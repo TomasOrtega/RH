@@ -9,6 +9,19 @@ namespace PI.TermsAtPtFiniteW
 
 open NumberField Formalism.BasicNotions
 
+/- English proof (translation)
+Set `Bl : W →ₗ[ℚ] Module.Dual ℚ W` to `B`. Establish `hinj : Function.Injective Bl`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `w hw`. Assume the negation of the conclusion as `hne`.
+
+Establish `h1` using `hp w hne`. Establish `h0 : B w w = 0` using `by simpa [Bl] using LinearMap.congr_fun hw w`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsurj : Function.Surjective Bl` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (Subspace.dual_finrank_eq).symm).1 hinj`. Take `⟨w, hw⟩` from `hsurj f`.
+
+Use `⟨B w w, fun x => ?_⟩` and prove the remaining obligations. Establish `hfx : f x = B w x` using `by rw [← hw]`. Rewrite using `[hfx]`. Distinguish the cases in `hw0 : w = 0`. Substitute `hw0` using the available equality.
+
+Simplify using the standard rewrite rules. Establish `hww` using `hp w hw0`. Establish `hyy : 0 ≤ B (B w w • x - B w x • w) (B w w • x - B w x • w)`. Distinguish the cases in `hy : B w w • x - B w x • w = 0`. Rewrite using `[hy]`.
+
+Simplify using the standard rewrite rules. Conclude with `le_of_lt (hp _ hy)`. Establish `hexp : B (B w w • x - B w x • w) (B w w • x - B w x • w) = B w w * (B w w * B x x - B w x ^ 2)`. Simplify using `only [map_sub, map_smul, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[hs x w]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `hyy` using `[hexp]`. Establish `h2` using `(mul_nonneg_iff_of_pos_left hww).1 hyy`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem qcs_bound {W : Type*} [AddCommGroup W] [Module ℚ W] [FiniteDimensional ℚ W]
     (B : LinearMap.BilinForm ℚ W) (hs : ∀ x y, B x y = B y x) (hp : ∀ x, x ≠ 0 → 0 < B x x)
     (f : W →ₗ[ℚ] ℚ) : ∃ K : ℚ, ∀ x, f x ^ 2 ≤ K * B x x := by
@@ -44,6 +57,13 @@ theorem qcs_bound {W : Type*} [AddCommGroup W] [Module ℚ W] [FiniteDimensional
     have h2 := (mul_nonneg_iff_of_pos_left hww).1 hyy
     linarith
 
+/- English proof (translation)
+Use `haveI : Nonempty (E →ₐ[ℚ] ℂ) := ⟨IsAlgClosed.lift⟩`. Establish `h1 : algebraMap ℚ ℂ (Algebra.trace ℚ E z) = ∑ σ : E →ₐ[ℚ] ℂ, σ z` using `trace_eq_sum_embeddings ℂ`. Establish `h2 : (algebraMap ℚ ℂ (Algebra.trace ℚ E z)).re = ∑ σ : E →ₐ[ℚ] ℂ, (σ z).re`. Rewrite using `[h1, Complex.re_sum]`. Establish `h3 : (algebraMap ℚ ℂ (Algebra.trace ℚ E z)).re = ((Algebra.trace ℚ E z : ℚ) : ℝ)`.
+
+Simplify using the standard rewrite rules. Establish `hpos : 0 < ∑ σ : E →ₐ[ℚ] ℂ, (σ z).re`. Apply `Finset.sum_pos` to reduce the goal to its premises. Introduce `σ _`. Conclude with `h σ.toRingHom`.
+
+Conclude with `Finset.univ_nonempty`. Establish `h4 : (0 : ℝ) < ((Algebra.trace ℚ E z : ℚ) : ℝ)`. Rewrite using `[← h3, h2]`. Conclude with `hpos`. Conclude with `h4` after adjusting the coercions.
+-/
 theorem trace_pos_of_re_pos {E : Type} [Field E] [NumberField E] (z : E)
     (h : ∀ τ : E →+* ℂ, 0 < (τ z).re) : 0 < Algebra.trace ℚ E z := by
   haveI : Nonempty (E →ₐ[ℚ] ℂ) := ⟨IsAlgClosed.lift⟩
@@ -63,6 +83,27 @@ theorem trace_pos_of_re_pos {E : Type} [Field E] [NumberField E] (z : E)
     exact hpos
   exact_mod_cast h4
 
+/- English proof (translation)
+Establish `hintC : ∀ m : ℤ, IsIntegral ℤ (m : E)` using `fun m => by`. Simplify using `using isIntegral_algebraMap (R := ℤ) (A := E) (x := m)`. Establish `hone : ∀ a : E, ∃ y : ℤ, y ≠ 0 ∧ IsIntegral ℤ ((y : E) * a)`. Introduce `a`. Establish `hbint : ∀ k, IsIntegral ℤ (integralBasis E k)`.
+
+Introduce `k`. Rewrite using `[integralBasis_apply]`. Conclude with `RingOfIntegers.isIntegral_coe _`. Establish `hsum : ∀ Y : ℤ, (Y : E) * a = ∑ k, ((Y : ℚ) * (integralBasis E).repr a k) • integralBasis E k`. Introduce `Y`.
+
+Establish `h1 : (Y : E) * (∑ k, (integralBasis E).repr a k • integralBasis E k) = ∑ k, ((Y : ℚ) * (integralBasis E).repr a k) • integralBasis E k`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Simplify using `only [Algebra.smul_def, map_mul, map_intCast]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `h1` using `[(integralBasis E).sum_repr a]`. Then use the resulting hypothesis. Use `⟨∏ j, (((integralBasis E).repr a j).den : ℤ), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `k _`. Conclude with `((integralBasis E).repr a k).den_nz` after adjusting the coercions.
+
+Rewrite using `[hsum]`. Apply `IsIntegral.sum` to reduce the goal to its premises. Introduce `k _`. Take `⟨c, hc⟩ : (((integralBasis E).repr a k).den : ℤ) ∣ ∏ j, (((integralBasis E).repr a j).den : ℤ)` from `Finset.dvd_prod_of_mem _ (Finset.mem_univ k)`. Establish `hm : ((∏ j, (((integralBasis E).repr a j).den : ℤ) : ℤ) : ℚ) * (integralBasis E).repr a k = ((c * ((integralBasis E).repr a k).num : ℤ) : ℚ)`.
+
+Rewrite using `[hc]`. Use `push_cast`. Establish `h2` using `Rat.den_mul_eq_num ((integralBasis E).repr a k)`. Take the linear combination `(c : ℚ) * h2`. Rewrite using `[hm, Algebra.smul_def, map_intCast]`.
+
+Conclude with `(hintC _).mul (hbint k)`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_ne_zero, fun e he => by simp at he⟩`. Consider the case `@insert a t ha ih`. Take `⟨d, hd, hdint⟩` from `ih`.
+
+Take `⟨y, hy, hyint⟩` from `hone a`. Use `⟨d * y, mul_ne_zero hd hy, fun e he => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 he with rfl | he'` into its components or cases. Establish `h1 : ((d * y : ℤ) : E) * e = (d : E) * ((y : E) * e)`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`. Conclude with `(hintC d).mul hyint`. Establish `h1 : ((d * y : ℤ) : E) * e = (y : E) * ((d : E) * e)`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`. Conclude with `(hintC y).mul (hdint e he')`.
+-/
 theorem exists_common_den {E : Type} [Field E] [NumberField E] (t : Finset E) :
     ∃ d : ℤ, d ≠ 0 ∧ ∀ e ∈ t, IsIntegral ℤ ((d : E) * e) := by
   have hintC : ∀ m : ℤ, IsIntegral ℤ (m : E) := fun m => by
@@ -117,6 +158,13 @@ theorem exists_common_den {E : Type} [Field E] [NumberField E] (t : Finset E) :
       rw [h1]
       exact (hintC y).mul (hdint e he')
 
+/- English proof (translation)
+Establish `hφ : (Algebra.trace ℚ E).comp (LinearMap.mulLeft ℚ (a - b)) = 0`. Apply `(integralBasis E).ext` to reduce the goal to its premises. Introduce `k`. Simplify using `only [LinearMap.comp_apply, LinearMap.mulLeft_apply, LinearMap.zero_apply]`. Rewrite using `[sub_mul, map_sub, mul_comm a, mul_comm b, h k, sub_self]`.
+
+Establish `hall : ∀ n : E, Algebra.traceForm ℚ E (a - b) n = 0`. Introduce `n`. Rewrite using `[Algebra.traceForm_apply]`. Conclude with `LinearMap.congr_fun hφ n`. Establish `hab : a - b = 0` using `by first`.
+
+Consider the case `exact (traceForm_nondegenerate ℚ E) (a - b) hall`. Consider the case `exact (traceForm_nondegenerate ℚ E).1 (a - b) hall`. Consider the case `exact (traceForm_nondegenerate (K := ℚ) (L := E)) (a - b) hall`. Conclude with `sub_eq_zero.1 hab`.
+-/
 theorem eq_of_trace_basis {E : Type} [Field E] [NumberField E] (a b : E)
     (h : ∀ k, Algebra.trace ℚ E (integralBasis E k * a) = Algebra.trace ℚ E (integralBasis E k * b)) :
     a = b := by
@@ -136,12 +184,52 @@ theorem eq_of_trace_basis {E : Type} [Field E] [NumberField E] (a b : E)
     | exact (traceForm_nondegenerate (K := ℚ) (L := E)) (a - b) hall
   exact sub_eq_zero.1 hab
 
+/- English proof (translation)
+Establish `h1 : IsIntegral ℤ (Algebra.trace ℚ E z)` using `Algebra.isIntegral_trace hz`. Take `⟨n, hn⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h1`. Conclude with `⟨n, by simpa using hn⟩`.
+-/
 theorem trace_int_of_isIntegral {E : Type} [Field E] [NumberField E] (z : E) (hz : IsIntegral ℤ z) :
     ∃ n : ℤ, (n : ℚ) = Algebra.trace ℚ E z := by
   have h1 : IsIntegral ℤ (Algebra.trace ℚ E z) := Algebra.isIntegral_trace hz
   obtain ⟨n, hn⟩ := IsIntegrallyClosed.isIntegral_iff.1 h1
   exact ⟨n, by simpa using hn⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ S Λ hΛ P hpos c`. Establish `hsl : ∀ (q : ℚ) (x y : S.V), S.hT (algebraMap ℚ E q • x) y = algebraMap ℚ E q * S.hT x y`. Introduce `q x y`. Rewrite using `[LinearMap.map_smulₛₗ₂, starRingEnd_apply, eq_ratCast, star_ratCast, smul_eq_mul]`. Establish `hsr : ∀ (q : ℚ) (x y : S.V), S.hT x (algebraMap ℚ E q • y) = algebraMap ℚ E q * S.hT x y`.
+
+Introduce `q x y`. Rewrite using `[LinearMap.map_smul, smul_eq_mul]`. Establish `htq : ∀ (q : ℚ) (z : E), Algebra.trace ℚ E (algebraMap ℚ E q * z) = q * Algebra.trace ℚ E z`. Introduce `q z`. Rewrite using `[← Algebra.smul_def, LinearMap.map_smul, smul_eq_mul]`.
+
+Use `letI : Module ℚ P := Module.compHom P (algebraMap ℚ E)`. Use `haveI : IsScalarTower ℚ E P := ⟨fun q e x => by show (q • e) • x = algebraMap ℚ E q • (e • x)`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`. Use `haveI : FiniteDimensional ℚ P := Module.Finite.trans E P`. Establish `hcoe : ∀ (q : ℚ) (x : P), ((q • x : P) : S.V) = algebraMap ℚ E q • (x : S.V)` using `fun q x => rfl`.
+
+Set `B : LinearMap.BilinForm ℚ P` to `LinearMap.mk₂ ℚ (fun x y : P => Algebra.trace ℚ E (S.hT x y) + Algebra.trace ℚ E (S.hT y x)) (fun x1 x2 y => by simp only [Submodule.coe_add, map_add, LinearMap.add_apply]; ring) (fun q x y => by simp only [hcoe, hsl, hsr, htq, smul_eq_mul]; ring) (fun x y1 y2 => by simp only [Su …`. Establish `hBapp : ∀ x y : P, B x y = Algebra.trace ℚ E (S.hT x y) + Algebra.trace ℚ E (S.hT y x)` using `fun x y => rfl`. Establish `hsym : ∀ x y : P, B x y = B y x` using `fun x y => by rw [hBapp, hBapp]; ring`. Establish `hp : ∀ x : P, x ≠ 0 → 0 < B x x`. Introduce `x hx`.
+
+Establish `hx' : (x : S.V) ≠ 0`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Conclude with `Subtype.ext h`. Use `trace_pos_of_re_pos _ (hpos x x.2 hx')` as an intermediate fact.
+
+Rewrite using `[hBapp]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨sg, hsg⟩` from `hΛ.fg`. Take `⟨d, hd0, hd⟩` from `exists_common_den (sg.biUnion fun g => Finset.univ.image fun j => S.frame.repr g j)`. Establish `hΛint : ∀ x ∈ Λ, ∀ j, IsIntegral ℤ ((d : E) * S.frame.repr x j)`.
+
+Introduce `x hx`. Rewrite `hx` using `[← hsg]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem g hg`. Introduce `j`.
+
+Conclude with `hd _ (Finset.mem_biUnion.2 ⟨g, hg, Finset.mem_image.2 ⟨j, Finset.mem_univ _, rfl⟩⟩)`. Consider the case `zero => intro j`. Simplify using `using (isIntegral_zero : IsIntegral ℤ (0 : E))`. Consider the case `add x y _ _ hx hy`. Introduce `j`.
+
+Simplify using `only [map_add, Finsupp.add_apply, mul_add]`. Conclude with `(hx j).add (hy j)`. Consider the case `smul a x _ hx`. Introduce `j`. Rewrite using `[← algebraMap_smul E a x, map_smul, Finsupp.smul_apply, smul_eq_mul, mul_left_comm]`.
+
+Conclude with `(RingOfIntegers.isIntegral_coe a).mul (hx j)`. Set `Φ : S.V → Fin S.rank × Module.Free.ChooseBasisIndex ℤ (𝓞 E) → ℚ` to `fun x p => Algebra.trace ℚ E (integralBasis E p.2 * ((d : E) * S.frame.repr x p.1))`. Establish `hlin : ∀ p, ∃ f : P →ₗ[ℚ] ℚ, ∀ x : P, f x = Φ x p`. Introduce `p`. Use `⟨{ toFun := fun x => Φ x p, map_add' := ?_, map_smul' := ?_ }, fun x => rfl⟩` and prove the remaining obligations.
+
+Introduce `x y`. Simplify using `only [Φ, Submodule.coe_add, map_add, Finsupp.add_apply, mul_add]`. Introduce `q x`. Simplify using `only [Φ, hcoe, map_smul, Finsupp.smul_apply, smul_eq_mul, RingHom.id_apply]`. Rewrite using `[← htq]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `choose f hf using hlin`. Use `choose K hK using fun p => qcs_bound B hsym hp (f p)`. Establish `hint : ∀ x ∈ Λ, ∀ p, ∃ n : ℤ, (n : ℚ) = Φ x p`.
+
+Introduce `x hx p`. Establish `hμ : IsIntegral ℤ (integralBasis E p.2)`. Rewrite using `[integralBasis_apply]`. Conclude with `RingOfIntegers.isIntegral_coe _`. Conclude with `trace_int_of_isIntegral _ (hμ.mul (hΛint x hx p.1))`.
+
+Set `R : Fin S.rank × Module.Free.ChooseBasisIndex ℤ (𝓞 E) → ℤ` to `fun p => ⌈K p * (2 * Algebra.trace ℚ E c)⌉`. Use `Set.Finite.of_injOn (f := Φ) (t := Set.pi Set.univ fun p => ((Int.cast : ℤ → ℚ) '' Set.Icc (-R p) (R p))) ?_ ?_ (Set.Finite.pi fun p => (Set.finite_Icc _ _).image _)` and prove the remaining obligations. Introduce and unpack `x ⟨hxΛ, hxP, hxc⟩ p _`. Take `⟨n, hn⟩` from `hint x hxΛ p`. Establish `hB : B ⟨x, hxP⟩ ⟨x, hxP⟩ = 2 * Algebra.trace ℚ E c`.
+
+Rewrite using `[hBapp]`. Simplify using `only [hxc]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : (Φ x p) ^ 2 ≤ K p * (2 * Algebra.trace ℚ E c)`. Use `hK p ⟨x, hxP⟩` as an intermediate fact.
+
+Rewrite `this` using `[hf, hB]`. Conclude with `this`. Establish `h2 : ((n ^ 2 : ℤ) : ℚ) ≤ (R p : ℚ)`. Use `push_cast`. Rewrite using `[hn]`.
+
+Conclude with `h1.trans (Int.le_ceil _)`. Establish `h3 : n ^ 2 ≤ R p` using `by exact_mod_cast h2`. Use `⟨n, ⟨?_, ?_⟩, hn⟩` and prove the remaining obligations. Apply the tactic sequence `rcases le_or_gt n 0 with h | h <;> nlinarith`. Apply the tactic sequence `rcases le_or_gt n 0 with h | h <;> nlinarith`.
+
+Introduce and unpack `x ⟨hxΛ, -, -⟩ y ⟨hyΛ, -, -⟩ hxy`. Apply `S.frame.ext_elem` to reduce the goal to its premises. Introduce `j`. Establish `hj : (d : E) * S.frame.repr x j = (d : E) * S.frame.repr y j` using `eq_of_trace_basis _ _ (fun k => congrFun hxy (j, k))`. Conclude with `mul_left_cancel₀ (Int.cast_ne_zero.2 hd0) hj`.
+-/
 theorem shortFin_holds : ShortFin := by
   intro E _ _ _ S Λ hΛ P hpos c
   have hsl : ∀ (q : ℚ) (x y : S.V),

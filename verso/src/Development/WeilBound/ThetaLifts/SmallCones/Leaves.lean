@@ -12,9 +12,23 @@ open GlobalTheory.Doubling (absE)
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Substitute `e1 e2` using the available equality. Conclude with `h`.
+-/
 theorem lawα {n d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} {H' : Plane E d d₁} {χ χ' : Chr F E} {x y : ℝ} {T : UA σ W.J → ℂ}
     (_n : n = n) (h : HasLaw W₁ H' χ x T) (e1 : χ = χ') (e2 : x = y) : HasLaw W₁ H' χ' y T := by subst e1 e2; exact h
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' h d₁ W₁ H' i₀ i₁ hH'`. Take `⟨hp, hp', hw⟩` from `hT F E σ B a a' G X om om' h`. Take `⟨h1, h2, hW₁⟩` from `(hL F E σ B _ _ G.W W₁ H' i₀ i₁ _ _ h.base hH').2 h.geo.hW`. Establish `hlt` using `h.geo.lt`. Establish `hev` using `h.geo.even`.
+
+Establish `heB` using `h.geo.eBig`. Establish `haB` using `h.geo.aBig`. Take `⟨k, hk⟩` from `hev`. Establish `uniq : ∀ f fa fb, Split2 W₁ H' X f fa fb → ∃! x : (UA σ G.W.J → ℂ) × (UA σ G.W.J → ℂ), Split2 W₁ H' X f x.1 x.2` using `fun f fa fb hs => ⟨(fa, fb), hs, fun y hy => Prod.ext (split_uniq hU h hH' hy hs).1 (split_uniq hU h hH' hy hs).2⟩`. Use `⟨fun Φ hΦ => ?_, fun Φ hΦ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨⟨M₁, hM₁⟩, hW⟩` from `hP F E σ B h.base _ _ G.V W₁ _ _ _ _ h.geo.hV hW₁`. Take `⟨om₁, hp₁⟩` from `hW _ _ hp.hX hp.hW hp.resX (res_low hp.resW hH'.rank) M₁ hM₁`. Take `⟨⟨e₀, he₀⟩, -⟩` from `hZ F E σ B _ _ G.V G.W G.M _ _ om _ _ _ _ hp d₁ G.V W₁ H' i₀ i₁ M₁ rfl hH' hM₁`. Take `⟨C₀, -, H0⟩` from `anyBig hB hA hK hS hI hP hPl hC F E σ B a (a + a') d₁ G.V G.W W₁ H' i₀ i₁ (a - G.p) G.p _ _ G.M M₁ (by omega) ⟨(a - a') / 2, by omega, by omega⟩ hH' e₀ he₀`. Take `⟨A₀, A₁, c1, c2, c3, -⟩` from `H0 _ _ om om₁ (IsPair.cast hp rfl rfl (by omega) (by omega)) hp₁ Φ hΦ (by simp)`.
+
+Conclude with `uniq _ A₁ A₀ ⟨by rwa [add_comm A₁], lawα (n := 0) rfl c3 (by simp) (by push_cast; ring), c2⟩`. Take `⟨⟨M₁, hM₁⟩, hW⟩` from `hP F E σ B h.base _ _ G.V' W₁ _ _ _ _ h.geo.hV' hW₁`. Take `⟨om₁, hp₁⟩` from `hW _ _ hp'.hX hp'.hW hp'.resX (res_low hp'.resW hH'.rank) M₁ hM₁`. Take `⟨⟨e₀, he₀⟩, -⟩` from `hZ F E σ B _ _ G.V' G.W G.M' _ _ om' _ _ _ _ hp' d₁ G.V' W₁ H' i₀ i₁ M₁ rfl hH' hM₁`. Take `⟨C₀, -, H0⟩` from `anySmall hSm hA hK hS hI hP hPl hC F E σ B a' (a + a') d₁ G.V' G.W W₁ H' i₀ i₁ G.q (a' - G.q) _ _ G.M' M₁ (by omega) ⟨(a - a') / 2 + 1, by omega, by omega⟩ hH' e₀ he₀`.
+
+Take `⟨A₀, A₁, c1, c2, c3, -⟩` from `H0 _ _ om' om₁ (IsPair.cast hp' rfl rfl (by omega) (by omega)) hp₁ Φ hΦ.1 (fun _ => hΦ.2)`. Conclude with `uniq _ A₀ A₁ ⟨c1, c2, lawα (n := 0) rfl c3 (by simp) (by push_cast; ring)⟩`.
+-/
 theorem splitEx_of (hB : GenBig) (hSm : GenSmall) (hA : GenAniso) (hK : KFinData) (hS : StabEx) (hI : IwaEx) (hP : PairEx)
     (hPl : PlaneHerm) (hC : EvCone) (hZ : EvZero) (hU : UnipEx) (hL : Low) (hT : TriplePair) : SplitEx := by
   intro F E _ _ _ _ _ σ B a a' G X om om' h d₁ W₁ H' i₀ i₁ hH'
@@ -43,6 +57,15 @@ theorem splitEx_of (hB : GenBig) (hSm : GenSmall) (hA : GenAniso) (hK : KFinData
     obtain ⟨A₀, A₁, c1, c2, c3, -⟩ := H0 _ _ om' om₁ (IsPair.cast hp' rfl rfl (by omega) (by omega)) hp₁ Φ hΦ.1 (fun _ => hΦ.2)
     exact uniq _ A₀ A₁ ⟨c1, c2, lawα (n := 0) rfl c3 (by simp) (by push_cast; ring)⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a b G G₁ H H' hc e he`. Take `⟨p₁, q₁, V₁, V₁', W₁, M₁, M₁'⟩` from `G₁`. Take `⟨eV, ep, eq, hH, hH'⟩` from `hc`. Simplify using `only at eV ep eq hH hH' he`. Substitute `eV ep` using the available equality.
+
+Distinguish the cases in `hex : ∃ X om om', IsTriple B G X om om'`. Use `swap`. Conclude with `⟨1, one_ne_zero, fun X om om' _ _ h => absurd ⟨X, om, om', h⟩ hex⟩`. Take `⟨X0, o, o', h0⟩` from `hex`. Establish `hlt` using `h0.geo.lt`.
+
+Establish `heB` using `h0.geo.eBig`. Establish `haB` using `h0.geo.aBig`. Take `⟨k, hk⟩` from `h0.geo.even`. Take `⟨C₀, hC₀, H0⟩` from `anyBig hB hA hK hS hI hP hPl hC F E σ B a (a + (b + 2)) (a + b) G.V G.W W₁ H' _ _ (a - G.p) G.p (a + b - (G.p + q₁)) (G.p + q₁) G.M M₁ (by omega) ⟨(a - (b + 2)) / 2, by omega, by omega⟩ hH' e he`. Use `⟨C₀, hC₀, fun X om om' om₁ om₁' h h₁ Φ hΦ fa fb hs g m hm x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨A₀, A₁, c1, c2, c3, c4⟩` from `H0 _ _ om om₁ (IsPair.cast (hT F E σ B _ _ G X om om' h).1 rfl rfl (by omega) (by omega)) (hT F E σ B _ _ _ X om₁ om₁' h₁).1 Φ hΦ (by simp)`. Use `split_uniq hU h hH' hs (fa' := A₁) (fb' := A₀) ⟨by rwa [add_comm A₁], lawα (n := 0) rfl c3 (by simp) (by push_cast; ring), c2⟩` as an intermediate fact. Rewrite using `[this.2]`. Conclude with `c4 g m hm x (by simp)`.
+-/
 theorem ctBigZero_of (hB : GenBig) (hA : GenAniso) (hK : KFinData) (hS : StabEx) (hI : IwaEx) (hP : PairEx)
     (hPl : PlaneHerm) (hC : EvCone) (hU : UnipEx) (hT : TriplePair) : CTBigZero := by
   intro F E _ _ _ _ _ σ B a b G G₁ H H' hc e he
@@ -68,6 +91,11 @@ theorem ctBigZero_of (hB : GenBig) (hA : GenAniso) (hK : KFinData) (hS : StabEx)
   rw [this.2]
   exact c4 g m hm x (by simp)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hc e he`. Take `⟨C, hC, H0⟩` from `hA F E σ B a' _ _ G.V' G.W G₁.W H' _ _ G.q (a' - G.q) (b + 2 + a' - (G.p + G.q)) (G.p + G.q) (b + a' - (G₁.p + G₁.q)) (G₁.p + G₁.q) G₁.V' G.M' G₁.M' hc.eV (by rw [hc.q0]; simp) hc.hH' e he`. Use `⟨C, hC, fun X om om' om₁ om₁' h h₁ Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `hp` using `(hT F E σ B _ _ G X om om' h).2.1`. Take `⟨K, μK, μ, hK1, -⟩` from `hS F E σ B _ G.V' _ _ h.base hp.herm`.
+
+Take `⟨A₀, c1, c2, c3⟩` from `H0 _ _ om' om₁' hp (IsPair.cast (hT F E σ B _ _ G₁ X om₁ om₁' h₁).2.1 (by rw [hc.q0, hc.q1]) (by rw [hc.q0, hc.q1]) rfl rfl) Φ (hK F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hp K hK1 Φ hΦ).1`. Conclude with `⟨A₀, ⟨by rwa [add_zero], c2, fun t m _ h => by simp⟩, c3⟩`.
+-/
 theorem ctSmallZero_of (hA : GenAniso) (hK : KFinData) (hS : StabEx) (hT : TriplePair) : CTSmallZero := by
   intro F E _ _ _ _ _ σ B b a' G G₁ H H' hc e he
   obtain ⟨C, hC, H0⟩ := hA F E σ B a' _ _ G.V' G.W G₁.W H' _ _ G.q (a' - G.q) (b + 2 + a' - (G.p + G.q)) (G.p + G.q)
@@ -80,6 +108,17 @@ theorem ctSmallZero_of (hA : GenAniso) (hK : KFinData) (hS : StabEx) (hT : Tripl
     (hK F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hp K hK1 Φ hΦ).1
   exact ⟨A₀, ⟨by rwa [add_zero], c2, fun t m _ h => by simp⟩, c3⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hc e he K μK μ hK1 hμK hμ`. Distinguish the cases in `hex : ∃ X om om' om₁ om₁', IsTriple B G X om om' ∧ IsTriple B G₁ X om₁ om₁'`. Use `swap`. Conclude with `⟨1, one_ne_zero, fun X om om' om₁ om₁' h h₁ => absurd ⟨X, om, om', om₁, om₁', h, h₁⟩ hex⟩`. Take `⟨X0, o, o', o₁, o₁', h0, h1⟩` from `hex`.
+
+Establish `hlt` using `h0.geo.lt`. Establish `heB` using `h0.geo.eBig`. Establish `haB` using `h0.geo.aBig`. Establish `e1` using `hc.ep`. Establish `e2` using `hc.q0`.
+
+Establish `e3` using `hc.q1`. Take `⟨k, hk⟩` from `h0.geo.even`. Take `⟨⟨M₁, hM₁⟩, hW⟩` from `hP F E σ B h0.base _ _ G.V G₁.W _ _ _ _ h0.geo.hV h1.geo.hW`. Take `⟨⟨e₀, he₀⟩, -⟩` from `hZ F E σ B _ _ G.V G.W G.M _ _ o _ _ _ _ (hT F E σ B _ _ G X0 o o' h0).1 _ G.V G₁.W H' _ _ M₁ rfl hc.hH' hM₁`. Take `⟨C₀, C₁, -, hC₁, H0⟩` from `hB F E σ B _ _ _ _ G.V G.W G₁.V G₁.W H H' _ _ _ _ (b - G₁.p) G₁.p (b + a' - (G₁.p + G₁.q)) (G₁.p + G₁.q) G.M G₁.M hc.hH hc.hH' M₁ e₀ e hM₁ h1.geo.hM he₀ he ((b + 2 - a') / 2) ⟨by omega, by omega⟩ K μK μ (hI F E σ B _ _ G.V _ _ H h0.base h0.geo.hV (adapted_x_ne hc.hH) hc.hH.xx K h …`.
+
+Use `⟨C₁, hC₁, fun X om om' om₁ om₁' h h₁ Φ hΦ fa fb hs g m hm x => ?_⟩` and prove the remaining obligations. Establish `hp` using `(hT F E σ B _ _ G X om om' h).1`. Establish `hp₁` using `(hT F E σ B _ _ G₁ X om₁ om₁' h₁).1`. Take `⟨om₂, hp₂⟩` from `hW _ _ hp.hX hp.hW hp.resX hp₁.resW M₁ hM₁`. Take `⟨hs1, hf⟩` from `hK F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hp K hK1 Φ hΦ`.
+
+Take `⟨A₀, A₁, c1, c2, c3, c4⟩` from `H0 _ _ om om₂ om₁ (IsPair.cast hp (by omega) (by omega) (by omega) (by omega)) (IsPair.cast hp₂ (by omega) (by omega) rfl rfl) hp₁ Φ hs1 hf`. Use `split_uniq hU h hc.hH' hs (fa' := A₁) (fb' := A₀) ⟨by rwa [add_comm A₁], lawα (n := 0) rfl c3 (by simp) (by push_cast; ring), c2⟩` as an intermediate fact. Rewrite using `[this.1, (c4 g m hm x).1, inv_div]`. Both sides reduce to the same expression.
+-/
 theorem ctBigCone_of (hB : GenBig) (hK : KFinData) (hI : IwaEx) (hP : PairEx) (hZ : EvZero) (hU : UnipEx) (hT : TriplePair) :
     CTBigCone := by
   intro F E _ _ _ _ _ σ B b a' G G₁ H H' hc e he K μK μ hK1 hμK hμ
@@ -111,6 +150,17 @@ theorem ctBigCone_of (hB : GenBig) (hK : KFinData) (hI : IwaEx) (hP : PairEx) (h
   rw [this.1, (c4 g m hm x).1, inv_div]
   rfl
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a b G G₁ H H' hc e he K μK μ hK1 hμK hμ`. Distinguish the cases in `hex : ∃ X om om' om₁ om₁', IsTriple B G X om om' ∧ IsTriple B G₁ X om₁ om₁'`. Use `swap`. Conclude with `⟨1, one_ne_zero, fun X om om' om₁ om₁' h h₁ => absurd ⟨X, om, om', om₁, om₁', h, h₁⟩ hex⟩`. Take `⟨X0, o, o', o₁, o₁', h0, h1⟩` from `hex`.
+
+Establish `hlt` using `h0.geo.lt`. Establish `heB` using `h0.geo.eBig`. Establish `haB` using `h0.geo.aBig`. Establish `e1` using `hc.ep`. Establish `e2` using `hc.eq`.
+
+Take `⟨k, hk⟩` from `h0.geo.even`. Take `⟨⟨M₁, hM₁⟩, hW⟩` from `hP F E σ B h0.base _ _ G.V' G₁.W _ _ _ _ h0.geo.hV' h1.geo.hW`. Take `⟨⟨e₀, he₀⟩, -⟩` from `hZ F E σ B _ _ G.V' G.W G.M' _ _ o' _ _ _ _ (hT F E σ B _ _ G X0 o o' h0).2.1 _ G.V' G₁.W H' _ _ M₁ rfl hc.hH' hM₁`. Take `⟨C₀, C₁, -, hC₁, H0⟩` from `hB F E σ B _ _ _ _ G.V' G.W G₁.V' G₁.W H H' _ _ _ _ G₁.q (b - G₁.q) (a + b - (G₁.p + G₁.q)) (G₁.p + G₁.q) G.M' G₁.M' hc.hH hc.hH' M₁ e₀ e hM₁ h1.geo.hM' he₀ he ((a - (b + 2)) / 2 + 1) ⟨by omega, by omega⟩ K μK μ (hI F E σ B _ _ G.V' _ _ H h0.base h0.geo.hV' (adapted_x_ne hc.hH) h …`. Use `⟨C₁, hC₁, fun X om om' om₁ om₁' h h₁ Φ hΦ fa fb hs g m hm x => ?_⟩` and prove the remaining obligations.
+
+Establish `hp` using `(hT F E σ B _ _ G X om om' h).2.1`. Establish `hp₁` using `(hT F E σ B _ _ G₁ X om₁ om₁' h₁).2.1`. Take `⟨om₂, hp₂⟩` from `hW _ _ hp.hX hp.hW hp.resX hp₁.resW M₁ hM₁`. Take `⟨-, hf⟩` from `hK F E σ B _ _ _ _ _ _ _ _ _ _ _ _ hp K hK1 Φ hΦ.1`. Take `⟨A₀, A₁, c1, c2, c3, c4⟩` from `H0 _ _ om' om₂ om₁' (IsPair.cast hp (by omega) (by omega) (by omega) (by omega)) (IsPair.cast hp₂ (by omega) (by omega) rfl rfl) hp₁ Φ hΦ.2 hf`.
+
+Use `split_uniq hU h hc.hH' hs (fa' := A₀) (fb' := A₁) ⟨c1, c2, lawα (n := 0) rfl c3 (by simp) (by push_cast; ring)⟩` as an intermediate fact. Rewrite using `[this.2, (c4 g m hm x).1]`. Both sides reduce to the same expression.
+-/
 theorem ctSmallCone_of (hB : GenSmall) (hK : KFinData) (hI : IwaEx) (hP : PairEx) (hZ : EvZero) (hU : UnipEx) (hT : TriplePair) :
     CTSmallCone := by
   intro F E _ _ _ _ _ σ B a b G G₁ H H' hc e he K μK μ hK1 hμK hμ

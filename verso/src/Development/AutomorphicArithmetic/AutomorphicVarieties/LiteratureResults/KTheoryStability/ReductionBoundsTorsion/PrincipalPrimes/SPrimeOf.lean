@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 
 namespace PositivityTheory.KB
 
+/- English proof (translation)
+Introduce `L _ _` and use `PrincipalPrimes.exists_prime L 25`.
+-/
 theorem sPrime_of : SPrime := fun L _ _ => PrincipalPrimes.exists_prime L 25
 
 end PositivityTheory.KB

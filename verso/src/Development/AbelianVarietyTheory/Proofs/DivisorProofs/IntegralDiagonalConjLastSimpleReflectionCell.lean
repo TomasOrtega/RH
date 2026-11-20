@@ -20,6 +20,9 @@ section Diag
 
 variable {L : Type} [Field L] {σ : L →+* L} {n : ℕ}
 
+/- English proof (translation)
+Introduce `i j hij`. Establish `h` using `(GlobalTheory.LGrp.mem_GU_iff σ n (t : GL (Fin n) L)).1 t.2 i j`. Rewrite using `[Subgroup.coe_inv, h, ht _ _ (fun e => hij (Fin.rev_injective e).symm), map_zero]`.
+-/
 theorem diag_inv_of_diag (t : GU σ n)
     (ht : ∀ i j, i ≠ j → ((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j = 0) :
     ∀ i j, i ≠ j → (((t⁻¹ : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j = 0 := by
@@ -27,6 +30,9 @@ theorem diag_inv_of_diag (t : GU σ n)
   have h := (GlobalTheory.LGrp.mem_GU_iff σ n (t : GL (Fin n) L)).1 t.2 i j
   rw [Subgroup.coe_inv, h, ht _ _ (fun e => hij (Fin.rev_injective e).symm), map_zero]
 
+/- English proof (translation)
+Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, Units.val_mul, Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single j (fun b _ hb => by rw [ht b j hb, mul_zero]) (by simp), Matrix.mul_apply, Finset.sum_eq_single i (fun b _ hb => by rw [hs i b (Ne.symm hb), zero_mul]) (by simp)]`.
+-/
 theorem diag_mul_mul_diag_apply (s u t : GU σ n)
     (hs : ∀ i j, i ≠ j → ((s : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j = 0)
     (ht : ∀ i j, i ≠ j → ((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j = 0) (i j : Fin n) :
@@ -37,6 +43,9 @@ theorem diag_mul_mul_diag_apply (s u t : GU σ n)
     Finset.sum_eq_single j (fun b _ hb => by rw [ht b j hb, mul_zero]) (by simp), Matrix.mul_apply,
     Finset.sum_eq_single i (fun b _ hb => by rw [hs i b (Ne.symm hb), zero_mul]) (by simp)]
 
+/- English proof (translation)
+Establish `h` using `diag_mul_mul_diag_apply t⁻¹ 1 t (diag_inv_of_diag t ht) ht i i`. Rewrite `h` using `[mul_one, inv_mul_cancel]`. Simplify using `using h.symm`.
+-/
 theorem diag_inv_mul_diag (t : GU σ n)
     (ht : ∀ i j, i ≠ j → ((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j = 0) (i : Fin n) :
     (((t⁻¹ : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i i *
@@ -49,6 +58,13 @@ end Diag
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+Unfold `cornerU`. Rewrite using `[diag_mul_mul_diag_apply _ _ _ (diag_inv_of_diag t ht) ht]`. Establish `h1` using `diag_inv_mul_diag t ht (lo k)`. Establish `h2` using `(GlobalTheory.LGrp.mem_GU_iff σ n (t : GL (Fin n) L)).1 t.2 (lo k) (lo k)`. Rewrite `h2` using `[← Subgroup.coe_inv]`.
+
+Establish `h0 : ((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (lo k) (lo k) ≠ 0` using `right_ne_zero_of_mul_eq_one h1`. Establish `h3 : Valued.v ((((t⁻¹ : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (lo k) (lo k)) = WithZero.exp (ordL (((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (lo k) (lo k)))`. Rewrite using `[eq_inv_of_mul_eq_one_left h1, map_inv₀, GlobalTheory.BorelUMod.v_eq_exp h0, ← WithZero.exp_neg, neg_neg]`. Establish `h4 : Valued.v (((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (lo k).rev (lo k).rev) = WithZero.exp (ordL (((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (lo k) (lo k)))`. Rewrite using `[← h3, h2, hσ]`.
+
+Rewrite using `[map_mul, map_mul, h3, h4, two_mul, WithZero.exp_add, mul_right_comm]`.
+-/
 theorem v_cornerU_conj {σ : L →+* L} (hσ : ∀ x, Valued.v (σ x) = Valued.v x) {n : ℕ} (k : Fin (n / 2))
     (t : GU σ n) (ht : ∀ i j, i ≠ j → ((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j = 0) (u : GU σ n) :
     Valued.v (cornerU k (t⁻¹ * u * t)) =
@@ -68,6 +84,11 @@ theorem v_cornerU_conj {σ : L →+* L} (hσ : ∀ x, Valued.v (σ x) = Valued.v
     rw [← h3, h2, hσ]
   rw [map_mul, map_mul, h3, h4, two_mul, WithZero.exp_add, mul_right_comm]
 
+/- English proof (translation)
+Rewrite `hu`, the goal using `[mem_cellU_last_iff L ϖ σ q hU n k hk hn y hy hw]`. Take `⟨⟨hb, hd⟩, hz⟩` from `hu`. Establish `e` using `diag_mul_mul_diag_apply t⁻¹ u t (diag_inv_of_diag t ht) ht`. Use `⟨⟨fun i j hij => ?_, fun i => ?_⟩, fun i j hij h => ?_⟩` and prove the remaining obligations. Rewrite using `[e, hb i j hij, mul_zero, zero_mul]`.
+
+Rewrite using `[e, hd i, mul_one, diag_inv_mul_diag t ht]`. Rewrite using `[e, hz i j hij h, mul_zero, zero_mul]`.
+-/
 theorem conj_mem_cellU_last [CompleteSpace L] {ϖ : L} {σ : L →+* L} {q : ℕ} (hU : IsUnramInv ϖ σ q)
     {n : ℕ} {k : Fin (n / 2)} (hk : ¬ k.val + 1 < n / 2) (hn : ¬ Even n)
     {y : GU σ n} (hy : y ∈ KU σ n) (hw : IsWeylRep (simpleU k) (y : GL (Fin n) L))
@@ -81,6 +102,31 @@ theorem conj_mem_cellU_last [CompleteSpace L] {ϖ : L} {σ : L →+* L} {q : ℕ
   · rw [e, hd i, mul_one, diag_inv_mul_diag t ht]
   · rw [e, hz i j hij h, mul_zero, zero_mul]
 
+/- English proof (translation)
+Introduce `L _ _ _ ϖ σ q hU n k hk hn y hy hw _ _ μ _ hμ t ht`. Establish `hsh` using `(GlobalTheory.T.unitaryWeylCellShell_isOpenCompactSubgroup L ϖ σ q hU n k hk hn y hy hw).1`. Establish `hvol` using `GlobalTheory.T.haar_measure_weyl_cell_odd_unitary L ϖ σ q hU n k hk hn y hy hw μ hμ`. Establish `hcv` using `v_cornerU_conj hU.2.1 k t ht`. Establish `hq : (2 : ℕ) ≤ q` using `hU.2.2.2.2.2.1`.
+
+Generalize the expression as in `ordL (((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (lo k) (lo k)) = o at hcv ⊢`. Establish `hm` using `conj_mem_cellU_last hU hk hn hy hw t ht`. Establish `hm'` using `conj_mem_cellU_last hU hk hn hy hw t⁻¹ (diag_inv_of_diag t ht)`. Set `κ : cellU y ≃* cellU y` to `{ toFun := fun u => ⟨t⁻¹ * u * t, hm u u.2⟩ invFun := fun u => ⟨t⁻¹⁻¹ * u * t⁻¹, hm' u u.2⟩ left_inv := fun u => Subtype.ext (by simp [mul_assoc]) right_inv := fun u => Subtype.ext (by simp [mul_assoc]) map_mul' := fun u v => Subtype.ext (by simp [mul_assoc]) }`. Establish `hc : Continuous κ`.
+
+Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Use `fun_prop`. Establish `hc' : Continuous κ.symm`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Use `fun_prop`.
+
+Set `e : cellU y ≃ᵐ cellU y` to `(Homeomorph.mk κ.toEquiv hc hc').toMeasurableEquiv`. Establish `he : ∀ u : cellU y, ((e u : cellU y) : GU σ n) = t⁻¹ * u * t` using `fun u => rfl`. Use `haveI : (μ.map e).IsHaarMeasure := MulEquiv.isHaarMeasure_map μ κ hc hc'`. Use `haveI : LocallyCompactSpace (cellU y) := (hsh 0).2.1.locallyCompactSpace_of_mem_nhds_of_group ((hsh 0).1.mem_nhds (hsh 0).2.2.1)`. Establish `hpre : ∀ j : ℤ, e ⁻¹' shellU k y j = shellU k y (j - 2 * o)`.
+
+Introduce `j`. Use extensionality with `u`. Simplify using `only [Set.mem_preimage, shellU, Set.mem_setOf_eq, he, hcv]`. Rewrite using `[WithZero.exp_sub, le_div_iff₀' (WithZero.exp_pos)]`. Establish `hq0 : (q : ℝ) ≠ 0` using `by positivity`.
+
+Establish `hnorm : ‖(q : ℂ) ^ (-4 * o)‖ = (q : ℝ) ^ (-4 * o)`. Rewrite using `[norm_zpow, Complex.norm_natCast]`. Take `⟨a, ha⟩ : ∃ a : ℕ, (a : ℤ) = |o|` from `⟨o.natAbs, by simp⟩`. Take `⟨b, hb⟩ : ∃ b : ℕ, (b : ℤ) = a - o` from `⟨(a - o).toNat, by`. Rewrite using `[Int.toNat_of_nonneg]`.
+
+Rewrite using `[ha]`. Combine the linear relations using `[le_abs_self o]⟩`. Establish `key : μ.map e = ‖(q : ℂ) ^ (-4 * o)‖ₑ • μ`. Use `GlobalTheory.T.haarMeasure_unique_sigmaCompact_normalised_compactOpen (cellU y) μ (μ.map e) (fun j : ℕ => shellU k y j) (fun j => ⟨(hsh j).2.1, (hsh j).1.measurableSet⟩) ?_ (shellU k y ((2 * a : ℕ) : ℤ)) _ (hsh _).1 (hsh _).2.1 ⟨1, (hsh _).2.2.1⟩ ?_` and prove the remaining obligations. Conclude with `Set.eq_univ_of_forall fun u => Set.mem_iUnion.2 ⟨_, mem_shellU_depth k y u⟩`.
+
+Rewrite using `[e.map_apply, hpre]`. Establish `h2 : ((2 * a : ℕ) : ℤ) - 2 * o = ((2 * b : ℕ) : ℤ)` using `by push_cast; rw [hb]; ring`. Rewrite using `[h2, hvol, hvol, ← ofReal_norm_eq_enorm, hnorm, ← ENNReal.ofReal_natCast q, ← ENNReal.ofReal_pow (Nat.cast_nonneg q), ← ENNReal.ofReal_pow (Nat.cast_nonneg q), ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ hq0]`.
+
+Use `congr 1`. Establish `e1 : 2 * a / 2 = a` using `by omega`. Establish `e2 : 2 * b / 2 = b` using `by omega`. Rewrite using `[e1, e2]`. Use `push_cast`.
+
+Rewrite using `[hb]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨fun F => ?_, fun F => ?_⟩` and prove the remaining obligations. Establish `h` using `integral_map_equiv (μ := μ) e (fun u : cellU y => F (u : GU σ n))`. Rewrite `h` using `[key, integral_smul_measure, toReal_enorm, hnorm, Complex.real_smul]`.
+
+Simplify using `only [he] at h`. Rewrite using `[← h]`. Use `push_cast`. Both sides reduce to the same expression. Establish `h` using `lintegral_map_equiv (μ := μ) (fun u : cellU y => F (u : GU σ n)) e`.
+
+Rewrite `h` using `[key, lintegral_smul_measure, smul_eq_mul]`. Simplify using `only [he] at h`. Conclude with `h.symm`.
+-/
 theorem integral_conj_diag_cellU_last :
     ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L)
     (σ : L →+* L) (q : ℕ), IsUnramInv ϖ σ q →

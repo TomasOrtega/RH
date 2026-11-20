@@ -211,6 +211,9 @@ section LinAlg
 variable {H G : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
   [NormedAddCommGroup G] [InnerProductSpace ℂ G] [FiniteDimensional ℂ G]
 
+/- English proof (translation)
+Unfold `hsNormSq hsInner`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `using inner_self_eq_norm_sq (𝕜 := ℂ) (A (stdOrthonormalBasis ℂ H i))`.
+-/
 theorem hsNormSq_eq (A : H →L[ℂ] G) : hsNormSq A = ∑ i, ‖A (stdOrthonormalBasis ℂ H i)‖ ^ 2 := by
   unfold hsNormSq hsInner
   rw [Complex.re_sum]
@@ -219,6 +222,9 @@ theorem hsNormSq_eq (A : H →L[ℂ] G) : hsNormSq A = ∑ i, ‖A (stdOrthonorm
 
 end LinAlg
 
+/- English proof (translation)
+Unfold `c0 dimPi`. Use `div_nonneg (mul_nonneg ?_ ?_) (Finset.prod_nonneg fun _ _ => Nat.cast_nonneg _)` and prove the remaining obligations. Conclude with `(D.s.volN_pos u).le`. Conclude with `(D.s.volH_pos u).le`.
+-/
 theorem weightConst_nonneg (D : D7) (u : D.what₂.Word) : 0 ≤ c0 D.s u := by
   unfold c0 dimPi
   refine div_nonneg (mul_nonneg ?_ ?_) (Finset.prod_nonneg fun _ _ => Nat.cast_nonneg _)

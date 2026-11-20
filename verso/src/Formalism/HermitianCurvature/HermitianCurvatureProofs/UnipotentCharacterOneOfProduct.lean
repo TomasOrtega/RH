@@ -27,10 +27,22 @@ def lmulE (a : B.Mat k r) (ha : IsUnit a.det) : Mt k r ≃ᵐ Mt k r where
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(lmulE a hdet).measurable, h.left a ha⟩`.
+-/
 private theorem measurePreserving_lmulE_of_isHaarOn {U : Set (B.Mat k r)} {μ : Measure (Mt k r)} (h : B.IsHaarOn U μ)
     {a : B.Mat k r} (ha : a ∈ U) (hdet : IsUnit a.det) : MeasurePreserving (lmulE a hdet) μ μ :=
   ⟨(lmulE a hdet).measurable, h.left a ha⟩
 
+/- English proof (translation)
+Establish `hdet : IsUnit n1.det` using `Formalism.FourierDecayAlt.P.StabilizerDisintegration.A.isUnit_N hn1.1`. Use `haveI := Formalism.FourierDecayAlt.P.B7.sf Bs.haarW`. Use `haveI := Formalism.FourierDecayAlt.P.B7.sf Bs.haarW'`. Use `haveI := Formalism.FourierDecayAlt.P.B7.sf hμ0`. Use `haveI := Formalism.FourierDecayAlt.P.B7.sf hμ0'`.
+
+Set `e : B.SS k r ≃ᵐ B.SS k r` to `MeasurableEquiv.prodCongr (MeasurableEquiv.prodCongr (MeasurableEquiv.refl _) (lmulE n1 hdet)) (MeasurableEquiv.refl _)`. Establish `he : MeasurePreserving e ((Bs.μW.prod μ0).prod (Bs.μW'.prod μ0')) ((Bs.μW.prod μ0).prod (Bs.μW'.prod μ0'))` using `((MeasurePreserving.id Bs.μW).prod (measurePreserving_lmulE_of_isHaarOn hμ0 hn1 hdet)).prod (MeasurePreserving.id (Bs.μW'.prod μ0'))`. Establish `key : ∀ p : B.SS k r, B.rho Bs (e p) F g = B.rho Bs p F (n1⁻¹ * g)`. Introduce `p`. Establish `hs : B.sgs (e p) g = B.sgs p (n1⁻¹ * g)` using `by show (Matrix.of p.1.1)⁻¹ * (n1 * Matrix.of p.1.2)⁻¹ * g * Matrix.of p.2.2 * Matrix.of p.2.1 = _`.
+
+Simplify using `only [B.sgs, Matrix.mul_inv_rev, Matrix.mul_assoc]`. Use `show (Bs.π (Matrix.of p.1.1)).comp ((F (B.sgs (e p) g)).comp (Bs.π' (Matrix.of p.2.1)⁻¹)) = _`. Rewrite using `[hs]`. Both sides reduce to the same expression. Unfold `PBI.fibInt`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun p => (key p).symm)`. Use `_ = _ := he.integral_comp' (fun p => B.rho Bs p F g)`.
+-/
 theorem fibInt_left (Bs : B.RealPlaceData k r Wp Wq) {μ0 μ0' : Measure (Mt k r)}
     (hμ0 : B.IsHaarOn (C2.N0set k r Bs.z) μ0) (hμ0' : B.IsHaarOn (C2.N0set k r Bs.z') μ0')
     (F : B.Mat k r → (Wq →L[ℂ] Wp)) (g : B.Mat k r) {n1 : B.Mat k r} (hn1 : n1 ∈ C2.N0set k r Bs.z) :
@@ -61,6 +73,15 @@ theorem fibInt_left (Bs : B.RealPlaceData k r Wp Wq) {μ0 μ0' : Measure (Mt k r
         exact MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun p => (key p).symm)
     _ = _ := he.integral_comp' (fun p => B.rho Bs p F g)
 
+/- English proof (translation)
+Establish `hdet : IsUnit n1.det` using `Formalism.FourierDecayAlt.P.StabilizerDisintegration.A.isUnit_N hn1.1`. Use `haveI := Formalism.FourierDecayAlt.P.B7.sf Bs.haarW`. Use `haveI := Formalism.FourierDecayAlt.P.B7.sf Bs.haarW'`. Use `haveI := Formalism.FourierDecayAlt.P.B7.sf hμ0`. Use `haveI := Formalism.FourierDecayAlt.P.B7.sf hμ0'`.
+
+Set `e : B.SS k r ≃ᵐ B.SS k r` to `MeasurableEquiv.prodCongr (MeasurableEquiv.refl _) (MeasurableEquiv.prodCongr (MeasurableEquiv.refl _) (lmulE n1 hdet))`. Establish `he : MeasurePreserving e ((Bs.μW.prod μ0).prod (Bs.μW'.prod μ0')) ((Bs.μW.prod μ0).prod (Bs.μW'.prod μ0'))` using `(MeasurePreserving.id (Bs.μW.prod μ0)).prod ((MeasurePreserving.id Bs.μW').prod (measurePreserving_lmulE_of_isHaarOn hμ0' hn1 hdet))`. Establish `key : ∀ p : B.SS k r, B.rho Bs (e p) F g = B.rho Bs p F (g * n1)`. Introduce `p`. Establish `hs : B.sgs (e p) g = B.sgs p (g * n1)` using `by show (Matrix.of p.1.1)⁻¹ * (Matrix.of p.1.2)⁻¹ * g * (n1 * Matrix.of p.2.2) * Matrix.of p.2.1 = _`.
+
+Simplify using `only [B.sgs, Matrix.mul_assoc]`. Use `show (Bs.π (Matrix.of p.1.1)).comp ((F (B.sgs (e p) g)).comp (Bs.π' (Matrix.of p.2.1)⁻¹)) = _`. Rewrite using `[hs]`. Both sides reduce to the same expression. Unfold `PBI.fibInt`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun p => (key p).symm)`. Use `_ = _ := he.integral_comp' (fun p => B.rho Bs p F g)`.
+-/
 theorem fibInt_right (Bs : B.RealPlaceData k r Wp Wq) {μ0 μ0' : Measure (Mt k r)}
     (hμ0 : B.IsHaarOn (C2.N0set k r Bs.z) μ0) (hμ0' : B.IsHaarOn (C2.N0set k r Bs.z') μ0')
     (F : B.Mat k r → (Wq →L[ℂ] Wp)) (g : B.Mat k r) {n1 : B.Mat k r} (hn1 : n1 ∈ C2.N0set k r Bs.z') :
@@ -91,6 +112,13 @@ theorem fibInt_right (Bs : B.RealPlaceData k r Wp Wq) {μ0 μ0' : Measure (Mt k 
         exact MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun p => (key p).symm)
     _ = _ := he.integral_comp' (fun p => B.rho Bs p F g)
 
+/- English proof (translation)
+Establish `key : C2.uMap k r z (hA * nA) = C2.uMap k r z nA`. Use function extensionality and compare the values at `a b`. Simplify using `only [C2.uMap]`. Use `split_ifs with h`. Establish `e` using `Formalism.FourierDecayAlt.P.Qx2.herm_uh hhA.1 (nA *ᵥ fvec k r z b) (bvec (esI k r ⟨a.val, h⟩))`.
+
+Rewrite `e` using `[(hhA.2.1 ⟨a.val, h⟩).2, Matrix.mulVec_mulVec]`. Conclude with `e`. Establish `e` using `Formalism.FourierDecayAlt.P.Qx2.herm_uh hhA.1 (nA *ᵥ fvec k r z b) z`. Rewrite `e` using `[hhA.2.2, Matrix.mulVec_mulVec]`. Rewrite using `[e]`.
+
+Rewrite using `[← key]`. Conclude with `hs`.
+-/
 theorem unipotent_character_one_of_product {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) {hA nA : B.Mat k r}
     (hhA : hA ∈ UWset k r z) (hnA : nA ∈ Nset k r) (hs : C2.uMap k r z (hA * nA) = 1) : C2.uMap k r z nA = 1 := by
   have key : C2.uMap k r z (hA * nA) = C2.uMap k r z nA := by
@@ -106,6 +134,21 @@ theorem unipotent_character_one_of_product {z : Fin (2 * r + k + 1) → ℂ} (hz
   rw [← key]
   exact hs
 
+/- English proof (translation)
+Use `set τ := C2.tauM k r z v with hτdef`. Establish `hτN : τ ∈ Nset k r` using `Formalism.FourierDecayAlt.P.StabilizerDisintegration.A.tau_N hz hv`. Establish `hτdet : IsUnit τ.det` using `Formalism.FourierDecayAlt.P.StabilizerDisintegration.A.isUnit_N hτN`. Use `⟨Formalism.QuantumDeterminants.WeylGroupFacts.mem_n_mul (Formalism.QuantumDeterminants.WeylGroupFacts.mem_n_mul hτN hn) (Formalism.QuantumDeterminants.WeylGroupFacts.mem_n_inv hτN), ?_⟩` and prove the remaining obligations. Establish `h1W : (1 : B.Mat k r) ∈ UWset k r z`.
+
+Use `⟨?_, fun a => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show (1 : B.Mat k r)ᴴ * Hpk k r * 1 = Hpk k r`. Simplify using the standard rewrite rules. Apply the tactic sequence `all_goals simp`. Establish `hS : ∀ s ∈ Nset k r, s ∈ Sset k r z` using `fun s hs => ⟨1, h1W, s, hs, (Matrix.one_mul s).symm⟩`.
+
+Take `⟨Un, -, -, hUn⟩` from `Formalism.QuantumDeterminants.S_F hz.1 (hS n hn)`. Establish `hUn1 : Un = 1`. Rewrite using `[← hu]`. Conclude with `(Formalism.FourierDecayAlt.P.C2x5.uMap_eq hz n Un (Formalism.FourierDecayAlt.P.C2x5.colEq hUn)).symm`. Rewrite `hUn` using `[hUn1, Matrix.mul_one]`.
+
+Take `⟨Ut, hlow, hdiag, hUt⟩` from `Formalism.QuantumDeterminants.S_F hz.1 (hS τ hτN)`. Establish `hUdet : IsUnit Ut.det`. Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => hlow i j hij)]`. Simplify using `[hdiag]`. Establish `hinv : τ⁻¹ * Fm k r z = Fm k r z * Ut⁻¹`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc (Fm k r z), Matrix.mul_nonsing_inv _ hUdet, Matrix.mul_one]`. Use `_ = τ⁻¹ * (τ * Fm k r z) * Ut⁻¹ := by rw [← hUt]; simp only [Matrix.mul_assoc]`. Use `_ = Fm k r z * Ut⁻¹ := by`. Rewrite using `[← Matrix.mul_assoc τ⁻¹, Matrix.nonsing_inv_mul _ hτdet, Matrix.one_mul]`.
+
+Establish `hM : τ * n * τ⁻¹ * Fm k r z = Fm k r z * (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc (τ * n), hinv]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Fm k r z * (Ut * Ut⁻¹) := by rw [hUn, hUt, Matrix.mul_assoc]`.
+
+Use `_ = Fm k r z * (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) := by rw [Matrix.mul_nonsing_inv _ hUdet]`. Introduce `b`. Rewrite using `[Formalism.FourierDecayAlt.P.C2x5.colEq hM b]`. Simplify using `[Matrix.one_apply]`.
+-/
 theorem conj_fix {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) {v : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ}
     (hv : v ∈ C2.UTset (r + 1)) {n : B.Mat k r} (hn : n ∈ Nset k r) (hu : C2.uMap k r z n = 1) :
     C2.tauM k r z v * n * (C2.tauM k r z v)⁻¹ ∈ Nset k r ∧
@@ -149,6 +192,31 @@ theorem conj_fix {z : Fin (2 * r + k + 1) → ℂ} (hz : C2.StdZ k r z) {v : Mat
 
 variable (S : B.RealPlaceData k r Wp Wq)
 
+/- English proof (translation)
+Take `⟨hγe, hZe, hDe, hσU, hE3, hE2⟩` from `hE`. Establish `hz : C2.StdZ k r S.z` using `⟨S.z_mem, S.T_pos⟩`. Establish `hz' : C2.StdZ k r S.z'` using `⟨S.z'_mem, S.T'_pos⟩`. Use `set γ0 := m₀ * σ with hγ0`. Use `set τ := C2.tauM k r S.z v with hτ_def`.
+
+Use `set τ' := C2.tauM k r S.z' u' with hτ'_def`. Establish `hτN : τ ∈ Nset k r` using `A.tau_N hz hv`. Establish `hτN' : τ' ∈ Nset k r` using `A.tau_N hz' hu'`. Establish `uτ` using `A.isUnit_N hτN`. Establish `uτ'` using `A.isUnit_N hτN'`.
+
+Establish `hGG` using `Formalism.FourierDecayAlt.P.unitary_group_closed k r`. Establish `hg1 : τ⁻¹ * γ0 * τ' ∈ B.GV k r` using `hGG.mul_mem _ (hGG.mul_mem _ (hGG.inv_mem _ hτN.1) _ hγe) _ hτN'.1`. Establish `hpos0 : 0 < Gf k r S.z S.z' γ0`. Rewrite using `[← Formalism.FourierDecayAlt.P.ptG_spec k r S.z S.z' pt _ hp hZe]`. Conclude with `hG`.
+
+Establish `hdet` using `Formalism.FourierDecayAlt.P.determinant_nonzero k r S.z S.z' hz hz' _ hpos0`. Establish `hZ1 : Zhat k r S.z S.z' (τ⁻¹ * γ0 * τ') = vᴴ * Zhat k r S.z S.z' γ0 * u'`. Rewrite using `[Formalism.FourierDecayAlt.P.zhat_equivalence k r S.z S.z' hz hz' τ (A.n_in_S hτN) τ' (A.n_in_S hτN') γ0, (Formalism.FourierDecayAlt.P.c2_tau_mem k r S.z hz v hv).2.2, (Formalism.FourierDecayAlt.P.c2_tau_mem k r S.z' hz' u' hu').2.2]`. Establish `hpos1 : 0 < Gf k r S.z S.z' (τ⁻¹ * γ0 * τ')`. Rewrite using `[PBI.gf_eq_gPoly, hZ1]`.
+
+Rewrite `hpos0` using `[PBI.gf_eq_gPoly]`. Take `⟨h1, h2⟩` from `Formalism.FourierDecayAlt.P.StabilizerDisintegration.minorsLU r vᴴ (Zhat k r S.z S.z' γ0) u' (A.UT_star hv) hu'`. Unfold `PBI.gPoly at hpos0 ⊢`. Rewrite using `[h1, h2]`. Conclude with `hpos0`.
+
+Take `⟨s, hs, s', hs', hgs⟩` from `Formalism.FourierDecayAlt.P.fibre_orbit_description k r S.z S.z' ⟨S.k_pos, hz, hz'⟩ _ hg1 g2 hg2 hpos1 hZ2.symm`. Take `⟨hA, hhA, nA, hnA, hfA, rfl⟩` from `Dx2.VV.stabilizer_decomp_unitary_mul_unipotent hz hs`. Take `⟨hB, hhB, nB, hnB, hfB, rfl⟩` from `Dx2.VV.stabilizer_decomp_unitary_mul_unipotent hz' hs'`. Establish `huA : C2.uMap k r S.z nA = 1` using `unipotent_character_one_of_product hz hhA hnA hs.2`. Establish `huB : C2.uMap k r S.z' nB = 1` using `unipotent_character_one_of_product hz' hhB hnB hs'.2`.
+
+Take `⟨hnA'', hfA''⟩` from `conj_fix hz hv hnA huA`. Take `⟨hnB'', hfB''⟩` from `conj_fix hz' hu' hnB huB`. Establish `uhA : IsUnit hA.det` using `Dx2.OrbJ.isUnit_of_G hhA.1`. Establish `uhB : IsUnit hB.det` using `Dx2.OrbJ.isUnit_of_G hhB.1`. Establish `unA : IsUnit nA.det` using `A.isUnit_N hnA`.
+
+Establish `cA : hA⁻¹ * τ⁻¹ = τ⁻¹ * hA⁻¹`. Use `A.tau_comm hhA v` as an intermediate fact. Rewrite using `[← Matrix.mul_inv_rev, ← Matrix.mul_inv_rev]`. Conclude with `congrArg _ this.symm`. Establish `cB : τ' * hB = hB * τ'` using `(A.tau_comm hhB u').symm`.
+
+Establish `hX` using `A.dframe_tau_inv S ν' m₀ hg2 hD2 hv hu'`. Establish `hXeq : τ * g2 * τ'⁻¹ = (hA * (τ * nA * τ⁻¹))⁻¹ * γ0 * (hB * (τ' * nB * τ'⁻¹))`. Rewrite using `[hgs]`. Establish `e1 : (hA * (τ * nA * τ⁻¹))⁻¹ = τ * nA⁻¹ * τ⁻¹ * hA⁻¹`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ uτ]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e1, Matrix.mul_inv_rev]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hX` using `[hXeq]`. Establish `hfix` using `Dx2.VV.frame_fix S ν' m₀ hbase hσU hE3 hE2 hγe hDe hdet hhA hnA'' hfA'' hhB hnB'' hfB'' hX`.
+
+Establish `hg2eq : (hA * nA)⁻¹ * (τ⁻¹ * γ0 * τ') * (hB * nB) = nA⁻¹ * (τ⁻¹ * γ0 * τ') * nB`. Rewrite using `[Matrix.mul_inv_rev]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = nA⁻¹ * τ⁻¹ * (hA⁻¹ * γ0 * hB) * τ' * nB := by rw [cA, cB]; simp only [Matrix.mul_assoc]`.
+
+Use `_ = nA⁻¹ * (τ⁻¹ * γ0 * τ') * nB := by rw [hfix]; simp only [Matrix.mul_assoc, hγ0]`. Rewrite using `[hgs, hg2eq, fibInt_right S hμ0 hμ0' F _ ⟨hnB, huB⟩, fibInt_left S hμ0 hμ0' F _ ⟨hnA, huA⟩]`.
+-/
 theorem fib_indep (ν' : Fin (2 * r + k + 1) → ℂ) (m₀ : B.Mat k r) (hbase : D.IsBaseFrame S ν' m₀) (pt : C.LPt)
     (hp : D.IsLocPt pt (r + 1)) (hG : 0 < D.ptG (Tz k r S.z * Tz k r S.z') r pt) {σ : B.Mat k r}
     (hE : m₀ * σ ∈ B.GV k r ∧ Zhat k r S.z S.z' (m₀ * σ) = D.ptMatN pt (r + 1) ∧

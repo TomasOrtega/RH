@@ -13,6 +13,13 @@ namespace GlobalTheory.AbTorsionAnyBase
 
 open ReciprocityTheory.ChartRestriction.G.Out
 
+/- English proof (translation)
+Establish `hc` using `hA.comm`. Establish `hsm` using `hA.smooth`. Establish `hpr` using `hA.proper`. Establish `hm` using `GlobalTheory.AbLaw.MulN.isMonHom_mulA A k`. Establish `hg : ∀ (K : Type) [Field K] [IsAlgClosed K] (t : Spec (CommRingCat.of K) ⟶ S), IsFinite ((Over.pullback t).map (mulA A k)).left` using `fun K _ _ t => by`.
+
+Rewrite using `[GlobalTheory.MulFiniteFlat.pullback_map_mulA]`. Conclude with `GlobalTheory.MulFiniteAny.isFinite_mulA K _ (TLinPf.isAb_pullback t A hA) k hk`. Establish `h1 : IsProper ((mulA A k).left ≫ A.hom)` using `by rw [Over.w]; exact hpr`. Establish `h2 : IsProper (mulA A k).left` using `IsProper.of_comp _ A.hom`. Establish `h3 : LocallyQuasiFinite (mulA A k).left` using `LocallyQuasiFinite.of_finite_preimage_singleton _ (GlobalTheory.MulFiniteFlat.finite_preimage_of_geomFibres _ hg)`.
+
+Establish `hf : IsFinite (mulA A k).left` using `.of_isProper_of_locallyQuasiFinite _`. Use `⟨hf, GlobalTheory.flat_of_isFinite_of_finitePresentation_of_flat_geometric_fibres S _ _ _ inferInstance inferInstance inferInstance hf fun K _ _ t => ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.flat_and_surjective_of_isFinite_abelianEnd GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected K _ (TLinPf.isAb_pullback t A hA) _ inferInstance (hg K t)).1`.
+-/
 theorem isFinite_and_flat_mulA (S : Scheme.{0}) (A : Over S) [GrpObj A] (hA : IsAbelianScheme A)
     (k : ℕ) (hk : 1 ≤ k) : IsFinite (mulA A k).left ∧ Flat (mulA A k).left := by
   have hc := hA.comm
@@ -35,6 +42,9 @@ theorem isFinite_and_flat_mulA (S : Scheme.{0}) (A : Over S) [GrpObj A] (hA : Is
     GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected K _
     (TLinPf.isAb_pullback t A hA) _ inferInstance (hg K t)).1
 
+/- English proof (translation)
+Introduce `S B _ hB N hN`. Take `⟨h1, h2⟩` from `isFinite_and_flat_mulA S B hB N hN`. Rewrite `h1`, `h2` using `[Out.mulA, ← GrpTangent.mulN_eq_pow]`. Conclude with `⟨MorphismProperty.of_isPullback (P := @IsFinite) (GrpTangent.isPullback_torsion B N) h1, MorphismProperty.of_isPullback (P := @Flat) (GrpTangent.isPullback_torsion B N) h2⟩`.
+-/
 theorem isFinite_and_flat_torsion : ∀ (S : Scheme.{0}) (B : Over S) [GrpObj B], IsAbelianScheme B → ∀ N : ℕ, 1 ≤ N → IsFinite (torsion B N).hom ∧ Flat (torsion B N).hom := by
   intro S B _ hB N hN
   obtain ⟨h1, h2⟩ := isFinite_and_flat_mulA S B hB N hN

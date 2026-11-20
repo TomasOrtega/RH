@@ -4,18 +4,33 @@ namespace Formalism.FourierDecayAlt.P.PBD
 
 open Formalism.FourierDecayAlt NumberField
 
+/- English proof (translation)
+Proceed by induction on `ys with`. Consider the case `nil => rfl`. Consider the case `cons y ys ih => simp only [KB.plusW, ih, List.map_cons, List.cons_append]`.
+-/
 theorem plusW_eq (ys : List ℝ) (w : List C.Letter) :
     KB.plusW ys w = ys.map (fun y => ((true, y) : C.Letter)) ++ w := by
   induction ys with
   | nil => rfl
   | cons y ys ih => simp only [KB.plusW, ih, List.map_cons, List.cons_append]
 
+/- English proof (translation)
+Proceed by induction on `ys with`. Consider the case `nil => rfl`. Consider the case `cons y ys ih => simp only [KB.minusW, ih, List.map_cons, List.cons_append]`.
+-/
 theorem minusW_eq (ys : List ℝ) (w : List C.Letter) :
     KB.minusW ys w = ys.map (fun y => ((false, y + 1) : C.Letter)) ++ w := by
   induction ys with
   | nil => rfl
   | cons y ys ih => simp only [KB.minusW, ih, List.map_cons, List.cons_append]
 
+/- English proof (translation)
+Unfold `KB.CutWord`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun x hx => ?_, ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `List.mem_iff_get.1 hx`.
+
+Conclude with `h1 a`. Rewrite using `[List.pairwise_iff_get]`. Introduce `i j hij`. Conclude with `h2 i j (ne_of_lt hij)`. Introduce and unpack `⟨h1, h2⟩`.
+
+Use `⟨fun a => h1 _ (List.mem_iff_get.2 ⟨a, rfl⟩), fun a b hab => ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[List.pairwise_iff_get]`. Break down `lt_or_gt_of_ne hab with h | h` into its components or cases. Conclude with `h2 a b h`. Rewrite using `[abs_sub_comm]`.
+
+Conclude with `h2 b a h`.
+-/
 theorem cutWord_iff (P : M.Par) (l0 : ℕ) (L : List C.Letter) :
     KB.CutWord P l0 L ↔ (∀ x ∈ L, I.OnCut P.u P.u' l0 x.2) ∧ L.Pairwise (fun x y => 2 < |x.2 - y.2|) := by
   unfold KB.CutWord
@@ -34,6 +49,23 @@ theorem cutWord_iff (P : M.Par) (l0 : ℕ) (L : List C.Letter) :
     · exact h2 a b h
     · rw [abs_sub_comm]; exact h2 b a h
 
+/- English proof (translation)
+Distinguish the cases in `hn : Q.card + B.card = 0`. Establish `hQ : Q = ∅` using `Finset.card_eq_zero.mp (by omega)`. Establish `hB : B = ∅` using `Finset.card_eq_zero.mp (by omega)`. Substitute `hQ` using the available equality. Substitute `hB` using the available equality.
+
+Simplify using `only [Finset.card_empty, Nat.cast_zero, add_zero, mul_zero, zero_add] at h`. Conclude with `⟨lo, le_refl _, by linarith, by simp, by simp, by simp⟩`. Establish `hn1 : (1 : ℝ) ≤ (Q.card : ℝ) + B.card`. Establish `: 1 ≤ Q.card + B.card` using `Nat.one_le_iff_ne_zero.mpr hn`. Conclude with `this` after adjusting the coercions.
+
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hsub : Set.Icc lo (hi - 1) ⊆ (⋃ q ∈ Q, Metric.closedBall q 4) ∪ ((B : Set ℝ) ∪ (fun b => b - 1) '' (B : Set ℝ))`. Introduce `y hy`. Distinguish the cases in `hyB : y ∈ B`.
+
+Conclude with `Or.inr (Or.inl hyB)`. Distinguish the cases in `hyB' : y + 1 ∈ B`. Conclude with `Or.inr (Or.inr ⟨y + 1, hyB', by ring⟩)`. Take `⟨q, hq, hyq⟩` from `hcon y hy.1 (by linarith [hy.2]) hyB hyB'`. Use `Or.inl (Set.mem_biUnion hq ?_)` and prove the remaining obligations.
+
+Rewrite using `[Metric.mem_closedBall, Real.dist_eq]`. Conclude with `hyq`. Establish `hfin : ((B : Set ℝ) ∪ (fun b => b - 1) '' (B : Set ℝ)).Finite` using `B.finite_toSet.union (B.finite_toSet.image _)`. Establish `h1` using `MeasureTheory.measure_mono (μ := MeasureTheory.volume) hsub`. Establish `h2 : MeasureTheory.volume ((⋃ q ∈ Q, Metric.closedBall q 4) ∪ ((B : Set ℝ) ∪ (fun b => b - 1) '' (B : Set ℝ))) ≤ ∑ q ∈ Q, MeasureTheory.volume (Metric.closedBall q (4 : ℝ))`.
+
+Use `(MeasureTheory.measure_union_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[hfin.measure_zero, add_zero]`. Conclude with `MeasureTheory.measure_biUnion_finset_le _ _`. Establish `h3` using `h1.trans h2`. Simplify using `only [Real.volume_Icc, Real.volume_closedBall, Finset.sum_const, nsmul_eq_mul] at h3`.
+
+Establish `h4 : ENNReal.ofReal (hi - 1 - lo) ≤ ENNReal.ofReal (8 * Q.card)`. Use `h3.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[show (8 : ℝ) * Q.card = (Q.card : ℝ) * (2 * 4) by ring, ENNReal.ofReal_mul (p := (Q.card : ℝ)) (by positivity), ENNReal.ofReal_natCast]`. Rewrite `h4` using `[ENNReal.ofReal_le_ofReal_iff (by positivity)]`. Establish `: (0 : ℝ) ≤ Q.card` using `by positivity`.
+
+Establish `: (0 : ℝ) ≤ B.card` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem pick_one (lo hi : ℝ) (Q B : Finset ℝ) (h : 9 * ((Q.card : ℝ) + B.card) + 1 ≤ hi - lo) :
     ∃ y, lo ≤ y ∧ y + 1 ≤ hi ∧ y ∉ B ∧ y + 1 ∉ B ∧ ∀ q ∈ Q, 4 < |y - q| := by
   classical
@@ -79,6 +111,9 @@ theorem pick_one (lo hi : ℝ) (Q B : Finset ℝ) (h : 9 * ((Q.card : ℝ) + B.c
     have : (0 : ℝ) ≤ B.card := by positivity
     linarith
 
+/- English proof (translation)
+The claim follows from `| 0, Q, _ => ⟨[], rfl, by simp, List.Pairwise.nil⟩ | m + 1, Q, h => by classical push_cast at h obtain ⟨y, h1, h2, h3, h4, h5⟩ := pick_one lo hi Q B (by linarith) have hc : ((insert y Q).card : ℝ) ≤ Q.card + 1 := by exact_mod_cast Finset.card_insert_le y Q obtain ⟨ys, hl, hys, hp …`.
+-/
 theorem pick_many (lo hi : ℝ) (B : Finset ℝ) : ∀ (m : ℕ) (Q : Finset ℝ),
     9 * ((Q.card : ℝ) + m + B.card) + 1 ≤ hi - lo →
     ∃ ys : List ℝ, ys.length = m ∧
@@ -101,6 +136,9 @@ theorem pick_many (lo hi : ℝ) (B : Finset ℝ) : ∀ (m : ℕ) (Q : Finset ℝ
       have := (hys z hz).2.2.2.2 y (Finset.mem_insert_self y Q)
       rwa [abs_sub_comm] at this
 
+/- English proof (translation)
+Break down `lt_abs.mp h with h | h` into its components or cases. Conclude with `lt_abs.mpr (Or.inl (by linarith))`. Conclude with `lt_abs.mpr (Or.inr (by linarith))`.
+-/
 theorem two_lt_of_four_lt {y p : ℝ} (h : 4 < |y - p|) : 2 < |y + 1 - p| := by
   rcases lt_abs.mp h with h | h
   · exact lt_abs.mpr (Or.inl (by linarith))
@@ -114,6 +152,23 @@ def RoomOffGrid : Prop :=
         ys.Pairwise (fun y y' => 4 < |y - y'|) ∧ KB.CutWord P l0 (KB.plusW ys w) ∧
         KB.CutWord P l0 (KB.minusW ys w)
 
+/- English proof (translation)
+Introduce `P l0 lo hi hOn w m B hw hlen`. Take `⟨hw1, hw2⟩` from `(cutWord_iff P l0 w).1 hw`. Establish `hQ : (((w.map Prod.snd).toFinset).card : ℝ) ≤ w.length`. Use `List.toFinset_card_le (w.map Prod.snd)` as an intermediate fact. Rewrite `this` using `[List.length_map]`.
+
+Conclude with `this` after adjusting the coercions. Take `⟨ys, hlen', hys, hpw⟩` from `pick_many lo hi B m ((w.map Prod.snd).toFinset) (by`. Establish `: (0 : ℝ) ≤ B.card` using `by positivity`. Establish `: (0 : ℝ) ≤ m` using `by positivity`. Use the proof step `linarith)`.
+
+Establish `hfar : ∀ y ∈ ys, ∀ x ∈ w, 4 < |y - x.2|` using `fun y hy x hx => (hys y hy).2.2.2.2 x.2 (List.mem_toFinset.2 (List.mem_map.2 ⟨x, hx, rfl⟩))`. Use `⟨ys, hlen', fun y hy => ⟨(hys y hy).1, (hys y hy).2.1, (hys y hy).2.2.1, (hys y hy).2.2.2.1⟩, hpw, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[plusW_eq, cutWord_iff]`. Use `⟨fun x hx => ?_, ?_⟩` and prove the remaining obligations. Break down `List.mem_append.1 hx with hx | hx` into its components or cases.
+
+Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hx`. Conclude with `hOn y (hys y hy).1 (by linarith [(hys y hy).2.1])`. Conclude with `hw1 x hx`. Rewrite using `[List.pairwise_append]`. Use `⟨?_, hw2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[List.pairwise_map]`. Conclude with `hpw.imp fun h => by dsimp only; linarith`. Introduce `a ha b hb`. Take `⟨y, hy, rfl⟩` from `List.mem_map.1 ha`. Use `hfar y hy b hb` as an intermediate fact.
+
+Simplify using `only`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[minusW_eq, cutWord_iff]`. Use `⟨fun x hx => ?_, ?_⟩` and prove the remaining obligations. Break down `List.mem_append.1 hx with hx | hx` into its components or cases.
+
+Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hx`. Conclude with `hOn (y + 1) (by linarith [(hys y hy).1]) (hys y hy).2.1`. Conclude with `hw1 x hx`. Rewrite using `[List.pairwise_append]`. Use `⟨?_, hw2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[List.pairwise_map]`. Conclude with `hpw.imp fun h => by dsimp only; rw [add_sub_add_right_eq_sub]; linarith`. Introduce `a ha b hb`. Take `⟨y, hy, rfl⟩` from `List.mem_map.1 ha`. Conclude with `two_lt_of_four_lt (hfar y hy b hb)`.
+-/
 theorem roomOffGrid : RoomOffGrid := by
   intro P l0 lo hi hOn w m B hw hlen
   classical
@@ -169,6 +224,13 @@ def RoomOffGridS : Prop :=
         ys.Pairwise (fun y y' => 4 < |y - y'|) ∧ KB.CutWord (D.parOf S v) (S.l + 1) (KB.plusW ys w) ∧
         KB.CutWord (D.parOf S v) (S.l + 1) (KB.minusW ys w)
 
+/- English proof (translation)
+Introduce `E _ _ _ Wp Wq _ _ _ _ S hG hC v w m B hw hlen`. Establish `hN : 20 ≤ S.Ntop`. Unfold `C.HidaSetting.Ntop C.Kst`. Use linear arithmetic over natural numbers and integers. Establish `hN' : (20 : ℝ) ≤ S.Ntop` using `by exact_mod_cast hN`.
+
+Establish `hlen' : (w.length : ℝ) + m + B.card ≤ 2 * S.Ntop` using `by exact_mod_cast hlen`. Establish `hgap` using `(hG v).1`. Establish `h2 : (400 : ℝ) ≤ (S.Ntop : ℝ) ^ 2` using `by nlinarith`. Establish `h3 : (400 : ℝ) * S.Ntop ≤ (S.Ntop : ℝ) ^ 3`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `key : 10 * ((w.length : ℝ) + m + B.card + 1) ≤ S.cutHi v - S.cutLo v` using `by clear hw hC`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `roomOffGrid (D.parOf S v) (S.l + 1) (S.cutLo v) (S.cutHi v) (fun Y h1 h2 => hC v Y ⟨h1, h2⟩) w m B hw key`.
+-/
 theorem roomOffGridS : RoomOffGridS := by
   intro E _ _ _ Wp Wq _ _ _ _ S hG hC v w m B hw hlen
   have hN : 20 ≤ S.Ntop := by
@@ -188,6 +250,12 @@ theorem roomOffGridS : RoomOffGridS := by
 
 end Formalism.FourierDecayAlt.P.PBD
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.PBD.roomOffGrid`.
+-/
 theorem Formalism.FourierDecayAlt.P.room_off_grid : Formalism.FourierDecayAlt.P.PBD.RoomOffGrid := Formalism.FourierDecayAlt.P.PBD.roomOffGrid
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.PBD.roomOffGridS`.
+-/
 theorem Formalism.FourierDecayAlt.P.room_off_grid_symmetric : Formalism.FourierDecayAlt.P.PBD.RoomOffGridS := Formalism.FourierDecayAlt.P.PBD.roomOffGridS

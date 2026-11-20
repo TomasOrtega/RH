@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.Pinch
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Establish `h1 : u + m ∈ IsLocalRing.maximalIdeal R` using `(IsLocalRing.mem_maximalIdeal _).mpr h`. Establish `h2 : m ∈ IsLocalRing.maximalIdeal R` using `(IsLocalRing.mem_maximalIdeal _).mpr hm`. Establish `h3 : u ∈ IsLocalRing.maximalIdeal R`. Use `Ideal.sub_mem _ h1 h2` as an intermediate fact.
+
+Simplify using `using this`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp h3 hu`.
+-/
 theorem isUnit_add_of_not_isUnit {R : Type*} [CommRing R] [IsLocalRing R] {u m : R}
     (hu : IsUnit u) (hm : ¬ IsUnit m) : IsUnit (u + m) := by
   by_contra h
@@ -23,6 +28,19 @@ theorem isUnit_add_of_not_isUnit {R : Type*} [CommRing R] [IsLocalRing R] {u m :
     simpa using this
   exact (IsLocalRing.mem_maximalIdeal _).mp h3 hu
 
+/- English proof (translation)
+Introduce `X L W J D hDW k hD F hF a ha hsep E hE hEu`. Set `r : ∀ j, Γ(X, W) →+* Γ(X, D j)` to `fun j => (X.presheaf.map (homOfLE (hDW j)).op).hom`. Use `⟨fun j => ∑ x ∈ hF.toFinset, r j (a x) * E x j, ?_, ?_⟩` and prove the remaining obligations. Establish `hr : ∀ j z (hz : z ∈ D j) (s : Γ(X, W)), (X.presheaf.germ (D j) z hz).hom (r j s) = (X.presheaf.germ W z (hDW j hz)).hom s`. Introduce `j z hz s`.
+
+Conclude with `TopCat.Presheaf.germ_res_apply X.presheaf (homOfLE (hDW j)) z hz s`. Introduce `j j' z hz hz'`. Simplify using `only [map_sum, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[hr, hr, hE x (hF.mem_toFinset.mp hx) j j' z hz hz']`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `y hy j hyj`. Establish `hyW : y ∈ W` using `hDW j hyj`. Establish `hyF : y ∈ hF.toFinset` using `hF.mem_toFinset.mpr hy`. Simplify using `only [map_sum, map_mul]`.
+
+Rewrite using `[← Finset.add_sum_erase _ _ hyF]`. Establish `hr : ∀ s : Γ(X, W), (X.presheaf.germ (D j) y hyj).hom (r j s) = (X.presheaf.germ W y hyW).hom s` using `fun s => TopCat.Presheaf.germ_res_apply X.presheaf (homOfLE (hDW j)) y hyj s`. Apply `isUnit_add_of_not_isUnit` to reduce the goal to its premises. Rewrite using `[hr]`. Conclude with `((X.mem_basicOpen (a y) y hyW).mp (ha y hy)).mul (hEu y hy j hyj)`.
+
+Introduce `hu`. Establish `hmem : ∑ x ∈ hF.toFinset.erase y, (X.presheaf.germ (D j) y hyj).hom (r j (a x)) * (X.presheaf.germ (D j) y hyj).hom (E x j) ∈ IsLocalRing.maximalIdeal (X.presheaf.stalk y)`. Use `Ideal.sum_mem _ fun x hx => ?_` and prove the remaining obligations. Establish `hxy : x ≠ y` using `(Finset.mem_erase.mp hx).1`. Establish `hxF : x ∈ F` using `hF.mem_toFinset.mp (Finset.mem_erase.mp hx).2`.
+
+Use `Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Rewrite using `[hr, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu'`. Conclude with `hsep x hxF y hy (Ne.symm hxy) ((X.mem_basicOpen (a x) y hyW).mpr hu')`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp hmem hu`.
+-/
 theorem secFam_unit_at_finite : ∀ (X : Scheme.{0}) (L : LB X) (W : X.Opens) (J : Type) (D : J → X.Opens), (∀ j, D j ≤ W) → ∀ (k : J → L.ι) (hD : ∀ j, D j ≤ L.U (k j)) (F : Set X), F.Finite → ∀ (a : X → Γ(X, W)), (∀ x ∈ F, x ∈ X.basicOpen (a x)) → (∀ x ∈ F, ∀ y ∈ F, y ≠ x → y ∉ X.basicOpen (a x)) → ∀ (E : X → ∀ j, Γ(X, D j)), (∀ x ∈ F, GlobalTheory.Pinch.IsSecFam L D k hD (E x)) → (∀ x ∈ F, ∀ j (h : x ∈ D j), IsUnit ((X.presheaf.germ (D j) x h).hom (E x j))) → ∃ e : ∀ j, Γ(X, D j), GlobalTheory.Pinch.IsSecFam L D k hD e ∧ ∀ x ∈ F, ∀ j (h : x ∈ D j), IsUnit ((X.presheaf.germ (D j) x h).hom (e j)) := by
   intro X L W J D hDW k hD F hF a ha hsep E hE hEu
   classical

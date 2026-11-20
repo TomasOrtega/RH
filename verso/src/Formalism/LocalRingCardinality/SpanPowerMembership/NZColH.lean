@@ -14,8 +14,14 @@ abbrev MuN : Type := EuclideanSpace ℂ ι
 
 def eE : MuN ι ≃ₗ[ℂ] FK ι := (EuclideanSpace.equiv ι ℂ).toLinearEquiv.trans (eF ι)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eE_apply (φ : MuN ι) (c : ι) (y : Unit) : eE ι φ c y = φ c := rfl
 
+/- English proof (translation)
+Rewrite using `[ipS_apply, PiLp.inner_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[eE_apply, eE_apply, RCLike.inner_apply]`. Conclude with `mul_comm _ _`.
+-/
 theorem inner_eE (φ ψ : MuN ι) : inner ℂ φ ψ = ipS ι (eE ι φ) (eE ι ψ) := by
   rw [ipS_apply, PiLp.inner_apply]
   refine Finset.sum_congr rfl fun c _ => ?_
@@ -29,8 +35,16 @@ def jE : (ι → LL) →ₛₗ[σ] MuN ι where
   map_add' x y := by rw [map_add, map_add]
   map_smul' c x := by rw [LinearMap.map_smulₛₗ, map_smul]
 
+/- English proof (translation)
+The claim follows from `(eE ι).apply_symm_apply _`.
+-/
 theorem eE_jE (x : ι → LL) : eE ι (jE σ x) = slK σ x := (eE ι).apply_symm_apply _
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `slK_basis (ι := ι) σ`. Establish `h : (fun i => jE σ ((stdHLat LL ι).b i)) = (eE ι).symm ∘ fun i => slK σ ((stdHLat LL ι).b i)` using `rfl`. Rewrite using `[h]`. Use `⟨h1.map' _ (LinearEquiv.ker _), ?_⟩` and prove the remaining obligations. Rewrite using `[Set.range_comp]`.
+
+Establish `h3` using `Submodule.map_span (eE ι).symm.toLinearMap (Set.range fun i => slK σ ((stdHLat LL ι).b i))`. Rewrite `h3` using `[h2, Submodule.map_top, LinearEquiv.range]`. Conclude with `h3.symm`.
+-/
 theorem jE_basis : LinearIndependent ℂ (fun i => jE σ ((stdHLat LL ι).b i)) ∧
     Submodule.span ℂ (Set.range (fun i => jE σ ((stdHLat LL ι).b i))) = ⊤ := by
   obtain ⟨h1, h2⟩ := slK_basis (ι := ι) σ
@@ -42,6 +56,9 @@ theorem jE_basis : LinearIndependent ℂ (fun i => jE σ ((stdHLat LL ι).b i)) 
   rw [h2, Submodule.map_top, LinearEquiv.range] at h3
   exact h3.symm
 
+/- English proof (translation)
+Rewrite using `[normAt_std, EuclideanSpace.norm_eq]`. Use `congr 1`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[InfinitePlace.norm_embedding_eq, InfinitePlace.apply]`. Both sides reduce to the same expression.
+-/
 theorem norm_jE (x : ι → LL) :
     Formalism.HermitianLatticesTheory.normAt (stdHLat LL ι).b (stdHLat LL ι).X (InfinitePlace.mk σ) x = ‖jE σ x‖ := by
   rw [normAt_std, EuclideanSpace.norm_eq]
@@ -60,6 +77,9 @@ variable {R : Ranks} {Tau : Type} [Fintype Tau] (hc : Tau → HCParam R) (K : Cl
 def eMuN (hT2 : T ≠ 2) : MuN (K.cls 0) ≃ₗ[ℂ] (atTN hc K T Dst hD du hdu Gam hG).Mram :=
   (eE (K.cls 0)).trans (LinearEquiv.ofTop _ (atTN_Mram hc K T Dst hD du hdu Gam hG hT2)).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eMuN_coe (hT2 : T ≠ 2) (φ : MuN (K.cls 0)) :
     ((eMuN hc K T Dst hD du hdu Gam hG hT2 φ : (atTN hc K T Dst hD du hdu Gam hG).Mram) : FK (K.cls 0)) =
       eE (K.cls 0) φ := rfl
@@ -67,6 +87,9 @@ theorem eMuN_coe (hT2 : T ≠ 2) (φ : MuN (K.cls 0)) :
 def eCuN : MuN (K.cls 0) ≃ₗ[ℂ] (atTN hc K T Dst hD du hdu Gam hG).Mu0 :=
   (eE (K.cls 0)).trans (LinearEquiv.ofTop (⊤ : Submodule ℂ (FK (K.cls 0))) rfl).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eCuN_coe (φ : MuN (K.cls 0)) :
     ((eCuN hc K T Dst hD du hdu Gam hG φ : (atTN hc K T Dst hD du hdu Gam hG).Mu0) : FK (K.cls 0)) =
       eE (K.cls 0) φ := rfl

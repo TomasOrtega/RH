@@ -17,11 +17,17 @@ open GlobalTheory.ProjVar GlobalTheory.ArInt GlobalTheory.Mean4O GlobalTheory.Co
 
 namespace GlobalTheory.AmpNefFib
 
+/- English proof (translation)
+Take `⟨_, P, h⟩` from `hO`. Rewrite using `[h.ab_eq]`. Conclude with `P.nefFib_ab c`.
+-/
 theorem ab_nefFib {D : D7} {O : Setup D} (hO : O.Core) (c : O.s.Comp) : (O.met.ab c).NefFib := by
   obtain ⟨_, P, h⟩ := hO
   rw [h.ab_eq]
   exact P.nefFib_ab c
 
+/- English proof (translation)
+Introduce `hP _ D O hO A T H h P c X' p' hp' ρ hρ r _ Z i _ _ _ hd`. Establish `hV : ArInt.NefFib (h.mdl P c).amp` using `GlobalTheory.T.nef_fibre_of_norms_power hP _ _ _ (ab_nefFib hO c) _ _ _ (h.mdl P c).k_pos (norms_of_induces (h.mdl P c).amp_spec)`. Establish `hX` using `ArInt.nefFib_pull _ _ _ _ _ (h.mdl P c).V.ar.isProjOver hp' ρ hρ _ hV`. Conclude with `hX Z i (ZMod r) hd`.
+-/
 theorem main : Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ (A : SlopeTestRemainingChoices O.Y) (T : Real0 O.Y) (H : Ht O.Y) (h : O.Reads A T H),
   ∀ (P : Finset ℕ) (c : O.s.Comp) (X' : Scheme.{0}) (p' : X' ⟶ Sp (𝓞 D.what₂.LL)), IsProjOver p' →
   ∀ (ρ : X' ⟶ (h.mdl P c).V.X) (hρ : ρ ≫ (h.mdl P c).V.p = p') (r : ℕ) [Fact r.Prime]

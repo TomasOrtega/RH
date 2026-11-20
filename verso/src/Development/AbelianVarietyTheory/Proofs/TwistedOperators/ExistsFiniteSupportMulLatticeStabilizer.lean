@@ -27,6 +27,19 @@ namespace GlobalTheory.TruncAway
 
 open GlobalTheory.AdelicU
 
+/- English proof (translation)
+Introduce `D V L hfg hspan S b`. Use `haveI : Submodule.IsLattice D.host.E L := ⟨hfg, hspan⟩`. Establish `hfin` using `Filter.eventually_cofinite.1 (eventually_proj_mem_stabLoc D.sp.cm.sig V.gram L b)`. Set `P : Finset (HeightOneSpectrum (𝓞 D.host.F))` to `S ∪ hfin.toFinset`. Set `b' : GA D V` to `ofInf D.sp.cm.sig V.gram (projInf D.sp.cm.sig V.gram b) * embAt D.sp.cm.sig V.gram P (projAt D.sp.cm.sig V.gram P b)`.
+
+Establish `hat` using `mem_atPts.1 (embAt_mem D.sp.cm.sig V.gram P (projAt D.sp.cm.sig V.gram P b))`. Establish `hout : ∀ v ∉ P, proj D.sp.cm.sig V.gram v b' = 1` using `fun v hv => by`. Simplify using `only [b', map_mul, proj_ofInf, one_mul]`. Conclude with `hat.2 v hv`. Establish `hin : ∀ v ∈ P, proj D.sp.cm.sig V.gram v b' = proj D.sp.cm.sig V.gram v b` using `fun v hv => by`.
+
+Simplify using `only [b', map_mul, proj_ofInf, one_mul]`. Conclude with `proj_embAt D.sp.cm.sig V.gram P _ ⟨v, hv⟩`. Establish `hinf : projInf D.sp.cm.sig V.gram b' = projInf D.sp.cm.sig V.gram b`. Simplify using `only [b', map_mul, projInf_ofInf, mem_finPts.1 hat.1, mul_one]`. Use `⟨b', P, hout, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.FinPl.KOpen.mem_grpAt_iff]`. Use `⟨mem_finPts.2 ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, hinf, inv_mul_cancel]`. Establish `hvP : v ∈ P` using `Finset.mem_union_left _ (not_not.1 hv)`. Rewrite using `[map_mul, map_inv, hin v hvP, inv_mul_cancel]`.
+
+Use `GlobalTheory.FinPl.KOpen.moves_of_levelOpen V L hfg _ (mem_levelOpen.2 fun v => ?_)` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ P`. Rewrite using `[map_mul, map_inv, hin v hv, inv_mul_cancel]`. Conclude with `one_mem _`. Rewrite using `[map_mul, map_inv, hout v hv, inv_one, one_mul]`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hv (Finset.mem_union_right _ (hfin.mem_toFinset.2 h))`.
+-/
 theorem exists_trunc_mul_inK : ∀ {D : D7} (V : HSp D) (L : GlobalTheory.FinPl.Lat V), L.FG → Submodule.span D.host.E (L : Set (Fin V.rank → D.host.E)) = ⊤ →
   ∀ (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) (b : GA D V), ∃ (b' : GA D V) (P : Finset (HeightOneSpectrum (𝓞 D.host.F))),
     (∀ v ∉ P, GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v b' = 1) ∧ GlobalTheory.FinPl.InK V L (fun v => v ∉ S) (b'⁻¹ * b) := by

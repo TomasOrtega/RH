@@ -10,6 +10,15 @@ open scoped ENNReal ContDiff
 
 namespace GlobalTheory.SemiPosLarge
 
+/- English proof (translation)
+Introduce `n Y _ _ _ _ _ _ ι La _ A H G hH`. Take `⟨C⟩` from `GlobalTheory.T.nonempty_atlasBallPartitionCover n Y ι La A`. Take `⟨k0, hk0⟩` from `GlobalTheory.T.curvature_lower_bound_on_cover_balls n Y ι La A C H G hH 0`. Use `⟨k0, fun k hk i y hy ξ => ?_⟩` and prove the remaining obligations. Establish `hcurv` using `hk0 k hk`.
+
+Establish `hex : ∃ a, C.chi a y ≠ 0`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Use `C.sum_one y` as an intermediate fact. Simplify using `[hno] at this`.
+
+Take `⟨a, ha⟩` from `hex`. Establish `hts : y ∈ tsupport (C.chi a)` using `subset_tsupport _ (Function.mem_support.2 ha)`. Take `⟨hsrc, hball⟩` from `C.supp a hts`. Establish `hsm : A.SmoothFn (fun _ : Y => (0 : ℝ))` using `fun _ => contDiffOn_const`. Establish `ht` using `A.levi_transfer (G + k • H) (fun _ => (0 : ℝ)) hsm i (C.idx a) hy hsrc ξ`.
+
+Simplify using `only [add_zero] at ht ⊢`. Rewrite using `[ht]`. Establish `h1` using `hcurv a (A.chart (C.idx a) y) hball (fderiv ℂ ((A.chart (C.idx a)) ∘ (A.chart i).symm) (A.chart i y) (WithLp.toLp 2 ξ)).ofLp`. Rewrite `h1` using `[(A.chart (C.idx a)).left_inv hsrc, zero_mul]`. Conclude with `h1`.
+-/
 theorem semipos_add_smul : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] [CompactSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ H G : La, (∀ i y, y ∈ (A.chart i).source → ∀ ξ : Fin n → ℂ, ξ ≠ 0 → 0 < A.leviAt i (A.ph H i) y ξ) → ∃ k0 : ℕ, ∀ k ≥ k0, A.Pos (G + k • H) (fun _ => 0) := by
   intro n Y _ _ _ _ _ _ ι La _ A H G hH
   obtain ⟨C⟩ := GlobalTheory.T.nonempty_atlasBallPartitionCover n Y ι La A

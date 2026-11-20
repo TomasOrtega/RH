@@ -16,6 +16,9 @@ section Unimod
 variable {D : D7} {T : D.host.E} {F0 : FlagG (VS D) D.R.rS T} {f : Fin D.R.rS → (VS D).V}
   {M : Submodule (𝓞 D.host.E) (WbQ D F0)}
 
+/- English proof (translation)
+Rewrite using `[Submodule.mem_one]`. Apply the tactic sequence `all_goals first`. Consider the case `rfl`. Consider the case `exact ⟨fun ⟨y, hy⟩ => ⟨y, hy⟩, fun ⟨y, hy⟩ => ⟨y, hy⟩⟩`.
+-/
 theorem rs_mem_one_iff (x : D.host.E) :
     x ∈ (1 : Submodule (𝓞 D.host.E) D.host.E) ↔ ∃ o : 𝓞 D.host.E, (o : D.host.E) = x := by
   rw [Submodule.mem_one]
@@ -23,6 +26,9 @@ theorem rs_mem_one_iff (x : D.host.E) :
     | rfl
     | exact ⟨fun ⟨y, hy⟩ => ⟨y, hy⟩, fun ⟨y, hy⟩ => ⟨y, hy⟩⟩
 
+/- English proof (translation)
+Rewrite using `[FractionalIdeal.mem_one_iff]`. Apply the tactic sequence `all_goals first`. Consider the case `rfl`. Consider the case `exact ⟨fun ⟨y, hy⟩ => ⟨y, hy⟩, fun ⟨y, hy⟩ => ⟨y, hy⟩⟩`.
+-/
 theorem rs_fone_iff (x : D.host.E) :
     x ∈ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ↔ ∃ o : 𝓞 D.host.E, (o : D.host.E) = x := by
   rw [FractionalIdeal.mem_one_iff]
@@ -30,18 +36,27 @@ theorem rs_fone_iff (x : D.host.E) :
     | rfl
     | exact ⟨fun ⟨y, hy⟩ => ⟨y, hy⟩, fun ⟨y, hy⟩ => ⟨y, hy⟩⟩
 
+/- English proof (translation)
+Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, LinearMap.coe_restrictScalars]`.
+-/
 theorem rs_mem_dual {h : (VS D).V →ₗ⋆[D.host.E] (VS D).V →ₗ[D.host.E] D.host.E}
     {L : Submodule (𝓞 D.host.E) (VS D).V} {v : (VS D).V} :
     v ∈ Formalism.HermitianLatticesTheory.dual h L ↔ ∀ y ∈ L, h y v ∈ (1 : Submodule (𝓞 D.host.E) D.host.E) := by
   simp only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap,
     LinearMap.restrictScalars_apply, LinearMap.coe_restrictScalars]
 
+/- English proof (translation)
+Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, LinearMap.coe_restrictScalars]`.
+-/
 theorem rs_mem_dualW {h : WbQ D F0 →ₗ⋆[D.host.E] WbQ D F0 →ₗ[D.host.E] D.host.E}
     {L : Submodule (𝓞 D.host.E) (WbQ D F0)} {v : WbQ D F0} :
     v ∈ Formalism.HermitianLatticesTheory.dual h L ↔ ∀ y ∈ L, h y v ∈ (1 : Submodule (𝓞 D.host.E) D.host.E) := by
   simp only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap,
     LinearMap.restrictScalars_apply, LinearMap.coe_restrictScalars]
 
+/- English proof (translation)
+Distinguish the cases in `hI : aaI D a = 0`. Rewrite `hs` using `[hI, inv_zero]`. Simplify using `only [FractionalIdeal.mem_zero_iff] at hs`. Conclude with `⟨0, by simp [hs]⟩`. Conclude with `(rs_fone_iff _).1 ((FractionalIdeal.mem_inv_iff hI).1 hs x hx)`.
+-/
 theorem rs_inv_mul {a : Fin D.R.rS} {s x : D.host.E} (hs : s ∈ (aaI D a)⁻¹) (hx : x ∈ aaI D a) :
     ∃ o : 𝓞 D.host.E, (o : D.host.E) = s * x := by
   by_cases hI : aaI D a = 0
@@ -50,31 +65,51 @@ theorem rs_inv_mul {a : Fin D.R.rS} {s x : D.host.E} (hs : s ∈ (aaI D a)⁻¹)
     exact ⟨0, by simp [hs]⟩
   · exact (rs_fone_iff _).1 ((FractionalIdeal.mem_inv_iff hI).1 hs x hx)
 
+/- English proof (translation)
+Take `⟨o, rfl⟩` from `hx`. Conclude with `star_int D o`.
+-/
 theorem rs_int_star {x : D.host.E} (hx : ∃ o : 𝓞 D.host.E, (o : D.host.E) = x) :
     ∃ o : 𝓞 D.host.E, (o : D.host.E) = star x := by
   obtain ⟨o, rfl⟩ := hx
   exact star_int D o
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private theorem mem_lamC_iff {v : (VS D).V} : v ∈ lamC D F0 f M ↔
     ((∀ a, star ((VS D).hT (F0.e a) v) ∈ (aaI D a)⁻¹) ∧
       (∃ w : perpS (VS D) F0.X, (w : (VS D).V) = vPr D F0 f v ∧
         (Submodule.Quotient.mk w : WbQ D F0) ∈ M) ∧
       ∀ a, (VS D).hT (f a) (vPr D F0 f v) ∈ aaI D a) := Iff.rfl
 
+/- English proof (translation)
+Establish `h` using `(VS D).herm.eq x z`. Use `first`. Consider the case `exact h`. Consider the case `rwa [starRingEnd_apply] at h`.
+-/
 private theorem hs_lemma_2 (x z : (VS D).V) : star ((VS D).hT x z) = (VS D).hT z x := by
   have h := (VS D).herm.eq x z
   first
     | exact h
     | rwa [starRingEnd_apply] at h
 
+/- English proof (translation)
+Simplify using `[vPr, map_sub, map_sum, map_smul]`.
+-/
 private theorem hT_eq_hT_vPr_right_add_sum (x z : (VS D).V) : (VS D).hT x z =
     (VS D).hT x (vPr D F0 f z) + ∑ b, (VS D).hT (F0.e b) z * (VS D).hT x (f b) := by
   simp [vPr, map_sub, map_sum, map_smul]
 
+/- English proof (translation)
+Simplify using `[vPr, LinearMap.map_sub₂, LinearMap.map_sum₂, LinearMap.map_smulₛₗ₂, starRingEnd_apply]`.
+-/
 private theorem hT_eq_hT_vPr_left_add_sum (x z : (VS D).V) : (VS D).hT x z =
     (VS D).hT (vPr D F0 f x) z + ∑ a, star ((VS D).hT (F0.e a) x) * (VS D).hT (f a) z := by
   simp [vPr, LinearMap.map_sub₂, LinearMap.map_sum₂, LinearMap.map_smulₛₗ₂, starRingEnd_apply]
 
+/- English proof (translation)
+Establish `hK : F0.X ≤ LinearMap.ker ((VS D).hT z)`. Rewrite using `[FlagG.X, Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, ← hs_lemma_2, hz b, star_zero]`. Introduce `x hx`.
+
+Rewrite using `[← hs_lemma_2, LinearMap.mem_ker.1 (hK hx), star_zero]`.
+-/
 private theorem mem_perpS_X_of_hT_e_eq_zero (z : (VS D).V) (hz : ∀ b, (VS D).hT (F0.e b) z = 0) :
     z ∈ perpS (VS D) F0.X := by
   have hK : F0.X ≤ LinearMap.ker ((VS D).hT z) := by
@@ -84,10 +119,24 @@ private theorem mem_perpS_X_of_hT_e_eq_zero (z : (VS D).V) (hz : ∀ b, (VS D).h
   intro x hx
   rw [← hs_lemma_2, LinearMap.mem_ker.1 (hK hx), star_zero]
 
+/- English proof (translation)
+Simplify using `[vPr, map_sub, map_sum, map_smul, hf.1]`.
+-/
 private theorem hT_e_vPr_eq_zero_of_partnerOK (hf : PartnerOK D F0 f) (z : (VS D).V) (b : Fin D.R.rS) :
     (VS D).hT (F0.e b) (vPr D F0 f z) = 0 := by
   simp [vPr, map_sub, map_sum, map_smul, hf.1]
 
+/- English proof (translation)
+Introduce `v hv`. Rewrite using `[rs_mem_dual]`. Introduce `y hy`. Take `⟨hv1, ⟨w, hw, hwM⟩, hv3⟩` from `mem_lamC_iff.1 hv`. Take `⟨hy1, ⟨u, hu, huM⟩, hy3⟩` from `mem_lamC_iff.1 hy`.
+
+Establish `hU : Formalism.HermitianLatticesTheory.dual (hWb D F0) M = M` using `hM.2.1`. Establish `hwD : (Submodule.Quotient.mk w : WbQ D F0) ∈ Formalism.HermitianLatticesTheory.dual (hWb D F0) M`. Rewrite using `[hU]`. Conclude with `hwM`. Establish `hqp : (VS D).hT (vPr D F0 f y) (vPr D F0 f v) ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)`.
+
+Establish `h1` using `rs_mem_dualW.1 hwD _ huM`. Rewrite using `[← hu, ← hw, ← hWbFun_mk]`. Conclude with `h1`. Rewrite using `[hT_eq_hT_vPr_right_add_sum (F0 := F0) (f := f) y v]`. Use `Submodule.add_mem _ ?_ (Submodule.sum_mem _ fun b _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[hT_eq_hT_vPr_left_add_sum (F0 := F0) (f := f) y (vPr D F0 f v)]`. Use `Submodule.add_mem _ hqp (Submodule.sum_mem _ fun a _ => ?_)` and prove the remaining obligations. Conclude with `(rs_mem_one_iff _).2 (rs_inv_mul (hy1 a) (hv3 a))`. Establish `e0 : (VS D).hT y (f b) = (VS D).hT (vPr D F0 f y) (f b)`. Rewrite using `[hT_eq_hT_vPr_left_add_sum (F0 := F0) (f := f) y (f b)]`.
+
+Simplify using `[hf.2.1]`. Rewrite using `[e0, ← hs_lemma_2 (f b) (vPr D F0 f y)]`. Take `⟨o, ho⟩` from `rs_int_star (rs_inv_mul (hv1 b) (hy3 b))`. Use `(rs_mem_one_iff _).2 ⟨o, ?_⟩` and prove the remaining obligations. Rewrite using `[ho, star_mul', star_star]`.
+-/
 theorem rs_lam_le_dual (hf : PartnerOK D F0 f) (hM : IsGlueLat (hWb D F0) (zbar D F0) M) :
     lamC D F0 f M ≤ Formalism.HermitianLatticesTheory.dual (VS D).hT (lamC D F0 f M) := by
   intro v hv
@@ -115,11 +164,21 @@ theorem rs_lam_le_dual (hf : PartnerOK D F0 f) (hM : IsGlueLat (hWb D F0) (zbar 
     refine (rs_mem_one_iff _).2 ⟨o, ?_⟩
     rw [ho, star_mul', star_star]
 
+/- English proof (translation)
+Rewrite using `[vPr_smul]`. Establish `h0 : vPr D F0 f (f a) = 0` using `by simp [vPr, hf.1]`. Rewrite using `[h0, smul_zero]`.
+-/
 theorem rs_vPr_smul_f (hf : PartnerOK D F0 f) (a : Fin D.R.rS) (c : D.host.E) : vPr D F0 f (c • f a) = 0 := by
   rw [vPr_smul]
   have h0 : vPr D F0 f (f a) = 0 := by simp [vPr, hf.1]
   rw [h0, smul_zero]
 
+/- English proof (translation)
+Use `mem_lamC_iff.2 ⟨fun b => ?_, ⟨0, ?_, ?_⟩, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hf.1, smul_eq_mul]`. Distinguish the cases in `hab : b = a`. Substitute `hab` using the available equality. Rewrite using `[if_pos rfl, mul_one, star_star]`.
+
+Conclude with `hs`. Rewrite using `[if_neg hab, mul_zero, star_zero]`. Conclude with `fi_zero D _`. Simplify using `[rs_vPr_smul_f hf]`. Rewrite using `[Submodule.Quotient.mk_zero]`.
+
+Conclude with `M.zero_mem`. Rewrite using `[rs_vPr_smul_f hf, map_zero]`. Conclude with `fi_zero D _`.
+-/
 theorem rs_smul_f_mem (hf : PartnerOK D F0 f) {a : Fin D.R.rS} {s : D.host.E} (hs : s ∈ (aaI D a)⁻¹) :
     star s • f a ∈ lamC D F0 f M := by
   refine mem_lamC_iff.2 ⟨fun b => ?_, ⟨0, ?_, ?_⟩, fun b => ?_⟩
@@ -131,6 +190,47 @@ theorem rs_smul_f_mem (hf : PartnerOK D F0 f) {a : Fin D.R.rS} {s : D.host.E} (h
   · rw [Submodule.Quotient.mk_zero]; exact M.zero_mem
   · rw [rs_vPr_smul_f hf, map_zero]; exact fi_zero D _
 
+/- English proof (translation)
+Introduce `v hv`. Establish `hv'` using `rs_mem_dual.1 hv`. Establish `hI0 : ∀ a, aaI D a ≠ 0`. Introduce `a`. Establish `hd : ddS D ≠ 0`.
+
+Rewrite using `[ddS, Ne, FractionalIdeal.coeIdeal_eq_zero]`. Use `first`. Consider the case `exact Ideal.map_ne_bot_of_ne_bot differentIdeal_ne_bot`. Consider the case `exact Ideal.map_ne_bot_of_ne_bot (differentIdeal_ne_bot (A := ℤ))`. Consider the case `(intro h`.
+
+Rewrite `h` using `[Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective _ _)]`. Conclude with `differentIdeal_ne_bot h)`. Rewrite using `[aaI]`. Conclude with `zpow_ne_zero _ hd`. Establish `heX : ∀ a, F0.e a ∈ F0.X`.
+
+Introduce `a`. Rewrite using `[FlagG.X]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`. Establish `hfe : ∀ a b, (VS D).hT (f b) (F0.e a) = if a = b then 1 else 0`. Introduce `a b`.
+
+Rewrite using `[← hs_lemma_2 (F0.e a) (f b), hf.1 a b]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hxe : ∀ a, ∀ x ∈ aaI D a, x • F0.e a ∈ lamC D F0 f M`. Introduce `a x hx`. Establish `hv0 : vPr D F0 f (x • F0.e a) = x • F0.e a`.
+
+Simplify using `[vPr, map_smul, F0.e_iso]`. Establish `hxP : x • F0.e a ∈ perpS (VS D) F0.X` using `Submodule.smul_mem _ x (mem_perpS_X_of_hT_e_eq_zero _ fun b => F0.e_iso b a)`. Use `mem_lamC_iff.2 ⟨fun b => ?_, ⟨⟨x • F0.e a, hxP⟩, hv0.symm, ?_⟩, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, F0.e_iso, smul_zero, star_zero]`. Conclude with `fi_zero D _`.
+
+Rewrite using `[(Submodule.Quotient.mk_eq_zero _).2 (Submodule.mem_comap.2 (Submodule.smul_mem _ x (heX a)))]`. Conclude with `M.zero_mem`. Rewrite using `[hv0, map_smul, hfe a b, smul_eq_mul] split_ifs with hab`. Substitute `hab` using the available equality. Simplify using `using hx`.
+
+Rewrite using `[mul_zero]`. Conclude with `fi_zero D _`. Establish `hPerp : vPr D F0 f v ∈ perpS (VS D) F0.X` using `mem_perpS_X_of_hT_e_eq_zero _ (hT_e_vPr_eq_zero_of_partnerOK hf v)`. Establish `key : ∀ u' : perpS (VS D) F0.X, (Submodule.Quotient.mk u' : WbQ D F0) ∈ M → (VS D).hT (u' : (VS D).V) (vPr D F0 f v) ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)`. Introduce `u' hy`.
+
+Take `⟨t, ht⟩ : ∃ t : (VS D).V, t = (u' : (VS D).V) - ∑ a, (VS D).hT (f a) u' • F0.e a` from `⟨_, rfl⟩`. Establish `ht1 : ∀ b, (VS D).hT (F0.e b) t = 0`. Introduce `b`. Rewrite using `[ht]`. Simplify using `[map_sub, map_sum, map_smul, F0.e_iso, hT_X_perp D F0 (heX b) u'.2]`.
+
+Establish `ht3 : ∀ b, (VS D).hT (f b) t = 0`. Introduce `b`. Rewrite using `[ht]`. Simplify using `[map_sub, map_sum, map_smul, hfe]`. Establish `htP : t ∈ perpS (VS D) F0.X` using `mem_perpS_X_of_hT_e_eq_zero t ht1`.
+
+Establish `hvt : vPr D F0 f t = t` using `by simp [vPr, ht1]`. Establish `hq : (Submodule.Quotient.mk ⟨t, htP⟩ : WbQ D F0) = Submodule.Quotient.mk u'`. Rewrite using `[Submodule.Quotient.eq]`. Use `show t - (u' : (VS D).V) ∈ F0.X`. Rewrite using `[ht, sub_sub_cancel_left]`.
+
+Conclude with `Submodule.neg_mem _ (Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (heX a))`. Establish `htL : t ∈ lamC D F0 f M`. Use `mem_lamC_iff.2 ⟨fun b => ?_, ⟨⟨t, htP⟩, hvt.symm, ?_⟩, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[ht1 b, star_zero]`. Conclude with `fi_zero D _`.
+
+Rewrite using `[hq]`. Conclude with `hy`. Rewrite using `[hvt, ht3 b]`. Conclude with `fi_zero D _`. Establish `htf : ∀ b, (VS D).hT t (f b) = 0` using `fun b => by`.
+
+Rewrite using `[← hs_lemma_2 (f b) t, ht3 b, star_zero]`. Establish `e1 : (VS D).hT t v = (VS D).hT (u' : (VS D).V) (vPr D F0 f v)`. Rewrite using `[hT_eq_hT_vPr_right_add_sum (F0 := F0) (f := f) t v]`. Simplify using `only [htf, mul_zero, Finset.sum_const_zero, add_zero]`. Rewrite using `[ht]`.
+
+Simplify using `[LinearMap.map_sub₂, LinearMap.map_sum₂, LinearMap.map_smulₛₗ₂, hT_e_vPr_eq_zero_of_partnerOK hf]`. Rewrite using `[← e1]`. Conclude with `hv' t htL`. Establish `hWM : (Submodule.Quotient.mk ⟨vPr D F0 f v, hPerp⟩ : WbQ D F0) ∈ Formalism.HermitianLatticesTheory.dual (hWb D F0) M`. Rewrite using `[rs_mem_dualW]`.
+
+Introduce `y hy`. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H u'`. Establish `e2 : hWb D F0 (Submodule.Quotient.mk u') (Submodule.Quotient.mk ⟨vPr D F0 f v, hPerp⟩) = (VS D).hT (u' : (VS D).V) (vPr D F0 f v)` using `hWbFun_mk D F0 u' ⟨vPr D F0 f v, hPerp⟩`. Rewrite using `[e2]`.
+
+Conclude with `key u' hy`. Establish `hU : Formalism.HermitianLatticesTheory.dual (hWb D F0) M = M` using `hM.2.1`. Rewrite `hWM` using `[hU]`. Use `mem_lamC_iff.2 ⟨fun a => ?_, ⟨⟨_, hPerp⟩, rfl, hWM⟩, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[FractionalIdeal.mem_inv_iff (hI0 a)]`.
+
+Introduce `x hx`. Take `⟨o, ho⟩` from `rs_int_star ((rs_mem_one_iff _).1 (hv' _ (hxe a x hx)))`. Rewrite using `[rs_fone_iff]`. Use `⟨o, ?_⟩` and prove the remaining obligations. Rewrite using `[ho, LinearMap.map_smulₛₗ₂, starRingEnd_apply, smul_eq_mul, star_mul', star_star, mul_comm]`.
+
+Establish `e3 : (VS D).hT (f a) (vPr D F0 f v) = (VS D).hT (f a) v`. Rewrite using `[hT_eq_hT_vPr_right_add_sum (F0 := F0) (f := f) (f a) v]`. Simplify using `[hf.2.1]`. Rewrite using `[e3, ← inv_inv (aaI D a), FractionalIdeal.mem_inv_iff (inv_ne_zero (hI0 a))]`. Introduce `s hs`.
+
+Take `⟨o, ho⟩` from `(rs_mem_one_iff _).1 (hv' _ (rs_smul_f_mem hf hs))`. Rewrite using `[rs_fone_iff]`. Use `⟨o, ?_⟩` and prove the remaining obligations. Rewrite using `[ho, LinearMap.map_smulₛₗ₂, starRingEnd_apply, star_star, smul_eq_mul, mul_comm]`.
+-/
 theorem rs_dual_le_lam (hf : PartnerOK D F0 f) (hM : IsGlueLat (hWb D F0) (zbar D F0) M) :
     Formalism.HermitianLatticesTheory.dual (VS D).hT (lamC D F0 f M) ≤ lamC D F0 f M := by
   intro v hv
@@ -235,6 +335,9 @@ theorem rs_dual_le_lam (hf : PartnerOK D F0 f) (hM : IsGlueLat (hWb D F0) (zbar 
 
 end Unimod
 
+/- English proof (translation)
+Introduce `D u F0 f M hf hM`. Conclude with `le_antisymm (rs_dual_le_lam hf hM) (rs_lam_le_dual hf hM)`.
+-/
 theorem lamUnimod : LamUnimod := by
   intro D u F0 f M hf hM
   exact le_antisymm (rs_dual_le_lam hf hM) (rs_lam_le_dual hf hM)

@@ -28,6 +28,9 @@ def ComplexUniformizationSigOne : Prop :=
             Nat.card {π : GlobalTheory.LKCx.QIsog L o // ∃ k ∈ L.KN N, IsGamma L o π.1 k} =
               Nat.card (GlobalTheory.LKCx.Form.Stab v (Quot.out q) (L.KN N) (GlobalTheory.LKCx.KpOne G) a)
 
+/- English proof (translation)
+Introduce `p _ D G L hD R _ b σ ρ hm ht N hN hNp M v hv`. Use `h p D G L hD.1 (Or.inr ⟨hD.2.2, ?_⟩) R b σ ρ hm ht N hN hNp M v hv` and prove the remaining obligations. Establish `h1` using `hD.2.1`. Establish `h2` using `D.n_pos`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem complex_unif_of_sig_one (h : ComplexUniformizationSigOne) : GlobalTheory.LKCx.CxUnif := by
   intro p _ D G L hD R _ b σ ρ hm ht N hN hNp M v hv
   refine h p D G L hD.1 (Or.inr ⟨hD.2.2, ?_⟩) R b σ ρ hm ht N hN hNp M v hv

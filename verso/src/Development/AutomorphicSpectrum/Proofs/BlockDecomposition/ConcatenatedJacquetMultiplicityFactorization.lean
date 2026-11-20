@@ -11,6 +11,11 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 
 namespace GlobalTheory.CompanionTheory.CoarseOcc
 
+/- English proof (translation)
+Take `⟨S, f, hf⟩` from `h`. Use `haveI : Nontrivial W := Model.nontrivial_of_isIrreducible hσ`. Take `⟨u, hu⟩` from `exists_ne (0 : W)`. Take `⟨v, rfl⟩` from `hf u`. Use `⟨(v : V), 0, fun h0 => hu ?_⟩` and prove the remaining obligations.
+
+Establish `hv0 : v = 0` using `Subtype.ext h0`. Rewrite using `[hv0, map_zero]`.
+-/
 theorem nontrivial_of_isSubquotient {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (hσ : σ.IsIrreducible)
     (h : IsSubquotient σ ρ) : Nontrivial V := by
@@ -22,6 +27,9 @@ theorem nontrivial_of_isSubquotient {G V W : Type} [Group G] [AddCommGroup V] [M
   have hv0 : v = 0 := Subtype.ext h0
   rw [hv0, map_zero]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sum_concat {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {s : ℕ}
     (c : Fin s → ℕ) (x : ∀ a, Fin (c a) → IrrGL k) :
     ∑ i, (concat c x i).1 = ∑ a, ∑ i, (x a i).1 := by
@@ -29,6 +37,15 @@ theorem sum_concat {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [I
         Fintype.sum_equiv finSigmaFinEquiv.symm _ _ fun _ => rfl
     _ = ∑ a, ∑ i, (x a i).1 := Fintype.sum_sigma _
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hA s N c x _ hcat V _ _ π hs _ h1`. Set `d : Fin s → ℕ` to `fun a => ∑ i, (x a i).1`. Establish `hd : ∑ a, d a = N` using `(sum_concat c x).symm.trans hcat`. Set `e` to `stdBlocks d hd`. Set `e' : ∀ a, (Σ b, Fin ((x a b).1)) ≃ Fin (d a)` to `fun a => stdBlocks (fun i => (x a i).1) rfl`.
+
+Establish `hE : refinePlace e e' = stdBlocks (fun a => (concat c x a).1) hcat` using `GlobalTheory.CompanionTheory.JmTrans.refinePlace_stdBlocks (x := fun a i => (x a i).1) hd (fun _ => rfl) hcat`. Take `⟨φS⟩` from `GlobalTheory.T.jacquetModule_in_stages_refined_blocks k s N d e c (fun a b => (x a b).1) e' V π`. Establish `hsub : IsSubquotient (piTensor fun l => (concat c x l).rep) (jac (refinePlace e e') π)`. Rewrite using `[hE]`. Conclude with `jhMult_ne_zero_iff.1 (ENat.one_le_iff_ne_zero.1 h1)`.
+
+Establish `hnt` using `nontrivial_of_isSubquotient (GlobalTheory.CompanionTheory.SocleJm.isIrreducible_piTensor hA (concat c x)) hsub`. Establish `hnt2` using `@Function.Surjective.nontrivial _ _ hnt _ φS.symm.surjective`. Establish `hnt3` using `@Function.Surjective.nontrivial _ _ hnt2 _ (Submodule.Quotient.mk_surjective (twKer (jac e π) (relUnipD k e') 1))`. Take `⟨Y, _, _, τ, hτ, hτs⟩` from `GlobalTheory.IrrSubquot.exists_irreducible_subquotient _ _ (jac e π) hnt3`. Set `T : IrrRep (Levi k fun a => Fin (d a))` to `⟨Y, τ, hτs.isSmooth (isSmooth_jac e hs), hτ⟩`.
+
+Take `⟨σ, ⟨φ⟩⟩` from `GlobalTheory.CompanionTheory.LeviTensor.nonempty_equiv_piTensor hA d T`. Use `⟨fun a => ⟨d a, σ a⟩, hd, fun _ => rfl, ENat.one_le_iff_ne_zero.2 (jhMult_ne_zero_iff.2 ?_)⟩` and prove the remaining obligations. Conclude with `(isSubquotient_of_equiv φ.symm).trans hτs`.
+-/
 theorem exists_one_le_jm_coarse : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {s N : ℕ} (c : Fin s → ℕ) (x : ∀ a, Fin (c a) → IrrGL k) (hpos : ∀ a, 0 < ∑ i, (x a i).1) (hcat : ∑ i, (concat c x i).1 = N) {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V) (hs : IsSmooth π) (hfl : HasFiniteLength π), 1 ≤ jm (concat c x) hcat π → ∃ (σ : Fin s → IrrGL k) (hσ : ∑ a, (σ a).1 = N), (∀ a, (σ a).1 = ∑ i, (x a i).1) ∧ 1 ≤ jm σ hσ π := by
   intro k _ _ _ _ hA s N c x _ hcat V _ _ π hs _ h1
   let d : Fin s → ℕ := fun a => ∑ i, (x a i).1

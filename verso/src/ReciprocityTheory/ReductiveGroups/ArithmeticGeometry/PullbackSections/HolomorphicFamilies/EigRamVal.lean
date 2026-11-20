@@ -13,6 +13,11 @@ variable {E : Type} [Field E] [NumberField E]
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {k : Type} [Field k] [Algebra V k]
   [IsFractionRing V k]
 
+/- English proof (translation)
+Establish `hle : valV V (K'` using `k) (algebraMap V k v) ≤ 1 := by`. Unfold `valV`. Conclude with `IsDedekindDomain.HeightOneSpectrum.valuation_le_one _ v`. Unfold `vV`. Distinguish the cases in `h0 : valV V (K' := k) (algebraMap V k v) = 0`.
+
+Rewrite using `[h0, WithZero.log_zero]`. Simplify using the standard rewrite rules. Use `(WithZero.log_le_log h0 one_ne_zero).2 hle` as an intermediate fact. Rewrite `this` using `[WithZero.log_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem vV_alg_nonneg (v : V) : 0 ≤ vV V (algebraMap V k v) := by
   have hle : valV V (K' := k) (algebraMap V k v) ≤ 1 := by
     unfold valV
@@ -24,12 +29,18 @@ theorem vV_alg_nonneg (v : V) : 0 ≤ vV V (algebraMap V k v) := by
     rw [WithZero.log_one] at this
     linarith
 
+/- English proof (translation)
+Establish `h1 : IsIntegral ℤ (ψ (x : E))` using `(RingOfIntegers.isIntegral_coe x).map ψ.toIntAlgHom`. Establish `h2 : IsIntegral V (ψ (x : E))` using `h1.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h2`. Conclude with `⟨y, hy⟩`.
+-/
 theorem int_mem_range (ψ : E →+* k) (x : 𝓞 E) : ψ (x : E) ∈ (algebraMap V k).range := by
   have h1 : IsIntegral ℤ (ψ (x : E)) := (RingOfIntegers.isIntegral_coe x).map ψ.toIntAlgHom
   have h2 : IsIntegral V (ψ (x : E)) := h1.tower_top
   obtain ⟨y, hy⟩ := IsIntegrallyClosed.isIntegral_iff.1 h2
   exact ⟨y, hy⟩
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `int_mem_range (V := V) ψ x`. Rewrite using `[← hy]`. Conclude with `vV_alg_nonneg y`.
+-/
 theorem w_nonneg (ψ : E →+* k) (x : 𝓞 E) : 0 ≤ vV V (ψ (x : E)) := by
   obtain ⟨y, hy⟩ := int_mem_range (V := V) ψ x
   rw [← hy]
@@ -103,12 +114,31 @@ def primeOf (ψ : E →+* k) (hψ : Function.Injective ψ) : Ideal (𝓞 E) wher
     linarith
 
 variable (V) in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_primeOf (ψ : E →+* k) (hψ : Function.Injective ψ) (x : 𝓞 E) :
     x ∈ primeOf (V := V) ψ hψ ↔ 0 < vV V (ψ (x : E)) ∨ x = 0 := Iff.rfl
 
+/- English proof (translation)
+Conclude with `(map_ne_zero ψ).2 (by exact_mod_cast hx)`.
+-/
 theorem psi_ne_zero (ψ : E →+* k) (hψ : Function.Injective ψ) {x : 𝓞 E} (hx : x ≠ 0) : ψ (x : E) ≠ 0 := by
   exact (map_ne_zero ψ).2 (by exact_mod_cast hx)
 
+/- English proof (translation)
+Establish `hmul : ∀ a b : k, a ≠ 0 → b ≠ 0 → vV V (a * b) = vV V a + vV V b`. Introduce `a b ha hb`. Unfold `vV`. Rewrite using `[map_mul, WithZero.log_mul ((valV V (K' := k)).ne_zero_iff.mpr ha) ((valV V (K' := k)).ne_zero_iff.mpr hb)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hv1 : vV V (1 : k) = 0`. Unfold `vV`. Rewrite using `[map_one, WithZero.log_one]`. Simplify using the standard rewrite rules. Use `Ideal.isPrime_iff.2 ⟨(Ideal.ne_top_iff_one _).2 ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mem_primeOf] push_neg`. Use `⟨?_, one_ne_zero⟩` and prove the remaining obligations. Simplify using `[hv1]`. Introduce `x y hxy`. Rewrite `hxy`, the goal using `[mem_primeOf]`.
+
+Rewrite using `[mem_primeOf]`. Distinguish the cases in `hx0 : x = 0`. Conclude with `Or.inl (Or.inr hx0)`. Distinguish the cases in `hy0 : y = 0`. Conclude with `Or.inr (Or.inr hy0)`.
+
+Establish `hxy'` using `hxy.resolve_right (mul_ne_zero hx0 hy0)`. Establish `hc : ((x * y : 𝓞 E) : E) = (x : E) * (y : E)` using `by simp`. Rewrite `hxy'` using `[hc, map_mul, hmul _ _ (psi_ne_zero ψ hψ hx0) (psi_ne_zero ψ hψ hy0)]`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`.
+
+Use `hno.1.1` as an intermediate fact. Use `hno.2.1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem primeOf_isPrime (ψ : E →+* k) (hψ : Function.Injective ψ) : (primeOf (V := V) ψ hψ).IsPrime := by
   have hmul : ∀ a b : k, a ≠ 0 → b ≠ 0 → vV V (a * b) = vV V a + vV V b := by
     intro a b ha hb
@@ -139,12 +169,20 @@ theorem primeOf_isPrime (ψ : E →+* k) (hψ : Function.Injective ψ) : (primeO
     have := hno.2.1
     linarith
 
+/- English proof (translation)
+Rewrite `hx` using `[mem_primeOf]`. Use `push_neg at hx`. Conclude with `le_antisymm hx.1 (w_nonneg ψ x)`.
+-/
 theorem w_zero_of_not_mem (ψ : E →+* k) (hψ : Function.Injective ψ) {x : 𝓞 E}
     (hx : x ∉ primeOf (V := V) ψ hψ) : vV V (ψ (x : E)) = 0 := by
   rw [mem_primeOf] at hx
   push_neg at hx
   exact le_antisymm hx.1 (w_nonneg ψ x)
 
+/- English proof (translation)
+Establish `hspan : Ideal.span {x} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hx0`. Establish `hirr : Irreducible P` using `(Ideal.prime_of_isPrime hP0 hP).irreducible`. Establish `hdvd : P ∣ Ideal.span {x}` using `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hx)`.
+
+Take `⟨Q, hQ, hPQ⟩` from `UniqueFactorizationMonoid.exists_mem_normalizedFactors_of_dvd hspan hirr hdvd`. Rewrite `hPQ` using `[associated_iff_eq]`. Rewrite using `[hPQ]`. Conclude with `Multiset.count_pos.2 hQ`.
+-/
 theorem mem_factors_of_mem {P : Ideal (𝓞 E)} (hP : P.IsPrime) (hP0 : P ≠ ⊥) {x : 𝓞 E} (hx0 : x ≠ 0) (hx : x ∈ P) :
     0 < (normalizedFactors (Ideal.span {x})).count P := by
   have hspan : Ideal.span {x} ≠ 0 := by
@@ -156,12 +194,20 @@ theorem mem_factors_of_mem {P : Ideal (𝓞 E)} (hP : P.IsPrime) (hP0 : P ≠ �
   rw [hPQ]
   exact Multiset.count_pos.2 hQ
 
+/- English proof (translation)
+Use `Multiset.count_eq_zero.2 fun hP => hx ?_` and prove the remaining obligations. Establish `hdvd` using `UniqueFactorizationMonoid.dvd_of_mem_normalizedFactors hP`. Conclude with `(Ideal.le_of_dvd hdvd) (Ideal.mem_span_singleton_self x)`.
+-/
 theorem count_zero_of_not_mem {P : Ideal (𝓞 E)} {x : 𝓞 E} (hx : x ∉ P) :
     (normalizedFactors (Ideal.span {x})).count P = 0 := by
   refine Multiset.count_eq_zero.2 fun hP => hx ?_
   have hdvd := UniqueFactorizationMonoid.dvd_of_mem_normalizedFactors hP
   exact (Ideal.le_of_dvd hdvd) (Ideal.mem_span_singleton_self x)
 
+/- English proof (translation)
+Establish `hx' : Ideal.span {x} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hx`. Establish `hy' : Ideal.span {y} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`.
+
+Conclude with `hy`. Rewrite using `[← Ideal.span_singleton_mul_span_singleton, UniqueFactorizationMonoid.normalizedFactors_mul hx' hy', Multiset.count_add]`.
+-/
 theorem count_mul_span {P : Ideal (𝓞 E)} {x y : 𝓞 E} (hx : x ≠ 0) (hy : y ≠ 0) :
     (normalizedFactors (Ideal.span {x * y})).count P =
       (normalizedFactors (Ideal.span {x})).count P + (normalizedFactors (Ideal.span {y})).count P := by
@@ -172,6 +218,39 @@ theorem count_mul_span {P : Ideal (𝓞 E)} {x y : 𝓞 E} (hx : x ≠ 0) (hy : 
   rw [← Ideal.span_singleton_mul_span_singleton, UniqueFactorizationMonoid.normalizedFactors_mul hx' hy',
     Multiset.count_add]
 
+/- English proof (translation)
+Use `set P := primeOf (V := V) ψ hψ with hPdef`. Establish `hPp : P.IsPrime` using `primeOf_isPrime ψ hψ`. Establish `hmulv : ∀ a b : 𝓞 E, a ≠ 0 → b ≠ 0 → vV V (ψ ((a * b : 𝓞 E) : E)) = vV V (ψ (a : E)) + vV V (ψ (b : E))`. Introduce `a b ha hb`. Establish `hab : ((a * b : 𝓞 E) : E) = (a : E) * (b : E)` using `by simp`.
+
+Rewrite using `[hab, map_mul]`. Unfold `vV`. Rewrite using `[map_mul, WithZero.log_mul ((valV V (K' := k)).ne_zero_iff.mpr (psi_ne_zero ψ hψ ha)) ((valV V (K' := k)).ne_zero_iff.mpr (psi_ne_zero ψ hψ hb))]`. Expand and normalize the polynomial expressions, which then agree. Establish `hspan : ∀ z : 𝓞 E, z ≠ 0 → Ideal.span {z} ≠ 0` using `fun z hz => by`.
+
+Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hz`. Establish `hP2 : P ^ 2 < P`. Use `lt_of_le_of_ne (Ideal.pow_le_self two_ne_zero) fun heq => ?_` and prove the remaining obligations. Establish `h1 : P * P = P * ⊤` using `by rw [← sq, heq, Ideal.mul_top]`.
+
+Conclude with `hPp.ne_top (mul_left_cancel₀ (by rwa [Ne, Ideal.zero_eq_bot]) h1)`. Take `⟨π, hπP, hπ2⟩` from `SetLike.exists_of_lt hP2`. Establish `hπ0 : π ≠ 0` using `by rintro rfl; exact hπ2 (Submodule.zero_mem _)`. Establish `hcπ : (normalizedFactors (Ideal.span {π})).count P = 1`. Establish `h1` using `mem_factors_of_mem hPp hP0 hπ0 hπP`.
+
+Assume the negation of the conclusion as `hne`. Apply `hπ2` to reduce the goal to its premises. Establish `h2 : Multiset.replicate 2 P ≤ normalizedFactors (Ideal.span {π})`. Rewrite using `[Multiset.le_iff_count]`. Introduce `Q`.
+
+Rewrite using `[Multiset.count_replicate]`. Use `split_ifs with hQ`. Substitute `hQ` using the available equality. Use linear arithmetic over natural numbers and integers. Conclude with `Nat.zero_le _`.
+
+Establish `h3 : P ^ 2 ∣ Ideal.span {π}`. Use `Multiset.prod_dvd_prod_of_le h2` as an intermediate fact. Rewrite `this` using `[Multiset.prod_replicate]`. Conclude with `this.trans (UniqueFactorizationMonoid.prod_normalizedFactors (hspan π hπ0)).dvd`. Conclude with `(Ideal.le_of_dvd h3) (Ideal.mem_span_singleton_self π)`.
+
+Take `⟨A, hA⟩` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hπP)`. Establish `hAP : ¬ A ≤ P`. Introduce `hle`. Establish `hdvd : P ∣ A` using `Ideal.dvd_iff_le.2 hle`. Establish `h4 : P * P ∣ Ideal.span {π}` using `hA ▸ mul_dvd_mul_left P hdvd`.
+
+Apply `hπ2` to reduce the goal to its premises. Rewrite using `[sq]`. Conclude with `(Ideal.le_of_dvd h4) (Ideal.mem_span_singleton_self π)`. Take `⟨s, hsA, hsP⟩` from `Set.not_subset.1 hAP`. Establish `hs0 : s ≠ 0` using `by rintro rfl; exact hsP (Submodule.zero_mem _)`.
+
+Establish `hws : vV V (ψ (s : E)) = 0` using `w_zero_of_not_mem ψ hψ hsP`. Establish `hcs : (normalizedFactors (Ideal.span {s})).count P = 0` using `count_zero_of_not_mem hsP`. Use `⟨π, hπ0, ?_⟩` and prove the remaining obligations. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero`. Introduce `x hx hc`. Establish `hxP : x ∉ P` using `fun hxP => by`. Use `mem_factors_of_mem hPp hP0 hx hxP` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `[w_zero_of_not_mem ψ hψ hxP]`. Consider the case `succ n ih`. Introduce `x hx hc`. Establish `hxP : x ∈ P`. Assume the negation of the conclusion as `hxP`.
+
+Rewrite `hc` using `[count_zero_of_not_mem hxP]`. Use linear arithmetic over natural numbers and integers. Establish `hmem : x * s ∈ Ideal.span {π}` using `by rw [hA]; exact Ideal.mul_mem_mul hxP hsA`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 hmem`. Establish `hy0 : y ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hy` using `[zero_mul]`. Conclude with `mul_ne_zero hx hs0 hy.symm`. Establish `hcy : (normalizedFactors (Ideal.span {y})).count P = n`. Establish `h1` using `count_mul_span (P := P) hy0 hπ0`.
+
+Rewrite `h1` using `[hy, count_mul_span hx hs0, hc, hcs, hcπ]`. Use linear arithmetic over natural numbers and integers. Establish `h2` using `hmulv y π hy0 hπ0`. Rewrite `h2` using `[hy, hmulv x s hx hs0, hws, ih y hy0 hcy]`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem w_eq_count (ψ : E →+* k) (hψ : Function.Injective ψ) (hP0 : primeOf (V := V) ψ hψ ≠ ⊥) :
     ∃ π : 𝓞 E, π ≠ 0 ∧ ∀ (n : ℕ) (x : 𝓞 E), x ≠ 0 →
       (normalizedFactors (Ideal.span {x})).count (primeOf (V := V) ψ hψ) = n →
@@ -255,6 +334,17 @@ theorem w_eq_count (ψ : E →+* k) (hψ : Function.Injective ψ) (hP0 : primeOf
     push_cast
     linarith
 
+/- English proof (translation)
+Use `set Dif := differentIdeal ℤ (𝓞 E) with hDif`. Establish `hD0 : Dif ≠ ⊥` using `differentIdeal_ne_bot`. Establish `hlt : Dif * P < Dif`. Use `lt_of_le_of_ne Ideal.mul_le_left fun heq => ?_` and prove the remaining obligations. Establish `h1 : Dif * P = Dif * ⊤` using `by rw [heq, Ideal.mul_top]`.
+
+Use `mul_left_cancel₀ (by rwa [Ne, Ideal.zero_eq_bot]) h1` as an intermediate fact. Conclude with `hP.ne_top this`. Take `⟨δ, hδD, hδP⟩` from `SetLike.exists_of_lt hlt`. Establish `hδ0 : δ ≠ 0` using `by rintro rfl; exact hδP (Submodule.zero_mem _)`. Use `⟨δ, hδD, hδ0, ?_⟩` and prove the remaining obligations.
+
+Take `⟨K, hK⟩` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hδD)`. Establish `hKP : ¬ K ≤ P`. Introduce `hle`. Apply `hδP` to reduce the goal to its premises. Establish `: Ideal.span {δ} ≤ Dif * P` using `by rw [hK]; exact Ideal.mul_mono_right hle`.
+
+Conclude with `this (Ideal.mem_span_singleton_self δ)`. Establish `hK0 : K ≠ 0`. Introduce and unpack `rfl`. Rewrite `hK` using `[mul_zero, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hδ0 hK`.
+
+Establish `hcK : (normalizedFactors K).count P = 0`. Use `Multiset.count_eq_zero.2 fun hP' => hKP ?_` and prove the remaining obligations. Conclude with `Ideal.le_of_dvd (UniqueFactorizationMonoid.dvd_of_mem_normalizedFactors hP')`. Rewrite using `[hK, UniqueFactorizationMonoid.normalizedFactors_mul (by rwa [Ne, Ideal.zero_eq_bot]) hK0, Multiset.count_add, hcK, add_zero]`.
+-/
 theorem exists_delta_count {P : Ideal (𝓞 E)} (hP : P.IsPrime) (hP0 : P ≠ ⊥) :
     ∃ δ : 𝓞 E, δ ∈ differentIdeal ℤ (𝓞 E) ∧ δ ≠ 0 ∧
       (normalizedFactors (Ideal.span {δ})).count P = (normalizedFactors (differentIdeal ℤ (𝓞 E))).count P := by
@@ -286,6 +376,15 @@ theorem exists_delta_count {P : Ideal (𝓞 E)} (hP : P.IsPrime) (hP0 : P ≠ �
   rw [hK, UniqueFactorizationMonoid.normalizedFactors_mul (by rwa [Ne, Ideal.zero_eq_bot]) hK0,
     Multiset.count_add, hcK, add_zero]
 
+/- English proof (translation)
+Use `set P := primeOf (V := V) ψ hψ`. Establish `hPp : P.IsPrime` using `primeOf_isPrime ψ hψ`. Establish `hℓ0 : (ℓ : 𝓞 E) ≠ 0` using `Nat.cast_ne_zero.2 hℓ.ne_zero`. Establish `hℓP : (ℓ : 𝓞 E) ∈ P` using `Or.inl (by simpa using hℓψ)`. Establish `hP0 : P ≠ ⊥` using `fun h => hℓ0 (by rw [h] at hℓP; exact (Submodule.mem_bot _).1 hℓP)`.
+
+Take `⟨π, hπ0, hw⟩` from `w_eq_count ψ hψ hP0`. Take `⟨δ, hδD, hδ0, hδc⟩` from `exists_delta_count hPp hP0`. Establish `hex` using `diffExp E ℓ a m hℓ hm hdisc P hPp hℓP`. Establish `h1` using `hw _ δ hδ0 rfl`. Establish `h2` using `hw _ (ℓ : 𝓞 E) hℓ0 rfl`.
+
+Use `⟨δ, hδD, hδ0, ?_⟩` and prove the remaining obligations. Establish `e : ((ℓ : 𝓞 E) : E) = (ℓ : E)` using `by simp`. Rewrite `h2` using `[e]`. Rewrite using `[h1, h2, hδc]`. Establish `hex' : ((normalizedFactors (differentIdeal ℤ (𝓞 E))).count P : ℤ) * Module.finrank ℚ E = a * (normalizedFactors (Ideal.span {(ℓ : 𝓞 E)})).count P` using `by exact_mod_cast hex`.
+
+Take the linear combination `vV V (ψ (π : E)) * hex'`.
+-/
 theorem exists_delta_val [IsGalois ℚ E] (ℓ a m : ℕ) (hℓ : ℓ.Prime) (hm : ¬ ℓ ∣ m)
     (hdisc : (discr E).natAbs = ℓ ^ a * m) (ψ : E →+* k) (hψ : Function.Injective ψ)
     (hℓψ : 0 < vV V (ψ (ℓ : E))) :

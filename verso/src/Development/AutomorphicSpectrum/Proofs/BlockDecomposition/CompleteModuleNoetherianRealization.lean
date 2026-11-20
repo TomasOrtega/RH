@@ -9,15 +9,26 @@ open AdicCompletion
 
 variable {B : Type} [CommRing B] (I : Ideal B) {N : Type} [AddCommGroup N] [Module B N]
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `Submodule.Quotient.mk_surjective _ (r.val n)`. Conclude with `⟨b, by show (r • x).val n = b • x.val n; rw [smul_eval, ← hb]; rfl⟩`.
+-/
 theorem exists_eval_smul (r : AdicCompletion I B) (x : AdicCompletion I N) (n : ℕ) :
     ∃ b : B, eval I N n (r • x) = b • eval I N n x := by
   obtain ⟨b, hb⟩ := Submodule.Quotient.mk_surjective _ (r.val n)
   exact ⟨b, by show (r • x).val n = b • x.val n; rw [smul_eval, ← hb]; rfl⟩
 
+/- English proof (translation)
+The claim follows from `Module.Finite.of_surjective (ofTensorProduct I N) (ofTensorProduct_surjective_of_finite I N)`.
+-/
 theorem finite_adicCompletion [Module.Finite B N] :
     Module.Finite (AdicCompletion I B) (AdicCompletion I N) :=
   Module.Finite.of_surjective (ofTensorProduct I N) (ofTensorProduct_surjective_of_finite I N)
 
+/- English proof (translation)
+Use `Submodule.eq_top_iff'.2 fun x ↦ ?_` and prove the remaining obligations. Take `⟨t, rfl⟩` from `ofTensorProduct_surjective_of_finite I N x`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `tmul a e`.
+
+Rewrite using `[ofTensorProduct_tmul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨e, rfl⟩)`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+-/
 theorem span_range_of [Module.Finite B N] :
     Submodule.span (AdicCompletion I B) (Set.range (of I N)) = ⊤ := by
   refine Submodule.eq_top_iff'.2 fun x ↦ ?_
@@ -34,9 +45,15 @@ variable {I} (T : ℕ → Submodule B N) (hT : ∀ n, I ^ (n + 1) • (⊤ : Sub
 noncomputable def toQuot (n : ℕ) : AdicCompletion I N →ₗ[B] N ⧸ T n :=
   Submodule.factor (hT n) ∘ₗ eval I N (n + 1)
 
+/- English proof (translation)
+Simplify using `[toQuot, eval_of, Submodule.factor_mk]`.
+-/
 theorem toQuot_of (n : ℕ) (e : N) : toQuot T hT n (of I N e) = (T n).mkQ e := by
   simp [toQuot, eval_of, Submodule.factor_mk]
 
+/- English proof (translation)
+Use `show Submodule.factor (hT n) ((AdicCompletion.mk I N f).val (n + 1)) = _`. Rewrite using `[mk_apply_coe, Submodule.factor_mk]`.
+-/
 theorem toQuot_mk (n : ℕ) (f : AdicCauchySequence I N) :
     toQuot T hT n (AdicCompletion.mk I N f) = (T n).mkQ (f (n + 1)) := by
   show Submodule.factor (hT n) ((AdicCompletion.mk I N f).val (n + 1)) = _
@@ -52,11 +69,34 @@ noncomputable def Tb (n : ℕ) : Submodule (AdicCompletion I B) (AdicCompletion 
       simp only [toQuot, LinearMap.comp_apply, hb, map_smul]
     simp_all
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_Tb (n : ℕ) (x : AdicCompletion I N) : x ∈ Tb T hT n ↔ toQuot T hT n x = 0 := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `antitone_nat_of_succ_le fun n ↦ (hT' n).symm ▸ le_sup_left`.
+-/
 theorem antitone_of_eq_sup_pow_smul_whole_module (hT' : ∀ n, T n = T (n + 1) ⊔ I ^ (n + 1) • (⊤ : Submodule B N)) : Antitone T :=
   antitone_nat_of_succ_le fun n ↦ (hT' n).symm ▸ le_sup_left
 
+/- English proof (translation)
+Establish `step : ∀ j (x : T (n + j)), ∃ y : T (n + j + 1), (x : N) - y ∈ I ^ (n + j + 1) • (⊤ : Submodule B N)`. Introduce `j x`. Establish `hx : (x : N) ∈ T (n + j + 1) ⊔ I ^ (n + j + 1) • (⊤ : Submodule B N)`. Rewrite using `[← hT']`. Conclude with `x.2`.
+
+Take `⟨a, ha, c, hc, hxe⟩` from `Submodule.mem_sup.1 hx`. Conclude with `⟨⟨a, ha⟩, by rw [← hxe]; simpa using hc⟩`. Use `choose f hf using step`. Set `u : (j : ℕ) → T (n + j)` to `fun j ↦ Nat.rec ⟨e, he⟩ (fun j x ↦ f j x) j`. Establish `huj : ∀ j, (u (j + 1)).1 = (f j (u j)).1` using `fun j ↦ rfl`.
+
+Establish `hu : ∀ j, ((u j).1 - (u (j + 1)).1) ∈ I ^ (n + j + 1) • (⊤ : Submodule B N)` using `fun j ↦ by`. Rewrite using `[huj]`. Conclude with `hf j (u j)`. Set `s : ℕ → N` to `fun k ↦ (u (k - (n + 1))).1`. Establish `huc : ∀ a b, a = b → (u a).1 = (u b).1` using `by rintro a b rfl; rfl`.
+
+Establish `hs0 : ∀ k, k ≤ n + 1 → s k = e` using `fun k hk ↦ huc _ 0 (Nat.sub_eq_zero_of_le hk)`. Establish `hs1 : ∀ j, s (n + 1 + j) = (u j).1` using `fun j ↦ huc _ _ (by omega)`. Establish `hcau : ∀ k, s k ≡ s (k + 1) [SMOD (I ^ k • ⊤ : Submodule B N)]`. Introduce `k`. Rewrite using `[SModEq.sub_mem]`.
+
+Break down `Nat.lt_or_ge k (n + 1) with hk | hk` into its components or cases. Rewrite using `[hs0 k hk.le, hs0 (k + 1) hk, sub_self]`. Conclude with `zero_mem _`. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hk`. Rewrite using `[hs1, show n + 1 + j + 1 = n + 1 + (j + 1) by omega, hs1]`.
+
+Simplify `hu j` using `[show n + 1 + j = n + j + 1 by omega]`. Set `F : AdicCauchySequence I N` to `AdicCauchySequence.mk I N s hcau`. Establish `hF : ∀ k, F k = s k` using `fun k ↦ rfl`. Use `⟨AdicCompletion.mk I N F, Submodule.mem_iInf _ |>.2 fun m ↦ ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_Tb, toQuot_mk, hF, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+
+Break down `Nat.lt_or_ge m n with hm | hm` into its components or cases. Rewrite using `[hs0 _ (by omega)]; exact antitone_of_eq_sup_pow_smul_whole_module T hT' hm.le he`. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hm`. Rewrite using `[show n + j + 1 = n + 1 + j by omega, hs1]; exact (u j).2`. Use `show (AdicCompletion.mk I N F).val (n + 1) = _`.
+
+Rewrite using `[mk_apply_coe, eval_of, hF, hs0 _ le_rfl]`.
+-/
 theorem exists_lift (hT' : ∀ n, T n = T (n + 1) ⊔ I ^ (n + 1) • (⊤ : Submodule B N)) (n : ℕ) (e : N)
     (he : e ∈ T n) : ∃ l ∈ ⨅ m, Tb T hT m, eval I N (n + 1) l = eval I N (n + 1) (of I N e) := by
   have step : ∀ j (x : T (n + j)), ∃ y : T (n + j + 1),
@@ -100,6 +140,23 @@ namespace GlobalTheory.CompanionTheory.GE.CompletionTower
 
 open AdicCompletion
 
+/- English proof (translation)
+Introduce `B _ _ I N _ _ _ T hT hT'`. Use `haveI := finite_adicCompletion I (N := N)`. Use `haveI := AdicCompletion.isAdicComplete_self I I.fg_of_isNoetherianRing`. Set `L : Submodule (AdicCompletion I B) (AdicCompletion I N)` to `⨅ m, Tb T hT m`. Set `μ : N →ₗ[B] AdicCompletion I N ⧸ L` to `(L.mkQ.restrictScalars B) ∘ₗ of I N`.
+
+Use `⟨AdicCompletion I B, inferInstance, GlobalTheory.AdicNoeth.isNoetherianRing_adicCompletion B I, inferInstance, AdicCompletion I N ⧸ L, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, μ, IsAdicComplete.le_jacobson_bot _, ?_, ?_⟩` and prove the remaining obligations. Establish `: Set.range μ = L.mkQ '' Set.range (of I N)`. Use extensionality with `y`. Simplify using `[μ]`. Rewrite using `[this, ← Submodule.map_span, span_range_of, Submodule.map_top, Submodule.range_mkQ]`.
+
+Introduce `n e`. Prove the components needed by the constructor for the conclusion. Introduce `he`. Take `⟨l, hl, hle⟩` from `exists_lift T hT hT' n e he`. Establish `hmem : of I N e - l ∈ (I ^ (n + 1) • ⊤ : Submodule B (AdicCompletion I N))`.
+
+Rewrite using `[AdicCompletion.pow_smul_top_eq_ker_eval I.fg_of_isNoetherianRing, LinearMap.mem_ker, map_sub, hle, sub_self]`. Establish `hl0 : L.mkQ l = 0` using `(Submodule.Quotient.mk_eq_zero L).2 hl`. Establish `hμ : μ e = (L.mkQ.restrictScalars B) (of I N e - l)`. Simplify using `only [μ, LinearMap.comp_apply, LinearMap.restrictScalars_apply, map_sub, hl0, sub_zero]`. Establish `h2` using `Submodule.mem_map_of_mem (f := L.mkQ.restrictScalars B) hmem`.
+
+Rewrite `h2` using `[Submodule.map_smul'']`. Rewrite using `[hμ]`. Conclude with `Submodule.smul_mono le_rfl le_top h2`. Introduce `hμ`. Establish `key : (I ^ (n + 1) • ⊤ : Submodule B (AdicCompletion I N ⧸ L)) ≤ (LinearMap.ker (toQuot T hT n)).map (L.mkQ.restrictScalars B)`.
+
+Rewrite using `[Submodule.smul_le]`. Introduce `i hi m _`. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective L m`. Use `⟨i • x, ?_, by simp⟩` and prove the remaining obligations. Use `show toQuot T hT n (i • x) = 0`.
+
+Rewrite using `[map_smul]`. Take `⟨y, hy⟩` from `Submodule.mkQ_surjective (T n) (toQuot T hT n x)`. Rewrite using `[← hy, ← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hT n (Submodule.smul_mem_smul hi Submodule.mem_top)`. Take `⟨x, hx, hxe⟩` from `key hμ`.
+
+Establish `hd : x - of I N e ∈ L` using `(Submodule.Quotient.eq L).1 hxe`. Establish `hd'` using `(Submodule.mem_iInf _).1 hd n`. Rewrite `hd'` using `[mem_Tb, map_sub, LinearMap.mem_ker.1 hx, zero_sub, neg_eq_zero, toQuot_of, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hd'`.
+-/
 theorem exists_completion_tower : ∀ {B : Type} [CommRing B] [IsNoetherianRing B] (I : Ideal B)
     {N : Type} [AddCommGroup N] [Module B N] [Module.Finite B N] (T : ℕ → Submodule B N),
     (∀ n, I ^ (n + 1) • (⊤ : Submodule B N) ≤ T n) →

@@ -30,6 +30,21 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 def MinGe {r : ℕ} (X : Data E r) (ε : ℝ) (x : Frame X.Ψ r) : Prop :=
   ∀ v ∈ X.Λ, v ≠ 0 → ε ≤ QuadraticLatticeForms.Qy X (mat x) v
 
+/- English proof (translation)
+Introduce `r X G d hd γ hγ x hx`. Establish `hmat : ∀ τ : X.Ψ, mat (lact γ x) τ = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ` using `fun τ => rfl`. Establish `hγdet : (γ : Matrix (Fin r) (Fin r) E).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 γ.isUnit).ne_zero`. Establish `hτdet : ∀ τ : X.Ψ, ((γ : Matrix (Fin r) (Fin r) E).map τ.1).det ≠ 0`. Introduce `τ`.
+
+Use `τ.1.map_det (γ : Matrix (Fin r) (Fin r) E)` as an intermediate fact. Rewrite `this` using `[RingHom.mapMatrix_apply]`. Rewrite using `[← this]`. Conclude with `(map_ne_zero τ.1).2 hγdet`. Establish `hx' : ∀ τ : X.Ψ, (mat (lact γ x) τ).det ≠ 0`.
+
+Introduce `τ`. Rewrite using `[hmat, Matrix.det_mul]`. Conclude with `mul_ne_zero (hτdet τ) (hx τ)`. Use `⟨hx', fun W => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, hwΛ, hsp⟩` from `GlobalTheory.LatBasis.exists_basis_mem r X W`.
+
+Use `set f := (γ : Matrix (Fin r) (Fin r) E).mulVecLin with hf`. Establish `hinj : Function.Injective f` using `Matrix.mulVec_injective_of_isUnit γ.isUnit`. Establish `hsurj : Function.Surjective f` using `LinearMap.injective_iff_surjective.1 hinj`. Establish `hΛ : ∀ y, y ∈ X.Λ ↔ f y ∈ X.Λ` using `hγ.2`. Establish `hw' : LinearIndependent E (fun a => f (w a))` using `hw.map' f (LinearMap.ker_eq_bot.2 hinj)`.
+
+Establish `hsp' : W.map f = Submodule.span E (Set.range fun a => f (w a))` using `by conv_lhs => rw [← hsp]`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Establish `e1` using `hd (lact γ x) hx' _ (fun a => f (w a)) hw' (fun a => (hΛ _).1 (hwΛ a))`. Establish `e2` using `hd x hx _ w hw hwΛ`.
+
+Establish `hM : ∀ τ : X.Ψ, (mat (lact γ x) τ)⁻¹ * (Matrix.of fun k a => τ.1 (f (w a) k)) = (mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k))`. Introduce `τ`. Establish `: (Matrix.of fun k a => τ.1 (f (w a) k)) = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * (Matrix.of fun k a => τ.1 (w a k))`. Use extensionality with `k a`. Simplify using `[hf, Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+
+Rewrite using `[this, hmat, Matrix.mul_inv_rev, Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ (hτdet τ).isUnit]`. Rewrite using `[hsp', e1, relIndex_span_map X.Λ f hinj hsurj hΛ w]`. Rewrite `e2` using `[hsp]`. Rewrite using `[e2, hsp]`. Simplify using `only [hM]`.
+-/
 theorem height_lact : (∀ (r : ℕ) (X : Data E r) {G : Matrix (Fin r) (Fin r) E} (d : Frame X.Ψ r → Submodule E (Fin r → E) → ℝ), (∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (w : ι → Fin r → E), LinearIndependent E w → (∀ a, w a ∈ X.Λ) → d x (Submodule.span E (Set.range w)) = ((∏ τ : X.Ψ, ((((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))ᴴ * ((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))).det.re)) / (((Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup.relIndex (X.Λ.toAddSubgroup ⊓ (Submodule.span E (Set.range w)).toAddSubgroup)) : ℝ))) → ∀ γ : GL (Fin r) E, IsUStab G X.Λ γ → ∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → (∀ τ : X.Ψ, (mat (lact γ x) τ).det ≠ 0) ∧ ∀ W : Submodule E (Fin r → E), d (lact γ x) (W.map (γ : Matrix (Fin r) (Fin r) E).mulVecLin) = d x W) := by
   intro r X G d hd γ hγ x hx
   have hmat : ∀ τ : X.Ψ, mat (lact γ x) τ = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ :=
@@ -73,6 +88,17 @@ theorem height_lact : (∀ (r : ℕ) (X : Data E r) {G : Matrix (Fin r) (Fin r) 
   rw [e2, hsp]
   simp only [hM]
 
+/- English proof (translation)
+Introduce `r X G d hd δ α hα γ hγ x hx i hi`. Take `⟨hx', hinv⟩` from `height_lact r X d hd γ hγ x hx`. Set `e : (Fin r → E) ≃ₗ[E] (Fin r → E)` to `Matrix.GeneralLinearGroup.toLin γ |>.toLinearEquiv`. Establish `he : (e : (Fin r → E) →ₗ[E] (Fin r → E)) = (γ : Matrix (Fin r) (Fin r) E).mulVecLin` using `by ext1 j`. Both sides reduce to the same expression.
+
+Rewrite `hinv` using `[← he]`. Use `(hα i hi _ hx').unique ?_` and prove the remaining obligations. It suffices to establish `hs : (fun W => d (lact γ x) W ^ (-δ)) '' {W | Module.finrank E W = i} = (fun W => d x W ^ (-δ)) '' {W | Module.finrank E W = i} by`. Rewrite using `[hs]`. Conclude with `hα i hi x hx`.
+
+Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨W, hW, rfl⟩`. Use `⟨W.map (e.symm : (Fin r → E) →ₗ[E] (Fin r → E)), ?_, ?_⟩` and prove the remaining obligations. Simplify `hW` using `[LinearEquiv.finrank_map_eq]`.
+
+Use `show d x _ ^ (-δ) = d (lact γ x) W ^ (-δ)`. Rewrite using `[← hinv, ← Submodule.map_comp]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨W, hW, rfl⟩`. Use `⟨W.map (e : (Fin r → E) →ₗ[E] (Fin r → E)), ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify `hW` using `[LinearEquiv.finrank_map_eq]`. Use `show d (lact γ x) _ ^ (-δ) = d x W ^ (-δ)`. Rewrite using `[hinv]`.
+-/
 theorem height_sup_lact_invariant : (∀ (r : ℕ) (X : Data E r) {G : Matrix (Fin r) (Fin r) E} (d : Frame X.Ψ r → Submodule E (Fin r → E) → ℝ), (∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (w : ι → Fin r → E), LinearIndependent E w → (∀ a, w a ∈ X.Λ) → d x (Submodule.span E (Set.range w)) = ((∏ τ : X.Ψ, ((((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))ᴴ * ((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))).det.re)) / (((Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup.relIndex (X.Λ.toAddSubgroup ⊓ (Submodule.span E (Set.range w)).toAddSubgroup)) : ℝ))) → ∀ (δ : ℝ) (α : ℕ → Frame X.Ψ r → ℝ), (∀ i ≤ r, ∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → IsLUB ((fun W => d x W ^ (-δ)) '' {W | Module.finrank E W = i}) (α i x)) → ∀ γ : GL (Fin r) E, IsUStab G X.Λ γ → ∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → ∀ i ≤ r, α i (lact γ x) = α i x) := by
   intro r X G d hd δ α hα γ hγ x hx i hi
   obtain ⟨hx', hinv⟩ := height_lact r X d hd γ hγ x hx
@@ -100,6 +126,11 @@ theorem height_sup_lact_invariant : (∀ (r : ℕ) (X : Data E r) {G : Matrix (F
     · show d (lact γ x) _ ^ (-δ) = d x W ^ (-δ)
       rw [hinv]
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun M => ‖Matrix.det M‖) (hx τ)`. Simplify using `only [GlobalTheory.HeightEnds.gram_eq_mul, Matrix.det_mul, Matrix.det_transpose, Matrix.det_conjTranspose, Matrix.det_diagonal, norm_mul, norm_star, norm_prod] at h`. Establish `h1 : ∀ a : Fin r, ‖((sgn (p τ) (a : ℕ) : ℝ) : ℂ)‖ = 1`. Introduce `a`. Unfold `sgn`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [h1, Finset.prod_const_one] at h`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, ← h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_det_orth {r : ℕ} (X : Data E r) {G : Matrix (Fin r) (Fin r) E} {p : X.Ψ → ℕ} (x : Frame X.Ψ r) (hx : Orth X G p x) (τ : X.Ψ) :
     ‖(mat x τ).det‖ ^ 2 * ‖τ.1 G.det‖ = 1 := by
   have h := congrArg (fun M => ‖Matrix.det M‖) (hx τ)
@@ -113,6 +144,25 @@ theorem norm_det_orth {r : ℕ} (X : Data E r) {G : Matrix (Fin r) (Fin r) E} {p
   rw [RingHom.map_det, RingHom.mapMatrix_apply, ← h]
   ring
 
+/- English proof (translation)
+Introduce `r X G p hG d hd`. Take `⟨w0, hw0, hΛ0, hsp0⟩` from `GlobalTheory.LatBasis.exists_basis_mem r X ⊤`. Establish `hr : r = Module.finrank E (⊤ : Submodule E (Fin r → E))` using `by simp`. Set `w : Fin r → Fin r → E` to `w0 ∘ finCongr hr`. Establish `hw : LinearIndependent E w` using `hw0.comp _ (finCongr hr).injective`.
+
+Establish `hΛ : ∀ a, w a ∈ X.Λ` using `fun a => hΛ0 _`. Establish `hsp : Submodule.span E (Set.range w) = ⊤`. Rewrite using `[(finCongr hr).surjective.range_comp]`. Conclude with `hsp0`. Establish `hdet : (Matrix.of w).det ≠ 0`.
+
+Establish `: IsUnit (Matrix.of w)` using `Matrix.linearIndependent_rows_iff_isUnit.1 hw`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 this).ne_zero`. Establish `hind` using `GlobalTheory.SpanIndex.relIndex_span_ne_zero r X (Fin r) w hw hΛ`. Use `set n : ℕ := (Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup.relIndex (X.Λ.toAddSubgroup ⊓ (Submodule.span E (Set.range w)).toAddSubgroup) with hn`. Establish `hnpos : (0 : ℝ) < n` using `Nat.cast_pos.2 (Nat.pos_of_ne_zero hind)`.
+
+Set `c : ℝ` to `(∏ τ : X.Ψ, ‖τ.1 G.det‖ * ‖τ.1 (Matrix.of w).det‖ ^ 2) / n`. Establish `hc : 0 < c`. Use `div_pos (Finset.prod_pos fun τ _ => mul_pos ?_ (pow_pos ?_ 2)) hnpos` and prove the remaining obligations. Conclude with `norm_pos_iff.2 ((map_ne_zero τ.1).2 hG)`. Conclude with `norm_pos_iff.2 ((map_ne_zero τ.1).2 hdet)`.
+
+Use `⟨min 1 c, lt_min one_pos hc, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hxd : ∀ τ : X.Ψ, (mat x τ).det ≠ 0`. Introduce `τ h0`. Use `norm_det_orth X x hx τ` as an intermediate fact. Simplify using `[h0] at this`.
+
+Prove the components needed by the constructor for the conclusion. Establish `h` using `hd x hxd Empty (fun a => a.elim) linearIndependent_empty_type (fun a => a.elim)`. Establish `hre : Set.range (fun a : Empty => (a.elim : Fin r → E)) = ∅` using `Set.range_eq_empty _`. Rewrite `h` using `[hre]`. Simplify using `only [Submodule.span_empty, Matrix.det_isEmpty, Complex.one_re, Finset.prod_const_one, Submodule.bot_toAddSubgroup, inf_bot_eq, AddSubgroup.relIndex_self, Nat.cast_one, div_one] at h`.
+
+Rewrite using `[h]`. Conclude with `min_le_left _ _`. Establish `h` using `hd x hxd (Fin r) w hw hΛ`. Rewrite `h` using `[← hn, hsp]`. Rewrite using `[h]`.
+
+Use `(min_le_right _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `congrArg (· / (n : ℝ)) (Finset.prod_congr rfl fun τ _ => ?_)` and prove the remaining obligations. Establish `h1 : (Matrix.of fun k a => τ.1 (w a k)).det = τ.1 (Matrix.of w).det`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, ← Matrix.det_transpose]`. Both sides reduce to the same expression.
+
+Establish `h2` using `norm_det_orth X x hx τ`. Establish `h3 : ‖(mat x τ).det‖ ≠ 0` using `norm_ne_zero_iff.2 (hxd τ)`. Rewrite using `[gramDet_square, Matrix.det_mul, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', h1, norm_mul, norm_inv, mul_pow, inv_pow]`. Use `congr 1`. Conclude with `eq_inv_of_mul_eq_one_right h2`.
+-/
 theorem exists_pos_le_bot_top : (∀ (r : ℕ) (X : Data E r) (G : Matrix (Fin r) (Fin r) E) (p : X.Ψ → ℕ) (_ : G.det ≠ 0) (d : Frame X.Ψ r → Submodule E (Fin r → E) → ℝ), (∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (w : ι → Fin r → E), LinearIndependent E w → (∀ a, w a ∈ X.Λ) → d x (Submodule.span E (Set.range w)) = ((∏ τ : X.Ψ, ((((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))ᴴ * ((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))).det.re)) / (((Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup.relIndex (X.Λ.toAddSubgroup ⊓ (Submodule.span E (Set.range w)).toAddSubgroup)) : ℝ))) → ∃ m : ℝ, 0 < m ∧ ∀ x, Orth X G p x → m ≤ d x ⊥ ∧ m ≤ d x ⊤) := by
   intro r X G p hG d hd
   obtain ⟨w0, hw0, hΛ0, hsp0⟩ := GlobalTheory.LatBasis.exists_basis_mem r X ⊤
@@ -162,6 +212,19 @@ theorem exists_pos_le_bot_top : (∀ (r : ℕ) (X : Data E r) (G : Matrix (Fin r
     congr 1
     exact eq_inv_of_mul_eq_one_right h2
 
+/- English proof (translation)
+Introduce `r X d hd m hm`. Use `nonempty_cmType X` as an intermediate fact. Take `⟨τ0, hτ0⟩` from `Finite.exists_min X.c`. Establish `hmin : 0 < min 1 m` using `lt_min one_pos hm`. Use `⟨X.c τ0 * min 1 m, mul_pos (c_pos X τ0) hmin, ?_⟩` and prove the remaining obligations.
+
+Introduce `x hdet hW v hv hv0`. Unfold `QuadraticLatticeForms.Qy`. Establish `hli : LinearIndependent E (fun _ : Unit => v)`. Rewrite using `[linearIndependent_unique_iff]`. Conclude with `hv0`.
+
+Establish `hrank : Module.finrank E (Submodule.span E (Set.range (fun _ : Unit => v))) = 1`. Rewrite using `[finrank_span_eq_card hli]`. Simplify using the standard rewrite rules. Establish `h1` using `hW _ hrank`. Rewrite `h1` using `[hd x hdet Unit (fun _ => v) hli (fun _ => hv)]`.
+
+Establish `hind` using `GlobalTheory.SpanIndex.relIndex_span_ne_zero r X Unit (fun _ => v) hli (fun _ => hv)`. Establish `hnn : ∀ τ : X.Ψ, 0 ≤ (∑ a, ‖((mat x τ)⁻¹.mulVec (Data.emb τ.1 v)) a‖ ^ 2)` using `fun τ => by`. Check the signs of the components of the expression. Establish `hprod : (∏ τ : X.Ψ, ((((mat x τ)⁻¹ * (Matrix.of fun k (_ : Unit) => τ.1 (v k)))ᴴ * ((mat x τ)⁻¹ * (Matrix.of fun k (_ : Unit) => τ.1 (v k)))).det.re)) = ∏ τ : X.Ψ, (∑ a, ‖((mat x τ)⁻¹.mulVec (Data.emb τ.1 v)) a‖ ^ 2)` using `Finset.prod_congr rfl fun τ _ => by`. Conclude with `gramDet_column _ (Data.emb τ.1 v)`.
+
+Establish `h2 : m ≤ ∏ τ : X.Ψ, (∑ a, ‖((mat x τ)⁻¹.mulVec (Data.emb τ.1 v)) a‖ ^ 2)`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[← hprod]`. Use `div_le_self ?_ ?_` and prove the remaining obligations. Rewrite using `[hprod]`.
+
+Conclude with `Finset.prod_nonneg fun τ _ => hnn τ`. Conclude with `Nat.one_le_iff_ne_zero.2 hind` after adjusting the coercions. Take `⟨τ, hτ⟩` from `exists_min_le_of_le_prod _ hnn m h2`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem minGe_of_lines : (∀ (r : ℕ) (X : Data E r) (d : Frame X.Ψ r → Submodule E (Fin r → E) → ℝ), (∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (w : ι → Fin r → E), LinearIndependent E w → (∀ a, w a ∈ X.Λ) → d x (Submodule.span E (Set.range w)) = ((∏ τ : X.Ψ, ((((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))ᴴ * ((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))).det.re)) / (((Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup.relIndex (X.Λ.toAddSubgroup ⊓ (Submodule.span E (Set.range w)).toAddSubgroup)) : ℝ))) → ∀ m : ℝ, 0 < m → ∃ ε : ℝ, 0 < ε ∧ ∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → (∀ W : Submodule E (Fin r → E), Module.finrank E W = 1 → m ≤ d x W) → MinGe X ε x) := by
   intro r X d hd m hm
   have := nonempty_cmType X
@@ -196,6 +259,23 @@ theorem minGe_of_lines : (∀ (r : ℕ) (X : Data E r) (d : Frame X.Ψ r → Sub
     _ ≤ _ := Finset.single_le_sum (f := fun τ => X.c τ * (∑ a, ‖((mat x τ)⁻¹.mulVec (Data.emb τ.1 v)) a‖ ^ 2))
         (fun τ _ => mul_nonneg (c_pos X τ).le (hnn τ)) (Finset.mem_univ τ)
 
+/- English proof (translation)
+Introduce `r X G p hG d hd τ0 S hS hirr hU`. Take `⟨δ, c, Ω, hδ, hc0, hc1, hΩ, hw⟩` from `GlobalTheory.height_rpow_neg_distortion_contraction r X d hd τ0 S hS hirr`. Use `⟨δ, hδ, fun α hα => ?_⟩` and prove the remaining obligations. Establish `hdet : ∀ y : {x // Orth X G p x}, ∀ τ : X.Ψ, (mat y.1 τ).det ≠ 0` using `fun y => det_ne_zero_of_isOrth X y.2`. Establish `hpos : ∀ y : {x // Orth X G p x}, ∀ W, 0 < d y.1 W` using `fun y W => by`.
+
+Take `⟨m, hm, h⟩` from `GlobalTheory.HeightLower.exists_pos_le_height r X d hd y.1 (hdet y)`. Conclude with `hm.trans_le (h W)`. Set `t : S → {x // Orth X G p x} → {x // Orth X G p x}` to `fun a y => ⟨_, isOrth_update_mul_inv r X τ0 y.1 a.1 y.2 (hU a.1 a.2)⟩`. Establish `hfr : Module.finrank E (Fin r → E) = r` using `by simp`. Take `⟨C, hC, halt⟩` from `GlobalTheory.subspace_sup_alternative E (Fin r → E) {x // Orth X G p x} S r t (fun y W => d y.1 W ^ (-δ)) (fun i y => α i y.1) c Ω hfr hΩ (fun y W => Real.rpow_pos_of_pos (hpos y W) _) (fun i hi y => hα i hi y.1 (hdet y)) (fun y W₁ W₂ => by`.
+
+Establish `h` using `GlobalTheory.HeightSubmodular.height_submodular r X d hd y.1 (hdet y) W₁ W₂`. Rewrite using `[← Real.mul_rpow (hpos y _).le (hpos y _).le, ← Real.mul_rpow (hpos y _).le (hpos y _).le]`. Conclude with `Real.rpow_le_rpow_of_nonpos (mul_pos (hpos y _) (hpos y _)) h (by linarith))`. Use the proof step `(fun s y W => (hw y.1 (hdet y) W).1 s.1 s.2)`. Use the proof step `(fun y W h0 h1 => by`.
+
+Establish `h` using `(hw y.1 (hdet y) W).2 h0 h1`. Rewrite `h` using `[← Finset.sum_coe_sort]`. Rewrite using `[Fintype.card_coe]`. Conclude with `h)`. Take `⟨m, hm, htop⟩` from `exists_pos_le_bot_top r X G p hG d hd`.
+
+Take `⟨e, c', b, he, hc'0, hc'1, hb, hdr⟩` from `GlobalTheory.weighted_sum_drift_inequality {x // Orth X G p x} S r t (fun i y => α i y.1) c C (m ^ (-δ)) hc0 hc1 hC (fun i hi y => nonneg_of_isLUB_image (fun W => (Real.rpow_pos_of_pos (hpos y W) _).le) (hα i hi y.1 (hdet y))) (fun y => by`. Prove the components needed by the constructor for the conclusion. Use `(hα 0 (Nat.zero_le r) y.1 (hdet y)).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨W, hW, rfl⟩`. Establish `hW' : W = ⊥` using `Submodule.finrank_eq_zero.1 hW`.
+
+Substitute `hW'` using the available equality. Conclude with `Real.rpow_le_rpow_of_nonpos hm (htop y.1 y.2).1 (by linarith)`. Use `(hα r le_rfl y.1 (hdet y)).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨W, hW, rfl⟩`. Establish `hW' : W = ⊤` using `Submodule.eq_top_of_finrank_eq (hW.trans hfr.symm)`.
+
+Substitute `hW'` using the available equality. Conclude with `Real.rpow_le_rpow_of_nonpos hm (htop y.1 y.2).2 (by linarith))`. Use `halt`. Use `⟨e, c', b, he, hc'0, hc'1, hb, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h` using `hdr ⟨x, hx⟩`.
+
+Rewrite `h` using `[Fintype.card_coe]`. Rewrite using `[← Finset.sum_coe_sort]`. Conclude with `h`.
+-/
 theorem weighted_sup_drift_on_orthonormal_frames :
     (∀ (r : ℕ) (X : Data E r) (G : Matrix (Fin r) (Fin r) E) (p : X.Ψ → ℕ) (_ : G.det ≠ 0) (d : Frame X.Ψ r → Submodule E (Fin r → E) → ℝ), (∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (w : ι → Fin r → E), LinearIndependent E w → (∀ a, w a ∈ X.Λ) → d x (Submodule.span E (Set.range w)) = ((∏ τ : X.Ψ, ((((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))ᴴ * ((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))).det.re)) / (((Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup.relIndex (X.Λ.toAddSubgroup ⊓ (Submodule.span E (Set.range w)).toAddSubgroup)) : ℝ))) → ∀ (τ0 : X.Ψ) (S : Finset (Matrix (Fin r) (Fin r) ℂ)), (∀ a ∈ S, a.IsHermitian ∧ a.det ≠ 0 ∧ a⁻¹ ∈ S) → (∀ W : Submodule ℂ (Fin r → ℂ), (∀ a ∈ S, ∀ v ∈ W, (a * a).mulVec v ∈ W) → W = ⊥ ∨ W = ⊤) → (∀ a ∈ S, (a)ᵀ * (Matrix.diagonal fun k : Fin r => if (k : ℕ) < p τ0 then (1 : ℂ) else -1) * (a).map (starRingEnd ℂ) = (Matrix.diagonal fun k : Fin r => if (k : ℕ) < p τ0 then (1 : ℂ) else -1)) → ∃ δ : ℝ, 0 < δ ∧ ∀ α : ℕ → Frame X.Ψ r → ℝ, (∀ i ≤ r, ∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → IsLUB ((fun W => d x W ^ (-δ)) '' {W | Module.finrank E W = i}) (α i x)) → ∃ (e : ℕ → ℝ) (c b : ℝ), (∀ i, 0 < e i) ∧ 0 ≤ c ∧ c < 1 ∧ 0 ≤ b ∧ ∀ x, Orth X G p x → ∑ a ∈ S, (∑ i ∈ Finset.Ioo 0 r, e i * α i (@Function.update X.Ψ (fun _ => Fin r → Fin r → ℂ) (Classical.decEq _) x τ0 (mat x τ0 * a⁻¹ : Matrix (Fin r) (Fin r) ℂ))) ≤ S.card * (c * (∑ i ∈ Finset.Ioo 0 r, e i * α i x) + b)) := by
   intro r X G p hG d hd τ0 S hS hirr hU
@@ -247,6 +327,21 @@ theorem weighted_sup_drift_on_orthonormal_frames :
   rw [← Finset.sum_coe_sort]
   exact h
 
+/- English proof (translation)
+Introduce `r X G p hG τ0 hp0 hpr S hS hirr hU`. Take `⟨d, hd⟩` from `GlobalTheory.SubspaceHeight.exists_height r X`. Take `⟨δ, hδ, hdrift⟩` from `weighted_sup_drift_on_orthonormal_frames r X G p hG d hd τ0 S hS hirr hU`. Take `⟨α, hα, hlsc⟩` from `GlobalTheory.exists_isLUB_height_rpow_lowerSemicontinuousOn r X d hd δ hδ`. Take `⟨e, c, b, he, hc0, hc1, hb, hineq⟩` from `hdrift α hα`.
+
+Establish `hinv : ∀ x, Orth X G p x → ∀ τ : X.Ψ, (mat x τ).det ≠ 0` using `fun x hx => det_ne_zero_of_isOrth X hx`. Establish `hdpos : ∀ x, Orth X G p x → ∀ W, 0 < d x W`. Introduce `x hx W`. Take `⟨m, hm, hW⟩` from `GlobalTheory.HeightLower.exists_pos_le_height r X d hd x (hinv x hx)`. Conclude with `hm.trans_le (hW W)`.
+
+Establish `hαnn : ∀ x, Orth X G p x → ∀ i ≤ r, 0 ≤ α i x`. Introduce `x hx i hi`. Take `⟨v, hv⟩` from `exists_linearIndependent_of_le_finrank (R := E) (M := Fin r → E) (n := i) (by simpa using hi)`. Establish `hW : Module.finrank E (Submodule.span E (Set.range v)) = i`. Simplify using `using finrank_span_eq_card hv`.
+
+Conclude with `(Real.rpow_nonneg (hdpos x hx _).le _).trans ((hα i hi x (hinv x hx)).1 ⟨_, hW, rfl⟩)`. Use `⟨fun x => ∑ i ∈ Finset.Ioo 0 r, e i * α i x, c, b, hc0, hc1, hb, ?_, ?_, ?_, hineq, ?_⟩` and prove the remaining obligations. Use `lowerSemicontinuousOn_sum_pos_mul _ e he α fun i hi => ?_` and prove the remaining obligations. Conclude with `(hlsc i (Finset.mem_Ioo.1 hi).2.le).mono fun x hx => hinv x hx`. Introduce `x hx`.
+
+Conclude with `Finset.sum_nonneg fun i hi => mul_nonneg (he i).le (hαnn x hx i (Finset.mem_Ioo.1 hi).2.le)`. Introduce `γ hγ x hx`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[height_sup_lact_invariant r X d hd δ α hα γ hγ x (hinv x hx) i (Finset.mem_Ioo.1 hi).2.le]`. Introduce `M`.
+
+Establish `hM' : 0 < max 1 (M / e 1)` using `lt_max_of_lt_left one_pos`. Take `⟨ε, hε, hla⟩` from `minGe_of_lines r X d hd ((max 1 (M / e 1)) ^ (-δ)⁻¹) (Real.rpow_pos_of_pos hM' _)`. Use `⟨ε, hε, fun x hx hM => hla x (hinv x hx) fun W hW => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : ℕ) ∈ Finset.Ioo 0 r` using `Finset.mem_Ioo.2 ⟨one_pos, by omega⟩`. Establish `h2 : e 1 * α 1 x ≤ M` using `(Finset.single_le_sum (f := fun i => e i * α i x) (fun i hi => mul_nonneg (he i).le (hαnn x hx i (Finset.mem_Ioo.1 hi).2.le)) h1).trans hM`.
+
+Establish `h3 : α 1 x ≤ M / e 1`. Rewrite using `[le_div_iff₀ (he 1), mul_comm]`. Conclude with `h2`. Establish `h4 : d x W ^ (-δ) ≤ max 1 (M / e 1)` using `(((hα 1 (by omega) x (hinv x hx)).1 ⟨W, hW, rfl⟩).trans h3).trans (le_max_right _ _)`. Conclude with `(Real.rpow_inv_le_iff_of_neg hM' (hdpos x hx W) (by linarith)).2 h4`.
+-/
 theorem exists_drift_function_orthFrames : (∀ (r : ℕ) (X : Data E r) (G : Matrix (Fin r) (Fin r) E) (p : X.Ψ → ℕ) (_ : G.det ≠ 0) (τ0 : X.Ψ), 0 < p τ0 → p τ0 < r → ∀ (S : Finset (Matrix (Fin r) (Fin r) ℂ)), (∀ a ∈ S, a.IsHermitian ∧ a.det ≠ 0 ∧ a⁻¹ ∈ S) → (∀ W : Submodule ℂ (Fin r → ℂ), (∀ a ∈ S, ∀ v ∈ W, (a * a).mulVec v ∈ W) → W = ⊥ ∨ W = ⊤) → (∀ a ∈ S, (a)ᵀ * (Matrix.diagonal fun k : Fin r => if (k : ℕ) < p τ0 then (1 : ℂ) else -1) * (a).map (starRingEnd ℂ) = (Matrix.diagonal fun k : Fin r => if (k : ℕ) < p τ0 then (1 : ℂ) else -1)) → ∃ (f : Frame X.Ψ r → ℝ) (c b : ℝ), 0 ≤ c ∧ c < 1 ∧ 0 ≤ b ∧ LowerSemicontinuousOn f {x | Orth X G p x} ∧ (∀ x, Orth X G p x → 0 ≤ f x) ∧ (∀ γ : GL (Fin r) E, IsUStab G X.Λ γ → ∀ x, Orth X G p x → f (lact γ x) = f x) ∧ (∀ x, Orth X G p x → ∑ a ∈ S, f (@Function.update X.Ψ (fun _ => Fin r → Fin r → ℂ) (Classical.decEq _) x τ0 (mat x τ0 * a⁻¹ : Matrix (Fin r) (Fin r) ℂ)) ≤ S.card * (c * f x + b)) ∧ ∀ M : ℝ, ∃ ε : ℝ, 0 < ε ∧ ∀ x, Orth X G p x → f x ≤ M → MinGe X ε x) := by
   intro r X G p hG τ0 hp0 hpr S hS hirr hU
   obtain ⟨d, hd⟩ := GlobalTheory.SubspaceHeight.exists_height r X
@@ -291,6 +386,17 @@ theorem exists_drift_function_orthFrames : (∀ (r : ℕ) (X : Data E r) (G : Ma
       (((hα 1 (by omega) x (hinv x hx)).1 ⟨W, hW, rfl⟩).trans h3).trans (le_max_right _ _)
     exact (Real.rpow_inv_le_iff_of_neg hM' (hdpos x hx W) (by linarith)).2 h4
 
+/- English proof (translation)
+Introduce `r X G p hG τ0 H hH _ _ hp0 hpr x0 hx0`. Take `⟨S, hSne, hS1, hS2, hS3⟩` from `GlobalTheory.gramDet_closed_forms.2.2.2 r (p τ0) hp0 hpr`. Take `⟨f, c, b, hc0, hc1, hb, hlsc, hf0, hfinv, hdrift, hprop⟩` from `exists_drift_function_orthFrames r X G p hG τ0 hp0 hpr S hS1 hS2 (fun a ha => (hS3 a ha).1)`. Establish `horth : ∀ g : H, Orth X G p (X.lmulC (fun τ => ((g : X.Ψ → GL (Fin r) ℂ) τ : Matrix (Fin r) (Fin r) ℂ)) x0)` using `fun g => isOrth_lmulC X ((hH _).1 g.2) hx0`. Establish `hlift` using `fun a : S => (hS3 a a.2).2.elim fun s hs => step_of_right_mul r X H hH x0 hx0 τ0 a s (hS3 a a.2).1 hs.1 hs.2`.
+
+Use `choose h k hk hg using hlift`. Use `⟨S, inferInstance, hSne.coe_sort, h, fun g => f (X.lmulC (fun τ => ((g : X.Ψ → GL (Fin r) ℂ) τ : Matrix (Fin r) (Fin r) ℂ)) x0), c, b, fun s => ⟨k s, hk s⟩, ?_, fun g => hf0 _ (horth g), ?_, hc0, hc1, hb, ?_, ?_⟩` and prove the remaining obligations. Apply `LowerSemicontinuous.measurable` to reduce the goal to its premises. Rewrite using `[← lowerSemicontinuousOn_univ_iff]`. Conclude with `hlsc.comp (continuous_orbit X H x0).continuousOn (fun g _ => horth g)`.
+
+Introduce and unpack `u ⟨γ, hγ, hu⟩ g`. Use `Eq.trans (congrArg f ?_) (hfinv γ hγ _ (horth g))` and prove the remaining obligations. Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `((((u : X.Ψ → GL (Fin r) ℂ) τ * (g : X.Ψ → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) * mat x0 τ : Matrix (Fin r) (Fin r) ℂ) = ((γ : Matrix (Fin r) (Fin r) E).map τ.1 * (((g : X.Ψ → GL (Fin r) ℂ) τ : Matrix (Fin r) (Fin r) ℂ) * mat x0 τ) : Matrix (Fin r) (Fin r) …`. Rewrite using `[Units.val_mul, hu τ, Matrix.mul_assoc]`.
+
+Introduce `g`. Use `hdrift _ (horth g)` as an intermediate fact. Rewrite `this` using `[← Finset.sum_coe_sort S]`. Simplify using `only [hg, Fintype.card_coe]`. Conclude with `this`.
+
+Introduce `M`. Take `⟨ε, hε, hM⟩` from `hprop M`. Conclude with `⟨ε, hε, fun g hgM => hM _ (horth g) hgM⟩`.
+-/
 theorem exists_drift_function :
     (∀ (r : ℕ) (X : Data E r) (G : Matrix (Fin r) (Fin r) E) (p : X.Ψ → ℕ) (_ : G.det ≠ 0) (τ0 : X.Ψ) (H : Subgroup (X.Ψ → GL (Fin r) ℂ)), (∀ g, g ∈ H ↔ Uni X G fun τ => (g τ : Matrix (Fin r) (Fin r) ℂ)) → ∀ [MeasurableSpace H] [BorelSpace H], 0 < p τ0 → p τ0 < r → ∀ x0, Orth X G p x0 → ∃ (σ : Type) (_ : Fintype σ) (_ : Nonempty σ) (h : σ → H) (f : H → ℝ) (c b : ℝ), (∀ s, ∃ k : H, k * h s = (h s)⁻¹ * k) ∧ Measurable f ∧ (∀ g, 0 ≤ f g) ∧ (∀ u : H, (∃ γ : GL (Fin r) E, IsUStab G X.Λ γ ∧ ∀ τ : X.Ψ, ((((u : H) : X.Ψ → GL (Fin r) ℂ) τ : GL (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ) = (γ : Matrix (Fin r) (Fin r) E).map τ.1) → ∀ g, f (u * g) = f g) ∧ 0 ≤ c ∧ c < 1 ∧ 0 ≤ b ∧ (∀ g, ∑ s, f (g * h s) ≤ Fintype.card σ * (c * f g + b)) ∧ ∀ M : ℝ, ∃ ε : ℝ, 0 < ε ∧ ∀ g : H, f g ≤ M → MinGe X ε (X.lmulC (fun τ => (((g : H) : X.Ψ → GL (Fin r) ℂ) τ : Matrix (Fin r) (Fin r) ℂ)) x0)) := by
   intro r X G p hG τ0 H hH _ _ hp0 hpr x0 hx0

@@ -16,6 +16,9 @@ section gam
 
 variable {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C' : Type u'} [Category.{v'} C']
 
+/- English proof (translation)
+Rewrite using `[← ModuleCat.comp_apply, ← F.map_comp, ← ModuleCat.comp_apply, ← F.map_comp, φ.w]`.
+-/
 theorem gam_h {E : Type u''} [Category.{v''} E] (F : C ⥤ ModuleCat.{w} R) (j : C' ⥤ C) (ι : E ⥤ C)
     {x y : Comma ι j} (φ : x ⟶ y) (a : F.obj (ι.obj x.left)) :
     (F.map y.hom).hom ((F.map (ι.map φ.left)).hom a) = (F.map (j.map φ.right)).hom ((F.map x.hom).hom a) := by
@@ -38,16 +41,25 @@ namespace GamDat
 
 variable {Γ : Type} [CommMonoid Γ] {D : C} {γ : Γ →* End D} {j : C' ⥤ C} {t : C'} (P : GamDat γ j t)
 
+/- English proof (translation)
+The claim follows from `(P.hu t' _ _).unique ⟨h1, h2⟩ ⟨rfl, rfl⟩`.
+-/
 theorem uniq {t' : C'} (ψ ψ' : P.S ⟶ j.obj t') (h1 : P.il ≫ ψ = P.il ≫ ψ') (h2 : P.ir ≫ ψ = P.ir ≫ ψ') : ψ = ψ' :=
   (P.hu t' _ _).unique ⟨h1, h2⟩ ⟨rfl, rfl⟩
 
 noncomputable def ψ (x : StructuredArrow t (Comma.snd (SingleObj.functor γ) j)) : P.S ⟶ j.obj x.right.right :=
   (P.hu x.right.right x.right.hom (j.map x.hom)).exists.choose
 
+/- English proof (translation)
+The claim follows from `(P.hu x.right.right x.right.hom (j.map x.hom)).exists.choose_spec`.
+-/
 theorem ψ_spec (x : StructuredArrow t (Comma.snd (SingleObj.functor γ) j)) :
     P.il ≫ P.ψ x = x.right.hom ∧ P.ir ≫ P.ψ x = j.map x.hom :=
   (P.hu x.right.right x.right.hom (j.map x.hom)).exists.choose_spec
 
+/- English proof (translation)
+Establish `hw : (γ f.right.left : D ⟶ D) ≫ y.right.hom = x.right.hom ≫ j.map f.right.right` using `f.right.w`. Establish `hw' : x.hom ≫ f.right.right = y.hom` using `StructuredArrow.w f`. Apply `P.uniq` to reduce the goal to its premises. Rewrite using `[← Category.assoc, P.hil, Category.assoc, (P.ψ_spec y).1, ← Category.assoc, (P.ψ_spec x).1, hw]`. Rewrite using `[← Category.assoc, P.hir, (P.ψ_spec y).2, ← Category.assoc, (P.ψ_spec x).2, ← j.map_comp, hw']`.
+-/
 theorem ψ_nat {x y : StructuredArrow t (Comma.snd (SingleObj.functor γ) j)} (f : x ⟶ y) :
     (P.g f.right.left : P.S ⟶ P.S) ≫ P.ψ y = P.ψ x ≫ j.map f.right.right := by
   have hw : (γ f.right.left : D ⟶ D) ≫ y.right.hom = x.right.hom ≫ j.map f.right.right := f.right.w
@@ -84,11 +96,19 @@ noncomputable def Ψ [j.Full] [j.Faithful] :
   map_id X := StructuredArrow.hom_ext _ _ (CommaMorphism.ext rfl rfl)
   map_comp f g := StructuredArrow.hom_ext _ _ (CommaMorphism.ext rfl rfl)
 
+/- English proof (translation)
+Apply `P.uniq` to reduce the goal to its premises. Rewrite using `[(P.ψ_spec _).1]`. Both sides reduce to the same expression. Rewrite using `[(P.ψ_spec _).2]`. Conclude with `j.map_preimage _`.
+-/
 theorem ψΨ [j.Full] [j.Faithful] (T : Comma (SingleObj.functor P.g) j) : P.ψ (P.Ψ.obj T) = T.hom := by
   apply P.uniq
   · rw [(P.ψ_spec _).1]; rfl
   · rw [(P.ψ_spec _).2]; exact j.map_preimage _
 
+/- English proof (translation)
+Establish `w1 : (γ f.right.left : D ⟶ D) ≫ (P.il ≫ Y.hom) = (P.il ≫ X.hom) ≫ j.map f.right.right` using `f.right.w`. Establish `w2 : j.preimage (P.ir ≫ X.hom) ≫ f.right.right = j.preimage (P.ir ≫ Y.hom)` using `StructuredArrow.w f`. Establish `w : (P.g f.right.left : P.S ⟶ P.S) ≫ Y.hom = X.hom ≫ j.map f.right.right`. Apply `P.uniq` to reduce the goal to its premises. Rewrite using `[← Category.assoc, P.hil, Category.assoc, w1, Category.assoc]`.
+
+Rewrite using `[← Category.assoc, P.hir, ← Category.assoc, ← j.map_preimage (P.ir ≫ X.hom), ← j.map_comp, w2, j.map_preimage]`. Conclude with `⟨{ left := f.right.left, right := f.right.right, w := w }, StructuredArrow.hom_ext _ _ (CommaMorphism.ext rfl rfl)⟩`.
+-/
 theorem Ψ_full [j.Full] [j.Faithful] : P.Ψ.Full where
   map_surjective {X Y} f := by
     have w1 : (γ f.right.left : D ⟶ D) ≫ (P.il ≫ Y.hom) = (P.il ≫ X.hom) ≫ j.map f.right.right := f.right.w
@@ -100,9 +120,17 @@ theorem Ψ_full [j.Full] [j.Faithful] : P.Ψ.Full where
           j.map_preimage]
     exact ⟨{ left := f.right.left, right := f.right.right, w := w }, StructuredArrow.hom_ext _ _ (CommaMorphism.ext rfl rfl)⟩
 
+/- English proof (translation)
+The claim follows from `CommaMorphism.ext (congrArg (fun f => f.right.left) h) (congrArg (fun f => f.right.right) h)`.
+-/
 theorem Ψ_faithful [j.Full] [j.Faithful] : P.Ψ.Faithful where
   map_injective {_ _} {_ _} h := CommaMorphism.ext (congrArg (fun f => f.right.left) h) (congrArg (fun f => f.right.right) h)
 
+/- English proof (translation)
+Set `X : Comma (SingleObj.functor P.g) j` to `{ left := Y.right.left, right := Y.right.right, hom := P.ψ Y }`. Use `⟨X, ⟨StructuredArrow.isoMk (Comma.isoMk (Iso.refl _) (Iso.refl _) ?_) ?_⟩⟩` and prove the remaining obligations. Use `show (SingleObj.functor γ).map (𝟙 Y.right.left) ≫ Y.right.hom = (P.il ≫ P.ψ Y) ≫ j.map (𝟙 _) erw [CategoryTheory.Functor.map_id, CategoryTheory.Functor.map_id, Category.id_comp, Category.comp_id]`. Conclude with `(P.ψ_spec Y).1.symm`. Use `show j.preimage (P.ir ≫ P.ψ Y) ≫ 𝟙 _ = Y.hom`.
+
+Rewrite using `[Category.comp_id, (P.ψ_spec Y).2, j.preimage_map]`.
+-/
 theorem Ψ_essSurj [j.Full] [j.Faithful] : P.Ψ.EssSurj where
   mem_essImage Y := by
     let X : Comma (SingleObj.functor P.g) j := { left := Y.right.left, right := Y.right.right, hom := P.ψ Y }
@@ -113,12 +141,24 @@ theorem Ψ_essSurj [j.Full] [j.Faithful] : P.Ψ.EssSurj where
     · show j.preimage (P.ir ≫ P.ψ Y) ≫ 𝟙 _ = Y.hom
       rw [Category.comp_id, (P.ψ_spec Y).2, j.preimage_map]
 
+/- English proof (translation)
+Use `P.Ψ_full` as an intermediate fact. Use `P.Ψ_faithful` as an intermediate fact. Use `P.Ψ_essSurj` as an intermediate fact. Conclude with `{}`.
+-/
 theorem Ψ_equiv [j.Full] [j.Faithful] : P.Ψ.IsEquivalence := by
   have := P.Ψ_full
   have := P.Ψ_faithful
   have := P.Ψ_essSurj
   exact {}
 
+/- English proof (translation)
+Introduce `q hq`. Establish `h1 : UpTo (s ^ (2 * (n + 1) + 3)) ((gamCm F j (SingleObj.functor P.g)).pull q)` using `CrystallineSemistableComparison.B.P.comma1 F j (SingleObj.functor P.g) s (fun φ a => gam_h F j _ φ a) hD (n + 1) q hq`. Use `P.Ψ_equiv` as an intermediate fact. Set `F'` to `StructuredArrow.proj t (Comma.snd (SingleObj.functor γ) j) ⋙ (Comma.snd (SingleObj.functor γ) j ⋙ j ⋙ F)`. Establish `hb : UpTo (1 : R) ((Mor.restrict F' P.Ψ).pull q)` using `((CrystallineSemistableComparison.P.upTo_alg ((Mor.restrict F' P.Ψ).pull q) LinearMap.id (1 : R) 1).2.2.2.2).2 (CrystallineSemistableComparison.P.adj F' P.Ψ _ P.Ψ.asEquivalence.toAdjunction q)`.
+
+Set `η : Comma.fst (SingleObj.functor P.g) j ⟶ P.Ψ ⋙ (StructuredArrow.proj t (Comma.snd (SingleObj.functor γ) j) ⋙ Comma.fst (SingleObj.functor γ) j)` to `{ app := fun X => 𝟙 X.left naturality := fun X Y f => by show f.left ≫ 𝟙 Y.left = 𝟙 X.left ≫ f.left`. Rewrite using `[Category.comp_id, Category.id_comp] }`. Establish `heq : (Mor.restrict F' P.Ψ).pull q ∘ₗ (P.μ F).pull q = (gamCm F j (SingleObj.functor P.g)).pull q`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, ← (CrystallineSemistableComparison.P.pull_comp (P.μ F) (Mor.restrict F' P.Ψ) q x).1]`.
+
+Use `(CrystallineSemistableComparison.P.prism (gamCm F j (SingleObj.functor P.g)) ((P.μ F).comp (Mor.restrict F' P.Ψ)) η ?_ q x).symm` and prove the remaining obligations. Introduce `T a`. Use `show (F.map (P.ψ (P.Ψ.obj T))).hom ((F.map ((SingleObj.functor P.g).map (𝟙 T.left))).hom a) = (F.map T.hom).hom a`. Rewrite using `[CategoryTheory.Functor.map_id, F.map_id, ModuleCat.id_apply, P.ψΨ]`. Both sides reduce to the same expression.
+
+Rewrite `h1` using `[← heq]`. Conclude with `(CrystallineSemistableComparison.P.upTo_alg ((P.μ F).pull q) ((Mor.restrict F' P.Ψ).pull q) (1 : R) _).2.2.1 hb h1`.
+-/
 theorem μ_iso [j.Full] [j.Faithful] (F : C ⥤ ModuleCat.{w} R) (s : R) (hD : Desc s F j) (n : ℕ) :
     IsoLe (1 * s ^ (2 * (n + 1) + 3)) (n + 1) (P.μ F) := by
   intro q hq
@@ -152,6 +192,17 @@ end gam
 
 end CrystallineSemistableComparison.B
 
+/- English proof (translation)
+Introduce `n`. Use `⟨(2 * n + 3) + ((2 * n + 3) + (2 * n + 6) * (2 * n + 3)), ?_⟩` and prove the remaining obligations. Introduce `R _ C _ C' _ F j _ _ Γ _ D γ s hD hT q hq`. Establish `hA : UpTo (s ^ (2 * n + 3)) ((gamCm F j (SingleObj.functor γ)).pull q)` using `CrystallineSemistableComparison.B.P.comma1 F j (SingleObj.functor γ) s (fun φ a => gam_h F j _ φ a) hD n q hq`. Establish `hC : UpTo (s ^ (2 * n + 3)) ((Mor.restrict F j).pull q)` using `CrystallineSemistableComparison.B.P.fib (Mor.restrict F j) s (fun T => hD T) n q hq`.
+
+Establish `hS : UpTo ((s * (1 * s ^ (2 * (n + 1) + 3))) ^ (2 * n + 3)) ((Mor.restrict (j ⋙ F) (Comma.snd (SingleObj.functor γ) j)).pull q)`. Use `CrystallineSemistableComparison.B.P.fible (Mor.restrict (j ⋙ F) (Comma.snd (SingleObj.functor γ) j)) (s * (1 * s ^ (2 * (n + 1) + 3))) n (fun t => ?_) q hq` and prove the remaining obligations. Take `⟨S, il, ir, g, hil, hir, hu, hinj, hex0, hex⟩` from `hT t`. Set `P : GamDat γ j t` to `⟨S, il, ir, g, hil, hir, hu⟩`. Use `⟨SingleObj Γ, inferInstance, SingleObj.functor g ⋙ F, P.μ F, fun _ => (F.map ir).hom, s, 1 * s ^ (2 * (n + 1) + 3), rfl, ?_, ?_, P.μ_iso F s hD n, hinj, hex0, hex⟩` and prove the remaining obligations.
+
+Introduce `x a show (F.map (P.ψ x)).hom ((F.map ir).hom a) = (F.map (j.map x.hom)).hom a`. Rewrite using `[← ModuleCat.comp_apply, ← F.map_comp, (P.ψ_spec x).2]`. Both sides reduce to the same expression. Introduce `x y φ a show (F.map (g φ : S ⟶ S)).hom ((F.map ir).hom a) = (F.map ir).hom a`. Rewrite using `[← ModuleCat.comp_apply, ← F.map_comp, hir]`.
+
+Establish `heq : (gamCm F j (SingleObj.functor γ)).pull q ∘ₗ (Mor.restrict F (SingleObj.functor γ)).pull q = (Mor.restrict (j ⋙ F) (Comma.snd (SingleObj.functor γ) j)).pull q ∘ₗ (Mor.restrict F j).pull q`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, ← (CrystallineSemistableComparison.P.pull_comp (Mor.restrict F (SingleObj.functor γ)) (gamCm F j (SingleObj.functor γ)) q x).1, ← (CrystallineSemistableComparison.P.pull_comp (Mor.restrict F j) (Mor.restrict (j ⋙ F) (Comma.snd (SingleO …`. Use `CrystallineSemistableComparison.P.prism _ _ (Comma.natTrans (SingleObj.functor γ) j) (fun T a => rfl) q x` and prove the remaining obligations. Establish `h2` using `(CrystallineSemistableComparison.P.upTo_alg _ _ _ _).1 hC hS`.
+
+Rewrite `h2` using `[← heq]`. Establish `h3` using `(CrystallineSemistableComparison.P.upTo_alg _ _ _ _).2.2.1 hA h2`. Establish `e : s ^ ((2 * n + 3) + ((2 * n + 3) + (2 * n + 6) * (2 * n + 3))) = s ^ (2 * n + 3) * (s ^ (2 * n + 3) * (s * (1 * s ^ (2 * (n + 1) + 3))) ^ (2 * n + 3))` using `by ring`. Rewrite using `[e]`. Conclude with `h3`.
+-/
 theorem CrystallineSemistableComparison.B.P.gam : ∀ n : ℕ, ∃ N : ℕ, ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C' : Type u'} [Category.{v'} C'] (F : C ⥤ ModuleCat.{w} R) (j : C' ⥤ C) [j.Full] [j.Faithful] (Γ : Type) [CommMonoid Γ] (D : C) (γ : Γ →* End D) (s : R), Desc s F j → (∀ t : C', ∃ (S : C) (il : D ⟶ S) (ir : j.obj t ⟶ S) (g : Γ →* End S), (∀ a, il ≫ (g a : S ⟶ S) = (γ a : D ⟶ D) ≫ il) ∧ (∀ a, ir ≫ (g a : S ⟶ S) = ir) ∧ (∀ (t' : C') (c : D ⟶ j.obj t') (φ : j.obj t ⟶ j.obj t'), ∃! ψ : S ⟶ j.obj t', il ≫ ψ = c ∧ ir ≫ ψ = φ) ∧ InjUpTo s (aug (SingleObj.functor g ⋙ F) fun _ => (F.map ir).hom) ∧ ExactUpTo s (aug (SingleObj.functor g ⋙ F) fun _ => (F.map ir).hom) (d (SingleObj.functor g ⋙ F) 0) ∧ ∀ i ≤ n, ExactUpTo s (d (SingleObj.functor g ⋙ F) i) (d (SingleObj.functor g ⋙ F) (i + 1))) → RI (s ^ N) n F (SingleObj.functor γ) := by
   intro n
   refine ⟨(2 * n + 3) + ((2 * n + 3) + (2 * n + 6) * (2 * n + 3)), ?_⟩

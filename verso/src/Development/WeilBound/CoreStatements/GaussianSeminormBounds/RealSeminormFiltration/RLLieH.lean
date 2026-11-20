@@ -17,9 +17,17 @@ def atL (w : ι) : Module.End ℂ V →ₗ[ℂ] Module.End ℂ (⨂[ℂ] _ : ι,
   (PiTensorProduct.mapMultilinear ℂ (fun _ : ι => V) fun _ => V).toLinearMap (fun _ => LinearMap.id) w
 
 omit [Fintype ι] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem atL_eq (w : ι) (L : Module.End ℂ V) : atPl (V := fun _ : ι => V) w L = atL w L := rfl
 
 omit [Fintype ι] in
+/- English proof (translation)
+Rewrite using `[← atL_eq, atPl, PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Distinguish the cases in `h : v = w`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h]`.
+-/
 theorem atL_tprod (w : ι) (L : Module.End ℂ V) (x : ι → V) :
     atL w L (PiTensorProduct.tprod ℂ x) = PiTensorProduct.tprod ℂ (Function.update x w (L (x w))) := by
   rw [← atL_eq, atPl, PiTensorProduct.map_tprod]
@@ -30,15 +38,26 @@ theorem atL_tprod (w : ι) (L : Module.End ℂ V) (x : ι → V) :
   · simp [h]
 
 omit [Fintype ι] in
+/- English proof (translation)
+Use `PiTensorProduct.ext (MultilinearMap.ext fun x => ?_)` and prove the remaining obligations. Simplify using `[atL_tprod]`.
+-/
 theorem atL_mul (w : ι) (L L' : Module.End ℂ V) : atL w (L * L') = atL w L * atL w L' := by
   refine PiTensorProduct.ext (MultilinearMap.ext fun x => ?_)
   simp [atL_tprod]
 
 omit [Fintype ι] in
+/- English proof (translation)
+Use `PiTensorProduct.ext (MultilinearMap.ext fun x => ?_)` and prove the remaining obligations. Simplify using `[atL_tprod]`.
+-/
 theorem atL_one (w : ι) : atL w (1 : Module.End ℂ V) = 1 := by
   refine PiTensorProduct.ext (MultilinearMap.ext fun x => ?_)
   simp [atL_tprod]
 
+/- English proof (translation)
+Proceed by induction on `T using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r x`. Simplify using `only [map_smul, sumPl, LinearMap.sum_apply, map_sum, atL_eq, atL_tprod, PiTensorProduct.map_tprod]`. Use `congr 1`. Use `Finset.sum_congr rfl fun w _ => congrArg _ (funext fun v => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality. Simplify using `[h]`. Simplify using `[hv]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem map_sumPl (e : V →ₗ[ℂ] W) (L : ι → Module.End ℂ V) (L' : ι → Module.End ℂ W) (h : ∀ w x, e (L w x) = L' w (e x))
     (T : ⨂[ℂ] _ : ι, V) : PiTensorProduct.map (fun _ => e) (sumPl (V := fun _ => V) L T) =
       sumPl (V := fun _ => W) L' (PiTensorProduct.map (fun _ => e) T) := by
@@ -56,6 +75,9 @@ end Tensor
 
 variable {P Q R S : ℕ}
 
+/- English proof (translation)
+Use `LinearMap.ext fun p => ?_` and prove the remaining obligations. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[add_comm]`. Simplify using `[h, pderiv_X_of_ne (Ne.symm h)]`.
+-/
 theorem pd_X {σ : Type} [DecidableEq σ] (a b : σ) :
     ((pderiv a).toLinearMap * LinearMap.mulLeft ℂ (X b) : Module.End ℂ (MvPolynomial σ ℂ)) =
       LinearMap.mulLeft ℂ (X b) * (pderiv a).toLinearMap + if a = b then 1 else 0 := by
@@ -65,6 +87,11 @@ theorem pd_X {σ : Type} [DecidableEq σ] (a b : σ) :
     simp [add_comm]
   · simp [h, pderiv_X_of_ne (Ne.symm h)]
 
+/- English proof (translation)
+Use `LinearMap.ext fun P => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pderiv a (pderiv b P) = pderiv b (pderiv a P)`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C c => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+
+Consider the case `mul_X p i hp`. Simplify using `only [Derivation.leibniz, map_add, smul_eq_mul, hp, pderiv_X, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp <;> ring`.
+-/
 theorem pd_pd {σ : Type} [DecidableEq σ] (a b : σ) :
     ((pderiv a).toLinearMap * (pderiv b).toLinearMap : Module.End ℂ (MvPolynomial σ ℂ)) =
       (pderiv b).toLinearMap * (pderiv a).toLinearMap := by
@@ -77,6 +104,11 @@ theorem pd_pd {σ : Type} [DecidableEq σ] (a b : σ) :
     simp only [Derivation.leibniz, map_add, smul_eq_mul, hp, pderiv_X, Pi.single_apply]
     split_ifs <;> simp <;> ring
 
+/- English proof (translation)
+Unfold `lowB raiB`. Distinguish the cases in `h : l = l'`. Substitute `h` using the available equality. Apply the tactic sequence `cases linePos l <;> simp [pd_X]`. Establish `h' : l' ≠ l` using `Ne.symm h`.
+
+Apply the tactic sequence `cases linePos l <;> cases linePos l' <;> simp [pd_X, h, h', pd_pd l l']`. Conclude with `LinearMap.ext fun p => mul_left_comm _ _ _`.
+-/
 theorem low_rai (l l' : Ln P Q R S) : lowB l' * raiB l = raiB l * lowB l' + if l = l' then 1 else 0 := by
   unfold lowB raiB
   by_cases h : l = l'
@@ -86,18 +118,30 @@ theorem low_rai (l l' : Ln P Q R S) : lowB l' * raiB l = raiB l * lowB l' + if l
     cases linePos l <;> cases linePos l' <;> simp [pd_X, h, h', pd_pd l l']
     exact LinearMap.ext fun p => mul_left_comm _ _ _
 
+/- English proof (translation)
+Rewrite using `[low_rai, omE]`. Apply the tactic sequence `split_ifs <;> module`.
+-/
 theorem anti_omE (l l' : Ln P Q R S) : raiB l * lowB l' + lowB l' * raiB l = (2 : ℂ) • omE l l' := by
   rw [low_rai, omE]
   split_ifs <;> module
 
 def eps : Ix R S → ℝ := Sum.elim (fun _ => 1) fun _ => -1
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [lineSign, eps]`.
+-/
 theorem lineSign_eq (a : Ix P Q) (b : Ix R S) :
     lineSign (p := P) (q := Q) (r := R) (s := S) a b = ((eps a * eps b : ℝ) : ℂ) := by
   rcases a with a | a <;> rcases b with b | b <;> simp [lineSign, eps]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with a | a <;> simp [eps]`.
+-/
 theorem eps_sq (a : Ix R S) : eps a * eps a = 1 := by rcases a with a | a <;> simp [eps]
 
+/- English proof (translation)
+Use `congrFun (congrFun (show Yᴴ * Jm R S + Jm R S * Y = 0 from hY) b) b'` as an intermediate fact. Rewrite `this` using `[PositivityTheory.RL.Jm_eq, Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply]`. Apply the tactic sequence `rcases b with b | b <;> rcases b' with b' | b' <;> simp [eps] at this ⊢ <;> first | linear_combination this | linear_combination -this`.
+-/
 theorem upq_entry {Y : Mat R S} (hY : Y ∈ upq R S) (b b' : Ix R S) :
     ((eps b * eps b' : ℝ) : ℂ) * star (Y b' b) = -Y b b' := by
   have := congrFun (congrFun (show Yᴴ * Jm R S + Jm R S * Y = 0 from hY) b) b'
@@ -105,6 +149,9 @@ theorem upq_entry {Y : Mat R S} (hY : Y ∈ upq R S) (b b' : Ix R S) :
   rcases b with b | b <;> rcases b' with b' | b' <;> simp [eps] at this ⊢ <;>
     first | linear_combination this | linear_combination -this
 
+/- English proof (translation)
+Rewrite using `[im_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases l with ⟨a | a, b | b⟩ <;> simp [Fock.tw1, linePos, eps] <;> ring`.
+-/
 theorem im_twisted_inner_sum (c c' : Matrix (Ix P Q) (Ix R S) ℂ) : (∑ l, Fock.tw1 c l * star (Fock.tw1 c' l)).im =
     ∑ l : Ln P Q R S, eps l.1 * eps l.2 * (c l.1 l.2 * star (c' l.1 l.2)).im := by
   rw [im_sum]
@@ -117,6 +164,15 @@ def cu (Y : Mat R S) (j : Ln P Q R S × Bool) : Matrix (Ix P Q) (Ix R S) ℂ :=
 def cv (j : Ln P Q R S × Bool) : Matrix (Ix P Q) (Ix R S) ℂ :=
   (((eps j.1.1 * eps j.1.2 / 2 : ℝ) : ℂ) * if j.2 then I else -1) • Matrix.single j.1.1 j.1.2 1
 
+/- English proof (translation)
+Establish `h : ∀ j : Ln P Q R S × Bool, 2 * (∑ l, Fock.tw1 (cv j) l * star (Fock.tw1 c l)).im = if j.2 then (c j.1.1 j.1.2).re else (c j.1.1 j.1.2).im` using `fun j => by`. Take `⟨⟨a, b⟩, t⟩` from `j`. Rewrite using `[im_twisted_inner_sum, Finset.sum_eq_single (a, b) (fun l _ hl => by`. Establish `: ¬(a = l.1 ∧ b = l.2)` using `fun h => hl (Prod.ext h.1.symm h.2.symm)`. Simplify using `[cv, this]) (by simp)]`.
+
+Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> cases t <;> simp [cv, eps] <;> ring`. Simplify using `only [h]`. Use `conv_lhs => rw [Matrix.matrix_eq_sum_single c]`. Rewrite using `[Fintype.sum_prod_type, Fintype.sum_prod_type, Matrix.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.sum_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[show Matrix.single a b (c a b) = c a b • Matrix.single a b 1 by simp, Matrix.smul_mul]`. Simplify using `only [Fintype.sum_bool, cu, if_true, Bool.false_eq_true, if_false, one_smul]`. Generalize the expression as in `Matrix.single a b (1 : ℂ) * Yᵀ = N`.
+
+Use extensionality with `i k`. Simplify using `only [Matrix.smul_apply, Matrix.add_apply, smul_eq_mul, real_smul]`. Take the linear combination `(-N i k) * re_add_im (c a b)`.
+-/
 theorem expand (Y : Mat R S) (c : Matrix (Ix P Q) (Ix R S) ℂ) :
     c * Yᵀ = ∑ j, (2 * (∑ l, Fock.tw1 (cv j) l * star (Fock.tw1 c l)).im) • cu Y j := by
   have h : ∀ j : Ln P Q R S × Bool, 2 * (∑ l, Fock.tw1 (cv j) l * star (Fock.tw1 c l)).im =
@@ -139,6 +195,11 @@ theorem expand (Y : Mat R S) (c : Matrix (Ix P Q) (Ix R S) ℂ) :
   simp only [Matrix.smul_apply, Matrix.add_apply, smul_eq_mul, real_smul]
   linear_combination (-N i k) * re_add_im (c a b)
 
+/- English proof (translation)
+Rewrite using `[heisOp, Finset.smul_sum (r := z), Finset.smul_sum (r := star z), ← Finset.sum_sub_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [lineSign_eq, Matrix.smul_apply, smul_eq_mul, star_mul', smul_smul]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heis_smul (z : ℂ) (c : Matrix (Ix P Q) (Ix R S) ℂ) : heisOp (z • c) = ((Real.sqrt (2 * π) : ℝ) : ℂ) •
     (z • (∑ l : Ln P Q R S, c l.1 l.2 • raiB l) - star z • ∑ l : Ln P Q R S,
       (((eps l.1 * eps l.2 : ℝ) : ℂ) * star (c l.1 l.2)) • lowB l) := by
@@ -149,6 +210,29 @@ theorem heis_smul (z : ℂ) (c : Matrix (Ix P Q) (Ix R S) ℂ) : heisOp (z • c
   congr 2
   ring
 
+/- English proof (translation)
+Use `set k : ℂ := ((Real.sqrt (2 * π) : ℝ) : ℂ) with hk`. Establish `hk2 : k * k = 2 * π`. Rewrite using `[hk, ← ofReal_mul, Real.mul_self_sqrt (by positivity)]`. Simplify using the standard rewrite rules. Establish `hπ : (π : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero]`.
+
+Establish `one : ∀ (a : Ix P Q) (b : Ix R S), (8 * π * I : ℂ)⁻¹ • ∑ t : Bool, (heisOp (cu Y ((a, b), t)) * heisOp (cv ((a, b), t)) + heisOp (cv ((a, b), t)) * heisOp (cu Y ((a, b), t))) = (1 / 2 : ℂ) • (∑ b', Y b' b • omE (a, b') (a, b) + ∑ b', Y b b' • omE (a, b) (a, b'))` using `fun a b => by`. Establish `r1 : (∑ l : Ln P Q R S, (Matrix.single a b (1 : ℂ) * Yᵀ) l.1 l.2 • raiB l) = ∑ b', Y b' b • raiB (a, b')`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single a (fun a' _ h => by simp [Matrix.mul_apply, h.symm]) (by simp)]`. Simplify using the standard rewrite rules. Establish `r2 : (∑ l : Ln P Q R S, (((eps l.1 * eps l.2 : ℝ) : ℂ) * star ((Matrix.single a b (1 : ℂ) * Yᵀ) l.1 l.2)) • lowB l) = -(((eps a * eps b : ℝ) : ℂ) • ∑ b', Y b b' • lowB (a, b'))`.
+
+Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single a (fun a' _ h => by simp [Matrix.mul_apply, h.symm]) (by simp), Finset.smul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun b' _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← neg_smul, Matrix.single_mul_apply_same, one_mul, Matrix.transpose_apply]`. Use `congr 1`. Apply the tactic sequence `have h1 := upq_entry hY b b'`.
+
+Establish `h2 : ((eps b : ℝ) : ℂ) * (eps b : ℝ) = 1` using `by rw [← ofReal_mul, eps_sq, ofReal_one]`. Move the coercions through the operations in `at h1 ⊢`. Take the linear combination `((eps a : ℂ) * eps b) * h1 - ((eps a : ℂ) * eps b' * star (Y b' b)) * h2`. Establish `r3 : (∑ l : Ln P Q R S, (Matrix.single a b (1 : ℂ)) l.1 l.2 • raiB l) = raiB (a, b)`. Rewrite using `[Finset.sum_eq_single (a, b) (fun l _ hl => by`.
+
+Establish `: ¬(a = l.1 ∧ b = l.2)` using `fun h => hl (Prod.ext h.1.symm h.2.symm)`. Simplify using `[this]) (by simp)]`. Simplify using the standard rewrite rules. Establish `r4 : (∑ l : Ln P Q R S, (((eps l.1 * eps l.2 : ℝ) : ℂ) * star ((Matrix.single a b (1 : ℂ)) l.1 l.2)) • lowB l) = ((eps a * eps b : ℝ) : ℂ) • lowB (a, b)`. Rewrite using `[Finset.sum_eq_single (a, b) (fun l _ hl => by`.
+
+Establish `: ¬(a = l.1 ∧ b = l.2)` using `fun h => hl (Prod.ext h.1.symm h.2.symm)`. Simplify using `[this]) (by simp)]`. Simplify using the standard rewrite rules. Establish `a1 : (2 : ℂ) • ∑ b', Y b' b • omE (a, b') (a, b) = (∑ b', Y b' b • raiB (a, b')) * lowB (a, b) + lowB (a, b) * ∑ b', Y b' b • raiB (a, b')`. Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Finset.sum_add_distrib, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun b' _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, mul_smul_comm, ← smul_add, anti_omE, smul_comm]`. Establish `a2 : (2 : ℂ) • ∑ b', Y b b' • omE (a, b) (a, b') = raiB (a, b) * (∑ b', Y b b' • lowB (a, b')) + (∑ b', Y b b' • lowB (a, b')) * raiB (a, b)`. Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Finset.sum_add_distrib, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun b' _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_mul_assoc, mul_smul_comm, ← smul_add, anti_omE, smul_comm]`. Establish `hs : ((eps a * eps b : ℝ) : ℂ) * ((eps a * eps b : ℝ) : ℂ) = 1`. Rewrite using `[← ofReal_mul, mul_mul_mul_comm, eps_sq, eps_sq, mul_one, ofReal_one]`. Rewrite using `[show (1 / 2 : ℂ) = (1 / 4) * 2 by norm_num, mul_smul, smul_add (2 : ℂ), a1, a2, inv_smul_eq_iff₀ (by simp [hπ])]`. Simplify using `only [Fintype.sum_bool, cu, cv, heis_smul, r1, r2, r3, r4, if_true, Bool.false_eq_true, if_false, ← hk]`.
+
+Simplify using `only [ofReal_div, ofReal_ofNat, star_mul', star_div₀, star_ofNat, star_one, star_neg, star_def, conj_I, conj_ofReal, map_neg, map_one]`. Generalize the expression as in `((eps a * eps b : ℝ) : ℂ) = s at hs`. Generalize the expression as in `(∑ b', Y b' b • raiB (a, b') : Module.End ℂ (Pol P Q R S)) = Rp`. Generalize the expression as in `(∑ b', Y b b' • lowB (a, b') : Module.End ℂ (Pol P Q R S)) = Lp`. Simplify using `only [mul_sub, sub_mul, mul_add, add_mul, smul_mul_assoc, mul_smul_comm, mul_neg, neg_mul]`.
+
+Apply the tactic sequence `match_scalars <;> first | ring1 | linear_combination (I * s ^ 2) * hk2 + (2 * π * I) * hs`. Rewrite using `[Fintype.sum_prod_type, Fintype.sum_prod_type, Finset.smul_sum]`. Simplify using `only [Finset.smul_sum (r := (8 * π * I : ℂ)⁻¹) (s := (Finset.univ : Finset (Ix R S))), one]`. Simplify using `only [fockAct2, LinearMap.comp_apply, omAct_apply, Matrix.kroneckerMapBilinear_apply_apply, Matrix.kroneckerMap_apply, LinearMap.mul_apply', Fintype.sum_prod_type, Matrix.one_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.smul_sum, Finset.sum_add_distrib, Finset.sum_comm (f := fun b b' => Y b' b • omE (a, b') (a, b)), ← two_smul ℂ, smul_smul]`. Simplify using `[ite_smul]`.
+-/
 theorem fock_eq {Y : Mat R S} (hY : Y ∈ upq R S) :
     (8 * π * I : ℂ)⁻¹ • ∑ j : Ln P Q R S × Bool, (heisOp (cu Y j) * heisOp (cv j) + heisOp (cv j) * heisOp (cu Y j)) =
       fockAct2 P Q R S Y := by
@@ -216,13 +300,22 @@ theorem fock_eq {Y : Mat R S} (hY : Y ∈ upq R S) :
 
 def sw (P Q R S : ℕ) : Pol R S P Q ≃ₐ[ℂ] Pol P Q R S := renameEquiv ℂ (Equiv.prodComm _ _)
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> rfl`.
+-/
 theorem linePos_swap (a : Ix P Q) (b : Ix R S) :
     linePos (p := R) (q := S) (r := P) (s := Q) (b, a) = linePos (p := P) (q := Q) (r := R) (s := S) (a, b) := by
   rcases a with a | a <;> rcases b with b | b <;> rfl
 
+/- English proof (translation)
+The claim follows from `(pderiv_rename (Equiv.prodComm _ _).injective (b, a) p).symm`.
+-/
 theorem sw_pd (a : Ix P Q) (b : Ix R S) (p : Pol R S P Q) : sw P Q R S (pderiv (b, a) p) = pderiv (a, b) (sw P Q R S p) :=
   (pderiv_rename (Equiv.prodComm _ _).injective (b, a) p).symm
 
+/- English proof (translation)
+Unfold `lowB`. Rewrite using `[linePos_swap]`. Use `split_ifs`. Conclude with `sw_pd a b p`. Simplify using `[sw]`.
+-/
 theorem sw_low (a : Ix P Q) (b : Ix R S) (p : Pol R S P Q) : sw P Q R S (lowB (b, a) p) = lowB (a, b) (sw P Q R S p) := by
   unfold lowB
   rw [linePos_swap]
@@ -230,6 +323,11 @@ theorem sw_low (a : Ix P Q) (b : Ix R S) (p : Pol R S P Q) : sw P Q R S (lowB (b
   · exact sw_pd a b p
   · simp [sw]
 
+/- English proof (translation)
+Unfold `raiB`. Rewrite using `[linePos_swap]`. Use `split_ifs`. Simplify using `[sw]`. Simplify using `only [LinearMap.neg_apply, map_neg]`.
+
+Conclude with `congrArg _ (sw_pd a b p)`.
+-/
 theorem sw_rai (a : Ix P Q) (b : Ix R S) (p : Pol R S P Q) : sw P Q R S (raiB (b, a) p) = raiB (a, b) (sw P Q R S p) := by
   unfold raiB
   rw [linePos_swap]
@@ -238,6 +336,9 @@ theorem sw_rai (a : Ix P Q) (b : Ix R S) (p : Pol R S P Q) : sw P Q R S (raiB (b
   · simp only [LinearMap.neg_apply, map_neg]
     exact congrArg _ (sw_pd a b p)
 
+/- English proof (translation)
+Simplify using `only [heisOp, LinearMap.smul_apply, LinearMap.sum_apply, LinearMap.sub_apply, map_smul, map_sum, map_sub, Fintype.sum_prod_type, sw_low, sw_rai, lineSign_eq, Matrix.transpose_apply]`. Rewrite using `[Finset.sum_comm]`. Use `congrArg _ (Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_comm (eps a)]`.
+-/
 theorem sw_heis (c : Matrix (Ix R S) (Ix P Q) ℂ) (p : Pol R S P Q) :
     sw P Q R S (heisOp c p) = heisOp cᵀ (sw P Q R S p) := by
   simp only [heisOp, LinearMap.smul_apply, LinearMap.sum_apply, LinearMap.sub_apply, map_smul, map_sum, map_sub,
@@ -246,6 +347,11 @@ theorem sw_heis (c : Matrix (Ix R S) (Ix P Q) ℂ) (p : Pol R S P Q) :
   refine congrArg _ (Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_)
   rw [mul_comm (eps a)]
 
+/- English proof (translation)
+Establish `h : ∀ (a a' : Ix P Q) (b b' : Ix R S), sw P Q R S (omE (b, a) (b', a') p) = omE (a, b) (a', b') (sw P Q R S p)` using `fun a a' b b' => by`. Simplify using `only [omE, LinearMap.add_apply, Module.End.mul_apply, map_add, sw_rai, sw_low, Prod.mk.injEq, and_comm]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [fockAct1, fockAct2, LinearMap.comp_apply, LinearMap.flip_apply, omAct_apply, Matrix.kroneckerMapBilinear_apply_apply, Matrix.kroneckerMap_apply, LinearMap.mul_apply', Fintype.sum_prod_type, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, h]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm]`.
+-/
 theorem sw_fock (Y : Mat P Q) (p : Pol R S P Q) :
     sw P Q R S (fockAct2 R S P Q Y p) = fockAct1 P Q R S Y (sw P Q R S p) := by
   have h : ∀ (a a' : Ix P Q) (b b' : Ix R S), sw P Q R S (omE (b, a) (b', a') p) = omE (a, b) (a', b') (sw P Q R S p) :=
@@ -266,6 +372,15 @@ namespace PositivityTheory.RL
 
 open Up
 
+/- English proof (translation)
+Introduce `h2 F E _ _ _ _ _ σ α β κ _ _ _ _ _ P Q R S ψ τ JA JB d d' a b A C Φ om χ m hcm hψ hfr hΦ hd hW hm γ hγ Y hY T`. Set `Ψ : Tens F R S P Q ≃ₗ[ℂ] Tens F P Q R S` to `PiTensorProduct.congr fun _ => (sw P Q R S).toLinearEquiv`. Establish `hΨ : ∀ T, Ψ T = PiTensorProduct.map (fun _ => (sw P Q R S).toLinearMap) T` using `fun _ => rfl`. Establish `h1 : IsFockMap ψ τ d' C A (Φ ∘ₗ Ψ.toLinearMap)`. Use `⟨hΦ.1.comp Ψ.injective, fun u hu c hc T => ?_⟩` and prove the remaining obligations.
+
+Use `hΦ.2 uᵀ (fun s hs => by rw [← Matrix.transpose_smul, hu s hs, Matrix.transpose_zero]) (fun w => (c w)ᵀ) (fun w => by rw [Matrix.transpose_map, hc, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]) (Ψ T)` as an intermediate fact. Establish `e : ∀ t, d.rho ψ (realAd F t • uᵀ) = d'.rho ψ (realAd F t • u)` using `fun t => by`. Rewrite using `[Darboux.rho, Darboux.rho, ← hd, Matrix.transpose_smul, Matrix.transpose_transpose]`. Simplify using `only [e] at this`. Rewrite `this` using `[hΨ, ← map_sumPl _ (fun w => heisOp (c w)) _ fun w x => sw_heis (c w) x]`.
+
+Conclude with `this`. Use `h2 F E σ β α κ R S P Q ψ τ JB JA d' b a C A _ om χ m hcm hψ ⟨(mul_comm _ _).trans hfr.1, hfr.2.2, hfr.2.1⟩ h1 hW hm γ hγ Y hY (Ψ.symm T)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at this`. Rewrite using `[hΨ, map_sumPl _ _ (fun w => fockAct1 P Q R S (Y w) + ((m w : ℂ) / 2 * (Y w).trace) • 1) fun w x => by`. Simplify using `only [LinearMap.add_apply, map_add, LinearMap.smul_apply, map_smul, Module.End.one_apply]`.
+
+Conclude with `congrArg (· + _) (sw_fock (Y w) x), ← hΨ, LinearEquiv.apply_symm_apply] at this`. Conclude with `this`.
+-/
 theorem lieFirst : GlobalTheory.RealLift.LieSecond → GlobalTheory.RealLift.LieFirst := by
   intro h2 F E _ _ _ _ _ σ α β κ _ _ _ _ _ P Q R S ψ τ JA JB d d' a b A C Φ om χ m hcm hψ hfr hΦ hd hW hm γ hγ Y hY T
   let Ψ : Tens F R S P Q ≃ₗ[ℂ] Tens F P Q R S := PiTensorProduct.congr fun _ => (sw P Q R S).toLinearEquiv

@@ -7,5 +7,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CrysToDRBi
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
 open GlobalTheory.LatVal GlobalTheory.LatJet GlobalTheory.LatJet.An
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LatJet.An.coordEx | exact GlobalTheory.LatJet.An.coordEx | (intros; apply GlobalTheory.LatJet.An.coordEx <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.coordinate_existence_of_periods : GlobalTheory.Published.GaussManinPeriods → JetCalc → DiagFrame → CoordEx := by
   first | exact @GlobalTheory.LatJet.An.coordEx | exact GlobalTheory.LatJet.An.coordEx | (intros; apply GlobalTheory.LatJet.An.coordEx <;> assumption)

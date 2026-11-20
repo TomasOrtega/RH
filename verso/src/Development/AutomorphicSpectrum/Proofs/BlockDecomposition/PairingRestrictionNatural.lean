@@ -25,6 +25,9 @@ abbrev bas (C : Cx.{1} K) (i : ℕ) : Module.Basis (Bi C i) K (C.H i) := Module.
 def rep (C : Cx.{1} K) (i : ℕ) (β : Bi C i) : C.Z i :=
   (Submodule.Quotient.mk_surjective _ (bas C i β)).choose
 
+/- English proof (translation)
+The claim follows from `(Submodule.Quotient.mk_surjective _ (bas C i β)).choose_spec`.
+-/
 theorem rep_cls (C : Cx.{1} K) (i : ℕ) (β : Bi C i) :
     C.cls (rep C i β).1 (rep C i β).2 = bas C i β :=
   (Submodule.Quotient.mk_surjective _ (bas C i β)).choose_spec
@@ -45,10 +48,22 @@ def tupEquiv (P : ℕ → Cx.{1} K) (c n : ℕ) :
   left_inv := by rintro ⟨⟨⟨a, a', ha, i, β⟩, m⟩, h⟩; rfl
   right_inv := by rintro ⟨⟨a, i, a', j, ha, h⟩, β⟩; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem lof_cast {V : Type 1} [DecidableEq V] (W : V → Type 1) [∀ u, AddCommGroup (W u)] [∀ u, Module K (W u)]
     {v v' : V} (h : v = v') (x : W v) : DirectSum.lof K V W v x = DirectSum.lof K V W v' (h ▸ x) := by
   subst h; rfl
 
+/- English proof (translation)
+Set `f : (⨁ v, W (σ v)) →ₗ[K] ⨁ u, W u` to `DirectSum.toModule K V _ fun v => DirectSum.lof K U W (σ v)`. Set `g : (⨁ u, W u) →ₗ[K] ⨁ v, W (σ v)` to `DirectSum.toModule K U _ fun u => (DirectSum.lof K V (fun v => W (σ v)) (σ.symm u)).comp ((LinearEquiv.cast (R := K) (M := W) (σ.apply_symm_apply u).symm).toLinearMap)`. Use `⟨LinearEquiv.ofLinear f g ?_ ?_, fun v x => ?_⟩` and prove the remaining obligations. Use `DirectSum.linearMap_ext K fun u => LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `key : ∀ (u' : U) (hu : u' = u) (hh : u = u'), DirectSum.lof K U W u' (LinearEquiv.cast (R` using `K) (M := W) hh x) = DirectSum.lof K U W u x := by`.
+
+Introduce and unpack `_ rfl hh`. Both sides reduce to the same expression. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply, f, g, DirectSum.toModule_lof, LinearEquiv.coe_coe]`. Conclude with `key _ (σ.apply_symm_apply u) _`. Use `DirectSum.linearMap_ext K fun v => LinearMap.ext fun x => ?_` and prove the remaining obligations.
+
+Establish `key : ∀ (v' : V) (hv : v' = v) (hh : σ v = σ v'), DirectSum.lof K V (fun v => W (σ v)) v' (LinearEquiv.cast (R` using `K) (M := W) hh x) = DirectSum.lof K V (fun v => W (σ v)) v x := by`. Introduce and unpack `_ rfl hh`. Both sides reduce to the same expression. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply, f, g, DirectSum.toModule_lof, LinearEquiv.coe_coe]`. Conclude with `key _ (σ.symm_apply_apply v) _`.
+
+Simplify using `only [LinearEquiv.ofLinear_apply, f, DirectSum.toModule_lof]`.
+-/
 theorem reidx {V U : Type 1} [DecidableEq V] [DecidableEq U] (σ : V ≃ U) (W : U → Type 1)
     [∀ u, AddCommGroup (W u)] [∀ u, Module K (W u)] :
     ∃ r : (⨁ v, W (σ v)) ≃ₗ[K] ⨁ u, W u,
@@ -96,15 +111,24 @@ def gmap {P Q T : ℕ → Cx.{1} K} (pr : ∀ {a a' c : ℕ}, a + a' = c → CxP
     (u : Tup P c) {m n : ℕ} (h : m + u.i = n) : (Q u.a').X m →ₗ[K] (T c).X n :=
   (pr u.ha).μ (show u.i + m = n by omega) (rep (P u.a) u.i u.β).1
 
+/- English proof (translation)
+Rewrite using `[p.leib, hx, hy]`. Simplify using the standard rewrite rules.
+-/
 theorem mu_closed {C D E : Cx.{1} K} (p : CxPairing C D E) {i j n : ℕ} (h : i + j = n) (x : C.X i) (y : D.X j)
     (hx : C.d i x = 0) (hy : D.d j y = 0) : E.d n (p.μ h x y) = 0 := by
   rw [p.leib, hx, hy]; simp
 
 def sec (C : Cx.{1} K) (i : ℕ) : C.H i →ₗ[K] C.Z i := (bas C i).constr K (rep C i)
 
+/- English proof (translation)
+The claim follows from `(bas C i).constr_basis K _ _`.
+-/
 theorem sec_bas (C : Cx.{1} K) (i : ℕ) (β : Bi C i) : sec C i (bas C i β) = rep C i β :=
   (bas C i).constr_basis K _ _
 
+/- English proof (translation)
+Establish `: (Submodule.mkQ _ : C.Z i →ₗ[K] C.H i).comp (sec C i) = LinearMap.id`. Use `(bas C i).ext fun β => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, sec_bas, LinearMap.id_apply]`. Conclude with `rep_cls C i β`. Conclude with `LinearMap.congr_fun this ξ`.
+-/
 theorem cls_sec (C : Cx.{1} K) (i : ℕ) (ξ : C.H i) : C.cls (sec C i ξ).1 (sec C i ξ).2 = ξ := by
   have : (Submodule.mkQ _ : C.Z i →ₗ[K] C.H i).comp (sec C i) = LinearMap.id := by
     refine (bas C i).ext fun β => ?_
@@ -119,15 +143,38 @@ def prodR {C D E : Cx.{1} K} (p : CxPairing C D E) {i j n : ℕ} (h : i + j = n)
       (((p.μ h).flip y).comp ((C.Z i).subtype.comp (sec C i)))
       (fun ξ => mu_closed p h _ y (sec C i ξ).2 hy))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prodR_apply {C D E : Cx.{1} K} (p : CxPairing C D E) {i j n : ℕ} (h : i + j = n) (y : D.X j) (hy : D.d j y = 0)
     (ξ : C.H i) :
     prodR p h y hy ξ = E.cls (p.μ h (sec C i ξ).1 y) (mu_closed p h _ y (sec C i ξ).2 hy) := rfl
 
+/- English proof (translation)
+Rewrite using `[prodR_apply, ← CrystallineSemistableComparison.P.cxcup_cls p h _ y (sec C i _).2 hy, ← CrystallineSemistableComparison.P.cxcup_cls p h x y hx hy, cls_sec]`.
+-/
 theorem prodR_cls {C D E : Cx.{1} K} (p : CxPairing C D E) {i j n : ℕ} (h : i + j = n) (x : C.X i) (hx : C.d i x = 0)
     (y : D.X j) (hy : D.d j y = 0) (hz : E.d n (p.μ h x y) = 0) :
     prodR p h y hy (C.cls x hx) = E.cls (p.μ h x y) hz := by
   rw [prodR_apply, ← CrystallineSemistableComparison.P.cxcup_cls p h _ y (sec C i _).2 hy, ← CrystallineSemistableComparison.P.cxcup_cls p h x y hx hy, cls_sec]
 
+/- English proof (translation)
+Take `⟨e₁, he₁⟩` from `GlobalTheory.T.tensor_direct_sum_basis_equiv (K := K) (J := Idx c n) (fun t => (P t.a).H t.i) (fun t => (Q t.a').H t.j) (fun t => Bi (P t.a) t.i) (fun t => bas (P t.a) t.i)`. Take `⟨r, hr⟩` from `reidx (K := K) (tupEquiv P c n) (fun u : (Σ t : Idx c n, Bi (P t.a) t.i) => (Q u.1.a').H u.1.j)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e, he⟩`. Use `⟨(r.trans e₁.symm).trans e, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨⟨⟨a, a', ha, i, β⟩, m⟩, h⟩ x hx hz`. Establish `h' : i + m = n` using `by simpa [add_comm] using h`. Establish `step` using `he ⟨a, i, a', m, ha, h'⟩ (rep (P a) i β).1 x (rep (P a) i β).2 hx hz`. Establish `e1` using `he₁ ⟨a, i, a', m, ha, h'⟩ β ((Q a').cls x hx)`. Establish `r1` using `hr ⟨(⟨a, a', ha, i, β⟩, m), h⟩ ((Q a').cls x hx)`.
+
+Simplify using `only [LinearEquiv.trans_apply]`. Use `Eq.trans ?_ step` and prove the remaining obligations. Use `congrArg e ?_` and prove the remaining obligations. Rewrite using `[rep_cls]`. Use `Eq.trans (congrArg e₁.symm r1) ?_` and prove the remaining obligations.
+
+Conclude with `(LinearEquiv.symm_apply_eq _).2 e1.symm`. Introduce and unpack `⟨E, hE⟩`. Use `⟨(e₁.trans r.symm).trans E, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, i, a', j, ha, h⟩ x y hx hy hz`. Establish `h' : j + i = n` using `by omega`.
+
+Set `L : (P a).H i →ₗ[K] (T c).H n` to `((E.toLinearMap.comp r.symm.toLinearMap).comp e₁.toLinearMap).comp ((DirectSum.lof K _ (fun t : Idx c n => (P t.a).H t.i ⊗[K] (Q t.a').H t.j) ⟨a, i, a', j, ha, h⟩).comp ((TensorProduct.mk K _ _).flip ((Q a').cls y hy)))`. Establish `hL : L = prodR (pr ha) h y hy`. Use `(bas (P a) i).ext fun β => ?_` and prove the remaining obligations. Establish `e1` using `he₁ ⟨a, i, a', j, ha, h⟩ β ((Q a').cls y hy)`. Establish `r1` using `hr ⟨(⟨a, a', ha, i, β⟩, j), h'⟩ ((Q a').cls y hy)`.
+
+Establish `hz'` using `mu_closed (pr ha) h _ y (rep (P a) i β).2 hy`. Establish `E1` using `hE ⟨(⟨a, a', ha, i, β⟩, j), h'⟩ y hy hz'`. Establish `r2` using `(LinearEquiv.symm_apply_eq r).2 r1.symm`. Establish `hLb : L (bas (P a) i β) = E (r.symm (e₁ (DirectSum.lof K _ (fun t : Idx c n => (P t.a).H t.i ⊗[K] (Q t.a').H t.j) ⟨a, i, a', j, ha, h⟩ (bas (P a) i β ⊗ₜ (Q a').cls y hy))))` using `rfl`. Rewrite using `[hLb, e1]`.
+
+Use `Eq.trans (congrArg E r2) (Eq.trans E1 ?_)` and prove the remaining obligations. Rewrite using `[prodR_apply]`. Simplify using `only [sec_bas]`. Both sides reduce to the same expression. Use `LinearMap.congr_fun hL ((P a).cls x hx)` as an intermediate fact.
+
+Rewrite `this` using `[prodR_cls (pr ha) h x hx y hy hz]`. Conclude with `this`.
+-/
 theorem kun_iff_mv {P Q T : ℕ → Cx.{1} K} (pr : ∀ {a a' c : ℕ}, a + a' = c → CxPairing (P a) (Q a') (T c)) (c n : ℕ) :
     KunC pr c n ↔ MvC (I := Tup P c) (fun u => u.i) (fun u => Q u.a') (T c) (fun u {m n} h => gmap pr c u h) n := by
   classical
@@ -177,6 +224,11 @@ theorem kun_iff_mv {P Q T : ℕ → Cx.{1} K} (pr : ∀ {a a' c : ℕ}, a + a' =
 end GlobalTheory.CompanionTheory.KunGlue.Glue
 
 open GlobalTheory.CompanionTheory.KunGlue.Glue in
+/- English proof (translation)
+Introduce `hmv K _ ι _ _ P Q T pr hnat hQ hT hK c n`. Establish `main` using `GlobalTheory.T.mvE_empty_of_mvE_nonempty hmv (K := K) (ι := ι) (I := Tup P c) (fun u => u.i) (fun u => (-1 : ℤˣ) ^ u.i) (fun u => Q u.a') (T c) (fun u S {m n} h => gmap (Q := fun a => (Q a).K S) (T := fun c => (T c).K S) (fun {a a' c} ha => pr S ha) c u h) ?_ ?_ (fun u => hQ _) ( …`. Conclude with `(kun_iff_mv (Q := fun a => (Q a).K ∅) (T := fun c => (T c).K ∅) (fun {a a' c} ha => pr ∅ ha) c n).2 main`. Introduce `u S m n h h' x`. Simplify using `only [gmap]`.
+
+Rewrite using `[(pr S u.ha).leib, (rep (P u.a) u.i u.β).2]`. Simplify using the standard rewrite rules. Introduce `u S S' hS m n h x`. Conclude with `hnat hS u.ha _ _ x`.
+-/
 theorem GlobalTheory.CompanionTheory.KunGlue.kun_glue : MVBij → ∀ {K : Type} [Field K] {ι : Type} [DecidableEq ι] [Fintype ι] (P : ℕ → Cx.{1} K) (Q T : ℕ → Sy.{1} K ι) (pr : ∀ (S : Finset ι) {a a' c : ℕ}, a + a' = c → CxPairing (P a) ((Q a').K S) ((T c).K S)), (∀ {S S' : Finset ι} (h : S ⊆ S') {a a' c : ℕ} (ha : a + a' = c) {i j n : ℕ} (hn : i + j = n) (x : (P a).X i) (y : ((Q a').K S).X j), ((T c).res h).f n ((pr S ha).μ hn x y) = (pr S' ha).μ hn x (((Q a').res h).f j y)) → (∀ a, (Q a).Desc) → (∀ c, (T c).Desc) → (∀ S : Finset ι, S.Nonempty → KunE (P := P) (Q := fun a => (Q a).K S) (T := fun c => (T c).K S) (fun {a a' c} ha => pr S ha)) → KunE (P := P) (Q := fun a => (Q a).K ∅) (T := fun c => (T c).K ∅) (fun {a a' c} ha => pr ∅ ha) := by
   intro hmv K _ ι _ _ P Q T pr hnat hQ hT hK c n
   have main := GlobalTheory.T.mvE_empty_of_mvE_nonempty hmv (K := K) (ι := ι) (I := Tup P c) (fun u => u.i) (fun u => (-1 : ℤˣ) ^ u.i)

@@ -12,6 +12,13 @@ open CategoryTheory AlgebraicGeometry Polynomial DividedPowers GlobalTheory.LogC
 
 namespace GlobalTheory.CompanionTheory.ThickHom
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `hp`. Establish `key : ∀ M : ℕ, p ^ M ∣ (M * p).factorial`. Introduce `M`. Proceed by induction on `M with`. Consider the case `zero => simp`.
+
+Consider the case `succ M ih`. Rewrite using `[Nat.succ_mul, pow_succ]`. Conclude with `(mul_dvd_mul ih (Nat.dvd_factorial (Nat.pos_of_ne_zero h0) le_rfl)).trans (Nat.factorial_mul_factorial_dvd_factorial_add _ _)`. Take `⟨c, hc⟩` from `key N`. Use `⟨N * p, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← δ.factorial_mul_dpow_eq_pow hx, hc]`. Use `push_cast`. Rewrite using `[hN]`. Simplify using the standard rewrite rules.
+-/
 theorem isNilpotent_of_mem {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) {p : ℕ} (h0 : p ≠ 0)
     (hp : IsNilpotent (p : B)) {x : B} (hx : x ∈ J) : IsNilpotent x := by
   obtain ⟨N, hN⟩ := hp
@@ -33,6 +40,11 @@ theorem isNilpotent_of_mem {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPo
 variable {O : Type} [CommRing O] {F : Fn O} {d : ℕ} (s : F.Small d) {b : Base} (ht : b.t = 1)
   {κ : O →+* b.R ⧸ b.I}
 
+/- English proof (translation)
+Establish `h1 : F.Ov T.y.1.2 (g.comp s.a)`. Use `F.ov_map (CommRingCat.ofHom g) s.ov` as an intermediate fact. Rewrite `this` using `[hg]`. Conclude with `this`. Establish `h2` using `F.ov_uniq h1 T.y.2`.
+
+Establish `h3` using `congrArg (fun f : O →+* _ => f o) h2`. Establish `h4 : T.y.1.1 (Ideal.Quotient.mk _ x) = Ideal.Quotient.mk T.J (T.i x)` using `T.w x`. Rewrite using `[← h4, hx]`. Conclude with `h3`.
+-/
 theorem comp_eq (T : Thick (F.cr b ht κ)) {g : s.R →+* T.B ⧸ T.J}
     (hg : F.Pt.map (CommRingCat.ofHom g) s.y₀ = T.y.1.2) (o : O) (x : b.R)
     (hx : Ideal.Quotient.mk b.I x = κ o) : g (s.a o) = Ideal.Quotient.mk T.J (T.i x) := by
@@ -49,6 +61,9 @@ theorem comp_eq (T : Thick (F.cr b ht κ)) {g : s.R →+* T.B ⧸ T.J}
 variable (𝓛 : Lift s.a (fun k => (s.T k : s.R)) b.R b.I κ) (δ : DividedPowers (b.I.map 𝓛.i))
   (hδ : IsDPMorphism b.γ δ 𝓛.i) (hp : b.p ≠ 0) (hn : IsNilpotent (b.p : b.R))
 
+/- English proof (translation)
+Establish `h : (1 : T.B) = T.s * T.i b.t` using `(Finset.prod_of_isEmpty (ι := Empty) _).symm.trans T.hs`. Rewrite `h` using `[ht, map_one, mul_one]`. Conclude with `Units.ext h.symm`.
+-/
 theorem s_eq_one (T : Thick (F.cr b ht κ)) : T.s = 1 := by
   have h : (1 : T.B) = T.s * T.i b.t := (Finset.prod_of_isEmpty (ι := Empty) _).symm.trans T.hs
   rw [ht, map_one, mul_one] at h
@@ -90,6 +105,13 @@ def homOf (T : Thick (F.cr b ht κ)) {g : s.R →+* T.B ⧸ T.J}
       rw [s_eq_one ht T, h1, map_one, Finset.prod_of_isEmpty, one_mul]
     hv := fun j => j.elim }
 
+/- English proof (translation)
+Take `⟨g, hg, hgu⟩` from `s.univ (CommRingCat.of (T.B ⧸ T.J)) T.y.1.2 (T.y.1.1.comp κ) T.y.2`. Establish `hc : ∀ (c : liftObj s ht 𝓛 δ hδ hp hn ⟶ T) (r : s.R) (z : 𝓛.D), Ideal.Quotient.mk _ z = 𝓛.j r → Ideal.Quotient.mk T.J (c.φ z) = g r`. Introduce `c r z hz`. Establish `hpt : F.Pt.map (CommRingCat.ofHom (Ideal.quotientMap T.J c.φ c.hle)) (F.Pt.map (CommRingCat.ofHom 𝓛.j) s.y₀) = T.y.1.2` using `congrArg (fun y => y.1.2) c.pt`. Establish `e` using `congrFun (congrArg (fun t => (ConcreteCategory.hom t : _ → _)) (F.Pt.map_comp (CommRingCat.ofHom 𝓛.j) (CommRingCat.ofHom (Ideal.quotientMap T.J c.φ c.hle)))) s.y₀`.
+
+Establish `hq : (Ideal.quotientMap T.J c.φ c.hle).comp 𝓛.j = g` using `hgu _ (e.trans hpt)`. Use `congrArg (fun e : s.R →+* T.B ⧸ T.J => e r) hq` as an intermediate fact. Use `Eq.trans ?_ this` and prove the remaining obligations. Conclude with `congrArg (Ideal.quotientMap T.J c.φ c.hle) hz`. Use `⟨g, hc, hg, fun u hu => ?_⟩` and prove the remaining obligations.
+
+Establish `hJ : EtLift T.J` using `GlobalTheory.CompanionTheory.EtNil.etLift_of_nil T.J fun x hx => isNilpotent_of_mem T.δ hp (T.adm.1 hp) hx`. Take `⟨f, ⟨hf1, hf2, hf3⟩, hfu⟩` from `GlobalTheory.CompanionTheory.EtaleLift.lift_hom_existsUnique s.a (fun k => (s.T k : s.R)) b.I κ 𝓛 T.J hJ T.i g u (fun x hx => T.i_mem hx) (comp_eq s ht T hg) hu`. Use `⟨homOf s ht 𝓛 δ hδ hp hn T hg f hf1 hf3, hf2, fun c hck => ?_⟩` and prove the remaining obligations. Establish `hcf : c.φ = f` using `hfu c.φ ⟨RingHom.ext c.comm, hck, hc c⟩`. Conclude with `Thick.Hom.ext hcf (funext fun j => j.elim)`.
+-/
 theorem main (T : Thick (F.cr b ht κ)) :
     ∃ g : s.R →+* T.B ⧸ T.J,
       (∀ (c : liftObj s ht 𝓛 δ hδ hp hn ⟶ T) (r : s.R) (z : 𝓛.D),

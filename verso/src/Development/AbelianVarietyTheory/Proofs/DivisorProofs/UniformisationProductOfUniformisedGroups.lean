@@ -44,6 +44,11 @@ variable {X X₁ X₂ : Scheme.{0}} {M : LB X} {M₁ : LB X₁} {M₂ : LB X₂}
   {ψ₂ : K → (W₂ ⟶ X₂)} {ρ₁ : Y ⟶ Y₁} {ρ₂ : Y ⟶ Y₂} {σ₁ : W ⟶ W₁} {σ₂ : W ⟶ W₂} {h : Y ⟶ W} {h₁ : Y₁ ⟶ W₁}
   {h₂ : Y₂ ⟶ W₂}
 
+/- English proof (translation)
+Use `corr_of_val hM fun y J hJ => ?_` and prove the remaining obligations. Take `⟨J₁, hJ₁⟩` from `BoxFamily.exists_good_at hM₁ y`. Take `⟨J₂, hJ₂⟩` from `BoxFamily.exists_good_at hM₂ y`. Rewrite using `[val_pull hJ, Category.id_comp]`. Establish `a` using `Hs _ (𝟙 _) y J₁ J₂ J hJ₁ hJ₂ hJ`.
+
+Establish `b` using `Ht _ h y J₁ J₂ J hJ₁ hJ₂ hJ`. Rewrite `b` using `[e₁, e₂, ← val_pull hJ₁, ← val_pull hJ₂, val_corr hJ₁ H₁, val_corr hJ₂ H₂]`. Simplify using `only [Category.id_comp] at a`. Simplify using `only [e] at b`. Conclude with `mul_left_cancel (b.trans a.symm)`.
+-/
 theorem corr_box (hM : M.IsLB) (hM₁ : M₁.IsLB) (hM₂ : M₂.IsLB) {w : LB.Iso M (extLB M₁ M₂ f₁ f₂)}
     (e : ∀ a, h ≫ ψ a = φ a) (e₁ : h ≫ σ₁ = ρ₁ ≫ h₁) (e₂ : h ≫ σ₂ = ρ₂ ≫ h₂)
     {s : LB.Gen (LB.LinComb M φ ε)} {s₁ : LB.Gen (LB.LinComb M₁ φ₁ ε)} {s₂ : LB.Gen (LB.LinComb M₂ φ₂ ε)}
@@ -62,6 +67,13 @@ theorem corr_box (hM : M.IsLB) (hM₁ : M₁.IsLB) (hM₂ : M₂.IsLB) {w : LB.I
   simp only [e] at b
   exact mul_left_cancel (b.trans a.symm)
 
+/- English proof (translation)
+Use `BoxFamScalar.secScal_of_pointwise hM fun y J hJ => ?_` and prove the remaining obligations. Take `⟨J₁, hJ₁⟩` from `BoxFamily.exists_good_at hM₁ y`. Take `⟨J₂, hJ₂⟩` from `BoxFamily.exists_good_at hM₂ y`. Establish `a` using `Hs _ (𝟙 _) y J₁ J₂ J hJ₁ hJ₂ hJ`. Establish `b` using `Ht _ h y J₁ J₂ J hJ₁ hJ₂ hJ`.
+
+Rewrite `b` using `[e₁, e₂, BoxFamScalar.sval_of_secScal H₁ ρ₁ y hJ₁, BoxFamScalar.sval_of_secScal H₂ ρ₂ y hJ₂, BoxFamScalar.gs_scal π₁, BoxFamScalar.gs_scal π₂, c₁, c₂]`. Simplify using `only [Category.id_comp] at a ⊢`. Simplify using `only [e] at b`. Establish `m : scal π (r₁ * r₂) = scal π r₁ * scal π r₂` using `by simp only [scal, map_mul]`. Rewrite using `[m, gs_mul _ y ⊤ trivial]`.
+
+Use `(Units.mul_right_inj _).1 (b.trans ?_)` and prove the remaining obligations. Rewrite using `[_root_.mul_mul_mul_comm, ← a, mul_left_comm]`.
+-/
 theorem secScal_box (hM : M.IsLB) (hM₁ : M₁.IsLB) (hM₂ : M₂.IsLB) {w : LB.Iso M (extLB M₁ M₂ f₁ f₂)}
     (e : ∀ a, h ≫ ψ a = φ a) (e₁ : h ≫ σ₁ = ρ₁ ≫ h₁) (e₂ : h ≫ σ₂ = ρ₂ ≫ h₂)
     {s : LB.Sec (LB.LinComb M φ ε)} {s₁ : LB.Sec (LB.LinComb M₁ φ₁ ε)} {s₂ : LB.Sec (LB.LinComb M₂ φ₂ ε)}
@@ -93,6 +105,17 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D₁ D₂ D : DegDa
   {p₁ : D.toPre.P.A ⟶ D₁.toPre.P.A} {p₂ : D.toPre.P.A ⟶ D₂.toPre.P.A} {q₁ : D.toPre.X →+ D₁.toPre.X}
   {q₂ : D.toPre.X →+ D₂.toPre.X} {a₁ : A.A ⟶ A₁.A} {a₂ : A.A ⟶ A₂.A}
 
+/- English proof (translation)
+Take `⟨q, i, q_hom, q_flat, q_surj, q_aff, i_hom, hker, hq₁, hq₂, hi₁, hi₂⟩` from `GlobalTheory.T.torusExtension_product_over_thickening_of_sumData R I e D.toPre D₁.toPre D₂.toPre p₁ p₂ q₁ q₂ G₁ G₂ g₁ g₂ hD`. Use `hD.hom₁` as an intermediate fact. Use `hD.hom₂` as an intermediate fact. Establish `hp₁` using `pG_pr hq₁`. Establish `hp₂` using `pG_pr hq₂`.
+
+Use `choose t ht H using fun x : D.toPre.X => exists_boxGen w hw D₁.toPre.P.isLB D₂.toPre.P.isLB D.toPre.P.isLB (Oφ_pr hD.c_pr₁ hp₁ x) (Oφ_pr hD.c_pr₂ hp₂ x) (g₁.t (q₁ x)) (g₁.t_gen _) (g₂.t (q₂ x)) (g₂.t_gen _)`. Establish `e₂ : (Over.map (thick R I e)).map η[thickObj R I e (G₁ ⊗ G₂)] ≫ ((Over.map (thick R I e)).map q ≫ D.toPre.prBe I e) = 1`. Rewrite using `[← Category.assoc, ← Functor.map_comp, IsMonHom.one_hom]`. Use `Over.OverMorphism.ext ((cubeMapOf (isGrpPullback_pullback D.toPre.P.A (thick R I e))).e_comm.trans ?_)` and prove the remaining obligations. Use `show thick R I e ≫ η[D.toPre.P.A].left = (𝟙 _ ≫ thick R I e) ≫ η[D.toPre.P.A].left`.
+
+Rewrite using `[Category.id_comp]`. Establish `aq : ((fst (splitTorus _ D.toPre.X) (thickObj R I e (G₁ ⊗ G₂)) ≫ i) * snd _ _) ≫ q = snd _ _ ≫ q`. Rewrite using `[MonObj.mul_comp, Category.assoc, hker.w, ← Category.assoc, comp_toUnit, ← Hom.one_def, _root_.one_mul]`. Establish `aO : (Over.map (thick R I e)).map (lift (fst (splitTorus _ D.toPre.X) (thickObj R I e (G₁ ⊗ G₂)) ≫ i) (snd _ _) ≫ μ[thickObj R I e (G₁ ⊗ G₂)]) ≫ ((Over.map (thick R I e)).map q ≫ D.toPre.prBe I e) = (Over.map (thick R I e)).map (snd (splitTorus _ D.toPre.X) (thickObj R I e (G₁ ⊗ …`. Rewrite using `[← Category.assoc, ← Functor.map_comp, ← Hom.mul_def, aq, Functor.map_comp, Category.assoc]`.
+
+Use `choose j₁ hj₁ using fun y : D₁.toPre.X => hD.xsum.2 (y, 0)`. Use `choose j₂ hj₂ using fun y : D₂.toPre.X => hD.xsum.2 (0, y)`. Take `⟨τ₁, hτ₁, hκ₁⟩` from `hi₁ j₁ (fun y => congrArg Prod.fst (hj₁ y)) (fun y => congrArg Prod.snd (hj₁ y))`. Take `⟨τ₂, hτ₂, hκ₂⟩` from `hi₂ j₂ (fun y => congrArg Prod.fst (hj₂ y)) (fun y => congrArg Prod.snd (hj₂ y))`. Establish `hj : ∀ χ, j₁ (q₁ χ) + j₂ (q₂ χ) = χ` using `fun χ => hD.xsum.1 (by`.
+
+Rewrite using `[map_add, hj₁, hj₂, Prod.mk_add_mk, add_zero, zero_add]`. Use the proof step `rfl)`. Conclude with `⟨⟨q, q_hom, q_flat, q_surj, q_aff, i, i_hom, hker, t, ht, GlobalTheory.ProdUnif.tMul_of_box R _ _ _ p₁ p₂ q₁ q₂ hD w hc _ _ _ _ g₁.pG g₂.pG _ _ hp₁ hp₂ t g₁.t g₂.t H g₁.t_mul g₂.t_mul, fun χ => GlobalTheory.ProdUnifUnit.unit_box R _ _ _ p₁ p₂ q₁ q₂ w _ (thick R I e) _ _ _ _ _ _ g …`.
+-/
 theorem exists_gt (hD : IsSumDeg D.toPre D₁.toPre D₂.toPre p₁ p₂ q₁ q₂)
     (w : LB.Iso D.toPre.P.L (extLB D₁.toPre.P.L D₂.toPre.P.L p₁.left p₂.left)) (hw : w.IsGen)
     (hc : IsBoxGen (φ := thφ D.toPre.P.A (x3 D.toPre.P.A)) (φ₁ := thφ D₁.toPre.P.A (x3 D₁.toPre.P.A))
@@ -146,6 +169,9 @@ theorem exists_gt (hD : IsSumDeg D.toPre D₁.toPre D₂.toPre p₁ p₂ q₁ q�
       inferInstance (H χ) i g₁.i g₂.i j₁ j₂ τ₁ τ₂ (hj χ) hτ₁ hτ₂ hκ₁ hκ₂ aO (g₁.t_weight _) (g₂.t_weight _)⟩,
     hq₁, hq₂, hi₁, hi₂, H⟩
 
+/- English proof (translation)
+Use `hD.lim` as an intermediate fact. Establish `h : LevelCompat.thickMapOver I e (G₁ ⊗ G₂) ≫ (gt (e + 1)).pG = (gt e).pG` using `SumDeg.pt_ext p₁ p₂ (Over.OverMorphism.ext ((Category.assoc _ _ _).trans ((congrArg (thickMap R I e (G₁ ⊗ G₂) ≫ ·) (h₁ (e + 1))).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ (U₁.gt (e + 1)).pG.left) (thickMap_nat I e (fst G₁ G₂))).trans ((Category.assoc _ _ _).trans ( …`. Conclude with `congrArg (fun z => z.left) h`.
+-/
 theorem thickMap_pG (hD : IsSumDeg D.toPre D₁.toPre D₂.toPre p₁ p₂ q₁ q₂) (U₁ : UnifPre I D₁ A₁ G₁)
     (U₂ : UnifPre I D₂ A₂ G₂) (gt : ∀ e, GtCoord I D.toPre e (G₁ ⊗ G₂))
     (h₁ : ∀ e, (gt e).pG.left ≫ p₁.left = ((Over.pullback (thick R I e)).map (fst G₁ G₂)).left ≫ (U₁.gt e).pG.left)
@@ -163,6 +189,19 @@ theorem thickMap_pG (hD : IsSumDeg D.toPre D₁.toPre D₂.toPre p₁ p₂ q₁ 
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Take `⟨wM_gen, mr, mc, ms⟩` from `hM`. Take `⟨gen, gen_hom, gen₁, gen₂, ext⟩` from `GlobalTheory.T.exists_genericFibre_product_sumPolarisedAbelianVariety R I D₁ A₁ G₁ U₁ D₂ A₂ G₂ U₂ A a₁ a₂ hA`. Take `⟨L, c, s, wL, s_gen, s_rig, hwLgen, lr, lc, ls⟩` from `GlobalTheory.T.exists_externalTensor_rigidified_cubical_product _ G₁ G₂ U₁.LG U₂.LG U₁.cubG U₂.cubG U₁.symG U₂.symG U₁.symG_gen U₂.symG_gen U₁.symG_rig U₂.symG_rig`. Use `choose gt hq₁ hq₂ hi₁ hi₂ ht using fun e => exists_gt hD wM wM_gen mc e (U₁.gt e) (U₂.gt e)`. Establish `hp₁ : ∀ e, (gt e).pG.left ≫ p₁.left = ((Over.pullback (thick R I e)).map (fst G₁ G₂)).left ≫ (U₁.gt e).pG.left` using `fun e => congrArg (fun z => z.left) (pG_pr (hq₁ e))`.
+
+Establish `hp₂ : ∀ e, (gt e).pG.left ≫ p₂.left = ((Over.pullback (thick R I e)).map (snd G₁ G₂)).left ≫ (U₂.gt e).pG.left` using `fun e => congrArg (fun z => z.left) (pG_pr (hq₂ e))`. Use `choose w w_gen Q using fun e => GlobalTheory.T.exists_generating_boxProduct_of_restrictedIsos (T := (thickObj R I e (G₁ ⊗ G₂)).left) (T₁ := (thickObj R I e G₁).left) (T₂ := (thickObj R I e G₂).left) wM wL (U₁.w e) (U₂.w e) D.toPre.P.isLB D₁.toPre.P.isLB D₂.toPre.P.isLB L.isLB U₁. …`. Establish `gq` using `thickMap_pG hD U₁ U₂ gt hp₁ hp₂`. Use `U₁.smooth` as an intermediate fact. Use `U₂.smooth` as an intermediate fact.
+
+Use `U₁.separated` as an intermediate fact. Use `U₂.separated` as an intermediate fact. Use `⟨{ smooth := inferInstanceAs (Smooth (pullback.fst G₁.hom G₂.hom ≫ G₁.hom)) separated := inferInstanceAs (IsSeparated (pullback.fst G₁.hom G₂.hom ≫ G₁.hom)) gen := gen gen_hom := gen_hom LG := L cubG := c symG := s symG_gen := s_gen symG_rig := s_rig` and prove the remaining obligations. Use extensionality with `:= ext L.L wL L.isLB hwLgen`. Use `gt := gt`.
+
+Use `gt_q := gq`. Use `gt_t := fun e χ => corr_box (Y := (thickObj R I e (G₁ ⊗ G₂)).left) (Y₁ := (thickObj R I e G₁).left) (Y₂ := (thickObj R I e G₂).left) (W := (thickObj R I (e + 1) (G₁ ⊗ G₂)).left) (W₁ := (thickObj R I (e + 1) G₁).left) (W₂ := (thickObj R I (e + 1) G₂).left) D.toPre.P.isLB D₁.toPre. …`. Use `w := w`. Use `w_gen := w_gen`. Use `w_rig := fun e => GlobalTheory.ProdUnif.rigAlong_box (T := (thickObj R I e (G₁ ⊗ G₂)).left) (T₁ := (thickObj R I e G₁).left) (T₂ := (thickObj R I e G₂).left) wM wL (U₁.w e) (U₂.w e) D.toPre.P.isLB D₁.toPre.P.isLB D₂.toPre.P.isLB L.isLB U₁.LG.isLB U₂.LG.isLB (hp₁ e) (hp₂ e) (thick …`.
+
+Use `w_even := fun e => by`. Use `(gt e).q_hom` as an intermediate fact. Use `(U₁.gt e).q_hom` as an intermediate fact. Use `(U₂.gt e).q_hom` as an intermediate fact. Conclude with `GlobalTheory.ProdUnif.even_box₂ (T := (thickObj R I e (G₁ ⊗ G₂)).left) (T₁ := (thickObj R I e G₁).left) (T₂ := (thickObj R I e G₂).left) wM wL (U₁.w e) (U₂.w e) D.toPre.P.isLB D₁.toPre.P.isLB D₂.toPre.P.isLB L.isLB U₁.LG.isLB U₂.LG.isLB (hp₁ e) (hp₂ e) (thick_fstG I e _) (thick_f …`.
+
+Use `w_cub := fun e => GlobalTheory.T.thickeningProductIso_preserves_cubicalStructure R I D₁ A₁ G₁ U₁ D₂ A₂ G₂ U₂ D p₁ p₂ q₁ q₂ hD wM L.L c.t wL L.isLB mc lc e (gt e) (hp₁ e) (hp₂ e) (w e) (Q e)`. Use `w_compat := fun e => GlobalTheory.ProdUnif.compat_box₂ (T := (thickObj R I e (G₁ ⊗ G₂)).left) (T₁ := (thickObj R I e G₁).left) (T₂ := (thickObj R I e G₂).left) wM wL (U₁.w e) (U₂.w e) D.toPre.P.isLB D₁.toPre.P.isLB D₂.toPre.P.isLB L.isLB U₁.LG.isLB U₂.LG.isLB (hp₁ e) (hp₂ e) (thi …`. Use the proof step `wL, ⟨gen₁, gen₂, ⟨wL, hwLgen⟩, hq₁, hq₂, hi₁, hi₂⟩, hwLgen, ht, Q⟩`.
+-/
 theorem exists_pre (hD : IsSumDeg D.toPre D₁.toPre D₂.toPre p₁ p₂ q₁ q₂) (hA : IsSumPolAV A A₁ A₂ a₁ a₂)
     (U₁ : UnifPre I D₁ A₁ G₁) (U₂ : UnifPre I D₂ A₂ G₂)
     (wM : LB.Iso D.toPre.P.L (extLB D₁.toPre.P.L D₂.toPre.P.L p₁.left p₂.left))
@@ -249,6 +288,15 @@ theorem exists_pre (hD : IsSumDeg D.toPre D₁.toPre D₂.toPre p₁ p₂ q₁ q
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Take `⟨r₁, hr₁, σ₁, f₁, a₁, b₁, c₁⟩` from `H₁`. Take `⟨r₂, hr₂, σ₂, f₂, a₂, b₂, c₂⟩` from `H₂`. Use `hD.hom₁` as an intermediate fact. Use `hD.hom₂` as an intermediate fact. Take `⟨σ, hσ⟩` from `exists_boxSec (φ := fun _ : Fin 1 => 𝟙 (G₁ ⊗ G₂).left) (h₁ := (fst G₁ G₂).left) (h₂ := (snd G₁ G₂).left) wL hwL U₁.LG.isLB U₂.LG.isLB U.LG.isLB (fun _ => (Category.id_comp _).trans (Category.comp_id _).symm) (fun _ => (Category.id_comp _).trans (Category.comp_id _).symm) σ₁ σ₂`.
+
+Use `choose f hf using fun α => exists_boxSec wM hwM D₁.toPre.P.isLB D₂.toPre.P.isLB D.toPre.P.isLB (famφB_pr hD.c_pr₁ α) (famφB_pr hD.c_pr₂ α) (f₁ (q₁ α)) (f₂ (q₂ α))`. Use `⟨r₁ * r₂, mul_ne_zero hr₁ hr₂, σ, f, ?_, fun α => ?_, fun e => ?_⟩` and prove the remaining obligations. Use `secScal_box U.LG.isLB U₁.LG.isLB U₂.LG.isLB (fun _ => Category.comp_id _) (pullback.lift_fst _ _ _).symm (pullback.lift_fst _ _ _).symm hs hσ ?_ ?_ a₁ a₂` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ jK R) (Over.w ((Over.pullback (jK R)).map (fst G₁ G₂))))`. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ jK R) (Over.w ((Over.pullback (jK R)).map (snd G₁ G₂))))`.
+
+Use `secScal_box D.toPre.P.isLB D₁.toPre.P.isLB D₂.toPre.P.isLB (fun a => ?_) (congrArg (fun m => m.left) (whiskerLeft_snd (TF (R := R) (FractionRing R)) p₁).symm) (congrArg (fun m => m.left) (whiskerLeft_snd (TF (R := R) (FractionRing R)) p₂).symm) (hE α) (hf α) (Over.w _) (Over.w _) …` and prove the remaining obligations. Conclude with `Category.comp_id _`. Use `congrArg (fun m : DegPre.BF D.toPre (FractionRing R) ⟶ D.toPre.P.A => m.left) (?_ : DegPre.prB D.toPre (FractionRing R) ≫ (𝟙 _ * cP D.toPre _ α) = DegPre.prB D.toPre (FractionRing R) * cP D.toPre _ α)` and prove the remaining obligations. Rewrite using `[MonObj.comp_mul, Category.comp_id, comp_cP]`. Conclude with `congrArg (fun m => m.left) (comp_cP D.toPre (DegPre.prB D.toPre (FractionRing R)) α)`.
+
+Conclude with `congrArg (fun m : DegPre.BF D.toPre (FractionRing R) ⟶ D.toPre.P.A => m.left) (MonObj.comp_one (M := D.toPre.P.A) (DegPre.prB D.toPre (FractionRing R)))`. Conclude with `GlobalTheory.T.expansionModIdealPow_boxProduct_eq_boxProduct R I D₁ A₁ G₁ U₁ D₂ A₂ G₂ U₂ D p₁ p₂ q₁ q₂ A U hD.xsum wM wL e k (congrArg (fun z => z.left) (pG_pr (hU.q_pr₁ e))) (congrArg (fun z => z.left) (pG_pr (hU.q_pr₂ e))) (ht e) (Q e) σ σ₁ σ₂ f f₁ f₂ hσ hf (c₁ e) (c₂ e)`.
+-/
 theorem expands_box (hD : IsSumDeg D.toPre D₁.toPre D₂.toPre p₁ p₂ q₁ q₂)
     {U₁ : UnifPre I D₁ A₁ G₁} {U₂ : UnifPre I D₂ A₂ G₂} {U : UnifPre I D A (G₁ ⊗ G₂)}
     {wM : LB.Iso D.toPre.P.L (extLB D₁.toPre.P.L D₂.toPre.P.L p₁.left p₂.left)} (hwM : wM.IsGen)
@@ -297,6 +345,19 @@ theorem expands_box (hD : IsSumDeg D.toPre D₁.toPre D₂.toPre p₁ p₂ q₁ 
       (congrArg (fun z => z.left) (pG_pr (hU.q_pr₁ e))) (congrArg (fun z => z.left) (pG_pr (hU.q_pr₂ e))) (ht e) (Q e)
       σ σ₁ σ₂ f f₁ f₂ hσ hf (c₁ e) (c₂ e)
 
+/- English proof (translation)
+Take `⟨wM, hM, hψ⟩` from `GlobalTheory.ProdUnif.exists_strBox_of_isSumDeg R _ _ _ p₁ p₂ q₁ q₂ hD`. Take `⟨U, wL, hU, hwL, ht, Q⟩` from `exists_pre hD hA U₁.toUnifPre U₂.toUnifPre wM hM`. Use `⟨⟨U, fun k hk => ?_⟩, hU⟩` and prove the remaining obligations. Take `⟨hL, hL₂⟩` from `GlobalTheory.abelianSchemeLaws_all`. Take `⟨hf₁, hd₁⟩` from `GlobalTheory.FamDimension.main hL.globalFns hL.cube hL.square hL₂.secTwist R I D₁ (FractionRing R) k hk`.
+
+Take `⟨hf₂, hd₂⟩` from `GlobalTheory.FamDimension.main hL.globalFns hL.cube hL.square hL₂.secTwist R I D₂ (FractionRing R) k hk`. Take `⟨hf, hd⟩` from `GlobalTheory.FamDimension.main hL.globalFns hL.cube hL.square hL₂.secTwist R I D (FractionRing R) k hk`. Establish `hg` using `GlobalTheory.ProdDim.g_eq_add _ D.toPre.P D₁.toPre.P D₂.toPre.P p₁ p₂ inferInstance hD.lim`. Establish `hg'` using `GlobalTheory.ProdDim.g_eq_add _ A A₁ A₂ a₁ a₂ inferInstance hA.lim`. Establish `hr : D.toPre.rank = D₁.toPre.rank + D₂.toPre.rank` using `by show Module.finrank ℤ D.toPre.X = Module.finrank ℤ D₁.toPre.X + Module.finrank ℤ D₂.toPre.X`.
+
+Rewrite using `[(AddEquiv.ofBijective _ hD.xsum).toIntLinearEquiv.finrank_eq, Module.finrank_prod]`. Establish `n₁` using `GlobalTheory.ProdUnif.famDim_of_expBij R I D₁ A₁ G₁ U₁.toUnifPre k hk (U₁.expand k hk)`. Establish `n₂` using `GlobalTheory.ProdUnif.famDim_of_expBij R I D₂ A₂ G₂ U₂.toUnifPre k hk (U₂.expand k hk)`. Set `b₁` to `Module.finBasisOfFinrankEq (FractionRing R) (Fam D₁.toPre (FractionRing R) k) n₁`. Set `b₂` to `Module.finBasisOfFinrankEq (FractionRing R) (Fam D₂.toPre (FractionRing R) k) n₂`.
+
+Use `choose σ₁ hσ₁ using fun l => ((U₁.expand k hk).2 (b₁ l)).exists`. Use `choose σ₂ hσ₂ using fun l => ((U₂.expand k hk).2 (b₂ l)).exists`. Use `choose b hb using fun a : Fin (k ^ A₁.g) × Fin (k ^ A₂.g) => GlobalTheory.T.exists_boxFamily_productDegeneration R _ _ _ p₁ p₂ q₁ q₂ hD wM hM.1 hM.2.1 hψ (FractionRing R) k (b₁ a.1) (b₂ a.2)`. Use `choose σ hσ using fun a : Fin (k ^ A₁.g) × Fin (k ^ A₂.g) => exists_boxSec (Y := pullback (G₁ ⊗ G₂).hom (jK R)) (Y₁ := pullback G₁.hom (jK R)) (Y₂ := pullback G₂.hom (jK R)) (φ := fun _ : Fin 1 => pullback.fst (G₁ ⊗ G₂).hom (jK R)) (h₁ := ((Over.pullback (jK R)).map (fst G₁ G₂)). …`. Establish `hli` using `GlobalTheory.T.boxFamily_linearIndependent_productDegeneration R _ _ _ p₁ p₂ q₁ q₂ hD wM (FractionRing R) k _ _ b₁ b₂ b b₁.linearIndependent b₂.linearIndependent hb`.
+
+Establish `hc : Fintype.card (Fin (k ^ A₁.g) × Fin (k ^ A₂.g)) = k ^ A₁.g * k ^ A₂.g`. Rewrite using `[Fintype.card_prod, Fintype.card_fin, Fintype.card_fin]`. Establish `hcard : Fintype.card (Fin (k ^ A₁.g) × Fin (k ^ A₂.g)) = Module.finrank (FractionRing R) (Fam D.toPre (FractionRing R) k)`. Rewrite using `[hc, ← n₁, ← n₂, hd, hd₁, hd₂, hr, hg, ← pow_add, add_add_add_comm]`. Use `haveI : Nonempty (Fin (k ^ A₁.g) × Fin (k ^ A₂.g)) := ⟨⟨0, pow_pos hk _⟩, ⟨0, pow_pos hk _⟩⟩`.
+
+Use `GlobalTheory.ProdUnif.expBij_of_basis_card R I D A _ U k hR hk _ (basisOfLinearIndependentOfCardEqFinrank hli hcard) σ (by rw [hc, hg', pow_add]) (fun a => ?_)` and prove the remaining obligations. Rewrite using `[coe_basisOfLinearIndependentOfCardEqFinrank]`. Conclude with `expands_box hD hM.1 hwL hU ht Q (hσ a) (hb a) (hσ₁ _) (hσ₂ _)`.
+-/
 theorem exists_unif (hR : AdmBase R I) (hD : IsSumDeg D.toPre D₁.toPre D₂.toPre p₁ p₂ q₁ q₂)
     (hA : IsSumPolAV A A₁ A₂ a₁ a₂) (U₁ : Unif I D₁ A₁ G₁) (U₂ : Unif I D₂ A₂ G₂) :
     ∃ U : Unif I D A (G₁ ⊗ G₂), IsProdUnif U₁.toUnifPre U₂.toUnifPre U.toUnifPre p₁ p₂ q₁ q₂ a₁ a₂ := by
@@ -342,6 +403,9 @@ theorem exists_unif (hR : AdmBase R I) (hD : IsSumDeg D.toPre D₁.toPre D₂.to
 
 end Main
 
+/- English proof (translation)
+Introduce `R _ _ _ hR D₁ A₁ G₁ _ _ U₁ D₂ A₂ G₂ _ _ U₂ D A p₁ p₂ q₁ q₂ a₁ a₂ hD hA`. Conclude with `exists_unif hR.1 hD hA U₁ U₂`.
+-/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D₁ : DegData R (maximalIdeal R)) (A₁ : PolAV (Sp (FractionRing R))) (G₁ : Over (Sp R)) [GrpObj G₁] [IsCommMonObj G₁] (U₁ : Unif (maximalIdeal R) D₁ A₁ G₁) (D₂ : DegData R (maximalIdeal R)) (A₂ : PolAV (Sp (FractionRing R))) (G₂ : Over (Sp R)) [GrpObj G₂] [IsCommMonObj G₂] (U₂ : Unif (maximalIdeal R) D₂ A₂ G₂) (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (p₁ : D.toPre.P.A ⟶ D₁.toPre.P.A) (p₂ : D.toPre.P.A ⟶ D₂.toPre.P.A) (q₁ : D.toPre.X →+ D₁.toPre.X) (q₂ : D.toPre.X →+ D₂.toPre.X) (a₁ : A.A ⟶ A₁.A) (a₂ : A.A ⟶ A₂.A), IsSumDeg D.toPre D₁.toPre D₂.toPre p₁ p₂ q₁ q₂ → IsSumPolAV A A₁ A₂ a₁ a₂ → ∃ U : Unif (maximalIdeal R) D A (G₁ ⊗ G₂), IsProdUnif U₁.toUnifPre U₂.toUnifPre U.toUnifPre p₁ p₂ q₁ q₂ a₁ a₂ := by
   intro R _ _ _ hR D₁ A₁ G₁ _ _ U₁ D₂ A₂ G₂ _ _ U₂ D A p₁ p₂ q₁ q₂ a₁ a₂ hD hA
   exact exists_unif hR.1 hD hA U₁ U₂

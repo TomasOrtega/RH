@@ -9,6 +9,17 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT NumberField IsDedekindDomain Polynomial GlobalTheory.HeightCounting GlobalTheory.RowTie GlobalTheory.SplitRead GlobalTheory.NPin
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace GlobalTheory.MuUnrTie
+/- English proof (translation)
+Introduce `_ hL D P i hl w hw`. Establish `hj` using `D.nd.j_range i`. Set `j : Fin D.R.m` to `⟨D.nd.j i - 1, by omega⟩`. Establish `hjj : j.1 + 1 = D.nd.j i` using `by simp only [j]; omega`. Establish `hlp : (D.nd.l i).Prime` using `(D.nd.lPrime i).out`.
+
+Rewrite using `[P.chr.unr_iff, P.chr.tw, P.chr.muC i j hjj, P.chr.etaTinv]`. Use `GlobalTheory.MuTameQS.unrAt_mul ?_ (unrAt_inv (P.cf.isEta.unr w))` and prove the remaining obligations. Unfold `TupTied.tup`. Use `GlobalTheory.MuTameQS.unrAt_mul ?_ ?_` and prove the remaining obligations. Use `(P.cf.isMu0 j).unr w fun k hk => ?_` and prove the remaining obligations.
+
+Establish `e` using `eq_of_over_two hlp (D.host.g_prime k) w hw hk`. Apply `hl` to reduce the goal to its premises. Rewrite using `[e]`. Apply the tactic sequence `fin_cases k <;> simp [TwistedPlaces.gset]`. Rewrite using `[D.nd.mu_w i, P.tp.xi_tw, D.nd.w_l i]`.
+
+Use `GlobalTheory.MuTameQS.unrAt_mul ?_ ?_` and prove the remaining obligations. Unfold `CharFrame.delAt split_ifs with h`. Use `P.cf.isDel'.unr w fun ho => D.host.pde_ne ?_` and prove the remaining obligations. Rewrite using `[← h]`. Conclude with `eq_of_over_two hlp D.host.pde'_prime w hw ho`.
+
+Use `P.cf.isDel.unr w fun ho => h ?_` and prove the remaining obligations. Conclude with `eq_of_over_two hlp D.host.pde_prime w hw ho`. Establish `hpsi` using `P.tp.psi_is (D.nd.w i) (D.nd.w_tw i)`. Rewrite `hpsi` using `[D.nd.w_l i, ← P.Q_eq i]`. Conclude with `(hpsi.ram w).2 fun hq => D.nd.SQ_l i w (Or.inr hq) hw`.
+-/
 theorem main_alt_alt : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D),
     GlobalTheory.HubX.MuUnr D := by
   intro _ hL D P i hl w hw

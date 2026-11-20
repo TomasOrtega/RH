@@ -14,6 +14,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 def leftTr (h : GAd σ J) : Module.End ℂ (GAd σ J → ℂ) := LinearMap.funLeft ℂ ℂ (fun g => h * g)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem leftTr_apply (h : GAd σ J) (f : GAd σ J → ℂ) (g : GAd σ J) : leftTr σ J h f g = f (h * g) := rfl
 
 variable (F) in

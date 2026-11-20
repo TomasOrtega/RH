@@ -18,6 +18,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.GL2Factorization.EmC
 
+/- English proof (translation)
+Establish `hd : (!![h.val 0 0, h.val 0 1, 0; h.val 1 0, h.val 1 1, 0; 0, 0, 1] : Matrix (Fin 3) (Fin 3) ℝ).det ≠ 0`. Establish `h0 : h.val.det ≠ 0` using `(Matrix.isUnits_det_units h).ne_zero`. Rewrite `h0` using `[Matrix.det_fin_two]`. Rewrite using `[Matrix.det_fin_three]`. Simplify using `only [Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, Matrix.cons_val_fin_one]`.
+
+Introduce `hh`. Apply `h0` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[GL2LocalData.emR, dif_pos hd]`. Both sides reduce to the same expression.
+-/
 theorem emR_coe (h : GL (Fin 2) ℝ) :
     ((GL2LocalData.emR h : GL (Fin 3) ℝ) : Matrix (Fin 3) (Fin 3) ℝ) =
       !![h.val 0 0, h.val 0 1, 0; h.val 1 0, h.val 1 1, 0; 0, 0, 1] := by
@@ -34,6 +39,15 @@ theorem emR_coe (h : GL (Fin 2) ℝ) :
   rw [GL2LocalData.emR, dif_pos hd]
   rfl
 
+/- English proof (translation)
+Introduce `a b k hk`. Prove the components needed by the constructor for the conclusion. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, emR_coe, emR_coe]`. Use extensionality with `i j`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[dg, dg2, Matrix.mul_apply, Fin.sum_univ_two, Fin.sum_univ_three]`. Establish `e00` using `congrFun (congrFun hk 0) 0`. Establish `e01` using `congrFun (congrFun hk 0) 1`. Establish `e10` using `congrFun (congrFun hk 1) 0`.
+
+Establish `e11` using `congrFun (congrFun hk 1) 1`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.transpose_apply, Matrix.one_apply] at e00 e01 e10 e11`. Use `show ((GL2LocalData.emR k : GL (Fin 3) ℝ) : Matrix (Fin 3) (Fin 3) ℝ) * ((GL2LocalData.emR k : GL (Fin 3) ℝ) : Matrix (Fin 3) (Fin 3) ℝ)ᵀ = 1`. Rewrite using `[emR_coe]`. Use extensionality with `i j`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_three] <;> simp_all`.
+-/
 theorem emR_iwasawa : ∀ (a b : ℝˣ) (k : GL (Fin 2) ℝ), k.val * k.valᵀ = 1 →
     GL2LocalData.emR (dg2 (a * b) b * k) = dg (a * b) b 1 * GL2LocalData.emR k ∧ GL2LocalData.emR k ∈ O3 := by
   intro a b k hk

@@ -3,6 +3,11 @@ open Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨κ, a, ha, hsp, hli⟩` from `exists_linearIndependent' K M.row`. Use `haveI : Finite κ := Finite.of_injective a ha`. Use `letI : Fintype κ := Fintype.ofFinite κ`. Establish `hκ : Fintype.card κ = M.rank`. Rewrite using `[← finrank_span_eq_card hli, hsp, ← Matrix.rank_eq_finrank_span_row]`.
+
+Establish `hle : Fintype.card (Fin ρ) ≤ Fintype.card κ` using `by rw [hκ, Fintype.card_fin]; exact h`. Take `⟨f⟩` from `Function.Embedding.nonempty_of_card_le hle`. Conclude with `⟨a ∘ f, hli.comp f f.injective⟩`.
+-/
 theorem exists_rows_linearIndependent_of_le_rank {K m n : Type} [Field K] [Fintype m] [Fintype n]
     (ρ : ℕ) (M : Matrix m n K) (h : ρ ≤ M.rank) :
     ∃ S : Fin ρ → m, LinearIndependent K (M.submatrix S id).row := by
@@ -16,6 +21,13 @@ theorem exists_rows_linearIndependent_of_le_rank {K m n : Type} [Field K] [Finty
   obtain ⟨f⟩ := Function.Embedding.nonempty_of_card_le hle
   exact ⟨a ∘ f, hli.comp f f.injective⟩
 
+/- English proof (translation)
+Introduce `k _ A D _ _ _ _ ρ Y h`. Take `⟨S, hS⟩` from `exists_rows_linearIndependent_of_le_rank ρ Y h`. Establish `hZ : (Y.submatrix S id).rank = ρ`. Rewrite using `[Matrix.rank_eq_finrank_span_row, finrank_span_eq_card hS, Fintype.card_fin]`. Establish `hZt : ρ ≤ (Y.submatrix S id)ᵀ.rank` using `by rw [Matrix.rank_transpose, hZ]`.
+
+Take `⟨τ, hτ⟩` from `exists_rows_linearIndependent_of_le_rank ρ (Y.submatrix S id)ᵀ hZt`. Use `⟨S, τ, ?_⟩` and prove the remaining obligations. Establish `hu` using `(Matrix.isUnit_iff_isUnit_det _).1 (Matrix.linearIndependent_rows_iff_isUnit.1 hτ)`. Establish `e : (Y.submatrix S id)ᵀ.submatrix τ id = (Y.submatrix S τ)ᵀ` using `by ext i j; rfl`. Rewrite `hu` using `[e, Matrix.det_transpose]`.
+
+Conclude with `hu.ne_zero`.
+-/
 theorem exists_submatrix_det_ne_zero_of_le_rank :
     ∀ (k : Type) [Field k] (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D]
       (ρ : ℕ) (Y : Matrix A D k), ρ ≤ Y.rank → ∃ S : Fin ρ → A, ∃ τ : Fin ρ → D,

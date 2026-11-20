@@ -12,6 +12,19 @@ namespace GlobalTheory.SmoothForms.Cover
 
 open NumberField IsDedekindDomain Topology
 
+/- English proof (translation)
+Take `⟨W, hW, hWU⟩` from `isOpen_induced_iff.1 hU`. Establish `h1 : (1 : G) ∈ W`. Establish `: (1 : H) ∈ (U : Set H)` using `U.one_mem`. Rewrite `this` using `[← hWU]`. Conclude with `this`.
+
+Establish `hc : Continuous fun p : G × G => p.1⁻¹ * p.2` using `by fun_prop`. Establish `h2 : (fun p : G × G => p.1⁻¹ * p.2) ⁻¹' W ∈ 𝓝 ((1, 1) : G × G)` using `(hW.preimage hc).mem_nhds (by simpa using h1)`. Take `⟨A, hA, B, hB, hAB⟩` from `mem_nhds_prod_iff.1 h2`. Take `⟨t, -, ht⟩` from `hK.elim_nhds_subcover (fun x => (fun y => x⁻¹ * y) ⁻¹' (A ∩ B)) (fun x _ => by`. Establish `: Continuous fun y : G => x⁻¹ * y` using `by fun_prop`.
+
+Conclude with `this.continuousAt.preimage_mem_nhds (by simpa using ⟨hA, hB⟩))`. Establish `hch : ∀ x : G, (∃ s ∈ Ω, x⁻¹ * (s : G) ∈ A ∩ B) → ∃ s ∈ Ω, x⁻¹ * (s : G) ∈ A ∩ B` using `fun _ h => h`. Use `choose f hf hf' using hch`. Use `⟨(t.filter fun x => ∃ s ∈ Ω, x⁻¹ * (s : G) ∈ A ∩ B).attach.image fun x => f x.1 (by have h := x.2; rw [Finset.mem_filter] at h; exact h.2), ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+
+Take `⟨y, -, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `hf _ _`. Introduce `k hk`. Take `⟨x, hx, hxk⟩` from `Set.mem_iUnion₂.1 (ht (hΩ k hk))`. Establish `hex : ∃ s ∈ Ω, x⁻¹ * (s : G) ∈ A ∩ B` using `⟨k, hk, hxk⟩`.
+
+Use `⟨f x hex, Finset.mem_image.2 ⟨⟨x, Finset.mem_filter.2 ⟨hx, hex⟩⟩, Finset.mem_attach _ _, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h3` using `hAB (Set.mk_mem_prod (hf' x hex).1 hxk.2)`. Establish `h4 : (x⁻¹ * (f x hex : G))⁻¹ * (x⁻¹ * (k : G)) = (((f x hex)⁻¹ * k : H) : G)` using `by push_cast; group`. Express the relevant statement in the definitionally equal form `_ ∈ (U : Set H)`. Rewrite using `[← hWU]`.
+
+Express the relevant statement in the definitionally equal form `_ ∈ W`. Rewrite using `[← h4]`. Conclude with `h3`.
+-/
 theorem exists_finset_of_compact {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (H : Subgroup G) (U : Subgroup H) (hU : IsOpen (U : Set H)) (K : Set G) (hK : IsCompact K)
     (Ω : Set H) (hΩ : ∀ k ∈ Ω, (k : G) ∈ K) :
@@ -49,6 +62,9 @@ theorem exists_finset_of_compact {G : Type} [Group G] [TopologicalSpace G] [IsTo
     rw [← h4]
     exact h3
 
+/- English proof (translation)
+Establish `h1 : IsCompact {m : Matrix (Fin n) (Fin n) A | ∀ i j, m i j ∈ C i j}` using `isCompact_pi_infinite fun i => isCompact_pi_infinite (hC i)`. Establish `h2` using `(Units.isClosedEmbedding_embedProduct (α := Matrix (Fin n) (Fin n) A)).isCompact_preimage (h1.prod (h1.image MulOpposite.continuous_op))`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, Units.embedProduct_apply, Set.mem_prod, Set.mem_image, MulOpposite.op_inj, exists_eq_right, forall_and]`.
+-/
 theorem isCompact_GL {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A] [T2Space A] {n : ℕ}
     (C : Fin n → Fin n → Set A) (hC : ∀ i j, IsCompact (C i j)) :
     IsCompact {g : GL (Fin n) A | ∀ i j, g.1 i j ∈ C i j ∧ (g⁻¹).1 i j ∈ C i j} := by
@@ -61,6 +77,19 @@ theorem isCompact_GL {A : Type} [CommRing A] [TopologicalSpace A] [IsTopological
   simp only [Set.mem_setOf_eq, Set.mem_preimage, Units.embedProduct_apply, Set.mem_prod, Set.mem_image,
     MulOpposite.op_inj, exists_eq_right, forall_and]
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (Af D.host.F) (Af D.host.F ⊗[D.host.F] D.host.E) := ⟨rfl⟩`. Use `haveI : Module.Finite D.host.F D.host.E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Use `haveI : IsTopologicalRing (Af D.host.F ⊗[D.host.F] D.host.E) := IsModuleTopology.isTopologicalRing (Af D.host.F) _`. Set `b` to `RingOfIntegers.basis D.host.E`. Set `O : AddSubgroup (Af D.host.F)` to `{ carrier := {a | ∀ v, a v ∈ v.adicCompletionIntegers D.host.F} zero_mem' := fun v => zero_mem _ add_mem' := fun ha hb v => add_mem (ha v) (hb v) neg_mem' := fun ha v => neg_mem (ha v) }`.
+
+Set `φ : (Module.Free.ChooseBasisIndex ℤ (𝓞 D.host.E) → Af D.host.F) →+ Af D.host.F ⊗[D.host.F] D.host.E` to `{ toFun := fun a => ∑ i, a i • ((1 : Af D.host.F) ⊗ₜ[D.host.F] (b i : D.host.E)) map_zero' := by simp map_add' := fun x y => by simp [add_smul, Finset.sum_add_distrib] }`. Establish `hφ : Continuous φ` using `continuous_finset_sum _ fun i _ => (continuous_apply i).fun_smul continuous_const`. Establish `hle : intAE D ≤ (AddSubgroup.pi Set.univ fun _ => O).map φ`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `y ⟨a, ha, x, rfl⟩`.
+
+Use `⟨fun i => b.repr x i • a, fun i _ => zsmul_mem (show a ∈ O from ha) _, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∑ i, (b.repr x i • a) • ((1 : Af D.host.F) ⊗ₜ[D.host.F] (b i : D.host.E)) = _`. Use `conv_rhs => rw [← b.sum_repr x]`. Express the relevant statement in the definitionally equal form `_ = a ⊗ₜ[D.host.F] (algebraMap (𝓞 D.host.E) D.host.E _)`. Rewrite using `[map_sum, TensorProduct.tmul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, smul_assoc, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Conclude with `(map_zsmul (TensorProduct.mk D.host.F (Af D.host.F) D.host.E a) _ _).symm`. Establish `hO : IsCompact (Set.pi Set.univ fun _ : Module.Free.ChooseBasisIndex ℤ (𝓞 D.host.E) => (O : Set (Af D.host.F)))` using `isCompact_univ_pi fun _ => GlobalTheory.AdeleCocompact.isCompact_integral D.host.F`. Set `c : Af D.host.F` to `algebraMap D.host.F (Af D.host.F) (d : D.host.F)⁻¹`.
+
+Establish `hcs : Continuous fun y : Af D.host.F ⊗[D.host.F] D.host.E => c • y` using `(continuous_const (y := c)).fun_smul continuous_id`. Use `⟨(fun y => c • y) '' (φ '' _), (hO.image hφ).image hcs, fun y hy => ?_⟩` and prove the remaining obligations. Use `⟨d • y, hle hy, ?_⟩` and prove the remaining obligations. Establish `: (d : D.host.F) ≠ 0` using `Nat.cast_ne_zero.mpr hd.ne'`. Express the relevant statement in the definitionally equal form `c • d • y = y`.
+
+Rewrite using `[← Nat.cast_smul_eq_nsmul (Af D.host.F), smul_smul, ← map_natCast (algebraMap D.host.F (Af D.host.F)) d, ← map_mul, inv_mul_cancel₀ this, map_one, one_smul]`.
+-/
 theorem exists_compact_denom (D : D7) (d : ℕ) (hd : 0 < d) :
     ∃ C : Set (Af D.host.F ⊗[D.host.F] D.host.E), IsCompact C ∧ ∀ y, d • y ∈ intAE D → y ∈ C := by
   classical
@@ -105,6 +134,17 @@ theorem exists_compact_denom (D : D7) (d : ℕ) (hd : 0 < d) :
   rw [← Nat.cast_smul_eq_nsmul (Af D.host.F), smul_smul,
     ← map_natCast (algebraMap D.host.F (Af D.host.F)) d, ← map_mul, inv_mul_cancel₀ this, map_one, one_smul]
 
+/- English proof (translation)
+Introduce `D V U hU d hd`. Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Use `haveI : Module.Finite D.host.F D.host.E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Use `haveI : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField D.host.F`.
+
+Take `⟨e0⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := D.host.F) (E := D.host.E) (AF D.host.F)`. Use `haveI : T2Space (AE D) := e0.isEmbedding.t2Space`. Take `⟨C, hC, hCd⟩` from `exists_compact_denom D d hd`. Take `⟨e, he, -, hc⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Set `C' : Fin V.rank → Fin V.rank → Set (AE D)` to `fun i j => e.symm '' ({(1 : Matrix (Fin V.rank) (Fin V.rank) (Ainf D.host.F ⊗[D.host.F] D.host.E)) i j} ×ˢ C)`.
+
+Establish `hC' : ∀ i j, IsCompact (C' i j)` using `fun i j => (isCompact_singleton.prod hC).image hc`. Establish `key : ∀ k ∈ GfC V, (∀ i j, d • finMat D.sp.cm.sig V.gram k i j ∈ intAE D) → ∀ i j, (matHom V k).1 i j ∈ C' i j`. Introduce `k hk h i j`. Use `⟨e ((matHom V k).1 i j), ⟨?_, ?_⟩, e.symm_apply_apply _⟩` and prove the remaining obligations. Rewrite using `[(he _).1]`.
+
+Establish `h1 : (infHom V k).1 i j = _` using `congrArg (fun g => g.1 i j) (MonoidHom.mem_ker.1 hk)`. Conclude with `h1`. Rewrite using `[(he _).2]`. Conclude with `hCd _ (h i j)`. Take `⟨S, hS, hS'⟩` from `exists_finset_of_compact (HR (AF D.host.F) D.sp.cm.sig V.gram) U hU _ (isCompact_GL C' hC') {k : GA D V | k ∈ GfC V ∧ BddDen V d k} (fun k hk i j => ⟨key k hk.1 (fun i j => (hk.2 i j).1) i j, key k⁻¹ (inv_mem hk.1) (fun i j => (hk.2 i j).2) i j⟩)`.
+
+Use `⟨S, fun k hk hb => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hxk⟩` from `hS' k ⟨hk, hb⟩`. Conclude with `⟨x, hx, hxk, mul_mem (inv_mem (hS x hx).1) hk⟩`.
+-/
 theorem exists_finset_cover : ∀ (D : D7) (V : HSp D) (U : Subgroup (GA D V)), IsOpen (U : Set (GA D V)) → ∀ d : ℕ, 0 < d → ∃ S : Finset (GA D V), ∀ k ∈ GfC V, BddDen V d k → ∃ x ∈ S, x⁻¹ * k ∈ U ∧ x⁻¹ * k ∈ GfC V := by
   intro D V U hU d hd
   haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩

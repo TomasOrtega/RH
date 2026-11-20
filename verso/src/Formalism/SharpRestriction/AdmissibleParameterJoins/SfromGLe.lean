@@ -11,10 +11,19 @@ open NumberField Formalism.HermitianLatticesTheory Formalism.BasicNotions
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem lowest_K_type_integral_formula (D : D7) (h : PlaceDegreeData.DiscreteSeriesLowestKTypeFormula D) : StandardLattice.SmallPrimeLengthBound D := h
 
+/- English proof (translation)
+The claim follows from `massRatio_host_of D h`.
+-/
 theorem mass_ratio_alt (D : D7) (h : StandardLattice.MassRatio₂ D) : LocalBesselAndTopKernel.FamilySchurFormalDegree D := massRatio_host_of D h
 
+/- English proof (translation)
+Introduce `x i` and use `mass_ratio_alt (Fm.D x i) (h x i)`.
+-/
 theorem family_mass_ratio {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (h : ∀ x (i : Fm.Ix x), StandardLattice.MassRatio₂ (Fm.D x i)) :
     LocalBesselAndTopKernel.SecondSizeStatement Fm :=
   fun x i => mass_ratio_alt (Fm.D x i) (h x i)
@@ -26,18 +35,31 @@ def IdxRowTie (D : D7) : Prop := StandardLattice.idxSig D (D.host.g 0) (D.host.g
 def ColHyp (D : D7) : Prop :=
   StandardLattice.GBig D ∧ (∀ i, StandardLattice.SplitsF D (D.host.g i)) ∧ ∀ u : D.what₂.Word, StandardLattice.SplitsF D (D.mem u).A.T ∧ StandardLattice.Mu0Tie D u
 
+/- English proof (translation)
+Simplify using `only [sigYD, Ranks.rankY, Ranks.r, zero_mul, add_zero]`. Establish `h1` using `R.m_add_three_le_k`. Establish `h2` using `R.two_le_m`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem signature_at_zero_sum (R : Ranks) : (sigYD R 0).1 + (sigYD R 0).2 = R.r := by
   simp only [sigYD, Ranks.rankY, Ranks.r, zero_mul, add_zero]
   have h1 := R.m_add_three_le_k
   have h2 := R.two_le_m
   omega
 
+/- English proof (translation)
+Simplify using `only [sigYD, Ranks.rankY, Ranks.r, zero_mul, add_zero]`. Establish `h1` using `R.m_add_three_le_k`. Establish `h2` using `R.two_le_m`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem two_le_signature_at_zero (R : Ranks) : 2 ≤ (sigYD R 0).1 := by
   simp only [sigYD, Ranks.rankY, Ranks.r, zero_mul, add_zero]
   have h1 := R.m_add_three_le_k
   have h2 := R.two_le_m
   omega
 
+/- English proof (translation)
+Introduce `V _ _ _ _ h L _`. Use `⟨fun hL u => ?_, fun hL => ?_⟩` and prove the remaining obligations. Establish `e` using `h4 hc.1 hc.2.1 u (hc.2.2 u).1 (hc.2.2 u).2`. Establish `em : mass h L = StandardLattice.massI D D.R.k` using `mass_ortho_eq hL (std_ortho D.host.E D.R.k)`. Rewrite using `[em, ← t1]`.
+
+Conclude with `e`. Establish `em : mass h L = StandardLattice.massI D D.R.r` using `mass_ortho_eq hL (std_ortho D.host.E D.R.r)`. Establish `ev : D.vol (D.sp.Y 0) = StandardLattice.massI D ((sigYD D.R 0).1 + (sigYD D.R 0).2)` using `h2.2 (D.sp.Y 0) _ _ (D.sp.Y_sig 0) (fun τ => D.Y_sigval 0 (Nat.zero_le _) τ) (two_le_signature_at_zero D.R)`. Rewrite `ev` using `[signature_at_zero_sum]`. Rewrite using `[em, ← t2, hD, ← ev]`.
+
+Both sides reduce to the same expression.
+-/
 theorem column_row_ranks (D : D7) (Lv : LevelData D) (h4 : StandardLattice.Conclusion4f D Lv) (h2 : StandardLattice.VolumeEqMass₂ D)
     (hD : StandardLattice.FactDstar D) (hc : ColHyp D) (t1 : IdxColTie D) (t2 : IdxRowTie D) : LocalBesselAndTopKernel.FamilyMidVolume D := by
   intro V _ _ _ _ h L _
@@ -53,6 +75,9 @@ theorem column_row_ranks (D : D7) (Lv : LevelData D) (h4 : StandardLattice.Concl
     rw [em, ← t2, hD, ← ev]
     rfl
 
+/- English proof (translation)
+Take `⟨x0, hx0⟩` from `h`. Use `⟨x0, fun x hx i hh => ?_⟩` and prove the remaining obligations. Take `⟨⟨Lv, h4⟩, h2, hD, hc, t1, t2⟩` from `hx0 x hx i hh`. Conclude with `column_row_ranks _ Lv h4 h2 hD hc t1 t2`.
+-/
 theorem family_column_row_ranks {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (C0 Cg cb Cu cT CT : ℝ)
     (h : S.OwnEv Fm fun C' Cl x i => LocalBesselAndTopKernel.hyp (Fm.D x i) (Fm.L x i) C0 C' Cl Cg cb Cu cT CT →
       (∃ Lv : LevelData (Fm.D x i), StandardLattice.Conclusion4f (Fm.D x i) Lv) ∧ StandardLattice.VolumeEqMass₂ (Fm.D x i) ∧ StandardLattice.FactDstar (Fm.D x i) ∧

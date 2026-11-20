@@ -39,6 +39,9 @@ local notation "𝔹" => BDeRhamPlus (normInteger K) p
 local notation "𝔹dR" => BDeRham (normInteger K) p
 local notation "J" => RingHom.ker (fontaineThetaInvertP (normInteger K) p)
 
+/- English proof (translation)
+Rewrite using `[← map_ker_fontaineThetaInvertP K p, ha, Ideal.map_span, Set.image_singleton]`.
+-/
 theorem maximalIdeal_eq_span_of_ker_eq_span {a : 𝔸} (ha : J = span {a}) :
     maximalIdeal 𝔹 = span {toBDeRhamPlus 𝒪 p a} := by
   rw [← map_ker_fontaineThetaInvertP K p, ha, Ideal.map_span, Set.image_singleton]
@@ -48,26 +51,41 @@ variable (K p) in
 def varpi : 𝔹 := wittToBDeRhamPlus 𝒪 p (kerThetaGenerator K p)
 
 variable (K p) in
+/- English proof (translation)
+The claim follows from `maximalIdeal_bDeRhamPlus_eq_span (ker_fontaineTheta_eq_span_kerThetaGenerator K p)`.
+-/
 theorem maximalIdeal_eq_span_varpi : maximalIdeal 𝔹 = span {varpi K p} :=
   maximalIdeal_bDeRhamPlus_eq_span (ker_fontaineTheta_eq_span_kerThetaGenerator K p)
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Rewrite `hπ` using `[span_singleton_eq_bot.2 rfl]`. Conclude with `IsDiscreteValuationRing.not_a_field 𝔹 hπ`.
+-/
 theorem ne_zero_of_maximalIdeal_eq_span {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) : π ≠ 0 := by
   rintro rfl
   rw [span_singleton_eq_bot.2 rfl] at hπ
   exact IsDiscreteValuationRing.not_a_field 𝔹 hπ
 
 variable (K p) in
+/- English proof (translation)
+Use `Submonoid.subset_closure ⟨algebraMap _ 𝔸 (kerThetaGenerator K p), ?_, rfl⟩` and prove the remaining obligations. Conclude with `ker_fontaineThetaInvertP (ker_fontaineTheta_eq_span_kerThetaGenerator K p)`.
+-/
 theorem varpi_mem_bDeRhamSubmonoid : varpi K p ∈ bDeRhamSubmonoid 𝒪 p := by
   refine Submonoid.subset_closure ⟨algebraMap _ 𝔸 (kerThetaGenerator K p), ?_, rfl⟩
   exact ker_fontaineThetaInvertP (ker_fontaineTheta_eq_span_kerThetaGenerator K p)
 
 variable (K p) in
+/- English proof (translation)
+Use `Submonoid.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `mem_nonZeroDivisors_of_ne_zero (ne_zero_of_maximalIdeal_eq_span (maximalIdeal_eq_span_of_ker_eq_span ha))`.
+-/
 theorem bDeRhamSubmonoid_le_nonZeroDivisors : bDeRhamSubmonoid 𝒪 p ≤ nonZeroDivisors 𝔹 := by
   refine Submonoid.closure_le.2 ?_
   rintro _ ⟨a, ha, rfl⟩
   exact mem_nonZeroDivisors_of_ne_zero (ne_zero_of_maximalIdeal_eq_span
     (maximalIdeal_eq_span_of_ker_eq_span ha))
 
+/- English proof (translation)
+Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx (irreducible_wittToBDeRhamPlus (ker_fontaineTheta_eq_span_kerThetaGenerator K p))`. Rewrite using `[map_mul, map_pow]`. Conclude with `(u.isUnit.map _).mul ((IsLocalization.map_units (M := bDeRhamSubmonoid 𝒪 p) 𝔹dR ⟨varpi K p, varpi_mem_bDeRhamSubmonoid K p⟩).pow n)`.
+-/
 theorem isUnit_algebraMap_bDeRham {x : 𝔹} (hx : x ≠ 0) : IsUnit (algebraMap 𝔹 𝔹dR x) := by
   obtain ⟨n, u, rfl⟩ := IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx
     (irreducible_wittToBDeRhamPlus (ker_fontaineTheta_eq_span_kerThetaGenerator K p))
@@ -88,13 +106,26 @@ instance isFractionRing_bDeRham : IsFractionRing 𝔹 𝔹dR := by
 
 instance instFieldBDeRham : Field 𝔹dR := IsFractionRing.toField 𝔹
 
+/- English proof (translation)
+The claim follows from `IsFractionRing.injective 𝔹 𝔹dR`.
+-/
 theorem algebraMap_bDeRham_injective : Function.Injective (algebraMap 𝔹 𝔹dR) :=
   IsFractionRing.injective 𝔹 𝔹dR
 
+/- English proof (translation)
+The claim follows from `(map_ne_zero_iff _ algebraMap_bDeRham_injective).2 (ne_zero_of_maximalIdeal_eq_span hπ)`.
+-/
 theorem algebraMap_ne_zero_of_maximalIdeal_eq_span {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) :
     algebraMap 𝔹 𝔹dR π ≠ 0 :=
   (map_ne_zero_iff _ algebraMap_bDeRham_injective).2 (ne_zero_of_maximalIdeal_eq_span hπ)
 
+/- English proof (translation)
+Establish `hirr : Irreducible π` using `IsDiscreteValuationRing.irreducible_iff_uniformizer π |>.2 hπ`. Rewrite using `[IsLocalization.Away, isLocalization_iff]`. Use `⟨?_, fun z => ?_, fun {x y} h => ⟨1, by rw [algebraMap_bDeRham_injective h]⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨_, n, rfl⟩`. Establish `h` using `(isUnit_algebraMap_bDeRham (K := K) (ne_zero_of_maximalIdeal_eq_span hπ)).pow n`.
+
+Rewrite `h` using `[← map_pow]`. Conclude with `h`. Take `⟨⟨x, y⟩, hxy⟩` from `IsLocalization.surj (nonZeroDivisors 𝔹) z`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (nonZeroDivisors.coe_ne_zero y) hirr`. Use `⟨⟨x * ↑u⁻¹, ⟨π ^ n, n, rfl⟩⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only at hxy ⊢`. Establish `hu' : (y : 𝔹) * ↑u⁻¹ = π ^ n` using `by rw [hu, mul_comm (↑u : 𝔹), mul_assoc, Units.mul_inv, mul_one]`. Rewrite using `[← hu', map_mul, ← mul_assoc, hxy, map_mul]`.
+-/
 theorem isLocalization_away_bDeRham {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) :
     IsLocalization.Away π 𝔹dR := by
   have hirr : Irreducible π := IsDiscreteValuationRing.irreducible_iff_uniformizer π |>.2 hπ
@@ -116,6 +147,9 @@ variable (K p) in
 
 def fil (i : ℤ) : Submodule 𝔹 𝔹dR := Submodule.span 𝔹 {algebraMap 𝔹 𝔹dR (varpi K p) ^ i}
 
+/- English proof (translation)
+Break down `i with n | n` into its components or cases. Simplify using `only [Int.ofNat_eq_coe, zpow_natCast, Units.val_pow_eq_pow_val, map_pow]`. Rewrite using `[zpow_negSucc, zpow_negSucc, ← map_pow, ← Units.val_pow_eq_pow_val]`. Conclude with `(map_units_inv (algebraMap 𝔹 𝔹dR) _).symm`.
+-/
 theorem algebraMap_units_zpow (u : 𝔹ˣ) (i : ℤ) :
     algebraMap 𝔹 𝔹dR (↑u) ^ i = algebraMap 𝔹 𝔹dR ↑(u ^ i) := by
   rcases i with n | n
@@ -123,6 +157,9 @@ theorem algebraMap_units_zpow (u : 𝔹ˣ) (i : ℤ) :
   · rw [zpow_negSucc, zpow_negSucc, ← map_pow, ← Units.val_pow_eq_pow_val]
     exact (map_units_inv (algebraMap 𝔹 𝔹dR) _).symm
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `Ideal.span_singleton_eq_span_singleton.1 (hπ.symm.trans (maximalIdeal_eq_span_varpi K p))`. Rewrite using `[fil, ← hu, map_mul, mul_zpow, algebraMap_units_zpow, mul_comm (algebraMap 𝔹 𝔹dR π ^ i), ← Algebra.smul_def, Submodule.span_singleton_smul_eq (Units.isUnit _)]`.
+-/
 theorem fil_eq_span {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) (i : ℤ) :
     fil K p i = Submodule.span 𝔹 {algebraMap 𝔹 𝔹dR π ^ i} := by
   obtain ⟨u, hu⟩ := Ideal.span_singleton_eq_span_singleton.1
@@ -130,6 +167,11 @@ theorem fil_eq_span {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) (i : ℤ) 
   rw [fil, ← hu, map_mul, mul_zpow, algebraMap_units_zpow, mul_comm (algebraMap 𝔹 𝔹dR π ^ i),
     ← Algebra.smul_def, Submodule.span_singleton_smul_eq (Units.isUnit _)]
 
+/- English proof (translation)
+Rewrite using `[fil_eq_span hπ, Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨b, by rw [Algebra.smul_def, mul_comm]⟩`. Introduce and unpack `⟨b, rfl⟩`.
+
+Conclude with `⟨b, by rw [Algebra.smul_def, mul_comm]⟩`.
+-/
 theorem mem_fil_iff {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) {i : ℤ} {x : 𝔹dR} :
     x ∈ fil K p i ↔ ∃ b : 𝔹, x = algebraMap 𝔹 𝔹dR π ^ i * algebraMap 𝔹 𝔹dR b := by
   rw [fil_eq_span hπ, Submodule.mem_span_singleton]
@@ -141,6 +183,11 @@ theorem mem_fil_iff {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) {i : ℤ} 
 
 variable (K p) in
 
+/- English proof (translation)
+Introduce `i j hij`. Establish `hϖ` using `maximalIdeal_eq_span_varpi K p`. Express the relevant statement in the definitionally equal form `Submodule.span 𝔹 {algebraMap 𝔹 𝔹dR (varpi K p) ^ j} ≤ fil K p i`. Rewrite using `[Submodule.span_singleton_le_iff_mem, mem_fil_iff hϖ]`. Use `⟨varpi K p ^ (j - i).toNat, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_pow, ← zpow_natCast, Int.toNat_of_nonneg (by omega), ← zpow_add₀ (algebraMap_ne_zero_of_maximalIdeal_eq_span hϖ), add_sub_cancel]`.
+-/
 theorem fil_antitone : Antitone (fil K p) := by
   intro i j hij
   have hϖ := maximalIdeal_eq_span_varpi K p
@@ -152,15 +199,26 @@ theorem fil_antitone : Antitone (fil K p) := by
 
 variable (K p) in
 
+/- English proof (translation)
+Rewrite using `[fil, zpow_zero, Submodule.one_eq_span]`.
+-/
 theorem fil_zero : fil K p 0 = 1 := by
   rw [fil, zpow_zero, Submodule.one_eq_span]
 
 variable (K p) in
 
+/- English proof (translation)
+Rewrite using `[mem_fil_iff (maximalIdeal_eq_span_varpi K p), zpow_zero]`. Simplify using `only [one_mul]`.
+-/
 theorem mem_fil_zero_iff {x : 𝔹dR} : x ∈ fil K p 0 ↔ ∃ b : 𝔹, x = algebraMap 𝔹 𝔹dR b := by
   rw [mem_fil_iff (maximalIdeal_eq_span_varpi K p), zpow_zero]
   simp only [one_mul]
 
+/- English proof (translation)
+Rewrite using `[mem_fil_iff (maximalIdeal_eq_span_varpi K p), maximalIdeal_eq_span_varpi K p, span_singleton_pow, mem_span_singleton]`. Simplify using `only [zpow_natCast, ← map_pow, ← map_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨c, algebraMap_bDeRham_injective hc⟩`.
+
+Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨c, by rw [hc]⟩`.
+-/
 theorem algebraMap_mem_fil_iff (b : 𝔹) (n : ℕ) :
     algebraMap 𝔹 𝔹dR b ∈ fil K p n ↔ b ∈ maximalIdeal 𝔹 ^ n := by
   rw [mem_fil_iff (maximalIdeal_eq_span_varpi K p), maximalIdeal_eq_span_varpi K p,
@@ -174,6 +232,15 @@ theorem algebraMap_mem_fil_iff (b : 𝔹) (n : ℕ) :
 
 variable (K p) in
 
+/- English proof (translation)
+Establish `hϖ` using `maximalIdeal_eq_span_varpi K p`. Establish `hne` using `algebraMap_ne_zero_of_maximalIdeal_eq_span (K := K) hϖ`. Use `haveI := isLocalization_away_bDeRham hϖ`. Use `eq_bot_iff.2 fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Submodule.mem_iInf]`.
+
+Take `⟨⟨a, ⟨_, m, rfl⟩⟩, ha⟩` from `IsLocalization.surj (Submonoid.powers (varpi K p)) x`. Simplify using `only [map_pow] at ha`. Establish `ha0 : a = 0`. Use `eq_zero_of_forall_mem_maximalIdeal_pow fun n => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `(mem_fil_iff hϖ).1 (hx ((n : ℤ) - m))`.
+
+Establish `h2 : algebraMap 𝔹 𝔹dR a = algebraMap 𝔹 𝔹dR (varpi K p ^ n * b)`. Rewrite using `[← ha, hb, map_mul, map_pow, mul_right_comm, ← zpow_natCast (algebraMap 𝔹 𝔹dR (varpi K p)) m, ← zpow_add₀ hne, sub_add_cancel, zpow_natCast]`. Rewrite using `[algebraMap_bDeRham_injective h2, hϖ, span_singleton_pow]`. Conclude with `mul_mem_right _ _ (mem_span_singleton_self _)`. Rewrite `ha` using `[ha0, map_zero]`.
+
+Rewrite using `[Submodule.mem_bot]`. Conclude with `(mul_eq_zero.1 ha).resolve_right (pow_ne_zero _ hne)`.
+-/
 theorem iInf_fil : ⨅ i, fil K p i = ⊥ := by
   have hϖ := maximalIdeal_eq_span_varpi K p
   have hne := algebraMap_ne_zero_of_maximalIdeal_eq_span (K := K) hϖ
@@ -197,6 +264,11 @@ theorem iInf_fil : ⨅ i, fil K p i = ⊥ := by
 
 variable (K p) in
 
+/- English proof (translation)
+Establish `hϖ` using `maximalIdeal_eq_span_varpi K p`. Establish `hne` using `algebraMap_ne_zero_of_maximalIdeal_eq_span (K := K) hϖ`. Use `haveI := isLocalization_away_bDeRham hϖ`. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Take `⟨⟨a, ⟨_, m, rfl⟩⟩, ha⟩` from `IsLocalization.surj (Submonoid.powers (varpi K p)) x`.
+
+Simplify using `only [map_pow] at ha`. Use `Submodule.mem_iSup_of_mem (-(m : ℤ)) ((mem_fil_iff hϖ).2 ⟨a, ?_⟩)` and prove the remaining obligations. Rewrite using `[← ha, zpow_neg, zpow_natCast, mul_comm x, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hne), one_mul]`.
+-/
 theorem iSup_fil : ⨆ i, fil K p i = ⊤ := by
   have hϖ := maximalIdeal_eq_span_varpi K p
   have hne := algebraMap_ne_zero_of_maximalIdeal_eq_span (K := K) hϖ
@@ -210,10 +282,16 @@ theorem iSup_fil : ⨆ i, fil K p i = ⊤ := by
 
 variable (K p) in
 
+/- English proof (translation)
+Rewrite using `[fil, fil, fil, Submodule.span_mul_span, Set.singleton_mul_singleton, ← zpow_add₀ (algebraMap_ne_zero_of_maximalIdeal_eq_span (maximalIdeal_eq_span_varpi K p))]`.
+-/
 theorem fil_mul_fil (i j : ℤ) : fil K p i * fil K p j = fil K p (i + j) := by
   rw [fil, fil, fil, Submodule.span_mul_span, Set.singleton_mul_singleton,
     ← zpow_add₀ (algebraMap_ne_zero_of_maximalIdeal_eq_span (maximalIdeal_eq_span_varpi K p))]
 
+/- English proof (translation)
+The claim follows from `fil_mul_fil K p i j ▸ Submodule.mul_mem_mul hx hy`.
+-/
 theorem mul_mem_fil {i j : ℤ} {x y : 𝔹dR} (hx : x ∈ fil K p i) (hy : y ∈ fil K p j) :
     x * y ∈ fil K p (i + j) :=
   fil_mul_fil K p i j ▸ Submodule.mul_mem_mul hx hy
@@ -225,6 +303,9 @@ def filMk {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) (i : ℤ) : 𝔹 →
     simp only [smul_eq_mul, map_mul, Submodule.coe_smul, RingHom.id_apply, Algebra.smul_def]
     ring)
 
+/- English proof (translation)
+Establish `hne` using `zpow_ne_zero i (algebraMap_ne_zero_of_maximalIdeal_eq_span (K := K) hπ)`. Use `⟨fun a b h => algebraMap_bDeRham_injective (mul_left_cancel₀ hne (congrArg Subtype.val h)), fun x => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `(mem_fil_iff hπ).1 x.2`. Conclude with `⟨b, Subtype.ext hb.symm⟩`.
+-/
 theorem filMk_bijective {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) (i : ℤ) :
     Function.Bijective (filMk (K := K) hπ i) := by
   have hne := zpow_ne_zero i (algebraMap_ne_zero_of_maximalIdeal_eq_span (K := K) hπ)
@@ -236,11 +317,17 @@ theorem filMk_bijective {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) (i : �
 def filEquiv {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) (i : ℤ) : fil K p i ≃ₗ[𝔹] 𝔹 :=
   (LinearEquiv.ofBijective (filMk hπ i) (filMk_bijective hπ i)).symm
 
+/- English proof (translation)
+The claim follows from `(congrArg Subtype.val ((LinearEquiv.ofBijective (filMk hπ i) (filMk_bijective hπ i)).apply_symm_apply x)).symm`.
+-/
 theorem coe_eq_filEquiv {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) {i : ℤ} (x : fil K p i) :
     (x : 𝔹dR) = algebraMap 𝔹 𝔹dR π ^ i * algebraMap 𝔹 𝔹dR (filEquiv hπ i x) :=
   (congrArg Subtype.val
     ((LinearEquiv.ofBijective (filMk hπ i) (filMk_bijective hπ i)).apply_symm_apply x)).symm
 
+/- English proof (translation)
+The claim follows from `(LinearEquiv.ofBijective (filMk hπ i) (filMk_bijective hπ i)).symm_apply_apply b`.
+-/
 theorem filEquiv_mk {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) {i : ℤ} (b : 𝔹)
     (h : algebraMap 𝔹 𝔹dR π ^ i * algebraMap 𝔹 𝔹dR b ∈ fil K p i) :
     filEquiv hπ i ⟨algebraMap 𝔹 𝔹dR π ^ i * algebraMap 𝔹 𝔹dR b, h⟩ = b :=
@@ -249,22 +336,39 @@ theorem filEquiv_mk {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) {i : ℤ} 
 def grMap {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) (i : ℤ) : fil K p i →+ K :=
   (thetaBDeRhamPlusField p).toAddMonoidHom.comp (filEquiv hπ i).toLinearMap.toAddMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem grMap_apply {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) {i : ℤ} (x : fil K p i) :
     grMap hπ i x = thetaBDeRhamPlusField p (filEquiv hπ i x) := rfl
 
+/- English proof (translation)
+Rewrite using `[grMap_apply, filEquiv_mk]`.
+-/
 theorem grMap_mk {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) {i : ℤ} (b : 𝔹)
     (h : algebraMap 𝔹 𝔹dR π ^ i * algebraMap 𝔹 𝔹dR b ∈ fil K p i) :
     grMap hπ i ⟨algebraMap 𝔹 𝔹dR π ^ i * algebraMap 𝔹 𝔹dR b, h⟩ = thetaBDeRhamPlusField p b := by
   rw [grMap_apply, filEquiv_mk]
 
+/- English proof (translation)
+Rewrite using `[grMap_apply, grMap_apply, map_smul, smul_eq_mul, map_mul]`.
+-/
 theorem grMap_smul {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) {i : ℤ} (c : 𝔹) (x : fil K p i) :
     grMap hπ i (c • x) = thetaBDeRhamPlusField p c * grMap hπ i x := by
   rw [grMap_apply, grMap_apply, map_smul, smul_eq_mul, map_mul]
 
+/- English proof (translation)
+The claim follows from `(surjective_thetaBDeRhamPlusField p).comp (filEquiv hπ i).surjective`.
+-/
 theorem grMap_surjective {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) (i : ℤ) :
     Function.Surjective (grMap (K := K) hπ i) :=
   (surjective_thetaBDeRhamPlusField p).comp (filEquiv hπ i).surjective
 
+/- English proof (translation)
+Establish `hne` using `algebraMap_ne_zero_of_maximalIdeal_eq_span (K := K) hπ`. Rewrite using `[grMap_apply, ← RingHom.mem_ker, ← maximalIdeal_bDeRhamPlus (K := K) (p := p), hπ, mem_span_singleton, mem_fil_iff hπ, coe_eq_filEquiv hπ x]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨c, by rw [hc, map_mul, zpow_add_one₀ hne]; ring⟩`.
+
+Introduce and unpack `⟨c, hc⟩`. Use `⟨c, algebraMap_bDeRham_injective ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[zpow_add_one₀ hne, mul_assoc]`. Rewrite using `[map_mul]`. Conclude with `mul_left_cancel₀ (zpow_ne_zero i hne) hc`.
+-/
 theorem grMap_eq_zero_iff {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) {i : ℤ} (x : fil K p i) :
     grMap hπ i x = 0 ↔ (x : 𝔹dR) ∈ fil K p (i + 1) := by
   have hne := algebraMap_ne_zero_of_maximalIdeal_eq_span (K := K) hπ
@@ -279,6 +383,9 @@ theorem grMap_eq_zero_iff {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) {i :
     rw [map_mul]
     exact mul_left_cancel₀ (zpow_ne_zero i hne) hc
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[AddMonoidHom.mem_ker, grMap_eq_zero_iff]`. Both sides reduce to the same expression.
+-/
 theorem ker_grMap {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) (i : ℤ) :
     (grMap hπ i).ker = ((fil K p (i + 1)).comap (fil K p i).subtype).toAddSubgroup := by
   ext x
@@ -290,6 +397,9 @@ def grEquiv {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) (i : ℤ) :
   (QuotientAddGroup.quotientAddEquivOfEq (ker_grMap hπ i).symm).trans
     (QuotientAddGroup.quotientKerEquivOfSurjective _ (grMap_surjective hπ i))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem grEquiv_mk {π : 𝔹} (hπ : maximalIdeal 𝔹 = span {π}) {i : ℤ} (x : fil K p i) :
     grEquiv hπ i (Submodule.Quotient.mk x) = grMap hπ i x := rfl
 
@@ -305,16 +415,25 @@ local notation "𝔹dR" => BDeRham (normInteger ℂ_[p]) p
 def galBdRField (σ : Gal(PadicAlgCl p/L)) : 𝔹dR ≃+* 𝔹dR :=
   IsFractionRing.ringEquivOfRingEquiv (galBdR σ)
 
+/- English proof (translation)
+The claim follows from `IsFractionRing.ringEquivOfRingEquiv_algebraMap _ b`.
+-/
 theorem galBdRField_algebraMap (σ : Gal(PadicAlgCl p/L)) (b : 𝔹) :
     galBdRField σ (algebraMap 𝔹 𝔹dR b) = algebraMap 𝔹 𝔹dR (σ • b) :=
   IsFractionRing.ringEquivOfRingEquiv_algebraMap _ b
 
+/- English proof (translation)
+Use `RingEquiv.toRingHom_injective (IsLocalization.ringHom_ext (nonZeroDivisors 𝔹) (RingHom.ext fun b => ?_))` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, galBdRField_algebraMap, one_smul, RingEquiv.coe_ringHom_refl, RingHom.id_apply]`.
+-/
 theorem galBdRField_one : galBdRField (1 : Gal(PadicAlgCl p/L)) = RingEquiv.refl 𝔹dR := by
   refine RingEquiv.toRingHom_injective (IsLocalization.ringHom_ext (nonZeroDivisors 𝔹)
     (RingHom.ext fun b => ?_))
   simp only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe,
     galBdRField_algebraMap, one_smul, RingEquiv.coe_ringHom_refl, RingHom.id_apply]
 
+/- English proof (translation)
+Use `RingEquiv.toRingHom_injective (IsLocalization.ringHom_ext (nonZeroDivisors 𝔹) (RingHom.ext fun b => ?_))` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, galBdRField_algebraMap, mul_smul, RingEquiv.coe_trans, Function.comp_apply]`.
+-/
 theorem galBdRField_mul (σ τ : Gal(PadicAlgCl p/L)) :
     galBdRField (σ * τ) = (galBdRField τ).trans (galBdRField σ) := by
   refine RingEquiv.toRingHom_injective (IsLocalization.ringHom_ext (nonZeroDivisors 𝔹)
@@ -337,13 +456,22 @@ instance instMulSemiringActionBdRField : MulSemiringAction Gal(PadicAlgCl p/L) �
   smul_one σ := map_one (galBdRField σ)
   smul_mul σ := map_mul (galBdRField σ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gal_smul_bDeRham_def (σ : Gal(PadicAlgCl p/L)) (x : 𝔹dR) : σ • x = galBdRField σ x :=
   rfl
 
+/- English proof (translation)
+The claim follows from `galBdRField_algebraMap σ b`.
+-/
 theorem gal_smul_algebraMap_bDeRham (σ : Gal(PadicAlgCl p/L)) (b : 𝔹) :
     σ • algebraMap 𝔹 𝔹dR b = algebraMap 𝔹 𝔹dR (σ • b) :=
   galBdRField_algebraMap σ b
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Simplify using `using (map_galBdR_maximalIdeal_pow σ 1).symm`. Use `_ = span {σ • π} := by`. Rewrite using `[hπ, Ideal.map_span, Set.image_singleton]`. Both sides reduce to the same expression.
+-/
 theorem maximalIdeal_eq_span_gal_smul (σ : Gal(PadicAlgCl p/L)) {π : 𝔹}
     (hπ : maximalIdeal 𝔹 = span {π}) : maximalIdeal 𝔹 = span {σ • π} := by
   calc maximalIdeal 𝔹 = (maximalIdeal 𝔹).map (galBdR σ) := by
@@ -352,6 +480,9 @@ theorem maximalIdeal_eq_span_gal_smul (σ : Gal(PadicAlgCl p/L)) {π : 𝔹}
         rw [hπ, Ideal.map_span, Set.image_singleton]
         rfl
 
+/- English proof (translation)
+Establish `hϖ` using `IsPerfectoidField.maximalIdeal_eq_span_varpi ℂ_[p] p`. Take `⟨b, rfl⟩` from `(IsPerfectoidField.mem_fil_iff hϖ).1 hx`. Use `(IsPerfectoidField.mem_fil_iff (maximalIdeal_eq_span_gal_smul σ hϖ)).2 ⟨σ • b, ?_⟩` and prove the remaining obligations. Rewrite using `[gal_smul_bDeRham_def, map_mul, map_zpow₀, galBdRField_algebraMap, galBdRField_algebraMap]`.
+-/
 theorem gal_smul_mem_fil (σ : Gal(PadicAlgCl p/L)) {i : ℤ} {x : 𝔹dR}
     (hx : x ∈ IsPerfectoidField.fil ℂ_[p] p i) : σ • x ∈ IsPerfectoidField.fil ℂ_[p] p i := by
   have hϖ := IsPerfectoidField.maximalIdeal_eq_span_varpi ℂ_[p] p
@@ -359,6 +490,9 @@ theorem gal_smul_mem_fil (σ : Gal(PadicAlgCl p/L)) {i : ℤ} {x : 𝔹dR}
   refine (IsPerfectoidField.mem_fil_iff (maximalIdeal_eq_span_gal_smul σ hϖ)).2 ⟨σ • b, ?_⟩
   rw [gal_smul_bDeRham_def, map_mul, map_zpow₀, galBdRField_algebraMap, galBdRField_algebraMap]
 
+/- English proof (translation)
+Use `⟨fun h => ?_, gal_smul_mem_fil σ⟩` and prove the remaining obligations. Use `gal_smul_mem_fil σ⁻¹ h` as an intermediate fact. Rewrite `this` using `[inv_smul_smul]`. Then use the resulting hypothesis.
+-/
 theorem gal_smul_mem_fil_iff (σ : Gal(PadicAlgCl p/L)) (i : ℤ) (x : 𝔹dR) :
     σ • x ∈ IsPerfectoidField.fil ℂ_[p] p i ↔ x ∈ IsPerfectoidField.fil ℂ_[p] p i := by
   refine ⟨fun h => ?_, gal_smul_mem_fil σ⟩

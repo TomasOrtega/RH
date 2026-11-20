@@ -6,6 +6,9 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert GlobalTheory.LocM GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4O GlobalTheory.MixedLocalChains GlobalTheory.BundleChernComparison GlobalTheory.ChainPts
 open GlobalTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+The claim follows from `isDiscreteValuationRing_V z.Z.i.c (Fact.out : p.Prime) hW ∀ c : (nmodel z.Z).Comp, ∃ (B₁ : Vert.Model (z.Z.i.c.V W)) (f₁ : Vert.Model.Hom B₁ ((nmodel z.Z).comp c)), GlobalTheory.IsNormalScheme B₁.X ∧ f₁.relDim = 0 ∧ ∃ (oo : EPres B₁ (𝓞 D.host.E)) (π : Γ(B₁.X, ⊤)) (u : oo.E ⟶ oo.E …`.
+-/
 theorem _root_.GlobalTheory.T.exists_normal_model_with_presentation : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → GlobalTheory.Published.PrismaticDieudonnePerfd → GlobalTheory.GroupBplus.GroupAllSt →
   GlobalTheory.BundleChernComparison.AtAll fun D O p _ W hW _ z =>
     haveI := isDiscreteValuationRing_V z.Z.i.c (Fact.out : p.Prime) hW

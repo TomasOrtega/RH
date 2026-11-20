@@ -12,6 +12,43 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 
 namespace GlobalTheory.FrobKerDim
 
+/- English proof (translation)
+Introduce `q K H _ _ _ _ hq`. Use `set J := frobKerIdeal q K H with hJ`. Use `set ε := Bialgebra.counitAlgHom K H with hε`. Use `set mk := Ideal.Quotient.mkₐ K J with hmk`. Establish `hJI : ∀ a ∈ J, ε a = 0` using `fun a ha => frobKerIdeal_le_augIdeal hq.ne' K H ha`.
+
+Use `set εQ : (H ⧸ J) →ₐ[K] K := Ideal.Quotient.liftₐ J ε hJI with hεQ`. Establish `hεQmk : ∀ a, εQ (mk a) = ε a` using `fun a => rfl`. Establish `hmks : Function.Surjective mk` using `Ideal.Quotient.mkₐ_surjective K J`. Use `haveI hfinQ : Module.Finite K (H ⧸ J) := Module.Finite.of_surjective mk.toLinearMap hmks`. Use `haveI : IsNoetherianRing (H ⧸ J) := isNoetherian_of_tower K inferInstance`.
+
+Establish `hkerQ : ∀ z ∈ RingHom.ker εQ, ∃ a ∈ RingHom.ker ε, mk a = z`. Introduce `z hz`. Take `⟨a, rfl⟩` from `hmks z`. Use `⟨a, ?_, rfl⟩` and prove the remaining obligations. Rewrite `hz`, the goal using `[RingHom.mem_ker]`.
+
+Rewrite using `[← hεQmk]`. Conclude with `hz`. Establish `hpowQ : ∀ z ∈ RingHom.ker εQ, z ^ q = 0`. Introduce `z hz`. Take `⟨a, ha, rfl⟩` from `hkerQ z hz`.
+
+Rewrite using `[← map_pow]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (pow_mem_frobKerIdeal ha)`. Establish `hnil : IsNilpotent (RingHom.ker εQ)`. Rewrite using `[Ideal.FG.isNilpotent_iff_le_nilradical (IsNoetherian.noetherian _)]`. Introduce `f hf`.
+
+Conclude with `⟨q, hpowQ f hf⟩`. Use `haveI : Module.Finite K (AugCot ε) := Module.Finite.of_surjective _ (AugCot.d_surjective ε)`. Use `set d := Module.finrank K (AugCot ε) with hd`. Set `b` to `Module.finBasis K (AugCot ε)`. Use `choose x hx using fun i => (RingHom.ker ε).toCotangent_surjective (b i)`.
+
+Establish `hsum : ∀ l : Fin d → K, AugCot.d ε (∑ i, l i • (x i : H)) = ∑ i, l i • b i`. Introduce `l`. Simplify using `[map_sum, hx]`. Establish `hmem : ∀ l : Fin d → K, (∑ i, l i • (x i : H)) ∈ RingHom.ker ε`. Introduce `l`.
+
+Use `Ideal.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Conclude with `Ideal.mul_mem_left _ _ (x i).2`. Establish `hspanH : ∀ a ∈ RingHom.ker ε, ∃ l : Fin d → K, a - ∑ i, l i • (x i : H) ∈ RingHom.ker ε ^ 2`. Introduce `a ha`.
+
+Use `⟨b.repr (AugCot.d ε a), ?_⟩` and prove the remaining obligations. Establish `h1 : AugCot.d ε (a - ∑ i, b.repr (AugCot.d ε a) i • (x i : H)) = 0`. Rewrite using `[map_sub, hsum, b.sum_repr, sub_self]`. Rewrite `h1` using `[AugCot.d_of_mem _ (sub_mem ha (hmem _)), Ideal.toCotangent_eq_zero]`. Then use the resulting hypothesis. Set `y : Fin d → H ⧸ J` to `fun i => mk (x i)`.
+
+Establish `hy : ∀ i, y i ∈ RingHom.ker εQ` using `fun i => by`. Rewrite using `[RingHom.mem_ker, hεQmk]`. Conclude with `(x i).2`. Establish `hmapI : Ideal.map mk (RingHom.ker ε) ≤ RingHom.ker εQ`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+
+Introduce `a ha`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`. Conclude with `ha`. Establish `hspan : ∀ z ∈ RingHom.ker εQ, ∃ l : Fin d → K, z - ∑ i, l i • y i ∈ RingHom.ker εQ ^ 2`. Introduce `z hz`.
+
+Take `⟨a, ha, rfl⟩` from `hkerQ z hz`. Take `⟨l, hl⟩` from `hspanH a ha`. Use `⟨l, ?_⟩` and prove the remaining obligations. Establish `h1 : mk (a - ∑ i, l i • (x i : H)) ∈ Ideal.map mk (RingHom.ker ε ^ 2)` using `Ideal.mem_map_of_mem _ hl`. Rewrite `h1` using `[Ideal.map_pow]`.
+
+Establish `h2` using `Ideal.pow_right_mono hmapI 2 h1`. Simplify `h2` using `[y, map_sub, map_sum, map_smul]`. Establish `hsurj` using `GlobalTheory.HeightOneHopf.aeval_surjective_of_span_cotangent εQ hnil y hy hspan`. Establish `hyq : ∀ i, y i ^ q = 0` using `fun i => hpowQ _ (hy i)`. Set `mon : (Fin d → Fin q) → H ⧸ J` to `fun e => ∏ i, y i ^ (e i : ℕ)`.
+
+Establish `htop : Submodule.span K (Set.range mon) = ⊤`. Establish `hall : ∀ P : MvPolynomial (Fin d) K, MvPolynomial.aeval y P ∈ Submodule.span K (Set.range mon)`. Introduce `P`. Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial u a`.
+
+Rewrite using `[MvPolynomial.aeval_monomial, Finsupp.prod_fintype _ _ (fun i => pow_zero _), ← Algebra.smul_def]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Distinguish the cases in `h : ∀ i, u i < q`. Conclude with `Submodule.subset_span ⟨fun i => ⟨u i, h i⟩, rfl⟩`. Use `push_neg at h`.
+
+Take `⟨i, hi⟩` from `h`. Establish `h0 : y i ^ u i = 0` using `pow_eq_zero_of_le hi (hyq i)`. Rewrite using `[Finset.prod_eq_zero (i := i) (Finset.mem_univ i) h0]`. Conclude with `Submodule.zero_mem _`. Consider the case `add P Q hP hQ => rw [map_add]`.
+
+Conclude with `Submodule.add_mem _ hP hQ`. Use `eq_top_iff.2 fun z _ => ?_` and prove the remaining obligations. Take `⟨P, rfl⟩` from `hsurj z`. Conclude with `hall P`. Establish `h1` using `finrank_range_le_card (R := K) (b := mon)`.
+
+Rewrite `h1` using `[Set.finrank, htop, finrank_top]`. Simplify `h1` using `[Fintype.card_fun, Fintype.card_fin]`.
+-/
 theorem finrank_quot_frobKerIdeal_le : ∀ (q : ℕ) (K H : Type) [Field K] [CommRing H] [Bialgebra K H]
     [Module.Finite K H], 0 < q →
     Module.finrank K (H ⧸ frobKerIdeal q K H) ≤ q ^ Module.finrank K (Cot K H) := by

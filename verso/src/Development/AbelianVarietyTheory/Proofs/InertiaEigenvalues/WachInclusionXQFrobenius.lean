@@ -19,6 +19,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Establish `h : (X : O⟦X⟧) * W.q₀ = X * ∑ i ∈ Finset.range PD.p, (1 + X) ^ i`. Rewrite using `[W.q₀_def, ← geom_sum_mul, add_sub_cancel_left, mul_comm]`. Establish `h2` using `PowerSeries.X_mul_cancel h`. Simplify `h2` using `[LocWach.q, letπ, Finset.sum_apply]`.
+-/
 theorem q_eq (W : LocWach PD LL O v n) : W.q = ∑ i ∈ Finset.range PD.p, (1 + letπ) ^ i := by
   funext j
   have h : (X : O⟦X⟧) * W.q₀ = X * ∑ i ∈ Finset.range PD.p, (1 + X) ^ i := by
@@ -26,24 +29,39 @@ theorem q_eq (W : LocWach PD LL O v n) : W.q = ∑ i ∈ Finset.range PD.p, (1 +
   have h2 := PowerSeries.X_mul_cancel h
   simpa [LocWach.q, letπ, Finset.sum_apply] using h2
 
+/- English proof (translation)
+Rewrite using `[map_add, map_one, W.φA_π, q_eq]`. Take the linear combination `geom_sum_mul (1 + (letπ : LetA O n)) PD.p`.
+-/
 theorem φA_one_add (W : LocWach PD LL O v n) : W.φA (1 + letπ) = (1 + letπ) ^ PD.p := by
   rw [map_add, map_one, W.φA_π, q_eq]
   linear_combination geom_sum_mul (1 + (letπ : LetA O n)) PD.p
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', AlgHom.mul_apply, ih, map_pow, φA_one_add, ← pow_mul, pow_succ']`.
+-/
 theorem φA_pow_one_add (W : LocWach PD LL O v n) (k : ℕ) :
     (W.φA ^ k) (1 + letπ) = (1 + letπ) ^ (PD.p ^ k) := by
   induction k with
   | zero => simp
   | succ k ih => rw [pow_succ', AlgHom.mul_apply, ih, map_pow, φA_one_add, ← pow_mul, pow_succ']
 
+/- English proof (translation)
+Rewrite using `[← φA_pow_one_add W, map_add, map_one, add_sub_cancel_left, LocWach.X]`.
+-/
 theorem X_eq (W : LocWach PD LL O v n) : W.X = (1 + letπ) ^ (PD.p ^ (W.s - 1)) - 1 := by
   rw [← φA_pow_one_add W, map_add, map_one, add_sub_cancel_left, LocWach.X]
 
+/- English proof (translation)
+Rewrite using `[LocWach.Q, q_eq, map_sum]`. Simplify using `only [map_pow, φA_pow_one_add]`.
+-/
 theorem Q_eq (W : LocWach PD LL O v n) :
     W.Q = ∑ i ∈ Finset.range PD.p, ((1 + letπ) ^ (PD.p ^ (W.s - 1))) ^ i := by
   rw [LocWach.Q, q_eq, map_sum]
   simp only [map_pow, φA_pow_one_add]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using ha`. Consider the case `succ k ih`. Rewrite using `[pow_succ', AlgHom.mul_apply, LocWach.φA, ← W.φE_ext]`. Conclude with `ih.map W.φE`.
+-/
 theorem isUnit_φA_pow (W : LocWach PD LL O v n) {a : LetA O n} (ha : IsUnit (algebraMap _ W.EE a)) (k : ℕ) :
     IsUnit (algebraMap _ W.EE ((W.φA ^ k) a)) := by
   induction k with
@@ -52,9 +70,15 @@ theorem isUnit_φA_pow (W : LocWach PD LL O v n) {a : LetA O n} (ha : IsUnit (al
     rw [pow_succ', AlgHom.mul_apply, LocWach.φA, ← W.φE_ext]
     exact ih.map W.φE
 
+/- English proof (translation)
+The claim follows from `isUnit_φA_pow W W.EE_π _`.
+-/
 theorem isUnit_X (W : LocWach PD LL O v n) : IsUnit (algebraMap _ W.EE W.X) :=
   isUnit_φA_pow W W.EE_π _
 
+/- English proof (translation)
+Establish `h` using `isUnit_φA_pow W (isUnit_X W) 1`. Rewrite `h` using `[pow_one, W.φA_X, map_mul]`. Conclude with `isUnit_of_mul_isUnit_right h`.
+-/
 theorem isUnit_Q (W : LocWach PD LL O v n) : IsUnit (algebraMap _ W.EE W.Q) := by
   have h := isUnit_φA_pow W (isUnit_X W) 1
   rw [pow_one, W.φA_X, map_mul] at h
@@ -63,6 +87,17 @@ theorem isUnit_Q (W : LocWach PD LL O v n) : IsUnit (algebraMap _ W.EE W.Q) := b
 variable {RA RW : Type} [CommRing RA] [CommRing RW] [Algebra O RA]
     [Algebra O RW] {inclR : RA →ₐ[O] RW} {φR : RW →ₐ[O] RW} {gR : G → (RW →ₐ[O] RW)} {πA : RA}
 
+/- English proof (translation)
+Take `⟨e, e₀, hspan, hj, -⟩` from `E.one_e`. Take `⟨e₁, he₁, hT⟩` from `W.one_line`. Establish `he₀ : (e₀ : W.one.V) ≠ 0`. Introduce `h`. Establish `hm : e₁ ∈ W.one.L.T` using `hT ▸ Submodule.mem_span_singleton_self e₁`.
+
+Establish `h1 : (⟨e₁, hm⟩ : W.one.L.T) ∈ Submodule.span O {e₀}` using `hspan ▸ Submodule.mem_top`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 h1`. Apply `he₁` to reduce the goal to its premises. Use `congrArg Subtype.val hc` as an intermediate fact. Simplify `this.symm` using `[h]`.
+
+Establish `hinj : Function.Injective (LinearMap.toSpanSingleton O W.one.L.T e₀)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Establish `h1 : c • (e₀ : W.one.V) = 0` using `congrArg Subtype.val hc`. Rewrite `h1` using `[← algebraMap_smul LL, smul_eq_zero]`.
+
+Conclude with `hO ((h1.resolve_right he₀).trans (map_zero _).symm)`. Establish `hsurj : Function.Surjective (LinearMap.toSpanSingleton O W.one.L.T e₀)`. Rewrite using `[← LinearMap.range_eq_top, ← LinearMap.span_singleton_eq_range, hspan]`. Take `⟨f, hf⟩ : ∃ f : W.one.L.T ≃ₗ[O] O, f e₀ = 1` from `⟨(LinearEquiv.ofBijective _ ⟨hinj, hsurj⟩).symm, (LinearEquiv.symm_apply_eq _).2 (one_smul O e₀).symm⟩`. Establish `h1` using `E.jD_φ W.one (x • e)`.
+
+Rewrite `h1` using `[W.φD_smul, E.jD_smul, E.jD_smul, E.jD_φ, hj]`. Simplify using `only [TWmap, TensorProduct.smul_tmul', smul_eq_mul, mul_one, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, map_one, LinearMap.id_apply] at h1`. Establish `h2` using `congrArg (fun z => TensorProduct.rid O RW (LinearMap.lTensor RW f.toLinearMap z)) h1`. Simplify `h2` using `[hf]`.
+-/
 theorem ioE_φ (hO : Function.Injective (algebraMap O LL)) {W : LocWach PD LL O v n}
     (E : EtTie W RA RW inclR φR gR πA) (x : W.EE) : E.ioE (W.φE x) = φR (E.ioE x) := by
   obtain ⟨e, e₀, hspan, hj, -⟩ := E.one_e
@@ -92,10 +127,16 @@ theorem ioE_φ (hO : Function.Injective (algebraMap O LL)) {W : LocWach PD LL O 
   have h2 := congrArg (fun z => TensorProduct.rid O RW (LinearMap.lTensor RW f.toLinearMap z)) h1
   simpa [hf] using h2
 
+/- English proof (translation)
+Rewrite using `[X_eq, map_sub, map_pow, map_add, map_one, E.io_π]`.
+-/
 theorem io_X_gen {W : LocWach PD LL O v n} (E : EtTie W RA RW inclR φR gR πA) :
     E.io W.X = (1 + πA) ^ (PD.p ^ (W.s - 1)) - 1 := by
   rw [X_eq, map_sub, map_pow, map_add, map_one, E.io_π]
 
+/- English proof (translation)
+Rewrite using `[Q_eq, map_sum]`. Simplify using `only [map_pow, map_add, map_one, E.io_π]`.
+-/
 theorem io_Q_gen {W : LocWach PD LL O v n} (E : EtTie W RA RW inclR φR gR πA) :
     E.io W.Q = ∑ i ∈ Finset.range PD.p, ((1 + πA) ^ (PD.p ^ (W.s - 1))) ^ i := by
   rw [Q_eq, map_sum]
@@ -103,12 +144,18 @@ theorem io_Q_gen {W : LocWach PD LL O v n} (E : EtTie W RA RW inclR φR gR πA) 
 
 end Generic
 
+/- English proof (translation)
+Rewrite using `[Algebra.TensorProduct.one_def, ← TensorProduct.tmul_add, add_sub_cancel, Algebra.TensorProduct.tmul_pow, one_pow, h, TensorProduct.tmul_sub]`.
+-/
 theorem tmul_X {Z O A : Type} [CommRing Z] [CommRing O] [CommRing A] [Algebra Z O] [Algebra Z A]
     (t u : A) (m : ℕ) (h : t ^ m = u) :
     (1 + (1 : O) ⊗ₜ[Z] (t - 1)) ^ m - 1 = (1 : O) ⊗ₜ[Z] (u - 1) := by
   rw [Algebra.TensorProduct.one_def, ← TensorProduct.tmul_add, add_sub_cancel,
     Algebra.TensorProduct.tmul_pow, one_pow, h, TensorProduct.tmul_sub]
 
+/- English proof (translation)
+Rewrite using `[Algebra.TensorProduct.one_def, ← TensorProduct.tmul_add, add_sub_cancel, Algebra.TensorProduct.tmul_pow, one_pow, h, TensorProduct.tmul_sum]`. Simplify using `only [Algebra.TensorProduct.tmul_pow, one_pow]`.
+-/
 theorem tmul_Q {Z O A : Type} [CommRing Z] [CommRing O] [CommRing A] [Algebra Z O] [Algebra Z A]
     (t u : A) (m p : ℕ) (h : t ^ m = u) :
     ∑ i ∈ Finset.range p, ((1 + (1 : O) ⊗ₜ[Z] (t - 1)) ^ m) ^ i = (1 : O) ⊗ₜ[Z] (∑ i ∈ Finset.range p, u ^ i) := by
@@ -116,6 +163,11 @@ theorem tmul_Q {Z O A : Type} [CommRing Z] [CommRing O] [CommRing A] [Algebra Z 
     Algebra.TensorProduct.tmul_pow, one_pow, h, TensorProduct.tmul_sum]
   simp only [Algebra.TensorProduct.tmul_pow, one_pow]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp [LocAinf.εroot, LocAinf.ε1]`. Consider the case `succ k ih`. Rewrite using `[pow_succ', pow_mul, ← ih]`. Use `congr 1`.
+
+Rewrite using `[LocAinf.εroot, Function.iterate_succ_apply', frobeniusEquiv_symm_pow_p]`. Both sides reduce to the same expression.
+-/
 theorem εroot_pow {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (k : ℕ) :
     AI.εroot (k + 1) ^ (l ^ k) = AI.ε1 := by
   induction k with
@@ -134,22 +186,37 @@ variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} {K : FinEx
     ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] (WittVector.teichmuller l (AI.εroot s) - 1)))
 
 omit E in
+/- English proof (translation)
+Take `⟨k, hk⟩ : ∃ k, s = k + 1` from `⟨s - 1, by have := W.s_pos; omega⟩`. Rewrite using `[← map_pow, P.PD_p K, hs, hk, Nat.add_sub_cancel, εroot_pow]`.
+-/
 theorem teich_pow (hs : W.s = s) : WittVector.teichmuller l (AI.εroot s) ^ ((P.PD K).p ^ (W.s - 1)) =
     WittVector.teichmuller l AI.ε1 := by
   obtain ⟨k, hk⟩ : ∃ k, s = k + 1 := ⟨s - 1, by have := W.s_pos; omega⟩
   rw [← map_pow, P.PD_p K, hs, hk, Nat.add_sub_cancel, εroot_pow]
 
+/- English proof (translation)
+The claim follows from `(io_X_gen E).trans (tmul_X _ _ _ (teich_pow hs))`.
+-/
 theorem io_X (hs : W.s = s) : E.io W.X = (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] AI.π₁ :=
   (io_X_gen E).trans (tmul_X _ _ _ (teich_pow hs))
 
+/- English proof (translation)
+The claim follows from `((io_Q_gen E).trans (tmul_Q _ _ _ _ (teich_pow hs))).trans (congrArg (fun p => (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] ∑ i ∈ Finset.range p, (WittVector.teichmuller l AI.ε1) ^ i) (P.PD_p K))`.
+-/
 theorem io_Q (hs : W.s = s) : E.io W.Q = (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] AI.ξ :=
   ((io_Q_gen E).trans (tmul_Q _ _ _ _ (teich_pow hs))).trans
     (congrArg (fun p => (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] ∑ i ∈ Finset.range p, (WittVector.teichmuller l AI.ε1) ^ i)
       (P.PD_p K))
 
+/- English proof (translation)
+The claim follows from `ioE_φ Subtype.val_injective E x`.
+-/
 theorem ioE_φ' (x : W.EE) : E.ioE (W.φE x) = φRW LL (E.ioE x) :=
   ioE_φ Subtype.val_injective E x
 
+/- English proof (translation)
+The claim follows from `((E.ioE_ext _).symm.trans (congrArg E.ioE (W.φE_ext a).symm)).trans ((ioE_φ' E _).trans (congrArg (φRW LL) (E.ioE_ext a)))`.
+-/
 theorem incl_io_φ (a : AA K LL) : inclR LL (E.io (W.φA a)) = φRW LL (inclR LL (E.io a)) :=
   ((E.ioE_ext _).symm.trans (congrArg E.ioE (W.φE_ext a).symm)).trans
     ((ioE_φ' E _).trans (congrArg (φRW LL) (E.ioE_ext a)))
@@ -157,6 +224,31 @@ theorem incl_io_φ (a : AA K LL) : inclR LL (E.io (W.φA a)) = φRW LL (inclR LL
 open GlobalTheory.IoInj in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨_, hc, hl0, hlu, hfree, -, -⟩` from `GlobalTheory.Per.integers_completeDVR l LL`. Take `⟨hWc, hWtf, -, hsat, hμ⟩` from `GlobalTheory.HWL.TensorWitt.main l LL`. Use `haveI : FiniteDimensional ℚ_[l] K.1 := K.2`. Use `haveI : FiniteDimensional ℚ_[l] (K0 K) := Module.Finite.of_injective (IntermediateField.inclusion (inf_le_left : K0 K ≤ K.1)).toLinearMap (IntermediateField.inclusion_injective (inf_le_left : K0 K ≤ K.1))`. Use `haveI : NeZero (Module.finrank ℚ_[l] (K0 K)) := ⟨Module.finrank_pos.ne'⟩`.
+
+Use `haveI : Nontrivial (RW LL) := Module.FaithfullyFlat.lTensor_nontrivial ℤ_[l] ↥(OL LL) (WCb l)`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible ↥(OL LL)`. Take `⟨N, hN⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hl0 hϖ`. Choose the witnesses or unpack the hypotheses as in `⟨n, rfl⟩ : ∃ n, N = n + 1 := by`. Break down `N with _ | n` into its components or cases.
+
+Conclude with `absurd (by simpa using hN) hlu`. Conclude with `⟨n, rfl⟩`. Take `⟨u, hu⟩` from `hN.symm`. Establish `hm : IsLocalRing.maximalIdeal ↥(OL LL) = Ideal.span {ϖ}` using `hϖ.maximalIdeal_eq`. Establish `hO : ∀ a : ↥(OL LL), IsUnit a ∨ ϖ ∣ a`.
+
+Introduce `a`. Distinguish the cases in `h : IsUnit a`. Conclude with `Or.inl h`. Use `right`. Rewrite using `[← Ideal.mem_span_singleton, ← hm]`.
+
+Conclude with `h`. Establish `hOp : ∀ a : ℕ → ↥(OL LL), (∀ k k', k ≤ k' → (l : ↥(OL LL)) ^ k ∣ a k - a k') → ∃ L, ∀ k, (l : ↥(OL LL)) ^ k ∣ a k - L`. Introduce `a ha`. Establish `hiff : ∀ (k : ℕ) (x y : ↥(OL LL)), x ≡ y [SMOD (IsLocalRing.maximalIdeal ↥(OL LL) ^ k • ⊤ : Submodule ↥(OL LL) ↥(OL LL))] ↔ ϖ ^ k ∣ x - y`. Introduce `k x y`.
+
+Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, hm, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Take `⟨L, hL⟩` from `IsPrecomplete.prec hc.toIsPrecomplete (f := a) (by`. Introduce `k k' hk`. Rewrite using `[hiff]`. Use `(pow_dvd_pow_of_dvd ?_ k).trans (ha k k' hk)` and prove the remaining obligations.
+
+Conclude with `⟨ϖ ^ n * u, by rw [← hu]; ring⟩)`. Use `⟨L, fun k => ?_⟩` and prove the remaining obligations. Establish `h1` using `(hiff _ _ _).mp (hL ((n + 1) * k))`. Establish `h2 : (l : ↥(OL LL)) ^ k ∣ ϖ ^ ((n + 1) * k)`. Rewrite using `[pow_mul]`.
+
+Conclude with `pow_dvd_pow_of_dvd hN.dvd k`. Establish `: a k - L = (a k - a ((n + 1) * k)) + (a ((n + 1) * k) - L)` using `by ring`. Rewrite using `[this]`. Conclude with `dvd_add (ha _ _ (by nlinarith)) (h2.trans h1)`. Establish `hp` using `P.PD_p K`.
+
+Establish `hE` using `W.EE_complete`. Establish `hdense` using `W.EE_dense`. Establish `hEsat` using `W.EE_sat`. Rewrite `hE`, `hdense`, `hEsat` using `[hp]`. Use `(fun h => ⟨h.1, h.2.2.2⟩) (abstract (algebraMap _ W.EE) E.ioE.toRingHom E.io.toRingHom (inclR LL).toRingHom E.ioE_ext l (fun _ => C ϖ) letπ (fun _ => C (u : ↥(OL LL))) n (Pi.isUnit_iff.mpr fun _ => u.isUnit.map C) ?_ (fun i => Pi.single i 1) ?_ ?_ (letter_form ϖ hO) (prec_pi l hO …` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `i`. Use `congrArg (C : ↥(OL LL) →+* _) hu` as an intermediate fact. Rewrite `this` using `[map_natCast, map_mul, map_pow]`. Simplify using `only [Pi.natCast_apply, Pi.mul_apply, Pi.pow_apply, ← this]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `i`. Rewrite using `[← Pi.single_mul, mul_one]`. Conclude with `Finset.univ_sum_single (1 : LetA ↥(OL LL) _)`. Use `haveI := hμ _ (not_isUnit_εroot_sub_one AI s)`. Express the relevant statement in the definitionally equal form `E.io letπ ∈ _`.
+
+Rewrite using `[E.io_π]`. Conclude with `IsAdicComplete.le_jacobson_bot _ (Ideal.mem_span_singleton_self _)`. Conclude with `idem_ne_zero (algebraMap _ W.EE) E.ioE.toRingHom W.φ₀ W.φE (φRW LL) (map_zero _) W.φE_ext (ioE_φ' E)`.
+-/
 theorem ioE_inj_inter : Function.Injective E.ioE ∧
       ∀ x : W.EE, (∃ y, inclR LL y = E.ioE x) → ∃ a : AA K LL, algebraMap _ W.EE a = x := by
   classical
@@ -230,6 +322,9 @@ theorem ioE_inj_inter : Function.Injective E.ioE ∧
 
 end Concrete
 
+/- English proof (translation)
+Introduce `D HW F l _ K s LL h W E`. Establish `hs : W.s = s` using `(HW l).W_s K s LL h`. Conclude with `⟨io_X E hs, io_Q E hs, (GlobalTheory.HWL.TensorWitt.main l LL).2.2.1, (ioE_inj_inter E).1, incl_io_φ E, (ioE_inj_inter E).2, fun j => ⟨isUnit_φA_pow W (isUnit_X W) j, isUnit_φA_pow W (isUnit_Q W) j⟩⟩`.
+-/
 theorem main : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; let E := ((F l).E K s LL h).tie; E.io W.X = (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] (D.locA l).π₁ ∧ E.io W.Q = (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] (D.locA l).ξ ∧ Function.Injective (inclR LL) ∧ Function.Injective E.ioE ∧ (∀ a, inclR LL (E.io (W.φA a)) = φRW LL (inclR LL (E.io a))) ∧ (∀ x : W.EE, (∃ y, inclR LL y = E.ioE x) → ∃ a : AA K LL, algebraMap _ W.EE a = x) ∧ ∀ j : ℕ, IsUnit (algebraMap (AA K LL) W.EE ((W.φA ^ j) W.X)) ∧ IsUnit (algebraMap (AA K LL) W.EE ((W.φA ^ j) W.Q)) := by
   intro D HW F l _ K s LL h W E
   have hs : W.s = s := (HW l).W_s K s LL h

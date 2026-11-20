@@ -57,6 +57,15 @@ structure NormalizedCharacterCompatibility (D : D7) (K : NChiData D) : Prop wher
   lamG : ∀ s lam, Read D.nd.plOm.1 (D.ntw.lamG s lam) (algebraMap (D.ntw.O s) (FractionRing (D.ntw.O s)))
     (K.embO s (D.ntw.sideL s lam)) (complexEmbeddingRestrictedToSubfield D) (K.lamH s lam) 0
 
+/- English proof (translation)
+Take `⟨B1, h1⟩` from `T.chi1 (D.ntw.twOf a) (D.nd.j a) (D.ntw.twSide a) (D.nd.j_range a).1 (D.nd.j_range a).2`. Take `⟨B2, h2⟩` from `T.psi a`. Use `⟨B1 ∪ B2, fun P hP => ?_⟩` and prove the remaining obligations. Take `⟨α1, hα1, x1, hx1, hσ1⟩` from `h1 P (fun h => hP (Finset.mem_union_left _ h))`. Take `⟨α2, hα2, x2, hx2, hσ2⟩` from `h2 P (fun h => hP (Finset.mem_union_right _ h))`.
+
+Use `⟨α1 * α2, hα1.mul hα2, (α1 * α2)⁻¹ * (Real.sqrt (normV P) : ℂ) ^ (-(D.R.r : ℤ)), rfl, fun σ hσ => ?_⟩` and prove the remaining obligations. Establish `e1` using `hσ1 σ hσ`. Establish `e2` using `hσ2 σ hσ`. Simplify using `only [RingHom.id_apply] at hx2 e2 ⊢`. Establish `tw` using `D.ntw.twO_emb a x1 _ e1`.
+
+Establish `hc : (D.nd.chi a 1 σ : D.nd.O a) = D.ntw.twist₂ a (D.ntw.chi1 (D.ntw.twOf a) (D.nd.j a) (D.ntw.twSide a) σ : D.ntw.O0 (D.ntw.twOf a)) * (D.ntw.psiL a σ : D.nd.O a)`. Rewrite using `[D.ntw.chi_tw a]`. Both sides reduce to the same expression. Rewrite using `[hc, map_mul, e2, hx2]`. Establish `h3 : iotaC D a (D.ntw.twist₂ a (D.ntw.chi1 (D.ntw.twOf a) (D.nd.j a) (D.ntw.twSide a) σ : D.ntw.O0 (D.ntw.twOf a))) = complexEmbeddingRestrictedToSubfield D x1`.
+
+Simplify using `only [iotaC, RingHom.comp_apply, complexEmbeddingRestrictedToSubfield]`. Rewrite using `[← tw]`. Conclude with `D.naut.iota_LL a (x1 : D.what₂.LL)`. Rewrite using `[h3, hx1, zpow_zero, mul_one, mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chi_read {D : D7} {K : NChiData D} (T : NormalizedCharacterCompatibility D K) (a : D.nd.Loc) :
     ReadC D.nd.plOm.1 (D.nd.chi a 1) (iotaC D a) (K.chiH a) (-(D.R.r : ℤ)) := by
   classical
@@ -88,6 +97,11 @@ section rcg
 
 variable (D : D7)
 
+/- English proof (translation)
+Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Use `mem_rcgKer.2 fun A _ φ hφ => ?_` and prove the remaining obligations. Take `⟨hfin, hl, hop, han, hun⟩` from `hφ`.
+
+Use `hfin` as an intermediate fact. Take `⟨f, hf⟩` from `D.ntw.art_univ s Q hQ A hl φ hop han (fun v hv A' hA σ hσ => hun v hv A' hA σ hσ)`. Rewrite using `[← hf, MonoidHom.comp_apply, (MonoidHom.mem_ker).1 hg, map_one]`. Introduce `hg`. Conclude with `(mem_rcgKer.1 hg) _ (D.ntw.art s Q) ⟨inferInstance, D.ntw.RCG_l s Q, D.ntw.art_cont s Q, D.ntw.art_anti s Q, fun v hv A hA σ hσ => D.ntw.art_unr s Q v hv A hA σ hσ⟩`.
+-/
 theorem art_ker (s : D.ntw.Tw) (Q : Finset (HeightOneSpectrum (𝓞 D.host.E)))
     (hQ : ∀ v ∈ Q, v ∉ placesOver D.host.E (D.ntw.l s)) :
     (D.ntw.art s Q).ker = rcgKer D.ntw.cc (D.ntw.l s) (Q : Set (HeightOneSpectrum (𝓞 D.host.E))) := by
@@ -109,6 +123,9 @@ def rcgEquiv (s : D.ntw.Tw) (Q : Finset (HeightOneSpectrum (𝓞 D.host.E)))
   (QuotientGroup.quotientKerEquivOfSurjective _ (D.ntw.art_surj s Q)).symm.trans
     (QuotientGroup.quotientMulEquivOfEq (art_ker D s Q hQ))
 
+/- English proof (translation)
+Establish `h1 : (QuotientGroup.quotientKerEquivOfSurjective _ (D.ntw.art_surj s Q)).symm (D.ntw.art s Q g) = (QuotientGroup.mk g : G D.host.E D.nd.Om ⧸ (D.ntw.art s Q).ker)`. Rewrite using `[MulEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [rcgEquiv, MulEquiv.trans_apply, h1]`. Both sides reduce to the same expression.
+-/
 theorem rcgEquiv_art (s : D.ntw.Tw) (Q : Finset (HeightOneSpectrum (𝓞 D.host.E)))
     (hQ : ∀ v ∈ Q, v ∉ placesOver D.host.E (D.ntw.l s)) (g : G D.host.E D.nd.Om) :
     rcgEquiv D s Q hQ (D.ntw.art s Q g) = artGal D.ntw.cc (D.ntw.l s) (Q : Set (HeightOneSpectrum (𝓞 D.host.E))) g := by
@@ -119,6 +136,11 @@ theorem rcgEquiv_art (s : D.ntw.Tw) (Q : Finset (HeightOneSpectrum (𝓞 D.host.
   simp only [rcgEquiv, MulEquiv.trans_apply, h1]
   rfl
 
+/- English proof (translation)
+Apply `MonoidHom.ext` to reduce the goal to its premises. Introduce `x`. Take `⟨g, rfl⟩` from `D.ntw.art_surj s Q x`. Establish `h1` using `congrArg (fun φ => φ g) hf`. Simplify using `only [MonoidHom.comp_apply] at h1`.
+
+Use `first`. Consider the case `(have h2 := congrArg (fun φ => φ g) (D.ntw.res_art s Q Q' h)`. Simplify using `only [MonoidHom.comp_apply] at h2`. Rewrite using `[h1, h2])`. Consider the case `rw [h1, D.ntw.res_art s Q Q' h g]`.
+-/
 theorem res_eq (s : D.ntw.Tw) (Q Q' : Finset (HeightOneSpectrum (𝓞 D.host.E))) (h : Q' ⊆ Q)
     (f : D.ntw.RCG s Q →* D.ntw.RCG s Q') (hf : f.comp (D.ntw.art s Q) = D.ntw.art s Q') :
     f = D.ntw.res s Q Q' h := by
@@ -133,6 +155,19 @@ theorem res_eq (s : D.ntw.Tw) (Q Q' : Finset (HeightOneSpectrum (𝓞 D.host.E))
      rw [h1, h2])
   | rw [h1, D.ntw.res_art s Q Q' h g]
 
+/- English proof (translation)
+Establish `hfin : Finite (D.ntw.psiL a).range`. Establish `: Finite (G D.host.E D.nd.Om ⧸ (D.ntw.psiL a).ker)` using `Subgroup.quotient_finite_of_isOpen _ (D.ntw.psiL_open a)`. Conclude with `Finite.of_equiv _ (QuotientGroup.quotientKerEquivRange (D.ntw.psiL a)).toEquiv`. Establish `hQ : ∀ v ∈ D.nd.Q a, v ∉ placesOver D.host.E (D.ntw.l (D.ntw.twOf a))`. Introduce `v hv`.
+
+Rewrite using `[D.ntw.twOf_l]`. Conclude with `D.nd.SQ_l a v (Or.inr hv)`. Establish `hl : ∀ x : (D.ntw.psiL a).range, ∃ n : ℕ, x ^ (D.ntw.l (D.ntw.twOf a) ^ n) = 1`. Introduce and unpack `⟨_, g, rfl⟩`. Take `⟨n, hn⟩` from `D.ntw.psiL_ord a g`.
+
+Use `⟨n, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[D.ntw.twOf_l]`. Simplify using `using hn`. Establish `hop : IsOpen ((D.ntw.psiL a).rangeRestrict.ker : Set (G D.host.E D.nd.Om))`. Rewrite using `[MonoidHom.ker_rangeRestrict]`.
+
+Conclude with `D.ntw.psiL_open a`. Establish `han : AntiHom D.ntw.cc (D.ntw.psiL a).rangeRestrict` using `fun g g' h => Subtype.ext (by simpa using D.ntw.psiL_anti a g g' h)`. Establish `hun : ∀ v, v ∉ D.nd.Q a → ∀ A : ValuationSubring D.nd.Om, IsPlaceOver A v → ∀ σ ∈ Ine (F` using `D.host.E) A, (D.ntw.psiL a).rangeRestrict σ = 1 := by`. Introduce `v hv A hA σ hσ`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `only [MonoidHom.coe_rangeRestrict, OneMemClass.coe_one]`. Assume the negation of the conclusion as `hne`. Conclude with `hv ((D.ntw.psiL_ram a v A hA).1 ⟨σ, hσ, hne⟩)`. Take `⟨f, hf⟩` from `D.ntw.art_univ (D.ntw.twOf a) (D.nd.Q a) hQ (D.ntw.psiL a).range hl _ hop han hun`. Use `⟨(D.ntw.psiL a).range.subtype.comp f, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[MonoidHom.comp_assoc, hf]`. Both sides reduce to the same expression.
+-/
 theorem psiL_factor (a : D.nd.Loc) :
     ∃ f : D.ntw.RCG (D.ntw.twOf a) (D.nd.Q a) →* (D.nd.O a)ˣ,
       f.comp (D.ntw.art (D.ntw.twOf a) (D.nd.Q a)) = D.ntw.psiL a := by
@@ -169,6 +204,17 @@ theorem psiL_factor (a : D.nd.Loc) :
 
 end rcg
 
+/- English proof (translation)
+Establish `hS : v ∉ D.nd.S i` using `fun h => Finset.disjoint_left.1 (D.nd.SQ_disj i) h hv`. Establish `hl : v ∉ placesOver D.host.E (D.nd.l i)` using `D.nd.SQ_l i v (Or.inr hv)`. Establish `hg : ∀ k, v ∉ placesOver D.host.E (D.host.g k)`. Introduce `k hk`. Apply `hS` to reduce the goal to its premises.
+
+Rewrite using `[D.nd.S_def i v]`. Use `⟨?_, hl⟩` and prove the remaining obligations. Use `fin_cases k`. Conclude with `Or.inl hk`. Conclude with `Or.inr (Or.inl hk)`.
+
+Establish `hpd : v ∉ D.ntw.pD (D.ntw.twOf i)`. Introduce `hp`. Establish `h' : v ∈ ((D.ntw.pD (D.ntw.twOf i) : Finset _) : Set (HeightOneSpectrum (𝓞 D.host.E)))` using `hp`. Rewrite `h'` using `[D.ntw.pD_eq, D.ntw.twOf_l]`. Conclude with `hS ((D.nd.S_def i v).2 ⟨Or.inr (Or.inr h'), hl⟩)`.
+
+Establish `hl' : v ∉ placesOver D.host.E (D.ntw.l (D.ntw.twOf i))`. Rewrite using `[D.ntw.twOf_l]`. Conclude with `hl`. Take `⟨σ, hσ, hψ⟩` from `(D.ntw.psiL_ram i v (D.nd.plOm.1 v) (D.nd.plOm.2 v)).2 hv`. Use `⟨σ, hσ, ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `D.ntw.twistCharacterFamily_unramified (D.ntw.twOf i) (D.nd.j i) (D.ntw.twSide i) v hl' hg hpd (D.nd.plOm.1 v) (D.nd.plOm.2 v) σ hσ`. Rewrite using `[D.ntw.chi_tw i, MonoidHom.mul_apply, MonoidHom.comp_apply, h1, map_one, one_mul]`. Conclude with `hψ`.
+-/
 theorem chi_ram_Q_of_tw (D : D7) (i : D.nd.Loc) (v : HeightOneSpectrum (𝓞 D.host.E)) (hv : v ∈ D.nd.Q i) :
     ∃ g ∈ Ine (F := D.host.E) (D.nd.plOm.1 v), D.nd.chi i 1 g ≠ 1 := by
   have hS : v ∉ D.nd.S i := fun h => Finset.disjoint_left.1 (D.nd.SQ_disj i) h hv
@@ -195,6 +241,11 @@ theorem chi_ram_Q_of_tw (D : D7) (i : D.nd.Loc) (v : HeightOneSpectrum (𝓞 D.h
   rw [D.ntw.chi_tw i, MonoidHom.mul_apply, MonoidHom.comp_apply, h1, map_one, one_mul]
   exact hψ
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `T.lamG s lam`. Use `⟨B ∪ D.ntw.S0 s, fun P hP => ?_⟩` and prove the remaining obligations. Take `⟨α, hα, x, hx, hσ⟩` from `hB P (fun h => hP (Finset.mem_union_left _ h))`. Use `⟨α, hα, x, by rw [hx, zpow_zero, mul_one], fun σ hσ' => ?_⟩` and prove the remaining obligations. Rewrite using `[D.ntw.Xv_def s lam P (fun h => hP (Finset.mem_union_right _ h)) σ hσ']`.
+
+Conclude with `hσ σ hσ'`.
+-/
 theorem Xv_read {D : D7} {K : NChiData D} (T : NormalizedCharacterCompatibility D K) (s : D.ntw.Tw) (lam : D.ntw.abelian₂ s) :
     ∃ B : Finset (HeightOneSpectrum (𝓞 D.host.E)), ∀ P ∉ B, ∃ α : ℂ, (K.lamH s lam).At P α ∧ ∃ x : ↥D.LL0,
       complexEmbeddingRestrictedToSubfield D x = α⁻¹ ∧
@@ -208,12 +259,26 @@ theorem Xv_read {D : D7} {K : NChiData D} (T : NormalizedCharacterCompatibility 
   rw [D.ntw.Xv_def s lam P (fun h => hP (Finset.mem_union_right _ h)) σ hσ']
   exact hσ σ hσ'
 
+/- English proof (translation)
+Establish `h2` using `congrArg (fun v : ℂˣ => (v : ℂ)) (map_zpow (Units.map f.toMonoidHom) u n)`. Simplify using `only [Units.coe_map, Units.val_zpow_eq_zpow_val, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe] at h2`. Conclude with `h2`.
+-/
 theorem units_zpow_map {O : Type} [CommRing O] (f : O →+* ℂ) (u : Oˣ) (n : ℤ) :
     f ((u ^ n : Oˣ) : O) = (f (u : O)) ^ n := by
   have h2 := congrArg (fun v : ℂˣ => (v : ℂ)) (map_zpow (Units.map f.toMonoidHom) u n)
   simp only [Units.coe_map, Units.val_zpow_eq_zpow_val, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe] at h2
   exact h2
 
+/- English proof (translation)
+Establish `: IsAlgClosed D.nd.Om` using `IsAlgClosure.isAlgClosed D.host.E`. Establish `: CharZero D.nd.Om` using `charZero_of_injective_algebraMap (algebraMap D.host.E D.nd.Om).injective`. Establish `hcyc : CycFrob D.nd.plOm.1 (D.nd.l a)` using `cycFrob_holds D.nd.plOm.1 D.nd.plOm.2 (D.nd.l a)`. Take `⟨B, hB⟩` from `chi_read T a`. Establish `hfin` using `finite_placesOver (E := D.host.E) (D.nd.l a)`.
+
+Use `⟨B ∪ hfin.toFinset, fun P hP => ?_⟩` and prove the remaining obligations. Take `⟨α, hα, x, hx, hσ⟩` from `hB P (fun h => hP (Finset.mem_union_left _ h))`. Establish `hl : ((D.nd.l a : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal` using `fun h => hP (Finset.mem_union_right _ (hfin.mem_toFinset.2 h))`. Use `⟨α, hα, α⁻¹ * (Real.sqrt (normV P) : ℂ) ^ (-(D.R.r : ℤ) - 2 * ((c : ℤ) - 1)), rfl, fun σ hσ' => ?_⟩` and prove the remaining obligations. Simplify using `only [RingHom.id_apply] at hx hσ ⊢`.
+
+Establish `e` using `hσ σ hσ'`. Rewrite `e` using `[hx]`. Establish `hq` using `hcyc P hl σ hσ'`. Establish `hcy : iotaC D a ((((Units.map (algebraMap ℤ_[D.nd.l a] (D.nd.O a)).toMonoidHom).comp (cycZ (F` using `D.host.E) (Ω := D.nd.Om) (D.nd.l a))) σ : (D.nd.O a)ˣ) : D.nd.O a) = (normV P : ℂ) := by`. Simplify using `only [MonoidHom.comp_apply, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, hq, map_natCast]`.
+
+Establish `hs : ((Real.sqrt (normV P) : ℝ) : ℂ) ≠ 0`. Establish `: 0 < Real.sqrt (normV P)` using `Real.sqrt_pos.2 (Nat.cast_pos.2 (Nat.pos_of_ne_zero (normV_ne_zero P)))`. Conclude with `this.ne'` after adjusting the coercions. Establish `hsq : (normV P : ℂ) = ((Real.sqrt (normV P) : ℝ) : ℂ) ^ (2 : ℤ)`. Rewrite using `[zpow_two, ← Complex.ofReal_mul, Real.mul_self_sqrt (Nat.cast_nonneg _)]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[D.nd.chi_def a c h1 h2, MonoidHom.mul_apply, Units.val_mul, map_mul, e, MonoidHom.zpow_apply, units_zpow_map, hcy, hsq, ← zpow_mul, mul_assoc, ← zpow_add₀ hs]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chi_c_read {D : D7} {K : NChiData D} (T : NormalizedCharacterCompatibility D K) (a : D.nd.Loc) (c : ℕ) (h1 : 1 ≤ c) (h2 : c ≤ D.R.t) :
     ReadC D.nd.plOm.1 (D.nd.chi a c) (iotaC D a) (K.chiH a) (-(D.R.r : ℤ) - 2 * ((c : ℤ) - 1)) := by
   classical
@@ -245,6 +310,9 @@ theorem chi_c_read {D : D7} {K : NChiData D} (T : NormalizedCharacterCompatibili
   congr 2
   ring
 
+/- English proof (translation)
+Introduce `_ _ _ _`. Rewrite using `[← art_ker D s Q hQ]`. Conclude with `D.ntw.art_cont s Q`.
+-/
 theorem rcgOpen_of_record (D : D7) (s : D.ntw.Tw) (Q : Finset (HeightOneSpectrum (𝓞 D.host.E)))
     (hQ : ∀ v ∈ Q, v ∉ placesOver D.host.E (D.ntw.l s)) :
     RcgOpen D.ntw.cc (D.ntw.l s) (Q : Set (HeightOneSpectrum (𝓞 D.host.E))) := by
@@ -252,6 +320,9 @@ theorem rcgOpen_of_record (D : D7) (s : D.ntw.Tw) (Q : Finset (HeightOneSpectrum
   rw [← art_ker D s Q hQ]
   exact D.ntw.art_cont s Q
 
+/- English proof (translation)
+The claim follows from `have hO : IsOpen ((rcgKer D.ntw.cc (D.ntw.l s) (Q : Set (HeightOneSpectrum (𝓞 D.host.E))) : Subgroup _) : Set (G D.host.E D.nd.Om)) := by rw [← art_ker D s Q hQ] exact D.ntw.art_cont s Q ⟨rcgGal_finite _ _ _ hO, rcgGal_lpow _ _ _ hO, by rw [artGal_ker]; exact hO, artGal_anti _ _ …`.
+-/
 theorem rcgGal_second (D : D7) (s : D.ntw.Tw) (Q : Finset (HeightOneSpectrum (𝓞 D.host.E)))
     (hQ : ∀ v ∈ Q, v ∉ placesOver D.host.E (D.ntw.l s)) :
     Finite (RCGGal D.ntw.cc (D.ntw.l s) (Q : Set (HeightOneSpectrum (𝓞 D.host.E)))) ∧
@@ -267,6 +338,9 @@ theorem rcgGal_second (D : D7) (s : D.ntw.Tw) (Q : Finset (HeightOneSpectrum (�
   ⟨rcgGal_finite _ _ _ hO, rcgGal_lpow _ _ _ hO, by rw [artGal_ker]; exact hO, artGal_anti _ _ _, artGal_unr _ _ _,
     artGal_surj _ _ _⟩
 
+/- English proof (translation)
+The claim follows from `exists_isFrob (D.nd.plOm.2 P)`.
+-/
 theorem frob_exists (D : D7) (P : HeightOneSpectrum (𝓞 D.host.E)) :
     ∃ σ : G D.host.E D.nd.Om, IsFrob (F := D.host.E) (D.nd.plOm.1 P) (normV P) σ :=
   exists_isFrob (D.nd.plOm.2 P)

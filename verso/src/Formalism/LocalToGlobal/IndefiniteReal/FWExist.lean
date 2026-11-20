@@ -19,11 +19,20 @@ variable (L) in
 def crd (b : Basis (Fin n) K C) : C →ₗ[K] (Fin n → L) :=
   (Algebra.linearMap K L).compLeft (Fin n) ∘ₗ b.equivFun.toLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem crd_apply (b : Basis (Fin n) K C) (f : C) (k : Fin n) : crd L b f k = algebraMap K L (b.repr f k) := rfl
 
+/- English proof (translation)
+Introduce `_ _ h` and use `b.ext_elem fun k => (algebraMap K L).injective (congrFun h k)`.
+-/
 theorem crd_injective (b : Basis (Fin n) K C) : Function.Injective (crd L b) := fun _ _ h =>
   b.ext_elem fun k => (algebraMap K L).injective (congrFun h k)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Rewrite using `[crd_apply, b.repr_self, Finsupp.single_apply, Pi.single_apply]`. Distinguish the cases in `h : k = l`. Simplify using `[h]`. Simplify using `[h, Ne.symm h]`.
+-/
 theorem crd_basis (b : Basis (Fin n) K C) (k : Fin n) : crd L b (b k) = Pi.single k 1 := by
   funext l
   rw [crd_apply, b.repr_self, Finsupp.single_apply, Pi.single_apply]
@@ -36,8 +45,14 @@ def extB (σ : L →+* ℂ) (w : Fin n → H) : (Fin n → L) →ₛₗ[σ] H wh
   map_add' x y := by simp [add_smul, Finset.sum_add_distrib]
   map_smul' a x := by simp [mul_smul, Finset.smul_sum]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem extB_apply (σ : L →+* ℂ) (w : Fin n → H) (x : Fin n → L) : extB σ w x = ∑ k, σ (x k) • w k := rfl
 
+/- English proof (translation)
+Use `conv_rhs => rw [← b.sum_repr f]`. Rewrite using `[map_sum, extB_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, crd_apply]`. Both sides reduce to the same expression.
+-/
 theorem extB_crd (σ : L →+* ℂ) (b : Basis (Fin n) K C) (jK : C →ₛₗ[σ.comp (algebraMap K L)] H) (f : C) :
     extB σ (fun k => jK (b k)) (crd L b f) = jK f := by
   conv_rhs => rw [← b.sum_repr f]
@@ -46,15 +61,24 @@ theorem extB_crd (σ : L →+* ℂ) (b : Basis (Fin n) K C) (jK : C →ₛₗ[σ
   rw [map_smulₛₗ, crd_apply]
   rfl
 
+/- English proof (translation)
+The claim follows from `LinearMap.ker_eq_bot'.2 fun c hc => funext (Fintype.linearIndependent_iff.1 hw c hc)`.
+-/
 theorem lc_ker {w : Fin n → H} (hw : LinearIndependent ℂ w) : LinearMap.ker (Fintype.linearCombination ℂ w) = ⊥ :=
   LinearMap.ker_eq_bot'.2 fun c hc => funext (Fintype.linearIndependent_iff.1 hw c hc)
 
+/- English proof (translation)
+Set `_ : Algebra L ℂ` to `σ.toAlgebra`. Establish `h1 : LinearIndependent ℂ fun k => algebraMap L ℂ ∘ x k` using `linearIndependent_algebraMap_comp_iff.2 hx`. Conclude with `h1.map' _ (lc_ker hw)`.
+-/
 theorem extB_indep (σ : L →+* ℂ) {w : Fin n → H} (hw : LinearIndependent ℂ w) {m : ℕ} {x : Fin m → Fin n → L}
     (hx : LinearIndependent L x) : LinearIndependent ℂ fun k => extB σ w (x k) := by
   let _ : Algebra L ℂ := σ.toAlgebra
   have h1 : LinearIndependent ℂ fun k => algebraMap L ℂ ∘ x k := linearIndependent_algebraMap_comp_iff.2 hx
   exact h1.map' _ (lc_ker hw)
 
+/- English proof (translation)
+Introduce `x y h`. Establish `h1 : (fun k => σ (x k)) = fun k => σ (y k)` using `LinearMap.ker_eq_bot.1 (lc_ker hw) h`. Conclude with `funext fun k => σ.injective (congrFun h1 k)`.
+-/
 theorem extB_injective (σ : L →+* ℂ) {w : Fin n → H} (hw : LinearIndependent ℂ w) : Function.Injective (extB σ w) := by
   intro x y h
   have h1 : (fun k => σ (x k)) = fun k => σ (y k) := LinearMap.ker_eq_bot.1 (lc_ker hw) h
@@ -64,8 +88,14 @@ variable (K C) in
 
 abbrev HasB (n : ℕ) : Prop := Nonempty (Basis (Fin n) K C)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Module.finBasis K C⟩`.
+-/
 theorem hasB_finrank [FiniteDimensional K C] : HasB K C (finrank K C) := ⟨Module.finBasis K C⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨b⟩ => ⟨Module.Finite.of_basis b, by rw [finrank_eq_card_basis b, Fintype.card_fin]⟩, fun ⟨_, h⟩ => h ▸ hasB_finrank⟩`.
+-/
 theorem hasB_iff : HasB K C n ↔ FiniteDimensional K C ∧ n = finrank K C :=
   ⟨fun ⟨b⟩ => ⟨Module.Finite.of_basis b, by rw [finrank_eq_card_basis b, Fintype.card_fin]⟩,
     fun ⟨_, h⟩ => h ▸ hasB_finrank⟩
@@ -80,10 +110,19 @@ open Classical in
 
 def bOr (n : ℕ) : Fin n → C := if h : HasB K C n then h.some else 0
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem crdOr_eq (h : HasB K C n) : crdOr K L C n = crd L h.some := dif_pos h
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem bOr_eq (h : HasB K C n) : bOr K C n = h.some := dif_pos h
 
+/- English proof (translation)
+The claim follows from `crdOr_eq (L := L) h ▸ crd_injective _`.
+-/
 theorem crdOr_injective (h : HasB K C n) : Function.Injective (crdOr K L C n) := crdOr_eq (L := L) h ▸ crd_injective _
 
 variable (K L C) in
@@ -92,11 +131,17 @@ open Classical in
 def secOr (n : ℕ) : LinearMap.range (crdOr K L C n) →ₗ[K] C :=
   if h : Function.Injective (crdOr K L C n) then (LinearEquiv.ofInjective _ h).symm.toLinearMap else 0
 
+/- English proof (translation)
+Rewrite using `[secOr, dif_pos (crdOr_injective h)]`. Conclude with `LinearEquiv.symm_apply_apply _ f`.
+-/
 theorem secOr_apply (h : HasB K C n) (f : C) :
     secOr K L C n (LinearEquiv.ofInjective _ (crdOr_injective h) f) = f := by
   rw [secOr, dif_pos (crdOr_injective h)]
   exact LinearEquiv.symm_apply_apply _ f
 
+/- English proof (translation)
+Rewrite using `[crdOr_eq h, bOr_eq h]`. Conclude with `extB_crd σ _ jK f`.
+-/
 theorem extB_crdOr (h : HasB K C n) (σ : L →+* ℂ) (jK : C →ₛₗ[σ.comp (algebraMap K L)] H) (f : C) :
     extB σ (fun k => jK (bOr K C n k)) (crdOr K L C n f) = jK f := by
   rw [crdOr_eq h, bOr_eq h]
@@ -108,6 +153,9 @@ open Classical in
 
 def evOr (σ : K →+* ℂ) (ev : H → X) (φ : C → X) : C →ₛₗ[σ] H := if h : EvEx σ ev φ then h.choose else 0
 
+/- English proof (translation)
+Rewrite using `[evOr, dif_pos h]`. Conclude with `h.choose_spec f`.
+-/
 theorem evOr_spec {σ : K →+* ℂ} {ev : H → X} {φ : C → X} (h : EvEx σ ev φ) (f : C) : ev (evOr σ ev φ f) = φ f := by
   rw [evOr, dif_pos h]
   exact h.choose_spec f
@@ -132,11 +180,17 @@ def rhoOr (σ : L →+* ℂ) (j : WL →ₛₗ[σ] H) (e : H →ₗ[ℂ] X) (act
     G →* (WL →ₗ[L] WL) :=
   if h : ∃ ρ, RhoIs σ j e act chi ρ then h.choose else 1
 
+/- English proof (translation)
+Rewrite using `[rhoOr, dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem rhoOr_spec {σ : L →+* ℂ} {j : WL →ₛₗ[σ] H} {e : H →ₗ[ℂ] X} {act : G → X →ₗ[ℂ] X} {chi : G →* Lˣ}
     (h : ∃ ρ, RhoIs σ j e act chi ρ) : RhoIs σ j e act chi (rhoOr σ j e act chi) := by
   rw [rhoOr, dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+The claim follows from `MonoidHom.ext fun g => LinearMap.ext fun x => hj (he ((h g x).trans (h' g x).symm))`.
+-/
 theorem RhoIs.unique {σ : L →+* ℂ} {j : WL →ₛₗ[σ] H} {e : H →ₗ[ℂ] X} {act : G → X →ₗ[ℂ] X} {chi : G →* Lˣ}
     (hj : Function.Injective j) (he : Function.Injective e) {ρ ρ' : G →* (WL →ₗ[L] WL)}
     (h : RhoIs σ j e act chi ρ) (h' : RhoIs σ j e act chi ρ') : ρ = ρ' :=
@@ -153,12 +207,20 @@ def rhoB (b : Basis (Fin n) K C) (ρC : G →* (C →ₗ[K] C)) : G →* ((Fin n
     rw [map_mul, LinearMap.toMatrix_mul, Matrix.map_mul, Matrix.toLin'_mul]
     rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Use `show ((LinearMap.toMatrix b b (ρC g)).map (algebraMap K L)).mulVec (algebraMap K L ∘ b.repr f) k = _`. Rewrite using `[← RingHom.map_mulVec, LinearMap.toMatrix_mulVec_repr, crd_apply]`.
+-/
 theorem rhoB_crd (b : Basis (Fin n) K C) (ρC : G →* (C →ₗ[K] C)) (g : G) (f : C) :
     rhoB L b ρC g (crd L b f) = crd L b (ρC g f) := by
   funext k
   show ((LinearMap.toMatrix b b (ρC g)).map (algebraMap K L)).mulVec (algebraMap K L ∘ b.repr f) k = _
   rw [← RingHom.map_mulVec, LinearMap.toMatrix_mulVec_repr, crd_apply]
 
+/- English proof (translation)
+Introduce `g x`. Establish `hx : x = ∑ k, x k • crd L b (b k)`. Simplify using `only [crd_basis]`. Conclude with `pi_eq_sum_univ' x`. Rewrite using `[hx]`.
+
+Simplify using `only [map_sum, map_smulₛₗ, Finset.smul_sum, RingHom.id_apply, rhoB_crd, extB_crd, h]`. Conclude with `Finset.sum_congr rfl fun k _ => smul_comm _ _ _`.
+-/
 theorem rhoIs_rhoB (σ : L →+* ℂ) (b : Basis (Fin n) K C) (jK : C →ₛₗ[σ.comp (algebraMap K L)] H) (e : H →ₗ[ℂ] X)
     (act : G → X →ₗ[ℂ] X) (chi : G →* Lˣ) (ρC : G →* (C →ₗ[K] C))
     (h : ∀ g f, e (jK (ρC g f)) = σ ((chi g : Lˣ) : L) • act g (e (jK f))) :
@@ -179,6 +241,21 @@ variable {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algeb
   {WL : Type} [AddCommGroup WL] [Module L WL] [Module K WL] [IsScalarTower K L WL]
   {W : (L →+* ℂ) → Type} [∀ σ, NormedAddCommGroup (W σ)] [∀ σ, InnerProductSpace ℂ (W σ)] {G : Type} [Group G]
 
+/- English proof (translation)
+Take `⟨n, b, hb, -, h2, h3, h4⟩` from `h`. Set `B : Basis (Fin n) L WL` to `Basis.mk h3 h4.ge`. Set `j : WL →ₛₗ[σ] W σ` to `(extB σ fun k => jK (e.symm ⟨b k, hb k⟩)).comp B.equivFun.toLinearMap`. Establish `hj : ∀ k, j (b k) = jK (e.symm ⟨b k, hb k⟩)` using `fun k => by`. Establish `h5 : b k = B k` using `(Basis.mk_apply h3 h4.ge k).symm`.
+
+Use `show ∑ l, σ (B.repr (b k) l) • jK (e.symm ⟨b l, hb l⟩) = _`. Rewrite using `[Finset.sum_eq_single k]`. Rewrite using `[show B.repr (b k) k = 1 by rw [h5]; simp, map_one, one_smul]`. Introduce `l _ hl`. Rewrite using `[show B.repr (b k) l = 0 by rw [h5]; simp [hl.symm], map_zero, zero_smul]`.
+
+Simplify using the standard rewrite rules. Establish `key : ∀ x ∈ Submodule.span K (Set.range b), ∀ hx : x ∈ F.WK, j x = jK (e.symm ⟨x, hx⟩)`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨k, rfl⟩ := hx`.
+
+Conclude with `fun _ => hj k`. Consider the case `zero => intro _`. Rewrite using `[map_zero, show (⟨0, _⟩ : F.WK) = 0 from rfl, map_zero, map_zero]`. Consider the case `add x y hx hy ihx ihy`. Introduce `_`.
+
+Rewrite using `[map_add, ihx (h2.le hx), ihy (h2.le hy), ← map_add, ← map_add]`. Both sides reduce to the same expression. Consider the case `smul a x hx ih`. Introduce `_`. Use `(congrArg j (algebraMap_smul L a x).symm).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smulₛₗ, ih (h2.le hx)]`. Use `(map_smulₛₗ jK a _).symm.trans (congrArg jK ?_)` and prove the remaining obligations. Rewrite using `[← LinearEquiv.map_smul]`. Both sides reduce to the same expression. Use `⟨j, fun f => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[key _ (h2.ge (e f).2) (e f).2]`. Conclude with `congrArg jK (e.symm_apply_apply f)`.
+-/
 theorem exists_ext_of_isKsForm (F : FormsL L K WL W G) (h : F.IsKsForm) (e : C ≃ₗ[K] F.WK) (σ : L →+* ℂ)
     (jK : C →ₛₗ[σ.comp (algebraMap K L)] W σ) : ∃ j : WL →ₛₗ[σ] W σ, ∀ f, j (e f : F.WK) = jK f := by
   obtain ⟨n, b, hb, -, h2, h3, h4⟩ := h
@@ -212,6 +289,9 @@ theorem exists_ext_of_isKsForm (F : FormsL L K WL W G) (h : F.IsKsForm) (e : C �
   rw [key _ (h2.ge (e f).2) (e f).2]
   exact congrArg jK (e.symm_apply_apply f)
 
+/- English proof (translation)
+Take `⟨n, b, -, h1, h2, h3, h4⟩` from `h`. Establish `e1 : finrank L (Fin m → L) = n` using `by rw [finrank_eq_card_basis (Basis.mk h3 h4.ge), Fintype.card_fin]`. Rewrite using `[← h2, finrank_span_eq_card h1, Fintype.card_fin, ← e1, finrank_fin_fun]`.
+-/
 theorem finrank_of_isKsForm {m : ℕ} (F : FormsL L K (Fin m → L) W G) (h : F.IsKsForm) : m = finrank K F.WK := by
   obtain ⟨n, b, -, h1, h2, h3, h4⟩ := h
   have e1 : finrank L (Fin m → L) = n := by rw [finrank_eq_card_basis (Basis.mk h3 h4.ge), Fintype.card_fin]
@@ -222,6 +302,11 @@ variable {Rg : Type} [CommRing Rg] [Algebra K Rg] [Algebra (𝓞 K) Rg] [IsScala
 def FullLat (Cs : Submodule K Rg) (Vs : HeightOneSpectrum (𝓞 K) → Set (Rg → EReal)) (hV : ∀ la, ∀ v ∈ Vs la, IsVal la v) : Prop :=
   Submodule.IsLattice K (latOf Cs Vs hV)
 
+/- English proof (translation)
+Establish `e : F.MK = (latOf Cs Vs hV).map (ι.restrictScalars (𝓞 K))`. Use extensionality with `x`. Rewrite using `[hM, Submodule.mem_map]`. Both sides reduce to the same expression. Use `⟨e ▸ h.fg.map _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e, hW]`. Use `show Submodule.span K (ι '' (latOf Cs Vs hV : Set Cs)) = _`. Rewrite using `[Submodule.span_image, h.span_eq_top, Submodule.map_top]`.
+-/
 theorem mkFull_of [Fintype G] [Module (𝓞 K) WL] [IsScalarTower (𝓞 K) K WL] (F : FormsL L K WL W G) {Cs : Submodule K Rg}
     {Vs : HeightOneSpectrum (𝓞 K) → Set (Rg → EReal)} {hV : ∀ la, ∀ v ∈ Vs la, IsVal la v} (ι : Cs →ₗ[K] WL)
     (hW : F.WK = LinearMap.range ι) (hM : ∀ x, x ∈ F.MK ↔ ∃ f : Cs, (∀ la, ∀ v ∈ Vs la, 0 ≤ v (f : Rg)) ∧ ι f = x)
@@ -241,14 +326,25 @@ section Nrm
 
 variable {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K))
 
+/- English proof (translation)
+Unfold `nrmOf`. Use `split_ifs`. Conclude with `le_rfl`. Conclude with `Real.rpow_nonneg (Nat.cast_nonneg _) _`.
+-/
 theorem nrmOf_nonneg (v : EReal) : 0 ≤ nrmOf la v := by
   unfold nrmOf
   split_ifs
   · exact le_rfl
   · exact Real.rpow_nonneg (Nat.cast_nonneg _) _
 
+/- English proof (translation)
+Simplify using `[nrmOf]`.
+-/
 theorem nrmOf_top : nrmOf la ⊤ = 0 := by simp [nrmOf]
 
+/- English proof (translation)
+Distinguish the cases in `hw : w = ⊤`. Rewrite using `[hw, nrmOf_top]`. Conclude with `nrmOf_nonneg la v`. Establish `hv' : v ≠ ⊤` using `fun h' => hw (top_le_iff.1 (h' ▸ h))`. Simplify using `only [nrmOf, if_neg hw, if_neg hv']`.
+
+Conclude with `Real.rpow_le_rpow_of_exponent_le (one_lt_absNorm_real la).le (neg_le_neg (EReal.toReal_le_toReal h hv hw))`.
+-/
 theorem nrmOf_anti {v w : EReal} (hv : v ≠ ⊥) (h : v ≤ w) : nrmOf la w ≤ nrmOf la v := by
   by_cases hw : w = ⊤
   · rw [hw, nrmOf_top]; exact nrmOf_nonneg la v
@@ -262,9 +358,17 @@ section NrmM
 
 variable {D : D7} (T : Core D) (j : ℕ) (la : HeightOneSpectrum (𝓞 T.Q.c.F)) (y : T.PtM j la)
 
+/- English proof (translation)
+Rewrite using `[Core.nrmM, (isVal_valSet la y.1 y.2).zero, nrmOf_top]`.
+-/
 theorem nrmM_zero : T.nrmM j la y 0 = 0 := by
   rw [Core.nrmM, (isVal_valSet la y.1 y.2).zero, nrmOf_top]
 
+/- English proof (translation)
+Establish `hv` using `isVal_valSet la y.1 y.2`. Establish `h` using `hv.add f g`. Break down `le_total (y.1 f) (y.1 g) with h1 | h1` into its components or cases. Rewrite `h` using `[min_eq_left h1]`. Conclude with `(nrmOf_anti la (hv.ne_bot f) h).trans (le_max_left _ _)`.
+
+Rewrite `h` using `[min_eq_right h1]`. Conclude with `(nrmOf_anti la (hv.ne_bot g) h).trans (le_max_right _ _)`.
+-/
 theorem nrmM_add (f g : T.R j) : T.nrmM j la y (f + g) ≤ max (T.nrmM j la y f) (T.nrmM j la y g) := by
   have hv := isVal_valSet la y.1 y.2
   have h := hv.add f g
@@ -274,6 +378,9 @@ theorem nrmM_add (f g : T.R j) : T.nrmM j la y (f + g) ≤ max (T.nrmM j la y f)
   · rw [min_eq_right h1] at h
     exact (nrmOf_anti la (hv.ne_bot g) h).trans (le_max_right _ _)
 
+/- English proof (translation)
+Establish `hv` using `isVal_valSet la y.1 y.2`. Distinguish the cases in `ha : a = 0`. Rewrite using `[ha, zero_smul, nrmM_zero, map_zero, zero_mul]`. Rewrite using `[Core.nrmM, hv.smul a f ha]`. Conclude with `nrmOf_smul la ha (hv.ne_bot f)`.
+-/
 theorem nrmM_smul (a : T.Q.c.F) (f : T.R j) : T.nrmM j la y (a • f) = FinitePlace.mk la a * T.nrmM j la y f := by
   have hv := isVal_valSet la y.1 y.2
   by_cases ha : a = 0
@@ -312,9 +419,19 @@ def chiTop (i : Fin D.R.m) : G →* D.what₂.LLˣ := if h : ∃ chi, ChiIs R i 
 def ChiVal : Prop :=
   ∀ i : Fin D.R.m, ∀ PP ∈ R.Pg, ∀ x, ((R.chi ((i : ℕ) + 1) PP x : ℂˣ) : ℂ) ∈ D.what₂.embLL.fieldRange
 
+/- English proof (translation)
+Simplify using `only [chiC, map_mul, Pi.mul_apply, Finset.prod_mul_distrib]`.
+-/
 theorem chiC_mul (i : Fin D.R.m) (g g' : G) : chiC R i (g * g') = chiC R i g * chiC R i g' := by
   simp only [chiC, map_mul, Pi.mul_apply, Finset.prod_mul_distrib]
 
+/- English proof (translation)
+Establish `h1 : ∀ g, ∃ a, D.what₂.embLL a = (chiC R i g : ℂ)` using `fun g => by`. Establish `: ((chiC R i g : ℂˣ) : ℂ) ∈ D.what₂.embLL.fieldRange`. Rewrite using `[chiC, Units.coe_prod]`. Conclude with `prod_mem fun PP _ => h i PP.1 PP.2 _`. Conclude with `this`.
+
+Use `choose a ha using h1`. Establish `hne : ∀ g, a g ≠ 0` using `fun g h0 => (chiC R i g).ne_zero (by rw [← ha, h0, map_zero])`. Establish `hex : ∃ chi, ChiIs R i chi` using `⟨MonoidHom.mk' (fun g => Units.mk0 (a g) (hne g)) fun g g' => Units.ext (D.what₂.embLL.injective (by`. Simplify using `only [Units.val_mk0, Units.val_mul, map_mul, ha, chiC_mul])), ha⟩`. Rewrite using `[chiTop, dif_pos hex]`.
+
+Conclude with `hex.choose_spec`.
+-/
 theorem chiIs_chiTop (h : ChiVal R) (i : Fin D.R.m) : ChiIs R i (chiTop R i) := by
   have h1 : ∀ g, ∃ a, D.what₂.embLL a = (chiC R i g : ℂ) := fun g => by
     have : ((chiC R i g : ℂˣ) : ℂ) ∈ D.what₂.embLL.fieldRange := by
@@ -329,6 +446,11 @@ theorem chiIs_chiTop (h : ChiVal R) (i : Fin D.R.m) : ChiIs R i (chiTop R i) := 
   rw [chiTop, dif_pos hex]
   exact hex.choose_spec
 
+/- English proof (translation)
+Introduce `i PP hPP x`. Take `⟨z, hz⟩` from `h PP hPP`. Use `hf PP hPP` as an intermediate fact. Establish `: NeZero (Nat.card (kP PP)ˣ)` using `⟨Nat.card_pos.ne'⟩`. Establish `h1 : ((R.chi ((i : ℕ) + 1) PP x : ℂˣ) : ℂ) ^ Nat.card (kP PP)ˣ = 1`.
+
+Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one', map_one, Units.val_one]`. Take `⟨k, -, hk⟩` from `(hz.map_of_injective D.what₂.embLL.injective).eq_pow_of_pow_eq_one h1`. Conclude with `⟨z ^ k, by rw [map_pow, hk]⟩`.
+-/
 theorem chiVal_of_roots (h : ∀ PP ∈ R.Pg, ∃ z : D.what₂.LL, IsPrimitiveRoot z (Nat.card (kP PP)ˣ))
     (hf : ∀ PP ∈ R.Pg, Finite (kP PP)) : ChiVal R := by
   intro i PP hPP x
@@ -367,12 +489,21 @@ def phiC {j : ℕ} {σ : T.Q.c.F →+* ℂ} {W : HSp D} (hV : T.V j σ = W) (a :
     GA D W → ℂ :=
   hV ▸ T.phiJ j σ a f
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Nat.le_add_left _ _, i.2⟩`.
+-/
 theorem inR (i : Fin D.R.m) : InR D ((i : ℕ) + 1) := ⟨Nat.le_add_left _ _, i.2⟩
 
+/- English proof (translation)
+The claim follows from `hasB_iff.2 ⟨h.cuspFD _ (inR i) _ _ (dom_wtA (κ i)), rfl⟩`.
+-/
 theorem hasB_nTop (h : LawsJ T) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (i : Fin D.R.m) :
     HasB T.Q.c.F (Cu T κ i) (nTop T κ i) :=
   hasB_iff.2 ⟨h.cuspFD _ (inR i) _ _ (dom_wtA (κ i)), rfl⟩
 
+/- English proof (translation)
+Introduce `x y hxy` and use `by have h1 : ((x : T.Q.c.F) : ℂ) = ((y : T.Q.c.F) : ℂ) := by rw [← h x, ← h y] exact congrArg D.what₂.embLL hxy exact RingOfIntegers.coe_injective (Subtype.ext h1)`.
+-/
 theorem eO_injective (h : T.Q.PinField) : Function.Injective (D.what₂.OtoLL.comp T.Q.eO.toRingHom) := fun x y hxy => by
   have h1 : ((x : T.Q.c.F) : ℂ) = ((y : T.Q.c.F) : ℂ) := by
     rw [← h x, ← h y]
@@ -387,6 +518,9 @@ variable [Algebra T.Q.c.F D.what₂.LL]
 def AlgTie : Prop := ∀ x : 𝓞 T.Q.c.F, algebraMap T.Q.c.F D.what₂.LL (x : T.Q.c.F) = D.what₂.OtoLL (T.Q.eO x)
 
 omit [Algebra T.Q.c.F D.what₂.LL] in
+/- English proof (translation)
+Introduce `x` and use `IsFractionRing.lift_algebraMap (K := T.Q.c.F) (eO_injective T h) x`.
+-/
 theorem algTie_algTop (h : T.Q.PinField) : @AlgTie D T (algTop T h) := fun x =>
   IsFractionRing.lift_algebraMap (K := T.Q.c.F) (eO_injective T h) x
 
@@ -394,10 +528,16 @@ abbrev res (σ : D.what₂.LL →+* ℂ) : T.Q.c.F →+* ℂ := σ.comp (algebra
 
 abbrev resC (σ : D.what₂.LL →+* ℂ) : T.Q.c.F →+* ℂ := (starRingEnd ℂ).comp (res T σ)
 
+/- English proof (translation)
+The claim follows from `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 T.Q.c.F)) (RingHom.ext fun x => (congrArg D.what₂.embLL (ha x)).trans (h x))`.
+-/
 theorem res_embLL (ha : AlgTie T) (h : T.Q.PinField) : res T D.what₂.embLL = T.σ₀ :=
   IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 T.Q.c.F)) (RingHom.ext fun x =>
     (congrArg D.what₂.embLL (ha x)).trans (h x))
 
+/- English proof (translation)
+Use `goodEmb_goodOf T.Q.c (res T σ)` as an intermediate fact. Rewrite `this` using `[goodOf, if_neg h]`. Then use the resulting hypothesis.
+-/
 theorem good_resC {σ : D.what₂.LL →+* ℂ} (h : ¬ GoodEmb T.Q.c (res T σ)) : GoodEmb T.Q.c (resC T σ) := by
   have := goodEmb_goodOf T.Q.c (res T σ)
   rwa [goodOf, if_neg h] at this
@@ -406,6 +546,9 @@ variable (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D 
   (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec)
 
 include R in
+/- English proof (translation)
+Rewrite using `[show sg0 D A = D.what₂.embLL from sgAt_mk _ R.hv0, res_embLL T ha h]`. Conclude with `T.good_σ₀`.
+-/
 theorem base_embedding_good (ha : AlgTie T) (h : T.Q.PinField) : GoodEmb T.Q.c (res T (sg0 D A)) := by
   rw [show sg0 D A = D.what₂.embLL from sgAt_mk _ R.hv0, res_embLL T ha h]
   exact T.good_σ₀
@@ -437,21 +580,33 @@ def jTop (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) : Cu T κ i →ₛₗ[res
     evOr (res T σ) (evAt R i σ h.choose_spec.choose) (phiBar T κ h.choose)
   else 0
 
+/- English proof (translation)
+Rewrite using `[jTop, if_pos hσ, dif_pos hV]`. Conclude with `evOr_spec h f`.
+-/
 theorem jTop_good {i : Fin D.R.m} {σ : D.what₂.LL →+* ℂ} (hσ : GoodEmb T.Q.c (res T σ))
     (hV : T.V ((i : ℕ) + 1) (res T σ) = Wc D i) (h : JEvAt T R κ v₀ i σ hV) (f : Cu T κ i) :
     evAt R i σ (v₀ i σ) (jTop T R κ v₀ i σ f) = phiC T hV (wtA (κ i)) (f : T.R ((i : ℕ) + 1)) := by
   rw [jTop, if_pos hσ, dif_pos hV]
   exact evOr_spec h f
 
+/- English proof (translation)
+Rewrite using `[jTop, if_pos hσ, dif_pos hV]`. Conclude with `dif_neg h`.
+-/
 theorem jTop_good0 {i : Fin D.R.m} {σ : D.what₂.LL →+* ℂ} (hσ : GoodEmb T.Q.c (res T σ))
     (hV : T.V ((i : ℕ) + 1) (res T σ) = Wc D i) (h : ¬ JEvAt T R κ v₀ i σ hV) : jTop T R κ v₀ i σ = 0 := by
   rw [jTop, if_pos hσ, dif_pos hV]
   exact dif_neg h
 
+/- English proof (translation)
+Rewrite using `[jTop, if_neg hσ, dif_neg fun h' => h h'.choose_spec]`.
+-/
 theorem top_lift_vanishes_off_good_embeddings {i : Fin D.R.m} {σ : D.what₂.LL →+* ℂ} (hσ : ¬ GoodEmb T.Q.c (res T σ))
     (hV : T.V ((i : ℕ) + 1) (resC T σ) = Wc D i) (h : ¬ JEvBarAt T R κ i σ hV) : jTop T R κ v₀ i σ = 0 := by
   rw [jTop, if_neg hσ, dif_neg fun h' => h h'.choose_spec]
 
+/- English proof (translation)
+Establish `h' : ∃ hV, JEvBarAt T R κ i σ hV` using `⟨hV, h⟩`. Use `⟨h'.choose_spec.choose, h'.choose_spec.choose_spec.1, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[jTop, if_neg hσ, dif_pos h']`. Conclude with `evOr_spec h'.choose_spec.choose_spec.2 f`.
+-/
 theorem jTop_bar {i : Fin D.R.m} {σ : D.what₂.LL →+* ℂ} (hσ : ¬ GoodEmb T.Q.c (res T σ))
     (hV : T.V ((i : ℕ) + 1) (resC T σ) = Wc D i) (h : JEvBarAt T R κ i σ hV) :
     ∃ v : (R.MW i σ).Vec, IsUnitV v ∧ ∀ f, evAt R i σ v (jTop T R κ v₀ i σ f) = phiBar T κ hV f := by
@@ -487,6 +642,9 @@ abbrev topR : RealDat D A T.Q.c.F := topN T R κ v₀ (nTop T κ)
 
 def FWEq : Prop := ∀ i, R.FW i = formsOfTop T R κ v₀ i
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 theorem fwEq_topN (n : Fin D.R.m → ℕ) : FWEq T (topN T R κ v₀ n) κ v₀ := fun _ => rfl
 
 def DimMatch : Prop := ∀ i, R.nW i = nTop T κ i
@@ -495,6 +653,13 @@ def FormsExist : Prop := Nonempty (FWTie T (topN T R κ v₀ R.nW) κ v₀)
 
 def FormsExistTop : Prop := Nonempty (FWTie T (topR T R κ v₀) κ v₀)
 
+/- English proof (translation)
+Establish `e : crdOr T.Q.c.F D.what₂.LL (Cu T κ i) m = crd D.what₂.LL hb.some` using `crdOr_eq hb`. Establish `e1 : (fun k => crd D.what₂.LL hb.some (hb.some k)) = Pi.basisFun D.what₂.LL (Fin m)`. Use function extensionality and compare the values at `fun k => (crd_basis _ k).trans (Pi.basisFun_apply _ _ k).symm`. Use `⟨m, fun k => crd D.what₂.LL hb.some (hb.some k), fun k => ⟨hb.some k, by rw [e]⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hb.some.linearIndependent.map' _ (LinearMap.ker_eq_bot.2 (crd_injective _))`.
+
+Use `show Submodule.span T.Q.c.F (Set.range (crd D.what₂.LL hb.some ∘ hb.some)) = LinearMap.range (crdOr _ _ _ m)`. Rewrite using `[e, Set.range_comp, Submodule.span_image, hb.some.span_eq, Submodule.map_top]`. Rewrite using `[e1]`. Conclude with `(Pi.basisFun _ _).linearIndependent`. Rewrite using `[e1]`.
+
+Conclude with `(Pi.basisFun _ _).span_eq`.
+-/
 theorem isKsForm_formsN {i : Fin D.R.m} {m : ℕ} (hb : HasB T.Q.c.F (Cu T κ i) m) : (formsN T R κ v₀ i m).IsKsForm := by
   have e : crdOr T.Q.c.F D.what₂.LL (Cu T κ i) m = crd D.what₂.LL hb.some := crdOr_eq hb
   have e1 : (fun k => crd D.what₂.LL hb.some (hb.some k)) = Pi.basisFun D.what₂.LL (Fin m) :=
@@ -506,10 +671,16 @@ theorem isKsForm_formsN {i : Fin D.R.m} {m : ℕ} (hb : HasB T.Q.c.F (Cu T κ i)
   · rw [e1]; exact (Pi.basisFun _ _).linearIndependent
   · rw [e1]; exact (Pi.basisFun _ _).span_eq
 
+/- English proof (translation)
+The claim follows from `extB_crdOr hb σ (jTop T R κ v₀ i σ) f`.
+-/
 theorem jL_crdOr {i : Fin D.R.m} {m : ℕ} (hb : HasB T.Q.c.F (Cu T κ i) m) (σ : D.what₂.LL →+* ℂ) (f : Cu T κ i) :
     jL T R κ v₀ i m σ (crdOr T.Q.c.F D.what₂.LL (Cu T κ i) m f) = jTop T R κ v₀ i σ f :=
   extB_crdOr hb σ (jTop T R κ v₀ i σ) f
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun x => by rw [jL, h, extB_apply] simp`.
+-/
 theorem jL_eq_zero {i : Fin D.R.m} (m : ℕ) {σ : D.what₂.LL →+* ℂ} (h : jTop T R κ v₀ i σ = 0) : jL T R κ v₀ i m σ = 0 :=
   LinearMap.ext fun x => by
     rw [jL, h, extB_apply]
@@ -530,6 +701,19 @@ def KapDom : Prop :=
       aMi D i ((Wc D i).sig (tauE D τ)).1 ((Wc D i).sig (tauE D τ)).2 τ k) ∧ Even D.R.nV
 
 variable (D) in
+/- English proof (translation)
+Use `⟨fun i τ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show (Wc D i).sig (tauE D τ) = D.R.sigW ((i : ℕ) + 1) from D.sp.W_sigval _ (inR i).1 (inR i).2 _]`. Establish `hi` using `i.2`. Establish `hr : (D.R.sigW ((i : ℕ) + 1)).1 + (D.R.sigW ((i : ℕ) + 1)).2 = D.R.r`. Use `D.R.m_add_three_le_k` as an intermediate fact.
+
+Simplify using `only [Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers. Generalize the expression as in `(D.R.sigW ((i : ℕ) + 1)).1 = p at *`. Generalize the expression as in `(D.R.sigW ((i : ℕ) + 1)).2 = q at *`. Use `⟨fun k k' hk => ?_, fun k k' hk => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (k : ℕ) ≤ k'` using `hk`. Establish `h2` using `k'.2`. Establish `h3` using `Formalism.L2.NTheta.lamAt_add_add_le (D.hc τ) (k' - k) k (by omega)`. Rewrite `h3` using `[show (k : ℕ) + (k' - k) = k' by omega, Nat.cast_sub h1]`. Simplify using `only [aPl, if_pos k.2, if_pos k'.2]`.
+
+Conclude with `Int.toNat_le_toNat (Int.floor_le_floor (by linarith))`. Establish `h1 : (k : ℕ) ≤ k'` using `hk`. Establish `h2` using `k'.2`. Establish `h3` using `Formalism.L2.NTheta.lamAt_add_add_le (D.hc τ) (k' - k) (p + (q - k') - 1) (by omega)`. Rewrite `h3` using `[show p + (q - k') - 1 + ((k' : ℕ) - k) = p + (q - k) - 1 by omega, Nat.cast_sub h1]`.
+
+Simplify using `only [aMi, if_pos k.2, if_pos k'.2, Nat.cast_sub k.2.le, Nat.cast_sub k'.2.le]`. Conclude with `Int.toNat_le_toNat (Int.floor_le_floor (by linarith))`. Take `⟨a, ha⟩` from `D.R.k_even`. Take `⟨b, hb⟩` from `D.R.m_even`. Take `⟨c, hc⟩` from `D.R.t_odd`.
+
+Use `D.R.two_le_m` as an intermediate fact. Conclude with `⟨a + b + c, by simp only [Ranks.nV, Ranks.r]; omega⟩`.
+-/
 theorem kapDom : KapDom D := by
   refine ⟨fun i τ => ?_, ?_⟩
   · rw [show (Wc D i).sig (tauE D τ) = D.R.sigW ((i : ℕ) + 1) from D.sp.W_sigval _ (inR i).1 (inR i).2 _]
@@ -565,8 +749,16 @@ def kapTop (i : Fin D.R.m) : WeightFamilies.Wt D ((i : ℕ) + 1) :=
   ⟨_, _, fun τ => ((kapDom D).1 i τ).1, fun τ => ((kapDom D).1 i τ).2, D.R.nV, (kapDom D).2⟩
 
 variable (D) in
+/- English proof (translation)
+Introduce `_ _` and use `⟨fun _ => rfl, fun _ => rfl, rfl⟩`.
+-/
 theorem kapIs_kapTop : KapIs (kapTop D) := fun _ _ => ⟨fun _ => rfl, fun _ => rfl, rfl⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Take `⟨τ₀⟩` from `hT`. Establish `h1 : (κ i).aP = (kapTop D i).aP` using `funext fun τ => funext (h i τ).1`. Establish `h2 : (κ i).aM = (kapTop D i).aM` using `funext fun τ => funext (h i τ).2.1`. Establish `h3 : (κ i).n = (kapTop D i).n` using `(h i τ₀).2.2`.
+
+Generalize the expression as in `κ i = w at *`. Generalize the expression as in `kapTop D i = w' at *`. Consider the cases of `w`. Consider the cases of `w'`. Reduce the equality to equality of the corresponding arguments.
+-/
 theorem KapIs.eq (h : KapIs κ) (hT : Nonempty D.what₂.Tau) : κ = kapTop D := by
   funext i
   obtain ⟨τ₀⟩ := hT
@@ -581,6 +773,9 @@ theorem KapIs.eq (h : KapIs κ) (hT : Nonempty D.what₂.Tau) : κ = kapTop D :=
 
 def ChiTie : Prop := ∀ i : Fin D.R.m, T.chiW ((i : ℕ) + 1) T.toCore.σ₀ = R.mu0 ((i : ℕ) + 1)
 
+/- English proof (translation)
+Introduce `i` and use `by have e := res_embLL T ha hp have h1 := (h i D.what₂.embLL (e ▸ T.toCore.good_σ₀ : GoodEmb T.Q.c (res T D.what₂.embLL))).2.2.2.2 rfl exact (congrArg (T.chiW ((i : ℕ) + 1)) e).symm.trans h1`.
+-/
 theorem chiTie_of_chiR (ha : AlgTie T) (hp : T.Q.PinField) (h : ChiR T R) : ChiTie T R := fun i => by
   have e := res_embLL T ha hp
   have h1 := (h i D.what₂.embLL (e ▸ T.toCore.good_σ₀ : GoodEmb T.Q.c (res T D.what₂.embLL))).2.2.2.2 rfl
@@ -615,12 +810,21 @@ def tieN (n : Fin D.R.m → ℕ) (h : TieIn T R κ v₀) (hb : ∀ i, HasB T.Q.c
     (congrArg (evAt R i σ (v₀ i σ)) (jL_crdOr T R κ v₀ (hb i) σ f)).trans
       (jTop_good T R κ v₀ hσ hV ⟨resK σ hj.choose (crdOr T.Q.c.F D.what₂.LL (Cu T κ i) (n i)), hj.choose_spec⟩ f)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨tieN T R κ v₀ _ h (hasB_nTop T h.laws κ)⟩`.
+-/
 theorem formsExistTop_of (h : TieIn T R κ v₀) : FormsExistTop T R κ v₀ :=
   ⟨tieN T R κ v₀ _ h (hasB_nTop T h.laws κ)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨tieN T R κ v₀ _ h fun i => hd i ▸ hasB_nTop T h.laws κ i⟩`.
+-/
 theorem formsExist_of (h : TieIn T R κ v₀) (hd : DimMatch T R κ) : FormsExist T R κ v₀ :=
   ⟨tieN T R κ v₀ _ h fun i => hd i ▸ hasB_nTop T h.laws κ i⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h, ha, kapIs_kapTop D, fun i σ => extremal_vector_is_chosen R i σ (hs i σ), hc, hb⟩`.
+-/
 theorem tieIn_top (h : LawsJ T) (ha : AlgTie T) (hs : ∀ i σ, LowSm (R.MW i σ)) (hc : ChiR T R) (hb : IsBaseClassLevelAdapted T R) :
     TieIn T R (kapTop D) (v0 R) :=
   ⟨h, ha, kapIs_kapTop D, fun i σ => extremal_vector_is_chosen R i σ (hs i σ), hc, hb⟩
@@ -639,15 +843,26 @@ def FWTie.Evaluates (t : FWTie T R κ v₀) : Prop :=
   ∀ (i : Fin D.R.m) σ, GoodEmb T.Q.c (res T σ) → ∀ (hV : T.V ((i : ℕ) + 1) (res T σ) = Wc D i) (f : Cu T κ i),
     evAt R i σ (v₀ i σ) (t.jK i σ f) = phiC T hV (wtA (κ i)) (f : T.R ((i : ℕ) + 1))
 
+/- English proof (translation)
+Introduce `i σ hσ hV` and use `⟨t.jK i σ, h i σ hσ hV⟩`.
+-/
 theorem FWTie.jEvExists (t : FWTie T R κ v₀) (h : t.Evaluates) : JEvExists T R κ v₀ :=
   fun i σ hσ hV => ⟨t.jK i σ, h i σ hσ hV⟩
 
+/- English proof (translation)
+Introduce `i σ hσ hV`. Take `⟨jK, hjK⟩` from `hj i σ hσ hV`. Take `⟨j', hj'⟩` from `exists_ext_of_isKsForm (R.FW i) (t.ks i) (t.e i) σ jK`. Conclude with `t.ev i σ hσ hV ⟨j', fun f => (congrArg (evAt R i σ (v₀ i σ)) (hj' f)).trans (hjK f)⟩`.
+-/
 theorem FWTie.evaluates (t : FWTie T R κ v₀) (hj : JEvExists T R κ v₀) : t.Evaluates := by
   intro i σ hσ hV
   obtain ⟨jK, hjK⟩ := hj i σ hσ hV
   obtain ⟨j', hj'⟩ := exists_ext_of_isKsForm (R.FW i) (t.ks i) (t.e i) σ jK
   exact t.ev i σ hσ hV ⟨j', fun f => (congrArg (evAt R i σ (v₀ i σ)) (hj' f)).trans (hjK f)⟩
 
+/- English proof (translation)
+Rewrite using `[FormsL.mem_MK]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h⟩ la y`. Establish `h1 : (R.FW i).nrm la ((t.pt i la).symm y) (t.e i f) ≤ 1` using `h la ((t.pt i la).symm y)`. Rewrite `h1` using `[t.nrm_eq, Equiv.apply_symm_apply]`.
+
+Conclude with `(T.nrmM_le_one_iff _ la y _).1 h1`. Introduce `h`. Use `⟨(t.e i f).2, fun la y => ?_⟩` and prove the remaining obligations. Conclude with `(t.nrm_eq i la y f).trans_le ((T.nrmM_le_one_iff _ la _ _).2 (h la _))`.
+-/
 theorem FWTie.mem_MK (t : FWTie T R κ v₀) (i : Fin D.R.m) (f : Cu T κ i) :
     ((t.e i f : (R.FW i).WK) : Fin (R.nW i) → D.what₂.LL) ∈ (R.FW i).MK ↔
       ∀ la (y : T.PtM ((i : ℕ) + 1) la), 0 ≤ y.1 (f : T.R ((i : ℕ) + 1)) := by
@@ -665,6 +880,9 @@ variable (T R v₀) in
 
 def EvInj : Prop := ∀ i σ, GoodEmb T.Q.c (res T σ) → Function.Injective (evAt R i σ (v₀ i σ))
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun f => h i σ hσ ((ht i σ hσ hV f).trans (jTop_good T R κ v₀ hσ hV (t.jEvExists ht i σ hσ hV) f).symm)`.
+-/
 theorem FWTie.jK_eq (t : FWTie T R κ v₀) (ht : t.Evaluates) (h : EvInj T R v₀) {i : Fin D.R.m} {σ : D.what₂.LL →+* ℂ}
     (hσ : GoodEmb T.Q.c (res T σ)) (hV : T.V ((i : ℕ) + 1) (res T σ) = Wc D i) : t.jK i σ = jTop T R κ v₀ i σ :=
   LinearMap.ext fun f => h i σ hσ ((ht i σ hσ hV f).trans (jTop_good T R κ v₀ hσ hV (t.jEvExists ht i σ hσ hV) f).symm)
@@ -681,11 +899,20 @@ section Rows
 variable (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1))
   (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (n : Fin D.R.m → ℕ)
 
+/- English proof (translation)
+Introduce `_ h` and use `rhoOr_spec h`.
+-/
 theorem rhoTie_topN : RhoTie (topN T R κ v₀ n) := fun _ h => rhoOr_spec h
 
+/- English proof (translation)
+Introduce `i g` and use `(chiIs_chiTop R h i g).trans (Units.coe_prod _ _)`.
+-/
 theorem chiW_topN (h : ChiVal R) : (topN T R κ v₀ n).grp_chiW := fun i g =>
   (chiIs_chiTop R h i g).trans (Units.coe_prod _ _)
 
+/- English proof (translation)
+Introduce `i σ hσ hV` and use `by refine ⟨fun h => ?_, fun h => jL_eq_zero T R κ v₀ (n i) (top_lift_vanishes_off_good_embeddings T R κ v₀ hσ hV h)⟩ obtain ⟨v, hv, h1⟩ := jTop_bar T R κ v₀ hσ hV h exact ⟨v, hv, fun f => (congrArg (evAt R i σ v) (jL_crdOr T R κ v₀ (hb i) σ f)).trans (h1 f)⟩`.
+-/
 theorem barTie_tieN (hl : TieIn T R κ v₀) (hb : ∀ i, HasB T.Q.c.F (Cu T κ i) (n i)) :
     BarTie (tieN T R κ v₀ n hl hb) := fun i σ hσ hV => by
   refine ⟨fun h => ?_, fun h => jL_eq_zero T R κ v₀ (n i) (top_lift_vanishes_off_good_embeddings T R κ v₀ hσ hV h)⟩
@@ -695,6 +922,11 @@ theorem barTie_tieN (hl : TieIn T R κ v₀) (hb : ∀ i, HasB T.Q.c.F (Cu T κ 
 def IntAll {i : Fin D.R.m} (f : Cu T κ i) : Prop :=
   ∀ la (y : T.PtM ((i : ℕ) + 1) la), 0 ≤ y.1 (f : T.R ((i : ℕ) + 1))
 
+/- English proof (translation)
+Establish `key : ∀ f la y, (formsN T R κ v₀ i m).nrm la y ⟨crdOr T.Q.c.F D.what₂.LL (Cu T κ i) m f, f, rfl⟩ ≤ 1 ↔ 0 ≤ y.1 (f : T.R ((i : ℕ) + 1))` using `fun f la y => (congrArg (fun g : Cu T κ i => T.nrmM ((i : ℕ) + 1) la y (g : T.R ((i : ℕ) + 1)) ≤ 1) (secOr_apply hb f)).to_iff.trans (T.nrmM_le_one_iff _ la y _)`. Rewrite using `[FormsL.mem_MK]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨f, rfl⟩, h⟩`. Conclude with `⟨f, fun la y => (key f la y).1 (h la y), rfl⟩`.
+
+Introduce and unpack `⟨f, h, rfl⟩`. Conclude with `⟨⟨f, rfl⟩, fun la y => (key f la y).2 (h la y)⟩`.
+-/
 theorem mem_MK_formsN {i : Fin D.R.m} {m : ℕ} (hb : HasB T.Q.c.F (Cu T κ i) m) (x : Fin m → D.what₂.LL) :
     x ∈ (formsN T R κ v₀ i m).MK ↔ ∃ f, IntAll T κ f ∧ crdOr T.Q.c.F D.what₂.LL (Cu T κ i) m f = x := by
   have key : ∀ f la y, (formsN T R κ v₀ i m).nrm la y ⟨crdOr T.Q.c.F D.what₂.LL (Cu T κ i) m f, f, rfl⟩ ≤ 1 ↔
@@ -724,22 +956,34 @@ def LatFull : Prop :=
   ∀ i : Fin D.R.m, FullLat (T.cuspA ((i : ℕ) + 1) (wtA (κ i)) (κ i).n)
     (valSet (T.Q.Xo _) T.Q.c (algCls (T.Q.Xo _) T.Q.c)) fun la => isVal_valSet la
 
+/- English proof (translation)
+The claim follows from `(hu i σ).1 m _ (bOr_eq hb ▸ hb.some.linearIndependent)`.
+-/
 theorem indep_bOr (hu : JUnif T R κ v₀) {i : Fin D.R.m} {m : ℕ} (hb : HasB T.Q.c.F (Cu T κ i) m) (σ : D.what₂.LL →+* ℂ) :
     LinearIndependent ℂ fun k => jTop T R κ v₀ i σ (bOr T.Q.c.F (Cu T κ i) m k) :=
   (hu i σ).1 m _ (bOr_eq hb ▸ hb.some.linearIndependent)
 
+/- English proof (translation)
+Rewrite using `[jL, bOr_eq hb]`. Conclude with `rhoIs_rhoB σ hb.some _ _ _ _ ρC (h.1 σ)`.
+-/
 theorem rhoIs_jL {i : Fin D.R.m} {m : ℕ} (hb : HasB T.Q.c.F (Cu T κ i) m) {ρC : G →* (Cu T κ i →ₗ[T.Q.c.F] Cu T κ i)}
     (h : IsGeoAct T R κ v₀ i ρC) (σ : D.what₂.LL →+* ℂ) :
     RhoIs σ (jL T R κ v₀ i m σ) (R.HW i σ).e (actW R i σ) (chiTop R i) (rhoB D.what₂.LL hb.some ρC) := by
   rw [jL, bOr_eq hb]
   exact rhoIs_rhoB σ hb.some _ _ _ _ ρC (h.1 σ)
 
+/- English proof (translation)
+The claim follows from `RhoIs.unique (extB_injective _ (indep_bOr T R κ v₀ hu hb _)) (he i _).1 (rhoOr_spec ⟨_, rhoIs_jL T R κ v₀ hb h _⟩) (rhoIs_jL T R κ v₀ hb h _)`.
+-/
 theorem rho_formsN (hu : JUnif T R κ v₀) (he : R.models_HW) {i : Fin D.R.m} {m : ℕ} (hb : HasB T.Q.c.F (Cu T κ i) m)
     {ρC : G →* (Cu T κ i →ₗ[T.Q.c.F] Cu T κ i)} (h : IsGeoAct T R κ v₀ i ρC) :
     (formsN T R κ v₀ i m).ρ = rhoB D.what₂.LL hb.some ρC :=
   RhoIs.unique (extB_injective _ (indep_bOr T R κ v₀ hu hb _)) (he i _).1
     (rhoOr_spec ⟨_, rhoIs_jL T R κ v₀ hb h _⟩) (rhoIs_jL T R κ v₀ hb h _)
 
+/- English proof (translation)
+Introduce `i σ` and use `by obtain ⟨ρC, h⟩ := hg i refine ⟨fun m b hm => extB_indep σ (indep_bOr T R κ v₀ hu (hb i) σ) hm, ?_, ?_⟩ · refine top_le_iff.1 ((hu i σ).2.ge.trans (Submodule.span_mono ?_)) rintro _ ⟨f, rfl⟩ exact ⟨_, jL_crdOr T R κ v₀ (hb i) σ f⟩ · have h1 := rhoIs_jL T R κ v₀ (hb i) h σ rw [← …`.
+-/
 theorem lUnif_topN (hb : ∀ i, HasB T.Q.c.F (Cu T κ i) (n i)) (he : R.models_HW) (hu : JUnif T R κ v₀) (hg : GeoAct T R κ v₀) :
     (topN T R κ v₀ n).LUnif := fun i σ => by
   obtain ⟨ρC, h⟩ := hg i
@@ -751,6 +995,9 @@ theorem lUnif_topN (hb : ∀ i, HasB T.Q.c.F (Cu T κ i) (n i)) (he : R.models_H
     rw [← rho_formsN T R κ v₀ hu he (hb i) h] at h1
     exact h1
 
+/- English proof (translation)
+Introduce `g x` and use `by obtain ⟨ρC, h⟩ := hg i have h1 : ∀ f, (formsN T R κ v₀ i m).ρ g (crdOr T.Q.c.F D.what₂.LL (Cu T κ i) m f) = crdOr T.Q.c.F D.what₂.LL (Cu T κ i) m (ρC g f) := fun f => by rw [rho_formsN T R κ v₀ hu he hb h, crdOr_eq hb] exact rhoB_crd _ ρC g f constructor · rintro ⟨f, rfl⟩ exac …`.
+-/
 theorem mkStable_formsN (hu : JUnif T R κ v₀) (he : R.models_HW) (hg : GeoAct T R κ v₀) {i : Fin D.R.m} {m : ℕ}
     (hb : HasB T.Q.c.F (Cu T κ i) m) : (formsN T R κ v₀ i m).MKStable := fun g x => by
   obtain ⟨ρC, h⟩ := hg i
@@ -765,11 +1012,17 @@ theorem mkStable_formsN (hu : JUnif T R κ v₀) (he : R.models_HW) (hg : GeoAct
     obtain ⟨f, hf, rfl⟩ := (mem_MK_formsN T R κ v₀ hb x).1 hx
     exact (mem_MK_formsN T R κ v₀ hb _).2 ⟨_, h.2 g f hf, (h1 f).symm⟩
 
+/- English proof (translation)
+The claim follows from `mkFull_of _ (crdOr T.Q.c.F D.what₂.LL (Cu T κ i) m) rfl (fun x => (mem_MK_formsN T R κ v₀ hb x).trans (exists_congr fun _ => and_congr ⟨fun h la v hv => h la ⟨v, hv⟩, fun h la y => h la y.1 y.2⟩ Iff.rfl)) (hl i)`.
+-/
 theorem mkFull_formsN (hl : LatFull T κ) {i : Fin D.R.m} {m : ℕ} (hb : HasB T.Q.c.F (Cu T κ i) m) :
     (formsN T R κ v₀ i m).MKFull :=
   mkFull_of _ (crdOr T.Q.c.F D.what₂.LL (Cu T κ i) m) rfl (fun x => (mem_MK_formsN T R κ v₀ hb x).trans
     (exists_congr fun _ => and_congr ⟨fun h la v hv => h la ⟨v, hv⟩, fun h la y => h la y.1 y.2⟩ Iff.rfl)) (hl i)
 
+/- English proof (translation)
+Introduce `i` and use `⟨isKsForm_formsN T R κ v₀ (hb i), mkFull_formsN T R κ v₀ hl (hb i), mkStable_formsN T R κ v₀ hu he hg (hb i)⟩`.
+-/
 theorem lIntegral_topN (hb : ∀ i, HasB T.Q.c.F (Cu T κ i) (n i)) (he : R.models_HW) (hu : JUnif T R κ v₀)
     (hg : GeoAct T R κ v₀) (hl : LatFull T κ) : (topN T R κ v₀ n).LIntegral := fun i =>
   ⟨isKsForm_formsN T R κ v₀ (hb i), mkFull_formsN T R κ v₀ hl (hb i), mkStable_formsN T R κ v₀ hu he hg (hb i)⟩
@@ -777,21 +1030,36 @@ theorem lIntegral_topN (hb : ∀ i, HasB T.Q.c.F (Cu T κ i) (n i)) (he : R.mode
 def FormsExistAll : Prop :=
   ∃ t : FWTie T (topR T R κ v₀) κ v₀, RhoTie (topR T R κ v₀) ∧ BarTie t ∧ (topR T R κ v₀).grp_chiW
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨tieN T R κ v₀ _ h (hasB_nTop T h.laws κ), rhoTie_topN T R κ v₀ _, barTie_tieN T R κ v₀ _ h _, chiW_topN T R κ v₀ _ hc⟩`.
+-/
 theorem formsExistAll_of (h : TieIn T R κ v₀) (hc : ChiVal R) : FormsExistAll T R κ v₀ :=
   ⟨tieN T R κ v₀ _ h (hasB_nTop T h.laws κ), rhoTie_topN T R κ v₀ _, barTie_tieN T R κ v₀ _ h _, chiW_topN T R κ v₀ _ hc⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨t⟩ => ⟨t.laws, t.alg_eq, t.kap, t.hv₀, t.chiR, t.x0⟩, formsExistTop_of T R κ v₀⟩`.
+-/
 theorem formsExistTop_iff : FormsExistTop T R κ v₀ ↔ TieIn T R κ v₀ :=
   ⟨fun ⟨t⟩ => ⟨t.laws, t.alg_eq, t.kap, t.hv₀, t.chiR, t.x0⟩, formsExistTop_of T R κ v₀⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ht => (tieN T R κ v₀ n h hb).jEvExists ht, fun hj => (tieN T R κ v₀ n h hb).evaluates hj⟩`.
+-/
 theorem evaluates_tieN_iff (h : TieIn T R κ v₀) (hb : ∀ i, HasB T.Q.c.F (Cu T κ i) (n i)) :
     (tieN T R κ v₀ n h hb).Evaluates ↔ JEvExists T R κ v₀ :=
   ⟨fun ht => (tieN T R κ v₀ n h hb).jEvExists ht, fun hj => (tieN T R κ v₀ n h hb).evaluates hj⟩
 
+/- English proof (translation)
+Introduce `i` and use `(finrank_of_isKsForm (R.FW i) (t.ks i)).trans (t.e i).finrank_eq.symm`.
+-/
 theorem FWTie.dimMatch {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F}
     {κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)} {v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec}
     (t : FWTie T R κ v₀) : DimMatch T R κ := fun i =>
   (finrank_of_isKsForm (R.FW i) (t.ks i)).trans (t.e i).finrank_eq.symm
 
+/- English proof (translation)
+Establish `h1 : ∀ FW, FW = (fun i => formsN T R κ v₀ i (R.nW i)) → Nonempty (FWTie T (updFW R R.nW FW) κ v₀)`. Introduce and unpack `_ rfl`. Conclude with `formsExist_of T R κ v₀ h hd`. Conclude with `h1 R.FW (funext hf)`.
+-/
 theorem tie_of_fwEq (h : TieIn T R κ v₀) (hd : DimMatch T R κ) (hf : FWEq T R κ v₀) : Nonempty (FWTie T R κ v₀) := by
   have h1 : ∀ FW, FW = (fun i => formsN T R κ v₀ i (R.nW i)) → Nonempty (FWTie T (updFW R R.nW FW) κ v₀) := by
     rintro _ rfl

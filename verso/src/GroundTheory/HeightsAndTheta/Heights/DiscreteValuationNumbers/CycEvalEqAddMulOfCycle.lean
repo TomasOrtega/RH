@@ -14,6 +14,11 @@ section SlopeTestRemainingChoices
 
 variable {K : Type*} {ι : K → Type*} {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Unfold `cycEval`. Establish `f₀ : (Function.support fun W => Z₀ W * φ W).Finite` using `h₀.subset fun W hW h0 => hW (by simp [h0])`. Establish `f₂ : (Function.support fun W => k * (Z₂ W * φ W)).Finite` using `h₂.subset fun W hW h0 => hW (by simp [h0])`. Rewrite using `[mul_finsum, ← finsum_add_distrib f₀ f₂]`. Use `finsum_congr fun W => ?_` and prove the remaining obligations.
+
+Rewrite using `[h W]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cycEval_eq_add_mul_of_cycle (φ : Ideal (MRing ι R) → ℤ) {Z₀ Z₁ Z₂ : Ideal (MRing ι R) → ℤ}
     (k : ℤ) (h₀ : (Function.support Z₀).Finite) (h₂ : (Function.support Z₂).Finite)
     (h : ∀ W, Z₁ W = Z₀ W + k * Z₂ W) :
@@ -28,6 +33,11 @@ theorem cycEval_eq_add_mul_of_cycle (φ : Ideal (MRing ι R) → ℤ) {Z₀ Z₁
   rw [h W]
   ring
 
+/- English proof (translation)
+Unfold `cycEval`. Establish `f₀ : (Function.support fun W => Z W * φ₀ W).Finite` using `hZ.subset fun W hW h0 => hW (by simp [h0])`. Establish `f₂ : (Function.support fun W => k * (Z W * φ₂ W)).Finite` using `hZ.subset fun W hW h0 => hW (by simp [h0])`. Rewrite using `[mul_finsum, ← finsum_add_distrib f₀ f₂]`. Use `finsum_congr fun W => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hW : Z W = 0`. Simplify using `[hW]`. Rewrite using `[h W hW]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cycEval_eq_add_mul_of_fun {φ₀ φ₁ φ₂ : Ideal (MRing ι R) → ℤ} {Z : Ideal (MRing ι R) → ℤ}
     (k : ℤ) (hZ : (Function.support Z).Finite) (h : ∀ W, Z W ≠ 0 → φ₁ W = φ₀ W + k * φ₂ W) :
     cycEval φ₁ Z = cycEval φ₀ Z + k * cycEval φ₂ Z := by
@@ -50,6 +60,11 @@ section VNum
 variable {K : Type*} [DecidableEq K] {ι : K → Type*}
 variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
+/- English proof (translation)
+Unfold `vNum intNum`. Establish `hm : mixedDiff (Matrix.vecCons (0 : K → ℤ) L) (hilbFn (specialIdeal W)) = fun _ => 0`. Use function extensionality and compare the values at `m`. Simplify using `[mixedDiff, List.ofFn_succ, diffStep]`. Rewrite using `[hm]`.
+
+Unfold `eventualValue`. Establish `hex : ∃ c, ∀ᶠ m in Filter.atTop, (fun _ : K → ℤ => (0 : ℤ)) m = c` using `⟨0, Filter.Eventually.of_forall fun _ => rfl⟩`. Rewrite using `[dif_pos hex]`. Take `⟨m, hm'⟩` from `hex.choose_spec.exists`. Conclude with `hm'.symm`.
+-/
 theorem vNum_vecCons_zero (W : Ideal (MRing ι O)) {d : ℕ} (L : Fin d → K → ℤ) :
     vNum W (Matrix.vecCons (0 : K → ℤ) L) = 0 := by
   unfold vNum intNum
@@ -66,6 +81,27 @@ theorem vNum_vecCons_zero (W : Ideal (MRing ι O)) {d : ℕ} (L : Fin d → K �
 
 end VNum
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P d hP b f g hD c s _ hsP hH L n hI₁ hI₂`. Establish `hfin : ∀ (Q : Ideal (MRing ι O)) (x : MRing ι O), (Function.support (divCycle Q x)).Finite` using `fun Q x => h₂ O K ι Q x`. Establish `hrat : ∀ (Q : Ideal (MRing ι O)) (x y : MRing ι O), (Function.support (ratDiv Q x y)).Finite` using `fun Q x y => ((hfin Q x).union (hfin Q y)).subset fun W hW => by`. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Function.mem_support, not_or, not_not] at hc`.
+
+Conclude with `hW (by simp [ratDiv, hc.1, hc.2])`. Establish `hpow : ∀ (Q : Ideal (MRing ι O)), Q.IsPrime → (C ϖ : MRing ι O) ∉ Q → f ∉ Q → ∀ m : ℕ, ∀ W, divCycle Q (C ϖ ^ m * f) W = divCycle Q f W + m * divCycle Q (C ϖ) W`. Introduce `Q hQ hϖQ hfQ m`. Proceed by induction on `m with`. Consider the case `zero => intro W`.
+
+Simplify using the standard rewrite rules. Consider the case `succ m ih`. Introduce `W`. Establish `hm : C ϖ ^ m * f ∉ Q` using `fun h => (hQ.mem_or_mem h).elim (fun h' => hϖQ (hQ.mem_of_pow_mem _ h')) hfQ`. Establish `e : (C ϖ : MRing ι O) ^ (m + 1) * f = C ϖ * (C ϖ ^ m * f)` using `by ring`.
+
+Rewrite using `[e, congrFun (h₁ O K ι Q (C ϖ) (C ϖ ^ m * f) hQ hϖQ hm) W, Pi.add_apply, ih W]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hshift : ∀ (Q : Ideal (MRing ι O)), Q.IsPrime → (C ϖ : MRing ι O) ∉ Q → f ∉ Q → ∀ W, ratDiv Q (C ϖ ^ n * f) g W = ratDiv Q f g W + (n : ℤ) * ratDiv Q (C ϖ) 1 W`. Introduce `Q hQ hϖQ hfQ W`.
+
+Simplify using `only [ratDiv, divCycle_one, sub_zero]`. Rewrite using `[hpow Q hQ hϖQ hfQ n W]`. Expand and normalize the polynomial expressions, which then agree. Establish `hPp : P.IsPrime` using `hP.multiProj.isPrime`. Establish `hϖP : (C ϖ : MRing ι O) ∉ P`.
+
+Introduce `h`. Establish `h' : ϖ ∈ P.comap (C : O →+* MRing ι O)` using `h`. Rewrite `h'` using `[hP.noTorsion, Ideal.mem_bot]`. Conclude with `hϖ.ne_zero h'`. Unfold `cutIdentity at hI₁ hI₂ ⊢`.
+
+Rewrite `hI₁` using `[cycEval_eq_add_mul_of_cycle _ (n : ℤ) (hrat P f g) (hrat P (C ϖ) 1) (hshift P hPp hϖP hD.num_not_mem)]`. Establish `hR : cycEval (fun W => if (C ϖ : MRing ι O) ∈ W then vNum W (Matrix.vecCons b L) else cycEval (fun G => vNum G L) (ratDiv W (C ϖ ^ n * f) g)) (divCycle P s) = cycEval (fun W => if (C ϖ : MRing ι O) ∈ W then vNum W (Matrix.vecCons b L) else cycEval (fun G => vNum G L) (ratDiv W f …`. Use `cycEval_eq_add_mul_of_fun (n : ℤ) (hfin P s) fun W hW => ?_` and prove the remaining obligations. Distinguish the cases in `hϖW : (C ϖ : MRing ι O) ∈ W`. Simplify using `only [if_pos hϖW, vNum_vecCons_zero]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [if_neg hϖW]`. Establish `hV` using `hH W hW hϖW`. Establish `hWp : W.IsPrime`. Unfold `divCycle at hW`.
+
+Use `split_ifs at hW with hm`. Conclude with `hm.1.1.1`. Conclude with `absurd rfl hW`. Conclude with `cycEval_eq_add_mul_of_cycle _ (n : ℤ) (hrat W f g) (hrat W (C ϖ) 1) (hshift W hWp hϖW hV.num_not_mem)`. Rewrite `hI₁` using `[hR, hI₂]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ShiftByUniformiser.proof (h₁ : DivCycleMul.Statement.{u})
     (h₂ : DivCycleFiniteSupport.Statement.{u}) : ShiftByUniformiser.Statement.{u} := by
   intro O _ _ _ ϖ hϖ K _ _ ι _ P d hP b f g hD c s _ hsP hH L n hI₁ hI₂

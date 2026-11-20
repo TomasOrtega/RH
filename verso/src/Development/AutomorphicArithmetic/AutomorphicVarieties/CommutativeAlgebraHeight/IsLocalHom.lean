@@ -13,6 +13,11 @@ structure IsCL (O R : Type) [CommRing O] [CommRing R] [Algebra O R] [IsLocalRing
   isLocalHom : IsLocalHom (algebraMap O R)
   res_fin : Module.Finite O (ResidueField R)
 
+/- English proof (translation)
+Use `⟨inferInstance, UpperTheory.V.Alg.IsCO.complete (O := O), UpperTheory.V.Alg.IsCO.isLocalHom, ?_⟩` and prove the remaining obligations. Use `Module.Finite.of_surjective (Algebra.linearMap O (ResidueField R)) ?_` and prove the remaining obligations. Introduce `y`. Take `⟨r, rfl⟩` from `IsLocalRing.residue_surjective y`. Take `⟨a, ha⟩` from `UpperTheory.V.Alg.IsCO.res_surj (O := O) r`.
+
+Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.linearMap_apply, IsScalarTower.algebraMap_apply O R (ResidueField R), ResidueField.algebraMap_eq, ← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]`. Establish `h'` using `(maximalIdeal R).neg_mem ha`. Rewrite `h'` using `[neg_sub]`. Then use the resulting hypothesis.
+-/
 theorem IsCL.of_isCO (O R : Type) [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] [Alg.IsCO O R] :
     IsCL O R := by
   refine ⟨inferInstance, UpperTheory.V.Alg.IsCO.complete (O := O), UpperTheory.V.Alg.IsCO.isLocalHom, ?_⟩
@@ -47,6 +52,9 @@ structure IsCplAt {C : Type} [CommRing C] (x : Ideal C) (R : Type) [CommRing R] 
   comap_pow : ∀ n : ℕ, (maximalIdeal R ^ n).comap (algebraMap C R) = x ^ n
   dense : ∀ (n : ℕ) (r : R), ∃ c : C, r - algebraMap C R c ∈ maximalIdeal R ^ n
 
+/- English proof (translation)
+The claim follows from `inferInstance complete := inferInstance comap_pow n := Ideal.comap_id _ dense n r := ⟨r, by simp⟩`.
+-/
 theorem IsCplAt.self (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     [IsAdicComplete (maximalIdeal R) R] : IsCplAt (maximalIdeal R) R where
   noeth := inferInstance

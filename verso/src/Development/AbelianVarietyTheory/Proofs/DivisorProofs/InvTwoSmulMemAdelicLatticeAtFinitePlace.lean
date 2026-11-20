@@ -7,6 +7,13 @@ open scoped TensorProduct Matrix
 
 namespace GlobalTheory.InertSph
 
+/- English proof (translation)
+Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Establish `hv2 : Valued.v (2 : Fv F v) = 1`. Establish `e` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation (K := F) v (2 : 𝓞 F)`. Rewrite `e` using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff.2 h2]`. Rewrite using `[← e]`.
+
+Use `congr 1`. Conclude with `(map_ofNat (algebraMap (𝓞 F) (Fv F v)) 2).symm`. Establish `hm : evFin F v (⅟(2 : AF F)) * 2 = 1`. Rewrite using `[← map_ofNat (evFin F v) 2, ← map_mul, invOf_mul_self, map_one]`. Establish `hvm` using `congrArg Valued.v hm`.
+
+Rewrite `hvm` using `[map_mul, hv2, mul_one, map_one]`. Conclude with `hvm.le`.
+-/
 theorem evFin_invTwo_mem {F : Type} [Field F] [NumberField F] (v : Pl F) (h2 : (2 : 𝓞 F) ∉ v.asIdeal) :
     evFin F v (⅟(2 : AF F)) ∈ v.adicCompletionIntegers F := by
   rw [HeightOneSpectrum.mem_adicCompletionIntegers]
@@ -20,6 +27,15 @@ theorem evFin_invTwo_mem {F : Type} [Field F] [NumberField F] (v : Pl F) (h2 : (
   rw [map_mul, hv2, mul_one, map_one] at hvm
   exact hvm.le
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ d W v h2 z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hv, y, hy, rfl⟩` from `hz`. Rewrite using `[smul_smul]`.
+
+Use `AddSubgroup.subset_closure ⟨⅟(2 : AF F) * a, ?_, ?_, y, hy, rfl⟩` and prove the remaining obligations. Introduce `u hu`. Rewrite using `[smul_eq_mul, mul_left_comm, ← smul_eq_mul u a, ha u hu, mul_zero]`. Rewrite using `[map_mul]`. Conclude with `mul_mem (evFin_invTwo_mem v h2) hv`.
+
+Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`.
+
+Conclude with `neg_mem hx`.
+-/
 theorem invTwo_smul_mem_latAt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (d : ℕ) (W : Spc F E d)
     (v : Pl F), (2 : 𝓞 F) ∉ v.asIdeal → ∀ z ∈ GlobalTheory.InertSph.latAt W v, (⅟(2 : AF F)) • z ∈ GlobalTheory.InertSph.latAt W v := by
   intro F E _ _ _ _ _ d W v h2 z hz

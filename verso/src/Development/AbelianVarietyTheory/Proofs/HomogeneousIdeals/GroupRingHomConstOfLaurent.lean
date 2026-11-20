@@ -17,11 +17,17 @@ noncomputable def pt {R F X : Type} [CommRing R] [CommRing F] [AddCommGroup X] (
     (c : Multiplicative X →* Fˣ) : AddMonoidAlgebra R X →+* F :=
   AddMonoidAlgebra.liftNCRingHom r ((Units.coeHom F).comp c) (fun _ _ ↦ Commute.all _ _)
 
+/- English proof (translation)
+Simplify using `[pt, AddMonoidAlgebra.liftNCRingHom, AddMonoidAlgebra.liftNC_single]`.
+-/
 @[simp] lemma pt_single {R F X : Type} [CommRing R] [CommRing F] [AddCommGroup X] (r : R →+* F)
     (c : Multiplicative X →* Fˣ) (a : X) (x : R) :
     pt r c (AddMonoidAlgebra.single a x) = r x * (c (Multiplicative.ofAdd a) : F) := by
   simp [pt, AddMonoidAlgebra.liftNCRingHom, AddMonoidAlgebra.liftNC_single]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[AddMonoidAlgebra.coe_algebraMap, pt_single]`.
+-/
 lemma pt_comp_algebraMap {R F X : Type} [CommRing R] [CommRing F] [AddCommGroup X] (r : R →+* F)
     (c : Multiplicative X →* Fˣ) :
     (pt r c).comp (algebraMap R (AddMonoidAlgebra R X)) = r := by
@@ -32,10 +38,18 @@ def powChar {G X : Type} [CommGroup G] [AddCommGroup X] (l : X →+ ℤ) (u : G)
     Multiplicative X →* G :=
   (zpowersHom G u).comp (AddMonoidHom.toMultiplicative l)
 
+/- English proof (translation)
+Simplify using `[powChar]`.
+-/
 @[simp] lemma powChar_apply {G X : Type} [CommGroup G] [AddCommGroup X] (l : X →+ ℤ) (u : G)
     (a : X) : powChar l u (Multiplicative.ofAdd a) = u ^ l a := by
   simp [powChar]
 
+/- English proof (translation)
+Use `MonoidHom.ext fun m => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩ : ∃ a, Multiplicative.ofAdd a = m` from `⟨Multiplicative.toAdd m, rfl⟩`. Rewrite using `[MonoidHom.finsetProd_apply]`. Simplify using `only [powChar_apply]`. Use `conv_lhs => rw [← b.sum_repr a]`.
+
+Rewrite using `[ofAdd_sum, map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ofAdd_zsmul, map_zpow]`. Simplify using `[Module.Basis.coord_apply]`.
+-/
 lemma eq_prod_powChar {G X I : Type} [CommGroup G] [AddCommGroup X] [Fintype I]
     (b : Module.Basis I ℤ X) (c : Multiplicative X →* G) :
     c = ∏ i, powChar (b.coord i).toAddMonoidHom (c (Multiplicative.ofAdd (b i))) := by
@@ -56,6 +70,9 @@ noncomputable def family {R F X : Type} [CommRing R] [CommRing F] [AddCommGroup 
       ((AddMonoidAlgebra.of F ℤ).comp (AddMonoidHom.toMultiplicative l)))
     (fun _ _ ↦ Commute.all _ _)
 
+/- English proof (translation)
+Simplify using `[family, AddMonoidAlgebra.liftNCRingHom, AddMonoidAlgebra.liftNC_single, AddMonoidAlgebra.coe_algebraMap, AddMonoidAlgebra.of_apply, _root_.mul_assoc]`.
+-/
 lemma family_single {R F X : Type} [CommRing R] [CommRing F] [AddCommGroup X] (r : R →+* F)
     (c : Multiplicative X →* Fˣ) (l : X →+ ℤ) (a : X) (x : R) :
     family r c l (AddMonoidAlgebra.single a x) =
@@ -63,6 +80,9 @@ lemma family_single {R F X : Type} [CommRing R] [CommRing F] [AddCommGroup X] (r
   simp [family, AddMonoidAlgebra.liftNCRingHom, AddMonoidAlgebra.liftNC_single,
     AddMonoidAlgebra.coe_algebraMap, AddMonoidAlgebra.of_apply, _root_.mul_assoc]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[AddMonoidAlgebra.coe_algebraMap, family_single]`.
+-/
 lemma family_comp_algebraMap {R F X : Type} [CommRing R] [CommRing F] [AddCommGroup X]
     (r : R →+* F) (c : Multiplicative X →* Fˣ) (l : X →+ ℤ) :
     (family r c l).comp (algebraMap R (AddMonoidAlgebra R X)) =
@@ -70,6 +90,9 @@ lemma family_comp_algebraMap {R F X : Type} [CommRing R] [CommRing F] [AddCommGr
   ext x
   simp [AddMonoidAlgebra.coe_algebraMap, family_single]
 
+/- English proof (translation)
+Apply the tactic sequence `refine AddMonoidAlgebra.ringHom_ext (fun x => ?_) (fun a => ?_) <;> (rw [RingHom.comp_apply, family_single, pt_single, pt_single]`. Simplify using `[powChar_apply])`.
+-/
 lemma pt_comp_family {R F X : Type} [CommRing R] [CommRing F] [AddCommGroup X]
     (r : R →+* F) (c : Multiplicative X →* Fˣ) (l : X →+ ℤ) (u : Fˣ) :
     (pt (RingHom.id F) (zpowersHom Fˣ u)).comp (family r c l) = pt r (c * powChar l u) := by
@@ -77,16 +100,25 @@ lemma pt_comp_family {R F X : Type} [CommRing R] [CommRing F] [AddCommGroup X]
     (rw [RingHom.comp_apply, family_single, pt_single, pt_single]
      simp [powChar_apply])
 
+/- English proof (translation)
+Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`.
+-/
 lemma spec_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (φ : A →+* B)
     (ψ : B →+* C) : Spec.map (CommRingCat.ofHom ψ) ≫ Spec.map (CommRingCat.ofHom φ) =
       Spec.map (CommRingCat.ofHom (ψ.comp φ)) := by
   rw [CommRingCat.ofHom_comp, Spec.map_comp]
 
+/- English proof (translation)
+Use `MonoidHom.ext fun m => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.one_apply, ← ofAdd_toAdd m, GlobalTheory.GroupRingConst.powChar_apply, one_zpow]`.
+-/
 private lemma powChar_one {G X : Type} [CommGroup G] [AddCommGroup X] (l : X →+ ℤ) :
     GlobalTheory.GroupRingConst.powChar l (1 : G) = 1 := by
   refine MonoidHom.ext fun m => ?_
   rw [MonoidHom.one_apply, ← ofAdd_toAdd m, GlobalTheory.GroupRingConst.powChar_apply, one_zpow]
 
+/- English proof (translation)
+Use `AddMonoidAlgebra.ringHom_ext (fun x => ?_) (fun a => ?_)` and prove the remaining obligations. Simplify using `[GlobalTheory.GroupRingConst.pt_single, AddMonoidAlgebra.coe_algebraMap]`. Simplify using `[GlobalTheory.GroupRingConst.pt_single, MonoidHom.coe_toHomUnits, AddMonoidAlgebra.of_apply]`. Rewrite using `[← map_mul, AddMonoidAlgebra.single_mul_single, zero_add, _root_.one_mul]`.
+-/
 private lemma pt_eq_lemma_2 {R F X : Type} [CommRing R] [CommRing F] [AddCommGroup X]
     (φ : AddMonoidAlgebra R X →+* F) :
     φ = GlobalTheory.GroupRingConst.pt (φ.comp (algebraMap R (AddMonoidAlgebra R X)))
@@ -96,6 +128,11 @@ private lemma pt_eq_lemma_2 {R F X : Type} [CommRing R] [CommRing F] [AddCommGro
   · simp [GlobalTheory.GroupRingConst.pt_single, MonoidHom.coe_toHomUnits, AddMonoidAlgebra.of_apply]
     rw [← map_mul, AddMonoidAlgebra.single_mul_single, zero_add, _root_.one_mul]
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `h L (Spec.map (CommRingCat.ofHom r) ≫ s) (Spec.map (CommRingCat.ofHom (GlobalTheory.GroupRingConst.family r c l)) ≫ f) (by`. Rewrite using `[Category.assoc, hf, ← Category.assoc, GlobalTheory.GroupRingConst.spec_comp, GlobalTheory.GroupRingConst.family_comp_algebraMap, ← GlobalTheory.GroupRingConst.spec_comp, Category.assoc])`. Establish `key : ∀ v : Lˣ, Spec.map (CommRingCat.ofHom (GlobalTheory.GroupRingConst.pt r (c * GlobalTheory.GroupRingConst.powChar l v))) ≫ f = k`. Introduce `v`. Rewrite using `[← GlobalTheory.GroupRingConst.pt_comp_family, ← GlobalTheory.GroupRingConst.spec_comp, Category.assoc, hk, ← Category.assoc, GlobalTheory.GroupRingConst.spec_comp, GlobalTheory.GroupRingConst.pt_comp_algebraMap, CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]`.
+
+Establish `h1` using `key 1`. Rewrite `h1` using `[powChar_one, _root_.mul_one]`. Rewrite using `[key u, h1]`.
+-/
 private lemma step_lemma_3 {S Y : Scheme.{0}} (p : Y ⟶ S)
     (h : ∀ (L : Type) [Field L] (s : Spec (CommRingCat.of L) ⟶ S) (f : Spec (CommRingCat.of (AddMonoidAlgebra L ℤ)) ⟶ Y),
       f ≫ p = Spec.map (CommRingCat.ofHom (algebraMap L (AddMonoidAlgebra L ℤ))) ≫ s →
@@ -118,6 +155,11 @@ private lemma step_lemma_3 {S Y : Scheme.{0}} (p : Y ⟶ S)
   rw [powChar_one, _root_.mul_one] at h1
   rw [key u, h1]
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis ℤ X`. Establish `key : ∀ t : Finset (Module.Free.ChooseBasisIndex ℤ X), Spec.map (CommRingCat.ofHom (GlobalTheory.GroupRingConst.pt r (∏ i ∈ t, GlobalTheory.GroupRingConst.powChar (b.coord i).toAddMonoidHom (c (Multiplicative.ofAdd (b i)))))) ≫ f = Spec.map (CommRingCat.ofHom (GlobalTheory.GroupR …`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => rw [Finset.prod_empty]`.
+
+Consider the case `@insert i t hi ih`. Rewrite using `[Finset.prod_insert hi, _root_.mul_comm (GlobalTheory.GroupRingConst.powChar _ _), step_lemma_3 p h s f hf, ih]`. Use `conv_lhs => rw [GlobalTheory.GroupRingConst.eq_prod_powChar b c]`. Conclude with `key Finset.univ`.
+-/
 private lemma chain_lemma_4 {S Y : Scheme.{0}} (p : Y ⟶ S)
     (h : ∀ (L : Type) [Field L] (s : Spec (CommRingCat.of L) ⟶ S) (f : Spec (CommRingCat.of (AddMonoidAlgebra L ℤ)) ⟶ Y),
       f ≫ p = Spec.map (CommRingCat.ofHom (algebraMap L (AddMonoidAlgebra L ℤ))) ≫ s →
@@ -141,6 +183,11 @@ private lemma chain_lemma_4 {S Y : Scheme.{0}} (p : Y ⟶ S)
   conv_lhs => rw [GlobalTheory.GroupRingConst.eq_prod_powChar b c]
   exact key Finset.univ
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, ← Category.assoc, GlobalTheory.GroupRingConst.spec_comp, GlobalTheory.GroupRingConst.spec_comp]`. Establish `e1 : (φ.comp (algebraMap R (AddMonoidAlgebra R X))).comp (GlobalTheory.GroupRingConst.pt (RingHom.id R) (1 : Multiplicative X →* Rˣ)) = GlobalTheory.GroupRingConst.pt (φ.comp (algebraMap R (AddMonoidAlgebra R X))) (1 : Multiplicative X →* Lˣ)`. Apply the tactic sequence `refine AddMonoidAlgebra.ringHom_ext (fun x => ?_) (fun a => ?_) <;> simp [GlobalTheory.GroupRingConst.pt_single]`. Rewrite using `[e1]`. Use `conv_lhs => rw [pt_eq_lemma_2 φ]`.
+
+Conclude with `chain_lemma_4 p h s f hf L _ _`.
+-/
 private lemma pts_lemma_5 {S Y : Scheme.{0}} (p : Y ⟶ S)
     (h : ∀ (L : Type) [Field L] (s : Spec (CommRingCat.of L) ⟶ S) (f : Spec (CommRingCat.of (AddMonoidAlgebra L ℤ)) ⟶ Y),
       f ≫ p = Spec.map (CommRingCat.ofHom (algebraMap L (AddMonoidAlgebra L ℤ))) ≫ s →
@@ -164,6 +211,11 @@ private lemma pts_lemma_5 {S Y : Scheme.{0}} (p : Y ⟶ S)
 end GlobalTheory.GroupRingConst
 
 open GlobalTheory.GroupRingConst in
+/- English proof (translation)
+Establish `: UniqueSums X` using `UniqueSums.of_injective_addHom (Module.Free.chooseBasis ℤ X).repr.toLinearMap.toAddMonoidHom.toAddHom (Module.Free.chooseBasis ℤ X).repr.injective inferInstance`. Establish `hcomp : (pt (RingHom.id R) (1 : Multiplicative X →* Rˣ)).comp (algebraMap R (AddMonoidAlgebra R X)) = RingHom.id R` using `pt_comp_algebraMap _ _`. Use `⟨Spec.map (CommRingCat.ofHom (pt (RingHom.id R) 1)) ≫ f, ?_⟩` and prove the remaining obligations. Use `ext_of_fromSpecResidueField_eq _ _ p Set.univ dense_univ (fun x _ => ?_) ?_` and prove the remaining obligations. Take `⟨φ, hφ⟩ : ∃ φ : AddMonoidAlgebra R X →+* ((Spec (CommRingCat.of (AddMonoidAlgebra R X))).residueField x), Spec.map (CommRingCat.ofHom φ) = (Spec (CommRingCat.of (AddMonoidAlgebra R X))).fromSpecResidueField x` from `⟨(Spec.preimage ((Spec (CommRingCat.of (AddMonoidAlgebra R X))).fromSpecResidueField x)).hom, by rw [CommRingCat.ofHom_hom, Spec.map_preimage]⟩`.
+
+Rewrite using `[← hφ]`. Conclude with `pts_lemma_5 p h s f hf _ φ`. Rewrite using `[hf, Category.assoc, Category.assoc, hf, ← Category.assoc _ (Spec.map (CommRingCat.ofHom (algebraMap R (AddMonoidAlgebra R X)))), spec_comp, hcomp, CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]`.
+-/
 theorem GlobalTheory.groupRing_hom_const_of_laurent {S Y : Scheme.{0}} (p : Y ⟶ S) [IsSeparated p]
     (h : ∀ (L : Type) [Field L] (s : Spec (CommRingCat.of L) ⟶ S) (f : Spec (CommRingCat.of (AddMonoidAlgebra L ℤ)) ⟶ Y),
       f ≫ p = Spec.map (CommRingCat.ofHom (algebraMap L (AddMonoidAlgebra L ℤ))) ≫ s →

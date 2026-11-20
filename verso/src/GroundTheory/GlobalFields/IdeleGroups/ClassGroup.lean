@@ -14,11 +14,17 @@ def primeIdealUnit (v : HeightOneSpectrum (𝓞 K)) : (FractionalIdeal (𝓞 K)�
   Units.mk0 (v.asIdeal : FractionalIdeal (𝓞 K)⁰ K) (coeIdeal_ne_zero.mpr v.ne_bot)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_primeIdealUnit (v : HeightOneSpectrum (𝓞 K)) :
     ((primeIdealUnit v : (FractionalIdeal (𝓞 K)⁰ K)ˣ) : FractionalIdeal (𝓞 K)⁰ K) =
       (v.asIdeal : FractionalIdeal (𝓞 K)⁰ K) :=
   rfl
 
+/- English proof (translation)
+Use `⟨fun h v ↦ h ▸ rfl, fun h ↦ Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← finprod_heightOneSpectrum_factorization' (K := K) I.ne_zero, ← finprod_heightOneSpectrum_factorization' (K := K) J.ne_zero]`. Conclude with `finprod_congr fun v ↦ by rw [h v]`.
+-/
 theorem fractionalIdealUnits_eq_iff {I J : (FractionalIdeal (𝓞 K)⁰ K)ˣ} :
     I = J ↔ ∀ v : HeightOneSpectrum (𝓞 K),
       count K v (I : FractionalIdeal (𝓞 K)⁰ K) = count K v (J : FractionalIdeal (𝓞 K)⁰ K) := by
@@ -27,6 +33,9 @@ theorem fractionalIdealUnits_eq_iff {I J : (FractionalIdeal (𝓞 K)⁰ K)ˣ} :
     ← finprod_heightOneSpectrum_factorization' (K := K) J.ne_zero]
   exact finprod_congr fun v ↦ by rw [h v]
 
+/- English proof (translation)
+Establish `hfin : (Function.mulSupport fun v ↦ primeIdealUnit (K` using `K) v ^ n v).Finite := (Filter.eventually_cofinite.1 hn).subset fun v hv h ↦ hv (by simp only [h, zpow_zero])`. Rewrite using `[← Units.coeHom_apply, map_finprod _ hfin]`. Conclude with `finprod_congr fun v ↦ by simp [Units.val_zpow_eq_zpow_val]`.
+-/
 theorem coe_finprod_primeIdealUnit_zpow (n : HeightOneSpectrum (𝓞 K) → ℤ)
     (hn : ∀ᶠ v in Filter.cofinite, n v = 0) :
     ((∏ᶠ v, primeIdealUnit v ^ n v : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
@@ -37,12 +46,18 @@ theorem coe_finprod_primeIdealUnit_zpow (n : HeightOneSpectrum (𝓞 K) → ℤ)
   rw [← Units.coeHom_apply, map_finprod _ hfin]
   exact finprod_congr fun v ↦ by simp [Units.val_zpow_eq_zpow_val]
 
+/- English proof (translation)
+Rewrite using `[coe_finprod_primeIdealUnit_zpow n hn, count_finprod K v n hn]`.
+-/
 theorem count_finprod_primeIdealUnit_zpow (n : HeightOneSpectrum (𝓞 K) → ℤ)
     (hn : ∀ᶠ v in Filter.cofinite, n v = 0) (v : HeightOneSpectrum (𝓞 K)) :
     count K v ((∏ᶠ w, primeIdealUnit w ^ n w : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
       FractionalIdeal (𝓞 K)⁰ K) = n v := by
   rw [coe_finprod_primeIdealUnit_zpow n hn, count_finprod K v n hn]
 
+/- English proof (translation)
+Rewrite using `[fractionalIdealUnits_eq_iff]`. Introduce `v`. Conclude with `count_finprod_primeIdealUnit_zpow _ (FractionalIdeal.finite_factors _) v`.
+-/
 theorem finprod_primeIdealUnit_zpow_count (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     ∏ᶠ v, primeIdealUnit v ^ count K v (I : FractionalIdeal (𝓞 K)⁰ K) = I := by
   rw [fractionalIdealUnits_eq_iff]
@@ -50,6 +65,9 @@ theorem finprod_primeIdealUnit_zpow_count (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ
   exact count_finprod_primeIdealUnit_zpow _ (FractionalIdeal.finite_factors _) v
 
 open Classical in
+/- English proof (translation)
+Rewrite using `[coe_primeIdealUnit]`. Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `count_self K w`. Conclude with `count_maximal_coprime K w (Ne.symm h)`.
+-/
 theorem count_primeIdealUnit (v w : HeightOneSpectrum (𝓞 K)) :
     count K w ((primeIdealUnit v : (FractionalIdeal (𝓞 K)⁰ K)ˣ) : FractionalIdeal (𝓞 K)⁰ K) =
       if w = v then 1 else 0 := by
@@ -59,6 +77,11 @@ theorem count_primeIdealUnit (v w : HeightOneSpectrum (𝓞 K)) :
     exact count_self K w
   · exact count_maximal_coprime K w (Ne.symm h)
 
+/- English proof (translation)
+Take `⟨n, d, hd, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) a`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`. Simplify using `at ha`.
+
+Establish `hI : spanSingleton (𝓞 K)⁰ (algebraMap (𝓞 K) K n / algebraMap (𝓞 K) K d) = spanSingleton (𝓞 K)⁰ (algebraMap (𝓞 K) K d)⁻¹ * ↑(Ideal.span {n} : Ideal (𝓞 K))`. Rewrite using `[coeIdeal_span_singleton, spanSingleton_mul_spanSingleton, div_eq_mul_inv, mul_comm]`. Rewrite using `[count_well_defined K v ((spanSingleton_ne_zero_iff).2 ha) hI, map_div₀, valuation_of_algebraMap, valuation_of_algebraMap, intValuation_if_neg _ hn0, intValuation_if_neg _ hd0, ← exp_sub, log_exp]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem count_spanSingleton (v : HeightOneSpectrum (𝓞 K)) {a : K} (ha : a ≠ 0) :
     count K v (spanSingleton (𝓞 K)⁰ a) = -log (v.valuation K a) := by
   obtain ⟨n, d, hd, rfl⟩ := IsFractionRing.div_surjective (A := 𝓞 K) a
@@ -79,31 +102,49 @@ namespace IdeleGroup
 def ord (v : HeightOneSpectrum (𝓞 K)) (x : IdeleGroup K) : ℤ :=
   -log (Valued.v ((x : 𝔸[K]).2 v))
 
+/- English proof (translation)
+The claim follows from `(Valuation.ne_zero_iff _).2 (finiteProj v x).ne_zero`.
+-/
 theorem valued_ne_zero (v : HeightOneSpectrum (𝓞 K)) (x : IdeleGroup K) :
     Valued.v ((x : 𝔸[K]).2 v) ≠ 0 :=
   (Valuation.ne_zero_iff _).2 (finiteProj v x).ne_zero
 
+/- English proof (translation)
+Establish `h : ((x * y : IdeleGroup K) : 𝔸[K]).2 v = (x : 𝔸[K]).2 v * (y : 𝔸[K]).2 v` using `rfl`. Rewrite using `[ord, ord, ord, h, map_mul, log_mul (valued_ne_zero v x) (valued_ne_zero v y), neg_add]`. Use the proof step `@[simp]`.
+-/
 theorem ord_mul (v : HeightOneSpectrum (𝓞 K)) (x y : IdeleGroup K) :
     ord v (x * y) = ord v x + ord v y := by
   have h : ((x * y : IdeleGroup K) : 𝔸[K]).2 v = (x : 𝔸[K]).2 v * (y : 𝔸[K]).2 v := rfl
   rw [ord, ord, ord, h, map_mul, log_mul (valued_ne_zero v x) (valued_ne_zero v y), neg_add]
 
 @[simp]
+/- English proof (translation)
+Establish `h : ((1 : IdeleGroup K) : 𝔸[K]).2 v = 1` using `rfl`. Rewrite using `[ord, h, map_one, log_one, neg_zero]`.
+-/
 theorem ord_one (v : HeightOneSpectrum (𝓞 K)) : ord v (1 : IdeleGroup K) = 0 := by
   have h : ((1 : IdeleGroup K) : 𝔸[K]).2 v = 1 := rfl
   rw [ord, h, map_one, log_one, neg_zero]
 
+/- English proof (translation)
+Establish `h` using `ord_mul v x x⁻¹`. Rewrite `h` using `[mul_inv_cancel, ord_one]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ord_inv (v : HeightOneSpectrum (𝓞 K)) (x : IdeleGroup K) : ord v x⁻¹ = -ord v x := by
   have h := ord_mul v x x⁻¹
   rw [mul_inv_cancel, ord_one] at h
   omega
 
+/- English proof (translation)
+Rewrite using `[mem_adicCompletionIntegers, ord, neg_nonneg, log_le_iff_le_exp (valued_ne_zero v x), exp_zero]`.
+-/
 theorem mem_adicCompletionIntegers_iff_ord_nonneg (v : HeightOneSpectrum (𝓞 K))
     (x : IdeleGroup K) :
     (x : 𝔸[K]).2 v ∈ v.adicCompletionIntegers K ↔ 0 ≤ ord v x := by
   rw [mem_adicCompletionIntegers, ord, neg_nonneg, log_le_iff_le_exp (valued_ne_zero v x),
     exp_zero]
 
+/- English proof (translation)
+Rewrite using `[mem_adicCompletionIntegers_iff_ord_nonneg, mem_adicCompletionIntegers_iff_ord_nonneg, ord_inv]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ord_eq_zero_iff (v : HeightOneSpectrum (𝓞 K)) (x : IdeleGroup K) :
     ord v x = 0 ↔ (x : 𝔸[K]).2 v ∈ v.adicCompletionIntegers K ∧
       ((x⁻¹ : IdeleGroup K) : 𝔸[K]).2 v ∈ v.adicCompletionIntegers K := by
@@ -111,30 +152,52 @@ theorem ord_eq_zero_iff (v : HeightOneSpectrum (𝓞 K)) (x : IdeleGroup K) :
     ord_inv]
   omega
 
+/- English proof (translation)
+The claim follows from `((x : 𝔸[K]).2.2.and ((x⁻¹ : IdeleGroup K) : 𝔸[K]).2.2).mono fun v hv ↦ (ord_eq_zero_iff v x).2 hv`.
+-/
 theorem eventually_ord_eq_zero (x : IdeleGroup K) :
     ∀ᶠ v in Filter.cofinite, ord v x = 0 :=
   ((x : 𝔸[K]).2.2.and ((x⁻¹ : IdeleGroup K) : 𝔸[K]).2.2).mono fun v hv ↦
     (ord_eq_zero_iff v x).2 hv
 
+/- English proof (translation)
+Simplify using `only [mem_standardOpenSubgroup, ord_eq_zero_iff]`.
+-/
 theorem mem_standardOpenSubgroup_iff_ord {x : IdeleGroup K} :
     x ∈ standardOpenSubgroup K ↔ ∀ v : HeightOneSpectrum (𝓞 K), ord v x = 0 := by
   simp only [mem_standardOpenSubgroup, ord_eq_zero_iff]
 
+/- English proof (translation)
+Rewrite using `[ord, ← coe_finiteProj, finiteProj_finiteEmbedding]`.
+-/
 theorem ord_finiteEmbedding_self (v : HeightOneSpectrum (𝓞 K)) (a : (v.adicCompletion K)ˣ) :
     ord v (finiteEmbedding v a) = -log (Valued.v (a : v.adicCompletion K)) := by
   rw [ord, ← coe_finiteProj, finiteProj_finiteEmbedding]
 
+/- English proof (translation)
+Rewrite using `[ord, ← coe_finiteProj, finiteProj_finiteEmbedding_of_ne h, Units.val_one, map_one, log_one, neg_zero]`.
+-/
 theorem ord_finiteEmbedding_of_ne {v w : HeightOneSpectrum (𝓞 K)} (h : w ≠ v)
     (a : (v.adicCompletion K)ˣ) : ord w (finiteEmbedding v a) = 0 := by
   rw [ord, ← coe_finiteProj, finiteProj_finiteEmbedding_of_ne h, Units.val_one, map_one, log_one,
     neg_zero]
 
+/- English proof (translation)
+Rewrite using `[ord, ← coe_finiteProj, coe_finiteProj_diagonal, valuedAdicCompletion_eq_valuation']`.
+-/
 theorem ord_diagonal (v : HeightOneSpectrum (𝓞 K)) (a : Kˣ) :
     ord v (diagonal K a) = -log (v.valuation K a) := by
   rw [ord, ← coe_finiteProj, coe_finiteProj_diagonal, valuedAdicCompletion_eq_valuation']
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer K`. Establish `hne : ((π : K) : v.adicCompletion K) ≠ 0`. Introduce `h`. Establish `h'` using `congrArg Valued.v h`. Rewrite `h'` using `[valuedAdicCompletion_eq_valuation', hπ, map_zero]`.
+
+Conclude with `exp_ne_zero h'`. Use `⟨finiteEmbedding v (Units.mk0 _ hne), fun w ↦ ?_⟩` and prove the remaining obligations. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[ord_finiteEmbedding_self, Units.val_mk0, valuedAdicCompletion_eq_valuation', hπ, log_exp, neg_neg]`.
+
+Conclude with `ord_finiteEmbedding_of_ne h _`.
+-/
 theorem exists_ord_eq_ite (v : HeightOneSpectrum (𝓞 K)) :
     ∃ x : IdeleGroup K, ∀ w, ord w x = if w = v then 1 else 0 := by
   obtain ⟨π, hπ⟩ := v.valuation_exists_uniformizer K
@@ -150,6 +213,9 @@ theorem exists_ord_eq_ite (v : HeightOneSpectrum (𝓞 K)) :
       neg_neg]
   · exact ord_finiteEmbedding_of_ne h _
 
+/- English proof (translation)
+The claim follows from `(Filter.eventually_cofinite.1 (eventually_ord_eq_zero x)).subset fun v hv h ↦ hv (by simp only [h, zpow_zero])`.
+-/
 theorem finite_mulSupport_primeIdealUnit_zpow_ord (x : IdeleGroup K) :
     (Function.mulSupport fun v ↦ primeIdealUnit (K := K) v ^ ord v x).Finite :=
   (Filter.eventually_cofinite.1 (eventually_ord_eq_zero x)).subset fun v hv h ↦
@@ -164,16 +230,25 @@ def toFractionalIdeal : IdeleGroup K →* (FractionalIdeal (𝓞 K)⁰ K)ˣ wher
       (finite_mulSupport_primeIdealUnit_zpow_ord y)
 
 @[simp]
+/- English proof (translation)
+The claim follows from `count_finprod_primeIdealUnit_zpow _ (eventually_ord_eq_zero x) v`.
+-/
 theorem count_toFractionalIdeal (v : HeightOneSpectrum (𝓞 K)) (x : IdeleGroup K) :
     count K v ((toFractionalIdeal x : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
       FractionalIdeal (𝓞 K)⁰ K) = ord v x :=
   count_finprod_primeIdealUnit_zpow _ (eventually_ord_eq_zero x) v
 
+/- English proof (translation)
+Simplify using `only [fractionalIdealUnits_eq_iff, count_toFractionalIdeal]`.
+-/
 theorem toFractionalIdeal_eq_iff {x : IdeleGroup K} {I : (FractionalIdeal (𝓞 K)⁰ K)ˣ} :
     toFractionalIdeal x = I ↔
       ∀ v : HeightOneSpectrum (𝓞 K), ord v x = count K v (I : FractionalIdeal (𝓞 K)⁰ K) := by
   simp only [fractionalIdealUnits_eq_iff, count_toFractionalIdeal]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[MonoidHom.mem_ker, toFractionalIdeal_eq_iff, mem_standardOpenSubgroup_iff_ord]`. Simplify using `only [Units.val_one, count_one]`.
+-/
 theorem ker_toFractionalIdeal :
     (toFractionalIdeal (K := K)).ker = standardOpenSubgroup K := by
   ext x
@@ -182,12 +257,18 @@ theorem ker_toFractionalIdeal :
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `exists_ord_eq_ite v`. Use `⟨x, toFractionalIdeal_eq_iff.2 fun w ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[hx, count_primeIdealUnit]`.
+-/
 theorem primeIdealUnit_mem_range (v : HeightOneSpectrum (𝓞 K)) :
     primeIdealUnit v ∈ (toFractionalIdeal (K := K)).range := by
   obtain ⟨x, hx⟩ := exists_ord_eq_ite v
   refine ⟨x, toFractionalIdeal_eq_iff.2 fun w ↦ ?_⟩
   rw [hx, count_primeIdealUnit]
 
+/- English proof (translation)
+Introduce `I`. Establish `h : I ∈ (toFractionalIdeal (K` using `K)).range := by`. Rewrite using `[← finprod_primeIdealUnit_zpow_count I]`. Conclude with `finprod_induction (· ∈ (toFractionalIdeal (K := K)).range) (one_mem _) (fun _ _ ↦ mul_mem) fun v ↦ zpow_mem (primeIdealUnit_mem_range v) _`. Conclude with `h`.
+-/
 theorem toFractionalIdeal_surjective : Function.Surjective (toFractionalIdeal (K := K)) := by
   intro I
   have h : I ∈ (toFractionalIdeal (K := K)).range := by
@@ -196,12 +277,20 @@ theorem toFractionalIdeal_surjective : Function.Surjective (toFractionalIdeal (K
       (fun _ _ ↦ mul_mem) fun v ↦ zpow_mem (primeIdealUnit_mem_range v) _
   exact h
 
+/- English proof (translation)
+Rewrite using `[toFractionalIdeal_eq_iff]`. Introduce `v`. Rewrite using `[ord_diagonal, coe_toPrincipalIdeal, count_spanSingleton v a.ne_zero]`.
+-/
 theorem toFractionalIdeal_diagonal (a : Kˣ) :
     toFractionalIdeal (diagonal K a) = toPrincipalIdeal (𝓞 K) K a := by
   rw [toFractionalIdeal_eq_iff]
   intro v
   rw [ord_diagonal, coe_toPrincipalIdeal, count_spanSingleton v a.ne_zero]
 
+/- English proof (translation)
+Rewrite using `[ClassGroup.mk_eq_one_iff, mem_principal_ideals_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hI`. Take `⟨x, hx⟩` from `Submodule.IsPrincipal.principal (S := (I : Submodule (𝓞 K) K))`. Use `⟨x, ?_⟩` and prove the remaining obligations.
+
+Use `symm`. Apply `Subtype.coe_injective` to reduce the goal to its premises. Simplify using `only [FractionalIdeal.val_eq_coe, hx, coe_spanSingleton]`. Introduce and unpack `⟨x, hx⟩`. Conclude with `⟨⟨x, by rw [← hx, coe_spanSingleton]⟩⟩`.
+-/
 theorem _root_.GroundTheory.Global.classGroup_mk_eq_one_iff {I : (FractionalIdeal (𝓞 K)⁰ K)ˣ} :
     ClassGroup.mk K I = 1 ↔ I ∈ (toPrincipalIdeal (𝓞 K) K).range := by
   rw [ClassGroup.mk_eq_one_iff, mem_principal_ideals_iff]
@@ -215,6 +304,9 @@ theorem _root_.GroundTheory.Global.classGroup_mk_eq_one_iff {I : (FractionalIdea
   · rintro ⟨x, hx⟩
     exact ⟨⟨x, by rw [← hx, coe_spanSingleton]⟩⟩
 
+/- English proof (translation)
+The claim follows from `fun c ↦ ClassGroup.induction K (P := fun c ↦ ∃ I, ClassGroup.mk K I = c) (fun I ↦ ⟨I, rfl⟩) c`.
+-/
 theorem _root_.GroundTheory.Global.classGroup_mk_surjective :
     Function.Surjective (ClassGroup.mk K : (FractionalIdeal (𝓞 K)⁰ K)ˣ →* ClassGroup (𝓞 K)) :=
   fun c ↦ ClassGroup.induction K (P := fun c ↦ ∃ I, ClassGroup.mk K I = c) (fun I ↦ ⟨I, rfl⟩) c
@@ -222,13 +314,26 @@ theorem _root_.GroundTheory.Global.classGroup_mk_surjective :
 def toClassGroup : IdeleGroup K →* ClassGroup (𝓞 K) :=
   (ClassGroup.mk K).comp toFractionalIdeal
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toClassGroup_apply (x : IdeleGroup K) :
     toClassGroup x = ClassGroup.mk K (toFractionalIdeal x) :=
   rfl
 
+/- English proof (translation)
+The claim follows from `classGroup_mk_surjective.comp toFractionalIdeal_surjective`.
+-/
 theorem toClassGroup_surjective : Function.Surjective (toClassGroup (K := K)) :=
   classGroup_mk_surjective.comp toFractionalIdeal_surjective
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[MonoidHom.mem_ker, toClassGroup_apply, classGroup_mk_eq_one_iff]`. Take `⟨a, ha⟩` from `hx`. Establish `hu : (diagonal K a)⁻¹ * x ∈ standardOpenSubgroup K`.
+
+Rewrite using `[← ker_toFractionalIdeal, MonoidHom.mem_ker, map_mul, map_inv, toFractionalIdeal_diagonal, ha, inv_mul_cancel]`. Conclude with `Subgroup.mem_sup.2 ⟨diagonal K a, ⟨a, rfl⟩, _, hu, mul_inv_cancel_left _ _⟩`. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[MonoidHom.mem_ker, toClassGroup_apply, toFractionalIdeal_diagonal, classGroup_mk_eq_one_iff]`.
+
+Conclude with `⟨a, rfl⟩`. Introduce `x hx`. Rewrite `hx` using `[← ker_toFractionalIdeal, MonoidHom.mem_ker]`. Rewrite using `[MonoidHom.mem_ker, toClassGroup_apply, hx, map_one]`.
+-/
 theorem ker_toClassGroup :
     (toClassGroup (K := K)).ker = (diagonal K).range ⊔ standardOpenSubgroup K := by
   apply le_antisymm
@@ -254,6 +359,9 @@ def quotientEquivClassGroup :
     (QuotientGroup.quotientKerEquivOfSurjective _ toClassGroup_surjective)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem quotientEquivClassGroup_mk (x : IdeleGroup K) :
     quotientEquivClassGroup (QuotientGroup.mk x :
       IdeleGroup K ⧸ ((diagonal K).range ⊔ standardOpenSubgroup K)) =
@@ -271,15 +379,28 @@ def toClassGroup : IdeleClassGroup K →* ClassGroup (𝓞 K) :=
     (le_sup_left.trans_eq (ker_toClassGroup (K := K)).symm)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toClassGroup_mk (x : IdeleGroup K) :
     toClassGroup (mk K x) = IdeleGroup.toClassGroup x :=
   rfl
 
+/- English proof (translation)
+Introduce `c`. Take `⟨x, rfl⟩` from `IdeleGroup.toClassGroup_surjective c`. Conclude with `⟨mk K x, rfl⟩`.
+-/
 theorem toClassGroup_surjective : Function.Surjective (toClassGroup (K := K)) := by
   intro c
   obtain ⟨x, rfl⟩ := IdeleGroup.toClassGroup_surjective c
   exact ⟨mk K x, rfl⟩
 
+/- English proof (translation)
+Use extensionality with `c`. Take `⟨x, rfl⟩` from `mk_surjective K c`. Rewrite using `[MonoidHom.mem_ker, toClassGroup_mk, ← MonoidHom.mem_ker, IdeleGroup.ker_toClassGroup]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Take `⟨_, ⟨a, rfl⟩, u, hu, rfl⟩` from `Subgroup.mem_sup.1 hx`. Conclude with `⟨u, hu, by rw [map_mul, mk_diagonal]; exact (one_mul (mk K u)).symm⟩`. Introduce and unpack `⟨u, hu, h⟩`. Establish `h1 : mk K (x * u⁻¹) = 1` using `by rw [map_mul, map_inv, h, mul_inv_cancel]`. Rewrite `h1` using `[← MonoidHom.mem_ker, ker_mk]`.
+
+Rewrite using `[← inv_mul_cancel_right x u]`. Conclude with `mul_mem (Subgroup.mem_sup_left h1) (Subgroup.mem_sup_right hu)`.
+-/
 theorem ker_toClassGroup :
     (toClassGroup (K := K)).ker = (standardOpenSubgroup K).map (mk K) := by
   ext c

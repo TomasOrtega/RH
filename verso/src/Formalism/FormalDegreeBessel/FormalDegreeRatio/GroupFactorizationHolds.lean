@@ -7,6 +7,9 @@ noncomputable section
 
 namespace Formalism.QuantumDeterminants
 
+/- English proof (translation)
+Rewrite using `[show (∑ j : Fin l, f (Fin.castLE h j)) = ∑ j ∈ Finset.univ.map (Fin.castLEEmb h), f j from (Finset.sum_map Finset.univ (Fin.castLEEmb h) f).symm]`. Use `(Finset.sum_subset (Finset.subset_univ _) fun j _ hj => hf j ?_).symm` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Conclude with `hj (Finset.mem_map.mpr ⟨⟨j.val, hlt⟩, Finset.mem_univ _, Fin.ext rfl⟩)`.
+-/
 theorem sum_fin_castLE {m l : ℕ} (h : l ≤ m) (f : Fin m → ℂ)
     (hf : ∀ j : Fin m, l ≤ j.val → f j = 0) :
     ∑ j, f j = ∑ j : Fin l, f (Fin.castLE h j) := by
@@ -17,6 +20,15 @@ theorem sum_fin_castLE {m l : ℕ} (h : l ≤ m) (f : Fin m → ℂ)
   push_neg at hlt
   exact hj (Finset.mem_map.mpr ⟨⟨j.val, hlt⟩, Finset.mem_univ _, Fin.ext rfl⟩)
 
+/- English proof (translation)
+Establish `hord : ∀ i j : Fin l, i < j → Fin.castLE hl i < Fin.castLE hl j` using `fun i j h => Fin.lt_def.2 (by simpa using Fin.lt_def.1 h)`. Establish `h1 : (L * X).submatrix (Fin.castLE hl) (Fin.castLE hl) = L.submatrix (Fin.castLE hl) (Fin.castLE hl) * X.submatrix (Fin.castLE hl) (Fin.castLE hl)`. Use extensionality with `i j`. Simplify using `only [submatrix_apply, mul_apply]`. Rewrite using `[sum_fin_castLE hl (fun q => L (Fin.castLE hl i) q * X q (Fin.castLE hl j)) (fun q hq => by`.
+
+Rewrite using `[hL0 _ _ (Fin.lt_def.2 (by simp; omega)), zero_mul])]`. Establish `h2 : (Y * U).submatrix (Fin.castLE hl) (Fin.castLE hl) = Y.submatrix (Fin.castLE hl) (Fin.castLE hl) * U.submatrix (Fin.castLE hl) (Fin.castLE hl)`. Use extensionality with `i j`. Simplify using `only [submatrix_apply, mul_apply]`. Rewrite using `[sum_fin_castLE hl (fun q => Y (Fin.castLE hl i) q * U q (Fin.castLE hl j)) (fun q hq => by`.
+
+Rewrite using `[hU0 _ _ (Fin.lt_def.2 (by simp; omega)), mul_zero])]`. Establish `hdL : (L.submatrix (Fin.castLE hl) (Fin.castLE hl)).det = 1`. Rewrite using `[Matrix.det_of_lowerTriangular (L.submatrix (Fin.castLE hl) (Fin.castLE hl)) (fun i j hij => hL0 _ _ (hord _ _ (OrderDual.toDual_lt_toDual.mp hij)))]`. Simplify using `[hL1]`. Establish `hdU : (U.submatrix (Fin.castLE hl) (Fin.castLE hl)).det = 1`.
+
+Rewrite using `[Matrix.det_of_upperTriangular (M := U.submatrix (Fin.castLE hl) (Fin.castLE hl)) (fun i j hij => hU0 _ _ (hord _ _ hij))]`. Simplify using `[hU1]`. Establish `h3` using `congrArg Matrix.det (show (L * X).submatrix (Fin.castLE hl) (Fin.castLE hl) = (Y * U).submatrix (Fin.castLE hl) (Fin.castLE hl) by rw [h])`. Rewrite `h3` using `[h1, h2, Matrix.det_mul, Matrix.det_mul, hdL, hdU, one_mul, mul_one]`. Conclude with `h3`.
+-/
 theorem minor_eq_of_mul {m : ℕ} (L U X Y : Matrix (Fin m) (Fin m) ℂ)
     (hL0 : ∀ i j : Fin m, i < j → L i j = 0) (hL1 : ∀ i, L i i = 1)
     (hU0 : ∀ i j : Fin m, j < i → U i j = 0) (hU1 : ∀ i, U i i = 1)
@@ -52,6 +64,9 @@ theorem minor_eq_of_mul {m : ℕ} (L U X Y : Matrix (Fin m) (Fin m) ℂ)
 def Fm (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : Matrix (Fin (2 * r + k + 1)) (Fin (r + 1)) ℂ :=
   Matrix.of fun i a => fvec k r z a i
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_assoc]`. Use extensionality with `a b`. Both sides reduce to the same expression.
+-/
 theorem Zhat_eq (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ)
     (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Zhat k r z z' g = (Fm k r z)ᴴ * Hpk k r * g * Fm k r z' := by
@@ -59,6 +74,9 @@ theorem Zhat_eq (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ)
   ext a b
   rfl
 
+/- English proof (translation)
+Take `⟨h, hh, m, hm, rfl⟩` from `hs`. Establish `h1 : hᴴ * Hpk k r * h = Hpk k r` using `hh.1`. Establish `h2 : mᴴ * Hpk k r * m = Hpk k r` using `hm.1`. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem Sset_UH {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
     {s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hs : s ∈ Sset k r z) :
     sᴴ * Hpk k r * s = Hpk k r := by
@@ -69,6 +87,11 @@ theorem Sset_UH {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
   calc mᴴ * hᴴ * Hpk k r * (h * m) = mᴴ * (hᴴ * Hpk k r * h) * m := by simp only [Matrix.mul_assoc]
     _ = Hpk k r := by rw [h1, h2]
 
+/- English proof (translation)
+Use extensionality with `i a`. Express the relevant statement in the definitionally equal form `(h *ᵥ fvec k r z a) i = fvec k r z a i`. Unfold `fvec`. Use `split_ifs with ha`. Rewrite using `[(hh.2.1 ⟨a.val, ha⟩).1]`.
+
+Rewrite using `[hh.2.2]`.
+-/
 theorem UW_F {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
     {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hh : h ∈ UWset k r z) :
     h * Fm k r z = Fm k r z := by
@@ -79,6 +102,9 @@ theorem UW_F {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
   · rw [(hh.2.1 ⟨a.val, ha⟩).1]
   · rw [hh.2.2]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(m *ᵥ fvec k r z a) i = _`. Simplify using `[fvec, hA, bvec, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+-/
 theorem mF_col {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ)
     (m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (i : Fin (2 * r + k + 1))
     (a : Fin (r + 1)) (hA : a.val < r) :
@@ -90,6 +116,11 @@ def Uof (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ)
     (m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ :=
   fun c a => if hc : c.val < r then (m * Fm k r z) (eI k r ⟨c.val, hc⟩) a else if c = a then 1 else 0
 
+/- English proof (translation)
+Unfold `fvec`. Use `split_ifs with hc h1 h1`. Simplify using `[bvec, eI, Pi.single_apply, Fin.ext_iff, h1]`. Apply the tactic sequence `simp [bvec, eI, Pi.single_apply, Fin.ext_iff] <;> omega`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `hz i (Or.inl hi)`.
+-/
 theorem fvec_apply_lt {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z)
     (c : Fin (r + 1)) (i : Fin (2 * r + k + 1)) (hi : i.val < r) :
     fvec k r z c i = if c.val = i.val then 1 else 0 := by
@@ -100,6 +131,11 @@ theorem fvec_apply_lt {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k
   · omega
   · exact hz i (Or.inl hi)
 
+/- English proof (translation)
+Unfold `fvec`. Use `split_ifs with hc h1 h1`. Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `simp [bvec, eI, Pi.single_apply, Fin.ext_iff] <;> omega`. Both sides reduce to the same expression.
+
+Use `c.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem fvec_apply_ge {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ)
     (c : Fin (r + 1)) (i : Fin (2 * r + k + 1)) (hi : r ≤ i.val) :
     fvec k r z c i = if c.val = r then z i else 0 := by
@@ -111,6 +147,27 @@ theorem fvec_apply_ge {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ)
   · have := c.isLt
     omega
 
+/- English proof (translation)
+Establish `hm2` using `hm.2.1`. Establish `hm3` using `hm.2.2`. Use extensionality with `i a`. Use `conv_rhs => rw [Matrix.mul_apply]`. Distinguish the cases in `hi : i.val < r`.
+
+Establish `hF : ∀ c, Fm k r z i c = if c = ⟨i.val, by omega⟩ then 1 else 0` using `fun c => by`. Express the relevant statement in the definitionally equal form `fvec k r z c i = _`. Rewrite using `[fvec_apply_lt z hz c i hi]`. Simplify using `[Fin.ext_iff]`. Simplify using `only [hF, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+
+Simplify using `[Uof, hi, eI]`. Establish `hF : ∀ c, Fm k r z i c = if c = Fin.last r then z i else 0` using `fun c => by`. Express the relevant statement in the definitionally equal form `fvec k r z c i = _`. Rewrite using `[fvec_apply_ge z c i (by omega)]`. Simplify using `[Fin.ext_iff]`.
+
+Simplify using `only [hF, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `hU : Uof k r z m (Fin.last r) a = if Fin.last r = a then 1 else 0` using `by simp [Uof]`. Rewrite using `[hU]`. Distinguish the cases in `ha : a.val < r`. Rewrite using `[mF_col z m i a ha, hm2 ⟨a.val, ha⟩ i (by show a.val ≤ i.val; omega)]`.
+
+Establish `h1 : i ≠ eI k r ⟨a.val, ha⟩`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Express the relevant statement in the definitionally equal form `i.val = a.val at this`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h2 : Fin.last r ≠ a`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `[h1, h2]`. Establish `ha' : a = Fin.last r` using `Fin.ext (by have := a.isLt; simp; omega)`. Substitute `ha'` using the available equality. Simplify using `only [if_true, mul_one]`. Express the relevant statement in the definitionally equal form `(m *ᵥ fvec k r z (Fin.last r)) i = z i`.
+
+Establish `hf : fvec k r z (Fin.last r) = z` using `by simp [fvec]`. Rewrite using `[hf]`. Establish `hterm : ∀ j, m i j * z j = if i = j then z j else 0`. Introduce `j`. Distinguish the cases in `hj : j.val < r ∨ r + k < j.val`.
+
+Rewrite using `[hz j hj]`. Simplify using the standard rewrite rules. Use `push_neg at hj`. Rewrite using `[hm3 i j hj.1 hj.2 (by omega)]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, hterm, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+-/
 theorem N_F {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z)
     {m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hm : m ∈ Nset k r) :
     m * Fm k r z = Fm k r z * Uof k r z m := by
@@ -163,6 +220,13 @@ theorem N_F {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z)
           split_ifs <;> simp
       simp only [Matrix.mulVec, dotProduct, hterm, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Establish `hm2` using `hm.2.1`. Establish `hac' : a.val < c.val` using `hac`. Distinguish the cases in `hc : c.val < r`. Simplify using `only [Uof, hc, dif_pos]`. Rewrite using `[mF_col z m _ a (by omega), hm2 ⟨a.val, by omega⟩ _ (by show a.val ≤ c.val; omega)]`.
+
+Rewrite using `[if_neg]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Express the relevant statement in the definitionally equal form `c.val = a.val at this`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hne : c ≠ a` using `fun h => by rw [h] at hac'; omega`. Simplify using `[Uof, hc, hne]`.
+-/
 theorem Uof_lower_zero {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
     {m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hm : m ∈ Nset k r)
     (c a : Fin (r + 1)) (hac : a < c) : Uof k r z m c a = 0 := by
@@ -179,6 +243,9 @@ theorem Uof_lower_zero {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
   · have hne : c ≠ a := fun h => by rw [h] at hac'; omega
     simp [Uof, hc, hne]
 
+/- English proof (translation)
+Establish `hm2` using `hm.2.1`. Distinguish the cases in `hc : c.val < r`. Simplify using `only [Uof, hc, dif_pos]`. Rewrite using `[mF_col z m _ c hc, hm2 ⟨c.val, hc⟩ _ (le_refl _), if_pos rfl]`. Simplify using `[Uof, hc]`.
+-/
 theorem Uof_diag {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
     {m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hm : m ∈ Nset k r)
     (c : Fin (r + 1)) : Uof k r z m c c = 1 := by
@@ -188,6 +255,9 @@ theorem Uof_diag {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
     rw [mF_col z m _ c hc, hm2 ⟨c.val, hc⟩ _ (le_refl _), if_pos rfl]
   · simp [Uof, hc]
 
+/- English proof (translation)
+Take `⟨h, hh, m, hm, rfl⟩` from `hs`. Use `⟨Uof k r z m, fun c a hac => Uof_lower_zero hm c a hac, fun c => Uof_diag hm c, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, N_F hz hm, ← Matrix.mul_assoc, UW_F hh]`.
+-/
 theorem S_F {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z)
     {s : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hs : s ∈ Sset k r z) :
     ∃ U : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ, (∀ c a, a < c → U c a = 0) ∧ (∀ c, U c c = 1) ∧
@@ -196,6 +266,15 @@ theorem S_F {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z)
   refine ⟨Uof k r z m, fun c a hac => Uof_lower_zero hm c a hac, fun c => Uof_diag hm c, ?_⟩
   rw [Matrix.mul_assoc, N_F hz hm, ← Matrix.mul_assoc, UW_F hh]
 
+/- English proof (translation)
+Introduce `k r z z' hz hz' s hs s' hs' g l`. Take `⟨U, hU0, hU1, hsF⟩` from `S_F hz hs`. Take `⟨U', hU0', hU1', hsF'⟩` from `S_F hz' hs'`. Establish `hH : sᴴ * Hpk k r * s = Hpk k r` using `Sset_UH hs`. Establish `hFs : (Fm k r z)ᴴ * sᴴ = Uᴴ * (Fm k r z)ᴴ`.
+
+Rewrite using `[← conjTranspose_mul, hsF, conjTranspose_mul]`. Establish `hL0 : ∀ i j : Fin (r + 1), i < j → Uᴴ i j = 0` using `fun i j hij => by`. Simplify using `[conjTranspose_apply, hU0 j i hij]`. Establish `hL1 : ∀ i, Uᴴ i i = 1` using `fun i => by simp [conjTranspose_apply, hU1 i]`. Establish `hmul : Uᴴ * Zhat k r z z' (s * g * s') = Zhat k r z z' g * U'`.
+
+Rewrite using `[Zhat_eq, Zhat_eq]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (Fm k r z)ᴴ * (sᴴ * Hpk k r * s) * g * (s' * Fm k r z') := by`. Rewrite using `[← hFs]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = (Fm k r z)ᴴ * Hpk k r * g * Fm k r z' * U' := by`. Rewrite using `[hH, hsF']`. Simplify using `only [Matrix.mul_assoc]`. Conclude with `minor_eq_of_mul Uᴴ U' _ _ hL0 hL1 hU0' hU1' hmul l.val _`.
+-/
 theorem diagonal_inverse_holds : DInv := by
   intro k r z z' hz hz' s hs s' hs' g l
   obtain ⟨U, hU0, hU1, hsF⟩ := S_F hz hs
@@ -219,10 +298,16 @@ theorem diagonal_inverse_holds : DInv := by
           simp only [Matrix.mul_assoc]
   exact minor_eq_of_mul Uᴴ U' _ _ hL0 hL1 hU0' hU1' hmul l.val _
 
+/- English proof (translation)
+Introduce `k r z z' hz hz' s hs s' hs' g`. Simplify using `only [Gf, diagonal_inverse_holds k r z z' hz hz' s hs s' hs' g]`.
+-/
 theorem group_inverse_holds : GInv := by
   intro k r z z' hz hz' s hs s' hs' g
   simp only [Gf, diagonal_inverse_holds k r z z' hz hz' s hs s' hs' g]
 
+/- English proof (translation)
+Introduce `k r z z' g h`. Establish `hne : Complex.normSq (Dmin k r z z' g ⟨r, by omega⟩) ≠ 0` using `(Complex.normSq_pos.mpr h).ne'`. Simplify using `only [Gf, GGf, zeta, Complex.normSq_div]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem group_factorization_holds : GFactor := by
   intro k r z z' g h
   have hne : Complex.normSq (Dmin k r z z' g ⟨r, by omega⟩) ≠ 0 :=

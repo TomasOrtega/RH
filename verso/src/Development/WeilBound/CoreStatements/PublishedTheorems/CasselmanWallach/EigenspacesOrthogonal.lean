@@ -10,8 +10,14 @@ namespace PositivityTheory.CW
 
 namespace HilbertSchmidtSqEq₂
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hs2_eq {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : hs2 g = hs g := rfl
 
+/- English proof (translation)
+Rewrite using `[Seminorm.coe_smul]`. Conclude with `hq.const_smul c`.
+-/
 theorem smul_seminorm_cont {E : Type} [AddCommGroup E] [Module ℂ E] [TopologicalSpace E] {q : Seminorm ℂ E}
     (hq : Continuous q) (c : NNReal) : Continuous (c • q) := by
   rw [Seminorm.coe_smul]
@@ -20,6 +26,41 @@ theorem smul_seminorm_cont {E : Type} [AddCommGroup E] [Module ℂ E] [Topologic
 end HilbertSchmidtSqEq₂
 
 open HilbertSchmidtSqEq₂ in
+/- English proof (translation)
+Introduce `hM e3a e3b n ε H _ _ _ σ hU hI E _ _ _ _ _ _ p π dπ hπ hD A hA hMod T hG hd Q N hQc hQg hη`. Take `⟨m, K, I₀, hK, hmax⟩` from `hM n ε (kfin ε σ) A hMod N`. Establish `hC : ∀ e : kfin ε σ, ∃ C : ℝ, 0 ≤ C ∧ ∀ y, Sm ε σ y → ‖⟪(e : H), y⟫_ℂ‖ ≤ C * Q (T y)` using `fun e => hη e e.2`. Use `choose Ce hCe0 hCe using hC`. Use `set Cs : ℝ := ∑ e ∈ I₀, Ce e with hCs`.
+
+Establish `hCs0 : 0 ≤ Cs` using `Finset.sum_nonneg fun e _ => hCe0 e`. Establish `h3a` using `e3a n ε (kfin ε σ) A hMod.gl hMod.uni hMod m`. Take `⟨D, hDm⟩` from `e3b n ε H σ hU hI E p π dπ hπ A hA T hd m`. Establish `key : ∀ y : kfin ε σ, ‖(y : H)‖ ≤ K * Cs * Q (D (T y))`. Introduce `y`.
+
+Take `⟨v, hv⟩` from `h3a.1 y`. Use `set w : H := ((((1 + casimirK ε A) ^ m) y : kfin ε σ) : H) with hwdef`. Establish `hw : Sm ε σ w` using `hD.1 _ (((1 + casimirK ε A) ^ m) y).2`. Set `F : kfin ε σ →ₗ[ℂ] (Matrix (Fin n) (Fin n) ℂ → ℂ)` to `{ toFun := fun η g => ⟪w, σ g (η : H)⟫_ℂ map_add' := fun a b => by funext g; simp [inner_add_right] map_smul' := fun c a => by funext g; simp [inner_smul_right] }`. Establish `hF : ∀ (η : kfin ε σ) g, F η g = ⟪w, σ g (η : H)⟫_ℂ` using `fun _ _ => rfl`.
+
+Establish `h1 : ∀ η : kfin ε σ, ContinuousOn (F η) (ReciprocityTheory.ChartRestriction.DS.UJset ε)` using `fun η => by`. Use `(continuousOn_const (c := w) (s := UJset ε)).inner (𝕜 := ℂ) (hU.2.2 (η : H))` as an intermediate fact. Conclude with `this`. Establish `h2 : ∀ X, ReciprocityTheory.ChartRestriction.DS.inP ε X → ∀ η : kfin ε σ, ∀ g ∈ ReciprocityTheory.ChartRestriction.DS.UJset ε, HasDerivAt (fun t : ℝ => F η (g * NormedSpace.exp (t • X))) (F (actM A X η) g) 0`. Introduce `X hX η g hg`.
+
+Establish `hXl : X ∈ lieSet ε` using `hX.1`. Establish `hg' : g ∈ UJset ε` using `hg`. Establish `hη' : Sm ε σ (η : H)` using `hD.1 _ η.2`. Establish `ho : HasDerivAt (fun t : ℝ => σ (NormedSpace.exp (t • X)) (η : H)) (dRep σ X η) 0`. Use `hasDerivAt_orbit hU hη' hXl 0` as an intermediate fact.
+
+Rewrite `this` using `[zero_smul, NormedSpace.exp_zero, sigma_one hU]`. Then use the resulting hypothesis. Establish `h4 : HasDerivAt (fun t : ℝ => σ g (σ (NormedSpace.exp (t • X)) (η : H))) (σ g (dRep σ X η)) 0` using `((σ g).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 ho`. Establish `h5` using `((innerSL ℂ w).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 h4`. Simplify using `only [ContinuousLinearMap.coe_restrictScalars', innerSL_apply_apply] at h5`. Rewrite using `[hF, hA X hXl η]`.
+
+Use `h5.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, hF, innerSL_apply_apply]`. Rewrite using `[sigma_mul hU hg' (exp_mem_UJ hXl t)]`. Establish `h3 : ∀ η : kfin ε σ, ∃ C : ℝ, ∀ g ∈ ReciprocityTheory.ChartRestriction.DS.UJset ε, ‖F η g‖ ≤ C * (1 + hs2 g) ^ N`. Introduce `η`.
+
+Use `⟨‖w‖ * ‖(η : H)‖, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hg' : g ∈ UJset ε` using `hg`. Rewrite using `[hF, hs2_eq]`. Establish `e1 : ‖⟪w, σ g (η : H)⟫_ℂ‖ ≤ ‖w‖ * ‖(η : H)‖`. Use `norm_inner_le_norm (𝕜 := ℂ) w (σ g (η : H))` as an intermediate fact.
+
+Rewrite `this` using `[hU.2.1 g hg' (η : H)]`. Then use the resulting hypothesis. Establish `e2 : (1 : ℝ) ≤ (1 + hs g) ^ N` using `one_le_pow₀ (by linarith [hs_nonneg g])`. Combine the equalities or inequalities in the displayed calculation. Establish `h5b : ∀ e ∈ I₀, ∀ g ∈ ReciprocityTheory.ChartRestriction.DS.UJset ε, ‖F e g‖ ≤ (Cs * Q (T w)) * (1 + hs2 g) ^ N`. Introduce `e he g hg`.
+
+Establish `hg' : g ∈ UJset ε` using `hg`. Rewrite using `[hF, hs2_eq, inner_sigma hU hg' w (e : H), norm_inner_symm]`. Establish `hgi : g⁻¹ ∈ UJset ε` using `inv_mem_UJ hg'`. Establish `e1` using `hCe e (σ g⁻¹ w) (Sm.translate hU hw hgi)`. Rewrite `e1` using `[hG.1 g⁻¹ hgi w hw]`.
+
+Establish `e2` using `hQg g⁻¹ hgi (T w)`. Rewrite `e2` using `[hs_inv hg']`. Establish `e3 : Ce e ≤ Cs` using `Finset.single_le_sum (f := Ce) (fun x _ => hCe0 x) he`. Establish `hQ0 : 0 ≤ Q (T w)` using `apply_nonneg _ _`. Establish `hW0 : 0 ≤ (1 + hs g) ^ N` using `pow_nonneg (by linarith [hs_nonneg g]) _`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hmv` using `hmax F h1 h2 h3 (Cs * Q (T w)) (mul_nonneg hCs0 (apply_nonneg _ _)) h5b v`. Rewrite `hmv` using `[hv, hF, sigma_one hU]`. Establish `hin : ⟪w, (v : H)⟫_ℂ = ⟪(y : H), (y : H)⟫_ℂ`. Rewrite using `[hwdef, ← Submodule.coe_inner, ← Submodule.coe_inner, h3a.2 y v, hv]`.
+
+Establish `hn : ‖⟪(y : H), (y : H)⟫_ℂ‖ = ‖(y : H)‖ ^ 2`. Rewrite using `[inner_self_eq_norm_sq_to_K, norm_pow]`. Simplify using the standard rewrite rules. Rewrite `hmv` using `[hin, hn]`. Establish `hTw : T w = D (T y)` using `hDm y`.
+
+Rewrite `hmv` using `[hTw]`. Establish `hy0 : 0 ≤ ‖(y : H)‖` using `norm_nonneg _`. Establish `hR0 : 0 ≤ K * Cs * Q (D (T y))` using `mul_nonneg (mul_nonneg hK hCs0) (apply_nonneg _ _)`. Break down `hy0.eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0]`.
+
+Conclude with `hR0`. Establish `: ‖(y : H)‖ * ‖(y : H)‖ ≤ K * Cs * Q (D (T y)) * ‖(y : H)‖`. Establish `e : K * (Cs * Q (D (T y))) * ‖(y : H)‖ = K * Cs * Q (D (T y)) * ‖(y : H)‖` using `by ring`. Rewrite using `[← e, ← sq]`. Conclude with `hmv`.
+
+Conclude with `le_of_mul_le_mul_right this h0`. Use `⟨(K * Cs).toNNReal • Q.comp (D : E →ₗ[ℂ] E), smul_seminorm_cont ?_ _, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[Seminorm.coe_comp]`. Conclude with `hQc.comp D.continuous`. Rewrite using `[Seminorm.smul_apply, NNReal.smul_def, smul_eq_mul, Real.coe_toNNReal _ (mul_nonneg hK hCs0), Seminorm.comp_apply]`.
+
+Conclude with `key ⟨v, hv⟩`.
+-/
 theorem e3c : SmoothMapSeminormBound := by
   classical
   intro hM e3a e3b n ε H _ _ _ σ hU hI E _ _ _ _ _ _ p π dπ hπ hD A hA hMod T hG hd Q N hQc hQg hη

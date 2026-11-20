@@ -16,6 +16,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `h : ∀ y ∈ GLs n, y⁻¹ = (y.det)⁻¹ • y.adjugate` using `fun y _ => by`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`. Use `ContinuousOn.congr ?_ h` and prove the remaining obligations. Conclude with `ContinuousOn.smul ((continuous_id.matrix_det).continuousOn.inv₀ fun y hy => hy) (continuous_id.matrix_adjugate).continuousOn`.
+-/
 theorem contOn_inv : ContinuousOn (fun y : Mat n => y⁻¹) (GLs n) := by
   have h : ∀ y ∈ GLs n, y⁻¹ = (y.det)⁻¹ • y.adjugate := fun y _ => by
     rw [Matrix.inv_def, Ring.inverse_eq_inv']
@@ -23,46 +26,101 @@ theorem contOn_inv : ContinuousOn (fun y : Mat n => y⁻¹) (GLs n) := by
   exact ContinuousOn.smul ((continuous_id.matrix_det).continuousOn.inv₀ fun y hy => hy)
     (continuous_id.matrix_adjugate).continuousOn
 
+/- English proof (translation)
+Simplify using `only [GLs, Set.mem_ofPred_eq, Matrix.det_mul] at *`. Conclude with `mul_ne_zero hx hy`.
+-/
 theorem mem_GLs_mul {x y : Mat n} (hx : x ∈ GLs n) (hy : y ∈ GLs n) : x * y ∈ GLs n := by
   simp only [GLs, Set.mem_ofPred_eq, Matrix.det_mul] at *
   exact mul_ne_zero hx hy
 
+/- English proof (translation)
+The claim follows from `(Matrix.isUnit_nonsing_inv_det x (isUnit_iff_ne_zero.2 hx)).ne_zero`.
+-/
 theorem inv_mem_GLs {x : Mat n} (hx : x ∈ GLs n) : x⁻¹ ∈ GLs n :=
   (Matrix.isUnit_nonsing_inv_det x (isUnit_iff_ne_zero.2 hx)).ne_zero
 
+/- English proof (translation)
+Simplify using `only [GLs, Set.mem_ofPred_eq, Matrix.det_conjTranspose, star_ne_zero] at *`. Conclude with `hx`.
+-/
 theorem conjTranspose_mem_GLs {x : Mat n} (hx : x ∈ GLs n) : xᴴ ∈ GLs n := by
   simp only [GLs, Set.mem_ofPred_eq, Matrix.det_conjTranspose, star_ne_zero] at *
   exact hx
 
+/- English proof (translation)
+The claim follows from `mem_GLs_mul (mem_GLs_mul (inv_mem_GLs hx) hd) (inv_mem_GLs (conjTranspose_mem_GLs hx))`.
+-/
 theorem tw_mem {x d : Mat n} (hx : x ∈ GLs n) (hd : d ∈ GLs n) : x⁻¹ * d * xᴴ⁻¹ ∈ GLs n :=
   mem_GLs_mul (mem_GLs_mul (inv_mem_GLs hx) hd) (inv_mem_GLs (conjTranspose_mem_GLs hx))
 
+/- English proof (translation)
+The claim follows from `((Matrix.isUnit_iff_isUnit_det _).mp (Units.isUnit x)).ne_zero`.
+-/
 theorem val_mem (x : G n) : (x : Mat n) ∈ GLs n :=
   ((Matrix.isUnit_iff_isUnit_det _).mp (Units.isUnit x)).ne_zero
 
+/- English proof (translation)
+Simplify using `only [tw, th, Units.val_mul, Matrix.coe_units_inv, Units.coe_star, Matrix.star_eq_conjTranspose]`.
+-/
 theorem tw_val (x d : G n) : ((tw x d : G n) : Mat n) = (x : Mat n)⁻¹ * d * (x : Mat n)ᴴ⁻¹ := by
   simp only [tw, th, Units.val_mul, Matrix.coe_units_inv, Units.coe_star, Matrix.star_eq_conjTranspose]
 
 def trL (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] : (V →L[ℂ] V) →ₗ[ℂ] ℂ :=
   (LinearMap.trace ℂ V).comp (ContinuousLinearMap.coeLM ℂ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trL_apply {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] (A : V →L[ℂ] V) :
     trL V A = LinearMap.trace ℂ V (A : V →ₗ[ℂ] V) := rfl
 
+/- English proof (translation)
+The claim follows from `LinearMap.continuous_of_finiteDimensional _`.
+-/
 theorem trL_cont (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] : Continuous (trL V) :=
   LinearMap.continuous_of_finiteDimensional _
 
+/- English proof (translation)
+Simplify using `only [trL_apply, ContinuousLinearMap.toLinearMap_mul]`. Conclude with `LinearMap.trace_mul_comm ℂ _ _`.
+-/
 theorem trL_mul_comm {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V]
     (A B : V →L[ℂ] V) : trL V (A * B) = trL V (B * A) := by
   simp only [trL_apply, ContinuousLinearMap.toLinearMap_mul]
   exact LinearMap.trace_mul_comm ℂ _ _
 
+/- English proof (translation)
+Establish `h1 : (hOf v).det ≠ 0` using `(show (hOf v).PosDef from hv).det_pos.ne'`. Rewrite `h1` using `[← hσ2 v hv, Matrix.det_mul]`. Conclude with `left_ne_zero_of_mul h1`.
+-/
 theorem sigma_mem {σ : (Fin n × Fin n → ℝ) → Mat n} (hσ2 : ∀ v ∈ cone n, σ v * (σ v)ᴴ = hOf v) {v} (hv : v ∈ cone n) :
     σ v ∈ GLs n := by
   have h1 : (hOf v).det ≠ 0 := (show (hOf v).PosDef from hv).det_pos.ne'
   rw [← hσ2 v hv, Matrix.det_mul] at h1
   exact left_ne_zero_of_mul h1
 
+/- English proof (translation)
+Introduce `n lam E Fr ε ι S Γ T hCx _ _ μ _ σ c hσ hσ2 hform k hk hkeq hkΓ d R hR`. Use `set Fm : Mat n → ℂ := fun y => trL E.V (k (y⁻¹ * d.val * yᴴ⁻¹) * T) with hFm`. Establish `hdG` using `val_mem d`. Establish `harg : ContinuousOn (fun y : Mat n => y⁻¹ * d.val * yᴴ⁻¹) (GLs n)` using `(contOn_inv.mul continuousOn_const).mul (contOn_inv.comp (continuous_id.matrix_conjTranspose).continuousOn fun y hy => conjTranspose_mem_GLs hy)`. Establish `hFmcont : ContinuousOn Fm (GLs n)` using `(trL_cont E.V).comp_continuousOn ((hk.comp harg fun y hy => tw_mem hy hdG).mul continuousOn_const)`.
+
+Establish `hFmsupp : ∃ R, ∀ y ∈ GLs n, R < lg y → Fm y = 0` using `⟨R, fun y hy h => by simp only [hFm, hR y hy h, zero_mul, map_zero]⟩`. Establish `hFmK : ∀ y ∈ GLs n, ∀ kk : Matrix.unitaryGroup (Fin n) ℂ, Fm (y * kk.1) = Fm y`. Introduce `y hy kk`. Establish `hu : kk.1ᴴ * kk.1 = 1` using `Matrix.UnitaryGroup.star_mul_self kk`. Establish `hu' : kk.1 * kk.1ᴴ = 1`.
+
+Use `Matrix.mem_unitaryGroup_iff.mp kk.2` as an intermediate fact. Simplify `this` using `[Matrix.star_eq_conjTranspose]`. Establish `hinv : kk.1⁻¹ = kk.1ᴴ` using `Matrix.inv_eq_left_inv hu`. Establish `hinvH : kk.1ᴴ⁻¹ = kk.1` using `Matrix.inv_eq_left_inv hu'`. Establish `e : (y * kk.1)⁻¹ * d.val * (y * kk.1)ᴴ⁻¹ = (kk⁻¹ : Matrix.unitaryGroup (Fin n) ℂ).1 * (y⁻¹ * d.val * yᴴ⁻¹) * kk.1`.
+
+Rewrite using `[Matrix.mul_inv_rev, Matrix.conjTranspose_mul, Matrix.mul_inv_rev, hinvH, hinv]`. Establish `: (kk⁻¹ : Matrix.unitaryGroup (Fin n) ℂ).1 = kk.1ᴴ`. Rewrite using `[Matrix.UnitaryGroup.inv_val, Matrix.star_eq_conjTranspose]`. Rewrite using `[this]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Simplify using `only [hFm]`. Rewrite using `[e, hkeq _ (tw_mem hy hdG)]`. Rewrite using `[show E.ρ kk⁻¹ * k (y⁻¹ * d.val * yᴴ⁻¹) * E.ρ kk * T = E.ρ kk⁻¹ * (k (y⁻¹ * d.val * yᴴ⁻¹) * T) * E.ρ kk by`. Rewrite using `[mul_assoc (E.ρ kk⁻¹ * k _) (E.ρ kk) T, ← hCx.TK kk]`. Simplify using `only [mul_assoc]]`.
+
+Rewrite using `[trL_mul_comm, ← mul_assoc, ← map_mul, mul_inv_cancel, map_one, one_mul]`. Establish `hcone : ∀ v ∈ cone n, trL E.V (Γ * S 1 * Kc σ c Fr k Γ T d.val (v, v)) = ((c : ℂ) * ((hOf v).det ^ n)⁻¹) * Fm (σ v)`. Introduce `v hv`. Establish `hx` using `sigma_mem hσ2 hv`. Simplify using `only [Kc, Kf, hCx.S1, mul_one, mul_smul_comm, map_smul, smul_eq_mul, hFm]`.
+
+Use `congr 1`. Establish `hw` using `tw_mem hx hdG`. Establish `h1 : Fr (σ v)⁻¹ * Fr (σ v) = 1`. Rewrite using `[← hCx.mul _ (inv_mem_GLs hx) _ hx, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 hx), hCx.one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[show Γ * (Fr (σ v) * k ((σ v)⁻¹ * d.val * (σ v)ᴴ⁻¹) * Γ * T * Fr (σ v)⁻¹) = (Γ * Fr (σ v)) * (k ((σ v)⁻¹ * d.val * (σ v)ᴴ⁻¹) * Γ * T * Fr (σ v)⁻¹) by simp only [mul_assoc], hCx.ΓFr _ hx]`. Simplify using `only [mul_assoc]`. Use `_ = trL E.V ((Γ * k ((σ v)⁻¹ * d.val * (σ v)ᴴ⁻¹) * Γ * T * Fr (σ v)⁻¹) * Fr (σ v)) := trL_mul_comm _ _`. Use `_ = trL E.V (k ((σ v)⁻¹ * d.val * (σ v)ᴴ⁻¹) * T) := by`. Rewrite using `[mul_assoc _ (Fr (σ v)⁻¹), h1, mul_one, hkΓ _ hw, mul_assoc (k _) Γ Γ, hCx.Γsq, mul_one]`.
+
+Establish `hcontTw : Continuous (fun x : G n => (x : Mat n)⁻¹ * d.val * (x : Mat n)ᴴ⁻¹)` using `((contOn_inv.comp_continuous Units.continuous_val val_mem).mul continuous_const).mul (contOn_inv.comp_continuous (Units.continuous_val.matrix_conjTranspose) fun x => conjTranspose_mem_GLs (val_mem x))`. Establish `hphi : (fun x : G n => phiOf E T k (tw x d)) = fun x : G n => Fm (x : Mat n)`. Use function extensionality and compare the values at `x`. Simplify using `only [phiOf, hFm, trL_apply, tw_val]`. Establish `hcont : Continuous (fun x : G n => Fm (x : Mat n))` using `(trL_cont E.V).comp ((hk.comp_continuous hcontTw fun x => tw_mem (val_mem x) hdG).mul continuous_const)`.
+
+Establish `hcs : HasCompactSupport (fun x : G n => Fm (x : Mat n))`. Use `HasCompactSupport.intro (GlobalTheory.T.length_function_compact n R) fun x hx => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, not_le] at hx`. Simplify using `only [hFm, hR _ (val_mem x) hx, zero_mul, map_zero]`. Use `⟨hphi ▸ hcont.integrable_of_hasCompactSupport hcs, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hphi, hform Fm hFmcont hFmsupp hFmK, ← integral_const_mul]`. Use `setIntegral_congr_fun (GlobalTheory.T.positive_cone_structure n).1.measurableSet (fun v hv => ?_)` and prove the remaining obligations. Rewrite using `[show Γ * S 1 * Kc σ c Fr k Γ T d.val (v, v) = Γ * S 1 * Kc σ c Fr k Γ T d.val (v, v) from rfl]`. Use `hcone v hv` as an intermediate fact. Simplify using `only [trL_apply] at this`.
+
+Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem end1 : End1 := by
   intro n lam E Fr ε ι S Γ T hCx _ _ μ _ σ c hσ hσ2 hform k hk hkeq hkΓ d R hR
   set Fm : Mat n → ℂ := fun y => trL E.V (k (y⁻¹ * d.val * yᴴ⁻¹) * T) with hFm

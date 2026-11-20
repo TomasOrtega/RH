@@ -27,17 +27,29 @@ variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
 def sc (E : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] (k : ℕ) : E →L[ℝ] E :=
   ((2 : ℝ) ^ k)⁻¹ • ContinuousLinearMap.id ℝ E
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sc_apply (k : ℕ) (u : E) : sc E k u = ((2 : ℝ) ^ k)⁻¹ • u := rfl
 
+/- English proof (translation)
+Rewrite using `[sc_apply, norm_smul, norm_inv, norm_pow, Real.norm_ofNat]`.
+-/
 theorem norm_sc_apply (k : ℕ) (u : E) : ‖sc E k u‖ = ((2 : ℝ) ^ k)⁻¹ * ‖u‖ := by
   rw [sc_apply, norm_smul, norm_inv, norm_pow, Real.norm_ofNat]
 
+/- English proof (translation)
+Use `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun u => ?_` and prove the remaining obligations. Rewrite using `[norm_sc_apply, one_mul]`. Establish `h : ((2 : ℝ) ^ k)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (one_le_pow₀ one_le_two)`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) h`.
+-/
 theorem norm_sc_le (k : ℕ) : ‖sc E k‖ ≤ 1 := by
   refine ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun u => ?_
   rw [norm_sc_apply, one_mul]
   have h : ((2 : ℝ) ^ k)⁻¹ ≤ 1 := inv_le_one_of_one_le₀ (one_le_pow₀ one_le_two)
   exact mul_le_of_le_one_left (norm_nonneg _) h
 
+/- English proof (translation)
+Establish `h1 : ContDiff ℝ ∞ (b ∘ sc E k)` using `hb.comp (sc E k).contDiff`. Establish `e : (fun v => z * b (sc E k v)) = z • (b ∘ sc E k)` using `rfl`. Rewrite using `[e, iteratedFDeriv_const_smul_apply (h1.contDiffAt.of_le (by exact_mod_cast le_top)), (sc E k).iteratedFDeriv_comp_right hb u (by exact_mod_cast le_top)]`.
+-/
 theorem iter_term (b : E → ℂ) (hb : ContDiff ℝ ∞ b) (z : ℂ) (k n : ℕ) (u : E) :
     iteratedFDeriv ℝ n (fun v => z * b (sc E k v)) u =
       z • (iteratedFDeriv ℝ n b (sc E k u)).compContinuousLinearMap fun _ => sc E k := by
@@ -46,6 +58,9 @@ theorem iter_term (b : E → ℂ) (hb : ContDiff ℝ ∞ b) (z : ℂ) (k n : ℕ
   rw [e, iteratedFDeriv_const_smul_apply (h1.contDiffAt.of_le (by exact_mod_cast le_top)),
     (sc E k).iteratedFDeriv_comp_right hb u (by exact_mod_cast le_top)]
 
+/- English proof (translation)
+Rewrite using `[iter_term b hb, norm_smul]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans ?_` and prove the remaining obligations. Establish `h : ∏ _i : Fin n, ‖sc E k‖ ≤ 1` using `Finset.prod_le_one (fun _ _ => norm_nonneg _) fun _ _ => norm_sc_le k`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) h).trans (hA n _)`.
+-/
 theorem term_bound (b : E → ℂ) (hb : ContDiff ℝ ∞ b) (A : ℕ → ℝ) (hA : ∀ n x, ‖iteratedFDeriv ℝ n b x‖ ≤ A n)
     (z : ℂ) (k n : ℕ) (u : E) : ‖iteratedFDeriv ℝ n (fun v => z * b (sc E k v)) u‖ ≤ ‖z‖ * A n := by
   rw [iter_term b hb, norm_smul]
@@ -54,6 +69,11 @@ theorem term_bound (b : E → ℂ) (hb : ContDiff ℝ ∞ b) (A : ℕ → ℝ) (
   have h : ∏ _i : Fin n, ‖sc E k‖ ≤ 1 := Finset.prod_le_one (fun _ _ => norm_nonneg _) fun _ _ => norm_sc_le k
   exact (mul_le_of_le_one_right (norm_nonneg _) h).trans (hA n _)
 
+/- English proof (translation)
+Rewrite using `[iter_term b hb, hs n _ ?_]`. Use extensionality with `m`. Simplify using the standard rewrite rules. Rewrite `*` using `[norm_sc_apply, pow_succ]`. Establish `h2 : (0 : ℝ) < 2 ^ k` using `by positivity`.
+
+Rewrite using `[inv_mul_eq_div, lt_div_iff₀ h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem term_zero (b : E → ℂ) (hb : ContDiff ℝ ∞ b) (hs : ∀ n x, 2 < ‖x‖ → iteratedFDeriv ℝ n b x = 0)
     (z : ℂ) (k n : ℕ) (u : E) (hu : (2 : ℝ) ^ (k + 1) < ‖u‖) :
     iteratedFDeriv ℝ n (fun v => z * b (sc E k v)) u = 0 := by
@@ -65,6 +85,11 @@ theorem term_zero (b : E → ℂ) (hb : ContDiff ℝ ∞ b) (hs : ∀ n x, 2 < �
     rw [inv_mul_eq_div, lt_div_iff₀ h2]
     linarith
 
+/- English proof (translation)
+Distinguish the cases in `hu : (2 : ℝ) ^ (k + 1) < ‖u‖`. Rewrite using `[term_zero b hb hs z k n u hu, norm_zero, mul_zero]`. Establish `: 0 ≤ A n` using `(norm_nonneg _).trans (hA n 0)`. Check the signs of the components of the expression. Establish `h1` using `term_bound b hb A hA z k n u`.
+
+Establish `h2 : ‖u‖ ^ p ≤ ((2 : ℝ) ^ (k + 1)) ^ p` using `pow_le_pow_left₀ (norm_nonneg _) (not_lt.1 hu) p`. Conclude with `mul_le_mul h2 h1 (norm_nonneg _) (by positivity)`.
+-/
 theorem term_decay (b : E → ℂ) (hb : ContDiff ℝ ∞ b) (A : ℕ → ℝ) (hA : ∀ n x, ‖iteratedFDeriv ℝ n b x‖ ≤ A n)
     (hs : ∀ n x, 2 < ‖x‖ → iteratedFDeriv ℝ n b x = 0) (z : ℂ) (k n p : ℕ) (u : E) :
     ‖u‖ ^ p * ‖iteratedFDeriv ℝ n (fun v => z * b (sc E k v)) u‖ ≤ ((2 : ℝ) ^ (k + 1)) ^ p * (‖z‖ * A n) := by
@@ -78,12 +103,23 @@ theorem term_decay (b : E → ℂ) (hb : ContDiff ℝ ∞ b) (A : ℕ → ℝ) (
 
 def cf (C : ℕ → ℝ) (k : ℕ) : ℝ := ⨅ N : ℕ, C N * (2 / (2 : ℝ) ^ k) ^ N
 
+/- English proof (translation)
+The claim follows from `le_ciInf fun N => mul_nonneg (hC N) (by positivity)`.
+-/
 theorem cf_nonneg {C : ℕ → ℝ} (hC : ∀ N, 0 ≤ C N) (k : ℕ) : 0 ≤ cf C k :=
   le_ciInf fun N => mul_nonneg (hC N) (by positivity)
 
+/- English proof (translation)
+The claim follows from `ciInf_le ⟨0, by rintro _ ⟨M, rfl⟩; exact mul_nonneg (hC M) (by positivity)⟩ N`.
+-/
 theorem cf_le {C : ℕ → ℝ} (hC : ∀ N, 0 ≤ C N) (k N : ℕ) : cf C k ≤ C N * (2 / (2 : ℝ) ^ k) ^ N :=
   ciInf_le ⟨0, by rintro _ ⟨M, rfl⟩; exact mul_nonneg (hC M) (by positivity)⟩ N
 
+/- English proof (translation)
+Use `le_ciInf fun N => ?_` and prove the remaining obligations. Establish `h1 : (0 : ℝ) < 1 + r` using `by linarith`. Establish `h2 : (0 : ℝ) < 2 ^ k` using `by positivity`. Establish `h3 : 1 / (1 + r) ≤ 2 / (2 : ℝ) ^ k`. Rewrite using `[div_le_div_iff₀ h1 h2]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : y ≤ C N * (1 / (1 + r)) ^ N`. Rewrite using `[one_div, inv_pow, ← div_eq_mul_inv, le_div_iff₀ (by positivity), mul_comm]`. Conclude with `h N`. Conclude with `h4.trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by positivity) h3 N) (hC N))`.
+-/
 theorem le_cf {C : ℕ → ℝ} (hC : ∀ N, 0 ≤ C N) {r y : ℝ} (hr : 0 ≤ r) (h : ∀ N : ℕ, (1 + r) ^ N * y ≤ C N) {k : ℕ}
     (hk : (2 : ℝ) ^ k ≤ 2 * (1 + r)) : y ≤ cf C k := by
   refine le_ciInf fun N => ?_
@@ -97,6 +133,11 @@ theorem le_cf {C : ℕ → ℝ} (hC : ∀ N, 0 ≤ C N) {r y : ℝ} (hr : 0 ≤ 
     exact h N
   exact h4.trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by positivity) h3 N) (hC N))
 
+/- English proof (translation)
+Use `Summable.of_nonneg_of_le (fun k => by positivity) (fun k => ?_) (summable_geometric_two.mul_left (2 ^ p * (C (p + 1) * 2 ^ (p + 1)) * a))` and prove the remaining obligations. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (cf_nonneg hC k)]`. Establish `h1` using `cf_le hC k (p + 1)`. Establish `h2 : ((2 : ℝ) ^ (k + 1)) ^ p * (C (p + 1) * (2 / (2 : ℝ) ^ k) ^ (p + 1)) = 2 ^ p * (C (p + 1) * 2 ^ (p + 1)) * (1 / 2) ^ k`. Establish `h0 : (2 : ℝ) ^ k ≠ 0` using `by positivity`.
+
+Rewrite using `[div_pow, one_div, inv_pow, pow_succ (2 : ℝ) k, mul_pow, pow_succ ((2 : ℝ) ^ k) p]`. Clear the denominators using the available nonvanishing facts. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem summable_weighted {C : ℕ → ℝ} (hC : ∀ N, 0 ≤ C N) (p : ℕ) (a : ℝ) (ha : 0 ≤ a) :
     Summable fun k => ((2 : ℝ) ^ (k + 1)) ^ p * (‖(cf C k : ℂ)‖ * a) := by
   refine Summable.of_nonneg_of_le (fun k => by positivity) (fun k => ?_)
@@ -120,6 +161,33 @@ section MajMain
 
 open scoped ContDiff
 
+/- English proof (translation)
+Use `choose C₀ hC₀ using h`. Use `set C : ℕ → ℝ := fun N => max (C₀ N) 0 with hCd`. Establish `hC : ∀ N, 0 ≤ C N` using `fun N => le_max_right _ _`. Establish `hw : ∀ x N, (1 + ‖P x‖) ^ N * w x ≤ C N` using `fun x N => (hC₀ N x).trans (le_max_left _ _)`. Set `φ : ContDiffBump (0 : E)` to `⟨1, 2, one_pos, one_lt_two⟩`.
+
+Use `set b : E → ℂ := fun u => ((φ u : ℝ) : ℂ) with hbd`. Establish `hb : ContDiff ℝ ∞ b` using `Complex.ofRealCLM.contDiff.comp φ.contDiff`. Establish `hsupp : tsupport b ⊆ Metric.closedBall (0 : E) 2`. Establish `: tsupport b ⊆ tsupport φ` using `closure_mono fun x hx h0 => hx (by simp [hbd, h0])`. Rewrite `this` using `[φ.tsupport_eq]`. Then use the resulting hypothesis.
+
+Establish `hbs : HasCompactSupport b` using `(isCompact_closedBall (0 : E) 2).of_isClosed_subset (isClosed_tsupport b) hsupp`. Establish `hA : ∀ n : ℕ, ∃ A : ℝ, ∀ x, ‖iteratedFDeriv ℝ n b x‖ ≤ A` using `fun n => (hb.continuous_iteratedFDeriv (by exact_mod_cast le_top)).bounded_above_of_compact_support (hbs.iteratedFDeriv n)`. Use `choose A hA using hA`. Establish `hA0 : ∀ n, 0 ≤ A n` using `fun n => (norm_nonneg _).trans (hA n 0)`. Establish `hs : ∀ n x, 2 < ‖x‖ → iteratedFDeriv ℝ n b x = 0`.
+
+Introduce `n x hx`. Assume the negation of the conclusion as `hne`. Establish `h1 : x ∈ tsupport b` using `support_iteratedFDeriv_subset n hne`. Establish `h2` using `hsupp h1`. Rewrite `h2` using `[mem_closedBall_zero_iff]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `set f : ℕ → E → ℂ := fun k v => (cf C k : ℂ) * b (sc E k v) with hfd`. Establish `hf : ∀ k, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (f k)` using `fun k => contDiff_const.mul (hb.comp (sc E k).contDiff)`. Use `set v : ℕ → ℕ → ℝ := fun n k => ‖(cf C k : ℂ)‖ * A n with hvd`. Establish `hsum : ∀ n, Summable (v n)` using `fun n => by`.
+
+Establish `h0` using `summable_weighted hC 0 (A n) (hA0 n)`. Simplify using `only [pow_zero, one_mul] at h0`. Conclude with `h0`. Establish `hv : ∀ k : ℕ, (k : ℕ∞) ≤ ⊤ → Summable (v k)` using `fun k _ => hsum k`. Establish `hd : ∀ (k i : ℕ) (x : E), (k : ℕ∞) ≤ ⊤ → ‖iteratedFDeriv ℝ k (f i) x‖ ≤ v k i` using `fun k i x _ => term_bound b hb A hA _ i k x`.
+
+Set `F : SchwartzMap E ℂ` to `{ toFun := fun x => ∑' k, f k x smooth' := contDiff_tsum hf hv hd decay' := fun p n => ⟨∑' k, ((2 : ℝ) ^ (k + 1)) ^ p * (‖(cf C k : ℂ)‖ * A n), fun x => by`. Rewrite using `[iteratedFDeriv_tsum_apply hf hv hd (le_top) x]`. Establish `hn : Summable fun k => ‖iteratedFDeriv ℝ n (f k) x‖` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun k => hd n k x le_top) (hsum n)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `norm_tsum_le_tsum_norm hn`.
+
+Use `_ = ∑' k, ‖x‖ ^ p * ‖iteratedFDeriv ℝ n (f k) x‖ := tsum_mul_left.symm`. Use `_ ≤ _ := (hn.mul_left _).tsum_le_tsum (fun k => term_decay b hb A hA hs _ k n p x) (summable_weighted hC p (A n) (hA0 n))⟩ }`. Establish `hcf : Summable fun k => cf C k`. Use `summable_weighted hC 0 1 zero_le_one` as an intermediate fact. Simplify `this` using `[Complex.norm_real, Real.norm_of_nonneg (cf_nonneg hC _), abs_of_nonneg (cf_nonneg hC _)]`.
+
+Establish `hr : ∀ u, Summable fun k => cf C k * φ (sc E k u)` using `fun u => Summable.of_nonneg_of_le (fun k => mul_nonneg (cf_nonneg hC k) φ.nonneg) (fun k => mul_le_of_le_one_right (cf_nonneg hC k) φ.le_one) hcf`. Establish `hF : ∀ u, F u = ((∑' k, cf C k * φ (sc E k u) : ℝ) : ℂ)` using `fun u => by`. Rewrite using `[Complex.ofReal_tsum]`. Use `show ∑' k, f k u = _`. Simplify using `[hfd, hbd]`.
+
+Use `⟨F, fun u => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hF, Complex.ofReal_re, Complex.ofReal_im]`. Conclude with `⟨tsum_nonneg fun k => mul_nonneg (cf_nonneg hC k) φ.nonneg, rfl⟩`. Rewrite using `[hF, Complex.ofReal_re]`. Take `⟨n, h1, h2⟩` from `exists_nat_pow_near (x := 1 + ‖P x‖) (y := (2 : ℝ)) (by linarith [norm_nonneg (P x)]) one_lt_two`.
+
+Establish `hk : (2 : ℝ) ^ (n + 1) ≤ 2 * (1 + ‖P x‖)`. Rewrite using `[pow_succ]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hone : φ (sc E (n + 1) (P x)) = 1`. Use `φ.one_of_mem_closedBall ?_` and prove the remaining obligations.
+
+Rewrite using `[mem_closedBall_zero_iff, norm_sc_apply, inv_mul_eq_div]`. Establish `h2' : (0 : ℝ) < 2 ^ (n + 1)` using `by positivity`. Rewrite using `[div_le_iff₀ h2']`. Use `show ‖P x‖ ≤ 1 * 2 ^ (n + 1)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h3` using `le_cf hC (norm_nonneg (P x)) (hw x) hk`. Establish `h4` using `(hr (P x)).le_tsum (n + 1) (fun k _ => mul_nonneg (cf_nonneg hC k) φ.nonneg)`. Rewrite `h4` using `[hone, mul_one]`. Conclude with `h3.trans h4`.
+-/
 theorem real_maj (E X : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     (P : X → E) (w : X → ℝ) (h : ∀ N : ℕ, ∃ C : ℝ, ∀ x, (1 + ‖P x‖) ^ N * w x ≤ C) :
     ∃ F : SchwartzMap E ℂ, (∀ u, 0 ≤ (F u).re ∧ (F u).im = 0) ∧ ∀ x, w x ≤ (F (P x)).re := by
@@ -203,6 +271,19 @@ theorem real_maj (E X : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] [Finite
 
 end MajMain
 
+/- English proof (translation)
+Take `⟨hl, hc⟩` from `hg`. Take `⟨C, hC⟩` from `hl.continuous.bounded_above_of_compact_support hc`. Establish `hK : IsCompact (Pr '' tsupport g)` using `hc.isCompact.image hPc`. Establish `hHom : ∀ y : Y, IsClopen ((fun z => y + z) '' U) ∧ IsCompact ((fun z => y + z) '' U)` using `fun y => ⟨⟨(Homeomorph.addLeft y).isClosed_image.2 hUc.1, (Homeomorph.addLeft y).isOpen_image.2 hUc.2⟩, hUk.image (continuous_const.add continuous_id)⟩`. Take `⟨t, -, ht⟩` from `hK.elim_nhds_subcover (fun y => (fun z => y + z) '' U) fun y _ => (hHom y).1.2.mem_nhds ⟨0, h0, add_zero y⟩`.
+
+Use `set K : Set Y := ⋃ y ∈ t, (fun z => y + z) '' U with hKd`. Establish `hKc : IsClopen K` using `t.finite_toSet.isClopen_biUnion fun y _ => (hHom y).1`. Establish `hKk : IsCompact K` using `t.finite_toSet.isCompact_biUnion fun y _ => (hHom y).2`. Use `set C' : ℝ := max C 0 with hC'`. Establish `hC0 : 0 ≤ C'` using `le_max_right _ _`.
+
+Establish `hnn : ∀ y, 0 ≤ (K.indicator (fun _ => ((C' : ℝ) : ℂ)) y).re ∧ (K.indicator (fun _ => ((C' : ℝ) : ℂ)) y).im = 0`. Introduce `y`. Distinguish the cases in `hy : y ∈ K`. Simplify using `[Set.indicator_of_mem hy, hC0]`. Simplify using `[Set.indicator_of_notMem hy]`.
+
+Use `⟨K.indicator fun _ => ((C' : ℝ) : ℂ), ⟨?_, ?_⟩, hnn, fun x => ?_⟩` and prove the remaining obligations. Conclude with `(LocallyConstant.indicator (LocallyConstant.const Y ((C' : ℝ) : ℂ)) hKc).isLocallyConstant`. Use `hKk.of_isClosed_subset isClosed_closure ?_` and prove the remaining obligations. Conclude with `closure_minimal (fun y hy => by`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hy (Set.indicator_of_notMem h _)) hKc.1`. Distinguish the cases in `hx : g x = 0`. Simplify `(hnn (Pr x)).1` using `[hx]`. Establish `hm : Pr x ∈ K` using `ht ⟨x, subset_tsupport g hx, rfl⟩`. Rewrite using `[Set.indicator_of_mem hm, Complex.ofReal_re]`.
+
+Conclude with `(hC x).trans (le_max_left _ _)`.
+-/
 theorem fin_gen {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] [AddCommGroup Y] [IsTopologicalAddGroup Y]
     (Pr : X → Y) (hPc : Continuous Pr) (U : Set Y) (hUc : IsClopen U) (hUk : IsCompact U) (h0 : (0 : Y) ∈ U)
     (g : X → ℂ) (hg : g ∈ WeilM.SB X) :
@@ -236,6 +317,11 @@ theorem fin_gen {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] [AddCommG
       rw [Set.indicator_of_mem hm, Complex.ofReal_re]
       exact (hC x).trans (le_max_left _ _)
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (Af D.host.F) (Af D.host.F ⊗[D.host.F] D.host.E) := ⟨rfl⟩`. Use `haveI h1 : IsTopologicalAddGroup (Af D.host.F ⊗[D.host.F] D.host.E) := IsModuleTopology.topologicalAddGroup (Af D.host.F) _`. Use `haveI h2 : IsTopologicalAddGroup (Fin c → Af D.host.F ⊗[D.host.F] D.host.E) := Pi.topologicalAddGroup`. Use `haveI h3 : IsTopologicalAddGroup (Fin a → Fin c → Af D.host.F ⊗[D.host.F] D.host.E) := Pi.topologicalAddGroup`. Take `⟨U, hUc, hUk, h0⟩` from `GlobalTheory.AfTensNbhd.exists_clopen_compact_nbhd_zero D a c`.
+
+Conclude with `fin_gen (fun x i j => x i (ι j)) (continuous_pi fun i => continuous_pi fun j => (continuous_apply (ι j)).comp (continuous_apply i)) U hUc hUk h0 g hg`.
+-/
 theorem fin_dom (D : D7) (a b c : ℕ) (ι : Fin c → Fin b)
     (g : (Fin a → Fin b → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ)
     (hg : g ∈ WeilM.SB (Fin a → Fin b → Af D.host.F ⊗[D.host.F] D.host.E)) :
@@ -251,6 +337,11 @@ theorem fin_dom (D : D7) (a b c : ℕ) (ι : Fin c → Fin b)
     (continuous_pi fun i => continuous_pi fun j => (continuous_apply (ι j)).comp (continuous_apply i))
     U hUc hUk h0 g hg
 
+/- English proof (translation)
+Use `real_maj (T → Fin a → Fin c → ℂ) (T → Fin a → Fin b → ℂ) (fun v τ i j => v τ i (ι j)) (fun v => ‖f v‖) fun N => ?_` and prove the remaining obligations. Use `⟨2 ^ N * (Finset.Iic (N, 0)).sup (fun m => SchwartzMap.seminorm ℝ m.1 m.2) f, fun v => ?_⟩` and prove the remaining obligations. Establish `h` using `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℝ) (m := (N, 0)) (k := N) (n := 0) le_rfl le_rfl f v`. Rewrite `h` using `[norm_iteratedFDeriv_zero]`. Use `le_trans ?_ h` and prove the remaining obligations.
+
+Establish `hP : ‖(fun τ i j => v τ i (ι j) : T → Fin a → Fin c → ℂ)‖ ≤ ‖v‖` using `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun τ => (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun j => (norm_le_pi_norm (v τ i) (ι j)).trans ((norm_le_pi_norm (v τ) i).trans (norm_le_pi_norm v τ))`. Use `gcongr`.
+-/
 theorem real_dom {T : Type} [Fintype T] (a b c : ℕ) (ι : Fin c → Fin b) (f : SchwartzMap (T → Fin a → Fin b → ℂ) ℂ) :
     ∃ F : SchwartzMap (T → Fin a → Fin c → ℂ) ℂ, (∀ u, 0 ≤ (F u).re ∧ (F u).im = 0) ∧
       ∀ v, ‖f v‖ ≤ (F fun τ i j => v τ i (ι j)).re := by
@@ -266,6 +357,15 @@ theorem real_dom {T : Type} [Fintype T] (a b c : ℕ) (ι : Fin c → Fin b) (f 
           (norm_le_pi_norm (v τ i) (ι j)).trans ((norm_le_pi_norm (v τ) i).trans (norm_le_pi_norm v τ))
   gcongr
 
+/- English proof (translation)
+Take `⟨F, hF, hFd⟩` from `real_dom a b c ι f`. Take `⟨G, hG, hG0, hGd⟩` from `fin_dom D a b c ι g hg`. Use `⟨fun y => F (fun τ i j => compAt θ τ y i j) * G (fun i j => finPart D (y i j)), Submodule.subset_span ⟨F, G, hG, rfl⟩, fun y => ?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hF (fun τ i j => compAt θ τ y i j)`. Take `⟨h3, h4⟩` from `hG0 (fun i j => finPart D (y i j))`.
+
+Simplify using `only [Complex.mul_re, Complex.mul_im, h2, h4, mul_zero, zero_mul, add_zero, sub_zero, and_true]`. Conclude with `mul_nonneg h1 h3`. Establish `h1` using `hFd (fun τ i j => compAt θ τ x i j)`. Establish `h2` using `hGd (fun i j => finPart D (x i j))`. Establish `e1 : (fun τ i j => (fun τ i j => compAt θ τ x i j : D.what₂.Tau → Fin a → Fin b → ℂ) τ i (ι j)) = (fun τ i j => compAt θ τ (x.submatrix id ι) i j)` using `rfl`.
+
+Establish `e2 : (fun i j => (fun i j => finPart D (x i j) : Fin a → Fin b → _) i (ι j)) = (fun i j => finPart D ((x.submatrix id ι) i j))` using `rfl`. Rewrite `h1` using `[e1]`. Rewrite `h2` using `[e2]`. Take `⟨-, h4⟩` from `hF (fun τ i j => compAt θ τ (x.submatrix id ι) i j)`. Simplify using `only [norm_mul, Complex.mul_re, h4, zero_mul, sub_zero]`.
+
+Conclude with `mul_le_mul h1 h2 (norm_nonneg _) ((norm_nonneg _).trans h1)`.
+-/
 theorem pure_dom (D : D7) (θ : InfFam D) (a b c : ℕ) (ι : Fin c → Fin b)
     (f : SchwartzMap (D.what₂.Tau → Fin a → Fin b → ℂ) ℂ)
     (g : (Fin a → Fin b → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ)
@@ -297,6 +397,17 @@ end GlobalTheory.CompanionTheory.ColumnSplitting.DomProof
 
 namespace GlobalTheory.CompanionTheory.ColumnSplitting
 
+/- English proof (translation)
+Introduce `D θ _ a b c ι _ Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Conclude with `DomProof.pure_dom D θ a b c ι f g hg`.
+
+Consider the case `zero => exact ⟨0, zero_mem _, fun _ => by simp, fun _ => by simp⟩`. Consider the case `add φ ψ _ _ h1 h2`. Take `⟨M₁, m₁, p₁, d₁⟩` from `h1`. Take `⟨M₂, m₂, p₂, d₂⟩` from `h2`. Use `⟨M₁ + M₂, add_mem m₁ m₂, fun y => ?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Pi.add_apply, Complex.add_re, Complex.add_im, (p₁ y).2, (p₂ y).2, add_zero, and_true]`. Conclude with `add_nonneg (p₁ y).1 (p₂ y).1`. Simplify using `only [Pi.add_apply, Complex.add_re]`. Conclude with `(norm_add_le _ _).trans (add_le_add (d₁ x) (d₂ x))`. Consider the case `smul k φ _ h`.
+
+Take `⟨M, m, p, d⟩` from `h`. Use `⟨((‖k‖ : ℝ) : ℂ) • M, Submodule.smul_mem _ _ m, fun y => ?_, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, (p y).2, zero_mul, mul_zero, sub_zero, add_zero, and_true]`. Conclude with `mul_nonneg (norm_nonneg _) (p y).1`. Simplify using `only [Pi.smul_apply, smul_eq_mul, norm_mul, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (d x) (norm_nonneg _)`.
+-/
 theorem dom : Dom := by
   intro D θ _ a b c ι _ Φ hΦ
   induction hΦ using Submodule.span_induction with

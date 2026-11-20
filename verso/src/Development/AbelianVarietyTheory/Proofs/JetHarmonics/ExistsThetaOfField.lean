@@ -19,6 +19,9 @@ open GlobalTheory.BoxApp
 
 namespace GlobalTheory.ThetaLift
 
+/- English proof (translation)
+Use `⟨⟨x, ⟨fun _ => 1⟩, ?_⟩, rfl⟩` and prove the remaining obligations. Use `isGen_of_gm (M := L) (K := Fin 2) (φ := ![(snd T A).left, (translPt A x).left]) (ε := ![((0 : ℕ) : ℤ), -((0 : ℕ) : ℤ)]) _ fun w j j' h h' => ?_` and prove the remaining obligations. Use `(map_one _).trans (Eq.trans ?_ (congrArg₂ (· * ·) rfl (map_one _)).symm)` and prove the remaining obligations. Simplify using `[trF, Fin.prod_univ_two]`.
+-/
 theorem exists_theta_zero {S : Scheme.{0}} {A : Over S} [GrpObj A] (L : LB A.left) {T : Over S} (x : T ⟶ A) :
     ∃ θ : ThetaGrp A L ((0 : ℕ) : ℤ) T, θ.pt = x := by
   refine ⟨⟨x, ⟨fun _ => 1⟩, ?_⟩, rfl⟩
@@ -27,6 +30,11 @@ theorem exists_theta_zero {S : Scheme.{0}} {A : Over S} [GrpObj A] (L : LB A.lef
   refine (map_one _).trans (Eq.trans ?_ (congrArg₂ (· * ·) rfl (map_one _)).symm)
   simp [trF, Fin.prod_univ_two]
 
+/- English proof (translation)
+Introduce `K _ A Y F _ e k x hx`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Conclude with `exists_theta_zero A.L x`. Establish `: Subsingleton (Sp F)` using `inferInstanceAs (Subsingleton (PrimeSpectrum F))`. Establish `: Nonempty (Sp F)` using `inferInstanceAs (Nonempty (PrimeSpectrum F))`.
+
+Establish `: Subsingleton Y.left` using `e.hom.homeomorph.toEquiv.subsingleton`. Establish `: Nonempty Y.left` using `e.hom.homeomorph.toEquiv.nonempty`. Conclude with `GlobalTheory.BoxTheta.exists_theta GlobalTheory.firstFiveLaws.1.kerPow A hk x hx`.
+-/
 theorem exists_theta_of_field : ∀ (K : Type) [Field K] (A : PolAV (Sp K)) (Y : Over (Sp K)) (F : Type) [Field F] (e : Y.left ≅ Sp F) (k : ℕ) (x : Y ⟶ A.A), x ^ k = 1 → ∃ θ : ThetaGrp A.A A.L (k : ℤ) Y, θ.pt = x := by
   intro K _ A Y F _ e k x hx
   rcases Nat.eq_zero_or_pos k with rfl | hk

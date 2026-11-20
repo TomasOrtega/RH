@@ -17,10 +17,20 @@ open GlobalTheory.OpenOmega
 
 namespace GlobalTheory.OpenOmega
 
+/- English proof (translation)
+Rewrite using `[← MonObj.comp_pow, h, MonObj.comp_one]`.
+-/
 theorem comp_pow_eq_one {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {X Y : Over (Sp R)} (f : X ⟶ Y)
     (z : Y ⟶ G) {N : ℕ} (h : z ^ N = 1) : (f ≫ z) ^ N = 1 := by
   rw [← MonObj.comp_pow, h, MonObj.comp_one]
 
+/- English proof (translation)
+Introduce `p _ R _ G _ GG θ n hs hi M _ _ _ _ z hz w`. Establish `hφ` using `fst_comp_pt θ n z hz`. Establish `e0` using `eq_map_comp_univ GG n (θ.pt n _ z) hφ`. Generalize the expression as in `AugCot.sqZeroEquiv (Bialgebra.counitAlgHom R (GG.A n)) M ⟨θ.pt n _ z, hφ⟩ = l at e0 ⊢`. Establish `hu` using `univPt_spec θ n hs`.
+
+Establish `h' : zeroSec R M ≫ (GlobalTheory.GrpTangent.sqZeroMap l ≫ (univPt θ n hs).1) = η[G]`. Rewrite using `[← Category.assoc, zeroSec_sqZeroMap, hu.1]`. Set `z' : Tors G (p ^ n) (TrivSqZeroExt R M)` to `⟨GlobalTheory.GrpTangent.sqZeroMap l ≫ (univPt θ n hs).1, comp_pow_eq_one _ _ (univPt θ n hs).2⟩`. Establish `e1 : θ.pt n _ z' = (TrivSqZeroExt.map l).comp (θ.pt n _ (univPt θ n hs))` using `θ.nat n _ _ (TrivSqZeroExt.map l) (univPt θ n hs) z' rfl`. Establish `e : z = z'` using `hi M z z' hz h' (by rw [e1, hu.2]; exact e0)`.
+
+Rewrite using `[Phi_congr (congrArg Subtype.val e) hz h' w]`. Conclude with `Phi_sqZeroMap_comp R _ M G l (univPt θ n hs).1 hu.1 h' w`.
+-/
 theorem specProp_of_ptInj : ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] (GG : PDivGroup p R) (θ : TorsionMap G GG) (n : ℕ) (hs : PtSurj θ n), PtInj θ n → SpecProp θ n hs := by
   intro p _ R _ G _ GG θ n hs hi M _ _ _ _ z hz w
   have hφ := fst_comp_pt θ n z hz

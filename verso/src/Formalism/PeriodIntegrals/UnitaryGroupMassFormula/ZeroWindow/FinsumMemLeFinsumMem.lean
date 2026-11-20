@@ -6,16 +6,25 @@ namespace PI.ZW
 
 open DirichletCharacter
 
+/- English proof (translation)
+Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (ht.subset hst), finsum_mem_eq_finite_toFinset_sum _ ht]`. Conclude with `Finset.sum_le_sum_of_subset_of_nonneg (Set.Finite.toFinset_subset_toFinset.mpr hst) fun x _ _ => hg x`.
+-/
 lemma finsum_mem_le_of_subset' {s t : Set ℂ} (g : ℂ → ℝ) (hg : ∀ x, 0 ≤ g x) (ht : t.Finite)
     (hst : s ⊆ t) : ∑ᶠ x ∈ s, g x ≤ ∑ᶠ x ∈ t, g x := by
   rw [finsum_mem_eq_finite_toFinset_sum _ (ht.subset hst), finsum_mem_eq_finite_toFinset_sum _ ht]
   exact Finset.sum_le_sum_of_subset_of_nonneg (Set.Finite.toFinset_subset_toFinset.mpr hst) fun x _ _ => hg x
 
+/- English proof (translation)
+Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hs, finsum_mem_eq_finite_toFinset_sum _ hs]`. Conclude with `Finset.sum_le_sum fun x hx => h x (hs.mem_toFinset.mp hx)`.
+-/
 lemma finsum_mem_le_finsum_mem' {s : Set ℂ} (f g : ℂ → ℝ) (hs : s.Finite) (h : ∀ x ∈ s, f x ≤ g x) :
     ∑ᶠ x ∈ s, f x ≤ ∑ᶠ x ∈ s, g x := by
   rw [finsum_mem_eq_finite_toFinset_sum _ hs, finsum_mem_eq_finite_toFinset_sum _ hs]
   exact Finset.sum_le_sum fun x hx => h x (hs.mem_toFinset.mp hx)
 
+/- English proof (translation)
+Distinguish the cases in `h : χ = 1`. Use `right`. Rewrite `hχ` using `[DirichletCharacter.isPrimitive_def, h, DirichletCharacter.conductor_one]`. Conclude with `hχ.symm`. Conclude with `Or.inl h`.
+-/
 lemma ne_one_or_of_isPrimitive {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N} (hχ : χ.IsPrimitive) :
     χ ≠ 1 ∨ N = 1 := by
   by_cases h : χ = 1
@@ -24,11 +33,29 @@ lemma ne_one_or_of_isPrimitive {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ
     exact hχ.symm
   · exact Or.inl h
 
+/- English proof (translation)
+Establish `hN : (1 : ℝ) ≤ N` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)`. Apply `Real.log_nonneg` to reduce the goal to its premises. Use polynomial arithmetic with `[abs_nonneg t]`.
+-/
 lemma log_mul_abs_add_two_nonneg (N : ℕ) [NeZero N] (t : ℝ) : 0 ≤ Real.log (N * (|t| + 2)) := by
   have hN : (1 : ℝ) ≤ N := by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)
   apply Real.log_nonneg
   nlinarith [abs_nonneg t]
 
+/- English proof (translation)
+Introduce `N _ χ hχ t`. Establish `hχ' : χ ≠ 1 ∨ N = 1` using `ne_one_or_of_isPrimitive hχ`. Establish `hχi : χ⁻¹ ≠ 1 ∨ N = 1` using `hχ'.imp (fun h h' => h (inv_eq_one.mp h')) id`. Take `⟨hA, hAs⟩` from `hR N χ hχ' t`. Take `⟨hB, hBs⟩` from `hR N χ⁻¹ hχi (-t)`.
+
+Rewrite `hBs` using `[abs_neg]`. Establish `hZrA : ZerosNear χ t ∩ {ρ | 1 / 2 ≤ ρ.re} ⊆ RightNear χ t` using `fun ρ ⟨⟨_, h1, h2, h3⟩, h4⟩ => ⟨h4, h1, h2, h3⟩`. Establish `hZl : ∀ ρ ∈ ZerosNear χ t ∩ {ρ | ρ.re < 1 / 2}, 1 - ρ ∈ RightNear χ⁻¹ (-t)`. Introduce and unpack `ρ ⟨⟨h0, h1, h2, h3⟩, h4⟩`. Simplify using `only [Set.mem_setOf_eq] at h4`.
+
+Use `⟨by simp; linarith, by simp; linarith, ?_, (hT N χ hχ ρ h0 h1 h3).1⟩` and prove the remaining obligations. Simplify using `only [Complex.sub_im, Complex.one_im, zero_sub]`. Rewrite using `[show -ρ.im - -t = -(ρ.im - t) by ring, abs_neg]`. Conclude with `h2`. Establish `hsplit : ZerosNear χ t = (ZerosNear χ t ∩ {ρ | 1 / 2 ≤ ρ.re}) ∪ (ZerosNear χ t ∩ {ρ | ρ.re < 1 / 2})` using `Set.ext fun ρ => ⟨fun h => (le_or_gt (1 / 2) ρ.re).imp (fun h' => ⟨h, h'⟩) (fun h' => ⟨h, h'⟩), fun h => h.elim (·.1) (·.1)⟩`.
+
+Establish `hBimg : ((fun σ : ℂ => 1 - σ) '' RightNear χ⁻¹ (-t)).Finite` using `hB.image _`. Establish `hZfin : (ZerosNear χ t).Finite`. Rewrite using `[hsplit]`. Use `(hA.subset hZrA).union (hBimg.subset fun ρ hρ => ⟨1 - ρ, hZl ρ hρ, by ring⟩)` and prove the remaining obligations. Use `⟨hZfin, ?_⟩` and prove the remaining obligations.
+
+Establish `hdisj : Disjoint (ZerosNear χ t ∩ {ρ | 1 / 2 ≤ ρ.re}) (ZerosNear χ t ∩ {ρ | ρ.re < 1 / 2})` using `Set.disjoint_left.mpr fun ρ h1 h2 => absurd (show (1 / 2 : ℝ) ≤ ρ.re from h1.2) (not_le.mpr (show ρ.re < 1 / 2 from h2.2))`. Establish `hfl : (ZerosNear χ t ∩ {ρ | ρ.re < 1 / 2}).Finite` using `hZfin.subset Set.inter_subset_left`. Rewrite using `[hsplit, finsum_mem_union hdisj (hZfin.subset Set.inter_subset_left) hfl]`. Establish `e1` using `finsum_mem_le_of_subset' (fun ρ => (analyticOrderNatAt (DirichletCharacter.LFunction χ) ρ : ℝ)) (fun _ => Nat.cast_nonneg _) hA hZrA`. Establish `e2 : ∑ᶠ ρ ∈ ZerosNear χ t ∩ {ρ | ρ.re < 1 / 2}, (analyticOrderNatAt (DirichletCharacter.LFunction χ) ρ : ℝ) ≤ ∑ᶠ σ ∈ RightNear χ⁻¹ (-t), (analyticOrderNatAt (DirichletCharacter.LFunction χ⁻¹) σ : ℝ)`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `(hT N χ hχ ρ hρ.1.1 hρ.1.2.1 hρ.1.2.2.2).2` after adjusting the coercions. Use `_ = ∑ᶠ σ ∈ (fun σ : ℂ => 1 - σ) '' (ZerosNear χ t ∩ {ρ | ρ.re < 1 / 2}), (analyticOrderNatAt (DirichletCharacter.LFunction χ⁻¹) σ : ℝ) := (finsum_mem_image (f := fun σ => (analyticOrderNatAt (DirichletCharacter.LFunction χ⁻¹) σ : ℝ)) (g := fun σ : ℂ => 1 - σ) (s := ZerosNear χ t …`. Use `_ ≤ ∑ᶠ σ ∈ RightNear χ⁻¹ (-t), (analyticOrderNatAt (DirichletCharacter.LFunction χ⁻¹) σ : ℝ) := finsum_mem_le_of_subset' _ (fun _ => Nat.cast_nonneg _) hB (by`. Introduce and unpack `_ ⟨ρ, hρ, rfl⟩`.
+
+Conclude with `hZl ρ hρ)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem zerosWindowWith_of (C : ℝ) (hR : RightHalfWith C) (hT : Transfer) :
     PI.ZerosWindowWith (2 * C) := by
   intro N _ χ hχ t
@@ -78,6 +105,11 @@ theorem zerosWindowWith_of (C : ℝ) (hR : RightHalfWith C) (hT : Transfer) :
             exact hZl ρ hρ)
   linarith
 
+/- English proof (translation)
+Introduce `N _ χ hχ t`. Establish `hl` using `log_mul_abs_add_two_nonneg N t`. Break down `hχ with h | h` into its components or cases. Take `⟨hf, hs⟩` from `h₁ N χ h t`. Conclude with `⟨hf, hs.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) hl)⟩`.
+
+Take `⟨hf, hs⟩` from `h₂ N χ h t`. Conclude with `⟨hf, hs.trans (mul_le_mul_of_nonneg_right (le_max_right _ _) hl)⟩`.
+-/
 theorem rightHalf_of (C₁ C₂ : ℝ) (h₁ : RightChiWith C₁) (h₂ : RightOneWith C₂) :
     RightHalfWith (max C₁ C₂) := by
   intro N _ χ hχ t

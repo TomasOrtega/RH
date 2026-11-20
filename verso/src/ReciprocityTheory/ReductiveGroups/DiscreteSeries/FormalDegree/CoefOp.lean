@@ -15,6 +15,9 @@ section Frob
 attribute [local instance] Matrix.frobeniusNormedAddCommGroup Matrix.frobeniusNormedRing
   Matrix.frobeniusNormedAlgebra
 
+/- English proof (translation)
+Establish `h1 : Matrix.toEuclideanCLM (𝕜` using `ℂ) A v = WithLp.toLp 2 (A *ᵥ WithLp.ofLp v) := rfl`. Rewrite using `[h1, ← Matrix.frobenius_norm_replicateCol (ι := Fin 1), Matrix.replicateCol_mulVec]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Conclude with `Matrix.frobenius_norm_replicateCol (ι := Fin 1) (WithLp.ofLp v)`.
+-/
 lemma coefOp_apply_le_frob (A : Matrix (Fin n) (Fin n) ℂ) (v : EuclideanSpace ℂ (Fin n)) :
     ‖Matrix.toEuclideanCLM (𝕜 := ℂ) A v‖ ≤ ‖A‖ * ‖v‖ := by
   have h1 : Matrix.toEuclideanCLM (𝕜 := ℂ) A v = WithLp.toLp 2 (A *ᵥ WithLp.ofLp v) := rfl
@@ -27,6 +30,13 @@ lemma coefOp_apply_le_frob (A : Matrix (Fin n) (Fin n) ℂ) (v : EuclideanSpace 
 
 end Frob
 
+/- English proof (translation)
+Rewrite using `[NormedSpace.exp_eq_tsum ℂ, Real.exp_eq_exp_ℝ, NormedSpace.exp_eq_tsum ℝ]`. Simplify using `only`. Use `(norm_tsum_le_tsum_norm (NormedSpace.norm_expSeries_summable' (𝕂 := ℂ) T)).trans ?_` and prove the remaining obligations. Use `Summable.tsum_le_tsum (fun k => ?_) (NormedSpace.norm_expSeries_summable' (𝕂 := ℂ) T) (NormedSpace.expSeries_summable' (𝕂 := ℝ) ‖T‖)` and prove the remaining obligations. Rewrite using `[norm_smul, smul_eq_mul, norm_inv, Complex.norm_natCast]`.
+
+Use `gcongr`. Consider the cases of `k with`. Consider the case `zero`. Rewrite using `[pow_zero, pow_zero]`. Conclude with `ContinuousLinearMap.norm_id_le`.
+
+Consider the case `succ k => exact norm_pow_le' T (Nat.succ_pos k)`.
+-/
 lemma coefOp_norm_exp_clm (T : EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n)) :
     ‖NormedSpace.exp T‖ ≤ Real.exp ‖T‖ := by
   rw [NormedSpace.exp_eq_tsum ℂ, Real.exp_eq_exp_ℝ, NormedSpace.exp_eq_tsum ℝ]
@@ -42,6 +52,11 @@ lemma coefOp_norm_exp_clm (T : EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpa
     exact ContinuousLinearMap.norm_id_le
   | succ k => exact norm_pow_le' T (Nat.succ_pos k)
 
+/- English proof (translation)
+Establish `hU : star (Matrix.toEuclideanCLM (𝕜` using `ℂ) k) * Matrix.toEuclideanCLM (𝕜 := ℂ) k = 1 := by`. Rewrite using `[← map_star, ← map_mul, Unitary.star_mul_self_of_mem hk, map_one]`. Establish `h` using `CStarRing.norm_star_mul_self (x := Matrix.toEuclideanCLM (𝕜 := ℂ) k)`. Rewrite `h` using `[hU]`. Establish `h1 : ‖(1 : EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n))‖ ≤ 1` using `ContinuousLinearMap.norm_id_le`.
+
+Use polynomial arithmetic with `[norm_nonneg (Matrix.toEuclideanCLM (𝕜 := ℂ) k)]`.
+-/
 lemma coefOp_unitary_le_one {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Matrix.unitaryGroup (Fin n) ℂ) :
     ‖Matrix.toEuclideanCLM (𝕜 := ℂ) k‖ ≤ 1 := by
   have hU : star (Matrix.toEuclideanCLM (𝕜 := ℂ) k) * Matrix.toEuclideanCLM (𝕜 := ℂ) k = 1 := by
@@ -52,12 +67,20 @@ lemma coefOp_unitary_le_one {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Matrix.
     ContinuousLinearMap.norm_id_le
   nlinarith [norm_nonneg (Matrix.toEuclideanCLM (𝕜 := ℂ) k)]
 
+/- English proof (translation)
+Use `ContinuousLinearMap.opNorm_le_bound _ (Real.sqrt_nonneg _) fun v => ?_` and prove the remaining obligations. Establish `h` using `coefOp_apply_le_frob A v`. Rewrite `h` using `[← S7.sqrt_hs_frobVG A]`. Then use the resulting hypothesis.
+-/
 theorem coefOp_le_sqrt_hs (A : Matrix (Fin n) (Fin n) ℂ) :
     ‖Matrix.toEuclideanCLM (𝕜 := ℂ) A‖ ≤ Real.sqrt (S7.hs A) := by
   refine ContinuousLinearMap.opNorm_le_bound _ (Real.sqrt_nonneg _) fun v => ?_
   have h := coefOp_apply_le_frob A v
   rwa [← S7.sqrt_hs_frobVG A] at h
 
+/- English proof (translation)
+Establish `hc : Continuous (Matrix.toEuclideanCLM (n` using `Fin n) (𝕜 := ℂ)) := (Matrix.toEuclideanCLM (n := Fin n) (𝕜 := ℂ)).toAlgEquiv.toLinearEquiv.toLinearMap.continuous_of_finiteDimensional`. Establish `hexp : Matrix.toEuclideanCLM (𝕜` using `ℂ) (NormedSpace.exp X) = NormedSpace.exp (Matrix.toEuclideanCLM (𝕜 := ℂ) X) := by`. Set `_ : NormedRing (Matrix (Fin n) (Fin n) ℂ)` to `Matrix.frobeniusNormedRing`. Set `_ : NormedAlgebra ℂ (Matrix (Fin n) (Fin n) ℂ)` to `Matrix.frobeniusNormedAlgebra`. Use `NormedSpace.map_exp_of_mem_ball (𝕂 := ℂ) _ hc X ?_` and prove the remaining obligations.
+
+Rewrite using `[NormedSpace.expSeries_radius_eq_top]`. Simplify using the standard rewrite rules. Rewrite using `[map_mul, hexp]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem coefOp_unitary_mul_exp {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Matrix.unitaryGroup (Fin n) ℂ)
     (X : Matrix (Fin n) (Fin n) ℂ) :
     ‖Matrix.toEuclideanCLM (𝕜 := ℂ) (k * NormedSpace.exp X)‖ ≤ Real.exp (Real.sqrt (S7.hs X)) := by
@@ -80,6 +103,9 @@ theorem coefOp_unitary_mul_exp {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Matr
           (norm_nonneg _) zero_le_one
     _ = Real.exp (Real.sqrt (S7.hs X)) := one_mul _
 
+/- English proof (translation)
+Establish `hk : S7.toMK k ∈ Matrix.unitaryGroup (Fin n) ℂ`. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose]`. Conclude with `(S7.toMK_facts k).2.1`. Conclude with `coefOp_unitary_mul_exp hk X`.
+-/
 theorem coefOp_kexp {ε : Fin n → Bool} (k : S7.KG ε) (X : Matrix (Fin n) (Fin n) ℂ) :
     ‖Matrix.toEuclideanCLM (𝕜 := ℂ) (S7.toMK k * NormedSpace.exp X)‖ ≤ Real.exp (Real.sqrt (S7.hs X)) := by
   have hk : S7.toMK k ∈ Matrix.unitaryGroup (Fin n) ℂ := by

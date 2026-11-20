@@ -20,6 +20,11 @@ namespace GlobalTheory.RSThetaSelf
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Establish `key : ∀ z w t : ℂ, 0 ≤ w.re → w.im = 0 → (t = 0 ∨ t = 1) → z * conj z * w * t = ((‖z * conj z * w * t‖ : ℝ) : ℂ)`. Introduce `z w t h1 h2 ht`. Establish `hw : w = ((w.re : ℝ) : ℂ)` using `Complex.ext (by simp) (by simp [h2])`. Break down `ht with rfl | rfl` into its components or cases. Simplify using the standard rewrite rules.
+
+Rewrite using `[mul_one, Complex.mul_conj, hw, ← Complex.ofReal_mul, Complex.norm_real, Real.norm_of_nonneg (mul_nonneg (Complex.normSq_nonneg z) h1)]`. Simplify using `only [rsPsi, thetaFn, rsInf]`. Use `key _ _ _ (hΦ _).1 (hΦ _).2 ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : (fun i => pFin E (y i)) - η ∈ latt a J <;> simp [h]`.
+-/
 theorem rsPsi_self_eq_norm (ℓ : Fin a) (F : GA E a → ℂ) {Φ : (Fin a → Cinf E) → ℂ}
     (hΦ : ∀ u, 0 ≤ (Φ u).re ∧ (Φ u).im = 0) (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ) (η : Fin a → Af E) (g : GA E a)
     (y : Fin a → Ad E) : rsPsi ℓ F F Φ J η g y = ((‖rsPsi ℓ F F Φ J η g y‖ : ℝ) : ℂ) := by
@@ -35,6 +40,19 @@ theorem rsPsi_self_eq_norm (ℓ : Fin a) (F : GA E a → ℂ) {Φ : (Fin a → C
   refine key _ _ _ (hΦ _).1 (hΦ _).2 ?_
   by_cases h : (fun i => pFin E (y i)) - η ∈ latt a J <;> simp [h]
 
+/- English proof (translation)
+Introduce `E _ _ _ a ℓ π ω hω hc F hF Φ hΦ hcs hs hpos J η μ _ 𝓕 h𝓕 x hx`. Establish `hπ : π.IsUnitary` using `⟨ω, hω, CuspSub.hasCentral_iff.2 hc⟩`. Take `⟨φ, rfl, hw⟩` from `GlobalTheory.JSW.mspanR_words GlobalTheory.CuspOrth.cuspFormsBounded hπ F hF`. Establish `hcont : Continuous φ.1` using `by simpa [GlobalTheory.JSW.word_nil] using (hw []).2.cont`. Establish `hrsm : φ ∈ GlobalTheory.RSThetaLowM.rsm π` using `hF`.
+
+Take `⟨hsum, hup, -⟩` from `GlobalTheory.RSThetaM.theta_integral_upper_mspan E a ℓ π π hπ hπ φ φ (Or.inr hF) (Or.inr hF) Φ hΦ.continuous hcs hs J η μ 𝓕 h𝓕`. Establish `hlow` using `(GlobalTheory.RSThetaLowM.integral_low_eq J η hπ hπ hrsm hrsm hcont hcont ⟨hΦ, hcs, hs⟩ h𝓕 (s := (x : ℂ)) (by simpa using hx)).1`. Establish `hpt : ∀ g : GA E a, (∑' ξ : {ξ : Fin a → E // ξ ≠ 0}, ‖rsPsi ℓ φ.1 φ.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* g.val)‖ₑ) * ENNReal.ofReal ((ideleModule E (GeneralLinearGroup.det g) : ℝ) ^ x) = ENNReal.ofReal ((∑' ξ : {ξ : Fin a → E // ξ ≠ 0}, ‖rsPsi ℓ φ.1 φ.1 Φ J η g ( …`. Introduce `g`. Rewrite using `[ENNReal.ofReal_mul (tsum_nonneg fun _ => norm_nonneg _), ENNReal.ofReal_tsum_of_nonneg (fun _ => norm_nonneg _) (hsum g)]`.
+
+Simplify using `only [ofReal_norm_eq_enorm]`. Establish `hlow' : IntegrableOn (fun g : GA E a => (∑' ξ : {ξ : Fin a → E // ξ ≠ 0}, ‖rsPsi ℓ φ.1 φ.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* g.val)‖) * (ideleModule E (GeneralLinearGroup.det g) : ℝ) ^ x) (𝓕 ∩ GlobalTheory.RSThetaLow.lowSet E a) μ`. Use `hlow.norm.congr (.of_forall fun g => ?_)` and prove the remaining obligations. Establish `e : ∑' ξ : {ξ : Fin a → E // ξ ≠ 0}, rsPsi ℓ φ.1 φ.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* g.val) = (((∑' ξ : {ξ : Fin a → E // ξ ≠ 0}, ‖rsPsi ℓ φ.1 φ.1 Φ J η g ((fun j => algebraMap E (Ad E) (ξ.1 j)) ᵥ* g.val)‖ : ℝ)) : ℂ)`. Rewrite using `[Complex.ofReal_tsum]`.
+
+Conclude with `tsum_congr fun ξ => rsPsi_self_eq_norm ℓ φ.1 hpos J η g _`. Simplify using `only`. Rewrite using `[← GlobalTheory.RSThetaLow.tsum_rsPsi_eq_tsum_ne_zero J η _ _ hs g, norm_mul, e, Complex.norm_real, Real.norm_of_nonneg (tsum_nonneg fun _ => norm_nonneg _), Complex.norm_cpow_eq_rpow_re_of_pos (ideleModule E _).2, Complex.ofReal_re]`. Establish `h1` using `(hup x).lintegral_lt_top`. Establish `h2` using `hlow'.lintegral_lt_top`.
+
+Establish `hsub : 𝓕 ⊆ (𝓕 ∩ {g | 1 ≤ (ideleModule E (GeneralLinearGroup.det g) : ℝ)}) ∪ (𝓕 ∩ GlobalTheory.RSThetaLow.lowSet E a)`. Introduce `g hg`. Break down `le_total 1 (ideleModule E (GeneralLinearGroup.det g) : ℝ) with h | h` into its components or cases. Conclude with `Or.inl ⟨hg, h⟩`. Conclude with `Or.inr ⟨hg, h⟩`.
+
+Rewrite using `[lintegral_congr hpt]`. Conclude with `ne_of_lt ((lintegral_mono_set hsub).trans_lt ((lintegral_union_le _ _ _).trans_lt (ENNReal.add_lt_top.2 ⟨h1, h2⟩)))`.
+-/
 theorem lintegral_ne_top : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (ℓ : Fin a) (π : CuspSub E a) (ω : HChar E),
     ω.IsUnitary → π.HasCentChar ω → ∀ F : GA E a → ℂ, F ∈ GlobalTheory.JSW.mspanR π →
     ∀ (Φ : (Fin a → Cinf E) → ℂ), ContDiff ℝ (⊤ : ℕ∞) Φ → HasCompactSupport Φ → tsupport Φ ⊆ GlobalTheory.RSTheta.rowSet E ℓ →

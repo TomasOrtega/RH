@@ -25,6 +25,39 @@ namespace GlobalTheory.FockTransl
 
 open Formalism.L2.Ker (VCx DVar derivAt0)
 
+/- English proof (translation)
+Introduce `D ψ θ hψ hθ S T A B ℓ hℓ f hf hP w hw`. Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Take `⟨hcont, hsurj, htr⟩` from `GlobalTheory.T.fockRealPoint_transport_continuous_integral D θ σ hσ S T A B`. Take `⟨z₀, rfl⟩` from `hsurj w hw`. Establish `hth` using `hf.1`.
+
+Use `set F : VCx D.what₂.Tau S.rank T.rank → ℂ := fun z => ℓ (heisO ψ S T (fockPt σ A B z) f) with hFdef`. Establish `hFc : Continuous F` using `(hℓ.cont f hth).comp hcont`. Take `⟨M, hM⟩` from `hℓ.bdd f hth`. Establish `hFb : ∃ M : ℝ, ∀ z, ‖F z‖ ≤ M` using `⟨M, fun z => hM _⟩`. Establish `key : ∀ g : VCx D.what₂.Tau S.rank T.rank → ℂ, Integrable g → IsThetaFunO ψ S T (fun x => ∫ z, g z * heisO ψ S T (fockPt σ A B z) f x) → ℓ (fun x => ∫ z, g z * heisO ψ S T (fockPt σ A B z) f x) = ∫ z, g z * F z`.
+
+Introduce `g hg hthg`. Take `⟨m, α, hm, hα, hH⟩` from `htr g hg`. Establish `e1 : (fun x => ∫ z, g z * heisO ψ S T (fockPt σ A B z) f x) = fun x => ∫ w, α w * heisO ψ S T w f x ∂m`. Use function extensionality and compare the values at `x`. Conclude with `(hH fun w => heisO ψ S T w f x).symm`.
+
+Rewrite `hthg`, the goal using `[e1]`. Rewrite using `[hℓ.sup f hth m α hα hthg]`. Conclude with `hH fun w => ℓ (heisO ψ S T w f)`. Take `⟨C, hC⟩` from `((GlobalTheory.ThetaSquare.squareIntegrable hψ) f hth).2.1`. Establish `hG : ∀ x, ∃ M : ℝ, ∀ z, ‖rd ψ σ A B f x z‖ ≤ M * Real.exp (gq (fw D) z / 2)`.
+
+Introduce `x`. Use `⟨C, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[rd, norm_mul, GlobalTheory.ThetaSquare.norm_heisO hψ, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _), mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (hC _) (Real.exp_pos _).le`. Establish `hent` using `GlobalTheory.T.fockGaussianReading_differentiable D ψ θ σ hψ hσ S T A B f hf`.
+
+Establish `hc : ∀ τ, 0 < fw D τ` using `fw_pos D`. Take `⟨hint1, hint2⟩` from `GlobalTheory.T.integrable_conjMonomial_bargmann_gaussian D.what₂.Tau S.rank T.rank (fw D) hc`. Establish `hgq : ∀ z : VCx D.what₂.Tau S.rank T.rank, ∀ x, (Real.exp (-gq (fw D) z) : ℂ) * rd ψ σ A B f x z = (Real.exp (-gq (fw D) z / 2) : ℂ) * heisO ψ S T (fockPt σ A B z) f x`. Introduce `z x`. Rewrite using `[rd, ← mul_assoc, ← Complex.ofReal_mul, ← Real.exp_add]`.
+
+Use `congr 3`. Expand and normalize the polynomial expressions, which then agree. Take `⟨Cj, hCj⟩` from `GlobalTheory.T.fock_gaussian_jets_at_origin_eq_fock_vectors D ψ θ σ hψ hσ S T A B`. Establish `hpt : ∀ P, IsThetaFunO ψ S T (GlobalTheory.ChainFr.ptF ψ θ A B f P)` using `fun P => GlobalTheory.GalLift.Vec.theta_pureTensorO hψ hθ _ _ _ _ hth P`. Establish `hmom : ∀ m : DVar D.what₂.Tau S.rank T.rank →₀ ℕ, ∫ z, conjMono m z * (Real.exp (-gq (fw D) z / 2) : ℂ) * F z = 0`.
+
+Introduce `m`. Use `set K : ℂ := ((∏ τ, (Real.pi / fw D τ) ^ (S.rank * T.rank) : ℝ) : ℂ) * ((m.prod fun k n => (fw D k.1)⁻¹ ^ n : ℝ) : ℂ) with hK`. Establish `e : (fun x => ∫ z, conjMono m z * (Real.exp (-gq (fw D) z / 2) : ℂ) * heisO ψ S T (fockPt σ A B z) f x) = (K * Cj m) • GlobalTheory.ChainFr.ptF ψ θ A B f (MvPolynomial.monomial m 1)`. Use function extensionality and compare the values at `x`. Establish `h1` using `GlobalTheory.T.gaussian_conjMonomial_moment_eq_taylor_coefficient D.what₂.Tau S.rank T.rank (fw D) hc (rd ψ σ A B f x) (hent x) (hG x) m`.
+
+Rewrite `h1` using `[hCj f hf x m]`. Establish `h2 : (fun z => conjMono m z * (Real.exp (-gq (fw D) z / 2) : ℂ) * heisO ψ S T (fockPt σ A B z) f x) = fun z => conjMono m z * (Real.exp (-gq (fw D) z) : ℂ) * rd ψ σ A B f x z`. Use function extensionality and compare the values at `z`. Rewrite using `[mul_assoc, mul_assoc, hgq]`. Rewrite using `[h2, h1, Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hthe : IsThetaFunO ψ S T (fun x => ∫ z, conjMono m z * (Real.exp (-gq (fw D) z / 2) : ℂ) * heisO ψ S T (fockPt σ A B z) f x)`. Rewrite using `[e]`. Conclude with `GlobalTheory.OrientedHeis.theta_smul _ (hpt _)`. Use `key _ (hint1 m) hthe` as an intermediate fact.
+
+Rewrite using `[← this, e, hℓ.smul _ _ (hpt _), hP, mul_zero]`. Establish `hU` using `GlobalTheory.T.integral_exp_bk_mul_eq_zero_of_moments_zero D.what₂.Tau S.rank T.rank (fw D) hc F hFc hFb hmom z₀`. Use `set K' : ℂ := ((∏ τ, (fw D τ / Real.pi) ^ (S.rank * T.rank) : ℝ) : ℂ) * (Real.exp (-gq (fw D) z₀ / 2) : ℂ) with hK'`. Establish `e : (fun x => ∫ z, (K' * (Complex.exp (bk (fw D) z₀ z) * (Real.exp (-gq (fw D) z / 2) : ℂ))) * heisO ψ S T (fockPt σ A B z) f x) = heisO ψ S T (fockPt σ A B z₀) f`. Use function extensionality and compare the values at `x`.
+
+Establish `h1` using `GlobalTheory.T.fock_bargmann_reproducing_formula D.what₂.Tau S.rank T.rank (fw D) hc (rd ψ σ A B f x) (hent x) (hG x) z₀`. Establish `h2 : heisO ψ S T (fockPt σ A B z₀) f x = (Real.exp (-gq (fw D) z₀ / 2) : ℂ) * rd ψ σ A B f x z₀`. Rewrite using `[rd, ← mul_assoc, ← Complex.ofReal_mul, ← Real.exp_add]`. Rewrite using `[show -gq (fw D) z₀ / 2 + gq (fw D) z₀ / 2 = 0 by ring, Real.exp_zero, Complex.ofReal_one, one_mul]`. Rewrite using `[h2, h1]`.
+
+Establish `h3 : (fun z => (K' * (Complex.exp (bk (fw D) z₀ z) * (Real.exp (-gq (fw D) z / 2) : ℂ))) * heisO ψ S T (fockPt σ A B z) f x) = fun z => K' * (Complex.exp (bk (fw D) z₀ z) * ((Real.exp (-gq (fw D) z) : ℂ) * rd ψ σ A B f x z))`. Use function extensionality and compare the values at `z`. Rewrite using `[hgq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3, integral_const_mul, hK']`.
+
+Simplify using `only [mul_assoc]`. Expand and normalize the polynomial expressions, which then agree. Establish `hthe : IsThetaFunO ψ S T (fun x => ∫ z, (K' * (Complex.exp (bk (fw D) z₀ z) * (Real.exp (-gq (fw D) z / 2) : ℂ))) * heisO ψ S T (fockPt σ A B z) f x)`. Rewrite using `[e]`. Conclude with `(GlobalTheory.ThetaSquare.heisUnitary hψ).2.2.1 _ _ hth`.
+
+Use `key _ ((hint2 z₀).const_mul K') hthe` as an intermediate fact. Rewrite `this` using `[e]`. Express the relevant statement in the definitionally equal form `ℓ (heisO ψ S T (fockPt σ A B z₀) f) = 0`. Rewrite using `[this]`. Repeatedly rewrite using `[mul_assoc]`.
+
+Rewrite using `[integral_const_mul]`. Rewrite `hU`, the goal using `[← mul_assoc]`. Rewrite using `[hU, mul_zero]`.
+-/
 theorem tame_kills_real_translates : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (S T : HSp D) (A : GlobalTheory.ChainFr.Fr S) (B : GlobalTheory.ChainFr.Fr T) (ℓ : (WO S T → ℂ) → ℂ), Tame ψ S T ℓ →
     ∀ f, GlobalTheory.ChainFr.IsVacF ψ θ A B f → (∀ P, ℓ (GlobalTheory.ChainFr.ptF ψ θ A B f P) = 0) →

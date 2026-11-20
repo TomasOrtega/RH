@@ -11,10 +11,28 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat.ActFam
 
+/- English proof (translation)
+Rewrite using `[Hom.mul_def, Hom.mul_def, comp_lift_assoc]`.
+-/
 theorem comp_mul_hom {S : Scheme.{0}} {X Y M : Over S} [GrpObj M] (u : Y ⟶ X) (a b : X ⟶ M) :
     (u ≫ a) * (u ≫ b) = u ≫ (a * b) := by
   rw [Hom.mul_def, Hom.mul_def, comp_lift_assoc]
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ t g n M ρ ψ e hρ`. Establish `h0 : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) ρ` using `Metric.mem_ball_self hρ`. Establish `hlift` using `fun c : 𝓞 E => exists_linear_lift_of_additive_family R t.G g n M (Metric.ball 0 ρ) ψ e g (Metric.ball 0 ρ) (fun b z => e.ex b z ≫ t.act.act c) Metric.isOpen_ball subset_rfl (fun b hb z w => by haveI := t.act.hom c`. Simplify using `only [e.add b hb z w]`. Conclude with `(IsMonHom.monoidHom (t.act.act c) _).map_mul _ _)`.
+
+Use the proof step `(ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolTo_comp e.hol (t.act.act c).left)`. Use `choose h hd hs using hlift`. Establish `hex : ∀ c, ∀ b ∈ Metric.ball (0 : Fin n → ℂ) ρ, ∀ z, e.ex b (h c b z) = e.ex b z ≫ t.act.act c` using `fun c b hb z => (hs c b hb).1 z`. Establish `huq : ∀ c, ∀ b ∈ Metric.ball (0 : Fin n → ℂ) ρ, ∀ l : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ), (∀ z, e.ex b (l z) = e.ex b z ≫ t.act.act c) → l = h c b` using `fun c b hb l hl => (hs c b hb).2.1 l hl`. Establish `hring : ∀ b ∈ Metric.ball (0 : Fin n → ℂ) ρ, ∃ f : 𝓞 E →+* Module.End ℂ (Fin g → ℂ), ∀ c, f c = h c b`.
+
+Introduce `b hb`. Use `⟨RingHom.mk' ⟨⟨fun c => h c b, ?_⟩, ?_⟩ ?_, fun c => rfl⟩` and prove the remaining obligations. Use `(huq 1 b hb LinearMap.id fun z => ?_).symm` and prove the remaining obligations. Rewrite using `[t.act.one]`. Conclude with `(Category.comp_id _).symm`.
+
+Introduce `c c'`. Use `(huq (c * c') b hb (h c b * h c' b) fun z => ?_).symm` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, hex c b hb, hex c' b hb, mul_comm c c', t.act.mul, Category.assoc]`. Introduce `c c'`. Use `(huq (c + c') b hb (h c b + h c' b) fun z => ?_).symm` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.add_apply, e.add b hb, hex c b hb, hex c' b hb, t.act.add, comp_mul_hom]`. Establish `hall : ∀ b, ∃ f : 𝓞 E →+* Module.End ℂ (Fin g → ℂ), b ∈ Metric.ball (0 : Fin n → ℂ) ρ → ∀ c, f c = h c b`. Introduce `b`. Distinguish the cases in `hb : b ∈ Metric.ball (0 : Fin n → ℂ) ρ`. Take `⟨f, hf⟩` from `hring b hb`.
+
+Conclude with `⟨f, fun _ => hf⟩`. Take `⟨f, -⟩` from `hring 0 h0`. Conclude with `⟨f, fun hb' => absurd hb' hb⟩`. Use `choose B hB using hall`. Use `⟨B, fun c x => ?_, fun b hb c x => ?_⟩` and prove the remaining obligations.
+
+Use `(hd c x).congr fun b hb => ?_` and prove the remaining obligations. Simplify using `only [hB b hb c]`. Rewrite using `[hB b hb c]`. Conclude with `hex c b hb x`.
+-/
 theorem exists_action_family : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] (t : SAB H (Sp R)) (g n : ℕ) (M : LieModel t.G (𝟙 (Sp R)) (Fin g → R)) (ρ : ℝ) (ψ : (Fin n → ℂ) → (R →+* ℂ)) (e : Flat.FamExp t.G M (Metric.ball 0 ρ) ψ), 0 < ρ → ∃ B : (Fin n → ℂ) → (𝓞 E →+* Module.End ℂ (Fin g → ℂ)), (∀ c x, DifferentiableOn ℂ (fun b => B b c x) (Metric.ball 0 ρ)) ∧ ∀ b ∈ Metric.ball (0 : Fin n → ℂ) ρ, ∀ c x, e.ex b (B b c x) = e.ex b x ≫ t.act.act c := by
   intro E _ _ _ H R _ t g n M ρ ψ e hρ
   have h0 : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) ρ := Metric.mem_ball_self hρ

@@ -8,6 +8,11 @@ open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.Counti
 
 variable {p n' : ℕ} (R : RS p n') {m : ℕ}
 
+/- English proof (translation)
+Take `⟨hS, hw, -, -⟩` from `R.std`. Use `haveI := hS.frac_O`. Establish `hO : (p : R.O) ≠ 0`. Rewrite using `[← hS.w_sq]`. Conclude with `pow_ne_zero _ hw.ne_zero`.
+
+Introduce `h`. Apply `hO` to reduce the goal to its premises. Apply `IsFractionRing.injective R.O R.Kf` to reduce the goal to its premises. Rewrite using `[map_zero, map_natCast]`. Conclude with `h`.
+-/
 theorem RS.pK_ne : (p : R.Kf) ≠ 0 := by
   obtain ⟨hS, hw, -, -⟩ := R.std
   haveI := hS.frac_O
@@ -20,6 +25,9 @@ theorem RS.pK_ne : (p : R.Kf) ≠ 0 := by
   rw [map_zero, map_natCast]
   exact h
 
+/- English proof (translation)
+Unfold `be`. Rewrite using `[LinearMap.smul_apply, LinearMap.comp_apply, map_smul, map_smul, map_smul, smul_eq_mul, smul_eq_mul, smul_eq_mul, ← mul_assoc, ← zpow_add₀ R.pK_ne, sub_add_cancel]`.
+-/
 theorem be_pull (lam mu : Fin n' → Fin (m + 1) → ℤ) (f : Vsp R.Kf lam →ₗ[R.Kf] Vsp R.Kf mu)
     (g : Module.Dual R.Kf (Vsp R.Kf mu)) (v : Vsp R.Kf lam) :
     be p 1 lam v (((p : R.Kf) ^ (Ar 1 mu - Ar 1 lam)) • (g ∘ₗ f)) = be p 1 mu (f v) g := by
@@ -27,6 +35,53 @@ theorem be_pull (lam mu : Fin n' → Fin (m + 1) → ℤ) (f : Vsp R.Kf lam →�
   rw [LinearMap.smul_apply, LinearMap.comp_apply, map_smul, map_smul, map_smul, smul_eq_mul, smul_eq_mul,
     smul_eq_mul, ← mul_assoc, ← zpow_add₀ R.pK_ne, sub_add_cancel]
 
+/- English proof (translation)
+Establish `: IsFractionRing R.O R.Kf` using `R.std.1.frac_O`. Take `⟨x1, y1, z1, hx1, hy1, hz1, hv1, hG1⟩` from `wit_of_factors R H hD f1`. Take `⟨x2, y2, z2, hx2, hy2, hz2, hv2, hG2⟩` from `wit_of_factors R Hp hD f2`. Establish `hw0` using `R.w_ne`. Take `⟨bH, πH, -, -, -, -, hReH, -⟩` from `hD3 p n' R.W R.Qq R.O R.Kf R.ι R.σ R.jO R.w R.std.1 m 1 H hdH e he`.
+
+Take `⟨bP, πP, -, -, -, -, hReP, -⟩` from `hD3 p n' R.W R.Qq R.O R.Kf R.ι R.σ R.jO R.w R.std.1 m 1 Hp hdHp e he`. Set `cH` to `bH.isUnitSMul (w := fun i => algebraMap R.O R.Kf R.w ^ (-order 1 H (πH i))) (fun i => (zpow_ne_zero _ hw0).isUnit)`. Set `cP` to `bP.isUnitSMul (w := fun i => algebraMap R.O R.Kf R.w ^ (-order 1 Hp (πP i))) (fun i => (zpow_ne_zero _ hw0).isUnit)`. Establish `hcH : Submodule.span R.O (Set.range cH) = Re p R.ι R.σ R.w 1 H e`. Rewrite using `[← hReH]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `Module.Basis.isUnitSMul_apply _ _`. Establish `hcP : Submodule.span R.O (Set.range cP) = Re p R.ι R.σ R.w 1 Hp e`. Rewrite using `[← hReP]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `Module.Basis.isUnitSMul_apply _ _`. Take `⟨ret, hret1, hret2⟩` from `hRet R.O R.Kf _ _ _ _ cH cP io (by intro F; rw [hcH, hcP]; exact hiso F)`. Rewrite `hret2` using `[hcH, hcP]`.
+
+Set `tt : Fin n1 → Module.Dual R.Kf (Vsp R.Kf Hp)` to `fun l => ((p : R.Kf) ^ (Ar 1 H - Ar 1 Hp)) • (y1 l ∘ₗ ret)`. Establish `htt : ∀ F l, be p 1 Hp F (tt l) = be p 1 H (ret F) (y1 l)` using `fun F l => be_pull R Hp H ret (y1 l) F`. Establish `httm : ∀ l, tt l ∈ Re' p R.ι R.σ R.w 1 Hp e` using `fun l => ((hBP p n' R.W R.Qq R.O R.Kf R.ι R.σ R.jO R.w R.std.1 m 1 Hp hdHp e he).1 (tt l)).2 fun F hF => by`. Rewrite using `[htt]`. Take `⟨b, hb⟩` from `be_Re R H e (hret2 F hF) (hy1 l).1.2`.
+
+Conclude with `⟨b, hb.symm⟩`. Establish `hGt : ∀ k k', be p 1 Hp (io (x1 k)) (tt k') = algebraMap R.O R.Kf ((z1 • (1 : Matrix (Fin n1) (Fin n1) R.O)) k k')`. Introduce `k k'`. Rewrite using `[htt, hret1, hG1, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `hNint : ∀ i b, ∃ g : R.O, be p 1 Hp (io (x1 i)) (y2 b) = algebraMap R.O R.Kf g` using `fun i b => be_Re R Hp e (hio _ (hx1 i)).1.2 (hy2 b).1.2`. Use `choose Nm hNm using hNint`. Establish `hBint : ∀ a l, ∃ g : R.O, be p 1 Hp (x2 a) (tt l) = algebraMap R.O R.Kf g` using `fun a l => be_Re R Hp e (hx2 a).1.2 (httm l)`. Use `choose Bm hBm using hBint`. Take `⟨r, s, hrs, ⟨P, Q, hPQ⟩, ⟨P', P'', M, hPP, hblk⟩⟩` from `hS R.O n1 n2 z1 z2 hz1 hz2 (Matrix.of Nm) (Matrix.of Bm)`.
+
+Establish `hz12 : z1 * z2 ≠ 0` using `mul_ne_zero hz1 hz2`. Establish `hv12 : vLEO p (z1 * z2) (2 * D₁)`. Use `vLEO_mul hz1 hz2 hv1 hv2` as an intermediate fact. Rewrite `this` using `[← two_mul]`. Then use the resulting hypothesis. Set `Xb : Fin s ⊕ Fin n2 → Vsp R.Kf Hp` to `Sum.elim (fun i => ∑ k, algebraMap R.O R.Kf (P' i k) • io (x1 k)) x2`.
+
+Set `Yb : Fin s ⊕ Fin n2 → Module.Dual R.Kf (Vsp R.Kf Hp)` to `Sum.elim (fun l => ∑ k, P'' k l • tt k) y2`. Establish `hXb : ∀ i, Xb i ∈ CCL R Hp t c₂ e`. Introduce and unpack `(i | a)`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[algebraMap_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ (hio _ (hx1 k))`. Conclude with `hx2 a`. Establish `hYb : ∀ i, Yb i ∈ Re' p R.ι R.σ R.w 1 Hp e`. Introduce and unpack `(l | b)`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (httm k)`.
+
+Conclude with `(hy2 b).1.2`. Establish `hGb : ∀ i j, be p 1 Hp (Xb i) (Yb j) = algebraMap R.O R.Kf (Matrix.fromBlocks (z1 • (1 : Matrix (Fin s) (Fin s) R.O)) (P' * Matrix.of Nm) (Matrix.of Bm * P'') (z2 • (1 : Matrix (Fin n2) (Fin n2) R.O)) i j)`. Introduce and unpack `(i | a) (l | b)`. Use `show be p 1 Hp (∑ k, algebraMap R.O R.Kf (P' i k) • io (x1 k)) (∑ k, P'' k l • tt k) = _`. Rewrite using `[be_mat R Hp (fun k => io (x1 k)) tt _ hGt P' P'' i l, Matrix.fromBlocks_apply₁₁]`.
+
+Use `congr 1`. Rewrite using `[Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, hPP]`. Use `show be p 1 Hp (∑ k, algebraMap R.O R.Kf (P' i k) • io (x1 k)) (y2 b) = _`. Rewrite using `[be_sum_left, Matrix.fromBlocks_apply₁₂, Matrix.mul_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [hNm, map_mul, Matrix.of_apply]`.
+
+Use `show be p 1 Hp (x2 a) (∑ k, P'' k l • tt k) = _`. Rewrite using `[be_sum, Matrix.fromBlocks_apply₂₁, Matrix.mul_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [hBm, map_mul, Matrix.of_apply]`. Use `show be p 1 Hp (x2 a) (y2 b) = _`. Rewrite using `[hG2, Matrix.fromBlocks_apply₂₂, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `hbadF : FactorsLE p (be (Kf` using `R.Kf) p 1 Hp) (CCL R Hp t c₂ e) (Re' p R.ι R.σ R.w 1 Hp e) (Fintype.card (Fin s ⊕ Fin n2)) (2 * D₁) := by`. Use `factorsLE_of_fintype p _ _ _ Xb (fun j => ∑ l, M l j • Yb l) hXb (fun j => Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (hYb l)) (z1 * z2) hz12 hv12 fun i j => ?_` and prove the remaining obligations. Rewrite using `[be_sum]`. Establish `: ∑ l, be p 1 Hp (Xb i) (Yb l) * algebraMap R.O R.Kf (M l j) = algebraMap R.O R.Kf ((Matrix.fromBlocks (z1 • (1 : Matrix (Fin s) (Fin s) R.O)) (P' * Matrix.of Nm) (Matrix.of Bm * P'') (z2 • (1 : Matrix (Fin n2) (Fin n2) R.O)) * M) i j)`.
+
+Rewrite using `[Matrix.mul_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [hGb, map_mul]`. Rewrite using `[this, hblk, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hbad : ((s + n2 : ℕ) : ℝ) ≤ dL R Hp`.
+
+Establish `hcard : Fintype.card (Fin s ⊕ Fin n2) = s + n2` using `by simp`. Rewrite `hbadF` using `[hcard]`. Conclude with `nLeD R Hp hdHp t c₂ (s + n2) (2 * D₁) (by linarith) (by linarith) e he hbadF`. Use `⟨r, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : ((r + s : ℕ) : ℝ) = n1` using `by exact_mod_cast hrs`.
+
+Move the coercions through the operations in `at h1 hbad`. Combine the linear equalities and inequalities to obtain the conclusion. Set `Fg : Fin r → Vsp R.Kf H` to `fun i => ∑ k, algebraMap R.O R.Kf (P i k) • x1 k`. Set `gg : Fin r → Module.Dual R.Kf (Vsp R.Kf Hp)` to `fun j => ∑ b, Q b j • y2 b`. Establish `hFg : ∀ i, Fg i ∈ CCL R H t c₂ e` using `fun i => by`.
+
+Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (hx1 k)`. Establish `hgg : ∀ j, gg j ∈ CCL' R Hp t c₂ e` using `fun j => Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (hy2 b)`. Establish `hFgg : ∀ i j, be p 1 Hp (io (Fg i)) (gg j) = if i = j then algebraMap R.O R.Kf (z1 * z2) else 0`.
+
+Introduce `i j`. Establish `e1 : io (Fg i) = ∑ k, algebraMap R.O R.Kf (P i k) • io (x1 k)`. Simplify using `only [Fg, map_sum, map_smul]`. Rewrite using `[e1, be_mat R Hp (fun k => io (x1 k)) y2 (Matrix.of Nm) (fun k k' => hNm k k') P Q i j, hPQ, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `hcardg : Fintype.card (Fin nb × Fin r) = nb * r` using `by simp`. Rewrite using `[← hcardg]`. Use `factorsLE_of_fintype p _ _ _ (fun x : Fin nb × Fin r => U x.1 (Fg x.2)) (fun y : Fin nb × Fin r => ((p : R.O) ^ (kk - ka y.1)) • (((p : R.Kf) ^ (Ar 1 Hp - Ar 1 lam)) • (gg y.2 ∘ₗ L y.1))) (fun x => CCL_anti_c R lam hc t e (hU x.1 _ (hFg x.2))) (fun y => Submodule.smul_mem _ _ (hL …` and prove the remaining obligations. Introduce and unpack `⟨b, i⟩ ⟨a, j⟩`. Use `show be p 1 lam (U b (Fg i)) (((p : R.O) ^ (kk - ka a)) • (((p : R.Kf) ^ (Ar 1 Hp - Ar 1 lam)) • (gg j ∘ₗ L a))) = _`.
+
+Rewrite using `[be_smul, be_pull, h24]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[if_pos rfl, be_smulK_left, hFgg]`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`. Simplify using `only [map_mul, map_pow, map_natCast]`. Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel (hka a)]`. Establish `: ((a, i) : Fin nb × Fin r) ≠ (a, j)` using `fun h => hij (Prod.mk.inj h).2`.
+
+Rewrite using `[if_neg hij, if_neg this, mul_zero, mul_zero]`. Establish `: ((b, i) : Fin nb × Fin r) ≠ (a, j)` using `fun h => hab (Prod.mk.inj h).1.symm`. Rewrite using `[if_neg hab, if_neg this]`. Simplify using `[be]`.
+-/
 theorem cloud_count (hS : LemmaSMat) (hRet : LatRetract) (hBP : BePerfect) (hD3 : DualHeightBasis)
     (H Hp lam : Fin n' → Fin (m + 1) → ℤ) (hdH : IsDominant H) (hdHp : IsDominant Hp)
     (e : Edge R.W R.Qq (m + 1)) (he : IsEdge p n' 1 e) (t c₂ c₃ : ℕ) (hc : c₃ ≤ c₂) (D₁ : ℝ) (hD : 0 ≤ D₁)

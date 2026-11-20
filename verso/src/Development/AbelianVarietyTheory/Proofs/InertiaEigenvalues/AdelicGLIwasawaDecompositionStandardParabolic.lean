@@ -9,22 +9,38 @@ open Matrix
 
 namespace GlobalTheory.IwasawaAdelic
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cornerGL_entry {R S : Type} [CommRing R] [CommRing S] {a : ℕ} (s : R →ₙ+* S)
     (g : GL (Fin a) R) (i j : Fin a) :
     (cornerGL a s g).val i j
       = (1 : Matrix (Fin a) (Fin a) S) i j - s ((1 : Matrix (Fin a) (Fin a) R) i j) + s (g.val i j) :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[cornerGL_entry]`. Simplify using `[Matrix.one_apply_ne h]`.
+-/
 theorem cornerGL_entry_ne {R S : Type} [CommRing R] [CommRing S] {a : ℕ} (s : R →ₙ+* S)
     (g : GL (Fin a) R) {i j : Fin a} (h : i ≠ j) :
     (cornerGL a s g).val i j = s (g.val i j) := by
   rw [cornerGL_entry]; simp [Matrix.one_apply_ne h]
 
+/- English proof (translation)
+Rewrite using `[cornerGL_entry]`. Simplify using the standard rewrite rules.
+-/
 theorem cornerGL_entry_same {R S : Type} [CommRing R] [CommRing S] {a : ℕ} (s : R →ₙ+* S)
     (g : GL (Fin a) R) (i : Fin a) :
     (cornerGL a s g).val i i = 1 - s 1 + s (g.val i i) := by
   rw [cornerGL_entry]; simp
 
+/- English proof (translation)
+Set `f : ℕ → ℕ` to `fun n => if h : n < s then d ⟨n, h⟩ else 0`. Establish `key : ∀ c : Fin s, ∑ x : Fin c, d (Fin.castLE c.2.le x) = ∑ x ∈ Finset.range c, f x`. Introduce `c`. Rewrite using `[← Fin.sum_univ_eq_sum_range]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Establish `hx : (x : ℕ) < s` using `x.2.trans c.2`. Simplify using `only [f, hx, dif_pos]`. Both sides reduce to the same expression. Rewrite using `[Fin.lt_def, stdBlocks_val, stdBlocks_val, key, key]`. Establish `h1 : ∑ x ∈ Finset.range (b + 1), f x ≤ ∑ x ∈ Finset.range a, f x` using `Finset.sum_le_sum_of_subset (Finset.range_mono (Nat.succ_le_of_lt hba))`.
+
+Rewrite `h1` using `[Finset.sum_range_succ]`. Establish `h2 : f b = d b` using `by simp [f]`. Use `j.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem stdBlocks_lt_of_lt {s r : ℕ} (d : Fin s → ℕ) (hd : ∑ i, d i = r) {a b : Fin s}
     (i : Fin (d a)) (j : Fin (d b)) (hba : b < a) : stdBlocks d hd ⟨b, j⟩ < stdBlocks d hd ⟨a, i⟩ := by
   let f : ℕ → ℕ := fun n => if h : n < s then d ⟨n, h⟩ else 0
@@ -43,6 +59,9 @@ theorem stdBlocks_lt_of_lt {s r : ℕ} (d : Fin s → ℕ) (hd : ∑ i, d i = r)
   have := j.2
   omega
 
+/- English proof (translation)
+Rewrite using `[mem_parab_iff]`. Introduce `a a' i j hlt`. Conclude with `hb (stdBlocks_lt_of_lt n h i j hlt)`.
+-/
 theorem mem_parab_of_upper {R : Type} [CommRing R] {c N : ℕ} (n : Fin c → ℕ) (h : ∑ i, n i = N)
     (b : GL (Fin N) R) (hb : (b : Matrix (Fin N) (Fin N) R).BlockTriangular id) :
     b ∈ parab R (stdBlocks n h) := by
@@ -50,6 +69,17 @@ theorem mem_parab_of_upper {R : Type} [CommRing R] {c N : ℕ} (n : Fin c → �
   intro a a' i j hlt
   exact hb (stdBlocks_lt_of_lt n h i j hlt)
 
+/- English proof (translation)
+Use `set A : Matrix (Fin N) (Fin N) ℂ := ((y⁻¹ : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) with hAdef`. Establish `hyA : (y : Matrix (Fin N) (Fin N) ℂ) * A = 1` using `by simp [hAdef]`. Establish `hAdet : IsUnit A.det`. Rewrite using `[← Matrix.isUnit_iff_isUnit_det]`. Conclude with `(y⁻¹).isUnit`.
+
+Establish `hdet : IsUnit (Aᴴ * A).det`. Rewrite using `[det_mul, det_conjTranspose]`. Conclude with `hAdet.star.mul hAdet`. Take `⟨Q, u, hQ, hu, hudet, hA⟩` from `GlobalTheory.QRDecomp.exists_qr N N A hdet`. Use `letI := u.invertibleOfIsUnitDet hudet`.
+
+Use `⟨(Matrix.nonsingInvUnit u hudet)⁻¹, ?_, Qᴴ, ?_, ?_⟩` and prove the remaining obligations. Use `show (u⁻¹).BlockTriangular id`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hu`. Rewrite using `[Matrix.mem_unitaryGroup_iff', star_eq_conjTranspose, conjTranspose_conjTranspose]`. Conclude with `mul_eq_one_comm.1 hQ`.
+
+Use `show (y : Matrix (Fin N) (Fin N) ℂ) = u⁻¹ * Qᴴ`. Establish `hQQ : Q * Qᴴ = 1` using `mul_eq_one_comm.1 hQ`. Establish `h1 : (Q * u) * (u⁻¹ * Qᴴ) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc u, Matrix.mul_nonsing_inv u hudet, Matrix.one_mul, hQQ]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[h1, Matrix.mul_one]`. Use `_ = u⁻¹ * Qᴴ := by rw [← Matrix.mul_assoc, ← hA, hyA, Matrix.one_mul]`.
+-/
 theorem exists_upper_mul_unitary (N : ℕ) (y : GL (Fin N) ℂ) :
     ∃ b : GL (Fin N) ℂ, (b : Matrix (Fin N) (Fin N) ℂ).BlockTriangular id ∧
       ∃ k : Matrix (Fin N) (Fin N) ℂ, k ∈ Matrix.unitaryGroup (Fin N) ℂ ∧
@@ -75,11 +105,29 @@ theorem exists_upper_mul_unitary (N : ℕ) (y : GL (Fin N) ℂ) :
           rw [h1, Matrix.mul_one]
       _ = u⁻¹ * Qᴴ := by rw [← Matrix.mul_assoc, ← hA, hyA, Matrix.one_mul]
 
+/- English proof (translation)
+Use extensionality with `i j v`. Conclude with `congrFun (congrFun (hPQ v) i) j`.
+-/
 theorem ext_eval {ι : Type} {N : ℕ} {P Q : Matrix (Fin N) (Fin N) (ι → ℂ)}
     (hPQ : ∀ v, P.map (Pi.evalRingHom (fun _ : ι => ℂ) v) = Q.map (Pi.evalRingHom (fun _ : ι => ℂ) v)) :
     P = Q := by
   ext i j v; exact congrFun (congrFun (hPQ v) i) j
 
+/- English proof (translation)
+Set `ev : InfinitePlace E → (Cinf E →+* ℂ)` to `fun v => Pi.evalRingHom (fun _ : InfinitePlace E => ℂ) v`. Use `choose B hB K hK hyK using fun v => exists_upper_mul_unitary N (Matrix.GeneralLinearGroup.map (ev v) y)`. Set `bm : Matrix (Fin N) (Fin N) (Cinf E)` to `fun i j v => (B v : Matrix (Fin N) (Fin N) ℂ) i j`. Set `bi : Matrix (Fin N) (Fin N) (Cinf E)` to `fun i j v => (((B v)⁻¹ : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) i j`. Set `km : Matrix (Fin N) (Fin N) (Cinf E)` to `fun i j v => K v i j`.
+
+Establish `hbm : ∀ v, bm.map (ev v) = (B v : Matrix (Fin N) (Fin N) ℂ)` using `fun v => rfl`. Establish `hbi : ∀ v, bi.map (ev v) = (((B v)⁻¹ : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ)` using `fun v => rfl`. Establish `hkm : ∀ v, km.map (ev v) = K v` using `fun v => rfl`. Establish `h1 : bm * bi = 1` using `ext_eval fun v => by`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _), hbm, hbi]`.
+
+Simplify using the standard rewrite rules. Establish `h2 : bi * bm = 1` using `ext_eval fun v => by`. Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _), hbm, hbi]`. Simplify using the standard rewrite rules. Establish `hkU : km ∈ Matrix.unitaryGroup (Fin N) (Cinf E)`.
+
+Rewrite using `[Matrix.mem_unitaryGroup_iff']`. Use `ext_eval fun v => ?_` and prove the remaining obligations. Establish `hs : (star km).map (ev v) = star (K v)`. Use extensionality with `i j`. Both sides reduce to the same expression.
+
+Rewrite using `[Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _), hs, hkm]`. Conclude with `(Matrix.mem_unitaryGroup_iff').1 (hK v)`. Use `⟨⟨bm, bi, h1, h2⟩, ?_, ⟨km, hkU⟩, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Use function extensionality and compare the values at `v`.
+
+Conclude with `hB v hij`. Apply `Units.ext` to reduce the goal to its premises. Use `ext_eval fun v => ?_` and prove the remaining obligations. Use `show (y : Matrix (Fin N) (Fin N) (Cinf E)).map (ev v) = (bm * km).map (ev v)`. Rewrite using `[Matrix.map_mul, hbm, hkm]`.
+
+Conclude with `hyK v`.
+-/
 theorem exists_upper_mul_unitary_inf (E : Type) [Field E] (N : ℕ) (y : GL (Fin N) (Cinf E)) :
     ∃ b : GL (Fin N) (Cinf E), (b : Matrix (Fin N) (Fin N) (Cinf E)).BlockTriangular id ∧
       ∃ k : Kinf E N, y = b * Unitary.toUnits k := by
@@ -112,9 +160,19 @@ theorem exists_upper_mul_unitary_inf (E : Type) [Field E] (N : ℕ) (y : GL (Fin
     rw [Matrix.map_mul, hbm, hkm]
     exact hyK v
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem infGL_eq (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N : ℕ) :
     infGL E N = cornerGL N (GlobalTheory.CuspRep.sInf E) := rfl
 
+/- English proof (translation)
+Rewrite `hu`, the goal using `[mem_unipRad]`. Take `⟨hP, hD⟩` from `hu`. Use `⟨mem_parab_iff.2 fun a b i j hlt => ?_, fun a i j => ?_⟩` and prove the remaining obligations. Establish `hne : stdBlocks n h ⟨a, i⟩ ≠ stdBlocks n h ⟨b, j⟩` using `fun he => by`. Use `congrArg Sigma.fst ((stdBlocks n h).injective he)` as an intermediate fact.
+
+Conclude with `(ne_of_gt hlt) this`. Rewrite using `[infGL_eq, cornerGL_entry_ne _ _ hne, mem_parab_iff.1 hP a b i j hlt, map_zero]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[infGL_eq, cornerGL_entry_same, hD a i i]`.
+
+Simplify using the standard rewrite rules. Establish `hne : stdBlocks n h ⟨a, i⟩ ≠ stdBlocks n h ⟨a, j⟩` using `fun he => by`. Conclude with `hij (by simpa using (stdBlocks n h).injective he)`. Rewrite using `[infGL_eq, cornerGL_entry_ne _ _ hne, hD a i j, Matrix.one_apply_ne hij, Matrix.one_apply_ne hij, map_zero]`.
+-/
 theorem infGL_mem_unipRad (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] {c N : ℕ}
     (n : Fin c → ℕ) (h : ∑ i, n i = N) (u : GL (Fin N) (Cinf E))
     (hu : u ∈ unipRad (Cinf E) (stdBlocks n h)) : infGL E N u ∈ unipRad (Ad E) (stdBlocks n h) := by
@@ -133,6 +191,13 @@ theorem infGL_mem_unipRad (E : Type) [Field E] [NumberField E] [IsTotallyComplex
       rw [infGL_eq, cornerGL_entry_ne _ _ hne, hD a i j, Matrix.one_apply_ne hij, Matrix.one_apply_ne hij,
         map_zero]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `p q`. Take `⟨⟨a, i⟩, rfl⟩` from `(stdBlocks n h).surjective p`. Take `⟨⟨b, j⟩, rfl⟩` from `(stdBlocks n h).surjective q`. Distinguish the cases in `hab : a = b`.
+
+Substitute `hab` using the available equality. Rewrite using `[leviEmb_apply_same]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[infGL_eq, infGL_eq, cornerGL_entry_same, cornerGL_entry_same, leviEmb_apply_same]`.
+
+Establish `hne : stdBlocks n h ⟨a, i⟩ ≠ stdBlocks n h ⟨a, j⟩` using `fun he => hij (by simpa using (stdBlocks n h).injective he)`. Rewrite using `[infGL_eq, infGL_eq, cornerGL_entry_ne _ _ hne, cornerGL_entry_ne _ _ hij, leviEmb_apply_same]`. Establish `hne : stdBlocks n h ⟨a, i⟩ ≠ stdBlocks n h ⟨b, j⟩` using `fun he => hab (congrArg Sigma.fst ((stdBlocks n h).injective he))`. Rewrite using `[leviEmb_apply_ne _ _ _ hab, infGL_eq, cornerGL_entry_ne _ _ hne, leviEmb_apply_ne _ _ _ hab, map_zero]`.
+-/
 theorem infGL_leviEmb (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] {c N : ℕ}
     (n : Fin c → ℕ) (h : ∑ i, n i = N) (l : ∀ i, GL (Fin (n i)) (Cinf E)) :
     infGL E N (leviEmb (Cinf E) (stdBlocks n h) l)
@@ -154,6 +219,13 @@ theorem infGL_leviEmb (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] 
       hab (congrArg Sigma.fst ((stdBlocks n h).injective he))
     rw [leviEmb_apply_ne _ _ _ hab, infGL_eq, cornerGL_entry_ne _ _ hne, leviEmb_apply_ne _ _ _ hab, map_zero]
 
+/- English proof (translation)
+Introduce `E _ _ _ c N n h x`. Take `⟨b, hb, k, hy⟩` from `exists_upper_mul_unitary_inf E N (Matrix.GeneralLinearGroup.map (pInf E) x)`. Take `⟨u, hu, hbu⟩` from `exists_levi_mul_unip (Cinf E) (stdBlocks n h) ⟨b, mem_parab_of_upper n h b hb⟩`. Use `set L := leviEmb (Cinf E) (stdBlocks n h) (leviProj (Cinf E) (stdBlocks n h) ⟨b, mem_parab_of_upper n h b hb⟩) with hL`. Establish `hN` using `leviEmb_mem_normalizer (Cinf E) (stdBlocks n h) (leviProj (Cinf E) (stdBlocks n h) ⟨b, mem_parab_of_upper n h b hb⟩)`.
+
+Establish `hu' : L * u * L⁻¹ ∈ unipRad (Cinf E) (stdBlocks n h)` using `(Subgroup.mem_normalizer_iff.1 hN u).1 hu`. Use `⟨infGL E N (L * u * L⁻¹), infGL_mem_unipRad E n h _ hu', fun i => infGL E (n i) (leviProj (Cinf E) (stdBlocks n h) ⟨b, mem_parab_of_upper n h b hb⟩ i), k, Matrix.GeneralLinearGroup.map (pFin E) x, ?_⟩` and prove the remaining obligations. Rewrite using `[← infGL_leviEmb, ← hL]`. Use `conv_lhs => rw [← infGL_mul_finGL x, hy]`. Simplify using `only [Subtype.coe_mk] at hbu`.
+
+Rewrite using `[hbu]`. Simplify using `only [map_mul, map_inv]`. Use `group`.
+-/
 theorem iwasawa : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] {c N : ℕ} (n : Fin c → ℕ) (h : ∑ i, n i = N) (x : GA E N), ∃ u ∈ unipRad (Ad E) (stdBlocks n h), ∃ (m : ∀ i, GA E (n i)) (k : Kinf E N) (g : GL (Fin N) (Af E)), x = u * leviEmb (Ad E) (stdBlocks n h) m * (infGL E N (Unitary.toUnits k) * finGL E N g) := by
   intro E _ _ _ c N n h x
   obtain ⟨b, hb, k, hy⟩ := exists_upper_mul_unitary_inf E N (Matrix.GeneralLinearGroup.map (pInf E) x)

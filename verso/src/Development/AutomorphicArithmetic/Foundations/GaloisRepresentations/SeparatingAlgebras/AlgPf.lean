@@ -1,6 +1,21 @@
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.SeparatingAlgebras.GroupDetAlt
 open UpperTheory.Gal.Gen
 
+/- English proof (translation)
+Introduce `hHB hGD k _ _ l _ H _ _ hH P hP hN`. Establish `hl0 : 0 ≤ ‖(l : k)‖` using `norm_nonneg _`. Establish `hl1 : ‖(l : k)‖ ≤ 1` using `IsUltrametricDist.norm_natCast_le_one k l`. Establish `hdN : Module.finrank k P ≤ Fintype.card H`. Establish `h` using `Submodule.finrank_le P`.
+
+Rewrite `h` using `[Module.finrank_fintype_fun_eq_card]`. Then use the resulting hypothesis. Establish `key : ∀ a : H → k, (∀ i, ‖a i‖ ≤ 1) → (∀ c ∈ P, ∑ i, a i * c i = 0) → ‖∑ i, a i * (fun _ => (1 : k)) i‖ ≤ Real.sqrt ‖(l : k)‖`. Introduce `a ha hperp`. Establish `hker : P ≤ LinearMap.ker (Matrix.of fun h g : H => a (h * g⁻¹)).transpose.mulVecLin`. Introduce `c hc`.
+
+Rewrite using `[LinearMap.mem_ker]`. Use function extensionality and compare the values at `g`. Establish `h0` using `hperp (fun h => c (h * g)) (hP c hc g)`. Establish `h1 : ∑ h, a (h * g⁻¹) * c h = ∑ i, a i * c (i * g)` using `Fintype.sum_equiv (Equiv.mulRight g⁻¹) _ _ (fun x => by simp)`. Express the relevant statement in the definitionally equal form `∑ h, a (h * g⁻¹) * c h = 0`.
+
+Rewrite using `[h1]`. Conclude with `h0`. Establish `hrank : (Matrix.of fun h g : H => a (h * g⁻¹)).rank ≤ Fintype.card H - Module.finrank k P`. Establish `h2` using `LinearMap.finrank_range_add_finrank_ker (Matrix.of fun h g : H => a (h * g⁻¹)).transpose.mulVecLin`. Rewrite `h2` using `[Module.finrank_fintype_fun_eq_card]`.
+
+Establish `h3` using `Submodule.finrank_mono hker`. Rewrite using `[← Matrix.rank_transpose]`. Establish `h4 : (Matrix.of fun h g : H => a (h * g⁻¹)).transpose.rank = Module.finrank k (LinearMap.range (Matrix.of fun h g : H => a (h * g⁻¹)).transpose.mulVecLin)` using `rfl`. Use linear arithmetic over natural numbers and integers. Establish `h1` using `hGD k l H hH a _ ha hrank`.
+
+Rewrite `h1` using `[Nat.sub_sub_self hdN]`. Simplify using `only [mul_one]`. Rewrite using `[Real.le_sqrt (norm_nonneg _) hl0]`. Establish `hne : Fintype.card H ≠ 0` using `Fintype.card_ne_zero`. Use `(pow_le_pow_iff_left₀ (by positivity) hl0 hne).mp ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨c, hc, hcv⟩` from `hHB k H P (fun _ => 1) (Real.sqrt ‖(l : k)‖) key`. Use `⟨c, hc, fun h => ?_⟩` and prove the remaining obligations. Establish `h5 : ‖(1 : k) - c h‖ ≤ Real.sqrt ‖(l : k)‖` using `hcv h`. Conclude with `(Real.le_sqrt (norm_nonneg _) hl0).mp h5`.
+-/
 theorem UpperTheory.Gal.Gen.alg_pf :
     UpperTheory.Gal.Gen.HB → UpperTheory.Gal.Gen.GroupDet → UpperTheory.Gal.Gen.Alg := by
   intro hHB hGD k _ _ l _ H _ _ hH P hP hN

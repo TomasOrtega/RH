@@ -11,6 +11,13 @@ open GlobalTheory.MBLow.Cl Matrix
 
 namespace GlobalTheory.MBLow.Cl
 
+/- English proof (translation)
+Introduce `g' r g σ Mx MB h1 h2`. Establish `key : Mx.submatrix σ.symm σ.symm = Matrix.fromBlocks MB (Matrix.of fun i l => Mx (σ.symm (Sum.inl i)) (σ.symm (Sum.inr l))) 0 1`. Use extensionality with `(i | i) (j | j)`. Conclude with `congrFun (h1 i) j`. Both sides reduce to the same expression.
+
+Conclude with `congrFun (h2 i).1 j`. Use `congrFun (h2 i).2 j` as an intermediate fact. Simplify using `only [Matrix.submatrix_apply, Matrix.fromBlocks_apply₂₂, Matrix.one_apply]`. Rewrite `this` using `[Pi.single_apply]`. Simplify using `only [eq_comm (a := i)]`.
+
+Conclude with `this`. Rewrite using `[← Matrix.det_submatrix_equiv_self σ.symm Mx, key, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, _root_.mul_one]`.
+-/
 theorem det_eq_det_block : ∀ (g' r g : ℕ) (σ : Fin g ≃ Fin g' ⊕ Fin r) (Mx : Matrix (Fin g) (Fin g) ℂ) (MB : Matrix (Fin g') (Fin g') ℂ), (∀ i, zP σ (Mx (σ.symm (Sum.inl i))) = MB i) → (∀ l, zP σ (Mx (σ.symm (Sum.inr l))) = 0 ∧ tP σ (Mx (σ.symm (Sum.inr l))) = Pi.single l 1) → Mx.det = MB.det := by
   intro g' r g σ Mx MB h1 h2
   have key : Mx.submatrix σ.symm σ.symm =

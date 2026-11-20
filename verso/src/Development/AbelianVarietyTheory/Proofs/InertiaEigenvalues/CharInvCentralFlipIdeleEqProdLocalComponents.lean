@@ -18,19 +18,37 @@ namespace GlobalTheory.FlipCharFormula
 
 variable {D : D7}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fa_mul (a b : FiniteAdeleRing (𝓞 D.host.E) D.host.E) (Q : HeightOneSpectrum (𝓞 D.host.E)) :
     (a * b) Q = a Q * b Q := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fa_add (a b : FiniteAdeleRing (𝓞 D.host.E) D.host.E) (Q : HeightOneSpectrum (𝓞 D.host.E)) :
     (a + b) Q = a Q + b Q := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fa_sub (a b : FiniteAdeleRing (𝓞 D.host.E) D.host.E) (Q : HeightOneSpectrum (𝓞 D.host.E)) :
     (a - b) Q = a Q - b Q := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fa_one (Q : HeightOneSpectrum (𝓞 D.host.E)) :
     (1 : FiniteAdeleRing (𝓞 D.host.E) D.host.E) Q = 1 := rfl
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [Nat.cast_succ, fa_add, ih, fa_one, Nat.cast_succ]`.
+-/
 theorem fa_natCast (n : ℕ) (Q : HeightOneSpectrum (𝓞 D.host.E)) :
     (n : FiniteAdeleRing (𝓞 D.host.E) D.host.E) Q = n := by
   induction n with
   | zero => rfl
   | succ n ih => rw [Nat.cast_succ, fa_add, ih, fa_one, Nat.cast_succ]
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty]`. Both sides reduce to the same expression. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, fa_add, ih, Finset.sum_insert ha]`.
+-/
 theorem fa_sum {α : Type*} (s : Finset α) (g : α → FiniteAdeleRing (𝓞 D.host.E) D.host.E)
     (Q : HeightOneSpectrum (𝓞 D.host.E)) : (∑ a ∈ s, g a) Q = ∑ a ∈ s, g a Q := by
   classical
@@ -38,8 +56,30 @@ theorem fa_sum {α : Type*} (s : Finset α) (g : α → FiniteAdeleRing (𝓞 D.
   | empty => simp only [Finset.sum_empty]; rfl
   | insert a s ha ih => rw [Finset.sum_insert ha, fa_add, ih, Finset.sum_insert ha]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finPart_incA (k : D.host.E) : finPart D (incA D k) = 1 ⊗ₜ k := rfl
 
+/- English proof (translation)
+Take `⟨⟨hee, -, -⟩, hP⟩` from `he`. Establish `hidem : ∀ Q, ι (finPart D e) Q = 0 ∨ ι (finPart D e) Q = 1`. Introduce `Q`. Apply `IsIdempotentElem.iff_eq_zero_or_one.mp` to reduce the goal to its premises. Use `show ι (finPart D e) Q * ι (finPart D e) Q = ι (finPart D e) Q`.
+
+Rewrite using `[← fa_mul, ← map_mul, ← map_mul, hee]`. Establish `key : ∀ x : 𝓞 D.host.E, x ≠ 0 → (x ∈ PP.asIdeal ↔ ∃ Q, ι (finPart D e) Q = 1 ∧ x ∈ Q.asIdeal)`. Introduce `x hx`. Rewrite using `[hP x hx, h2, map_mul, finPart_incA, map_mul, h1]`. Establish `hQ : ∀ Q, (Valued.v ((ι (finPart D e) * algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.host.E) ((x : D.host.E))⁻¹) Q) ≤ 1 ↔ ¬ (ι (finPart D e) Q = 1 ∧ x ∈ Q.asIdeal))`.
+
+Introduce `Q`. Rewrite using `[fa_mul]`. Break down `hidem Q with h | h` into its components or cases. Rewrite using `[h, zero_mul]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h, one_mul]`. Establish `hv : Valued.v ((algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.host.E) ((x : D.host.E))⁻¹) Q) = HeightOneSpectrum.valuation D.host.E Q ((x : D.host.E))⁻¹` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' Q _`. Establish `hx0 : HeightOneSpectrum.valuation D.host.E Q (x : D.host.E) ≠ 0`. Simplify using `using hx`. Rewrite using `[hv, map_inv₀, inv_le_one₀ (zero_lt_iff.mpr hx0), ← not_lt, HeightOneSpectrum.valuation_lt_one_iff_mem]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [hQ, not_forall, not_not]`. Establish `hne : ∀ Q, Q ≠ PP → ι (finPart D e) Q = 0`. Introduce `Q hQ`. Break down `hidem Q with h | h` into its components or cases.
+
+Conclude with `h`. It suffices to derive a contradiction. Establish `hnle : ¬ Q.asIdeal ≤ PP.asIdeal`. Introduce `hle`. Apply `hQ` to reduce the goal to its premises.
+
+Conclude with `HeightOneSpectrum.ext (Q.isMaximal.eq_of_le PP.isPrime.ne_top hle)`. Take `⟨x, hxQ, hxP⟩` from `Set.not_subset.mp hnle`. Establish `hx0 : x ≠ 0` using `by rintro rfl; exact hxP PP.asIdeal.zero_mem`. Conclude with `hxP ((key x hx0).mpr ⟨Q, h, hxQ⟩)`. Establish `hPP : ι (finPart D e) PP = 1`.
+
+Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot PP.ne_bot`. Take `⟨Q, hQ1, -⟩` from `(key x hx0).mp hx`. Distinguish the cases in `hQ : Q = PP`. Rewrite `hQ1` using `[hQ]`. Then use the resulting hypothesis. Rewrite `hQ1` using `[hne Q hQ]`.
+
+Conclude with `absurd hQ1 zero_ne_one`. Use `split_ifs with h`. Rewrite using `[h, hPP]`. Conclude with `hne P h`.
+-/
 theorem comp_of_isIdemAt (ι : Af ↥D.host.F ⊗[↥D.host.F] D.host.E ≃+* FiniteAdeleRing (𝓞 D.host.E) D.host.E)
     (h1 : ∀ (x : D.host.E), ι (1 ⊗ₜ[↥D.host.F] x) = (algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.host.E)) x)
     (h2 : ∀ (y : Af ↥D.host.F ⊗[↥D.host.F] D.host.E),
@@ -95,6 +135,15 @@ theorem comp_of_isIdemAt (ι : Af ↥D.host.F ⊗[↥D.host.F] D.host.E ≃+* Fi
   · rw [h, hPP]
   · exact hne P h
 
+/- English proof (translation)
+Take `⟨⟨hee, hec, v, ε, ⟨α, rfl, -, -⟩, hsum⟩, -⟩` from `he`. Establish `h0 : infPart D (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α)) = 0`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply]`. Use `show (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id (↥D.host.F) D.host.E)) ((pairA D.host.F 0 α : AF D.host.F) ⊗ₜ[↥D.host.F] (1 : D.host.E)) = 0`. Rewrite using `[Algebra.TensorProduct.map_tmul]`.
+
+Establish `: (fstA D.host.F) (pairA D.host.F 0 α) = 0` using `rfl`. Rewrite using `[this]`. Conclude with `TensorProduct.zero_tmul _ _`. Establish `hs` using `congrArg (infPart D) hsum`. Establish `hm` using `congrArg (infPart D) hec`.
+
+Establish `hi` using `congrArg (infPart D) hee`. Rewrite `hs` using `[map_add, h0]`. Rewrite `hm` using `[map_mul, map_zero]`. Rewrite `hi` using `[map_mul]`. Establish `hc : infPart D (cA D e) = - infPart D e` using `eq_neg_iff_add_eq_zero.mpr (by rw [add_comm]; exact hs)`.
+
+Rewrite `hm` using `[hc, mul_neg, hi, neg_eq_zero]`. Conclude with `hm`.
+-/
 theorem infPart_of_isIdemAt {e : AE D} {PP : HeightOneSpectrum (𝓞 D.host.E)}
     (he : Formalism.L2.NTheta.IsIdemAt e PP) : infPart D e = 0 := by
   obtain ⟨⟨hee, hec, v, ε, ⟨α, rfl, -, -⟩, hsum⟩, -⟩ := he
@@ -118,6 +167,29 @@ theorem infPart_of_isIdemAt {e : AE D} {PP : HeightOneSpectrum (𝓞 D.host.E)}
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `D V χW χ M₀ u T eT x hχ hu hT hx`. Take `⟨ι, h1, h2, h3⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Take `⟨N, hN, hprod⟩` from `GlobalTheory.CharLocProd.char_eq_prod_locK D ι h1 h2 (GlobalTheory.PlaceIdem.exists_isPlIdem D ι h1 h2 h3) χW χ hχ`. Take `⟨⟨es, hes, rfl⟩, -⟩` from `hT`. Unfold `IsFlipDet at hx`.
+
+Establish `heT : ∀ P, ι (finPart D (∑ PP ∈ T, es PP)) P = if P ∈ T then 1 else 0`. Introduce `P`. Rewrite using `[map_sum, map_sum, fa_sum, Finset.sum_congr rfl (fun PP hPP => comp_of_isIdemAt ι h1 h2 (hes PP hPP) P)]`. Conclude with `Finset.sum_ite_eq T P (fun _ => (1 : HeightOneSpectrum.adicCompletion D.host.E P))`. Establish `hinfT : infPart D (∑ PP ∈ T, es PP) = 0`.
+
+Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero (fun PP hPP => infPart_of_isIdemAt (hes PP hPP))`. Establish `hinf : infPart D (x : AE D) = 1`. Use `congrArg (infPart D) hx` as an intermediate fact. Rewrite `this` using `[map_mul, map_add, map_mul, map_sub, hinfT, map_one, zero_mul, zero_add, sub_zero, mul_one]`.
+
+Conclude with `this`. Establish `hcomp : ∀ P, ι (finPart D (x : AE D)) P * ((if P ∈ T then 1 else 0) * (((M₀ ^ V.rank : ℕ) : HeightOneSpectrum.adicCompletion D.host.E P)) + (1 - if P ∈ T then 1 else 0)) = 1`. Introduce `P`. Establish `h0 : ι (finPart D ((x : AE D) * ((∑ PP ∈ T, es PP) * ((M₀ ^ V.rank : ℕ) : AE D) + (1 - ∑ PP ∈ T, es PP)))) P = ι (finPart D 1) P`. Rewrite using `[Nat.cast_pow, hx]`.
+
+Simplify using `only [map_mul, map_add, map_sub, map_one, map_natCast] at h0`. Rewrite `h0` using `[fa_mul, fa_add, fa_mul, fa_sub, fa_one, fa_natCast, heT]`. Conclude with `h0`. Set `k : HeightOneSpectrum (𝓞 D.host.E) → D.host.Eˣ` to `fun P => if P ∈ T then (u⁻¹) ^ V.rank else 1`. Establish `hxk : ∀ P, ι (finPart D (x : AE D)) P = algebraMap D.host.E (HeightOneSpectrum.adicCompletion D.host.E P) (k P : D.host.E)`.
+
+Introduce `P`. Establish `hc` using `hcomp P`. Distinguish the cases in `hP : P ∈ T`. Rewrite `hc` using `[if_pos hP, one_mul, sub_self, add_zero]`. Rewrite using `[show k P = (u⁻¹) ^ V.rank from if_pos hP, Units.val_pow_eq_pow_val, Units.val_inv_eq_inv_val, hu, map_pow, map_inv₀, map_natCast, eq_inv_of_mul_eq_one_left hc, Nat.cast_pow, inv_pow]`.
+
+Rewrite `hc` using `[if_neg hP, zero_mul, sub_zero, zero_add, mul_one]`. Rewrite using `[show k P = 1 from if_neg hP, Units.val_one, map_one]`. Conclude with `hc`. Establish `hI : Ideal.span {((N : ℕ) : 𝓞 D.host.E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`.
+
+Conclude with `hN.ne'` after adjusting the coercions. Establish `key` using `hprod x hinf (T ∪ (Ideal.finite_factors hI).toFinset) k (fun P _ => by`. Rewrite using `[hxk P, sub_self, map_zero]`. Conclude with `⟨HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P _, zero_le'⟩)`. Use the proof step `(fun P hP => by`.
+
+Establish `hPT : P ∉ T` using `fun h => hP (Finset.mem_union_left _ h)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hxk P, show k P = 1 from if_neg hPT, Units.val_one, map_one, map_one]`. Introduce `hNP`. Apply `hP` to reduce the goal to its premises.
+
+Apply `Finset.mem_union_right` to reduce the goal to its premises. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `Ideal.dvd_span_singleton.mpr hNP)`. Rewrite using `[key, ← Finset.prod_subset (Finset.subset_union_left) (fun P _ hPT => by rw [show k P = 1 from if_neg hPT, map_one, Units.val_one])]`. Rewrite using `[Finset.prod_congr rfl (fun P hP => by`.
+
+Rewrite using `[show k P = (u⁻¹) ^ V.rank from if_pos hP, map_pow, map_inv, Units.val_pow_eq_pow_val, Units.val_inv_eq_inv_val, inv_pow])]`. Rewrite using `[Finset.prod_inv_distrib, inv_inv]`.
+-/
 theorem char_inv_eq_prod_locK_of_flip : ∀ (D : D7) (V : HSp D) (χW : (AE D)ˣ →* Circle) (χ : Formalism.L2.Host.HChar D.host.E) (M₀ : ℕ) (u : D.host.Eˣ) (T : Finset (Formalism.L2.DIV.Pl D.host.E)) (eT : AE D) (x : (AE D)ˣ), ChrEq χW χ → (u : D.host.E) = ((M₀ : ℕ) : D.host.E) → IsIdemSum eT T → IsFlipDet V eT M₀ x → ((χW x : Circle) : ℂ)⁻¹ = ∏ PP ∈ T, ((χ.locK PP u : ℂˣ) : ℂ) ^ V.rank := by
   intro D V χW χ M₀ u T eT x hχ hu hT hx
   classical

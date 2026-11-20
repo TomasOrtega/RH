@@ -20,6 +20,11 @@ def Phi (V : VF C) (u : Fin dd → C) (f : PS C 3 dd) (γ : Fin 2 × Fin dd →�
 def Tk (f : PS C 3 dd) (k : Fin dd) : PS C 3 dd :=
   fun p => if (∀ j : Fin dd, j < k → p ((0 : Fin 3), j) = 0) then coeff (p + Finsupp.single ((0 : Fin 3), k) 1) f else 0
 
+/- English proof (translation)
+Introduce `μ`. Use `show V.Ge 0 (if (∀ j : Fin dd, j < k → μ ((0 : Fin 3), j) = 0) then coeff (μ + Finsupp.single ((0 : Fin 3), k) 1) f else 0)`. Use `split_ifs`. Conclude with `hf _`. Unfold `VF.Ge`.
+
+Simplify using `[AddValuation.map_zero]`.
+-/
 theorem Tk_int {f : PS C 3 dd} (hf : IntS V f) (k : Fin dd) : IntS V (Tk f k) := by
   intro μ
   show V.Ge 0 (if (∀ j : Fin dd, j < k → μ ((0 : Fin 3), j) = 0) then
@@ -29,6 +34,35 @@ theorem Tk_int {f : PS C 3 dd} (hf : IntS V f) (k : Fin dd) : IntS V (Tk f k) :=
   · unfold VF.Ge
     simp [AddValuation.map_zero]
 
+/- English proof (translation)
+Use extensionality with `p`. Rewrite using `[map_add, MvPowerSeries.coeff_one, map_sum]`. Establish `hX : ∀ k, coeff p (X ((0 : Fin 3), k) * Tk f k) = if Finsupp.single ((0 : Fin 3), k) 1 ≤ p then coeff (p - Finsupp.single ((0 : Fin 3), k) 1) (Tk f k) else 0`. Introduce `k`. Rewrite using `[MvPowerSeries.X, MvPowerSeries.coeff_monomial_mul, one_mul]`.
+
+Simplify using `only [hX]`. Distinguish the cases in `hfree : ∀ j, p ((0 : Fin 3), j) = 0`. Rewrite using `[coeff_free h1 hfree, Finset.sum_eq_zero, add_zero]`. Introduce `k _`. Rewrite using `[if_neg]`.
+
+Rewrite using `[Finsupp.single_le_iff, hfree k]`. Use linear arithmetic over natural numbers and integers. Use `push_neg at hfree set S := Finset.univ.filter (fun j : Fin dd => p ((0 : Fin 3), j) ≠ 0) with hSdef`. Establish `hS : S.Nonempty`. Take `⟨j, hj⟩` from `hfree`.
+
+Conclude with `⟨j, by simp only [hSdef, Finset.mem_filter, Finset.mem_univ, true_and]; exact hj⟩`. Use `set k0 := S.min' hS with hk0`. Establish `hk0S : k0 ∈ S` using `S.min'_mem hS`. Establish `hk0p : p ((0 : Fin 3), k0) ≠ 0`. Simplify using `only [hSdef, Finset.mem_filter, Finset.mem_univ, true_and] at hk0S`.
+
+Conclude with `hk0S`. Establish `hmin : ∀ j, j < k0 → p ((0 : Fin 3), j) = 0`. Introduce `j hj`. Assume the negation of the conclusion as `hne`. Establish `hjS : j ∈ S`.
+
+Simplify using `only [hSdef, Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `hne`. Conclude with `absurd hj (not_lt.mpr (S.min'_le j hjS))`. Establish `hp0 : p ≠ 0`. Introduce `h`.
+
+Apply `hk0p` to reduce the goal to its premises. Rewrite using `[h]`. Both sides reduce to the same expression. Establish `hle0 : Finsupp.single ((0 : Fin 3), k0) 1 ≤ p`. Rewrite using `[Finsupp.single_le_iff]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hp0, zero_add, Finset.sum_eq_single k0]`. Rewrite using `[if_pos hle0] show coeff p f = (if (∀ j : Fin dd, j < k0 → (p - Finsupp.single ((0 : Fin 3), k0) 1 : Fin 3 × Fin dd →₀ ℕ) ((0 : Fin 3), j) = 0) then coeff (p - Finsupp.single ((0 : Fin 3), k0) 1 + Finsupp.single ((0 : Fin 3), k0) 1) f else 0)`. Rewrite using `[if_pos, tsub_add_cancel_of_le hle0]`. Introduce `j hj`.
+
+Rewrite using `[Finsupp.tsub_apply, Finsupp.single_apply, if_neg, hmin j hj]`. Apply the tactic sequence `all_goals first`. Consider the case `rfl`. Consider the case `(intro h`. Simplify using `only [Prod.mk.injEq, true_and] at h`.
+
+Substitute `h` using the available equality. Conclude with `lt_irrefl _ hj)`. Introduce `k _ hk`. Distinguish the cases in `hle : Finsupp.single ((0 : Fin 3), k) 1 ≤ p`. Rewrite using `[if_pos hle] show (if (∀ j : Fin dd, j < k → (p - Finsupp.single ((0 : Fin 3), k) 1 : Fin 3 × Fin dd →₀ ℕ) ((0 : Fin 3), j) = 0) then coeff (p - Finsupp.single ((0 : Fin 3), k) 1 + Finsupp.single ((0 : Fin 3), k) 1) f else 0) = 0`.
+
+Rewrite using `[if_neg]`. Introduce `hall`. Establish `hkS : k ∈ S`. Simplify using `only [hSdef, Finset.mem_filter, Finset.mem_univ, true_and]`. Rewrite `hle` using `[Finsupp.single_le_iff]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hk0k : k0 < k` using `lt_of_le_of_ne (S.min'_le k hkS) (Ne.symm hk)`. Establish `h2` using `hall k0 hk0k`. Rewrite `h2` using `[Finsupp.tsub_apply, Finsupp.single_apply, if_neg]`. Conclude with `hk0p (by omega)`.
+
+Introduce `h`. Simplify using `only [Prod.mk.injEq, true_and] at h`. Conclude with `hk h`. Rewrite using `[if_neg hle]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ k0) h`.
+-/
 theorem decomp {f : PS C 3 dd} (h1 : ev (rz 2) f = 1) : f = 1 + ∑ k, X ((0 : Fin 3), k) * Tk f k := by
   classical
   ext p
@@ -107,6 +141,9 @@ theorem decomp {f : PS C 3 dd} (h1 : ev (rz 2) f = 1) : f = 1 + ∑ k, X ((0 : F
     · intro h
       exact absurd (Finset.mem_univ k0) h
 
+/- English proof (translation)
+Establish `hz` using `constant_zero_triple_multiplication Y`. Use `conv_lhs => rw [QQ, decomp (second_pairing_restrict_one Y)]`. Rewrite using `[PartialDerivEval.ev_add hz, ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.ev_one, PartialDerivEval.ev_sum hz]`. Simplify using `only [PartialDerivEval.ev_mul hz, PartialDerivEval.ev_X hz]`. Both sides reduce to the same expression.
+-/
 theorem QQ_expand (Y : FBChart C V O dd) :
     QQ Y = 1 + ∑ k, m3 Y.B.G V.l k * ev ![m3 Y.B.G V.l, p3 1, p3 2] (Tk Y.B.ph2 k) := by
   have hz := constant_zero_triple_multiplication Y
@@ -115,6 +152,11 @@ theorem QQ_expand (Y : FBChart C V O dd) :
   simp only [PartialDerivEval.ev_mul hz, PartialDerivEval.ev_X hz]
   rfl
 
+/- English proof (translation)
+Simplify using `only [m3]`. Rewrite using `[pderiv_eval_single (fun j => by simp [p3, pt])]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `j _`. Simplify using `only [p3, pderiv_pt]`.
+
+Rewrite using `[if_neg (fun h => hs (congrArg Prod.fst h).symm), mul_zero]`.
+-/
 theorem triple_multiplication_pderiv_other (Y : FBChart C V O dd) (k : Fin dd) (s : Fin 3 × Fin dd) (hs : s.1 ≠ 0) :
     pderiv C s (m3 Y.B.G V.l k) = 0 := by
   simp only [m3]
@@ -124,6 +166,11 @@ theorem triple_multiplication_pderiv_other (Y : FBChart C V O dd) (k : Fin dd) (
   simp only [p3, pderiv_pt]
   rw [if_neg (fun h => hs (congrArg Prod.fst h).symm), mul_zero]
 
+/- English proof (translation)
+Establish `h` using `congrArg (coeff (p - Finsupp.single s 1)) (triple_multiplication_pderiv_other Y k s hs)`. Rewrite `h` using `[MvPowerSeries.coeff_pderiv, map_zero]`. Establish `hle : Finsupp.single s 1 ≤ p`. Rewrite using `[Finsupp.single_le_iff]`. Conclude with `Nat.one_le_iff_ne_zero.mpr hp`.
+
+Rewrite `h` using `[tsub_add_cancel_of_le hle]`. Conclude with `(mul_eq_zero.mp h).resolve_right (Nat.cast_add_one_ne_zero _)`.
+-/
 theorem triple_multiplication_first_only (Y : FBChart C V O dd) (k : Fin dd) (p : Fin 3 × Fin dd →₀ ℕ) (s : Fin 3 × Fin dd)
     (hs : s.1 ≠ 0) (hp : p s ≠ 0) : coeff p (m3 Y.B.G V.l k) = 0 := by
   have h := congrArg (coeff (p - Finsupp.single s 1)) (triple_multiplication_pderiv_other Y k s hs)
@@ -134,12 +181,18 @@ theorem triple_multiplication_first_only (Y : FBChart C V O dd) (k : Fin dd) (p 
   rw [tsub_add_cancel_of_le hle] at h
   exact (mul_eq_zero.mp h).resolve_right (Nat.cast_add_one_ne_zero _)
 
+/- English proof (translation)
+Rewrite using `[pderiv_eval_single (fun j => by simp [p3, pt])]`. Simplify using `[p3, pderiv_pt, Finset.sum_ite_eq']`.
+-/
 private theorem pderiv_ev_p3_zero_eq_ev_pderiv (i : Fin dd) (g : PS C 1 dd) :
     pderiv C ((0 : Fin 3), i) (ev ![(p3 0 : Pt C 3 dd)] g) =
       ev ![(p3 0 : Pt C 3 dd)] (pderiv C ((0 : Fin 1), i) g) := by
   rw [pderiv_eval_single (fun j => by simp [p3, pt])]
   simp [p3, pderiv_pt, Finset.sum_ite_eq']
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `zero => rfl`. Consider the case `succ L ih`. Rewrite using `[Function.iterate_succ_apply', ih, pderiv_ev_p3_zero_eq_ev_pderiv, ← Function.iterate_succ_apply' (pderiv C ((0 : Fin 1), i))]`.
+-/
 theorem iterate_pderiv_triple_multiplication (Y : FBChart C V O dd) (k i : Fin dd) (L : ℕ) :
     (pderiv C ((0 : Fin 3), i))^[L] (m3 Y.B.G V.l k) =
       ev ![(p3 0 : Pt C 3 dd)] ((pderiv C ((0 : Fin 1), i))^[L] (mulL Y.B.G.F V.l k)) := by
@@ -149,6 +202,13 @@ theorem iterate_pderiv_triple_multiplication (Y : FBChart C V O dd) (k i : Fin d
     rw [Function.iterate_succ_apply', ih, pderiv_ev_p3_zero_eq_ev_pderiv,
       ← Function.iterate_succ_apply' (pderiv C ((0 : Fin 1), i))]
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `zero`. Introduce `f μ`. Simplify using the standard rewrite rules. Consider the case `succ L ih`.
+
+Introduce `f μ`. Rewrite using `[Function.iterate_succ_apply, ih, MvPowerSeries.coeff_pderiv, Finset.prod_range_succ]`. Establish `e : μ + Finsupp.single i L + Finsupp.single i 1 = μ + Finsupp.single i (L + 1)`. Rewrite using `[add_assoc, ← Finsupp.single_add]`. Rewrite using `[e]`.
+
+Simplify using `only [Finsupp.add_apply, Finsupp.single_eq_same]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem coeff_iterate_pderiv_eq_coeff_add_single_mul_prod {σ : Type} (i : σ) (L : ℕ) : ∀ (f : MvPowerSeries σ C) (μ : σ →₀ ℕ),
     coeff μ ((pderiv C i)^[L] f) =
       coeff (μ + Finsupp.single i L) f * ∏ t ∈ Finset.range L, ((μ i : C) + t + 1) := by
@@ -166,6 +226,13 @@ private theorem coeff_iterate_pderiv_eq_coeff_add_single_mul_prod {σ : Type} (i
     push_cast
     ring
 
+/- English proof (translation)
+Establish `hz : Z0 (![(p3 0 : Pt C 3 dd)] : Fin 1 → Pt C 3 dd)`. Introduce `j i`. Use `fin_cases j`. Simplify using `[p3, pt]`. Establish `h1` using `coeff_iterate_pderiv_eq_coeff_add_single_mul_prod ((0 : Fin 3), i) L (m3 Y.B.G V.l k) 0`.
+
+Establish `h2` using `coeff_iterate_pderiv_eq_coeff_add_single_mul_prod ((0 : Fin 1), i) L (mulL Y.B.G.F V.l k) 0`. Rewrite `h1` using `[iterate_pderiv_triple_multiplication]`. Simplify using `only [zero_add, Finsupp.coe_zero, Pi.zero_apply, Nat.cast_zero] at h1 h2`. Establish `hP : ∏ t ∈ Finset.range L, ((t : C) + 1) ≠ 0` using `Finset.prod_ne_zero_iff.mpr (fun t _ => Nat.cast_add_one_ne_zero t)`. Rewrite `h1` using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, PartialDerivEval.constantCoeff_ev hz, ← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, h2]`.
+
+Conclude with `(mul_right_cancel₀ hP h1).symm`.
+-/
 theorem coeff_triple_multiplication_single (Y : FBChart C V O dd) (k i : Fin dd) (L : ℕ) :
     coeff (Finsupp.single ((0 : Fin 3), i) L) (m3 Y.B.G V.l k) =
       coeff (Finsupp.single ((0 : Fin 1), i) L) (mulL Y.B.G.F V.l k) := by
@@ -183,22 +250,37 @@ theorem coeff_triple_multiplication_single (Y : FBChart C V O dd) (k i : Fin dd)
     ← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, h2] at h1
   exact (mul_right_cancel₀ hP h1).symm
 
+/- English proof (translation)
+Conclude with `frobX_of (triple_multiplication_integral Y.B.G Y.intF V.l k) (fun j => pderiv_triple_multiplication_maximal Y k j)`.
+-/
 theorem triple_multiplication_frobenius (Y : FBChart C V O dd) (k : Fin dd) : FrobX V (m3 Y.B.G V.l k) := by
   exact frobX_of (triple_multiplication_integral Y.B.G Y.intF V.l k) (fun j => pderiv_triple_multiplication_maximal Y k j)
 
+/- English proof (translation)
+Unfold `VF.MM`. Rewrite using `[AddValuation.map_zero, ← WithTop.coe_zero]`. Conclude with `WithTop.coe_lt_top _`.
+-/
 private theorem mm_zero_of_vf : V.MM (0 : C) := by
   unfold VF.MM
   rw [AddValuation.map_zero, ← WithTop.coe_zero]
   exact WithTop.coe_lt_top _
 
+/- English proof (translation)
+Unfold `VF.MM at *`. Conclude with `lt_of_lt_of_le (lt_min ha hb) (AddValuation.map_add _ _ _)`.
+-/
 private theorem mm_add_character_germs {a b : C} (ha : V.MM a) (hb : V.MM b) : V.MM (a + b) := by
   unfold VF.MM at *
   exact lt_of_lt_of_le (lt_min ha hb) (AddValuation.map_add _ _ _)
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction a (fun x => V.MM x) (fun x y hx hy => mm_add_character_germs hx hy) mm_zero_of_vf h`.
+-/
 private theorem mm_sum_character_germs {ι : Type} (s : Finset ι) (a : ι → C) (h : ∀ i ∈ s, V.MM (a i)) :
     V.MM (∑ i ∈ s, a i) :=
   Finset.sum_induction a (fun x => V.MM x) (fun x y hx hy => mm_add_character_germs hx hy) mm_zero_of_vf h
 
+/- English proof (translation)
+Unfold `VF.MM at *`. Unfold `VF.Ge at hb`. Rewrite using `[AddValuation.map_mul]`. Establish `hb' : (0 : WithTop ℝ) ≤ V.v b` using `by simpa using hb`. Conclude with `lt_of_lt_of_le ha (le_add_of_nonneg_right hb')`.
+-/
 private theorem mm_mul_ge_zero_right {a b : C} (ha : V.MM a) (hb : V.Ge 0 b) : V.MM (a * b) := by
   unfold VF.MM at *
   unfold VF.Ge at hb
@@ -206,6 +288,35 @@ private theorem mm_mul_ge_zero_right {a b : C} (ha : V.MM a) (hb : V.Ge 0 b) : V
   have hb' : (0 : WithTop ℝ) ≤ V.v b := by simpa using hb
   exact lt_of_lt_of_le ha (le_add_of_nonneg_right hb')
 
+/- English proof (translation)
+Use `set N := ix i V.l γ with hN`. Establish `hl0 : 0 < V.l` using `V.l_prime.pos`. Establish `hNi : N ((0 : Fin 3), i) = V.l` using `by rw [hN, index_raise_first, if_pos rfl]`. Establish `key : ∀ a : Fin 3 × Fin dd →₀ ℕ, a ≤ N → a ≠ Finsupp.single ((0 : Fin 3), i) V.l → V.MM (coeff a (m3 Y.B.G V.l k))`. Introduce `a ha hne`.
+
+Distinguish the cases in `hz : ∃ s : Fin 3 × Fin dd, s.1 ≠ 0 ∧ a s ≠ 0`. Take `⟨s, hs, has⟩` from `hz`. Rewrite using `[triple_multiplication_first_only Y k a s hs has]`. Conclude with `mm_zero_of_vf`. Use `push_neg at hz`.
+
+Establish `hx : ∀ j, j ≠ i → a ((0 : Fin 3), j) = 0` using `fun j hj => x_le i γ ha j hj`. Distinguish the cases in `hd : V.l ∣ a ((0 : Fin 3), i)`. Establish `hle : a ((0 : Fin 3), i) ≤ V.l`. Use `ha ((0 : Fin 3), i)` as an intermediate fact. Rewrite `this` using `[hNi]`. Then use the resulting hypothesis.
+
+Establish `h01 : a ((0 : Fin 3), i) = 0 ∨ a ((0 : Fin 3), i) = V.l`. Take `⟨q, hq⟩` from `hd`. Break down `q with _ | _ | q` into its components or cases. Use `left`. Simplify using `using hq`.
+
+Use `right`. Simplify using `using hq`. It suffices to derive a contradiction. Establish `h3` using `hq ▸ hle`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hext : ∀ c : ℕ, a ((0 : Fin 3), i) = c → a = Finsupp.single ((0 : Fin 3), i) c`. Introduce `c hc`. Use extensionality with `⟨kk, j⟩`. Proceed by induction on `kk using Fin.cases with`. Consider the case `zero`.
+
+Rewrite using `[Finsupp.single_apply]`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Rewrite using `[if_pos rfl]`. Conclude with `hc`.
+
+Rewrite using `[if_neg (fun h => hj (congrArg Prod.snd h).symm), hx j hj]`. Consider the case `succ kk'`. Rewrite using `[Finsupp.single_apply, if_neg (fun h => Fin.succ_ne_zero _ (congrArg Prod.fst h).symm)]`. Conclude with `hz _ (Fin.succ_ne_zero _)`. Break down `h01 with h0 | hL` into its components or cases.
+
+Rewrite using `[hext 0 h0, Finsupp.single_zero, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, triple_multiplication_constantCoeff]`. Conclude with `mm_zero_of_vf`. Conclude with `absurd (hext V.l hL) hne`. Conclude with `triple_multiplication_frobenius Y k a ⟨i, hd⟩`. Rewrite using `[MvPowerSeries.coeff_mul]`.
+
+Establish `hx0 : (Finsupp.single ((0 : Fin 3), i) V.l, γ.mapDomain (up 2)) ∈ Finset.HasAntidiagonal.antidiagonal N`. Rewrite using `[Finset.HasAntidiagonal.mem_antidiagonal, hN]`. Both sides reduce to the same expression. Rewrite using `[← Finset.add_sum_erase _ _ hx0]`. Simplify using `only`.
+
+Rewrite using `[coeff_triple_multiplication_single Y k i V.l, add_sub_cancel_left]`. Apply `mm_sum_character_germs` to reduce the goal to its premises. Introduce `x hx`. Take `⟨hne, hxa⟩` from `Finset.mem_erase.mp hx`. Establish `hxa'` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hxa`.
+
+Establish `ha : x.1 ≤ N`. Rewrite using `[← hxa']`. Conclude with `le_self_add`. Establish `hne1 : x.1 ≠ Finsupp.single ((0 : Fin 3), i) V.l`. Introduce `h1`.
+
+Apply `hne` to reduce the goal to its premises. Establish `h2 : x.2 = γ.mapDomain (up 2)`. Establish `h3` using `hxa'`. Rewrite `h3` using `[h1, hN]`. Unfold `ix at h3`.
+
+Conclude with `add_left_cancel h3`. Conclude with `Prod.ext h1 h2`. Conclude with `mm_mul_ge_zero_right (key x.1 ha hne1) (hG x.2)`.
+-/
 theorem m3mul (Y : FBChart C V O dd) (k i : Fin dd) (γ : Fin 2 × Fin dd →₀ ℕ) {G : PS C 3 dd} (hG : IntS V G) :
     V.MM (coeff (ix i V.l γ) (m3 Y.B.G V.l k * G) -
       coeff (Finsupp.single ((0 : Fin 1), i) V.l) (mulL Y.B.G.F V.l k) * coeff (γ.mapDomain (up 2)) G) := by
@@ -280,6 +391,11 @@ theorem m3mul (Y : FBChart C V O dd) (k i : Fin dd) (γ : Fin 2 × Fin dd →₀
     exact Prod.ext h1 h2
   exact mm_mul_ge_zero_right (key x.1 ha hne1) (hG x.2)
 
+/- English proof (translation)
+Introduce `μ`. Unfold `VF.Ge`. Rewrite using `[MvPowerSeries.coeff_one]`. Use `split_ifs`. Simplify using `[AddValuation.map_one]`.
+
+Simplify using `[AddValuation.map_zero]`.
+-/
 private theorem intS_one' {V : VF C} {σ : Type} : IntS V (1 : MvPowerSeries σ C) := by
   intro μ
   unfold VF.Ge
@@ -288,6 +404,11 @@ private theorem intS_one' {V : VF C} {σ : Type} : IntS V (1 : MvPowerSeries σ 
   · simp [AddValuation.map_one]
   · simp [AddValuation.map_zero]
 
+/- English proof (translation)
+Introduce `μ`. Rewrite using `[MvPowerSeries.coeff_mul]`. Unfold `VF.Ge`. Apply `AddValuation.map_le_sum` to reduce the goal to its premises. Introduce `x _`.
+
+Rewrite using `[AddValuation.map_mul]`. Establish `h1` using `hf x.1`. Establish `h2` using `hg x.2`. Unfold `VF.Ge at h1 h2`. Simplify using `using add_le_add h1 h2`.
+-/
 private theorem intS_mul_character_germs' {V : VF C} {σ : Type} {f g : MvPowerSeries σ C} (hf : IntS V f)
     (hg : IntS V g) : IntS V (f * g) := by
   intro μ
@@ -301,12 +422,24 @@ private theorem intS_mul_character_germs' {V : VF C} {σ : Type} {f g : MvPowerS
   unfold VF.Ge at h1 h2
   simpa using add_le_add h1 h2
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero]`. Conclude with `intS_one'`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `intS_mul_character_germs' ih hf`.
+-/
 private theorem intS_pow' {V : VF C} {σ : Type} {f : MvPowerSeries σ C} (hf : IntS V f) (k : ℕ) :
     IntS V (f ^ k) := by
   induction k with
   | zero => rw [pow_zero]; exact intS_one'
   | succ k ih => rw [pow_succ]; exact intS_mul_character_germs' ih hf
 
+/- English proof (translation)
+Establish `hs : MvPowerSeries.HasSubst (fun p : Fin m × Fin dd => a p.1 p.2)` using `by first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun p => ha p.1 p.2)`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' (fun p => ha p.1 p.2)`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun p => by rw [ha p.1 p.2]; exact IsNilpotent.zero)`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun p => by rw [ha p.1 p.2]; exact IsNilpotent.zero)`.
+
+Introduce `e`. Use `show V.Ge 0 (coeff e (MvPowerSeries.subst (fun p : Fin m × Fin dd => a p.1 p.2) f))`. Rewrite using `[MvPowerSeries.coeff_subst hs, finsum_eq_sum _ (MvPowerSeries.coeff_subst_finite hs f e)]`. Unfold `VF.Ge`. Apply `AddValuation.map_le_sum` to reduce the goal to its premises.
+
+Introduce `d _`. Rewrite using `[smul_eq_mul, AddValuation.map_mul]`. Establish `hd : IntS V (d.prod fun s k => (fun p : Fin m × Fin dd => a p.1 p.2) s ^ k)`. Unfold `Finsupp.prod`. Conclude with `Finset.prod_induction _ (fun g => IntS V g) (fun x y hx hy => intS_mul_character_germs' hx hy) intS_one' (fun s _ => intS_pow' (hi s.1 s.2) _)`.
+
+Establish `h1` using `hf d`. Establish `h2` using `hd e`. Unfold `VF.Ge at h1 h2`. Simplify using `using add_le_add h1 h2`.
+-/
 private theorem intS_ev_of_z0_of_intS {V : VF C} {m n : ℕ} {a : Fin m → Pt C n dd} (ha : Z0 a)
     (hi : ∀ k j, IntS V (a k j)) {f : PS C m dd} (hf : IntS V f) : IntS V (ev a f) := by
   have hs : MvPowerSeries.HasSubst (fun p : Fin m × Fin dd => a p.1 p.2) := by
@@ -331,6 +464,9 @@ private theorem intS_ev_of_z0_of_intS {V : VF C} {m n : ℕ} {a : Fin m → Pt C
   unfold VF.Ge at h1 h2
   simpa using add_le_add h1 h2
 
+/- English proof (translation)
+Unfold `VF.MM at *`. Unfold `VF.Ge at ha`. Rewrite using `[AddValuation.map_mul]`. Establish `ha' : (0 : WithTop ℝ) ≤ V.v a` using `by simpa using ha`. Conclude with `lt_of_lt_of_le hb (le_add_of_nonneg_left ha')`.
+-/
 private theorem mm_mul_of_ge_zero_of_mm {a b : C} (ha : V.Ge 0 a) (hb : V.MM b) : V.MM (a * b) := by
   unfold VF.MM at *
   unfold VF.Ge at ha
@@ -338,6 +474,25 @@ private theorem mm_mul_of_ge_zero_of_mm {a b : C} (ha : V.Ge 0 a) (hb : V.MM b) 
   have ha' : (0 : WithTop ℝ) ≤ V.v a := by simpa using ha
   exact lt_of_lt_of_le hb (le_add_of_nonneg_left ha')
 
+/- English proof (translation)
+Establish `hzi : ∀ k i, IntS V ((![m3 Y.B.G V.l, p3 1, p3 2] : Fin 3 → Pt C 3 dd) k i)`. Introduce `k i`. Use `fin_cases k`. Conclude with `triple_multiplication_integral Y.B.G Y.intF V.l i`. Conclude with `triple_coordinate_integral 1 i`.
+
+Conclude with `triple_coordinate_integral 2 i`. Establish `hIT : ∀ k, IntS V (ev (![m3 Y.B.G V.l, p3 1, p3 2] : Fin 3 → Pt C 3 dd) (Tk Y.B.ph2 k))` using `fun k => intS_ev_of_z0_of_intS (constant_zero_triple_multiplication Y) hzi (Tk_int Y.intPh2 k)`. Establish `alg : ∀ (A : Fin dd → Fin dd → C) (B : Fin dd → Fin dd → C) (t : Fin dd → C) (w : Fin dd → C), ∑ i, w i * ∑ k, A i k = ∑ i, ∑ k, w i * (A i k - B k i * t k) + ∑ k, t k * ∑ i, B k i * w i`. Introduce `A B t w`. Establish `h1 : ∀ i, w i * ∑ k, A i k = ∑ k, w i * (A i k - B k i * t k) + ∑ k, w i * (B k i * t k)`.
+
+Introduce `i`. Rewrite using `[← Finset.sum_add_distrib, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl (fun i _ => h1 i), Finset.sum_add_distrib, Finset.sum_comm (f := fun i k => w i * (B k i * t k))]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hA : ∀ i, coeff (ix i V.l γ) (1 + ∑ k, m3 Y.B.G V.l k * ev (![m3 Y.B.G V.l, p3 1, p3 2] : Fin 3 → Pt C 3 dd) (Tk Y.B.ph2 k)) = ∑ k, coeff (ix i V.l γ) (m3 Y.B.G V.l k * ev (![m3 Y.B.G V.l, p3 1, p3 2] : Fin 3 → Pt C 3 dd) (Tk Y.B.ph2 k))`. Introduce `i`. Rewrite using `[map_add, map_sum, MvPowerSeries.coeff_one, if_neg, zero_add]`. Introduce `h`. Establish `h2` using `congrArg (fun p => p ((0 : Fin 3), i)) h`.
+
+Simplify using `[index_raise_first] at h2`. Conclude with `V.l_prime.ne_zero h2`. Unfold `Phi`. Rewrite using `[QQ_expand Y]`. Simplify using `only [hA]`.
+
+Rewrite using `[alg _ (fun k i => coeff (Finsupp.single ((0 : Fin 1), i) V.l) (mulL Y.B.G.F V.l k)) (fun k => coeff (γ.mapDomain (up 2)) (ev (![m3 Y.B.G V.l, p3 1, p3 2] : Fin 3 → Pt C 3 dd) (Tk Y.B.ph2 k)))]`. Apply `mm_add_character_germs` to reduce the goal to its premises. Apply `mm_sum_character_germs` to reduce the goal to its premises. Introduce `i _`. Apply `mm_sum_character_germs` to reduce the goal to its premises.
+
+Introduce `k _`. Establish `hul : V.Ge 0 (u i ^ V.l)`. Unfold `VF.Ge`. Rewrite using `[AddValuation.map_pow]`. Establish `h0 : (0 : WithTop ℝ) ≤ V.v (u i)` using `by simpa [VF.Ge] using hu i`.
+
+Simplify using `using nsmul_nonneg h0 V.l`. Conclude with `mm_mul_of_ge_zero_of_mm hul (m3mul Y k i γ (hIT k))`. Apply `mm_sum_character_germs` to reduce the goal to its premises. Introduce `k _`. Conclude with `mm_mul_of_ge_zero_of_mm (hIT k _) (hV1 k)`.
+-/
 theorem phiQ (Y : FBChart C V O dd) (u : Fin dd → C) (hu : ∀ i, V.Ge 0 (u i)) (hV1 : Y.FirstVanishingAt u)
     (γ : Fin 2 × Fin dd →₀ ℕ) : V.MM (Phi V u (QQ Y) γ) := by
   have hzi : ∀ k i, IntS V ((![m3 Y.B.G V.l, p3 1, p3 2] : Fin 3 → Pt C 3 dd) k i) := by
@@ -393,6 +548,11 @@ theorem phiQ (Y : FBChart C V O dd) (u : Fin dd → C) (hu : ∀ i, V.Ge 0 (u i)
     intro k _
     exact mm_mul_of_ge_zero_of_mm (hIT k _) (hV1 k)
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp [AddValuation.map_zero]`. Consider the case `succ m ih`. Rewrite using `[Nat.cast_succ]`. Use `le_trans (le_min ih ?_) (AddValuation.map_add _ _ _)` and prove the remaining obligations.
+
+Rewrite using `[AddValuation.map_one]`.
+-/
 private theorem v_natCast_nonneg_vf (V : VF C) (m : ℕ) : 0 ≤ V.v (m : C) := by
   induction m with
   | zero => simp [AddValuation.map_zero]
@@ -401,10 +561,16 @@ private theorem v_natCast_nonneg_vf (V : VF C) (m : ℕ) : 0 ≤ V.v (m : C) := 
     refine le_trans (le_min ih ?_) (AddValuation.map_add _ _ _)
     rw [AddValuation.map_one]
 
+/- English proof (translation)
+Unfold `VF.MM at *`. Conclude with `lt_of_lt_of_le (lt_min ha hb) (AddValuation.map_add _ _ _)`.
+-/
 private theorem mm_add_of_both {a b : C} (ha : V.MM a) (hb : V.MM b) : V.MM (a + b) := by
   unfold VF.MM at *
   exact lt_of_lt_of_le (lt_min ha hb) (AddValuation.map_add _ _ _)
 
+/- English proof (translation)
+Use `Finset.sum_induction a (fun x => V.MM x) (fun x y hx hy => mm_add_of_both hx hy) ?_ h` and prove the remaining obligations. Unfold `VF.MM`. Rewrite using `[AddValuation.map_zero, ← WithTop.coe_zero]`. Conclude with `WithTop.coe_lt_top _`.
+-/
 private theorem mm_finset_sum {ι : Type} (s : Finset ι) (a : ι → C) (h : ∀ i ∈ s, V.MM (a i)) :
     V.MM (∑ i ∈ s, a i) := by
   refine Finset.sum_induction a (fun x => V.MM x) (fun x y hx hy => mm_add_of_both hx hy) ?_ h
@@ -412,6 +578,17 @@ private theorem mm_finset_sum {ι : Type} (s : Finset ι) (a : ι → C) (h : �
   rw [AddValuation.map_zero, ← WithTop.coe_zero]
   exact WithTop.coe_lt_top _
 
+/- English proof (translation)
+Take `⟨n, hn⟩ : ∃ n, V.l = n + 1` from `⟨V.l - 1, (Nat.succ_pred_eq_of_pos V.l_prime.pos).symm⟩`. Establish `hpr : (n + 1).Prime` using `hn ▸ V.l_prime`. Establish `hvl : V.v ((n + 1 : ℕ) : C) = 1`. Rewrite using `[← hn]`. Conclude with `V.v_l`.
+
+Rewrite using `[hn, add_pow, Finset.sum_range_succ, Finset.sum_range_succ']`. Simplify using `only [Nat.choose_self, Nat.choose_zero_right, Nat.sub_self, Nat.sub_zero, pow_zero, mul_one, one_mul, Nat.cast_one]`. Establish `e : ∀ A B D : C, A + B + D - D - B = A`. Use `intros`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Apply `mm_finset_sum` to reduce the goal to its premises. Introduce `m hm`. Establish `hm' : m < n` using `Finset.mem_range.mp hm`. Take `⟨q, hq⟩` from `hpr.dvd_choose_self (Nat.succ_ne_zero m) (by omega)`.
+
+Rewrite using `[hq, Nat.cast_mul]`. Unfold `VF.MM`. Rewrite using `[AddValuation.map_mul, AddValuation.map_mul, AddValuation.map_mul, AddValuation.map_pow, AddValuation.map_pow, hvl]`. Establish `h1 : (0 : WithTop ℝ) ≤ (m + 1) • V.v y` using `nsmul_nonneg (by simpa [VF.Ge] using hy) _`. Establish `h2 : (0 : WithTop ℝ) ≤ (n + 1 - (m + 1)) • V.v z` using `nsmul_nonneg (by simpa [VF.Ge] using hz) _`.
+
+Establish `h3` using `v_natCast_nonneg_vf V q`. Establish `h01 : (0 : WithTop ℝ) < 1`. Rewrite using `[← WithTop.coe_zero, ← WithTop.coe_one, WithTop.coe_lt_coe]`. Conclude with `one_pos`. Conclude with `lt_of_lt_of_le (lt_of_lt_of_le h01 (le_add_of_nonneg_right h3)) (le_add_of_nonneg_left (add_nonneg h1 h2))`.
+-/
 private theorem mm_add_pow_l_sub_pow_l_sub_pow_l {y z : C} (hy : V.Ge 0 y) (hz : V.Ge 0 z) :
     V.MM ((y + z) ^ V.l - y ^ V.l - z ^ V.l) := by
   obtain ⟨n, hn⟩ : ∃ n, V.l = n + 1 := ⟨V.l - 1, (Nat.succ_pred_eq_of_pos V.l_prime.pos).symm⟩
@@ -442,6 +619,15 @@ private theorem mm_add_pow_l_sub_pow_l_sub_pow_l {y z : C} (hy : V.Ge 0 y) (hz :
     exact one_pos
   exact lt_of_lt_of_le (lt_of_lt_of_le h01 (le_add_of_nonneg_right h3)) (le_add_of_nonneg_left (add_nonneg h1 h2))
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ (fun x t hx ih => ?_)` and prove the remaining obligations. Simplify using `only [Finset.sum_empty, sub_zero]`. Rewrite using `[zero_pow V.l_prime.ne_zero]`. Unfold `VF.MM`. Rewrite using `[AddValuation.map_zero, ← WithTop.coe_zero]`.
+
+Conclude with `WithTop.coe_lt_top _`. Rewrite using `[Finset.sum_insert hx, Finset.sum_insert hx]`. Establish `hS : V.Ge 0 (∑ i ∈ t, a i)`. Unfold `VF.Ge`. Apply `AddValuation.map_le_sum` to reduce the goal to its premises.
+
+Introduce `i _`. Conclude with `ha i`. Establish `e : (a x + ∑ i ∈ t, a i) ^ V.l - (a x ^ V.l + ∑ i ∈ t, a i ^ V.l) = ((a x + ∑ i ∈ t, a i) ^ V.l - a x ^ V.l - (∑ i ∈ t, a i) ^ V.l) + ((∑ i ∈ t, a i) ^ V.l - ∑ i ∈ t, a i ^ V.l)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `mm_add_of_both (mm_add_pow_l_sub_pow_l_sub_pow_l (ha x) hS) ih`.
+-/
 theorem mm_sum_pow {ι : Type} (s : Finset ι) (a : ι → C) (ha : ∀ i, V.Ge 0 (a i)) :
     V.MM ((∑ i ∈ s, a i) ^ V.l - ∑ i ∈ s, a i ^ V.l) := by
   classical
@@ -464,6 +650,9 @@ theorem mm_sum_pow {ι : Type} (s : Finset ι) (a : ι → C) (ha : ∀ i, V.Ge 
     rw [e]
     exact mm_add_of_both (mm_add_pow_l_sub_pow_l_sub_pow_l (ha x) hS) ih
 
+/- English proof (translation)
+Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h`. Simplify using `only [up, Prod.mk.injEq] at h`. Conclude with `Fin.succ_ne_zero _ h.1.symm`.
+-/
 private theorem single_zero_apply_up_two_eq_zero (i : Fin dd) (L : ℕ) (t : Fin 2 × Fin dd) :
     (Finsupp.single ((0 : Fin 3), i) L : Fin 3 × Fin dd →₀ ℕ) (up 2 t) = 0 := by
   rw [Finsupp.single_apply, if_neg]
@@ -471,10 +660,20 @@ private theorem single_zero_apply_up_two_eq_zero (i : Fin dd) (L : ℕ) (t : Fin
   simp only [up, Prod.mk.injEq] at h
   exact Fin.succ_ne_zero _ h.1.symm
 
+/- English proof (translation)
+Rewrite using `[ix, Finsupp.add_apply, single_zero_apply_up_two_eq_zero, zero_add, Finsupp.mapDomain_apply (up_inj 2)]`.
+-/
 private theorem ix_apply_up_two (i : Fin dd) (L : ℕ) (γ : Fin 2 × Fin dd →₀ ℕ) (t : Fin 2 × Fin dd) :
     ix i L γ (up 2 t) = γ t := by
   rw [ix, Finsupp.add_apply, single_zero_apply_up_two_eq_zero, zero_add, Finsupp.mapDomain_apply (up_inj 2)]
 
+/- English proof (translation)
+Use extensionality with `⟨k, j⟩`. Proceed by induction on `k using Fin.cases with`. Consider the case `zero`. Establish `hn : ((0 : Fin 3), j) ∉ Set.range (up (dd` using `dd) 2) := by`. Introduce and unpack `⟨q, hq⟩`.
+
+Simplify using `only [up, Prod.mk.injEq] at hq`. Conclude with `Fin.succ_ne_zero _ hq.1`. Rewrite using `[Finsupp.mapRange_apply, index_raise_first, Finsupp.add_apply, Finsupp.mapDomain_notin_range _ _ hn, zero_add, Finsupp.single_apply]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+
+Simplify using `[Nat.div_self hL]`. Simplify using `[h, Ne.symm h]`. Consider the case `succ k'`. Establish `e : ((Fin.succ k', j) : Fin 3 × Fin dd) = up 2 (k', j)` using `rfl`. Rewrite using `[e, Finsupp.mapRange_apply, ix_apply_up_two, Finsupp.add_apply, single_zero_apply_up_two_eq_zero, add_zero, Finsupp.mapDomain_apply (up_inj 2), Finsupp.mapRange_apply]`.
+-/
 theorem ix_div (i : Fin dd) (γ : Fin 2 × Fin dd →₀ ℕ) (L : ℕ) (hL : 0 < L) :
     (ix i L γ).mapRange (fun n => n / L) (Nat.zero_div L) =
       (γ.mapRange (fun n => n / L) (Nat.zero_div L)).mapDomain (up 2) + Finsupp.single ((0 : Fin 3), i) 1 := by
@@ -496,6 +695,13 @@ theorem ix_div (i : Fin dd) (γ : Fin 2 × Fin dd →₀ ℕ) (L : ℕ) (hL : 0 
     rw [e, Finsupp.mapRange_apply, ix_apply_up_two, Finsupp.add_apply, single_zero_apply_up_two_eq_zero, add_zero,
       Finsupp.mapDomain_apply (up_inj 2), Finsupp.mapRange_apply]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h t`. Use `h (up 2 t)` as an intermediate fact. Rewrite `this` using `[ix_apply_up_two]`. Then use the resulting hypothesis. Introduce and unpack `h ⟨k, j⟩`.
+
+Proceed by induction on `k using Fin.cases with`. Consider the case `zero`. Rewrite using `[index_raise_first]`. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `succ k'`.
+
+Establish `e : ((Fin.succ k', j) : Fin 3 × Fin dd) = up 2 (k', j)` using `rfl`. Rewrite using `[e, ix_apply_up_two]`. Conclude with `h _`.
+-/
 theorem ix_dvd (i : Fin dd) (γ : Fin 2 × Fin dd →₀ ℕ) :
     (∀ s, V.l ∣ ix i V.l γ s) ↔ ∀ t, V.l ∣ γ t := by
   constructor
@@ -512,6 +718,19 @@ theorem ix_dvd (i : Fin dd) (γ : Fin 2 × Fin dd →₀ ℕ) :
       rw [e, ix_apply_up_two]
       exact h _
 
+/- English proof (translation)
+Establish `hl` using `V.l_prime`. Establish `hP` using `MaximalIdealCongruence.mms_pow_frobTw (V := V) Y.intPh2`. Establish `e1 : Phi V u (Y.B.ph2 ^ V.l) γ = ∑ i, u i ^ V.l * (coeff (ix i V.l γ) (Y.B.ph2 ^ V.l - frobTw V.l Y.B.ph2)) + ∑ i, u i ^ V.l * coeff (ix i V.l γ) (frobTw V.l Y.B.ph2)`. Unfold `Phi`. Rewrite using `[← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, add_sub_assoc]`. Use `GmExArith.mm_add (GmExArith.mm_sum fun i _ => GmExArith.mm_int_mul ((hu i).pow _) (hP _)) ?_` and prove the remaining obligations.
+
+Rewrite using `[MaximalIdealCongruence.coeff_frobTw]`. Distinguish the cases in `hd : ∀ t, V.l ∣ γ t`. Rewrite using `[if_pos hd]`. Establish `e2 : ∀ i, coeff (ix i V.l γ) (frobTw V.l Y.B.ph2) = (coeff ((γ.mapRange (fun n => n / V.l) (Nat.zero_div V.l)).mapDomain (up 2) + Finsupp.single ((0 : Fin 3), i) 1) Y.B.ph2) ^ V.l`. Introduce `i`.
+
+Rewrite using `[MaximalIdealCongruence.coeff_frobTw, if_pos ((ix_dvd i γ).2 hd), ix_div i γ V.l hl.pos]`. Simplify using `only [e2]`. Use `set ν := γ.mapRange (fun n => n / V.l) (Nat.zero_div V.l) with hν`. Establish `e3 : coeff ν (Y.chartLinearTerm u) = ∑ i, u i * coeff (ν.mapDomain (up 2) + Finsupp.single ((0 : Fin 3), i) 1) Y.B.ph2`. Both sides reduce to the same expression.
+
+Rewrite using `[e3]`. Establish `e4 : ∑ i, u i ^ V.l * coeff (ν.mapDomain (up 2) + Finsupp.single ((0 : Fin 3), i) 1) Y.B.ph2 ^ V.l = ∑ i, (u i * coeff (ν.mapDomain (up 2) + Finsupp.single ((0 : Fin 3), i) 1) Y.B.ph2) ^ V.l` using `Finset.sum_congr rfl fun i _ => (mul_pow _ _ _).symm`. Rewrite using `[e4, ← neg_sub]`. Conclude with `GmExArith.mm_neg (mm_sum_pow _ _ fun i => (hu i).mul_int (Y.intPh2 _))`. Rewrite using `[if_neg hd, sub_zero]`.
+
+Use `GmExArith.mm_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MaximalIdealCongruence.coeff_frobTw, if_neg (fun h => hd ((ix_dvd i γ).1 h)), mul_zero]`. Conclude with `GmExArith.mm_zero`.
+-/
 theorem phiP (Y : FBChart C V O dd) (u : Fin dd → C) (hu : ∀ i, V.Ge 0 (u i)) (γ : Fin 2 × Fin dd →₀ ℕ) :
     V.MM (Phi V u (Y.B.ph2 ^ V.l) γ - coeff γ (frobTw V.l (Y.chartLinearTerm u))) := by
   have hl := V.l_prime

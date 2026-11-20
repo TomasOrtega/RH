@@ -6,20 +6,35 @@ open scoped TensorProduct
 
 section SlopeTestRemainingChoices
 
+/- English proof (translation)
+Simplify using `[lft, Finset.mem_toLeft]`.
+-/
 private lemma mem_lft' {ι κ : Type} [LinearOrder ι] [LinearOrder κ] (s : Finset (ι ⊕ₗ κ)) (a : ι) :
     a ∈ lft s ↔ toLex (Sum.inl a) ∈ s := by
   simp [lft, Finset.mem_toLeft]
 
+/- English proof (translation)
+Simplify using `[rgt, Finset.mem_toRight]`.
+-/
 private lemma mem_rgt' {ι κ : Type} [LinearOrder ι] [LinearOrder κ] (s : Finset (ι ⊕ₗ κ)) (a : κ) :
     a ∈ rgt s ↔ toLex (Sum.inr a) ∈ s := by
   simp [rgt, Finset.mem_toRight]
 
+/- English proof (translation)
+Introduce `a ha` and use `(mem_lft' _ _).2 (h ((mem_lft' _ _).1 ha))`.
+-/
 private lemma lft_mono' {ι κ : Type} [LinearOrder ι] [LinearOrder κ] {s s' : Finset (ι ⊕ₗ κ)} (h : s ⊆ s') :
     lft s ⊆ lft s' := fun a ha => (mem_lft' _ _).2 (h ((mem_lft' _ _).1 ha))
 
+/- English proof (translation)
+Introduce `a ha` and use `(mem_rgt' _ _).2 (h ((mem_rgt' _ _).1 ha))`.
+-/
 private lemma rgt_mono' {ι κ : Type} [LinearOrder ι] [LinearOrder κ] {s s' : Finset (ι ⊕ₗ κ)} (h : s ⊆ s') :
     rgt s ⊆ rgt s' := fun a ha => (mem_rgt' _ _).2 (h ((mem_rgt' _ _).1 ha))
 
+/- English proof (translation)
+Unfold `pk`. Rewrite using `[dif_pos h]`. Conclude with `Finset.min'_mem _ _`.
+-/
 private lemma pk_mem' {d : ℕ} {I : Finset (Fin (d + 1))} (h : I.Nonempty) : pk I ∈ I := by
   unfold pk
   rw [dif_pos h]
@@ -28,6 +43,9 @@ private lemma pk_mem' {d : ℕ} {I : Finset (Fin (d + 1))} (h : I.Nonempty) : pk
 variable {d : ℕ} {S E : Type} [CommRing S] [Algebra ℂ S] [AddCommGroup E] [Module ℂ E] (T : Sys d S E)
   {κ : Type} [LinearOrder κ]
 
+/- English proof (translation)
+Establish `e : T.u n a b l * (T.u n a' b' l)⁻¹ = (T.X a * (T.X a')⁻¹) ^ (n l).1 * (T.Y b * (T.Y b')⁻¹) ^ (n l).2`. Simplify using `only [Sys.u, mul_inv, mul_pow, inv_pow]`. The two sides agree by associativity and commutativity. Rewrite using `[e, Units.val_mul, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val]`. Conclude with `mul_mem (pow_mem (hT.memX I J hJ a' ha' a) _) (pow_mem (hT.memY I J hI b' hb' b) _)`.
+-/
 private lemma u_quot (hT : T.Good) (n : κ → ℕ × ℕ) {I J : Finset (Fin (d + 1))} (hI : I.Nonempty) (hJ : J.Nonempty)
     {a a' b b' : Fin (d + 1)} (ha' : a' ∈ I) (hb' : b' ∈ J) (l : κ) :
     ((T.u n a b l * (T.u n a' b' l)⁻¹ : Sˣ) : S) ∈ T.R I J := by
@@ -38,12 +56,18 @@ private lemma u_quot (hT : T.Good) (n : κ → ℕ × ℕ) {I J : Finset (Fin (d
   rw [e, Units.val_mul, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val]
   exact mul_mem (pow_mem (hT.memX I J hJ a' ha' a) _) (pow_mem (hT.memY I J hI b' hb' b) _)
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, Units.coe_prod]`. Conclude with `Subalgebra.prod_mem _ (fun l _ => u_quot T hT n hI hJ ha' hb' l)`.
+-/
 private lemma prod_quot (hT : T.Good) (n : κ → ℕ × ℕ) {I J : Finset (Fin (d + 1))} (hI : I.Nonempty) (hJ : J.Nonempty)
     {a a' b b' : Fin (d + 1)} (ha' : a' ∈ I) (hb' : b' ∈ J) (L : Finset κ) :
     (((∏ l ∈ L, T.u n a b l) * (∏ l ∈ L, T.u n a' b' l)⁻¹ : Sˣ) : S) ∈ T.R I J := by
   rw [← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, Units.coe_prod]
   exact Subalgebra.prod_mem _ (fun l _ => u_quot T hT n hI hJ ha' hb' l)
 
+/- English proof (translation)
+Introduce and unpack `y ⟨m, hm, rfl⟩`. Establish `hr` using `prod_quot T hT n hI hJ (a := a) (b := b) ha' hb' L`. Use `⟨T.act (((∏ l ∈ L, T.u n a b l) * (∏ l ∈ L, T.u n a' b' l)⁻¹ : Sˣ) : S) m, hT.stab I J hI hJ _ hr m hm, ?_⟩` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Units.val_mul, mul_comm (∏ l ∈ L, T.u n a b l), mul_inv_cancel_left]`.
+-/
 private lemma lat_le (hT : T.Good) (n : κ → ℕ × ℕ) {I J : Finset (Fin (d + 1))} (hI : I.Nonempty) (hJ : J.Nonempty)
     {a a' b b' : Fin (d + 1)} (ha' : a' ∈ I) (hb' : b' ∈ J) (L : Finset κ) :
     (T.M I J).map (T.act ((∏ l ∈ L, T.u n a b l : Sˣ) : S)) ≤
@@ -55,12 +79,18 @@ private lemma lat_le (hT : T.Good) (n : κ → ℕ × ℕ) {I J : Finset (Fin (d
   rw [← Module.End.mul_apply, ← map_mul, ← Units.val_mul, mul_comm (∏ l ∈ L, T.u n a b l),
     mul_inv_cancel_left]
 
+/- English proof (translation)
+The claim follows from `le_antisymm (lat_le T hT n hI hJ ha' hb' L) (lat_le T hT n hI hJ ha hb L)`.
+-/
 private lemma lat_eq (hT : T.Good) (n : κ → ℕ × ℕ) {I J : Finset (Fin (d + 1))} (hI : I.Nonempty) (hJ : J.Nonempty)
     {a a' b b' : Fin (d + 1)} (ha : a ∈ I) (ha' : a' ∈ I) (hb : b ∈ J) (hb' : b' ∈ J) (L : Finset κ) :
     (T.M I J).map (T.act ((∏ l ∈ L, T.u n a b l : Sˣ) : S)) =
       (T.M I J).map (T.act ((∏ l ∈ L, T.u n a' b' l : Sˣ) : S)) :=
   le_antisymm (lat_le T hT n hI hJ ha' hb' L) (lat_le T hT n hI hJ ha hb L)
 
+/- English proof (translation)
+Establish `hI'` using `Finset.Nonempty.mono hII hI`. Establish `hJ'` using `Finset.Nonempty.mono hJJ hJ`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma lat_mono (hT : T.Good) (n : κ → ℕ × ℕ) {I I' J J' : Finset (Fin (d + 1))} (hI : I.Nonempty)
     (hJ : J.Nonempty) (hII : I ⊆ I') (hJJ : J ⊆ J') (L : Finset κ) :
     (T.M I J).map (T.act ((∏ l ∈ L, T.u n (pk I) (pk J) l : Sˣ) : S)) ≤
@@ -72,11 +102,17 @@ private lemma lat_mono (hT : T.Good) (n : κ → ℕ × ℕ) {I I' J J' : Finset
         Submodule.map_mono (hT.monoM I I' J J' hI hJ hII hJJ)
     _ = _ := lat_eq T hT n hI' hJ' (hII (pk_mem' hI)) (pk_mem' hI') (hJJ (pk_mem' hJ)) (pk_mem' hJ') L
 
+/- English proof (translation)
+The claim follows from `hT.monoR {i} I {j} J (Finset.singleton_nonempty i) (Finset.singleton_nonempty j) (Finset.singleton_subset_iff.2 hi) (Finset.singleton_subset_iff.2 hj) (hA i j l)`.
+-/
 private lemma r_mem (hT : T.Good) (n : κ → ℕ × ℕ) (z : κ → S) (hA : T.admitted n z) {I J : Finset (Fin (d + 1))}
     {i j : Fin (d + 1)} (hi : i ∈ I) (hj : j ∈ J) (l : κ) : T.r n z i j l ∈ T.R I J :=
   hT.monoR {i} I {j} J (Finset.singleton_nonempty i) (Finset.singleton_nonempty j)
     (Finset.singleton_subset_iff.2 hi) (Finset.singleton_subset_iff.2 hj) (hA i j l)
 
+/- English proof (translation)
+Unfold `Sys.colCx kosT`. Use `congr 1`. Use function extensionality and compare the values at `L`. Conclude with `lat_eq T hT n ⟨i, hi⟩ ⟨j, hj⟩ (pk_mem' ⟨i, hi⟩) hi (pk_mem' ⟨j, hj⟩) hj L`.
+-/
 private lemma col_eq (hT : T.Good) (n : κ → ℕ × ℕ) (z : κ → S) {I J : Finset (Fin (d + 1))}
     {i j : Fin (d + 1)} (hi : i ∈ I) (hj : j ∈ J) :
     T.colCx n z I J = kosT T.act (T.M I J) (T.u n i j) z := by
@@ -85,6 +121,11 @@ private lemma col_eq (hT : T.Good) (n : κ → ℕ × ℕ) (z : κ → S) {I J :
   funext L
   exact lat_eq T hT n ⟨i, hi⟩ ⟨j, hj⟩ (pk_mem' ⟨i, hi⟩) hi (pk_mem' ⟨j, hj⟩) hj L
 
+/- English proof (translation)
+Unfold `mixF at hm ⊢`. Distinguish the cases in `h : (lft s).Nonempty ∧ (rgt s).Nonempty`. Establish `h' : (lft s').Nonempty ∧ (rgt s').Nonempty` using `⟨Finset.Nonempty.mono (lft_mono' hs) h.1, Finset.Nonempty.mono (rgt_mono' hs) h.2⟩`. Rewrite `hm` using `[if_pos h]`. Rewrite using `[if_pos h']`.
+
+Conclude with `lat_mono T hT n h.1 h.2 (lft_mono' hs) (rgt_mono' hs) L hm`. Rewrite `hm` using `[if_neg h, Submodule.mem_bot]`. Substitute `hm` using the available equality. Conclude with `zero_mem _`.
+-/
 private lemma mix_mono (hT : T.Good) (n : κ → ℕ × ℕ) (L : Finset κ) {s s' : Finset (Fin (d + 1) ⊕ₗ Fin (d + 1))}
     (hs : s ⊆ s') {m : E}
     (hm : m ∈ mixF (fun I J => (T.M I J).map (T.act ((∏ l ∈ L, T.u n (pk I) (pk J) l : Sˣ) : S))) s) :
@@ -100,6 +141,13 @@ private lemma mix_mono (hT : T.Good) (n : κ → ℕ × ℕ) (L : Finset κ) {s 
     subst hm
     exact zero_mem _
 
+/- English proof (translation)
+Unfold `mixF at hm ⊢`. Distinguish the cases in `h : (lft s).Nonempty ∧ (rgt s).Nonempty`. Rewrite `hm`, the goal using `[if_pos h]`. Rewrite `hm`, the goal using `[Submodule.mem_map]`. Take `⟨m0, hm0, rfl⟩` from `hm`.
+
+Use `⟨T.act (T.r n z (pk (lft s)) (pk (rgt s)) l) m0, hT.stab _ _ h.1 h.2 _ (r_mem T hT n z hA (pk_mem' h.1) (pk_mem' h.2) l) m0 hm0, ?_⟩` and prove the remaining obligations. Establish `e : ((∏ k ∈ insert l L, T.u n (pk (lft s)) (pk (rgt s)) k : Sˣ) : S) * T.r n z (pk (lft s)) (pk (rgt s)) l = z l * ((∏ k ∈ L, T.u n (pk (lft s)) (pk (rgt s)) k : Sˣ) : S)`. Establish `hu` using `Units.mul_inv (T.u n (pk (lft s)) (pk (rgt s)) l)`. Rewrite using `[Finset.prod_insert hl, Units.val_mul]`. Simplify using `only [Sys.r]`.
+
+Take the linear combination `(z l * ((∏ k ∈ L, T.u n (pk (lft s)) (pk (rgt s)) k : Sˣ) : S)) * hu`. Rewrite using `[← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply]`. Rewrite `hm` using `[if_neg h, Submodule.mem_bot]`. Rewrite using `[if_neg h, hm, map_zero]`. Conclude with `zero_mem _`.
+-/
 private lemma mix_step (hT : T.Good) (n : κ → ℕ × ℕ) (z : κ → S) (hA : T.admitted n z) (L : Finset κ) {l : κ} (hl : l ∉ L)
     (s : Finset (Fin (d + 1) ⊕ₗ Fin (d + 1))) {m : E}
     (hm : m ∈ mixF (fun I J => (T.M I J).map (T.act ((∏ l ∈ L, T.u n (pk I) (pk J) l : Sˣ) : S))) s) :
@@ -125,6 +173,27 @@ private lemma mix_step (hT : T.Good) (n : κ → ℕ × ℕ) (z : κ → S) (hA 
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `_`. Unfold `SysOk`. Introduce `d S E _ _ _ _ T κ _ _ n z hT hA`. Use `⟨⟨?_, ?_⟩, fun I J i hi j hj => ⟨fun l => r_mem T hT n z hA hi hj l, col_eq T hT n z hi hj⟩, ?_⟩` and prove the remaining obligations. Introduce `i j`.
+
+Unfold `Sys.wt`. Apply the tactic sequence `rcases ofLex i with a | a <;> rcases ofLex j with b | b <;> simp only [Sum.elim_inl, Sum.elim_inr]`. Conclude with `Commute.one_left _`. Conclude with `Commute.one_left _`. Conclude with `Commute.one_right _`.
+
+Conclude with `(Commute.all (z a) (z b)).map T.act`. Introduce `s t ht m hm`. Take `⟨x, rfl⟩ : ∃ x : Two d ⊕ κ, toLex x = t` from `⟨ofLex t, rfl⟩`. Use `beta_reduce at hm ⊢`. Break down `x with a | l` into its components or cases.
+
+Establish `hw : T.wt z (toLex (Sum.inl a)) = 1` using `rfl`. Rewrite using `[hw, Module.End.one_apply]`. Establish `gen : ∀ s1 : Finset (Two d ⊕ₗ κ), lft s ⊆ lft s1 → rgt s1 = rgt s → m ∈ mixF (fun I J => (T.M I J).map (T.act ((∏ l ∈ rgt s1, T.u n (pk I) (pk J) l : Sˣ) : S))) (lft s1)`. Introduce `s1 h1 h2`. Rewrite using `[h2]`.
+
+Conclude with `mix_mono T hT n (rgt s) h1 hm`. Use `gen _ ?_ ?_` and prove the remaining obligations. Introduce `b hb`. Rewrite `hb`, the goal using `[mem_lft']`. Simplify using `[hb]`.
+
+Use extensionality with `b`. Simplify using `[mem_rgt']`. Establish `hl : l ∉ rgt s` using `fun h => ht ((mem_rgt' s l).1 h)`. Establish `key` using `mix_step T hT n z hA (rgt s) hl (lft s) hm`. Establish `hw : T.wt z (toLex (Sum.inr l)) = T.act (z l)` using `rfl`.
+
+Rewrite using `[hw]`. Establish `gen : ∀ s1 : Finset (Two d ⊕ₗ κ), lft s1 = lft s → rgt s1 = insert l (rgt s) → T.act (z l) m ∈ mixF (fun I J => (T.M I J).map (T.act ((∏ l ∈ rgt s1, T.u n (pk I) (pk J) l : Sˣ) : S))) (lft s1)`. Introduce `s1 h1 h2`. Rewrite using `[h1, h2]`. Conclude with `key`.
+
+Use `gen _ ?_ ?_` and prove the remaining obligations. Use extensionality with `b`. Simplify using `[mem_lft']`. Use extensionality with `b`. Simplify using `[mem_rgt']`.
+
+Introduce `I I' J J' hI hJ hII hJJ m x hx`. Simplify using `only [Cx.Z, Sys.colCx, kosT, acx, Submodule.mem_inf, Submodule.mem_pi, Set.mem_univ, true_implies] at hx ⊢`. Use `⟨fun L => ?_, hx.2⟩` and prove the remaining obligations. Establish `hxL` using `hx.1 L`. Use `split_ifs at hxL ⊢`.
+
+Conclude with `lat_mono T hT n hI hJ hII hJJ L hxL`. Conclude with `hxL`.
+-/
 theorem UpperTheory.Gal.productCup_of_system.sysOk_of :
     WdUni → SysOk := by
   intro _

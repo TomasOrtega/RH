@@ -23,6 +23,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CoefRoot
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T m A cR cL lR lL B pl S Qt tauL lamR lamL gramR gramR' c0R c0R' c0L c0L' h h' i`. Break down `subsingleton_or_nontrivial (VV D.what₂.LL (lamL i)) with hs | hs` into its components or cases. Conclude with `⟨1, ⟨1, one_ne_zero, one_pow _⟩, fun F => by rw [Subsingleton.elim F 0, map_zero, map_zero, smul_zero]⟩`. Take `⟨e, hrat, hco, hpa, hnab, -⟩` from `h.coefL i A.μ0`. Take `⟨e₂, hrat₂, hco₂, hpa₂, hnab₂, -⟩` from `h'.coefL i A.μ0`.
+
+Set `g : Module.End D.what₂.LL (VV D.what₂.LL (lamL i))` to `(e₂.symm.trans e).toLinearMap`. Establish `hcg : ∀ v, c0L' i v = c0L i (g v)` using `fun v => by`. Establish `h1` using `hco₂ (e₂.symm v)`. Rewrite `h1` using `[e₂.apply_symm_apply]`. Rewrite using `[← h1, hco]`.
+
+Both sides reduce to the same expression. Establish `hinj : Function.Injective (c0L i)` using `GlobalTheory.GalLift.rescale_inj (bVV D.what₂.LL (lamL i)) D.what₂.embLL (c0L i) (h.mapL i).2.1`. Establish `hcomm : ∀ (γ : GQ (D.sp.V ((i : ℕ) + 1))) (γE : GL (Fin (D.sp.V ((i : ℕ) + 1)).rank) D.host.E), Bridge.IsRatMat _ γ γE → ∀ v, g (rhoVr tauL (lamL i) γE v) = rhoVr tauL (lamL i) γE (g v)`. Introduce `γ γE hγ v`. Apply `hinj` to reduce the goal to its premises.
+
+Rewrite using `[← hcg, (h'.mapL i).1 γ γE hγ, hcg, (h.mapL i).1 γ γE hγ]`. Take `⟨a, ha⟩` from `GlobalTheory.T.coefficientSpace_endomorphism_scalar_schur D.what₂.LL (lamL i) g (GlobalTheory.T.commutes_all_of_commutes_rationalUnitaryPoints D _ tauL h.tauL_ok (lamL i) g hcomm)`. Establish `hea : ∀ x, e x = a • e₂ x` using `fun x => by`. Establish `h1` using `ha (e₂ x)`. Simplify `h1` using `[g]`.
+
+Use `haveI := e.toEquiv.nontrivial`. Take `⟨i0⟩` from `(A.MtCSD i A.μ0).bV.index_nonempty`. Establish `hx0` using `(A.MtCSD i A.μ0).bV.ne_zero i0`. Establish `hy0 : e₂ ((A.MtCSD i A.μ0).bV i0) ≠ 0` using `fun h0 => hx0 (e₂.injective (h0.trans (map_zero e₂).symm))`. Establish `hm : a ∈ Formalism.DivisionValues.cmMax D.what₂.LL` using `GlobalTheory.CoefUniq.mem_of_coords _ (bVV D.what₂.LL (lamL i)) a hy0 (fun k => hea _ ▸ hrat i0 k) (hrat₂ i0)`.
+
+Establish `hst : star a * a = 1`. Establish `hinj'` using `GlobalTheory.GalLift.rescale_inj _ D.what₂.embLL _ (B.L i A.μ0).pres.coef_li`. Establish `hp0` using `GlobalTheory.CoefUniq.pair_ne_zero D.what₂.embLL _ hinj' _ (B.L i A.μ0).pres.coef_pair hx0`. Use `GlobalTheory.CoefUniq.star_mul_self_of_pair _ a ((hpa₂ _ _).trans_ne hp0) ?_` and prove the remaining obligations. Rewrite using `[← hea, hpa, hpa₂]`.
+
+Establish `hi : IsIntegral ℤ a`. Take `⟨cl, -⟩` from `((B.L i A.μ0).pres.reps 1).exists`. Establish `hL` using `nabAtr_isLattice tauL (lamL i) _ (GlobalTheory.RepsCompare.isLattice_hLat (D.sp.V ((i : ℕ) + 1)) ((B.L i A.μ0).pres.y cl))`. Use `GlobalTheory.CoefUniq.isIntegral_of_keeps _ (fun h0 => ?_) hL.fg a (fun n hn => ?_)` and prove the remaining obligations. Establish `h1` using `hL.span_eq_top`.
+
+Rewrite `h1` using `[h0, Submodule.bot_coe, Submodule.span_zero_singleton]`. Conclude with `bot_ne_top h1`. Rewrite `hn` using `[← hnab₂ cl]`. Take `⟨m, hm, rfl⟩` from `hn`. Rewrite using `[← hnab cl]`.
+
+Conclude with `⟨m, hm, hea m⟩`. Take `⟨n, hn, han⟩` from `GlobalTheory.CoefUniq.pow_eq_one_of_cmMax hm hst hi`. Conclude with `⟨a, ⟨n, hn, han⟩, fun F => by rw [hcg, ha, LinearMap.map_smulₛₗ]⟩`.
+-/
 theorem coef_root : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {m : ℕ}
     {A : FamIn D.what₂.LL G Pl0 T m} {cR : Bridge.CoefDat D D.sp.X'} {cL : ∀ i : Fin m, Bridge.CoefDat D (D.sp.V ((i : ℕ) + 1))}
     {lR : ∀ t, Bridge.LevEnv D D.sp.X' (A.ok t × ℕ)} {lL : ∀ (i : Fin m) t, Bridge.LevEnv D (D.sp.V ((i : ℕ) + 1)) (A.ok t × ℕ)}

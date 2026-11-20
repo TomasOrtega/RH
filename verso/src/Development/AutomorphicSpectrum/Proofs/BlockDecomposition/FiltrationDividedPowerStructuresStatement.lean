@@ -5,5 +5,8 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 set_option backward.isDefEq.respectTransparency false
 open CategoryTheory GroundTheory.PAdicHodge CrystallineSemistableComparison CrystallineSemistableComparison.PAlg
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PerfFil.pdI_main | exact GlobalTheory.CompanionTheory.PerfFil.pdI_main | (intros; apply GlobalTheory.CompanionTheory.PerfFil.pdI_main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.filtration_divided_power_structures : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l), R.PdI (A.Fil0 1) ∧ R.PdI A.PFil0 ∧ ∀ x ∈ A.Fil0 1, ∀ (k : ℕ) (y : A.Acr0), (k.factorial : A.Acr0) * y = x ^ k → y ∈ A.Fil0 k := by
   first | exact @GlobalTheory.CompanionTheory.PerfFil.pdI_main | exact GlobalTheory.CompanionTheory.PerfFil.pdI_main | (intros; apply GlobalTheory.CompanionTheory.PerfFil.pdI_main <;> assumption)

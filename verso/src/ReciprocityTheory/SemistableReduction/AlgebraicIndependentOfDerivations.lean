@@ -6,6 +6,11 @@ namespace DerivationAlgebraicIndependence
 
 open MvPolynomial
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [map_add, hp, hq, add_mul, Finset.sum_add_distrib]`. Consider the case `mul_X p j hp`. Simplify using `only [map_mul, aeval_X, Derivation.leibniz, hp, smul_eq_mul, pderiv_X, Pi.single_apply, add_mul, Finset.sum_add_distrib, Finset.mul_sum]`.
+
+Simplify using `only [map_add, map_mul, aeval_X, apply_ite (aeval z), map_zero, map_one, add_mul, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem derivation_aeval_eq {K R ι : Type*} [CommRing K] [CommRing R] [Algebra K R] [Fintype ι]
     (d : Derivation K R R) (z : ι → R) (P : MvPolynomial ι K) :
     d (aeval z P) = ∑ i, aeval z (pderiv i P) * d (z i) := by
@@ -21,6 +26,17 @@ theorem derivation_aeval_eq {K R ι : Type*} [CommRing K] [CommRing R] [Algebra 
       Finset.mem_univ, if_true]
     ring
 
+/- English proof (translation)
+Establish `hsum : pderiv i P = ∑ m ∈ P.support, pderiv i (monomial m (coeff m P))` using `by conv_lhs => rw [P.as_sum]`. Rewrite using `[map_sum]`. Rewrite using `[hsum]`. Use `lt_of_le_of_lt (totalDegree_finset_sum _ _) ?_` and prove the remaining obligations. Rewrite using `[Finset.sup_lt_iff hP]`.
+
+Introduce `m hm`. Rewrite using `[pderiv_monomial]`. Distinguish the cases in `hmi : m i = 0`. Simplify using `[hmi, hP]`. Establish `hm1 : m = (m - Finsupp.single i 1) + Finsupp.single i 1`.
+
+Use extensionality with `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `[Finsupp.single_apply, Ne.symm hk]`. Establish `key : ((m - Finsupp.single i 1).sum fun _ e => e) + 1 = m.sum fun _ e => e` using `by conv_rhs => rw [hm1]`. Rewrite using `[Finsupp.sum_add_index' (by simp) (by intros; rfl), Finsupp.sum_single_index rfl]`. Establish `hle : (m.sum fun _ e => e) ≤ P.totalDegree` using `le_totalDegree hm`. Use `lt_of_le_of_lt (totalDegree_monomial_le _ _) ?_` and prove the remaining obligations.
+
+Use `show ((m - Finsupp.single i 1).sum fun _ e => e) < _`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem totalDegree_pderiv_lt {K ι : Type*} [CommRing K] (P : MvPolynomial ι K) (i : ι)
     (hP : 0 < P.totalDegree) : (pderiv i P).totalDegree < P.totalDegree := by
   classical
@@ -47,6 +63,17 @@ theorem totalDegree_pderiv_lt {K ι : Type*} [CommRing K] (P : MvPolynomial ι K
     show ((m - Finsupp.single i 1).sum fun _ e => e) < _
     omega
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hmd⟩` from `Finset.exists_mem_eq_sup P.support (Finset.nonempty_of_ne_empty (by rintro hs; apply hne; simp [totalDegree, hs])) (fun s => s.sum fun _ e => e)`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Apply `hne` to reduce the goal to its premises.
+
+Simplify `hmd` using `[totalDegree]`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, m i ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hm0 (Finsupp.ext hc)`.
+
+Establish `hc` using `congrArg (coeff (m - Finsupp.single i 1)) (h i)`. Rewrite `hc` using `[coeff_pderiv, coeff_zero]`. Establish `hm' : m - Finsupp.single i 1 + Finsupp.single i 1 = m`. Use extensionality with `k`. Distinguish the cases in `hk : k = i`.
+
+Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using `[Finsupp.single_apply, Ne.symm hk]`. Rewrite `hc` using `[hm']`.
+
+Break down `mul_eq_zero.mp hc with h1 | h1` into its components or cases. Conclude with `(mem_support_iff.mp hm) h1`. Conclude with `Nat.cast_add_one_ne_zero _ h1`.
+-/
 theorem eq_C_of_pderiv_eq_zero {K ι : Type*} [Field K] [CharZero K] (P : MvPolynomial ι K)
     (h : ∀ i, pderiv i P = 0) : P.totalDegree = 0 := by
   classical
@@ -74,6 +101,15 @@ theorem eq_C_of_pderiv_eq_zero {K ι : Type*} [Field K] [CharZero K] (P : MvPoly
   · exact (mem_support_iff.mp hm) h1
   · exact Nat.cast_add_one_ne_zero _ h1
 
+/- English proof (translation)
+Rewrite using `[algebraicIndependent_iff]`. It suffices to establish `H : ∀ n (P : MvPolynomial ι K), P.totalDegree = n → aeval z P = 0 → P = 0 from fun P => H _ P rfl`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`.
+
+Introduce `P hn hP`. Establish `hd : ∀ i, pderiv i P = 0`. Establish `hv : ∀ i, aeval z (pderiv i P) = 0` using `h (fun i => aeval z (pderiv i P)) (fun j => by rw [← derivation_aeval_eq, hP, map_zero])`. Introduce `i`. Distinguish the cases in `h0 : P.totalDegree = 0`.
+
+Rewrite `h0` using `[totalDegree_eq_zero_iff_eq_C]`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Conclude with `ih _ (hn ▸ totalDegree_pderiv_lt P i (Nat.pos_of_ne_zero h0)) _ rfl (hv i)`. Establish `h0` using `eq_C_of_pderiv_eq_zero P hd`.
+
+Rewrite `h0` using `[totalDegree_eq_zero_iff_eq_C]`. Rewrite `hP` using `[h0, aeval_C]`. Establish `hc : coeff 0 P = 0` using `(algebraMap K R).injective (hP.trans (map_zero _).symm)`. Rewrite using `[h0, hc, map_zero]`.
+-/
 theorem algebraicIndependent_of_derivations {K R ι J : Type*} [Field K] [CharZero K] [CommRing R]
     [Nontrivial R] [Algebra K R] [Fintype ι] (z : ι → R) (δ : J → Derivation K R R)
     (h : ∀ c : ι → R, (∀ j, ∑ i, c i * δ j (z i) = 0) → ∀ i, c i = 0) :

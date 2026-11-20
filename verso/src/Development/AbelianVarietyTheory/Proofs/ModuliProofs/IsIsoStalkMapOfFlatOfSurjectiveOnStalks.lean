@@ -13,6 +13,9 @@ namespace GlobalTheory
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct Pointwise in
 
+/- English proof (translation)
+Rewrite using `[isDominant_iff, DenseRange, Scheme.Pullback.range_fst]`. Conclude with `j.denseRange.preimage hp`.
+-/
 theorem _root_.GlobalTheory.isDominant_pullback_fst_of_isOpenMap {X U Y : Scheme.{0}} (j : U ⟶ X) [IsDominant j]
     (p : Y ⟶ X) (hp : IsOpenMap p) : IsDominant (pullback.fst p j) := by
   rw [isDominant_iff, DenseRange, Scheme.Pullback.range_fst]
@@ -21,6 +24,9 @@ theorem _root_.GlobalTheory.isDominant_pullback_fst_of_isOpenMap {X U Y : Scheme
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct Pointwise in
 
+/- English proof (translation)
+Establish `h1 : closure ({y} : Set T) ⊆ closure {x}` using `hx.2 isIrreducible_singleton.closure h.closure_subset`. Conclude with `(h.antisymm (specializes_iff_closure_subset.2 h1)).eq`.
+-/
 theorem _root_.GlobalTheory.eq_of_specializes_of_mem_genericPoints {T : Type*} [TopologicalSpace T] [T0Space T]
     {x y : T} (hx : x ∈ genericPoints T) (h : y ⤳ x) : y = x := by
   have h1 : closure ({y} : Set T) ⊆ closure {x} :=
@@ -30,6 +36,27 @@ theorem _root_.GlobalTheory.eq_of_specializes_of_mem_genericPoints {T : Type*} [
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct Pointwise in
 
+/- English proof (translation)
+Introduce `ξ hξ`. Take `⟨V, hV, hξV, -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens) (show ξ ∈ (⊤ : X.Opens) from trivial)`. Use `replace hV : IsAffineOpen V := hV`. Establish `hc : IsCompact (j ⁻¹' (V : Set X))` using `QuasiCompact.isCompact_preimage _ V.isOpen hV.isCompact`. Take `⟨s, hs, hW⟩` from `isCompact_and_isOpen_iff_finite_and_eq_biUnion_affineOpens.mp ⟨hc, V.isOpen.preimage j.continuous⟩`.
+
+Establish `hcl : ξ ∈ closure (j '' (j ⁻¹' (V : Set X)))`. Rewrite using `[Set.image_preimage_eq_inter_range]`. Conclude with `j.denseRange.open_subset_closure_inter V.isOpen hξV`. Rewrite `hcl` using `[hW, Set.image_iUnion₂, hs.closure_biUnion, Set.mem_iUnion₂]`. Take `⟨W, hWs, hξW⟩` from `hcl`.
+
+Establish `hWV : (W : Set U) ⊆ j ⁻¹' (V : Set X)`. Rewrite using `[hW]`. Conclude with `Set.subset_biUnion_of_mem (u := fun i : U.affineOpens => ((i : U.Opens) : Set U)) hWs`. Establish `hWa : IsAffineOpen (W : U.Opens)` using `W.2`. Use `set g := hWa.fromSpec ≫ j with hg`.
+
+Establish `hrg : Set.range g = j '' (W : Set U)`. Rewrite using `[hg, Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, hWa.range_fromSpec]`. Establish `hsub : Set.range g ⊆ Set.range hV.fromSpec`. Rewrite using `[hrg, hV.range_fromSpec]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Conclude with `hWV hx`. Use `set k := IsOpenImmersion.lift hV.fromSpec g hsub with hk`. Establish `hkg : k ≫ hV.fromSpec = g` using `IsOpenImmersion.lift_fac _ _ _`. Use `set φ := Spec.preimage k`. Establish `hφ : Spec.map φ = k` using `Spec.map_preimage k`.
+
+Take `⟨p, hp⟩ : ξ ∈ Set.range hV.fromSpec` from `by rw [hV.range_fromSpec]; exact hξV`. Establish `hinj : Function.Injective hV.fromSpec` using `hV.fromSpec.isOpenEmbedding.injective`. Establish `hpcl₀ : p ∈ closure (Set.range (Spec.map φ))`. Rewrite using `[hV.fromSpec.isOpenEmbedding.isInducing.closure_eq_preimage_closure_image, Set.mem_preimage, hp]`. Use `hξW using 2` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[← hrg, ← hkg, ← hφ, Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp]`. Establish `hpcl₁ : (p : PrimeSpectrum Γ(X, V)) ∈ closure (Set.range (PrimeSpectrum.comap φ.hom))` using `hpcl₀`. Rewrite `hpcl₁` using `[PrimeSpectrum.closure_range_comap]`. Establish `hpcl : RingHom.ker φ.hom ≤ p.asIdeal` using `(PrimeSpectrum.mem_zeroLocus _ _).1 hpcl₁`. Establish `hmin : p.asIdeal ∈ (Ideal.comap φ.hom ⊥).minimalPrimes`.
+
+Rewrite using `[← RingHom.ker_eq_comap_bot]`. Use `⟨⟨p.2, hpcl⟩, fun q hq hqp => ?_⟩` and prove the remaining obligations. Establish `hspec : (⟨q, hq.1⟩ : PrimeSpectrum _) ⤳ p` using `(PrimeSpectrum.le_iff_specializes _ _).1 hqp`. Establish `heq` using `_root_.GlobalTheory.eq_of_specializes_of_mem_genericPoints (hp ▸ hξ) (hspec.map hV.fromSpec.continuous)`. Establish `heq'` using `hinj heq`.
+
+Rewrite using `[← heq']`. Take `⟨q, hq, -, hqp⟩` from `Ideal.exists_comap_eq_of_mem_minimalPrimes φ.hom _ hmin`. Use `⟨hWa.fromSpec ⟨q, hq⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hp]`. Express the relevant statement in the definitionally equal form `g ⟨q, hq⟩ = _`.
+
+Establish `hgq : g ⟨q, hq⟩ = hV.fromSpec (Spec.map φ ⟨q, hq⟩)` using `by rw [← hkg, ← hφ]; rfl`. Rewrite using `[hgq]`. Use `congr 1`. Conclude with `PrimeSpectrum.ext hqp`.
+-/
 theorem _root_.GlobalTheory.genericPoints_subset_range_of_isDominant {X U : Scheme.{0}} (j : U ⟶ X) [IsDominant j]
     [QuasiCompact j] : genericPoints X ⊆ Set.range j := by
   intro ξ hξ
@@ -92,6 +119,11 @@ theorem _root_.GlobalTheory.genericPoints_subset_range_of_isDominant {X U : Sche
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct Pointwise in
 
+/- English proof (translation)
+Establish `hs` using `j.stalkMap_surjective u`. Use `letI := (j.stalkMap u).hom.toAlgebra`. Use `haveI : Module.Flat _ _ := Flat.stalkMap j u`. Use `haveI : IsLocalHom (algebraMap (X.presheaf.stalk (j u)) (U.presheaf.stalk u)) := inferInstanceAs (IsLocalHom (j.stalkMap u).hom)`. Use `haveI := Module.FaithfullyFlat.of_flat_of_isLocalHom (A := X.presheaf.stalk (j u)) (B := U.presheaf.stalk u)`.
+
+Establish `hi : Function.Injective (j.stalkMap u).hom` using `FaithfulSMul.algebraMap_injective (X.presheaf.stalk (j u)) (U.presheaf.stalk u)`. Conclude with `(ConcreteCategory.isIso_iff_bijective _).2 ⟨hi, hs⟩`.
+-/
 theorem _root_.GlobalTheory.isIso_stalkMap_of_flat_of_surjectiveOnStalks {X U : Scheme.{0}} (j : U ⟶ X) [Flat j]
     [SurjectiveOnStalks j] (u : U) : IsIso (j.stalkMap u) := by
   have hs := j.stalkMap_surjective u
@@ -108,6 +140,9 @@ theorem _root_.GlobalTheory.isIso_stalkMap_of_flat_of_surjectiveOnStalks {X U : 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct Pointwise in
 
+/- English proof (translation)
+Introduce `X U j _ _ _ _`. Use `⟨_root_.GlobalTheory.genericPoints_subset_range_of_isDominant j, fun u => _root_.GlobalTheory.isIso_stalkMap_of_flat_of_surjectiveOnStalks j u, fun _ => (isSchemeTheoreticallyDominant_iff_isDominant j).2 inferInstance, fun Y p _ => _root_.GlobalTheory.isDominant_pullback_fst_of_i …` and prove the remaining obligations.
+-/
 theorem _root_.GlobalTheory.densePart_basic : ∀ (X U : Scheme.{0}) (j : U ⟶ X), IsPreimmersion j → Flat j → IsDominant j → QuasiCompact j → genericPoints X ⊆ Set.range j ∧ (∀ u : U, IsIso (j.stalkMap u)) ∧ (IsReduced X → IsSchemeTheoreticallyDominant j) ∧ ∀ (Y : Scheme.{0}) (p : Y ⟶ X), UniversallyOpen p → IsDominant (pullback.fst p j) := by
   intro X U j _ _ _ _
   refine ⟨_root_.GlobalTheory.genericPoints_subset_range_of_isDominant j,

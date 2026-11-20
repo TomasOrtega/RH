@@ -12,6 +12,13 @@ namespace GlobalTheory.LawDer
 
 open MvPowerSeries in
 set_option autoImplicit false in
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `hsum : ∀ (s : Finset (ℕ × ℕ)) (f : ℕ × ℕ → A), D (∑ x ∈ s, f x) = ∑ x ∈ s, D (f x)` using `fun s f => map_sum (AddMonoidHom.mk' D hadd) f s`. Establish `hns : ∀ (m : ℕ) (x : A), D (m • x) = m • D x` using `fun m x => map_nsmul (AddMonoidHom.mk' D hadd) m x`.
+
+Establish `hc` using `Finset.sum_antidiagonal_choose_succ_nsmul (fun i j => D^[i] a * D^[j] b) n`. Use `beta_reduce at hc`. Rewrite using `[Function.iterate_succ_apply', ih, hsum, hc, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun ij hij => ?_` and prove the remaining obligations. Rewrite `hij` using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+
+Rewrite using `[← Nat.choose_symm_of_eq_add hij.symm, hns, hmul, ← smul_add]`. Simplify using `only [Function.iterate_succ_apply']`. Rewrite using `[add_comm]`.
+-/
 private lemma iterate_mul_eq_sum_antidiagonal_choose {A : Type} [CommRing A] (D : A → A)
     (hadd : ∀ a b, D (a + b) = D a + D b) (hmul : ∀ a b, D (a * b) = D a * b + a * D b) (n : ℕ)
     (a b : A) :
@@ -35,6 +42,13 @@ private lemma iterate_mul_eq_sum_antidiagonal_choose {A : Type} [CommRing A] (D 
 open MvPowerSeries in
 set_option autoImplicit false in
 
+/- English proof (translation)
+Introduce `p hp R _ d μ hμ hid u F G hF hG`. Establish `hlin` using `_root_.GlobalTheory.LawDer.Linear.invDer_linear R d μ hμ u`. Rewrite using `[iterate_mul_eq_sum_antidiagonal_choose _ hlin.1 (_root_.GlobalTheory.LawDer.invDer_mul R d μ hμ hid u), map_sum]`. Use `Finset.dvd_sum fun ij hij => ?_` and prove the remaining obligations. Rewrite `hij` using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+
+Rewrite using `[map_nsmul, map_mul, nsmul_eq_mul]`. Break down `Nat.eq_zero_or_pos ij.1 with h1 | h1` into its components or cases. Rewrite using `[h1, Function.iterate_zero, id, hF]`. Simplify using the standard rewrite rules. Break down `Nat.eq_zero_or_pos ij.2 with h2 | h2` into its components or cases.
+
+Rewrite using `[h2, Function.iterate_zero, id, hG]`. Simplify using the standard rewrite rules. Establish `hdvd : p ∣ p.choose ij.1` using `hp.out.dvd_choose_self h1.ne' (by omega)`. Conclude with `Dvd.dvd.mul_right (Nat.cast_dvd_cast hdvd) _`.
+-/
 theorem _root_.GlobalTheory.LawDer.constantCoeff_iterate_invDer_mul : ∀ (p : ℕ) [Fact p.Prime] (R : Type)
     [CommRing R] (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R),
     (∀ i, constantCoeff (μ i) = 0) →

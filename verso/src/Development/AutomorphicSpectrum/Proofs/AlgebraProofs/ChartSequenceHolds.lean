@@ -14,6 +14,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.HT.FinrankDualChartSequence
 
+/- English proof (translation)
+Use `haveI : FaithfulSMul A K := (faithfulSMul_iff_algebraMap_injective A K).2 (IsFractionRing.injective A K)`. Rewrite using `[← (TensorProduct.isBaseChange A (Module.Dual A M) K).finrank_eq, ← (TensorProduct.isBaseChange A M K).finrank_eq]`. Conclude with `(GlobalTheory.DualFibreRank.finrank_dual_and_range_dualMap_baseChange A M M K LinearMap.id).1`.
+-/
 theorem finrank_dual_eq_of_projective (A K : Type) [CommRing A] [IsDomain A] [Field K] [Algebra A K]
     [IsFractionRing A K] (M : Type) [AddCommGroup M] [Module A M] [Module.Finite A M]
     [Module.Projective A M] : finrank A (Module.Dual A M) = finrank A M := by
@@ -23,6 +26,9 @@ theorem finrank_dual_eq_of_projective (A K : Type) [CommRing A] [IsDomain A] [Fi
     ← (TensorProduct.isBaseChange A M K).finrank_eq]
   exact (GlobalTheory.DualFibreRank.finrank_dual_and_range_dualMap_baseChange A M M K LinearMap.id).1
 
+/- English proof (translation)
+Establish `h1 : IsIntegral ℤ (σ (a : E))` using `(RingOfIntegers.isIntegral_coe a).map σ.toIntAlgHom`. Establish `h2 : IsIntegral A (σ (a : E))` using `h1.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h2`. Conclude with `⟨y, hy⟩`.
+-/
 theorem ringOfIntegers_mem_range (A K : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [Field K]
     [Algebra A K] [IsFractionRing A K] {E : Type} [Field E] [NumberField E] (σ : E →+* K) (a : 𝓞 E) :
     σ (a : E) ∈ (algebraMap A K).range := by
@@ -38,6 +44,23 @@ def qLin {A K : Type} [CommRing A] [Field K] [Algebra A K] {E : Type} [Field E] 
   map_add' x y := by simp [HTChart.q, add_smul, Finset.sum_add_distrib]
   map_smul' a x := by simp [HTChart.q, Finset.smul_sum, mul_smul]
 
+/- English proof (translation)
+Introduce `A K _ _ _ _ _ _ _ _ E _ _ c hc p R N _ Ω _ _ _ _ D κ m hdiv hT hproj`. Establish `hκR : κ ∣ (p : A) ^ R` using `dvd_trans (dvd_mul_right _ _) hdiv`. Establish `h1` using `GlobalTheory.T.hodge_tate_chart_test_point A K E c hc p R N Ω D κ hκR hproj hT`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Introduce `σ d d' hd hd' hP1 hP2`.
+
+Establish `hAK : Function.Injective (algebraMap A K)` using `IsFractionRing.injective A K`. Establish `hnorm : ∀ (σ : E →+* K) (a : 𝓞 E), σ (a : E) ∈ (algebraMap A K).range` using `fun σ a => ringOfIntegers_mem_range A K σ a`. Take `⟨⟨i, hi⟩, -, hsplit⟩` from `GlobalTheory.T.hodge_tate_chart_different_bound A K hAK E c hc p R N Ω D κ σ d m hnorm hd hdiv h1.2 hP2`. Establish `hq` using `GlobalTheory.T.hodge_tate_chart_divisibility A K hAK E c hc p R N Ω D κ σ m (hnorm σ) hdiv h1.2`. Establish `hq'` using `GlobalTheory.T.hodge_tate_chart_divisibility A K hAK E c hc p R N Ω D κ (σ.comp c.toRingHom) m (hnorm _) hdiv h1.2`.
+
+Establish `hcomp` using `GlobalTheory.T.hodge_tate_chart_dual_pairing A K E c hc p R N Ω D κ σ d d' m i hdiv hd hd' h1.2 hP1 hP2 hT hi`. Use `⟨i, hi, hsplit i hi, fun x => ⟨?_, ?_⟩, hq.2.2⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy, hxy⟩`. Distinguish the cases in `hu : IsUnit (p : A)`. Take `⟨u, hu'⟩` from `hu.pow m`.
+
+Use `⟨0, ((u⁻¹ : Aˣ) : A) • x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, zero_add, ← hu', smul_smul, Units.mul_inv, one_smul]`. Use `haveI : Module.Finite A (D.omHT σ) := Module.Finite.iff_fg.2 hq.2.1 haveI : Module.Finite A (D.omHT (σ.comp c.toRingHom)) := Module.Finite.iff_fg.2 hq'.2.1 haveI := hP1 haveI := hP2`. Establish `hrank` using `GlobalTheory.T.hodge_tate_chart_non_unit_p A K E c hc p R N Ω D κ σ d d' hu hκR hd hd' hP1 hP2 hT`. Rewrite `hrank` using `[← finrank_dual_eq_of_projective A K (D.omHT (σ.comp c.toRingHom))]`.
+
+Take `⟨r, hr⟩` from `hsplit i hi`. Set `qL : (Fin N → A) →ₗ[A] D.omHT σ` to `LinearMap.codRestrict (D.omHT σ) (qLin D σ) hq.1`. Use `GlobalTheory.T.projective_split_modulo_element A (Module.Dual A (D.omHT (σ.comp c.toRingHom))) (D.omHT σ) N ((p : A) ^ m) i r qL (by rw [add_comm]; exact hrank) hr ?_ ?_ x ⟨⟨y, hy⟩, Subtype.ext hxy⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Take `⟨x, y', hy', e⟩` from `hq.2.2 y hy`.
+
+Conclude with `⟨x, ⟨y', hy'⟩, Subtype.ext e⟩`. Introduce `w`. Take `⟨y, hy, e⟩` from `hcomp w`. Conclude with `⟨⟨y, hy⟩, Subtype.ext e⟩`. Introduce and unpack `⟨w, x', rfl⟩`.
+
+Take `⟨y, hy, hy'⟩` from `hcomp w`. Use `⟨y + D.q σ x', add_mem hy (hq.1 x'), ?_⟩` and prove the remaining obligations. Establish `e1` using `(qLin D σ).map_add (i w) (((p : A) ^ m) • x')`. Establish `e2` using `(qLin D σ).map_smul ((p : A) ^ m) x'`. Express the relevant statement in the definitionally equal form `D.q σ _ = _`.
+
+Express the relevant statement in the definitionally equal form `(qLin D σ) _ = _`. Rewrite using `[e1, e2]`. Express the relevant statement in the definitionally equal form `D.q σ (i w) + _ = _`. Rewrite using `[hy', smul_add]`. Both sides reduce to the same expression.
+-/
 theorem chartSequence : ChartSequence := by
   intro A K _ _ _ _ _ _ _ _ E _ _ c hc p R N _ Ω _ _ _ _ D κ m hdiv hT hproj
   have hκR : κ ∣ (p : A) ^ R := dvd_trans (dvd_mul_right _ _) hdiv

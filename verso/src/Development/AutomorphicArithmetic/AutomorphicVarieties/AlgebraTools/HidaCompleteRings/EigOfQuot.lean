@@ -3,6 +3,27 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.HidaC
 
 open UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite TensorProduct
 
+/- English proof (translation)
+It suffices to establish `h : ∀ d : ℕ, ∀ V : Submodule K Y, Module.finrank K V = d → V ≠ ⊥ → (∀ i, ∀ y ∈ V, T i y ∈ V) → (∀ i, ∀ y ∈ V, ∃ n : ℕ, (T i ^ n) y = 0) → ∃ y : Y, y ≠ 0 ∧ ∀ i, T i y = 0 from h _ U rfl`. Introduce `d`. Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`. Introduce `V hd hV hinv hnil`.
+
+Distinguish the cases in `hall : ∀ i, ∀ y ∈ V, T i y = 0`. Take `⟨y, hyV, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hV`. Conclude with `⟨y, hy0, fun i => hall i y hyV⟩`. Use `push_neg at hall`. Take `⟨i, z, hzV, hz⟩` from `hall`.
+
+Establish `hpowmem : ∀ k : ℕ, (T i ^ k) z ∈ V`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using hzV`. Consider the case `succ k ihk`.
+
+Rewrite using `[pow_succ', Module.End.mul_apply]`. Conclude with `hinv i _ ihk`. Set `W : Submodule K Y` to `V ⊓ LinearMap.ker (T i)`. Establish `hWle : W ≤ V` using `inf_le_left`. Establish `hWlt : W < V`.
+
+Use `lt_of_le_of_ne hWle ?_` and prove the remaining obligations. Introduce `hWV`. Establish `: z ∈ W` using `hWV ▸ hzV`. Conclude with `hz (LinearMap.mem_ker.mp (Submodule.mem_inf.mp this).2)`. Establish `hWne : W ≠ ⊥` using `by classical`.
+
+Establish `hex : ∃ n : ℕ, (T i ^ n) z = 0` using `hnil i z hzV`. Establish `hz0 : z ≠ 0` using `fun h0 => hz (by rw [h0, map_zero])`. Establish `hm0 : Nat.find hex ≠ 0`. Introduce `h0`. Use `Nat.find_spec hex` as an intermediate fact.
+
+Rewrite `this` using `[h0, pow_zero, Module.End.one_apply]`. Conclude with `hz0 this`. Take `⟨m, hm⟩` from `Nat.exists_eq_succ_of_ne_zero hm0`. Establish `hspec` using `Nat.find_spec hex`. Rewrite `hspec` using `[hm]`.
+
+Establish `hmin : (T i ^ m) z ≠ 0` using `Nat.find_min hex (by omega)`. Rewrite using `[Submodule.ne_bot_iff]`. Use `⟨(T i ^ m) z, Submodule.mem_inf.mpr ⟨hpowmem m, ?_⟩, hmin⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, ← Module.End.mul_apply, ← pow_succ']`. Conclude with `hspec`.
+
+Establish `hWinv : ∀ j, ∀ y ∈ W, T j y ∈ W`. Introduce `j y hy`. Take `⟨hyV, hyk⟩` from `Submodule.mem_inf.mp hy`. Use `Submodule.mem_inf.mpr ⟨hinv j y hyV, ?_⟩` and prove the remaining obligations. Rewrite `hyk`, the goal using `[LinearMap.mem_ker]`.
+
+Rewrite using `[← Module.End.mul_apply, (hc i j).eq, Module.End.mul_apply, hyk, map_zero]`. Establish `hWnil : ∀ j, ∀ y ∈ W, ∃ n : ℕ, (T j ^ n) y = 0` using `fun j y hy => hnil j y (hWle hy)`. Conclude with `ih _ (hd ▸ Submodule.finrank_lt_finrank_of_lt hWlt) W rfl hWne hWinv hWnil`.
+-/
 private theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.common_ker_of_nilpotent
     {K Y ι : Type*} [Field K] [AddCommGroup Y] [Module K Y] [FiniteDimensional K Y]
     (T : ι → Module.End K Y) (hc : ∀ i j, Commute (T i) (T j)) (U : Submodule K Y) :
@@ -61,6 +82,31 @@ private theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.common_ker_
     fun j y hy => hnil j y (hWle hy)
   exact ih _ (hd ▸ Submodule.finrank_lt_finrank_of_lt hWlt) W rfl hWne hWinv hWnil
 
+/- English proof (translation)
+Introduce `hu hinv`. It suffices to establish `h : ∀ d : ℕ, ∀ V : Submodule K Y, Module.finrank K V = d → (∃ u ∈ V, φ u ≠ 0) → (∀ i, ∀ y ∈ V, T i y ∈ V) → ∃ y : Y, y ≠ 0 ∧ ∀ i, T i y = 0 from h _ U rfl hu hinv`. Introduce `d`. Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`.
+
+Introduce `V hd hV hinv`. Take `⟨u, huV, hu⟩` from `hV`. Establish `hVne : V ≠ ⊥`. Rewrite using `[Submodule.ne_bot_iff]`. Conclude with `⟨u, huV, fun h0 => hu (by rw [h0, map_zero])⟩`.
+
+Distinguish the cases in `hall : ∀ i, ∀ y ∈ V, ∃ n : ℕ, (T i ^ n) y = 0`. Conclude with `UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.common_ker_of_nilpotent T hc V hVne hinv hall`. Use `push_neg at hall`. Take `⟨i, z, hzV, hz⟩` from `hall`. Set `f : Module.End K V` to `(T i).restrict (hinv i)`.
+
+Take `⟨n, hn⟩` from `Filter.eventually_atTop.mp (LinearMap.eventually_codisjoint_ker_pow_range_pow f)`. Establish `hcod` using `hn (n + 1) (by omega)`. Establish `hfpow : ∀ (k : ℕ) (w : V), ((f ^ k) w : Y) = (T i ^ k) (w : Y)`. Introduce `k w`. Proceed by induction on `k with`.
+
+Consider the case `zero => simp`. Consider the case `succ k ihk`. Rewrite using `[pow_succ', Module.End.mul_apply, pow_succ', Module.End.mul_apply, ← ihk]`. Both sides reduce to the same expression. Establish `hmem : (⟨u, huV⟩ : V) ∈ LinearMap.ker (f ^ (n + 1)) ⊔ LinearMap.range (f ^ (n + 1))`.
+
+Rewrite using `[codisjoint_iff.mp hcod]`. Conclude with `Submodule.mem_top`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.mp hmem`. Take `⟨c, rfl⟩` from `LinearMap.mem_range.mp hb`. Establish `hφb : φ (((f ^ (n + 1)) c : V) : Y) = 0`.
+
+Rewrite using `[hfpow, pow_succ', Module.End.mul_apply, hφ]`. Establish `hab' : (a : Y) + (((f ^ (n + 1)) c : V) : Y) = u`. Use `congrArg Subtype.val hab` as an intermediate fact. Simplify using `using this`. Establish `hφa : φ (a : Y) ≠ 0`.
+
+Establish `h2` using `congrArg φ hab'`. Rewrite `h2` using `[map_add, hφb, add_zero]`. Rewrite using `[h2]`. Conclude with `hu`. Establish `haker : (T i ^ (n + 1)) (a : Y) = 0`.
+
+Rewrite using `[← hfpow]`. Rewrite using `[LinearMap.mem_ker.mp ha]`. Both sides reduce to the same expression. Set `W : Submodule K Y` to `V ⊓ LinearMap.ker (T i ^ (n + 1))`. Establish `hWle : W ≤ V` using `inf_le_left`.
+
+Establish `hWlt : W < V`. Use `lt_of_le_of_ne hWle ?_` and prove the remaining obligations. Introduce `hWV`. Establish `: z ∈ W` using `hWV ▸ hzV`. Conclude with `hz (n + 1) (LinearMap.mem_ker.mp (Submodule.mem_inf.mp this).2)`.
+
+Establish `hWinv : ∀ j, ∀ y ∈ W, T j y ∈ W`. Introduce `j y hy`. Take `⟨hyV, hyk⟩` from `Submodule.mem_inf.mp hy`. Use `Submodule.mem_inf.mpr ⟨hinv j y hyV, ?_⟩` and prove the remaining obligations. Rewrite `hyk`, the goal using `[LinearMap.mem_ker]`.
+
+Rewrite using `[← Module.End.mul_apply, ((hc i j).pow_left (n + 1)).eq, Module.End.mul_apply, hyk, map_zero]`. Establish `hWu : ∃ w ∈ W, φ w ≠ 0` using `⟨(a : Y), Submodule.mem_inf.mpr ⟨a.2, LinearMap.mem_ker.mpr haker⟩, hφa⟩`. Conclude with `ih _ (hd ▸ Submodule.finrank_lt_finrank_of_lt hWlt) W rfl hWu hWinv`.
+-/
 private theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.common_ker_of_quot
     {K Y Z ι : Type*} [Field K] [AddCommGroup Y] [Module K Y] [FiniteDimensional K Y]
     [AddCommGroup Z] [Module K Z]
@@ -129,6 +175,15 @@ private theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.common_ker_
     ⟨(a : Y), Submodule.mem_inf.mpr ⟨a.2, LinearMap.mem_ker.mpr haker⟩, hφa⟩
   exact ih _ (hd ▸ Submodule.finrank_lt_finrank_of_lt hWlt) W rfl hWu hWinv
 
+/- English proof (translation)
+Introduce `K Y Z ι _ _ _ _ _ _ A hA x φ hφ0 hφ`. Set `T : ι → Module.End K Y` to `fun i => A i - x i • (1 : Module.End K Y)`. Establish `hT : ∀ i y, T i y = A i y - x i • y`. Introduce `i y`. Simplify using `[T]`.
+
+Establish `hc : ∀ i j, Commute (T i) (T j)`. Introduce `i j`. Conclude with `((hA i j).sub_right ((Commute.one_right (A i)).smul_right (x j))).sub_left (((Commute.one_left (A j)).smul_left (x i)).sub_right (((Commute.one_left 1).smul_left (x i)).smul_right (x j)))`. Establish `hφT : ∀ i y, φ (T i y) = 0`. Introduce `i y`.
+
+Rewrite using `[hT, map_sub, map_smul, hφ, sub_self]`. Establish `hu : ∃ u ∈ (⊤ : Submodule K Y), φ u ≠ 0`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Conclude with `hφ0 (LinearMap.ext fun y => by simpa using hno y Submodule.mem_top)`.
+
+Take `⟨y, hy0, hy⟩` from `UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.common_ker_of_quot T hc φ hφT ⊤ hu (fun _ _ _ => Submodule.mem_top)`. Use `⟨y, hy0, fun i => ?_⟩` and prove the remaining obligations. Use `hy i` as an intermediate fact. Rewrite `this` using `[hT, sub_eq_zero]`. Conclude with `this`.
+-/
 theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.eigOfQuot :
     ∀ {K Y Z ι : Type*} [Field K] [AddCommGroup Y] [Module K Y] [FiniteDimensional K Y] [AddCommGroup Z] [Module K Z] (A : ι → Module.End K Y), (∀ i j, Commute (A i) (A j)) → ∀ (x : ι → K) (φ : Y →ₗ[K] Z), φ ≠ 0 → (∀ i y, φ (A i y) = x i • φ y) → ∃ y : Y, y ≠ 0 ∧ ∀ i, A i y = x i • y := by
   intro K Y Z ι _ _ _ _ _ _ A hA x φ hφ0 hφ

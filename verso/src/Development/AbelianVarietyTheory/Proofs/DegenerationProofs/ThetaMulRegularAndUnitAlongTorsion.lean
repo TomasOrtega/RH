@@ -16,12 +16,18 @@ noncomputable section
 namespace GlobalTheory.ZH.TorsReg
 open GlobalTheory.Points
 
+/- English proof (translation)
+Rewrite using `[← valR_appLE y j (j.preimage_image_eq U).ge hy, ← CommRingCat.comp_apply, Scheme.Hom.appIso_inv_appLE]`. Conclude with `valR_res y le_rfl hy f`.
+-/
 theorem valR_appIso_inv {X Y : Scheme.{0}} (j : X ⟶ Y) [IsOpenImmersion j] (U : X.Opens) (f : Γ(X, U))
     {C : Type} [CommRing C] (y : Sp C ⟶ X) (hy : ⊤ ≤ y ⁻¹ᵁ U) :
     valR (y ≫ j) (j ''ᵁ U) ((j.appIso U).inv.hom f) = valR y U f := by
   rw [← valR_appLE y j (j.preimage_image_eq U).ge hy, ← CommRingCat.comp_apply, Scheme.Hom.appIso_inv_appLE]
   exact valR_res y le_rfl hy f
 
+/- English proof (translation)
+Establish `hx : ⊤ ≤ x ⁻¹ᵁ LB.wchart L (fun _ : Fin 1 => z.left) (fun _ => j)` using `fun y _ => Set.mem_iInter.2 fun _ => hj ⟨y, rfl⟩`. Establish `e` using `congrArg (valR x _) (H fun _ => j)`. Rewrite `e` using `[valR_res x _ hx, valR_mul x _ hx, valR_res x _ hx]`. Rewrite using `[valR_comp]`. Conclude with `e`.
+-/
 theorem valR_valueAt {B : Scheme.{0}} (A : Over B) (L : LB A.left) (a : ℤ) [GrpObj A] {T : Over B}
     {s : LB.Sec (LPow A L a T)} {z : T ⟶ A}
     {τ : LB.Gen (LB.LinComb L (Y := T.left) (K := Fin 1) (fun _ => z.left) (fun _ => a))} {v : Γ(T.left, ⊤)}
@@ -35,6 +41,9 @@ theorem valR_valueAt {B : Scheme.{0}} (A : Over B) (L : LB A.left) (a : ℤ) [Gr
   rw [valR_comp]
   exact e
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Subsingleton.elim y p]`. Conclude with `h`.
+-/
 theorem range_subset {K : Type} [Field K] {X : Scheme.{0}} (x : Sp K ⟶ X) {U : X.Opens} (p : Sp K) (h : x p ∈ U) :
     Set.range x ⊆ U := by
   rintro _ ⟨y, rfl⟩
@@ -44,6 +53,31 @@ theorem range_subset {K : Type} [Field K] {X : Scheme.{0}} (x : Sp K ⟶ X) {U :
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
 variable {S : ThetaSys o Ω} {ρ : S.Real} {M : RatModel o Ω} {U₀ : M.Z.Opens} (Q : ZHPre ρ M U₀)
 
+/- English proof (translation)
+Set `V : W.toScheme.Opens` to `h ⁻¹ᵁ (Q.G.hom ⁻¹ᵁ N ⊓ Q.LOne.U fun _ => jL)`. Establish `hwV : w ∈ V`. Use `⟨?_, Set.mem_iInter.2 fun _ => hj⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(h ≫ Q.G.hom) w ∈ N`. Rewrite using `[hE.1]`.
+
+Conclude with `hw`. Establish `hT : W.ι w ∈ W.ι ''ᵁ V` using `⟨w, hwV, rfl⟩`. Establish `hval : ∀ (K : Type) [Field K] (y : Sp K ⟶ W.toScheme), ⊤ ≤ y ⁻¹ᵁ V → valF (y ≫ W.ι) (W.ι ''ᵁ V) ((W.ι.appIso V).inv.hom ((h.app _).hom (σ fun _ => jL))) = valF (y ≫ h) _ (σ fun _ => jL)` using `fun K _ y hy => (valR_appIso_inv W.ι V _ y hy).trans (valR_comp y h _ _).symm`. Establish `lift : ∀ U : M.Z.Opens, (U : Set M.Z).Nonempty → ∃ x : Sp Ω ⟶ U.toScheme, x ≫ U.ι = M.pt` using `fun U hU => ⟨IsOpenImmersion.lift U.ι M.pt (by`. Rewrite using `[Scheme.Opens.range_ι]`.
+
+Conclude with `(top_le_preimage_iff _ _).1 (M.top_le_preimage_pt hU)), IsOpenImmersion.lift_fac _ _ _⟩`. Take `⟨x, hx⟩` from `lift W ⟨w.1, w.2⟩`. Take `⟨x₀, hx₀⟩` from `lift U₀ hne`. Set `t₀ : Sp Ω ⟶ Sp S.R` to `spMap S.R.val.toRingHom`. Establish `hcond : (t₀ ≫ (ρ.pt a).left) ≫ ρ.P.A.hom = x₀ ≫ Q.u₀`.
+
+Rewrite using `[Q.u₀_gen x₀ hx₀, Category.assoc, Over.w (ρ.pt a)]`. Conclude with `Category.comp_id _`. Set `x' : Sp Ω ⟶ pullback ρ.P.A.hom Q.u₀` to `pullback.lift _ _ hcond`. Establish `h1 : x' ≫ pullback.fst _ _ = t₀ ≫ (ρ.pt a).left` using `pullback.lift_fst _ _ _`. Establish `h2 : x' ≫ pullback.snd _ _ ≫ U₀.ι = M.pt`.
+
+Rewrite using `[← Category.assoc, pullback.lift_snd, hx₀]`. Establish `h3 : x' ≫ Q.φ ≫ Q.G.hom = M.pt`. Rewrite using `[← h2]`. Conclude with `congrArg (x' ≫ ·) Q.cart.1.w`. Establish `h4 : x ≫ h = x' ≫ Q.φ` using `hE.2 x x' hx h3 h1`.
+
+Establish `hxV : ⊤ ≤ x ⁻¹ᵁ V`. Establish `h5` using `M.top_le_preimage_pt ⟨_, hT⟩`. Rewrite `h5` using `[← hx]`. Conclude with `le_preimage_mono x (W.ι.preimage_image_eq V).le h5`. Establish `hxh : Set.range (x' ≫ Q.φ) ⊆ (Q.G.hom ⁻¹ᵁ N ⊓ Q.LOne.U fun _ => jL : Q.G.left.Opens)`.
+
+Rewrite using `[← h4]`. Conclude with `(top_le_preimage_iff _ _).1 hxV`. Choose the witnesses or unpack the hypotheses as in `⟨jP, hjP⟩ : ∃ jP, Set.range (t₀ ≫ (ρ.pt a).left) ⊆ ρ.P.L.U jP := by`. Establish `h5 : (t₀ ≫ (ρ.pt a).left) (IsLocalRing.closedPoint Ω) ∈ ⨆ i, ρ.P.L.U i`. Rewrite using `[ρ.P.isLB.cover]`.
+
+Discharge the goal by the elementary cases of `trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 h5`. Conclude with `⟨i, range_subset _ _ hi⟩`. Take `⟨he0, he1, he2⟩` from `hF jP jL x' _ hj h3 h1 (h1 ▸ hjP) rfl`. Use `⟨_, _, _, hT, he0, he1, he2, ?_, fun K _ y hy => hval K y fun p _ => ?_⟩` and prove the remaining obligations.
+
+Establish `hr : (t₀ ≫ (ptSecT ρ.P.A (ρ.pt a)).left) ≫ (snd (baseOver (Sp S.R)) ρ.P.A).left = x' ≫ pullback.fst _ _`. Rewrite using `[h1, Category.assoc, ← Over.comp_left, ptSecT, lift_snd]`. Establish `hid : spMap (RingHom.id Ω) = 𝟙 (Sp Ω)` using `Spec.map_id _`. Establish `e` using `hσ Ω (RingHom.id Ω) x' _ jP jL (by rw [h2, hid, Category.id_comp]) hr (h1 ▸ hjP) (fun p hp => Set.mem_iInter.1 (hxh hp).2 0) (fun p hp => (hxh hp).1)`. Establish `e2` using `valR_valueAt ρ.P.A ρ.P.L 1 (ρ.th_val a) t₀ jP hjP`.
+
+Establish `e3 : valR (X` using `(baseOver (Sp S.R)).left) t₀ ⊤ (fn (⟨S.th a, S.th_mem a⟩ : S.R)) = S.th a := valR_specMap (C := Ω) (A := CommRingCat.of S.R) (CommRingCat.ofHom S.R.val.toRingHom) _`. Rewrite `e2` using `[e3]`. Rewrite `e` using `[Fintype.sum_unique, zpow_one, RingHom.id_apply, valF_eq_valR, e2, ← h4, ← hval Ω x hxV, hx]`. Establish `hn` using `(div_ne_zero_iff.1 he0).1`. Rewrite using `[inv_div, ← mul_div_assoc, eq_div_iff hn, _root_.mul_assoc, _root_.mul_comm (valF M.pt _ _)]`.
+
+Conclude with `e`. Establish `h5 : y p ∈ Set.range y` using `⟨p, rfl⟩`. Rewrite `h5` using `[hy]`. Express the relevant statement in the definitionally equal form `y p ∈ V`. Rewrite using `[show y p = w from h5]`.
+
+Conclude with `hwV`.
+-/
 theorem exists_eq_mul_unit (hne : (U₀ : Set M.Z).Nonempty) {N : M.Z.Opens} {σ : Q.SecFam N} {c : Ω}
     (hσ : Q.ThMul c N σ) {a : S.Gam} {W : M.Z.Opens} {h : W.toScheme ⟶ Q.G.left} {w : W.toScheme}
     (hE : Q.ExtPt a W h) (hF : Q.FrameUnit a W h w) (hw : W.ι w ∈ N) (jL : Q.L.L.ι) (hj : h w ∈ Q.L.L.U jL) :
@@ -117,6 +151,19 @@ end GlobalTheory.ZH.TorsReg
 
 open GlobalTheory.Points GlobalTheory.ZH.TorsReg in
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ _ S ρ M U₀ Q hO N σ c _ hσ a W h w hE hF hw`. Prove the components needed by the constructor for the conclusion. Establish `h5 : h w ∈ ⨆ i, Q.L.L.U i`. Rewrite using `[Q.L.isLB.cover]`. Discharge the goal by the elementary cases of `trivial`.
+
+Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 h5`. Take `⟨T, f, e, hT, -, -, he, hc, -⟩` from `exists_eq_mul_unit Q hO.ne hσ hE hF hw i hi`. Rewrite using `[hc]`. Conclude with `mul_mem (RatModel.valF_mem_O hT f) he`. Introduce `K _ x j hx hv`.
+
+Establish `hxw : x (IsLocalRing.closedPoint K) = w`. Establish `h5 : x (IsLocalRing.closedPoint K) ∈ Set.range x` using `⟨_, rfl⟩`. Rewrite `h5` using `[hx]`. Then use the resulting hypothesis. Take `⟨i, rfl⟩ : ∃ i, j = fun _ => i` from `⟨j 0, funext fun k => congrArg j (Subsingleton.elim k 0)⟩`. Establish `hi : h w ∈ Q.L.L.U i`.
+
+Assume the negation of the conclusion as `hi`. Use `hv (dif_neg fun hle => hi ?_)` and prove the remaining obligations. Rewrite using `[← hxw]`. Conclude with `Set.mem_iInter.1 (hle (x := IsLocalRing.closedPoint K) trivial).2 0`. Take `⟨T, f, e, hT, he0, he1, -, hc, hK⟩` from `exists_eq_mul_unit Q hO.ne hσ hE hF hw i hi`.
+
+Rewrite `hv` using `[← hK K x hx]`. Establish `hxw' : (x ≫ W.ι) (IsLocalRing.closedPoint K) = W.ι w` using `by rw [← hxw]; rfl`. Establish `hle : ⊤ ≤ (x ≫ W.ι) ⁻¹ᵁ T` using `(le_preimage_iff _ _).2 (hxw' ▸ hT)`. Establish `hb : W.ι w ∈ M.Z.basicOpen f` using `hxw' ▸ (le_preimage_iff _ _).1 ((le_preimage_basicOpen_iff _ hle f).2 (isUnit_iff_ne_zero.2 hv))`. Take `⟨hf0, hf1⟩` from `(RatModel.isUnit_O_iff _).1 ((RatModel.isUnit_valF_iff hT f).2 hb)`.
+
+Rewrite using `[hc]`. Use `⟨mul_ne_zero hf0 (inv_ne_zero he0), ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.mul_inv, inv_inv]`. Conclude with `mul_mem hf1 he1`.
+-/
 theorem GlobalTheory.ZH.mul_theta_regular_and_unit : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (Q : ZHPre ρ M U₀), S.Over₀ M U₀ → ∀ (N : M.Z.Opens) (σ : Q.SecFam N) (c : Ω), σ ∈ secOn Q.LOne (Q.G.hom ⁻¹ᵁ N) → Q.ThMul c N σ → ∀ (a : S.Gam) (W : M.Z.Opens) (h : W.toScheme ⟶ Q.G.left) (w : W.toScheme), Q.ExtPt a W h → Q.FrameUnit a W h w → W.ι w ∈ N → c * S.th a ∈ M.O (W.ι w) ∧ ∀ (K : Type) [Field K] (x : Sp K ⟶ W.toScheme) (j : Q.LOne.ι), Set.range x = {w} → valF (x ≫ h) _ (σ j) ≠ 0 → c * S.th a ≠ 0 ∧ (c * S.th a)⁻¹ ∈ M.O (W.ι w) := by
   intro o Ω _ _ _ _ S ρ M U₀ Q hO N σ c _ hσ a W h w hE hF hw
   constructor

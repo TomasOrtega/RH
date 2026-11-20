@@ -13,12 +13,18 @@ namespace GlobalTheory.GLq.DegDer
 
 variable {g : ℕ} [Fact g.Prime]
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hi : (i : ℕ) < n` using `by omega`. Establish `hj : (j : ℕ) < n` using `by omega`. Simplify using `only [tl, entN, hi, hj, and_self, dif_pos, Matrix.one_apply, Fin.ext_iff]`.
+-/
 theorem tl_one {a n : ℕ} (h : a ≤ n) : tl a (1 : Mt g n) = (1 : Mt g a) := by
   ext i j
   have hi : (i : ℕ) < n := by omega
   have hj : (j : ℕ) < n := by omega
   simp only [tl, entN, hi, hj, and_self, dif_pos, Matrix.one_apply, Fin.ext_iff]
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hi : a + (i : ℕ) < n` using `by omega`. Establish `hj : a + (j : ℕ) < n` using `by omega`. Simplify using `only [br, entN, hi, hj, and_self, dif_pos, Matrix.one_apply, Fin.ext_iff]`. Simplify using the standard rewrite rules.
+-/
 theorem br_one {a b n : ℕ} (h : a + b ≤ n) : br a b (1 : Mt g n) = (1 : Mt g b) := by
   ext i j
   have hi : a + (i : ℕ) < n := by omega
@@ -26,12 +32,18 @@ theorem br_one {a b n : ℕ} (h : a + b ≤ n) : br a b (1 : Mt g n) = (1 : Mt g
   simp only [br, entN, hi, hj, and_self, dif_pos, Matrix.one_apply, Fin.ext_iff]
   simp
 
+/- English proof (translation)
+Unfold `toG`. Rewrite using `[dif_pos isUnit_one]`. Use extensionality with `: 1`. Simplify using the standard rewrite rules.
+-/
 theorem toG_one {n : ℕ} : toG (1 : Mt g n) = 1 := by
   unfold toG
   rw [dif_pos isUnit_one]
   ext : 1
   simp
 
+/- English proof (translation)
+Unfold `hc hcT`. Rewrite using `[← GlobalTheory.GLm.ParBasic.card_par]`. Use `congr 1`. Simplify using `only [mul_one, inv_mul_cancel, Units.val_one, GlobalTheory.GLm.ParBasic.inPar_one, if_true, tl_one (Nat.le_add_right a b), br_one (le_refl (a + b)), toG_one, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+-/
 theorem hc_one (a b : ℕ) (α : Gn g a → ℂ) (β : Gn g b → ℂ) :
     hc a b α β (a + b) 1 = ((Fintype.card (Gn g a) * Fintype.card (Gn g b) * g ^ (a * b) : ℕ) : ℂ)⁻¹ *
       ((Fintype.card (Gn g (a + b)) : ℂ) * (α 1 * β 1)) := by
@@ -42,6 +54,11 @@ theorem hc_one (a b : ℕ) (α : Gn g a → ℂ) (β : Gn g b → ℂ) :
     tl_one (Nat.le_add_right a b), br_one (le_refl (a + b)), toG_one, Finset.sum_const, Finset.card_univ,
     nsmul_eq_mul]
 
+/- English proof (translation)
+Unfold `diag1`. Establish `: (fun i j : Fin (k + 1) => if (i : ℕ) < k ∧ (j : ℕ) < k then entN ((1 : Gn g k) : Mt g k) i j else (1 : Mt g (k + 1)) i j) = (1 : Mt g (k + 1))`. Use extensionality with `i j`. Use `split_ifs with h`. Simplify using `only [Units.val_one, entN, h, and_self, dif_pos, Matrix.one_apply, Fin.ext_iff]`.
+
+Both sides reduce to the same expression. Rewrite using `[this, toG_one]`.
+-/
 theorem blockDiagonalWithIdentityGL_one (k : ℕ) : diag1 (1 : Gn g k) (k + 1) = 1 := by
   unfold diag1
   have : (fun i j : Fin (k + 1) => if (i : ℕ) < k ∧ (j : ℕ) < k then entN ((1 : Gn g k) : Mt g k) i j
@@ -52,6 +69,9 @@ theorem blockDiagonalWithIdentityGL_one (k : ℕ) : diag1 (1 : Gn g k) (k + 1) =
     · rfl
   rw [this, toG_one]
 
+/- English proof (translation)
+Rewrite using `[Fin.prod_univ_add]`. Simplify using `only [Fin.coe_castAdd, Fin.coe_natAdd, pow_add, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[← pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prod_pow_add (a b : ℕ) :
     (∏ i : Fin (a + b), (g : ℂ) ^ (i : ℕ)) =
       (∏ i : Fin a, (g : ℂ) ^ (i : ℕ)) * (∏ i : Fin b, (g : ℂ) ^ (i : ℕ)) * (g : ℂ) ^ (a * b) := by
@@ -61,17 +81,32 @@ theorem prod_pow_add (a b : ℕ) :
   rw [← pow_mul]
   ring
 
+/- English proof (translation)
+Establish `e : ∀ n, Finset.Icc 1 n = Finset.Ico 1 (n + 1)` using `fun n => by ext x; simp only [Finset.mem_Icc, Finset.mem_Ico]; omega`. Rewrite using `[e, e, Finset.prod_Ico_consecutive _ (by omega) (by omega)]`.
+-/
 theorem prod_Icc_add (f : ℕ → ℂ) (a b : ℕ) :
     (∏ i ∈ Finset.Icc 1 (a + b), f i) = (∏ i ∈ Finset.Icc 1 a, f i) * ∏ i ∈ Finset.Ico (a + 1) (a + b + 1), f i := by
   have e : ∀ n, Finset.Icc 1 n = Finset.Ico 1 (n + 1) := fun n => by ext x; simp only [Finset.mem_Icc, Finset.mem_Ico]; omega
   rw [e, e, Finset.prod_Ico_consecutive _ (by omega) (by omega)]
 
+/- English proof (translation)
+Establish `h : (Fintype.card (Gn g n) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`. Rewrite `h` using `[GlobalTheory.GLq.GGDeg.card_Gn]`. Conclude with `mul_ne_zero_iff.mp h`.
+-/
 theorem card_Gn_factors_ne_zero (n : ℕ) :
     (∏ i : Fin n, (g : ℂ) ^ (i : ℕ)) ≠ 0 ∧ (∏ i ∈ Finset.Icc 1 n, ((g : ℂ) ^ i - 1)) ≠ 0 := by
   have h : (Fintype.card (Gn g n) : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr Fintype.card_ne_zero
   rw [GlobalTheory.GLq.GGDeg.card_Gn] at h
   exact mul_ne_zero_iff.mp h
 
+/- English proof (translation)
+Introduce `g _ ψ hψ n χ hn hχ`. Take `⟨k, rfl⟩ : ∃ k, n = k + 1` from `⟨n - 1, by omega⟩`. Establish `hM : IsMirClass χ` using `fun p x _ _ => hχ x p`. Establish `h1 : χ 1 = χ (diag1 (1 : Gn g k) (k + 1))` using `by rw [blockDiagonalWithIdentityGL_one]`. Rewrite using `[h1, GlobalTheory.GLm.mirClass_diag1_eq_sum g ψ hψ k χ hM 1]`.
+
+Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ≤ k` using `by have := Finset.mem_range.mp hi; omega`. Take `⟨b, rfl⟩ : ∃ b, k = i + b` from `⟨k - i, by omega⟩`. Establish `hkb : i + b - i = b` using `by omega`. Rewrite using `[hkb, hc_one, (GlobalTheory.GLq.GGDeg.gg_one_and_isClass g ψ b).1]`.
+
+Use `push_cast`. Rewrite using `[GlobalTheory.GLq.GGDeg.card_Gn i, GlobalTheory.GLq.GGDeg.card_Gn b, GlobalTheory.GLq.GGDeg.card_Gn (i + b), prod_pow_add, prod_Icc_add]`. Take `⟨hPi, hQi⟩` from `card_Gn_factors_ne_zero (g := g) i`. Take `⟨hPb, hQb⟩` from `card_Gn_factors_ne_zero (g := g) b`. Establish `hg : (g : ℂ) ^ (i * b) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.mpr (Fact.out : g.Prime).ne_zero)`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem one_eq_sum_der : ∀ (g : ℕ) [Fact g.Prime] (ψ : AddChar (ZMod g) ℂ), ψ ≠ 1 → ∀ (n : ℕ) (χ : Gn g n → ℂ),
     0 < n → IsClass χ → χ 1 = ∑ m ∈ Finset.range n, der ψ m χ 1 * ∏ i ∈ Finset.Ico (m + 1) n, ((g : ℂ) ^ i - 1) := by
   intro g _ ψ hψ n χ hn hχ

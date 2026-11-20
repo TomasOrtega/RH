@@ -8,6 +8,23 @@ open CategoryTheory Limits AlgebraicGeometry
 
 namespace CrystallineSemistableComparison.Onto.CLB
 
+/- English proof (translation)
+Use `letI : Algebra R A := f.toAlgebra`. Use `letI : Algebra R S := g.toAlgebra`. Use `letI : Algebra R B := (φ.comp f).toAlgebra`. Use `haveI : Algebra.Etale R A := RingHom.etale_algebraMap.1 hf`. Use `haveI : Algebra.Etale S (TensorProduct R S A) := Algebra.Etale.baseChange R A S`.
+
+Set `hA : S →ₐ[R] B` to `{ h with commutes' := fun r => (RingHom.congr_fun hsq r).symm }`. Set `φA : A →ₐ[R] B` to `{ φ with commutes' := fun r => rfl }`. Set `e : TensorProduct R S A →ₐ[R] B` to `Algebra.TensorProduct.lift hA φA (fun _ _ => Commute.all _ _)`. Establish `he1 : e.toRingHom.comp Algebra.TensorProduct.includeLeftRingHom = h`. Use extensionality with `s`.
+
+Simplify using `[e, hA]`. Establish `he2 : e.toRingHom.comp (Algebra.TensorProduct.includeRight (R` using `R) (A := S) (B := A)).toRingHom = φ := by`. Use extensionality with `a`. Simplify using `[e, φA]`. Take `⟨γ, hγ1, hγ2⟩` from `hU (TensorProduct R S A) (Algebra.TensorProduct.includeRight (R := R) (A := S) (B := A)).toRingHom Algebra.TensorProduct.includeLeftRingHom (by`.
+
+Use extensionality with `r`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.includeLeftRingHom_apply]`. Establish `h1 : f r = r • (1 : A)` using `Algebra.algebraMap_eq_smul_one r`. Establish `h2 : g r = r • (1 : S)` using `Algebra.algebraMap_eq_smul_one r`. Rewrite using `[h1, h2, TensorProduct.smul_tmul])`.
+
+Establish `hinv1 : ∀ b, e (γ b) = b`. Introduce `b`. Use `hE B (e.toRingHom.comp γ) (RingHom.id B) (by rw [RingHom.comp_assoc, hγ1, he2]; rfl) (by rw [RingHom.comp_assoc, hγ2, he1]; rfl)` as an intermediate fact. Conclude with `RingHom.congr_fun this b`. Establish `hinv2 : ∀ z, γ (e z) = z`.
+
+Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul s a`. Rewrite using `[Algebra.TensorProduct.lift_tmul, map_mul]`.
+
+Establish `e1` using `RingHom.congr_fun hγ2 s`. Establish `e2` using `RingHom.congr_fun hγ1 a`. Simplify using `only [RingHom.comp_apply] at e1 e2`. Express the relevant statement in the definitionally equal form `γ (h s) * γ (φ a) = _`. Rewrite using `[e1, e2]`.
+
+Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Establish `hb : Function.Bijective e` using `Function.bijective_iff_has_inverse.2 ⟨γ, hinv2, hinv1⟩`. Rewrite using `[← he1]`. Conclude with `RingHom.Etale.stableUnderComposition _ _ (RingHom.etale_algebraMap.2 inferInstance) (RingHom.Etale.of_bijective (f := e.toRingHom) hb)`.
+-/
 theorem chart_etale_of_univ {R A S B : Type} [CommRing R] [CommRing A] [CommRing S] [CommRing B]
     (f : R →+* A) (g : R →+* S) (φ : A →+* B) (h : S →+* B) (hf : f.Etale) (hsq : φ.comp f = h.comp g)
     (hU : ∀ (T : Type) [CommRing T] (α : A →+* T) (β : S →+* T), α.comp f = β.comp g →
@@ -62,6 +79,39 @@ def chartMapKXT {K : Type} [CommRing K] {n d : ℕ} (k : Fin d) :
   MvPolynomial.eval₂Hom MvPolynomial.C (Sum.elim (fun i => MvPolynomial.X (Sum.inl i))
     (fun j => if j = k then MvPolynomial.X (Sum.inr k) else MvPolynomial.X (Sum.inr k) * MvPolynomial.X (Sum.inr j)))
 
+/- English proof (translation)
+Establish `hk1 : u k = 1`. Establish `hm : MvPolynomial.X k - 1 ∈ RingHom.ker (MvPolynomial.eval₂Hom φ u)`. Rewrite using `[hr]`. Conclude with `Ideal.subset_span (Set.mem_insert _ _)`. Use `(RingHom.mem_ker).1 hm` as an intermediate fact.
+
+Simplify `this` using `[sub_eq_zero]`. Establish `htj : ∀ j, φ (t j) = φ (t k) * u j`. Introduce `j`. Establish `hm : MvPolynomial.C (t j) - MvPolynomial.C (t k) * MvPolynomial.X j ∈ RingHom.ker (MvPolynomial.eval₂Hom φ u)`. Rewrite using `[hr]`.
+
+Conclude with `Ideal.subset_span (Set.mem_insert_of_mem _ ⟨j, rfl⟩)`. Use `(RingHom.mem_ker).1 hm` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`. Use `chart_etale_of_univ (MvPolynomial.eval₂Hom s (Sum.elim x t)) (chartMapKXT (K := K) (n := n) k) φ _ het ?_ ?_ ?_` and prove the remaining obligations. Use `MvPolynomial.ringHom_ext (fun r => by simp [chartMapKXT]) (fun v => ?_)` and prove the remaining obligations.
+
+Break down `v with i | j` into its components or cases. Simplify using `[chartMapKXT]`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using `[chartMapKXT]`.
+
+Simplify using `[chartMapKXT, hj, htj j]`. Introduce `T _ α β hαβ`. Establish `hX : ∀ v, α (MvPolynomial.eval₂Hom s (Sum.elim x t) (MvPolynomial.X v)) = β (chartMapKXT (K` using `K) (n := n) k (MvPolynomial.X v)) := fun v => RingHom.congr_fun hαβ _`. Establish `hC : ∀ c, α (s c) = β (MvPolynomial.C c)`. Introduce `c`.
+
+Use `RingHom.congr_fun hαβ (MvPolynomial.C c)` as an intermediate fact. Simplify `this` using `[chartMapKXT]`. Establish `hXk : α (t k) = β (MvPolynomial.X (Sum.inr k))`. Use `hX (Sum.inr k)` as an intermediate fact. Simplify `this` using `[chartMapKXT]`.
+
+Establish `hXj : ∀ j, j ≠ k → α (t j) = β (MvPolynomial.X (Sum.inr k)) * β (MvPolynomial.X (Sum.inr j))`. Introduce `j hj`. Use `hX (Sum.inr j)` as an intermediate fact. Simplify `this` using `[chartMapKXT, hj]`. Establish `hXi : ∀ i, α (x i) = β (MvPolynomial.X (Sum.inl i))`.
+
+Introduce `i`. Use `hX (Sum.inl i)` as an intermediate fact. Simplify `this` using `[chartMapKXT]`. Set `γ0 : MvPolynomial (Fin d) A →+* T` to `MvPolynomial.eval₂Hom α (fun j => if j = k then 1 else β (MvPolynomial.X (Sum.inr j)))`. Establish `hle : RingHom.ker (MvPolynomial.eval₂Hom φ u) ≤ RingHom.ker γ0`.
+
+Rewrite using `[hr, Ideal.span_le]`. Introduce and unpack `p (rfl | ⟨j, rfl⟩)`. Simplify using `[γ0]`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality.
+
+Simplify using `[γ0]`. Simplify using `[γ0, hj, hXj j hj, hXk]`. Set `γ` to `(RingHom.liftOfSurjective (MvPolynomial.eval₂Hom φ u) hs) ⟨γ0, hle⟩`. Establish `hγ : ∀ p, γ (MvPolynomial.eval₂Hom φ u p) = γ0 p` using `fun p => RingHom.liftOfRightInverse_comp_apply _ _ _ _ p`. Use `⟨γ, ?_, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `a`. Use `hγ (MvPolynomial.C a)` as an intermediate fact. Simplify `this` using `[γ0]`. Use `MvPolynomial.ringHom_ext (fun c => ?_) (fun v => ?_)` and prove the remaining obligations. Use `hγ (MvPolynomial.C (s c))` as an intermediate fact.
+
+Simplify using `only [MvPolynomial.eval₂Hom_C, γ0] at this`. Simplify using `[this, hC]`. Break down `v with i | j` into its components or cases. Use `hγ (MvPolynomial.C (x i))` as an intermediate fact. Simplify using `only [MvPolynomial.eval₂Hom_C, γ0] at this`.
+
+Simplify using `[this, hXi]`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Use `hγ (MvPolynomial.C (t j))` as an intermediate fact. Simplify using `only [MvPolynomial.eval₂Hom_C, γ0] at this`.
+
+Simplify using `[this, hXk]`. Use `hγ (MvPolynomial.X j)` as an intermediate fact. Simplify `this` using `[γ0, hj]`. Introduce `T _ γ γ' h1 h2`. Establish `hc : γ.comp (MvPolynomial.eval₂Hom φ u) = γ'.comp (MvPolynomial.eval₂Hom φ u)`.
+
+Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun j => ?_)` and prove the remaining obligations. Simplify using `using RingHom.congr_fun h1 a`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using `[hk1]`.
+
+Use `RingHom.congr_fun h2 (MvPolynomial.X (Sum.inr j))` as an intermediate fact. Simplify `this` using `[hj]`. Use extensionality with `b`. Take `⟨p, rfl⟩` from `hs b`. Conclude with `RingHom.congr_fun hc p`.
+-/
 theorem chart_etale {K A B : Type} [CommRing K] [CommRing A] [CommRing B] {n d : ℕ} (s : K →+* A) (x : Fin n → A)
     (t : Fin d → A) (het : (MvPolynomial.eval₂Hom s (Sum.elim x t) : MvPolynomial (Fin n ⊕ Fin d) K →+* A).Etale)
     (φ : A →+* B) (u : Fin d → B) (k : Fin d) (hs : Function.Surjective (MvPolynomial.eval₂Hom φ u))

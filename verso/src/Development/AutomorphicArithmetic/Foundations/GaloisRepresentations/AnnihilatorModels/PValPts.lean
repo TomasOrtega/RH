@@ -4,6 +4,15 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Annih
 open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
+/- English proof (translation)
+Introduce `R S V _ _ _ _ _ _ _ _`. Establish `hinj : Function.Injective (IsScalarTower.toAlgHom R V (FractionRing V))` using `IsFractionRing.injective V (FractionRing V)`. Prove the components needed by the constructor for the conclusion. Introduce `z z' h`. Use extensionality with `s`.
+
+Apply `hinj` to reduce the goal to its premises. Simplify `AlgHom.congr_fun h s` using `only [AlgHom.comp_apply]`. Introduce `φ`. Establish `hmem : ∀ s, φ s ∈ (IsScalarTower.toAlgHom R V (FractionRing V)).range`. Introduce `s`.
+
+Establish `h1 : IsIntegral R (φ s)` using `(Algebra.IsIntegral.isIntegral s).map φ`. Establish `h2 : IsIntegral V (φ s)` using `h1.tower_top`. Take `⟨v, hv⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h2`. Conclude with `(AlgHom.mem_range _).2 ⟨v, hv⟩`. Set `e` to `AlgEquiv.ofInjective (IsScalarTower.toAlgHom R V (FractionRing V)) hinj`.
+
+Use `⟨e.symm.toAlgHom.comp (φ.codRestrict _ hmem), ?_⟩` and prove the remaining obligations. Use extensionality with `s`. Establish `h` using `e.apply_symm_apply ⟨φ s, hmem s⟩`. Conclude with `congrArg Subtype.val h`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.valPts_of :
     ValPts := by
   intro R S V _ _ _ _ _ _ _ _

@@ -21,6 +21,9 @@ def graphSub (W : HSp D) (c : Matrix (Fin W.rank) (Fin W.rank) D.host.E) :
     Submodule D.host.E ((Fin W.rank → D.host.E) × (Fin W.rank → D.host.E)) :=
   LinearMap.range (LinearMap.prod LinearMap.id (Matrix.mulVecLin c))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Simplify using the standard rewrite rules. Introduce `h`. Conclude with `⟨y.1, Prod.ext rfl (by simp [h])⟩`.
+-/
 theorem mem_graphSub {W : HSp D} {c : Matrix (Fin W.rank) (Fin W.rank) D.host.E}
     {y : (Fin W.rank → D.host.E) × (Fin W.rank → D.host.E)} : y ∈ graphSub W c ↔ y.2 = c *ᵥ y.1 := by
   constructor
@@ -29,11 +32,17 @@ theorem mem_graphSub {W : HSp D} {c : Matrix (Fin W.rank) (Fin W.rank) D.host.E}
   · intro h
     exact ⟨y.1, Prod.ext rfl (by simp [h])⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Both sides reduce to the same expression.
+-/
 theorem cT_eq (W : HSp D) (c : Matrix (Fin W.rank) (Fin W.rank) D.host.E) :
     Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) c = cᴴ := by
   funext i j
   rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.star_mulVec]`. Use `conv_rhs => rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec]`.
+-/
 theorem star_dot (W : HSp D) (c : Matrix (Fin W.rank) (Fin W.rank) D.host.E) (x x' : Fin W.rank → D.host.E) :
     star (c *ᵥ x) ⬝ᵥ W.gram *ᵥ (c *ᵥ x') = star x ⬝ᵥ (cᴴ * W.gram * c) *ᵥ x' := by
   rw [Matrix.star_mulVec]
@@ -52,6 +61,9 @@ def graphLag (W : HSp D) (g : GL (Fin W.rank) D.host.E)
       W.gram *ᵥ ((g : Matrix (Fin W.rank) (Fin W.rank) D.host.E) *ᵥ y)
     rw [star_dot, h]⟩
 
+/- English proof (translation)
+Rewrite using `[Submodule.eq_bot_iff]`. Introduce `x hx`. Establish `h : (0 : Fin W.rank → D.host.E) = (g : Matrix (Fin W.rank) (Fin W.rank) D.host.E) *ᵥ x` using `mem_graphSub.1 (Submodule.mem_comap.1 hx)`. Establish `h2` using `congrArg (((g⁻¹ : GL (Fin W.rank) D.host.E) : Matrix (Fin W.rank) (Fin W.rank) D.host.E) *ᵥ ·) h`. Simplify `h2.symm` using `[Matrix.mulVec_mulVec]`.
+-/
 theorem graphLag_bot (W : HSp D) (g : GL (Fin W.rank) D.host.E)
     (hg : g ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) W.gram) :
     (graphLag W g hg).1.comap (LinearMap.inl D.host.E _ _) = ⊥ := by
@@ -62,14 +74,23 @@ theorem graphLag_bot (W : HSp D) (g : GL (Fin W.rank) D.host.E)
   have h2 := congrArg (((g⁻¹ : GL (Fin W.rank) D.host.E) : Matrix (Fin W.rank) (Fin W.rank) D.host.E) *ᵥ ·) h
   simpa [Matrix.mulVec_mulVec] using h2.symm
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.AutFunCounterexample.gram_herm W`. Use function extensionality and compare the values at `i j`. Conclude with `congrFun (congrFun h i) j`.
+-/
 theorem herm' (W : HSp D) : W.gramᵀ.map (starRingAut : D.host.E ≃+* D.host.E) = W.gram := by
   have h := GlobalTheory.AutFunCounterexample.gram_herm W
   funext i j
   exact congrFun (congrFun h i) j
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F)`.
+-/
 theorem incA_injective (D : D7) : Function.Injective (incA D) :=
   Algebra.TensorProduct.includeRight_injective (AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F)
 
+/- English proof (translation)
+Establish `h : matHom W (γ : GA D W) ∈ HFin (AF D.host.F) D.sp.cm.sig W.gram` using `Subgroup.mem_subgroupOf.1 γ.2`. Take `⟨g, hg, e⟩` from `Subgroup.mem_map.1 h`. Conclude with `⟨g, hg, e⟩`.
+-/
 theorem exists_rat (W : HSp D) (γ : GQ W) : ∃ g : GL (Fin W.rank) D.host.E,
     g ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) W.gram ∧ Formalism.UG.bc (incA D) g = matHom W (γ : GA D W) := by
   have h : matHom W (γ : GA D W) ∈ HFin (AF D.host.F) D.sp.cm.sig W.gram := Subgroup.mem_subgroupOf.1 γ.2
@@ -78,19 +99,31 @@ theorem exists_rat (W : HSp D) (γ : GQ W) : ∃ g : GL (Fin W.rank) D.host.E,
 
 def ratG (W : HSp D) (γ : GQ W) : GL (Fin W.rank) D.host.E := (exists_rat W γ).choose
 
+/- English proof (translation)
+The claim follows from `(exists_rat W γ).choose_spec.1`.
+-/
 theorem ratG_mem (W : HSp D) (γ : GQ W) :
     ratG W γ ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) W.gram := (exists_rat W γ).choose_spec.1
 
+/- English proof (translation)
+Rewrite using `[Formalism.L2.Theta.mt, ← (exists_rat W γ).choose_spec.2]`. Both sides reduce to the same expression.
+-/
 theorem mt_ratG (W : HSp D) (γ : GQ W) :
     Formalism.L2.Theta.mt W (γ : GA D W) = (ratG W γ : Matrix (Fin W.rank) (Fin W.rank) D.host.E).map (incA D) := by
   rw [Formalism.L2.Theta.mt, ← (exists_rat W γ).choose_spec.2]
   rfl
 
+/- English proof (translation)
+Conclude with `Units.ext (Matrix.ext fun i j => incA_injective D (congrFun (congrFun h i) j))`.
+-/
 theorem bc_injective (W : HSp D) {g g' : GL (Fin W.rank) D.host.E}
     (h : (g : Matrix (Fin W.rank) (Fin W.rank) D.host.E).map (incA D) =
       (g' : Matrix (Fin W.rank) (Fin W.rank) D.host.E).map (incA D)) : g = g' := by
   exact Units.ext (Matrix.ext fun i j => incA_injective D (congrFun (congrFun h i) j))
 
+/- English proof (translation)
+Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply]`. Establish `hx : (x, c *ᵥ x) ∈ graphSub W c'` using `h ▸ mem_graphSub.2 rfl`. Conclude with `mem_graphSub.1 hx`.
+-/
 theorem graphSub_injective (W : HSp D) {c c' : Matrix (Fin W.rank) (Fin W.rank) D.host.E}
     (h : graphSub W c = graphSub W c') : c = c' := by
   apply Matrix.toLin'.injective
@@ -99,6 +132,11 @@ theorem graphSub_injective (W : HSp D) {c c' : Matrix (Fin W.rank) (Fin W.rank) 
   have hx : (x, c *ᵥ x) ∈ graphSub W c' := h ▸ mem_graphSub.2 rfl
   exact mem_graphSub.1 hx
 
+/- English proof (translation)
+Establish `h` using `congrArg (Submodule.map (LinearMap.prod (LinearMap.id : (Fin W.rank → D.host.E) →ₗ[D.host.E] _) (Matrix.mulVecLin (g : Matrix (Fin W.rank) (Fin W.rank) D.host.E)))) (Pi.basisFun D.host.E (Fin W.rank)).span_eq`. Rewrite `h` using `[Submodule.map_span, Submodule.map_top, ← Set.range_comp]`. Use `Eq.trans ?_ h` and prove the remaining obligations. Use `congr 2`. Use function extensionality and compare the values at `j`.
+
+Apply the tactic sequence `ext a <;> simp [Matrix.one_apply, Pi.single_apply]`.
+-/
 theorem isLagFrame_graph (W : HSp D) (g : GL (Fin W.rank) D.host.E)
     (hg : g ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) W.gram) :
     IsLagFrame W (graphLag W g hg) (1, (g : Matrix (Fin W.rank) (Fin W.rank) D.host.E)) := by
@@ -111,6 +149,9 @@ theorem isLagFrame_graph (W : HSp D) (g : GL (Fin W.rank) D.host.E)
   funext j
   ext a <;> simp [Matrix.one_apply, Pi.single_apply]
 
+/- English proof (translation)
+Establish `h : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (g : Matrix (Fin W.rank) (Fin W.rank) D.host.E) * W.gram * (g : Matrix (Fin W.rank) (Fin W.rank) D.host.E) = W.gram` using `hg`. Use `show Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) ((g : Matrix (Fin W.rank) (Fin W.rank) D.host.E).map (inclR (F := D.host.F) (AF D.host.F))) * W.gram.map (inclR (F := D.host.F) (AF D.host.F)) * (g : Matrix (Fin W.rank) (Fin W.rank) D.host.E).map (inclR (F := D.host.F) (AF D. …`. Rewrite using `[GlobalTheory.AutFunCounterexample.cT_map_gen, ← Matrix.map_mul, ← Matrix.map_mul, h]`.
+-/
 theorem hr_mem (W : HSp D) (g : GL (Fin W.rank) D.host.E)
     (hg : g ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) W.gram) :
     Formalism.UG.bc (incA D) g ∈ HR (AF D.host.F) D.sp.cm.sig W.gram := by
@@ -134,6 +175,17 @@ namespace GlobalTheory.RawLift.Graphs
 
 open GlobalTheory.RawLift.Graphs
 
+/- English proof (translation)
+Introduce `D W`. Set `f : GQ W → {Y : Lag W // Y.1.comap (LinearMap.inl D.host.E _ _) = ⊥}` to `fun γ => ⟨graphLag W (ratG W γ) (ratG_mem W γ), graphLag_bot W _ _⟩`. Establish `hinj : Function.Injective f`. Introduce `γ γ' h`. Establish `h1 : graphSub W (ratG W γ : Matrix (Fin W.rank) (Fin W.rank) D.host.E) = graphSub W (ratG W γ')` using `congrArg (fun Y => Y.1.1) h`.
+
+Establish `h2` using `graphSub_injective W h1`. Establish `h3 : Formalism.L2.Theta.mt W (γ : GA D W) = Formalism.L2.Theta.mt W (γ' : GA D W)`. Rewrite using `[mt_ratG, mt_ratG, h2]`. Conclude with `Subtype.ext (GlobalTheory.AutFunCounterexample.GA_ext W h3)`. Establish `hsurj : Function.Surjective f`.
+
+Introduce and unpack `⟨Y, hY⟩`. Take `⟨g, hgU, hgY⟩` from `((GlobalTheory.Doubling.maximal_isotropic_doubled D.host.E starRingAut W.rank W.gram (fun x => star_star x) (GlobalTheory.AutFunCounterexample.gram_det_ne W) (herm' W) Y.1 Y.2.1 Y.2.2).2.2).1 hY`. Establish `hg : g ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) W.gram` using `hgU`. Use `⟨ofRat W g hg, Subtype.ext (Subtype.ext ?_)⟩` and prove the remaining obligations. Establish `e1 : ratG W (ofRat W g hg) = g` using `bc_injective W ((mt_ratG W _).symm.trans rfl)`.
+
+Use `show graphSub W (ratG W (ofRat W g hg)) = Y.1`. Rewrite using `[e1]`. Use extensionality with `y`. Rewrite using `[mem_graphSub]`. Conclude with `(hgY y).symm`.
+
+Conclude with `⟨Equiv.ofBijective f ⟨hinj, hsurj⟩, fun γ => ⟨_, mt_ratG W γ, isLagFrame_graph W _ (ratG_mem W γ)⟩⟩`.
+-/
 theorem graphs : ∀ (D : D7) (W : HSp D), ∃ e : GQ W ≃ {Y : Lag W // Y.1.comap (LinearMap.inl D.host.E _ _) = ⊥},
     ∀ γ : GQ W, ∃ c : Matrix (Fin W.rank) (Fin W.rank) D.host.E, mt W (γ : GA D W) = c.map (incA D) ∧ IsLagFrame W (e γ).1 (1, c) := by
   intro D W

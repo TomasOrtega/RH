@@ -1,5 +1,14 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `κ _ n M a ha hM`. Establish `hev : ∀ i, Module.End.HasEigenvalue (Matrix.toLin' M) (a i)`. Introduce `i`. Rewrite using `[Module.End.hasEigenvalue_iff_isRoot_charpoly, Matrix.charpoly_toLin', hM, Polynomial.IsRoot.def, Polynomial.eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp)`.
+
+Use `choose v hv using fun i => (hev i).exists_hasEigenvector`. Establish `hli : LinearIndependent κ v` using `Module.End.eigenvectors_linearIndependent' (Matrix.toLin' M) a ha v hv`. Establish `hU : IsUnit (Matrix.of fun r c => v c r : Matrix (Fin n) (Fin n) κ)` using `Matrix.linearIndependent_cols_iff_isUnit.mp hli`. Take `⟨P, hP⟩` from `hU`. Use `⟨P, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hP]`. Use extensionality with `r c`. Establish `h` using `congrFun (hv c).apply_eq_smul r`. Rewrite `h` using `[Matrix.toLin'_apply]`. Rewrite using `[Matrix.mul_diagonal, Matrix.mul_apply]`.
+
+Simplify `h` using `[Matrix.mulVec, dotProduct, mul_comm]`.
+-/
 theorem UpperTheory.Reformulated.B.DiagonalizationExistence.exists_diag :
     ∀ {κ : Type} [inst : Field κ] {n : ℕ}
     (M : Matrix (Fin n) (Fin n) κ) (a : Fin n → κ),

@@ -21,6 +21,17 @@ section Abstract
 
 variable {R : Type} [CommRing R] {a b : ℕ}
 
+/- English proof (translation)
+Establish `eMP : M * P = 1 - Q` using `eq_sub_of_add_eq hMP`. Establish `hQM : Q * M = 0`. Establish `: (M * P + Q) * M = M` using `by rw [hMP, Matrix.one_mul]`. Rewrite `this` using `[Matrix.add_mul, Matrix.mul_assoc, hPM, Matrix.mul_one]`. Conclude with `left_eq_add.1 this.symm`.
+
+Establish `hQH : Q * H = Q` using `by rw [← hQG, Matrix.mul_assoc, hGH, Matrix.mul_one, hQG]`. Establish `hHQ : H * Q = Q` using `by rw [← hGQ, ← Matrix.mul_assoc, hHG, Matrix.one_mul, hGQ]`. Establish `hmid : ∀ {A B : Matrix (Fin a) (Fin a) R}, A * B = 1 → Q * B = Q → A * Q = Q → (P * A * M) * (P * B * M) = 1`. Introduce `A B hAB hQB hAQ`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[eMP]`. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = 1 := by`. Rewrite using `[hAB, hAQ, Matrix.mul_one, hPM, Matrix.mul_assoc P Q B, hQB, Matrix.mul_assoc P Q M, hQM, Matrix.mul_zero, sub_zero]`. Establish `hMG : M * (P * G * M) = G * M`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[eMP, Matrix.sub_mul, Matrix.sub_mul, hQG, hQM, Matrix.one_mul, sub_zero]`. Use `⟨hmid hGH hQH hGQ, hmid hHG hQG hHQ, hMG, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show cT s (M * (P * G * M)) = cT s (P * G * M) * cT s M by rw [Formalism.UG.cT_mul], ← hK]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = cT s M * (cT s G * J * G) * M := by`. Rewrite using `[hMG, Formalism.UG.cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = K := by rw [hU, hK]`.
+-/
 theorem lift_of_fix (s : R →+* R) {M : Matrix (Fin a) (Fin b) R} {P : Matrix (Fin b) (Fin a) R}
     {Q G H J : Matrix (Fin a) (Fin a) R} {K : Matrix (Fin b) (Fin b) R}
     (hMP : M * P + Q = 1) (hPM : P * M = 1) (hGQ : G * Q = Q) (hQG : Q * G = Q) (hGH : G * H = 1) (hHG : H * G = 1)
@@ -63,16 +74,25 @@ section Frame
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}
 
+/- English proof (translation)
+Simplify using `only [USplit.P, prj, prX, prY, Matrix.mul_add, Matrix.mul_assoc]`.
+-/
 theorem mul_P {b : Type} [Fintype b] (N : Matrix b (Fin n) E) (I : Set (Fin r)) :
     N * USplit.P σ J X Y I = (N * X * diagonal (ind I : Fin r → E)) * cT (σ : E →+* E) Y * J +
       (N * Y * diagonal (ind I : Fin r → E)) * cT (σ : E →+* E) X * J := by
   simp only [USplit.P, prj, prX, prY, Matrix.mul_add, Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[mul_P, hW.xx, hW.xy]`. Simplify using `[Matrix.mul_assoc]`.
+-/
 theorem cTX_mul_P (hW : IsWittFrame σ J X Y) (I : Set (Fin r)) :
     cT (σ : E →+* E) X * J * USplit.P σ J X Y I = diagonal (ind I : Fin r → E) * (cT (σ : E →+* E) X * J) := by
   rw [mul_P, hW.xx, hW.xy]
   simp [Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[mul_P, hW.yy, Comm.yJx hCM hJ hW]`. Simplify using `[Matrix.mul_assoc]`.
+-/
 theorem cTY_mul_P (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) (I : Set (Fin r)) :
     cT (σ : E →+* E) Y * J * USplit.P σ J X Y I = diagonal (ind I : Fin r → E) * (cT (σ : E →+* E) Y * J) := by
   rw [mul_P, hW.yy, Comm.yJx hCM hJ hW]
@@ -84,9 +104,15 @@ section Space
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `funext fun a => congrFun (V.frame.equivFun.apply_symm_apply c) a`.
+-/
 theorem repr_symm (V : HSp D) (c : Fin V.rank → D.host.E) : ⇑(V.frame.repr (V.frame.equivFun.symm c)) = c :=
   funext fun a => congrFun (V.frame.equivFun.apply_symm_apply c) a
 
+/- English proof (translation)
+Establish `h` using `colM_vec V (fun i => V.frame.equivFun.symm fun j => C j i) (V.frame.equivFun.symm c) i`. Establish `e : colM V (fun i => V.frame.equivFun.symm fun j => C j i) = C` using `Matrix.ext fun a b => congrFun (repr_symm V fun j => C j b) a`. Rewrite `h` using `[e, repr_symm]`. Conclude with `h.symm`.
+-/
 theorem hT_col (V : HSp D) {m : ℕ} (C : Matrix (Fin V.rank) (Fin m) D.host.E) (c : Fin V.rank → D.host.E) (i : Fin m) :
     V.hT (V.frame.equivFun.symm fun j => C j i) (V.frame.equivFun.symm c) =
       ((cT (D.sp.cm.sig : D.host.E →+* D.host.E) C * V.gram) *ᵥ c) i := by
@@ -96,6 +122,9 @@ theorem hT_col (V : HSp D) {m : ℕ} (C : Matrix (Fin V.rank) (Fin m) D.host.E) 
   rw [e, repr_symm] at h
   exact h.symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Establish `e` using `colM_vec V (fun k => ι (V'.frame k)) (V.frame.equivFun.symm c) a`. Rewrite `e` using `[repr_symm]`. Rewrite using `[frameMat_eq, e, ← V.herm.eq, h _ ⟨_, rfl⟩]`. Simplify using the standard rewrite rules.
+-/
 theorem mulVec_perp {V V' : HSp D} {ι : V'.V →ₗ[D.host.E] V.V} {c : Fin V.rank → D.host.E}
     (h : ∀ v ∈ LinearMap.range ι, V.hT (V.frame.equivFun.symm c) v = 0) :
     (cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat V V' ι) * V.gram) *ᵥ c = 0 := by
@@ -112,6 +141,11 @@ section Main
 variable {D : D7} {V V' : HSp D} {ι : V'.V →ₗ[D.host.E] V.V} {m : ℕ} {X Y : Matrix (Fin V.rank) (Fin m) D.host.E}
   {T : Finset (Fin m)}
 
+/- English proof (translation)
+Use `Matrix.ext fun a i => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_diagonal, GlobalTheory.CompanionTheory.LeviGen.ind_apply]`. Distinguish the cases in `hi : i ∈ I`. Rewrite using `[h a i hi, zero_mul]`. Both sides reduce to the same expression.
+
+Rewrite using `[if_neg hi, mul_zero]`. Both sides reduce to the same expression.
+-/
 theorem mul_diag_zero {b : Type} [Fintype b] {N : Matrix b (Fin m) D.host.E} {I : Set (Fin m)}
     (h : ∀ a, ∀ i ∈ I, N a i = 0) : N * diagonal (ind I : Fin m → D.host.E) = 0 := by
   classical
@@ -121,6 +155,23 @@ theorem mul_diag_zero {b : Type} [Fintype b] {N : Matrix b (Fin m) D.host.E} {I 
   · rw [h a i hi, zero_mul]; rfl
   · rw [if_neg hi, mul_zero]; rfl
 
+/- English proof (translation)
+Use `set M := frameMat V V' ι with hM`. Use `set Pr := prM V V' ι with hPr`. Use `set Q := USplit.P D.sp.cm.sig V.gram X Y (upTo T) with hQ`. Establish `hPM : Pr * M = 1`. Rewrite using `[hPr, prM, Matrix.mul_assoc, frame_rel hι, Matrix.nonsing_inv_mul _ (gram_det_ne V').isUnit]`.
+
+Establish `hX : ∀ a, ∀ i ∈ upTo T, (cT (D.sp.cm.sig : D.host.E →+* D.host.E) M * V.gram * X) a i = 0` using `fun a i hi => congrFun (mulVec_perp (ι := ι) (c := fun j => X j i) fun v hv => ((hr v).1 hv i hi).1) a`. Establish `hY : ∀ a, ∀ i ∈ upTo T, (cT (D.sp.cm.sig : D.host.E →+* D.host.E) M * V.gram * Y) a i = 0` using `fun a i hi => congrFun (mulVec_perp (ι := ι) (c := fun j => Y j i) fun v hv => ((hr v).1 hv i hi).2) a`. Establish `hMQ : cT (D.sp.cm.sig : D.host.E →+* D.host.E) M * V.gram * Q = 0`. Rewrite using `[hQ, mul_P, mul_diag_zero hX, mul_diag_zero hY]`. Simplify using the standard rewrite rules.
+
+Establish `hcol : ∀ j, ∃ u, ι u = V.frame.equivFun.symm fun a => (1 - Q) a j` using `fun j => by`. Use `(hr _).2 fun i hi => ?_` and prove the remaining obligations. Rewrite using `[hT_col, hT_col]`. Establish `hi' : (ind (upTo T) : Fin m → D.host.E) i = 1` using `by rw [GlobalTheory.CompanionTheory.LeviGen.ind_apply, if_pos hi]`. Prove the components needed by the constructor for the conclusion.
+
+Establish `e : cT (D.sp.cm.sig : D.host.E →+* D.host.E) X * V.gram * (1 - Q) = (1 - diagonal (ind (upTo T) : Fin m → D.host.E)) * (cT (D.sp.cm.sig : D.host.E →+* D.host.E) X * V.gram)`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, hQ, cTX_mul_P hW, Matrix.sub_mul, Matrix.one_mul]`. Establish `e'` using `congrFun (congrFun e i) j`. Use `e'.trans ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.sub_apply, Matrix.diagonal_mul, hi', one_mul, sub_self]`.
+
+Establish `e : cT (D.sp.cm.sig : D.host.E →+* D.host.E) Y * V.gram * (1 - Q) = (1 - diagonal (ind (upTo T) : Fin m → D.host.E)) * (cT (D.sp.cm.sig : D.host.E →+* D.host.E) Y * V.gram)`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, hQ, cTY_mul_P hCM hJ hW, Matrix.sub_mul, Matrix.one_mul]`. Establish `e'` using `congrFun (congrFun e i) j`. Use `e'.trans ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.sub_apply, Matrix.diagonal_mul, hi', one_mul, sub_self]`.
+
+Use `choose u hu using hcol`. Establish `hA : M * Matrix.of (fun b j => V'.frame.repr (u j) b) = 1 - Q`. Use `Matrix.ext fun a j => ?_` and prove the remaining obligations. Establish `e` using `congrFun (LinearMap.toMatrix_mulVec_repr V'.frame V.frame ι (u j)) a`. Rewrite `e` using `[hu j, repr_symm]`.
+
+Conclude with `e`. Establish `e1 : M * Pr * (1 - Q) = 1 - Q`. Rewrite using `[← hA, Matrix.mul_assoc M Pr, ← Matrix.mul_assoc Pr, hPM, Matrix.one_mul]`. Establish `e2 : M * Pr * Q = 0`. Rewrite using `[hPr, prM, Matrix.mul_assoc, Matrix.mul_assoc, hMQ]`.
+
+Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem frame_proj (hCM : IsCMExt D.host.F D.host.E D.sp.cm.sig) (hJ : IsHermND D.sp.cm.sig V.gram)
     (hW : IsWittFrame D.sp.cm.sig V.gram X Y) (hι : HSpace.IsIsomEmb V' V ι)
     (hr : ∀ v : V.V, v ∈ LinearMap.range ι ↔ ∀ i ∈ upTo T, V.hT (V.frame.equivFun.symm fun j => X j i) v = 0 ∧
@@ -174,6 +225,25 @@ end Main
 
 section Final
 
+/- English proof (translation)
+Introduce `D V m X Y hW T V' ι hι hr s hs`. Take `⟨hCM, hJ⟩` from `GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND D.host.F D.host.E D.sp.cm`. Use `⟨fun h => ?_, fun g hg => ?_, fun h hh => Formalism.L2.Fam.ThC.emb_fin hι hs hh⟩` and prove the remaining obligations. Introduce `y hy`. Set `S : Submodule (AF D.host.F ⊗[D.host.F] D.host.E) (Fin V.rank → AF D.host.F ⊗[D.host.F] D.host.E)` to `LinearMap.eqLocus (GlobalTheory.AdelicU.matHom (AF D.host.F) D.sp.cm.sig V.gram (s h)).1.mulVecLin LinearMap.id`.
+
+Establish `hle : colSpan D.host.F X (upTo T) ⊔ colSpan D.host.F Y (upTo T) ≤ S`. Use `sup_le (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Conclude with `(hs h).2 (fun j => X j i) (mulVec_perp fun v hv => ((hr v).1 hv i hi).1)`. Introduce and unpack `_ ⟨i, hi, rfl⟩`.
+
+Conclude with `(hs h).2 (fun j => Y j i) (mulVec_perp fun v hv => ((hr v).1 hv i hi).2)`. Conclude with `hle hy`. Establish `hF` using `frame_proj hCM (hJ V) hW hι hr set Q := USplit.P D.sp.cm.sig V.gram X Y (upTo T) with hQ`. Establish `hF' : frameMat V V' ι * prM V V' ι + Q = 1` using `by rw [hF, sub_add_cancel]`. Establish `hPM' : prM V V' ι * frameMat V V' ι = 1`.
+
+Rewrite using `[prM, Matrix.mul_assoc, frame_rel hι, Matrix.nonsing_inv_mul _ (gram_det_ne V').isUnit]`. Establish `hMP : (frameMat V V' ι).map (incA D) * (prM V V' ι).map (incA D) + adMat D.host.F Q = 1`. Rewrite using `[← Matrix.map_mul]`. Use `show (frameMat V V' ι * prM V V' ι).map (incA D) + Q.map (incA D) = 1`. Rewrite using `[← Matrix.map_add _ (map_add (incA D)), hF', Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Establish `hPM : (prM V V' ι).map (incA D) * (frameMat V V' ι).map (incA D) = 1`. Rewrite using `[← Matrix.map_mul, hPM', Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hGQ` using `USplit.Q_fix_of_uPart hCM (hJ V) hW hg`. Establish `hJu : IsUnit (JR (F` using `D.host.F) (AF D.host.F) V.gram).det := by`. Rewrite using `[show JR (F := D.host.F) (AF D.host.F) V.gram = V.gram.map (incA D) from rfl, show (V.gram.map (incA D)).det = incA D V.gram.det from (RingHom.map_det (incA D) V.gram).symm]`.
+
+Conclude with `(isUnit_iff_ne_zero.2 (hJ V).2).map (incA D)`. Establish `hQG` using `Comm.mul_eq_of_unitary hJu (USplit.matHom_unitary g) (USplit.adMat_P_selfAdjoint hCM (hJ V) _) hGQ`. Establish `hK : Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) ((frameMat V V' ι).map (incA D)) * JR (F` using `D.host.F) (AF D.host.F) V.gram * (frameMat V V' ι).map (incA D) = JR (F := D.host.F) (AF D.host.F) V'.gram := by`. Rewrite using `[Comm.cT_map]`. Establish `e` using `congrArg (fun A => Matrix.map A (incA D)) (frame_rel hι)`.
+
+Simplify using `only [Matrix.map_mul] at e`. Conclude with `e`. Take `⟨h1, h2, h3, h4⟩` from `lift_of_fix (sigR (AF D.host.F) D.sp.cm.sig) hMP hPM hGQ hQG (USplit.matHom_mul_inv g) (USplit.matHom_inv_mul g) (USplit.matHom_unitary g) hK`. Set `h : GA D V'` to `show HR (AF D.host.F) D.sp.cm.sig V'.gram from ⟨⟨_, _, h1, h2⟩, h4⟩`. Use `⟨h, embU D V V' ι hι _ _ h (hs h) ⟨h3.symm, fun x hx => ?_⟩⟩` and prove the remaining obligations.
+
+Establish `hPx : prM V V' ι *ᵥ x = 0` using `by rw [prM, ← Matrix.mulVec_mulVec, hx, Matrix.mulVec_zero]`. Establish `hQx : Q *ᵥ x = x`. Establish `e : (frameMat V V' ι * prM V V' ι + Q) *ᵥ x = x` using `by rw [hF', Matrix.one_mulVec]`. Rewrite `e` using `[Matrix.add_mulVec, ← Matrix.mulVec_mulVec, hPx, Matrix.mulVec_zero, zero_add]`. Then use the resulting hypothesis. Establish `hb : adMat D.host.F Q *ᵥ (fun i => incA D (x i)) = fun i => incA D (x i)`.
+
+Use function extensionality and compare the values at `i`. Conclude with `((incA D).map_mulVec Q x i).symm.trans (congrArg _ (congrFun hQx i))`. Use `show (GlobalTheory.AdelicU.matHom (AF D.host.F) D.sp.cm.sig V.gram g).1 *ᵥ (fun i => incA D (x i)) = _`. Rewrite using `[← hb, Matrix.mulVec_mulVec, hGQ]`.
+-/
 theorem range_embHom : ∀ (D : D7) (V : HSp D) (m : ℕ) (X Y : Matrix (Fin V.rank) (Fin m) D.host.E),
     GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram X Y → ∀ (T : Finset (Fin m)) (V' : HSp D)
     (ι : V'.V →ₗ[D.host.E] V.V), HSpace.IsIsomEmb V' V ι →

@@ -21,6 +21,9 @@ def StConj (γ₀ γ : Bˣ) : Prop :=
 
 variable {k}
 
+/- English proof (translation)
+Establish `hu : IsUnit (star (γ : B))` using `(Units.isUnit γ).star`. Apply `hu.mul_right_cancel` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem star_mul_conj {γ₀ γ g : Bˣ} (n : B) (hn : ∀ x : B, n * x = x * n)
     (h0 : (γ₀ : B) * star (γ₀ : B) = n) (h1 : (γ : B) * star (γ : B) = n) (hg : (g : B) * γ₀ = γ * g) :
     star (g : B) * γ = γ₀ * star (g : B) := by
@@ -33,11 +36,17 @@ theorem star_mul_conj {γ₀ γ g : Bˣ} (n : B) (hn : ∀ x : B, n * x = x * n)
     _ = γ₀ * star ((γ : B) * g) := by rw [hg]
     _ = γ₀ * star (g : B) * star (γ : B) := by rw [star_mul, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Units.coe_star, mul_assoc, hg, ← mul_assoc, star_mul_conj n hn h0 h1 hg, mul_assoc]`.
+-/
 theorem star_mul_self_comm {γ₀ γ g : Bˣ} (n : B) (hn : ∀ x : B, n * x = x * n)
     (h0 : (γ₀ : B) * star (γ₀ : B) = n) (h1 : (γ : B) * star (γ : B) = n) (hg : (g : B) * γ₀ = γ * g) :
     ((star g * g : Bˣ) : B) * γ₀ = γ₀ * ((star g * g : Bˣ) : B) := by
   rw [Units.val_mul, Units.coe_star, mul_assoc, hg, ← mul_assoc, star_mul_conj n hn h0 h1 hg, mul_assoc]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the calculation `calc ((u⁻¹ : Bˣ) : B) * γ₀ = ((u⁻¹ : Bˣ) : B) * (γ₀ * u) * ((u⁻¹ : Bˣ) : B) := by rw [mul_assoc, mul_assoc, Units.mul_inv, mul_one] _ = ((u⁻¹ : Bˣ) : B) * ((u : B) * γ₀) * ((u⁻¹ : Bˣ) : B) := by rw [hu] _ = γ₀ * ((u⁻¹ : Bˣ) : B) := by rw [← mul_assoc, Units.inv_mul, one_mul]`.
+-/
 theorem inv_comm {γ₀ : B} (u : Bˣ) (hu : (u : B) * γ₀ = γ₀ * u) :
     ((u⁻¹ : Bˣ) : B) * γ₀ = γ₀ * ((u⁻¹ : Bˣ) : B) :=
   calc ((u⁻¹ : Bˣ) : B) * γ₀ = ((u⁻¹ : Bˣ) : B) * (γ₀ * u) * ((u⁻¹ : Bˣ) : B) := by
@@ -58,6 +67,9 @@ def liftUnit (ι : L →ₐ[k] B) (hι : Function.Injective ι) (γ₀ : B)
     have h2 := ((hcent ((u⁻¹ : Bˣ) : B)).1 (inv_comm u hu)).choose_spec
     rw [map_mul, h1, h2, Units.inv_mul, map_one])
 
+/- English proof (translation)
+The claim follows from `((hcent u).1 hu).choose_spec`.
+-/
 @[simp] theorem ι_liftUnit (ι : L →ₐ[k] B) (hι : Function.Injective ι) (γ₀ : B)
     (hcent : ∀ x : B, x * γ₀ = γ₀ * x ↔ x ∈ Set.range ι) (u : Bˣ) (hu : (u : B) * γ₀ = γ₀ * u) :
     ι ((liftUnit ι hι γ₀ hcent u hu : Lˣ) : L) = u :=
@@ -70,6 +82,9 @@ def cocyc (ι : L →ₐ[k] B) (hι : Function.Injective ι) (γ₀ : B)
   ⟨liftUnit ι hι γ₀ hcent (star g * g) hg, hι (by
     rw [hc, ι_liftUnit, Units.val_mul, Units.coe_star, star_mul, star_star])⟩
 
+/- English proof (translation)
+Simplify using `[cocyc]`.
+-/
 @[simp] theorem ι_cocyc (ι : L →ₐ[k] B) (hι : Function.Injective ι) (γ₀ : B)
     (hcent : ∀ x : B, x * γ₀ = γ₀ * x ↔ x ∈ Set.range ι) (c : L →ₐ[k] L)
     (hc : ∀ a, ι (c a) = star (ι a)) (g : Bˣ) (hg : ((star g * g : Bˣ) : B) * γ₀ = γ₀ * ((star g * g : Bˣ) : B)) :
@@ -81,6 +96,11 @@ section Inv
 variable (ι : L →ₐ[k] B) (hι : Function.Injective ι) (γ₀ : Bˣ)
   (hcent : ∀ x : B, x * γ₀ = γ₀ * x ↔ x ∈ Set.range ι) (c : L →ₐ[k] L) (hc : ∀ a, ι (c a) = star (ι a))
 
+/- English proof (translation)
+Apply `QuotientGroup.eq.2` to reduce the goal to its premises. Rewrite using `[GlobalTheory.LKTorus.Model.mem_normSub_iff]`. Use `⟨t, y, ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, Units.val_mul, h]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [inv_mul_cancel, Units.val_one, mul_one]`.
+-/
 theorem mk_eq_mk_of {c : L →ₐ[k] L} (a b : fixU k c) (t : kˣ) (y : Lˣ)
     (h : ((b : Lˣ) : L) = algebraMap k L t * ((a : Lˣ) : L) * ((y : L) * c y)) :
     (QuotientGroup.mk a : H1 k c) = QuotientGroup.mk b := by
@@ -93,6 +113,9 @@ theorem mk_eq_mk_of {c : L →ₐ[k] L} (a b : fixU k c) (t : kˣ) (y : Lˣ)
         rw [Units.val_mul]; ring
     _ = _ := by rw [inv_mul_cancel, Units.val_one, mul_one]
 
+/- English proof (translation)
+The claim follows from `star_mul_self_comm _ (fun x => Algebra.commutes _ x) h0 h1 hg`.
+-/
 theorem StConj.comm {γ₀ γ : Bˣ} (ν : kˣ) (h0 : (γ₀ : B) * star (γ₀ : B) = algebraMap k B ν)
     (h1 : (γ : B) * star (γ : B) = algebraMap k B ν) {g : Bˣ} (hg : (g : B) * γ₀ = γ * g) :
     ((star g * g : Bˣ) : B) * γ₀ = γ₀ * ((star g * g : Bˣ) : B) :=
@@ -102,6 +125,15 @@ def invCls {γ : Bˣ} (h : StConj k γ₀ γ) : H1 k c :=
   QuotientGroup.mk (cocyc ι hι (γ₀ : B) hcent c hc h.choose_spec.2.2.choose
     (StConj.comm h.choose h.choose_spec.1 h.choose_spec.2.1 h.choose_spec.2.2.choose_spec))
 
+/- English proof (translation)
+Establish `hq : ((g⁻¹ * g' : Bˣ) : B) * γ₀ = γ₀ * ((g⁻¹ * g' : Bˣ) : B)`. Establish `e : (γ : B) = g * γ₀ * ((g⁻¹ : Bˣ) : B)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Units.val_mul, mul_assoc, hg', e]`. Simplify using `only [← mul_assoc, Units.inv_mul, one_mul]`.
+
+Use `set y := liftUnit ι hι (γ₀ : B) hcent (g⁻¹ * g') hq with hy`. Establish `hιy : ι (y : L) = ((g⁻¹ * g' : Bˣ) : B)` using `ι_liftUnit ι hι _ hcent _ hq`. Establish `hgy : (g' : B) = g * ι (y : L)`. Rewrite using `[hιy, Units.val_mul, ← mul_assoc, Units.mul_inv, one_mul]`. Use `set a := cocyc ι hι (γ₀ : B) hcent c hc g hgc with hadef`.
+
+Establish `ha : star (g : B) * g = ι (((a : Lˣ)) : L)`. Rewrite using `[hadef, ι_cocyc]`. Apply `mk_eq_mk_of _ _ 1 y` to reduce the goal to its premises. Apply `hι` to reduce the goal to its premises. Rewrite using `[ι_cocyc, hgy]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mk_cocyc_eq {γ : Bˣ} (g g' : Bˣ) (hg : (g : B) * γ₀ = γ * g) (hg' : (g' : B) * γ₀ = γ * g')
     (hgc : ((star g * g : Bˣ) : B) * γ₀ = γ₀ * ((star g * g : Bˣ) : B))
     (hgc' : ((star g' * g' : Bˣ) : B) * γ₀ = γ₀ * ((star g' * g' : Bˣ) : B)) :
@@ -128,14 +160,25 @@ theorem mk_cocyc_eq {γ : Bˣ} (g g' : Bˣ) (hg : (g : B) * γ₀ = γ * g) (hg'
     _ = ι (c (y : L) * ((a : Lˣ) : L) * (y : L)) := by rw [← hc, ha, map_mul, map_mul]
     _ = _ := by congr 1; rw [Units.val_one, map_one, one_mul]; ring
 
+/- English proof (translation)
+The claim follows from `mk_cocyc_eq ι hι γ₀ hcent c hc _ g h.choose_spec.2.2.choose_spec hg _ hgc`.
+-/
 theorem invCls_eq {γ : Bˣ} (h : StConj k γ₀ γ) (g : Bˣ) (hg : (g : B) * γ₀ = γ * g)
     (hgc : ((star g * g : Bˣ) : B) * γ₀ = γ₀ * ((star g * g : Bˣ) : B)) :
     invCls ι hι γ₀ hcent c hc h = QuotientGroup.mk (cocyc ι hι (γ₀ : B) hcent c hc g hgc) :=
   mk_cocyc_eq ι hι γ₀ hcent c hc _ g h.choose_spec.2.2.choose_spec hg _ hgc
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ν, h0, h0, 1, by simp⟩`.
+-/
 theorem StConj.refl' (ν : kˣ) (h0 : (γ₀ : B) * star (γ₀ : B) = algebraMap k B ν) : StConj k γ₀ γ₀ :=
   ⟨ν, h0, h0, 1, by simp⟩
 
+/- English proof (translation)
+Establish `h1 : ((star (1 : Bˣ) * 1 : Bˣ) : B) * γ₀ = γ₀ * ((star (1 : Bˣ) * 1 : Bˣ) : B)` using `by simp`. Establish `e : cocyc ι hι (γ₀ : B) hcent c hc 1 h1 = 1`. Use `ext`. Apply `hι` to reduce the goal to its premises. Rewrite using `[ι_cocyc]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[invCls_eq ι hι γ₀ hcent c hc h 1 (by simp) h1, e]`. Both sides reduce to the same expression.
+-/
 theorem invCls_self (h : StConj k γ₀ γ₀) : invCls ι hι γ₀ hcent c hc h = 1 := by
   have h1 : ((star (1 : Bˣ) * 1 : Bˣ) : B) * γ₀ = γ₀ * ((star (1 : Bˣ) * 1 : Bˣ) : B) := by simp
   have e : cocyc ι hι (γ₀ : B) hcent c hc 1 h1 = 1 := by
@@ -146,6 +189,9 @@ theorem invCls_self (h : StConj k γ₀ γ₀) : invCls ι hι γ₀ hcent c hc 
   rw [invCls_eq ι hι γ₀ hcent c hc h 1 (by simp) h1, e]
   rfl
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, mul_assoc, Units.mul_inv, mul_one]`. Use `_ = n := by rw [h, mul_assoc, hn, ← mul_assoc, Units.mul_inv, one_mul]`.
+-/
 theorem mul_star_of_star_mul (x : Bˣ) (n : B) (hn : ∀ y : B, n * y = y * n)
     (h : star (x : B) * x = n) : (x : B) * star (x : B) = n := by
   calc (x : B) * star (x : B) = x * (star (x : B) * x) * ((x⁻¹ : Bˣ) : B) := by
@@ -170,17 +216,26 @@ def locMap (ι : L →ₐ[ℚ] B) : S ⊗[ℚ] L →ₐ[S] S ⊗[ℚ] B := Algeb
 def locElt (γ₀ : Bˣ) : (S ⊗[ℚ] B)ˣ :=
   Units.map (Algebra.TensorProduct.includeRight : B →ₐ[ℚ] S ⊗[ℚ] B).toMonoidHom γ₀
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_locElt (γ₀ : Bˣ) : ((locElt S γ₀ : (S ⊗[ℚ] B)ˣ) : S ⊗[ℚ] B) = (1 : S) ⊗ₜ[ℚ] (γ₀ : B) :=
   rfl
 
 variable {S}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LKCent.baseChange_centralizer ℚ S B L (γ₀ : B) ι hι hcent`.
+-/
 theorem locMap_cent (ι : L →ₐ[ℚ] B) (hι : Function.Injective ι) (γ₀ : Bˣ)
     (hcent : ∀ x : B, x * γ₀ = γ₀ * x ↔ x ∈ Set.range ι) :
     Function.Injective (locMap S ι) ∧ ∀ y : S ⊗[ℚ] B, y * (locElt S γ₀ : S ⊗[ℚ] B) = (locElt S γ₀ : S ⊗[ℚ] B) * y ↔
       y ∈ Set.range (locMap S ι) :=
   GlobalTheory.LKCent.baseChange_centralizer ℚ S B L (γ₀ : B) ι hι hcent
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul s x`. Simplify using `only [locMap, locInv, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, hstar, hc]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, star_add]`.
+-/
 theorem locMap_star (ι : L →ₐ[ℚ] B) (c : L →ₐ[ℚ] L) (hc : ∀ a, ι (c a) = star (ι a))
     [StarRing (S ⊗[ℚ] B)] (hstar : ∀ (s : S) (b : B), star (s ⊗ₜ[ℚ] b) = s ⊗ₜ[ℚ] star b) (a : S ⊗[ℚ] L) :
     locMap S ι (locInv S c a) = star (locMap S ι a) := by
@@ -211,15 +266,24 @@ section Examples
 
 open GlobalTheory.LKInv
 
+/- English proof (translation)
+The claim follows from `invCls_self _ _ _ _ _ _ _`.
+-/
 example : invCls (k := ℝ) (AlgHom.id ℝ ℂ) (fun _ _ h => h) (Units.mk0 Complex.I Complex.I_ne_zero)
     (fun x => ⟨fun _ => ⟨x, rfl⟩, fun _ => mul_comm _ _⟩) (Complex.conjAe : ℂ →ₐ[ℝ] ℂ) (fun _ => rfl)
     (StConj.refl' (Units.mk0 Complex.I Complex.I_ne_zero) 1 (by
       simp [Complex.ext_iff])) = 1 :=
   invCls_self _ _ _ _ _ _ _
 
+/- English proof (translation)
+The claim follows from `mul_star_of_star_mul x 2 (fun y => mul_comm _ _) h`.
+-/
 example (x : ℂˣ) (h : star (x : ℂ) * x = 2) : (x : ℂ) * star (x : ℂ) = 2 :=
   mul_star_of_star_mul x 2 (fun y => mul_comm _ _) h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (B : Type) [Ring B] [Algebra ℚ B] (γ₀ : Bˣ) [Fact (Nat.Prime 5)] :
     ((locElt ℚ_[5] γ₀ : (ℚ_[5] ⊗[ℚ] B)ˣ) : ℚ_[5] ⊗[ℚ] B) = (1 : ℚ_[5]) ⊗ₜ[ℚ] (γ₀ : B) := rfl
 

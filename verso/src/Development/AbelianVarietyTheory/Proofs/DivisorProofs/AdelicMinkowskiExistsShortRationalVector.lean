@@ -21,6 +21,9 @@ variable (F : Type) [Field F] [NumberField F] (n : ℕ)
 noncomputable abbrev ratL : AddSubgroup (Fin n → AF F) :=
   AddSubgroup.pi Set.univ fun _ : Fin n => AdeleRing.principalSubgroup (𝓞 F) F
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx choose ξ hξ using fun i => hx i trivial`. Conclude with `⟨ξ, funext fun i => (hξ i).symm⟩`. Introduce and unpack `⟨ξ, rfl⟩ i _`. Conclude with `⟨ξ i, rfl⟩`.
+-/
 theorem mem_ratL_iff (x : Fin n → AF F) :
     x ∈ ratL F n ↔ ∃ ξ : Fin n → F, x = fun i => algebraMap F (AF F) (ξ i) := by
   constructor
@@ -39,16 +42,31 @@ instance countable_ratL : Countable (ratL F n) := by
     exact ⟨ξ, rfl⟩
   exact ((Set.countable_range _).mono h).to_subtype
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.SWQ.RatLattice.isFD_pi (adeleMeasure F) (isAddFundamentalDomain_fundamentalSet F) n`.
+-/
 theorem isAddFundamentalDomain :
     IsAddFundamentalDomain (ratL F n) (Set.univ.pi fun _ : Fin n => fundamentalSet F)
       (adeleMeasurePi F (ι := Fin n)) :=
   GlobalTheory.SWQ.RatLattice.isFD_pi (adeleMeasure F) (isAddFundamentalDomain_fundamentalSet F) n
 
+/- English proof (translation)
+Rewrite using `[adeleMeasurePi, Measure.pi_pi]`. Simplify using `[adeleMeasure_fundamentalSet]`.
+-/
 theorem measure_fundamental :
     adeleMeasurePi F (ι := Fin n) (Set.univ.pi fun _ : Fin n => fundamentalSet F) = 1 := by
   rw [adeleMeasurePi, Measure.pi_pi]
   simp [adeleMeasure_fundamentalSet]
 
+/- English proof (translation)
+Use `set μ := adeleMeasurePi F (ι := Fin n)`. Use `set D := Set.univ.pi fun _ : Fin n => fundamentalSet F`. Establish `hfd` using `isAddFundamentalDomain F n`. Use `set v : Fin n → AF F := fun i => algebraMap F (AF F) ((Pi.single (⟨0, hn⟩ : Fin n) (1 : F) : Fin n → F) i)`. Establish `hv : v ∈ ratL F n` using `(mem_ratL_iff F n v).2 ⟨_, rfl⟩`.
+
+Establish `hv0 : (⟨v, hv⟩ : ratL F n) ≠ 0`. Introduce `h`. Establish `hc` using `congrFun (congrArg Subtype.val h) ⟨0, hn⟩`. Use `haveI : Nontrivial (AF F) := by show Nontrivial (AdeleRing (𝓞 F) F)`. Unfold `AdeleRing`.
+
+Use `infer_instance`. Simplify using `[v] at hc`. Establish `hdis : AEDisjoint μ ((0 : ratL F n) +ᵥ D) ((⟨v, hv⟩ : ratL F n) +ᵥ D)` using `hfd.aedisjoint hv0.symm`. Rewrite `hdis` using `[zero_vadd]`. Establish `hmeas : μ ((⟨v, hv⟩ : ratL F n) +ᵥ D) = μ D` using `measure_vadd _ _ _`.
+
+Establish `h2 : μ (D ∪ ((⟨v, hv⟩ : ratL F n) +ᵥ D)) = 2`. Rewrite using `[measure_union₀ (hfd.nullMeasurableSet.vadd _) hdis, hmeas, measure_fundamental]`. Evaluate the numerical expressions. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem one_lt_measure_univ (hn : 0 < n) : 1 < adeleMeasurePi F (ι := Fin n) Set.univ := by
   set μ := adeleMeasurePi F (ι := Fin n)
   set D := Set.univ.pi fun _ : Fin n => fundamentalSet F
@@ -78,6 +96,25 @@ end GlobalTheory.AdelicMinkowski
 
 namespace GlobalTheory.AdelicMinkowski
 
+/- English proof (translation)
+Introduce `F _ _ n hn`. Use `set μ := adeleMeasurePi F (ι := Fin n)`. Use `set D := Set.univ.pi fun _ : Fin n => fundamentalSet F`. Establish `hfd` using `isAddFundamentalDomain F n`. Take `⟨B₀, -, hB₀c, hB₀⟩` from `isOpen_univ.exists_lt_isCompact (μ := μ) (one_lt_measure_univ F n hn)`.
+
+Use `⟨(fun p : (Fin n → AF F) × (Fin n → AF F) => p.1 - p.2) '' (B₀ ×ˢ B₀), (hB₀c.prod hB₀c).image continuous_sub, ?_⟩` and prove the remaining obligations. Introduce and unpack `g hg ⟨u, hu, hu1⟩`. Use `set G : GL (Fin n) (AF F) := Matrix.nonsingInvUnit gᵀ (by rwa [Matrix.det_transpose])`. Establish `hG : (G : Matrix (Fin n) (Fin n) (AF F)) = gᵀ` using `rfl`. Establish `hdetG : Matrix.GeneralLinearGroup.det G = u`.
+
+Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, hG, Matrix.det_transpose, hu]`. Establish `hmap` using `map_vecMul_adeleMeasurePi G`. Rewrite `hmap` using `[hdetG]`. Use `set φ : (Fin n → AF F) → (Fin n → AF F) := fun x => x ᵥ* (G : Matrix (Fin n) (Fin n) (AF F))`.
+
+Establish `hφ : ∀ x, φ x = g *ᵥ x` using `fun x => by simp only [φ, hG, Matrix.vecMul_transpose]`. Use `set s := φ ⁻¹' B₀`. Establish `hφm : Measurable φ` using `measurable_vecMul' G`. Establish `hsm : MeasurableSet s` using `hφm hB₀c.measurableSet`. Establish `hc : (1 : ENNReal) ≤ ENNReal.ofReal ((IdeleGroup.ideleModule F u : ℝ))⁻¹`.
+
+Establish `hpos : 0 < (IdeleGroup.ideleModule F u : ℝ)` using `(IdeleGroup.ideleModule F u).2`. Rewrite using `[← ENNReal.ofReal_one]`. Conclude with `ENNReal.ofReal_le_ofReal (one_le_inv₀ hpos |>.2 hu1)`. Establish `hs : μ D < μ s`. Rewrite using `[measure_fundamental]`.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨x, y, hxy, hnd⟩` from `exists_pair_mem_lattice_not_disjoint_vadd hfd hsm.nullMeasurableSet hs`. Take `⟨z, hzx, hzy⟩` from `Set.not_disjoint_iff.1 hnd`. Take `⟨a, ha, rfl⟩` from `hzx`. Take `⟨b, hb, hab⟩` from `hzy`.
+
+Express the relevant statement in the definitionally equal form `(y : Fin n → AF F) + b = (x : Fin n → AF F) + a at hab`. Establish `hdiff : a - b = (y : Fin n → AF F) - x`. Rewrite using `[sub_eq_sub_iff_add_eq_add, hab, add_comm]`. Take `⟨ξ, hξ⟩` from `(mem_ratL_iff F n _).1 (sub_mem y.2 x.2)`. Use `⟨ξ, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `rfl`. Apply `hxy` to reduce the goal to its premises. Use `(Subtype.ext (sub_eq_zero.1 ?_)).symm` and prove the remaining obligations. Rewrite using `[hξ]`. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← hξ, ← hdiff, Matrix.mulVec_sub, ← hφ, ← hφ]`. Conclude with `⟨(φ a, φ b), ⟨ha, hb⟩, rfl⟩`.
+-/
 theorem exists_compact_mulVec_rat_mem : ∀ (F : Type) [Field F] [NumberField F] (n : ℕ), 0 < n → ∃ B : Set (Fin n → AF F), IsCompact B ∧ ∀ g : Matrix (Fin n) (Fin n) (AF F), IsUnit g.det → (∃ u : (AF F)ˣ, (u : AF F) = g.det ∧ (GroundTheory.Global.IdeleGroup.ideleModule F u : ℝ) ≤ 1) → ∃ ξ : Fin n → F, ξ ≠ 0 ∧ g *ᵥ (fun i => algebraMap F (AF F) (ξ i)) ∈ B := by
   intro F _ _ n hn
   set μ := adeleMeasurePi F (ι := Fin n)

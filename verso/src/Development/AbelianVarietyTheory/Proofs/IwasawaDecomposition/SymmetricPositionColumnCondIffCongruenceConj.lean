@@ -22,6 +22,9 @@ section Comb
 
 variable {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] {ρ k n : ℕ}
 
+/- English proof (translation)
+Use `a.2` as an intermediate fact. Unfold `flagV`. Rewrite using `[dif_pos (by omega)]`. Conclude with `congrArg e (Fin.ext h)`.
+-/
 theorem fl_e (e f : Fin ρ → M) (b : Fin k → M) (z : M) (i : Fin n) (a : Fin ρ) (h : i.1 = a.1) :
     flagV ρ k n e f b z i = e a := by
   have := a.2
@@ -29,6 +32,9 @@ theorem fl_e (e f : Fin ρ → M) (b : Fin k → M) (z : M) (i : Fin n) (a : Fin
   rw [dif_pos (by omega)]
   exact congrArg e (Fin.ext h)
 
+/- English proof (translation)
+Use `a.2` as an intermediate fact. Unfold `flagV`. Rewrite using `[dif_neg (by omega), dif_pos (by omega)]`. Conclude with `congrArg b (Fin.ext (by simp only; omega))`.
+-/
 theorem fl_b (e f : Fin ρ → M) (b : Fin k → M) (z : M) (i : Fin n) (a : Fin k) (h : i.1 = ρ + a.1) :
     flagV ρ k n e f b z i = b a := by
   have := a.2
@@ -36,11 +42,17 @@ theorem fl_b (e f : Fin ρ → M) (b : Fin k → M) (z : M) (i : Fin n) (a : Fin
   rw [dif_neg (by omega), dif_pos (by omega)]
   exact congrArg b (Fin.ext (by simp only; omega))
 
+/- English proof (translation)
+Unfold `flagV`. Rewrite using `[dif_neg (by omega), dif_neg (by omega), dif_pos h]`.
+-/
 theorem symmetricFlagBasisVectors_apply_centre (e f : Fin ρ → M) (b : Fin k → M) (z : M) (i : Fin n) (h : i.1 = ρ + k) :
     flagV ρ k n e f b z i = z := by
   unfold flagV
   rw [dif_neg (by omega), dif_neg (by omega), dif_pos h]
 
+/- English proof (translation)
+Use `a.2` as an intermediate fact. Unfold `flagV`. Rewrite using `[dif_neg (by omega), dif_neg (by omega), dif_neg (by omega), dif_pos (by omega)]`. Conclude with `congrArg f (Fin.ext (by simp only; omega))`.
+-/
 theorem fl_f (e f : Fin ρ → M) (b : Fin k → M) (z : M) (i : Fin n) (a : Fin ρ) (h : i.1 + a.1 = 2 * ρ + k) :
     flagV ρ k n e f b z i = f a := by
   have := a.2
@@ -48,6 +60,11 @@ theorem fl_f (e f : Fin ρ → M) (b : Fin k → M) (z : M) (i : Fin n) (a : Fin
   rw [dif_neg (by omega), dif_neg (by omega), dif_neg (by omega), dif_pos (by omega)]
   exact congrArg f (Fin.ext (by simp only; omega))
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Use `a.2` as an intermediate fact. Conclude with `⟨⟨a.1, by omega⟩, ha, fl_e e f b z _ a rfl⟩`.
+
+Introduce and unpack `⟨j, hj, rfl⟩`. Establish `hj' : j.1 < m` using `hj`. Conclude with `⟨⟨j.1, by omega⟩, hj, (fl_e e f b z _ _ rfl).symm⟩`.
+-/
 theorem img_e (hn : n = 2 * ρ + k + 1) (e f : Fin ρ → M) (b : Fin k → M) (z : M) {m : ℕ} (hm : m ≤ ρ) :
     e '' {a | a.1 < m} = flagV ρ k n e f b z '' {j | j.1 < m} := by
   ext x
@@ -59,9 +76,19 @@ theorem img_e (hn : n = 2 * ρ + k + 1) (e f : Fin ρ → M) (b : Fin k → M) (
     have hj' : j.1 < m := hj
     exact ⟨⟨j.1, by omega⟩, hj, (fl_e e f b z _ _ rfl).symm⟩
 
+/- English proof (translation)
+Rewrite using `[show {a : Fin ρ | a.1 < ρ} = Set.univ from Set.eq_univ_of_forall fun a => a.2, Set.image_univ]`.
+-/
 theorem range_eq_img (e : Fin ρ → M) : Set.range e = e '' {a | a.1 < ρ} := by
   rw [show {a : Fin ρ | a.1 < ρ} = Set.univ from Set.eq_univ_of_forall fun a => a.2, Set.image_univ]
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨a, rfl⟩ | ⟨a, ha, rfl⟩)`. Use `a.2` as an intermediate fact. Conclude with `⟨⟨a.1, by omega⟩, show a.1 < ρ + m by omega, fl_e e f b z _ a rfl⟩`.
+
+Establish `ha' : a.1 < m` using `ha`. Conclude with `⟨⟨ρ + a.1, by omega⟩, show ρ + a.1 < ρ + m by omega, fl_b e f b z _ a rfl⟩`. Introduce and unpack `⟨j, hj, rfl⟩`. Establish `hj' : j.1 < ρ + m` using `hj`. Distinguish the cases in `h : j.1 < ρ`.
+
+Conclude with `Or.inl ⟨⟨j.1, h⟩, (fl_e e f b z _ _ rfl).symm⟩`. Conclude with `Or.inr ⟨⟨j.1 - ρ, by omega⟩, show j.1 - ρ < m by omega, (fl_b e f b z _ _ (show j.1 = ρ + (j.1 - ρ) by omega)).symm⟩`.
+-/
 theorem img_b (hn : n = 2 * ρ + k + 1) (e f : Fin ρ → M) (b : Fin k → M) (z : M) {m : ℕ} (hm : m ≤ k) :
     Set.range e ∪ b '' {a | a.1 < m} = flagV ρ k n e f b z '' {j | j.1 < ρ + m} := by
   ext x
@@ -78,6 +105,11 @@ theorem img_b (hn : n = 2 * ρ + k + 1) (e f : Fin ρ → M) (b : Fin k → M) (
     · exact Or.inr ⟨⟨j.1 - ρ, by omega⟩, show j.1 - ρ < m by omega,
         (fl_b e f b z _ _ (show j.1 = ρ + (j.1 - ρ) by omega)).symm⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Establish `ha' : a.1 < m` using `ha`. Conclude with `⟨⟨2 * ρ + k - a.1, by omega⟩, show 2 * ρ + k < 2 * ρ + k - a.1 + m by omega, fl_f e f b z _ a (show 2 * ρ + k - a.1 + a.1 = _ by omega)⟩`.
+
+Introduce and unpack `⟨j, hj, rfl⟩`. Establish `hj' : 2 * ρ + k < j.1 + m` using `hj`. Use `j.2` as an intermediate fact. Conclude with `⟨⟨2 * ρ + k - j.1, by omega⟩, show 2 * ρ + k - j.1 < m by omega, (fl_f e f b z _ _ (show j.1 + (2 * ρ + k - j.1) = _ by omega)).symm⟩`.
+-/
 theorem img_f (hn : n = 2 * ρ + k + 1) (e f : Fin ρ → M) (b : Fin k → M) (z : M) {m : ℕ} (hm : m ≤ ρ) :
     f '' {a | a.1 < m} = flagV ρ k n e f b z '' {j | 2 * ρ + k < j.1 + m} := by
   ext x
@@ -92,6 +124,15 @@ theorem img_f (hn : n = 2 * ρ + k + 1) (e f : Fin ρ → M) (b : Fin k → M) (
     exact ⟨⟨2 * ρ + k - j.1, by omega⟩, show 2 * ρ + k - j.1 < m by omega,
       (fl_f e f b z _ _ (show j.1 + (2 * ρ + k - j.1) = _ by omega)).symm⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨a, rfl⟩ | ⟨a, ha, rfl⟩)`. Use `a.2` as an intermediate fact. Conclude with `⟨⟨2 * ρ + k - a.1, by omega⟩, show ρ + k ≤ 2 * ρ + k - a.1 + m ∧ 2 * ρ + k - a.1 ≠ ρ + k by omega, fl_f e f _ z _ a (show 2 * ρ + k - a.1 + a.1 = _ by omega)⟩`.
+
+Establish `ha' : a.1 < m` using `ha`. Use `⟨⟨ρ + k - 1 - a.1, by omega⟩, show ρ + k ≤ ρ + k - 1 - a.1 + m ∧ ρ + k - 1 - a.1 ≠ ρ + k by omega, ?_⟩` and prove the remaining obligations. Rewrite using `[fl_b e f _ z _ (Fin.rev a) (by rw [Fin.val_rev]; simp only; omega), Fin.rev_rev]`. Introduce and unpack `⟨j, hj, rfl⟩`. Establish `hj' : ρ + k ≤ j.1 + m ∧ j.1 ≠ ρ + k` using `hj`.
+
+Use `j.2` as an intermediate fact. Distinguish the cases in `h : j.1 < ρ + k`. Use `Or.inr ⟨Fin.rev ⟨j.1 - ρ, by omega⟩, ?_, (fl_b e f (fun i => b (Fin.rev i)) z j ⟨j.1 - ρ, by omega⟩ (show j.1 = ρ + (j.1 - ρ) by omega)).symm⟩ show (Fin.rev _).1 < m` and prove the remaining obligations. Rewrite using `[Fin.val_rev]`. Simplify using `only`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `Or.inl ⟨⟨2 * ρ + k - j.1, by omega⟩, (fl_f e f _ z _ _ (show j.1 + (2 * ρ + k - j.1) = _ by omega)).symm⟩`.
+-/
 theorem img_rev (hn : n = 2 * ρ + k + 1) (e f : Fin ρ → M) (b : Fin k → M) (z : M) {m : ℕ} (hm : m ≤ k) :
     Set.range f ∪ b '' {a | a.1 < m} =
       flagV ρ k n e f (fun i => b (Fin.rev i)) z '' {j | ρ + k ≤ j.1 + m ∧ j.1 ≠ ρ + k} := by
@@ -115,6 +156,29 @@ theorem img_rev (hn : n = 2 * ρ + k + 1) (e f : Fin ρ → M) (b : Fin k → M)
     · exact Or.inl ⟨⟨2 * ρ + k - j.1, by omega⟩,
         (fl_f e f _ z _ _ (show j.1 + (2 * ρ + k - j.1) = _ by omega)).symm⟩
 
+/- English proof (translation)
+Establish `c1 : ∀ (a : Fin ρ) (i : Fin n), i.1 = a.1 → (T (e a) ∈ Submodule.span R (e '' {c | c.1 < a.1}) ⊔ W ↔ ∀ j : Fin n, ¬ j.1 < a.1 → P j i)` using `fun a i h => by`. Rewrite using `[img_e hn e f ε z a.2.le, ← fl_e e f ε z i a h]`. Conclude with `hcol _ _`. Establish `c2 : ∀ i : Fin n, i.1 = ρ + k → (T z ∈ Submodule.span R (Set.range e) ⊔ W ↔ ∀ j : Fin n, ¬ j.1 < ρ → P j i)` using `fun i h => by`. Use `hcol i {j | j.1 < ρ}` as an intermediate fact.
+
+Rewrite `this` using `[symmetricFlagBasisVectors_apply_centre e f ε z i h, ← img_e hn e f ε z le_rfl, ← range_eq_img]`. Conclude with `this`. Establish `c3 : ∀ (a : Fin k) (i : Fin n), i.1 = ρ + a.1 → (T (ε a) ∈ Submodule.span R (Set.range e ∪ ε '' {c | c.1 < a.1}) ⊔ W ↔ ∀ j : Fin n, ¬ j.1 < ρ + a.1 → P j i)` using `fun a i h => by`. Rewrite using `[img_b hn e f ε z a.2.le, ← fl_b e f ε z i a h]`. Conclude with `hcol _ _`.
+
+Establish `r1 : ∀ (a : Fin ρ) (j : Fin n), j.1 + a.1 = 2 * ρ + k → (T' (e a) ∈ Submodule.span R (e '' {c | c.1 < a.1}) ⊔ W' ↔ ∀ i : Fin n, ¬ 2 * ρ + k < i.1 + a.1 → P j i)` using `fun a j h => by`. Rewrite using `[img_f hn f e εd (-z) a.2.le, ← fl_f f e εd (-z) j a h]`. Conclude with `hrow _ _`. Establish `r2 : ∀ j : Fin n, j.1 = ρ + k → (T' z ∈ Submodule.span R (Set.range e) ⊔ W' ↔ ∀ i : Fin n, ¬ 2 * ρ + k < i.1 + ρ → P j i)` using `fun j h => by`. Use `hrow j {i | 2 * ρ + k < i.1 + ρ}` as an intermediate fact.
+
+Rewrite `this` using `[symmetricFlagBasisVectors_apply_centre f e εd (-z) j h, ← img_f hn f e εd (-z) le_rfl, ← range_eq_img, hneg, neg_mem_iff]`. Conclude with `this`. Establish `r3 : εd = (fun i => b (Fin.rev i)) → ∀ (a : Fin k) (j : Fin n), j.1 + a.1 + 1 = ρ + k → (T' (b a) ∈ Submodule.span R (Set.range e ∪ b '' {c | c.1 < a.1}) ⊔ W' ↔ ∀ i : Fin n, ¬ (ρ + k ≤ i.1 + a.1 ∧ i.1 ≠ ρ + k) → P j i)` using `fun hd a j h => by`. Use `hrow j {i | ρ + k ≤ i.1 + a.1 ∧ i.1 ≠ ρ + k}` as an intermediate fact. Establish `ha` using `a.2`.
+
+Rewrite `this` using `[hd, fl_b f e _ (-z) j (Fin.rev a) (by rw [Fin.val_rev]; omega), ← img_rev hn f e b (-z) a.2.le, Fin.rev_rev]`. Conclude with `this`. Simplify using `only [hcol, Set.mem_setOf_eq, symAllowed]`. Prove the components needed by the constructor for the conclusion. Introduce `H`.
+
+Use `⟨⟨fun a => ?_, ?_, fun a => ?_⟩, fun a => ?_, ?_, fun a => ?_⟩` and prove the remaining obligations. Use `a.2` as an intermediate fact. Conclude with `(c1 a ⟨a.1, by omega⟩ rfl).2 fun j hj => H _ _ (by simp only; omega)`. Conclude with `(c2 ⟨ρ + k, by omega⟩ rfl).2 fun j hj => H _ _ (by dsimp only; omega)`. Use `a.2` as an intermediate fact.
+
+Break down `hcase with ⟨rfl, -⟩ | ⟨-, h⟩` into its components or cases. Conclude with `(c3 a ⟨ρ + a.1, by omega⟩ rfl).2 fun j hj => H _ _ (by simp only; omega)`. Conclude with `Submodule.mem_sup_right (h a)`. Use `a.2` as an intermediate fact. Conclude with `(r1 a ⟨2 * ρ + k - a.1, by omega⟩ (by simp only; omega)).2 fun j hj => H _ _ (by simp only; omega)`.
+
+Conclude with `(r2 ⟨ρ + k, by omega⟩ rfl).2 fun j hj => H _ _ (by simp only; omega)`. Use `a.2` as an intermediate fact. Break down `hcase with ⟨-, h⟩ | ⟨h, -⟩` into its components or cases. Conclude with `Submodule.mem_sup_right (h a)`. Conclude with `(r3 h a ⟨ρ + k - 1 - a.1, by omega⟩ (by simp only; omega)).2 fun j hj => H _ _ (by simp only; omega)`.
+
+Introduce and unpack `⟨⟨h1, h2, h3⟩, h4, h5, h6⟩ i j hij`. Establish `hi` using `i.2`. Establish `hj` using `j.2`. Distinguish the cases in `a1 : i.1 < ρ`. Conclude with `(c1 ⟨i.1, a1⟩ i rfl).1 (h1 _) j (by simp only; omega)`.
+
+Distinguish the cases in `a2 : i.1 = ρ + k`. Conclude with `(c2 i a2).1 h2 j (by omega)`. Distinguish the cases in `a3 : ρ + k < j.1`. Conclude with `(r1 ⟨2 * ρ + k - j.1, by omega⟩ j (by simp only; omega)).1 (h4 _) i (by simp only; omega)`. Distinguish the cases in `a4 : j.1 = ρ + k`.
+
+Conclude with `(r2 j a4).1 h5 i (by omega)`. Break down `hcase with ⟨rfl, -⟩ | ⟨h, -⟩` into its components or cases. Conclude with `(c3 ⟨i.1 - ρ, by omega⟩ i (by simp only; omega)).1 (h3 _) j (by simp only; omega)`. Conclude with `(r3 h ⟨ρ + k - 1 - j.1, by omega⟩ j (by simp only; omega)).1 (h6 _) i (by simp only; omega)`.
+-/
 theorem comb (hn : n = 2 * ρ + k + 1) (e f : Fin ρ → M) (z : M) (b ε εd : Fin k → M) (W W' : Submodule R M)
     (T T' : M → M) (hneg : T' (-z) = -T' z) (P : Fin n → Fin n → Prop)
     (hcol : ∀ i S, T (flagV ρ k n e f ε z i) ∈ Submodule.span R (flagV ρ k n e f ε z '' S) ⊔ W ↔ ∀ j ∉ S, P j i)
@@ -196,6 +260,15 @@ open Formalism.L2.SG.Pf.unitaryCongruence GlobalTheory.Mem.SymChar GlobalTheory.
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem c hc`. Take `⟨a, ⟨b, hb, hab⟩, rfl⟩` from `hc`. Rewrite using `[sigA_inclE]`. Use `Submodule.subset_span ⟨RingOfIntegers.mapRingEquiv X.ιE.symm (GlobalTheory.SumWCompare.cj _ b), ⟨GlobalTheory.SumWCompare.cj _ b, by rw [mem_cPl, GlobalTheory.SumWCompare.cj_cj]; exact hb, X.ιE.apply_symm_apply _⟩, ?_⟩` and prove the remaining obligations.
+
+Use `congr 1`. Apply `X.ιE.injective` to reduce the goal to its premises. Rewrite using `[X.ιE_conj, hab, ← star_conj, ← GlobalTheory.SumWCompare.cj_coe]`. Conclude with `(X.ιE.apply_symm_apply _).symm`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul r a _ ha => show sigA X.B.I ((r : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) * a) ∈ _`. Rewrite using `[map_mul]`.
+
+Conclude with `(wInt X (cPl w)).smul_mem ⟨_, sigA_mem X.B.I r.2⟩ ha`.
+-/
 theorem sig_mem (w : HeightOneSpectrum (𝓞 D.host.E)) {c : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F}
     (hc : c ∈ wInt X w) : sigA X.B.I c ∈ wInt X (cPl w) := by
   induction hc using Submodule.span_induction with
@@ -215,10 +288,28 @@ theorem sig_mem (w : HeightOneSpectrum (𝓞 D.host.E)) {c : X.B.I.E ⊗[X.B.I.F
     rw [map_mul]
     exact (wInt X (cPl w)).smul_mem ⟨_, sigA_mem X.B.I r.2⟩ ha
 
+/- English proof (translation)
+The claim follows from `(wInt X w).smul_mem ⟨t, ht⟩ hc`.
+-/
 theorem mul_mem_wInt (w : HeightOneSpectrum (𝓞 D.host.E)) {t c : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F}
     (ht : t ∈ Formalism.MainNotions.S.IntAf X.B.I.F X.B.I.E) (hc : c ∈ wInt X w) : t * c ∈ wInt X w :=
   (wInt X w).smul_mem ⟨t, ht⟩ hc
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h j hj`. Take `⟨s, hs, t, ht, rfl⟩` from `Submodule.mem_sup.1 h`. Rewrite using `[hA_add_right]`. Use `add_mem ?_ (hA_mem_wInt X w (hv j) ht)` and prove the remaining obligations.
+
+Use `clear h hy`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem s hs`. Take `⟨i, hi, rfl⟩` from `hs`. Use `hd j i` as an intermediate fact.
+
+Rewrite `this` using `[if_neg (fun (e : i = j) => hj (e ▸ hi)), sub_zero]`. Then use the resulting hypothesis. Consider the case `zero => rw [hA_zero_right']`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [hA_add_right]`. Conclude with `add_mem ha hb`.
+
+Consider the case `smul r a _ ha => show hA X.B.I (v j) ((r : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) • a) ∈ _`. Rewrite using `[hA_smul_right]`. Conclude with `mul_mem_wInt X w r.2 ha`. Introduce `h`. Take `⟨s, hs, t, ht, rfl⟩` from `Submodule.mem_sup.1 hy`.
+
+Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hs`. Use `add_mem (sum_mem fun j _ => ?_) (Submodule.mem_sup_right ht)` and prove the remaining obligations. Distinguish the cases in `hj : j ∈ S`. Conclude with `Submodule.mem_sup_left (Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, hj, rfl⟩))`. Use `Submodule.mem_sup_right (smul_mem_wLf_of_mem_wInt X w (c := c j) ?_ (hu j))` and prove the remaining obligations.
+
+Establish `h1` using `h j hj`. Rewrite `h1` using `[hA_add_right, hA_sum_right']`. Establish `h2` using `sub_mem h1 (hA_mem_wInt X w (hv j) ht)`. Rewrite `h2` using `[add_sub_cancel_right]`. Establish `h3 : ∑ i, ((c i : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) * (hA X.B.I (v j) (u i) - (if i = j then 1 else 0))) ∈ wInt X w` using `sum_mem fun i _ => mul_mem_wInt X w (c i).2 (hd j i)`.
+
+Establish `h4 : ∀ i, hA X.B.I (v j) (c i • u i) = (c i : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) * hA X.B.I (v j) (u i)` using `fun i => hA_smul_right _ _ _ _`. Simplify using `only [h4] at h2`. Establish `h5` using `sub_mem h2 h3`. Simplify `h5` using `[mul_sub, Finset.sum_sub_distrib]`.
+-/
 theorem coords (w : HeightOneSpectrum (𝓞 D.host.E)) {n : ℕ} (u v : Fin n → VA X.B.I)
     (hu : ∀ i, u i ∈ X.B.I.Lf) (hv : ∀ i, v i ∈ X.B.I.Lf)
     (hd : ∀ j i, hA X.B.I (v j) (u i) - (if i = j then 1 else 0) ∈ wInt X w)
@@ -261,6 +352,11 @@ theorem coords (w : HeightOneSpectrum (𝓞 D.host.E)) {n : ℕ} (u v : Fin n �
     have h5 := sub_mem h2 h3
     simpa [mul_sub, Finset.sum_sub_distrib] using h5
 
+/- English proof (translation)
+Establish `h : Submodule.span (Formalism.MainNotions.S.IntAf X.B.I.F X.B.I.E) S ⊔ wLf X w ≤ (Submodule.span (Formalism.MainNotions.S.IntAf X.B.I.F X.B.I.E) S ⊔ wLf X w).comap (mvO X.B.I (X.B.I.fmat x))`. Use `sup_le (Submodule.span_le.2 fun s hs => ?_) (fun s hs => Submodule.mem_sup_right (fmat_mulVec_mem_wLf X w hx hs))` and prove the remaining obligations. Use `show GroupLoc.ModW X w S (X.B.I.fmat x *ᵥ s)`. Establish `e : X.B.I.fmat x *ᵥ s = s + (X.B.I.fmat x - 1) *ᵥ s`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `add_mem (Submodule.mem_sup_left (Submodule.subset_span hs)) (hS s hs)`. Conclude with `h hy`.
+-/
 theorem pres_w (w : HeightOneSpectrum (𝓞 D.host.E)) {x : X.B.I.Gf} (hx : x ∈ X.B.I.Kset) (S : Set (VA X.B.I))
     (hS : ∀ s ∈ S, GroupLoc.ModW X w S ((X.B.I.fmat x - 1) *ᵥ s)) {y : VA X.B.I} (hy : GroupLoc.ModW X w S y) :
     GroupLoc.ModW X w S (X.B.I.fmat x *ᵥ y) := by
@@ -275,10 +371,26 @@ theorem pres_w (w : HeightOneSpectrum (𝓞 D.host.E)) {x : X.B.I.Gf} (hx : x �
     exact add_mem (Submodule.mem_sup_left (Submodule.subset_span hs)) (hS s hs)
   exact h hy
 
+/- English proof (translation)
+The claim follows from `(sup_le_sup_right (Submodule.span_mono h) _ : Submodule.span _ S ⊔ wLf X w ≤ _) hy`.
+-/
 theorem modW_mono {w : HeightOneSpectrum (𝓞 D.host.E)} {S T : Set (VA X.B.I)} (h : S ⊆ T) {y : VA X.B.I}
     (hy : GroupLoc.ModW X w S y) : GroupLoc.ModW X w T y :=
   (sup_le_sup_right (Submodule.span_mono h) _ : Submodule.span _ S ⊔ wLf X w ≤ _) hy
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Establish `key : ∀ (S : Set (VA X.B.I)) (y : VA X.B.I), (∀ s ∈ S, GroupLoc.ModW X w S ((X.B.I.fmat x⁻¹ - 1) *ᵥ s)) → GroupLoc.ModW X w S ((X.B.I.fmat x - 1) *ᵥ y) → GroupLoc.ModW X w S ((X.B.I.fmat x⁻¹ - 1) *ᵥ y)` using `fun S y hS hy => by`. Rewrite using `[inv_id]`. Conclude with `neg_mem (pres_w X w (K_inv _ hx) S hS hy)`. Establish `e1 : ∀ m : ℕ, ∀ a : Fin D.R.rS, a.1 < m → GroupLoc.ModW X w (X.e0 '' {b | b.1 < a.1}) ((X.B.I.fmat x⁻¹ - 1) *ᵥ X.e0 a)`.
+
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro a h`. Conclude with `absurd h (Nat.not_lt_zero _)`. Consider the case `succ m ih`.
+
+Introduce `a ha`. Use `key _ _ ?_ (h1 a)` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Establish `hb' : b.1 < a.1` using `hb`. Conclude with `modW_mono X (Set.image_mono (lt_sub hb'.le)) (ih b (by omega))`.
+
+Establish `e3 : ∀ m : ℕ, ∀ i : Fin D.R.k, i.1 < m → GroupLoc.ModW X w (Set.range X.e0 ∪ X.bw '' {j | j.1 < i.1}) ((X.B.I.fmat x⁻¹ - 1) *ᵥ X.bw i)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro a h`. Conclude with `absurd h (Nat.not_lt_zero _)`.
+
+Consider the case `succ m ih`. Introduce `i hi`. Use `key _ _ ?_ (h3 i)` and prove the remaining obligations. Introduce and unpack `_ (⟨b, rfl⟩ | ⟨j, hj, rfl⟩)`. Conclude with `modW_mono X ((Set.image_subset_range _ _).trans Set.subset_union_left) (e1 _ b (Nat.lt_succ_self _))`.
+
+Establish `hj' : j.1 < i.1` using `hj`. Conclude with `modW_mono X (Set.union_subset_union_right _ (Set.image_mono (lt_sub hj'.le))) (ih j (by omega))`. Use `⟨fun a => e1 _ a (Nat.lt_succ_self _), key _ _ ?_ h2, fun i => e3 _ i (Nat.lt_succ_self _)⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `modW_mono X (Set.image_subset_range _ _) (e1 _ b (Nat.lt_succ_self _))`.
+-/
 theorem condAt_inv (w : HeightOneSpectrum (𝓞 D.host.E)) {x : X.B.I.Gf} (hx : x ∈ X.B.I.Kset) (h : CondAt X w x) :
     CondAt X w x⁻¹ := by
   obtain ⟨h1, h2, h3⟩ := h
@@ -313,11 +425,19 @@ theorem condAt_inv (w : HeightOneSpectrum (𝓞 D.host.E)) {x : X.B.I.Gf} (hx : 
   rintro _ ⟨b, rfl⟩
   exact modW_mono X (Set.image_subset_range _ _) (e1 _ b (Nat.lt_succ_self _))
 
+/- English proof (translation)
+Use `D.R.rS_two` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rank_eq (D : D7) : D.R.r = 2 * D.R.rS + D.R.k + 1 := by
   have := D.R.rS_two
   unfold Ranks.r
   omega
 
+/- English proof (translation)
+Establish `h` using `X.latticeSpan y hy`. Use `(sup_le (Submodule.span_le.2 ?_) (le_trans ?_ le_sup_right) : _ ≤ Submodule.span (Formalism.MainNotions.S.IntAf X.B.I.F X.B.I.E) (Set.range u) ⊔ wLf X w) h` and prove the remaining obligations. Introduce and unpack `_ ((((⟨a, rfl⟩ | ⟨a, rfl⟩) | rfl) | ⟨a, rfl⟩) | ⟨a, rfl⟩) exacts [he a, hf a, hz, hb a, hb' a]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Conclude with `smul_mem_wLf_of_mem_wInt X w (wInt_of_zmod X k hg ⟨1, one_mem _, (mul_one _).symm⟩) hx`.
+-/
 theorem span_frame (w : HeightOneSpectrum (𝓞 D.host.E)) (k : Fin 2)
     (hg : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal) (u : Fin D.R.r → VA X.B.I)
     (he : ∀ a, GroupLoc.ModW X w (Set.range u) (X.e0 a)) (hf : ∀ a, GroupLoc.ModW X w (Set.range u) (X.f0 a))
@@ -333,6 +453,9 @@ theorem span_frame (w : HeightOneSpectrum (𝓞 D.host.E)) (k : Fin 2)
     rintro _ ⟨x, hx, rfl⟩
     exact smul_mem_wLf_of_mem_wInt X w (wInt_of_zmod X k hg ⟨1, one_mem _, (mul_one _).symm⟩) hx
 
+/- English proof (translation)
+Unfold `flagV`. Use `split_ifs`. Use `exacts [he _, hb _, hz, hf _, zero_mem _]`.
+-/
 theorem flagV_mem {e f : Fin D.R.rS → VA X.B.I} {b : Fin D.R.k → VA X.B.I} {z : VA X.B.I}
     (he : ∀ a, e a ∈ X.B.I.Lf) (hf : ∀ a, f a ∈ X.B.I.Lf) (hb : ∀ a, b a ∈ X.B.I.Lf) (hz : z ∈ X.B.I.Lf)
     (i : Fin D.R.r) : flagV D.R.rS D.R.k D.R.r e f b z i ∈ X.B.I.Lf := by
@@ -340,10 +463,16 @@ theorem flagV_mem {e f : Fin D.R.rS → VA X.B.I} {b : Fin D.R.k → VA X.B.I} {
   split_ifs
   exacts [he _, hb _, hz, hf _, zero_mem _]
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_sup_left (Submodule.subset_span ⟨i, h⟩)`.
+-/
 theorem modW_range {w : HeightOneSpectrum (𝓞 D.host.E)} {u : Fin D.R.r → VA X.B.I} {y : VA X.B.I} (i : Fin D.R.r)
     (h : u i = y) : GroupLoc.ModW X w (Set.range u) y :=
   Submodule.mem_sup_left (Submodule.subset_span ⟨i, h⟩)
 
+/- English proof (translation)
+Establish `h1` using `hA_mem_wInt X w X.vectorsInLattice.2.1 (h _ X.vectorsInLattice.2.1)`. Rewrite `h1` using `[hA_smul_right]`. Establish `h2` using `mul_mem_wInt X w (sub_mem (one_mem _) X.ew_int) (wInt_of_zmod X k hg X.formsAtZero.1)`. Establish `h3` using `sub_mem h2 h1`. Rewrite `h3` using `[mul_add, add_sub_cancel_left, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem one_sub_ew (w : HeightOneSpectrum (𝓞 D.host.E)) (k : Fin 2)
     (hg : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal) (h : EwAt X w) : 1 - X.ew ∈ wInt X w := by
   have h1 := hA_mem_wInt X w X.vectorsInLattice.2.1 (h _ X.vectorsInLattice.2.1)
@@ -360,9 +489,15 @@ def epsD (w : HeightOneSpectrum (𝓞 D.host.E)) : Fin D.R.k → VA X.B.I :=
 def dualVec (w : HeightOneSpectrum (𝓞 D.host.E)) : Fin D.R.r → VA X.B.I :=
   flagV D.R.rS D.R.k D.R.r X.f0 X.e0 (epsD X w) (-X.z0)
 
+/- English proof (translation)
+Rewrite using `[← neg_one_smul (X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) x, hA_smul_left, map_neg, map_one, neg_one_mul]`.
+-/
 theorem hA_neg_left (x y : VA X.B.I) : hA X.B.I (-x) y = -hA X.B.I x y := by
   rw [← neg_one_smul (X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) x, hA_smul_left, map_neg, map_one, neg_one_mul]
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.St.G.FrameClose.hA_unitary x b (X.B.I.fmat x⁻¹ *ᵥ a)`. Establish `e : X.B.I.fmat x * X.B.I.fmat x⁻¹ = 1` using `by rw [← fmat_mul, mul_inv_cancel, fmat_one]`. Rewrite `h` using `[Matrix.mulVec_mulVec, e, Matrix.one_mulVec]`. Simplify using `only [Matrix.sub_mulVec, Matrix.one_mulVec, hA_sub_right, map_sub]`. Rewrite using `[← h, ← hA_symm, ← hA_symm]`.
+-/
 theorem hA_adj (x : X.B.I.Gf) (a b : VA X.B.I) :
     hA X.B.I b ((X.B.I.fmat x⁻¹ - 1) *ᵥ a) = sigA X.B.I (hA X.B.I a ((X.B.I.fmat x - 1) *ᵥ b)) := by
   have h := GlobalTheory.St.G.FrameClose.hA_unitary x b (X.B.I.fmat x⁻¹ *ᵥ a)
@@ -371,6 +506,53 @@ theorem hA_adj (x : X.B.I.Gf) (a b : VA X.B.I) :
   simp only [Matrix.sub_mulVec, Matrix.one_mulVec, hA_sub_right, map_sub]
   rw [← h, ← hA_symm, ← hA_symm]
 
+/- English proof (translation)
+Introduce `D X hI hι hgs x hx kv`. Establish `hg` using `hgs kv`. Establish `hn` using `rank_eq D`. Establish `hA_e0` using `hA_e0_symVec D X kv hg`. Establish `hA_z0` using `ZPair.hA_z0_symVec D X kv hg`.
+
+Establish `hA_bw` using `Resid.hA_bw_symVec_not_ewAt D X kv hg`. Establish `hsig` using `sigA_ew_sub_one_mem_wInt D X hI hι kv hg`. Generalize the expression as in `D.naut.plGw kv.1 kv.2 = w at *`. Establish `hg' : ((D.host.g kv.1 : ℕ) : 𝓞 D.host.E) ∈ (cPl w).asIdeal` using `by rw [mem_cPl, map_natCast]; exact hg`. Take `⟨ief, iz, ib⟩` from `X.vectorsInLattice`.
+
+Establish `hse` using `sigA_mem X.B.I X.ew_int`. Establish `p1 : EwAt X w → sigA X.B.I X.ew ∈ wInt X w` using `fun h => by`. Use `mul_mem_wInt X w hse (one_sub_ew X w kv.1 hg h)` as an intermediate fact. Rewrite `this` using `[mul_sub, mul_one, mul_comm, X.ew_orth, sub_zero]`. Then use the resulting hypothesis. Establish `p2 : ¬ EwAt X w → X.ew ∈ wInt X w` using `fun h => by`.
+
+Use `neg_mem (mul_mem_wInt X w X.ew_int (hsig h))` as an intermediate fact. Rewrite `this` using `[mul_sub, mul_one, X.ew_orth, zero_sub, neg_neg]`. Then use the resulting hypothesis. Establish `q1 : EwAt X w → ∀ i, X.bwd i ∈ wLf X w` using `fun h i => by`. Rewrite using `[X.bwd_w]`. Conclude with `smul_mem_wLf_of_mem_wInt X w (p1 h) (ib i).2`.
+
+Establish `q2 : EwAt X w → ∀ i, X.bw i ∈ wLf X (cPl w)` using `fun h i => by`. Use `sig_mem X w (p1 h)` as an intermediate fact. Rewrite `this` using `[sigA_sigA]`. Rewrite using `[X.bw_w]`. Conclude with `smul_mem_wLf_of_mem_wInt X _ this (ib i).1`.
+
+Establish `q3 : ¬ EwAt X w → ∀ i, X.bw i ∈ wLf X w` using `fun h i => by`. Rewrite using `[X.bw_w]`. Conclude with `smul_mem_wLf_of_mem_wInt X w (p2 h) (ib i).1`. Establish `q4 : ¬ EwAt X w → ∀ i, X.bwd i ∈ wLf X (cPl w)` using `fun h i => by`. Rewrite using `[X.bwd_w]`.
+
+Conclude with `smul_mem_wLf_of_mem_wInt X _ (sig_mem X w (p2 h)) (ib i).2`. Establish `hu : ∀ i, symVec X w i ∈ X.B.I.Lf` using `flagV_mem X (fun a => (ief a).1) (fun a => (ief a).2) (fun a => by unfold epsW; split_ifs; exacts [(ib _).1, (ib _).2]) iz`. Establish `hv : ∀ i, dualVec X w i ∈ X.B.I.Lf` using `flagV_mem X (fun a => (ief a).2) (fun a => (ief a).1) (fun a => by unfold epsD; split_ifs; exacts [(ib _).2, (ib _).1]) (neg_mem iz)`. Establish `hd : ∀ j i, hA X.B.I (dualVec X w j) (symVec X w i) - (if i = j then 1 else 0) ∈ wInt X w`. Introduce `j i`.
+
+Establish `hj` using `j.2`. Unfold `dualVec`. Distinguish the cases in `a1 : j.1 < D.R.rS`. Rewrite using `[fl_e _ _ _ _ j ⟨j.1, a1⟩ rfl]`. Conclude with `hA_symVec_sub_ite_mem_wInt D X w kv.1 hg ⟨j.1, a1⟩ i`.
+
+Distinguish the cases in `a2 : j.1 < D.R.rS + D.R.k`. Rewrite using `[fl_b _ _ _ _ j ⟨j.1 - D.R.rS, by omega⟩ (by simp only; omega)]`. Unfold `epsD`. Distinguish the cases in `h : EwAt X w`. Rewrite using `[if_pos h]`.
+
+Use `Resid.hA_bwd_symVec D X w kv.1 hg h (one_sub_ew X w kv.1 hg h) ⟨j.1 - D.R.rS, by omega⟩ i` as an intermediate fact. Rewrite `this` using `[show Resid.posB D ⟨j.1 - D.R.rS, by omega⟩ = j from Fin.ext (by simp only [Resid.posB]; omega)]`. Then use the resulting hypothesis. Rewrite using `[if_neg h]`. Use `hA_bw h (hsig h) (Fin.rev ⟨j.1 - D.R.rS, by omega⟩) i` as an intermediate fact. Rewrite using `[show D.R.rS + D.R.k - 1 - (Fin.rev (⟨j.1 - D.R.rS, by omega⟩ : Fin D.R.k)).1 = j.1 by` and apply the resulting hypothesis.
+
+Rewrite using `[Fin.val_rev]`. Simplify using `only`. Use the proof step `omega, if_congr Fin.val_inj rfl rfl] at this`. Distinguish the cases in `a3 : j.1 = D.R.rS + D.R.k`. Rewrite using `[symmetricFlagBasisVectors_apply_centre _ _ _ _ j a3, hA_neg_left]`.
+
+Use `neg_mem (hA_z0 i)` as an intermediate fact. Rewrite `this` using `[← a3, if_congr Fin.val_inj rfl rfl]`. Use `this using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `split_ifs <;> ring`. Rewrite using `[fl_f _ _ _ _ j ⟨2 * D.R.rS + D.R.k - j.1, by omega⟩ (by simp only; omega)]`.
+
+Use `hA_e0 ⟨2 * D.R.rS + D.R.k - j.1, by omega⟩ i` as an intermediate fact. Rewrite using `[show 2 * D.R.rS + D.R.k - (⟨2 * D.R.rS + D.R.k - j.1, by omega⟩ : Fin D.R.rS).1 = j.1 by` and apply the resulting hypothesis. Simplify using `only`. Use the proof step `omega, if_congr Fin.val_inj rfl rfl] at this`. Establish `hd' : ∀ i j, hA X.B.I (symVec X w i) (dualVec X w j) - (if j = i then 1 else 0) ∈ wInt X (cPl w)`.
+
+Introduce `i j`. Use `sig_mem X w (hd j i)` as an intermediate fact. Rewrite `this` using `[map_sub, ← hA_symm, apply_ite (sigA X.B.I), map_one, map_zero, if_congr eq_comm rfl rfl]`. Then use the resulting hypothesis. Establish `su : ∀ y ∈ X.B.I.Lf, GroupLoc.ModW X w (Set.range (symVec X w)) y` using `fun y hy => by`. Use `span_frame X w kv.1 hg _ (fun a => ?_) (fun a => ?_) ?_ (fun a => ?_) (fun a => ?_) hy` and prove the remaining obligations.
+
+Use `a.2` as an intermediate fact. Conclude with `modW_range X ⟨a.1, by omega⟩ (fl_e _ _ _ _ _ a rfl)`. Use `a.2` as an intermediate fact. Conclude with `modW_range X ⟨2 * D.R.rS + D.R.k - a.1, by omega⟩ (fl_f _ _ _ _ _ a (by simp only; omega))`. Conclude with `modW_range X ⟨D.R.rS + D.R.k, by omega⟩ (symmetricFlagBasisVectors_apply_centre _ _ _ _ _ rfl)`.
+
+Use `a.2` as an intermediate fact. Distinguish the cases in `h : EwAt X w`. Conclude with `modW_range X ⟨D.R.rS + a.1, by omega⟩ ((fl_b _ _ _ _ _ a rfl).trans (by rw [epsW, if_pos h]))`. Conclude with `Submodule.mem_sup_right (q3 h a)`. Use `a.rev.2` as an intermediate fact.
+
+Distinguish the cases in `h : EwAt X w`. Conclude with `Submodule.mem_sup_right (q1 h a)`. Conclude with `modW_range X ⟨D.R.rS + a.rev.1, by omega⟩ ((fl_b _ _ _ _ _ a.rev rfl).trans (by rw [epsW, if_neg h]; exact congrArg X.bwd (Fin.rev_rev a)))`. Establish `sv : ∀ y ∈ X.B.I.Lf, GroupLoc.ModW X (cPl w) (Set.range (dualVec X w)) y` using `fun y hy => by`. Use `span_frame X _ kv.1 hg' _ (fun a => ?_) (fun a => ?_) ?_ (fun a => ?_) (fun a => ?_) hy` and prove the remaining obligations.
+
+Use `a.2` as an intermediate fact. Conclude with `modW_range X ⟨2 * D.R.rS + D.R.k - a.1, by omega⟩ (fl_f _ _ _ _ _ a (by simp only; omega))`. Use `a.2` as an intermediate fact. Conclude with `modW_range X ⟨a.1, by omega⟩ (fl_e _ _ _ _ _ a rfl)`. Conclude with `neg_mem_iff.1 (modW_range X ⟨D.R.rS + D.R.k, by omega⟩ (symmetricFlagBasisVectors_apply_centre _ _ _ _ _ rfl))`.
+
+Use `a.rev.2` as an intermediate fact. Distinguish the cases in `h : EwAt X w`. Conclude with `Submodule.mem_sup_right (q2 h a)`. Conclude with `modW_range X ⟨D.R.rS + a.rev.1, by omega⟩ ((fl_b _ _ _ _ _ a.rev rfl).trans (by rw [epsD, if_neg h]; exact congrArg X.bw (Fin.rev_rev a)))`. Use `a.2` as an intermediate fact.
+
+Distinguish the cases in `h : EwAt X w`. Conclude with `modW_range X ⟨D.R.rS + a.1, by omega⟩ ((fl_b _ _ _ _ _ a rfl).trans (by rw [epsD, if_pos h]))`. Conclude with `Submodule.mem_sup_right (q4 h a)`. Establish `sub_w : ∀ (w' : HeightOneSpectrum (𝓞 D.host.E)) (y : X.B.I.Gf), y ∈ X.B.I.Kset → ∀ s ∈ wLf X w', (X.B.I.fmat y - 1) *ᵥ s ∈ wLf X w'` using `fun w' y hy s hs => by`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`.
+
+Conclude with `sub_mem (fmat_mulVec_mem_wLf X w' hy hs) hs`. Establish `main` using `comb (R := Formalism.MainNotions.S.IntAf X.B.I.F X.B.I.E) hn X.e0 X.f0 X.z0 X.bw (epsW X w) (epsD X w) (wLf X w) (wLf X (cPl w)) (fun y => (X.B.I.fmat x - 1) *ᵥ y) (fun y => (X.B.I.fmat x⁻¹ - 1) *ᵥ y) (Matrix.mulVec_neg _ _) (fun j i => hA X.B.I (dualVec X w j) ((X.B.I.fmat x - 1 …`. Rewrite using `[hA_adj]`. Use `⟨fun h => ?_, sig_mem X w⟩` and prove the remaining obligations. Use `sig_mem X _ h` as an intermediate fact.
+
+Rewrite using `[sigA_sigA, cPl_cPl] at this))` and apply the resulting hypothesis. Use the proof step `(by`. Distinguish the cases in `h : EwAt X w`. Conclude with `Or.inl ⟨by rw [epsW, if_pos h], fun i => sub_w _ _ (K_inv _ hx) _ (q2 h i)⟩`. Conclude with `Or.inr ⟨by rw [epsD, if_neg h], fun i => sub_w _ _ hx _ (q3 h i)⟩)`.
+
+Use `Iff.trans main (and_congr Iff.rfl ⟨fun h => ?_, fun h => condAt_inv X _ hx h⟩)` and prove the remaining obligations. Use `condAt_inv X (cPl w) (K_inv _ hx) h` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+-/
 theorem colCond_iff_condAt : ∀ (D : D7) (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), (∀ x : X.B.I.E, HEq (X.ιE x) x) → (∀ kv : (Σ k : Fin 2, D.nd.PlG k), ((D.host.g kv.1 : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw kv.1 kv.2).asIdeal) → ∀ k ∈ X.B.I.Kset, ∀ kv : (Σ k : Fin 2, D.nd.PlG k), (GlobalTheory.Mem.GroupLoc.ColCond X (D.naut.plGw kv.1 kv.2) k ↔ GlobalTheory.Mem.GroupLoc.CondAt X (D.naut.plGw kv.1 kv.2) k ∧ GlobalTheory.Mem.GroupLoc.CondAt X (GlobalTheory.DimPartsCompare.cPl (D.naut.plGw kv.1 kv.2)) k) := by
   intro D X hI hι hgs x hx kv
   have hg := hgs kv

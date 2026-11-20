@@ -11,10 +11,16 @@ noncomputable section
 
 namespace GlobalTheory.EtC.GmPhiNoeth
 
+/- English proof (translation)
+Simplify using `[laurentMap]`.
+-/
 theorem coeff_laurentMap {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (p : LaurentPolynomial R) (n : ℤ) :
     (laurentMap f p).coeff n = f (p.coeff n) := by
   simp [laurentMap]
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun p => AddMonoidAlgebra.ext (Finsupp.ext fun n => by rw [coeff_laurentMap]; rfl)`.
+-/
 theorem laurentMap_id (R : Type) [CommRing R] : laurentMap (RingHom.id R) = RingHom.id _ :=
   RingHom.ext fun p => AddMonoidAlgebra.ext (Finsupp.ext fun n => by rw [coeff_laurentMap]; rfl)
 
@@ -108,6 +114,13 @@ end GlobalTheory.EtC.GmPhiNoeth
 
 open GlobalTheory.EtC.GmPhiNoeth in
 
+/- English proof (translation)
+Introduce `q _ hN A _ hSH hq i x`. Take `⟨hH, hsep⟩` from `hSH`. Take `⟨J, _, _, D, ι, hc, hl, hst, hqj, -, -⟩` from `GlobalTheory.SHColim.strictlyHenselian_isColimit q A ⟨hH, hsep⟩ hq`. Establish `hqL : IsUnit (q : LaurentPolynomial A)`. Simplify using `using hq.map (LaurentPolynomial.C : A →+* LaurentPolynomial A)`.
+
+Take `⟨j, y, hy⟩` from `(GlobalTheory.T.etaleCohomology_twisted_filtered_colimit_continuity q (D ⋙ laurentFunctor) _ (isColimit_laurent hc) 1 i).1 x hqL`. Take `⟨B, _, _, s, hs⟩` from `hst j`. Use `haveI := hl j`. Use `haveI : IsNoetherianRing (D.obj j) := GlobalTheory.StalkNoeth.isNoetherianRing_of_isStalk B (D.obj j) s hs`. Take `⟨b, hb⟩` from `hN (D.obj j) hs.1 (hqj j) i y`.
+
+Establish `hn` using `gmPhi_nat GlobalTheory.T.cup_chern_kummer_pullback_naturality q (A := D.obj j) (B := A) (ι.app j).hom (hqj j) i b`. Rewrite `hn` using `[hb]`. Conclude with `⟨_, hn.symm.trans hy⟩`.
+-/
 theorem GlobalTheory.EtC.gmPhi_surjective_of_noetherian : ∀ (q : ℕ) [NeZero q],
     (∀ (A : Type) [CommRing A] [IsNoetherianRing A], SH A → IsUnit (q : A) → ∀ i : ℤ,
       Function.Surjective (gmPhi q A i)) →

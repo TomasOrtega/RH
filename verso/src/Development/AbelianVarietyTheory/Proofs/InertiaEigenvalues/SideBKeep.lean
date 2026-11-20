@@ -48,6 +48,9 @@ def expC (X : NExpTied (recE hE Sp F ex h0 th).toD7) : NExpTied (recL hE Sp F L 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{ B with twF := twFC B.twF tw := { B.tw with qs_pos := hqs } chiD := { B.chiD with chiI := chiI } chi := { B.chi with lamG := hlam } exp := expC B.exp }⟩`.
+-/
 theorem sideB_keep {Rw : RowSide D} {low : Finset ℕ}
     {Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host} {S : RatDat D.ntw}
     {hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)} {eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0}

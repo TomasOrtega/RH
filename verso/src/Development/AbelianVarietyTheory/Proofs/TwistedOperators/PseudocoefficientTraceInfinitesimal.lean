@@ -18,10 +18,22 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.TraceInfChar
 
+/- English proof (translation)
+Introduce `x hx` and use `by obtain ⟨g, hg, -⟩ := GlobalTheory.RealIwasawa.exists_uMat x hx exact ⟨g, hg⟩`.
+-/
 theorem ujMat_onto {n : ℕ} {ε : Fin n → Bool} : ∀ x ∈ UJset ε, ∃ g, ujMat ε g = x := fun x hx => by
   obtain ⟨g, hg, -⟩ := GlobalTheory.RealIwasawa.exists_uMat x hx
   exact ⟨g, hg⟩
 
+/- English proof (translation)
+Introduce `S hS hst`. Set `e` to `U.toLinearEquiv`. Establish `hS' : IsClosed ((S.map (e : H →ₗ[ℂ] H') : Submodule ℂ H') : Set H')`. Rewrite using `[Submodule.map_coe]`. Conclude with `U.toHomeomorph.isClosedMap _ hS`.
+
+Break down `h _ hS' (fun g hg w hw => by` into its components or cases. Take `⟨v, hv, rfl⟩` from `hw`. Conclude with `⟨ρ g v, hst g hg v hv, hU g hg v⟩) with h0 | h1`. Use `left`. Rewrite using `[eq_bot_iff]`.
+
+Introduce `v hv`. Establish `: e v ∈ S.map (e : H →ₗ[ℂ] H')` using `⟨v, hv, rfl⟩`. Rewrite `this` using `[h0, Submodule.mem_bot]`. Simplify using `using this`. Use `right`.
+
+Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `: e v ∈ S.map (e : H →ₗ[ℂ] H')` using `h1 ▸ Submodule.mem_top`. Take `⟨w, hw, hwe⟩` from `this`. Rewrite `hw` using `[e.injective hwe]`. Then use the resulting hypothesis.
+-/
 theorem isIrredOn_of_isom {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} {H H' : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [NormedAddCommGroup H'] [InnerProductSpace ℂ H']
     {ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {σ : Matrix (Fin n) (Fin n) ℂ → (H' →L[ℂ] H')}
@@ -47,6 +59,9 @@ theorem isIrredOn_of_isom {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} {H H'
     obtain ⟨w, hw, hwe⟩ := this
     rwa [e.injective hwe] at hw
 
+/- English proof (translation)
+Take `⟨A, hA⟩` from `h`. Take `⟨v, hv, hi⟩` from `ht`. Use `⟨A v, by simpa using hv, fun r hr => ?_⟩` and prove the remaining obligations. Simplify `hi r hr` using `[← hA, LinearIsometryEquiv.inner_map_map]`.
+-/
 theorem isTempered_of_unitEquiv {G V W : Type} [Group G] [MeasurableSpace G] [NormedAddCommGroup V]
     [InnerProductSpace ℂ V] [NormedAddCommGroup W] [InnerProductSpace ℂ W] {μ : Measure G}
     {π : G →* (V →L[ℂ] V)} {π' : G →* (W →L[ℂ] W)} (h : IsUnitEquiv π π') (ht : GlobalTheory.Orb.IsTempered μ π) :
@@ -56,6 +71,21 @@ theorem isTempered_of_unitEquiv {G V W : Type} [Group G] [MeasurableSpace G] [No
   refine ⟨A v, by simpa using hv, fun r hr => ?_⟩
   simpa [← hA, LinearIsometryEquiv.inner_map_map] using hi r hr
 
+/- English proof (translation)
+Introduce `hL hC n ε χ X _ _ _ δ hδ hχ μ _ f hf V _ _ _ π hπ c hc hc0`. Take `⟨b, W₀, hW₀⟩` from `exists_isMinimalFlag ε`. Take `⟨N, I, m, hstd, -, -, -, hinf, htr⟩` from `hL.2.2.2.2.1 n ε b W₀ hW₀ V π hπ`. Take `⟨-, hsum⟩` from `htr μ f hf.mem`. Establish `hcs : c = ∑ i, (m i : ℂ) * trace (repOp (I i).rep μ f)` using `hc.2.symm.trans hsum.2`.
+
+Take `⟨i, -, hi⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (hcs ▸ hc0)`. Establish `htr0 : trace (repOp (I i).rep μ f) ≠ 0` using `right_ne_zero_of_mul hi`. Use `(hinf i χ).1 ?_` and prove the remaining obligations. Distinguish the cases in `ha : (I i).a = 0`. Take `⟨hM, U, hUρ⟩` from `GlobalTheory.Published.Langlands.equiv_of_zero (I i) ha`.
+
+Establish `ht` using `(I i).temp`. Rewrite `ht` using `[show leviOne ε (I i).W = ⊤ from hM]`. Take `⟨hσn, hσi, hσU, hσt⟩` from `(isIrrTempered_top_iff μ).1 ht`. Use `haveI := hσn`. Establish `hAdm` using `(hL.1 n ε (I i)).1`.
+
+Use `haveI hρn : Nontrivial (I i).H := U.toLinearEquiv.toEquiv.nontrivial`. Establish `hρU : IsURepOn (UJset ε) (I i).ρ` using `⟨(I i).isCRepOn, fun g hg v => by`. Rewrite using `[← U.norm_map, hUρ g hg v, hσU.2.1 g hg, U.norm_map], hAdm.2.1⟩`. Establish `hρi : IsIrredOn (UJset ε) (I i).ρ` using `isIrredOn_of_isom U hUρ hσi`. Establish `hσρ : IsUnitEquiv (ujRep hσU) (ujRep hρU)` using `⟨U.symm, fun g v => by`.
+
+Establish `hg : ujMat ε g ∈ UJset ε` using `g.2`. Express the relevant statement in the definitionally equal form `U.symm ((I i).σ (ujMat ε g) v) = (I i).ρ (ujMat ε g) (U.symm v)`. Apply `U.injective` to reduce the goal to its premises. Rewrite using `[LinearIsometryEquiv.apply_symm_apply, hUρ _ hg, LinearIsometryEquiv.apply_symm_apply]⟩`. Establish `hρt : GlobalTheory.Orb.IsTempered μ (ujRep hρU)` using `isTempered_of_unitEquiv hσρ hσt`.
+
+Establish `hrep : (I i).rep = ujRep hρU` using `rfl`. Establish `hρδ : IsUnitEquiv (ujRep hρU) (ujRep hδ)`. Assume the negation of the conclusion as `hne`. Establish `h0` using `hf.trace_other (I i).H (ujRep hρU) (GlobalTheory.Orb.isUnitaryRep_repVia hρU (fun g => g.2) GlobalTheory.HCChar.continuous_ujMat) (GlobalTheory.Orb.isTopIrreducible_repVia hρU (fun g => g.2) ujMat_onto hρi) hρt hne`. Conclude with `htr0 (hrep ▸ h0.2)`.
+
+Take `⟨A, hA⟩` from `hρδ`. Use `GlobalTheory.ClassificationConsequences.hasInfChar_of_uEquiv ⟨A, fun g hg v => ?_⟩ hχ` and prove the remaining obligations. Take `⟨g', rfl⟩` from `ujMat_onto g hg`. Conclude with `hA g' v`. Conclude with `absurd (GlobalTheory.T.pseudocoefficient_trace_vanishes hC n ε μ X (ujRep hδ) f hf (I i) ha).2 htr0`.
+-/
 theorem hasInfChar_of_trace_ne_zero : GlobalTheory.Published.LanglandsClassification → GlobalTheory.Published.HarishChandraCharacters →
     ∀ (n : ℕ) (ε : Fin n → Bool) (χ : Fin n → ℂ) (X : Type) [NormedAddCommGroup X] [InnerProductSpace ℂ X]
       [CompleteSpace X] (δ : Matrix (Fin n) (Fin n) ℂ → (X →L[ℂ] X)) (hδ : IsURepOn (UJset ε) δ),

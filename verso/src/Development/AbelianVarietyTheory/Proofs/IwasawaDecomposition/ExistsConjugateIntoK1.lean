@@ -18,6 +18,9 @@ noncomputable section
 
 namespace GlobalTheory.SplitFrameW
 
+/- English proof (translation)
+Set `e : (Fin n → K) ≃ₗ[K] (Fin m → K)` to `LinearEquiv.ofLinear (Matrix.toLin' A) (Matrix.toLin' B) (by rw [← Matrix.toLin'_mul, h1, Matrix.toLin'_one]) (by rw [← Matrix.toLin'_mul, h2, Matrix.toLin'_one])`. Use `e.finrank_eq` as an intermediate fact. Simplify using `using this.symm`.
+-/
 theorem eq_of_mul_eq_one {K : Type} [Field K] {m n : ℕ} (A : Matrix (Fin m) (Fin n) K) (B : Matrix (Fin n) (Fin m) K)
     (h1 : A * B = 1) (h2 : B * A = 1) : m = n := by
   let e : (Fin n → K) ≃ₗ[K] (Fin m → K) := LinearEquiv.ofLinear (Matrix.toLin' A) (Matrix.toLin' B)
@@ -25,6 +28,9 @@ theorem eq_of_mul_eq_one {K : Type} [Field K] {m n : ℕ} (A : Matrix (Fin m) (F
   have := e.finrank_eq
   simpa using this.symm
 
+/- English proof (translation)
+Use `congrFun ((HeightOneSpectrum.denseRange_algebraMap (maximalRealSubfield E) s.v).equalizer (GlobalTheory.LFun.SplitChart.continuous_complMap h) hc (funext fun k => ?_)) a` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GlobalTheory.LFun.complMap h (algebraMap _ _ k) = c (algebraMap _ _ k)`. Rewrite using `[GlobalTheory.LFun.complMap_algebraMap, ← hci]`. Use `congr 1`. Conclude with `s.i.commutes k`.
+-/
 theorem complMap_eq {E : Type} [Field E] [NumberField E] [IsCMField E] (s : SplitPlace E)
     (c : s.v.adicCompletion (maximalRealSubfield E) ≃+* s.w.adicCompletion E) (hc : Continuous c)
     (hci : ∀ x : E, c (s.i x) = algebraMap E _ x) (h : s.w.under (𝓞 (maximalRealSubfield E)) = s.v)
@@ -36,10 +42,20 @@ theorem complMap_eq {E : Type} [Field E] [NumberField E] [IsCMField E] (s : Spli
   congr 1
   exact s.i.commutes k
 
+/- English proof (translation)
+The claim follows from `HeightOneSpectrum.ext s.w_under`.
+-/
 theorem under_w {E : Type} [Field E] [NumberField E] [IsCMField E] (s : SplitPlace E) :
     s.w.under (𝓞 (maximalRealSubfield E)) = s.v :=
   HeightOneSpectrum.ext s.w_under
 
+/- English proof (translation)
+Substitute `hF` using the available equality. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add y z hy hz`. Rewrite using `[map_add, map_add, map_add, map_add, ← hy, ← hz]`.
+
+Both sides reduce to the same expression. Consider the case `tmul x a`. Express the relevant statement in the definitionally equal form `Φ (a ⊗ₜ x) s.w = c (s.i x * ReciprocityTheory.Aut.evalAt E s.v a)`. Rewrite using `[hΦ, map_mul, hci]`. Express the relevant statement in the definitionally equal form `algebraMap E _ x * GlobalTheory.AdeleBaseChange.adMap _ E a s.w = _`.
+
+Rewrite using `[GlobalTheory.DefU.ClassFin.adMap_eq_complMap (under_w s), complMap_eq s c hc hci]`. Both sides reduce to the same expression.
+-/
 theorem cpt_swap {E : Type} [Field E] [NumberField E] [IsCMField E] (F1 : Subfield E)
     (hF : F1 = maximalRealSubfield E)
     (Φ : FiniteAdeleRing (𝓞 F1) F1 ⊗[F1] E →+* FiniteAdeleRing (𝓞 E) E)
@@ -67,6 +83,27 @@ namespace GlobalTheory.SplitFrameW
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D V n hF P β hS s`. Take `⟨⟨βs, βs', h1, h2, hfr⟩, -⟩` from `hS`. Take `⟨c, hc, hc', hci⟩` from `GlobalTheory.SplitComplHomeo.exists_complEquiv D.host.E s`. Take `⟨f, hf⟩ : ∃ f : (FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E) →+* s.w.adicCompletion D.host.E, f = (GlobalTheory.StdFrames.cpt s.w).comp (swapAE D)` from `⟨_, rfl⟩`. Establish `hn : V.rank = n` using `eq_of_mul_eq_one (βs.map f) (βs'.map f) (by rw [← Matrix.map_mul, h1, Matrix.map_one _ (map_zero f) (map_one f)]) (by rw [← Matrix.map_mul, h2, Matrix.map_one _ (map_zero f) (map_one f)])`.
+
+Substitute `hn` using the available equality. Take `⟨Φc, hΦc⟩ : ∃ Φc : Matrix (Fin V.rank) (Fin V.rank) (EAf D) →+* Matrix (Fin V.rank) (Fin V.rank) (s.v.adicCompletion (maximalRealSubfield D.host.E)), Φc = (c.symm.toRingHom.comp (GlobalTheory.StdFrames.cpt s.w)).mapMatrix` from `⟨_, rfl⟩`. Take `⟨B, hB⟩ : ∃ B : Matrix (Fin V.rank) (Fin V.rank) (EAf D), B = βs.map (swapAE D)` from `⟨_, rfl⟩`. Take `⟨B', hB'⟩ : ∃ B' : Matrix (Fin V.rank) (Fin V.rank) (EAf D), B' = βs'.map (swapAE D)` from `⟨_, rfl⟩`. Establish `hBB : B * B' = 1`.
+
+Rewrite using `[hB, hB', ← Matrix.map_mul, h1, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hBB' : B' * B = 1`. Rewrite using `[hB, hB', ← Matrix.map_mul, h2, Matrix.map_one _ (map_zero _) (map_one _)]`. Take `⟨X, hX⟩ : ∃ X, X = Φc ((β⁻¹).val * B)` from `⟨_, rfl⟩`. Take `⟨X', hX'⟩ : ∃ X', X' = Φc (B' * β.val)` from `⟨_, rfl⟩`.
+
+Establish `hXX : X * X' = 1`. Rewrite using `[hX, hX', ← map_mul, show (β⁻¹).val * B * (B' * β.val) = (β⁻¹).val * (B * B') * β.val by`. Simplify using `only [Matrix.mul_assoc], hBB, Matrix.mul_one, Units.inv_mul, map_one]`. Establish `hXX' : X' * X = 1`. Rewrite using `[hX, hX', ← map_mul, show B' * β.val * ((β⁻¹).val * B) = B' * (β.val * (β⁻¹).val) * B by`.
+
+Simplify using `only [Matrix.mul_assoc], Units.mul_inv, Matrix.mul_one, hBB', map_one]`. Take `⟨g, hg⟩ : ∃ g : GL (Fin V.rank) (s.v.adicCompletion (maximalRealSubfield D.host.E)), g = ⟨X', X, hXX', hXX⟩` from `⟨_, rfl⟩`. Use `⟨g, fun κ _ hk a b => ?_⟩` and prove the remaining obligations. Establish `hK : Φc (((κ.1 : Matrix (Fin V.rank) (Fin V.rank) (ReciprocityTheory.Aut.AL D.host.E)).map (swapCast hF).symm).map (swapAE D)) = ((s.loc V.rank κ : GL _ _) : Matrix _ _ _)`. Rewrite using `[hΦc]`.
+
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c.symm (((GlobalTheory.StdFrames.toAd D).comp (swapAE D)) ((swapCast hF).symm (κ.1.val i j)) s.w) = s.proj (κ.1.val i j)`. Rewrite using `[cpt_swap D.host.F hF ((GlobalTheory.StdFrames.toAd D).comp (swapAE D)) (fun a x => GlobalTheory.StdFrames.toAd_spec D x a) s c hc hci]`. Conclude with `c.symm_apply_apply _`. Establish `e1 : (finE V (P.ψ κ)).val = B * (((κ.1 : Matrix (Fin V.rank) (Fin V.rank) (ReciprocityTheory.Aut.AL D.host.E)).map (swapCast hF).symm).map (swapAE D)) * B'`.
+
+Express the relevant statement in the definitionally equal form `(finMat D.sp.cm.sig V.gram (P.ψ κ)).map (swapAE D) = _`. Rewrite using `[hfr κ, Matrix.map_mul, Matrix.map_mul, hB, hB']`. Establish `hM : Φc ((β⁻¹ * finE V (P.ψ κ) * β).val) = X * ((s.loc V.rank κ : GL _ _) : Matrix _ _ _) * X'`. Rewrite using `[Units.val_mul, Units.val_mul, e1, ← hK, hX, hX', ← map_mul, ← map_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Establish `hv` using `(GlobalTheory.FixedAtSplit.mem_KOne_iff' _).1 hk a b`. Establish `e3 : (↑(g⁻¹ * s.loc V.rank κ * g) : Matrix (Fin V.rank) (Fin V.rank) (s.v.adicCompletion (maximalRealSubfield D.host.E))) = X * ((s.loc V.rank κ : GL _ _) : Matrix _ _ _) * X'`. Rewrite using `[hg]`. Both sides reduce to the same expression. Establish `hent : Φc ((β⁻¹ * finE V (P.ψ κ) * β).val) a b = c.symm (GlobalTheory.StdFrames.cpt s.w ((β⁻¹ * finE V (P.ψ κ) * β).val a b))`.
+
+Rewrite using `[hΦc]`. Both sides reduce to the same expression. Establish `e2 : GlobalTheory.StdFrames.cpt s.w ((β⁻¹ * finE V (P.ψ κ) * β).val a b - (1 : Matrix (Fin V.rank) (Fin V.rank) (EAf D)) a b) = c (((↑(g⁻¹ * s.loc V.rank κ * g) : Matrix (Fin V.rank) (Fin V.rank) (s.v.adicCompletion (maximalRealSubfield D.host.E))) - 1) a b)`. Rewrite using `[e3, ← hM, Matrix.sub_apply, hent, map_sub, map_sub, c.apply_symm_apply, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Rewrite using `[e2]`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Use `GlobalTheory.FixedAtSplit.valued_lt_one_of_map c.symm hc' (c _) (by rw [c.symm_apply_apply]; exact hv)` as an intermediate fact. Conclude with `absurd this (not_lt.2 hne)`.
+-/
 theorem main : ∀ (D : D7) (V : HSp D) (n : ℕ) (hF : D.host.F = maximalRealSubfield D.host.E) (P : principalLevelFrame.RowPsi V n) (β : GL (Fin V.rank) (EAf D)), GlobalTheory.Mem.R3.StdFrame hF P → ∀ (s : SplitPlace D.host.E), ∃ h : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield D.host.E)), ∀ κ : Formalism.AUTREP.GAf D.host.E n, TrivOutside {s.v} κ → h⁻¹ * s.loc n κ * h ∈ GlobalTheory.SplitWeil.KOne (s.v.adicCompletion (maximalRealSubfield D.host.E)) (Fin n) → ∀ a b : Fin V.rank, Valued.v (GlobalTheory.StdFrames.cpt s.w ((β⁻¹ * finE V (P.ψ κ) * β).val a b - (1 : Matrix (Fin V.rank) (Fin V.rank) (EAf D)) a b)) < 1 := by
   intro D V n hF P β hS s
   obtain ⟨⟨βs, βs', h1, h2, hfr⟩, -⟩ := hS

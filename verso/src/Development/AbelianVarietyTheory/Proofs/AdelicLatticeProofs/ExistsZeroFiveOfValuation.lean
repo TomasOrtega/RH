@@ -13,30 +13,51 @@ def qf (a x : n → K) : K := ∑ i, a i * x i ^ 2
 
 def bf (a x y : n → K) : K := ∑ i, 2 * a i * x i * y i
 
+/- English proof (translation)
+Simplify using `only [qf, bf, ← Finset.sum_add_distrib, Pi.add_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 lemma qf_add (a x y : n → K) : qf a (x + y) = qf a x + bf a x y + qf a y := by
   simp only [qf, bf, ← Finset.sum_add_distrib, Pi.add_apply]
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Simplify using `only [qf, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 lemma qf_smul (a x : n → K) (s : K) : qf a (s • x) = s ^ 2 * qf a x := by
   simp only [qf, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Simplify using `only [bf, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 lemma bf_smul_left (a x y : n → K) (s : K) : bf a (s • x) y = s * bf a x y := by
   simp only [bf, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Simplify using `only [bf, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 lemma bf_smul_right (a x y : n → K) (s : K) : bf a x (s • y) = s * bf a x y := by
   simp only [bf, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Simplify using `only [bf, ← Finset.sum_add_distrib, Pi.add_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 lemma bf_add_left (a x y z : n → K) : bf a (x + y) z = bf a x z + bf a y z := by
   simp only [bf, ← Finset.sum_add_distrib, Pi.add_apply]
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Simplify using `only [bf, qf, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 lemma bf_self (a x : n → K) : bf a x x = 2 * qf a x := by
   simp only [bf, qf, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Rewrite using `[qf_add, qf_add, bf_add_left]`. Simplify using `[Fin.sum_univ_three, qf_smul, bf_smul_left, bf_smul_right]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma qf_three (a p q r : n → K) (x : Fin 3 → K) (w : K) :
     qf a (x 0 • p + x 1 • q + x 2 • r) / w = ∑ i, ∑ j,
       (![![qf a p / w, bf a p q / w, bf a p r / w], ![0, qf a q / w, bf a q r / w],
@@ -45,6 +66,29 @@ lemma qf_three (a p q r : n → K) (x : Fin 3 → K) (w : K) :
   simp [Fin.sum_univ_three, qf_smul, bf_smul_left, bf_smul_right]
   ring
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Establish `hb : bf a x y ≠ 0`. Introduce `h`. Rewrite `hlt` using `[h]`.
+
+Simplify using `at hlt`. Establish `hvb : v (bf a x y) ≠ 0` using `by simpa using hb`. Establish `h4 : (4 : K) ≠ 0`. Establish `: (4 : K) = 2 * 2` using `by norm_num`. Rewrite using `[this]`.
+
+Conclude with `mul_ne_zero h2 h2`. Establish `hv4 : v 4 ≠ 0` using `by simpa using h4`. Establish `hv4' : v 4 ≤ 1`. Establish `e : (4 : K) = 1 + 1 + 1 + 1` using `by norm_num`. Establish `h1 : v 1 ≤ 1` using `(map_one v).le`.
+
+Rewrite using `[e]`. Conclude with `v.map_add_le (v.map_add_le (v.map_add_le h1 h1) h1) h1`. Establish `hx : qf a x ≠ 0`. Introduce `h`. Apply `hb` to reduce the goal to its premises.
+
+Rewrite using `[han x h]`. Simplify using `[bf]`. Take `⟨s, hs⟩` from `hsq (1 - 4 * (qf a x * qf a y) / bf a x y ^ 2) (by`. Rewrite using `[sub_sub_cancel_left, Valuation.map_neg, map_div₀, map_mul, map_mul, map_pow, mul_div_assoc]`. Establish `h1 : v (qf a x) * v (qf a y) / v (bf a x y) ^ 2 < 1` using `(div_lt_one₀ (pow_pos (zero_lt_iff.mpr hvb) 2)).mpr hlt`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `set t := (-bf a x y + bf a x y * s) / (2 * qf a x) with ht`. Establish `h0 : qf a (t • x + y) = 0`. Rewrite using `[qf_add, qf_smul, bf_smul_left, ht]`. Establish `hs' : 4 * (qf a x * qf a y) = bf a x y ^ 2 * (1 - s * s)`.
+
+Rewrite using `[← hs]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `: qf a y = bf a x y ^ 2 * (1 - s * s) / (4 * qf a x)`. Rewrite using `[← hs']`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Establish `h4' : (4 : K) = 2 * 2` using `by norm_num`. Rewrite using `[h4']`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hy : y = (-t) • x`. Use `han _ h0` as an intermediate fact. Rewrite using `[neg_smul]`. Conclude with `eq_neg_of_add_eq_zero_right this`.
+
+Use `clear_value t`. Substitute `hy` using the available equality. Rewrite `hlt` using `[bf_smul_right, bf_self, qf_smul]`. Establish `e : ((-t) * (2 * qf a x)) ^ 2 = 4 * (qf a x * ((-t) ^ 2 * qf a x))` using `by ring`. Rewrite `hlt` using `[← map_pow, e, ← map_mul v (qf a x), map_mul v 4]`.
+
+Conclude with `absurd hlt (not_lt.mpr (mul_le_of_le_one_left' hv4'))`.
+-/
 lemma val_bf_sq_le (h2 : (2 : K) ≠ 0) (v : Valuation K ℤᵐ⁰)
     (hsq : ∀ x : K, v (x - 1) < v 4 → IsSquare x) (a : n → K)
     (han : ∀ x, qf a x = 0 → x = 0) (x y : n → K) :
@@ -103,6 +147,15 @@ lemma val_bf_sq_le (h2 : (2 : K) ≠ 0) (v : Valuation K ℤᵐ⁰)
 
 variable [DecidableEq n]
 
+/- English proof (translation)
+Establish `hB : P * Matrix.diagonal (fun i => 2 * a i) * Pᵀ = Matrix.of fun i j => bf a (P i) (P j)`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.mul_diagonal, Matrix.transpose_apply, Matrix.of_apply, bf]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+
+Establish `hd` using `congrArg Matrix.det hB`. Rewrite `hd` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, Matrix.det_diagonal]`. Establish `e : v (∏ i, 2 * a i) * v P.det ^ 2 = v (P.det * (∏ i, 2 * a i) * P.det)`. Rewrite using `[map_mul, map_mul, sq, mul_comm (v P.det) (v (∏ i, 2 * a i)), mul_assoc]`. Rewrite using `[e, hd, Matrix.det_apply']`.
+
+Apply `Valuation.map_sum_le` to reduce the goal to its premises. Introduce `σ _`. Establish `hε : v (((Equiv.Perm.sign σ : ℤˣ) : ℤ) : K) = 1`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`. Rewrite using `[map_mul, hε, one_mul, map_prod]`.
+
+Apply `le_of_pow_le_pow_left₀ (n := 2) two_ne_zero zero_le'` to reduce the goal to its premises. Rewrite using `[← Finset.prod_pow]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Equiv.prod_comp σ (fun i => v (qf a (P i))), sq]`.
+-/
 lemma val_det_le (h2 : (2 : K) ≠ 0) (v : Valuation K ℤᵐ⁰)
     (hsq : ∀ x : K, v (x - 1) < v 4 → IsSquare x) (a : n → K)
     (han : ∀ x, qf a x = 0 → x = 0) (P : Matrix n n K) :
@@ -131,6 +184,27 @@ lemma val_det_le (h2 : (2 : K) ≠ 0) (v : Valuation K ℤᵐ⁰)
     _ = (∏ i, v (qf a (P i))) ^ 2 := by
         rw [Finset.prod_mul_distrib, Equiv.prod_comp σ (fun i => v (qf a (P i))), sq]
 
+/- English proof (translation)
+Establish `hrow : ∀ P : Matrix n n K, P.det ≠ 0 → ∀ j, qf a (P j) ≠ 0`. Introduce `P hP j h`. Conclude with `hP (Matrix.det_eq_zero_of_row_eq_zero j fun k => congrFun (han _ h) k)`. Establish `ha : ∀ i, a i ≠ 0`. Introduce `i h`.
+
+Use `hrow 1 (by simp) i` as an intermediate fact. Apply `this` to reduce the goal to its premises. Unfold `qf`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `k _`.
+
+Distinguish the cases in `hk : i = k`. Substitute `hk` using the available equality. Simplify using `[h]`. Simplify using `[Matrix.one_apply_ne hk]`. Establish `hD : v (∏ i, 2 * a i) ≠ 0`.
+
+Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun i _ => mul_ne_zero h2 (ha i)`. Establish `hprod : ∀ P : Matrix n n K, P.det ≠ 0 → (∏ i, v (qf a (P i))) / v P.det ^ 2 ≠ 0`. Introduce `P hP`. Use `div_ne_zero (Finset.prod_ne_zero_iff.mpr fun i _ => ?_) (pow_ne_zero _ ?_)` and prove the remaining obligations.
+
+Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `hrow P hP i`. Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `hP`. Take `⟨m, ⟨P, hP, hm⟩, hmin⟩` from `Int.exists_least_of_bdd (P := fun z => ∃ P : Matrix n n K, P.det ≠ 0 ∧ WithZero.log ((∏ i, v (qf a (P i))) / v P.det ^ 2) = z) ⟨WithZero.log (v (∏ i, 2 * a i)), by`.
+
+Introduce and unpack `z ⟨P, hP, rfl⟩`. Rewrite using `[WithZero.log_le_log hD (hprod P hP), le_div_iff₀ (pow_pos (zero_lt_iff.mpr ((Valuation.ne_zero_iff v).mpr hP)) 2)]`. Conclude with `val_det_le h2 v hsq a han P⟩`. Use the proof step `⟨_, 1, by simp, rfl⟩`. Use `⟨P, hrow P hP, fun c j => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hc : c j = 0`. Simplify using `[hc]`. Establish `hdet : (P.updateRow j (∑ k, c k • P k)).det = c j * P.det`. Rewrite using `[Matrix.det_updateRow_sum, smul_eq_mul]`. Establish `hP' : (P.updateRow j (∑ k, c k • P k)).det ≠ 0`.
+
+Rewrite using `[hdet]`. Conclude with `mul_ne_zero hc hP`. Establish `h` using `hmin _ ⟨_, hP', rfl⟩`. Rewrite `h` using `[← hm, WithZero.log_le_log (hprod P hP) (hprod _ hP'), hdet, ← Finset.mul_prod_erase _ _ (Finset.mem_univ j), ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ j), Matrix.updateRow_self]`. Establish `e : ∏ i ∈ Finset.univ.erase j, v (qf a (P.updateRow j (∑ k, c k • P k) i)) = ∏ i ∈ Finset.univ.erase j, v (qf a (P i))` using `Finset.prod_congr rfl fun i hi => by rw [Matrix.updateRow_ne (Finset.ne_of_mem_erase hi)]`.
+
+Rewrite `h` using `[e]`. Establish `hR : 0 < ∏ i ∈ Finset.univ.erase j, v (qf a (P i))` using `zero_lt_iff.mpr (Finset.prod_ne_zero_iff.mpr fun i _ => (Valuation.ne_zero_iff v).mpr (hrow P hP i))`. Establish `hd : 0 < v P.det ^ 2` using `pow_pos (zero_lt_iff.mpr ((Valuation.ne_zero_iff v).mpr hP)) 2`. Establish `hcj : 0 < v (c j) ^ 2` using `pow_pos (zero_lt_iff.mpr ((Valuation.ne_zero_iff v).mpr hc)) 2`. Rewrite `h` using `[map_mul, mul_pow, ← div_div, div_le_div_iff_of_pos_right hd, le_div_iff₀ hcj, mul_right_comm, mul_le_mul_iff_left₀ hR, mul_comm]`.
+
+Conclude with `h`.
+-/
 lemma exists_basis (h2 : (2 : K) ≠ 0) (v : Valuation K ℤᵐ⁰)
     (hsq : ∀ x : K, v (x - 1) < v 4 → IsSquare x) (a : n → K)
     (han : ∀ x, qf a x = 0 → x = 0) :
@@ -190,11 +264,19 @@ lemma exists_basis (h2 : (2 : K) ≠ 0) (v : Valuation K ℤᵐ⁰)
     mul_right_comm, mul_le_mul_iff_left₀ hR, mul_comm] at h
   exact h
 
+/- English proof (translation)
+Use `revert f`. Evaluate the decidable proposition.
+-/
 lemma exists_three (f : Fin 5 → Bool) :
     ∃ i j k : Fin 5, i ≠ j ∧ i ≠ k ∧ j ≠ k ∧ f j = f i ∧ f k = f i := by
   revert f
   decide
 
+/- English proof (translation)
+Establish `he : Even (WithZero.log (v x) - WithZero.log (v y))`. Rewrite using `[Int.even_sub]`. Simplify `h` using `[eq_comm]`. Take `⟨m, hm⟩` from `he`. Take `⟨u, hu⟩` from `hv (WithZero.exp m)`.
+
+Use `⟨u, ?_⟩` and prove the remaining obligations. Rewrite using `[hu, ← WithZero.exp_log ((Valuation.ne_zero_iff v).mpr hx), ← WithZero.exp_log ((Valuation.ne_zero_iff v).mpr hy), sq, ← WithZero.exp_add, ← WithZero.exp_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma exists_scale (v : Valuation K ℤᵐ⁰) (hv : Function.Surjective v) {x y : K} (hx : x ≠ 0)
     (hy : y ≠ 0)
     (h : decide (Even (WithZero.log (v y))) = decide (Even (WithZero.log (v x)))) :
@@ -215,6 +297,31 @@ end FiveVar
 
 open FiveVar in
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hno`. Establish `han : ∀ x, qf a x = 0 → x = 0`. Introduce `x hx`. Assume the negation of the conclusion as `h`. Conclude with `hno ⟨x, h, hx⟩`.
+
+Take `⟨P, hP, hmin⟩` from `exists_basis h2 v hsq a han`. Take `⟨i, j, k, hij, hik, hjk, hj, hk⟩` from `exists_three fun i => decide (Even (WithZero.log (v (qf a (P i)))))`. Take `⟨s, hs⟩` from `exists_scale v hv (hP i) (hP j) hj`. Take `⟨t, ht⟩` from `exists_scale v hv (hP i) (hP k) hk`. Use `set w := qf a (P i) with hw`.
+
+Establish `hw0 : w ≠ 0` using `hP i`. Establish `hvw : 0 < v w` using `zero_lt_iff.mpr ((Valuation.ne_zero_iff v).mpr hw0)`. Establish `hq : ∀ x, v (qf a x) = v w → v (qf a x / w) ≤ 1`. Introduce `x hx`. Rewrite using `[map_div₀, hx, div_self hvw.ne']`.
+
+Establish `hb : ∀ x y, v (qf a x) = v w → v (qf a y) = v w → v (bf a x y / w) ≤ 1`. Introduce `x y hx hy`. Rewrite using `[map_div₀, div_le_one₀ hvw]`. Apply `le_of_pow_le_pow_left₀ (n := 2) two_ne_zero zero_le'` to reduce the goal to its premises. Use `val_bf_sq_le h2 v hsq a han x y` as an intermediate fact.
+
+Rewrite `this` using `[hx, hy, ← sq]`. Then use the resulting hypothesis. Establish `h0 : v (qf a (P i)) = v w` using `rfl`. Establish `h1 : v (qf a (s • P j)) = v w` using `by rw [qf_smul, map_mul, map_pow, hs]`. Establish `h2' : v (qf a (t • P k)) = v w` using `by rw [qf_smul, map_mul, map_pow, ht]`. Take `⟨x, -, ⟨l, hl⟩, hx⟩` from `hcw ![![qf a (P i) / w, bf a (P i) (s • P j) / w, bf a (P i) (t • P k) / w], ![0, qf a (s • P j) / w, bf a (s • P j) (t • P k) / w], ![0, 0, qf a (t • P k) / w]] (by`.
+
+Introduce `p q`. Apply the tactic sequence `fin_cases p <;> fin_cases q`. Conclude with `hq _ h0`. Conclude with `hb _ _ h0 h1`. Conclude with `hb _ _ h0 h2'`.
+
+Simplify using the standard rewrite rules. Conclude with `hq _ h1`. Conclude with `hb _ _ h1 h2'`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+
+Conclude with `hq _ h2')`. Use `set c : Fin 5 → K := Pi.single i (x 0) + Pi.single j (x 1 * s) + Pi.single k (x 2 * t) with hc`. Establish `hsum : ∑ p, c p • P p = x 0 • P i + x 1 • s • P j + x 2 • t • P k`. Simplify using `only [hc, Pi.add_apply, add_smul, Finset.sum_add_distrib, Pi.single_apply, ite_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true, smul_smul]`. Establish `hlt : v (qf a (∑ p, c p • P p)) < v w`.
+
+Rewrite using `[← div_lt_one₀ hvw, ← map_div₀]`. Use `hx using 2` and compare the differences between its conclusion and the goal. Rewrite using `[hsum]`. Conclude with `qf_three a _ _ _ x w`. Use `fin_cases l`.
+
+Use `hmin c i` as an intermediate fact. Establish `e : c i = x 0` using `by simp [hc, hij, hik]`. Establish `hl' : v (x 0) = 1` using `hl`. Rewrite `this` using `[e, hl', one_pow, one_mul]`. Conclude with `absurd hlt (not_lt.mpr this)`.
+
+Use `hmin c j` as an intermediate fact. Establish `e : c j = x 1 * s` using `by simp [hc, hij.symm, hjk]`. Establish `hl' : v (x 1) = 1` using `hl`. Rewrite `this` using `[e, map_mul, hl', one_mul, hs]`. Conclude with `absurd hlt (not_lt.mpr this)`.
+
+Use `hmin c k` as an intermediate fact. Establish `e : c k = x 2 * t` using `by simp [hc, hik.symm, hjk.symm]`. Establish `hl' : v (x 2) = 1` using `hl`. Rewrite `this` using `[e, map_mul, hl', one_mul, ht]`. Conclude with `absurd hlt (not_lt.mpr this)`.
+-/
 theorem exists_zero_five_of_valuation {K : Type*} [Field K] (h2 : (2 : K) ≠ 0)
     (v : Valuation K ℤᵐ⁰) (hv : Function.Surjective v)
     (hsq : ∀ x : K, v (x - 1) < v 4 → IsSquare x)

@@ -4,11 +4,29 @@ open scoped Formalism.Per
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `h` using `PadicComplex.norm_extends' l (l : ℚ_[l])`. Rewrite `h` using `[Padic.norm_p]`. Simplify using `using h`.
+-/
 theorem psers_norm_natCast_self (l : ℕ) [Fact l.Prime] : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹ := by
   have h := PadicComplex.norm_extends' l (l : ℚ_[l])
   rw [Padic.norm_p] at h
   simpa using h
 
+/- English proof (translation)
+Introduce `l _ h j r h1 hr0 hr1`. Establish `hl : 1 < l` using `(Fact.out : l.Prime).one_lt`. Establish `hlR : (1 : ℝ) < l` using `by exact_mod_cast hl`. Establish `ha` using `psers_norm_natCast_self l`. Use `set a := ‖(l : ℂ_[l])‖ with ha_def`.
+
+Establish `ha0 : 0 ≤ a` using `by rw [ha]; positivity`. Establish `ha1 : a < 1` using `by rw [ha]; exact inv_lt_one_of_one_lt₀ hlR`. Rewrite using `[Int.cofinite_eq, Filter.tendsto_sup]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← Filter.map_neg_atTop, Filter.tendsto_map'_iff, ← Nat.map_cast_int_atTop, Filter.tendsto_map'_iff]`.
+
+Use `squeeze_zero (fun k => ?_) (fun k => ?_) (tendsto_pow_atTop_nhds_zero_of_lt_one ha0 ha1)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, neg_neg, zpow_natCast]`. Conclude with `mul_nonneg (pow_nonneg ha0 _) (Real.rpow_nonneg hr0 _)`. Simplify using `only [Function.comp_apply, neg_neg, zpow_natCast]`. Establish `: r ^ ((l : ℝ) ^ (-(k : ℤ) * h + j : ℤ)) ≤ 1` using `Real.rpow_le_one hr0 hr1.le (zpow_nonneg (by positivity) _)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Nat.map_cast_int_atTop, Filter.tendsto_map'_iff]`. Establish `hN : Filter.Tendsto (fun k : ℕ => l ^ (k * h + j)) Filter.atTop Filter.atTop`. Use `Filter.tendsto_atTop_mono (fun k => ?_) Filter.tendsto_id` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Use `squeeze_zero (fun k => ?_) (fun k => ?_) ((tendsto_self_mul_const_pow_of_lt_one hr0 hr1).comp hN)` and prove the remaining obligations. Conclude with `mul_nonneg (zpow_nonneg ha0 _) (Real.rpow_nonneg hr0 _)`. Establish `e1 : a ^ (-((k : ℕ) : ℤ)) = (l : ℝ) ^ k`. Rewrite using `[zpow_neg, zpow_natCast, ha, inv_pow, inv_inv]`. Establish `e2 : (l : ℝ) ^ (((k : ℕ) : ℤ) * h + j : ℤ) = ((l ^ (k * h + j) : ℕ) : ℝ)`.
+
+Rewrite using `[show (((k : ℕ) : ℤ) * h + j : ℤ) = ((k * h + j : ℕ) : ℤ) by push_cast; ring, zpow_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Function.comp_apply]`. Rewrite using `[e1, e2, Real.rpow_natCast]`.
+
+Apply `mul_le_mul_of_nonneg_right _ (pow_nonneg hr0 _)` to reduce the goal to its premises. Establish `: l ^ k ≤ l ^ (k * h + j)` using `Nat.pow_le_pow_right (by omega) (by nlinarith)`. Conclude with `this` after adjusting the coercions.
+-/
 theorem psers_terms_tendsto_zero : ∀ (l : ℕ) [Fact l.Prime] (h j : ℕ) (r : ℝ), 1 ≤ h → 0 ≤ r → r < 1 → Filter.Tendsto (fun n : ℤ => ‖(l : ℂ_[l])‖ ^ (-n) * r ^ ((l : ℝ) ^ (n * h + j : ℤ))) Filter.cofinite (nhds 0) := by
   intro l _ h j r h1 hr0 hr1
   have hl : 1 < l := (Fact.out : l.Prime).one_lt

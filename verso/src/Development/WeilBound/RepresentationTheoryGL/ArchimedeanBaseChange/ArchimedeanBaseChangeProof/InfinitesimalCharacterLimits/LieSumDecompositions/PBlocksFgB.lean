@@ -18,14 +18,23 @@ attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebr
 def ecurve {N : ℕ} (Z : Matrix (Fin N) (Fin N) (Cinf E)) (t : ℝ) : Matrix (Fin N) (Fin N) (Cinf E) :=
   NormedSpace.exp (t • Z)
 
+/- English proof (translation)
+Establish `h` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) Z (0 : ℝ)`. Rewrite `h` using `[zero_smul, NormedSpace.exp_zero, one_mul]`. Conclude with `h`.
+-/
 theorem hasDerivAt_ecurve {N : ℕ} (Z : Matrix (Fin N) (Fin N) (Cinf E)) : HasDerivAt (ecurve Z) Z 0 := by
   have h := hasDerivAt_exp_smul_const (𝕂 := ℝ) Z (0 : ℝ)
   rw [zero_smul, NormedSpace.exp_zero, one_mul] at h
   exact h
 
+/- English proof (translation)
+Simplify using `[ecurve]`.
+-/
 theorem ecurve_zero {N : ℕ} (Z : Matrix (Fin N) (Fin N) (Cinf E)) : ecurve Z 0 = 1 := by
   simp [ecurve]
 
+/- English proof (translation)
+Establish `hc : (t • Z)ᴴ = -(t • Z)`. Rewrite using `[conjTranspose_smul, hZ]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, ecurve, ← Matrix.exp_conjTranspose, hc, ← Matrix.exp_add_of_commute _ _ (Commute.refl (t • Z)).neg_right]`. Simplify using the standard rewrite rules.
+-/
 theorem ecurve_mem {N : ℕ} (Z : Matrix (Fin N) (Fin N) (Cinf E)) (hZ : Zᴴ = -Z) (t : ℝ) :
     ecurve Z t ∈ Matrix.unitaryGroup (Fin N) (Cinf E) := by
   have hc : (t • Z)ᴴ = -(t • Z) := by
@@ -38,6 +47,9 @@ def toLclm (N : ℕ) : Matrix (Fin N) (Fin N) (Cinf E) →L[ℝ] Lie E N :=
   LinearMap.toContinuousLinearMap
     { toFun := fun A => toL A, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }
 
+/- English proof (translation)
+Establish `h` using `((toLclm (E := E) N).hasFDerivAt (x := ecurve Z 0)).comp_hasDerivAt (0 : ℝ) (hasDerivAt_ecurve Z)`. Conclude with `h`.
+-/
 theorem hasDerivAt_toL_ecurve {N : ℕ} (Z : Matrix (Fin N) (Fin N) (Cinf E)) :
     HasDerivAt (fun t => (toL (ecurve Z t) : Lie E N)) (toL Z) 0 := by
   have h := ((toLclm (E := E) N).hasFDerivAt (x := ecurve Z 0)).comp_hasDerivAt (0 : ℝ) (hasDerivAt_ecurve Z)
@@ -48,6 +60,21 @@ end Curve
 def kcurve {N : ℕ} (Z : Matrix (Fin N) (Fin N) (Cinf E)) (hZ : Zᴴ = -Z) (t : ℝ) : Kinf E N :=
   ⟨ecurve Z t, ecurve_mem Z hZ t⟩
 
+/- English proof (translation)
+Use `set A : Submodule ℂ (GA E N → ℂ) := (GlobalTheory.CuspRep.LocEx.orbSpan φ).map (Sm E N).subtype with hA`. Establish `: FiniteDimensional ℂ A` using `inferInstance`. Take `⟨S, a, ha⟩` from `SliceTensor.interp A`. Set `c : ℝ → GL (Fin N) (Cinf E)` to `fun t => Unitary.toUnits (kcurve Z hZ t)`. Establish `h0 : c 0 = 1` using `Units.ext (ecurve_zero Z)`.
+
+Establish `hc : HasDerivAt (fun t => toL (c t).val) (toL Z) 0` using `hasDerivAt_toL_ecurve Z`. Establish `hmem : ∀ t, (cptRep E N (kcurve Z hZ t) φ).1 ∈ A` using `fun t => ⟨_, Submodule.subset_span ⟨kcurve Z hZ t, rfl⟩, rfl⟩`. Establish `hval : ∀ t g, (cptRep E N (kcurve Z hZ t) φ).1 g = φ.1 (g * infGL E N (c t))` using `fun _ _ => rfl`. Establish `key : ∀ g, lieD (toL Z) φ.1 g = ∑ κ : S, lieD (toL Z) φ.1 κ.1 * (a κ : GA E N → ℂ) g`. Introduce `g`.
+
+Establish `e : ∀ t, φ.1 (g * infGL E N (c t)) = ∑ κ : S, φ.1 (κ.1 * infGL E N (c t)) * (a κ : GA E N → ℂ) g`. Introduce `t`. Use `congrFun (ha _ (hmem t)) g` as an intermediate fact. Rewrite `this` using `[hval, Finset.sum_apply]`. Rewrite using `[this]`.
+
+Use `Finset.sum_congr rfl fun κ _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, hval]`. Establish `d1` using `hasDerivAt_curve φ g c (toL Z) h0 hc`. Establish `d2 : HasDerivAt (fun t => ∑ κ : S, φ.1 (κ.1 * infGL E N (c t)) * (a κ : GA E N → ℂ) g) (∑ κ : S, lieD (toL Z) φ.1 κ.1 * (a κ : GA E N → ℂ) g) 0` using `HasDerivAt.fun_sum fun κ _ => (hasDerivAt_curve φ κ.1 c (toL Z) h0 hc).mul_const _`. Rewrite `d1` using `[show (fun t => φ.1 (g * infGL E N (c t))) = fun t => ∑ κ : S, φ.1 (κ.1 * infGL E N (c t)) * (a κ : GA E N → ℂ) g from funext e]`.
+
+Conclude with `d1.unique d2`. Establish `hL : (lie E N (toL Z) φ).1 ∈ A`. Establish `e : (lie E N (toL Z) φ).1 = ∑ κ : S, lieD (toL Z) φ.1 κ.1 • (a κ : GA E N → ℂ)`. Use function extensionality and compare the values at `g`. Rewrite using `[GlobalTheory.CuspRep.lie_apply, key g, Finset.sum_apply]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `A.sum_mem fun κ _ => A.smul_mem _ (a κ).2`. Take `⟨y, hy, e⟩` from `hL`. Establish `: y = lie E N (toL Z) φ` using `Subtype.ext e`.
+
+Rewrite using `[← this]`. Conclude with `hy`.
+-/
 theorem lie_mem_orbSpan {N : ℕ} (φ : Sm E N) [FiniteDimensional ℂ (GlobalTheory.CuspRep.LocEx.orbSpan φ)]
     (Z : Matrix (Fin N) (Fin N) (Cinf E)) (hZ : Zᴴ = -Z) :
     lie E N (toL Z) φ ∈ GlobalTheory.CuspRep.LocEx.orbSpan φ := by

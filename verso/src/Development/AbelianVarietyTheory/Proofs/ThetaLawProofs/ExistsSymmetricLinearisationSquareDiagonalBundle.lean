@@ -22,6 +22,19 @@ section Alg
 
 open Polynomial in
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial R with hR | hR` into its components or cases. Conclude with `⟨R, inferInstance, inferInstance, ⟨inferInstance, inferInstance, inferInstance⟩, 0, Subsingleton.elim _ _⟩`. Set `f : R[X]` to `X ^ 2 - C (a : R)`. Establish `hf : f.Monic` using `monic_X_pow_sub_C _ two_ne_zero`. Establish `hroot : AdjoinRoot.root f ^ 2 = algebraMap R (AdjoinRoot f) a`.
+
+Use `AdjoinRoot.aeval_eq f (f := f)` as an intermediate fact. Rewrite `this` using `[AdjoinRoot.mk_self]`. Simplify `this` using `[f, sub_eq_zero]`. Establish `hru : IsUnit (AdjoinRoot.root f)`. Rewrite using `[← isUnit_pow_iff two_ne_zero, hroot]`.
+
+Conclude with `a.isUnit.map _`. Establish `h2 : IsUnit (2 : R)`. Use `(Ne.isUnit (two_ne_zero : (2 : ℚ) ≠ 0)).map (algebraMap ℚ R)` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Establish `het : Algebra.Etale R (AdjoinRoot f)`.
+
+Use `GlobalTheory.etale_adjoinRoot_of_isUnit_derivative hf ?_` and prove the remaining obligations. Establish `: AdjoinRoot.mk f f.derivative = algebraMap R (AdjoinRoot f) 2 * AdjoinRoot.root f`. Simplify using `[f, map_ofNat, one_add_one_eq_two]`. Rewrite using `[this]`. Conclude with `(h2.map _).mul hru`.
+
+Establish `hb` using `(AdjoinRoot.powerBasis' hf).basis`. Establish `hd : (AdjoinRoot.powerBasis' hf).dim = 2`. Rewrite using `[AdjoinRoot.powerBasis'_dim]`. Conclude with `natDegree_X_pow_sub_C`. Establish `: Nonempty (Fin (AdjoinRoot.powerBasis' hf).dim)` using `by rw [hd]; infer_instance`.
+
+Conclude with `⟨AdjoinRoot f, inferInstance, inferInstance, ⟨Module.Finite.of_basis hb, het, Module.FaithfullyFlat.of_linearEquiv R _ hb.repr⟩, _, hroot⟩`.
+-/
 theorem exists_sqrt_one (R : Type) [CommRing R] [Algebra ℚ R] (a : Rˣ) :
     ∃ (R₁ : Type) (_ : CommRing R₁) (_ : Algebra R R₁), (Module.Finite R R₁ ∧ Algebra.Etale R R₁ ∧
       Module.FaithfullyFlat R R₁) ∧ ∃ b : R₁, b ^ 2 = algebraMap R R₁ a := by
@@ -52,6 +65,13 @@ theorem exists_sqrt_one (R : Type) [CommRing R] [Algebra ℚ R] (a : Rˣ) :
   exact ⟨AdjoinRoot f, inferInstance, inferInstance, ⟨Module.Finite.of_basis hb, het,
     Module.FaithfullyFlat.of_linearEquiv R _ hb.repr⟩, _, hroot⟩
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact fun R _ _ a => ⟨R, inferInstance, inferInstance, ⟨inferInstance, inferInstance, inferInstance⟩, fun i => i.elim0⟩`. Consider the case `succ n ih`. Introduce `R _ _ a`. Take `⟨R₁, _, _, ⟨h₁, h₂, h₃⟩, b, hb⟩` from `exists_sqrt_one R (a 0)`.
+
+Use `letI : Algebra ℚ R₁ := ((algebraMap R R₁).comp (algebraMap ℚ R)).toAlgebra`. Take `⟨R₂, _, _, ⟨k₁, k₂, k₃⟩, hc⟩` from `ih R₁ fun i => Units.map (algebraMap R R₁).toMonoidHom (a i.succ)`. Use `letI : Algebra R R₂ := ((algebraMap R₁ R₂).comp (algebraMap R R₁)).toAlgebra`. Establish `: IsScalarTower R R₁ R₂` using `IsScalarTower.of_algebraMap_eq' rfl`. Use `⟨R₂, inferInstance, inferInstance, ⟨Module.Finite.trans R₁ R₂, Algebra.Etale.comp R R₁ R₂, Module.FaithfullyFlat.trans R R₁ R₂⟩, fun i => ?_⟩` and prove the remaining obligations.
+
+Use `Fin.cases ⟨algebraMap R₁ R₂ b, by rw [← map_pow, hb]; rfl⟩ (fun i => hc i) i` and prove the remaining obligations.
+-/
 theorem exists_sqrt (n : ℕ) : ∀ (R : Type) [CommRing R] [Algebra ℚ R] (a : Fin n → Rˣ),
     ∃ (R₁ : Type) (_ : CommRing R₁) (_ : Algebra R R₁), (Module.Finite R R₁ ∧ Algebra.Etale R R₁ ∧
       Module.FaithfullyFlat R R₁) ∧ ∀ i, ∃ b : R₁, b ^ 2 = algebraMap R R₁ (a i) := by
@@ -71,9 +91,19 @@ theorem exists_sqrt (n : ℕ) : ∀ (R : Type) [CommRing R] [Algebra ℚ R] (a :
 
 def bas {n : ℕ} (i : Fin n) : Multiplicative (Fin n → ZMod 2) := Multiplicative.ofAdd (Pi.single i 1)
 
+/- English proof (translation)
+The claim follows from `funext fun i => CharTwo.add_self_eq_zero (c.toAdd i)`.
+-/
 theorem mul_self_eq {n : ℕ} (c : Multiplicative (Fin n → ZMod 2)) : c * c = 1 :=
   funext fun i => CharTwo.add_self_eq_zero (c.toAdd i)
 
+/- English proof (translation)
+Set `ϕ : ∀ i : Fin n, Multiplicative (ZMod 2) →* G` to `fun i => { toFun := fun a => g i ^ a.toAdd.val map_one' := pow_zero _ map_mul' := fun a b => by`. Establish `h : g i ^ 2 = 1` using `(pow_two _).trans (h₁ i)`. Rewrite using `[toAdd_mul, ZMod.val_add, ← pow_add, pow_eq_pow_mod (a.toAdd.val + b.toAdd.val) h] }`. Establish `hc : Pairwise fun i k => ∀ x y, Commute (ϕ i x) (ϕ k y)` using `fun i k _ x y => (h₂ i k).pow_pow _ _`. Use `⟨(MonoidHom.noncommPiCoprod ϕ hc).comp (MulEquiv.piMultiplicative fun _ : Fin n => ZMod 2).toMonoidHom, fun i => ?_⟩` and prove the remaining obligations.
+
+Establish `e : (MulEquiv.piMultiplicative fun _ : Fin n => ZMod 2) (bas i) = Pi.mulSingle i (Multiplicative.ofAdd 1)`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `[bas]`.
+
+Simplify using `[bas, hk]`. Rewrite using `[MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, e, MonoidHom.noncommPiCoprod_mulSingle]`. Conclude with `pow_one _`.
+-/
 theorem exists_hom.{u} {n : ℕ} {G : Type u} [Monoid G] (g : Fin n → G) (h₁ : ∀ i, g i * g i = 1)
     (h₂ : ∀ i k, Commute (g i) (g k)) : ∃ Φ : Multiplicative (Fin n → ZMod 2) →* G, ∀ i, Φ (bas i) = g i := by
   let ϕ : ∀ i : Fin n, Multiplicative (ZMod 2) →* G := fun i =>
@@ -93,6 +123,11 @@ theorem exists_hom.{u} {n : ℕ} {G : Type u} [Monoid G] (g : Fin n → G) (h₁
   rw [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, e, MonoidHom.noncommPiCoprod_mulSingle]
   exact pow_one _
 
+/- English proof (translation)
+Establish `key : ∀ a : Fin n → ZMod 2, Φ (Multiplicative.ofAdd a) = Ψ (Multiplicative.ofAdd a)` using `fun a => by`. Proceed by induction on `a using Pi.single_induction with`. Consider the case `zero => exact (map_one Φ).trans (map_one Ψ).symm`. Consider the case `add f g hf hg => rw [ofAdd_add, map_mul, map_mul, hf, hg]`. Consider the case `single i m => fin_cases m`.
+
+Use `show Φ (Multiplicative.ofAdd (Pi.single i 0)) = Ψ (Multiplicative.ofAdd (Pi.single i 0))`. Rewrite using `[Pi.single_zero, ofAdd_zero, map_one, map_one]`. Conclude with `h i`. Conclude with `key c.toAdd`.
+-/
 theorem hom_ext.{u} {n : ℕ} {G : Type u} [Monoid G] {Φ Ψ : Multiplicative (Fin n → ZMod 2) →* G}
     (h : ∀ i, Φ (bas i) = Ψ (bas i)) (c : Multiplicative (Fin n → ZMod 2)) : Φ c = Ψ c := by
   have key : ∀ a : Fin n → ZMod 2, Φ (Multiplicative.ofAdd a) = Ψ (Multiplicative.ofAdd a) := fun a => by
@@ -106,6 +141,15 @@ theorem hom_ext.{u} {n : ℕ} {G : Type u} [Monoid G] {Φ Ψ : Multiplicative (F
       · exact h i
   exact key c.toAdd
 
+/- English proof (translation)
+Set `op : Multiplicative (Fin n → ZMod 2) → N → Multiplicative (Fin n → ZMod 2) × Function.End N` to `fun c f => (c, fun g => f * ρ c g)`. Establish `om : ∀ c c' f f', op c f * op c' f' = op (c * c') (f * ρ c f')` using `fun c c' f f' => Prod.ext rfl (funext fun g => by show f * ρ c (f' * ρ c' g) = f * ρ c f' * ρ (c * c') g`. Rewrite using `[map_mul (ρ c), map_mul ρ, _root_.mul_assoc]`. Use the proof step `rfl)`. Establish `o₁ : op 1 1 = 1` using `Prod.ext rfl (funext fun g => by show 1 * ρ 1 g = g`.
+
+Rewrite using `[map_one, _root_.one_mul]`. Use the proof step `rfl)`. Set `S : Submonoid (Multiplicative (Fin n → ZMod 2) × Function.End N)` to `{ carrier := {p | ∃ f, Q p.1 f ∧ p = op p.1 f} one_mem' := ⟨1, q₁, o₁.symm⟩ mul_mem' := by`. Introduce and unpack `p p' ⟨f, hf, e⟩ ⟨f', hf', e'⟩`. Conclude with `⟨_, qm _ _ _ _ hf hf', (congrArg₂ (· * ·) e e').trans (om _ _ _ _)⟩ }`.
+
+Take `⟨Φ, hΦ⟩` from `exists_hom (G := S) (fun i => ⟨op (bas i) (w i), w i, hw i, rfl⟩) (fun i => Subtype.ext ((om (bas i) (bas i) (w i) (w i)).trans (by rw [mul_self_eq, h₁]; exact o₁))) (fun i k => Subtype.ext ((om (bas i) (bas k) (w i) (w k)).trans (by rw [mul_comm (bas i), h₂]; exact (om (bas k) ( …`. Establish `e : ∀ c, (Φ c).1.1 = c` using `hom_ext (Φ := (MonoidHom.fst _ _).comp (S.subtype.comp Φ)) (Ψ := MonoidHom.id _) fun i => congrArg (fun p : S => p.1.1) (hΦ i)`. Use `choose u hu hu' using fun c => (Φ c).2`. Simplify using `only [e] at hu hu'`. Use `⟨u, hu, fun c c' => ?_⟩` and prove the remaining obligations.
+
+Use `(hu' (c * c')).symm.trans ((congrArg Subtype.val (map_mul Φ c c')).trans ((congrArg₂ (· * ·) (hu' c) (hu' c')).trans (om _ _ _ _)))` as an intermediate fact. Simplify `congrArg (fun p => p.2 1) this` using `[op]`.
+-/
 theorem exists_cocycle.{u} {n : ℕ} {N : Type u} [CommGroup N] (ρ : Multiplicative (Fin n → ZMod 2) →* Monoid.End N)
     (Q : Multiplicative (Fin n → ZMod 2) → N → Prop) (q₁ : Q 1 1)
     (qm : ∀ c c' f f', Q c f → Q c' f' → Q (c * c') (f * ρ c f')) (w : Fin n → N) (hw : ∀ i, Q (bas i) (w i))
@@ -155,10 +199,16 @@ def vals {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ} (t : LB.
 
 def pl (h : Y' ⟶ Y) : Vals M Y →* Vals M Y' := MonoidHom.mk' (fun f Z r => f Z (r ≫ h)) fun _ _ => rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `Z r`. Conclude with `congrArg (f Z) (Category.assoc _ _ _)`.
+-/
 theorem pl_pl (h' : Y'' ⟶ Y') (h : Y' ⟶ Y) (f : Vals M Y) : pl h' (pl h f) = pl (h' ≫ h) f := by
   funext Z r
   exact congrArg (f Z) (Category.assoc _ _ _)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `Z r`. Conclude with `congrArg (f Z) (Category.comp_id _)`.
+-/
 theorem pl_id (f : Vals M Y) : pl (𝟙 Y) f = f := by
   funext Z r
   exact congrArg (f Z) (Category.comp_id _)
@@ -168,6 +218,9 @@ def uv (M : LB X) (Y : Scheme.{0}) : Γ(Y, ⊤)ˣ →* Vals M Y :=
     funext Z r z J
     exact map_mul _ _ _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `Z r z J`. Conclude with `(gm_pull r h z ⊤ trivial a).symm`.
+-/
 theorem pl_uv (h : Y' ⟶ Y) (a : Γ(Y, ⊤)ˣ) : pl h (uv M Y a) = uv M Y' (pullU h ⊤ a) := by
   funext Z r z J
   exact (gm_pull r h z ⊤ trivial a).symm
@@ -180,11 +233,20 @@ def Rep (M : LB X) (D : FreeAbelianGroup (Y ⟶ X)) (f : Vals M Y) : Prop :=
 
 open FreeAbelianGroup
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨K, _, φ, ε, t, ht, rfl, rfl⟩`.
+-/
 theorem rep_vals {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ} {t : LB.Gen (LB.LinComb M φ ε)} (ht : t.IsGen) :
     Rep M (∑ k, ε k • of (φ k)) (vals t) := ⟨K, _, φ, ε, t, ht, rfl, rfl⟩
 
+/- English proof (translation)
+The claim follows from `e ▸ h`.
+-/
 theorem Rep.form {D D' : FreeAbelianGroup (Y ⟶ X)} {f : Vals M Y} (h : Rep M D f) (e : D = D') : Rep M D' f := e ▸ h
 
+/- English proof (translation)
+Take `⟨K, _, φ, ε, t, ht, rfl, rfl⟩` from `h`. Take `⟨K', _, φ', ε', t', ht', rfl, rfl⟩` from `h'`. Use `⟨K ⊕ K', inferInstance, _, _, LB.mulGen M _ _ _ _ t t', DVR.mulGen_isGen _ _ _ _ _ _ _ ht ht', Fintype.sum_sum_type _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `Z r z J`. Conclude with `val_mul J.2 _ _ _`.
+-/
 theorem Rep.mul {D D' : FreeAbelianGroup (Y ⟶ X)} {f f' : Vals M Y} (h : Rep M D f) (h' : Rep M D' f') :
     Rep M (D + D') (f * f') := by
   obtain ⟨K, _, φ, ε, t, ht, rfl, rfl⟩ := h
@@ -194,12 +256,18 @@ theorem Rep.mul {D D' : FreeAbelianGroup (Y ⟶ X)} {f f' : Vals M Y} (h : Rep M
   funext Z r z J
   exact val_mul J.2 _ _ _
 
+/- English proof (translation)
+Take `⟨K, _, φ, ε, t, ht, rfl, rfl⟩` from `h`. Use `⟨K, inferInstance, _, _, LB.invGen M _ _ t, DVR.invGen_isGen _ _ _ _ ht, by simp, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `Z r z J`. Conclude with `val_inv _ _`.
+-/
 theorem Rep.inv {D : FreeAbelianGroup (Y ⟶ X)} {f : Vals M Y} (h : Rep M D f) : Rep M (-D) f⁻¹ := by
   obtain ⟨K, _, φ, ε, t, ht, rfl, rfl⟩ := h
   refine ⟨K, inferInstance, _, _, LB.invGen M _ _ t, DVR.invGen_isGen _ _ _ _ ht, by simp, ?_⟩
   funext Z r z J
   exact val_inv _ _
 
+/- English proof (translation)
+Take `⟨K, _, φ, ε, t, ht, rfl, rfl⟩` from `h`. Use `⟨K, inferInstance, _, _, LB.pullGen M _ _ t g, DVR.pullGen_isGen _ _ _ _ ht _, by simp, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `Z r z J`. Conclude with `val_pull J.2 _ _ _`.
+-/
 theorem Rep.pull {D : FreeAbelianGroup (Y ⟶ X)} {f : Vals M Y} (h : Rep M D f) (g : Y' ⟶ Y) :
     Rep M (FreeAbelianGroup.map (g ≫ ·) D) (pl g f) := by
   obtain ⟨K, _, φ, ε, t, ht, rfl, rfl⟩ := h
@@ -207,6 +275,9 @@ theorem Rep.pull {D : FreeAbelianGroup (Y ⟶ X)} {f : Vals M Y} (h : Rep M D f)
   funext Z r z J
   exact val_pull J.2 _ _ _
 
+/- English proof (translation)
+Use `⟨PEmpty, inferInstance, PEmpty.elim, PEmpty.elim, ⟨fun _ => res le_top a⟩, isGen_of_gm _ fun y j j' hj hj' => ?_, by simp, ?_⟩` and prove the remaining obligations. Use `(gm_res _ y le_top hj a).trans (Eq.trans ?_ (congrArg _ (gm_res _ y le_top hj' a)).symm)` and prove the remaining obligations. Simplify using `[trF]`. Use function extensionality and compare the values at `Z r z J`. Conclude with `gm_res r z le_top (J.2.mem _ r) a`.
+-/
 theorem rep_uv (a : Γ(Y, ⊤)ˣ) : Rep M 0 (uv M Y a) := by
   refine ⟨PEmpty, inferInstance, PEmpty.elim, PEmpty.elim, ⟨fun _ => res le_top a⟩,
     isGen_of_gm _ fun y j j' hj hj' => ?_, by simp, ?_⟩
@@ -215,6 +286,11 @@ theorem rep_uv (a : Γ(Y, ⊤)ˣ) : Rep M 0 (uv M Y a) := by
   · funext Z r z J
     exact gm_res r z le_top (J.2.mem _ r) a
 
+/- English proof (translation)
+Take `⟨K', _, φ', ε', t', ht', e, rfl⟩` from `h`. Take `⟨t, ht, hv⟩` from `exists_gen hM (φ' := φ) (ε' := ε) (fun U _ h => by`. Use `congrArg (FreeAbelianGroup.lift fun ψ => Additive.ofMul (h ψ)) e` as an intermediate fact. Simplify using `only [map_sum, map_zsmul, lift_apply_of] at this`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify `this) t' ht'` using `only [ofMul_prod, ofMul_zpow]`. Conclude with `⟨t, ht, funext fun Z => funext fun r => funext fun z => funext fun J => hv Z r z J.1 J.2⟩`.
+-/
 theorem Rep.out (hM : M.IsLB) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ) {f : Vals M Y}
     (h : Rep M (∑ k, ε k • of (φ k)) f) : ∃ t : LB.Gen (LB.LinComb M φ ε), t.IsGen ∧ vals t = f := by
   obtain ⟨K', _, φ', ε', t', ht', e, rfl⟩ := h
@@ -225,6 +301,9 @@ theorem Rep.out (hM : M.IsLB) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε 
     simpa only [ofMul_prod, ofMul_zpow] using this) t' ht'
   exact ⟨t, ht, funext fun Z => funext fun r => funext fun z => funext fun J => hv Z r z J.1 J.2⟩
 
+/- English proof (translation)
+Take `⟨t, -, rfl⟩` from `Rep.out hM (K := PEmpty) PEmpty.elim PEmpty.elim (h.form (by simp))`. Establish `le : (⊤ : Y.Opens) ≤ LB.wchart M (PEmpty.elim : PEmpty → (Y ⟶ X)) PEmpty.elim` using `fun _ _ => Set.mem_iInter.2 fun k => k.elim`. Use `⟨res le (t.s PEmpty.elim), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `Z r z J`. Conclude with `(val_of t r z J.1 PEmpty.elim (fun k => k.elim)).trans (gm_res r z le trivial _).symm`.
+-/
 theorem Rep.zero (hM : M.IsLB) {f : Vals M Y} (h : Rep M 0 f) : ∃ a, f = uv M Y a := by
   obtain ⟨t, -, rfl⟩ := Rep.out hM (K := PEmpty) PEmpty.elim PEmpty.elim (h.form (by simp))
   have le : (⊤ : Y.Opens) ≤ LB.wchart M (PEmpty.elim : PEmpty → (Y ⟶ X)) PEmpty.elim := fun _ _ =>
@@ -238,6 +317,11 @@ def dn (M : LB X) (F : X' ⟶ X) (δ : ℤ) (Y : Scheme.{0}) :
   MonoidHom.mk' (fun f Z r z I => f Z r z ⟨fun χ _ => I.1 (χ ≫ F), fun χ => Set.mem_iInter.2 fun _ => I.2 (χ ≫ F)⟩)
     fun _ _ => rfl
 
+/- English proof (translation)
+Take `⟨t, ht, rfl⟩` from `Rep.out hM _ _ h`. Establish `le : ∀ j : K → PUnit → M.ι, LB.wchart (LB.LinComb M (K` using `PUnit) (fun _ => F) (fun _ => δ)) φ j ≤ LB.wchart M (fun k => φ k ≫ F) (fun k => j k PUnit.unit) := fun j y hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 (Set.mem_iInter.1 hy k) PUnit.unit`. Use `⟨⟨fun j => res (le j) (t.s _)⟩, isGen_of_gm _ fun y j j' hj hj' => ?_, ?_⟩` and prove the remaining obligations. Use `(gm_res _ y (le j) hj _).trans ((gen_trans ht (𝟙 Y) y (le j hj) (le j' hj')).trans (congrArg₂ (· * ·) (Finset.prod_congr rfl fun k _ => ?_) (gm_res _ y (le j') hj' _).symm))` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (· ^ ε k) (gm_linComb M (fun _ : PUnit => F) (fun _ => δ) (𝟙 Y ≫ φ k) y (j k) (j' k) (Set.mem_iInter.1 hj k) (Set.mem_iInter.1 hj' k))).symm` and prove the remaining obligations.
+
+Rewrite using `[Fintype.prod_unique, zpow_mul, Category.assoc]`. Use function extensionality and compare the values at `Z r z I`. Use `Eq.trans ?_ (val_of t r z I.1 (fun k => I.1 ((r ≫ φ k) ≫ F)) (fun k => by rw [Category.assoc])).symm` and prove the remaining obligations. Conclude with `gm_res r z (le _) (Set.mem_iInter.2 fun k => Set.mem_iInter.2 fun _ => I.2 ((r ≫ φ k) ≫ F)) _`.
+-/
 theorem Rep.down (hM : M.IsLB) (F : X' ⟶ X) (δ : ℤ) {K : Type} [Fintype K] (φ : K → (Y ⟶ X')) (ε : K → ℤ) {f : Vals M Y}
     (h : Rep M (∑ k, (δ * ε k) • of (φ k ≫ F)) f) :
     ∃ t : LB.Gen (LB.LinComb (LB.LinComb M (K := PUnit) (fun _ => F) (fun _ => δ)) φ ε), t.IsGen ∧
@@ -256,6 +340,9 @@ theorem Rep.down (hM : M.IsLB) (F : X' ⟶ X) (δ : ℤ) {K : Type} [Fintype K] 
     refine Eq.trans ?_ (val_of t r z I.1 (fun k => I.1 ((r ≫ φ k) ≫ F)) (fun k => by rw [Category.assoc])).symm
     exact gm_res r z (le _) (Set.mem_iInter.2 fun k => Set.mem_iInter.2 fun _ => I.2 ((r ≫ φ k) ≫ F)) _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `Z r z J`. Use `choose I hI using fun χ : Z ⟶ X => exists_chart hM (χ z)`. Conclude with `congrFun (congrFun (congrFun (congrFun h Z) r) z) ⟨I, hI⟩`.
+-/
 theorem uv_eq_one (hM : M.IsLB) (N : LB X') {a : Γ(Y, ⊤)ˣ} (h : uv M Y a = 1) : uv N Y a = 1 := by
   funext Z r z J
   choose I hI using fun χ : Z ⟶ X => exists_chart hM (χ z)
@@ -274,22 +361,50 @@ omit [IsCommMonObj A] in
 abbrev tr (h : 𝟙_ (Over S) ⟶ A) : A ⟶ A := (toUnit A ≫ h) * 𝟙 A
 
 omit [IsCommMonObj A] in
+/- English proof (translation)
+Rewrite using `[MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit]`.
+-/
 theorem comp_tr {T : Over S} (x : T ⟶ A) (h : 𝟙_ (Over S) ⟶ A) : x ≫ tr h = (toUnit T ≫ h) * x := by
   rw [MonObj.comp_mul, Category.comp_id, ← Category.assoc, comp_toUnit]
 
+/- English proof (translation)
+Rewrite using `[comp_tr, tr, tr, MonObj.comp_mul, _root_.mul_assoc]`.
+-/
 theorem tr_tr (h k : 𝟙_ (Over S) ⟶ A) : tr h ≫ tr k = tr (k * h) := by
   rw [comp_tr, tr, tr, MonObj.comp_mul, _root_.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[tr, MonObj.comp_one, _root_.one_mul]`.
+-/
 theorem tr_one : tr (1 : 𝟙_ (Over S) ⟶ A) = 𝟙 A := by
   rw [tr, MonObj.comp_one, _root_.one_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comp_inv' {T : Over S} (x : T ⟶ A) : x ≫ GrpObj.inv = x⁻¹ := rfl
 
+/- English proof (translation)
+Establish `e : (toUnit A ≫ h)⁻¹ = toUnit A ≫ h` using `inv_eq_of_mul_eq_one_right (by rw [← MonObj.comp_mul, hh, MonObj.comp_one])`. Rewrite using `[comp_tr, comp_inv', tr, mul_inv, e, ← comp_inv' (𝟙 A), Category.id_comp]`.
+-/
 theorem tr_inv {h : 𝟙_ (Over S) ⟶ A} (hh : h * h = 1) : tr h ≫ GrpObj.inv = GrpObj.inv ≫ tr h := by
   have e : (toUnit A ≫ h)⁻¹ = toUnit A ≫ h :=
     inv_eq_of_mul_eq_one_right (by rw [← MonObj.comp_mul, hh, MonObj.comp_one])
   rw [comp_tr, comp_inv', tr, mul_inv, e, ← comp_inv' (𝟙 A), Category.id_comp]
 
+/- English proof (translation)
+Establish `hP` using `c.isLB`. Set `B : (T ⟶ c.A) → (T ⟶ c.A) → Pic T.left` to `fun a b => pull (lift a b).left (cls c.P hP)`. Establish `hm : ∀ x : T ⟶ c.A, pull x.left (cls _ hM) = B x x` using `fun x => by`. Establish `k : x.left ≫ (lift (𝟙 c.A) (𝟙 c.A)).left = (lift x x).left`. Rewrite using `[← Over.comp_left, comp_lift, Category.comp_id]`.
+
+Use `show pull x.left (pull (lift (𝟙 c.A) (𝟙 c.A)).left (cls c.P hP)) = pull (lift x x).left (cls c.P hP)`. Rewrite using `[← k, pull_comp]`. Establish `hb : ∀ a a' b, B (a * a') b = B a b + B a' b` using `fun a a' b => by`. Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 (GlobalTheory.Biadditive.biadditive_of_triv_axes hG S c.A c.diag c.ab hM hc.1 c.P hP c.rig₁ c.rig₂ T a a' b).1`. Rewrite `e` using `[cls_linComb hP, Fin.sum_univ_three]`.
+
+Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, one_smul, neg_smul] at e`. Rewrite using `[← sub_eq_zero, ← e]`. Simplify using `only [B]`. Normalize the expressions using the abelian group laws. Establish `hs : ∀ a b, B a b = B b a` using `fun a b => by`.
+
+Establish `e : cls c.P hP = pull (lift (snd c.A c.A) (fst c.A c.A)).left (cls c.P hP)` using `(cls_eq_iff hP (pull_isLB hP _)).2 c.symm`. Establish `k : (lift b a).left ≫ (lift (snd c.A c.A) (fst c.A c.A)).left = (lift a b).left`. Rewrite using `[← Over.comp_left, comp_lift, lift_fst, lift_snd]`. Use `show pull (lift a b).left (cls c.P hP) = pull (lift b a).left (cls c.P hP)`. Rewrite using `[← k, pull_comp, ← e]`.
+
+Establish `h1 : ∀ b, B 1 b = 0` using `fun b => by simpa using hb 1 1 b`. Establish `hi : ∀ a b, B a⁻¹ b = -B a b` using `fun a b => eq_neg_of_add_eq_zero_left (by rw [← hb, inv_mul_cancel, h1])`. Establish `h2 : ∀ y b, y * y = 1 → B y b + B y b = 0` using `fun y b hy => by rw [← hb, hy, h1]`. Simplify using `only [hm]`. Use `⟨fun x y hy => ?_, fun y hy => h2 y y hy, fun x => by rw [hi, hs, hi, neg_neg]⟩` and prove the remaining obligations.
+
+Rewrite using `[hb, hs y, hs x, hb, hb, hs x y]`. Take the linear combination `(norm := abel) h2 y x hy`.
+-/
 theorem cls_diag {h k : ℕ} {o : Type} [CommRing o] {ζ : o} {s : S ⟶ Sp o} (hG : Out.GlobalFnsSt) (c : SiegPre h k ζ s)
     (hc : c.Principal) (hM : c.diag.IsLB) (T : Over S) :
     (∀ x y : T ⟶ c.A, y * y = 1 → pull (y * x).left (cls _ hM) = pull x.left (cls _ hM) + pull y.left (cls _ hM)) ∧
@@ -325,6 +440,35 @@ theorem cls_diag {h k : ℕ} {o : Type} [CommRing o] {ζ : o} {s : S ⟶ Sp o} (
   rw [hb, hs y, hs x, hb, hb, hs x y]
   linear_combination (norm := abel) h2 y x hy
 
+/- English proof (translation)
+Establish `ex : ∀ {Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ A.left)) (ε : K → ℤ), ∑ k, ε k • pull (φ k) (cls M hM) = 0 → ∃ f, Rep M (∑ k, ε k • of (φ k)) f` using `fun φ ε e => by`. Take `⟨t, ht⟩` from `(cls_eq_zero_iff (LB.isLB_linComb hM φ ε)).1 ((cls_linComb hM φ ε _).trans e)`. Conclude with `⟨_, rep_vals ht⟩`. Establish `base : ∀ f, Rep M 0 f → ∃ b : Γ(S, ⊤)ˣ, f = pl A.hom (uv M S b)` using `fun f hf => by`. Take `⟨a, rfl⟩` from `hf.zero hM`.
+
+Set `e` to `RingEquiv.ofBijective _ (hG S A hA)`. Use `⟨Units.map e.symm.toRingHom.toMonoidHom a, ?_⟩` and prove the remaining obligations. Rewrite using `[pl_uv]`. Conclude with `congrArg _ (Units.ext (e.apply_symm_apply a.val).symm)`. Establish `cst : ∀ f, Rep M 0 f → ∀ x : A ⟶ A, pl x.left f = f` using `fun f hf x => by`.
+
+Take `⟨b, rfl⟩` from `base f hf`. Rewrite using `[pl_pl, Over.w]`. Establish `pp : ∀ (x y : A ⟶ A) (f : Vals M A.left), pl x.left (pl y.left f) = pl (x ≫ y).left f` using `fun x y f => pl_pl _ _ _`. Establish `h2 : ∀ i, (toUnit A ≫ h i) * (toUnit A ≫ h i) = 1` using `fun i => by rw [← MonObj.comp_mul, hh, MonObj.comp_one]`. Establish `tt : ∀ i, tr (h i) ≫ tr (h i) = 𝟙 A` using `fun i => by rw [tr_tr, hh, tr_one]`.
+
+Establish `tc : ∀ i k, tr (h i) ≫ tr (h k) = tr (h k) ≫ tr (h i)` using `fun i k => by rw [tr_tr, tr_tr, mul_comm]`. Establish `ii : (GrpObj.inv : A ⟶ A) ≫ GrpObj.inv = 𝟙 A` using `GrpObj.inv_comp_inv A`. Use `choose ψ hψ using fun i => ex ![(𝟙 A : A ⟶ A).left, (tr (h i)).left, (toUnit A ≫ h i).left] ![1, -1, 1] (by`. Simplify using `only [Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, one_smul, neg_smul]`. Rewrite using `[(H A).1 _ _ (h2 i)]`.
+
+Use the proof step `abel)`. Use `choose τ₀ hτ₀ using fun i => ex ![(h i).left, (h i).left] ![-1, -1] (by`. Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, one_smul, neg_smul]`. Rewrite using `[← neg_add, (H _).2.1 _ (hh i), neg_zero])`. Take `⟨j, hj⟩` from `ex ![(𝟙 A : A ⟶ A).left, (GrpObj.inv : A ⟶ A).left] ![1, -1] (by`.
+
+Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, one_smul, neg_smul]`. Rewrite using `[← (H A).2.2 (𝟙 A), ← comp_inv', Category.id_comp, add_neg_cancel])`. Establish `rψ : ∀ i (x : A ⟶ A), Rep M (of x.left - of (x ≫ tr (h i)).left + of (toUnit A ≫ h i).left) (pl x.left (ψ i))` using `fun i x => ((hψ i).pull x.left).form (by`. Simplify using `only [Fin.sum_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, one_smul, neg_smul, map_add, map_neg, map_of_apply, ← Over.comp_left, Category.comp_id, comp_toUnit_assoc, sub_eq_add_neg])`. Establish `rj : ∀ x : A ⟶ A, Rep M (of x.left - of (x ≫ GrpObj.inv).left) (pl x.left j)` using `fun x => (hj.pull x.left).form (by`.
+
+Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, one_smul, neg_smul, map_add, map_neg, map_of_apply, ← Over.comp_left, Category.comp_id, sub_eq_add_neg])`. Set `τ : κ → Vals M A.left` to `fun i => pl (toUnit A).left (τ₀ i)`. Establish `rτ : ∀ i, Rep M (-of (toUnit A ≫ h i).left - of (toUnit A ≫ h i).left) (τ i)` using `fun i => ((hτ₀ i).pull (toUnit A).left).form (by`. Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, one_smul, neg_smul, map_add, map_neg, map_of_apply, ← Over.comp_left, sub_eq_add_neg])`. Establish `cτ : ∀ i (x : A ⟶ A), pl x.left (τ i) = τ i` using `fun i x => by`.
+
+Simplify using `only [τ]`. Rewrite using `[pl_pl, ← Over.comp_left, comp_toUnit]`. Establish `p₁ : ∀ f : Vals M A.left, pl (𝟙 A : A ⟶ A).left f = f` using `fun f => pl_id f`. Establish `rψ₁` using `fun i => p₁ _ ▸ rψ i (𝟙 A)`. Establish `rj₁` using `p₁ _ ▸ rj (𝟙 A)`.
+
+Simplify using `only [Category.id_comp] at rψ₁ rj₁`. Establish `rv : ∀ i, Rep M (of (𝟙 _) + of (𝟙 _) - of (tr (h i)).left - of (tr (h i)).left) (ψ i * ψ i * τ i)` using `fun i => (((rψ₁ i).mul (rψ₁ i)).mul (rτ i)).form (by rw [Over.id_left]; abel)`. Use `choose a ha using fun i => base _ (((rv i).mul (((rψ i (tr (h i))).mul (rψ i (tr (h i)))).mul (rτ i))).form (by`. Rewrite using `[tt, Over.id_left]`. Use the proof step `abel))`.
+
+Establish `α : ∀ i (x : A ⟶ A), pl x.left (ψ i * pl (tr (h i)).left (ψ i) * τ i) = ψ i * pl (tr (h i)).left (ψ i) * τ i` using `fun i => cst _ ((((rψ₁ i).mul (rψ i (tr (h i)))).mul (rτ i)).form (by rw [tt]; abel))`. Establish `E` using `fun {p q : Vals M A.left} (e : p = q) => congrArg Additive.ofMul e`. Use `⟨fun i => ψ i * ψ i * τ i, j * j, a, rv, (rj₁.mul rj₁).form (by rw [Over.id_left]; abel), fun i => ?_, fun i k => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← ha, map_mul, map_mul, cτ]`. Establish `e` using `cst _ ((((rψ₁ i).mul (rψ k (tr (h i)))).mul ((rψ₁ k).mul (rψ i (tr (h k)))).inv).form (by`.
+
+Rewrite using `[tc]`. Use the proof step `abel)) (tr (h i))`. Establish `e'` using `α i (tr (h k))`. Simplify using `only [map_mul, map_inv, pp, cτ, tt, p₁, tc k i] at e e' ⊢`. Establish `a₁` using `E e`.
+
+Establish `a₂` using `E e'`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv] at a₁ a₂ ⊢`. Take the linear combination `(norm := abel) -a₁ - a₂`. Establish `e` using `cst _ ((((rψ₁ i).mul (rj (tr (h i)))).mul (rj₁.mul (rψ i GrpObj.inv)).inv).form (by`.
+
+Rewrite using `[tr_inv (hh i)]`. Use the proof step `abel)) GrpObj.inv`. Establish `e'` using `cst _ ((rj₁.mul (rj GrpObj.inv)).form (by rw [ii]; abel)) (tr (h i))`. Simplify using `only [map_mul, map_inv, pp, cτ, ii, p₁, tr_inv (hh i)] at e e' ⊢`. Establish `a₁` using `E e`.
+
+Establish `a₂` using `E e'`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv] at a₁ a₂ ⊢`. Take the linear combination `(norm := abel) a₂ - a₁`.
+-/
 theorem core (hG : Out.GlobalFnsSt) (hA : IsAbelianScheme A) {M : LB A.left} (hM : M.IsLB)
     (H : ∀ T : Over S,
       (∀ x y : T ⟶ A, y * y = 1 → pull (y * x).left (cls _ hM) = pull x.left (cls _ hM) + pull y.left (cls _ hM)) ∧
@@ -416,6 +560,41 @@ end Core
 open FreeAbelianGroup in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hL h k o _ ζ R _ _ _ β c g i₀ hc`. Establish `hM : c.diag.IsLB` using `pull_isLB c.isLB _`. Take `⟨v, j, a, rv, rj, h₁, h₂, h₃⟩` from `core hL.globalFns c.ab hM (cls_diag hL.globalFns c hc hM) (fun n => i₀ (bas n)) (fun n => by rw [← map_mul, mul_self_eq, map_one])`. Take `⟨R₁, _, _, hR, hb⟩` from `exists_sqrt (2 * g) R fun n => Units.map (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom.toMonoidHom (a n)`. Use `⟨R₁, inferInstance, inferInstance, hR, fun A _ _ φ i L hφ hi hLe => ?_⟩` and prove the remaining obligations.
+
+Substitute `hLe` using the available equality. Establish `hb' : ∀ n, ∃ b : Γ(Sp R₁, ⊤)ˣ, b * b = pullU (spMap (algebraMap R R₁)) ⊤ (a n)` using `fun n => by`. Take `⟨b, e⟩` from `hb n`. Establish `e' : (Scheme.ΓSpecIso (CommRingCat.of R₁)).inv.hom b * (Scheme.ΓSpecIso (CommRingCat.of R₁)).inv.hom b = (pullU (spMap (algebraMap R R₁)) ⊤ (a n)).val`. Rewrite using `[← map_mul, ← pow_two, e]`.
+
+Use `congrArg (fun q => q.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom (a n).val)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap R R₁)))` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, Iso.hom_inv_id_apply] at this`. Conclude with `this`. Establish `hu` using `isUnit_of_mul_isUnit_left (e' ▸ Units.isUnit _)`. Conclude with `⟨hu.unit, Units.ext e'⟩`.
+
+Use `choose b hb' using hb'`. Establish `htr : ∀ q, (tr (i q)).left ≫ φ = φ ≫ (tr (i₀ q)).left` using `fun q => by`. Set `x₀` to `pushPt hφ.1.w (𝟙 A)`. Establish `e` using `hφ.2 A (toUnit A ≫ i q) (𝟙 A) (toUnit _ ≫ i₀ q) x₀ (by`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hi]`.
+
+Conclude with `Category.assoc _ _ _) rfl`. Rewrite `e` using `[← comp_tr, Over.comp_left]`. Conclude with `e.symm.trans (congrArg (· ≫ _) (Category.id_comp φ))`. Establish `hinv : (GrpObj.inv : A ⟶ A).left ≫ φ = φ ≫ (GrpObj.inv : c.A ⟶ c.A).left`. Establish `e` using `congrArg (fun q => q.left) (map_inv (pushHom hφ A) (𝟙 A))`.
+
+Rewrite `e` using `[← comp_inv', ← comp_inv', Category.id_comp]`. Conclude with `e.trans (congrArg (· ≫ _) (Category.id_comp φ))`. Set `ρ : Multiplicative (Fin (2 * g) → ZMod 2) →* Monoid.End (Vals c.diag A.left)` to `{ toFun := fun q => pl (tr (i q)).left map_one' := MonoidHom.ext fun f => by rw [map_one, tr_one]; exact pl_id f map_mul' := fun q q' => MonoidHom.ext fun f => by show _ = pl (tr (i q)).left (pl (tr (i q')).left f)`. Rewrite using `[pl_pl, ← Over.comp_left, tr_tr, mul_comm q, map_mul] }`. Establish `ρe : ∀ q f, ρ q f = pl (tr (i q)).left f` using `fun _ _ => rfl`.
+
+Establish `ρφ : ∀ q (f : Vals c.diag c.A.left), pl (tr (i q)).left (pl φ f) = pl φ (pl (tr (i₀ q)).left f)` using `fun q f => by rw [pl_pl, pl_pl, htr]`. Establish `ρb : ∀ (x : A ⟶ A) (f : Vals c.diag (Sp R₁)), pl x.left (pl A.hom f) = pl A.hom f` using `fun x f => by`. Rewrite using `[pl_pl, Over.w]`. Establish `iφ : ∀ f : Vals c.diag c.A.left, pl (GrpObj.inv : A ⟶ A).left (pl φ f) = pl φ (pl (GrpObj.inv : c.A ⟶ c.A).left f)` using `fun f => by rw [pl_pl, pl_pl, hinv]`. Establish `ii : ∀ q, i q * i q = 1` using `fun q => by rw [← map_mul, mul_self_eq, map_one]`.
+
+Take `⟨u, hu, hu'⟩` from `exists_cocycle ρ (fun q f => Rep c.diag (of φ + of φ - of ((tr (i q)).left ≫ φ) - of ((tr (i q)).left ≫ φ)) f ∧ f * ρ q (pl φ j) = pl φ j * pl (GrpObj.inv : A ⟶ A).left f) ⟨(map_one (uv c.diag A.left) ▸ rep_uv 1).form (by rw [map_one, tr_one, Over.id_left, Category.id_comp]; abel …`. Simplify using `only [map_add, map_sub, map_of_apply]`. Rewrite using `[← Category.assoc, ← Over.comp_left, tr_tr, mul_comm q, map_mul]; abel), by`. Establish `e : pl (GrpObj.inv : A ⟶ A).left (ρ q f') = ρ q (pl (GrpObj.inv : A ⟶ A).left f')`. Rewrite using `[ρe, ρe, pl_pl, pl_pl, ← Over.comp_left, ← Over.comp_left, tr_inv (ii q)]`.
+
+Rewrite using `[map_mul ρ, Monoid.End.coe_mul, Function.comp_apply, _root_.mul_assoc, ← map_mul, hf'.2, map_mul, ← _root_.mul_assoc, hf.2, map_mul, e, _root_.mul_assoc]⟩)`. Use the proof step `(fun n => pl φ (v n) * pl A.hom (uv _ _ (b n)⁻¹))`. Use the proof step `(fun n => ⟨(((rv n).pull φ).mul ((rep_uv _).pull A.hom)).form (by`. Simplify using `only [map_add, map_sub, map_of_apply, map_zero, htr, Category.comp_id, add_zero]), by`. Rewrite using `[ρe, ρφ, map_mul, ρb, iφ, mul_right_comm, ← map_mul, h₃, map_mul, _root_.mul_assoc]⟩)`.
+
+Use the proof step `(fun n => by`. Rewrite using `[ρe, map_mul, ρb, ρφ, _root_.mul_mul_mul_comm, ← map_mul, h₁, pl_pl, hφ.1.w, ← pl_pl, pl_uv (spMap _), ← hb', ← map_mul, ← map_mul, ← map_mul, ← map_mul, ← mul_inv, mul_inv_cancel, map_one, map_one])`. Use the proof step `(fun n m => by`. Rewrite using `[ρe, ρe, map_mul, map_mul, ρb, ρb, ρφ, ρφ, _root_.mul_mul_mul_comm, ← map_mul (pl φ), h₂, map_mul (pl φ)]`. Use the proof step `ac_rfl)`.
+
+Establish `hM' : (c.diag.pull φ).IsLB` using `pull_isLB hM φ`. Establish `hL' : (lbPow (c.diag.pull φ) 2).IsLB` using `LB.isLB_linComb hM' _ _`. Set `D : Vals (lbPow (c.diag.pull φ) 2) A.left →* Vals c.diag A.left` to `(dn c.diag φ 1 A.left).comp (dn (c.diag.pull φ) (𝟙 _) ((2 : ℕ) : ℤ) A.left)`. Establish `Dpl : ∀ (x : A.left ⟶ A.left) f, D (pl x f) = pl x (D f)` using `fun _ _ => rfl`. Establish `Dinj : ∀ {E} {f f'}, Rep (lbPow (c.diag.pull φ) 2) E f → Rep (lbPow (c.diag.pull φ) 2) E f' → D f = D f' → f = f'` using `fun {E f f'} hf hf' e => by`.
+
+Take `⟨a, ha⟩` from `((hf.mul hf'.inv).form (add_neg_cancel _)).zero hL'`. Establish `: uv c.diag A.left a = 1`. Use `congrArg D ha` as an intermediate fact. Rewrite `this` using `[map_mul, map_inv, e, mul_inv_cancel]`. Conclude with `this.symm`.
+
+Conclude with `mul_inv_eq_one.1 (ha.trans (uv_eq_one hM _ this))`. Establish `down : ∀ (x : A.left ⟶ A.left) f, Rep c.diag (of φ + of φ - of (x ≫ φ) - of (x ≫ φ)) f → ∃ t : LB.Gen (LB.LinComb (lbPow (c.diag.pull φ) 2) (K` using `Fin 2) ![𝟙 A.left, x] ![1, -1]), t.IsGen ∧ D (vals t) = f := fun x f hf => by`. Take `⟨t, ht, e⟩` from `Rep.down hM φ 1 (K := Fin 2) ![𝟙 A.left, x] ![2, -2] (hf.form (by`. Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Category.id_comp]`. Use the proof step `module))`.
+
+Take `⟨t', ht', e'⟩` from `Rep.down hM' (𝟙 _) ((2 : ℕ) : ℤ) (K := Fin 2) ![𝟙 A.left, x] ![1, -1] ((rep_vals ht).form (by`. Simplify using `[Fin.sum_univ_two]))`. Conclude with `⟨t', ht', (congrArg _ e').trans e⟩`. Use `choose U hU eU using fun q => down _ _ (hu q).1`. Take `⟨J₀, hJ₀, eJ⟩` from `down (GrpObj.inv : A ⟶ A).left (pl φ j) ((rj.pull φ).form (by`.
+
+Simplify using `only [map_add, map_sub, map_of_apply, hinv, Category.comp_id]))`. Establish `r₂ : ∀ {x : A.left ⟶ A.left} {t : LB.Gen (LB.LinComb (lbPow (c.diag.pull φ) 2) (K` using `Fin 2) ![𝟙 A.left, x] ![1, -1])}, t.IsGen → ∀ y : A.left ⟶ A.left, Rep _ (of y - of (y ≫ x)) (pl y (vals t)) := fun ht y => ((rep_vals ht).pull y).form (by simp [Fin.sum_univ_two, sub_eq_add_neg])`. Establish `r₁` using `fun q => pl_id (M := lbPow (c.diag.pull φ) 2) _ ▸ r₂ (hU q) (𝟙 _)`. Establish `r₃` using `pl_id (M := lbPow (c.diag.pull φ) 2) _ ▸ r₂ hJ₀ (𝟙 _)`. Simplify using `only [Category.id_comp] at r₁ r₃`.
+
+Use `⟨U, J₀, hU, fun q q' => corr_of_val hL' fun y J hJ => ?_, hJ₀, fun q T x z J hJ => ?_⟩` and prove the remaining obligations. Establish `e` using `Dinj (r₁ (q * q')) (((r₁ q).mul (r₂ (hU q') (tr (i q)).left)).form (by`. Rewrite using `[← Over.comp_left, tr_tr, mul_comm q, map_mul]; abel)) (by rw [map_mul D, Dpl, eU, eU, eU, hu', ρe])`. Rewrite using `[val_mul hJ, val_pull hJ]`. Conclude with `congrFun (congrFun (congrFun (congrFun e _) (𝟙 _)) y) ⟨J, hJ⟩`.
+
+Establish `e` using `Dinj ((r₁ q).mul (r₂ hJ₀ (tr (i q)).left)) ((r₃.mul (r₂ (hU q) (GrpObj.inv : A ⟶ A).left)).form (by`. Rewrite using `[← Over.comp_left, ← Over.comp_left, tr_inv (ii q)]; abel)) (by`. Rewrite using `[map_mul D, map_mul D, Dpl, Dpl, eU, eJ, ← ρe, (hu q).2])`. Rewrite using `[inv_eq_of_mul_eq_one_right (mul_self_eq q), ← comp_tr x (i q), ← comp_inv' x, Over.comp_left, Over.comp_left]`. Conclude with `congrFun (congrFun (congrFun (congrFun e _) x.left) z) ⟨J, hJ⟩`.
+-/
 theorem main : Out.Laws → ∀ (h k : ℕ) (o : Type) [CommRing o] (ζ : o) (R : Type) [CommRing R] [Algebra ℚ R] [IsNoetherianRing R] (β : o →+* R) (c : SiegPre h k ζ (spMap β)) (g : ℕ) (i₀ : (Multiplicative (Fin (2 * g) → ZMod 2)) →* (𝟙_ (Over (Sp R)) ⟶ c.A)), c.Principal → ∃ (R₁ : Type) (_ : CommRing R₁) (_ : Algebra R R₁), (Module.Finite R R₁ ∧ Algebra.Etale R R₁ ∧ Module.FaithfullyFlat R R₁) ∧ ∀ (A : Over (Sp R₁)) [GrpObj A] [IsCommMonObj A] (φ : A.left ⟶ c.A.left) (i : (Multiplicative (Fin (2 * g) → ZMod 2)) →* (𝟙_ (Over (Sp R₁)) ⟶ A)) (L : LB A.left), IsGrpPullback A c.A (spMap (algebraMap R R₁)) φ → (∀ a, (i a).left ≫ φ = spMap (algebraMap R R₁) ≫ (i₀ a).left) → L = lbPow (c.diag.pull φ) 2 → ∃ (u : ∀ c, LB.Gen (LB.LinComb L (K := Fin 2) ![𝟙 A.left, ((toUnit A ≫ i c) * 𝟙 A).left] ![1, -1])) (j : LB.Gen (LB.LinComb L (K := Fin 2) ![𝟙 A.left, (GrpObj.inv : A ⟶ A).left] ![1, -1])), (∀ c, (u c).IsGen) ∧ (∀ c c', LB.Gen.Corr L _ _ _ _ (u (c * c')) (LB.mulGen L _ _ _ _ (u c) (LB.pullGen L _ _ (u c') ((toUnit A ≫ i c) * 𝟙 A).left))) ∧ j.IsGen ∧ ∀ c (T : Over (Sp R₁)) (x : T ⟶ A) (z : T.left) (J), Good L z J → val (u c) x.left z J * val j ((toUnit T ≫ i c) * x).left z J = val j x.left z J * val (u c⁻¹) (x⁻¹).left z J := by
   intro hL h k o _ ζ R _ _ _ β c g i₀ hc
   have hM : c.diag.IsLB := pull_isLB c.isLB _

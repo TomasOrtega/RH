@@ -25,6 +25,17 @@ open GlobalTheory.KummerEisensteinGalois GlobalTheory.LambdaValuationPowers
 
 variable {l : ℕ} [Fact l.Prime] {Ω : Type} [Field Ω] [Algebra ℚ Ω]
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, -, -, -, -, -, -, χ', hχ'k, hχ'I, hχ'ψ⟩` from `hadm`. Establish `hth : ∀ s, thK l e ψ s = (eps l s ^ e)⁻¹ * (χ' s : Qbar l)` using `fun s => by rw [thK, ← hχ'ψ s]`. Establish `hrho : ∀ s i j, rhoK W e ψ s i j = (thK l e ψ s)⁻¹ * mat W s i j` using `fun s i j => by`. Simplify using `[rhoK, Matrix.smul_apply, smul_eq_mul]`. Establish `hE : ∀ s : G ℚ Ω, eps l s ^ e ≠ 0` using `fun s => pow_ne_zero _ (Units.ne_zero _)`.
+
+Establish `hth0 : ∀ s, thK l e ψ s ≠ 0` using `fun s => by`. Rewrite using `[hth]`. Conclude with `mul_ne_zero (inv_ne_zero (hE s)) (Units.ne_zero _)`. Establish `hnuD : ∀ s, rhoK W e ψ s 1 1 ≠ 0 → (nuD W e ψ s : Qbar l) = rhoK W e ψ s 1 1` using `fun s h => by`. Simplify using `[nuD, h]`.
+
+Establish `hr11 : ∀ s ∈ Dec (F` using `ℚ) A, rhoK W e ψ s 1 1 ≠ 0 := fun s hs => by`. Rewrite using `[hrho]`. Use `mul_ne_zero (inv_ne_zero (hth0 s)) ?_` and prove the remaining obligations. Establish `hd : (mat W s).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 (W s).isUnit).ne_zero`. Rewrite `hd` using `[Matrix.det_fin_two, hnf.upper s hs, mul_zero, sub_zero]`.
+
+Conclude with `right_ne_zero_of_mul hd`. Take `⟨ρ, hρ, -, -, hρI, -⟩` from `GlobalTheory.RhoAdm.rho_ordinary_shape l Ω ι e S A W g ψ hnf hsrc ⟨χ', hχ'k, hχ'I, hχ'ψ⟩`. Establish `hI11 : ∀ s ∈ Ine (F` using `ℚ) A, rhoK W e ψ s 1 1 = 1 := fun s hs => by`. Rewrite using `[← hρ s]`. Conclude with `hρI s hs`.
+
+Conclude with `⟨fun s hs => ⟨by rw [hrho, hnf.upper s hs, mul_zero], (hnuD s (hr11 s hs)).symm⟩, fun s hs => Units.ext (by rw [hnuD s (hr11 s (Ine_le_Dec A hs)), hI11 s hs, Units.val_one])⟩`.
+-/
 theorem rho_on_dec [IsAlgClosure ℚ Ω] {ι : Qbar l ≃+* ℂ} {e : ℕ} {S : Finset Pl} {A : ValuationSubring Ω} {W : R2 Ω l}
     {g : Newform (2 * e + 1)} (hnf : Nf e S A W) (hsrc : SrcUr ι e A W g) {ε : Ω →+* ℂ} {X : Tower Ω ε}
     {pr : X.Fn l → Fin 2 → Qbar l} {N : ℕ} [NeZero N] {x : ZMod N} {c d : ℕ} {gm : (ZMod l)ˣ → SL(2, ℤ)} {ψ : ZMod l → Qbar l}
@@ -52,6 +63,13 @@ theorem rho_on_dec [IsAlgClosure ℚ Ω] {ι : Qbar l ≃+* ℂ} {e : ℕ} {S : 
   exact ⟨fun s hs => ⟨by rw [hrho, hnf.upper s hs, mul_zero], (hnuD s (hr11 s hs)).symm⟩,
     fun s hs => Units.ext (by rw [hnuD s (hr11 s (Ine_le_Dec A hs)), hI11 s hs, Units.val_one])⟩
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.LambdaValuationPowers.htCoL_sum l Ω A c j Bool (fun b => cond b 1 (-(d : Qbar l))) (fun b => cond b Z (fun r s y' => Z r s (y' * u r))) m a y (fun b => cond b h h') (fun b => by`. Consider the cases of `b`. Conclude with `⟨by simpa using IsUltrametricDist.norm_natCast_le_one (Qbar l) d, fun σ _ _ => by simp⟩`. Conclude with `⟨by simp, fun σ _ _ => by simp⟩)`. Use the proof step `(fun b => by`.
+
+Consider the cases of `b`. Conclude with `H'`. Conclude with `H)`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `r s y'`.
+
+Simplify using `[sub_eq_add_neg]`. Simplify using `[sub_eq_add_neg]`.
+-/
 theorem htCoL_smooth {A : ValuationSubring Ω} {c : Coef l} {j : Ω →+* Qbar l} {Z : ∀ r : ℕ, G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l}
     {m a : ℕ} {y : (ZMod (l ^ m))ˣ} {h h' : Qbar l} (u : ∀ r : ℕ, (ZMod (l ^ r))ˣ) (d : ℕ) (H : HTCoL A c j Z m a y h)
     (H' : HTCoL A c j Z m a (y * u m) h') :
@@ -71,6 +89,11 @@ theorem htCoL_smooth {A : ValuationSubring Ω} {c : Coef l} {j : Ω →+* Qbar l
     simp [sub_eq_add_neg]
   · simp [sub_eq_add_neg]
 
+/- English proof (translation)
+Rewrite using `[← hV (fun b => β (b * u⁻¹) * γ) (fun b => by`. Simplify using `only [Nat.cast_mul, hβ, hγ, mul_one, and_true]`. Rewrite using `[← Units.val_mul, inv_mul_cancel_right]), Finset.mul_sum]`. Use `Fintype.sum_equiv (Equiv.mulRight u) _ _ fun b => ?_` and prove the remaining obligations. Establish `hu : ψ u ≠ 0`.
+
+Rewrite using `[← MulChar.coe_toUnitHom]`. Conclude with `Units.ne_zero _`. Simplify using `only [Equiv.coe_mulRight, mul_inv_cancel_right, Units.val_mul, map_mul, MulChar.inv_apply_eq_inv']`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem sum_translate {m N : ℕ} (ψ : DirichletCharacter (Qbar l) (l ^ m)) (V : ℕ → Qbar l) (R : Qbar l)
     (hV : ∀ β : (ZMod (l ^ m))ˣ → ℕ, (∀ b, ((β b : ℕ) : ZMod (l ^ m)) = b ∧ ((β b : ℕ) : ZMod N) = 1) →
       ∑ b : (ZMod (l ^ m))ˣ, ψ b * V (β b) = R)
@@ -92,6 +115,13 @@ def chiVal (ε : Ω →+* ℂ) (j : Ω →+* Qbar l) (lam : (ℕ → Qbar l) →
   ∑ δ : (ZMod N)ˣ, (χ (δ : ZMod N).val)⁻¹ * unitVal ε j lam N k c d (x * t * (((δ⁻¹ : (ZMod N)ˣ) : ZMod N).val : ℤ))
     (t * (((δ⁻¹ : (ZMod N)ˣ) : ZMod N).val : ℤ)) m β
 
+/- English proof (translation)
+Establish `hN0 : 0 < N` using `Nat.pos_of_ne_zero (NeZero.ne N)`. Establish `hup : up (l ^ m) (chiProj N l m k ψ χ c d x) = ∑ δ : (ZMod N)ˣ, χ ((δ⁻¹ : (ZMod N)ˣ) : ZMod N).val • up (l ^ m) (coPtSb N l m k ψ c d (x * (((δ⁻¹ : (ZMod N)ˣ) : ZMod N).val : ℤ)) (((δ⁻¹ : (ZMod N)ˣ) : ZMod N).val : ℤ))`. Use function extensionality and compare the values at `i`. Simplify using `only [up, chiProj, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `Fintype.sum_equiv (Equiv.inv _) _ _ fun δ => by simp only [Equiv.inv_apply, inv_inv]`.
+
+Simplify using `only [chiVal, Finset.mul_sum (s := (Finset.univ : Finset (ZMod N)ˣ))]`. Rewrite using `[Finset.sum_comm, hup, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun δ _ => ?_` and prove the remaining obligations. Simplify using `only [mul_left_comm (ψ _) (χ _)⁻¹]`. Rewrite using `[← Finset.mul_sum, sum_unitVal ε j lam N k c d _ _ m β ψ (coPtSb N l m k ψ c d (x * (((δ⁻¹ : (ZMod N)ˣ) : ZMod N).val : ℤ)) (((δ⁻¹ : (ZMod N)ˣ) : ZMod N).val : ℤ)) hN hm hβ (fun ζ hζ r => by`.
+
+Rewrite using `[mul_right_comm x t, mul_comm t]`. Conclude with `(GlobalTheory.LambdaValuationPowers.pieceT_unitSet_muModel_smoothedSb l N m k (Qbar l) ψ c d _ _ t ζ hl hζ hN0 hN hm hk hψ hc hd ht).2 r),`. Use the proof step `map_smul, smul_eq_mul, hχ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_chiVal [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (j : Ω →+* Qbar l) (lam : (ℕ → Qbar l) →ₗ[Qbar l] Qbar l) (N : ℕ) [NeZero N]
     (k : ℕ) (χ : ℕ → Qbar l) (c d x t : ℤ) (m : ℕ) (β : (ZMod (l ^ m))ˣ → ℕ) (ψ : DirichletCharacter (Qbar l) (l ^ m))
     (hχ : ∀ δ : (ZMod N)ˣ, (χ (δ : ZMod N).val)⁻¹ = χ ((δ⁻¹ : (ZMod N)ˣ) : ZMod N).val)
@@ -118,6 +148,33 @@ theorem sum_chiVal [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (j : Ω →+* Qbar 
     map_smul, smul_eq_mul, hχ]
   ring
 
+/- English proof (translation)
+Introduce `l _ Ω _ _ _ ι e S A W g hnf hsrc ε X pr N _ cw c d gm ψ₀ cf α hjK hl he hadm hK5 j hj c₀ Y hZW hcoc hcont hint χd hχu hχm hχp lam hlam d₀ hd₀ hd₂`. Establish `hp : l.Prime` using `Fact.out`. Establish `hN : ¬ l ∣ N` using `(Nat.Prime.coprime_iff_not_dvd hp).1 hK5.2.1`. Establish `hpres` using `hunit l Ω ι e S A W g hnf hsrc ε X pr N cw c d gm ψ₀ cf α hjK hl he hadm hK5 j hj c₀ Y hZW hcoc hcont hint d₀ hd₀ hd₂`. Take `⟨Yx, hYx, hY⟩` from `hZW`.
+
+Use `set χ : ℕ → Qbar l := fun n => ((χd n : ℤ_[l]) : Qbar l) with hχ`. Use `set u : ∀ r : ℕ, (ZMod (l ^ r))ˣ := fun r => ZMod.unitOfCoprime d₀ (Nat.Coprime.pow_right r hd₀) with hu`. Take `⟨ν, κ₀, c', per, hνI, hνD, hκ, hper, hco⟩ : ∃ (ν : G ℚ Ω → (Qbar l)ˣ) (κ₀ : Qbar l) (c' : ℕ) (per : ℕ → Qbar l), (∀ s ∈ Ine (F` from `ℚ) A, ν s = 1) ∧ (∀ m, ∀ s ∈ Dec (F := ℚ) A, ∀ t ∈ Dec (F := ℚ) A, ∀ x, Y m (s * t) x 1 = Y m s x 1 + (ν s : Qbar l) * Y m t (x * (cycMod ℚ Ω l m s)⁻¹) 1) ∧ κ₀ ≠ 0 ∧ (∀ n, ‖per n‖ = 1 ∧ Cg n (per (n + 1)) (per n)) ∧ ∀ x, cw x ≠ 0 → ∀ m : ℕ, 1 ≤ m → ∀ (y : (ZMod (l ^ m))ˣ) (β : ℕ) …`. Distinguish the cases in `h0 : ∃ x, cw x ≠ 0`. Take `⟨x₀, hx₀⟩` from `h0`.
+
+Take `⟨hD, hI⟩` from `rho_on_dec hnf hsrc (hadm.1 x₀ hx₀)`. Establish `hρI : ∀ s ∈ Ine (F` using `ℚ) A, cycMod ℚ Ω l 1 s = 1 → rhoK W e ψ₀ s 1 0 = 0 ∧ rhoK W e ψ₀ s 1 1 = 1 := fun s hs _ => ⟨(hD s (Ine_le_Dec A hs)).1, by rw [(hD s (Ine_le_Dec A hs)).2, hI s hs, Units.val_one]⟩`. Take `⟨c', κ₀, per, hκ, hper, h⟩` from `hcoef Ω ε X l hl hjK A j hnf.atL hj N hN c d e gm he ι g W pr ψ₀ cf α hK5 hρI χd hχu hχm hχp lam hlam c₀`. Conclude with `⟨nuD W e ψ₀, κ₀, c', per, hI, fun m => GlobalTheory.KA.shCoc_quot_coord l Ω A _ _ Y m (hcoc m) hD, hκ, hper, fun x hx => h x (hadm.1 x hx) (Yx x) (hYx x)⟩`. Establish `h1 : ∀ x, cw x = 0` using `fun x => by_contra fun h => h0 ⟨x, h⟩`.
+
+Conclude with `⟨1, 1, 0, 1, fun _ _ => rfl, fun m s _ t _ x => by simp [hY, h1], one_ne_zero, fun n => by simp [Cg], fun x hx => (hx (h1 x)).elim⟩`. Establish `hγ : ∀ m : ℕ, ∃ γ : ℕ, (γ : ZMod (l ^ m)) = u m ∧ (γ : ZMod N) = 1` using `fun m => by`. Take `⟨γ, h1, h2⟩` from `Nat.chineseRemainder (Nat.Coprime.pow_left m hK5.2.1) d₀ 1`. Use `⟨γ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[(ZMod.natCast_eq_natCast_iff _ _ _).2 h1, hu, ZMod.coe_unitOfCoprime]`.
+
+Rewrite using `[(ZMod.natCast_eq_natCast_iff _ _ _).2 h2, Nat.cast_one]`. Use `choose γ hγ using hγ`. Establish `hχ1 : χd 1 = 1` using `(hχu 1 (Nat.coprime_one_left N)).mul_left_cancel (by rw [← hχm, mul_one, mul_one])`. Establish `hχinv : ∀ δ : (ZMod N)ˣ, (χ (δ : ZMod N).val)⁻¹ = χ ((δ⁻¹ : (ZMod N)ˣ) : ZMod N).val` using `fun δ => by`. Establish `h1 : χd (δ : ZMod N).val * χd ((δ⁻¹ : (ZMod N)ˣ) : ZMod N).val = 1`.
+
+Rewrite using `[← hχm, ← hχ1]`. Use `hχp _ _ ((ZMod.natCast_eq_natCast_iff _ _ _).1 ?_)` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, ZMod.natCast_zmod_val, ZMod.natCast_zmod_val, Units.mul_inv, Nat.cast_one]`. Use `inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap ℚ_[l] (Qbar l) _ * algebraMap ℚ_[l] (Qbar l) _ = 1`.
+
+Rewrite using `[← map_mul, ← PadicInt.coe_mul, h1, PadicInt.coe_one, map_one]`. Establish `hcd : ∀ x, cw x ≠ 0 → ¬ (l : ℤ) ∣ (c : ℤ) ∧ ¬ (l : ℤ) ∣ (d : ℤ)` using `fun x hx => by`. Take `⟨-, -, h1, h2, -⟩` from `hadm.1 x hx`. Establish `hdv : l ∣ 6 * l * N` using `Dvd.dvd.mul_right (dvd_mul_left l 6) N`. Conclude with `⟨fun h => (Nat.Prime.coprime_iff_not_dvd hp).1 (h1.coprime_dvd_right hdv).symm (Int.natCast_dvd_natCast.1 h), fun h => (Nat.Prime.coprime_iff_not_dvd hp).1 (h2.coprime_dvd_right hdv).symm (Int.natCast_dvd_natCast.1 h)⟩`.
+
+Establish `hN1 : (N : Qbar l) ≠ 0` using `by exact_mod_cast NeZero.ne N`. Take `⟨c₁, hloc⟩` from `GlobalTheory.LambdaValuationPowers.LocGlue.localGlue l hl Ω A cf j hnf.atL hj`. Take `⟨m₀, c₂, κ, v, hκ', hv, hlaw⟩` from `law_of_parts A cf j ε N cw c₀ (-((N : Qbar l) ^ ((2 : ℤ) - ((2 * e + 1 : ℕ) : ℤ)))) (fun x m β t => chiVal ε j lam N (2 * e + 1) χ (c : ℤ) (d : ℤ) (x.val : ℤ) m β t - (d₀ : Qbar l) * chiVal ε j lam N (2 * e + 1) χ (c : ℤ) (d : ℤ) (x.val : ℤ) m (β * γ m) t) (fun m ψ x => (1 - (d₀ …`. Simplify using `only [hY, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun x _ => by ring)`.
+
+Use `hper hκ (neg_ne_zero.2 (zpow_ne_zero _ hN1)) hN hadm.2`. Use the proof step `(fun x hx m hm ψ hψ β t hβ ht => by`. Establish `hV` using `fun β' hβ' => sum_chiVal ε j lam N (2 * e + 1) χ c d (x.val : ℤ) t m β' ψ hχinv hl hN hm (by omega) hψ (hcd x hx).1 (hcd x hx).2 ht hβ'`. Establish `h2` using `sum_translate ψ (fun b => chiVal ε j lam N (2 * e + 1) χ (c : ℤ) (d : ℤ) (x.val : ℤ) m b t) _ hV (u m) (γ m) (hγ m) β hβ`. Establish `h3 : up (l ^ m) ((1 - (d₀ : Qbar l) * ψ⁻¹ (d₀ : ZMod (l ^ m))) • chiProj N l m (2 * e + 1) ψ χ (c : ℤ) (d : ℤ) (x.val : ℤ)) = (1 - (d₀ : Qbar l) * ψ⁻¹ (d₀ : ZMod (l ^ m))) • up (l ^ m) (chiProj N l m (2 * e + 1) ψ χ (c : ℤ) (d : ℤ) (x.val : ℤ))` using `rfl`.
+
+Simplify using `only [mul_sub, mul_left_comm (ψ _) (d₀ : Qbar l), Finset.sum_sub_distrib, ← Finset.mul_sum]`. Rewrite using `[h2, hV β hβ, h3, map_smul, smul_eq_mul, hu, ZMod.coe_unitOfCoprime]`. Use the proof step `ring)`. Use the proof step `(fun x hx => ⟨c', fun m hm y β t h1 h2 ht => by`. Establish `h3` using `htCoL_smooth u d₀ (hco x hx m hm y β t h1 h2 ht) (hco x hx m hm (y * u m) (β * γ m) t (by rw [Nat.cast_mul, h1, (hγ m).1, Units.val_mul]) (by rw [Nat.cast_mul, h2, (hγ m).2, mul_one]) ht)`.
+
+Use `h3 using 1` and compare the differences between its conclusion and the goal. Use the proof step `ring⟩)`. Use `hpres`. Use the proof step `⟨c₁, fun m C hC ζ ι' _ P o h hP hH => hloc ν _ m C hC hνI (fun s hs t ht x => by`. Rewrite using `[hνD m s hs t ht x, hνD m s hs t ht (x * u m), mul_right_comm x (u m)]`.
+
+Use the proof step `ring) ζ ι' P o h hP hH⟩`. Use `⟨m₀, c₂, κ, v, hκ', hv, ?_⟩` and prove the remaining obligations. Use `hlaw using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m ψ z`. Establish `h4 : up (l ^ m) (fun i => ∑ x : ZMod N, cw x * ((1 - (d₀ : Qbar l) * ψ⁻¹ (d₀ : ZMod (l ^ m))) • chiProj N l m (2 * e + 1) ψ χ (c : ℤ) (d : ℤ) (x.val : ℤ)) i) = (1 - (d₀ : Qbar l) * ψ⁻¹ (d₀ : ZMod (l ^ m))) • up (l ^ m) (fun i => ∑ x : ZMod N, cw x * chiProj N l m (2 * e + 1) ψ χ …`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [up, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun x _ => by ring`. Rewrite using `[h4, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem law_of_inputs
   (hcoef : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (l : ℕ) [Fact l.Prime], l ≠ 2 →
   (∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)) →

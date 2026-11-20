@@ -6,6 +6,11 @@ namespace MassDataIdxRed
 
 open Matrix
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hr`. Establish `hk : RingHom.ker π = IsLocalRing.maximalIdeal R` using `IsLocalRing.eq_maximalIdeal (RingHom.ker_isMaximal_of_surjective π hπ)`. Establish `hm : r ∈ RingHom.ker π`. Rewrite using `[hk]`. Conclude with `(IsLocalRing.mem_maximalIdeal r).2 hr`.
+
+Rewrite `hm` using `[RingHom.mem_ker]`. Rewrite `h` using `[hm]`. Conclude with `not_isUnit_zero h`.
+-/
 theorem isUnit_of_map {R S : Type} [CommRing R] [IsLocalRing R] [Field S] (π : R →+* S)
     (hπ : Function.Surjective π) (r : R) (h : IsUnit (π r)) : IsUnit r := by
   by_contra hr
@@ -21,9 +26,19 @@ def glRed {ι R S : Type} [Fintype ι] [DecidableEq ι] [CommRing R] [CommRing S
     GL ι R →* GL ι S :=
   Units.map (π.mapMatrix : Matrix ι ι R →+* Matrix ι ι S).toMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem glRed_coe {ι R S : Type} [Fintype ι] [DecidableEq ι] [CommRing R] [CommRing S] (π : R →+* S)
     (A : GL ι R) : ((glRed π A : GL ι S) : Matrix ι ι S) = (A : Matrix ι ι R).map π := rfl
 
+/- English proof (translation)
+Introduce `B`. Use `choose f hf using hπ`. Use `set A0 : Matrix ι ι R := (B : Matrix ι ι S).map f with hA0def`. Establish `hA0 : A0.map π = (B : Matrix ι ι S)`. Use extensionality with `i j`.
+
+Simplify using `[A0, hf]`. Establish `hdet : IsUnit A0.det`. Apply `hloc` to reduce the goal to its premises. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hA0]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 B.isUnit`.
+
+Use `⟨Matrix.nonsingInvUnit A0 hdet, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[glRed_coe]`. Conclude with `hA0`.
+-/
 theorem glRed_surjective {ι R S : Type} [Fintype ι] [DecidableEq ι] [CommRing R] [CommRing S]
     (π : R →+* S) (hπ : Function.Surjective π) (hloc : ∀ r, IsUnit (π r) → IsUnit r) :
     Function.Surjective (glRed (ι := ι) π) := by
@@ -41,6 +56,13 @@ theorem glRed_surjective {ι R S : Type} [Fintype ι] [DecidableEq ι] [CommRing
   rw [glRed_coe]
   exact hA0
 
+/- English proof (translation)
+Rewrite using `[← Units.val_inj, glRed_coe, Units.val_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Establish `hij` using `congrFun (congrFun h i) j`. Rewrite `hij` using `[Matrix.map_apply]`.
+
+Rewrite using `[RingHom.mem_ker, Matrix.sub_apply, map_sub, hij, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Introduce `h`. Use extensionality with `i j`. Establish `hij` using `h i j`.
+
+Rewrite `hij` using `[RingHom.mem_ker, Matrix.sub_apply, map_sub, sub_eq_zero]`. Rewrite using `[Matrix.map_apply, hij, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem glRed_eq_one_iff {ι R S : Type} [Fintype ι] [DecidableEq ι] [CommRing R] [CommRing S]
     (π : R →+* S) (A : GL ι R) :
     glRed π A = 1 ↔ ∀ i j, ((A : Matrix ι ι R) - 1) i j ∈ RingHom.ker π := by

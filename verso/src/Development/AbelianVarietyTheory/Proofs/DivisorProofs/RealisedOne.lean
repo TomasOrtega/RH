@@ -14,6 +14,9 @@ def act {R : Type} [CommRing R] [Algebra F R] {κ : Type} [Fintype κ] (g : Matr
     (w : (κ → R) × (κ → R)) : (κ → R) × (κ → R) :=
   ((g.map (algebraMap F R) *ᵥ Sum.elim w.1 w.2) ∘ Sum.inl, (g.map (algebraMap F R) *ᵥ Sum.elim w.1 w.2) ∘ Sum.inr)
 
+/- English proof (translation)
+Establish `h : (1 : Matrix (κ ⊕ κ) (κ ⊕ κ) F).map (algebraMap F R) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Simplify using `only [act, h, Matrix.one_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem act_one {R : Type} [CommRing R] [Algebra F R] {κ : Type} [Fintype κ] [DecidableEq κ]
     (w : (κ → R) × (κ → R)) : act (1 : Matrix (κ ⊕ κ) (κ ⊕ κ) F) w = w := by
   have h : (1 : Matrix (κ ⊕ κ) (κ ⊕ κ) F).map (algebraMap F R) = 1 :=
@@ -21,6 +24,9 @@ theorem act_one {R : Type} [CommRing R] [Algebra F R] {κ : Type} [Fintype κ] [
   simp only [act, h, Matrix.one_mulVec]
   rfl
 
+/- English proof (translation)
+Establish `e : (g * h).map (algebraMap F R) = g.map (algebraMap F R) * h.map (algebraMap F R)` using `Matrix.map_mul (f := algebraMap F R)`. Simplify using `only [act, e, ← Matrix.mulVec_mulVec, Sum.elim_comp_inl_inr]`.
+-/
 theorem act_mul {R : Type} [CommRing R] [Algebra F R] {κ : Type} [Fintype κ]
     (g h : Matrix (κ ⊕ κ) (κ ⊕ κ) F) (w : (κ → R) × (κ → R)) : act (g * h) w = act g (act h w) := by
   have e : (g * h).map (algebraMap F R) = g.map (algebraMap F R) * h.map (algebraMap F R) :=
@@ -41,11 +47,21 @@ def Realised (ψ : AddChar (AF F) ℂ) {κ : Type} [Fintype κ] (g : Matrix (κ 
     (∀ l ∈ (adeleClass F).adm κ, ∃ l' ∈ (adeleClass F).adm κ, ∀ φ ∈ schA F κ, l' φ = l (S φ)) ∧
     ∀ w, ∀ φ ∈ schA F κ, S (schr ψ w φ) = schr ψ (act g w) (S φ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨id, fun φ h => h, fun φ h => ⟨φ, h, rfl⟩, fun l hl => ⟨l, hl, fun _ _ => rfl⟩, fun w φ _ => by rw [act_one]; rfl⟩`.
+-/
 theorem realised_one (ψ : AddChar (AF F) ℂ) {κ : Type} [Fintype κ] [DecidableEq κ] :
     Realised ψ (1 : Matrix (κ ⊕ κ) (κ ⊕ κ) F) :=
   ⟨id, fun φ h => h, fun φ h => ⟨φ, h, rfl⟩, fun l hl => ⟨l, hl, fun _ _ => rfl⟩,
     fun w φ _ => by rw [act_one]; rfl⟩
 
+/- English proof (translation)
+Take `⟨S, hS, hSs, hSa, hSi⟩` from `hg`. Take `⟨T, hT, hTs, hTa, hTi⟩` from `hh`. Use `⟨S ∘ T, fun φ hφ => hS _ (hT φ hφ), fun φ hφ => ?_, fun l hl => ?_, fun w φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨φ₁, h₁, rfl⟩` from `hSs φ hφ`. Take `⟨φ₂, h₂, rfl⟩` from `hTs φ₁ h₁`.
+
+Conclude with `⟨φ₂, h₂, rfl⟩`. Take `⟨l₁, hl₁, e₁⟩` from `hSa l hl`. Take `⟨l₂, hl₂, e₂⟩` from `hTa l₁ hl₁`. Conclude with `⟨l₂, hl₂, fun φ hφ => (e₂ φ hφ).trans (e₁ _ (hT φ hφ))⟩`. Simplify using `only [Function.comp_apply]`.
+
+Rewrite using `[hTi w φ hφ, hSi _ _ (hT φ hφ), act_mul]`.
+-/
 theorem Realised.mul {ψ : AddChar (AF F) ℂ} {κ : Type} [Fintype κ] {g h : Matrix (κ ⊕ κ) (κ ⊕ κ) F}
     (hg : Realised ψ g) (hh : Realised ψ h) : Realised ψ (g * h) := by
   obtain ⟨S, hS, hSs, hSa, hSi⟩ := hg

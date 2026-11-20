@@ -19,16 +19,25 @@ section Local
 variable {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K]
 variable {R : Type} [CommRing R] [Algebra K R] [TopologicalSpace R]
 
+/- English proof (translation)
+Simplify using `only [hf, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hfR_smul (L : LocE K R) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) R) (s t : R) (x y : Fin n → R) :
     hf L Hm (s • x) (t • y) = s * L.cj t * hf L Hm x y := by
   simp only [hf, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [hf, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem hfR_add (L : LocE K R) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) R) (x y z : Fin n → R) :
     hf L Hm x (y + z) = hf L Hm x y + hf L Hm x z := by
   simp only [hf, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use `hfR_smul L Hm 1 t x y` as an intermediate fact. Rewrite `this` using `[one_smul, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem hfR_smulr (L : LocE K R) {n : ℕ} (Hm : Matrix (Fin n) (Fin n) R) (t : R) (x y : Fin n → R) :
     hf L Hm x (t • y) = L.cj t * hf L Hm x y := by
   have := hfR_smul L Hm 1 t x y
@@ -39,6 +48,9 @@ end Local
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {sig : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `Ideal.exists_maximal (𝓞 F)`. Conclude with `⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField F)⟩⟩`.
+-/
 theorem exists_place : Nonempty (HeightOneSpectrum (𝓞 F)) := by
   obtain ⟨M, hM⟩ := Ideal.exists_maximal (𝓞 F)
   exact ⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField F)⟩⟩
@@ -49,6 +61,9 @@ def bcL (A : Places F E sig) (p : HeightOneSpectrum (𝓞 F)) (n : ℕ) :
   map_add' x y := by funext i; simp [Places.bc]
   map_smul' c x := by funext i; simp [Places.bc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bcL_apply (A : Places F E sig) (p : HeightOneSpectrum (𝓞 F)) (n : ℕ) (x : Fin n → E) :
     bcL A p n x = A.bc p x := rfl
 
@@ -62,29 +77,53 @@ def sc (n : ℕ) : (A.loc p).Ep :=
 def sci (n : ℕ) : (A.loc p).Ep :=
   algebraMap (A.loc p).Fp (A.loc p).Ep (((G.c p : (A.loc p).Fp)) ^ (r - n))
 
+/- English proof (translation)
+Rewrite using `[sc, sci, ← map_mul, ← mul_pow, inv_mul_cancel₀ (G.c p).ne_zero, one_pow, map_one]`.
+-/
 theorem sc_mul_sci (n : ℕ) : sc G p n * sci G p n = 1 := by
   rw [sc, sci, ← map_mul, ← mul_pow, inv_mul_cancel₀ (G.c p).ne_zero, one_pow, map_one]
 
+/- English proof (translation)
+The claim follows from `(A.L p).cj.commutes _`.
+-/
 theorem cj_sc (n : ℕ) : (A.L p).cj (sc G p n) = sc G p n := (A.L p).cj.commutes _
 
+/- English proof (translation)
+The claim follows from `(A.L p).cj.commutes _`.
+-/
 theorem cj_sci (n : ℕ) : (A.L p).cj (sci G p n) = sci G p n := (A.L p).cj.commutes _
 
+/- English proof (translation)
+Rewrite using `[A.L_cj, (A.loc p).cj_ιE]`.
+-/
 theorem cj_ι (x : E) : (A.L p).cj ((A.loc p).ιE x) = (A.loc p).ιE (sig x) := by
   rw [A.L_cj, (A.loc p).cj_ιE]
 
+/- English proof (translation)
+Rewrite using `[sc, ← G.f_eq p a, smul_smul, ← map_mul, ← mul_pow, inv_mul_cancel₀ (G.c p).ne_zero, one_pow, map_one, one_smul]`.
+-/
 theorem f_scale (a : Fin (r + 1)) : (G.S p).f a = sc G p a • A.bc p (G.f a) := by
   rw [sc, ← G.f_eq p a, smul_smul, ← map_mul, ← mul_pow, inv_mul_cancel₀ (G.c p).ne_zero, one_pow,
     map_one, one_smul]
 
+/- English proof (translation)
+Rewrite using `[sc, ← G.f'_eq p a, smul_smul, ← map_mul, ← mul_pow, inv_mul_cancel₀ (G.c p).ne_zero, one_pow, map_one, one_smul]`.
+-/
 theorem f'_scale (a : Fin (r + 1)) : (G.S p).f' a = sc G p a • A.bc p (G.f' a) := by
   rw [sc, ← G.f'_eq p a, smul_smul, ← map_mul, ← mul_pow, inv_mul_cancel₀ (G.c p).ne_zero, one_pow,
     map_one, one_smul]
 
+/- English proof (translation)
+Rewrite using `[G.Hm_eq p]`. Conclude with `(RatExt.rational_extend A _ p).2.2.2.2.1 G.Hm x y`.
+-/
 theorem herm_bc (x y : G.V) :
     hf (A.L p) (G.S p).Hm (A.bc p x) (A.bc p y) = (A.loc p).ιE (B G x y) := by
   rw [G.Hm_eq p]
   exact (RatExt.rational_extend A _ p).2.2.2.2.1 G.Hm x y
 
+/- English proof (translation)
+Simplify using `only [Frames.Zh, Frames.h, Matrix.of_apply]`. Rewrite using `[f_scale, f'_scale, hfR_smul, cj_sc, herm_bc]`. Both sides reduce to the same expression.
+-/
 theorem Zh_scale (a b : Fin (r + 1)) :
     (G.S p).Zh a b = sc G p b * sc G p a * (A.loc p).ιE (G.Zh a b) := by
   simp only [Frames.Zh, Frames.h, Matrix.of_apply]
@@ -94,6 +133,9 @@ theorem Zh_scale (a b : Fin (r + 1)) :
 def locM (s : Matrix (Fin (r + 1)) (Fin (r + 1)) E) : Matrix (Fin (r + 1)) (Fin (r + 1)) (A.loc p).Ep :=
   Matrix.of fun i j => sc G p j * sci G p i * (A.loc p).ιE (s i j)
 
+/- English proof (translation)
+Use `⟨fun i j h => ?_, fun i => ?_⟩` and prove the remaining obligations. Simplify using `[locM, hs.1 i j h]`. Rewrite using `[locM, Matrix.of_apply, hs.2, map_one, mul_one, sc_mul_sci]`.
+-/
 theorem locM_unitri (s : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
     (hs : (∀ i j, j < i → s i j = 0) ∧ (∀ i, s i i = 1)) :
     (∀ i j, j < i → locM G p s i j = 0) ∧ (∀ i, locM G p s i i = 1) := by
@@ -101,6 +143,11 @@ theorem locM_unitri (s : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
   · simp [locM, hs.1 i j h]
   · rw [locM, Matrix.of_apply, hs.2, map_one, mul_one, sc_mul_sci]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, cT, locM, Matrix.of_apply, Zh_scale, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, cj_sc, cj_sci, cj_ι, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h1` using `sc_mul_sci G p i`. Establish `h2` using `sc_mul_sci G p l`. Use `set X := (A.loc p).ιE (sig (s i a)) * (A.loc p).ιE (G.Zh i l) * (A.loc p).ιE (s' l b)`.
+
+Take the linear combination `(sc G p a * sc G p b * X * sc G p l * sci G p l) * h1 + (sc G p a * sc G p b * X) * h2`.
+-/
 theorem mat_entry (s s' : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (a b : Fin (r + 1)) :
     (cT (A.L p) (locM G p s) * (G.S p).Zh * locM G p s') a b =
       sc G p a * sc G p b * (A.loc p).ιE (((s.map sig).transpose * G.Zh * s') a b) := by
@@ -119,6 +166,13 @@ open GlobalTheory.HL.FrameStab
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {sig : E →ₐ[F] E} {A : Places F E sig} {r k : ℕ} (G : GFrames A r k) (p : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `a b`. Establish `h1` using `congrFun (congrFun h a) b`. Rewrite `h1` using `[mat_entry, Zh_scale]`.
+
+Use `haveI : Nontrivial (A.loc p).Ep := Module.nontrivial_of_finrank_pos (R := (A.loc p).Fp) (by rw [(A.loc p).rank]; norm_num)`. Apply `(A.loc p).ιE.injective` to reduce the goal to its premises. Establish `hu` using `sc_mul_sci G p a`. Establish `hv` using `sc_mul_sci G p b`. Use `set D := (A.loc p).ιE (((s.map sig).transpose * G.Zh * s') a b) - (A.loc p).ιE (G.Zh a b)`.
+
+Take the linear combination `(sci G p a * sci G p b) * h1 - (D * sc G p b * sci G p b) * hu - D * hv`. Introduce `h`. Use extensionality with `a b`. Rewrite using `[mat_entry, h, Zh_scale]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mat_iff (s s' : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :
     cT (A.L p) (locM G p s) * (G.S p).Zh * locM G p s' = (G.S p).Zh ↔
       (s.map sig).transpose * G.Zh * s' = G.Zh := by
@@ -139,10 +193,18 @@ theorem mat_iff (s s' : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :
     rw [mat_entry, h, Zh_scale]
     ring
 
+/- English proof (translation)
+Simplify using `only [← bcL_apply, map_sum, map_smulₛₗ]`.
+-/
 theorem bc_sum (s : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (v : Fin (r + 1) → G.V) (j : Fin (r + 1)) :
     A.bc p (∑ i, s i j • v i) = ∑ i, (A.loc p).ιE (s i j) • A.bc p (v i) := by
   simp only [← bcL_apply, map_sum, map_smulₛₗ]
 
+/- English proof (translation)
+Rewrite using `[hu j, map_smul, hE, hv j, bc_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hu i, smul_smul, smul_smul]`. Use `congr 1`. Simplify using `only [locM, Matrix.of_apply]`.
+
+Take the linear combination `(-(sc G p j * (A.loc p).ιE (s i j))) * sc_mul_sci G p i`.
+-/
 theorem loc_of_glob (u : Fin (r + 1) → Fin (k + 2 * r + 1) → (A.loc p).Ep) (v : Fin (r + 1) → G.V)
     (hu : ∀ a, u a = sc G p a • A.bc p (v a)) (s : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (h : G.GLV)
     (h' : (Fin (k + 2 * r + 1) → (A.loc p).Ep) ≃ₗ[(A.loc p).Ep] (Fin (k + 2 * r + 1) → (A.loc p).Ep))
@@ -155,6 +217,11 @@ theorem loc_of_glob (u : Fin (r + 1) → Fin (k + 2 * r + 1) → (A.loc p).Ep) (
   simp only [locM, Matrix.of_apply]
   linear_combination (-(sc G p j * (A.loc p).ιE (s i j))) * sc_mul_sci G p i
 
+/- English proof (translation)
+Establish `hb : ∀ a, A.bc p (v a) = sci G p a • u a` using `fun a => by`. Rewrite using `[hu a, smul_smul, mul_comm (sci G p a), sc_mul_sci, one_smul]`. Rewrite using `[hb j, map_smul, hl j, bc_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hb i, smul_smul, smul_smul]`.
+
+Use `congr 1`. Simplify using `only [locM, Matrix.of_apply]`. Take the linear combination `(sci G p i * (A.loc p).ιE (s i j)) * sc_mul_sci G p j`.
+-/
 theorem glob_of_loc (u : Fin (r + 1) → Fin (k + 2 * r + 1) → (A.loc p).Ep) (v : Fin (r + 1) → G.V)
     (hu : ∀ a, u a = sc G p a • A.bc p (v a)) (s : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
     (h' : (Fin (k + 2 * r + 1) → (A.loc p).Ep) ≃ₗ[(A.loc p).Ep] (Fin (k + 2 * r + 1) → (A.loc p).Ep))
@@ -191,16 +258,47 @@ def Phi : G.V →ₗ[E] (Fin (r + 1) ⊕ Fin (r + 1) → E) where
 
 def Wc : Submodule E G.V := LinearMap.ker (Phi G)
 
+/- English proof (translation)
+Break down `i with a | a` into its components or cases. Conclude with `f_scale G p a`. Conclude with `f'_scale G p a`.
+-/
 theorem gp_scale (i : Fin (r + 1) ⊕ Fin (r + 1)) :
     Sum.elim (G.S p).f (G.S p).f' i = sc G p (idx i) • A.bc p (gg G i) := by
   rcases i with a | a
   · exact f_scale G p a
   · exact f'_scale G p a
 
+/- English proof (translation)
+Rewrite using `[gp_scale, smul_smul, mul_comm (sci G p _), sc_mul_sci, one_smul]`.
+-/
 theorem bc_gg (i : Fin (r + 1) ⊕ Fin (r + 1)) :
     A.bc p (gg G i) = sci G p (idx i) • Sum.elim (G.S p).f (G.S p).f' i := by
   rw [gp_scale, smul_smul, mul_comm (sci G p _), sc_mul_sci, one_smul]
 
+/- English proof (translation)
+Use `haveI := (A.loc p).lf`. Use `haveI := (A.loc p).char0`. Use `haveI : Nontrivial (A.loc p).Ep := Module.nontrivial_of_finrank_pos (R := (A.loc p).Fp) (by rw [(A.loc p).rank]; norm_num)`. Take `⟨hli, hco, -⟩` from `GlobalTheory.FrameBasic.main (A.L p) r k (G.S p)`. Establish `hME : (G.S p).ME = Submodule.span (A.loc p).Ep (Set.range (Sum.elim (G.S p).f (G.S p).f'))`.
+
+Rewrite using `[Frames.ME, spanTo_top, spanTo_top, Set.Sum.elim_range, Submodule.span_union]`. Establish `hinjbc : Function.Injective (A.bc (n` using `k + 2 * r + 1) p) := (RatExt.rational_extend A _ p).1`. Establish `hind : LinearIndependent E (gg G)`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc i`.
+
+Establish `h1` using `congrArg (bcL A p _) hc`. Simplify using `only [map_sum, map_smulₛₗ, map_zero, bcL_apply, bc_gg, smul_smul] at h1`. Establish `h2` using `Fintype.linearIndependent_iff.1 hli _ h1 i`. Apply `(A.loc p).ιE.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+
+Take the linear combination `sc G p (idx i) * h2 - (A.loc p).ιE (c i) * sc_mul_sci G p (idx i)`. Establish `hW : ∀ x ∈ Wc G, A.bc p x ∈ (G.S p).W0`. Introduce `x hx y hy`. Rewrite `hy` using `[hME]`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Take `⟨i, rfl⟩` from `hy`. Establish `h0 : B G x (gg G i) = 0` using `congrFun (LinearMap.mem_ker.1 hx) i`. Rewrite using `[gp_scale, hfR_smulr, herm_bc, h0, map_zero, mul_zero]`. Consider the case `zero => simp [hf]`.
+
+Consider the case `add a b _ _ ha hb => rw [hfR_add, ha, hb, add_zero]`. Consider the case `smul c a _ ha => rw [hfR_smulr, ha, mul_zero]`. Establish `hM : ∀ m ∈ Submodule.span E (Set.range (gg G)), A.bc p m ∈ (G.S p).ME`. Introduce `m hm`. Establish `: Submodule.span E (Set.range (gg G)) ≤ Submodule.comap (bcL A p _) (G.S p).ME`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `show A.bc p (gg G i) ∈ (G.S p).ME`. Rewrite using `[bc_gg, hME]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+
+Conclude with `this hm`. Establish `hdis : ∀ m ∈ Submodule.span E (Set.range (gg G)), m ∈ Wc G → m = 0`. Introduce `m hm hw`. Apply `hinjbc` to reduce the goal to its premises. Establish `h0 : A.bc p m = 0` using `Submodule.disjoint_def.1 hco.disjoint _ (hM m hm) (hW m hw)`.
+
+Rewrite using `[h0]`. Use function extensionality and compare the values at `i`. Simplify using `[Places.bc]`. Use `⟨hind, ⟨Submodule.disjoint_def.2 hdis, codisjoint_iff.2 ?_⟩, hW⟩` and prove the remaining obligations. Use `set M := Submodule.span E (Set.range (gg G))`.
+
+Establish `hinj : Function.Injective ((Phi G).comp M.subtype)`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `m hm`. Use `hdis m m.2 (LinearMap.mem_ker.2 hm)` as an intermediate fact. Conclude with `(Submodule.mem_bot E).2 (Subtype.ext this)`.
+
+Establish `hrk : Module.finrank E M = Module.finrank E (Fin (r + 1) ⊕ Fin (r + 1) → E)`. Rewrite using `[finrank_span_eq_card hind, Module.finrank_fintype_fun_eq_card]`. Establish `hsurj` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hrk).1 hinj`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+
+Take `⟨m, hm⟩` from `hsurj (Phi G x)`. Use `Submodule.mem_sup.2 ⟨m, m.2, x - m, ?_, by abel⟩` and prove the remaining obligations. Rewrite using `[Wc, LinearMap.mem_ker, map_sub]`. Rewrite `hm` using `[LinearMap.comp_apply, Submodule.subtype_apply]`. Rewrite using `[hm, sub_self]`.
+-/
 theorem decomp : LinearIndependent E (gg G) ∧ IsCompl (Submodule.span E (Set.range (gg G))) (Wc G) ∧
     ∀ x ∈ Wc G, A.bc p x ∈ (G.S p).W0 := by
   haveI := (A.loc p).lf
@@ -274,6 +372,29 @@ end GlobalTheory.HL.RatStab
 namespace GlobalTheory.HL.RatStab
 open GlobalTheory.HL.FrameStab
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ sig A r k G s s' hs hs'`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Establish `hloc : ∀ p, ∃ h' ∈ (G.S p).St, (∀ j, h' ((G.S p).f j) = ∑ i, locM G p s i j • (G.S p).f i) ∧ ∀ j, h' ((G.S p).f' j) = ∑ i, locM G p s' i j • (G.S p).f' i` using `fun p => by haveI := (A.loc p).lf haveI := (A.loc p).char0`. Conclude with `((stab_eq (A.L p) r k (G.S p)).2 _ _ (locM_unitri G p s hs) (locM_unitri G p s' hs')).1 ((mat_iff G p s s').2 hz)`.
+
+Use `choose hp hpSt hpf hpf' using hloc`. Take `⟨p0⟩` from `exists_place (F := F)`. Take `⟨hli, hco, -⟩` from `decomp G p0`. Set `t : Fin (r + 1) ⊕ Fin (r + 1) → G.V` to `Sum.elim (fun j => ∑ i, s i j • G.f i) (fun j => ∑ i, s' i j • G.f' i)`. Set `φ : G.V →ₗ[E] G.V` to `LinearMap.ofIsCompl hco ((Module.Basis.span hli).constr E t) (Wc G).subtype`.
+
+Establish `hφ1 : ∀ i, φ (gg G i) = t i`. Introduce `i`. Establish `h1` using `LinearMap.ofIsCompl_apply_left hco (φ := (Module.Basis.span hli).constr E t) (ψ := (Wc G).subtype) (Module.Basis.span hli i)`. Rewrite `h1` using `[Module.Basis.constr_basis, Module.Basis.span_apply]`. Conclude with `h1`.
+
+Establish `hφ2 : ∀ w ∈ Wc G, φ w = w` using `fun w hw => LinearMap.ofIsCompl_apply_right hco (φ := (Module.Basis.span hli).constr E t) (ψ := (Wc G).subtype) ⟨w, hw⟩`. Establish `hspan : Submodule.span E (Set.range (gg G) ∪ (Wc G : Set G.V)) = ⊤`. Rewrite using `[Submodule.span_union, Submodule.span_eq, hco.sup_eq_top]`. Establish `hExt : ∀ p x, hp p (A.bc p x) = A.bc p (φ x)`. Introduce `p`.
+
+Use `haveI := (A.loc p).lf`. Use `haveI := (A.loc p).char0`. Establish `heq` using `LinearMap.ext_on (s := Set.range (gg G) ∪ (Wc G : Set G.V)) (f := (hp p).toLinearMap.comp (bcL A p _)) (g := (bcL A p _).comp φ) hspan (by`. Introduce and unpack `x (⟨i, rfl⟩ | hx)`. Use `show hp p (A.bc p (gg G i)) = A.bc p (φ (gg G i))`.
+
+Rewrite using `[hφ1]`. Break down `i with j | j` into its components or cases. Conclude with `glob_of_loc G p (G.S p).f G.f (f_scale G p) s (hp p) (hpf p) j`. Conclude with `glob_of_loc G p (G.S p).f' G.f' (f'_scale G p) s' (hp p) (hpf' p) j`. Use `show hp p (A.bc p x) = A.bc p (φ x)`.
+
+Rewrite using `[hφ2 x hx]`. Conclude with `(stab_eq (A.L p) r k (G.S p)).1 (hp p) (hpSt p) _ ((decomp G p).2.2 x hx))`. Conclude with `fun x => LinearMap.congr_fun heq x`. Establish `hinj : Function.Injective φ`. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `x hx`. Establish `h1` using `hExt p0 x`. Rewrite `h1` using `[hx]`. Establish `h2 : A.bc p0 (0 : G.V) = 0` using `by funext i; simp [Places.bc]`. Rewrite `h1` using `[h2, LinearEquiv.map_eq_zero_iff]`.
+
+Conclude with `(RatExt.rational_extend A _ p0).1 (h1.trans h2.symm)`. Set `h : G.GLV` to `LinearEquiv.ofBijective φ ⟨hinj, LinearMap.injective_iff_surjective.1 hinj⟩`. Conclude with `⟨h, fun p => ⟨hp p, hpSt p, hExt p⟩, fun j => hφ1 (Sum.inl j), fun j => hφ1 (Sum.inr j)⟩`. Introduce and unpack `⟨h, hh, h1, h2⟩`. Take `⟨p⟩` from `exists_place (F := F)`.
+
+Use `haveI := (A.loc p).lf`. Use `haveI := (A.loc p).char0`. Establish `hh0 : ∀ p, ∃ g' ∈ (G.S p).St, A.Ext p h g'` using `hh`. Take `⟨h', hh', hE⟩` from `hh0 p`. Rewrite using `[← mat_iff G p]`.
+
+Conclude with `((stab_eq (A.L p) r k (G.S p)).2 _ _ (locM_unitri G p s hs) (locM_unitri G p s' hs')).2 ⟨h', hh', loc_of_glob G p (G.S p).f G.f (f_scale G p) s h h' hE h1, loc_of_glob G p (G.S p).f' G.f' (f'_scale G p) s' h h' hE h2⟩`.
+-/
 theorem stab_rat : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E} (A : Places F E sig), ∀ (r k : ℕ) (G : GFrames A r k), ∀ s s' : Matrix (Fin (r + 1)) (Fin (r + 1)) E, ((∀ i j, j < i → s i j = 0) ∧ (∀ i, s i i = 1)) → ((∀ i j, j < i → s' i j = 0) ∧ (∀ i, s' i i = 1)) → ((s.map sig).transpose * G.Zh * s' = G.Zh ↔ ∃ h ∈ G.St, (∀ j, h (G.f j) = ∑ i, s i j • G.f i) ∧ ∀ j, h (G.f' j) = ∑ i, s' i j • G.f' i) := by
   intro F E _ _ _ _ _ sig A r k G s s' hs hs'
   constructor

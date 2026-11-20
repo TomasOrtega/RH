@@ -6,6 +6,13 @@ open scoped ENNReal
 
 namespace GlobalTheory.WeilOrbit
 
+/- English proof (translation)
+Use `⟨hi, hc.measurable, fun s hs => ?_⟩` and prove the remaining obligations. Establish `h : φ '' s = ⋃ n, (fun y : compactCovering Y n => φ y) '' (Subtype.val ⁻¹' s)`. Use extensionality with `x`. Simplify using `only [Set.mem_iUnion, Set.mem_image, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨n, hn⟩` from `exists_mem_compactCovering y`. Conclude with `⟨n, ⟨y, hn⟩, hy, rfl⟩`. Introduce and unpack `⟨n, y, hy, rfl⟩`. Conclude with `⟨y, hy, rfl⟩`.
+
+Rewrite using `[h]`. Use `MeasurableSet.iUnion fun n => ?_` and prove the remaining obligations. Use `haveI : CompactSpace (compactCovering Y n) := isCompact_iff_compactSpace.mp (isCompact_compactCovering Y n)`. Establish `hce : Topology.IsClosedEmbedding (fun y : compactCovering Y n => φ y)` using `(hc.comp continuous_subtype_val).isClosedEmbedding (hi.comp Subtype.val_injective)`. Conclude with `hce.measurableEmbedding.measurableSet_image.mpr (measurable_subtype_coe hs)`.
+-/
 theorem measurableEmbedding_of_sigmaCompact {Y X : Type} [TopologicalSpace Y] [T2Space Y]
     [SigmaCompactSpace Y] [MeasurableSpace Y] [BorelSpace Y] [TopologicalSpace X] [T2Space X]
     [MeasurableSpace X] [BorelSpace X] {φ : Y → X} (hc : Continuous φ)
@@ -28,6 +35,11 @@ theorem measurableEmbedding_of_sigmaCompact {Y X : Type} [TopologicalSpace Y] [T
     (hc.comp continuous_subtype_val).isClosedEmbedding (hi.comp Subtype.val_injective)
   exact hce.measurableEmbedding.measurableSet_image.mpr (measurable_subtype_coe hs)
 
+/- English proof (translation)
+Use `hC.induction_on (p := fun C => ∃ K : Set G, IsCompact K ∧ C ⊆ (QuotientGroup.mk : G → G ⧸ H) '' K) ⟨∅, isCompact_empty, by simp⟩ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `s t hst ⟨K, hK, h⟩`. Conclude with `⟨K, hK, hst.trans h⟩`. Introduce and unpack `s t ⟨K, hK, h⟩ ⟨L, hL, h'⟩`. Conclude with `⟨K ∪ L, hK.union hL, by rw [Set.image_union]; exact Set.union_subset_union h h'⟩`.
+
+Introduce `q _`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g`. Take `⟨K, hK, hg⟩` from `exists_compact_mem_nhds g`. Conclude with `⟨_, mem_nhdsWithin_of_mem_nhds (QuotientGroup.isOpenMap_coe.image_mem_nhds hg), K, hK, subset_rfl⟩`.
+-/
 theorem exists_compact_cover {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] (H : Subgroup G) {C : Set (G ⧸ H)} (hC : IsCompact C) :
     ∃ K : Set G, IsCompact K ∧ C ⊆ (QuotientGroup.mk : G → G ⧸ H) '' K := by
@@ -48,13 +60,48 @@ def orbitMap (G : Type) {X : Type} [Group G] [MulAction G X] (x0 : X) :
     G ⧸ MulAction.stabilizer G x0 → X :=
   MulAction.ofQuotientStabilizer G x0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem orbitMap_mk {G X : Type} [Group G] [MulAction G X] (x0 : X) (g : G) :
     orbitMap G x0 (g : G ⧸ MulAction.stabilizer G x0) = g • x0 := rfl
 
+/- English proof (translation)
+The claim follows from `MulAction.injective_ofQuotientStabilizer G x0`.
+-/
 theorem orbitMap_injective {G X : Type} [Group G] [MulAction G X] (x0 : X) :
     Function.Injective (orbitMap G x0) :=
   MulAction.injective_ofQuotientStabilizer G x0
 
+/- English proof (translation)
+Introduce `G X _ _ _ _ _ _ _ _ _ _ _ _ _ _ x0 hcont μ hμ ν hν0 hinv hfin hne`. Use `set H := MulAction.stabilizer G x0 with hHdef`. Establish `hc0 : Continuous (fun g : G => g • x0)` using `hcont.comp (continuous_id.prodMk continuous_const)`. Establish `hH : IsClosed (H : Set G)` using `isClosed_eq hc0 continuous_const`. Use `haveI := hH`.
+
+Use `letI : MeasurableSpace (G ⧸ H) := borel _`. Use `haveI : BorelSpace (G ⧸ H) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace H := hH.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SigmaCompactSpace (G ⧸ H) := inferInstance`. Set `φ : G ⧸ H → X` to `orbitMap G x0`.
+
+Establish `hφc : Continuous φ` using `(QuotientGroup.isQuotientMap_mk H).continuous_iff.mpr hc0`. Establish `hφ : MeasurableEmbedding φ` using `measurableEmbedding_of_sigmaCompact hφc (orbitMap_injective x0)`. Establish `hrange : Set.range φ = {y | ∃ g : G, g • x0 = y}`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨q, rfl⟩`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g => exact ⟨g, rfl⟩`. Introduce and unpack `⟨g, rfl⟩`. Conclude with `⟨(g : G ⧸ H), rfl⟩`.
+
+Establish `hae : ∀ᵐ y ∂ν, y ∈ Set.range φ`. Rewrite using `[hrange]`. Conclude with `hν0`. Establish `hmap : (ν.comap φ).map φ = ν`. Rewrite using `[hφ.map_comap, Measure.restrict_eq_self_of_ae_mem hae]`.
+
+Establish `hrad : GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre.IsInvariantRadon H (ν.comap φ)`. Use `⟨fun h0 => hne ?_, ⟨fun C hC => ?_⟩, ⟨fun g s hs => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hmap, h0, Measure.map_zero]`. Take `⟨K, hK, hCK⟩` from `exists_compact_cover H hC`. Rewrite using `[hφ.comap_apply]`.
+
+Use `(measure_mono ?_).trans_lt (hfin K hK)` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, rfl⟩`. Take `⟨g, hg, rfl⟩` from `hCK hq`. Conclude with `⟨g, hg, rfl⟩`. Rewrite using `[hφ.comap_apply, hφ.comap_apply, ← hinv g (φ '' s) (hφ.measurableSet_image.mpr hs)]`.
+
+Use `congr 1`. Establish `heq : ∀ (a : G) (q : G ⧸ H), φ (a • q) = a • φ q`. Introduce `a q`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H b => exact mul_smul a b x0`.
+
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, hq, rfl⟩`. Conclude with `⟨g • q, hq, heq g q⟩`. Introduce and unpack `⟨q, hq, h⟩`.
+
+Use `⟨g⁻¹ • q, by simpa using hq, ?_⟩` and prove the remaining obligations. Rewrite using `[heq, h, inv_smul_smul]`. Set `ν0 : Measure H` to `Measure.haar`. Take `⟨dg, ⟨hdg, hq⟩, -⟩` from `GlobalTheory.QuotientHaar.existsUnique_haar_of_invariantRadon G H hH ν0 _ hrad`. Set `c` to `Measure.haarScalarFactor μ dg`.
+
+Establish `hc : μ = c • dg` using `Measure.isMulLeftInvariant_eq_smul μ dg`. Establish `hcpos : c ≠ 0` using `(Measure.haarScalarFactor_pos_of_isHaarMeasure μ dg).ne'`. Use `⟨c • ν0, Measure.IsHaarMeasure.nnreal_smul ν0 hcpos, fun f hf s hs => ?_⟩` and prove the remaining obligations. Establish `h1 : ∫⁻ y, ∫⁻ h' : H, f (s y * (h' : G)) ∂ν0 ∂ν = ∫⁻ g, f g ∂dg`. Rewrite using `[(hq f hf).2]`.
+
+Use `conv_lhs => rw [← hmap]`. Rewrite using `[hφ.lintegral_map]`. Use `lintegral_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre.fibreIntegral_mk H ν0 f]`. Use `congr 1`.
+
+Apply `orbitMap_injective x0` to reduce the goal to its premises. Rewrite using `[orbitMap_mk]`. Conclude with `hs _ (by`. Establish `: φ q ∈ Set.range φ` using `⟨q, rfl⟩`. Rewrite using `[hrange] at this)` and apply the resulting hypothesis.
+
+Rewrite using `[hc]`. Simplify using `only [lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.coe_ne_top, h1]`.
+-/
 theorem weil_formula : ∀ (G X : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] [MulAction G X] [TopologicalSpace X] [T2Space X] [SecondCountableTopology X] [MeasurableSpace X] [BorelSpace X] (x0 : X), Continuous (fun p : G × X => p.1 • p.2) → ∀ (μ : Measure G), μ.IsHaarMeasure → ∀ (ν : Measure X), ν {y | ¬ ∃ g : G, g • x0 = y} = 0 → (∀ (g : G) (s : Set X), MeasurableSet s → ν ((fun y => g • y) ⁻¹' s) = ν s) → (∀ K : Set G, IsCompact K → ν ((fun g => g • x0) '' K) < ⊤) → ν ≠ 0 → ∃ μ' : Measure (MulAction.stabilizer G x0), μ'.IsHaarMeasure ∧ ∀ f : G → ℝ≥0∞, Measurable f → ∀ s : X → G, (∀ y, (∃ g : G, g • x0 = y) → s y • x0 = y) → ∫⁻ g, f g ∂μ = ∫⁻ y, ∫⁻ h', f (s y * (h' : G)) ∂μ' ∂ν := by
   intro G X _ _ _ _ _ _ _ _ _ _ _ _ _ _ x0 hcont μ hμ ν hν0 hinv hfin hne
   set H := MulAction.stabilizer G x0 with hHdef

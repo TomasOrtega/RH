@@ -16,6 +16,25 @@ open scoped Matrix ComplexOrder
 
 namespace GlobalTheory.UnifHolo
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hG hU Φ k X j f f₀ Eb A₀ hj hL ψ hψ W g`. Use `haveI : IsOpenImmersion j := hL.1`. Establish `hjr : Dw.p ≤ Dw.p + Dw.q` using `Nat.le_add_right _ _`. Establish `hp : (U.X k).p0 = Dw.p + Dw.q - Dw.p`. Use `(hU.2.1 k).1` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Set `L : ((U.X k).Ψ × Fin Dw.p × Fin (Dw.p + Dw.q - Dw.p) → ℂ) ≃L[ℂ] (Fin (Fintype.card ((U.X k).Ψ × Fin Dw.p × Fin (Dw.p + Dw.q - Dw.p))) → ℂ)` to `(LinearEquiv.funCongrLeft ℂ ℂ (Fintype.equivFin _).symm).toContinuousLinearEquiv`. Establish `ho : IsOpen (DomFlat (U.X k).Ψ Dw.p (Dw.p + Dw.q - Dw.p))` using `GlobalTheory.HodgeDomain.ActionDeriv.isOpen_domFlat`. Use `set B := L.symm ⁻¹' DomFlat (U.X k).Ψ Dw.p (Dw.p + Dw.q - Dw.p) with hBdef`. Establish `hB : IsOpen B` using `ho.preimage L.symm.continuous`.
+
+Set `x : (Fin (Fintype.card ((U.X k).Ψ × Fin Dw.p × Fin (Dw.p + Dw.q - Dw.p))) → ℂ) → (U.X k).dom` to `fun b => stdFrame (U.X k) hjr (Equiv.refl _) hp (unflat (L.symm b))`. Establish `hd : ∀ τ a c, DifferentiableOn ℂ (fun b => ReciprocityTheory.ChartRestriction.G.FD.mat (x b).1 τ a c) B` using `fun τ a c => ((TorHolo.differentiable_stdMat (U.X k) hjr (Equiv.refl _) τ a c).comp L.symm.differentiable).differentiableOn.congr fun b hb => by show ReciprocityTheory.ChartRestriction.G.FD.mat (stdFrame _ _ _ _ _).1 τ a c = _`. Rewrite using `[stdFrame_val _ _ _ _ hb]`. Both sides reduce to the same expression. Establish `hY : IsHolTo B fun b => (cxPt T.Z (U.un k (x b))).1` using `GlobalTheory.GramFamily.isHolTo_cxPt T.Z hU k hB x hd`.
+
+Establish `hflat : ∀ u : (U.X k).Ψ × Fin Dw.p × Fin (Dw.p + Dw.q - Dw.p) → ℂ, flat (unflat u) = u`. Introduce `u`. Use function extensionality and compare the values at `⟨i, a, b⟩`. Both sides reduce to the same expression. Establish `hrel : ∀ b ∈ B, cxOf e σ hj (ψ (L.symm b)) = cxPt T.Z (U.un k (x b))`.
+
+Introduce `b hb`. Establish `h1` using `hψ (x b)`. Rewrite `h1` using `[domPt_stdFrame (U.X k) hjr (Equiv.refl _) hp hb, hflat]`. Then use the resulting hypothesis. Use `set g' := (j.appIso W).inv.hom g with hg'`. Introduce `v hv`.
+
+Establish `hb : L v ∈ B`. Use `Set.mem_preimage.2 ?_` and prove the remaining obligations. Rewrite using `[L.symm_apply_apply]`. Conclude with `hv.1`. Establish `hS : L v ∈ {b ∈ B | ⊤ ≤ (cxPt T.Z (U.un k (x b))).1 ⁻¹ᵁ (j ''ᵁ W)}`.
+
+Use `⟨hb, ?_⟩` and prove the remaining obligations. Rewrite using `[← hrel _ hb, L.symm_apply_apply]`. Conclude with `le_preimage_cxOf e σ hj W hv.2`. Establish `hdA : DifferentiableAt ℂ (fun b => valAt' (cxPt T.Z (U.un k (x b))).1 (j ''ᵁ W) g') (L v)` using `((hY (j ''ᵁ W) g').2 (L v) hS).differentiableAt (((hY (j ''ᵁ W) g').1).mem_nhds hS)`. Establish `hc` using `(hdA.comp v L.differentiableAt).differentiableWithinAt (s := DomFlat (U.X k).Ψ Dw.p (Dw.p + Dw.q - Dw.p) ∩ ψ ⁻¹' ptsIn X.str (σ.comp e.toRingHom) W)`.
+
+Establish `heq : ∀ w ∈ DomFlat (U.X k).Ψ Dw.p (Dw.p + Dw.q - Dw.p) ∩ ψ ⁻¹' ptsIn X.str (σ.comp e.toRingHom) W, (ev X.str (σ.comp e.toRingHom) W g ∘ ψ) w = ((fun b => valAt' (cxPt T.Z (U.un k (x b))).1 (j ''ᵁ W) g') ∘ L) w`. Introduce `w hw`. Establish `hwB : L w ∈ B`. Use `Set.mem_preimage.2 ?_` and prove the remaining obligations. Rewrite using `[L.symm_apply_apply]`.
+
+Conclude with `hw.1`. Rewrite using `[Function.comp_apply, Function.comp_apply, ev_eq_valAt'_cxOf e σ hj W g hw.2, ← hrel _ hwB, L.symm_apply_apply]`. Conclude with `hc.congr heq (heq v hv)`.
+-/
 theorem holo : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q)), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∀ (Φ : FlagTor T.Z e U) (k : U.Comp), ∀ (X : Var F) (j : X.X ⟶ gen T.Z) (f : (Φ.C k).Y.X ⟶ X.X) (f₀ : EigFrame T.Z (constF e X) (genericPt X ≫ j ≫ genι T.Z)) (Eb : Fr (ratOf X) Dw.mult 0) (A₀ : Mat Dw.mult X.Fn) (hj : j ≫ genStr T.Z ≫ spMap e.toRingHom = X.str), IsLieBase e (Φ.C k) X j f f₀ Eb A₀ → ∀ ψ : ((U.X k).Ψ × Fin Dw.p × Fin (Dw.p + Dw.q - Dw.p) → ℂ) → CxPts X.str (σ.comp e.toRingHom), (∀ x : (U.X k).dom, cxOf e σ hj (ψ (flat (domPt (U.X k) (Nat.le_add_right Dw.p Dw.q) (Equiv.refl (U.X k).Ψ) x.1))) = cxPt T.Z (U.un k x)) → ∀ (W : X.X.Opens) (g : Γ(X.X, W)), DifferentiableOn ℂ (ev X.str (σ.comp e.toRingHom) W g ∘ ψ) (DomFlat (U.X k).Ψ Dw.p (Dw.p + Dw.q - Dw.p) ∩ ψ ⁻¹' ptsIn X.str (σ.comp e.toRingHom) W) := by
   intro E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hG hU Φ k X j f f₀ Eb A₀ hj hL ψ hψ W g
   classical

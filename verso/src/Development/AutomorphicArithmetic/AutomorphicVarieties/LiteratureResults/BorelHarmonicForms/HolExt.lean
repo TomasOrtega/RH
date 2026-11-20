@@ -2,6 +2,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af UpperTheory.V.AlgRepEndIrreducible UpperTheory.V.Lit UpperTheory.V.Lit.Bor
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `E _ _ _ a f hf`. Proceed by induction on `hf using Algebra.adjoin_induction with`. Consider the case `mem f hf`. Break down `hf with ⟨τ, i, j, rfl⟩ | ⟨τ, rfl⟩` into its components or cases. Conclude with `⟨fun x => x i j τ, by fun_prop, fun _ => rfl⟩`.
+
+Use `⟨fun x => ((Matrix.of x).det τ)⁻¹, DifferentiableOn.inv ?_ fun x hx => ?_, fun y => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.det_apply', Finset.sum_apply, Pi.mul_apply, Finset.prod_apply, Matrix.of_apply]`. Conclude with `Differentiable.differentiableOn (Differentiable.fun_sum fun σ _ => (differentiable_const _).mul (by fun_prop))`. Conclude with `(((Matrix.isUnit_iff_isUnit_det _).1 hx).map (Pi.evalRingHom (fun _ : E →+* ℂ => ℂ) τ)).ne_zero`. Conclude with `congrArg (fun z : (E →+* ℂ) → ℂ => (z τ)⁻¹) ((emb E).map_det y.val).symm`.
+
+Consider the case `algebraMap c => exact ⟨fun _ => c, differentiableOn_const c, fun _ => rfl⟩`. Consider the case `add f g _ _ h1 h2`. Take `⟨Φ, hΦ, e1⟩` from `h1`. Take `⟨Ψ, hΨ, e2⟩` from `h2`. Conclude with `⟨Φ + Ψ, hΦ.add hΨ, fun y => by rw [Pi.add_apply, Pi.add_apply, e1, e2]⟩`.
+
+Consider the case `mul f g _ _ h1 h2`. Take `⟨Φ, hΦ, e1⟩` from `h1`. Take `⟨Ψ, hΨ, e2⟩` from `h2`. Conclude with `⟨Φ * Ψ, hΦ.mul hΨ, fun y => by rw [Pi.mul_apply, Pi.mul_apply, e1, e2]⟩`.
+-/
 theorem UpperTheory.V.Lit.Bor.holExt :
     UpperTheory.V.Lit.Bor.HolExt := by
   intro E _ _ _ a f hf

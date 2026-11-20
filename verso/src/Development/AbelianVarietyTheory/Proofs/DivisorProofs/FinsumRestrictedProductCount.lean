@@ -6,6 +6,11 @@ namespace GlobalTheory.LocalGrouping
 
 open Function
 
+/- English proof (translation)
+Introduce `i hi hzero`. Apply `hne` to reduce the goal to its premises. Establish `hfin : (S ∩ mulSupport h).Finite` using `hf.subset Set.inter_subset_right`. Rewrite using `[← finprod_mem_inter_mulSupport, finprod_mem_eq_finite_toFinset_prod _ hfin]`. Apply `Finset.prod_eq_zero (i := i)` to reduce the goal to its premises.
+
+Simplify using `[Set.Finite.mem_toFinset, hi, Function.mem_mulSupport, hzero]`. Conclude with `hzero`.
+-/
 theorem ne_zero_of_finprod_mem_ne_zero {ι : Type} (S : Set ι) (h : ι → ℂ)
     (hf : (mulSupport h).Finite) (hne : ∏ᶠ i ∈ S, h i ≠ 0) : ∀ i ∈ S, h i ≠ 0 := by
   intro i hi hzero
@@ -16,6 +21,17 @@ theorem ne_zero_of_finprod_mem_ne_zero {ι : Type} (S : Set ι) (h : ι → ℂ)
   · simp [Set.Finite.mem_toFinset, hi, Function.mem_mulSupport, hzero]
   · exact hzero
 
+/- English proof (translation)
+Establish `hone : ∀ i ∈ S, i ∉ T → ∑ᶠ d, B i d = 1`. Introduce `i hi hT`. Rewrite using `[finsum_eq_single _ (u i)]`. Simplify using `[hind i hi hT]`. Introduce `d hd`.
+
+Simplify using `[hind i hi hT, hd]`. Rewrite using `[finprod_mem_eq_prod_of_subset _ (t := T) ?_ hTS]`. Use `swap`. Introduce and unpack `i ⟨hiS, hi⟩`. Assume the negation of the conclusion as `hT`.
+
+Conclude with `hi (hone i hiS hT)`. Set `P : ∀ i : T, Finset (D i)` to `fun i => (hfin i (hTS i.2)).toFinset`. Establish `hsum : ∀ i : T, ∑ᶠ d, B i d = ∑ d ∈ P i, B i d` using `fun i => finsum_eq_sum_of_support_subset _ (by simp [P])`. Rewrite using `[← Finset.prod_coe_sort T, Finset.prod_congr rfl (fun i _ => hsum i), Finset.prod_univ_sum]`. Use `symm`.
+
+Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `f hf`. Rewrite `hf` using `[Function.mem_support, Finset.prod_ne_zero_iff]`. Rewrite using `[Finset.mem_coe, Fintype.mem_piFinset]`. Introduce `i`.
+
+Simplify `hf i (Finset.mem_univ _)` using `[P]`.
+-/
 theorem finprod_finsum_eq (I : Type) (D : I → Type) (S : Set I) (B : ∀ i, D i → ℂ)
     (T : Finset I) (u : ∀ i, D i) (hTS : (T : Set I) ⊆ S)
     (hfin : ∀ i ∈ S, (support (B i)).Finite)
@@ -49,6 +65,49 @@ namespace GlobalTheory.LocalGrouping
 
 open Function
 
+/- English proof (translation)
+Set `F : (∀ i : T, D i) → ℂ` to `fun f => ∏ i : T, B i (f i)`. Establish `hFfin : (support F).Finite`. Apply `(Set.Finite.pi (t := fun i : T => support (B i)) (fun i => hfin i (hTS i.2))).subset` to reduce the goal to its premises. Introduce `f hf`. Rewrite `hf` using `[mem_support, Finset.prod_ne_zero_iff]`.
+
+Introduce `i _`. Conclude with `hf i (Finset.mem_univ _)`. Set `E : (∀ i : T, D i) → ∀ i, D i` to `fun f i => if h : i ∈ T then f ⟨i, h⟩ else u i`. Set `Fib : (∀ i : T, D i) → Set R` to `fun f => {c | c ∈ A ∧ ∀ i ∈ S, ℓ c i = E f i}`. Establish `hEnz : ∀ f, F f ≠ 0 → ∀ i ∈ S, B i (E f i) ≠ 0`.
+
+Introduce `f hf i hi`. Distinguish the cases in `hT : i ∈ T`. Simplify using `only [E, hT, dite_true]`. Rewrite `hf` using `[Finset.prod_ne_zero_iff]`. Conclude with `hf ⟨i, hT⟩ (Finset.mem_univ _)`.
+
+Simplify using `[E, hT, hind i hi hT]`. Establish `hcard : ∀ f, F f ≠ 0 → (Nat.card (Fib f) : ℂ) * 2 ^ k = 2 ^ m`. Introduce `f hf`. Establish `h` using `H4 (E f) (hEnz f hf)`. Conclude with `h` after adjusting the coercions.
+
+Establish `hFibfin : ∀ f, F f ≠ 0 → (Fib f).Finite`. Introduce `f hf`. Establish `h` using `H4 (E f) (hEnz f hf)`. Establish `hne : Nat.card (Fib f) ≠ 0`. Introduce `h0`.
+
+Express the relevant statement in the definitionally equal form `Nat.card {c : R // c ∈ A ∧ ∀ i ∈ S, ℓ c i = E f i} = 0 at h0`. Rewrite `h` using `[h0, zero_mul]`. Conclude with `(pow_ne_zero m two_ne_zero) h.symm`. Conclude with `Set.finite_coe_iff.mp (Nat.finite_of_card_ne_zero hne)`. Establish `hpt : ∀ c, (if c ∈ A then ∏ᶠ i ∈ S, B i (ℓ c i) else 0) = ∑ f ∈ hFfin.toFinset, if c ∈ Fib f then F f else 0`.
+
+Introduce `c`. Distinguish the cases in `hcA : c ∈ A`. Use `swap`. Simplify using `[hcA, Fib]`. Rewrite using `[if_pos hcA]`.
+
+Distinguish the cases in `hex : ∃ f ∈ hFfin.toFinset, c ∈ Fib f`. Take `⟨f, hf, hcf⟩` from `hex`. Rewrite using `[Finset.sum_eq_single f]`. Rewrite using `[if_pos hcf]`. Rewrite using `[finprod_mem_eq_prod_of_subset _ (t := T) ?_ hTS]`.
+
+Rewrite using `[← Finset.prod_coe_sort T]`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[hcf.2 i (hTS i.2)]`. Simplify using `[E]`.
+
+Introduce and unpack `i ⟨hiS, hi⟩`. Assume the negation of the conclusion as `hT`. Apply `hi` to reduce the goal to its premises. Use `show B i (ℓ c i) = 1`. Establish `hT' : i ∉ T` using `hT`.
+
+Rewrite using `[hcf.2 i hiS]`. Simplify using `[E, hT', hind i hiS hT']`. Introduce `g _ hgf`. Rewrite using `[if_neg]`. Introduce `hcg`.
+
+Apply `hgf` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Establish `h1` using `hcf.2 i (hTS i.2)`. Establish `h2` using `hcg.2 i (hTS i.2)`. Simplify using `[E] at h1 h2`.
+
+Rewrite using `[← h1, ← h2]`. Introduce `hf'`. Conclude with `absurd hf hf'`. Rewrite using `[Finset.sum_eq_zero] swap`. Introduce `f hf`.
+
+Rewrite using `[if_neg]`. Introduce `hcf`. Conclude with `hex ⟨f, hf, hcf⟩`. Assume the negation of the conclusion as `hne`. Establish `hmf : (mulSupport fun i => B i (ℓ c i)).Finite` using `Filter.eventually_cofinite.mp (H3 c hcA)`.
+
+Establish `hall` using `ne_zero_of_finprod_mem_ne_zero S _ hmf hne`. Apply `hex` to reduce the goal to its premises. Use `⟨fun i => ℓ c i, ?_, hcA, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset, mem_support, Finset.prod_ne_zero_iff]`. Introduce `i _`.
+
+Conclude with `hall i (hTS i.2)`. Introduce `i hi`. Distinguish the cases in `hT : i ∈ T`. Simplify using `[E, hT]`. Use `hall i hi` as an intermediate fact.
+
+Rewrite `this` using `[hind i hi hT]`. Simplify using `only [E, hT, dite_false]`. Assume the negation of the conclusion as `h`. Conclude with `this (if_neg h)`. Establish `hinner : ∀ f ∈ hFfin.toFinset, (∑ᶠ c, if c ∈ Fib f then F f else 0) * (2 : ℂ) ^ k = 2 ^ m * F f`.
+
+Introduce `f hf`. Rewrite `hf` using `[Set.Finite.mem_toFinset, mem_support]`. Establish `e1 : (∑ᶠ c, if c ∈ Fib f then F f else 0) = ∑ᶠ c ∈ Fib f, F f`. Rewrite using `[finsum_mem_def]`. Apply `finsum_congr` to reduce the goal to its premises.
+
+Introduce `c`. Simplify using `[Set.indicator_apply]`. Rewrite using `[e1, finsum_mem_eq_finite_toFinset_sum _ (hFibfin f hf), Finset.sum_const, ← Nat.card_eq_card_finite_toFinset, nsmul_eq_mul, mul_right_comm, hcard f hf]`. Rewrite using `[finsum_congr hpt, finsum_sum_comm, Finset.sum_mul, Finset.sum_congr rfl hinner, ← Finset.mul_sum]`. Use `congr 1`.
+
+Use `symm`. Conclude with `finsum_eq_sum_of_support_subset F (by simp)`. Introduce `f hf`. Rewrite `hf` using `[Set.Finite.mem_toFinset, mem_support]`. Apply `(hFibfin f hf).subset` to reduce the goal to its premises.
+
+Introduce `c hc`. Assume the negation of the conclusion as `h`. Conclude with `hc (if_neg h)`.
+-/
 theorem finsum_fibres_eq (I R : Type) (D : I → Type) (S : Set I) (B : ∀ i, D i → ℂ)
     (ℓ : R → ∀ i, D i) (A : Set R) (k m : ℕ)
     (T : Finset I) (u : ∀ i, D i) (hTS : (T : Set I) ⊆ S)
@@ -171,6 +230,15 @@ namespace GlobalTheory
 
 open Function
 
+/- English proof (translation)
+Introduce `I R D S B ℓ A k m H0 H1 H2 H3 H4`. Establish `hbad : {i | ¬ ∃ u : D i, ∀ d, B i d = if d = u then 1 else 0}.Finite` using `Filter.eventually_cofinite.mp H2`. Set `T : Finset I` to `(hbad.inter_of_left S).toFinset`. Set `u : ∀ i, D i` to `fun i => if h : ∃ u : D i, ∀ d, B i d = if d = u then 1 else 0 then h.choose else (H0 i).some`. Establish `hTS : (T : Set I) ⊆ S`.
+
+Introduce `i hi`. Simplify using `only [T, Set.Finite.coe_toFinset] at hi`. Conclude with `hi.2`. Establish `hind : ∀ i ∈ S, i ∉ T → ∀ d, B i d = if d = u i then 1 else 0`. Introduce `i hi hT`.
+
+Establish `hgood : ∃ u : D i, ∀ d, B i d = if d = u then 1 else 0`. Assume the negation of the conclusion as `h`. Apply `hT` to reduce the goal to its premises. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `⟨h, hi⟩`.
+
+Introduce `d`. Simplify using `only [u, hgood, dite_true]`. Conclude with `hgood.choose_spec d`. Rewrite using `[LocalGrouping.finprod_finsum_eq I D S B T u hTS H1 hind]`. Conclude with `LocalGrouping.finsum_fibres_eq I R D S B ℓ A k m T u hTS H1 hind H3 H4`.
+-/
 theorem finsum_finprod_mul_two_pow_eq :
     ∀ (I R : Type) (D : I → Type) (S : Set I) (B : ∀ i, D i → ℂ) (ℓ : R → ∀ i, D i) (A : Set R)
       (k m : ℕ), (∀ i, Nonempty (D i)) → (∀ i ∈ S, (Function.support (B i)).Finite) →

@@ -4,6 +4,15 @@ universe u_1 u_2
 
 namespace Bl.ComplementLifts
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hxA hxB`. Take `⟨y, hy, n', hn', rfl⟩` from `Submodule.mem_sup.1 hxB`. Take `⟨a, ha, hax⟩` from `Submodule.mem_map.1 hxA`.
+
+Take `⟨b, hb, rfl⟩` from `Submodule.mem_map.1 hy`. Simplify using `only [Submodule.subtype_apply] at hax ⊢`. Establish `hn'N : n' ∈ N`. Establish `: n' = (a : M) - (b : M)`. Rewrite using `[hax]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `N.sub_mem a.2 b.2`. Establish `hn0 : n' = 0` using `(Submodule.disjoint_def.1 hN.disjoint) n' hn'N hn'`. Rewrite `hax`, the goal using `[hn0, add_zero]`.
+
+Establish `hab : a = b` using `Subtype.ext hax`. Establish `h0 : b = 0` using `(Submodule.disjoint_def.1 hAB.disjoint) b (hab ▸ ha) hb`. Simplify using `[h0]`. Rewrite using `[codisjoint_iff, ← sup_assoc, ← Submodule.map_sup, hAB.sup_eq_top, Submodule.map_top, Submodule.range_subtype, hN.sup_eq_top]`.
+-/
 private lemma compl_lift {R : Type*} {M : Type*} [CommRing R] [AddCommGroup M] [Module R M]
     (N N' : Submodule R M) (hN : IsCompl N N') (A B : Submodule R N) (hAB : IsCompl A B) :
     IsCompl (A.map N.subtype) (B.map N.subtype ⊔ N') := by
@@ -26,6 +35,21 @@ private lemma compl_lift {R : Type*} {M : Type*} [CommRing R] [AddCommGroup M] [
   · rw [codisjoint_iff, ← sup_assoc, ← Submodule.map_sup, hAB.sup_eq_top, Submodule.map_top,
       Submodule.range_subtype, hN.sup_eq_top]
 
+/- English proof (translation)
+Introduce `R M _ _ _ _ _ N N' S hN _ hSN hsat`. Set `S' : Submodule R N` to `S.comap N.subtype`. Establish `: Module.IsTorsionFree R (N ⧸ S')`. Apply `Module.IsTorsionFree.of_smul_eq_zero` to reduce the goal to its premises. Introduce `r q hq`.
+
+Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective S' q`. Distinguish the cases in `hr : r = 0`. Conclude with `Or.inl hr`. Use `right`. Rewrite `hq` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`.
+
+Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Simplify using `only [S', Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_smul] at hq ⊢`. Conclude with `hsat r x hr hq`. Take `⟨h, hh⟩` from `LinearMap.exists_rightInverse_of_surjective S'.mkQ (Submodule.range_mkQ S')`. Establish `hidem : IsIdempotentElem (h ∘ₗ S'.mkQ)` using `LinearMap.ext fun x => congrArg h (LinearMap.congr_fun hh (S'.mkQ x))`.
+
+Establish `hker : LinearMap.ker (h ∘ₗ S'.mkQ) = S'`. Use extensionality with `x`. Simplify using `only [LinearMap.mem_ker, LinearMap.comp_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Use `congrArg S'.mkQ hx` as an intermediate fact. Rewrite `this` using `[← LinearMap.comp_apply S'.mkQ h, hh, LinearMap.id_apply, map_zero]`. Rewrite `this` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Then use the resulting hypothesis. Introduce `hx`. Rewrite using `[Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero S').2 hx, map_zero]`.
+
+Establish `hc : IsCompl S' (LinearMap.range (h ∘ₗ S'.mkQ))`. Use `LinearMap.IsIdempotentElem.isCompl hidem` as an intermediate fact. Rewrite `this` using `[hker]`. Conclude with `this.symm`. Establish `hS : S'.map N.subtype = S`.
+
+Simplify using `only [S', Submodule.map_comap_subtype]`. Conclude with `inf_eq_right.2 hSN`. Use `⟨(LinearMap.range (h ∘ₗ S'.mkQ)).map N.subtype ⊔ N', ?_⟩` and prove the remaining obligations. Use `compl_lift N N' hN S' _ hc` as an intermediate fact. Rewrite `this` using `[hS]`. Then use the resulting hypothesis.
+-/
 theorem goal1 :
   ∀ {R : Type u_1} {M : Type u_2} [inst : CommRing.{u_1} R] [IsDomain.{u_1} R] [IsPrincipalIdealRing.{u_1} R]
   [inst_3 : AddCommGroup.{u_2} M] [inst_4 : Module.{u_1, u_2} R M] (N N' S : Submodule.{u_1, u_2} R M),

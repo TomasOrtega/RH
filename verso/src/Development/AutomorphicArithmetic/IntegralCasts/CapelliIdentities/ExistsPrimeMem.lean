@@ -4,6 +4,11 @@ import Mathlib
     (E : Type) → [Field E] → Type :=
     fun (E : Type) [Field E] ↦ IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E)
 
+/- English proof (translation)
+Introduce `E _ _ _ w`. Use `haveI : w.asIdeal.IsPrime := w.isPrime`. Use `haveI : Finite (NumberField.RingOfIntegers E ⧸ w.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot w.asIdeal w.ne_bot`. Use `⟨ringChar (NumberField.RingOfIntegers E ⧸ w.asIdeal), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(CharP.char_is_prime_or_zero (NumberField.RingOfIntegers E ⧸ w.asIdeal) _).resolve_right (CharP.ringChar_ne_zero_of_finite _)`.
+
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `CharP.cast_eq_zero _ _`.
+-/
 theorem UpperTheory.Reformulated.B.Qk68.exists_prime_mem :
     ∀ {E : Type} [inst : Field E] [inst_1 : NumberField E] [NumberField.IsCMField E] (w : UpperTheory.Reformulated.B.Qk68.Plc E),
       ∃ (q : ℕ), Nat.Prime q ∧ (↑q : NumberField.RingOfIntegers E) ∈ w.asIdeal := by

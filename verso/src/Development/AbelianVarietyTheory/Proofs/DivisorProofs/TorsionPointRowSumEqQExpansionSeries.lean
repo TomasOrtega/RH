@@ -8,6 +8,9 @@ open GlobalTheory.QFam GlobalTheory.WpFam
 namespace GlobalTheory.WpFam
 
 open scoped UpperHalfPlane MatrixGroups Matrix ModularForm ComplexConjugate in
+/- English proof (translation)
+Rewrite using `[← Complex.exp_nat_mul, ← Complex.exp_nat_mul, ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma exp_two_pi_I_div_pow_eq_mul (N : ℕ) (hN : (N : ℂ) ≠ 0) (d : ℕ) (τ c : ℂ) (j : ℕ) :
     Complex.exp (2 * Real.pi * Complex.I * ((d * τ + c) / N)) ^ j
       = Complex.exp (2 * Real.pi * Complex.I * (j * c) / N)
@@ -19,6 +22,11 @@ private lemma exp_two_pi_I_div_pow_eq_mul (N : ℕ) (hN : (N : ℂ) ≠ 0) (d : 
   ring
 
 open scoped UpperHalfPlane MatrixGroups Matrix ModularForm ComplexConjugate in
+/- English proof (translation)
+Establish `h` using `(_root_.GlobalTheory.WpFam.AddCharZMod.main N).1 ((j * b.val : ℕ) : ℤ)`. Establish `hc : (((j * b.val : ℕ) : ℤ) : ZMod N) = (j : ZMod N) * b`. Use `push_cast`. Rewrite using `[ZMod.natCast_zmod_val]`. Rewrite `h` using `[hc]`.
+
+Rewrite using `[h]`. Use `congr 1`. Apply the tactic sequence `first | (push_cast; ring) | push_cast`.
+-/
 private lemma wpFam_ch_natCast_mul (N : ℕ) [NeZero N] (j : ℕ) (b : ZMod N) :
     _root_.GlobalTheory.WpFam.ch N ((j : ZMod N) * b)
       = Complex.exp (2 * Real.pi * Complex.I * (j * (b.val : ℂ)) / N) := by
@@ -32,6 +40,11 @@ private lemma wpFam_ch_natCast_mul (N : ℕ) [NeZero N] (j : ℕ) (b : ZMod N) :
   first | (push_cast; ring) | push_cast
 
 open scoped UpperHalfPlane MatrixGroups Matrix ModularForm ComplexConjugate in
+/- English proof (translation)
+Establish `h` using `(_root_.GlobalTheory.WpFam.AddCharZMod.main N).1 (-((j * b.val : ℕ) : ℤ))`. Establish `hc : ((-((j * b.val : ℕ) : ℤ) : ℤ) : ZMod N) = -((j : ZMod N) * b)`. Use `push_cast`. Rewrite using `[ZMod.natCast_zmod_val]`. Rewrite `h` using `[hc]`.
+
+Rewrite using `[h]`. Use `congr 1`. Apply the tactic sequence `first | (push_cast; ring) | push_cast`.
+-/
 private lemma wpFam_ch_neg_natCast_mul (N : ℕ) [NeZero N] (j : ℕ) (b : ZMod N) :
     _root_.GlobalTheory.WpFam.ch N (-((j : ZMod N) * b))
       = Complex.exp (2 * Real.pi * Complex.I * (j * -(b.val : ℂ)) / N) := by
@@ -46,6 +59,19 @@ private lemma wpFam_ch_neg_natCast_mul (N : ℕ) [NeZero N] (j : ℕ) (b : ZMod 
 
 open scoped UpperHalfPlane MatrixGroups Matrix ModularForm ComplexConjugate in
 
+/- English proof (translation)
+Introduce `N _ e τ b d he`. Establish `hNc : (N : ℂ) ≠ 0` using `by exact_mod_cast NeZero.ne N`. Establish `hN : (0 : ℝ) < N` using `by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)`. Establish `him : ∀ c : ℂ, c.im = 0 → 0 < ((((d : ℕ) : ℂ) * τ + c) / N).im`. Introduce `c hc`.
+
+Rewrite using `[Complex.div_natCast_im]`. Establish `h1 : (((d : ℕ) : ℂ) * (τ : ℂ) + c).im = ((d : ℕ) : ℝ) * τ.im`. Simplify using `[Complex.mul_im, hc]`. Rewrite using `[h1]`. Conclude with `div_pos (mul_pos (by exact_mod_cast d.pos) τ.im_pos) hN`.
+
+Prove the components needed by the constructor for the conclusion. Establish `h` using `EisensteinSeries.qExpansion_identity_pnat he ⟨(((d : ℕ) : ℂ) * τ + (b.val : ℂ)) / N, him _ (Complex.natCast_im _)⟩`. Simplify using `only [UpperHalfPlane.coe_mk] at h`. Establish `hS : (∑' j : ℕ+, ((j : ℕ) : ℂ) ^ e * Complex.exp (2 * Real.pi * Complex.I * ((((d : ℕ) : ℂ) * τ + (b.val : ℂ)) / N)) ^ (j : ℕ)) = ∑' j : ℕ+, ((j : ℕ) : ℂ) ^ e * _root_.GlobalTheory.WpFam.ch N (((j : ℕ) : ZMod N) * b) * Complex.exp ((2 * (Real.pi : ℂ) * Complex.I) * τ / N) ^ ((d : …` using `tsum_congr fun j => by`. Rewrite using `[exp_two_pi_I_div_pow_eq_mul N hNc, wpFam_ch_natCast_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, hS]`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `EisensteinSeries.qExpansion_identity_pnat he ⟨(((d : ℕ) : ℂ) * τ + -(b.val : ℂ)) / N, him _ (by rw [Complex.neg_im, Complex.natCast_im, neg_zero])⟩`. Simplify using `only [UpperHalfPlane.coe_mk] at h`.
+
+Establish `hterm : ∀ m : ℤ, 1 / ((-((d : ℕ) : ℂ) * τ + (b.val : ℂ)) / N + m) ^ (e + 1) = (-1) ^ (e + 1) * (1 / ((((d : ℕ) : ℂ) * τ + -(b.val : ℂ)) / N + ((-m : ℤ) : ℂ)) ^ (e + 1))`. Introduce `m`. Rewrite using `[show (-((d : ℕ) : ℂ) * τ + (b.val : ℂ)) / N + m = -((((d : ℕ) : ℂ) * τ + -(b.val : ℂ)) / N + ((-m : ℤ) : ℂ)) by push_cast; ring]`. Rewrite using `[neg_pow, one_div, one_div, mul_inv, ← inv_pow, inv_neg, inv_one]`. Establish `hre : ∑' m : ℤ, 1 / ((((d : ℕ) : ℂ) * τ + -(b.val : ℂ)) / N + ((-m : ℤ) : ℂ)) ^ (e + 1) = ∑' m : ℤ, 1 / ((((d : ℕ) : ℂ) * τ + -(b.val : ℂ)) / N + (m : ℂ)) ^ (e + 1)` using `(Equiv.neg ℤ).tsum_eq (fun m : ℤ => 1 / ((((d : ℕ) : ℂ) * τ + -(b.val : ℂ)) / N + (m : ℂ)) ^ (e + 1))`.
+
+Establish `hS : (∑' j : ℕ+, ((j : ℕ) : ℂ) ^ e * Complex.exp (2 * Real.pi * Complex.I * ((((d : ℕ) : ℂ) * τ + -(b.val : ℂ)) / N)) ^ (j : ℕ)) = ∑' j : ℕ+, ((j : ℕ) : ℂ) ^ e * _root_.GlobalTheory.WpFam.ch N (-(((j : ℕ) : ZMod N) * b)) * Complex.exp ((2 * (Real.pi : ℂ) * Complex.I) * τ / N) ^ ( …` using `tsum_congr fun j => by`. Rewrite using `[exp_two_pi_I_div_pow_eq_mul N hNc, wpFam_ch_neg_natCast_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[tsum_congr hterm, tsum_mul_left, hre, h, hS]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.WpFam.torsion_row_series : ∀ (N : ℕ) [NeZero N] (e : ℕ) (τ : ℍ) (b : ZMod N) (d : ℕ+), 1 ≤ e → (∑' m : ℤ, 1 / ((((d : ℕ) : ℂ) * τ + (b.val : ℂ)) / N + m) ^ (e + 1) = (-(2 * (Real.pi : ℂ) * Complex.I)) ^ (e + 1) / (e.factorial : ℂ) * ∑' j : ℕ+, ((j : ℕ) : ℂ) ^ e * _root_.GlobalTheory.WpFam.ch N (((j : ℕ) : ZMod N) * b) * Complex.exp ((2 * (Real.pi : ℂ) * Complex.I) * τ / N) ^ ((d : ℕ) * (j : ℕ))) ∧ ∑' m : ℤ, 1 / ((-((d : ℕ) : ℂ) * τ + (b.val : ℂ)) / N + m) ^ (e + 1) = (-(2 * (Real.pi : ℂ) * Complex.I)) ^ (e + 1) / (e.factorial : ℂ) * ((-1) ^ (e + 1) * ∑' j : ℕ+, ((j : ℕ) : ℂ) ^ e * _root_.GlobalTheory.WpFam.ch N (-(((j : ℕ) : ZMod N) * b)) * Complex.exp ((2 * (Real.pi : ℂ) * Complex.I) * τ / N) ^ ((d : ℕ) * (j : ℕ))) := by
   intro N _ e τ b d he
   have hNc : (N : ℂ) ≠ 0 := by exact_mod_cast NeZero.ne N

@@ -9,6 +9,15 @@ noncomputable section
 
 namespace GlobalTheory.FinSep
 
+/- English proof (translation)
+Set `W : Subgroup G` to `{ carrier := {u | ∀ c ∈ C, c * u * c⁻¹ ∈ U} one_mem' := fun c _ => by simp [U.one_mem] mul_mem' := fun {a b} ha hb c hc => by`. Use `U.mul_mem (ha c hc) (hb c hc)` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Use the proof step `inv_mem' := fun {a} ha c hc => by`. Use `U.inv_mem (ha c hc)` as an intermediate fact.
+
+Simplify `this }` using `[mul_assoc]`. Establish `hO : IsOpen ((fun q : G × G => q.1 * q.2 * q.1⁻¹) ⁻¹' (U : Set G))` using `hU.preimage (by fun_prop)`. Take `⟨u, v, -, hv, hCu, h1v, huv⟩` from `generalized_tube_lemma hC (isCompact_singleton (x := (1 : G))) hO (fun q hq => by`. Take `⟨-, hq2⟩` from `hq`. Simplify using `only [Set.mem_singleton_iff] at hq2`.
+
+Simplify using `[Set.mem_preimage, hq2, U.one_mem])`. Use `⟨W, W.isOpen_of_mem_nhds (g := 1) ?_, fun w hw => by simpa using hw 1 C.one_mem, ?_⟩` and prove the remaining obligations. Use `Filter.mem_of_superset (hv.mem_nhds (h1v rfl)) fun w hw c hc => ?_` and prove the remaining obligations. Conclude with `huv (Set.mk_mem_prod (hCu hc) hw)`. Introduce `c hc w hw d hd`.
+
+Use `hw (d * c) (C.mul_mem hd hc)` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+-/
 theorem exists_open_normalised {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (C : Subgroup G) (hC : IsCompact (C : Set G)) (U : Subgroup G) (hU : IsOpen (U : Set G)) :
     ∃ W : Subgroup G, IsOpen (W : Set G) ∧ W ≤ U ∧ ∀ c ∈ C, ∀ w ∈ W, c * w * c⁻¹ ∈ W := by
@@ -35,6 +44,45 @@ theorem exists_open_normalised {G : Type} [Group G] [TopologicalSpace G] [IsTopo
     have := hw (d * c) (C.mul_mem hd hc)
     simpa [mul_assoc] using this
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ n J _ Kc hKc x hx y hy hxy`. Use `haveI := GlobalTheory.Doubling.nonarchimedeanGroup_GFin σ J`. Set `C : Subgroup (GFin σ J)` to `Kc.map (projFin σ J)`. Establish `hC : IsCompact (C : Set (GFin σ J))`. Rewrite using `[Subgroup.coe_map]`.
+
+Conclude with `hKc.image (continuous_projFin σ J)`. Establish `hpC : ∀ k ∈ Kc, projFin σ J k ∈ C` using `fun k hk => Subgroup.mem_map_of_mem _ hk`. Establish `ha : (projFin σ J x)⁻¹ * projFin σ J y ≠ 1` using `fun h => hxy (inv_mul_eq_one.1 h)`. Take `⟨U₀, hU₀⟩` from `NonarchimedeanGroup.is_nonarchimedean ({(projFin σ J x)⁻¹ * projFin σ J y}ᶜ : Set (GFin σ J)) (isOpen_compl_singleton.mem_nhds (Set.mem_compl_singleton_iff.2 (Ne.symm ha)))`. Take `⟨W, hWo, hWU, hWn⟩` from `exists_open_normalised C hC U₀.toSubgroup U₀.isOpen`.
+
+Set `e : GFin σ J → GAd σ J → ℂ` to `fun c g => if c⁻¹ * projFin σ J g ∈ W then 1 else 0`. Set `S : Set (GAd σ J → ℂ)` to `e '' (C : Set (GFin σ J))`. Set `U : Subgroup (GAd σ J)` to `W.comap (projFin σ J)`. Establish `hUo : IsOpen (U : Set (GAd σ J))` using `hWo.preimage (continuous_projFin σ J)`. Establish `hfin : S.Finite`.
+
+Take `⟨t, htC, hcov⟩` from `hC.elim_nhds_subcover (fun c => {z | c⁻¹ * z ∈ W}) (fun c _ => (hWo.preimage (continuous_const_mul c⁻¹)).mem_nhds (by simp [W.one_mem]))`. Use `((t.finite_toSet.image e).subset ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Take `⟨d, hd, hcd⟩` from `Set.mem_iUnion₂.1 (hcov hc)`. Use `⟨d, hd, funext fun g => ?_⟩` and prove the remaining obligations.
+
+Establish `hcd' : d⁻¹ * c ∈ W` using `hcd`. Establish `key : d⁻¹ * projFin σ J g ∈ W ↔ c⁻¹ * projFin σ J g ∈ W`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `W.mul_mem (W.inv_mem hcd') h` as an intermediate fact.
+
+Simplify `this` using `[mul_assoc]`. Introduce `h`. Use `W.mul_mem hcd' h` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Simplify using `only [e, key]`.
+
+Establish `hinv : ∀ w ∈ Submodule.span ℂ S, ∀ u ∈ U, ∀ g, w (g * u) = w g`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨c, -, rfl⟩` from `hw`.
+
+Introduce `u hu g`. Establish `hu' : projFin σ J u ∈ W` using `hu`. Establish `key : c⁻¹ * projFin σ J (g * u) ∈ W ↔ c⁻¹ * projFin σ J g ∈ W`. Rewrite using `[map_mul, ← mul_assoc]`. Conclude with `⟨fun h => by simpa using W.mul_mem h (W.inv_mem hu'), fun h => W.mul_mem h hu'⟩`.
+
+Simplify using `only [e, key]`. Consider the case `zero => intro u _ g`. Both sides reduce to the same expression. Consider the case `add a b _ _ ha hb => intro u hu g`. Simplify using `[ha u hu g, hb u hu g]`.
+
+Consider the case `smul r a _ ha => intro u hu g`. Simplify using `[ha u hu g]`. Establish `hcont : ∀ w : GAd σ J → ℂ, (∀ u ∈ U, ∀ g, w (g * u) = w g) → Continuous w` using `fun w hw => continuous_iff_continuousAt.2 fun g => by`. Establish `hn : (fun h => g⁻¹ * h) ⁻¹' (U : Set (GAd σ J)) ∈ 𝓝 g` using `(hUo.preimage (continuous_const_mul g⁻¹)).mem_nhds (by simp [U.one_mem])`. Establish `hev : ∀ᶠ h in 𝓝 g, w g = w h` using `by filter_upwards [hn] with h hh`.
+
+Use `hw _ hh g` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Conclude with `this.symm`. Conclude with `continuousAt_const.congr hev`. Establish `hsm : ∀ w : GAd σ J → ℂ, (∀ u ∈ U, ∀ g, w (g * u) = w g) → GlobalTheory.UAut.IsSm σ J w`.
+
+Introduce `w hw k γ hγ g`. Establish `hmem : ∀ t : Fin k → ℝ, (List.ofFn fun i => γ i (t i)).prod ∈ U` using `fun t => U.list_prod_mem fun a ha => by`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 ha`. Take `⟨w', τ, Z, -, hZ⟩` from `hγ i`. Take `⟨z, hz, -⟩` from `hZ (t i)`.
+
+Use `show projFin σ J (γ i (t i)) ∈ W`. Rewrite using `[hz, projFin_embArch]`. Conclude with `W.one_mem`. Establish `: (fun t : Fin k → ℝ => w (g * (List.ofFn fun i => γ i (t i)).prod)) = fun _ => w g`. Use function extensionality and compare the values at `fun t => hw _ (hmem t) g`.
+
+Rewrite using `[this]`. Conclude with `contDiff_const`. Establish `hleft : ∀ k ∈ Kc, Submodule.span ℂ S ≤ (Submodule.span ℂ S).comap (LinearMap.funLeft ℂ ℂ (fun g : GAd σ J => k * g))`. Introduce `k hk`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨c, hc, rfl⟩`. Use `Submodule.subset_span ⟨(projFin σ J k)⁻¹ * c, C.mul_mem (C.inv_mem (hpC k hk)) hc, funext fun g => ?_⟩` and prove the remaining obligations. Simplify using `[e, LinearMap.funLeft_apply, mul_assoc]`. Establish `hright : ∀ k ∈ Kc, Submodule.span ℂ S ≤ (Submodule.span ℂ S).comap (LinearMap.funLeft ℂ ℂ (fun g : GAd σ J => g * k))`. Introduce `k hk`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Establish `hk'` using `hpC k hk`. Use `Submodule.subset_span ⟨c * (projFin σ J k)⁻¹, C.mul_mem hc (C.inv_mem hk'), funext fun g => ?_⟩` and prove the remaining obligations. Establish `key : (c * (projFin σ J k)⁻¹)⁻¹ * projFin σ J g ∈ W ↔ c⁻¹ * projFin σ J (g * k) ∈ W`.
+
+Rewrite using `[mul_inv_rev, inv_inv, map_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `hWn _ (C.inv_mem hk') _ h` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+
+Introduce `h`. Use `hWn _ hk' _ h` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Simplify using `only [e, LinearMap.funLeft_apply, Function.comp_apply, key]`. Use `⟨Submodule.span ℂ S, FiniteDimensional.span_of_finite ℂ hfin, fun w hw => ⟨hcont w (hinv w hw), hsm w (hinv w hw), ⟨U, hUo, fun u hu _ g => hinv w hw u hu g⟩, fun k hk => ⟨hleft k hk hw, hright k hk hw⟩⟩, e (projFin σ J x), Submodule.subset_span ⟨_, hpC x hx, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (projFin σ J x)⁻¹ * projFin σ J x ∈ W` using `by simp [W.one_mem]`. Establish `h2 : (projFin σ J x)⁻¹ * projFin σ J y ∉ W` using `fun h => hU₀ (hWU h) rfl`. Simplify using `only [e, h1, h2, if_true, if_false]`. Conclude with `one_ne_zero`.
+-/
 theorem exists_finDim_separating : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
       ∀ Kc : Subgroup (GAd σ J), IsCompact (Kc : Set (GAd σ J)) → ∀ x ∈ Kc, ∀ y ∈ Kc, projFin σ J x ≠ projFin σ J y →

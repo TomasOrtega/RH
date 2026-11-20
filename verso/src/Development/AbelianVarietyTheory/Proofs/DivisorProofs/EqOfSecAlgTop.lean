@@ -14,6 +14,9 @@ def secAlg {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A)) (U : T.Opens) : 
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry Opposite in
 open scoped TensorProduct in
 variable (A B : Type) [CommRing A] [CommRing B] [Algebra A B] in
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.HilbAff.appLE_eq_of_eq {X Y : Scheme.{0}} {f₁ f₂ : X ⟶ Y} (h : f₁ = f₂)
     (U : Y.Opens) (V : X.Opens)
     (e₁ : V ≤ f₁ ⁻¹ᵁ U) (e₂ : V ≤ f₂ ⁻¹ᵁ U) : f₁.appLE U V e₁ = f₂.appLE U V e₂ := by
@@ -23,6 +26,13 @@ theorem _root_.GlobalTheory.HilbAff.appLE_eq_of_eq {X Y : Scheme.{0}} {f₁ f₂
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry Opposite in
 open scoped TensorProduct in
 variable (A B : Type) [CommRing A] [CommRing B] [Algebra A B] in
+/- English proof (translation)
+Establish `key : (I.subschemeι ≫ pullback.fst _ g) ≫ _root_.GlobalTheory.HilbAff.str A B = (I.subschemeι ≫ pullback.snd _ g) ≫ g`. Simplify using `[pullback.condition]`. Establish `h1 : (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom (algebraMap A B a) = (_root_.GlobalTheory.HilbAff.str A B).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom a)`. Use `congrArg (fun φ => φ.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap A B)))` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at this`.
+
+Conclude with `this`. Establish `hm : (_root_.GlobalTheory.HilbAff.str A B).appTop ≫ (I.subschemeι ≫ pullback.fst _ g).appLE ⊤ ((I.subschemeι ≫ pullback.snd _ g) ⁻¹ᵁ U) (by simp) = g.appLE ⊤ U (by simp) ≫ (I.subschemeι ≫ pullback.snd _ g).app U`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).symm`.
+
+Rewrite using `[h1]`. Conclude with `congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom a)) hm`.
+-/
 theorem _root_.GlobalTheory.HilbAff.kappa_comm {T : Scheme.{0}}
     (g : T ⟶ Spec (CommRingCat.of A))
     (I : (pullback (_root_.GlobalTheory.HilbAff.str A B) g).IdealSheafData) (U : T.Opens) (a : A) :
@@ -68,6 +78,9 @@ def kappa {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A))
       commutes' := fun a => kappa_comm A B g I U a }
     (fun _ _ => Commute.all _ _)).toRingHom
 
+/- English proof (translation)
+Use `letI := (secAlg A g U).toAlgebra`. Use `letI : Algebra A Γ(I.subscheme, (I.subschemeι ≫ pullback.snd _ g) ⁻¹ᵁ U) := (((I.subschemeι ≫ pullback.snd _ g).app U).hom.comp (secAlg A g U)).toAlgebra`. Conclude with `Algebra.TensorProduct.lift_tmul _ _ _ _ _`.
+-/
 theorem kappa_tmul {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A))
     (I : (pullback (str A B) g).IdealSheafData) (U : T.Opens) (c : Γ(T, U)) (b : B) :
     letI := (secAlg A g U).toAlgebra
@@ -87,6 +100,9 @@ def xI (C : Type) [CommRing C] [Algebra A C] (J : Ideal (C ⊗[A] B)) :
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry Opposite in
 open scoped TensorProduct in
 variable (A B : Type) [CommRing A] [CommRing B] [Algebra A B] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.HilbAff.Basic`. Use `forall_congr' fun U => ?_` and prove the remaining obligations. Simplify using `only [map_sum, _root_.GlobalTheory.HilbAff.kappa_tmul]`.
+-/
 theorem _root_.GlobalTheory.HilbAff.basic_iff_kappa {r N : ℕ} (e : Module.Basis (Fin N) A B)
     (σ : Fin r ↪ Fin N) {T : Scheme.{0}}
     (g : T ⟶ Spec (CommRingCat.of A))
@@ -103,6 +119,9 @@ theorem _root_.GlobalTheory.HilbAff.basic_iff_kappa {r N : ℕ} (e : Module.Basi
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry Opposite in
 open scoped TensorProduct in
 variable (A B : Type) [CommRing A] [CommRing B] [Algebra A B] in
+/- English proof (translation)
+Use extensionality with `a`. Conclude with `congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom a)) (Scheme.Hom.appLE_map g (U := ⊤) (by simp) (homOfLE h).op)`.
+-/
 theorem _root_.GlobalTheory.HilbAff.secAlg_res {T : Scheme.{0}}
     (g : T ⟶ Spec (CommRingCat.of A)) {U V : T.Opens}
     (h : U ≤ V) : (T.presheaf.map (homOfLE h).op).hom.comp (_root_.GlobalTheory.HilbAff.secAlg A g V) =
@@ -114,6 +133,9 @@ theorem _root_.GlobalTheory.HilbAff.secAlg_res {T : Scheme.{0}}
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry Opposite in
 open scoped TensorProduct in
 variable (A B : Type) [CommRing A] [CommRing B] [Algebra A B] in
+/- English proof (translation)
+Establish `hm : (Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ (h ≫ Spec.map (CommRingCat.ofHom f)).appLE ⊤ U (by simp) = CommRingCat.ofHom f ≫ (Scheme.ΓSpecIso (CommRingCat.of C)).inv ≫ h.appLE ⊤ U (by simp)`. Combine the equalities or inequalities in the displayed calculation. Use extensionality with `a`. Conclude with `congrArg (fun φ => φ.hom a) hm`.
+-/
 theorem _root_.GlobalTheory.HilbAff.secAlg_comp {C : Type} [CommRing C] {T : Scheme.{0}}
     (h : T ⟶ Spec (CommRingCat.of C)) (f : A →+* C) (U : T.Opens) :
     _root_.GlobalTheory.HilbAff.secAlg A (h ≫ Spec.map (CommRingCat.ofHom f)) U =
@@ -136,6 +158,11 @@ theorem _root_.GlobalTheory.HilbAff.secAlg_comp {C : Type} [CommRing C] {T : Sch
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry Opposite in
 open scoped TensorProduct in
 variable (A B : Type) [CommRing A] [CommRing B] [Algebra A B] in
+/- English proof (translation)
+Apply `ext_of_isAffine` to reduce the goal to its premises. Establish `e₁ : g₁.appLE ⊤ ⊤ le_top = g₁.appTop` using `g₁.appLE_eq_app`. Establish `e₂ : g₂.appLE ⊤ ⊤ le_top = g₂.appTop` using `g₂.appLE_eq_app`. Establish `h' : (Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ g₁.appLE ⊤ ⊤ le_top = (Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ g₂.appLE ⊤ ⊤ le_top` using `CommRingCat.hom_ext h`. Rewrite `h'` using `[e₁, e₂]`.
+
+Conclude with `(cancel_epi _).1 h'`.
+-/
 theorem _root_.GlobalTheory.HilbAff.eq_of_secAlg_top {T : Scheme.{0}}
     {g₁ g₂ : T ⟶ Spec (CommRingCat.of A)}
     (h : _root_.GlobalTheory.HilbAff.secAlg A g₁ ⊤ = _root_.GlobalTheory.HilbAff.secAlg A g₂ ⊤) :

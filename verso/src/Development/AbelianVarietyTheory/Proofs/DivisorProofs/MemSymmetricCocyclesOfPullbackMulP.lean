@@ -9,6 +9,11 @@ namespace GlobalTheory
 
 namespace PDivGroup
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[mem_symCocycles]`. Establish `h3 : Function.Injective (TensorProduct.map (G.mulP n : G.A n →ₗ[R] G.A (n + 1)) (pullbackTwo (G.mulP n)))` using `TensorProduct.map_injective_of_flat_flat _ _ (Test.mulP_injective G n) (G.pullbackTwo_mulP_injective n)`. Use `⟨h3 ?_, G.pullbackTwo_mulP_injective n ?_⟩` and prove the remaining obligations. Rewrite using `[← cobTwo_pullTwo, h.1, map_zero]`. Rewrite using `[← h.2]`.
+
+Conclude with `TensorProduct.map_comm _ _ c`.
+-/
 theorem mem_symCocycles_of_pullTwo_mulP {p : ℕ} {R : Type} [CommRing R] (G : PDivGroup p R) (n : ℕ)
     (c : G.A n ⊗[R] G.A n) (h : pullbackTwo (G.mulP n) c ∈ symCocycles R (G.A (n + 1))) :
     c ∈ symCocycles R (G.A n) := by

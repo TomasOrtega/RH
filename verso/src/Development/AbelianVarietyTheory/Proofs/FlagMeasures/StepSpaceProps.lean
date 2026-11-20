@@ -13,6 +13,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace
 
 variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Establish `h1 : gᴴ * g = 1`. Use `Matrix.mem_unitaryGroup_iff'.mp hg.1` as an intermediate fact. Simplify `this` using `[Matrix.star_eq_conjTranspose]`. Unfold `inUJ`. Rewrite using `[Matrix.mul_assoc, ← hg.2, ← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+-/
 theorem kset_inUJ {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) : inUJ ε g := by
   have h1 : gᴴ * g = 1 := by
     have := Matrix.mem_unitaryGroup_iff'.mp hg.1
@@ -20,6 +23,9 @@ theorem kset_inUJ {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g
   unfold inUJ
   rw [Matrix.mul_assoc, ← hg.2, ← Matrix.mul_assoc, h1, Matrix.one_mul]
 
+/- English proof (translation)
+Unfold `inUJ at *`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Jm ε := by rw [hg, hh]`.
+-/
 theorem inUJ_mul {ε : Fin n → Bool} {g h : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (hh : inUJ ε h) :
     inUJ ε (g * h) := by
   unfold inUJ at *
@@ -27,6 +33,13 @@ theorem inUJ_mul {ε : Fin n → Bool} {g h : Matrix (Fin n) (Fin n) ℂ} (hg : 
         simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
     _ = Jm ε := by rw [hg, hh]
 
+/- English proof (translation)
+Establish `h2 : gᴴ * Jm ε = Jm ε * gᴴ`. Use `congrArg Matrix.conjTranspose hg.2` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Jm_conjTranspose]`. Conclude with `this.symm`. Unfold `inG at *`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`. Use `_ = g * (Xᴴ * Jm ε + Jm ε * X) * gᴴ := by`. Rewrite using `[h2, ← hg.2]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`.
+
+Use `_ = 0 := by rw [hX]; simp`.
+-/
 theorem inG_conj {ε : Fin n → Bool} {g X : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) (hX : inG ε X) :
     inG ε (g * X * gᴴ) := by
   have h2 : gᴴ * Jm ε = Jm ε * gᴴ := by
@@ -42,6 +55,11 @@ theorem inG_conj {ε : Fin n → Bool} {g X : Matrix (Fin n) (Fin n) ℂ} (hg : 
         simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]
     _ = 0 := by rw [hX]; simp
 
+/- English proof (translation)
+Establish `h1 : gᴴ * g = 1`. Use `Matrix.mem_unitaryGroup_iff'.mp hg` as an intermediate fact. Simplify `this` using `[Matrix.star_eq_conjTranspose]`. Establish `hi : g⁻¹ = gᴴ` using `Matrix.inv_eq_left_inv h1`. Establish `hu : IsUnit g` using `(Matrix.isUnit_iff_isUnit_det g).mpr (Matrix.isUnit_det_of_left_inverse h1)`.
+
+Establish `: t • (g * X * gᴴ) = g * (t • X) * g⁻¹`. Rewrite using `[hi]`. Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.exp_conj _ _ hu, hi, Matrix.mul_assoc, h1, Matrix.mul_one]`.
+-/
 theorem exp_conj_mul {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Matrix.unitaryGroup (Fin n) ℂ)
     (X : Matrix (Fin n) (Fin n) ℂ) (t : ℂ) :
     NormedSpace.exp (t • (g * X * gᴴ)) * g = g * NormedSpace.exp (t • X) := by
@@ -54,6 +72,9 @@ theorem exp_conj_mul {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Matrix.unitary
     rw [hi]; simp
   rw [this, Matrix.exp_conj _ _ hu, hi, Matrix.mul_assoc, h1, Matrix.mul_one]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Establish `a1` using `hσ.2 _ (exp_indefinite_unitary_holds n ε _ (inG_conj hg hX) t) g (kset_inUJ hg)`. Establish `a2` using `hσ.2 g (kset_inUJ hg) _ (exp_indefinite_unitary_holds n ε _ hX t)`. Rewrite `a1` using `[exp_conj_mul hg.1, a2]`. Conclude with `(congrArg (fun T : H →L[ℂ] H => T w) a1).symm`.
+-/
 theorem orbit_conj {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hσ : IsCRepOn (UJset ε) σ) {g X : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) (hX : inG ε X) (w : H) :
     orbit σ (g * X * gᴴ) (σ g w) = fun t => σ g (orbit σ X w t) := by
@@ -63,6 +84,9 @@ theorem orbit_conj {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H
   rw [exp_conj_mul hg.1, a2] at a1
   exact (congrArg (fun T : H →L[ℂ] H => T w) a1).symm
 
+/- English proof (translation)
+Unfold `dAct`. Rewrite using `[orbit_conj hσ hg hX]`. Conclude with `(((σ g).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hw.hasDerivAt).deriv`.
+-/
 theorem dAct_conj {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hσ : IsCRepOn (UJset ε) σ) {g X : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) (hX : inG ε X) {w : H}
     (hw : DifferentiableAt ℝ (orbit σ X w) 0) :
@@ -71,6 +95,11 @@ theorem dAct_conj {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H 
   rw [orbit_conj hσ hg hX]
   exact (((σ g).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hw.hasDerivAt).deriv
 
+/- English proof (translation)
+Establish `: orbit σ X (w + c • w') = fun t => orbit σ X w t + c • orbit σ X w' t`. Use function extensionality and compare the values at `t`. Simplify using `[orbit]`. Unfold `dAct`. Rewrite using `[this]`.
+
+Conclude with `(hw.hasDerivAt.fun_add (hw'.hasDerivAt.fun_const_smul c)).deriv`.
+-/
 theorem dAct_add_smul {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {X : Matrix (Fin n) (Fin n) ℂ}
     {w w' : H} (hw : DifferentiableAt ℝ (orbit σ X w) 0) (hw' : DifferentiableAt ℝ (orbit σ X w') 0)
     (c : ℂ) : dAct σ X (w + c • w') = dAct σ X w + c • dAct σ X w' := by
@@ -81,6 +110,11 @@ theorem dAct_add_smul {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {X :
   rw [this]
   exact (hw.hasDerivAt.fun_add (hw'.hasDerivAt.fun_const_smul c)).deriv
 
+/- English proof (translation)
+Establish `: orbit σ X 0 = fun _ => 0`. Use function extensionality and compare the values at `t`. Simplify using `[orbit]`. Unfold `dAct`. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem dAct_zero (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (X : Matrix (Fin n) (Fin n) ℂ) :
     dAct σ X 0 = 0 := by
   have : orbit σ X 0 = fun _ => 0 := by
@@ -90,6 +124,11 @@ theorem dAct_zero (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (X : Mat
   rw [this]
   simp
 
+/- English proof (translation)
+Introduce `g hg v hv`. Establish `: lowKSub ε lam σ ≤ (lowKSub ε lam σ).comap (σ g : H →ₗ[ℂ] H)`. Use `sSup_le fun S hS => ?_` and prove the remaining obligations. Introduce `x hx`. Conclude with `(le_sSup hS : S ≤ lowKSub ε lam σ) (hS.2.1 g hg x hx)`.
+
+Conclude with `this hv`.
+-/
 theorem lowKSub_stable (ε : Fin n → Bool) (lam : Fin n → ℝ) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) :
     IsKStableOn ε σ (lowKSub ε lam σ) := by
   intro g hg v hv
@@ -99,11 +138,19 @@ theorem lowKSub_stable (ε : Fin n → Bool) (lam : Fin n → ℝ) (σ : Matrix 
     exact (le_sSup hS : S ≤ lowKSub ε lam σ) (hS.2.1 g hg x hx)
   exact this hv
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨l, u, hl, hX, hu, rfl⟩`.
+-/
 theorem dWord_mem {ε : Fin n → Bool} {lam : Fin n → ℝ} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     {P : ℕ} {l : List (Matrix (Fin n) (Fin n) ℂ)} {u : H} (hl : l.length ≤ P) (hX : ∀ X ∈ l, inG ε X)
     (hu : u ∈ lowKSub ε lam σ) : dWord σ l u ∈ stepSpace ε lam σ P :=
   Submodule.subset_span ⟨l, u, hl, hX, hu, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons Y l ih`. Establish `hl : ∀ X ∈ l, inG ε X` using `fun X h => hX X (List.mem_cons_of_mem _ h)`. Establish `hY : inG ε Y` using `hX Y List.mem_cons_self`.
+
+Express the relevant statement in the definitionally equal form `σ g (dAct σ Y (dWord σ l u)) = dAct σ (g * Y * gᴴ) (dWord σ (l.map fun X => g * X * gᴴ) (σ g u))`. Rewrite using `[← ih hl, dAct_conj hσ hg hY (hd _ _ (dWord_mem le_rfl hl hu) Y hY)]`.
+-/
 theorem dWord_conj {ε : Fin n → Bool} {lam : Fin n → ℝ} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hσ : IsCRepOn (UJset ε) σ) (hd : ∀ P, ∀ w ∈ stepSpace ε lam σ P, IsDiffVec ε σ w)
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) {u : H} (hu : u ∈ lowKSub ε lam σ)
@@ -118,6 +165,23 @@ theorem dWord_conj {ε : Fin n → Bool} {lam : Fin n → ℝ} {σ : Matrix (Fin
       dAct σ (g * Y * gᴴ) (dWord σ (l.map fun X => g * X * gᴴ) (σ g u))
     rw [← ih hl, dAct_conj hσ hg hY (hd _ _ (dWord_mem le_rfl hl hu) Y hY)]
 
+/- English proof (translation)
+Introduce `hSB n ε H _ _ _ σ lam hlam hDS P`. Establish `hb : ∀ a, |lam a| ≤ Real.sqrt (∑ a, |lam a|) ^ 2`. Introduce `a`. Rewrite using `[Real.sq_sqrt (Finset.sum_nonneg fun _ _ => abs_nonneg _)]`. Conclude with `Finset.single_le_sum (f := fun a => |lam a|) (fun _ _ => abs_nonneg _) (Finset.mem_univ a)`.
+
+Establish `hd : ∀ P, ∀ w ∈ stepSpace ε lam σ P, IsDiffVec ε σ w` using `fun P => (hSB n ε lam H σ _ P hlam hDS hb).2.1`. Establish `hσ : IsCRepOn (UJset ε) σ` using `hDS.2.2.1.1`. Use `⟨(hSB n ε lam H σ _ P hlam hDS hb).1, ?_, fun X hX w hw => ⟨(hd P w hw X hX).hasDerivAt, ?_⟩, fun X hX w hw w' hw' c => dAct_add_smul (hd P w hw X hX) (hd P w' hw' X hX) c⟩` and prove the remaining obligations. Introduce `g hg v hv`. Establish `: stepSpace ε lam σ P ≤ (stepSpace ε lam σ P).comap (σ g : H →ₗ[ℂ] H)`.
+
+Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, u, hl, hX, hu, rfl⟩`. Express the relevant statement in the definitionally equal form `σ g (dWord σ l u) ∈ stepSpace ε lam σ P`. Rewrite using `[dWord_conj hσ hd hg hu l hX]`. Use `dWord_mem (by simpa using hl) ?_ (lowKSub_stable ε lam σ g hg u hu)` and prove the remaining obligations.
+
+Introduce `Y hY`. Take `⟨X, hXl, rfl⟩` from `List.mem_map.mp hY`. Conclude with `inG_conj hg (hX X hXl)`. Conclude with `this hv`. Proceed by induction on `hw using Submodule.span_induction with`.
+
+Consider the case `mem v hv`. Take `⟨l, u, hl, hl', hu, rfl⟩` from `hv`. Use `dWord_mem (l := X :: l) (by simpa using hl) ?_ hu` and prove the remaining obligations. Introduce `Y hY`. Break down `List.mem_cons.mp hY with rfl | h` into its components or cases.
+
+Conclude with `hX`. Conclude with `hl' Y h`. Consider the case `zero => rw [dAct_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y hx hy ihx ihy`.
+
+Use `dAct_add_smul (hd P x hx X hX) (hd P y hy X hX) 1` as an intermediate fact. Rewrite `this` using `[one_smul, one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ ihx ihy`. Consider the case `smul c x hx ihx`.
+
+Use `dAct_add_smul (hd P 0 (Submodule.zero_mem _) X hX) (hd P x hx X hX) c` as an intermediate fact. Rewrite `this` using `[zero_add, dAct_zero, zero_add]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ c ihx`.
+-/
 theorem stepSpace_props : GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.StepBound → ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (lam : Fin n → ℝ), IsHCParam lam → IsDS ε lam σ → ∀ P : ℕ, FiniteDimensional ℂ (GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace ε lam σ P) ∧ IsKStableOn ε σ (GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace ε lam σ P) ∧ (∀ X, inG ε X → ∀ w ∈ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace ε lam σ P, HasDerivAt (GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.orbit σ X w) (GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct σ X w) 0 ∧ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct σ X w ∈ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace ε lam σ (P + 1)) ∧ ∀ X, inG ε X → ∀ w ∈ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace ε lam σ P, ∀ w' ∈ GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.stepSpace ε lam σ P, ∀ c : ℂ, GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct σ X (w + c • w') = GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct σ X w + c • GlobalTheory.IndefiniteRowSideFullHecke.OrbitDifferenceSpace.dAct σ X w' := by
   intro hSB n ε H _ _ _ σ lam hlam hDS P
   have hb : ∀ a, |lam a| ≤ Real.sqrt (∑ a, |lam a|) ^ 2 := by

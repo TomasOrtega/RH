@@ -21,6 +21,21 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 namespace GlobalTheory.CompanionTheory.WaveMult
 
+/- English proof (translation)
+Establish `cg : Continuous g` using `hg.1.continuous`. Establish `cg' : Continuous g'` using `hg'.1.continuous`. Set `F : ℝ → ℝ → V` to `fun t r => ((g t * g' (r - t) : ℝ) : ℂ) • φ r`. Establish `hFc : Continuous (Function.uncurry F)`. Establish `: Function.uncurry F = fun p : ℝ × ℝ => ((g p.1 * g' (p.2 - p.1) : ℝ) : ℂ) • φ p.2` using `rfl`.
+
+Rewrite using `[this]`. Use `fun_prop`. Establish `hFs : HasCompactSupport (Function.uncurry F)`. Use `HasCompactSupport.intro (K := Set.Icc (-|T|) |T| ×ˢ Set.Icc (-(|T| + |T'|)) (|T| + |T'|)) (isCompact_Icc.prod isCompact_Icc) ?_` and prove the remaining obligations. Introduce and unpack `⟨t, r⟩ h`.
+
+Distinguish the cases in `ht : T < |t|`. Simplify using `[Function.uncurry, F, hg.2.2 t ht]`. Distinguish the cases in `hr : T' < |r - t|`. Simplify using `[Function.uncurry, F, hg'.2.2 _ hr]`. It suffices to derive a contradiction.
+
+Apply `h` to reduce the goal to its premises. Establish `h1 : |t| ≤ |T|` using `(not_lt.mp ht).trans (le_abs_self T)`. Establish `h2 : |r - t| ≤ |T'|` using `(not_lt.mp hr).trans (le_abs_self T')`. Establish `h3 : |r| ≤ |t| + |r - t|` using `by simpa using abs_add_le t (r - t)`. Conclude with `⟨abs_le.mp h1, abs_le.mp (by linarith)⟩`.
+
+Establish `hFi : Integrable (Function.uncurry F) (volume.prod volume)` using `hFc.integrable_of_hasCompactSupport hFs`. Establish `hL : ∀ t, (g t : ℂ) • ∫ s, (g' s : ℂ) • φ (t + s) = ∫ r, F t r`. Introduce `t`. Rewrite using `[← integral_add_left_eq_self (fun r => F t r) t, ← integral_smul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations.
+
+Simplify using `only [F, add_sub_cancel_left, Complex.ofReal_mul, mul_smul]`. Establish `hR : ∀ r, (gconv g g' r : ℂ) • φ r = ∫ t, F t r`. Introduce `r`. Simplify using `only [F, gconv]`. Rewrite using `[integral_smul_const, integral_complex_ofReal]`.
+
+Simplify using `only [hL, hR]`. Conclude with `integral_integral_swap hFi`.
+-/
 theorem integral_smul_integral_shift {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     [CompleteSpace V] {g g' : ℝ → ℝ} {T T' : ℝ} (hg : IsBump g T) (hg' : IsBump g' T')
     {φ : ℝ → V} (hφ : Continuous φ) :
@@ -61,6 +76,13 @@ theorem integral_smul_integral_shift {V : Type} [NormedAddCommGroup V] [NormedSp
   simp only [hL, hR]
   exact integral_integral_swap hFi
 
+/- English proof (translation)
+Introduce `hR hS n E u w w' g g' T T' hu hg hg'`. Establish `: CompleteSpace E.V` using `FiniteDimensional.complete ℂ E.V`. Establish `hu' : IsWave E (fun t => zOp w' (u t))` using `WaveZ.isWave_zOp hR n E u w' hu`. Establish `hv` using `WaveAvg.isWave_avg hS n E (fun t => zOp w' (u t)) g' T' hu' hg'`. Use `⟨_, hv, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx`. Establish `h` using `ZOpAvg.zOp_avg n u g' T' w' hu.1 hg' x hx`. Simplify using `only [zero_add]`. Conclude with `h.symm`. Introduce `x hx`.
+
+Establish `hb` using `isBump_gconv g g' T T' hg hg'`. Establish `hφ : ∀ x' ∈ GLs n, Continuous fun r => zOp w' (u r) x'` using `fun x' hx' => hu'.1.continuousOn.comp_continuous (f := fun r : ℝ => (r, x')) (by fun_prop) (fun r => ⟨trivial, hx'⟩)`. Establish `h1 : ∀ x' ∈ GLs n, (∫ t, (g t : ℂ) • ∫ s, (g' s : ℂ) • zOp w' (u (t + s)) x') = ∫ r, (gconv g g' r : ℂ) • zOp w' (u r) x'` using `fun x' hx' => integral_smul_integral_shift hg hg' (hφ x' hx')`. Rewrite using `[zOp_agree_GLs n w _ _ h1 x hx, ZOpAvg.zOp_avg n (fun t => zOp w' (u t)) (gconv g g') (T + T') w hu'.1 hb x hx, ZOpAvg.zOp_avg n u (gconv g g') (T + T') (w ++ w') hu.1 hb x hx]`. Simplify using `only [Swap.zOp_append]`.
+-/
 theorem wave_compose : RCalc → WaveSpeed → ∀ (n : ℕ) (E : KMod n) (u : ℝ → Mat n → E.V)
     (w w' : List (Bool × ℕ)) (g g' : ℝ → ℝ) (T T' : ℝ), IsWave E u → IsBump g T → IsBump g' T' →
     ∃ v : ℝ → Mat n → E.V, IsWave E v ∧

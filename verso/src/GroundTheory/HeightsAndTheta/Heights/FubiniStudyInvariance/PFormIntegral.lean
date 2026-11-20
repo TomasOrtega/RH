@@ -13,6 +13,11 @@ namespace FSInv
 
 open CP
 
+/- English proof (translation)
+Introduce `N i g hg`. Rewrite `hg`, the goal using `[hC N i]`. Rewrite using `[integral_map (measurable_chartInv i).aemeasurable hg, fsChartMeasure]`. Establish `hd : (fun z => ENNReal.ofReal (fsVolumeDensity (N` using `N) i z)) = fun z => (((fsVolumeDensity (N := N) i z).toNNReal : NNReal) : ℝ≥0∞) := rfl`. Rewrite using `[hd, integral_withDensity_eq_integral_smul (measurable_fsVolumeDensity i).real_toNNReal]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [NNReal.smul_def, Real.coe_toNNReal _ (fsVolumeDensity_pos i z).le, smul_eq_mul]`. Rewrite using `[fsVolumeDensity, mul_comm]`.
+-/
 theorem FormIntegral.proof (hC : ChartIndep.Statement) : FormIntegral.Statement := by
   intro N i g hg
   rw [hC N i] at hg ⊢

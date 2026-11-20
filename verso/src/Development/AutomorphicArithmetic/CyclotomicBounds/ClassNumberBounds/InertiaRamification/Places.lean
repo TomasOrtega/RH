@@ -8,16 +8,25 @@ open DirichletCharacter
 variable {N : ℕ} [NeZero N] (l : ℕ) [Fact l.Prime]
 
 omit [NeZero N] in
+/- English proof (translation)
+Rewrite using `[MonoidHom.mem_ker, ← Units.val_eq_one, MulChar.coe_toUnitHom]`.
+-/
 private theorem mem_ker_toUnitHom_iff (ψ : DirichletCharacter ℂ N) (u : (ZMod N)ˣ) :
     u ∈ (MulChar.toUnitHom ψ).ker ↔ ψ (u : ZMod N) = 1 := by
   rw [MonoidHom.mem_ker, ← Units.val_eq_one, MulChar.coe_toUnitHom]
 
 omit [NeZero N] in
+/- English proof (translation)
+The claim follows from `iInf₂_le (f := fun (φ : DirichletCharacter ℂ N) (_ : φ ∈ X) => (MulChar.toUnitHom φ).ker) ψ h`.
+-/
 private theorem charKer_le_ker {X : Subgroup (DirichletCharacter ℂ N)}
     {ψ : DirichletCharacter ℂ N} (h : ψ ∈ X) : charKer X ≤ (MulChar.toUnitHom ψ).ker :=
   iInf₂_le (f := fun (φ : DirichletCharacter ℂ N) (_ : φ ∈ X) => (MulChar.toUnitHom φ).ker) ψ h
 
 omit [NeZero N] in
+/- English proof (translation)
+Rewrite using `[mem_ker_toUnitHom_iff]`. Establish `h : ψ (-1) = -1` using `o`. Simplify using `only [Units.val_neg, Units.val_one, h]`. Evaluate the numerical expressions.
+-/
 private theorem neg_one_notMem_ker {ψ : DirichletCharacter ℂ N} (o : ψ.Odd) :
     (-1 : (ZMod N)ˣ) ∉ (MulChar.toUnitHom ψ).ker := by
   rw [mem_ker_toUnitHom_iff]
@@ -26,6 +35,9 @@ private theorem neg_one_notMem_ker {ψ : DirichletCharacter ℂ N} (o : ψ.Odd) 
   norm_num
 
 omit [NeZero N] in
+/- English proof (translation)
+Establish `hle : D ⊔ charKer X ≤ (MulChar.toUnitHom ψ).ker` using `sup_le (fun u hu => (mem_ker_toUnitHom_iff ψ u).2 (hD u hu)) (charKer_le_ker h)`. Conclude with `⟨hle, fun hc => neg_one_notMem_ker o (hle hc)⟩`.
+-/
 private theorem not_conjIn_of_trivial {X : Subgroup (DirichletCharacter ℂ N)}
     {ψ : DirichletCharacter ℂ N} (h : ψ ∈ X) (o : ψ.Odd) {D : Subgroup (ZMod N)ˣ}
     (hD : ∀ u ∈ D, ψ (u : ZMod N) = 1) :
@@ -34,6 +46,11 @@ private theorem not_conjIn_of_trivial {X : Subgroup (DirichletCharacter ℂ N)}
     sup_le (fun u hu => (mem_ker_toUnitHom_iff ψ u).2 (hD u hu)) (charKer_le_ker h)
   exact ⟨hle, fun hc => neg_one_notMem_ker o (hle hc)⟩
 
+/- English proof (translation)
+Take `⟨hle, hc⟩` from `not_conjIn_of_trivial hch hodd ((splitsFor_iff l ch).2.1 hs)`. Use `⟨hle, hc, (conjIn_iff l X).1.2 hc, fun σ τ h => ?_⟩` and prove the remaining obligations. Establish `h1` using `(mem_ker_toUnitHom_iff ch _).1 (hle h)`. Establish `h2 : (τ : ZMod N) = σ * ((σ⁻¹ * τ : (ZMod N)ˣ) : ZMod N)`. Rewrite using `[← Units.val_mul, mul_inv_cancel_left]`.
+
+Rewrite using `[h2, map_mul, h1, mul_one]`.
+-/
 theorem split_of_splitsFor (X : Subgroup (DirichletCharacter ℂ N)) {ch : DirichletCharacter ℂ N}
     (hch : ch ∈ X) (hodd : ch.Odd) (hs : SplitsFor l ch) :
     decompUnits N l ⊔ charKer X ≤ (MulChar.toUnitHom ch).ker ∧ ¬ ConjIn X (decompUnits N l) ∧

@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `P _ Good bad h S`. Proceed by induction on `S using Finset.strongInduction with`. Consider the case `H S ih`. Introduce `hS`. Distinguish the cases in `hb : ∃ w ∈ S, bad w`.
+
+Take `⟨w, hw, hbw⟩` from `hb`. Conclude with `ih (S.erase w) (Finset.erase_ssubset hw) (h S w hS hw hbw)`. Conclude with `⟨S, hS, fun w hw hbw => hb ⟨w, hw, hbw⟩⟩`.
+-/
 theorem UpperTheory.exists_good_without_bad :
     ∀ {P : Type} [DecidableEq P] (Good : Finset P → Prop) (bad : P → Prop), (∀ (S : Finset P) (w : P), Good S → w ∈ S → bad w → Good (S.erase w)) → ∀ S : Finset P, Good S → ∃ T : Finset P, Good T ∧ ∀ w ∈ T, ¬ bad w := by
   intro P _ Good bad h S

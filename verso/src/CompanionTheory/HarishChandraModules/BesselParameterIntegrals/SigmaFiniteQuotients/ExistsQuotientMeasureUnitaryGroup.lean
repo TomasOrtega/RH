@@ -11,6 +11,11 @@ open PI PI.QuotSetU PI.QuotSetU.UnitaryGroupMassFormula CompanionTheory.D.Upq.Mo
 
 variable {m : ℕ}
 
+/- English proof (translation)
+Establish `hι` using `MG.measurableEmbedding_toM (hG := hG)`. Set `μ : Measure (MG G hG)` to `haar`. Use `⟨μ.map MG.toM, hι.sigmaFinite_map, ?_, ?_, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Measure.map_eq_zero_iff hι.measurable.aemeasurable]`. Conclude with `NeZero.ne μ`.
+
+Rewrite using `[hι.map_apply]`. Establish `: (MG.toM : MG G hG → MtM m) ⁻¹' {x | Matrix.of x ∉ G} = ∅` using `Set.eq_empty_of_forall_notMem fun a ha => ha a.mem`. Rewrite using `[this, measure_empty]`. Establish `e : lmulQ s ∘ MG.toM = MG.toM ∘ (fun x : MG G hG => MG.mk hG s hs * x)` using `rfl`. Rewrite using `[map_map (measurable_lmulQ _) hι.measurable, e, ← map_map hι.measurable (measurable_const_mul _), map_mul_left_eq_self]`.
+-/
 theorem exists_isHaarOnM {G : Set (Matrix (Fin m) (Fin m) ℂ)} (hG : IsMatGroup G) :
     ∃ μ : Measure (MtM m), IsHaarOnM G μ := by
   have hι := MG.measurableEmbedding_toM (hG := hG)
@@ -28,6 +33,11 @@ theorem exists_isHaarOnM {G : Set (Matrix (Fin m) (Fin m) ℂ)} (hG : IsMatGroup
 
 def oneM (m : ℕ) : MtM m := Matrix.of.symm (1 : Matrix (Fin m) (Fin m) ℂ)
 
+/- English proof (translation)
+Use `⟨hG, hG, subset_rfl, hμ, hμ, hr, hr, fun f _ => ?_⟩` and prove the remaining obligations. Rewrite using `[lintegral_dirac]`. Use `congr 1`. Use extensionality with `s`. Use `congr 1`.
+
+Conclude with `(Matrix.mul_one (Matrix.of s)).symm`.
+-/
 theorem quotient_measure_self {G : Set (Matrix (Fin m) (Fin m) ℂ)} (hG : IsMatGroup G)
     {μ : Measure (MtM m)} (hμ : IsHaarOnM G μ) (hr : IsRightInvM G μ) :
     QuotientSetting G G μ μ (dirac (oneM m)) := by
@@ -38,11 +48,23 @@ theorem quotient_measure_self {G : Set (Matrix (Fin m) (Fin m) ℂ)} (hG : IsMat
   congr 1
   exact (Matrix.mul_one (Matrix.of s)).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isClosed_singleton, rfl, fun a ha b hb => by rw [Set.mem_singleton_iff.1 ha, Set.mem_singleton_iff.1 hb]; simp, fun a ha => by rw [Set.mem_singleton_iff.1 ha]; simp⟩`.
+-/
 theorem isMatGroup_one : IsMatGroup ({1} : Set (Matrix (Fin m) (Fin m) ℂ)) :=
   ⟨isClosed_singleton, rfl, fun a ha b hb => by
     rw [Set.mem_singleton_iff.1 ha, Set.mem_singleton_iff.1 hb]; simp, fun a ha => by
     rw [Set.mem_singleton_iff.1 ha]; simp⟩
 
+/- English proof (translation)
+Use `⟨hG, isMatGroup_one, Set.singleton_subset_iff.2 hG.2.1, hμ, ⟨inferInstance, NeZero.ne _, ?_, fun s hs => ?_⟩, hr, fun s hs => ?_, fun f _ => ?_⟩` and prove the remaining obligations. Rewrite using `[dirac_apply]`. Use `Set.indicator_of_notMem ?_ _` and prove the remaining obligations. Introduce `h`. Conclude with `h rfl`.
+
+Rewrite using `[Set.mem_singleton_iff.1 hs, map_dirac' (measurable_lmulQ _)]`. Use `congr 1`. Conclude with `Matrix.mul_one (1 : Matrix (Fin m) (Fin m) ℂ)`. Rewrite using `[Set.mem_singleton_iff.1 hs, map_dirac' (measurable_rmulQ _)]`. Use `congr 1`.
+
+Conclude with `Matrix.mul_one (1 : Matrix (Fin m) (Fin m) ℂ)`. Use `congr 1`. Use extensionality with `x`. Rewrite using `[lintegral_dirac]`. Use `congr 1`.
+
+Conclude with `(Matrix.one_mul (Matrix.of x)).symm`.
+-/
 theorem quotient_measure_trivial_subgroup {G : Set (Matrix (Fin m) (Fin m) ℂ)} (hG : IsMatGroup G)
     {μ : Measure (MtM m)} (hμ : IsHaarOnM G μ) (hr : IsRightInvM G μ) :
     QuotientSetting G {1} μ (dirac (oneM m)) μ := by
@@ -64,6 +86,9 @@ theorem quotient_measure_trivial_subgroup {G : Set (Matrix (Fin m) (Fin m) ℂ)}
     congr 1
     exact (Matrix.one_mul (Matrix.of x)).symm
 
+/- English proof (translation)
+Establish `hG` using `unitary_hermitian_group k r`. Take `⟨μ, hμ⟩` from `exists_isHaarOnM hG`. Take `⟨D, hD, hR⟩` from `exists_modular_function _ _ hG`. Establish `hr` using `hR (CompanionTheory.D.Upq.unitary_group_modular_function_trivial k r D hD) μ hμ`. Conclude with `⟨μ, quotient_measure_self hG hμ hr, quotient_measure_trivial_subgroup hG hμ hr⟩`.
+-/
 theorem exists_quotient_measure_unitary_group (k r : ℕ) : ∃ μ : Measure (MtM (2 * r + k + 1)),
     QuotientSetting (UH (Hpk k r)) (UH (Hpk k r)) μ μ (dirac (oneM _)) ∧
     QuotientSetting (UH (Hpk k r)) {1} μ (dirac (oneM _)) μ := by

@@ -10,5 +10,8 @@ open GlobalTheory.LGrp (IsUnitarisable IsIrrSmooth bcParam)
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DiagIdx.relIndex_intMat_diag | exact GlobalTheory.DiagIdx.relIndex_intMat_diag | (intros; apply GlobalTheory.DiagIdx.relIndex_intMat_diag <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.relIndex_integralMatrices_diagonal_uniformizer_pow : ∀ {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (Q : ℕ), ϖ ≠ 0 → Valued.v ϖ ≤ 1 → (∀ e : ℕ, ((Formalism.UG.intL L).toAddSubgroup.map (AddMonoidHom.mulLeft (ϖ ^ e))).relIndex (Formalism.UG.intL L).toAddSubgroup = Q ^ e) → ∀ (r n : ℕ) (d : Fin r → ℤ), (GlobalTheory.InertHomIdx.intMat L r n).relIndex ((GlobalTheory.InertHomIdx.intMat L r n).map (GlobalTheory.InertHomIdx.lmul (Matrix.diagonal (fun i => ϖ ^ d i)))) = Q ^ (n * (∑ i, max (-d i) 0).toNat) := by
   first | exact @GlobalTheory.DiagIdx.relIndex_intMat_diag | exact GlobalTheory.DiagIdx.relIndex_intMat_diag | (intros; apply GlobalTheory.DiagIdx.relIndex_intMat_diag <;> assumption)

@@ -13,14 +13,25 @@ section
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
 variable {S : Subring K} {π : K} {h : V →ₗ⋆[K] V →ₗ[K] K}
 
+/- English proof (translation)
+Introduce `ha`. Apply `hu.1` to reduce the goal to its premises. Rewrite using `[ha, zero_mul]`.
+-/
 theorem unit_ne {a : K} {k : ℕ} (hu : IsUnitIn S (a * (π ^ k)⁻¹)) : a ≠ 0 := by
   intro ha
   apply hu.1
   rw [ha, zero_mul]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private theorem mem_iff_lemma {ι : Type} [Fintype ι] (b : ι → V) (v : V) :
     v ∈ spanS S b ↔ ∃ c : ι → K, (∀ i, c i ∈ S) ∧ v = ∑ i, c i • b i := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[mem_iff_lemma]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, -, rfl⟩`. Simplify using the standard rewrite rules. Introduce and unpack `rfl`.
+
+Conclude with `⟨0, fun _ => S.zero_mem, by simp⟩`.
+-/
 theorem spanS_empty {ι : Type} [Fintype ι] [IsEmpty ι] (b : ι → V) (v : V) :
     v ∈ spanS S b ↔ v = 0 := by
   rw [mem_iff_lemma]
@@ -30,6 +41,9 @@ theorem spanS_empty {ι : Type} [Fintype ι] [IsEmpty ι] (b : ι → V) (v : V)
   · rintro rfl
     exact ⟨0, fun _ => S.zero_mem, by simp⟩
 
+/- English proof (translation)
+Use `(mem_iff_lemma b (b i)).2 ⟨fun j => if j = i then 1 else 0, fun j => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs`. Conclude with `S.one_mem`. Conclude with `S.zero_mem`. Simplify using `[ite_smul]`.
+-/
 theorem mem_spanS_self {ι : Type} [Fintype ι] [DecidableEq ι] (b : ι → V) (i : ι) :
     b i ∈ spanS S b := by
   refine (mem_iff_lemma b (b i)).2 ⟨fun j => if j = i then 1 else 0, fun j => ?_, ?_⟩
@@ -39,6 +53,11 @@ theorem mem_spanS_self {ι : Type} [Fintype ι] [DecidableEq ι] (b : ι → V) 
     · exact S.zero_mem
   · simp [ite_smul]
 
+/- English proof (translation)
+Use `⟨φ, hφ, fun v _ => rfl, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[spanS_empty b v, spanS_empty b' (φ v)]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Rewrite using `[h0, map_zero]`.
+
+Introduce `h0`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[h0, map_zero]`.
+-/
 theorem core_empty {ι : Type} [Fintype ι] [IsEmpty ι] (b b' : ι → V) {φ : V ≃ₗ[K] V}
     (hφ : φ ∈ Formalism.HermitianLatticesTheory.isom h) :
     ∃ g ∈ Formalism.HermitianLatticesTheory.isom h, (∀ v, (∀ w ∈ Submodule.span K (Set.range b), h w v = 0) → g v = φ v) ∧
@@ -52,6 +71,15 @@ theorem core_empty {ι : Type} [Fintype ι] [IsEmpty ι] (b b' : ι → V) {φ :
     apply φ.injective
     rw [h0, map_zero]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `show f i ∈ Submodule.span K (Set.range f) ⊓ LinearMap.ker (h (f i₀))`. Conclude with `Submodule.mem_inf.2 ⟨Submodule.subset_span ⟨i, rfl⟩, LinearMap.mem_ker.2 (ho i₀ i (Ne.symm i.2))⟩`.
+
+Introduce `v hv`. Establish `hv' : v ∈ Submodule.span K (Set.range f) ⊓ LinearMap.ker (h (f i₀))` using `hv`. Take `⟨hv1, hv2⟩` from `Submodule.mem_inf.1 hv'`. Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hv1`. Establish `ha0 : a i₀ = 0`.
+
+Rewrite `hv2` using `[LinearMap.mem_ker, map_sum, Finset.sum_eq_single i₀]`. Rewrite `hv2` using `[map_smul, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 hv2).resolve_right hf0`. Introduce `i _ hi`. Rewrite using `[map_smul, ho i₀ i (Ne.symm hi), smul_zero]`.
+
+Introduce `h'`. Conclude with `absurd (Finset.mem_univ i₀) h'`. Rewrite using `[Fintype.sum_eq_add_sum_subtype_ne _ i₀, ha0, zero_smul, zero_add]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 private theorem span_ne_eq_cutW_of_orthogonal {ι : Type} [Fintype ι] [DecidableEq ι] {f : ι → V}
     (ho : ∀ i j, i ≠ j → h (f i) (f j) = 0) {i₀ : ι} (hf0 : h (f i₀) (f i₀) ≠ 0) :
     Submodule.span K (Set.range (fun i : {i // i ≠ i₀} => f i)) =
@@ -77,6 +105,15 @@ private theorem span_ne_eq_cutW_of_orthogonal {ι : Type} [Fintype ι] [Decidabl
     rw [Fintype.sum_eq_add_sum_subtype_ne _ i₀, ha0, zero_smul, zero_add]
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+Rewrite using `[mem_iff_lemma]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, rfl⟩`. Use `⟨c i₀, hc i₀, ∑ i : {i // i ≠ i₀}, c i • f i, (mem_iff_lemma _ _).2 ⟨fun i => c i, fun i => hc i, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `Fintype.sum_eq_add_sum_subtype_ne _ i₀`.
+
+Introduce and unpack `⟨a, ha, w, hw, rfl⟩`. Rewrite `hw` using `[mem_iff_lemma]`. Take `⟨d, hd, rfl⟩` from `hw`. Use `⟨fun i => if hi : i = i₀ then a else d ⟨i, hi⟩, fun i => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs`.
+
+Conclude with `ha`. Conclude with `hd _`. Rewrite using `[Fintype.sum_eq_add_sum_subtype_ne _ i₀] dsimp only`. Rewrite using `[dif_pos rfl]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[dif_neg i.2]`.
+-/
 private theorem mem_spanS_iff_smul_add_mem_spanS_ne {ι : Type} [Fintype ι] [DecidableEq ι] (f : ι → V) (i₀ : ι)
     (v : V) : v ∈ spanS S f ↔
       ∃ a ∈ S, ∃ w ∈ spanS S (fun i : {i // i ≠ i₀} => f i), v = a • f i₀ + w := by
@@ -101,6 +138,27 @@ private theorem mem_spanS_iff_smul_add_mem_spanS_ne {ι : Type} [Fintype ι] [De
       refine Finset.sum_congr rfl fun i _ => ?_
       rw [dif_neg i.2]
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `ι _ _ hcard b b' e φ _ _ _ _ hφ _`. Establish `: IsEmpty ι` using `Fintype.card_eq_zero_iff.1 (Nat.le_zero.1 hcard)`.
+
+Conclude with `core_empty b b' hφ`. Consider the case `succ n ih`. Introduce `ι _ _ hcard b b' e φ ho ho' hu hu' hφ hW`. Break down `isEmpty_or_nonempty ι with hι | hι` into its components or cases. Conclude with `core_empty b b' hφ`.
+
+Take `⟨i₀, -, hmin⟩` from `Finset.exists_min_image Finset.univ e Finset.univ_nonempty`. Establish `hb0 : b i₀ ∈ Submodule.span K (Set.range b)` using `Submodule.subset_span ⟨i₀, rfl⟩`. Establish `hξ : φ (b i₀) ∈ Submodule.span K (Set.range b')` using `(hW _).1 hb0`. Establish `hφn : h (φ (b i₀)) (φ (b i₀)) = h (b i₀) (b i₀)` using `hφ (b i₀) (b i₀)`. Take `⟨c, hoc, huc, hcc, hspc, hiffc⟩` from `hsp ι b' e i₀ ho' hu' (fun i => hmin i (Finset.mem_univ i)) (φ (b i₀)) hξ (by rw [hφn]; exact hu i₀)`.
+
+Establish `hWc : ∀ v, v ∈ Submodule.span K (Set.range b) ↔ φ v ∈ Submodule.span K (Set.range c)`. Introduce `v`. Rewrite using `[hspc]`. Conclude with `hW v`. Take `⟨φ', hφ', hφ'0, hcut, hagree⟩` from `exists_prep hs hd hφ hWc hb0 (Submodule.subset_span ⟨i₀, rfl⟩) (by rw [hcc, hφn])`.
+
+Establish `hA : h (b i₀) (b i₀) ≠ 0` using `unit_ne (hu i₀)`. Establish `hC : h (c i₀) (c i₀) ≠ 0` using `unit_ne (huc i₀)`. Establish `hcardS : Fintype.card {i // i ≠ i₀} ≤ n`. Use `Fintype.card_subtype_lt (p := fun i => i ≠ i₀) (x := i₀) (by simp)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `hWbb : ∀ v, v ∈ Submodule.span K (Set.range (fun i : {i // i ≠ i₀} => b i)) ↔ φ' v ∈ Submodule.span K (Set.range (fun i : {i // i ≠ i₀} => c i))`. Introduce `v`. Rewrite using `[span_ne_eq_cutW_of_orthogonal ho hA, span_ne_eq_cutW_of_orthogonal hoc hC]`. Conclude with `hcut v`. Take `⟨g, hg, hgagree, hgiff⟩` from `ih {i // i ≠ i₀} hcardS (fun i => b i) (fun i => c i) (fun i => e i) φ' (fun i j hij => ho i j (fun h' => hij (Subtype.ext h'))) (fun i j hij => hoc i j (fun h' => hij (Subtype.ext h'))) (fun i => hu i) (fun i => huc i) hφ' hWbb`.
+
+Establish `hperp : ∀ w ∈ Submodule.span K (Set.range (fun i : {i // i ≠ i₀} => b i)), h w (b i₀) = 0`. Introduce `w hw`. Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hw`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Conclude with `Finset.sum_eq_zero fun i _ => by`.
+
+Rewrite using `[map_smulₛₗ, LinearMap.smul_apply, ho i i₀ i.2, smul_zero]`. Establish `hg0 : g (b i₀) = c i₀` using `by rw [hgagree _ hperp, hφ'0]`. Use `⟨g, hg, fun v hv => ?_, fun v => ?_⟩` and prove the remaining obligations. Establish `hv' : ∀ w ∈ Submodule.span K (Set.range (fun i : {i // i ≠ i₀} => b i)), h w v = 0` using `fun w hw => hv w (Submodule.span_mono (by rintro _ ⟨i, rfl⟩; exact ⟨i, rfl⟩) hw)`. Rewrite using `[hgagree v hv', hagree v hv]`.
+
+Rewrite using `[← hiffc, mem_spanS_iff_smul_add_mem_spanS_ne b i₀, mem_spanS_iff_smul_add_mem_spanS_ne c i₀]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, w, hw, rfl⟩`. Use `⟨a, ha, g w, (hgiff w).1 hw, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_smul, hg0]`.
+
+Introduce and unpack `⟨a, ha, u, hu2, huv⟩`. Use `⟨a, ha, g.symm u, (hgiff _).2 (by rw [LinearEquiv.apply_symm_apply]; exact hu2), ?_⟩` and prove the remaining obligations. Apply `g.injective` to reduce the goal to its premises. Rewrite using `[huv, map_add, map_smul, hg0, LinearEquiv.apply_symm_apply]`.
+-/
 theorem core_of_split (hs : h.IsSymm) (hd : ∀ x, h x x = 0 → x = 0) (hsp : SplitAt S π h) :
     ∀ (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι], Fintype.card ι ≤ n →
     ∀ (b b' : ι → V) (e : ι → ℕ) (φ : V ≃ₗ[K] V),

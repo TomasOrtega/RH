@@ -17,6 +17,17 @@ open scoped Classical
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun i j hj hi => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h i j (by omega)]`. Establish `: i ≠ j` using `fun e => by rw [e] at hi; omega`.
+
+Simplify using `[this]`. Use extensionality with `i j`. Establish `hi : (i : ℕ) < a + 1` using `by omega`. Establish `hj : (j : ℕ) < a + 1` using `by omega`. Apply the tactic sequence `have := h ⟨i, hi⟩ ⟨j, hj⟩ (by first | omega | simp | (simp; omega))`.
+
+Simplify using `only [tl, entN, hi, hj, and_self, dif_pos, Matrix.one_apply, Fin.ext_iff] at this ⊢`. Conclude with `this`. Introduce and unpack `⟨h1, h2⟩ i j hij`. Establish `hj : (j : ℕ) < a` using `by omega`. Distinguish the cases in `hi : (i : ℕ) < a`.
+
+Use `congrFun (congrFun h2 ⟨i, hi⟩) ⟨j, hj⟩` as an intermediate fact. Establish `hi' : (i : ℕ) < a + 1` using `by omega`. Establish `hj' : (j : ℕ) < a + 1` using `by omega`. Simplify using `only [tl, entN, hi', hj', and_self, dif_pos, Matrix.one_apply, Fin.ext_iff] at this`. Simplify using `only [Fin.ext_iff]`.
+
+Conclude with `this`. Establish `hne : i ≠ j` using `fun e => by rw [e] at hi; omega`. Rewrite using `[if_neg hne]`. Conclude with `h1 i j hj (by omega)`.
+-/
 theorem stdBlock_iff (a : ℕ) (y : Gn p (a + 1)) :
     StdBlock a y ↔ InPar a (y : Mt p (a + 1)) ∧ tl a (y : Mt p (a + 1)) = 1 := by
   constructor
@@ -44,11 +55,21 @@ theorem stdBlock_iff (a : ℕ) (y : Gn p (a + 1)) :
       rw [if_neg hne]
       exact h1 i j hj (by omega)
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(stdBlock_iff a y).1 h`. Rewrite using `[GlobalTheory.GLq.LabelDet.det_par a 1 y h1, h2, GlobalTheory.GLq.LabelDet.toG_one, map_one, one_mul]`.
+-/
 theorem det_eq_of_stdBlock (a : ℕ) (y : Gn p (a + 1)) (h : StdBlock a y) :
     Matrix.GeneralLinearGroup.det y = Matrix.GeneralLinearGroup.det (toG (br a 1 (y : Mt p (a + 1)))) := by
   obtain ⟨h1, h2⟩ := (stdBlock_iff a y).1 h
   rw [GlobalTheory.GLq.LabelDet.det_par a 1 y h1, h2, GlobalTheory.GLq.LabelDet.toG_one, map_one, one_mul]
 
+/- English proof (translation)
+Establish `hd` using `GlobalTheory.GLq.LabelDet.det_inPar a 1 _ h`. Establish `h0 : (tl a (y : Mt p (a + 1))).det * (br a 1 (y : Mt p (a + 1))).det ≠ 0` using `hd ▸ y.det_ne_zero`. Establish `hu : IsUnit (br a 1 (y : Mt p (a + 1)))` using `(Matrix.isUnit_iff_isUnit_det _).2 (Ne.isUnit (right_ne_zero_of_mul h0))`. Establish `hv : ((toG (br a 1 (y : Mt p (a + 1))) : Gn p 1) : Mt p 1) = br a 1 (y : Mt p (a + 1))`. Unfold `toG`.
+
+Rewrite using `[dif_pos hu]`. Conclude with `IsUnit.unit_spec hu`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[hv, e]`. Introduce `e`. Rewrite using `[e, hv]`.
+-/
 theorem br_eq_iff (a : ℕ) (y : Gn p (a + 1)) (h : InPar a (y : Mt p (a + 1))) (x : Gn p 1) :
     br a 1 (y : Mt p (a + 1)) = (x : Mt p 1) ↔ x = toG (br a 1 (y : Mt p (a + 1))) := by
   have hd := GlobalTheory.GLq.LabelDet.det_inPar a 1 _ h
@@ -61,6 +82,17 @@ theorem br_eq_iff (a : ℕ) (y : Gn p (a + 1)) (h : InPar a (y : Mt p (a + 1))) 
   · intro e; apply Units.ext; rw [hv, e]
   · intro e; rw [e, hv]
 
+/- English proof (translation)
+Rewrite using `[stdTrace, Finset.mul_sum]`. Unfold `res`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hs : StdBlock a y`. Take `⟨h1, h2⟩` from `(stdBlock_iff a y).1 hs`. Rewrite using `[if_pos hs]`. Establish `e : ∀ x : Gn p 1, ((θ⁻¹ (Matrix.GeneralLinearGroup.det x) : ℂˣ) : ℂ) * (((p : ℂ) ^ (a * 1))⁻¹ * if InPar a (y : Mt p (a + 1)) ∧ tl a (y : Mt p (a + 1)) = ((1 : Gn p a) : Mt p a) ∧ br a 1 (y : Mt p (a + 1)) = (x : Mt p 1) then α y else 0) = if x = toG (br a 1 (y : Mt p (a + 1))) t …`. Introduce `x`.
+
+Distinguish the cases in `hx : x = toG (br a 1 (y : Mt p (a + 1)))`. Rewrite using `[if_pos ⟨h1, by rw [h2, Units.val_one], (br_eq_iff a y h1 x).2 hx⟩, if_pos hx, det_eq_of_stdBlock a y hs, ← hx, MonoidHom.inv_apply, Nat.mul_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (fun h => hx ((br_eq_iff a y h1 x).1 h.2.2)), if_neg hx, mul_zero, mul_zero]`. Rewrite using `[Finset.sum_congr rfl fun x _ => e x, Finset.sum_ite_eq']`.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_neg hs, mul_zero]`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg, mul_zero, mul_zero]`. Introduce and unpack `⟨h1, h2, -⟩`.
+
+Conclude with `hs ((stdBlock_iff a y).2 ⟨h1, by rw [h2, Units.val_one]⟩)`.
+-/
 theorem sum_res_eq (a : ℕ) (θ : (ZMod p)ˣ →* ℂˣ) (α : Gn p (a + 1) → ℂ) :
     ∑ x : Gn p 1, ((θ⁻¹ (Matrix.GeneralLinearGroup.det x) : ℂˣ) : ℂ) * res a 1 α 1 x =
       ((p : ℂ) ^ a)⁻¹ * stdTrace a θ α := by
@@ -91,6 +123,11 @@ theorem sum_res_eq (a : ℕ) (θ : (ZMod p)ˣ →* ℂˣ) (α : Gn p (a + 1) →
     rintro ⟨h1, h2, -⟩
     exact hs ((stdBlock_iff a y).2 ⟨h1, by rw [h2, Units.val_one]⟩)
 
+/- English proof (translation)
+Introduce `p _ a θ α hα hne`. Establish `key : ∑ x : Gn p 1, ((θ⁻¹ (Matrix.GeneralLinearGroup.det x) : ℂˣ) : ℂ) * res a 1 α 1 x ≠ 0`. Rewrite using `[sum_res_eq]`. Conclude with `mul_ne_zero (inv_ne_zero (pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero))) hne`. Take `⟨σ, hσ, h⟩` from `(GlobalTheory.GLq.HCFrobWeight.exists_irr_hc_thetaInv p a α hα θ⁻¹).1 key`.
+
+Conclude with `⟨σ, hσ, by simpa only [inv_inv] using h⟩`.
+-/
 theorem exists_irr_hc_of_stdTrace_ne_zero : ∀ (p : ℕ) [Fact p.Prime] (a : ℕ) (θ : (ZMod p)ˣ →* ℂˣ)
     (α : GlobalTheory.GLq.Gn p (a + 1) → ℂ), GlobalTheory.GLq.IsIrr α → stdTrace a θ α ≠ 0 →
     ∃ σ : GlobalTheory.GLq.Gn p a → ℂ, GlobalTheory.GLq.IsIrr σ ∧ GlobalTheory.GLq.ip α (GlobalTheory.GLq.hc a 1 σ

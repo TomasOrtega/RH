@@ -5,6 +5,35 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Mod
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `H C _ _ I _ ρ ψ s₀ hs₀ hu hD htrip`. Establish `hdiag : ∀ c : C, (ρ s₀ : Matrix (Fin 3) (Fin 3) C) - Matrix.scalar _ c = Matrix.diagonal (fun a => (ψ a s₀ : C) - c)`. Introduce `c`. Rewrite using `[hD, Matrix.scalar_apply, Matrix.diagonal_sub]`. Establish `hmid : ∀ s ∈ I, ∀ i j : Fin 3, i ≠ 0 → j ≠ 2 → (ρ s : Matrix (Fin 3) (Fin 3) C) i j = if i = j then (ψ 1 s : C) else 0`.
+
+Introduce `s hs i j hi hj`. Apply the tactic sequence `have h := htrip ![s₀, s, s₀] (by intro a; fin_cases a <;> simp [hs, hs₀])`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons] at h`. Rewrite `h` using `[hdiag, hdiag]`. Establish `h2` using `congrArg (fun M => M i j) h`.
+
+Simplify using `only [Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.zero_apply, Matrix.sub_apply, Matrix.scalar_apply, Matrix.diagonal_apply] at h2`. Rewrite `h2` using `[(hu j 2 hj).mul_left_eq_zero, (hu i 0 hi).mul_right_eq_zero, sub_eq_zero]`. Conclude with `h2`. Establish `hfirst : ∀ s ∈ I, (ρ s : Matrix (Fin 3) (Fin 3) C) 0 0 = ψ 0 s`. Introduce `s hs`.
+
+Apply the tactic sequence `have h := htrip ![s, s₀, s₀] (by intro a; fin_cases a <;> simp [hs, hs₀])`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons] at h`. Rewrite `h` using `[hdiag, hdiag]`. Establish `h2` using `congrArg (fun M => M 0 0) h`. Simplify using `only [Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.zero_apply, Matrix.sub_apply, Matrix.scalar_apply, Matrix.diagonal_apply] at h2`.
+
+Rewrite `h2` using `[(hu 0 2 (by decide)).mul_left_eq_zero, (hu 0 1 (by decide)).mul_left_eq_zero, sub_eq_zero]`. Simplify using `using h2`. Establish `hlast : ∀ s ∈ I, (ρ s : Matrix (Fin 3) (Fin 3) C) 2 2 = ψ 2 s`. Introduce `s hs`. Apply the tactic sequence `have h := htrip ![s₀, s₀, s] (by intro a; fin_cases a <;> simp [hs, hs₀])`.
+
+Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons] at h`. Rewrite `h` using `[hdiag, hdiag, Matrix.diagonal_mul_diagonal]`. Establish `h2` using `congrArg (fun M => M 2 2) h`. Simplify using `only [Matrix.diagonal_mul, Matrix.zero_apply, Matrix.sub_apply, Matrix.scalar_apply, Matrix.diagonal_apply] at h2`. Rewrite `h2` using `[((hu 2 0 (by decide)).mul (hu 2 1 (by decide))).mul_right_eq_zero, sub_eq_zero]`.
+
+Simplify using `using h2`. Use `⟨fun g i j hji => ?_, fun s hs i => ?_⟩` and prove the remaining obligations. Establish `ht : g * s₀ * g⁻¹ ∈ I` using `‹I.Normal›.conj_mem s₀ hs₀ g`. Establish `hψ : ∀ a, (ψ a (g * s₀ * g⁻¹) : C) = ψ a s₀`. Introduce `a`.
+
+Rewrite using `[map_mul, map_mul, map_inv, mul_comm (ψ a g), mul_inv_cancel_right]`. Establish `hkey : (ρ (g * s₀ * g⁻¹) : Matrix (Fin 3) (Fin 3) C) * (ρ g : Matrix (Fin 3) (Fin 3) C) = (ρ g : Matrix (Fin 3) (Fin 3) C) * Matrix.diagonal (fun a => (ψ a s₀ : C))`. Rewrite using `[← hD, ← Units.val_mul, ← Units.val_mul, ← map_mul, ← map_mul, inv_mul_cancel_right]`. Establish `e : ∀ i j : Fin 3, ((ρ (g * s₀ * g⁻¹) : Matrix (Fin 3) (Fin 3) C) * (ρ g : Matrix (Fin 3) (Fin 3) C)) i j = (ρ g : Matrix (Fin 3) (Fin 3) C) i j * (ψ j s₀ : C)`. Introduce `i j`.
+
+Rewrite using `[hkey, Matrix.mul_diagonal]`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_three] at e`. Establish `u10` using `hmid _ ht 1 0 (by decide) (by decide)`. Establish `u20` using `hmid _ ht 2 0 (by decide) (by decide)`. Establish `u21` using `hmid _ ht 2 1 (by decide) (by decide)`.
+
+Establish `u11` using `hmid _ ht 1 1 (by decide) (by decide)`. Establish `u22` using `hlast _ ht`. Simplify using `only [if_neg (by decide : (1 : Fin 3) ≠ 0), if_neg (by decide : (2 : Fin 3) ≠ 0), if_neg (by decide : (2 : Fin 3) ≠ 1), if_pos rfl, ite_true, hψ] at u10 u20 u21 u11 u22`. Establish `p2 : ∀ j : Fin 3, j ≠ 2 → (ρ g : Matrix (Fin 3) (Fin 3) C) 2 j = 0`. Introduce `j hj`.
+
+Establish `h` using `e 2 j`. Rewrite `h` using `[u20, u21, u22]`. Establish `h' : (ρ g : Matrix (Fin 3) (Fin 3) C) 2 j * ((ψ j s₀ : C) - ψ 2 s₀) = 0`. Take the linear combination `-h`. Conclude with `((hu j 2 hj).mul_left_eq_zero).mp h'`.
+
+Establish `p10 : (ρ g : Matrix (Fin 3) (Fin 3) C) 1 0 = 0`. Establish `h` using `e 1 0`. Rewrite `h` using `[u10, u11, p2 0 (by decide)]`. Establish `h' : (ρ g : Matrix (Fin 3) (Fin 3) C) 1 0 * ((ψ 0 s₀ : C) - ψ 1 s₀) = 0`. Take the linear combination `-h`.
+
+Conclude with `((hu 0 1 (by decide)).mul_left_eq_zero).mp h'`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first`. Consider the case `(exfalso; revert hji; decide)`. Consider the case `exact p2 0 (by decide)`. Consider the case `exact p2 1 (by decide)`.
+
+Consider the case `exact p10`. Use `fin_cases i`. Conclude with `hfirst s hs`. Simplify using `using hmid s hs 1 1 (by decide) (by decide)`. Conclude with `hlast s hs`.
+-/
 theorem tripleProduct_stable_flag : ∀ {H C : Type} [Group H] [CommRing C] (I : Subgroup H) [I.Normal] (ρ : H →* GL (Fin 3) C) (ψ : Fin 3 → H →* Cˣ) (s₀ : H), s₀ ∈ I → (∀ a b, a ≠ b → IsUnit ((ψ a s₀ : C) - ψ b s₀)) → (ρ s₀ : Matrix (Fin 3) (Fin 3) C) = Matrix.diagonal (fun a => (ψ a s₀ : C)) → (∀ s : Fin 3 → H, (∀ a, s a ∈ I) → ((ρ (s 0) : Matrix (Fin 3) (Fin 3) C) - Matrix.scalar _ (ψ 0 (s 0) : C)) * ((ρ (s 1) : Matrix (Fin 3) (Fin 3) C) - Matrix.scalar _ (ψ 1 (s 1) : C)) * ((ρ (s 2) : Matrix (Fin 3) (Fin 3) C) - Matrix.scalar _ (ψ 2 (s 2) : C)) = 0) → (∀ g i j, j < i → (ρ g : Matrix (Fin 3) (Fin 3) C) i j = 0) ∧ ∀ s ∈ I, ∀ i, (ρ s : Matrix (Fin 3) (Fin 3) C) i i = ψ i s := by
   intro H C _ _ I _ ρ ψ s₀ hs₀ hu hD htrip
   have hdiag : ∀ c : C, (ρ s₀ : Matrix (Fin 3) (Fin 3) C) - Matrix.scalar _ c =

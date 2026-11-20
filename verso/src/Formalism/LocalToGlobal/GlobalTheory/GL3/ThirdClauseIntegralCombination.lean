@@ -11,6 +11,11 @@ section Int
 
 variable {σ : Type*} {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => unfold IsIntP`. Simplify using the standard rewrite rules. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi]`.
+
+Conclude with `isPadicIntegral_add (h i (Finset.mem_insert_self i s)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem isPadicIntegral_sum {ι : Type*} (s : Finset ι) (f : ι → ℂ_[p]) (h : ∀ i ∈ s, IsIntP (f i)) :
     IsIntP (∑ i ∈ s, f i) := by
   classical
@@ -20,16 +25,25 @@ theorem isPadicIntegral_sum {ι : Type*} (s : Finset ι) (f : ι → ℂ_[p]) (h
     rw [Finset.sum_insert hi]
     exact isPadicIntegral_add (h i (Finset.mem_insert_self i s)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
+/- English proof (translation)
+Unfold `IsIntP at *`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ hx (norm_nonneg _) hy`.
+-/
 theorem isPadicIntegral_mul {x y : ℂ_[p]} (hx : IsIntP x) (hy : IsIntP y) : IsIntP (x * y) := by
   unfold IsIntP at *
   rw [norm_mul]; exact mul_le_one₀ hx (norm_nonneg _) hy
 
+/- English proof (translation)
+Introduce `n` and use `by classical rw [MvPowerSeries.coeff_mul] exact isPadicIntegral_sum _ _ fun x _ => isPadicIntegral_mul (hF _) (hG _)`.
+-/
 theorem integralMv_mul {F G : MvPowerSeries σ ℂ_[p]} (hF : IntegralMv F) (hG : IntegralMv G) :
     IntegralMv (F * G) := fun n => by
   classical
   rw [MvPowerSeries.coeff_mul]
   exact isPadicIntegral_sum _ _ fun x _ => isPadicIntegral_mul (hF _) (hG _)
 
+/- English proof (translation)
+Introduce `n` and use `by classical have e : MvPowerSeries.coeff n (algebraMap ℂ_[p] (MvPowerSeries σ ℂ_[p]) c) = if n = 0 then c else 0 := by first | exact MvPowerSeries.coeff_C n c | exact MvPowerSeries.coeff_C (σ := σ) n c | (rw [MvPowerSeries.algebraMap_apply']; exact MvPowerSeries.coeff_C n c) | s …`.
+-/
 theorem integralMv_C {c : ℂ_[p]} (hc : IsIntP c) :
     IntegralMv (algebraMap ℂ_[p] (MvPowerSeries σ ℂ_[p]) c) := fun n => by
   classical
@@ -51,6 +65,9 @@ section Subst
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `PowerSeries.X_dvd_iff.mpr hf`. Establish `hs` using `PowerSeries.HasSubst.of_constantCoeff_zero ha`. Rewrite using `[PowerSeries.subst_mul hs, PowerSeries.subst_X hs, map_mul, ha, zero_mul]`.
+-/
 theorem cc_psubst' {ι : Type*} {a : MvPowerSeries ι ℂ_[p]} (ha : MvPowerSeries.constantCoeff a = 0)
     {f : PowerSeries ℂ_[p]} (hf : PowerSeries.constantCoeff f = 0) :
     MvPowerSeries.constantCoeff (PowerSeries.subst a f) = 0 := by
@@ -58,6 +75,9 @@ theorem cc_psubst' {ι : Type*} {a : MvPowerSeries ι ℂ_[p]} (ha : MvPowerSeri
   have hs := PowerSeries.HasSubst.of_constantCoeff_zero ha
   rw [PowerSeries.subst_mul hs, PowerSeries.subst_X hs, map_mul, ha, zero_mul]
 
+/- English proof (translation)
+Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, flog, PowerSeries.coeff_mk, if_pos rfl]`.
+-/
 theorem cc_flog (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     PowerSeries.constantCoeff (flog W wq) = 0 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, flog, PowerSeries.coeff_mk, if_pos rfl]
@@ -70,6 +90,9 @@ def atLogA : D.what₂.Tau × Fin N' × Fin N → MvPowerSeries (Fin r) ℂ_[p] 
       (((C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) * lamC lam (embT D k.1 (b i k.2.1 k.2.2))) *
       PowerSeries.subst (MvPowerSeries.X i) (flog (C • wModel lam Λ) wq)
 
+/- English proof (translation)
+Apply `MvPowerSeries.hasSubst_of_constantCoeff_zero` to reduce the goal to its premises. Introduce `k`. Simplify using `only [atLogA, map_sum, map_mul]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[cc_psubst' (MvPowerSeries.constantCoeff_X i) (cc_flog _ wq), mul_zero]`.
+-/
 theorem atLogA_hasSubst : MvPowerSeries.HasSubst (atLogA lam Λ C wq b) := by
   apply MvPowerSeries.hasSubst_of_constantCoeff_zero
   intro k
@@ -77,6 +100,9 @@ theorem atLogA_hasSubst : MvPowerSeries.HasSubst (atLogA lam Λ C wq b) := by
   refine Finset.sum_eq_zero fun i _ => ?_
   rw [cc_psubst' (MvPowerSeries.constantCoeff_X i) (cc_flog _ wq), mul_zero]
 
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.coe_substAlgHom]`. Both sides reduce to the same expression.
+-/
 theorem atLog_eq (F : MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p]) :
     atLog D lam Λ C wq b F = MvPowerSeries.substAlgHom (atLogA_hasSubst lam Λ C wq b) F := by
   rw [MvPowerSeries.coe_substAlgHom]; rfl

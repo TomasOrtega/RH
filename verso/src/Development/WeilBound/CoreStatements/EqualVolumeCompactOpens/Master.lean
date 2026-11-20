@@ -11,13 +11,24 @@ open scoped ENNReal
 
 variable {G : Type} [Group G]
 
+/- English proof (translation)
+Simplify using `only [conjBy, Subgroup.map_map, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem conjBy_mul (g h : G) (K : Subgroup G) : conjBy (g * h) K = conjBy g (conjBy h K) := by
   simp only [conjBy, Subgroup.map_map, map_mul]
   rfl
 
+/- English proof (translation)
+The claim follows from `Subgroup.relIndex_map_map_of_injective A B (MulAut.conj g).injective`.
+-/
 theorem relIndex_conjBy (g : G) (A B : Subgroup G) : (conjBy g A).relIndex (conjBy g B) = A.relIndex B :=
   Subgroup.relIndex_map_map_of_injective A B (MulAut.conj g).injective
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [conjBy, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `(h y).1 hy`.
+
+Introduce `hx`. Use `⟨g⁻¹ * x * g, (h _).2 (by simpa [mul_assoc] using hx), ?_⟩` and prove the remaining obligations. Simplify using `[mul_assoc]`.
+-/
 theorem conjBy_eq_of {K : Subgroup G} {g : G} (h : ∀ x, x ∈ K ↔ g * x * g⁻¹ ∈ K) : conjBy g K = K := by
   ext x
   simp only [conjBy, Subgroup.mem_map]
@@ -28,6 +39,25 @@ theorem conjBy_eq_of {K : Subgroup G} {g : G} (h : ∀ x, x ∈ K ↔ g * x * g�
     refine ⟨g⁻¹ * x * g, (h _).2 (by simpa [mul_assoc] using hx), ?_⟩
     simp [mul_assoc]
 
+/- English proof (translation)
+Set `f : G → ℚ` to `fun g => ((conjBy g K).relIndex K : ℚ) / (K.relIndex (conjBy g K) : ℚ)`. Establish `hpos : ∀ g, 0 < f g` using `fun g => div_pos (Nat.cast_pos.2 (Nat.pos_of_ne_zero (hc g).2)) (Nat.cast_pos.2 (Nat.pos_of_ne_zero (hc g).1))`. Establish `hmul : ∀ a b, f (a * b) = f a * f b`. Introduce `a b`. Establish `h` using `(GlobalTheory.CompanionTheory.Ar.Cmp.relIndex_ratio_cocycle G K (conjBy a K) (conjBy a (conjBy b K)) (hc a).1 (hc a).2 (by rw [relIndex_conjBy]; exact (hc b).1) (by rw [relIndex_conjBy]; exact (hc b).2)).2.2`.
+
+Rewrite `h` using `[relIndex_conjBy, relIndex_conjBy, ← conjBy_mul]`. Establish `h'` using `congrArg (Nat.cast : ℕ → ℚ) h`. Move the coercions through the operations in `at h'`. Establish `e1 : (K.relIndex (conjBy a K) : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (hc a).1`. Establish `e2 : (K.relIndex (conjBy b K) : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (hc b).1`.
+
+Establish `e3 : (K.relIndex (conjBy (a * b) K) : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (hc (a * b)).1`. Simplify using `only [f]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-h'`. Set `c : G →* ℚˣ` to `MonoidHom.mk' (fun g => Units.mk0 (f g) (hpos g).ne') fun a b => Units.ext (hmul a b)`.
+
+Establish `h1 : ∀ x, conjBy x K = K → c x = 1`. Introduce `x hx`. Use `Units.ext ?_` and prove the remaining obligations. Use `show f x = 1`. Simplify using `only [f, hx, Subgroup.relIndex_self]`.
+
+Evaluate the numerical expressions. Establish `hK : ∀ k ∈ K, c k = 1` using `fun k hk => h1 k (conjBy_eq_of fun x => ⟨fun hx => K.mul_mem (K.mul_mem hk hx) (K.inv_mem hk), fun hx => by`. Simplify `K.mul_mem (K.mul_mem (K.inv_mem hk) hx) hk⟩)` using `[mul_assoc]`. Establish `hZ : ∀ z ∈ Subgroup.center G, c z = 1` using `fun z hz => h1 z (conjBy_eq_of fun x => by`. Rewrite using `[← Subgroup.mem_center_iff.1 hz x, mul_inv_cancel_right])`.
+
+Establish `hG : ∀ γ ∈ Γ, c γ = 1`. Introduce `γ hγ`. Establish `: Subgroup.closure {x : G | ∀ n : ℕ, 0 < n → ∃ y : G, y ^ n = x} ≤ c.ker`. Rewrite using `[Subgroup.closure_le]`. Introduce `x hx`.
+
+Use `GlobalTheory.CompanionTheory.Ar.Cmp.ratUnit_eq_one_of_divisible (c x) fun n hn => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `hx n hn`. Conclude with `⟨c y, by rw [← map_pow, hy]⟩`. Conclude with `this (hΓ hγ)`. Take `⟨n, hn, z, hz, s, hs, e⟩` from `hp g`.
+
+Take `⟨γ, hγ, k, hk, rfl⟩` from `hS s hs`. Establish `h2 : c g ^ n = 1` using `by rw [← map_pow, e, map_mul, map_mul, hZ z hz, hG γ hγ, hK k hk]; simp`. Establish `h3 : f g ^ n = 1`. Use `congrArg Units.val h2` as an intermediate fact. Rewrite `this` using `[Units.val_pow_eq_pow_val]`. Then use the resulting hypothesis.
+
+Establish `h4 : f g = 1` using `(pow_eq_one_iff_of_nonneg (hpos g).le hn.ne').1 h3`. Establish `e1 : (K.relIndex (conjBy g K) : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (hc g).1`. Conclude with `((div_eq_one_iff_eq e1).1 h4).symm` after adjusting the coercions.
+-/
 theorem unimod (S Γ K : Subgroup G) (hc : ∀ g : G, K.relIndex (conjBy g K) ≠ 0 ∧ (conjBy g K).relIndex K ≠ 0)
     (hS : ∀ s ∈ S, ∃ γ ∈ Γ, ∃ k ∈ K, s = γ * k)
     (hΓ : Γ ≤ Subgroup.closure {x : G | ∀ n : ℕ, 0 < n → ∃ y : G, y ^ n = x})
@@ -80,6 +110,11 @@ theorem unimod (S Γ K : Subgroup G) (hc : ∀ g : G, K.relIndex (conjBy g K) �
   have e1 : (K.relIndex (conjBy g K) : ℚ) ≠ 0 := Nat.cast_ne_zero.2 (hc g).1
   exact_mod_cast ((div_eq_one_iff_eq e1).1 h4).symm
 
+/- English proof (translation)
+Introduce `G _ S Γ 𝒦 h1 h2 h3 h4 h5 h6 h7 K hK g`. Establish `hK'` using `h3 K hK g`. Establish `e` using `unimod S Γ K (fun g => ⟨h4 _ hK _ (h3 K hK g), h4 _ (h3 K hK g) _ hK⟩) (h5 K hK) h6 h7 g`. Establish `a` using `GlobalTheory.CompanionTheory.Ar.Cmp.relIndex_inf_eq_of_mem_mul G Γ K _ fun k hk => h5 _ (h2 _ hK _ hK') k (h1 _ hK' hk)`. Establish `b` using `GlobalTheory.CompanionTheory.Ar.Cmp.relIndex_inf_eq_of_mem_mul G Γ _ K fun k hk => h5 _ (h2 _ hK' _ hK) k (h1 _ hK hk)`.
+
+Rewrite using `[a, b]`. Conclude with `⟨e, h4 _ hK _ hK'⟩`.
+-/
 theorem master : ∀ (G : Type) [Group G] (S Γ : Subgroup G) (𝒦 : Set (Subgroup G)), (∀ K ∈ 𝒦, K ≤ S) → (∀ K ∈ 𝒦, ∀ K' ∈ 𝒦, K ⊓ K' ∈ 𝒦) → (∀ K ∈ 𝒦, ∀ g : G, K.map (MulAut.conj g).toMonoidHom ∈ 𝒦) → (∀ K ∈ 𝒦, ∀ K' ∈ 𝒦, K.relIndex K' ≠ 0) → (∀ K ∈ 𝒦, ∀ s ∈ S, ∃ γ ∈ Γ, ∃ k ∈ K, s = γ * k) → Γ ≤ Subgroup.closure {x : G | ∀ n : ℕ, 0 < n → ∃ y : G, y ^ n = x} → (∀ g : G, ∃ n : ℕ, 0 < n ∧ ∃ z ∈ Subgroup.center G, ∃ s ∈ S, g ^ n = z * s) → ∀ K ∈ 𝒦, ∀ g : G, (K ⊓ Γ).relIndex (K.map (MulAut.conj g).toMonoidHom ⊓ Γ) = (K.map (MulAut.conj g).toMonoidHom ⊓ Γ).relIndex (K ⊓ Γ) ∧ (K ⊓ Γ).relIndex (K.map (MulAut.conj g).toMonoidHom ⊓ Γ) ≠ 0 := by
   intro G _ S Γ 𝒦 h1 h2 h3 h4 h5 h6 h7 K hK g
   have hK' := h3 K hK g
@@ -89,6 +124,11 @@ theorem master : ∀ (G : Type) [Group G] (S Γ : Subgroup G) (𝒦 : Set (Subgr
   rw [a, b]
   exact ⟨e, h4 _ hK _ hK'⟩
 
+/- English proof (translation)
+Introduce `G X _ _ _ _ μ _ Γ₁ Γ₂ _ _ s₁ s₂ he hne h₁ h₂`. Establish `i1 : (Γ₁ ⊓ Γ₂).relIndex Γ₁ = Γ₂.relIndex Γ₁` using `Subgroup.inf_relIndex_left _ _`. Establish `i2 : (Γ₁ ⊓ Γ₂).relIndex Γ₂ = Γ₁.relIndex Γ₂` using `Subgroup.inf_relIndex_right _ _`. Take `⟨t₁, ht₁, m₁⟩` from `GlobalTheory.CompanionTheory.Ar.Cmp.exists_isFundamentalDomain_of_relIndex_ne_zero G X μ (Γ₁ ⊓ Γ₂) Γ₁ s₁ inf_le_left (by rw [i1, ← he]; exact hne) h₁`. Take `⟨t₂, ht₂, m₂⟩` from `GlobalTheory.CompanionTheory.Ar.Cmp.exists_isFundamentalDomain_of_relIndex_ne_zero G X μ (Γ₁ ⊓ Γ₂) Γ₂ s₂ inf_le_right (by rw [i2]; exact hne) h₂`.
+
+Establish `: Countable ↥(Γ₁ ⊓ Γ₂)` using `(Subgroup.inclusion_injective (inf_le_left : Γ₁ ⊓ Γ₂ ≤ Γ₁)).countable`. Establish `e` using `ht₁.measure_eq ht₂`. Rewrite `e` using `[m₁, m₂, i1, i2, ← he]`. Conclude with `(ENNReal.mul_right_inj (Nat.cast_ne_zero.2 hne) (ENNReal.natCast_ne_top _)).1 e`.
+-/
 theorem fdEqual : ∀ (G X : Type) [Group G] [MeasurableSpace X] [MulAction G X] [MeasurableConstSMul G X] (μ : Measure X) [SMulInvariantMeasure G X μ] (Γ₁ Γ₂ : Subgroup G) [Countable Γ₁] [Countable Γ₂] (s₁ s₂ : Set X), Γ₁.relIndex Γ₂ = Γ₂.relIndex Γ₁ → Γ₁.relIndex Γ₂ ≠ 0 → IsFundamentalDomain Γ₁ s₁ μ → IsFundamentalDomain Γ₂ s₂ μ → μ s₁ = μ s₂ := by
   intro G X _ _ _ _ μ _ Γ₁ Γ₂ _ _ s₁ s₂ he hne h₁ h₂
   have i1 : (Γ₁ ⊓ Γ₂).relIndex Γ₁ = Γ₂.relIndex Γ₁ := Subgroup.inf_relIndex_left _ _

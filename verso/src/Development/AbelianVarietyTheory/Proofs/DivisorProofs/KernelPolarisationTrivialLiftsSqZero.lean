@@ -15,6 +15,11 @@ noncomputable section
 
 namespace GlobalTheory.KTrivSqZero
 
+/- English proof (translation)
+Take `⟨m, hm, hpm⟩` from `Ideal.exists_le_maximal p.asIdeal p.2.ne_top`. Establish `hJm : RingHom.ker π ≤ m` using `hJ.trans (sInf_le ⟨bot_le, hm⟩)`. Establish `: (⟨m, hm.isPrime⟩ : PrimeSpectrum R) ∈ Set.range (PrimeSpectrum.comap π)`. Rewrite using `[range_comap_of_surjective _ _ hπ]`. Conclude with `hJm`.
+
+Take `⟨q, hq⟩` from `this`. Use `⟨q, ?_⟩` and prove the remaining obligations. Rewrite using `[hq, ← PrimeSpectrum.le_iff_specializes]`. Conclude with `hpm`.
+-/
 theorem exists_specializes_of_surjective {R R₀ : Type} [CommRing R] [CommRing R₀] {π : R →+* R₀}
     (hπ : Function.Surjective π) (hJ : RingHom.ker π ≤ Ideal.jacobson ⊥) (p : PrimeSpectrum R) :
     ∃ q : PrimeSpectrum R₀, p ⤳ PrimeSpectrum.comap π q := by
@@ -28,6 +33,11 @@ theorem exists_specializes_of_surjective {R R₀ : Type} [CommRing R] [CommRing 
   rw [hq, ← PrimeSpectrum.le_iff_specializes]
   exact hpm
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hx2 : x ∈ (⊥ : Ideal R).radical` using `⟨2, by`. Establish `: x ^ 2 ∈ J ^ 2` using `Ideal.pow_mem_pow hx 2`. Rewrite `this` using `[h]`. Conclude with `this⟩`.
+
+Conclude with `Ideal.radical_le_jacobson hx2`.
+-/
 theorem le_jacobson_of_sq_eq_bot {R : Type} [CommRing R] {J : Ideal R} (h : J ^ 2 = ⊥) : J ≤ Ideal.jacobson ⊥ := by
   intro x hx
   have hx2 : x ∈ (⊥ : Ideal R).radical := ⟨2, by
@@ -36,6 +46,11 @@ theorem le_jacobson_of_sq_eq_bot {R : Type} [CommRing R] {J : Ideal R} (h : J ^ 
     exact this⟩
   exact Ideal.radical_le_jacobson hx2
 
+/- English proof (translation)
+Introduce `R R₀ _ _ _ π hπ hsq Y₀ _ Y _ i hY hi L₀ L hL₀ hL hA e hK`. Establish `hJ` using `le_jacobson_of_sq_eq_bot hsq`. Establish `key : ∀ p : Sp R, ∃ U : (Sp R).Opens, p ∈ U ∧ KTriv ((Over.pullback U.ι).obj Y) (L.pull (pullback.fst Y.hom U.ι))` using `fun p => by`. Take `⟨q, hq⟩` from `exists_specializes_of_surjective hπ hJ p`. Take `⟨U, hU, H⟩` from `GlobalTheory.KTrivGlob.exists_open hL hL₀ hY hA hi e hK q`.
+
+Conclude with `⟨U, hq.mem_open U.2 hU, H⟩`. Use `choose U hU hK using key`. Establish `hL'` using `fun p => pull_isLB hL (pullback.fst Y.hom (U p).ι)`. Conclude with `GlobalTheory.CoverGlue.kTriv_of_cover _ _ U Y _ _ (top_le_iff.1 fun p _ => TopologicalSpace.Opens.mem_iSup.2 ⟨p, hU p⟩) (fun p => isGrpPullback_pullback Y (U p).ι) _ _ hL hL' (fun p => GlobalTheory.lbIso_refl (hL' p)) hY (fun p => GlobalTheory.PolPull.isAbelianScheme_of_isGrpPull …`.
+-/
 theorem kTriv_lift : ∀ (R R₀ : Type) [CommRing R] [IsNoetherianRing R] [CommRing R₀] (π : R →+* R₀), Function.Surjective π → RingHom.ker π ^ 2 = ⊥ → ∀ (Y₀ : Over (Sp R₀)) [GrpObj Y₀] (Y : Over (Sp R)) [GrpObj Y] (i : Y₀.left ⟶ Y.left), IsAbelianScheme Y → IsGrpPullback Y₀ Y (spMap π) i → ∀ (L₀ : LB Y₀.left) (L : LB Y.left), L₀.IsLB → L.IsLB → RelAmple Y L → LBIso L₀ (L.pull i) → KTriv Y₀ L₀ → KTriv Y L := by
   intro R R₀ _ _ _ π hπ hsq Y₀ _ Y _ i hY hi L₀ L hL₀ hL hA e hK
   have hJ := le_jacobson_of_sq_eq_bot hsq

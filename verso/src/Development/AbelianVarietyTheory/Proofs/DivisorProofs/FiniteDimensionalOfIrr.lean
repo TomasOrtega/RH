@@ -24,10 +24,20 @@ section General
 variable {G V V' W W' : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
   [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
 
+/- English proof (translation)
+Rewrite `h` using `[Representation.irreducible_iff_isSimpleModule_asModule]`. Conclude with `IsSimpleModule.nontrivial (MonoidAlgebra ℂ G) ρ.asModule`.
+-/
 theorem nontrivial_of_irr {ρ : Representation ℂ G V} (h : ρ.IsIrreducible) : Nontrivial V := by
   rw [Representation.irreducible_iff_isSimpleModule_asModule] at h
   exact IsSimpleModule.nontrivial (MonoidAlgebra ℂ G) ρ.asModule
 
+/- English proof (translation)
+Use `nontrivial_of_irr h` as an intermediate fact. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Set `S : Subrepresentation ρ` to `⟨Submodule.span ℂ (Set.range fun g => ρ g v), fun g x hx => by`. Use `(Submodule.span_le (p := (Submodule.span ℂ (Set.range fun g => ρ g v)).comap (ρ g))).2 ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Conclude with `Submodule.subset_span ⟨g * k, by simp⟩⟩`. Break down `eq_bot_or_eq_top S with hS | hS` into its components or cases. Establish `h1 : v ∈ S.toSubmodule` using `Submodule.subset_span ⟨1, by simp⟩`. Rewrite `h1` using `[hS]`. Conclude with `absurd h1 hv`.
+
+Establish `h1 : Submodule.span ℂ (Set.range fun g => ρ g v) = ⊤` using `congrArg Subrepresentation.toSubmodule hS`. Conclude with `⟨Submodule.fg_def.2 ⟨_, Set.finite_range _, h1⟩⟩`.
+-/
 theorem finiteDimensional_of_irr [Finite G] {ρ : Representation ℂ G V} (h : ρ.IsIrreducible) :
     FiniteDimensional ℂ V := by
   have := nontrivial_of_irr h
@@ -43,6 +53,9 @@ theorem finiteDimensional_of_irr [Finite G] {ρ : Representation ℂ G V} (h : �
   · have h1 : Submodule.span ℂ (Set.range fun g => ρ g v) = ⊤ := congrArg Subrepresentation.toSubmodule hS
     exact ⟨Submodule.fg_def.2 ⟨_, Set.finite_range _, h1⟩⟩
 
+/- English proof (translation)
+Use `top_le_iff.1 (h.ge.trans (iSup_le fun f => le_iSup_of_le (f.comp e.toIntertwiningMap) ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨y, rfl⟩` from `e.toLinearEquiv.surjective x`. Conclude with `⟨y, rfl⟩`.
+-/
 theorem isotypic_of_equiv {τ : Representation ℂ G V} {ρ : Representation ℂ G W} {ρ' : Representation ℂ G W'}
     (e : ρ.Equiv ρ') (h : IsIsotypicOf τ ρ') : IsIsotypicOf τ ρ := by
   refine top_le_iff.1 (h.ge.trans (iSup_le fun f => le_iSup_of_le (f.comp e.toIntertwiningMap) ?_))
@@ -50,6 +63,11 @@ theorem isotypic_of_equiv {τ : Representation ℂ G V} {ρ : Representation ℂ
   obtain ⟨y, rfl⟩ := e.toLinearEquiv.surjective x
   exact ⟨y, rfl⟩
 
+/- English proof (translation)
+Use `top_le_iff.1 (h.ge.trans (iSup_le fun f => le_iSup_of_le ⟨f.toLinearMap ∘ₗ ρ π, fun g => ?_⟩ ?_))` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [LinearMap.comp_apply, hτ]`. Use `Eq.trans ?_ (f.isIntertwining _ _ _ _)` and prove the remaining obligations. Simplify using `only [← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right]`.
+
+Both sides reduce to the same expression. Introduce and unpack `_ ⟨x, rfl⟩`. Use `⟨ρ π⁻¹ x, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem isotypic_conj {τ τ' : Representation ℂ G V} {ρ : Representation ℂ G W} (π : G)
     (hτ : ∀ g, τ' g = τ (π * g * π⁻¹)) (h : IsIsotypicOf τ ρ) : IsIsotypicOf τ' ρ := by
   refine top_le_iff.1 (h.ge.trans (iSup_le fun f => le_iSup_of_le ⟨f.toLinearMap ∘ₗ ρ π, fun g => ?_⟩ ?_))
@@ -62,6 +80,23 @@ theorem isotypic_conj {τ τ' : Representation ℂ G V} {ρ : Representation ℂ
     refine ⟨ρ π⁻¹ x, ?_⟩
     simp only [LinearMap.comp_apply, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Use `nontrivial_of_irr hσ` as an intermediate fact. Use `finiteDimensional_of_irr hσ` as an intermediate fact. Establish `: NeZero (Nat.card G : ℂ)` using `⟨by exact_mod_cast Nat.card_pos.ne'⟩`. Take `⟨K, hi, hK⟩` from `GlobalTheory.T.exists_injective_kernel_coind_intertwiningMap G P P V V σ σ`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.exists_ne_zero_coindIntertwiner_of_doubleCoset G P P V V σ σ 1 LinearMap.id (fun e => by`.
+
+Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Conclude with `hv (LinearMap.congr_fun e v)) (fun p p' e => by`. Establish `: p' = p` using `Subtype.ext (by simpa using e)`. Rewrite using `[this]`. Use the proof step `rfl)`.
+
+Establish `hl : ∀ Ψ (p : P), K Ψ p = σ p ∘ₗ K Ψ 1` using `fun Ψ p => by`. Use `hK Ψ p 1 1` as an intermediate fact. Simplify `this` using `[Module.End.one_eq_id]`. Establish `hr : ∀ Ψ (p : P), K Ψ p = K Ψ 1 ∘ₗ σ p` using `fun Ψ p => by`. Use `hK Ψ 1 1 p` as an intermediate fact.
+
+Simplify `this` using `[Module.End.one_eq_id]`. Set `E : Representation.IntertwiningMap (Representation.coind P.subtype σ) (Representation.coind P.subtype σ) →ₗ[ℂ] Representation.IntertwiningMap σ σ` to `{ toFun := fun Ψ => ⟨K Ψ 1, fun p => (hr Ψ p).symm.trans (hl Ψ p)⟩ map_add' := fun a b => Representation.IntertwiningMap.ext (by simp) map_smul' := fun a b => Representation.IntertwiningMap.ext (by simp) }`. Establish `hE : Function.Injective E`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `Ψ h0`.
+
+Establish `h1 : K Ψ 1 = 0` using `congrArg Representation.IntertwiningMap.toLinearMap h0`. Apply `hi` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `g`. Assume the negation of the conclusion as `hg`.
+
+Apply `hg` to reduce the goal to its premises. Use `hl Ψ ⟨g, h _ (hK Ψ) g hg⟩` as an intermediate fact. Rewrite `this` using `[h1]`. Simplify using `using this`. Establish `hf : Module.Finite ℂ (Representation.IntertwiningMap σ σ)` using `Module.finite_of_finrank_eq_succ (Representation.IsIrreducible.finrank_intertwiningMap_self σ)`.
+
+Establish `hf2` using `Module.Finite.of_injective E hE`. Establish `h1` using `LinearMap.finrank_le_finrank_of_injective hE`. Rewrite `h1` using `[Representation.IsIrreducible.finrank_intertwiningMap_self σ]`. Establish `: Nontrivial (Representation.IntertwiningMap (Representation.coind P.subtype σ) (Representation.coind P.subtype σ))` using `⟨⟨Φ, 0, hΦ⟩⟩`. Establish `h2` using `le_antisymm h1 Module.finrank_pos`.
+
+Rewrite using `[Representation.irreducible_iff_isSimpleModule_asModule]`. Use `GlobalTheory.CuspCharCompare.isSimpleModule_of_finrank_end ?_` and prove the remaining obligations. Rewrite using `[← h2]`. Conclude with `(Representation.IntertwiningMap.equivAlgEnd (ρ := Representation.coind P.subtype σ)).toLinearEquiv.finrank_eq.symm`.
+-/
 theorem coind_irreducible [Finite G] (P : Subgroup G) (σ : Representation ℂ P V) (hσ : σ.IsIrreducible)
     (h : ∀ K : G → V →ₗ[ℂ] V, (∀ (p' : P) (g : G) (p : P), K ((p' : G) * g * (p : G)) = σ p' ∘ₗ K g ∘ₗ σ p) →
       ∀ g, K g ≠ 0 → g ∈ P) : (Representation.coind P.subtype σ).IsIrreducible := by
@@ -111,6 +146,9 @@ theorem coind_irreducible [Finite G] (P : Subgroup G) (σ : Representation ℂ P
   exact (Representation.IntertwiningMap.equivAlgEnd
     (ρ := Representation.coind P.subtype σ)).toLinearEquiv.finrank_eq.symm
 
+/- English proof (translation)
+Establish `h1` using `hK p' x 1`. Establish `h2` using `hK 1 x p`. Simplify using `only [OneMemClass.coe_one, mul_one, one_mul, map_one, Module.End.one_eq_id, LinearMap.comp_id, LinearMap.id_comp] at h1 h2`. Rewrite using `[← h1, ← h2, e]`.
+-/
 theorem kernel_twist {P P' : Subgroup G} {σ : Representation ℂ P V} {σ' : Representation ℂ P' V'}
     {K : G → V →ₗ[ℂ] V'} (hK : ∀ (p' : P') (g : G) (p : P), K ((p' : G) * g * (p : G)) = σ' p' ∘ₗ K g ∘ₗ σ p)
     (x : G) (p : P) (p' : P') (e : (p' : G) * x = x * (p : G)) : σ' p' ∘ₗ K x = K x ∘ₗ σ p := by
@@ -130,21 +168,35 @@ variable {d d' d'' : ℕ} {W W' W'' : Type} [AddCommGroup W] [Module ℂ W] [Add
   [AddCommGroup W''] [Module ℂ W''] {ρ : Representation ℂ (GL (Fin d) F) W}
   {ρ' : Representation ℂ (GL (Fin d') F) W'} {ρ'' : Representation ℂ (GL (Fin d'') F) W''}
 
+/- English proof (translation)
+Take `⟨rfl, ⟨e⟩⟩` from `h`. Conclude with `⟨rfl, ⟨e.symm⟩⟩`.
+-/
 theorem isoGL_symm (h : IsoGL ρ ρ') : IsoGL ρ' ρ := by
   obtain ⟨rfl, ⟨e⟩⟩ := h
   exact ⟨rfl, ⟨e.symm⟩⟩
 
+/- English proof (translation)
+Take `⟨rfl, ⟨e⟩⟩` from `h`. Take `⟨rfl, ⟨e'⟩⟩` from `h'`. Conclude with `⟨rfl, ⟨e.trans e'⟩⟩`.
+-/
 theorem isoGL_trans (h : IsoGL ρ ρ') (h' : IsoGL ρ' ρ'') : IsoGL ρ ρ'' := by
   obtain ⟨rfl, ⟨e⟩⟩ := h
   obtain ⟨rfl, ⟨e'⟩⟩ := h'
   exact ⟨rfl, ⟨e.trans e'⟩⟩
 
+/- English proof (translation)
+Take `⟨rfl, ⟨e⟩⟩` from `h`. Take `⟨hi, hc, ht⟩` from `hf`. Conclude with `⟨isIrreducible_of_equiv e.symm hi, hc, isotypic_of_equiv e ht⟩`.
+-/
 theorem isFactor_of_iso {b : Fin r → ℕ} {σ : Representation ℂ (blockTri (κ := F) b) V} {c : ℕ}
     (h : IsoGL ρ ρ') (hf : IsFactor b σ c ρ') : IsFactor b σ c ρ := by
   obtain ⟨rfl, ⟨e⟩⟩ := h
   obtain ⟨hi, hc, ht⟩ := hf
   exact ⟨isIrreducible_of_equiv e.symm hi, hc, isotypic_of_equiv e ht⟩
 
+/- English proof (translation)
+Take `⟨hi, hc, hs⟩` from `hf`. Take `⟨hi', hc', hs'⟩` from `hf'`. Take `⟨h1, h2⟩` from `GlobalTheory.T.blockGLHom_conj_permMatrix_of_blocks_match F r b b' w hw i`. Take `rfl : d = d'` from `hc.symm.trans (h1.trans hc')`. Take `⟨π, hπ⟩` from `h2 d hc hc'`.
+
+Set `τ' : Representation ℂ (GL (Fin d) F) V'` to `(σ'.comp (blockHom F b' _ hc')).comp (MulAut.conj π).toMonoidHom`. Use `(isoGL_iff _ _).2 (GlobalTheory.T.equiv_of_ne_zero_map_isotypicSumOfCopies _ V V' W W' _ τ' ρ ρ' hi hi' hs (isotypic_conj π (fun g => rfl) hs') ⟨T, fun g => (ht _ _ (hπ g)).symm⟩ fun e => hT (congrArg Representation.IntertwiningMap.toLinearMap e))` and prove the remaining obligations.
+-/
 theorem isoGL_of_twist [Finite F] {b b' : Fin r → ℕ} {σ : Representation ℂ (blockTri (κ := F) b) V}
     {σ' : Representation ℂ (blockTri (κ := F) b') V'} {w : Equiv.Perm (Fin r)}
     (hw : ∀ i j : Fin r, b i = b j ↔ b' (w i) = b' (w j)) {T : V →ₗ[ℂ] V'} (hT : T ≠ 0)
@@ -170,6 +222,9 @@ variable [Finite F] {b b' : Fin r → ℕ} {σ : Representation ℂ (blockTri (�
   {d' : ℕ → ℕ} {W' : ℕ → Type} [∀ c, AddCommGroup (W' c)] [∀ c, Module ℂ (W' c)]
   {ρ' : ∀ c, Representation ℂ (GL (Fin (d' c)) F) (W' c)}
 
+/- English proof (translation)
+Take `⟨w, p', p, rfl⟩` from `GlobalTheory.T.exists_permMatrix_rep_parabolic_doubleCoset F r b b' h.1.mono h'.1.mono g`. Establish `h0 : K (permGL F w) ≠ 0` using `fun e => hg (by rw [hK, e]; simp)`. Establish `hw` using `GlobalTheory.T.cuspidalLeviDatum_perm_blocks_match F r b b' V V' σ σ' h.1 h'.1 w _ h0 (kernel_twist hK _)`. Conclude with `⟨w, p', p, rfl, fun i => isoGL_of_twist hw h0 (kernel_twist hK _) i (h.2.1 _ ⟨i, rfl⟩) (h'.2.1 _ ⟨w i, rfl⟩)⟩`.
+-/
 theorem exists_perm_of_kernel (h : IsRegularCusp b σ d W ρ) (h' : IsRegularCusp b' σ' d' W' ρ')
     {K : GL (Fin r) F → V →ₗ[ℂ] V'}
     (hK : ∀ (p' : blockTri (κ := F) b') (g : GL (Fin r) F) (p : blockTri (κ := F) b),
@@ -181,6 +236,11 @@ theorem exists_perm_of_kernel (h : IsRegularCusp b σ d W ρ) (h' : IsRegularCus
   have hw := GlobalTheory.T.cuspidalLeviDatum_perm_blocks_match F r b b' V V' σ σ' h.1 h'.1 w _ h0 (kernel_twist hK _)
   exact ⟨w, p', p, rfl, fun i => isoGL_of_twist hw h0 (kernel_twist hK _) i (h.2.1 _ ⟨i, rfl⟩) (h'.2.1 _ ⟨w i, rfl⟩)⟩
 
+/- English proof (translation)
+Use `coind_irreducible _ σ h.1.irr fun K hK g hg => ?_` and prove the remaining obligations. Take `⟨w, p', p, rfl, hw⟩` from `exists_perm_of_kernel h h hK hg`. Use `Subgroup.mul_mem _ (Subgroup.mul_mem _ p'.2 (mem_blockTri.2 fun i j hij => ?_)) p.2` and prove the remaining obligations. Rewrite using `[permGL_apply, if_neg]`. Introduce and unpack `rfl`.
+
+Conclude with `h.2.2 _ ⟨j, rfl⟩ _ ⟨w j, rfl⟩ hij.ne (hw j)`.
+-/
 theorem parInd_irreducible (h : IsRegularCusp b σ d W ρ) : (parInd b σ).IsIrreducible := by
   refine coind_irreducible _ σ h.1.irr fun K hK g hg => ?_
   obtain ⟨w, p', p, rfl, hw⟩ := exists_perm_of_kernel h h hK hg
@@ -189,6 +249,21 @@ theorem parInd_irreducible (h : IsRegularCusp b σ d W ρ) : (parInd b σ).IsIrr
   rintro rfl
   exact h.2.2 _ ⟨j, rfl⟩ _ ⟨w j, rfl⟩ hij.ne (hw j)
 
+/- English proof (translation)
+Use `nontrivial_of_irr h.1.irr` as an intermediate fact. Use `nontrivial_of_irr h'.1.irr` as an intermediate fact. Use `finiteDimensional_of_irr h.1.irr` as an intermediate fact. Use `finiteDimensional_of_irr h'.1.irr` as an intermediate fact. Establish `hf : ∀ c : Set.range b, IsFactor b σ c (ρ c)` using `fun c => h.2.1 c c.2`.
+
+Take `⟨f, hf1, hf2, hf3⟩` from `GlobalTheory.T.exists_levi_generated_commuting_blockGL F r b (fun c => d c) fun c => (hf c).2.1`. Establish `hL : levi F b = levi F (b' ∘ w)` using `levi_congr hw`. Set `ι : levi F b →* blockTri (κ` to `F) b := Subgroup.inclusion (levi_le_blockTri b)`. Set `ι' : levi F b →* blockTri (κ` to `F) b' := (Subgroup.inclusion (levi_le_blockTri b')).comp ((leviConj b' w).toMonoidHom.comp (Subgroup.inclusion hL.le))`. Establish `hι' : ∀ m, (ι' m : GL (Fin r) F) = permGL F w * m * (permGL F w)⁻¹` using `fun _ => rfl`.
+
+Take `⟨T, hT⟩` from `GlobalTheory.T.exists_ne_zero_intertwining_of_commuting_isotypicFactors (levi F b) (Set.range b) (fun c => GL (Fin (d c)) F) f hf2 hf3 (fun c => W c) (fun c => ρ c) (fun c => (hf c).1) V V' (σ.comp ι) (σ'.comp ι') (fun c => by`. Establish `e : ι.comp (f c) = blockHom F b c (hf c).2.1` using `MonoidHom.ext fun g => Subtype.ext (hf1 c g)`. Use `(hf c).2.2` as an intermediate fact. Rewrite `this` using `[← e]`. Conclude with `this) (by`.
+
+Introduce and unpack `⟨_, i, rfl⟩`. Take `⟨-, hc', hs'⟩` from `isFactor_of_iso (hρ i) (h'.2.1 _ ⟨w i, rfl⟩)`. Take `⟨π, hπ⟩` from `(GlobalTheory.T.blockGLHom_conj_permMatrix_of_blocks_match F r b b' w hw i).2 _ (hf ⟨_, i, rfl⟩).2.1 hc'`. Use `isotypic_conj π (fun g => ?_) hs'` and prove the remaining obligations. Use `congrArg σ' (Subtype.ext ?_)` and prove the remaining obligations.
+
+Use `show (ι' (f ⟨_, i, rfl⟩ g) : GL (Fin r) F) = _`. Rewrite using `[hι', hf1, ← hπ, mul_inv_cancel_right])`. Use `⟨T.toLinearMap, fun e => hT (Representation.IntertwiningMap.ext e), fun p p' e => ?_⟩` and prove the remaining obligations. Establish `hp' : (p' : GL (Fin r) F) = permGL F w * p * (permGL F w)⁻¹` using `eq_mul_inv_of_mul_eq e`. Take `⟨m, hm, hm1⟩` from `h.1.exists_blockDiag_act_eq F r V b σ p`.
+
+Take `⟨m', hm', hm1'⟩` from `h'.1.exists_blockDiag_act_eq F r V' b' σ' p'`. Establish `hmL : (m : GL (Fin r) F) ∈ levi F b` using `fun i j hij => by rw [hm1, if_neg hij]`. Establish `e' : m' = ι' ⟨m, hmL⟩`. Use `Subtype.ext (Units.ext (Matrix.ext fun i j => ?_))` and prove the remaining obligations. Take `⟨i, rfl⟩` from `w.surjective i`.
+
+Take `⟨j, rfl⟩` from `w.surjective j`. Rewrite using `[hι', conj_permGL_apply, hm1', hp', conj_permGL_apply]`. Simplify using `only [hm1, hw]`. Rewrite using `[← hm, ← hm', e']`. Conclude with `(T.isIntertwining' ⟨m, hmL⟩).symm`.
+-/
 theorem exists_twist (h : IsRegularCusp b σ d W ρ) (h' : IsRegularCusp b' σ' d' W' ρ') {w : Equiv.Perm (Fin r)}
     (hw : ∀ i j : Fin r, b i = b j ↔ b' (w i) = b' (w j)) (hρ : ∀ i, IsoGL (ρ (b i)) (ρ' (b' (w i)))) :
     ∃ T : V →ₗ[ℂ] V', T ≠ 0 ∧ ∀ (p : blockTri (κ := F) b) (p' : blockTri (κ := F) b'),
@@ -231,6 +306,23 @@ theorem exists_twist (h : IsRegularCusp b σ d W ρ) (h' : IsRegularCusp b' σ' 
   rw [← hm, ← hm', e']
   exact (T.isIntertwining' ⟨m, hmL⟩).symm
 
+/- English proof (translation)
+Use `⟨fun F _ _ r b V _ _ σ d W _ _ ρ h => parInd_irreducible h, ?_⟩` and prove the remaining obligations. Introduce `F _ _ r b V _ _ σ d W _ _ ρ b' V' _ _ σ' d' W' _ _ ρ' h h'`. Establish `hi` using `parInd_irreducible h`. Establish `hi'` using `parInd_irreducible h'`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨e⟩`. Take `⟨K, hKi, hK⟩` from `GlobalTheory.T.exists_injective_kernel_coind_intertwiningMap _ _ _ V V' σ σ'`. Use `nontrivial_of_irr hi` as an intermediate fact. Establish `h0 : K e.toIntertwiningMap ≠ 0` using `fun e0 => by`. Establish `e1` using `hKi (e0.trans (map_zero K).symm)`.
+
+Take `⟨v, hv⟩` from `exists_ne (0 : Representation.coindV (blockTri (κ := F) b).subtype σ)`. Use `hv (e.toLinearEquiv.injective ?_)` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `congrArg (fun f : Representation.IntertwiningMap (parInd b σ) (parInd b' σ') => f v) e1`. Take `⟨g, hg⟩` from `Function.ne_iff.1 h0`.
+
+Take `⟨w, -, -, -, hw⟩` from `exists_perm_of_kernel h h' (hK _) hg`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨_, ⟨w i, rfl⟩, hw i⟩`. Introduce and unpack `_ ⟨j, rfl⟩`.
+
+Take `⟨i, rfl⟩` from `w.surjective j`. Conclude with `⟨_, ⟨i, rfl⟩, hw i⟩`. Introduce and unpack `⟨h1, h2⟩`. Take `⟨w, hρ, hw⟩` from `GlobalTheory.T.exists_perm_of_blockSize_bijection r b b' (fun c c' => IsoGL (ρ c) (ρ' c')) (fun c hc => by`. Take `⟨c', hc', e⟩` from `h1 c hc`.
+
+Use `⟨c', ⟨hc', e⟩, fun c'' ⟨hc'', e'⟩ => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `h'.2.2 _ hc'' _ hc' hne (isoGL_trans (isoGL_symm e') e))`. Use the proof step `(fun c' hc' => by`. Take `⟨c, hc, e⟩` from `h2 c' hc'`.
+
+Use `⟨c, ⟨hc, e⟩, fun c'' ⟨hc'', e'⟩ => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `h.2.2 _ hc'' _ hc hne (isoGL_trans e' (isoGL_symm e)))`. Use the proof step `(fun c hc c' hc' e => (h.2.1 c hc).2.1.trans (e.1.symm.trans (h'.2.1 c' hc').2.1.symm))`. Take `⟨T, hT, ht⟩` from `exists_twist h h' hw hρ`.
+
+Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.exists_ne_zero_coindIntertwiner_of_doubleCoset _ _ _ V V' σ σ' _ T hT ht`. Conclude with `⟨Φ.ofBijective ((Representation.IsIrreducible.bijective_or_eq_zero Φ).resolve_right hΦ)⟩`.
+-/
 theorem irrPar : IrrPar := by
   refine ⟨fun F _ _ r b V _ _ σ d W _ _ ρ h => parInd_irreducible h, ?_⟩
   intro F _ _ r b V _ _ σ d W _ _ ρ b' V' _ _ σ' d' W' _ _ ρ' h h'

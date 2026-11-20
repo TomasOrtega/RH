@@ -15,6 +15,11 @@ open scoped Classical
 
 variable {g : ℕ} [Fact g.Prime]
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp [ip]`. Consider the case `cons ρ L ih`. Rewrite using `[List.sum_cons, List.map_cons, List.sum_cons, ← ih]`. Unfold `ip`.
+
+Simplify using `only [Pi.add_apply, add_mul, Finset.sum_add_distrib, mul_add]`.
+-/
 theorem ip_list_sum_left {G : Type} [Group G] [Fintype G] (L : List (G → ℂ)) (B : G → ℂ) :
     ip L.sum B = (L.map fun ρ => ip ρ B).sum := by
   induction L with
@@ -24,6 +29,13 @@ theorem ip_list_sum_left {G : Type} [Group G] [Fintype G] (L : List (G → ℂ))
     unfold ip
     simp only [Pi.add_apply, add_mul, Finset.sum_add_distrib, mul_add]
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => exact ⟨0, by simp, by simp⟩`. Consider the case `cons ρ L ih`. Take `⟨N, hN, hN0⟩` from `ih (fun σ hσ => hL σ (List.mem_cons_of_mem _ hσ))`. Take `⟨k, hk⟩` from `GlobalTheory.GLq.LabelMul.ip_nat (hL ρ List.mem_cons_self) hB`.
+
+Use `⟨k + N, by simp [hN, hk], ?_⟩` and prove the remaining obligations. Introduce `σ hσ h0`. Break down `List.mem_cons.1 hσ with rfl | hσ` into its components or cases. Rewrite `h0` using `[hk]`. Establish `: k ≠ 0` using `by exact_mod_cast h0`.
+
+Use linear arithmetic over natural numbers and integers. Use `hN0 σ hσ h0` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem list_nat_sum {G : Type} [Group G] [Fintype G] (L : List (G → ℂ)) (hL : ∀ ρ ∈ L, IsIrr ρ) (B : G → ℂ)
     (hB : IsChar B) : ∃ N : ℕ, (L.map fun ρ => ip ρ B).sum = N ∧ ∀ ρ ∈ L, ip ρ B ≠ 0 → N ≠ 0 := by
   induction L with
@@ -40,6 +52,11 @@ theorem list_nat_sum {G : Type} [Group G] [Fintype G] (L : List (G → ℂ)) (hL
     · have := hN0 σ hσ h0
       omega
 
+/- English proof (translation)
+Take `⟨L, hL, rfl⟩` from `(GlobalTheory.T.character_decomposition_and_classFunction_expansion G A).1 hA`. Rewrite `hψA` using `[GlobalTheory.GLq.LabelMul.ip_sum_eq_count hψ L hL]`. Establish `hm : ψ ∈ L` using `List.count_pos_iff.1 (Nat.pos_of_ne_zero (by exact_mod_cast hψA))`. Take `⟨N, hN, hN0⟩` from `list_nat_sum L hL B hB`. Rewrite using `[ip_list_sum_left, hN]`.
+
+Conclude with `hN0 ψ hm hψB` after adjusting the coercions.
+-/
 theorem ip_ne_zero_of_common {G : Type} [Group G] [Fintype G] {ψ A B : G → ℂ} (hψ : IsIrr ψ) (hA : IsChar A)
     (hB : IsChar B) (hψA : ip ψ A ≠ 0) (hψB : ip ψ B ≠ 0) : ip A B ≠ 0 := by
   obtain ⟨L, hL, rfl⟩ := (GlobalTheory.T.character_decomposition_and_classFunction_expansion G A).1 hA
@@ -49,6 +66,11 @@ theorem ip_ne_zero_of_common {G : Type} [Group G] [Fintype G] {ψ A B : G → �
   rw [ip_list_sum_left, hN]
   exact_mod_cast hN0 ψ hm hψB
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.GLq.LabelMul.ip_add_right]`. Take `⟨k, hk⟩` from `GlobalTheory.GLq.LabelMul.ip_nat hψ hX`. Take `⟨l, hl⟩` from `GlobalTheory.GLq.LabelMul.ip_nat hψ hY`. Rewrite `h` using `[hk]`. Establish `hk0 : k ≠ 0` using `by exact_mod_cast h`.
+
+Rewrite using `[hk, hl]`. Conclude with `(show k + l ≠ 0 by omega)` after adjusting the coercions.
+-/
 theorem ip_add_ne_zero {G : Type} [Group G] [Fintype G] {ψ X Y : G → ℂ} (hψ : IsIrr ψ) (hX : IsChar X)
     (hY : IsChar Y) (h : ip ψ X ≠ 0) : ip ψ (X + Y) ≠ 0 := by
   rw [GlobalTheory.GLq.LabelMul.ip_add_right]
@@ -59,10 +81,16 @@ theorem ip_add_ne_zero {G : Type} [Group G] [Fintype G] {ψ X Y : G → ℂ} (h�
   rw [hk, hl]
   exact_mod_cast (show k + l ≠ 0 by omega)
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.harishChandraProductList_isCharacter_and_perm_invariant g K K m hm.symm (fun p hp => GlobalTheory.GLq.IpCuspProd.isChar_of_isCusp (hK p hp))).1`.
+-/
 theorem isChar_hcL_cusp (K : List (Pc g)) (hK : ∀ p ∈ K, IsCusp p.2) (m : ℕ) (hm : degL K = m) :
     IsChar (hcL K m) :=
   (GlobalTheory.T.harishChandraProductList_isCharacter_and_perm_invariant g K K m hm.symm (fun p hp => GlobalTheory.GLq.IpCuspProd.isChar_of_isCusp (hK p hp))).1
 
+/- English proof (translation)
+Take `⟨R, hR, he⟩` from `GlobalTheory.GLq.LabelMul.exists_add_of_ip_ne_zero hσ (isChar_hcL_cusp K hK m hd) hσK`. Rewrite using `[he, GlobalTheory.GLq.LabelMul.hc_add_left]`. Establish `hc` using `(GlobalTheory.T.harishChandra_induction_character_restriction_decomp g m 1 (m + 1) rfl).1`. Conclude with `ip_add_ne_zero hψ (hc σ β (GlobalTheory.GLq.LabelMul.isChar_of_isIrr hσ) hβ) (hc R β hR hβ) h`.
+-/
 theorem ip_hc_left (m : ℕ) (ψ : Gn g (m + 1) → ℂ) (hψ : IsIrr ψ) (σ : Gn g m → ℂ) (hσ : IsIrr σ)
     (β : Gn g 1 → ℂ) (hβ : IsChar β) (K : List (Pc g)) (hK : ∀ p ∈ K, IsCusp p.2) (hd : degL K = m)
     (hσK : ip σ (hcL K m) ≠ 0) (h : ip ψ (hc m 1 σ β (m + 1)) ≠ 0) : ip ψ (hc m 1 (hcL K m) β (m + 1)) ≠ 0 := by
@@ -71,6 +99,9 @@ theorem ip_hc_left (m : ℕ) (ψ : Gn g (m + 1) → ℂ) (hψ : IsIrr ψ) (σ : 
   have hc := (GlobalTheory.T.harishChandra_induction_character_restriction_decomp g m 1 (m + 1) rfl).1
   exact ip_add_ne_zero hψ (hc σ β (GlobalTheory.GLq.LabelMul.isChar_of_isIrr hσ) hβ) (hc R β hR hβ) h
 
+/- English proof (translation)
+Take `⟨R, hR, he⟩` from `GlobalTheory.GLq.LabelMul.exists_add_of_ip_ne_zero hσ (isChar_hcL_cusp K hK m hd) hσK`. Rewrite using `[he, GlobalTheory.GLq.LabelMul.hc_add_right]`. Establish `hc` using `(GlobalTheory.T.harishChandra_induction_character_restriction_decomp g 1 m (m + 1) (by omega)).1`. Conclude with `ip_add_ne_zero hψ (hc β σ hβ (GlobalTheory.GLq.LabelMul.isChar_of_isIrr hσ)) (hc β R hβ hR) h`.
+-/
 theorem ip_hc_right (m : ℕ) (ψ : Gn g (m + 1) → ℂ) (hψ : IsIrr ψ) (σ : Gn g m → ℂ) (hσ : IsIrr σ)
     (β : Gn g 1 → ℂ) (hβ : IsChar β) (K : List (Pc g)) (hK : ∀ p ∈ K, IsCusp p.2) (hd : degL K = m)
     (hσK : ip σ (hcL K m) ≠ 0) (h : ip ψ (hc 1 m β σ (m + 1)) ≠ 0) : ip ψ (hc 1 m β (hcL K m) (m + 1)) ≠ 0 := by
@@ -79,6 +110,19 @@ theorem ip_hc_right (m : ℕ) (ψ : Gn g (m + 1) → ℂ) (hψ : IsIrr ψ) (σ :
   have hc := (GlobalTheory.T.harishChandra_induction_character_restriction_decomp g 1 m (m + 1) (by omega)).1
   exact ip_add_ne_zero hψ (hc β σ hβ (GlobalTheory.GLq.LabelMul.isChar_of_isIrr hσ)) (hc β R hβ hR) h
 
+/- English proof (translation)
+Take `⟨⟨hm, -, h0, hdeg⟩, -, hf⟩` from `hP`. Establish `hPe : P = X - C (-P.coeff 0)`. Rewrite using `[map_neg, sub_neg_eq_add]`. Conclude with `hm.eq_X_add_C hdeg`. Establish `hc'0 : -P.coeff 0 ≠ 0` using `neg_ne_zero.2 h0`.
+
+Take `⟨u, hu⟩` from `GlobalTheory.GLq.LabelDet.gen_one_mem L`. Set `y : Gn g 1` to `Units.map (Matrix.scalar (Fin 1) : ZMod g →+* Mt g 1).toMonoidHom u`. Establish `hy00 : (y : Mt g 1) 0 0 = u` using `by simp [y]`. Establish `hcp : (y : Mt g 1).charpoly = X - C ((y : Mt g 1) 0 0)`. Simplify using `[Matrix.charpoly, Matrix.det_fin_one]`.
+
+Establish `hx : algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) (-P.coeff 0) ∈ Formalism.CyclotomicNorms.rootsBar P`. Rewrite using `[hPe]`. Simplify using `[Formalism.CyclotomicNorms.rootsBar]`. Establish `hz : L.gen 1 ∈ Formalism.CyclotomicNorms.rootsBar (y : Mt g 1).charpoly`. Rewrite using `[hcp, hy00, ← hu]`.
+
+Simplify using `[Formalism.CyclotomicNorms.rootsBar]`. Establish `hirr : Irreducible (y : Mt g 1).charpoly` using `by rw [hcp]; exact irreducible_X_sub_C _`. Establish `key` using `hf _ hx y hirr _ hz`. Establish `hxp : (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) (-P.coeff 0)) ^ (g ^ 1 - 1) = 1`. Rewrite using `[← map_pow, pow_one, ZMod.pow_card_sub_one_eq_one hc'0, map_one]`.
+
+Establish `hth` using `GlobalTheory.GLq.LabelDet.theta_gen_pow L hxp 1`. Rewrite `hth` using `[pow_one, pow_one]`. Establish `hdet : Matrix.GeneralLinearGroup.det y = u` using `by ext; simp [y, Matrix.det_fin_one]`. Simplify using `only [hdet, Nat.sub_self, pow_zero, one_mul, Finset.sum_range_one, pow_one, hth] at key`. Rewrite `key` using `[h.2 u hu]`.
+
+Use `L.teich_inj _ _ ((_root_.map_ne_zero _).2 h.1) ((_root_.map_ne_zero _).2 hc'0) key` as an intermediate fact. Rewrite using `[hPe, (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)).injective this]`.
+-/
 theorem eq_of_isCuspOf_det (L : LabelDatum g) (θ : (ZMod g)ˣ →* ℂˣ) (c : ZMod g) (h : GlobalTheory.GLp.IsCharLab L θ c)
     (P : (ZMod g)[X])
     (hP : IsCuspOf L P (fun y : Gn g 1 => ((θ (Matrix.GeneralLinearGroup.det y) : ℂˣ) : ℂ))) : P = X - C c := by
@@ -113,6 +157,31 @@ namespace GlobalTheory.GLq.DetRoot
 
 open scoped Classical
 
+/- English proof (translation)
+Introduce `g _ L n ψ f hψ hL σ hσ θ c hlab`. Take `⟨Q, hQ, hQd, rfl, hQi⟩` from `hL`. Take `⟨K, hK, hKd, hKi⟩` from `GlobalTheory.GLq.SuppCusp.exists_cusp_list g n σ hσ`. Substitute `hKd` using the available equality. Establish `hβI : IsIrr (fun y : Gn g 1 => ((θ (Matrix.GeneralLinearGroup.det y) : ℂˣ) : ℂ))` using `GlobalTheory.GLq.LabelDet.isIrr_hom (θ.comp Matrix.GeneralLinearGroup.det)`.
+
+Establish `hβC` using `GlobalTheory.GLq.LabelMul.isChar_of_isIrr hβI`. Establish `hβcusp : IsCusp (fun y : Gn g 1 => ((θ (Matrix.GeneralLinearGroup.det y) : ℂˣ) : ℂ))` using `⟨one_pos, hβI, fun a h1 h2 => by omega⟩`. Establish `hQc : ∀ p ∈ Q.map Prod.snd, IsCusp p.2`. Introduce `p hp`. Take `⟨q, hq, rfl⟩` from `List.mem_map.1 hp`.
+
+Conclude with `(hQ q hq).2.1`. Establish `hA` using `isChar_hcL_cusp _ hQc _ hQd`. Establish `fin : ∀ K' : List (Pc g), (Q.map Prod.snd).Perm K' → (⟨1, fun y : Gn g 1 => ((θ (Matrix.GeneralLinearGroup.det y) : ℂˣ) : ℂ)⟩ : Pc g) ∈ K' → ((Q.map Prod.fst).prod).IsRoot c`. Introduce `K' hp hm`. Take `⟨⟨P, s⟩, hq, hs⟩` from `List.mem_map.1 (hp.mem_iff.2 hm)`.
+
+Simplify using `only at hs`. Substitute `hs` using the available equality. Establish `hP` using `eq_of_isCuspOf_det L θ c hlab P (hQ _ hq)`. Establish `hdvd : P ∣ (Q.map Prod.fst).prod` using `List.dvd_prod (List.mem_map.2 ⟨_, hq, rfl⟩)`. Conclude with `Polynomial.IsRoot.dvd (by rw [hP]; exact root_X_sub_C.2 rfl) hdvd`.
+
+Establish `hbc : ∀ p ∈ [(⟨1, fun y : Gn g 1 => ((θ (Matrix.GeneralLinearGroup.det y) : ℂˣ) : ℂ)⟩ : Pc g)], IsCusp p.2`. Introduce `p hp`. Rewrite `hp` using `[List.mem_singleton]`. Substitute `hp` using the available equality. Conclude with `hβcusp`.
+
+Establish `hKc` using `fun p hp => GlobalTheory.GLq.IpCuspProd.isChar_of_isCusp (hK p hp)`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `h2` using `ip_hc_left _ ψ hψ σ hσ _ hβC K hK rfl hKi h`. Establish `e2 : hc (degL K) 1 (hcL K (degL K)) (hcL [(⟨1, fun y : Gn g 1 => ((θ (Matrix.GeneralLinearGroup.det y) : ℂˣ) : ℂ)⟩ : Pc g)] 1) (degL K + 1) = hcL (K ++ [(⟨1, fun y : Gn g 1 => ((θ (Matrix.GeneralLinearGroup.det y) : ℂˣ) : ℂ)⟩ : Pc g)]) (degL K + 1)` using `(GlobalTheory.GLq.LabelMul.hcL_append K _ hKc (fun p hp => GlobalTheory.GLq.IpCuspProd.isChar_of_isCusp (hbc p hp)) (degL K + 1) (by simp [degL])).symm`. Rewrite `e2` using `[GlobalTheory.GLq.IpCuspProd.hcL_single 1 _ (GlobalTheory.GLq.IpCuspProd.isClass_of_isChar hβC)]`.
+
+Rewrite `h2` using `[e2]`. Establish `hKd' : degL (K ++ [(⟨1, fun y : Gn g 1 => ((θ (Matrix.GeneralLinearGroup.det y) : ℂˣ) : ℂ)⟩ : Pc g)]) = degL K + 1` using `by simp [degL]`. Establish `hB` using `isChar_hcL_cusp _ (fun p hp => by`. Break down `List.mem_append.1 hp with hp | hp` into its components or cases. Conclude with `hK p hp`.
+
+Conclude with `hbc p hp) _ hKd'`. Establish `hAB` using `ip_ne_zero_of_common hψ hA hB hQi h2`. Use `fin (K ++ [(⟨1, fun y : Gn g 1 => ((θ (Matrix.GeneralLinearGroup.det y) : ℂˣ) : ℂ)⟩ : Pc g)]) ?_ (List.mem_append.2 (Or.inr (List.mem_singleton.2 rfl)))` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `hAB ((GlobalTheory.GLq.IpCuspProd.ip_hcL_cusp g _ _ _ hQd hKd' hQc (fun p hp => by`.
+
+Break down `List.mem_append.1 hp with hp | hp` into its components or cases. Conclude with `hK p hp`. Conclude with `hbc p hp)).1 hn)`. Establish `h2` using `ip_hc_right _ ψ hψ σ hσ _ hβC K hK rfl hKi h`. Establish `e2 : hc 1 (degL K) (fun y : Gn g 1 => ((θ (Matrix.GeneralLinearGroup.det y) : ℂˣ) : ℂ)) (hcL K (degL K)) (degL K + 1) = hcL ((⟨1, fun y : Gn g 1 => ((θ (Matrix.GeneralLinearGroup.det y) : ℂˣ) : ℂ)⟩ : Pc g) :: K) (degL K + 1)` using `(hcL_cons (⟨1, fun y : Gn g 1 => ((θ (Matrix.GeneralLinearGroup.det y) : ℂˣ) : ℂ)⟩ : Pc g) K (degL K + 1)).symm`.
+
+Rewrite `h2` using `[e2]`. Establish `hKd' : degL ((⟨1, fun y : Gn g 1 => ((θ (Matrix.GeneralLinearGroup.det y) : ℂˣ) : ℂ)⟩ : Pc g) :: K) = degL K + 1` using `by simp [degL]; omega`. Establish `hKc' : ∀ p ∈ (⟨1, fun y : Gn g 1 => ((θ (Matrix.GeneralLinearGroup.det y) : ℂˣ) : ℂ)⟩ : Pc g) :: K, IsCusp p.2`. Introduce `p hp`. Break down `List.mem_cons.1 hp with rfl | hp` into its components or cases.
+
+Conclude with `hβcusp`. Conclude with `hK p hp`. Establish `hB` using `isChar_hcL_cusp _ hKc' _ hKd'`. Establish `hAB` using `ip_ne_zero_of_common hψ hA hB hQi h2`. Use `fin ((⟨1, fun y : Gn g 1 => ((θ (Matrix.GeneralLinearGroup.det y) : ℂˣ) : ℂ)⟩ : Pc g) :: K) ?_ List.mem_cons_self` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hn`. Conclude with `hAB ((GlobalTheory.GLq.IpCuspProd.ip_hcL_cusp g _ _ _ hQd hKd' hQc hKc').1 hn)`.
+-/
 theorem root_of_hc_det : ∀ (g : ℕ) [Fact g.Prime] (L : LabelDatum g) (n : ℕ) (ψ : Gn g (n + 1) → ℂ) (f : (ZMod g)[X]),
     IsIrr ψ → HasLabel L ψ f → ∀ (σ : Gn g n → ℂ), IsIrr σ → ∀ (θ : (ZMod g)ˣ →* ℂˣ) (c : ZMod g),
     GlobalTheory.GLp.IsCharLab L θ c →

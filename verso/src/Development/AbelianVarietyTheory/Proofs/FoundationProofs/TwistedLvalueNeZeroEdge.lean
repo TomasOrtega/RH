@@ -15,6 +15,9 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
 namespace GlobalTheory.EisM.ZEdge
 
+/- English proof (translation)
+Take `⟨u, v, huv⟩` from `h`. Establish `h2` using `congrArg (Int.cast : ℤ → ZMod L) huv`. Move the coercions through the operations in `at h2`. Rewrite `h2` using `[ZMod.natCast_self, mul_zero, add_zero]`. Conclude with `⟨⟨(d : ZMod L), (u : ZMod L), by rw [mul_comm]; exact h2, h2⟩, rfl⟩`.
+-/
 theorem isUnit_of_isCoprime {L : ℕ} {d : ℤ} (h : IsCoprime d (L : ℤ)) : IsUnit (d : ZMod L) := by
   obtain ⟨u, v, huv⟩ := h
   have h2 := congrArg (Int.cast : ℤ → ZMod L) huv
@@ -22,12 +25,26 @@ theorem isUnit_of_isCoprime {L : ℕ} {d : ℤ} (h : IsCoprime d (L : ℤ)) : Is
   rw [ZMod.natCast_self, mul_zero, add_zero] at h2
   exact ⟨⟨(d : ZMod L), (u : ZMod L), by rw [mul_comm]; exact h2, h2⟩, rfl⟩
 
+/- English proof (translation)
+Use `DirichletCharacter.changeLevel_eq_cast_of_dvd χ h hd.unit` as an intermediate fact. Simplify using `only [IsUnit.unit_spec] at this`. Rewrite using `[this, ZMod.cast_intCast h]`.
+-/
 theorem changeLevel_int {n m : ℕ} (χ : DirichletCharacter ℂ n) (h : n ∣ m) (d : ℤ) (hd : IsUnit (d : ZMod m)) :
     DirichletCharacter.changeLevel h χ (d : ZMod m) = χ (d : ZMod n) := by
   have := DirichletCharacter.changeLevel_eq_cast_of_dvd χ h hd.unit
   simp only [IsUnit.unit_spec] at this
   rw [this, ZMod.cast_intCast h]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hinv` using `hg.cf.1.2 (-1) (by simp)`. Establish `hq : ∀ τ : ℍ, qs g τ = 0`. Introduce `τ`. Establish `h1` using `hinv τ`.
+
+Establish `hs : (-1 : SL(2, ℤ)) • τ = τ` using `by rw [ModularGroup.SL_neg_smul, one_smul]`. Rewrite `h1` using `[hs]`. Simplify using `[ch, hk.neg_one_pow] at h1`. Establish `h3 : qs g τ * (1 + χ (-1)) = 0` using `by linear_combination h1`. Break down `mul_eq_zero.1 h3 with h | h` into its components or cases.
+
+Conclude with `h`. Conclude with `absurd (by linear_combination h) hne`. Establish `hq0 : qs g = qs 0`. Use function extensionality and compare the values at `τ`. Rewrite using `[hq τ]`.
+
+Simplify using `[qs]`. Establish `hp0 : PolyB (0 : ℕ → ℂ)` using `⟨0, 0, by simp⟩`. Use `GlobalTheory.T.qExpansionFunction_injective_of_polynomialGrowth g 0 hg.cf.1.1 hp0 hq0` as an intermediate fact. Establish `h1` using `hg.one`. Rewrite `h1` using `[this]`.
+
+Simplify using `at h1`.
+-/
 theorem chi_neg_one (k N : ℕ) (χ : DirichletCharacter ℂ N) (g : ℕ → ℂ) (hk : Odd k) (hg : Prim k N χ g) :
     χ (-1) = -1 := by
   by_contra hne
@@ -54,6 +71,9 @@ end GlobalTheory.EisM.ZEdge
 
 namespace GlobalTheory.EisM.ZEdge
 
+/- English proof (translation)
+Introduce `d hd`. Establish `hu` using `isUnit_of_isCoprime hd`. Simplify using `only [ch, MulChar.mul_apply, MulChar.pow_apply' _ two_ne_zero]`. Rewrite using `[changeLevel_int χ _ d hu, changeLevel_int φ _ d hu]`.
+-/
 theorem multiplier_agree (N M : ℕ) (χ : DirichletCharacter ℂ N) (φ : DirichletCharacter ℂ M) :
     ∀ d : ℤ, IsCoprime d ((N * M ^ 2 : ℕ) : ℤ) →
       ch χ d * ch φ d ^ 2 = ch (DirichletCharacter.changeLevel (dvd_mul_right N (M ^ 2)) χ *
@@ -63,6 +83,9 @@ theorem multiplier_agree (N M : ℕ) (χ : DirichletCharacter ℂ N) (φ : Diric
   simp only [ch, MulChar.mul_apply, MulChar.pow_apply' _ two_ne_zero]
   rw [changeLevel_int χ _ d hu, changeLevel_int φ _ d hu]
 
+/- English proof (translation)
+Establish `ht` using `GlobalTheory.T.isCuspFormCoeffSeq_dirichletTwist_level_mul_sq k N M χ φ g hM hg`. Establish `hmf` using `(GlobalTheory.T.modularFormCoeffSeq_linear_structure k (N * M ^ 2) _).2.2.2.1 _ _ (multiplier_agree N M χ φ) ht.1`. Take `⟨Λ, h1, h2⟩` from `GlobalTheory.T.cuspForm_lseries_extends_entire k (N * M ^ 2) (N * M ^ 2) _ _ hk (by positivity) dvd_rfl ⟨hmf, ht.2⟩`. Conclude with `⟨Λ, h1, fun s hs => (h2 s hs).2⟩`.
+-/
 theorem exists_entire (k N M : ℕ) (χ : DirichletCharacter ℂ N) (φ : DirichletCharacter ℂ M) (g : ℕ → ℂ)
     (hk : 1 ≤ k) (hN : 0 < N) (hM : 0 < M) (hg : CF k N (ch χ) g) :
     ∃ Λ : ℂ → ℂ, Differentiable ℂ Λ ∧ ∀ s : ℂ, ((k : ℝ) + 1) / 2 < s.re →
@@ -72,11 +95,19 @@ theorem exists_entire (k N M : ℕ) (χ : DirichletCharacter ℂ N) (φ : Dirich
   obtain ⟨Λ, h1, h2⟩ := GlobalTheory.T.cuspForm_lseries_extends_entire k (N * M ^ 2) (N * M ^ 2) _ _ hk (by positivity) dvd_rfl ⟨hmf, ht.2⟩
   exact ⟨Λ, h1, fun s hs => (h2 s hs).2⟩
 
+/- English proof (translation)
+Rewrite using `[norm_div, norm_mul, norm_pow, Complex.norm_natCast, div_pow, mul_pow, ← pow_mul, mul_comm e 2, mul_div_assoc]`. Conclude with `mul_le_of_le_one_left (by positivity) (pow_le_one₀ (norm_nonneg _) (DirichletCharacter.norm_le_one φ _))`.
+-/
 theorem norm_b_sq (e n : ℕ) {M : ℕ} (φ : DirichletCharacter ℂ M) (g : ℕ → ℂ) :
     ‖φ n * g n / (n : ℂ) ^ e‖ ^ 2 ≤ ‖g n‖ ^ 2 / (n : ℝ) ^ (2 * e) := by
   rw [norm_div, norm_mul, norm_pow, Complex.norm_natCast, div_pow, mul_pow, ← pow_mul, mul_comm e 2, mul_div_assoc]
   exact mul_le_of_le_one_left (by positivity) (pow_le_one₀ (norm_nonneg _) (DirichletCharacter.norm_le_one φ _))
 
+/- English proof (translation)
+Break down `n.eq_zero_or_pos with rfl | hn` into its components or cases. Rewrite using `[show ((0 : ℕ) : ℝ) = 0 from Nat.cast_zero, Real.zero_rpow (by linarith), Real.zero_rpow (by positivity), div_zero, div_zero]`. Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hn`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_div]`.
+
+Use `congr 1`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_add hn']`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem term_le (e n : ℕ) (s : ℝ) (hs : 0 < s) {M : ℕ} (φ : DirichletCharacter ℂ M) (g : ℕ → ℂ) :
     ‖φ n * g n / (n : ℂ) ^ e‖ ^ 2 / (n : ℝ) ^ (1 + s) ≤ ‖g n‖ ^ 2 / (n : ℝ) ^ (((2 * e + 1 : ℕ) : ℝ) + s) := by
   rcases n.eq_zero_or_pos with rfl | hn
@@ -88,6 +119,11 @@ theorem term_le (e n : ℕ) (s : ℝ) (hs : 0 < s) {M : ℕ} (φ : DirichletChar
           rw [div_div]; congr 1
           rw [← Real.rpow_natCast, ← Real.rpow_add hn']; congr 1; push_cast; ring
 
+/- English proof (translation)
+Unfold `LSeries`. Use `congr 1`. Use function extensionality and compare the values at `n`. Simplify using `only [LSeries.term]`. Use `split_ifs with h`.
+
+Both sides reduce to the same expression. Rewrite using `[cpow_add _ _ (Nat.cast_ne_zero.2 h), cpow_natCast, div_div, mul_comm]`.
+-/
 theorem lseries_shift (e : ℕ) (a : ℕ → ℂ) (z : ℂ) :
     LSeries (fun n => a n / (n : ℂ) ^ e) z = LSeries a (z + e) := by
   unfold LSeries; congr 1; funext n
@@ -100,6 +136,29 @@ end GlobalTheory.EisM.ZEdge
 
 namespace GlobalTheory.EisM.ZEdge
 
+/- English proof (translation)
+Introduce `b ω`. Take `⟨hmul, hrec, -⟩` from `GlobalTheory.T.depletedCuspEigenform_heckeRelations (2 * e + 1) N χ g (by omega) hN hg`. Use `⟨by simp [b, hg.one], by simp [b, hg0], ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `m n hmn`. Simplify using `only [b, Nat.cast_mul, map_mul, hmul m n hmn, mul_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `n hn`. Simplify using `only [b]`. Distinguish the cases in `hnN : n.Coprime N`. Establish `hnM : ¬ n.Coprime M` using `fun h => hn (Nat.Coprime.mul_right hnN h)`.
+
+Rewrite using `[MulChar.map_nonunit φ (by rwa [ZMod.isUnit_iff_coprime]), zero_mul, zero_div]`. Rewrite using `[hg.zero n hnN, mul_zero, zero_div]`. Introduce `p r hp hpd`. Establish `hpN : ¬ p ∣ N` using `fun h => hpd (dvd_mul_of_dvd_left h M)`. Establish `huN : IsUnit (p : ZMod N)` using `(ZMod.isUnit_iff_coprime p N).2 ((Nat.Prime.coprime_iff_not_dvd hp).2 hpN)`.
+
+Establish `hp0 : (p : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [ω, norm_mul, norm_pow]`. Establish `h1` using `DirichletCharacter.unit_norm_eq_one χ huN.unit`. Simplify using `only [IsUnit.unit_spec] at h1`.
+
+Rewrite using `[h1, one_mul]`. Establish `hpM : ¬ p ∣ M` using `fun h => hpd (dvd_mul_of_dvd_right h N)`. Establish `huM : IsUnit (p : ZMod M)` using `(ZMod.isUnit_iff_coprime p M).2 ((Nat.Prime.coprime_iff_not_dvd hp).2 hpM)`. Establish `h2` using `DirichletCharacter.unit_norm_eq_one φ huM.unit`. Simplify using `only [IsUnit.unit_spec] at h2`.
+
+Rewrite using `[h2, one_pow]`. Simplify using `only [b, Nat.cast_pow, map_pow, hrec p r hp hpN, ω]`. Rewrite using `[show 2 * e + 1 - 1 = 2 * e by omega]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `p hp hpd hpm`. Establish `hpN : ¬ p ∣ N` using `fun h => hpd (dvd_mul_of_dvd_left h M)`. Establish `hcN : (p : ZMod N) = -1`. Use `congrArg (ZMod.castHom (dvd_mul_right N M) (ZMod N)) hpm` as an intermediate fact. Simplify using `using this`.
+
+Establish `hcM : (p : ZMod M) = -1`. Use `congrArg (ZMod.castHom (dvd_mul_left M N) (ZMod M)) hpm` as an intermediate fact. Simplify using `using this`. Establish `hreal` using `GlobalTheory.T.depletedCuspEigenform_eigenvalue_eq_char_mul_conj (2 * e + 1) N p χ g (by omega) hN hg hp hpN`. Simplify using `only [ch, Int.cast_natCast, hcN, hχ] at hreal`.
+
+Establish `hre : (g p).re = 0`. Use `congrArg Complex.re hreal` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hφ : φ (-1) = 1 ∨ φ (-1) = -1`.
+
+Establish `h2 : φ (-1) ^ 2 = 1` using `by rw [← map_pow]; simp`. Establish `h3 : (φ (-1) - 1) * (φ (-1) + 1) = 0` using `by linear_combination h2`. Break down `mul_eq_zero.1 h3 with h | h` into its components or cases. Use `left`. Take the linear combination `h`.
+
+Use `right`. Take the linear combination `h`. Simplify using `only [b, hcM]`. Rewrite using `[← Nat.cast_pow, Complex.div_natCast_re]`. Apply the tactic sequence `rcases hφ with h | h <;> simp [h, hre]`.
+-/
 theorem b_props (e N M : ℕ) (χ : DirichletCharacter ℂ N) (φ : DirichletCharacter ℂ M) (g : ℕ → ℂ)
     (hN : 0 < N) (hg : Prim (2 * e + 1) N χ g) (hχ : χ (-1) = -1) (hg0 : g 0 = 0) :
     let b : ℕ → ℂ := fun n => φ n * g n / (n : ℂ) ^ e
@@ -164,6 +223,25 @@ theorem b_props (e N M : ℕ) (χ : DirichletCharacter ℂ N) (φ : DirichletCha
 
 end GlobalTheory.EisM.ZEdge
 
+/- English proof (translation)
+Introduce `k N M χ φ g w hk hN hM hg hw`. Establish `hχ` using `GlobalTheory.EisM.ZEdge.chi_neg_one k N χ g hk hg`. Use `⟨hχ, ?_⟩` and prove the remaining obligations. Take `⟨e, rfl⟩` from `hk`. Take `⟨Λ, hΛd, hΛ⟩` from `GlobalTheory.EisM.ZEdge.exists_entire (2 * e + 1) N M χ φ g (by omega) hN hM hg.cf`.
+
+Take `⟨hg0, ⟨C1, hC1⟩, hsum, ⟨C2, hC2⟩⟩` from `GlobalTheory.T.rankin_mean_square_cuspForm (2 * e + 1) N (ch χ) g (by omega) hg.cf`. Take `⟨hb1, hb0, hbm, hbz, hbr, hbre⟩` from `GlobalTheory.EisM.ZEdge.b_props e N M χ φ g hN hg hχ hg0`. Establish `hkw : (e : ℝ) + 1 ≤ w` using `by push_cast at hw; linarith`. Establish `hne : Λ w ≠ 0`. Establish `key` using `GlobalTheory.T.lseries_ne_zero_re_ge_one_of_positivity (N * M) (fun n => φ n * g n / (n : ℂ) ^ e) (fun p => χ p * φ p ^ 2) (max C1 C2) (fun z => Λ (z + e)) (by positivity) hb1 hb0 hbm hbz hbr ?_ ?_ ?_ hbre ?_ ?_ (w - e) (by linarith)`.
+
+Establish `hc : (((w - e : ℝ)) : ℂ) + (e : ℂ) = (w : ℂ)` using `by push_cast; ring`. Simplify `key` using `[hc]`. Introduce `n`. Break down `n.eq_zero_or_pos with rfl | hn` into its components or cases. Simplify using `[hg0]`.
+
+Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hn`. Combine the equalities or inequalities in the displayed calculation. Introduce `s hs`. Conclude with `Summable.of_nonneg_of_le (fun n => by positivity) (fun n => GlobalTheory.EisM.ZEdge.term_le e n s hs φ g) (hsum s hs)`. Introduce `s hs hs1`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left _ hs.le` to reduce the goal to its premises. Conclude with `Summable.tsum_le_tsum (fun n => GlobalTheory.EisM.ZEdge.term_le e n s hs φ g) (Summable.of_nonneg_of_le (fun n => by positivity) (fun n => GlobalTheory.EisM.ZEdge.term_le e n s hs φ g) (hsum s hs)) (hsum s hs)`. Use `_ ≤ C2 := hC2 s hs hs1`. Use `_ ≤ max C1 C2 := le_max_right _ _`.
+
+Conclude with `hΛd.comp (differentiable_id.add_const _)`. Introduce `s hs show LSeries (fun n => φ n * g n / (n : ℂ) ^ e) _ = Λ (_ + e)`. Rewrite using `[GlobalTheory.EisM.ZEdge.lseries_shift e (fun n => φ n * g n)]`. Apply `hΛ` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨Λ w, hne, ?_⟩` and prove the remaining obligations. Establish `hc : Tendsto (fun s : ℝ => Λ ((w + s : ℝ) : ℂ)) (𝓝[>] 0) (𝓝 (Λ w))`. Apply `tendsto_nhdsWithin_of_tendsto_nhds` to reduce the goal to its premises.
+
+Establish `: Continuous (fun s : ℝ => Λ ((w + s : ℝ) : ℂ))` using `hΛd.continuous.comp (Complex.continuous_ofReal.comp (continuous_const.add continuous_id))`. Simplify using `using this.tendsto 0`. Apply `hc.congr'` to reduce the goal to its premises. Use `filter_upwards [self_mem_nhdsWithin] with s hs`. Rewrite using `[hΛ]`.
+
+Simplify using the standard rewrite rules. Use `push_cast`. Establish `: (0 : ℝ) < s` using `hs`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem GlobalTheory.EisM.twisted_lvalue_ne_zero_edge : ∀ (k N M : ℕ) (χ : DirichletCharacter ℂ N) (φ : DirichletCharacter ℂ M) (g : ℕ → ℂ) (w : ℝ), Odd k → 0 < N → 0 < M → Prim k N χ g → ((k : ℝ) + 1) / 2 ≤ w → χ (-1) = -1 ∧ ∃ v : ℂ, v ≠ 0 ∧ Tendsto (fun s : ℝ => LSeries (fun n => φ n * g n) ((w + s : ℝ) : ℂ)) (𝓝[>] 0) (𝓝 v) := by
   intro k N M χ φ g w hk hN hM hg hw
   have hχ := GlobalTheory.EisM.ZEdge.chi_neg_one k N χ g hk hg

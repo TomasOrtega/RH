@@ -16,6 +16,11 @@ open AlgebraicGeometry MeasureTheory GlobalTheory.ChernReg GlobalTheory.ShFam Gl
 
 namespace GlobalTheory.RegLow
 
+/- English proof (translation)
+Establish `hm` using `mass_pos hc hh hp`. Rewrite using `[mean, div_le_iff₀ hm]`. Distinguish the cases in `hi : Integrable fun ξ => f ξ * GlobalTheory.ChernReg.cutoff (q ξ)`. Rewrite using `[← integral_const_mul]`. Conclude with `integral_mono hi ((integrable_cutoff hc hh hp).const_mul M) fun ξ => mul_le_mul_of_nonneg_right (hf ξ) (cutoff_nonneg (q ξ)) |>.trans_eq (by ring)`.
+
+Rewrite using `[integral_undef hi]`. Check the signs of the components of the expression.
+-/
 theorem mean_le_of_le {d : ℕ} {q f : (Fin d → ℂ) → ℝ} (hc : Continuous q) (hh : ∀ (t : ℝ) ξ, q (t • ξ) = t ^ 2 * q ξ)
     (hp : ∀ ξ, ξ ≠ 0 → 0 < q ξ) {M : ℝ} (hM : 0 ≤ M) (hf : ∀ ξ, f ξ ≤ M) : mean q f ≤ M := by
   have hm := mass_pos hc hh hp
@@ -26,6 +31,15 @@ theorem mean_le_of_le {d : ℕ} {q f : (Fin d → ℂ) → ℝ} (hc : Continuous
       mul_le_mul_of_nonneg_right (hf ξ) (cutoff_nonneg (q ξ)) |>.trans_eq (by ring)
   · rw [integral_undef hi]; positivity
 
+/- English proof (translation)
+Establish `hm` using `mass_pos hc hh hp`. Distinguish the cases in `hi : Integrable fun ξ => f ξ * GlobalTheory.ChernReg.cutoff (q ξ)`. Use `(min_le_right _ _).trans ?_` and prove the remaining obligations. Establish `h1 : ∫ ξ, -(A * g ξ) * GlobalTheory.ChernReg.cutoff (q ξ) ≤ ∫ ξ, f ξ * GlobalTheory.ChernReg.cutoff (q ξ)` using `integral_mono ((hg.const_mul A).neg.congr (ae_of_all _ fun ξ => by simp only [Pi.neg_apply]; ring)) hi fun ξ => mul_le_mul_of_nonneg_right (hfg ξ) (cutoff_nonneg (q ξ))`. Establish `e : ∫ ξ, -(A * g ξ) * GlobalTheory.ChernReg.cutoff (q ξ) = -A * ∫ ξ, g ξ * GlobalTheory.ChernReg.cutoff (q ξ)`.
+
+Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use extensionality with `ξ`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[e]`.
+
+Establish `h2 : -(A * B) ≤ -A * mean q g`. Use `mul_le_mul_of_nonneg_left hB hA` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `h2.trans ?_` and prove the remaining obligations. Rewrite using `[mean, mean, mul_div_assoc']`.
+
+Conclude with `div_le_div_of_nonneg_right h1 hm.le`. Rewrite using `[mean, integral_undef hi, zero_div]`. Conclude with `min_le_left _ _`.
+-/
 theorem le_mean_of {d : ℕ} {q f g : (Fin d → ℂ) → ℝ} (hc : Continuous q) (hh : ∀ (t : ℝ) ξ, q (t • ξ) = t ^ 2 * q ξ)
     (hp : ∀ ξ, ξ ≠ 0 → 0 < q ξ) {A B : ℝ} (hA : 0 ≤ A) (hg : Integrable fun ξ => g ξ * GlobalTheory.ChernReg.cutoff (q ξ))
     (hB : mean q g ≤ B) (hfg : ∀ ξ, -(A * g ξ) ≤ f ξ) : min 0 (-(A * B)) ≤ mean q f := by
@@ -45,24 +59,65 @@ theorem le_mean_of {d : ℕ} {q f g : (Fin d → ℂ) → ℝ} (hc : Continuous 
     exact div_le_div_of_nonneg_right h1 hm.le
   · rw [mean, integral_undef hi, zero_div]; exact min_le_left _ _
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.height_green_vanishes_off_boundary`.
+-/
 theorem L_zero : ∀ (D : D7) (O : Setup D) (x : ToroidalCompactificationData O.s) (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ) (τ : D.what₂.Tau) (i : Fin O.N)
     (y : GlobalTheory.TrueGeo.Pts (O.var c) σ), y ∉ offBd O.Φ c σ → GlobalTheory.HeightParts.psi O x c σ τ i y = 0 := GlobalTheory.T.height_green_vanishes_off_boundary
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.height_green_continuous_off_boundary`.
+-/
 theorem L_cont : ∀ (D : D7) (O : Setup D) (x : ToroidalCompactificationData O.s) (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ) (τ : D.what₂.Tau) (i : Fin O.N)
     (ch : GlobalTheory.AlgChart (O.var c).str σ (O.var c).dim) (y : GlobalTheory.TrueGeo.Pts (O.var c) σ), y ∈ ch.e.source → y ∈ offBd O.Φ c σ →
     ∃ U ∈ 𝓝 (ch.e y), ContinuousOn (GlobalTheory.HeightParts.psi O x c σ τ i ∘ ch.e.symm) U := GlobalTheory.T.height_green_continuous_off_boundary
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.kaehler_exponential_chart_limit`.
+-/
 theorem L_lim : GlobalTheory.HeightParts.KernelSt → ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp k) (σ : k →+* ℂ) (d : ℕ)
     [SmoothOfRelativeDimension d p] (a : ChartForm p σ d) (E : ChartMap p σ d), IsKaehlerForm (GlobalTheory.AnRead.all p σ d) a →
     IsExph a E → ∀ (f : GlobalTheory.CxPts p σ → ℝ) (c : GlobalTheory.AlgChart p σ d) (y : GlobalTheory.CxPts p σ), y ∈ c.e.source →
     (∃ U ∈ 𝓝 (c.e y), ContinuousOn (f ∘ c.e.symm) U) → Tendsto (fun t => rho a E f y t) (𝓝[>] 0) (𝓝 (f y)) := GlobalTheory.T.kaehler_exponential_chart_limit
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.log_metric_cutoff_integrable`.
+-/
 theorem L_logm : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → GlobalTheory.HeightParts.KernelSt → GlobalTheory.HeightParts.OnCore fun _ O _ P =>
     ∃ C t₀ : ℝ, 0 < C ∧ 0 < t₀ ∧ ∀ t : ℝ, 0 < t → t ≤ t₀ → ∀ (c : O.s.Comp) (σ : _ →+* ℂ)
       (ch : GlobalTheory.AlgChart (O.var c).str σ (O.var c).dim) (y : GlobalTheory.TrueGeo.Pts (O.var c) σ), y ∈ ch.e.source →
       Integrable (fun ξ => Real.log (O.met.r c σ (P.exph c σ ch y (t • ξ))) * GlobalTheory.ChernReg.cutoff (P.om c σ ch y ξ)) ∧
       rhoIn (P.om c σ) (P.exph c σ) (fun z => Real.log (O.met.r c σ z)) ch y t ≤ Real.log (C * Real.log (1 / t)) := GlobalTheory.T.log_metric_cutoff_integrable
 
+/- English proof (translation)
+Introduce `h2 hH hK hS hC D O x P hcw hf hr`. Take `⟨C₀, hC₀, hS'⟩` from `hS D O x P hcw hf hr`. Take `⟨-, hKn, hδ, hreg⟩` from `hC D O x P hcw hf hr`. Take `⟨C₁, t₁, hC₁, ht₁, hlog⟩` from `L_logm h2 hH hK D O x P hcw hf hr`. Establish `hcore : O.Core` using `⟨x, P, hcw⟩`.
+
+Use `set t₀ := min (min t₁ (P.δ / 2)) (Real.exp (-Real.exp 1)) with ht₀`. Establish `ht₀p : 0 < t₀` using `lt_min (lt_min ht₁ (by linarith)) (Real.exp_pos _)`. Use `⟨C₀ + P.K * t₀ ^ 2 + C₀ * (1 + |Real.log C₁|), t₀, by positivity, ht₀p, fun t ht htt c σ τ i hi y => ?_⟩` and prove the remaining obligations. Establish `htt1 : t ≤ t₁` using `htt.trans ((min_le_left _ _).trans (min_le_left _ _))`. Establish `httδ : t < P.δ` using `htt.trans_lt (((min_le_left _ _).trans (min_le_right _ _)).trans_lt (by linarith))`.
+
+Establish `htte : t ≤ Real.exp (-Real.exp 1)` using `htt.trans (min_le_right _ _)`. Use `set ψ := GlobalTheory.HeightParts.psi O x c σ τ i with hψ`. Establish `hψle : ∀ z, ψ z ≤ C₀` using `fun z => by`. Distinguish the cases in `hz : z ∈ offBd O.Φ c σ`. Conclude with `(hS' c σ τ i z hz).2`.
+
+Rewrite using `[hψ, L_zero D O x c σ τ i z hz]`. Conclude with `hC₀`. Establish `hψge : ∀ z, -(C₀ * Real.log (O.met.r c σ z)) ≤ ψ z` using `fun z => by`. Distinguish the cases in `hz : z ∈ offBd O.Φ c σ`. Conclude with `(hS' c σ τ i z hz).1`.
+
+Rewrite using `[hψ, L_zero D O x c σ τ i z hz]`. Establish `: 0 ≤ Real.log (O.met.r c σ z)` using `Real.log_nonneg (le_trans (by linarith [Real.add_one_le_exp (1 : ℝ)]) (hcore.exp_le_r c σ z))`. Use the polynomial consequences of the given equalities and inequalities. Establish `e : P.regFund c σ τ i t y = rho (P.om c σ) (P.exph c σ) ψ y t + P.K * t ^ 2`. Rewrite using `[PolDat.regFund, if_pos hi]`.
+
+Establish `hy₀` using `(GlobalTheory.AlgChart.exists_mem_source (D := (O.var c).dim) y).choose_spec`. Establish `ha` using `P.om_kaehler c σ`. Establish `hq` using `continuous_and_smul ha hy₀`. Establish `hpd` using `ha.2 _ y hy₀`. Establish `hL1 : Real.exp 1 ≤ Real.log (1 / t)`.
+
+Rewrite using `[one_div, Real.log_inv, le_neg]`. Conclude with `(Real.log_le_log ht htte).trans_eq (Real.log_exp _)`. Establish `hLpos : 0 < Real.log (1 / t)` using `lt_of_lt_of_le (Real.exp_pos 1) hL1`. Establish `hLL : 1 ≤ Real.log (Real.log (1 / t))`. Use `Real.log_le_log (Real.exp_pos 1) hL1` as an intermediate fact.
+
+Rewrite `this` using `[Real.log_exp]`. Then use the resulting hypothesis. Use `⟨?_, ?_, fun hyo => ?_⟩` and prove the remaining obligations. Take `⟨hint, hmean⟩` from `hlog t ht htt1 c σ _ y hy₀`. Establish `hm` using `le_mean_of hq.1 hq.2 hpd hC₀ hint hmean (fun ξ => hψge _)`. Establish `hm' : min 0 (-(C₀ * Real.log (C₁ * Real.log (1 / t)))) ≤ rho (P.om c σ) (P.exph c σ) ψ y t` using `hm`.
+
+Rewrite using `[e]`. Rewrite `hm'` using `[Real.log_mul hC₁.ne' hLpos.ne']`. Establish `hab : Real.log C₁ ≤ |Real.log C₁| * Real.log (Real.log (1 / t))` using `(le_abs_self _).trans (le_mul_of_one_le_right (abs_nonneg _) hLL)`. Establish `h3 : -((C₀ + P.K * t₀ ^ 2 + C₀ * (1 + |Real.log C₁|)) * Real.log (Real.log (1 / t))) ≤ min 0 (-(C₀ * (Real.log C₁ + Real.log (Real.log (1 / t)))))`. Establish `hLL0 : 0 ≤ Real.log (Real.log (1 / t))` using `by linarith`.
+
+Establish `hK0 : 0 ≤ P.K * t₀ ^ 2` using `by positivity`. Use `le_min ?_ ?_` and prove the remaining obligations. Establish `: 0 ≤ (C₀ + P.K * t₀ ^ 2 + C₀ * (1 + |Real.log C₁|)) * Real.log (Real.log (1 / t))` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4` using `mul_le_mul_of_nonneg_left hab hC₀`.
+
+Use polynomial arithmetic with `[mul_nonneg hK0 hLL0, mul_nonneg hC₀ hLL0]`. Establish `: 0 ≤ P.K * t ^ 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[e]`. Establish `h1 : rho (P.om c σ) (P.exph c σ) ψ y t ≤ C₀` using `mean_le_of_le hq.1 hq.2 hpd hC₀ fun ξ => hψle _`.
+
+Establish `h2 : P.K * t ^ 2 ≤ P.K * t₀ ^ 2` using `by gcongr`. Establish `h3 : 0 ≤ C₀ * (1 + |Real.log C₁|)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[e]`. Establish `hmono` using `(hreg c σ τ i hi).mono y`.
+
+Take `⟨U, hU, hcU⟩` from `L_cont D O x c σ τ i _ y hy₀ hyo`. Establish `hlim` using `L_lim hK _ _ _ _ _ _ _ ha (P.exph_is c σ) ψ _ y hy₀ ⟨U, hU, hcU⟩`. Establish `hlim' : Tendsto (fun s => rho (P.om c σ) (P.exph c σ) ψ y s + P.K * s ^ 2) (𝓝[>] 0) (𝓝 (ψ y + P.K * 0 ^ 2))` using `hlim.add ((continuous_const.mul (continuous_pow 2)).tendsto 0 |>.mono_left nhdsWithin_le_nhds)`. Rewrite `hlim'` using `[zero_pow two_ne_zero, mul_zero, add_zero]`. Use `le_of_tendsto hlim' ?_` and prove the remaining obligations.
+
+Use `filter_upwards [Ioo_mem_nhdsGT ht] with s hs`. Conclude with `hmono ⟨hs.1, hs.2.trans httδ⟩ ⟨ht, httδ⟩ hs.2.le`.
+-/
 theorem lowSt : Hypotheses2 → HypothesesH → KernelSt → SizeSt → ConstSt → LowSt := by
   intro h2 hH hK hS hC D O x P hcw hf hr
   obtain ⟨C₀, hC₀, hS'⟩ := hS D O x P hcw hf hr

@@ -7,6 +7,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.RankEqCardIffExists
 open MeasureTheory Matrix
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LinSchur.eq_smul_of_commute | exact GlobalTheory.LinSchur.eq_smul_of_commute | (intros; apply GlobalTheory.LinSchur.eq_smul_of_commute <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.eq_smul_of_commute_heisenberg_linearModel_schwartzBruhat : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n d : ℕ} {Xt : Type} [AddCommGroup Xt] [Module ℂ Xt] (V : Submodule ℂ Xt)
     (ψ0 : AddChar k ℂ), Continuous ψ0 → ψ0 ≠ 1 →
     ∀ (ι₁ : Xt →ₗ[ℂ] (Matrix (Fin n) (Fin d) k → ℂ)) (ι₂ : Xt → Matrix (Fin n) (Fin d) k → ℂ),

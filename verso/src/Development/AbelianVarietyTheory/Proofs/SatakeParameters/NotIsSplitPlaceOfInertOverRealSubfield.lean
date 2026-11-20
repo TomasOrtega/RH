@@ -13,6 +13,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce and unpack `⟨x, hx, hy⟩`. Establish `hc : (NumberField.RingOfIntegers.mapRingHom (D.host.conj : D.host.E →+* D.host.E)).comp (algebraMap (𝓞 ↥D.host.F) (𝓞 D.host.E)) = algebraMap (𝓞 ↥D.host.F) (𝓞 D.host.E)`. Use `RingHom.ext fun a => RingOfIntegers.ext ?_` and prove the remaining obligations. Establish `key : ((algebraMap (𝓞 ↥D.host.F) (𝓞 D.host.E) a : 𝓞 D.host.E) : D.host.E) = ((a : ↥D.host.F) : D.host.E)` using `rfl`. Establish `h0` using `(D.host.conjE_mem_hostF_iff _).1 (a : ↥D.host.F).2`.
+
+Use `show (D.host.conj ((algebraMap (𝓞 ↥D.host.F) (𝓞 D.host.E) a : 𝓞 D.host.E) : D.host.E)) = _`. Rewrite using `[key]`. Conclude with `h0`. Establish `hmem : NumberField.RingOfIntegers.mapRingHom (D.host.conj : D.host.E →+* D.host.E) x ∈ Pp.asIdeal`. Unfold `Formalism.UG.IsInertAt at h`.
+
+Rewrite `hx`, the goal using `[← h]`. Use `Ideal.mem_map_of_mem (NumberField.RingOfIntegers.mapRingHom (D.host.conj : D.host.E →+* D.host.E)) hx` as an intermediate fact. Rewrite `this` using `[Ideal.map_map, hc]`. Then use the resulting hypothesis. Conclude with `hy _ rfl hmem`.
+-/
 theorem not_isSplitPl_of_isInertAt (D : D7) (Pp : HeightOneSpectrum (𝓞 D.host.E)) (h : Formalism.UG.IsInertAt (↥D.host.F) D.host.E (HeightOneSpectrum.under (𝓞 ↥D.host.F) Pp) Pp) : ¬ Formalism.BasicNotions.IsSplitPl D.host Pp := by
   rintro ⟨x, hx, hy⟩
   have hc : (NumberField.RingOfIntegers.mapRingHom (D.host.conj : D.host.E →+* D.host.E)).comp

@@ -9,6 +9,13 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `key : ∀ x : n → A, x ∈ Λ ↔ (b⁻¹).1 *ᵥ x ∈ stdLat (n` using `n) (A := A) S := fun x => by`. Rewrite using `[hΛ, Formalism.UG.P.afsplit_mem_stdLat]`. Prove the components needed by the constructor for the conclusion. Introduce `hg y`. Establish `h` using `hg (b.1 *ᵥ y)`.
+
+Rewrite `h` using `[key, key]`. Simplify `h` using `only [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec, Units.val_mul, Matrix.mul_assoc]`. Introduce `hg x`. Establish `h` using `hg ((b⁻¹).1 *ᵥ x)`. Rewrite using `[key, key]`.
+
+Simplify `h` using `only [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.mul_one, Units.val_mul, Matrix.mul_assoc]`.
+-/
 theorem stabGL_iff_conj_stdLat {A : Type} [CommRing A] (S : Subring A) {n : Type} [Fintype n]
     [DecidableEq n] (b : GL n A) (Λ : Submodule S (n → A))
     (hΛ : ∀ x, x ∈ Λ ↔ ∀ i, ((b⁻¹).1 *ᵥ x) i ∈ S) (g : GL n A) :
@@ -27,6 +34,15 @@ theorem stabGL_iff_conj_stdLat {A : Type} [CommRing A] (S : Subring A) {n : Type
     simpa only [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.mul_one, Units.val_mul,
       Matrix.mul_assoc] using h
 
+/- English proof (translation)
+Establish `hg' : cT τ g.1 * J * g.1 = J` using `hg`. Establish `cm : ∀ M N : Matrix n n A, cT τ (M * N) = cT τ N * cT τ M` using `fun M N => by`. Simplify using `only [cT, Matrix.map_mul, Matrix.transpose_mul]`. Establish `c1 : cT τ (1 : Matrix n n A) = 1`. Simplify using `only [cT, Matrix.map_one _ (map_zero τ) (map_one τ), Matrix.transpose_one]`.
+
+Establish `hJ : cT τ (b⁻¹).1 * (b⁻¹).1 = J`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hb, Matrix.mul_one]`. Use `_ = cT τ (b.1 * (b⁻¹).1) * J * (b.1 * (b⁻¹).1) := by`. Rewrite using `[cm]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = J := by rw [Units.mul_inv, c1, Matrix.one_mul, Matrix.mul_one]`. Express the relevant statement in the definitionally equal form `cT τ (b⁻¹ * g * b).1 * 1 * (b⁻¹ * g * b).1 = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Units.val_mul, cm, Matrix.mul_one, Matrix.mul_assoc]`.
+
+Use `_ = 1 := by rw [hJ, hg', hb]`.
+-/
 theorem conj_mem_UJ_one {A : Type} [CommRing A] (τ : A →+* A) {n : Type} [Fintype n]
     [DecidableEq n] (J : Matrix n n A) (b : GL n A) (hb : cT τ b.1 * J * b.1 = 1)
     (g : GL n A) (hg : g ∈ UJ τ J) : b⁻¹ * g * b ∈ UJ τ (1 : Matrix n n A) := by
@@ -47,6 +63,19 @@ theorem conj_mem_UJ_one {A : Type} [CommRing A] (τ : A →+* A) {n : Type} [Fin
         simp only [Units.val_mul, cm, Matrix.mul_one, Matrix.mul_assoc]
     _ = 1 := by rw [hJ, hg', hb]
 
+/- English proof (translation)
+Introduce `A K _ _ O S τ φ hτ hS n _ _ J b Λ hb hΛ g hg`. Establish `hU` using `conj_mem_UJ_one τ J b hb g hg`. Rewrite using `[stabGL_iff_conj_stdLat S b Λ hΛ g, ← map_inv, ← map_mul, ← map_mul]`. Generalize the expression as in `b⁻¹ * g * b = h at hU`. Establish `hinj : Function.Injective (algebraMap O K)` using `Subtype.val_injective`.
+
+Establish `hOr : ∀ x : K, x ∈ Set.range (algebraMap O K) ↔ x ∈ O` using `fun x => ⟨fun ⟨y, hy⟩ => hy ▸ y.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩`. Rewrite using `[Formalism.UG.P.afsplit_stab_iff, Formalism.UG.P.levelvsplit_mem_range_iff _ hinj, ← map_inv, Formalism.UG.P.levelvsplit_coe_bc, Formalism.UG.P.levelvsplit_coe_bc]`. Simplify using `only [hOr, hS]`. Establish `main : ∀ k : GL n A, k ∈ UJ τ (1 : Matrix n n A) → ∀ i j, (φ (k.1 i j)).2 = (φ ((k⁻¹).1 j i)).1`. Introduce `k hk i j`.
+
+Establish `rel` using `Formalism.UG.P.levelvsplit_unitary τ φ hτ _ k hk`. Rewrite `rel` using `[Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hk1 : k.1.map ((RingHom.fst K K).comp φ.toRingHom) * (k⁻¹).1.map ((RingHom.fst K K).comp φ.toRingHom) = 1`. Rewrite using `[← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `s` using `Formalism.UG.P.levelvsplit_solve 1 1 _ _ _ (Matrix.mul_one _) hk1 rel`.
+
+Rewrite `s` using `[Matrix.one_mul, Matrix.mul_one]`. Conclude with `congrFun (congrFun s i) j`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun i j => (h1 i j).1, fun i j => (h2 i j).1⟩`.
+
+Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun i j => ⟨h1 i j, ?_⟩, fun i j => ⟨h2 i j, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[main h hU]`. Conclude with `h2 j i`. Rewrite using `[main h⁻¹ (inv_mem hU), inv_inv]`.
+
+Conclude with `h1 j i`.
+-/
 theorem split_stabGL_iff_mem_range :
     ∀ (A K : Type) [CommRing A] [Field K] (O : ValuationSubring K) (S : Subring A) (τ : A →+* A) (φ : A ≃+* K × K), (∀ x, φ (τ x) = swapR K (φ x)) → (∀ x, x ∈ S ↔ (φ x).1 ∈ O ∧ (φ x).2 ∈ O) → ∀ (n : Type) [Fintype n] [DecidableEq n] (J : Matrix n n A) (b : GL n A) (Λ : Submodule S (n → A)), cT τ b.1 * J * b.1 = 1 → (∀ x, x ∈ Λ ↔ ∀ i, ((b⁻¹).1 *ᵥ x) i ∈ S) → ∀ g ∈ UJ τ J, g ∈ stabGL Λ ↔ (bc ((RingHom.fst K K).comp φ.toRingHom) b)⁻¹ * bc ((RingHom.fst K K).comp φ.toRingHom) g * bc ((RingHom.fst K K).comp φ.toRingHom) b ∈ (bc (n := n) (algebraMap O K)).range := by
   intro A K _ _ O S τ φ hτ hS n _ _ J b Λ hb hΛ g hg

@@ -27,6 +27,9 @@ namespace HWRep
 
 variable {k : ℕ}
 
+/- English proof (translation)
+Simplify using `only [Matrix.det_apply', Matrix.of_apply]`. Use `fun_prop`.
+-/
 theorem differentiable_det : Differentiable ℂ (fun B : Fin k → Fin k → ℂ => (Matrix.of B).det) := by
   simp only [Matrix.det_apply', Matrix.of_apply]
   fun_prop
@@ -86,6 +89,11 @@ def tpow (A : Matrix (Fin k) (Fin k) ℂ) : Matrix ({a // p a} → Fin k) ({a //
 def inc (J : {a // p a} → Fin k) : Matrix {a // p a} {a // p a} ℂ :=
   Matrix.of fun q s => if J s = q.1 then 1 else 0
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct, tpow, inc, Matrix.det_apply', Matrix.of_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (fun s => (σ s).1)]`. Simplify using `[mul_comm]`.
+
+Introduce `J _ hJ`. Take `⟨s, hs⟩` from `Function.ne_iff.1 hJ`. Rewrite using `[Finset.prod_eq_zero (f := fun s => if J s = (σ s).1 then (1 : ℂ) else 0) (Finset.mem_univ s) (if_neg hs)]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem tpow_mulVec (b : Matrix (Fin k) (Fin k) ℂ) (I : {a // p a} → Fin k) :
     (tpow p b *ᵥ fun J => (inc p J).det) I = (Matrix.of fun q s : {a // p a} => b (I s) q.1).det := by
   simp only [Matrix.mulVec, dotProduct, tpow, inc, Matrix.det_apply', Matrix.of_apply, Finset.mul_sum]
@@ -148,6 +156,17 @@ def wedge (hp : ∀ a b, a ≤ b → p b → p a) : HWRep k (fun a => if p a the
 
 end wedge
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m : ℤ, ∀ a, m ≤ ν a := by`. Take `⟨m, hm⟩` from `(Set.finite_range ν).bddBelow`. Conclude with `⟨m, fun a => hm ⟨a, rfl⟩⟩`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN⟩ : ∃ N : ℕ, ∀ a, ν a ≤ m + N := by`. Take `⟨M, hM⟩` from `(Set.finite_range ν).bddAbove`.
+
+Conclude with `⟨(M - m).toNat, fun a => by have := hM ⟨a, rfl⟩; omega⟩`. Proceed by induction on `N generalizing ν with`. Consider the case `zero`. Establish `: ν = fun _ => m` using `funext fun a => le_antisymm (by simpa using hN a) (hm a)`. Conclude with `this ▸ ⟨detPow k m⟩`.
+
+Consider the case `succ N ih`. Set `p : Fin k → Prop` to `fun a => m < ν a`. Establish `hp : ∀ a b, a ≤ b → p b → p a` using `fun a b hab hb => lt_of_lt_of_le hb (hν hab)`. Take `⟨R⟩` from `ih (fun a => ν a - if p a then 1 else 0) (fun a b hab => by`. Establish `h1` using `hν hab`.
+
+Establish `h2` using `hm b`. Establish `h3` using `hm a`. Apply the tactic sequence `simp only [p]; split_ifs <;> omega)`. Apply the tactic sequence `(fun a => by have := hm a; simp only [p]; split_ifs <;> omega)`. Apply the tactic sequence `(fun a => by have := hm a; have := hN a; simp only [p]; push_cast at *; split_ifs <;> omega)`.
+
+Establish `e : ν = (fun a => ν a - if p a then 1 else 0) + fun a => if p a then 1 else 0`. Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules. Conclude with `e ▸ ⟨R.tensor (wedge p hp)⟩`.
+-/
 theorem nonempty_of_antitone (ν : Fin k → ℤ) (hν : Antitone ν) : Nonempty (HWRep k ν) := by
   classical
   obtain ⟨m, hm⟩ : ∃ m : ℤ, ∀ a, m ≤ ν a := by

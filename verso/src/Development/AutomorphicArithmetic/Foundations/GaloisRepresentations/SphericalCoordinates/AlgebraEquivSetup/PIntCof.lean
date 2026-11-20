@@ -4,6 +4,11 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.UPel.HT GlobalTheory.LKTri
 open UpperTheory.Gal.CertificateRingHomMap (GUf Gam0 AfQ Plc sim mat comp rat lev ZU)
 open scoped TensorProduct Classical
 
+/- English proof (translation)
+Establish `inj : Function.Injective (O.subtype.mapMatrix (m` using `Fin n)) := fun A B h => by ext i j; exact congrFun (congrFun h i) j`. Set `A : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨g.val i j, h1 i j⟩`. Set `B : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨(g⁻¹).val i j, h2 i j⟩`. Establish `hA : O.subtype.mapMatrix A = g.val` using `rfl`. Establish `hB : O.subtype.mapMatrix B = (g⁻¹).val` using `rfl`.
+
+Use `⟨⟨A, B, inj ?_, inj ?_⟩, Units.ext rfl⟩` and prove the remaining obligations. Rewrite using `[map_mul, hA, hB, map_one, Units.mul_inv]`. Rewrite using `[map_mul, hA, hB, map_one, Units.inv_mul]`.
+-/
 private theorem mem_GLint_of_entries {K : Type} [Field K] {n : ℕ} (O : Subring K) (g : GL (Fin n) K)
     (h1 : ∀ a b, g.val a b ∈ O) (h2 : ∀ a b, (g⁻¹).val a b ∈ O) : g ∈ Formalism.UG.GLint (Fin n) O := by
   have inj : Function.Injective (O.subtype.mapMatrix (m := Fin n)) :=
@@ -16,6 +21,11 @@ private theorem mem_GLint_of_entries {K : Type} [Field K] {n : ℕ} (O : Subring
   · rw [map_mul, hA, hB, map_one, Units.mul_inv]
   · rw [map_mul, hA, hB, map_one, Units.inv_mul]
 
+/- English proof (translation)
+Introduce `E _ _ n a`. Establish `key : ∀ x : Af E, ∀ᶠ w : Plc E in Filter.cofinite, pLoc E w x ∈ w.adicCompletionIntegers E` using `fun x => x.2`. Establish `h1` using `Filter.eventually_all.2 (fun i => Filter.eventually_all.2 (fun j => key (a.val i j)))`. Establish `h2` using `Filter.eventually_all.2 (fun i => Filter.eventually_all.2 (fun j => key ((a⁻¹).val i j)))`. Use `filter_upwards [h1, h2] with w ha hb`.
+
+Use `mem_GLint_of_entries (w.adicCompletionIntegers E).toSubring _ (fun i j => ha i j) (fun i j => ?_)` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `hb i j`.
+-/
 theorem UpperTheory.Gal.W2.Seed.pIntCof :
     IntCof := by
   intro E _ _ n a

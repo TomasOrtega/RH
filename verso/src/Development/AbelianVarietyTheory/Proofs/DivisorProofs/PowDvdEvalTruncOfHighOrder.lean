@@ -3,6 +3,23 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `p B _ σ _ _ z hz`. Use `choose N hN using hz`. Use `set N₀ : ℕ := ∑ i, N i + 1 with hN₀`. Establish `hdiv : ∀ i, (p : B) ∣ z i ^ N₀`. Introduce `i`.
+
+Establish `hle : N i ≤ N₀`. Use `Finset.single_le_sum (f := N) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `(hN i).trans (pow_dvd_pow _ hle)`. Use `⟨Fintype.card σ * N₀ + 1, ?_⟩` and prove the remaining obligations.
+
+Introduce `k h hh n`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[MvPolynomial.eval_eq]`. Apply `Finset.dvd_sum` to reduce the goal to its premises.
+
+Introduce `β _`. Rewrite using `[coeff_trunc']`. Use `split_ifs with hβ`. Distinguish the cases in `hc : coeff β h = 0`. Simplify using `[hc]`.
+
+Establish `hdeg : ¬ β.degree < (Fintype.card σ * N₀ + 1) * k` using `fun hlt => hc (hh β hlt)`. Establish `: ∃ i, N₀ * k ≤ β i`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Apply `hdeg` to reduce the goal to its premises.
+
+Rewrite using `[Finsupp.degree_eq_sum]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨i, hi⟩` from `this`. Apply `Dvd.dvd.mul_left` to reduce the goal to its premises. Establish `h1 : (p : B) ^ k ∣ z i ^ β i`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hmem : i ∈ β.support`. Rewrite using `[Finsupp.mem_support_iff]`. Establish `: 1 ≤ N₀ * k` using `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega))`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `h1.trans (Finset.dvd_prod_of_mem _ hmem)`. Simplify using the standard rewrite rules.
+-/
 theorem trunc'_eval_dvd_of_order :
     ∀ (p : ℕ) (B : Type) [CommRing B] (σ : Type) [Fintype σ] [DecidableEq σ] (z : σ → B),
       (∀ i, ∃ N : ℕ, (p : B) ∣ z i ^ N) → ∃ L : ℕ, ∀ (k : ℕ) (h : MvPowerSeries σ B),

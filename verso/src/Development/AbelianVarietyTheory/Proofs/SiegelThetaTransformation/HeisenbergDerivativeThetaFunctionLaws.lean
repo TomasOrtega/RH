@@ -19,6 +19,17 @@ open GlobalTheory.FockCompare GlobalTheory.OrientedHeis
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+Simplify using `only [EFR, hermC, omO, LinearMap.mk₂_apply, formAt]`. Rewrite using `[← C.m.e.sum_comp, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.symm_apply_apply, C.m.e_emb, C.m.ka, C.m.gT, C.m.gS, inv_one, ComplexEmbedding.conjugate_coe_eq, Matrix.transpose_apply, RCLike.conj_conj]`. Establish `hx : (-(2 * D.host.xi0 / 2)) = -D.host.xi0` using `by ring`.
+
+Establish `hone : ∀ F : Fin S.rank → Fin S.rank → ℂ, ∑ a, ∑ b, tauE D τ ((1 : Matrix (Fin S.rank) (Fin S.rank) D.host.E) a b) * F a b = ∑ a, F a a`. Introduce `F`. Simplify using `[Matrix.one_apply]`. Rewrite using `[hx]`. Repeatedly rewrite using `[mul_assoc, ← Finset.mul_sum]`.
+
+Rewrite using `[hone, ← Complex.re_sum, ← Finset.mul_sum]`. Establish `hc : conj (tauE D τ (-D.host.xi0)) * ∑ k, ∑ a, conj (x τ a k) * ∑ b, conj (tauE D τ (T.gram b a)) * y τ b k = conj (-(tauE D τ D.host.xi0 * ∑ k, ∑ b, conj (y τ b k) * ∑ a, tauE D τ (T.gram b a) * x τ a k))`. Simplify using `only [map_neg, map_mul, map_sum, RCLike.conj_conj, neg_mul]`. Use `congr 2`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc, Complex.conj_re, Complex.neg_re]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem EFR_conj (C : Ctx S T) (x y : RW T S) :
     EFR C.X (fun σ k a => conj (x (C.m.e.symm σ) a k) : WR C.X S.rank) (fun σ k a => conj (y (C.m.e.symm σ) a k)) =
       -omO S T x y := by
@@ -48,6 +59,11 @@ theorem EFR_conj (C : Ctx S T) (x y : RW T S) :
   rw [hc, Complex.conj_re, Complex.neg_re]
   ring
 
+/- English proof (translation)
+Take `⟨-, -, h⟩` from `isLineAt_lineAt hθ τ z`. Use function extensionality and compare the values at `τ' i j`. Establish `h1` using `congrFun (congrFun (h 1 τ') i) j`. Rewrite using `[Pi.single_apply]`. Use `split_ifs at h1 ⊢ with hτ`.
+
+Rewrite `h1` using `[Complex.ofReal_one, one_smul]`. Conclude with `h1`. Conclude with `h1`.
+-/
 theorem pi_lineAt {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
     piW θ T S (lineAt θ τ z 1) = (Pi.single τ z : D.what₂.Tau → Matrix (Fin T.rank) (Fin S.rank) ℂ) := by
   obtain ⟨-, -, h⟩ := isLineAt_lineAt hθ τ z
@@ -59,6 +75,9 @@ theorem pi_lineAt {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) (z : 
     exact h1
   · exact h1
 
+/- English proof (translation)
+Rewrite using `[pi_lineAt C.inf]`. Use function extensionality and compare the values at `σ k a`. Simplify using `only [Pi.single_apply, Equiv.symm_apply_eq]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem single_conj (C : Ctx S T) (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
     (Pi.single (C.m.e τ) (fun k a => conj (z a k)) : WR C.X S.rank) =
       fun σ k a => conj (piW C.θ T S (lineAt C.θ τ z 1) (C.m.e.symm σ) a k) := by
@@ -67,6 +86,33 @@ theorem single_conj (C : Ctx S T) (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) 
   simp only [Pi.single_apply, Equiv.symm_apply_eq]
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `D S T C f hf τ z`. Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart C.inf`. Establish `hθ` using `C.inf`. Establish `hψ` using `C.std`. Establish `hD' : ∀ (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) (g : WO S T → ℂ), dRho (heisO C.ψ S T) C.θ τ z g = hD (iotaW σ T S) (piW C.θ T S) (omO S T) (piW C.θ T S (lineAt C.θ τ z 1)) g`.
+
+Introduce `τ z g`. Rewrite using `[dRho_eq_dLine, dLine_eq_hD hσ hψ (isRealDir_lineAt hθ τ z)]`. Establish `hsm : ∀ g, C.IsTh g → Sm (iotaW σ T S) g` using `fun g hg => theta_sm hσ hg`. Establish `hform : ∀ g, C.IsTh g → ∀ (u : RW T S) (w : WO S T), hD (iotaW σ T S) (piW C.θ T S) (omO S T) u g w = -(Real.pi * Complex.I) * (omO S T (piW C.θ T S w) u : ℝ) * g w + fderiv ℝ (fun x : RW T S => g (w + iotaW σ T S x)) 0 u` using `fun g hg u w => hD_eq_fderiv _ _ _ g (hsm g hg) u w`. Establish `hdiff : ∀ g, C.IsTh g → ∀ w : WO S T, DifferentiableAt ℝ (fun x : RW T S => g (w + iotaW σ T S x)) 0` using `fun g hg w => ((hsm g hg w).differentiable (by simp)) 0`.
+
+Use `⟨theta_dRho hθ hψ τ z hf, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w`. Establish `h` using `hasDerivAt_heisO hθ hψ (isRealDir_lineAt hθ τ z) hf w 0`. Rewrite `h` using `[map_zero, heisO_zero, ← dRho_eq_dLine]`. Conclude with `h`.
+
+Introduce `f' hf'`. Use function extensionality and compare the values at `w`. Rewrite using `[hD', hD', hD', Pi.add_apply, hform f hf, hform f' hf', hform (f + f') (theta_add hf hf')]`. Rewrite using `[show (fun x : RW T S => (f + f') (w + iotaW σ T S x)) = (fun x => f (w + iotaW σ T S x)) + (fun x => f' (w + iotaW σ T S x)) from rfl, fderiv_add (hdiff f hf w) (hdiff f' hf' w)]`. Simplify using `only [Pi.add_apply, _root_.add_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `a`. Use function extensionality and compare the values at `w`. Rewrite using `[hD', hD', Pi.smul_apply, hform f hf, hform (a • f) (theta_smul a hf)]`. Rewrite using `[show (fun x : RW T S => (a • f) (w + iotaW σ T S x)) = (fun x => a * f (w + iotaW σ T S x)) from rfl, fderiv_const_mul (hdiff f hf w)]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, _root_.smul_apply]`. Expand and normalize the polynomial expressions, which then agree. Introduce `z'`. Establish `hadd : piW C.θ T S (lineAt C.θ τ (z + z') 1) = piW C.θ T S (lineAt C.θ τ z 1) + piW C.θ T S (lineAt C.θ τ z' 1)`. Use function extensionality and compare the values at `τ' i j`.
+
+Establish `e` using `fun y : Matrix (Fin T.rank) (Fin S.rank) ℂ => congrFun (congrFun (congrFun (pi_lineAt hθ τ y) τ') i) j`. Rewrite using `[Pi.add_apply, Pi.add_apply, Pi.add_apply, e, e, e]`. Simplify using `only [Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use function extensionality and compare the values at `w`.
+
+Rewrite using `[hD', hD', hD', Pi.add_apply, hform f hf, hform f hf, hform f hf, hadd, map_add, ContinuousLinearMap.map_add]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `t`. Establish `hs : piW C.θ T S (lineAt C.θ τ ((t : ℂ) • z) 1) = t • piW C.θ T S (lineAt C.θ τ z 1)`.
+
+Use function extensionality and compare the values at `τ' i j`. Establish `e` using `fun y : Matrix (Fin T.rank) (Fin S.rank) ℂ => congrFun (congrFun (congrFun (pi_lineAt hθ τ y) τ') i) j`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, Pi.smul_apply, e, e]`. Simplify using `only [Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp [Complex.real_smul]`.
+
+Use function extensionality and compare the values at `w`. Rewrite using `[hD', hD', Pi.smul_apply, hform f hf, hform f hf, hs, map_smul, ContinuousLinearMap.map_smul]`. Simplify using `only [smul_eq_mul, Complex.real_smul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `u hu`. Conclude with `GlobalTheory.FinTranslate.dRho_heisO hθ hu τ z f`. Introduce `τ' z'`. Establish `hskew : ∀ u v : RW T S, omO S T v u = -omO S T u v`. Introduce `u v`.
+
+Establish `h` using `omO_self hσ (u + v)`. Simplify using `only [map_add, LinearMap.add_apply, omO_self hσ, zero_add, add_zero] at h`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [hD']`. Rewrite using `[heisenberg_derivative_commutator (WO S T) (RW T S) (iotaW σ T S) (piW C.θ T S) (omO S T) (hσ.pi_iota T S) (fun g hg u w => hD_eq_fderiv _ _ _ g hg u w) hskew f (hsm f hf), single_conj C τ z, single_conj C τ' z', EFR_conj]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dRho_laws : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ f, C.IsTh f → ∀ (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ), C.IsTh (dRho (heisO C.ψ S T) C.θ τ z f) ∧ (∀ w, HasDerivAt (fun t : ℝ => C.rho (lineAt C.θ τ z t) f w) (dRho (heisO C.ψ S T) C.θ τ z f w) 0) ∧ (∀ f', C.IsTh f' → dRho (heisO C.ψ S T) C.θ τ z (f + f') = dRho (heisO C.ψ S T) C.θ τ z f + dRho (heisO C.ψ S T) C.θ τ z f') ∧ (∀ a : ℂ, dRho (heisO C.ψ S T) C.θ τ z (a • f) = a • dRho (heisO C.ψ S T) C.θ τ z f) ∧ (∀ z', dRho (heisO C.ψ S T) C.θ τ (z + z') f = dRho (heisO C.ψ S T) C.θ τ z f + dRho (heisO C.ψ S T) C.θ τ z' f) ∧ (∀ t : ℝ, dRho (heisO C.ψ S T) C.θ τ ((t : ℂ) • z) f = (t : ℂ) • dRho (heisO C.ψ S T) C.θ τ z f) ∧ (∀ u, IsFinPt u → dRho (heisO C.ψ S T) C.θ τ z (C.rho u f) = C.rho u (dRho (heisO C.ψ S T) C.θ τ z f)) ∧ ∀ (τ' : D.what₂.Tau) (z' : Matrix (Fin T.rank) (Fin S.rank) ℂ), dRho (heisO C.ψ S T) C.θ τ z (dRho (heisO C.ψ S T) C.θ τ' z' f) - dRho (heisO C.ψ S T) C.θ τ' z' (dRho (heisO C.ψ S T) C.θ τ z f) = (2 * π * I * (EFR C.X (Pi.single (C.m.e τ) (fun k a => conj (z a k)) : WR C.X S.rank) (Pi.single (C.m.e τ') (fun k a => conj (z' a k)) : WR C.X S.rank) : ℝ)) • f := by
   intro D S T C f hf τ z
   obtain ⟨σ, hσ⟩ := GlobalTheory.RealLineAt.exists_inverse_chart C.inf

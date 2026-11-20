@@ -4,6 +4,9 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC GlobalTheory.GalV 
 open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
+/- English proof (translation)
+Rewrite using `[Algebra.trace_apply, LinearMap.trace_eq_matrix_trace C (Pi.basisFun C J), Matrix.trace]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Simplify using `[LinearMap.toMatrix_apply, Pi.single_apply]`.
+-/
 private theorem trace_pi_eq_sum {C J : Type} [CommRing C] [Fintype J] (a : J → C) :
     Algebra.trace C (J → C) a = ∑ j, a j := by
   classical
@@ -12,6 +15,13 @@ private theorem trace_pi_eq_sum {C J : Type} [CommRing C] [Fintype J] (a : J →
   intro j _
   simp [LinearMap.toMatrix_apply, Pi.single_apply]
 
+/- English proof (translation)
+Introduce `A A' C _ _ _ _ _ _ _ J _ τ e he b`. Use `letI : Algebra A' (C ⊗[A] A') := Algebra.TensorProduct.rightAlgebra`. Use `haveI : Module.Projective A A' := projective_of_etale A A'`. Use `haveI : Module.Free C (C ⊗[A] A') := Module.Free.of_equiv e.symm.toLinearEquiv`. Use `haveI : Module.Finite C (C ⊗[A] A') := Module.Finite.equiv e.symm.toLinearEquiv`.
+
+Establish `h1` using `algTrace_of_isPushout (B := A) (B' := A') (C := C) (C' := C ⊗[A] A') b`. Establish `h2 : (etTrace A A') b = (algTrace A A') b` using `rfl`. Rewrite using `[h2, ← h1, algTrace_eq_trace]`. Establish `h3 : algebraMap A' (C ⊗[A] A') b = e.symm (e (1 ⊗ₜ[A] b))`. Rewrite using `[AlgEquiv.symm_apply_apply]`.
+
+Both sides reduce to the same expression. Rewrite using `[h3, Algebra.trace_eq_of_algEquiv e.symm, trace_pi_eq_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => he b j`.
+-/
 theorem UpperTheory.Gal.G3.pAlgTr :
     AlgTr := by
   intro A A' C _ _ _ _ _ _ _ J _ τ e he b

@@ -18,6 +18,13 @@ section Comb
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use `set T := Finset.univ.filter fun i : Fin n => j ≤ (i : ℕ) with hT`. Use `Finset.sum_sdiff_le_sum_sdiff.1 ?_` and prove the remaining obligations. Establish `hc` using `Finset.card_sdiff_comm hS`. Establish `h1 : ∑ i ∈ T \ S, μ i ≤ (T \ S).card • (T \ S).sup μ` using `Finset.sum_le_card_nsmul _ _ _ fun i hi => Finset.le_sup (f := μ) hi`. Establish `h2 : (S \ T).card • (T \ S).sup μ ≤ ∑ i ∈ S \ T, μ i`.
+
+Use `Finset.card_nsmul_le_sum _ _ _ fun y hy => Finset.sup_le fun i hi => hμ ?_` and prove the remaining obligations. Establish `hy' : ¬ j ≤ (y : ℕ)`. Use `(Finset.mem_sdiff.1 hy).2` as an intermediate fact. Simplify `this` using `[hT]`. Establish `hi' : j ≤ (i : ℕ)`.
+
+Use `(Finset.mem_sdiff.1 hi).1` as an intermediate fact. Simplify `this` using `[hT]`. Conclude with `Fin.le_def.2 (by omega)`. Rewrite `h1` using `[hc]`. Conclude with `h1.trans h2`.
+-/
 theorem tail_sum_le {μ : Fin n → ℕ} (hμ : Antitone μ) (j : ℕ) (S : Finset (Fin n))
     (hS : (Finset.univ.filter fun i : Fin n => j ≤ (i : ℕ)).card = S.card) :
     ∑ i ∈ Finset.univ.filter (fun i : Fin n => j ≤ (i : ℕ)), μ i ≤ ∑ i ∈ S, μ i := by
@@ -38,6 +45,13 @@ theorem tail_sum_le {μ : Fin n → ℕ} (hμ : Antitone μ) (j : ℕ) (S : Fins
   rw [hc] at h1
   exact h1.trans h2
 
+/- English proof (translation)
+Proceed by induction on `j generalizing c with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Establish `hjn : j < n` using `hj`. Establish `e : Finset.univ.filter (fun i : Fin n => (i : ℕ) < j + 1) = insert (⟨j, hjn⟩ : Fin n) (Finset.univ.filter fun i : Fin n => (i : ℕ) < j)`.
+
+Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Establish `hn : (⟨j, hjn⟩ : Fin n) ∉ Finset.univ.filter fun i : Fin n => (i : ℕ) < j` using `by simp`. Establish `h1` using `ih (by omega) (a ⟨j, hjn⟩) fun i hi => ha (Fin.le_def.2 (by simpa using hi.le))`.
+
+Establish `h2` using `hH (j + 1)`. Establish `h3` using `hc ⟨j, hjn⟩ (by simp)`. Rewrite `h2`, the goal using `[e, Finset.sum_insert hn]`. Rewrite using `[Finset.sum_insert hn]`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 h3) h2]`.
+-/
 theorem abel_head (a x : Fin n → ℤ) (ha : Antitone a)
     (hH : ∀ j : ℕ, 0 ≤ ∑ i ∈ Finset.univ.filter (fun i : Fin n => (i : ℕ) < j), x i) (j : ℕ) (hj : j ≤ n) (c : ℤ)
     (hc : ∀ i : Fin n, (i : ℕ) < j → c ≤ a i) :
@@ -60,6 +74,23 @@ theorem abel_head (a x : Fin n → ℤ) (ha : Antitone a)
     rw [Finset.sum_insert hn]
     nlinarith [mul_nonneg (sub_nonneg.2 h3) h2]
 
+/- English proof (translation)
+Distinguish the cases in `hne : d' = d`. Conclude with `Or.inl hne`. Use `Or.inr ?_` and prove the remaining obligations. Set `x : Fin n → ℤ` to `fun i => (d i : ℤ) - d' i`. Set `a : Fin n → ℤ` to `fun i => d' i`.
+
+Establish `hH : ∀ j : ℕ, 0 ≤ ∑ i ∈ Finset.univ.filter (fun i : Fin n => (i : ℕ) < j), x i`. Introduce `j`. Establish `e1` using `Finset.sum_filter_add_sum_filter_not Finset.univ (fun i : Fin n => (i : ℕ) < j) d`. Establish `e2` using `Finset.sum_filter_add_sum_filter_not Finset.univ (fun i : Fin n => (i : ℕ) < j) d'`. Simplify using `only [not_lt] at e1 e2`.
+
+Use `hT j` as an intermediate fact. Simplify using `only [x, Finset.sum_sub_distrib, ← Nat.cast_sum]`. Use linear arithmetic over natural numbers and integers. Establish `ha : Antitone a` using `fun i j h => by simpa [a] using hd' h`. Establish `hA` using `abel_head a x ha hH n le_rfl 0 fun i _ => by simp [a]`.
+
+Establish `e : Finset.univ.filter (fun i : Fin n => (i : ℕ) < n) = Finset.univ`. Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite `hA` using `[e, zero_mul]`. Establish `hx : 0 < ∑ i, x i ^ 2`.
+
+Take `⟨i, hi⟩` from `Function.ne_iff.1 hne`. Use `Finset.sum_pos' (fun i _ => sq_nonneg _) ⟨i, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Establish `: x i ≠ 0`. Simplify using `only [x]`. Use linear arithmetic over natural numbers and integers.
+
+Check the signs of the components of the expression. Establish `key : ((∑ i, d i ^ 2 : ℕ) : ℤ) = ∑ i, (d' i : ℤ) ^ 2 + ∑ i, x i ^ 2 + 2 * ∑ i, x i * a i`. Use `push_cast`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [x, a]`. Expand and normalize the polynomial expressions, which then agree. Establish `: ((∑ i, d' i ^ 2 : ℕ) : ℤ) < ((∑ i, d i ^ 2 : ℕ) : ℤ)`. Rewrite using `[key]`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `this` after adjusting the coercions.
+-/
 theorem sq_lt {d d' : Fin n → ℕ} (hd' : Antitone d') (htot : ∑ i, d' i = ∑ i, d i)
     (hT : ∀ j : ℕ, ∑ i ∈ Finset.univ.filter (fun i : Fin n => j ≤ (i : ℕ)), d i ≤
       ∑ i ∈ Finset.univ.filter (fun i : Fin n => j ≤ (i : ℕ)), d' i) :
@@ -108,8 +139,16 @@ local notation "Γ" => WithZero (Multiplicative ℤ)
 def MinorLe (c : Γ) (r : ℕ) (M : Matrix (Fin n) (Fin n) L) : Prop :=
   ∀ I J : Fin r → Fin n, Valued.v (M.submatrix I J).det ≤ c
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_intL_iff {x : L} : x ∈ Formalism.UG.intL L ↔ Valued.v x ≤ 1 := Iff.rfl
 
+/- English proof (translation)
+Establish `h` using `(Matrix.detRowAlternating (R := L) (n := Fin r)).toMultilinearMap.map_sum (fun (i : Fin r) (k : Fin n) => A (I i) k • (fun j => M k (J j)))`. Establish `e : (fun i => ∑ k, A (I i) k • (fun j => M k (J j))) = (A * M).submatrix I J`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Finset.sum_apply]`. Rewrite `h` using `[e]`.
+
+Use `h.trans (Finset.sum_congr rfl fun f _ => ?_)` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ]`. Both sides reduce to the same expression.
+-/
 theorem det_submatrix_mul_expand {r : ℕ} (A M : Matrix (Fin n) (Fin n) L) (I J : Fin r → Fin n) :
     ((A * M).submatrix I J).det =
       ∑ f : Fin r → Fin n, (∏ i, A (I i) (f i)) * (M.submatrix f J).det := by
@@ -123,6 +162,11 @@ theorem det_submatrix_mul_expand {r : ℕ} (A M : Matrix (Fin n) (Fin n) L) (I J
   rw [MultilinearMap.map_smul_univ]
   rfl
 
+/- English proof (translation)
+Introduce `I J`. Rewrite using `[det_submatrix_mul_expand]`. Use `Valuation.map_sum_le _ fun f _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Establish `h1 : Valued.v (∏ i, A (I i) (f i)) ≤ 1` using `mem_intL_iff.1 (prod_mem fun i _ => hA _ _)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem minorLe_mul_left {c : Γ} {r : ℕ} {A M : Matrix (Fin n) (Fin n) L}
     (hA : ∀ i j, A i j ∈ Formalism.UG.intL L) (h : MinorLe c r M) : MinorLe c r (A * M) := by
   intro I J
@@ -134,6 +178,9 @@ theorem minorLe_mul_left {c : Γ} {r : ℕ} {A M : Matrix (Fin n) (Fin n) L}
   calc _ ≤ 1 * c := mul_le_mul' h1 (h f J)
     _ = c := one_mul c
 
+/- English proof (translation)
+Introduce `I J`. Establish `: (M.transpose.submatrix I J) = (M.submatrix J I).transpose` using `by ext; rfl`. Rewrite using `[this, Matrix.det_transpose]`. Conclude with `h J I`.
+-/
 theorem minorLe_transpose {c : Γ} {r : ℕ} {M : Matrix (Fin n) (Fin n) L} (h : MinorLe c r M) :
     MinorLe c r M.transpose := by
   intro I J
@@ -141,22 +188,36 @@ theorem minorLe_transpose {c : Γ} {r : ℕ} {M : Matrix (Fin n) (Fin n) L} (h :
   rw [this, Matrix.det_transpose]
   exact h J I
 
+/- English proof (translation)
+Use `minorLe_transpose (minorLe_mul_left (A := B.transpose) (fun i j => hB j i) (minorLe_transpose h))` as an intermediate fact. Rewrite `this` using `[← Matrix.transpose_mul, Matrix.transpose_transpose]`. Then use the resulting hypothesis.
+-/
 theorem minorLe_mul_right {c : Γ} {r : ℕ} {B M : Matrix (Fin n) (Fin n) L}
     (hB : ∀ i j, B i j ∈ Formalism.UG.intL L) (h : MinorLe c r M) : MinorLe c r (M * B) := by
   have := minorLe_transpose (minorLe_mul_left (A := B.transpose) (fun i j => hB j i) (minorLe_transpose h))
   rwa [← Matrix.transpose_mul, Matrix.transpose_transpose] at this
 
+/- English proof (translation)
+Use `mem_intL_iff.1 ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_apply']`. Conclude with `sum_mem fun σ _ => mul_mem (intCast_mem _ _) (prod_mem fun i _ => h _ _)`.
+-/
 theorem det_int {r : ℕ} (M : Matrix (Fin r) (Fin r) L) (h : ∀ i j, M i j ∈ Formalism.UG.intL L) :
     Valued.v M.det ≤ 1 := by
   refine mem_intL_iff.1 ?_
   rw [Matrix.det_apply']
   exact sum_mem fun σ _ => mul_mem (intCast_mem _ _) (prod_mem fun i _ => h _ _)
 
+/- English proof (translation)
+Take `⟨g0, rfl⟩` from `hg`. Conclude with `((g0 : Matrix (Fin n) (Fin n) (Formalism.UG.intL L)) i j).2`.
+-/
 theorem glint_entry {g : GL (Fin n) L} (hg : g ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L)) (i j : Fin n) :
     (g : Matrix (Fin n) (Fin n) L) i j ∈ Formalism.UG.intL L := by
   obtain ⟨g0, rfl⟩ := hg
   exact ((g0 : Matrix (Fin n) (Fin n) (Formalism.UG.intL L)) i j).2
 
+/- English proof (translation)
+Apply the tactic sequence `have h1 := det_int _ (glint_entry hg)`. Apply the tactic sequence `have h2 := det_int _ (glint_entry (inv_mem hg))`. Establish `h3 : (g : Matrix (Fin n) (Fin n) L).det * ((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L).det = 1`. Rewrite using `[← Matrix.det_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.det_one]`. Establish `h4` using `congrArg Valued.v h3`.
+
+Rewrite `h4` using `[map_mul, map_one]`. Use `le_antisymm h1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem glint_det {g : GL (Fin n) L} (hg : g ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L)) :
     Valued.v (g : Matrix (Fin n) (Fin n) L).det = 1 := by
   have h1 := det_int _ (glint_entry hg)
@@ -172,14 +233,33 @@ theorem glint_det {g : GL (Fin n) L} (hg : g ∈ Formalism.UG.GLint (Fin n) (For
 
 variable {ϖ : L}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Conclude with `absurd (pow_lt_pow_right_of_lt_one₀ h0 hq (not_le.1 hc)) (not_lt.2 h)`.
+-/
 theorem v_pow_anti {q : Γ} (hq : q < 1) (h0 : 0 < q) {a b : ℕ} (h : q ^ a ≤ q ^ b) : b ≤ a := by
   by_contra hc
   exact absurd (pow_lt_pow_right_of_lt_one₀ h0 hq (not_le.1 hc)) (not_lt.2 h)
 
+/- English proof (translation)
+The claim follows from `(Finset.sum_image fun _ _ _ _ h => hI h).symm`.
+-/
 theorem sum_inj_image {M : Type} [AddCommMonoid M] {r : ℕ} (f : Fin n → M) {I : Fin r → Fin n}
     (hI : Function.Injective I) : ∑ t, f (I t) = ∑ i ∈ Finset.univ.image I, f i :=
   (Finset.sum_image fun _ _ _ _ h => hI h).symm
 
+/- English proof (translation)
+Introduce `I J`. Distinguish the cases in `hI : Function.Injective I`. Use `swap`. Take `⟨a, b, e, ne⟩` from `Function.not_injective_iff.1 hI`. Rewrite using `[Matrix.det_zero_of_row_eq ne (by ext c; simp [e]), map_zero]`.
+
+Conclude with `zero_le`. Distinguish the cases in `hJ : Function.Injective J`. Use `swap`. Take `⟨a, b, e, ne⟩` from `Function.not_injective_iff.1 hJ`. Rewrite using `[Matrix.det_zero_of_column_eq ne (by intro c; simp [e]), map_zero]`.
+
+Conclude with `zero_le`. Establish `e : (Matrix.diagonal (fun i => ϖ ^ μ i) * h * Matrix.diagonal (fun i => ϖ ^ ω i)).submatrix I J = Matrix.diagonal (fun t => ϖ ^ μ (I t)) * h.submatrix I J * Matrix.diagonal (fun t => ϖ ^ ω (J t))`. Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Rewrite using `[e, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_diagonal, map_mul, map_mul, Finset.prod_pow_eq_pow_sum, Finset.prod_pow_eq_pow_sum, map_pow, map_pow, hϖ, sum_inj_image μ hI, sum_inj_image ω hJ]`.
+
+Establish `c1 : (Finset.univ.image I).card = (Finset.univ.filter fun i : Fin n => j ≤ (i : ℕ)).card`. Rewrite using `[Finset.card_image_of_injective _ hI]`. Simplify using the standard rewrite rules. Establish `c2 : (Finset.univ.image J).card = (Finset.univ.filter fun i : Fin n => j ≤ (i : ℕ)).card`. Rewrite using `[Finset.card_image_of_injective _ hJ]`.
+
+Simplify using the standard rewrite rules. Establish `t1` using `tail_sum_le hμ j _ c1.symm`. Establish `t2` using `tail_sum_le hω j _ c2.symm`. Establish `hd` using `det_int (h.submatrix I J) fun a b => hh _ _`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_one, pow_add]`. Use `_ ≤ _ := pow_le_pow_right_of_le_one' hq.le (add_le_add t1 t2)`.
+-/
 theorem minorLe_diag (q : Γ) (hq : q < 1) (hϖ : Valued.v ϖ = q) {μ ω : Fin n → ℕ} (hμ : Antitone μ) (hω : Antitone ω)
     {h : Matrix (Fin n) (Fin n) L} (hh : ∀ i j, h i j ∈ Formalism.UG.intL L) (j : ℕ) :
     MinorLe (q ^ (∑ i ∈ Finset.univ.filter (fun i : Fin n => j ≤ (i : ℕ)), μ i +
@@ -217,6 +297,11 @@ theorem minorLe_diag (q : Γ) (hq : q < 1) (hϖ : Valued.v ϖ = q) {μ ω : Fin 
         rw [mul_one, pow_add]
     _ ≤ _ := pow_le_pow_right_of_le_one' hq.le (add_le_add t1 t2)
 
+/- English proof (translation)
+Use `set T := Finset.univ.filter fun i : Fin n => j ≤ (i : ℕ)`. Establish `hI : Function.Injective (T.orderEmbOfFin rfl)` using `(T.orderEmbOfFin rfl).injective`. Use `h (T.orderEmbOfFin rfl) (T.orderEmbOfFin rfl)` as an intermediate fact. Rewrite `this` using `[Matrix.submatrix_diagonal _ _ hI, Matrix.det_diagonal]`. Simplify using `only [Function.comp] at this`.
+
+Rewrite `this` using `[Finset.prod_pow_eq_pow_sum, map_pow, hϖ, sum_inj_image d' hI]`. Establish `e : Finset.univ.image (T.orderEmbOfFin rfl) = T`. Simplify using `using Finset.image_orderEmbOfFin_univ T rfl`. Rewrite `this` using `[e]`. Conclude with `v_pow_anti hq h0 this`.
+-/
 theorem tail_of_minorLe (q : Γ) (hq : q < 1) (h0 : 0 < q) (hϖ : Valued.v ϖ = q) {d' : Fin n → ℕ} {t : ℕ} (j : ℕ)
     (h : MinorLe (q ^ t) (Finset.univ.filter fun i : Fin n => j ≤ (i : ℕ)).card
       (Matrix.diagonal fun i => ϖ ^ d' i)) :
@@ -234,6 +319,27 @@ theorem tail_of_minorLe (q : Γ) (hq : q < 1) (h0 : 0 < q) (hϖ : Valued.v ϖ = 
 
 end Val
 
+/- English proof (translation)
+Introduce `L _ _ ϖ n hϖ d k hd hk g a ⟨k₁, hk₁, k₂, hk₂, eg⟩ ⟨l₁, hl₁, l₂, hl₂, ea⟩ d' hd' ⟨m₁, hm₁, m₂, hm₂, e⟩`. Take `⟨q, hqdef⟩ : ∃ q : WithZero (Multiplicative ℤ), q = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))` from `⟨_, rfl⟩`. Rewrite `hϖ` using `[← hqdef]`. Establish `hq0 : 0 < q` using `by rw [hqdef]; exact WithZero.zero_lt_coe _`. Establish `hq1 : q < 1`.
+
+Rewrite using `[hqdef, ← WithZero.coe_one, WithZero.coe_lt_coe]`. Use `show (-1 : ℤ) < 0`. Evaluate the numerical expressions. Set `μ : Fin n → ℕ` to `fun i => d i - 1`. Set `ω : Fin n → ℕ` to `fun i => if (i : ℕ) < k then 1 else 0`.
+
+Establish `hμ : Antitone μ` using `fun i j h => Nat.sub_le_sub_right (hd h) 1`. Establish `hω : Antitone ω` using `fun i j h => by`. Establish `h' : (i : ℕ) ≤ j` using `h`. Simplify using `only [ω]`. Apply the tactic sequence `split_ifs <;> omega`.
+
+Establish `hdμ : ∀ i, d i = μ i + ω i` using `fun i => by`. Use `hk i` as an intermediate fact. Simplify using `only [μ, ω]`. Apply the tactic sequence `split_ifs <;> omega`. Establish `ea' : ((l₁ * a * l₂ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = Matrix.diagonal fun i => ϖ ^ ω i`.
+
+Rewrite using `[ea]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [ω]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `hA : m₁ * k₁⁻¹ ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L)` using `mul_mem hm₁ (inv_mem hk₁)`. Establish `hh : k₂⁻¹ * l₁⁻¹ ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L)` using `mul_mem (inv_mem hk₂) (inv_mem hl₁)`. Establish `hB : l₂⁻¹ * m₂ ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L)` using `mul_mem (inv_mem hl₂) hm₂`. Establish `key : m₁ * (g * a) * m₂ = (m₁ * k₁⁻¹) * ((k₁ * g * k₂) * (k₂⁻¹ * l₁⁻¹) * (l₁ * a * l₂)) * (l₂⁻¹ * m₂)` using `by group`. Establish `em : (Matrix.diagonal fun i => ϖ ^ d' i) = ((m₁ * k₁⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * ((Matrix.diagonal fun i => ϖ ^ μ i) * ((k₂⁻¹ * l₁⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * (Matrix.diagonal fun i => ϖ ^ ω i)) * ((l₂⁻¹ * m₂ : GL (Fin n) L) : Matrix (Fin n …`.
+
+Rewrite using `[← e, key, ← ea', Units.val_mul, Units.val_mul (m₁ * k₁⁻¹), Units.val_mul (k₁ * g * k₂ * (k₂⁻¹ * l₁⁻¹)), Units.val_mul (k₁ * g * k₂) (k₂⁻¹ * l₁⁻¹), eg]`. Establish `hT : ∀ j : ℕ, ∑ i ∈ Finset.univ.filter (fun i : Fin n => j ≤ (i : ℕ)), d i ≤ ∑ i ∈ Finset.univ.filter (fun i : Fin n => j ≤ (i : ℕ)), d' i`. Introduce `j`. Apply the tactic sequence `have m := minorLe_mul_right (glint_entry hB) (minorLe_mul_left (glint_entry hA) (minorLe_diag (ϖ := ϖ) q hq1 hϖ hμ hω (glint_entry hh) j))`. Rewrite `m` using `[← em]`.
+
+Use `tail_of_minorLe q hq1 hq0 hϖ j m` as an intermediate fact. Rewrite `this` using `[← Finset.sum_add_distrib, Finset.sum_congr rfl fun i _ => (hdμ i).symm]`. Then use the resulting hypothesis. Establish `htot : ∑ i, d' i = ∑ i, d i`. Establish `h1` using `congrArg (fun M => Valued.v (Matrix.det M)) em`. Simplify using `only [Matrix.det_mul, Matrix.det_diagonal, map_mul, glint_det hA, glint_det hB, glint_det hh, Finset.prod_pow_eq_pow_sum, map_pow, hϖ, one_mul, mul_one] at h1`.
+
+Rewrite `h1` using `[← pow_add]`. Establish `h2 : ∑ i, d' i = ∑ i, μ i + ∑ i, ω i` using `le_antisymm (v_pow_anti hq1 hq0 h1.ge) (v_pow_anti hq1 hq0 h1.le)`. Rewrite using `[h2, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => (hdμ i).symm`. Break down `sq_lt hd' htot hT with h | h` into its components or cases.
+
+Conclude with `Or.inl h`. Conclude with `Or.inr ⟨htot, h⟩`.
+-/
 theorem elemDiv_mul_minuscule : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (n : ℕ), Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) → ∀ (d : Fin n → ℕ) (k : ℕ), Antitone d → (∀ i : Fin n, 0 < d i ↔ (i : ℕ) < k) → ∀ (g a : GL (Fin n) L), (∃ k₁ ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L), ∃ k₂ ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L), ((k₁ * g * k₂ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = Matrix.diagonal fun i => ϖ ^ (d i - 1)) → (∃ k₁ ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L), ∃ k₂ ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L), ((k₁ * a * k₂ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = Matrix.diagonal fun i : Fin n => if (i : ℕ) < k then ϖ else 1) → ∀ d' : Fin n → ℕ, Antitone d' → (∃ k₁ ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L), ∃ k₂ ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L), ((k₁ * (g * a) * k₂ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = Matrix.diagonal fun i => ϖ ^ d' i) → d' = d ∨ (∑ i, d' i = ∑ i, d i ∧ ∑ i, d' i ^ 2 < ∑ i, d i ^ 2) := by
   intro L _ _ ϖ n hϖ d k hd hk g a ⟨k₁, hk₁, k₂, hk₂, eg⟩ ⟨l₁, hl₁, l₂, hl₂, ea⟩ d' hd' ⟨m₁, hm₁, m₂, hm₂, e⟩
   obtain ⟨q, hqdef⟩ : ∃ q : WithZero (Multiplicative ℤ), q = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) := ⟨_, rfl⟩

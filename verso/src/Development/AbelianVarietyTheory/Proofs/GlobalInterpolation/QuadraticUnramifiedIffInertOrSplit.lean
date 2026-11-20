@@ -7,6 +7,45 @@ namespace GlobalTheory
 open scoped TensorProduct in
 open NumberField IsDedekindDomain in
 
+/- English proof (translation)
+Use `haveI : v.asIdeal.IsMaximal := v.isMaximal`. Use `set I := v.asIdeal.map (algebraMap (𝓞 F) (𝓞 E)) with hIdef`. Use `set M := UniqueFactorizationMonoid.normalizedFactors I with hMdef`. Use `set s := IsDedekindDomain.primesOverFinset v.asIdeal (𝓞 E) with hsdef`. Establish `hv : v.asIdeal ≠ ⊥` using `v.ne_bot`.
+
+Establish `hI : I ≠ ⊥` using `(Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 E))).not.mpr hv`. Establish `hs : ∀ P, P ∈ s ↔ P ∈ v.asIdeal.primesOver (𝓞 E)` using `fun P => IsDedekindDomain.mem_primesOverFinset_iff hv (𝓞 E)`. Establish `hM : ∀ P, P ∈ v.asIdeal.primesOver (𝓞 E) ↔ P ∈ M` using `fun P => Ideal.mem_primesOver_iff_mem_normalizedFactors (𝓞 E) hv`. Establish `hcount : ∀ P ∈ v.asIdeal.primesOver (𝓞 E), P.ramificationIdx (𝓞 F) = M.count P`. Introduce `P hP`.
+
+Use `haveI : P.LiesOver v.asIdeal := hP.2`. Conclude with `Ideal.IsDedekindDomain.ramificationIdx_eq_normalizedFactors_count v.asIdeal P hI`. Establish `hsum : ∑ P ∈ s, P.ramificationIdx (𝓞 F) * v.asIdeal.inertiaDeg' P = 2`. Rewrite using `[← h2, ← Ideal.sum_ramification_inertia (𝓞 E) F E hv]`. Use `Finset.sum_congr rfl fun P hP => ?_` and prove the remaining obligations.
+
+Establish `hP'` using `(hs P).1 hP`. Use `haveI : P.IsPrime := hP'.1`. Use `haveI : P.LiesOver v.asIdeal := hP'.2`. Rewrite using `[Ideal.ramificationIdx_eq_ramificationIdx' v.asIdeal P hv]`. Establish `hterm : ∀ P ∈ s, 1 ≤ P.ramificationIdx (𝓞 F) * v.asIdeal.inertiaDeg' P`.
+
+Introduce `P hP`. Establish `hP'` using `(hs P).1 hP`. Use `haveI : P.IsPrime := hP'.1`. Use `haveI : P.LiesOver v.asIdeal := hP'.2`. Establish `h1 : 0 < P.ramificationIdx (𝓞 F)` using `Ideal.ramificationIdx_pos P (𝓞 F)`.
+
+Establish `h2 : 0 < v.asIdeal.inertiaDeg' P` using `Ideal.inertiaDeg'_pos v.asIdeal P`. Conclude with `Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero h1.ne' h2.ne')`. Establish `hncard : (v.asIdeal.primesOver (𝓞 E)).ncard = s.card`. Rewrite using `[← Set.ncard_coe_finset, hsdef, IsDedekindDomain.coe_primesOverFinset hv]`. Establish `hcard_le : s.card ≤ 2`.
+
+Use `Finset.card_nsmul_le_sum s _ 1 hterm` as an intermediate fact. Simplify `this` using `[hsum]`. Establish `hcard_pos : 0 < s.card`. Rewrite using `[← hncard]`. Conclude with `Nat.pos_of_ne_zero (IsDedekindDomain.primesOver_ncard_ne_zero v.asIdeal (𝓞 E))`.
+
+Establish `hU : (∀ w : HeightOneSpectrum (𝓞 E), w.asIdeal.LiesOver v.asIdeal → Algebra.IsUnramifiedAt (𝓞 F) w.asIdeal) ↔ ∀ P ∈ s, P.ramificationIdx (𝓞 F) = 1`. Prove the components needed by the constructor for the conclusion. Introduce `h P hP`. Establish `hP'` using `(hs P).1 hP`. Use `haveI : P.IsPrime := hP'.1`.
+
+Use `haveI : P.LiesOver v.asIdeal := hP'.2`. Establish `hPb : P ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot hv P`. Conclude with `Algebra.isUnramifiedAt_iff_of_isDedekindDomain.1 (h ⟨P, hP'.1, hPb⟩ hP'.2)`. Introduce `h w hw`. Establish `hmem : w.asIdeal ∈ s` using `(hs _).2 ⟨w.isPrime, hw⟩`.
+
+Conclude with `Algebra.isUnramifiedAt_iff_of_isDedekindDomain.2 (h _ hmem)`. Rewrite using `[hU, hncard]`. Establish `hI0 : I ≠ 0` using `hI`. Prove the components needed by the constructor for the conclusion. Introduce `he`.
+
+Distinguish the cases in `h2c : s.card = 2`. Conclude with `Or.inr h2c`. Use `left`. Establish `h1 : s.card = 1` using `by omega`. Take `⟨P, hsP⟩` from `Finset.card_eq_one.1 h1`.
+
+Establish `hPs : P ∈ s` using `by simp [hsP]`. Establish `hallM : ∀ Q ∈ M, Q = P`. Introduce `Q hQ`. Establish `: Q ∈ s` using `(hs Q).2 ((hM Q).2 hQ)`. Simplify `this` using `[hsP]`.
+
+Establish `hcP : M.count P = 1`. Rewrite using `[← hcount P ((hs P).1 hPs)]`. Conclude with `he P hPs`. Establish `hcardM : M.card = 1`. Rewrite using `[← hcP]`.
+
+Conclude with `(Multiset.count_eq_card.2 fun x hx => (hallM x hx).symm).symm`. Establish `hMP : M = {P}`. Rewrite using `[Multiset.eq_replicate_of_mem hallM, hcardM, Multiset.replicate_one]`. Establish `hassoc` using `UniqueFactorizationMonoid.prod_normalizedFactors hI0`. Rewrite `hassoc` using `[← hMdef, hMP, Multiset.prod_singleton]`.
+
+Rewrite using `[← associated_iff_eq.1 hassoc]`. Conclude with `((hs P).1 hPs).1`. Introduce and unpack `(hp | h2c)`. Introduce `P hP`. Establish `hirr : Irreducible I` using `(Ideal.prime_of_isPrime hI hp).irreducible`.
+
+Establish `hMI : M = {I}`. Rewrite using `[hMdef, UniqueFactorizationMonoid.normalizedFactors_irreducible hirr, normalize_eq]`. Establish `hPI : P = I`. Use `(hM P).1 ((hs P).1 hP)` as an intermediate fact. Rewrite `this` using `[hMI]`.
+
+Simplify using `using this`. Rewrite using `[hcount P ((hs P).1 hP), hMI, hPI, Multiset.count_singleton_self]`. Introduce `P hP`. Assume the negation of the conclusion as `hne`. Establish `hP'` using `(hs P).1 hP`.
+
+Use `haveI : P.IsPrime := hP'.1`. Use `haveI : P.LiesOver v.asIdeal := hP'.2`. Establish `he : 0 < P.ramificationIdx (𝓞 F)` using `Ideal.ramificationIdx_pos P (𝓞 F)`. Establish `hf : 0 < v.asIdeal.inertiaDeg' P` using `Ideal.inertiaDeg'_pos v.asIdeal P`. Establish `hge : 2 * 1 ≤ P.ramificationIdx (𝓞 F) * v.asIdeal.inertiaDeg' P` using `Nat.mul_le_mul (by omega) hf`.
+
+Establish `hrest` using `Finset.card_nsmul_le_sum (s.erase P) _ 1 (fun Q hQ => hterm Q (Finset.mem_of_mem_erase hQ))`. Rewrite `hsum` using `[← Finset.add_sum_erase s _ hP]`. Rewrite `hrest` using `[Finset.card_erase_of_mem hP, h2c]`. Simplify using `only [smul_eq_mul, mul_one] at hrest`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem _root_.GlobalTheory.quadratic_unramified_iff_inert_or_split (F E : Type) [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E] (h2 : Module.finrank F E = 2) (v : HeightOneSpectrum (𝓞 F)) :
     ((∀ w : HeightOneSpectrum (𝓞 E), w.asIdeal.LiesOver v.asIdeal →

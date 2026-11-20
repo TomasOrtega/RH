@@ -9,6 +9,11 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC
 
 namespace LateralTheory.EtaleTrace.LFinCut
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.isNormalScheme_iff]`. Use `GlobalTheory.forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth p fun y => ?_` and prove the remaining obligations. Establish `hf : IsField ((S k).presheaf.stalk y)` using `isField_stalk_of_closure_mem_irreducibleComponents (S k) y (by`. Establish `: closure ({y} : Set (S k)) = Set.univ` using `Set.eq_univ_of_forall fun z => subset_closure (Subsingleton.elim z y)`. Rewrite using `[this, irreducibleComponents_eq_singleton]`.
+
+Use the proof step `rfl)`. Set `` to `hf.toField`. Conclude with `⟨inferInstance, inferInstance⟩`.
+-/
 theorem normal_of_smooth {k : Type} [Field k] {X : Scheme.{0}} (p : X ⟶ S k) [Smooth p] : GlobalTheory.IsNormalScheme X := by
   rw [GlobalTheory.isNormalScheme_iff]
   refine GlobalTheory.forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth p fun y => ?_

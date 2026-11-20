@@ -5,6 +5,29 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.HidaC
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.LocalRingsCompletion.dvrFinite
 open UpperTheory.V.Z.J.D UpperTheory.V UpperTheory.V.Hi IsLocalRing
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero`. Introduce `S hSW hd h0 _ _`. Use `haveI : FiniteDimensional ℂ S := Submodule.finiteDimensional_of_le hSW`. Conclude with `absurd (Submodule.finrank_eq_zero.1 (Nat.le_zero.1 hd)) h0`.
+
+Consider the case `succ d ih`. Introduce `S hSW hd h0 hS hG`. Use `haveI : FiniteDimensional ℂ S := Submodule.finiteDimensional_of_le hSW`. Distinguish the cases in `hall : ∀ i, ∀ s ∈ S, (T i - μ i • (1 : Module.End ℂ E)) s = 0`. Take `⟨G, hG1, hG2⟩` from `(Submodule.ne_bot_iff _).1 h0`.
+
+Use `⟨G, hSW hG1, hG2, fun i => ?_⟩` and prove the remaining obligations. Use `hall i G hG1` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`. Use `push_neg at hall`. Take `⟨i, s, hs, hne⟩` from `hall`.
+
+Use `set D : Module.End ℂ E := T i - μ i • (1 : Module.End ℂ E) with hD`. Establish `hDS : ∀ t ∈ S, D t ∈ S` using `fun t ht => by`. Simplify using `only [hD, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`. Conclude with `sub_mem (hS i t ht) (S.smul_mem _ ht)`. Establish `hDp : ∀ (k : ℕ), ∀ t ∈ S, (D ^ k) t ∈ S`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro t ht`. Simplify using `using ht`. Consider the case `succ k ihk => intro t ht`.
+
+Rewrite using `[pow_succ', Module.End.mul_apply]`. Conclude with `hDS _ (ihk t ht)`. Set `S' : Submodule ℂ E` to `S ⊓ LinearMap.ker D`. Establish `hlt : S' < S`. Use `lt_of_le_of_ne inf_le_left fun h => hne ?_` and prove the remaining obligations.
+
+Establish `: s ∈ S'` using `h ▸ hs`. Conclude with `this.2`. Establish `hnz : S' ≠ ⊥`. Take `⟨k, hk⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).1 (hG i s hs)`. Establish `hex : ∃ k, (D ^ k) s = 0` using `⟨k, hk⟩`.
+
+Establish `hf` using `Nat.find_spec hex`. Establish `hf0 : Nat.find hex ≠ 0`. Introduce `h`. Rewrite `hf` using `[h]`. Establish `h1 : s = 0` using `by simpa using hf`.
+
+Conclude with `hne (by rw [h1, map_zero])`. Take `⟨m, hm⟩` from `Nat.exists_eq_succ_of_ne_zero hf0`. Establish `hmin` using `Nat.find_min hex (m := m) (by omega)`. Rewrite `hf` using `[hm, pow_succ', Module.End.mul_apply]`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨_, ⟨hDp m s hs, hf⟩, hmin⟩`.
+
+Establish `hcD : ∀ j, ∀ t ∈ S, D (T j t) = T j (D t)` using `fun j t ht => by`. Simplify using `only [hD, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub, map_smul]`. Rewrite using `[hc i j t (hSW ht)]`. Use `ih S' (inf_le_left.trans hSW) ?_ hnz (fun j t ht => ⟨hS j t ht.1, ?_⟩) (fun j t ht => hG j t ht.1)` and prove the remaining obligations. Use `Submodule.finrank_lt_finrank_of_lt hlt` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Express the relevant statement in the definitionally equal form `D (T j t) = 0`. Rewrite using `[hcD j t ht.1]`. Establish `: D t = 0` using `ht.2`. Rewrite using `[this, map_zero]`.
+-/
 private theorem exists_joint_eigenvector_bis {E J : Type} [AddCommGroup E] [Module ℂ E] (W : Submodule ℂ E) [FiniteDimensional ℂ W]
     (T : J → Module.End ℂ E) (hst : ∀ i, ∀ w ∈ W, T i w ∈ W) (hc : ∀ i j, ∀ w ∈ W, T i (T j w) = T j (T i w))
     (μ : J → ℂ) (d : ℕ) : ∀ S : Submodule ℂ E, S ≤ W → Module.finrank ℂ S ≤ d → S ≠ ⊥ → (∀ i, ∀ s ∈ S, T i s ∈ S) →
@@ -63,6 +86,17 @@ private theorem exists_joint_eigenvector_bis {E J : Type} [AddCommGroup E] [Modu
         have : D t = 0 := ht.2
         rw [this, map_zero]
 
+/- English proof (translation)
+Establish `hpw : ∀ i (k : ℕ), ∀ w ∈ W, ((T i - μ i • (1 : Module.End ℂ E)) ^ k) w ∈ W`. Introduce `i k`. Proceed by induction on `k with`. Consider the case `zero => intro w hw`. Simplify using `using hw`.
+
+Consider the case `succ k ih`. Introduce `w hw`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`. Conclude with `sub_mem (hst i _ (ih w hw)) (W.smul_mem _ (ih w hw))`.
+
+Establish `hcm : ∀ i j (k : ℕ), ∀ w ∈ W, ((T i - μ i • (1 : Module.End ℂ E)) ^ k) (T j w) = T j (((T i - μ i • (1 : Module.End ℂ E)) ^ k) w)`. Introduce `i j k`. Proceed by induction on `k with`. Consider the case `zero => intro w _`. Simplify using the standard rewrite rules.
+
+Consider the case `succ k ih`. Introduce `w hw`. Rewrite using `[pow_succ', Module.End.mul_apply, Module.End.mul_apply, ih w hw]`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub, map_smul]`. Rewrite using `[hc i j _ (hpw i k w hw)]`.
+
+Use `exists_joint_eigenvector_bis W T hst hc μ _ (W ⊓ ⨅ i, (T i).maxGenEigenspace (μ i)) inf_le_left le_rfl ((Submodule.ne_bot_iff _).2 ⟨F, ⟨hF, (Submodule.mem_iInf _).2 hg⟩, h0⟩) (fun j s hs => ?_) (fun i s hs => (Submodule.mem_iInf _).1 hs.2 i)` and prove the remaining obligations. Use `⟨hst j s hs.1, (Submodule.mem_iInf _).2 fun i => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).1 ((Submodule.mem_iInf _).1 hs.2 i)`. Use `(Module.End.mem_maxGenEigenspace _ _ _).2 ⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[hcm i j k s hs.1, hk, map_zero]`.
+-/
 private theorem joint_vec {E J : Type} [AddCommGroup E] [Module ℂ E] (W : Submodule ℂ E) [FiniteDimensional ℂ W]
     (T : J → Module.End ℂ E) (hst : ∀ i, ∀ w ∈ W, T i w ∈ W) (hc : ∀ i j, ∀ w ∈ W, T i (T j w) = T j (T i w))
     (μ : J → ℂ) (F : E) (hF : F ∈ W) (h0 : F ≠ 0) (hg : ∀ i, F ∈ (T i).maxGenEigenspace (μ i)) :
@@ -94,6 +128,17 @@ private theorem joint_vec {E J : Type} [AddCommGroup E] [Module ℂ E] (W : Subm
   refine (Module.End.mem_maxGenEigenspace _ _ _).2 ⟨k, ?_⟩
   rw [hcm i j k s hs.1, hk, map_zero]
 
+/- English proof (translation)
+Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Establish `key : ∀ g : P, sp g ∈ Submodule.span ℂ (Set.range fun i => sp (b i))`. Introduce `g`. Establish `hg : g ∈ Submodule.span A (Set.range b)` using `by rw [b.span_eq]; trivial`.
+
+Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨i, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero`.
+
+Use `hsmul 0 P.zero_mem 0` as an intermediate fact. Simplify using `only [zero_smul, map_zero] at this`. Simplify `Submodule.zero_mem _` using `[this]`. Consider the case `add y y' _ _ h h'`. Rewrite using `[Submodule.coe_add, hadd _ y.2 _ y'.2]`.
+
+Conclude with `add_mem h h'`. Consider the case `smul r y _ h`. Rewrite using `[Submodule.coe_smul, hsmul _ y.2]`. Conclude with `Submodule.smul_mem _ _ h`. Conclude with `key ⟨f, hf⟩`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨b i, (b i).2, rfl⟩`.
+-/
 private theorem sp_span {A M E κ : Type} [CommRing A] [AddCommGroup M] [Module A M] [AddCommGroup E] [Module ℂ E]
     (P : Submodule A M) (φ : A →+* ℂ) (sp : M → E) (hadd : ∀ f ∈ P, ∀ f' ∈ P, sp (f + f') = sp f + sp f')
     (hsmul : ∀ f ∈ P, ∀ b : A, sp (b • f) = φ b • sp f) (b : Module.Basis κ A P) :
@@ -121,11 +166,19 @@ private theorem sp_span {A M E κ : Type} [CommRing A] [AddCommGroup M] [Module 
   · rintro _ ⟨i, rfl⟩
     exact ⟨b i, (b i).2, rfl⟩
 
+/- English proof (translation)
+Use `inf_le_inf h (iInf_mono fun i => iInf_mono fun k => iSup_mono fun n => ?_)` and prove the remaining obligations. Conclude with `Submodule.comap_mono (Submodule.smul_mono le_rfl h)`.
+-/
 private theorem locPart_sub {A M J : Type} [CommRing A] [IsLocalRing A] [AddCommGroup M] [Module A M] (Z Y : Submodule A M)
     (h : Z ≤ Y) (op : J → Module.End A M) (a : J → A) : locPart Z op a ≤ locPart Y op a := by
   refine inf_le_inf h (iInf_mono fun i => iInf_mono fun k => iSup_mono fun n => ?_)
   exact Submodule.comap_mono (Submodule.smul_mono le_rfl h)
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => intro w hw`. Simplify using `using hw`. Consider the case `succ k ih`. Introduce `w hw`.
+
+Rewrite using `[pow_succ', Module.End.mul_apply]`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`. Conclude with `sub_mem (hS _ (ih w hw)) (S.smul_mem _ (ih w hw))`.
+-/
 private theorem pow_mem_of {E : Type} [AddCommGroup E] [Module ℂ E] (S : Submodule ℂ E) (T : Module.End ℂ E)
     (c : ℂ) (hS : ∀ s ∈ S, T s ∈ S) (k : ℕ) : ∀ s ∈ S, ((T - c • (1 : Module.End ℂ E)) ^ k) s ∈ S := by
   induction k with
@@ -136,6 +189,53 @@ private theorem pow_mem_of {E : Type} [AddCommGroup E] [Module ℂ E] (S : Submo
     simp only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]
     exact sub_mem (hS _ (ih w hw)) (S.smul_mem _ (ih w hw))
 
+/- English proof (translation)
+Take `⟨hLC, -, hLfin, ⟨Z, hdis, hsup, hZst⟩, hLfree⟩` from `AlgebraTools.AnnihilatorQuotientFinite.locFree A M J Y op a hC`. Establish `hLY : locPart Y op a ≤ Y` using `inf_le_left`. Establish `hZY : Z ≤ Y` using `hsup ▸ le_sup_right`. Use `haveI : Module.Free A (locPart Y op a) := hLfree inferInstance`. Set `f : (locPart Y op a × Z) →ₗ[A] Y` to `(Submodule.inclusion hLY).coprod (Submodule.inclusion hZY)`.
+
+Establish `hfb : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨u, v⟩ h`. Establish `h1 : (u : M) + v = 0` using `congrArg Subtype.val h`.
+
+Establish `h2 : (u : M) ∈ Z`. Rewrite using `[eq_neg_of_add_eq_zero_left h1]`. Conclude with `neg_mem v.2`. Establish `h3 : (u : M) = 0` using `Submodule.disjoint_def.1 hdis _ u.2 h2`. Establish `h4 : (v : M) = 0` using `by simpa [h3] using h1`.
+
+Conclude with `Prod.ext (Subtype.ext h3) (Subtype.ext h4)`. Introduce and unpack `⟨y, hy⟩`. Rewrite `hy` using `[← hsup]`. Take `⟨u, hu, v, hv, rfl⟩` from `Submodule.mem_sup.1 hy`. Conclude with `⟨(⟨u, hu⟩, ⟨v, hv⟩), Subtype.ext rfl⟩`.
+
+Set `g : (locPart Y op a × Z) ≃ₗ[A] Y` to `LinearEquiv.ofBijective f hfb`. Establish `hgl : ∀ u, ((g (u, 0) : Y) : M) = u` using `fun u => by`. Express the relevant statement in the definitionally equal form `((f (u, 0) : Y) : M) = u`. Simplify using `[f]`. Establish `hgr : ∀ v, ((g (0, v) : Y) : M) = v` using `fun v => by`.
+
+Express the relevant statement in the definitionally equal form `((f (0, v) : Y) : M) = v`. Simplify using `[f]`. Set `pr : Y →ₗ[A] Z` to `LinearMap.snd A _ _ ∘ₗ g.symm.toLinearMap`. Establish `hpr : pr ∘ₗ Submodule.inclusion hZY = LinearMap.id`. Use extensionality with `v`.
+
+Establish `h1 : Submodule.inclusion hZY v = g (0, v)` using `Subtype.ext (hgr v).symm`. Simplify using `[pr, h1]`. Use `haveI hZfin : Module.Finite A Z := Module.Finite.of_surjective pr fun v => ⟨_, LinearMap.congr_fun hpr v⟩`. Use `haveI : Module.Projective A Z := Module.Projective.of_split _ _ hpr`. Use `haveI hZfree : Module.Free A Z := Module.free_of_flat_of_isLocalRing`.
+
+Establish `hboth : ∀ (κ κ' : Type) (bL : Module.Basis κ A (locPart Y op a)) (bZ : Module.Basis κ' A Z), LinearIndependent ℂ (Sum.elim (fun i => sp (bL i)) (fun j => sp (bZ j)))`. Introduce `κ κ' bL bZ`. Use `hind _ ((bL.prod bZ).map g)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`.
+
+Break down `s with i | j` into its components or cases. Simplify using `[Module.Basis.prod_apply, hgl]`. Simplify using `[Module.Basis.prod_apply, hgr]`. Set `bL0` to `Module.Free.chooseBasis A (locPart Y op a)`. Set `bZ0` to `Module.Free.chooseBasis A Z`.
+
+Establish `hindL : ∀ (κ : Type) (b : Module.Basis κ A (locPart Y op a)), LinearIndependent ℂ fun i => sp (b i)` using `fun κ b => (hboth _ _ b bZ0).comp Sum.inl Sum.inl_injective`. Establish `hindZ : ∀ (κ : Type) (b : Module.Basis κ A Z), LinearIndependent ℂ fun i => sp (b i)` using `fun κ b => (hboth _ _ bL0 b).comp Sum.inr Sum.inr_injective`. Use `⟨hindL, le_antisymm ?_ (inf_le_inf_right _ (Submodule.span_mono (Set.image_mono hLY)))⟩` and prove the remaining obligations. Establish `haddL` using `fun f (hf : f ∈ locPart Y op a) f' (hf' : f' ∈ locPart Y op a) => hadd f (hLY hf) f' (hLY hf')`. Establish `haddZ` using `fun f (hf : f ∈ Z) f' (hf' : f' ∈ Z) => hadd f (hZY hf) f' (hZY hf')`.
+
+Establish `hsmL` using `fun f (hf : f ∈ locPart Y op a) => hsmul f (hLY hf)`. Establish `hsmZ` using `fun f (hf : f ∈ Z) => hsmul f (hZY hf)`. Use `set E1 := Submodule.span ℂ (sp '' locPart Y op a) with hE1`. Use `set E2 := Submodule.span ℂ (sp '' Z) with hE2`. Establish `hspanL : E1 = Submodule.span ℂ (Set.range fun i => sp (bL0 i))` using `sp_span _ (e.toRingHom.comp x) sp haddL hsmL bL0`.
+
+Establish `hspanZ : E2 = Submodule.span ℂ (Set.range fun i => sp (bZ0 i))` using `sp_span _ (e.toRingHom.comp x) sp haddZ hsmZ bZ0`. Establish `hdisE : Disjoint E1 E2`. Use `(linearIndependent_sum.1 (hboth _ _ bL0 bZ0)).2.2` as an intermediate fact. Rewrite using `[hspanL, hspanZ]`. Simplify `this` using `[Function.comp_def]`.
+
+Use `haveI : FiniteDimensional ℂ E2 := by`. Rewrite using `[hspanZ]`. Conclude with `FiniteDimensional.span_of_finite ℂ (Set.finite_range _)`. Establish `hst : ∀ (P : Submodule A M), P ≤ Y → (∀ i, ∀ y ∈ P, op i y ∈ P) → ∀ i, ∀ w ∈ Submodule.span ℂ (sp '' P), opC i w ∈ Submodule.span ℂ (sp '' P)`. Introduce `P hP hPs i w hw`.
+
+Establish `: Submodule.span ℂ (sp '' P) ≤ (Submodule.span ℂ (sp '' P)).comap (opC i)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `Submodule.mem_comap.2 ?_` and prove the remaining obligations. Rewrite using `[← hop i y (hP hy)]`.
+
+Conclude with `Submodule.subset_span ⟨_, hPs i y hy, rfl⟩`. Conclude with `this hw`. Establish `hst1 : ∀ i, ∀ w ∈ E1, opC i w ∈ E1` using `hst _ hLY hLC.1`. Establish `hst2 : ∀ i, ∀ w ∈ E2, opC i w ∈ E2` using `hst _ hZY hZst`. Establish `hcm : ∀ i j, ∀ w ∈ E2, opC i (opC j w) = opC j (opC i w)`.
+
+Introduce `i j w hw`. Establish `: E2 ≤ LinearMap.eqLocus (opC i * opC j) (opC j * opC i)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Express the relevant statement in the definitionally equal form `opC i (opC j (sp y)) = opC j (opC i (sp y))`.
+
+Rewrite using `[← hop j y (hZY hy), ← hop i y (hZY hy), ← hop i _ (hC.1 j y (hZY hy)), ← hop j _ (hC.1 i y (hZY hy)), hC.2 i j y (hZY hy)]`. Conclude with `this hw`. Introduce and unpack `F ⟨hF1, hF2⟩`. Establish `hle : Submodule.span ℂ (sp '' Y) ≤ E1 ⊔ E2`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `hy' : y ∈ locPart Y op a ⊔ Z` using `by rw [hsup]; exact hy`. Take `⟨u, hu, v, hv, rfl⟩` from `Submodule.mem_sup.1 hy'`. Rewrite using `[hadd u (hLY hu) v (hZY hv)]`. Conclude with `Submodule.add_mem_sup (Submodule.subset_span ⟨u, hu, rfl⟩) (Submodule.subset_span ⟨v, hv, rfl⟩)`.
+
+Take `⟨F1, h1, F2, h2, rfl⟩` from `Submodule.mem_sup.1 (hle hF1)`. Establish `hg2 : ∀ i, F2 ∈ (opC i).maxGenEigenspace (μ i)`. Introduce `i`. Take `⟨k, hk⟩` from `(Module.End.mem_maxGenEigenspace _ _ _).1 ((Submodule.mem_iInf _).1 hF2 i)`. Use `(Module.End.mem_maxGenEigenspace _ _ _).2 ⟨k, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hk` using `[map_add]`. Establish `h3` using `pow_mem_of E1 (opC i) (μ i) (hst1 i) k F1 h1`. Establish `h4` using `pow_mem_of E2 (opC i) (μ i) (hst2 i) k F2 h2`. Use `Submodule.disjoint_def.1 hdisE _ ?_ h4` and prove the remaining obligations. Rewrite using `[eq_neg_of_add_eq_zero_right hk]`.
+
+Conclude with `neg_mem h3`. Establish `hF20 : F2 = 0`. Assume the negation of the conclusion as `hne`. Take `⟨G, hG, hG0, hGe⟩` from `joint_vec E2 opC hst2 hcm μ F2 h2 hne hg2`. Establish `hCZ : CommOn Z op` using `⟨hZst, fun i j y hy => hC.2 i j y (hZY hy)⟩`.
+
+Use `haveI : Fact (CommOn (locPart Z op a) op) := ⟨(AlgebraTools.AnnihilatorQuotientFinite.locFree A M J Z op a hCZ).1⟩`. Establish `h5` using `(Up.eigPt Z op hCZ e x hx1 hx2 sp haddZ hsmZ hindZ opC (fun i f hf => hop i f (hZY hf)) G hG hG0 μ hGe a hμ).1`. Use `h5 ((Submodule.eq_bot_iff _).2 fun y hy => ?_)` and prove the remaining obligations. Conclude with `Submodule.disjoint_def.1 hdis _ (locPart_sub Z Y hZY op a hy) hy.1`. Substitute `hF20` using the available equality.
+
+Rewrite `hF2`, the goal using `[add_zero]`. Conclude with `⟨h1, hF2⟩`.
+-/
 private theorem abs_main {l : ℕ} [Fact l.Prime] {A M J E : Type} [CommRing A] [IsCNL A] [AddCommGroup M] [Module A M]
     [AddCommGroup E] [Module ℂ E] (Y : Submodule A M) [Module.Finite A Y] [Module.Free A Y] (op : J → Module.End A M)
     (hC : CommOn Y op) (e : PadicAlgCl l ≃+* ℂ) (x : A →+* PadicAlgCl l) (hx1 : ∀ b, ‖x b‖ ≤ 1)
@@ -267,6 +367,11 @@ private theorem abs_main {l : ℕ} [Fact l.Prime] {A M J E : Type} [CommRing A] 
   rw [add_zero] at hF2 ⊢
   exact ⟨h1, hF2⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hr`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi]`. Use `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt (h i (Finset.mem_insert_self _ _)) ?_)` and prove the remaining obligations.
+
+Conclude with `ih fun j hj => h j (Finset.mem_insert_of_mem hj)`.
+-/
 private theorem sum_lt {l : ℕ} [Fact l.Prime] {ι : Type} (s : Finset ι) (f : ι → PadicAlgCl l) (r : ℝ) (hr : 0 < r)
     (h : ∀ i ∈ s, ‖f i‖ < r) : ‖∑ i ∈ s, f i‖ < r := by
   classical
@@ -277,6 +382,13 @@ private theorem sum_lt {l : ℕ} [Fact l.Prime] {ι : Type} (s : Finset ι) (f :
     refine lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt (h i (Finset.mem_insert_self _ _)) ?_)
     exact ih fun j hj => h j (Finset.mem_insert_of_mem hj)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hge`. Establish `h1 : 1 ≤ ‖u‖` using `not_lt.1 hge`. Establish `hpos : 0 < ‖u‖ ^ p.natDegree` using `pow_pos (lt_of_lt_of_le one_pos h1) _`. Rewrite `hu` using `[Polynomial.eval₂_eq_sum_range, Finset.sum_range_succ, hp.coeff_natDegree, map_one, one_mul]`. Establish `h2 : ‖∑ i ∈ Finset.range p.natDegree, x (p.coeff i) * u ^ i‖ < ‖u‖ ^ p.natDegree`.
+
+Use `sum_lt _ _ _ hpos fun i hi => ?_` and prove the remaining obligations. Establish `hi'` using `Finset.mem_range.1 hi`. Establish `h3 : p.coeff i ∈ I` using `Ideal.pow_le_self (by omega) (hc i)`. Rewrite using `[norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite `h2` using `[eq_neg_of_add_eq_zero_left hu, norm_neg, norm_pow]`. Conclude with `lt_irrefl _ h2`.
+-/
 private theorem root_lt {l : ℕ} [Fact l.Prime] {A : Type} [CommRing A] (I : Ideal A) (x : A →+* PadicAlgCl l)
     (hx2 : ∀ b ∈ I, ‖x b‖ < 1) (p : Polynomial A) (hp : p.Monic) (hc : ∀ k, p.coeff k ∈ I ^ (p.natDegree - k))
     (u : PadicAlgCl l) (hu : p.eval₂ x u = 0) : ‖u‖ < 1 := by
@@ -296,6 +408,19 @@ private theorem root_lt {l : ℕ} [Fact l.Prime] {A : Type} [CommRing A] (I : Id
   rw [eq_neg_of_add_eq_zero_left hu, norm_neg, norm_pow] at h2
   exact lt_irrefl _ h2
 
+/- English proof (translation)
+Establish `hD : ∀ y ∈ I • (⊤ : Submodule A P), D y ∈ I • (⊤ : Submodule A P)`. Introduce `y hy`. Use `Submodule.smul_induction_on hy (fun r hr n _ => ?_) (fun y y' h h' => ?_)` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem_smul hr trivial`.
+
+Rewrite using `[map_add]`. Conclude with `add_mem h h'`. Establish `hmono : ∀ (n k : ℕ) (y : P), (D ^ n) y ∈ I • (⊤ : Submodule A P) → (D ^ (n + k)) y ∈ I • (⊤ : Submodule A P)`. Introduce `n k y hy`. Proceed by induction on `k with`.
+
+Consider the case `zero => simpa using hy`. Consider the case `succ k ih`. Rewrite using `[← add_assoc, pow_succ', Module.End.mul_apply]`. Conclude with `hD _ ih`. Use `choose f hf using h`.
+
+Take `⟨S, hS⟩` from `(Module.Finite.fg_top : (⊤ : Submodule A P).FG)`. Set `N` to `S.sup f`. Use `⟨N, ?_⟩` and prove the remaining obligations. Establish `hall : Submodule.span A (S : Set P) ≤ (I • (⊤ : Submodule A P)).comap (D ^ N)`. Use `Submodule.span_le.2 fun s hs => ?_` and prove the remaining obligations.
+
+Establish `hle : f s ≤ N` using `Finset.le_sup hs`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le hle`. Use `Submodule.mem_comap.2 ?_` and prove the remaining obligations. Rewrite using `[hk]`. Conclude with `hmono _ _ _ (hf s)`.
+
+Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `hall (by rw [hS]; trivial)`.
+-/
 private theorem abs_nil {A P : Type} [CommRing A] [AddCommGroup P] [Module A P] [Module.Finite A P] (I : Ideal A)
     (D : Module.End A P) (h : ∀ y : P, ∃ n : ℕ, (D ^ n) y ∈ I • (⊤ : Submodule A P)) :
     ∃ N : ℕ, LinearMap.range (D ^ N) ≤ I • (⊤ : Submodule A P) := by
@@ -328,6 +453,29 @@ private theorem abs_nil {A P : Type} [CommRing A] [AddCommGroup P] [Module A P] 
   rintro _ ⟨y, rfl⟩
   exact hall (by rw [hS]; trivial)
 
+/- English proof (translation)
+Take `⟨-, hLL, hLfin, -, -⟩` from `AlgebraTools.AnnihilatorQuotientFinite.locFree A M J Y op a hC`. Set `t : heckeAlg (locPart Y op a) op` to `heckeGen (locPart Y op a) op i - algebraMap A _ (a i)`. Set `D : Module.End A (locPart Y op a)` to `t`. Establish `hD : ∀ w : (locPart Y op a), ((D w : (locPart Y op a)) : M) = (op i - algebraMap A (Module.End A M) (a i)) w`. Introduce `w`.
+
+Simplify using `[D, t, heckeGen]`. Establish `hDn : ∀ (n : ℕ) (w : (locPart Y op a)), (((D ^ n) w : (locPart Y op a)) : M) = ((op i - algebraMap A (Module.End A M) (a i)) ^ n) w`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro w`.
+
+Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `w`. Rewrite using `[pow_succ', Module.End.mul_apply, pow_succ', Module.End.mul_apply, hD, ih]`. Establish `hnil : ∀ w : (locPart Y op a), ∃ n : ℕ, (D ^ n) w ∈ maximalIdeal A • (⊤ : Submodule A (locPart Y op a))`.
+
+Introduce `w`. Establish `hw : (w : M) ∈ locPart (locPart Y op a) op a` using `by rw [hLL]; exact w.2`. Establish `h1` using `(Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 hw.2 i) 1`. Establish `hmono : Monotone fun n : ℕ => (maximalIdeal A ^ 1 • (locPart Y op a)).comap ((op i - algebraMap A (Module.End A M) (a i)) ^ n)`. Use `monotone_nat_of_le_succ fun n v hv => ?_` and prove the remaining obligations.
+
+Rewrite `hv`, the goal using `[Submodule.mem_comap]`. Rewrite using `[pow_succ' (op i - algebraMap A (Module.End A M) (a i)), Module.End.mul_apply]`. Use `Submodule.smul_induction_on hv (fun r hr m hm => ?_) (fun u u' h h' => ?_)` and prove the remaining obligations. Rewrite using `[map_smul]`. Use `Submodule.smul_mem_smul hr ?_` and prove the remaining obligations.
+
+Use `hD ⟨m, hm⟩` as an intermediate fact. Rewrite using `[← this]`. Conclude with `(D ⟨m, hm⟩).2`. Rewrite using `[map_add]`. Conclude with `add_mem h h'`.
+
+Take `⟨n, hn⟩` from `(Submodule.mem_iSup_of_directed _ hmono.directed_le).1 h1`. Use `⟨n, (Submodule.mem_smul_top_iff _ _ _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[hDn]`. Simplify using `using hn`. Take `⟨N, hN⟩` from `abs_nil (maximalIdeal A) D hnil`.
+
+Take `⟨p, hp, -, hc, hz⟩` from `LinearMap.exists_monic_and_coeff_mem_pow_and_aeval_eq_zero_of_range_le_smul A (D ^ N) _ hN`. Establish `hz' : Polynomial.aeval (t ^ N) p = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Polynomial.aeval_subalgebra_coe]`. Simplify `hz` using `[D]`.
+
+Establish `hu : p.eval₂ x (y (t ^ N)) = 0`. Establish `h1` using `congrArg y hz'`. Rewrite `h1` using `[map_zero, Polynomial.aeval_def, Polynomial.hom_eval₂]`. Rewrite using `[← h1]`. Use `congr 1`.
+
+Conclude with `RingHom.ext fun b => (hy b).symm`. Establish `h2` using `root_lt _ x hx2 p hp hc _ hu`. Rewrite `h2` using `[map_pow, norm_pow]`. Establish `h3 : ‖y t‖ < 1`. Assume the negation of the conclusion as `hge`.
+
+Conclude with `absurd h2 (not_lt.2 (one_le_pow₀ (not_lt.1 hge)))`. Establish `h4 : y t = y (heckeGen (locPart Y op a) op i) - x (a i)`. Simplify using `only [t, map_sub, hy]`. Rewrite `h3` using `[h4]`. Then use the resulting hypothesis.
+-/
 private theorem abs_cong {l : ℕ} [Fact l.Prime] {A M J : Type} [CommRing A] [IsCNL A] [AddCommGroup M] [Module A M]
     (Y : Submodule A M) [Module.Finite A Y] (op : J → Module.End A M) (hC : CommOn Y op) (a : J → A)
     [hF : Fact (CommOn (locPart Y op a) op)] (x : A →+* PadicAlgCl l) (hx2 : ∀ b ∈ maximalIdeal A, ‖x b‖ < 1)
@@ -389,6 +537,17 @@ private theorem abs_cong {l : ℕ} [Fact l.Prime] {A M J : Type} [CommRing A] [I
     simp only [t, map_sub, hy]
   rwa [h4] at h3
 
+/- English proof (translation)
+Introduce `L Ω _ _ _ _ _ l _ n c H hA A _ _ _ θ hθ ι x lam d ξ c0 sp hsp K a hF hfree hfin z hz`. Use `haveI : Finite (ResidueField c.O) := (UpperTheory.V.abelian₂.dvr_finite l c.O).2.1`. Use `haveI : IsCNL A := IsCNL.ofCO c.O A`. Take `⟨hC, hfi, hfr, -⟩` from `hiComm L Ω l n c H hA A θ hθ K`. Establish `hx2 : ∀ b ∈ maximalIdeal A, ‖x.toRingHom b‖ < 1` using `Up.normLt x`.
+
+Establish `hx1 : ∀ b, ‖x.toRingHom b‖ ≤ 1`. Introduce `b`. Take `⟨o, ho⟩` from `Alg.IsCO.res_surj (O := c.O) b`. Establish `h1 : ‖x (algebraMap c.O A o)‖ ≤ 1`. Rewrite using `[x.commutes]`.
+
+Conclude with `(Up.intIff _).1 ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) o).map c.O.val)`. Establish `h2 : x.toRingHom b = x.toRingHom (b - algebraMap c.O A o) + x (algebraMap c.O A o)` using `by simp`. Rewrite using `[h2]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hx2 _ ho).le h1)`. Use `haveI hF' : Fact (CommOn (locPart (H.X.Ord (H.τA A) θ (H.lev K)) (H.op A) fun i => algebraMap c.O A (a i)) (H.op A)) := hF`.
+
+Establish `hcong : ∀ i, ‖ι.symm (ι (z (H.gen θ a K i))) - x.toRingHom (algebraMap c.O A (a i))‖ < 1`. Introduce `i`. Rewrite using `[RingEquiv.symm_apply_apply]`. Conclude with `abs_cong (H.X.Ord (H.τA A) θ (H.lev K)) (H.op A) hC (fun i => algebraMap c.O A (a i)) x.toRingHom hx2 z.toRingHom (fun b => RingHom.congr_fun hz b) i`. Take `⟨h1, h2⟩` from `abs_main (H.X.Ord (H.τA A) θ (H.lev K)) (H.op A) hC ι x.toRingHom hx1 hx2 sp (hsp.add K) (hsp.smul K) (hsp.indep K) (H.opC ι lam d) (hsp.op K) (fun i => algebraMap c.O A (a i)) _ hcong`.
+
+Use `⟨h1, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `H.OrdAt θ ι x.toRingHom lam ξ K c0 ⊓ _ = _`. Rewrite using `[← hsp.span K c0 le_rfl]`. Conclude with `h2`.
+-/
 theorem UpperTheory.V.Z.J.D.locSp :
     LocSp := by
   intro L Ω _ _ _ _ _ l _ n c H hA A _ _ _ θ hθ ι x lam d ξ c0 sp hsp K a hF hfree hfin z hz

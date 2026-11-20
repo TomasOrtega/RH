@@ -16,6 +16,9 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 
 namespace GlobalTheory.ShFam.Pad.RelDim
 
+/- English proof (translation)
+Take `⟨g, hg, hs⟩` from `GlobalTheory.T.exists_chart_map_local_system hp hW Z a`. Use `haveI := GlobalTheory.T.chart_smooth_relative_dimension Z hfull a g hg`. Use `haveI := smooth_XF (Xo Z.i.l) Z.i.c`. Rewrite using `[← hs, add_comm]`. Use `infer_instance`.
+-/
 theorem smooth_chart {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p} (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i₀)
     (hfull : ∀ τ k, k ≤ Dw.mult τ → k ∈ Z.ty τ) (a : Fin Z.m) :
     SmoothOfRelativeDimension (Dw.dim + ∑ τ : E →+* ℂ, (Dw.mult τ).choose 2) (spMap (Z.alg a)) := by
@@ -27,6 +30,9 @@ theorem smooth_chart {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Rec
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+The claim follows from `isDiscreteValuationRing_V z.Z.i.c hp hW ((nmodel z.Z).comp C).relDim = Formalism.DegreeFormula.dimFl D.what₂.Tau N := by haveI := isDiscreteValuationRing_V z.Z.i.c hp hW haveI : IsNormalScheme z.Z.X := z.Z.normal haveI : AlgebraicGeometry.IsNoetherian z.Z.X := (nmodel z.Z).isNoet …`.
+-/
 theorem relDim_comp (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (p : ℕ) (hp : p.Prime)
     (W : ValuationSubring ℂ) (hW : (p : ℂ) ∈ W.nonunits) (z : AdmAt S κ hp hW) (C : (nmodel z.Z).Comp) :
     haveI := isDiscreteValuationRing_V z.Z.i.c hp hW

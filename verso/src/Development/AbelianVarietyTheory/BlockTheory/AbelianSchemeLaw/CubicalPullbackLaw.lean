@@ -53,6 +53,9 @@ def GtPresentationBaseChangeLaw : Prop :=
         charUnit S' E'.X χ) ∧
       D'.i.left ≫ pullback.fst G.hom p = τ ≫ D.i.left
 
+/- English proof (translation)
+Introduce `S G' G _ _ _ _ f _ L c`. Take `⟨hL, hr, c', hc, _⟩` from `h (CubeMap.ofHom f) L c`. Conclude with `⟨hL, hr, c', hc⟩`.
+-/
 theorem CubicalPullLaw.ofHom (h : CubicalPullLaw) : CubicalPullOfHomSt.{0} := by
   intro S G' G _ _ _ _ f _ L c
   obtain ⟨hL, hr, c', hc, _⟩ := h (CubeMap.ofHom f) L c

@@ -11,6 +11,21 @@ noncomputable section
 
 namespace GlobalTheory.KeyOriginCut
 
+/- English proof (translation)
+Introduce `A A₁ R R₁ _ _ _ _ _ _ _ j γ ρ ρ₁ β hβ hret hργ q hq DA _ _ actA hT`. Use `letI : Algebra (GlobalTheory.LocAcyc.GenFib A R) (GlobalTheory.LocAcyc.GenFib A₁ R₁) := β.toAlgebra`. Take `⟨act', -, hT'⟩` from `GlobalTheory.LocAcyc.isZModTorsor_baseChange (GlobalTheory.LocAcyc.GenFib A R) (GlobalTheory.LocAcyc.GenFib A₁ R₁) DA q hq actA hT`. Set `M₁` to `Algebra.algebraMapSubmonoid R₁ (nonZeroDivisors A₁)`. Set `f : R₁ →+* FractionRing A₁` to `(algebraMap A₁ (FractionRing A₁)).comp ρ₁`.
+
+Establish `hf : ∀ m : M₁, IsUnit (f m)`. Introduce and unpack `⟨m, hm⟩`. Take `⟨a, ha, rfl⟩` from `hm`. Establish `: ρ₁ (algebraMap A₁ R₁ a) = a`. Simplify using `using congrArg (fun φ : A₁ →+* A₁ => φ a) hret`.
+
+Simplify using `only [f, RingHom.comp_apply, this]`. Conclude with `IsLocalization.map_units (FractionRing A₁) (⟨a, ha⟩ : nonZeroDivisors A₁)`. Set `ρK : GlobalTheory.LocAcyc.GenFib A₁ R₁ →+* FractionRing A₁` to `IsLocalization.lift (M := M₁) (S := GlobalTheory.LocAcyc.GenFib A₁ R₁) hf`. Establish `hρK : ρK.comp (algebraMap R₁ (GlobalTheory.LocAcyc.GenFib A₁ R₁)) = f` using `IsLocalization.lift_comp hf`. Use `⟨TensorProduct (GlobalTheory.LocAcyc.GenFib A R) (GlobalTheory.LocAcyc.GenFib A₁ R₁) DA, inferInstance, inferInstance, act', Algebra.TensorProduct.includeRight.toRingHom, hT', ?_, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `b`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.algebraMap_apply]`. Rewrite using `[← Algebra.TensorProduct.tmul_one_eq_one_tmul]`. Both sides reduce to the same expression. Introduce `σ hσ`.
+
+Establish `hagree : ρK.comp β = σ.comp (algebraMap (GlobalTheory.LocAcyc.GenFib A R) DA)`. Apply `IsLocalization.ringHom_ext (Algebra.algebraMapSubmonoid R (nonZeroDivisors A))` to reduce the goal to its premises. Rewrite using `[hσ, RingHom.comp_assoc, hβ, ← RingHom.comp_assoc, hρK, ← hργ]`. Both sides reduce to the same expression. Use `letI : Algebra (GlobalTheory.LocAcyc.GenFib A R) (FractionRing A₁) := (ρK.comp β).toAlgebra`.
+
+Set `fA : GlobalTheory.LocAcyc.GenFib A₁ R₁ →ₐ[GlobalTheory.LocAcyc.GenFib A R] FractionRing A₁` to `{ ρK with commutes' := fun _ => rfl }`. Set `gA : DA →ₐ[GlobalTheory.LocAcyc.GenFib A R] FractionRing A₁` to `{ σ with commutes' := fun b => (congrArg (fun φ => φ b) hagree).symm }`. Use `⟨(Algebra.TensorProduct.productMap fA gA).toRingHom, ?_⟩` and prove the remaining obligations. Use extensionality with `r`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.productMap_apply_tmul, map_one, mul_one]`.
+
+Use `show ρK (algebraMap R₁ _ r) = _`. Rewrite using `[← RingHom.comp_apply ρK, hρK]`. Both sides reduce to the same expression.
+-/
 theorem torsor_baseChange_point :
     ∀ (A A₁ R R₁ : Type) [CommRing A] [CommRing A₁] [IsDomain A₁] [CommRing R] [Algebra A R]
     [CommRing R₁] [Algebra A₁ R₁] (j : A →+* A₁) (γ : R →+* R₁) (ρ : R →+* A) (ρ₁ : R₁ →+* A₁)

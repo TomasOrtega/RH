@@ -18,15 +18,32 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Ker.GaussKer
 
+/- English proof (translation)
+Simplify using `only [EFR, hermC, Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib, Complex.sub_re]`.
+-/
 theorem EFR_sub_right {E : Type} [Field E] [NumberField E] [IsCMField E] {r n : ℕ} (X : Data E r)
     (v a b : WR X n) : EFR X v (a - b) = EFR X v a - EFR X v b := by
   simp only [EFR, hermC, Pi.sub_apply, map_sub, mul_sub, Finset.sum_sub_distrib, Complex.sub_re]
 
+/- English proof (translation)
+Unfold `IsRealPt at h h' ⊢`. Rewrite using `[Matrix.map_add (finPart D) (map_add _), h, h', add_zero]`.
+-/
 theorem isRealPt_add {D : D7} {S T : HSp D} {w w' : WO S T} (h : IsRealPt w) (h' : IsRealPt w') :
     IsRealPt (w + w') := by
   unfold IsRealPt at h h' ⊢
   rw [Matrix.map_add (finPart D) (map_add _), h, h', add_zero]
 
+/- English proof (translation)
+Introduce `D S T C μ 𝓕 hF x₁ hx₁ x₂ hx₂ φ₁ φ₂ hφ₁ hφ₂ w₁ w₂ hw₁ hw₂`. Take `⟨R, -, -, hadd, -⟩` from `GlobalTheory.T.realPoints_classicalModel_realVectorSpace D S T C`. Establish `hψ` using `(GlobalTheory.T.symplecticCharacter_real_finite_points_match D S T C).2.1`. Establish `hZ₁` using `(GlobalTheory.T.adelicZakTheta_exists_unique D S T C x₁ hx₁ φ₁ hφ₁).1`. Establish `hZ₂` using `(GlobalTheory.T.adelicZakTheta_exists_unique D S T C x₂ hx₂ φ₂ hφ₂).1`.
+
+Establish `hth` using `GlobalTheory.T.thetaFunction_space_heisenberg_laws D S T C`. Establish `hT₁ : C.IsTh (C.rho w₁ (C.Th x₁ φ₁))` using `(hth.2.2 _ hZ₁.1).2.1 w₁`. Establish `hT₂ : C.IsTh (C.rho w₂ (C.Th x₂ φ₂))` using `(hth.2.2 _ hZ₂.1).2.1 w₂`. Establish `hval : ∀ (w w₀ : WO S T) (x : Frame C.X.Ψ T.rank) (φ : TF S.rank C.g), C.IsZak x φ (C.Th x φ) → IsRealPt w → IsRealPt w₀ → C.rho w₀ (C.Th x φ) w = cexp (π * I * (EFR C.X (C.realPt w) (C.realPt w₀) : ℝ)) * thR C.X C.bas C.idx φ x (C.realPt w + C.realPt w₀)`. Introduce `w w₀ x φ hZ hw hw₀`.
+
+Simplify using `only [Ctx.rho]`. Unfold `heisO`. Rewrite using `[hψ w w₀ hw hw₀, hZ.2 _ (isRealPt_add hw hw₀), hadd]`. Take `⟨N₀, hN₀, hip⟩` from `GlobalTheory.T.thetaInnerProduct_eq_realTorusMean D S T C μ 𝓕 hF _ _ hT₁ hT₂`. Take `⟨N₁, hN₁, hsw⟩` from `GlobalTheory.T.mean_realTorus_normalisedTheta_mul_conj D.host.E T.rank C.X C.g C.q0 C.hr C.bas C.idx S.rank C.sympl C.even x₁ hx₁ x₂ hx₂ φ₁ φ₂ hφ₁ hφ₂`.
+
+Take `⟨⟨Fd, hFd⟩, hint⟩` from `hip (N₀ * N₁) (Nat.mul_pos hN₀ hN₁) (dvd_mul_right _ _)`. Rewrite using `[hint Fd hFd (fun v => cexp (π * I * (EFR C.X v (C.realPt w₁ - C.realPt w₂) : ℝ)) * (thR C.X C.bas C.idx φ₁ x₁ (v + C.realPt w₁) * conj (thR C.X C.bas C.idx φ₂ x₂ (v + C.realPt w₂)))) ?_]`. Conclude with `hsw (N₀ * N₁) (Nat.mul_pos hN₀ hN₁) (dvd_mul_left _ _) Fd hFd (C.realPt w₁) (C.realPt w₂)`. Introduce `w hw`. Rewrite using `[hval w w₁ x₁ φ₁ hZ₁ hw hw₁, hval w w₂ x₂ φ₂ hZ₂ hw hw₂, EFR_sub_right, map_mul, ← Complex.exp_conj]`.
+
+Simplify using `only [map_mul, Complex.conj_ofReal, Complex.conj_I]`. Establish `e : (π : ℂ) * I * ((EFR C.X (C.realPt w) (C.realPt w₁) - EFR C.X (C.realPt w) (C.realPt w₂) : ℝ) : ℂ) = π * I * (EFR C.X (C.realPt w) (C.realPt w₁) : ℂ) + π * -I * (EFR C.X (C.realPt w) (C.realPt w₂) : ℂ)` using `by push_cast; ring`. Rewrite using `[e, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ipO_rho_Th : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ x₁ ∈ C.X.dom, ∀ x₂ ∈ C.X.dom, ∀ φ₁ φ₂ : TF S.rank C.g, SW.IsSB φ₁ → SW.IsSB φ₂ → ∀ w₁ w₂, IsRealPt w₁ → IsRealPt w₂ → ipO μ 𝓕 (C.rho w₁ (C.Th x₁ φ₁)) (C.rho w₂ (C.Th x₂ φ₂)) = dbl C.X C.bas C.idx φ₁ φ₂ 0 * (gaussR C.X C.bas C.idx x₁ (C.zOf x₁ w₁) * conj (gaussR C.X C.bas C.idx x₂ (C.zOf x₂ w₂)) * kZero C.X C.idx x₁ x₂ (C.zOf x₁ w₁) (fun k i => conj (C.zOf x₂ w₂ k i))) := by
   intro D S T C μ 𝓕 hF x₁ hx₁ x₂ hx₂ φ₁ φ₂ hφ₁ hφ₂ w₁ w₂ hw₁ hw₂
   obtain ⟨R, -, -, hadd, -⟩ := GlobalTheory.T.realPoints_classicalModel_realVectorSpace D S T C

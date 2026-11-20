@@ -18,6 +18,9 @@ variable {X : Scheme.{0}} [IsIntegral X] {L : Type} [Field L] (φ : X.presheaf.s
 
 abbrev fieldPt : Spec (.of L) ⟶ X := Spec.map φ ≫ X.fromSpecStalk (genericPoint X)
 
+/- English proof (translation)
+Use `letI : Field (X.presheaf.stalk (genericPoint X)) := inferInstanceAs (Field X.functionField)`. Establish `: Spec.map φ x = closedPoint (X.presheaf.stalk (genericPoint X))` using `Subsingleton.elim (α := PrimeSpectrum (X.presheaf.stalk (genericPoint X))) _ _`. Express the relevant statement in the definitionally equal form `X.fromSpecStalk _ (Spec.map φ x) = _`. Rewrite using `[this]`. Conclude with `Scheme.fromSpecStalk_closedPoint`.
+-/
 theorem fieldPt_apply (x : Spec (.of L)) : fieldPt φ x = genericPoint X := by
   letI : Field (X.presheaf.stalk (genericPoint X)) := inferInstanceAs (Field X.functionField)
   have : Spec.map φ x = closedPoint (X.presheaf.stalk (genericPoint X)) :=
@@ -26,10 +29,20 @@ theorem fieldPt_apply (x : Spec (.of L)) : fieldPt φ x = genericPoint X := by
   rw [this]
   exact Scheme.fromSpecStalk_closedPoint
 
+/- English proof (translation)
+Introduce `x _` and use `by change fieldPt φ x ∈ U rwa [fieldPt_apply]`.
+-/
 theorem top_le_fieldPt {U : X.Opens} (hU : genericPoint X ∈ U) : ⊤ ≤ fieldPt φ ⁻¹ᵁ U := fun x _ => by
   change fieldPt φ x ∈ U
   rwa [fieldPt_apply]
 
+/- English proof (translation)
+Establish `h1 : ⊤ ≤ X.fromSpecStalk (genericPoint X) ⁻¹ᵁ U` using `fun x _ => by`. Use `letI : Field (X.presheaf.stalk (genericPoint X)) := inferInstanceAs (Field X.functionField)`. Establish `: x = closedPoint (X.presheaf.stalk (genericPoint X))` using `Subsingleton.elim (α := PrimeSpectrum (X.presheaf.stalk (genericPoint X))) _ _`. Express the relevant statement in the definitionally equal form `X.fromSpecStalk _ x ∈ U`. Rewrite using `[this, Scheme.fromSpecStalk_closedPoint]`.
+
+Conclude with `hU`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE (Spec.map φ) (X.fromSpecStalk (genericPoint X)) U ⊤ ⊤ h1 le_rfl]`. Establish `h2 : (Spec.map φ).appLE ⊤ ⊤ le_rfl = (Spec.map φ).appTop` using `(Scheme.Hom.app_eq_appLE _).symm`. Rewrite using `[h2, Category.assoc, Scheme.ΓSpecIso_naturality, Scheme.Hom.appLE, Scheme.fromSpecStalk_app hU]`. Simplify using `only [Category.assoc, ← Functor.map_comp_assoc]`.
+
+Establish `h3 : ∀ i : (Opposite.op ⊤ : (Spec (X.presheaf.stalk (genericPoint X))).Opensᵒᵖ) ⟶ Opposite.op ⊤, (Spec (X.presheaf.stalk (genericPoint X))).presheaf.map i = 𝟙 _` using `fun i => by`. Rewrite using `[Subsingleton.elim i (𝟙 _)]`. Conclude with `CategoryTheory.Functor.map_id _ _`. Rewrite using `[h3]`. Simplify using the standard rewrite rules.
+-/
 theorem fieldPt_appLE {U : X.Opens} (hU : genericPoint X ∈ U) :
     (fieldPt φ).appLE U ⊤ (top_le_fieldPt φ hU) ≫ (Scheme.ΓSpecIso (.of L)).hom = X.presheaf.germ U _ hU ≫ φ := by
   have h1 : ⊤ ≤ X.fromSpecStalk (genericPoint X) ⁻¹ᵁ U := fun x _ => by
@@ -55,6 +68,11 @@ def normFun {U : X.Opens} (hU : genericPoint X ∈ U) :
     rw [← Scheme.Hom.comp_preimage, Scheme.Hom.toNormalization_fromNormalization]; exact top_le_fieldPt φ hU) ≫
     (Scheme.ΓSpecIso (.of L)).hom
 
+/- English proof (translation)
+Establish `key : ∀ (g : Spec (.of L) ⟶ X) (_ : g = fieldPt φ) (e : ⊤ ≤ g ⁻¹ᵁ U), g.appLE U ⊤ e = (fieldPt φ).appLE U ⊤ (top_le_fieldPt φ hU)`. Introduce and unpack `_ rfl _`. Both sides reduce to the same expression. Rewrite using `[normFun, ← fieldPt_appLE, ← Category.assoc]`. Use `congr 1`.
+
+Conclude with `(Scheme.Hom.comp_appLE _ _ _ _ _).symm.trans (key _ (fieldPt φ).toNormalization_fromNormalization (by`. Rewrite using `[Scheme.Hom.toNormalization_fromNormalization]`. Conclude with `top_le_fieldPt φ hU))`.
+-/
 theorem app_normFun {U : X.Opens} (hU : genericPoint X ∈ U) :
     (fieldPt φ).fromNormalization.app U ≫ normFun φ hU = X.presheaf.germ U _ hU ≫ φ := by
   have key : ∀ (g : Spec (.of L) ⟶ X) (_ : g = fieldPt φ) (e : ⊤ ≤ g ⁻¹ᵁ U),
@@ -66,11 +84,27 @@ theorem app_normFun {U : X.Opens} (hU : genericPoint X ∈ U) :
   exact (Scheme.Hom.comp_appLE _ _ _ _ _).symm.trans (key _ (fieldPt φ).toNormalization_fromNormalization (by
     rw [Scheme.Hom.toNormalization_fromNormalization]; exact top_le_fieldPt φ hU))
 
+/- English proof (translation)
+Rewrite using `[normFun, normFun, Scheme.Hom.map_appLE_assoc]`.
+-/
 theorem map_normFun {U U' : X.Opens} (hU : genericPoint X ∈ U) (hU' : genericPoint X ∈ U') (h : U' ≤ U) :
     (fieldPt φ).normalization.presheaf.map (homOfLE ((fieldPt φ).fromNormalization.preimage_mono h)).op ≫
       normFun φ hU' = normFun φ hU := by
   rw [normFun, normFun, Scheme.Hom.map_appLE_assoc]
 
+/- English proof (translation)
+Set `u` to `fieldPt φ`. Use `letI := (u.app U).hom.toAlgebra`. Set `ε : Γ(Spec (.of L), u ⁻¹ᵁ U) ⟶ .of L` to `(Spec (.of L)).presheaf.map (homOfLE (top_le_fieldPt φ hU)).op ≫ (Scheme.ΓSpecIso (.of L)).hom`. Establish `hε : Function.Bijective ε.hom`. Establish `: homOfLE (top_le_fieldPt φ hU) = eqToHom (top_le_iff.1 (top_le_fieldPt φ hU)).symm` using `Subsingleton.elim _ _`.
+
+Use `haveI : IsIso ε := by`. Simplify using `only [ε, this]`. Use `infer_instance`. Conclude with `ConcreteCategory.bijective_of_isIso ε`. Establish `h1 : normFun φ hU = (u.normalizationObjIso hA).hom ≫ CommRingCat.ofHom (integralClosure Γ(X, U) Γ(Spec (.of L), u ⁻¹ᵁ U)).val.toRingHom ≫ ε`.
+
+Rewrite using `[← Category.assoc, u.normalizationObjIso_hom_val hA, normFun]`. Simplify using `only [ε]`. Rewrite using `[Scheme.Hom.appLE_map_assoc]`. Establish `h2 : X.presheaf.germ U _ hU ≫ φ = u.app U ≫ ε`. Rewrite using `[← fieldPt_appLE, Scheme.Hom.appLE, Category.assoc]`.
+
+Establish `hb` using `ConcreteCategory.bijective_of_isIso (u.normalizationObjIso hA).hom`. Rewrite using `[h1, h2]`. Use `⟨hε.1.comp (Subtype.val_injective.comp hb.1), fun x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, rfl⟩`. Take `⟨p, hp, hp0⟩` from `((u.normalizationObjIso hA).hom y).2`.
+
+Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Use `congrArg ε.hom hp0` as an intermediate fact. Rewrite `this` using `[Polynomial.hom_eval₂, map_zero]`. Conclude with `this`. Introduce and unpack `⟨p, hp, hp0⟩`.
+
+Take `⟨y, rfl⟩` from `hε.2 x`. Establish `hy : IsIntegral Γ(X, U) y` using `⟨p, hp, hε.1 (by rw [Polynomial.hom_eval₂, map_zero]; exact hp0)⟩`. Take `⟨z, hz⟩` from `hb.2 ⟨y, hy⟩`. Conclude with `⟨z, congrArg (fun w : integralClosure Γ(X, U) Γ(Spec (.of L), u ⁻¹ᵁ U) => ε.hom w.1) hz⟩`.
+-/
 theorem normFun_spec {U : X.Opens} (hU : genericPoint X ∈ U) (hA : IsAffineOpen U) :
     Function.Injective (normFun φ hU).hom ∧
       ∀ x : L, x ∈ (normFun φ hU).hom.range ↔ (X.presheaf.germ U _ hU ≫ φ).hom.IsIntegralElem x := by
@@ -108,6 +142,35 @@ theorem normFun_spec {U : X.Opens} (hU : genericPoint X ∈ U) (hA : IsAffineOpe
 
 end Field
 
+/- English proof (translation)
+Use `set η := genericPoint B.X`. Set `ψ : B.X.presheaf.stalk (genericPoint B.X) ⟶ .of K'` to `CommRingCat.ofHom (algebraMap B.X.functionField K')`. Set `u : Spec (.of K') ⟶ B.X` to `fieldPt ψ`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (u ≫ B.str)`. Establish `hu : u (IsLocalRing.closedPoint K') = η` using `fieldPt_apply ψ _`.
+
+Establish `hφinj : Function.Injective φ.hom`. Establish `hη : (B.str η).asIdeal = ⊥` using `Model.mem_gen_iff_eq_bot.1 B.genericPoint_mem_gen`. Establish `e : Spec.map φ (IsLocalRing.closedPoint K') = B.str η`. Rewrite using `[hφ]`. Conclude with `congrArg B.str hu`.
+
+Rewrite using `[RingHom.injective_iff_ker_eq_bot]`. Establish `e'` using `congrArg PrimeSpectrum.asIdeal e`. Rewrite `e'` using `[hη]`. Rewrite using `[← e']`. Use extensionality with `a`.
+
+Express the relevant statement in the definitionally equal form `_ ↔ φ.hom a ∈ IsLocalRing.maximalIdeal K'`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_iff_ne_zero, not_not]`. Both sides reduce to the same expression. Use `haveI : CharZero K' := charZero_of_injective_ringHom hφinj`. Use `haveI : LocallyOfFiniteType B.str := inferInstance`.
+
+Establish `hfin : IsFinite u.fromNormalization` using `GlobalTheory.isFinite_fromNormalization_SpecMap_fromSpecStalk (o := .of O) B.str η ψ (RingHom.finite_algebraMap.2 hK).finiteType.essFiniteType`. Set `ν` to `u.fromNormalization`. Use `haveI : Flat (u.fromNormalization ≫ B.str) := by`. Establish `: Flat (u.toNormalization ≫ u.fromNormalization ≫ B.str)`. Rewrite using `[← Category.assoc, Scheme.Hom.toNormalization_fromNormalization, ← hφ]`.
+
+Conclude with `Flat.SpecMap_iff.mpr (flat_of_dedekind_of_injective φ.hom hφinj)`. Conclude with `flat_normalization u _`. Set `B' : Model O` to `{ X := u.normalization str := ν ≫ B.str isIntegral := inferInstance isProjOver := isProjOver_comp_of_isFinite ν B.isProjOver flat := ‹_› }`. Establish `hrange : Set.range ν = Set.univ`. Establish `hcl : IsClosed (Set.range ν)` using `ν.isClosedMap.isClosed_range`.
+
+Establish `hmem : η ∈ Set.range ν` using `⟨u.toNormalization (IsLocalRing.closedPoint K'), by`. Express the relevant statement in the definitionally equal form `(u.toNormalization ≫ u.fromNormalization) _ = η`. Rewrite using `[Scheme.Hom.toNormalization_fromNormalization]`. Conclude with `hu⟩`. Use `Set.eq_univ_of_univ_subset ?_` and prove the remaining obligations.
+
+Rewrite using `[← (genericPoint_spec B.X).def]`. Conclude with `hcl.closure_subset_iff.2 (Set.singleton_subset_iff.2 hmem)`. Use `haveI : Surjective ν := ⟨fun x => hrange.ge (Set.mem_univ x)⟩`. Set `n : Model.Hom B' B` to `⟨ν, rfl⟩`. Establish `hx : ∀ U : AffOp B.X, genericPoint B.X ∈ U.1` using `fun U => ((genericPoint_spec B.X).mem_open_set_iff U.1.isOpen).2 (by simpa using U.2.2)`.
+
+Establish `hint : ∀ (U : AffOp B.X) (x : K'), (B.X.presheaf.germ U.1 _ (hx U) ≫ ψ).hom.IsIntegralElem x ↔ IsIntegral Γ(B.X, U.1) (x : Kbar B.X)` using `fun U x => by`. Use `exists_congr fun p => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[← (map_eq_zero_iff K'.val.toRingHom Subtype.val_injective), Polynomial.hom_eval₂]`. Both sides reduce to the same expression. Set `γ : ∀ U : AffOp B.X, Γ(B'.X, n.f ⁻¹ᵁ U.1) →+* U.Bp` to `fun U => (K'.val.toRingHom.comp (normFun ψ (hx U)).hom).codRestrict (integralClosure Γ(B.X, U.1) (Kbar B.X)) fun a => (hint U _).1 (((normFun_spec ψ (hx U) U.2.1).2 _).1 ⟨a, rfl⟩)`.
+
+Use `⟨B', n, γ, GlobalTheory.IsNormalScheme.normalization_of_isIntegral u, ?_, hfin, fun U a b h => ?_, fun U a => ?_, fun U U' hle a => ?_, fun U => ?_⟩` and prove the remaining obligations. Establish `hdim` using `Model.topologicalKrullDim_genFibre O B B' n haveI : Subsingleton n.genFibre := by`. Prove the components needed by the constructor for the conclusion. Introduce `a b`. Establish `key : ∀ c : n.genFibre, (ν.fiberι η) c = genericPoint B'.X` using `fun c => by`.
+
+Establish `hc : (ν.fiberι η) c ∈ ν ⁻¹' {η}`. Rewrite using `[← Scheme.Hom.range_fiberι]`. Conclude with `⟨c, rfl⟩`. Conclude with `Model.eq_genericPoint_of_isFinite ν hc`. Conclude with `(ν.fiberι η).isEmbedding.injective ((key a).trans (key b).symm)`.
+
+Establish `h0` using `topologicalKrullDim_zero_of_discreteTopology n.genFibre`. Rewrite `h0` using `[hdim]`. Establish `h1 : n.relDim ≤ 0` using `by exact_mod_cast h0`. Use linear arithmetic over natural numbers and integers. Conclude with `(normFun_spec ψ (hx U) U.2.1).1 (Subtype.ext (congrArg (fun z : U.Bp => (z : Kbar B.X)) h))`.
+
+Conclude with `Subtype.ext (congrArg (fun g : Γ(B.X, U.1) ⟶ .of K' => (g.hom a : Kbar B.X)) (app_normFun ψ (hx U)))`. Conclude with `Subtype.ext (congrArg (fun g : Γ(B'.X, n.f ⁻¹ᵁ U.1) ⟶ .of K' => (g.hom a : Kbar B.X)) (map_normFun ψ (hx U) (hx U') hle))`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`.
+
+Conclude with `((normFun ψ (hx U)).hom a).2`. Introduce `h`. Take `⟨a, ha⟩` from `((normFun_spec ψ (hx U) U.2.1).2 ⟨x.1, h⟩).2 ((hint U _).2 x.2)`. Conclude with `⟨a, Subtype.ext (congrArg (fun z : K' => (z : Kbar B.X)) ha)⟩`.
+-/
 theorem exists_normalization_in (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O]
     (B : GlobalTheory.Vert.Model O) (_ : GlobalTheory.IsNormalScheme B.X) (K' : IntermediateField B.X.functionField (Kbar B.X))
     (hK : FiniteDimensional B.X.functionField K') :

@@ -33,6 +33,9 @@ section Quot
 
 variable {H : Type} [Group H] [MeasurableSpace H] {T : Subgroup H} {dt : Measure T} {dh : Measure H}
 
+/- English proof (translation)
+Use `⟨h.1.const_mul c, ?_⟩` and prove the remaining obligations. Establish `e` using `h.2`. Unfold `quotInt GlobalTheory.AutomorphicL2Unitary.descend at e ⊢`. Rewrite using `[integral_const_mul, e, mul_zero]`.
+-/
 theorem hasQuotInt_const_mul {g : H → ℂ} (h : HasQuotInt T dt dh g 0) (c : ℂ) :
     HasQuotInt T dt dh (fun x => c * g x) 0 := by
   refine ⟨h.1.const_mul c, ?_⟩
@@ -40,6 +43,13 @@ theorem hasQuotInt_const_mul {g : H → ℂ} (h : HasQuotInt T dt dh g 0) (c : �
   unfold quotInt GlobalTheory.AutomorphicL2Unitary.descend at e ⊢
   rw [integral_const_mul, e, mul_zero]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `integrable_zero _ _ _`. Simplify using `[quotInt, GlobalTheory.AutomorphicL2Unitary.descend]`.
+
+Consider the case `insert i s hi ih`. Establish `h1` using `h i (Finset.mem_insert_self i s)`. Establish `h2` using `ih fun j hj => h j (Finset.mem_insert_of_mem hj)`. Simplify using `only [Finset.sum_insert hi]`. Use `⟨h1.1.add h2.1, ?_⟩` and prove the remaining obligations.
+
+Establish `e : quotInt T dt dh (fun x => g i x + ∑ i ∈ s, g i x) = quotInt T dt dh (g i) + quotInt T dt dh (fun x => ∑ i ∈ s, g i x)` using `integral_add h1.1 h2.1`. Rewrite using `[e, h1.2, h2.2, add_zero]`.
+-/
 theorem hasQuotInt_sum {ι : Type} (s : Finset ι) {g : ι → H → ℂ} (h : ∀ i ∈ s, HasQuotInt T dt dh (g i) 0) :
     HasQuotInt T dt dh (fun x => ∑ i ∈ s, g i x) 0 := by
   classical
@@ -57,6 +67,9 @@ theorem hasQuotInt_sum {ι : Type} (s : Finset ι) {g : ι → H → ℂ} (h : �
         quotInt T dt dh (g i) + quotInt T dt dh (fun x => ∑ i ∈ s, g i x) := integral_add h1.1 h2.1
     rw [e, h1.2, h2.2, add_zero]
 
+/- English proof (translation)
+Establish `e : quotInt T dt dh (fun x => F x - G x) = quotInt T dt dh F - quotInt T dt dh G` using `integral_sub hF hG.1`. Rewrite `hS` using `[e, hG.2, sub_zero]`. Conclude with `hS`.
+-/
 theorem quotInt_eq_zero_of_sub {F G : H → ℂ} (hF : Integrable (GlobalTheory.AutomorphicL2Unitary.descend T F) (quotMeas T dt dh))
     (hG : HasQuotInt T dt dh G 0) (hS : quotInt T dt dh (fun x => F x - G x) = 0) : quotInt T dt dh F = 0 := by
   have e : quotInt T dt dh (fun x => F x - G x) = quotInt T dt dh F - quotInt T dt dh G :=
@@ -66,6 +79,9 @@ theorem quotInt_eq_zero_of_sub {F G : H → ℂ} (hF : Integrable (GlobalTheory.
 
 end Quot
 
+/- English proof (translation)
+Rewrite using `[mem_cent, mem_cent, mem_cent, ← map_mul, ← map_mul, e.injective.eq_iff, Prod.mk_mul_mk, Prod.mk_mul_mk, Prod.mk.injEq]`.
+-/
 theorem mk_mem_cent_iff {A B H : Type} [Group A] [Group B] [Group H] [TopologicalSpace A] [TopologicalSpace B]
     [TopologicalSpace H] (e : A × B ≃ₜ* H) (a a0 : A) (b b0 : B) :
     e (a, b) ∈ cent (e (a0, b0)) ↔ a ∈ cent a0 ∧ b ∈ cent b0 := by
@@ -75,6 +91,9 @@ theorem mk_mem_cent_iff {A B H : Type} [Group A] [Group B] [Group H] [Topologica
 section Tensor
 variable {D : D7} {V : HSp D}
 
+/- English proof (translation)
+Establish `hfin` using `hff.finite_mulSupport (projFin D.sp.cm.sig V.gram g)`. Simplify using `only [projFinLoc_projFin] at hfin`. Rewrite using `[tensor, ← finprod_mem_univ, ← Set.union_compl_self (S : Set (HeightOneSpectrum (𝓞 D.host.F))), finprod_mem_union' disjoint_compl_right (hfin.inter_of_right _) (hfin.inter_of_right _), finprod_mem_coe_finset, ← Finset.prod_coe_sort S]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tensor_split (fa : ∀ w, GArch D.sp.cm.sig V.gram w → ℂ) (ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ)
     (hff : IsFinFamily D.sp.cm.sig V.gram (frameLat V) ff) (S : Finset (HeightOneSpectrum (𝓞 D.host.F)))
     (g : GAd D.sp.cm.sig V.gram) :
@@ -97,11 +116,17 @@ section Proj
 variable (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) (x : ∀ v : S, GLoc D.sp.cm.sig V.gram v)
   (bb : awayPts D.sp.cm.sig V.gram S) (g : GAd D.sp.cm.sig V.gram)
 
+/- English proof (translation)
+Rewrite using `[map_mul, map_mul, map_inv, map_mul, proj_embAt, mem_awayPts.1 bb.2 v v.2, mul_one]`.
+-/
 theorem proj_conj_at (v : S) :
     proj D.sp.cm.sig V.gram v ((embAt D.sp.cm.sig V.gram S x * bb)⁻¹ * g * (embAt D.sp.cm.sig V.gram S x * bb)) =
       (x v)⁻¹ * proj D.sp.cm.sig V.gram v g * x v := by
   rw [map_mul, map_mul, map_inv, map_mul, proj_embAt, mem_awayPts.1 bb.2 v v.2, mul_one]
 
+/- English proof (translation)
+Establish `h1 : proj D.sp.cm.sig V.gram v (embAt D.sp.cm.sig V.gram S x) = 1` using `(mem_atPts.1 (embAt_mem D.sp.cm.sig V.gram S x)).2 v hv`. Rewrite using `[map_mul, map_mul, map_inv, map_mul, h1, one_mul, map_mul, map_mul, map_inv]`.
+-/
 theorem proj_conj_away {v : HeightOneSpectrum (𝓞 D.host.F)} (hv : v ∉ S) :
     proj D.sp.cm.sig V.gram v ((embAt D.sp.cm.sig V.gram S x * bb)⁻¹ * g * (embAt D.sp.cm.sig V.gram S x * bb)) =
       proj D.sp.cm.sig V.gram v ((bb : GAd D.sp.cm.sig V.gram)⁻¹ * g * bb) := by
@@ -109,6 +134,9 @@ theorem proj_conj_away {v : HeightOneSpectrum (𝓞 D.host.F)} (hv : v ∉ S) :
     (mem_atPts.1 (embAt_mem D.sp.cm.sig V.gram S x)).2 v hv
   rw [map_mul, map_mul, map_inv, map_mul, h1, one_mul, map_mul, map_mul, map_inv]
 
+/- English proof (translation)
+Establish `h1 : projArch D.sp.cm.sig V.gram w (embAt D.sp.cm.sig V.gram S x) = 1` using `mem_finPts_iff_forall.1 (mem_atPts.1 (embAt_mem D.sp.cm.sig V.gram S x)).1 w`. Rewrite using `[map_mul, map_mul, map_inv, map_mul, h1, one_mul, map_mul, map_mul, map_inv]`.
+-/
 theorem projArch_conj (w : InfinitePlace D.host.F) :
     projArch D.sp.cm.sig V.gram w ((embAt D.sp.cm.sig V.gram S x * bb)⁻¹ * g * (embAt D.sp.cm.sig V.gram S x * bb)) =
       projArch D.sp.cm.sig V.gram w ((bb : GAd D.sp.cm.sig V.gram)⁻¹ * g * bb) := by
@@ -116,9 +144,17 @@ theorem projArch_conj (w : InfinitePlace D.host.F) :
     mem_finPts_iff_forall.1 (mem_atPts.1 (embAt_mem D.sp.cm.sig V.gram S x)).1 w
   rw [map_mul, map_mul, map_inv, map_mul, h1, one_mul, map_mul, map_mul, map_inv]
 
+/- English proof (translation)
+The claim follows from `funext fun v => by rw [projAt_apply, map_mul, proj_embAt, mem_awayPts.1 bb.2 v v.2, mul_one]`.
+-/
 theorem projAt_embAt_mul : projAt D.sp.cm.sig V.gram S (embAt D.sp.cm.sig V.gram S x * bb) = x :=
   funext fun v => by rw [projAt_apply, map_mul, proj_embAt, mem_awayPts.1 bb.2 v v.2, mul_one]
 
+/- English proof (translation)
+Rewrite using `[conjFn, tensor_split fa ff hff S]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun v _ => by rw [proj_conj_at]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun w _ => by rw [projArch_conj]`.
+
+Conclude with `finprod_mem_congr rfl fun v hv => by rw [proj_conj_away S x bb g hv]`.
+-/
 theorem conjFn_tensor_split (fa : ∀ w, GArch D.sp.cm.sig V.gram w → ℂ) (ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ)
     (hff : IsFinFamily D.sp.cm.sig V.gram (frameLat V) ff) :
     conjFn g (tensor D.sp.cm.sig V.gram fa ff) (embAt D.sp.cm.sig V.gram S x * bb) =
@@ -135,12 +171,18 @@ theorem conjFn_tensor_split (fa : ∀ w, GArch D.sp.cm.sig V.gram w → ℂ) (ff
 
 end Proj
 
+/- English proof (translation)
+Rewrite using `[hw, ← Finset.add_sum_erase _ _ h0, hd, mul_one, add_mul, add_sub_cancel_left, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun Q _ => by ring`.
+-/
 theorem sum_erase_split {ι : Type} [DecidableEq ι] (s : Finset ι) {i0 : ι} (h0 : i0 ∈ s) (c d : ι → ℂ)
     (hd : d i0 = 1) (wv A B : ℂ) (hw : wv = ∑ Q ∈ s, c Q * d Q) :
     wv * (A * B) - c i0 * (A * B) = ∑ Q ∈ s.erase i0, (d Q * B) * (c Q * A) := by
   rw [hw, ← Finset.add_sum_erase _ _ h0, hd, mul_one, add_mul, add_sub_cancel_left, Finset.sum_mul]
   exact Finset.sum_congr rfl fun Q _ => by ring
 
+/- English proof (translation)
+Take `⟨hQpar, hQle, -⟩` from `mem_parF.1 hQ`. Take `⟨u, hu⟩` from `Finset.nonempty_of_ne_empty hQ0`. Establish `hu0 : u ≠ 0` using `fun h => hQpar.1 (h ▸ hu)`. Establish `hvec : vec u ∈ aP P` using `hQle (Submodule.subset_span ⟨u, hu, rfl⟩)`. Conclude with `GlobalTheory.T.regular_semisimple_test_vanishing hTC D V T U μf ff hF hμ hH Φ u γ hu0 hγ (GlobalTheory.T.levi_monotone_in_parabolic D V Φ (AF D.host.F) P hP u hvec hγP) C hc hi (hn u hu) dg dt`.
+-/
 theorem hasQuotInt_types (hTC : GlobalTheory.IndefiniteRowSideFullHecke.StandardMaximalParabolic.TypeConstTermVanish) (T : TypeDataG V) (U : AuxiliaryPlaceHermitianSpace V)
     (μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)) (ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ)
     (hF : IsTestFin T U μf ff) (hμ : ∀ v, (μf v).IsHaarMeasure)
@@ -160,6 +202,11 @@ theorem hasQuotInt_types (hTC : GlobalTheory.IndefiniteRowSideFullHecke.Standard
   exact GlobalTheory.T.regular_semisimple_test_vanishing hTC D V T U μf ff hF hμ hH Φ u γ hu0 hγ (GlobalTheory.T.levi_monotone_in_parabolic D V Φ (AF D.host.F) P hP u hvec hγP) C hc
     hi (hn u hu) dg dt
 
+/- English proof (translation)
+Establish `h0 : (∅ : Finset (SV (wittIndex V))) ∈ parF (aP P) ∅` using `mem_parF.2 ⟨⟨Finset.notMem_empty _, by simp⟩, by simp [aP], subset_rfl⟩`. Establish `hff` using `hF.isFinFamily`. Establish `hsum` using `hasQuotInt_sum (T := cent (projAt D.sp.cm.sig V.gram T.S (rat V γ))) (dt := dt) (dh := dg) ((parF (aP P) ∅).erase ∅) (g := fun Q x => (Dd Q bb * ((∏ w, fa w (projArch D.sp.cm.sig V.gram w ((bb : GAd D.sp.cm.sig V.gram)⁻¹ * rat V γ * bb))) * ∏ᶠ (v) (_ : v ∈ (T.S : Set (HeightOneSp …`. Establish `hQ'` using `Finset.mem_of_mem_erase hQ`. Conclude with `hasQuotInt_const_mul (hasQuotInt_types hTC T U μf ff hF hμ hH Φ P hP γ hγ hγP Q hQ' (Finset.ne_of_mem_erase hQ) (C Q) (hC Q hQ').1 (fun t ht y => (hC Q hQ').2.1 t (hle ht) y) (hC Q hQ').2.2 dg dt) _`.
+
+Use `Eq.trans (congrArg _ (funext fun x => ?_)) hsum.2` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[conjFn_tensor_split T.S x bb (rat V γ) fa ff hff, projAt_embAt_mul]`. Conclude with `sum_erase_split _ h0 _ _ (hD1 bb) _ _ _ (hsplit _ (embAt_mem _ _ T.S x) bb bb.2)`.
+-/
 theorem quotInt_inner (hTC : GlobalTheory.IndefiniteRowSideFullHecke.StandardMaximalParabolic.TypeConstTermVanish) (T : TypeDataG V) (U : AuxiliaryPlaceHermitianSpace V)
     (μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)) (fa : ∀ w, GArch D.sp.cm.sig V.gram w → ℂ)
     (ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ)
@@ -203,6 +250,25 @@ theorem quotInt_inner (hTC : GlobalTheory.IndefiniteRowSideFullHecke.StandardMax
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `hLW hPar hTC hRS D V lam S M T U μa μf μ _ _ fa ff hTD Φ L a hG γ hγ P hP hP0 dt _ Tr`. Take `⟨-, -, -, hNF, hRP, hA, hF⟩` from `hTD`. Establish `hff` using `hF.isFinFamily`. Use `haveI : ∀ w, (μa w).IsHaarMeasure := hRP.haar_arch`. Use `haveI : ∀ v, (μf v).IsHaarMeasure := hRP.haar_loc`.
+
+Take `⟨hPar', hγP, -⟩` from `hP`. Take `⟨hcomm, hle, hnc⟩` from `GlobalTheory.T.centralizer_regular_levi_commutative_noncompact D V Φ P hPar' γ hγ hγP`. Take `⟨C, Dd, hC, hD1, hsplit, hinv⟩` from `GlobalTheory.T.truncation_coefficients_invariant hLW D V Φ L a hG P hPar' Tr`. Take `⟨hH, -⟩` from `GlobalTheory.T.typeHypothesis_forms_agree D V T hNF`. Establish `hlevi : ∀ (S' : Finset (HeightOneSpectrum (𝓞 D.host.F))) t, t ∈ Φ.levi D.sp.cm (AF D.host.F) P → embAt D.sp.cm.sig V.gram S' (projAt D.sp.cm.sig V.gram S' t) ∈ Φ.levi D.sp.cm (AF D.host.F) P` using `fun S' t ht => GlobalTheory.T.levi_embedding_projection D V Φ P S' t ht`.
+
+Establish `h0 : (∅ : Finset (SV (wittIndex V))) ∈ parF (aP P) ∅` using `mem_parF.2 ⟨⟨Finset.notMem_empty _, by simp⟩, by simp [aP], subset_rfl⟩`. Establish `hinvC : ∀ Q ∈ parF (aP P) ∅, LeftInv (cent (rat V γ)) (C Q)` using `fun Q hQ t ht y => (hC Q hQ).2.1 t (hle ht) y`. Establish `hinvb0 : LeftInv (cent (rat V γ)) (fun x => C ∅ (embAt D.sp.cm.sig V.gram T.S (projAt D.sp.cm.sig V.gram T.S x)))` using `fun t ht x => by`. Simplify using `only [map_mul]`. Conclude with `(hC ∅ h0).2.1 _ (hlevi T.S t (hle ht)) _`.
+
+Take `⟨w⟩ : Nonempty (InfinitePlace D.host.F)` from `inferInstance`. Establish `hF0` using `GlobalTheory.T.regular_centralizer_noncompact D V S M μa fa ff (fun w => inferInstance) hA hff γ hγ w (hnc hP0 w) (fun x => C ∅ (embAt D.sp.cm.sig V.gram T.S (projAt D.sp.cm.sig V.gram T.S x))) ((hC ∅ h0).1.comp ((continuous_embAt _ _ T.S).comp (continuous_projAt _ _ T.S))) hinvb …`. Establish `: projAt D.sp.cm.sig V.gram T.S (embArch D.sp.cm.sig V.gram w g * x) = projAt D.sp.cm.sig V.gram T.S x`. Use function extensionality and compare the values at `fun v => by simp`. Simplify using `only [this]) μ dt`.
+
+Unfold `wOrbInt`. Distinguish the cases in `hint : Integrable (GlobalTheory.AutomorphicL2Unitary.descend (cent (rat V γ)) (fun x => (weight Φ (levelAll D.sp.cm.sig V.gram L a) (aP P) Tr x : ℂ) * conjFn (rat V γ) (tensor D.sp.cm.sig V.gram fa ff) x)) (quotMeas (cent (rat V γ)) dt μ)`. Use `swap`. Conclude with `integral_undef hint`. Use `quotInt_eq_zero_of_sub hint hF0 ?_` and prove the remaining obligations.
+
+Set `e` to `(atAwayContEquiv D.sp.cm.sig V.gram T.S).symm`. Establish `he : ∀ a b, e (a, b) = embAt D.sp.cm.sig V.gram T.S a * (b : GAd D.sp.cm.sig V.gram)` using `fun a b => rfl`. Establish `hΓe : e (projAt D.sp.cm.sig V.gram T.S (rat V γ), partAway D.sp.cm.sig V.gram T.S (rat V γ)) = (rat V γ)` using `embAt_mul_partAway D.sp.cm.sig V.gram T.S (rat V γ)`. Establish `hprod : ∀ a b, e (a, b) ∈ cent (rat V γ) ↔ a ∈ cent (projAt D.sp.cm.sig V.gram T.S (rat V γ)) ∧ b ∈ cent (partAway D.sp.cm.sig V.gram T.S (rat V γ))` using `fun a b => by`. Use `mk_mem_cent_iff e a (projAt D.sp.cm.sig V.gram T.S (rat V γ)) b (partAway D.sp.cm.sig V.gram T.S (rat V γ))` as an intermediate fact.
+
+Rewrite `this` using `[hΓe]`. Then use the resulting hypothesis. Use `haveI : LocallyCompactSpace (cent (projAt D.sp.cm.sig V.gram T.S (rat V γ))) := (isClosed_cent _).locallyCompactSpace`. Establish `hinvW : LeftInv (cent (rat V γ)) (fun x => (weight Φ (levelAll D.sp.cm.sig V.gram L a) (aP P) Tr x : ℂ))` using `fun t ht x => by simp only [hinv t (hle ht) x]`. Establish `hcf` using `leftInv_conjFn (le_refl (cent (rat V γ))) (tensor D.sp.cm.sig V.gram fa ff)`. Use `GlobalTheory.T.quotient_measure_fibration _ _ _ e (cent (projAt D.sp.cm.sig V.gram T.S (rat V γ))) (cent (partAway D.sp.cm.sig V.gram T.S (rat V γ))) (cent (rat V γ)) hprod (isClosed_cent (rat V γ)) hcomm μ dt Measure.haar Measure.haar _ ?_ (hint.sub hF0.1) ?_` and prove the remaining obligations.
+
+Introduce `t ht x`. Simplify using `only [hinvW t ht x, hcf t ht x, hinvb0 t ht x]`. Introduce `bb`. Establish `hq` using `quotInt_inner hTC T U μf fa ff hF (fun v => inferInstance) hH Φ P hPar' γ hγ hγP hle C Dd hC hD1 (fun x => (weight Φ (levelAll D.sp.cm.sig V.gram L a) (aP P) Tr x : ℂ)) (fun y hy z hz => hsplit T.S y hy z hz) bb Measure.haar Measure.haar`. Simplify using `only [he]`.
+
+Use `beta_reduce at hq ⊢`. Conclude with `hq`.
+-/
 theorem wOrbInt_eq_zero : GlobalTheory.Published.LabesseWaldspurger → GlobalTheory.IndefiniteRowSideFullHecke.ConstantTermVanishing.ParabolicAndConstTerm → GlobalTheory.IndefiniteRowSideFullHecke.StandardMaximalParabolic.TypeConstTermVanish → GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.RegularSemisimple → ∀ (D : D7) (V : HSp D) (lam : D.what₂.Tau → Fin V.rank → ℤ) (S : D.what₂.Tau → SPar) (M : DSModel V S) (T : TypeDataG V) (U : AuxiliaryPlaceHermitianSpace V) (μa : ∀ w, Measure (GArch D.sp.cm.sig V.gram w)) (μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)) (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (fa : ∀ w, GArch D.sp.cm.sig V.gram w → ℂ) (ff : ∀ v, GLoc D.sp.cm.sig V.gram v → ℂ), IsTestData V lam M T U μa μf μ fa ff → ∀ (Φ : GlobalTheory.TruncKer.WittFrame V) (L : _) (a : _), Φ.IsGood D.sp.cm L a → ∀ γ : GlobalTheory.TruncKer.GF V, IsRegSS γ.1.1 → ∀ P, GlobalTheory.TruncKer.IsMinLevi Φ γ P → P ≠ ∅ → ∀ (dt : Measure (cent (GlobalTheory.TruncKer.rat V γ))) [dt.IsHaarMeasure] (Tr : _), wOrbInt (cent (GlobalTheory.TruncKer.rat V γ)) dt μ (GlobalTheory.TruncKer.rat V γ) (fun x => GlobalTheory.TruncKer.weight Φ (levelAll D.sp.cm.sig V.gram L a) (GlobalTheory.Chamber.aP P) Tr x) (tensor D.sp.cm.sig V.gram fa ff) = 0 := by
   intro hLW hPar hTC hRS D V lam S M T U μa μf μ _ _ fa ff hTD Φ L a hG γ hγ P hP hP0 dt _ Tr
   obtain ⟨-, -, -, hNF, hRP, hA, hF⟩ := hTD

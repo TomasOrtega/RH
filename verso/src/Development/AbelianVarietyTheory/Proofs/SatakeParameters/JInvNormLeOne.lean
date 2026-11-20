@@ -7,6 +7,13 @@ open GlobalTheory GlobalTheory.CMCurves
 
 namespace GlobalTheory.ThLoc
 
+/- English proof (translation)
+Introduce `d L _ hd hL`. Take `⟨a, τ, ha, h⟩` from `exists_lattice_eq_mul_tau L`. Rewrite using `[Formalism.L2.Th1.CM.jInv, g₂_cube_div_eq_modularJ ha h]`. Use `isIntegral_modularJ_of_mul_mem (α := Formalism.L2.Th1.CM.omegaK d) (fun m hm => ?_) fun x hx ↦ ?_` and prove the remaining obligations. Use `congrArg Complex.im hm` as an intermediate fact.
+
+Establish `h0 : (0:ℝ) < Real.sqrt d` using `Real.sqrt_pos.mpr (by exact_mod_cast (by omega : 0 < d))`. Simplify using `[Formalism.L2.Th1.CM.omegaK] at this`. Use linear arithmetic over natural numbers and integers. Establish `key : ∀ y : ℂ, y ∈ Submodule.span ℤ {(τ : ℂ), 1} ↔ a * y ∈ L.lattice` using `fun y ↦ by`. Rewrite using `[h, Submodule.mem_span_pair]`.
+
+Simplify using `[mul_right_inj' ha]`. Rewrite `hx`, the goal using `[key]`. Simplify `hL _ hx` using `[mul_left_comm]`.
+-/
 theorem cm1 : Formalism.L2.Th1.CM.JInvariantIntegrality := by
   intro d L _ hd hL
   obtain ⟨a, τ, ha, h⟩ := exists_lattice_eq_mul_tau L

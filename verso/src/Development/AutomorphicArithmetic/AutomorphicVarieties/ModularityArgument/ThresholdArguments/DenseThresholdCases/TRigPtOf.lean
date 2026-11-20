@@ -11,6 +11,11 @@ section
 attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDiscreteValuationRing
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp IsLocalRing UpperTheory.V UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Af UpperTheory.V.Pr
   UpperTheory.V.Th
+/- English proof (translation)
+Establish `hi : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Establish `h0 : ‖x‖ = spectralValue (minpoly ℚ_[l] x)` using `rfl`. Rewrite using `[h0, spectralValue_le_one_iff (minpoly.monic hi)]`. Introduce `n`. Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h, Polynomial.coeff_map]`.
+
+Conclude with `PadicInt.norm_le_one _`.
+-/
 private theorem ap_norm {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) (h : IsIntegral ℤ_[l] x) : ‖x‖ ≤ 1 := by
   have hi : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
   have h0 : ‖x‖ = spectralValue (minpoly ℚ_[l] x) := rfl
@@ -18,6 +23,13 @@ private theorem ap_norm {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) (h : IsInteg
   intro n
   rw [minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h, Polynomial.coeff_map]
   exact PadicInt.norm_le_one _
+/- English proof (translation)
+Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := ℤ_[l]) (M := R)`. Use `haveI := (s.finite_toSet.image φ).to_subtype`. Use `⟨IntermediateField.adjoin ℚ_[l] (φ '' (s : Set R)), IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x, fun x => ⟨?_, ap_norm _ ((Algebra.IsIntegral.isIntegral (R := ℤ_[l]) x).map φ)⟩⟩` and prove the remaining obligations. Establish `hx : x ∈ Submodule.span ℤ_[l] (s : Set R)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem y hy => exact IntermediateField.subset_adjoin _ _ ⟨y, hy, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`.
+
+Consider the case `smul a b _ hb`. Rewrite using `[map_smul, ← algebraMap_smul ℚ_[l] a]`. Conclude with `IntermediateField.smul_mem _ hb`.
+-/
 private theorem ap_field {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] [Algebra ℤ_[l] R] [Module.Finite ℤ_[l] R]
     (φ : R →ₐ[ℤ_[l]] PadicAlgCl l) :
     ∃ E : IntermediateField ℚ_[l] (PadicAlgCl l), FiniteDimensional ℚ_[l] E ∧ ∀ x, φ x ∈ E ∧ ‖φ x‖ ≤ 1 := by
@@ -34,6 +46,9 @@ private theorem ap_field {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] [Algeb
   | smul a b _ hb =>
     rw [map_smul, ← algebraMap_smul ℚ_[l] a]
     exact IntermediateField.smul_mem _ hb
+/- English proof (translation)
+Use `haveI : Module.Finite ℤ_[l] A := Module.Finite.trans c.O A`. Take `⟨E₁, f₁, m₁⟩` from `ap_field c₁.O.val`. Take `⟨E₂, f₂, m₂⟩` from `ap_field (A.val.restrictScalars ℤ_[l])`. Take `⟨c₂, hc⟩` from `UpperTheory.V.X.So.coefOf l (E₁ ⊔ E₂)`. Conclude with `⟨c₂, fun x hx => (hc x).2 ⟨(le_sup_left : E₁ ≤ E₁ ⊔ E₂) (m₁ ⟨x, hx⟩).1, (m₁ ⟨x, hx⟩).2⟩, fun x hx => (hc x).2 ⟨(le_sup_right : E₂ ≤ E₁ ⊔ E₂) (m₂ ⟨x, hx⟩).1, (m₂ ⟨x, hx⟩).2⟩⟩`.
+-/
 private theorem ap_coef {l : ℕ} [Fact l.Prime] (c c₁ : Coef l) (A : Subalgebra c.O (PadicAlgCl l)) [Module.Finite c.O A] :
     ∃ c₂ : Coef l, c₁.O ≤ c₂.O ∧ ∀ x ∈ A, x ∈ c₂.O := by
   haveI : Module.Finite ℤ_[l] A := Module.Finite.trans c.O A
@@ -42,6 +57,9 @@ private theorem ap_coef {l : ℕ} [Fact l.Prime] (c c₁ : Coef l) (A : Subalgeb
   obtain ⟨c₂, hc⟩ := UpperTheory.V.X.So.coefOf l (E₁ ⊔ E₂)
   exact ⟨c₂, fun x hx => (hc x).2 ⟨(le_sup_left : E₁ ≤ E₁ ⊔ E₂) (m₁ ⟨x, hx⟩).1, (m₁ ⟨x, hx⟩).2⟩,
     fun x hx => (hc x).2 ⟨(le_sup_right : E₂ ≤ E₁ ⊔ E₂) (m₂ ⟨x, hx⟩).1, (m₂ ⟨x, hx⟩).2⟩⟩
+/- English proof (translation)
+Establish `hint : φ.IsIntegral`. Use `RingHom.IsIntegral.tower_top (algebraMap ℤ_[l] R) φ ?_` and prove the remaining obligations. Rewrite using `[show φ.comp (algebraMap ℤ_[l] R) = algebraMap ℤ_[l] c.O from RingHom.ext h1]`. Conclude with `fun x => Algebra.IsIntegral.isIntegral x`. Conclude with `hint.isLocalHom hφ`.
+-/
 private theorem ap_local {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] [Algebra ℤ_[l] R] (c : Coef l)
     (φ : R →+* c.O) (h1 : ∀ a, φ (algebraMap ℤ_[l] R a) = algebraMap ℤ_[l] c.O a) (hφ : Function.Injective φ) :
     IsLocalHom φ := by
@@ -50,6 +68,9 @@ private theorem ap_local {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] [Algeb
     rw [show φ.comp (algebraMap ℤ_[l] R) = algebraMap ℤ_[l] c.O from RingHom.ext h1]
     exact fun x => Algebra.IsIntegral.isIntegral x
   exact hint.isLocalHom hφ
+/- English proof (translation)
+Introduce `N` and use `by have hle : maximalIdeal R ^ N ≤ (maximalIdeal S ^ N).comap φ := by rw [← Ideal.map_le_iff_le_comap, Ideal.map_pow] exact Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.2 fun x hx => Ideal.mem_comap.2 (map_nonunit φ x hx)) N exact (h N).comp (Ideal.quotientMap _ φ hle)`.
+-/
 private theorem ap_adic {Γ R S : Type} [TopologicalSpace Γ] [CommRing R] [CommRing S] [IsLocalRing R] [IsLocalRing S]
     (φ : R →+* S) [IsLocalHom φ] {f : Γ → R} (h : Alg.AdicCont (maximalIdeal R) f) :
     Alg.AdicCont (maximalIdeal S) fun g => φ (f g) := fun N => by
@@ -57,6 +78,13 @@ private theorem ap_adic {Γ R S : Type} [TopologicalSpace Γ] [CommRing R] [Comm
     rw [← Ideal.map_le_iff_le_comap, Ideal.map_pow]
     exact Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.2 fun x hx => Ideal.mem_comap.2 (map_nonunit φ x hx)) N
   exact (h N).comp (Ideal.quotientMap _ φ hle)
+/- English proof (translation)
+Use `W.GDet.ext fun C _ _ x => ?_` and prove the remaining obligations. Use `letI : Algebra A C := ((algebraMap B C).comp f).toAlgebra`. Express the relevant statement in the definitionally equal form `(W.GDet.repAlg ρ C (MonoidAlgebra.mapDomainRingHom C p x)).det = (W.GDet.repAlg τ C x).det`. Use `congr 1`. Proceed by induction on `x using MonoidAlgebra.induction_linear with`.
+
+Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single g r`. Use extensionality with `i j`. Simplify using `[W.GDet.repAlg, h]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem ap_det {n : ℕ} {A B G H : Type} [CommRing A] [CommRing B] [Group G] [Group H]
     (ρ : G →* Matrix (Fin n) (Fin n) A) (f : A →+* B) (p : H →* G) (τ : H →* Matrix (Fin n) (Fin n) B)
     (h : ∀ g, τ g = (ρ (p g)).map f) : ((W.GDet.ofRep ρ).map f).comap p = W.GDet.ofRep τ := by
@@ -71,6 +99,15 @@ private theorem ap_det {n : ℕ} {A B G H : Type} [CommRing A] [CommRing B] [Gro
     ext i j
     simp [W.GDet.repAlg, h]
     rfl
+/- English proof (translation)
+Take `⟨-, art, Y, a, hart, -, hY⟩` from `hka`. Use `⟨fun τ => -a ((ι.toRingHom.comp τ.1).comp (algebraMap L (w.adicCompletion L))), fun m χ hχ κ hκ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hl : ∃ b, GlobalTheory.LocLanglands.IsLocalArtin h b`. Use `swap`. Conclude with `⟨1, by simp, fun b hb => absurd ⟨b, hb⟩ hl⟩`.
+
+Take `⟨ph, h1⟩` from `Loc.laHecke h art hart ι Y a ka hY hl`. Establish `h2` using `(Loc.laMul h).2.1 _ _ _ m (Loc.laCyc hG h hw)`. Establish `h3` using `(Loc.laMul h).2.2 (χ.comp (Dec (F := L) A).subtype) (χ.comp (Ine (F := L) A).subtype)⁻¹ (Subgroup.isOpen_mono (H₁ := χ.ker.comap (Ine (F := L) A).subtype) (fun x hx => inv_eq_one.2 hx) (hχ.preimage continuous_subtype_val)) fun s => mul_inv_cancel _`. Establish `h4` using `((Loc.laMul h).1 _ _ _ _ _ _ ((Loc.laMul h).1 _ _ _ _ _ _ h2 h3).1 h1).1`. Use `⟨_, h4.1, fun b hb s => ?_⟩` and prove the remaining obligations.
+
+Establish `h5` using `h4.2 b hb s`. Rewrite using `[hκ _ s.2]`. Use `Eq.trans ?_ (h5.trans ?_)` and prove the remaining obligations. Both sides reduce to the same expression. Use `finprod_congr fun τ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.zero_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem ap_locAlg (hG : GlobalTheory.Published.GlobalArtinReciprocity) {L Ω : Type} [Field L] [NumberField L] [Field Ω]
     [Algebra L Ω] [IsAlgClosure L Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (ka : G L Ω →* (Qbar l)ˣ)
     (hka : Sd.IsAlgChar ι ka) {A : ValuationSubring Ω} {w : W.Plc L} (h : IsPlaceOver A w)
@@ -101,6 +138,13 @@ private theorem ap_locAlg (hG : GlobalTheory.Published.GlobalArtinReciprocity) {
     ring
 private def apExt {l : ℕ} [Fact l.Prime] {k k' : Type} [Field k] [Field k'] {Φ : Fr.Frame l k} {n : ℕ} {K : Type} [CommRing K]
     (f : k →+* k') (ρ : Fr.NRep Φ n K) : Fr.NRep (Φ.ext f) n K := ⟨ρ.r, ρ.ψ, ρ.pol, ρ.diag, ρ.ord⟩
+/- English proof (translation)
+Establish `h1 : ∀ (x : A) (y : ResidueField O), residue A x = ResidueField.map (algebraMap O A) y → residue A₁ (φ x) = ResidueField.map (algebraMap O₁ A₁) (f y)` using `fun x y e => by`. Take `⟨a, rfl⟩` from `residue_surjective y`. Rewrite using `[h, ← ResidueField.map_residue φ, e, ResidueField.map_residue, ResidueField.map_residue]`. Establish `h2 : ∀ (u : (ResidueField O)ˣ) (m : ℤ), f (u ^ m).val = (Units.map f.toMonoidHom u ^ m).val` using `fun u m => by`. Rewrite using `[← map_zpow]`.
+
+Both sides reduce to the same expression. Use `⟨⟨fun i j => ap_adic φ (H.cont.1 i j), fun v i => ap_adic φ (H.cont.2 v i)⟩, ⟨fun g i => ?_, fun v i g => ?_⟩, fun g i j hij => ?_⟩` and prove the remaining obligations. Conclude with `(h1 _ _ (H.bar.1 g i)).trans (congrArg _ (h2 _ _))`. Conclude with `(h1 _ _ (H.bar.2 v i g)).trans (congrArg _ (h2 _ _))`. Use `h1 (ρ.r g i j) 0 ((H.diag g i j hij).trans (map_zero _).symm)` as an intermediate fact.
+
+Rewrite `this` using `[map_zero, map_zero]`. Then use the resulting hypothesis.
+-/
 private theorem ap_lift {l : ℕ} [Fact l.Prime] {O O₁ A A₁ : Type} [CommRing O] [IsLocalRing O] [CommRing O₁] [IsLocalRing O₁]
     [CommRing A] [IsLocalRing A] [CommRing A₁] [IsLocalRing A₁] [Algebra O A] [Algebra O₁ A₁]
     [IsLocalHom (algebraMap O A)] [IsLocalHom (algebraMap O₁ A₁)] (f : ResidueField O →+* ResidueField O₁)
@@ -120,6 +164,11 @@ private theorem ap_lift {l : ℕ} [Fact l.Prime] {O O₁ A A₁ : Type} [CommRin
   · exact (h1 _ _ (H.bar.2 v i g)).trans (congrArg _ (h2 _ _))
   · have := h1 (ρ.r g i j) 0 ((H.diag g i j hij).trans (map_zero _).symm)
     rwa [map_zero, map_zero] at this
+/- English proof (translation)
+Set `u : c.Oˣ →* (Qbar l)ˣ` to `Units.map c.O.val.toRingHom.toMonoidHom`. Use `⟨((u.comp (Chr.dirG ℚ Ω ψ)).comp (galEmb ℚ L Ω)) ^ m, ?_, fun g => ?_, fun g => ?_⟩` and prove the remaining obligations. Use `Subgroup.isOpen_mono (H₁ := (Chr.cls ℚ Ω N).ker.comap (galEmb ℚ L Ω)) (fun g hg => ?_) ((Chr.clsFacts ℚ Ω N).1.preimage (galEmbTop ℚ L Ω).1.continuous)` and prove the remaining obligations. Establish `h1 : Chr.cls ℚ Ω N (galEmb ℚ L Ω g) = 1` using `hg`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.zpow_apply, MonoidHom.comp_apply, MonoidHom.comp_apply, Chr.dirG, MonoidHom.comp_apply, h1, map_one, map_one, one_zpow]`.
+
+Rewrite using `[MonoidHom.zpow_apply, MonoidHom.comp_apply, MonoidHom.comp_apply, Chr.dirG, MonoidHom.comp_apply, ← map_zpow, ← map_zpow, ← map_pow, ← map_pow, pow_card_eq_one', map_one, map_one]`. Establish `h1 : u (chiO ℚ Ω l c.O (galEmb ℚ L Ω g)) = cycBar L Ω l g` using `Units.ext rfl`. Express the relevant statement in the definitionally equal form `(u _).val = _`. Rewrite using `[map_zpow, Chr.Psi, MonoidHom.mul_apply, map_mul, MonoidHom.zpow_apply, map_zpow, h1, mul_zpow, ← zpow_mul]`. Both sides reduce to the same expression.
+-/
 private theorem rp_psi {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] (c : Coef l)
     {N : ℕ} [NeZero N] (e : ℕ) (ψ : DirichletCharacter c.O N) (L : Type) [Field L] [NumberField L] [Algebra L Ω]
     [IsAlgClosure L Ω] (m : ℤ) :
@@ -138,6 +187,11 @@ private theorem rp_psi {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω
     change (u _).val = _
     rw [map_zpow, Chr.Psi, MonoidHom.mul_apply, map_mul, MonoidHom.zpow_apply, map_zpow, h1, mul_zpow, ← zpow_mul]
     rfl
+/- English proof (translation)
+Introduce `h`. Establish `h1 : a ^ (Fr.w n i - Fr.w n j) = 1` using `by rw [_root_.zpow_sub, h, mul_inv_cancel]`. Establish `h2 : Fr.w n i - Fr.w n j ∣ 2` using `by clear h h1 revert i j`. Apply the tactic sequence `rcases hn with rfl | rfl <;> decide`. Take `⟨c, hc⟩` from `h2`.
+
+Apply `ha` to reduce the goal to its premises. Establish `h3 : a ^ (2 : ℤ) = 1` using `by rw [hc, _root_.zpow_mul, h1, _root_.one_zpow]`. Conclude with `h3` after adjusting the coercions.
+-/
 private theorem rp_w_ne {k : Type} [Field k] {n : ℕ} (hn : n = 2 ∨ n = 3) (a : kˣ) (ha : a ^ 2 ≠ 1)
     (i j : Fin n) (hij : i ≠ j) : a ^ Fr.w n i ≠ a ^ Fr.w n j := by
   intro h
@@ -150,6 +204,11 @@ private theorem rp_w_ne {k : Type} [Field k] {n : ℕ} (hn : n = 2 ∨ n = 3) (a
   apply ha
   have h3 : a ^ (2 : ℤ) = 1 := by rw [hc, _root_.zpow_mul, h1, _root_.one_zpow]
   exact_mod_cast h3
+/- English proof (translation)
+Take `⟨g, hg⟩` from `h`. Establish `key : ∀ s a b, (Matrix.GeneralLinearGroup.map j g * W.pushRep j r s * (Matrix.GeneralLinearGroup.map j g)⁻¹ : GL (Fin n) K) a b = j ((g * r s * g⁻¹ : GL (Fin n) A) a b)` using `fun s a b => by`. Rewrite using `[MonoidHom.comp_apply, ← map_inv, ← map_mul, ← map_mul]`. Both sides reduce to the same expression. Use `⟨Matrix.GeneralLinearGroup.map j g, fun s => ⟨fun a b hab => ?_, fun a => ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[key, (hg s).1 a b hab, map_zero]`. Rewrite using `[key, (hg s).2 a]`. Both sides reduce to the same expression.
+-/
 private theorem rp_flag_map {H A K : Type} [Group H] [CommRing A] [CommRing K] {n : ℕ} (j : A →+* K) (r : H →* GL (Fin n) A)
     (ψ : Fin n → H →* Aˣ) (h : W.HasFlag r ψ) : W.HasFlag (W.pushRep j r) fun i => W.pushCh j (ψ i) := by
   obtain ⟨g, hg⟩ := h
@@ -161,6 +220,17 @@ private theorem rp_flag_map {H A K : Type} [Group H] [CommRing A] [CommRing K] {
   · rw [key, (hg s).1 a b hab, map_zero]
   · rw [key, (hg s).2 a]
     rfl
+/- English proof (translation)
+Establish `h4 : ∀ i, residue A (ρ.ψ v i g₀) = ResidueField.map (algebraMap O A) (F.Ψ (F.loc v g₀) ^ Fr.w n i).val` using `fun i => H.bar.2 v i g₀`. Establish `hfl : W.HasFlag (ρ.r.comp (F.loc0 v)).toHomUnits (ρ.ψ v)`. Use `Fr.flag_loc _ _ g₀ (fun i j hij => ?_) ?_ (fun s => ρ.ord v s)` and prove the remaining obligations. Assume the negation of the conclusion as `hu`. Establish `h3` using `(residue_eq_zero_iff _).2 hu`.
+
+Rewrite `h3` using `[map_sub, h4, h4, sub_eq_zero]`. Conclude with `rp_w_ne hn _ hg i j hij (Units.ext ((ResidueField.map (algebraMap O A)).injective h3))`. Establish `hd : ((ρ.r.comp (F.loc0 v)) g₀).map (residue A) = Matrix.diagonal fun i => residue A (ρ.ψ v i g₀)`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq, h4]`. Conclude with `H.bar.1 (F.loc0 v g₀) i`. Rewrite using `[Matrix.diagonal_apply_ne _ hij]`. Conclude with `H.diag (F.loc0 v g₀) i j hij`.
+
+Rewrite using `[hd, Matrix.charpoly_diagonal]`. Establish `h` using `rp_flag_map j _ _ hfl`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g a b`. Both sides reduce to the same expression.
+
+Both sides reduce to the same expression.
+-/
 private theorem rp_flag {l : ℕ} [Fact l.Prime] {O A K : Type} [CommRing O] [IsLocalRing O] [CommRing A] [IsLocalRing A]
     [Algebra O A] [IsLocalHom (algebraMap O A)] [CommRing K] {F : Fr.Frame l (ResidueField O)} {n : ℕ} (hn : n = 2 ∨ n = 3)
     (ρ : Fr.NRep F n A) (H : IsLiftA O ρ) (j : A →+* K) (v : F.V) (g₀ : F.Gv v) (hg : F.Ψ (F.loc v g₀) ^ 2 ≠ 1) :
@@ -187,6 +257,13 @@ private theorem rp_flag {l : ℕ} [Fact l.Prime] {O A K : Type} [CommRing O] [Is
   · ext g a b
     rfl
   · rfl
+/- English proof (translation)
+Take `⟨g, hg⟩` from `h`. Establish `h1` using `Matrix.charpoly_units_conj g (r s)`. Establish `h2 : ((g * r.toHomUnits s * g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).BlockTriangular id` using `fun i j hij => (hg s).1 i j hij`. Establish `h3` using `Matrix.charpoly_of_upperTriangular _ h2`. Rewrite using `[← h1]`.
+
+Simplify using `only [Units.val_mul, Matrix.coe_units_inv, MonoidHom.coe_toHomUnits] at h3`. Rewrite using `[h3]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h4` using `(hg s).2 i`. Simplify using `only [Units.val_mul, Matrix.coe_units_inv, MonoidHom.coe_toHomUnits] at h4`.
+
+Rewrite using `[h4]`.
+-/
 private theorem rp_charpoly {H k : Type} [Group H] [CommRing k] {n : ℕ} (r : H →* Matrix (Fin n) (Fin n) k)
     (κ : Fin n → H →* kˣ) (h : W.HasFlag r.toHomUnits κ) (s : H) :
     (r s).charpoly = ∏ i, (Polynomial.X - Polynomial.C (κ i s : k)) := by
@@ -202,6 +279,13 @@ private theorem rp_charpoly {H k : Type} [Group H] [CommRing k] {n : ℕ} (r : H
   have h4 := (hg s).2 i
   simp only [Units.val_mul, Matrix.coe_units_inv, MonoidHom.coe_toHomUnits] at h4
   rw [h4]
+/- English proof (translation)
+Establish `h1 : Function.Injective fun i => (α i : K)` using `fun i j hij => by`. Assume the negation of the conclusion as `hne`. Conclude with `hα i j hne 1 one_pos (by rw [pow_one, pow_one]; exact Units.ext hij)`. Establish `h2 : Function.Injective fun i => (β i : K)` using `Polynomial.separable_prod_X_sub_C_iff.1 (h ▸ Polynomial.separable_prod_X_sub_C_iff.2 h1)`. Establish `h3 : ∀ i, ∃ j, β i = α j` using `fun i => by`.
+
+Establish `h4` using `congrArg (Polynomial.eval (β i : K)) h`. Rewrite `h4` using `[Polynomial.eval_prod, Polynomial.eval_prod, Finset.prod_eq_zero (Finset.mem_univ i) (by simp)]`. Take `⟨j, -, hj⟩` from `Finset.prod_eq_zero_iff.1 h4.symm`. Conclude with `⟨j, Units.ext (by simpa [sub_eq_zero] using hj)⟩`. Use `choose s hs using h3`.
+
+Introduce `i j hij m hm e`. Simplify using `only [mul_pow, mul_left_inj, hs] at e`. Conclude with `hα _ _ (fun e' => hij (h2 (by simp only [hs, e']))) m hm e`.
+-/
 private theorem rp_free {K : Type} [Field K] {n : ℕ} (α β : Fin n → Kˣ) (a : Kˣ) (hα : FreeRatios α)
     (h : ∏ i, (Polynomial.X - Polynomial.C (β i : K)) = ∏ i, (Polynomial.X - Polynomial.C (α i : K))) :
     FreeRatios fun i => β i * a := by
@@ -219,6 +303,9 @@ private theorem rp_free {K : Type} [Field K] {n : ℕ} (α β : Fin n → Kˣ) (
   intro i j hij m hm e
   simp only [mul_pow, mul_left_inj, hs] at e
   exact hα _ _ (fun e' => hij (h2 (by simp only [hs, e']))) m hm e
+/- English proof (translation)
+Introduce `W hW`. Use `hb W fun g _ v hv => ?_` and prove the remaining obligations. Establish `h1` using `W.smul_mem ((c g)⁻¹ : kˣ) (hW (π g) trivial v hv)`. Rewrite `h1` using `[h, Matrix.smul_mulVec, smul_smul, Units.inv_mul, one_smul]`. Then use the resulting hypothesis.
+-/
 private theorem rp_irr {G H k : Type} [Group G] [Group H] [Field k] {n : ℕ} (a : G → Matrix (Fin n) (Fin n) k)
     (b : H → Matrix (Fin n) (Fin n) k) (π : H → G) (c : H → kˣ)
     (h : ∀ g, a (π g) = (c g : k) • b g) (hb : MatIrr ⊤ b) : MatIrr ⊤ a := by
@@ -226,6 +313,11 @@ private theorem rp_irr {G H k : Type} [Group G] [Group H] [Field k] {n : ℕ} (a
   refine hb W fun g _ v hv => ?_
   have h1 := W.smul_mem ((c g)⁻¹ : kˣ) (hW (π g) trivial v hv)
   rwa [h, Matrix.smul_mulVec, smul_smul, Units.inv_mul, one_smul] at h1
+/- English proof (translation)
+Take `⟨g, hg⟩` from `h`. Use `⟨g, fun s => ?_⟩` and prove the remaining obligations. Establish `key : ∀ i j, (g * ((K.tw ρ).toHomUnits.comp (G.φ v)) s * g⁻¹ : GL (Fin n) A) i j = ((K.κA A (G.φ v s) : Aˣ) : A) * (g * (ρ.r.comp (F.loc0 (K.e v))).toHomUnits (K.lam v s) * g⁻¹ : GL (Fin n) A) i j` using `fun i j => by`. Express the relevant statement in the definitionally equal form `((g : Matrix (Fin n) (Fin n) A) * (((K.κA A (G.φ v s) : Aˣ) : A) • ρ.r (K.π (G.φ v s))) * ((g⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A)) i j = _ * ((g : Matrix (Fin n) (Fin n) A) * ρ.r (F.loc0 (K.e v) (K.lam v s)) * ((g⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A)) i j`. Rewrite using `[K.lam_loc, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul]`.
+
+Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[key, (hg _).1 i j hij, mul_zero]`. Rewrite using `[key, (hg _).2 i, mul_comm]`. Both sides reduce to the same expression.
+-/
 private theorem rp_tw_flag {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O]
     {F : Fr.Frame l (ResidueField O)} {n : ℕ} {G : W.GFrame l} {r : W.Resid G O n} (K : TwLink F r)
     {A : Type} [CommRing A] [Algebra O A] (ρ : Fr.NRep F n A) (v : G.Vl)
@@ -245,6 +337,11 @@ private theorem rp_tw_flag {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsL
   · rw [key, (hg _).1 i j hij, mul_zero]
   · rw [key, (hg _).2 i, mul_comm]
     rfl
+/- English proof (translation)
+Establish `h1 : Continuous (K.tw (ρ.map j))`. Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Establish `h2` using `continuous_subtype_val.comp (((X.So.adicCont l c₁).2 _ _).1 K.κ_cont)`. Establish `h3` using `(continuous_subtype_val.comp (((X.So.adicCont l c₂).2 _ _).1 (h.1 a b))).comp K.π_cont`. Use `h2.mul h3 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `g`. Conclude with `congrArg (_ * ·) (hj _)`. Conclude with `Units.continuous_iff.2 ⟨h1, h1.comp continuous_inv⟩`.
+-/
 private theorem rp_cont {l : ℕ} [Fact l.Prime] {c₁ c₂ : Coef l}
     {F : Fr.Frame l (ResidueField c₁.O)} {n : ℕ} {G : W.GFrame l} {r : W.Resid G c₁.O n} (K : TwLink F r)
     (ρ : Fr.NRep F n c₂.O) (h : ρ.Cont (maximalIdeal c₂.O)) (j : c₂.O →+* Qbar l) (hj : ∀ a, j a = a.1) :
@@ -257,11 +354,21 @@ private theorem rp_cont {l : ℕ} [Fact l.Prime] {c₁ c₂ : Coef l}
     funext g
     exact congrArg (_ * ·) (hj _)
   exact Units.continuous_iff.2 ⟨h1, h1.comp continuous_inv⟩
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `h`. Rewrite using `[Nat.cast_mul, map_mul]`. Conclude with `mul_lt_one_of_lt_of_le ha ((A.valuation_le_one_iff _).2 (natCast_mem A c))`.
+-/
 private theorem rp_val_dvd {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {a b : ℕ} (h : a ∣ b)
     (ha : A.valuation (a : Ω) < 1) : A.valuation (b : Ω) < 1 := by
   obtain ⟨c, rfl⟩ := h
   rw [Nat.cast_mul, map_mul]
   exact mul_lt_one_of_lt_of_le ha ((A.valuation_le_one_iff _).2 (natCast_mem A c))
+/- English proof (translation)
+Establish `hl : ¬ A.valuation (l : Ω) < 1` using `fun h' => hA (rp_val_dvd A ((dvd_mul_right l N).trans h) h')`. Establish `hg' : galEmb ℚ L Ω g ∈ Ine (F` using `ℚ) A := hg`. Establish `h1 : cycZ ℚ Ω l (galEmb ℚ L Ω g) = 1` using `(Base.places ℚ Ω l A).2.2.2 hl hg'`. Establish `h2 : Chr.cls ℚ Ω N (galEmb ℚ L Ω g) = 1` using `(Chr.clsFacts ℚ Ω N).2.2.2.2 A (fun h' => hA (rp_val_dvd A ((dvd_mul_left N l).trans h) h')) hg'`. Establish `h3 : Chr.Psi l e (Chr.dirG ℚ Ω ψ) (galEmb ℚ L Ω g) = 1` using `by simp [Chr.Psi, Chr.dirG, chiO, h1, h2]`.
+
+Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `toUpl Ω L (W.resP L Ω g) ∈ k.p.ker`. Rewrite using `[k.p_ker]`. Use `Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure ⟨A, hl, hg', ?_, ?_⟩)` and prove the remaining obligations. Conclude with `(k.mem_range_resP _).1 ⟨_, rfl⟩`.
+
+Conclude with `(congrArg (Units.map (residue O).toMonoidHom) h3).trans (map_one _)`.
+-/
 private theorem rp_unr {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O]
     [IsLocalRing O] [Algebra ℤ_[l] O] {N M : ℕ} [NeZero N] (e : ℕ) (ψ : DirichletCharacter O N) (h : l * N ∣ M)
     {η : G ℚ Ω →* ℤˣ} {σ g₁ : G ℚ Ω} {B : ValuationSubring Ω}
@@ -280,6 +387,11 @@ private theorem rp_unr {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω
   refine Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure ⟨A, hl, hg', ?_, ?_⟩)
   · exact (k.mem_range_resP _).1 ⟨_, rfl⟩
   · exact (congrArg (Units.map (residue O).toMonoidHom) h3).trans (map_one _)
+/- English proof (translation)
+Set `u : c.Oˣ →* (Qbar l)ˣ` to `Units.map c.O.val.toRingHom.toMonoidHom`. Establish `h0 : ∀ g, u (κ (V.pr g)) = ka g` using `fun g => Units.ext (h g)`. Establish `h1 : V.frame.conj (V.pr g) = V.pr g'` using `Subtype.ext (by`. Express the relevant statement in the definitionally equal form `toGS Ω V.S' s.c * toGS Ω V.S' (W.resP L Ω g) * (toGS Ω V.S' s.c)⁻¹ = toGS Ω V.S' (W.resP L Ω g')`. Rewrite using `[hg, map_mul, map_mul, map_inv])`.
+
+Establish `h3 : V.ε (V.pr g).1 = cycZ L Ω l g` using `DFunLike.congr_fun V.hε (W.resP L Ω g)`. Establish `h4 : u (V.frame.eps c.O c.O (V.pr g)) = cycBar L Ω l g` using `Units.ext (congrArg (fun t : ℤ_[l]ˣ => algebraMap ℤ_[l] (Qbar l) t) h3)`. Establish `h2 : κ (V.pr g) * κ (V.pr g') = V.frame.eps c.O c.O (V.pr g) ^ m` using `(congrArg (fun t => κ (V.pr g) * κ t) h1).symm.trans (hκ _)`. Rewrite using `[← h0, ← h0, ← h4, ← map_zpow, ← map_mul, h2]`.
+-/
 private theorem rp_conj {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] {s : W.HidaSetting l L Ω} (V : s.Lev) (c : Coef l) (κ : V.frame.G₀ →* c.Oˣ) (m : ℤ)
     (hκ : ∀ g, κ g * κ (V.frame.conj g) = V.frame.eps c.O c.O g ^ m) (ka : G L Ω →* (Qbar l)ˣ)
@@ -296,12 +408,54 @@ private theorem rp_conj {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [Number
   have h2 : κ (V.pr g) * κ (V.pr g') = V.frame.eps c.O c.O (V.pr g) ^ m :=
     (congrArg (fun t => κ (V.pr g) * κ t) h1).symm.trans (hκ _)
   rw [← h0, ← h0, ← h4, ← map_zpow, ← map_mul, h2]
+/- English proof (translation)
+Establish `h : t ^ a * x * z / (t ^ b * y * z) * t ^ (b - a) = x / y`. Rewrite using `[zpow_sub, mul_div_mul_right_eq_div, mul_div_mul_comm, mul_right_comm, ← div_eq_mul_inv, div_mul_div_cancel, div_self', one_mul]`. Rewrite using `[h, div_pow, hx, hy, div_one]`.
+-/
 private theorem rp_par {A : Type} [CommGroup A] (t x y z : A) (a b : ℤ) (k : ℕ) (hx : x ^ k = 1) (hy : y ^ k = 1) :
     (t ^ a * x * z / (t ^ b * y * z) * t ^ (b - a)) ^ k = 1 := by
   have h : t ^ a * x * z / (t ^ b * y * z) * t ^ (b - a) = x / y := by
     rw [zpow_sub, mul_div_mul_right_eq_div, mul_div_mul_comm, mul_right_comm, ← div_eq_mul_inv, div_mul_div_cancel, div_self',
       one_mul]
   rw [h, div_pow, hx, hy, div_one]
+/- English proof (translation)
+Introduce `hG hAd Ω _ _ _ l _ ι c _ N _ e ψ η σ g₁ B M H L _ _ _ _ _ Φ k c₁ _ f n ka R hL hka A _ _ _ ρ hρ hψ r hr hirr haut hfree`. Take `⟨c₂, h₁, h₂⟩` from `ap_coef c c₁ A`. Use `letI : Algebra c₁.O c₂.O := (Subalgebra.inclusion h₁).toRingHom.toAlgebra`. Set `φ : A →+* c₂.O` to `A.val.toRingHom.codRestrict c₂.O fun x => h₂ x.1 x.2`. Use `haveI : IsLocalHom φ := ap_local c₂ φ (fun a => rfl) fun a b h => Subtype.ext (congrArg (fun t : c₂.O => t.1) h)`.
+
+Use `haveI hl : IsLocalHom (algebraMap c₁.O c₂.O) := ap_local c₂ _ (fun a => rfl) (Subalgebra.inclusion_injective h₁)`. Take `⟨hc, hf, -⟩` from `UpperTheory.V.abelian₂.dvr_finite l c₂.O`. Use `haveI : IsCD c₁.O c₂.O := { complete := hc, isLocalHom := hl, fin := hf }`. Set `j : c₂.O →ₐ[c₁.O] Qbar l` to `{ c₂.O.val.toRingHom with commutes' := fun _ => rfl }`. Set `ρ₂ : Fr.NRep (Φ.ext f) n c₂.O` to `apExt f (ρ.map φ)`.
+
+Establish `hlift : IsLiftA c₁.O ρ₂` using `ap_lift f φ (fun a => by`. Rewrite using `[R.hf a ⟨a.1, R.le a.2⟩ rfl, ResidueField.map_residue]`. Use the proof step `rfl) ρ hρ`. Take `⟨Ph, hPh, -⟩` from `phiEx l c₁.O (Φ.ext f) n R.T`. Take `⟨F, -, hD, hP⟩` from `goodPtOf l c₁.O (Φ.ext f) n R.T Ph hPh ⊥ (fun p _ _ => by rw [Ideal.map_bot]; exact bot_le) c₂.O ρ₂ hlift (Qbar l) j Subtype.val_injective fun U hU => hirr.2.2 U le_top fun s v hv => by rw [hr]; exact hU (k.p0 s) trivial v hv`.
+
+Establish `hAl : ∀ v : W.Vl l L, (R.s.A v).valuation (l : Ω) < 1` using `fun v => (natCast_place (R.s.hA v) l).2 v.2`. Establish `hw : ∀ v : W.Vl l L, ((l : ℕ) : 𝓞 L) ∈ (R.s.w v).asIdeal` using `fun v => (natCast_place (R.s.hw v) l).1 (hAl v)`. Use `choose wt hwt using fun v : W.Vl l L => ap_locAlg hG ι ka hka.alg (R.s.hw v) (hw v)`. Use `choose χ hχ hχN hχe using fun i : Fin n => rp_psi c e ψ L (Ω := Ω) (Fr.w n i)`. Set `x : R.B₀.Pt` to `j.comp F`.
+
+Set `ρQ : Fr.NRep (Φ.ext f) n (Qbar l)` to `ρ₂.map (j : c₂.O →+* Qbar l)`. Set `ρ0 : R.V.frame.G₀ →* GL (Fin n) (Qbar l)` to `(R.K.tw ρQ).toHomUnits`. Establish `hrQ : ∀ g, ρQ.r (R.K.π (R.V.pr g)) = W.mat r g` using `fun g => by`. Express the relevant statement in the definitionally equal form `_ = (r g).val`. Rewrite using `[hr, ← R.π_pr]`.
+
+Both sides reduce to the same expression. Establish `hκ : ∀ g, R.K.κA (Qbar l) (R.V.pr g) = ka g` using `fun g => Units.ext (R.κ_pr g)`. Establish `hpr : ∀ g, W.mat ρ0 (R.V.pr g) = (ka g : Qbar l) • W.mat r g` using `fun g => by`. Rewrite using `[← hrQ, ← hκ]`. Both sides reduce to the same expression.
+
+Establish `htw : ρ0.comp R.V.pr = tw r ka` using `MonoidHom.ext fun g => Units.ext ((hpr g).trans (tw_val r ka g).symm)`. Establish `hx : ∀ v, x.psi v = R.K.twψ ρQ v` using `fun v => funext fun i => MonoidHom.ext fun g => Units.ext (by`. Establish `h2 : F (R.B₀.u.ψ v i g).val = (R.K.twψ ρ₂ v i g).val` using `congrArg (fun t => (t g).val) (hP v i)`. Express the relevant statement in the definitionally equal form `j (F (R.B₀.u.ψ v i g).val) = _`. Rewrite using `[h2]`.
+
+Use the proof step `rfl)`. Establish `hxv : ∀ v i g, x.psi v i g = ρQ.ψ (R.K.e v) i (R.K.lam v g) * ka g` using `fun v i g => by`. Rewrite using `[hx, ← hκ]`. Both sides reduce to the same expression. Establish `hin : ∀ (v : W.Vl l L) i (g : Dec (F` using `L) (R.s.A v)), (g : G L Ω) ∈ Ine (F := L) (R.s.A v) → x.psi v i g = cycBar L Ω l g ^ ((e : ℤ) * Fr.w n i) * χ i g * ka g := fun v i g hg => by`.
+
+Establish `h3` using `hψ (R.K.e v) i (R.K.lam v g) ((R.K.lam_I v g).2 hg)`. Rewrite `h3` using `[R.lam_j]`. Rewrite using `[hxv]`. Use `congr 1`. Use `Units.ext ?_` and prove the remaining obligations.
+
+Rewrite using `[← hχe]`. Conclude with `congrArg (fun t : A => t.1) h3`. Establish `hanti : StrictAnti fun i => (e : ℤ) * Fr.w n i` using `fun a b hab => by`. Establish `h1 : Fr.w n b < Fr.w n a`. Establish `h2 : (a : ℕ) < b` using `hab`.
+
+Unfold `Fr.w`. Apply the tactic sequence `split_ifs <;> omega`. Establish `h3 : (0 : ℤ) < e` using `by exact_mod_cast H.e_pos`. Conclude with `mul_lt_mul_of_pos_left h1 h3`. Establish `hfl : ∀ v, W.HasFlag (ρQ.r.comp ((Φ.ext f).loc0 v)).toHomUnits (ρQ.ψ v)` using `fun v => by`.
+
+Take `⟨g₀, hg⟩` from `R.ok.f3 v`. Conclude with `rp_flag R.n23 ρ₂ hlift _ v g₀ hg`. Establish `hV : Nonempty Φ.V`. Assume the negation of the conclusion as `hV`. Rewrite `hV` using `[not_nonempty_iff]`.
+
+Establish `h : _ < Φ.d` using `R.big.1`. Simplify using `[Fr.Frame.d] at h`. Take `⟨v'⟩` from `hV`. Establish `hA : _root_.UpperTheory.V.Th.AutomorphicPointGalois ι x ρ0`. Use `⟨rp_cont R.K ρ₂ hlift.cont _ fun _ => rfl, ?_, ⟨fun v i τ => wt v τ - (e : ℤ) * Fr.w n i, fun v τ a b hab => sub_lt_sub_left (hanti hab) _, fun v i => hwt v _ (χ i) (hχ i) _ (hin v i)⟩, htw ▸ haut, ?_, fun v => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : W.UniversalOrdinaryDeterminantRing.Pt.D x = (W.GDet.ofRep (R.K.tw ρ₂)).map (j : c₂.O →+* Qbar l)` using `congrArg (fun D => D.map (j : c₂.O →+* Qbar l)) hD`. Use `(congrArg (fun D => D.comap R.V.pr) h1).trans (ap_det _ _ _ _ fun g => ?_)` and prove the remaining obligations. Both sides reduce to the same expression. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Use `Units.ext ((hpr g).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[hka.unr _ R.v0M g hg, ← hrQ, R.π_pr, rp_unr e ψ H.dvd k _ R.v0M g hg]`. Conclude with `(one_smul _ _).trans (map_one ρQ.r)`. Conclude with `(hx v).symm ▸ rp_tw_flag R.K ρQ v (hfl _)`. Establish `hN : _root_.UpperTheory.V.Th.AutomorphicPointLocallyGeneric ι x ρ0`. Use `_root_.UpperTheory.V.Th.nice_zero_of_rank_two_or_three_irreducible_free ι x ρ0 R.n23 hA (rp_irr _ (W.mat r) R.V.pr ka hpr fun U hU => hirr.2.2 U le_top fun s v hv => hU s trivial v hv) (fun v => ?_) ?_` and prove the remaining obligations.
+
+Take `⟨g, hg, h1, α, hα, h2⟩` from `hfree _ (hAl v)`. Use `⟨⟨g, hg⟩, (DFunLike.congr_fun R.V.hε (W.resP L Ω g)).trans h1, ?_⟩` and prove the remaining obligations. Establish `h3` using `rp_charpoly _ _ (hfl (R.K.e v)) (R.K.lam v ⟨g, hg⟩)`. Establish `h5` using `(congrArg ρQ.r (R.K.lam_loc v ⟨g, hg⟩)).trans (hrQ g)`. Establish `h4` using `rp_free α _ (ka g) hα (h3.symm.trans ((congrArg Matrix.charpoly h5).trans h2))`.
+
+Use `h4 using 2 with i` and compare the differences between its conclusion and the goal. Conclude with `hxv v i ⟨g, hg⟩`. Take `⟨v, hv⟩` from `R.K.e.surjective v'`. Take `⟨s, hs⟩` from `R.ok.f3 (R.K.e v)`. Take `⟨g, rfl⟩` from `(R.K.lam v).surjective s`.
+
+Establish `hn : 1 < n` using `by have := R.n23; omega`. Use `⟨v, ⟨0, by omega⟩, ⟨1, hn⟩, g, fun h => rp_w_ne R.n23 _ hs ⟨0, by omega⟩ ⟨1, hn⟩ (by simp) ?_⟩` and prove the remaining obligations. Rewrite `h` using `[R.K.psib, R.K.psib, R.K.chib, R.K.chib, ← R.K.lam_loc]`. Conclude with `mul_right_cancel h`. Use `⟨R.s, R.V, ρ0, hpr, rp_conj R.V c₁ R.K.κ _ R.K.κ_conj ka R.κ_pr, hAd l L Ω R.s R.V R.hV (degEq Ω l ι c N e ψ η σ g₁ B M H L Φ k v').2 c₁ hL n (by have := R.n23; omega) (by have := R.n23; omega) R.r R.v0 R.B₀ ι x ρ0 hN fun v => ⟨_, Nat.card (ZMod N)ˣ, hanti, Nat.card_pos, fun a b …` and prove the remaining obligations.
+
+Rewrite using `[hin v a g hg, hin v b g hg]`. Conclude with `rp_par _ _ _ _ _ _ _ (hχN a g) (hχN b g)`.
+-/
 theorem UpperTheory.V.Th.rigPtOf_alt :
     GlobalTheory.Published.GlobalArtinReciprocity → _root_.UpperTheory.V.Th.AdjointLiftingTheorem → _root_.UpperTheory.V.Th.RigPtOfAlt := by
   intro hG hAd Ω _ _ _ l _ ι c _ N _ e ψ η σ g₁ B M H L _ _ _ _ _ Φ k c₁ _ f n ka R hL hka A _ _ _ ρ hρ hψ r hr hirr haut hfree

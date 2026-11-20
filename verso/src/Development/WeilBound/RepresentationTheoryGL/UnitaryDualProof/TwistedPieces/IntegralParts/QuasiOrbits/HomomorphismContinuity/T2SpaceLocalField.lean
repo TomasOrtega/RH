@@ -41,10 +41,16 @@ section Hom
 variable {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)}
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Use `Prod.ext ?_ rfl` and prove the remaining obligations. Simplify using `[hom, smul_smul]`.
+-/
 theorem hom_hom (t : kˣ) (p : Sp k n) : hom t⁻¹ (hom t p) = p := by
   refine Prod.ext ?_ rfl
   simp [hom, smul_smul]
 
+/- English proof (translation)
+The claim follows from `(continuous_fst.const_smul (t : k)).prodMk continuous_snd`.
+-/
 theorem continuous_hom (t : kˣ) : Continuous (hom (n := n) t) :=
   (continuous_fst.const_smul (t : k)).prodMk continuous_snd
 
@@ -57,15 +63,26 @@ def homH (t : kˣ) : Sp k n ≃ₜ Sp k n where
   continuous_invFun := continuous_hom t⁻¹
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Simplify using `only [hom, act]`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Simplify using `only [mul_smul_comm, smul_mul_assoc]`.
+-/
 theorem hom_act (t : kˣ) (g : GL (Fin n) k) (p : Sp k n) : hom t (act g p) = act g (hom t p) := by
   simp only [hom, act]
   refine Prod.ext ?_ rfl
   simp only [mul_smul_comm, smul_mul_assoc]
 
+/- English proof (translation)
+The claim follows from `comp_mem_supportedIn (homH t) hf`.
+-/
 theorem comp_hom_mem (t : kˣ) {f : Sp k n → ℂ} (hf : f ∈ supportedIn (UU : Set (Sp k n))) :
     (fun p => f (hom t p)) ∈ supportedIn (UU : Set (Sp k n)) :=
   comp_mem_supportedIn (homH t) hf
 
+/- English proof (translation)
+Introduce `g hg f hf`. Use `show ξ (fun p => f (act g (hom t p))) = ξ (fun p => f (hom t p))`. Establish `e : (fun p => f (act g (hom t p))) = fun p => (fun q => f (hom t q)) (act g p)`. Use function extensionality and compare the values at `p`. Use `show f (act g (hom t p)) = f (hom t (act g p))`.
+
+Rewrite using `[hom_act]`. Rewrite using `[e]`. Conclude with `hξ g hg _ (comp_hom_mem t hf)`.
+-/
 theorem invU_pullH (t : kˣ) {ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (hξ : InvU Z ξ) : InvU Z (pullH t ξ) := by
   intro g hg f hf
   show ξ (fun p => f (act g (hom t p))) = ξ (fun p => f (hom t p))
@@ -74,13 +91,26 @@ theorem invU_pullH (t : kˣ) {ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (hξ : InvU
   rw [e]
   exact hξ g hg _ (comp_hom_mem t hf)
 
+/- English proof (translation)
+Introduce `g hg f hf`. Simplify using `[h1 g hg f hf, h2 g hg f hf]`.
+-/
 theorem invU_sub_smul {ξ η : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (h1 : InvU Z ξ) (h2 : InvU Z η) (a : ℂ) : InvU Z (ξ - a • η) := by
   intro g hg f hf
   simp [h1 g hg f hf, h2 g hg f hf]
 
+/- English proof (translation)
+Introduce `f hf` and use `hξ _ (comp_hom_mem t hf)`.
+-/
 theorem kills_pullH (t : kˣ) {ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (hξ : Kills ξ UU) : Kills (pullH t ξ) UU :=
   fun f hf => hξ _ (comp_hom_mem t hf)
 
+/- English proof (translation)
+Proceed by induction on `Q using Polynomial.induction_on' with`. Consider the case `add p q hp hq => intro f hf`. Simplify using `[hp f hf, hq f hf]`. Consider the case `monomial m a`. Introduce `f hf`.
+
+Establish `key : ∀ m : ℕ, Kills (((pullH (n` using `n) t) ^ m : Module.End ℂ _) ξ) UU := by`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simpa using hξ`. Consider the case `succ m ih`.
+
+Rewrite using `[pow_succ', Module.End.mul_apply]`. Conclude with `kills_pullH t ih`. Simplify using `[aeval_monomial, key m f hf]`.
+-/
 theorem kills_aevalH (t : kˣ) {ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (hξ : Kills ξ UU) (Q : ℂ[X]) :
     Kills (aeval (pullH (n := n) t) Q ξ) UU := by
   induction Q using Polynomial.induction_on' with
@@ -96,10 +126,18 @@ theorem kills_aevalH (t : kˣ) {ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (hξ : Ki
         exact kills_pullH t ih
     simp [aeval_monomial, key m f hf]
 
+/- English proof (translation)
+Simplify using `[Algebra.algebraMap_eq_smul_one]`.
+-/
 theorem aeval_X_subH (t : kˣ) (a : ℂ) (ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ) :
     aeval (pullH (n := n) t) (X - Polynomial.C a) ξ = pullH t ξ - a • ξ := by
   simp [Algebra.algebraMap_eq_smul_one]
 
+/- English proof (translation)
+Introduce `f hf`. Use `h f hf fun q hq => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hfq`. Establish `: q ∈ D ∩ UU` using `⟨hq, hf.2 hfq⟩`. Rewrite `this` using `[hD]`.
+
+Conclude with `this`.
+-/
 theorem kills_of_suppU {ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} {D : Set (Sp k n)} (hD : D ∩ UU = ∅) (h : SuppU ξ D) :
     Kills ξ UU := by
   intro f hf
@@ -109,6 +147,9 @@ theorem kills_of_suppU {ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} {D : Set (Sp k n)
   rw [hD] at this
   exact this
 
+/- English proof (translation)
+Establish `: NB Z = Bz Z ∩ {x | x ^ n = 0}`. Use extensionality with `x`. Simplify using `[NB, isNilpotent_iff_pow]`. Rewrite using `[this]`. Conclude with `(isClosed_Bz.inter (isClosed_eq (continuous_id.pow n) continuous_const)).prod isClosed_univ`.
+-/
 theorem isClosed_NB : IsClosed (NB Z ×ˢ (Set.univ : Set (Fin n → k))) := by
   have : NB Z = Bz Z ∩ {x | x ^ n = 0} := by
     ext x; simp [NB, isNilpotent_iff_pow]
@@ -116,12 +157,18 @@ theorem isClosed_NB : IsClosed (NB Z ×ˢ (Set.univ : Set (Fin n → k))) := by
   exact (isClosed_Bz.inter (isClosed_eq (continuous_id.pow n) continuous_const)).prod isClosed_univ
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Establish `h` using `action_mem_orbit_closure hZ (zero_mem Z) hg (q := q) ⟨hq.1.1, by simpa using hq.1.2⟩`. Conclude with `⟨⟨h.1, by simpa using h.2⟩, mem_univ _⟩`.
+-/
 theorem act_mem_NB (hZ : CR Z) {g : GL (Fin n) k} (hg : g ∈ Gz Z) {q : Sp k n}
     (hq : q ∈ NB Z ×ˢ (Set.univ : Set (Fin n → k))) : act g q ∈ NB Z ×ˢ (Set.univ : Set (Fin n → k)) := by
   have h := action_mem_orbit_closure hZ (zero_mem Z) hg (q := q) ⟨hq.1.1, by simpa using hq.1.2⟩
   exact ⟨⟨h.1, by simpa using h.2⟩, mem_univ _⟩
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Use `⟨⟨fun a ha => ?_, hq.1.2.smul _⟩, mem_univ _⟩` and prove the remaining obligations. Use `show a * ((t : k) • q.1) = (t : k) • q.1 * a`. Rewrite using `[mul_smul_comm, smul_mul_assoc, hq.1.1 a ha]`.
+-/
 theorem hom_mem_NB (t : kˣ) {q : Sp k n} (hq : q ∈ NB Z ×ˢ (Set.univ : Set (Fin n → k))) :
     hom t q ∈ NB Z ×ˢ (Set.univ : Set (Fin n → k)) := by
   refine ⟨⟨fun a ha => ?_, hq.1.2.smul _⟩, mem_univ _⟩
@@ -134,6 +181,37 @@ section Main
 
 variable {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)}
 
+/- English proof (translation)
+Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`. Introduce `T hT hTs D hD hinv hsig hcov ξ hξ hS Q hQ`. Establish `hT0 : T = ∅` using `Finset.card_eq_zero.1 (Nat.le_zero.1 hT)`.
+
+Substitute `hT0` using the available equality. Establish `hD0 : D ∩ UU = ∅`. Use `Set.eq_empty_of_forall_notMem fun q hq => ?_` and prove the remaining obligations. Simplify using `using hcov hq`. Conclude with `kills_aevalH t (kills_of_suppU hD0 hS) Q`.
+
+Consider the case `succ N ih`. Introduce `T hT hTs D hD hinv hsig hcov ξ hξ hS Q hQ`. Distinguish the cases in `hne : (D ∩ UU).Nonempty`. Use `swap`. Conclude with `kills_aevalH t (kills_of_suppU (Set.not_nonempty_iff_eq_empty.1 hne) hS) Q`.
+
+Take `⟨p₀, hp₀T, hO, hcl⟩` from `exists_open_orbit T (fun p hp => (hs p (hTs hp)).1) D hD hinv hcov hne`. Take `⟨hp₀2, K, L, g, hg, hgp, hK, hKo, hKc, hLo, hLKK, hLn1, hLn2, hm⟩` from `hs p₀ (hTs hp₀T)`. Use `set O := orb Z p₀ with hOdef`. Use `set U := (UU : Set (Sp k n)) ∩ (D \ O)ᶜ with hUdef`. Establish `hU : IsOpen U` using `PositivityTheory.RgUd.T.Nil.Orb.Oasm.isOpen_UU.inter hcl.isOpen_compl`.
+
+Establish `hUD : U ∩ D = O`. Use extensionality with `q`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, hqn⟩, hqD⟩`. Assume the negation of the conclusion as `hqO`.
+
+Conclude with `hqn ⟨hqD, hqO⟩`. Introduce `hqO`. Conclude with `⟨⟨orb_subset_UU hp₀2 hqO, fun h => h.2 hqO⟩, hO hqO⟩`. Establish `hstep` using `h4 n Z hZ t p₀ g hg hgp hp₀2 K hK hKo hKc L hLo hLKK hLn1 hLn2 D U hD hU hUD hinv hsig ξ hξ hS`. Establish `hDU : D \ U = D \ O`.
+
+Use extensionality with `q`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hqD, hqU⟩`. Use `⟨hqD, fun hqO => hqU ⟨orb_subset_UU hp₀2 hqO, fun h => h.2 hqO⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨hqD, hqO⟩`.
+
+Conclude with `⟨hqD, fun h => h.2 ⟨hqD, hqO⟩⟩`. Rewrite `hstep` using `[hDU, hm]`. Establish `hOinv : ∀ h ∈ Gz Z, ∀ q, act h q ∈ O → q ∈ O`. Introduce and unpack `h hh q ⟨g', hg', hg'q⟩`. Use `⟨h⁻¹ * g', (GzS Z).mul_mem ((GzS Z).inv_mem hh) hg', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[act_mul, hg'q, ← act_mul, inv_mul_cancel, act_one]`. Establish `hsig0 : hom t⁻¹ p₀ = act g⁻¹ p₀`. Establish `e1 : hom t⁻¹ (act g p₀) = p₀` using `by rw [hgp, hom_hom]`. Rewrite `e1` using `[hom_act]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hsigO : ∀ q, hom t q ∈ O → q ∈ O`. Introduce and unpack `q ⟨g', hg', hg'q⟩`. Use `⟨g' * g⁻¹, (GzS Z).mul_mem hg' ((GzS Z).inv_mem hg), ?_⟩` and prove the remaining obligations. Rewrite using `[act_mul, ← hsig0, ← hom_act, hg'q, hom_hom]`. Use `set T' := T.filter (fun p => orb Z p ≠ O) with hT'def`.
+
+Establish `hT'sub : T' ⊆ T.erase p₀`. Introduce `p hp`. Rewrite `hp` using `[Finset.mem_filter]`. Conclude with `Finset.mem_erase.2 ⟨fun h => hp.2 (by rw [h]), hp.1⟩`. Establish `hT'card : T'.card ≤ N`.
+
+Use `Finset.card_le_card hT'sub` as an intermediate fact. Rewrite `this` using `[Finset.card_erase_of_mem hp₀T]`. Use linear arithmetic over natural numbers and integers. Take `⟨Q0, hQ0⟩` from `hQ`. Use `set R := (∏ p ∈ T.erase p₀, (X - Polynomial.C (mm p))) * Q0 with hRdef`.
+
+Establish `hQR : Q = R * (X - Polynomial.C (mm p₀))`. Rewrite using `[hQ0, ← Finset.mul_prod_erase T _ hp₀T, hRdef]`. Expand and normalize the polynomial expressions, which then agree. Establish `hT'R : (∏ p ∈ T', (X - Polynomial.C (mm p))) ∣ R` using `dvd_mul_of_dvd_left (Finset.prod_dvd_prod_of_subset _ _ _ hT'sub) Q0`. Establish `key : aeval (pullH (n` using `n) t) Q ξ = aeval (pullH (n := n) t) R (pullH t ξ - mm p₀ • ξ) := by`.
+
+Rewrite using `[hQR, map_mul, Module.End.mul_apply, aeval_X_subH]`. Rewrite using `[key]`. Use `ih T' hT'card (fun p hp => hTs (Finset.mem_of_mem_filter p hp)) (D \ O) hcl ?_ ?_ ?_ _ (invU_sub_smul (invU_pullH t hξ) hξ _) hstep R hT'R` and prove the remaining obligations. Introduce and unpack `h hh q ⟨hqD, hqO⟩`. Conclude with `⟨hinv h hh q hqD, fun h' => hqO (hOinv h hh q h')⟩`.
+
+Introduce and unpack `q ⟨hqD, hqO⟩`. Conclude with `⟨hsig q hqD, fun h' => hqO (hsigO q h')⟩`. Introduce and unpack `q ⟨⟨hqD, hqO⟩, hqU⟩`. Take `⟨p, hpT, hqp⟩` from `Set.mem_iUnion₂.1 (hcov ⟨hqD, hqU⟩)`. Use `Set.mem_iUnion₂.2 ⟨p, Finset.mem_filter.2 ⟨hpT, fun h => hqO (h ▸ hqp)⟩, hqp⟩` and prove the remaining obligations.
+-/
 theorem main_ind (h4 : StepModH k) (hZ : CR Z) (t : kˣ) (mm : Sp k n → ℂ) (s : Finset (Sp k n))
     (hs : ∀ p ∈ s, p.2 ≠ 0 ∧ ∃ (K L : Subgroup (GL (Fin n) k)) (g : GL (Fin n) k), g ∈ Gz Z ∧ act g p = hom t p ∧
       K ≤ GzS Z ∧ IsOpen (((↑) : GzS Z → GL (Fin n) k) ⁻¹' (K : Set (GL (Fin n) k))) ∧
@@ -230,6 +308,23 @@ section Final
 
 variable (k) in
 
+/- English proof (translation)
+Introduce `hT _ n Z hZ hd t ht`. Take `⟨s, hs, hcov⟩` from `h3 n Z hZ`. Establish `H : ∀ p ∈ s, ∃ a : ℝ, 2 * a < dB0 Z ∧ ∃ (K L : Subgroup (GL (Fin n) k)) (g : GL (Fin n) k), g ∈ Gz Z ∧ act g p = hom t p ∧ K ≤ GzS Z ∧ IsOpen (((↑) : GzS Z → GL (Fin n) k) ⁻¹' (K : Set (GL (Fin n) k))) ∧ IsCompact (K : Set (GL (Fin n) k)) ∧ IsOpen (((↑) : GzS Z → GL (Fin n) k) ⁻¹ …`. Introduce `p hp`. Take `⟨hp1, hpn, hp2, P, w, hgr, hpos⟩` from `hs p hp`.
+
+Take `⟨a, ha, hat⟩` from `h5 hT n Z hZ hd p P w hp1 hpn hp2 hgr hpos`. Take `⟨K, L, g, hK, hKo, hKc, hLo, hLKK, hLn1, hLn2, hgval, hmod⟩` from `hat t ht`. Establish `hgr'` using `hgr t`. Simplify using `only [← hgval] at hgr'`. Take `⟨hgZ, hE, hv⟩` from `hgr'`.
+
+Establish `hgG : g ∈ Gz Z` using `fun b hb => hgZ b hb`. Establish `e1 : g.val * p.1 * g⁻¹.val = (t : k) • p.1`. Rewrite using `[hE, smul_mul_assoc, mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, mul_one]`. Establish `hact : act g p = hom t p` using `Prod.ext e1 hv`. Conclude with `⟨a, ha, K, L, g, hgG, hact, hK, hKo, hKc, hLo, hLKK, hLn1, hLn2, hmod⟩`.
+
+Use `choose! a ha hKLg using H`. Use `⟨s.toList.map a, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨p, hp, rfl⟩` from `List.mem_map.1 hx`. Conclude with `ha p (Finset.mem_toList.1 hp)`.
+
+Introduce `ξ hsupp hinv set mm : Sp k n → ℂ := fun p => (((nabs k t)⁻¹ ^ a p : ℝ) : ℂ) with hmm`. Establish `hprod : (polyH t (s.toList.map a) : Module.End ℂ ((Sp k n → ℂ) →ₗ[ℂ] ℂ)) = aeval (pullH (n` using `n) t) (∏ p ∈ s, (X - Polynomial.C (mm p))) := by`. Unfold `polyH`. Rewrite using `[← Finset.prod_map_toList s (fun p => X - Polynomial.C (mm p)), map_list_prod, List.map_map, List.map_map]`. Use `congr 1`.
+
+Use `List.map_congr_left fun p _ => ?_` and prove the remaining obligations. Simplify using `only [mm, Function.comp_apply, map_sub, aeval_X, aeval_C, Algebra.algebraMap_eq_smul_one]`. Both sides reduce to the same expression. Rewrite using `[hprod]`. Use `main_ind h4 hZ t mm s ?_ s.card s le_rfl subset_rfl (NB Z ×ˢ Set.univ) isClosed_NB (fun h hh q hq => act_mem_NB hZ hh hq) (fun q hq => hom_mem_NB t hq) ?_ ξ hinv hsupp _ dvd_rfl` and prove the remaining obligations.
+
+Introduce `p hp`. Take `⟨K, L, g, hgG, hact, hK, hKo, hKc, hLo, hLKK, hLn1, hLn2, hmod⟩` from `hKLg p hp`. Conclude with `⟨(hs p hp).2.2.1, K, L, g, hgG, hact, hK, hKo, hKc, hLo, hLKK, hLn1, hLn2, by rw [hmod]⟩`. Introduce and unpack `q ⟨⟨⟨hq1, hqn⟩, -⟩, hqU⟩`. Take `⟨p, hp, hqp⟩` from `hcov q.1 hq1 hqn q.2 hqU`.
+
+Conclude with `Set.mem_iUnion₂.2 ⟨p, hp, hqp⟩`.
+-/
 theorem orbQ_of (h3 : Reps0 k) (h4 : StepModH k) (h5 : ModH k) : OrbQ k := by
   classical
   intro hT _ n Z hZ hd t ht
@@ -277,6 +372,9 @@ theorem orbQ_of (h3 : Reps0 k) (h4 : StepModH k) (h5 : ModH k) : OrbQ k := by
       obtain ⟨p, hp, hqp⟩ := hcov q.1 hq1 hqn q.2 hqU
       exact Set.mem_iUnion₂.2 ⟨p, hp, hqp⟩
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.RgUd.TP.Nil.Orb.modBound0 k`.
+-/
 example : ModH k := PositivityTheory.RgUd.TP.Nil.Orb.modBound0 k
 
 end Final

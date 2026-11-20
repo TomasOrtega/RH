@@ -17,6 +17,9 @@ namespace GlobalTheory.LinePow
 
 variable {X : Scheme.{0}}
 
+/- English proof (translation)
+Rewrite using `[map_zpow, map_zpow, zpow_natCast, zpow_natCast, mul_pow, inv_pow]`.
+-/
 theorem res_pow_mul_inv {L M : LB X} (n : ℕ) (p p' : M.ι) (q q' : L.ι)
     (h : M.U p ⊓ L.U q ⊓ (M.U p' ⊓ L.U q') ≤ M.U p ⊓ M.U p')
     (h' : M.U p ⊓ L.U q ⊓ (M.U p' ⊓ L.U q') ≤ L.U q ⊓ L.U q') :
@@ -44,6 +47,9 @@ def secPow {L M : LB X} (w : LB.Sec (LB.div M L)) (n : ℕ) :
 
 def powMod (E : X.Modules) (n : ℕ) : X.Modules := toMod (GlobalTheory.AbLaw.pw (det E 1) n)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.VB.isVB_toMod (GlobalTheory.AbLaw.isLB_pw hE.isLB_det n)`.
+-/
 theorem isVB_powMod {E : X.Modules} (hE : IsVB E 1) (n : ℕ) : IsVB (powMod E n) 1 :=
   GlobalTheory.VB.isVB_toMod (GlobalTheory.AbLaw.isLB_pw hE.isLB_det n)
 
@@ -55,14 +61,23 @@ def powHom {E E' : X.Modules} (hE : IsVB E 1) (hE' : IsVB E' 1) (ψ : E' ⟶ E) 
 def frm {E : X.Modules} (hE : IsVB E 1) (n : ℕ) (c : Chart E 1) : Fin 1 → Γ(powMod E n, c.U) :=
   fun _ => GlobalTheory.LB.chartSec (GlobalTheory.AbLaw.isLB_pw hE.isLB_det n) c
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.VB.isFrame_chartSec (GlobalTheory.AbLaw.isLB_pw hE.isLB_det n) c`.
+-/
 theorem isFrame_frm {E : X.Modules} (hE : IsVB E 1) (n : ℕ) (c : Chart E 1) : IsFrame (frm hE n c) :=
   GlobalTheory.VB.isFrame_chartSec (GlobalTheory.AbLaw.isLB_pw hE.isLB_det n) c
 
+/- English proof (translation)
+The claim follows from `congrFun ((he V h).1 (a₁ := fun _ => a) (a₂ := fun _ => b) (by simpa [Fintype.linearCombination_apply] using hab)) 0`.
+-/
 theorem eq_of_smul_eq {E : X.Modules} {U V : X.Opens} {e : Fin 1 → Γ(E, U)} (he : IsFrame e)
     (h : V ≤ U) {a b : Γ(X, V)} (hab : a • resM E h (e 0) = b • resM E h (e 0)) : a = b :=
   congrFun ((he V h).1 (a₁ := fun _ => a) (a₂ := fun _ => b)
     (by simpa [Fintype.linearCombination_apply] using hab)) 0
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.LB.resG_homFun hL hM (homOfSec hL hM w) p q (le_inf hp hq)`. Rewrite `h` using `[← GlobalTheory.LB.homCoord_secOfHom, GlobalTheory.LB.secOfHom_homOfSec]`. Rewrite using `[h]`. Conclude with `((GlobalTheory.LB.chartEquiv hM p hp).symm_apply_apply _).symm`.
+-/
 theorem homOfSec_app_chartSec {L M : LB X} (hL : L.IsLB) (hM : M.IsLB) (w : LB.Sec (LB.div M L))
     (p : M.ι) (q : L.ι) {V : X.Opens} (hp : V ≤ M.U p) (hq : V ≤ L.U q) :
     (homOfSec hL hM w).app V (resM _ hq (GlobalTheory.LB.chartSec hL q)) =
@@ -72,6 +87,9 @@ theorem homOfSec_app_chartSec {L M : LB X} (hL : L.IsLB) (hM : M.IsLB) (w : LB.S
   rw [h]
   exact ((GlobalTheory.LB.chartEquiv hM p hp).symm_apply_apply _).symm
 
+/- English proof (translation)
+The claim follows from `(homOfSec_app_chartSec (GlobalTheory.AbLaw.isLB_pw hL n) (GlobalTheory.AbLaw.isLB_pw hM n) (secPow w n) p q hp hq).trans (congrArg (· • resM _ hp (GlobalTheory.LB.chartSec (GlobalTheory.AbLaw.isLB_pw hM n) p)) (map_pow (resG X (le_inf hp hq)) (homCoord w p q) n))`.
+-/
 theorem homOfSec_secPow_app_chartSec {L M : LB X} (hL : L.IsLB) (hM : M.IsLB) (w : LB.Sec (LB.div M L))
     (n : ℕ) (p : M.ι) (q : L.ι) {V : X.Opens} (hp : V ≤ M.U p) (hq : V ≤ L.U q) :
     (homOfSec (GlobalTheory.AbLaw.isLB_pw hL n) (GlobalTheory.AbLaw.isLB_pw hM n) (secPow w n)).app V
@@ -81,12 +99,20 @@ theorem homOfSec_secPow_app_chartSec {L M : LB X} (hL : L.IsLB) (hM : M.IsLB) (w
     (congrArg (· • resM _ hp (GlobalTheory.LB.chartSec (GlobalTheory.AbLaw.isLB_pw hM n) p))
       (map_pow (resG X (le_inf hp hq)) (homCoord w p q) n))
 
+/- English proof (translation)
+Rewrite using `[app_resM, ← GlobalTheory.VB.wedge_frame hE c]`. Conclude with `congrArg _ (congrArg (GlobalTheory.VB.wedge E c.U 1) (funext fun j => congrArg c.e (Subsingleton.elim _ _)))`.
+-/
 theorem isoDet_hom_app {E : X.Modules} (hE : IsVB E 1) (c : Chart E 1) {V : X.Opens} (h : V ≤ c.U) :
     hE.isoDet.hom.app V (resM E h (c.e 0)) = resM _ h (GlobalTheory.LB.chartSec hE.isLB_det c) := by
   rw [app_resM, ← GlobalTheory.VB.wedge_frame hE c]
   exact congrArg _ (congrArg (GlobalTheory.VB.wedge E c.U 1)
     (funext fun j => congrArg c.e (Subsingleton.elim _ _)))
 
+/- English proof (translation)
+Establish `h1` using `homOfSec_app_chartSec hE'.isLB_det hE.isLB_det (secOfHom hE'.isLB_det hE.isLB_det (hE'.isoDet.inv ≫ ψ ≫ hE.isoDet.hom)) c c' h h'`. Rewrite `h1` using `[GlobalTheory.LB.homOfSec_secOfHom]`. Establish `h0 : (hE'.isoDet.inv ≫ ψ ≫ hE.isoDet.hom).app V (hE'.isoDet.hom.app V (resM E' h' (c'.e 0))) = a • hE.isoDet.hom.app V (resM E h (c.e 0))`. Rewrite using `[GlobalTheory.QCoh.app_app, Iso.hom_inv_id_assoc, ← GlobalTheory.QCoh.app_app, ha, Scheme.Modules.Hom.app_smul]`. Rewrite `h0` using `[isoDet_hom_app, isoDet_hom_app]`.
+
+Establish `h2` using `eq_of_smul_eq (GlobalTheory.VB.isFrame_chartSec hE.isLB_det c) h (h0.symm.trans h1)`. Establish `h3` using `homOfSec_secPow_app_chartSec hE'.isLB_det hE.isLB_det (secOfHom hE'.isLB_det hE.isLB_det (hE'.isoDet.inv ≫ ψ ≫ hE.isoDet.hom)) n c c' h h'`. Rewrite `h3` using `[← h2]`. Conclude with `h3`.
+-/
 theorem powHom_app_frm {E E' : X.Modules} (hE : IsVB E 1) (hE' : IsVB E' 1) (ψ : E' ⟶ E) (n : ℕ)
     (c : Chart E 1) (c' : Chart E' 1) {V : X.Opens} (h : V ≤ c.U) (h' : V ≤ c'.U) {a : Γ(X, V)}
     (ha : ψ.app V (resM E' h' (c'.e 0)) = a • resM E h (c.e 0)) (i j : Fin 1) :
@@ -104,6 +130,11 @@ theorem powHom_app_frm {E E' : X.Modules} (hE : IsVB E 1) (hE' : IsVB E' 1) (ψ 
   rw [← h2] at h3
   exact h3
 
+/- English proof (translation)
+Establish `h1` using `congrArg (hE.isoDet.hom.app V) ha`. Rewrite `h1` using `[Scheme.Modules.Hom.app_smul, isoDet_hom_app, isoDet_hom_app]`. Establish `h2` using `(GlobalTheory.LB.bijective_smul_chartSec hE.isLB_det c V h).1 (h1.symm.trans (GlobalTheory.LB.map_chartSec_change hE.isLB_det c c' h h'))`. Use `(GlobalTheory.LB.map_chartSec_change (GlobalTheory.AbLaw.isLB_pw hE.isLB_det n) c c' h h').trans (congrArg (· • _) ?_)` and prove the remaining obligations. Rewrite using `[h2, ← map_pow, ← Units.val_pow_eq_pow_val, ← zpow_natCast]`.
+
+Both sides reduce to the same expression.
+-/
 theorem resM_frm {E : X.Modules} (hE : IsVB E 1) (n : ℕ) (c c' : Chart E 1) {V : X.Opens}
     (h : V ≤ c.U) (h' : V ≤ c'.U) {a : Γ(X, V)} (ha : resM E h' (c'.e 0) = a • resM E h (c.e 0))
     (i j : Fin 1) : resM _ h' (frm hE n c' i) = a ^ n • resM _ h (frm hE n c j) := by
@@ -116,11 +147,19 @@ theorem resM_frm {E : X.Modules} (hE : IsVB E 1) (n : ℕ) (c c' : Chart E 1) {V
   rw [h2, ← map_pow, ← Units.val_pow_eq_pow_val, ← zpow_natCast]
   rfl
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `(he V h).2 s`. Conclude with `⟨a 0, by simp [Fintype.linearCombination_apply]⟩`.
+-/
 theorem exists_eq_smul {E : X.Modules} {U V : X.Opens} {e : Fin 1 → Γ(E, U)} (he : IsFrame e)
     (h : V ≤ U) (s : Γ(E, V)) : ∃ a : Γ(X, V), s = a • resM E h (e 0) := by
   obtain ⟨a, rfl⟩ := (he V h).2 s
   exact ⟨a 0, by simp [Fintype.linearCombination_apply]⟩
 
+/- English proof (translation)
+Use `choose U e hx he h using h`. Establish `hU : ⨆ x, U x = ⊤` using `top_le_iff.1 fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨x, hx x⟩`. Use extensionality with `V s : 3`. Use `GlobalTheory.Twist.sec_ext_of_cover (fun x => V ⊓ U x) (fun _ => inf_le_left) (GlobalTheory.LB.le_iSup_inf hU V) fun x => ?_` and prove the remaining obligations. Rewrite using `[← app_resM, ← app_resM]`.
+
+Take `⟨a, ha⟩` from `(he x _ (inf_le_right : V ⊓ U x ≤ U x)).2 (resM F inf_le_left s)`. Rewrite using `[← ha]`. Simplify using `only [Fintype.linearCombination_apply, map_sum, Scheme.Modules.Hom.app_smul, app_resM, h]`.
+-/
 theorem hom_ext_of_frames {F G : X.Modules} {φ ψ : F ⟶ G} {ι : Type} [Fintype ι]
     (h : ∀ x : X, ∃ (U : X.Opens) (e : ι → Γ(F, U)), x ∈ U ∧ IsFrame e ∧
       ∀ i, φ.app U (e i) = ψ.app U (e i)) : φ = ψ := by
@@ -134,6 +173,17 @@ theorem hom_ext_of_frames {F G : X.Modules} {φ ψ : F ⟶ G} {ι : Type} [Finty
   rw [← ha]
   simp only [Fintype.linearCombination_apply, map_sum, Scheme.Modules.Hom.app_smul, app_resM, h]
 
+/- English proof (translation)
+Establish `key (k l : κ) {V : X.Opens} (hk : V ≤ U k) (hl : V ≤ U l) (s : Γ(F, V)) : (he k).equiv (hf k) hk s = (he l).equiv (hf l) hl s`. Take `⟨b, rfl⟩` from `exists_eq_smul (he l) hl s`. Take `⟨a, h₁, h₂⟩` from `h k l`. Establish `h₁'` using `congrArg (resM F (le_inf hk hl)) h₁`. Establish `h₂'` using `congrArg (resM G (le_inf hk hl)) h₂`.
+
+Rewrite `h₁'`, `h₂'` using `[resM_smul, resM_resM, resM_resM]`. Rewrite using `[map_smul, map_smul, IsFrame.equiv_resM_frame, h₁', map_smul, IsFrame.equiv_resM_frame, h₂']`. Establish `H (V : X.Opens) (s : Γ(F, V)) : ∃ t : Γ(G, V), ∀ k, resM G inf_le_left t = (he k).equiv (hf k) (inf_le_right : V ⊓ U k ≤ U k) (resM F inf_le_left s)` using `GlobalTheory.Twist.exists_sec_of_cover (fun k => V ⊓ U k) (fun _ => inf_le_left) (GlobalTheory.LB.le_iSup_inf hU V) _ fun k l => by`. Rewrite using `[← IsFrame.equiv_resM, ← IsFrame.equiv_resM, resM_resM, resM_resM]`. Conclude with `key k l _ _ _`.
+
+Use `choose t ht using H`. Establish `ext {V : X.Opens} {a b : Γ(G, V)} (e : ∀ k, resM G (inf_le_left : V ⊓ U k ≤ V) a = resM G inf_le_left b) : a = b` using `GlobalTheory.Twist.sec_ext_of_cover (fun k => V ⊓ U k) (fun _ => inf_le_left) (GlobalTheory.LB.le_iSup_inf hU V) e`. Establish `ht' (V : X.Opens) (s : Γ(F, V)) (k : κ) (W : X.Opens) (h₁ : W ≤ V) (h₂ : W ≤ U k) : resM G h₁ (t V s) = (he k).equiv (hf k) h₂ (resM F h₁ s)`. Use `congrArg (resM G (le_inf h₁ h₂)) (ht V s k)` as an intermediate fact. Rewrite `this` using `[← IsFrame.equiv_resM, resM_resM, resM_resM]`. Then use the resulting hypothesis.
+
+Set `θ : F ⟶ G` to `GlobalTheory.LB.homOfLinear (fun V => { toFun := t V map_add' := fun a b => ext fun k => by simp only [map_add, ht] map_smul' := fun a b => ext fun k => by simp only [resM_smul, ht, map_smul, RingHom.id_apply] }) fun {V W} hW s => ext fun k => by`. Express the relevant statement in the definitionally equal form `resM G _ (t W (resM F hW s)) = resM G _ (resM G hW (t V s))`. Rewrite using `[ht, resM_resM, resM_resM, ht' V s k _ _ inf_le_right]`. Establish `hθ (k : κ) (i : Fin 1) : θ.app (U k) (e k i) = f k i`. Use `ht' (U k) (e k i) k (U k) le_rfl le_rfl` as an intermediate fact.
+
+Rewrite `this` using `[IsFrame.equiv_resM_frame, GlobalTheory.Twist.resM_self, GlobalTheory.Twist.resM_self]`. Then use the resulting hypothesis. Use `haveI : IsIso θ := GlobalTheory.VB.isIso_of_frames θ fun x => by`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hU.ge (TopologicalSpace.Opens.mem_top x))`. Conclude with `⟨U k, e k, hk, he k, by rw [funext (hθ k)]; exact hf k⟩`. Conclude with `⟨asIso θ, hθ⟩`.
+-/
 theorem exists_iso_of_frames {F G : X.Modules} {κ : Type} {U : κ → X.Opens} (hU : ⨆ k, U k = ⊤)
     {e : ∀ k, Fin 1 → Γ(F, U k)} {f : ∀ k, Fin 1 → Γ(G, U k)} (he : ∀ k, IsFrame (e k))
     (hf : ∀ k, IsFrame (f k))

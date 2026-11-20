@@ -6,6 +6,13 @@ open Matrix Polynomial
 
 namespace UpperTheory.ConvolutionTheory.D
 
+/- English proof (translation)
+Establish `h1 : reflect n (cp g⁻¹) = ((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R).charpolyRev`. Rewrite using `[← Matrix.reverse_charpoly, Polynomial.reverse, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin, cp]`. Establish `h2` using `Matrix.charpoly_inv ((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) (Units.isUnit _)`. Establish `h3` using `Matrix.det_eq_sign_charpoly_coeff ((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R)`. Rewrite `h2` using `[← Matrix.coe_units_inv, inv_inv]`.
+
+Establish `h4 : IsUnit ((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (Units.isUnit _)`. Establish `h5` using `Ring.mul_inverse_cancel _ h4`. Rewrite using `[h1, cp, cp, h2]`. Use `nth_rewrite 1 [h3] at h5`. Establish `h6` using `congrArg (C : R → R[X]) h5`.
+
+Simplify using `only [map_mul, map_pow, map_neg, map_one] at h6`. Take the linear combination `(-((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R).charpolyRev) * h6`.
+-/
 private lemma reflect_cp_inv {R : Type} [CommRing R] [Nontrivial R] {n : ℕ} (g : GL (Fin n) R) :
     reflect n (cp g⁻¹) = C ((cp g⁻¹).coeff 0) * cp g := by
   have h1 : reflect n (cp g⁻¹) = ((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R).charpolyRev := by
@@ -22,16 +29,31 @@ private lemma reflect_cp_inv {R : Type} [CommRing R] [Nontrivial R] {n : ℕ} (g
   simp only [map_mul, map_pow, map_neg, map_one] at h6
   linear_combination (-((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R).charpolyRev) * h6
 
+/- English proof (translation)
+Rewrite using `[ct, ct, ct, ← Matrix.transpose_mul, Matrix.map_mul]`.
+-/
 private lemma ct_mul {k R : Type} [CommRing k] [CommRing R] [Algebra k R] (c : R ≃ₐ[k] R) {n : ℕ}
     (A B : Matrix (Fin n) (Fin n) R) : ct c (A * B) = ct c B * ct c A := by
   rw [ct, ct, ct, ← Matrix.transpose_mul, Matrix.map_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `congrArg (fun f : R ≃ₐ[k] R => f (A i j)) hc` as an intermediate fact. Simplify `this` using `[ct, pow_two]`.
+-/
 private lemma ct_ct {k R : Type} [CommRing k] [CommRing R] [Algebra k R] (c : R ≃ₐ[k] R) (hc : c ^ 2 = 1) {n : ℕ}
     (A : Matrix (Fin n) (Fin n) R) : ct c (ct c A) = A := by
   ext i j
   have := congrArg (fun f : R ≃ₐ[k] R => f (A i j)) hc
   simpa [ct, pow_two] using this
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `(Matrix.isUnit_iff_isUnit_det J).2 hJ`. Establish `h1 : ct c (g : Matrix (Fin n) (Fin n) R) = u.val * ((g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) * (u⁻¹).val`. Rewrite `h` using `[cong]`. Use `nth_rewrite 1 [← h]`. Simplify using `only [mul_assoc, Units.mul_inv_cancel_left, Units.mul_inv, mul_one]`.
+
+Establish `h2 : (cp g).map (c : R →+* R) = cp g⁻¹`. Establish `h3` using `congrArg Matrix.charpoly h1`. Rewrite `h3` using `[Matrix.coe_units_inv u, Matrix.charpoly_units_conj, ct, Matrix.charpoly_transpose]`. Rewrite using `[cp, cp, ← h3, ← Matrix.charpoly_map]`. Both sides reduce to the same expression.
+
+Use `⟨Matrix.charpoly_monic _, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cp, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Establish `h4 : IsUnit (g : Matrix (Fin n) (Fin n) R).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (Units.isUnit _)`. Rewrite `h4` using `[Matrix.det_eq_sign_charpoly_coeff]`. Conclude with `isUnit_of_mul_isUnit_right h4`.
+
+Establish `h5 : c ((cp g).coeff 0) = (cp g⁻¹).coeff 0`. Rewrite using `[← h2, Polynomial.coeff_map]`. Both sides reduce to the same expression. Rewrite using `[h2, h5, reflect_cp_inv]`.
+-/
 private lemma csr_of_cong {k R : Type} [CommRing k] [CommRing R] [Algebra k R] [Nontrivial R] (c : R ≃ₐ[k] R) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) R) (g : GL (Fin n) R) (hJ : IsUnit J.det) (h : cong c g J = J) :
     IsCsr c n (cp g) := by
@@ -57,6 +79,11 @@ private lemma csr_of_cong {k R : Type} [CommRing k] [CommRing R] [Algebra k R] [
       rfl
     rw [h2, h5, reflect_cp_inv]
 
+/- English proof (translation)
+Introduce `k R _ _ _ _ c hc n`. Use `⟨fun J g hJ h => csr_of_cong c J g hJ h, fun d => ?_⟩` and prove the remaining obligations. Use `csr_of_cong c ((d⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) _ ((Matrix.isUnit_iff_isUnit_det _).1 (Units.isUnit _)) ?_` and prove the remaining obligations. Establish `h1 : (th c d).val = ct c (d⁻¹ : GL (Fin n) R).val` using `rfl`. Establish `h2 : ct c d.val * (th c d).val = 1` using `(th c d).inv_val`.
+
+Rewrite using `[cong, Units.val_mul, ct_mul]`. Use `nth_rewrite 1 [h1]`. Rewrite using `[ct_ct c hc]`. Simplify using `only [mul_assoc, Units.inv_mul_cancel_left, h2, mul_one]`.
+-/
 theorem csrOf : CsrOf := by
   intro k R _ _ _ _ c hc n
   refine ⟨fun J g hJ h => csr_of_cong c J g hJ h, fun d => ?_⟩

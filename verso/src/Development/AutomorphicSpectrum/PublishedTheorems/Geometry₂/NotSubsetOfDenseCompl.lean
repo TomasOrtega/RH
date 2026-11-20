@@ -29,6 +29,9 @@ inductive IsSncBlowupSeq {S X : Scheme.{0}} (g : X ⟶ S) (E : Closeds X) :
       IsSncBlowupSeq g E s E₁ → Smooth (s ≫ g) → Smooth (Z.subschemeι ≫ s ≫ g) → IsSncCentre E₁ Z →
       FinalTheorems.Blowup π Z → IsSncBlowupSeq g E (π ≫ s) (totalTransform π Z E₁)
 
+/- English proof (translation)
+Proceed by induction on `h with`. Consider the case `id => exact IsSmoothBlowupSeq.id`. Consider the case `step Z π _ _ hZ _ hB ih => exact IsSmoothBlowupSeq.step Z π ih hZ (Set.subset_univ _) hB`.
+-/
 theorem IsSncBlowupSeq.isSmoothBlowupSeq {S X X' : Scheme.{0}} {g : X ⟶ S} {E : Closeds X} {s : X' ⟶ X}
     {E' : Closeds X'} (h : IsSncBlowupSeq g E s E') : IsSmoothBlowupSeq g Set.univ s := by
   induction h with
@@ -67,12 +70,20 @@ def PrincipalisationCharZero : Prop :=
 
 namespace SncBlowup
 
+/- English proof (translation)
+Introduce `C hC h` and use `by obtain ⟨o, ho, hne, hoC⟩ := NoetherianSpace.exists_isOpen_nonempty_subset_irreducibleComponent C hC obtain ⟨x, hx, hxT⟩ := hT.inter_open_nonempty o ho hne exact hxT (h (hoC hx))`.
+-/
 theorem not_subset_of_dense_compl {X : Type*} [TopologicalSpace X] [NoetherianSpace X] {T : Set X}
     (hT : Dense Tᶜ) : ∀ C ∈ irreducibleComponents X, ¬ C ⊆ T := fun C hC h => by
   obtain ⟨o, ho, hne, hoC⟩ := NoetherianSpace.exists_isOpen_nonempty_subset_irreducibleComponent C hC
   obtain ⟨x, hx, hxT⟩ := hT.inter_open_nonempty o ho hne
   exact hxT (h (hoC hx))
 
+/- English proof (translation)
+Introduce `C hC hsub`. Rewrite `hC` using `[irreducibleComponents_eq_singleton, Set.mem_singleton_iff]`. Substitute `hC` using the available equality. Apply `hI` to reduce the goal to its premises. Rewrite using `[← Scheme.IdealSheafData.support_eq_top_iff]`.
+
+Use extensionality with `x`. Simplify using `only [TopologicalSpace.Closeds.coe_top, Set.mem_univ, iff_true]`. Conclude with `hsub (Set.mem_univ x)`.
+-/
 theorem not_subset_of_ne_bot {X : Scheme.{0}} [IsIntegral X] {I : X.IdealSheafData} (hI : I ≠ ⊥) :
     ∀ C ∈ irreducibleComponents X, ¬ C ⊆ (I.support : Set X) := by
   intro C hC hsub

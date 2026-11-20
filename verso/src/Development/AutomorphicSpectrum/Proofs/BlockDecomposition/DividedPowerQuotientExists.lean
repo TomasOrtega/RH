@@ -6,6 +6,9 @@ open CategoryTheory AlgebraicGeometry CrystallineSemistableComparison Crystallin
 
 namespace GlobalTheory.CompanionTheory.PdTF
 
+/- English proof (translation)
+Take `⟨δ₀, -, hδ₀⟩` from `exists_dividedPowers hS I hI`. Establish `hsub : DividedPowers.IsSubDPIdeal δ₀ (J ⊓ I)` using `{ isSubideal := inf_le_right dpow_mem := fun n hn j hj => ⟨hJ j hj.2 hj.1 n hn _ (δ₀.factorial_mul_dpow_eq_pow hj.2), δ₀.dpow_mem hn hj.2⟩ }`. Use `⟨DividedPowers.Quotient.dividedPowers δ₀ hsub, rfl, fun k x y hx e => ?_⟩` and prove the remaining obligations. Rewrite using `[DividedPowers.Quotient.dpow_apply δ₀ hsub hx]`. Conclude with `congrArg _ (hδ₀ k x y hx e)`.
+-/
 theorem exists_dividedPowers_map_quotient {S : Type} [CommRing S] (hS : TF S) (I J : Ideal S)
     (hI : PdI I)
     (hJ : ∀ x ∈ I, x ∈ J → ∀ k : ℕ, k ≠ 0 → ∀ y : S, (k.factorial : S) * y = x ^ k → y ∈ J) :

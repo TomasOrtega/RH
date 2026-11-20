@@ -12,12 +12,20 @@ namespace GlobalTheory.SupConstSize
 open NumberField MeasureTheory in
 open scoped ENNReal in
 
+/- English proof (translation)
+Establish `h` using `IsTotallyComplex.finrank E`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem _root_.GlobalTheory.SupConstSize.finrank_eq_two_fdeg (E : Type) [Field E] [NumberField E] [IsCMField E] :
     Module.finrank ℚ E = 2 * _root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E := by
   have h := IsTotallyComplex.finrank E
   unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg
   omega
 
+/- English proof (translation)
+Unfold `dE`. Establish `h` using `NumberField.discr_ne_zero E`. Establish `: (1 : ℤ) ≤ |discr E|` using `Int.one_le_abs h`. Establish `h2 : ((|discr E| : ℤ) : ℝ) = |((discr E : ℤ) : ℝ)|` using `Int.cast_abs`. Rewrite using `[← h2]`.
+
+Conclude with `this` after adjusting the coercions.
+-/
 theorem one_le_dE (E : Type) [Field E] [NumberField E] : 1 ≤ dE E := by
   unfold dE
   have h := NumberField.discr_ne_zero E
@@ -30,6 +38,27 @@ end GlobalTheory.SupConstSize
 namespace GlobalTheory.SupConstSize
 open Real
 
+/- English proof (translation)
+Establish `hn` using `finrank_eq_two_fdeg E`. Establish `hf1 : 1 ≤ fdeg E`. Establish `: 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Use linear arithmetic over natural numbers and integers. Establish `hfR : (1 : ℝ) ≤ fdeg E` using `by exact_mod_cast hf1`.
+
+Establish `hrR : (2 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hMR : (1 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hd1` using `one_le_dE E`. Establish `hd0 : 0 < dE E` using `by linarith`. Establish `hh : 1 ≤ classNumber E` using `classNumber_pos E`.
+
+Establish `hhR : (1 : ℝ) ≤ classNumber E` using `by exact_mod_cast hh`. Establish `hrd : rdE E = dE E ^ (1 / (2 * (fdeg E : ℝ)))`. Unfold `rdE`. Rewrite using `[hn]`. Use `push_cast`.
+
+Put the polynomial expressions in normal form. Establish `hrd1 : 1 ≤ rdE E`. Rewrite using `[hrd]; exact Real.one_le_rpow hd1 (by positivity)`. Establish `hlrd : Real.log (rdE E) = Real.log (dE E) / (2 * fdeg E)`. Rewrite using `[hrd, Real.log_rpow hd0]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hexp0 : 0 ≤ (fdeg E : ℝ) * ((r : ℝ) ^ 2 - 1) / 2`. Establish `: (1:ℝ) ≤ (r:ℝ)^2` using `by nlinarith`. Establish `: 0 ≤ (r:ℝ)^2 - 1` using `by linarith`. Check the signs of the components of the expression.
+
+Establish `hm : massLev E r M = 2 * ((classNumber E : ℝ) * (M : ℝ) ^ (2 * fdeg E)) * (M : ℝ) ^ (2 * fdeg E * r ^ 2) * rdE E ^ ((fdeg E : ℝ) * ((r : ℝ) ^ 2 - 1) / 2)`. Unfold `massLev GlobalTheory.UCls.massBd`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hA : 1 ≤ (classNumber E : ℝ) * (M : ℝ) ^ (2 * fdeg E)` using `one_le_mul_of_one_le_of_one_le hhR (one_le_pow₀ hMR)`.
+
+Establish `hB : 1 ≤ (M : ℝ) ^ (2 * fdeg E * r ^ 2)` using `one_le_pow₀ hMR`. Establish `hC : 1 ≤ rdE E ^ ((fdeg E : ℝ) * ((r : ℝ) ^ 2 - 1) / 2)` using `Real.one_le_rpow hrd1 hexp0`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hm]`. Use `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hA hB) hC` as an intermediate fact.
+
+Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hm, Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_pow, Real.log_pow, Real.log_rpow (by linarith), hlrd]`. Establish `hlh` using `GlobalTheory.log_classNumber_le_log_abs_discr_div E (fdeg E) hn`. Establish `hfr' : Real.log (fdeg E) + Real.log r ≤ L`. Rewrite using `[← Real.log_mul (by positivity) (by positivity)]; exact hfr`.
+
+Establish `hlM0 : 0 ≤ Real.log M` using `Real.log_nonneg hMR`. Establish `hlrd0 : 0 ≤ Real.log (dE E) / (2 * fdeg E)` using `div_nonneg (Real.log_nonneg hd1) (by positivity)`. Establish `hlrd2 : Real.log (dE E) / (2 * fdeg E) ≤ 2 * L`. Rewrite using `[div_le_iff₀ (by positivity)]; linarith`. Establish `key` using `(GlobalTheory.log_size_bounds_class_number_volume (fdeg E) r L (Real.log (dE E) / (2 * fdeg E)) (Real.log M) (Real.log (classNumber E)) 1 1 ((fdeg E : ℝ) * r * (r - 1) / 2) hfR hrR hL hfr' hlrd0 hlrd2 hlM0 hlM (by unfold dE at *; exact hlh) le_rfl (by simp [hlrd0]) one_pos rfl).2 …`.
+
+Use `push_cast`. Use polynomial arithmetic with `[key]`.
+-/
 theorem massLev_size (E : Type) [Field E] [NumberField E] [IsCMField E] (r M : ℕ) (L : ℝ)
     (hr : 2 ≤ r) (hM : 1 ≤ M) (hL : 1 ≤ L) (hfr : Real.log (fdeg E * r) ≤ L)
     (hlM : Real.log M ≤ 30 * L) (hdE : Real.log (dE E) ≤ 4 * fdeg E * L) :
@@ -90,6 +119,17 @@ open NumberField MeasureTheory in
 open scoped ENNReal in
 open Real in
 
+/- English proof (translation)
+Establish `hd' : (1 : ℝ) ≤ d` using `by exact_mod_cast hd`. Establish `hM' : (1 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hs : 1 ≤ Real.sqrt d` using `Real.one_le_sqrt.mpr hd'`. Establish `hA : 1 ≤ (_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ) * w` using `one_le_mul_of_one_le_of_one_le hf hw`. Establish `hB : 1 ≤ (M : ℝ) * Real.sqrt d` using `one_le_mul_of_one_le_of_one_le hM' hs`.
+
+Establish `hl2` using `Real.log_two_lt_d9`. Establish `hl0 : 0 < Real.log 2` using `Real.log_pos one_lt_two`. Establish `hpi` using `Real.pi_gt_three`. Establish `hden : 0 < 2 * (M : ℝ) * Real.sqrt d * ((_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ) * w + 2) * 1 * Real.log 2` using `by positivity`. Establish `hpos : 0 < Real.pi / (2 * (M : ℝ) * Real.sqrt d * ((_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ) * w + 2) * 1 * Real.log 2)` using `div_pos Real.pi_pos hden`.
+
+Establish `e : 3 * (_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ) * w * M * Real.sqrt d = 3 * ((_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ) * w) * ((M : ℝ) * Real.sqrt d)`. Expand and normalize the polynomial expressions, which then agree. Unfold `_root_.GlobalTheory.LevGeo.epsLev _root_.ReciprocityTheory.ChartRestriction.G.FD.epStar`. Use `⟨lt_min one_pos hpos, min_le_left _ _, le_min ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[e, div_le_one (by positivity)]`.
+
+Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hA) (sub_nonneg.2 hB)]`. Rewrite using `[e, div_le_div_iff₀ (by positivity) hden]`. Establish `hAB : 0 < (M : ℝ) * Real.sqrt d` using `by linarith`. Establish `key : 2 * ((_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ) * w + 2) * Real.log 2 ≤ 3 * Real.pi * ((_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ) * w)`. Use polynomial arithmetic with `[mul_lt_mul_of_pos_left hl2 (by linarith : (0 : ℝ) < (_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ) * w), mul_lt_mul_of_pos_left hpi (by linarith : (0 : ℝ) < (_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ) * w)]`.
+
+Establish `e1 : 1 * (2 * (M : ℝ) * Real.sqrt d * ((_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ) * w + 2) * 1 * Real.log 2) = ((M : ℝ) * Real.sqrt d) * (2 * ((_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ) * w + 2) * Real.log 2)` using `by ring`. Establish `e2 : Real.pi * (3 * ((_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ) * w) * ((M : ℝ) * Real.sqrt d)) = ((M : ℝ) * Real.sqrt d) * (3 * Real.pi * ((_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ) * w))` using `by ring`. Rewrite using `[e1, e2]`. Conclude with `mul_le_mul_of_nonneg_left key hAB.le`.
+-/
 theorem _root_.GlobalTheory.SupConstSize.epsLev_bounds (E : Type) [Field E] [NumberField E] (d M : ℕ) (w : ℝ)
     (hf : 1 ≤ (_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ)) (hd : 1 ≤ d) (hM : 1 ≤ M) (hw : 1 ≤ w) :
     0 < _root_.GlobalTheory.LevGeo.epsLev E d M w ∧ _root_.GlobalTheory.LevGeo.epsLev E d M w ≤ 1 ∧
@@ -127,6 +167,19 @@ open NumberField MeasureTheory in
 open scoped ENNReal in
 open Real in
 
+/- English proof (translation)
+Use `⟨_root_.GlobalTheory.LevGeo.one_le_multBd E r hε, ?_⟩` and prove the remaining obligations. Establish `hdE : 1 ≤ _root_.ReciprocityTheory.ChartRestriction.G.FD.dE E`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.dE`. Establish `h : (1 : ℤ) ≤ |discr E|` using `Int.one_le_abs (discr_ne_zero E)`. Conclude with `h` after adjusting the coercions.
+
+Establish `hB0 : 0 < B` using `by linarith`. Establish `hinv : 1 / ε ≤ B` using `(one_div_le hε hB0).2 hεB`. Establish `hX : 1 + 2 * (2 * (_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ) * r) ^ 2 * _root_.ReciprocityTheory.ChartRestriction.G.FD.dE E / ε ≤ 16 * (_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2 * _root_.ReciprocityTheory.ChartRestriction.G.FD.d …`. Establish `h1 : 2 * (2 * (_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ) * r) ^ 2 * _root_.ReciprocityTheory.ChartRestriction.G.FD.dE E / ε ≤ 8 * (_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2 * _root_.ReciprocityTheory.ChartRestriction.G.FD.dE E * …`. Rewrite using `[div_eq_mul_one_div]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h2 : 1 ≤ (_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2 * _root_.ReciprocityTheory.ChartRestriction.G.FD.dE E * B` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_pow₀ hf) (one_le_pow₀ hr)) hdE) hB`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpos : 0 < 1 + 2 * (2 * (_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ) * r) ^ 2 * _root_.ReciprocityTheory.ChartRestriction.G.FD.dE E / ε`. Establish `: 0 ≤ 2 * (2 * (_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ) * r) ^ 2 * _root_.ReciprocityTheory.ChartRestriction.G.FD.dE E / ε`.
+
+Establish `: 0 ≤ _root_.ReciprocityTheory.ChartRestriction.G.FD.dE E` using `by linarith`. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hf0 : 0 < (_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ)` using `by linarith`. Establish `hr0 : 0 < (r : ℝ)` using `by linarith`.
+
+Establish `hd0 : 0 < _root_.ReciprocityTheory.ChartRestriction.G.FD.dE E` using `by linarith`. Unfold `_root_.GlobalTheory.LevGeo.multBd`. Rewrite using `[Real.log_pow]`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Real.log_mul (by positivity) hB0.ne', Real.log_mul (by positivity) hd0.ne', Real.log_mul (by positivity) (by positivity), Real.log_mul (by norm_num) (by positivity), Real.log_pow, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.SupConstSize.multBd_size (E : Type) [Field E] [NumberField E] (r : ℕ)
     (ε B : ℝ) (hf : 1 ≤ (_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ)) (hr : 1 ≤ (r : ℝ)) (hε : 0 < ε) (hB : 1 ≤ B) (hεB : 1 / B ≤ ε) :
     1 ≤ _root_.GlobalTheory.LevGeo.multBd E r ε ∧
@@ -184,6 +237,37 @@ open NumberField MeasureTheory in
 open scoped ENNReal in
 open Real in
 
+/- English proof (translation)
+Establish `hfN : 1 ≤ _root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E` using `by exact_mod_cast hf`. Establish `hr' : (2 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hρ : _root_.GlobalTheory.LevGeo.chartRad E r w = 1 / (200 * (r : ℝ) ^ 3 * (w + _root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E))`. Unfold `_root_.GlobalTheory.LevGeo.chartRad`. Both sides reduce to the same expression.
+
+Establish `hnN : _root_.GlobalTheory.LevGeo.dimFl E r = _root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E * (r * (r - 1) / 2)`. Unfold `_root_.GlobalTheory.LevGeo.dimFl`. Both sides reduce to the same expression. Establish `hn1 : 1 ≤ _root_.GlobalTheory.LevGeo.dimFl E r`. Rewrite using `[hnN]`.
+
+Establish `h2 : 2 * 1 ≤ r * (r - 1)` using `Nat.mul_le_mul hr (by omega)`. Establish `h3 : 1 ≤ r * (r - 1) / 2` using `(Nat.le_div_iff_mul_le two_pos).2 (by omega)`. Conclude with `one_le_mul_of_one_le_of_one_le hfN h3`. Establish `hnle : (_root_.GlobalTheory.LevGeo.dimFl E r : ℝ) ≤ (_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ) * (r : ℝ) ^ 2 / 2`. Rewrite using `[hnN, Nat.cast_mul, mul_div_assoc]`.
+
+Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Use `Nat.cast_div_le.trans ?_` and prove the remaining obligations. Establish `: ((r * (r - 1) : ℕ) : ℝ) ≤ (r : ℝ) ^ 2`. Rewrite using `[sq]`. Conclude with `Nat.mul_le_mul_left r (Nat.sub_le r 1)` after adjusting the coercions.
+
+Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Generalize the expression as in `_root_.GlobalTheory.LevGeo.dimFl E r = n at hn1 hnle ⊢`. Rewrite using `[hρ]`. Use `set f : ℝ := (_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ) with hfdef`.
+
+Establish `hf0 : 0 < f` using `by linarith`. Establish `hr0 : 0 < (r : ℝ)` using `by linarith`. Establish `hw0 : 0 < w` using `by linarith`. Use `set u : ℝ := 200 * (r : ℝ) ^ 3 * (w + f) with hu`. Establish `hu4 : 4 ≤ u`.
+
+Establish `: 1 ≤ (r : ℝ) ^ 3` using `one_le_pow₀ (by linarith)`. Establish `: 2 ≤ w + f` using `by linarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `hu0 : 0 < u` using `by linarith`. Establish `hq : Real.pi * (1 / u) ^ 2 = Real.pi / u ^ 2`.
+
+Rewrite using `[div_pow, one_pow, mul_one_div]`. Rewrite using `[hq]`. Establish `hqpos : 0 < Real.pi / u ^ 2` using `div_pos Real.pi_pos (by positivity)`. Establish `hq1 : Real.pi / u ^ 2 ≤ 1`. Rewrite using `[div_le_one (by positivity)]`.
+
+Use polynomial arithmetic with `[Real.pi_lt_four]`. Establish `hnR : (1 : ℝ) ≤ n` using `by exact_mod_cast hn1`. Establish `hfac : (1 : ℝ) ≤ (n.factorial : ℝ)` using `by exact_mod_cast Nat.factorial_pos n`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[le_div_iff₀ (pow_pos hqpos n), one_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hY : 8 * (n.factorial : ℝ) / (Real.pi / u ^ 2) ^ n ≤ 8 * ((n : ℝ) / (Real.pi / u ^ 2)) ^ n`. Rewrite using `[div_pow (n : ℝ) (Real.pi / u ^ 2) n, ← mul_div_assoc]`. Use `div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_left ?_ (by norm_num)) (by positivity)` and prove the remaining obligations. Conclude with `Nat.factorial_le_pow n` after adjusting the coercions.
+
+Establish `hwf : w + f ≤ 2 * w * f` using `by nlinarith [mul_nonneg (sub_nonneg.2 hw) (sub_nonneg.2 hf)]`. Establish `hratio : (n : ℝ) / (Real.pi / u ^ 2) ≤ 2 ^ 16 * (f * r) ^ 8 * w ^ 2`. Rewrite using `[div_div_eq_mul_div, div_le_iff₀ Real.pi_pos]`. Establish `hule : u ≤ 200 * (r : ℝ) ^ 3 * (2 * w * f)` using `mul_le_mul_of_nonneg_left hwf (by positivity)`. Establish `h1 : (n : ℝ) * u ^ 2 ≤ f * (r : ℝ) ^ 2 / 2 * (200 * (r : ℝ) ^ 3 * (2 * w * f)) ^ 2` using `mul_le_mul hnle (pow_le_pow_left₀ hu0.le hule 2) (by positivity) (by positivity)`.
+
+Establish `h38 : f ^ 3 ≤ f ^ 8` using `pow_le_pow_right₀ hf (by norm_num)`. Establish `h2 : 80000 * f ^ 3 ≤ 2 ^ 16 * Real.pi * f ^ 8`. Establish `: (80000 : ℝ) ≤ 2 ^ 16 * Real.pi` using `by nlinarith [Real.pi_gt_three]`. Use polynomial arithmetic with `[pow_pos hf0 8]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hratio0 : 0 < (n : ℝ) / (Real.pi / u ^ 2)` using `div_pos (by linarith) hqpos`. Establish `hlog : Real.log ((n : ℝ) / (Real.pi / u ^ 2)) ≤ 12 * L + 16 * Real.log 2`. Use `(Real.log_le_log hratio0 hratio).trans ?_` and prove the remaining obligations. Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_pow, Real.log_pow, Real.log_pow, Real.log_mul hf0.ne' hr0.ne']`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hC : 0 ≤ 12 * L + 16 * Real.log 2`. Use `Real.log_pos one_lt_two` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Real.log_mul (by norm_num) (by positivity), Real.log_pow, show (8 : ℝ) = 2 ^ 3 by norm_num, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ 3 * Real.log 2 + n * (12 * L + 16 * Real.log 2) := by gcongr`. Use `_ ≤ 3 * Real.log 2 + f * (r : ℝ) ^ 2 / 2 * (12 * L + 16 * Real.log 2) := by gcongr`.
+-/
 theorem _root_.GlobalTheory.SupConstSize.chart_factor_size (E : Type) [Field E] [NumberField E] (r : ℕ) (w L : ℝ)
     (hf : 1 ≤ (_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E : ℝ)) (hr : 2 ≤ r) (hw : 1 ≤ w) (hL : 1 ≤ L)
     (hfr : Real.log (_root_.ReciprocityTheory.ChartRestriction.G.FD.fdeg E) + Real.log r ≤ L) (hlw : Real.log w ≤ 2 * L) :
@@ -285,6 +369,33 @@ end GlobalTheory.SupConstSize
 namespace GlobalTheory.SupConstSize
 open Real
 
+/- English proof (translation)
+Introduce `E _ _ _ r d M w L hr hd hM hL hw hfr hlM hdE hld hlw`. Establish `hn` using `finrank_eq_two_fdeg E`. Establish `hf1 : 1 ≤ fdeg E`. Establish `: 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hfR : (1 : ℝ) ≤ fdeg E` using `by exact_mod_cast hf1`. Establish `hrR : (2 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hMR : (1 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hdR : (1 : ℝ) ≤ d` using `by exact_mod_cast hd`. Establish `hfr' : Real.log (fdeg E) + Real.log r ≤ L`.
+
+Rewrite using `[← Real.log_mul (by positivity) (by positivity)]; exact hfr`. Establish `hf0 : 0 ≤ Real.log (fdeg E)` using `Real.log_nonneg hfR`. Establish `hr0 : 0 ≤ Real.log r` using `Real.log_nonneg (by linarith)`. Take `⟨hε0, hε1, hεB⟩` from `epsLev_bounds E d M w hfR hd hM hw`. Use `set B : ℝ := 3 * fdeg E * w * M * Real.sqrt d with hB`.
+
+Establish `sd : 1 ≤ Real.sqrt d` using `Real.one_le_sqrt.mpr hdR`. Establish `hB1 : 1 ≤ B`. Establish `a : 1 ≤ (fdeg E : ℝ) * w` using `one_le_mul_of_one_le_of_one_le hfR hw`. Establish `b : 1 ≤ (fdeg E : ℝ) * w * M` using `one_le_mul_of_one_le_of_one_le a hMR`. Establish `c : 1 ≤ (fdeg E : ℝ) * w * M * Real.sqrt d` using `one_le_mul_of_one_le_of_one_le b sd`.
+
+Rewrite using `[hB]`. Use the polynomial consequences of the given equalities and inequalities. Establish `l2b` using `Real.log_two_lt_d9`. Establish `l2a` using `Real.log_two_gt_d9`. Establish `l3 : Real.log 3 ≤ 2 * Real.log 2`.
+
+Rewrite using `[← Real.log_rpow (by norm_num)]; exact Real.log_le_log (by norm_num) (by norm_num)`. Establish `l16 : Real.log 16 = 4 * Real.log 2`. Rewrite using `[show (16 : ℝ) = 2 ^ 4 by norm_num, Real.log_pow]; norm_num`. Establish `hlB : Real.log B ≤ 2 * Real.log 2 + 35 * L`. Rewrite using `[hB, Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_mul (by norm_num) (by positivity), Real.log_sqrt (by linarith)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hm1, hml⟩` from `multBd_size E r (epsLev E d M w) B hfR (by linarith) hε0 hB1 hεB`. Take `⟨hc1, hcl⟩` from `chart_factor_size E r w L hfR hr hw hL hfr' hlw`. Take `⟨hM1, hMl⟩` from `massLev_size E r M L hr hM hL hfr hlM hdE`. Establish `hs : supConst E r d M w = (8 * ((dimFl E r).factorial : ℝ) / (Real.pi * chartRad E r w ^ 2) ^ dimFl E r) * multBd E r (epsLev E d M w) * massLev E r M`.
+
+Unfold `supConst locConst`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs]`. Use `⟨one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hc1 hm1) hM1, ?_⟩` and prove the remaining obligations. Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity)]`.
+
+Establish `hX0 : 0 ≤ (fdeg E : ℝ) * (r : ℝ) ^ 2` using `by positivity`. Establish `b1 : (fdeg E : ℝ) * (r : ℝ) ^ 2 / 2 * (12 * L + 16 * Real.log 2) ≤ (fdeg E : ℝ) * (r : ℝ) ^ 2 / 2 * (28 * L)` using `mul_le_mul_of_nonneg_left (by linarith) (by positivity)`. Establish `b2 : 2 * (fdeg E : ℝ) * (r : ℝ) ^ 2 * (Real.log 16 + 2 * (Real.log (fdeg E) + Real.log r) + Real.log (dE E) + Real.log B) ≤ 2 * (fdeg E : ℝ) * (r : ℝ) ^ 2 * (43 * L + 4 * fdeg E * L)` using `mul_le_mul_of_nonneg_left (by linarith) (by positivity)`. Establish `hXY : (fdeg E : ℝ) * (r : ℝ) ^ 2 * L ≤ (fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2 * L`. Establish `: 0 ≤ (r : ℝ) ^ 2 * L` using `by positivity`.
+
+Establish `h` using `mul_le_mul_of_nonneg_right hfR (by positivity : (0:ℝ) ≤ (fdeg E : ℝ) * ((r : ℝ) ^ 2 * L))`. Establish `e1 : (fdeg E : ℝ) * (r : ℝ) ^ 2 * L = 1 * ((fdeg E : ℝ) * ((r : ℝ) ^ 2 * L))` using `by ring`. Establish `e2 : (fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2 * L = (fdeg E : ℝ) * ((fdeg E : ℝ) * ((r : ℝ) ^ 2 * L))` using `by ring`. Rewrite using `[e1, e2]`. Conclude with `h`.
+
+Establish `hLY : L ≤ (fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2 * L`. Establish `h1 : 1 ≤ (fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2`. Establish `a : 1 ≤ (fdeg E : ℝ) ^ 2` using `one_le_pow₀ hfR`. Establish `b : 1 ≤ (r : ℝ) ^ 2` using `one_le_pow₀ (by linarith)`. Conclude with `one_le_mul_of_one_le_of_one_le a b`.
+
+Use `mul_le_mul_of_nonneg_right h1 (by linarith : (0:ℝ) ≤ L)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `c1 : (fdeg E : ℝ) * (r : ℝ) ^ 2 / 2 * (28 * L) = 14 * ((fdeg E : ℝ) * (r : ℝ) ^ 2 * L)` using `by ring`. Establish `c2 : 2 * (fdeg E : ℝ) * (r : ℝ) ^ 2 * (43 * L + 4 * fdeg E * L) = 86 * ((fdeg E : ℝ) * (r : ℝ) ^ 2 * L) + 8 * ((fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2 * L)` using `by ring`. Establish `c3 : 80 * (fdeg E : ℝ) * (r : ℝ) ^ 2 * L = 80 * ((fdeg E : ℝ) * (r : ℝ) ^ 2 * L)` using `by ring`.
+
+Establish `c4 : 250 * (fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2 * L = 250 * ((fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2 * L)` using `by ring`. Rewrite using `[c4]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem supConst_size : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r d M : ℕ) (w L : ℝ), 2 ≤ r → 1 ≤ d →
     1 ≤ M → 1 ≤ L → 1 ≤ w → Real.log (fdeg E * r) ≤ L → Real.log M ≤ 30 * L →
     Real.log (dE E) ≤ 4 * fdeg E * L → Real.log d ≤ 4 * L → Real.log w ≤ 2 * L →

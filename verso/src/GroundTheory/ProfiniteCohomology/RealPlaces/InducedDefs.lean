@@ -27,6 +27,9 @@ noncomputable def tateForget (n : ℕ) :
   HomologicalComplex.homologyMap (tateForgetCochains φ ψ A Aᵥ a Aᵣ ar) n
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Conclude with `(HomologicalComplex.homologyMap_comp _ _ n).symm.trans (congrArg (fun f => HomologicalComplex.homologyMap f n) (mappingCoconeNat.map_fst _ _ _))`.
+-/
 theorem tateForget_compactToGlobal (n : ℕ) :
     tateForget φ ψ A Aᵥ a Aᵣ ar n ≫ compactToGlobal φ A Aᵥ a n = tateToGlobal φ ψ A Aᵥ a Aᵣ ar n := by
   exact (HomologicalComplex.homologyMap_comp _ _ n).symm.trans
@@ -38,6 +41,11 @@ noncomputable def tateLocalFst (n : ℕ) :
   ModuleCat.ofHom (LinearMap.fst k _ _)
 
 omit [∀ w, Fintype (F w)] in
+/- English proof (translation)
+Use `ModuleCat.hom_ext (LinearMap.ext fun p => ?_)` and prove the remaining obligations. Establish `hp` using `hom_apply_hom_apply_of_comp_eq (Iso.inv_hom_id (tateLocalCohomologyIso Aᵥ Aᵣ n)) p`. Rewrite `hp` using `[tateLocalCohomologyIso_hom_apply]`. Establish `h1` using `congrArg Prod.fst hp`. Express the relevant statement in the definitionally equal form `(localCohomologyIso Aᵥ n).hom.hom _ = p.1 at h1`.
+
+Express the relevant statement in the definitionally equal form `(HomologicalComplex.homologyMap (prodFst _ _) n).hom ((tateLocalCohomologyIso Aᵥ Aᵣ n).inv.hom p) = (localCohomologyIso Aᵥ n).inv.hom p.1`. Rewrite using `[← h1]`. Conclude with `(hom_apply_hom_apply_of_comp_eq (Iso.hom_inv_id (localCohomologyIso Aᵥ n)) _).symm`. Use the proof step `@[reassoc]`.
+-/
 theorem tateLocalCohomologyIso_inv_homologyMap_prodFst (n : ℕ) :
     (tateLocalCohomologyIso Aᵥ Aᵣ n).inv ≫ HomologicalComplex.homologyMap (prodFst _ _) n =
       tateLocalFst Aᵥ Aᵣ n ≫ (localCohomologyIso Aᵥ n).inv := by
@@ -52,6 +60,9 @@ theorem tateLocalCohomologyIso_inv_homologyMap_prodFst (n : ℕ) :
   exact (hom_apply_hom_apply_of_comp_eq (Iso.hom_inv_id (localCohomologyIso Aᵥ n)) _).symm
 
 @[reassoc]
+/- English proof (translation)
+Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (mappingCoconeNat.homologyδ_naturality _ _ _ n)).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) (tateLocalCohomologyIso_inv_homologyMap_prodFst Aᵥ Aᵣ n)).trans (Category.assoc _ _ _))))`.
+-/
 theorem tateLocalToCompact_tateForget (n : ℕ) :
     tateLocalToCompact φ ψ A Aᵥ a Aᵣ ar n ≫ tateForget φ ψ A Aᵥ a Aᵣ ar (n + 1) =
       tateLocalFst Aᵥ Aᵣ n ≫ localToCompact φ A Aᵥ a n := by

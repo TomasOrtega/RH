@@ -5,6 +5,19 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor (hermForm)
 
 namespace GlobalTheory.PELU
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, -⟩` from `hP₀`. Establish `hsurj : Function.Surjective R` using `LinearMap.injective_iff_surjective.mp hR`. Set `e : (Fin g → ℂ) ≃ₗ[ℝ] (Fin g → ℂ)` to `LinearEquiv.ofInjectiveEndo R hR`. Establish `he : ∀ z, e z = R z` using `fun z => rfl`. Set `ec` to `e.toContinuousLinearEquiv`.
+
+Use `⟨?_, ?_, ?_, ?_, M, hM, hpos, ?_⟩` and prove the remaining obligations. Introduce `a x`. Simplify using `only [AddMonoidHom.comp_apply, LinearMap.toAddMonoidHom_coe, h1, hRρ]`. Conclude with `hR.comp h2`. Set `f : (R.toAddMonoidHom.comp P₀).range → P₀.range` to `fun z => ⟨ec.symm z.1, by`.
+
+Take `⟨z, x, rfl⟩` from `z`. Conclude with `⟨x, (e.symm_apply_apply (P₀ x)).symm⟩⟩`. Establish `hf : Continuous f`. Apply `Continuous.subtype_mk` to reduce the goal to its premises. Conclude with `ec.symm.continuous.comp continuous_subtype_val`.
+
+Establish `hi : Function.Injective f`. Introduce `z w h`. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg (fun u : P₀.range => ec u.1) h` as an intermediate fact. Simplify `this` using `[f]`.
+
+Conclude with `DiscreteTopology.of_continuous_injective hf hi`. Establish `: Set.range (R.toAddMonoidHom.comp P₀) = R '' Set.range P₀`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[this, Submodule.span_image, h4, Submodule.map_top, LinearMap.range_eq_top]`.
+
+Conclude with `hsurj`. Introduce `x y`. Conclude with `hE x y`.
+-/
 theorem isPeriod_comp_realLinear {O : Type} [Ring O] {bar : O → O} (D : PLat O bar) {g : ℕ}
     (ρ : O →+* Matrix (Fin g) (Fin g) ℂ) (P₀ : D.La →+ (Fin g → ℂ)) (R : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ))
     (M : Matrix (Fin g) (Fin g) ℂ) (hP₀ : IsPeriod D ρ P₀) (hR : Function.Injective R)

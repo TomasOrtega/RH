@@ -29,6 +29,25 @@ def AmpOrbCoefDD : Prop :=
       OrbEq D hW hA hT hT' (fun g => κ • Formalism.MainNotions.S.Pv.AmpDD.coefF (toBessel D τ w w' θ W (lamD D τ) A hW hA hT hT')
         v v' ξ ξ' g)
 
+/- English proof (translation)
+Introduce `Cg cb Cu cT CT C0`. Take `⟨A1, B1, hE'⟩` from `hE Cg cb Cu cT CT C0`. Use `⟨A1, max B1 1000, fun C' Cl hC' hCl D large₂ hH τ w w' hTT θ W hW A hA hT hT' μsec hsec => ?_⟩` and prove the remaining obligations. Establish `hCl1 : B1 ≤ Cl` using `le_trans (le_max_left _ _) hCl`. Establish `hCl2 : (1000 : ℝ) ≤ Cl` using `le_trans (le_max_right _ _) hCl`.
+
+Take `⟨v, v', l, l', ξ, ξ', κ, hκ, hv, hv', hbe, hbe', hl, hl', hOrb⟩` from `hE' C' Cl hC' hCl1 D large₂ hH τ w w' hTT θ W hW A hA hT hT'`. Use `⟨_, hOrb, ?_⟩` and prove the remaining obligations. Use `set L := toBessel D τ w w' θ W (lamD D τ) A hW hA hT hT' with hLdef`. Establish `hk2 : 2 ≤ D.R.k` using `by have := Formalism.MainNotions.BridgeLemma.five_le_k D; omega`. Establish `hv0 : 0 < D.host.v`.
+
+Unfold `Host.v Host.rdE`. Use `div_pos (Real.rpow_pos_of_pos (abs_pos.2 ?_) _) two_pos` and prove the remaining obligations. Conclude with `NumberField.discr_ne_zero D.host.E` after adjusting the coercions. Establish `hka0 : 0 < D.host.ka` using `by unfold Host.ka; exact div_pos Real.pi_pos hv0`. Establish `hg0 : (0 : ℝ) < D.host.g 0` using `by exact_mod_cast (D.host.g_prime 0).pos`.
+
+Establish `hg1 : (0 : ℝ) < D.host.g 1` using `by exact_mod_cast (D.host.g_prime 1).pos`. Use `set ka : ℝ := D.host.ka / ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) with hka`. Establish `hkapos : 0 < ka` using `by positivity`. Establish `hc : L.c = ((2 * ka : ℝ) : ℂ)` using `by show (((2 * D.host.ka / ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) : ℝ) : ℂ)) = _`. Use `congr 1`.
+
+Rewrite using `[hka]`. Expand and normalize the polynomial expressions, which then agree. Establish `hW'` using `hW`. Take `⟨-, -, -, -, -, -, hG, -, -, -, -, hNq, hq, -⟩` from `hW'`. Establish `hκtop : kapN D θ ≠ ⊤` using `ENNReal.ofReal_ne_top`.
+
+Establish `hκ0 : kapN D θ ≠ 0`. Introduce `h0`. Establish `hμN : W.μN = 0` using `by rw [hNq, h0]; unfold haarLie; rw [zero_smul]`. Establish `hS0 : muS W.μW W.μN = 0` using `by unfold muS; rw [hμN, Measure.prod_zero, Measure.map_zero]`. Establish `h1` using `hq (fun _ => 1) measurable_const`.
+
+Rewrite `h1` using `[hS0]`. Simplify using `at h1`. Conclude with `hG.2.1 h1`. Establish `hL1 : (1 : ℝ) ≤ large₂.sc.L`. Unfold `Scale.L`.
+
+Conclude with `Real.one_le_rpow (le_of_lt large₂.sc.one_lt_alt) (le_of_lt large₂.sc.eps_pos)`. Take `⟨-, hTie⟩` from `Formalism.L2.S.Pv.Mom.paramTieG_of hH.1 0 (by rw [abs_zero, add_zero]; nlinarith)`. Establish `hl0 : l1dist (lamD D τ) (lamD D τ) ≤ 0 * D.R.k * (D.R.m : ℝ) ^ 3`. Unfold `l1dist`. Simplify using the standard rewrite rules.
+
+Take `⟨h, hgap, hok⟩` from `hTie τ (lamD D τ) hl0 (Formalism.MainNotions.S.Inh.obj_isHCParam_lamSH D.R (D.hc τ))`. Establish `hsm : jNorm2 L (fun g => κ • Formalism.MainNotions.S.Pv.AmpDD.coefF L v v' ξ ξ' g) μsec = ENNReal.ofReal (‖κ‖ ^ 2) * jNorm2 L (Formalism.MainNotions.S.Pv.AmpDD.coefF L v v' ξ ξ') μsec` using `Formalism.MainNotions.BesselShellMomentBounds.jNorm2_smul L κ _ μsec`. Rewrite using `[hsm]`. Use `mul_ne_zero (ENNReal.ofReal_pos.2 (pow_pos (norm_pos_iff.2 hκ) 2)).ne' ?_` and prove the remaining obligations. Conclude with `Formalism.L2.S.Pv.AmpNZTie.jNorm2_coef_ne' hk2 L ka hkapos hc hκ0 hκtop μsec hsec h hgap hok v v' hv hv' l l' ξ ξ' hbe hbe' hl hl' hCI hBI`.
+-/
 theorem ampNZCoef_of (hE : AmpOrbCoefDD) (hCI : Formalism.MainNotions.S.Pv.BetaCut.CoefInCC)
     (hBI : Formalism.MainNotions.S.Pv.BetaCut.BetaInfCoefNZ) : AmpNZCoef := by
   intro Cg cb Cu cT CT C0
@@ -82,15 +101,24 @@ theorem ampNZCoef_of (hE : AmpOrbCoefDD) (hCI : Formalism.MainNotions.S.Pv.BetaC
   exact Formalism.L2.S.Pv.AmpNZTie.jNorm2_coef_ne' hk2 L ka hkapos hc hκ0 hκtop μsec hsec h hgap hok v v' hv hv'
     l l' ξ ξ' hbe hbe' hl hl' hCI hBI
 
+/- English proof (translation)
+Introduce `k r ε lam H _ _ _ σ h m A hlam hσ hgap hm hA v hv v' hv' Wp Wq _ _ _ _ ξ ξ'`. Conclude with `Formalism.L2.SG.Pf.CoefDecay.coefM_inCC hlam hgap m hm hA hσ hv hv' ξ ξ' 5`.
+-/
 theorem coefficients_in_compact_closure : Formalism.MainNotions.S.Pv.BetaCut.CoefInCC := by
   intro k r ε lam H _ _ _ σ h m A hlam hσ hgap hm hA v hv v' hv' Wp Wq _ _ _ _ ξ ξ'
   exact Formalism.L2.SG.Pf.CoefDecay.coefM_inCC hlam hgap m hm hA hσ hv hv' ξ ξ' 5
 
+/- English proof (translation)
+The claim follows from `ampNZ_of (ampNZCoef_of hE coefficients_in_compact_closure hBI)`.
+-/
 theorem ampNZ_of_parts (hE : AmpOrbCoefDD) (hBI : Formalism.MainNotions.S.Pv.BetaCut.BetaInfCoefNZ) : AmpNZ :=
   ampNZ_of (ampNZCoef_of hE coefficients_in_compact_closure hBI)
 
 variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] in
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.S.Pv.AmpFinal.amplitude_uniform_of_orbit hJ hKD hRJ hRH hOQ hRA (ampNZ_of_parts hE hBI)`.
+-/
 theorem amplitude_uniform_of_coefficients (hJ : PI.BesselMapUniq.BesselMapUniq) (hKD : Formalism.MainNotions.S.Pv.AmpDD.KDense)
     (hRJ : RootJac) (hRH : RootHaar) (hOQ : OrbQuotEx) (hRA : RelAtPt) (hE : AmpOrbCoefDD)
     (hBI : Formalism.MainNotions.S.Pv.BetaCut.BetaInfCoefNZ) : AmpUnif :=

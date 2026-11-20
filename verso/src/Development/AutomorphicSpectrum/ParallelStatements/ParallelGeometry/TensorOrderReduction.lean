@@ -84,6 +84,9 @@ def LemmaBT : Prop :=
     ∀ (x : Spec (CommRingCat.of R) ⟶ S) (N : ℕ) (Γ : QFGroup R T) (i : Γ.G.left ⟶ G.left),
       Γ.IsTorsionAlong G x N i → Conclusion Γ G x N i
 
+/- English proof (translation)
+Use extensionality with `t`. Establish `h` using `hi.inj _ (Γ.pt (b t)) (Γ.pt (c t)) ((hb t).trans (hc t).symm)`. Set `p : Spec (CommRingCat.of (FractionRing R))` to `(⊥ : PrimeSpectrum (FractionRing R))`. Conclude with `Γ.pt_inj _ _ p p (by rw [h])`.
+-/
 theorem InducesOnPts.unique {Γ : QFGroup R T} {S : Scheme.{0}} {G : Over S} [GrpObj G]
     {x : Spec (CommRingCat.of R) ⟶ S} {N : ℕ} {i : Γ.G.left ⟶ G.left} (hi : Γ.IsTorsionAlong G x N i)
     {a : G ⟶ G} {b c : T →* T} (hb : InducesOnPts Γ i a b) (hc : InducesOnPts Γ i a c) : b = c := by

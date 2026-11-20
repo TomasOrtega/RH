@@ -18,6 +18,11 @@ section CongBasic
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ} {P : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+Take `⟨s, hs, h1⟩` from `ha`. Take `⟨r, hr, h2⟩` from `hb`. Establish `hi : ∀ x : 𝓞 E, iA F E (algebraMap (𝓞 E) E x) ∈ Formalism.L2.Herm.intAf F E` using `fun x => (toRInt F E x).2`. Use `⟨s * r, fun h => (P.isPrime.mem_or_mem h).elim hs hr, ?_⟩` and prove the remaining obligations. Establish `e : iA F E (algebraMap (𝓞 E) E (s * r)) * (a + b) = iA F E (algebraMap (𝓞 E) E r) * (iA F E (algebraMap (𝓞 E) E s) * a) + iA F E (algebraMap (𝓞 E) E s) * (iA F E (algebraMap (𝓞 E) E r) * b)`.
+
+Rewrite using `[map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `add_mem (mul_mem (hi r) h1) (mul_mem (hi s) h2)`.
+-/
 theorem intAtA_add {a b : E ⊗[F] FiniteAdeleRing (𝓞 F) F} (ha : IntAtA (F := F) P a) (hb : IntAtA (F := F) P b) :
     IntAtA (F := F) P (a + b) := by
   obtain ⟨s, hs, h1⟩ := ha
@@ -31,6 +36,11 @@ theorem intAtA_add {a b : E ⊗[F] FiniteAdeleRing (𝓞 F) F} (ha : IntAtA (F :
   rw [e]
   exact add_mem (mul_mem (hi r) h1) (mul_mem (hi s) h2)
 
+/- English proof (translation)
+Take `⟨s, hs, h1⟩` from `ha`. Take `⟨r, hr, h2⟩` from `hb`. Use `⟨s * r, fun h => (P.isPrime.mem_or_mem h).elim hs hr, ?_⟩` and prove the remaining obligations. Establish `e : iA F E (algebraMap (𝓞 E) E (s * r)) * (a * b) = (iA F E (algebraMap (𝓞 E) E s) * a) * (iA F E (algebraMap (𝓞 E) E r) * b)`. Rewrite using `[map_mul, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mul_mem h1 h2`.
+-/
 theorem intAtA_mul {a b : E ⊗[F] FiniteAdeleRing (𝓞 F) F} (ha : IntAtA (F := F) P a) (hb : IntAtA (F := F) P b) :
     IntAtA (F := F) P (a * b) := by
   obtain ⟨s, hs, h1⟩ := ha
@@ -42,10 +52,16 @@ theorem intAtA_mul {a b : E ⊗[F] FiniteAdeleRing (𝓞 F) F} (ha : IntAtA (F :
   rw [e]
   exact mul_mem h1 h2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by rw [map_one, map_one, one_mul]; exact (toRInt F E x).2⟩`.
+-/
 theorem intAtA_int (x : 𝓞 E) : IntAtA (F := F) P (iA F E (algebraMap (𝓞 E) E x)) :=
   ⟨1, fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by
     rw [map_one, map_one, one_mul]; exact (toRInt F E x).2⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using intAtA_int (F := F) (P := P) 0`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `intAtA_add (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem intAtA_sum {ι : Type} (s : Finset ι) (f : ι → E ⊗[F] FiniteAdeleRing (𝓞 F) F) (h : ∀ i ∈ s, IntAtA (F := F) P (f i)) :
     IntAtA (F := F) P (∑ i ∈ s, f i) := by
   classical
@@ -55,6 +71,15 @@ theorem intAtA_sum {ι : Type} (s : Finset ι) (f : ι → E ⊗[F] FiniteAdeleR
     rw [Finset.sum_insert ha]
     exact intAtA_add (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Introduce `a b`. Establish `hq : ((qOf P : ℕ) : E) ≠ 0`. Establish `: qOf P ≠ 0` using `fun h0 => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`. Conclude with `this` after adjusting the coercions. Use `set c := iA F E (((qOf P : ℕ) : E) ^ n)⁻¹ with hc`.
+
+Use `set d := iA F E (algebraMap (𝓞 E) E (((qOf P : ℕ) : 𝓞 E) ^ n)) with hd`. Establish `hcd : d * c = 1`. Rewrite using `[hc, hd, ← map_mul, map_pow, map_natCast, mul_inv_cancel₀ (pow_ne_zero _ hq), map_one]`. Establish `e : ((k * k' : GL (Fin N) _) : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) - 1 = ((k : Matrix (Fin N) (Fin N) _) - 1) * ((k' : Matrix (Fin N) (Fin N) _) - 1) + (((k : Matrix (Fin N) (Fin N) _) - 1) + ((k' : Matrix (Fin N) (Fin N) _) - 1))`. Rewrite using `[Units.val_mul]`.
+
+Use `noncomm_ring`. Rewrite using `[e, Matrix.add_apply, Matrix.add_apply, mul_add, mul_add, Matrix.mul_apply, Finset.mul_sum]`. Use `intAtA_add (intAtA_sum _ _ fun l _ => ?_) (intAtA_add (h a b) (h' a b))` and prove the remaining obligations. Establish `e2 : ∀ x y : E ⊗[F] FiniteAdeleRing (𝓞 F) F, c * (x * y) = d * ((c * x) * (c * y))`. Introduce `x y`.
+
+Take the linear combination `(-(c * (x * y))) * hcd`. Rewrite using `[e2]`. Conclude with `intAtA_mul (intAtA_int _) (intAtA_mul (h a l) (h' l b))`.
+-/
 theorem congAt_mul (n : ℕ) {k k' : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)} (h : CongAt P n k) (h' : CongAt P n k') :
     CongAt P n (k * k') := by
   intro a b
@@ -76,6 +101,9 @@ theorem congAt_mul (n : ℕ) {k k' : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 
   rw [e2]
   exact intAtA_mul (intAtA_int _) (intAtA_mul (h a l) (h' l b))
 
+/- English proof (translation)
+Unfold `NearAt`. Rewrite using `[map_mul, ← mul_assoc]`. Conclude with `congAt_mul n h hk`.
+-/
 theorem nearAt_mul (n : ℕ) {x : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)} {g k : GL (Fin N) E} (h : NearAt P n x g)
     (hk : CongAt P n (ratA F k)) : NearAt P n x (g * k) := by
   unfold NearAt
@@ -88,15 +116,30 @@ section Conj
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ} {P : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+Take `⟨r, s, hs, hr⟩` from `h`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, hr]`. Conclude with `(toRInt F E r).2`.
+-/
 theorem intAtA_of_intAt {e : E} (h : IntAt P e) : IntAtA (F := F) P (iA F E e) := by
   obtain ⟨r, s, hs, hr⟩ := h
   refine ⟨s, hs, ?_⟩
   rw [← map_mul, hr]
   exact (toRInt F E r).2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ratA_apply (h : GL (Fin N) E) (a b : Fin N) :
     ((ratA F h : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Matrix (Fin N) (Fin N) _) a b = iA F E ((h : Matrix (Fin N) (Fin N) E) a b) := rfl
 
+/- English proof (translation)
+Introduce `a b`. Use `set A' : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F) := ((ratA F h⁻¹ : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))`. Use `set A : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F) := ((ratA F h : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))`. Establish `hAA : A' * A = 1`. Simplify using `only [A', A, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`.
+
+Establish `e : (((ratA F h)⁻¹ * C * ratA F h : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) - 1 = A' * ((C : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) - 1) * A`. Rewrite using `[← map_inv, Units.val_mul, Units.val_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hAA]`. Rewrite using `[e, Matrix.mul_apply, Finset.mul_sum]`. Use `intAtA_sum _ _ fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum]`.
+
+Use `intAtA_sum _ _ fun l _ => ?_` and prove the remaining obligations. Establish `e2 : iA F E (((qOf P : ℕ) : E) ^ n)⁻¹ * (A' a l * ((C : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) - 1) l m * A m b) = A' a l * (iA F E (((qOf P : ℕ) : E) ^ n)⁻¹ * ((C : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) - 1) l m) * A m b` using `by ring`. Rewrite using `[e2]`. Use `intAtA_mul (intAtA_mul ?_ (hC l m)) ?_` and prove the remaining obligations. Conclude with `intAtA_of_intAt (hh a l).2`.
+
+Conclude with `intAtA_of_intAt (hh m b).1`.
+-/
 theorem congAt_conj (n : ℕ) {C : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)} {h : GL (Fin N) E} (hC : CongAt P n C)
     (hh : ∀ a b, IntAt P ((h : Matrix (Fin N) (Fin N) E) a b) ∧ IntAt P (((h⁻¹ : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) a b)) :
     CongAt P n ((ratA F h)⁻¹ * C * ratA F h) := by
@@ -119,6 +162,11 @@ theorem congAt_conj (n : ℕ) {C : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F)
   · exact intAtA_of_intAt (hh a l).2
   · exact intAtA_of_intAt (hh m b).1
 
+/- English proof (translation)
+Unfold `NearAt at *`. Establish `e : (x * y)⁻¹ * ratA F (g * h) = (y⁻¹ * ratA F h) * ((ratA F h)⁻¹ * (x⁻¹ * ratA F g) * ratA F h)`. Rewrite using `[map_mul]`. Use `group`. Rewrite using `[e]`.
+
+Conclude with `congAt_mul n hy (congAt_conj n hx hh)`.
+-/
 theorem nearAt_mul_int (n : ℕ) {x y : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)} {g h : GL (Fin N) E}
     (hx : NearAt P n x g) (hy : NearAt P n y h)
     (hh : ∀ a b, IntAt P ((h : Matrix (Fin N) (Fin N) E) a b) ∧ IntAt P (((h⁻¹ : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) a b)) :
@@ -131,6 +179,9 @@ theorem nearAt_mul_int (n : ℕ) {x y : GL (Fin N) (E ⊗[F] FiniteAdeleRing (�
 
 end Conj
 
+/- English proof (translation)
+Take `⟨r, c, hc, e⟩` from `h`. Use `⟨RingOfIntegers.mapRingEquiv s.iE r, RingOfIntegers.mapRingEquiv s.iE c, (mem_seamP s P c).not.2 hc, ?_⟩` and prove the remaining obligations. Use `congrArg s.iE e` as an intermediate fact. Simplify using `using this`.
+-/
 theorem intAt_map {D : D7} {X : Fields} (s : Seam D X) {P : HeightOneSpectrum (𝓞 X.E)} {a : X.E} (h : IntAt P a) :
     IntAt (seamP s P) (s.iE a) := by
   obtain ⟨r, c, hc, e⟩ := h
@@ -138,6 +189,11 @@ theorem intAt_map {D : D7} {X : Fields} (s : Seam D X) {P : HeightOneSpectrum (�
   have := congrArg s.iE e
   simpa using this
 
+/- English proof (translation)
+Establish `e1 : ∀ g : Sp X.E n ≃ₗ[X.E] Sp X.E n, ((seamGL s g : GL (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E) a b = s.iE (g (Pi.single b 1) a)` using `fun g => by show ((LinearMap.toMatrix' g.toLinearMap).map (s.iE : X.E →+* D.host.E)) a b = _`. Rewrite using `[Matrix.map_apply, LinearMap.toMatrix'_apply]`. Both sides reduce to the same expression. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`.
+
+Apply the tactic sequence `exact intAt_map s (glint_entry k a b)`. Rewrite using `[← map_inv, e1]`. Apply the tactic sequence `exact intAt_map s (glint_entry k⁻¹ a b)`.
+-/
 theorem seamGL_int {D : D7} {X : Fields} (s : Seam D X) {n : ℕ} {P : HeightOneSpectrum (𝓞 X.E)} (k : GLint X.E n P) (a b : Fin n) :
     IntAt (seamP s P) (((seamGL s k.1 : GL (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E) a b) ∧
       IntAt (seamP s P) ((((seamGL s k.1)⁻¹ : GL (Fin n) D.host.E) : Matrix (Fin n) (Fin n) D.host.E) a b) := by
@@ -152,6 +208,17 @@ theorem seamGL_int {D : D7} {X : Fields} (s : Seam D X) {n : ℕ} {P : HeightOne
   · rw [← map_inv, e1]
     exact intAt_map s (glint_entry k⁻¹ a b)
 
+/- English proof (translation)
+Introduce `a b`. Establish `hm : redMat k = 1` using `by rw [← redGL_val, hk, Units.val_one]`. Establish `hab : redP P (k.1 (Pi.single b 1) a) = (1 : Matrix (Fin n) (Fin n) (𝓞 X.E ⧸ P.asIdeal)) a b` using `congrFun (congrFun hm a) b`. Establish `hδ : IntAt P (if a = b then (1 : X.E) else 0)` using `by split_ifs`. Simplify using `using IntAt.coe P 1`.
+
+Simplify using `using IntAt.coe P 0`. Establish `hent : IntAt P (k.1 (Pi.single b 1) a - (if a = b then (1 : X.E) else 0))`. Rewrite using `[sub_eq_add_neg]`. Apply the tactic sequence `exact (glint_entry k a b).add (intAt_neg hδ)`. Establish `hred : redP P (k.1 (Pi.single b 1) a - (if a = b then (1 : X.E) else 0)) = 0`.
+
+Apply the tactic sequence `rw [reduction_sub (glint_entry k a b) hδ, hab, Matrix.one_apply]`. Use `split_ifs`. Simplify using `using (sub_eq_zero.2 (reduction_coe P 1).symm)`. Simplify using `using (reduction_coe P 0)`. Establish `h1` using `intAt_div_of_redP hq hent hred`.
+
+Establish `h2 : IntAt P ((((qOf P : ℕ) : X.E) ^ 1)⁻¹ * (k.1 (Pi.single b 1) a - (if a = b then (1 : X.E) else 0)))`. Rewrite using `[pow_one, ← div_eq_inv_mul]` and apply the resulting hypothesis. Use `intAtA_of_intAt (F := D.host.F) (intAt_map s h2) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[MidIndep.qOf_seamP, map_mul s.iE, map_mul (iA D.host.F D.host.E), map_inv₀ s.iE, map_pow s.iE, map_natCast s.iE]`. Use `congr 1`.
+
+Rewrite using `[Matrix.sub_apply, Matrix.one_apply, map_sub, map_sub]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem congAt_one_of_redGL {D : D7} {X : Fields} (s : Seam D X) {n : ℕ} {P : HeightOneSpectrum (𝓞 X.E)}
     (hq : ((qOf P : ℕ) : 𝓞 X.E) ∉ P.asIdeal ^ 2) (k : GLint X.E n P) (hk : redGL n P k = 1) :
     CongAt (F := D.host.F) (seamP s P) 1 (ratA D.host.F (seamGL s k.1)) := by
@@ -183,6 +250,17 @@ theorem congAt_one_of_redGL {D : D7} {X : Fields} (s : Seam D X) {n : ℕ} {P : 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Unfold `FunMoved`. Introduce `H w hw z hz`. Establish `hU` using `(lev.U_eq κ.1).1 κ.2`. Establish `hk : bc (prV (E` using `D.host.E) v) κ.1 ∈ lev.Uloc v := hU.2 v`. Rewrite `hk` using `[lev.UlocAlt v h]`.
+
+Establish `hk2` using `(Subgroup.mem_inf.1 hk).2`. Express the relevant statement in the definitionally equal form `∃ _, _ at hk2`. Take `⟨hst, hf⟩` from `hk2`. Establish `hp : pullV (F` using `D.host.F) (x * κ.1) (fun a => s.iE (w a)) = (κ.1⁻¹).val *ᵥ pullV (F := D.host.F) x (fun a => s.iE (w a)) := by`. Unfold `pullV`.
+
+Rewrite using `[_root_.mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec]`. Establish `hz1 : z.1 = (bc (prV (E` using `D.host.E) v) κ.1⁻¹).val *ᵥ (fun l => prV (E := D.host.E) v (pullV (F := D.host.F) x (fun a => s.iE (w a)) l)) := by`. Rewrite using `[hz, hp]`. Use function extensionality and compare the values at `l`. Conclude with `RingHom.map_mulVec _ _ _ l`.
+
+Establish `hz0 : (bc (prV (E` using `D.host.E) v) κ.1).val *ᵥ z.1 = fun l => prV (E := D.host.E) v (pullV (F := D.host.F) x (fun a => s.iE (w a)) l) := by`. Establish `e : (bc (prV (E` using `D.host.E) v) κ.1).val * (bc (prV (E := D.host.E) v) κ.1⁻¹).val = 1 := by`. Rewrite using `[← Units.val_mul (bc (prV (E := D.host.E) v) κ.1), ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Use `(congrArg (fun y => (bc (prV (E := D.host.E) v) κ.1).val *ᵥ y) hz1).trans ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec_mulVec, e, Matrix.one_mulVec]`.
+
+Rewrite using `[H w hw ⟨_, (hst z.1).1 z.2⟩ hz0]`. Conclude with `congrArg ι (hf z)`.
+-/
 theorem funMoved_mul_lev {D : D7} {X : Fields} (s : Seam D X) {i : ℕ} {hi : i ≤ D.R.m} {T : ℕ} {bad : Set (HeightOneSpectrum (𝓞 D.host.F))}
     (lev : StepLevel D.host.F D.host.E (sigD D) (gramN D i hi) T D.R.f bad) {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))} (P : ST)
     (v : HeightOneSpectrum (𝓞 D.host.F)) (h : (T : 𝓞 D.host.F) ∈ v.asIdeal) (ι : lev.fM v h →+ 𝓞 X.E ⧸ P.1.asIdeal)
@@ -219,6 +297,15 @@ section Pt
 variable {X : Fields} {Pr : Primes X} {R : Ranks}
   {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ} {mu : Tup X.F X.E X.K S} {u : Pr.Word} {j : ℕ}
 
+/- English proof (translation)
+Set `h : GLG X.E (R.N j) Pr.vGs` to `fun w => redGL _ w.1 (g ⟨w.1, Finset.mem_union_left _ w.2⟩)⁻¹`. Set `k : GLQ X.E (R.N j) (QE sel (mu : Chr X.F X.E X.K))` to `fun P => (g ⟨P.1, Finset.mem_union_right _ P.2⟩)⁻¹`. Set `q : ChPt (R` to `R) sel mu u j := ((1 : UF X.E (R.N j)), h, k) • p`. Establish `hl : ∀ w : Pr.vGs, IsLiftFr (p.deco.1.act 1 h) w (q.deco.1.liftFr w)` using `fun w => liftFr_spec q.deco.2 w`. Set `t1 : ∀ w : Pr.vGs, GLint X.E (R.N j) w.1` to `fun w => passFr (d := p.deco.1) 1 h (liftFr_spec p.deco.2 w) (hl w)`.
+
+Set `κ : GLQ X.E (R.N j) (rowSG Pr sel mu)` to `fun P => if hP : P.1 ∈ Pr.vGs then t1 ⟨P.1, hP⟩ else (g P)⁻¹`. Use `⟨q, κ, Submodule.map_id _, rfl, fun P => ?_, fun P => ?_⟩` and prove the remaining obligations. Unfold `frsF`. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Simplify using `only [dif_pos hP, κ] show _ = p.deco.1.liftFr ⟨P.1, hP⟩ * ((q.deco.1.liftFr ⟨P.1, hP⟩)⁻¹ * 1 * p.deco.1.liftFr ⟨P.1, hP⟩)⁻¹ group`.
+
+Simplify using `only [dif_neg hP, κ] show 1 * p.fr _ * ((k _)⁻¹).1 = _`. Simplify using `[k]`. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Simplify using `only [κ, dif_pos hP, not_not.2 hP, IsEmpty.forall_iff, and_true]`. Establish `e : redGL _ P.1 (t1 ⟨P.1, hP⟩) = h ⟨P.1, hP⟩` using `redGL_passFr (d := p.deco.1) (w := ⟨P.1, hP⟩) 1 h (liftFr_spec p.deco.2 _) (hl _)`.
+
+Rewrite using `[map_mul, map_inv, map_inv, e]`. Simplify using `only [h, map_inv, inv_inv, Subtype.coe_eta, inv_mul_cancel]`. Simplify using `only [κ, dif_neg hP, inv_inv, inv_mul_cancel, map_one]`. Conclude with `⟨trivial, fun _ => trivial⟩`.
+-/
 theorem exists_pt_frames (p : ChPt (R := R) sel mu u j) (g : ∀ P : rowSG Pr sel mu, GLint X.E (R.N j) P.1) :
     ∃ (q : ChPt (R := R) sel mu u j) (κ : GLQ X.E (R.N j) (rowSG Pr sel mu)),
       q.deco.1.N = p.deco.1.N ∧ q.deco.1.f = p.deco.1.f ∧ (∀ P, frsF sel mu q P = frsF sel mu p P * ((κ P)⁻¹).1) ∧
@@ -249,6 +336,11 @@ theorem exists_pt_frames (p : ChPt (R := R) sel mu u j) (g : ∀ P : rowSG Pr se
 
 end Pt
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a _ hTie hj β' κ' P`. Take `⟨hLe, -, -⟩` from `hTie.levCpl β'`. Establish `hv : IsOver (HeightOneSpectrum.under (𝓞 D.host.F) (seamP t.seam P.1)) (seamP t.seam P.1)`. Unfold `IsOver`. Rewrite using `[HeightOneSpectrum.under_asIdeal]`.
+
+Establish `hU` using `(((St (t.m2 + 1) hj).K β').lev.U_eq κ'.1).1 κ'.2`. Take `⟨g, z, ⟨hmid, -⟩, hin⟩` from `hLe P _ hv κ'.1 hU.1 (hU.2 _)`. Establish `hpr` using `(exists_midLev_iff t.Ch t.sel (t.tup μ) (t.cst μ) (t.m2 + 1) P _ g).1 ⟨z, hmid⟩`. Conclude with `⟨⟨g, (t.idx_ok μ).int (t.m2 + 1) _ P hpr⟩, hin⟩`.
+-/
 theorem exists_glint_inFrame : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => ∀ (hj : t.m2 + 1 ≤ D.R.m) (β' : (St (t.m2 + 1) hj).Ch)
     (κ' : ((St (t.m2 + 1) hj).K β').lev.U) (P : SB t μ),
     ∃ g : GLint t.X.E (D.R.N (t.m2 + 1)) P.1, InFrame t.seam (A.fb (t.m2 + 1) hj β') (t.cst μ).D P κ'.1 g.1) := by
@@ -262,6 +354,21 @@ theorem exists_glint_inFrame : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St}
   have hpr := (exists_midLev_iff t.Ch t.sel (t.tup μ) (t.cst μ) (t.m2 + 1) P _ g).1 ⟨z, hmid⟩
   exact ⟨⟨g, (t.idx_ok μ).int (t.m2 + 1) _ P hpr⟩, hin⟩
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPin hTie hj β' x' x₁' κ' p' hx hp'`. Use `choose g hg using exists_glint_inFrame A dtU a hPin hTie hj β' κ'`. Take `⟨q', κ'', hN, hf, hfr, hκ⟩` from `exists_pt_frames p' g`. Establish `hin : ∀ P, InFrame t.seam (A.fb (t.m2 + 1) hj β') (t.cst μ).D P κ'.1 ((κ'' P)⁻¹).1`. Introduce `P`.
+
+Distinguish the cases in `hP : P.1 ∈ t.Pr.vGs`. Establish `hD : (t.cst μ).D P = 1` using `(t.idx_ok μ).depthG P hP`. Establish `hq` using `(GlobalTheory.ColPeriod.levelPrimes t.X t.Pr t.sel t.S (t.tup μ) hPin.fields.ok t.pr_ok hPin.sel P).1.2`. Establish `e : ((κ'' P)⁻¹).1 = (g P).1 * ((g P)⁻¹ * (κ'' P)⁻¹).1`. Rewrite using `[← Subgroup.coe_mul, mul_inv_cancel_left]`.
+
+Unfold `InFrame`. Rewrite using `[e, map_mul]`. Use `nearAt_mul _ (hg P) ?_` and prove the remaining obligations. Rewrite using `[hD]`. Conclude with `congAt_one_of_redGL t.seam hq ((g P)⁻¹ * (κ'' P)⁻¹) (hκ P).1`.
+
+Rewrite using `[(hκ P).2 hP]`. Conclude with `hg P`. Use `⟨q', κ'', ⟨?_, fun P => ?_, fun P v h hvP => ?_⟩, fun p w => ?_, hfr, hin⟩` and prove the remaining obligations. Rewrite using `[hN, hp'.lat]`. Unfold `latCo`.
+
+Rewrite using `[hx, Formalism.MainNotions.G.KAat.latAd_stab _ _ _ (hatStab_of_lev _ κ')]`. Rewrite using `[hfr P, map_mul, hx]`. Establish `e : ratA D.host.F (A.crd _ hj) * (x'.1 * κ'.1) * ratA D.host.F (A.fb _ hj β' P) = (ratA D.host.F (A.crd _ hj) * x'.1 * ratA D.host.F (A.fb _ hj β' P)) * ((ratA D.host.F (A.fb _ hj β' P))⁻¹ * κ'.1 * ratA D.host.F (A.fb _ hj β' P))` using `by group`. Rewrite using `[e]`. Conclude with `nearAt_mul_int _ (hp'.frame P) (hin P) (seamGL_int t.seam (κ'' P)⁻¹)`.
+
+Establish `H` using `funMoved_mul_lev t.seam _ P v h _ _ _ κ' (hp'.fnl P v h hvP)`. Rewrite using `[hx, ← mul_assoc]`. Unfold `FunMoved at H ⊢`. Introduce `w hw z hz`. Conclude with `(congrFun (congrFun hf P) w).trans (H w (hN ▸ hw) z hz)`.
+
+Unfold `phiT`. Use `@if_congr _ _ _ (_) (_) _ _ _ _ ?_ rfl rfl` and prove the remaining obligations. Simplify using `only [Deco.at, hN, hf]`.
+-/
 theorem ptAd_levCpl : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => ∀ (hj : t.m2 + 1 ≤ D.R.m) (β' : (St (t.m2 + 1) hj).Ch)
     (x' x₁' : UA D (t.m2 + 1) hj) (κ' : ((St (t.m2 + 1) hj).K β').lev.U) p', x₁'.1 = x'.1 * κ'.1 → IsPtAd A a (t.m2 + 1) hj β' x' p' →
     ∃ (q' : ChPt (R := D.R) t.sel (t.tup μ) (t.word u) (t.m2 + 1)) (κ'' : GLQ t.X.E (D.R.N (t.m2 + 1)) (SB t μ)),

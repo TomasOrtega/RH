@@ -7,6 +7,9 @@ namespace GlobalTheory.UnifCorr
 
 variable {R : Type} [CommRing R] {σ : Type}
 
+/- English proof (translation)
+Introduce `m`. Rewrite using `[X_pow_eq_monomial, coeff_monomial_mul']`. Use `split_ifs`. Conclude with `I.mul_mem_left _ (h _)`. Conclude with `I.zero_mem`.
+-/
 theorem coeff_X_pow_mul_mem (I : Ideal R) (i : σ) (k : ℕ) (G : MvPolynomial σ R)
     (h : ∀ m, coeff m G ∈ I) : ∀ m, coeff m ((X i : MvPolynomial σ R) ^ k * G) ∈ I := by
   intro m
@@ -15,6 +18,9 @@ theorem coeff_X_pow_mul_mem (I : Ideal R) (i : σ) (k : ℕ) (G : MvPolynomial �
   · exact I.mul_mem_left _ (h _)
   · exact I.zero_mem
 
+/- English proof (translation)
+Rewrite using `[G.as_sum]`. Use `K.sum_mem fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_one (coeff v G), ← C_mul_monomial]`. Conclude with `K.mul_mem_right _ (hC _ (h v))`.
+-/
 theorem mem_of_coeff_mem (I : Ideal R) (K : Ideal (MvPolynomial σ R))
     (hC : ∀ a ∈ I, C a ∈ K) (G : MvPolynomial σ R) (h : ∀ m, coeff m G ∈ I) : G ∈ K := by
   rw [G.as_sum]
@@ -25,6 +31,27 @@ theorem mem_of_coeff_mem (I : Ideal R) (K : Ideal (MvPolynomial σ R))
 end GlobalTheory.UnifCorr
 
 open GlobalTheory.UnifCorr in
+/- English proof (translation)
+Introduce `R _ _ I n K hsat hC hstep`. Establish `hcoef : ∀ e (G : MvPolynomial (Fin (n + 1)) R), (∀ m, coeff m G ∈ I ^ (e + 1)) → G ∈ K e` using `fun e G h => mem_of_coeff_mem (I ^ (e + 1)) (K e) (hC e) G h`. Establish `hJ : ∀ (e t : ℕ) (a : R) (F : MvPolynomial (Fin (n + 1)) R), a ∈ I → F.IsHomogeneous t → (∀ m, coeff m F ∈ I ^ e) → F ∈ K e → C a * F ∈ K (e + 1)`. Introduce `e t a F ha hF _ hFK`. Establish `hCF : (C a * F).IsHomogeneous t`.
+
+Use `(isHomogeneous_C (Fin (n + 1)) a).mul hF` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Apply `hsat (e + 1) t (C a * F) hCF` to reduce the goal to its premises. Introduce `i`. Take `⟨N, G, _, hGc, hk⟩` from `hstep e t F hF hFK i`.
+
+Use `⟨N, ?_⟩` and prove the remaining obligations. Establish `h1 : C a * G ∈ K (e + 1)`. Apply `hcoef (e + 1)` to reduce the goal to its premises. Introduce `m`. Rewrite using `[coeff_C_mul]`.
+
+Use `Ideal.mul_mem_mul ha (hGc m)` as an intermediate fact. Rewrite `this` using `[← pow_succ']`. Then use the resulting hypothesis. Establish `: (X i : MvPolynomial (Fin (n + 1)) R) ^ N * (C a * F) = C a * (X i ^ N * F - G) + C a * G` using `by ring`. Rewrite using `[this]`. Conclude with `add_mem ((K (e + 1)).mul_mem_left _ hk) h1`.
+
+Take `⟨d₀, hd₀⟩` from `GlobalTheory.T.uniform_serre_sections_alt R I n K hJ`. Use `⟨d₀, fun t ht e F hF hFK => ?_⟩` and prove the remaining obligations. Use `choose N G hG hGc hk using hstep e t F hF hFK`. Take `⟨M, hNM⟩ : ∃ M, ∀ i, N i ≤ M` from `⟨∑ i, N i, fun i => Finset.single_le_sum (fun j _ => Nat.zero_le (N j)) (Finset.mem_univ i)⟩`. Set `G' : Fin (n + 1) → MvPolynomial (Fin (n + 1)) R` to `fun i => X i ^ (M - N i) * G i`.
+
+Establish `hXM : ∀ i, (X i : MvPolynomial (Fin (n + 1)) R) ^ M = X i ^ (M - N i) * X i ^ N i` using `fun i => by`. Rewrite using `[← pow_add, Nat.sub_add_cancel (hNM i)]`. Establish `hG'h : ∀ i, (G' i).IsHomogeneous (t + M)` using `fun i => by show (X i ^ (M - N i) * G i).IsHomogeneous (t + M)`. Rewrite using `[show t + M = (M - N i) + (t + N i) by have := hNM i; omega]`. Conclude with `(isHomogeneous_X_pow i (M - N i)).mul (hG i)`.
+
+Establish `hG'c : ∀ i m, coeff m (G' i) ∈ I ^ (e + 1)` using `fun i => coeff_X_pow_mul_mem _ i _ _ (hGc i)`. Establish `hk' : ∀ i, (X i : MvPolynomial (Fin (n + 1)) R) ^ M * F - G' i ∈ K (e + 1)` using `fun i => by`. Establish `: (X i : MvPolynomial (Fin (n + 1)) R) ^ M * F - G' i = X i ^ (M - N i) * (X i ^ N i * F - G i)`. Simplify using `only [G', hXM i]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this]`. Conclude with `(K (e + 1)).mul_mem_left _ (hk i)`. Take `⟨G0, hG0, hG0c, hL⟩` from `hd₀ t ht (e + 1) M G' hG'h hG'c (fun i j => ⟨0, by`. Establish `: ((X i : MvPolynomial (Fin (n + 1)) R) * X j) ^ 0 * (X j ^ M * G' i - X i ^ M * G' j) = X i ^ M * (X j ^ M * F - G' j) - X j ^ M * (X i ^ M * F - G' i)` using `by ring`. Rewrite using `[this]`.
+
+Conclude with `sub_mem ((K (e + 1)).mul_mem_left _ (hk' j)) ((K (e + 1)).mul_mem_left _ (hk' i))⟩)`. Use `⟨G0, hG0, hG0c, ?_⟩` and prove the remaining obligations. Apply `hsat (e + 1) t (F - G0) (hF.sub hG0)` to reduce the goal to its premises. Introduce `i`. Take `⟨L, hLi⟩` from `hL i`.
+
+Use `⟨L + M, ?_⟩` and prove the remaining obligations. Establish `: (X i : MvPolynomial (Fin (n + 1)) R) ^ (L + M) * (F - G0) = X i ^ L * (X i ^ M * F - G' i) + X i ^ L * (G' i - X i ^ M * G0)` using `by ring`. Rewrite using `[this]`. Conclude with `add_mem ((K (e + 1)).mul_mem_left _ (hk' i)) hLi`.
+-/
 theorem GlobalTheory.homogeneous_correction_next_level : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R), ∀ (n : ℕ) (K : ℕ → Ideal (MvPolynomial (Fin (n + 1)) R)), (∀ (e t : ℕ) (F : MvPolynomial (Fin (n + 1)) R), F.IsHomogeneous t → (∀ i, ∃ N : ℕ, (X i : MvPolynomial (Fin (n + 1)) R) ^ N * F ∈ K e) → F ∈ K e) → (∀ e, ∀ a ∈ I ^ (e + 1), C a ∈ K e) → (∀ (e t : ℕ) (F : MvPolynomial (Fin (n + 1)) R), F.IsHomogeneous t → F ∈ K e → ∀ i, ∃ (N : ℕ) (G : MvPolynomial (Fin (n + 1)) R), G.IsHomogeneous (t + N) ∧ (∀ m, coeff m G ∈ I ^ (e + 1)) ∧ (X i : MvPolynomial (Fin (n + 1)) R) ^ N * F - G ∈ K (e + 1)) → ∃ t₀ : ℕ, ∀ t, t₀ ≤ t → ∀ (e : ℕ) (F : MvPolynomial (Fin (n + 1)) R), F.IsHomogeneous t → F ∈ K e → ∃ G : MvPolynomial (Fin (n + 1)) R, G.IsHomogeneous t ∧ (∀ m, coeff m G ∈ I ^ (e + 1)) ∧ F - G ∈ K (e + 1) := by
   intro R _ _ I n K hsat hC hstep
   have hcoef : ∀ e (G : MvPolynomial (Fin (n + 1)) R), (∀ m, coeff m G ∈ I ^ (e + 1)) → G ∈ K e :=

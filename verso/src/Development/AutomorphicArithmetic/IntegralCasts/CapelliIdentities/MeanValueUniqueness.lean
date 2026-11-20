@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `G K _ _ _ _ _ _ _ κ _ a p ha hp φ ψ hφ hψ h1 h2 g`. Establish `key : ∀ f : G → ℂ, Continuous f → MeasureTheory.Integrable (fun k => p k * f (g * a k)) κ`. Introduce `f hf`. Establish `hc : Continuous (fun k => p k * f (g * a k))` using `hp.mul (hf.comp (continuous_const.mul ha))`. Conclude with `(BoundedContinuousFunction.mkOfCompact ⟨_, hc⟩).integrable κ`.
+
+Simplify using `only [Pi.add_apply, mul_add]`. Rewrite using `[MeasureTheory.integral_add (key φ hφ) (key ψ hψ), h1 g, h2 g]`.
+-/
 theorem UpperTheory.mean_value_uniqueness :
     ∀ {G K : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [TopologicalSpace K] [CompactSpace K]
         [MeasurableSpace K] [OpensMeasurableSpace K] (κ : MeasureTheory.Measure K) [MeasureTheory.IsFiniteMeasure κ]

@@ -7,6 +7,9 @@ namespace GroundTheory.Heights₂.Heights.ChowlaSelberg
 open GroundTheory.Global.Elliptic
 open scoped Real ModularForm UpperHalfPlane
 
+/- English proof (translation)
+Introduce `τ`. Rewrite using `[latticeDiscr_lattice, discr_latticeOfTau]`. Simplify using `only [ModularForm.discriminant]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem DeltaEta.proof : DeltaEta.Statement := by
   intro τ
   rw [latticeDiscr_lattice, discr_latticeOfTau]

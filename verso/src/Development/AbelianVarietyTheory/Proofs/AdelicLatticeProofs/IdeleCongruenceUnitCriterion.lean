@@ -8,6 +8,13 @@ namespace GlobalTheory.IdeleCharLevel
 
 variable (K : Type) [Field K] [NumberField K]
 
+/- English proof (translation)
+Take `⟨M, hM, h⟩` from `GlobalTheory.AdLat.OpenLat.exists_nsmul_adele K U hU`. Use `⟨M, hM.ne', fun a ha => ?_⟩` and prove the remaining obligations. Establish `hM0 : (M : K) ≠ 0` using `Nat.cast_ne_zero.mpr hM.ne'`. Establish `hM1 : (M : 𝓞 K) ≠ 0` using `Nat.cast_ne_zero.mpr hM.ne'`. Use `h (algebraMap K (FiniteAdeleRing (𝓞 K) K) (M : K)⁻¹ * a) fun P => by` as an intermediate fact.
+
+Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Express the relevant statement in the definitionally equal form `Valued.v ((algebraMap K (FiniteAdeleRing (𝓞 K) K) (M : K)⁻¹) P * a P) ≤ 1`. Rewrite using `[map_mul, FiniteAdeleRing.algebraMap_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', map_inv₀, ← map_natCast (algebraMap (𝓞 K) K), HeightOneSpectrum.valuation_of_algebraMap]`. Establish `h0 : P.intValuation (M : 𝓞 K) ≠ 0` using `P.intValuation_ne_zero _ hM1`. Rewrite using `[inv_mul_le_iff₀ (zero_lt_iff.mpr h0), mul_one]`.
+
+Conclude with `ha P`. Rewrite `this` using `[nsmul_eq_mul, ← mul_assoc, ← map_natCast (algebraMap K (FiniteAdeleRing (𝓞 K) K)) M, ← map_mul, mul_inv_cancel₀ hM0, map_one, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem exists_level (U : Set (FiniteAdeleRing (𝓞 K) K)) (hU : U ∈ 𝓝 (0 : FiniteAdeleRing (𝓞 K) K)) :
     ∃ M : ℕ, M ≠ 0 ∧ ∀ a : FiniteAdeleRing (𝓞 K) K,
       (∀ P : HeightOneSpectrum (𝓞 K), Valued.v (a P) ≤ P.intValuation (M : 𝓞 K)) → a ∈ U := by

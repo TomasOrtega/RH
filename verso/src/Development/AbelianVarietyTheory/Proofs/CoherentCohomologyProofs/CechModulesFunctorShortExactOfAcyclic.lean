@@ -12,6 +12,11 @@ noncomputable section
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.AddEquivOfSurjectiveKernel.exists_addEquiv_of_surjective_of_ker_iff`. Consider the case `exact _root_.GlobalTheory.AddEquivOfSurjectiveKernel.exists_addEquiv_of_surjective_of_ker_iff`. Consider the case `(apply _root_.GlobalTheory.AddEquivOfSurjectiveKernel.exists_addEquiv_of_surjective_of_ker_iff <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.AddEquivOfSurjectiveKernel.exists_addEquiv_of_surjective_of_ker_iff <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.AddEquivOfSurjectiveKernel.exists_addEquiv_of_surjective_of_ker_iff <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.AddEquivOfSurjectiveKernel.exists_addEquiv_of_surjective_of_ker_iff ..)`.
+-/
 theorem exists_addEquiv_of_surjective_of_ker {A B C : Type*} [AddCommGroup A] [AddCommGroup B]
     [AddCommGroup C] (f : A →+ B) (g : A →+ C) (hf : Function.Surjective f)
     (hg : Function.Surjective g) (h : ∀ a, f a = 0 ↔ g a = 0) :
@@ -28,6 +33,13 @@ section Cube
 
 variable {ι : Type} [LinearOrder ι] {R : Type v} [Ring R]
 
+/- English proof (translation)
+Establish `hx₃ : (forget₂ (ModuleCat.{u} R) Ab).map ((S.map (cechFunctor ι R)).X₃.d p (p + 1)) x₃.1 = 0`. Express the relevant statement in the definitionally equal form `((cechComplex S.X₃).d p (p + 1)).hom x₃.1 = 0`. Rewrite using `[cechComplex_d]`. Conclude with `x₃.2`. Establish `hx₁ : (forget₂ (ModuleCat.{u} R) Ab).map ((S.map (cechFunctor ι R)).f.f (p + 1)) x₁.1 = (forget₂ (ModuleCat.{u} R) Ab).map ((S.map (cechFunctor ι R)).X₂.d p (p + 1)) x₂`.
+
+Express the relevant statement in the definitionally equal form `_ = ((cechComplex S.X₂).d p (p + 1)).hom x₂`. Rewrite using `[cechComplex_d]`. Conclude with `h₁`. Establish `key` using `hS.δ_apply p (p + 1) rfl x₃.1 hx₃ x₂ h₂ x₁.1 hx₁ (p + 1 + 1) (by simp)`. Establish `aux (A : Cube.{u} ι R) (q j : ℕ) (x : LinearMap.ker (Cube.d A (q + 1))) (hj : (ComplexShape.up ℕ).next q = j) (hx : (forget₂ (ModuleCat.{u} R) Ab).map ((cechComplex A).d q j) x.1 = 0) : (forget₂ (ModuleCat.{u} R) Ab).map ((cechComplex A).homologyπ q) ((cechComplex A).cyclesMk x.1 …`.
+
+Use `congrArg ((cechComplex A).homologyπ q).hom (?_ : _ = (cechCyclesIso A q).inv.hom x)` and prove the remaining obligations. Apply `(ModuleCat.mono_iff_injective ((cechComplex A).iCycles q)).1 inferInstance` to reduce the goal to its premises. Conclude with `((cechComplex A).i_cyclesMk x.1 j hj hx).trans (iCycles_cechCyclesIso_inv A q x).symm`. Conclude with `(congrArg (hS.δ p (p + 1) rfl).hom (aux S.X₃ p _ x₃ _ _).symm).trans (key.trans (aux S.X₁ (p + 1) _ x₁ _ _))`.
+-/
 theorem δ_cechClass {S : ShortComplex (Cube.{u} ι R)}
     (hS : (S.map (cechFunctor ι R)).ShortExact) (p : ℕ)
     (x₃ : LinearMap.ker (Cube.d S.X₃ (p + 1))) (x₂ : Cube.Term S.X₂ (p + 1))
@@ -58,6 +70,11 @@ theorem δ_cechClass {S : ShortComplex (Cube.{u} ι R)}
   exact (congrArg (hS.δ p (p + 1) rfl).hom (aux S.X₃ p _ x₃ _ _).symm).trans
     (key.trans (aux S.X₁ (p + 1) _ x₁ _ _))
 
+/- English proof (translation)
+Establish `h q` using `(HomologicalComplex.shortExact_iff_degreewise_shortExact _).1 hS q`. Establish `hg : Function.Surjective (Cube.termMap S.g (p + 1))` using `(ModuleCat.epi_iff_surjective _).1 (h p).epi_g`. Establish `hf : Function.Injective (Cube.termMap S.f (p + 1 + 1 + 1))` using `(ModuleCat.mono_iff_injective _).1 (h (p + 1 + 1)).mono_f`. Establish `he : Function.Exact (Cube.termMap S.f (p + 1 + 1)) (Cube.termMap S.g (p + 1 + 1))` using `(ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1 (h (p + 1)).exact`. Take `⟨x₂, h₂⟩` from `hg x₃.1`.
+
+Take `⟨x₁, h₁⟩` from `(he (Cube.d S.X₂ (p + 1) x₂)).1 (by rw [Cube.termMap_d, h₂]; exact x₃.2)`. Use `⟨x₂, ⟨x₁, hf ?_⟩, h₂, h₁⟩` and prove the remaining obligations. Rewrite using `[Cube.termMap_d, h₁, Cube.d_d, map_zero]`.
+-/
 theorem exists_lift_cechCocycle {S : ShortComplex (Cube.{u} ι R)}
     (hS : (S.map (cechFunctor ι R)).ShortExact) (p : ℕ)
     (x₃ : LinearMap.ker (Cube.d S.X₃ (p + 1))) :
@@ -76,6 +93,11 @@ theorem exists_lift_cechCocycle {S : ShortComplex (Cube.{u} ι R)}
   refine ⟨x₂, ⟨x₁, hf ?_⟩, h₂, h₁⟩
   rw [Cube.termMap_d, h₁, Cube.d_d, map_zero]
 
+/- English proof (translation)
+Take `⟨x₃, rfl⟩` from `cechClass_surjective S.X₃ p x`. Take `⟨x₂, x₁, h₂, h₁⟩` from `exists_lift_cechCocycle hS p x₃`. Rewrite using `[δ_cechClass hS p x₃ x₂ x₁ h₂ h₁, homology_cechClass, homology_cechClass]`. Use `(δ_cechClass hS' p _ (ψ₂.term _ x₂) _ ?_ ?_).symm` and prove the remaining obligations. Rewrite using `[coe_cocycle, ← h₂]`.
+
+Conclude with `funext fun s => (hg s.1 _).symm`. Rewrite using `[coe_cocycle, ← term_d, ← h₁]`. Conclude with `funext fun s => (hf s.1 _).symm`.
+-/
 theorem Cube.SemiHom.homology_δ {R' : Type*} [Ring R'] {σ : R →+* R'}
     {S : ShortComplex (Cube.{u} ι R)} {S' : ShortComplex (Cube.{u} ι R')}
     (hS : (S.map (cechFunctor ι R)).ShortExact) (hS' : (S'.map (cechFunctor ι R')).ShortExact)
@@ -107,19 +129,35 @@ def CechAcyclic (V : Opens T) (U : ι → Opens T)
 
 variable {V : Opens T} {U : ι → Opens T}
 
+/- English proof (translation)
+Introduce `_ _ q` and use `Flasque.subsingleton_H'_of_injective I q _`.
+-/
 theorem cechAcyclic_of_injective (I : Sheaf (Opens.grothendieckTopology T) AddCommGrpCat.{u})
     [Injective I] : CechAcyclic V U I := fun _ _ q => Flasque.subsingleton_H'_of_injective I q _
 
+/- English proof (translation)
+Introduce `s hs q` and use `SheafLES.subsingleton₃ hS _ _ (h₂ s hs q) (h₁ s hs (q + 1))`.
+-/
 theorem CechAcyclic.of_shortExact₃
     {S : ShortComplex (Sheaf (Opens.grothendieckTopology T) AddCommGrpCat.{u})} (hS : S.ShortExact)
     (h₁ : CechAcyclic V U S.X₁) (h₂ : CechAcyclic V U S.X₂) : CechAcyclic V U S.X₃ :=
   fun s hs q => SheafLES.subsingleton₃ hS _ _ (h₂ s hs q) (h₁ s hs (q + 1))
 
+/- English proof (translation)
+Introduce `s hs q` and use `SheafLES.subsingleton₂ hS _ _ (h₁ s hs q) (h₃ s hs q)`.
+-/
 theorem CechAcyclic.of_shortExact₂
     {S : ShortComplex (Sheaf (Opens.grothendieckTopology T) AddCommGrpCat.{u})} (hS : S.ShortExact)
     (h₁ : CechAcyclic V U S.X₁) (h₃ : CechAcyclic V U S.X₃) : CechAcyclic V U S.X₂ :=
   fun s hs q => SheafLES.subsingleton₂ hS _ _ (h₁ s hs q) (h₃ s hs q)
 
+/- English proof (translation)
+Use `⟨fun x y hxy => ?_, fun x => ?_, SheafLES.sections_surjective_of_subsingleton hS W h⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(SheafLES.equivZero.{u} S.X₁ W).surjective x`. Take `⟨y, rfl⟩` from `(SheafLES.equivZero.{u} S.X₁ W).surjective y`. Rewrite `hxy` using `[← SheafLES.equivZero_map, ← SheafLES.equivZero_map]`. Rewrite using `[SheafLES.injective_zero hS W ((SheafLES.equivZero.{u} S.X₂ W).injective hxy)]`.
+
+Take `⟨x, rfl⟩` from `(SheafLES.equivZero.{u} S.X₂ W).surjective x`. Rewrite using `[← SheafLES.equivZero_map, AddEquiv.map_eq_zero_iff, SheafLES.exact₂ hS 0 W x]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨_, (SheafLES.equivZero_map S.f W y).symm⟩`.
+
+Introduce and unpack `⟨y, hy⟩`. Take `⟨y, rfl⟩` from `(SheafLES.equivZero.{u} S.X₁ W).surjective y`. Conclude with `⟨y, (SheafLES.equivZero.{u} S.X₂ W).injective ((SheafLES.equivZero_map S.f W y).trans hy)⟩`.
+-/
 theorem sections_shortExact_of_subsingleton
     {S : ShortComplex (Sheaf (Opens.grothendieckTopology T) AddCommGrpCat.{u})} (hS : S.ShortExact)
     (W : Opens T) (h : Subsingleton (Sheaf.H'.{u} S.X₁ 1 W)) :
@@ -156,6 +194,9 @@ variable {S S' : ShortComplex (Sheaf (Opens.grothendieckTopology T) AddCommGrpCa
 
 include hS h₁ in
 
+/- English proof (translation)
+The claim follows from `cechAbFunctor_shortExact V U (S.map (sheafToPresheaf _ _)) fun s hs => sections_shortExact_of_subsingleton hS _ (h₁ s hs 0)`.
+-/
 theorem cechAbSheafFunctor_shortExact : (S.map (cechAbSheafFunctor V U)).ShortExact :=
   cechAbFunctor_shortExact V U (S.map (sheafToPresheaf _ _)) fun s hs =>
     sections_shortExact_of_subsingleton hS _ (h₁ s hs 0)
@@ -163,16 +204,25 @@ theorem cechAbSheafFunctor_shortExact : (S.map (cechAbSheafFunctor V U)).ShortEx
 def cechAbδ (n : ℕ) : cechAbH S.X₃.obj V U n →ₗ[ℤ] cechAbH S.X₁.obj V U (n + 1) :=
   ((cechAbSheafFunctor_shortExact hS h₁).δ n (n + 1) rfl).hom
 
+/- English proof (translation)
+The claim follows from `(ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1 ((cechAbSheafFunctor_shortExact hS h₁).homology_exact₃ n (n + 1) rfl)`.
+-/
 theorem cechAbδ_exact₃ (n : ℕ) :
     Function.Exact (cechAbHMap V U S.g.hom n).hom (cechAbδ hS h₁ n) :=
   (ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1
     ((cechAbSheafFunctor_shortExact hS h₁).homology_exact₃ n (n + 1) rfl)
 
+/- English proof (translation)
+The claim follows from `(ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1 ((cechAbSheafFunctor_shortExact hS h₁).homology_exact₁ n (n + 1) rfl)`.
+-/
 theorem cechAbδ_exact₁ (n : ℕ) :
     Function.Exact (cechAbδ hS h₁ n) (cechAbHMap V U S.f.hom (n + 1)).hom :=
   (ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1
     ((cechAbSheafFunctor_shortExact hS h₁).homology_exact₁ n (n + 1) rfl)
 
+/- English proof (translation)
+The claim follows from `congr(($(HomologicalComplex.HomologySequence.δ_naturality ((cechAbSheafFunctor V U).mapShortComplex.map φ) (cechAbSheafFunctor_shortExact hS h₁) (cechAbSheafFunctor_shortExact hS' h₁') n (n + 1) rfl)).hom x)`.
+-/
 theorem cechAbδ_naturality (hS' : S'.ShortExact) (h₁' : CechAcyclic V U S'.X₁) (φ : S ⟶ S')
     (n : ℕ) (x : cechAbH S.X₃.obj V U n) :
     (cechAbHMap V U φ.τ₁.hom (n + 1)).hom (cechAbδ hS h₁ n x) =
@@ -181,6 +231,9 @@ theorem cechAbδ_naturality (hS' : S'.ShortExact) (h₁' : CechAcyclic V U S'.X�
     ((cechAbSheafFunctor V U).mapShortComplex.map φ) (cechAbSheafFunctor_shortExact hS h₁)
     (cechAbSheafFunctor_shortExact hS' h₁') n (n + 1) rfl)).hom x)
 
+/- English proof (translation)
+Introduce `x` and use `haveI := Flasque.isFlasque_of_injective (X := T) S.X₂ (hI := ‹_›) (cechAbδ_exact₁ hS h₁ n x).1 (@Subsingleton.elim _ (subsingleton_cechAbH_succ_of_isFlasque (T := T) S.X₂ V U n) _ _)`.
+-/
 theorem cechAbδ_surjective [Finite ι] [Injective S.X₂] (n : ℕ) :
     Function.Surjective (cechAbδ hS h₁ n) := fun x =>
   haveI := Flasque.isFlasque_of_injective (X := T) S.X₂ (hI := ‹_›)
@@ -205,6 +258,19 @@ def CechComparison.zero (hc : V ≤ ⨆ i, U i) : CechComparison V U 0 :=
       exact congrArg (SheafLES.equivZero G V).symm
         (cechAbHZeroEquiv_map F.property G.property hc φ.hom x)⟩
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `e`. Set `I (F : Sheaf (Opens.grothendieckTopology T) AddCommGrpCat.{u})` to `Flasque.injectiveShortComplex F`. Establish `hI F : (I F).ShortExact` using `Flasque.injectiveShortComplex_shortExact F`. Establish `inj F : Injective (I F).X₂` using `inferInstanceAs (Injective (Injective.under F))`. Establish `a₂ F : CechAcyclic V U (I F).X₂` using `cechAcyclic_of_injective _`.
+
+Establish `a₃ F (hF : CechAcyclic V U F) : CechAcyclic V U (I F).X₃` using `CechAcyclic.of_shortExact₃ (hI F) hF (a₂ F)`. Establish `ex F (hF : CechAcyclic V U F) : ∃ e' : cechAbH F.obj V U (n + 1) ≃+ Sheaf.H'.{u} F (n + 1) V, ∀ x, e' (cechAbδ (hI F) hF n x) = SheafLES.δ (hI F) n V (e _ (a₃ F hF) x)`. Use `exists_addEquiv_of_surjective_of_ker (cechAbδ (hI F) hF n).toAddMonoidHom ((SheafLES.δ (hI F) n V).comp (e _ (a₃ F hF)).toAddMonoidHom) (cechAbδ_surjective (hI F) hF n) ((SheafLES.δ_surjective_of_subsingleton (hI F) n V (Flasque.subsingleton_H'_of_injective _ n V)).comp (e _ (a₃ …` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`.
+
+Conclude with `⟨_, (he _ _ (a₂ F) _ _ y).symm⟩`. Introduce and unpack `⟨y, hy⟩`. Take `⟨y, rfl⟩` from `(e _ (a₂ F)).surjective y`. Conclude with `⟨y, (e _ (a₃ F hF)).injective ((he _ _ (a₂ F) _ _ y).trans hy)⟩`. Use `choose e' he' using ex`.
+
+Establish `key (S : ShortComplex (Sheaf (Opens.grothendieckTopology T) AddCommGrpCat.{u})) (hS : S.ShortExact) (h₁ : CechAcyclic V U S.X₁) (h₃ : CechAcyclic V U S.X₃) G hG (f : S.X₁ ⟶ G) (x : cechAbH S.X₃.obj V U n) : e' G hG ((cechAbHMap V U f.hom (n + 1)).hom (cechAbδ hS h₁ n x)) = SheafL …`. Take `⟨φ, hφ⟩` from `Flasque.exists_hom_τ₁_eq (T := I G) hS f`. Establish `e₁` using `cechAbδ_naturality hS h₁ (hI G) hG φ n x`. Establish `e₂` using `SheafLES.δ_naturality hS (hI G) φ n V (e S.X₃ h₃ x)`. Rewrite `e₁`, `e₂` using `[hφ]`.
+
+Use `(congrArg (e' G hG) e₁).trans ((he' G hG _).trans (Eq.trans ?_ e₂.symm))` and prove the remaining obligations. Conclude with `congrArg _ (he _ _ h₃ _ φ.τ₃ x)`. Use `⟨⟨e', fun F G hF hG φ x => ?_⟩, fun S hS h₁ h₃ x => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `cechAbδ_surjective (hI F) hF n x`. Conclude with `(key (I F) (hI F) hF (a₃ F hF) G hG φ x).trans (congrArg _ (he' F hF x).symm)`.
+
+Use `key S hS h₁ h₃ S.X₁ h₁ (𝟙 _) x` as an intermediate fact. Rewrite `this` using `[SheafLES.map_id]`. Use `Eq.trans (congrArg _ ?_) this` and prove the remaining obligations. Conclude with `(congr(($(cechAbHMap_id S.X₁.obj V U (n + 1))).hom (cechAbδ hS h₁ n x))).symm`.
+-/
 theorem CechComparison.exists_succ [Finite ι] {n : ℕ} (e : CechComparison V U n) :
     ∃ e' : CechComparison V U (n + 1),
       ∀ (S : ShortComplex (Sheaf (Opens.grothendieckTopology T) AddCommGrpCat.{u}))
@@ -265,17 +331,26 @@ def cechAbHEquivH' (hF : CechAcyclic V U F) (n : ℕ) :
     cechAbH F.obj V U n ≃+ Sheaf.H'.{u} F n V :=
   (cechComparisonOfCover hc n).1 F hF
 
+/- English proof (translation)
+The claim follows from `congrArg (SheafLES.equivZero F V).symm ((cechAbHZeroEquiv F.property hc).apply_symm_apply x)`.
+-/
 theorem cechAbHEquivH'_toCechAbH (hF : CechAcyclic V U F) (x : F.obj.obj (op V)) :
     cechAbHEquivH' hc hF 0 (toCechAbH F.obj V U x) = (SheafLES.equivZero F V).symm x :=
   congrArg (SheafLES.equivZero F V).symm
     ((cechAbHZeroEquiv F.property hc).apply_symm_apply x)
 
+/- English proof (translation)
+The claim follows from `(cechComparisonOfCover hc n).2 F G hF hG φ x`.
+-/
 theorem cechAbHEquivH'_map (hF : CechAcyclic V U F) (hG : CechAcyclic V U G) (φ : F ⟶ G) (n : ℕ)
     (x : cechAbH F.obj V U n) :
     cechAbHEquivH' hc hG n ((cechAbHMap V U φ.hom n).hom x) =
       SheafLES.map φ n V (cechAbHEquivH' hc hF n x) :=
   (cechComparisonOfCover hc n).2 F G hF hG φ x
 
+/- English proof (translation)
+The claim follows from `(cechComparisonOfCover hc n).exists_succ.choose_spec S hS h₁ h₃ x`.
+-/
 theorem cechAbHEquivH'_δ
     {S : ShortComplex (Sheaf (Opens.grothendieckTopology T) AddCommGrpCat.{u})} (hS : S.ShortExact)
     (h₁ : CechAcyclic V U S.X₁) (h₃ : CechAcyclic V U S.X₃) (n : ℕ) (x : cechAbH S.X₃.obj V U n) :
@@ -294,9 +369,15 @@ def CechAcyclicMod (V : X.Opens) (U : ι → X.Opens) (F : X.Modules) : Prop :=
 
 variable {V : X.Opens} {U : ι → X.Opens} {F G : X.Modules}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem cechAcyclicMod_iff : CechAcyclicMod V U F ↔
     CechAcyclic (T := X.toPresheafedSpace.carrier) V U ((toAbSheaf X).obj F) := Iff.rfl
 
+/- English proof (translation)
+Use `forall₂_congr fun s hs => ?_` and prove the remaining obligations. Rewrite using `[cechOpen_of_nonempty h hs]`. Conclude with `⟨fun H q hq => by`. Take `⟨q, rfl⟩` from `Nat.exists_eq_add_one_of_ne_zero hq.ne'`. Conclude with `H q, fun H q => H _ q.succ_pos⟩`.
+-/
 theorem cechAcyclicMod_iff_of_le (h : ∀ i, U i ≤ V) : CechAcyclicMod V U F ↔
     ∀ s : Finset ι, s.Nonempty → ∀ q, 0 < q → Subsingleton (cohOn F (⨅ i ∈ s, U i) q) := by
   refine forall₂_congr fun s hs => ?_
@@ -305,10 +386,16 @@ theorem cechAcyclicMod_iff_of_le (h : ∀ i, U i ≤ V) : CechAcyclicMod V U F �
     obtain ⟨q, rfl⟩ := Nat.exists_eq_add_one_of_ne_zero hq.ne'
     exact H q, fun H q => H _ q.succ_pos⟩
 
+/- English proof (translation)
+Introduce `s hs q` and use `cohOn.subsingleton₃ hS _ _ (h₂ s hs q) (h₁ s hs (q + 1))`.
+-/
 theorem CechAcyclicMod.of_shortExact₃ {S : ShortComplex X.Modules} (hS : S.ShortExact)
     (h₁ : CechAcyclicMod V U S.X₁) (h₂ : CechAcyclicMod V U S.X₂) : CechAcyclicMod V U S.X₃ :=
   fun s hs q => cohOn.subsingleton₃ hS _ _ (h₂ s hs q) (h₁ s hs (q + 1))
 
+/- English proof (translation)
+Introduce `s hs q` and use `cohOn.subsingleton₂ hS _ _ (h₁ s hs q) (h₃ s hs q)`.
+-/
 theorem CechAcyclicMod.of_shortExact₂ {S : ShortComplex X.Modules} (hS : S.ShortExact)
     (h₁ : CechAcyclicMod V U S.X₁) (h₃ : CechAcyclicMod V U S.X₃) : CechAcyclicMod V U S.X₂ :=
   fun s hs q => cohOn.subsingleton₂ hS _ _ (h₁ s hs q) (h₃ s hs q)
@@ -321,6 +408,9 @@ variable {S S' : ShortComplex X.Modules} (hS : S.ShortExact) (h₁ : CechAcyclic
 
 include hS h₁ in
 
+/- English proof (translation)
+The claim follows from `cechModulesFunctor_shortExact R V U S fun s hs => sections_shortExact_of_subsingleton (T := X.toPresheafedSpace.carrier) (shortExact_toAbSheaf hS) _ (h₁ s hs 0)`.
+-/
 theorem cechModulesFunctor_shortExact_of_acyclic :
     (S.map (cechModulesFunctor R V U)).ShortExact :=
   cechModulesFunctor_shortExact R V U S fun s hs =>
@@ -330,9 +420,15 @@ theorem cechModulesFunctor_shortExact_of_acyclic :
 def cechδ (n : ℕ) : cechH R S.X₃ V U n →ₗ[R] cechH R S.X₁ V U (n + 1) :=
   ((cechModulesFunctor_shortExact_of_acyclic R hS h₁).δ n (n + 1) rfl).hom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cechδ_def (h : (S.map (cechModulesFunctor R V U)).ShortExact) (n : ℕ) :
     cechδ R hS h₁ n = (h.δ n (n + 1) rfl).hom := rfl
 
+/- English proof (translation)
+The claim follows from `Cube.SemiHom.homology_δ (S := (S.map (toAbSheaf X)).map (sheafToPresheaf _ _ ⋙ cechAbCubeFunctor V U)) (S' := S.map (cechCubeFunctor R V U)) (cechAbSheafFunctor_shortExact (T := X.toPresheafedSpace.carrier) (shortExact_toAbSheaf hS) (cechAcyclicMod_iff.1 h₁)) (cechModulesFunctor_ …`.
+-/
 theorem cechAbHEquiv_δ (n : ℕ) (x : cechAbH S.X₃.presheaf V U n) :
     cechAbHEquiv R S.X₁ V U (n + 1) (cechAbδ (T := X.toPresheafedSpace.carrier)
         (shortExact_toAbSheaf hS) (cechAcyclicMod_iff.1 h₁) n x) =
@@ -355,6 +451,9 @@ def cechHAddEquivCohOn (hF : CechAcyclicMod V U F) (n : ℕ) : cechH R F V U n �
     (cechAbHEquivH' (T := X.toPresheafedSpace.carrier) hc (cechAcyclicMod_iff.1 hF) n)).trans
     (cohOn.toH' F V n).symm
 
+/- English proof (translation)
+The claim follows from `congrArg (cechAbHEquivH' (T := X.toPresheafedSpace.carrier) hc (cechAcyclicMod_iff.1 hF) n) ((cechAbHEquiv R F V U n).symm_apply_apply x)`.
+-/
 theorem toH'_cechHAddEquivCohOn (hF : CechAcyclicMod V U F) (n : ℕ)
     (x : cechAbH F.presheaf V U n) :
     cohOn.toH' F V n (cechHAddEquivCohOn R hc hF n (cechAbHEquiv R F V U n x)) =
@@ -362,6 +461,9 @@ theorem toH'_cechHAddEquivCohOn (hF : CechAcyclicMod V U F) (n : ℕ)
   congrArg (cechAbHEquivH' (T := X.toPresheafedSpace.carrier) hc (cechAcyclicMod_iff.1 hF) n)
     ((cechAbHEquiv R F V U n).symm_apply_apply x)
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `(cechAbHEquiv R F V U n).surjective x`. Apply `(cohOn.toH' G V n).injective` to reduce the goal to its premises. Rewrite using `[← cechAbHEquiv_map, toH'_cechHAddEquivCohOn, cohOn.toH'_map, toH'_cechHAddEquivCohOn]`. Conclude with `cechAbHEquivH'_map (T := X.toPresheafedSpace.carrier) hc (cechAcyclicMod_iff.1 hF) (cechAcyclicMod_iff.1 hG) ((toAbSheaf X).map φ) n y`.
+-/
 theorem cechHAddEquivCohOn_map (hF : CechAcyclicMod V U F) (hG : CechAcyclicMod V U G)
     (φ : F ⟶ G) (n : ℕ) (x : cechH R F V U n) :
     cechHAddEquivCohOn R hc hG n ((cechHMap R V U φ n).hom x) =
@@ -378,17 +480,26 @@ def cechHEquivCohOn (hF : CechAcyclicMod V U F) (n : ℕ) : cechH R F V U n ≃�
       (congrArg (cechHAddEquivCohOn R hc hF n) (cechHMap_smulHom_apply R F V U r n x).symm).trans
         (cechHAddEquivCohOn_map R hc hF hF _ n x) }
 
+/- English proof (translation)
+The claim follows from `toH'_cechHAddEquivCohOn R hc hF n x`.
+-/
 theorem toH'_cechHEquivCohOn (hF : CechAcyclicMod V U F) (n : ℕ) (x : cechAbH F.presheaf V U n) :
     cohOn.toH' F V n (cechHEquivCohOn R hc hF n (cechAbHEquiv R F V U n x)) =
       cechAbHEquivH' (T := X.toPresheafedSpace.carrier) hc (cechAcyclicMod_iff.1 hF) n x :=
   toH'_cechHAddEquivCohOn R hc hF n x
 
+/- English proof (translation)
+The claim follows from `cechHAddEquivCohOn_map R hc hF hG φ n x`.
+-/
 theorem cechHEquivCohOn_map (hF : CechAcyclicMod V U F) (hG : CechAcyclicMod V U G)
     (φ : F ⟶ G) (n : ℕ) (x : cechH R F V U n) :
     cechHEquivCohOn R hc hG n ((cechHMap R V U φ n).hom x) =
       cohOn.map R φ V n (cechHEquivCohOn R hc hF n x) :=
   cechHAddEquivCohOn_map R hc hF hG φ n x
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `(cechAbHEquiv R S.X₃ V U n).surjective x`. Apply `(cohOn.toH' S.X₁ V (n + 1)).injective` to reduce the goal to its premises. Rewrite using `[← cechAbHEquiv_δ, cohOn.toH'_δ, toH'_cechHEquivCohOn]`. Conclude with `(toH'_cechHEquivCohOn R hc h₁ (n + 1) _).trans (cechAbHEquivH'_δ (T := X.toPresheafedSpace.carrier) hc (shortExact_toAbSheaf hS) (cechAcyclicMod_iff.1 h₁) (cechAcyclicMod_iff.1 h₃) n y)`.
+-/
 theorem cechHEquivCohOn_δ {S : ShortComplex X.Modules} (hS : S.ShortExact)
     (h₁ : CechAcyclicMod V U S.X₁) (h₃ : CechAcyclicMod V U S.X₃) (n : ℕ)
     (x : cechH R S.X₃ V U n) :
@@ -401,6 +512,11 @@ theorem cechHEquivCohOn_δ {S : ShortComplex X.Modules} (hS : S.ShortExact)
     (cechAbHEquivH'_δ (T := X.toPresheafedSpace.carrier) hc (shortExact_toAbSheaf hS)
       (cechAcyclicMod_iff.1 h₁) (cechAcyclicMod_iff.1 h₃) n y)
 
+/- English proof (translation)
+Use `LinearEquiv.ext fun x => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `(toCechH_bijective R F hc).2 x`. Apply `(cohOn.toH' F V 0).injective` to reduce the goal to its premises. Use `(congrArg (fun z => cohOn.toH' F V 0 (cechHEquivCohOn R hc hF 0 z)) (cechAbHEquiv_toCechAbH R F V U y).symm).trans ((toH'_cechHEquivCohOn R hc hF 0 _).trans ((cechAbHEquivH'_toCechAbH (T := X.toPresheafedSpace.carrier) hc (cechAcyclicMod_iff.1 hF) _).trans ?_))` and prove the remaining obligations. Rewrite using `[cechHZeroEquivCohOn, LinearEquiv.trans_apply, cechHZeroEquiv_toCechH]`.
+
+Both sides reduce to the same expression.
+-/
 theorem cechHEquivCohOn_zero (hF : CechAcyclicMod V U F) :
     cechHEquivCohOn R hc hF 0 = cechHZeroEquivCohOn R F hc := by
   refine LinearEquiv.ext fun x => ?_
@@ -416,6 +532,9 @@ theorem cechHEquivCohOn_zero (hF : CechAcyclicMod V U F) :
 omit [LinearOrder ι] [Finite ι] in
 include hc in
 
+/- English proof (translation)
+The claim follows from `letI : LinearOrder ι := LinearOrder.lift' _ (Fintype.equivFin ι).injective haveI := subsingleton_cechH ℤ F V U hn (cechHEquivCohOn ℤ hc hF n).symm.injective.subsingleton`.
+-/
 theorem subsingleton_cohOn_of_cechAcyclic [Fintype ι] (hF : CechAcyclicMod V U F) {n : ℕ}
     (hn : Fintype.card ι ≤ n) : Subsingleton (cohOn F V n) :=
   letI : LinearOrder ι := LinearOrder.lift' _ (Fintype.equivFin ι).injective

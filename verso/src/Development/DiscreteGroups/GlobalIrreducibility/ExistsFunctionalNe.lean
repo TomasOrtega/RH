@@ -14,6 +14,23 @@ variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {
   {ψ₀ : AddChar (ZMod g) Circle} {ψ : AddChar (w.adicCompletion E) Circle}
 
 include hi in
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨h, x, hx⟩ : ∃ (h : GL (Fin n) (w.adicCompletion E)) (x : τ), L (π h (φ x)) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Set `S : Subrepresentation π` to `⟨Submodule.span ℂ (Set.range fun p : GL (Fin n) (w.adicCompletion E) × τ => π p.1 (φ p.2)), by`. Introduce `g0 v hv`.
+
+Use `Submodule.span_induction (p := fun v _ => π g0 v ∈ Submodule.span ℂ (Set.range fun p : GL (Fin n) (w.adicCompletion E) × τ => π p.1 (φ p.2))) (fun y hy => ?_) (by simp) (fun a b _ _ ha hb => by rw [map_add]; exact Submodule.add_mem _ ha hb) (fun c a _ ha => by rw [map_smul]; exac …` and prove the remaining obligations. Take `⟨⟨h1, x1⟩, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨(g0 * h1, x1), by simp only [rep_mul_apply]⟩⟩`. Establish `hS : S ≠ ⊥`. Introduce `hS`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨x0, hx0⟩ : ∃ x0, φ x0 ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hφ0 (LinearMap.ext hc)`. Establish `hmem : φ x0 ∈ S.toSubmodule` using `Submodule.subset_span ⟨(1, x0), by simp only [rep_one_apply]⟩`.
+
+Rewrite `hmem` using `[hS]`. Conclude with `hx0 ((Submodule.mem_bot ℂ).1 hmem)`. Establish `hT` using `(IsSimpleOrder.eq_bot_or_eq_top S).resolve_left hS`. Apply `hL0` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+
+Establish `hv : v ∈ S.toSubmodule` using `by rw [hT]; exact Submodule.mem_top`. Establish `hle : S.toSubmodule ≤ LinearMap.ker L` using `Submodule.span_le.2 (by rintro _ ⟨⟨h1, x1⟩, rfl⟩; exact hcon h1 x1)`. Conclude with `hle hv`. Take `⟨u, hu, d, k, hk, rfl⟩` from `Iwasawa.exists_iwasawa (w.adicCompletion E) n h`. Take `⟨κ, rfl⟩` from `DzLc.exists_inc_eq i hi k hk`.
+
+Rewrite `hx` using `[rep_mul_apply, rep_mul_apply, hL _ (unipotent_le_unipB hu)]`. Establish `hx'` using `right_ne_zero_of_mul hx`. Rewrite `hx'` using `[← hφ]`. Establish `hd` using `supp_const i hi hψ h0 τ hτ π φ hφ L hL _ d hx'`. Establish `hdc : d = fun _ => (if h : 0 < n then d ⟨0, h⟩ else 0)`.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[dif_pos (Fin.pos j)]`. Conclude with `hd j _`. Rewrite `hx'` using `[hdc]`. Use `⟨L.comp (π (Iwasawa.torusPow (w.adicCompletion E) n (fun _ => (if h : 0 < n then d ⟨0, h⟩ else 0)))), fun u' hu' v => ?_, τ.ρ (red g n κ) x, hx'⟩` and prove the remaining obligations.
+
+Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[← rep_mul_apply, torusPow_const_comm, rep_mul_apply, hL _ hu']`.
+-/
 theorem exists_functional_ne (hψ : ∀ x : ℤ_[g], ψ (i (x : ℚ_[g])) = ψ₀ (PadicInt.toZMod x)) (h0 : ψ₀ ≠ 1) {n : ℕ}
     (τ : FDRep ℂ (Gn g n)) (hτ : IsCusp τ.character) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V) (hirr : π.IsIrreducible) (φ : τ →ₗ[ℂ] V)

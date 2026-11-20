@@ -20,6 +20,13 @@ namespace GlobalTheory.PosDefAmple
 
 open GlobalTheory.CechPic
 
+/- English proof (translation)
+Take `⟨N, a, l, hN, ha, hl, h⟩` from `exists_smul_eq_transpose_mul_diagonal_mul n Q hQ`. Set `e` to `Fintype.equivFin (Σ i, Fin (a i))`. Set `c : Matrix (Fin (Fintype.card (Σ i, Fin (a i)))) (Fin n) ℤ` to `fun j => l (e.symm j).1`. Establish `hc : c.transpose * c = l.transpose * Matrix.diagonal (fun i => (a i : ℤ)) * l`. Use extensionality with `u v`.
+
+Rewrite using `[Matrix.mul_apply, Matrix.mul_apply]`. Use `((e.symm.sum_comp (fun p => l p.1 u * l p.1 v)).trans (Fintype.sum_sigma _)).trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Simplify using `[Matrix.mul_diagonal]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨N, _, (c.transpose * c).det, c, (c.transpose * c).adjugate * c.transpose, hN, ?_, h.trans hc.symm, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hc, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, Matrix.det_diagonal]`. Conclude with `mul_ne_zero (mul_ne_zero hl (Finset.prod_ne_zero_iff.2 fun i _ => by exact_mod_cast (ha i).ne')) hl`. Rewrite using `[Matrix.mul_assoc, Matrix.adjugate_mul]`.
+-/
 theorem exists_smul_eq_transpose_mul_self {n : ℕ} (Q : Matrix (Fin n) (Fin n) ℤ)
     (hQ : (Q.map (Int.cast : ℤ → ℝ)).PosDef) :
     ∃ (N m : ℕ) (d : ℤ) (c : Matrix (Fin m) (Fin n) ℤ) (b : Matrix (Fin n) (Fin m) ℤ), 0 < N ∧ d ≠ 0 ∧
@@ -41,6 +48,11 @@ theorem exists_smul_eq_transpose_mul_self {n : ℕ} (Q : Matrix (Fin n) (Fin n) 
 
 variable {S : Scheme.{0}}
 
+/- English proof (translation)
+Use `relAmple_of_isAmpleLB G (pull_isLB hL _) fun U hU => ?_` and prove the remaining obligations. Establish `e : G.hom ⁻¹ᵁ U = φ.left ⁻¹ᵁ (G'.hom ⁻¹ᵁ U)` using `by rw [← Scheme.Hom.comp_preimage, Over.w φ]`. Rewrite using `[e]`. Establish `: IsAffineHom (φ.left ∣_ (G'.hom ⁻¹ᵁ U))` using `MorphismProperty.of_isPullback (P := @IsAffineHom) (isPullback_morphismRestrict φ.left (G'.hom ⁻¹ᵁ U)).flip inferInstance`. Establish `h₁` using `(isAmpleLB_of_relAmple G' hL h U hU).pull_of_isAffineHom (φ.left ∣_ (G'.hom ⁻¹ᵁ U))`.
+
+Establish `h₂` using `pull_isLB (pull_isLB hL φ.left) (φ.left ⁻¹ᵁ (G'.hom ⁻¹ᵁ U)).ι`. Use `h₁.of_lbIso h₂ ((cls_eq_iff h₂ h₁.isLB).1 ?_)` and prove the remaining obligations. Rewrite using `[cls_pull (pull_isLB hL _), cls_pull hL, cls_pull (pull_isLB hL _), cls_pull hL, ← pull_comp, ← pull_comp, morphismRestrict_ι]`.
+-/
 theorem relAmple_pull_of_isAffineHom {G G' : Over S} [IsProper G.hom] (φ : G ⟶ G') [IsAffineHom φ.left]
     {L : LB G'.left} (hL : L.IsLB) (h : Out.RelAmple G' L) : Out.RelAmple G (L.pull φ.left) := by
   refine relAmple_of_isAmpleLB G (pull_isLB hL _) fun U hU => ?_
@@ -54,6 +66,9 @@ theorem relAmple_pull_of_isAffineHom {G G' : Over S} [IsProper G.hom] (φ : G �
   rw [cls_pull (pull_isLB hL _), cls_pull hL, cls_pull (pull_isLB hL _), cls_pull hL, ← pull_comp, ← pull_comp,
     morphismRestrict_ι]
 
+/- English proof (translation)
+Use `relAmple_of_isAmpleLB G hL fun U hU => ?_` and prove the remaining obligations. Establish `h₁` using `isAmpleLB_of_relAmple G hM h U hU`. Establish `h₂` using `pull_isLB hL (G.hom ⁻¹ᵁ U).ι`. Use `(isAmpleLB_pow_iff h₂ hN).1 (h₁.of_lbIso (isLB_lbPow h₂ N) ((cls_eq_iff (isLB_lbPow h₂ N) h₁.isLB).1 ?_))` and prove the remaining obligations. Rewrite using `[cls_lbPow h₂, cls_pull hL, cls_pull hM, ← e, map_nsmul]`.
+-/
 theorem relAmple_of_nsmul {G : Over S} [IsProper G.hom] {L M : LB G.left} (hL : L.IsLB) (hM : M.IsLB) {N : ℕ}
     (hN : 1 ≤ N) (e : N • cls L hL = cls M hM) (h : Out.RelAmple G M) : Out.RelAmple G L := by
   refine relAmple_of_isAmpleLB G hL fun U hU => ?_
@@ -62,18 +77,29 @@ theorem relAmple_of_nsmul {G : Over S} [IsProper G.hom] {L M : LB G.left} (hL : 
   refine (isAmpleLB_pow_iff h₂ hN).1 (h₁.of_lbIso (isLB_lbPow h₂ N) ((cls_eq_iff (isLB_lbPow h₂ N) h₁.isLB).1 ?_))
   rw [cls_lbPow h₂, cls_pull hL, cls_pull hM, ← e, map_nsmul]
 
+/- English proof (translation)
+The claim follows from `| 0 => inferInstanceAs (IsProper (𝟙 S)) | n + 1 => by have := isProper_powObj A n exact inferInstanceAs (IsProper (pullback.fst A.hom (Out.powObj A n).hom ≫ A.hom))`.
+-/
 theorem isProper_powObj (A : Over S) [IsProper A.hom] : ∀ n, IsProper (Out.powObj A n).hom
   | 0 => inferInstanceAs (IsProper (𝟙 S))
   | n + 1 => by
     have := isProper_powObj A n
     exact inferInstanceAs (IsProper (pullback.fst A.hom (Out.powObj A n).hom ≫ A.hom))
 
+/- English proof (translation)
+Set `F : (T ⟶ A) →* (T' ⟶ A)` to `MonoidHom.mk' (fun y => f ≫ y) (comp_mul f)`. Express the relevant statement in the definitionally equal form `F _ = ∏ i, F (x i) ^ c i`. Simplify using `only [map_prod, map_zpow]`.
+-/
 theorem comp_prod_zpow {T T' A : Over S} [GrpObj A] [IsCommMonObj A] (f : T' ⟶ T) {n : ℕ} (x : Fin n → (T ⟶ A))
     (c : Fin n → ℤ) : f ≫ (∏ i, x i ^ c i) = ∏ i, (f ≫ x i) ^ c i := by
   let F : (T ⟶ A) →* (T' ⟶ A) := MonoidHom.mk' (fun y => f ≫ y) (comp_mul f)
   change F _ = ∏ i, F (x i) ^ c i
   simp only [map_prod, map_zpow]
 
+/- English proof (translation)
+Establish `H` using `(cls_eq_iff (LB.isLB_linComb o.isLB _ _) (LB.isLB_linComb o.isLB _ _)).2 (GlobalTheory.BilinCalc.main S o.A o.P o.isLB (GlobalTheory.Biadditive.biadditive_of_triv_axes hG S o.A o.diag o.ab (pull_isLB o.isLB _) hA o.P o.isLB o.rig₁ o.rig₂) o.symm T n m x 1 W c (by rw [hW, Matrix.t …`. Rewrite `H` using `[cls_linComb o.isLB, cls_linComb o.isLB]`. Rewrite using `[H, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single j (fun v _ hv => by rw [Matrix.one_apply_ne hv.symm, zero_smul]) (by simp), Matrix.one_apply_eq, one_smul]`.
+
+Use `Eq.trans ?_ (pull_comp (∏ i, x i ^ c j i).left (lift (𝟙 o.A) (𝟙 o.A)).left (cls o.P o.isLB))` and prove the remaining obligations. Rewrite using `[← Over.comp_left, comp_lift, Category.comp_id]`.
+-/
 theorem cls_form_eq_sum (hG : Out.GlobalFnsSt) {h k : ℕ} {B : Type} [CommRing B] {ζ : B} {s : S ⟶ Sp B}
     (o : SiegPre h k ζ s) (hA : Out.RelAmple o.A o.diag) {T : Over S} {n m : ℕ} (x : Fin n → (T ⟶ o.A))
     (W : Matrix (Fin n) (Fin n) ℤ) (c : Matrix (Fin m) (Fin n) ℤ)
@@ -92,11 +118,35 @@ theorem cls_form_eq_sum (hG : Out.GlobalFnsSt) {h k : ℕ} {B : Type} [CommRing 
   refine Eq.trans ?_ (pull_comp (∏ i, x i ^ c j i).left (lift (𝟙 o.A) (𝟙 o.A)).left (cls o.P o.isLB))
   rw [← Over.comp_left, comp_lift, Category.comp_id]
 
+/- English proof (translation)
+Use `(congrArg _ (cls_linComb hL _ _ _)).trans ?_` and prove the remaining obligations. Simplify using `only [map_sum, one_smul, ← pull_comp, Over.comp_left]`.
+-/
 theorem pull_cls_boxLB {T G A : Over S} {n : ℕ} (pr : Fin n → (G ⟶ A)) {L : LB A.left} (hL : L.IsLB) (φ : T ⟶ G) :
     pull φ.left (cls (Out.boxLB L pr) (LB.isLB_linComb hL _ _)) = ∑ j, pull (φ ≫ pr j).left (cls L hL) := by
   refine (congrArg _ (cls_linComb hL _ _ _)).trans ?_
   simp only [map_sum, one_smul, ← pull_comp, Over.comp_left]
 
+/- English proof (translation)
+Introduce `hG h k n B _ ζ S s o G _ pr W hpr up hA hW`. Use `o.ab.proper` as an intermediate fact. Establish `hD : o.diag.IsLB` using `pull_isLB o.isLB _`. Set `p : Out.IsPowGrp G o.A n` to `⟨pr, hpr, mkFanLimit _ (fun t => (up t.pt t.proj).choose) (fun t j => (up t.pt t.proj).choose_spec.1 j) (fun t y hy => (up t.pt t.proj).choose_spec.2 y hy)⟩`. Establish `hp : IsProper G.hom`.
+
+Use `isProper_powObj o.A n` as an intermediate fact. Set `e : G ≅ Out.powObj o.A n` to `p.lim.conePointUniqueUpToIso (Out.powIsLimit o.A n)`. Establish `: IsIso e.hom.left` using `((Over.forget S).mapIso e).isIso_hom`. Rewrite using `[← Over.w e.hom]`. Use `infer_instance`.
+
+Take `⟨N, m, d, c, b, hN, hd, hc, hb⟩` from `exists_smul_eq_transpose_mul_self _ hW`. Use `isProper_powObj o.A m` as an intermediate fact. Set `φ : G ⟶ Out.powObj o.A m` to `(Out.powIsLimit o.A m).lift (Fan.mk G fun j => ∏ i, pr i ^ c j i)`. Establish `hφ : ∀ j, φ ≫ Out.powPr o.A j = ∏ i, pr i ^ c j i` using `fun j => (Out.powIsLimit o.A m).fac _ ⟨j⟩`. Take `⟨ψ, hψ, -⟩` from `up (Out.powObj o.A m) fun i => ∏ j, Out.powPr o.A j ^ b i j`.
+
+Establish `hμ : ∀ u, (φ ≫ ψ) ≫ pr u = ∏ i, pr i ^ (d • (1 : Matrix (Fin n) (Fin n) ℤ)) u i` using `fun u => by`. Rewrite using `[Category.assoc, hψ, comp_prod_zpow, ← hb]`. Simplify using `only [hφ, ← Finset.prod_zpow, ← zpow_mul, Matrix.mul_apply]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [mul_comm (c _ i)]`. Conclude with `(map_prod (zpowersHom _ (pr i)) (fun j => Multiplicative.ofAdd (b u j * c j i)) Finset.univ).symm`. Establish `hE : (Out.boxLB o.diag pr).IsLB` using `LB.isLB_linComb hD _ _`. Establish `hfin : IsFinite (φ ≫ ψ).left`. Take `⟨α, hα⟩` from `(cls_eq_zero_iff (LB.isLB_linComb hE (K := Fin 2) ![𝟙 G.left, (φ ≫ ψ).left] ![((d.natAbs ^ 2 : ℕ) : ℤ), -1])).1 (by`.
+
+Establish `e₁` using `cls_form_eq_sum hG o hA pr ((d * d) • (1 : Matrix (Fin n) (Fin n) ℤ)) (d • 1) (by`. Rewrite using `[Matrix.transpose_smul, Matrix.transpose_smul, Matrix.transpose_one, Matrix.smul_mul, Matrix.one_mul, smul_smul d, two_smul])`. Establish `e₂` using `cls_form_eq_sum hG o hA pr 1 1 (by rw [Matrix.transpose_one, Matrix.one_mul, two_smul])`. Establish `e₃ : ∀ j, ∏ i, pr i ^ (1 : Matrix (Fin n) (Fin n) ℤ) j i = 𝟙 G ≫ pr j` using `fun j => by`. Rewrite using `[Finset.prod_eq_single j (fun v _ hv => by rw [Matrix.one_apply_ne hv.symm, zpow_zero]) (by simp), Matrix.one_apply_eq, zpow_one, Category.id_comp]`.
+
+Simplify using `only [← hμ] at e₁`. Simplify using `only [e₃] at e₂`. Rewrite `e₁`, `e₂` using `[← pull_cls_boxLB pr hD]`. Rewrite using `[cls_linComb hE, Fin.sum_univ_two]`. Express the relevant statement in the definitionally equal form `_ • pull (𝟙 G : G ⟶ G).left _ + (-1 : ℤ) • pull (φ ≫ ψ).left _ = 0`.
+
+Rewrite using `[← e₁, ← e₂]`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, mul_smul, ← Finset.smul_sum, Matrix.cons_val_zero]`. Rewrite using `[Nat.cast_pow, Int.natAbs_sq, pow_two, mul_smul, neg_one_smul, add_neg_cancel])`. Conclude with `MulFinite.isFinite_of_relAmple G _ hE (relAmple_boxLB S G o.A n p _ hD hA) (φ ≫ ψ) _ (pow_ne_zero _ (Int.natAbs_ne_zero.2 hd)) α hα`. Establish `: IsSeparated (ψ.left ≫ G.hom)` using `by rw [Over.w ψ]; infer_instance`.
+
+Establish `: IsSeparated ψ.left` using `.of_comp _ G.hom`. Establish `: IsAffineHom (φ.left ≫ ψ.left)` using `inferInstanceAs (IsAffineHom (φ ≫ ψ).left)`. Establish `: IsAffineHom φ.left` using `.of_comp _ ψ.left`. Establish `hF : (Out.boxLB o.diag (Out.powPr o.A (n` using `m))).IsLB := LB.isLB_linComb hD _ _`. Use `relAmple_of_nsmul (LB.isLB_linComb o.isLB _ _) (pull_isLB hF φ.left) (N := 2 * N) (by omega) ?_ (relAmple_pull_of_isAffineHom φ hF (relAmple_boxLB S _ o.A m (Out.powIsPowGrp o.A m) _ hD hA))` and prove the remaining obligations.
+
+Establish `e` using `cls_form_eq_sum hG o hA pr (((2 * N : ℕ) : ℤ) • W) c (by`. Rewrite using `[← hc, Matrix.transpose_smul, ← smul_add, smul_smul, Nat.cast_mul, Nat.cast_ofNat])`. Simplify using `only [← hφ] at e`. Rewrite using `[cls_pull hF, pull_cls_boxLB _ hD, ← e, cls_linComb o.isLB, Finset.smul_sum]`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, mul_smul, natCast_zsmul]`.
+-/
 theorem relAmple_linComb_of_posDef : Out.GlobalFnsSt → ∀ (h k n : ℕ) (B : Type) [CommRing B] (ζ : B) (S : Scheme.{0}) (s : S ⟶ Sp B) (c : SiegPre h k ζ s) (G : Over S) [GrpObj G] (pr : Fin n → (G ⟶ c.A)) (W : Matrix (Fin n) (Fin n) ℤ), (∀ u, IsMonHom (pr u)) → (∀ (T : Over S) (y : Fin n → (T ⟶ c.A)), ∃! x : T ⟶ G, ∀ u, x ≫ pr u = y u) → Out.RelAmple c.A c.diag → ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef → Out.RelAmple G (LB.LinComb c.P (K := Fin n × Fin n) (fun uv => (lift (pr uv.1) (pr uv.2)).left) (fun uv => W uv.1 uv.2)) := by
   intro hG h k n B _ ζ S s o G _ pr W hpr up hA hW
   have := o.ab.proper

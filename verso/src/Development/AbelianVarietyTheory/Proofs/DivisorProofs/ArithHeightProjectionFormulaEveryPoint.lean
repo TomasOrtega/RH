@@ -10,6 +10,11 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.Cartier G
 
 namespace GlobalTheory.MixHt
 
+/- English proof (translation)
+Establish `hemb` using `(cloι y).isClosedEmbedding`. Establish `hr : Set.range (cloι y) = closure ({y} : Set Y)`. Rewrite using `[← Set.image_univ, ← (genericPoint_spec (clo y)).def, ← hemb.isClosedMap.closure_image_eq_of_continuous hemb.continuous, Set.image_singleton, cloι_genericPoint]`. Establish `h` using `(hemb.toIsEmbedding.toHomeomorph).isHomeomorph.topologicalKrullDim_eq`. Unfold `HasDim`.
+
+Rewrite using `[h, hr]`.
+-/
 theorem hasDim_iff_clo {Y : Scheme.{0}} (y : Y) (e : ℕ) : HasDim y e ↔ topologicalKrullDim (clo y) = (e : ℕ) := by
   have hemb := (cloι y).isClosedEmbedding
   have hr : Set.range (cloι y) = closure ({y} : Set Y) := by
@@ -19,6 +24,15 @@ theorem hasDim_iff_clo {Y : Scheme.{0}} (y : Y) (e : ℕ) : HasDim y e ↔ topol
   unfold HasDim
   rw [h, hr]
 
+/- English proof (translation)
+Introduce `k _ X Y p q D E hX hY π hπ L h h' H H'`. Establish `key : ∀ (n : ℕ) (w : Y), HasDim w (n + 1) → h' w = (π.residueDegree w : ℝ) * h (π w)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+
+Introduce `w hw`. Break down `hY.vertical_or_horizontal (cloι w) with ⟨l, _, hl⟩ | ⟨hc, e, he⟩` into its components or cases. Conclude with `GlobalTheory.T.arith_height_pullback_residue_degree k X Y p q D E hX hY π hπ L h h' H H' w l hl`. Conclude with `GlobalTheory.T.arithHeight_projectionFormula_pointCurve k X Y p q D E hX hY π hπ L h h' H H' w hc hw`. Consider the case `succ m ih`.
+
+Introduce `w hw`. Break down `hY.vertical_or_horizontal (cloι w) with ⟨l, _, hl⟩ | ⟨hc, e, he⟩` into its components or cases. Conclude with `GlobalTheory.T.arith_height_pullback_residue_degree k X Y p q D E hX hY π hπ L h h' H H' w l hl`. Conclude with `GlobalTheory.T.arithHeight_projectionFormula_inductiveStep k X Y p q D E hX hY π hπ L h h' H H' w m hc hw ih`. Introduce `y`.
+
+Break down `hY.vertical_or_horizontal (cloι y) with ⟨l, _, hl⟩ | ⟨hc, e, he⟩` into its components or cases. Conclude with `GlobalTheory.T.arith_height_pullback_residue_degree k X Y p q D E hX hY π hπ L h h' H H' y l hl`. Conclude with `key e y ((hasDim_iff_clo y (e + 1)).2 he)`.
+-/
 theorem heightProj : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (D E : ℕ),
     IsArithVar p D → IsArithVar q E → ∀ (π : Y ⟶ X) (hπ : π ≫ p = q) (L : HermLB p) (h : X → ℝ) (h' : Y → ℝ),
     L.IsArithHeight h → (L.pull π hπ).IsArithHeight h' → ∀ y : Y, h' y = (π.residueDegree y : ℝ) * h (π y) := by

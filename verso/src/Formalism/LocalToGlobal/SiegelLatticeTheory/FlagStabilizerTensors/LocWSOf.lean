@@ -50,6 +50,9 @@ def IsTranspC {D : D7} (X : HidaSetting D) (v : InfinitePlace X.B.I.F) (lam : �
     Q *ᵥ Pi.single (Formalism.QuantumDeterminants.eI k r a) 1 = lam ^ (r - (a : ℕ)) • Formalism.L2.SG.HidaSetting.rv X.B.I v (X.eR b) ∧
     Q *ᵥ Pi.single (Formalism.QuantumDeterminants.esI k r a) 1 = (star (lam ^ (r - (a : ℕ))))⁻¹ • Formalism.L2.SG.HidaSetting.rv X.B.I v (X.fR b)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact Iff.rfl`. Consider the case `(unfold Formalism.L2.SG.RealObj.IsTransp IsTranspC; exact Iff.rfl)`.
+-/
 theorem isTransp_iff {D : D7} (X : HidaSetting D) (v : InfinitePlace X.B.I.F) (g : ℝ) (k r : ℕ)
     (Q : Matrix (Fin X.B.I.n) (Fin (2 * r + k + 1)) ℂ) (Qi : Matrix (Fin (2 * r + k + 1)) (Fin X.B.I.n) ℂ) :
     Formalism.L2.SG.RealObj.IsTransp X v g k r Q Qi ↔
@@ -98,6 +101,9 @@ def Qcs {D : D7} {X : HidaSetting D} {θ : ℝ} (C : Choice X θ) (τ : D.what�
 def Qics {D : D7} {X : HidaSetting D} {θ : ℝ} (C : Choice X θ) (τ : D.what₂.Tau) :
     Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin X.B.I.n) ℂ := torS (muT D)⁻¹ D.R.k D.R.rS * C.Qi τ
 
+/- English proof (translation)
+The claim follows from `(isTransp_iff X (vOf X τ) _ D.R.k D.R.rS (Qcs C τ) (Qics C τ)).2 (h (vOf X τ) (C.Q τ) (C.Qi τ) (C.isT τ))`.
+-/
 theorem isTransp_cs {D : D7} {X : HidaSetting D} {θ : ℝ} (h : TorTie X) (C : Choice X θ) (τ : D.what₂.Tau) :
     Formalism.L2.SG.RealObj.IsTransp X (vOf X τ) (((D.host.g 0 * D.host.g 1 : ℕ) : ℝ)) D.R.k D.R.rS (Qcs C τ) (Qics C τ) :=
   (isTransp_iff X (vOf X τ) _ D.R.k D.R.rS (Qcs C τ) (Qics C τ)).2 (h (vOf X τ) (C.Q τ) (C.Qi τ) (C.isT τ))
@@ -135,6 +141,9 @@ def PsiTr (C : Choice X θ) (u : D.what₂.Word) (τ : D.what₂.Tau) : Prop :=
       (fun a => Formalism.L2.SG.HidaSetting.rv X.B.I (vOf X τ) (X.fR a)) (Formalism.L2.SG.HidaSetting.rv X.B.I (vOf X τ) (X.zR u))
       (C.Q τ * m * C.Qi τ) = psiS D (zB X (C.Qi τ) u τ) m
 
+/- English proof (translation)
+Establish `hz1 : Formalism.QuantumDeterminants.inWb D.R.k D.R.rS (zB X (C.Qi τ) u τ) ∧ Formalism.QuantumDeterminants.Tz D.R.k D.R.rS (zB X (C.Qi τ) u τ) = Tr D u` using `hz`. Establish `hz2 : Formalism.QuantumDeterminants.inWb D.R.k D.R.rS (zB X (C.Qi τ) u' τ) ∧ Formalism.QuantumDeterminants.Tz D.R.k D.R.rS (zB X (C.Qi τ) u' τ) = Tr D u'` using `hz'`. Unfold `GoodW`. Conclude with `⟨hc, hc', hz1.1, hz2.1, hz1.2, hz2.2, hh, C.muW_haar u τ, C.muW_one u τ, C.muW_haar u' τ, C.muW_one u' τ, rfl, C.nuS_q u τ, C.nuS_q u' τ⟩`.
+-/
 theorem goodW_of (C : Choice X θ) (u u' : D.what₂.Word) (τ : D.what₂.Tau)
     (hc : ColsTypeTr C u τ) (hc' : ColsTypeTr C u' τ) (hz : ZTr C u τ) (hz' : ZTr C u' τ) (hh : HaarTr C τ) :
     GoodW D τ u u' θ (locW C u u' τ) := by
@@ -174,6 +183,13 @@ def sclOf {C : Choice X θ} (hB : WuBessel C) (u u' : D.what₂.Word) (τ : D.wh
   ((Real.sqrt (cOf hB u τ * (Module.finrank ℂ (X.Vloc u' (vOf X τ)) : ℝ) /
     (l2SG (C.nuS u' τ) (phiOf hB u' τ)).toReal) : ℝ) : ℂ)
 
+/- English proof (translation)
+Take `⟨hadd, hsm, heq, hcw⟩` from `h`. Unfold `IsBesselMapSm`. Use `⟨fun v hv w hw => ?_, fun c v hv => ?_, fun h' hh m hm v hv => ?_, ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hadd v hv w hw, smul_add]`.
+
+Use `beta_reduce`. Rewrite using `[hsm c v hv, smul_comm]`. Use `beta_reduce`. Rewrite using `[heq h' hh m hm v hv, map_smul, smul_comm]`. Take `⟨Cc, Ws, hW, hb⟩` from `hcw`.
+
+Unfold `IsCWCont`. Use `⟨‖s‖ * Cc, Ws, hW, fun v hv => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hb v hv) (norm_nonneg s)`.
+-/
 theorem isBesselMapSm_smul {k r : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {Wp : Type*} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] {z : Fin (2 * r + k + 1) → ℂ}
     {ψ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → ℂ}
@@ -206,6 +222,9 @@ def locS {C : Choice X θ} (hB : WuBessel C) (u u' : D.what₂.Word) (τ : D.wha
   cN := cOf hB u τ
   deg := D.dsig τ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem deg_eq {C : Choice X θ} (hB : WuBessel C) (u u' : D.what₂.Word) (τ : D.what₂.Tau) :
     (locS hB u u' τ).deg = D.dsig τ := rfl
 
@@ -222,6 +241,9 @@ def GoodSRest {C : Choice X θ} (hB : WuBessel C) (u u' : D.what₂.Word) (τ : 
     IsFdeg (((D.s.cdScale _ (epsSH D.R) : NNReal) : ℝ≥0∞) • Formalism.REAL.muG (epsSH D.R))
       (fun g => sigB X (C.Q τ) (C.Qi τ) τ (P⁻¹ * g * P)) (D.dsig τ)
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5, h6, h7, h8⟩` from `h`. Unfold `GoodS`. Conclude with `⟨h1, h2, (hB u τ).choose_spec.1, isBesselMapSm_smul _ (hB u' τ).choose_spec.1, h3, h4, C.y_low τ, h5, h6, h7, h8⟩`.
+-/
 theorem goodS_of {C : Choice X θ} (hB : WuBessel C) (u u' : D.what₂.Word) (τ : D.what₂.Tau)
     (h : GoodSRest hB u u' τ) : GoodS D (lamD D τ) (locS hB u u' τ) := by
   obtain ⟨h1, h2, h3, h4, h5, h6, h7, h8⟩ := h

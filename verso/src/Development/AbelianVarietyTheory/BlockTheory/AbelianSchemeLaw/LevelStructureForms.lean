@@ -54,16 +54,25 @@ def ptKer (ℓ : Level P k ζ) (v : Fin P.g ⊕ Fin P.g → ZMod k) :
     𝟙_ (Over S) ⟶ pullback (mulBy P.A k) η[P.A] :=
   Sigma.ι (fun _ : Fin P.g ⊕ Fin P.g → ZMod k => 𝟙_ (Over S)) v ≫ ℓ.isKer.isoPullback.hom
 
+/- English proof (translation)
+Simplify using `[ptKer, pt]`.
+-/
 example (ℓ : Level P k ζ) (v : Fin P.g ⊕ Fin P.g → ZMod k) :
     ℓ.ptKer v ≫ pullback.fst _ _ = ℓ.pt v := by
   simp [ptKer, pt]
 
 end Level
 
+/- English proof (translation)
+Simplify using `[stdForm, Pi.single_apply]`.
+-/
 example {g : ℕ} (i : Fin g) :
     stdForm (Pi.single (Sum.inl i) 1) (Pi.single (Sum.inr i) 1) = 1 := by
   simp [stdForm, Pi.single_apply]
 
+/- English proof (translation)
+Simplify using `only [stdForm, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 example {g : ℕ} (a b : Fin g ⊕ Fin g → ℤ) : stdForm b a = -stdForm a b := by
   simp only [stdForm, ← Finset.sum_neg_distrib]
   exact Finset.sum_congr rfl fun i _ => by ring

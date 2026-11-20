@@ -14,6 +14,11 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.PB GlobalTh
 
 namespace PositivityTheory.Xgp.FlagsLieBaseChange
 
+/- English proof (translation)
+Substitute `hy` using the available equality. Set `_` to `f.toAlgebra`. Take `⟨j, hj, hl, hb⟩` from `PositivityTheory.HtPt.Htat.lie_bc S G R R' x E E' M M'`. Use `haveI := hs`. Use `haveI : Module.Finite R E := (PositivityTheory.HtPt.Htat.lie_fin S G R x E M).1`.
+
+Set `b₁` to `Module.finBasis R E`. Use `⟨j, hj, ⟨hl, fun n b h => LiePull.indep_of_bases b₁ j (fun m B => (hb hs m B).1) b h⟩, ?_, inferInstance⟩` and prove the remaining obligations. Use `top_le_iff.1 ((hb hs _ b₁).2.symm.le.trans (Submodule.span_mono ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨_, rfl⟩`.
+-/
 theorem bc {S : Scheme.{0}} {G : Over S} [GrpObj G] (hs : Smooth G.hom) {R R' : Type} [Field R] [Field R']
     (f : R →+* R') (x : Spec (CommRingCat.of R) ⟶ S) (y : Spec (CommRingCat.of R') ⟶ S)
     (hy : Spec.map (CommRingCat.ofHom f) ≫ x = y) {E E' : Type} [AddCommGroup E] [Module R E] [AddCommGroup E']
@@ -31,6 +36,17 @@ theorem bc {S : Scheme.{0}} {G : Over S} [GrpObj G] (hs : Smooth G.hom) {R R' : 
   rintro _ ⟨k, rfl⟩
   exact ⟨_, rfl⟩
 
+/- English proof (translation)
+Set `b` to `Module.finBasis F U`. Establish `h1 : LinearIndependent F (fun k => (b k : V))` using `b.linearIndependent.map' U.subtype U.ker_subtype`. Establish `h2 : Submodule.span F (Set.range fun k => (b k : V)) = U`. Use `congrArg (Submodule.map U.subtype) b.span_eq` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, ← Set.range_comp, Submodule.map_subtype_top]`. Then use the resulting hypothesis.
+
+Establish `h3` using `hj.2 _ _ h1`. Establish `h4 : Submodule.span Ω (Set.range fun k => j (b k : V)) = U'`. Rewrite using `[h]`. Use `le_antisymm (Submodule.span_mono ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Conclude with `⟨_, (b k).2, rfl⟩`. Introduce and unpack `_ ⟨e, he, rfl⟩`. Rewrite `he` using `[← h2]`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun F).1 he`. Rewrite using `[map_sum]`.
+
+Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hj.1]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Establish `h5 : Module.finrank F U = n`. Use `finrank_span_eq_card h3` as an intermediate fact.
+
+Rewrite `this` using `[h4, Module.finrank_eq_card_basis B, Fintype.card_fin, Fintype.card_fin]`. Conclude with `this.symm`. Substitute `h5` using the available equality. Conclude with `⟨_, h1, h2⟩`.
+-/
 theorem basis {F Ω V W : Type} [Field F] [Field Ω] [AddCommGroup V] [Module F V] [AddCommGroup W] [Module Ω W]
     [Module.Finite F V] {i : F →+* Ω} {j : V →+ W} (hj : IsExtOver i j) (U : Submodule F V) (U' : Submodule Ω W)
     (h : U' = Submodule.span Ω (j '' (U : Set V))) {n : ℕ} (B : Module.Basis (Fin n) Ω U') :
@@ -63,6 +79,29 @@ theorem basis {F Ω V W : Type} [Field F] [Field Ω] [AddCommGroup V] [Module F 
 end PositivityTheory.Xgp.FlagsLieBaseChange
 
 open PositivityTheory.Xgp.FlagsLieBaseChange in
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Y S Ω _ _ K _ J x A F₀ _ ξ₀ ι hgen hd`. Take `⟨Li₀, _, _, ⟨M₀⟩⟩` from `GlobalTheory.CompanionTheory.Ar.lieModel_exists _ Y.t.G F₀ ξ₀`. Take `⟨ρ₀, hact₀, -⟩` from `GlobalTheory.CompanionTheory.Ar.lieModel_exists_unique_act _ Y.t.G F₀ ξ₀ Li₀ M₀ (𝓞 E) Y.t.act.act Y.t.act.hom Y.t.act.one Y.t.act.mul Y.t.act.add`. Take `⟨j, hj, hext, hsp, hfin⟩` from `bc Y.t.semi.smooth ι ξ₀ (A.ξ ≫ A.f) (Eq.symm hd) M₀ (LieMove.pushModel A.m.cart A.M)`. Establish `hj' : ∀ e, (A.M.pt (j e)).left ≫ A.m.φ = spMap (dualMap ι) ≫ (M₀.pt e).left` using `hj`.
+
+Establish `hint` using `FlagStep.lieMap_act_pull E H Y.X A.X Y.t A.t A.f A.m F₀ Ω ξ₀ A.ξ ι Li₀ A.Li M₀ A.M ρ₀ A.ρ j hd hact₀ A.act hj'`. Establish `hjinj : Function.Injective j`. Use `(injective_iff_map_eq_zero j).2 fun e he => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `h1` using `hext.2 1 (fun _ => e) (LinearIndependent.of_subsingleton (0 : Fin 1) hne)`.
+
+Conclude with `h1.ne_zero (0 : Fin 1) he`. Set `a : 𝓞 c.F →+* F₀` to `(Spec.preimage (ξ₀ ≫ Y.s)).hom`. Establish `ha : spMap a = ξ₀ ≫ Y.s`. Simplify using `only [spMap, a, CommRingCat.ofHom_hom, Spec.map_preimage]`. Establish `hfa : ι.comp a = A.cst.comp (algebraMap (𝓞 c.F) c.F)`.
+
+Establish `h1 : spMap (ι.comp a) = spMap (A.cst.comp (algebraMap (𝓞 c.F) c.F))`. Rewrite using `[← A.cst_over]`. Establish `hd' : A.ξ ≫ A.f = spMap ι ≫ ξ₀` using `hd`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [spMap, ← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Use `_ = A.ξ ≫ A.f ≫ Y.s := by rw [ha, ← Category.assoc, ← hd', Category.assoc]`. Establish `h2` using `Spec.map_injective h1`. Conclude with `congrArg CommRingCat.Hom.hom h2`. Establish `: NumberField c.F` using `{ to_charZero := inferInstance, to_finiteDimensional := c.fin }`.
+
+Establish `hainj : Function.Injective a`. Establish `: Function.Injective (ι.comp a)`. Rewrite using `[hfa]`. Conclude with `A.cst.injective.comp (IsFractionRing.injective (𝓞 c.F) c.F)`. Conclude with `Function.Injective.of_comp (f := ι) this`.
+
+Set `a' : c.F →+* F₀` to `IsFractionRing.lift hainj`. Establish `ha' : ι.comp a' = A.cst`. Use `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 c.F)) ?_` and prove the remaining obligations. Rewrite using `[← hfa]`. Use `RingHom.ext fun o => ?_` and prove the remaining obligations.
+
+Conclude with `congrArg ι (IsFractionRing.lift_algebraMap hainj o)`. Use `haveI : CharZero F₀ := ι.charZero`. Set `σ : CMType H ⊕ CMType H → (𝓞 E →+* F₀)` to `fun s => a'.comp (labelEmb c s)`. Establish `hσ : ∀ s, A.emb s = ι.comp (σ s)` using `fun s => by`. Rewrite using `[← RingHom.comp_assoc, ha']`.
+
+Both sides reduce to the same expression. Establish `hV : ∀ s, A.Vgen s = Submodule.span Ω (j '' (eigSp ρ₀ (σ s) : Set Li₀))` using `fun s => by`. Unfold `HodgeCpt.Vgen`. Rewrite using `[hσ]`. Conclude with `EigExt.eigSp_ext E F₀ Ω ι Li₀ A.Li j ρ₀ A.ρ (σ s) hext hsp fun a e => (hint a e).symm`.
+
+Establish `hb` using `fun s => basis hext _ _ (hV s) (nonempty_basis_Vgen A s).some`. Use `choose b hb using hb`. Use `⟨Li₀, inferInstance, inferInstance, M₀, j, fun s => eigSp ρ₀ (σ s), b, hj', hext, fun s e => ?_, hb⟩` and prove the remaining obligations. Unfold `HodgeCpt.Vgen`. Rewrite using `[hσ]`.
+
+Simplify using `only [eigSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[← hint a e, RingHom.comp_apply ι, ← hext.1]`. Conclude with `hjinj.eq_iff.symm`.
+-/
 theorem PositivityTheory.Xgp.exists_flags_lie_compact_dominated : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] [CharZero Ω] (K : Type) [Fintype K] (J : K → Type) (x : (Σ k, J k) → Ω) (A : HodgeCpt Y S x) (F₀ : Type) [Field F₀] (ξ₀ : Spec (CommRingCat.of F₀) ⟶ Y.X) (ι : F₀ →+* Ω), IsCptGen ξ₀ → GlobalTheory.CompanionTheory.Ar.Dominates A.ξ ξ₀ A.f ι → ∃ (Li₀ : Type) (_ : AddCommGroup Li₀) (_ : Module F₀ Li₀) (M₀ : LieModel Y.t.G ξ₀ Li₀) (j₁ : Li₀ →+ A.Li) (V₀ : CMType H ⊕ CMType H → Submodule F₀ Li₀) (b : ∀ s, Fin (labelRk D s) → Li₀), (∀ e, (A.M.pt (j₁ e)).left ≫ A.m.φ = spMap (dualMap ι) ≫ (M₀.pt e).left) ∧ IsExtOver ι j₁ ∧ (∀ s e, e ∈ V₀ s ↔ j₁ e ∈ A.Vgen s) ∧ ∀ s, LinearIndependent F₀ (b s) ∧ Submodule.span F₀ (Set.range (b s)) = V₀ s := by
   intro E _ _ _ H D l Xo c Y S Ω _ _ K _ J x A F₀ _ ξ₀ ι hgen hd
   obtain ⟨Li₀, _, _, ⟨M₀⟩⟩ := GlobalTheory.CompanionTheory.Ar.lieModel_exists _ Y.t.G F₀ ξ₀

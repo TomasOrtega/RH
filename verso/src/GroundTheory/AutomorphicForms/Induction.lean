@@ -21,6 +21,9 @@ def rightTranslation : Representation ℂ G (G → W) where
     simp [LinearMap.funLeft_apply, Module.End.mul_apply, mul_assoc]
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rightTranslation_apply (g : G) (f : G → W) (x : G) :
     rightTranslation g f x = f (x * g) := rfl
 
@@ -46,6 +49,9 @@ def indSpace : Submodule ℂ (G → W) where
     exact ⟨fun h g => by simp [h₁ h g], K, hK, fun k hk g => by simp [hf k hk g]⟩
 
 variable {H σ} in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_indSpace {f : G → W} :
     f ∈ indSpace H σ ↔ (∀ h : H, ∀ g : G, f ((h : G) * g) = σ h (f g)) ∧
       ∃ K : Subgroup G, IsOpen (K : Set G) ∧ ∀ k ∈ K, ∀ g : G, f (g * k) = f g :=
@@ -67,17 +73,32 @@ def cindSpace : Submodule ℂ (G → W) :=
       exact ⟨C, hC, fun g hg => hf g fun h0 => hg (by simp [h0])⟩ }
 
 variable {H σ} in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_cindSpace {f : G → W} :
     f ∈ cindSpace H σ ↔ f ∈ indSpace H σ ∧
       ∃ C : Set G, IsCompact C ∧ ∀ g, f g ≠ 0 → g ∈ (H : Set G) * C :=
   Iff.rfl
 
+/- English proof (translation)
+The claim follows from `inf_le_left`.
+-/
 theorem cindSpace_le : cindSpace H σ ≤ indSpace H σ := inf_le_left
 
 variable [IsTopologicalGroup G]
 
 variable {H σ} in
 
+/- English proof (translation)
+Take `⟨h₁, K, hK, hfK⟩` from `hf`. Use `⟨fun h x => ?_, K.comap (MulAut.conj g⁻¹).toMonoidHom, ?_, fun k hk x => ?_⟩` and prove the remaining obligations. Use `show f ((h : G) * x * g) = σ h (f (x * g))`. Rewrite using `[mul_assoc, h₁]`. Rewrite using `[Subgroup.coe_comap]`.
+
+Establish `: ⇑(MulAut.conj g⁻¹).toMonoidHom = fun x : G => g⁻¹ * x * g⁻¹⁻¹`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `hK.preimage (by fun_prop)`.
+
+Use `hfK _ hk (x * g)` as an intermediate fact. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv] at this`. Simplify using `only [rightTranslation_apply]`. Rewrite using `[← this]`. Use `congr 1`.
+
+Use `group`.
+-/
 theorem rightTranslation_mem_indSpace {f : G → W} (hf : f ∈ indSpace H σ) (g : G) :
     rightTranslation g f ∈ indSpace H σ := by
   obtain ⟨h₁, K, hK, hfK⟩ := hf
@@ -99,6 +120,9 @@ theorem rightTranslation_mem_indSpace {f : G → W} (hf : f ∈ indSpace H σ) (
 
 variable {H σ} in
 
+/- English proof (translation)
+Take `⟨hf, C, hC, hfC⟩` from `mem_cindSpace.1 hf`. Use `mem_cindSpace.2 ⟨rightTranslation_mem_indSpace hf g, (· * g⁻¹) '' C, hC.image (continuous_mul_const g⁻¹), fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨h, hh, c, hc, hxc⟩` from `Set.mem_mul.1 (hfC (x * g) hx)`. Use `Set.mem_mul.2 ⟨h, hh, c * g⁻¹, ⟨c, hc, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, hxc, mul_inv_cancel_right]`.
+-/
 theorem rightTranslation_mem_cindSpace {f : G → W} (hf : f ∈ cindSpace H σ) (g : G) :
     rightTranslation g f ∈ cindSpace H σ := by
   obtain ⟨hf, C, hC, hfC⟩ := mem_cindSpace.1 hf
@@ -113,6 +137,9 @@ def indRep : Representation ℂ G (indSpace H σ) :=
     rightTranslation_mem_indSpace hf g
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_indRep_apply (g : G) (f : indSpace H σ) (x : G) :
     (indRep H σ g f : G → W) x = (f : G → W) (x * g) := rfl
 
@@ -121,9 +148,15 @@ def cindRep : Representation ℂ G (cindSpace H σ) :=
     rightTranslation_mem_cindSpace hf g
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_cindRep_apply (g : G) (f : cindSpace H σ) (x : G) :
     (cindRep H σ g f : G → W) x = (f : G → W) (x * g) := rfl
 
+/- English proof (translation)
+Introduce `f`. Take `⟨-, K, hK, hfK⟩` from `f.2`. Use `Subgroup.isOpen_mono (fun k hk => ?_) hK` and prove the remaining obligations. Rewrite using `[mem_stabilizerOf]`. Conclude with `Subtype.ext (funext fun x => hfK k hk x)`.
+-/
 theorem isSmooth_indRep : IsSmooth (indRep H σ) := by
   intro f
   obtain ⟨-, K, hK, hfK⟩ := f.2
@@ -144,8 +177,14 @@ def evalOne : indSpace H σ →ₗ[ℂ] W :=
 
 omit [IsTopologicalGroup G] in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evalOne_apply (f : indSpace H σ) : evalOne H σ f = (f : G → W) 1 := rfl
 
+/- English proof (translation)
+Simplify using `using f.2.1 h 1`.
+-/
 theorem evalOne_indRep (h : H) (f : indSpace H σ) :
     evalOne H σ (indRep H σ h f) = σ h (evalOne H σ f) := by
   simpa using f.2.1 h 1
@@ -174,6 +213,9 @@ def frobeniusInv (hπ : IsSmooth π) (φ : Representation.IntertwiningMap (π.co
     simp [map_mul, Module.End.mul_apply])
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem frobeniusInv_apply (hπ : IsSmooth π)
     (φ : Representation.IntertwiningMap (π.comp H.subtype) σ) (v : V) (g : G) :
     (frobeniusInv H σ hπ φ v : G → W) g = φ (π g v) := rfl
@@ -197,10 +239,16 @@ def frobenius (hπ : IsSmooth π) :
     simp)
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem frobenius_apply (hπ : IsSmooth π) (Φ : Representation.IntertwiningMap π (indRep H σ))
     (v : V) : frobenius H σ hπ Φ v = (Φ v : G → W) 1 := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem frobenius_symm_apply (hπ : IsSmooth π)
     (φ : Representation.IntertwiningMap (π.comp H.subtype) σ) (v : V) (g : G) :
     ((frobenius H σ hπ).symm φ v : G → W) g = φ (π g v) := rfl

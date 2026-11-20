@@ -16,6 +16,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace ResidueKilled.Tr
 
+/- English proof (translation)
+Establish `h : ∃ k' : K, p * k * (k' : G)⁻¹ ∈ P` using `⟨⟨k, hk⟩, by simpa using hp⟩`. Unfold `ext`. Rewrite using `[dif_pos h]`. Establish `hs` using `h.choose_spec`. Establish `hr : k * (h.choose : G)⁻¹ ∈ K` using `K.mul_mem hk (K.inv_mem h.choose.2)`.
+
+Establish `e : p * k * (h.choose : G)⁻¹ = p * (k * (h.choose : G)⁻¹)` using `by group`. Rewrite `hs`, the goal using `[e]`. Establish `hrP : k * (h.choose : G)⁻¹ ∈ P`. Use `P.mul_mem (P.inv_mem hp) hs` as an intermediate fact. Simplify using `using this`.
+
+Rewrite using `[hadd p hp _ hrP, h0 _ hrP hr, add_zero]`.
+-/
 theorem ext_mul' {G : Type} [Group G] (K P : Subgroup G) (f : G → ℝ) (hadd : ∀ p ∈ P, ∀ q ∈ P, f (p * q) = f p + f q)
     (h0 : ∀ r ∈ P, r ∈ K → f r = 0) {p k : G} (hp : p ∈ P) (hk : k ∈ K) : ext K P f (p * k) = f p := by
   have h : ∃ k' : K, p * k * (k' : G)⁻¹ ∈ P := ⟨⟨k, hk⟩, by simpa using hp⟩
@@ -30,6 +37,9 @@ theorem ext_mul' {G : Type} [Group G] (K P : Subgroup G) (f : G → ℝ) (hadd :
     simpa using this
   rw [hadd p hp _ hrP, h0 _ hrP hr, add_zero]
 
+/- English proof (translation)
+Use `pos_iff_ne_zero.2 fun h0 => ?_` and prove the remaining obligations. Establish `h1` using `map_mul (absA D) x x⁻¹`. Rewrite `h1` using `[mul_inv_cancel, map_one, h0, zero_mul]`. Conclude with `one_ne_zero h1`.
+-/
 theorem absA_pos (D : D7) (x : (AE D)ˣ) : 0 < absA D x := by
   refine pos_iff_ne_zero.2 fun h0 => ?_
   have h1 := map_mul (absA D) x x⁻¹
@@ -37,6 +47,63 @@ theorem absA_pos (D : D7) (x : (AE D)ˣ) : 0 < absA D x := by
   exact one_ne_zero h1
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `hG hT hB hE hP hS hC hSc hDv D V hV a ha hI μ b hμ hb s₁ φ hφ`. Establish `hCM` using `isCMExt_host D`. Establish `hUn` using `GlobalTheory.HeckeAdjoint.unramified_host D`. Establish `hHk : GlobalTheory.LFun.IsHecke D.host.F D.host.E μ` using `hμ`. Establish `hRes` using `GlobalTheory.LFun.resEtaPow_of_resEta D.host.F D.host.E hCM.2.2.1 μ b hb`.
+
+Establish `hgood` using `hG D.host.F D.host.E D.sp.cm.sig μ b hCM hUn hHk hRes`. Take `⟨Φ, p, hΓ, hPs, hK, hbd, hlg⟩` from `hC D μ V a ha`. Take `⟨-, -, -, ht2, hlc, -, hKc⟩` from `hT D.host.E (AE D) (adCM D.sp.cm.sig μ) hgood (Fin V.rank) (-1)`. Use `ht2` as an intermediate fact. Use `hlc` as an intermediate fact.
+
+Establish `hiwa : Iwa ((adCM D.sp.cm.sig μ).uQ (-1) (Set.univ : Set (Fin V.rank))) ((adCM D.sp.cm.sig μ).uK (-1) (Fin V.rank))`. Introduce `y`. Take `⟨q, k, hk, e⟩` from `hI (Φ.symm y * (p : GA D (dblSp V))⁻¹)`. Use `⟨Φ ((q : GA D (dblSp V)) * p), (hPs _).1 (mul_mem q.2 p.2), Φ ((p : GA D (dblSp V))⁻¹ * k * p), (hK k).1 hk, ?_⟩` and prove the remaining obligations. Establish `e2 : Φ.symm y = (q : GA D (dblSp V)) * k * p` using `by rw [← e]; group`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hW` using `hS D.host.F D.host.E D.sp.cm.sig μ b hCM hUn hHk hRes (-1) (Fin V.rank) (by rw [Fintype.card_fin]; exact hV) hiwa`. Take `⟨-, hparU⟩` from `hP D.host.E (AE D) (adCM D.sp.cm.sig μ) hgood (Fin V.rank) (-1) Set.univ`. Take `⟨hIP', hIH, -⟩` from `hparU (by rwa [inf_idem])`. Rewrite `hIP'` using `[inf_idem]`.
+
+Take `⟨-, hmul, -, -, hzero, -⟩` from `hB D.host.E (AE D) (adCM D.sp.cm.sig μ) hgood.toGoodL (Fin V.rank ⊕ Fin V.rank) (Sum.inl '' (Set.univ : Set (Fin V.rank)))`. Use `set A := adCM D.sp.cm.sig μ with hAdef`. Use `set η : A.U (-1) (Fin V.rank) → ℝ := A.uH (-1) (Set.univ : Set (Fin V.rank)) with hηdef`. Use `set c : ℝ≥0 := absA D (aP V p) with hcdef`. Establish `hc : 0 < c` using `absA_pos D _`.
+
+Establish `hηQ : ∀ y ∈ A.uQ (-1) (Set.univ : Set (Fin V.rank)), ∀ k ∈ A.uK (-1) (Fin V.rank), η (y * k) = A.lg (bdet (Sum.inl '' (Set.univ : Set (Fin V.rank))) y.1)`. Introduce `y hy k hk`. Use `ext_mul' _ _ (fun q : A.U (-1) (Fin V.rank) => A.lg (bdet (Sum.inl '' (Set.univ : Set (Fin V.rank))) q.1)) ?_ ?_ hy hk` and prove the remaining obligations. Introduce `q₁ h₁ q₂ h₂ show A.lg (bdet _ (q₁.1 * q₂.1)) = _`. Rewrite using `[hmul q₁.1 h₁ q₂.1 h₂, hgood.lgmul]`.
+
+Introduce `r h₁ h₂`. Conclude with `hzero _ h₁ h₂`. Establish `hηP : ∀ q : siegel V, η (Φ q) = Real.log (absA D (aP V q))`. Introduce `q`. Use `hηQ (Φ q) ((hPs q).1 q.2) 1 (one_mem _)` as an intermediate fact.
+
+Rewrite `this` using `[mul_one]`. Rewrite using `[this, hbd q, hlg]`. Establish `hηx : ∀ x : GA D (dblSp V), η (Φ x) = Real.log (hgt V a (x * (p : GA D (dblSp V))⁻¹)) + Real.log c`. Introduce `x`. Take `⟨q, k, hk, e⟩` from `hI (x * (p : GA D (dblSp V))⁻¹)`.
+
+Establish `e2 : x = (q : GA D (dblSp V)) * p * ((p : GA D (dblSp V))⁻¹ * k * p)`. Establish `: x = x * (p : GA D (dblSp V))⁻¹ * p` using `by group`. Rewrite using `[this, e]`. Use `group`. Establish `h1 : hgt V a (x * (p : GA D (dblSp V))⁻¹) = absA D (aP V q)` using `by rw [e, hgt_mul V a q hk]`.
+
+Establish `h2 : η (Φ x) = Real.log (absA D (aP V (q * p)))`. Rewrite using `[e2, map_mul, hηQ _ ((hPs _).1 (mul_mem q.2 p.2)) _ ((hK k).1 hk), ← Subgroup.coe_mul, hbd (q * p), hlg]`. Rewrite using `[h1, h2, map_mul, map_mul, NNReal.coe_mul, Real.log_mul (NNReal.coe_pos.2 (absA_pos D _)).ne' (NNReal.coe_pos.2 (absA_pos D _)).ne']`. Use `set u : ℂ := s₁ + (V.rank : ℂ) / 2 with hu`. Use `set f : GA D (dblSp V) → ℂ := fun x => φ (x * (p : GA D (dblSp V))⁻¹) * Complex.exp (-u * η (Φ x)) with hf`.
+
+Take `⟨hlaw, hφc, hφK⟩` from `(mem_degPS V a).1 hφ`. Establish `hflaw : ∀ q ∈ siegel V, ∀ g, f (q * g) = A.uC (-1) (Fin V.rank) (Φ q) * f g`. Introduce `q hq g`. Establish `h1 : φ (q * g * (p : GA D (dblSp V))⁻¹) = μ (aP V ⟨q, hq⟩) * npow (absA D (aP V ⟨q, hq⟩)) u * φ (g * (p : GA D (dblSp V))⁻¹)`. Rewrite using `[mul_assoc]`.
+
+Conclude with `hlaw ⟨q, hq⟩ (g * (p : GA D (dblSp V))⁻¹)`. Establish `h2 : η (Φ (q * g)) = η (Φ q) + η (Φ g)` using `by rw [map_mul]; exact hIH.left _ ((hPs q).1 hq) _`. Establish `h3` using `hηP ⟨q, hq⟩`. Establish `h4 : A.uC (-1) (Fin V.rank) (Φ q) = (μ (aP V ⟨q, hq⟩) : ℂ)` using `by show ((A.χ (bdet (Sum.inl '' (Set.univ : Set (Fin V.rank))) (Φ q).1) : Circle) : ℂ) = _`. Rewrite using `[hbd ⟨q, hq⟩]`.
+
+Both sides reduce to the same expression. Establish `e5 : npow (absA D (aP V ⟨q, hq⟩)) u * Complex.exp (-u * ((Real.log (absA D (aP V ⟨q, hq⟩)) + η (Φ g) : ℝ) : ℂ)) = Complex.exp (-u * (η (Φ g) : ℂ))`. Rewrite using `[npow_eq_exp (absA_pos D _), ← Complex.exp_add]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hf]`. Rewrite using `[h1, h2, h4, show η (Φ q) = Real.log (absA D (aP V ⟨q, hq⟩)) from h3, ← e5]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfc : Continuous f` using `(hφc.comp (continuous_id.mul continuous_const)).mul (Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp (hIH.cont.comp (map_continuous Φ)))))`.
+
+Establish `hfin : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k : A.uK (-1) (Fin V.rank) => fun x => f (x * Φ.symm k)))`. Set `T : (GA D (dblSp V) → ℂ) →ₗ[ℂ] (GA D (dblSp V) → ℂ)` to `{ toFun := fun ψ x => ψ (x * (p : GA D (dblSp V))⁻¹) * Complex.exp (-u * η (Φ x)) map_add' := fun ψ ψ' => by funext x; simp [add_mul] map_smul' := fun z ψ => by funext x; simp [mul_assoc] }`. Establish `: FiniteDimensional ℂ (kSpan (Khat V a) φ)` using `hφK`. Use `Submodule.finiteDimensional_of_le (S₂ := (kSpan (Khat V a) φ).map T) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Establish `hk' : (p : GA D (dblSp V)) * Φ.symm k * (p : GA D (dblSp V))⁻¹ ∈ Khat V a`. Use `(hK _).2 ?_` and prove the remaining obligations. Establish `e : (p : GA D (dblSp V))⁻¹ * ((p : GA D (dblSp V)) * Φ.symm k * (p : GA D (dblSp V))⁻¹) * p = Φ.symm k` using `by group`. Rewrite using `[e, Φ.apply_symm_apply]`. Conclude with `k.2`.
+
+Use `⟨fun g => φ (g * ((p : GA D (dblSp V)) * Φ.symm k * (p : GA D (dblSp V))⁻¹)), Submodule.subset_span ⟨_, hk', rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Use `show φ (x * (p : GA D (dblSp V))⁻¹ * ((p : GA D (dblSp V)) * Φ.symm k * (p : GA D (dblSp V))⁻¹)) * Complex.exp (-u * η (Φ x)) = φ (x * Φ.symm k * (p : GA D (dblSp V))⁻¹) * Complex.exp (-u * η (Φ (x * Φ.symm k)))`. Establish `e1 : x * (p : GA D (dblSp V))⁻¹ * ((p : GA D (dblSp V)) * Φ.symm k * (p : GA D (dblSp V))⁻¹) = x * Φ.symm k * (p : GA D (dblSp V))⁻¹` using `by group`. Establish `e2 : η (Φ (x * Φ.symm k)) = η (Φ x)` using `by rw [map_mul, Φ.apply_symm_apply]; exact hIH.right _ _ k.2`.
+
+Rewrite using `[e1, e2]`. Take `⟨Am, H, R, hAd, hAne, hHd, hHc, hHe, hHb⟩` from `hSc (GA D (dblSp V)) (A.U (-1) (Fin V.rank)) Φ (GQ (dblSp V)) (siegel V) (A.uΓ (-1) (Fin V.rank)) (A.uK (-1) (Fin V.rank)) (A.uQ (-1) Set.univ) (A.uC (-1) (Fin V.rank)) η (Fintype.card (Fin V.rank) : ℝ) hKc hIP' hIH hΓ hPs hW f hfc hflaw hfin`. Establish `hgrow : ∀ r : ℝ, ∃ (C : ℝ) (N : ℕ), ∀ z : ℂ, ‖z‖ ≤ r → ∀ g, ‖H z g‖ ≤ C * GlobalTheory.Grow.height (dblSp V) g ^ N`. Introduce `r`. Use `set A₁ : ℝ := max (R + 1) (max (r + 1) ((V.rank : ℝ) + 1)) with hA₁`.
+
+Use `set B₁ : ℝ := min (-R - 1) (min (-r - 1) (-1)) with hB₁`. Establish `a1` using `le_max_left (R + 1) (max (r + 1) ((V.rank : ℝ) + 1))`. Establish `a2` using `le_max_left (r + 1) ((V.rank : ℝ) + 1)`. Establish `a3` using `le_max_right (r + 1) ((V.rank : ℝ) + 1)`. Establish `a4` using `le_max_right (R + 1) (max (r + 1) ((V.rank : ℝ) + 1))`.
+
+Establish `b1` using `min_le_left (-R - 1) (min (-r - 1) (-1))`. Establish `b2` using `min_le_left (-r - 1) (-1)`. Establish `b3` using `min_le_right (-r - 1) (-1)`. Establish `b4` using `min_le_right (-R - 1) (min (-r - 1) (-1))`. Take `⟨M, hM⟩` from `hHb A₁ B₁ (by linarith) (by linarith)`.
+
+Take `⟨C₁, N₁, h₁⟩` from `posSum_growth' D V hV a ha hI (p : GA D (dblSp V)) c hc (fun x => η (Φ x)) hηx A₁ (by linarith)`. Take `⟨C₂, N₂, h₂⟩` from `posSum_growth' D V hV a ha hI (p : GA D (dblSp V)) c hc (fun x => η (Φ x)) hηx ((Fintype.card (Fin V.rank) : ℝ) - B₁) (by rw [Fintype.card_fin]; linarith)`. Use `⟨|M| * (|C₁| + |C₂|), N₁ + N₂, fun z hz g => ?_⟩` and prove the remaining obligations. Establish `hre` using `abs_le.1 ((Complex.abs_re_le_norm z).trans hz)`. Establish `h₃` using `hM z (by linarith) (by linarith) g`.
+
+Establish `q₁` using `h₁ g`. Establish `q₂` using `h₂ g`. Use `beta_reduce at q₁ q₂`. Establish `hone : (1 : ℝ) ≤ GlobalTheory.Grow.height (dblSp V) g` using `GlobalTheory.Grow.one_le_height _ g`. Establish `w₁ : GlobalTheory.Grow.height (dblSp V) g ^ N₁ ≤ GlobalTheory.Grow.height (dblSp V) g ^ (N₁ + N₂)` using `pow_le_pow_right₀ hone (by omega)`.
+
+Establish `w₂ : GlobalTheory.Grow.height (dblSp V) g ^ N₂ ≤ GlobalTheory.Grow.height (dblSp V) g ^ (N₁ + N₂)` using `pow_le_pow_right₀ hone (by omega)`. Establish `w₀ : (0 : ℝ) ≤ GlobalTheory.Grow.height (dblSp V) g ^ N₁` using `by positivity`. Establish `w₀' : (0 : ℝ) ≤ GlobalTheory.Grow.height (dblSp V) g ^ N₂` using `by positivity`. Establish `r₁ : C₁ * GlobalTheory.Grow.height (dblSp V) g ^ N₁ ≤ |C₁| * GlobalTheory.Grow.height (dblSp V) g ^ (N₁ + N₂)` using `(mul_le_mul_of_nonneg_right (le_abs_self _) w₀).trans (mul_le_mul_of_nonneg_left w₁ (abs_nonneg _))`. Establish `r₂ : C₂ * GlobalTheory.Grow.height (dblSp V) g ^ N₂ ≤ |C₂| * GlobalTheory.Grow.height (dblSp V) g ^ (N₁ + N₂)` using `(mul_le_mul_of_nonneg_right (le_abs_self _) w₀').trans (mul_le_mul_of_nonneg_left w₂ (abs_nonneg _))`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hCont` using `hDv D (dblSp V) (fun z g => GlobalTheory.Eis.cosetSum (siegel V) (GQ (dblSp V)) (fun x => Complex.exp (z * η (Φ x)) * f x) g) H Am R hAd hAne hHd hHc hHe hgrow`. Establish `hflat` using `GlobalTheory.T.continuesWithModerateGrowth_shift_translate_pow D (dblSp V) _ (fun s g => GlobalTheory.Eis.eis V (flat V a φ s₁ s) g) (p : GA D (dblSp V)) c s₁ ((V.rank : ℂ) / 2) hc (fun s g => ?_) hCont`. Conclude with `⟨⟨GlobalTheory.Eis.ContModel.isEisFamily_flat ha hμ hφ, hflat.1⟩, hflat.2⟩`. Use `show GlobalTheory.Eis.cosetSum (siegel V) (GQ (dblSp V)) (flat V a φ s₁ s) g = npow c (s₁ - s) * GlobalTheory.Eis.cosetSum (siegel V) (GQ (dblSp V)) (fun x => Complex.exp ((s + (V.rank : ℂ) / 2) * η (Φ x)) * f x) (g * (p : GA D (dblSp V)))`.
+
+Establish `e4 : GlobalTheory.Eis.cosetSum (siegel V) (GQ (dblSp V)) (fun x => Complex.exp ((s + (V.rank : ℂ) / 2) * η (Φ x)) * f x) (g * (p : GA D (dblSp V))) = npow c (s - s₁) * GlobalTheory.Eis.cosetSum (siegel V) (GQ (dblSp V)) (flat V a φ s₁ s) g`. Rewrite using `[← GlobalTheory.Eis.cosetSum_mul_right, ← GlobalTheory.Eis.cosetSum_smul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [hf, Pi.smul_apply, smul_eq_mul, flatH_apply]`.
+
+Establish `hh` using `hηx (x * (p : GA D (dblSp V)))`. Rewrite `hh` using `[show x * (p : GA D (dblSp V)) * (p : GA D (dblSp V))⁻¹ = x by group]`. Rewrite using `[hh, npow_eq_exp hc, npow_eq_exp (hgtH_pos _), show x * (p : GA D (dblSp V)) * (p : GA D (dblSp V))⁻¹ = x by group]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 2`.
+
+Rewrite using `[hu]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [Complex.exp_add]; ring`. Rewrite using `[e4, ← mul_assoc, ← npow_add hc, show s₁ - s + (s - s₁) = 0 by ring]`.
+
+Simplify using `[npow]`.
+-/
 theorem tTop : TTop := by
   intro hG hT hB hE hP hS hC hSc hDv D V hV a ha hI μ b hμ hb s₁ φ hφ
   have hCM := isCMExt_host D

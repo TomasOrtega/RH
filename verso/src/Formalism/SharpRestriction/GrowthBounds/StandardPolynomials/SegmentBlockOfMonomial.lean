@@ -6,6 +6,15 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 
 open Formalism.MainNotions.G MvPolynomial
 
+/- English proof (translation)
+Establish `h1 : ∏ l : Fin S.t, f (uTop S l) = ∏ i : Fin s, if S.sigma ≤ i.val then f i else 1`. Rewrite using `[← Finset.prod_filter]`. Use `Finset.prod_nbij (fun l => uTop S l) ?_ ?_ ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `l _`. Conclude with `Finset.mem_filter.2 ⟨Finset.mem_univ _, Nat.le_add_right _ _⟩`.
+
+Introduce `l _ l' _ h`. Apply `Fin.ext` to reduce the goal to its premises. Establish `h' : S.sigma + l.val = S.sigma + l'.val` using `congrArg Fin.val h`. Use linear arithmetic over natural numbers and integers. Introduce `i hi`.
+
+Establish `hi'` using `(Finset.mem_filter.1 (Finset.mem_coe.1 hi)).2`. Use `i.2` as an intermediate fact. Conclude with `⟨⟨i.val - S.sigma, by unfold SegData.t; omega⟩, Finset.mem_coe.2 (Finset.mem_univ _), Fin.ext (by show S.sigma + (i.val - S.sigma) = i.val; omega)⟩`. Rewrite using `[h1, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h : (i : ℕ) < S.sigma`. Rewrite using `[if_pos h, if_neg (by omega), mul_one]`. Rewrite using `[if_neg h, if_pos (by omega), one_mul]`.
+-/
 theorem prod_uTop {M : Type} [CommMonoid M] {s : ℕ} (S : SegData s) (f : Fin s → M) :
     ∏ i, f i = (∏ i : Fin s, if (i : ℕ) < S.sigma then f i else 1) * ∏ l : Fin S.t, f (uTop S l) := by
   classical
@@ -55,12 +64,22 @@ def segmentBlockOfMonomial (ju : Fin (X.seg C0 CE1 CE2 j).t → ℕ) (jp : ℕ) 
   sg := fun i => if (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma then y0A C0 CE1 CE2 X j A i else 0
   oPlus := jp + du (chU _) + ∑ c, axA X j A c
 
+/- English proof (translation)
+Unfold `ioA`. Rewrite using `[aeval_X]`.
+-/
 theorem ioA_X (v : BVar (2 * segS X.TT j + 1) X.m (X.seg C0 CE1 CE2 j).t) :
     ioA (KK O) X.p C0 CE1 CE2 X j (MvPolynomial.X v) =
       MvPolynomial.X (symVar C0 CE1 CE2 X j v) ^ symLev X.p C0 CE1 CE2 X j v := by
   unfold ioA
   rw [aeval_X]
 
+/- English proof (translation)
+Unfold `mEps`. Simplify using `only [map_mul, map_prod, map_pow, rename_X, chainEmb, ioA_X]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `a1` using `symbol_variable_lower_letter C0 CE1 CE2 X j i c`.
+
+Establish `a2` using `symbol_level_lower_letter C0 CE1 CE2 X j i c`. Establish `a3` using `sv_E C0 CE1 CE2 X j i c`. Establish `a4` using `sl_E C0 CE1 CE2 X j i c`. Unfold `chW chE`. Rewrite using `[a1, a2, a3, a4]`.
+
+Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `a1` using `sv_U C0 CE1 CE2 X j c`. Establish `a2` using `sl_U C0 CE1 CE2 X j c`. Unfold `chU`. Rewrite using `[a1, a2, pow_one]`.
+-/
 theorem ioA_mEps (ez ey : Fin (segS X.TT j) → Fin X.m → ℕ) (ax : Fin X.m → ℕ) :
     ioA (KK O) X.p C0 CE1 CE2 X j (rename (chainEmb (2 * segS X.TT j + 1) X.m (X.seg C0 CE1 CE2 j).t) (mEps (KK O) ez ey ax)) =
       (∏ i, ∏ c : Fin X.m, ((MvPolynomial.X ((topOdd X j i, true), c.succ) ^ (X.seg C0 CE1 CE2 j).P X.p i) ^ ez i c *
@@ -82,6 +101,29 @@ theorem ioA_mEps (ez ey : Fin (segS X.TT j) → Fin X.m → ℕ) (ax : Fin X.m �
     unfold chU
     rw [a1, a2, pow_one]
 
+/- English proof (translation)
+Use `set P := fun i => (X.seg C0 CE1 CE2 j).P X.p i with hP`. Use `set Xz : Fin (segS X.TT j) → Fin (X.m + 1) → RHH O X := fun i c => MvPolynomial.X ((topOdd X j i, true), c) with hXz`. Use `set Xy : Fin (segS X.TT j) → Fin (X.m + 1) → RHH O X := fun i c => MvPolynomial.X ((topOdd X j i, false), c) with hXy`. Establish `i2 : ioA (KK O) X.p C0 CE1 CE2 X j (∏ l : Fin (X.seg C0 CE1 CE2 j).t, (MvPolynomial.X (scalZ (2 * segS X.TT j + 1) X.m (X.seg C0 CE1 CE2 j).t (Fin.castSucc l)) ^ z0A C0 CE1 CE2 X j A (uTop (X.seg C0 CE1 CE2 j) l) * MvPolynomial.X (scalS (2 * segS X.TT j + 1) X.m (X.seg C0 CE1 CE2 …`. Simplify using `only [map_prod, map_mul, map_pow, ioA_X]`.
+
+Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Unfold `scalZ scalS`. Rewrite using `[sv_Z, sl_Z, sv_Z, sl_Z]`. Both sides reduce to the same expression. Establish `i3 : ioA (KK O) X.p C0 CE1 CE2 X j (MvPolynomial.X (scalZ (2 * segS X.TT j + 1) X.m (X.seg C0 CE1 CE2 j).t (Fin.last _)) ^ A ((topEnd X j, true), 0)) = MvPolynomial.X ((topEnd X j, true), 0) ^ A ((topEnd X j, true), 0)`.
+
+Rewrite using `[map_pow, ioA_X]`. Unfold `scalZ`. Rewrite using `[symbol_variable_last, symbol_level_last, pow_one]`. Both sides reduce to the same expression. Establish `i4 : ioA (KK O) X.p C0 CE1 CE2 X j (∏ c, MvPolynomial.X (xiVar (2 * segS X.TT j + 1) X.m (X.seg C0 CE1 CE2 j).t c) ^ γ c) = ∏ c : Fin X.m, MvPolynomial.X ((topEnd X j, false), c.succ) ^ γ c`.
+
+Simplify using `only [map_prod, map_pow, ioA_X]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Unfold `xiVar`. Rewrite using `[sv_xi, sl_xi, pow_one]`. Rewrite using `[ioA_mEps, i2, i3, i4]`.
+
+Establish `hS : sTopMon (KK O) X.p C0 CE1 CE2 X j (segmentBlockOfMonomial C0 CE1 CE2 X j ju jp du A) = ∏ i : Fin (segS X.TT j), if (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma then (fun i => (Xz i 0 ^ P i) ^ z0A C0 CE1 CE2 X j A i * (Xy i 0 ^ P i) ^ y0A C0 CE1 CE2 X j A i) i else 1`. Unfold `sTopMon`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma`. Rewrite using `[if_pos h, if_pos h, hz0 i h]`.
+
+Establish `: (segmentBlockOfMonomial C0 CE1 CE2 X j ju jp du A).sg i = y0A C0 CE1 CE2 X j A i` using `by show (if (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma then _ else 0) = _`. Rewrite using `[if_pos h]`. Rewrite using `[this, pow_mul, pow_mul]`. Rewrite using `[if_neg h, if_neg h]`. Rewrite using `[hS]`.
+
+Establish `hodd : ∀ i : Fin (segS X.TT j), ∏ c : Fin (X.m + 1), (Xz i c ^ A ((topOdd X j i, true), c) * Xy i c ^ A ((topOdd X j i, false), c)) = (∏ c : Fin (X.m + 1), (Xz i c ^ (A ((topOdd X j i, true), c) % P i) * Xy i c ^ (A ((topOdd X j i, false), c) % P i))) * ((Xz i 0 ^ P i) ^ z0A C0 C …`. Introduce `i`. Establish `e1 : ∀ c : Fin (X.m + 1), Xz i c ^ A ((topOdd X j i, true), c) * Xy i c ^ A ((topOdd X j i, false), c) = (Xz i c ^ (A ((topOdd X j i, true), c) % P i) * Xy i c ^ (A ((topOdd X j i, false), c) % P i)) * ((Xz i c ^ P i) ^ (A ((topOdd X j i, true), c) / P i) * (Xy i c ^ P i) ^ (A (( …`. Introduce `c`. Use `conv_lhs => rw [← Nat.mod_add_div (A ((topOdd X j i, true), c)) (P i), ← Nat.mod_add_div (A ((topOdd X j i, false), c)) (P i)]`.
+
+Rewrite using `[pow_add, pow_add, pow_mul, pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.prod_congr rfl fun c _ => e1 c, Finset.prod_mul_distrib, mul_assoc]`. Use `congr 1`. Rewrite using `[Fin.prod_univ_succ]`.
+
+Both sides reduce to the same expression. Unfold `segMon digitMon`. Rewrite using `[Finset.prod_congr rfl fun i _ => hodd i, Finset.prod_mul_distrib, Finset.prod_mul_distrib, prod_uTop (X.seg C0 CE1 CE2 j) (fun i => (Xz i 0 ^ P i) ^ z0A C0 CE1 CE2 X j A i * (Xy i 0 ^ P i) ^ y0A C0 CE1 CE2 X j A i)]`. Establish `hend : ∏ c : Fin (X.m + 1), ((MvPolynomial.X ((topEnd X j, true), c) : RHH O X) ^ A ((topEnd X j, true), c) * MvPolynomial.X ((topEnd X j, false), c) ^ A ((topEnd X j, false), c)) = (∏ c : Fin X.m, MvPolynomial.X ((topEnd X j, true), c.succ) ^ axA X j A c) * MvPolynomial.X ((topE …`. Rewrite using `[Fin.prod_univ_succ, hy0, pow_zero, mul_one, Finset.prod_mul_distrib]`.
+
+Simplify using `only [hγ]`. Unfold `axA`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hend]`. Use `show (∏ i, ∏ c : Fin (X.m + 1), (Xz i c ^ (A ((topOdd X j i, true), c) % P i) * Xy i c ^ (A ((topOdd X j i, false), c) % P i))) * _ * _ * _ = (∏ i, ∏ c : Fin (X.m + 1), (Xz i c ^ (A ((topOdd X j i, true), c) % P i) * Xy i c ^ (A ((topOdd X j i, false), c) % P i))) * _ * _`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem segMon_eq (ju : Fin (X.seg C0 CE1 CE2 j).t → ℕ) (jp : ℕ) (du : Fin (2 * segS X.TT j + 1) → ℕ) (A : MonH X)
     (γ : Fin X.m → ℕ)
     (hz0 : ∀ i : Fin (segS X.TT j), (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma →

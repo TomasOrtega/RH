@@ -18,6 +18,9 @@ private noncomputable def sl1 (jW : W →ₗ[ℂ] (Y → ℂ)) (y : Y) : V ⊗[�
 private noncomputable def sl2 (jV : V →ₗ[ℂ] (X → ℂ)) (x : X) : V ⊗[ℂ] W →ₗ[ℂ] W :=
   (TensorProduct.lid ℂ W).toLinearMap ∘ₗ LinearMap.rTensor W (LinearMap.proj x ∘ₗ jV)
 
+/- English proof (translation)
+Simplify using `[sl1]`.
+-/
 private theorem slice_first_tmul (jW : W →ₗ[ℂ] (Y → ℂ)) (y : Y) (v : V) (w : W) : sl1 jW y (v ⊗ₜ[ℂ] w) = jW w y • v := by
   simp [sl1]
 
@@ -25,6 +28,13 @@ end SlopeTestRemainingChoices
 
 end UpperTheory.V.Cj.S
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul v w`. Use `⟨fun a => (Module.finBasis ℂ V).repr v a • w, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← (Module.finBasis ℂ V).sum_repr v]`.
+
+Rewrite using `[TensorProduct.sum_tmul]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Conclude with `TensorProduct.smul_tmul _ _ _`. Consider the case `add t1 t2 h1 h2`. Take `⟨m1, rfl⟩` from `h1`.
+
+Take `⟨m2, rfl⟩` from `h2`. Conclude with `⟨m1 + m2, by simp [TensorProduct.tmul_add, Finset.sum_add_distrib]⟩`.
+-/
 private theorem tensor_exists_finBasis_expansion {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     [FiniteDimensional ℂ V] (t : V ⊗[ℂ] W) :
     ∃ m : Fin (Module.finrank ℂ V) → W, t = ∑ a, Module.finBasis ℂ V a ⊗ₜ[ℂ] m a := by
@@ -41,6 +51,13 @@ private theorem tensor_exists_finBasis_expansion {V W : Type} [AddCommGroup V] [
     obtain ⟨m2, rfl⟩ := h2
     exact ⟨m1 + m2, by simp [TensorProduct.tmul_add, Finset.sum_add_distrib]⟩
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `tensor_exists_finBasis_expansion (V := V) (W := W) t`. Establish `hm : ∀ a, m a = 0`. Introduce `a`. Apply `hjW` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+
+Use function extensionality and compare the values at `y`. Establish `hy` using `ht y`. Simplify using `only [map_sum, UpperTheory.V.Cj.S.slice_first_tmul] at hy`. Use `(Fintype.linearIndependent_iff.mp (Module.finBasis ℂ V).linearIndependent) (fun a => jW (m a) y) hy a` as an intermediate fact. Simplify using `using this`.
+
+Simplify using `[hm]`.
+-/
 private theorem tensor_eq_zero_of_sl1_vanishing {V W Y : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     [FiniteDimensional ℂ V] (jW : W →ₗ[ℂ] (Y → ℂ)) (hjW : Function.Injective jW) (t : V ⊗[ℂ] W)
     (ht : ∀ y, UpperTheory.V.Cj.S.sl1 jW y t = 0) : t = 0 := by
@@ -56,6 +73,17 @@ private theorem tensor_eq_zero_of_sl1_vanishing {V W Y : Type} [AddCommGroup V] 
     simpa using this
   simp [hm]
 
+/- English proof (translation)
+Set `P : Submodule ℂ (Module.Dual ℂ V)` to `{ carrier := {ψ | ∃ w : W, jW w = fun y => ψ (col y)} add_mem' := by`. Introduce and unpack `ψ χ ⟨w1, h1⟩ ⟨w2, h2⟩`. Conclude with `⟨w1 + w2, by rw [map_add, h1, h2]; rfl⟩`. Use the proof step `zero_mem' := ⟨0, by rw [map_zero]; rfl⟩`. Use the proof step `smul_mem' := by`.
+
+Introduce and unpack `c ψ ⟨w, h⟩`. Conclude with `⟨c • w, by rw [map_smul, h]; rfl⟩ }`. Establish `hev : ∀ x, (LinearMap.proj x ∘ₗ jV) ∈ P`. Introduce `x`. Take `⟨w, h⟩` from `hrow x`.
+
+Conclude with `⟨w, h⟩`. Establish `hco : P.dualCoannihilator = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `v hv`. Rewrite `hv` using `[Submodule.mem_dualCoannihilator]`.
+
+Rewrite using `[Submodule.mem_bot]`. Apply `hjV` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Simplify using `using hv _ (hev x)`. Establish `htop : P = ⊤`.
+
+Rewrite using `[← Subspace.dualCoannihilator_dualAnnihilator_eq (W := P), hco, Submodule.dualAnnihilator_bot]`. Establish `hφ : φ ∈ P`. Rewrite using `[htop]`. Conclude with `Submodule.mem_top`. Conclude with `hφ`.
+-/
 private theorem exists_vec_of_dual_apply_col {X Y V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     [FiniteDimensional ℂ V] (jV : V →ₗ[ℂ] (X → ℂ)) (hjV : Function.Injective jV)
     (jW : W →ₗ[ℂ] (Y → ℂ)) (col : Y → V) (hrow : ∀ x, ∃ w : W, jW w = fun y => jV (col y) x)
@@ -88,6 +116,45 @@ private theorem exists_vec_of_dual_apply_col {X Y V W : Type} [AddCommGroup V] [
     exact Submodule.mem_top
   exact hφ
 
+/- English proof (translation)
+Introduce `hT X Y M N V W hVf hWf ι κ A B hAV hBW hAc hBc F hF hcol hrow`. Set `jV : V →ₗ[ℂ] (X → ℂ)` to `M.subtype ∘ₗ V.subtype`. Set `jW : W →ₗ[ℂ] (Y → ℂ)` to `N.subtype ∘ₗ W.subtype`. Establish `hjV : Function.Injective jV` using `Subtype.val_injective.comp Subtype.val_injective`. Establish `hjW : Function.Injective jW` using `Subtype.val_injective.comp Subtype.val_injective`.
+
+Use `choose col hcolV hcolF using hcol`. Set `colV : Y → V` to `fun y => ⟨col y, hcolV y⟩`. Establish `hjcol : ∀ y, jV (colV y) = fun x => F x y` using `fun y => hcolF y`. Establish `hrow' : ∀ x, ∃ w : W, jW w = fun y => jV (colV y) x`. Introduce `x`.
+
+Take `⟨f, hfW, hf⟩` from `hrow x`. Use `⟨⟨f, hfW⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Rewrite using `[hjcol]`. Use `show (f : Y → ℂ) y = F x y`.
+
+Rewrite using `[hf]`. Set `bV` to `Module.finBasis ℂ V`. Use `choose w hw using fun a => exists_vec_of_dual_apply_col jV hjV jW colV hrow' (bV.coord a)`. Set `z : V ⊗[ℂ] W` to `∑ a, bV a ⊗ₜ[ℂ] w a`. Establish `hz : ∀ y, UpperTheory.V.Cj.S.sl1 jW y z = colV y`.
+
+Introduce `y`. Simplify using `only [z, map_sum, UpperTheory.V.Cj.S.slice_first_tmul, hw]`. Simplify `bV.sum_repr (colV y)` using `[Module.Basis.coord_apply]`. Establish `hFz : ∀ x y, jV (UpperTheory.V.Cj.S.sl1 jW y z) x = F x y`. Introduce `x y`.
+
+Rewrite using `[hz, hjcol]`. Establish `hz0 : z ≠ 0`. Take `⟨x0, y0, h0⟩` from `hF`. Introduce `h`. Apply `h0` to reduce the goal to its premises.
+
+Rewrite using `[← hFz, h]`. Simplify using the standard rewrite rules. Set `A' : ι → Module.End ℂ V` to `fun i => (A i).restrict (hAV i)`. Set `B' : κ → Module.End ℂ W` to `fun k => (B k).restrict (hBW k)`. Establish `hA' : ∀ i (v : V), ((A' i v : V) : M) = A i v` using `fun i v => rfl`.
+
+Establish `hB' : ∀ k (w : W), ((B' k w : W) : N) = B k w` using `fun k w => rfl`. Establish `cA : ∀ i i', Commute (A' i) (A' i')`. Introduce `i i'`. Conclude with `LinearMap.ext fun v => Subtype.ext (hAc i i' v v.2)`. Establish `cB : ∀ k k', Commute (B' k) (B' k')`.
+
+Introduce `k k'`. Conclude with `LinearMap.ext fun w => Subtype.ext (hBc k k' w w.2)`. Take `⟨v, w', l, m, hv, hw', hAv, hBw, hprop⟩` from `hT V W ι κ A' B' cA cB z hz0`. Use `⟨v, v.2, w', w'.2, l, m, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`.
+
+Conclude with `hv (Subtype.ext h)`. Introduce `h`. Conclude with `hw' (Subtype.ext h)`. Introduce `i`. Use `congrArg Subtype.val (hAv i)` as an intermediate fact.
+
+Simplify `this` using `[hA']`. Introduce `k`. Use `congrArg Subtype.val (hBw k)` as an intermediate fact. Simplify `this` using `[hB']`. Introduce `σ _ c ip kp G e hAct hsum`.
+
+Establish `hsumV : ∀ y', (∑ a, jW (w a) y' • bV a) = colV y'`. Introduce `y'`. Simplify `bV.sum_repr (colV y')` using `[hw, Module.Basis.coord_apply]`. Establish `key : ∀ i k (Gp : X → Y → ℂ), Act2 (A i) (B k) F Gp → ∀ x y, jV (UpperTheory.V.Cj.S.sl1 jW y (TensorProduct.map (A' i) (B' k) z)) x = Gp x y`. Introduce `i k Gp hG x y`.
+
+Take `⟨H, h1, h2⟩` from `hG`. Establish `hH : ∀ x' y', H x' y' = ∑ a, jW (w a) y' * jV (A' i (bV a)) x'`. Introduce `x' y'`. Take `⟨f, hf1, hf2⟩` from `h1 y'`. Establish `hf : f = ((∑ a, jW (w a) y' • bV a : V) : M)`.
+
+Apply `Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[hf1, hsumV]`. Conclude with `(hjcol y').symm`. Use `congrFun hf2 x'` as an intermediate fact. Rewrite using `[← this, hf]`.
+
+Simplify using `[map_sum, jV, hA']`. Take `⟨f', hf'1, hf'2⟩` from `h2 x`. Establish `hf' : f' = ((∑ a, jV (A' i (bV a)) x • w a : W) : N)`. Apply `Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[hf'1]`.
+
+Use function extensionality and compare the values at `y'`. Rewrite using `[hH]`. Simplify using `[jW, jV, Finset.sum_apply, mul_comm]`. Rewrite using `[← hf'2, hf']`. Simplify using `[z, map_sum, TensorProduct.map_tmul, UpperTheory.V.Cj.S.slice_first_tmul, jV, jW, hB', mul_comm]`.
+
+Apply `hprop σ c ip kp e` to reduce the goal to its premises. Rewrite using `[← sub_eq_zero]`. Apply `tensor_eq_zero_of_sl1_vanishing jW hjW` to reduce the goal to its premises. Introduce `y`. Apply `hjV` to reduce the goal to its premises.
+
+Rewrite using `[map_zero]`. Use function extensionality and compare the values at `x`. Establish `key' : ∀ p, jV (UpperTheory.V.Cj.S.sl1 jW y (TensorProduct.map (A' (ip p)) (B' (kp p)) z)) x = G p x y` using `fun p => key _ _ _ (hAct p) x y`. Establish `hval : jV (UpperTheory.V.Cj.S.sl1 jW y (∑ p, c p • TensorProduct.map (A' (ip p)) (B' (kp p)) z - e • z)) x = ∑ p, c p * G p x y - e * F x y`. Simplify using `only [map_sub, map_sum, map_smul, Pi.sub_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, key', hFz]`.
+
+Rewrite using `[hval, hsum, sub_self]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Cj.S.twoVar :
     UpperTheory.V.Cj.S.TensEig → UpperTheory.V.Cj.S.TwoVar := by
   intro hT X Y M N V W hVf hWf ι κ A B hAV hBW hAc hBc F hF hcol hrow

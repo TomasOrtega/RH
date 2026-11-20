@@ -19,6 +19,9 @@ section Graph
 
 variable {S : Type} [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω] {N m : ℕ} {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+Introduce `c` and use `twist_secs_eq_secOver Q n s hgen c`.
+-/
 theorem realises_graph (Q : Kleiman.LineBundle S x) (n : ℤ) (s : Fin m → Ω) (hgen : IsGraphGen Q n s) :
     BundleRealises (graphVec x s) baseBlock Q (graphDeg n) :=
   fun c => twist_secs_eq_secOver Q n s hgen c

@@ -15,6 +15,9 @@ def utOf {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (s : ℕ) (
     (x D : ℂ) : H :=
   ((‖x‖ ^ (s - 1) : ℝ) : ℂ) • V (ptX s h x) (x ^ (s - 1) * D)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c`. Establish `ha : x ^ (s - 1) ≠ 0` using `pow_ne_zero _ hx`. Establish `hr : ‖x‖ ^ (s - 1) ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.mpr hx)`. Simplify using `only [cvec, utOf, smul_smul]`. Rewrite using `[mul_div_assoc', mul_div_cancel_left₀ c ha, ← Complex.ofReal_mul, inv_mul_cancel₀ hr, Complex.ofReal_one, one_smul]`.
+-/
 theorem cvec_utOf {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (s : ℕ) (V : C.LPt → ℂ → H)
     (h : C.LPt) (x : ℂ) (hx : x ≠ 0) : cvec s (utOf s V h) x = V (ptX s h x) := by
   funext c
@@ -24,9 +27,15 @@ theorem cvec_utOf {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (s
   rw [mul_div_assoc', mul_div_cancel_left₀ c ha, ← Complex.ofReal_mul, inv_mul_cancel₀ hr,
     Complex.ofReal_one, one_smul]
 
+/- English proof (translation)
+Simplify using `[D.ptSize, ptX]`.
+-/
 theorem ptSize_ptX (s : ℕ) (h : C.LPt) (x : ℂ) : D.ptSize (ptX s h x) = D.ptSize h + (s - 1) := by
   simp [D.ptSize, ptX]
 
+/- English proof (translation)
+Unfold `S6.rd`. Apply `Real.rpow_pos_of_pos` to reduce the goal to its premises. Conclude with `Int.cast_pos.mpr (abs_pos.mpr (NumberField.discr_ne_zero E))`.
+-/
 theorem rd_pos (E : Type) [Field E] [NumberField E] : 0 < S6.rd E := by
   unfold S6.rd
   apply Real.rpow_pos_of_pos
@@ -38,6 +47,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, NormedAddCommGroup (Wp x)] [∀ x, InnerProductSpace ℂ (Wp x)] [∀ x, NormedAddCommGroup (Wq x)]
   [∀ x, InnerProductSpace ℂ (Wq x)]
 
+/- English proof (translation)
+Establish `hrd` using `rd_pos E`. Establish `hg0 : 0 < S.g` using `Nat.mul_pos hg1 hg2`. Establish `hg : (0 : ℝ) < (S.g : ℝ)` using `by exact_mod_cast hg0`. Unfold `KB.dlB D.deG`. Apply `div_ne_zero (zpow_ne_zero _ hrd.ne')` to reduce the goal to its premises.
+
+Apply `div_ne_zero two_ne_zero` to reduce the goal to its premises. Conclude with `mul_ne_zero hrd.ne' (pow_ne_zero _ hg.ne')`.
+-/
 theorem dlB_ne_zero (S : C.HidaSetting E Wp Wq) (hg1 : 0 < S.G.g1) (hg2 : 0 < S.G.g2) (b s : ℕ) :
     KB.dlB S b s ≠ 0 := by
   have hrd := rd_pos E
@@ -77,6 +91,11 @@ def GermFibres (S : C.HidaSetting E Wp Wq) (v : Fin S.f) : Prop :=
   ∀ ε, 0 < ε → ∀ b s, 1 ≤ b → 2 ≤ s → b + s ≤ S.G.r + 2 → ∀ a, D.AdmAt S v a → ∀ Y : Finset C.LPt,
     (∀ h ∈ Y, D.ptSize h = b - 1) → Nonempty (FibreGerm S v ε b s a Y)
 
+/- English proof (translation)
+Establish `hg : Integrable (fun c : ℂ => (1 + ‖c‖) ^ (-(3 : ℝ)))`. Apply `integrable_one_add_norm` to reduce the goal to its premises. Rewrite using `[Complex.finrank_real_complex]`. Evaluate the numerical expressions. Establish `e : ∀ c : ℂ, (1 + ‖c‖) ^ (-(3 : ℝ)) = ((1 + ‖c‖) ^ 3)⁻¹` using `fun c => by`.
+
+Rewrite using `[Real.rpow_neg (by positivity)]`. Use `norm_cast`. Use `(hg.const_mul Cφ).mono' hφ.aestronglyMeasurable (ae_of_all _ fun c => ?_)` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `h c`.
+-/
 theorem integrable_of_decay {φ : ℂ → ℂ} (hφ : Continuous φ) {Cφ : ℝ}
     (h : ∀ c : ℂ, ‖φ c‖ ≤ Cφ * ((1 + ‖c‖) ^ 3)⁻¹) : Integrable φ := by
   have hg : Integrable (fun c : ℂ => (1 + ‖c‖) ^ (-(3 : ℝ))) := by
@@ -152,6 +171,9 @@ def FibreGerm.toGermReal {S : C.HidaSetting E Wp Wq} {v : Fin S.f} {ε : ℝ} {b
       germ := R.germ
       dens := R.dens }
 
+/- English proof (translation)
+Apply `germLoc_of_realised _ hC` to reduce the goal to its premises. Introduce `ε hε b s hb hs hbs a ha Y hY`. Take `⟨R⟩` from `hF ε hε b s hb hs hbs a ha Y hY`. Conclude with `⟨R.toGermReal hI hg1 hg2 hε hb hs hbs ha hY⟩`.
+-/
 theorem germLoc_of_fibres {S : C.HidaSetting E Wp Wq} {v : Fin S.f} (hI : JC.ThmPIntPlace S v fun i => KB.dlB S i 1)
     (hg1 : 0 < S.G.g1) (hg2 : 0 < S.G.g2) (hF : GermFibres S v) (hC : GermCont S v) : KB.GermLoc S v := by
   apply germLoc_of_realised _ hC
@@ -167,6 +189,9 @@ def GermLocOfFibres : Prop :=
     [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)] (S : C.HidaSetting E Wp Wq),
     0 < S.G.g1 → 0 < S.G.g2 → KB.IntAll S → (∀ v, GermFibres S v) → (∀ v, GermCont S v) → ∀ v, KB.GermLoc S v
 
+/- English proof (translation)
+Introduce `E _ _ _ Wp Wq _ _ _ _ S hg1 hg2 hI hF hC v`. Conclude with `germLoc_of_fibres (hI v) hg1 hg2 (hF v) (hC v)`.
+-/
 theorem germLocOfFibres : GermLocOfFibres := by
   intro E _ _ _ Wp Wq _ _ _ _ S hg1 hg2 hI hF hC v
   exact germLoc_of_fibres (hI v) hg1 hg2 (hF v) (hC v)
@@ -175,4 +200,7 @@ end
 
 end Formalism.FourierDecayAlt.P.GermRealisation
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.GermRealisation.germLocOfFibres`.
+-/
 theorem Formalism.FourierDecayAlt.P.germ_local_of_fibres : Formalism.FourierDecayAlt.P.GermRealisation.GermLocOfFibres := Formalism.FourierDecayAlt.P.GermRealisation.germLocOfFibres

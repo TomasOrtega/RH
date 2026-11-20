@@ -13,6 +13,19 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BigBlockCharacters (HasChars)
 open GlobalTheory.IndefiniteRowSideFullHecke.FactorDepthInertBounds (boundAll boundInert boundFine)
 namespace GlobalTheory.RefSum
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c p _ la cx`. Use `letI := H.starRing`. Establish `hcs : ∀ g : Lt1 Dw → ℝ, (((∑ f, g f : ℝ)) : EReal) = ∑ f, ((g f : ℝ) : EReal)` using `fun g => map_sum (⟨⟨((↑) : ℝ → EReal), EReal.coe_zero⟩, EReal.coe_add⟩ : ℝ →+ EReal) g Finset.univ`. Use `⟨fun A B hAB => ⟨fun T io e ho y => ⟨?_, fun ha => ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hcs]`.
+
+Conclude with `Finset.sum_le_sum fun f _ => (hAB f T io e ho y).1`. Rewrite using `[hcs]`. Conclude with `Finset.sum_le_sum fun f _ => (hAB f T io e ho y).2 ha`. Use `set s : ℝ := ∑ f, A f with hs`. Use `⟨⌊max 0 s⌋₊, fun T io e ho y => ⟨?_, fun ha => ?_⟩⟩` and prove the remaining obligations.
+
+Establish `h0 : (0 : EReal) ≤ nuP p y cx` using `Finset.sum_nonneg fun f _ => (GlobalTheory.T.factorDepth_between_zero_and_bound E H Dw l Xo c p la f (cx f)).1 T io e ho y |>.1 |> fun h => by simpa using h`. Establish `h1 : ((s : ℝ) : EReal) ≤ nuP p y cx`. Rewrite using `[hs, hcs]`. Conclude with `Finset.sum_le_sum fun f _ => (hAB f T io e ho y).1`. Establish `hn : ((⌊max 0 s⌋₊ : ℕ) : ℝ) ≤ max 0 s` using `Nat.floor_le (le_max_left _ _)`.
+
+Break down `le_total 0 s with h | h` into its components or cases. Conclude with `(EReal.coe_le_coe_iff.2 (hn.trans (max_eq_right h).le)).trans h1`. Conclude with `(EReal.coe_le_coe_iff.2 (hn.trans (max_eq_left h).le)).trans (by simpa using h0)`. Establish `hu : nuP p y cx ≤ ((∑ f, B f : ℝ) : EReal)`. Rewrite using `[hcs]`.
+
+Conclude with `Finset.sum_le_sum fun f _ => (hAB f T io e ho y).2 ha`. Use `hu.trans (EReal.coe_le_coe_iff.2 ?_)` and prove the remaining obligations. Establish `hlt : max 0 s < ((⌊max 0 s⌋₊ : ℕ) : ℝ) + 1` using `Nat.lt_floor_add_one _`. Establish `hsd : ∑ f, (B f - A f) = ∑ f, B f - s` using `by rw [Finset.sum_sub_distrib]`. Establish `hm : s ≤ max 0 s` using `le_max_right _ _`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce `b hb O _ β Y Z`. Take `⟨A, hA⟩` from `hb la`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem nuBetween_sum_and_eLoc_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (p : ℕ) [Fact p.Prime] (la : PointsOfFlagModel.abelian₂ p c), ∀ (cx : Lt1 Dw → ℕ), (∀ A B : Lt1 Dw → ℝ, (∀ f, FacBetween Xo la f (cx f) (A f) (B f)) → NuBetween Xo la cx (∑ f, A f) (∑ f, B f) ∧ ∃ n : ℕ, NuBetween Xo la cx n (n + (∑ f, (B f - A f) + 1))) ∧ ∀ b : ℝ, OscLe Xo c p cx b → ∀ (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (Z : Comp Xo c), (letI := H.starRing; eLoc Y Z la cx ≤ (b : EReal)) := by
   intro E _ _ _ H Dw l Xo c p _ la cx
   letI := H.starRing

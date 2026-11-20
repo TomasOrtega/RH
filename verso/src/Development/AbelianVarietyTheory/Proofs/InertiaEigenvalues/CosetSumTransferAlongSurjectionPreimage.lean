@@ -13,6 +13,31 @@ open Classical
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set F : G ⧸ U0 → V := fun c => if hc : ∃ x : G, (x : G ⧸ U0) = c ∧ x ∈ T then a (ψ ⟨hc.choose, hc.choose_spec.2⟩) • β hc.choose else 0 with hF`. Set `t : H ⧸ K → T` to `fun d => (hψ d.out).choose`. Establish `ht : ∀ d, ψ (t d) = d.out` using `fun d => (hψ d.out).choose_spec`. Set `f : H ⧸ K → G ⧸ U0` to `fun d => ((t d : G) : G ⧸ U0)`. Establish `key : ∀ x y : T, ((x : G) : G ⧸ U0) = ((y : G) : G ⧸ U0) → ((x : G)⁻¹ * y ∈ U0) ∧ ∃ k ∈ K, ψ y = ψ x * k`.
+
+Introduce `x y hxy`. Rewrite `hxy` using `[QuotientGroup.eq]`. Use `⟨hxy, ψ (x⁻¹ * y), (hTU _).2 (by simpa using hxy), ?_⟩` and prove the remaining obligations. Simplify using `[map_mul, map_inv]`. Establish `hinj : Function.Injective f`.
+
+Introduce `d d' h`. Take `⟨-, k, hk, hkk⟩` from `key _ _ h`. Rewrite `hkk` using `[ht, ht]`. Rewrite using `[← QuotientGroup.out_eq' d, ← QuotientGroup.out_eq' d', QuotientGroup.eq, hkk]`. Simplify using `using hk`.
+
+Establish `hcover : ∀ x : T, f ((ψ x : H) : H ⧸ K) = ((x : G) : G ⧸ U0) ∧ a (((ψ x : H) : H ⧸ K).out) = a (ψ x)`. Introduce `x`. Use `set d : H ⧸ K := ((ψ x : H) : H ⧸ K) with hd`. Establish `h1 : d.out⁻¹ * ψ x ∈ K`. Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq']`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (((t d : T) : G) : G ⧸ U0) = ((x : G) : G ⧸ U0)`. Rewrite using `[QuotientGroup.eq]`. Establish `: ψ ((t d)⁻¹ * x) ∈ K` using `by simpa [map_mul, map_inv, ht] using h1`. Simplify using `using (hTU _).1 this`.
+
+Use `ha d.out _ h1` as an intermediate fact. Simplify using `using this.symm`. Establish `hval : ∀ d, F (f d) = a d.out • β (t d)`. Introduce `d`. Establish `hc : ∃ x : G, (x : G ⧸ U0) = f d ∧ x ∈ T` using `⟨t d, rfl, (t d).2⟩`.
+
+Simplify using `only [hF, dif_pos hc]`. Take `⟨hU, k, hk, hkk⟩` from `key (t d) ⟨hc.choose, hc.choose_spec.2⟩ hc.choose_spec.1.symm`. Rewrite using `[hkk, ha _ k hk, ht]`. Use `congr 1`. Use `hβ (t d : G) _ hU` as an intermediate fact.
+
+Simplify using `using this`. Use `set S : Finset (H ⧸ K) := hfin.toFinset with hS`. Establish `hsupp : Function.support F ⊆ ↑(S.image f)`. Introduce `c hc`. Rewrite `hc` using `[Function.mem_support]`.
+
+Establish `hc' : ∃ x : G, (x : G ⧸ U0) = c ∧ x ∈ T`. Assume the negation of the conclusion as `hn`. Conclude with `hc (by simp only [hF, dif_neg hn])`. Take `⟨x, rfl, hx⟩` from `hc'`. Take `⟨h1, h2⟩` from `hcover ⟨x, hx⟩`.
+
+Use `Finset.mem_coe.2 (Finset.mem_image.2 ⟨_, ?_, h1⟩)` and prove the remaining obligations. Rewrite using `[hS, Set.Finite.mem_toFinset, Function.mem_support, h2]`. Introduce `h0`. Apply `hc` to reduce the goal to its premises. Establish `hF'` using `hval ((ψ ⟨x, hx⟩ : H) : H ⧸ K)`.
+
+Rewrite `hF'` using `[h1, h2, h0, zero_smul]`. Conclude with `hF'`. Establish `hL : Function.support (fun d : H ⧸ K => a d.out * φ' d.out) ⊆ ↑S`. Introduce `d hd`. Rewrite using `[hS, Set.Finite.coe_toFinset]`.
+
+Conclude with `fun h0 => hd (by simp only [h0, zero_mul])`. Rewrite using `[finsum_eq_sum_of_support_subset _ hL, finsum_eq_sum_of_support_subset _ hsupp, Finset.sum_image (fun d _ d' _ h => hinj h), map_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[hval, map_smul, smul_eq_mul, ← hφ, ht]`.
+-/
 theorem cosetSum_transfer_surj {G H V : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V]
     (U0 : Subgroup G) (K : Subgroup H) (T : Subgroup G) (ψ : T →* H)
     (hψ : Function.Surjective ψ) (hTU : ∀ t : T, ψ t ∈ K ↔ (t : G) ∈ U0)

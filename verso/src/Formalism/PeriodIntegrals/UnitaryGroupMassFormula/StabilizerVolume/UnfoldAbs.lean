@@ -24,6 +24,9 @@ instance subMeasurableInv (H : Subgroup G) : MeasurableInv H where
     exact ((measurable_inv.comp measurable_subtype_coe).subtype_mk :
       Measurable fun x : H => (⟨(x : G)⁻¹, H.inv_mem x.2⟩ : H))
 
+/- English proof (translation)
+Use `Function.Injective.countable (f := fun x : (Γ ⊓ H).subgroupOf H => (⟨((x : H) : G), (Subgroup.mem_inf.1 (Subgroup.mem_subgroupOf.1 x.2)).1⟩ : Γ)) ?_` and prove the remaining obligations. Introduce `a b hab`. Establish `e : ((a : H) : G) = ((b : H) : G)` using `congrArg (fun z : Γ => (z : G)) hab`. Conclude with `Subtype.ext (Subtype.ext e)`.
+-/
 theorem countable_subgroupOf {Γ H : Subgroup G} [Countable Γ] :
     Countable ((Γ ⊓ H).subgroupOf H) := by
   refine Function.Injective.countable
@@ -40,9 +43,15 @@ def orbS (Γ : Subgroup G) (y0 : Y) : Set Y := {x | ∃ γ ∈ Γ, γ • y0 = x
 def repO (Γ : Subgroup G) (y0 : Y) (x : orbS Γ y0) : G :=
   Classical.choose (x.2 : ∃ γ ∈ Γ, γ • y0 = (x : Y))
 
+/- English proof (translation)
+Conclude with `(Classical.choose_spec x.2).1`.
+-/
 theorem repO_mem (Γ : Subgroup G) (y0 : Y) (x : orbS Γ y0) : repO Γ y0 x ∈ Γ := by
   exact (Classical.choose_spec x.2).1
 
+/- English proof (translation)
+Conclude with `(Classical.choose_spec x.2).2`.
+-/
 theorem repO_smul (Γ : Subgroup G) (y0 : Y) (x : orbS Γ y0) : repO Γ y0 x • y0 = x := by
   exact (Classical.choose_spec x.2).2
 
@@ -52,12 +61,24 @@ def cntN (Γ : Subgroup G) (A : Set G) (g : G) : ℝ≥0∞ :=
 def cfun (Γ : Subgroup G) (A : Set G) (y0 : Y) (g : G) : ℝ≥0∞ :=
   ∑' x : orbS Γ y0, A.indicator (fun _ => (1 : ℝ≥0∞)) (repO Γ y0 x * g⁻¹)
 
+/- English proof (translation)
+Unfold `cfun`. Conclude with `Measurable.ennreal_tsum fun x => (measurable_const.indicator hA).comp ((measurable_const_mul (repO Γ y0 x)).comp measurable_inv)`.
+-/
 theorem meas_cfun (Γ : Subgroup G) (y0 : Y) [Countable (orbS Γ y0)] {A : Set G}
     (hA : MeasurableSet A) : Measurable (cfun Γ A y0) := by
   unfold cfun
   exact Measurable.ennreal_tsum fun x =>
     (measurable_const.indicator hA).comp ((measurable_const_mul (repO Γ y0 x)).comp measurable_inv)
 
+/- English proof (translation)
+Set `F : orbS Γ y0 × (Γ ⊓ H).subgroupOf H → Γ` to `fun p => ⟨repO Γ y0 p.1 * ((p.2 : H) : G), Γ.mul_mem (repO_mem Γ y0 p.1) (Subgroup.mem_inf.1 (Subgroup.mem_subgroupOf.1 p.2.2)).1⟩`. Establish `hF : Function.Bijective F`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, δ⟩ ⟨x', δ'⟩ he`. Establish `he' : repO Γ y0 x * ((δ : H) : G) = repO Γ y0 x' * ((δ' : H) : G)` using `congrArg Subtype.val he`.
+
+Establish `hδ : ((δ : H) : G) • y0 = y0` using `(hH _).1 (δ : H).2`. Establish `hδ' : ((δ' : H) : G) • y0 = y0` using `(hH _).1 (δ' : H).2`. Establish `hx : (x : Y) = x'`. Combine the equalities or inequalities in the displayed calculation. Establish `hxx : x = x'` using `Subtype.ext hx`.
+
+Substitute `hxx` using the available equality. Establish `e : ((δ : H) : G) = ((δ' : H) : G)` using `mul_left_cancel he'`. Conclude with `Prod.ext rfl (Subtype.ext (Subtype.ext e))`. Introduce `γ`. Establish `hd : (repO Γ y0 ⟨(γ : G) • y0, γ, γ.2, rfl⟩)⁻¹ * γ ∈ H`.
+
+Rewrite using `[hH, mul_smul, inv_smul_eq_iff, repO_smul]`. Use `⟨(⟨(γ : G) • y0, γ, γ.2, rfl⟩, ⟨⟨_, hd⟩, Subgroup.mem_subgroupOf.2 (Subgroup.mem_inf.2 ⟨Γ.mul_mem (Γ.inv_mem (repO_mem Γ y0 _)) γ.2, hd⟩)⟩), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `mul_inv_cancel_left _ _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sum_rep_eq {Γ H : Subgroup G} (y0 : Y) (hH : ∀ k : G, k ∈ H ↔ k • y0 = y0)
     (u : G → ℝ≥0∞) :
     ∑' x : orbS Γ y0, ∑' δ : (Γ ⊓ H).subgroupOf H, u (repO Γ y0 x * ((δ : H) : G)) =

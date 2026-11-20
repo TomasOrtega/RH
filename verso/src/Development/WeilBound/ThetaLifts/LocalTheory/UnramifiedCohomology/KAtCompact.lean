@@ -17,6 +17,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 attribute [local instance] PositivityTheory.ThK.kc_ring PositivityTheory.ThK.adele_t2Space PositivityTheory.ThK.kc_smul
 
+/- English proof (translation)
+Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Use `haveI : ((Measure.haar : Measure K).map π).IsHaarMeasure := Measure.isHaarMeasure_map_of_isFiniteMeasure _ π hc hs`. Use `⟨Measure.haar, inferInstance, Measure.haarScalarFactor μ ((Measure.haar : Measure K).map π), fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[← integral_map hc.measurable.aemeasurable hf.aestronglyMeasurable, ← integral_smul_nnreal_measure, ← Measure.isMulLeftInvariant_eq_smul]`.
+-/
 theorem push {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] [SecondCountableTopology G]
     [MeasurableSpace G] [BorelSpace G] {K K' : Subgroup G} (hK : IsCompact (K : Set G)) [CompactSpace K'] (π : K →* K')
     (hc : Continuous π) (hs : Function.Surjective π) (μ : Measure K') [μ.IsHaarMeasure] :
@@ -29,25 +32,51 @@ theorem push {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T
 
 namespace Tp
 
+/- English proof (translation)
+The claim follows from `IsModuleTopology.isTopologicalRing (AF F) _`.
+-/
 theorem ae_ring : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _
+/- English proof (translation)
+The claim follows from `IsModuleTopology.toContinuousSMul (AF F) _`.
+-/
 theorem ae_smul : ContinuousSMul (AF F) (AE F E) := IsModuleTopology.toContinuousSMul (AF F) _
+/- English proof (translation)
+Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Conclude with `⟨e.isEmbedding.t2Space, e.isClosedEmbedding.locallyCompactSpace, e.secondCountableTopology⟩`.
+-/
 theorem ae_top : T2Space (AE F E) ∧ LocallyCompactSpace (AE F E) ∧ SecondCountableTopology (AE F E) := by
   haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F
   haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F
   obtain ⟨e⟩ := GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)
   exact ⟨e.isEmbedding.t2Space, e.isClosedEmbedding.locallyCompactSpace, e.secondCountableTopology⟩
+/- English proof (translation)
+The claim follows from `ae_top.1`.
+-/
 theorem ae_t2 : T2Space (AE F E) := ae_top.1
+/- English proof (translation)
+The claim follows from `ae_top.2.1`.
+-/
 theorem ae_lc : LocallyCompactSpace (AE F E) := ae_top.2.1
+/- English proof (translation)
+The claim follows from `ae_top.2.2`.
+-/
 theorem ae_sc : SecondCountableTopology (AE F E) := ae_top.2.2
 
 attribute [local instance] ae_ring ae_smul ae_t2 ae_lc ae_sc
 
+/- English proof (translation)
+Use `haveI : SecondCountableTopology Aᵐᵒᵖ := MulOpposite.opHomeomorph.symm.secondCountableTopology`. Use `haveI : LocallyCompactSpace Aᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`. Conclude with `⟨Units.isClosedEmbedding_embedProduct.locallyCompactSpace, Units.isEmbedding_embedProduct.secondCountableTopology⟩`.
+-/
 theorem units_top {A : Type} [Ring A] [TopologicalSpace A] [IsTopologicalRing A] [T2Space A] [LocallyCompactSpace A]
     [SecondCountableTopology A] : LocallyCompactSpace Aˣ ∧ SecondCountableTopology Aˣ := by
   haveI : SecondCountableTopology Aᵐᵒᵖ := MulOpposite.opHomeomorph.symm.secondCountableTopology
   haveI : LocallyCompactSpace Aᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace
   exact ⟨Units.isClosedEmbedding_embedProduct.locallyCompactSpace, Units.isEmbedding_embedProduct.secondCountableTopology⟩
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) (AE F E)) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → AE F E))`. Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (AE F E)) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → AE F E))`. Take `⟨h1, h2⟩` from `units_top (A := Matrix (Fin n) (Fin n) (AE F E))`. Establish `hc : Continuous (cA σ)` using `IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap`. Establish `: IsClosed ((UG (cA σ) (incM F J) : Subgroup (GL (Fin n) (AE F E))) : Set (GL (Fin n) (AE F E)))` using `isClosed_eq (((Units.continuous_val.matrix_transpose).matrix_mul continuous_const).matrix_mul (Units.continuous_val.matrix_map hc)) continuous_const`.
+
+Conclude with `⟨this.locallyCompactSpace, TopologicalSpace.Subtype.secondCountableTopology _⟩`.
+-/
 theorem ua_top {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : LocallyCompactSpace (UA σ J) ∧ SecondCountableTopology (UA σ J) := by
   haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) (AE F E)) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → AE F E))
   haveI : SecondCountableTopology (Matrix (Fin n) (Fin n) (AE F E)) :=
@@ -79,12 +108,23 @@ def uSub (v : Pl F) : Subgroup (UA σ X.J) where
     have e : mat a⁻¹ - 1 = -(mat a⁻¹ * (mat a - 1)) := by rw [Matrix.mul_sub, h1, Matrix.mul_one]; abel
     rw [e, smul_neg, ← Matrix.mul_smul, ha u hu, Matrix.mul_zero, neg_zero]
 
+/- English proof (translation)
+The claim follows from `congrArg (K ⊓ ·) (Subgroup.closure_eq (uSub σ X v))`.
+-/
 theorem kAt_eq (K : Subgroup (UA σ X.J)) (v : Pl F) : kAt K (evFin F v) = K ⊓ uSub σ X v :=
   congrArg (K ⊓ ·) (Subgroup.closure_eq (uSub σ X v))
 
+/- English proof (translation)
+The claim follows from `((kAt_eq K v).le k.2).2`.
+-/
 theorem kAt_mem {K : Subgroup (UA σ X.J)} {v : Pl F} (k : kAt K (evFin F v)) : k.1 ∈ UAt σ X (evFin F v) :=
   ((kAt_eq K v).le k.2).2
 
+/- English proof (translation)
+Use `isCompact_iff_compactSpace.1 ?_` and prove the remaining obligations. Rewrite using `[kAt_eq, Subgroup.coe_inf]`. Use `hK.inter_right ?_` and prove the remaining obligations. Establish `: (uSub σ X v : Set (UA σ X.J)) = ⋂ u : AF F, ⋂ _ : evFin F v u = 0, {g | u • (mat g - 1) = 0}`. Use extensionality with `g`.
+
+Simplify using `only [Set.mem_iInter]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `isClosed_iInter fun u => isClosed_iInter fun _ => isClosed_eq (((PositivityTheory.ThK.kc_cont_mat X.J).sub continuous_const).const_smul u) continuous_const`.
+-/
 theorem kAt_compact {K : Subgroup (UA σ X.J)} (hK : IsCompact (K : Set (UA σ X.J))) (v : Pl F) : CompactSpace (kAt K (evFin F v)) := by
   refine isCompact_iff_compactSpace.1 ?_
   rw [kAt_eq, Subgroup.coe_inf]
@@ -101,15 +141,24 @@ section Part
 
 variable {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {a : AF F} (ha : a * a = a)
 
+/- English proof (translation)
+The claim follows from `Cone.mat_inj (mix_mul ha (mat g) (mat h)).symm`.
+-/
 theorem part_mul (g h : UA σ J) : partU ha (g * h) = partU ha g * partU ha h :=
   Cone.mat_inj (mix_mul ha (mat g) (mat h)).symm
 
+/- English proof (translation)
+Establish `c` using `PositivityTheory.ThK.kc_cont_mat (F := F) (σ := σ) J`. Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations. Conclude with `(c.const_smul a).add continuous_const`. Conclude with `((c.comp continuous_inv).const_smul a).add continuous_const`.
+-/
 theorem cont_part : Continuous (partU (σ := σ) (J := J) ha) := by
   have c := PositivityTheory.ThK.kc_cont_mat (F := F) (σ := σ) J
   refine Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _
   · exact (c.const_smul a).add continuous_const
   · exact ((c.comp continuous_inv).const_smul a).add continuous_const
 
+/- English proof (translation)
+Rewrite using `[mat_partU, Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec]`.
+-/
 theorem part_vec (g : UA σ J) (z : Fin n → AE F E) : mat (partU ha g) *ᵥ z = a • (mat g *ᵥ z) + (1 - a) • z := by
   rw [mat_partU, Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec]
 
@@ -122,6 +171,11 @@ end Part
 
 variable {B : Base F E} {n n₁ : ℕ} {Y : Spc F E n} {Y₁ : Spc F E n₁} {H : Plane E n n₁} {i₀ i₁ r s : ℕ}
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[part_vec, h.1]`. Simplify using `only [partI, add_smul, smul_assoc, one_smul]`. Rewrite using `[part_vec, h.2.1]`. Express the relevant statement in the definitionally equal form `_ = cA σ (a • (t⁻¹).1 + (1 - a) • 1) • _`.
+
+Simplify using `only [map_add, map_smul, map_one, add_smul, smul_assoc, one_smul]`. Simplify using `only [mat_partU, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, h.2.2, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem part_levi {a : AF F} (ha : a * a = a) {t : (AE F E)ˣ} {g : UA σ Y₁.J} {m : UA σ Y.J} (h : IsLevi H t g m) :
     IsLevi H (partI ha t) (partU ha g) (partU ha m) := by
   refine ⟨?_, ?_, ?_⟩
@@ -132,6 +186,11 @@ theorem part_levi {a : AF F} (ha : a * a = a) {t : (AE F E)ˣ} {g : UA σ Y₁.J
     simp only [map_add, map_smul, map_one, add_smul, smul_assoc, one_smul]
   · simp only [mat_partU, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, h.2.2, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `Fr.mem_unip.1 h`. Use `Fr.mem_unip.2 ⟨by rw [part_vec, h1, ← add_smul, add_sub_cancel, one_smul], fun z => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `h2 z`. Use `⟨a • c, ?_⟩` and prove the remaining obligations. Rewrite using `[part_vec, hc, smul_add, smul_assoc, sub_smul, one_smul]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem part_unip {a : AF F} (ha : a * a = a) {u : UA σ Y.J} (h : u ∈ unip σ Y H) : partU ha u ∈ unip σ Y H := by
   obtain ⟨h1, h2⟩ := Fr.mem_unip.1 h
   refine Fr.mem_unip.2 ⟨by rw [part_vec, h1, ← add_smul, add_sub_cancel, one_smul], fun z => ?_⟩
@@ -140,6 +199,9 @@ theorem part_unip {a : AF F} (ha : a * a = a) {u : UA σ Y.J} (h : u ∈ unip σ
   rw [part_vec, hc, smul_add, smul_assoc, sub_smul, one_smul]
   abel
 
+/- English proof (translation)
+Establish `h` using `hg (1 - idem F v) (by rw [map_sub, map_one, Cone.evFin_idem_self, sub_self])`. Use `Cone.mat_inj (sub_left_inj (a := 1) |>.1 ?_)` and prove the remaining obligations. Rewrite using `[partU_sub_one]`. Rewrite `h` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `h.symm`.
+-/
 theorem part_at {v : Pl F} {g : UA σ Y.J} (hg : g ∈ UAt σ Y (evFin F v)) : partU (idem_mul_self v) g = g := by
   have h := hg (1 - idem F v) (by rw [map_sub, map_one, Cone.evFin_idem_self, sub_self])
   refine Cone.mat_inj (sub_left_inj (a := 1) |>.1 ?_)
@@ -147,6 +209,35 @@ theorem part_at {v : Pl F} {g : UA σ Y.J} (hg : g ∈ UAt σ Y (evFin F v)) : p
   rw [sub_smul, one_smul, sub_eq_zero] at h
   exact h.symm
 
+/- English proof (translation)
+Take `⟨ε', A', hfr⟩` from `Fr.isFr hB (.inl hY) hH`. Establish `hd` using `Fr.det_ne (.inl hY : Y.IsHerm σ B r s ∨ Y.IsSkew σ B r s)`. Establish `dec : ∀ (p : UA σ Y.J) (t : (AE F E)ˣ), mat p *ᵥ incV F H.x = t.1 • incV F H.x → ∃ q g₁, p = nn q * ι g₁ * mm t` using `fun p t hp => by`. Take `⟨u, hu', g₁, m, hm, e, -⟩` from `Fr.stab_dec hB.cm hfr hd p t hp`. Take `⟨q, rfl⟩` from `(hu u).1 hu'`.
+
+Conclude with `⟨q, g₁, by rw [e, Fr.levi_uniq hfr hm (hL t g₁), mul_assoc]⟩`. Establish `act : ∀ q g₁ t, mat (nn q * ι g₁ * mm t) *ᵥ incV F H.x = t.1 • incV F H.x` using `fun q g₁ t => by`. Rewrite using `[mul_assoc, Fr.mat_mul, ← Matrix.mulVec_mulVec, (hL t g₁).1, Matrix.mulVec_smul, (Fr.mem_unip.1 ((hu _).2 ⟨q, rfl⟩)).1]`. Establish `hG : ∀ x, ∃ p u t, ∃ k ∈ K, x = nn p * ι u * mm t * k` using `fun x => by`. Take `⟨p, k, l, hk, hp, rfl⟩` from `hI.2 x`.
+
+Take `⟨q, g₁, rfl⟩` from `dec p l hp`. Conclude with `⟨q, g₁, l, k, hk, rfl⟩`. Establish `inv : ∀ (p : UA σ Y.J) (t : (AE F E)ˣ), mat p *ᵥ incV F H.x = t.1 • incV F H.x → mat p⁻¹ *ᵥ incV F H.x = (t⁻¹).1 • incV F H.x` using `fun p t hp => by`. Use `Fr.mat_cancel p (incV F H.x)` as an intermediate fact. Rewrite `this` using `[hp, Matrix.mulVec_smul]`.
+
+Use `conv_rhs => rw [← this, smul_smul, Units.inv_mul, one_smul]`. Establish `le1 : ∀ k ∈ K, ∀ t : (AE F E)ˣ, mat k *ᵥ incV F H.x = t.1 • incV F H.x → absE F E t ≤ 1` using `fun k hk t ht => by`. Take `⟨C, hC⟩` from `((hemb.isCompact_preimage hI.1).image (GlobalTheory.Doubling.continuous_absE.comp (continuous_snd.comp continuous_snd))).bddAbove`. Establish `pw : ∀ j : ℕ, mat (k ^ j) *ᵥ incV F H.x = (t ^ j).1 • incV F H.x` using `fun j => by`. Proceed by induction on `j with`.
+
+Consider the case `zero => simp [Fr.mat_one]`. Consider the case `succ j ih => rw [pow_succ, Fr.mat_mul, ← Matrix.mulVec_mulVec, ht, Matrix.mulVec_smul, ih, smul_smul, pow_succ', Units.val_mul]`. Assume the negation of the conclusion as `hlt`. Take `⟨j, hj⟩` from `pow_unbounded_of_one_lt C (not_le.1 hlt)`. Take `⟨q, g₁, e⟩` from `dec _ _ (pw j)`.
+
+Establish `: absE F E (t ^ j) ≤ C` using `hC ⟨(q, g₁, t ^ j), by`. Express the relevant statement in the definitionally equal form `nn q * ι g₁ * mm (t ^ j) ∈ K`. Rewrite using `[← e]`. Conclude with `pow_mem hk j, rfl⟩`. Rewrite `this` using `[map_pow]`.
+
+Conclude with `absurd hj (not_lt.2 this)`. Establish `one : ∀ k ∈ K, ∀ t : (AE F E)ˣ, mat k *ᵥ incV F H.x = t.1 • incV F H.x → absE F E t = 1` using `fun k hk t ht => by`. Establish `a1` using `le1 k hk t ht`. Establish `a2` using `le1 _ (inv_mem hk) _ (inv k t ht)`. Establish `a3 : absE F E t * absE F E t⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`.
+
+Conclude with `le_antisymm a1 (a3 ▸ mul_le_of_le_one_right zero_le a2)`. Use `⟨hG, act, ?_⟩` and prove the remaining obligations. Use `choose P U T k₀ hk₀ hx using hG`. Set `ht : UA σ Y.J → ℝ≥0` to `fun x => absE F E (T x) ^ (n₁ + 1)`. Establish `spec : ∀ q g₁ t, ∀ k ∈ K, ht (nn q * ι g₁ * mm t * k) = absE F E t ^ (n₁ + 1)` using `fun q g₁ t k hk => by`.
+
+Establish `e` using `hx (nn q * ι g₁ * mm t * k)`. Use `set x := nn q * ι g₁ * mm t * k with hxd`. Establish `h1 : (nn q * ι g₁ * mm t)⁻¹ * (nn (P x) * ι (U x) * mm (T x)) = k * (k₀ x)⁻¹`. Rewrite using `[← mul_left_inj (k₀ x), mul_assoc, ← e, hxd]`. Use `group`.
+
+Use `one _ (mul_mem hk (inv_mem (hk₀ x))) (T x * t⁻¹) (by` as an intermediate fact. Rewrite using `[← h1, Fr.mat_mul, ← Matrix.mulVec_mulVec, act, Matrix.mulVec_smul, inv _ _ (act q g₁ t), smul_smul, Units.val_mul])`. Establish `h2 : absE F E (T x) = absE F E t` using `by rw [← inv_mul_cancel_right (T x) t, map_mul, this, one_mul]`. Simplify using `only [ht, h2]`. Establish `htK : ∀ x, ∀ k ∈ K, ht (x * k) = ht x` using `fun x k hk => by conv_lhs => rw [hx x, mul_assoc, spec _ _ _ _ (mul_mem (hk₀ x) hk)]`.
+
+Establish `htP : ∀ (p : UA σ Y.J) (t : (AE F E)ˣ), mat p *ᵥ incV F H.x = t.1 • incV F H.x → ∀ x, ht (p * x) = absE F E t ^ (n₁ + 1) * ht x` using `fun p t hp x => by`. Take `⟨q, g₁, e⟩` from `dec (p * (nn (P x) * ι (U x) * mm (T x))) (t * T x) (by`. Rewrite using `[Fr.mat_mul, ← Matrix.mulVec_mulVec, act, Matrix.mulVec_smul, hp, smul_smul, Units.val_mul, mul_comm])`. Use `conv_lhs => rw [hx x, ← mul_assoc, e, spec _ _ _ _ (hk₀ x), map_mul, mul_pow]`. Establish `ht0 : ∀ t : (AE F E)ˣ, absE F E t ≠ 0` using `fun t => ((Group.isUnit t).map (absE F E)).ne_zero`.
+
+Establish `htc : Continuous ht` using `continuous_iff_isClosed.2 fun C hC => by`. Establish `: ht ⁻¹' C = ((fun z : N × UA σ Y₁.J × (AE F E)ˣ => nn z.1 * ι z.2.1 * mm z.2.2) '' {z | absE F E z.2.2 ^ (n₁ + 1) ∈ C}) * (K : Set (UA σ Y.J))`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => ⟨_, ⟨(P x, U x, T x), h, rfl⟩, k₀ x, hk₀ x, (hx x).symm⟩`.
+
+Introduce and unpack `⟨_, ⟨z, hz, rfl⟩, k, hk, rfl⟩`. Express the relevant statement in the definitionally equal form `ht _ ∈ C`. Rewrite using `[spec _ _ _ _ hk]`. Conclude with `hz`. Rewrite using `[this]`.
+
+Conclude with `(hemb.isClosedMap _ (hC.preimage ((GlobalTheory.Doubling.continuous_absE.comp (continuous_snd.comp continuous_snd)).pow _))).mul_right_of_isCompact hI.1`. Conclude with `⟨ht, htc, fun x => pow_ne_zero _ (ht0 _), htK, htP⟩`.
+-/
 theorem htEx (hB : B.IsGood σ) (hY : Y.IsHerm σ B r s) (hH : H.IsAdapted σ B Y Y₁ i₀ i₁) {K : Subgroup (UA σ Y.J)}
     (hI : Iwa H K) {N : Type} [TopologicalSpace N] {nn : N → UA σ Y.J} {ι : UA σ Y₁.J →* UA σ Y.J} {mm : (AE F E)ˣ →* UA σ Y.J}
     (hemb : IsClosedEmbedding fun z : N × UA σ Y₁.J × (AE F E)ˣ => nn z.1 * ι z.2.1 * mm z.2.2)
@@ -228,6 +319,15 @@ theorem htEx (hB : B.IsGood σ) (hY : Y.IsHerm σ B r s) (hH : H.IsAdapted σ B 
       (continuous_snd.comp continuous_snd)).pow _))).mul_right_of_isCompact hI.1
   exact ⟨ht, htc, fun x => pow_ne_zero _ (ht0 _), htK, htP⟩
 
+/- English proof (translation)
+Establish `ha` using `idem_mul_self v`. Take `⟨c, hc⟩ : ∃ c, c = (partU ha k)⁻¹ * k` from `⟨_, rfl⟩`. Establish `c1 : partU ha c = 1`. Rewrite using `[hc, part_mul, ← part_at (inv_mem (show partU ha k ∈ US.uSub σ Y v from partU_idem_mem v _) : _ ∈ US.uSub σ Y v)]`. Use `nth_rewrite 1 [part_at (inv_mem (show partU ha k ∈ US.uSub σ Y v from partU_idem_mem v _) : _ ∈ US.uSub σ Y v)]`.
+
+Rewrite using `[part_at (inv_mem (show partU ha k ∈ US.uSub σ Y v from partU_idem_mem v _) : _ ∈ US.uSub σ Y v), inv_mul_cancel]`. Establish `c2 : idem F v • (mat c - 1) = 0` using `by rw [← partU_sub_one ha, c1, Fr.mat_one, sub_self]`. Establish `c3 : idem F v • (mat g - 1) = mat g - 1` using `by rw [← partU_sub_one ha, part_at hg]`. Establish `c4 : g * c = c * g` using `Cone.mat_inj (by`. Establish `l : (mat g - 1) * (mat c - 1) = 0` using `by rw [← c3, smul_mul_assoc, ← mul_smul_comm, c2, mul_zero]`.
+
+Establish `r : (mat c - 1) * (mat g - 1) = 0` using `by rw [← c3, mul_smul_comm, ← smul_mul_assoc, c2, zero_mul]`. Rewrite using `[Fr.mat_mul, Fr.mat_mul, ← sub_eq_zero, ← sub_self (0 : Matrix _ _ _)]`. Use `nth_rewrite 1 [← l]`. Rewrite using `[← r]`. Use the proof step `noncomm_ring)`.
+
+Rewrite using `[← hc, mul_assoc, c4, hc]`. Use `group`.
+-/
 theorem part_comm {v : Pl F} {g : UA σ Y.J} (hg : g ∈ UAt σ Y (evFin F v)) (k : UA σ Y.J) :
     k * g = partU (idem_mul_self v) k * g * ((partU (idem_mul_self v) k)⁻¹ * k) := by
   have ha := idem_mul_self v
@@ -250,6 +350,35 @@ theorem part_comm {v : Pl F} {g : UA σ Y.J} (hg : g ∈ UAt σ Y (evFin F v)) (
   rw [← hc, mul_assoc, c4, hc]; group
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Take `⟨N, _, _, _, _, μN, _, _, nn, ι, mm, χ, hpar, hχ, hu, hL, hR, -⟩` from `parEx hB (.inl hY) hH`. Take `⟨ε', A', hfr⟩` from `Fr.isFr hB (.inl hY) hH`. Establish `hd` using `Fr.det_ne (.inl hY : Y.IsHerm σ B r s ∨ Y.IsSkew σ B r s)`. Establish `hd₁ : IsUnit Y₁.J.det` using `hfr.isUnit_det hd.isUnit`. Establish `h₁ : ∀ i j, σ (Y₁.J j i) = (((1 : ℤˣ) : ℤ) : E) * Y₁.J i j` using `fun i j => by`.
+
+Rewrite using `[← hH.gram]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, hY.herm, PositivityTheory.ThKG.Tow.Levi.sig_sig hB.cm, Finset.sum_mul, Units.val_one, Int.cast_one, one_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Take `⟨-, ⟨ν, -, hν, -⟩, hνr⟩` from `PositivityTheory.ThKF.unimodularity_holds F E σ hB.cm n Y.J 1 (fun i j => by simp [hY.herm]) hd`.
+
+Take `⟨-, ⟨μH, -, hμH, -⟩, hμr⟩` from `PositivityTheory.ThKF.unimodularity_holds F E σ hB.cm n₁ Y₁.J 1 h₁ hd₁.ne_zero`. Use `haveI := hνr ν hν`. Use `haveI := hμr μH hμH`. Use `haveI := (Tp.ua_top (F := F) (σ := σ) Y.J).1`. Use `haveI := (Tp.ua_top (F := F) (σ := σ) Y.J).2`.
+
+Use `haveI := (Tp.ua_top (F := F) (σ := σ) Y₁.J).1`. Use `haveI := (Tp.ua_top (F := F) (σ := σ) Y₁.J).2`. Use `haveI := Tp.ae_lc (F := F) (E := E)`. Use `haveI := Tp.ae_sc (F := F) (E := E)`. Use `haveI := (Tp.units_top (A := AE F E)).1`.
+
+Use `haveI := (Tp.units_top (A := AE F E)).2`. Use `haveI : BorelSpace (UA σ Y.J) := ⟨rfl⟩`. Use `haveI : BorelSpace (UA σ Y₁.J) := ⟨rfl⟩`. Use `haveI : BorelSpace (AE F E)ˣ := ⟨rfl⟩`. Use `haveI := US.kAt_compact hI.1 v`.
+
+Take `⟨hG, act, ht, htc, ht1, htK, htP⟩` from `htEx hB hY hH hI hpar.emb hu hL`. Establish `ht0 : ∀ t : (AE F E)ˣ, absE F E t ≠ 0` using `fun t => ((Group.isUnit t).map (absE F E)).ne_zero`. Establish `ha` using `idem_mul_self v`. Establish `htne : ∀ x, ((ht x : ℝ) : ℂ) ≠ 0` using `fun x => by exact_mod_cast ht1 x`. Set `f' : UA σ Y.J → ℂ` to `fun x => f (partU ha x) * ((ht x : ℝ) : ℂ) / ((ht (partU ha x) : ℝ) : ℂ)`.
+
+Establish `hc1 : Continuous fun x => ((ht x : ℝ) : ℂ)` using `by fun_prop`. Establish `hf' : Continuous f'` using `((hf.comp_continuous (cont_part ha) (partU_idem_mem v)).mul hc1).div (hc1.comp (cont_part ha)) fun x => htne _`. Set `π : K →* kAt K (evFin F v)` to `MonoidHom.mk' (fun k => ⟨partU ha k.1, partU_mem_kAt hK k.2 v⟩) fun a b => Subtype.ext (part_mul ha _ _)`. Establish `πc : Continuous π` using `((cont_part ha).comp continuous_subtype_val).subtype_mk _`. Establish `πs : Function.Surjective π` using `fun k => ⟨⟨k.1, k.2.1⟩, Subtype.ext (part_at (US.kAt_mem k))⟩`.
+
+Take `⟨μK, _, c, hc⟩` from `push hI.1 π πc πs μ`. Establish `main` using `KInv.int ν μH Measure.haar hpar hR hI.1 μK hG hf' (fun p u t x => by`. Establish `hl` using `part_levi ha (hL t u)`. Establish `hn` using `part_unip ha ((hu _).2 ⟨p, rfl⟩)`. Establish `e1 : partU ha (nn p * ι u * mm t * x) = partU ha (nn p) * partU ha (ι u * mm t) * partU ha x`.
+
+Rewrite using `[mul_assoc (nn p), part_mul, part_mul]`. Establish `e2` using `hP _ hn (partU_idem_mem v _) _ _ _ hl (partU_idem_mem v _) (partU_idem_mem v _) (by`. Express the relevant statement in the definitionally equal form `At _ (idem F v • t.1 + (1 - idem F v) • 1 - 1)`. Rewrite using `[show idem F v • t.1 + (1 - idem F v) • (1 : AE F E) - 1 = idem F v • (t.1 - 1) by`. Rewrite using `[smul_sub, sub_smul, one_smul]`.
+
+Use the proof step `abel]`. Conclude with `Cone.at_idem v _) _ (partU_idem_mem v x)`. Establish `e3` using `htP (partU ha (nn p) * partU ha (ι u * mm t)) (partI ha t) (by`. Rewrite using `[Fr.mat_mul, ← Matrix.mulVec_mulVec, hl.1, Matrix.mulVec_smul, (Fr.mem_unip.1 hn).1]) (partU ha x)`. Establish `e4 : (((χ t : ℝ≥0) : ℝ) : ℂ) * (((absE F E t ^ (n₁ + 1) : ℝ≥0) : ℝ) : ℂ) = 1` using `by exact_mod_cast hχ t`.
+
+Establish `e5 : (((absE F E (partI ha t) ^ (n₁ + 1) : ℝ≥0) : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast pow_ne_zero _ (ht0 _)`. Establish `e6` using `htne (partU ha x)`. Simplify using `only [f', e1, e2, e3, htP _ _ (act p u t), NNReal.coe_mul, Complex.ofReal_mul]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(f (partU ha x) * ((ht x : ℝ) : ℂ)) * e4)`.
+
+Establish `val : ∀ g ∈ UAt σ Y (evFin F v), ∀ k : K, f' (k.1 * g) = f ((π k).1 * g)` using `fun g hg k => by`. Establish `e1 : partU ha (k.1 * g) = partU ha k.1 * g` using `by rw [part_mul, part_at hg]`. Establish `e2` using `part_comm hg k.1`. Establish `e3 : ht (k.1 * g) = ht (partU ha k.1 * g)` using `by conv_lhs => rw [e2, htK _ _ (mul_mem (inv_mem (partU_mem_kAt hK k.2 v).1) k.2)]`. Simplify using `only [f', e1, e3]`.
+
+Conclude with `mul_div_cancel_right₀ _ (htne _)`. Establish `tr : ∀ g ∈ UAt σ Y (evFin F v), ∫ k, f (k.1 * g) ∂μ = c • ∫ k : K, f' (k.1 * g) ∂μK` using `fun g hg => by`. Rewrite using `[hc (fun k => f (k.1 * g)) (hf.comp_continuous (continuous_subtype_val.mul continuous_const) fun k => (US.uSub σ Y v).mul_mem (US.kAt_mem k) hg)]`. Simplify using `only [val g hg]`. Establish `t1` using `tr 1 (US.uSub σ Y v).one_mem`.
+
+Simplify using `only [mul_one] at t1`. Rewrite using `[tr g hg, main g, t1]`.
+-/
 theorem kInv (hB : B.IsGood σ) (hY : Y.IsHerm σ B r s) (hH : H.IsAdapted σ B Y Y₁ i₀ i₁) {K : Subgroup (UA σ Y.J)}
     (hK : IsStab B K) (hI : Iwa H K) (v : Pl F) (μ : Measure (kAt K (evFin F v))) [μ.IsHaarMeasure] {f : UA σ Y.J → ℂ}
     (hf : ContinuousOn f (UAt σ Y (evFin F v)))

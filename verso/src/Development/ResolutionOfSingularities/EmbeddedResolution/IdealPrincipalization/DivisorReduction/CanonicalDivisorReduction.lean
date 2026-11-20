@@ -46,6 +46,9 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Introduce `T hV _ j hj`. Take `⟨J, hJ⟩` from `exists_mul_pow_containedComponentsIdeal_eq_ideal T hV j hj`. Conclude with `⟨J, by rw [mul_comm]; exact hJ⟩`.
+-/
 private theorem exists_mul_containedComponentsIdeal_pow_eq_ideal_of_orderAt_le : ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible →
     (∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞)) →
     ∀ (j : ℕ) (hj : j < T.boundary.length),
@@ -54,11 +57,19 @@ private theorem exists_mul_containedComponentsIdeal_pow_eq_ideal_of_orderAt_le :
   obtain ⟨J, hJ⟩ := exists_mul_pow_containedComponentsIdeal_eq_ideal T hV j hj
   exact ⟨J, by rw [mul_comm]; exact hJ⟩
 
+/- English proof (translation)
+Use `delta OrderAtComapOffExceptionalLocus`. Conclude with `fun T hT X' π Z hπ x' hx' A => orderAt_comap_eq_of_notMem_exceptionalIdeal T hT Z X' π hπ x' hx' A`.
+-/
 private theorem orderAtComapOffExceptionalLocus : OrderAtComapOffExceptionalLocus.{u} := by
   delta OrderAtComapOffExceptionalLocus
   exact fun T hT X' π Z hπ x' hx' A =>
     orderAt_comap_eq_of_notMem_exceptionalIdeal T hT Z X' π hπ x' hx' A
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `comap_ne_top_of_surjective`. Introduce `T hV Y q h inst hq m`. Conclude with `DivisorReduction.orderAtLeastLocus_comap_of_smooth T hV Y q h hq m`. Conclude with `DivisorReduction.isPullback_subschemeMapOfComap`.
+
+Conclude with `DivisorReduction.smooth_of_isPullback`. Conclude with `DivisorReduction.lowerIdealAfterBlowup_pullbackAlong_of_smooth exists_mul_containedComponentsIdeal_pow_eq_ideal_of_orderAt_le isBlowupAlongIdealSheaf_id_containedComponentsIdeal`. Conclude with `DivisorReduction.lowerBoundaryAfterBlowup_sameNontrivialBoundary_of_smooth exists_mul_containedComponentsIdeal_pow_eq_ideal_of_orderAt_le isBlowupAlongIdealSheaf_id_containedComponentsIdeal`. Conclude with `DivisorReduction.containedComponentsIdeal_pullbackAlong_of_smooth hfacts`.
+-/
 private theorem smoothPullbackCompatibility_of_divisorReductionTermination (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian) :
     DivisorReduction.SmoothPullbackCompatibility.{u} := by
@@ -73,6 +84,11 @@ private theorem smoothPullbackCompatibility_of_divisorReductionTermination (hres
       isBlowupAlongIdealSheaf_id_containedComponentsIdeal
   · exact DivisorReduction.containedComponentsIdeal_pullbackAlong_of_smooth hfacts
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `T hV K inst f E' m`. Conclude with `orderAtLeastLocus_withBoundary_baseChange_eq_preimage T hV K f E' m`. Conclude with `flat_fieldBaseChangeProjection`. Conclude with `surjective_fieldBaseChangeProjection`.
+
+Conclude with `containedComponentsIdeal_withBoundary_baseChange hfacts MarkedIdealWithBoundary.validOfSameNontrivialBoundary`.
+-/
 private theorem fieldBaseChangeCompatibility_of_divisorReductionTermination (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hfacts : DivisorReductionTerminationProperties hres blowupPreservesNoetherian) :
     FieldBaseChangeCompatibility.{u} := by
@@ -83,6 +99,13 @@ private theorem fieldBaseChangeCompatibility_of_divisorReductionTermination (hre
   · exact surjective_fieldBaseChangeProjection
   · exact containedComponentsIdeal_withBoundary_baseChange hfacts MarkedIdealWithBoundary.validOfSameNontrivialBoundary
 
+/- English proof (translation)
+Use `⟨comap_comap, comap_fieldBaseChangeProjection_ne_top, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `T j hj K inst1 inst2 f E' hjE hD I₀ E₀ I₀' E₀' hI hE`. Take `⟨E'', e, hs, hsu, h1, h2, h3, h4, h5, h6⟩` from `DivisorReduction.exists_smooth_surjective_to_restrictToBoundaryDivisor_baseChange T j hj K f E' hjE hD I₀ E₀ I₀' E₀' hI hE`. Conclude with `⟨E'', e, hs, hsu, h1.symm, h2, h3, h4, h5, h6⟩`. Introduce `T K inst1 inst2 f E'`.
+
+Conclude with `lowerIdealWithoutBlowup_withBoundary_baseChange T K f E'`. Introduce `T j hj K inst1 inst2 f E' hBE htake hjE`. Conclude with `DivisorReduction.lowerBoundaryWithoutBlowup_baseChange_sameNontrivialBoundary T j hj K f E' hBE htake hjE`. Introduce `T hV hO j hj K inst1 inst2 f E' hBE hjE htake hV' hpre`. Conclude with `DivisorReduction.lowerIdealAfterBlowup_fieldBaseChange exists_mul_containedComponentsIdeal_pow_eq_ideal_of_orderAt_le isBlowupAlongIdealSheaf_id_containedComponentsIdeal T hV hO j hj K f E' hBE.symm hjE htake hV' hpre`.
+
+Introduce `T hV hO j hj K inst1 inst2 f E' hBE hjE htake hV' hpre`. Conclude with `DivisorReduction.lowerBoundaryAfterBlowup_fieldBaseChange exists_mul_containedComponentsIdeal_pow_eq_ideal_of_orderAt_le isBlowupAlongIdealSheaf_id_containedComponentsIdeal T hV hO j hj K f E' hBE.symm hjE htake hV' hpre`.
+-/
 private theorem divisorRestrictionFieldBaseChange : DivisorReduction.DivisorRestrictionFieldBaseChange.{u} := by
   refine ⟨comap_comap, comap_fieldBaseChangeProjection_ne_top, ?_, ?_, ?_, ?_, ?_⟩
   · intro T j hj K inst1 inst2 f E' hjE hD I₀ E₀ I₀' E₀' hI hE
@@ -100,6 +123,9 @@ private theorem divisorRestrictionFieldBaseChange : DivisorReduction.DivisorRest
     exact DivisorReduction.lowerBoundaryAfterBlowup_fieldBaseChange exists_mul_containedComponentsIdeal_pow_eq_ideal_of_orderAt_le isBlowupAlongIdealSheaf_id_containedComponentsIdeal T hV hO
       j hj K f E' hBE.symm hjE htake hV' hpre
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `T hV hO j hj Y h htop`. Conclude with `DivisorReduction.comap_lowerIdealAfterBlowup_eq_comap_lowerIdealWithoutBlowup exists_mul_containedComponentsIdeal_pow_eq_ideal_of_orderAt_le isBlowupAlongIdealSheaf_id_containedComponentsIdeal T hV hO j hj Y h htop`. Introduce `T hV j hj Y h htop`. Conclude with `DivisorReduction.comap_lowerBoundaryAfterBlowup_sameNontrivialBoundary_of_eq_top exists_mul_containedComponentsIdeal_pow_eq_ideal_of_orderAt_le isBlowupAlongIdealSheaf_id_containedComponentsIdeal T hV j hj Y h htop`.
+-/
 private theorem emptyPulledBackCenterCompatibility : DivisorReduction.EmptyPulledBackCenterCompatibility.{u} := by
   refine ⟨?_, ?_⟩
   · intro T hV hO j hj Y h htop
@@ -109,6 +135,19 @@ private theorem emptyPulledBackCenterCompatibility : DivisorReduction.EmptyPulle
     exact DivisorReduction.comap_lowerBoundaryAfterBlowup_sameNontrivialBoundary_of_eq_top exists_mul_containedComponentsIdeal_pow_eq_ideal_of_orderAt_le
       isBlowupAlongIdealSheaf_id_containedComponentsIdeal T hV j hj Y h htop
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `T hV j hj`. Conclude with `DivisorReduction.isOpen_preimage_support_containedComponentsIdeal T j hj (DivisorReduction.preimageSupportEqComponentsInOrderLocus_of_isAdmissible T hV j hj)`. Introduce `T inst j hj s hpr hmk`. Conclude with `DivisorReduction.ker_embeddingIntoAmbient_zero_eq_comap_isoObjZero hres blowupPreservesNoetherian T j hj s hpr hmk`.
+
+Introduce `T inst j hj hb s hpr hmk`. Conclude with `DivisorReduction.ker_embeddingIntoAmbient_zero_eq_comap_blowupMorphism hres blowupPreservesNoetherian T j hj hb s hpr hmk`. Introduce `T hV j hj S`. Conclude with `DivisorReduction.isSmoothDivisor_boundary_comap_isoObjZero T hV j hj S`. Introduce `T inst j hj s hpr hmk t ht`.
+
+Conclude with `DivisorReduction.boundaryLocus_subset_preimage_otherBoundaryLocus hres blowupPreservesNoetherian T j hj s hpr hmk t ht`. Introduce `T inst j hj hb s hpr hmk t ht`. Conclude with `DivisorReduction.boundaryLocus_subset_preimage_otherBoundaryLocus_succ hres blowupPreservesNoetherian T j hj hb s hpr hmk t ht`. Introduce `T hV`. Conclude with `DivisorReduction.one_le_mult_of_isAdmissible T hV`.
+
+Introduce `T hV hOB hbal j hj hpre hlow inst s hpr hmk t ht`. Conclude with `DivisorReduction.isSmoothDivisor_ker_embeddingIntoAmbient_of_eq_top hres blowupPreservesNoetherian T hV hOB hbal j hj hpre hlow s hpr hmk t ht`. Introduce `T hV hOB hbal j hj hne hb hlow inst s hpr hmk t ht`. Conclude with `DivisorReduction.isSmoothDivisor_ker_embeddingIntoAmbient hres blowupPreservesNoetherian orderAtComapOffExceptionalLocus T hV hOB j hj hb hlow s hpr hmk (fun t _ => DivisorReduction.embeddingIntoAmbient_comp_projectionToBase_eq_comp_subschemeι hres blowupPreservesNoetherian T j h …`. Introduce `T inst j hj s hpr hmk t`.
+
+Conclude with `DivisorReduction.projectionToSpec_eq_comp_ambientMarkedSeq hres blowupPreservesNoetherian T j hj s hpr hmk t`. Introduce `T inst j hj hb s hpr hmk t`. Conclude with `DivisorReduction.projectionToSpec_eq_comp_prependedAmbientSeq hres blowupPreservesNoetherian T j hj hb s hpr hmk t`. Introduce `X Y f inst I`. Conclude with `support_ker_comp_subset_support_ker I.subschemeι f`.
+
+Introduce `T hV j hj`. Conclude with `DivisorReduction.support_containedComponentsIdeal_subset_support_boundary T j hj`.
+-/
 private theorem pushedBlowupSequenceProperties_canonicalAlgorithmRules (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) :
     PushedBlowupSequenceProperties hres blowupPreservesNoetherian := by
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
@@ -148,10 +187,16 @@ private theorem pushedBlowupSequenceProperties_canonicalAlgorithmRules (hres : F
   · intro T hV j hj
     exact DivisorReduction.support_containedComponentsIdeal_subset_support_boundary T j hj
 
+/- English proof (translation)
+The claim follows from `(divisorReductionProperties_of_blowupPreservesNoetherian hres blowupPreservesNoetherian).toDivisorReductionStepProperties`.
+-/
 private theorem divisorReductionStepProperties_canonicalAlgorithmRules (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) :
     DivisorReductionStepProperties hres blowupPreservesNoetherian :=
   (divisorReductionProperties_of_blowupPreservesNoetherian hres blowupPreservesNoetherian).toDivisorReductionStepProperties
 
+/- English proof (translation)
+Establish `hstepProps` using `divisorReductionStepProperties_canonicalAlgorithmRules hres`. Establish `hfacts` using `hstepProps.toDivisorReductionTerminationProperties`. Use `{ trivial_of_coSupport_empty := ?_ baseChange := smoothPullbackCompatibility_of_divisorReductionTermination hres hfacts smoothImpliesFlat := ⟨fun X Y f hf => by have := hf; infer_instance⟩ degenerateTransversal := emptyPulledBackCenterCompatibility fieldBaseChangeCompatibility := …` and prove the remaining obligations. Introduce `L j T hV hj Y q h inst hq E' hV' hne hempty B' hB'`. Conclude with `DivisorReductionEmptyOrderLocus.divisorFamily_isPullbackSequenceOfBlowups_of_orderAtLeastLocus_empty hres L j T hV hj Y q h hq E' hV' hne hempty B' hB'`.
+-/
 theorem divisorReductionHypotheses_canonicalAlgorithmRules (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) :
     DivisorReduction.DivisorReductionHypotheses hres := by
   have hstepProps := divisorReductionStepProperties_canonicalAlgorithmRules hres

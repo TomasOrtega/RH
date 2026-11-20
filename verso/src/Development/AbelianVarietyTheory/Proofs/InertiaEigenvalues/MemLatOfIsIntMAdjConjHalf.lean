@@ -30,6 +30,13 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.BasicNotions.TH Form
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h0 : FractionalIdeal.count D.host.E Q D.host.AA⁻¹ = 0`. Rewrite using `[FractionalIdeal.count_inv, hQ, neg_zero]`. Take `⟨b, t, ht, hbc⟩` from `GlobalTheory.exists_den_not_mem_of_count_eq_zero Q _ h0 hc`. Establish `ht0 : t ≠ 0` using `fun h => ht (h ▸ Q.asIdeal.zero_mem)`. Establish `ht0' : (t : D.host.E) ≠ 0` using `by simpa using ht0`.
+
+Establish `h1 : finPart D (f * incA D ((t : D.host.E)⁻¹)) ∈ intAE D`. Assume the negation of the conclusion as `h`. Conclude with `ht ((hf t ht0).2 h)`. Establish `h2` using `mul_mem (GlobalTheory.IdemIntegral.toEAf_mem_of_finPart h1) (GlobalTheory.IdemIntegral.eToEAf_int D b)`. Establish `e : c = (t : D.host.E)⁻¹ * (b : D.host.E)`.
+
+Rewrite using `[eq_inv_mul_iff_mul_eq₀ ht0']`. Conclude with `hbc`. Rewrite using `[e, map_mul (incA D), ← mul_assoc, map_mul (toEAf D)]`. Conclude with `h2`.
+-/
 theorem tie_mul_inv_mem {Q : HeightOneSpectrum (𝓞 D.host.E)} {f : AE D} (hf : GlobalTheory.IdemSupport.Comparison₂ Q f)
     (hQ : FractionalIdeal.count D.host.E Q D.host.AA = 0) {c : D.host.E} (hc : c ∈ D.host.AA⁻¹) :
     toEAf D (f * incA D c) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
@@ -47,6 +54,11 @@ theorem tie_mul_inv_mem {Q : HeightOneSpectrum (𝓞 D.host.E)} {f : AE D} (hf :
   rw [e, map_mul (incA D), ← mul_assoc, map_mul (toEAf D)]
   exact h2
 
+/- English proof (translation)
+Take `⟨P, h1, -, hsp⟩` from `hP.split`. Establish `hS : GlobalTheory.ExportSeries.SplitSet Pg` using `hsp.mono h1`. Rewrite using `[GlobalTheory.ExportSeries.idem, map_sum, Finset.sum_mul, map_sum]`. Use `sum_mem fun PP hPP => ?_` and prove the remaining obligations. Establish `ht : GlobalTheory.IdemSupport.Comparison₂ PP (GlobalTheory.ExportSeries.idemAt PP)` using `(hS.isIdemAt hPP).2`.
+
+Use `tie_mul_inv_mem ht.conj ?_ hc` and prove the remaining obligations. Conclude with `hP.prime PP (Or.inl hPP) _ (Or.inr ((GlobalTheory.IdemSupport.isConjPl_iff PP _).2 rfl))`.
+-/
 theorem toEAf_cA_idem_mul_inv_mem {Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)} (hP : GlobalTheory.ExportSeries.PlacesOK Pg Q)
     {c : D.host.E} (hc : c ∈ D.host.AA⁻¹) :
     toEAf D (cA D (GlobalTheory.ExportSeries.idem Pg) * incA D c) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
@@ -60,6 +72,39 @@ theorem toEAf_cA_idem_mul_inv_mem {Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)}
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Use `set e : AE D := GlobalTheory.ExportSeries.idem Pg with he_def`. Establish `he : IsIdemSum e Pg`. Take `⟨P, h1, -, hsp⟩` from `hP.split`. Conclude with `(hsp.mono h1).isIdemSum`. Take `⟨L, pa, pc, hpa, hpc, hac⟩` from `GlobalTheory.HostAAPartition.host_AA_partition D`.
+
+Establish `hpc' : ∀ l, pc l ∈ D.host.AA⁻¹` using `fun l => by`. Use `(FractionalIdeal.mem_inv_iff (GlobalTheory.HostAAPartition.host_AA_ne_zero D)).2 fun y hy => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `hpc l y hy`. Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨b, hb⟩`. Take `⟨n, s, s', hs, hss⟩` from `GlobalTheory.LatVacDual.dualFamily D S ΛS hS`.
+
+Take `⟨m, t, t', ht, htt⟩` from `GlobalTheory.LatVacDual.dualFamily D T ΛT hT`. Take `⟨s₁, hs₁⟩ : ∃ A : Matrix (Fin S.rank) (Fin n) D.host.E, A = Matrix.of fun a k => s k a` from `⟨_, rfl⟩`. Take `⟨s₂, hs₂⟩ : ∃ A : Matrix (Fin S.rank) (Fin n) D.host.E, A = Matrix.of fun a k => s' k a` from `⟨_, rfl⟩`. Take `⟨t₁, ht₁⟩ : ∃ A : Matrix (Fin T.rank) (Fin m) D.host.E, A = Matrix.of fun a k => t k a` from `⟨_, rfl⟩`. Take `⟨t₂, ht₂⟩ : ∃ A : Matrix (Fin T.rank) (Fin m) D.host.E, A = Matrix.of fun a k => t' k a` from `⟨_, rfl⟩`.
+
+Establish `e1 : s₁ * (s₂ᴴ * S.gram) = 1`. Substitute `hs₁ hs₂` using the available equality. Conclude with `Matrix.ext fun a j => (hss a j).trans (Matrix.one_apply).symm`. Establish `e2 : t₁ * (t₂ᴴ * T.gram) = 1`. Substitute `ht₁ ht₂` using the available equality.
+
+Conclude with `Matrix.ext fun a j => (htt a j).trans (Matrix.one_apply).symm`. Take `⟨w, hw⟩ : ∃ w : Matrix (Fin m) (Fin n) (AE D), w = (t₂ᴴ * T.gram).map (incA D) * x * s₁.map (incA D)` from `⟨_, rfl⟩`. Establish `hx' : cA D e • x = x` using `Matrix.ext hx`. Establish `hw1 : cA D e • w = w` using `by rw [hw, ← Matrix.smul_mul, ← Matrix.mul_smul, hx']`. Establish `hG : T.gramᴴ = T.gram` using `Matrix.ext fun i j => gram_star T j i`.
+
+Establish `hw2 : ((w.map (toEAf D)).map (cF D))ᵀ = (s₁ᴴ * S.gram).map (eToEAf D) * βS.val * frMapAdj S T βS βT x * ((βT⁻¹).val * t₂.map (eToEAf D))`. Rewrite using `[hw, Matrix.map_mul (f := toEAf D), Matrix.map_mul (f := toEAf D), Matrix.map_mul (f := cF D), Matrix.map_mul (f := cF D), Matrix.transpose_mul, Matrix.transpose_mul, conj_map, conj_map, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hG, frMapAdj_eq, Matrix.map_mul …`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc βS.val, Units.mul_inv, Matrix.one_mul, ← Matrix.mul_assoc βT.val, Units.mul_inv, Matrix.one_mul, ← Matrix.mul_assoc (S.gram.map (eToEAf D)), gram_map_mul_inv, Matrix.one_mul]`. Establish `hcol : ∀ a, (fun k => βS.val k a) ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) ΛS := fun a => by`.
+
+Use `(fS _).2 fun i => ?_` and prove the remaining obligations. Establish `e : ((βS⁻¹).val *ᵥ fun k => βS.val k a) i = ((βS⁻¹).val * βS.val) i a` using `rfl`. Rewrite using `[e, Units.inv_mul, Matrix.one_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`.
+
+Establish `i1 : IsIntM ((s₁ᴴ * S.gram).map (eToEAf D) * βS.val)` using `fun k a => by`. Use `GlobalTheory.PairIntegral.sum_mem_intAf ΛS (fun j => (s₁ᴴ * S.gram) k j) (fun y hy => ?_) _ (hcol a)` and prove the remaining obligations. Take `⟨b, hb⟩` from `(hS.2 y).1 hy _ (hs k).1`. Use `⟨b, hb.trans ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_comm, hs₁]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => (Finset.sum_mul _ _ _).symm`. Establish `i2 : IsIntM ((βT⁻¹).val * t₂.map (eToEAf D))` using `fun a k => by`. Rewrite using `[ht₂]`. Conclude with `(fT _).1 (pure_mem_hatL ΛT 1 (one_mem _) _ (ht k).2) a`. Establish `hwe : ∀ i k, cA D e * w i k = w i k` using `fun i k => congrFun (congrFun hw1 i) k`.
+
+Establish `hw3 : ∀ i k l, toEAf D (w i k * incA D (pc l)) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun i k l => by`. Establish `h1 : cF D (toEAf D (w i k)) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Rewrite using `[show cF D (toEAf D (w i k)) = _ from congrFun (congrFun hw2 k) i, Matrix.mul_apply]`. Use `sum_mem fun p _ => mul_mem ?_ (i2 p i)` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`.
+
+Conclude with `sum_mem fun q _ => mul_mem (i1 k q) (hi q p)`. Establish `h2 : toEAf D (w i k) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Use `cF_mem_int h1` as an intermediate fact. Rewrite `this` using `[cF_cF_toEAf]`. Then use the resulting hypothesis. Rewrite using `[← hwe i k, mul_comm (cA D e) (w i k), mul_assoc, RingHom.map_mul]`.
+
+Conclude with `mul_mem h2 (toEAf_cA_idem_mul_inv_mem hP (hpc' l))`. Establish `hxw : x = t₁.map (incA D) * w * (s₂ᴴ * S.gram).map (incA D)`. Rewrite using `[hw, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.map_mul, e2, Matrix.mul_assoc, ← Matrix.map_mul, e1, Matrix.map_one _ (RingHom.map_zero _) (RingHom.map_one _), Matrix.map_one _ (RingHom.map_zero _) (RingHom.map_one _), Matrix.one_mul, Matrix.mul_one]`. Establish `hsum : x = ∑ k, ∑ i, ∑ l, (w i k * incA D (pc l)) • finTens 1 (genMap S T (pa l) (s' k) (t i))`. Rewrite using `[hxw]`.
+
+Use extensionality with `a j`. Simplify using `only [Matrix.mul_apply (M := t₁.map (incA D) * w), Matrix.mul_apply (M := t₁.map (incA D)), Matrix.sum_apply, Finset.sum_mul, Matrix.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h0 : infPart D (w i k) = 0`. Rewrite using `[← hwe i k, RingHom.map_mul, infPart_cA (idemSum_infPart he), zero_mul]`.
+
+Establish `hterm : ∀ l, (w i k * incA D (pc l)) * finTens 1 (genMap S T (pa l) (s' k) (t i)) a j = w i k * incA D (pc l * pa l * (t₁ a i * (s₂ᴴ * S.gram) k j))` using `fun l => by`. Establish `h4 : finPart D (finTens 1 (genMap S T (pa l) (s' k) (t i)) a j) = finPart D (incA D (pa l * t₁ a i * (s₂ᴴ * S.gram) k j))`. Rewrite using `[ht₁, hs₂]`. Both sides reduce to the same expression. Use `GlobalTheory.SplitScalar.adele_ext (by simp only [RingHom.map_mul, h0, zero_mul]) ?_` and prove the remaining obligations.
+
+Rewrite using `[RingHom.map_mul, RingHom.map_mul, h4, ← RingHom.map_mul, ← RingHom.map_mul, mul_assoc, ← RingHom.map_mul (incA D)]`. Use `congr 3`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun l _ => hterm l, ← Finset.mul_sum, ← map_sum, ← Finset.sum_mul]`. Establish `hac' : ∑ l, pc l * pa l = 1` using `by rw [← hac]; exact Finset.sum_congr rfl fun l _ => mul_comm _ _`.
+
+Rewrite using `[hac', one_mul, Matrix.map_apply, Matrix.map_apply, mul_comm (incA D (t₁ a i)), mul_assoc, ← RingHom.map_mul]`. Rewrite using `[hsum]`. Conclude with `sum_mem fun k _ => sum_mem fun i _ => sum_mem fun l _ => GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ _ (finPart_mem_intAE (hw3 i k l)) _ (finTens_mem_latO (one_mem_intAf _) (AddSubgroup.subset_closure ⟨_, hpa l, _, (hs k).2, _, (ht i).1, rfl⟩))`.
+-/
 theorem mem_latO_of_adj_int {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} {βS : GL (Fin S.rank) (EAf D)} {βT : GL (Fin T.rank) (EAf D)}
     (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) (fS : Formalism.L2.DIV.IsFrame βS ΛS) (fT : Formalism.L2.DIV.IsFrame βT ΛT)

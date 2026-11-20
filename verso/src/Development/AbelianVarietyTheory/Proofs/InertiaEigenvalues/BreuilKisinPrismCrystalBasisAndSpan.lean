@@ -14,6 +14,37 @@ namespace GlobalTheory.BKBasis
 
 set_option maxHeartbeats 1000000
 
+/- English proof (translation)
+Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ t ϖ ι _ _ P T I`. Use `letI := zlLat T`. Introduce `E jA H him oE hoE`. Take `⟨J, hJ⟩ : ∃ J : E.M (ϖ.prism a) →+ TW (OW l O) T, ∀ x, J x = kappa T (jA (E.tr (ϖ.toAinf a) x))` from `⟨(kappa T).comp (jA.toAddMonoidHom.comp (E.tr (ϖ.toAinf a)).toAddMonoidHom), fun _ => rfl⟩`. Establish `h1 : ∀ y : TW (OW l O) T, (∃ x, y = J x) ↔ ∃ (m : Vec K a ι) (hm : m ∈ P.M), y = I.j (toW t ϖ P ⟨m, mem_ME_of_mem_M hm⟩)` using `fun y => by`.
+
+Simplify using `only [hJ]`. Conclude with `him y`. Take `⟨c, hc, hcJ, hs⟩` from `GlobalTheory.BKCoord.exists_coord I J h1`. Establish `hi : Function.Injective J`. Use `E.proj (ainfObj (ϖ.field a))` as an intermediate fact.
+
+Use `E.proj (ϖ.prism a)` as an intermediate fact. Introduce `x y h`. Rewrite `h` using `[hJ, hJ]`. Conclude with `GlobalTheory.BKCoord.semiBC_injective (E.tr_bc (ϖ.toAinf a)) (GlobalTheory.BKCoord.ev_injective ϖ) (GlobalTheory.BKCoord.semiBC_injective H.bc inclW_injective ((kappa_bijective T).1 h))`. Establish `hci : Function.Injective c` using `fun x y hxy => hi (by rw [hcJ, hcJ]; simp only [hxy])`.
+
+Establish `hsm : ∀ (w : (ϖ.prism a).A) (x : E.M (ϖ.prism a)), c (w • x) = fun τ i => (toAc t K w τ : K⟦X⟧) * c x τ i` using `fun w x => by`. Use `GlobalTheory.BKCoord.eq_of_j_eq_toAc I w ⟨_, mem_ME_of_mem_M (hc x)⟩ ⟨_, mem_ME_of_mem_M (hc _)⟩ ?_` and prove the remaining obligations. Establish `h3` using `congrArg jA ((E.tr (ϖ.toAinf a)).map_smulₛₗ w x)`. Establish `h4` using `congrArg (kappa T) (h3.trans (jA.map_smulₛₗ _ _))`. Establish `h5` using `h4.trans (GlobalTheory.BKCoord.kappa_smul T _ _)`.
+
+Use `rewrite [← hcJ, ← hcJ, hJ, hJ]`. Conclude with `h5`. Establish `hom : ∀ (o : O) (x : E.M (ϖ.prism a)), c ((oE o).u (ϖ.prism a) x) = fun τ i => PowerSeries.C (algebraMap O K o) * c x τ i` using `fun o x => by`. Use `GlobalTheory.BKCoord.eq_of_j_eq_const I o ⟨_, mem_ME_of_mem_M (hc x)⟩ ⟨_, mem_ME_of_mem_M (hc _)⟩ ?_` and prove the remaining obligations. Establish `h3` using `(congrArg jA ((oE o).u_tr (ϖ.toAinf a) x)).symm.trans (hoE o _)`.
+
+Establish `hk : ∀ y : WCb l ⊗[ℤ_[l]] ↥T.L.T, kappa T ((OfCrystal.mulZ T o).lTensor (WCb l) y) = o • kappa T y`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, smul_zero]`. Consider the case `tmul v z => exact tmul_smul o ((1 : O) ⊗ₜ[ℤ_[l]] v : OW l O) z`.
+
+Consider the case `add y y' hy hy' => simp only [map_add, smul_add, hy, hy']`. Establish `h4` using `(congrArg (kappa T) h3).trans (hk _)`. Use `rewrite [← hcJ, ← hcJ, hJ, hJ]`. Conclude with `h4`. Establish `hbas : ∀ j, (bas j : Vec K a ι) ∈ P.M` using `fun j => mem_tot.2 fun τ i => by`.
+
+Express the relevant statement in the definitionally equal form `(Pi.single j (1 : K⟦X⟧) : ι → K⟦X⟧) i ∈ A O K`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `one_mem _`.
+
+Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `zero_mem _`. Use `choose b hb using fun j => hs _ (hbas j)`. Use `⟨b, fun j => ⟨hbas j, ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← hJ, hcJ]`.
+
+Establish `e1 : (⟨c (b j), mem_ME_of_mem_M (hc _)⟩ : ME P) = ⟨bas j, mem_ME_of_mem_M (hbas j)⟩` using `Subtype.ext (hb j)`. Rewrite using `[e1]`. Set `o` to `Module.finBasis ℤ_[l] O`. Establish `hf : ∀ i, ∃ s : Fin (Module.finrank ℤ_[l] O) → (Wq l a)⟦X⟧, (fun τ => (⟨c x τ i, mem_tot.1 (hc x) τ i⟩ : A O K)) = ∑ q, o q • toAc t K (s q)` using `fun i => exists_eq_sum_toAc t K o _`. Use `choose s hs' using hf`.
+
+Use `⟨Module.finrank ℤ_[l] O, fun _ q => o q, s, hci ?_⟩` and prove the remaining obligations. Simplify using `only [map_sum, hsm, hom, hb]`. Use function extensionality and compare the values at `τ i`. Establish `h6` using `congrArg (fun f : ZMod a → A O K => (f τ : K⟦X⟧)) (hs' i)`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, AddSubmonoidClass.coe_finsetSum, SetLike.val_smul] at h6`.
+
+Rewrite using `[h6]`. Simplify using `only [Finset.sum_apply]`. Use `symm`. Rewrite using `[Finset.sum_eq_single i]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Establish `h7` using `hsm (s i q) ((oE (o q)).u (ϖ.prism a) (b i))`. Use `erw [h7, hom, hb]`. Simplify using `only [bas, Pi.single_eq_same, mul_one, Algebra.smul_def, algebraMap_eq_C]`. Conclude with `mul_comm _ _`. Introduce `j _ hj`.
+
+Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations. Establish `h7` using `hsm (s j q) ((oE (o q)).u (ϖ.prism a) (b j))`. Use `erw [h7, hom, hb]`. Simplify using `only [bas, Pi.single_eq_of_ne (Ne.symm hj), mul_zero]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod O K l e a ι) (T : Lat a O K ϖ) (I : Ident t ϖ P T), letI := zlLat T; ∀ (E : FCrys l ↥(OL (ϖ.field a))) (jA : E.M (ainfObj (ϖ.field a)) →ₛₗ[(inclW l).comp (ainfId (ϖ.field a)).toRingHom] (WCb l ⊗[ℤ_[l]] ↥T.L.T)), Realises (ϖ.field a) E (ainfObj _) (ainfId _) ↥T.L.T (actZ T) jA → (∀ y : TW (OW l O) T, (∃ x : E.M (ϖ.prism a), y = kappa T (jA (E.tr (ϖ.toAinf a) x))) ↔ ∃ (m : Vec K a ι) (hm : m ∈ P.M), y = I.j (toW t ϖ P ⟨m, mem_ME_of_mem_M hm⟩)) → ∀ (oE : O → FHom E E), (∀ (c : O) (x : E.M (ainfObj (ϖ.field a))), jA ((oE c).u (ainfObj (ϖ.field a)) x) = (OfCrystal.mulZ T c).lTensor (WCb l) (jA x)) → ∃ b : ι → E.M (ϖ.prism a), (∀ j, ∃ hm : (bas j : Vec K a ι) ∈ P.M, kappa T (jA (E.tr (ϖ.toAinf a) (b j))) = I.j (toW t ϖ P ⟨bas j, mem_ME_of_mem_M hm⟩)) ∧ ∀ x : E.M (ϖ.prism a), ∃ (N : ℕ) (c : ι → Fin N → O) (s : ι → Fin N → (ϖ.prism a).A), x = ∑ j, ∑ q, s j q • (oE (c j q)).u (ϖ.prism a) (b j) := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ t ϖ ι _ _ P T I
   letI := zlLat T

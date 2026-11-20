@@ -7,6 +7,19 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ σ _ A _ _ φ ψ hφ h`. Take `⟨N₁, h₁⟩` from `GlobalTheory.mvPowerSeries_algHom_kill_high_order k σ A φ hφ`. Take `⟨N₂, h₂⟩` from `GlobalTheory.mvPowerSeries_algHom_kill_high_order k σ A ψ (fun i => h i ▸ hφ i)`. Establish `hp : φ.comp (MvPolynomial.coeToMvPowerSeries.algHom k) = ψ.comp (MvPolynomial.coeToMvPowerSeries.algHom k)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises.
+
+Introduce `i`. Simplify using `[h i]`. Establish `hm : ∀ (α : σ →₀ ℕ) (c : k), φ (monomial α c) = ψ (monomial α c)`. Introduce `α c`. Use `DFunLike.congr_fun hp (MvPolynomial.monomial α c)` as an intermediate fact.
+
+Simplify `this` using `[MvPolynomial.coe_monomial]`. Establish `hfin : {α : σ →₀ ℕ | α.degree ≤ N₁ + N₂}.Finite` using `Finsupp.finite_of_degree_le _`. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `f`. Use `set p : MvPowerSeries σ k := ∑ α ∈ hfin.toFinset, monomial α (coeff α f) with hpdef`.
+
+Establish `hc : ∀ α : σ →₀ ℕ, α.degree ≤ N₁ + N₂ → coeff α (f - p) = 0`. Introduce `α hα`. Rewrite using `[map_sub, hpdef, map_sum, Finset.sum_eq_single α]`. Simplify using the standard rewrite rules. Introduce `β _ hβ`.
+
+Rewrite using `[coeff_monomial_ne hβ.symm]`. Introduce `hn`. Conclude with `absurd (by simpa using hα) hn`. Establish `e₁ : φ (f - p) = 0` using `h₁ _ (fun α hα => hc α (by omega))`. Establish `e₂ : ψ (f - p) = 0` using `h₂ _ (fun α hα => hc α (by omega))`.
+
+Establish `e₃ : φ p = ψ p`. Rewrite using `[hpdef, map_sum, map_sum]`. Conclude with `Finset.sum_congr rfl (fun α _ => hm _ _)`. Rewrite `e₁`, `e₂` using `[map_sub, sub_eq_zero]`. Rewrite using `[e₁, e₂, e₃]`.
+-/
 theorem mvPowerSeries_algHom_ext_of_isNilpotent :
     ∀ (k : Type) [CommRing k] (σ : Type) [Finite σ] (A : Type) [CommRing A] [Algebra k A],
       ∀ φ ψ : MvPowerSeries σ k →ₐ[k] A, (∀ i, IsNilpotent (φ (X i))) →

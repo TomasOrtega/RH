@@ -16,12 +16,21 @@ variable {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S)
 
 abbrev resShv : Shv S ⥤ Shv R := ChangeRing.res Scheme.proetaleTopology.{0} (RingHom.ulift.{1, 1} φ)
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : PreservesFiniteLimits (resShv φ) := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : PreservesFiniteColimits (resShv φ) := inferInstance
 
 def freeOnUnit (X : Scheme.{0}) : (freeOn R).obj X ⟶ (resShv φ).obj ((freeOn S).obj X) :=
   ChangeRing.freeUnit _ (RingHom.ulift.{1, 1} φ) (uliftYoneda.{1}.obj X)
 
+/- English proof (translation)
+Establish `h : (fun g : (freeOn S).obj X ⟶ G => freeOnUnit φ X ≫ (resShv φ).map g) = ChangeRing.resEquiv _ (RingHom.ulift.{1, 1} φ) (uliftYoneda.{1}.obj X) G`. Use function extensionality and compare the values at `(ChangeRing.freeUnit_comp _ (RingHom.ulift.{1, 1} φ) (uliftYoneda.{1}.obj X))`. Rewrite using `[h]`. Conclude with `Equiv.bijective _`.
+-/
 theorem freeOnUnit_comp_bijective (X : Scheme.{0}) (G : Shv S) :
     Function.Bijective fun g : (freeOn S).obj X ⟶ G => freeOnUnit φ X ≫ (resShv φ).map g := by
   have h : (fun g : (freeOn S).obj X ⟶ G => freeOnUnit φ X ≫ (resShv φ).map g) =
@@ -33,16 +42,25 @@ theorem freeOnUnit_comp_bijective (X : Scheme.{0}) (G : Shv S) :
 def resEquivHS (G : Shv S) (n : ℕ) (X : Scheme.{0}) : HS S G n X ≃+ HS R ((resShv φ).obj G) n X :=
   ChangeRing.cmp _ (RingHom.ulift.{1, 1} φ) (uliftYoneda.{1}.obj X) G n
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resEquivHS_apply (G : Shv S) (n : ℕ) (X : Scheme.{0}) (y : HS S G n X) :
     resEquivHS φ G n X y = (Ext.mk₀ (freeOnUnit φ X)).comp (y.mapExactFunctor (resShv φ)) (zero_add n) := rfl
 
 def chgS {F : Shv R} {G : Shv S} (u : F ⟶ (resShv φ).obj G) (n : ℕ) (X : Scheme.{0}) : HS R F n X →+ HS S G n X :=
   ChangeRing.change _ (RingHom.ulift.{1, 1} φ) u (uliftYoneda.{1}.obj X) n
 
+/- English proof (translation)
+The claim follows from `ChangeRing.cmp_change _ _ u _ n x`.
+-/
 theorem resEquivHS_chgS {F : Shv R} {G : Shv S} (u : F ⟶ (resShv φ).obj G) (n : ℕ) (X : Scheme.{0})
     (x : HS R F n X) : resEquivHS φ G n X (chgS φ u n X x) = x.comp (Ext.mk₀ u) (add_zero n) :=
   ChangeRing.cmp_change _ _ u _ n x
 
+/- English proof (translation)
+Apply `(resEquivHS φ G 0 X).injective` to reduce the goal to its premises. Rewrite using `[resEquivHS_chgS, resEquivHS_apply, Ext.mapExactFunctor_mk₀, Ext.mk₀_comp_mk₀, Ext.mk₀_comp_mk₀, h]`.
+-/
 theorem chgS_mk₀ {F : Shv R} {G : Shv S} (u : F ⟶ (resShv φ).obj G) (X : Scheme.{0}) (g : (freeOn R).obj X ⟶ F)
     (g' : (freeOn S).obj X ⟶ G) (h : freeOnUnit φ X ≫ (resShv φ).map g' = g ≫ u) :
     chgS φ u 0 X (Ext.mk₀ g) = Ext.mk₀ g' := by
@@ -54,9 +72,15 @@ variable (R) in
 def sectionOf (X : Scheme.{0}) (F : Shv R) : ((freeOn R).obj X ⟶ F) ≃ F.obj.obj (op X) :=
   (ChangeRing.freeEquiv Scheme.proetaleTopology.{0} (uliftYoneda.{1}.obj X) F).trans uliftYonedaEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sectionOf_comp (X : Scheme.{0}) {F G : Shv R} (g : (freeOn R).obj X ⟶ F) (u : F ⟶ G) :
     sectionOf R X G (g ≫ u) = u.hom.app (op X) (sectionOf R X F g) := rfl
 
+/- English proof (translation)
+The claim follows from `(congrArg (sectionOf R X ((resShv φ).obj G)) (ChangeRing.freeUnit_comp _ (RingHom.ulift.{1, 1} φ) (uliftYoneda.{1}.obj X) g)).trans (congrArg uliftYonedaEquiv (ChangeRing.freeEquiv_resEquiv _ (RingHom.ulift.{1, 1} φ) (uliftYoneda.{1}.obj X) G g))`.
+-/
 theorem sectionOf_freeOnUnit_comp (X : Scheme.{0}) {G : Shv S} (g : (freeOn S).obj X ⟶ G) :
     sectionOf R X ((resShv φ).obj G) (freeOnUnit φ X ≫ (resShv φ).map g) = sectionOf S X G g :=
   (congrArg (sectionOf R X ((resShv φ).obj G))
@@ -86,6 +110,9 @@ def coefMap : coef R ⟶ (resShv φ).obj (coef S) :=
   ((sheafificationAdjunction _ _).homEquiv (coefPre R) ((resShv φ).obj (coef S))).symm
     (coefPreMap φ hφ ≫ Functor.whiskerRight (toSheafify _ (coefPre S)) _)
 
+/- English proof (translation)
+Establish `h : toSheafify Scheme.proetaleTopology.{0} (coefPre R) ≫ (coefMap φ hφ).hom = coefPreMap φ hφ ≫ Functor.whiskerRight (toSheafify _ (coefPre S)) _` using `((sheafificationAdjunction _ _).homEquiv (coefPre R) ((resShv φ).obj (coef S))).apply_symm_apply _`. Conclude with `ConcreteCategory.congr_hom (NatTrans.congr_app h U) (ULift.up g)`.
+-/
 theorem coefMap_toSheafify (U : Scheme.{0}ᵒᵖ) (g : C(U.unop, R)) :
     (coefMap φ hφ).hom.app U ((toSheafify Scheme.proetaleTopology.{0} (coefPre R)).app U (ULift.up g)) =
       (toSheafify Scheme.proetaleTopology.{0} (coefPre S)).app U (ULift.up ((⟨φ, hφ⟩ : C(R, S)).comp g)) := by
@@ -100,6 +127,9 @@ def chg (n : ℕ) (X : Scheme.{0}) : H R n X →ₛₗ[φ] H S n X where
   map_smul' r x := ChangeRing.change_smul _ (RingHom.ulift.{1, 1} φ) (coefMap φ hφ) _ n (ULift.up r) x
 
 variable (R) in
+/- English proof (translation)
+Establish `h : Ext.addEquiv₀ (X` using `(freeOn R).obj X) (Y := coef R) (Ext.mk₀ g) = g := Ext.addEquiv₀.apply_symm_apply g`. Establish `key : (toSheafify Scheme.proetaleTopology.{0} (coefPre R)).app (op X) (ULift.up (H0.e R X (Ext.mk₀ g))) = (toSheafify Scheme.proetaleTopology.{0} (coefPre R)).app (op X) ((isoSheafify _ (H0.sh R)).inv.app (op X) (sectionOf R X (coef R) (Ext.addEquiv₀ (X` using `(freeOn R).obj X) (Y := coef R) (Ext.mk₀ g)))) := rfl`. Conclude with `key.trans ((ConcreteCategory.congr_hom ((isoSheafify _ (H0.sh R)).inv_hom_id_app (op X)) _).trans (congrArg (sectionOf R X (coef R)) h))`.
+-/
 theorem toSheafify_e_mk₀ (X : Scheme.{0}) (g : (freeOn R).obj X ⟶ coef R) :
     (toSheafify Scheme.proetaleTopology.{0} (coefPre R)).app (op X) (ULift.up (H0.e R X (Ext.mk₀ g))) =
       sectionOf R X (coef R) g := by
@@ -111,11 +141,19 @@ theorem toSheafify_e_mk₀ (X : Scheme.{0}) (g : (freeOn R).obj X ⟶ coef R) :
     (congrArg (sectionOf R X (coef R)) h))
 
 variable (R) in
+/- English proof (translation)
+The claim follows from `congrArg ULift.down (((isoSheafify _ (H0.sh R)).app U).toLinearEquiv.injective h)`.
+-/
 theorem toSheafify_up_injective (U : Scheme.{0}ᵒᵖ) {a b : C(U.unop, R)}
     (h : (toSheafify Scheme.proetaleTopology.{0} (coefPre R)).app U (ULift.up a) =
       (toSheafify Scheme.proetaleTopology.{0} (coefPre R)).app U (ULift.up b)) : a = b :=
   congrArg ULift.down (((isoSheafify _ (H0.sh R)).app U).toLinearEquiv.injective h)
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `(Ext.mk₀_bijective ((freeOn R).obj X) (coef R)).surjective x`. Take `⟨g', hg'⟩` from `(freeOnUnit_comp_bijective φ X (coef S)).surjective (g ≫ coefMap φ hφ)`. Establish `h1 : chg φ hφ 0 X (Ext.mk₀ g) = Ext.mk₀ g'` using `chgS_mk₀ φ (coefMap φ hφ) X g g' hg'`. Establish `h2` using `sectionOf_freeOnUnit_comp φ X g'`. Establish `h3` using `sectionOf_comp X g (coefMap φ hφ)`.
+
+Establish `h4` using `coefMap_toSheafify φ hφ (op X) (H0.e R X (Ext.mk₀ g))`. Establish `h5` using `congrArg ((coefMap φ hφ).hom.app (op X)) (toSheafify_e_mk₀ R X g)`. Establish `h6` using `congrArg (sectionOf R X ((resShv φ).obj (coef S))) hg'`. Rewrite using `[h1]`. Conclude with `toSheafify_up_injective S (op X) ((toSheafify_e_mk₀ S X g').trans (h2.symm.trans (h6.trans (h3.trans (h5.symm.trans h4)))))`.
+-/
 theorem e_chg (X : Scheme.{0}) (x : H R 0 X) : H0.e S X (chg φ hφ 0 X x) = (⟨φ, hφ⟩ : C(R, S)).comp (H0.e R X x) := by
   obtain ⟨g, rfl⟩ := (Ext.mk₀_bijective ((freeOn R).obj X) (coef R)).surjective x
   obtain ⟨g', hg'⟩ := (freeOnUnit_comp_bijective φ X (coef S)).surjective (g ≫ coefMap φ hφ)
@@ -133,10 +171,16 @@ end Coefficients
 
 section Examples
 
+/- English proof (translation)
+Rewrite using `[LinearMap.map_smulₛₗ, (by decide : ZMod.castHom (by decide : 2 ∣ 4) (ZMod 2) 2 = 0), zero_smul]`.
+-/
 example (n : ℕ) (X : Scheme.{0}) (x : H (ZMod 4) n X) :
     chg (ZMod.castHom (by decide : 2 ∣ 4) (ZMod 2)) continuous_of_discreteTopology n X ((2 : ZMod 4) • x) = 0 := by
   rw [LinearMap.map_smulₛₗ, (by decide : ZMod.castHom (by decide : 2 ∣ 4) (ZMod 2) 2 = 0), zero_smul]
 
+/- English proof (translation)
+Apply `(H0.e (ZMod 2) X).injective` to reduce the goal to its premises. Rewrite using `[e_chg, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Use extensionality with `x`. Conclude with `(by decide : ZMod.castHom (by decide : 2 ∣ 4) (ZMod 2) 3 = 1)`.
+-/
 example (X : Scheme.{0}) :
     chg (ZMod.castHom (by decide : 2 ∣ 4) (ZMod 2)) continuous_of_discreteTopology 0 X
       ((H0.e (ZMod 4) X).symm (ContinuousMap.const X 3)) = (H0.e (ZMod 2) X).symm (ContinuousMap.const X 1) := by
@@ -145,6 +189,9 @@ example (X : Scheme.{0}) :
   ext x
   exact (by decide : ZMod.castHom (by decide : 2 ∣ 4) (ZMod 2) 3 = 1)
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `e_chg (ZMod.castHom (by decide : 2 ∣ 4) (ZMod 2)) continuous_of_discreteTopology X ((H0.e (ZMod 4) X).symm 1)`. Rewrite `h1` using `[h, LinearMap.zero_apply, map_zero, LinearEquiv.apply_symm_apply]`. Conclude with `absurd (DFunLike.congr_fun h1 (Classical.arbitrary X)) (by decide : (0 : ZMod 2) ≠ ZMod.castHom (by decide : 2 ∣ 4) (ZMod 2) 1)`.
+-/
 example (X : Scheme.{0}) [Nonempty X] :
     chg (ZMod.castHom (by decide : 2 ∣ 4) (ZMod 2)) continuous_of_discreteTopology 0 X ≠ 0 := by
   intro h

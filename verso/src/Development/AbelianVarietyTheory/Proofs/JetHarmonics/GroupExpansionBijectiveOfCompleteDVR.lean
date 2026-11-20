@@ -18,6 +18,9 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hL _ _ _ _ _ _ _ _ _ _ _ _ _ U F _ _ k hk` and use `FieldBaseChange.expandsG_bijective U.toUnifPre F hL.globalFns hk (U.expand k hk)`.
+-/
 theorem expandsG_bijective_of_dvr : Laws → Laws2 → Laws4 → TwistBaseChangeStatement → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] (D : DegData V (maximalIdeal V)) (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G] (U : Unif (maximalIdeal V) D A G) (F : Type) [Field F] [Algebra (FractionRing V) F] (k : ℕ), 1 ≤ k → (∀ σ' : U.SecGF F k, ∃! s : Fam D.toPre F k, U.ExpandsG F k σ' s) ∧ ∀ s : Fam D.toPre F k, ∃! σ' : U.SecGF F k, U.ExpandsG F k σ' s :=
   fun hL _ _ _ _ _ _ _ _ _ _ _ _ _ U F _ _ k hk =>
     FieldBaseChange.expandsG_bijective U.toUnifPre F hL.globalFns hk (U.expand k hk)

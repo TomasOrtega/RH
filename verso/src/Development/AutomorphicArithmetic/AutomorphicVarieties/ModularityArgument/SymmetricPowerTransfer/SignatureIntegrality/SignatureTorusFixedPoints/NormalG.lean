@@ -8,11 +8,25 @@ open ValuativeRel Matrix Polynomial GlobalTheory.SmGL GlobalTheory.SplitWeil Upp
 
 namespace UpperTheory.V.Z.Sym.Sig
 
+/- English proof (translation)
+The claim follows from `UpperTheory.V.Lib.Small.conj_of_roots (fun i => (μ i : k)) (fun _ _ e => hμ (Units.ext e)) N _ (GlobalTheory.SmGL.val_diagT k μ) hroot`.
+-/
 private theorem exists_conj_diag {k : Type} [Field k] (N : GL (Fin 3) k) (μ : Fin 3 → kˣ)
     (hμ : Function.Injective μ) (hroot : ∀ i, ((N : Matrix (Fin 3) (Fin 3) k).charpoly).IsRoot (μ i : k)) :
     ∃ g : GL (Fin 3) k, N = g * diagT k (Fin 3) μ * g⁻¹ :=
   UpperTheory.V.Lib.Small.conj_of_roots (fun i => (μ i : k)) (fun _ _ e => hμ (Units.ext e)) N _ (GlobalTheory.SmGL.val_diagT k μ) hroot
 
+/- English proof (translation)
+Establish `hoff : ∀ i j, i ≠ j → (e : Matrix (Fin 3) (Fin 3) k) i j = 0`. Introduce `i j hij`. Establish `h1` using `congrArg (fun M : Matrix (Fin 3) (Fin 3) k => M i j) (congrArg Units.val h)`. Simplify using `only [Units.val_mul, val_diagT, Matrix.mul_diagonal, Matrix.diagonal_mul] at h1`. Establish `h2 : (μ j : k) ≠ μ i` using `fun h' => hij (hμ (Units.ext h')).symm`.
+
+Establish `h3 : (e : Matrix (Fin 3) (Fin 3) k) i j * ((μ j : k) - μ i) = 0`. Rewrite using `[mul_sub, h1]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(mul_eq_zero.1 h3).resolve_right (sub_ne_zero.2 h2)`. Establish `hdiag : (e : Matrix (Fin 3) (Fin 3) k) = Matrix.diagonal fun i => (e : Matrix (Fin 3) (Fin 3) k) i i`.
+
+Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hoff i j hij, Matrix.diagonal_apply_ne _ hij]`.
+
+Establish `hdet : (e : Matrix (Fin 3) (Fin 3) k).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 e.isUnit).ne_zero`. Establish `hne : ∀ i, (e : Matrix (Fin 3) (Fin 3) k) i i ≠ 0`. Introduce `i hi`. Apply `hdet` to reduce the goal to its premises. Rewrite using `[hdiag, Matrix.det_diagonal]`.
+
+Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simpa using hi)`. Use `⟨fun i => Units.mk0 _ (hne i), Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[val_diagT]`. Simplify using `using hdiag`.
+-/
 private theorem diag_of_comm {k : Type} [Field k] (μ : Fin 3 → kˣ) (hμ : Function.Injective μ)
     (e : GL (Fin 3) k) (h : e * diagT k (Fin 3) μ = diagT k (Fin 3) μ * e) :
     ∃ u : Fin 3 → kˣ, e = diagT k (Fin 3) u := by
@@ -42,6 +56,35 @@ private theorem diag_of_comm {k : Type} [Field k] (μ : Fin 3 → kˣ) (hμ : Fu
 
 end UpperTheory.V.Z.Sym.Sig
 
+/- English proof (translation)
+Introduce `k _ _ _ _`. Take `⟨-, -, hd, hθ, hΦ, hi, hc⟩` from `thFacts k (Lev.iw k)`. Take `hP` from `(thFacts k (Lev.iw k)).1`. Establish `ht : ∀ u : GL (Fin 3) k, th' k u = Phi k * th k 3 u * (Phi k)⁻¹` using `fun u => rfl`. Establish `hprod : ∀ x y z : kˣ, dg ![x, y, z] * th' k (dg ![x, y, z]) = dg ![x / z, 1, z / x]`.
+
+Introduce `x y z`. Rewrite using `[hd, ← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [div_eq_mul_inv, mul_comm]`.
+
+Use `⟨fun g₀ x y z => ?_, fun δ a ha hch => ?_⟩` and prove the remaining obligations. Rewrite using `[← hprod x y z, ht]`. Simplify using `only [map_mul, map_inv, hθ, hΦ]`. Use `group`. Establish `ha0 : (a : k) ≠ 0` using `a.ne_zero`.
+
+Establish `hgt : 1 < valuation k ((a⁻¹ : kˣ) : k)`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀]`. Conclude with `(one_lt_inv₀ (zero_lt_iff.2 ((valuation k).ne_zero_iff.2 ha0))).2 ha`. Establish `h1 : (a : k) ≠ 1` using `fun h => by rw [h, map_one] at ha; exact lt_irrefl _ ha`. Establish `h2 : ((a⁻¹ : kˣ) : k) ≠ 1` using `fun h => by rw [h, map_one] at hgt; exact lt_irrefl _ hgt`.
+
+Establish `h3 : (a : k) ≠ ((a⁻¹ : kˣ) : k)` using `fun h => by`. Rewrite `hgt` using `[← h]`. Conclude with `lt_asymm ha hgt`. Establish `hμ : Function.Injective (![a, 1, a⁻¹] : Fin 3 → kˣ)`. Introduce `i j hij`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first`. Consider the case `rfl`. Consider the case `(exfalso`. Establish `hij'` using `congrArg Units.val hij`. Simplify using `only [Fin.zero_eta, Fin.mk_one, Fin.reduceFinMk, Matrix.cons_val, Units.val_one] at hij'`.
+
+Use `first`. Consider the case `exact h1 hij' | exact h1 hij'.symm | exact h2 hij' | exact h2 hij'.symm`. Consider the case `exact h3 hij' | exact h3 hij'.symm)`. Establish `hroot : ∀ i, (((δ * th k 3 δ : GL (Fin 3) k) : Matrix (Fin 3) (Fin 3) k).charpoly).IsRoot (((![a, 1, a⁻¹] : Fin 3 → kˣ) i : kˣ) : k)`. Introduce `i`.
+
+Rewrite using `[hch]`. Apply the tactic sequence `fin_cases i <;> simp [Polynomial.IsRoot]`. Take `⟨g₀, hN⟩` from `exists_conj_diag (δ * th k 3 δ) _ hμ hroot`. Use `set n : GL (Fin 3) k := dg ![a, 1, a⁻¹] with hn`. Use `set e : GL (Fin 3) k := g₀⁻¹ * δ * th k 3 g₀ * (Phi k)⁻¹ with he`.
+
+Establish `hen : e * th' k e = n`. Establish `: e * th' k e = g₀⁻¹ * (δ * th k 3 δ) * g₀`. Rewrite using `[ht, he]`. Simplify using `only [map_mul, map_inv, hθ, hΦ, inv_inv]`. Use `group`.
+
+Rewrite using `[this, hN]`. Simplify using `only [mul_assoc, inv_mul_cancel_left, inv_mul_cancel, mul_one]`. Apply the tactic sequence `try rfl`. Establish `hfix : th' k n = n`. Rewrite using `[hn, hd]`.
+
+Simplify using the standard rewrite rules. Establish `hne : th' k e * e = n`. Use `congrArg (th' k) hen` as an intermediate fact. Rewrite `this` using `[map_mul, hP.invol, hfix]`. Then use the resulting hypothesis. Establish `hcomm : e * n = n * e` using `by nth_rewrite 1 [← hne] nth_rewrite 1 [← hen] group`.
+
+Take `⟨u, hu⟩` from `diag_of_comm _ hμ e hcomm`. Establish `hu' : u = ![u 0, u 1, u 2]`. Apply the tactic sequence `funext i; fin_cases i <;> rfl`. Use `⟨g₀, u 0, u 1, u 2, ?_, ?_⟩` and prove the remaining obligations. Establish `: dg ![u 0, u 1, u 2] = e` using `by rw [hu]; exact congrArg _ hu'.symm`.
+
+Rewrite using `[this, he]`. Use `group`. Establish `h4 : dg ![u 0 / u 2, 1, u 2 / u 0] = n`. Rewrite using `[← hprod, ← hu' , ← hen, hu]`. Establish `h5` using `congrArg (fun M : Matrix (Fin 3) (Fin 3) k => M 0 0) (congrArg Units.val h4)`.
+
+Simplify using `only [hn, dg, val_diagT] at h5`. Simplify `h5` using `[Units.ext_iff]`.
+-/
 theorem UpperTheory.V.Z.Sym.Sig.normalG :
     UpperTheory.V.Z.Sym.Sig.NormalG := by
   intro k _ _ _ _

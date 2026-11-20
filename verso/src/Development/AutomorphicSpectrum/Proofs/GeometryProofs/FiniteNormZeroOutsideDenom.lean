@@ -18,6 +18,23 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat.LinePointFrame
 
+/- English proof (translation)
+Establish `hli : LinearIndependent K u` using `Fintype.linearIndependent_iff.2 fun g hg i => by`. Use `(h2 0 (Submodule.zero_mem _)).unique hg.symm (y₂ := 0) (by simp)` as an intermediate fact. Conclude with `congrFun this i`. Take `⟨L, hL⟩` from `(Fintype.linearCombination K u).exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 hli.fintypeLinearCombination_injective)`. Establish `hL' : ∀ cf : Fin n → K, L (∑ i, cf i • u i) = cf` using `fun cf => by`.
+
+Use `LinearMap.congr_fun hL cf` as an intermediate fact. Simplify `this` using `[Fintype.linearCombination_apply]`. Establish `ha : ∀ k, ∃ a : Fin N → K, ∑ i, a i • t i = u k` using `fun k => (Submodule.mem_span_range_iff_exists_fun K).1 (ht ▸ Submodule.mem_top)`. Use `choose a ha using ha`. Use `⟨Set.range (fun x : Fin n × Fin N => a x.1 x.2) ∪ Set.range (fun x : Fin n × Fin N => L (t x.2) x.1), (Set.finite_range _).union (Set.finite_range _), ?_⟩` and prove the remaining obligations.
+
+Introduce `V _ g M _ _ b s ρV σV hg hZ hb hsm hs hsp hρ hσ`. Use `choose a' ha' using fun k i => hZ (Or.inl ⟨(k, i), rfl⟩)`. Use `choose l' hl' using fun k i => hZ (Or.inr ⟨(k, i), rfl⟩)`. Establish `hbu : ∀ k, b (∑ i, a' k i • s i) = u k` using `fun k => by`. Rewrite using `[map_sum, ← ha k]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by rw [hsm, hs, ha']`. Establish `heig : ∀ x, x ∈ eigSp ρV σV ↔ b x ∈ eigSp ρ σ` using `fun x => by`. Rewrite using `[EigBase.mem_eigSp, EigBase.mem_eigSp]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations. Rewrite using `[← hρ, ← hσ, RingHom.comp_apply, ← hsm, hb.eq_iff]`.
+
+Establish `hsum : ∀ cf : Fin n → V, b (∑ k, cf k • ∑ i, a' k i • s i) = ∑ k, g (cf k) • u k` using `fun cf => by`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [hsm, hbu]`. Use `⟨fun k => ∑ i, a' k i • s i, hbu, fun k => (heig _).2 (by rw [hbu]; exact h1 k), fun e he => ?_⟩` and prove the remaining obligations. Take `⟨cf, hcf, -⟩` from `h2 _ ((heig e).1 he)`.
+
+Take `⟨x, hx⟩` from `(Submodule.mem_span_range_iff_exists_fun V).1 (hsp ▸ Submodule.mem_top : e ∈ _)`. Establish `hc : ∀ k, cf k = g (∑ i, x i * l' k i)` using `fun k => by`. Rewrite using `[← hL' cf, ← hcf, ← hx, map_sum, map_sum, map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hsm, hs, map_smul, map_mul, hl']`.
+
+Both sides reduce to the same expression. Establish `he' : e = ∑ k, (∑ i, x i * l' k i) • ∑ i, a' k i • s i` using `hb (by`. Rewrite using `[hsum, hcf]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [hc])`. Use `⟨fun k => ∑ i, x i * l' k i, he', fun y hy => funext fun k => hg ?_⟩` and prove the remaining obligations.
+
+Establish `e1` using `congrArg b (hy.symm.trans he')`. Rewrite `e1` using `[hsum, hsum]`. Conclude with `congrFun ((hL' _).symm.trans ((congrArg L e1).trans (hL' _))) k`.
+-/
 theorem alg_descend {O K T : Type} [CommRing O] [Field K] [AddCommGroup T] [Module K T] (ρ : O →+* Module.End K T)
     (σ : O →+* K) {N n : ℕ} (t : Fin N → T) (ht : Submodule.span K (Set.range t) = ⊤) (u : Fin n → T)
     (h1 : ∀ i, u i ∈ eigSp ρ σ) (h2 : ∀ e ∈ eigSp ρ σ, ∃! cf : Fin n → K, e = ∑ i, cf i • u i) :
@@ -70,6 +87,17 @@ theorem alg_descend {O K T : Type} [CommRing O] [Field K] [AddCommGroup T] [Modu
   rw [hsum, hsum] at e1
   exact congrFun ((hL' _).symm.trans ((congrArg L e1).trans (hL' _))) k
 
+/- English proof (translation)
+Use `letI := g.toAlgebra`. Substitute `hx` using the available equality. Take `⟨T, _, _, _, _, M'', j, hl, hj⟩` from `GlobalTheory.T.exists_lie_model_base_change S G R R' x V M`. Take `⟨f, hf, -⟩` from `lieModel_existsUnique_equiv S G R' _ T V' M'' M'`. Use `⟨f.toLinearMap.toAddMonoidHom.comp j.toAddMonoidHom, fun e => ?_, fun c e => ?_, ?_, fun hg => ?_⟩` and prove the remaining obligations.
+
+Use `hl e show (M'.pt (f (j e))).left = _` as an intermediate fact. Rewrite using `[hf]`. Simplify `this` using `[LieModel.Lifts]`. Use `show f (j (c • e)) = g c • f (j e)`. Rewrite using `[j.map_smul, ← algebraMap_smul R' c (j e), f.map_smul]`.
+
+Both sides reduce to the same expression. Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `f.surjective y`. Proceed by induction on `z using hj.inductionOn with`. Consider the case `zero => simp`.
+
+Consider the case `tmul m => exact Submodule.subset_span ⟨m, rfl⟩`. Consider the case `smul s n h => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ (h trivial)`. Consider the case `add m n h h' => rw [map_add]`. Conclude with `Submodule.add_mem _ (h trivial) (h' trivial)`.
+
+Use `haveI : Module.Projective R V := (LieProj.lie_finite_projective_baseChange S G R x V M).2.1 haveI : FaithfulSMul R R' := (faithfulSMul_iff_algebraMap_injective R R').2 hg`. Introduce `a c hac`. Establish `h1 : j a = j c` using `f.injective hac`. Use `Module.Flat.tensorProduct_mk_injective R V R' (hj.equiv.injective ?_)` and prove the remaining obligations. Simplify `h1` using `[hj.equiv_tmul]`.
+-/
 theorem lie_lift {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] [Smooth G.hom] {R R' : Type} [CommRing R]
     [CommRing R'] (g : R →+* R') {x : Sp R ⟶ S} {x' : Sp R' ⟶ S} (hx : x' = spMap g ≫ x) {V V' : Type}
     [AddCommGroup V] [Module R V] [AddCommGroup V'] [Module R' V'] (M : LieModel G x V) (M' : LieModel G x' V') :
@@ -102,6 +130,11 @@ theorem lie_lift {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] [Smoo
     refine Module.Flat.tensorProduct_mk_injective R V R' (hj.equiv.injective ?_)
     simpa [hj.equiv_tmul] using h1
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← h, Submodule.span_le]`. Introduce and unpack `_ ⟨e, rfl⟩`. Take `⟨x, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 (hs ▸ Submodule.mem_top : e ∈ _)`. Rewrite using `[map_sum]`. Conclude with `Submodule.sum_mem _ fun i _ => by`.
+
+Rewrite using `[hb]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem span_map {R R' V V' : Type} [CommRing R] [CommRing R'] [AddCommGroup V] [Module R V] [AddCommGroup V']
     [Module R' V'] (g : R →+* R') (b : V →+ V') (hb : ∀ c e, b (c • e) = g c • b e)
     (h : Submodule.span R' (Set.range b) = ⊤) {N : ℕ} {s : Fin N → V} (hs : Submodule.span R (Set.range s) = ⊤) :
@@ -113,6 +146,19 @@ theorem span_map {R R' V V' : Type} [CommRing R] [CommRing R'] [AddCommGroup V] 
   exact Submodule.sum_mem _ fun i _ => by
     rw [hb]; exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+Take `⟨MR, _, _, ⟨M⟩⟩` from `lieModel_exists S G R x`. Take `⟨T, _, _, ⟨MK⟩⟩` from `lieModel_exists S G K xK`. Take `⟨ρ, hρ, -⟩` from `lieModel_exists_unique_act S G K xK T MK O act.act act.hom act.one act.mul act.add`. Use `haveI : Module.Finite R MR := (LieProj.lie_finite_projective_baseChange S G R x MR M).1`. Take `⟨N, s, hs⟩` from `Module.Finite.exists_fin (R := R) (M := MR)`.
+
+Take `⟨jK, hjK, hsK, hspK, -⟩` from `lie_lift f hx M MK`. Use `choose u hu using fun i => MK.onto (v i) (hv.1 i).1`. Take `rfl : (fun k => MK.pt (u k)) = v` from `funext hu`. Take `⟨h1, h2⟩` from `(LieEigFrame.isEigFrame_pt_iff S K G xK T MK O act ρ σ n u hρ).1 hv`. Take `⟨Z, hZ, H⟩` from `alg_descend ρ σ _ (span_map f jK hsK hspK hs) u h1 h2`.
+
+Use `⟨Z, hZ, fun V _ g r σV xV hg hZg hr hσ hxV => ?_⟩` and prove the remaining obligations. Take `⟨W, _, _, ⟨MV⟩⟩` from `lieModel_exists S G V xV`. Take `⟨ρV, hρV, -⟩` from `lieModel_exists_unique_act S G V xV W MV O act.act act.hom act.one act.mul act.add`. Take `⟨jV, hjV, hsV, hspV, -⟩` from `lie_lift r hxV M MV`. Establish `hxK : xK = spMap g ≫ xV`.
+
+Rewrite using `[hx, hxV, ← hr, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression. Take `⟨b, hb, hsb, -, hinj⟩` from `lie_lift g hxK MV MK`. Establish `hd : spMap (dualMap f) = spMap (dualMap g) ≫ spMap (dualMap r)`. Rewrite using `[← Spec.map_comp, ← hr]`.
+
+Use `congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext fun a => ?_))` and prove the remaining obligations. Use `show dualMap (g.comp r) a = dualMap g (dualMap r a)`. Apply the tactic sequence `ext <;> simp [dualMap]`. Take `⟨u', e1, e2, e3⟩` from `H V g W b (fun i => jV (s i)) ρV σV hg hZg (hinj hg) hsb (fun i => MK.inj (Over.OverMorphism.ext (by rw [hb, hjV, hjK, hd, Category.assoc]))) (span_map r jV hsV hspV hs) (fun a e => MK.inj (Over.OverMorphism.ext (by`. Rewrite using `[hρ a (b e), Over.comp_left, hb, hb, hρV a e, Over.comp_left, Category.assoc]))) hσ`.
+
+Use `⟨fun i => MV.pt (u' i), (LieEigFrame.isEigFrame_pt_iff S V G xV W MV O act ρV σV n u' hρV).2 ⟨e2, e3⟩, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← hb, e1]`.
+-/
 theorem frame_descend {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] [Smooth G.hom] {R K : Type}
     [CommRing R] [Field K] (f : R →+* K) (x : Sp R ⟶ S) (xK : Sp K ⟶ S) (hx : xK = spMap f ≫ x) {O : Type}
     [CommRing O] (act : OAct O G) (σ : O →+* K) {n : ℕ} (v : Fin n → (epsAt xK ⟶ G)) (hv : IsEigFrame act xK σ v) :
@@ -151,6 +197,13 @@ theorem frame_descend {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] 
     fun i => ?_⟩
   rw [← hb, e1]
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Take `⟨V, _, _, ⟨M'⟩⟩` from `lieModel_exists S' t'.G R x'`. Take `⟨M, hM⟩` from `GlobalTheory.CompanionTheory.Ar.SabLie.lieModel_of_sabMap E H S S' t' t f m R x' V M'`. Take `⟨ρ, hρ', -⟩` from `lieModel_exists_unique_act S' t'.G R x' V M' _ t'.act.act t'.act.hom t'.act.one t'.act.mul t'.act.add`. Establish `hρ : M.IsActOf t.act.act ρ` using `fun a e => Over.OverMorphism.ext (by`.
+
+Rewrite using `[Over.comp_left, hM, hM, hρ' a e, Over.comp_left, Category.assoc, Category.assoc, m.act])`. Establish `key : ∀ u : Fin n → V, IsEigFrame t'.act x' σ (fun i => M'.pt (u i)) ↔ IsEigFrame t.act (x' ≫ f) σ (fun i => M.pt (u i))` using `fun u => (LieEigFrame.isEigFrame_pt_iff _ _ _ _ _ M' _ t'.act ρ σ n u hρ').trans (LieEigFrame.isEigFrame_pt_iff _ _ _ _ _ M _ t.act ρ σ n u hρ).symm`. Use `⟨fun v h => ?_, fun v h => ?_⟩` and prove the remaining obligations. Use `choose u hu using fun i => M'.onto (v i) (h.1 i).1`. Take `rfl : (fun k => M'.pt (u k)) = v` from `funext hu`.
+
+Conclude with `⟨_, (key u).1 h, fun i => (hM _).symm⟩`. Use `choose u hu using fun i => M.onto (v i) (h.1 i).1`. Take `rfl : (fun k => M.pt (u k)) = v` from `funext hu`. Conclude with `⟨_, (key u).2 h, fun i => (hM _).symm⟩`.
+-/
 theorem frame_transfer {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' : Scheme.{0}}
     {t' : SAB H S'} {t : SAB H S} {f : S' ⟶ S} (m : SABMap t' t f) {R : Type} [CommRing R] (x' : Sp R ⟶ S')
     (x : Sp R ⟶ S) (hx : x = x' ≫ f) (σ : 𝓞 E →+* R) (n : ℕ) :
@@ -177,11 +230,25 @@ theorem frame_transfer {E : Type} [Field E] [NumberField E] [IsCMField E] {H : H
     obtain rfl : (fun k => M.pt (u k)) = v := funext hu
     exact ⟨_, (key u).2 h, fun i => (hM _).symm⟩
 
+/- English proof (translation)
+Take `⟨PP', cub, sym, adj, prim, m₁, -⟩` from `sabPull Out.proved_CubePullSt f t`. Conclude with `⟨_, ⟨m₁⟩⟩`.
+-/
 theorem exists_sab {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' : Scheme.{0}} (f : S' ⟶ S)
     (t : SAB H S) : ∃ t' : SAB H S', Nonempty (SABMap t' t f) := by
   obtain ⟨PP', cub, sym, adj, prim, m₁, -⟩ := sabPull Out.proved_CubePullSt f t
   exact ⟨_, ⟨m₁⟩⟩
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `hne`. Take `⟨_, ⟨W, hW, rfl⟩, hxW, hWU⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hx hU`. Use `replace hW : IsAffineOpen W := hW`. Use `haveI : IsOpenImmersion hW.fromSpec := hW.isOpenImmersion_fromSpec`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective (hW.fromSpec ≫ s)`.
+
+Establish `hft : ψ.hom.FiniteType`. Establish `: LocallyOfFiniteType (Spec.map ψ)`. Rewrite using `[hψ]`. Conclude with `MorphismProperty.comp_mem @LocallyOfFiniteType _ _ inferInstance ‹_›`. Conclude with `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).1 this`.
+
+Establish `hr : Set.range hW.fromSpec = (W : Set X)` using `hW.range_fromSpec`. Take `⟨q, -⟩ : x ∈ Set.range hW.fromSpec` from `hr ▸ hxW`. Use `haveI : Nontrivial Γ(X, W) := PrimeSpectrum.nonempty_iff_nontrivial.1 ⟨q⟩`. Take `⟨m, hm⟩` from `Ideal.exists_maximal Γ(X, W)`. Use `letI := Ideal.Quotient.field m`.
+
+Use `⟨Γ(X, W) ⧸ m, inferInstance, (Ideal.Quotient.mk m).comp ψ.hom, spMap (Ideal.Quotient.mk m) ≫ hW.fromSpec, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `RingHom.finite_iff_finiteType_of_isJacobsonRing.2 ((RingHom.FiniteType.of_surjective _ Ideal.Quotient.mk_surjective).comp hft)`. Rewrite using `[Category.assoc, ← hψ]`. Conclude with `(Spec.map_comp _ _).symm`. Introduce and unpack `_ ⟨p, rfl⟩`.
+
+Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `hWU (hr ▸ ⟨_, rfl⟩)`.
+-/
 theorem exists_point {X : Scheme.{0}} {F : Type} [Field F] (s : X ⟶ Sp F) [LocallyOfFiniteType s] (U : Set X)
     (hU : IsOpen U) (hne : U.Nonempty) : ∃ (L : Type) (_ : Field L) (β : F →+* L) (y : Sp L ⟶ X),
       β.Finite ∧ y ≫ s = spMap β ∧ Set.range y ⊆ U := by
@@ -210,6 +277,25 @@ theorem exists_point {X : Scheme.{0}} {F : Type} [Field F] (s : X ⟶ Sp F) [Loc
     rw [Scheme.Hom.comp_apply]
     exact hWU (hr ▸ ⟨_, rfl⟩)
 
+/- English proof (translation)
+Use `haveI := c.fin`. Use `haveI := Xo.smooth`. Use `haveI : Smooth Xo.s := SmoothOfRelativeDimension.smooth D.dim Xo.s`. Use `haveI := Xo.univ.t.semi.smooth`. Take `⟨L, _, β, y, hfin, hy, hyU⟩` from `exists_point (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)) U hU hne`.
+
+Set `k` to `AlgebraicClosure L`. Set `βk : c.F →+* k` to `(algebraMap L k).comp β`. Establish `hxs : (spMap (algebraMap L k) ≫ under y) ≫ Xo.s = spMap (βk.comp (IntermediateField.inclusion c.le).toRingHom)`. Rewrite using `[Category.assoc, Category.assoc, pullback.condition, ← Category.assoc y, hy, ← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression.
+
+Establish `hdet` using `(Xo.univ.geom k _ _ hxs).1`. Establish `h0 : tauIn c τ H.rt = (IntermediateField.inclusion c.le).toRingHom (baseKA l).ρ` using `Subtype.ext hτ`. Establish `h1 : tauIn c (ComplexEmbedding.conjugate τ) H.rt ≠ (IntermediateField.inclusion c.le).toRingHom (baseKA l).ρ`. Introduce `h`. Establish `h' : starRingEnd ℂ (τ (H.rt : E)) = H.rt0` using `congrArg Subtype.val h`.
+
+Rewrite `h'` using `[hτ]`. Take `⟨a, ha⟩` from `Complex.conj_eq_iff_real.1 h'`. Establish `h2` using `H.sqrt_neg_disc_sq`. Rewrite `h2` using `[ha]`. Establish `h3 : a ^ 2 = -(H.d : ℝ)` using `by exact_mod_cast h2`.
+
+Establish `h4 : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Use polynomial arithmetic with `[sq_nonneg a]`. Take `⟨v, hv⟩ : ∃ v : Fin D.p → (epsAt (spMap (algebraMap L k) ≫ under y) ⟶ Xo.univ.t.G), IsEigFrame Xo.univ.t.act _ (βk.comp (tauIn c τ)) v` from `(hdet (βk.comp (tauIn c τ))).1 (congrArg βk h0)`. Take `⟨w, hw⟩ : ∃ w : Fin D.q → (epsAt (spMap (algebraMap L k) ≫ under y) ⟶ Xo.univ.t.G), IsEigFrame Xo.univ.t.act _ (βk.comp (tauIn c (ComplexEmbedding.conjugate τ))) w` from `(hdet (βk.comp (tauIn c (ComplexEmbedding.conjugate τ)))).2 fun h => h1 (βk.injective h)`. Take `⟨Z₁, hZ₁, H₁⟩` from `frame_descend (algebraMap L k) (under y) _ rfl _ _ v hv`.
+
+Take `⟨Z₂, hZ₂, H₂⟩` from `frame_descend (algebraMap L k) (under y) _ rfl _ _ w hw`. Set `K` to `IntermediateField.adjoin L (Z₁ ∪ Z₂)`. Use `haveI : Finite (Z₁ ∪ Z₂ : Set k) := (hZ₁.union hZ₂).to_subtype`. Use `haveI : FiniteDimensional L K := IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Set `βK : c.F →+* K` to `(algebraMap L K).comp β`.
+
+Establish `hβK : βK.Finite` using `(RingHom.finite_algebraMap.2 inferInstance).comp hfin`. Use `haveI : CharZero K := βK.charZero_iff βK.injective |>.1 inferInstance`. Use `haveI : NumberField c.F := { }`. Use `haveI : NumberField K := by`. Use `letI := βK.toAlgebra`.
+
+Use `haveI : Module.Finite c.F K := hβK`. Conclude with `NumberField.of_module_finite c.F K`. Establish `hZ : Z₁ ∪ Z₂ ⊆ Set.range (algebraMap K k)` using `fun z hz => ⟨⟨z, IntermediateField.subset_adjoin _ _ hz⟩, rfl⟩`. Take `⟨v', hv', -⟩` from `H₁ K (algebraMap K k) (algebraMap L K) (βK.comp (tauIn c τ)) (under (spMap (algebraMap L K) ≫ y)) (algebraMap K k).injective (Set.subset_union_left.trans hZ) rfl rfl (Category.assoc _ _ _)`. Take `⟨w', hw', -⟩` from `H₂ K (algebraMap K k) (algebraMap L K) (βK.comp (tauIn c (ComplexEmbedding.conjugate τ))) (under (spMap (algebraMap L K) ≫ y)) (algebraMap K k).injective (Set.subset_union_right.trans hZ) rfl rfl (Category.assoc _ _ _)`.
+
+Use `⟨K, inferInstance, inferInstance, βK, spMap (algebraMap L K) ≫ y, v', w', ?_, ?_, hv', hw'⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hy, ← Spec.map_comp]`. Both sides reduce to the same expression. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `hyU ⟨spMap (algebraMap L K) p, (Scheme.Hom.comp_apply _ _ _).symm⟩`.
+-/
 theorem exists_framed {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     (Xo : Moduli D l) (c : Coeff l) (U : Set (Xo.XF c)) (τ : E →+* ℂ) (hτ : τ (H.rt : E) = H.rt0) (hU : IsOpen U)
     (hne : U.Nonempty) : ∃ (K : Type) (_ : Field K) (_ : NumberField K) (β : c.F →+* K) (y : Sp K ⟶ Xo.XF c)
@@ -271,6 +357,13 @@ theorem exists_framed {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Ho
   · rintro _ ⟨p, rfl⟩
     exact hyU ⟨spMap (algebraMap L K) p, (Scheme.Hom.comp_apply _ _ _).symm⟩
 
+/- English proof (translation)
+Take `⟨y, hy, H⟩` from `exists_integral_multiples ℤ ℚ hZ.toFinset`. Use `⟨y.natAbs, Int.natAbs_pos.2 hy, fun z hz => ?_⟩` and prove the remaining obligations. Establish `h` using `H z (hZ.mem_toFinset.2 hz)`. Break down `Int.natAbs_eq y with e | e` into its components or cases. Use `⟨⟨y • z, h⟩, ?_⟩ show y • z = _` and prove the remaining obligations.
+
+Rewrite using `[zsmul_eq_mul]`. Use `nth_rewrite 1 [e]`. Simplify using the standard rewrite rules. Use `⟨⟨-(y • z), h.neg⟩, ?_⟩ show -(y • z) = _` and prove the remaining obligations. Rewrite using `[zsmul_eq_mul]`.
+
+Use `nth_rewrite 1 [e]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_denom {K : Type} [Field K] [NumberField K] (Z : Set K) (hZ : Z.Finite) :
     ∃ n : ℕ, 0 < n ∧ ∀ z ∈ Z, ∃ a : 𝓞 K, (a : K) = n * z := by
   obtain ⟨y, hy, H⟩ := exists_integral_multiples ℤ ℚ hZ.toFinset
@@ -288,6 +381,15 @@ theorem exists_denom {K : Type} [Field K] [NumberField K] (Z : Set K) (hZ : Z.Fi
     nth_rewrite 1 [e]
     simp
 
+/- English proof (translation)
+Use `haveI := T.semi.smooth`. Take `⟨vK, hvK, eK⟩` from `(frame_transfer m (𝟙 _) (under y) (Category.id_comp _).symm σ n).2 v hv`. Take `⟨vT, hvT, eT⟩` from `(frame_transfer m₀ (𝟙 _) (spMap f) (Category.id_comp _).symm σ n).1 vK hvK`. Take `⟨Z, hZ, HZ⟩` from `frame_descend f (𝟙 _) (spMap f) (Category.comp_id _).symm T.act σ vT hvT`. Use `⟨Z, hZ, fun V _ _ r σV TV mV m' hg hZg hr hσ hm => ?_⟩` and prove the remaining obligations.
+
+Take `⟨v', hv', e'⟩` from `HZ V (algebraMap V K) r σV (spMap r) hg hZg hr hσ (Category.comp_id _).symm`. Take `⟨vV, hvV, eV⟩` from `(frame_transfer mV (𝟙 _) (spMap r) (Category.id_comp _).symm σV n).2 v' hv'`. Use `⟨σV, vV, hσ, hvV, fun a => ⟨(vK a).left, eK a, ?_⟩⟩` and prove the remaining obligations. Establish `hp : IsPullback mV.φ TV.G.hom T.G.hom (spMap r)` using `mV.cart.1`. Establish `hq : IsPullback m'.φ tK.G.hom TV.G.hom (spMap (algebraMap V K))` using `m'.cart.1`.
+
+Apply `hp.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, ← hm, eT, e', Category.assoc, eV]`. Establish `a₁ : (vK a).left ≫ tK.G.hom = spMap (algebraMap K (DualNumber K)) ≫ 𝟙 _` using `Over.w (vK a)`. Establish `a₂ : (vV a).left ≫ TV.G.hom = spMap (algebraMap V (DualNumber V)) ≫ 𝟙 _` using `Over.w (vV a)`. Rewrite using `[Category.assoc, hq.w, ← Category.assoc, a₁, Category.assoc, Category.assoc, a₂, Category.comp_id, Category.id_comp, ← Spec.map_comp, ← Spec.map_comp]`.
+
+Use `congr 1`. Use `CommRingCat.hom_ext (RingHom.ext fun z => ?_)` and prove the remaining obligations. Use `show algebraMap K (DualNumber K) (algebraMap V K z) = dualMap (algebraMap V K) (algebraMap V (DualNumber V) z)`. Apply the tactic sequence `ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem intFrame {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     {Xo : Moduli D l} {c : Coeff l} {K R : Type} [Field K] [CommRing R] {y : Sp K ⟶ Xo.XF c} {tK : SAB H (Sp K)}
     (m : SABMap tK Xo.univ.t (under y)) {T : SAB H (Sp R)} (f : R →+* K) (m₀ : SABMap tK T (spMap f))
@@ -317,6 +419,9 @@ theorem intFrame {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     show algebraMap K (DualNumber K) (algebraMap V K z) = dualMap (algebraMap V K) (algebraMap V (DualNumber V) z)
     ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ m n`.
+-/
 theorem exists_cancel {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' S'' : Scheme.{0}}
     {t : SAB H S} {t' : SAB H S'} {t'' : SAB H S''} {f : S' ⟶ S} (g : S'' ⟶ S') {h : S'' ⟶ S} (e : h = g ≫ f)
     (m : SABMap t' t f) (n : SABMap t'' t h) : ∃ m' : SABMap t'' t' g, n.φ = m'.φ ≫ m.φ := by
@@ -329,6 +434,23 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 open LinePointFrame in
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c U τ φ hτ hU hne hφ`. Use `haveI := c.fin`. Use `haveI : NumberField c.F := { }`. Take `⟨K, _, _, β, y, v, w, hfr⟩` from `exists_framed Xo c U τ hτ hU hne`. Take `⟨tK, ⟨m⟩⟩` from `LinePointFrame.exists_sab (under y) Xo.univ.t`.
+
+Establish `hprop : IsProper tK.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) m.cart.1 Xo.univ.proper`. Take `⟨n₀, hn₀, T, f, hf, ⟨m₀⟩⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.abelianTriple_spreads_out E H K tK hprop`. Take `⟨Z₁, hZ₁, H₁⟩` from `intFrame m f m₀ _ v hfr.2.2.1`. Take `⟨Z₂, hZ₂, H₂⟩` from `intFrame m f m₀ _ w hfr.2.2.2`. Establish `hφ0 : φ K y v w ≠ 0` using `hφ.ne K β y v w hfr`.
+
+Take `⟨n, hn, Hn⟩` from `exists_denom (Z₁ ∪ Z₂ ∪ {φ K y v w, (φ K y v w)⁻¹, (n₀ : K)⁻¹}) ((hZ₁.union hZ₂).union (Set.toFinite _))`. Use `⟨n, hn, fun p κ t hp ht => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `PositivityTheory.Xgf.exists_extension_embedding_alg_closed c.F K ℂ_[p] β κ`. Take `⟨V, hV, hjV, hOV, hnV⟩` from `GlobalTheory.CompanionTheory.Ar.Fl.ValRing.exists_dvr_of_padic_embedding K p j`. Establish `hle : ∀ z ∈ Z₁ ∪ Z₂ ∪ {φ K y v w, (φ K y v w)⁻¹, (n₀ : K)⁻¹}, ‖j z‖ ≤ 1` using `fun z hz => by`.
+
+Take `⟨a, ha⟩` from `Hn z hz`. Use `(hjV _).2 (hOV a)` as an intermediate fact. Rewrite `this` using `[ha, map_mul, norm_mul, hnV n hp, _root_.one_mul]`. Then use the resulting hypothesis. Establish `hrange : ∀ a : K, ‖j a‖ ≤ 1 ↔ a ∈ (algebraMap V K).range` using `fun a => (hjV a).trans ⟨fun h => ⟨⟨a, h⟩, rfl⟩, fun ⟨b, hb⟩ => hb ▸ b.2⟩`. Establish `hn₀K : (n₀ : K) ≠ 0` using `fun h => hn₀ (RingOfIntegers.coe_eq_zero_iff.1 h)`.
+
+Establish `hfV : ∀ x, f x ∈ V.toSubring` using `fun x => by`. Take `⟨k, a, hx⟩` from `IsLocalization.Away.surj n₀ x`. Establish `h1` using `congrArg f hx`. Rewrite `h1` using `[map_mul, map_pow, hf, hf]`. Establish `h2 : f x = (a : K) * ((n₀ : K)⁻¹) ^ k`.
+
+Rewrite using `[← h1, inv_pow, mul_inv_cancel_right₀ (pow_ne_zero k hn₀K)]`. Rewrite using `[h2]`. Conclude with `mul_mem (hOV a) (pow_mem ((hjV _).1 (hle _ (by simp))) k)`. Establish `hσV : ∀ (σ : 𝓞 E →+* K) (x : 𝓞 E), σ x ∈ V.toSubring` using `fun σ x => hOV ⟨σ x, (RingOfIntegers.isIntegral x).map σ.toIntAlgHom⟩`. Set `r : Localization.Away n₀ →+* V` to `f.codRestrict V.toSubring hfV`.
+
+Take `⟨TV, ⟨mV⟩⟩` from `LinePointFrame.exists_sab (spMap r) T`. Take `⟨m', hm'⟩` from `exists_cancel (spMap (algebraMap V K)) (h := spMap f) (by rw [← Spec.map_comp]; rfl) mV m₀`. Establish `key` using `ht V K j β y v w TV tK m m' hrange hj hfr (H₁ V r (RingHom.codRestrict (β.comp (tauIn c τ)) V.toSubring (hσV _)) TV mV m' Subtype.val_injective (fun z hz => (hrange z).1 (hle z (Or.inl (Or.inl hz)))) rfl rfl hm') (H₂ V r (RingHom.codRestrict (β.comp (tauIn c (ComplexEmbedding.con …`. Establish `a₁` using `hle (φ K y v w) (by simp)`. Establish `a₂` using `hle (φ K y v w)⁻¹ (by simp)`.
+
+Establish `a₃ : 0 < ‖j (φ K y v w)‖` using `norm_pos_iff.2 ((map_ne_zero j).2 hφ0)`. Rewrite `a₂` using `[map_inv₀, norm_inv, inv_le_one₀ a₃]`. Rewrite using `[← key, le_antisymm a₁ a₂, Real.log_one]`.
+-/
 theorem line_function_norm_zero_away : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (U : Set (Xo.XF c)) (τ : E →+* ℂ) (φ : FrameFn Xo c), τ (H.rt : E) = H.rt0 → IsOpen U → U.Nonempty → IsLineFn U τ φ → ∃ n : ℕ, 0 < n ∧ ∀ (p : Nat.Primes) (κ : c.F →+* ℂ_[p]) (t : ℝ), ¬ (p : ℕ) ∣ n → HasFinNorm U τ φ p κ t → t = 0 := by
   intro E _ _ _ H D l Xo c U τ φ hτ hU hne hφ
   haveI := c.fin

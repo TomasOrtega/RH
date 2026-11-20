@@ -22,6 +22,29 @@ noncomputable section
 namespace GlobalTheory.Fam.RatDec
 variable {D : D7}
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W u hP a hLz hT0`. Establish `hxi : D.host.xi0 ≠ 0` using `GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero`. Establish `hN : D.host.xi0 * star D.host.xi0 ≠ 0` using `mul_ne_zero hxi (star_ne_zero.2 hxi)`. Take `⟨lam0, hlam0, hB⟩` from `GlobalTheory.Core.Mi.exists_sBes_scaled_dual D W.S.X W.Q.instEq u W.Q.Rl.ψ _ (W.S.tr u) hP.bot.idE W.Q.stdChar`. Take `⟨B, hA, hvA, hz, he, he'⟩` from `hB 1 (a.x 0).vol one_ne_zero`.
+
+Establish `hz1 : ∀ k, (B.d.i₀ *ᵥ vecB B.o B.ζ) k = W.S.X.ιE (W.S.X.zR u (Fin.cast (GlobalTheory.Core.Mi.rank_eq W.S.X W.Q.instEq) k))` using `fun k => by rw [hz k, one_mul]`. Establish `hB0` using `sbes_norm B hP.bot.idE hz1`. Establish `hI` using `GlobalTheory.T.exists_thetaLiftSpaces_positiveIndex_with_lineNorms D u (fun j hj => D.X_posDef j hj)`. Establish `hbes : ∀ j ρ (h : j + 2 * ρ + 2 = D.R.m), ∃ b : BesAt (Yc D j) (D.sp.X j) ρ, star b.ζ ⬝ᵥ b.L.gram *ᵥ b.ζ * (D.host.xi0 * star D.host.xi0) ^ (j / 2) = -(((D.mem u).A.T : ℕ) : D.host.E)`. Introduce `j ρ h`.
+
+Take `⟨V, b, hr, hs, hsig, hn⟩` from `hI.1 j ρ h`. Take `⟨b2, hb2⟩` from `bes_to_Yc j ρ (by omega) b hr hs hsig`. Conclude with `⟨b2, by rw [hb2]; exact hn⟩`. Use `choose b' hb' using hbes`. Establish `hjac : ∀ j ρ, j + 2 * ρ + 2 = D.R.m → Nonempty (JacAt (Yc D (j + 1)) (D.sp.X (j + 1)) ρ)`.
+
+Introduce `j ρ h`. Take `⟨V, b, hr, hs, hsig⟩` from `hI.2 j ρ h`. Conclude with `jac_to_Yc (j + 1) ρ (by omega) b hr hs hsig`. Take `⟨bes, hbes_def⟩ : ∃ f, f = besF (besOf B) b'` from `⟨_, rfl⟩`. Establish `h0 : 0 + 2 * D.R.rS + 2 = D.R.m` using `by show 0 + 2 * (D.R.m / 2 - 1) + 2 = D.R.m`.
+
+Take `⟨k, hk⟩` from `D.R.m_even`. Use `D.R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hbes0 : bes 0 D.R.rS h0 = besOf B` using `by rw [hbes_def]; rfl`. Establish `hnorm : ∀ j ρ h, star (bes j ρ h).ζ ⬝ᵥ (bes j ρ h).L.gram *ᵥ (bes j ρ h).ζ * (D.host.xi0 * star D.host.xi0) ^ (j / 2) = -(((D.mem u).A.T : ℕ) : D.host.E)`.
+
+Rewrite using `[hbes_def]`. Conclude with `besF_norm (besOf B) b' _ _ hB0 hb'`. Establish `hlnk : ∀ j σ (h : j + 2 * (σ + 1) + 2 = D.R.m), Nonempty (Link ((bes j (σ + 1) h).lev (a.x j).vol) (bes (j + 1 + 1) σ (idx_step h)).L (bes (j + 1 + 1) σ (idx_step h)).ζ)`. Introduce `j σ h`. Establish `hn1` using `hnorm j (σ + 1) h`.
+
+Establish `hn2` using `hnorm (j + 1 + 1) σ (idx_step h)`. Establish `e : (j + 1 + 1) / 2 = j / 2 + 1` using `by omega`. Rewrite `hn2` using `[e, pow_succ]`. Establish `hrel : star (bes j (σ + 1) h).ζ ⬝ᵥ (bes j (σ + 1) h).L.gram *ᵥ (bes j (σ + 1) h).ζ = D.host.xi0 * star D.host.xi0 * (star (bes (j + 1 + 1) σ (idx_step h)).ζ ⬝ᵥ (bes (j + 1 + 1) σ (idx_step h)).L.gram *ᵥ (bes (j + 1 + 1) σ (idx_step h)).ζ)`. Apply `mul_right_cancel₀ (pow_ne_zero (j / 2) hN)` to reduce the goal to its premises.
+
+Rewrite using `[hn1]`. Take the linear combination `-hn2`. Establish `hl` using `(GlobalTheory.Unf.LinkExist.link_of_norm D (σ + 1) ((bes j (σ + 1) h).lev (a.x j).vol) (bes (j + 1 + 1) σ (idx_step h)).L (bes (j + 1 + 1) σ (idx_step h)).ζ D.host.xi0 (bes (j + 1 + 1) σ (idx_step h)).line hrel).2`. Rewrite `hl` using `[div_self hxi, one_smul]`. Then use the resulting hypothesis. Establish `hvol` using `GlobalTheory.Unf.VolExist.measures_exist D`.
+
+Establish `hrelT : ∀ j (h : j + 2 * 0 + 2 = D.R.m), star (-D.host.xi0 ^ (D.R.m / 2)) * (-D.host.xi0 ^ (D.R.m / 2)) * (star (bes j 0 h).ζ ⬝ᵥ (bes j 0 h).L.gram *ᵥ (bes j 0 h).ζ) = -(D.host.xi0 * star D.host.xi0) * (star a.ζ₀ ⬝ᵥ a.Lz.gram *ᵥ a.ζ₀)`. Introduce `j h`. Establish `hn` using `hnorm j 0 h`. Establish `e : D.R.m / 2 = j / 2 + 1` using `by omega`. Establish `hl : star (-D.host.xi0 ^ (D.R.m / 2)) * (-D.host.xi0 ^ (D.R.m / 2)) = (D.host.xi0 * star D.host.xi0) ^ (D.R.m / 2)`.
+
+Rewrite using `[star_neg, star_pow, neg_mul_neg, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hl, e, pow_succ, hT0]`. Take the linear combination `(D.host.xi0 * star D.host.xi0) * hn`. Use `⟨⟨bes, fun j ρ h => (hjac j ρ h).some, fun j σ h => (hlnk j σ h).some, fun j σ h => (hvol.2.2.1 _ _).some, fun j h => Matrix.of fun i k => -D.host.xi0 ^ (D.R.m / 2) * (bes j 0 h).ζ i / a.ζ₀ k⟩, B, h0, ?_, ?_, hA, ⟨1, lam0, one_ne_zero, hlam0, hz, he, he'⟩, hB0, hz1⟩` and prove the remaining obligations.
+
+Introduce `j h`. Conclude with `tau_line (bes j 0 h).line.1 hLz.1 _ _ _ _ _ _ hLz.2 (hrelT j h)`. Use `show B.lev = (bes 0 D.R.rS h0).lev (a.x 0).vol`. Rewrite using `[hbes0, ← hvA]`. Both sides reduce to the same expression.
+-/
 theorem exists_yRat_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (u : D.what₂.Word), _root_.GlobalTheory.Fam.PackageHypotheses W → ∀ a : XGeo D, IsLineVec a.Lz a.ζ₀ → star a.ζ₀ ⬝ᵥ a.Lz.gram *ᵥ a.ζ₀ = (((D.mem u).A.T : ℕ) : D.host.E) → ∃ (y : YRat a) (B : GlobalTheory.Core.Mi.SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)) (h0 : 0 + 2 * D.R.rS + 2 = D.R.m), y.Tau (-D.host.xi0 ^ (D.R.m / 2)) ∧ B.lev = (y.bes 0 D.R.rS h0).lev (a.x 0).vol ∧ B.Adapted (W.S.tr u).wt ∧ GlobalTheory.MiTop.Framed B ∧ star B.ζ ⬝ᵥ B.L.gram *ᵥ B.ζ = -(((D.mem u).A.T : ℕ) : D.host.E) ∧ ∀ k, (B.d.i₀ *ᵥ vecB B.o B.ζ) k = W.S.X.ιE (W.S.X.zR u (Fin.cast (GlobalTheory.Core.Mi.rank_eq W.S.X W.Q.instEq) k)) := by
   intro D L hT Gi Gl Kc Yd cX ex W u hP a hLz hT0
   have hxi : D.host.xi0 ≠ 0 := GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero

@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Deter
 
 open Polynomial UpperTheory.V.W
 
+/- English proof (translation)
+Introduce `n A G _ _ D D' h`. Use `GDet.ext fun B _ _ x => ?_` and prove the remaining obligations. Take `⟨m, g, b, rfl⟩` from `UpperTheory.V.AlgebraTools.Det.genSpan (A := A) B x`. Rewrite using `[UpperTheory.V.AlgebraTools.Det.genEval D B m (fun j => MonoidAlgebra.single (g j) 1) b, UpperTheory.V.AlgebraTools.Det.genEval D' B m (fun j => MonoidAlgebra.single (g j) 1) b, h]`.
+-/
 theorem UpperTheory.V.AlgebraTools.Det.extGen :
     ∀ {n : ℕ} {A G : Type} [CommRing A] [Group G] (D D' : GDet n A G),
     (∀ (m : ℕ) (g : Fin m → G), D.D (MvPolynomial (Fin m) A) (GDet.gen fun j => MonoidAlgebra.single (g j) 1) =

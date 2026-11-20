@@ -3,6 +3,23 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `O V _ _ _ _ _ _ N hN W`. Use `set K := FractionRing O`. Establish `hV : IsBaseChange K (LinearMap.id : V →ₗ[O] V)` using `(isLocalizedModule_iff_isBaseChange (nonZeroDivisors O) K _).1 (isLocalizedModule_id (nonZeroDivisors O) V K)`. Establish `hVt : ∀ (c : K) (v : V), hV.equiv (c ⊗ₜ[O] v) = c • v` using `fun c v => by`. Rewrite using `[IsBaseChange.equiv_tmul]`.
+
+Both sides reduce to the same expression. Set `fN : K ⊗[O] N →ₗ[K] V` to `hV.equiv.toLinearMap ∘ₗ N.subtype.baseChange K`. Establish `hfN : ∀ y : N, fN (1 ⊗ₜ y) = y` using `fun y => by simp [fN, hVt]`. Establish `hinjN : Function.Injective fN` using `hV.equiv.injective.comp (Module.Flat.lTensor_preserves_injective_linearMap (M := K) N.subtype N.injective_subtype)`. Establish `hsurjN : Function.Surjective fN`.
+
+Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hN, Submodule.span_le]`. Conclude with `fun y hy => ⟨1 ⊗ₜ ⟨y, hy⟩, hfN _⟩`. Establish `hbN : IsBaseChange K N.subtype` using `IsBaseChange.of_equiv (LinearEquiv.ofBijective fN ⟨hinjN, hsurjN⟩) (fun y => hfN y)`. Use `haveI hlN : IsLocalizedModule (nonZeroDivisors O) N.subtype := (isLocalizedModule_iff_isBaseChange (nonZeroDivisors O) K N.subtype).2 hbN`. Use `set N' := N ⊓ W.restrictScalars O`.
+
+Set `e : K ⊗[O] N' →ₗ[K] V` to `hV.equiv.toLinearMap ∘ₗ N'.subtype.baseChange K`. Establish `het : ∀ (c : K) (x : N'), e (c ⊗ₜ[O] x) = c • (x : V)` using `fun c x => by`. Simplify using `[e, hVt]`. Use `⟨e, hV.equiv.injective.comp (Module.Flat.lTensor_preserves_injective_linearMap (M := K) N'.subtype N'.injective_subtype), ?_, het⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨t, rfl⟩`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c x => rw [het]`. Conclude with `W.smul_mem c x.2.2`.
+
+Consider the case `add a b ha hb => rw [map_add]`. Conclude with `W.add_mem ha hb`. Introduce `v hv`. Take `⟨⟨n, d⟩, hd⟩` from `IsLocalizedModule.surj (nonZeroDivisors O) N.subtype v`. Establish `hdv : (d : O) • v = (n : V)` using `hd`.
+
+Establish `hdK : (d : O) • v = algebraMap O K d • v` using `(algebraMap_smul K (d : O) v).symm`. Establish `hW : (n : V) ∈ W` using `by rw [← hdv, hdK]; exact W.smul_mem _ hv`. Establish `hne : algebraMap O K d ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors d.2`. Use `⟨(algebraMap O K d)⁻¹ ⊗ₜ[O] (⟨n, n.2, hW⟩ : N'), ?_⟩` and prove the remaining obligations. Rewrite using `[het]`.
+
+Use `show (algebraMap O K d)⁻¹ • (n : V) = v`. Rewrite using `[← hdv, hdK, smul_smul, inv_mul_cancel₀ hne, one_smul]`.
+-/
 theorem baseChange_inf_lattice_eq_subspace : ∀ {O V : Type} [CommRing O] [IsDomain O] [AddCommGroup V]
     [Module (FractionRing O) V] [Module O V]
     [IsScalarTower O (FractionRing O) V] (N : Submodule O V),

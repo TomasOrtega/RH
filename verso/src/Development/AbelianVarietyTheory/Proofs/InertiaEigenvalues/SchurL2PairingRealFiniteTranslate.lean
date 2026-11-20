@@ -15,6 +15,21 @@ noncomputable section
 
 namespace GlobalTheory.RawLift
 
+/- English proof (translation)
+Introduce `hP D G _ _ Pl0 T A Ks _ _ _ R F hL i hLP v x y u hu γ hγ`. Establish `hθ : IsInfFam R.θ` using `hL.models.inf`. Take `⟨-, hr, -⟩` from `hL.models.HW i (sg0 D A)`. Establish `hHaar : (R.νW i).IsHaarMeasure` using `(hL.models.νW i).1.1`. Establish `hfd : IsFundamentalDomain (GQ (Wc D i)) (R.fdW i) (R.νW i)` using `(hL.models.νW i).2`.
+
+Establish `hTm : IsMultMap R.θ (R.MW i (sg0 D A)) (levS _ (R.βW i) (R.datWp i R.triv)) (levChi _ (R.βW i) (R.datWp i R.triv)) ((R.HW i (sg0 D A)).e x)` using `(GlobalTheory.MultMem.mem_mult_iff ..).1 (by`. Establish `: (R.HW i (sg0 D A)).e x ∈ R.Wall i (sg0 D A)` using `hr ▸ LinearMap.mem_range_self _ x`. Conclude with `this)`. Establish `hTm' : IsMultMap R.θ (R.MW i (sg0 D A)) (levS _ (R.βW i) (R.datWp i R.triv)) (levChi _ (R.βW i) (R.datWp i R.triv)) ((R.HW i (sg0 D A)).e y)` using `(GlobalTheory.MultMem.mem_mult_iff ..).1 (by`. Establish `: (R.HW i (sg0 D A)).e y ∈ R.Wall i (sg0 D A)` using `hr ▸ LinearMap.mem_range_self _ y`.
+
+Conclude with `this)`. Use `set J' : Set (GA D (Wc D i)) := {k | k ∈ levW R i ∧ γ⁻¹ * k * γ ∈ levW R i} with hJ'`. Establish `hT1 : IsMultMap R.θ (R.MW i (sg0 D A)) J' (fun _ => 1) ((R.HW i (sg0 D A)).e x)` using `⟨hTm.aut, hTm.cusp, fun w k hk g => by rw [hTm.lev w k hk.1 g, hLP.2.1 k hk.1], hTm.equiv, hTm.cont⟩`. Establish `hT2 : IsMultMap R.θ (R.MW i (sg0 D A)) J' (fun _ => 1) (heckeOn (R.MW i (sg0 D A)) {γ} ((R.HW i (sg0 D A)).e y))`. Establish `hT3 : IsMultMap R.θ (R.MW i (sg0 D A)) J' (fun _ => 1) ((R.HW i (sg0 D A)).e y)` using `⟨hTm'.aut, hTm'.cusp, fun w k hk g => by rw [hTm'.lev w k hk.1 g, hLP.2.1 k hk.1], hTm'.equiv, hTm'.cont⟩`.
+
+Use `GlobalTheory.SphericalOps.isMultMap_heckeOn hT3 (fun k hk => ?_) (fun w k hk g => ?_)` and prove the remaining obligations. Rewrite `hk` using `[Finset.mem_singleton]`. Conclude with `hk ▸ hγ`. Simplify using `only [heckeLin_apply, Finset.sum_singleton, one_mul]`. Establish `e : g * k * γ = g * γ * (γ⁻¹ * k * γ)` using `by group`.
+
+Rewrite using `[e, hTm'.lev w _ hk.2 (g * γ), hLP.2.1 _ hk.2, one_mul]`. Take `⟨c, hc⟩` from `GlobalTheory.MultFinite.schurMult (θ := R.θ) (M := R.MW i (sg0 D A)) (J := J') (χ := fun _ => 1) hP (R.νW i) (R.fdW i) hθ hHaar hfd _ ((GlobalTheory.MultMem.mem_mult_iff ..).2 hT1) _ ((GlobalTheory.MultMem.mem_mult_iff ..).2 hT2)`. Establish `hip` using `ipM_spec _ _ _ _ _ ⟨c, hc⟩`. Take `⟨v', hv', hmove⟩` from `GlobalTheory.RealPointMove.translate_eq_move D R.θ hθ (Wc D i) _ (R.MW i (sg0 D A)) J' (fun _ => 1) _ hT2 u hu (fun ρ => (v ρ : (R.MW i (sg0 D A)).sm ρ))`. Establish `htr : trPair R i γ x y = dimProd A i * ipM (R.MW i (sg0 D A)) (R.νW i) (R.fdW i) ((R.HW i (sg0 D A)).e x) (heckeOn (R.MW i (sg0 D A)) {γ} ((R.HW i (sg0 D A)).e y))` using `rfl`.
+
+Establish `hint : ∀ z, star (val R i v x z) * val R i v y (z * (u * γ)) = star ((R.HW i (sg0 D A)).e x (fun ρ => (v ρ : (R.MW i (sg0 D A)).sm ρ)) z) * heckeOn (R.MW i (sg0 D A)) {γ} ((R.HW i (sg0 D A)).e y) v' z` using `fun z => by`. Rewrite using `[← hmove z]`. Simplify using `[val, heckeOn, postOn_apply, heckeLin_apply, mul_assoc]`. Repeatedly rewrite using `[hint]`. Rewrite using `[(hip (fun ρ => (v ρ : (R.MW i (sg0 D A)).sm ρ)) v').2, htr, mul_assoc]`.
+
+Use `congr 2`. Use `Finset.prod_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[hv' ρ]`.
+-/
 theorem schur_trPair_real_fin : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → ∀ i, LevProd R i → ∀ (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) (x y : (R.HW i (sg0 D A)).H), ∀ u ∈ GinfC (Wc D i), ∀ γ ∈ GfC (Wc D i), dimProd A i * ∫ z in R.fdW i, star (val R i v x z) * val R i v y (z * (u * γ)) ∂(R.νW i) = trPair R i γ x y * ∏ ρ, ⟪((v ρ : (R.MW i (sg0 D A)).sm ρ) : (R.MW i (sg0 D A)).H ρ), (R.MW i (sg0 D A)).rep ρ (infMat D.sp.cm.sig (Wc D i).gram (R.θ ρ) u) ((v ρ : (R.MW i (sg0 D A)).sm ρ) : (R.MW i (sg0 D A)).H ρ)⟫_ℂ := by
   intro hP D G _ _ Pl0 T A Ks _ _ _ R F hL i hLP v x y u hu γ hγ
   have hθ : IsInfFam R.θ := hL.models.inf

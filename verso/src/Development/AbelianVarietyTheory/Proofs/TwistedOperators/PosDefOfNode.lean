@@ -35,6 +35,13 @@ def Good (a : Arrow T) (f : Sch G a) : Prop :=
   (∀ τ, (gramAt D (G.V a.src) τ).PosDef) ∧ (M.ν a.src).IsHaarMeasure ∧
   IsFundamentalDomain (GQ (G.V a.src)) (M.fd a.src) (M.ν a.src)
 
+/- English proof (translation)
+Take `⟨hK, hinv, hpos, hH, hfd⟩` from `hg`. Take `⟨C, hC, hcov⟩` from `GlobalTheory.definite_unitary_cocompact _ hpos`. Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (G.V a.src)`. Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (G.V a.tgt)`. Establish `hl : ∀ γ ∈ GQ (G.V a.src), ∀ g h, W.kerA a f (γ * g) h = W.kerA a f g h` using `fun γ hγ g h => by`.
+
+Simplify using `using hinv γ hγ 1 (one_mem _) g h`. Establish `hr : ∀ γ ∈ GQ (G.V a.tgt), ∀ g h, W.kerA a f g (γ * h) = W.kerA a f g h` using `fun γ hγ g h => by`. Simplify using `using hinv 1 (one_mem _) γ hγ g h`. Use `⟨fun h => ?_, ?_, fun γ hγ h => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.CocompactIntegrable.integrableOn_of_cocompact _ _ _ C hfd hC hcov _ ((hK.comp (Continuous.prodMk_left h)).mul hF.1) (fun γ hγ g => by simp only [hl γ hγ, hF.2 γ hγ])`.
+
+Conclude with `GlobalTheory.DefLiftCont.continuous_integral_of_cocompact (G := GA D (G.V a.tgt)) (GQ (G.V a.src)) (M.ν a.src) (M.fd a.src) C hfd hC hcov (fun h g => W.kerA a f g h * F g) ((hK.comp continuous_swap).mul (hF.1.comp continuous_snd)) (fun γ hγ h g => by simp only [hl γ hγ, hF.2 γ hγ …`. Simplify using `only [liftA_apply, hr γ hγ]`.
+-/
 theorem step {a : Arrow T} {f : Sch G a} (hg : Good W M a f) {F : Fn G a.src} (hF : IsInvCont a.src F) :
     LiftConv W M a f F ∧ IsInvCont a.tgt (liftA W M a f F) := by
   obtain ⟨hK, hinv, hpos, hH, hfd⟩ := hg
@@ -53,6 +60,9 @@ theorem step {a : Arrow T} {f : Sch G a} (hg : Good W M a f) {F : Fn G a.src} (h
       ((hK.comp continuous_swap).mul (hF.1.comp continuous_snd)) (fun γ hγ h g => by simp only [hl γ hγ, hF.2 γ hγ])
   · simp only [liftA_apply, hr γ hγ]
 
+/- English proof (translation)
+The claim follows from `| _, .nil, _, _ => ⟨trivial, hF⟩ | _, .snoc a p, d, h => by obtain ⟨h1, h2⟩ := path hF p d.1 h.1 obtain ⟨h3, h4⟩ := step W M h.2 h2 exact ⟨⟨h1, h3⟩, h4⟩`.
+-/
 theorem path {X : Node} {F : Fn G X} (hF : IsInvCont X F) : ∀ {Y : Node} (p : Path T X Y) (d : PureT G p),
     Path.Fam.All (fun a f => Good W M a f) d → PathConv W M p d F ∧ IsInvCont Y (liftP W M p d F)
   | _, .nil, _, _ => ⟨trivial, hF⟩
@@ -61,11 +71,17 @@ theorem path {X : Node} {F : Fn G X} (hF : IsInvCont X F) : ∀ {Y : Node} (p : 
     obtain ⟨h3, h4⟩ := step W M h.2 h2
     exact ⟨⟨h1, h3⟩, h4⟩
 
+/- English proof (translation)
+The claim follows from `| 0, _, _ => trivial | n + 1, f, h => ⟨all_colFam t n _ fun j => h j.castSucc, h (Fin.last n)⟩`.
+-/
 theorem all_colFam {S : Arrow T → Type} {P : ∀ a, S a → Prop} (t : T) :
     ∀ n (f : ∀ j : Fin n, S (.col t j)), (∀ j, P _ (f j)) → Path.Fam.All P (colFam t n f)
   | 0, _, _ => trivial
   | n + 1, f, h => ⟨all_colFam t n _ fun j => h j.castSucc, h (Fin.last n)⟩
 
+/- English proof (translation)
+The claim follows from `| 0, _, _ => trivial | n + 1, f, h => ⟨all_rowFam j n _ fun i => h i.castSucc, h (Fin.last n)⟩`.
+-/
 theorem all_rowFam {S : Arrow T → Type} {P : ∀ a, S a → Prop} (j : ℕ) :
     ∀ n (f : ∀ i : Fin n, S (.right i j)), (∀ i, P _ (f i)) → Path.Fam.All P (rowFam j n f)
   | 0, _, _ => trivial
@@ -77,6 +93,9 @@ namespace GlobalTheory.DefConv
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
+/- English proof (translation)
+Establish `hV` using `node_isV G hL h`. Rewrite `hV` using `[h0]`. Use `GlobalTheory.RepsObj.gramAt_posDef (fun σ => ?_) hV.sigOK τ` and prove the remaining obligations. Rewrite using `[hV.sig σ, hV.rank, Nat.sub_zero]`.
+-/
 theorem posDef_of_node (G : GridData L sc) {μ0 : T} (hL : L.Is μ0) {X : Node} (h : X.InRange D.R.m)
     (h0 : X.neg D.R.m = 0) (τ : D.what₂.Tau) : (gramAt D (G.V X) τ).PosDef := by
   have hV := node_isV G hL h
@@ -86,6 +105,9 @@ theorem posDef_of_node (G : GridData L sc) {μ0 : T} (hL : L.Is μ0) {X : Node} 
 
 variable (W : G.Weil) {U : Set T} (S : GridChoice W U)
 
+/- English proof (translation)
+Establish `h1` using `(GlobalTheory.FockRealVec.vec_theta_fock W S.Z hp d hv).1`. Establish `h2 : IsThetaFunO W.ψ _ _ (movedVec t S d)` using `(W.om_is p hr).om_pres _ _ h1`. Conclude with `GlobalTheory.FockTheta.ptStable D W.ψ W.θ W.ψ_std W.θ_is _ _ _ _ _ _ _ Q h2`.
+-/
 theorem theta_fock {t : T} {p : Pair T} (hp : DefPair D.R.m p) (hr : p.InRange D.R.m) (d : FinDatum G t p)
     (hv : S.Z.HasVec d) (Q : PolF D (G.pT p).rank (G.pS p).rank) :
     IsThetaFunO W.ψ (G.pS p) (G.pT p) (W.fock p (movedVec t S d) Q) := by
@@ -99,6 +121,9 @@ namespace GlobalTheory.DefConv
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (M : Vol G)
 
+/- English proof (translation)
+Establish `hr : (Pair.top t j : Pair T).InRange D.R.m` using `by show j + 1 ≤ D.R.m; omega`. Take `⟨hc, -⟩` from `GlobalTheory.thetaKO_continuous_and_rat_invariant W.ψ _ _ _ _ _ (W.om_is _ hr) f hf`. Conclude with `⟨hc, fun γ hγ γ' hγ' g h => GlobalTheory.T.thetaKernel_grid_rational_left_invariant W _ hr f hf γ hγ γ' hγ' g h, hpos, hM.haar_fund.1, hM.haar_fund.2⟩`.
+-/
 theorem good_col {t : T} {j : ℕ} (hj : j < D.R.m) (f : Sch G (.col t j))
     (hf : IsThetaFunO W.ψ (G.pS (.top t j)) (G.pT (.top t j)) f) (hpos : ∀ τ, (gramAt D (G.V (.top j)) τ).PosDef)
     {K : Subgroup (GL (Fin (G.V (.top j)).rank) (Lev.EAf D))} (hM : M.IsAt (.top j) K) : Good W M (.col t j) f := by
@@ -106,6 +131,9 @@ theorem good_col {t : T} {j : ℕ} (hj : j < D.R.m) (f : Sch G (.col t j))
   obtain ⟨hc, -⟩ := GlobalTheory.thetaKO_continuous_and_rat_invariant W.ψ _ _ _ _ _ (W.om_is _ hr) f hf
   exact ⟨hc, fun γ hγ γ' hγ' g h => GlobalTheory.T.thetaKernel_grid_rational_left_invariant W _ hr f hf γ hγ γ' hγ' g h, hpos, hM.haar_fund.1, hM.haar_fund.2⟩
 
+/- English proof (translation)
+Establish `hr : (Pair.chi i D.R.m : Pair T).InRange D.R.m` using `by show i + 1 ≤ D.R.m ∧ D.R.m ≤ D.R.m; omega`. Take `⟨hc, -⟩` from `GlobalTheory.thetaKO_continuous_and_rat_invariant W.ψ _ _ _ _ _ (W.om_is _ hr) f hf`. Use `⟨?_, fun γ hγ γ' hγ' g h => GlobalTheory.T.thetaKernel_grid_rational_left_invariant W _ hr f hf γ hγ γ' hγ' g h, hpos, hM.haar_fund.1, hM.haar_fund.2⟩` and prove the remaining obligations. Conclude with `hc.comp (((continuous_negGA _).comp continuous_snd).prodMk continuous_fst)`.
+-/
 theorem good_row {i : ℕ} (hi : i < D.R.m) (f : Sch G (.right i D.R.m))
     (hf : IsThetaFunO W.ψ (G.pS (.chi i D.R.m)) (G.pT (.chi i D.R.m)) f)
     (hpos : ∀ τ, (gramAt D (G.V (.grid i D.R.m)) τ).PosDef)

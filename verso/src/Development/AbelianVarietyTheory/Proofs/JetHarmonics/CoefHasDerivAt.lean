@@ -17,9 +17,15 @@ noncomputable def coefL {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (v w : Fin n 
       map_add' := fun g h => by simp [herm, Matrix.add_mulVec, Matrix.mulVec_add, dotProduct_add]
       map_smul' := fun c g => by simp [herm, Matrix.smul_mulVec, Matrix.mulVec_smul, dotProduct_smul] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coefL_apply {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (v w : Fin n → ℂ) (g : Matrix (Fin n) (Fin n) ℂ) :
     coefL H v w g = herm H (g *ᵥ v) w := rfl
 
+/- English proof (translation)
+Establish `h1` using `B5.curve_hasDerivAt (1 : Mx k r) X 0`. Simplify using `only [Matrix.one_mul, Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero] at h1`. Conclude with `((coefL (Hpk k r) v w).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1`.
+-/
 theorem coef_hasDerivAt {k r : ℕ} (X : Mx k r) (v w : Fin (2 * r + k + 1) → ℂ) :
     HasDerivAt (fun t : ℝ => herm (Hpk k r) (NormedSpace.exp ((t : ℂ) • X) *ᵥ v) w)
       (herm (Hpk k r) (X *ᵥ v) w) 0 := by
@@ -27,6 +33,11 @@ theorem coef_hasDerivAt {k r : ℕ} (X : Mx k r) (v w : Fin (2 * r + k + 1) → 
   simp only [Matrix.one_mul, Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero] at h1
   exact ((coefL (Hpk k r) v w).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1
 
+/- English proof (translation)
+Unfold `hpart1 hpart2`. Rewrite using `[smul_smul]`. Establish `: Complex.I * (1 / (2 * Complex.I)) = 1 / 2` using `by field_simp`. Rewrite using `[this, ← smul_add]`. Establish `: Z - H⁻¹ * Zᴴ * H + (Z + H⁻¹ * Zᴴ * H) = (2 : ℂ) • Z` using `by rw [two_smul]; abel`.
+
+Rewrite using `[this, smul_smul]`. Evaluate the numerical expressions.
+-/
 theorem hpart_sum {n : ℕ} (H Z : Matrix (Fin n) (Fin n) ℂ) :
     hpart1 H Z + Complex.I • hpart2 H Z = Z := by
   unfold hpart1 hpart2
@@ -36,6 +47,13 @@ theorem hpart_sum {n : ℕ} (H Z : Matrix (Fin n) (Fin n) ℂ) :
   have : Z - H⁻¹ * Zᴴ * H + (Z + H⁻¹ * Zᴴ * H) = (2 : ℂ) • Z := by rw [two_smul]; abel
   rw [this, smul_smul]; norm_num
 
+/- English proof (translation)
+Establish `h1` using `dOp_hasDeriv hπt.1 hπt.2 hX`. Establish `h2` using `dOp_hasDeriv hπ.1 hπ.2 hX`. Establish `h3 : HasDerivAt (fun t : ℝ => πt (NormedSpace.exp ((t : ℂ) • X)) y c) (dOp πt X y c) 0` using `(((PiLp.proj (𝕜 := ℂ) 2 (fun _ : Fin k => V) c).comp (ContinuousLinearMap.apply ℂ _ y)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1`. Establish `h4 : ∀ d, HasDerivAt (fun t : ℝ => π (NormedSpace.exp ((t : ℂ) • X)) (y d)) (dOp π X (y d)) 0` using `fun d => ((ContinuousLinearMap.apply ℂ V (y d)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h2`. Establish `h5` using `HasDerivAt.fun_sum (u := Finset.univ) fun d _ => (coef_hasDerivAt X (B d) (B c)).fun_smul (h4 d)`.
+
+Establish `h6 : (fun t : ℝ => πt (NormedSpace.exp ((t : ℂ) • X)) y c) = fun t : ℝ => ∑ d, herm (Hpk k r) (NormedSpace.exp ((t : ℂ) • X) *ᵥ B d) (B c) • π (NormedSpace.exp ((t : ℂ) • X)) (y d)`. Use function extensionality and compare the values at `fun t => hf _ (exp_uw hX t) y c`. Rewrite `h3` using `[h6]`. Rewrite using `[h3.unique h5]`. Simplify using `only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, Matrix.one_mulVec, hπ.1.1, hB.2.1, Finset.sum_add_distrib, one_apply_eq_self]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem dOp_tensor {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] {k r : ℕ}
     {z : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (V →L[ℂ] V)} {B : Fin k → (Fin (2 * r + k + 1) → ℂ)}
     {πt : Mx k r → ((PiLp 2 (fun _ : Fin k => V)) →L[ℂ] (PiLp 2 (fun _ : Fin k => V)))}
@@ -60,6 +78,15 @@ theorem dOp_tensor {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [
     Finset.sum_add_distrib, one_apply_eq_self]
   simp
 
+/- English proof (translation)
+Introduce `V _ _ _ k r z π B πt _ _ hπ hπt hB hf a b y c`. Take `⟨l1, l2⟩` from `frame_lie hB a b`. Establish `e1` using `dOp_tensor hπ hπt hB hf l1 y c`. Establish `e2` using `dOp_tensor hπ hπt hB hf l2 y c`. Establish `e3 : ∀ d, herm (Hpk k r) (hpart1 (Hpk k r) (unitB (Hpk k r) B a b) *ᵥ B d) (B c) + Complex.I * herm (Hpk k r) (hpart2 (Hpk k r) (unitB (Hpk k r) B a b) *ᵥ B d) (B c) = if d = b then (if c = a then 1 else 0) else 0`.
+
+Introduce `d`. Rewrite using `[← coefL_apply, ← coefL_apply, ← smul_eq_mul Complex.I, ← map_smul, ← map_add, hpart_sum, coefL_apply, Qx8.unitB_mulVec, hB.2.1]`. Use `hB.2.1 a c` as an intermediate fact. Distinguish the cases in `hd : d = b`. Substitute `hd` using the available equality.
+
+Establish `e : herm (Hpk k r) ((1 : ℂ) • B a) (B c) = herm (Hpk k r) (B a) (B c)` using `by rw [one_smul]`. Rewrite using `[if_pos rfl, if_pos rfl, e, this]`. Simplify using `only [eq_comm]`. Simplify using `[hd, herm]`. Use `show dOp πt _ y c + Complex.I • dOp πt _ y c = (dOp π _ (y c) + Complex.I • dOp π _ (y c)) + _`.
+
+Rewrite using `[e1, e2, smul_add, Finset.smul_sum, add_add_add_comm, ← Finset.sum_add_distrib]`. Use `congr 1`. Simplify using `only [smul_smul, ← add_smul, e3]`. Apply the tactic sequence `by_cases hc : c = a <;> simp [hc]`.
+-/
 theorem EB_tensor_std : ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] (k r : ℕ) (z : (Fin (2 * r + k + 1) → ℂ)) (π : Mx k r → (V →L[ℂ] V)) (B : Fin k → (Fin (2 * r + k + 1) → ℂ)) (πt : Mx k r → ((PiLp 2 (fun _ : Fin k => V)) →L[ℂ] (PiLp 2 (fun _ : Fin k => V)))), inWb k r z → 0 < Tz k r z → IsRepW k r z π → IsRepW k r z πt → IsFrameOf k r [z] B → (∀ h ∈ UWset k r z, ∀ y c, πt h y c = ∑ d, herm (Hpk k r) (h *ᵥ B d) (B c) • π h (y d)) → ∀ a b y c, EB πt B a b y c = EB π B a b (y c) + if c = a then y b else 0 := by
   intro V _ _ _ k r z π B πt _ _ hπ hπt hB hf a b y c
   obtain ⟨l1, l2⟩ := frame_lie hB a b

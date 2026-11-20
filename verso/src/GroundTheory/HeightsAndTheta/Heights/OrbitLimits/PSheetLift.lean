@@ -14,6 +14,11 @@ namespace SheetLift
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Use `⟨fun k => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz.1 k`. Conclude with `⟨i, mul_ne_zero (hc k) hi⟩`. Take `⟨S, hS, hPS⟩` from `hP`. Establish `hle : P ≤ RingHom.ker ((eval (bsmul c z)).comp (map (Int.castRingHom ℂ)))`.
+
+Rewrite using `[hPS, Ideal.span_le]`. Introduce `g hg`. Take `⟨a, ha⟩` from `hS g hg`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker, RingHom.comp_apply, eval_bsmul_of_isMultiHomog ha c z, hz.2 g (by rw [hPS]; exact Ideal.subset_span hg), mul_zero]`. Conclude with `hle hf`.
+-/
 theorem bsmul_mem {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal P) {c : K → ℂ} (hc : ∀ k, c k ≠ 0)
     {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts P) : bsmul c z ∈ mcPts P := by
   refine ⟨fun k => ?_, fun f hf => ?_⟩
@@ -30,6 +35,9 @@ theorem bsmul_mem {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal P) {c : K → �
 
 omit [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [segre, bsmul, Finset.prod_mul_distrib]`.
+-/
 theorem segre_bsmul (c : K → ℂ) (z : (Σ k, ι k) → ℂ) :
     segre (bsmul c z) = fun i => (∏ k, c k) * segre z i := by
   funext i
@@ -38,6 +46,13 @@ theorem segre_bsmul (c : K → ℂ) (z : (Σ k, ι k) → ℂ) :
 def lift [DecidableEq K] (i0 : (k : K) → ι k) (k0 : K) (w : ((k : K) → ι k) → ℂ) : (Σ k, ι k) → ℂ :=
   fun p => (if p.1 = k0 then w i0 else 1) * (w (Function.update i0 p.1 p.2) / w i0)
 
+/- English proof (translation)
+Establish `h0 : ∀ k, z ⟨k, i0 k⟩ ≠ 0` using `fun k => (Finset.prod_ne_zero_iff.mp hz) k (Finset.mem_univ k)`. Use function extensionality and compare the values at `⟨k, j⟩`. Establish `e1 : segre z (Function.update i0 k j) = z ⟨k, j⟩ * ∏ k' ∈ Finset.univ.erase k, z ⟨k', i0 k'⟩` using `prod_update_eq z i0 k j`. Establish `e2 : segre z i0 = z ⟨k, i0 k⟩ * ∏ k' ∈ Finset.univ.erase k, z ⟨k', i0 k'⟩`. Use `prod_update_eq z i0 k (i0 k)` as an intermediate fact.
+
+Rewrite `this` using `[Function.update_eq_self]`. Then use the resulting hypothesis. Establish `hQ : ∏ k' ∈ Finset.univ.erase k, z ⟨k', i0 k'⟩ ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k' _ => h0 k'`. Establish `hk` using `h0 k`. Simplify using `only [lift, bsmul]`. Rewrite using `[e1, e2]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem lift_segre [DecidableEq K] (i0 : (k : K) → ι k) (k0 : K) {z : (Σ k, ι k) → ℂ}
     (hz : segre z i0 ≠ 0) :
     lift i0 k0 (segre z) = bsmul (fun k => (if k = k0 then segre z i0 else 1) / z ⟨k, i0 k⟩) z := by
@@ -55,6 +70,11 @@ theorem lift_segre [DecidableEq K] (i0 : (k : K) → ι k) (k0 : K) {z : (Σ k, 
   rw [e1, e2]
   field_simp
 
+/- English proof (translation)
+Establish `h0 : ∀ k, z ⟨k, i0 k⟩ ≠ 0` using `fun k => (Finset.prod_ne_zero_iff.mp hne) k (Finset.mem_univ k)`. Rewrite using `[lift_segre i0 k0 hne]`. Apply the tactic sequence `refine ⟨bsmul_mem hP (fun k => div_ne_zero (by split_ifs <;> simp [hne]) (h0 k)) hz, ?_⟩`. Establish `hprod : ∏ k, (if k = k0 then segre z i0 else 1) / z ⟨k, i0 k⟩ = 1`. Rewrite using `[Finset.prod_div_distrib, Finset.prod_ite_eq' Finset.univ k0, if_pos (Finset.mem_univ _)]`.
+
+Conclude with `div_self hne`. Rewrite using `[segre_bsmul, hprod]`. Use function extensionality and compare the values at `i`. Rewrite using `[one_mul]`.
+-/
 theorem lift_spec [DecidableEq K] {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal P) (i0 : (k : K) → ι k)
     (k0 : K) {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts P) (hne : segre z i0 ≠ 0) :
     lift i0 k0 (segre z) ∈ mcPts P ∧ segre (lift i0 k0 (segre z)) = segre z := by
@@ -70,6 +90,11 @@ theorem lift_spec [DecidableEq K] {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Establish `hc : ∀ i, DifferentiableAt ℂ (fun y' => h y' i) y` using `fun i => differentiableAt_pi.mp hd i`. Use `differentiableAt_pi.mpr fun p => ?_` and prove the remaining obligations. Simplify using `only [lift, div_eq_mul_inv]`. Use `DifferentiableAt.mul ?_ ((hc (Function.update i0 p.1 p.2)).mul ((hc i0).inv hne))` and prove the remaining obligations. Distinguish the cases in `hp : p.1 = k0`.
+
+Simplify using `only [hp, if_true]`. Conclude with `hc i0`. Simplify using `only [hp, if_false]`. Conclude with `differentiableAt_const _`.
+-/
 theorem differentiableAt_lift [DecidableEq K] {e : ℕ} (i0 : (k : K) → ι k) (k0 : K)
     {h : (Fin e → ℂ) → ((k : K) → ι k) → ℂ} {y : Fin e → ℂ} (hd : DifferentiableAt ℂ h y)
     (hne : h y i0 ≠ 0) : DifferentiableAt ℂ (fun y' => lift i0 k0 (h y')) y := by
@@ -83,6 +108,19 @@ theorem differentiableAt_lift [DecidableEq K] {e : ℕ} (i0 : (k : K) → ι k) 
   · simp only [hp, if_false]
     exact differentiableAt_const _
 
+/- English proof (translation)
+Introduce `K _ ι _ P e Ψ y h hP hev`. Take `⟨hd0, ⟨z0, hz0, hs0⟩, -⟩` from `hev.self_of_nhds`. Break down `isEmpty_or_nonempty K with hK | ⟨⟨k0⟩⟩` into its components or cases. Use `⟨fun _ => z0, hs0, hev.mono fun y' ⟨_, ⟨z, hz, hs⟩, hΨ⟩ => ?_⟩` and prove the remaining obligations. Establish `hzz : z0 = z` using `funext fun p => (IsEmpty.false p.1).elim`.
+
+Use `⟨differentiableAt_const _, hzz ▸ hz, ?_⟩` and prove the remaining obligations. Use `show Ψ (segre z0) = _`. Rewrite using `[hzz, hs]`. Conclude with `hΨ`. Use `choose i0 hi0 using hz0.1`.
+
+Establish `hy : h y i0 ≠ 0`. Rewrite using `[← hs0]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ => hi0 k`. Establish `hnear : ∀ᶠ y' in 𝓝 y, h y' i0 ≠ 0` using `(differentiableAt_pi.mp hd0 i0).continuousAt.eventually_ne hy`. Use `⟨fun y' => lift i0 k0 (h y'), ?_, (hev.and hnear).mono fun y' ⟨⟨hd, ⟨z, hz, hs⟩, hΨ⟩, hne⟩ => ?_⟩` and prove the remaining obligations.
+
+Use `show segre (lift i0 k0 (h y)) = h y`. Rewrite using `[← hs0]`. Conclude with `(lift_spec hP i0 k0 hz0 (hs0 ▸ hy)).2`. Establish `hne' : segre z i0 ≠ 0` using `hs ▸ hne`. Take `⟨h1, h2⟩` from `lift_spec hP i0 k0 hz hne'`.
+
+Use `⟨differentiableAt_lift i0 k0 hd hne, ?_, ?_⟩` and prove the remaining obligations. Use `show lift i0 k0 (h y') ∈ mcPts P`. Rewrite using `[← hs]`. Conclude with `h1`. Use `show Ψ (segre (lift i0 k0 (h y'))) = _`.
+
+Rewrite using `[← hs, h2, hs]`. Conclude with `hΨ`.
+-/
 theorem proof : SheetLift.Statement := by
   intro K _ ι _ P e Ψ y h hP hev
   classical

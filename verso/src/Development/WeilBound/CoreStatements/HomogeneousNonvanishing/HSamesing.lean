@@ -9,6 +9,11 @@ open ReciprocityTheory.ChartRestriction.G.AI.I4 (IsPullHerm imageZ blockFnField)
 
 namespace PositivityTheory.UnitarySelfGeneration
 
+/- English proof (translation)
+Take `⟨c, hc, rfl⟩` from `hs`. Establish `hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0` using `fun k => by`. Take `⟨i, hi⟩` from `hw k`. Conclude with `⟨i, fun h0 => hi (by simp [h0])⟩`. Establish `hA` using `A.pos z hz`.
+
+Establish `hB` using `B.pos z hz`. Use `⟨hA, hB, ?_⟩` and prove the remaining obligations. Establish `hC : (∏ k, ‖c k‖ ^ A.a k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.2 (hc k))`. Rewrite `h` using `[A.smul c z hc, B.smul c z hc, hab, Real.log_mul hC hA.ne', Real.log_mul hC hB.ne']`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem same_orbit_log_height_difference {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (A B : HermLine ι)
     (hab : B.a = A.a) (w z : (Σ k, ι k) → ℂ) (r : ℝ) (hw : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0) (hs : SameOrbit w z)
     (h : Real.log (A.h w) = Real.log (B.h w) + r) :
@@ -25,6 +30,17 @@ theorem same_orbit_log_height_difference {K : Type} [Fintype K] {ι : K → Type
   rw [A.smul c z hc, B.smul c z hc, hab, Real.log_mul hC hA.ne', Real.log_mul hC hB.ne'] at h
   linarith
 
+/- English proof (translation)
+Introduce `hv0`. Take `⟨hf, -, hW⟩` from `hu`. Set `φ : MRing ι →+* ℂ` to `(MvPolynomial.eval z).comp (MvPolynomial.map (Int.castRingHom ℂ))`. Establish `hφ : ∀ h, φ h = evC z h` using `fun h => rfl`. Establish `hWp : (RingHom.ker φ).IsPrime` using `RingHom.ker_isPrime φ`.
+
+Establish `hPW : P ≤ RingHom.ker φ` using `fun h hh => (RingHom.mem_ker).2 (by rw [hφ]; exact hz.2 h hh)`. Establish `hrel : IsRelevant (RingHom.ker φ)`. Introduce `k`. Take `⟨i, hi⟩` from `hz.1 k`. Use `⟨i, fun h => hi ?_⟩` and prove the remaining obligations.
+
+Use `(RingHom.mem_ker).1 h` as an intermediate fact. Simplify `this` using `[φ]`. Take `⟨u', v', -, hv', h'⟩` from `hW _ hWp hPW hrel`. Establish `hmem : (u * v' - v * u') * f ∈ P`. Establish `e : (u * v' - v * u') * f = v' * (u * f - v * g) - v * (u' * f - v' * g)` using `by ring`.
+
+Rewrite using `[e]`. Conclude with `P.sub_mem (P.mul_mem_left _ huv) (P.mul_mem_left _ h')`. Establish `hin : u * v' - v * u' ∈ P` using `(hP.mem_or_mem hmem).resolve_right hf`. Establish `h0 : φ (u * v' - v * u') = 0` using `by rw [hφ]; exact hz.2 _ hin`. Rewrite `h0` using `[map_sub, map_mul, map_mul, hφ v, hv0, zero_mul, sub_zero]`.
+
+Establish `hv'' : φ v' ≠ 0` using `fun h => hv' (RingHom.mem_ker.2 h)`. Conclude with `mul_ne_zero (by rw [hφ]; exact hu0) hv'' h0`.
+-/
 theorem h_samesing_ne {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (P : Ideal (MRing ι))
     (hP : P.IsPrime) (f g : MRing ι) (hu : UnitRatio P f g) (z : (Σ k, ι k) → ℂ) (hz : z ∈ mcPts P)
     (u v : MRing ι) (huv : u * f - v * g ∈ P) (hu0 : evC z u ≠ 0) : evC z v ≠ 0 := by
@@ -51,6 +67,15 @@ theorem h_samesing_ne {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (
   have hv'' : φ v' ≠ 0 := fun h => hv' (RingHom.mem_ker.2 h)
   exact mul_ne_zero (by rw [hφ]; exact hu0) hv'' h0
 
+/- English proof (translation)
+Introduce `K _ ι _ K₁ _ ι₁ _ K₂ _ ι₂ _ κ₁ v₁ κ₂ v₂ P P₁ P₂ D σ₁ σ₂ S₁ S₂ Re₁ Re₂ β a₁ a₂ A₁ A₂ A₁' A₂' hb₁ hb₂ hp₁ hp₂ ha₁ ha₂ hφ₁ hφ₂ hP hiso`. Take `⟨f, g, hfg, hdef⟩` from `hiso`. Use `⟨f, g, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ha₁, ha₂, ← hp₁.1, ← hp₂.1]`. Conclude with `hfg`.
+
+Introduce `z hz hβ x₁ x₂ hs₁ hs₂ hb₁' hb₂' u v huv hu`. Establish `hw₁` using `(Re₁.R.mem x₁ x₁ (Re₁.R.mem_U x₁)).1`. Establish `hw₂` using `(Re₂.R.mem x₂ x₂ (Re₂.R.mem_U x₂)).1`. Take `⟨q₁, r₁, e₁⟩` from `same_orbit_log_height_difference A₁ (Re₁.ref a₁) ha₁ _ _ _ hw₁ hs₁ (hφ₁ x₁ hb₁')`. Take `⟨q₂, r₂, e₂⟩` from `same_orbit_log_height_difference A₂ (Re₂.ref a₂) ha₂ _ _ _ hw₂ hs₂ (hφ₂ x₂ hb₂')`.
+
+Establish `hv` using `h_samesing_ne P hP.1 f g hfg.2 z hz u v huv hu`. Establish `hd` using `hdef z ⟨hz, hβ⟩ u v huv hu`. Rewrite `q₁`, `e₁` using `[← hp₁.2 z]`. Rewrite `q₂`, `e₂` using `[← hp₂.2 z]`. Establish `hu' : 0 < ‖evC z v‖ / ‖evC z u‖` using `div_pos (norm_pos_iff.2 hv) (norm_pos_iff.2 hu)`.
+
+Rewrite `hd` using `[Real.log_div (mul_pos hu' q₂).ne' q₁.ne', Real.log_mul hu'.ne' q₂.ne']`. Rewrite using `[Real.log_div (mul_pos hu' r₂).ne' r₁.ne', Real.log_mul hu'.ne' r₂.ne']`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem h_samesing : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (K₁ : Type) [Fintype K₁] (ι₁ : K₁ → Type) [∀ k, Fintype (ι₁ k)] (K₂ : Type) [Fintype K₂] (ι₂ : K₂ → Type) [∀ k, Fintype (ι₂ k)] (κ₁ : K₁ → K) (v₁ : (Σ k, ι₁ k) → Σ k, ι k) (κ₂ : K₂ → K) (v₂ : (Σ k, ι₂ k) → Σ k, ι k) (P : Ideal (MRing ι)) (P₁ : Ideal (MRing ι₁)) (P₂ : Ideal (MRing ι₂)) (D : ℕ) (σ₁ σ₂ : Type) (S₁ : PB.AnSys D σ₁) (S₂ : PB.AnSys D σ₂) (Re₁ : PB.Realis S₁ P₁) (Re₂ : PB.Realis S₂ P₂) (β : MRing ι) (a₁ : σ₁) (a₂ : σ₂) (A₁ : HermLine ι₁) (A₂ : HermLine ι₂) (A₁' A₂' : HermLine ι), IsBlockMap κ₁ v₁ → IsBlockMap κ₂ v₂ → IsPullHerm κ₁ v₁ A₁ A₁' → IsPullHerm κ₂ v₂ A₂ A₂' → (Re₁.ref a₁).a = A₁.a → (Re₂.ref a₂).a = A₂.a → (∀ x, Re₁.π x ∉ ReciprocityTheory.AnForm.P.bdry S₁.s → Real.log (A₁.h (Re₁.R.lift x x)) = Real.log ((Re₁.ref a₁).h (Re₁.R.lift x x)) + S₁.ph a₁ (Re₁.π x)) → (∀ x, Re₂.π x ∉ ReciprocityTheory.AnForm.P.bdry S₂.s → Real.log (A₂.h (Re₂.R.lift x x)) = Real.log ((Re₂.ref a₂).h (Re₂.R.lift x x)) + S₂.ph a₂ (Re₂.π x)) → IsMultiProjPrime P → IsoLineOn P {z | z ∈ mcPts P ∧ evC z β ≠ 0} A₁' A₂' → SameSing Re₁ Re₂ P κ₁ v₁ κ₂ v₂ β a₁ a₂ := by
   intro K _ ι _ K₁ _ ι₁ _ K₂ _ ι₂ _ κ₁ v₁ κ₂ v₂ P P₁ P₂ D σ₁ σ₂ S₁ S₂ Re₁ Re₂ β a₁ a₂ A₁ A₂ A₁' A₂'
     hb₁ hb₂ hp₁ hp₂ ha₁ ha₂ hφ₁ hφ₂ hP hiso

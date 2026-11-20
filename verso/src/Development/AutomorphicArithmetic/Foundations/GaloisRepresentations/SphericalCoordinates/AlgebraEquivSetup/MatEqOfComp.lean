@@ -11,11 +11,17 @@ namespace UpperTheory.Gal.W2.Seed
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Use `haveI := v.isMaximal`. Take `⟨Q, hQm, hQo⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 E) v.asIdeal`. Conclude with `⟨⟨Q, hQm.isPrime, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q⟩, HeightOneSpectrum.ext hQo.over.symm⟩`.
+-/
 private theorem exists_over (v : Plc ℚ) : ∃ w : Plc E, below ℚ w = v := by
   haveI := v.isMaximal
   obtain ⟨Q, hQm, hQo⟩ := Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 E) v.asIdeal
   exact ⟨⟨Q, hQm.isPrime, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q⟩, HeightOneSpectrum.ext hQo.over.symm⟩
 
+/- English proof (translation)
+Introduce `x y h`. Use `FiniteAdeleRing.ext (K := ℚ) fun v => ?_` and prove the remaining obligations. Take `⟨w, rfl⟩` from `exists_over (E := E) v`. Establish `h1` using `congrArg (fun z : FiniteAdeleRing (𝓞 E) E => z w) h`. Conclude with `(GroundTheory.Global.SemiLocal.completionMap (below ℚ w) w).injective h1`.
+-/
 private theorem fam_inj : Function.Injective (finiteAdeleMap ℚ E) := by
   intro x y h
   refine FiniteAdeleRing.ext (K := ℚ) fun v => ?_
@@ -25,10 +31,18 @@ private theorem fam_inj : Function.Injective (finiteAdeleMap ℚ E) := by
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i k => GlobalTheory.EulerTw.pLoc_ext E fun w => ?_)` and prove the remaining obligations. Conclude with `congrArg (fun x : GL (Fin n) (w.adicCompletion E) => x.val i k) (h w)`.
+-/
 private theorem mat_eq_of_comp {g g' : GUf E n} (h : ∀ w, comp w g = comp w g') : mat g = mat g' := by
   refine Units.ext (Matrix.ext fun i k => GlobalTheory.EulerTw.pLoc_ext E fun w => ?_)
   exact congrArg (fun x : GL (Fin n) (w.adicCompletion E) => x.val i k) (h w)
 
+/- English proof (translation)
+Establish `h1` using `UpperTheory.Gal.CertificateRingHomMap.mem_Sim.1 g.2`. Establish `h2` using `UpperTheory.Gal.CertificateRingHomMap.mem_Sim.1 g'.2`. Establish `h3 : (g : GL (Fin n) (Af E) × AfQˣ).1 = (g' : GL (Fin n) (Af E) × AfQˣ).1` using `h`. Rewrite `h1` using `[h3, h2]`. Establish `h4` using `congrFun (congrFun h1 ⟨0, hn⟩) ⟨0, hn⟩`.
+
+Simplify using `only [Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one] at h4`. Conclude with `Units.ext (fam_inj h4.symm)`.
+-/
 private theorem sim_eq_of_mat (hn : 1 ≤ n) {g g' : GUf E n} (h : mat g = mat g') : sim g = sim g' := by
   have h1 := UpperTheory.Gal.CertificateRingHomMap.mem_Sim.1 g.2
   have h2 := UpperTheory.Gal.CertificateRingHomMap.mem_Sim.1 g'.2
@@ -38,9 +52,21 @@ private theorem sim_eq_of_mat (hn : 1 ≤ n) {g g' : GUf E n} (h : mat g = mat g
   simp only [Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one] at h4
   exact Units.ext (fam_inj h4.symm)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Prod.ext (mat_eq_of_comp h) (sim_eq_of_mat hn (mat_eq_of_comp h)))`.
+-/
 private theorem eq_of_comp (hn : 1 ≤ n) {g g' : GUf E n} (h : ∀ w, comp w g = comp w g') : g = g' :=
   Subtype.ext (Prod.ext (mat_eq_of_comp h) (sim_eq_of_mat hn (mat_eq_of_comp h)))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h w hw`. Use `Units.ext (Matrix.ext fun i k => ?_)` and prove the remaining obligations. Establish `h1 : T.Φ (x.val i k - y.val i k) = 0`. Rewrite using `[map_sub]`.
+
+Conclude with `sub_eq_zero.2 (congrFun (congrFun h i) k)`. Establish `h2` using `(T.Φ_ker _).1 h1 w hw`. Rewrite `h2` using `[map_sub]`. Conclude with `sub_eq_zero.1 h2`. Introduce `h`.
+
+Use `Matrix.ext fun i k => ?_` and prove the remaining obligations. Establish `h1 : T.Φ (x.val i k - y.val i k) = 0`. Use `(T.Φ_ker _).2 fun w hw => ?_` and prove the remaining obligations. Rewrite using `[map_sub]`. Conclude with `sub_eq_zero.2 (congrArg (fun z : GL (Fin n) (w.adicCompletion E) => z.val i k) (h w hw))`.
+
+Rewrite `h1` using `[map_sub]`. Conclude with `sub_eq_zero.1 h1`.
+-/
 private theorem map_eq_iff {p : ℕ} [Fact p.Prime] (T : AdT p E) (x y : GL (Fin n) (Af E)) :
     x.val.map T.Φ = y.val.map T.Φ ↔ ∀ w : Plc E, (p : 𝓞 E) ∉ w.asIdeal →
       GeneralLinearGroup.map (pLoc E w) x = GeneralLinearGroup.map (pLoc E w) y := by
@@ -62,6 +88,9 @@ private theorem map_eq_iff {p : ℕ} [Fact p.Prime] (T : AdT p E) (x y : GL (Fin
     rw [map_sub] at h1
     exact sub_eq_zero.1 h1
 
+/- English proof (translation)
+Establish `e : ∀ h : GUf E n, GeneralLinearGroup.map (pLoc E w) (a * mat h * a⁻¹) = GeneralLinearGroup.map (pLoc E w) a * comp w h * (GeneralLinearGroup.map (pLoc E w) a)⁻¹` using `fun h => by`. Rewrite using `[map_mul, map_mul, map_inv]`. Both sides reduce to the same expression. Rewrite using `[e, e, mul_left_inj, mul_right_inj]`.
+-/
 private theorem conj_comp_iff (a : GL (Fin n) (Af E)) (w : Plc E) (g g' : GUf E n) :
     GeneralLinearGroup.map (pLoc E w) (a * mat g * a⁻¹) = GeneralLinearGroup.map (pLoc E w) (a * mat g' * a⁻¹) ↔
       comp w g = comp w g' := by
@@ -70,6 +99,9 @@ private theorem conj_comp_iff (a : GL (Fin n) (Af E)) (w : Plc E) (g g' : GUf E 
     rw [map_mul, map_mul, map_inv]; rfl
   rw [e, e, mul_left_inj, mul_right_inj]
 
+/- English proof (translation)
+Establish `h1` using `congrFun (congrFun (congrArg μ h) ⟨0, hn⟩) ⟨0, hn⟩`. Rewrite `h1` using `[hμ, hμ, Matrix.one_apply_eq]`. Conclude with `Algebra.TensorProduct.includeLeft_injective (R := ℚ) (S := ℚ) (A := AfP p) (B := E) (algebraMap ℚ E).injective h1`.
+-/
 private theorem algMap_inj {p : ℕ} [Fact p.Prime] (hn : 1 ≤ n)
     (μ : AfP p ⊗[ℚ] Matrix (Fin n) (Fin n) E ≃+* Matrix (Fin n) (Fin n) (AfP p ⊗[ℚ] E)) (hμ : IsMu μ)
     {c c' : AfP p} (h : c ⊗ₜ[ℚ] (1 : Matrix (Fin n) (Fin n) E) = c' ⊗ₜ[ℚ] (1 : Matrix (Fin n) (Fin n) E)) : c = c' := by
@@ -80,6 +112,13 @@ private theorem algMap_inj {p : ℕ} [Fact p.Prime] (hn : 1 ≤ n)
 
 end UpperTheory.Gal.W2.Seed
 
+/- English proof (translation)
+Introduce `E _ _ _ A n p _ S T μ hμ a j hj`. Use `⟨fun g g' h => eq_of_comp S.facts.pos h, fun g g' => ?_⟩` and prove the remaining obligations. Establish `key : S.mx (j g) = S.mx (j g') ↔ ∀ w : Plc E, (p : 𝓞 E) ∉ w.asIdeal → comp w g = comp w g'`. Rewrite using `[← μ.injective.eq_iff, hj, hj, map_eq_iff]`. Conclude with `forall₂_congr fun w _ => conj_comp_iff a w g g'`.
+
+Rewrite using `[← key]`. Use `⟨fun h => congrArg S.mx h, fun h => ?_⟩` and prove the remaining obligations. Establish `h1 : (((j g : S.G.GAf) : (AfP p ⊗[ℚ] S.G.C)ˣ × (AfP p)ˣ).1) = ((j g' : S.G.GAf) : (AfP p ⊗[ℚ] S.G.C)ˣ × (AfP p)ˣ).1` using `Units.ext h`. Use `Subtype.ext (Prod.ext h1 (Units.ext ?_))` and prove the remaining obligations. Establish `e1` using `mem_uGroup.1 (j g).2`.
+
+Establish `e2` using `mem_uGroup.1 (j g').2`. Rewrite `e1` using `[h1, e2]`. Conclude with `algMap_inj S.facts.pos μ hμ e1.symm`.
+-/
 theorem UpperTheory.Gal.W2.Seed.pJEq :
     JEq := by
   intro E _ _ _ A n p _ S T μ hμ a j hj

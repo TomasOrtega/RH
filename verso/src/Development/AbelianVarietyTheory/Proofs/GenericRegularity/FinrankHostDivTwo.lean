@@ -6,6 +6,11 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions R
 
 namespace GlobalTheory.FlagDim
 
+/- English proof (translation)
+Establish `h : (Module.finrank ℚ D.host.E : ℝ) = 2 * (D.R.f : ℝ)`. Rewrite using `[D.host.finrank_cmField]`. Unfold `Ranks.f Ranks.n`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h' : Module.finrank ℚ D.host.E = 2 * D.R.f` using `by exact_mod_cast h`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_host_div_two (D : D7) : Module.finrank ℚ D.host.E / 2 = D.R.f := by
   have h : (Module.finrank ℚ D.host.E : ℝ) = 2 * (D.R.f : ℝ) := by
     rw [D.host.finrank_cmField]
@@ -15,6 +20,11 @@ theorem finrank_host_div_two (D : D7) : Module.finrank ℚ D.host.E / 2 = D.R.f 
   have h' : Module.finrank ℚ D.host.E = 2 * D.R.f := by exact_mod_cast h
   omega
 
+/- English proof (translation)
+Introduce `D Q hP j hj`. Take `⟨hp, hq, -⟩` from `hP j hj`. Establish `h` using `fnFG_fnTrdeg D.host.E Q.H (Q.Dw j) Q.l (Q.Xo j) Q.c`. Rewrite `h` using `[finrank_host_div_two]`. Establish `e : WeightFamilies.dimY D j = D.R.f * ((Q.Dw j).p * (Q.Dw j).q + (Q.Dw j).p * ((Q.Dw j).p - 1) / 2 + (Q.Dw j).q * ((Q.Dw j).q - 1) / 2)`.
+
+Rewrite using `[hp, hq]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem fnFG_fnTrdeg_record : ∀ (D : D7) (Q : Par D), Q.PinDat → ∀ j, InR D j → FnFG (Q.Xo j) Q.c ∧ FnTrdeg (Q.Xo j) Q.c (WeightFamilies.dimY D j) := by
   intro D Q hP j hj
   obtain ⟨hp, hq, -⟩ := hP j hj

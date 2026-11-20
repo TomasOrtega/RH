@@ -18,6 +18,33 @@ open TensorProduct
 
 namespace GlobalTheory.DRLine
 
+/- English proof (translation)
+Introduce `hPC hDR hDC E _ _ _ _ I _ d φ hφ 𝔣 h𝔣 l _ Q hQ hQl y hy lam 𝔠 R _ hR X₀ X U p cm hpull hcmF hα j hj φK hφK n eH σ`. Use `choose α hαM hαp hαU using hα`. Set `T : orderC (condQ 𝔣 Q) → Module.End ℂ (HdR X.A)` to `fun a ↦ haveI := hαM a`. Use `push (dp0 ℂ) (𝟙 _) (α a)`. Take `⟨B, hB⟩` from `GlobalTheory.T.de_rham_basis_base_change hDR E (condQ 𝔣 Q) 𝔠 R X₀ X p cm hpull n eH`.
+
+Establish `hTB : ∀ a i, T a (B i) = ∑ k, (((eH.conjRingEquiv.toRingHom.comp (act (dp0 R) (𝟙 _) cm)) a (Pi.single i 1) k : R) : ℂ) • B k` using `fun a i ↦ by haveI := hαM a; exact hB a (α a) (hαp a) i`. Rewrite using `[GlobalTheory.T.order_action_matrix_eigenvalues E (condQ 𝔣 Q) R n _ j hj (HdR X.A) B T hTB σ]`. Take `⟨ε, hε⟩` from `hPC`. Establish `hLB : (X.diag U.c).IsLB` using `ReciprocityTheory.ChartRestriction.G.Semi.LB.isLB_pull (X.isLB U.c) _`. Take `⟨P, hspan, hrank, -, hpush, -⟩` from `hε X.A (Module.finrank ℚ (FR E)) X.ab X.dim (X.diag U.c) hLB U.u`.
+
+Establish `hmem : ∀ x : E, x ∈ lattice (condQ 𝔣 Q) y ↔ algebraMap E (Af E) x * (↑y⁻¹ : Af E) ∈ hatO (condQ 𝔣 Q)` using `fun x ↦ Iff.rfl`. Set `L : AddSubgroup E` to `{ carrier := lattice (condQ 𝔣 Q) y add_mem' := fun {a b} ha hb ↦ by show a + b ∈ lattice (condQ 𝔣 Q) y`. Rewrite using `[hmem, map_add, add_mul]`. Conclude with `Subring.add_mem _ ((hmem a).1 ha) ((hmem b).1 hb)`. Use the proof step `zero_mem' := by show (0 : E) ∈ lattice (condQ 𝔣 Q) y`.
+
+Rewrite using `[hmem, map_zero, zero_mul]`. Conclude with `Subring.zero_mem _`. Use the proof step `neg_mem' := fun {a} ha ↦ by show -a ∈ lattice (condQ 𝔣 Q) y`. Rewrite using `[hmem, map_neg, neg_mul]`. Conclude with `Subring.neg_mem _ ((hmem a).1 ha) }`.
+
+Establish `hLs : ∀ a ∈ orderC (condQ 𝔣 Q), ∀ x ∈ L, a * x ∈ L` using `fun a ha x hx ↦ by show a * x ∈ lattice (condQ 𝔣 Q) y`. Rewrite using `[hmem, map_mul, _root_.mul_assoc]`. Use `Subring.mul_mem _ ?_ ((hmem x).1 hx)` and prove the remaining obligations. Conclude with `Subring.le_topologicalClosure _ ⟨a, ha, rfl⟩`. Set `Φ : E → (Fin (Module.finrank ℚ (FR E)) → ℂ)` to `fun x j ↦ φ (U.e j) x`.
+
+Establish `hΦ : ∀ x ∈ L, Φ x ∈ U.u.Λ` using `fun x hx ↦ (U.lat _).2 ⟨x, hx, by funext j; simp [Φ, GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.defCoord]⟩`. Set `P' : L →+ HdR X.A` to `{ toFun := fun x ↦ P ⟨Φ x, hΦ x x.2⟩ map_zero' := by`. Establish `: (⟨Φ ((0 : L) : E), hΦ _ (0 : L).2⟩ : U.u.Λ) = 0` using `Subtype.ext (by funext j; simp [Φ])`. Rewrite using `[this, map_zero]`. Use the proof step `map_add' := fun x x' ↦ by`.
+
+Establish `: (⟨Φ ((x + x' : L) : E), hΦ _ (x + x').2⟩ : U.u.Λ) = ⟨Φ x, hΦ x x.2⟩ + ⟨Φ x', hΦ x' x'.2⟩` using `Subtype.ext (by funext j; simp [Φ])`. Rewrite using `[this, map_add] }`. Establish `hspan' : Submodule.span ℂ (Set.range P') = ⊤`. Rewrite using `[← hspan]`. Use `congr 1`.
+
+Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨_, rfl⟩`. Introduce and unpack `⟨w, rfl⟩`.
+
+Take `⟨x, hx, hw⟩` from `(U.lat w).1 w.2`. Use `⟨⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Use `show P _ = P w`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[hw]`. Use function extensionality and compare the values at `j`. Simplify using `[Φ, GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.defCoord]`. Establish `hdim : Module.finrank ℂ (HdR X.A) = Module.finrank ℚ E`. Rewrite using `[hrank, ← Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E, Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E, mul_comm]`.
+
+Establish `hT : ∀ (a : orderC (condQ 𝔣 Q)) (x x' : L), (x' : E) = a * x → T a (P' x) = P' x'`. Introduce `a x x' hx'`. Use `haveI := hαM a`. Set `M : (Fin (Module.finrank ℚ (FR E)) → ℂ) →ₗ[ℂ] (Fin (Module.finrank ℚ (FR E)) → ℂ)` to `{ toFun := fun w j ↦ φ (U.e j) (a : E) * w j map_add' := fun w w' ↦ by funext j; simp [mul_add] map_smul' := fun r w ↦ by funext j; simp; ring }`. Conclude with `hpush (α a) M (fun w ↦ hαU a w) _ _ (by funext j; simp [M, Φ, hx', map_mul])`.
+
+Establish `hc0 : condQ 𝔣 Q ≠ ⊥`. Unfold `condQ`. Use `mul_ne_zero h𝔣.1 ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_ne_zero_iff]`. Conclude with `fun q _ ↦ q.ne_bot`.
+
+Conclude with `GlobalTheory.T.cm_representation_eigen_decomposition E (orderC (condQ 𝔣 Q)) (GlobalTheory.T.bounded_denominator_in_order E _ hc0) L hLs (HdR X.A) P' hspan' hdim T hT (j.comp σ)`.
+-/
 theorem eigK_finrank_eq_one : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal →
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (I : Type) [Fintype I] (d : ℕ)
       (φ : I → E →+* ℂ), GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsFieldData d φ → ∀ (𝔣 : Ideal (OF E)), IsBaseCond 𝔣 →

@@ -21,10 +21,21 @@ variable (F) in
 private def wF : Matrix.SpecialLinearGroup (Fin 2) F :=
   ⟨!![0, 1; -1, 0], by simp [Matrix.det_fin_two]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem coe_nF (b : F) : (nF b).1 = !![1, b; 0, 1] := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem coe_wF : (wF F).1 = !![0, 1; -1, 0] := rfl
 
+/- English proof (translation)
+Establish `hdet` using `γ.det_coe`. Rewrite `hdet` using `[Matrix.det_fin_two]`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, coe_nF, coe_wF]`. Use extensionality with `i j`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> field_simp <;> first | ring1 | linear_combination hdet | linear_combination -hdet`.
+-/
 private theorem decomp (γ : Matrix.SpecialLinearGroup (Fin 2) F) (hc : γ.1 1 0 ≠ 0) :
     γ = nF ((γ.1 0 0 - 1) / γ.1 1 0) * (wF F * nF (-(γ.1 1 0)) * (wF F * wF F * wF F)) *
       nF ((γ.1 1 1 - 1) / γ.1 1 0) := by
@@ -36,6 +47,9 @@ private theorem decomp (γ : Matrix.SpecialLinearGroup (Fin 2) F) (hc : γ.1 1 0
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> field_simp <;>
     first | ring1 | linear_combination hdet | linear_combination -hdet
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, coe_wF]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 private theorem decomp0 (γ : Matrix.SpecialLinearGroup (Fin 2) F) :
     γ = (γ * wF F) * (wF F * wF F * wF F) := by
   apply Subtype.ext
@@ -43,6 +57,15 @@ private theorem decomp0 (γ : Matrix.SpecialLinearGroup (Fin 2) F) :
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Establish `hw3 : P (wF F * wF F * wF F)` using `hmul _ _ (hmul _ _ hw hw) hw`. Establish `key : ∀ γ : Matrix.SpecialLinearGroup (Fin 2) F, γ.1 1 0 ≠ 0 → P γ`. Introduce `γ hc`. Rewrite using `[decomp γ hc]`. Conclude with `hmul _ _ (hmul _ _ (hn _) (hmul _ _ (hmul _ _ hw (hn _)) hw3)) (hn _)`.
+
+Distinguish the cases in `hc : γ.1 1 0 = 0`. Establish `hdet` using `γ.det_coe`. Rewrite `hdet` using `[Matrix.det_fin_two, hc]`. Establish `hd : γ.1 1 1 ≠ 0`. Introduce `h`.
+
+Rewrite `hdet` using `[h]`. Simplify using `at hdet`. Rewrite using `[decomp0 γ]`. Use `hmul _ _ (key _ ?_) hw3` and prove the remaining obligations. Establish `h10 : (γ * wF F).1 1 0 = -γ.1 1 1`.
+
+Rewrite using `[Matrix.SpecialLinearGroup.coe_mul, coe_wF, Matrix.mul_apply, Fin.sum_univ_two]`. Simplify using the standard rewrite rules. Rewrite using `[h10]`. Conclude with `neg_ne_zero.mpr hd`. Conclude with `key γ hc`.
+-/
 private theorem specialLinearGroup_two_induction_on_unipotent_weyl (P : Matrix.SpecialLinearGroup (Fin 2) F → Prop)
     (hmul : ∀ a b, P a → P b → P (a * b)) (hn : ∀ b, P (nF b)) (hw : P (wF F))
     (γ : Matrix.SpecialLinearGroup (Fin 2) F) : P γ := by
@@ -74,21 +97,33 @@ section Main
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   [IsTotallyReal F] [IsTotallyComplex E] {D : Dat F E} (W : Weil D)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem ratS_coe (g : Matrix.SpecialLinearGroup (Fin 2) F) (i j : Fin 2) :
     (ratS F g).1 i j = rt (g.1 i j) := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[ratS_coe, coe_nF]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [nU]`.
+-/
 private theorem ratS_nF (b : F) : ratS F (nF b) = nU (rt b) := by
   apply Subtype.ext
   ext i j
   rw [ratS_coe, coe_nF]
   fin_cases i <;> fin_cases j <;> simp [nU]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[ratS_coe, coe_wF]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [wW]`.
+-/
 private theorem ratS_wF : ratS F (wF F) = wW F := by
   apply Subtype.ext
   ext i j
   rw [ratS_coe, coe_wF]
   fin_cases i <;> fin_cases j <;> simp [wW]
 
+/- English proof (translation)
+Simplify using `[ψ, adelicChar_algebraMap]`.
+-/
 private theorem psi_rt (x : F) : ψ (rt x) = 1 := by
   simp [ψ, adelicChar_algebraMap]
 
@@ -96,12 +131,26 @@ private def Good (γ : Matrix.SpecialLinearGroup (Fin 2) F) : Prop :=
   ∀ (r : Fin 2 → F) (φ : S4 F), ThRow (rt (r 0)) (rt (r 1)) (W.Om (ratS F γ) φ).1 =
     ThRow (rt ((r ᵥ* γ.1) 0)) (rt ((r ᵥ* γ.1) 1)) φ.1
 
+/- English proof (translation)
+Introduce `r φ`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, ha r, hb (r ᵥ* a.1) φ, Matrix.SpecialLinearGroup.coe_mul, Matrix.vecMul_vecMul]`.
+-/
 private theorem good_mul (a b : Matrix.SpecialLinearGroup (Fin 2) F)
     (ha : Good W a) (hb : Good W b) : Good W (a * b) := by
   intro r φ
   rw [map_mul, map_mul, Module.End.mul_apply, ha r, hb (r ᵥ* a.1) φ,
     Matrix.SpecialLinearGroup.coe_mul, Matrix.vecMul_vecMul]
 
+/- English proof (translation)
+Introduce `r φ`. Rewrite using `[ratS_nF]`. Establish `h0 : (r ᵥ* (nF b).1) 0 = r 0`. Rewrite using `[coe_nF]`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+
+Establish `h1 : (r ᵥ* (nF b).1) 1 = r 1 + b * r 0`. Rewrite using `[coe_nF]`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h0, h1]`.
+
+Unfold `ThRow`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Rewrite using `[UpperTheory.ConvolutionTheory.R2.D.hatN F E D W (rt b) φ]`. Establish `hψ : ψ (rt b * ((![rt (r 0), rt (r 1), rt (ξ 0), rt (ξ 1)] : V4 F) 2 ^ 2 - rt D.δ * (![rt (r 0), rt (r 1), rt (ξ 0), rt (ξ 1)] : V4 F) 3 ^ 2)) = 1`. Establish `: rt b * ((![rt (r 0), rt (r 1), rt (ξ 0), rt (ξ 1)] : V4 F) 2 ^ 2 - rt D.δ * (![rt (r 0), rt (r 1), rt (ξ 0), rt (ξ 1)] : V4 F) 3 ^ 2) = rt (b * (ξ 0 ^ 2 - D.δ * ξ 1 ^ 2))`.
+
+Simplify using `[map_mul, map_sub, map_pow]`. Rewrite using `[this, psi_rt]`. Rewrite using `[hψ, one_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Apply the tactic sequence `fin_cases i <;> simp [Function.update, map_add, map_mul]`.
+-/
 private theorem good_n (b : F) : Good W (nF b) := by
   intro r φ
   rw [ratS_nF]
@@ -128,6 +177,11 @@ private theorem good_n (b : F) : Good W (nF b) := by
   funext i
   fin_cases i <;> simp [Function.update, map_add, map_mul]
 
+/- English proof (translation)
+Introduce `r φ`. Rewrite using `[ratS_wF]`. Establish `h0 : (r ᵥ* (wF F).1) 0 = -r 1`. Rewrite using `[coe_wF]`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+
+Establish `h1 : (r ᵥ* (wF F).1) 1 = r 0`. Rewrite using `[coe_wF]`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Rewrite using `[h0, h1]`. Conclude with `UpperTheory.ConvolutionTheory.R2.D.rowW F E D W (r 0) (r 1) φ`.
+-/
 private theorem good_w : Good W (wF F) := by
   intro r φ
   rw [ratS_wF]
@@ -140,6 +194,9 @@ private theorem good_w : Good W (wF F) := by
   rw [h0, h1]
   exact UpperTheory.ConvolutionTheory.R2.D.rowW F E D W (r 0) (r 1) φ
 
+/- English proof (translation)
+The claim follows from `specialLinearGroup_two_induction_on_unipotent_weyl (Good W) (good_mul W) (good_n W) (good_w W) γ`.
+-/
 private theorem good_all (γ : Matrix.SpecialLinearGroup (Fin 2) F) : Good W γ :=
   specialLinearGroup_two_induction_on_unipotent_weyl (Good W) (good_mul W) (good_n W) (good_w W) γ
 
@@ -147,6 +204,9 @@ end Main
 
 end UpperTheory.ConvolutionTheory.R2.D.SL2BruhatGenerators
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W γ r φ`. Conclude with `UpperTheory.ConvolutionTheory.R2.D.SL2BruhatGenerators.good_all W γ r φ`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.D.row :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D), ∀ γ (r : Fin 2 → F) φ, ThRow (rt (r 0)) (rt (r 1)) (W.Om (ratS F γ) φ).1 =
       ThRow (rt ((r ᵥ* γ.1) 0)) (rt ((r ᵥ* γ.1) 1)) φ.1 := by

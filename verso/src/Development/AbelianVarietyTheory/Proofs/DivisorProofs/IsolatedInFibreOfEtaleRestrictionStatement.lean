@@ -13,5 +13,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.OrbitSep
 open GlobalTheory.Discrepancy GlobalTheory.QCoh
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.isolated_in_fibre_of_etale_restrict | exact GlobalTheory.isolated_in_fibre_of_etale_restrict | (intros; apply GlobalTheory.isolated_in_fibre_of_etale_restrict <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isolated_in_fibre_of_etale_restriction : ∀ (M W : Scheme.{0}) (f : M ⟶ W) (U : W.Opens), Etale (f ∣_ U) → ∀ z : M, f z ∈ U → ∃ V : M.Opens, z ∈ V ∧ ∀ y ∈ V, f y = f z → y = z := by
   first | exact @GlobalTheory.isolated_in_fibre_of_etale_restrict | exact GlobalTheory.isolated_in_fibre_of_etale_restrict | (intros; apply GlobalTheory.isolated_in_fibre_of_etale_restrict <;> assumption)

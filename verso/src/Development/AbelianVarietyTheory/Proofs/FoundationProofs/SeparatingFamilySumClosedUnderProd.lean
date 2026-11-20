@@ -4,6 +4,19 @@ open scoped NNReal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `L _ v G _ _ F ι s x y hs`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Conclude with `⟨1, fun _ => 1, fun _ => 1, fun _ => ⟨F.one_mem, F.one_mem, by simp, by simp⟩, fun σ => by simp⟩`. Consider the case `insert j s hj ih`.
+
+Take `⟨n, a, b, hab, hsum⟩` from `ih (fun k hk => hs k (Finset.mem_insert_of_mem hk))`. Take `⟨hxF, hyF, hxv, hyv⟩` from `hs j (Finset.mem_insert_self j s)`. Use `⟨n + n, Fin.append (fun i => x j * a i) (fun i => - a i), Fin.append b (fun i => y j * b i), ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations.
+
+Simplify using `only [Fin.append_left]`. Take `⟨h1, h2, h3, h4⟩` from `hab i`. Conclude with `⟨F.mul_mem hxF h1, h2, by rw [map_mul]; exact mul_le_one' hxv h3, h4⟩`. Simplify using `only [Fin.append_right]`. Take `⟨h1, h2, h3, h4⟩` from `hab i`.
+
+Conclude with `⟨F.neg_mem h1, F.mul_mem hyF h2, by rw [Valuation.map_neg]; exact h3, by rw [map_mul]; exact mul_le_one' hyv h4⟩`. Introduce `σ`. Rewrite using `[Finset.prod_insert hj, ← hsum σ, Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, smul_mul']`. Establish `e1 : ∑ i, x j * a i * σ • b i = x j * ∑ i, a i * σ • b i`.
+
+Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl (fun i _ => by ring)`. Establish `e2 : ∑ i, -a i * (σ • y j * σ • b i) = -(σ • y j * ∑ i, a i * σ • b i)`. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl (fun i _ => by ring)`. Rewrite using `[e1, e2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sepFamily_prod : ∀ (L : Type) [Field L] (v : Valuation L ℝ≥0) (G : Type) [Group G] [MulSemiringAction G L] (F : Subfield L) (ι : Type) (s : Finset ι) (x y : ι → L), (∀ j ∈ s, x j ∈ F ∧ y j ∈ F ∧ v (x j) ≤ 1 ∧ v (y j) ≤ 1) → ∃ (n : ℕ) (a b : Fin n → L), (∀ i, a i ∈ F ∧ b i ∈ F ∧ v (a i) ≤ 1 ∧ v (b i) ≤ 1) ∧ ∀ σ : G, ∑ i, a i * σ • b i = ∏ j ∈ s, (x j - σ • y j) := by
   intro L _ v G _ _ F ι s x y hs
   classical

@@ -17,12 +17,22 @@ open scoped InnerProductSpace ComplexOrder ContDiff
 
 namespace GlobalTheory.Reproducing
 
+/- English proof (translation)
+Establish `h` using `Finset.card_filter_add_card_filter_not (s := (univ : Finset (Fin n))) (fun a => ε a = true)`. Simplify using `only [Bool.not_eq_true, Finset.card_univ, Fintype.card_fin] at h`. Unfold `rkR`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem two_mul_rank_le {n : ℕ} (ε : Fin n → Bool) : 2 * rkR ε ≤ n := by
   have h := Finset.card_filter_add_card_filter_not (s := (univ : Finset (Fin n))) (fun a => ε a = true)
   simp only [Bool.not_eq_true, Finset.card_univ, Fintype.card_fin] at h
   unfold rkR
   omega
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos (rkR (B.I.ε v)) with h0 | h0` into its components or cases. Conclude with `Or.inl h0`. Use `right`. Establish `h1 : (2 : ℝ) * rkR (B.I.ε v) ≤ B.I.n` using `by exact_mod_cast two_mul_rank_le _`. Establish `h2 : 0 < Real.sqrt (rkR (B.I.ε v))` using `Real.sqrt_pos.2 (by exact_mod_cast h0)`.
+
+Establish `h3 : (1 : ℝ) ≤ B.I.n` using `by exact_mod_cast hn`. Establish `h4` using `hb v`. Establish `h5 : s + 4 * B.I.n * rkR (B.I.ε v) ≤ 4 * (B.I.n : ℝ) ^ 2` using `by nlinarith`. Establish `h6` using `mul_le_mul_of_nonneg_left h5 h2.le`. Establish `h7 : 0 < Real.sqrt (rkR (B.I.ε v)) * (B.I.n : ℝ) ^ 2` using `by positivity`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem weight_condition (B : RowsAut) (h s : ℝ) (hn : 1 ≤ B.I.n) (hb : HBig B 40 h)
     (hs : s ≤ 2 * (B.I.n : ℝ) ^ 2) (v : InfinitePlace B.I.F) :
     rkR (B.I.ε v) = 0 ∨ 8 * Real.sqrt (rkR (B.I.ε v)) * (s + 4 * B.I.n * rkR (B.I.ε v)) < h := by
@@ -38,6 +48,13 @@ theorem weight_condition (B : RowsAut) (h s : ℝ) (hn : 1 ≤ B.I.n) (hb : HBig
   have h7 : 0 < Real.sqrt (rkR (B.I.ε v)) * (B.I.n : ℝ) ^ 2 := by positivity
   nlinarith
 
+/- English proof (translation)
+Take `⟨hp, -, -, hl⟩` from `GlobalTheory.T.truncatedLeastLatticeSize_lipschitz_properties I hn`. Establish `hf : (0 : ℝ) < I.f`. Establish `: 0 < I.f` using `Module.finrank_pos`. Conclude with `this` after adjusting the coercions. Establish `h1` using `(abs_le.1 (hl x g hg)).1`.
+
+Establish `h2 : (tau1 I (x * g))⁻¹ ≤ (tau1 I x)⁻¹ * Real.exp (dSum I g.1 / I.f)`. Rewrite using `[← Real.exp_log (inv_pos.2 (hp (x * g))), ← Real.exp_log (inv_pos.2 (hp x)), ← Real.exp_add, Real.log_inv, Real.log_inv]`. Conclude with `Real.exp_le_exp.2 (by linarith)`. Use `(pow_le_pow_left₀ (inv_pos.2 (hp _)).le h2 _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[mul_pow, ← Real.exp_nat_mul]`.
+
+Use `congr 2`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem inv_tau_pow_le (I : AutInst) (hn : 1 ≤ I.n) (x g : I.GA) (hg : g.2 ∈ I.Kset) :
     (tau1 I (x * g))⁻¹ ^ (2 * I.n ^ 2 * I.f) ≤
       (tau1 I x)⁻¹ ^ (2 * I.n ^ 2 * I.f) * Real.exp (2 * (I.n : ℝ) ^ 2 * dSum I g.1) := by
@@ -56,6 +73,11 @@ theorem inv_tau_pow_le (I : AutInst) (hn : 1 ≤ I.n) (x g : I.GA) (hg : g.2 ∈
   push_cast
   field_simp
 
+/- English proof (translation)
+Use `⟨continuous_finset_sum _ fun i _ => continuous_const.mul (hF i).1, fun γ hγ x => ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun i _ => by rw [(hF i).2.1 γ hγ]`. Establish `h1` using `Lp.coeFn_finsetSum (univ : Finset (Fin m)) (fun i => c i • y i)`. Establish `h2 : ∀ᵐ x ∂((B.I.muA B.μf).restrict B.fund), ∀ i, (c i • y i : B.I.L2 B.μf B.fund) x = c i * F i x` using `ae_all_iff.2 fun i => by filter_upwards [Lp.coeFn_smul (c i) (y i), (hF i).2.2] with x hx hx'`. Rewrite using `[hx, Pi.smul_apply, hx', smul_eq_mul]`.
+
+Use `filter_upwards [h1, h2] with x hx hx'`. Rewrite using `[hx, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => hx' i`.
+-/
 theorem isContRep_sum (B : RowsAut) {m : ℕ} (y : Fin m → B.I.L2 B.μf B.fund) (F : Fin m → B.I.GA → ℂ)
     (hF : ∀ i, IsContRep B (y i) (F i)) (c : Fin m → ℂ) :
     IsContRep B (∑ i, c i • y i) (fun x => ∑ i, c i * F i x) := by
@@ -70,6 +92,31 @@ theorem isContRep_sum (B : RowsAut) {m : ℕ} (y : Fin m → B.I.L2 B.μf B.fund
     rw [hx, Finset.sum_apply]
     exact Finset.sum_congr rfl fun i _ => hx' i
 
+/- English proof (translation)
+Introduce `B d h hd hn hdec hb hfin T hT y f hf`. Take `⟨hT2, hL, hS, -⟩` from `GlobalTheory.CongTop.adelic_topology B.I`. Take `⟨hl, -⟩` from `GlobalTheory.AdelicUnimod.adelic_unimodular B.I B.μf`. Establish `: BorelSpace B.I.GA` using `inferInstance`. Establish `: (B.I.muA B.μf).IsMulLeftInvariant` using `⟨hl⟩`.
+
+Take `⟨hp, htc, -, -⟩` from `GlobalTheory.T.truncatedLeastLatticeSize_lipschitz_properties B.I hn`. Take `⟨hphc, hphb, hphi⟩` from `GlobalTheory.T.discrete_series_coefficient_integrable_majorant B d h hd hdec`. Establish `hec : Continuous B.e` using `(GlobalTheory.rowsAut_idem_elementary B).2.2.2`. Establish `hb' : HBig B 32 h` using `fun v => le_trans (by`. Establish `: 0 ≤ (B.I.n : ℝ) ^ 2 * Real.sqrt (rkR (B.I.ε v))` using `by positivity`.
+
+Use the proof step `nlinarith) (hb v)`. Take `⟨u, F, -, hsp, hF, -, -, -, hbd⟩` from `GlobalTheory.T.kernelB' B d h hd hn hdec hb' hfin T hT`. Establish `hmem : T y ∈ Submodule.span ℂ (Set.range u)` using `by rw [hsp]; exact ⟨y, rfl⟩`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 hmem`. Take `⟨hext, huniq, -⟩` from `GlobalTheory.ExtContRep.ext_ae_eq_contRep B (T y) f hf`.
+
+Establish `hfe : (fun x => ∑ i, c i * F i x) = f` using `huniq _ (hc ▸ isContRep_sum B u F hF c)`. Use `set N := 2 * B.I.n ^ 2 * B.I.f with hN`. Establish `hτ : ∀ x, 0 ≤ (tau1 B.I x)⁻¹ ^ N` using `fun x => pow_nonneg (inv_pos.2 (hp x)).le _`. Choose the witnesses or unpack the hypotheses as in `⟨C, hC0, hC⟩ : ∃ C : ℝ, 0 ≤ C ∧ ∀ x, ‖f x‖ ≤ C * (tau1 B.I x)⁻¹ ^ N := by`. Use `⟨Real.sqrt ((∑ i, ‖c i‖ ^ 2) * kerC B d), Real.sqrt_nonneg _, fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `hbd c x`. Rewrite `h1` using `[congrFun hfe x, show 4 * B.I.n ^ 2 * B.I.f = N * 2 by rw [hN]; ring, pow_mul, ← mul_assoc]`. Establish `h2` using `Real.le_sqrt_of_sq_le h1`. Rewrite `h2` using `[Real.sqrt_mul' _ (sq_nonneg _), Real.sqrt_sq (hτ x)]`. Then use the resulting hypothesis. Set `Φ : B.I.GA → ℝ` to `fun g => C * (majPh B d h g.1 * Real.exp (2 * (B.I.n : ℝ) ^ 2 * dSum B.I g.1) * ‖B.e g.2‖)`.
+
+Establish `hm0 : ∀ g, 0 ≤ majPh B d h g` using `fun g => (norm_nonneg _).trans (hphb g)`. Establish `hΦ0 : ∀ g, 0 ≤ Φ g` using `fun g => mul_nonneg hC0 (mul_nonneg (mul_nonneg (hm0 _) (Real.exp_pos _).le) (norm_nonneg _))`. Establish `hΦi : Integrable Φ (B.I.muA B.μf)` using `(Integrable.mul_prod (hphi _ (by positivity) (weight_condition B h _ hn hb le_rfl)) B.Re_spec.1.norm).const_mul C`. Establish `hΦ : ∀ x g, ‖phe B d g * f (x * g)‖ ≤ (tau1 B.I x)⁻¹ ^ N * Φ g`. Introduce `x g`.
+
+Distinguish the cases in `he : B.e g.2 = 0`. Rewrite using `[phe, he, mul_zero, zero_mul, norm_zero]`. Conclude with `mul_nonneg (hτ x) (hΦ0 g)`. Establish `hg : g.2 ∈ B.I.Kset` using `B.e_adm.2.2.2.2.1 _ he`. Establish `h1` using `(hC (x * g)).trans (mul_le_mul_of_nonneg_left (inv_tau_pow_le B.I hn x g hg) hC0)`.
+
+Rewrite using `[norm_mul, phe, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨⟨C, hC⟩, ⟨Φ, hΦi, hΦ⟩, fun x => (congrFun (huniq (fun x => ∫ g, phe B d g * f (x * g) ∂(B.I.muA B.μf)) ⟨?_, fun γ hγ x => ?_, ?_⟩) x).symm⟩` and prove the remaining obligations. Establish `hpc : Continuous (phe B d)` using `(hphc.comp continuous_fst).mul (hec.comp continuous_snd)`. Establish `htN : Continuous fun x => (tau1 B.I x)⁻¹ ^ N` using `(htc.inv₀ fun x => (hp x).ne').pow _`.
+
+Use `continuous_iff_continuousAt.2 fun x₀ => ?_` and prove the remaining obligations. Use `continuousAt_of_dominated (bound := fun g => ((tau1 B.I x₀)⁻¹ ^ N + 1) * Φ g) (Filter.Eventually.of_forall fun x => ?_) ?_ (hΦi.const_mul _) (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Conclude with `(hpc.mul (hf.1.comp (continuous_const.mul continuous_id))).aestronglyMeasurable`. Use `filter_upwards [htN.continuousAt.eventually_lt continuousAt_const (lt_add_one ((tau1 B.I x₀)⁻¹ ^ N))] with x hx`. Conclude with `Filter.Eventually.of_forall fun g => (hΦ x g).trans (mul_le_mul_of_nonneg_right hx.le (hΦ0 g))`.
+
+Conclude with `(continuous_const.mul (hf.1.comp (continuous_id.mul continuous_const))).continuousAt`. Simplify using `only [mul_assoc, hf.2.1 γ hγ]`. Establish `hi : Integrable (ph B d) (muInf B.I)`. Use `(hphi 0 le_rfl (weight_condition B h _ hn hb (by positivity))).mono' hphc.aestronglyMeasurable (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `using hphb g`.
+
+Establish `hproj` using `((GlobalTheory.T.globalConvolutionOrthogonalProjector_proof B d hd hi).2.2.2 T hT).1`. Establish `hTT : T (T y) = T y` using `congrArg (fun A : B.I.L2 B.μf B.fund →L[ℂ] B.I.L2 B.μf B.fund => A y) hproj.1`. Establish `h1` using `(GlobalTheory.ConvKernel.rconv_eq_integral B _ T hT (T y)).2`. Rewrite `h1` using `[hTT]`. Use `h1.trans (Filter.Eventually.of_forall fun x => integral_congr_ae ?_)` and prove the remaining obligations.
+
+Use `filter_upwards [(measurePreserving_mul_left (B.I.muA B.μf) x).quasiMeasurePreserving.ae hext] with g hg`. Rewrite using `[hg]`.
+-/
 theorem reproducing_formula : ∀ (B : RowsAut) (d : InfinitePlace B.I.F → ℝ) (h : ℝ), IsDSData B d → 1 ≤ B.I.n → LocDec B h → HBig B 40 h → FiniteDimensional ℂ (B.I.eHom B.σs B.μf B.fund B.R B.Re) → ∀ T, B.I.IsRConv B.μf B.fund B.R (phe B d) T → ∀ (y : B.I.L2 B.μf B.fund) (f : B.I.GA → ℂ), IsContRep B (T y) f → (∃ C : ℝ, ∀ x, ‖f x‖ ≤ C * (tau1 B.I x)⁻¹ ^ (2 * B.I.n ^ 2 * B.I.f)) ∧ (∃ Φ : B.I.GA → ℝ, Integrable Φ (B.I.muA B.μf) ∧ ∀ x g, ‖phe B d g * f (x * g)‖ ≤ (tau1 B.I x)⁻¹ ^ (2 * B.I.n ^ 2 * B.I.f) * Φ g) ∧ ∀ x, f x = ∫ g, phe B d g * f (x * g) ∂(B.I.muA B.μf) := by
   intro B d h hd hn hdec hb hfin T hT y f hf
   obtain ⟨hT2, hL, hS, -⟩ := GlobalTheory.CongTop.adelic_topology B.I

@@ -58,6 +58,9 @@ def objOfSABMap (o : Obj D l b s) {t' : SAB H S'} (m : SABMap t' o.t f) : Obj D 
 def objMapOfSABMap (o : Obj D l b s) {t' : SAB H S'} (m : SABMap t' o.t f) : ObjMap (objOfSABMap o m) o f :=
   ⟨m, fun _ => secPull_left m.cart _, fun _ => secPull_left m.cart _⟩
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Conclude with `h.trans (secPull_left m.cart _).symm`. Rewrite using `[Over.w, Over.w]`.
+-/
 theorem sec_eq_secPull {t : SAB H S} {t' : SAB H S'} (m : SABMap t' t f) {e : 𝟙_ (Over S) ⟶ t.G}
     {e' : 𝟙_ (Over S') ⟶ t'.G} (h : e'.left ≫ m.φ = f ≫ e.left) : e' = secPull m.cart e := by
   apply Over.OverMorphism.ext
@@ -132,13 +135,28 @@ def secEquiv : (𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G) ≃
     ((Y.m0.cart.1.lift_snd _ _ _).trans (Over.w σ).symm))
   right_inv σ := Over.OverMorphism.ext (Y.m0.cart.1.lift_fst _ _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem secEquiv_left (σ : 𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G) :
     (secEquiv Y σ).left = σ.left ≫ Y.m0.toSABMap.φ := rfl
 
+/- English proof (translation)
+The claim follows from `congrArg (fun x : 𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G => x.left ≫ Y.m.φ) ((secEquiv Y).left_inv σ)`.
+-/
 theorem secMap_secEquiv (σ : 𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G) :
     (toSecond Y).secMap (secEquiv Y σ) = σ.left ≫ Y.m.φ :=
   congrArg (fun x : 𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G => x.left ≫ Y.m.φ) ((secEquiv Y).left_inv σ)
 
+/- English proof (translation)
+Rewrite using `[ModelScope.extends_iff_of_subset Y U hU]`. Unfold `IndefiniteRowSideFullHecke.OpenModelSections.Model.Extends`. Rewrite using `[secMap_secEquiv]`. Use `show _ ↔ ∃ τ : Over.mk U.ι ⟶ Y.t.G, (Y.j ∣_ U) ≫ τ.left = (Y.j ⁻¹ᵁ U).ι ≫ σ.left ≫ Y.m.φ`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨j', σ', h₀, h₁, h₂⟩`. Use `⟨Over.homMk σ' h₁, ?_⟩` and prove the remaining obligations. Establish `e : Y.j ∣_ U = (Y.j ⁻¹ᵁ U).ι ≫ j'`. Rewrite using `[← cancel_mono U.ι, morphismRestrict_ι, Category.assoc, h₀]`. Rewrite using `[e, Category.assoc, ← h₂]`.
+
+Both sides reduce to the same expression. Introduce and unpack `⟨τ, hτ⟩`. Establish `hr : Set.range (𝟙 (Xo.XF c) : _ ⟶ _) ⊆ Set.range (Y.j ⁻¹ᵁ U).ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Conclude with `hU ⟨x, rfl⟩`. Establish `hi` using `IsOpenImmersion.lift_fac (Y.j ⁻¹ᵁ U).ι (𝟙 _) hr`. Use `⟨IsOpenImmersion.lift (Y.j ⁻¹ᵁ U).ι (𝟙 _) hr ≫ Y.j ∣_ U, τ.left, ?_, Over.w τ, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, morphismRestrict_ι, ← Category.assoc, hi, Category.id_comp]`. Rewrite using `[Category.assoc, hτ, ← Category.assoc, hi, Category.id_comp]`.
+-/
 theorem extends_iff_of_subset (U : Y.X.Opens) (hU : Set.range Y.j ⊆ (U : Set Y.X))
     (σ : 𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G) : Y.Extends U σ ↔ (toSecond Y).Extends (secEquiv Y σ) U := by
   rw [ModelScope.extends_iff_of_subset Y U hU]
@@ -162,6 +180,9 @@ theorem extends_iff_of_subset (U : Y.X.Opens) (hU : Set.range Y.j ⊆ (U : Set Y
     · rw [Category.assoc, morphismRestrict_ι, ← Category.assoc, hi, Category.id_comp]
     · rw [Category.assoc, hτ, ← Category.assoc, hi, Category.id_comp]
 
+/- English proof (translation)
+Distinguish the cases in `hU : Set.range Y.j ⊆ (U : Set Y.X)`. Rewrite using `[extends_iff_of_subset Y U hU]`. Conclude with `⟨fun h _ => h, fun h => h hU⟩`. Conclude with `⟨fun _ h => (hU h).elim, fun _ => ModelScope.extends_of_not_subset Y U hU σ⟩`.
+-/
 theorem extends_iff (U : Y.X.Opens) (σ : 𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G) :
     Y.Extends U σ ↔ (Set.range Y.j ⊆ (U : Set Y.X) → (toSecond Y).Extends (secEquiv Y σ) U) := by
   by_cases hU : Set.range Y.j ⊆ (U : Set Y.X)

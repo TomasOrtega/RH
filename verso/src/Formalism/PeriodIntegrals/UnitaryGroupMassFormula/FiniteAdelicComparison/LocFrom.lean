@@ -9,28 +9,43 @@ open NumberField IsDedekindDomain Matrix
 open scoped TensorProduct
 open Formalism.MainNotions.S (AutInst)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[Formalism.L2.SG.Sub.ratV]`.
+-/
 theorem ratV_add' {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     {n : ℕ} (a b : Fin n → E) :
     Formalism.L2.SG.Sub.ratV (F := F) R (a + b) = Formalism.L2.SG.Sub.ratV (F := F) R a + Formalism.L2.SG.Sub.ratV (F := F) R b := by
   funext i
   simp [Formalism.L2.SG.Sub.ratV]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[Formalism.L2.SG.Sub.ratV]`.
+-/
 theorem ratV_zero' {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     {n : ℕ} : Formalism.L2.SG.Sub.ratV (F := F) R (0 : Fin n → E) = 0 := by
   funext i
   simp [Formalism.L2.SG.Sub.ratV]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[Formalism.L2.SG.Sub.ratV]`.
+-/
 theorem ratV_zsmul' {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     {n : ℕ} (k : ℤ) (a : Fin n → E) :
     Formalism.L2.SG.Sub.ratV (F := F) R (k • a) = k • Formalism.L2.SG.Sub.ratV (F := F) R a := by
   funext i
   simp [Formalism.L2.SG.Sub.ratV]
 
+/- English proof (translation)
+Simplify using `[psiV, Algebra.TensorProduct.tmul_mul_tmul]`.
+-/
 theorem psiV_entry (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (a : Formalism.MainNotions.S.Af I.F) (e : I.E) :
     psiV I v (((1 : I.E) ⊗ₜ[I.F] a) * (e ⊗ₜ[I.F] (1 : Formalism.MainNotions.S.Af I.F))) =
       (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV I.F v a) ⊗ₜ[I.F] e := by
   simp [psiV, Algebra.TensorProduct.tmul_mul_tmul]
 
+/- English proof (translation)
+Rewrite using `[TensorProduct.smul_tmul']`. Use `congr 1`. Rewrite using `[Algebra.smul_def, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem smul_one_tmul' (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (r : v.adicCompletionIntegers I.F)
     (e : I.E) :
     r • ((1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) ⊗ₜ[I.F] e) = ((r : v.adicCompletion I.F) ⊗ₜ[I.F] e) := by
@@ -39,6 +54,27 @@ theorem smul_one_tmul' (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (r : v.a
   rw [Algebra.smul_def, mul_one]
   rfl
 
+/- English proof (translation)
+Introduce `I x hx`. Take `⟨s, hs⟩` from `Submodule.FG.restrictScalars (R := ℤ) I.L_fg`. Set `g : s → (Fin I.n → I.E)` to `fun j => (j : Fin I.n → I.E)`. Establish `hgL : ∀ j, g j ∈ I.L` using `fun j => by`. Establish `: (j : Fin I.n → I.E) ∈ I.L.restrictScalars ℤ` using `hs ▸ Submodule.subset_span j.2`.
+
+Conclude with `this`. Establish `hloc : ∀ v : HeightOneSpectrum (𝓞 I.F), ∃ c : s → v.adicCompletionIntegers I.F, ∑ j, c j • Formalism.L2.SG.Sub.ratV (F` using `I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) (g j) = vecV I v x := by`. Introduce `v`. Rewrite using `[← Submodule.mem_span_range_iff_exists_fun]`. Establish `hle : Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E)) ≤ Submodule.span (v.adicCompletionIntegers I.F) (Set.range fun j => Formalism.L2.SG.Sub.ratV (F` using `I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) (g j)) := by`.
+
+Rewrite using `[Formalism.L2.SG.Sub.latLoc, Submodule.span_le]`. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Establish `hl' : l ∈ Submodule.span ℤ (s : Set (Fin I.n → I.E))` using `by rw [hs]; exact hl`. Use `clear hl`. Proceed by induction on `hl' using Submodule.span_induction with`.
+
+Consider the case `mem y hy => exact Submodule.subset_span ⟨⟨y, hy⟩, rfl⟩`. Consider the case `zero => rw [ratV_zero']`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [ratV_add']`. Conclude with `add_mem ha hb`.
+
+Consider the case `smul k a _ ha => rw [ratV_zsmul']`. Conclude with `zsmul_mem ha k`. Conclude with `hle (hx v)`. Use `choose c hc using hloc`. Set `α : s → Formalism.MainNotions.S.Af I.F` to `fun j => RestrictedProduct.mk (fun v => ((c v j : v.adicCompletionIntegers I.F) : v.adicCompletion I.F)) (Filter.Eventually.of_forall fun v => (c v j).2)`.
+
+Establish `hαint : ∀ j, α j ∈ Formalism.UG.intAd I.F` using `fun j v => (c v j).2`. Establish `hαmem : ∀ j, (1 : I.E) ⊗ₜ[I.F] α j ∈ Formalism.MainNotions.S.IntAf I.F I.E` using `fun j => Subring.subset_closure (Or.inr ⟨⟨α j, hαint j⟩, rfl⟩)`. Set `y : Fin I.n → I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F` to `∑ j, (⟨_, hαmem j⟩ : Formalism.MainNotions.S.IntAf I.F I.E) • (fun i => Formalism.UG.inclE (F := I.F) (Formalism.MainNotions.S.Af I.F) (g j i))`. Establish `hy : y ∈ I.Lf` using `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨g j, hgL j⟩, rfl⟩)`. Establish `hyx : y = x`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[← sub_eq_zero]`. Apply `hI I` to reduce the goal to its premises. Introduce `v`. Rewrite using `[map_sub, sub_eq_zero]`.
+
+Establish `hci` using `congrFun (hc v) i`. Simplify using `only [vecV] at hci`. Rewrite using `[← hci]`. Simplify using `only [y, Finset.sum_apply, map_sum, Pi.smul_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Subring.smul_def, smul_eq_mul]`. Express the relevant statement in the definitionally equal form `psiV I v (((1 : I.E) ⊗ₜ[I.F] α j) * (g j i ⊗ₜ[I.F] (1 : Formalism.MainNotions.S.Af I.F))) = _`. Rewrite using `[psiV_entry]`. Express the relevant statement in the definitionally equal form `_ = c v j • ((1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) ⊗ₜ[I.F] g j i)`. Rewrite using `[smul_one_tmul']`.
+
+Both sides reduce to the same expression. Conclude with `hyx ▸ hy`.
+-/
 theorem memLocFrom_of (hI : InjV) : MemLocFrom := by
   intro I x hx
   obtain ⟨s, hs⟩ := Submodule.FG.restrictScalars (R := ℤ) I.L_fg

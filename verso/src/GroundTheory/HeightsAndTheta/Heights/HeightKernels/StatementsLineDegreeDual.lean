@@ -50,6 +50,9 @@ def dualNormSq (b : Module.Basis T ℤ (dualLattice F))
   ∑ σ : K →+* ℂ, (star (fun j => dualRecover b hb z (σ, j)) ⬝ᵥ
     (F.metric σ *ᵥ fun j => dualRecover b hb z (σ, j))).re
 
+/- English proof (translation)
+Distinguish the cases in `hw : w = 0`. Simplify using `[hw]`. Conclude with `((Complex.lt_def.mp ((F.posDef σ).dotProduct_mulVec_pos hw)).1).le`.
+-/
 theorem dualNormSq_term_nonneg (σ : K →+* ℂ) (w : Fin i → ℂ) :
     0 ≤ (star w ⬝ᵥ (F.metric σ *ᵥ w)).re := by
   by_cases hw : w = 0
@@ -145,6 +148,13 @@ def DualGeomDegPos.Statement : Prop :=
     (hb : Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b))), 1 ≤ i →
     0 < geomDeg (dualIdeal b) (dualLine F b hb) (i - 1)
 
+/- English proof (translation)
+Introduce `x hx`. Use `Submodule.span_induction (p := fun x _ => (fun _ : Fin 1 => (1 : ℚ)) ⬝ᵥ x ∈ (algebraMap (𝓞 ℚ) ℚ).range) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨1, by fin_cases j; simp [dotProduct]⟩`. Conclude with `⟨0, by simp⟩`.
+
+Introduce and unpack `x y _ _ ⟨a, ha⟩ ⟨c, hc⟩`. Conclude with `⟨a + c, by rw [dotProduct_add, map_add, ha, hc]⟩`. Introduce and unpack `r x _ ⟨a, ha⟩`. Use `⟨r * a, ?_⟩` and prove the remaining obligations. Rewrite using `[dotProduct_smul, map_mul, ha]`.
+
+Both sides reduce to the same expression.
+-/
 theorem one_mem_dualLattice_standard :
     (fun _ : Fin 1 => (1 : ℚ)) ∈ dualLattice (HermLattice.standard ℚ 1) := by
   intro x hx
@@ -162,15 +172,30 @@ theorem one_mem_dualLattice_standard :
 
 def oneDual : dualLattice (HermLattice.standard ℚ 1) := ⟨fun _ => 1, one_mem_dualLattice_standard⟩
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : ((oneDual : dualLattice (HermLattice.standard ℚ 1)) : Fin 1 → ℚ) 0 = 0`. Rewrite using `[h]`. Both sides reduce to the same expression. Conclude with `one_ne_zero h1`.
+-/
 theorem oneDual_ne_zero : oneDual ≠ 0 := by
   intro h
   have h1 : ((oneDual : dualLattice (HermLattice.standard ℚ 1)) : Fin 1 → ℚ) 0 = 0 := by
     rw [h]; rfl
   exact one_ne_zero h1
 
+/- English proof (translation)
+The claim follows from `linearIndependent_unique_iff.mpr oneDual_ne_zero`.
+-/
 theorem oneDual_linearIndependent : LinearIndependent ℤ (fun _ : Unit => oneDual) :=
   linearIndependent_unique_iff.mpr oneDual_ne_zero
 
+/- English proof (translation)
+Introduce and unpack `⟨φ, hφ⟩ -`. Establish `hx : (fun j : Fin 1 => if j = 0 then (1 : ℚ) else 0) ∈ (HermLattice.standard ℚ 1).lattice`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`.
+
+Use `fin_cases j`. Both sides reduce to the same expression. Take `⟨a, ha⟩` from `hφ _ hx`. Establish `h0 : φ 0 = algebraMap (𝓞 ℚ) ℚ a`. Rewrite using `[ha]`.
+
+Simplify using `[dotProduct]`. Rewrite using `[Set.range_const]`. Use `Submodule.mem_span_singleton.mpr ⟨Rat.ringOfIntegersEquiv a, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `j`.
+
+Use `fin_cases j`. Use `show ((Rat.ringOfIntegersEquiv a : ℤ) : ℚ) * 1 = φ 0`. Rewrite using `[mul_one, Rat.ringOfIntegersEquiv_apply_coe, h0]`.
+-/
 theorem oneDual_span : ⊤ ≤ Submodule.span ℤ (Set.range fun _ : Unit => oneDual) := by
   rintro ⟨φ, hφ⟩ -
   have hx : (fun j : Fin 1 => if j = 0 then (1 : ℚ) else 0) ∈ (HermLattice.standard ℚ 1).lattice := by
@@ -194,9 +219,21 @@ theorem oneDual_span : ⊤ ≤ Submodule.span ℤ (Set.range fun _ : Unit => one
 def dualBasisStandard : Module.Basis Unit ℤ (dualLattice (HermLattice.standard ℚ 1)) :=
   Module.Basis.mk oneDual_linearIndependent oneDual_span
 
+/- English proof (translation)
+Simplify using `[dualBasisStandard]`.
+-/
 theorem dualBasisStandard_apply (t : Unit) : dualBasisStandard t = oneDual := by
   simp [dualBasisStandard]
 
+/- English proof (translation)
+Set `hU : Unique ((ℚ →+* ℂ) × Fin 1)` to `{ default := (Rat.castHom ℂ, 0) uniq := fun p => Prod.ext (Subsingleton.elim _ _) (Subsingleton.elim _ _) }`. Establish `hM : ∀ (t : Unit) (p : (ℚ →+* ℂ) × Fin 1), dualEmbMatrix dualBasisStandard t p = 1`. Introduce `t p`. Simplify using `[dualEmbMatrix, dualBasisStandard_apply, oneDual]`. Establish `hv : ∀ w : (ℚ →+* ℂ) × Fin 1 → ℂ, Matrix.mulVecLin (dualEmbMatrix dualBasisStandard) w = fun _ => w default`.
+
+Introduce `w`. Use function extensionality and compare the values at `t`. Rewrite using `[Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, Fintype.sum_unique, hM, one_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `w w' h`.
+
+Rewrite `h` using `[hv, hv]`. Establish `h1` using `congrFun h ()`. Use function extensionality and compare the values at `p`. Rewrite using `[Unique.eq_default p]`. Conclude with `h1`.
+
+Introduce `z`. Use `⟨fun _ => z (), ?_⟩` and prove the remaining obligations. Rewrite using `[hv]`.
+-/
 theorem dualEmbMatrix_standard_bijective :
     Function.Bijective (Matrix.mulVecLin (dualEmbMatrix dualBasisStandard)) := by
   let hU : Unique ((ℚ →+* ℂ) × Fin 1) :=
@@ -221,6 +258,9 @@ theorem dualEmbMatrix_standard_bijective :
     refine ⟨fun _ => z (), ?_⟩
     rw [hv]
 
+/- English proof (translation)
+The claim follows from `dualLine (HermLattice.standard ℚ 1) dualBasisStandard dualEmbMatrix_standard_bijective`.
+-/
 example : HermLine (dualBlocks Unit) :=
   dualLine (HermLattice.standard ℚ 1) dualBasisStandard dualEmbMatrix_standard_bijective
 

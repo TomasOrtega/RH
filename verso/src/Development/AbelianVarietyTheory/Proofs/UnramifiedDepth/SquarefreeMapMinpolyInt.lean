@@ -18,6 +18,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hi : IsIntegral ℤ a` using `Algebra.IsIntegral.isIntegral a`. Establish `h1 : Irreducible (minpoly ℤ a)` using `minpoly.irreducible hi`. Establish `h2 : Irreducible ((minpoly ℤ a).map (algebraMap ℤ ℚ))` using `((minpoly.monic hi).irreducible_iff_irreducible_map_fraction_map (K := ℚ)).mp h1`. Establish `h3` using `(h2.separable.map (f := algebraMap ℚ C)).squarefree`. Rewrite `h3` using `[Polynomial.map_map]`.
+
+Establish `h4 : (algebraMap ℚ C).comp (algebraMap ℤ ℚ) = Int.castRingHom C` using `RingHom.ext_int _ _`. Rewrite `h3` using `[h4]`. Then use the resulting hypothesis.
+-/
 private theorem squarefree_map_minpoly_int (C : Type) [Field C] [CharZero C] (OE : Type)
     [CommRing OE] [IsDomain OE] [Module.Finite ℤ OE] (a : OE) :
     Squarefree ((minpoly ℤ a).map (Int.castRingHom C)) := by
@@ -30,6 +35,9 @@ private theorem squarefree_map_minpoly_int (C : Type) [Field C] [CharZero C] (OE
   have h4 : (algebraMap ℚ C).comp (algebraMap ℤ ℚ) = Int.castRingHom C := RingHom.ext_int _ _
   rwa [h4] at h3
 
+/- English proof (translation)
+Establish `h4 : Int.castRingHom C = algebraMap ℤ C` using `RingHom.ext_int _ _`. Rewrite using `[h4, Polynomial.aeval_map_algebraMap]`. Use `Polynomial.aeval_algHom_apply ρ.toIntAlgHom a (minpoly ℤ a)` as an intermediate fact. Rewrite `this` using `[minpoly.aeval, map_zero]`. Conclude with `this`.
+-/
 private theorem aeval_map_minpoly_int (C : Type) [Field C] (OE : Type)
     [CommRing OE] (A : Type) [Ring A] [Algebra C A] (ρ : OE →+* A) (a : OE) :
     Polynomial.aeval (ρ a) ((minpoly ℤ a).map (Int.castRingHom C)) = 0 := by
@@ -39,6 +47,11 @@ private theorem aeval_map_minpoly_int (C : Type) [Field C] (OE : Type)
   rw [minpoly.aeval, map_zero] at this
   exact this
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis ℤ OE`. Set `p : OE → Polynomial C` to `fun a => (minpoly ℤ a).map (Int.castRingHom C)`. Establish `hfin : ∀ a, Finite ((p a).rootSet C)` using `fun a => (Polynomial.rootSet_finite _ _).to_subtype`. Set `F : (OE →+* C) → ∀ i, (p (b i)).rootSet C` to `fun τ i => ⟨τ (b i), Polynomial.mem_rootSet.mpr ⟨(squarefree_map_minpoly_int C OE (b i)).ne_zero, aeval_map_minpoly_int C OE C τ (b i)⟩⟩`. Use `Finite.of_injective F fun τ σ h => ?_` and prove the remaining obligations.
+
+Establish `: τ.toAddMonoidHom.toIntLinearMap = σ.toAddMonoidHom.toIntLinearMap` using `b.ext fun i => congrArg Subtype.val (congrFun h i)`. Conclude with `RingHom.ext fun a => LinearMap.congr_fun this a`.
+-/
 private theorem finite_ringHom_order (C : Type) [Field C] [CharZero C] (OE : Type)
     [CommRing OE] [IsDomain OE] [Module.Free ℤ OE] [Module.Finite ℤ OE] :
     Finite (OE →+* C) := by
@@ -54,6 +67,13 @@ private theorem finite_ringHom_order (C : Type) [Field C] [CharZero C] (OE : Typ
     b.ext fun i => congrArg Subtype.val (congrFun h i)
   exact RingHom.ext fun a => LinearMap.congr_fun this a
 
+/- English proof (translation)
+Distinguish the cases in `h0 : x = 0`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Establish `hinj : Function.Injective fun c : C => c • x` using `smul_left_injective C h0`. Set `τ : OE →+* C` to `{ toFun := χ map_one' := hinj (by simp only [← hx, map_one, one_smul, Module.End.one_apply]) map_mul' := fun a b => hinj (by`.
+
+Simplify using `only`. Rewrite using `[← hx, map_mul, Module.End.mul_apply, hx b, map_smul, hx a, smul_smul, mul_comm])`. Use the proof step `map_zero' := hinj (by simp only [← hx, map_zero, zero_smul, LinearMap.zero_apply])`. Use the proof step `map_add' := fun a b => hinj (by`. Simplify using `only`.
+
+Rewrite using `[← hx, map_add, LinearMap.add_apply, hx a, hx b, add_smul]) }`. Use `Submodule.mem_iSup_of_mem τ ((Submodule.mem_iInf _).mpr fun a => ?_)` and prove the remaining obligations. Conclude with `Module.End.mem_eigenspace_iff.mpr (hx a)`.
+-/
 private theorem mem_iSup_of_eigenvector (C : Type) [Field C] (OE : Type) [CommRing OE]
     (V : Type) [AddCommGroup V] [Module C V] (ρ : OE →+* Module.End C V) (χ : OE → C) (x : V)
     (hx : ∀ a, ρ a x = χ a • x) :
@@ -74,6 +94,27 @@ private theorem mem_iSup_of_eigenvector (C : Type) [Field C] (OE : Type) [CommRi
   refine Submodule.mem_iSup_of_mem τ ((Submodule.mem_iInf _).mpr fun a => ?_)
   exact Module.End.mem_eigenspace_iff.mpr (hx a)
 
+/- English proof (translation)
+Introduce `C _ _ _ OE _ _ _ _ _`. Use `⟨finite_ringHom_order C OE, fun V _ _ ρ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `hcomm : ∀ a b : OE, Commute (ρ a) (ρ b)` using `fun a b => (Commute.all a b).map ρ`. Establish `h` using `Module.End.independent_iInf_maxGenEigenspace_of_forall_mapsTo (fun a : OE => ρ a) (fun i j φ => Module.End.mapsTo_maxGenEigenspace_of_comm (hcomm j i) φ)`. Establish `h2` using `h.comp (f := fun τ : OE →+* C => (τ : OE → C)) DFunLike.coe_injective`.
+
+Use `h2.mono fun τ => ?_` and prove the remaining obligations. Conclude with `iInf_mono fun a => (Module.End.genEigenspace (ρ a) (τ a)).mono le_top`. Establish `hcomm : ∀ a b : OE, Commute (ρ a) (ρ b)` using `fun a b => (Commute.all a b).map ρ`. Establish `hss : ∀ a, (ρ a).IsSemisimple` using `fun a => Module.End.isSemisimple_of_squarefree_aeval_eq_zero (squarefree_map_minpoly_int C OE a) (aeval_map_minpoly_int C OE _ ρ a)`. Rewrite using `[eq_top_iff]`.
+
+Introduce and unpack `v -`. Set `W : Submodule C V` to `Submodule.span C (Set.range fun a : OE => ρ a v)`. Establish `hW : ∀ a, W ∈ (ρ a).invtSubmodule`. Introduce `a`. Rewrite using `[Module.End.mem_invtSubmodule, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨b, rfl⟩`. Use `Submodule.subset_span ⟨a * b, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, Module.End.mul_apply]`. Establish `hfin : FiniteDimensional C W`. Set `b` to `Module.Free.chooseBasis ℤ OE`.
+
+Establish `hle : W ≤ Submodule.span C (Set.range fun i => ρ (b i) v)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Establish `ha : a ∈ Submodule.span ℤ (Set.range b)` using `by rw [b.span_eq]; trivial`. Simplify using `only [SetLike.mem_coe]`.
+
+Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul n x _ hx`. Rewrite using `[map_zsmul, LinearMap.smul_apply]`.
+
+Conclude with `zsmul_mem hx n`. Establish `: FiniteDimensional C (Submodule.span C (Set.range fun i => ρ (b i) v))` using `FiniteDimensional.span_of_finite C (Set.finite_range _)`. Conclude with `Submodule.finiteDimensional_of_le hle`. Set `f : OE → Module.End C W` to `fun a => (ρ a).restrict (hW a)`. Establish `htop` using `Module.End.iSup_iInf_maxGenEigenspace_eq_top_of_iSup_maxGenEigenspace_eq_top_of_commute f (fun a b _ => LinearMap.restrict_commute (hcomm a b) (hW a) (hW b)) (fun a => Module.End.iSup_maxGenEigenspace_eq_top (f a))`.
+
+Establish `hv : v ∈ W` using `Submodule.subset_span ⟨1, by simp⟩`. Establish `hle : (⊤ : Submodule C W) ≤ Submodule.comap W.subtype (⨆ τ : OE →+* C, ⨅ a : OE, Module.End.eigenspace (ρ a) (τ a))`. Rewrite using `[← htop]`. Use `iSup_le fun χ x hx => ?_` and prove the remaining obligations. Use `mem_iSup_of_eigenvector C OE V ρ χ x fun a => ?_` and prove the remaining obligations.
+
+Establish `h1` using `(Submodule.mem_iInf _).mp hx a`. Establish `h2 : (f a).IsSemisimple` using `(hss a).restrict (hW a)`. Rewrite `h1` using `[h2.isFinitelySemisimple.maxGenEigenspace_eq_eigenspace, Module.End.mem_eigenspace_iff]`. Conclude with `congrArg Subtype.val h1`. Conclude with `hle (Submodule.mem_top (x := (⟨v, hv⟩ : W)))`.
+-/
 theorem order_rep_diagonalisable : ∀ (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (OE : Type) [CommRing OE] [IsDomain OE] [CharZero OE] [Module.Free ℤ OE] [Module.Finite ℤ OE], Finite (OE →+* C) ∧ ∀ (V : Type) [AddCommGroup V] [Module C V] (ρ : OE →+* Module.End C V), iSupIndep (fun τ : OE →+* C => ⨅ a : OE, Module.End.eigenspace (ρ a) (τ a)) ∧ (⨆ τ : OE →+* C, ⨅ a : OE, Module.End.eigenspace (ρ a) (τ a)) = ⊤ := by
   intro C _ _ _ OE _ _ _ _ _
   refine ⟨finite_ringHom_order C OE, fun V _ _ ρ => ⟨?_, ?_⟩⟩

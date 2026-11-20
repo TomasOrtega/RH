@@ -10,6 +10,9 @@ open GlobalTheory.Desc
 
 namespace GlobalTheory.Desc
 
+/- English proof (translation)
+Introduce `E _ _ _ _ G H _ _ hG hH f hf`. Conclude with `GlobalTheory.Published.SemiAbelianHomExtension.fractionField GlobalTheory.semiAbelianHomExtension_holds E (FractionRing E) G H hG hH f`.
+-/
 theorem semiAbelian_hom_extend_generic : ∀ (E : Type) [CommRing E] [IsDomain E] [IsNoetherianRing E] [IsIntegrallyClosed E]
     (G H : Over (Sp E)) [GrpObj G] [GrpObj H], IsSemiAbelian G → IsSemiAbelian H →
     ∀ f : (Over.pullback (jK E)).obj G ⟶ (Over.pullback (jK E)).obj H, IsMonHom f →

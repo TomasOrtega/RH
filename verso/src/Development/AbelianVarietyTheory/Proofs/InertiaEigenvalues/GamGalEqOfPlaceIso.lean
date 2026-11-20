@@ -28,6 +28,11 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A' : ValuationSubring Ω'} {w' : HeightOneSpectrum (𝓞 E')} {h' : IsPlaceOver A' w'}
   {φ : Ω ≃+* Ω'}
 
+/- English proof (translation)
+Set `e : V ≃ₗ[ℂ] (Fin (Module.finrank ℂ V) → ℂ)` to `(Module.finBasis ℂ V).equivFun`. Use `⟨_, b.transport e, b'.transport e, WD.sound (b.iso_transport e).symm, WD.sound (b'.iso_transport e).symm, ?_, fun σ σ' hσ => ?_⟩` and prove the remaining obligations. Use `show e.conjAlgEquiv ℂ b.N = e.conjAlgEquiv ℂ b'.N`. Rewrite using `[hN]`. Use `show e.conjAlgEquiv ℂ (b.ρ σ) = e.conjAlgEquiv ℂ (b'.ρ σ')`.
+
+Rewrite using `[← (hcr σ σ').1 hσ, hρ]`.
+-/
 theorem wdRel_mk (c : Weil h ≃* Weil h') (hcr : ∀ σ σ', WeilRel φ σ σ' ↔ c σ = σ')
     {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (b : WDRep h V) (b' : WDRep h' V)
     (hN : b.N = b'.N) (hρ : ∀ σ, b'.ρ (c σ) = b.ρ σ) : WDRel φ (WD.mk b) (WD.mk b') := by
@@ -39,6 +44,9 @@ theorem wdRel_mk (c : Weil h ≃* Weil h') (hcr : ∀ σ σ', WeilRel φ σ σ' 
   · show e.conjAlgEquiv ℂ (b.ρ σ) = e.conjAlgEquiv ℂ (b'.ρ σ')
     rw [← (hcr σ σ').1 hσ, hρ]
 
+/- English proof (translation)
+Unfold `WD.lpUnr`. Use `wdRel_mk c hcr _ _ rfl fun σ => ?_` and prove the remaining obligations. Rewrite using `[WDRep.diag_ρ, WDRep.diag_ρ, hdeg]`.
+-/
 theorem wdRel_lpUnr (c : Weil h ≃* Weil h') (hcr : ∀ σ σ', WeilRel φ σ σ' ↔ c σ = σ')
     (hdeg : ∀ σ, deg (c σ) = deg σ) (m : Multiset ℂ) : WDRel φ (WD.lpUnr h m) (WD.lpUnr h' m) := by
   classical

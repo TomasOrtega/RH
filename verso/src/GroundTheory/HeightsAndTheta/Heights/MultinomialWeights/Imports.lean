@@ -4,6 +4,17 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.TheoremB
 
+/- English proof (translation)
+Introduce `d mu τ0 c0 B hc0 hB10 hBc h0 hoth hmu τ`. Establish `hf : (0 : ℝ) ≤ (d.f : ℝ)` using `Nat.cast_nonneg _`. Establish `hB0 : 0 < B` using `by linarith`. Establish `hB2 : 0 ≤ B - 2` using `by linarith`. Establish `hlhs : 4 * (d.f : ℝ) * ‖mu‖ ≤ 4 * (d.f : ℝ)`.
+
+Use `mul_le_mul_of_nonneg_left hmu (by positivity : (0 : ℝ) ≤ 4 * (d.f : ℝ))` as an intermediate fact. Simplify using `using this`. Distinguish the cases in `hτ : τ = τ0`. Rewrite using `[hτ]`. Establish `hmid : 4 * (d.f : ℝ) ≤ (B - 2) * (5 * (d.f : ℝ) / B)`.
+
+Rewrite using `[mul_div_assoc', le_div_iff₀ hB0]`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Establish `hg` using `hoth τ hτ`. Establish `heq : 8 * (d.f : ℝ) / c0 * (c0 / 2) = 4 * (d.f : ℝ)`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hmid : 4 * (d.f : ℝ) ≤ (B - 2) * (c0 / 2)`. Rewrite using `[← heq]`. Conclude with `mul_le_mul_of_nonneg_right (by linarith) (by positivity)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem Gap4Nef.proof : Gap4Nef.Statement := by
   intro d mu τ0 c0 B hc0 hB10 hBc h0 hoth hmu τ
   have hf : (0 : ℝ) ≤ (d.f : ℝ) := Nat.cast_nonneg _

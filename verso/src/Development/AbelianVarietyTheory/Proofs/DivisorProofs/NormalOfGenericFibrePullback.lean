@@ -8,6 +8,13 @@ open GlobalTheory.FlagCls
 
 namespace GlobalTheory.FlagCls
 
+/- English proof (translation)
+Introduce `x`. Take `⟨h1, h2⟩` from `h (j x)`. Establish `hf : (j.stalkMap x).hom.Flat` using `Flat.stalkMap j x`. Establish `hs : Function.Surjective (j.stalkMap x).hom` using `j.stalkMap_surjective x`. Establish `hi : Function.Injective (j.stalkMap x).hom`.
+
+Use `letI := (j.stalkMap x).hom.toAlgebra`. Establish `: Module.Flat (X.presheaf.stalk (j x)) (U.presheaf.stalk x)` using `hf`. Establish `: IsLocalHom (algebraMap (X.presheaf.stalk (j x)) (U.presheaf.stalk x))` using `inferInstanceAs (IsLocalHom (j.stalkMap x).hom)`. Use `Module.FaithfullyFlat.of_flat_of_isLocalHom (A := X.presheaf.stalk (j x)) (B := U.presheaf.stalk x)` as an intermediate fact. Conclude with `FaithfulSMul.algebraMap_injective (X.presheaf.stalk (j x)) (U.presheaf.stalk x)`.
+
+Set `e` to `RingEquiv.ofBijective (j.stalkMap x).hom ⟨hi, hs⟩`. Establish `h3 : IsDomain (U.presheaf.stalk x)` using `e.symm.toMulEquiv.isDomain _`. Conclude with `⟨h3, IsIntegrallyClosed.of_equiv e⟩`.
+-/
 theorem isNormalScheme_of_isPreimmersion_of_flat {U X : Scheme.{0}} (j : U ⟶ X) [IsPreimmersion j] [Flat j]
     (h : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X) : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme U := by
   intro x
@@ -26,6 +33,11 @@ theorem isNormalScheme_of_isPreimmersion_of_flat {U X : Scheme.{0}} (j : U ⟶ X
   have h3 : IsDomain (U.presheaf.stalk x) := e.symm.toMulEquiv.isDomain _
   exact ⟨h3, IsIntegrallyClosed.of_equiv e⟩
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ N G g j s hp hN`. Establish `hb : IsPreimmersion (spMap (algebraMap R K))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors R)`. Establish `hbf : Flat (spMap (algebraMap R K))`. Rewrite using `[Flat.SpecMap_iff]`. Conclude with `RingHom.flat_algebraMap_iff.mpr (IsLocalization.flat K (nonZeroDivisors R))`.
+
+Establish `: IsPreimmersion j` using `MorphismProperty.of_isPullback (P := @IsPreimmersion) hp.flip hb`. Establish `: Flat j` using `MorphismProperty.of_isPullback (P := @Flat) hp.flip hbf`. Conclude with `isNormalScheme_of_isPreimmersion_of_flat j hN`.
+-/
 theorem isNormalScheme_of_isPullback_fractionField : ∀ (R K : Type) [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K] (N G : Scheme.{0}) (g : N ⟶ Sp R) (j : G ⟶ N) (s : G ⟶ Sp K), IsPullback j s g (spMap (algebraMap R K)) → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme N → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme G := by
   intro R K _ _ _ _ _ N G g j s hp hN
   have hb : IsPreimmersion (spMap (algebraMap R K)) :=

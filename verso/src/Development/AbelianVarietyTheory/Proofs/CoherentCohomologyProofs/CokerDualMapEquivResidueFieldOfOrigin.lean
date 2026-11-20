@@ -28,10 +28,16 @@ def vec {P : Type} [AddCommGroup P] [Module R P] {a : ℕ} (b : Module.Basis (Fi
     (Fin a → R') ≃ₗ[R'] R' ⊗[R] P :=
   (Algebra.TensorProduct.basis R' b).equivFun.symm
 
+/- English proof (translation)
+Simplify using `[vec, TensorProduct.smul_tmul']`.
+-/
 theorem vec_apply {P : Type} [AddCommGroup P] [Module R P] {a : ℕ} (b : Module.Basis (Fin a) R P)
     (v : Fin a → R') : vec b v = ∑ k, v k ⊗ₜ[R] b k := by
   simp [vec, TensorProduct.smul_tmul']
 
+/- English proof (translation)
+Rewrite using `[vec, LinearEquiv.symm_apply_eq, ← LinearMap.toMatrix_baseChange, Module.Basis.equivFun_apply, ← LinearMap.toMatrix_mulVec_repr (Algebra.TensorProduct.basis R' b)]`. Use `congr 1`. Conclude with `((Algebra.TensorProduct.basis R' b).equivFun.apply_symm_apply v).symm`.
+-/
 theorem vec_mulVec {P Q : Type} [AddCommGroup P] [Module R P] [AddCommGroup Q] [Module R Q] {a c : ℕ}
     (b : Module.Basis (Fin a) R P) (b' : Module.Basis (Fin c) R Q) (d : P →ₗ[R] Q) (v : Fin a → R') :
     vec b' (((LinearMap.toMatrix b b' d).map (algebraMap R R')).mulVec v) =
@@ -41,6 +47,13 @@ theorem vec_mulVec {P Q : Type} [AddCommGroup P] [Module R P] [AddCommGroup Q] [
   congr 1
   exact ((Algebra.TensorProduct.basis R' b).equivFun.apply_symm_apply v).symm
 
+/- English proof (translation)
+Establish `h : ∀ ψ, b.dualBasis.equivFun (d.dualMap ψ) = (LinearMap.toMatrix b b' d).transpose.mulVecLin (b'.dualBasis.equivFun ψ)` using `fun ψ => by`. Rewrite using `[← LinearMap.toMatrix_transpose, Matrix.mulVecLin_apply]`. Conclude with `(LinearMap.toMatrix_mulVec_repr b'.dualBasis b.dualBasis _ ψ).symm`. Use `⟨Submodule.Quotient.equiv _ _ b.dualBasis.equivFun ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨ψ, rfl⟩, rfl⟩`. Conclude with `⟨_, (h ψ).symm⟩`. Introduce and unpack `⟨y, rfl⟩`. Take `⟨ψ, rfl⟩` from `b'.dualBasis.equivFun.surjective y`.
+
+Conclude with `⟨_, ⟨ψ, rfl⟩, h ψ⟩`.
+-/
 theorem coker_dualMap_equiv {P Q : Type} [AddCommGroup P] [Module R P] [AddCommGroup Q] [Module R Q]
     {a c : ℕ} (b : Module.Basis (Fin a) R P) (b' : Module.Basis (Fin c) R Q) (d : P →ₗ[R] Q) :
     Nonempty ((Module.Dual R P ⧸ LinearMap.range d.dualMap) ≃ₗ[R]
@@ -74,10 +87,22 @@ variable {R' : Type} [CommRing R'] [Algebra R R'] {Y' : Scheme.{0}} {π : Y' ⟶
 
 omit [Fintype κ] in
 
+/- English proof (translation)
+The claim follows from `congrArg ModuleCat.Hom.hom (cechLB_d f M D p)`.
+-/
 theorem cech_d (f : Y ⟶ Spec (CommRingCat.of R)) (M : LB Y) (D : κ → Y.Opens) (p : ℕ) :
     ((cechLB f M D).d p (p + 1)).hom = Cube.d (secCube f M D) (p + 1) :=
   congrArg ModuleCat.Hom.hom (cechLB_d f M D p)
 
+/- English proof (translation)
+Establish `hb` using `(bijOn_ker_and_exact_of_quasiIso_baseChange R R' C _ φ hφ).1`. Establish `hc' : ⨆ i, π ⁻¹ᵁ D i = ⊤` using `by rw [← Scheme.Hom.preimage_iSup, hc]; rfl`. Establish `h₁` using `secTermBaseChange_bijective hM H 1 fun s hs => hD s (Finset.card_pos.1 (by omega))`. Establish `h₂` using `secTermBaseChange_bijective hM H 2 fun s hs => hD s (Finset.card_pos.1 (by omega))`. Rewrite `hb` using `[cech_d f M D 0]`.
+
+Establish `hk : ∀ y, secTermBaseChange M D H.w 1 y ∈ LinearMap.ker ((cechLB f' (M.pull π) fun i => π ⁻¹ᵁ D i).d 0 1).hom ↔ y ∈ LinearMap.ker ((Cube.d (secCube f M D) 1).baseChange R')` using `fun y => by`. Rewrite using `[cech_d f' _ _ 0]`. Express the relevant statement in the definitionally equal form `Cube.d _ 1 _ = 0 ↔ _`. Rewrite using `[d_secTermBaseChange]`. Conclude with `map_eq_zero_iff _ h₂.1`.
+
+Set `F : LinearMap.ker ((C.d 0 1).hom.baseChange R') → LinearMap.ker ((cechLB f' (M.pull π) fun i => π ⁻¹ᵁ D i).d 0 1).hom` to `fun x => ⟨secTermBaseChange M D H.w 1 ((φ.f 0).hom.baseChange R' x.1), (hk _).2 (hb.1 x.2)⟩`. Establish `hF : Function.Bijective F`. Use `⟨fun x y h => Subtype.ext (hb.2.1 x.2 y.2 (h₁.1 (congrArg Subtype.val h))), fun z => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `h₁.2 z.1`. Take `⟨x, hx, rfl⟩` from `hb.2.2 ((hk y).1 (hy ▸ z.2))`.
+
+Conclude with `⟨⟨x, hx⟩, Subtype.ext hy⟩`. Use `⟨(Equiv.ofBijective F hF).trans (CechOne.secKerEquiv (M.pull π) f' hc').toEquiv.symm, fun x s => ?_⟩` and prove the remaining obligations. Use `(CechOne.secKerEquiv_val (M.pull π) f' hc' _ s).symm.trans ?_` and prove the remaining obligations. Conclude with `congrFun (congrArg Subtype.val ((CechOne.secKerEquiv (M.pull π) f' hc').apply_symm_apply (F x))) s`.
+-/
 theorem exists_equiv_sec (hM : M.IsLB) (hc : ⨆ i, D i = ⊤)
     (hD : ∀ s : Finset κ, s.Nonempty → IsAffineOpen (⨅ i ∈ s, D i))
     (H : IsPullback π f' f (Spec.map (CommRingCat.ofHom (algebraMap R R'))))
@@ -112,6 +137,13 @@ theorem exists_equiv_sec (hM : M.IsLB) (hc : ⨆ i, D i = ⊤)
   exact congrFun (congrArg Subtype.val
     ((CechOne.secKerEquiv (M.pull π) f' hc').apply_symm_apply (F x))) s
 
+/- English proof (translation)
+Use `(bijOn_ker_and_exact_of_quasiIso_baseChange R R' C _ φ hφ).2 ?_` and prove the remaining obligations. Establish `hc' : ⨆ i, π ⁻¹ᵁ D i = ⊤` using `by rw [← Scheme.Hom.preimage_iSup, hc]; rfl`. Establish `h₁` using `secTermBaseChange_bijective hM H 1 fun s hs => hD s (Finset.card_pos.1 (by omega))`. Establish `h₂` using `secTermBaseChange_bijective hM H 2 fun s hs => hD s (Finset.card_pos.1 (by omega))`. Establish `h₃` using `secTermBaseChange_bijective hM H 3 fun s hs => hD s (Finset.card_pos.1 (by omega))`.
+
+Establish `he` using `(cechComplex_exactAt_succ_iff _ 0).1 (CechOne.exactAt_one_of_h1Zero f' (LB.isLB_pull hM π) hc' h)`. Rewrite using `[cech_d f M D 0, cech_d f M D 1]`. Introduce `y`. Establish `e` using `he (secTermBaseChange M D H.w 2 y)`. Use `erw [d_secTermBaseChange, map_eq_zero_iff _ h₃.1] at e`.
+
+Use `e.trans ⟨fun ⟨z, hz⟩ => ?_, fun ⟨x, hx⟩ => ⟨secTermBaseChange M D H.w 1 x, ?_⟩⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `h₁.2 z`. Conclude with `⟨x, h₂.1 ((d_secTermBaseChange M D H.w 1 x).symm.trans hz)⟩`. Conclude with `(d_secTermBaseChange M D H.w 1 x).trans (congrArg _ hx)`.
+-/
 theorem exact_of_h1Zero (hM : M.IsLB) (hc : ⨆ i, D i = ⊤)
     (hD : ∀ s : Finset κ, s.Nonempty → IsAffineOpen (⨅ i ∈ s, D i))
     (H : IsPullback π f' f (Spec.map (CommRingCat.ofHom (algebraMap R R'))))
@@ -137,6 +169,11 @@ theorem exact_of_h1Zero (hM : M.IsLB) (hc : ⨆ i, D i = ⊤)
 
 omit [Fintype κ] in
 
+/- English proof (translation)
+Set `G : R' ⊗[R] C.X 0 →+ Γ(Y', π ⁻¹ᵁ ((⨅ l ∈ ({p.1} : Finset κ), D l) ⊓ M.U p.2))` to `AddMonoidHom.mk' (fun z => rs Y' h (SecOnR.coord (f := f') (M := M.pull π) (secTermBaseChange M D w 1 ((φ.f 0).hom.baseChange R' z) ⟨{p.1}, Finset.card_singleton _⟩) fun _ => p.2)) fun z z' => by erw [map_add, map_add]`. Conclude with `map_add (rs Y' h) _ _`. Use `(map_sum G _ _).trans (Finset.sum_congr rfl fun k _ => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `rs Y' h (SecOnR.coord (f := f') (M := M.pull π) (v k • secCubePull M D w {p.1} ((φ.f 0).hom (x k) ⟨{p.1}, Finset.card_singleton _⟩)) fun _ => p.2) = _`. Use `erw [SecOnR.coord_base_smul]`.
+
+Rewrite using `[map_mul, rs_cst]`. Use `congr 1`. Use `(congrArg (rs Y' h) (SecOn.coord_pullLE π (preimage_biInf D π _).ge _ _)).trans ?_` and prove the remaining obligations. Use `(GlobalTheory.LB.resG_appLE π _ _ _).trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun q => q.hom (loc φ (x k) p)) (Scheme.Hom.app_eq_appLE π).symm`.
+-/
 theorem coord_secTermBaseChange (w : π ≫ f = f' ≫ Spec.map (CommRingCat.ofHom (algebraMap R R')))
     {a : ℕ} (v : Fin a → R') (x : Fin a → C.X 0) (p : κ × M.ι)
     (h : π ⁻¹ᵁ ((⨅ l ∈ ({p.1} : Finset κ), D l) ⊓ M.U p.2) ≤
@@ -210,6 +247,15 @@ section Geometry
 
 variable {S : Scheme.{0}} (A : Over S) [GrpObj A] (L : LB A.left)
 
+/- English proof (translation)
+Use `(KerPow.pull_iff _ _ q).2 (KerPow.hasGen_of_trivial hL fun U _ g => ?_)` and prove the remaining obligations. Set `q' : Over.mk (q ≫ (A ⊗ A).hom) ⟶ A ⊗ A` to `Over.homMk q rfl`. Establish `hs : s = q ≫ (A ⊗ A).hom`. Establish `h₁ : η[A].left ≫ A.hom = 𝟙 S` using `Over.w η[A]`. Rewrite using `[← Over.w (fst A A), reassoc_of% h, h₁]`.
+
+Conclude with `(Category.comp_id _).symm`. Establish `h₁ : q' ≫ fst A A = 1`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `h.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `s ≫ η[A].left = (toUnit (Over.mk (q ≫ (A ⊗ A).hom))).left ≫ η[A].left`.
+
+Rewrite using `[hs, Over.toUnit_left]`. Both sides reduce to the same expression. Establish `h₂ : q ≫ (lift (fst A A ≫ 𝟙 A) (snd A A) ≫ μ[A]).left = q ≫ (snd A A).left`. Express the relevant statement in the definitionally equal form `(q' ≫ lift (fst A A ≫ 𝟙 A) (snd A A) ≫ μ[A]).left = (q' ≫ snd A A).left`. Rewrite using `[comp_lift_assoc, Category.comp_id, h₁, ← Hom.mul_def, _root_.one_mul]`.
+
+Rewrite using `[Fin.prod_univ_two]`. Express the relevant statement in the definitionally equal form `g (q ≫ (lift (fst A A ≫ 𝟙 A) (snd A A) ≫ μ[A]).left) ^ (1 : ℤ) * g (q ≫ (snd A A).left) ^ (-1 : ℤ) = 1`. Rewrite using `[h₂, ← zpow_add]`. Simplify using the standard rewrite rules.
+-/
 theorem triv_of_origin (hL : L.IsLB) {X : Scheme.{0}} (q : X ⟶ (A ⊗ A).left) (s : X ⟶ S)
     (h : q ≫ (fst A A).left = s ≫ η[A].left) : Triv ((translDiff A L (𝟙 A)).pull q) := by
   refine (KerPow.pull_iff _ _ q).2 (KerPow.hasGen_of_trivial hL fun U _ g => ?_)
@@ -233,6 +279,11 @@ theorem triv_of_origin (hL : L.IsLB) {X : Scheme.{0}} (q : X ⟶ (A ⊗ A).left)
   rw [h₂, ← zpow_add]
   simp
 
+/- English proof (translation)
+Establish `h₀ : IsPullback (snd A A).left (fst A A).left A.hom A.hom` using `(IsPullback.of_hasPullback A.hom A.hom).flip`. Establish `h₁ : IsPullback (snd T A).left (fst T A).left A.hom T.hom` using `(IsPullback.of_hasPullback T.hom A.hom).flip`. Use `IsPullback.of_right ?_ ?_ h₀` and prove the remaining obligations. Rewrite using `[← Over.comp_left, whiskerRight_snd, Over.w]`. Conclude with `h₁`.
+
+Rewrite using `[← Over.comp_left, whiskerRight_fst, Over.comp_left]`.
+-/
 theorem isPullback_whiskerRight {T : Over S} (x : T ⟶ A) :
     IsPullback (x ▷ A).left (fst T A).left (fst A A).left x.left := by
   have h₀ : IsPullback (snd A A).left (fst A A).left A.hom A.hom :=
@@ -244,6 +295,11 @@ theorem isPullback_whiskerRight {T : Over S} (x : T ⟶ A) :
     exact h₁
   · rw [← Over.comp_left, whiskerRight_fst, Over.comp_left]
 
+/- English proof (translation)
+Establish `h₁` using `(KerPow.pull_iff _ _ _).1 h`. Establish `h₂` using `hK R t x fun p => ⟨⊤, trivial, (KerPow.pull_iff _ _ _).2 (h₁.pull ((fst (Over.mk t) A).left ⁻¹ᵁ ⊤).ι fun k => ?_)⟩`. Rewrite using `[h₂, Over.comp_left, Over.toUnit_left]`. Both sides reduce to the same expression. Use `congr 1 fin_cases k`.
+
+Express the relevant statement in the definitionally equal form `(x ▷ A ≫ lift (fst A A ≫ 𝟙 A) (snd A A) ≫ μ[A]).left = (lift (fst _ A ≫ x) (snd _ A) ≫ μ[A]).left`. Rewrite using `[comp_lift_assoc, Category.comp_id, whiskerRight_fst, whiskerRight_snd]`. Express the relevant statement in the definitionally equal form `(x ▷ A ≫ snd A A).left = (snd _ A).left`. Rewrite using `[whiskerRight_snd]`.
+-/
 theorem eq_origin_of_triv (hK : KTriv A L) {R : Type} [CommRing R] {t : Spec (CommRingCat.of R) ⟶ S}
     (x : Over.mk t ⟶ A) (h : Triv ((translDiff A L (𝟙 A)).pull (x ▷ A).left)) :
     x.left = t ≫ η[A].left := by
@@ -262,6 +318,27 @@ theorem eq_origin_of_triv (hK : KTriv A L) {R : Type} [CommRing R] {t : Spec (Co
 
 end Geometry
 
+/- English proof (translation)
+Introduce `K _ _ P R _ t₀ χ₀ O _ _ _ _ _ t Y π f H ht₀ hχ ht κ _ _ D C φ hD hc hC hφ`. Take `⟨-, hsep, -, hcl, hsurj, HA⟩` from `(AbProj.abelian_projective_baseChange K P).2 O t Y π f H`. Establish `hM : ((translDiff P.A P.L (𝟙 P.A)).pull π).IsLB` using `LB.isLB_pull (LB.isLB_linComb P.isLB _ _) π`. Use `haveI : Y.IsSeparated := ⟨by`. Rewrite using `[← terminal.comp_from f]`.
+
+Use the proof step `infer_instance⟩`. Establish `hD' : ∀ s : Finset κ, s.Nonempty → IsAffineOpen (⨅ i ∈ s, D i)` using `fun s hs => by`. Proceed by induction on `hs using Finset.Nonempty.cons_induction with`. Consider the case `singleton i => simpa using hD i`. Consider the case `cons i s hi _ ih`.
+
+Rewrite using `[Finset.cons_eq_insert, Finset.iInf_insert]`. Conclude with `(hD i).inf ih`. Use `haveI := fun p => (hC p).1`. Use `haveI := fun p => (hC p).2`. Set `χ : O →+* K` to `IsLocalization.lift (M := (RingHom.ker χ₀).primeCompl) (g := χ₀) fun y => Ne.isUnit y.2`.
+
+Establish `hχ₀ : χ.comp (algebraMap R O) = χ₀` using `IsLocalization.lift_comp _`. Establish `hm` using `IsLocalization.AtPrime.map_eq_maximalIdeal (RingHom.ker χ₀) O`. Establish `hker : IsLocalRing.maximalIdeal O ≤ RingHom.ker χ`. Rewrite using `[← hm, Ideal.map_le_iff_le_comap, RingHom.comap_ker, hχ₀]`. Establish `hloc : IsLocalHom χ` using `⟨fun a ha => by`.
+
+Assume the negation of the conclusion as `h`. Conclude with `ha.ne_zero (hker h)⟩`. Establish `horig : Spec.map (CommRingCat.ofHom χ) ≫ t = η[P.A].left`. Rewrite using `[ht, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hχ₀, hχ]`. Establish `H₀` using `IsPullback.of_hasPullback f (Spec.map (CommRingCat.ofHom χ))`.
+
+Establish `htriv : Triv (((translDiff P.A P.L (𝟙 P.A)).pull π).pull (pullback.fst f (Spec.map (CommRingCat.ofHom χ))))` using `CubeOpen.triv_pull_pull _ _ (triv_of_origin P.A P.L P.isLB _ (pullback.snd _ _) (by`. Rewrite using `[Category.assoc, H.w, H₀.w_assoc, horig]))`. Take `⟨I, ⟨e⟩, hI⟩` from `UU.SecCyclic.cyclic_ideal O Y f _ hM (perfOfBases φ hM hc hD' hφ (Module.finBasis O _) (Module.finBasis O _) (Module.finBasis O _)) hcl hsurj K χ hloc _ _ _ H₀ (CubeOpen.bijective_appTop globalFns_holds P.A P.isAb (H₀.paste_horiz HA)) htriv`. Establish `h₁ : I ≤ IsLocalRing.maximalIdeal O` using `((hI K χ _ _ _ H₀).1 htriv).trans (IsLocalRing.le_maximalIdeal (RingHom.ker_ne_top χ))`. Establish `h₂ : IsLocalRing.maximalIdeal O ≤ I`.
+
+Set `x : Over.mk ((Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I)) ≫ t) ≫ P.A.hom) ⟶ P.A` to `Over.homMk (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I)) ≫ t) rfl`. Establish `Hx` using `isPullback_whiskerRight P.A x`. Set `π'` to `H.lift (x ▷ P.A).left ((fst _ P.A).left ≫ Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I))) (Hx.w.trans (Category.assoc _ _ _).symm)`. Establish `hπ : π' ≫ π = (x ▷ P.A).left` using `H.lift_fst _ _ _`. Establish `H' : IsPullback π' (fst _ P.A).left f (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I)))` using `IsPullback.of_right (by rw [hπ]; exact Hx) (H.lift_snd _ _ _) H`.
+
+Establish `h₃` using `(KerPow.pull_iff _ _ _).1 ((hI _ _ _ _ _ H').2 (Ideal.mk_ker (I := I)).ge)`. Establish `h₄` using `eq_origin_of_triv P.A P.L P.ktriv x (h₃.pull (𝟙 _) fun _ => by`. Rewrite using `[Category.id_comp, hπ])`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective ((Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I)) ≫ t) ≫ P.A.hom)`. Establish `h₅ : Spec.map (CommRingCat.ofHom (algebraMap R O) ≫ CommRingCat.ofHom (Ideal.Quotient.mk I)) = Spec.map (CommRingCat.ofHom χ₀ ≫ ψ)`.
+
+Rewrite using `[← cancel_mono t₀, Spec.map_comp, Spec.map_comp, Category.assoc, Category.assoc, ← ht, hχ, hψ]`. Conclude with `h₄`. Rewrite using `[← hm, Ideal.map_le_iff_le_comap]`. Introduce `r hr`. Establish `h₆ : Ideal.Quotient.mk I (algebraMap R O r) = ψ.hom (χ₀ r)` using `congrArg (fun q => q.hom r) (Spec.map_injective h₅)`.
+
+Rewrite `h₆` using `[show χ₀ r = 0 from hr, map_zero]`. Conclude with `(Ideal.Quotient.eq_zero_iff_mem (I := I)).1 h₆`. Take `⟨e'⟩` from `coker_dualMap_equiv (Module.finBasis O (C.X 0)) (Module.finBasis O (C.X 1)) (C.d 0 1).hom`. Conclude with `⟨(e'.trans e).trans (Submodule.quotEquivOfEq _ _ (le_antisymm h₁ h₂))⟩`.
+-/
 theorem coker_dualMap_equiv_residueField_of_origin : ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))) (R : Type) [CommRing R] (t₀ : Spec (CommRingCat.of R) ⟶ P.A.left) (χ₀ : R →+* K) (O : Type) [CommRing O] [IsLocalRing O] [Algebra R O] [(RingHom.ker χ₀).IsPrime] [IsLocalization.AtPrime O (RingHom.ker χ₀)] (t : Spec (CommRingCat.of O) ⟶ P.A.left) (Y : Scheme.{0}) (π : Y ⟶ (P.A ⊗ P.A).left) (f : Y ⟶ Spec (CommRingCat.of O)), IsPullback π f (fst P.A P.A).left t → IsOpenImmersion t₀ → Spec.map (CommRingCat.ofHom χ₀) ≫ t₀ = η[P.A].left → t = Spec.map (CommRingCat.ofHom (algebraMap R O)) ≫ t₀ → ∀ (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → Y.Opens) (C : CochainComplex (ModuleCat.{0} O) ℕ) (φ : C ⟶ cechLB f ((translDiff P.A P.L (𝟙 P.A)).pull π) D), (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ → (∀ p, Module.Free O (C.X p) ∧ Module.Finite O (C.X p)) → (∀ (R' : Type) [CommRing R'] [Algebra O R'], QuasiIso (((ModuleCat.extendScalars.{0, 0, 0} (algebraMap O R')).mapHomologicalComplex _).map φ)) → Nonempty ((Module.Dual O (C.X 0) ⧸ LinearMap.range (C.d 0 1).hom.dualMap) ≃ₗ[O] IsLocalRing.ResidueField O) := by
   intro K _ _ P R _ t₀ χ₀ O _ _ _ _ _ t Y π f H ht₀ hχ ht κ _ _ D C φ hD hc hC hφ
   obtain ⟨-, hsep, -, hcl, hsurj, HA⟩ := (AbProj.abelian_projective_baseChange K P).2 O t Y π f H

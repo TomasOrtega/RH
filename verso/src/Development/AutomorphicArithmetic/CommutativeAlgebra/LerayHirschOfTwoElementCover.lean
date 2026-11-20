@@ -8,21 +8,39 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TateTwistCupUnitAnd
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Pbf UpperTheory.Blow
 
+/- English proof (translation)
+Substitute `hn hi` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem cast_zero' {q : ℕ} {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i = i') :
     Ht.cast hn hi (0 : Ht q E n i) = 0 := by
   subst hn hi
   rfl
 
+/- English proof (translation)
+Substitute `hn hi` using the available equality. Conclude with `h`.
+-/
 private theorem eq_zero_of_cast {q : ℕ} {E : Spc} {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (x : Ht q E n i)
     (h : Ht.cast hn hi x = 0) : x = 0 := by
   subst hn hi
   exact h
 
+/- English proof (translation)
+Substitute `hn hi` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem pull_cast' {q : ℕ} {X Y : Spc} (f : X ⟶ Y) {n i n' i' : ℤ} (hn : n = n') (hi : i = i') (x : Ht q Y n i) :
     pull _ f _ _ (x.cast hn hi) = Ht.cast hn hi (pull _ f _ _ x : Ht q X n i) := by
   subst hn hi
   rfl
 
+/- English proof (translation)
+Take `⟨hinj, -⟩` from `hLH n i`. Take `⟨j0, hj0⟩ : ∃ j0 : Fin N, (j0 : ℕ) = 0` from `⟨⟨0, hN⟩, rfl⟩`. Establish `e1 : n = n - 2 * (((j0 : ℕ) : ℤ))` using `by simp [hj0]`. Establish `e2 : i = i - ((j0 : ℕ) : ℤ)` using `by simp [hj0]`. Set `a' : (j : Fin N) → Ht q E (n - 2 * ((j : ℕ) : ℤ)) (i - ((j : ℕ) : ℤ))` to `Pi.single (M := fun j : Fin N => Ht q E (n - 2 * ((j : ℕ) : ℤ)) (i - ((j : ℕ) : ℤ))) j0 (a.cast e1 e2)`.
+
+Establish `hp : ∀ j, pull _ πX _ _ (a' j) = 0`. Introduce `j`. Distinguish the cases in `hj : j = j0`. Substitute `hj` using the available equality. Simplify using `only [a', Pi.single_eq_same]`.
+
+Rewrite using `[pull_cast', ha, cast_zero']`. Simplify using `only [a', Pi.single_eq_of_ne hj, map_zero]`. Establish `h0 : a' = 0` using `hinj (by simp [hp, cast_zero'])`. Establish `h1` using `congrFun h0 j0`. Simplify using `only [a', Pi.single_eq_same, Pi.zero_apply] at h1`.
+
+Conclude with `eq_zero_of_cast e1 e2 a h1`.
+-/
 private theorem inj_of_LH {q : ℕ} {N : ℕ} (hN : 1 ≤ N) {E X : Spc} (πX : X ⟶ E) (ξX : Ht q X 2 1)
     (hLH : LH q πX (fun j : Fin N => 2 * (((j : ℕ) : ℤ))) (fun j : Fin N => ((j : ℕ) : ℤ)) (fun j => cpow q ξX j))
     {n i : ℤ} (a : Ht q E n i) (ha : pull _ πX _ _ a = 0) : a = 0 := by
@@ -45,6 +63,21 @@ private theorem inj_of_LH {q : ℕ} {N : ℕ} (hN : 1 ≤ N) {E X : Spc} (πX : 
   simp only [a', Pi.single_eq_same, Pi.zero_apply] at h1
   exact eq_zero_of_cast e1 e2 a h1
 
+/- English proof (translation)
+Introduce `q _ N hN E X Y B W₁ W₂ B₁ B₂ πX πY p β f₁ f₂ g₁ g₂ b₁ b₂ h₁ h₂ hsq ξX hX hcW hcB hLH hW₁ hB₁ hb₂ hmap n i x hx`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by ring⟩`. Establish `MW` using `(UpperTheory.mayerVietorisConnecting_exists_unique_additive_exact (ZMod q) (tw q i) m).1 f₁ f₂ hcW`. Establish `MB` using `(UpperTheory.mayerVietorisConnecting_exists_unique_additive_exact (ZMod q) (tw q i) m).1 g₁ g₂ hcB`. Establish `nat` using `(UpperTheory.mayerVietorisConnecting_exists_unique_additive_exact (ZMod q) (tw q i) m).2 g₁ g₂ f₁ f₂ β b₁ b₂ h₁ h₂ hcB hcW`.
+
+Establish `hA : pull _ f₁ _ _ x = 0`. Take `⟨e, he⟩` from `(hW₁ i (m + 1)).2 (pull _ f₁ _ _ x)`. Establish `key : (g₁ ≫ p) ≫ πX = b₁ ≫ (f₁ ≫ πY)`. Rewrite using `[Category.assoc, hsq, ← Category.assoc, h₁, Category.assoc]`. Establish `h0 : pull _ (g₁ ≫ p) _ _ (pull _ πX _ _ e) = 0`.
+
+Rewrite using `[← pull_comp, key, pull_comp, he, ← pull_comp, ← h₁, pull_comp, hx, map_zero]`. Establish `h1 : pull _ πX _ _ e = 0` using `(hB₁ i (m + 1)).1 (h0.trans (map_zero _).symm)`. Establish `h2 : e = 0` using `inj_of_LH hN πX ξX hLH e h1`. Rewrite using `[← he, h2, map_zero]`. Establish `hB : pull _ f₂ _ _ x = 0`.
+
+Apply `(hb₂ i (m + 1)).1` to reduce the goal to its premises. Rewrite using `[map_zero, ← pull_comp, ← h₂, pull_comp, hx, map_zero]`. Take `⟨c, hc⟩` from `(MW.2.2.2.2.1 x).1 ⟨hA, hB⟩`. Establish `hc'` using `nat c x hc`. Rewrite `hc'` using `[hx]`.
+
+Take `⟨a, b, hab⟩` from `(MB.2.2.2.1 _ _ hc').1 rfl`. Take `⟨a₀, ha₀⟩` from `(hB₁ i m).2 a`. Establish `hfst : pull _ (pullback.fst g₁ g₂) _ _ a = pull _ (pullback.snd g₁ g₂) _ _ (pull _ g₂ _ _ (pull _ p _ _ a₀))`. Rewrite using `[← ha₀]`. Simplify using `only [← pull_comp]`.
+
+Rewrite using `[← Category.assoc, pullback.condition, Category.assoc]`. Take `⟨w, hw⟩` from `(hb₂ i m).2 (pull _ g₂ _ _ (pull _ p _ _ a₀) - b)`. Establish `hm : pullback.map g₁ g₂ f₁ f₂ b₁ b₂ β h₁ h₂ ≫ pullback.snd f₁ f₂ = pullback.snd g₁ g₂ ≫ b₂` using `pullback.lift_snd _ _ _`. Establish `hcw : c = pull _ (pullback.snd f₁ f₂) _ _ w`. Apply `(hmap i m).1` to reduce the goal to its premises.
+
+Rewrite using `[hab, hfst, ← map_sub, ← hw, ← pull_comp, ← pull_comp, hm]`. Conclude with `(MW.2.2.2.1 c x hc).2 ⟨0, -w, by rw [hcw, map_zero, map_neg, zero_sub, neg_neg]⟩`.
+-/
 theorem UpperTheory.leray_hirsch_of_two_element_cover :
     ∀ (q : ℕ) [NeZero q] (N : ℕ), 1 ≤ N → ∀ {E X Y B W₁ W₂ B₁ B₂ : Spc} (πX : X ⟶ E) (πY : Y ⟶ E) (p : B ⟶ X) (β : B ⟶ Y)
             (f₁ : W₁ ⟶ Y) (f₂ : W₂ ⟶ Y) (g₁ : B₁ ⟶ B) (g₂ : B₂ ⟶ B) (b₁ : B₁ ⟶ W₁) (b₂ : B₂ ⟶ W₂)

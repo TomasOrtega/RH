@@ -16,6 +16,11 @@ attribute [local instance] GroundTheory.Automorphic.Spherical.fintypeResidue
 
 variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Establish `e1 : {x // x ∈ A} ≃ {x // x ∈ B}` using `Fintype.equivOfCardEq (by simp [h])`. Establish `e2 : {x // x ∉ A} ≃ {x // x ∉ B}` using `Fintype.equivOfCardEq (by rw [Fintype.card_subtype_compl, Fintype.card_subtype_compl]; simp [h])`. Use `⟨(Equiv.sumCompl (· ∈ A)).symm.trans ((Equiv.sumCongr e1 e2).trans (Equiv.sumCompl (· ∈ B))), fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ A`. Rewrite using `[Equiv.trans_apply, Equiv.trans_apply, Equiv.sumCompl_symm_apply_of_pos hx, Equiv.sumCongr_apply, Sum.map_inl, Equiv.sumCompl_apply_inl]`.
+
+Conclude with `⟨fun _ => hx, fun _ => (e1 ⟨x, hx⟩).2⟩`. Rewrite using `[Equiv.trans_apply, Equiv.trans_apply, Equiv.sumCompl_symm_apply_of_neg hx, Equiv.sumCongr_apply, Sum.map_inr, Equiv.sumCompl_apply_inr]`. Conclude with `⟨fun h' => absurd h' (e2 ⟨x, hx⟩).2, fun h' => absurd h' hx⟩`.
+-/
 theorem exists_perm_mem_iff {N : ℕ} {A B : Finset (Fin N)} (h : A.card = B.card) :
     ∃ σ : Equiv.Perm (Fin N), ∀ x, σ x ∈ B ↔ x ∈ A := by
   classical
@@ -32,6 +37,9 @@ theorem exists_perm_mem_iff {N : ℕ} {A B : Finset (Fin N)} (h : A.card = B.car
       Sum.map_inr, Equiv.sumCompl_apply_inr]
     exact ⟨fun h' => absurd h' (e2 ⟨x, hx⟩).2, fun h' => absurd h' hx⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, lamS, hσ]`.
+-/
 theorem lamS_comp_of_mem_iff {N : ℕ} {A B : Finset (Fin N)} {σ : Equiv.Perm (Fin N)}
     (hσ : ∀ x, σ x ∈ B ↔ x ∈ A) : lamS B ∘ σ = lamS A := by
   funext x

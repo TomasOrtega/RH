@@ -21,6 +21,9 @@ def preL {K K' : Cx (ZMod q)} (f : K' ⟶ K) (I : Cx (ZMod q)) (n : ℤ) :
   map_add' _ _ := Cochain.comp_add _ _ _ _
   map_smul' _ _ := Cochain.comp_smul _ _ _ _
 
+/- English proof (translation)
+Simplify using `[preL, Cochain.ofHom_comp]`.
+-/
 theorem preL_comp {K K' K'' : Cx (ZMod q)} (g : K'' ⟶ K') (f : K' ⟶ K) (I : Cx (ZMod q)) (n : ℤ) (α : Cochain K I n) :
     preL (g ≫ f) I n α = preL g I n (preL f I n α) := by
   simp [preL, Cochain.ofHom_comp]
@@ -71,8 +74,14 @@ def coneF {G₁ G₂ : B.Etale ⥤ Scheme.{0}} (F : G₁ ⟶ G₂) (q : ℕ) : B
     simp only [rmap, Functor.map_comp]
     exact mappingCone.map_comp _ _ _ _ _ _ _ _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem id_left' (U : B.Etale) : (𝟙 U : U ⟶ U).left = 𝟙 U.left := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comp_left' {U V W : B.Etale} (a : U ⟶ V) (b : V ⟶ W) : (a ≫ b).left = a.left ≫ b.left := rfl
 
 def gY {Y : Scheme.{0}} (p : Y ⟶ B) : B.Etale ⥤ Scheme.{0} where

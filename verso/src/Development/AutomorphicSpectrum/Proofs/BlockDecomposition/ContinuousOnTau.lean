@@ -25,17 +25,29 @@ open GlobalTheory.CompanionTheory.MuC
 
 variable {D : D7} {p : ℕ}
 
+/- English proof (translation)
+The claim follows from `isUnit_mix_iff hee (cB g)`.
+-/
 theorem mem_cell_iff {e : AE D} (hee : e * e = e) (g : G D p) : g ∈ cell e ↔ InCell e g :=
   isUnit_mix_iff hee (cB g)
 
+/- English proof (translation)
+Establish `hm : Continuous (mat : G D p → Mx D (p + p) (p + p))` using `Units.continuous_val.comp continuous_subtype_val`. Conclude with `continuous_matrix fun i j => hm.matrix_elem _ _`.
+-/
 theorem continuous_cB : Continuous (cB : G D p → Mx D p p) := by
   have hm : Continuous (mat : G D p → Mx D (p + p) (p + p)) := Units.continuous_val.comp continuous_subtype_val
   exact continuous_matrix fun i j => hm.matrix_elem _ _
 
+/- English proof (translation)
+Establish `hm : Continuous (mat : G D p → Mx D (p + p) (p + p))` using `Units.continuous_val.comp continuous_subtype_val`. Conclude with `continuous_matrix fun i j => hm.matrix_elem _ _`.
+-/
 theorem continuous_dB : Continuous (dB : G D p → Mx D p p) := by
   have hm : Continuous (mat : G D p → Mx D (p + p) (p + p)) := Units.continuous_val.comp continuous_subtype_val
   exact continuous_matrix fun i j => hm.matrix_elem _ _
 
+/- English proof (translation)
+Use extensionality with `g`. Express the relevant statement in the definitionally equal form `IsUnit _ ↔ IsUnit _`. Rewrite using `[det_mix_one hee]`.
+-/
 theorem cell_eq {e : AE D} (hee : e * e = e) :
     cell e = (fun g : G D p => (cB g).det) ⁻¹' {z : AE D | IsUnit (1 - e + e * z)} := by
   ext g
@@ -46,13 +58,22 @@ open Classical in
 
 def tau (e : AE D) (g : G D p) : hermS D p e := if h : ∃ x, IsB e g x then h.choose else 0
 
+/- English proof (translation)
+Rewrite using `[tau, dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem isB_tau {e : AE D} {g : G D p} (h : ∃ x, IsB e g x) : IsB e g (tau e g) := by
   rw [tau, dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+The claim follows from `isB_unique (isB_tau ⟨x, h⟩) h`.
+-/
 theorem tau_eq {e : AE D} {g : G D p} {x : hermS D p e} (h : IsB e g x) : tau e g = x :=
   isB_unique (isB_tau ⟨x, h⟩) h
 
+/- English proof (translation)
+Establish `hu' : IsUnit (1 - e + e * (cB g).det)`. Use `hu` as an intermediate fact. Rewrite `this` using `[cell_eq hee]`. Conclude with `this`. Conclude with `mix_solve hee hu' x.2 h.2`.
+-/
 theorem tau_formula {e : AE D} (hee : e * e = e) {g : G D p} {x : hermS D p e} (hu : g ∈ cell e) (h : IsB e g x) :
     Ring.inverse (1 - e + e * (cB g).det) • (((1 - e) • (1 : Mx D p p) + e • cB g).adjugate * (e • dB g)) = x.1.1 := by
   have hu' : IsUnit (1 - e + e * (cB g).det) := by
@@ -61,6 +82,15 @@ theorem tau_formula {e : AE D} (hee : e * e = e) {g : G D p} {x : hermS D p e} (
     exact this
   exact mix_solve hee hu' x.2 h.2
 
+/- English proof (translation)
+Establish `: IsTopologicalRing (AE D)` using `isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)`. Establish `hd : Continuous fun g : G D p => (cB g).det` using `continuous_cB.matrix_det`. Establish `h1 : ContinuousOn (fun g : G D p => Ring.inverse (1 - e + e * (cB g).det)) (cell e)`. Use `(unit_AE he).2.comp hd.continuousOn ?_` and prove the remaining obligations. Introduce `g hg`.
+
+Rewrite `hg` using `[cell_eq hee]`. Conclude with `hg`. Establish `h2 : Continuous fun g : G D p => ((1 - e) • (1 : Mx D p p) + e • cB g).adjugate * (e • dB g)`. Use `Continuous.matrix_mul (Continuous.matrix_adjugate ?_) (continuous_dB.const_smul e)` and prove the remaining obligations. Conclude with `continuous_const.add (continuous_cB.const_smul e)`.
+
+Establish `h3 : ContinuousOn (fun g : G D p => ((tau e g).1.1 : Mx D p p)) (cell e)`. Use `(h1.smul h2.continuousOn).congr fun g hg => ?_` and prove the remaining obligations. Establish `hB : IsB e g (tau e g)` using `isB_tau (exists_isB hee hce ((mem_cell_iff hee g).1 hg))`. Conclude with `(tau_formula hee hg hB).symm`. Establish `i1 : Topology.IsInducing (Subtype.val : hermS D p e → hermA D p)` using `Topology.IsInducing.subtypeVal`.
+
+Establish `i2 : Topology.IsInducing (Subtype.val : hermA D p → Mx D p p)` using `Topology.IsInducing.subtypeVal`. Conclude with `(i2.comp i1).continuousOn_iff.2 h3`.
+-/
 theorem continuousOn_tau {S : Finset (Pl D)} {e : AE D} (he : IsIdem S e) (hee : e * e = e) (hce : cA D e = e) :
     ContinuousOn (tau e : G D p → hermS D p e) (cell e) := by
   have : IsTopologicalRing (AE D) := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)
@@ -81,6 +111,17 @@ theorem continuousOn_tau {S : Finset (Pl D)} {e : AE D} (he : IsIdem S e) (hee :
   have i2 : Topology.IsInducing (Subtype.val : hermA D p → Mx D p p) := Topology.IsInducing.subtypeVal
   exact (i2.comp i1).continuousOn_iff.2 h3
 
+/- English proof (translation)
+Introduce `hI D p nb hnb w hw S e he`. Take `⟨hee, hce⟩` from `(hI D S).2 e he`. Establish `hex : ∀ g ∈ cell (p` using `p) e, IsB e g (tau e g) := fun g hg => isB_tau (exists_isB hee hce ((mem_cell_iff hee g).1 hg))`. Establish `hcell : ∀ {g : G D p} {x : hermS D p e}, IsB e g x → g ∈ cell e` using `fun h => (mem_cell_iff hee _).2 h.1`. Use `⟨tau e, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `⟨?_, ?_, ?_, continuousOn_tau he hee hce, (continuous_nb hnb).comp continuous_subtype_val, fun x y => isNMap_add hnb x.1 y.1⟩` and prove the remaining obligations. Rewrite using `[cell_eq hee]`. Conclude with `(unit_AE he).1.preimage (continuous_cB.matrix_det (R := AE D))`. Introduce `q hq x hx`. Establish `h` using `(LeftCell.isB_left hq (tau e x)).2 (hex x hx)`.
+
+Conclude with `⟨hcell h, (tau_eq h)⟩`. Introduce `y x hx`. Establish `h` using `(isB_mul_nb hnb y (tau e x)).2 (hex x hx)`. Conclude with `⟨hcell h, tau_eq h⟩`. Introduce `g hg u hu`.
+
+Conclude with `hcell ((isB_mul_right_iff he hu (tau e g)).2 (hex g hg))`. Introduce `g hg`. Establish `h` using `hex g hg`. Express the relevant statement in the definitionally equal form `(e • cB g) * _ = _`. Rewrite using `[smul_mul_assoc]`.
+
+Establish `h2 : cB g * (tau e g).1.1 = e • dB g` using `h.2`. Rewrite using `[h2, smul_smul, hee]`.
+-/
 theorem cellAlg : IdemEx → CellAlg := by
   intro hI D p nb hnb w hw S e he
   obtain ⟨hee, hce⟩ := (hI D S).2 e he

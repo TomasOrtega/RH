@@ -11,6 +11,15 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical Pointwise
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W π f hf φ hφ C hC`. Take `⟨c, hc, hred⟩` from `UpperTheory.ConvolutionTheory.R2.red F`. Take `⟨B₁, N, hB₁⟩` from `UpperTheory.ConvolutionTheory.R2.Ff.thMaj F E D W φ hφ c hc`. Establish `hKc : IsCompact (KK F)` using `(UpperTheory.ConvolutionTheory.R2.Ff.iwa F).1`. Establish `hC' : IsCompact ((gl (F` using `F) '' KK F) * C) := (hKc.image continuous_gl).mul hC`.
+
+Take `⟨B₂, hB₂⟩` from `(UpperTheory.ConvolutionTheory.R2.decay F π f hf).2 _ hC' c hc 2`. Use `⟨B₂ * B₁, N, fun y hy g x hx => ?_⟩` and prove the remaining obligations. Take `⟨γ, b, a, k, hk, hg, ha⟩` from `hred g`. Establish `hp : 0 < ab a` using `ab_pos a`. Establish `e1 : f.1 (gl g * x) = f.1 (gl (nU b * mD a) * (gl k * x))`.
+
+Rewrite using `[← mul_assoc, ← gl_mul, ← hg, gl_mul, gl_ratS, mul_assoc, (π.cusp _ hf).1.left]`. Establish `e2 : Th (W.Om g (W.L (infGL E 2 y) φ)).1 = Th (W.Om (nU b * mD a * k) (W.L (infGL E 2 y) φ)).1`. Rewrite using `[← hg]`. Conclude with `((UpperTheory.ConvolutionTheory.R2.Ff.thMeas F E D W (W.L (infGL E 2 y) φ)).2.1 γ g).symm`. Establish `h1` using `hB₂ b a (gl k * x) (Set.mul_mem_mul ⟨k, hk, rfl⟩ hx) ha`.
+
+Establish `h2` using `hB₁ y hy b a k hk ha`. Rewrite using `[e1, e2, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.thBound :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (π : TR.CuspSub F 2), ThBound W π := by
   intro F E _ _ _ _ _ _ _ D W π f hf φ hφ C hC

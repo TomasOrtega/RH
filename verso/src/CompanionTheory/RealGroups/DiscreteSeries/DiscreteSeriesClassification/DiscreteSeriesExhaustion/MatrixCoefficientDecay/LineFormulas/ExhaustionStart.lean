@@ -9,6 +9,9 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.FubiniO
 
 namespace CompanionTheory.RgExh.Dec.N.S
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.InitialStatement GlobalTheory.T.rgExh_flagFacts GlobalTheory.T.ParabolicSubgroupEquality GlobalTheory.T.rgExh_lineFacts GlobalTheory.T.SlabStatement (GlobalTheory.T.fubini_of_parabolic_haar_multiple GlobalTheory.T.FubiniParabolicMultiple) GlobalTheory.T.MaximalComp …`.
+-/
 theorem exhaustion_start : CompanionTheory.RgExh.Dec.Start :=
   GlobalTheory.T.InitialStatement GlobalTheory.T.rgExh_flagFacts GlobalTheory.T.ParabolicSubgroupEquality GlobalTheory.T.rgExh_lineFacts GlobalTheory.T.SlabStatement (GlobalTheory.T.fubini_of_parabolic_haar_multiple GlobalTheory.T.FubiniParabolicMultiple) GlobalTheory.T.MaximalCompactStatement
 

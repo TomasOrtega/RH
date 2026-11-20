@@ -13,6 +13,11 @@ variable (K : Type*) [Field K] [NumberField K]
 
 namespace IdeleGroup
 
+/- English proof (translation)
+Set `s : ClassGroup (𝓞 K) → IdeleGroup K` to `Function.invFun toClassGroup`. Use `⟨Finset.univ.image s, fun x ↦ ?_⟩` and prove the remaining obligations. Establish `hs : toClassGroup (s (toClassGroup x)) = toClassGroup x` using `Function.invFun_eq (toClassGroup_surjective _)`. Establish `hmem : x * (s (toClassGroup x))⁻¹ ∈ (diagonal K).range ⊔ standardOpenSubgroup K`. Rewrite using `[← ker_toClassGroup, MonoidHom.mem_ker, map_mul, map_inv, hs, mul_inv_cancel]`.
+
+Take `⟨_, ⟨k, rfl⟩, u, hu, hku⟩` from `Subgroup.mem_sup.1 hmem`. Use `⟨k⁻¹, s (toClassGroup x), Finset.mem_image_of_mem _ (Finset.mem_univ _), ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv, mul_assoc, ← hku, inv_mul_cancel_left]`. Conclude with `hu`.
+-/
 theorem exists_finset_mul_mem_standardOpenSubgroup :
     ∃ R : Finset (IdeleGroup K), ∀ x : IdeleGroup K, ∃ k : Kˣ, ∃ r ∈ R,
       diagonal K k * x * r⁻¹ ∈ standardOpenSubgroup K := by
@@ -28,6 +33,15 @@ theorem exists_finset_mul_mem_standardOpenSubgroup :
   rw [map_inv, mul_assoc, ← hku, inv_mul_cancel_left]
   exact hu
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `exists_unit_forall_abs_log_le (K := K) (∑ r ∈ R, |Real.log (ideleModule K r : ℝ)|)`. Set `S` to `{x : IdeleGroup K | (∀ w : InfinitePlace K, |Real.log ‖(x : 𝔸[K]).1 w‖| ≤ M) ∧ x ∈ standardOpenSubgroup K}`. Use `⟨⋃ r ∈ R, (fun s ↦ s * r) '' S, R.isCompact_biUnion fun r _ ↦ (isCompact_abs_log_le_inter_standardOpenSubgroup K M).image (continuous_id.mul continuous_const), fun x hx ↦ ?_⟩` and prove the remaining obligations. Take `⟨k, r, hr, hy⟩` from `hR x`. Use `set y := diagonal K k * x * r⁻¹ with hydef`.
+
+Establish `hmod : ideleModule K y = (ideleModule K r)⁻¹`. Rewrite using `[hydef, map_mul, map_mul, map_inv, ideleModule_diagonal, MonoidHom.mem_ker.1 hx, one_mul, one_mul]`. Establish `hinf : |Real.log (infiniteModule y)| ≤ ∑ r ∈ R, |Real.log (ideleModule K r : ℝ)|`. Establish `h1 : infiniteModule y = ((ideleModule K r : ℝ))⁻¹`. Use `congrArg Subtype.val hmod` as an intermediate fact.
+
+Rewrite `this` using `[ideleModule_apply, finiteModule_eq_one_of_mem hy, mul_one]`. Conclude with `this`. Rewrite using `[h1, Real.log_inv, abs_neg]`. Conclude with `Finset.single_le_sum (f := fun r ↦ |Real.log (ideleModule K r : ℝ)|) (fun r _ ↦ abs_nonneg _) hr`. Take `⟨u, hu⟩` from `hM y hinf`.
+
+Use `⟨unitsToUnits K u * k, Set.mem_biUnion hr ⟨diagonal K (unitsToUnits K u) * y, ⟨hu, mul_mem (diagonal_unitsToUnits_mem K u) hy⟩, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [hydef, map_mul, mul_assoc, inv_mul_cancel, mul_one]`.
+-/
 theorem exists_isCompact_of_finset (R : Finset (IdeleGroup K))
     (hR : ∀ x : IdeleGroup K, ∃ k : Kˣ, ∃ r ∈ R,
       diagonal K k * x * r⁻¹ ∈ standardOpenSubgroup K) :
@@ -58,6 +72,9 @@ theorem exists_isCompact_of_finset (R : Finset (IdeleGroup K))
     ⟨diagonal K (unitsToUnits K u) * y, ⟨hu, mul_mem (diagonal_unitsToUnits_mem K u) hy⟩, ?_⟩⟩
   simp only [hydef, map_mul, mul_assoc, inv_mul_cancel, mul_one]
 
+/- English proof (translation)
+Take `⟨R, hR⟩` from `exists_finset_mul_mem_standardOpenSubgroup K`. Take `⟨D, hD, hxD⟩` from `exists_isCompact_of_finset K R hR`. Use `⟨D ∩ normOneSubgroup K, hD.inter_right (isClosed_normOneSubgroup K), Set.inter_subset_right, fun x hx ↦ ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hxD x hx`. Conclude with `⟨k, hk, mul_mem (range_diagonal_le_normOneSubgroup K ⟨k, rfl⟩) hx⟩`.
+-/
 theorem exists_isCompact_normOneSubgroup :
     ∃ D : Set (IdeleGroup K), IsCompact D ∧ D ⊆ normOneSubgroup K ∧
       ∀ x ∈ normOneSubgroup K, ∃ k : Kˣ, diagonal K k * x ∈ D := by
@@ -91,6 +108,13 @@ end IdeleGroup
 
 namespace IdeleClassGroup
 
+/- English proof (translation)
+Take `⟨D, hD, hDJ, hxD⟩` from `IdeleGroup.exists_isCompact_normOneSubgroup K`. Establish `h : (normOneSubgroup K : Set (IdeleClassGroup K)) = mk K '' D`. Rewrite using `[normOneSubgroup_eq_map, Subgroup.coe_map]`. Use extensionality with `c`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, hx, rfl⟩`. Take `⟨k, hk⟩` from `hxD x hx`. Use `⟨IdeleGroup.diagonal K k * x, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, mk_diagonal]`. Conclude with `one_mul (mk K x)`.
+
+Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨x, hDJ hx, rfl⟩`. Rewrite using `[h]`. Conclude with `hD.image (continuous_mk K)`.
+-/
 theorem isCompact_normOneSubgroup :
     IsCompact (normOneSubgroup K : Set (IdeleClassGroup K)) := by
   obtain ⟨D, hD, hDJ, hxD⟩ := IdeleGroup.exists_isCompact_normOneSubgroup K

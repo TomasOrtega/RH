@@ -14,6 +14,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.DescB GlobalTheory.ThK.FlagCT GlobalTheory.ThK.FlagPar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ProdFundDom.setIntegral_eq_zero_of_prod | exact GlobalTheory.ProdFundDom.setIntegral_eq_zero_of_prod | (intros; apply GlobalTheory.ProdFundDom.setIntegral_eq_zero_of_prod <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unimodular_quotient_integral_formula : ∀ (G T L : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     [Group T] [TopologicalSpace T] [IsTopologicalGroup T] [LocallyCompactSpace T] [SecondCountableTopology T] [T2Space T]
     [MeasurableSpace T] [BorelSpace T]

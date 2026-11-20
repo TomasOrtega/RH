@@ -32,6 +32,11 @@ namespace GlobalTheory.GalCut.IwaTwist
 
 open Formalism.WeaklyAdmissibleFiltrations GlobalTheory.PMon Module
 
+/- English proof (translation)
+Establish `hD : Dst P (GlobalTheory.PstCoeff.resQ ρ) = (Dst P ρ).restrictScalars ℚ_[l]`. Use extensionality with `x`. Simplify using `[mem_Dst, GlobalTheory.PstCoeff.stRep_resQ]`. Establish `e : finrank ℚ_[l] ↥(Dst P (GlobalTheory.PstCoeff.resQ ρ)) = finrank ℚ_[l] LL * finrank LL ↥(Dst P ρ)`. Rewrite using `[hD, finrank_mul_finrank]`.
+
+Both sides reduce to the same expression. Rewrite using `[IsSst, e, h, ← finrank_mul_finrank ℚ_[l] LL V]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isSst_resQ {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K : FinExt l} {LL : Type} [Field LL] [Algebra ℚ_[l] LL]
     [FiniteDimensional ℚ_[l] LL] {V : Type} [AddCommGroup V] [Module LL V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] LL V]
     (ρ : Representation LL ↥(GK K) V) (h : IsSst P ρ) : IsSst P (GlobalTheory.PstCoeff.resQ ρ) := by
@@ -44,6 +49,11 @@ theorem isSst_resQ {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K : FinExt l} {LL 
   rw [IsSst, e, h, ← finrank_mul_finrank ℚ_[l] LL V]
   ring
 
+/- English proof (translation)
+Rewrite using `[← GlobalTheory.PstCoeff.isPst_resQ_iff]`. Apply `GlobalTheory.PMon.isPst_of_isSst_resTo l P AI T K K le_rfl V` to reduce the goal to its premises. Establish `hD : Dst P (resTo (GlobalTheory.PstCoeff.resQ ρ) (le_refl K.1)) = Dst P (GlobalTheory.PstCoeff.resQ ρ)`. Use extensionality with `x`. Rewrite using `[mem_Dst_resTo, mem_Dst]`.
+
+Conclude with `⟨fun H g => H g g.2, fun H g _ => H g⟩`. Use `isSst_resQ P ρ h` as an intermediate fact. Rewrite `this`, the goal using `[IsSst]`. Rewrite using `[hD]`. Conclude with `this`.
+-/
 theorem isPst_of_isSst {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) {K : FinExt l}
     {LL : Type} [Field LL] [Algebra ℚ_[l] LL] [FiniteDimensional ℚ_[l] LL] {V : Type} [AddCommGroup V] [Module LL V]
     [Module ℚ_[l] V] [IsScalarTower ℚ_[l] LL V] [FiniteDimensional ℚ_[l] V]
@@ -59,6 +69,9 @@ theorem isPst_of_isSst {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l
   rw [hD]
   exact this
 
+/- English proof (translation)
+Introduce and unpack `⟨LL', r', hm, hs⟩`. Take `⟨T⟩` from `hT`. Use `haveI := LL'.2`. Conclude with `⟨LL', r', hm, isPst_of_isSst P AI T _ hs⟩`.
+-/
 theorem isPstAt_of_isSstAt {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (hT : Nonempty (LocTied l P AI))
     {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω] {Gw : Subgroup (Ω ≃ₐ[E] Ω)} {O : Type} [CommRing O]
     [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω Gw O) {a : ℕ} (r : ↥Gw →* GL (Fin a) (Om l)) :
@@ -68,6 +81,9 @@ theorem isPstAt_of_isSstAt {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAi
   haveI := LL'.2
   exact ⟨LL', r', hm, isPst_of_isSst P AI T _ hs⟩
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.isSemistableAtPlace_twist_crystallineCharacter hD l P AI hT E Ω Gw O Bw a r c hr hc h1 h2`.
+-/
 theorem isSstAt_twist (hD : GlobalTheory.Published.DeRhamPotSemistable) {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (hT : Nonempty (LocTied l P AI))
     {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω] {Gw : Subgroup (Ω ≃ₐ[E] Ω)} {O : Type} [CommRing O]
     [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω Gw O) {a : ℕ}

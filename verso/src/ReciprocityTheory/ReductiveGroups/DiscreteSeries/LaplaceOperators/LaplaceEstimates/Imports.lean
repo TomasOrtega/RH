@@ -2,6 +2,9 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.Laplace
 
 namespace ReciprocityTheory.ChartRestriction.DS.Lap
 
+/- English proof (translation)
+Introduce `M _ _ n E`. Conclude with `⟨rfl, rfl, rfl, rfl⟩`.
+-/
 theorem conv : ConvStatement := by
   intro M _ _ n E
   exact ⟨rfl, rfl, rfl, rfl⟩

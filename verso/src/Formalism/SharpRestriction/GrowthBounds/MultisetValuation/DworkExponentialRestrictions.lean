@@ -41,6 +41,9 @@ section
 
 variable {p : ℕ} [hp : Fact p.Prime]
 
+/- English proof (translation)
+Establish `hA : MvPowerSeries.constantCoeff (Aser (K0 p) p) = 0` using `by show Aser (K0 p) p 0 = 0`. Simplify using `[Aser]`. Establish `hA' : MvPowerSeries.constantCoeff (Aser' (K0 p) p) = 0` using `by show Aser' (K0 p) p 0 = 0`. Simplify using `[Aser']`. Simplify using `[Gser, hA, hA']`.
+-/
 theorem th_Gser_const (c c' : K0 p) : MvPowerSeries.constantCoeff (Gser p c c') = 0 := by
   have hA : MvPowerSeries.constantCoeff (Aser (K0 p) p) = 0 := by
     show Aser (K0 p) p 0 = 0
@@ -50,18 +53,29 @@ theorem th_Gser_const (c c' : K0 p) : MvPowerSeries.constantCoeff (Gser p c c') 
     simp [Aser']
   simp [Gser, hA, hA']
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hh` using `(h.ab 0 hne).1`. Simplify using `at hh`.
+-/
 theorem th_be_const {be : MvPowerSeries (Fin 2) (K0 p)} (h : BeProp p be) :
     MvPowerSeries.constantCoeff be = 0 := by
   by_contra hne
   have hh := (h.ab 0 hne).1
   simp at hh
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Apply the tactic sequence `rcases x with ⟨r, a, b⟩ | ⟨r, a, b⟩ <;>`. Simplify using `only [coordZ, Finset.mul_sum, one_mul, map_mul, mul_assoc]`.
+-/
 theorem th_coordZ_eq {n' r0 r1 : ℕ} (B : OmBasis p n') (K' : Type) [Field K'] [Algebra (K0 p) K'] (vp : K') :
     coordZ (r0 := r0) (r1 := r1) B K' vp = fun x => MvPowerSeries.C vp * coordZ B K' 1 x := by
   funext x
   rcases x with ⟨r, a, b⟩ | ⟨r, a, b⟩ <;>
     simp only [coordZ, Finset.mul_sum, one_mul, map_mul, mul_assoc]
 
+/- English proof (translation)
+Introduce `n`. Apply the tactic sequence `rcases x with ⟨r, a, b⟩ | ⟨r, a, b⟩ <;>`. Simplify using `only [coordZ, map_sum, one_mul]`. Use `Subring.sum_mem _ fun s _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_C_mul]`.
+
+Use `Subring.mul_mem _ (Subring.subset_closure (Set.mem_union_left _ ⟨_, rfl⟩)) ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_X]`. Use `split_ifs`. Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`.
+-/
 theorem th_coordZ_int {n' r0 r1 : ℕ} (B : OmBasis p n') (K' : Type) [Field K'] [Algebra (K0 p) K'] (vp : K')
     (x : Eidx n' r0 r1 ⊕ Eidx n' r0 r1) : IntR (Rp p K' vp) (coordZ B K' 1 x) := by
   intro n
@@ -75,6 +89,11 @@ theorem th_coordZ_int {n' r0 r1 : ℕ} (B : OmBasis p n') (K' : Type) [Field K']
     · exact Subring.one_mem _
     · exact Subring.zero_mem _
 
+/- English proof (translation)
+Introduce `n`. Apply the tactic sequence `rcases x with ⟨v, r, a, b⟩ | ⟨v, r, a, b⟩ <;>`. Simplify using `only [Sys.coordZA, map_sum]`. Use `Subring.sum_mem _ fun s _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_C_mul]`.
+
+Use `Subring.mul_mem _ (Subring.subset_closure (Set.mem_union_left _ ⟨_, rfl⟩)) ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_X]`. Use `split_ifs`. Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`.
+-/
 theorem th_coordZA_int (X : Sys p) (K' : Type) [Field K'] [Algebra (K0 p) K'] (vp : K') (j : ℕ)
     (x : X.EA j ⊕ X.EA j) : IntR (Rp p K' vp) (X.coordZA K' j x) := by
   intro n
@@ -88,10 +107,18 @@ theorem th_coordZA_int (X : Sys p) (K' : Type) [Field K'] [Algebra (K0 p) K'] (v
     · exact Subring.one_mem _
     · exact Subring.zero_mem _
 
+/- English proof (translation)
+Apply the tactic sequence `rcases x with ⟨r, a, b⟩ | ⟨r, a, b⟩ <;> simp [coordZ]`.
+-/
 private theorem constantCoeff_coordZ_eq_zero {n' r0 r1 : ℕ} (B : OmBasis p n') (K' : Type) [Field K'] [Algebra (K0 p) K']
     (vp : K') (x : Eidx n' r0 r1 ⊕ Eidx n' r0 r1) : MvPowerSeries.constantCoeff (coordZ B K' vp x) = 0 := by
   rcases x with ⟨r, a, b⟩ | ⟨r, a, b⟩ <;> simp [coordZ]
 
+/- English proof (translation)
+Introduce `h5 hD be hbe n' r0 r1 h2 hev B Ph hPh K' _ _ vp hvp`. Take `⟨c, hc, hE⟩` from `hB h5 hD be hbe`. Take `⟨μ, hμ0, hμR, hμ1⟩` from `exists_mu (p := p) K' vp hvp`. Take `⟨u, hu, V, hV, hGeq⟩` from `hG h5 c hc n' r0 r1 h2 hev B K' vp hvp μ hμ0 hμ1`. Take `⟨V', hV', hred⟩` from `th_reduce (p := p) be (th_be_const hbe) (wK p c) (wK p (sigW p c)) (th_Gser_const _ _) (fun _ => hE) Ph hPh K' vp μ hμ0 hμR hμ1 (coordZ B K' 1) (fun i => constantCoeff_coordZ_eq_zero B K' 1 i) (fun i => th_coordZ_int B K' vp i)`.
+
+Use `⟨u, hu, V * V', IntR_mul hV hV', ?_⟩` and prove the remaining obligations. Unfold `ThZ`. Rewrite using `[th_coordZ_eq B K' vp, hred, hGeq, mul_assoc]`.
+-/
 theorem restSExp_of (hB : RestBeta p) (hG : RestGc p) : RestSExp p := by
   intro h5 hD be hbe n' r0 r1 h2 hev B Ph hPh K' _ _ vp hvp
   obtain ⟨c, hc, hE⟩ := hB h5 hD be hbe
@@ -104,10 +131,16 @@ theorem restSExp_of (hB : RestBeta p) (hG : RestGc p) : RestSExp p := by
   unfold ThZ
   rw [th_coordZ_eq B K' vp, hred, hGeq, mul_assoc]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases x with ⟨v, r, a, b⟩ | ⟨v, r, a, b⟩ <;> simp [Sys.coordZA]`.
+-/
 private theorem constantCoeff_coordZA_eq_zero (X : Sys p) (K' : Type) [Field K'] [Algebra (K0 p) K'] (j : ℕ)
     (x : X.EA j ⊕ X.EA j) : MvPowerSeries.constantCoeff (X.coordZA K' j x) = 0 := by
   rcases x with ⟨v, r, a, b⟩ | ⟨v, r, a, b⟩ <;> simp [Sys.coordZA]
 
+/- English proof (translation)
+Use extensionality with `n`. Simplify using `[MvPowerSeries.coeff_map, IsScalarTower.algebraMap_apply (K0 p) K1 K']`.
+-/
 private theorem mvPowerSeries_map_algebraMap_map_algebraMap (K1 K' : Type) [Field K1] [Algebra (K0 p) K1] [Field K'] [Algebra (K0 p) K']
     [Algebra K1 K'] [IsScalarTower (K0 p) K1 K'] {σ : Type} (F : MvPowerSeries σ (K0 p)) :
     MvPowerSeries.map (algebraMap K1 K') (MvPowerSeries.map (algebraMap (K0 p) K1) F) =
@@ -115,6 +148,13 @@ private theorem mvPowerSeries_map_algebraMap_map_algebraMap (K1 K' : Type) [Fiel
   ext n
   simp [MvPowerSeries.coeff_map, IsScalarTower.algebraMap_apply (K0 p) K1 K']
 
+/- English proof (translation)
+Introduce `hD be hbe j Ph hPh K1 _ _ K' _ _ _ _ vp hvp`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc, hE⟩ : ∃ c : WW p, (sigW p)^[2] c = c ∧ (X.EA j → E0 p (inParam p be - Gser p (wK p c) (wK p (sigW p c)))) := by`. Distinguish the cases in `h5 : 5 ≤ p`. Take `⟨c, hc, hE⟩` from `hB h5 hD be hbe`. Conclude with `⟨c, hc, fun _ => hE⟩`.
+
+Use `⟨0, ?_, fun e => absurd (X.std e.1).five_le h5⟩ first` and prove the remaining obligations. Consider the case `exact Function.iterate_fixed (map_zero (sigW p)) 2`. Consider the case `simp`. Take `⟨μ, hμ0, hμR, hμ1⟩` from `exists_mu (p := p) K' vp hvp`. Take `⟨u, hu, V, hV, hGeq⟩` from `hG c hc j K' vp hvp μ hμ0 hμ1`.
+
+Take `⟨V', hV', hred⟩` from `th_reduce (p := p) be (th_be_const hbe) (wK p c) (wK p (sigW p c)) (th_Gser_const _ _) hE Ph hPh K' vp μ hμ0 hμR hμ1 (X.coordZA K' j) (fun i => constantCoeff_coordZA_eq_zero X K' j i) (fun i => th_coordZA_int X K' vp j i)`. Use `⟨u, hu, V * V', IntR_mul hV hV', ?_⟩` and prove the remaining obligations. Rewrite using `[atPi_map_ThZA (X := X), mvPowerSeries_map_algebraMap_map_algebraMap, hred, hGeq, mul_assoc]`.
+-/
 theorem restSExpA_of (X : Sys p) (hB : RestBeta p) (hG : RestGcA X) : RestSExpA X := by
   intro hD be hbe j Ph hPh K1 _ _ K' _ _ _ _ vp hvp
   obtain ⟨c, hc, hE⟩ : ∃ c : WW p, (sigW p)^[2] c = c ∧
@@ -134,10 +174,16 @@ theorem restSExpA_of (X : Sys p) (hB : RestBeta p) (hG : RestGcA X) : RestSExpA 
   refine ⟨u, hu, V * V', IntR_mul hV hV', ?_⟩
   rw [atPi_map_ThZA (X := X), mvPowerSeries_map_algebraMap_map_algebraMap, hred, hGeq, mul_assoc]
 
+/- English proof (translation)
+The claim follows from `kernel_expansion_of_restrictions D X Y hA (restSExp_of hB hG) (restSInt p)`.
+-/
 theorem baseChange_preserves_unitary_of (D : Formalism.BasicNotions.D7) (X : Sys p) (Y : Pend X) (hA : admitted D X Y) (hB : RestBeta p) (hG : RestGc p) :
     Conclusion1 D X Y :=
   kernel_expansion_of_restrictions D X Y hA (restSExp_of hB hG) (restSInt p)
 
+/- English proof (translation)
+The claim follows from `all_places_of_restrictions (hA := hA) (hE := restSExpA_of X hB hG) (hI := restSIntA (X := X))`.
+-/
 theorem expansion_all_places_of_computation (D : Formalism.BasicNotions.D7) (X : Sys p) (Y : Pend X) (hA : admitted D X Y) (hB : RestBeta p) (hG : RestGcA X) :
     ExpansionsMultiply D X Y :=
   all_places_of_restrictions (hA := hA) (hE := restSExpA_of X hB hG) (hI := restSIntA (X := X))

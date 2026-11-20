@@ -23,6 +23,19 @@ namespace GlobalTheory.PenBridge.SuppLev
 end GlobalTheory.PenBridge.SuppLev
 open GlobalTheory.PenBridge in
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat j hj t J hJ t' J' hJ' α' P hP x hx hrd`. Establish `hjm : j ≤ B.R.m` using `by omega`. Establish `hok : I.Ok` using `hW.tr.ok`. Establish `hsd : IsSelfDualC ((I.rec7 l Z).sp.X j) (a.g.x j).L` using `(ha.x j hjm).sd`. Use `haveI : Submodule.IsLattice (I.rec7 l Z).host.E (a.g.x j).L := hsd.1`.
+
+Establish `hfg : (a.g.x j).L.FG` using `Submodule.IsLattice.fg (A := (I.rec7 l Z).host.E)`. Establish `hlb` using `(hJ'.is.reads j hjm).lb (J'.ι j α')`. Use `(hJ'.is.U j hjm _ _).2 ⟨GlobalTheory.FinPl.SetCut.grpAt_le_GfC _ _ hx, ?_⟩` and prove the remaining obligations. Take `⟨-, hPr, -⟩` from `GlobalTheory.Mem.Col2.base_fields_primes_ok B X`. Establish `hd : X.piT u ∣ ((B.T u : ℕ) : 𝓞 B.host.E)` using `⟨_, (hPr.piT_norm u).symm⟩`.
+
+Use `GlobalTheory.PenBridge.SuppLev.exists_mem_level_set (I.rec7 l Z) _ _ _ (J'.A.K j hjm (J'.ι j α')).lev (X.piT u) hd hlb (a.g.x j).L hfg (fun y => ((hat.pinX.xs j hjm).2.2 y).trans (forall_congr' fun r => ⟨fun h => ⟨⟨y r, h⟩, rfl⟩, fun ⟨s, hs⟩ => hs ▸ s.2⟩)) (· ∈ P) x hx ?_` and prove the remaining obligations. Introduce `v hvP`. Take `⟨⟨i, hi⟩, hn'⟩` from `hP v hvP`. Substitute `hi` using the available equality. Establish `hu : I.UnderQ (W.P.I.tup t) (J.G i).q.v` using `⟨J.pl i, (hW.tq.Q t (J.pl i)).1 (J.mem i), ((_root_.GlobalTheory.Fam.QJPlaces.places_under_alt W hW u a ha hat t J hJ).2 i).symm⟩`.
+
+Take `⟨hTv, hgv⟩` from `GlobalTheory.Mem.Col2.TC.underQ_notMem I hok l u _ _ hu`. Use `⟨fun h => ?_, hTv, ?_⟩` and prove the remaining obligations. Break down `hJ'.is.bad_le j hjm _ h with (h0 | h0) | ⟨Q, hQ, e⟩` into its components or cases. Conclude with `hgv 0 h0`. Conclude with `hgv 1 h0`.
+
+Take `⟨i', hi'⟩` from `hJ'.surj Q ((hW.tq.Q t' Q).2 hQ)`. Use `hn' ⟨i', ?_⟩` and prove the remaining obligations. Rewrite using `[(_root_.GlobalTheory.Fam.QJPlaces.places_under_alt W hW u a ha hat t' J' hJ').2 i', hi']`. Conclude with `e`. Establish `h1` using `hrd i hvP`.
+
+Rewrite `h1` using `[_root_.GlobalTheory.PenBridge.reductionHomAtLastLevel, MonoidHom.pi_apply, _root_.GlobalTheory.PenBridge.rd_at_apply, toSum0_mem_KO_iff]`. Conclude with `GlobalTheory.LevProd.SamePlace.moves_of_mem_KO (J.G i).q _ hsd (_root_.GlobalTheory.PenBridge.int_in_frame_at_level J j i (_root_.GlobalTheory.PenBridge.eq_s_succ_of_succ_eq_m J hj i)) h1`.
+-/
 theorem GlobalTheory.PenBridge.supp_mem_level_alt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u), a.Is → a.True → ∀ j (hj : j + 1 = B.R.m), ∀ t (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t), J.Reads → ∀ t' (J' : _root_.GlobalTheory.Fam.QuadraticExtensionData a t'), J'.Reads → ∀ (α' : J'.Ch j) (P : Finset (GlobalTheory.FinPl.Pl (I.rec7 l Z))), (∀ p ∈ P, _root_.GlobalTheory.PenBridge.finitePlaceCondition J p ∧ ¬ _root_.GlobalTheory.PenBridge.finitePlaceCondition J' p) → ∀ x ∈ GlobalTheory.FinPl.grpAt _ (· ∈ P), (∀ i, (J.G i).q.v ∈ P → _root_.GlobalTheory.PenBridge.reductionHomAtLastLevel J j hj x i ∈ KO (J.G i).k _) → x ∈ J'.A.U j (J'.ι j α') := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat j hj t J hJ t' J' hJ' α' P hP x hx hrd
   have hjm : j ≤ B.R.m := by omega

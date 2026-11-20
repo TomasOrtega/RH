@@ -9,6 +9,17 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompanionTheory.FineProd.TensorLine
 
+/- English proof (translation)
+Use `nontrivial_of_irreducible hi` as an intermediate fact. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Set `S : Subrepresentation ρ` to `⟨Submodule.span ℂ {v}, fun g w hw => by`. Rewrite using `[Subsingleton.elim g 1, map_one]`. Conclude with `hw⟩`.
+
+Establish `hvS : v ∈ S.toSubmodule` using `Submodule.mem_span_singleton_self v`. Establish `hS : S = ⊤`. Break down `hi.eq_bot_or_eq_top S with h | h` into its components or cases. It suffices to derive a contradiction. Rewrite `hvS` using `[h]`.
+
+Conclude with `hv ((Submodule.mem_bot ℂ).1 hvS)`. Conclude with `h`. Establish `htop : ∀ w : V, w ∈ Submodule.span ℂ {v}` using `fun w => by`. Establish `: w ∈ S.toSubmodule`. Rewrite using `[hS]`.
+
+Conclude with `(Submodule.mem_top : w ∈ (⊤ : Submodule ℂ V))`. Conclude with `this`. Use `⟨(LinearEquiv.ofBijective (LinearMap.toSpanSingleton ℂ V v) ⟨?_, ?_⟩).symm⟩` and prove the remaining obligations. Conclude with `LinearMap.ker_eq_bot.1 (LinearMap.ker_toSpanSingleton ℂ hv)`. Introduce `w`.
+
+Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 (htop w)`. Conclude with `⟨c, by simpa using hc⟩`.
+-/
 theorem exists_line {G V : Type} [Group G] [Subsingleton G] [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ G V} (hi : ρ.IsIrreducible) : Nonempty (V ≃ₗ[ℂ] ℂ) := by
   have := nontrivial_of_irreducible hi
@@ -33,6 +44,9 @@ theorem exists_line {G V : Type} [Group G] [Subsingleton G] [AddCommGroup V] [Mo
     obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.1 (htop w)
     exact ⟨c, by simpa using hc⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨fun a b => Units.ext (Subsingleton.elim _ _)⟩`.
+-/
 theorem subsingleton_GL {k : Type} [Field k] {n : ℕ} (h : n = 0) : Subsingleton (GL (Fin n) k) := by
   subst h
   exact ⟨fun a b => Units.ext (Subsingleton.elim _ _)⟩
@@ -70,6 +84,11 @@ def dropEquiv (o : Fin r' → Fin r) (ho : Function.Injective o) (φ : ∀ c : O
 
 open scoped Classical in
 
+/- English proof (translation)
+Establish `h1 : PiTensorProduct.reindex ℂ X (blockEquiv o ho).symm (PiTensorProduct.tprod ℂ x) = PiTensorProduct.tprod ℂ fun i => x (blockEquiv o ho i)` using `PiTensorProduct.reindex_tprod _ _`. Establish `h2` using `PiTensorProduct.tmulEquivDep_symm_apply ℂ (fun i => X (blockEquiv o ho i)) (fun i => x (blockEquiv o ho i))`. Establish `h3 : (PiTensorProduct.congr fun c : Off o => φ c) (PiTensorProduct.tprod ℂ fun c : Off o => x c) = PiTensorProduct.tprod ℂ fun c : Off o => φ c (x c)` using `PiTensorProduct.congr_tprod _ _`. Establish `ht : ((PiTensorProduct.tmulEquivDep ℂ fun i => X (blockEquiv o ho i)).symm (PiTensorProduct.reindex ℂ X (blockEquiv o ho).symm (PiTensorProduct.tprod ℂ x)) : TensorProduct ℂ (⨂[ℂ] a, X (o a)) (⨂[ℂ] c : Off o, X c)) = (PiTensorProduct.tprod ℂ fun a => x (o a)) ⊗ₜ[ℂ] (PiTensorProdu …` using `(congrArg _ h1).trans h2`. Use `show (TensorProduct.rid ℂ _) ((TensorProduct.congr (LinearEquiv.refl ℂ (⨂[ℂ] a, X (o a))) ((PiTensorProduct.congr fun c : Off o => φ c).trans (PiTensorProduct.constantBaseRingEquiv (Off o) ℂ).toLinearEquiv)) ((PiTensorProduct.tmulEquivDep ℂ fun i => X (blockEquiv o ho i)).symm (P …`.
+
+Rewrite using `[ht, TensorProduct.congr_tmul, LinearEquiv.trans_apply, h3, TensorProduct.rid_tmul]`. Use `congr 1`. Conclude with `PiTensorProduct.constantBaseRingEquiv_tprod _`.
+-/
 theorem dropEquiv_tprod (o : Fin r' → Fin r) (ho : Function.Injective o)
     (φ : ∀ c : Off o, X c ≃ₗ[ℂ] ℂ) (x : ∀ j, X j) :
     dropEquiv o ho φ (PiTensorProduct.tprod ℂ x) =
@@ -97,6 +116,13 @@ theorem dropEquiv_tprod (o : Fin r' → Fin r) (ho : Function.Injective o)
   congr 1
   exact PiTensorProduct.constantBaseRingEquiv_tprod _
 
+/- English proof (translation)
+Introduce `k _ _ _ _ r r' y o ho hy`. Establish `hz : ∀ c : Off o, (y c).1 = 0` using `fun c => by`. Assume the negation of the conclusion as `h`. Conclude with `c.2 (hy c h)`. Establish `hφ : ∀ c : Off o, Nonempty ((y c).2.rep.V ≃ₗ[ℂ] ℂ)` using `fun c => by haveI := subsingleton_GL (k := k) (hz c)`.
+
+Conclude with `exists_line (y c).2.rep.irr`. Set `φ : ∀ c : Off o, (y c).2.rep.V ≃ₗ[ℂ] ℂ` to `fun c => (hφ c).some`. Use `⟨Representation.Equiv.mk (dropEquiv o ho.injective φ) fun g => ?_⟩` and prove the remaining obligations. Use `PiTensorProduct.ext (MultilinearMap.ext fun x => ?_)` and prove the remaining obligations. Establish `hc : ∀ c : Off o, (y c).rep (g c) (x c) = x c` using `fun c => by haveI := subsingleton_GL (k := k) (hz c)`.
+
+Rewrite using `[Subsingleton.elim (g c) 1, map_one]`. Both sides reduce to the same expression. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, piTensor_tprod, dropEquiv_tprod, hc, map_smul]`. Use `congr 1`. Conclude with `(piTensor_tprod (fun a => (y (o a)).rep) (fun a => g (o a)) (fun a => x (o a))).symm`.
+-/
 theorem piTensor_drop_equiv : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {r r' : ℕ} (y : Fin r → IrrGL k) (o : Fin r' → Fin r), StrictMono o → (∀ j, (y j).1 ≠ 0 → j ∈ Set.range o) → Nonempty ((piTensor fun j => (y j).rep).Equiv ((piTensor fun a => (y (o a)).rep).comp (GlobalTheory.CompanionTheory.FineProd.dropHom (k := k) (fun j => (y j).1) o) : Representation ℂ (Levi k fun j => Fin (y j).1) _)) := by
   intro k _ _ _ _ r r' y o ho hy
   have hz : ∀ c : Off o, (y c).1 = 0 := fun c => by

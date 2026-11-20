@@ -17,6 +17,9 @@ open MvPolynomial Formalism.BasicNotions.DV
 open GlobalTheory.ShFam.Pad GlobalTheory.TrivFlag
 open GlobalTheory.Cartier GlobalTheory.TrueGeo GlobalTheory.ProjVar GlobalTheory.WholeFlag
 
+/- English proof (translation)
+Introduce `h2 hH hRA hSW D O hO Sx R hR p hp c` and use `GlobalTheory.T.halfFlag_of_halfData _ p hp (GlobalTheory.T.half_data_adelic_metric_prime h2 hH hRA hSW D O hO Sx R hR p hp c)`.
+-/
 theorem GlobalTheory.WholeFlag.halfFlag_whole : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB → ∀ (D : D7) (O : Setup D), O.Core →
     ∀ (Sx : Finset ℕ) (R : ℝ), 2 ≤ R → ∀ p : ℕ, p.Prime → ∀ c : O.s.Comp,
     HalfFlag (fun k : Fin (D.R.f * O.N) => adlOf (O.Φ.C c) (O.met.hm c)

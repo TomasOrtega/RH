@@ -12,6 +12,11 @@ open GlobalTheory.CompanionTheory.LTPer.Tilt
 
 namespace GlobalTheory.CompanionTheory.LTPer.Tilt
 
+/- English proof (translation)
+Introduce `l _ K π hmax hfin c`. Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_pow, sub_eq_zero]`. Use `letI := Ideal.Quotient.field (Ideal.span {π})`. Use `letI := Fintype.ofFinite (↥(OL K) ⧸ Ideal.span {π})`. Rewrite using `[qOf, Nat.card_eq_fintype_card]`.
+
+Conclude with `FiniteField.pow_card _`.
+-/
 theorem dvd_pow_qOf_sub_self : ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (π : ↥(OL K)), (Ideal.span {π}).IsMaximal →
     Finite (↥(OL K) ⧸ Ideal.span {π}) → ∀ c : ↥(OL K), π ∣ c ^ qOf π - c := by
   intro l _ K π hmax hfin c

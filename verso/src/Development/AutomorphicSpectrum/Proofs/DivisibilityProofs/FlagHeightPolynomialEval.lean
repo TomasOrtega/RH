@@ -17,9 +17,17 @@ section
 
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ}
 
+/- English proof (translation)
+Simplify using `[GroundTheory.Heights₂.Heights.antisymDegree, dimFl, Nat.choose_two_right]`.
+-/
 theorem antisymDegree_eq_dimFl' : GroundTheory.Heights₂.Heights.antisymDegree Ψ N = dimFl Ψ N := by
   simp [GroundTheory.Heights₂.Heights.antisymDegree, dimFl, Nat.choose_two_right]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Establish `hl : (Finsupp.toMultiset m).toList.length = d`. Rewrite using `[Multiset.length_toList, Finsupp.card_toMultiset, ← hm]`. Both sides reduce to the same expression. Establish `hk : (k : ℕ) < (Finsupp.toMultiset m).toList.length`.
+
+Rewrite using `[hl]`. Conclude with `k.2`. Simplify using `only [GroundTheory.Heights₂.Heights.LowerBoundFree.monoLines, monoLines, dif_pos hk]`.
+-/
 theorem flMonoLines_eq (m : Ψ × Fin N →₀ ℕ) (d : ℕ) (hm : m.degree = d) :
     GroundTheory.Heights₂.Heights.LowerBoundFree.monoLines Ψ N m d =
       monoLines (GroundTheory.Heights₂.Heights.LowerBoundFree.xLine Ψ N) m d := by
@@ -32,6 +40,9 @@ theorem flMonoLines_eq (m : Ψ × Fin N →₀ ℕ) (d : ℕ) (hm : m.degree = d
     exact k.2
   simp only [GroundTheory.Heights₂.Heights.LowerBoundFree.monoLines, monoLines, dif_pos hk]
 
+/- English proof (translation)
+Rewrite using `[linRoot, neg_pow, Finset.prod_const, Finset.card_univ, Fintype.card_fin, smul_eq_C_mul, map_pow, map_neg, map_one]`.
+-/
 theorem linRoot_pow_eq (lam : Wt Ψ N) (n : ℕ) :
     linRoot lam ^ n = ((-1 : ℝ) ^ n) •
       ∏ _k : Fin n, ∑ x : Ψ × Fin N, C (lam x.1 x.2) * X x := by
@@ -39,6 +50,15 @@ theorem linRoot_pow_eq (lam : Wt Ψ N) (n : ℕ) :
 
 end
 
+/- English proof (translation)
+Introduce `II hII Ψ _ _ N _ lam _ hP`. Establish `hword : ∀ w : Fin (dimFl Ψ N + 1) → Ψ × Fin N, hhFl Ψ N II (monomial (∑ k, Finsupp.single (w k) 1) 1) = (-1 : ℝ) ^ (dimFl Ψ N + 1) * II (GroundTheory.Heights₂.Heights.LowerBoundFree.FlBlock Ψ N) (GroundTheory.Heights₂.Heights.LowerBoundFree.FlIdx Ψ N) (GroundTheory.Heights₂.Heigh …`. Introduce `w`. Take `⟨hdeg, σ, -, hI⟩` from `GlobalTheory.T.monomial_lines_permutation II hII.1 _ _ (GroundTheory.Heights₂.Heights.LowerBoundFree.PFl Ψ N) (dimFl Ψ N + 1) _ (GroundTheory.Heights₂.Heights.LowerBoundFree.xLine Ψ N) w hP (fun j => GroundTheory.Heights₂.Heights.LowerBoundFree.FlagHeightMultilinear.isSmoothHerm_ …`. Establish `hdeg' : (∑ k, Finsupp.single (w k) 1 : Ψ × Fin N →₀ ℕ).degree = GroundTheory.Heights₂.Heights.LowerBoundFree.dimFl Ψ N + 1` using `hdeg`.
+
+Establish `e1 : II (GroundTheory.Heights₂.Heights.LowerBoundFree.FlBlock Ψ N) (GroundTheory.Heights₂.Heights.LowerBoundFree.FlIdx Ψ N) (GroundTheory.Heights₂.Heights.LowerBoundFree.PFl Ψ N) (dimFl Ψ N + 1) (GroundTheory.Heights₂.Heights.LowerBoundFree.monoLines Ψ N (∑ k, Finsupp.single (w k …`. Rewrite using `[flMonoLines_eq _ _ hdeg]`. Conclude with `hI`. Rewrite using `[HhModel.hhFl_monomial, GroundTheory.Heights₂.Heights.LowerBoundFree.hFlMono, if_pos hdeg', hdeg, one_mul]`. Conclude with `congrArg (fun t => (-1 : ℝ) ^ (dimFl Ψ N + 1) * t) e1`.
+
+Establish `hpoly : PB.hFlPoly Ψ N II = PB.formPoly (dimFl Ψ N + 1) fun w => II (GroundTheory.Heights₂.Heights.LowerBoundFree.FlBlock Ψ N) (GroundTheory.Heights₂.Heights.LowerBoundFree.FlIdx Ψ N) (GroundTheory.Heights₂.Heights.LowerBoundFree.PFl Ψ N) (dimFl Ψ N + 1) (fun k => GroundTheory.He …`. Rewrite using `[PB.hFlPoly, antisymDegree_eq_dimFl']`. Rewrite using `[linRoot_pow_eq, map_smul, GlobalTheory.T.functional_product_linear_forms _ _ (hhFl Ψ N II) (fun _ x => lam x.1 x.2), hpoly, (PB.formPoly_isHomogeneous_and_eval (Ψ × Fin N) (dimFl Ψ N + 1) _).2]`. Simplify using `only [hword, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Establish `h2 : ((-1 : ℝ) ^ (dimFl Ψ N + 1)) * (-1 : ℝ) ^ (dimFl Ψ N + 1) = 1`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules. Take the linear combination `(∏ k, lam (w k).1 (w k).2) * II (GroundTheory.Heights₂.Heights.LowerBoundFree.FlBlock Ψ N) (GroundTheory.Heights₂.Heights.LowerBoundFree.FlIdx Ψ N) (GroundTheory.Heights₂.Heights.LowerBoundFree.PFl Ψ N) (dimFl Ψ N + 1) (fun k => GroundTheory.Heights₂.Heights.LowerBoundFree.xLine …`.
+-/
 theorem hhFl_linRoot_pow : ∀ II : IntersectionSystem, IsFullIntersectionSystem II → ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) [Nonempty Ψ] (lam : Wt Ψ N), 2 ≤ N → IsArithVar (GroundTheory.Heights₂.Heights.LowerBoundFree.PFl Ψ N) (dimFl Ψ N + 1) → hhFl Ψ N II (linRoot lam ^ (dimFl Ψ N + 1)) = eval (fun x => lam x.1 x.2) (PB.hFlPoly Ψ N II) := by
   intro II hII Ψ _ _ N _ lam _ hP
   have hword : ∀ w : Fin (dimFl Ψ N + 1) → Ψ × Fin N,

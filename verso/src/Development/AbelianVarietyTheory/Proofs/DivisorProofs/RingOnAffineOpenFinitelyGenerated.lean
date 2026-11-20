@@ -12,6 +12,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.Poinc
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ hU hne` and use `GlobalTheory.ZH.RatModel.fg_ringOn hU hne`.
+-/
 theorem fg_ringOn_of_isAffineOpen : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) (U : M.Z.Opens), IsAffineOpen U → (U : Set M.Z).Nonempty → (M.ringOn U).FG :=
   fun _ _ _ _ _ _ _ hU hne => GlobalTheory.ZH.RatModel.fg_ringOn hU hne
 

@@ -16,8 +16,14 @@ noncomputable def genX : W.toAffine.FunctionField :=
 noncomputable def genY : W.toAffine.FunctionField :=
   algebraMap W.toAffine.CoordinateRing _ (CoordinateRing.mk W Y)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem genX_eq : genX W = algebraMap F[X] W.toAffine.FunctionField X := rfl
 
+/- English proof (translation)
+Rewrite using `[transcendental_iff_injective]`. Introduce `p q h`. Simplify using `only [genX_eq, aeval_algebraMap_apply, aeval_X_left, AlgHom.id_apply] at h`. Conclude with `(IsFractionRing.injective W.toAffine.CoordinateRing W.toAffine.FunctionField).comp (FaithfulSMul.algebraMap_injective F[X] W.toAffine.CoordinateRing) h`.
+-/
 theorem transcendental_genX : Transcendental F (genX W) := by
   rw [transcendental_iff_injective]
   intro p q h
@@ -25,10 +31,18 @@ theorem transcendental_genX : Transcendental F (genX W) := by
   exact (IsFractionRing.injective W.toAffine.CoordinateRing W.toAffine.FunctionField).comp
     (FaithfulSMul.algebraMap_injective F[X] W.toAffine.CoordinateRing) h
 
+/- English proof (translation)
+Use `(transcendental_iff_injective.mp (transcendental_genX W))` as an intermediate fact. Conclude with `⟨fun h => this (by rw [h, map_zero]), fun h => by rw [h, map_zero]⟩`.
+-/
 theorem aeval_genX_eq_zero_iff (p : F[X]) : aeval (genX W) p = 0 ↔ p = 0 := by
   have := (transcendental_iff_injective.mp (transcendental_genX W))
   exact ⟨fun h => this (by rw [h, map_zero]), fun h => by rw [h, map_zero]⟩
 
+/- English proof (translation)
+Establish `h0 : CoordinateRing.mk W W.toAffine.polynomial = 0` using `AdjoinRoot.mk_self`. Establish `h1` using `congrArg (algebraMap W.toAffine.CoordinateRing W.toAffine.FunctionField) h0`. Rewrite using `[equation_iff]`. Simplify using `only [Affine.polynomial, map_sub, map_add, map_mul, map_pow, map_zero] at h1`. Simplify using `only [WeierstrassCurve.baseChange, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆, genX, genY]`.
+
+Establish `e : ∀ a : F, algebraMap W.toAffine.CoordinateRing W.toAffine.FunctionField (CoordinateRing.mk W (C (C a))) = algebraMap F W.toAffine.FunctionField a` using `fun a => rfl`. Simplify using `only [C_add, C_mul, map_add, map_mul, e] at h1`. Take the linear combination `h1`.
+-/
 theorem equation_gen : (W.baseChange W.toAffine.FunctionField).toAffine.Equation (genX W) (genY W) := by
   have h0 : CoordinateRing.mk W W.toAffine.polynomial = 0 := AdjoinRoot.mk_self
   have h1 := congrArg (algebraMap W.toAffine.CoordinateRing W.toAffine.FunctionField) h0
@@ -47,6 +61,9 @@ section Lift
 
 variable {L : Type*} [Field L] [Algebra F L] {u v : L}
 
+/- English proof (translation)
+Establish `e` using `(equation_iff _ _).mp h`. Simplify using `only [WeierstrassCurve.baseChange, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆] at e`. Simplify using `only [Affine.polynomial, eval₂_sub, eval₂_add, eval₂_mul, eval₂_pow, eval₂_X, eval₂_C, coe_eval₂RingHom, eval₂_X, eval₂_C]`. Take the linear combination `e`.
+-/
 private theorem eval₂_polynomial (h : (W.baseChange L).toAffine.Equation u v) :
     W.toAffine.polynomial.eval₂ (eval₂RingHom (algebraMap F L) u) v = 0 := by
   have e := (equation_iff _ _).mp h
@@ -66,12 +83,18 @@ noncomputable def evalAt (h : (W.baseChange L).toAffine.Equation u v) :
       AdjoinRoot.lift_of]
     simp
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `AdjoinRoot.lift (eval₂RingHom (algebraMap F L) u) v (eval₂_polynomial W h) (AdjoinRoot.mk _ p) = _`. Rewrite using `[AdjoinRoot.lift_mk]`.
+-/
 theorem evalAt_mk (h : (W.baseChange L).toAffine.Equation u v) (p : F[X][Y]) :
     evalAt W h (CoordinateRing.mk W p) = p.eval₂ (eval₂RingHom (algebraMap F L) u) v := by
   change AdjoinRoot.lift (eval₂RingHom (algebraMap F L) u) v (eval₂_polynomial W h)
     (AdjoinRoot.mk _ p) = _
   rw [AdjoinRoot.lift_mk]
 
+/- English proof (translation)
+Rewrite using `[AdjoinRoot.algebraMap_eq]`. Express the relevant statement in the definitionally equal form `AdjoinRoot.lift (eval₂RingHom (algebraMap F L) u) v (eval₂_polynomial W h) (AdjoinRoot.of _ p) = _`. Rewrite using `[AdjoinRoot.lift_of, coe_eval₂RingHom, aeval_def]`.
+-/
 theorem evalAt_algebraMap (h : (W.baseChange L).toAffine.Equation u v) (p : F[X]) :
     evalAt W h (algebraMap F[X] W.toAffine.CoordinateRing p) = aeval u p := by
   rw [AdjoinRoot.algebraMap_eq]
@@ -84,6 +107,13 @@ instance : Module.Finite F[X] W.toAffine.CoordinateRing :=
 
 instance : Algebra.IsIntegral F[X] W.toAffine.CoordinateRing := Algebra.IsIntegral.of_finite _ _
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Establish `hker : RingHom.ker (evalAt W h) = ⊥`. Apply `Ideal.eq_bot_of_comap_eq_bot (R := F[X])` to reduce the goal to its premises. Use extensionality with `p`. Simplify using `only [Ideal.mem_comap, RingHom.mem_ker, Ideal.mem_bot]`.
+
+Rewrite using `[evalAt_algebraMap]`. Conclude with `⟨fun hp => (transcendental_iff_injective.mp hu) (by rw [hp, map_zero]), fun hp => by`. Rewrite using `[hp, map_zero]⟩`. Introduce `a ha`. Rewrite `ha` using `[← RingHom.mem_ker, hker]`.
+
+Conclude with `ha`.
+-/
 theorem evalAt_injective (h : (W.baseChange L).toAffine.Equation u v) (hu : Transcendental F u) :
     Function.Injective (evalAt W h) := by
   rw [injective_iff_map_eq_zero]
@@ -102,16 +132,25 @@ noncomputable def liftPoint (h : (W.baseChange L).toAffine.Equation u v)
     (hu : Transcendental F u) : W.toAffine.FunctionField →ₐ[F] L :=
   IsFractionRing.liftAlgHom (evalAt_injective W h hu)
 
+/- English proof (translation)
+The claim follows from `IsFractionRing.lift_algebraMap (evalAt_injective W h hu) a`.
+-/
 theorem liftPoint_algebraMap (h : (W.baseChange L).toAffine.Equation u v)
     (hu : Transcendental F u) (a : W.toAffine.CoordinateRing) :
     liftPoint W h hu (algebraMap _ _ a) = evalAt W h a :=
   IsFractionRing.lift_algebraMap (evalAt_injective W h hu) a
 
+/- English proof (translation)
+Rewrite using `[genX, liftPoint_algebraMap, evalAt_mk]`. Simplify using the standard rewrite rules.
+-/
 theorem liftPoint_genX (h : (W.baseChange L).toAffine.Equation u v) (hu : Transcendental F u) :
     liftPoint W h hu (genX W) = u := by
   rw [genX, liftPoint_algebraMap, evalAt_mk]
   simp
 
+/- English proof (translation)
+Rewrite using `[genY, liftPoint_algebraMap, evalAt_mk]`. Simplify using the standard rewrite rules.
+-/
 theorem liftPoint_genY (h : (W.baseChange L).toAffine.Equation u v) (hu : Transcendental F u) :
     liftPoint W h hu (genY W) = v := by
   rw [genY, liftPoint_algebraMap, evalAt_mk]
@@ -127,6 +166,9 @@ private noncomputable def coefB : W.toAffine.FunctionField :=
 private noncomputable def coefC : W.toAffine.FunctionField :=
   genX W ^ 3 + algebraMap F _ W.a₂ * genX W ^ 2 + algebraMap F _ W.a₄ * genX W + algebraMap F _ W.a₆
 
+/- English proof (translation)
+Establish `e` using `(equation_iff _ _).mp (equation_gen W)`. Simplify using `only [WeierstrassCurve.baseChange, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆] at e`. Simplify using `only [coefB, coefC]`. Take the linear combination `e`.
+-/
 private theorem genY_sq : genY W ^ 2 + coefB W * genY W - coefC W = 0 := by
   have e := (equation_iff _ _).mp (equation_gen W)
   simp only [WeierstrassCurve.baseChange, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂,
@@ -134,6 +176,9 @@ private theorem genY_sq : genY W ^ 2 + coefB W * genY W - coefC W = 0 := by
   simp only [coefB, coefC]
   linear_combination e
 
+/- English proof (translation)
+Rewrite using `[genY, ne_eq, map_eq_zero_iff _ (IsFractionRing.injective _ _)]`. Introduce `h`. Use `CoordinateRing.smul_basis_eq_zero (W' := W.toAffine) (p := 0) (q := 1) (by rw [zero_smul, zero_add, one_smul]; exact h)` as an intermediate fact. Conclude with `one_ne_zero this.2`.
+-/
 theorem genY_ne_zero : genY W ≠ 0 := by
   rw [genY, ne_eq, map_eq_zero_iff _ (IsFractionRing.injective _ _)]
   intro h
@@ -141,6 +186,13 @@ theorem genY_ne_zero : genY W ≠ 0 := by
     (by rw [zero_smul, zero_add, one_smul]; exact h)
   exact one_ne_zero this.2
 
+/- English proof (translation)
+Introduce `h`. Take `⟨r, s, hrs⟩` from `(IntermediateField.mem_adjoin_simple_iff F (genY W)).mp h`. Distinguish the cases in `hs : aeval (genX W) s = 0`. Rewrite `hrs` using `[hs, div_zero]`. Conclude with `genY_ne_zero W hrs`.
+
+Establish `key : genY W * aeval (genX W) s = aeval (genX W) r` using `by rw [hrs, div_mul_cancel₀ _ hs]`. Simplify using `only [genX_eq, aeval_algebraMap_apply, aeval_X_left, AlgHom.id_apply, genY] at key hs`. Rewrite `key` using `[IsScalarTower.algebraMap_apply F[X] W.toAffine.CoordinateRing W.toAffine.FunctionField, IsScalarTower.algebraMap_apply F[X] W.toAffine.CoordinateRing W.toAffine.FunctionField, ← map_mul, (IsFractionRing.injective _ _).eq_iff]`. Establish `h0 : (-r) • (1 : W.toAffine.CoordinateRing) + s • CoordinateRing.mk W Y = 0`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, mul_one, map_neg]`.
+
+Take the linear combination `key`. Conclude with `hs (by rw [(CoordinateRing.smul_basis_eq_zero h0).2, map_zero])`.
+-/
 theorem genY_not_mem : genY W ∉ IntermediateField.adjoin F {genX W} := by
   intro h
   obtain ⟨r, s, hrs⟩ := (IntermediateField.mem_adjoin_simple_iff F (genY W)).mp h
@@ -155,6 +207,15 @@ theorem genY_not_mem : genY W ∉ IntermediateField.adjoin F {genX W} := by
     rw [Algebra.smul_def, Algebra.smul_def, mul_one, map_neg]; linear_combination key
   exact hs (by rw [(CoordinateRing.smul_basis_eq_zero h0).2, map_zero])
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `z _`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := W.toAffine.CoordinateRing) z`. Establish `mem : ∀ a : W.toAffine.CoordinateRing, algebraMap _ W.toAffine.FunctionField a ∈ IntermediateField.adjoin F {genX W, genY W}`. Introduce `a`.
+
+Take `⟨p, rfl⟩` from `AdjoinRoot.mk_surjective a`. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, map_add]`. Conclude with `add_mem hp hq`. Consider the case `monomial n c`.
+
+Rewrite using `[← C_mul_X_pow_eq_monomial, map_mul, map_mul, map_pow, map_pow]`. Use `mul_mem ?_ (pow_mem (IntermediateField.subset_adjoin F _ (by simp [genY])) _)` and prove the remaining obligations. Proceed by induction on `c using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [C_add, map_add, map_add]`. Conclude with `add_mem hp hq`.
+
+Consider the case `monomial m d`. Rewrite using `[← C_mul_X_pow_eq_monomial, C_mul, C_pow, map_mul, map_mul, map_pow, map_pow]`. Use `mul_mem ?_ (pow_mem (IntermediateField.subset_adjoin F _ (by simp [genX])) _)` and prove the remaining obligations. Conclude with `IntermediateField.algebraMap_mem _ d`. Conclude with `div_mem (mem a) (mem b)`.
+-/
 theorem adjoin_genX_genY : IntermediateField.adjoin F {genX W, genY W} = ⊤ := by
   rw [eq_top_iff]
   intro z _
@@ -176,6 +237,19 @@ theorem adjoin_genX_genY : IntermediateField.adjoin F {genX W, genY W} = ⊤ := 
         exact IntermediateField.algebraMap_mem _ d
   exact div_mem (mem a) (mem b)
 
+/- English proof (translation)
+Use `set E1 := IntermediateField.adjoin F {genX W}`. Establish `hx : genX W ∈ E1` using `IntermediateField.mem_adjoin_simple_self F _`. Establish `hb : coefB W ∈ E1`. Simplify using `only [coefB]`. Conclude with `add_mem (mul_mem (IntermediateField.algebraMap_mem _ _) hx) (IntermediateField.algebraMap_mem _ _)`.
+
+Establish `hc : coefC W ∈ E1`. Simplify using `only [coefC]`. Conclude with `add_mem (add_mem (add_mem (pow_mem hx 3) (mul_mem (IntermediateField.algebraMap_mem _ _) (pow_mem hx 2))) (mul_mem (IntermediateField.algebraMap_mem _ _) hx)) (IntermediateField.algebraMap_mem _ _)`. Use `set q : E1[X] := X ^ 2 + C ⟨coefB W, hb⟩ * X - C ⟨coefC W, hc⟩`. Establish `hq : aeval (genY W) q = 0`.
+
+Simplify using `only [q, map_sub, map_add, map_mul, map_pow, aeval_X, aeval_C]`. Conclude with `genY_sq W`. Establish `hqdeg : q.natDegree = 2` using `by simp only [q]; compute_degree!`. Establish `hq0 : q ≠ 0` using `fun h => by rw [h, natDegree_zero] at hqdeg; exact absurd hqdeg (by decide)`. Establish `hint : IsIntegral E1 (genY W)` using `(show IsAlgebraic E1 (genY W) from ⟨q, hq0, hq⟩).isIntegral`.
+
+Establish `hdeg : (minpoly E1 (genY W)).natDegree = 2`. Establish `hle : (minpoly E1 (genY W)).natDegree ≤ 2`. Rewrite using `[← hqdeg]`. Conclude with `natDegree_le_of_dvd (minpoly.dvd E1 _ hq) hq0`. Establish `hne1 : (minpoly E1 (genY W)).natDegree ≠ 1`.
+
+Introduce `h1`. Rewrite `h1` using `[minpoly.natDegree_eq_one_iff]`. Take `⟨z, hz⟩` from `h1`. Conclude with `genY_not_mem W (hz ▸ z.2)`. Establish `hpos` using `minpoly.natDegree_pos hint`.
+
+Use linear arithmetic over natural numbers and integers. Establish `htop : IntermediateField.adjoin E1 {genY W} = ⊤`. Rewrite using `[← IntermediateField.restrictScalars_eq_top_iff (K := F), IntermediateField.adjoin_simple_adjoin_simple]`. Conclude with `adjoin_genX_genY W`. Rewrite using `[← IntermediateField.finrank_top', ← htop, IntermediateField.adjoin.finrank hint, hdeg]`.
+-/
 theorem finrank_adjoin_genX : Module.finrank (IntermediateField.adjoin F {genX W})
     W.toAffine.FunctionField = 2 := by
   set E1 := IntermediateField.adjoin F {genX W}
@@ -223,6 +297,9 @@ instance (A : Type*) [Field A] [Algebra F A] : (W.baseChange A).IsElliptic := by
 noncomputable def genericPoint : (W.baseChange W.toAffine.FunctionField).toAffine.Point :=
   .some (genX W) (genY W) (equation_iff_nonsingular.mp (equation_gen W))
 
+/- English proof (translation)
+Simplify using `only [genericPoint, Point.map]`. Simplify using `only [AddMonoidHom.coe_mk, ZeroHom.coe_mk, Point.some.injEq]`. Conclude with `⟨liftPoint_genX W h.1 hu, liftPoint_genY W h.1 hu⟩`.
+-/
 theorem map_liftPoint_genericPoint {L : Type*} [Field L] [Algebra F L] [DecidableEq L] {u v : L}
     (h : (W.baseChange L).toAffine.Nonsingular u v) (hu : Transcendental F u) :
     Point.map (liftPoint W h.1 hu) (genericPoint W) = .some u v h := by

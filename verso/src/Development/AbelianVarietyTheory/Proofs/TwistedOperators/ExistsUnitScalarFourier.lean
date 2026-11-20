@@ -47,6 +47,21 @@ noncomputable section
 
 namespace GlobalTheory.MovedKappa
 
+/- English proof (translation)
+Introduce `D ψ θ S T sS sT frS frT hS hT hcS hcT δ hC hδ Ls Lt hLs hLt f hf`. Establish `hsS` using `GlobalTheory.FockPos.cart_one frS hS hcS`. Establish `hsT` using `GlobalTheory.FockPos.cart_one frT hT hcT`. Substitute `hsS hsT` using the available equality. Take `⟨Φ, hΦd, hreal⟩` from `GlobalTheory.T.fockVacuum_real_restriction_gaussian_entire ψ θ S T frS frT _ _ hS hT f hf`.
+
+Establish `hTh` using `GlobalTheory.T.unitVacuumEntireFactor_isTheta_movedLattices ψ θ S T frS frT hS hT δ hC hδ Ls Lt hLs hLt f hf Φ hΦd hreal`. Take `⟨Θ, hΘ⟩ : ∃ Θ : Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank → ℂ, Θ = fun Y => Φ (δ⁻¹ • Y)` from `⟨_, rfl⟩`. Rewrite `hTh` using `[← hΘ]`. Establish `hΦeq : Φ = fun z => Θ (δ • z)`. Use function extensionality and compare the values at `z`.
+
+Simplify using `only [hΘ, smul_smul, inv_mul_cancel₀ hδ, one_smul]`. Use `⟨Θ, hTh, ?_, fun k => ?_⟩` and prove the remaining obligations. Introduce `h0`. Take `⟨w, hw, hfw⟩` from `GlobalTheory.T.exists_finitePartZero_ne_of_isVacuum_orientedModel ψ θ S T _ _ _ _ f hf`. Apply `hfw` to reduce the goal to its premises.
+
+Establish `h1 : Φ (GlobalTheory.FockPos.zCo θ frS frT w) = 0`. Rewrite using `[hΦeq]`. Conclude with `congrFun h0 _`. Rewrite using `[hreal w hw, h1, mul_zero]`. Establish `hdiff : Differentiable ℂ Θ` using `hTh.1`.
+
+Establish `hj` using `GlobalTheory.T.fockMonomial_at_origin_gaussian_entire_orthonormal ψ θ S T frS frT hf.1 hf.2.inf hS hT f Φ hΦd hreal k`. Express the relevant statement in the definitionally equal form `pureTensorO ψ θ S T (fun _ => 1) (fun _ => 1) (GlobalTheory.FockPos.frAt frS) (GlobalTheory.FockPos.frAt frT) f (MvPolynomial.monomial k 1) 0 = _`. Rewrite using `[hj, hΦeq, GlobalTheory.FockPos.applyAt0_monomial', GlobalTheory.FockPos.applyAt0_monomial', GlobalTheory.FockPos.taylor_comp_smul' D _ hdiff]`. Establish `hper : ∀ τ : D.what₂.Tau, GlobalTheory.FunObj.period δ τ = δ * (((Real.sqrt (2 * Real.pi * Formalism.L2.Pj.xiR D) : ℝ) : ℂ)⁻¹)`. Introduce `τ`.
+
+Rewrite using `[GlobalTheory.FunObj.period, GlobalTheory.AdTh.Fock.norm_embedding_hostFormConstant_eq, div_eq_mul_inv]`. Establish `hprod : (k.prod fun v n => GlobalTheory.FunObj.period δ v.1 ^ n) = (δ * (((Real.sqrt (2 * Real.pi * Formalism.L2.Pj.xiR D) : ℝ) : ℂ)⁻¹)) ^ (k.sum fun _ n => n)`. Simplify using `only [hper, Finsupp.prod, Finsupp.sum]`. Conclude with `Finset.prod_pow_eq_pow_sum _ _ _`. Rewrite using `[hprod, mul_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fock_jets_moved : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D)
     (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)
     (frS : GL (Fin S.rank) D.host.E) (frT : GL (Fin T.rank) D.host.E),
@@ -97,6 +112,9 @@ theorem fock_jets_moved : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : In
     rw [hprod, mul_pow]
     ring
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.FockPos.applyAt0_monomial', GlobalTheory.FockPos.applyAt0_monomial', GlobalTheory.ProdThetaConj.taylor_const_mul hG]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem applyAt0_const_mul (D : D7) {N N' : ℕ} (k : Formalism.MainNotions.GL3Theta.Idx D N N' →₀ ℕ) {G : Formalism.MainNotions.TaylorLogMetric.VC D N N' → ℂ}
     (hG : Differentiable ℂ G) (a : ℂ) :
     Formalism.MainNotions.GL3Theta.applyAt0 D (MvPolynomial.monomial k 1) (fun z => a * G z) =
@@ -104,6 +122,21 @@ theorem applyAt0_const_mul (D : D7) {N N' : ℕ} (k : Formalism.MainNotions.GL3T
   rw [GlobalTheory.FockPos.applyAt0_monomial', GlobalTheory.FockPos.applyAt0_monomial', GlobalTheory.ProdThetaConj.taylor_const_mul hG]
   ring
 
+/- English proof (translation)
+Establish `hG` using `(GlobalTheory.InducedType.induced_type D).1`. Establish `he0ne : e0 ≠ 0`. Introduce `h`. Establish `hn` using `he0.2.2.1`. Rewrite `hn` using `[h]`.
+
+Establish `h0 : Formalism.MainNotions.TaylorLogMetric.normSq D (Formalism.MainNotions.TaylorLogMetric.tor0 D D.host.ccK δ) (Formalism.MainNotions.StandardLatticesGL3.La0 D (Formalism.MainNotions.TaylorLogMetric.tor0 D D.host.ccK δ) N N') 0 = 0`. Simplify using `[Formalism.MainNotions.TaylorLogMetric.normSq]`. Rewrite `hn` using `[h0]`. Conclude with `pow_ne_zero _ (GlobalTheory.ConjJet.thetaZeroNormSq_ne_zero_cmLattice D hG D.host.ccK δ t0 hC ht) hn.symm`. Establish `hK1 : Formalism.MainNotions.StandardLatticesGL3.KLat D (Formalism.MainNotions.TaylorLogMetric.tor0 D D.host.ccK δ) (Formalism.MainNotions.StandardLatticesGL3.La0 D (Formalism.MainNotions.TaylorLogMetric.tor0 D D.host.ccK δ) N N')` using `Or.inr ⟨_, _, GlobalTheory.NormSum.VacInt.sd_std D N, GlobalTheory.NormSum.VacInt.sd_std D N', rfl⟩`.
+
+Establish `hK2 : Formalism.MainNotions.StandardLatticesGL3.KLat D (Formalism.MainNotions.TaylorLogMetric.tor0 D D.host.ccK δ) (Formalism.MainNotions.TaylorLogMetric.La D (Formalism.MainNotions.TaylorLogMetric.tor0 D D.host.ccK δ) L L')` using `Or.inr ⟨L, L', hL, hL', rfl⟩`. Establish `hne : ∃ z, Θ z ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hΘ0 (funext h)`.
+
+Establish `hS` using `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.IO.semiChar_of_ne_zero _ hΘ hne`. Establish `hI` using `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.IO.Iop_mem_ThSp _ hS he0.1`. Establish `hI0 : Formalism.MainNotions.TaylorLogMetric.Iop D (Formalism.MainNotions.TaylorLogMetric.tor0 D D.host.ccK δ) (Formalism.MainNotions.StandardLatticesGL3.La0 D (Formalism.MainNotions.TaylorLogMetric.tor0 D D.host.ccK δ) N N') (Formalism.MainNotions.TaylorLogMetric.La D (Formalism. …`. Introduce `h0`. Take `⟨-, -, hself, htrip⟩` from `GlobalTheory.ThetaTriple.klat_triples D D.host.ccK δ hC N N'`.
+
+Take `⟨μ, hμ⟩` from `htrip _ _ _ hK1 hK2 hK1 e0 he0.1 he0ne`. Establish `h1` using `hμ.2.2.2.2.2.2.2.2.2`. Establish `hμ8` using `hμ.2.2.2.2.2.2.2.2.1`. Rewrite `h1` using `[h0, GlobalTheory.NormSum.VacMove.iop_zero, hself _ hK1 e0 he0.1]`. Establish `hμ0 : μ ≠ 0`.
+
+Introduce and unpack `rfl`. Evaluate the numerical expressions using `at hμ8`. Apply `he0ne` to reduce the goal to its premises. Use function extensionality and compare the values at `z`. Use `congrFun h1 z` as an intermediate fact.
+
+Simplify using `only [Pi.zero_apply] at this`. Conclude with `(mul_eq_zero.1 this.symm).resolve_left hμ0`. Take `⟨c, hc⟩` from `(GlobalTheory.ThetaLine.theta_line D hG D.host.ccK δ hC N N' _ hK2).1 Θ hΘ _ hI hI0`. Conclude with `⟨c, hc, hI.1⟩`.
+-/
 theorem intertwining_mem_ne_zero {D : D7} {δ t0 : ℂ} (hC : Formalism.MainNotions.StandardLatticesGL3.Crv D D.host.ccK δ)
     (ht : Formalism.MainNotions.GL3Theta.IsTwoTorsionPointUnkilled D (Formalism.MainNotions.TaylorLogMetric.lamOf D D.host.ccK δ) t0) {N N' : ℕ} {e0 : Formalism.MainNotions.TaylorLogMetric.VC D N N' → ℂ}
     (he0 : Formalism.MainNotions.StandardLatticesGL3.oddE0 D D.host.ccK δ t0 N N' e0)
@@ -152,6 +185,23 @@ theorem intertwining_mem_ne_zero {D : D7} {δ t0 : ℂ} (hC : Formalism.MainNoti
   obtain ⟨c, hc⟩ := (GlobalTheory.ThetaLine.theta_line D hG D.host.ccK δ hC N N' _ hK2).1 Θ hΘ _ hI hI0
   exact ⟨c, hc, hI.1⟩
 
+/- English proof (translation)
+Introduce `hP hI D Γ _ _ Pl0 T A Ks _ _ _ R ch hch p hp x y`. Establish `hC` using `ch.S.Z.crv`. Establish `hδ : ch.S.Z.δ ≠ 0` using `GlobalTheory.InertSign.delta_ne_zero hC`. Establish `he0` using `ch.S.Z.e0_is p hp`. Establish `hsd` using `GlobalTheory.T.lattices_self_dual_moved_pair hP hI ch hch p hp x y`.
+
+Establish `hvac` using `GlobalTheory.T.vacuum_vector_moved_pair hP hI ch hch p hp x y`. Establish `hc0 : (ch.S.Z.c0 p : ℂ) ≠ 0` using `Units.ne_zero _`. Consider the cases of `p with`. Consider the case `chi i j`. Take `⟨hi, rfl⟩` from `hp`.
+
+Establish `hconj` using `GlobalTheory.T.isVacuum_conj_of_negHermitianSpace ch.W.ψ ch.W.θ (ch.G.V (.grid (i + 1) D.R.m)) (ch.G.V (.grid i D.R.m)) (ch.W.cart (.grid (i + 1) D.R.m)) (ch.W.cart (.grid i D.R.m)) _ _ _ hvac`. Take `⟨Θ, hΘ, hΘ0, hjet⟩` from `fock_jets_moved ch.W.ψ ch.W.θ (ch.G.V (.grid (i + 1) D.R.m)) (ch.G.V (.grid i D.R.m)) (ch.W.cart (.grid (i + 1) D.R.m)) (ch.W.cart (.grid i D.R.m)) (ch.S.N.fr (.grid (i + 1) D.R.m)) (ch.S.N.fr (.grid i D.R.m)) (ch.S.N.fr_on _ ⟨hi, rfl⟩) (ch.S.N.fr_on _ ⟨by omega, rfl⟩) (ch.W.cart …`. Take `⟨κ, hκ, hd⟩` from `intertwining_mem_ne_zero hC ch.S.Z.pt0 he0 hsd.1 hsd.2 hΘ hΘ0`. Use `⟨κ / starRingEnd ℂ (ch.S.Z.c0 (.chi i D.R.m) : ℂ), fun k => ?_⟩` and prove the remaining obligations. Establish `h2` using `fun f => GlobalTheory.T.fockVector_negHermitianSpace_conj_monomial ch.W.ψ ch.W.θ (ch.G.V (.grid (i + 1) D.R.m)) (ch.G.V (.grid i D.R.m)) (ch.W.cart (.grid (i + 1) D.R.m)) (ch.W.cart (.grid i D.R.m)) (ch.S.N.frC (.grid (i + 1) D.R.m)) (ch.S.N.frC (.grid i D.R.m)) f ch.W.ψ_std ch.W …`.
+
+Use `show pureTensorO _ _ _ _ _ _ _ _ _ _ 0 = _`. Rewrite using `[h2]`. Establish `hj` using `hjet k`. Use `erw [hj]`. Rewrite using `[hκ, applyAt0_const_mul D _ hd, applyAt0_const_mul D _ hd]`.
+
+Use `show starRingEnd ℂ _ = _ * starRingEnd ℂ _`. Simplify using `only [map_mul, map_div₀, Complex.conj_conj]`. Establish `hc0' : starRingEnd ℂ (ch.S.Z.c0 (.chi i D.R.m) : ℂ) ≠ 0` using `(map_ne_zero _).2 hc0`. Clear the denominators using the available nonvanishing facts. Consider the case `mu t i j => exact absurd hp id`.
+
+Consider the case `core i => exact absurd hp id`. Consider the case `top t j`. Establish `hj1 : j + 1 ≤ D.R.m` using `hp`. Take `⟨Θ, hΘ, hΘ0, hjet⟩` from `fock_jets_moved ch.W.ψ ch.W.θ (ch.G.V (.top j)) (ch.G.V (.top (j + 1))) (ch.W.cart (.top j)) (ch.W.cart (.top (j + 1))) (ch.S.N.fr (.top j)) (ch.S.N.fr (.top (j + 1))) (ch.S.N.fr_on (.top j) (by show j ≤ D.R.m; omega)) (ch.S.N.fr_on (.top (j + 1)) hj1) (ch.W.cart_is (.top j) (by …`. Take `⟨κ, hκ, hd⟩` from `intertwining_mem_ne_zero hC ch.S.Z.pt0 he0 hsd.1 hsd.2 hΘ hΘ0`.
+
+Use `⟨κ / (ch.S.Z.c0 (.top t j) : ℂ), fun k => ?_⟩` and prove the remaining obligations. Use `show pureTensorO _ _ _ _ _ _ _ _ _ _ 0 = _`. Use `erw [hjet k]`. Rewrite using `[hκ, applyAt0_const_mul D _ hd, applyAt0_const_mul D _ hd]`. Use `show _ = _ * RingHom.id ℂ _`.
+
+Rewrite using `[RingHom.id_apply]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem fock_jets_moved_vacuum : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
     (ch : Choice R), ch.Is → ∀ (p : Pair T), DefPair D.R.m p → ∀ (x : FinPt ch.G p.small) (y : FinPt ch.G p.big),

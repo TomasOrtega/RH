@@ -12,6 +12,19 @@ section Abstract
 
 variable {A R Q : Type*} [CommRing A] [CommRing R] [Algebra A R] [AddCommGroup Q] [Module R Q]
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis A Q`. Set `f : A → R` to `fun a => algebraMap A R a * e`. Establish `hf0 : f 0 = 0` using `by simp [f]`. Establish `hfa : ∀ a c, f (a + c) = f a + f c` using `by intro a c; simp [f, add_mul]`. Establish `hact : ∀ (x : R) (q : Q), ∃ a : A, x • q = a • q ∧ x * e = algebraMap A R a * e`.
+
+Introduce `x q`. Take `⟨a, ha⟩` from `he x`. Use `⟨a, ?_, ha⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hfc : ∀ (i : Module.Free.ChooseBasisIndex A Q) (c : A), f c • b i = c • b i`.
+
+Introduce `i c`. Simplify using `only [f]`. Rewrite using `[mul_smul, hQ, algebraMap_smul]`. Set `s : Q →ₗ[R] (Module.Free.ChooseBasisIndex A Q →₀ R)` to `{ toFun := fun q => Finsupp.mapRange f hf0 (b.repr q) map_add' := fun q q' => by`. Rewrite using `[map_add]`.
+
+Conclude with `Finsupp.mapRange_add hfa _ _`. Use the proof step `map_smul' := fun x q => by`. Take `⟨a, h1, h2⟩` from `hact x q`. Use extensionality with `i`. Rewrite using `[h1, LinearEquiv.map_smul]`.
+
+Simplify using `only [RingHom.id_apply, Finsupp.mapRange_apply, Finsupp.smul_apply, smul_eq_mul, f, map_mul]`. Rewrite using `[show x * (algebraMap A R ((b.repr q) i) * e) = algebraMap A R ((b.repr q) i) * (x * e) by ring, h2]`. Use `ring }`. Set `π : (Module.Free.ChooseBasisIndex A Q →₀ R) →ₗ[R] Q` to `Finsupp.linearCombination R (fun i => b i)`. Use `Module.Projective.of_split s π (LinearMap.ext fun q => ?_)` and prove the remaining obligations.
+
+Use `show Finsupp.linearCombination R (fun i => b i) (Finsupp.mapRange f hf0 (b.repr q)) = q`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_mapRange_index (by intro i; simp)]`. Simplify using `only [hfc]`. Rewrite using `[← Finsupp.linearCombination_apply]`. Conclude with `b.linearCombination_repr q`.
+-/
 theorem proj_of_free_idem [Module A Q] [IsScalarTower A R Q] [Module.Free A Q] (e : R)
     (he : ∀ x : R, ∃ a : A, x * e = algebraMap A R a * e) (hQ : ∀ q : Q, e • q = q) :
     Module.Projective R Q := by
@@ -57,6 +70,17 @@ theorem proj_of_free_idem [Module A Q] [IsScalarTower A R Q] [Module.Free A Q] (
 
 variable (A) in
 
+/- English proof (translation)
+Set `_ : Module A Q` to `Module.compHom Q (algebraMap A R)`. Establish `: IsScalarTower A R Q` using `⟨fun a x q => by show (a • x) • q = algebraMap A R a • (x • q)`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`. Establish `: Module.Finite A Q`. Take `⟨n, g, hg⟩` from `Module.Finite.exists_fin' R Q`.
+
+Set `g' : (Fin n → A) →ₗ[A] Q` to `(g.restrictScalars A).comp (LinearMap.compLeft (Algebra.linearMap A R) (Fin n))`. Use `Module.Finite.of_surjective g' fun q => ?_` and prove the remaining obligations. Take `⟨r, rfl⟩` from `hg q`. Use `choose a ha using fun j => he (r j)`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (e • r : Fin n → R) = e • (fun j => algebraMap A R (a j))`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[mul_comm, ha j, mul_comm]`. Use `show g (fun j => algebraMap A R (a j)) = g r`.
+
+Rewrite using `[← hQ (g r), ← map_smul, h1, map_smul, hQ]`. Establish `: Module.IsTorsionFree A Q` using `Module.IsTorsionFree.of_smul_eq_zero fun a q h => by`. Distinguish the cases in `ha : a = 0`. Conclude with `Or.inl ha`. Conclude with `Or.inr (htf a q ha h)`.
+
+Establish `: Module.Free A Q` using `Module.free_of_finite_type_torsion_free'`. Conclude with `proj_of_free_idem e he hQ`.
+-/
 theorem proj_of_idem [IsDomain A] [IsPrincipalIdealRing A] [Module.Finite R Q] (e : R)
     (he : ∀ x : R, ∃ a : A, x * e = algebraMap A R a * e) (hQ : ∀ q : Q, e • q = q)
     (htf : ∀ (a : A) (q : Q), a ≠ 0 → algebraMap A R a • q = 0 → q = 0) :
@@ -88,6 +112,13 @@ theorem proj_of_idem [IsDomain A] [IsPrincipalIdealRing A] [Module.Finite R Q] (
 
 variable (A) in
 
+/- English proof (translation)
+Establish `key : ∀ f : R, f * f = f → (∀ x : R, ∃ a : A, x * f = algebraMap A R a * f) → Module.Projective R (LinearMap.range (f • LinearMap.id : Q →ₗ[R] Q))`. Introduce `f hff hf`. Use `proj_of_idem A f hf ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨_, q, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show f • (f • LinearMap.id : Q →ₗ[R] Q) q = (f • LinearMap.id : Q →ₗ[R] Q) q`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, smul_smul, hff]`. Introduce and unpack `a ⟨w, hw⟩ ha h`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `htf a w ha (congrArg Subtype.val h)`.
+
+Use `key e hee he` as an intermediate fact. Use `key (1 - e) (by linear_combination hee) he'` as an intermediate fact. Use `Module.Projective.of_split (LinearMap.prod (e • LinearMap.id : Q →ₗ[R] Q).rangeRestrict ((1 - e) • LinearMap.id : Q →ₗ[R] Q).rangeRestrict) ((LinearMap.range (e • LinearMap.id : Q →ₗ[R] Q)).subtype.coprod (LinearMap.range ((1 - e) • LinearMap.id : Q →ₗ[R] Q)).subtype) (LinearMap. …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(e • LinearMap.id : Q →ₗ[R] Q) q + ((1 - e) • LinearMap.id : Q →ₗ[R] Q) q = q`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, ← add_smul, add_sub_cancel, one_smul]`.
+-/
 theorem proj_of_two_idem [IsDomain A] [IsPrincipalIdealRing A] [Module.Finite R Q] (e : R)
     (hee : e * e = e)
     (he : ∀ x : R, ∃ a : A, x * e = algebraMap A R a * e)
@@ -123,6 +154,11 @@ section Concrete
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
+/- English proof (translation)
+Use `PI.LocHerm.SlopeTestRemainingChoices.nontrivial_E L` as an intermediate fact. Take `⟨a, ha⟩` from `PI.LocHerm.SlopeTestRemainingChoices.tr_ex L (x * f)`. Establish `hmem : algebraMap F E a ∈ L.O`. Rewrite using `[ha]`. Conclude with `L.O.add_mem (L.O.mul_mem hx hf) (PI.LocHerm.SlopeTestRemainingChoices.cj_mem_O L _ (L.O.mul_mem hx hf))`.
+
+Use `⟨⟨a, PI.LocHerm.SlopeTestRemainingChoices.mem_OF_of_mem_O L a hmem⟩, ?_⟩` and prove the remaining obligations. Use `show x * f = algebraMap F E a * f`. Rewrite using `[ha, map_mul, hcj]`. Take the linear combination `(L.cj x - x) * hff`.
+-/
 theorem exists_mul_idem (L : LocE F E) (f : E) (hf : f ∈ L.O) (hff : f * f = f)
     (hcj : L.cj f = 1 - f) (x : E) (hx : x ∈ L.O) :
     ∃ a : 𝒪[F], x * f = algebraMap F E a * f := by
@@ -136,6 +172,15 @@ theorem exists_mul_idem (L : LocE F E) (f : E) (hf : f ∈ L.O) (hff : f * f = f
   rw [ha, map_mul, hcj]
   linear_combination (L.cj x - x) * hff
 
+/- English proof (translation)
+Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`. Conclude with `hD0 (by rw [← hs, mul_zero])`. Take `⟨c, hc2'⟩ : ∃ c : F, c * 2 = 1` from `⟨2⁻¹, inv_mul_cancel₀ two_ne_zero⟩`. Take `⟨t, ht'⟩ : ∃ t : F, t * t * D = 1` from `⟨s⁻¹, by`.
+
+Rewrite using `[← hs]`. Use the proof step `field_simp⟩`. Establish `hc2 : algebraMap F E c * 2 = 1`. Rewrite using `[← map_ofNat (algebraMap F E) 2, ← map_mul, hc2', map_one]`. Establish `ht : algebraMap F E t * algebraMap F E t * algebraMap F E D = 1`.
+
+Rewrite using `[← map_mul, ← map_mul, ht', map_one]`. Use `⟨algebraMap F E c * (1 + algebraMap F E t * θ), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `PI.LocHerm.SlopeTestRemainingChoices.mem_O_of_quad L _ 1 0 ?_` and prove the remaining obligations. Rewrite using `[show ((1 : 𝒪[F]) : F) = 1 from rfl, show ((0 : 𝒪[F]) : F) = 0 from rfl, map_one, map_zero]`. Take the linear combination `algebraMap F E c ^ 2 * algebraMap F E t ^ 2 * hD + algebraMap F E c ^ 2 * ht + (1 + algebraMap F E t * θ) * algebraMap F E c * hc2`.
+
+Take the linear combination `algebraMap F E c ^ 2 * algebraMap F E t ^ 2 * hD + algebraMap F E c ^ 2 * ht + (1 + algebraMap F E t * θ) * algebraMap F E c * hc2`. Rewrite using `[map_mul, map_add, map_one, map_mul, AlgEquiv.commutes, AlgEquiv.commutes, hc]`. Take the linear combination `hc2`.
+-/
 theorem exists_idem [CharZero F] (L : LocE F E) (θ : E) (hc : L.cj θ = -θ) (D : F)
     (hD : θ * θ = algebraMap F E D) (s : F) (hs : s * s = D) (hD0 : D ≠ 0) :
     ∃ e : E, e ∈ L.O ∧ e * e = e ∧ L.cj e = 1 - e := by
@@ -160,6 +205,19 @@ theorem exists_idem [CharZero F] (L : LocE F E) (θ : E) (hc : L.cj θ = -θ) (D
   · rw [map_mul, map_add, map_one, map_mul, AlgEquiv.commutes, AlgEquiv.commutes, hc]
     linear_combination hc2
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M hM θ hθ hc D hD0 hD hs`. Take `⟨s, hs⟩` from `hs`. Introduce `W _ _ P hP`. Use `hM.loc` as an intermediate fact. Use `hM.char0` as an intermediate fact.
+
+Take `⟨e, heO, hee, hcj⟩` from `exists_idem M.L θ hc D hD s hs hD0`. Set `_ : Algebra 𝒪[F] M.L.O` to `((algebraMap 𝒪[F] E).codRestrict M.L.O (fun a => PI.LocHerm.SlopeTestRemainingChoices.algebraMap_mem_O M.L a)).toAlgebra`. Establish `_ : Module.Finite M.L.O P` using `Module.Finite.iff_fg.mpr hP`. Establish `h1O : 1 - e ∈ M.L.O` using `M.L.O.sub_mem M.L.O.one_mem heO`. Establish `hcj' : M.L.cj (1 - e) = 1 - (1 - e)`.
+
+Rewrite using `[map_sub, map_one, hcj]`. Use `proj_of_two_idem 𝒪[F] (⟨e, heO⟩ : M.L.O) (Subtype.ext hee) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨x, hx⟩`. Take `⟨a, ha⟩` from `exists_mul_idem M.L e heO hee hcj x hx`. Conclude with `⟨a, Subtype.ext ha⟩`.
+
+Introduce and unpack `⟨x, hx⟩`. Take `⟨a, ha⟩` from `exists_mul_idem M.L (1 - e) h1O (by linear_combination hee) hcj' x hx`. Conclude with `⟨a, Subtype.ext ha⟩`. Introduce `a q ha h`. Establish `ha' : (a : F) ≠ 0` using `fun h0 => ha (Subtype.ext h0)`.
+
+Establish `h1 : algebraMap F E (a : F) • (q : W) = 0` using `congrArg Subtype.val h`. Apply `Subtype.ext` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_mul_cancel₀ ha', map_one, one_smul]`. Use `_ = algebraMap F E (a : F)⁻¹ • (algebraMap F E (a : F) • (q : W)) := by`.
+
+Rewrite using `[map_mul, mul_smul]`. Use `_ = 0 := by rw [h1, smul_zero]`.
+-/
 theorem sqCase : SqCase := by
   intro F _ _ _ E _ _ _ _ M hM θ hθ hc D hD0 hD hs
   obtain ⟨s, hs⟩ := hs

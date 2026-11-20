@@ -70,6 +70,9 @@ def StepSha : Prop :=
     (g1 : GQ), Dat V l e χ K g1 → ∀ (T : Formalism.MainNotions.UnitaryThreeHeightBounds.UnitaryThreeLiftingProblem V l e χ K g1) (P : Pres V l e χ K g1), Comparison₂ T P →
       DataM P.𝔓 P.F P.G P.E1 P.E2 P.Z → V.Vlen l e χ ≤ VPrime P.𝔓 P.F
 
+/- English proof (translation)
+Introduce `hG l _ e χ K _ g1 dat`. Take `⟨T⟩` from `hG.1.1 l e χ K dat.data g1 dat.norm`. Take `⟨P, ⟨tie⟩, hD⟩` from `h1 hG l e χ K g1 dat T`. Conclude with `⟨P, hD, h2 hG l e χ K g1 dat T P tie hD, h3 hG l e χ K g1 dat T P tie hD⟩`.
+-/
 theorem stepA_of (h1 : StepPresT V) (h2 : FirstModuleCondition V) (h3 : StepSha V) : StepA V := by
   intro hG l _ e χ K _ g1 dat
   obtain ⟨T⟩ := hG.1.1 l e χ K dat.data g1 dat.norm

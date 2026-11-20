@@ -14,6 +14,11 @@ open Ad3 Ad3.R
 
 namespace GlobalTheory.CompanionTheory.RankinSelbergEulerProduct
 
+/- English proof (translation)
+Establish `h` using `finprod_mem_inter_mul_diff' (f := f) (s := Set.univ) (t := (S : Set α)) (hf.subset Set.inter_subset_right)`. Simplify using `only [Set.univ_inter, finprod_mem_univ] at h`. Rewrite using `[← h, finprod_mem_coe_finset, Finset.prod_coe_sort S f]`. Use `congr 1`. Establish `e : Set.univ \ (S : Set α) = {v | v ∉ S}` using `by ext; simp`.
+
+Rewrite using `[e, ← finprod_set_coe_eq_finprod_mem]`. Both sides reduce to the same expression.
+-/
 theorem finprod_split {α M : Type*} [CommMonoid M] (f : α → M) (S : Finset α)
     (hf : (Function.mulSupport f).Finite) :
     ∏ᶠ v, f v = (∏ v : S, f v.1) * ∏ᶠ v : {v // v ∉ S}, f v.1 := by
@@ -26,11 +31,17 @@ theorem finprod_split {α M : Type*} [CommMonoid M] (f : α → M) (S : Finset �
   rw [e, ← finprod_set_coe_eq_finprod_mem]
   rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> rfl`.
+-/
 theorem finAt_diag (v : Pl) (a : Jd) : finAt v (dg2 a 1) = dg2 (lc v a) 1 := by
   apply Units.ext
   ext i j
   fin_cases i <;> fin_cases j <;> rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(((IdeleGroup.prodEquiv ℚ).symm p : Jd) : 𝔸[ℚ]).2 v = _`. Rewrite using `[GroundTheory.Automorphic.GodementSection.val_symm_snd]`. Both sides reduce to the same expression.
+-/
 theorem lc_symm (v : Pl) (p : (InfiniteAdeleRing ℚ)ˣ × Afˣ) :
     lc v ((IdeleGroup.prodEquiv ℚ).symm p) = lf v p.2 := by
   apply Units.ext
@@ -38,9 +49,17 @@ theorem lc_symm (v : Pl) (p : (InfiniteAdeleRing ℚ)ˣ × Afˣ) :
   rw [GroundTheory.Automorphic.GodementSection.val_symm_snd]
   rfl
 
+/- English proof (translation)
+Simplify using `only [GroundTheory.Automorphic.GL2Classical.realPart, map_mul, Prod.fst_mul]`.
+-/
 theorem realPart_mul (g h : G2) : realPart (g * h) = realPart g * realPart h := by
   simp only [GroundTheory.Automorphic.GL2Classical.realPart, map_mul, Prod.fst_mul]
 
+/- English proof (translation)
+Establish `: (AdelicGLn.prodEquiv ℚ 2 h).1 = 1`. Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.ext fun i j => funext fun w => ?_` and prove the remaining obligations. Establish `h2 : infAt w h i j = ((1 : GL (Fin 2) w.Completion) : Matrix (Fin 2) (Fin 2) w.Completion) i j`. Rewrite using `[hh w]`.
+
+Rewrite `h2` using `[GroundTheory.Automorphic.Reduction.infAt_apply]`. Express the relevant statement in the definitionally equal form `(h i j).1 w = _`. Rewrite using `[h2]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> rfl`. Simplify using `[GroundTheory.Automorphic.GL2Classical.realPart, this]`.
+-/
 theorem realPart_eq_of_infAt {h : G2} (hh : ∀ w, infAt w h = 1) : realPart h = 1 := by
   have : (AdelicGLn.prodEquiv ℚ 2 h).1 = 1 := by
     apply Units.ext
@@ -53,6 +72,11 @@ theorem realPart_eq_of_infAt {h : G2} (hh : ∀ w, infAt w h = 1) : realPart h =
     fin_cases i <;> fin_cases j <;> simp <;> rfl
   simp [GroundTheory.Automorphic.GL2Classical.realPart, this]
 
+/- English proof (translation)
+Establish `: (AdelicGLn.prodEquiv ℚ 2 (dg2 ((IdeleGroup.prodEquiv ℚ).symm (a, b)) 1)).1 = (AdelicGLn.prodEquiv ℚ 2 (dg2 ((IdeleGroup.prodEquiv ℚ).symm (a, b')) 1)).1`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `((dg2 ((IdeleGroup.prodEquiv ℚ).symm (a, b)) 1 : G2) i j).1 = ((dg2 ((IdeleGroup.prodEquiv ℚ).symm (a, b')) 1 : G2) i j).1`. Apply the tactic sequence `fin_cases i <;> fin_cases j`.
+
+Express the relevant statement in the definitionally equal form `(((IdeleGroup.prodEquiv ℚ).symm (a, b) : Jd) : 𝔸[ℚ]).1 = (((IdeleGroup.prodEquiv ℚ).symm (a, b') : Jd) : 𝔸[ℚ]).1`. Rewrite using `[GroundTheory.Automorphic.GodementSection.val_symm_fst, GroundTheory.Automorphic.GodementSection.val_symm_fst]`. Apply the tactic sequence `all_goals rfl`. Simplify using `only [GroundTheory.Automorphic.GL2Classical.realPart, this]`.
+-/
 theorem realPart_diag (a : (InfiniteAdeleRing ℚ)ˣ) (b b' : Afˣ) :
     realPart (dg2 ((IdeleGroup.prodEquiv ℚ).symm (a, b)) 1) =
       realPart (dg2 ((IdeleGroup.prodEquiv ℚ).symm (a, b')) 1) := by
@@ -68,16 +92,25 @@ theorem realPart_diag (a : (InfiniteAdeleRing ℚ)ˣ) (b b' : Afˣ) :
   simp only [GroundTheory.Automorphic.GL2Classical.realPart, this]
 
 open GroundTheory.Automorphic.GodementSection (infChar finChar infMod finMod) in
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[IdeleGroup.coe_finiteComponent]`. Both sides reduce to the same expression.
+-/
 theorem lf_eq_finiteComponent (v : Pl) (b : Afˣ) : lf v b = IdeleGroup.finiteComponent v b := by
   apply Units.ext
   rw [IdeleGroup.coe_finiteComponent]
   rfl
 
+/- English proof (translation)
+Simplify `c.finite_mulSupport_localComponent b` using `only [lf_eq_finiteComponent, GroundTheory.Automorphic.GodementSection.coe_localChar]`.
+-/
 theorem mulSupport_char_finite (c : HeckeCharacter ℚ) (b : Afˣ) :
     (Function.mulSupport fun v : Pl => ((localChar c v (lf v b) : ℂˣ) : ℂ)).Finite := by
   simpa only [lf_eq_finiteComponent, GroundTheory.Automorphic.GodementSection.coe_localChar] using
     c.finite_mulSupport_localComponent b
 
+/- English proof (translation)
+Rewrite using `[GroundTheory.Automorphic.GodementSection.toIdele_eq_finChar_mul_infChar, GroundTheory.Automorphic.GodementSection.toInfinite_symm, GroundTheory.Automorphic.GodementSection.toFinite_symm]`. Establish `h : ((GodementSection.finChar c b : Circle) : ℂ) = ∏ᶠ v : Pl, ((localChar c v (lf v b) : ℂˣ) : ℂ)`. Simplify using `only [lf_eq_finiteComponent, GroundTheory.Automorphic.GodementSection.coe_localChar]`. Conclude with `c.toIdele_ofFinite_eq_finprod b`. Rewrite using `[Circle.coe_mul, h, mul_comm]`.
+-/
 theorem toIdele_symm (c : HeckeCharacter ℚ) (a : (InfiniteAdeleRing ℚ)ˣ) (b : Afˣ) :
     (c.toIdele ((IdeleGroup.prodEquiv ℚ).symm (a, b)) : ℂ) =
       (GodementSection.infChar c a : ℂ) * ∏ᶠ v : Pl, ((localChar c v (lf v b) : ℂˣ) : ℂ) := by
@@ -88,13 +121,22 @@ theorem toIdele_symm (c : HeckeCharacter ℚ) (a : (InfiniteAdeleRing ℚ)ˣ) (b
     exact c.toIdele_ofFinite_eq_finprod b
   rw [Circle.coe_mul, h, mul_comm]
 
+/- English proof (translation)
+The claim follows from `IdeleGroup.finite_mulSupport_norm (IdeleGroup.ofFinite b)`.
+-/
 theorem mulSupport_norm_finite (b : Afˣ) :
     (Function.mulSupport fun v : Pl => ‖((lf v b : (Qv v)ˣ) : Qv v)‖).Finite :=
   IdeleGroup.finite_mulSupport_norm (IdeleGroup.ofFinite b)
 
+/- English proof (translation)
+Rewrite using `[mp, GroundTheory.Automorphic.GodementSection.modulus_adicCompletion]`.
+-/
 theorem mp_eq (v : Pl) (a : (Qv v)ˣ) (z : ℂ) : mp a z = ((‖(a : Qv v)‖ : ℝ) : ℂ) ^ z := by
   rw [mp, GroundTheory.Automorphic.GodementSection.modulus_adicCompletion]
 
+/- English proof (translation)
+Use `(mulSupport_norm_finite b).subset fun v hv h => hv ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mp (lf v b) z = 1`. Establish `h' : ‖((lf v b : (Qv v)ˣ) : Qv v)‖ = 1` using `h`. Rewrite using `[mp_eq, h']`. Simplify using the standard rewrite rules.
+-/
 theorem mulSupport_mp_finite (b : Afˣ) (z : ℂ) :
     (Function.mulSupport fun v : Pl => mp (lf v b) z).Finite := by
   refine (mulSupport_norm_finite b).subset fun v hv h => hv ?_
@@ -103,6 +145,13 @@ theorem mulSupport_mp_finite (b : Afˣ) (z : ℂ) :
   rw [mp_eq, h']
   simp
 
+/- English proof (translation)
+Establish `h1` using `mulSupport_norm_finite b`. Establish `h2` using `mulSupport_mp_finite b z`. Establish `e : GodementSection.finMod b = ∏ᶠ v : Pl, ‖((lf v b : (Qv v)ˣ) : Qv v)‖` using `rfl`. Rewrite using `[e, finprod_eq_prod_of_mulSupport_subset (s := h1.toFinset ∪ h2.toFinset) _ (by`. Introduce `v hv`.
+
+Simplify using `only [Finset.coe_union, Set.Finite.coe_toFinset]`. Conclude with `Or.inl hv),`. Use `finprod_eq_prod_of_mulSupport_subset (s := h1.toFinset ∪ h2.toFinset) (fun v : Pl => mp (lf v b) z) (by`. Introduce `v hv`. Simplify using `only [Finset.coe_union, Set.Finite.coe_toFinset]`.
+
+Conclude with `Or.inr hv),`. Use the proof step `GroundTheory.Automorphic.GodementSection.ofReal_prod_cpow _ _ (fun _ => norm_nonneg _)]`. Conclude with `Finset.prod_congr rfl fun v _ => (mp_eq v _ z).symm`.
+-/
 theorem finMod_cpow (b : Afˣ) (z : ℂ) :
     ((GodementSection.finMod b : ℝ) : ℂ) ^ z = ∏ᶠ v : Pl, mp (lf v b) z := by
   have h1 := mulSupport_norm_finite b
@@ -115,6 +164,9 @@ theorem finMod_cpow (b : Afˣ) (z : ℂ) :
     GroundTheory.Automorphic.GodementSection.ofReal_prod_cpow _ _ (fun _ => norm_nonneg _)]
   exact Finset.prod_congr rfl fun v _ => (mp_eq v _ z).symm
 
+/- English proof (translation)
+Rewrite using `[GroundTheory.Automorphic.GodementSection.modPow_eq, GroundTheory.Automorphic.GodementSection.toInfinite_symm, GroundTheory.Automorphic.GodementSection.toFinite_symm, finMod_cpow]`.
+-/
 theorem modPow_symm (a : (InfiniteAdeleRing ℚ)ˣ) (b : Afˣ) (z : ℂ) :
     modPow ((IdeleGroup.prodEquiv ℚ).symm (a, b)) z =
       ((GodementSection.infMod a : ℝ) : ℂ) ^ z * ∏ᶠ v : Pl, mp (lf v b) z := by
@@ -125,6 +177,9 @@ section Loc
 variable {N : ℕ} {ω : HeckeCharacter ℚ} {W : G2 → ℂ} {μ₁ μ₂ : ∀ v : Pl, (Qv v)ˣ →* ℂˣ}
   {φ₀ : ∀ v : Pl, (Fin 2 → Qv v) → ℂ}
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `hm.good v hv`. Rewrite using `[h3]`. Conclude with `(hM (Qv v) (localAdelicChar ℚ v) (hB.1 v).1 (μ₁ v) (μ₂ v) (hm.u₁ v) (hm.u₂ v) h1 h2).2.2.1 x hx g`.
+-/
 theorem w_inv (hB : B0) (hM : M0) (hm : Mod N ω W μ₁ μ₂ φ₀) {v : Pl} (hv : ¬ pOf v ∣ N)
     {x : GL (Fin 2) (Qv v)} (hx : x ∈ integralGL (Qv v) 2) (g : GL (Fin 2) (Qv v)) :
     W2 (localAdelicChar ℚ v) (μ₁ v) (μ₂ v) (φ₀ v) (g * x) = W2 (localAdelicChar ℚ v) (μ₁ v) (μ₂ v) (φ₀ v) g := by
@@ -132,12 +187,18 @@ theorem w_inv (hB : B0) (hM : M0) (hm : Mod N ω W μ₁ μ₂ φ₀) {v : Pl} (
   rw [h3]
   exact (hM (Qv v) (localAdelicChar ℚ v) (hB.1 v).1 (μ₁ v) (μ₂ v) (hm.u₁ v) (hm.u₂ v) h1 h2).2.2.1 x hx g
 
+/- English proof (translation)
+Use `w_inv hB hM hm hv hx 1` as an intermediate fact. Rewrite `this` using `[one_mul, hm.one v]`. Then use the resulting hypothesis.
+-/
 theorem w_one (hB : B0) (hM : M0) (hm : Mod N ω W μ₁ μ₂ φ₀) {v : Pl} (hv : ¬ pOf v ∣ N)
     {x : GL (Fin 2) (Qv v)} (hx : x ∈ integralGL (Qv v) 2) :
     W2 (localAdelicChar ℚ v) (μ₁ v) (μ₂ v) (φ₀ v) x = 1 := by
   have := w_inv hB hM hm hv hx 1
   rwa [one_mul, hm.one v] at this
 
+/- English proof (translation)
+Establish `hf` using `hB.2.2.2.2.2.2.1 g`. Use `(S.finite_toSet.union hf).subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Finset.mem_coe, Set.mem_setOf_eq, not_or, not_not] at hc`. Conclude with `hv (w_one hB hM hm (fun h => hc.1 (hS v h)) hc.2)`.
+-/
 theorem mulSupport_w_finite (hB : B0) (hM : M0) (hm : Mod N ω W μ₁ μ₂ φ₀) {S : Finset Pl}
     (hS : ∀ v, pOf v ∣ N → v ∈ S) (g : G2) :
     (Function.mulSupport fun v : Pl => W2 (localAdelicChar ℚ v) (μ₁ v) (μ₂ v) (φ₀ v) (finAt v g)).Finite := by
@@ -163,6 +224,15 @@ section Glob
 variable {N : ℕ} {ω : HeckeCharacter ℚ} {W : G2 → ℂ} {μ₁ μ₂ : ∀ v : Pl, (Qv v)ˣ →* ℂˣ}
   {φ₀ : ∀ v : Pl, (Fin 2 → Qv v) → ℂ}
 
+/- English proof (translation)
+Establish `f1` using `mulSupport_w_finite hB hM hm hS g`. Establish `f2` using `mulSupport_w_finite hB hM hm hS (g * h)`. Establish `f3` using `mulSupport_char_finite c b`. Establish `f4` using `mulSupport_mp_finite b (s - 1)`. Establish `f2' : (Function.mulSupport fun v : Pl => conj (W2 (localAdelicChar ℚ v) (μ₁ v) (μ₂ v) (φ₀ v) (finAt v (g * h)))).Finite`.
+
+Use `f2.subset fun v hv hc => hv ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `conj _ = (1 : ℂ)`. Rewrite using `[show W2 (localAdelicChar ℚ v) (μ₁ v) (μ₂ v) (φ₀ v) (finAt v (g * h)) = 1 from hc, map_one]`. Establish `f12` using `(f1.union f2').subset (Function.mulSupport_mul _ _)`. Establish `f123` using `(f12.union f3).subset (Function.mulSupport_mul _ _)`.
+
+Establish `f1234` using `(f123.union f4).subset (Function.mulSupport_mul _ _)`. Rewrite using `[map_finprod (starRingEnd ℂ) f2, ← finprod_mul_distrib f1 f2', ← finprod_mul_distrib f12 f3, ← finprod_mul_distrib f123 f4, finprod_split _ S f1234]`. Establish `hfin : ∀ v, finAt v g = dg2 (lf v b) 1 * finAt v κ` using `fun v => by`. Rewrite using `[hg, GroundTheory.Automorphic.Reduction.finAt_mul, finAt_diag, lc_symm]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Aloc, GroundTheory.Automorphic.Reduction.finAt_mul, hfin, hxh.1 v]`. Use `finprod_congr fun v => ?_` and prove the remaining obligations. Establish `hv : ¬ pOf v.1 ∣ N` using `fun h' => v.2 (hS _ h')`. Rewrite using `[Gloc, GroundTheory.Automorphic.Reduction.finAt_mul, hxh.2.1 v.1 v.2, mul_one, hfin, w_inv hB hM hm hv (hκ v.1), (hm.good v.1 hv).2.2]`.
+-/
 theorem local_prod (hB : B0) (hM : M0) (hm : Mod N ω W μ₁ μ₂ φ₀) {S : Finset Pl}
     (hS : ∀ v, pOf v ∣ N → v ∈ S) (c : HeckeCharacter ℚ) {x : ∀ v : S, Qv v.1} {h : G2} (hxh : IsUn S x h)
     (s : ℂ) {κ : G2} (hκ : ∀ v, finAt v κ ∈ integralGL (Qv v) 2) (a : (InfiniteAdeleRing ℚ)ˣ) (b : Afˣ)
@@ -194,6 +264,11 @@ theorem local_prod (hB : B0) (hM : M0) (hm : Mod N ω W μ₁ μ₂ φ₀) {S : 
     rw [Gloc, GroundTheory.Automorphic.Reduction.finAt_mul, hxh.2.1 v.1 v.2, mul_one, hfin,
       w_inv hB hM hm hv (hκ v.1), (hm.good v.1 hv).2.2]
 
+/- English proof (translation)
+Take `⟨g, hg⟩ : ∃ g, g = dg2 ((IdeleGroup.prodEquiv ℚ).symm (a, b)) 1 * κ` from `⟨_, rfl⟩`. Establish `hr : realPart (g * h) = realPart g`. Rewrite using `[realPart_mul, realPart_eq_of_infAt hxh.2.2, mul_one]`. Establish `hr' : realPart (dg2 ((IdeleGroup.prodEquiv ℚ).symm (a, 1)) 1 * κ) = realPart g`. Rewrite using `[hg, realPart_mul, realPart_mul, realPart_diag a b 1]`.
+
+Rewrite using `[← local_prod hB hM hm hS c hxh s hκ a b hg, ← hg, hr', hE g, hE (g * h), hr, toIdele_symm, modPow_symm, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pointwise (hB : B0) (hM : M0) (hm : Mod N ω W μ₁ μ₂ φ₀)
     (hE : ∀ g : G2, W g = W (realEmb (realPart g)) *
       ∏ᶠ v : Pl, W2 (localAdelicChar ℚ v) (μ₁ v) (μ₂ v) (φ₀ v) (finAt v g)) {S : Finset Pl}
@@ -213,6 +288,9 @@ theorem pointwise (hB : B0) (hM : M0) (hm : Mod N ω W μ₁ μ₂ φ₀)
   rw [← local_prod hB hM hm hS c hxh s hκ a b hg, ← hg, hr', hE g, hE (g * h), hr, toIdele_symm, modPow_symm, map_mul]
   ring
 
+/- English proof (translation)
+Rewrite using `[Ag, integral_ideleMeasure, ← integral_prod_mul]`. Use `integral_congr_ae (Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Take `⟨a, b⟩` from `p`. Conclude with `pointwise hB hM hm hE hS c hxh s hκ a b`.
+-/
 theorem Ag_factor (hB : B0) (hM : M0) (hm : Mod N ω W μ₁ μ₂ φ₀)
     (hE : ∀ g : G2, W g = W (realEmb (realPart g)) *
       ∏ᶠ v : Pl, W2 (localAdelicChar ℚ v) (μ₁ v) (μ₂ v) (φ₀ v) (finAt v g)) {S : Finset Pl}
@@ -230,6 +308,9 @@ theorem Ag_factor (hB : B0) (hM : M0) (hm : Mod N ω W μ₁ μ₂ φ₀)
   exact pointwise hB hM hm hE hS c hxh s hκ a b
 end Glob
 
+/- English proof (translation)
+Use extensionality with `a`. Simplify using `only [GroundTheory.Automorphic.GodementSection.coe_localChar, MonoidHom.mul_apply, Units.val_mul]`. Rewrite using `[← GroundTheory.Automorphic.GodementSection.coe_localChar, ← GroundTheory.Automorphic.GodementSection.coe_localChar]`. Both sides reduce to the same expression.
+-/
 theorem localChar_sq (c : HeckeCharacter ℚ) (v : Pl) : localChar (c * c) v = localChar c v * localChar c v := by
   ext a
   simp only [GroundTheory.Automorphic.GodementSection.coe_localChar, MonoidHom.mul_apply, Units.val_mul]
@@ -239,9 +320,15 @@ theorem localChar_sq (c : HeckeCharacter ℚ) (v : Pl) : localChar (c * c) v = l
 section Unit
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ha.1.mul hb.1, fun x => by simp [ha.2 x, hb.2 x]⟩`.
+-/
 theorem isUnit1_mul {a b : Fˣ →* ℂˣ} (ha : IsUnit1 a) (hb : IsUnit1 b) : IsUnit1 (a * b) :=
   ⟨ha.1.mul hb.1, fun x => by simp [ha.2 x, hb.2 x]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ha.1.inv, fun x => by simp [ha.2 x]⟩`.
+-/
 theorem isUnit1_inv {a : Fˣ →* ℂˣ} (ha : IsUnit1 a) : IsUnit1 a⁻¹ :=
   ⟨ha.1.inv, fun x => by simp [ha.2 x]⟩
 end Unit
@@ -250,6 +337,11 @@ section Core
 variable {N : ℕ} {ω : HeckeCharacter ℚ} {W : G2 → ℂ} {μ₁ μ₂ : ∀ v : Pl, (Qv v)ˣ →* ℂˣ}
   {φ₀ : ∀ v : Pl, (Fin 2 → Qv v) → ℂ}
 
+/- English proof (translation)
+Take `⟨m, hmK⟩` from `hB.2.2.2.2.2.1`. Use `haveI := (hmK v.1).1`. Use `haveI := (hmK v.1).2`. Establish `hstd` using `(hB.1 v.1).1`. Establish `hW : W2 (localAdelicChar ℚ v.1) (μ₁ v.1) (μ₂ v.1) (φ₀ v.1) ∈ V2 (localAdelicChar ℚ v.1) (μ₁ v.1) (μ₂ v.1)` using `Submodule.subset_span ⟨φ₀ v.1, hm.sb v.1, rfl⟩`.
+
+Establish `hW'` using `(h1 (Qv v.1) (localAdelicChar ℚ v.1) hstd (μ₁ v.1) (μ₂ v.1) (hm.u₁ _) (hm.u₂ _)).1.stable _ hW (uni2 (x v))`. Conclude with `((hA (Qv v.1) (localAdelicChar ℚ v.1) hstd (m v.1) (μ₁ v.1) (μ₂ v.1) (localChar c v.1) (hm.u₁ _) (hm.u₂ _) ((hB.1 v.1).2.2.2.2.2.2 c) _ hW _ hW').1 s hs).1 _ (hκ v.1)`.
+-/
 theorem integrable_Aloc (h1 : Loc2) (hB : B0) (hA : A10) (hm : Mod N ω W μ₁ μ₂ φ₀) {S : Finset Pl}
     (c : HeckeCharacter ℚ) (x : ∀ v : S, Qv v.1) {s : ℂ} (hs : 0 < s.re) {κ : G2}
     (hκ : ∀ v, finAt v κ ∈ integralGL (Qv v) 2) (v : S) :
@@ -264,6 +356,11 @@ theorem integrable_Aloc (h1 : Loc2) (hB : B0) (hA : A10) (hm : Mod N ω W μ₁ 
   exact ((hA (Qv v.1) (localAdelicChar ℚ v.1) hstd (m v.1) (μ₁ v.1) (μ₂ v.1) (localChar c v.1) (hm.u₁ _) (hm.u₂ _)
     ((hB.1 v.1).2.2.2.2.2.2 c) _ hW _ hW').1 s hs).1 _ (hκ v.1)
 
+/- English proof (translation)
+Establish `hc : ∀ v, IsUnit1 (localChar c v)` using `fun v => (hB.1 v).2.2.2.2.2.2 c`. Establish `hν : ∀ v, IsUnit1 (μ₁ v * (μ₂ v)⁻¹)` using `fun v => isUnit1_mul (hm.u₁ v) (isUnit1_inv (hm.u₂ v))`. Establish `m1` using `(hE2 S s hs).2 (fun v => (μ₁ v * (μ₂ v)⁻¹) * localChar c v) fun v => isUnit1_mul (hν v) (hc v)`. Establish `m2` using `(hE2 S s hs).2 (fun v => localChar c v) hc`. Establish `m3` using `(hE2 S s hs).2 (fun v => (μ₁ v * (μ₂ v)⁻¹)⁻¹ * localChar c v) fun v => isUnit1_mul (isUnit1_inv (hν v)) (hc v)`.
+
+Conclude with `(m1.mul m2).mul m3`.
+-/
 theorem multipliable_local_l_factors (hB : B0) (hE2 : E2) (hm : Mod N ω W μ₁ μ₂ φ₀) (S : Finset Pl)
     (c : HeckeCharacter ℚ) {s : ℂ} (hs : 1 < s.re) :
     Multipliable fun v : {v : Pl // v ∉ S} => lf3 (μ₁ v.1 * (μ₂ v.1)⁻¹) (localChar c v.1) s := by
@@ -275,6 +372,17 @@ theorem multipliable_local_l_factors (hB : B0) (hE2 : E2) (hm : Mod N ω W μ₁
     fun v => isUnit1_mul (isUnit1_inv (hν v)) (hc v)
   exact (m1.mul m2).mul m3
 
+/- English proof (translation)
+Establish `hκ : ∀ v, finAt v κ.1 ∈ integralGL (Qv v) 2` using `κ.2.2`. Establish `hs0 : 0 < s.re` using `by linarith`. Establish `hE4 : ∀ v ∉ S, _` using `fun v (hv : v ∉ S) =>`. Establish `hv' : ¬ pOf v ∣ N` using `fun h' => hv (hS _ h')`. Use `h4 (Qv v) (localAdelicChar ℚ v) (hB.1 v).1 (μ₁ v) (μ₂ v) (localChar c v) (hm.u₁ v) (hm.u₂ v) ((hB.1 v).2.2.2.2.2.2 c) (hm.good v hv').1 (hm.good v hv').2.1 (hc v hv) s hs0 (Gloc μ₁ μ₂ c s v) fun _ => rfl`.
+
+Take `⟨hmul, hint⟩` from `hE1 S (Aloc μ₁ μ₂ φ₀ c s S x κ.1) (Gloc μ₁ μ₂ c s) s.re hs (integrable_Aloc h1 hB hA hm c x hs0 hκ) fun v hv => by`. Take `⟨e1, e2, e3, e4, -⟩` from `hE4 v hv`. Use `⟨e1, e2, e3, fun n => ?_⟩` and prove the remaining obligations. Use `e4 n` as an intermediate fact. Rewrite `this` using `[(hB.1 v).2.1]`. Then use the resulting hypothesis.
+
+Establish `h2s : 1 < (2 * s).re` using `by simp; linarith`. Establish `hc2 : ∀ v ∉ S, IsUnramifiedChar (localChar (c * c) v)` using `fun v hv u hu => by`. Rewrite using `[localChar_sq, MonoidHom.mem_ker, MonoidHom.mul_apply, hc v hv hu, mul_one]`. Take `⟨-, hPL⟩` from `(hE2 S (2 * s) h2s).1 (c * c) hc2`. Establish `hLc` using `(hE2 S s hs).2 (fun v => localChar c v) fun v => (hB.1 v).2.2.2.2.2.2 c`.
+
+Establish `key : (∏' v : {v : Pl // v ∉ S}, ∑' n : ℕ, Gloc μ₁ μ₂ c s v.1 (unifUnit (Qv v.1) ^ n)) * partialLFunction (c * c) S (2 * s) = (∏' v : {v : Pl // v ∉ S}, lf3 (μ₁ v.1 * (μ₂ v.1)⁻¹) (localChar c v.1) s) * Lp c S s`. Rewrite using `[← hPL.tprod_eq, ← hmul.tprod_mul hPL.multipliable, Ad3.R.Lp, ← (multipliable_local_l_factors hB hE2 hm S c hs).tprod_mul hLc]`. Use `tprod_congr fun v => ?_` and prove the remaining obligations. Take `⟨-, -, -, -, e5⟩` from `hE4 v.1 v.2`. Rewrite using `[localChar_sq]`.
+
+Conclude with `e5`. Rewrite using `[Ag_factor hB hM hm hE hS c hxh s hκ, hint, ← key]`. Establish `hAv : ∀ v : S, ∫ a, Aloc μ₁ μ₂ φ₀ c s S x κ.1 v a ∂multHaar (Qv v.1) = Av (W2 (localAdelicChar ℚ v.1) (μ₁ v.1) (μ₂ v.1) (φ₀ v.1)) (fun g => W2 (localAdelicChar ℚ v.1) (μ₁ v.1) (μ₂ v.1) (φ₀ v.1) (g * uni2 (x v))) (localChar c v.1) s (finAt v.1 κ.1)` using `fun v => rfl`. Simplify using `only [hAv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem core (h1 : Loc2) (hB : B0) (hA : A10) (hM : M0) (h4 : E4) (hE1 : E1) (hE2 : E2)
     (hm : Mod N ω W μ₁ μ₂ φ₀)
     (hE : ∀ g : G2, W g = W (realEmb (realPart g)) *
@@ -323,6 +431,9 @@ theorem core (h1 : Loc2) (hB : B0) (hA : A10) (hM : M0) (h4 : E4) (hE1 : E1) (hE
   ring
 end Core
 
+/- English proof (translation)
+Introduce `h1 hB hA hM h4 h0 hE1 hE2 k N _ hk χ hχ f a hf ha ω φ hω hl μ₁ μ₂ φ₀ hm S hS c hc x h hxh s hs κ`. Conclude with `core h1 hB hA hM h4 hE1 hE2 hm (h0 k N hk χ hχ f a hf ha ω φ hω hl μ₁ μ₂ φ₀ hm) hS c hc hxh hs κ`.
+-/
 theorem e6a : Loc2 → B0 → A10 → M0 → E4 → E0 → E1 → E2 → UnramifiedEulerProductIntegral := by
   intro h1 hB hA hM h4 h0 hE1 hE2 k N _ hk χ hχ f a hf ha ω φ hω hl μ₁ μ₂ φ₀ hm S hS c hc x h hxh s hs κ
   exact core h1 hB hA hM h4 hE1 hE2 hm (h0 k N hk χ hχ f a hf ha ω φ hω hl μ₁ μ₂ φ₀ hm) hS c hc hxh hs κ

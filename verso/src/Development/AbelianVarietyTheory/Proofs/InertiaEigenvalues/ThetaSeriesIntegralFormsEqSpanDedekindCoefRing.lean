@@ -28,6 +28,17 @@ variable {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module �
 def Indep (M : Submodule R W) : Prop :=
   ∀ (I : Type) (f : I → W), (∀ a, f a ∈ M) → LinearIndependent R f → LinearIndependent ℂ f
 
+/- English proof (translation)
+Take `⟨I, hI, hmax⟩` from `exists_maximal_linearIndepOn R (fun n : N => n)`. Establish `h1 : LinearIndependent ℂ fun a : I => ((a.1 : N) : W)` using `hN I _ (fun a => a.1.2) (LinearIndependent.map' hI N.subtype N.ker_subtype)`. Take `⟨s', hs'⟩` from `LinearMap.exists_extend ((Module.Basis.span h1).constr ℂ fun a : I => s a.1)`. Establish `h2 : ∀ a : I, s' (a.1 : W) = s a.1` using `fun a => by`. Use `LinearMap.congr_fun hs' (Module.Basis.span h1 a)` as an intermediate fact.
+
+Rewrite `this` using `[Module.Basis.constr_basis, LinearMap.comp_apply, Submodule.subtype_apply, Module.Basis.span_apply]`. Conclude with `this`. Establish `h3 : ∀ n ∈ Submodule.span R ((fun n : N => n) '' I), s' (n : W) = s n` using `fun n hn => by`. Proceed by induction on `hn using Submodule.span_induction with`. Consider the case `mem x h`.
+
+Take `⟨a, ha, rfl⟩` from `h`. Conclude with `h2 ⟨a, ha⟩`. Consider the case `zero => simp`. Consider the case `add _ _ _ _ e1 e2 => rw [Submodule.coe_add, map_add, map_add, e1, e2]`. Consider the case `smul a x _ e`.
+
+Rewrite using `[map_smul, ← e]`. Conclude with `s'.map_smul (a : ℂ) (x : W)`. Use `⟨s', fun n => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hn : n ∈ I`. Conclude with `h2 ⟨n, hn⟩`.
+
+Take `⟨a, ha, h⟩` from `hmax n hn`. Establish `h4 : (a : ℂ) • s' (n : W) = (a : ℂ) • s n`. Rewrite using `[← map_smul]`. Conclude with `(h3 _ h).trans (map_smul s a n)`. Conclude with `smul_right_injective V (fun e => ha (Subtype.ext e)) h4`.
+-/
 theorem exists_extend {N : Submodule R W} (hN : Indep N) (s : N →ₗ[R] V) : ∃ s' : W →ₗ[ℂ] V, ∀ n : N, s' n = s n := by
   obtain ⟨I, hI, hmax⟩ := exists_maximal_linearIndepOn R (fun n : N => n)
   have h1 : LinearIndependent ℂ fun a : I => ((a.1 : N) : W) :=
@@ -56,6 +67,23 @@ theorem exists_extend {N : Submodule R W} (hN : Indep N) (s : N →ₗ[R] V) : �
     exact (h3 _ h).trans (map_smul s a n)
   exact smul_right_injective V (fun e => ha (Subtype.ext e)) h4
 
+/- English proof (translation)
+Set `t : V →ₗ[R] W` to `T.restrictScalars R`. Set `N : Submodule R W` to `L.map t`. Establish `hN : Indep N` using `fun I f hf => hM I f fun a => by`. Take `⟨y, hy, e⟩` from `hf a`. Conclude with `e ▸ hT y hy`.
+
+Use `haveI : Module.Finite R N := Module.Finite.iff_fg.2 (hL.map t)`. Use `haveI : Module.Flat R N := by`. Rewrite using `[IsDedekindDomain.flat_iff_torsion_eq_bot, eq_bot_iff]`. Introduce and unpack `n ⟨a, ha⟩`. Establish `h1 : ((a.1 : R) : ℂ) • (n : W) = 0` using `congrArg Subtype.val ha`.
+
+Conclude with `Subtype.ext ((smul_eq_zero.1 h1).resolve_left fun e => nonZeroDivisors.coe_ne_zero a (Subtype.ext e))`. Use `haveI : Module.FinitePresentation R N := Module.finitePresentation_of_finite R N`. Use `haveI : Module.Projective R N := Module.Flat.projective_of_finitePresentation`. Take `⟨s, hs⟩` from `Module.projective_lifting_property (t.submoduleMap L) (LinearMap.id : N →ₗ[R] N) (t.submoduleMap_surjective L)`. Take `⟨s', hs'⟩` from `exists_extend hN (L.subtype ∘ₗ s)`.
+
+Establish `e : x = x - s' (T x)` using `by rw [h0, map_zero, sub_zero]`. Rewrite using `[e]`. Use `clear e h0`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Establish `h1` using `hs' ⟨T y, y, hy, rfl⟩`. Establish `h2` using `congrArg Subtype.val (LinearMap.congr_fun hs ⟨T y, y, hy, rfl⟩)`. Use `Submodule.subset_span ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `sub_mem hy (s _).2`.
+
+Express the relevant statement in the definitionally equal form `T _ = 0`. Rewrite using `[map_sub, h1]`. Conclude with `sub_eq_zero.2 h2.symm`. Consider the case `zero => simp`. Consider the case `add y z _ _ h1 h2`.
+
+Rewrite using `[map_add, map_add, add_sub_add_comm]`. Conclude with `add_mem h1 h2`. Consider the case `smul a y _ h1`. Use `Submodule.smul_mem _ a h1` as an intermediate fact. Rewrite `this` using `[smul_sub]`.
+
+Express the relevant statement in the definitionally equal form `(a : ℂ) • y - s' (T ((a : ℂ) • y)) ∈ _`. Rewrite using `[map_smul, map_smul]`. Conclude with `this`.
+-/
 theorem mem_span_ker [IsDedekindDomain R] {L : Submodule R V} (hL : L.FG) {M : Submodule R W} (hM : Indep M) (T : V →ₗ[ℂ] W)
     (hT : ∀ x ∈ L, T x ∈ M) {x : V} (hx : x ∈ Submodule.span O (L : Set V)) (h0 : T x = 0) :
     x ∈ Submodule.span O ((L ⊓ (LinearMap.ker T).restrictScalars R : Submodule R V) : Set V) := by
@@ -98,6 +126,15 @@ theorem mem_span_ker [IsDedekindDomain R] {L : Submodule R V} (hL : L.FG) {M : S
     rw [map_smul, map_smul]
     exact this
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `L hL hn hT x hx h0`. Distinguish the cases in `h : ∀ a, ∀ y ∈ L, T a y = 0`. Conclude with `Submodule.span_mono (fun y hy => And.intro hy fun a => h a y hy) hx`.
+
+Use `push Not at h`. Take `⟨a, y, hy, hy0⟩` from `h`. Set `L' : Submodule R V` to `L ⊓ (LinearMap.ker (T a)).restrictScalars R`. Establish `hL' : L'.FG` using `hL.of_le inf_le_left`. Use `haveI : Module.Finite ℂ (Submodule.span ℂ (L : Set V)) := by`.
+
+Take `⟨s, rfl⟩` from `hL`. Rewrite using `[Submodule.span_span_of_tower]`. Conclude with `Module.Finite.span_finset ℂ s`. Establish `hlt : Submodule.span ℂ (L' : Set V) < Submodule.span ℂ (L : Set V)`. Use `lt_of_le_of_ne (Submodule.span_mono fun z hz => hz.1) fun e => hy0 ?_` and prove the remaining obligations.
+
+Establish `h1 : Submodule.span ℂ (L' : Set V) ≤ LinearMap.ker (T a)` using `Submodule.span_le.2 fun z hz => hz.2`. Conclude with `h1 (e ▸ Submodule.subset_span hy)`. Use `ih _ (hn ▸ Submodule.finrank_lt_finrank_of_lt hlt) L' hL' rfl (fun b z hz => hT b z hz.1) x (mem_span_ker hL hM (T a) (hT a) hx (h0 a)) h0` as an intermediate fact. Conclude with `Submodule.span_mono (fun z hz => And.intro hz.1.1 hz.2) this`.
+-/
 theorem mem_span_iInf_ker [IsDedekindDomain R] {M : Submodule R W} (hM : Indep M) {A : Type} (T : A → V →ₗ[ℂ] W) (n : ℕ) :
     ∀ L : Submodule R V, L.FG → Module.finrank ℂ (Submodule.span ℂ (L : Set V)) = n → (∀ a, ∀ x ∈ L, T a x ∈ M) →
       ∀ x ∈ Submodule.span O (L : Set V), (∀ a, T a x = 0) → x ∈ Submodule.span O {y | y ∈ L ∧ ∀ a, T a y = 0} := by
@@ -122,6 +159,25 @@ theorem mem_span_iInf_ker [IsDedekindDomain R] {M : Submodule R W} (hM : Indep M
       (mem_span_ker hL hM (T a) (hT a) hx (h0 a)) h0
     exact Submodule.span_mono (fun z hz => And.intro hz.1.1 hz.2) this
 
+/- English proof (translation)
+Use `choose c γ k hg using hy`. Set `E : (I → W) →ₗ[ℂ] (G → W)` to `LinearMap.pi fun g => ((χ (k g) : ℂˣ) : ℂ) • (ρ (γ g) ∘ₗ LinearMap.proj (c g))`. Establish `hE : ∀ v g, E v g = ((χ (k g) : ℂˣ) : ℂ) • ρ (γ g) (v (c g))` using `fun _ _ => rfl`. Set `L : Submodule R (I → W)` to `Submodule.pi Set.univ fun i => C (y i)`. Establish `hL : L.FG` using `Submodule.fg_pi fun i => hfg (y i)`.
+
+Establish `hEL : ∀ v ∈ L, ∀ g, E v g ∈ C g` using `fun v hv g => by`. Use `hact (γ g) _ (k g) _ (hv (c g) trivial)` as an intermediate fact. Rewrite `this` using `[← hg g]`. Conclude with `(C g).smul_mem (⟨_, hχ (k g)⟩ : R) this`. Set `T : Γ × J → (I → W) →ₗ[ℂ] (G → W)` to `fun a => E - (LinearMap.pi fun g => ((χ a.2 : ℂˣ) : ℂ) • (ρ a.1 ∘ₗ LinearMap.proj ((ι a.1)⁻¹ * g * (a.2 : G)⁻¹))) ∘ₗ E`.
+
+Establish `hT : ∀ a v g, T a v g = E v g - ((χ a.2 : ℂˣ) : ℂ) • ρ a.1 (E v ((ι a.1)⁻¹ * g * (a.2 : G)⁻¹))` using `fun _ _ _ => rfl`. Establish `hc : ∀ (a : Γ × J) g, ι a.1 * ((ι a.1)⁻¹ * g * (a.2 : G)⁻¹) * a.2 = g` using `fun a g => by group`. Establish `hTL : ∀ a, ∀ v ∈ L, T a v ∈ Submodule.pi Set.univ C` using `fun a v hv g _ => by`. Rewrite using `[hT]`. Use `hact a.1 _ a.2 _ (hEL v hv ((ι a.1)⁻¹ * g * (a.2 : G)⁻¹))` as an intermediate fact.
+
+Rewrite `this` using `[hc]`. Conclude with `sub_mem (hEL v hv g) ((C g).smul_mem (⟨_, hχ a.2⟩ : R) this)`. Establish `hEf : E (fun i => f (y i)) = f` using `funext fun g => by`. Rewrite using `[hE, ← mem_lawForms.1 hf, ← hg g]`. Establish `hx : (fun i => f (y i)) ∈ Submodule.span O (L : Set (I → W))` using `by haveI := Fintype.ofFinite I`.
+
+Rewrite using `[← Finset.univ_sum_single (fun i => f (y i))]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Use `Submodule.mem_map_of_mem (f := LinearMap.single O (fun _ : I => W) i) (hv (y i))` as an intermediate fact. Rewrite `this` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ this` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨P, hP, rfl⟩ j _`. Distinguish the cases in `e : j = i`. Substitute `e` using the available equality. Simplify using `using hP`. Simplify using `[e]`.
+
+Establish `h1` using `mem_span_iInf_ker (O := O) hM T _ L hL rfl hTL _ hx fun a => funext fun g => by`. Rewrite using `[hT, hEf, ← mem_lawForms.1 hf, hc, sub_self]`. Both sides reduce to the same expression. Establish `h2` using `Submodule.mem_map_of_mem (f := E.restrictScalars O) h1`. Rewrite `h2` using `[Submodule.map_span, LinearMap.restrictScalars_apply, hEf]`.
+
+Use `Submodule.span_mono ?_ h2` and prove the remaining obligations. Introduce and unpack `_ ⟨v, ⟨hvL, hv0⟩, rfl⟩`. Use `⟨mem_lawForms.2 fun a g b => ?_, hEL v hvL⟩` and prove the remaining obligations. Use `congrFun (hv0 (a, b)) (ι a * g * b)` as an intermediate fact. Rewrite `this` using `[hT, show (ι a)⁻¹ * (ι a * g * b) * (b : G)⁻¹ = g by group]`.
+
+Conclude with `sub_eq_zero.1 this`.
+-/
 theorem law_mem_span [IsDedekindDomain R] {G Γ : Type} [Group G] [Group Γ] (ι : Γ →* G) (ρ : Γ →* Module.End ℂ W)
     (J : Subgroup G) (χ : J →* ℂˣ) (hχ : ∀ k, ((χ k : ℂˣ) : ℂ) ∈ R) (C : G → Submodule R W) (hfg : ∀ g, (C g).FG)
     (hact : ∀ (γ : Γ) (g : G) (k : J), ∀ P ∈ C g, ρ γ P ∈ C (ι γ * g * k)) (hM : Indep (Submodule.pi Set.univ C))
@@ -173,6 +229,11 @@ theorem law_mem_span [IsDedekindDomain R] {G Γ : Type} [Group G] [Group Γ] (ι
   rw [hT, show (ι a)⁻¹ * (ι a * g * b) * (b : G)⁻¹ = g by group] at this
   exact sub_eq_zero.1 this
 
+/- English proof (translation)
+Use `letI : Algebra R (Subfield.closure (R : Set ℂ)) := (Subring.inclusion (S := R) (T := (Subfield.closure (R : Set ℂ)).toSubring) Subfield.subset_closure).toAlgebra`. Use `haveI : IsScalarTower R (Subfield.closure (R : Set ℂ)) W := IsScalarTower.of_algebraMap_smul fun _ _ => rfl`. Use `haveI : FaithfulSMul R (Subfield.closure (R : Set ℂ)) := (faithfulSMul_iff_algebraMap_injective _ _).2 (Subring.inclusion_injective _)`. Use `haveI : IsFractionRing R (Subfield.closure (R : Set ℂ)) := IsFractionRing.of_field _ _ fun z => by`. Take `⟨a, ha, b, hb, e⟩` from `Subfield.mem_closure_iff.1 z.2`.
+
+Rewrite `ha`, `hb` using `[Subring.closure_eq]`. Conclude with `⟨⟨a, ha⟩, ⟨b, hb⟩, Subtype.ext e.symm⟩`. Conclude with `(LinearIndependent.iff_fractionRing R _).1 h`.
+-/
 theorem indep_closure {I : Type} {f : I → W} (h : LinearIndependent R f) :
     LinearIndependent (Subfield.closure (R : Set ℂ)) f := by
   letI : Algebra R (Subfield.closure (R : Set ℂ)) :=
@@ -191,12 +252,22 @@ end Algebra
 variable {D : D7} {S T : HSp D} {B : Base S T} {K : Type} [Field K] [NumberField K] {σ : K →+* ℂ}
   {emb : D.what₂.Tau → (D.host.E →+* K)}
 
+/- English proof (translation)
+Establish `h1` using `hB.sig τ`. Establish `h2` using `Formalism.BasicNotions.sig_sum _ hB.sigOK (tauE D τ)`. Rewrite `h2` using `[← h1]`. Conclude with `h2.le`.
+-/
 theorem pq_le (hB : B.Good) (τ : D.what₂.Tau) : B.w.p τ + B.w.q τ ≤ T.rank := by
   have h1 := hB.sig τ
   have h2 := Formalism.BasicNotions.sig_sum _ hB.sigOK (tauE D τ)
   rw [← h1] at h2
   exact h2.le
 
+/- English proof (translation)
+Establish `hle : Submodule.span O (B.coefLat σ emb R h : Set (PolF D T.rank S.rank)) ≤ (harm T.rank B.w B.F.BS).restrictScalars O` using `Submodule.span_le.2 fun x hx => hx.1`. Establish `h1 : coefLatFn σ emb O B.w.lam (B.latAt h) ≤ (Submodule.span O (B.coefLat σ emb R h : Set (PolF D T.rank S.rank))).map ((harmFn T.rank B.w B.F.BS).restrictScalars O)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨F, hF, rfl⟩`. Establish `h2 : coefFn σ B.w.lam (F : VV K B.w.lam) ∈ (harm T.rank B.w B.F.BS).map (harmFn T.rank B.w B.F.BS)`.
+
+Rewrite using `[GlobalTheory.T.fockHarmonicValueSpace_map_eq_dualWeylModuleFunctions D _ _ B.w B.F.BS hB.wt (pq_le hB)]`. Conclude with `Submodule.subset_span ⟨_, HarmLattice.coefFn_eq σ B.w.lam F⟩`. Take `⟨Q, hQ, e⟩` from `h2`. Use `⟨Q, Submodule.subset_span ((mem_harmLat _ _ _).2 ⟨hQ, ?_⟩), e⟩` and prove the remaining obligations. Rewrite using `[e]`.
+
+Conclude with `Submodule.subset_span ⟨F, hF, rfl⟩`. Take `⟨Q, hQ, e⟩` from `h1 hP.2`. Establish `h0 : P - Q = 0` using `GlobalTheory.T.harmonic_polynomial_eq_zero_of_function D _ _ B.w B.F.BS hB.wt (pq_le hB) _ (sub_mem hP.1 (hle hQ)) (by rw [map_sub]; exact sub_eq_zero.2 e.symm)`. Rewrite using `[sub_eq_zero.1 h0]`. Conclude with `hQ`.
+-/
 theorem coefLat_le_span (hB : B.Good) (R O : Subring ℂ) (h : Bridge.Gf S) {P : PolF D T.rank S.rank}
     (hP : P ∈ B.coefLat σ emb O h) : P ∈ Submodule.span O (B.coefLat σ emb R h : Set (PolF D T.rank S.rank)) := by
   have hle : Submodule.span O (B.coefLat σ emb R h : Set (PolF D T.rank S.rank)) ≤
@@ -219,6 +290,17 @@ theorem coefLat_le_span (hB : B.Good) (R O : Subring ℂ) (h : Bridge.Gf S) {P :
   rw [sub_eq_zero.1 h0]
   exact hQ
 
+/- English proof (translation)
+Introduce `D S T B hB ψ _ _ K _ _ σ emb R _ _ φ hφ hc hlam O hO`. Use `haveI : IsDedekindDomain φ.range := by`. Use `letI : Algebra R φ.range := φ.rangeRestrict.toAlgebra`. Use `haveI : IsLocalization (⊥ : Submonoid R) φ.range := IsLocalization.of_le_isUnit_of_bijective (by rintro _ ⟨x, hx, rfl⟩; rw [Submonoid.mem_bot.1 hx, map_one]; exact one_mem _) ⟨fun _ _ e => hφ (congrArg Subtype.val e), φ.rangeRestrict_surjective⟩`. Conclude with `IsLocalization.isDedekindDomain R (M := ⊥) bot_le _`.
+
+Use `le_antisymm (fun f hf => ?_) (Submodule.span_le.2 fun f hf => ?_)` and prove the remaining obligations. Take `⟨m, y, hy⟩` from `exists_isClassSystem B hB.frame ψ`. Take `⟨h1, h2⟩` from `(B.mem_mtLat σ emb O).1 hf`. Use `law_mem_span (O := O) (Bridge.ratF S) (B.act.comp (GQ S).subtype) (B.levJ ψ) (B.levLam ψ) hlam (B.coefLat σ emb φ.range) (fun g => (HarmLattice.harmLat_fg_span D _ _ _ _ _ _ _ _ _ hB.wt (pq_le hB) hc (Formalism.UG.P.csGlob_lattice _ (Module.Finite.iff_fg.2 hB.frame.sdS.1.fg) hB.f …` as an intermediate fact. Take `⟨c, ⟨γ, k, e⟩, -⟩` from `hy.reps g`.
+
+Conclude with `⟨c, γ, k, e⟩) h1.2 (fun g => coefLat_le_span hB φ.range O g (h2 g))`. Use `Submodule.span_mono ?_ this` and prove the remaining obligations. Introduce and unpack `F ⟨hF1, hF2⟩`. Conclude with `(B.mem_mtLat σ emb φ.range).2 ⟨⟨fun g _ => (hF2 g).1, hF1⟩, hF2⟩`. Take `⟨h1, h2⟩` from `(B.mem_mtLat σ emb φ.range).1 hf`.
+
+Use `(B.mem_mtLat σ emb O).2 ⟨h1, fun g => (mem_harmLat _ _ _).2 ⟨(h2 g).1, ?_⟩⟩` and prove the remaining obligations. Establish `key : ∀ x ∈ coefLatFn σ emb φ.range B.w.lam (B.latAt g), x ∈ coefLatFn σ emb O B.w.lam (B.latAt g)` using `fun x hx => by`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h => exact Submodule.subset_span h`. Consider the case `zero => exact zero_mem _`.
+
+Consider the case `add _ _ _ _ e1 e2 => exact add_mem e1 e2`. Consider the case `smul a x _ e => exact Submodule.smul_mem _ (⟨a.1, hO a.2⟩ : O) e`. Conclude with `key _ (h2 g).2`.
+-/
 theorem mtLat_eq_span : ∀ (D : D7) (S T : HSp D) (B : Base S T), B.Good → ∀ ψ : Twist D Circle, ψ.Good → B.admitted ψ.Q → ∀ (K : Type) [Field K] [NumberField K] (σ : K →+* ℂ) (emb : D.what₂.Tau → (D.host.E →+* K)) (R : Type) [CommRing R] [IsDedekindDomain R] (φ : R →+* ℂ), Function.Injective φ → IsCoefRing σ emb φ.range →
   (∀ k : B.levJ ψ, ((B.levLam ψ k : ℂˣ) : ℂ) ∈ φ.range) → ∀ O : Subring ℂ, φ.range ≤ O →
   B.mtLat σ emb O ψ = Submodule.span O (B.mtLat σ emb φ.range ψ : Set (Bridge.Gf S → PolF D T.rank S.rank)) := by

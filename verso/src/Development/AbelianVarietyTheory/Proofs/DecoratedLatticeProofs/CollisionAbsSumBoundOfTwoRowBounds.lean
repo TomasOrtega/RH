@@ -13,6 +13,31 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Core.Deg
 
+/- English proof (translation)
+Introduce `hS CT C hC hCT`. Establish `he : (1 : ℝ) ≤ Real.exp 1 * Real.pi`. Establish `h1 : (1 : ℝ) ≤ Real.exp 1` using `Real.one_le_exp (by norm_num)`. Establish `h2 : (3 : ℝ) ≤ Real.pi` using `Real.pi_gt_three.le`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hC1 : (1 : ℝ) ≤ C` using `by nlinarith`. Take `⟨K₀, hK⟩` from `GlobalTheory.T.corankSums_bound_with_expLoss C hC1`. Use `⟨max K₀ 4, ?_⟩` and prove the remaining obligations. Introduce `D large₂ X Y hF hI u T Z C' Cl Cg cb Cu cT C0 hC' hCl hH hCc hAbs hTie hFo hn hd`. Establish `hK₀ : K₀ ≤ C'` using `le_trans (le_max_left _ _) hC'`.
+
+Establish `hC'1 : (1 : ℝ) ≤ C'` using `by linarith [le_max_right K₀ 4]`. Establish `hCl4 : (4 : ℝ) ≤ Cl` using `le_trans (le_max_right _ _) hCl`. Establish `hHy` using `Formalism.MainNotions.count_hypotheses_diagonal_words D large₂ C' Cl Cg cb Cu cT CT C0 1 hH.2.1 hH.1 hH.2.2 (by linarith) hC'1 le_rfl u`. Establish `hXi` using `GlobalTheory.T.corankSizeHypothesis_explicitConstant_siegelMass hS C hC D large₂ u u C' Cl Cg cb Cu cT CT C0 1 (by linarith) hHy`. Establish `hP` using `Formalism.L2.SG.LoopsCut.params_at hH X u hCl4 hCT hC1 hK₀`.
+
+Establish `hb` using `Formalism.MainNotions.BridgeLemma.d_two_le_b D large₂`. Establish `hP1 : Formalism.HermitianLatticeCounting.LatticeSumBounds.Params C K₀ D.R.k (2 * D.R.rS + 2) D.R.f large₂.sc.b (X.B.g : ℝ) D.host.v (Cnt.NT D u) 1`. Take `⟨p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, _, _⟩` from `hP`. Use `⟨p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, le_rfl, ?_⟩` and prove the remaining obligations. Apply `Real.one_le_exp` to reduce the goal to its premises.
+
+Establish `hl : 0 ≤ Real.log large₂.sc.b` using `Real.log_nonneg (by linarith)`. Establish `hC0 : (0 : ℝ) ≤ C` using `by linarith`. Check the signs of the components of the expression. Establish `hGam0 : 0 ≤ GamS D large₂` using `(Real.exp_pos _).le`. Establish `hGam8 : GamS D large₂ ≤ Real.exp ((D.R.k : ℝ) / 8)`.
+
+Unfold `GamS`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `h1 : 8 * large₂.CGam ≤ C'` using `hH.1.1`. Establish `h2 : C' * (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L ≤ D.R.k` using `hH.1.2.1`. Establish `hL` using `Formalism.MainNotions.BridgeLemma.d_one_le_L D large₂`.
+
+Establish `hM : 0 ≤ (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨hND, hDG⟩` from `hK D.R.k (2 * D.R.rS + 2) D.R.f large₂.sc.b (X.B.g : ℝ) D.host.v (Cnt.NT D u) (GamS D large₂) (BridgeLemma.XiB D large₂ u C) hP1 hXi hGam0 hGam8`. Take `⟨hJ, hW, hFC, _, _, _, _⟩` from `hTie`. Establish `hG` using `Formalism.L2.SG.LoopTieOf.gammaFixed_of_hypotheses Y hH`.
+
+Establish `hm` using `Formalism.MainNotions.BridgeLemma.d_m_eq D`. Establish `hg : (X.B.g : ℝ) = gg D` using `by rw [X.g_eq]; unfold gg; push_cast; ring`. Establish `hcls : ∀ s, 2 ≤ s → s ≤ D.R.k → Formalism.L2.SG.LoopsCut.ClassLe (Y.tO u u) (Formalism.L2.SG.LoopsCut.bigS (Y.tO u u) s) ((fun s : ℕ => (D.duS u : ℝ) * (Formalism.HermitianLatticeCounting.LatticeSumBounds.ndRow C D.R.k (2 * D.R.rS + 2) D.R.f s large₂.sc.b (X.B.g : ℝ) D.host.v (Ga …`. Introduce `s h2 hk`. Establish `base` using `Formalism.L2.SG.LoopTieOf.gam_mul_le hG Z hFo (Formalism.L2.SG.LoopTieOf.classS_le T hJ hW hFC Z C hn hd s h2 hk)`.
+
+Rewrite `base` using `[hm, ← hg]`. Conclude with `base`. Establish `habs` using `GlobalTheory.T.pairAbs_corank_ge_two_le_sum_corankClasses _ _ _ _ _ (Y.tO u u) D.R.k _ hAbs (fun p _ => Formalism.L2.SG.LoopsCut.corank_le_k Y u u p.1 p.2) hcls`. Establish `hdd : ddC X Y u u = (D.duS u : ℝ) * BridgeLemma.rDD D u` using `Formalism.L2.SG.LoopTieOf.ddC_eq hCc u u`. Establish `hdu : duC X Y u = (D.duS u : ℝ)` using `hCc.2.2.1 u`.
+
+Establish `hdr0 : 0 ≤ (D.duS u : ℝ) * BridgeLemma.rDD D u` using `hdd ▸ dd_nonneg hCc u u`. Establish `hd0 : (0 : ℝ) ≤ (D.duS u : ℝ)` using `Nat.cast_nonneg _`. Establish `hgg : ((X.B.g : ℕ) : ℝ) = (D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)` using `by rw [X.g_eq]; push_cast; ring`. Unfold `CollS`. Rewrite using `[hdd, hdu]`.
+
+Use `set d : ℝ := (D.duS u : ℝ) with hdef`. Use `set r : ℝ := BridgeLemma.rDD D u with hrdef`. Use `set N := fun s : ℕ => Formalism.HermitianLatticeCounting.LatticeSumBounds.ndRow C D.R.k (2 * D.R.rS + 2) D.R.f s large₂.sc.b (X.B.g : ℝ) D.host.v (GamS D large₂) (BridgeLemma.XiB D large₂ u C) with hN`. Use `set G := fun s : ℕ => Formalism.HermitianLatticeCounting.LatticeSumBounds.degRow C D.R.k (2 * D.R.rS + 2) D.R.f s large₂.sc.b (X.B.g : ℝ) D.host.v (GamS D large₂) (BridgeLemma.XiB D large₂ u C) with hGd`. Establish `hsum : ∑ s ∈ Finset.Icc 2 D.R.k, d * (N s * r + G s) = d * r * ∑ s ∈ Finset.Icc 2 D.R.k, N s + d * ∑ s ∈ Finset.Icc 2 D.R.k, G s`.
+
+Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun s _ => by ring`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem collS_of_rowBounds : Formalism.HermitianLatticesTheory.SiegelMassRatio → ∀ CT C : ℝ, 408 * (Real.exp 1 * Real.pi) ≤ C → CT ≤ C → ∃ thr : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (hF : FinX Y) (hI : SIso D.s (sOf hF)) (u : D.what₂.Word) (T : TermTie D) (Z : LoopTie D large₂ T u u 1) (C' Cl Cg cb Cu cT C0 : ℝ), thr ≤ C' → thr ≤ Cl → Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0 → ConcTie X Y → (Y.tO u u).AbsConv → TieAt hF hI large₂ u T Z → UnitaryVolumeMass.FormAt D u → BridgeLemma.RowsND T Z C → BridgeLemma.RowsDeg T Z C → CollS Y u := by
   intro hS CT C hC hCT
   have he : (1 : ℝ) ≤ Real.exp 1 * Real.pi := by

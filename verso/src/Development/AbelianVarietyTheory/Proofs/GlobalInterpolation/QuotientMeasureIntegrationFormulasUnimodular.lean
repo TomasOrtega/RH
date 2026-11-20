@@ -10,6 +10,9 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.QuotientInteg
 
 namespace GlobalTheory.Proof.quotientMeasure_integration_formulas_unimodular
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GlobalTheory.T.quotientInvariantMeasure_exists_unique_unimodular, GlobalTheory.T.quotientMeasure_normalised_by_haar_unique, GlobalTheory.T.existsUnique_haar_subgroup_quotient_integral_formula, GlobalTheory.T.existsUnique_haar_group_quotient_integral_formula, GlobalTheory.T.quoti …`.
+-/
 theorem quotientMeasures : GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre.QuotientMeasures :=
   ⟨GlobalTheory.T.quotientInvariantMeasure_exists_unique_unimodular, GlobalTheory.T.quotientMeasure_normalised_by_haar_unique, GlobalTheory.T.existsUnique_haar_subgroup_quotient_integral_formula, GlobalTheory.T.existsUnique_haar_group_quotient_integral_formula, GlobalTheory.T.quotient_integration_formula_discrete_subgroup_left, GlobalTheory.T.weil_criterion_invariant_measure_homogeneous_space,
     GlobalTheory.T.compactSubgroup_quotient_invariant_measure⟩

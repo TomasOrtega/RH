@@ -9,18 +9,34 @@ open Filter Topology
 variable {l : ℕ} [Fact l.Prime] {O K : Type} [CommRing O] [Algebra ℤ_[l] O]
   [NormedField K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K]
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap ℚ_[l] K) l, norm_algebraMap']`. Conclude with `Padic.norm_p`.
+-/
 theorem norm_natCast_prime_eq : ‖(l : K)‖ = (l : ℝ)⁻¹ := by
   rw [← map_natCast (algebraMap ℚ_[l] K) l, norm_algebraMap']
   exact Padic.norm_p
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, map_pow, map_natCast]`.
+-/
 theorem natCast_smul_pow_eq (k : ℕ) (z : O) : ((l : ℤ_[l]) ^ k) • z = (l : O) ^ k * z := by
   rw [Algebra.smul_def, map_pow, map_natCast]
 
+/- English proof (translation)
+The claim follows from `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun i => PadicInt.norm_le_one _`.
+-/
 theorem norm_intCoord_le_one {ι : Type} [Fintype ι] (v : ι → ℤ_[l]) : ‖v‖ ≤ 1 :=
   (pi_norm_le_iff_of_nonneg zero_le_one).2 fun i => PadicInt.norm_le_one _
 
 variable {ι : Type} [Fintype ι] (b : Module.Basis ι ℤ_[l] O)
 
+/- English proof (translation)
+Establish `hl : (l : K) ≠ 0`. Rewrite using `[← norm_ne_zero_iff, norm_natCast_prime_eq (l := l)]`. Conclude with `inv_ne_zero (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Establish `hw : ‖algebraMap O K y / (l : K) ^ k‖ ≤ 1`. Rewrite using `[norm_div, norm_pow]`.
+
+Conclude with `div_le_one_of_le₀ h (by positivity)`. Take `⟨z, hz⟩` from `(IsUnitBall.mem_range_iff (O := O) _).2 hw`. Establish `hy : y = (l : O) ^ k * z`. Apply `IsUnitBall.inj (K := K)` to reduce the goal to its premises. Rewrite using `[map_mul, hz, map_pow, map_natCast, mul_div_cancel₀ _ (pow_ne_zero _ hl)]`.
+
+Rewrite using `[hy, ← natCast_smul_pow_eq, map_smul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem coord_small_of_small (y : O) (k : ℕ) (h : ‖algebraMap O K y‖ ≤ ‖(l : K)‖ ^ k) :
     ‖b.equivFun y‖ ≤ ‖(l : ℤ_[l])‖ ^ k := by
   have hl : (l : K) ≠ 0 := by
@@ -38,6 +54,13 @@ theorem coord_small_of_small (y : O) (k : ℕ) (h : ‖algebraMap O K y‖ ≤ �
     _ ≤ ‖(l : ℤ_[l]) ^ k‖ * 1 := by gcongr; exact norm_intCoord_le_one _
     _ = ‖(l : ℤ_[l])‖ ^ k := by rw [mul_one, norm_pow]
 
+/- English proof (translation)
+Establish `hd : ∀ i, ((l : ℤ_[l]) ^ k) ∣ b.equivFun y i`. Introduce `i`. Rewrite using `[← Ideal.mem_span_singleton, ← PadicInt.norm_le_pow_iff_mem_span_pow]`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).1 h i` as an intermediate fact. Rewrite `this` using `[PadicInt.norm_p, inv_pow, ← zpow_natCast, ← zpow_neg]`.
+
+Conclude with `this`. Use `choose e he using hd`. Establish `hy : y = (l : O) ^ k * b.equivFun.symm e`. Rewrite using `[← natCast_smul_pow_eq, ← map_smul, ← b.equivFun.symm_apply_apply y]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[he i]`. Rewrite using `[hy, map_mul, map_pow, map_natCast, norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_right (by positivity) (norm_algebraMap_le _)`.
+-/
 theorem small_of_coord_small (y : O) (k : ℕ) (h : ‖b.equivFun y‖ ≤ ‖(l : ℤ_[l])‖ ^ k) :
     ‖algebraMap O K y‖ ≤ ‖(l : K)‖ ^ k := by
   have hd : ∀ i, ((l : ℤ_[l]) ^ k) ∣ b.equivFun y i := by
@@ -55,6 +78,25 @@ theorem small_of_coord_small (y : O) (k : ℕ) (h : ‖b.equivFun y‖ ≤ ‖(l
   rw [hy, map_mul, map_pow, map_natCast, norm_mul, norm_pow]
   exact mul_le_of_le_one_right (by positivity) (norm_algebraMap_le _)
 
+/- English proof (translation)
+Introduce `l _ O K _ _ _ _ _ _ _ _ _`. Set `b` to `Module.Free.chooseBasis ℤ_[l] O`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hϖ0 : 0 < ‖(l : K)‖` using `by rw [norm_natCast_prime_eq (l := l)]; positivity`. Establish `hϖ1 : ‖(l : K)‖ < 1`.
+
+Rewrite using `[norm_natCast_prime_eq (l := l)]`. Conclude with `inv_lt_one_of_one_lt₀ hl1`. Establish `hπ0 : 0 < ‖(l : ℤ_[l])‖` using `by rw [PadicInt.norm_p]; positivity`. Establish `hπ1 : ‖(l : ℤ_[l])‖ < 1` using `by rw [PadicInt.norm_p]; exact inv_lt_one_of_one_lt₀ hl1`. Use `Metric.complete_of_convergent_controlled_sequences (fun N => ‖(l : K)‖ ^ N) (fun n => pow_pos hϖ0 n) ?_` and prove the remaining obligations.
+
+Introduce `u hu`. Establish `h0 : ∀ n, ‖u n - u 0‖ ≤ 1` using `fun n => by`. Use `hu 0 n 0 (Nat.zero_le _) le_rfl` as an intermediate fact. Rewrite `this` using `[dist_eq_norm, pow_zero]`. Conclude with `this.le`.
+
+Use `choose y hy using fun n => (IsUnitBall.mem_range_iff (O := O) _).2 (h0 n)`. Establish `hc : CauchySeq (fun n => b.equivFun (y n))`. Use `cauchySeq_of_le_tendsto_0 (fun N => ‖(l : ℤ_[l])‖ ^ N) (fun n m N hn hm => ?_) ?_` and prove the remaining obligations. Rewrite using `[dist_eq_norm, ← map_sub]`. Apply `coord_small_of_small (K := K) b` to reduce the goal to its premises.
+
+Rewrite using `[map_sub, hy, hy, show u n - u 0 - (u m - u 0) = u n - u m by abel]`. Use `hu N n m hn hm` as an intermediate fact. Rewrite `this` using `[dist_eq_norm]`. Conclude with `this.le`. Conclude with `tendsto_pow_atTop_nhds_zero_of_lt_one hπ0.le hπ1`.
+
+Take `⟨γ, hγ⟩` from `cauchySeq_tendsto_of_complete hc`. Use `⟨u 0 + algebraMap O K (b.equivFun.symm γ), ?_⟩` and prove the remaining obligations. Rewrite using `[Metric.tendsto_atTop]`. Introduce `ε hε`. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one hε hϖ1`.
+
+Take `⟨N, hN⟩` from `Metric.tendsto_atTop.1 hγ _ (pow_pos hπ0 k)`. Use `⟨N, fun n hn => ?_⟩` and prove the remaining obligations. Rewrite using `[dist_eq_norm]`. Establish `e : u n - (u 0 + algebraMap O K (b.equivFun.symm γ)) = algebraMap O K (y n - b.equivFun.symm γ)`. Rewrite using `[map_sub, hy]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Use `lt_of_le_of_lt (small_of_coord_small b _ k ?_) hk` and prove the remaining obligations. Rewrite using `[map_sub, LinearEquiv.apply_symm_apply]`. Use `hN n hn` as an intermediate fact.
+
+Rewrite `this` using `[dist_eq_norm]`. Conclude with `this.le`.
+-/
 theorem completeSpace_of_finite_unitBall : ∀ (l : ℕ) [Fact l.Prime] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K], CompleteSpace K := by
   intro l _ O K _ _ _ _ _ _ _ _ _
   let b := Module.Free.chooseBasis ℤ_[l] O

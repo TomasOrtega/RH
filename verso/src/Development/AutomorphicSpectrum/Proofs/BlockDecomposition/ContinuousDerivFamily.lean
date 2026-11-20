@@ -8,6 +8,23 @@ namespace GlobalTheory.CompanionTheory.WeakHolo
 
 open Metric Set Filter Topology Complex Real
 
+/- English proof (translation)
+Establish `hdf : DifferentiableOn ℂ (deriv f) U` using `((hf.analyticOnNhd hU).deriv_of_isOpen hU).differentiableOn`. Establish `h1 : ∀ z ∈ closedBall s₀ (2 * r), ‖deriv f z‖ ≤ M / r`. Introduce `z hz`. Establish `hsub : closedBall z r ⊆ closedBall s₀ (3 * r)`. Use `closedBall_subset_closedBall' ?_` and prove the remaining obligations.
+
+Use `mem_closedBall.1 hz` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `norm_deriv_le_of_forall_mem_sphere_norm_le hr (hf.diffContOnCl_ball (hsub.trans hb)) fun w hw => hM w (hsub (sphere_subset_closedBall hw))`. Establish `h2 : ∀ z ∈ closedBall s₀ r, ‖deriv (deriv f) z‖ ≤ M / r / r`. Introduce `z hz`.
+
+Establish `hsub : closedBall z r ⊆ closedBall s₀ (2 * r)`. Use `closedBall_subset_closedBall' ?_` and prove the remaining obligations. Use `mem_closedBall.1 hz` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsub' : closedBall s₀ (2 * r) ⊆ closedBall s₀ (3 * r)` using `closedBall_subset_closedBall (by linarith)`.
+
+Conclude with `norm_deriv_le_of_forall_mem_sphere_norm_le hr (hdf.diffContOnCl_ball ((hsub.trans hsub').trans hb)) fun w hw => h1 w (hsub (sphere_subset_closedBall hw))`. Establish `hin : ∀ z ∈ closedBall s₀ r, z ∈ U` using `fun z hz => hb (closedBall_subset_closedBall (by linarith) hz)`. Establish `hc : s₀ ∈ closedBall s₀ r` using `mem_closedBall_self hr.le`. Establish `h3 : ∀ z ∈ closedBall s₀ r, ‖deriv f z - deriv f s₀‖ ≤ M / r / r * ‖z - s₀‖` using `fun z hz => (convex_closedBall s₀ r).norm_image_sub_le_of_norm_deriv_le (fun y hy => (hdf y (hin y hy)).differentiableAt (hU.mem_nhds (hin y hy))) h2 hc hz`. Establish `hMn : 0 ≤ M` using `(norm_nonneg _).trans (hM s₀ (mem_closedBall_self (by positivity)))`.
+
+Establish `hs : closedBall s₀ ‖η‖ ⊆ closedBall s₀ r` using `closedBall_subset_closedBall hη`. Establish `h4` using `(convex_closedBall s₀ ‖η‖).norm_image_sub_le_of_norm_hasDerivWithin_le (f := fun z => f z - z * deriv f s₀) (f' := fun z => deriv f z - deriv f s₀) (C := M / r / r * ‖η‖) (fun z hz => by`. Establish `a` using `((hf z (hin z (hs hz))).differentiableAt (hU.mem_nhds (hin z (hs hz)))).hasDerivAt`. Establish `b` using `(hasDerivAt_id z).mul_const (deriv f s₀)`. Establish `c : HasDerivAt (fun z => f z - z * deriv f s₀) (deriv f z - 1 * deriv f s₀) z` using `a.sub b`.
+
+Rewrite `c` using `[one_mul]`. Conclude with `c.hasDerivWithinAt)`. Use the proof step `(fun z hz => (h3 z (hs hz)).trans (by`. Use `mem_closedBall_iff_norm.1 hz` as an intermediate fact. Use the proof step `gcongr))`.
+
+Use the proof step `(mem_closedBall_self (norm_nonneg η)) (x := s₀) (y := s₀ + η) (by simp [mem_closedBall_iff_norm])`. Establish `e : f (s₀ + η) - f s₀ - η * deriv f s₀ = (f (s₀ + η) - (s₀ + η) * deriv f s₀) - (f s₀ - s₀ * deriv f s₀)` using `by ring`. Rewrite using `[e]`. Use `h4.trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [add_sub_cancel_left]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem taylor_two {f : ℂ → ℂ} {U : Set ℂ} (hU : IsOpen U) (hf : DifferentiableOn ℂ f U) {s₀ : ℂ} {r M : ℝ}
     (hr : 0 < r) (hb : closedBall s₀ (3 * r) ⊆ U) (hM : ∀ z ∈ closedBall s₀ (3 * r), ‖f z‖ ≤ M) {η : ℂ}
     (hη : ‖η‖ ≤ r) : ‖f (s₀ + η) - f s₀ - η * deriv f s₀‖ ≤ M / r ^ 2 * ‖η‖ ^ 2 := by
@@ -59,12 +76,22 @@ theorem taylor_two {f : ℂ → ℂ} {U : Set ℂ} (hU : IsOpen U) (hf : Differe
   simp only [add_sub_cancel_left]
   field_simp
 
+/- English proof (translation)
+Use `hf.circleIntegral_one_div_sub_center_pow_smul hr 1` as an intermediate fact. Simplify using `only [zero_add, Nat.reduceAdd, Nat.factorial_one, Nat.cast_one, div_one, iteratedDeriv_one] at this`. Rewrite using `[this, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ (by simp [pi_ne_zero]), one_mul]`.
+-/
 theorem deriv_circle {f : ℂ → ℂ} {c : ℂ} {r : ℝ} (hr : 0 < r) (hf : DiffContOnCl ℂ f (ball c r)) :
     deriv f c = (2 * π * I)⁻¹ * ∮ z in C(c, r), (1 / (z - c) ^ 2) • f z := by
   have := hf.circleIntegral_one_div_sub_center_pow_smul hr 1
   simp only [zero_add, Nat.reduceAdd, Nat.factorial_one, Nat.cast_one, div_one, iteratedDeriv_one] at this
   rw [this, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ (by simp [pi_ne_zero]), one_mul]
 
+/- English proof (translation)
+Establish `e : (fun x => deriv (fun s => w s x) s₀) = fun x => (2 * π * I : ℂ)⁻¹ * ∫ θ in (0 : ℝ)..2 * π, deriv (circleMap s₀ r) θ • ((1 / (circleMap s₀ r θ - s₀) ^ 2) • w (circleMap s₀ r θ) x)`. Use function extensionality and compare the values at `x`. Rewrite using `[deriv_circle hr ((hd x).diffContOnCl_ball hb)]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Use `continuous_const.mul (intervalIntegral.continuous_parametric_intervalIntegral_of_continuous' ?_ _ _)` and prove the remaining obligations. Establish `hA : Continuous fun θ : ℝ => deriv (circleMap s₀ r) θ`. Simplify using `only [deriv_circleMap]`. Conclude with `(continuous_circleMap 0 r).mul continuous_const`. Establish `hB : Continuous fun θ : ℝ => (1 / (circleMap s₀ r θ - s₀) ^ 2 : ℂ)` using `continuous_const.div (((continuous_circleMap s₀ r).sub continuous_const).pow 2) fun θ => pow_ne_zero 2 (sub_ne_zero.2 (circleMap_ne_center hr.ne'))`.
+
+Establish `hC : Continuous fun p : X × ℝ => w (circleMap s₀ r p.2) p.1` using `hc.comp_continuous (((continuous_circleMap s₀ r).comp continuous_snd).prodMk continuous_fst) fun p => ⟨hb (circleMap_mem_closedBall s₀ hr.le p.2), mem_univ _⟩`. Conclude with `(hA.comp continuous_snd).smul ((hB.comp continuous_snd).smul hC)`.
+-/
 theorem continuous_deriv_family {X : Type*} [TopologicalSpace X] {w : ℂ → X → ℂ} {S : Set ℂ} {s₀ : ℂ} {r : ℝ}
     (hr : 0 < r) (hb : closedBall s₀ r ⊆ S) (hd : ∀ x, DifferentiableOn ℂ (fun s => w s x) S)
     (hc : ContinuousOn (fun y : ℂ × X => w y.1 y.2) (S ×ˢ Set.univ)) :
@@ -89,6 +116,11 @@ theorem continuous_deriv_family {X : Type*} [TopologicalSpace X] {w : ℂ → X 
       fun p => ⟨hb (circleMap_mem_closedBall s₀ hr.le p.2), mem_univ _⟩
   exact (hA.comp continuous_snd).smul ((hB.comp continuous_snd).smul hC)
 
+/- English proof (translation)
+Establish `h` using `hK (((l⁻¹ : ℝ) : ℂ) • f) fun x => by`. Establish `e : ‖(((l⁻¹ : ℝ) : ℂ) • f).1 x‖ = l⁻¹ * ‖f.1 x‖`. Simplify using `[abs_of_pos hl]`. Rewrite using `[e, inv_mul_le_iff₀ hl]`. Conclude with `hf x`.
+
+Rewrite `h` using `[map_smul, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (inv_pos.2 hl), inv_mul_le_iff₀ hl]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem form_scale {X : Type*} {V : Submodule ℂ (X → ℂ)} (μ : V →ₗ[ℂ] ℂ) {b : X → ℝ} {K : ℝ}
     (hK : ∀ f : V, (∀ x, ‖f.1 x‖ ≤ b x) → ‖μ f‖ ≤ K) (f : V) {l : ℝ} (hl : 0 < l)
     (hf : ∀ x, ‖f.1 x‖ ≤ l * b x) : ‖μ f‖ ≤ K * l := by
@@ -101,6 +133,23 @@ theorem form_scale {X : Type*} {V : Submodule ℂ (X → ℂ)} (μ : V →ₗ[�
     inv_mul_le_iff₀ hl] at h
   linarith
 
+/- English proof (translation)
+Introduce `s₀ hs₀`. Take `⟨R, hR, hRS⟩` from `nhds_basis_closedBall.mem_iff.1 (hS.mem_nhds hs₀)`. Take `⟨C, N, hCN⟩` from `hb _ hRS (isCompact_closedBall s₀ R)`. Take `⟨r, hr, rfl⟩ : ∃ r : ℝ, 0 < r ∧ R = 3 * r` from `⟨R / 3, by positivity, by ring⟩`. Establish `hsub : closedBall s₀ r ⊆ closedBall s₀ (3 * r)` using `closedBall_subset_closedBall (by linarith)`.
+
+Set `d : X → ℂ` to `fun x => deriv (fun s => (v s).1 x) s₀`. Establish `dc : Continuous d` using `continuous_deriv_family (w := fun s => (v s).1) hr (hsub.trans hRS) hd hc`. Establish `dB : ∀ x, ‖d x‖ ≤ C / r * h x ^ N` using `fun x => by`. Use `norm_deriv_le_of_forall_mem_sphere_norm_le (f := fun s => (v s).1 x) (c := s₀) hr ((hd x).diffContOnCl_ball (hsub.trans hRS)) (C := C * h x ^ N) fun z hz => hCN z (hsub (sphere_subset_closedBall hz)) x` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+
+Set `D : V` to `⟨d, hV d _ N dc dB⟩`. Take `⟨K, hK⟩` from `hμ N`. Use `set B : ℝ := |C| / r ^ 2 + 1 with hB`. Establish `hBpos : 0 < B` using `by positivity`. Establish `key : ∀ η : ℂ, ‖η‖ < r → ‖μ (v (s₀ + η)) - μ (v s₀) - η • μ D‖ ≤ K * B * ‖η ^ 2‖`.
+
+Introduce `η hη`. Distinguish the cases in `h0 : η = 0`. Simplify using `[h0]`. Establish `hηp : 0 < ‖η‖` using `norm_pos_iff.2 h0`. Establish `e : μ (v (s₀ + η)) - μ (v s₀) - η • μ D = μ (v (s₀ + η) - v s₀ - η • D)`.
+
+Simplify using `only [map_sub, map_smul]`. Rewrite using `[e, norm_pow, mul_assoc]`. Use `form_scale μ hK _ (by positivity) fun x => ?_` and prove the remaining obligations. Establish `t` using `taylor_two hS (hd x) hr hRS (fun z hz => hCN z hz x) hη.le`. Establish `hp : 0 ≤ h x ^ N` using `pow_nonneg (hh x) N`.
+
+Establish `e2 : (v (s₀ + η) - v s₀ - η • D).1 x = (v (s₀ + η)).1 x - (v s₀).1 x - η * deriv (fun s => (v s).1 x) s₀` using `rfl`. Rewrite using `[e2]`. Use `t.trans ?_` and prove the remaining obligations. Establish `: C * h x ^ N / r ^ 2 * ‖η‖ ^ 2 = (C / r ^ 2) * (‖η‖ ^ 2 * h x ^ N)` using `by ring`. Rewrite using `[this, show B * ‖η‖ ^ 2 * h x ^ N = B * (‖η‖ ^ 2 * h x ^ N) by ring]`.
+
+Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Rewrite using `[hB]`. Establish `: C / r ^ 2 ≤ |C| / r ^ 2` using `by gcongr; exact le_abs_self C`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hO : (fun η : ℂ => μ (v (s₀ + η)) - μ (v s₀) - η • μ D) =O[𝓝 0] fun η => η ^ 2` using `Asymptotics.IsBigO.of_bound (K * B) (Filter.eventually_of_mem (ball_mem_nhds (0 : ℂ) hr) fun η hη => key η (by simpa using hη))`.
+
+Conclude with `(hasDerivAt_iff_isLittleO_nhds_zero.2 (hO.trans_isLittleO (Asymptotics.isLittleO_pow_id one_lt_two))).differentiableAt.differentiableWithinAt`.
+-/
 theorem differentiableOn_form {X : Type*} [TopologicalSpace X] {h : X → ℝ} (hh : ∀ x, 0 ≤ h x)
     {V : Submodule ℂ (X → ℂ)}
     (hV : ∀ (g : X → ℂ) (A : ℝ) (N : ℕ), Continuous g → (∀ x, ‖g x‖ ≤ A * h x ^ N) → g ∈ V)
@@ -166,6 +215,11 @@ open GlobalTheory.Doubling (absE)
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n}
 
+/- English proof (translation)
+Establish `hp : 0 < |A| + 1` using `by positivity`. Establish `hq : (((|A| + 1 : ℝ)) : ℂ) ≠ 0` using `by exact_mod_cast hp.ne'`. Establish `h1 : ((((|A| + 1 : ℝ)) : ℂ)⁻¹ • g) ∈ modFun σ Y`. Use `Submodule.subset_span ⟨hg.const_smul _, N, fun x => ?_⟩` and prove the remaining obligations. Establish `hh : 0 ≤ (ht2 x : ℝ) ^ N` using `by positivity`.
+
+Rewrite using `[Pi.smul_apply, norm_smul, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hp, inv_mul_le_iff₀ hp]`. Use `(hA x).trans (mul_le_mul_of_nonneg_right ?_ hh)` and prove the remaining obligations. Combine the linear relations using `[le_abs_self A]`. Use `(modFun σ Y).smul_mem (((|A| + 1 : ℝ)) : ℂ) h1` as an intermediate fact. Rewrite `this` using `[smul_inv_smul₀ hq]`. Then use the resulting hypothesis.
+-/
 theorem mem_modFun {g : G2 σ Y → ℂ} {A : ℝ} {N : ℕ} (hg : Continuous g)
     (hA : ∀ x, ‖g x‖ ≤ A * (ht2 x : ℝ) ^ N) : g ∈ modFun σ Y := by
   have hp : 0 < |A| + 1 := by positivity
@@ -180,6 +234,9 @@ theorem mem_modFun {g : G2 σ Y → ℂ} {A : ℝ} {N : ℕ} (hg : Continuous g)
   have := (modFun σ Y).smul_mem (((|A| + 1 : ℝ)) : ℂ) h1
   rwa [smul_inv_smul₀ hq] at this
 
+/- English proof (translation)
+Introduce `μ hμ` and use `differentiableOn_form (h := fun x : G2 σ Y => (ht2 x : ℝ)) (fun x => NNReal.coe_nonneg _) (fun _ _ _ hg hA => mem_modFun hg hA) μ hμ v hS hd hc hb`.
+-/
 theorem wholo_growForms (v : ℂ → modFun σ Y) {S : Set ℂ} (hS : IsOpen S)
     (hd : ∀ x, DifferentiableOn ℂ (fun s => (v s).1 x) S)
     (hc : ContinuousOn (fun y : ℂ × G2 σ Y => (v y.1).1 y.2) (S ×ˢ Set.univ))

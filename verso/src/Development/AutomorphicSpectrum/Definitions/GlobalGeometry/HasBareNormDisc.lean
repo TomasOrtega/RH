@@ -81,6 +81,9 @@ def HasBareNorm (U : Set (Xo.XF c)) (τ : E →+* ℂ) (φ : FrameFn Xo c) (p : 
     (t : ℝ) : Prop :=
   ∀ (V K : Type) [CommRing V] [Field K] [Algebra V K] (j : K →+* ℂ_[p]), BareNormOver U τ φ p κ t V K j
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _` and use `isUnit_one`.
+-/
 example (Y : Model Xo c (RingHom.id c.F)) (U : (Xo.XF c).Opens) (τ : E →+* ℂ) :
     UnitRule Y U τ (fun _ _ _ _ _ => 1) := fun _ _ _ _ _ _ _ => isUnit_one
 

@@ -10,6 +10,9 @@ noncomputable section
 
 namespace GlobalTheory.CxUnfold
 
+/- English proof (translation)
+Set `e : A ≃ₐ[F] A` to `{ toFun := fun z => (u : A) * z * ((u⁻¹ : Aˣ) : A) invFun := fun z => ((u⁻¹ : Aˣ) : A) * z * u left_inv := fun z => by simp [mul_assoc] right_inv := fun z => by simp [mul_assoc] map_mul' := fun z w => by simp [mul_assoc] map_add' := fun z w => by simp [mul_add, add_mul] commutes' …`. Rewrite using `[← Algebra.commutes, mul_assoc, Units.mul_inv, mul_one] }`. Conclude with `minpoly.algEquiv_eq e x`.
+-/
 theorem minpoly_units_conj {F A : Type*} [Field F] [Ring A] [Algebra F A] (u : Aˣ) (x : A) :
     minpoly F ((u : A) * x * ((u⁻¹ : Aˣ) : A)) = minpoly F x := by
   let e : A ≃ₐ[F] A :=
@@ -24,6 +27,11 @@ theorem minpoly_units_conj {F A : Type*} [Field F] [Ring A] [Algebra F A] (u : A
         rw [← Algebra.commutes, mul_assoc, Units.mul_inv, mul_one] }
   exact minpoly.algEquiv_eq e x
 
+/- English proof (translation)
+Unfold `FixL`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨d, hd⟩`. Use `⟨d, ?_⟩` and prove the remaining obligations. Rewrite `hd` using `[Matrix.mulVec_smul, smul_comm d c z]`.
+
+Conclude with `smul_right_injective _ hc hd`. Introduce and unpack `⟨d, hd⟩`. Conclude with `⟨d, by rw [Matrix.mulVec_smul, hd, smul_comm]⟩`.
+-/
 theorem fixL_smul_iff {p : ℕ} [Fact p.Prime] (G : HTGroup p) (v : InfinitePlace G.F) (β : G.Cˣ) (y : grp G β)
     (z : Fin G.n → ℂ) (c : ℂ) (hc : c ≠ 0) : FixL G v β y (c • z) ↔ FixL G v β y z := by
   unfold FixL
@@ -39,6 +47,13 @@ end GlobalTheory.CxUnfold
 
 namespace GlobalTheory.CxUnfold
 
+/- English proof (translation)
+Use `set w := Projectivization.rep (l : Projectivization ℂ (Fin G.n → ℂ))`. Establish `hw : w ≠ 0` using `Projectivization.rep_nonzero _`. Establish `hMw : (toV G v β η : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ w ≠ 0`. Introduce `h0`. Apply `hw` to reduce the goal to its premises.
+
+Apply `toV_injective G v β η` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, h0, Matrix.mulVec_zero]`. Establish `hl : ((η • l : PLv G v β) : Projectivization ℂ (Fin G.n → ℂ)) = Projectivization.mk ℂ ((toV G v β η : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ w) hMw` using `by show Projectivization.map _ _ (l : Projectivization ℂ (Fin G.n → ℂ)) = _ conv_lhs => rw [← Projectivization.mk_rep (l : Projectivization ℂ (Fin G.n → ℂ))]`. Rewrite using `[Projectivization.map_mk]`. Simplify using `only [Matrix.toLin'_apply]`.
+
+Both sides reduce to the same expression. Rewrite using `[hl]`. Establish `h2` using `Projectivization.mk_rep (Projectivization.mk ℂ ((toV G v β η : Matrix (Fin G.n) (Fin G.n) ℂ) *ᵥ w) hMw)`. Take `⟨c, hc⟩` from `(Projectivization.mk_eq_mk_iff ℂ _ _ (Projectivization.rep_nonzero _) hMw).1 h2`. Conclude with `⟨c, c.ne_zero, by rw [← hc, Units.smul_def]⟩`.
+-/
 theorem rep_smul {p : ℕ} [Fact p.Prime] (G : HTGroup p) (v : InfinitePlace G.F) (β : G.Cˣ) (η : grp G β)
     (l : PLv G v β) : ∃ c : ℂ, c ≠ 0 ∧
       Projectivization.rep ((η • l : PLv G v β) : Projectivization ℂ (Fin G.n → ℂ)) =

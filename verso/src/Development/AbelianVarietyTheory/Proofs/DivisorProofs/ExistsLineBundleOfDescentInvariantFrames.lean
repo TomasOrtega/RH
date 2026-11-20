@@ -10,17 +10,51 @@ set_option autoImplicit false
 
 namespace GlobalTheory.LBDescent
 
+/- English proof (translation)
+Substitute `h1 h2` using the available equality. Rewrite using `[mul_inv_rev, mul_comm g D, _root_.mul_assoc, mul_inv_cancel_comm_assoc]`.
+-/
 private theorem ratio_eq {G : Type} [CommGroup G] (A B C D g : G) (h1 : A = g * B) (h2 : C = g * D) :
     C * A⁻¹ = D * B⁻¹ := by
   subst h1 h2; rw [mul_inv_rev, mul_comm g D, _root_.mul_assoc, mul_inv_cancel_comm_assoc]
 
+/- English proof (translation)
+Rewrite using `[mul_comm (B * A⁻¹), _root_.mul_assoc, inv_mul_cancel_left]`.
+-/
 private theorem ratio_mul {G : Type} [CommGroup G] (A B C : G) : (B * A⁻¹) * (C * B⁻¹) = C * A⁻¹ := by
   rw [mul_comm (B * A⁻¹), _root_.mul_assoc, inv_mul_cancel_left]
 
+/- English proof (translation)
+Rewrite using `[_root_.mul_assoc _ g⁻¹, ← mul_inv, ← h, mul_inv_cancel_comm]`.
+-/
 private theorem ratio_inv {G : Type} [CommGroup G] (A S g T : G) (h : S = g * T) :
     A⁻¹ = S * A⁻¹ * g⁻¹ * T⁻¹ := by
   rw [_root_.mul_assoc _ g⁻¹, ← mul_inv, ← h, mul_inv_cancel_comm]
 
+/- English proof (translation)
+Introduce `X Y f _ _ _ L hL φ H`. Use `choose V hV s hs1 hs2 using H`. Establish `hW : ∀ a b i, f ⁻¹ᵁ (V a ⊓ V b) ⊓ L.U i ≤ f ⁻¹ᵁ (V a ⊓ V b)` using `fun a b i => inf_le_left`. Establish `lb : ∀ a b i, f ⁻¹ᵁ (V a ⊓ V b) ⊓ L.U i ≤ f ⁻¹ᵁ V b ⊓ L.U i` using `fun a b i x hx => ⟨hx.1.2, hx.2⟩`. Establish `la : ∀ a b i, f ⁻¹ᵁ (V a ⊓ V b) ⊓ L.U i ≤ f ⁻¹ᵁ V a ⊓ L.U i` using `fun a b i x hx => ⟨hx.1.1, hx.2⟩`.
+
+Establish `hex : ∀ a b, ∃ t : Γ(X, f ⁻¹ᵁ (V a ⊓ V b))ˣ, ∀ i, res (hW a b i) t = res (lb a b i) (s b i) * (res (la a b i) (s a i))⁻¹`. Introduce `a b`. Use `glue_unit _ _ (hW a b) ?_ _ ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨i, hi⟩` from `exists_chart hL x`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, hx, hi⟩`. Introduce `i j x hx`. Simplify using `only [map_mul, map_inv]`. Rewrite using `[gm_res _ x (lb a b i) hx.1, gm_res _ x (la a b i) hx.1, gm_res _ x (lb a b j) hx.2, gm_res _ x (la a b j) hx.2]`. Conclude with `ratio_eq _ _ _ _ _ (hs1 a i j x hx.1.1.1 hx.1.2 hx.2.2) (hs1 b i j x hx.1.1.2 hx.1.2 hx.2.2)`.
+
+Use `choose t ht using hex`. Establish `tform : ∀ a b {Z : Scheme.{0}} (g : Z ⟶ X) (z : Z) (i : L.ι), f (g z) ∈ V a → f (g z) ∈ V b → g z ∈ L.U i → gm g z _ (t a b) = gm g z _ (s b i) * (gm g z _ (s a i))⁻¹`. Introduce `a b Z g z i ha hb hi`. Establish `hm : g z ∈ f ⁻¹ᵁ (V a ⊓ V b) ⊓ L.U i` using `⟨⟨ha, hb⟩, hi⟩`. Rewrite using `[← gm_res g z (hW a b i) hm, ht a b i, map_mul, map_inv, gm_res g z (lb a b i) hm, gm_res g z (la a b i) hm]`.
+
+Establish `hk : ∀ a b, ∃ k : Γ(Y, V a ⊓ V b)ˣ, pullU f _ k = t a b`. Introduce `a b`. Use `GlobalTheory.FlatDescent.exists_unit_of_gm_eq f (IsPullback.of_hasPullback f f) _ _ fun z hz => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_chart hL (pullback.fst f f z)`. Take `⟨j, hj⟩` from `exists_chart hL (pullback.snd f f z)`.
+
+Establish `e : f (pullback.snd f f z) = f (pullback.fst f f z)` using `congrArg (fun q : pullback f f ⟶ Y => q z) pullback.condition.symm`. Rewrite using `[tform a b _ z i hz.1 hz.2 hi, tform a b _ z j (e ▸ hz.1) (e ▸ hz.2) hj, ← hs2 a z i j hz.1 hi hj, ← hs2 b z i j hz.2 hi hj]`. Use `group`. Use `choose k hk using hk`. Establish `kform : ∀ a b (x : X) (i : L.ι), f x ∈ V a → f x ∈ V b → x ∈ L.U i → gm f x (V a ⊓ V b) (k a b) = gm (𝟙 X) x _ (s b i) * (gm (𝟙 X) x _ (s a i))⁻¹`.
+
+Introduce `a b x i ha hb hi`. Use `gm_pull (𝟙 X) f x (V a ⊓ V b) ⟨ha, hb⟩ (k a b)` as an intermediate fact. Rewrite `this` using `[Category.id_comp, hk]`. Rewrite using `[← this]`. Conclude with `tform a b (𝟙 X) x i ha hb hi`.
+
+Establish `hL' : LB.IsLB (⟨Y, V, k⟩ : LB Y)`. Use `⟨?_, fun a => ?_, fun a b c => ?_⟩` and prove the remaining obligations. Conclude with `eq_top_iff.2 fun y _ => TopologicalSpace.Opens.mem_iSup.2 ⟨y, hV y⟩`. Use `GlobalTheory.FlatDescent.unit_ext_of_flat f fun x hx => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_chart hL x`.
+
+Rewrite using `[gm_res f x _ hx, map_one]`. Conclude with `(kform a a x i hx hx hi).trans (mul_inv_cancel _)`. Use `GlobalTheory.FlatDescent.unit_ext_of_flat f fun x hx => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_chart hL x`. Rewrite using `[map_mul, gm_res f x _ hx, gm_res f x _ hx, gm_res f x _ hx]`.
+
+Conclude with `((congrArg₂ (· * ·) (kform a b x i hx.1.1 hx.1.2 hi) (kform b c x i hx.1.2 hx.2 hi)).trans (ratio_mul _ _ _)).trans (kform a c x i hx.1.1 hx.2 hi).symm`. Establish `le1 : ∀ (J : PUnit → Y) (i : L.ι), ((⟨Y, V, k⟩ : LB Y).pull f).U J ⊓ L.U i ≤ f ⁻¹ᵁ V (J PUnit.unit) ⊓ L.U i` using `fun J i x hx => ⟨mem_pull.1 hx.1, hx.2⟩`. Use `⟨⟨Y, V, k⟩, hL', ⟨fun p => (res (le1 p.1 p.2) (s (p.1 PUnit.unit) p.2))⁻¹⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨J, i⟩ ⟨J', i'⟩`. Apply `unit_ext` to reduce the goal to its premises.
+
+Introduce `x hx`. Establish `hj` using `mem_pull.1 hx.1.1`. Establish `hj'` using `mem_pull.1 hx.2.1`. Establish `d` using `gm_div_g (L := (⟨Y, V, k⟩ : LB Y)) (L' := L) (F := f) (𝟙 X) x (J PUnit.unit) (J' PUnit.unit) i i' hj hj' hx.1.2 hx.2.2`. Rewrite using `[map_mul, gm_res _ x _ hx, gm_res _ x _ hx]`.
+
+Use `erw [d]`. Use `erw [map_inv, map_inv, gm_res (𝟙 X) x (le1 J i) (show x ∈ ((⟨Y, V, k⟩ : LB Y).pull f).U J ⊓ L.U i from hx.1), gm_res (𝟙 X) x (le1 J' i') (show x ∈ ((⟨Y, V, k⟩ : LB Y).pull f).U J' ⊓ L.U i' from hx.2)]`. Rewrite using `[Category.id_comp]`. Use `erw [kform (J PUnit.unit) (J' PUnit.unit) x i hj hj' hx.1.2]`. Conclude with `ratio_inv _ _ _ _ (hs1 (J' PUnit.unit) i i' x hj' hx.1.2 hx.2.2)`.
+-/
 theorem exists_lb_of_invariant_frames : ∀ {X Y : Scheme.{0}} (f : X ⟶ Y) [QuasiCompact f] [Flat f] [Surjective f] (L : LB X), L.IsLB →
     ∀ (φ : ∀ i j, Γ(pullback f f, chart f L i j)ˣ),
     (∀ y : Y, ∃ V : Y.Opens, y ∈ V ∧ ∃ s : ∀ i, Γ(X, f ⁻¹ᵁ V ⊓ L.U i)ˣ,

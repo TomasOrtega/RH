@@ -45,11 +45,17 @@ open GlobalTheory.GalCut.IwaTwist GlobalTheory.GalCut.SsTwist Polynomial UpperTh
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : Formalism.ConjugateSelfDual.IsPlaceOver A w}
 
+/- English proof (translation)
+Take `⟨n, b, rfl⟩` from `x.exists_rep`. Rewrite using `[WD.lpTwist_mk, WD.monodromyZero_ofWeilDeligneRepClass_iff, WD.monodromyZero_ofWeilDeligneRepClass_iff]`. Both sides reduce to the same expression.
+-/
 theorem monodromy_vanishes_weilTwist_iff (x : WD h) (ξ : Weil h →* ℂˣ) (hξ : IsSmooth ξ) : (x.lpTwist ξ hξ).mono0 ↔ x.mono0 := by
   obtain ⟨n, b, rfl⟩ := x.exists_rep
   rw [WD.lpTwist_mk, WD.monodromyZero_ofWeilDeligneRepClass_iff, WD.monodromyZero_ofWeilDeligneRepClass_iff]
   rfl
 
+/- English proof (translation)
+Rewrite using `[charPol_lpTwist, charPol_lpTwist]`. Conclude with `⟨scaleRoots_cancel (Units.ne_zero _), fun e => by rw [e]⟩`.
+-/
 theorem charPol_lpTwist_iff (x y : WD h) (ξ : Weil h →* ℂˣ) (hξ : IsSmooth ξ) (g : Weil h) :
     (x.lpTwist ξ hξ).charPol g = (y.lpTwist ξ hξ).charPol g ↔ x.charPol g = y.charPol g := by
   rw [charPol_lpTwist, charPol_lpTwist]

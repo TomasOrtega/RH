@@ -18,6 +18,11 @@ namespace GlobalTheory.CompanionTheory.KummerCupInv
 
 attribute [local instance 2000] Rep.hV2
 
+/- English proof (translation)
+Establish `e : y ^ s * y ^ q = (y ^ n) ^ m * y ^ r`. Rewrite using `[← pow_add, ← pow_mul, ← pow_add, h]`. Rewrite using `[mul_pow, ← pow_mul, ← pow_eq_pow_mod _ hζ]`. Establish `hr : y ^ r ≠ 0` using `pow_ne_zero _ hy`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `(ζ ^ (p * q)) * e`.
+-/
 theorem pow_identity {F : Type} [Field F] {n m p q r s : ℕ} {ζ y : F} (hy : y ≠ 0) (hζ : ζ ^ n = 1)
     (h : s + q = n * m + r) :
     (ζ ^ p * y) ^ q / y ^ r * y ^ s = ζ ^ ((p * q) % n) * (y ^ n) ^ m := by
@@ -28,6 +33,9 @@ theorem pow_identity {F : Type} [Field F] {n m p q r s : ℕ} {ζ y : F} (hy : y
   field_simp
   linear_combination (ζ ^ (p * q)) * e
 
+/- English proof (translation)
+Apply `Additive.toMul.injective` to reduce the goal to its premises. Simplify using `only [natCast_zsmul, toMul_nsmul, toMul_add, toMul_sub, toMul_ofMul]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_pow_eq_pow_val, Units.val_mul, Units.val_div_eq_div_val, coe_galUnitsHom_apply, map_pow, hg]`. Rewrite using `[hu, pow_identity y.ne_zero (by rw [← Units.val_pow_eq_pow_val, hζ, Units.val_one]) h, hk]`.
+-/
 theorem kummer_key {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {n m p q r s k : ℕ} (ζ y u : Ωˣ)
     (g : Ω ≃ₐ[K] Ω) (hζ : ζ ^ n = 1) (hu : (u : Ω) = (y : Ω) ^ n)
     (hg : g (y : Ω) = (ζ : Ω) ^ p * y) (hk : k = (p * q) % n) (h : s + q = n * m + r) :
@@ -41,6 +49,11 @@ theorem kummer_key {K Ω : Type} [Field K] [Field Ω] [Algebra K Ω] {n m p q r 
     coe_galUnitsHom_apply, map_pow, hg]
   rw [hu, pow_identity y.ne_zero (by rw [← Units.val_pow_eq_pow_val, hζ, Units.val_one]) h, hk]
 
+/- English proof (translation)
+Rewrite using `[← restrictNormal_eq_maximalUnramifiedExtensionFrobenius_iff]`. Use extensionality with `y`. Establish `h1` using `AlgEquiv.restrictNormal_commutes ((localArtinMap K Ω a).liftNormal Ω) (maximalUnramifiedExtension K Ω) y`. Establish `h2` using `AlgEquiv.liftNormal_commutes (localArtinMap K Ω a) Ω ⟨(y : Ω), maximalUnramifiedExtension_le_maximalAbelianExtension y.2⟩`. Establish `h3` using `localArtinMap_uniformizer_apply (Ω := Ω) ha y.2`.
+
+Simplify using `only [IntermediateField.algebraMap_apply] at h1 h2`. Rewrite using `[h1, h2]`. Conclude with `h3`.
+-/
 theorem unramifiedDegree_liftNormal_localArtinMap {K Ω : Type} [Field K] [ValuativeRel K]
     [TopologicalSpace K] [IsNonarchimedeanLocalField K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
     [ValuativeRel Ω] [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension K Ω]
@@ -57,6 +70,23 @@ theorem unramifiedDegree_liftNormal_localArtinMap {K Ω : Type} [Field K] [Valua
   rw [h1, h2]
   exact h3
 
+/- English proof (translation)
+Introduce `K Ω _ _ _ _ _ _ _ _ _ _ _ n _ ζ y a hζ hord hy κ χ hκ hadd hcont hdeg x hx`. Establish `hlc : IsLocallyConstant χ` using `(IsLocallyConstant.iff_continuous χ).2 hcont`. Set `ψ : Additive Gal(Ω/K) →ₜ+ QZ` to `{ toFun := fun σ => zmodToQZ n (χ (Additive.toMul σ)) map_zero' := by`. Establish `h1 : χ 1 = 0` using `by simpa using hadd 1 1`. Simplify using `[h1]`.
+
+Use the proof step `map_add' := fun σ τ => by simp [hadd]`. Use `continuous_toFun := ((hlc.comp_continuous continuous_toMul).comp (zmodToQZ n)).continuous }`. Set `z : cocycles (galUnitsZ K Ω) 2` to `cocyclesULiftInt (galUnits.{0} K Ω) x`. Take `⟨w, hw, hwc⟩` from `exists_cocycle_cupCharClassProf (galUnitsZ K Ω) ψ (unitsInvariant K Ω a)`. Set `f : Gal(Ω/K) → galUnitsZ K Ω` to `fun g => Additive.ofMul (y ^ (χ g).val)`.
+
+Establish `hf : IsLocallyConstant f` using `hlc.comp fun c : ZMod n => (Additive.ofMul (y ^ c.val) : galUnitsZ K Ω)`. Establish `hz : cohomologyπ (galUnitsZ K Ω) 2 (z + w) = 0`. Use `(cohomologyπ_two_eq_zero_iff _ _).2 ⟨f, hf, fun g h => ?_⟩` and prove the remaining obligations. Establish `ez : cochainOf (galUnitsZ K Ω) (cocycleι _ 2 z) ![g, h] = Additive.ofMul (ζ ^ (κ g * χ h).val)` using `(congrFun (cochainOf_cocycleι_cocyclesULiftInt (galUnits.{0} K Ω) x) ![g, h]).trans (hx _)`. Use `set m : ℕ := ((χ g).val + (χ h).val) / n with hm`.
+
+Establish `em : charCocycle (charAdd ψ) ((![g, h] : Fin 2 → Gal(Ω/K)) 0, (![g, h] : Fin 2 → Gal(Ω/K)) 1) = (m : ℤ)` using `charCocycle_eq_bockInt χ (charAdd ψ) (fun _ => rfl) g h`. Establish `hsum : (χ g).val + (χ h).val = n * m + (χ (g * h)).val`. Rewrite using `[hadd, ZMod.val_add]`. Conclude with `(Nat.div_add_mod _ _).symm`. Set `u : Ωˣ` to `Units.map (algebraMap K Ω : K →* Ω) a`.
+
+Establish `key` using `kummer_key ζ y u g hζ (show (u : Ω) = (y : Ω) ^ n from hy.symm) (hκ g) (show (κ g * χ h).val = ((κ g).val * (χ h).val) % n from ZMod.val_mul _ _) hsum`. Rewrite using `[map_add, cochainOf_add, Pi.add_apply, ez, hwc, em]`. Conclude with `key`. Establish `e1 : cohomologyULiftIntAddEquiv (galUnits.{0} K Ω) 2 (cohomologyπ _ 2 x) = cohomologyπ (galUnitsZ K Ω) 2 z` using `cohomologyULiftIntAddEquiv_cohomologyπ' _ x`. Establish `e2 : brauerInv K Ω (cohomologyπ _ 2 x) = brauerInvZ K Ω (cohomologyπ (galUnitsZ K Ω) 2 z)`.
+
+Rewrite using `[← e1, brauerInvZ_cohomologyULiftIntAddEquiv]`. Establish `e3 : cohomologyπ (galUnitsZ K Ω) 2 z + galCupClass K Ω ψ a = 0`. Rewrite using `[galCupClass, ← hw, ← map_add]`. Conclude with `hz`. Establish `e4` using `brauerInvZ_galCupClass_liftNormal ψ a`.
+
+Establish `e5 : ψ (Additive.ofMul ((localArtinMap K Ω a).liftNormal Ω)) = zmodToQZ n 1`. Express the relevant statement in the definitionally equal form `zmodToQZ n (χ ((localArtinMap K Ω a).liftNormal Ω)) = _`. Rewrite using `[hdeg _ (unramifiedDegree_liftNormal_localArtinMap hord)]`. Establish `e6` using `congrArg (brauerInvZ K Ω) e3`. Rewrite `e6` using `[map_add, map_zero, e4, e5]`.
+
+Rewrite using `[e2]`. Conclude with `eq_neg_of_add_eq_zero_left e6`.
+-/
 theorem inv_kummerCup : ∀ (K Ω : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] [ValuativeRel Ω] [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension K Ω] (n : ℕ) [NeZero n] (ζ y : Ωˣ) (a : Kˣ), ζ ^ n = 1 → ord (a : K) = 1 → (y : Ω) ^ n = algebraMap K Ω a → ∀ (κ χ : Gal(Ω/K) → ZMod n), (∀ g : Gal(Ω/K), g (y : Ω) = (ζ : Ω) ^ (κ g).val * y) → (∀ g h, χ (g * h) = χ g + χ h) → Continuous χ → (∀ g, unramifiedDegree K Ω g = Multiplicative.ofAdd 1 → χ g = 1) → ∀ x : cocycles (galUnits.{0} K Ω) 2, (∀ s : Fin 2 → Gal(Ω/K), cochainOf _ (cocycleι _ 2 x) s = Additive.ofMul (ζ ^ (κ (s 0) * χ (s 1)).val)) → brauerInv K Ω (cohomologyπ _ 2 x) = - zmodToQZ n 1 := by
   intro K Ω _ _ _ _ _ _ _ _ _ _ _ n _ ζ y a hζ hord hy κ χ hκ hadd hcont hdeg x hx
   have hlc : IsLocallyConstant χ := (IsLocallyConstant.iff_continuous χ).2 hcont

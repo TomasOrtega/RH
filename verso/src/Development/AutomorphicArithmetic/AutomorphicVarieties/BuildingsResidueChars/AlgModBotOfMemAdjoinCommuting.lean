@@ -4,6 +4,19 @@ open NumberField NumberField.mixedEmbedding Matrix MeasureTheory GroundTheory.Au
 open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
+/- English proof (translation)
+Set `I : Ideal R` to `{ carrier := {r | ∀ x ∈ S, φ r x = 0} add_mem' := fun {a b} ha hb x hx => by`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[map_add, LinearMap.add_apply, ha x hx, hb x hx, add_zero]`. Use the proof step `zero_mem' := fun x _ => by simp`. Use the proof step `smul_mem' := fun c r hr x hx => by`.
+
+Simplify using `only [Set.mem_setOf_eq] at hr ⊢`. Rewrite using `[smul_eq_mul, map_mul, Module.End.mul_apply, hr x hx, map_zero] }`. Establish `hint : ∀ r ∈ t, IsIntegral ℂ (Ideal.Quotient.mkₐ ℂ I r)`. Introduce `r hr`. Take `⟨p, hp, hx⟩` from `ht r hr`.
+
+Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.aeval_def, Polynomial.aeval_algHom_apply, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`. Introduce `x hxS`. Establish `hx'` using `hx x hxS`. Rewrite `hx'` using `[Polynomial.aeval_algHom_apply, Submodule.mem_bot]`.
+
+Conclude with `hx'`. Introduce `r hr`. Establish `h1 : Ideal.Quotient.mkₐ ℂ I r ∈ Algebra.adjoin ℂ (Ideal.Quotient.mkₐ ℂ I '' t)`. Rewrite using `[Algebra.adjoin_image]`. Conclude with `⟨r, hr, rfl⟩`.
+
+Establish `h2 : Ideal.Quotient.mkₐ ℂ I r ∈ integralClosure ℂ (R ⧸ I)`. Use `Algebra.adjoin_le ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨r', hr', rfl⟩`. Conclude with `hint r' hr'`. Take `⟨p, hp, hev⟩` from `h2`.
+
+Use `⟨p, hp, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hev` using `[← Polynomial.aeval_def, Polynomial.aeval_algHom_apply, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[Polynomial.aeval_algHom_apply, Submodule.mem_bot]`. Conclude with `hev x hx`.
+-/
 private theorem adjoin_alg {V : Type} [AddCommGroup V] [Module ℂ V] {R : Type} [CommRing R] [Algebra ℂ R]
     (φ : R →ₐ[ℂ] Module.End ℂ V) (S : Submodule ℂ V) (t : Set R) (ht : ∀ r ∈ t, AlgMod S ⊥ (φ r)) :
     ∀ r ∈ Algebra.adjoin ℂ t, AlgMod S ⊥ (φ r) := by
@@ -41,6 +54,11 @@ private theorem adjoin_alg {V : Type} [AddCommGroup V] [Module ℂ V] {R : Type}
   rw [Polynomial.aeval_algHom_apply, Submodule.mem_bot]
   exact hev x hx
 
+/- English proof (translation)
+Introduce `M _ _ S s hcomm hs T hT`. Use `letI : CommRing (Algebra.adjoin ℂ s) := Algebra.adjoinCommRingOfComm ℂ hcomm`. Establish `hmem : (⟨T, hT⟩ : Algebra.adjoin ℂ s) ∈ Algebra.adjoin ℂ (((↑) : Algebra.adjoin ℂ s → Module.End ℂ M) ⁻¹' s)`. Rewrite using `[Algebra.adjoin_adjoin_coe_preimage]`. Discharge the goal by the elementary cases of `trivial`.
+
+Conclude with `adjoin_alg (Algebra.adjoin ℂ s).val S _ (fun r hr => hs r hr) _ hmem`.
+-/
 theorem UpperTheory.algMod_bot_of_mem_adjoin_commuting :
     ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (S : Submodule ℂ M) (s : Set (Module.End ℂ M)), (∀ x ∈ s, ∀ y ∈ s, x * y = y * x) → (∀ T ∈ s, AlgMod S ⊥ T) → ∀ T ∈ Algebra.adjoin ℂ s, AlgMod S ⊥ T := by
   intro M _ _ S s hcomm hs T hT

@@ -45,6 +45,9 @@ variable {mapR : ∀ {S T : Type} [CommRing S] [Algebra K S] [CommRing T] [Algeb
   (S →ₐ[K] T) → pts S → pts T → Prop}
 variable {borR : ∀ {S : Type} [CommRing S] [Algebra K S], (Jx → Sˣ) → pts S → pts S → Prop}
 
+/- English proof (translation)
+Establish `e : Units.map (g : A →* T) x = Units.map (g' : B →* T) x'` using `Units.ext h`. Establish `e'` using `congrArg (fun u : Tˣ => ((u ^ n : Tˣ) : T)) e`. Simplify using `only [← map_zpow] at e'`. Conclude with `e'`.
+-/
 theorem map_zpow_units {A B T : Type} [CommRing A] [Algebra K A] [CommRing B] [Algebra K B] [CommRing T]
     [Algebra K T] (g : A →ₐ[K] T) (g' : B →ₐ[K] T) (x : Aˣ) (x' : Bˣ) (h : g (x : A) = g' (x' : B)) (n : ℤ) :
     g ((x ^ n : Aˣ) : A) = g' ((x' ^ n : Bˣ) : B) := by
@@ -53,6 +56,11 @@ theorem map_zpow_units {A B T : Type} [CommRing A] [Algebra K A] [CommRing B] [A
   simp only [← map_zpow] at e'
   exact e'
 
+/- English proof (translation)
+Unfold `evalAt`. Rewrite using `[dif_pos hy, dif_pos hy']`. Apply `eq_of_locM (K := K)` to reduce the goal to its premises. Introduce `m hm`. Take `⟨A, u, c, c', B, uB, uB', tB, π, π', cB, hc, hc', hπ, hπ', hbB, e1, e2, e3⟩` from `h S t y y' hb m`.
+
+Rewrite using `[map_mul, chartAt_val hf hc' hy'.choose_spec.choose_spec.choose_spec, chartAt_val hf hc hy.choose_spec.choose_spec.choose_spec, ← e1, ← e2, AlgHom.comp_apply, AlgHom.comp_apply, ← hf A B π u uB hπ, ← hf A B π' u uB' hπ', hw B tB uB uB' hbB, map_mul]`. Use `congr 1`. Rewrite using `[Units.coe_prod, map_prod, map_prod]`. Conclude with `Finset.prod_congr rfl fun i _ => map_zpow_units cB (locM K m) (tB i) (t i) (e3 i) (e i)`.
+-/
 theorem wtAllZ_of_borChart (h : BorChart pts mapR borR) (e : Jx → ℤ) {f : Rules pts}
     (hf : IsNatural pts mapR f)
     (hw : ∀ (p : TRing K) (t : Jx → (p.R)ˣ) (y y' : pts p.R), borR t y y' →
@@ -74,6 +82,9 @@ theorem wtAllZ_of_borChart (h : BorChart pts mapR borR) (e : Jx → ℤ) {f : Ru
 
 end Charts
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c a f L _ _ t y y' hf hb`. Take `⟨⟨-, -, hB, -, hA, -⟩, -⟩` from `GlobalTheory.Exist.frame_laws_of_moduli E H Dw l Xo c`. Conclude with `wtAllZ_of_borChart hB (GlobalTheory.CompanionTheory.Ar.Rec.exZ Dw a) hf.1 hf.2 L t y y' (hA L y) (hA L y') hb`.
+-/
 theorem evR_frBor_secZ_field : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (a : GlobalTheory.CompanionTheory.Ar.Rec.WZ E) (f : Rul Xo c) (L : Type) [Field L] [Algebra c.F L] (t : Ix Dw → Lˣ) (y y' : FrPt Xo c L), f ∈ GlobalTheory.CompanionTheory.Ar.Rec.secZ Xo c a → FrBor t y y' → evR Xo c f y' = ((∏ i, t i ^ GlobalTheory.CompanionTheory.Ar.Rec.exZ Dw a i : Lˣ) : L) * evR Xo c f y := by
   intro E _ _ _ H Dw l Xo c a f L _ _ t y y' hf hb
   obtain ⟨⟨-, -, hB, -, hA, -⟩, -⟩ := GlobalTheory.Exist.frame_laws_of_moduli E H Dw l Xo c

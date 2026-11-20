@@ -43,6 +43,11 @@ structure TwJoin (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (nch : 
   cg : CGTrue hL D gal.wd
   base : first → ∀ w, D.what₂.muAt w ≠ D.what₂.mu0 → BaseTup Y (nch.twI w)
 
+/- English proof (translation)
+Take `⟨X, h1, h2, h3, h4, h5, h6, h7, h8, hR, -, -, -, hA, -⟩` from `a`. Consider the cases of `X`. Simplify using `only at h1 h2 h3 h4 h5 h6 h7 h8 hR hA ⊢`. Substitute `h1 h4 h5 h6 h7` using the available equality. Consider the cases of `h2`.
+
+Consider the cases of `h3`. Consider the cases of `h8`. Consider the cases of `hA`. Consider the cases of `hR`. Both sides reduce to the same expression.
+-/
 theorem TwJoin.Sb_eq {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {nch : NChoice D} {xd : ThData D} {first : Prop} {G : Type}
     [iG : Group G] [fG : Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {C : Formalism.L2.Pj.CoreJ D}
     [aC : Algebra C.Q.c.F D.what₂.LL] {R : RealDat3 D A3 C.Q.c.F} {F : Face3 D A3} {cG : G0 R.Pg D.R.r ≃* G0g D.nd}

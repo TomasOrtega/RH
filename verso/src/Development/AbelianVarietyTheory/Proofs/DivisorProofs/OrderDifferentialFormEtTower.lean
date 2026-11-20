@@ -41,14 +41,25 @@ def coeffHom (δ : Derivation k R S) : R →+* TrivSqZeroExt S S where
 def polyHom (δ : Derivation k R S) (v : Fin r → S) : MvPolynomial (Fin r) R →+* TrivSqZeroExt S S :=
   eval₂Hom (coeffHom δ) fun i => inl (algebraMap (MvPolynomial (Fin r) R) S (X i)) + inr (v i)
 
+/- English proof (translation)
+Simplify using `[polyHom, coeffHom]`.
+-/
 theorem polyHom_C (δ : Derivation k R S) (v : Fin r → S) (a : R) :
     polyHom δ v (C a) = inl (algebraMap R S a) + inr (δ a) := by
   simp [polyHom, coeffHom]
 
+/- English proof (translation)
+Simplify using `[polyHom]`.
+-/
 theorem polyHom_X (δ : Derivation k R S) (v : Fin r → S) (i : Fin r) :
     polyHom δ v (X i) = inl (algebraMap (MvPolynomial (Fin r) R) S (X i)) + inr (v i) := by
   simp [polyHom]
 
+/- English proof (translation)
+Establish `: (TrivSqZeroExt.fstHom S S S).toRingHom.comp (polyHom δ v) = algebraMap (MvPolynomial (Fin r) R) S`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `only [RingHom.comp_apply, polyHom_C, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, fstHom_apply, fst_add, fst_inl, fst_inr, add_zero, IsScalarTower.algebraMap_apply R (MvPolynomial (Fin r) R) S, MvPolynomial.algebraMap_eq]`. Introduce `i`.
+
+Simplify using `only [RingHom.comp_apply, polyHom_X, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, fstHom_apply, fst_add, fst_inl, fst_inr, add_zero]`. Conclude with `RingHom.congr_fun this p`.
+-/
 theorem polyHom_fst (δ : Derivation k R S) (v : Fin r → S) (p : MvPolynomial (Fin r) R) :
     fst (polyHom δ v p) = algebraMap (MvPolynomial (Fin r) R) S p := by
   have : (TrivSqZeroExt.fstHom S S S).toRingHom.comp (polyHom δ v) =
@@ -79,9 +90,15 @@ def polyDer (δ : Derivation k R S) (v : Fin r → S) : Derivation k (MvPolynomi
       Algebra.algebraMap_self, RingHom.id_apply]
     ring
 
+/- English proof (translation)
+Simplify using `[polyDer, polyHom_C]`.
+-/
 theorem polyDer_C (δ : Derivation k R S) (v : Fin r → S) (a : R) : polyDer δ v (C a) = δ a := by
   simp [polyDer, polyHom_C]
 
+/- English proof (translation)
+Simplify using `[polyDer, polyHom_X]`.
+-/
 theorem polyDer_X (δ : Derivation k R S) (v : Fin r → S) (i : Fin r) : polyDer δ v (X i) = v i := by
   simp [polyDer, polyHom_X]
 
@@ -105,12 +122,54 @@ def dualForm (DD : Derivation k (MvPolynomial (Fin r) R) S) : Ω[S⁄k] →ₗ[S
     (tensorKaehlerEquivOfFormallyEtale k (MvPolynomial (Fin r) R) S).symm.toLinearMap
 
 omit [CharZero k] in
+/- English proof (translation)
+Simplify using `only [dualForm, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, tensorKaehlerEquivOfFormallyEtale_symm_D_algebraMap, LinearMap.liftBaseChange_tmul, one_smul, Derivation.liftKaehlerDifferential_comp_D]`.
+-/
 theorem dualForm_D (DD : Derivation k (MvPolynomial (Fin r) R) S) (p : MvPolynomial (Fin r) R) :
     dualForm DD (D k S (algebraMap _ S p)) = DD p := by
   simp only [dualForm, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply,
     tensorKaehlerEquivOfFormallyEtale_symm_D_algebraMap, LinearMap.liftBaseChange_tmul, one_smul,
     Derivation.liftKaehlerDifferential_comp_D]
 
+/- English proof (translation)
+Use `haveI := hx.isAlgebraic_field`. Use `haveI : Algebra.IsSeparable (IntermediateField.adjoin k (Set.range (fun i => algebraMap R K (x i)))) K := Algebra.IsAlgebraic.isSeparable_of_perfectField`. Take `⟨bK, hbK⟩` from `exists_basis_kaehler_of_algebraicIndependent hx.1`. Use `set A := MvPolynomial (Fin r) R`. Set `Y : Fin (r + n) → A` to `Fin.append (fun j => X j) (fun j => C (x j))`.
+
+Establish `hY : (fun i => algebraMap A S (Y i)) = Fin.append (fun j => algebraMap A S (X j)) (fun j => algebraMap R S (x j))`. Use function extensionality and compare the values at `i`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) i` and prove the remaining obligations. Simplify using `[Y]`. Simplify using `only [Y, Fin.append_right]`.
+
+Rewrite using `[← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply]`. Set `δx : Fin n → Derivation k R S` to `fun m => (semiσ σ hσR).compDer (((bK.coord m).compDer (D k K)).compAlgebraMap R)`. Establish `hδx (m i : Fin n) : δx m (x i) = if i = m then 1 else 0`. Express the relevant statement in the definitionally equal form `σ (bK.coord m (D k K (algebraMap R K (x i)))) = _`. Rewrite using `[← hbK, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Set `DD : Fin (r + n) → Derivation k A S` to `Fin.append (fun j => polyDer 0 (Pi.single j 1)) (fun m => polyDer (δx m) 0)`. Establish `hDD (j i : Fin (r + n)) : DD j (Y i) = if i = j then 1 else 0`. Apply the tactic sequence `refine Fin.addCases (fun j => ?_) (fun j => ?_) j <;>`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations.
+
+Simplify using `only [DD, Y, Fin.append_left]`. Rewrite using `[polyDer_X, Pi.single_apply]`. Conclude with `if_congr (Fin.castAdd_injective _ _).eq_iff.symm rfl rfl`. Simplify using `only [DD, Y, Fin.append_left, Fin.append_right]`. Rewrite using `[polyDer_C, Derivation.zero_apply, if_neg]`.
+
+Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Simplify using `only [DD, Y, Fin.append_left, Fin.append_right]`.
+
+Rewrite using `[polyDer_X, Pi.zero_apply, if_neg]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [DD, Y, Fin.append_right]`. Rewrite using `[polyDer_C, hδx]`. Conclude with `if_congr (Fin.natAdd_injective _ _).eq_iff.symm rfl rfl`. Establish `hΦ (j i : Fin (r + n)) : dualForm (DD j) (D k S (algebraMap A S (Y i))) = if i = j then 1 else 0`. Rewrite using `[dualForm_D, hDD]`.
+
+Establish `hli : LinearIndependent S (fun i => D k S (algebraMap A S (Y i)))`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg j`. Use `congrArg (dualForm (DD j)) hg` as an intermediate fact. Simplify using `only [map_sum, map_smul, hΦ, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, map_zero] at this`.
+
+Conclude with `this`. Use `letI : Algebra K S := σ.toAlgebra`. Use `haveI : IsScalarTower k K S := IsScalarTower.of_algebraMap_eq fun c => (hσk c).symm`. Set `W` to `Submodule.span S (Set.range fun i => D k S (algebraMap A S (Y i)))`. Establish `hC (a : R) : D k S (algebraMap R S a) ∈ W`.
+
+Establish `e : algebraMap R S a = algebraMap K S (algebraMap R K a)` using `(hσR a).symm`. Rewrite using `[e, ← KaehlerDifferential.map_D k k K S, ← bK.sum_repr (D k K (algebraMap R K a)), map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← algebraMap_smul S, hbK, KaehlerDifferential.map_D]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨Fin.natAdd r i, ?_⟩)` and prove the remaining obligations.
+
+Simplify using `only [Y, Fin.append_right]`. Rewrite using `[← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply, show algebraMap K S (algebraMap R K (x i)) = algebraMap R S (x i) from hσR _]`. Establish `hA (p : A) : D k S (algebraMap A S p) ∈ W`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`.
+
+Rewrite using `[← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply]`. Conclude with `hC a`. Consider the case `add p q hp hq => rw [map_add, map_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p i hp`.
+
+Rewrite using `[map_mul, Derivation.leibniz]`. Use `add_mem (Submodule.smul_mem _ _ (Submodule.subset_span ⟨Fin.castAdd n i, ?_⟩)) (Submodule.smul_mem _ _ hp)` and prove the remaining obligations. Simplify using `[Y]`. Establish `hsp : ⊤ ≤ W`. Introduce and unpack `ω -`.
+
+Take `⟨t, rfl⟩` from `(tensorKaehlerEquivOfFormallyEtale k A S).surjective ω`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `add_mem ha hb`.
+
+Consider the case `tmul s m`. Rewrite using `[tensorKaehlerEquivOfFormallyEtale_apply, KaehlerDifferential.mapBaseChange_tmul]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hm : m ∈ Submodule.span A (Set.range (D k A))`. Rewrite using `[KaehlerDifferential.span_range_derivation]`.
+
+Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem m hm`. Take `⟨p, rfl⟩` from `hm`. Rewrite using `[KaehlerDifferential.map_D]`.
+
+Conclude with `hA p`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul a m _ hm`.
+
+Rewrite using `[map_smul, ← algebraMap_smul S]`. Conclude with `Submodule.smul_mem _ _ hm`. Use `⟨Module.Basis.mk hli hsp, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.mk_apply, ← hY]`.
+-/
 theorem exists_basis_kaehler (σ : K →+* S) (hσR : ∀ a : R, σ (algebraMap R K a) = algebraMap R S a)
     (hσk : ∀ c : k, σ (algebraMap k K c) = algebraMap k S c) (x : Fin n → R)
     (hx : IsTranscendenceBasis k (fun i => algebraMap R K (x i))) :
@@ -226,6 +285,9 @@ section Main
 
 variable {L : Type} [Field L] {cL : ℂ →+* L}
 
+/- English proof (translation)
+Establish `hinv : (u : L)⁻¹ ∈ P.ring`. Rewrite using `[← P.ord_nonneg_iff (inv_ne_zero hu), P.ord_inv, h, neg_zero]`. Conclude with `IsUnit.of_mul_eq_one ⟨_, hinv⟩ (Subtype.ext (mul_inv_cancel₀ hu))`.
+-/
 theorem isUnit_of_ord_eq_zero (P : Place cL) {u : P.ring} (hu : (u : L) ≠ 0) (h : P.ord u = 0) :
     IsUnit u := by
   have hinv : (u : L)⁻¹ ∈ P.ring := by
@@ -234,6 +296,33 @@ theorem isUnit_of_ord_eq_zero (P : Place cL) {u : P.ring} (hu : (u : L) ≠ 0) (
 
 end Main
 
+/- English proof (translation)
+Introduce `K L _ _ cK cL n r R T ι ψ τ x P hT hx hP h0`. Use `letI : Algebra ℂ K := cK.toAlgebra`. Use `letI : Algebra ℂ R := (cK.codRestrict R hT.base.const_mem).toAlgebra`. Use `haveI : IsScalarTower ℂ R K := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `letI : Algebra ℂ P.ring := P.const.toAlgebra`.
+
+Set `j : T →+* P.ring` to `T.subtype.codRestrict P.ring fun t => hP.1 _ t.2`. Establish `hj (t : T) : ((j t : P.ring) : L) = t` using `rfl`. Establish `hc (c : ℂ) : j (ι (algebraMap ℂ R c)) = algebraMap ℂ P.ring c` using `Subtype.ext (hT.const c)`. Use `letI : Algebra R P.ring := (j.comp ι).toAlgebra`. Use `haveI : IsScalarTower ℂ R P.ring := IsScalarTower.of_algebraMap_eq fun c => (hc c).symm`.
+
+Set `α : MvPolynomial (Fin r) R →+* T` to `MvPolynomial.eval₂Hom ι τ`. Use `letI : Algebra (MvPolynomial (Fin r) R) P.ring := (j.comp α).toAlgebra`. Use `haveI : IsScalarTower R (MvPolynomial (Fin r) R) P.ring := IsScalarTower.of_algebraMap_eq fun a => by`. Express the relevant statement in the definitionally equal form `j (ι a) = j (α (MvPolynomial.C a))`. Simplify using `[α]`.
+
+Use `haveI : IsScalarTower ℂ (MvPolynomial (Fin r) R) P.ring := IsScalarTower.of_algebraMap_eq fun c => by`. Rewrite using `[IsScalarTower.algebraMap_apply ℂ R (MvPolynomial (Fin r) R), ← IsScalarTower.algebraMap_apply R (MvPolynomial (Fin r) R) P.ring]`. Conclude with `(hc c).symm`. Use `haveI : Algebra.FormallyEtale (MvPolynomial (Fin r) R) P.ring := by`. Use `letI : Algebra (MvPolynomial (Fin r) R) T := α.toAlgebra`.
+
+Use `haveI : Algebra.FormallyEtale (MvPolynomial (Fin r) R) T := hT.etale`. Use `letI : Algebra T P.ring := j.toAlgebra`. Use `haveI : IsScalarTower (MvPolynomial (Fin r) R) T P.ring := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Set `M : Submonoid T` to `(IsUnit.submonoid P.ring).comap j`. Use `haveI : IsLocalization M P.ring := { map_units := fun y => y.2 surj := fun f => by`.
+
+Take `⟨a, ha, b, hb, hb0, hord, e⟩` from `hP.2 f f.2`. Use `⟨(⟨a, ha⟩, ⟨⟨b, hb⟩, isUnit_of_ord_eq_zero P (u := j ⟨b, hb⟩) hb0 hord⟩), ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext e`. Use `exists_of_eq := fun {a b} e => ⟨1, by`. Establish `: (a : L) = b` using `congrArg (fun z : P.ring => (z : L)) e`.
+
+Rewrite using `[Subtype.ext this]⟩ }`. Use `haveI : Algebra.FormallyEtale T P.ring := .of_isLocalization M`. Conclude with `Algebra.FormallyEtale.comp (MvPolynomial (Fin r) R) T P.ring`. Establish `hι0 (g : R) (hg : g ≠ 0) : (ι g : L) ≠ 0` using `fun e => hg (by`. Establish `: ι g = 0` using `Subtype.ext e`.
+
+Rewrite using `[← hT.retr g, this, map_zero])`. Use `haveI : FaithfulSMul R K := (faithfulSMul_iff_algebraMap_injective R K).2 Subtype.val_injective`. Use `haveI : IsFractionRing R K := IsFractionRing.of_field R K fun f => by`. Take `⟨a, ha, b, hb, hb0, e⟩` from `hT.base.frac f`. Use `⟨⟨a, ha⟩, ⟨b, hb⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show f = a / b`. Rewrite using `[← e, mul_div_cancel_right₀ f hb0]`. Establish `hunit : ∀ y : nonZeroDivisors R, IsUnit ((j.comp ι) y)` using `fun y =>`. Establish `hy : (y : R) ≠ 0` using `nonZeroDivisors.ne_zero y.2`. Use `isUnit_of_ord_eq_zero P (u := j (ι y)) (hι0 _ hy) (h0 _ hy)`.
+
+Set `σ : K →+* P.ring` to `IsLocalization.lift (M := nonZeroDivisors R) hunit`. Establish `hσR (a : R) : σ (algebraMap R K a) = algebraMap R P.ring a` using `IsLocalization.lift_eq hunit a`. Establish `hσk (c : ℂ) : σ (algebraMap ℂ K c) = algebraMap ℂ P.ring c`. Rewrite using `[IsScalarTower.algebraMap_apply ℂ R K, hσR, ← IsScalarTower.algebraMap_apply]`. Take `⟨b, hb⟩` from `EtForm.exists_basis_kaehler (k := ℂ) (S := P.ring) (r := r) σ hσR hσk x hx`.
+
+Establish `hω` using `isFreeGen_dForm (α := P.const) _ b hb`. Establish `e` using `P.formOrd_toRat hω`. Establish `e2` using `formMap_dForm (D := r + n) P.ring.subtype (α := P.const) (β := cL) rfl (Fin.append (fun j => algebraMap (MvPolynomial (Fin r) R) P.ring (MvPolynomial.X j)) fun j => algebraMap R P.ring (x j))`. Establish `key : (fun i => P.ring.subtype (Fin.append (fun j => algebraMap (MvPolynomial (Fin r) R) P.ring (MvPolynomial.X j)) (fun j => algebraMap R P.ring (x j)) i)) = Fin.append (fun i => (τ i : L)) (fun i => (ι (x i) : L))`. Use function extensionality and compare the values at `i`.
+
+Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.append_left, Fin.append_left]`. Express the relevant statement in the definitionally equal form `((j (α (MvPolynomial.X i)) : P.ring) : L) = (τ i : L)`. Simplify using `[α, hj]`. Rewrite using `[Fin.append_right, Fin.append_right]`.
+
+Both sides reduce to the same expression. Rewrite `e` using `[Place.toRat, e2, key]`. Conclude with `e`.
+-/
 theorem formOrd_dForm_append_eq_zero : ∀ {K L : Type} [Field K] [Field L] (cK : ℂ →+* K) (cL : ℂ →+* L) (n r : ℕ) (R : Subring K) (T : Subring L)
     (ι : R →+* T) (ψ : T →+* R) (τ : Fin r → T) (x : Fin n → R) (P : Place cL),
   IsEtTower cK R cL T ι ψ τ → TrBasis cK (fun i => (x i : K)) → P.IsPrimeOf T →

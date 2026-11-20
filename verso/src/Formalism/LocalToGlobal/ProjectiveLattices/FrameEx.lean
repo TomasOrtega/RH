@@ -23,6 +23,15 @@ def bdiag (X : Data E r) (b : Frame X.Ψ r) (τ : E →+* ℂ) (i : ℕ) : ℂ :
 def bdet (X : Data E r) (b : Frame X.Ψ r) : ℂ :=
   ∏ τ : X.Ψ, ∏ j : Fin r, b τ j j ^ (if X.p0 ≤ (j : ℕ) then (1 : ℤ) else -1)
 
+/- English proof (translation)
+Simplify using `only [Bor, Set.mem_setOf_eq] at hb`. Establish `key : ∀ (t : ↥X.Ψ) (j : Fin r), b t j j ≠ 0`. Introduce `t j`. Take `⟨hd, ht⟩` from `hb t`. Establish `htri : (mat b t).BlockTriangular id` using `fun a c hca => ht a c hca`.
+
+Rewrite `hd` using `[Matrix.det_of_upperTriangular htri]`. Use `Finset.prod_ne_zero_iff.mp hd j (Finset.mem_univ _)` as an intermediate fact. Use `first`. Consider the case `exact this`. Consider the case `simpa [mat] using this`.
+
+Unfold `bdiag`. Use `split_ifs`. Apply the tactic sequence `all_goals first`. Consider the case `exact one_ne_zero`. Consider the case `exact key _ _`.
+
+Consider the case `exact inv_ne_zero (key _ _)`.
+-/
 theorem bdiag_ne_zero (X : Data E r) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) (τ : E →+* ℂ) (i : ℕ) :
     bdiag X b τ i ≠ 0 := by
   simp only [Bor, Set.mem_setOf_eq] at hb
@@ -59,6 +68,9 @@ def lieOf (hP : PerAt e F M) (k : Fin F.n) (x : (M.X k).dom) (τ : E →+* ℂ) 
     Sp (DualNumber (CAt σ)) ⟶ Xo.univ.t.G.left :=
   (derivAt_exists (hP k x.1 x.2) (eb e τ i)).choose
 
+/- English proof (translation)
+The claim follows from `(derivAt_exists (hP k x.1 x.2) (eb e τ i)).choose_spec`.
+-/
 theorem lieOf_spec (hP : PerAt e F M) (k : Fin F.n) (x : (M.X k).dom) (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) :
     IsDerivAt0 (fun z => (F.ex k (pmOf e M k x.1) z).left) (eb e τ i) (lieOf e F M hP k x τ i) :=
     (derivAt_exists (hP k x.1 x.2) (eb e τ i)).choose_spec
@@ -104,6 +116,13 @@ abbrev IsGenSec (s : GenSec e F M) : Prop :=
 
 variable {e F M} in
 
+/- English proof (translation)
+Establish `hPx` using `hP k x.1 x.2`. Use `⟨fun τ i => (hTE k _ hPx _ _ (lieOf_spec e F M hP k x τ i)).1, fun τ i => ?_, fun τ w hw he => ?_⟩` and prove the remaining obligations. Use `(hTE k _ hPx _ _ (lieOf_spec e F M hP k x τ i)).2 (e.symm ⟨τ, i⟩) rfl` as an intermediate fact. Simplify using `using this`. Take `⟨a, ha⟩` from `hLE k _ hPx τ w hw he`.
+
+Use `⟨a, hEL k _ hPx _ _ _ a w (fun j => lieOf_spec e F M hP k x τ j) ha, fun a' ha' => ?_⟩` and prove the remaining obligations. Establish `h2` using `derivAt_of_comb hEL hPx (fun j => lieOf_spec e F M hP k x τ j) ha'`. Establish `hs` using `derivAt_unique hTE hPx ha h2`. Use function extensionality and compare the values at `j`. Use `congrFun hs (e.symm ⟨τ, j⟩)` as an intermediate fact.
+
+Establish `h1` using `sum_eb_apply e τ a j`. Establish `h3` using `sum_eb_apply e τ (a' : Fin (Dw.mult τ) → ℂ) j`. Conclude with `(h1.symm.trans (this.trans h3)).symm`.
+-/
 theorem lieOf_basis (hTE : ExpTan e F) (hEL : ExpLin e F) (hLE : LieEig e F) (hP : PerAt e F M)
     (k : Fin F.n) (x : (M.X k).dom) :
     (∀ τ i, IsTanAt (S := CAt σ) (F.u k (pmOf e M k x.1)) (lieOf e F M hP k x τ i)) ∧
@@ -179,11 +198,23 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   (hTE : ExpTan e F) (hEL : ExpLin e F) (hLE : LieEig e F) (hP : PerAt e F M) (s : GenSec e F M)
   (hs : IsGenSec e F M s)
 
+/- English proof (translation)
+Introduce `k x` and use `⟨pmOf e M k x.1, fun _ _ => rfl, hP k x.1 x.2, rfl, fun τ i => lieOf_spec e F M hP k x τ i, hU k x⟩`.
+-/
 theorem frameOK_unOf
     (hU : ∀ k (x : (M.X k).dom), UnitGen e F M k (pmOf e M k x.1) x.1 (unOf e F M hTE hEL hLE hP s hs k x)) :
     ∀ k x, FrameOK e F M k x (unOf e F M hTE hEL hLE hP s hs k x) :=
   fun k x => ⟨pmOf e M k x.1, fun _ _ => rfl, hP k x.1 x.2, rfl, fun τ i => lieOf_spec e F M hP k x τ i, hU k x⟩
 
+/- English proof (translation)
+Take `⟨hl, hPm, htri⟩` from `hPB k x.1 x.2 b hb h`. Take `⟨t0, ht0, hS⟩` from `hB k x b hb h`. Establish `hPx` using `hP k x.1 x.2`. Establish `hPx'` using `hP k _ h`. Establish `hxeq : F.u k (pmOf e M k (rmul x.1 b)) = F.u k (pmOf e M k x.1)` using `((F.fibre k _ _ hPx hPx').2 ⟨LinearEquiv.refl _ _, hl, fun _ _ => rfl, fun _ _ => ⟨0, by simp⟩, fun _ => ⟨0, by simp⟩, fun a => hPm a⟩).symm`.
+
+Establish `hexp` using `hEU k _ _ hPx hPx' (LinearEquiv.refl _ _) hl (fun _ _ => rfl) (fun _ _ => ⟨0, by simp⟩) (fun _ => ⟨0, by simp⟩) (fun a => hPm a)`. Use `⟨fun o => match o with` and prove the remaining obligations. Consider the case `none => t0`. Consider the case `some p => Units.mk0 (bdiag (M.X k) b (relab c σ p.1) p.2) (bdiag_ne_zero _ hb _ _),`. Use the proof step `⟨hxeq, fun τ i => ?_, hS⟩, hW _ k b _ hb (fun τ i => rfl) ht0⟩`.
+
+Take `⟨cf, hcf, hcz, hsum⟩` from `htri τ i`. Use `⟨cf, hcf, hcz, ?_⟩` and prove the remaining obligations. Establish `d'` using `lieOf_spec e F M hP k ⟨_, h⟩ τ i`. Establish `d` using `isDerivAt0_comp (e1 := fun z => (F.ex k (pmOf e M k (rmul x.1 b)) z).left) (e2 := fun z => (F.ex k (pmOf e M k x.1) z).left) hl.symm (fun z => by simpa using (hexp (hl.symm z)).symm) d'`. Rewrite `d` using `[hsum]`.
+
+Conclude with `hEL k _ hPx _ (fun j => eb e τ j) _ cf _ (fun j => lieOf_spec e F M hP k x τ j) d`.
+-/
 theorem bor_unOf (hEU : ExpUniq e F) (hPB : PerBor e F M) (hW : WtBor e F M)
     (hB : ∀ k (x : (M.X k).dom) b (_hb : b ∈ Bor (M.X k).Ψ r) (h : rmul x.1 b ∈ (M.X k).dom),
       ∃ t0 : (CAt σ)ˣ, toC (t0 : CAt σ) ^ 2 = bdet (M.X k) b ∧
@@ -216,6 +247,17 @@ theorem bor_unOf (hEU : ExpUniq e F) (hPB : PerBor e F M) (hW : WtBor e F M)
   rw [hsum] at d
   exact hEL k _ hPx _ (fun j => eb e τ j) _ cf _ (fun j => lieOf_spec e F M hP k x τ j) d
 
+/- English proof (translation)
+Take `⟨gam, hEF, hM1, hA, hPg⟩` from `hPG k γ hγ x.1 h`. Take `⟨t0, ht0, hS⟩` from `hΓ k γ hγ x h`. Establish `hPx` using `hP k x.1 x.2`. Establish `hPx'` using `hP k _ h`. Establish `hxeq : F.u k (pmOf e M k (lact γ x.1)) = F.u k (pmOf e M k x.1)` using `((F.fibre k _ _ hPx hPx').2 ⟨gam, LinearEquiv.refl _ _, hEF, hM1, hA, fun a => hPg a⟩).symm`.
+
+Establish `hexp` using `hEU k _ _ hPx hPx' gam (LinearEquiv.refl _ _) hEF hM1 hA (fun a => hPg a)`. Use `⟨fun o => match o with` and prove the remaining obligations. Consider the case `none => t0`. Consider the case `some _ => 1, ⟨hxeq, fun τ i => ⟨Pi.single i 1, by simp, fun j hj => by simp [Pi.single_eq_of_ne hj.ne'], ?_⟩, hS⟩, fun a n hd => ?_⟩`. Establish `d'` using `lieOf_spec e F M hP k ⟨_, h⟩ τ i`.
+
+Establish `d` using `isDerivAt0_comp (e1 := fun z => (F.ex k (pmOf e M k (lact γ x.1)) z).left) (e2 := fun z => (F.ex k (pmOf e M k x.1) z).left) (LinearEquiv.refl ℂ (Fin g → ℂ)) (fun z => by simpa using (hexp z).symm) d'`. Establish `d2 : IsDerivAt0 (fun z => (F.ex k (pmOf e M k x.1) z).left) (∑ j, (Pi.single i (1 : ℂ) : Fin (Dw.mult τ) → ℂ) j • eb e τ j) (lieOf e F M hP k ⟨_, h⟩ τ i)`. Rewrite using `[sum_single_eb]`. Simplify using `using d`. Conclude with `hEL k _ hPx _ (fun j => eb e τ j) _ _ _ (fun j => lieOf_spec e F M hP k x τ j) d2`.
+
+Take `⟨m, hm⟩` from `hd.2`. Establish `hw : wchar (ex Dw a n) (fun o => match o with`. Consider the case `none => t0`. Consider the case `some _ => (1 : (CAt σ)ˣ)) = (t0 : CAt σ) ^ n := by`. Simplify using `[wchar, Fintype.prod_option, ex]`.
+
+Establish `h2 : ((t0 : CAt σ) ^ 2 : CAt σ) = 1` using `ht0`. Rewrite using `[hw, hm, ← two_mul, pow_mul, h2, one_pow]`. Both sides reduce to the same expression.
+-/
 theorem gam_unOf (hEU : ExpUniq e F) (hPG : PerGam e F M)
     (hΓ : ∀ k, ∀ γ ∈ (M.X k).Γ, ∀ (x : (M.X k).dom) (h : lact γ x.1 ∈ (M.X k).dom),
       ∃ t0 : (CAt σ)ˣ, toC (t0 : CAt σ) ^ 2 = 1 ∧
@@ -253,6 +295,9 @@ theorem gam_unOf (hEU : ExpUniq e F) (hPG : PerGam e F M)
     rw [hw, hm, ← two_mul, pow_mul, h2, one_pow]
     rfl
 
+/- English proof (translation)
+Take `⟨s, hs, hU, hB, hΓ, hD⟩` from `hG`. Use `⟨unOf e F M hTE hEL hLE hP s hs, ?_⟩` and prove the remaining obligations. Unfold `FramesOK`. Conclude with `⟨frameOK_unOf hTE hEL hLE hP s hs hU, fun k x b hb h => bor_unOf hTE hEL hLE hP s hs hEU hPB hW hB k x b hb h, fun k γ hγ x h => gam_unOf hTE hEL hLE hP s hs hEU hPG hΓ k γ hγ x h, hD⟩`.
+-/
 theorem framesOK_of (hEU : ExpUniq e F) (hPB : PerBor e F M) (hPG : PerGam e F M) (hW : WtBor e F M)
     (hG : GenAt e F M hTE hEL hLE hP) : ∃ un, FramesOK e F M un := by
   obtain ⟨s, hs, hU, hB, hΓ, hD⟩ := hG
@@ -268,6 +313,9 @@ section Row
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `FrameEx`. Use `first`. Consider the case `exact framesOK_of hTE hEL hLE (hPD hM.choose_spec.1 hR) hEU hPB hPG hW hG`. Consider the case `exact framesOK_of _ _ _ _ hEU hPB hPG hW hG`.
+-/
 theorem frameEx_of {hN : N1c} {Q : Par D} {hpq : ∀ j, 1 ≤ (Q.Dw j).p + (Q.Dw j).q} {j : ℕ} {hj : InR D j}
     {σ : Q.c.F →+* ℂ} {hσ : GoodEmb Q.c σ} {hR : RelabType Q.c σ (Q.Dw j)} (hM : ModelEx hN Q hpq j hj σ hσ hR)
     (hPD : PerDom (letE (Q.Dw j)) (famJ hN Q hpq j σ hσ hR) (modelsJ hM))
@@ -293,12 +341,18 @@ open scoped Matrix
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `(unfold hermC; simp [Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc, mul_comm, mul_left_comm]; done)`.
+-/
 theorem hermC_dot (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u w : Fin r → ℂ) :
     hermC τ G u w = u ⬝ᵥ ((G.map τ) *ᵥ star w) := by
   first
     | rfl
     | (unfold hermC; simp [Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc, mul_comm, mul_left_comm]; done)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `first`. Consider the case `(simp only [Matrix.mulVec, dotProduct, Pi.star_apply, star_sum, star_mul', Matrix.map_apply]; rfl)`. Consider the case `simp [Matrix.mulVec, dotProduct, star_sum]`.
+-/
 theorem star_mulVec_fx (Γ : Matrix (Fin r) (Fin r) ℂ) (w : Fin r → ℂ) :
     star (Γ *ᵥ w) = (Γ.map (starRingEnd ℂ)) *ᵥ star w := by
   funext i
@@ -306,6 +360,9 @@ theorem star_mulVec_fx (Γ : Matrix (Fin r) (Fin r) ℂ) (w : Fin r → ℂ) :
     | (simp only [Matrix.mulVec, dotProduct, Pi.star_apply, star_sum, star_mul', Matrix.map_apply]; rfl)
     | simp [Matrix.mulVec, dotProduct, star_sum]
 
+/- English proof (translation)
+Use `first`. Consider the case `rw [Matrix.dotProduct_mulVec, Matrix.vecMul_transpose]`. Consider the case `(simp only [Matrix.mulVec, dotProduct, Matrix.transpose_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring)`.
+-/
 theorem mulVec_dot (Γ : Matrix (Fin r) (Fin r) ℂ) (u y : Fin r → ℂ) : (Γ *ᵥ u) ⬝ᵥ y = u ⬝ᵥ (Γᵀ *ᵥ y) := by
   first
     | rw [Matrix.dotProduct_mulVec, Matrix.vecMul_transpose]
@@ -313,11 +370,21 @@ theorem mulVec_dot (Γ : Matrix (Fin r) (Fin r) ℂ) (u y : Fin r → ℂ) : (Γ
        rw [Finset.sum_comm]
        exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring)
 
+/- English proof (translation)
+Rewrite using `[hermC_dot, hermC_dot, star_mulVec_fx, mulVec_dot, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hu]`.
+-/
 theorem hermC_unitary (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (Γ : Matrix (Fin r) (Fin r) ℂ)
     (hu : Γᵀ * G.map τ * Γ.map (starRingEnd ℂ) = G.map τ) (u w : Fin r → ℂ) :
     hermC τ G (Γ *ᵥ u) (Γ *ᵥ w) = hermC τ G u w := by
   rw [hermC_dot, hermC_dot, star_mulVec_fx, mulVec_dot, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hu]
 
+/- English proof (translation)
+Establish `hcc : ∀ a : E, τ (cc a) = starRingEnd ℂ (τ a)`. Introduce `a`. Use `first`. Consider the case `(unfold cc; exact NumberField.IsCMField.complexEmbedding_complexConj E τ a)`. Consider the case `exact NumberField.IsCMField.complexEmbedding_complexConj E τ a`.
+
+Consider the case `(simp only [cc]; exact NumberField.IsCMField.complexEmbedding_complexConj E τ a)`. Establish `h` using `congrArg (fun A : Matrix (Fin r) (Fin r) E => A.map τ) (ustab_mat hγ)`. Simplify using `only [Matrix.map_mul, Matrix.transpose_map, Matrix.map_map] at h`. Establish `hf : (⇑τ ∘ cc) = (starRingEnd ℂ) ∘ ⇑τ` using `funext hcc`. Rewrite using `[Matrix.map_map, ← hf]`.
+
+Conclude with `h`.
+-/
 theorem ustab_mapC {G : Matrix (Fin r) (Fin r) E} {Λ : Submodule (𝓞 E) (Fin r → E)} {γ : GL (Fin r) E}
     (hγ : IsUStab G Λ γ) (τ : E →+* ℂ) :
     ((γ : Matrix (Fin r) (Fin r) E).map τ)ᵀ * G.map τ * ((γ : Matrix (Fin r) (Fin r) E).map τ).map (starRingEnd ℂ) =
@@ -334,6 +401,9 @@ theorem ustab_mapC {G : Matrix (Fin r) (Fin r) E} {Λ : Submodule (𝓞 E) (Fin 
   rw [Matrix.map_map, ← hf]
   exact h
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `first`. Consider the case `simp [Data.emb, Matrix.mulVec, dotProduct, map_sum, map_mul]`. Consider the case `(unfold Data.emb; simp [Matrix.mulVec, dotProduct]; done)`.
+-/
 theorem emb_mulVec (τ : E →+* ℂ) (A : Matrix (Fin r) (Fin r) E) (v : Fin r → E) :
     Data.emb τ (A *ᵥ v) = (A.map τ) *ᵥ Data.emb τ v := by
   funext i
@@ -341,10 +411,22 @@ theorem emb_mulVec (τ : E →+* ℂ) (A : Matrix (Fin r) (Fin r) E) (v : Fin r 
     | simp [Data.emb, Matrix.mulVec, dotProduct, map_sum, map_mul]
     | (unfold Data.emb; simp [Matrix.mulVec, dotProduct]; done)
 
+/- English proof (translation)
+Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero τ).2 (Matrix.isUnits_det_units γ).ne_zero`.
+-/
 theorem det_map_ne (τ : E →+* ℂ) (γ : GL (Fin r) E) : ((γ : Matrix (Fin r) (Fin r) E).map τ).det ≠ 0 := by
   rw [← RingHom.mapMatrix_apply, ← RingHom.map_det]
   exact (map_ne_zero τ).2 (Matrix.isUnits_det_units γ).ne_zero
 
+/- English proof (translation)
+Establish `hu : ∀ t : E →+* ℂ, IsUnit (((γ : Matrix (Fin r) (Fin r) E).map t).det)` using `fun t => isUnit_iff_ne_zero.2 (det_map_ne t γ)`. Establish `hinv : ∀ t : E →+* ℂ, ((γ : Matrix (Fin r) (Fin r) E).map t)⁻¹ * (γ : Matrix (Fin r) (Fin r) E).map t = 1` using `fun t => Matrix.nonsing_inv_mul _ (hu t)`. Establish `hm : ∀ t : ↥X.Ψ, mat (lact γ x) t = ((γ : Matrix (Fin r) (Fin r) E).map (t : E →+* ℂ)) * mat x t` using `fun t => rfl`. Establish `hcol : ∀ (A B : Matrix (Fin r) (Fin r) ℂ) (j : Fin r), col (A * B) j = A *ᵥ col B j`. Introduce `A B j`.
+
+Use function extensionality and compare the values at `k`. Use `first`. Consider the case `simp [col, Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Consider the case `rfl`. Unfold `perFr`.
+
+Rewrite using `[emb_mulVec, emb_mulVec]`. Simplify using `only [hm]`. Use `split_ifs with h1 h2 h3 h4`. Simplify using `only [Matrix.mul_inv_rev, Matrix.mulVec_mulVec, Matrix.mul_assoc, hinv, Matrix.mul_one]`. Both sides reduce to the same expression.
+
+Rewrite using `[hcol]`. Conclude with `hermC_unitary _ _ _ (ustab_mapC hγ _) _ _`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem perFr_lact_fx (X : Data E r) (x : Frame X.Ψ r) {γ : GL (Fin r) E} (hγ : IsUStab X.Gm X.Λ γ)
     (v : Fin r → E) (τ : E →+* ℂ) (i : ℕ) :
     perFr X (lact γ x) ((γ : Matrix (Fin r) (Fin r) E) *ᵥ v) τ i = perFr X x v τ i := by
@@ -405,11 +487,25 @@ def gamL (X : Data E r) {γ : GL (Fin r) E} (hγ : IsUStab X.Gm X.Λ γ) : X.Λ 
     simp only
     rw [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gamL_coe (X : Data E r) {γ : GL (Fin r) E} (hγ : IsUStab X.Gm X.Λ γ) (v : X.Λ) :
     ((gamL X hγ v : X.Λ) : Fin r → E) = (γ : Matrix (Fin r) (Fin r) E) *ᵥ v := rfl
 
 variable (e F M) in
 
+/- English proof (translation)
+Introduce `k γ hγ x _`. Take `⟨hU, hMc, hAc⟩` from `(hMB.gam k γ).1 hγ`. Set `gam : (F.Di k).La ≃ₗ[𝓞 E] (F.Di k).La` to `(M.φ k).trans ((gamL (M.X k) hU).trans (M.φ k).symm)`. Establish `hg : ∀ a, ((M.φ k (gam a) : (M.X k).Λ) : Fin r → E) = (γ : Matrix (Fin r) (Fin r) E) *ᵥ (M.φ k a : Fin r → E)` using `fun a => by`. Simplify using `[gam, gamL_coe]`.
+
+Use `⟨gam, fun a b => ?_, fun a ha => ?_, fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `e1` using `hMB.ef k (gam a) (gam b)`. Establish `e2` using `hMB.ef k a b`. Rewrite `e1` using `[hg, hg, hU.1]`. Conclude with `e1.trans e2.symm` after adjusting the coercions.
+
+Take `⟨b, hb⟩` from `hMc a ha`. Use `⟨b, (M.φ k).injective (Subtype.ext ?_)⟩` and prove the remaining obligations. Rewrite using `[hg, hb, map_add, map_nsmul]`. Both sides reduce to the same expression. Take `⟨b, hb⟩` from `hAc a`.
+
+Use `⟨b, (M.φ k).injective (Subtype.ext ?_)⟩` and prove the remaining obligations. Rewrite using `[hg, hb, map_add, map_nsmul]`. Both sides reduce to the same expression. Use function extensionality and compare the values at `j`. Simplify using `only [pmOf, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`.
+
+Rewrite using `[hg]`. Conclude with `perFr_lact_fx (M.X k) x hU _ _ _`.
+-/
 theorem perGam_of (hMB : ModelBase M) : PerGam e F M := by
   intro k γ hγ x _
   obtain ⟨hU, hMc, hAc⟩ := (hMB.gam k γ).1 hγ

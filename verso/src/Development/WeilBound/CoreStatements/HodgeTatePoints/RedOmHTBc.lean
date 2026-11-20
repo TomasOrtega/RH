@@ -8,6 +8,39 @@ namespace PositivityTheory.HtPt.Gb
 
 open Module NumberField GlobalTheory.CompanionTheory.Ar.HT TensorProduct
 
+/- English proof (translation)
+Introduce `A K _ _ _ _ _ _ _ _ E _ _ c hc p R N _ Ω _ _ _ _ D C _ _ _ v O _ _ hv _ κ' V _ _ _ _ Ω' _ _ _ _ P ι hred σ σ' d hφ hd hκ hproj`. Establish `hAK : Function.Injective (algebraMap A K)` using `IsFractionRing.injective A K`. Establish `: IsDomain O` using `hv.hom_inj.isDomain (algebraMap O C)`. Use `isFractionRing_of_integers hv` as an intermediate fact. Establish `hσ : ∀ a : 𝓞 E, σ (a : E) ∈ (algebraMap A K).range` using `fun a => IsIntegrallyClosed.isIntegral_iff.1 ((map_isIntegral_int σ (RingOfIntegers.isIntegral_coe a)).tower_top)`.
+
+Take `⟨hd', h1, h2, h3, -⟩` from `red_proj A K hAK E c hc p R N Ω D C v O hv κ' V Ω' (algebraMap A O) P ι hred σ σ' d hσ hφ hd hκ`. Establish `hδ : algebraMap O C (algebraMap A O d) ≠ 0` using `(different_generator_dualInt O C E σ' _ hv.hom_inj (exists_diff_generator C v O hv E σ').1 hd').1`. Take `⟨j₀, hj₀, -, hj₀'⟩` from `bc_iso A K Ω D.om C v O hv Ω' P.om ι D.om_lat D.om_proj P.om_lat hred.span_eq hred.rank_eq`. Establish `hfg : (D.omHT σ).FG`. Establish `: IsNoetherian A D.om` using `isNoetherian_of_fg_of_noetherian _ D.om_lat.fg`.
+
+Establish `h` using `(IsNoetherian.noetherian (D.om'.comap D.om.subtype)).map D.om.subtype`. Rewrite `h` using `[Submodule.map_comap_subtype, inf_eq_right.2 (om'_le_om D)]`. Conclude with `h.map _`. Establish `: Module.Finite A (D.omHT σ)` using `Module.Finite.iff_fg.2 hfg`. Set `α : D.omHT σ →ₗ[A] D.om` to `LinearMap.codRestrict D.om (d • (D.omHT σ).subtype) (by`.
+
+Introduce and unpack `⟨_, x, hx, rfl⟩`. Conclude with `h1 x (om'_le_om D hx))`. Set `β : D.om →ₗ[A] D.omHT σ` to `LinearMap.codRestrict (D.omHT σ) ((eigProj D.ρΩ σ).restrictScalars A ∘ₗ ((p : A) ^ R • D.om.subtype)) (fun x => ⟨_, pow_smul_mem_om' D x.2, rfl⟩)`. Establish `hβα : β ∘ₗ α = ((p : A) ^ R * d) • LinearMap.id`. Use extensionality with `z`.
+
+Express the relevant statement in the definitionally equal form `eigProj D.ρΩ σ ((p : A) ^ R • d • (z : Ω)) = ((p : A) ^ R * d) • (z : Ω)`. Rewrite using `[LinearMap.map_smul_of_tower, LinearMap.map_smul_of_tower, LatBasic.eigProj_of_mem (LatBasic.eigQuot_le_eigSp _ _ D.om' z.2), mul_smul]`. Establish `hne : algebraMap A O ((p : A) ^ R * d) ≠ 0`. Introduce `h`. Establish `h'` using `congrArg (algebraMap O C) h`.
+
+Rewrite `h'` using `[map_mul, map_mul, map_pow, map_pow, map_natCast, map_natCast, map_zero]`. Conclude with `mul_ne_zero (pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)) hδ h'`. Establish `hα : Function.Injective (α.baseChange O)`. Establish `h : Function.Injective ((β.baseChange O) ∘ₗ (α.baseChange O))`. Rewrite using `[← LinearMap.baseChange_comp, hβα, LinearMap.baseChange_smul, LinearMap.baseChange_id]`.
+
+Introduce `x y e`. Express the relevant statement in the definitionally equal form `((p : A) ^ R * d) • x = ((p : A) ^ R * d) • y at e`. Rewrite `e` using `[← algebraMap_smul O, ← algebraMap_smul O ((p : A) ^ R * d) y]`. Conclude with `smul_right_injective _ hne e`. Conclude with `Function.Injective.of_comp h`.
+
+Take `⟨j₁, hj₁, hr₁⟩` from `exists_lift (ι.comp α)`. Establish `hj₁' : j₁ = j₀ ∘ₗ α.baseChange O`. Use `LinearMap.ext fun t => ?_` and prove the remaining obligations. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`.
+
+Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `tmul o z`. Establish `: o ⊗ₜ[A] z = o • ((1 : O) ⊗ₜ[A] z)` using `by simp [TensorProduct.smul_tmul']`. Rewrite using `[this, map_smul, map_smul, hj₁, LinearMap.comp_apply j₀, LinearMap.baseChange_tmul, hj₀']`. Both sides reduce to the same expression.
+
+Set `s : Ω' →ₗ[O] Ω'` to `((algebraMap O C (algebraMap A O d))⁻¹ • (LinearMap.id : Ω' →ₗ[C] Ω')).restrictScalars O`. Establish `hs : ∀ w, algebraMap A O d • s w = w` using `fun w => by`. Express the relevant statement in the definitionally equal form `algebraMap A O d • (algebraMap O C (algebraMap A O d))⁻¹ • w = w`. Rewrite using `[← algebraMap_smul C, smul_smul, mul_inv_cancel₀ hδ, one_smul]`. Establish `hinj : Function.Injective (s ∘ₗ j₁)`.
+
+Establish `hs' : Function.Injective s` using `fun x y e => by rw [← hs x, e, hs]`. Rewrite using `[hj₁']`. Conclude with `hs'.comp (hj₀.comp hα)`. Establish `hrange : LinearMap.range (s ∘ₗ j₁) = P.omHT σ'`. Establish `e : Set.range (ι.comp α) = ι '' {y : D.om | ∃ z ∈ D.omHT σ, (y : Ω) = d • z}`.
+
+Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨α z, ⟨z, z.2, rfl⟩, rfl⟩`. Introduce and unpack `⟨y, ⟨z, hz, e⟩, rfl⟩`.
+
+Conclude with `⟨⟨z, hz⟩, congrArg ι (Subtype.ext e.symm)⟩`. Rewrite using `[LinearMap.range_comp, hr₁, e, h3, ← Submodule.map_comp]`. Establish `: s ∘ₗ (algebraMap A O d • LinearMap.id) = LinearMap.id`. Use extensionality with `w`. Express the relevant statement in the definitionally equal form `s (algebraMap A O d • w) = w`.
+
+Rewrite using `[map_smul, hs]`. Rewrite using `[this, Submodule.map_id]`. Use `⟨s ∘ₗ j₁, hinj, hrange, fun z y e => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, hs, hj₁]`. Conclude with `congrArg ι (Subtype.ext e.symm)`.
+
+Establish `hl` using `(pt_om_block C v O hv E c hc κ' N V Ω' P σ').2.2.1`. Rewrite using `[← finrank_baseChange_flat (O := O), ← LinearMap.finrank_range_of_inj hinj, hrange, ← finrank_lattice _ hl]`. Establish `e : (latIn (P.omHT σ') (P.Ωsp σ')).map ((P.Ωsp σ').subtype.restrictScalars O) = P.omHT σ'`. Rewrite using `[LatBasic.map_latIn]`. Conclude with `inf_eq_left.2 (LatBasic.eigQuot_le_eigSp _ _ _)`.
+
+Use `conv_lhs => rw [← e]`. Conclude with `(Submodule.equivMapOfInjective _ Subtype.val_injective _).finrank_eq.symm`.
+-/
 theorem red_omHT_bc : ∀ (A K : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A] [Field K] [Algebra A K] [IsFractionRing A K] [CharZero K] (E : Type) [Field E] [NumberField E] (c : E ≃+* E) (hc : ∀ x, c (c x) = x) (p R N : ℕ) [Fact p.Prime] (Ω : Type) [AddCommGroup Ω] [Module K Ω] [Module A Ω] [IsScalarTower A K Ω] (D : HTChart A K c p R N Ω) (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] (hv : v.Integers O) [Algebra A O] (κ' : O) (V : Type) [AddCommGroup V] [Module C V] [Module O V] [IsScalarTower O C V] (Ω' : Type) [AddCommGroup Ω'] [Module C Ω'] [Module O Ω'] [IsScalarTower O C Ω'] (P : HTPoint C O c κ' N V Ω') (ι : D.om →ₛₗ[algebraMap A O] Ω') (hred : D.ReducesTo (algebraMap A O) P ι) (σ : E →+* K) (σ' : E →+* C) (d : A), (∀ (a : 𝓞 E) (a' : A), algebraMap A K a' = σ (a : E) → algebraMap O C (algebraMap A O a') = σ' (a : E)) → GeneratesDiff σ d → κ' ∣ (p : O) ^ R → Module.Projective A (D.omHT σ) → ∃ j : O ⊗[A] (D.omHT σ) →ₗ[O] Ω', Function.Injective j ∧ LinearMap.range j = P.omHT σ' ∧ (∀ (z : D.omHT σ) (y : D.om), (y : Ω) = d • (z : Ω) → algebraMap A O d • j (1 ⊗ₜ z) = ι y) ∧ Module.finrank A (D.omHT σ) = Module.finrank C (P.Ωsp σ') := by
   intro A K _ _ _ _ _ _ _ _ E _ _ c hc p R N _ Ω _ _ _ _ D C _ _ _ v O _ _ hv _ κ' V _ _ _ _
     Ω' _ _ _ _ P ι hred σ σ' d hφ hd hκ hproj
@@ -100,6 +133,19 @@ theorem red_omHT_bc : ∀ (A K : Type) [CommRing A] [IsDomain A] [IsNoetherianRi
     conv_lhs => rw [← e]
     exact (Submodule.equivMapOfInjective _ Subtype.val_injective _).finrank_eq.symm
 
+/- English proof (translation)
+Introduce `A K _ _ _ _ _ _ _ _ E _ _ c hc p R N _ Ω _ _ _ _ D κ σ d d' hp hκ hd hd' hP hP' htest`. Establish `hAK : Function.Injective (algebraMap A K)` using `IsFractionRing.injective A K`. Establish `hp0 : (p : A) ≠ 0` using `fun h => by`. Establish `h'` using `congrArg (algebraMap A K) h`. Rewrite `h'` using `[map_natCast, map_zero]`.
+
+Conclude with `Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero h'`. Take `⟨𝔮, h𝔮⟩` from `Ideal.nonempty_minimalPrimes (I := Ideal.span {(p : A)}) (by rwa [Ne, Ideal.span_singleton_eq_top])`. Establish `hprime : 𝔮.IsPrime` using `h𝔮.1.1`. Establish `hmem : (p : A) ∈ 𝔮` using `h𝔮.1.2 (Ideal.mem_span_singleton_self _)`. Establish `hht : 𝔮.height = 1`.
+
+Use `le_antisymm (Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ _ h𝔮) ?_` and prove the remaining obligations. Rewrite using `[Order.one_le_iff_ne_zero, Ne, Ideal.height_eq_zero_iff, IsDomain.minimalPrimes_eq_singleton_bot]`. Introduce and unpack `rfl`. Conclude with `hp0 hmem`. Take `⟨C, O, _, _, _, _, _, v, φ, V, Ω', _, _, _, _, _, _, _, _, P, ι, hv, hφ, -, hred⟩` from `htest 𝔮 hprime hht hmem`.
+
+Set `_ : Algebra A O` to `φ.toAlgebra`. Establish `hg : Function.Injective ((algebraMap O C).comp φ)` using `hv.hom_inj.comp hφ`. Set `ψ : K →+* C` to `IsFractionRing.lift hg`. Establish `hψ : ∀ (τ : E →+* K) (a : 𝓞 E) (a' : A), algebraMap A K a' = τ (a : E) → algebraMap O C (algebraMap A O a') = (ψ.comp τ) (a : E)` using `fun τ a a' h => by`. Rewrite using `[RingHom.comp_apply, ← h]`.
+
+Conclude with `(IsFractionRing.lift_algebraMap hg a').symm`. Establish `hκ' : φ κ ∣ (p : O) ^ R`. Use `map_dvd φ hκ` as an intermediate fact. Rewrite `this` using `[map_pow, map_natCast]`. Then use the resulting hypothesis. Take `⟨_, -, -, -, e1⟩` from `red_omHT_bc A K E c hc p R N Ω D C v O hv (φ κ) V Ω' P ι hred σ (ψ.comp σ) d (hψ σ) hd hκ' hP`.
+
+Take `⟨_, -, -, -, e2⟩` from `red_omHT_bc A K E c hc p R N Ω D C v O hv (φ κ) V Ω' P ι hred (σ.comp c.toRingHom) (ψ.comp (σ.comp c.toRingHom)) d' (hψ _) hd' hκ' hP'`. Rewrite using `[e1, e2]`. Conclude with `finrank_Ω_add_Ω P hv hc (ψ.comp σ)`.
+-/
 theorem chart_rank : ∀ (A K : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A] [Field K] [Algebra A K] [IsFractionRing A K] [CharZero K] (E : Type) [Field E] [NumberField E] (c : E ≃+* E) (hc : ∀ x, c (c x) = x) (p R N : ℕ) [Fact p.Prime] (Ω : Type) [AddCommGroup Ω] [Module K Ω] [Module A Ω] [IsScalarTower A K Ω] (D : HTChart A K c p R N Ω) (κ : A) (σ : E →+* K) (d d' : A), ¬ IsUnit (p : A) → κ ∣ (p : A) ^ R → GeneratesDiff σ d → GeneratesDiff (σ.comp c.toRingHom) d' → Module.Projective A (D.omHT σ) → Module.Projective A (D.omHT (σ.comp c.toRingHom)) → D.HasTestPoints κ → Module.finrank A (D.omHT σ) + Module.finrank A (D.omHT (σ.comp c.toRingHom)) = N := by
   intro A K _ _ _ _ _ _ _ _ E _ _ c hc p R N _ Ω _ _ _ _ D κ σ d d' hp hκ hd hd' hP hP' htest
   have hAK : Function.Injective (algebraMap A K) := IsFractionRing.injective A K

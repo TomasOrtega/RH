@@ -13,6 +13,13 @@ noncomputable section
 
 namespace GlobalTheory.ThK.LemF
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B a b G G₁ H H' cfg e' he' ei' ev' hloc K hK X om om' om₁ om₁' T T₁ v μK μ hμK hμ φ hφ`. Take `⟨N, f, c, hf, hc1, hc2, hsum⟩` from `GlobalTheory.T.config_b_local_part_stabilizer hP F E σ B a b G G₁ H H' cfg e' he' ei' ev' hloc K hK X om om' om₁ om₁' T T₁ v μK μ hμK hμ _ (Nat.le_add_left 1 _) φ hφ`. Establish `e : coneFin B G.M' om' v (ev' v) K μK μ (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) φ = ∑ i, (∫ k, ∫ l, c i k l ∂μ ∂μK) • f i`. Use function extensionality and compare the values at `y`. Establish `h1 : ∀ k : KAt K (evFin F v), ∫ l, coneFinInt B G.M' om' v (ev' v) (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) φ k.1 l.1 y ∂μ = ∑ i, (∫ l, c i k l ∂μ) * f i y` using `fun k => by`.
+
+Rewrite using `[show (fun l : idelesAt E (evFin F v) => coneFinInt B G.M' om' v (ev' v) (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) φ k.1 l.1 y) = fun l => ∑ i, c i k l * f i y from funext fun l => hsum k l y]`. Rewrite using `[integral_finsetSum _ fun j _ => (hc1 j k).mul_const _]`. Conclude with `Finset.sum_congr rfl fun j _ => integral_mul_const _ _`. Simplify using `only [coneFin, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Repeatedly rewrite using `[h1]`.
+
+Rewrite using `[integral_finsetSum _ fun j _ => (hc2 j).mul_const _]`. Conclude with `Finset.sum_congr rfl fun j _ => integral_mul_const _ _`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hf i)`.
+-/
 theorem coneB_mem_SB : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →
@@ -41,6 +48,9 @@ theorem coneB_mem_SB : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Fi
   rw [e]
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hf i)
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B a b G G₁ H H' cfg e' he' ei' ev' hloc K hK X om om' om₁ om₁' T T₁ v μK μ hμK hμ`. Conclude with `⟨coneB_mem_SB hP F E σ B a b G G₁ H H' cfg e' he' ei' ev' hloc K hK X om om' om₁ om₁' T T₁ v μK μ hμK hμ, GlobalTheory.T.config_b_local_part_integral hP F E σ B a b G G₁ H H' cfg e' he' ei' ev' hloc K hK X om om' om₁ om₁' T T₁ v μK μ hμK hμ, GlobalTheory.T.config_b_local_part_ide …`.
+-/
 theorem coneLawB : GlobalTheory.FunPr.Hypotheses₂ → ConeLawB := by
   intro hP F E _ _ _ _ _ σ B a b G G₁ H H' cfg e' he' ei' ev' hloc K hK X om om' om₁ om₁' T T₁ v μK μ hμK hμ
   exact ⟨coneB_mem_SB hP F E σ B a b G G₁ H H' cfg e' he' ei' ev' hloc K hK X om om' om₁ om₁' T T₁ v μK μ hμK hμ,

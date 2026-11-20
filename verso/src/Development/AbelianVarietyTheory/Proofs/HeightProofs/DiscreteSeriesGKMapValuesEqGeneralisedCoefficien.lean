@@ -26,6 +26,35 @@ namespace GlobalTheory.TypeSum.GKCoef
 
 open CoefLow in
 
+/- English proof (translation)
+Introduce `D θ V τ hθ hHC hCW H _ _ σ lam ε P T _ hDS hP h hT v x`. Use `haveI : CompleteSpace H := hDS.1`. Establish `hstd` using `std_of_isDS hHC hDS`. Establish `hσ` using `hstd.1`. Take `⟨N, hN⟩` from `GlobalTheory.TypeSum.GKCoef.exists_growth_exponent θ V τ hθ hHC H σ lam ε P T hDS hP h hT x`.
+
+Set `F : GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin ε σ → Mx V.rank → ℂ` to `fun w y => T w (x * atTau θ V τ (P⁻¹ * y * P))`. Set `f : GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin ε σ →ₗ[ℂ] Bd (Unit × UJset ε)` to `{ toFun := fun w => mkBd (fun i => F w i.2.1 / wt N i.2.1) (by`. Take `⟨C, hC⟩` from `hN w`. Use `⟨C, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, norm_wt, div_le_iff₀ (wt_pos _ _)]`.
+
+Conclude with `hC _ i.2.2)`. Use the proof step `map_add' := fun v w => by ext i; simp [F, add_div]`. Use the proof step `map_smul' := fun c v => by ext i; simp [F, mul_div_assoc] }`. Take `⟨T₀, hT₀'⟩` from `LinearMap.exists_extend f`. Establish `hT₀ : ∀ (w : H) (hw : IsKFin ε σ w) (i : Unit × UJset ε), T₀ w i = F ⟨w, mem_kFin_iff.2 hw⟩ i.2.1 / wt N i.2.1` using `fun w hw i => by`.
+
+Establish `: T₀ w = f ⟨w, mem_kFin_iff.2 hw⟩` using `LinearMap.congr_fun hT₀' ⟨w, mem_kFin_iff.2 hw⟩`. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `key : ∀ (w : H) (hw : IsKFin ε σ w), ∀ y ∈ UJset ε, ∀ i : Unit × UJset ε, rt ε Unit N y (T₀ w) i = F ⟨w, mem_kFin_iff.2 hw⟩ (i.2.1 * y) / wt N i.2.1`. Introduce `w hw y hy i`.
+
+Rewrite using `[rt_apply hy, hT₀ w hw]`. Use `wt_ne N (i.2.1 * y)` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish `hder : ∀ (w : H) (hw : IsKFin ε σ w) {X : Mx V.rank} (hX : X ∈ lieSet ε) {g : Mx V.rank} (hg : g ∈ UJset ε) (s : ℝ), HasDerivAt (fun t : ℝ => F ⟨w, mem_kFin_iff.2 hw⟩ (g * NormedSpace.exp (t • X))) (F ⟨dRep σ X w, mem_kFin_iff.2 (isKFin_dRep _ ε H σ hstd w hw X hX)⟩ (g * NormedSp …`. Introduce `w hw X hX g hg s`.
+
+Establish `hs` using `mul_mem_UJ hg (exp_mem_UJ hX s)`. Establish `h1` using `hasDerivAt_map hθ hP h hT ⟨w, mem_kFin_iff.2 hw⟩ ⟨dRep σ X w, mem_kFin_iff.2 (isKFin_dRep _ ε H σ hstd w hw X hX)⟩ hX (hstd.2.2.1 w hw) rfl x hs`. Establish `h2` using `HasDerivAt.comp_sub_const s s (by rw [sub_self]; exact h1)`. Use `HasDerivAt.congr_of_eventuallyEq h2 (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `show F _ _ = F _ _`.
+
+Simplify using `only [F]`. Rewrite using `[mul_assoc g (NormedSpace.exp (s • X)), ← exp_add_smul, add_sub_cancel]`. Take `⟨T', hT1, hT2, S, C, hS, hC⟩` from `GlobalTheory.TypeSum.casselmanWallach_banach hCW V.rank ε H σ hstd _ _ (modRep_rt ε Unit N) T₀ (fun k hk w hw => by`. Use extensionality with `i`. Rewrite using `[key w hw k (K_le_UJ hk), hT₀ _ (isKFin_translate hw hk)]`.
+
+Use `congr 1`. Conclude with `map_K hθ hP h hT hk _ _ rfl x i.2.2)`. Use the proof step `(fun X hX w hw => by`. Establish `hw1` using `isKFin_dRep _ ε H σ hstd w hw X hX`. Establish `hw2` using `isKFin_dRep _ ε H σ hstd _ hw1 X hX`.
+
+Take `⟨C2, hC2⟩` from `hN ⟨_, mem_kFin_iff.2 hw2⟩`. Take `⟨B, hB⟩` from `((isCompact_Icc (a := (-1 : ℝ)) (b := 1)).bddAbove_image ((continuous_wt N).comp (continuous_exp_smul X)).continuousOn)`. Use `hasDerivAt_of_sq (K := |C2| * |B|) fun t ht => lp.norm_le_of_forall_le (by positivity) fun i => ?_` and prove the remaining obligations. Establish `e : (t • T₀ (dRep σ X w)) i = t • T₀ (dRep σ X w) i` using `rfl`. Rewrite using `[lp.coeFn_sub, lp.coeFn_sub, Pi.sub_apply, Pi.sub_apply, e, key w hw _ (exp_mem_UJ hX _), key w hw _ (exp_mem_UJ hX _), hT₀ _ hw1, zero_smul, NormedSpace.exp_zero, mul_one, ← smul_div_assoc, ← sub_div, ← sub_div, norm_div, norm_wt, div_le_iff₀ (wt_pos _ _)]`.
+
+Establish `tb` using `taylor_two (hder w hw hX i.2.2) (hder _ hw1 hX i.2.2) (K := |C2| * |B| * wt N i.2.1) (fun s hs => by`. Use `(hC2 _ (mul_mem_UJ i.2.2 (exp_mem_UJ hX s))).trans ?_` and prove the remaining obligations. Establish `w1` using `wt_mul_le N i.2.1 (NormedSpace.exp (s • X))`. Establish `w2 : wt N (NormedSpace.exp (s • X)) ≤ |B|` using `(hB ⟨s, abs_le.1 hs, rfl⟩).trans (le_abs_self B)`. Establish `w3` using `wt_pos N i.2.1`.
+
+Establish `w4` using `wt_pos N (i.2.1 * NormedSpace.exp (s • X))`. Express the relevant statement in the definitionally equal form `C2 * wt N _ ≤ _`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [zero_smul, NormedSpace.exp_zero, mul_one] at tb`. Combine the equalities or inequalities in the displayed calculation.
+
+Set `ℓ : H →ₗ[ℂ] ℂ` to `{ toFun := fun w => wt N (1 : Mx V.rank) * T' w ((), ⟨1, one_mem_UJ ε⟩) map_add' := fun a b => by simp [mul_add] map_smul' := fun c a => by simp; ring }`. Establish `hvK : IsKFin ε σ (v : H)` using `mem_kFin_iff.1 v.2`. Use `⟨ℓ, ⟨S, wt N (1 : Mx V.rank) * |C|, hS, fun w hw => ?_⟩, hstd.2.2.1 _ hvK, fun y hy => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖(wt N (1 : Mx V.rank) : ℂ) * T' w ((), ⟨1, one_mem_UJ ε⟩)‖ ≤ _`. Rewrite using `[norm_mul, norm_wt, mul_assoc]`.
+
+Use `mul_le_mul_of_nonneg_left ((apply_le _ _).trans ((hC w hw).trans ?_)) (wt_pos _ _).le` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (le_abs_self C) (sobNorm_nonneg _ _ _)`. Express the relevant statement in the definitionally equal form `_ = (wt N (1 : Mx V.rank) : ℂ) * T' (σ y v) ((), ⟨1, one_mem_UJ ε⟩)`. Rewrite using `[hT2 y hy _ (hstd.2.2.1 _ hvK), hT1 _ hvK, key _ hvK y hy]`. Use `wt_ne N (1 : Mx V.rank)` as an intermediate fact.
+
+Simplify using `only [one_mul, F]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem values_eq_coef : ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
     (τ : D.what₂.Tau), IsInfFam (D := D) θ → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach →
     ∀ (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]

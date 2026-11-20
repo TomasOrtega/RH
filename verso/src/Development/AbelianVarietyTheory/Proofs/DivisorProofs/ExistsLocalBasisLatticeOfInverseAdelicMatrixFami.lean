@@ -12,6 +12,13 @@ namespace GlobalTheory.LocMatBasis
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Establish `h1 : (1 : 𝓞 K) ∉ P.asIdeal` using `(Ideal.ne_top_iff_one _).1 P.isPrime.ne_top`. Distinguish the cases in `hy : u.valuation K y ≤ 1`. Conclude with `⟨1, h1, by simpa using hy⟩`. Establish `hne : u ≠ P` using `h.resolve_right hy`. Establish `hy0 : u.valuation K y ≠ 0` using `fun h0 => hy (by rw [h0]; exact zero_le_one)`.
+
+Establish `hnle : ¬ u.asIdeal ≤ P.asIdeal` using `fun hle => hne (HeightOneSpectrum.ext (u.isMaximal.eq_of_le P.isPrime.ne_top hle))`. Take `⟨π, hπu, hπP⟩` from `SetLike.not_le_iff_exists.1 hnle`. Establish `hlt : u.valuation K (π : K) < 1` using `(HeightOneSpectrum.valuation_lt_one_iff_mem u π).2 hπu`. Take `⟨N, hN⟩` from `exists_pow_lt₀ hlt (Units.mk0 _ hy0)⁻¹`. Use `⟨π ^ N, fun hm => hπP (P.isPrime.mem_of_pow_mem N hm), ?_⟩` and prove the remaining obligations.
+
+Establish `e : ((π ^ N : 𝓞 K) : K) = (π : K) ^ N` using `by simp`. Rewrite using `[e, map_mul, map_pow]`. Establish `hN' : u.valuation K (π : K) ^ N ≤ (u.valuation K y)⁻¹` using `by simpa using hN.le`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_notMem_mul_le (P u : HeightOneSpectrum (𝓞 K)) (y : K) (h : u ≠ P ∨ u.valuation K y ≤ 1) :
     ∃ s : 𝓞 K, s ∉ P.asIdeal ∧ u.valuation K ((s : K) * y) ≤ 1 := by
   have h1 : (1 : 𝓞 K) ∉ P.asIdeal := (Ideal.ne_top_iff_one _).1 P.isPrime.ne_top
@@ -31,6 +38,13 @@ theorem exists_notMem_mul_le (P u : HeightOneSpectrum (𝓞 K)) (y : K) (h : u �
   calc _ ≤ (u.valuation K y)⁻¹ * u.valuation K y := by gcongr
     _ = 1 := inv_mul_cancel₀ hy0
 
+/- English proof (translation)
+Use `haveI : Fintype {w | ¬ IntAt w (B w)} := h.fintype`. Establish `hex : ∀ p : {w | ¬ IntAt w (B w)} × ι × ι, ∃ s : 𝓞 K, s ∉ P.asIdeal ∧ p.1.1.valuation K ((s : K) * B p.1.1 p.2.1 p.2.2) ≤ 1` using `fun p => exists_notMem_mul_le P _ _ (Or.inl fun e => p.1.2 (by rw [e]; exact hP))`. Use `choose s hs hv using hex`. Use `⟨∏ p, s p, fun hm => ?_, fun w i j => ?_⟩` and prove the remaining obligations. Take `⟨p, -, hp⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := P.isPrime)).1 hm`.
+
+Conclude with `hs p hp`. Distinguish the cases in `hw : IntAt w (B w)`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul]`. Conclude with `mul_le_one' (w.valuation_le_one _) (hw i j)`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, ← Finset.prod_erase_mul _ _ (Finset.mem_univ (⟨w, hw⟩, i, j))]`.
+
+Establish `e : ∀ a b : 𝓞 K, ((a * b : 𝓞 K) : K) = (a : K) * (b : K)` using `fun a b => by simp`. Rewrite using `[e, mul_assoc, map_mul]`. Conclude with `mul_le_one' (w.valuation_le_one _) (hv (⟨w, hw⟩, i, j))`.
+-/
 theorem exists_denom_notMem {ι : Type} [Fintype ι] (B : HeightOneSpectrum (𝓞 K) → Matrix ι ι K)
     (h : {w | ¬ IntAt w (B w)}.Finite) (P : HeightOneSpectrum (𝓞 K)) (hP : IntAt P (B P)) :
     ∃ s : 𝓞 K, s ∉ P.asIdeal ∧ ∀ w, IntAt w ((s : K) • B w) := by
@@ -51,6 +65,9 @@ theorem exists_denom_notMem {ι : Type} [Fintype ι] (B : HeightOneSpectrum (�
     rw [e, mul_assoc, map_mul]
     exact mul_le_one' (w.valuation_le_one _) (hv (⟨w, hw⟩, i, j))
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] refine Valuation.map_sum_le _ fun k _ => ?_ rw [map_mul] exact mul_le_one' (hM i k) (hN k j)`.
+-/
 theorem intAt_mul {ι : Type} [Fintype ι] {w : HeightOneSpectrum (𝓞 K)} {M N : Matrix ι ι K}
     (hM : IntAt w M) (hN : IntAt w N) : IntAt w (M * N) := fun i j => by
   rw [Matrix.mul_apply]
@@ -58,6 +75,9 @@ theorem intAt_mul {ι : Type} [Fintype ι] {w : HeightOneSpectrum (𝓞 K)} {M N
   rw [map_mul]
   exact mul_le_one' (hM i k) (hN k j)
 
+/- English proof (translation)
+Use `(Set.finite_iUnion fun p : ι × ι => HeightOneSpectrum.Support.finite (𝓞 K) (M p.1 p.2)).subset ?_` and prove the remaining obligations. Introduce `w hw`. Simplify using `only [IntAt, Set.mem_setOf_eq, not_forall, not_le] at hw`. Take `⟨i, j, hij⟩` from `hw`. Conclude with `Set.mem_iUnion.2 ⟨(i, j), hij⟩`.
+-/
 theorem finite_not_intAt {ι : Type} [Fintype ι] (M : Matrix ι ι K) :
     {w : HeightOneSpectrum (𝓞 K) | ¬ IntAt w M}.Finite := by
   refine (Set.finite_iUnion fun p : ι × ι => HeightOneSpectrum.Support.finite (𝓞 K) (M p.1 p.2)).subset ?_
@@ -66,6 +86,23 @@ theorem finite_not_intAt {ι : Type} [Fintype ι] (M : Matrix ι ι K) :
   obtain ⟨i, j, hij⟩ := hw
   exact Set.mem_iUnion.2 ⟨(i, j), hij⟩
 
+/- English proof (translation)
+Introduce `K _ _ n A hA P`. Take `⟨hdet, hfin⟩` from `hA`. Establish `hu : IsUnit (A P).det` using `isUnit_iff_ne_zero.2 (hdet P)`. Apply the tactic sequence `have hone : ∀ (w : HeightOneSpectrum (𝓞 K)) (j k : Fin n), w.valuation K ((Pi.single j 1 : Fin n → K) k) ≤ 1 := fun w j k => by by_cases hk : k = j <;> simp [Pi.single_apply, hk]`. Take `⟨s, hs, hint⟩` from `exists_denom_notMem (fun w => A w * (A P)⁻¹) ((hfin.union (finite_not_intAt (A P)⁻¹)).subset fun w hw => by`.
+
+Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hn`. Conclude with `hw (intAt_mul hn.1.1 hn.2)) P (by`. Introduce `i j`. Rewrite using `[Matrix.mul_nonsing_inv _ hu]`.
+
+Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij])`. Establish `hs0 : (s : K) ≠ 0` using `fun h0 => hs (by`. Establish `: s = 0` using `by exact_mod_cast h0`. Rewrite using `[this]`. Conclude with `P.asIdeal.zero_mem)`.
+
+Use `⟨s, hs, fun j w i => ?_, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_mulVec, ← Matrix.smul_mulVec]`. Conclude with `GlobalTheory.LocMatLat.mulVec_le w (hint w) (hone w j) i`. Establish `h1 : LinearIndependent K (A P)⁻¹.col` using `Matrix.linearIndependent_cols_iff_isUnit.2 (Matrix.isUnit_nonsing_inv_iff.2 ((Matrix.isUnit_iff_isUnit_det _).2 hu))`. Establish `h2 : LinearIndependent K (fun j => (s : K) • (A P)⁻¹.col j)` using `h1.units_smul fun _ => Units.mk0 (s : K) hs0`.
+
+Use `h2 using 3 with j` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Establish `hex` using `fun j => P.exists_primeCompl_mul_eq_of_integer _ (hx P j) choose c d hcd using hex`. Establish `hd : (∏ j, (d j : 𝓞 K)) ∉ P.asIdeal` using `fun hm => by`. Take `⟨p, -, hp⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := P.isPrime)).1 hm`.
+
+Conclude with `(d p).2 hp`. Use `⟨(∏ j, (d j : 𝓞 K)) * s, fun hm => (P.isPrime.mem_or_mem hm).elim hd hs, ?_⟩` and prove the remaining obligations. Establish `hx' : x = ∑ j, (A P *ᵥ x) j • ((A P)⁻¹ *ᵥ (Pi.single j 1 : Fin n → K))`. Repeatedly rewrite using `[← Matrix.mulVec_smul]`. Rewrite using `[← Matrix.mulVec_sum, ← pi_eq_sum_univ', Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]`.
+
+Rewrite using `[hx', Finset.smul_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ j)]`. Establish `e : ((∏ k ∈ Finset.univ.erase j, (d k : 𝓞 K)) * (d j : 𝓞 K) * s) • (A P *ᵥ x) j • ((A P)⁻¹ *ᵥ (Pi.single j 1 : Fin n → K)) = ((∏ k ∈ Finset.univ.erase j, (d k : 𝓞 K)) * c j) • ((s : K) • ((A P)⁻¹ *ᵥ (Pi.single j 1 : Fin n → K)))`. Rewrite using `[← algebraMap_smul K, ← algebraMap_smul K (_ * c j), smul_smul, smul_smul, map_mul, map_mul, map_mul, ← hcd j]`.
+
+Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = _ * algebraMap (𝓞 K) K s`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+-/
 theorem exists_locBasis_inv : ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (A : HeightOneSpectrum (𝓞 K) → Matrix (Fin n) (Fin n) K), IsAdelic A → ∀ P : HeightOneSpectrum (𝓞 K), ∃ s : 𝓞 K, s ∉ P.asIdeal ∧ GlobalTheory.PtDeg.LocBasis P (locLat A) (fun j => (s : K) • ((A P)⁻¹ *ᵥ (Pi.single j 1 : Fin n → K))) := by
   intro K _ _ n A hA P
   classical

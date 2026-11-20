@@ -15,6 +15,13 @@ open scoped Topology
 
 namespace GlobalTheory.LatJet.An.HolLiftProof
 
+/- English proof (translation)
+Use `haveI : Finite (Idx I n) := by`. Use `Finite.of_injective (fun ν : Idx I n ↦ fun i ↦ (⟨ν.1 i, Nat.lt_succ_of_le (le_trans (Finset.single_le_sum (fun l _ ↦ Nat.zero_le (ν.1 l)) (Finset.mem_univ i)) ν.2)⟩ : Fin (n + 2))) ?_` and prove the remaining obligations. Introduce `a b h`. Conclude with `Subtype.ext (funext fun i ↦ by simpa using congrFun h i)`. Use `haveI : Module.Finite ℂ J.B := Module.Finite.of_basis J.b`.
+
+Use `haveI : IsNoetherian ℂ J.B := IsNoetherian.iff_fg.2 inferInstance`. Use `haveI : IsNoetherianRing J.B := isNoetherian_of_tower ℂ inferInstance`. Rewrite using `[Ideal.FG.isNilpotent_iff_le_nilradical (IsNoetherian.noetherian (RingHom.ker J.π))]`. Introduce `x hx`. Take `⟨N, hN⟩` from `J.nil`.
+
+Use `mem_nilradical.2 ⟨N, ?_⟩` and prove the remaining obligations. Use `hN (List.replicate N (1, x)) (fun p hp ↦ by rw [List.eq_of_mem_replicate hp]; exact hx) (by simp)` as an intermediate fact. Simplify `this` using `[List.map_replicate, J.κ.dpow_one hx]`.
+-/
 theorem ker_nil (I : Type) [Fintype I] (n : ℕ) (J : JetRing ℂ I n) : IsNilpotent (RingHom.ker J.π) := by
   classical
   haveI : Finite (Idx I n) := by
@@ -32,6 +39,29 @@ theorem ker_nil (I : Type) [Fintype I] (n : ℕ) (J : JetRing ℂ I n) : IsNilpo
   have := hN (List.replicate N (1, x)) (fun p hp ↦ by rw [List.eq_of_mem_replicate hp]; exact hx) (by simp)
   simpa [List.map_replicate, J.κ.dpow_one hx] using this
 
+/- English proof (translation)
+Use `set A := Algebra.adjoin ℂ (Set.range J.t)`. Establish `key : ∀ k, ∀ ν : Idx I n, ∑ i, ν.1 i = k → J.b ν ∈ A`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+
+Introduce `ν hν`. Establish `: ν = ⟨0, by simp⟩` using `Subtype.ext (funext fun i ↦ (Finset.sum_eq_zero_iff.1 hν) i (Finset.mem_univ i))`. Rewrite using `[this, J.one]`. Conclude with `A.one_mem`. Consider the case `succ k ih`.
+
+Introduce `ν hν`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, ν.1 i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Simplify using `[h] at hν`.
+
+Set `ν' : Idx I n` to `⟨ν.1 - Pi.single i 1, le_trans (Finset.sum_le_sum fun l _ ↦ Nat.sub_le (ν.1 l) _) ν.2⟩`. Establish `hsum : ν.1 = Pi.single i 1 + ν'.1`. Use function extensionality and compare the values at `l`. Distinguish the cases in `hl : l = i`. Substitute `hl` using the available equality.
+
+Simplify using `[ν']`. Use linear arithmetic over natural numbers and integers. Simplify using `[ν', hl]`. Establish `hν' : ∑ l, ν'.1 l = k`. Establish `: ∑ l, ν.1 l = ∑ l, (Pi.single i 1 : I → ℕ) l + ∑ l, ν'.1 l`.
+
+Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun l _ ↦ congrFun hsum l`. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Establish `hmul` using `J.mul ⟨Pi.single i 1, by simp⟩ ν'`.
+
+Establish `hle : ∑ l, ((Pi.single i 1 : I → ℕ) + ν'.1) l ≤ n + 1` using `by rw [← hsum]; exact ν.2`. Rewrite `hmul` using `[dif_pos hle]`. Establish `hprod : ∏ l, (((Pi.single i 1 : I → ℕ) l + ν'.1 l).choose ((Pi.single i 1 : I → ℕ) l)) = ν.1 i`. Rewrite using `[Finset.prod_eq_single i]`. Simplify using `[ν']`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `l _ hl`. Simplify using `[hl]`. Simplify using the standard rewrite rules. Establish `hb : J.b ⟨(Pi.single i 1 : I → ℕ) + ν'.1, hle⟩ = J.b ν` using `congrArg J.b (Subtype.ext hsum.symm)`.
+
+Simplify using `only [Pi.add_apply] at hmul`. Rewrite `hmul` using `[hprod, hb]`. Establish `hne : (ν.1 i : ℂ) ≠ 0` using `by exact_mod_cast hi`. Establish `: J.b ν = (ν.1 i : ℂ)⁻¹ • (J.t i * J.b ν')`. Rewrite using `[JetRing.t, hmul, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hne, one_smul]`.
+
+Rewrite using `[this]`. Conclude with `A.smul_mem (A.mul_mem (Algebra.subset_adjoin ⟨i, rfl⟩) (ih ν' hν')) _`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hle : Submodule.span ℂ (Set.range J.b) ≤ Subalgebra.toSubmodule A` using `Submodule.span_le.2 (Set.range_subset_iff.2 fun ν ↦ key _ ν rfl)`.
+
+Conclude with `hle (J.b.mem_span x)`.
+-/
 theorem adjoin_top (I : Type) [Fintype I] (n : ℕ) (J : JetRing ℂ I n) :
     Algebra.adjoin ℂ (Set.range J.t) = ⊤ := by
   classical
@@ -81,6 +111,9 @@ theorem adjoin_top (I : Type) [Fintype I] (n : ℕ) (J : JetRing ℂ I n) :
     Submodule.span_le.2 (Set.range_subset_iff.2 fun ν ↦ key _ ν rfl)
   exact hle (J.b.mem_span x)
 
+/- English proof (translation)
+Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a => simpa using analyticAt_const`. Consider the case `add p q hp hq => exact (hp.add hq).congr (Filter.Eventually.of_forall fun z ↦ by simp)`. Consider the case `mul_X p i hp`. Conclude with `(hp.mul ((ContinuousLinearMap.proj i : (I → ℂ) →L[ℂ] ℂ).analyticAt x)).congr (Filter.Eventually.of_forall fun z ↦ by simp)`.
+-/
 theorem analyticAt_eval {I : Type} [Fintype I] (Q : MvPolynomial I ℂ) (x : I → ℂ) :
     AnalyticAt ℂ (fun z ↦ MvPolynomial.eval z Q) x := by
   induction Q using MvPolynomial.induction_on with
@@ -92,11 +125,23 @@ theorem analyticAt_eval {I : Type} [Fintype I] (Q : MvPolynomial I ℂ) (x : I �
 
 variable {I : Type} [Fintype I] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[J.π_eq]`. Conclude with `(hC I n J).1 f hf ⟨0, by simp⟩ [] (by simp)`.
+-/
 theorem pi_jet (hC : JetCalc) (J : JetRing ℂ I n) (f : (I → ℂ) → ℂ) (hf : AnalyticAt ℂ f 0) :
     J.π (jet J f) = f 0 := by
   rw [J.π_eq]
   exact (hC I n J).1 f hf ⟨0, by simp⟩ [] (by simp)
 
+/- English proof (translation)
+Take `⟨-, h2, -, h4, h5, -⟩` from `hC I n J`. Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[MvPolynomial.aeval_C, ← h4 a]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Consider the case `add p q hp hq`. Rewrite using `[map_add, ← hp, ← hq, ← (h2 _ _ (analyticAt_eval p 0) (analyticAt_eval q 0)).2]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Consider the case `mul_X p i hp`. Rewrite using `[map_mul, ← hp, MvPolynomial.aeval_X, ← h5 i, ← (h2 _ (fun z ↦ z i) (analyticAt_eval p 0) ((ContinuousLinearMap.proj i : (I → ℂ) →L[ℂ] ℂ).analyticAt 0)).1]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules.
+-/
 theorem jet_eval (hC : JetCalc) (J : JetRing ℂ I n) (Q : MvPolynomial I ℂ) :
     jet J (fun z ↦ MvPolynomial.eval z Q) = MvPolynomial.aeval J.t Q := by
   obtain ⟨-, h2, -, h4, h5, -⟩ := hC I n J
@@ -128,6 +173,15 @@ open GlobalTheory.AffinePoints
 
 variable {I : Type} [Fintype I] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `ker_nil I n J`. Use `set a := J.π x`. Establish `hr : algebraMap ℂ J.B a⁻¹ * x - 1 ∈ RingHom.ker J.π`. Rewrite using `[RingHom.mem_ker, map_sub, map_mul, map_one]`. Establish `: J.π (algebraMap ℂ J.B a⁻¹) = a⁻¹`.
+
+Rewrite using `[J.π_eq, Algebra.algebraMap_eq_smul_one, ← J.one, map_smul, J.b.repr_self]`. Simplify using the standard rewrite rules. Rewrite using `[this, inv_mul_cancel₀ hx, sub_self]`. Establish `hnil : IsNilpotent (algebraMap ℂ J.B a⁻¹ * x - 1)`. Use `⟨N, ?_⟩` and prove the remaining obligations.
+
+Use `Ideal.pow_mem_pow hr N` as an intermediate fact. Rewrite `this` using `[hN]`. Simplify using `using this`. Establish `hx' : x = algebraMap ℂ J.B a * (1 + (algebraMap ℂ J.B a⁻¹ * x - 1))`. Rewrite using `[add_sub_cancel, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hx, map_one, one_mul]`.
+
+Rewrite using `[hx']`. Conclude with `((IsUnit.mk0 a hx).map (algebraMap ℂ J.B)).mul hnil.isUnit_one_add`.
+-/
 theorem isUnit_of_pi_ne_zero (J : JetRing ℂ I n) (x : J.B) (hx : J.π x ≠ 0) : IsUnit x := by
   obtain ⟨N, hN⟩ := ker_nil I n J
   set a := J.π x
@@ -147,6 +201,33 @@ theorem isUnit_of_pi_ne_zero (J : JetRing ℂ I n) (x : J.B) (hx : J.π x ≠ 0)
   rw [hx']
   exact ((IsUnit.mk0 a hx).map (algebraMap ℂ J.B)).mul hnil.isUnit_one_add
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `Algebra.IsStandardSmoothOfRelativeDimension.exists_etale_mvPolynomial d ℂ B`. Set `p : B →ₐ[ℂ] ℂ` to `(piAlg hC J).comp j`. Take `⟨e, hp, he, han⟩` from `GlobalTheory.AffinePoints.exists_chart_of_etale g hg p`. Establish `hsurj : ∀ c : J.B, ∃ Q : MvPolynomial I ℂ, MvPolynomial.aeval J.t Q = c` using `fun c ↦ by`. Establish `: c ∈ Algebra.adjoin ℂ (Set.range J.t)` using `by rw [adjoin_top]; trivial`.
+
+Rewrite `this` using `[Algebra.adjoin_range_eq_range_aeval]`. Conclude with `this`. Use `choose Q hQ using fun k : Fin d ↦ hsurj (j (g (MvPolynomial.X k)))`. Set `w : (I → ℂ) → Fin d → ℂ` to `fun z k ↦ MvPolynomial.eval z (Q k)`. Establish `hwan : ∀ x, AnalyticAt ℂ w x` using `fun x ↦ analyticAt_pi_iff.2 fun k ↦ analyticAt_eval (Q k) x`.
+
+Establish `hwc : Continuous w` using `continuous_iff_continuousAt.2 fun x ↦ (hwan x).continuousAt`. Establish `hw0 : w 0 = e p`. Use function extensionality and compare the values at `k`. Rewrite using `[he, GlobalTheory.AffinePoints.coords_apply]`. Use `show MvPolynomial.eval 0 (Q k) = J.π (j (g (MvPolynomial.X k)))`.
+
+Rewrite using `[← hQ k, ← jet_eval hC J, pi_jet hC J _ (analyticAt_eval _ 0)]`. Set `U : Set (I → ℂ)` to `w ⁻¹' e.target`. Establish `hU : IsOpen U` using `e.open_target.preimage hwc`. Establish `h0U : (0 : I → ℂ) ∈ U` using `by show w 0 ∈ e.target`. Rewrite using `[hw0]`.
+
+Conclude with `e.map_source hp`. Set `y : (I → ℂ) → (B →ₐ[ℂ] ℂ)` to `fun z ↦ e.symm (w z)`. Establish `hyan : ∀ b, ∀ z ∈ U, AnalyticAt ℂ (fun z ↦ y z b) z` using `fun b z hz ↦ (han b (w z) hz).comp (hwan z)`. Take `⟨-, hmul, hloc, hconst, -⟩` from `hC I n J`. Set `ψ : B →ₐ[ℂ] J.B` to `{ toFun := fun b ↦ jet J fun z ↦ y z b map_one' := by show (jet J fun z ↦ y z 1) = 1`.
+
+Rewrite using `[show (fun z ↦ y z 1) = fun _ ↦ (1 : ℂ) from funext fun z ↦ map_one _, hconst, map_one]`. Use the proof step `map_mul' := fun a b ↦ by show (jet J fun z ↦ y z (a * b)) = (jet J fun z ↦ y z a) * jet J fun z ↦ y z b`. Rewrite using `[show (fun z ↦ y z (a * b)) = (fun z ↦ y z a) * (fun z ↦ y z b) from`. Use function extensionality and compare the values at `fun z ↦ map_mul _ _ _]`. Conclude with `(hmul _ _ (hyan a 0 h0U) (hyan b 0 h0U)).1`.
+
+Use the proof step `map_zero' := by show (jet J fun z ↦ y z 0) = 0`. Rewrite using `[show (fun z ↦ y z 0) = fun _ ↦ (0 : ℂ) from funext fun z ↦ map_zero _, hconst, map_zero]`. Use the proof step `map_add' := fun a b ↦ by show (jet J fun z ↦ y z (a + b)) = (jet J fun z ↦ y z a) + jet J fun z ↦ y z b`. Rewrite using `[show (fun z ↦ y z (a + b)) = (fun z ↦ y z a) + (fun z ↦ y z b) from`. Use function extensionality and compare the values at `fun z ↦ map_add _ _ _]`.
+
+Conclude with `(hmul _ _ (hyan a 0 h0U) (hyan b 0 h0U)).2`. Use the proof step `commutes' := fun c ↦ by show (jet J fun z ↦ y z (algebraMap ℂ B c)) = algebraMap ℂ J.B c`. Rewrite using `[show (fun z ↦ y z (algebraMap ℂ B c)) = fun _ ↦ c from`. Use function extensionality and compare the values at `fun z ↦ AlgHom.commutes _ _, hconst] }`. Establish `hψ : ∀ b, ψ b = jet J fun z ↦ y z b` using `fun b ↦ rfl`.
+
+Establish `hcoord : ψ.comp g = j.comp g`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `k`. Use `show (jet J fun z ↦ y z (g (MvPolynomial.X k))) = j (g (MvPolynomial.X k))`. Rewrite using `[← hQ k, ← jet_eval hC J]`.
+
+Apply `hloc` to reduce the goal to its premises. Use `filter_upwards [hU.mem_nhds h0U] with z hz`. Use `congrFun (e.right_inv hz) k` as an intermediate fact. Rewrite `this` using `[he, GlobalTheory.AffinePoints.coords_apply]`. Conclude with `this`.
+
+Establish `hres : ∀ b, J.π (j b) = J.π (ψ b)` using `fun b ↦ by`. Rewrite using `[hψ, pi_jet hC J _ (hyan b 0 h0U)]`. Use `show J.π (j b) = e.symm (w 0) b`. Rewrite using `[hw0, e.left_inv hp]`. Both sides reduce to the same expression.
+
+Use `letI : Algebra (MvPolynomial (Fin d) ℂ) B := g.toRingHom.toAlgebra`. Use `haveI : Algebra.Etale (MvPolynomial (Fin d) ℂ) B := hg`. Use `letI : Algebra (MvPolynomial (Fin d) ℂ) J.B := (j.comp g).toRingHom.toAlgebra`. Set `ψ₁ : B →ₐ[MvPolynomial (Fin d) ℂ] J.B` to `{ j.toRingHom with commutes' := fun _ ↦ rfl }`. Set `ψ₂ : B →ₐ[MvPolynomial (Fin d) ℂ] J.B` to `{ ψ.toRingHom with commutes' := fun q ↦ AlgHom.congr_fun hcoord q }`.
+
+Establish `h12 : ψ₁ = ψ₂` using `Algebra.FormallyUnramified.ext' J.π (ker_nil I n J) ψ₁ ψ₂ hres`. Use `⟨U, y, hU, h0U, fun b z hz ↦ (hyan b z hz).differentiableAt.differentiableWithinAt, fun b ↦ ?_⟩` and prove the remaining obligations. Conclude with `AlgHom.congr_fun h12 b`.
+-/
 theorem holLift_std (hC : JetCalc) (B : Type) [CommRing B] [Algebra ℂ B] (d : ℕ)
     [Algebra.IsStandardSmoothOfRelativeDimension d ℂ B] (J : JetRing ℂ I n) (j : B →ₐ[ℂ] J.B) :
     ∃ (U : Set (I → ℂ)) (y : (I → ℂ) → (B →ₐ[ℂ] ℂ)), IsOpen U ∧ 0 ∈ U ∧
@@ -225,6 +306,13 @@ theorem holLift_std (hC : JetCalc) (B : Type) [CommRing B] [Algebra ℂ B] (d : 
   refine ⟨U, y, hU, h0U, fun b z hz ↦ (hyan b z hz).differentiableAt.differentiableWithinAt, fun b ↦ ?_⟩
   exact AlgHom.congr_fun h12 b
 
+/- English proof (translation)
+Introduce `B _ _ _ I _ n J j`. Set `p : B →ₐ[ℂ] ℂ` to `(piAlg hC J).comp j`. Use `haveI := RingHom.ker_isPrime p`. Take `⟨s, hs, ι, σ, _, _, ⟨P⟩⟩` from `Algebra.IsSmoothAt.exists_notMem_isStandardSmooth ℂ (RingHom.ker p)`. Use `haveI : Algebra.IsStandardSmoothOfRelativeDimension P.dimension ℂ (Localization.Away s) := P.isStandardSmoothOfRelativeDimension rfl`.
+
+Establish `hu : IsUnit (j s)` using `isUnit_of_pi_ne_zero J _ hs`. Set `j' : Localization.Away s →ₐ[ℂ] J.B` to `IsLocalization.Away.liftAlgHom s hu`. Take `⟨U, y', hU, h0U, hd, hj⟩` from `holLift_std hC (Localization.Away s) P.dimension J j'`. Use `⟨U, fun z ↦ (y' z).comp (IsScalarTower.toAlgHom ℂ B (Localization.Away s)), hU, h0U, fun b ↦ hd _, fun b ↦ ?_⟩` and prove the remaining obligations. Use `show j b = jet J fun z ↦ y' z (algebraMap B (Localization.Away s) b)`.
+
+Rewrite using `[← hj]`. Simplify using `[j']`.
+-/
 theorem holLift (hC : JetCalc) : HolLift := by
   intro B _ _ _ I _ n J j
   classical
@@ -244,4 +332,7 @@ theorem holLift (hC : JetCalc) : HolLift := by
 
 end GlobalTheory.LatJet.An.HolLiftProof
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LatJet.An.HolLiftProof.holLift`.
+-/
 theorem GlobalTheory.LatJet.An.holLift_of_jetCalc : JetCalc → HolLift := GlobalTheory.LatJet.An.HolLiftProof.holLift

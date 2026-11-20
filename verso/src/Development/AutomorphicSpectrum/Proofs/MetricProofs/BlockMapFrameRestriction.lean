@@ -18,6 +18,13 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : 
   {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N j : ℕ}
   {Kk : Type} [Fintype Kk] {ιk : Kk → Type} [∀ k, Fintype (ιk k)]
 
+/- English proof (translation)
+Use `choose κ' hκ' using hr`. Establish `hex : ∀ q : Σ k, baseIdx ι M.blk k, ∃ q', v q' = ⟨q.1.1, q.2⟩` using `fun q => hb.2.2.2 ⟨q.1.1, q.2⟩ ⟨κ' q.1, hκ' q.1⟩`. Use `choose v' hv' using hex`. Establish `hfst : ∀ p, (v' p).1 = κ' p.1` using `fun p => hb.1 (by`. Rewrite using `[← hb.2.2.1, hv', hκ'])`.
+
+Use `⟨κ', v', ⟨fun a b e => Subtype.ext (by rw [← hκ' a, ← hκ' b, e]), fun a b e => ?_, hfst, ?_⟩, hv', fun z => ?_⟩` and prove the remaining obligations. Establish `e'` using `congrArg v e`. Rewrite `e'` using `[hv', hv']`. Conclude with `(GlobalTheory.CompanionTheory.Ar.PB.CPts.blockMap_base M).2.1 e'`. Introduce and unpack `q ⟨kb, hq⟩`.
+
+Establish `h1 : (v q).1 ∈ Set.range (Subtype.val : NonPluckerBlocks M.blk → K)` using `⟨kb, by rw [hb.2.2.1, ← hq, hκ']⟩`. Take `⟨p, hp⟩` from `(GlobalTheory.CompanionTheory.Ar.PB.CPts.blockMap_base M).2.2.2 (v q) h1`. Conclude with `⟨p, hb.2.1 ((hv' p).trans hp)⟩`. Use function extensionality and compare the values at `q show upV v z ⟨q.1.1, q.2⟩ = z (v' q)`. Rewrite using `[← hv', upV_apply hb.2.1]`.
+-/
 theorem exists_section (M : FlagModel y Ψ N j) {κ : Kk → K} {v : (Σ k, ιk k) → (Σ k, ι k)} (hb : IsBlockMap κ v)
     (hr : ∀ k : NonPluckerBlocks M.blk, k.1 ∈ Set.range κ) :
     ∃ (κ' : NonPluckerBlocks M.blk → Kk) (v' : (Σ k, baseIdx ι M.blk k) → (Σ k, ιk k)), IsBlockMap κ' v' ∧
@@ -43,6 +50,13 @@ theorem exists_section (M : FlagModel y Ψ N j) {κ : Kk → K} {v : (Σ k, ιk 
 
 end
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M keep Kk _ ιk _ κ v hb hk`. Take `⟨κ', v', hb', hv', hz⟩` from `exists_section M hb fun k => (hk k.1).2 (Or.inl k.2)`. Use `⟨fun z hzm => ?_, fun z z' ho => ?_⟩` and prove the remaining obligations. Rewrite using `[hz]`. Use `GlobalTheory.CompanionTheory.Ar.PB.CPts.comp_mem_mcPts hb' (algebraMap M.Ω Φ) (funext fun q => ?_) hzm` and prove the remaining obligations.
+
+Use `show y (v (v' q)) = algebraMap M.Ω Φ (M.x q)`. Rewrite using `[hv']`. Conclude with `M.y_base q`. Take `⟨c, hc, e⟩` from `ho`. Use `⟨fun k => c (κ' k), fun k => hc _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hz, hz, e]`. Use function extensionality and compare the values at `q`. Use `show c (v' q).1 * z' (v' q) = c (κ' q.1) * z' (v' q)`. Rewrite using `[hb'.2.2.1]`.
+-/
 theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (keep : Ψ × Fin N → Prop) (Kk : Type) [Fintype Kk] (ιk : Kk → Type) [∀ k, Fintype (ιk k)] (κ : Kk → K) (v : (Σ k, ιk k) → (Σ k, ι k)), IsBlockMap κ v → (∀ k, k ∈ Set.range κ ↔ ((∀ p, M.blk p ≠ some k) ∨ ∃ p, keep p ∧ M.blk p = some k)) → (∀ z ∈ mcPts (mCoordIdeal (y ∘ v)), pBase M v z ∈ mcPts (mCoordIdeal M.x)) ∧ ∀ z z' : (Σ k, ιk k) → ℂ, SameOrbit z z' → SameOrbit (pBase M v z) (pBase M v z') := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M keep Kk _ ιk _ κ v hb hk
   obtain ⟨κ', v', hb', hv', hz⟩ := exists_section M hb fun k => (hk k.1).2 (Or.inl k.2)

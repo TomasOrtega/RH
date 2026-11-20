@@ -8,6 +8,21 @@ open scoped ContDiff
 
 namespace GlobalTheory.PsCo.Pc1
 
+/- English proof (translation)
+Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`. Use `⟨fun x => expNegInvGlue (1 - x), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `expNegInvGlue.contDiff.comp (contDiff_const.sub contDiff_id)`.
+
+Introduce `x hx`. Conclude with `expNegInvGlue.zero_of_nonpos (by linarith)`. Introduce `x`. Simplify using `using expNegInvGlue.nonneg _`. Simplify using `using expNegInvGlue.pos_of_pos (x := 1) one_pos`.
+
+Consider the case `succ N ih`. Take `⟨G, h1, h2, h3, h4⟩` from `ih`. Establish `hc : Continuous G` using `h1.continuous`. Establish `hd : deriv (fun x => ∫ s in (1:ℝ)..x, G s) = G`. Use function extensionality and compare the values at `x`.
+
+Conclude with `(hc.deriv_integral G 1 x)`. Use `⟨fun x => ∫ s in (1:ℝ)..x, G s, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[contDiff_infty_iff_deriv, hd]`. Conclude with `⟨fun x => (intervalIntegral.integral_hasDerivAt_right (hc.intervalIntegrable _ _) (hc.stronglyMeasurableAtFilter _ _) hc.continuousAt).differentiableAt, h1⟩`. Introduce `x hx`.
+
+Establish `: ∫ s in (1:ℝ)..x, G s = ∫ s in (1:ℝ)..x, (0:ℝ)`. Apply `intervalIntegral.integral_congr` to reduce the goal to its premises. Introduce `s hs`. Rewrite `hs` using `[Set.uIcc_of_le hx]`. Conclude with `h2 s hs.1`.
+
+Simplify using `using this`. Introduce `x`. Rewrite using `[iteratedDeriv_succ', hd]`. Conclude with `h3 x`. Rewrite using `[iteratedDeriv_succ', hd]`.
+
+Conclude with `h4`.
+-/
 theorem stProfile_holds : StProfile := by
   intro N
   induction N with
@@ -42,6 +57,9 @@ theorem stProfile_holds : StProfile := by
     · rw [iteratedDeriv_succ', hd]
       exact h4
 
+/- English proof (translation)
+The claim follows from `stProfile_holds`.
+-/
 example : GlobalTheory.PsCo.Pc1.StProfile := stProfile_holds
 
 end GlobalTheory.PsCo.Pc1

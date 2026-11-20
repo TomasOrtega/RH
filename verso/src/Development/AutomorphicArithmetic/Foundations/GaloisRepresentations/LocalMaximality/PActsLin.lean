@@ -9,18 +9,32 @@ namespace UpperTheory.Gal.productCup_of_system
 section
 variable {F K : Type} [Field F] [Field K] [Algebra ℂ F] [Algebra ℂ K] [Algebra F K] [IsScalarTower ℂ F K]
 
+/- English proof (translation)
+Simplify using `[muP]`.
+-/
 private lemma muP_tmul (τ : DR ℂ K →ₗ[K] K) (w' w'' w : DR ℂ K) :
     muP F K τ (w' ⊗ₜ w'') w = (Algebra.trace F K (τ (w' * w))) ⊗ₜ[ℂ] w'' := by
   simp [muP]
 
+/- English proof (translation)
+Simplify using `[mulP]`.
+-/
 private lemma mulP_tmul (f : F) (w : DR ℂ K) : mulP F K (f ⊗ₜ w) = algebraMap F K f • w := by
   simp [mulP]
 
+/- English proof (translation)
+Simplify using `[actZ]`. Both sides reduce to the same expression.
+-/
 private lemma actZ_tmul (a b : K) (w' w'' : DR ℂ K) :
     actZ K (a ⊗ₜ b) (w' ⊗ₜ w'') = (a • w') ⊗ₜ[ℂ] (b • w'') := by
   simp [actZ]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul w' w''`. Rewrite using `[actZ_tmul, muP_tmul, muP_tmul, mulP_tmul, mulP_tmul, smul_mul_assoc, mul_smul_comm]`. Conclude with `smul_comm _ _ _`.
+
+Consider the case `add x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy, smul_add]`.
+-/
 private lemma key1 (τ : DR ℂ K →ₗ[K] K) (a b : K) (m : DR ℂ K ⊗[ℂ] DR ℂ K) (w : DR ℂ K) :
     mulP F K (muP F K τ (actZ K (a ⊗ₜ b) m) w) = b • mulP F K (muP F K τ m (a • w)) := by
   induction m using TensorProduct.induction_on with
@@ -30,6 +44,9 @@ private lemma key1 (τ : DR ℂ K →ₗ[K] K) (a b : K) (m : DR ℂ K ⊗[ℂ] 
     exact smul_comm _ _ _
   | add x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy, smul_add]
 
+/- English proof (translation)
+Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul w' w''`. Rewrite using `[muP_tmul, muP_tmul, mulP_tmul, mulP_tmul, mul_smul_comm, map_smul, smul_eq_mul, ← Algebra.smul_def, map_smul, smul_eq_mul, map_mul, mul_smul]`. Consider the case `add p q hp hq => simp only [map_add, LinearMap.add_apply, smul_add, hp, hq]`.
+-/
 private lemma key2 (τ : DR ℂ K →ₗ[K] K) (f : F) (m : DR ℂ K ⊗[ℂ] DR ℂ K) (w : DR ℂ K) :
     mulP F K (muP F K τ m (algebraMap F K f • w)) = algebraMap F K f • mulP F K (muP F K τ m w) := by
   induction m using TensorProduct.induction_on with
@@ -39,16 +56,25 @@ private lemma key2 (τ : DR ℂ K →ₗ[K] K) (f : F) (m : DR ℂ K ⊗[ℂ] DR
       map_smul, smul_eq_mul, map_mul, mul_smul]
   | add p q hp hq => simp only [map_add, LinearMap.add_apply, smul_add, hp, hq]
 
+/- English proof (translation)
+Rewrite using `[key1, key2, ← mul_smul, ← map_mul, mul_comm g f]`.
+-/
 private lemma key3 (τ : DR ℂ K →ₗ[K] K) (f g : F) (m : DR ℂ K ⊗[ℂ] DR ℂ K) (w : DR ℂ K) :
     mulP F K (muP F K τ (actZ K (algebraMap F K f ⊗ₜ algebraMap F K g) m) w) =
       algebraMap F K (f * g) • mulP F K (muP F K τ m w) := by
   rw [key1, key2, ← mul_smul, ← map_mul, mul_comm g f]
 
+/- English proof (translation)
+Simplify using `[sysP]`. Both sides reduce to the same expression.
+-/
 private lemma sysP_act_tmul {d : ℕ} (x : Fin (d + 1) → Fˣ) (a : ℕ) (f f' : F) (k : K) (w : DR ℂ K) :
     (sysP K x a).act (f ⊗ₜ k) (f' ⊗ₜ w) = (f * f') ⊗ₜ[ℂ] (k • w) := by
   simp [sysP]
   rfl
 
+/- English proof (translation)
+Simplify using `[Sys.r, Sys.mu, Sys.u, n11, sysZ, sub_mul, div_eq_mul_inv]`.
+-/
 private lemma r_eq {d : ℕ} (x : Fin (d + 1) → Fˣ) (a : ℕ) (i j : Fin (d + 1)) (l : Mi d) :
     (sysZ K x a).r n11 (sysZ K x a).mu i j l =
       algebraMap F K (x (ofLex l).1 / x i : Fˣ) ⊗ₜ algebraMap F K (x (ofLex l).2 / x j : Fˣ) -
@@ -59,6 +85,41 @@ end
 
 end UpperTheory.Gal.productCup_of_system
 
+/- English proof (translation)
+Introduce `F K _ _ _ _ _ _ d x _ τ _ a`. Establish `hadd : ∀ (m m' : DR ℂ K ⊗[ℂ] DR ℂ K) (c c' : K), Acts (F` using `F) K τ a m c → Acts (F := F) K τ a m' c' → Acts (F := F) K τ a (m + m') (c + c') ∧ Acts (F := F) K τ a (m - m') (c - c') := by`. Introduce `m m' c c' hm hm'`. Unfold `Acts at hm hm' ⊢`. Use `⟨fun w hw => ?_, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, LinearMap.add_apply, map_add, hm w hw, hm' w hw, add_smul]`. Rewrite using `[map_sub, LinearMap.sub_apply, map_sub, hm w hw, hm' w hw, sub_smul]`. Establish `hr : ∀ (i j : Fin (d + 1)) (l : Mi d) (m : DR ℂ K ⊗[ℂ] DR ℂ K), Acts (F` using `F) K τ a (actZ K ((sysZ K x a).r n11 (sysZ K x a).mu i j l) m) 0 := by`. Introduce `i j l m`. Unfold `Acts`.
+
+Introduce `w _`. Rewrite using `[r_eq, map_sub, LinearMap.sub_apply, map_sub, LinearMap.sub_apply, map_sub, key3, key3, ← Units.val_mul, ← Units.val_mul, div_mul_div_comm, div_mul_div_comm, mul_comm (x (ofLex l).1) (x (ofLex l).2), sub_self, zero_smul]`. Establish `hsm : ∀ (i j : Fin (d + 1)) (M : Submodule ℂ (DR ℂ K ⊗[ℂ] DR ℂ K)), ∀ m ∈ sm (actZ K) M (Set.range ((sysZ K x a).r n11 (sysZ K x a).mu i j)), Acts (F` using `F) K τ a m 0 := by`. Introduce `i j M m hm`. Set `N : Submodule ℂ (DR ℂ K ⊗[ℂ] DR ℂ K)` to `{ carrier := {m | Acts (F := F) K τ a m 0} add_mem' := fun {m m'} hm hm' => by simpa using (hadd m m' 0 0 hm hm').1 zero_mem' := by`.
+
+Simplify using `only [Set.mem_setOf_eq, Acts]`. Introduce `w _`. Simplify using the standard rewrite rules. Use the proof step `smul_mem' := fun c m hm => by`. Simplify using `only [Set.mem_setOf_eq, Acts] at hm ⊢`.
+
+Introduce `w hw`. Rewrite using `[map_smul, LinearMap.smul_apply, map_smul, hm w hw]`. Simplify using `}`. Establish `hle : sm (actZ K) M (Set.range ((sysZ K x a).r n11 (sysZ K x a).mu i j)) ≤ N`. Unfold `sm`.
+
+Use `iSup₂_le fun s hs => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, _, rfl⟩`. Take `⟨l, rfl⟩` from `hs`. Conclude with `hr i j l u`. Conclude with `hle hm`.
+
+Use `⟨hadd, ?_, hsm, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `m c s hm`. Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero`. Unfold `Acts`.
+
+Introduce `w _`. Simplify using the standard rewrite rules. Consider the case `tmul p q`. Unfold `Acts at hm ⊢`. Introduce `w hw`.
+
+Rewrite using `[key1, hm _ (Submodule.smul_mem _ p hw)]`. Simplify using `only [Algebra.TensorProduct.lmul'_apply_tmul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add s s' hs hs'`.
+
+Simplify `(hadd _ _ _ _ hs hs').1` using `only [map_add, LinearMap.add_apply, add_mul]`. Introduce `u M m i j hm`. Apply `hsm i j (M.map (actZ K u))` to reduce the goal to its premises. Establish `hle : sm (actZ K) M (Set.range ((sysZ K x a).r n11 (sysZ K x a).mu i j)) ≤ (sm (actZ K) (M.map (actZ K u)) (Set.range ((sysZ K x a).r n11 (sysZ K x a).mu i j))).comap (actZ K u)`. Unfold `sm`.
+
+Use `iSup₂_le fun s hs => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Rewrite using `[Submodule.mem_comap]`. Use `Submodule.mem_iSup_of_mem s (Submodule.mem_iSup_of_mem hs ⟨actZ K u v, ⟨v, hv, rfl⟩, ?_⟩)` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, mul_comm]`.
+
+Conclude with `hle hm`. Introduce `s m`. Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f k`.
+
+Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f' w`. Rewrite using `[sysP_act_tmul, mulP_tmul, mulP_tmul]`. Simplify using `[smul_smul, mul_comm, mul_left_comm, mul_assoc]`.
+
+Rewrite using `[← algebraMap_smul K f' w, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add y z hy hz => simp only [map_add, smul_add, hy, hz]`. Consider the case `add y z hy hz => simp only [map_add, LinearMap.add_apply, add_smul, hy, hz]`.
+
+Introduce `s m w`. Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f k`. Proceed by induction on `m using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul w' w''`. Rewrite using `[Algebra.TensorProduct.map_tmul, actZ_tmul, muP_tmul, muP_tmul, sysP_act_tmul]`. Simplify using `only [IsScalarTower.coe_toAlgHom', AlgHom.coe_id, id_eq, smul_mul_assoc, map_smul, smul_eq_mul]`. Rewrite using `[← Algebra.smul_def, map_smul, smul_eq_mul]`.
+
+Consider the case `add y z hy hz => simp only [map_add, LinearMap.add_apply, hy, hz]`. Consider the case `add y z hy hz => simp only [map_add, LinearMap.add_apply, hy, hz]`.
+-/
 theorem UpperTheory.Gal.productCup_of_system.actsLin_of :
     ActsLin := by
   intro F K _ _ _ _ _ _ d x _ τ _ a

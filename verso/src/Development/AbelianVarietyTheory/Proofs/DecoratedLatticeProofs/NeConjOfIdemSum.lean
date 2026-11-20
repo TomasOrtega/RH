@@ -12,6 +12,13 @@ namespace GlobalTheory.LocMod.LevelPlaces
 
 open IsDedekindDomain NumberField GlobalTheory.IdemSupport
 
+/- English proof (translation)
+Take `⟨Φ, hΦ⟩` from `exists_comp D`. Establish `hd` using `delta_of_isIdemAt hΦ h`. Take `⟨ε, hε, hsum⟩` from `q.above`. Establish `hc0 : Φ (cA D q.e) P = 0`. Use `ev_mul (Φ := Φ) q.e (cA D q.e) P` as an intermediate fact.
+
+Rewrite `this` using `[q.split.2.1, ev_zero, hd.2.1, one_mul]`. Conclude with `this.symm`. Establish `h1 : Φ (algebraMap (AF D.host.F) (AE D) ε) P ≠ 0`. Rewrite using `[← hsum, ev_add, hd.2.1, hc0, add_zero]`. Conclude with `one_ne_zero`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `h1 ((place_comp hΦ hε).2.2 P (Ne.symm hne))`.
+-/
 theorem splitPt_v_eq_under {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (q : SplitPt D k) {P : HeightOneSpectrum (𝓞 D.host.E)}
     (h : Formalism.L2.NTheta.IsIdemAt q.e P) : q.v = P.under (𝓞 D.host.F) := by

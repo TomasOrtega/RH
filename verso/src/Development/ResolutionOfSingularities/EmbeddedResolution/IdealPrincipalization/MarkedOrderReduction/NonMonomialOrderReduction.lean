@@ -38,6 +38,9 @@ namespace FunctorialResolution.EmbeddedResolution
 
 section
 
+/- English proof (translation)
+Establish `h : ∀ D : B.IdealSheafData, D.comap (𝟙 B) = D` using `fun D => by simp`. Proceed by induction on `E with`. Consider the case `nil => rfl`. Consider the case `cons D E ih => rw [List.map_cons, h D, ih]`.
+-/
 theorem list_map_comap_id (B : Scheme.{u}) (E : List B.IdealSheafData) :
     List.map (fun D : B.IdealSheafData => D.comap (𝟙 B)) E = E := by
   have h : ∀ D : B.IdealSheafData, D.comap (𝟙 B) = D := fun D => by simp
@@ -45,11 +48,17 @@ theorem list_map_comap_id (B : Scheme.{u}) (E : List B.IdealSheafData) :
   | nil => rfl
   | cons D E ih => rw [List.map_cons, h D, ih]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+-/
 theorem orderAtLeastLocus_comap_eqToHom {A B : Scheme.{u}} (h : A = B) (J : B.IdealSheafData) (c : ℕ) :
     orderAtLeastLocus (J.comap (eqToHom h)) c = (eqToHom h).base ⁻¹' orderAtLeastLocus J c := by
   subst h
   simp
 
+/- English proof (translation)
+Substitute `hp` using the available equality. Substitute `hI` using the available equality. Substitute `hm` using the available equality. Substitute `hE` using the available equality. Conclude with `h`.
+-/
 theorem isAdmissible_congr {k : Type u} [Field k] {A : Scheme.{u}}
     {p q : A ⟶ Spec (CommRingCat.of k)} {I J : A.IdealSheafData} {m n : ℕ}
     {E F : List A.IdealSheafData} (hp : p = q) (hI : I = J) (hm : m = n) (hE : E = F)
@@ -61,6 +70,13 @@ theorem isAdmissible_congr {k : Type u} [Field k] {A : Scheme.{u}}
   subst hE
   exact h
 
+/- English proof (translation)
+Use `revert hi`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_`. Rewrite using `[BlowupSequenceData.boundary_zero]`.
+
+Conclude with `s.boundary_zero.symm`. Consider the case `succ i ih`. Introduce `hi`. Establish `hlt : i < s.length` using `hi`. Rewrite using `[BlowupSequenceData.boundary_succ, ih (Nat.le_of_lt hlt)]`.
+
+Conclude with `(s.boundary_succ i hlt).symm`.
+-/
 theorem ofMarkedSequence_boundary_eq_of_le {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
     (s : MarkedSequenceOfBlowups p I m E) (i : ℕ) (hi : i ≤ s.length) :
@@ -85,16 +101,29 @@ abbrev principalizationOfDimLe (T : MarkedIdealWithBoundary.{u}) (A : Principali
     (S : MarkedIdealWithBoundary.{u}) → S.krullDimSucc ≤ T.krullDimSucc → S.SequenceOfBlowups :=
   fun S _ => A S
 
+/- English proof (translation)
+Use `h` as an intermediate fact. Use `infer_instance`.
+-/
 private theorem quasiCompact_of_isNoetherian {X Y : Scheme.{u}} (f : X ⟶ Y)
     (h : AlgebraicGeometry.IsNoetherian X) : AlgebraicGeometry.QuasiCompact f := by
   have := h
   infer_instance
 
+/- English proof (translation)
+Use `h` as an intermediate fact. Use `infer_instance`.
+-/
 private theorem locallyOfFiniteType_of_smooth {X Y : Scheme.{u}} (f : X ⟶ Y)
     (h : AlgebraicGeometry.Smooth f) : AlgebraicGeometry.LocallyOfFiniteType f := by
   have := h
   infer_instance
 
+/- English proof (translation)
+Establish `hlen : s.length ≤ s.toMarkedSequenceOfBlowups.length` using `le_of_eq (MarkedBlowupSequenceData.toMarkedSequence_length s).symm`. Establish `hsm : Smooth (s.proj s.length ≫ T.structMap)`. Establish `h` using `MarkedSequenceOfBlowups.smooth_projectionToSpec effectiveCartierSupportContainsNoComponent hT s.toMarkedSequenceOfBlowups s.length hlen`. Rewrite `h` using `[MarkedBlowupSequenceData.toMarkedSequence_projectionToSpec]`. Then use the resulting hypothesis. Establish `hnz : NonzeroOnComponents (s.ideal s.length)`.
+
+Establish `h` using `MarkedSequenceOfBlowups.nonzeroOnComponents_ideal_of_isAdmissible effectiveCartierSupportContainsNoComponent hT s.toMarkedSequenceOfBlowups s.length hlen`. Rewrite `h` using `[MarkedBlowupSequenceData.toMarkedSequence_ideal]`. Then use the resulting hypothesis. Establish `hsnc : InStrictNormalCrossingPosition (s.proj s.length ≫ T.structMap) (s.boundary s.length)`. Establish `h` using `MarkedSequenceOfBlowups.inStrictNormalCrossingPosition_projectionToSpec_boundary effectiveCartierSupportContainsNoComponent hT s.toMarkedSequenceOfBlowups s.length hlen`. Rewrite `h` using `[MarkedBlowupSequenceData.toMarkedSequence_projectionToSpec, MarkedBlowupSequenceData.toMarkedSequence_boundary]`. Then use the resulting hypothesis.
+
+Establish `hno : AlgebraicGeometry.IsNoetherian (s.obj s.length)`. Establish `h` using `MarkedSequenceOfBlowups.isNoetherian_schemeAt effectiveCartierSupportContainsNoComponent hT s.toMarkedSequenceOfBlowups s.length hlen`. Rewrite `h` using `[MarkedBlowupSequenceData.toMarkedSequence_schemeAt]`. Then use the resulting hypothesis. Conclude with `⟨hT.charZero, locallyOfFiniteType_of_smooth _ hsm, hnz, hT.one_le_mult, quasiCompact_of_isNoetherian _ hno, hsm, hsnc⟩`.
+-/
 theorem isAdmissible_tripleAtLength (_hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) :
     (tripleAtLength T s (s.ideal s.length) T.mult).IsAdmissible := by
@@ -119,6 +148,9 @@ theorem isAdmissible_tripleAtLength (_hG : PrincipalizationGeometryHypotheses.{u
   exact ⟨hT.charZero, locallyOfFiniteType_of_smooth _ hsm, hnz, hT.one_le_mult,
     quasiCompact_of_isNoetherian _ hno, hsm, hsnc⟩
 
+/- English proof (translation)
+Rewrite using `[tripleAtLength_dim]`. Establish `hlen : s.length ≤ s.toMarkedSequenceOfBlowups.length` using `le_of_eq (MarkedBlowupSequenceData.toMarkedSequence_length s).symm`. Establish `h` using `hG.monomialInputs.level_schemeDim_le T hT s.toMarkedSequenceOfBlowups s.length hlen`. Rewrite `h` using `[MarkedBlowupSequenceData.toMarkedSequence_schemeAt]`. Then use the resulting hypothesis.
+-/
 theorem tripleAtLength_dim_le (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
     (J : (s.obj s.length).IdealSheafData) (μ : ℕ) :
@@ -129,6 +161,9 @@ theorem tripleAtLength_dim_le (hG : PrincipalizationGeometryHypotheses.{u}) {T :
   have h := hG.monomialInputs.level_schemeDim_le T hT s.toMarkedSequenceOfBlowups s.length hlen
   rwa [MarkedBlowupSequenceData.toMarkedSequence_schemeAt] at h
 
+/- English proof (translation)
+Establish `h` using `hG.isMonomialSplitting_monomialPart_nonMonomialPart (tripleAtLength T s (s.ideal s.length) T.mult) (isAdmissible_tripleAtLength hG hT s)`. Conclude with `h`.
+-/
 theorem isMonomialSplitting_lastNonMonomialPart (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : T.IsAdmissible) (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) :
     IsMonomialSplitting (s.boundary s.length) (s.ideal s.length)
@@ -137,6 +172,9 @@ theorem isMonomialSplitting_lastNonMonomialPart (hG : PrincipalizationGeometryHy
     (isAdmissible_tripleAtLength hG hT s)
   exact h
 
+/- English proof (translation)
+Establish `hv` using `isAdmissible_tripleAtLength hG hT s`. Establish `hnz : NonzeroOnComponents (s.ideal s.length)` using `hv.nonzeroOnComponents`. Establish `hsplit` using `isMonomialSplitting_lastNonMonomialPart hG hT s`. Establish `hnz' : NonzeroOnComponents (lastNonMonomialPart T s)` using `hsplit.nonzeroOnComponents_nonMonomial hnz`. Conclude with `hG.monomialInputs.orderAt_bounded (tripleAtLength T s (s.ideal s.length) T.mult) hv (lastNonMonomialPart T s) hnz'`.
+-/
 theorem exists_orderAt_lastNonMonomialPart_le (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : T.IsAdmissible) (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) :
     ∃ B : ℕ, ∀ x : ↥(s.obj s.length), orderAt (lastNonMonomialPart T s) x ≤ (B : ℕ∞) := by
@@ -148,6 +186,9 @@ theorem exists_orderAt_lastNonMonomialPart_le (hG : PrincipalizationGeometryHypo
   exact hG.monomialInputs.orderAt_bounded (tripleAtLength T s (s.ideal s.length) T.mult) hv
     (lastNonMonomialPart T s) hnz'
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `exists_orderAt_lastNonMonomialPart_le hG hT s`. Establish `h : maxOrderNonMonomial T s = maxOrder (lastNonMonomialPart T s)` using `rfl`. Rewrite using `[h]`. Conclude with `orderAt_le_maxOrder (lastNonMonomialPart T s) hB x`.
+-/
 theorem orderAt_lastNonMonomialPart_le_maxOrderNonMonomial (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}}
     (hT : T.IsAdmissible) (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
     (x : ↥(s.obj s.length)) :
@@ -161,6 +202,11 @@ abbrev nonMonomialTriple (T : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) : MarkedIdealWithBoundary.{u} :=
   tripleAtLength T s (lastNonMonomialPart T s) (maxOrderNonMonomial T s)
 
+/- English proof (translation)
+Establish `hbase : (tripleAtLength T s (s.ideal s.length) T.mult).IsAdmissible` using `isAdmissible_tripleAtLength hG hT s`. Establish `hsplit : IsMonomialSplitting (s.boundary s.length) (s.ideal s.length) (monomialPart (s.boundary s.length) (s.ideal s.length)) (lastNonMonomialPart T s)` using `isMonomialSplitting_lastNonMonomialPart hG hT s`. Establish `hnz0 : NonzeroOnComponents (s.ideal s.length)` using `hbase.nonzeroOnComponents`. Establish `hnz : NonzeroOnComponents (lastNonMonomialPart T s)` using `hsplit.nonzeroOnComponents_nonMonomial hnz0`. Establish `hmult : 1 ≤ maxOrderNonMonomial T s` using `le_trans hT.one_le_mult ((nonMonomialOrderReductionContinues_iff T s).1 hcont).1`.
+
+Conclude with `⟨hbase.charZero, hbase.locallyOfFiniteType, hnz, hmult, hbase.quasiCompact, hbase.smooth, hbase.snc⟩`.
+-/
 theorem isAdmissible_nonMonomialTriple (hG : PrincipalizationGeometryHypotheses.{u}) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) (hcont : NonMonomialOrderReductionContinues T s) :
     (nonMonomialTriple T s).IsAdmissible := by
@@ -180,6 +226,11 @@ end
 
 section
 
+/- English proof (translation)
+Establish `hμ : T.mult ≤ maxOrderNonMonomial T s` using `((nonMonomialOrderReductionContinues_iff T s).1 hcont).1`. Establish `hadmLast : (tripleAtLength T s (s.ideal s.length) T.mult).IsAdmissible` using `isAdmissible_tripleAtLength hG hT s`. Establish `hadmNonMonomial : (nonMonomialTriple T s).IsAdmissible` using `isAdmissible_nonMonomialTriple hG hT s hcont`. Establish `hsplit : IsMonomialSplitting (s.boundary s.length) (s.ideal s.length) (monomialPart (s.boundary s.length) (s.ideal s.length)) (lastNonMonomialPart T s)` using `isMonomialSplitting_lastNonMonomialPart hG hT s`. Establish `hdim' : (nonMonomialTriple T s).krullDimSucc ≤ n` using `le_trans (tripleAtLength_dim_le hG hT s (lastNonMonomialPart T s) (maxOrderNonMonomial T s)) hdim`.
+
+Establish `hob : (nonMonomialTriple T s).IsOrderBoundedByMult` using `(MarkedIdealWithBoundary.isOrderBoundedByMult_iff (nonMonomialTriple T s)).2 fun x => orderAt_lastNonMonomialPart_le_maxOrderNonMonomial hG hT s x`. Establish `hord` using `hspec.order_le (nonMonomialTriple T s) hadmNonMonomial hdim' hob`. Conclude with `isMarked_sequenceData_of_orderAt_le hG hadmLast hsplit hμ (principalizationSeqAtEnd T (principalizationOfDimLe T A) s (lastNonMonomialPart T s) (maxOrderNonMonomial T s) (tripleAtLength_dim_le hG hT s (lastNonMonomialPart T s) (maxOrderNonMonomial T s))) hord`.
+-/
 theorem isMarked_seqAtEnd_lastNonMonomialPart (hG : PrincipalizationGeometryHypotheses.{u}) {n : ℕ} {A B : PrincipalizationAssignment.{u}}
     (hspec : IsOrderReduction (fun d => d ≤ n) A B) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     (hdim : T.krullDimSucc ≤ n) (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -218,6 +269,9 @@ def continuationByNonMonomialPart (hG : PrincipalizationGeometryHypotheses.{u}) 
     (isMarked_seqAtEnd_lastNonMonomialPart hG hspec hT hdim s hcont)
 
 @[simp]
+/- English proof (translation)
+Conclude with `MarkedBlowupSequenceData.ofMarkedSequence_length (principalizationSeqAtEnd T (principalizationOfDimLe T A) s (lastNonMonomialPart T s) (maxOrderNonMonomial T s) (tripleAtLength_dim_le hG hT s _ _))`.
+-/
 theorem continuationByNonMonomialPart_length (hG : PrincipalizationGeometryHypotheses.{u}) {n : ℕ} {A B : PrincipalizationAssignment.{u}}
     (hspec : IsOrderReduction (fun d => d ≤ n) A B) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     (hdim : T.krullDimSucc ≤ n) (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -229,6 +283,11 @@ theorem continuationByNonMonomialPart_length (hG : PrincipalizationGeometryHypot
     (principalizationSeqAtEnd T (principalizationOfDimLe T A) s (lastNonMonomialPart T s) (maxOrderNonMonomial T s)
       (tripleAtLength_dim_le hG hT s _ _))
 
+/- English proof (translation)
+Use `hp` as an intermediate fact. Establish `: AlgebraicGeometry.Smooth e.inv` using `inferInstance`. Take `⟨x, hx⟩` from `hne`. Establish `hcomp : (N.comap e.hom).comap e.inv = N`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, e.inv_hom_id]`.
+
+Simplify using the standard rewrite rules. Establish `hsub` using `image_orderAtLeastLocus_comap_subset k p e.inv (N.comap e.hom) c`. Rewrite `hsub` using `[hcomp]`. Conclude with `⟨_, hsub (Set.mem_image_of_mem _ hx)⟩`.
+-/
 private theorem orderAtLeastLocus_comap_iso_nonempty {k : Type u} [Field k] [CharZero k]
     {X Y : Scheme.{u}} (p : Y ⟶ Spec (CommRingCat.of k))
     (hp : AlgebraicGeometry.Smooth p) (e : Y ≅ X) (N : X.IdealSheafData) (c : ℕ)
@@ -244,6 +303,15 @@ private theorem orderAtLeastLocus_comap_iso_nonempty {k : Type u} [Field k] [Cha
   rw [hcomp] at hsub
   exact ⟨_, hsub (Set.mem_image_of_mem _ hx)⟩
 
+/- English proof (translation)
+Establish `hadmNonMonomial : (nonMonomialTriple T s).IsAdmissible` using `isAdmissible_nonMonomialTriple hG hT s hcont`. Establish `hdim' : (nonMonomialTriple T s).krullDimSucc ≤ n` using `le_trans (tripleAtLength_dim_le hG hT s (lastNonMonomialPart T s) (maxOrderNonMonomial T s)) hdim`. Establish `hob : (nonMonomialTriple T s).IsOrderBoundedByMult` using `(MarkedIdealWithBoundary.isOrderBoundedByMult_iff (nonMonomialTriple T s)).2 fun x => orderAt_lastNonMonomialPart_le_maxOrderNonMonomial hG hT s x`. Establish `key : 0 < (A (nonMonomialTriple T s)).length`. Assume the negation of the conclusion as `hzero`.
+
+Establish `hlen : (A (nonMonomialTriple T s)).length = 0` using `by omega`. Establish `hres` using `hspec.resolves (nonMonomialTriple T s) hadmNonMonomial hdim' hob`. Rewrite `hres` using `[MarkedSequenceOfBlowups.isResolution_iff]`. Rewrite `hres` using `[MarkedSequenceOfBlowups.lastIdeal_eq]`. Rewrite `hres` using `[hlen]`.
+
+Rewrite `hres` using `[MarkedSequenceOfBlowups.ideal_zero]`. Use `hadmNonMonomial.charZero` as an intermediate fact. Establish `hsm0 : AlgebraicGeometry.Smooth ((A (nonMonomialTriple T s)).projectionToSpec 0)` using `MarkedSequenceOfBlowups.smooth_projectionToSpec effectiveCartierSupportContainsNoComponent hadmNonMonomial (A (nonMonomialTriple T s)) 0 (Nat.zero_le _)`. Establish `hne : (orderAtLeastLocus ((nonMonomialTriple T s).ideal.comap (A (nonMonomialTriple T s)).isoZero.hom) (nonMonomialTriple T s).mult).Nonempty` using `orderAtLeastLocus_comap_iso_nonempty ((A (nonMonomialTriple T s)).projectionToSpec 0) hsm0 (A (nonMonomialTriple T s)).isoZero (nonMonomialTriple T s).ideal (nonMonomialTriple T s).mult (((nonMonomialOrderReductionContinues_iff T s).1 hcont).2)`. Conclude with `absurd hres (Set.nonempty_iff_ne_empty.mp hne)`.
+
+Conclude with `key`.
+-/
 theorem seqAtEnd_lastNonMonomialPart_length_pos (hG : PrincipalizationGeometryHypotheses.{u}) {n : ℕ} {A B : PrincipalizationAssignment.{u}}
     (hspec : IsOrderReduction (fun d => d ≤ n) A B) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     (hdim : T.krullDimSucc ≤ n) (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -276,6 +344,9 @@ theorem seqAtEnd_lastNonMonomialPart_length_pos (hG : PrincipalizationGeometryHy
     exact absurd hres (Set.nonempty_iff_ne_empty.mp hne)
   exact key
 
+/- English proof (translation)
+Establish `h` using `appendRecursivePrincipalization_eq_append hinv T (principalizationOfDimLe T A) s (lastNonMonomialPart T s) (maxOrderNonMonomial T s) (tripleAtLength_dim_le hG hT s (lastNonMonomialPart T s) (maxOrderNonMonomial T s)) (isMarked_seqAtEnd_lastNonMonomialPart hG hspec hT hdim s hcont …`. Conclude with `h`.
+-/
 theorem extendByNonMonomialPart_eq_append (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
     {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible) (hdim : T.krullDimSucc ≤ n)
@@ -290,12 +361,18 @@ theorem extendByNonMonomialPart_eq_append (hG : PrincipalizationGeometryHypothes
 private def maxOrderNonMonomialPart {k : Type u} [Field k] (D : MarkedSchemeWithCenter.{u} k) : ℕ :=
   maxOrder (nonMonomialPart D.boundary D.ideal)
 
+/- English proof (translation)
+Substitute `hY` using the available equality. Rewrite using `[eqToIso_refl, MarkedSchemeWithCenter.transport_refl]`.
+-/
 private theorem nonMonomialOrder_transport_eqToIso {k : Type u} [Field k] (D : MarkedSchemeWithCenter.{u} k)
     {Y : Scheme.{u}} (hY : Y = D.ambient) :
     maxOrderNonMonomialPart (D.transport (eqToIso hY)) = maxOrderNonMonomialPart D := by
   subst hY
   rw [eqToIso_refl, MarkedSchemeWithCenter.transport_refl]
 
+/- English proof (translation)
+Substitute `hE` using the available equality. Substitute `hI` using the available equality. Conclude with `h`.
+-/
 private theorem isMonomialSplitting_of_boundary_eq_of_ideal_eq {X : Scheme.{u}}
     {E F : List X.IdealSheafData} {I J M N : X.IdealSheafData} (hE : E = F) (hI : I = J)
     (h : IsMonomialSplitting F J M N) : IsMonomialSplitting E I M N := by
@@ -303,6 +380,9 @@ private theorem isMonomialSplitting_of_boundary_eq_of_ideal_eq {X : Scheme.{u}}
   subst hI
   exact h
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => rfl`. Consider the case `succ i ih`. Conclude with `congrArg (fun Z : (s.schemeAt i).IdealSheafData => residualByPow (Z.comap (s.transitionMapSucc i)) (s.exceptionalDivisor i) c) ih`.
+-/
 private theorem controlledTransform_ofMarkedSequence {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
     (s : MarkedSequenceOfBlowups p I m E) (J : X.IdealSheafData) (c : ℕ) (i : ℕ) :
@@ -315,6 +395,9 @@ private theorem controlledTransform_ofMarkedSequence {k : Type u} [Field k] {X :
         (fun Z : (s.schemeAt i).IdealSheafData =>
           residualByPow (Z.comap (s.transitionMapSucc i)) (s.exceptionalDivisor i) c) ih
 
+/- English proof (translation)
+Rewrite using `[continuationByNonMonomialPart_length hG hspec hT hdim s hcont]`. Conclude with `seqAtEnd_lastNonMonomialPart_length_pos hG hspec hT hdim s hcont`.
+-/
 private theorem continuationByNonMonomialPart_length_pos (hG : PrincipalizationGeometryHypotheses.{u}) {n : ℕ} {A B : PrincipalizationAssignment.{u}}
     (hspec : IsOrderReduction (fun d => d ≤ n) A B) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     (hdim : T.krullDimSucc ≤ n) (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -323,6 +406,9 @@ private theorem continuationByNonMonomialPart_length_pos (hG : PrincipalizationG
   rw [continuationByNonMonomialPart_length hG hspec hT hdim s hcont]
   exact seqAtEnd_lastNonMonomialPart_length_pos hG hspec hT hdim s hcont
 
+/- English proof (translation)
+The claim follows from `ofMarkedSequence_boundary_eq_of_le (A (nonMonomialTriple T s)) (A (nonMonomialTriple T s)).length le_rfl`.
+-/
 private theorem continuationByNonMonomialPart_boundary_length (hG : PrincipalizationGeometryHypotheses.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}}
     (hspec : IsOrderReduction (fun d => d ≤ n) A B) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
@@ -333,6 +419,9 @@ private theorem continuationByNonMonomialPart_boundary_length (hG : Principaliza
       = (A (nonMonomialTriple T s)).boundary (A (nonMonomialTriple T s)).length :=
   ofMarkedSequence_boundary_eq_of_le (A (nonMonomialTriple T s)) (A (nonMonomialTriple T s)).length le_rfl
 
+/- English proof (translation)
+The claim follows from `controlledTransform_ofMarkedSequence (principalizationSeqAtEnd T (principalizationOfDimLe T A) s (lastNonMonomialPart T s) (maxOrderNonMonomial T s) (tripleAtLength_dim_le hG hT s (lastNonMonomialPart T s) (maxOrderNonMonomial T s))) (s.ideal s.length) T.mult (principalizationSeq …`.
+-/
 private theorem continuationByNonMonomialPart_ideal_length (hG : PrincipalizationGeometryHypotheses.{u}) {n : ℕ} {A B : PrincipalizationAssignment.{u}}
     (hspec : IsOrderReduction (fun d => d ≤ n) A B) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     (hdim : T.krullDimSucc ≤ n) (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -349,6 +438,11 @@ private theorem continuationByNonMonomialPart_ideal_length (hG : Principalizatio
     (principalizationSeqAtEnd T (principalizationOfDimLe T A) s (lastNonMonomialPart T s) (maxOrderNonMonomial T s)
       (tripleAtLength_dim_le hG hT s (lastNonMonomialPart T s) (maxOrderNonMonomial T s))).length
 
+/- English proof (translation)
+Establish `hmu : T.mult ≤ maxOrderNonMonomial T s` using `((nonMonomialOrderReductionContinues_iff T s).1 hcont).1`. Establish `hadmLast : (tripleAtLength T s (s.ideal s.length) T.mult).IsAdmissible` using `isAdmissible_tripleAtLength hG hT s`. Establish `hadmNonMonomial : (nonMonomialTriple T s).IsAdmissible` using `isAdmissible_nonMonomialTriple hG hT s hcont`. Establish `hsplit : IsMonomialSplitting (s.boundary s.length) (s.ideal s.length) (monomialPart (s.boundary s.length) (s.ideal s.length)) (lastNonMonomialPart T s)` using `isMonomialSplitting_lastNonMonomialPart hG hT s`. Establish `hdim' : (nonMonomialTriple T s).krullDimSucc ≤ n` using `le_trans (tripleAtLength_dim_le hG hT s (lastNonMonomialPart T s) (maxOrderNonMonomial T s)) hdim`.
+
+Establish `hob : (nonMonomialTriple T s).IsOrderBoundedByMult` using `(MarkedIdealWithBoundary.isOrderBoundedByMult_iff (nonMonomialTriple T s)).2 fun x => orderAt_lastNonMonomialPart_le_maxOrderNonMonomial hG hT s x`. Establish `hordA` using `hspec.order_le (nonMonomialTriple T s) hadmNonMonomial hdim' hob`. Establish `hsp` using `(isMonomialSplitting_controlledTransform_monomialFactor hG hadmLast hsplit hmu (A (nonMonomialTriple T s)) hordA (A (nonMonomialTriple T s)).length le_rfl).1`. Establish `hvalid` using `isAdmissible_tripleAtLength hG hadmLast (continuationByNonMonomialPart hG hspec hT hdim s hcont)`. Conclude with `hG.nonMonomialPart_eq_of_isMonomialSplitting _ hvalid _ _ (isMonomialSplitting_of_boundary_eq_of_ideal_eq (continuationByNonMonomialPart_boundary_length hG hspec hT hdim s hcont) (continuationByNonMonomialPart_ideal_length hG hspec hT hdim s hcont) hsp)`.
+-/
 private theorem nonMonomialPart_continuationByNonMonomialPart_length (hG : PrincipalizationGeometryHypotheses.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}}
     (hspec : IsOrderReduction (fun d => d ≤ n) A B) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
@@ -379,6 +473,11 @@ private theorem nonMonomialPart_continuationByNonMonomialPart_length (hG : Princ
     (isMonomialSplitting_of_boundary_eq_of_ideal_eq (continuationByNonMonomialPart_boundary_length hG hspec hT hdim s hcont)
       (continuationByNonMonomialPart_ideal_length hG hspec hT hdim s hcont) hsp)
 
+/- English proof (translation)
+Establish `hmu : T.mult ≤ maxOrderNonMonomial T s` using `((nonMonomialOrderReductionContinues_iff T s).1 hcont).1`. Establish `hmu1 : 1 ≤ maxOrderNonMonomial T s` using `le_trans hT.one_le_mult hmu`. Establish `hadmNonMonomial : (nonMonomialTriple T s).IsAdmissible` using `isAdmissible_nonMonomialTriple hG hT s hcont`. Establish `hdim' : (nonMonomialTriple T s).krullDimSucc ≤ n` using `le_trans (tripleAtLength_dim_le hG hT s (lastNonMonomialPart T s) (maxOrderNonMonomial T s)) hdim`. Establish `hob : (nonMonomialTriple T s).IsOrderBoundedByMult` using `(MarkedIdealWithBoundary.isOrderBoundedByMult_iff (nonMonomialTriple T s)).2 fun x => orderAt_lastNonMonomialPart_le_maxOrderNonMonomial hG hT s x`.
+
+Establish `hres` using `hspec.resolves (nonMonomialTriple T s) hadmNonMonomial hdim' hob`. Rewrite `hres` using `[MarkedSequenceOfBlowups.isResolution_iff, MarkedSequenceOfBlowups.lastIdeal_eq]`. Conclude with `maxOrder_ideal_length_lt_of_orderAtLeastLocus_eq_empty (A (nonMonomialTriple T s)) (hspec.order_le (nonMonomialTriple T s) hadmNonMonomial hdim' hob) hres hmu1`.
+-/
 private theorem maxOrder_idealAtLength_lt_maxOrderNonMonomial (hG : PrincipalizationGeometryHypotheses.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}}
     (hspec : IsOrderReduction (fun d => d ≤ n) A B) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
@@ -399,6 +498,11 @@ private theorem maxOrder_idealAtLength_lt_maxOrderNonMonomial (hG : Principaliza
   exact maxOrder_ideal_length_lt_of_orderAtLeastLocus_eq_empty (A (nonMonomialTriple T s))
     (hspec.order_le (nonMonomialTriple T s) hadmNonMonomial hdim' hob) hres hmu1
 
+/- English proof (translation)
+Establish `ht : 0 < (continuationByNonMonomialPart hG hspec hT hdim s hcont).length` using `continuationByNonMonomialPart_length_pos hG hspec hT hdim s hcont`. Establish `hconv : maxOrderNonMonomial T (s.append (continuationByNonMonomialPart hG hspec hT hdim s hcont) hinv) = maxOrder (nonMonomialPart ((continuationByNonMonomialPart hG hspec hT hdim s hcont).boundary (continuationByNonMonomialPart hG hspec hT hdim s hcont).length) ((continuationByN …` using `by show maxOrderNonMonomialPart ((s.append (continuationByNonMonomialPart hG hspec hT hdim s hcont) hinv).dataAt (s.append (continuationByNonMonomialPart hG hspec hT hdim s hcont) hinv).length) = _`. Rewrite using `[MarkedBlowupSequenceData.append_dataAt_last s (continuationByNonMonomialPart hG hspec hT hdim s hcont) hinv ht]`. Conclude with `nonMonomialOrder_transport_eqToIso _ _`. Rewrite using `[extendByNonMonomialPart_eq_append hG hinv hspec hT hdim s hcont, hconv, nonMonomialPart_continuationByNonMonomialPart_length hG hspec hT hdim s hcont]`.
+
+Conclude with `maxOrder_idealAtLength_lt_maxOrderNonMonomial hG hspec hT hdim s hcont`.
+-/
 theorem maxOrderNonMonomial_extendByNonMonomialPart_lt (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
     {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible) (hdim : T.krullDimSucc ≤ n)
@@ -424,11 +528,23 @@ end
 
 section
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem maxOrderNonMonomial_emptyMarkedBlowupSequenceData (T : MarkedIdealWithBoundary.{u}) :
     maxOrderNonMonomial T (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) =
       maxOrder (nonMonomialPart T.boundary T.ideal) := by
   rfl
 
+/- English proof (translation)
+Proceed by induction on `f with`. Consider the case `zero`. Introduce `_`. Establish `h0 : maxOrderNonMonomial T (nonMonomialOrderReductionIter hinv T (principalizationOfDimLe T A) 0) = maxOrder (nonMonomialPart T.boundary T.ideal)`. Rewrite using `[nonMonomialOrderReductionIter_zero hinv T (principalizationOfDimLe T A)]`.
+
+Conclude with `maxOrderNonMonomial_emptyMarkedBlowupSequenceData T`. Use linear arithmetic over natural numbers and integers. Consider the case `succ f ih`. Introduce `hf`. Establish `hf' : f ≤ N` using `by omega`.
+
+Establish `hc` using `hall f hf'`. Establish `hstep` using `nonMonomialOrderReductionIter_succ_of_continues hinv T (principalizationOfDimLe T A) f hc`. Establish `hlt` using `maxOrderNonMonomial_extendByNonMonomialPart_lt hG hinv hspec hT hdim (nonMonomialOrderReductionIter hinv T (principalizationOfDimLe T A) f) hc`. Establish `hih` using `ih hf'`. Rewrite using `[hstep]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 private theorem maxOrderNonMonomial_iter_add_le_of_forall_le (hG : PrincipalizationGeometryHypotheses.{u})
     (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
@@ -456,6 +572,11 @@ private theorem maxOrderNonMonomial_iter_add_le_of_forall_le (hG : Principalizat
       rw [hstep]
       omega
 
+/- English proof (translation)
+Introduce `hcont`. Rewrite `hcont` using `[nonMonomialOrderReduction_eq hinv T (principalizationOfDimLe T A)]`. Establish `hall : ∀ f : ℕ, f ≤ maxOrder (nonMonomialPart T.boundary T.ideal) + 1 → NonMonomialOrderReductionContinues T (nonMonomialOrderReductionIter hinv T (principalizationOfDimLe T A) f)`. Introduce `f hf`. Assume the negation of the conclusion as `hnc`.
+
+Establish `he` using `nonMonomialOrderReductionIter_eq_of_not_continues hinv T (principalizationOfDimLe T A) f hnc (maxOrder (nonMonomialPart T.boundary T.ideal) + 1) hf`. Rewrite `hcont` using `[he]`. Conclude with `hnc hcont`. Establish `hfin` using `maxOrderNonMonomial_iter_add_le_of_forall_le hG hinv hspec hT hdim (maxOrder (nonMonomialPart T.boundary T.ideal) + 1) hall (maxOrder (nonMonomialPart T.boundary T.ideal) + 1) le_rfl`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem not_nonMonomialOrderReductionContinues_nonMonomialOrderReduction (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
     {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible) (hdim : T.krullDimSucc ≤ n) :
@@ -475,6 +596,9 @@ theorem not_nonMonomialOrderReductionContinues_nonMonomialOrderReduction (hG : P
     (maxOrder (nonMonomialPart T.boundary T.ideal) + 1) le_rfl
   omega
 
+/- English proof (translation)
+Establish `hnc : ¬ NonMonomialOrderReductionContinues T (nonMonomialOrderReductionIter hinv T (principalizationOfDimLe T A) (maxOrder (nonMonomialPart T.boundary T.ideal) + 1))`. Rewrite using `[← nonMonomialOrderReduction_eq hinv T (principalizationOfDimLe T A)]`. Conclude with `not_nonMonomialOrderReductionContinues_nonMonomialOrderReduction hG hinv hspec hT hdim`. Rewrite using `[nonMonomialOrderReduction_eq hinv T (principalizationOfDimLe T A)]`. Conclude with `nonMonomialOrderReductionIter_eq_of_not_continues hinv T (principalizationOfDimLe T A) (maxOrder (nonMonomialPart T.boundary T.ideal) + 1) hnc g hg`.
+-/
 theorem nonMonomialOrderReductionIter_eq_of_maxOrder_lt (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
     {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible) (hdim : T.krullDimSucc ≤ n) (g : ℕ)
@@ -488,6 +612,9 @@ theorem nonMonomialOrderReductionIter_eq_of_maxOrder_lt (hG : PrincipalizationGe
   exact nonMonomialOrderReductionIter_eq_of_not_continues hinv T (principalizationOfDimLe T A)
     (maxOrder (nonMonomialPart T.boundary T.ideal) + 1) hnc g hg
 
+/- English proof (translation)
+Use `⟨hne, ?_⟩` and prove the remaining obligations. Rewrite using `[MarkedBlowupSequenceData.boundarySupport_dataAt]`. Conclude with `hcert`.
+-/
 private theorem hasPrincipalizationCenter_of_principalizationCertificate {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
     (t : MarkedBlowupSequenceData p I m E) (μ i : ℕ)
@@ -499,6 +626,21 @@ private theorem hasPrincipalizationCenter_of_principalizationCertificate {k : Ty
   rw [MarkedBlowupSequenceData.boundarySupport_dataAt]
   exact hcert
 
+/- English proof (translation)
+Establish `hadmNonMonomial : (nonMonomialTriple T s).IsAdmissible` using `isAdmissible_nonMonomialTriple hG hT s hcont`. Establish `hdim' : (nonMonomialTriple T s).krullDimSucc ≤ n` using `le_trans (tripleAtLength_dim_le hG hT s (lastNonMonomialPart T s) (maxOrderNonMonomial T s)) hdim`. Establish `hob : (nonMonomialTriple T s).IsOrderBoundedByMult` using `(MarkedIdealWithBoundary.isOrderBoundedByMult_iff (nonMonomialTriple T s)).2 fun x => orderAt_lastNonMonomialPart_le_maxOrderNonMonomial hG hT s x`. Establish `hmu : T.mult ≤ maxOrderNonMonomial T s` using `((nonMonomialOrderReductionContinues_iff T s).1 hcont).1`. Establish `hadmLast : (tripleAtLength T s (s.ideal s.length) T.mult).IsAdmissible` using `isAdmissible_tripleAtLength hG hT s`.
+
+Establish `hsplit` using `isMonomialSplitting_lastNonMonomialPart hG hT s`. Establish `hord` using `hspec.order_le (nonMonomialTriple T s) hadmNonMonomial hdim' hob`. Establish `hcertA` using `hspec.cert (nonMonomialTriple T s) hadmNonMonomial hdim' hob`. Establish `hne` using `hspec.center_nonempty (nonMonomialTriple T s) hadmNonMonomial hdim' hob`. Rewrite `hi` using `[continuationByNonMonomialPart_length hG hspec hT hdim s hcont]`.
+
+Establish `hprinc` using `principalizationCertificate_controlledTransform hG hadmLast hsplit hmu (principalizationSeqAtEnd T (principalizationOfDimLe T A) s (lastNonMonomialPart T s) (maxOrderNonMonomial T s) (tripleAtLength_dim_le hG hT s (lastNonMonomialPart T s) (maxOrderNonMonomial T s))) hord hcertA …`. Establish `hidl : (continuationByNonMonomialPart hG hspec hT hdim s hcont).ideal i = MarkedSequenceOfBlowups.controlledTransform (principalizationSeqAtEnd T (principalizationOfDimLe T A) s (lastNonMonomialPart T s) (maxOrderNonMonomial T s) (tripleAtLength_dim_le hG hT s (lastNonMonomialPar …` using `controlledTransform_ofMarkedSequence (principalizationSeqAtEnd T (principalizationOfDimLe T A) s (lastNonMonomialPart T s) (maxOrderNonMonomial T s) (tripleAtLength_dim_le hG hT s (lastNonMonomialPart T s) (maxOrderNonMonomial T s))) (s.ideal s.length) T.mult i`. Establish `hproj : (continuationByNonMonomialPart hG hspec hT hdim s hcont).proj i = (principalizationSeqAtEnd T (principalizationOfDimLe T A) s (lastNonMonomialPart T s) (maxOrderNonMonomial T s) (tripleAtLength_dim_le hG hT s (lastNonMonomialPart T s) (maxOrderNonMonomial T s))).projectio …` using `BlowupSequenceData.ofSequenceOfBlowups_projectionToBase (principalizationSeqAtEnd T (principalizationOfDimLe T A) s (lastNonMonomialPart T s) (maxOrderNonMonomial T s) (tripleAtLength_dim_le hG hT s (lastNonMonomialPart T s) (maxOrderNonMonomial T s))).toSequenceOfBlowups i`. Establish `hbd : (continuationByNonMonomialPart hG hspec hT hdim s hcont).toMarkedSequenceOfBlowups.boundary i = (principalizationSeqAtEnd T (principalizationOfDimLe T A) s (lastNonMonomialPart T s) (maxOrderNonMonomial T s) (tripleAtLength_dim_le hG hT s (lastNonMonomialPart T s) (maxOrder …`. Rewrite using `[MarkedBlowupSequenceData.toMarkedSequence_boundary]`.
+
+Conclude with `ofMarkedSequence_boundary_eq_of_le (principalizationSeqAtEnd T (principalizationOfDimLe T A) s (lastNonMonomialPart T s) (maxOrderNonMonomial T s) (tripleAtLength_dim_le hG hT s (lastNonMonomialPart T s) (maxOrderNonMonomial T s))) i (le_of_lt hi)`. Establish `hloc : (continuationByNonMonomialPart hG hspec hT hdim s hcont).toMarkedSequenceOfBlowups.boundaryLocus i = (principalizationSeqAtEnd T (principalizationOfDimLe T A) s (lastNonMonomialPart T s) (maxOrderNonMonomial T s) (tripleAtLength_dim_le hG hT s (lastNonMonomialPart T s) (ma …`. Apply `Set.ext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[MarkedSequenceOfBlowups.mem_boundaryLocus_iff (continuationByNonMonomialPart hG hspec hT hdim s hcont).toMarkedSequenceOfBlowups i x]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Rewrite `hx` using `[hbd]`. Conclude with `(MarkedSequenceOfBlowups.mem_boundaryLocus_iff (principalizationSeqAtEnd T (principalizationOfDimLe T A) s (lastNonMonomialPart T s) (maxOrderNonMonomial T s) (tripleAtLength_dim_le hG hT s (lastNonMonomialPart T s) (maxOrderNonMonomial T s))) i x).2 hx`. Introduce `hx`.
+
+Establish `hx'` using `(MarkedSequenceOfBlowups.mem_boundaryLocus_iff (principalizationSeqAtEnd T (principalizationOfDimLe T A) s (lastNonMonomialPart T s) (maxOrderNonMonomial T s) (tripleAtLength_dim_le hG hT s (lastNonMonomialPart T s) (maxOrderNonMonomial T s))) i x).1 hx`. Rewrite `hx'` using `[← hbd]`. Conclude with `hx'`. Use `hasPrincipalizationCenter_of_principalizationCertificate (continuationByNonMonomialPart hG hspec hT hdim s hcont) T.mult i (hne i hi) ?_` and prove the remaining obligations. Rewrite using `[hproj, hidl, hloc]`.
+
+Conclude with `hprinc`.
+-/
 private theorem hasCenter_continuationByNonMonomialPart (hG : PrincipalizationGeometryHypotheses.{u}) {n : ℕ} {A B : PrincipalizationAssignment.{u}}
     (hspec : IsOrderReduction (fun d => d ≤ n) A B) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
     (hdim : T.krullDimSucc ≤ n) (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -566,6 +708,13 @@ private theorem hasCenter_continuationByNonMonomialPart (hG : PrincipalizationGe
   rw [hproj, hidl, hloc]
   exact hprinc
 
+/- English proof (translation)
+Proceed by induction on `f with`. Consider the case `zero`. Introduce `i hi`. Rewrite `hi` using `[nonMonomialOrderReductionIter_zero hinv T (principalizationOfDimLe T A)]`. Rewrite `hi` using `[emptyMarkedBlowupSequenceData_length]`.
+
+Conclude with `absurd hi (Nat.not_lt_zero i)`. Consider the case `succ f ih`. Distinguish the cases in `hc : NonMonomialOrderReductionContinues T (nonMonomialOrderReductionIter hinv T (principalizationOfDimLe T A) f)`. Establish `he : nonMonomialOrderReductionIter hinv T (principalizationOfDimLe T A) (f + 1) = (nonMonomialOrderReductionIter hinv T (principalizationOfDimLe T A) f).append (continuationByNonMonomialPart hG hspec hT hdim (nonMonomialOrderReductionIter hinv T (principalizationOfDimLe T A) f) h …`. Rewrite using `[nonMonomialOrderReductionIter_succ_of_continues hinv T (principalizationOfDimLe T A) f hc, extendByNonMonomialPart_eq_append hG hinv hspec hT hdim (nonMonomialOrderReductionIter hinv T (principalizationOfDimLe T A) f) hc]`.
+
+Rewrite using `[he]`. Introduce `i hi`. Conclude with `MarkedBlowupSequenceData.append_dataAt_of_forall _ _ hinv (fun D => HasPrincipalizationCenter T.mult D) (isInvariantUnderIso_hasPrincipalizationCenter hG.maxContactTransport T.mult) ih (fun j hj => hasCenter_continuationByNonMonomialPart hG hspec hT hdim _ hc j hj) i hi`. Rewrite using `[nonMonomialOrderReductionIter_succ_of_not_continues hinv T (principalizationOfDimLe T A) f hc]`. Conclude with `ih`.
+-/
 private theorem hasCenter_nonMonomialOrderReductionIter (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
     {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible) (hdim : T.krullDimSucc ≤ n) (f : ℕ) :
@@ -593,6 +742,9 @@ private theorem hasCenter_nonMonomialOrderReductionIter (hG : PrincipalizationGe
       · rw [nonMonomialOrderReductionIter_succ_of_not_continues hinv T (principalizationOfDimLe T A) f hc]
         exact ih
 
+/- English proof (translation)
+Rewrite `hi`, the goal using `[nonMonomialOrderReduction_eq hinv T (principalizationOfDimLe T A)]`. Conclude with `hasCenter_nonMonomialOrderReductionIter hG hinv hspec hT hdim _ i hi`.
+-/
 theorem hasCenter_nonMonomialOrderReduction (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
     {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible) (hdim : T.krullDimSucc ≤ n) (i : ℕ)
@@ -601,6 +753,13 @@ theorem hasCenter_nonMonomialOrderReduction (hG : PrincipalizationGeometryHypoth
   rw [nonMonomialOrderReduction_eq hinv T (principalizationOfDimLe T A)] at hi ⊢
   exact hasCenter_nonMonomialOrderReductionIter hG hinv hspec hT hdim _ i hi
 
+/- English proof (translation)
+Establish `hB : ∀ y : ↥((nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)).obj (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)).length), orderAt (lastNonMonomialPart T (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A))) y ≤ ((maxOrderNonMonomial T …` using `fun y => orderAt_lastNonMonomialPart_le_maxOrderNonMonomial hG hT (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) y`. Establish `: Nonempty ↥((nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)).obj (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)).length)` using `⟨x⟩`. Establish `hne : (orderAtLeastLocus (lastNonMonomialPart T (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A))) (maxOrder (lastNonMonomialPart T (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A))))).Nonempty` using `orderAtLeastLocus_maxOrder_nonempty (lastNonMonomialPart T (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A))) hB`. Establish `hnc : ¬ NonMonomialOrderReductionContinues T (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A))` using `not_nonMonomialOrderReductionContinues_nonMonomialOrderReduction hG hinv hspec hT hdim`. Rewrite `hnc` using `[nonMonomialOrderReductionContinues_iff]`.
+
+Establish `hmax : maxOrderNonMonomial T (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) = maxOrder (lastNonMonomialPart T (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)))` using `rfl`. Establish `hlt : maxOrder (lastNonMonomialPart T (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A))) < T.mult`. Assume the negation of the conclusion as `hle`. Use `push Not at hle`. Conclude with `hnc ⟨by rw [hmax]; exact hle, by rw [hmax]; exact hne⟩`.
+
+Conclude with `orderAt_lt_of_maxOrder_lt (lastNonMonomialPart T (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A))) hB hlt x`.
+-/
 theorem orderAt_lastNonMonomialPart_nonMonomialOrderReduction_lt (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u}) {n : ℕ}
     {A B : PrincipalizationAssignment.{u}} (hspec : IsOrderReduction (fun d => d ≤ n) A B)
     {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible) (hdim : T.krullDimSucc ≤ n)

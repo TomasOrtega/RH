@@ -19,6 +19,19 @@ variable {D : D7}
 
 instance factTypePrime (D : D7) (k : Fin 2) : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
 
+/- English proof (translation)
+Establish `h0 : matHom V h ∈ HR (AF D.host.F) D.sp.cm.sig V.gram`. Set `h' : HR (AF D.host.F) D.sp.cm.sig V.gram` to `h`. Conclude with `h'.2`. Establish `h1` using `Formalism.UG.P.bc_mem _ (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig) (Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom ?c1 _ _ h0`. Establish `h2` using `Formalism.UG.P.bc_mem _ (Formalism.UG.sigR D.sp.cm.sig (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F)) (swapAE D) ?c2 _ _ h1`.
+
+Use `h2 using 1` and compare the differences between its conclusion and the goal. Use `case e'_5 => rfl`. Use `case e'_4 =>`. Unfold `UA Formalism.UG.UPts`. Use `congr 1`.
+
+Use `case c2 =>`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul a e => simp [swapAE, sigR, Formalism.UG.sigR]`. Consider the case `add x y hx hy => simp only [RingHom.comp_apply, map_add] at hx hy ⊢`. Rewrite using `[hx, hy]`. Use `case c1 =>`. Apply `RingHom.ext` to reduce the goal to its premises.
+
+Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [sigR]`. Consider the case `add x y hx hy => simp only [RingHom.comp_apply, map_add] at hx hy ⊢`.
+
+Rewrite using `[hx, hy]`.
+-/
 theorem finE_mem (V : HSp D) (h : GA D V) : finE V h ∈ UA D.sp.cm V.gram := by
   have h0 : matHom V h ∈ HR (AF D.host.F) D.sp.cm.sig V.gram := by
     let h' : HR (AF D.host.F) D.sp.cm.sig V.gram := h
@@ -48,6 +61,9 @@ theorem finE_mem (V : HSp D) (h : GA D V) : finE V h ∈ UA D.sp.cm V.gram := by
 
 def finU (V : HSp D) : GA D V →* UA D.sp.cm V.gram := (finE V).codRestrict _ (finE_mem V)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_finU (V : HSp D) (h : GA D V) : (finU V h : GL (Fin V.rank) (EAf D)) = finE V h := rfl
 
 def clsA (V : HSp D) (K : Subgroup (GL (Fin V.rank) (EAf D))) (h : GA D V) : Cl D.sp.cm V.gram K :=
@@ -59,6 +75,9 @@ def evAt {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (h : GA D V)
   map_add' T T' := by ext v; simp
   map_smul' c T := by ext v; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evAt_apply {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (h : GA D V) (T : MMap M) (v : M.Vec) :
     evAt M h T v = T v h := rfl
 
@@ -66,6 +85,9 @@ def eig {G M : Type} [Group G] [AddCommGroup M] [Module ℂ M] (ρ : Representat
     Submodule ℂ M :=
   ⨅ g : P, LinearMap.ker (ρ g - χ g • LinearMap.id)
 
+/- English proof (translation)
+Simplify using `only [eig, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+-/
 theorem mem_eig {G M : Type} [Group G] [AddCommGroup M] [Module ℂ M] {ρ : Representation ℂ G M} {P : Subgroup G}
     {χ : P → ℂ} {x : M} : x ∈ eig ρ P χ ↔ ∀ g : P, ρ g x = χ g • x := by
   simp only [eig, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply,

@@ -9,6 +9,17 @@ namespace GlobalTheory.ColimitGlue
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Establish `hcov : TopologicalSpace.IsOpenCover (fun U : 𝒰 ↦ G U.1)` using `eq_top_iff.2 fun x _ => TopologicalSpace.Opens.mem_iSup.2 (by obtain ⟨U, hU, hx⟩ := hc x; exact ⟨⟨U, hU⟩, hx⟩)`. Set `𝒱 : X.OpenCover` to `X.openCoverOfIsOpenCover (fun U : 𝒰 ↦ G U.1) hcov`. Set `j : X ⟶ colimit F` to `𝒱.glueMorphisms (fun U ↦ e U ≫ colimit.ι F U) (by`. Introduce `U V`. Apply `Scheme.hom_ext_of_forall` to reduce the goal to its premises.
+
+Introduce `x`. Establish `hx : (pullback.fst (𝒱.f U) (𝒱.f V) x).1 = (pullback.snd (𝒱.f U) (𝒱.f V) x).1` using `congr($(pullback.condition (f := 𝒱.f U) (g := 𝒱.f V)) x)`. Take `⟨W, hW, hxW, h1, h2⟩` from `hbas U.1 U.2 V.1 V.2 _ (pullback.fst (𝒱.f U) (𝒱.f V) x).2 (hx ▸ (pullback.snd (𝒱.f U) (𝒱.f V) x).2)`. Set `α : (G W).toScheme ⟶ pullback (𝒱.f U) (𝒱.f V)` to `pullback.lift (X.homOfLE (hG h1)) (X.homOfLE (hG h2)) ((X.homOfLE_ι (hG h1)).trans (X.homOfLE_ι (hG h2)).symm)`. Establish `hα1 : α ≫ pullback.fst _ _ = X.homOfLE (hG h1)` using `pullback.lift_fst _ _ _`.
+
+Establish `hα2 : α ≫ pullback.snd _ _ = X.homOfLE (hG h2)` using `pullback.lift_snd _ _ _`. Establish `: IsOpenImmersion (α ≫ pullback.fst _ _)` using `by rw [hα1]; infer_instance`. Establish `: IsOpenImmersion α` using `.of_comp _ (pullback.fst _ _)`. Use `⟨α.opensRange, ⟨⟨_, hxW⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `(pullback.fst (𝒱.f U) (𝒱.f V)).isOpenEmbedding.injective` to reduce the goal to its premises.
+
+Rewrite using `[← Scheme.Hom.comp_apply, hα1]`. Conclude with `Subtype.ext (Scheme.homOfLE_apply _ _)`. Rewrite using `[← cancel_epi α.isoOpensRange.hom]`. Simplify using `only [Scheme.Hom.isoOpensRange_hom_ι_assoc]`. Rewrite using `[reassoc_of% hα1, reassoc_of% hα2, reassoc_of% (hnat (U := ⟨W, hW⟩) (V := U) h1), reassoc_of% (hnat (U := ⟨W, hW⟩) (V := V) h2), colimit.w, colimit.w])`.
+
+Conclude with `⟨j, fun U ↦ 𝒱.ι_glueMorphisms _ _ U⟩`.
+-/
 theorem exists_glue {B₀ : Scheme.{0}} (𝒰 : Set B₀.Opens) (F : 𝒰 ⥤ Scheme.{0})
     [∀ {U V : 𝒰} (f : U ⟶ V), IsOpenImmersion (F.map f)] [(F ⋙ Scheme.forget).IsLocallyDirected]
     (X : Scheme.{0}) (G : B₀.Opens → X.Opens) (hG : Monotone G)

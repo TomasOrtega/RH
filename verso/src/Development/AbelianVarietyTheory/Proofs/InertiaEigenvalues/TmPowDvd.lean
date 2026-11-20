@@ -8,6 +8,15 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.PSer
 
+/- English proof (translation)
+Introduce `l _ x hx`. Establish `hmem : x.untilt ∈ (Ideal.span {(l : OC l)}) ^ 1`. Rewrite using `[GlobalTheory.RingBasics.mem_span_pow_OC, pow_one]`. Conclude with `hx`. Rewrite `hmem` using `[pow_one]`.
+
+Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hmem`. Take `⟨z, hz⟩` from `GlobalTheory.MemLoc.FundOnto.untilt_surjective l c`. Establish `hk` using `GlobalTheory.MemLoc.FundOnto.dvd_pow_of_ker l (tm x - (l : Ainf l) * tm z) (by`. Rewrite using `[map_sub, map_mul, map_natCast, GlobalTheory.MemLoc.FundOnto.theta_tm, GlobalTheory.MemLoc.FundOnto.theta_tm, hz, ← hc, mul_comm, sub_self])`. Rewrite `hk` using `[map_sub, map_mul, map_natCast]`.
+
+Generalize the expression as in `algebraMap (Ainf l) (Acris l) (tm x) = X at hk ⊢`. Generalize the expression as in `algebraMap (Ainf l) (Acris l) (tm z) = Z at hk`. Establish `h1 : ((l : ℕ) : Acris l) ∣ X - (X - (l : Acris l) * Z)` using `⟨Z, by ring⟩`. Establish `h2` using `h1.trans (sub_dvd_pow_sub_pow _ _ l)`. Use `dvd_add h2 hk` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem tm_pow_dvd : ∀ (l : ℕ) [Fact l.Prime] (x : Fl l), ‖sh x‖ ≤ ‖(l : ℂ_[l])‖ →
     (l : Acris l) ∣ algebraMap (Ainf l) (Acris l) (tm x) ^ l := by
   intro l _ x hx

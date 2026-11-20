@@ -23,6 +23,9 @@ namespace GlobalTheory.DepthLow
 
 variable {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)}
 
+/- English proof (translation)
+Establish `h3 : (3 : ℝ) ≤ p` using `by exact_mod_cast hp`. Unfold `radius`. Use `div_nonneg ?_ (by nlinarith)` and prove the remaining obligations. Establish `: (0 : ℝ) < (p : ℝ) ^ (-(2 * k + 1))` using `zpow_pos (by linarith) _`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem radius_nonneg {p : ℕ} (hp : 3 ≤ p) (k : ℤ) : 0 ≤ radius p k := by
   have h3 : (3 : ℝ) ≤ p := by exact_mod_cast hp
   unfold radius
@@ -30,6 +33,9 @@ theorem radius_nonneg {p : ℕ} (hp : 3 ≤ p) (k : ℤ) : 0 ≤ radius p k := b
   have : (0 : ℝ) < (p : ℝ) ^ (-(2 * k + 1)) := zpow_pos (by linarith) _
   linarith
 
+/- English proof (translation)
+Establish `h3 : (3 : ℝ) ≤ p` using `by exact_mod_cast hp`. Unfold `radius`. Use `div_le_div_of_nonneg_right ?_ (by nlinarith)` and prove the remaining obligations. Establish `: (p : ℝ) ^ (-(2 * l + 1)) ≤ (p : ℝ) ^ (-(2 * k + 1))` using `zpow_le_zpow_right₀ (by linarith) (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem radius_anti {p : ℕ} (hp : 3 ≤ p) {k l : ℤ} (h : k ≤ l) : radius p l ≤ radius p k := by
   have h3 : (3 : ℝ) ≤ p := by exact_mod_cast hp
   unfold radius
@@ -38,10 +44,16 @@ theorem radius_anti {p : ℕ} (hp : 3 ≤ p) {k l : ℤ} (h : k ≤ l) : radius 
     zpow_le_zpow_right₀ (by linarith) (by omega)
   linarith
 
+/- English proof (translation)
+Introduce `α` and use `le_trans (WithTop.coe_le_coe.2 (by linarith)) (h α)`.
+-/
 theorem ordGe_mono {M : ℕ} {ρ : Fin M → ℝ} {g : MvPowerSeries (Fin M) C} {r r' : ℝ}
     (h : OrdGe v ρ g r) (hr : r' ≤ r) : OrdGe v ρ g r' := fun α =>
   le_trans (WithTop.coe_le_coe.2 (by linarith)) (h α)
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_smul, coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem coeff_lin {M : ℕ} (x : Fin M → C) (α : Fin M →₀ ℕ) :
     coeff α (∑ m, x m • (X m : MvPowerSeries (Fin M) C)) =
       ∑ m, if α = Finsupp.single m 1 then x m else 0 := by
@@ -51,12 +63,24 @@ theorem coeff_lin {M : ℕ} (x : Fin M → C) (α : Fin M →₀ ℕ) :
   rw [coeff_smul, coeff_X]
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[coeff_lin]`. Use `Finset.sum_eq_zero fun m _ => if_neg fun e => h ?_` and prove the remaining obligations. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+-/
 theorem coeff_lin_eq_zero {M : ℕ} (x : Fin M → C) (α : Fin M →₀ ℕ) (h : Finsupp.degree α ≠ 1) :
     coeff α (∑ m, x m • (X m : MvPowerSeries (Fin M) C)) = 0 := by
   rw [coeff_lin]
   refine Finset.sum_eq_zero fun m _ => if_neg fun e => h ?_
   rw [e]; simp
 
+/- English proof (translation)
+Introduce `α`. Rewrite using `[coeff_lin]`. Use `v.map_le_sum fun m _ => ?_` and prove the remaining obligations. Use `split_ifs with e`. Distinguish the cases in `h0 : x m = 0`.
+
+Rewrite using `[h0, v.map_zero]`. Conclude with `le_top`. Use `le_trans ?_ (hx m)` and prove the remaining obligations. Establish `h1 : ∑ k, ρ k * (α k : ℝ) = ρ m`. Rewrite using `[e, Finset.sum_eq_single m]`.
+
+Simplify using the standard rewrite rules. Introduce `k _ hk`. Simplify using `[Finsupp.single_eq_of_ne hk]`. Simplify using the standard rewrite rules. Rewrite using `[h1, ← WithTop.coe_zero]`.
+
+Conclude with `WithTop.coe_le_coe.2 (by linarith [h m h0])`. Rewrite using `[v.map_zero]`. Conclude with `le_top`.
+-/
 theorem ordGe_lin {M : ℕ} (ρ : Fin M → ℝ) (x : Fin M → C) (r : ℝ) (hx : ∀ m, IsIntV v (x m))
     (h : ∀ m, x m ≠ 0 → r ≤ ρ m) :
     OrdGe v ρ (∑ m, x m • (X m : MvPowerSeries (Fin M) C)) r := by
@@ -77,6 +101,11 @@ theorem ordGe_lin {M : ℕ} (ρ : Fin M → ℝ) (x : Fin M → C) (r : ℝ) (hx
       exact WithTop.coe_le_coe.2 (by linarith [h m h0])
   · rw [v.map_zero]; exact le_top
 
+/- English proof (translation)
+Set `M' : Matrix (Fin n) (Fin n) (PTb.intRing v)` to `Matrix.of fun a b => ⟨M a b, hM a b⟩`. Establish `hMM : (PTb.intRing v).subtype.mapMatrix M' = M`. Use extensionality with `a b`. Both sides reduce to the same expression. Use `RingHom.map_det (PTb.intRing v).subtype M'` as an intermediate fact.
+
+Rewrite `this` using `[hMM]`. Rewrite using `[← this]`. Conclude with `(M'.det).2`.
+-/
 theorem det_int {n : ℕ} (M : Matrix (Fin n) (Fin n) C) (hM : ∀ a b, IsIntV v (M a b)) :
     IsIntV v M.det := by
   let M' : Matrix (Fin n) (Fin n) (PTb.intRing v) := Matrix.of fun a b => ⟨M a b, hM a b⟩
@@ -87,6 +116,13 @@ theorem det_int {n : ℕ} (M : Matrix (Fin n) (Fin n) C) (hM : ∀ a b, IsIntV v
   rw [← this]
   exact (M'.det).2
 
+/- English proof (translation)
+Take `⟨-, r, hr⟩` from `hu`. Use `⟨hx, ?_⟩` and prove the remaining obligations. Establish `hm : (Matrix.of fun a b => u a (r b)) = (Matrix.of x) * (T.submatrix id r)`. Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, hxT]`.
+
+Rewrite `hr` using `[hm, ReciprocityTheory.ChartRestriction.DS.cauchyBinet]`. Assume the negation of the conclusion as `hne`. Establish `hlt : (0 : WithTop ℝ) < v (∑ S : {S : Finset (Fin d) // S.card = i}, ((Matrix.of x).submatrix id (S.1.orderEmbOfFin S.2)).det * ((T.submatrix id r).submatrix (S.1.orderEmbOfFin S.2) id).det)`. Use `v.map_lt_sum (by simp) fun S _ => ?_` and prove the remaining obligations. Rewrite using `[v.map_mul]`.
+
+Establish `h1 : (0 : WithTop ℝ) < v ((Matrix.of x).submatrix id (S.1.orderEmbOfFin S.2)).det` using `lt_of_le_of_ne (det_int _ fun a b => hx _ _) fun e => hne ⟨S.1.orderEmbOfFin S.2, e.symm⟩`. Establish `h2 : (0 : WithTop ℝ) ≤ v ((T.submatrix id r).submatrix (S.1.orderEmbOfFin S.2) id).det` using `det_int _ fun a b => hT _ _`. Conclude with `lt_of_lt_of_le h1 (le_add_of_nonneg_right h2)`. Conclude with `hlt.ne' hr`.
+-/
 theorem isSatFrame_of_mul {i d : ℕ} {x u : Fin i → Fin d → C} {T : Matrix (Fin d) (Fin d) C}
     (hx : ∀ a b, IsIntV v (x a b)) (hT : ∀ a b, IsIntV v (T a b))
     (hxT : ∀ a e, u a e = ∑ b, x a b * T b e) (hu : IsSatFrame v u) : IsSatFrame v x := by
@@ -109,6 +145,11 @@ theorem isSatFrame_of_mul {i d : ℕ} {x u : Fin i → Fin d → C} {T : Matrix 
     exact lt_of_lt_of_le h1 (le_add_of_nonneg_right h2)
   exact hlt.ne' hr
 
+/- English proof (translation)
+Use extensionality with `α`. Establish `hc : ∀ (c : Fin d → ℕ → Fin d → C) b, coeff α (lgSum p c t b) = ∑ n ∈ Finset.range (Finsupp.degree α + 1), ∑ a, c a n b * coeff α (t a ^ (p ^ n))` using `fun _ _ => rfl`. Rewrite using `[map_sum, hc]`. Simplify using `only [coeff_smul, hc, h, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm (s := Finset.univ)]`.
+
+Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => by ring` and prove the remaining obligations.
+-/
 theorem lgSum_change {d M : ℕ} (p : ℕ) (l c : Fin d → ℕ → Fin d → C)
     (T : Matrix (Fin d) (Fin d) C) (h : ∀ a n e, l a n e = ∑ b, c a n b * T b e)
     (t : Fin d → MvPowerSeries (Fin M) C) (e : Fin d) :
@@ -124,6 +165,11 @@ theorem lgSum_change {d M : ℕ} (p : ℕ) (l c : Fin d → ℕ → Fin d → C)
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => by ring
 
+/- English proof (translation)
+Establish `hex : ∃ K : ℕ, c ≤ p ^ (2 * K + 1)` using `⟨c, le_trans (Nat.lt_pow_self (by omega : 1 < p)).le (Nat.pow_le_pow_right (by omega) (by omega))⟩`. Use `⟨Nat.find hex, Nat.find_spec hex, ?_⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos (Nat.find hex) with h0 | hpos` into its components or cases. Conclude with `Or.inl h0`. Use `right`.
+
+Establish `h1` using `Nat.find_min hex (show Nat.find hex - 1 < Nat.find hex by omega)`. Rewrite `h1` using `[show 2 * (Nat.find hex - 1) + 1 = 2 * Nat.find hex - 1 by omega]`. Conclude with `not_le.1 h1`.
+-/
 theorem exists_least_exponent {p c : ℕ} (hp : 3 ≤ p) :
     ∃ K : ℕ, c ≤ p ^ (2 * K + 1) ∧ (K = 0 ∨ p ^ (2 * K - 1) < c) := by
   classical
@@ -138,6 +184,9 @@ theorem exists_least_exponent {p c : ℕ} (hp : 3 ≤ p) :
     rw [show 2 * (Nat.find hex - 1) + 1 = 2 * Nat.find hex - 1 by omega] at h1
     exact not_le.1 h1
 
+/- English proof (translation)
+Establish `h1 : ∀ a : Fin i, (if a.val < cr then r else s) = s + (if a.val < cr then r - s else 0)`. Apply the tactic sequence `intro a; split_ifs <;> ring`. Simplify using `only [h1]`. Rewrite using `[Finset.sum_add_distrib, ← Finset.sum_filter, Finset.sum_const, Finset.sum_const, Fin.card_filter_val_lt, min_eq_right h]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_two_radii {i cr : ℕ} (h : cr ≤ i) (r s : ℝ) :
     ∑ a : Fin i, (if a.val < cr then r else s) = i * s + cr * (r - s) := by
   have h1 : ∀ a : Fin i, (if a.val < cr then r else s) = s + (if a.val < cr then r - s else 0) := by
@@ -147,6 +196,21 @@ theorem sum_two_radii {i cr : ℕ} (h : cr ≤ i) (r s : ℝ) :
     Fin.card_filter_val_lt, min_eq_right h]
   simp
 
+/- English proof (translation)
+Establish `hv` using `pt5v' C v p hp hvp d h ty G γ hB`. Take `⟨hγ, -, hdet⟩` from `hB`. Establish `hdet' : v (PTb.tmat γ).det = 0` using `hdet`. Establish `hbound : ∀ (w : Fin d → C) (r : WithTop ℝ), (∀ e, r ≤ v (w e)) → ∀ b, r ≤ v (Matrix.vecMul w (PTb.tmat γ)⁻¹ b)`. Introduce `w r hw b`.
+
+Simplify using `only [Matrix.vecMul, dotProduct]`. Use `v.map_le_sum fun e _ => ?_` and prove the remaining obligations. Rewrite using `[v.map_mul]`. Conclude with `le_trans (hw e) (le_add_of_nonneg_right (PTb.isIntV_tmat_inv hγ hdet' e b))`. Establish `hrow : ∀ a, Matrix.vecMul (tangent (γ a)) (PTb.tmat γ)⁻¹ = Pi.single a 1`.
+
+Introduce `a`. Establish `e : tangent (γ a) = Matrix.vecMul (Pi.single a 1) (PTb.tmat γ)`. Rewrite using `[Matrix.single_one_vecMul]`. Both sides reduce to the same expression. Rewrite using `[e, Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ (PTb.tmat_isUnit_det hdet'), Matrix.vecMul_one]`.
+
+Use `⟨fun a n => Matrix.vecMul (G.lc p (γ a) n) (PTb.tmat γ)⁻¹, fun a n e => ?_, fun a => ?_, fun a n => hbound _ _ ((hv a).1 n), fun a ha => ?_⟩` and prove the remaining obligations. Conclude with `(congrFun (PTb.vecMul_inv_tmat hdet' (G.lc p (γ a) n)) e).symm`. Simplify using `only`. Rewrite using `[← PTb.tangent_eq_lc_zero G p (fun b => (hγ a b).1), hrow]`. Take `⟨h1, h2⟩` from `hlc a ha`.
+
+Use `⟨?_, fun n b hn => hbound _ _ (fun e => (hv a).2 h1 n e hn) b, fun b hb => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[h1, Matrix.zero_vecMul]`. Assume the negation of the conclusion as `hn`. Apply `hb` to reduce the goal to its premises.
+
+Take `⟨y, hy⟩` from `(Submodule.mem_span_range_iff_exists_fun C).1 h2`. Simplify using `only`. Rewrite using `[← hy, Matrix.sum_vecMul, Finset.sum_apply]`. Use `Finset.sum_eq_zero fun b' _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_vecMul, hrow, Pi.smul_apply, Pi.single_eq_of_ne, smul_zero]`.
+
+Introduce `e`. Conclude with `hn (e ▸ b'.2)`.
+-/
 theorem coeff_in_tangent_basis [IsAlgClosed C] [CharZero C] {p : ℕ} (hp : p.Prime)
     (hvp : v (p : C) = 1) {d h : ℕ} {ty : Fin d → ZMod h} {G : LogFGL v d}
     {γ : Fin d → Fin d → PowerSeries C} (hB : IsBasis G p ty γ) (dp : Fin d → ℤ)
@@ -196,6 +260,33 @@ theorem coeff_in_tangent_basis [IsAlgClosed C] [CharZero C] {p : ℕ} (hp : p.Pr
       intro e
       exact hn (e ▸ b'.2)
 
+/- English proof (translation)
+Introduce `C _ _ _ v p hp hvp hp3 d h hh hev ty G μ j hj τ hτ i c hc u hu huτ`. Take `⟨K, hK1, hK2⟩` from `exists_least_exponent (c := c) hp3`. Take `⟨γ, dp, hB, hdp, -, hcard, hlc⟩` from `GlobalTheory.T.logFGL_depth_stages_lowA C v p hp hp3 hvp d h hh hev ty G μ j K hj`. Take `⟨cc, hcT, hc0, hcv, hcdp⟩` from `coeff_in_tangent_basis hp hvp hB dp hlc`. Take `⟨⟨Ψ, hΨint, hΨ0, hΨΦ, hΦΨ⟩, hlg⟩` from `(GlobalTheory.TypicalCurveBases.typical_curves_tangent_and_bases.2 C v p hp hvp d h hh ty G μ).2 γ hB`.
+
+Take `⟨hγ, hγty, hdet⟩` from `hB`. Establish `hdet' : v (PTb.tmat γ).det = 0` using `hdet`. Establish `hΦ : PTGood v (basisMap G γ)`. Rewrite using `[GlobalTheory.basisMap_eq_ptBasisMap]`. Conclude with `ptBasisMap_good G hγ`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨x, hxint, hxT, hxτ⟩ : ∃ x : Fin i → Fin d → C, (∀ a b, IsIntV v (x a b)) ∧ (∀ a e, u a e = ∑ b, x a b * PTb.tmat γ b e) ∧ ∀ a b, ty b ≠ τ → x a b = 0 := by`. Use `⟨fun a => Matrix.vecMul (u a) (PTb.tmat γ)⁻¹, fun a b => PTb.isIntV_vecMul_inv hγ hdet' (hu.1 a) b, fun a e => (congrFun (PTb.vecMul_inv_tmat hdet' (u a)) e).symm, fun a => ?_⟩` and prove the remaining obligations. Use `PTb.vecMul_tmat_support ty hdet' (fun b e he => ?_) _ τ fun e he => ?_` and prove the remaining obligations. Rewrite using `[PTb.tangent_eq_lc_zero G p (fun e => (hγ b e).1)]`. Conclude with `(hγty b).2 0 e (by simpa using he)`.
+
+Rewrite using `[PTb.vecMul_inv_tmat hdet']`. Conclude with `huτ a e he`. Establish `hxsat : IsSatFrame v x` using `isSatFrame_of_mul hxint (fun a b => (hγ a b).2 1) hxT hu`. Take `⟨g, cr, hcri, hcrS, hgint, hgdet, hgS⟩` from `GlobalTheory.LowU.adapted_basis C v i d x (Finset.univ.filter fun b => ty b = τ ∧ dp b < K) hxsat`. Take `⟨hcount, hKb⟩` from `GlobalTheory.T.low_count_all_bounds.2.2 p i cr K c hp3 hc hcri hK1 hK2`.
+
+Use `⟨cr, hcri, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (cr : ℝ) ≤ ((K : ℝ) + 1) * j` using `by exact_mod_cast hcrS.trans (hcard τ hτ)`. Rewrite using `[mul_comm]`. Conclude with `h1.trans (mul_le_mul_of_nonneg_right hKb (Nat.cast_nonneg j))`. Use `set ρ : Fin i → ℝ := fun a => if a.val < cr then radius p (-1) else radius p K with hρ`.
+
+Use `set x' : Fin i → Fin d → C := fun a b => ∑ a', g a a' * x a' b with hx'`. Establish `hρK : ∀ a, radius p K ≤ ρ a`. Introduce `a`. Simplify using `only [hρ]`. Use `split_ifs`.
+
+Conclude with `radius_anti hp3 (by omega)`. Conclude with `le_rfl`. Establish `hz : ∀ b, OrdGe v ρ (∑ a, x' a b • (X a : MvPowerSeries (Fin i) C)) (radius p (dp b))`. Introduce `b`. Use `ordGe_lin ρ _ _ (fun a => ?_) fun a ha => ?_` and prove the remaining obligations.
+
+Conclude with `(PTb.intRing v).sum_mem fun a' _ => (PTb.intRing v).mul_mem (hgint a a') (hxint a' b)`. Establish `hb : ty b = τ`. Assume the negation of the conclusion as `hb`. Conclude with `ha (Finset.sum_eq_zero fun a' _ => by rw [hxτ a' b hb, mul_zero])`. Distinguish the cases in `hK : dp b < K`.
+
+Establish `hacr : a.val < cr`. Assume the negation of the conclusion as `hacr`. Conclude with `ha (hgS a (not_lt.1 hacr) b (Finset.mem_filter.2 ⟨Finset.mem_univ _, hb, hK⟩))`. Simplify using `only [hρ, if_pos hacr]`. Conclude with `radius_anti hp3 (hdp b).1`.
+
+Conclude with `(radius_anti hp3 (not_lt.1 hK)).trans (hρK a)`. Take `⟨t, ht0, hteq, htord, -⟩` from `GlobalTheory.DepthRadii.exists_solution_ordGe_radius C v p hp hp3 hvp d i dp cc (fun a => (hdp a).1) hc0 hcv hcdp ρ (fun a => (radius_nonneg hp3 _).trans (hρK a)) (fun b => ∑ a, x' a b • (X a : MvPowerSeries (Fin i) C)) (fun b α hα => coeff_lin_eq_zero _ α hα) hz`. Establish `heq : ∀ e, subst t (subst (basisMap G γ) (G.lg e)) = ∑ a, (∑ a', g a a' • u a') e • (X a : MvPowerSeries (Fin i) C)`. Introduce `e`. Rewrite using `[hlg e, GlobalTheory.LgSubst.subst_sum_lgCurve_eq_lgSum C v p hp d i G γ (fun a => (hγty a).1) t ht0 e, lgSum_change p _ cc (PTb.tmat γ) hcT]`.
+
+Simplify using `only [hteq, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`.
+
+Simplify using `only [hx', Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hxT, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a' _ => Finset.sum_congr rfl fun b _ => by ring`. Rewrite using `[← GlobalTheory.T.formalGroupDeterminantPowDepth_basis_change_invariant C v i d c G u g hgdet, GlobalTheory.T.differentialOperatorDepth_integral_coordinates C v i d c G _ (basisMap G γ) Ψ (fun a => ⟨(hΦ a).2, (hΦ a).1, hΨint a, hΨ0 a⟩) (fun a => ⟨hΨΦ a, hΦΨ a⟩) t ht0 heq]`. Use `le_iInf fun f => WithBot.coe_le_coe.2 ?_` and prove the remaining obligations.
+
+Use `GlobalTheory.T.le_formalGroupDeterminantPowDepth_of_radii C v i d c ρ t _ ht0 (fun a => ordGe_mono (htord a) (radius_nonneg hp3 _)) (fun α hα => ?_) f.1 f.2` and prove the remaining obligations. Establish `hk : ((((i * c : ℝ) / (p - 1) - (i : ℝ) ^ 2 * Real.logb p (c + 1) : ℝ)) : EReal) ≤ toE (v ((detPow C i c).coeff α * mfact α))` using `(GlobalTheory.T.dividedPowerContentValuation_detPow_bounds C v p hp hvp i c).2.trans (iInf₂_le α hα)`. Use `le_trans (WithTop.coe_le_coe.2 ?_) (WithBot.coe_le_coe.1 hk)` and prove the remaining obligations. Rewrite using `[hρ, sum_two_radii hcri]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem detDepth_lower : ∀ (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (p : ℕ), p.Prime → v (p : C) = 1 → 3 ≤ p → ∀ (d h : ℕ), 0 < h → Even h → ∀ (ty : Fin d → ZMod h) (G : LogFGL v d), MuAction G p h ty → ∀ (j : ℕ), (∀ s : ZMod h, Odd s.val → (Finset.univ.filter fun a => ty a = s).card ≤ j) → ∀ (τ : ZMod h), Even τ.val → ∀ (i c : ℕ), 1 ≤ c → ∀ u : Fin i → Fin d → C, IsSatFrame v u → (∀ a e, ty e ≠ τ → u a e = 0) → ∃ cr : ℕ, cr ≤ i ∧ (cr : ℝ) ≤ j * (3 / 2 + Real.logb p c / 2) ∧ ((((i : ℝ) - cr) * c * p / ((p : ℝ) ^ 2 - 1) - (i : ℝ) ^ 2 * (Real.logb p c + 1) : ℝ) : EReal) ≤ detDepth G u c := by
   intro C _ _ _ v p hp hvp hp3 d h hh hev ty G μ j hj τ hτ i c hc u hu huτ
   classical

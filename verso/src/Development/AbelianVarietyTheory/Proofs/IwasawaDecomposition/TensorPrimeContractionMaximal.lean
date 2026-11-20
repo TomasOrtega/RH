@@ -5,6 +5,25 @@ open IsLocalRing TensorProduct
 
 namespace GlobalTheory.BaseChangeLoc
 
+/- English proof (translation)
+Use `set P : Ideal C := Q.comap (Algebra.TensorProduct.includeLeft : C →ₐ[A] C ⊗[A] R) with hP`. Set `B` to `Localization.AtPrime P`. Set `φ : C ⊗[A] R →ₐ[A] B ⊗[A] R` to `Algebra.TensorProduct.map (IsScalarTower.toAlgHom A C B) (AlgHom.id A R)`. Use `letI : Algebra (C ⊗[A] R) (B ⊗[A] R) := φ.toRingHom.toAlgebra`. Establish `hφ : ∀ x, algebraMap (C ⊗[A] R) (B ⊗[A] R) x = φ x` using `fun _ => rfl`.
+
+Use `haveI : IsScalarTower C (C ⊗[A] R) (B ⊗[A] R) := by`. Use `IsScalarTower.of_algebraMap_eq fun c => ?_` and prove the remaining obligations. Rewrite using `[hφ]`. Simplify using `[φ, Algebra.TensorProduct.algebraMap_apply]`. Both sides reduce to the same expression.
+
+Establish `H : (algebraMap (C ⊗[A] R) (B ⊗[A] R)).comp Algebra.TensorProduct.includeRight.toRingHom = Algebra.TensorProduct.includeRight.toRingHom`. Use extensionality with `r`. Simplify using `[hφ, φ]`. Set `M : Submonoid (C ⊗[A] R)` to `Algebra.algebraMapSubmonoid (C ⊗[A] R) P.primeCompl`. Use `haveI hL : IsLocalization M (B ⊗[A] R) := IsLocalization.tensorProduct_tensorProduct A R P.primeCompl B H`.
+
+Establish `hdisj : Disjoint (M : Set (C ⊗[A] R)) (Q : Set (C ⊗[A] R))`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨c, hc, rfl⟩ h`. Conclude with `hc h`. Establish `hQ'` using `IsLocalization.isPrime_of_isPrime_disjoint M (B ⊗[A] R) Q inferInstance hdisj`.
+
+Establish `hc` using `IsLocalization.comap_map_of_isPrime_disjoint M (B ⊗[A] R) (inferInstance : Q.IsPrime) hdisj`. Use `⟨Q.map (algebraMap (C ⊗[A] R) (B ⊗[A] R)), hQ', ?_, ?_⟩` and prove the remaining obligations. Use `haveI := hQ'`. Establish `hne : (Q.map (algebraMap (C ⊗[A] R) (B ⊗[A] R))).comap (Algebra.TensorProduct.includeLeft : B →ₐ[A] B ⊗[A] R) ≠ ⊤` using `Ideal.IsPrime.ne_top inferInstance`. Use `symm`.
+
+Use `(IsLocalRing.maximalIdeal.isMaximal B).eq_of_le hne ?_` and prove the remaining obligations. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_le_iff_le_comap]`. Introduce `c hcP`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap]`. Establish `e1 : (Algebra.TensorProduct.includeLeft : B →ₐ[A] B ⊗[A] R) (algebraMap C B c) = algebraMap (C ⊗[A] R) (B ⊗[A] R) ((Algebra.TensorProduct.includeLeft : C →ₐ[A] C ⊗[A] R) c)`.
+
+Simplify using `[hφ, φ]`. Rewrite using `[e1]`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.mem_comap.mp hcP)`. Introduce `h3 h4`. Establish `h1` using `IsLocalization.isLocalization_isLocalization_atPrime_isLocalization M (Localization.AtPrime (Q.map (algebraMap (C ⊗[A] R) (B ⊗[A] R)))) (Q.map (algebraMap (C ⊗[A] R) (B ⊗[A] R)))`.
+
+Establish `h2 : IsLocalization Q.primeCompl (Localization.AtPrime (Q.map (algebraMap (C ⊗[A] R) (B ⊗[A] R))))`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using `[Ideal.primeCompl, hc]`. Set `e : Localization.AtPrime (Q.map (algebraMap (C ⊗[A] R) (B ⊗[A] R))) ≃ₐ[C ⊗[A] R] Localization.AtPrime Q` to `IsLocalization.algEquiv Q.primeCompl _ _`.
+
+Conclude with `⟨e.symm.injective.isDomain _, IsIntegrallyClosed.of_equiv e.toRingEquiv⟩`.
+-/
 theorem localization_atPrime_tensor (A C R : Type) [CommRing A] [CommRing C] [CommRing R] [Algebra A C]
     [Algebra A R] (Q : Ideal (C ⊗[A] R)) [Q.IsPrime] :
     ∃ (Q' : Ideal (Localization.AtPrime (Q.comap (Algebra.TensorProduct.includeLeft : C →ₐ[A] C ⊗[A] R)) ⊗[A] R))

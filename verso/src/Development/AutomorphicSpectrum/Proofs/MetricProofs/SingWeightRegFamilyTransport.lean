@@ -10,6 +10,17 @@ namespace GlobalTheory.CompanionTheory.Ar.PB.Transport
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `y hy`. Take `⟨j, hj⟩` from `A.cover y`. Establish `hyt : A.chart j y ∈ (A.chart j).target` using `(A.chart j).map_source hj`. Establish `hsy : (A.chart j).symm (A.chart j y) = y` using `(A.chart j).left_inv hj`.
+
+Establish `han : AnalyticAt ℂ (s y ∘ (A.chart j).symm) (A.chart j y)` using `hs.1 y j (A.chart j y) ⟨hyt, by show (A.chart j).symm (A.chart j y) ∈ L.U y`. Rewrite using `[hsy]`. Conclude with `L.mem_U y⟩`. Establish `hcy : ContinuousAt (fun z => (s y ∘ (A.chart j).symm) (A.chart j z)) y` using `ContinuousAt.comp (f := A.chart j) han.continuousAt ((A.chart j).continuousAt hj)`. Establish `hne : (s y ∘ (A.chart j).symm) (A.chart j y) ≠ 0` using `by show s y ((A.chart j).symm (A.chart j y)) ≠ 0`.
+
+Rewrite using `[hsy]`. Conclude with `hy`. Establish `h1 : ∀ᶠ z in 𝓝 y, (s y ∘ (A.chart j).symm) (A.chart j z) ≠ 0` using `hcy.eventually_ne hne`. Use `filter_upwards [h1, (A.chart j).open_source.mem_nhds hj, (L.isOpen_U y).mem_nhds (L.mem_U y)] with z h1 h2 h3`. Establish `h1' : s y z ≠ 0`.
+
+Establish `: s y ((A.chart j).symm (A.chart j z)) ≠ 0` using `h1`. Rewrite `this` using `[(A.chart j).left_inv h2]`. Then use the resulting hypothesis. Introduce `hz`. Establish `hz' : s z z = 0` using `hz`. Establish `hg` using `hs.2 y z z ⟨h3, L.mem_U z⟩`.
+
+Rewrite `hg` using `[hz']`. Simplify using `only [norm_zero, zero_mul] at hg`. Establish `hpos : 0 < ‖s y z‖ * Real.exp (-L.φ y z)` using `mul_pos (norm_pos_iff.2 h1') (Real.exp_pos _)`. Conclude with `hpos.ne' hg`.
+-/
 theorem isOpen_compl_bdry (A : FinHolAtlas e X) (L : LocPot X) (s : X → X → ℂ)
     (hs : IsSection A L s) : IsOpen (bdry s)ᶜ := by
   rw [isOpen_iff_mem_nhds]
@@ -41,12 +52,20 @@ theorem isOpen_compl_bdry (A : FinHolAtlas e X) (L : LocPot X) (s : X → X → 
     mul_pos (norm_pos_iff.2 h1') (Real.exp_pos _)
   exact hpos.ne' hg
 
+/- English proof (translation)
+The claim follows from `((h j).contDiffAt (((A.chart j).isOpen_inter_preimage_symm hU).mem_nhds ⟨hy, hyU⟩)).of_le ENat.LEInfty.out`.
+-/
 theorem contDiffAt_two {A : FinHolAtlas e X} {U : Set X} {f : X → ℝ} (h : A.SmoothOn U f)
     (hU : IsOpen U) (j : Fin A.n) {y : Fin e → ℂ} (hy : y ∈ (A.chart j).target)
     (hyU : (A.chart j).symm y ∈ U) : ContDiffAt ℝ 2 (f ∘ (A.chart j).symm) y :=
   ((h j).contDiffAt (((A.chart j).isOpen_inter_preimage_symm hU).mem_nhds ⟨hy, hyU⟩)).of_le
     ENat.LEInfty.out
 
+/- English proof (translation)
+Establish `hGa : AnalyticAt ℂ (G ∘ (A.chart j).symm) y` using `hG j y ⟨hy, hyW⟩`. Establish `hre : ContDiffAt ℝ 2 (fun z => ((G ∘ (A.chart j).symm) z).re) y` using `Complex.reCLM.contDiff.contDiffAt.comp y hGa.restrictScalars.contDiffAt`. Establish `hev : (a ∘ (A.chart j).symm) =ᶠ[𝓝 y] fun z => (b ∘ (A.chart j).symm) z + 1 * ((G ∘ (A.chart j).symm) z).re`. Establish `hmem : ∀ᶠ z in 𝓝 y, (A.chart j).symm z ∈ W` using `((A.chart j).continuousAt_symm hy).eventually_mem (hW.mem_nhds hyW)`. Use `filter_upwards [hmem] with z hz`.
+
+Use `hab _ hz` as an intermediate fact. Simplify using `only [Function.comp]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[levi_congr hev, levi_add_smul 1 hb hre, levi_re_analytic hGa]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem levi_eq_of_sub_re (A : FinHolAtlas e X) (j : Fin A.n) {y : Fin e → ℂ}
     (hy : y ∈ (A.chart j).target) {W : Set X} (hW : IsOpen W) (hyW : (A.chart j).symm y ∈ W)
     {G : X → ℂ} (hG : A.HoloOn W G) {a b : X → ℝ} (hab : ∀ z ∈ W, a z - b z = (G z).re)
@@ -66,6 +85,9 @@ theorem levi_eq_of_sub_re (A : FinHolAtlas e X) (j : Fin A.n) {y : Fin e → ℂ
   rw [levi_congr hev, levi_add_smul 1 hb hre, levi_re_analytic hGa]
   ring
 
+/- English proof (translation)
+Take `⟨W, oW, mW, G, hG, hW⟩` from `hP.2 x u u ⟨hu, P.mem_U u⟩`. Use `⟨W ∩ P.U x ∩ P.U u, (oW.inter (P.isOpen_U x)).inter (P.isOpen_U u), ⟨⟨mW, hu⟩, P.mem_U u⟩, G, fun k => (hG k).mono fun y hy => ⟨hy.1, hy.2.1.1⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `z hz`. Conclude with `hW z hz`.
+-/
 theorem exists_re_base {A : FinHolAtlas e X} {P : LocPot X} (hP : IsPotential A P) {x u : X}
     (hu : u ∈ P.U x) : ∃ W : Set X, IsOpen W ∧ u ∈ W ∧ ∃ G : X → ℂ, A.HoloOn W G ∧
       ∀ z ∈ W, P.φ x z - P.φ u z = (G z).re := by
@@ -75,6 +97,11 @@ theorem exists_re_base {A : FinHolAtlas e X} {P : LocPot X} (hP : IsPotential A 
   rintro z hz
   exact hW z hz
 
+/- English proof (translation)
+Take `⟨W, oW, mW, G₁, h₁, e₁⟩` from `exists_re_base hth hu`. Take `⟨V, oV, mV, G₂, h₂, e₂⟩` from `hsame u (Set.mem_univ _)`. Use `⟨W ∩ V, oW.inter oV, ⟨mW, mV⟩, fun z => G₁ z + G₂ z, fun k => ?_, ?_⟩` and prove the remaining obligations. Conclude with `((h₁ k).mono fun y hy => ⟨hy.1, hy.2.1⟩).add ((h₂ k).mono fun y hy => ⟨hy.1, hy.2.2⟩)`. Introduce and unpack `z ⟨a, b⟩`.
+
+Establish `h1` using `e₁ z a`. Establish `h2` using `e₂ z b`. Simplify using `only [Complex.add_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_re_change {A : FinHolAtlas e X} {th th' : LocPot X} (hth : IsPotential A th)
     (hsame : SamePot A Set.univ th th') {x u : X} (hu : u ∈ th.U x) :
     ∃ W : Set X, IsOpen W ∧ u ∈ W ∧ ∃ G : X → ℂ, A.HoloOn W G ∧
@@ -89,6 +116,13 @@ theorem exists_re_change {A : FinHolAtlas e X} {th th' : LocPot X} (hth : IsPote
     simp only [Complex.add_re]
     linarith
 
+/- English proof (translation)
+Introduce `x j y hy w`. Take `⟨hyt, hyU, hyb⟩` from `hy`. Establish `hyx : (A.chart j).symm y ∈ th.U x` using `hyU.1`. Take `⟨W, oW, mW, G, hG, hW⟩` from `exists_re_change hth hsame hyx`. Establish `h0` using `hpsh ((A.chart j).symm y) j y ⟨hyt, ⟨th'.mem_U _, Set.mem_univ _⟩, hyb⟩ w`.
+
+Establish `hb : ContDiffAt ℝ 2 ((th' + LocPot.ofFun ph).φ ((A.chart j).symm y) ∘ (A.chart j).symm) y` using `(contDiffAt_two (hth'.1 _) (th'.isOpen_U _) j hyt (th'.mem_U _)).add (contDiffAt_two hsm (isOpen_compl_bdry A L s hs) j hyt hyb)`. Rewrite using `[levi_eq_of_sub_re A j hyt oW mW hG (a := (th + LocPot.ofFun ph).φ x) (b := (th' + LocPot.ofFun ph).φ ((A.chart j).symm y)) (fun z hz => by`. Establish `h1` using `hW z hz`. Use `show th.φ x z + ph z - (th'.φ _ z + ph z) = _`. Use the proof step `linarith) hb w]`.
+
+Conclude with `h0`.
+-/
 theorem isPshOn_transport {A : FinHolAtlas e X} {L : LocPot X} {s : X → X → ℂ} {th th' : LocPot X}
     {ph : X → ℝ} (hs : IsSection A L s) (hth : IsPotential A th) (hth' : IsPotential A th')
     (hsame : SamePot A Set.univ th th') (hsm : A.SmoothOn (bdry s)ᶜ ph)
@@ -110,6 +144,15 @@ theorem isPshOn_transport {A : FinHolAtlas e X} {L : LocPot X} {s : X → X → 
       linarith) hb w]
   exact h0
 
+/- English proof (translation)
+Introduce `x j y hy w`. Take `⟨hyt, hyU⟩` from `hy`. Establish `hyx : (A.chart j).symm y ∈ th.U x` using `hyU.1.1`. Establish `hyΘ : (A.chart j).symm y ∈ Θ.U x` using `hyU.2`. Take `⟨W₁, o₁, m₁, G₁, h₁, e₁⟩` from `exists_re_change hth hsame hyx`.
+
+Take `⟨W₂, o₂, m₂, G₂, h₂, e₂⟩` from `exists_re_base hΘ hyΘ`. Establish `h0` using `hpsh ((A.chart j).symm y) j y ⟨hyt, ⟨⟨th'.mem_U _, Set.mem_univ _⟩, Θ.mem_U _⟩⟩ w`. Establish `hb : ContDiffAt ℝ 2 ((th' + LocPot.ofFun f + Θ.rsmul c).φ ((A.chart j).symm y) ∘ (A.chart j).symm) y` using `((contDiffAt_two (hth'.1 _) (th'.isOpen_U _) j hyt (th'.mem_U _)).add (contDiffAt_two hf isOpen_univ j hyt (Set.mem_univ _))).add (contDiffAt_const.mul (contDiffAt_two (hΘ.1 _) (Θ.isOpen_U _) j hyt (Θ.mem_U _)))`. Establish `hG : A.HoloOn (W₁ ∩ W₂) fun z => G₁ z + (c : ℂ) * G₂ z` using `fun k => ((h₁ k).mono fun y hy => ⟨hy.1, hy.2.1⟩).add ((analyticOnNhd_const (v := (c : ℂ))).mul ((h₂ k).mono fun y hy => ⟨hy.1, hy.2.2⟩))`. Rewrite using `[levi_eq_of_sub_re A j hyt (o₁.inter o₂) ⟨m₁, m₂⟩ hG (a := (th + LocPot.ofFun f + Θ.rsmul c).φ x) (b := (th' + LocPot.ofFun f + Θ.rsmul c).φ ((A.chart j).symm y)) (fun z hz => by`.
+
+Establish `h1` using `e₁ z hz.1`. Establish `h2` using `e₂ z hz.2`. Use `show th.φ x z + f z + c * Θ.φ x z - (th'.φ _ z + f z + c * Θ.φ _ z) = _`. Simplify using `only [Complex.add_re, Complex.re_ofReal_mul]`. Rewrite using `[← h1, ← h2]`.
+
+Use the proof step `ring) hb w]`. Conclude with `h0`.
+-/
 theorem isPsh_transport {A : FinHolAtlas e X} {Θ th th' : LocPot X} {f : X → ℝ} {c : ℝ}
     (hΘ : IsPotential A Θ) (hth : IsPotential A th) (hth' : IsPotential A th')
     (hsame : SamePot A Set.univ th th') (hf : A.Smooth f)
@@ -143,6 +186,11 @@ theorem isPsh_transport {A : FinHolAtlas e X} {Θ th th' : LocPot X} {f : X → 
       ring) hb w]
   exact h0
 
+/- English proof (translation)
+Introduce `e X _ A Θ L s th th' ph phT C₅ C t₀ hΘ hs hth hth' hsame`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, hsm, hpsh, hb⟩`. Conclude with `⟨hth, hsm, isPshOn_transport hs hth hth' hsame hsm hpsh, hb⟩`. Introduce and unpack `⟨h0, h1, hreg⟩`.
+
+Use `⟨h0, h1, fun t ht ht' => ?_⟩` and prove the remaining obligations. Take `⟨a1, a2, a3, a4, a5, a6, a7, a8⟩` from `hreg t ht ht'`. Conclude with `⟨a1, a2, a3, a4, isPsh_transport hΘ hth hth' hsame a1 a5, a6, a7, a8⟩`.
+-/
 theorem singWeight_regFamily_transport : ∀ (e : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas e X) (Θ L : LocPot X)
     (s : X → X → ℂ) (th th' : LocPot X) (ph : X → ℝ) (phT : ℝ → X → ℝ) (C₅ C t₀ : ℝ),
     IsPotential A Θ → IsSection A L s → IsPotential A th → IsPotential A th' → SamePot A Set.univ th th' →

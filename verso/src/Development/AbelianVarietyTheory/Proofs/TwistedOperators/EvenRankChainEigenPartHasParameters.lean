@@ -26,6 +26,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.EvenOnto
 
+/- English proof (translation)
+Establish `h` using `((mem_partFull c.θ s.M _ _ c.S e _).1 hu).2 P d R hR`. Establish `key : heckeLin s.V R ∘ₗ (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) = e P d • (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ))`. Apply `PiTensorProduct.ext` to reduce the goal to its premises. Use extensionality with `x`. Use `h x` as an intermediate fact.
+
+Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.coe_comp, Function.comp_apply, LinearMap.smul_apply] at this ⊢`. Apply the tactic sequence `convert congrFun this _ using 2 <;> simp [PiTensorProduct.lift_symm]`. Conclude with `congrFun (congrArg DFunLike.coe key) v |>.trans rfl`.
+-/
 theorem val_hecke_of_mem_partFull_one {D : D7} {c : Com D} {s : PiLocalization₂ D} (u : s.CC c)
     (e : HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ)
     (hu : PiTensorProduct.lift.symm (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) ∈
@@ -43,6 +48,23 @@ theorem val_hecke_of_mem_partFull_one {D : D7} {c : Com D} {s : PiLocalization�
     convert congrFun this _ using 2 <;> simp [PiTensorProduct.lift_symm]
   exact congrFun (congrArg DFunLike.coe key) v |>.trans rfl
 
+/- English proof (translation)
+Introduce `hP D c hc j hj s hs u e hu`. Take `⟨hval, hconj⟩` from `GlobalTheory.T.multiplicity_values_continuous_bounded_hecke_conj hP D c hc j hj s hs`. Establish `hsph : SphOff (s.J : Set (GA D s.V)) 1 c.S` using `hs.sph`. Establish `hlev : ∀ v, ∀ k ∈ (s.J : Set (GA D s.V)), ∀ g, (fun g => conj (PiLocalization₂.val u v g)) (g * k) = (1 : GA D s.V → ℂ) k * (fun g => conj (PiLocalization₂.val u v g)) g`. Introduce `v k hk g`.
+
+Simplify using `only [(hval u v).2.2.2.1 k hk g, Pi.one_apply, one_mul]`. Establish `hhk : ∀ v P d R, Hecke₂ s.V (s.J : Set (GA D s.V)) 1 c.S P d R → heckeLin s.V R (fun g => conj (PiLocalization₂.val u v g)) = (fun P d => conj (e P d)) P d • (fun g => conj (PiLocalization₂.val u v g))`. Introduce `v P d R hR`. Rewrite using `[hconj, val_hecke_of_mem_partFull_one u e hu P d R hR v]`. Use function extensionality and compare the values at `g`.
+
+Simplify using `[map_mul]`. Establish `hne : ∀ v, PiLocalization₂.val u v ≠ 0 → (fun g => conj (PiLocalization₂.val u v g)) ≠ 0`. Introduce `v h0 h`. Apply `h0` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+
+Simplify using `using congrFun h g`. Establish `hiff : ∀ v B, PiLocalization₂.val u v ≠ 0 → (ParFun c s (PiLocalization₂.val u v) B ↔ GlobalTheory.LFun.IsSysParamD D c.S s.V.rank (fun P d => conj (e P d)) B)`. Introduce `v B h0`. Conclude with `GlobalTheory.LFun.isParamFunV_iff_isSysParamD_of_level hsph (hne v h0) (hlev v) (hhk v) B`. Establish `second : ∀ w B, PiLocalization₂.val u w ≠ 0 → ParFun c s (PiLocalization₂.val u w) B → IsPar u B`.
+
+Introduce `w B hw hB`. Use `⟨?_, fun v hv => (hiff v B hv).2 ((hiff w B hw).1 hB)⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hw (by simp [PiLocalization₂.val])`. Use `⟨fun hu0 => ?_, second⟩` and prove the remaining obligations.
+
+Establish `hu1 : (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) ≠ 0` using `fun h => hu0 (Subtype.ext h)`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, PiLocalization₂.val u v ≠ 0 := by`. Assume the negation of the conclusion as `hh`. Use `push_neg at hh`. Conclude with `hu1 (LinearMap.ext hh)`.
+
+Take `⟨C, hC⟩` from `(hval u v).2.1`. Establish `hbdd : (fun g => conj (PiLocalization₂.val u v g)) ∈ GlobalTheory.FinZeta.bddAut s.V`. Use `⟨(Complex.continuous_conj.comp (hval u v).1), fun γ hγ g => ?_, C, fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [(hval u v).2.2.1 γ hγ g]`. Simplify using `using hC g`.
+
+Take `⟨B, hB, -⟩` from `GlobalTheory.T.exists_satake_parameters_bounded_eigenfunction D s.V (s.J : Set (GA D s.V)) 1 c.S hsph _ hbdd (hne v hv) (hlev v) (fun P d => conj (e P d)) (hhk v)`. Establish `hpf : ParFun c s (PiLocalization₂.val u v) B` using `hB`. Conclude with `⟨B, second v B hv hpf⟩`.
+-/
 theorem partPar : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, ForStage D fun c _ s => ∀ (u : s.CC c) (e : HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ), PiTensorProduct.lift.symm (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) ∈ partFull c.θ s.M (s.J : Set (GA D s.V)) 1 c.S e → (u ≠ 0 → ∃ B, IsPar u B) ∧ ∀ w B, PiLocalization₂.val u w ≠ 0 → ParFun c s (PiLocalization₂.val u w) B → IsPar u B := by
   intro hP D c hc j hj s hs u e hu
   obtain ⟨hval, hconj⟩ := GlobalTheory.T.multiplicity_values_continuous_bounded_hecke_conj hP D c hc j hj s hs

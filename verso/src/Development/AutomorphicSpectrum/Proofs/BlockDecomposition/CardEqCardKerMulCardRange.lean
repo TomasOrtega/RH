@@ -2,6 +2,9 @@ import Mathlib
 
 namespace GlobalTheory.CompanionTheory.Counting
 
+/- English proof (translation)
+Establish `h1 : Nat.card (A ⧸ LinearMap.ker f) = Nat.card ↥(LinearMap.range f)` using `Nat.card_congr f.quotKerEquivRange.toEquiv`. Establish `h2 : Nat.card A = Nat.card (A ⧸ (LinearMap.ker f).toAddSubgroup) * Nat.card (LinearMap.ker f).toAddSubgroup` using `AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup _`. Establish `h3 : Nat.card (A ⧸ (LinearMap.ker f).toAddSubgroup) = Nat.card (A ⧸ LinearMap.ker f)` using `rfl`. Establish `h4 : Nat.card (LinearMap.ker f).toAddSubgroup = Nat.card ↥(LinearMap.ker f)` using `rfl`. Rewrite using `[h2, h3, h4, h1, Nat.mul_comm]`.
+-/
 theorem card_eq_card_ker_mul_card_range (R A B : Type) [Ring R] [AddCommGroup A] [Module R A] [Finite A]
     [AddCommGroup B] [Module R B] (f : A →ₗ[R] B) :
     Nat.card A = Nat.card ↥(LinearMap.ker f) * Nat.card ↥(LinearMap.range f) := by

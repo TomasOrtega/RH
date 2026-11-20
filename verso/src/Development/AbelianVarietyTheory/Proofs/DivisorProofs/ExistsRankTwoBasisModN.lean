@@ -5,6 +5,21 @@ open NumberField
 
 namespace GlobalTheory.LatticeModN
 
+/- English proof (translation)
+Introduce `F _ _ M _ _ _ _ hrk N hN`. Break down `Nat.lt_or_ge N 2 with h1 | h2` into its components or cases. Take `rfl : N = 1` from `by omega`. Use `⟨0, fun m => ⟨0, 0, m, by simp⟩, fun a b _ => ⟨by simp, by simp⟩⟩` and prove the remaining obligations. Take `⟨r, x, hli, c, hc0, hcop, hspan⟩` from `GlobalTheory.T.exists_independent_basis_coprime F M N h2`.
+
+Establish `hr` using `GlobalTheory.T.finrank_eq_rank_mul_degree F M r x hli c hc0 hspan`. Establish `hf : 0 < Module.finrank ℚ F` using `Module.finrank_pos`. Establish `hr2 : r = 2`. Rewrite `hr` using `[hrk]`. Conclude with `(Nat.eq_of_mul_eq_mul_right hf hr).symm`.
+
+Substitute `hr2` using the available equality. Take `⟨u, v, huv⟩` from `hcop`. Establish `hNs : ∀ y : M, (N : 𝓞 F) • y = N • y` using `fun y => Nat.cast_smul_eq_nsmul (𝓞 F) N y`. Use `⟨x, fun m => ?_, fun a b ⟨m', hm'⟩ => ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 F)).1 (hspan m)`.
+
+Rewrite `hg` using `[Fin.sum_univ_two]`. Use `⟨u * g 0, u * g 1, v • m, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Take `⟨g, hg⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 F)).1 (hspan m')`. Rewrite `hg` using `[Fin.sum_univ_two]`.
+
+Establish `key : (c * a - N * g 0) • x 0 + (c * b - N * g 1) • x 1 = 0`. Establish `e1 : c • (a • x 0 + b • x 1) = (N : 𝓞 F) • (c • m')`. Rewrite using `[hm', ← hNs, smul_comm]`. Rewrite `e1` using `[← hg, smul_add, smul_add, smul_smul, smul_smul, smul_smul, smul_smul]`. Rewrite using `[sub_smul, sub_smul]`.
+
+Take the linear combination `(norm := module) e1`. Establish `hz` using `Fintype.linearIndependent_iff.1 hli ![c * a - N * g 0, c * b - N * g 1] (by simpa [Fin.sum_univ_two] using key)`. Establish `ha : c * a = N * g 0` using `sub_eq_zero.1 (hz 0)`. Establish `hb : c * b = N * g 1` using `sub_eq_zero.1 (hz 1)`. Use `⟨⟨u * g 0 + v * a, ?_⟩, ⟨u * g 1 + v * b, ?_⟩⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_gen_modN : ∀ (F : Type) [Field F] [NumberField F] (M : Type) [AddCommGroup M] [Module (𝓞 F) M] [Module.Finite ℤ M] [IsAddTorsionFree M], Module.finrank ℤ M = 2 * Module.finrank ℚ F → ∀ N : ℕ, 1 ≤ N → ∃ x : Fin 2 → M, (∀ m : M, ∃ (a b : 𝓞 F) (m' : M), m = a • x 0 + b • x 1 + N • m') ∧ ∀ a b : 𝓞 F, (∃ m' : M, a • x 0 + b • x 1 = N • m') → (N : 𝓞 F) ∣ a ∧ (N : 𝓞 F) ∣ b := by
   intro F _ _ M _ _ _ _ hrk N hN
   rcases Nat.lt_or_ge N 2 with h1 | h2

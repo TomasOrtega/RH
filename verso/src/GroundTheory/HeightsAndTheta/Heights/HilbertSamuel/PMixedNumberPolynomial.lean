@@ -19,6 +19,9 @@ variable {K : Type*}
 def gStep {G : Type*} [AddCommGroup G] (b : K → ℤ) (h : (K → ℤ) → G) : (K → ℤ) → G :=
   fun m => h m - h (m - b)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `m`. Simplify using `only [gStep]`. Rewrite using `[sub_right_comm m a b]`. Normalize the expressions using the abelian group laws.
+-/
 theorem gStep_comm {G : Type*} [AddCommGroup G] (a b : K → ℤ) (h : (K → ℤ) → G) :
     gStep a (gStep b h) = gStep b (gStep a h) := by
   funext m
@@ -32,20 +35,32 @@ instance {G : Type*} [AddCommGroup G] : LeftCommutative (gStep (K := K) (G := G)
 variable [DecidableEq K]
 
 omit [DecidableEq K] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mixedDiff_eq {n : ℕ} (bs : Fin n → K → ℤ) (h : (K → ℤ) → ℤ) :
     mixedDiff bs h = (List.ofFn bs).foldr gStep h := rfl
 
 omit [DecidableEq K] in
+/- English proof (translation)
+Simplify using `only [mixedDiff_eq, List.ofFn_succ, Fin.cons_zero, Fin.cons_succ, List.foldr_cons]`.
+-/
 theorem mixedDiff_cons {n : ℕ} (v : K → ℤ) (t : Fin n → K → ℤ) (h : (K → ℤ) → ℤ) :
     mixedDiff (Fin.cons v t : Fin (n + 1) → K → ℤ) h = gStep v (mixedDiff t h) := by
   simp only [mixedDiff_eq, List.ofFn_succ, Fin.cons_zero, Fin.cons_succ, List.foldr_cons]
 
+/- English proof (translation)
+Unfold `intNum`. Rewrite using `[mixedDiff_eq, mixedDiff_eq, (σ.ofFn_comp_perm bs).foldr_eq]`.
+-/
 theorem intNum_perm (F : Type*) [Field F] {ι : K → Type*} (q : Ideal (MRing ι F)) {d : ℕ}
     (σ : Equiv.Perm (Fin d)) (bs : Fin d → K → ℤ) : intNum F q (bs ∘ σ) = intNum F q bs := by
   unfold intNum
   rw [mixedDiff_eq, mixedDiff_eq, (σ.ofFn_comp_perm bs).foldr_eq]
 
 omit [DecidableEq K] in
+/- English proof (translation)
+Establish `hex : ∃ c, ∀ᶠ m in atTop, f m = c` using `⟨c, h⟩`. Unfold `eventualValue`. Rewrite using `[dif_pos hex]`. Take `⟨m, hm1, hm2⟩` from `(hex.choose_spec.and h).exists`. Conclude with `hm1.symm.trans hm2`.
+-/
 theorem eventualValue_of_eventually {f : (K → ℤ) → ℤ} {c : ℤ} (h : ∀ᶠ m in atTop, f m = c) :
     eventualValue f = c := by
   have hex : ∃ c, ∀ᶠ m in atTop, f m = c := ⟨c, h⟩
@@ -55,12 +70,20 @@ theorem eventualValue_of_eventually {f : (K → ℤ) → ℤ} {c : ℤ} (h : ∀
   exact hm1.symm.trans hm2
 
 omit [DecidableEq K] in
+/- English proof (translation)
+Take `⟨a, ha⟩` from `Filter.eventually_atTop.1 h`. Conclude with `Filter.eventually_atTop.2 ⟨a + x, fun m hm => ha _ (le_sub_iff_add_le.2 hm)⟩`.
+-/
 theorem eventually_sub {P : (K → ℤ) → Prop} (h : ∀ᶠ m in atTop, P m) (x : K → ℤ) :
     ∀ᶠ m in atTop, P (m - x) := by
   obtain ⟨a, ha⟩ := Filter.eventually_atTop.1 h
   exact Filter.eventually_atTop.2 ⟨a + x, fun m hm => ha _ (le_sub_iff_add_le.2 hm)⟩
 
 omit [DecidableEq K] in
+/- English proof (translation)
+Take `⟨cx, hcx⟩` from `hx`. Take `⟨cy, hcy⟩` from `hy`. Rewrite using `[eventualValue_of_eventually hcx, eventualValue_of_eventually hcy]`. Apply `eventualValue_of_eventually` to reduce the goal to its premises. Use `filter_upwards [hcx, eventually_sub hcy x] with m h1 h2`.
+
+Rewrite using `[← h1, ← h2]`. Simplify using `only [gStep]`. Rewrite using `[show m - x - y = m - (x + y) from sub_sub m x y]`. Normalize the expressions using the abelian group laws.
+-/
 theorem eventualValue_step_add (G : (K → ℤ) → ℤ) (x y : K → ℤ)
     (hx : ∃ c, ∀ᶠ m in atTop, gStep x G m = c) (hy : ∃ c, ∀ᶠ m in atTop, gStep y G m = c) :
     eventualValue (gStep (x + y) G) = eventualValue (gStep x G) + eventualValue (gStep y G) := by
@@ -74,6 +97,17 @@ theorem eventualValue_step_add (G : (K → ℤ) → ℤ) (x y : K → ℤ)
   rw [show m - x - y = m - (x + y) from sub_sub m x y]
   abel
 
+/- English proof (translation)
+Consider the cases of `d with`. Consider the case `zero => exact j.elim0`. Consider the case `succ n => set σ : Equiv.Perm (Fin (n + 1)) := Equiv.swap 0 j with hσ set t : Fin n → K → ℤ := fun i => bs (σ i.succ) with ht`. Establish `key : ∀ v, intNum F q (Function.update bs j v) = eventualValue (gStep v (mixedDiff t (hilbFn q)))`. Introduce `v`.
+
+Rewrite using `[← intNum_perm F q σ]`. Establish `hc : Function.update bs j v ∘ σ = Fin.cons v t`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `[hσ]`.
+
+Establish `hne : σ i.succ ≠ j`. Introduce `hij`. Establish `h0 : σ 0 = j` using `by simp [hσ]`. Conclude with `Fin.succ_ne_zero i (σ.injective (hij.trans h0.symm))`. Simplify using `only [Function.comp_apply, Fin.cons_succ, ht]`.
+
+Rewrite using `[Function.update_of_ne hne]`. Rewrite using `[hc]`. Unfold `intNum`. Rewrite using `[mixedDiff_cons]`. Rewrite using `[key, key, key]`.
+
+Apply `eventualValue_step_add` to reduce the goal to its premises. Simplify `hex (Fin.cons x t)` using `only [mixedDiff_cons]`. Simplify `hex (Fin.cons y t)` using `only [mixedDiff_cons]`.
+-/
 theorem intNum_update_add (F : Type*) [Field F] {ι : K → Type*} (q : Ideal (MRing ι F)) {d : ℕ}
     (hex : ∀ bs : Fin d → K → ℤ, ∃ c, ∀ᶠ m in atTop, mixedDiff bs (hilbFn q) m = c)
     (bs : Fin d → K → ℤ) (j : Fin d) (x y : K → ℤ) :
@@ -115,6 +149,9 @@ variable {K : Type*}
 def dPoly (b : K → ℤ) (p : MvPolynomial K ℚ) : MvPolynomial K ℚ :=
   p - bind₁ (fun k => X k - C (b k : ℚ)) p
 
+/- English proof (translation)
+Use `show aeval (fun k => (m k : ℚ)) (dPoly b p) = aeval (fun k => (m k : ℚ)) p - aeval (fun k => ((m - b) k : ℚ)) p`. Establish `hx : (fun i => aeval (fun k => (m k : ℚ)) (X i - C (b i : ℚ))) = fun k => ((m - b) k : ℚ)`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Rewrite using `[dPoly, map_sub, aeval_bind₁, hx]`.
+-/
 theorem eval_dPoly (b : K → ℤ) (p : MvPolynomial K ℚ) (m : K → ℤ) :
     eval (fun k => (m k : ℚ)) (dPoly b p) =
       eval (fun k => (m k : ℚ)) p - eval (fun k => ((m - b) k : ℚ)) p := by
@@ -128,6 +165,11 @@ theorem eval_dPoly (b : K → ℤ) (p : MvPolynomial K ℚ) (m : K → ℤ) :
 
 def Low (A : MvPolynomial K ℚ) (N : ℕ) : Prop := A = 0 ∨ A.totalDegree < N
 
+/- English proof (translation)
+Break down `hA with hA | hA` into its components or cases. Simplify `hB` using `[hA]`. Break down `hB with hB | hB` into its components or cases. Rewrite using `[hB, add_zero]`. Conclude with `Or.inr hA`.
+
+Conclude with `Or.inr ((totalDegree_add A B).trans_lt (max_lt hA hB))`.
+-/
 theorem low_add {A B : MvPolynomial K ℚ} {N : ℕ} (hA : Low A N) (hB : Low B N) :
     Low (A + B) N := by
   rcases hA with hA | hA
@@ -137,25 +179,40 @@ theorem low_add {A B : MvPolynomial K ℚ} {N : ℕ} (hA : Low A N) (hB : Low B 
     exact Or.inr hA
   exact Or.inr ((totalDegree_add A B).trans_lt (max_lt hA hB))
 
+/- English proof (translation)
+The claim follows from `hA.imp id (fun h' => h'.trans_le h)`.
+-/
 theorem low_mono {A : MvPolynomial K ℚ} {N N' : ℕ} (hA : Low A N) (h : N ≤ N') : Low A N' :=
   hA.imp id (fun h' => h'.trans_le h)
 
+/- English proof (translation)
+Break down `hA with hA | hA` into its components or cases. Conclude with `Or.inl (by simp [hA])`. Conclude with `Or.inr ((totalDegree_mul A B).trans_lt (by omega))`.
+-/
 theorem low_mul_right {A B : MvPolynomial K ℚ} {N M : ℕ} (hA : Low A N) (hB : B.totalDegree ≤ M) :
     Low (A * B) (N + M) := by
   rcases hA with hA | hA
   · exact Or.inl (by simp [hA])
   exact Or.inr ((totalDegree_mul A B).trans_lt (by omega))
 
+/- English proof (translation)
+Rewrite using `[mul_comm, add_comm]`. Conclude with `low_mul_right hB hA`.
+-/
 theorem low_mul_left {A B : MvPolynomial K ℚ} {N M : ℕ} (hB : Low B N) (hA : A.totalDegree ≤ M) :
     Low (A * B) (M + N) := by
   rw [mul_comm, add_comm]
   exact low_mul_right hB hA
 
+/- English proof (translation)
+Simplify using `only [dPoly, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dPoly_mul (b : K → ℤ) (A B : MvPolynomial K ℚ) :
     dPoly b (A * B) = dPoly b A * B + (A - dPoly b A) * dPoly b B := by
   simp only [dPoly, map_mul]
   ring
 
+/- English proof (translation)
+Use `(totalDegree_sub _ _).trans (max_le hd ?_)` and prove the remaining obligations. Break down `hl with hl | hl` into its components or cases. Simplify using `[hl]`. Conclude with `hl.le`.
+-/
 theorem totalDegree_sub_dPoly_le {b : K → ℤ} {A : MvPolynomial K ℚ} {N : ℕ}
     (hd : A.totalDegree ≤ N) (hl : Low (dPoly b A) N) : (A - dPoly b A).totalDegree ≤ N := by
   refine (totalDegree_sub _ _).trans (max_le hd ?_)
@@ -163,12 +220,20 @@ theorem totalDegree_sub_dPoly_le {b : K → ℤ} {A : MvPolynomial K ℚ} {N : �
   · simp [hl]
   · exact hl.le
 
+/- English proof (translation)
+Rewrite using `[dPoly_mul]`. Conclude with `low_add (low_mul_right hA hdB) (low_mul_left hB (totalDegree_sub_dPoly_le hdA hA))`.
+-/
 theorem low_dPoly_mul {b : K → ℤ} {A B : MvPolynomial K ℚ} {α β : ℕ}
     (hA : Low (dPoly b A) α) (hB : Low (dPoly b B) β) (hdA : A.totalDegree ≤ α)
     (hdB : B.totalDegree ≤ β) : Low (dPoly b (A * B)) (α + β) := by
   rw [dPoly_mul]
   exact low_add (low_mul_right hA hdB) (low_mul_left hB (totalDegree_sub_dPoly_le hdA hA))
 
+/- English proof (translation)
+Use `MvPolynomial.induction_on_monomial (motive := fun p => Low (dPoly b p) p.totalDegree) (fun a => ?_) (fun p n ih => ?_) s a` and prove the remaining obligations. Conclude with `Or.inl (by simp [dPoly])`. Distinguish the cases in `hp : p = 0`. Conclude with `Or.inl (by simp [hp, dPoly])`. Use `show Low (dPoly b (p * X n)) (p * X n).totalDegree`.
+
+Rewrite using `[totalDegree_mul_of_isDomain hp (X_ne_zero n), totalDegree_X]`. Use `low_dPoly_mul ih (Or.inr ?_) le_rfl (totalDegree_X n).le` and prove the remaining obligations. Establish `hXn : dPoly b (X n) = C (b n : ℚ)` using `by simp [dPoly]`. Rewrite using `[hXn, totalDegree_C]`. Conclude with `Nat.zero_lt_one`.
+-/
 theorem low_dPoly_monomial (b : K → ℤ) (s : K →₀ ℕ) (a : ℚ) :
     Low (dPoly b (monomial s a)) (monomial s a).totalDegree := by
   refine MvPolynomial.induction_on_monomial
@@ -183,6 +248,11 @@ theorem low_dPoly_monomial (b : K → ℤ) (s : K →₀ ℕ) (a : ℚ) :
     rw [hXn, totalDegree_C]
     exact Nat.zero_lt_one
 
+/- English proof (translation)
+Establish `hsum : dPoly b p = ∑ s ∈ p.support, dPoly b (monomial s (coeff s p))`. Simplify using `only [dPoly]`. Use `conv_lhs => rw [p.as_sum]`. Rewrite using `[map_sum, ← Finset.sum_sub_distrib]`. Rewrite using `[hsum]`.
+
+Use `Finset.sum_induction _ (fun A => Low A p.totalDegree) (fun _ _ => low_add) (Or.inl rfl) (fun s hs => low_mono (low_dPoly_monomial b s _) ?_)` and prove the remaining obligations. Conclude with `(totalDegree_monomial_le s _).trans (le_totalDegree hs)`.
+-/
 theorem low_dPoly (b : K → ℤ) (p : MvPolynomial K ℚ) : Low (dPoly b p) p.totalDegree := by
   have hsum : dPoly b p = ∑ s ∈ p.support, dPoly b (monomial s (coeff s p)) := by
     simp only [dPoly]
@@ -193,12 +263,20 @@ theorem low_dPoly (b : K → ℤ) (p : MvPolynomial K ℚ) : Low (dPoly b p) p.t
     (Or.inl rfl) (fun s hs => low_mono (low_dPoly_monomial b s _) ?_)
   exact (totalDegree_monomial_le s _).trans (le_totalDegree hs)
 
+/- English proof (translation)
+Break down `low_dPoly b p with h | h` into its components or cases. Simplify using `[h]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem totalDegree_dPoly_le (b : K → ℤ) (p : MvPolynomial K ℚ) :
     (dPoly b p).totalDegree ≤ p.totalDegree - 1 := by
   rcases low_dPoly b p with h | h
   · simp [h]
   · omega
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons b l ih`. Simplify using `only [List.foldr_cons, List.length_cons]`. Use `totalDegree_dPoly_le b (l.foldr dPoly p)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem totalDegree_foldr_dPoly_le (l : List (K → ℤ)) (p : MvPolynomial K ℚ) :
     (l.foldr dPoly p).totalDegree ≤ p.totalDegree - l.length := by
   induction l with
@@ -208,6 +286,9 @@ theorem totalDegree_foldr_dPoly_le (l : List (K → ℤ)) (p : MvPolynomial K �
     have := totalDegree_dPoly_le b (l.foldr dPoly p)
     omega
 
+/- English proof (translation)
+Proceed by induction on `l generalizing m with`. Consider the case `nil => rfl`. Consider the case `cons b l ih`. Simplify using `only [List.foldr_cons, gStep, ih, eval_dPoly]`.
+-/
 theorem foldr_gStep_eval (l : List (K → ℤ)) (p : MvPolynomial K ℚ) (m : K → ℤ) :
     l.foldr gStep (fun m : K → ℤ => eval (fun k => (m k : ℚ)) p) m =
       eval (fun k => (m k : ℚ)) (l.foldr dPoly p) := by
@@ -216,6 +297,11 @@ theorem foldr_gStep_eval (l : List (K → ℤ)) (p : MvPolynomial K ℚ) (m : K 
   | cons b l ih =>
     simp only [List.foldr_cons, gStep, ih, eval_dPoly]
 
+/- English proof (translation)
+Proceed by induction on `l generalizing m with`. Consider the case `nil => rfl`. Consider the case `cons b l ih`. Simplify using `only [List.foldr_cons, gStep]`. Use `push_cast`.
+
+Rewrite using `[ih, ih]`.
+-/
 theorem foldr_gStep_cast (l : List (K → ℤ)) (h : (K → ℤ) → ℤ) (m : K → ℤ) :
     ((l.foldr gStep h m : ℤ) : ℚ) = l.foldr gStep (fun m => (h m : ℚ)) m := by
   induction l generalizing m with
@@ -225,6 +311,9 @@ theorem foldr_gStep_cast (l : List (K → ℤ)) (h : (K → ℤ) → ℤ) (m : K
     push_cast
     rw [ih, ih]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simpa using hh`. Consider the case `cons b l ih => filter_upwards [ih, eventually_sub ih b] with m h1 h2`. Simplify using `only [List.foldr_cons, gStep, h1, h2]`.
+-/
 theorem foldr_gStep_congr {G : Type*} [AddCommGroup G] (l : List (K → ℤ)) {h h' : (K → ℤ) → G}
     (hh : ∀ᶠ m in atTop, h m = h' m) :
     ∀ᶠ m in atTop, l.foldr gStep h m = l.foldr gStep h' m := by
@@ -236,6 +325,17 @@ theorem foldr_gStep_congr {G : Type*} [AddCommGroup G] (l : List (K → ℤ)) {h
 
 end Polynomials
 
+/- English proof (translation)
+Take `⟨p, a₀, hdeg, hp⟩` from `h F K ι q d hq hdim`. Establish `hev : ∀ᶠ m in atTop, ((hilbFn q m : ℤ) : ℚ) = eval (fun k => (m k : ℚ)) p` using `by filter_upwards [eventually_ge_atTop (fun _ : K => (a₀ : ℤ))] with m hm`. Establish `hm' : ∀ k, (a₀ : ℤ) ≤ m k` using `fun k => hm k`. Establish `e1 : (fun k => (((m k).toNat : ℕ) : ℤ)) = m`. Use function extensionality and compare the values at `fun k => Int.toNat_of_nonneg (by have := hm' k; omega)`.
+
+Establish `e2 : (fun k => (((m k).toNat : ℕ) : ℚ)) = fun k => (m k : ℚ)`. Use function extensionality and compare the values at `k`. Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg (by have := hm' k; omega)]`. Use `hp (fun k => (m k).toNat) (fun k => by have := hm' k; omega)` as an intermediate fact. Rewrite `this` using `[e1, e2]`.
+
+Conclude with `this`. Use `set P := (List.ofFn bs).foldr dPoly p with hP`. Establish `hP0 : P.totalDegree = 0`. Use `totalDegree_foldr_dPoly_le (List.ofFn bs) p` as an intermediate fact. Rewrite `this` using `[List.length_ofFn, ← hP]`.
+
+Conclude with `Nat.eq_zero_of_le_zero (this.trans (Nat.sub_eq_zero_of_le hdeg).le)`. Take `⟨c, hc⟩ : ∃ c, P = C c` from `⟨_, totalDegree_eq_zero_iff_eq_C.1 hP0⟩`. Establish `hconst : ∀ᶠ m in atTop, ((mixedDiff bs (hilbFn q) m : ℤ) : ℚ) = c` using `by filter_upwards [foldr_gStep_congr (List.ofFn bs) hev] with m hm`. Rewrite using `[mixedDiff_eq, foldr_gStep_cast, hm, foldr_gStep_eval, ← hP, hc, eval_C]`. Take `⟨m₀, hm₀⟩` from `hconst.exists`.
+
+Use `⟨mixedDiff bs (hilbFn q) m₀, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hconst] with m hm`. Conclude with `hm.trans hm₀.symm` after adjusting the coercions.
+-/
 theorem exists_eventually_const (h : MultigradedHilbertPolynomial.Statement.{u}) (F : Type u)
     [Field F] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (q : Ideal (MRing ι F)) (d : ℕ) (hq : IsMultiProjPrime q)
@@ -269,6 +369,9 @@ theorem exists_eventually_const (h : MultigradedHilbertPolynomial.Statement.{u})
 
 end MixedNumberPolynomial
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ q d hq hdim`. Conclude with `⟨fun σ bs => MixedNumberPolynomial.intNum_perm F q σ bs, fun bs j x y => MixedNumberPolynomial.intNum_update_add F q (MixedNumberPolynomial.exists_eventually_const h F K ι q d hq hdim) bs j x y⟩`.
+-/
 theorem MixedNumberPolynomial.proof (h : MultigradedHilbertPolynomial.Statement.{u}) :
     MixedNumberPolynomial.Statement.{u} := by
   intro F _ K _ _ ι _ q d hq hdim

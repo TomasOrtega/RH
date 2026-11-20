@@ -19,6 +19,27 @@ namespace PositivityTheory.ThKW.PhaseFourierInjectivity
 
 open PositivityTheory.ThKW.ModulusFactorDefinition PositivityTheory.ThKW.ModulusDerivativeNormalisation PositivityTheory.ThKW.LagrangianIntegralFactorisation GlobalTheory.ThetaTransform
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ hσ ν 𝓕 hν h𝓕`. Establish `hT'` using `GlobalTheory.WeilSchrodinger.DblTargetF.isHermND_dblG hT`. Establish `hstd` using `GlobalTheory.StdCharWeilDatum.isStdCharF_of_isGood F E σ B hB`. Take `⟨N, α, β, e, hCe, he, hrat, hrat', hec, hes, hαc, hαs, hβc, hβs, hr1, hr2⟩` from `PositivityTheory.ThKW.AdelicSchwartzProperties.coords hB hS hT hξ hσ`. Take `⟨μN, μW, 𝓕W, c₁, hμN, hμW, h𝓕W, hc₁, hpar⟩` from `PositivityTheory.ThKW.AdelicSchwartzProperties.parseval_pol hB N e hec hes hrat hrat'`.
+
+Take `⟨c₀, hc₀, hlam⟩` from `PositivityTheory.ThKW.AdelicSchwartzProperties.lam_formula hB JS JT ξ₀ ν 𝓕 hν h𝓕 N α β e hCe he hβc hβs hr1 hr2`. Take `⟨c₂, hc₂, hmap, hint⟩` from `PositivityTheory.ThKW.AdelicSchwartzProperties.map_haar α hαc hαs ν hν μN hμN`. Establish `hn0 : 0 < ‖c₀‖` using `norm_pos_iff.2 hc₀`. Use `⟨μW, 𝓕W, c₁ / (c₂ * ‖c₀‖ ^ 2), hμW, h𝓕W, by positivity, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨Φ, hΦ, rfl⟩` from `GlobalTheory.ThetaOntoF.exists_thV_eqF F E σ B hB nS (nT + nT) JS _ hS hT' ξ₀ hξ hσ hstd N e he hrat f hf`.
+
+Take `⟨hΦc, hΦi, hΦm⟩` from `PositivityTheory.ThKW.AdelicSchwartzProperties.schA_facts hB N μN hμN Φ hΦ`. Establish `hnrm : nrm σ JS JT ξ₀ B.ψ ν 𝓕 (thV B.ψ Φ ∘ e) = fun v => ((‖c₀‖ ^ 2 : ℝ) : ℂ) * (Φ (α v) * starRingEnd ℂ (Φ (α v)))`. Use function extensionality and compare the values at `v`. Unfold `nrm`. Rewrite using `[hlam Φ hΦ v, map_mul, Complex.ofReal_pow, ← Complex.mul_conj' c₀]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hph : ∀ y v, phase σ JS JT ξ₀ B.ψ y v = B.ψ (α v ⬝ᵥ β y)`. Introduce `y v`. Unfold `phase`. Rewrite using `[he]`.
+
+Establish `h1 : e (dCd F JT * v) = (α v, 0)`. Use `hCe 0 v` as an intermediate fact. Rewrite `this` using `[Matrix.mul_zero, zero_add, map_zero]`. Then use the resulting hypothesis. Establish `h2 : e (dC (AF F ⊗[F] E) nT * y) = (0, β y)`. Use `hCe y 0` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.mul_zero, add_zero, map_zero]`. Then use the resulting hypothesis. Rewrite using `[h1, h2]`. Simplify using `[symV]`. Use `⟨?_, ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hnrm]`.
+
+Conclude with `continuous_const.mul ((hΦc.comp hαc).mul (Complex.continuous_conj.comp (hΦc.comp hαc)))`. Rewrite using `[hnrm]`. Conclude with `((hint _).2 hΦi).const_mul _`. Rewrite using `[PositivityTheory.ThKW.AdelicSchwartzProperties.heis_C hB JS JT ξ₀ N α β e hCe he Φ y]`. Establish `hl : ∫ w in 𝓕W, (thV B.ψ (fun x => B.ψ (x ⬝ᵥ β y) * Φ x) ∘ e) w * starRingEnd ℂ ((thV B.ψ Φ ∘ e) w) ∂μW = (c₁ : ℂ) * ∫ x, B.ψ (x ⬝ᵥ β y) * Φ x * starRingEnd ℂ (Φ x) ∂μN` using `hpar _ (hΦm (β y)) Φ hΦ`.
+
+Rewrite using `[hl, hnrm]`. Repeatedly rewrite using `[hph]`. Establish `hr : ∫ v, B.ψ (α v ⬝ᵥ β y) * (((‖c₀‖ ^ 2 : ℝ) : ℂ) * (Φ (α v) * starRingEnd ℂ (Φ (α v)))) ∂ν = ((‖c₀‖ ^ 2 : ℝ) : ℂ) * ((c₂ : ℂ) * ∫ x, B.ψ (x ⬝ᵥ β y) * Φ x * starRingEnd ℂ (Φ x) ∂μN)`. Rewrite using `[← hmap (fun x => B.ψ (x ⬝ᵥ β y) * Φ x * starRingEnd ℂ (Φ x)), ← integral_const_mul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `v`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hr]`. Establish `hc2 : (c₂ : ℂ) ≠ 0` using `by exact_mod_cast hc₂.ne'`. Establish `hc0 : ((‖c₀‖ ^ 2 : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (pow_pos hn0 2).ne'`.
+
+Establish `hn' : ((‖c₀‖ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hn0.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem coef : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →

@@ -4,6 +4,19 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ G _ V _ _ _ ρ hρ`. Use `haveI : Nontrivial V := by`. Assume the negation of the conclusion as `hV`. Rewrite `hV` using `[not_nontrivial_iff_subsingleton]`. Conclude with `(bot_ne_top (α := Subrepresentation ρ)) (Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _))`.
+
+Establish `hdualNT : Nontrivial (Module.Dual k V)` using `inferInstance`. Use `{ toNontrivial := ⟨⊥, ⊤, fun h => ?_⟩, eq_bot_or_eq_top := fun S => ?_ }` and prove the remaining obligations. Establish `h'` using `congrArg Subrepresentation.toSubmodule h`. Take `⟨x, y, hxy⟩` from `hdualNT`. Establish `hx : x ∈ (⊤ : Subrepresentation ρ.dual).toSubmodule` using `Submodule.mem_top`.
+
+Establish `hy : y ∈ (⊤ : Subrepresentation ρ.dual).toSubmodule` using `Submodule.mem_top`. Rewrite `hx`, `hy` using `[← h']`. Conclude with `hxy (((Submodule.mem_bot k).1 hx).trans ((Submodule.mem_bot k).1 hy).symm)`. Set `T : Subrepresentation ρ` to `⟨S.toSubmodule.dualCoannihilator, fun g v hv => by`. Rewrite `hv`, the goal using `[Submodule.mem_dualCoannihilator]`.
+
+Introduce `φ hφ`. Establish `h1` using `hv _ (S.apply_mem_toSubmodule g⁻¹ hφ)`. Simplify `h1⟩` using `[Representation.dual_apply, Module.Dual.transpose_apply]`. Establish `hST : S.toSubmodule = T.toSubmodule.dualAnnihilator` using `(Subspace.dualCoannihilator_dualAnnihilator_eq (W := S.toSubmodule)).symm`. Break down `hρ.eq_bot_or_eq_top T with hT | hT` into its components or cases.
+
+Use `right`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Rewrite using `[hST, hT]`. Conclude with `Submodule.dualAnnihilator_bot`. Use `left`.
+
+Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Rewrite using `[hST, hT]`. Conclude with `Submodule.dualAnnihilator_top`.
+-/
 theorem contragredient_isIrreducible : ∀ (k : Type) [Field k] (G : Type) [Group G] (V : Type) [AddCommGroup V] [Module k V] [FiniteDimensional k V]
     (ρ : Representation k G V), ρ.IsIrreducible → ρ.dual.IsIrreducible := by
   intro k _ G _ V _ _ _ ρ hρ

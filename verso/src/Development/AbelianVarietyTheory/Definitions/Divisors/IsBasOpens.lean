@@ -38,11 +38,20 @@ def IsCoc (V : C → X.Opens) (hV : ∀ ⦃T T' : C⦄, (T ⟶ T') → V T' ≤ 
 
 abbrev opOf (G : C ⥤ AffOp X) (T : C) : X.Opens := (G.obj T).unop.1
 
+/- English proof (translation)
+The claim follows from `leOfHom (G.map a).unop`.
+-/
 theorem opOf_le (G : C ⥤ AffOp X) ⦃T T' : C⦄ (a : T ⟶ T') : opOf G T' ≤ opOf G T := leOfHom (G.map a).unop
 
+/- English proof (translation)
+The claim follows from `fun _ _ _ _ _ ↦ by simp`.
+-/
 theorem isCoc_one (V : C → X.Opens) (hV : ∀ ⦃T T' : C⦄, (T ⟶ T') → V T' ≤ V T) : IsCoc V hV fun _ _ _ ↦ 1 :=
   fun _ _ _ _ _ ↦ by simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ U hx ↦ ⟨Opposite.op U, hx, le_rfl⟩, fun t₁ t₂ _ U hx h₁ h₂ ↦ ⟨Opposite.op (t₁.unop ⊓ t₂.unop ⊓ U), ⟨(homOfLE (inf_le_left.trans inf_le_left)).op⟩, ⟨(homOfLE (inf_le_left.trans inf_le_right)).op⟩, ⟨⟨h₁, h₂⟩, hx⟩, inf_le_right⟩⟩`.
+-/
 theorem isBas_opens : IsBas (C := (X.Opens)ᵒᵖ) fun U ↦ U.unop :=
   ⟨fun _ U hx ↦ ⟨Opposite.op U, hx, le_rfl⟩, fun t₁ t₂ _ U hx h₁ h₂ ↦
     ⟨Opposite.op (t₁.unop ⊓ t₂.unop ⊓ U), ⟨(homOfLE (inf_le_left.trans inf_le_left)).op⟩,
@@ -74,6 +83,9 @@ def IsObL (S : Sys I π s₀) (α : Aug I π R₁) (L : LB X₀) (c : CatCoh.H2 
   ∃ (C' : Type) (_ : Category.{0} C') (_ : Quiver.IsThin C') (G : C' ⥤ AffOp X₀), IsBas (opOf G) ∧
     ObAt S α L G ((extMap R₁ (CoefMap.restrict (OAff s₀) G)).pull2 c)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ ↦ 1, σ, 0, fun _ _ _ ↦ by simp, hσ, (map_zero _).symm, fun T T' T'' a b ↦ ⟨map_zero _, by have : (0 : Z2 (ext R₁ F)).1 T T' T'' a b = 0 := rfl rw [this, map_zero]; simp⟩⟩`.
+-/
 theorem isObU_one (L : Pre I π F) (α : Aug I π R₁) (σ : ∀ T, R₁ ⊗[R₀] F.obj T →+ L.B T)
     (hσ : ∀ T, α.IsSig (L.p T) (σ T)) : IsObU L α (fun _ _ _ ↦ 1) 0 :=
   ⟨fun _ _ _ ↦ 1, σ, 0, fun _ _ _ ↦ by simp, hσ, (map_zero _).symm, fun T T' T'' a b ↦

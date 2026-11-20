@@ -17,10 +17,36 @@ local notation "𝕢₁" => Function.Periodic.qParam 1
 
 variable {N : ℕ} [NeZero N] {k : ℤ}
 
+/- English proof (translation)
+Rewrite using `[Function.Periodic.norm_qParam]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_qParam_one (τ : ℍ) : ‖𝕢₁ (τ : ℂ)‖ = Real.exp (-2 * π * τ.im) := by
   rw [Function.Periodic.norm_qParam]
   simp
 
+/- English proof (translation)
+Use `set a : ℕ → ℂ := fun m => (qExpansion 1 f).coeff m`. Use `set τ₀ : ℍ := ⟨I / 2, by simp⟩`. Establish `h0` using `hasSum_qExpansion_cusp f τ₀`. Take `⟨M0, hM0⟩` from `(h0.summable.tendsto_atTop_zero.norm).bddAbove_range`. Establish `hq0 : ‖𝕢₁ (τ₀ : ℂ)‖ = Real.exp (-π)`.
+
+Rewrite using `[norm_qParam_one]`. Use `congr 1`. Simplify using `[τ₀, UpperHalfPlane.im]`. Expand and normalize the polynomial expressions, which then agree. Establish `ha : ∀ m : ℕ, ‖a m‖ ≤ M0 * Real.exp (π * m)`.
+
+Introduce `m`. Establish `hm` using `hM0 ⟨m, rfl⟩`. Simplify using `only at hm`. Rewrite `hm` using `[norm_mul, norm_pow, hq0, ← Real.exp_nat_mul]`. Establish `e : ‖a m‖ = ‖a m‖ * Real.exp (m * -π) * Real.exp (π * m)`.
+
+Rewrite using `[mul_assoc, ← Real.exp_add]`. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_right hm (Real.exp_pos _).le`.
+
+Use `⟨M0 * Real.exp (π * (B + 1)) * (1 - Real.exp (-π))⁻¹, fun τ hτ => ?_⟩` and prove the remaining obligations. Establish `hs` using `hasSum_qExpansion_cusp f τ`. Rewrite `hs` using `[← hasSum_nat_add_iff' (B + 1)]`. Establish `hzero : ∑ i ∈ Finset.range (B + 1), a i * 𝕢₁ (τ : ℂ) ^ i = 0` using `Finset.sum_eq_zero fun i hi => by`. Rewrite `hi` using `[Finset.mem_range]`.
+
+Simplify using `only [a]`. Rewrite using `[hB i (by omega), zero_mul]`. Rewrite `hs` using `[hzero, sub_zero]`. Use `set r := ‖𝕢₁ (τ : ℂ)‖ with hrdef`. Establish `hr : r = Real.exp (-2 * π * τ.im)` using `norm_qParam_one τ`.
+
+Establish `hr0 : 0 ≤ r` using `norm_nonneg _`. Establish `hr1 : r ≤ Real.exp (-2 * π)`. Rewrite using `[hr]`. Conclude with `Real.exp_le_exp.2 (by nlinarith [Real.pi_pos])`. Establish `hg : HasSum (fun m : ℕ => M0 * Real.exp (π * (B + 1)) * r ^ (B + 1) * Real.exp (-π) ^ m) (M0 * Real.exp (π * (B + 1)) * r ^ (B + 1) * (1 - Real.exp (-π))⁻¹)` using `(hasSum_geometric_of_lt_one (Real.exp_pos _).le (Real.exp_lt_one_iff.2 (by linarith [Real.pi_pos]))).mul_left _`.
+
+Establish `hle` using `hs.norm_le_of_bounded hg (fun m => by`. Rewrite using `[norm_mul, norm_pow, ← hrdef, pow_add]`. Establish `h1 : r ^ m ≤ Real.exp (-2 * π) ^ m` using `pow_le_pow_left₀ hr0 hr1 m`. Establish `h2` using `ha (m + (B + 1))`. Establish `e1 : Real.exp (-2 * π) ^ m * Real.exp (π * ((m + (B + 1) : ℕ) : ℝ)) = Real.exp (π * (B + 1)) * Real.exp (-π) ^ m`.
+
+Rewrite using `[← Real.exp_nat_mul, ← Real.exp_nat_mul, ← Real.exp_add, ← Real.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hM0' : 0 ≤ M0` using `le_trans (norm_nonneg _) (hM0 ⟨0, rfl⟩)`.
+
+Combine the equalities or inequalities in the displayed calculation. Take the linear combination `(M0 * r ^ (B + 1)) * e1)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hr, ← Real.exp_nat_mul]`. Use `push_cast`.
+
+Put the polynomial expressions in normal form.
+-/
 theorem exists_norm_le_exp_of_coeff_eq_zero (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) (B : ℕ)
     (hB : ∀ n ≤ B, (qExpansion 1 f).coeff n = 0) :
     ∃ C, ∀ τ : ℍ, 1 ≤ τ.im → ‖f τ‖ ≤ C * Real.exp (-2 * π * (B + 1) * τ.im) := by
@@ -90,6 +116,11 @@ variable (N k) in
 def sturmBoundGamma0 : ℕ :=
   (k * Nat.card (𝒮ℒ ⧸ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)).subgroupOf 𝒮ℒ)).toNat / 12
 
+/- English proof (translation)
+Proceed by induction on `q using Quotient.inductionOn with`. Consider the case `h h`. Take `⟨σ, hσ⟩` from `h.2`. Rewrite using `[SlashInvariantForm.quotientFunc_mk]`. Establish `e : ((h : GL (Fin 2) ℝ))⁻¹ = toReal (Matrix.SpecialLinearGroup.mapGL ℚ σ⁻¹)`.
+
+Rewrite using `[toReal_mapGL, map_inv, hσ]`. Rewrite using `[e]`. Conclude with `isBoundedAtImInfty_slash_toReal (CuspForm.toModularFormₗ f) _`.
+-/
 theorem isBoundedAtImInfty_quotientFunc (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     (q : 𝒮ℒ ⧸ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)).subgroupOf 𝒮ℒ) :
     IsBoundedAtImInfty (SlashInvariantForm.quotientFunc f q) := by
@@ -102,6 +133,33 @@ theorem isBoundedAtImInfty_quotientFunc (f : CuspForm (Gamma0 N : Subgroup (GL (
     rw [e]
     exact isBoundedAtImInfty_slash_toReal (CuspForm.toModularFormₗ f) _
 
+/- English proof (translation)
+Use `set B := sturmBoundGamma0 N k`. Take `⟨C, hC⟩` from `exists_norm_le_exp_of_coeff_eq_zero f B hB`. Use `set Q := 𝒮ℒ ⧸ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)).subgroupOf 𝒮ℒ`. Use `set F := ModularForm.norm 𝒮ℒ f`. Set `: Fintype Q` to `Fintype.ofFinite Q`.
+
+Use `set q₀ : Q := ⟦1⟧`. Establish `hR : IsBoundedAtImInfty (∏ q ∈ Finset.univ.erase q₀, SlashInvariantForm.quotientFunc f q)`. Rewrite using `[IsBoundedAtImInfty, BoundedAtFilter, show (1 : ℍ → ℝ) = (fun _ => ∏ _q ∈ Finset.univ.erase q₀, (1 : ℝ)) by ext; simp, Finset.prod_fn]`. Conclude with `Asymptotics.IsBigO.finsetProd fun q _ => isBoundedAtImInfty_quotientFunc f q`. Take `⟨M, A, hMA⟩` from `isBoundedAtImInfty_iff.1 hR`.
+
+Establish `hF : ∀ τ : ℍ, F τ = f τ * (∏ q ∈ Finset.univ.erase q₀, SlashInvariantForm.quotientFunc f q) τ`. Introduce `τ`. Rewrite using `[ModularForm.coe_norm, ← Finset.mul_prod_erase _ _ (Finset.mem_univ q₀), Pi.mul_apply, SlashInvariantForm.quotientFunc_mk, OneMemClass.coe_one, inv_one, SlashAction.slash_one]`. Establish `hcoeff : ∀ n ≤ B, (qExpansion 1 F).coeff n = 0`. Introduce `n hn`.
+
+Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖(qExpansion 1 F).coeff n‖` using `norm_pos_iff.2 hne`. Use `set K := |C| * |M| + 1`. Establish `hbound : ∀ t : ℝ, max 1 A ≤ t → ‖(qExpansion 1 F).coeff n‖ ≤ K * Real.exp (-2 * π * t)`. Introduce `t ht`.
+
+Establish `ht1 : 1 ≤ t` using `le_trans (le_max_left _ _) ht`. Establish `htA : A ≤ t` using `le_trans (le_max_right _ _) ht`. Establish `ht0 : 0 < t` using `by linarith`. Rewrite using `[ModularFormClass.qExpansion_coeff_eq_intervalIntegral (f := F) one_pos one_mem_strictPeriods_SL n ht0]`. Simplify using `only [Complex.ofReal_one, div_one, one_mul]`.
+
+Use `(intervalIntegral.norm_integral_le_of_norm_le_const (C := K * Real.exp (-2 * π * t)) fun u _ => ?_).trans (by simp)` and prove the remaining obligations. Use `set τ : ℍ := ⟨u + t * I, by simpa using ht0⟩`. Establish `him : τ.im = t` using `by simp [τ, UpperHalfPlane.im]`. Establish `h1` using `hC τ (by rw [him]; exact ht1)`. Establish `h2` using `hMA τ (by rw [him]; exact htA)`.
+
+Establish `hq : ‖1 / 𝕢₁ ((u : ℂ) + t * I) ^ n‖ = Real.exp (2 * π * n * t)`. Rewrite using `[norm_div, norm_one, norm_pow, Function.Periodic.norm_qParam, ← Real.exp_nat_mul, one_div, ← Real.exp_neg]`. Use `congr 1`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+
+Express the relevant statement in the definitionally equal form `‖1 / 𝕢₁ ((u : ℂ) + t * I) ^ n * F τ‖ ≤ _`. Rewrite `*` using `[norm_mul, hq, hF τ, norm_mul, him]`. Rewrite `h1` using `[him]`. Establish `hnB : (n : ℝ) ≤ B` using `by exact_mod_cast hn`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `h1.trans (mul_le_mul_of_nonneg_right (le_abs_self C) (Real.exp_pos _).le)`. Conclude with `h2.trans (le_abs_self M)`. Use `_ = |C| * |M| * (Real.exp (2 * π * n * t) * Real.exp (-2 * π * (B + 1) * t)) := by ring`. Use `_ ≤ |C| * |M| * Real.exp (-2 * π * t) := by gcongr`. Rewrite using `[← Real.exp_add]`.
+
+Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Establish `key : 2 * π * n * t + -2 * π * (B + 1) * t = -2 * π * t + 2 * π * t * (n - B)` using `by ring`. Rewrite using `[key]`. Establish `: 2 * π * t * ((n : ℝ) - B) ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos (by positivity) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `_ ≤ K * Real.exp (-2 * π * t) := by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `htend : Tendsto (fun t : ℝ => K * Real.exp (-2 * π * t)) atTop (nhds 0)`. Establish `: Tendsto (fun t : ℝ => -2 * π * t) atTop atBot` using `tendsto_id.const_mul_atTop_of_neg (by linarith [Real.pi_pos])`. Simplify using `using (Real.tendsto_exp_atBot.comp this).const_mul K`.
+
+Take `⟨t, ht⟩` from `((htend.eventually (gt_mem_nhds hpos)).and (eventually_ge_atTop (max 1 A))).exists`. Conclude with `absurd (hbound t ht.2) (not_le.2 ht.1)`. Establish `hFo : ((B : ℕ) : ℕ∞) < (qExpansion 1 F).order`. Use `lt_of_lt_of_le (by exact_mod_cast Nat.lt_succ_self B) (PowerSeries.nat_le_order _ (B + 1) ?_)` and prove the remaining obligations. Introduce `i hi`.
+
+Conclude with `hcoeff i (by omega)`. Establish `hF0 : F = 0` using `ModularForm.sturm_bound_levelOne hFo`. Use `(ModularForm.norm_eq_zero_iff 𝒮ℒ f).1 hF0` as an intermediate fact. Conclude with `DFunLike.coe_injective (by rw [this]; rfl)`.
+-/
 theorem eq_zero_of_coeff_le_sturmBound (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     (hB : ∀ n ≤ sturmBoundGamma0 N k, (qExpansion 1 f).coeff n = 0) : f = 0 := by
   classical

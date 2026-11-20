@@ -11,6 +11,15 @@ namespace GlobalTheory.SmoothCharDet
 
 open GlobalTheory.SplitFlip GlobalTheory.SplitWeil Matrix
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n hn ν s P hP hν`. Set `i0 : Fin n` to `⟨0, hn⟩`. Set `d : kˣ →* GL (Fin n) k` to `(diagHom (k := k) (n := Fin n)).comp (MonoidHom.mulSingle (fun _ : Fin n => kˣ) i0)`. Establish `hval : Continuous fun x : kˣ => ((d x : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)` using `by show Continuous fun x : kˣ => diagonal fun i => (((Pi.mulSingle (M := fun _ : Fin n => kˣ) i0 x) i : kˣ) : k)`. Conclude with `Continuous.matrix_diagonal (continuous_pi fun i => Units.continuous_val.comp ((continuous_apply i).comp (continuous_mulSingle (A := fun _ : Fin n => kˣ) i0)))`.
+
+Establish `hd : Continuous d`. Use `Units.continuous_iff.2 ⟨hval, ?_⟩` and prove the remaining obligations. Use `hval.comp continuous_inv` as an intermediate fact. Simplify `this` using `[Function.comp_def, map_inv]`. Establish `hdet : ∀ x : kˣ, gdet (d x) = x` using `fun x => by show Matrix.GeneralLinearGroup.det (diagGL (Pi.mulSingle (M := fun _ : Fin n => kˣ) i0 x)) = x`.
+
+Rewrite using `[det_diagGL]`. Simplify using the standard rewrite rules. Establish `hU : (d : kˣ → GL (Fin n) k) ⁻¹' (P ∩ (KO k (Fin n) : Set (GL (Fin n) k))) ∈ 𝓝 (1 : kˣ)`. Use `hd.continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Rewrite using `[map_one]`.
+
+Conclude with `Filter.inter_mem hP (isOpen_KO.mem_nhds (one_mem _))`. Use `Subgroup.isOpen_of_mem_nhds ν.ker (Filter.mem_of_superset hU fun x hx => ?_)` and prove the remaining obligations. Establish `h1` using `hν _ hx.1`. Rewrite `h1` using `[apow_of_valuation_eq_one (valuation_gdet_of_mem_KO hx.2), mul_one, hdet]`. Conclude with `MonoidHom.mem_ker.2 (Units.ext h1)`.
+-/
 theorem isSmoothChar_of_detChar_apow_nhds : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}, 0 < n → ∀ (ν : kˣ →* ℂˣ) (s : ℂ) (P : Set (GL (Fin n) k)), P ∈ 𝓝 1 → (∀ g ∈ P, (ν (GlobalTheory.SplitFlip.gdet g) : ℂ) * GlobalTheory.SplitFlip.apow (GlobalTheory.SplitFlip.gdet g) s = 1) → GlobalTheory.SmGL.IsSmoothChar ν := by
   intro k _ _ _ _ n hn ν s P hP hν
   let i0 : Fin n := ⟨0, hn⟩

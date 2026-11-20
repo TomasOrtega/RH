@@ -14,6 +14,21 @@ def CT (𝒞 : FamClass) : FamClass := fun Fm => 𝒞 Fm ∧ TuSize Fm
 
 def selT {𝒞 : FamClass} (sel : SSel 𝒞) : SSel (CT 𝒞) := fun Fm h => sel Fm h.1
 
+/- English proof (translation)
+Take `⟨ε1, hε1, hK⟩` from `hRes`. Use `⟨ε1, hε1, fun eps he he1 => ?_⟩` and prove the remaining obligations. Take `⟨K0, hK0⟩` from `hK eps he he1`. Use `⟨⟨K0.pre, K0.t, K0.mid, fun l => max (K0.last l) (max 29 (8 * (l.map abs).sum))⟩, fun Fm CH hC hL _ => ?_⟩` and prove the remaining obligations. Establish `hL0 : Fm.Large K0 CH` using `⟨hL.1, trivial, hL.2.2.1, fun c hc => le_trans (le_max_left _ _) (hL.2.2.2 c hc)⟩`.
+
+Establish `hRes' : ResidEv Fm` using `hK0 Fm CH hC.1 hL0`. Establish `hCG : 8 * Fm.CGam ≤ 8 * ((Fm.cOut ++ Fm.cMid CH).map abs).sum`. Establish `hmem : |Fm.CGam| ∈ (Fm.cOut ++ Fm.cMid CH).map abs` using `List.mem_map.mpr ⟨Fm.CGam, List.mem_append_right _ (by simp [FamP.cMid]), rfl⟩`. Establish `h1` using `List.single_le_sum (fun x hx => by`. Take `⟨y, _, rfl⟩` from `List.mem_map.mp hx`.
+
+Conclude with `abs_nonneg y) _ hmem`. Combine the linear relations using `[le_abs_self Fm.CGam]`. Establish `hlast : ∀ c ∈ Fm.cLast, 29 ≤ c ∧ 8 * Fm.CGam ≤ c`. Introduce `c hc`. Establish `h` using `hL.2.2.2 c hc`.
+
+Establish `h1` using `le_max_left (29 : ℝ) (8 * ((Fm.cOut ++ Fm.cMid CH).map abs).sum)`. Establish `h2` using `le_max_right (29 : ℝ) (8 * ((Fm.cOut ++ Fm.cMid CH).map abs).sum)`. Establish `h3` using `le_max_right (K0.last (Fm.cOut ++ Fm.cMid CH)) (max 29 (8 * ((Fm.cOut ++ Fm.cMid CH).map abs).sum))`. Conclude with `⟨by linarith, by linarith⟩`. Establish `g : ∀ c ∈ Fm.cLast, 29 ≤ c` using `fun c hc => (hlast c hc).1`.
+
+Establish `hCk : 8 * Fm.CGam ≤ Fm.CkLow` using `(hlast Fm.CkLow (by simp [FamP.cLast])).2`. Establish `hC'29 : 29 ≤ sC' Fm` using `g Fm.CkLow (by simp [FamP.cLast])`. Establish `hCl16 : 16 ≤ sCl Fm`. Unfold `sCl`. Establish `e1` using `g Fm.CfL (by simp [FamP.cLast])`.
+
+Establish `e2` using `g Fm.Cw (by simp [FamP.cLast])`. Establish `e3` using `g Fm.CDel (by simp [FamP.cLast])`. Establish `e4` using `g Fm.CCount (by simp [FamP.cLast])`. Establish `e5` using `g Fm.Ch0r (by simp [FamP.cLast])`. Establish `e6` using `g Fm.Cgap (by simp [FamP.cLast])`.
+
+Use `le_min (by linarith) (le_min (by linarith) (le_min (by linarith) (le_min (by linarith) (le_min (by linarith) (by linarith)))))` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `Formalism.MainNotions.Pk.SD.first_section_hypotheses_at_family_constants Fm ⟨hCk, hC.2, hRes'⟩`. Unfold `Formalism.L2.SG.LoopsTies.GapEv`. Conclude with `⟨x0, fun x hx i => gap_hypothesis_of_hypotheses (hx0 x hx i) hCl16 hC'29⟩`.
+-/
 theorem gapRowT {𝒞 : FamClass} (hRes : Closed 𝒞 fun Fm _ => ResidEv Fm) :
     Closed (CT 𝒞) fun Fm _ => CT 𝒞 Fm → Formalism.L2.SG.LoopsTies.GapEv Fm := by
   obtain ⟨ε1, hε1, hK⟩ := hRes

@@ -19,6 +19,15 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+Use `haveI : MeasureTheory.IsProbabilityMeasure (ReciprocityTheory.MultiplicativeHeights.blockSphereProb d.D (d.N + 1)) := ReciprocityTheory.MultiplicativeHeights.blockSphereMeasure_isProbability (Nat.succ_pos _)`. Establish `he` using `hd.a4.choose_spec.1`. Establish `hF : ∀ c, MeasureTheory.Integrable (fun z : ReciprocityTheory.MultiplicativeHeights.BlockSphere d.D (d.N + 1) => ∑ᶠ (P : Ω c →+* ℂ) (_ : P ∈ d.ST c sg (d.tOf z)), -Real.log (d.nrm c d.wF (hd.a4.choose c) P)) (ReciprocityTheory.MultiplicativeHeights.blockSphereProb d.D (d.N + 1))`. Introduce `c`. Use `((d.int_Nsg hd h hI2be c sg).1 d.wF (hd.a4.choose c) (by simp) (he c).1 (he c).2).neg` as an intermediate fact.
+
+Use `this.congr (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [Pi.neg_apply]`. Rewrite using `[← finsum_neg_distrib]`. Use `congr 1`. Use extensionality with `P`.
+
+Rewrite using `[← finsum_neg_distrib]`. Both sides reduce to the same expression. Establish `hR : MeasureTheory.Integrable (fun z : ReciprocityTheory.MultiplicativeHeights.BlockSphere d.D (d.N + 1) => (d.del * Real.log d.del + 2 * ∑ k, Real.log (d.supN sg d.wF (d.thp (hd.sel k)))) + 2 * ∑ c, ∑ᶠ (P : Ω c →+* ℂ) (_ : P ∈ d.ST c sg (d.tOf z)), -Real.log (d.nrm c d.wF (hd.a4 …` using `(MeasureTheory.integrable_const _).add ((MeasureTheory.integrable_finsetSum _ fun c _ => hF c).const_mul 2)`. Establish `hmono` using `MeasureTheory.integral_mono_ae (d.integrable_log_norm_sub_log_norm hd h a b hab sg) hR (d.disc_pointwise hd h a b hab sg)`. Establish `hc : ∫ _z : ReciprocityTheory.MultiplicativeHeights.BlockSphere d.D (d.N + 1), ((d.del : ℝ) * Real.log d.del + 2 * ∑ k, Real.log (d.supN sg d.wF (d.thp (hd.sel k)))) ∂(ReciprocityTheory.MultiplicativeHeights.blockSphereProb d.D (d.N + 1)) = (d.del : ℝ) * Real.log d.del + 2 * ∑ k, …` using `by simp`.
+
+Rewrite `hmono` using `[MeasureTheory.integral_add (MeasureTheory.integrable_const _) ((MeasureTheory.integrable_finsetSum _ fun c _ => hF c).const_mul 2), hc, MeasureTheory.integral_const_mul, MeasureTheory.integral_finsetSum _ fun c _ => hF c]`. Establish `hN : d.Nsg d.wF hd.a4.choose sg = ∑ c, ∫ z, ∑ᶠ (P : Ω c →+* ℂ) (_ : P ∈ d.ST c sg (d.tOf z)), -Real.log (d.nrm c d.wF (hd.a4.choose c) P) ∂(ReciprocityTheory.MultiplicativeHeights.blockSphereProb d.D (d.N + 1))` using `rfl`. Establish `hm : d.mSgP sg a b = ∫ z, (Real.log ‖d.evT sg 0 (d.tOf z) a‖ - Real.log ‖d.evT sg 0 (d.tOf z) b‖) ∂(ReciprocityTheory.MultiplicativeHeights.blockSphereProb d.D (d.N + 1))` using `rfl`. Rewrite using `[hN, hm]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem disc_hadamard (hd : d.AxH 𝒜) (h : d.S1) (hI2be : d.HeightIntegralBoundEstimate) (a b : KTp K d.D d.N)
     (hab : d.IsPres hd h a b) (sg : K →+* ℂ) :
     d.mSgP sg a b - 2 * d.Nsg d.wF hd.a4.choose sg ≤

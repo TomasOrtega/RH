@@ -15,28 +15,56 @@ section RingEquiv
 
 variable {R R' : Type*} [CommRing R] [CommRing R'] (φ : R ≃+* R')
 
+/- English proof (translation)
+Rewrite using `[Ideal.map_comap_of_equiv, Ideal.mem_comap, RingEquiv.symm_apply_apply]`.
+-/
 theorem mem_map_iff (I : Ideal R) (x : R) : φ x ∈ I.map (φ : R →+* R') ↔ x ∈ I := by
   rw [Ideal.map_comap_of_equiv, Ideal.mem_comap, RingEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Rewrite using `[Ideal.map_comap_of_equiv, Ideal.map_comap_of_equiv]`. Conclude with `Ideal.minimalPrimes_comap_of_surjective (f := (φ.symm : R' →+* R)) φ.symm.surjective h`.
+-/
 theorem map_mem_minimalPrimes {J W : Ideal R} (h : W ∈ J.minimalPrimes) :
     W.map (φ : R →+* R') ∈ (J.map (φ : R →+* R')).minimalPrimes := by
   rw [Ideal.map_comap_of_equiv, Ideal.map_comap_of_equiv]
   exact Ideal.minimalPrimes_comap_of_surjective (f := (φ.symm : R' →+* R)) φ.symm.surjective h
 
+/- English proof (translation)
+Use `⟨fun h => ?_, map_mem_minimalPrimes φ⟩` and prove the remaining obligations. Use `map_mem_minimalPrimes φ.symm h` as an intermediate fact. Rewrite `this` using `[Ideal.map_of_equiv, Ideal.map_of_equiv]`. Then use the resulting hypothesis.
+-/
 theorem map_mem_minimalPrimes_iff {J W : Ideal R} :
     W.map (φ : R →+* R') ∈ (J.map (φ : R →+* R')).minimalPrimes ↔ W ∈ J.minimalPrimes := by
   refine ⟨fun h => ?_, map_mem_minimalPrimes φ⟩
   have := map_mem_minimalPrimes φ.symm h
   rwa [Ideal.map_of_equiv, Ideal.map_of_equiv] at this
 
+/- English proof (translation)
+Rewrite using `[Ideal.map_comap_of_equiv]`. Conclude with `Ideal.comap_isPrime _ _`.
+-/
 theorem isPrime_map (W : Ideal R) [W.IsPrime] : (W.map (φ : R →+* R')).IsPrime := by
   rw [Ideal.map_comap_of_equiv]
   exact Ideal.comap_isPrime _ _
 
+/- English proof (translation)
+The claim follows from `(ringKrullDim_eq_of_ringEquiv (Ideal.quotientEquiv V _ φ rfl)).symm`.
+-/
 theorem ringKrullDim_quot_map (V : Ideal R) :
     ringKrullDim (R' ⧸ V.map (φ : R →+* R')) = ringKrullDim (R ⧸ V) :=
   (ringKrullDim_eq_of_ringEquiv (Ideal.quotientEquiv V _ φ rfl)).symm
 
+/- English proof (translation)
+Use `set V' := V.map (φ : R →+* R')`. Use `set W' := W.map (φ : R →+* R')`. Establish `hVW' : V' ≤ W'` using `Ideal.map_mono hVW`. Establish `: (W'.map (Ideal.Quotient.mk V')).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hVW')`. Establish `h'` using `ReciprocityTheory.ChartRestriction.G.AI.I1.SwapLoc.isLocData_atPrime_quot V' W' hVW'`.
+
+Use `letI : Algebra R (Localization.AtPrime (W'.map (Ideal.Quotient.mk V'))) := ((algebraMap R' (Localization.AtPrime (W'.map (Ideal.Quotient.mk V')))).comp (φ : R →+* R')).toAlgebra`. Establish `hal : ∀ r, algebraMap R (Localization.AtPrime (W'.map (Ideal.Quotient.mk V'))) r = algebraMap R' (Localization.AtPrime (W'.map (Ideal.Quotient.mk V'))) (φ r)` using `fun r => rfl`. Establish `hS : ∀ s : R', s ∈ W'.primeCompl → φ.symm s ∈ W.primeCompl`. Introduce `s hs h`. Apply `hs` to reduce the goal to its premises.
+
+Rewrite using `[← φ.apply_symm_apply s]`. Conclude with `(mem_map_iff φ W _).2 h`. Establish `h : ReciprocityTheory.ChartRestriction.G.AI.I1.SwapLoc.IsLocData R (Localization.AtPrime (W'.map (Ideal.Quotient.mk V'))) W.primeCompl V`. Use `⟨fun s hs => ?_, fun y => ?_, fun r hr => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[hal]`.
+
+Conclude with `h'.1 _ (fun h => hs ((mem_map_iff φ W s).1 h))`. Take `⟨r, s, hs, e⟩` from `h'.2.1 y`. Use `⟨φ.symm r, φ.symm s, hS s hs, ?_⟩` and prove the remaining obligations. Rewrite using `[hal, hal, φ.apply_symm_apply, φ.apply_symm_apply]`. Conclude with `e`.
+
+Rewrite `hr` using `[hal]`. Take `⟨s, hs, e⟩` from `h'.2.2.1 _ hr`. Use `⟨φ.symm s, hS s hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← mem_map_iff φ V, map_mul, φ.apply_symm_apply]`. Conclude with `e`.
+
+Rewrite using `[hal]`. Conclude with `h'.2.2.2 _ ((mem_map_iff φ V v).2 hv)`. Conclude with `(h'.length_eq (φ x)).trans (h.length_eq x).symm`.
+-/
 theorem length_map (V W : Ideal R) [W.IsPrime] [(W.map (φ : R →+* R')).IsPrime] (hVW : V ≤ W)
     (x : R) :
     Module.length (Localization.AtPrime (W.map (φ : R →+* R')))
@@ -84,6 +112,9 @@ section MRing
 variable {F : Type*} [Field F] {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
   {K' : Type*} [Fintype K'] {ι' : K' → Type*} [∀ k, Fintype (ι' k)]
 
+/- English proof (translation)
+Establish `hW' : (W.map (φ : MRingOver F ι →+* MRingOver F ι')).IsPrime` using `isPrime_map φ W`. Rewrite using `[multAt, multAt, dif_pos hW, dif_pos hW']`. Conclude with `congrArg ENat.toNat (length_map φ V W hVW f)`.
+-/
 theorem multAt_map (φ : MRingOver F ι ≃+* MRingOver F ι') (V W : Ideal (MRingOver F ι))
     [hW : W.IsPrime] (hVW : V ≤ W) (f : MRingOver F ι) :
     multAt (V.map (φ : MRingOver F ι →+* MRingOver F ι') ⊔ Ideal.span {φ f})
@@ -93,6 +124,9 @@ theorem multAt_map (φ : MRingOver F ι ≃+* MRingOver F ι') (V W : Ideal (MRi
   rw [multAt, multAt, dif_pos hW, dif_pos hW']
   exact congrArg ENat.toNat (length_map φ V W hVW f)
 
+/- English proof (translation)
+Use `⟨fun h k => ?_, fun h k => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `h k`. Conclude with `⟨⟨k, i⟩, rfl, hi⟩`. Take `⟨⟨a, b⟩, rfl, hp⟩` from `h k`. Conclude with `⟨b, hp⟩`.
+-/
 theorem isRelevant_iff (W : Ideal (MRingOver F ι)) :
     IsRelevant W ↔ ∀ k, ∃ p : Σ k, ι k, p.1 = k ∧ (X p : MRingOver F ι) ∉ W := by
   refine ⟨fun h k => ?_, fun h k => ?_⟩
@@ -101,6 +135,9 @@ theorem isRelevant_iff (W : Ideal (MRingOver F ι)) :
   · obtain ⟨⟨a, b⟩, rfl, hp⟩ := h k
     exact ⟨b, hp⟩
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_fiber {M : Type*} [AddCommMonoid M] [DecidableEq K] (g : (Σ k, ι k) → M) (k : K) :
     ∑ i, g ⟨k, i⟩ = ∑ p : Σ k, ι k, if p.1 = k then g p else 0 := by
   rw [Fintype.sum_sigma, Finset.sum_eq_single k]
@@ -114,13 +151,22 @@ variable (e : K ≃ K') (σ : (Σ k, ι k) ≃ (Σ k', ι' k')) (hσ : ∀ p, (�
 abbrev ren : MRingOver F ι ≃+* MRingOver F ι' := (renameEquiv F σ).toRingEquiv
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K'] [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ren_apply (f : MRingOver F ι) : ren σ f = rename σ f := rfl
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K'] [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Rewrite using `[ren_apply, rename_X]`.
+-/
 theorem ren_X (p : Σ k, ι k) : ren (F := F) σ (X p) = X (σ p) := by
   rw [ren_apply, rename_X]
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K'] [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Rewrite using `[Ideal.map_map]`. Use `Ideal.map_id V` and compare the differences between its conclusion and the goal. Use `RingHom.ext fun p => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, RingEquiv.coe_toRingHom, ren_apply, rename_rename, Equiv.symm_comp_self, rename_id, AlgHom.id_apply, RingHom.id_apply]`.
+-/
 theorem map_ren_symm_map (V : Ideal (MRingOver F ι)) :
     (V.map (ren (F := F) σ : MRingOver F ι →+* MRingOver F ι')).map
       (ren (F := F) σ.symm : MRingOver F ι' →+* MRingOver F ι) = V := by
@@ -132,6 +178,11 @@ theorem map_ren_symm_map (V : Ideal (MRingOver F ι)) :
 
 include hσ
 
+/- English proof (translation)
+Introduce `m hm k'`. Rewrite `hm` using `[ren_apply, support_rename_of_injective σ.injective, Finset.mem_image]`. Take `⟨m₀, hm₀, rfl⟩` from `hm`. Rewrite using `[sum_fiber, Function.comp_apply, ← h m₀ hm₀ (e.symm k'), sum_fiber]`. Use `(Equiv.sum_comp σ _).symm.trans (Finset.sum_congr rfl fun p _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Finsupp.mapDomain_equiv_apply, Equiv.symm_apply_apply, hσ, Equiv.apply_eq_iff_eq_symm_apply]`.
+-/
 theorem isMultiHomog_ren {f : MRingOver F ι} {a : K → ℕ} (h : IsMultiHomog f a) :
     IsMultiHomog (ren σ f) (a ∘ e.symm) := by
   classical
@@ -142,6 +193,9 @@ theorem isMultiHomog_ren {f : MRingOver F ι} {a : K → ℕ} (h : IsMultiHomog 
   refine (Equiv.sum_comp σ _).symm.trans (Finset.sum_congr rfl fun p _ => ?_)
   rw [Finsupp.mapDomain_equiv_apply, Equiv.symm_apply_apply, hσ, Equiv.apply_eq_iff_eq_symm_apply]
 
+/- English proof (translation)
+Take `⟨S, hS, rfl⟩` from `h`. Use `⟨(ren (F := F) σ : MRingOver F ι →+* MRingOver F ι') '' S, ?_, Ideal.map_span _ _⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Take `⟨a, ha⟩` from `hS f hf`. Conclude with `⟨a ∘ e.symm, isMultiHomog_ren e σ hσ ha⟩`.
+-/
 theorem isMultiHomogIdeal_map {V : Ideal (MRingOver F ι)} (h : IsMultiHomogIdeal V) :
     IsMultiHomogIdeal (V.map (ren (F := F) σ : MRingOver F ι →+* MRingOver F ι')) := by
   obtain ⟨S, hS, rfl⟩ := h
@@ -150,6 +204,13 @@ theorem isMultiHomogIdeal_map {V : Ideal (MRingOver F ι)} (h : IsMultiHomogIdea
   obtain ⟨a, ha⟩ := hS f hf
   exact ⟨a ∘ e.symm, isMultiHomog_ren e σ hσ ha⟩
 
+/- English proof (translation)
+Establish `hX : ∀ q : Σ k', ι' k', (X q : MRingOver F ι') = ren σ (X (σ.symm q))` using `fun q => by`. Rewrite using `[ren_X, Equiv.apply_symm_apply]`. Rewrite using `[isRelevant_iff, isRelevant_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h k`.
+
+Take `⟨q, hq, hX'⟩` from `h (e k)`. Use `⟨σ.symm q, e.injective ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hσ, Equiv.apply_symm_apply, hq]`. Rewrite `hX'` using `[hX, mem_map_iff]`. Then use the resulting hypothesis. Introduce `h k'`.
+
+Take `⟨p, hp, hX'⟩` from `h (e.symm k')`. Use `⟨σ p, by rw [hσ, hp, Equiv.apply_symm_apply], ?_⟩` and prove the remaining obligations. Rewrite using `[← ren_X, mem_map_iff]` and apply the resulting hypothesis.
+-/
 theorem isRelevant_map_iff (W : Ideal (MRingOver F ι)) :
     IsRelevant (W.map (ren (F := F) σ : MRingOver F ι →+* MRingOver F ι')) ↔ IsRelevant W := by
   have hX : ∀ q : Σ k', ι' k', (X q : MRingOver F ι') = ren σ (X (σ.symm q)) := fun q => by
@@ -166,17 +227,26 @@ theorem isRelevant_map_iff (W : Ideal (MRingOver F ι)) :
     refine ⟨σ p, by rw [hσ, hp, Equiv.apply_symm_apply], ?_⟩
     rwa [← ren_X, mem_map_iff]
 
+/- English proof (translation)
+Take `⟨hp, hh, hr⟩` from `h`. Conclude with `⟨isPrime_map _ V, isMultiHomogIdeal_map e σ hσ hh, (isRelevant_map_iff e σ hσ V).2 hr⟩`.
+-/
 theorem isMultiProjPrime_map {V : Ideal (MRingOver F ι)} (h : IsMultiProjPrime V) :
     IsMultiProjPrime (V.map (ren (F := F) σ : MRingOver F ι →+* MRingOver F ι')) := by
   obtain ⟨hp, hh, hr⟩ := h
   exact ⟨isPrime_map _ V, isMultiHomogIdeal_map e σ hσ hh,
     (isRelevant_map_iff e σ hσ V).2 hr⟩
 
+/- English proof (translation)
+Use `⟨isMultiProjPrime_map e σ hσ h.1, ?_⟩` and prove the remaining obligations. Rewrite using `[ringKrullDim_quot_map, h.2, Fintype.card_congr e]`.
+-/
 theorem isProjVarF_map {V : Ideal (MRingOver F ι)} {n : ℕ} (h : IsProjVarF V n) :
     IsProjVarF (V.map (ren (F := F) σ : MRingOver F ι →+* MRingOver F ι')) n := by
   refine ⟨isMultiProjPrime_map e σ hσ h.1, ?_⟩
   rw [ringKrullDim_quot_map, h.2, Fintype.card_congr e]
 
+/- English proof (translation)
+Take `⟨α, β, hf, hg, hfV, hgV, hd⟩` from `h`. Use `⟨α ∘ e.symm, β ∘ e.symm, isMultiHomog_ren e σ hσ hf, isMultiHomog_ren e σ hσ hg, fun h => hfV ((mem_map_iff _ _ _).1 h), fun h => hgV ((mem_map_iff _ _ _).1 h), fun k' => hd (e.symm k')⟩` and prove the remaining obligations.
+-/
 theorem isRatSection_map {V : Ideal (MRingOver F ι)} {A : K → ℤ} {f g : MRingOver F ι}
     (h : IsRatSection V A f g) :
     IsRatSection (V.map (ren (F := F) σ : MRingOver F ι →+* MRingOver F ι')) (A ∘ e.symm) (ren σ f)
@@ -189,12 +259,18 @@ theorem isRatSection_map {V : Ideal (MRingOver F ι)} {A : K → ℤ} {f g : MRi
 omit hσ in
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K'] [∀ k, Fintype (ι' k)] in
 
+/- English proof (translation)
+Rewrite using `[Ideal.map_sup, Ideal.map_span, Set.image_singleton]`. Both sides reduce to the same expression.
+-/
 theorem sup_span_map (V : Ideal (MRingOver F ι)) (f : MRingOver F ι) :
     (V ⊔ Ideal.span {f}).map (ren (F := F) σ : MRingOver F ι →+* MRingOver F ι') =
       V.map (ren (F := F) σ : MRingOver F ι →+* MRingOver F ι') ⊔ Ideal.span {ren σ f} := by
   rw [Ideal.map_sup, Ideal.map_span, Set.image_singleton]
   rfl
 
+/- English proof (translation)
+Establish `h1 : W.map (ren (F` using `F) σ : MRingOver F ι →+* MRingOver F ι') ∈ (V.map (ren (F := F) σ : MRingOver F ι →+* MRingOver F ι') ⊔ Ideal.span {ren σ f}).minimalPrimes ↔ W ∈ (V ⊔ Ideal.span {f}).minimalPrimes := by`. Rewrite using `[← sup_span_map]`. Conclude with `map_mem_minimalPrimes_iff _`. Conclude with `and_congr h1 (isRelevant_map_iff e σ hσ W)`.
+-/
 theorem mem_divSupp_map_iff (V W : Ideal (MRingOver F ι)) (f : MRingOver F ι) :
     W.map (ren (F := F) σ : MRingOver F ι →+* MRingOver F ι') ∈
         divSupp (V.map (ren (F := F) σ : MRingOver F ι →+* MRingOver F ι')) (ren σ f) ↔
@@ -206,6 +282,11 @@ theorem mem_divSupp_map_iff (V W : Ideal (MRingOver F ι)) (f : MRingOver F ι) 
     exact map_mem_minimalPrimes_iff _
   exact and_congr h1 (isRelevant_map_iff e σ hσ W)
 
+/- English proof (translation)
+Simplify using `only [divCycle, Finsupp.ofSupportFinite_coe]`. Distinguish the cases in `hW : W ∈ divSupp V f`. Establish `hW'` using `(mem_divSupp_map_iff e σ hσ V W f).2 hW`. Rewrite using `[if_pos hW, if_pos hW']`. Use `haveI : W.IsPrime := hW.1.1.1`.
+
+Conclude with `multAt_map (ren σ) V W (le_sup_left.trans hW.1.1.2) f`. Establish `hW'` using `mt (mem_divSupp_map_iff e σ hσ V W f).1 hW`. Rewrite using `[if_neg hW, if_neg hW']`.
+-/
 theorem divCycle_map_apply (V W : Ideal (MRingOver F ι)) (f : MRingOver F ι) :
     divCycle (V.map (ren (F := F) σ : MRingOver F ι →+* MRingOver F ι')) (ren σ f)
         (W.map (ren (F := F) σ : MRingOver F ι →+* MRingOver F ι')) = divCycle V f W := by
@@ -231,9 +312,15 @@ def idealEquiv : Ideal (MRingOver F ι) ≃ Ideal (MRingOver F ι') where
 
 omit hσ in
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K'] [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem idealEquiv_apply (W : Ideal (MRingOver F ι)) :
     idealEquiv σ W = W.map (ren (F := F) σ : MRingOver F ι →+* MRingOver F ι') := rfl
 
+/- English proof (translation)
+Use extensionality with `W'`. Take `⟨W, rfl⟩` from `(idealEquiv σ).surjective W'`. Rewrite using `[Finsupp.equivMapDomain_apply, Equiv.symm_apply_apply]`. Simplify using `only [ratDiv, Finsupp.coe_sub, Pi.sub_apply, Finsupp.mapRange_apply, idealEquiv_apply, divCycle_map_apply e σ hσ]`.
+-/
 theorem ratDiv_map (V : Ideal (MRingOver F ι)) (f g : MRingOver F ι) :
     ratDiv (V.map (ren (F := F) σ : MRingOver F ι →+* MRingOver F ι')) (ren σ f) (ren σ g) =
       Finsupp.equivMapDomain (idealEquiv σ) (ratDiv V f g) := by
@@ -245,6 +332,9 @@ theorem ratDiv_map (V : Ideal (MRingOver F ι)) (f g : MRingOver F ι) :
 
 omit hσ in
 omit [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Unfold `cycEval`. Rewrite using `[Finsupp.equivMapDomain_eq_mapDomain, Finsupp.sum_mapDomain_index (fun _ => zero_mul _) (fun _ _ _ => add_mul _ _ _)]`.
+-/
 theorem cycEval_map (J : Ideal (MRingOver F ι') → ℤ) (D : Ideal (MRingOver F ι) →₀ ℤ) :
     cycEval J (Finsupp.equivMapDomain (idealEquiv σ) D) = cycEval (fun W => J (idealEquiv σ W)) D := by
   classical
@@ -258,6 +348,9 @@ def fiberElt (q : Σ k', ι' k') (k' : K') (h : q.1 = k') : ι' k' := h ▸ q.2
 
 omit hσ in
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K'] [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Take `⟨a, b⟩` from `q`. Simplify using `only at h`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem sigma_mk_fiberElt (q : Σ k', ι' k') (k' : K') (h : q.1 = k') :
     (⟨k', fiberElt q k' h⟩ : Σ k', ι' k') = q := by
   obtain ⟨a, b⟩ := q
@@ -269,11 +362,17 @@ def chartMap (i : ∀ k, ι k) (k' : K') : ι' k' :=
   fiberElt (σ ⟨e.symm k', i (e.symm k')⟩) k' (by rw [hσ, Equiv.apply_symm_apply])
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K'] [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Rewrite using `[chartMap, sigma_mk_fiberElt, ren_X]`.
+-/
 theorem X_chartMap (i : ∀ k, ι k) (k' : K') :
     (X ⟨k', chartMap e σ hσ i k'⟩ : MRingOver F ι') = ren σ (X ⟨e.symm k', i (e.symm k')⟩) := by
   rw [chartMap, sigma_mk_fiberElt, ren_X]
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K'] [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Introduce `k' hk'`. Rewrite `hk'` using `[X_chartMap, mem_map_iff]`. Conclude with `h _ hk'`.
+-/
 theorem isChart_map {V : Ideal (MRingOver F ι)} {i : ∀ k, ι k} (h : IsChart V i) :
     IsChart (V.map (ren (F := F) σ : MRingOver F ι →+* MRingOver F ι')) (chartMap e σ hσ i) := by
   intro k' hk'
@@ -281,6 +380,11 @@ theorem isChart_map {V : Ideal (MRingOver F ι)} {i : ∀ k, ι k} (h : IsChart 
   exact h _ hk'
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K'] [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Rewrite using `[chartIdeal, chartIdeal, Ideal.map_sup, Ideal.map_span, ← Set.range_comp]`. Use `congr 2`. Establish `: (fun k' => (X ⟨k', chartMap e σ hσ i k'⟩ : MRingOver F ι') - 1) = ((ren (F` using `F) σ : MRingOver F ι →+* MRingOver F ι') ∘ fun k => (X ⟨k, i k⟩ : MRingOver F ι) - 1) ∘ e.symm := by`. Use function extensionality and compare the values at `k'`. Simplify using `only [Function.comp_apply, X_chartMap, map_sub, map_one, RingEquiv.coe_toRingHom]`.
+
+Rewrite using `[this, e.symm.surjective.range_comp]`.
+-/
 theorem chartIdeal_map (V : Ideal (MRingOver F ι)) (i : ∀ k, ι k) :
     chartIdeal (V.map (ren (F := F) σ : MRingOver F ι →+* MRingOver F ι')) (chartMap e σ hσ i) =
       (chartIdeal V i).map (ren (F := F) σ : MRingOver F ι →+* MRingOver F ι') := by
@@ -293,6 +397,9 @@ theorem chartIdeal_map (V : Ideal (MRingOver F ι)) (i : ∀ k, ι k) :
     simp only [Function.comp_apply, X_chartMap, map_sub, map_one, RingEquiv.coe_toRingHom]
   rw [this, e.symm.surjective.range_comp]
 
+/- English proof (translation)
+Rewrite using `[ptDeg, ptDeg]`. Conclude with `(Ideal.quotientEquivAlg (chartIdeal V i) _ (renameEquiv F σ) (chartIdeal_map e σ hσ V i)).toLinearEquiv.finrank_eq.symm`.
+-/
 theorem ptDeg_map (V : Ideal (MRingOver F ι)) (i : ∀ k, ι k) :
     ptDeg (V.map (ren (F := F) σ : MRingOver F ι →+* MRingOver F ι')) (chartMap e σ hσ i) = ptDeg V i := by
   rw [ptDeg, ptDeg]
@@ -306,6 +413,9 @@ def pullFamily (I' : IFamily F ι') : IFamily F ι :=
 
 omit hσ in
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K'] [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `only [Fin.snoc_last]`. Simplify using `only [Fin.snoc_castSucc]`.
+-/
 theorem snoc_comp {n : ℕ} (L : Fin n → K → ℤ) (A : K → ℤ) :
     (fun j => Fin.snoc (α := fun _ => K → ℤ) L A j ∘ e.symm) =
       Fin.snoc (α := fun _ => K' → ℤ) (fun j => L j ∘ e.symm) (A ∘ e.symm) := by
@@ -314,6 +424,11 @@ theorem snoc_comp {n : ℕ} (L : Fin n → K → ℤ) (A : K → ℤ) :
   · simp only [Fin.snoc_last]
   · simp only [Fin.snoc_castSucc]
 
+/- English proof (translation)
+Use `⟨fun V L i hV hi => ?_, fun V n L A f g hV hs => ?_⟩` and prove the remaining obligations. Use `hI'.1 (V.map (ren (F := F) σ : MRingOver F ι →+* MRingOver F ι')) (fun j => L j ∘ e.symm) (chartMap e σ hσ i) (isProjVarF_map e σ hσ hV) (isChart_map e σ hσ hi)` as an intermediate fact. Rewrite using `[pullFamily, this, ptDeg_map]`. Use `hI'.2 (V.map (ren (F := F) σ : MRingOver F ι →+* MRingOver F ι')) n (fun j => L j ∘ e.symm) (A ∘ e.symm) (ren σ f) (ren σ g) (isProjVarF_map e σ hσ hV) (isRatSection_map e σ hσ hs)` as an intermediate fact. Simplify using `only [pullFamily]`.
+
+Rewrite using `[snoc_comp, this, ratDiv_map e σ hσ, cycEval_map]`. Both sides reduce to the same expression.
+-/
 theorem isFieldIntersection_pull {I' : IFamily F ι'} (hI' : IsFieldIntersection I') :
     IsFieldIntersection (pullFamily e σ I') := by
   refine ⟨fun V L i hV hi => ?_, fun V n L A f g hV hs => ?_⟩
@@ -332,6 +447,13 @@ end ExistsUniqueRelabel
 
 universe u v w v' w'
 
+/- English proof (translation)
+Introduce `F _ K _ ι _ K' _ ι' _ e hι hE`. Take `⟨I', hI', huniq⟩` from `hE`. Set `σ : (Σ k, ι k) ≃ (Σ k', ι' k')` to `Equiv.sigmaCongr e hι`. Establish `hσ : ∀ p, (σ p).1 = e p.1` using `fun p => rfl`. Establish `hσ' : ∀ q, (σ.symm q).1 = e.symm q.1` using `fun q => by`.
+
+Rewrite using `[Equiv.eq_symm_apply, ← hσ, Equiv.apply_symm_apply]`. Use `⟨ExistsUniqueRelabel.pullFamily e σ I', ExistsUniqueRelabel.isFieldIntersection_pull e σ hσ hI', fun J hJ V n L hV => ?_⟩` and prove the remaining obligations. Establish `hJ'` using `ExistsUniqueRelabel.isFieldIntersection_pull e.symm σ.symm hσ' hJ`. Use `huniq _ hJ' _ n (fun j => L j ∘ e.symm) (ExistsUniqueRelabel.isProjVarF_map e σ hσ hV)` as an intermediate fact. Simplify using `only [ExistsUniqueRelabel.pullFamily, Equiv.symm_symm, ExistsUniqueRelabel.map_ren_symm_map] at this ⊢`.
+
+Use `this using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j k`. Simplify using the standard rewrite rules.
+-/
 theorem ExistsUniqueRelabel.proof : ExistsUniqueRelabel.Statement.{u, v, w, v', w'} := by
   intro F _ K _ ι _ K' _ ι' _ e hι hE
   obtain ⟨I', hI', huniq⟩ := hE

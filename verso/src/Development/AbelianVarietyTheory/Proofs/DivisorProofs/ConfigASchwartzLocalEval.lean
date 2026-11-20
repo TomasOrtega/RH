@@ -15,6 +15,11 @@ noncomputable section
 
 namespace GlobalTheory.PureBound
 
+/- English proof (translation)
+Unfold `GlobalTheory.IdeleDecay.size GlobalTheory.IdeleDecay.coord`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.map_smul, Pi.smul_apply, smul_eq_mul]`. Establish `h1 : ∀ z : AF F, (pairA F 1 0 * z).1 = z.1` using `fun z => one_mul z.1`. Unfold `evI`.
+
+Rewrite using `[h1]`.
+-/
 theorem size_inf {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (x : AE F E) :
     GlobalTheory.IdeleDecay.size F E ((pairA F 1 0 : AF F) • x) = GlobalTheory.IdeleDecay.size F E x := by
   unfold GlobalTheory.IdeleDecay.size GlobalTheory.IdeleDecay.coord
@@ -24,6 +29,17 @@ theorem size_inf {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   unfold evI
   rw [h1]
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ g hg S hS`. Take `⟨m, hm, hA⟩` from `GlobalTheory.T.seesaw_type_a_schwartz_triple_identity hKP F E σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ g hg`. Use `⟨m, hm, fun N => ?_⟩` and prove the remaining obligations. Take `⟨r, gs, hgs, hB⟩` from `GlobalTheory.T.seesaw_type_a_schwartz_triple_second hKP F E σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ g hg m hm`. Use `choose C hCb using fun j : Fin r => GlobalTheory.T.seesaw_type_a_schwartz_triple_third hKP F E σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ (gs j) (hgs j) S hS N`.
+
+Use `⟨∑ j, |C j|, fun f hf l y => ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.IdeleDecay.decay`. Use `split_ifs with hl`. Take `⟨j, hj⟩` from `hB l hl`. Rewrite using `[hj f]`.
+
+Establish `hid : (pairA F 1 0 : AF F) • ((pairA F 1 0 : AF F) • l.1) = (pairA F 1 0 : AF F) • l.1`. Rewrite using `[smul_smul]`. Use `congr 1`. Use `show ((1 : Ainf F) * 1, (0 : Af F) * 0) = ((1 : Ainf F), (0 : Af F))`. Simplify using the standard rewrite rules.
+
+Establish `h1` using `hCb j f hf _ hid y`. Rewrite `h1` using `[size_inf]`. Use `h1.trans (mul_le_mul_of_nonneg_right ((le_abs_self _).trans ?_) ?_)` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun j => |C j|) (fun _ _ => abs_nonneg _) (Finset.mem_univ j)`. Conclude with `inv_nonneg.mpr (pow_nonneg (add_nonneg zero_le_one (GlobalTheory.IdeleDecay.size_nonneg _)) _)`.
+
+Rewrite using `[hA l hl f y, norm_zero, mul_zero]`.
+-/
 theorem norm_ev_shiftA_pure_le : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
     ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ X om om' om₁ om₁', IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' →

@@ -11,6 +11,15 @@ def dualNumberRingHomMap {S S' : Type} [CommRing S] [CommRing S'] (f : S →+* S
   map_zero' := by ext <;> simp
   map_add' x y := by ext <;> simp <;> ring
 
+/- English proof (translation)
+Introduce `S S' _ _ _ g _ d hd`. Set `ψ : S →+* DualNumber S'` to `(dualNumberRingHomMap (algebraMap S S')).comp d`. Establish `hψ : ∀ s, ψ s = TrivSqZeroExt.inl (algebraMap S S' (d s).fst) + TrivSqZeroExt.inr (algebraMap S S' (d s).snd)` using `fun s => rfl`. Establish `hu : IsUnit (ψ g)`. Rewrite using `[TrivSqZeroExt.isUnit_iff_isUnit_fst, hψ]`.
+
+Simplify `IsLocalization.Away.algebraMap_isUnit (S := S') g` using `[hd]`. Use `⟨IsLocalization.Away.lift g hu, ?_, ?_⟩` and prove the remaining obligations. Establish `h : (TrivSqZeroExt.fstHom S' S' S').toRingHom.comp (IsLocalization.Away.lift g hu) = RingHom.id S'`. Apply `IsLocalization.ringHom_ext (Submonoid.powers g)` to reduce the goal to its premises. Use extensionality with `s`.
+
+Simplify using `[IsLocalization.Away.lift, IsLocalization.lift_eq, hψ, hd]`. Introduce `s`. Conclude with `congrArg (fun F : S' →+* S' => F s) h`. Introduce `s`. Simplify using `[IsLocalization.Away.lift, IsLocalization.lift_eq, hψ]`.
+
+Rewrite using `[Algebra.smul_def, mul_one]`.
+-/
 theorem dualNumber_deformation_extends_away :
     ∀ {S S' : Type} [CommRing S] [CommRing S'] [Algebra S S'] (g : S) [IsLocalization.Away g S']
       (d : S →+* DualNumber S), (∀ s, (d s).fst = s) →

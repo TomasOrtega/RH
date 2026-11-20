@@ -5,6 +5,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaSup
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa UpperTheory.V.Pa.Core
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `BB MM B B' _ _ _ _ _ _ _ _ _ _ p' Z hB' hZ hann hle`. Use `haveI := hZ`. Take `⟨Q, hQ, hQc⟩` from `(IsCplAt.exists_prime_over BB p' B' hB').1 _ (Ideal.IsPrime.comap _) hle`. Use `⟨Q, hQ, ?_, hQc⟩` and prove the remaining obligations. Set `zP : PrimeSpectrum B` to `⟨Z, hZ⟩`.
+
+Set `qP : PrimeSpectrum B'` to `⟨Q, hQ⟩`. Establish `hz : zP ∈ Module.support B (B ⊗[BB] MM)` using `Module.mem_support_iff_of_finite.mpr hann`. Establish `hz'` using `(mem_support_baseChange BB B MM zP).mp hz`. Establish `heq : PrimeSpectrum.comap (algebraMap BB B') qP = PrimeSpectrum.comap (algebraMap BB B) zP` using `PrimeSpectrum.ext hQc`. Establish `hq : qP ∈ Module.support B' (B' ⊗[BB] MM)`.
+
+Rewrite using `[mem_support_baseChange, heq]`. Conclude with `hz'`. Conclude with `Module.mem_support_iff_of_finite.mp hq`.
+-/
 theorem UpperTheory.V.Pa.Core.pmMove :
     ∀ (BB MM B B' : Type) [CommRing BB] [IsNoetherianRing BB] [AddCommGroup MM] [Module BB MM] [Module.Finite BB MM] [CommRing B] [Algebra BB B] [CommRing B'] [IsLocalRing B'] [Algebra BB B'] (p' : Ideal BB) (Z : Ideal B), IsCplAt BB p' B' → Z.IsPrime → Module.annihilator B (B ⊗[BB] MM) ≤ Z → Z.comap (algebraMap BB B) ≤ p' → ∃ Z' : Ideal B', Z'.IsPrime ∧ Module.annihilator B' (B' ⊗[BB] MM) ≤ Z' ∧ Z'.comap (algebraMap BB B') = Z.comap (algebraMap BB B) := by
   intro BB MM B B' _ _ _ _ _ _ _ _ _ _ p' Z hB' hZ hann hle

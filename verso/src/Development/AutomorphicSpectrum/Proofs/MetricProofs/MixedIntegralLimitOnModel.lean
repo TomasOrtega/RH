@@ -11,6 +11,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Giv.Mix
 
+/- English proof (translation)
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Take `⟨j, hj⟩` from `A.cover x`. Establish `h1 : ContinuousOn (f ∘ (A.chart j).symm) (A.chart j).target`. Use `(hf j).continuousOn` as an intermediate fact.
+
+Simplify `this` using `[Set.preimage_univ, Set.inter_univ]`. Establish `h2 : ContinuousAt ((f ∘ (A.chart j).symm) ∘ A.chart j) x` using `(h1.continuousAt ((A.chart j).open_target.mem_nhds ((A.chart j).map_source hj))).comp ((A.chart j).continuousAt hj)`. Use `h2.congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with z hz`. Simplify using `[(A.chart j).left_inv hz]`.
+-/
 theorem continuous_of_atlasSmooth {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X}
     {f : X → ℝ} (hf : A.Smooth f) : Continuous f := by
   rw [continuous_iff_continuousAt]
@@ -26,6 +31,23 @@ theorem continuous_of_atlasSmooth {e : ℕ} {X : Type} [TopologicalSpace X] {A :
   filter_upwards [(A.chart j).open_source.mem_nhds hj] with z hz
   simp [(A.chart j).left_inv hz]
 
+/- English proof (translation)
+Introduce `K _ ι _ P n M R Θ Pp f fT G GT C L g hV hΘ hΘp hP hf hfT hconv hGT hGc hrel hg`. Distinguish the cases in `hQ : ∃ Q : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ), IsGoodProj P Q`. Establish `hYo` using `(GlobalTheory.T.regular_chart_data_properties n M.Xc M.atlas R).1`. Establish `hmeas : ∀ᶠ t in 𝓝[>] (0 : ℝ), @Measurable M.Xc ℝ (borel M.Xc) _ (R.Yo.indicator (GT t)) ∧ ∀ x ∈ R.Yo, |GT t x| ≤ C + C * Real.log (R.r x)` using `by filter_upwards [hGT] with t ht`. Use `⟨?_, ht.2⟩` and prove the remaining obligations.
+
+Use `letI : MeasurableSpace M.Xc := borel M.Xc`. Use `haveI : BorelSpace M.Xc := ⟨rfl⟩`. Conclude with `(continuous_of_atlasSmooth ht.1).measurable.indicator hYo.measurableSet`. Take `⟨-, hint, hlim⟩` from `GlobalTheory.T.mixed_integral_tendsto_off_divisor n M.Xc M.atlas R Θ hΘ hΘp Pp f fT G GT C hP hf hfT hconv hmeas hGc`. Use `⟨_, hlim.congr' ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [hint, hfT, hGT, hrel, hg] with t hit hft hgt hrt hgt'`. Establish `hpush` using `GlobalTheory.T.mixed_integral_model_formula K ι P n M hQ.choose Set.univ ∅ ∅ (fun _ => 1) (L t) (fun i => Pp i + LocPot.ofFun (fT i t)) (g t) (GT t) hV hQ.choose_spec isOpen_univ (fun j => by simp) (fun Ψ _ => by simp) (fun i x => by`. Introduce `j`. Establish `h1` using `(hP i).1 x j`. Establish `h2` using `(hft i).1 j`.
+
+Establish `h3` using `h1.add (h2.mono (fun y hy => ⟨hy.1, Set.mem_univ _⟩))`. Use `(h3.mono ?_).congr ?_` and prove the remaining obligations. Introduce and unpack `y ⟨hy, hy'⟩`. Conclude with `⟨hy, hy'.1.1⟩`. Introduce `y _ rfl)`.
+
+Use the proof step `(fun i x y₀ hy₀ => by`. Take `⟨U, hU, hyU, hUs, s, hs, hsp, G', hG', hrel'⟩` from `hrt i x y₀ hy₀`. Conclude with `⟨U, hU, hyU, hUs, s, hs, hsp, G', hG', fun y' hy' => by`. Simplify using `using hrel' y' hy'⟩)`. Use the proof step `(fun z hz _ _ _ => hgt' z hz)`.
+
+Use the proof step `(fun j => ((continuous_of_atlasSmooth hgt.1).comp_continuousOn (M.atlas.chart j).continuousOn_symm).aestronglyMeasurable (M.atlas.chart j).open_target.measurableSet)`. Establish `h3` using `(hpush.2.2 hit).2`. Establish `hpot : (fun i z => (fun _ : Fin n => (1 : ℝ)) i * Real.log ((L t i).h z)) = pot (L t)`. Use function extensionality and compare the values at `i z`. Simplify using `[pot]`.
+
+Rewrite `h3` using `[hpot]`. Rewrite using `[ptsIntegral, dif_pos hQ, h3]`. Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `: (fun t => ptsIntegral P (pot (L t)) (g t)) = fun _ => (0 : ℝ)`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[ptsIntegral, dif_neg hQ]`. Rewrite using `[this]`. Conclude with `tendsto_const_nhds`.
+-/
 theorem tendsto_ptsIntegral_of_chart_conv : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) (n : ℕ) (M : CxModel P n) (R : GroundTheory.Heights₂.Heights.Regular.RegChartData M.atlas) (Θ : LocPot M.Xc) (Pp : Fin n → LocPot M.Xc) (f : Fin n → M.Xc → ℝ) (fT : Fin n → ℝ → M.Xc → ℝ) (G : M.Xc → ℝ) (GT : ℝ → M.Xc → ℝ) (C : ℝ) (L : ℝ → Fin n → HermLine ι) (g : ℝ → ((Σ k, ι k) → ℂ) → ℝ), IsArithVar P (n + 1) → IsPotential M.atlas Θ → IsPosPot M.atlas Θ → (∀ i, IsPotential M.atlas (Pp i)) → (∀ i, M.atlas.SmoothOn R.Yo (f i)) → (∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ i, M.atlas.Smooth (fT i t) ∧ IsPsh M.atlas (Pp i + LocPot.ofFun (fT i t) + Θ) ∧ ∀ x ∈ R.Yo, |fT i t x| ≤ C + C * Real.log (R.r x) ∧ fT i t x ≤ C) → (∀ i, ∀ j, ∀ K' ⊆ (M.atlas.chart j).target ∩ (M.atlas.chart j).symm ⁻¹' R.Yo, IsCompact K' → TendstoUniformlyOn (fun t => fT i t ∘ (M.atlas.chart j).symm) (f i ∘ (M.atlas.chart j).symm) (𝓝[>] 0) K' ∧ TendstoUniformlyOn (fun t => fderiv ℝ (fT i t ∘ (M.atlas.chart j).symm)) (fderiv ℝ (f i ∘ (M.atlas.chart j).symm)) (𝓝[>] 0) K' ∧ TendstoUniformlyOn (fun t => fderiv ℝ (fderiv ℝ (fT i t ∘ (M.atlas.chart j).symm))) (fderiv ℝ (fderiv ℝ (f i ∘ (M.atlas.chart j).symm))) (𝓝[>] 0) K') → (∀ᶠ t in 𝓝[>] (0 : ℝ), M.atlas.Smooth (GT t) ∧ ∀ x ∈ R.Yo, |GT t x| ≤ C + C * Real.log (R.r x)) → (∀ K' ⊆ R.Yo, IsCompact K' → TendstoUniformlyOn GT G (𝓝[>] 0) K') → (∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ i x, ∀ y₀ ∈ (Pp i + LocPot.ofFun (fT i t)).U x ∩ Set.univ, ∃ U : Set M.Xc, IsOpen U ∧ y₀ ∈ U ∧ U ⊆ (Pp i + LocPot.ofFun (fT i t)).U x ∩ Set.univ ∧ ∃ s : M.Xc → (Σ k, ι k) → ℂ, (∀ y' ∈ U, s y' ∈ mcPts P ∧ M.proj (s y') = y') ∧ (∀ p, M.atlas.HoloOn U fun y' => s y' p) ∧ ∃ G' : M.Xc → ℂ, M.atlas.HoloOn U G' ∧ ∀ y' ∈ U, (Pp i + LocPot.ofFun (fT i t)).φ x y' - Real.log ((L t i).h (s y')) = (G' y').re) → (∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ z ∈ mcPts P, g t z = GT t (M.proj z)) → ∃ l : ℝ, Tendsto (fun t => ptsIntegral P (pot (L t)) (g t)) (𝓝[>] 0) (𝓝 l) := by
   intro K _ ι _ P n M R Θ Pp f fT G GT C L g hV hΘ hΘp hP hf hfT hconv hGT hGc hrel hg
   classical

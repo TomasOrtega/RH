@@ -9,5 +9,8 @@ open GroundTheory.Automorphic.Iwasawa (blockUpper)
 open GroundTheory.Automorphic (permGL indRep)
 open DoubleCoset (doubleCoset)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GeoAssembly.jacquetOfInducedFiltration | exact GlobalTheory.CompanionTheory.GeoAssembly.jacquetOfInducedFiltration | (intros; apply GlobalTheory.CompanionTheory.GeoAssembly.jacquetOfInducedFiltration <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.jacquet_of_induced_filtration : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], GlobalTheory.SmGL.JacquetOfInducedFiltration k := by
   first | exact @GlobalTheory.CompanionTheory.GeoAssembly.jacquetOfInducedFiltration | exact GlobalTheory.CompanionTheory.GeoAssembly.jacquetOfInducedFiltration | (intros; apply GlobalTheory.CompanionTheory.GeoAssembly.jacquetOfInducedFiltration <;> assumption)

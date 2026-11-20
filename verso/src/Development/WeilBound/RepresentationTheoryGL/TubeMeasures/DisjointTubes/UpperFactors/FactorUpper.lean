@@ -9,12 +9,18 @@ noncomputable section
 
 namespace MainStatements.Tam.N
 
+/- English proof (translation)
+Establish `h1 : i.factorial ≤ i ^ i` using `Nat.factorial_le_pow i`. Establish `h2 : i ^ i ≤ r ^ i` using `Nat.pow_le_pow_left hi.le i`. Establish `h3 : r ^ i ≤ r ^ r` using `Nat.pow_le_pow_right (by omega) hi.le`. Conclude with `h1.trans (h2.trans h3)` after adjusting the coercions.
+-/
 theorem fac_le (r i : ℕ) (hi : i < r) : ((i.factorial : ℕ) : ℝ) ≤ (r : ℝ) ^ r := by
   have h1 : i.factorial ≤ i ^ i := Nat.factorial_le_pow i
   have h2 : i ^ i ≤ r ^ i := Nat.pow_le_pow_left hi.le i
   have h3 : r ^ i ≤ r ^ r := Nat.pow_le_pow_right (by omega) hi.le
   exact_mod_cast h1.trans (h2.trans h3)
 
+/- English proof (translation)
+Establish `hf : (0 : ℝ) < (i.factorial : ℝ)` using `by exact_mod_cast Nat.factorial_pos i`. Establish `hp : (1 : ℝ) ≤ Real.pi ^ (i + 1)` using `one_le_pow₀ (by linarith [Real.pi_gt_three])`. Establish `hnum : (1 : ℝ) ≤ 2 * Real.pi ^ (i + 1)` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem factor_lower (r i : ℕ) (hi : i < r) :
     ((r : ℝ) ^ r)⁻¹ ≤ 2 * Real.pi ^ (i + 1) / (i.factorial : ℝ) := by
   have hf : (0 : ℝ) < (i.factorial : ℝ) := by exact_mod_cast Nat.factorial_pos i
@@ -24,6 +30,13 @@ theorem factor_lower (r i : ℕ) (hi : i < r) :
     _ ≤ 1 / (i.factorial : ℝ) := one_div_le_one_div_of_le hf (fac_le r i hi)
     _ ≤ 2 * Real.pi ^ (i + 1) / (i.factorial : ℝ) := div_le_div_of_nonneg_right hnum hf.le
 
+/- English proof (translation)
+Establish `hf : (1 : ℝ) ≤ (i.factorial : ℝ)` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Nat.factorial_ne_zero i)`. Establish `hpos : (0 : ℝ) ≤ 2 * Real.pi ^ (i + 1)` using `by positivity`. Establish `h1 : 2 * Real.pi ^ (i + 1) / (i.factorial : ℝ) ≤ 2 * Real.pi ^ (i + 1)` using `div_le_self hpos hf`. Establish `h2 : Real.pi ^ (i + 1) ≤ (4 : ℝ) ^ (i + 1)` using `pow_le_pow_left₀ Real.pi_pos.le Real.pi_le_four _`. Establish `h3 : (4 : ℝ) ^ (i + 1) ≤ (4 : ℝ) ^ r` using `pow_le_pow_right₀ (by norm_num) (by omega)`.
+
+Establish `h4 : (2 : ℝ) ≤ (2 : ℝ) ^ r`. Combine the equalities or inequalities in the displayed calculation. Establish `h5 : (2 : ℝ) * 4 ^ r ≤ 2 ^ r * 4 ^ r`. Establish `: (0 : ℝ) ≤ 4 ^ r` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `h6 : (2 : ℝ) ^ r * 4 ^ r ≤ 13 ^ r`. Rewrite using `[← mul_pow]; exact pow_le_pow_left₀ (by norm_num) (by norm_num) _`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem factor_upper (r i : ℕ) (hi : i < r) :
     2 * Real.pi ^ (i + 1) / (i.factorial : ℝ) ≤ (13 : ℝ) ^ r := by
   have hf : (1 : ℝ) ≤ (i.factorial : ℝ) := by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Nat.factorial_ne_zero i)
@@ -45,6 +58,13 @@ end MainStatements.Tam.N
 
 namespace MainStatements.Tam
 
+/- English proof (translation)
+Introduce `r hr`. Prove the components needed by the constructor for the conclusion. Establish `e : ((r : ℝ) ^ (r ^ 2))⁻¹ = ∏ _i ∈ Finset.range r, ((r : ℝ) ^ r)⁻¹`. Rewrite using `[Finset.prod_const, Finset.card_range, inv_pow, ← pow_mul, sq]`. Rewrite using `[e]`.
+
+Unfold `ReciprocityTheory.ChartRestriction.DS.volU`. Conclude with `Finset.prod_le_prod (fun i _ => by positivity) (fun i hi => MainStatements.Tam.N.factor_lower r i (Finset.mem_range.mp hi))`. Establish `e : (13 : ℝ) ^ (r ^ 2) = ∏ _i ∈ Finset.range r, (13 : ℝ) ^ r`. Rewrite using `[Finset.prod_const, Finset.card_range, ← pow_mul, sq]`. Rewrite using `[e]`.
+
+Unfold `ReciprocityTheory.ChartRestriction.DS.volU`. Conclude with `Finset.prod_le_prod (fun i _ => by positivity) (fun i hi => MainStatements.Tam.N.factor_upper r i (Finset.mem_range.mp hi))`.
+-/
 theorem num : NumSt := by
   intro r hr
   constructor

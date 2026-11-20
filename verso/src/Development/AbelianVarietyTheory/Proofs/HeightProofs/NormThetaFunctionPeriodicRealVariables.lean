@@ -17,6 +17,11 @@ def mulRat (V W : HSp D) (γ : Matrix (Fin V.rank) (Fin W.rank) D.host.E) : AF D
   map_zero' := by ext i j; exact TensorProduct.zero_tmul _ _
   map_add' x y := by ext i j; exact TensorProduct.add_tmul _ _ _
 
+/- English proof (translation)
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Establish `e : (fun a : AF D.host.F => mulRat V W γ a i j) = fun a => a • ((1 : AF D.host.F) ⊗ₜ[D.host.F] γ i j : AE D)`. Use function extensionality and compare the values at `a`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Establish `: ContinuousSMul (AF D.host.F) (AE D)` using `IsModuleTopology.toContinuousSMul _ _`. Conclude with `Continuous.smul (M := AF D.host.F) (X := AE D) (f := fun a : AF D.host.F => a) continuous_id continuous_const`.
+-/
 theorem continuous_mulRat (V W : HSp D) (γ : Matrix (Fin V.rank) (Fin W.rank) D.host.E) :
     Continuous (mulRat V W γ) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -28,15 +33,36 @@ theorem continuous_mulRat (V W : HSp D) (γ : Matrix (Fin V.rank) (Fin W.rank) D
   have : ContinuousSMul (AF D.host.F) (AE D) := IsModuleTopology.toContinuousSMul _ _
   exact Continuous.smul (M := AF D.host.F) (X := AE D) (f := fun a : AF D.host.F => a) continuous_id continuous_const
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem mulRat_one (V W : HSp D) (γ : Matrix (Fin V.rank) (Fin W.rank) D.host.E) :
     mulRat V W γ 1 = ratW V W γ := by
   ext i j; rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `(incA D).toAddMonoidHom.map_nsmul N (γ i j)`.
+-/
 theorem ratW_nsmul (V W : HSp D) (γ : Matrix (Fin V.rank) (Fin W.rank) D.host.E) (N : ℕ) :
     ratW V W (N • γ) = N • ratW V W γ := by
   ext i j
   exact (incA D).toAddMonoidHom.map_nsmul N (γ i j)
 
+/- English proof (translation)
+Take `⟨U, hUo, hUf⟩` from `hf.level`. Take `⟨N, hN, hmem⟩` from `hU (U.comap (mulRat V W γ)) (hUo.preimage (continuous_mulRat V W γ))`. Use `⟨N, hN, fun w => ?_⟩` and prove the remaining obligations. Use `set u : WA V W := mulRat V W γ (pairA D.host.F 0 (N : Af D.host.F)) with hu`. Use `set r : WA V W := mulRat V W γ (pairA D.host.F (N : Ainf D.host.F) 0) with hr`.
+
+Establish `hu0 : u.map (infPart D) = 0`. Use extensionality with `i j`. Conclude with `TensorProduct.zero_tmul _ (γ i j)`. Establish `hr0 : IsRealW V W r`. Use extensionality with `i j`.
+
+Conclude with `TensorProduct.zero_tmul _ (γ i j)`. Establish `hsum : r + u = N • ratW V W γ`. Rewrite using `[hr, hu, ← AddMonoidHom.map_add, ← mulRat_one, ← AddMonoidHom.map_nsmul]`. Use `congr 1`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Use `show (N : Ainf D.host.F) + 0 = N • (1 : Ainf D.host.F)`. Rewrite using `[add_zero, nsmul_one]`. Use `show 0 + (N : Af D.host.F) = N • (1 : Af D.host.F)`. Rewrite using `[zero_add, nsmul_one]`. Establish `hpu : piW θ V W u = 0`.
+
+Use function extensionality and compare the values at `τ i j`. Establish `: infPart D (u i j) = 0` using `congrFun (congrFun hu0 i) j`. Use `show θ τ (infPart D (u i j)) = 0`. Rewrite using `[this, RingHom.map_zero]`. Establish `hi : iotaW σ V W ((N : ℝ) • piW θ V W (ratW V W γ)) = r`.
+
+Rewrite using `[Nat.cast_smul_eq_nsmul, ← AddMonoidHom.map_nsmul, ← hsum, AddMonoidHom.map_add, hpu, add_zero, h.iota_pi hr0]`. Establish `h1 : ∀ x, ‖f (x + u)‖ = ‖f x‖` using `fun x => by`. Use `congrFun (hUf u hmem hu0) x` as an intermediate fact. Rewrite using `[← this, Heisenberg₂, norm_mul, hψ, one_mul]`. Establish `h2` using `congrArg norm (hf.quasi (N • γ) w)`.
+
+Rewrite `h2` using `[norm_mul, hψ, one_mul, ratW_nsmul, ← hsum]`. Rewrite using `[hi, ← h1, ← h2, add_assoc, add_comm]`.
+-/
 theorem norm_periodic (D : D7) (θ : InfFam D) (σ : (D.what₂.Tau → ℂ) →+ AE D) (h : Chart θ σ)
     (ψ : AddChar (AF D.host.F) ℂ) (hψ : ∀ x, ‖ψ x‖ = 1)
     (hU : ∀ U : AddSubgroup (AF D.host.F), IsOpen (U : Set (AF D.host.F)) →

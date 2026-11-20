@@ -8,5 +8,8 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.Toroidal GlobalTheory.LocM G
 open scoped CategoryTheory.Obj
 open GlobalTheory.Desc
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.exists_finite_ext_compat_of_finite | exact GlobalTheory.exists_finite_ext_compat_of_finite | (intros; apply GlobalTheory.exists_finite_ext_compat_of_finite <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_finite_extension_compatible_embedding : ∀ (k K k₁ : Type) [Field k] [Field K] [Field k₁] [Algebra k K] [Algebra k k₁] [FiniteDimensional k k₁], ∃ (K' : Type) (_ : Field K') (_ : Algebra K K') (_ : FiniteDimensional K K') (e : k₁ →+* K'), e.comp (algebraMap k k₁) = (algebraMap K K').comp (algebraMap k K) := by
   first | exact @GlobalTheory.exists_finite_ext_compat_of_finite | exact GlobalTheory.exists_finite_ext_compat_of_finite | (intros; apply GlobalTheory.exists_finite_ext_compat_of_finite <;> assumption)

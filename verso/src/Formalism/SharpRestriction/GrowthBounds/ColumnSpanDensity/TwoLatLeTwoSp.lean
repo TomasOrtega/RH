@@ -7,6 +7,13 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.CountingSumsFrames Formalism.GradedWeylDivisibility MvPolynomial Formalism.MainNotions.G.LatticeSystems
 
+/- English proof (translation)
+Introduce `i j hij`. Consider the cases of `b`. Simplify using `only [letterWt, Bool.false_eq_true, if_false]`. Distinguish the cases in `hi : i = Fin.last m`. Establish `hj : j = Fin.last m` using `le_antisymm (Fin.le_last j) (hi ▸ hij)`.
+
+Simplify using `[hi, hj]`. Apply the tactic sequence `simp only [hi, if_false] split_ifs <;> omega`. Simplify using `only [letterWt, if_true]`. Distinguish the cases in `hj : j = 0`. Establish `hi : i = 0` using `le_antisymm (hj ▸ hij) (Fin.zero_le i)`.
+
+Simplify using `[hj, hi]`. Apply the tactic sequence `simp only [hj, if_false] split_ifs <;> omega`.
+-/
 theorem letterWt_anti (m d : ℕ) (b : Bool) : Antitone (letterWt m d b) := by
   intro i j hij
   cases b
@@ -23,6 +30,15 @@ theorem letterWt_anti (m d : ℕ) (b : Bool) : Antitone (letterWt m d b) := by
     · simp only [hj, if_false]
       split_ifs <;> omega
 
+/- English proof (translation)
+Take `⟨g, hg, hΛg⟩` from `hΛ`. Establish `hsub : ∀ b : Bool, ∀ F ∈ H0 O m (letterWt m (if b then P else Q) b) Λ, F ∈ dualWeyl Kf (m + 1) (m + 1) (nuOf (letterWt m (if b then P else Q) b))`. Introduce `b F hF`. Establish `hle` using `H0_le_twisted_nabla (O := O) m _ (letterWt_anti m (if b then P else Q) b) g hg`. Rewrite `hle` using `[← hΛg]`.
+
+Conclude with `la_nablaLTw_le m _ g hg F (hle hF)`. Introduce `x hx`. Unfold `twoLat tensorLat at hx`. Unfold `twoSp tensorLat`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Take `⟨F, hF, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨F, fun b => hsub b (F b) (hF b), rfl⟩`. Consider the case `zero => exact zero_mem _`. Consider the case `add y z _ _ hy hz => exact add_mem hy hz`.
+
+Consider the case `smul c y _ hy => exact Submodule.smul_of_tower_mem _ c hy`.
+-/
 theorem twoLat_le_twoSp {O Kf : Type} [CommRing O] [Field Kf] [Algebra O Kf] (m P Q : ℕ)
     (Λ : Submodule O (Fin (m + 1) → Kf)) (hΛ : IsLattice O Λ) :
     ∀ x ∈ twoLat O m P Q Λ, x ∈ twoSp Kf m P Q := by

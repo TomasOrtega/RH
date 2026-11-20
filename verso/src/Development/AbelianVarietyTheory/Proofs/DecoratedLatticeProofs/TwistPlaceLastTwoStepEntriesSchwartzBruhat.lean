@@ -12,6 +12,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.QPl.LastTwo
 
+/- English proof (translation)
+Introduce `D c v χ Q α yb`. Establish `hreg` using `Q.reg`. Prove the components needed by the constructor for the conclusion. Use `haveI := GlobalTheory.FinPl.Comm.t2Space_matrix_of_isNonarchimedeanLocalField (k := Q.k) (n := Q.X (Q.s + 1)) (n' := Q.X Q.s)`. Use `GlobalTheory.FinPl.Comm.comp_mem_SB (om_mem_SB (Q.T.mu (Q.s + 1)) (Q.rep Q.s 0 rfl α) 1 (hreg.1 Q.s 0 rfl)) (p := fun x₀ => withCol x₀ (Quotient.out yb)) (s := fun x => x.toBlocks₁₁) ?_ ?_ fun x => rfl` and prove the remaining obligations.
+
+Unfold `withCol`. Use `fun_prop`. Conclude with `continuous_pi fun i => continuous_pi fun j => (continuous_apply (Sum.inl j)).comp (continuous_apply (Sum.inl i))`. Use `haveI := GlobalTheory.FinPl.Comm.t2Space_matrix_of_isNonarchimedeanLocalField (k := Q.k) (n := Q.Z ⊕ Unit) (n' := Q.X (Q.s + 1))`. Establish `hv1 : valuation Q.k (-1 : Q.k) = 1` using `by simp`.
+
+Establish `hh` using `(GlobalTheory.IndefiniteRowSideFullHecke.OmegaColumnSlices.hat_mem_SB_and_hat_omCol Q.k Q.ψk Q.ν (-1) Q.cond Q.unitVol hv1 (Q.X (Q.s + 1)) 1 1 _ (cosetInd_mem_SB Q.c₂ yb)).1`. Use `GlobalTheory.FinPl.Comm.prod_mem_SB hreg.2.1 hh (p := fun x : Matrix (Q.Z ⊕ Unit) (Q.X (Q.s + 1)) Q.k => fromCols x.toRows₁ (0 : Matrix Q.Z (Fin 0) Q.k)) (r := fun x => x (Sum.inr ())) (s := fun z => fromRows z.1.toCols₁ (Matrix.of fun (_ : Unit) => z.2)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `continuous_pi fun i => continuous_pi fun j => by`. Break down `j with j | j` into its components or cases. Conclude with `(continuous_apply j).comp (continuous_apply (Sum.inl i))`.
+
+Conclude with `j.elim0`. Conclude with `continuous_apply _`. Conclude with `continuous_pi fun i => continuous_pi fun j => by`. Break down `i with i | i` into its components or cases. Conclude with `(continuous_apply (Sum.inl j)).comp ((continuous_apply i).comp continuous_fst)`.
+
+Conclude with `(continuous_apply j).comp continuous_snd`. Apply the tactic sequence `intro x; ext (i | i) j <;> rfl`.
+-/
 theorem entries_mem_SB : ∀ (D : D7) (c : Comm D) (v : VCom c) χ (Q : QAt v χ) α yb, Q.T.xiPen (box _ Q.c₂) (Q.rep Q.s 0 rfl α) yb ∈ SB _ ∧ Q.T.xiTop (box _ Q.c₂) Q.ψk Q.ν (-1) yb ∈ SB _ := by
   intro D c v χ Q α yb
   have hreg := Q.reg

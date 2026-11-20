@@ -5,6 +5,29 @@ namespace GlobalTheory
 
 open Matrix
 
+/- English proof (translation)
+Introduce `n r J θ hJ hpos X Y hXY l d h u₁ A X₁ Xb X₂ Yb Y₂ hθ h0`. Set `K : Matrix (Fin (l + d)) (Fin d) ℂ` to `fun i j => Fin.addCases (motive := fun _ => ℂ) (fun i => A i j) (fun i => (1 : Matrix (Fin d) (Fin d) ℂ) i j) i`. Establish `hK : X₂ * K = Xb + X₁ * A`. Use extensionality with `a c`. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_add]`.
+
+Simplify using `only [K, Fin.addCases_left, Fin.addCases_right, Matrix.add_apply, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true, Matrix.mul_apply]`. Rewrite using `[add_comm]`. Both sides reduce to the same expression. Establish `hP : ∀ {m : ℕ} (f : Fin m → Fin (l + d)), (X₂.submatrix id f)ᴴ * (J * θ) * (Xb + X₁ * A) = (X₂ᴴ * (J * θ) * (Xb + X₁ * A)).submatrix f id` using `fun _ => rfl`. Establish `hrow1 : (X₂ᴴ * (J * θ) * (Xb + X₁ * A)).submatrix (Fin.castAdd d) id = 0` using `(hP (Fin.castAdd d)).symm.trans h0`.
+
+Establish `key : ∀ P : Matrix (Fin (l + d)) (Fin d) ℂ, P.submatrix (Fin.castAdd d) id = 0 → Y₂ * P = Yb * P.submatrix (Fin.natAdd l) id`. Introduce `P hP0`. Use extensionality with `a c`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, Fin.sum_univ_add]`. Establish `h00 : ∀ i, P (Fin.castAdd d i) c = 0` using `fun i => by`.
+
+Simplify using `using congrFun (congrFun hP0 i) c`. Simplify using `only [h00, mul_zero, Finset.sum_const_zero, zero_add]`. Both sides reduce to the same expression. Establish `hmain : θ * (Xb + X₁ * A) = u₁ * Yb * (Xbᴴ * (J * θ) * (Xb + X₁ * A))`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hzero : (X₁ * A)ᴴ * (J * θ) * (Xb + X₁ * A) = 0`. Establish `h0'` using `h0`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc] at h0' ⊢`. Rewrite using `[h0', Matrix.mul_zero]`. Establish `hsame : Xbᴴ * (J * θ) * (Xb + X₁ * A) = (Xb + X₁ * A)ᴴ * (J * θ) * (Xb + X₁ * A)`.
+
+Rewrite using `[Matrix.conjTranspose_add, Matrix.add_mul, Matrix.add_mul, hzero, add_zero]`. Establish `hYX : Yᴴ * J * X = 1`. Use `congrArg Matrix.conjTranspose hXY` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_mul, hJ, Matrix.mul_assoc]`. Establish `hL : (Ybᴴ * J) * (Xb + X₁ * A) = 1`.
+
+Establish `e1 : Ybᴴ * J * Xb = 1`. Establish `: Ybᴴ * J * Xb = (Yᴴ * J * X).submatrix (fun j : Fin d => (⟨l + j.val, by omega⟩ : Fin r)) (fun j : Fin d => (⟨l + j.val, by omega⟩ : Fin r))` using `rfl`. Rewrite using `[this, hYX]`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply, Fin.ext_iff]`.
+
+Establish `e2 : Ybᴴ * J * X₁ = 0`. Establish `: Ybᴴ * J * X₁ = (Yᴴ * J * X).submatrix (fun j : Fin d => (⟨l + j.val, by omega⟩ : Fin r)) (fun j : Fin l => (⟨j.val, by omega⟩ : Fin r))` using `rfl`. Rewrite using `[this, hYX]`. Use extensionality with `i j`. Use `j.isLt` as an intermediate fact.
+
+Simplify using `only [Matrix.submatrix_apply, Matrix.one_apply, Fin.ext_iff, Matrix.zero_apply]`. Rewrite using `[if_neg (by omega)]`. Rewrite using `[Matrix.mul_add, e1, ← Matrix.mul_assoc, e2, Matrix.zero_mul, add_zero]`. Establish `hinj : Function.Injective (Xb + X₁ * A).mulVec`. Introduce `v w hvw`.
+
+Use `congrArg (Ybᴴ * J).mulVec hvw` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hL, Matrix.one_mulVec, Matrix.one_mulVec]`. Conclude with `this`. Use `⟨hmain, ?_⟩` and prove the remaining obligations. Rewrite using `[hsame]`.
+
+Conclude with `hpos.conjTranspose_mul_mul_same hinj`.
+-/
 theorem schur_complement_step_cpx : ∀ (n r : ℕ) (J θ : Matrix (Fin n) (Fin n) ℂ), J.conjTranspose = J → (J * θ).PosDef →
     ∀ (X Y : Matrix (Fin n) (Fin r) ℂ), X.conjTranspose * J * Y = 1 →
     ∀ (l d : ℕ) (h : l + d ≤ r) (u₁ : Matrix (Fin n) (Fin n) ℂ) (A : Matrix (Fin l) (Fin d) ℂ),

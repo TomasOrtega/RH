@@ -15,6 +15,9 @@ namespace GlobalTheory.ThK.ConeEuler.StabComp
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply]`. Simplify using `only [piInf, RingHom.comp_apply, map_add, compInf_smul, map_sub, map_one, hε, sub_self, zero_smul, one_smul, map_zero, add_zero]`.
+-/
 theorem map_piInf_of_one {n : ℕ} {w : InfinitePlace F} (τ : EmbOver E w) {ε : AF F} (hε : evInf F w ε = 1)
     (G : Matrix (Fin n) (Fin n) (AE F E)) :
     (ε • G + (1 - ε) • (1 : Matrix (Fin n) (Fin n) (AE F E))).map (piInf τ) = G.map (piInf τ) := by
@@ -23,6 +26,9 @@ theorem map_piInf_of_one {n : ℕ} {w : InfinitePlace F} (τ : EmbOver E w) {ε 
   simp only [piInf, RingHom.comp_apply, map_add, compInf_smul, map_sub, map_one, hε, sub_self, zero_smul, one_smul,
     map_zero, add_zero]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.map_one (piInf (F := F) τ) (map_zero _) (map_one _)]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply]`. Simplify using `only [piInf, RingHom.comp_apply, map_add, compInf_smul, map_sub, map_one, hε, sub_zero, zero_smul, one_smul, map_zero, zero_add]`.
+-/
 theorem map_piInf_of_zero {n : ℕ} {w : InfinitePlace F} (τ : EmbOver E w) {ε : AF F} (hε : evInf F w ε = 0)
     (G : Matrix (Fin n) (Fin n) (AE F E)) :
     (ε • G + (1 - ε) • (1 : Matrix (Fin n) (Fin n) (AE F E))).map (piInf τ) = 1 := by
@@ -32,6 +38,13 @@ theorem map_piInf_of_zero {n : ℕ} {w : InfinitePlace F} (τ : EmbOver E w) {ε
   simp only [piInf, RingHom.comp_apply, map_add, compInf_smul, map_sub, map_one, hε, sub_zero, zero_smul, one_smul,
     map_zero, zero_add]
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, hi, x, hx, rfl⟩` from `hy`. Use `AddSubgroup.subset_closure ⟨c * a, ?_, fun v => ?_, x, hx, smul_smul _ _ _⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.ArchUniq.evI_eq_evIHom, map_mul, ← GlobalTheory.ArchUniq.evI_eq_evIHom, ← GlobalTheory.ArchUniq.evI_eq_evIHom, ha, mul_zero]`.
+
+Rewrite using `[map_mul]`. Conclude with `mul_mem (hc v) (hi v)`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add _ _ _ _ h1 h2 => rw [smul_add]`.
+
+Conclude with `add_mem h1 h2`. Consider the case `neg _ _ h1 => rw [smul_neg]`. Conclude with `neg_mem h1`.
+-/
 theorem smul_mem_latHat {n : ℕ} {X : Spc F E n} {c : AF F} (hc : ∀ v, evFin F v c ∈ v.adicCompletionIntegers F)
     {z : Fin n → AE F E} (hz : z ∈ latHat X) : c • z ∈ latHat X := by
   induction hz using AddSubgroup.closure_induction with
@@ -45,6 +58,9 @@ theorem smul_mem_latHat {n : ℕ} {X : Spc F E n} {c : AF F} (hc : ∀ v, evFin 
   | add _ _ _ _ h1 h2 => rw [smul_add]; exact add_mem h1 h2
   | neg _ _ h1 => rw [smul_neg]; exact neg_mem h1
 
+/- English proof (translation)
+Rewrite using `[Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec]`. Use `add_mem (smul_mem_latHat hε hG) (smul_mem_latHat (fun v => ?_) hz)` and prove the remaining obligations. Rewrite using `[map_sub, map_one]`. Conclude with `sub_mem (one_mem _) (hε v)`.
+-/
 theorem idem_mulVec_mem {n : ℕ} {X : Spc F E n} {ε : AF F} (hε : ∀ v, evFin F v ε ∈ v.adicCompletionIntegers F)
     {G : Matrix (Fin n) (Fin n) (AE F E)} {z : Fin n → AE F E} (hz : z ∈ latHat X) (hG : G *ᵥ z ∈ latHat X) :
     (ε • G + (1 - ε) • (1 : Matrix (Fin n) (Fin n) (AE F E))) *ᵥ z ∈ latHat X := by
@@ -53,6 +69,11 @@ theorem idem_mulVec_mem {n : ℕ} {X : Spc F E n} {ε : AF F} (hε : ∀ v, evFi
   rw [map_sub, map_one]
   exact sub_mem (one_mem _) (hε v)
 
+/- English proof (translation)
+Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[eFin, GlobalTheory.LatVac.evFin_liftV]`. Conclude with `one_mem _`. Rewrite using `[show evFin F w (eFin v) = 0 from evalV_singleFin_ne hw 1]`.
+
+Conclude with `zero_mem _`.
+-/
 theorem evFin_eFin_mem (v w : Pl F) : evFin F w (eFin v) ∈ w.adicCompletionIntegers F := by
   by_cases hw : w = v
   · subst hw
@@ -61,15 +82,28 @@ theorem evFin_eFin_mem (v w : Pl F) : evFin F w (eFin v) ∈ w.adicCompletionInt
   · rw [show evFin F w (eFin v) = 0 from evalV_singleFin_ne hw 1]
     exact zero_mem _
 
+/- English proof (translation)
+Rewrite using `[show evFin F w (eInf F) = 0 from map_zero (evalV F w)]`. Conclude with `zero_mem _`.
+-/
 theorem evFin_eInf_mem (w : Pl F) : evFin F w (eInf F) ∈ w.adicCompletionIntegers F := by
   rw [show evFin F w (eInf F) = 0 from map_zero (evalV F w)]
   exact zero_mem _
 
+/- English proof (translation)
+Establish `h1 : (eInf F).1 = 1` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_one]; exact evI_realAd_one)`. Conclude with `congrFun h1 w`.
+-/
 theorem evInf_eInf (w : InfinitePlace F) : evInf F w (eInf F) = 1 := by
   have h1 : (eInf F).1 = 1 :=
     (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_one]; exact evI_realAd_one)
   exact congrFun h1 w
 
+/- English proof (translation)
+Introduce `k hk`. Take `⟨h1, h2⟩` from `(hK k).1 hk`. Use `⟨fun v => (hK _).2 ⟨fun w => ?_, fun z hz => ?_⟩, (hK _).2 ⟨fun w => ?_, fun z hz => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[mat_compAt, map_piInf_of_zero _ rfl]`. Conclude with `Commute.one_left _`.
+
+Rewrite using `[← map_inv, mat_compAt, mat_compAt]`. Conclude with `⟨idem_mulVec_mem (evFin_eFin_mem v) hz (h2 z hz).1, idem_mulVec_mem (evFin_eFin_mem v) hz (h2 z hz).2⟩`. Rewrite using `[mat_compArch, map_piInf_of_one _ (evInf_eInf w)]`. Conclude with `h1 w`. Rewrite using `[← map_inv, mat_compArch, mat_compArch]`.
+
+Conclude with `⟨idem_mulVec_mem evFin_eInf_mem hz (h2 z hz).1, idem_mulVec_mem evFin_eInf_mem hz (h2 z hz).2⟩`.
+-/
 theorem comp_mem_of_isStab (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (n : ℕ) (X : Spc F E n) (K : Subgroup (UA σ X.J)) (hK : IsStab B K) :
     ∀ k ∈ K, (∀ v : Pl F, compAt σ X.J v k ∈ K) ∧ compArch σ X.J k ∈ K := by

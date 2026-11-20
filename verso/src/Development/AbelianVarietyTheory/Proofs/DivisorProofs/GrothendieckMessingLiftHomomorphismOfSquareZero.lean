@@ -15,6 +15,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.SqLift.Hom
 
+/- English proof (translation)
+Set `x : Over.mk (T.hom ≫ f) ⟶ G` to `Over.homMk ((1 : T ⟶ G').left ≫ φ) (by`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w]`. Use the proof step `rfl)`. Establish `e : x * x = x` using `Over.OverMorphism.ext (by`. Rewrite using `[h.2 T 1 1 x x rfl rfl, _root_.mul_one]`.
+
+Use the proof step `rfl)`. Establish `e' : x = 1` using `by simpa using e`. Use `congrArg (fun z ↦ z.left) e'` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[Hom.one_def, Over.comp_left, Over.toUnit_left, ← Category.assoc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem one_left_comp {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (T : Over S') :
     (1 : T ⟶ G').left ≫ φ = T.hom ≫ f ≫ η[G].left := by
@@ -28,10 +35,20 @@ theorem one_left_comp {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G]
   rw [Hom.one_def, Over.comp_left, Over.toUnit_left, ← Category.assoc]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Hom.one_def, Over.comp_left, Over.toUnit_left]`.
+-/
 theorem one_left {S : Scheme.{0}} {G : Over S} [GrpObj G] (T : Over S) :
     (1 : T ⟶ G).left = T.hom ≫ η[G].left := by
   rw [Hom.one_def, Over.comp_left, Over.toUnit_left]
 
+/- English proof (translation)
+Introduce `P R R₀ _ _ I hI π hπ hk H g A₀ _ A _ i h hA hg g' B₀ _ B _ j k hB hg' f₀ _ hf`. Establish `pA` using `(P.1 R A g hA hg).1`. Establish `pB` using `(P.1 R B g' hB hg').1`. Take `⟨l, l₁, l₂⟩ : ∃ l : (A₀ ⊗ B₀).left ⟶ (A ⊗ B).left, l ≫ (fst A B).left = (fst A₀ B₀).left ≫ i ∧ l ≫ (snd A B).left = (snd A₀ B₀).left ≫ j` from `⟨Limits.pullback.lift ((fst A₀ B₀).left ≫ i) ((snd A₀ B₀).left ≫ j) (by`. Rewrite using `[Category.assoc, Category.assoc, h.1.w, k.1.w, ← Category.assoc, ← Category.assoc, Over.w, Over.w]),`.
+
+Use the proof step `Limits.pullback.lift_fst _ _ _, Limits.pullback.lift_snd _ _ _⟩`. Take `⟨φ, hφ⟩` from `GlobalTheory.T.exists_lift_shearMap_squareZero_abelianSchemes R R₀ I hI π hπ hk H g g' A₀ B₀ A B i j h k hA hB hg hg' A B i j h.1 k.1 hA.smooth hB.smooth η[A].left η[B].left (Over.w η[A]) (Over.w η[B]) ((one_left_comp h _).trans (Category.id_comp _)) ((one_left_comp k _).trans (C …`. Use `GlobalTheory.T.existsUnique_isMonHom_lift_of_grpPullback_abelian R R₀ π hπ ⟨2, hk ▸ hI⟩ A₀ B₀ A B i j h k hA hB f₀ (lift (𝟙 A) 1 ≫ φ) ?_` and prove the remaining obligations. Establish `e : i ≫ (lift (𝟙 A) (1 : A ⟶ B)).left = (lift (𝟙 A₀) (1 : A₀ ⟶ B₀)).left ≫ l`. Use `Limits.pullback.hom_ext ?_ ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(i ≫ _) ≫ (fst A B).left = (_ ≫ l) ≫ (fst A B).left`. Rewrite using `[Category.assoc, Category.assoc, l₁, ← Over.comp_left, ← Category.assoc, ← Over.comp_left, lift_fst, lift_fst, Over.id_left, Over.id_left, Category.comp_id, Category.id_comp]`. Express the relevant statement in the definitionally equal form `(i ≫ _) ≫ (snd A B).left = (_ ≫ l) ≫ (snd A B).left`. Rewrite using `[Category.assoc, Category.assoc, l₂, ← Over.comp_left, ← Category.assoc, ← Over.comp_left, lift_snd, lift_snd, one_left_comp k, one_left, ← Category.assoc, h.1.w, Category.assoc]`. Rewrite using `[Over.comp_left, ← Category.assoc, e, Category.assoc, hφ, ← Category.assoc, ← Over.comp_left, comp_mul, lift_fst_assoc, lift_snd, _root_.mul_one, Category.id_comp]`.
+-/
 theorem liftHom_sq : AbelianDeRham → ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0)
     (π : R →+* R₀), Function.Surjective π → RingHom.ker π = I → AbelianSchemeLifts.At hI π → LiftHom (divided₂ hI) π := by
   intro P R R₀ _ _ I hI π hπ hk H g A₀ _ A _ i h hA hg g' B₀ _ B _ j k hB hg' f₀ _ hf

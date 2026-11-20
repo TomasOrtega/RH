@@ -35,9 +35,15 @@ def intDer {S A : Type} [CommRing S] [CommRing A] [Algebra S A] (δ : Derivation
   map_one_eq_zero' := δ.map_one_eq_zero
   leibniz' := δ.leibniz
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem intDer_apply {S A : Type} [CommRing S] [CommRing A] [Algebra S A] (δ : Derivation S A A) (a : A) :
     intDer δ a = δ a := rfl
 
+/- English proof (translation)
+Unfold `iterOp`. Proceed by induction on `(List.finRange n) with`. Consider the case `nil => rfl`. Consider the case `cons i l ih => simpa using ih`.
+-/
 theorem iterOp_zero {A : Type} {n : ℕ} (ds : Fin n → A → A) (f : A) : iterOp ds 0 f = f := by
   unfold iterOp
   induction (List.finRange n) with

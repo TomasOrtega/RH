@@ -47,6 +47,9 @@ def latGood : Submodule (𝓞 D.what₂.LL) (Fin (R.nW i) → D.what₂.LL) :=
 def latBad : Submodule (𝓞 D.what₂.LL) (Fin (R.nW i) → D.what₂.LL) :=
   latType R F i ⊓ (LinearMap.ker (eGood R i)).restrictScalars (𝓞 D.what₂.LL)
 
+/- English proof (translation)
+The claim follows from `inf_le_left`.
+-/
 theorem latGood_le : latGood R F i ≤ latType R F i := inf_le_left
 
 end Base
@@ -68,13 +71,22 @@ def uMinus (kc : ℕ) (c0 : ℤ) : Weight Dw := uWt Dw a n kc - c0 • hodgeWt D
 
 def sizeK : ℝ := ∑ τ : Psi H, ∑ k, |(laOf Dw a n τ k : ℝ)|
 
+/- English proof (translation)
+Substitute `hk` using the available equality. Simplify using `[uWt, anchor, GlobalTheory.FlatLine.parWt]`.
+-/
 theorem uWt_anchor (kc : ℕ) (τ : Psi H) (k : Fin (Dw.p + Dw.q)) (hk : (k : ℕ) + 1 = kc) : uWt Dw a n kc τ k = 0 := by
   subst hk
   simp [uWt, anchor, GlobalTheory.FlatLine.parWt]
 
+/- English proof (translation)
+The claim follows from `sub_add_cancel _ _`.
+-/
 theorem uWt_add_anchor (kc : ℕ) : uWt Dw a n kc + GlobalTheory.FlatLine.parWt Dw (anchor Dw a n kc) = laOf Dw a n :=
   sub_add_cancel _ _
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`.
+-/
 theorem sizeK_nonneg : 0 ≤ sizeK Dw a n :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _
 
@@ -85,6 +97,9 @@ def cZeroN (D : D7) (j : ℕ) : ℕ :=
 
 def cZero (D : D7) (j : ℕ) : ℤ := (cZeroN D j : ℤ)
 
+/- English proof (translation)
+Unfold `cZeroN`. Use `⟨⟨⟨_, rfl⟩, by omega, by omega⟩, fun s hs => ?_⟩` and prove the remaining obligations. Take `⟨⟨y, rfl⟩, h1, h2⟩` from `hs`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem cZeroN_isLeast (D : D7) (j : ℕ) :
     IsLeast {s : ℕ | 8 ∣ s ∧ D.R.r + (D.R.f * (D.R.sigW j).1 * (D.R.sigW j).2 + 1).choose 2 + 2 ≤ s ∧
       8 * D.R.f * D.R.r + 4 ≤ s} (cZeroN D j) := by
@@ -93,6 +108,21 @@ theorem cZeroN_isLeast (D : D7) (j : ℕ) :
   obtain ⟨⟨y, rfl⟩, h1, h2⟩ := hs
   omega
 
+/- English proof (translation)
+Establish `hn : 0 < D.R.ord` using `D.R.ord_pos`. Establish `hk` using `D.R.f_le_k`. Establish `ht` using `D.R.rank_add_five_le`. Establish `hf : 1 ≤ D.R.f` using `by unfold Ranks.f Ranks.n; omega`. Establish `hr : 1 ≤ D.R.r` using `by unfold Ranks.r; omega`.
+
+Establish `hpq : (D.R.sigW j).1 * (D.R.sigW j).2 ≤ D.R.r ^ 2`. Distinguish the cases in `hj : j ≤ D.R.m`. Establish `h1 : (D.R.sigW j).1 ≤ D.R.r` using `by unfold Ranks.sigW Ranks.r; simp only; omega`. Establish `h2 : (D.R.sigW j).2 ≤ D.R.r` using `by unfold Ranks.sigW Ranks.r; simp only; omega`. Rewrite using `[sq]`.
+
+Conclude with `Nat.mul_le_mul h1 h2`. Establish `h2 : (D.R.sigW j).2 = 0` using `by unfold Ranks.sigW; simp only; omega`. Simplify using `[h2]`. Unfold `cZeroN`. Rewrite using `[mul_assoc D.R.f]`.
+
+Generalize the expression as in `(D.R.sigW j).1 * (D.R.sigW j).2 = s at hpq`. Generalize the expression as in `D.R.f = f at *`. Generalize the expression as in `D.R.r = r at *`. Establish `hN : f * s ≤ f * r ^ 2` using `Nat.mul_le_mul_left _ hpq`. Establish `hc : (f * s + 1).choose 2 ≤ (f * s) ^ 2`.
+
+Rewrite using `[Nat.choose_two_right, Nat.add_sub_cancel]`. Generalize the expression as in `f * s = N`. Break down `Nat.eq_zero_or_pos N with rfl | h` into its components or cases. Simplify using the standard rewrite rules. Conclude with `Nat.div_le_of_le_mul (by nlinarith)`.
+
+Establish `hc2 : (f * s) ^ 2 ≤ f ^ 2 * r ^ 4`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : f * r ≤ f ^ 2 * r ^ 4` using `Nat.mul_le_mul (Nat.le_self_pow (by norm_num) f) (Nat.le_self_pow (by norm_num) r)`. Establish `h4 : r ≤ f * r` using `Nat.le_mul_of_pos_left r hf`. Rewrite using `[mul_assoc 8 f r, mul_assoc 22]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem cZeroN_le (D : D7) (j : ℕ) : cZeroN D j ≤ 22 * D.R.f ^ 2 * D.R.r ^ 4 := by
   have hn : 0 < D.R.ord := D.R.ord_pos
   have hk := D.R.f_le_k
@@ -127,6 +157,9 @@ theorem cZeroN_le (D : D7) (j : ℕ) : cZeroN D j ≤ 22 * D.R.f ^ 2 * D.R.r ^ 4
   rw [mul_assoc 8 f r, mul_assoc 22]
   omega
 
+/- English proof (translation)
+Use `⟨?_, Int.natCast_nonneg _, ?_⟩` and prove the remaining obligations. Conclude with `Int.natCast_dvd_natCast.2 (cZeroN_isLeast D j).1.1`. Unfold `cZero`. Conclude with `cZeroN_le D j` after adjusting the coercions.
+-/
 theorem cZero_spec (D : D7) (j : ℕ) :
     8 ∣ cZero D j ∧ 0 ≤ cZero D j ∧ cZero D j ≤ 22 * (D.R.f : ℤ) ^ 2 * (D.R.r : ℤ) ^ 4 := by
   refine ⟨?_, Int.natCast_nonneg _, ?_⟩
@@ -136,6 +169,11 @@ theorem cZero_spec (D : D7) (j : ℕ) :
 def fieldSz (K : Type) [Field K] [NumberField K] : ℝ :=
   Real.log (Module.finrank ℚ K : ℝ) + Real.log |(discr K : ℝ)| / (Module.finrank ℚ K : ℝ)
 
+/- English proof (translation)
+Establish `h : 0 ≤ Real.log |(discr K : ℝ)|`. Rewrite using `[Real.log_abs]`. Conclude with `Real.log_intCast_nonneg _`. Unfold `fieldSz`. Establish `: 0 ≤ Real.log |(discr K : ℝ)| / (Module.finrank ℚ K : ℝ)` using `by positivity`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem log_finrank_le_fieldSz (K : Type) [Field K] [NumberField K] :
     Real.log (Module.finrank ℚ K : ℝ) ≤ fieldSz K := by
   have h : 0 ≤ Real.log |(discr K : ℝ)| := by
@@ -144,15 +182,24 @@ theorem log_finrank_le_fieldSz (K : Type) [Field K] [NumberField K] :
   have : 0 ≤ Real.log |(discr K : ℝ)| / (Module.finrank ℚ K : ℝ) := by positivity
   linarith
 
+/- English proof (translation)
+Unfold `fieldSz`. Combine the linear relations using `[Real.log_natCast_nonneg (Module.finrank ℚ K)]`.
+-/
 theorem log_rd_le_fieldSz (K : Type) [Field K] [NumberField K] :
     Real.log |(discr K : ℝ)| / (Module.finrank ℚ K : ℝ) ≤ fieldSz K := by
   unfold fieldSz
   linarith [Real.log_natCast_nonneg (Module.finrank ℚ K)]
 
+/- English proof (translation)
+Simplify using `[fieldSz, NumberField.discr_rat]`.
+-/
 example : fieldSz ℚ = 0 := by simp [fieldSz, NumberField.discr_rat]
 
 def expL (L : ℝ) : ℕ := ⌊3 * L / Real.log 3⌋₊
 
+/- English proof (translation)
+The claim follows from `Nat.le_floor ((le_div_iff₀ (Real.log_pos (by norm_num))).2 h)`.
+-/
 theorem le_expL {L : ℝ} {e : ℕ} (h : e * Real.log 3 ≤ 3 * L) : e ≤ expL L :=
   Nat.le_floor ((le_div_iff₀ (Real.log_pos (by norm_num))).2 h)
 
@@ -210,6 +257,9 @@ structure Good (e : ℕ) (o : ℝ) : Prop where
 def resEmb (σ : Y.d.c₂.F →+* ℂ) : T.Q.c.F →+* ℂ :=
   σ.comp ((Y.d.eF : Y.c'.F →+* Y.d.c₂.F).comp (IntermediateField.inclusion Y.hle).toRingHom)
 
+/- English proof (translation)
+The claim follows from `hσ`.
+-/
 theorem good_resEmb {σ : Y.d.c₂.F →+* ℂ} (hσ : GoodEmb Y.d.c₂ σ) : GoodEmb T.Q.c (Y.resEmb σ) := hσ
 
 def Match {T : CoreJ D} (Y : Deep T.toCore j) : Prop :=
@@ -220,11 +270,17 @@ abbrev GoodL (L o : ℝ) : Prop := Y.Good (expL L) o
 
 variable {Y} in
 
+/- English proof (translation)
+The claim follows from `(log_finrank_le_fieldSz _).trans h.size`.
+-/
 theorem Good.deg {e : ℕ} {o : ℝ} (h : Y.Good e o) : Real.log (Module.finrank ℚ Y.d.c₂.F : ℝ) ≤ o :=
   (log_finrank_le_fieldSz _).trans h.size
 
 variable {Y} in
 
+/- English proof (translation)
+Establish `hp : (0 : ℝ) < Module.finrank ℚ Y.d.c₂.F` using `by exact_mod_cast Module.finrank_pos`. Conclude with `(div_le_iff₀ hp).1 ((log_rd_le_fieldSz _).trans h.size)`.
+-/
 theorem Good.rd {e : ℕ} {o : ℝ} (h : Y.Good e o) :
     Real.log |(discr Y.d.c₂.F : ℝ)| ≤ o * Module.finrank ℚ Y.d.c₂.F := by
   have hp : (0 : ℝ) < Module.finrank ℚ Y.d.c₂.F := by exact_mod_cast Module.finrank_pos
@@ -232,6 +288,9 @@ theorem Good.rd {e : ℕ} {o : ℝ} (h : Y.Good e o) :
 
 variable {Y} in
 
+/- English proof (translation)
+The claim follows from `{ h with size := h.size.trans ho }`.
+-/
 theorem Good.mono {e : ℕ} {o o' : ℝ} (h : Y.Good e o) (ho : o ≤ o') : Y.Good e o' :=
   { h with size := h.size.trans ho }
 
@@ -303,6 +362,15 @@ section Half
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
 
+/- English proof (translation)
+Establish `h1 : (H.bar H.rt) ^ 2 = H.rt ^ 2` using `by rw [← map_pow, H.rt_sq]; simp`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h` into its components or cases. It suffices to derive a contradiction. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `h2 : IsCMField.complexConj E (H.rt : E) = (H.rt : E)` using `by rw [← H.bar_eq, h]`.
+
+Establish `h3` using `IsCMField.complexEmbedding_complexConj E φ (H.rt : E)`. Rewrite `h3` using `[h2]`. Establish `h4 : (φ (H.rt : E)) ^ 2 = -(H.d : ℂ)`. Use `congrArg (fun x : 𝓞 E => φ (x : E)) H.rt_sq` as an intermediate fact. Simplify using `using this`.
+
+Establish `h5 : (φ (H.rt : E)).im = 0` using `Complex.conj_eq_iff_im.1 h3.symm`. Establish `h6` using `congrArg Complex.re h4`. Simplify using `[sq, h5] at h6`. Establish `h7 : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Use polynomial arithmetic with `[mul_self_nonneg (φ (H.rt : E)).re]`.
+
+Conclude with `h`.
+-/
 theorem bar_root : H.bar H.rt = -H.rt := by
   have h1 : (H.bar H.rt) ^ 2 = H.rt ^ 2 := by rw [← map_pow, H.rt_sq]; simp
   rcases sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h
@@ -321,6 +389,33 @@ theorem bar_root : H.bar H.rt = -H.rt := by
     nlinarith [mul_self_nonneg (φ (H.rt : E)).re]
   · exact h
 
+/- English proof (translation)
+Establish `hd : Nat.Coprime 15 H.d`. Use `(Nat.coprime_comm.1 ((Nat.Prime.coprime_iff_not_dvd H.d_prime).2 fun h => ?_))` and prove the remaining obligations. Establish `h1` using `Nat.le_of_dvd (by norm_num) h`. Establish `h2` using `H.d_mod`. Establish `h3 : H.d = 7` using `by omega`.
+
+Rewrite `h` using `[h3]`. Evaluate the numerical expressions using `at h`. Establish `hc : IsCoprime (15 : ℤ) (2 * s)`. Use `IsCoprime.mul_right (by norm_num [Int.isCoprime_iff_gcd_eq_one]) ?_` and prove the remaining obligations. Take `⟨t, ht⟩` from `hs`.
+
+Establish `hd' : IsCoprime (15 : ℤ) (H.d : ℤ)` using `by exact_mod_cast Nat.isCoprime_iff_coprime.2 hd`. Take `⟨a, b, hab⟩` from `hd'`. Conclude with `⟨a + b * t, -(b * s), by linear_combination hab - b * ht⟩`. Take `⟨a, b, hab⟩` from `hc`. Establish `hab' : (a : 𝓞 E) * 15 + (b : 𝓞 E) * (2 * s) = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → 𝓞 E) hab`.
+
+Take `⟨t, ht⟩` from `hs`. Establish `ht' : (s : 𝓞 E) ^ 2 + H.d = 15 * t` using `by exact_mod_cast congrArg (Int.cast : ℤ → 𝓞 E) ht`. Set `J : Ideal (𝓞 E)` to `Ideal.span {15, (s : 𝓞 E) + H.rt}`. Establish `hJ : J.map (H.bar : 𝓞 E →+* 𝓞 E) = Ideal.span {15, (s : 𝓞 E) - H.rt}`. Rewrite using `[Ideal.map_span, Set.image_pair]`.
+
+Simplify using `[bar_root, sub_eq_add_neg, map_ofNat]`. Establish `m1 : (15 : 𝓞 E) ∈ J` using `Ideal.subset_span (by simp)`. Establish `m2 : (s : 𝓞 E) + H.rt ∈ J` using `Ideal.subset_span (by simp)`. Establish `m3 : (15 : 𝓞 E) ∈ J.map (H.bar : 𝓞 E →+* 𝓞 E)` using `hJ ▸ Ideal.subset_span (by simp)`. Establish `m4 : (s : 𝓞 E) - H.rt ∈ J.map (H.bar : 𝓞 E →+* 𝓞 E)` using `hJ ▸ Ideal.subset_span (by simp)`.
+
+Establish `hsup : J ⊔ J.map (H.bar : 𝓞 E →+* 𝓞 E) = ⊤`. Rewrite using `[Ideal.eq_top_iff_one, ← hab', show (2 * s : 𝓞 E) = (s + H.rt) + (s - H.rt) by ring]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ (Ideal.mem_sup_left m1)) (Ideal.mul_mem_left _ _ (add_mem (Ideal.mem_sup_left m2) (Ideal.mem_sup_right m4)))`. Establish `hmul : J * J.map (H.bar : 𝓞 E →+* 𝓞 E) = Ideal.span {(15 : 𝓞 E)}`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Rewrite using `[hJ, Ideal.span_pair_mul_span_pair, Ideal.span_le]`. Establish `hq : ((s : 𝓞 E) + H.rt) * (s - H.rt) = 15 * t` using `by linear_combination ht' - H.rt_sq`. Introduce `x hx`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx`. Break down `hx with rfl | rfl | rfl | rfl` into its components or cases.
+
+Conclude with `Ideal.mem_span_singleton.2 (dvd_mul_right _ _)`. Conclude with `Ideal.mem_span_singleton.2 (dvd_mul_right _ _)`. Conclude with `Ideal.mem_span_singleton.2 (dvd_mul_left _ _)`. Conclude with `Ideal.mem_span_singleton.2 (hq ▸ dvd_mul_right _ _)`. Rewrite using `[Ideal.mul_eq_inf_of_coprime hsup, Ideal.span_singleton_le_iff_mem]`.
+
+Conclude with `⟨m1, m3⟩`. Use `⟨J ^ e, ⟨({15, (s : 𝓞 E) + H.rt} : Set (𝓞 E)) ^ e, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.span_pow _ e`. Establish `h0 : ({15, (s : 𝓞 E) + H.rt} : Set (𝓞 E)) ⊆ Algebra.adjoin ℤ {H.w0}`. Establish `hw : H.w0 ∈ Algebra.adjoin ℤ {H.w0}` using `Algebra.subset_adjoin rfl`.
+
+Introduce and unpack `x (rfl | rfl)`. Conclude with `ofNat_mem _ 15`. Rewrite using `[show (s : 𝓞 E) + H.rt = s + (H.w0 + H.w0 - 1) by linear_combination -H.two_weight_eq_one_add_root]`. Conclude with `add_mem (intCast_mem _ s) (sub_mem (add_mem hw hw) (one_mem _))`. Proceed by induction on `e with`.
+
+Consider the case `zero => intro x hx`. Rewrite `hx` using `[pow_zero, Set.mem_one]`. Conclude with `hx ▸ one_mem _`. Consider the case `succ n ih`. Rewrite using `[pow_succ]`.
+
+Introduce and unpack `x ⟨y, hy, z, hz, rfl⟩`. Conclude with `mul_mem (ih hy) (h0 hz)`. Rewrite using `[Ideal.map_pow, ← mul_pow, hmul, Ideal.span_singleton_pow]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Rewrite using `[Ideal.map_pow, ← Ideal.isCoprime_iff_sup_eq]`. Conclude with `(Ideal.isCoprime_iff_sup_eq.2 hsup).pow`.
+-/
 theorem exists_half (s : ℤ) (hs : (15 : ℤ) ∣ s ^ 2 + H.d) (e : ℕ) :
     ∃ I : Ideal (𝓞 E), (∃ G : Set (𝓞 E), I = Ideal.span G ∧ G ⊆ Algebra.adjoin ℤ {H.w0}) ∧
       I * I.map (H.bar : 𝓞 E →+* 𝓞 E) = Ideal.span {((15 ^ e : ℕ) : 𝓞 E)} ∧ I ⊔ I.map (H.bar : 𝓞 E →+* 𝓞 E) = ⊤ := by
@@ -385,6 +480,9 @@ theorem exists_half (s : ℤ) (hs : (15 : ℤ) ∣ s ^ 2 + H.d) (e : ℕ) :
 
 end Half
 
+/- English proof (translation)
+Establish `: IntermediateField.normalClosure ℚ K ℂ ≤ (IntermediateField.normalClosure ℚ K ℂ).comap s.toRingHom.toRatAlgHom`. Use `iSup_le fun f => ?_` and prove the remaining obligations. Introduce and unpack `x ⟨y, rfl⟩`. Conclude with `AlgHom.fieldRange_le_normalClosure (s.toRingHom.toRatAlgHom.comp f) ⟨y, rfl⟩`. Conclude with `this ha`.
+-/
 theorem normalClosure_stable (K : IntermediateField ℚ ℂ) (s : ℂ ≃+* ℂ) (a : ℂ) (ha : a ∈ IntermediateField.normalClosure ℚ K ℂ) :
     s a ∈ IntermediateField.normalClosure ℚ K ℂ := by
   have : IntermediateField.normalClosure ℚ K ℂ ≤ (IntermediateField.normalClosure ℚ K ℂ).comap s.toRingHom.toRatAlgHom := by
@@ -393,6 +491,19 @@ theorem normalClosure_stable (K : IntermediateField ℚ ℂ) (s : ℂ ≃+* ℂ)
     exact AlgHom.fieldRange_le_normalClosure (s.toRingHom.toRatAlgHom.comp f) ⟨y, rfl⟩
   exact this ha
 
+/- English proof (translation)
+Establish `h3` using `D.host.split_small 3 (by norm_num) (by norm_num) (by omega)`. Establish `h5` using `D.host.split_small 5 (by norm_num) (by norm_num) h`. Rewrite `h3`, `h5` using `[jacobiSym.mod_left]`. Generalize the expression as in `(D.host.d : ℤ) = d at h3 h5 ⊢`. Establish `a3 : -d % 3 = 1`.
+
+Establish `: -d % 3 = 0 ∨ -d % 3 = 1 ∨ -d % 3 = 2` using `by omega`. Move the coercions through the operations in `at h3`. Break down `this with h | h | h` into its components or cases. Rewrite `h3` using `[h]`. Evaluate the numerical expressions using `at h3`.
+
+Conclude with `h`. Rewrite `h3` using `[h]`. Evaluate the numerical expressions using `at h3`. Establish `a5 : -d % 5 = 1 ∨ -d % 5 = 4`. Establish `: -d % 5 = 0 ∨ -d % 5 = 1 ∨ -d % 5 = 2 ∨ -d % 5 = 3 ∨ -d % 5 = 4` using `by omega`.
+
+Move the coercions through the operations in `at h5`. Break down `this with h | h | h | h | h` into its components or cases. Rewrite `h5` using `[h]`. Evaluate the numerical expressions using `at h5`. Conclude with `Or.inl h`.
+
+Rewrite `h5` using `[h]`. Evaluate the numerical expressions using `at h5`. Rewrite `h5` using `[h]`. Evaluate the numerical expressions using `at h5`. Conclude with `Or.inr h`.
+
+Break down `a5 with h | h` into its components or cases. Conclude with `⟨1, by omega⟩`. Conclude with `⟨2, by omega⟩`.
+-/
 theorem exists_root (h : 5 ≤ D.host.splitBound) : ∃ s : ℤ, (15 : ℤ) ∣ s ^ 2 + D.host.d := by
   have h3 := D.host.split_small 3 (by norm_num) (by norm_num) (by omega)
   have h5 := D.host.split_small 5 (by norm_num) (by norm_num) h
@@ -418,6 +529,11 @@ theorem exists_root (h : 5 ≤ D.host.splitBound) : ∃ s : ℤ, (15 : ℤ) ∣ 
   · exact ⟨1, by omega⟩
   · exact ⟨2, by omega⟩
 
+/- English proof (translation)
+Establish `hs : ∀ τ : D.host.E →+* ℂ, ‖τ D.host.sqrtMinusD‖ = Real.sqrt D.host.d`. Introduce `τ`. Establish `h0 : (τ D.host.sqrtMinusD) ^ 2 = -(D.host.d : ℂ)`. Rewrite using `[← map_pow, Formalism.BasicNotions.Host.sqrtMinusD_sq D.host, map_neg, map_natCast]`. Rewrite using `[← Real.sqrt_sq (norm_nonneg (τ D.host.sqrtMinusD)), ← norm_pow, h0, norm_neg, Complex.norm_natCast]`.
+
+Unfold `xiR Formalism.BasicNotions.Host.xi0`. Simplify using `only [map_div₀, map_neg, map_one, map_mul, map_natCast, norm_div, norm_neg, norm_one, norm_mul, Complex.norm_natCast, hs]`.
+-/
 theorem norm_neg_cmConstant_eq_at_all_embeddings (τ : D.host.E →+* ℂ) : ‖τ (-D.host.xi0)‖ = xiR D := by
   have hs : ∀ τ : D.host.E →+* ℂ, ‖τ D.host.sqrtMinusD‖ = Real.sqrt D.host.d := by
     intro τ
@@ -428,6 +544,11 @@ theorem norm_neg_cmConstant_eq_at_all_embeddings (τ : D.host.E →+* ℂ) : ‖
   simp only [map_div₀, map_neg, map_one, map_mul, map_natCast, norm_div, norm_neg, norm_one, norm_mul,
     Complex.norm_natCast, hs]
 
+/- English proof (translation)
+Take `⟨-, hr, -, -⟩` from `GlobalTheory.Member.exists_iotaOK D T.Q hQ j hj`. Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_add_three_le_k`. Rewrite using `[hr]`. Unfold `Ranks.r`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem rank_pos (T : Core D) (hQ : T.Q.Pins) (j : ℕ) (hj : InR D j) : 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q := by
   obtain ⟨-, hr, -, -⟩ := GlobalTheory.Member.exists_iotaOK D T.Q hQ j hj
   have h1 := D.R.two_le_m; have h2 := D.R.m_add_three_le_k
@@ -435,6 +556,19 @@ theorem rank_pos (T : Core D) (hQ : T.Q.Pins) (j : ℕ) (hj : InR D j) : 1 ≤ (
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hpos` using `rank_pos T hQ j hj`. Establish `hM : d.l₂.M = D.host.g 0 * D.host.g 1 * d.pd` using `by rw [a2.2.1, hQ.2.1.1]`. Take `⟨Kf, hKf⟩` from `(GlobalTheory.Member.PrincLevel.exists_levelK_and_nhds D (D.sp.W j) d.l₂.M).1`. Establish `hpk : ∀ σ, GoodEmb d.c₂ σ → ∃ (U : Unf d.Xo₂ d.c₂ σ D.R.r) (dict : GA D (D.sp.W j) → Σ k, Frame (U.X k).Ψ D.R.r), ∃ hr mu, GlobalTheory.Member.PkgLaws (D.sp.W j) hr ι Kf 1 U dict mu (x σ)` using `fun σ hσ => by`. Take `⟨C, hC, hCι, hCx⟩` from `hx σ hσ`.
+
+Take `⟨un, dict, mu, -, -, hP⟩` from `GlobalTheory.Member.exists_pkgLaws D _ _ _ _ _ _ _ _ C hC Kf hKf 1 ⟨continuous_const, fun _ => rfl⟩ (fun _ => rfl)`. Conclude with `⟨C.unf un, dict, C.hr, mu, hCx ▸ hCι ▸ hP⟩`. Establish `hall : ∀ σ, ∃ (U : Unf d.Xo₂ d.c₂ σ D.R.r) (dict : GA D (D.sp.W j) → Σ k, Frame (U.X k).Ψ D.R.r), GoodEmb d.c₂ σ → ∃ hr mu, GlobalTheory.Member.PkgLaws (D.sp.W j) hr ι Kf 1 U dict mu (x σ)` using `fun σ => by`. Distinguish the cases in `hσ : GoodEmb d.c₂ σ`. Take `⟨U, dict, h⟩` from `hpk σ hσ`.
+
+Conclude with `⟨U, dict, fun _ => h⟩`. Take `⟨U, dict, -⟩` from `hpk d.c₂.F.val.toRingHom rfl`. Take `⟨y⟩` from `GlobalTheory.nonempty_frPt_complex GlobalTheory.closing_of_abelianSchemeLaws GlobalTheory.abelianSchemeLaws_all.2.secTwist _ _ _ _ d.Xo₂ d.c₂ hpos σ`. Conclude with `⟨{ Comp := Unit, X := fun _ => U.X (dict 1).1, un := fun _ _ => y }, fun _ => ⟨(), fun _ => 0⟩, fun h => absurd h hσ⟩`. Use `choose U dict hP using hall`.
+
+Establish `hpin : ∀ σ, GoodEmb d.c₂ σ → (⟨c', hle, d, U, dict, Kf⟩ : Deep T j).Pin σ ι (x σ)` using `fun σ hσ => by`. Take `⟨hr, mu, h⟩` from `hP σ hσ`. Take `⟨g, e', F, ik, φ, th, b1, -, b3⟩` from `h.dictLaws`. Conclude with `⟨hr, g, e', F, ik, φ, th, b1, b3⟩`. Use `⟨U, dict, Kf, ⟨a1, ⟨a2, a3⟩, fun σ hσ => ?_, fun σ hσ => ?_, fun σ hσ _ _ _ k γ _ => ?_, fun σ hσ => ?_, hM ▸ hKf, fun σ hσ k τ => ?_, a4, a5, le_rfl, fun σ hσ => ?_, fun σ hσ => ?_, ι, hι.emb, ⟨1, fun x y => by simpa using hι.isom x y⟩, fun σ hσ => ?_⟩, hpin⟩` and prove the remaining obligations.
+
+Apply the tactic sequence `all_goals obtain ⟨hr, mu, h⟩ := hP σ hσ`. Conclude with `h.unf`. Conclude with `h.unTest`. Conclude with `h.chi1 k _ γ`. Take `⟨g, e', F, ik, φ, th, b1, b2, -⟩` from `h.dictLaws`.
+
+Conclude with `⟨th, hr, b1, b2⟩`. Conclude with `(congrArg (fun z => ‖τ z‖) (h.modelW k).2).trans (norm_neg_cmConstant_eq_at_all_embeddings τ)`. Conclude with `h.muUnit.2.2.2`. Conclude with `⟨hr, h.modelW⟩`. Conclude with `⟨x σ, h.familyUniformisationBasePointOrthogonal, hpin σ hσ⟩`.
+-/
 theorem exists_good_pin (T : Core D) (hQ : T.Q.Pins) (j : ℕ) (hj : InR D j) (c' : Coeff T.Q.l) (hle : T.Q.c.F ≤ c'.F)
     (d : DeltaDat (T.Q.Xo j) c' 0) (e : ℕ) (a1 : d.pd = 15 ^ e) (a2 : d.IsLev) (a3 : d.l₂.A = 1)
     (a4 : FnAlgClosed d.Xo₂ d.c₂) (a5 : ∀ s : ℂ ≃+* ℂ, (∀ a ∈ T.Q.c.F, s a = a) → ∀ a ∈ c'.F, s a ∈ c'.F)
@@ -481,6 +615,11 @@ theorem exists_good_pin (T : Core D) (hQ : T.Q.Pins) (j : ℕ) (hj : InR D j) (c
   · exact ⟨hr, h.modelW⟩
   · exact ⟨x σ, h.familyUniformisationBasePointOrthogonal, hpin σ hσ⟩
 
+/- English proof (translation)
+Take `⟨⟨ι, hι⟩, -, -, -⟩` from `GlobalTheory.Member.exists_iotaOK D T.Q hQ j hj`. Establish `h : ∀ σ, ∃ x, GoodEmb d.c₂ σ → ∃ C : GlobalTheory.Member.Ctx d.Xo₂ d.c₂ σ (D.sp.W j) D.R.r, C.OK ∧ C.ι = ι ∧ C.x₀ = x` using `fun σ => by`. Distinguish the cases in `hσ : GoodEmb d.c₂ σ`. Take `⟨C, hC, hCι⟩` from `(GlobalTheory.Member.exists_ctx D _ _ _ d.Xo₂ d.c₂ σ (D.sp.W j) D.R.r (D.sp.W_rank j hj.1 hj.2) ι hι (rank_pos T hQ j hj) a3 hσ).1`. Conclude with `⟨C.x₀, fun _ => ⟨C, hC, hCι, rfl⟩⟩`.
+
+Conclude with `⟨0, fun h => absurd h hσ⟩`. Use `choose x hx using h`. Take `⟨U, dict, Kf, h, -⟩` from `exists_good_pin T hQ j hj c' hle d e a1 a2 a3 a4 a5 ι hι x hx`. Conclude with `⟨U, dict, Kf, h⟩`.
+-/
 theorem exists_good_of_cover (T : Core D) (hQ : T.Q.Pins) (j : ℕ) (hj : InR D j) (c' : Coeff T.Q.l) (hle : T.Q.c.F ≤ c'.F)
     (d : DeltaDat (T.Q.Xo j) c' 0) (e : ℕ) (a1 : d.pd = 15 ^ e) (a2 : d.IsLev) (a3 : d.l₂.A = 1)
     (a4 : FnAlgClosed d.Xo₂ d.c₂) (a5 : ∀ s : ℂ ≃+* ℂ, (∀ a ∈ T.Q.c.F, s a = a) → ∀ a ∈ c'.F, s a ∈ c'.F) :
@@ -498,6 +637,11 @@ theorem exists_good_of_cover (T : Core D) (hQ : T.Q.Pins) (j : ℕ) (hj : InR D 
   obtain ⟨U, dict, Kf, h, -⟩ := exists_good_pin T hQ j hj c' hle d e a1 a2 a3 a4 a5 ι hι x hx
   exact ⟨U, dict, Kf, h⟩
 
+/- English proof (translation)
+Establish `hW : (D.sp.W j).rank = D.R.r` using `D.sp.W_rank j hj.1 hj.2`. Set `res : (d.c₂.F →+* ℂ) → (T.Q.c.F →+* ℂ)` to `fun σ => σ.comp ((d.eF : c'.F →+* d.c₂.F).comp (IntermediateField.inclusion hle).toRingHom)`. Establish `hres : ∀ σ, GoodEmb d.c₂ σ → GoodEmb T.Q.c (res σ)` using `fun _ h => h`. Establish `hι` using `(GlobalTheory.TupleCover.iotaOK_and_frame T hT j hj _ T.good_σ₀ _ (hT.spaceW j hj _ T.good_σ₀) hW).1`. Take `⟨U, dict, Kf, h, hp⟩` from `exists_good_pin T.toCore hT.pins j hj c' hle d e a1 a2 a3 a4 a5 _ hι (fun σ => T.x₀ j (res σ)) fun σ hσ => (GlobalTheory.Member.exists_ctx D _ _ _ d.Xo₂ d.c₂ σ (D.sp.W j) D.R.r hW _ hι (rank_pos T.toCore hT.pins j hj) a3 hσ).2.2 _ (GlobalTheory.TupleCover.iotaOK_and_frame T hT j …`.
+
+Conclude with `⟨U, dict, Kf, h, fun σ hσ => ⟨hW, hp σ hσ⟩⟩`.
+-/
 theorem exists_match_of_cover (T : CoreJ D) (hT : LawsJ T) (j : ℕ) (hj : InR D j) (c' : Coeff T.Q.l) (hle : T.Q.c.F ≤ c'.F)
     (d : DeltaDat (T.Q.Xo j) c' 0) (e : ℕ) (a1 : d.pd = 15 ^ e) (a2 : d.IsLev) (a3 : d.l₂.A = 1)
     (a4 : FnAlgClosed d.Xo₂ d.c₂) (a5 : ∀ s : ℂ ≃+* ℂ, (∀ a ∈ T.Q.c.F, s a = a) → ∀ a ∈ c'.F, s a ∈ c'.F) :
@@ -516,6 +660,19 @@ theorem exists_match_of_cover (T : CoreJ D) (hT : LawsJ T) (j : ℕ) (hj : InR D
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hpos` using `rank_pos T hQ j hj`. Take `⟨I, hK, hp, hI⟩` from `exists_half T.Q.H s (by rw [hQ.1.1]; exact hs) e`. Take `⟨l₂, l1, l2, l3, l4, l5, l6⟩` from `GlobalTheory.CoverHalf.exists_coverLevel T.Q.l hQ.2.1.2 (15 ^ e) I (Odd.pow (by decide)) (by rw [hQ.2.1.1]; exact h15.pow_left e) hK hp hI`. Take `⟨Xo₂⟩` from `GlobalTheory.Moduli.moduli_scheme_exists _ _ (T.Q.Dw j) l₂ hpos`. Take `⟨c₀, -⟩` from `GlobalTheory.TupleCover.exists_coeff_ge l₂ ⊥`.
+
+Take `⟨c₁, -, hc₁⟩` from `(GlobalTheory.GeomIrr.compNe_and_exists_fnAlgClosed _ _ _ _ Xo₂ c₀ hpos).2`. Use `haveI := c₁.fin`. Use `haveI := T.Q.c.fin`. Set `K : IntermediateField ℚ ℂ` to `T.Q.c.F ⊔ c₁.F`. Set `N : IntermediateField ℚ ℂ` to `IntermediateField.normalClosure ℚ K ℂ`.
+
+Establish `hKN : K ≤ N` using `IntermediateField.le_normalClosure K`. Establish `hN : FiniteDimensional ℚ N` using `inferInstance`. Establish `h1 : T.Q.c.F ≤ N` using `le_sup_left.trans hKN`. Establish `h2 : c₁.F ≤ N` using `le_sup_right.trans hKN`. Set `c' : Coeff T.Q.l` to `⟨N, hN, fun τ a => h1 (T.Q.c.conj τ a), h1 T.Q.c.zeta_mem, T.Q.c.le.trans h1⟩`.
+
+Set `c₂ : Coeff l₂` to `⟨N, hN, fun τ a => h2 (c₁.conj τ a), h2 c₁.zeta_mem, c₁.le.trans h2⟩`. Establish `hd : ∃ d : DeltaDat (T.Q.Xo j) c' 0, d.pd = 15 ^ e ∧ d.IsLev ∧ d.l₂.A = 1 ∧ FnAlgClosed d.Xo₂ d.c₂`. Take `⟨⟨pd', I', l₂', Xo₂', c₂', hF, r, mm, nab, cδ, φ₀⟩, a1, a2, a3, e₁, e₂, -, a4, a5⟩` from `GlobalTheory.LevelCover.exists_deltaDat_isLev _ _ _ _ (T.Q.Xo j) c' hpos 0 (15 ^ e) I l₂ Xo₂ c₂ rfl l1 l2 l3 l4 l5`. Use `⟨_, a1, a4, a3 ▸ l6, ?_⟩` and prove the remaining obligations. Simplify using `only at a3 e₁ e₂ ⊢`.
+
+Substitute `a3` using the available equality. Take `rfl` from `eq_of_heq e₁`. Take `rfl` from `eq_of_heq e₂`. Conclude with `hc₁ c₂ h2`. Take `⟨d, a1, a2, a3, a4⟩` from `hd`.
+
+Conclude with `⟨c', h1, d, a1, a2, a3, a4, fun s _ a ha => normalClosure_stable K s a ha⟩`.
+-/
 theorem exists_cover (T : Core D) (hQ : T.Q.Pins) (j : ℕ) (hj : InR D j) (s : ℤ) (hs : (15 : ℤ) ∣ s ^ 2 + D.host.d)
     (h15 : Nat.Coprime 15 (D.host.g 0 * D.host.g 1)) (e : ℕ) :
     ∃ (c' : Coeff T.Q.l) (_ : T.Q.c.F ≤ c'.F) (d : DeltaDat (T.Q.Xo j) c' 0), d.pd = 15 ^ e ∧ d.IsLev ∧ d.l₂.A = 1 ∧
@@ -549,6 +706,9 @@ theorem exists_cover (T : Core D) (hQ : T.Q.Pins) (j : ℕ) (hj : InR D j) (s : 
   obtain ⟨d, a1, a2, a3, a4⟩ := hd
   exact ⟨c', h1, d, a1, a2, a3, a4, fun s _ a ha => normalClosure_stable K s a ha⟩
 
+/- English proof (translation)
+Take `⟨c', h1, d, a1, a2, a3, a4, a5⟩` from `exists_cover T hQ j hj s hs h15 e`. Take `⟨U, dict, Kf, h⟩` from `exists_good_of_cover T hQ j hj c' h1 d e a1 a2 a3 a4 a5`. Conclude with `⟨_, _, h, by rw [← a1]; show d.l₂.M = _; rw [a2.2.1, hQ.2.1.1], (GlobalTheory.GeomIrr.compNe_and_exists_fnAlgClosed _ _ _ _ d.Xo₂ d.c₂ (rank_pos T hQ j hj)).1⟩`.
+-/
 theorem exists_good (T : Core D) (hQ : T.Q.Pins) (j : ℕ) (hj : InR D j) (s : ℤ) (hs : (15 : ℤ) ∣ s ^ 2 + D.host.d)
     (h15 : Nat.Coprime 15 (D.host.g 0 * D.host.g 1)) (e : ℕ) :
     ∃ (Y : Deep T j) (o : ℝ), Y.Good e o ∧ Y.d.l₂.M = D.host.g 0 * D.host.g 1 * 15 ^ e ∧ CompNe Y.d.Xo₂ Y.d.c₂ := by
@@ -557,6 +717,9 @@ theorem exists_good (T : Core D) (hQ : T.Q.Pins) (j : ℕ) (hj : InR D j) (s : �
   exact ⟨_, _, h, by rw [← a1]; show d.l₂.M = _; rw [a2.2.1, hQ.2.1.1],
     (GlobalTheory.GeomIrr.compNe_and_exists_fnAlgClosed _ _ _ _ d.Xo₂ d.c₂ (rank_pos T hQ j hj)).1⟩
 
+/- English proof (translation)
+Take `⟨c', h1, d, a1, a2, a3, a4, a5⟩` from `exists_cover T.toCore hT.pins j hj s hs h15 e`. Take `⟨U, dict, Kf, h⟩` from `exists_match_of_cover T hT j hj c' h1 d e a1 a2 a3 a4 a5`. Conclude with `⟨_, _, h⟩`.
+-/
 theorem exists_good_match (T : CoreJ D) (hT : LawsJ T) (j : ℕ) (hj : InR D j) (s : ℤ) (hs : (15 : ℤ) ∣ s ^ 2 + D.host.d)
     (h15 : Nat.Coprime 15 (D.host.g 0 * D.host.g 1)) (e : ℕ) :
     ∃ (Y : Deep T.toCore j) (o : ℝ), Y.Good e o ∧ Y.Match := by
@@ -564,12 +727,22 @@ theorem exists_good_match (T : CoreJ D) (hT : LawsJ T) (j : ℕ) (hj : InR D j) 
   obtain ⟨U, dict, Kf, h⟩ := exists_match_of_cover T hT j hj c' h1 d e a1 a2 a3 a4 a5
   exact ⟨_, _, h⟩
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ _ y₂ y' y _ _ _ _`. Establish `hB` using `GlobalTheory.abelianSchemeLaws_all.1.secBaseChange`. Conclude with `(evalAt_one _ _ y₂ (GlobalTheory.Frames.allTest_of_secBaseChange hB _ _ _ _ _ _ k y₂)).trans (evalAt_one _ _ y (GlobalTheory.Frames.allTest_of_secBaseChange hB _ _ _ _ _ _ k y)).symm`.
+-/
 theorem pull_one {T : Core D} {j : ℕ} (Y : Deep T j) : Y.Pull 1 1 := by
   intro k _ _ _ _ _ _ _ y₂ y' y _ _ _ _
   have hB := GlobalTheory.abelianSchemeLaws_all.1.secBaseChange
   exact (evalAt_one _ _ y₂ (GlobalTheory.Frames.allTest_of_secBaseChange hB _ _ _ _ _ _ k y₂)).trans
     (evalAt_one _ _ y (GlobalTheory.Frames.allTest_of_secBaseChange hB _ _ _ _ _ _ k y)).symm
 
+/- English proof (translation)
+Introduce `hp`. Establish `hB` using `GlobalTheory.abelianSchemeLaws_all.1.secBaseChange`. Take `⟨y'⟩` from `GlobalTheory.nonempty_frPt_complex GlobalTheory.closing_of_abelianSchemeLaws GlobalTheory.abelianSchemeLaws_all.2.secTwist _ _ _ _ (T.Q.Xo j) Y.c' hpos Y.c'.F.val.toRingHom`. Use `letI : Algebra Y.c'.F ℂ := Y.c'.F.val.toRingHom.toAlgebra`. Use `letI : Algebra T.Q.c.F ℂ := T.Q.c.F.val.toRingHom.toAlgebra`.
+
+Use `letI : Algebra Y.d.c₂.F ℂ := Y.d.c₂.F.val.toRingHom.toAlgebra`. Express the relevant statement in the definitionally equal form `FrPt (T.Q.Xo j) Y.c' ℂ at y'`. Establish `ho : AlgOver T.Q.c Y.c' Y.hle ℂ` using `fun _ => rfl`. Take `⟨y₂, hy⟩` from `h.lev.1.2.2.2.2.2.2.1 ℂ (fun _ => rfl) y'`. Use `hp ℂ ho (fun _ => rfl) y₂ y' (y'.res Y.hle ho) hy rfl rfl HEq.rfl` as an intermediate fact.
+
+Conclude with `zero_ne_one ((evalAt_zero _ _ y₂).symm.trans (this.trans (evalAt_one _ _ _ (GlobalTheory.Frames.allTest_of_secBaseChange hB _ _ _ _ _ _ _ _))))`.
+-/
 theorem not_pull_one_zero {T : Core D} {j : ℕ} (Y : Deep T j) {e : ℕ} {o : ℝ} (h : Y.Good e o)
     (hpos : 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q) : ¬ Y.Pull 1 0 := by
   intro hp

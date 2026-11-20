@@ -7,6 +7,13 @@ namespace GlobalTheory.AlmostEt
 
 open Finsupp
 
+/- English proof (translation)
+Break down `hg with (⟨⟨u, w⟩, rfl⟩ | ⟨⟨u, w⟩, rfl⟩) | ⟨a, rfl⟩` into its components or cases. Use `⟨{u, w}, fun C hC M _ _ D hD => ?_⟩` and prove the remaining obligations. Establish `hu : u ∈ C` using `hC (by simp)`. Establish `hw : w ∈ C` using `hC (by simp)`. Simplify using `[hD.add u hu w hw]`.
+
+Use `⟨{u, w}, fun C hC M _ _ D hD => ?_⟩` and prove the remaining obligations. Establish `hu : u ∈ C` using `hC (by simp)`. Establish `hw : w ∈ C` using `hC (by simp)`. Simplify using `[hD.mul u hu w hw, add_comm]`. Use `⟨∅, fun C _ M _ _ D hD => ?_⟩` and prove the remaining obligations.
+
+Simplify using `[hD.alg a]`.
+-/
 theorem kerTotal_gen_local {A S : Type} [CommRing A] [CommRing S] [Algebra A S]
     (g : S →₀ S)
     (hg : g ∈ ((Set.range fun x : S × S => single x.1 1 + single x.2 1 - single (x.1 + x.2) 1) ∪
@@ -28,6 +35,15 @@ theorem kerTotal_gen_local {A S : Type} [CommRing A] [CommRing S] [Algebra A S]
   · refine ⟨∅, fun C _ M _ _ D hD => ?_⟩
     simp [hD.alg a]
 
+/- English proof (translation)
+Introduce `A S _ _ _ n x y h`. Use `set v : S →₀ S := ∑ i, single (y i) (x i) with hv`. Establish `hlc : ∀ (M : Type) [AddCommGroup M] [Module S M] (D : S → M), Finsupp.linearCombination S D v = ∑ i, x i • D (y i)`. Introduce `M _ _ D`. Simplify using `[hv, map_sum, Finsupp.linearCombination_single]`.
+
+Establish `hmem : v ∈ KaehlerDifferential.kerTotal A S`. Rewrite using `[← KaehlerDifferential.kerTotal_eq, LinearMap.mem_ker, hlc, h]`. Take `⟨G, hGs, hvG⟩` from `Submodule.mem_span_finite_of_mem_span hmem`. Establish `key` using `fun g (hg : g ∈ G) => kerTotal_gen_local (A := A) g (hGs hg)`. Use `choose F hF using key`.
+
+Use `⟨G.attach.biUnion (fun g => F g.1 g.2), ?_⟩` and prove the remaining obligations. Introduce `C hC _ M _ _ D hD`. Rewrite using `[← hlc]`. Establish `hle : Submodule.span S (↑G : Set (S →₀ S)) ≤ LinearMap.ker (Finsupp.linearCombination S D)`. Rewrite using `[Submodule.span_le]`.
+
+Introduce `g hg`. Use `hF g hg C (fun z hz => hC ?_) M D hD` and prove the remaining obligations. Simplify using `only [Finset.coe_biUnion, Finset.coe_attach, Set.mem_univ, Set.iUnion_true, Set.mem_iUnion]`. Conclude with `⟨⟨g, hg⟩, hz⟩`. Conclude with `hle hvG`.
+-/
 theorem kaehler_rel_local : ∀ (A S : Type) [CommRing A] [CommRing S] [Algebra A S] (n : ℕ)
     (x y : Fin n → S), ∑ i, x i • KaehlerDifferential.D A S (y i) = 0 →
     ∃ T : Finset S, ∀ C : Subalgebra A S, (↑T : Set S) ⊆ C → (∀ i, y i ∈ C) →

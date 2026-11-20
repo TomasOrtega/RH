@@ -48,6 +48,9 @@ def th (F : G1 K (2 + 2) → ℂ) (g : G1 K (2 + 2)) : ℂ := ∑ᶠ q : Cos K, 
 def bf (β : ℝ → ℂ) (f : G1 K (2 + 2) → ℂ) (g : G1 K (2 + 2)) : ℂ :=
   β (HP 2 2 g) * Complex.exp ((((2 + 2 : ℕ) : ℝ) / 2 * HP 2 2 g : ℝ) : ℂ) * f g
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem theta_eq (β : ℝ → ℂ) (f : G1 K (2 + 2) → ℂ) : theta β f = th (bf β f) := rfl
 
 structure PFun (F : G1 K (2 + 2) → ℂ) : Prop where

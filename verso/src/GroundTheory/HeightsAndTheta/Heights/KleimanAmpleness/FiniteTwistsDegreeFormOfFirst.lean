@@ -16,6 +16,11 @@ section Graded
 
 variable {S : Type} [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω]
 
+/- English proof (translation)
+Use `conv_lhs => rw [f.as_sum]`. Use `conv_rhs => rw [f.as_sum]`. Simplify using `only [map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `he : ∑ i ∈ d.support, d i = e`.
+
+Rewrite using `[← hf (mem_support_iff.mp hd), Finsupp.weight_apply]`. Repeatedly rewrite using `[smul_eq_mul, Finsupp.sum, Pi.one_apply, mul_one]`. Simplify using `only [aeval_monomial, Finsupp.prod, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, he, Polynomial.algebraMap_apply, map_prod, map_pow, Polynomial.C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aeval_CX_of_isHomogeneous {r : ℕ} (η : Fin r → Ω) {f : MvPolynomial (Fin r) S} {e : ℕ}
     (hf : f.IsHomogeneous e) :
     aeval (fun j => Polynomial.C (η j) * Polynomial.X) f = Polynomial.C (aeval η f) * Polynomial.X ^ e := by
@@ -30,6 +35,25 @@ theorem aeval_CX_of_isHomogeneous {r : ℕ} (η : Fin r → Ω) {f : MvPolynomia
     Polynomial.algebraMap_apply, map_prod, map_pow, Polynomial.C_mul]
   ring
 
+/- English proof (translation)
+Use `set Q := Submodule.span (IndefiniteRowSideFullHecke.Kleiman2.genRing S η) (Set.range fun k => Polynomial.C (gen k) * Polynomial.X ^ deg k) with hQ`. Establish `hmem : ∀ (b : ℕ) (s : Ω), s ∈ H b → Polynomial.C s * Polynomial.X ^ b ∈ Q`. Introduce `b s hs`. Establish `key : ∀ t ∈ Submodule.span S {z | ∃ (k : Fin n) (f : MvPolynomial (Fin (r + 1)) S) (e : ℕ), f.IsHomogeneous e ∧ e + deg k = b ∧ z = aeval η f * gen k}, Polynomial.C t * Polynomial.X ^ b ∈ Q`. Introduce `t ht`.
+
+Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨k, f, e, hf, he, rfl⟩` from `hz`. Establish `hg : aeval (fun j => Polynomial.C (η j) * Polynomial.X) f ∈ IndefiniteRowSideFullHecke.Kleiman2.genRing S η`. Rewrite using `[IndefiniteRowSideFullHecke.Kleiman2.genRing, Algebra.adjoin_range_eq_range_aeval]`.
+
+Conclude with `⟨f, rfl⟩`. Establish `h1 : Polynomial.C (aeval η f * gen k) * Polynomial.X ^ b = (⟨_, hg⟩ : IndefiniteRowSideFullHecke.Kleiman2.genRing S η) • (Polynomial.C (gen k) * Polynomial.X ^ deg k)`. Rewrite using `[Subalgebra.smul_def, smul_eq_mul]`. Express the relevant statement in the definitionally equal form `_ = aeval (fun j => Polynomial.C (η j) * Polynomial.X) f * _`. Rewrite using `[aeval_CX_of_isHomogeneous η hf, ← he, pow_add, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Consider the case `zero => simp`. Consider the case `add a c _ _ ha hc`.
+
+Rewrite using `[map_add, add_mul]`. Conclude with `add_mem ha hc`. Consider the case `smul a z _ hz`. Establish `h1 : Polynomial.C (a • z) * Polynomial.X ^ b = (⟨algebraMap S (Polynomial Ω) a, Subalgebra.algebraMap_mem _ a⟩ : IndefiniteRowSideFullHecke.Kleiman2.genRing S η) • (Polynomial.C z * Polynomial.X ^ b)`. Rewrite using `[Subalgebra.smul_def, smul_eq_mul]`.
+
+Express the relevant statement in the definitionally equal form `_ = algebraMap S (Polynomial Ω) a * _`. Rewrite using `[Polynomial.algebraMap_apply, Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`. Conclude with `Submodule.smul_mem _ _ hz`.
+
+Conclude with `key s (hle b hs)`. Establish `heq : IndefiniteRowSideFullHecke.Kleiman2.powerSum S y γ β η = Q`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[IndefiniteRowSideFullHecke.Kleiman2.powerSum, Submodule.span_le]`. Introduce and unpack `_ ⟨b, s, hs, rfl⟩`.
+
+Conclude with `hmem b s (by rw [hH b]; exact hs)`. Rewrite using `[hQ, Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `Submodule.subset_span ⟨deg k, gen k, by rw [← hH (deg k)]; exact hgen k, rfl⟩`. Rewrite using `[Module.Finite.iff_fg, heq]`.
+
+Conclude with `Submodule.fg_span (Set.finite_range _)`.
+-/
 theorem powerSum_finite {K : Type} [Fintype K] {ι : K → Type} (y : (Σ k, ι k) → Ω) (γ β : K → ℤ) {r : ℕ}
     (η : Fin (r + 1) → Ω) (H : ℕ → Submodule S Ω) (hH : ∀ b : ℕ, H b = secOver S y (γ + b • β))
     {n : ℕ} (deg : Fin n → ℕ) (gen : Fin n → Ω) (hgen : ∀ k, gen k ∈ H (deg k))
@@ -85,6 +109,21 @@ theorem powerSum_finite {K : Type} [Fintype K] {ι : K → Type} (y : (Σ k, ι 
 
 end Graded
 
+/- English proof (translation)
+Introduce `S _ K _ _ ι _ Ω _ _ y γ β n η hS hy hη hgen`. Take `⟨hbase, hsec, hgenIff⟩` from `hSeg S K ι Ω y hy`. Choose the witnesses or unpack the hypotheses as in `⟨N, ⟨e⟩⟩ : ∃ N : ℕ, Nonempty ((∀ k, ι k) ≃ Fin (N + 1)) := by`. Establish `: Nonempty (∀ k, ι k)` using `⟨fun k => (hy k).choose⟩`. Conclude with `⟨Fintype.card (∀ k, ι k) - 1, ⟨(Fintype.equivFin _).trans (finCongr (Nat.succ_pred_eq_of_pos Fintype.card_pos).symm)⟩⟩`.
+
+Take `⟨G, B, hGB, hgenB⟩` from `hP S (Unit ⊕ K) (Sum.elim (fun _ : Unit => ∀ k, ι k) ι) Ω (segreJoin y) (Sum.inl ()) N e hbase (IndefiniteRowSideFullHecke.Kleiman2.pullDeg γ) (IndefiniteRowSideFullHecke.Kleiman2.pullDeg β)`. Establish `hpd : ∀ b : ℕ, (IndefiniteRowSideFullHecke.Kleiman2.pullDeg γ + b • IndefiniteRowSideFullHecke.Kleiman2.pullDeg β : Unit ⊕ K → ℤ) = IndefiniteRowSideFullHecke.Kleiman2.pullDeg (γ + b • β)`. Introduce `b`. Use function extensionality and compare the values at `o`. Apply the tactic sequence `cases o <;> simp [IndefiniteRowSideFullHecke.Kleiman2.pullDeg]`.
+
+Establish `hsecs : ∀ b : ℕ, (G.twist (B.pow b)).secs = secOver S y (γ + b • β)`. Introduce `b`. Rewrite using `[hGB b, hpd b, hsec]`. Choose the witnesses or unpack the hypotheses as in `⟨r, rfl⟩ : ∃ r, n = r + 1 := by`. Use `Nat.exists_eq_succ_of_ne_zero fun hn => ?_` and prove the remaining obligations.
+
+Substitute `hn` using the available equality. Take `⟨u, -, hu⟩` from `hgen (fun k => (hy k).choose) (fun k => (hy k).choose_spec)`. Simplify using `at hu`. Establish `hβ : ∀ j, η j ∈ secOver S (segreJoin y) (IndefiniteRowSideFullHecke.Kleiman2.pullDeg β)` using `fun j => by`. Rewrite using `[hsec]`.
+
+Conclude with `hη j`. Take `⟨hηB, hspan⟩` from `(hgenB (r + 1) η).mp ⟨hβ, (hgenIff β (r + 1) η).mpr hgen⟩`. Establish `hx : IndefiniteRowSideFullHecke.Kleiman2.blockVec (segreJoin y) (Sum.inl ()) ∘ e.symm ≠ 0`. Take `⟨i, hi⟩` from `hbase.1 (Sum.inl ())`. Introduce `h0`.
+
+Apply `hi` to reduce the goal to its premises. Establish `h1` using `congrFun h0 (e i)`. Express the relevant statement in the definitionally equal form `segreJoin y ⟨Sum.inl (), e.symm (e i)⟩ = 0 at h1`. Establish `h2 : e.symm (e i) = i` using `e.symm_apply_apply i`. Rewrite `h1` using `[h2]`.
+
+Conclude with `h1`. Take `⟨m, deg, gen, hgen1, hle⟩` from `hA S Ω N _ G B r η hx hηB hspan`. Conclude with `powerSum_finite y γ β η _ hsecs deg gen hgen1 hle`.
+-/
 theorem FiniteTwists.finiteTwists_degree_form_of_first (hSeg : SegreBase.Statement) (hP : BundlePair.Statement)
     (hA : Kleiman.FiniteTwists.Statement.{0, 0}) : IndefiniteRowSideFullHecke.Kleiman2.FiniteTwists.Statement := by
   intro S _ K _ _ ι _ Ω _ _ y γ β n η hS hy hη hgen
@@ -124,6 +163,9 @@ theorem FiniteTwists.finiteTwists_degree_form_of_first (hSeg : SegreBase.Stateme
   obtain ⟨m, deg, gen, hgen1, hle⟩ := hA S Ω N _ G B r η hx hηB hspan
   exact powerSum_finite y γ β η _ hsecs deg gen hgen1 hle
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨FiniteTwists.finiteTwists_degree_form_of_first hSeg hP, fun _ => Kleiman.FiniteTwists.full⟩`.
+-/
 theorem FiniteTwists.equiv (hSeg : SegreBase.Statement) (hP : BundlePair.Statement) :
     Kleiman.FiniteTwists.Statement.{0, 0} ↔ IndefiniteRowSideFullHecke.Kleiman2.FiniteTwists.Statement :=
   ⟨FiniteTwists.finiteTwists_degree_form_of_first hSeg hP, fun _ => Kleiman.FiniteTwists.full⟩

@@ -21,6 +21,13 @@ open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 namespace GlobalTheory.MovedKappaArith
 end GlobalTheory.MovedKappaArith
 namespace GlobalTheory.MovedKappaArith
+/- English proof (translation)
+Introduce `hPr hInp D Γ _ _ Pl0 T A Ks _ _ _ R ch hIs p hp x y κ κ' h1 h2`. Use `set F := Iop D (tor0 D D.host.ccK ch.S.Z.δ) (La0 D (tor0 D D.host.ccK ch.S.Z.δ) _ _) (Formalism.MainNotions.TaylorLogMetric.La D (tor0 D D.host.ccK ch.S.Z.δ) (GlobalTheory.MovedDict.srcLat ch.S.toGridChoice p x y) (GlobalTheory.MovedDict.tgtLat ch.S.toGridChoice p x y)) (ch.S.Z.e …`. Establish `hF : Differentiable ℂ F` using `_root_.GlobalTheory.MovedDict.Entire.differentiable_moved_operator_eval hPr hInp ch hIs p hp x y`. Take `⟨hsd, hsd'⟩` from `_root_.GlobalTheory.MovedSD.moved_series_decomposition hPr hInp ch hIs p hp x y`. Establish `hF0 : F ≠ 0` using `selfDualIntertwiner_baseVector_ne_zero ch.S.Z.crv ch.S.Z.pt0 (ch.S.Z.e0_is p hp) hsd hsd'`.
+
+Take `⟨α, hα⟩` from `GlobalTheory.NatFamily.exists_taylor_ne D hF hF0`. Establish `e` using `(h1 α).symm.trans (h2 α)`. Rewrite `e` using `[applyAt0_monomial, applyAt0_monomial, GlobalTheory.ProdThetaConj.taylor_const_mul hF, GlobalTheory.ProdThetaConj.taylor_const_mul hF]`. Establish `e'` using `(opp p).injective (mul_left_cancel₀ (ch.S.Z.c0 p).ne_zero e)`. Establish `hP : (α.prod fun v e => period ch.S.Z.δ v.1 ^ e) ≠ 0` using `Finsupp.prod_ne_zero_iff.2 fun v _ => pow_ne_zero _ (GlobalTheory.FunObj.period_ne_zero (GlobalTheory.TwoTorsionPt.delta_ne ch.S.Z.crv) v.1)`.
+
+Establish `hfac : (α.prod fun _ n => (n.factorial : ℂ)) ≠ 0` using `Finsupp.prod_ne_zero_iff.2 fun _ _ => Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _)`. Establish `e''` using `mul_left_cancel₀ (mul_ne_zero hP hfac) (by simpa only [mul_assoc] using e')`. Conclude with `mul_right_cancel₀ hα e''`.
+-/
 theorem movedKappa_unique : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
     (ch : Choice R), ch.Is → ∀ (p : Pair T), DefPair D.R.m p → ∀ (x : FinPt ch.G p.small) (y : FinPt ch.G p.big),
@@ -50,6 +57,9 @@ theorem movedKappa_unique : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ 
   exact mul_right_cancel₀ hα e''
 end GlobalTheory.MovedKappaArith
 namespace GlobalTheory.MovedKappaArith
+/- English proof (translation)
+Introduce `hPr hInp D Γ _ _ Pl0 T A Ks _ _ _ R ch hIs p hp x y κ hj`. Take `⟨κ₀, hm, hu, hj₀⟩` from `_root_.GlobalTheory.T.exists_unique_moved_kappa_jet hPr hInp ch hIs p hp x y`. Take `rfl` from `_root_.GlobalTheory.MovedKappaArith.movedKappa_unique hPr hInp ch hIs p hp x y κ κ₀ hj hj₀`. Conclude with `⟨hm, hu⟩`.
+-/
 theorem movedKappa_arithmetic : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
     (ch : Choice R), ch.Is → ∀ (p : Pair T), DefPair D.R.m p → ∀ (x : FinPt ch.G p.small) (y : FinPt ch.G p.big),
@@ -79,6 +89,9 @@ open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 open scoped TensorProduct
 open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.MovedKappaArith.movedKappa_arithmetic | exact _root_.GlobalTheory.MovedKappaArith.movedKappa_arithmetic | (intros; apply _root_.GlobalTheory.MovedKappaArith.movedKappa_arithmetic <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.movedKappa_rational_of_arithmetic : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type}
     {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
     (ch : Choice R), ch.Is → ∀ (p : Pair T), DefPair D.R.m p → ∀ (x : FinPt ch.G p.small) (y : FinPt ch.G p.big),

@@ -3,6 +3,9 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 
 open CrystallineSemistableComparison UpperTheory.Ru.crystallineComparison
 
+/- English proof (translation)
+Introduce `l _ K G Amp e he`. Use `⟨{ e := fun {M} _ j => GlueE.eMap e he.red M j lin := fun {M} _ _ j z v => GlueE.eMap_lin e he.red M j (per l K).z z v act := fun {M} _ _ j _ v => GlueE.eMap_act e he.red he.equi M j _ v phi := fun {M} _ _ j v => GlueE.eMap_phi e he.red he.phi M j v nat := fun {_ _ u hu _ _} _ _ …` and prove the remaining obligations. Introduce `M a j v n`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.Ru.crystallineComparison.ePin :
     ∀ (l : ℕ) [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) (G : Model l K → Prop) (Amp : ∀ M : Model l K, E.LineData M.X → Prop) (e : E.EtFam l K), e.Good → ∃ e' : EMap G (dat Amp), ∀ (M : Model l K) (a : (dat Amp).Ch M) (j : ℕ) (v : M.T j) (n : ℕ), (show (M.MS j).lim from e'.e a j v).1 n = e M n j (v.lev n) := by
   intro l _ K G Amp e he

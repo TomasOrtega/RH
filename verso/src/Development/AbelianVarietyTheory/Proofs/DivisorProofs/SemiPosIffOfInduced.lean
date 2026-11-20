@@ -16,6 +16,9 @@ open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.TrueGeo GlobalTh
 
 namespace GlobalTheory.TrueGeo.InducedSemiPos
 
+/- English proof (translation)
+Introduce `F _ _ C Y A P L k cf h` and use `(mSmooth_and_semiPos_iff F C Y A P L k cf h).2`.
+-/
 theorem semiPos_iff_of_induced : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y) (P : TrueGeo.Model Y) (L : HermLB P.p) (k : ℕ+) (cf : HeightOneSpectrum (𝓞 F) → ℝ), A.Induced P L k cf → (A.SemiPos ↔ L.SemiPos Y.dim) :=
   fun F _ _ C Y A P L k cf h => (mSmooth_and_semiPos_iff F C Y A P L k cf h).2
 

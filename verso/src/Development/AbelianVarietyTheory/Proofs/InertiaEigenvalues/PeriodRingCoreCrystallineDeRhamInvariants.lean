@@ -9,6 +9,13 @@ namespace GlobalTheory.MemLoc
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Introduce `K b hb`. Use `set b' : P.R.B := T.eB.symm b with hb'`. Establish `hfix : ∀ g : ↥(GK K), (P.PD K).actB g b' = b'`. Introduce `g`. Rewrite using `[P.PD_actB]`.
+
+Apply `T.eB.injective` to reduce the goal to its premises. Rewrite using `[T.actB, hb', RingEquiv.apply_symm_apply]`. Conclude with `hb g g.2`. Take `⟨c, hc⟩` from `(P.PD K).invB b' hfix`. Use `⟨IntermediateField.inclusion (inf_le_right : K0 K ≤ MaximalUnramifiedExtension l) c, (inf_le_left : K0 K ≤ K.1) c.2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hF.u]`. Establish `: algebraMap ↥(MaximalUnramifiedExtension l) P.R.B (IntermediateField.inclusion (inf_le_right : K0 K ≤ MaximalUnramifiedExtension l) c) = b'` using `hc`. Rewrite using `[this, hb', RingEquiv.apply_symm_apply]`.
+-/
 theorem Fits.invB {P : LocPrime l} {AI : LocAinf l P} {T : LocTied l P AI} {C : Core l}
     (hF : Fits T C) : C.InvB := by
   intro K b hb
@@ -25,6 +32,13 @@ theorem Fits.invB {P : LocPrime l} {AI : LocAinf l P} {T : LocTied l P AI} {C : 
   have : algebraMap ↥(MaximalUnramifiedExtension l) P.R.B (IntermediateField.inclusion (inf_le_right : K0 K ≤ MaximalUnramifiedExtension l) c) = b' := hc
   rw [this, hb', RingEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Introduce `K b hb`. Use `set b' : P.R.BdR := T.eD.symm b with hb'`. Establish `hfix : ∀ g : ↥(GK K), (P.PD K).actdR g b' = b'`. Introduce `g`. Rewrite using `[P.PD_actdR]`.
+
+Apply `T.eD.injective` to reduce the goal to its premises. Rewrite using `[T.actD, hb', RingEquiv.apply_symm_apply]`. Conclude with `hb g g.2`. Take `⟨c, hc⟩` from `(P.PD K).invdR b' hfix`. Use `⟨(c : Om l), c.2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hF.o]`. Establish `: algebraMap (Om l) P.R.BdR (c : Om l) = b'` using `hc`. Rewrite using `[this, hb', RingEquiv.apply_symm_apply]`.
+-/
 theorem Fits.invdR {P : LocPrime l} {AI : LocAinf l P} {T : LocTied l P AI} {C : Core l}
     (hF : Fits T C) : C.InvdR := by
   intro K b hb
@@ -41,6 +55,9 @@ theorem Fits.invdR {P : LocPrime l} {AI : LocAinf l P} {T : LocTied l P AI} {C :
   have : algebraMap (Om l) P.R.BdR (c : Om l) = b' := hc
   rw [this, hb', RingEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ hF` and use `⟨hF.invB, hF.invdR⟩`.
+-/
 theorem fits_inv : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI)
     (C : Core l), Fits T C → C.InvB ∧ C.InvdR :=
   fun _ _ _ _ _ _ hF => ⟨hF.invB, hF.invdR⟩

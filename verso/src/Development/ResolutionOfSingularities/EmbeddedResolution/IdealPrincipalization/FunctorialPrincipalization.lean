@@ -25,6 +25,9 @@ abbrev specMapOfFieldHom (k K : Type u) [Field k] [Field K] (f : k →+* K) :
     Spec (CommRingCat.of K) ⟶ Spec (CommRingCat.of k) :=
   Spec.map (CommRingCat.ofHom f)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem specMapOfFieldHom_eq (k K : Type u) [Field k] [Field K] (f : k →+* K) :
     specMapOfFieldHom k K f = Spec.map (CommRingCat.ofHom f) := rfl
 

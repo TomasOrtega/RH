@@ -9,6 +9,17 @@ open scoped Classical
 
 namespace GlobalTheory.LineForm
 
+/- English proof (translation)
+Introduce `L M h`. Take `⟨w, -, hw⟩` from `h.exists_units`. Use function extensionality and compare the values at `x`. Take `⟨⟨c, y⟩, hy⟩` from `x`. Establish `ha : y ∈ ptsIn p σ (M.B.U (pick (M.φ σ).isLB y))` using `mem_pick _ y`.
+
+Establish `hb : y ∈ ptsIn p σ (L.B.U (pick (L.φ σ).isLB y))` using `mem_pick _ y`. Use `set a := pick (M.φ σ).isLB y`. Use `set b := pick (L.φ σ).isLB y`. Establish `hy' : y ∈ c.e.source` using `hy`. Establish `ho` using `ChartGlue.isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (M.B.U a ⊓ L.B.U b))`.
+
+Establish `hm` using `ChartGlue.mem_over c.e hy' (mem_ptsIn_inf.2 ⟨ha, hb⟩)`. Establish `hg` using `c.holo _ (w a b).val`. Establish `hf : ContDiffAt ℂ 2 (ev p σ _ (w a b).val ∘ c.e.symm) (c.e y)` using `(SCV.analyticAt_of_differentiableOn (hg.mono fun v hv => ⟨hv.1, hv.2⟩) (ho.mem_nhds hm)).contDiffAt`. Establish `h0 : (ev p σ _ (w a b).val ∘ c.e.symm) (c.e y) ≠ 0` using `ev_ne_zero hm.2 (w a b).isUnit`. Establish `hL : ContDiffAt ℝ 2 (fun v => (L.φ σ).φ b (c.e.symm v)) (c.e y)` using `(L.cInf σ).contDiffAt c hy' hb`.
+
+Establish `hlog : ContDiffAt ℝ 2 (fun v => Real.log (‖(ev p σ _ (w a b).val ∘ c.e.symm) v‖ ^ 2)) (c.e y)` using `((hf.restrict_scalars ℝ).norm_sq ℂ).log (by simpa using h0)`. Establish `key : leviForm (fun v => (M.φ σ).φ a (c.e.symm v)) (c.e y) = leviForm (fun v => (L.φ σ).φ b (c.e.symm v)) (c.e y)`. Rewrite using `[leviForm_congr (u' := fun v => (L.φ σ).φ b (c.e.symm v) + Real.log (‖(ev p σ _ (w a b).val ∘ c.e.symm) v‖ ^ 2)), leviForm_add hL hlog, leviForm_log_normSq_eq_zero hf h0, add_zero]`. Use `filter_upwards [ho.mem_nhds hm] with v hv`. Conclude with `hw σ a b _ (mem_ptsIn_inf.1 hv.2).1 (mem_ptsIn_inf.1 hv.2).2`.
+
+Establish `eL : c1F hX σ L ⟨(c, y), hy⟩ = ofValues (HermFrame.ddc (fun v => (L.φ σ).φ b (c.e.symm v)) (c.e y))` using `rfl`. Establish `eM : c1F hX σ M ⟨(c, y), hy⟩ = ofValues (HermFrame.ddc (fun v => (M.φ σ).φ a (c.e.symm v)) (c.e y))` using `rfl`. Rewrite using `[eL, eM]`. Unfold `HermFrame.ddc`. Rewrite using `[key]`.
+-/
 theorem c1F_eq_of_isometric (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ)
     (hX : IsRegVar p D) (σ : k →+* ℂ) :
     ∀ L M : HermLB p, L.Isometric M → c1F hX σ L = c1F hX σ M := by

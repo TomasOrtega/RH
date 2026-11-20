@@ -17,18 +17,30 @@ open GlobalTheory.TraceConjugationCover
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Simplify using `only [Finsupp.linearCombination_apply, zOm_smul]`.
+-/
 theorem sumZ {Γ V : Type} [AddCommGroup V] [Module (Om l) V] [Module ℤ_[l] V] [IsScalarTower ℤ_[l] (Om l) V]
     (v : Γ → V) (F : Γ →₀ ℤ_[l]) : (F.sum fun g c => zOm l c • v g) = Finsupp.linearCombination ℤ_[l] v F := by
   simp only [Finsupp.linearCombination_apply, zOm_smul]
 
+/- English proof (translation)
+Simplify using `only [zOm_smul]`.
+-/
 theorem sumZ_fin {ι V : Type} [Fintype ι] [AddCommGroup V] [Module (Om l) V] [Module ℤ_[l] V]
     [IsScalarTower ℤ_[l] (Om l) V] (v : ι → V) (w : ι → ℤ_[l]) : ∑ i, zOm l (w i) • v i = ∑ i, w i • v i := by
   simp only [zOm_smul]
 
+/- English proof (translation)
+Rewrite using `[← zOm_smul]`. Simplify using `[zOm, map_pow, map_natCast]`.
+-/
 theorem lpow_smul {V : Type} [AddCommGroup V] [Module (Om l) V] [Module ℤ_[l] V] [IsScalarTower ℤ_[l] (Om l) V]
     (N : ℕ) (x : V) : (l : Om l) ^ N • x = ((l : ℤ_[l]) ^ N) • x := by
   rw [← zOm_smul]; simp [zOm, map_pow, map_natCast]
 
+/- English proof (translation)
+Establish `hz : LinearIndependent ℤ_[l] b` using `(LinearIndependent.iff_fractionRing ℤ_[l] ℚ_[l]).2 hb`. Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iffₛ.1 hz v w h i`.
+-/
 theorem coord_unique {ι V : Type} [Fintype ι] [AddCommGroup V] [Module ℚ_[l] V] [Module ℤ_[l] V]
     [IsScalarTower ℤ_[l] ℚ_[l] V] {b : ι → V} (hb : LinearIndependent ℚ_[l] b) {v w : ι → ℤ_[l]}
     (h : ∑ i, v i • b i = ∑ i, w i • b i) : v = w := by
@@ -36,6 +48,9 @@ theorem coord_unique {ι V : Type} [Fintype ι] [AddCommGroup V] [Module ℚ_[l]
   funext i
   exact Fintype.linearIndependent_iffₛ.1 hz v w h i
 
+/- English proof (translation)
+Rewrite using `[Finsupp.linearCombination_mapDomain]`. Establish `: (v ∘ (g * ·)) = (LinearMap.mulLeft ℤ_[l] (v g)) ∘ v` using `by funext h; simp [hv]`. Rewrite using `[this, ← Finsupp.apply_linearCombination]`. Both sides reduce to the same expression.
+-/
 theorem lc_translate {Γ A : Type} [Group Γ] [Ring A] [Module ℤ_[l] A] [SMulCommClass ℤ_[l] A A]
     [IsScalarTower ℤ_[l] A A] (v : Γ → A) (hv : ∀ g h, v (g * h) = v g * v h) (g : Γ) (F : Γ →₀ ℤ_[l]) :
     Finsupp.linearCombination ℤ_[l] v (F.mapDomain (g * ·)) = v g * Finsupp.linearCombination ℤ_[l] v F := by
@@ -44,13 +59,30 @@ theorem lc_translate {Γ A : Type} [Group Γ] [Ring A] [Module ℤ_[l] A] [SMulC
   rw [this, ← Finsupp.apply_linearCombination]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[tup, map_mul, Units.val_mul]`.
+-/
 theorem tup_mul {Γ : Type} [Group Γ] {a m : ℕ} (ρs : Fin m → (Γ →* GL (Fin a) (Om l))) (g h : Γ) :
     tup ρs (g * h) = tup ρs g * tup ρs h := by
   funext k; simp [tup, map_mul, Units.val_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[tup]`.
+-/
 theorem tup_one {Γ : Type} [Group Γ] {a m : ℕ} (ρs : Fin m → (Γ →* GL (Fin a) (Om l))) : tup ρs 1 = 1 := by
   funext k; simp [tup]
 
+/- English proof (translation)
+Establish `key : ∀ h, ((r h : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) = ∑ i, (∑ j, ((ρ h : GL (Fin d) ℤ_[l]) : Matrix (Fin d) (Fin d) ℤ_[l]) i j * e j) • b i`. Introduce `h`. Establish `h1` using `hR.one`. Establish `h2` using `hR.equi h`. Simplify using `only [zOm_smul] at h1 h2`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, Matrix.mul_one]`. Use `_ = ∑ j, e j • ((r h).val * b j) := by rw [Matrix.mul_sum]; simp only [Matrix.mul_smul]`. Use `_ = ∑ j, e j • ∑ i, ((ρ h).val i j) • b i := by simp only [h2]`. Use `_ = _ := by`.
+
+Simplify using `only [Finset.smul_sum, smul_smul, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by rw [mul_comm]`. Proceed by induction on `f using Finsupp.induction_linear with`. Consider the case `zero => simp`.
+
+Consider the case `add f g hf hg`. Rewrite using `[map_add, hf, hg, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← add_smul, Finsupp.sum_add_index' (by simp) (by intros; ring)]`. Consider the case `single h c`.
+
+Rewrite using `[Finsupp.linearCombination_single, key h, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_single_index (by simp), smul_smul]`.
+-/
 theorem coordsB {Γ : Type} [Group Γ] {a d : ℕ} {ρ : Γ →* GL (Fin d) ℤ_[l]} {r : Γ →* GL (Fin a) (Om l)}
     {b : Fin d → Matrix (Fin a) (Fin a) (Om l)} {e : Fin d → ℤ_[l]} (hR : Reads ρ r b e) (f : Γ →₀ ℤ_[l]) :
     Finsupp.linearCombination ℤ_[l] (fun h => ((r h : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l))) f =
@@ -80,6 +112,57 @@ theorem coordsB {Γ : Type} [Group Γ] {a d : ℕ} {ρ : Γ →* GL (Fin d) ℤ_
     refine Finset.sum_congr rfl fun i _ => ?_
     rw [Finsupp.sum_single_index (by simp), smul_smul]
 
+/- English proof (translation)
+Introduce `l _ Γ _ _ a r d ρ b e hR hind hspan c hlow n N hnN hN m ρs L t hcont hρL htL hLspan hone hstab cs happ`. Take `⟨u, hu⟩` from `GlobalTheory.T.galoisRepTuple_span_saturation_bound l Γ a m ρs t hone hstab`. Take `⟨M₁, hM₁⟩` from `GlobalTheory.T.trace_estimate_scaledProductSpanLattice l Γ a r m ρs t c N n cs hnN happ`. Use `⟨max (N + u) M₁, fun M hM => ?_⟩` and prove the remaining obligations. Establish `hMu : N + u ≤ M` using `le_trans (le_max_left _ _) hM`.
+
+Establish `hM1 : M₁ ≤ M` using `le_trans (le_max_right _ _) hM`. Take `⟨hstL, hstT⟩` from `GlobalTheory.T.scaledProductSpanLattice_stable_galoisRepTuple l Γ a m ρs t M hstab`. Take `⟨hentT, hspT⟩` from `GlobalTheory.T.scaledProductSpanLattice_entries_and_span l Γ a m ρs L t M hρL htL hLspan`. Take `⟨d', bb, hbbind, hbbmem, hbbco⟩` from `GlobalTheory.T.scaledProductSpanLattice_exists_padic_basis l Γ a m ρs t M hone hstab`. Take `⟨ρ', hρ'c, hact⟩` from `GlobalTheory.T.continuous_rep_of_matrixTuple_padic_basis l Γ a m ρs (latT ρs t M) d' bb hcont hbbind hbbmem hbbco hstT`.
+
+Establish `hW : ∀ H : Γ →₀ ℤ_[l], Finsupp.linearCombination ℤ_[l] (tup ρs) H ∈ latL t M → ∃ w : Fin d → ℤ_[l], Finsupp.linearCombination ℤ_[l] (fun h => ((r h : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l))) H = (l : Om l) ^ N • ∑ i, w i • b i`. Introduce `H hH`. Rewrite `hH` using `[← sumZ]`. Take `⟨H', hH'⟩` from `hu N M hMu H hH`. Rewrite `hH'` using `[sumZ, sumZ, lpow_smul]`.
+
+Take `⟨f', hf'⟩` from `GlobalTheory.T.galoisRepTuple_relation_mem_pow_span l Γ a r m ρs c N cs hlow happ (H - (l : ℤ_[l]) ^ N • H') (by`. Rewrite using `[sumZ, map_sub, map_smul, hH', sub_self])`. Rewrite `hf'` using `[sumZ, sumZ, map_sub, map_smul, lpow_smul]`. Use `⟨fun i => (f' + H').sum fun h c => c * ∑ j, ((ρ h : GL (Fin d) ℤ_[l]) : Matrix (Fin d) (Fin d) ℤ_[l]) i j * e j, ?_⟩` and prove the remaining obligations. Rewrite using `[← coordsB hR (f' + H'), map_add, lpow_smul, smul_add, ← hf', sub_add_cancel]`.
+
+Establish `hdec : ∀ s, ∃ (F : Γ →₀ ℤ_[l]) (y : Fin m → Matrix (Fin a) (Fin a) (Om l)), y ∈ latL t M ∧ bb s = Finsupp.linearCombination ℤ_[l] (tup ρs) F + y`. Introduce `s`. Take `⟨x, hx, y, hy, hxy⟩` from `Submodule.mem_sup.1 (hbbmem s)`. Take `⟨F, rfl⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 hx`. Conclude with `⟨F, y, hy, by rw [← hxy, Finsupp.linearCombination_apply]⟩`.
+
+Use `choose F y hy hFy using hdec`. Take `⟨P, hP⟩ : ∃ P : Matrix (Fin d) (Fin d') ℤ_[l], ∀ s, ∑ i, P i s • b i = Finsupp.linearCombination ℤ_[l] (fun h => ((r h : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l))) (F s)` from `⟨Matrix.of fun i s => (F s).sum fun h c => c * ∑ j, ((ρ h : GL (Fin d) ℤ_[l]) : Matrix (Fin d) (Fin d) ℤ_[l]) i j * e j, fun s => (coordsB hR (F s)).symm⟩`. Establish `hPz : ∀ z : Fin d' → ℤ_[l], ∑ i, (P *ᵥ z) i • b i = Finsupp.linearCombination ℤ_[l] (fun h => ((r h : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l))) (∑ s, z s • F s)`. Introduce `z`. Simplify using `only [map_sum, map_smul, ← hP, Finset.smul_sum, smul_smul, Matrix.mulVec, dotProduct, Finset.sum_smul]`.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun i _ => by rw [mul_comm]`. Establish `hCar : ∀ (z : Fin d' → ℤ_[l]) (G : Γ →₀ ℤ_[l]) (y0 : Fin m → Matrix (Fin a) (Fin a) (Om l)), y0 ∈ latL t M → ∑ s, z s • bb s = Finsupp.linearCombination ℤ_[l] (tup ρs) G + y0 → ∃ w : Fin d → ℤ_[l], ∑ i, (P *ᵥ z) i • b i = Finsupp.linearCombination ℤ_[l] (fun h => ((r h : GL (Fin …`. Introduce `z G y0 hy0 heq`. Take `⟨w, hw⟩` from `hW (∑ s, z s • F s - G) (by`.
+
+Establish `hLF : ∀ s, Finsupp.linearCombination ℤ_[l] (tup ρs) (F s) = bb s - y s` using `fun s => by rw [hFy s]; abel`. Establish `: Finsupp.linearCombination ℤ_[l] (tup ρs) (∑ s, z s • F s - G) = y0 - ∑ s, z s • y s`. Rewrite using `[map_sub, map_sum]`. Simplify using `only [map_smul, hLF, smul_sub, Finset.sum_sub_distrib, heq]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ hy0 (Submodule.sum_mem _ fun s _ => Submodule.smul_mem _ _ (hy s)))`. Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[hPz, ← hw, map_sub]`. Normalize the expressions using the abelian group laws.
+
+Establish `h1T : (1 : Fin m → Matrix (Fin a) (Fin a) (Om l)) ∈ latT ρs t M` using `by rw [← tup_one ρs]; exact tup_mem_latT ρs t M 1`. Take `⟨e', he'⟩` from `hbbco 1 h1T`. Establish `hrb : ∀ g (v : Fin d → ℤ_[l]), ((r g : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) * ∑ s, v s • b s = ∑ i, (((ρ g : GL (Fin d) ℤ_[l]) : Matrix (Fin d) (Fin d) ℤ_[l]) *ᵥ v) i • b i`. Introduce `g v`. Establish `h2` using `hR.equi g`.
+
+Simplify using `only [zOm_smul] at h2`. Rewrite using `[Matrix.mul_sum]`. Simplify using `only [Matrix.mul_smul, h2, Finset.smul_sum, smul_smul, Matrix.mulVec, dotProduct, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun i _ => by rw [mul_comm]`.
+
+Establish `hrmul : ∀ g h, ((r (g * h) : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) = ((r g : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) * ((r h : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l))` using `fun g h => by simp [map_mul, Units.val_mul]`. Use `⟨d', ρ', bb, e', P, hρ'c, fun s k i j => hentT _ (hbbmem s) k i j, hbbind, ?_, ?_, hbbmem, hbbco, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Use `Submodule.span_le.2 ?_ (hspT x hx)` and prove the remaining obligations. Introduce `v hv`.
+
+Take `⟨z, rfl⟩` from `hbbco v hv`. Use `Submodule.sum_mem _ fun s _ => ?_` and prove the remaining obligations. Rewrite using `[show zOm l (z s) = algebraMap ℚ_[l] (Om l) (algebraMap ℤ_[l] ℚ_[l] (z s)) from rfl, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨s, rfl⟩)`. Introduce `k`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `g j`. Use `congrFun (hact g j) k` as an intermediate fact. Simplify `this` using `only [Pi.mul_apply, Finset.sum_apply, Pi.smul_apply, tup]`. Use `congrFun he'.symm k` as an intermediate fact.
+
+Simplify `this` using `only [Finset.sum_apply, Pi.smul_apply, Pi.one_apply]`. Introduce `z G y0 hy0 heq`. Rewrite `heq` using `[sumZ_fin, sumZ]`. Take `⟨w, hw⟩` from `hCar z G y0 hy0 heq`. Conclude with `⟨w, by rw [sumZ_fin, sumZ, sumZ_fin]; exact hw⟩`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `g i j`. Establish `hz` using `hact g j`. Rewrite `hz` using `[sumZ_fin]`. Take `⟨w, hw⟩` from `hCar (fun s => ((ρ' g : GL (Fin d') ℤ_[l]) : Matrix (Fin d') (Fin d') ℤ_[l]) s j) ((F j).mapDomain (g * ·)) (tup ρs g * y j) (hstL g _ (hy j)) (by`.
+
+Rewrite using `[← hz, lc_translate _ (tup_mul ρs) g, hFy j, mul_add])`. Rewrite `hw` using `[lc_translate _ hrmul g, ← hP j, hrb, lpow_smul, Finset.smul_sum, ← Finset.sum_add_distrib]`. Simplify using `only [smul_smul, ← add_smul] at hw`. Use `congrFun (coord_unique hind hw) i` as an intermediate fact. Establish `e1 : (P * ((ρ' g : GL (Fin d') ℤ_[l]) : Matrix (Fin d') (Fin d') ℤ_[l])) i j = (P *ᵥ fun s => ((ρ' g : GL (Fin d') ℤ_[l]) : Matrix (Fin d') (Fin d') ℤ_[l]) s j) i`.
+
+Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Establish `e2 : (((ρ g : GL (Fin d) ℤ_[l]) : Matrix (Fin d) (Fin d) ℤ_[l]) * P) i j = (((ρ g : GL (Fin d) ℤ_[l]) : Matrix (Fin d) (Fin d) ℤ_[l]) *ᵥ fun s => P s j) i`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Rewrite using `[Matrix.sub_apply, e1, e2, this, add_sub_cancel_left]`. Conclude with `Dvd.dvd.mul_right (pow_dvd_pow _ hnN) _`.
+
+Establish `hb : ∀ j, ∃ f : Γ →₀ ℤ_[l], b j = Finsupp.linearCombination ℤ_[l] (fun h => ((r h : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l))) f` using `fun j => by`. Take `⟨f, hf⟩` from `hspan j`. Conclude with `⟨f, by rw [hf, sumZ]⟩`. Use `choose f hf using hb`. Establish `hz : ∀ j, ∃ z : Fin d' → ℤ_[l], Finsupp.linearCombination ℤ_[l] (tup ρs) (f j) = ∑ s, z s • bb s` using `fun j => by`.
+
+Take `⟨z, hz⟩` from `hbbco _ (Submodule.mem_sup_left (Finsupp.mem_span_range_iff_exists_finsupp.2 ⟨f j, by rw [Finsupp.linearCombination_apply]⟩) : Finsupp.linearCombination ℤ_[l] (tup ρs) (f j) ∈ latT ρs t M)`. Conclude with `⟨z, by rw [hz, sumZ_fin]⟩`. Use `choose z hz using hz`. Use `⟨Matrix.of fun s j => z j s, fun i j => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `hCar (z j) (f j) 0 (Submodule.zero_mem _) (by rw [add_zero, hz j])`.
+
+Rewrite `hw` using `[← hf j, lpow_smul, Finset.smul_sum]`. Establish `hbj : b j = ∑ i, (1 : Matrix (Fin d) (Fin d) ℤ_[l]) i j • b i`. Simplify using `[Matrix.one_apply, ite_smul]`. Rewrite `hw` using `[hbj, ← Finset.sum_add_distrib]`. Simplify using `only [smul_smul, ← add_smul] at hw`.
+
+Use `congrFun (coord_unique hind hw) i` as an intermediate fact. Establish `e1 : (P * Matrix.of fun s j => z j s) i j = (P *ᵥ z j) i`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Rewrite using `[Matrix.sub_apply, e1, this, add_sub_cancel_left]`. Conclude with `Dvd.dvd.mul_right (pow_dvd_pow _ hnN) _`.
+
+Introduce `i`. Take `⟨w, hw⟩` from `hCar e' (Finsupp.single 1 1) 0 (Submodule.zero_mem _) (by`. Rewrite using `[add_zero, Finsupp.linearCombination_single, one_smul, tup_one, he', sumZ_fin])`. Rewrite `hw` using `[Finsupp.linearCombination_single, one_smul, map_one, Units.val_one, ← hR.one, sumZ_fin, lpow_smul, Finset.smul_sum, ← Finset.sum_add_distrib]`. Simplify using `only [smul_smul, ← add_smul] at hw`.
+
+Use `congrFun (coord_unique hind hw) i` as an intermediate fact. Rewrite using `[Pi.sub_apply, this, add_sub_cancel_left]`. Conclude with `Dvd.dvd.mul_right (pow_dvd_pow _ hnN) _`. Introduce `s`. Use `hM₁ M hM1 (F s) (y s) (hy s)` as an intermediate fact.
+
+Rewrite using `[sumZ_fin, hP s, hFy s, ← sumZ, ← sumZ]`. Conclude with `this`.
+-/
 theorem layer : ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] (a : ℕ) (r : Γ →* GL (Fin a) (Om l)) (d : ℕ) (ρ : Γ →* GL (Fin d) ℤ_[l]) (b : Fin d → Matrix (Fin a) (Fin a) (Om l)) (e : Fin d → ℤ_[l]), Reads ρ r b e → LinearIndependent ℚ_[l] b → (∀ i, ∃ f : Γ →₀ ℤ_[l], b i = f.sum fun h c => zOm l c • ((r h : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l))) → ∀ c : ℕ, (∀ (n : ℕ) (f : Γ →₀ ℤ_[l]), (∀ g, ‖((f.sum fun h c => zOm l c • ((r h : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l))) * ((r g : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l))).trace‖ ≤ ((l : ℝ)⁻¹) ^ (n + c)) → ∃ f' : Γ →₀ ℤ_[l], (f.sum fun h c => zOm l c • ((r h : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l))) = (l : Om l) ^ n • (f'.sum fun h c => zOm l c • ((r h : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)))) → ∀ (n N : ℕ), n ≤ N → (∀ w : Fin d → ℤ_[l], ‖((l : Om l) ^ N • ∑ i, zOm l (w i) • b i).trace‖ ≤ ((l : ℝ) ^ n)⁻¹) → ∀ (m : ℕ) (ρs : Fin m → (Γ →* GL (Fin a) (Om l))) (L : Fin m → FinExt l) (t : Fin m → Finset (Matrix (Fin a) (Fin a) (Om l))), (∀ k, Continuous (ρs k)) → (∀ k g i j, ((ρs k g : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) i j ∈ (L k).1) → (∀ k, ∀ x ∈ t k, ∀ i j, x i j ∈ (L k).1) → (∀ k (x : Matrix (Fin a) (Fin a) (Om l)), (∀ i j, x i j ∈ (L k).1) → x ∈ Submodule.span ℚ_[l] (t k : Set (Matrix (Fin a) (Fin a) (Om l)))) → (∀ k, ∃ c' : Matrix (Fin a) (Fin a) (Om l) → ℤ_[l], ∑ y ∈ t k, zOm l (c' y) • y = 1) → (∀ k g, ∀ x ∈ t k, ∃ c' : Matrix (Fin a) (Fin a) (Om l) → ℤ_[l], ((ρs k g : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) * x = ∑ y ∈ t k, zOm l (c' y) • y) → ∀ cs : Fin m → Om l, (∀ g, ‖trc r g - ∑ k, cs k * trc (ρs k) g‖ ≤ ((l : ℝ)⁻¹) ^ (N + c)) → ∃ M₀ : ℕ, ∀ M, M₀ ≤ M → ∃ (d' : ℕ) (ρ' : Γ →* GL (Fin d') ℤ_[l]) (bb : Fin d' → Fin m → Matrix (Fin a) (Fin a) (Om l)) (e' : Fin d' → ℤ_[l]) (P : Matrix (Fin d) (Fin d') ℤ_[l]), Continuous ρ' ∧ (∀ s k i j, bb s k i j ∈ (L k).1) ∧ LinearIndependent ℚ_[l] bb ∧ (∀ x : Fin m → Matrix (Fin a) (Fin a) (Om l), (∀ k i j, x k i j ∈ (L k).1) → x ∈ Submodule.span ℚ_[l] (Set.range bb)) ∧ (∀ k, Reads ρ' (ρs k) (fun s => bb s k) e') ∧ (∀ s, bb s ∈ GlobalTheory.TraceConjugationCover.latT ρs t M) ∧ (∀ x ∈ GlobalTheory.TraceConjugationCover.latT ρs t M, ∃ z : Fin d' → ℤ_[l], x = ∑ s, zOm l (z s) • bb s) ∧ GlobalTheory.TraceConjugationCover.Carries r b ρs t M bb P N ∧ Onto (fun g => ((ρ g : GL (Fin d) ℤ_[l]) : Matrix (Fin d) (Fin d) ℤ_[l])) (fun g => ((ρ' g : GL (Fin d') ℤ_[l]) : Matrix (Fin d') (Fin d') ℤ_[l])) P n ∧ (∀ i, (l : ℤ_[l]) ^ n ∣ (P *ᵥ e' - e) i) ∧ ∀ s, ‖(∑ i, zOm l (P i s) • b i).trace - ∑ k, cs k * (bb s k).trace‖ ≤ ((l : ℝ) ^ n)⁻¹ := by
   intro l _ Γ _ _ a r d ρ b e hR hind hspan c hlow n N hnN hN m ρs L t hcont hρL htL hLspan hone hstab cs happ
   obtain ⟨u, hu⟩ := GlobalTheory.T.galoisRepTuple_span_saturation_bound l Γ a m ρs t hone hstab

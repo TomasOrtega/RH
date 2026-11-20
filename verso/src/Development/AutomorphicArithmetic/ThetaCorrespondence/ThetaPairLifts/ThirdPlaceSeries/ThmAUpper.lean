@@ -14,6 +14,11 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.BigTop GlobalTheo
 open GlobalTheory.FunObj.SqNum (nuH halfRank IsTor)
 noncomputable section
 namespace GlobalTheory.ThmAUpper
+/- English proof (translation)
+Introduce `hG hS hdl hF hT`. Use `_root_.GlobalTheory.BigTop.Fun.LeafConditions.mono (_root_.GlobalTheory.BigTop.Fun.LeafConditions.and (_root_.GlobalTheory.T.forallLeaves_fitted_of_gBig _ hS hdl hF) (_root_.GlobalTheory.T.forallLeaves_fitted_of_gBig _ hS hdl hT)) ?_` and prove the remaining obligations. Introduce `D L hT Gi Gl Kc Y cX ex Csz p CF d C CH hp hd`. Use `⟨hd, fun ⟨hf, ht⟩ w hw => ⟨_root_.GlobalTheory.T.qn_not_mem_asIdeal_of_mu_ne p CF d hp hd w hw, fun l hl hlw i j s Λ Λd z hs1 hs2 hΛ hΛd hz => ?_⟩⟩` and prove the remaining obligations. Establish `hw' : D.plEq (D.plEq.symm w) = w` using `D.plEq.apply_symm_apply w`.
+
+Establish `hl' : D.what₂.places.resChar (D.plEq.symm w) = l` using `resChar_eq _ hl (by rw [hw']; exact hlw)`. Establish `key` using `_root_.GlobalTheory.T.cm_abelian_field_data_of_toric_ratio_alt p CF d hp hd hG hf ht (D.plEq.symm w) (xiH_twisted p w hw).1 i j s Λ Λd z hs1 hs2 (by rw [← nuH_twisted p d.G w hw]; exact hΛ) (by rw [hl']; exact hΛd) hz`. Rewrite `key` using `[hw', hl']`. Conclude with `key`.
+-/
 theorem thmA_upper_alt : GlobalTheory.IndefiniteRowSideFullHecke.ToricSymbols.ToricRatioConjugates → _root_.GlobalTheory.BigTop.Fun.SettingAtPoint →
     (Closed FamHyp fun Fm _ => _root_.GlobalTheory.BigTop.EventuallyAtPoints Fm fun x _ i _ => |(Fm.L x i).logDerivativeAtOne| ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps) → FieldDat → TorEx →
     (_root_.GlobalTheory.BigTop.Fun.LeafConditions (Fitted @Comparison₂) fun p _ d _ _ => ThA d.G p.P.A3.A.μ0 p.R.mu) := by

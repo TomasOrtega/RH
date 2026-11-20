@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.ToricGeometry.FormallyUnramifiedO
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `torusAlgebraic_of_sections_of_veryAmple ThetaBundleSec.sections_pow_eq_thetaLevelChar thetaBundle_veryAmpleAt`.
+-/
 theorem torusAlgebraic_holds : TorusAlgebraic :=
   torusAlgebraic_of_sections_of_veryAmple ThetaBundleSec.sections_pow_eq_thetaLevelChar thetaBundle_veryAmpleAt
 

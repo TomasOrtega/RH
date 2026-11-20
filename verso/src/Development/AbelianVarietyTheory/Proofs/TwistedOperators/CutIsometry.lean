@@ -4,6 +4,11 @@ namespace GlobalTheory.TruncationIsometry
 
 open Matrix
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Formalism.UG.cT, hσ]`. Establish `h' : j ≠ i` using `fun e => h e.symm`.
+
+Simplify using `[Formalism.UG.cT, hσ, Matrix.one_apply_ne h, Matrix.one_apply_ne h']`.
+-/
 theorem cT_cut {R : Type} [CommRing R] {n : ℕ} (σ : R →+* R) (ε : R) (hσ : σ ε = ε)
     (M : Matrix (Fin n) (Fin n) R) :
     Formalism.UG.cT σ (ε • M + ((1 : R) - ε) • (1 : Matrix (Fin n) (Fin n) R)) =
@@ -15,6 +20,11 @@ theorem cT_cut {R : Type} [CommRing R] {n : ℕ} (σ : R →+* R) (ε : R) (hσ 
   · have h' : j ≠ i := fun e => h e.symm
     simp [Formalism.UG.cT, hσ, Matrix.one_apply_ne h, Matrix.one_apply_ne h']
 
+/- English proof (translation)
+Establish `h1 : ε * (1 - ε) = 0` using `by rw [mul_sub, mul_one, hε, sub_self]`. Establish `h2 : (1 - ε) * ε = 0` using `by rw [mul_comm, h1]`. Establish `h3 : (1 - ε) * (1 - ε) = 1 - ε` using `by rw [mul_sub, mul_one, h2, sub_zero]`. Rewrite using `[cT_cut σ ε hσ M]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, smul_add, smul_smul, hM, hε, h1, h2, h3, zero_smul, add_zero, zero_add]`.
+
+Rewrite using `[← add_smul, add_sub_cancel, one_smul]`.
+-/
 theorem cut_isometry {R : Type} [CommRing R] {n : ℕ} (σ : R →+* R) (ε : R) (hσ : σ ε = ε) (hε : ε * ε = ε)
     (J M : Matrix (Fin n) (Fin n) R) (hM : Formalism.UG.cT σ M * J * M = J) :
     Formalism.UG.cT σ (ε • M + ((1 : R) - ε) • (1 : Matrix (Fin n) (Fin n) R)) * J *

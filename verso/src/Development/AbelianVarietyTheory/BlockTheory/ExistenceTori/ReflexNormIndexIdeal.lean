@@ -20,6 +20,15 @@ def latIdeal (Λ : Lat E n) : Ideal (𝓞 E) := indexIdeal Λ.L Λ.inter
 def latNorm (Λ : Lat E n) (r : ℕ) : ℕ := Ideal.absNorm (latIdeal Λ) ^ r
 
 omit [IsCMField E] in
+/- English proof (translation)
+Take `⟨S, hS⟩` from `Λ.fg`. Take `⟨k, hk⟩` from `IsLocalization.exist_integer_multiples (𝓞 E)⁰ (S ×ˢ (Finset.univ : Finset (Fin n))) (fun t => (t.1 t.2 : E))`. Establish `hL : ∀ x ∈ Λ.L, (k : 𝓞 E) • x ∈ stdMod E n`. Establish `: Λ.L ≤ (stdMod E n).comap (LinearMap.lsmul (𝓞 E) (Fin n → E) (k : 𝓞 E))`. Rewrite using `[← hS, Submodule.span_le]`.
+
+Introduce `x hx`. Use `mem_stdMod.2 fun j => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hk (x, j) (by simpa using hx)`. Conclude with `⟨a, ha⟩`. Conclude with `fun x hx => this hx`.
+
+Introduce `h`. Establish `hm : (k : 𝓞 E) ^ n ∈ latIdeal Λ`. Use `Ideal.subset_span ⟨((k : 𝓞 E) : E) • LinearMap.id, fun x hx => ⟨hL x hx, Λ.L.smul_mem _ hx⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.det_smul]`. Simplify using the standard rewrite rules.
+
+Rewrite `hm` using `[h, Ideal.mem_bot]`. Conclude with `pow_ne_zero n (nonZeroDivisors.coe_ne_zero k) hm`.
+-/
 theorem latIdeal_ne_bot (Λ : Lat E n) : latIdeal Λ ≠ ⊥ := by
   classical
   obtain ⟨S, hS⟩ := Λ.fg
@@ -42,6 +51,9 @@ theorem latIdeal_ne_bot (Λ : Lat E n) : latIdeal Λ ≠ ⊥ := by
   exact pow_ne_zero n (nonZeroDivisors.coe_ne_zero k) hm
 
 omit [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[Ideal.eq_top_iff_one]`. Conclude with `Ideal.subset_span ⟨LinearMap.id, fun x hx => ⟨hx, hx⟩, by simp⟩`.
+-/
 theorem latIdeal_std : latIdeal (Lat.std E n) = ⊤ := by
   rw [Ideal.eq_top_iff_one]
   exact Ideal.subset_span ⟨LinearMap.id, fun x hx => ⟨hx, hx⟩, by simp⟩
@@ -71,6 +83,9 @@ def ReflexBasis : Prop :=
     (∀ i, (𝔠 i : Ideal (𝓞 E)) ^ h i = Ideal.span {γ i}) ∧
     ∀ i, ψ i ^ h i = reflexNorm Dw c (γ i : E)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨1, rfl, by simp only [reflexIdeal, Ideal.map_top, Ideal.span_singleton_one] simp [← Ideal.one_eq_top]⟩, fun s => by simp⟩`.
+-/
 theorem isBe_top : IsBe Dw c ⊤ 1 :=
   ⟨⟨1, rfl, by
     simp only [reflexIdeal, Ideal.map_top, Ideal.span_singleton_one]
@@ -85,17 +100,29 @@ def beIdeal (hK : ReflexLe Dw c) (𝔞 : Ideal (𝓞 E)) (h𝔞 : 𝔞 ≠ ⊥) 
 
 def be (hK : ReflexLe Dw c) (Λ : Lat E n) : c.F := beIdeal hK (latIdeal Λ) (latIdeal_ne_bot Λ)
 
+/- English proof (translation)
+Unfold `beIdeal`. Use `split_ifs with h`. Conclude with `h ▸ isBe_top Dw c`. Conclude with `(hK 𝔞 h𝔞).choose_spec`.
+-/
 theorem beIdeal_spec (hK : ReflexLe Dw c) (𝔞 : Ideal (𝓞 E)) (h𝔞 : 𝔞 ≠ ⊥) : IsBe Dw c 𝔞 (beIdeal hK 𝔞 h𝔞) := by
   unfold beIdeal
   split_ifs with h
   · exact h ▸ isBe_top Dw c
   · exact (hK 𝔞 h𝔞).choose_spec
 
+/- English proof (translation)
+The claim follows from `beIdeal_spec hK _ _`.
+-/
 theorem be_spec (hK : ReflexLe Dw c) (Λ : Lat E n) : IsBeLat Dw c Λ (be hK Λ) := beIdeal_spec hK _ _
 
+/- English proof (translation)
+Simplify using `[be, beIdeal, latIdeal_std]`.
+-/
 theorem be_std (hK : ReflexLe Dw c) : be hK (Lat.std E n) = 1 := by
   simp [be, beIdeal, latIdeal_std]
 
+/- English proof (translation)
+Simplify using `only [be, h]`.
+-/
 theorem be_congr (hK : ReflexLe Dw c) {n' : ℕ} {Λ : Lat E n} {Λ' : Lat E n'} (h : latIdeal Λ = latIdeal Λ') :
     be hK Λ = be hK Λ' := by
   simp only [be, h]

@@ -14,8 +14,16 @@ section SlopeTestRemainingChoices
 
 variable {H : Type} [Group H]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem ms_mem_rStab {u : H → ℂ} {r : H} : r ∈ rStab u ↔ ∀ x, u (x * r) = u x := Iff.rfl
 
+/- English proof (translation)
+Use extensionality with `r`. Rewrite using `[ms_mem_rStab, ms_mem_rStab]`. Prove the components needed by the constructor for the conclusion. Introduce `h x`. Simplify `h (k⁻¹ * x)` using `[mul_assoc]`.
+
+Introduce `h x`. Simplify `h (k * x)` using `[mul_assoc]`.
+-/
 theorem ms_rStab_left (u : H → ℂ) (k : H) : rStab (fun z => u (k * z)) = rStab u := by
   ext r
   rw [ms_mem_rStab, ms_mem_rStab]
@@ -25,6 +33,13 @@ theorem ms_rStab_left (u : H → ℂ) (k : H) : rStab (fun z => u (k * z)) = rSt
   · intro h x
     simpa [mul_assoc] using h (k * x)
 
+/- English proof (translation)
+Unfold `hint`. Rewrite using `[ms_rStab_left]`. Use `congr 1`. Use `Eq.trans ?_ (finsum_comp_equiv (MulAction.toPerm k : H ⧸ (rStab u ⊓ K) ≃ H ⧸ (rStab u ⊓ K)))` and prove the remaining obligations. Use `finsum_congr fun q => ?_` and prove the remaining obligations.
+
+Establish `hq : (MulAction.toPerm k : H ⧸ (rStab u ⊓ K) ≃ H ⧸ (rStab u ⊓ K)) q = ((k * q.out : H) : H ⧸ (rStab u ⊓ K))` using `by conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Rewrite using `[hq]`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (rStab u ⊓ K) (k * q.out)`. Rewrite using `[hh]`.
+
+Conclude with `(h.2.1 _).symm`.
+-/
 theorem ms_hint_left (K : Subgroup H) (u : H → ℂ) (k : H) :
     hint K (fun z => u (k * z)) = hint K u := by
   unfold hint
@@ -41,6 +56,9 @@ theorem ms_hint_left (K : Subgroup H) (u : H → ℂ) (k : H) :
   rw [hh]
   exact (h.2.1 _).symm
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Apply `h` to reduce the goal to its premises. Unfold `hint`. Simplify using `[hc]`.
+-/
 theorem ms_exists_of_hint_ne_zero (K : Subgroup H) (u : H → ℂ) (h : hint K u ≠ 0) : ∃ z, u z ≠ 0 := by
   by_contra hc
   push Not at hc
@@ -50,6 +68,17 @@ theorem ms_exists_of_hint_ne_zero (K : Subgroup H) (u : H → ℂ) (h : hint K u
 
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
+/- English proof (translation)
+Use `⟨h₁.1, h₁.2.1, ?_, ?_⟩` and prove the remaining obligations. Use `HasCompactSupport.intro (h₁.2.2.1.isCompact.mul h₂.2.2.1.isCompact) fun y hy => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Unfold `gconv at hne`. Take `⟨z, hz⟩` from `ms_exists_of_hint_ne_zero _ _ hne`.
+
+Apply `hy` to reduce the goal to its premises. Establish `hz1 : f₁ z ≠ 0` using `left_ne_zero_of_mul hz`. Establish `hz2 : f₂ (z⁻¹ * y) ≠ 0` using `right_ne_zero_of_mul hz`. Establish `hm` using `Set.mul_mem_mul (subset_tsupport _ hz1) (subset_tsupport _ hz2)`. Simplify using `using hm`.
+
+Introduce `k₁ hk₁ k₂ hk₂ g`. Unfold `gconv`. Use `set u : GLw n w → ℂ := fun z => f₁ z * f₂ (z⁻¹ * g) with hu`. Establish `e1 : (fun z => f₁ z * f₂ (z⁻¹ * (k₁ * g * k₂))) = fun z => u (k₁⁻¹ * z)`. Use function extensionality and compare the values at `z`.
+
+Establish `a1 : f₂ (z⁻¹ * (k₁ * g * k₂)) = f₂ (z⁻¹ * k₁ * g)`. Rewrite using `[show z⁻¹ * (k₁ * g * k₂) = 1 * (z⁻¹ * k₁ * g) * k₂ by group]`. Conclude with `h₂.2.2.2 1 (one_mem _) k₂ hk₂ _`. Establish `a2 : f₁ (k₁⁻¹ * z) = f₁ z`. Use `h₁.2.2.2 k₁⁻¹ (inv_mem hk₁) 1 (one_mem _) z` as an intermediate fact.
+
+Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Use `show _ = f₁ (k₁⁻¹ * z) * f₂ ((k₁⁻¹ * z)⁻¹ * g)`. Rewrite using `[a1, a2, show (k₁⁻¹ * z)⁻¹ * g = z⁻¹ * k₁ * g by group]`. Rewrite using `[e1]`. Conclude with `ms_hint_left _ u k₁⁻¹`.
+-/
 theorem isHk_gconv {w : Pl E} (K' : Subgroup (GLw n w)) (f₁ f₂ : GLw n w → ℂ)
     (h₁ : IsHk K' f₁) (h₂ : IsHk K' f₂) : IsHk K' (gconv f₁ f₂) := by
   refine ⟨h₁.1, h₁.2.1, ?_, ?_⟩
@@ -78,6 +107,9 @@ theorem isHk_gconv {w : Pl E} (K' : Subgroup (GLw n w)) (f₁ f₂ : GLw n w →
     rw [e1]
     exact ms_hint_left _ u k₁⁻¹
 
+/- English proof (translation)
+The claim follows from `| 0 => hf | N + 1 => isHk_gconv K' f (gpow f N) hf (isHk_gpow K' f hf N)`.
+-/
 theorem isHk_gpow {w : Pl E} (K' : Subgroup (GLw n w)) (f : GLw n w → ℂ) (hf : IsHk K' f) :
     ∀ N, IsHk K' (gpow f N)
   | 0 => hf
@@ -85,6 +117,15 @@ theorem isHk_gpow {w : Pl E} (K' : Subgroup (GLw n w)) (f : GLw n w → ℂ) (hf
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `E _ _ _ n a b h w K' hKo hKK hnorm X hX hXu f hf N m`. Take `⟨-, hct, hprod, -⟩` from `hL E n a b h w K' hKo hKK hnorm X hX hXu`. Establish `hpow` using `isHk_gpow K' f hf`. Establish `key : ∀ N, ∀ x ∈ X, ∀ z ∈ X, phi3 h w (gpow f N) x z = mpow X (phi3 h w f) N x z`. Introduce `N`.
+
+Proceed by induction on `N with`. Consider the case `zero => intro x _ z _`. Both sides reduce to the same expression. Consider the case `succ N ih`. Introduce `x hx z hz`.
+
+Use function extensionality and compare the values at `m`. Rewrite using `[show gpow f (N + 1) = gconv f (gpow f N) from rfl, hprod f (gpow f N) hf (hpow N) x hx z hz m]`. Use `show _ = ((X.card : ℂ))⁻¹ * ∑ y ∈ X, mconv (phi3 h w f x y) (mpow X (phi3 h w f) N y z) m`. Use `congr 1`. Use `Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations.
+
+Rewrite using `[ih y hy z hz]`. Rewrite using `[hct _ (hpow N) m]`. Use `congr 1`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[key N x hx x hx]`.
+-/
 theorem split_place_powers_of_local_ops (hL : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], LocOpUniformizer E) : SplitPlaceConstantTermPowers := by
   intro E _ _ _ n a b h w K' hKo hKK hnorm X hX hXu f hf N m
   obtain ⟨-, hct, hprod, -⟩ := hL E n a b h w K' hKo hKK hnorm X hX hXu
@@ -106,6 +147,15 @@ theorem split_place_powers_of_local_ops (hL : ∀ (E : Type) [Field E] [NumberFi
   refine Finset.sum_congr rfl fun x hx => ?_
   rw [key N x hx x hx]
 
+/- English proof (translation)
+Introduce `E _ _ _ _ n a w hw hUL μ K' hKo hKK hnorm hlev X hX hXu f hf ha N`. Establish `hpow` using `isHk_gpow K' f hf N`. Establish `hULt : UL n w = ⊤` using `eq_top_iff.2 fun g _ => hUL g`. Establish `hcl : IsClosed (UL n w : Set (GLw n w))`. Rewrite using `[hULt]`.
+
+Conclude with `isClosed_univ`. Establish `hH : IsHecke (K'.subgroupOf (UL n w)) (fun u : UL n w => gpow f N (u : GLw n w))`. Use `⟨hpow.2.2.1.comp_isClosedEmbedding hcl.isClosedEmbedding_subtypeVal, fun k hk x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `hpow.2.2.2 (k : GLw n w) (Subgroup.mem_subgroupOf.1 hk) 1 (one_mem _) (x : GLw n w)` as an intermediate fact. Simplify using `using this`.
+
+Use `hpow.2.2.2 1 (one_mem _) (k : GLw n w) (Subgroup.mem_subgroupOf.1 hk) (x : GLw n w)` as an intermediate fact. Simplify using `using this`. Establish `hM` using `h3 E n a ha w hw μ (K'.subgroupOf (UL n w)) hlev _ hH`. Establish `hφ : ctMu (Nat.add_sub_cancel' ha) w μ (fun u : UL n w => gpow f N (u : GLw n w)) = splitPlaceMackeyTraceTwist (Nat.add_sub_cancel' ha) w μ X f N`. Use function extensionality and compare the values at `m`.
+
+Unfold `ctMu splitPlaceMackeyTraceTwist`. Rewrite using `[← hP E n a (n - a) (Nat.add_sub_cancel' ha) w K' hKo hKK hnorm X hX hXu f hf N m]`. Simplify using `[toSub, hUL]`. Rewrite using `[← hφ]`. Conclude with `hM`.
+-/
 theorem match_split_place_of_powers (h3 : PositivityTheory.Rg.Bc.ArchbcB.B.M3) (hP : SplitPlaceConstantTermPowers) : MatchSplitPlace := by
   intro E _ _ _ _ n a w hw hUL μ K' hKo hKK hnorm hlev X hX hXu f hf ha N
   have hpow := isHk_gpow K' f hf N

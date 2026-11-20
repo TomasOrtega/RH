@@ -24,6 +24,13 @@ namespace GlobalTheory.ThK.ConeEuler.CompIntegral
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {B : Base F E} {n : ℕ} {X : Spc F E n} {K : Subgroup (UA σ X.J)}
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact absurd hw List.not_mem_nil`. Consider the case `cons x xs ih`. Rewrite using `[List.map_cons, List.prod_cons]`. Take `⟨hx, hxs⟩` from `List.nodup_cons.1 hl`.
+
+Distinguish the cases in `h : x = w`. Substitute `h` using the available equality. Rewrite using `[List.prod_eq_one, mul_one]`. Introduce `y hy`. Take `⟨v, hv, rfl⟩` from `List.mem_map.1 hy`.
+
+Conclude with `hf v (List.mem_cons_of_mem _ hv) fun e => hx (e ▸ hv)`. Rewrite using `[hf x List.mem_cons_self h, one_mul]`. Conclude with `ih hxs ((List.mem_cons.1 hw).resolve_left (Ne.symm h)) fun v hv => hf v (List.mem_cons_of_mem _ hv)`.
+-/
 theorem list_prod_map_single {α M : Type} [Monoid M] (l : List α) (hl : l.Nodup) {w : α} (hw : w ∈ l) (f : α → M)
     (hf : ∀ v ∈ l, v ≠ w → f v = 1) : (l.map f).prod = f w := by
   induction l with
@@ -51,11 +58,23 @@ def atK (hK : IsStab B K) (v : Pl F) : K →* KAt K (evFin F v) :=
 def compT (hK : IsStab B K) (T : Finset (Pl F)) : K →* KAt K (evI F) × ((v : T) → KAt K (evFin F v.1)) :=
   (archK hK).prod (Pi.monoidHom fun v : T => atK hK v.1)
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `continuous_components F E σ n X.J`. Use `Continuous.prodMk ((h2.comp continuous_subtype_val).subtype_mk _) (continuous_pi fun v => ?_)` and prove the remaining obligations. Conclude with `((h1 v.1).comp continuous_subtype_val).subtype_mk _`.
+-/
 theorem continuous_compT (hK : IsStab B K) (T : Finset (Pl F)) : Continuous (compT hK T) := by
   obtain ⟨h1, h2⟩ := continuous_components F E σ n X.J
   refine Continuous.prodMk ((h2.comp continuous_subtype_val).subtype_mk _) (continuous_pi fun v => ?_)
   exact ((h1 v.1).comp continuous_subtype_val).subtype_mk _
 
+/- English proof (translation)
+Introduce and unpack `⟨a, b⟩`. Use `set l : List T := (Finset.univ : Finset T).toList with hl`. Use `set k0 : UA σ X.J := a.1 * (l.map fun v => (b v).1).prod with hk0`. Establish `hmem : k0 ∈ K` using `mul_mem a.2.1 (K.list_prod_mem fun x hx => by`. Take `⟨v, -, rfl⟩` from `List.mem_map.1 hx`.
+
+Conclude with `(b v).2.1)`. Use `⟨⟨k0, hmem⟩, Prod.ext (Subtype.ext ?_) (funext fun w => Subtype.ext ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `compArch σ X.J k0 = a.1`. Rewrite using `[hk0, map_mul, map_list_prod, ((SuppOne.comp_of_supp F E σ n X a.1).2 a.2.2).1, List.map_map, List.prod_eq_one, mul_one]`. Introduce `y hy`.
+
+Take `⟨v, -, rfl⟩` from `List.mem_map.1 hy`. Conclude with `((SuppOne.comp_of_supp F E σ n X (b v).1).1 v.1 (b v).2.2).2.1`. Express the relevant statement in the definitionally equal form `compAt σ X.J w.1 k0 = (b w).1`. Rewrite using `[hk0, map_mul, map_list_prod, ((SuppOne.comp_of_supp F E σ n X a.1).2 a.2.2).2 w.1, one_mul, List.map_map, list_prod_map_single l (Finset.nodup_toList _) (Finset.mem_toList.2 (Finset.mem_univ w))]`. Conclude with `((SuppOne.comp_of_supp F E σ n X (b w).1).1 w.1 (b w).2.2).1`.
+
+Introduce `v _ hv`. Conclude with `((SuppOne.comp_of_supp F E σ n X (b v).1).1 v.1 (b v).2.2).2.2 w.1 fun e => hv (Subtype.ext e.symm)`.
+-/
 theorem surjective_compT (hK : IsStab B K) (T : Finset (Pl F)) : Function.Surjective (compT hK T) := by
   classical
   rintro ⟨a, b⟩
@@ -81,6 +100,29 @@ theorem surjective_compT (hK : IsStab B K) (T : Finset (Pl F)) : Function.Surjec
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 200000 in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n r s X hB hX K hK μK hμK μKI hKI μKv hKv`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Take `⟨hTG, hLC, hSC, hT2⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ n X.J`. Establish `hKc : IsCompact (K : Set (UA σ X.J))`. Establish `e : (K : Set (UA σ X.J)) = (GlobalTheory.StabHaar.stabK (σ` using `σ) B X : Set (UA σ X.J)) := Set.ext fun g => hK g`.
+
+Take `⟨C, hC, hsub⟩` from `GlobalTheory.T.relatively_compact_stabilizer F E σ B n X r s hB hX`. Rewrite using `[e]`. Conclude with `hC.of_isClosed_subset (GlobalTheory.StabHaar.isClosed_stabK B X (GlobalTheory.T.isClosed_adelic_lattice_closure F E n X hX.lat)) hsub`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hKc`. Use `haveI : CompactSpace (KAt K (evI F)) := isCompact_iff_compactSpace.1 (isCompact_KAt hKc _)`.
+
+Use `haveI : ∀ v : Pl F, CompactSpace (KAt K (evFin F v)) := fun v => isCompact_iff_compactSpace.1 (isCompact_KAt hKc _)`. Use `haveI : IsFiniteMeasure μK := inferInstance`. Establish `hpos : 0 < μK Set.univ` using `(isOpen_univ.measure_pos μK Set.univ_nonempty)`. Use `⟨(μK Set.univ).toReal, ENNReal.toReal_pos hpos.ne' (measure_ne_top _ _), fun T a b ha hb => ?_⟩` and prove the remaining obligations. Use `haveI := hKI.1`.
+
+Use `haveI : IsProbabilityMeasure μKI := ⟨hKI.2⟩`. Use `haveI := fun v => (hKv v).1`. Use `haveI : ∀ v, IsProbabilityMeasure (μKv v) := fun v => ⟨(hKv v).2⟩`. Use `set π := CompIntegral.compT hK T with hπdef`. Establish `hπc : Continuous π` using `CompIntegral.continuous_compT hK T`.
+
+Use `haveI : ∀ v : Pl F, MeasurableMul (KAt K (evFin F v)) := fun v => inferInstance`. Use `haveI : MeasurableMul (KAt K (evI F)) := inferInstance`. Use `haveI : ∀ v : Pl F, BorelSpace (KAt K (evFin F v)) := fun v => inferInstance`. Use `haveI : ∀ v : Pl F, SecondCountableTopology (KAt K (evFin F v)) := fun v => inferInstance`. Use `haveI : ∀ v : Pl F, IsTopologicalGroup (KAt K (evFin F v)) := fun v => inferInstance`.
+
+Use `haveI hpiH : (Measure.pi fun v : T => μKv v.1).IsHaarMeasure := Measure.pi.isHaarMeasure _`. Use `set P := μKI.prod (Measure.pi fun v : T => μKv v.1) with hP`. Use `haveI hPH : P.IsHaarMeasure := Measure.prod.instIsHaarMeasure _ _`. Establish `hPu : P Set.univ = 1` using `measure_univ`. Use `haveI : Measure.IsMulLeftInvariant (μK.map π) := isMulLeftInvariant_map π.toMulHom hπc.measurable (CompIntegral.surjective_compT hK T)`.
+
+Establish `h1` using `Measure.isMulInvariant_eq_smul_of_compactSpace (μK.map π) P`. Establish `h2 : μK.map π Set.univ = μK Set.univ`. Rewrite using `[Measure.map_apply hπc.measurable MeasurableSet.univ, Set.preimage_univ]`. Establish `h3 : ((Measure.haarScalarFactor (μK.map π) P : ℝ≥0) : ENNReal) = μK Set.univ`. Use `congrArg (fun m : Measure _ => m Set.univ) h1` as an intermediate fact.
+
+Simplify using `only [Measure.smul_apply, hPu, ENNReal.smul_def, smul_eq_mul, mul_one] at this`. Rewrite using `[← h2, this]`. Establish `hν : μK.map π = μK Set.univ • P`. Rewrite using `[h1, ENNReal.smul_def, h3]`. Use `set f : KAt K (evI F) × ((v : T) → KAt K (evFin F v.1)) → ℂ := fun x => a x.1.1 * ∏ v : T, b v.1 (x.2 v).1 with hf`.
+
+Establish `hcomp : (fun k : K => a (compArch σ X.J k.1) * ∏ v ∈ T, b v (compAt σ X.J v k.1)) = f ∘ π`. Use function extensionality and compare the values at `k`. Use `show a (compArch σ X.J k.1) * ∏ v ∈ T, b v (compAt σ X.J v k.1) = a (π k).1.1 * ∏ v : T, b v.1 ((π k).2 v).1`. Rewrite using `[← Finset.prod_coe_sort T]`. Both sides reduce to the same expression.
+
+Establish `hfP : Integrable f P` using `ha.mul_prod (Integrable.fintype_prod_dep fun v : T => hb v.1 v.2)`. Establish `hfν : Integrable f (μK.map π)`. Rewrite using `[hν]`. Conclude with `hfP.smul_measure (measure_ne_top _ _)`. Use `⟨hcomp ▸ (integrable_map_measure hfν.aestronglyMeasurable hπc.measurable.aemeasurable).1 hfν, ?_⟩` and prove the remaining obligations.
+
+Establish `hI` using `integral_map hπc.measurable.aemeasurable hfν.aestronglyMeasurable`. Establish `hPint : ∫ x, f x ∂P = (∫ k, a k.1 ∂μKI) * ∏ v ∈ T, ∫ k, b v k.1 ∂(μKv v)`. Rewrite using `[hP, hf, integral_prod_mul (fun x : KAt K (evI F) => a x.1) (fun y : (v : T) → KAt K (evFin F v.1) => ∏ v : T, b v.1 (y v).1), integral_fintype_prod_eq_prod (fun v : T => fun k : KAt K (evFin F v.1) => b v.1 k.1)]`. Conclude with `congrArg _ (Finset.prod_coe_sort T fun v => ∫ k, b v k.1 ∂(μKv v))`. Rewrite using `[hcomp, Function.comp_def, ← hI, hν, integral_smul_measure, hPint, Complex.real_smul, mul_assoc]`.
+-/
 theorem integral_components : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (B : Base F E) {n r s : ℕ} {X : Spc F E n}, B.IsGood σ → X.IsHerm σ B r s →
     ∀ {K : Subgroup (UA σ X.J)}, IsStab B K →

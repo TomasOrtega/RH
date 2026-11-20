@@ -159,24 +159,39 @@ section API
 
 variable {V : HSp D} {β : GL (Fin V.rank) (EAf D)} {L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_levA {K : Subgroup (GL (Fin V.rank) (EAf D))} {κ : GA D V} : κ ∈ levA V K ↔ κ ∈ GfC V ∧ finE V κ ∈ K := Iff.rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem datY_B_eq_datX (r t m : ℕ) (Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (P : Formalism.L2.DIV.LevelP Pg r ℂ)
     (χ : ℕ → ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ)
     (ξ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ) :
     datY (D := D) (r + m * t) r t m (Nat.le_add_right _ _) Pg Q P χ ξ Frm.B = Formalism.L2.DIV.datX r t m Pg Q P χ ξ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem datY_A_eq_datV (r t j : ℕ) (Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (P : Formalism.L2.DIV.LevelP Pg r ℂ)
     (χ : ℕ → ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ)
     (ξ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ) :
     datY (D := D) (r + t) r t 1 (Nat.le_add_right _ _) Pg Q P (fun _ => χ j) ξ Frm.A =
       Formalism.L2.DIV.datV r t j Pg Q P χ ξ := rfl
 
+/- English proof (translation)
+Unfold `Formalism.L2.DIV.ext1`. Apply the tactic sequence `split <;> rfl`.
+-/
 theorem subgroupCharExtension_one_apply {G N : Type} [Group G] [MulOneClass N] (P : Subgroup G) (x : G) :
     Formalism.L2.DIV.ext1 P (⇑(1 : P →* N)) x = 1 := by
   unfold Formalism.L2.DIV.ext1
   split <;> rfl
 
+/- English proof (translation)
+Establish `h1 : Formalism.L2.DIV.ext1 (flag1L L).P.H (flag1L L).P.chi (Formalism.L2.DIV.rTup β (flag1L L) x) = 1` using `subgroupCharExtension_one_apply _ _`. Establish `h2 : Formalism.L2.DIV.ext1 (flagL L).P.H (flagL L).P.chi (Formalism.L2.DIV.rTup β (flagL L) x) = 1` using `subgroupCharExtension_one_apply _ _`. Unfold `Formalism.L2.DIV.levFn`. Apply the tactic sequence `rw [h1, h2] <;> rfl`.
+-/
 theorem levFn_flag1 (x : GL (Fin V.rank) (EAf D)) :
     Formalism.L2.DIV.levFn β (flag1L L) x = Formalism.L2.DIV.levFn β (flagL L) x := by
   have h1 : Formalism.L2.DIV.ext1 (flag1L L).P.H (flag1L L).P.chi (Formalism.L2.DIV.rTup β (flag1L L) x) = 1 :=
@@ -186,10 +201,18 @@ theorem levFn_flag1 (x : GL (Fin V.rank) (EAf D)) :
   unfold Formalism.L2.DIV.levFn
   rw [h1, h2] <;> rfl
 
+/- English proof (translation)
+Unfold `levChi`. Conclude with `Units.ne_zero _`.
+-/
 theorem levChi_ne_zero (L' : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) (κ : GA D V) : levChi V β L' κ ≠ 0 := by
   unfold levChi
   exact Units.ne_zero _
 
+/- English proof (translation)
+Establish `hx' : x ∈ Formalism.L2.DIV.lev D.sp.cm V.gram β (flagL L)` using `by show x ∈ Formalism.L2.DIV.parLev D.sp.cm V.gram β (flagL L) ∧ Formalism.L2.DIV.rTup β (flagL L) x ∈ (flagL L).P.H`. Conclude with `⟨hx, Subgroup.mem_top _⟩`. Establish `hy' : y ∈ Formalism.L2.DIV.lev D.sp.cm V.gram β (flagL L)` using `by show y ∈ Formalism.L2.DIV.parLev D.sp.cm V.gram β (flagL L) ∧ Formalism.L2.DIV.rTup β (flagL L) y ∈ (flagL L).P.H`. Conclude with `⟨hy, Subgroup.mem_top _⟩`. Establish `e : ∀ z (hz : z ∈ Formalism.L2.DIV.lev D.sp.cm V.gram β (flagL L)), Formalism.L2.DIV.levChar D.sp.cm V.gram β (flagL L) ⟨z, hz⟩ = Formalism.L2.DIV.levFn β (flagL L) z`.
+
+Introduce `z hz`. Unfold `Formalism.L2.DIV.levChar`. Simplify using `only [MonoidHom.coe_mk, OneHom.coe_mk]`. Apply the tactic sequence `rw [← e x hx', ← e y hy', ← e (x * y) (Subgroup.mul_mem _ hx' hy'), ← map_mul] <;> rfl`.
+-/
 theorem levFn_flag_mul {x y : GL (Fin V.rank) (EAf D)} (hx : x ∈ Formalism.L2.DIV.parLev D.sp.cm V.gram β L)
     (hy : y ∈ Formalism.L2.DIV.parLev D.sp.cm V.gram β L) :
     Formalism.L2.DIV.levFn β (flagL L) (x * y) = Formalism.L2.DIV.levFn β (flagL L) x * Formalism.L2.DIV.levFn β (flagL L) y := by
@@ -206,6 +229,11 @@ theorem levFn_flag_mul {x y : GL (Fin V.rank) (EAf D)} (hx : x ∈ Formalism.L2.
     simp only [MonoidHom.coe_mk, OneHom.coe_mk]
   rw [← e x hx', ← e y hy', ← e (x * y) (Subgroup.mul_mem _ hx' hy'), ← map_mul] <;> rfl
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `hκ`. Take `⟨h1', h2', h3'⟩` from `hκ'`. Use `mem_levA.mpr ⟨(GfC V).mul_mem ((GfC V).inv_mem h1) h1', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv]`. Establish `hi : (finE V κ)⁻¹ ∈ Formalism.L2.DIV.parLev D.sp.cm V.gram β L` using `(Formalism.L2.DIV.parLev D.sp.cm V.gram β L).inv_mem h2`.
+
+Establish `hr : Formalism.L2.DIV.rTup β L ((finE V κ)⁻¹ * finE V κ') = 1`. Rewrite using `[Formalism.L2.DIV.rTup_mul hi h2', Formalism.L2.DIV.rTup_inv h2, h3, h3', inv_mul_cancel]`. Use `show (finE V κ)⁻¹ * finE V κ' ∈ Formalism.L2.DIV.parLev D.sp.cm V.gram β (flag1L L) ∧ Formalism.L2.DIV.rTup β (flag1L L) ((finE V κ)⁻¹ * finE V κ') ∈ (flag1L L).P.H`. Conclude with `⟨(Formalism.L2.DIV.parLev D.sp.cm V.gram β L).mul_mem hi h2', Subgroup.mem_bot.mpr hr⟩`.
+-/
 theorem lift_div_mem {g0 : Formalism.L2.DIV.G0 L.Pg L.r} {κ κ' : GA D V} (hκ : IsLevelLift V β L g0 κ)
     (hκ' : IsLevelLift V β L g0 κ') : κ⁻¹ * κ' ∈ levG V β (flag1L L) := by
   obtain ⟨h1, h2, h3⟩ := hκ
@@ -220,6 +248,17 @@ theorem lift_div_mem {g0 : Formalism.L2.DIV.G0 L.Pg L.r} {κ κ' : GA D V} (hκ 
     Formalism.L2.DIV.rTup β (flag1L L) ((finE V κ)⁻¹ * finE V κ') ∈ (flag1L L).P.H
   exact ⟨(Formalism.L2.DIV.parLev D.sp.cm V.gram β L).mul_mem hi h2', Subgroup.mem_bot.mpr hr⟩
 
+/- English proof (translation)
+Unfold `IsLevelActionImage actG0`. Introduce `κ hκ h`. Simplify using `only [dif_pos hex]`. Establish `hκ0 : IsLevelLift V β L g0 hex.choose` using `hex.choose_spec`. Establish `hd` using `lift_div_mem hκ0 hκ`.
+
+Establish `hF1` using `hF _ hd (h * hex.choose)`. Rewrite `hF1` using `[show h * hex.choose * (hex.choose⁻¹ * κ) = h * κ by rw [mul_assoc, mul_inv_cancel_left]]`. Establish `hp : finE V (hex.choose⁻¹ * κ) ∈ Formalism.L2.DIV.parLev D.sp.cm V.gram β L`. Rewrite using `[map_mul, map_inv]`. Conclude with `(Formalism.L2.DIV.parLev D.sp.cm V.gram β L).mul_mem ((Formalism.L2.DIV.parLev D.sp.cm V.gram β L).inv_mem hκ0.2.1) hκ.2.1`.
+
+Establish `hm : levChi V β (flagL L) κ = levChi V β (flagL L) hex.choose * levChi V β (flagL L) (hex.choose⁻¹ * κ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_inv_cancel_left]`. Use `_ = _ := by`. Unfold `levChi`.
+
+Rewrite using `[map_mul (finE V) hex.choose (hex.choose⁻¹ * κ), levFn_flag_mul hκ0.2.1 hp, Units.val_mul]`. Establish `h1 : levChi V β (flag1L L) (hex.choose⁻¹ * κ) = levChi V β (flagL L) (hex.choose⁻¹ * κ)`. Unfold `levChi`. Rewrite using `[levFn_flag1]`. Establish `n1` using `levChi_ne_zero (V := V) (β := β) (flagL L) (hex.choose⁻¹ * κ)`.
+
+Rewrite using `[hF1, h1, hm, mul_inv, mul_assoc, inv_mul_cancel_left₀ n1]`.
+-/
 theorem level_action_spec {g0 : Formalism.L2.DIV.G0 L.Pg L.r} {F : GA D V → ℂ} (hF : HasType V β (flag1L L) F)
     (hex : ∃ κ, IsLevelLift V β L g0 κ) : IsLevelActionImage V β L g0 F (actG0 V β L g0 F) := by
   unfold IsLevelActionImage actG0
@@ -246,6 +285,9 @@ theorem level_action_spec {g0 : Formalism.L2.DIV.G0 L.Pg L.r} {F : GA D V → �
   have n1 := levChi_ne_zero (V := V) (β := β) (flagL L) (hex.choose⁻¹ * κ)
   rw [hF1, h1, hm, mul_inv, mul_assoc, inv_mul_cancel_left₀ n1]
 
+/- English proof (translation)
+Establish `h2 : Formalism.L2.DIV.ext1 (flagL L).P.H (flagL L).P.chi (Formalism.L2.DIV.rTup β (flagL L) x) = 1` using `subgroupCharExtension_one_apply _ _`. Unfold `Formalism.L2.DIV.levFn`. Apply the tactic sequence `rw [h2, one_mul, mul_assoc] <;> rfl`.
+-/
 theorem levFn_withP (P : Formalism.L2.DIV.LevelP L.Pg L.r ℂ) (x : GL (Fin V.rank) (EAf D)) :
     Formalism.L2.DIV.levFn β (withP L P) x =
       Formalism.L2.DIV.ext1 P.H P.chi (Formalism.L2.DIV.rTup β L x) * Formalism.L2.DIV.levFn β (flagL L) x := by
@@ -254,6 +296,15 @@ theorem levFn_withP (P : Formalism.L2.DIV.LevelP L.Pg L.r ℂ) (x : GL (Fin V.ra
   unfold Formalism.L2.DIV.levFn
   rw [h2, one_mul, mul_assoc] <;> rfl
 
+/- English proof (translation)
+Introduce `κ hκ h`. Take `⟨hG, hl⟩` from `mem_levA.mp hκ`. Establish `hl' : finE V κ ∈ Formalism.L2.DIV.parLev D.sp.cm V.gram β L ∧ Formalism.L2.DIV.rTup β L (finE V κ) ∈ P.H` using `hl`. Establish `hlift : IsLevelLift V β L (Formalism.L2.DIV.rTup β L (finE V κ)) κ` using `And.intro hG (And.intro hl'.1 rfl)`. Establish `hsp : actG0 V β L (Formalism.L2.DIV.rTup β L (finE V κ)) F h = (levChi V β (flagL L) κ)⁻¹ * F (h * κ)` using `level_action_spec hF.1 ⟨κ, hlift⟩ κ hlift h`.
+
+Establish `hp : actG0 V β L (Formalism.L2.DIV.rTup β L (finE V κ)) F h = ((P.chi ⟨_, hl'.2⟩ : ℂˣ) : ℂ) * F h` using `congrFun (hF.2 ⟨_, hl'.2⟩) h`. Rewrite `hsp` using `[hp]`. Establish `n` using `levChi_ne_zero (V := V) (β := β) (flagL L) κ`. Establish `hc : levChi V β (withP L P) κ = ((P.chi ⟨_, hl'.2⟩ : ℂˣ) : ℂ) * levChi V β (flagL L) κ`. Establish `he : Formalism.L2.DIV.ext1 P.H P.chi (Formalism.L2.DIV.rTup β L (finE V κ)) = P.chi ⟨_, hl'.2⟩` using `dif_pos hl'.2`.
+
+Unfold `levChi`. Rewrite using `[levFn_withP, Units.val_mul, he]`. Establish `key : F (h * κ) = levChi V β (flagL L) κ * (((P.chi ⟨_, hl'.2⟩ : ℂˣ) : ℂ) * F h)`. Rewrite using `[hsp, ← mul_assoc, mul_inv_cancel₀ n, one_mul]`. Rewrite using `[hc, key]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsPLevel.hasType {P : Formalism.L2.DIV.LevelP L.Pg L.r ℂ} {F : GA D V → ℂ} (hF : IsPLevel V β L P F) :
     HasType V β (withP L P) F := by
   intro κ hκ h
@@ -277,6 +328,9 @@ theorem IsPLevel.hasType {P : Formalism.L2.DIV.LevelP L.Pg L.r ℂ} {F : GA D V 
   rw [hc, key]
   ring
 
+/- English proof (translation)
+Take `⟨κ, hκ⟩` from `hex`. Use function extensionality and compare the values at `h`. Rewrite using `[h₁ κ hκ h, h₂ κ hκ h]`.
+-/
 theorem level_action_unique {g0 : Formalism.L2.DIV.G0 L.Pg L.r} {F F₁ F₂ : GA D V → ℂ} (hex : ∃ κ, IsLevelLift V β L g0 κ)
     (h₁ : IsLevelActionImage V β L g0 F F₁) (h₂ : IsLevelActionImage V β L g0 F F₂) : F₁ = F₂ := by
   obtain ⟨κ, hκ⟩ := hex
@@ -294,8 +348,14 @@ def levCharAfE (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (L : Formalism.L2.DIV.
   (Formalism.L2.DIV.levChar D.sp.cm V.gram β L).comp
     ((Formalism.UG.bc (swapAE D)).subgroupComap (Formalism.L2.DIV.lev D.sp.cm V.gram β L))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finE_eq (V : HSp D) (h : GA D V) : finE V h = Formalism.UG.bc (swapAE D) (finHom V h) := rfl
 
+/- English proof (translation)
+Use `show Formalism.L2.DIV.levFn β (flag1L L) (Formalism.UG.bc (swapAE D) x) = Formalism.L2.DIV.levFn β (flagL L) (Formalism.UG.bc (swapAE D) x)`. Conclude with `levFn_flag1 _`.
+-/
 theorem levCharAfE_flag (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank)
     (x : GL (Fin V.rank) (Af D.host.F ⊗[D.host.F] D.host.E)) (h1 : x ∈ toAfE V (Formalism.L2.DIV.lev D.sp.cm V.gram β (flag1L L)))
     (h2 : x ∈ toAfE V (Formalism.L2.DIV.lev D.sp.cm V.gram β (flagL L))) :

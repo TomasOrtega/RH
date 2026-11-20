@@ -12,6 +12,11 @@ noncomputable def Formalism.REAL.CasK.{u_1} :
     {A : Type u_1} → [inst_h0 : Ring A] → {n : ℕ} → (Fin n → Bool) → (Fin n → Fin n → A) → A :=
   fun {A : Type u_1} {inst_f1 : Ring A} {n : ℕ} (ε_h1 : Fin n → Bool) (E : Fin n → Fin n → A) ↦ ∑ a : Fin n, ∑ b : Fin n, if ε_h1 a = ε_h1 b then E a b * E b a else OfNat.ofNat (nat_lit 0)
 
+/- English proof (translation)
+Distinguish the cases in `h : ε a = ε b`. Simplify using `only [if_pos h]`. Establish `h1 : E a b * E c d - E c d * E a b = (if b = c then E a d else 0) - (if d = a then E c b else 0)` using `hK a b c d h hcd`. Establish `h2 : E b a * E c d - E c d * E b a = (if a = c then E b d else 0) - (if d = b then E c a else 0)` using `hK b a c d h.symm hcd`. Establish `key : E c d * (E a b * E b a) - E a b * E b a * E c d = -((E a b * E c d - E c d * E a b) * E b a) - E a b * (E b a * E c d - E c d * E b a)` using `by noncomm_ring`.
+
+Rewrite using `[key, h1, h2]`. Simplify using `only [sub_mul, mul_sub, ite_mul, mul_ite, zero_mul, mul_zero]`. Normalize the expressions using the abelian group laws. Simplify using `only [if_neg h]`. Simplify using the standard rewrite rules.
+-/
 theorem commutator_casimir_term {V : Type} [AddCommGroup V] [_root_.Module ℂ V] {n : ℕ} (ε : Fin n → Bool)
     (E : Fin n → Fin n → Module.End ℂ V) (hK : PositivityTheory.D.DSIC.KRel ε E) {c d : Fin n} (hcd : ε c = ε d)
     (a b : Fin n) :
@@ -35,6 +40,11 @@ theorem commutator_casimir_term {V : Type} [AddCommGroup V] [_root_.Module ℂ V
   · simp only [if_neg h]
     simp
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single d]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`. Simplify using the standard rewrite rules. Introduce `a _ had`.
+
+Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`. Simplify using `[Ne.symm had]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ d) h`.
+-/
 theorem double_sum_reduce_first {V : Type} [AddCommGroup V] [_root_.Module ℂ V] {n : ℕ} (ε : Fin n → Bool)
     (E : Fin n → Fin n → Module.End ℂ V) (c d : Fin n) :
     (∑ a : Fin n, ∑ b : Fin n, (if ε a = ε b then (if d = a then E c b * E b a else 0) else 0))
@@ -50,6 +60,11 @@ theorem double_sum_reduce_first {V : Type} [AddCommGroup V] [_root_.Module ℂ V
   · intro h
     exact absurd (Finset.mem_univ d) h
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single c]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`. Simplify using the standard rewrite rules. Introduce `a _ hac`.
+
+Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`. Simplify using `[hac]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ c) h`.
+-/
 theorem double_sum_reduce_fourth {V : Type} [AddCommGroup V] [_root_.Module ℂ V] {n : ℕ} (ε : Fin n → Bool)
     (E : Fin n → Fin n → Module.End ℂ V) (c d : Fin n) :
     (∑ a : Fin n, ∑ b : Fin n, (if ε a = ε b then (if a = c then E a b * E b d else 0) else 0))
@@ -65,6 +80,11 @@ theorem double_sum_reduce_fourth {V : Type} [AddCommGroup V] [_root_.Module ℂ 
   · intro h
     exact absurd (Finset.mem_univ c) h
 
+/- English proof (translation)
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`. Rewrite using `[Finset.sum_eq_single d]`. Simplify using the standard rewrite rules. Introduce `b _ hbd`.
+
+Simplify using `[Ne.symm hbd]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ d) h`.
+-/
 theorem double_sum_reduce_third {V : Type} [AddCommGroup V] [_root_.Module ℂ V] {n : ℕ} (ε : Fin n → Bool)
     (E : Fin n → Fin n → Module.End ℂ V) (c d : Fin n) :
     (∑ a : Fin n, ∑ b : Fin n, (if ε a = ε b then (if d = b then E a b * E c a else 0) else 0))
@@ -78,6 +98,11 @@ theorem double_sum_reduce_third {V : Type} [AddCommGroup V] [_root_.Module ℂ V
   · intro h
     exact absurd (Finset.mem_univ d) h
 
+/- English proof (translation)
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`. Rewrite using `[Finset.sum_eq_single c]`. Simplify using the standard rewrite rules. Introduce `b _ hbc`.
+
+Simplify using `[hbc]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ c) h`.
+-/
 theorem double_sum_reduce_second {V : Type} [AddCommGroup V] [_root_.Module ℂ V] {n : ℕ} (ε : Fin n → Bool)
     (E : Fin n → Fin n → Module.End ℂ V) (c d : Fin n) :
     (∑ a : Fin n, ∑ b : Fin n, (if ε a = ε b then (if b = c then E a d * E b a else 0) else 0))
@@ -91,6 +116,11 @@ theorem double_sum_reduce_second {V : Type} [AddCommGroup V] [_root_.Module ℂ 
   · intro h
     exact absurd (Finset.mem_univ c) h
 
+/- English proof (translation)
+Introduce `n ε V _ _ E hK c d hcd`. Use `show E c d * Formalism.REAL.CasK ε E = Formalism.REAL.CasK ε E * E c d`. Rewrite using `[← sub_eq_zero]`. Establish `hsum : E c d * Formalism.REAL.CasK ε E - Formalism.REAL.CasK ε E * E c d = ∑ a : Fin n, ∑ b : Fin n, (E c d * (if ε a = ε b then E a b * E b a else 0) - (if ε a = ε b then E a b * E b a else 0) * E c d)`. Unfold `Formalism.REAL.CasK`.
+
+Simplify using `only [Finset.mul_sum, Finset.sum_mul, Finset.sum_sub_distrib]`. Rewrite using `[hsum]`. Simplify using `only [commutator_casimir_term ε E hK hcd, Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Rewrite using `[double_sum_reduce_first, double_sum_reduce_fourth, double_sum_reduce_third, double_sum_reduce_second, hcd]`. Simplify using the standard rewrite rules.
+-/
 theorem PositivityTheory.D.LK.casK_comm :
     ∀ {n : ℕ} {ε_h0 : Fin n → Bool} {V : Type} [inst_h2 : AddCommGroup V] [inst_h3 : _root_.Module ℂ V] {E : Fin n → Fin n → Module.End ℂ V}, PositivityTheory.D.DSIC.KRel ε_h0 E → ∀ {c d : Fin n}, ε_h0 c = ε_h0 d → Commute (E c d) (Formalism.REAL.CasK ε_h0 E) := by
   intro n ε V _ _ E hK c d hcd

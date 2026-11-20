@@ -11,8 +11,26 @@ section Gshift
 
 variable {A : Type} [Ring A] [Algebra ℂ A] {r : ℕ} (L : LevelData A r)
 
+/- English proof (translation)
+The claim follows from `Subring.mul_mem _ (Subring.mul_mem _ (cDr L) (cDrb L)) (cGG L)`.
+-/
 theorem cG : L.G ∈ Subring.closure L.fns := Subring.mul_mem _ (Subring.mul_mem _ (cDr L) (cDrb L)) (cGG L)
 
+/- English proof (translation)
+Establish `cGi : L.GGi * L.Drbi * L.Dri ∈ Subring.closure L.fns` using `Subring.mul_mem _ (Subring.mul_mem _ (cGGi L) (cDrbi L)) (cDri L)`. Establish `h1 : L.G * (L.GGi * L.Drbi * L.Dri) = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [LevelData.G, mul_assoc]`. Use `_ = 1 := by rw [L.GG_GGi, mul_one, Drb_Drbi, mul_one, Dr_Dri]`.
+
+Establish `h2 : (L.GGi * L.Drbi * L.Dri) * L.G = 1` using `by rw [(cl_comm L cGi (cG L)).eq, h1]`. Establish `key : ∀ (Z : A) (a b c : A), Z * L.Dr = L.Dr * Z + a * L.Dr → Z * L.Drb = L.Drb * Z + b * L.Drb → Z * L.GG = L.GG * Z + c * L.GG → a ∈ Subring.closure L.fns → b ∈ Subring.closure L.fns → c ∈ Subring.closure L.fns → Z * L.G = L.G * Z + (a + b + c) * L.G`. Introduce `Z a b c ha hb hc ma mb mc`. Establish `e1` using `(cl_comm L (cDr L) mb).eq`. Establish `e2` using `(cl_comm L (Subring.mul_mem _ (cDr L) (cDrb L)) mc).eq`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hb]`. Simplify using `only [add_mul, mul_add, mul_assoc]`. Use `_ = L.G * Z + (L.Dr * L.Drb * c) * L.GG + b * L.G + a * L.G := by`. Rewrite using `[hc, e1]`.
+
+Simplify using `only [LevelData.G, mul_add, mul_assoc]`. Use `_ = _ := by rw [e2]; simp only [LevelData.G, add_mul, mul_assoc]; abel`. Establish `z` using `(Subring.closure L.fns).zero_mem`. Establish `o` using `(Subring.closure L.fns).one_mem`. Establish `hG` using `gaugeConjugation A r L 1 L.G _ h1 h2 (fun x hx => (cl_comm L (clF L hx) (cG L)).eq) (fun l => by`.
+
+Rewrite using `[key (L.p l) 1 0 0 (p_Dr L l) (by rw [zero_mul, add_zero]; exact comm_Drb L (L.p_cb l)) (by rw [zero_mul, add_zero]; exact L.p_GG l) o z z]; simp)`. Use the proof step `(fun l => by`. Rewrite using `[key (L.pb l) 0 1 0 (by rw [zero_mul, add_zero]; exact comm_Dr L (L.pb_c l)) (pb_Drb L l) (by rw [zero_mul, add_zero]; exact L.pb_GG l) z o z]; simp)`. Use the proof step `(by`. Rewrite using `[key L.nab 0 0 (L.ζb * L.GGi) (by rw [zero_mul, add_zero]; exact comm_Dr L L.nab_c) (by rw [zero_mul, add_zero]; exact comm_Drb L L.nab_cb) (by rw [mul_assoc, L.GGi_GG, mul_one]; exact L.nab_GG) z z (Subring.mul_mem _ (cζb L) (cGGi L))]; simp)`.
+
+Use the proof step `(by`. Rewrite using `[key L.nabs 0 0 (-(L.ζ * L.GGi)) (by rw [zero_mul, add_zero]; exact comm_Dr L L.nabs_c) (by rw [zero_mul, add_zero]; exact comm_Drb L L.nabs_cb) (by rw [neg_mul, mul_assoc, L.GGi_GG, mul_one, ← sub_eq_add_neg]; exact L.nabs_GG) z z (Subring.neg_mem _ (Subring.mul_mem _ (cζ L) (cG …`. Establish `fin : ∀ {Z Z' : A}, L.GGi * L.Drbi * L.Dri * Z * L.G = Z' → Z * L.G = L.G * Z'` using `fun {Z Z'} h => by`. Rewrite using `[← h, ← mul_assoc, ← mul_assoc, h1, one_mul]`. Break down `hX with (((⟨y, rfl⟩ | ⟨y, rfl⟩) | ⟨y, rfl⟩) | ⟨y, rfl⟩)` into its components or cases.
+
+Conclude with `⟨_, mA _, fin (hG y).1⟩`. Conclude with `⟨_, mR _, fin (hG y).2.1⟩`. Conclude with `⟨_, mAv _, fin (hG y).2.2.1⟩`. Conclude with `⟨_, mRv _, fin (hG y).2.2.2⟩`.
+-/
 theorem hat_G (X : A) (hX : X ∈ hats L) : ∃ X' ∈ hats L, X * L.G = L.G * X' := by
   have cGi : L.GGi * L.Drbi * L.Dri ∈ Subring.closure L.fns :=
     Subring.mul_mem _ (Subring.mul_mem _ (cGGi L) (cDrbi L)) (cDri L)
@@ -60,6 +78,11 @@ theorem hat_G (X : A) (hX : X ∈ hats L) : ∃ X' ∈ hats L, X * L.G = L.G * X
   · exact ⟨_, mAv _, fin (hG y).2.2.1⟩
   · exact ⟨_, mRv _, fin (hG y).2.2.2⟩
 
+/- English proof (translation)
+Proceed by induction on `h with`. Consider the case `nil => exact ⟨[], rfl, hh, by simp⟩`. Consider the case `cons X h ih`. Take `⟨h', hl, hh', e⟩` from `ih fun a ha => hh a (List.mem_cons_of_mem _ ha)`. Take `⟨X', hX', e'⟩` from `hat_G L X (hh X List.mem_cons_self)`.
+
+Use `⟨X' :: h', by simp [hl], fun a ha => ?_, ?_⟩` and prove the remaining obligations. Break down `List.mem_cons.1 ha with rfl | ha` into its components or cases. Conclude with `hX'`. Conclude with `hh' a ha`. Rewrite using `[List.prod_cons, List.prod_cons, mul_assoc, e, ← mul_assoc, e', mul_assoc]`.
+-/
 theorem hats_G (h : List A) (hh : ∀ a ∈ h, a ∈ hats L) :
     ∃ h' : List A, h'.length = h.length ∧ (∀ a ∈ h', a ∈ hats L) ∧ h.prod * L.G = L.G * h'.prod := by
   induction h with
@@ -73,6 +96,11 @@ theorem hats_G (h : List A) (hh : ∀ a ∈ h, a ∈ hats L) :
       · exact hh' a ha
     · rw [List.prod_cons, List.prod_cons, mul_assoc, e, ← mul_assoc, e', mul_assoc]
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `zero => exact ⟨h, rfl, hh, by simp⟩`. Consider the case `succ s ih`. Take `⟨h', hl, hh', e⟩` from `ih`. Take `⟨h'', hl', hh'', e'⟩` from `hats_G L h' hh'`.
+
+Conclude with `⟨h'', hl'.trans hl, hh'', by rw [pow_succ, ← mul_assoc, e, mul_assoc, e', mul_assoc]⟩`.
+-/
 theorem hats_Gpow (s : ℕ) (h : List A) (hh : ∀ a ∈ h, a ∈ hats L) :
     ∃ h' : List A, h'.length = h.length ∧ (∀ a ∈ h', a ∈ hats L) ∧ h.prod * L.G ^ s = L.G ^ s * h'.prod := by
   induction s with
@@ -82,6 +110,11 @@ theorem hats_Gpow (s : ℕ) (h : List A) (hh : ∀ a ∈ h, a ∈ hats L) :
     obtain ⟨h'', hl', hh'', e'⟩ := hats_G L h' hh'
     exact ⟨h'', hl'.trans hl, hh'', by rw [pow_succ, ← mul_assoc, e, mul_assoc, e', mul_assoc]⟩
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih`. Rewrite using `[List.map_cons, List.map_cons, List.prod_cons, List.prod_cons, star_mul, ih, h]`. Use `(Commute.list_prod_left _ _ fun x hx => ?_).eq` and prove the remaining obligations.
+
+Take `⟨i, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `hc i a`.
+-/
 theorem star_prod_comm [StarRing A] {ι : Type} (f g : ι → A) (h : ∀ i, star (f i) = g i)
     (hc : ∀ i j, Commute (g i) (g j)) (l : List ι) : star (l.map f).prod = (l.map g).prod := by
   induction l with
@@ -98,6 +131,9 @@ section model
 
 variable {P : M.Par} {L : LevelData (MA.A P (MA.DQ P)) P.r}
 
+/- English proof (translation)
+Use `show X * _ = _ * X`. Use extensionality with `i j : 2`. Rewrite using `[MA.sc, Matrix.scalar_apply, Matrix.diagonal_mul, Matrix.mul_diagonal]`. Take `⟨z, hz⟩` from `h i j`. Rewrite using `[hz, Algebra.commutes]`.
+-/
 theorem sc_central (w : (MA.DQ P).Pr) (X : MA.A P (MA.DQ P)) (h : ∀ i j, ∃ z : ℂ, X i j = algebraMap ℂ _ z) :
     Commute X (MA.sc P (MA.DQ P) w) := by
   show X * _ = _ * X
@@ -106,6 +142,11 @@ theorem sc_central (w : (MA.DQ P).Pr) (X : MA.A P (MA.DQ P)) (h : ∀ i j, ∃ z
   obtain ⟨z, hz⟩ := h i j
   rw [hz, Algebra.commutes]
 
+/- English proof (translation)
+Take `⟨-, -, hc, hci, hcb, hcbi, hz, hzi, hzb, hzbi, hg, hgi, -⟩` from `hM`. Simplify using `only [LevelData.fns, Set.mem_union, Set.mem_range, Set.mem_insert_iff, Set.mem_singleton_iff] at hf`. Break down `hf with ((((⟨l, rfl⟩ | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩) | h)` into its components or cases. Conclude with `⟨_, congrFun hc l⟩`. Conclude with `⟨_, congrFun hci l⟩`.
+
+Conclude with `⟨_, congrFun hcb l⟩`. Conclude with `⟨_, congrFun hcbi l⟩`. Break down `h with rfl | rfl | rfl | rfl | rfl | rfl exacts [⟨_, hz⟩, ⟨_, hzi⟩, ⟨_, hzb⟩, ⟨_, hzbi⟩, ⟨_, hg⟩, ⟨_, hgi⟩]` into its components or cases.
+-/
 theorem fns_sc (hM : MA.IsModelLevel P (MA.DQ P) L) {f : MA.A P (MA.DQ P)} (hf : f ∈ L.fns) :
     ∃ w, f = MA.sc P (MA.DQ P) w := by
   obtain ⟨-, -, hc, hci, hcb, hcbi, hz, hzi, hzb, hzbi, hg, hgi, -⟩ := hM
@@ -118,27 +159,46 @@ theorem fns_sc (hM : MA.IsModelLevel P (MA.DQ P) L) {f : MA.A P (MA.DQ P)} (hf :
   · rcases h with rfl | rfl | rfl | rfl | rfl | rfl
     exacts [⟨_, hz⟩, ⟨_, hzi⟩, ⟨_, hzb⟩, ⟨_, hzbi⟩, ⟨_, hg⟩, ⟨_, hgi⟩]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kap_diag (g : M.Ty P → ℂ) :
     MA.kap P (MA.DQ P) g = Matrix.diagonal fun π => algebraMap ℂ (MA.DQ P).Pr (g π) := rfl
 
+/- English proof (translation)
+Rewrite using `[kap_diag, Matrix.diagonal_apply]`. Use `split_ifs`. Conclude with `⟨_, rfl⟩`. Conclude with `⟨0, (map_zero _).symm⟩`.
+-/
 theorem kap_central (g : M.Ty P → ℂ) (i j : M.Ty P) : ∃ z : ℂ, MA.kap P (MA.DQ P) g i j = algebraMap ℂ _ z := by
   rw [kap_diag, Matrix.diagonal_apply]
   split_ifs
   · exact ⟨_, rfl⟩
   · exact ⟨0, (map_zero _).symm⟩
 
+/- English proof (translation)
+Simplify using `only [MA.SS, Matrix.of_apply]`. Use `split_ifs`. Conclude with `⟨_, rfl⟩`. Conclude with `⟨0, (map_zero _).symm⟩`.
+-/
 theorem SS_central (l : ℕ) (i j : M.Ty P) : ∃ z : ℂ, MA.SS P (MA.DQ P) l i j = algebraMap ℂ _ z := by
   simp only [MA.SS, Matrix.of_apply]
   split_ifs
   · exact ⟨_, rfl⟩
   · exact ⟨0, (map_zero _).symm⟩
 
+/- English proof (translation)
+Rewrite using `[kap_diag, kap_diag, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `π`. Conclude with `(algebraMap_star_comm (g π)).symm`.
+-/
 theorem star_kap (g : M.Ty P → ℂ) : star (MA.kap P (MA.DQ P) g) = MA.kap P (MA.DQ P) (star g) := by
   rw [kap_diag, kap_diag, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose]
   congr 1
   funext π
   exact (algebraMap_star_comm (g π)).symm
 
+/- English proof (translation)
+Take `⟨hp, hpb, hc, hci, hcb, hcbi, -⟩` from `hM`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hp, hpb, MA.pA, MA.pbA, sc_star, MA.sc, MA.sc, ← map_neg]`. Use `congr 1`. Use `Prod.ext rfl ?_` and prove the remaining obligations.
+
+Use `show MulOpposite.op _ = -MulOpposite.op (-_)`. Rewrite using `[← MulOpposite.op_neg, neg_neg]`. Both sides reduce to the same expression. Rewrite using `[hc, hcb, MA.cA, sc_star]`. Both sides reduce to the same expression.
+
+Rewrite using `[hci, hcbi, MA.ciA, sc_star]`. Both sides reduce to the same expression.
+-/
 theorem model_star_c (hM : MA.IsModelLevel P (MA.DQ P) L) (l : Fin P.r) :
     star (L.p l) = -L.pb l ∧ star (L.c l) = L.cb l ∧ star (L.ci l) = L.cbi l := by
   obtain ⟨hp, hpb, hc, hci, hcb, hcbi, -⟩ := hM
@@ -152,6 +212,9 @@ theorem model_star_c (hM : MA.IsModelLevel P (MA.DQ P) L) (l : Fin P.r) :
   · rw [hc, hcb, MA.cA, sc_star]; rfl
   · rw [hci, hcbi, MA.ciA, sc_star]; rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[LevelData.Dr, LevelData.Drb, List.ofFn_eq_map, List.ofFn_eq_map]`. Conclude with `star_prod_comm _ _ (fun l => (model_star_c hM l).2.1) (fun i j => fc L (m_cb L i) (m_cb L j)) _`. Rewrite using `[LevelData.Dri, LevelData.Drbi, List.ofFn_eq_map, List.ofFn_eq_map]`. Conclude with `star_prod_comm _ _ (fun l => (model_star_c hM l).2.2) (fun i j => fc L (m_cbi L i) (m_cbi L j)) _`.
+-/
 theorem model_star_D (hM : MA.IsModelLevel P (MA.DQ P) L) : star L.Dr = L.Drb ∧ star L.Dri = L.Drbi := by
   constructor
   · rw [LevelData.Dr, LevelData.Drb, List.ofFn_eq_map, List.ofFn_eq_map]
@@ -162,15 +225,62 @@ theorem model_star_D (hM : MA.IsModelLevel P (MA.DQ P) L) : star L.Dr = L.Drb �
 def BB (P : M.Par) (L : LevelData (MA.A P (MA.DQ P)) P.r) : Subalgebra ℂ (MA.A P (MA.DQ P)) :=
   Algebra.adjoin ℂ (MA.bddSet P L)
 
+/- English proof (translation)
+Rewrite using `[← Algebra.adjoin_eq_span]`. Conclude with `hb`.
+-/
 theorem BB_span {b : MA.A P (MA.DQ P)} (hb : b ∈ BB P L) :
     b ∈ Submodule.span ℂ (Submonoid.closure (MA.bddSet P L) : Set (MA.A P (MA.DQ P))) := by
   rw [← Algebra.adjoin_eq_span]; exact hb
 
+/- English proof (translation)
+Establish `: b ∈ Subalgebra.toSubmodule (Algebra.adjoin ℂ (MA.bddSet P L))`. Rewrite using `[Algebra.adjoin_eq_span]`. Conclude with `Submodule.subset_span hb`. Conclude with `this`.
+-/
 theorem closure_BB {b : MA.A P (MA.DQ P)} (hb : b ∈ Submonoid.closure (MA.bddSet P L)) : b ∈ BB P L := by
   have : b ∈ Subalgebra.toSubmodule (Algebra.adjoin ℂ (MA.bddSet P L)) := by
     rw [Algebra.adjoin_eq_span]; exact Submodule.subset_span hb
   exact this
 
+/- English proof (translation)
+Establish `gen : ∀ {x}, x ∈ MA.bddSet P L → x ∈ BB P L` using `fun h => Algebra.subset_adjoin h`. Establish `mζi : L.ζi ∈ BB P L` using `gen (Or.inl (Or.inl (Or.inl (by simp))))`. Establish `mζbi : L.ζbi ∈ BB P L` using `gen (Or.inl (Or.inl (Or.inl (by simp))))`. Establish `mDD : L.D * L.Dbi ∈ BB P L` using `gen (Or.inl (Or.inl (Or.inl (by simp))))`. Establish `mDbD : L.Db * L.Di ∈ BB P L` using `gen (Or.inl (Or.inl (Or.inl (by simp))))`.
+
+Establish `mk : ∀ g, MA.kap P (MA.DQ P) g ∈ BB P L` using `fun g => gen (Or.inl (Or.inl (Or.inr ⟨g, rfl⟩)))`. Take `⟨s1, s2, -⟩` from `star_facts hS`. Take `⟨d1, d2⟩` from `model_star_D hM`. Establish `s2' : star L.ζbi = L.ζi` using `by rw [← s2, star_star]`. Establish `d1' : star L.Drb = L.Dr` using `by rw [← d1, star_star]`.
+
+Establish `d2' : star L.Drbi = L.Dri` using `by rw [← d2, star_star]`. Establish `sD : star L.D = L.Db`. Rewrite using `[LevelData.D, star_mul, hS.1, d1, LevelData.Db, (cl_comm L (cζb L) (cDrb L)).eq]`. Establish `sDi : star L.Di = L.Dbi`. Rewrite using `[LevelData.Di, star_mul, s2, d2, LevelData.Dbi, (cl_comm L (cDrbi L) (cζbi L)).eq]`.
+
+Establish `sDb : star L.Db = L.D` using `by rw [← sD, star_star]`. Establish `sDbi : star L.Dbi = L.Di` using `by rw [← sDi, star_star]`. Establish `hfn : ∀ b ∈ BB P L, ∀ f ∈ L.fns, Commute b f`. Introduce `b hb f hf`. Take `⟨w, hw⟩` from `fns_sc hM hf`.
+
+Use `(Algebra.commute_of_mem_adjoin_of_forall_mem_commute hb fun x hx => ?_).symm` and prove the remaining obligations. Establish `cf` using `clF L hf`. Break down `hx with (((hx | ⟨g, rfl⟩) | ⟨i, -, rfl⟩) | ⟨i, -, rfl⟩)` into its components or cases. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx`. Break down `hx with rfl | rfl | rfl | rfl` into its components or cases.
+
+Conclude with `cl_comm L cf (cζi L)`. Conclude with `cl_comm L cf (cζbi L)`. Conclude with `cl_comm L cf (Subring.mul_mem _ (cD L) (cDbi L))`. Conclude with `cl_comm L cf (Subring.mul_mem _ (cDb L) (cDi L))`. Rewrite using `[hw]`.
+
+Conclude with `(sc_central w _ (kap_central g)).symm`. Use `(cl_comm L cf (Subring.mul_mem _ (cDrb L) (cDri L))).mul_right ?_` and prove the remaining obligations. Rewrite using `[hw]`. Conclude with `(sc_central w _ (SS_central i)).symm`. Use `show Commute f (star (L.Drb * L.Dri * MA.SS P (MA.DQ P) i))`.
+
+Rewrite using `[star_mul, star_mul, d2, d1']`. Use `Commute.mul_right ?_ (cl_comm L cf (Subring.mul_mem _ (cDrbi L) (cDr L)))` and prove the remaining obligations. Rewrite using `[hw]`. Use `(sc_central w _ fun a b => ?_).symm` and prove the remaining obligations. Take `⟨z, hz⟩` from `SS_central (P := P) i b a`.
+
+Conclude with `⟨star z, by rw [Matrix.star_apply, hz, algebraMap_star_comm]⟩`. Use `⟨fun b hb => ?_, ?_, ?_, hfn, mζi, mζbi, mDD, mDbD, fun Y => ⟨_, rfl⟩, fun Y => ⟨_, rfl⟩, fun Y => ?_, ?_, fun X hX b hb => ?_⟩` and prove the remaining obligations. Proceed by induction on `hb using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Break down `hx with (((hx | ⟨g, rfl⟩) | ⟨i, hi, rfl⟩) | ⟨i, hi, rfl⟩)` into its components or cases.
+
+Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx`. Break down `hx with rfl | rfl | rfl | rfl` into its components or cases. Rewrite using `[s2]`. Conclude with `mζbi`. Rewrite using `[s2']`.
+
+Conclude with `mζi`. Rewrite using `[star_mul, sD, sDbi, (cl_comm L (cDi L) (cDb L)).eq]`. Conclude with `mDbD`. Rewrite using `[star_mul, sDi, sDb, (cl_comm L (cDbi L) (cD L)).eq]`. Conclude with `mDD`.
+
+Rewrite using `[star_kap]`. Conclude with `mk _`. Conclude with `gen (Or.inr ⟨i, hi, rfl⟩)`. Use `show star (star (L.Drb * L.Dri * MA.SS P (MA.DQ P) i)) ∈ _`. Rewrite using `[star_star]`.
+
+Conclude with `gen (Or.inl (Or.inr ⟨i, hi, rfl⟩))`. Consider the case `algebraMap c => rw [← algebraMap_star_comm]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add x y _ _ hx hy => rw [star_add]`. Conclude with `Subalgebra.add_mem _ hx hy`.
+
+Consider the case `mul x y _ _ hx hy => rw [star_mul]`. Conclude with `Subalgebra.mul_mem _ hy hx`. Introduce and unpack `b ⟨g, rfl⟩`. Conclude with `⟨star g, (star_kap g).symm⟩`. Introduce and unpack `b ⟨g, rfl⟩`.
+
+Conclude with `mk g`. Establish `hz` using `hM.2.2.2.2.2.2.1`. Establish `hzbi` using `hM.2.2.2.2.2.2.2.2.2.1`. Use `show MA.eeA P (MA.DQ P) Y ∈ _`. Rewrite using `[MA.eeA, ← hz, ← hzbi, Finset.mul_sum]`.
+
+Use `Subalgebra.sum_mem _ fun j hj => ?_` and prove the remaining obligations. Establish `e1 : L.D * L.Dbi * (L.Drb * L.Dri) = L.ζ * L.ζbi`. Rewrite using `[mul_assoc, ← mul_assoc L.Dbi, Dbi_Drb, LevelData.D, (cl_comm L (cDr L) (cζ L)).eq, (cl_comm L (cζbi L) (cDri L)).eq, mul_assoc, ← mul_assoc L.Dr, Dr_Dri, one_mul]`. Rewrite using `[← mul_assoc, ← (comm_cl L (hfn _ (mk _)) (Subring.mul_mem _ (cζ L) (cζbi L))).eq, ← e1, mul_assoc, mul_assoc (L.D * L.Dbi)]`. Conclude with `Subalgebra.mul_mem _ (mk _) (Subalgebra.mul_mem _ mDD (gen (Or.inl (Or.inr ⟨j, Finset.mem_Icc.1 hj, rfl⟩))))`.
+
+Introduce and unpack `b ⟨g, rfl⟩`. Rewrite using `[hM.2.2.2.2.2.2.2.2.2.2.2.2.2.1]`. Use `show MA.kap P (MA.DQ P) g * MA.nabsA P (MA.DQ P) = MA.nabsA P (MA.DQ P) * MA.kap P (MA.DQ P) g`. Rewrite using `[kap_diag, MA.nabsA, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `π`. Conclude with `Algebra.commutes _ _`. Establish `hb'` using `BB_span hb clear hb`. Proceed by induction on `hb' using Submodule.span_induction with`. Consider the case `mem b hb`.
+
+Use `Submodule.span_le.2 ?_ (hHB P L hTT hM X hX b hb)` and prove the remaining obligations. Introduce and unpack `x ⟨b', hb', X', hX', rfl⟩`. Use `nfs_one (L := L) (P := 1) (closure_BB hb') hX'` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Consider the case `zero => rw [mul_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem model_hyp (hHB : JDHatBdd) (hTT : 0 ≤ P.TT) (hM : MA.IsModelLevel P (MA.DQ P) L) (hS : IsStarLevel L)
     (l0 : ℕ) : NFHypA L (MA.startM P (MA.DQ P) l0) (BB P L) (MA.kap P (MA.DQ P)).range := by
   have gen : ∀ {x}, x ∈ MA.bddSet P L → x ∈ BB P L := fun h => Algebra.subset_adjoin h
@@ -264,6 +374,13 @@ theorem model_hyp (hHB : JDHatBdd) (hTT : 0 ≤ P.TT) (hM : MA.IsModelLevel P (M
     | add x y _ _ hx hy => rw [mul_add]; exact Submodule.add_mem _ hx hy
     | smul c x _ hx => rw [mul_smul_comm]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Use `⟨hS, hst, fun l => (model_star_c hM l).1, fun l => (model_star_c hM l).2.1, fun l => (model_star_c hM l).2.2, fun Y i j x hx => ?_⟩` and prove the remaining obligations. Establish `h : ∀ l, ∀ x ∈ ops (⟨L.p l, L.c l, L.ci l⟩ : Site (MA.A P (MA.DQ P))), Commute ((MA.startM P (MA.DQ P) l0).QQ Y i j) x` using `fun l => by`. Use `(hSi.1 (MA.siteA P (MA.DQ P) l) (by simp [MA.sites, List.mem_ofFn])).2 Y i j` as an intermediate fact. Rewrite using `[hM.1, hM.2.2.1, hM.2.2.2.1]`. Conclude with `this`.
+
+Break down `hx with (((((⟨l, rfl⟩ | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩)` into its components or cases. Conclude with `h l _ (Or.inl (Or.inl rfl))`. Use `h l (-L.pb l) (Or.inr (Or.inl (by rw [← (model_star_c hM l).1, star_star])))` as an intermediate fact. Simplify using `using this.neg_right`. Conclude with `h l _ (Or.inl (Or.inr (Or.inl rfl)))`.
+
+Conclude with `h l _ (Or.inl (Or.inr (Or.inr rfl)))`. Conclude with `h l _ (Or.inr (Or.inr (Or.inl (by rw [← (model_star_c hM l).2.1, star_star]))))`. Conclude with `h l _ (Or.inr (Or.inr (Or.inr (by rw [← (model_star_c hM l).2.2, star_star]; rfl))))`.
+-/
 theorem model_aHyp (hM : MA.IsModelLevel P (MA.DQ P) L) (hS : IsStarLevel L) {l0 : ℕ}
     (hst : IsLevelStart L (MA.startM P (MA.DQ P) l0))
     (hSi : SitesOK (K := ℂ) (MA.startM P (MA.DQ P) l0).QQ (MA.sites P (MA.DQ P))) :
@@ -284,6 +401,9 @@ theorem model_aHyp (hM : MA.IsModelLevel P (MA.DQ P) L) (hS : IsStarLevel L) {l0
   · exact h l _ (Or.inr (Or.inr (Or.inl (by rw [← (model_star_c hM l).2.1, star_star]))))
   · exact h l _ (Or.inr (Or.inr (Or.inr (by rw [← (model_star_c hM l).2.2, star_star]; rfl))))
 
+/- English proof (translation)
+Establish `e1 : TL.bTA L w = ((MA.sites P (MA.DQ P)).map fun σ => bT σ w).prod`. Rewrite using `[TL.bTA, hM.1, hM.2.2.1, hM.2.2.2.1]`. Simplify using `[MA.sites, List.ofFn_eq_map, List.map_reverse, Function.comp_def, MA.siteA]`. Rewrite using `[e1, Matrix.mul_apply]`. Both sides reduce to the same expression.
+-/
 theorem gM_eq (hM : MA.IsModelLevel P (MA.DQ P) L) (l0 : ℕ) {S : Type} [Fintype S] [DecidableEq S]
     (w : List (Letter ℂ S)) (e : Ix S) :
     gM P l0 L w e = ((ofWord L (MA.startM P (MA.DQ P) l0) w).F * TL.bTA L w) e e1 := by
@@ -293,6 +413,15 @@ theorem gM_eq (hM : MA.IsModelLevel P (MA.DQ P) L) (l0 : ℕ) {S : Type} [Fintyp
   rw [e1, Matrix.mul_apply]
   rfl
 
+/- English proof (translation)
+Establish `h1 : x ∈ Submodule.span ℂ {x | ∃ b ∈ Submonoid.closure (MA.bddSet P L), ∃ h : List (MA.A P (MA.DQ P)), h.length = n ∧ (∀ a ∈ h, a ∈ hats L) ∧ x = b * Q * h.prod}`. Use `Submodule.span_le.2 ?_ hx` and prove the remaining obligations. Introduce and unpack `y ⟨b, hb, h, hl, hh, rfl⟩`. Establish `hb'` using `BB_span hb`. Use `clear hb`.
+
+Proceed by induction on `hb' using Submodule.span_induction with`. Consider the case `mem b hb => exact Submodule.subset_span ⟨b, hb, h, hl, hh, rfl⟩`. Consider the case `zero => rw [zero_mul, zero_mul]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [add_mul, add_mul]`.
+
+Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [smul_mul_assoc, smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ _ hx`. Take `⟨m, c, g, hs⟩` from `Submodule.mem_span_set'.1 h1`. Use `choose b hb u hl hh hg using fun j => (g j).2`.
+
+Use `⟨m, fun j => MA.kap P (MA.DQ P) (fun _ => c j) * b j, u, fun j => Submonoid.mul_mem _ (jdh_kap_mem P L _) (hb j), fun j => ⟨hl j, hh j⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hg j, jdh_smul_eq]`. Simplify using `only [mul_assoc]`.
+-/
 theorem nfs_fin {Q x : MA.A P (MA.DQ P)} {n : ℕ} (hx : x ∈ NFs L (BB P L) Q n) :
     ∃ (m : ℕ) (b : Fin m → MA.A P (MA.DQ P)) (u : Fin m → List (MA.A P (MA.DQ P))),
       (∀ j, b j ∈ Submonoid.closure (MA.bddSet P L)) ∧ (∀ j, (u j).length = n ∧ ∀ a ∈ u j, a ∈ MA.hatSet P L) ∧
@@ -320,34 +449,68 @@ theorem nfs_fin {Q x : MA.A P (MA.DQ P)} {n : ℕ} (hx : x ∈ NFs L (BB P L) Q 
 def MulBy (a : MA.A P (MA.DQ P)) (φ : MA.Qp P.r P.TT → ℂ) : Prop :=
   ∀ f ρ q, MA.evQ P (MA.actA P a f ρ) q = φ q * MA.evQ P (f ρ) q
 
+/- English proof (translation)
+Introduce `f ρ q` and use `by rw [Gauge.actA_mul, ha, hb, mul_assoc]`.
+-/
 theorem MulBy.mul {a b : MA.A P (MA.DQ P)} {φ ψ} (ha : MulBy a φ) (hb : MulBy b ψ) :
     MulBy (a * b) fun q => φ q * ψ q := fun f ρ q => by rw [Gauge.actA_mul, ha, hb, mul_assoc]
 
+/- English proof (translation)
+Introduce `f ρ q` and use `by rw [jdh_actA_one, one_mul]`.
+-/
 theorem mulBy_one : MulBy (1 : MA.A P (MA.DQ P)) fun _ => 1 := fun f ρ q => by rw [jdh_actA_one, one_mul]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using mulBy_one`. Consider the case `succ n ih => simpa only [pow_succ] using ih.mul ha`.
+-/
 theorem MulBy.pow {a : MA.A P (MA.DQ P)} {φ} (ha : MulBy a φ) (n : ℕ) : MulBy (a ^ n) fun q => φ q ^ n := by
   induction n with
   | zero => simpa using mulBy_one
   | succ n ih => simpa only [pow_succ] using ih.mul ha
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simpa using mulBy_one`. Consider the case `cons i l ih => simpa only [List.map_cons, List.prod_cons] using (h i).mul ih`.
+-/
 theorem mulBy_prod {ι : Type} (a : ι → MA.A P (MA.DQ P)) (φ : ι → MA.Qp P.r P.TT → ℂ) (h : ∀ i, MulBy (a i) (φ i))
     (l : List ι) : MulBy (l.map a).prod fun q => (l.map fun i => φ i q).prod := by
   induction l with
   | nil => simpa using mulBy_one
   | cons i l ih => simpa only [List.map_cons, List.prod_cons] using (h i).mul ih
 
+/- English proof (translation)
+Introduce `f ρ q` and use `by have := ha (MA.actA P b f) ρ q rw [← Gauge.actA_mul, h, jdh_actA_one] at this rw [this, ← mul_assoc, inv_mul_cancel₀ (h0 q), one_mul]`.
+-/
 theorem MulBy.inv {a b : MA.A P (MA.DQ P)} {φ} (ha : MulBy a φ) (h : a * b = 1) (h0 : ∀ q, φ q ≠ 0) :
     MulBy b fun q => (φ q)⁻¹ := fun f ρ q => by
   have := ha (MA.actA P b f) ρ q
   rw [← Gauge.actA_mul, h, jdh_actA_one] at this
   rw [this, ← mul_assoc, inv_mul_cancel₀ (h0 q), one_mul]
 
+/- English proof (translation)
+Introduce `f ρ q` and use `by rw [act_sc]; rfl`.
+-/
 theorem mulBy_fn (g gb : MA.SmQ P.r P.TT) : MulBy (MA.sc P (MA.DQ P) ((MA.DQ P).fnP g gb)) (MA.evQ P g) :=
   fun f ρ q => by rw [act_sc]; rfl
 
+/- English proof (translation)
+Rewrite using `[funext h]`. Conclude with `ha`.
+-/
 theorem MulBy.congr {a : MA.A P (MA.DQ P)} {φ ψ} (ha : MulBy a φ) (h : ∀ q, ψ q = φ q) : MulBy a ψ := by
   rw [funext h]; exact ha
 
+/- English proof (translation)
+Take `⟨-, -, hc, -, hcb, -, hz, -, -, -, hg, -⟩` from `hM`. Establish `h1 : ∀ l, MulBy (L.c l) fun q => q.1.1 l` using `fun l => by`. Rewrite using `[hc]`. Use `(mulBy_fn (P := P) (MA.coordQ (M.vc l)) (MA.coordQ (M.vcb l))).congr fun q => ?_` and prove the remaining obligations. Simplify using `[MA.evQ, MA.coordQ, MA.coordE, MA.zE, M.vc]`.
+
+Establish `h2 : ∀ l, MulBy (L.cb l) fun q => star (q.1.1 l)` using `fun l => by`. Rewrite using `[hcb]`. Use `(mulBy_fn (P := P) (MA.coordQ (M.vcb l)) (MA.coordQ (M.vc l))).congr fun q => ?_` and prove the remaining obligations. Simplify using `[MA.evQ, MA.coordQ, MA.coordE, MA.zE, M.vcb]`. Establish `h3 : MulBy L.ζ fun q => q.1.2`.
+
+Rewrite using `[hz]`. Use `(mulBy_fn (P := P) (MA.coordQ M.vz) (MA.coordQ M.vzb)).congr fun q => ?_` and prove the remaining obligations. Simplify using `[MA.evQ, MA.coordQ, MA.coordE, MA.zE, M.vz]`. Establish `h4 : MulBy L.GG fun q => ((Complex.normSq q.1.2 - P.TT : ℝ) : ℂ)`. Rewrite using `[hg]`.
+
+Use `(mulBy_fn (P := P) ((MA.DQ P).gg P.TT) ((MA.DQ P).gg P.TT)).congr fun q => ?_` and prove the remaining obligations. Use `show _ = MA.coordE M.vz q.1 * MA.coordE M.vzb q.1 - (P.TT : ℂ)`. Simplify using `[MA.coordE, MA.zE, M.vz, M.vzb, Complex.mul_conj]`. Establish `hDr : MulBy L.Dr fun q => ∏ l, q.1.1 l`. Use `mulBy_prod L.c _ h1 (List.finRange P.r)` as an intermediate fact.
+
+Rewrite using `[LevelData.Dr, List.ofFn_eq_map]`. Simplify `this` using `only [Fin.prod_univ_def]`. Establish `hDrb : MulBy L.Drb fun q => ∏ l, star (q.1.1 l)`. Use `mulBy_prod L.cb _ h2 (List.finRange P.r)` as an intermediate fact. Rewrite using `[LevelData.Drb, List.ofFn_eq_map]`.
+
+Simplify `this` using `only [Fin.prod_univ_def]`. Use `⟨hDr.mul h3, ?_⟩` and prove the remaining obligations. Use `((hDr.mul hDrb).mul h4).congr fun q => ?_` and prove the remaining obligations. Rewrite using `[MA.Gq, ← Finset.prod_mul_distrib, Complex.ofReal_mul, Complex.ofReal_prod]`. Simplify using `[Complex.mul_conj]`.
+-/
 theorem mulBy_D (hM : MA.IsModelLevel P (MA.DQ P) L) : MulBy L.D (fun q => (∏ l, q.1.1 l) * q.1.2) ∧
     MulBy L.G fun q => ((MA.Gq P q : ℝ) : ℂ) := by
   obtain ⟨-, -, hc, -, hcb, -, hz, -, -, -, hg, -⟩ := hM
@@ -381,6 +544,21 @@ theorem mulBy_D (hM : MA.IsModelLevel P (MA.DQ P) L) : MulBy L.D (fun q => (∏ 
   rw [MA.Gq, ← Finset.prod_mul_distrib, Complex.ofReal_mul, Complex.ofReal_prod]
   simp [Complex.mul_conj]
 
+/- English proof (translation)
+Take `⟨m, b, u, hb, hu, rfl⟩` from `nfs_fin hx`. Use `choose u' hl hh he using fun j => hats_Gpow L s (u j) (hu j).2`. Use `⟨m, b, u', hb, fun j => ⟨(hl j).trans (hu j).1, hh j⟩, fun f g hg q ρ => ?_⟩` and prove the remaining obligations. Take `⟨hD, hG⟩` from `mulBy_D hM`. Establish `hDi` using `hD.inv (D_Di L) fun q => mul_ne_zero (Finset.prod_ne_zero_iff.2 fun l _ => q.2.1 l) (by`.
+
+Introduce `h0`. Use `q.2.2` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `absurd hTT (not_le.2 this))`. Establish `eg : g = MA.actA P (L.G ^ s) f`.
+
+Use function extensionality and compare the values at `ρ'`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `q'`. Use `hG.pow s f ρ' q'` as an intermediate fact. Use `beta_reduce at this`.
+
+Rewrite `this` using `[← Complex.ofReal_pow, ← hg]`. Conclude with `this.symm`. Establish `ex : (∑ j, b j * L.Di ^ n * (u j).prod) * L.G ^ s = L.G ^ s * L.Di ^ n * ∑ j, b j * (u' j).prod`. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Establish `c1` using `((comm_cl L (hfn _ (closure_BB (hb j))) (cDi L)).pow_right n).eq`. Establish `c2` using `((comm_cl L (hfn _ (closure_BB (hb j))) (cG L)).pow_right s).eq`. Establish `c3` using `((cl_comm L (cDi L) (cG L)).pow_pow n s).eq`. Rewrite using `[mul_assoc, he j, c1]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [mul_assoc]`. Use `_ = (L.Di ^ n * L.G ^ s) * (b j * (u' j).prod) := by rw [c2]; simp only [mul_assoc]`. Use `_ = _ := by rw [c3]`. Rewrite using `[eg, ← Gauge.actA_mul, ex, Gauge.actA_mul, ((hG.pow s).mul (hDi.pow n)), Gauge.actA_sum, Finset.sum_apply, Complex.ofReal_pow]`. Use `congr 1`.
+
+Simplify using `only [MA.evQ, AddSubmonoidClass.coe_finsetSum, Finset.sum_apply]`.
+-/
 theorem nf_pointwise (hTT : 0 ≤ P.TT) (hM : MA.IsModelLevel P (MA.DQ P) L)
     (hfn : ∀ b ∈ BB P L, ∀ f ∈ L.fns, Commute b f) {x : MA.A P (MA.DQ P)} {n : ℕ}
     (hx : x ∈ NFs L (BB P L) (L.Di ^ n) n) (s : ℕ) :

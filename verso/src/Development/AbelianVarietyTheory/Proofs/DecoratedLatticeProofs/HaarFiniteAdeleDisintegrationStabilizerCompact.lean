@@ -19,6 +19,9 @@ namespace GlobalTheory.SfinHaar
 
 open Formalism.MainNotions.S Formalism.L2.SG.HidaSetting Formalism.L2.SG.PoincareInHH Topology
 
+/- English proof (translation)
+Take `⟨W', hc⟩` from `W.exists_isCompl`. Take `⟨p, hp⟩ : ∃ p : Matrix (Fin n) (Fin n) E, ∀ x, p *ᵥ x = Submodule.projection W W' hc x` from `⟨LinearMap.toMatrix' _, fun x => LinearMap.toMatrix'_mulVec _ x⟩`. Establish `h1 : ∀ x, p *ᵥ x ∈ W` using `fun x => hp x ▸ Submodule.projection_apply_mem hc x`. Establish `h2 : ∀ x ∈ W, p *ᵥ x = x` using `fun x hx => (hp x).trans (Submodule.projection_apply_of_mem_left hc hx)`. Use `⟨p, Matrix.ext_iff_mulVec.2 fun y => by rw [← Matrix.mulVec_mulVec, h2 _ (h1 y)], fun x => ⟨fun hx => h2 x hx, fun hx => hx ▸ h1 x⟩⟩` and prove the remaining obligations.
+-/
 theorem exists_idem_of_subspace {E : Type} [Field E] {n : ℕ} (W : Submodule E (Fin n → E)) :
     ∃ e : Matrix (Fin n) (Fin n) E, e * e = e ∧ ∀ x, x ∈ W ↔ e *ᵥ x = x := by
   obtain ⟨W', hc⟩ := W.exists_isCompl
@@ -29,6 +32,17 @@ theorem exists_idem_of_subspace {E : Type} [Field E] {n : ℕ} (W : Submodule E 
   refine ⟨p, Matrix.ext_iff_mulVec.2 fun y => by rw [← Matrix.mulVec_mulVec, h2 _ (h1 y)], fun x =>
     ⟨fun hx => h2 x hx, fun hx => hx ▸ h1 x⟩⟩
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Submodule.span_mono (Set.image_mono Submodule.subset_span)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Proceed by induction on `hw using Submodule.span_induction with`.
+
+Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero`. Establish `: (fun i => GlobalTheory.UnipApprox.inc I ((0 : Fin I.n → I.E) i)) = 0` using `by ext; simp`. Use `beta_reduce`. Rewrite using `[this]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`. Establish `: (fun i => GlobalTheory.UnipApprox.inc I ((x + y) i)) = (fun i => GlobalTheory.UnipApprox.inc I (x i)) + fun i => GlobalTheory.UnipApprox.inc I (y i)` using `by ext; simp`. Rewrite `hx`, `hy` using `[SetLike.mem_coe]`. Use `beta_reduce at hx hy ⊢`.
+
+Rewrite using `[this]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`. Establish `: (fun i => GlobalTheory.UnipApprox.inc I ((a • x) i)) = GlobalTheory.UnipApprox.inc I a • fun i => GlobalTheory.UnipApprox.inc I (x i)` using `by ext; simp`. Rewrite `hx` using `[SetLike.mem_coe]`.
+
+Use `beta_reduce at hx ⊢`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem span_incl_eq (I : AutInst) (T : Set (Fin I.n → I.E)) :
     Submodule.span (I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) (incl I '' T) =
       Submodule.span (I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F)
@@ -51,6 +65,13 @@ theorem span_incl_eq (I : AutInst) (T : Set (Fin I.n → I.E)) :
           GlobalTheory.UnipApprox.inc I a • fun i => GlobalTheory.UnipApprox.inc I (x i) := by ext; simp
       rw [SetLike.mem_coe] at hx; beta_reduce at hx ⊢; rw [this]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Take `⟨t, hr, h2, -, -, -, hind⟩` from `GlobalTheory.UnipApprox.exists_top I`. Take `⟨e, he, hW⟩` from `exists_idem_of_subspace (Submodule.span I.E T)`. Establish `hset : {x : I.Gf | (I.fmat x - 1) *ᵥ incl I v ∈ Submodule.span (I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) (incl I '' T)} = {x | e.map (GlobalTheory.UnipApprox.inc I) *ᵥ ((I.fmat x - 1) *ᵥ incl I v) = (I.fmat x - 1) *ᵥ incl I v}`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq]`.
+
+Rewrite using `[span_incl_eq]`. Conclude with `GlobalTheory.UnipApprox.mem_span_iff (GlobalTheory.UnipApprox.inc I) he _ hW _`. Rewrite using `[hset]`. Establish `hc : Continuous fun x : I.Gf => I.fmat x` using `Units.continuous_val.comp hind.continuous`. Establish `hc2 : Continuous fun x : I.Gf => (I.fmat x - 1) *ᵥ incl I v` using `(hc.sub continuous_const).matrix_mulVec continuous_const`.
+
+Conclude with `isClosed_eq (continuous_const.matrix_mulVec hc2) hc2`.
+-/
 theorem isClosed_cond (I : AutInst) (v : Fin I.n → I.E) (T : Set (Fin I.n → I.E)) :
     IsClosed {x : I.Gf | (I.fmat x - 1) *ᵥ incl I v ∈ Submodule.span (I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) (incl I '' T)} := by
   obtain ⟨t, hr, h2, -, -, -, hind⟩ := GlobalTheory.UnipApprox.exists_top I
@@ -67,6 +88,11 @@ theorem isClosed_cond (I : AutInst) (v : Fin I.n → I.E) (T : Set (Fin I.n → 
     (hc.sub continuous_const).matrix_mulVec continuous_const
   exact isClosed_eq (continuous_const.matrix_mulVec hc2) hc2
 
+/- English proof (translation)
+Establish `h1 : ∀ a : Fin r, IsClosed {x : I.Gf | (I.fmat x - 1) *ᵥ incl I (e a) ∈ Submodule.span (I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) ((fun b => incl I (e b)) '' {b | b.1 < a.1})}`. Introduce `a`. Use `isClosed_cond I (e a) (e '' {b : Fin r | b.1 < a.1})` as an intermediate fact. Rewrite `this` using `[Set.image_image]`. Then use the resulting hypothesis. Establish `h2 : IsClosed {x : I.Gf | (I.fmat x - 1) *ᵥ incl I z ∈ Submodule.span (I.E ⊗[I.F] Formalism.MainNotions.S.Af I.F) (Set.range fun b => incl I (e b))}`.
+
+Use `isClosed_cond I z (Set.range e)` as an intermediate fact. Rewrite `this` using `[← Set.range_comp]`. Then use the resulting hypothesis. Unfold `Sfin`. Rewrite using `[Set.setOf_and, Set.setOf_forall]`. Conclude with `(isClosed_iInter h1).inter h2`.
+-/
 theorem isClosed_sfin (I : AutInst) {r : ℕ} (e : Fin r → Fin I.n → I.E) (z : Fin I.n → I.E) :
     IsClosed (Sfin I e z) := by
   have h1 : ∀ a : Fin r, IsClosed {x : I.Gf | (I.fmat x - 1) *ᵥ incl I (e a) ∈
@@ -88,6 +114,41 @@ namespace GlobalTheory.SfinHaar
 
 open Formalism.MainNotions.S Formalism.L2.SG.HidaSetting Formalism.L2.SG.PoincareInHH Topology MeasureTheory
 
+/- English proof (translation)
+Introduce `D X u`. Use `set G := X.B.I.Gf`. Use `set S := Formalism.L2.SG.Pf.SfinSub X.B.I X.eR (X.zR u) with hSdef`. Use `set K := X.K2 with hKdef`. Use `set x := X.xu u with hxdef`.
+
+Use `haveI : SecondCountableTopology G := Formalism.L2.SG.Pf.gf_secondCountable X.B.I`. Use `haveI : X.B.μf.IsHaarMeasure := X.B.haar`. Establish `hKg` using `Formalism.L2.SG.Closed.level_subgroup_is_group X`. Establish `hKt` using `Formalism.L2.SG.Pf.level_subgroup_compact_open X`. Establish `hK1 : (1 : G) ∈ K` using `hKg.1`.
+
+Establish `hKmul : ∀ a ∈ K, ∀ b ∈ K, a * b ∈ K` using `hKg.2.1`. Establish `hKinv : ∀ a ∈ K, a⁻¹ ∈ K` using `hKg.2.2.1`. Establish `hKo : IsOpen K` using `hKt.1`. Establish `hKc : IsCompact K` using `hKt.2`. Use `haveI : LocallyCompactSpace G := hKc.locallyCompactSpace_of_mem_nhds_of_group (hKo.mem_nhds hK1)`.
+
+Establish `hSc : IsClosed (S : Set G)` using `isClosed_sfin X.B.I X.eR (X.zR u)`. Use `set C : Set G := {g | x⁻¹ * g * x ∈ K} with hCdef`. Establish `hCeq : C = (fun k => x * k * x⁻¹) '' K`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hg; exact ⟨x⁻¹ * g * x, hg, by group⟩`. Introduce and unpack `⟨k, hk, rfl⟩ show x⁻¹ * (x * k * x⁻¹) * x ∈ K`. Simplify `hk` using `[mul_assoc]`. Establish `hCc : IsCompact C` using `hCeq ▸ hKc.image ((continuous_const_mul _).mul continuous_const)`. Establish `hCo : IsOpen C` using `hKo.preimage ((continuous_const_mul _).mul continuous_const)`.
+
+Use `set H : Set S := Subtype.val ⁻¹' C with hHdef`. Establish `hHc : IsCompact H` using `hSc.isClosedEmbedding_subtypeVal.isCompact_preimage hCc`. Establish `hHo : IsOpen H` using `hCo.preimage continuous_subtype_val`. Establish `hH1 : (1 : S) ∈ H` using `by show x⁻¹ * ((1 : S) : G) * x ∈ K`. Simplify using `using hK1`.
+
+Use `haveI : LocallyCompactSpace S := hHc.locallyCompactSpace_of_mem_nhds_of_group (hHo.mem_nhds hH1)`. Set `K₀ : TopologicalSpace.PositiveCompacts S` to `⟨⟨H, hHc⟩, ⟨1, hHo.subset_interior_iff.2 le_rfl hH1⟩⟩`. Use `set ν : Measure S := Measure.haarMeasure K₀ with hνdef`. Use `haveI : ν.IsHaarMeasure := Measure.isHaarMeasure_haarMeasure K₀`. Establish `hνH : ν H = 1` using `Measure.haarMeasure_self`.
+
+Use `⟨ν, inferInstance, inferInstance, 1, one_pos, fun φ hφ hsupp => ?_⟩` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_one, one_mul]`. Use `set Z : Set (S × G) := {p | x⁻¹ * ((p.1 : G)⁻¹ * p.2) ∈ K} with hZdef`. Establish `hZo : IsOpen Z` using `hKo.preimage (continuous_const.mul ((continuous_subtype_val.comp continuous_fst).inv.mul continuous_snd))`. Establish `hZm : MeasurableSet Z` using `hZo.measurableSet`.
+
+Establish `hKm : MeasurableSet K` using `hKo.measurableSet`. Set `F : S → G → ENNReal` to `fun t g => φ g * Z.indicator 1 (t, g)`. Establish `hF : Measurable (Function.uncurry F)` using `(hφ.comp measurable_snd).mul (measurable_one.indicator hZm)`. Establish `hA : ∀ t : S, ∫⁻ g, F t g ∂X.B.μf = ∫⁻ k in K, φ ((t : G) * x * k) ∂X.B.μf`. Introduce `t`.
+
+Rewrite using `[← lintegral_mul_left_eq_self _ ((t : G) * x), ← lintegral_indicator hKm]`. Use `lintegral_congr fun k => ?_` and prove the remaining obligations. Establish `e : x⁻¹ * ((t : G)⁻¹ * ((t : G) * x * k)) = k` using `by group`. Distinguish the cases in `hk : k ∈ K`. Establish `: ((t, (t : G) * x * k) : S × G) ∈ Z` using `by show x⁻¹ * ((t : G)⁻¹ * ((t : G) * x * k)) ∈ K; rw [e]; exact hk`.
+
+Simplify using `only [F]`. Rewrite using `[Set.indicator_of_mem this, Set.indicator_of_mem hk, Pi.one_apply, mul_one]`. Establish `: ((t, (t : G) * x * k) : S × G) ∉ Z` using `by show ¬ x⁻¹ * ((t : G)⁻¹ * ((t : G) * x * k)) ∈ K; rw [e]; exact hk`. Simplify using `only [F]`. Rewrite using `[Set.indicator_of_notMem this, Set.indicator_of_notMem hk, mul_zero]`.
+
+Establish `hC' : ∀ g, ∫⁻ t, F t g ∂ν = φ g`. Introduce `g`. Distinguish the cases in `h0 : φ g = 0`. Simplify using `[F, h0]`. Take `⟨s, hs, k, hk, rfl⟩` from `hsupp g h0`.
+
+Establish `hset : {t : S | (t, s * x * k) ∈ Z} = (fun t => (⟨s, hs⟩ : S)⁻¹ * t) ⁻¹' H`. Use extensionality with `t`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage]`. Use `show x⁻¹ * ((t : G)⁻¹ * (s * x * k)) ∈ K ↔ x⁻¹ * (s⁻¹ * (t : G)) * x ∈ K`. Establish `e : x⁻¹ * ((t : G)⁻¹ * (s * x * k)) = (x⁻¹ * (s⁻¹ * (t : G)) * x)⁻¹ * k` using `by group`.
+
+Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `hKinv _ (hKmul _ h _ (hKinv _ hk))` as an intermediate fact. Simplify using `using this`.
+
+Introduce `h`. Conclude with `hKmul _ (hKinv _ h) _ hk`. Establish `hmeas : MeasurableSet {t : S | (t, s * x * k) ∈ Z}` using `hZm.preimage (measurable_id.prodMk measurable_const)`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun t => ?_` and prove the remaining obligations.
+
+Simplify using `only [F]`. Use `congr 1`. Use `_ = φ (s * x * k) * ν {t : S | (t, s * x * k) ∈ Z} := by`. Rewrite using `[lintegral_const_mul _ (measurable_one.indicator hmeas), lintegral_indicator_one hmeas]`. Use `_ = φ (s * x * k) := by`.
+
+Rewrite using `[hset, measure_preimage_mul, hνH, mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem disint_finPart : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u : D.what₂.Word),
     ∃ μSf : Measure (Formalism.L2.SG.Pf.SfinSub X.B.I X.eR (X.zR u)), μSf.IsHaarMeasure ∧ SigmaFinite μSf ∧
       ∃ c : ℝ, 0 < c ∧ ∀ φ : X.B.I.Gf → ENNReal, Measurable φ →

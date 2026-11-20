@@ -6,10 +6,20 @@ namespace UpperTheory.V.Pa.B2
 
 variable {A Γ : Type} [CommRing A] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
 
+/- English proof (translation)
+The claim follows from `((M.cont.comp (continuous_fst.prodMk (hx.comp continuous_snd))).sub (hx.comp continuous_mul)).add (hx.comp continuous_fst)`.
+-/
 theorem continuous_differential_one (M : FRep A Γ) {x : Γ → M.X} (hx : Continuous x) : Continuous (d1 M.ρ x) :=
   ((M.cont.comp (continuous_fst.prodMk (hx.comp continuous_snd))).sub (hx.comp continuous_mul)).add
     (hx.comp continuous_fst)
 
+/- English proof (translation)
+Use `letI : TopologicalSpace (M.X ⧸ S) := ⊥`. Use `haveI : DiscreteTopology (M.X ⧸ S) := ⟨rfl⟩`. Use `haveI : Finite (M.X ⧸ S) := Finite.of_surjective _ S.mkQ_surjective`. Set `M' : FRep A Γ` to `{ X := M.X ⧸ S ρ := Representation.quotient M.ρ S hS cont := by`. Use `continuous_prod_of_discrete_right.2 fun q => ?_` and prove the remaining obligations.
+
+Take `⟨m, rfl⟩` from `S.mkQ_surjective q`. Conclude with `(continuous_of_discreteTopology (f := S.mkQ)).comp (M.cont.comp (continuous_id.prodMk continuous_const)) }`. Take `⟨b, hb, h1, h2⟩` from `(H A M hl hJ).2 M' S.mkQ (fun _ _ => rfl) S.mkQ_surjective (fun g => S.mkQ (x g)) ⟨(continuous_of_discreteTopology (f := S.mkQ)).comp hx, fun g h => by show S.mkQ (x (g * h)) = S.mkQ (x g) + S.mkQ (M.ρ g (x h))`. Rewrite using `[← map_add]`. Use `(Submodule.Quotient.eq S).2 ?_` and prove the remaining obligations.
+
+Use `S.neg_mem (hd (g, h)) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[d1_apply]`. Use the proof step `abel⟩`. Use the proof step `(fun g hg => (Submodule.Quotient.mk_eq_zero S).2 (h0 g hg))`. Conclude with `⟨b, hb, h1, fun g => (Submodule.Quotient.eq S).1 (h2 g).symm⟩`.
+-/
 theorem urLift {l : ℕ} {J : Subgroup Γ} (H : UrAx l J) (M : FRep A Γ) (hl : ∀ m : M.X, l • m = 0)
     (hJ : ∀ g ∈ J, ∀ m, M.ρ g m = m) (S : Submodule A M.X) (hS : ∀ g, S ≤ S.comap (M.ρ g)) (x : Γ → M.X)
     (hx : Continuous x) (hd : ∀ s, d1 M.ρ x s ∈ S) (h0 : ∀ g ∈ J, x g ∈ S) :
@@ -35,6 +45,33 @@ theorem urLift {l : ℕ} {J : Subgroup Γ} (H : UrAx l J) (M : FRep A Γ) (hl : 
     (fun g hg => (Submodule.Quotient.mk_eq_zero S).2 (h0 g hg))
   exact ⟨b, hb, h1, fun g => (Submodule.Quotient.eq S).1 (h2 g).symm⟩
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `hi.hasLeftInverse`. Establish `hr' : ∀ i s, ι (r (d1 M.ρ (x i) s)) = d1 M.ρ (x i) s` using `fun i s => by`. Take `⟨m, hm⟩` from `hd i s`. Rewrite using `[← hm, hr]`. Set `σ : P.ι → M.X → D.M.X` to `fun w s => Classical.epsilon fun m => s - ι m ∈ N w`.
+
+Set `τ : Fin e → ∀ w, P.G w → D.M.X` to `fun i w g => σ w (x i (P.φ w g) - b i w g)`. Establish `hτ : ∀ i w g, x i (P.φ w g) - b i w g - ι (τ i w g) ∈ N w` using `fun i w g => Classical.epsilon_spec (hxb i w g)`. Establish `mem : ∀ i, ((fun s => r (d1 M.ρ (x i) s), fun w g => D.π w (τ i w g)) : D.C2) ∈ D.selmerSecondCocycles`. Introduce `i`. Use `⟨⟨(continuous_of_discreteTopology (f := r)).comp (continuous_differential_one M (hx i)), fun g h k => hi ?_⟩, fun w => ⟨?_, fun g h => ?_⟩⟩` and prove the remaining obligations.
+
+Simplify using `only [map_add, map_sub, map_zero, he, hr']`. Simplify using `only [d1_apply, map_add, map_sub, map_mul, Module.End.mul_apply, mul_assoc]`. Normalize the expressions using the abelian group laws. Conclude with `(continuous_of_discreteTopology (f := fun s => D.π w (σ w s))).comp (((hx i).comp (P.cont w)).sub (hb i w))`. Simplify using `only [d1_apply (D.Q w).ρ, ← D.equiv]`.
+
+Rewrite using `[← map_sub, ← map_add, ← sub_eq_zero, ← map_sub, hk]`. Simplify using `only [map_add, map_sub, he, hr']`. Use `add_mem (sub_mem (hN w g _ (hτ i w h)) (hτ i w (g * h))) (hτ i w g) using 1` and compare the differences between its conclusion and the goal. Simplify using `only [d1_apply, map_add, map_sub, map_mul, hb']`. Normalize the expressions using the abelian group laws.
+
+Use `⟨fun i => ⟨_, mem i⟩, fun c hB => ?_⟩` and prove the remaining obligations. Take `⟨x0, c1, e1, e2⟩` from `hB`. Establish `e1' : ∀ s, ∑ i, c i • d1 M.ρ (x i) s = ι (d1 D.M.ρ x0 s)` using `fun s => by`. Rewrite using `[← e1]`. Simplify using `[Prod.fst_sum, Finset.sum_apply, hr']`.
+
+Establish `hΨ : (fun γ => ∑ i, c i • x i γ - ι (x0 γ)) ∈ Z1 M.ρ`. Use `⟨(continuous_finset_sum _ fun i _ => (hx i).const_smul _).sub ((continuous_of_discreteTopology (f := ι)).comp c1), fun g h => ?_⟩` and prove the remaining obligations. Use `e1' (g, h)` as an intermediate fact. Simplify using `only [d1_apply, map_add, map_sub, he, smul_add, smul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib] at this`. Simplify using `only [map_sub, map_sum, map_smul]`.
+
+Rewrite `this`, the goal using `[← sub_eq_zero]`. Rewrite using `[← neg_eq_zero, ← this]`. Normalize the expressions using the abelian group laws. Take `⟨m0, hm0⟩ : ∑ i, c i • x i c0 - ι (x0 c0) ∈ LinearMap.range ι` from `sub_mem (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hxc i)) ⟨_, rfl⟩`. Establish `hneg : M.ρ c0 (ι m0) = -ι m0`.
+
+Establish `a1` using `hΨ.2 1 1`. Establish `a2` using `hΨ.2 c0 c0`. Simplify using `only [mul_one, map_one, Module.End.one_apply, left_eq_add] at a1`. Simplify using `only [hc, a1, ← hm0] at a2`. Conclude with `eq_neg_of_add_eq_zero_right a2.symm`.
+
+Take `⟨t, ht⟩` from `h2.exists_left_inv`. Use `⟨(fun γ => ∑ i, c i • x i γ - ι (x0 γ)) + d0 M.ρ (ι (t • m0)), add_mem hΨ ⟨?_, fun g h => ?_⟩, ?_, fun γ => ?_, fun w => ?_⟩` and prove the remaining obligations. Conclude with `(M.cont.comp (continuous_id.prodMk continuous_const)).sub continuous_const`. Simplify using `only [amitsur_d0_apply, map_mul, map_sub, Module.End.mul_apply]`. Normalize the expressions using the abelian group laws.
+
+Simplify using `only [Pi.add_apply, amitsur_d0_apply, ← hm0]`. Rewrite using `[map_smul, map_smul, hneg, ← smul_sub, ← neg_add', ← two_smul A, smul_neg, smul_smul, ht, one_smul, add_neg_cancel]`. Use `⟨D.M.ρ γ (t • m0) - t • m0 - x0 γ, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, amitsur_d0_apply, map_sub, he]`. Normalize the expressions using the abelian group laws.
+
+Take `⟨-, Y, hY⟩` from `e2 w`. Take `⟨m, rfl⟩` from `D.surj w Y`. Use `⟨m + t • m0, fun g hg => ?_⟩` and prove the remaining obligations. Establish `a1 : D.π w (∑ i, c i • τ i w g - x0 (P.φ w g) - (D.M.ρ (P.φ w g) m - m)) = 0`. Use `hY g hg` as an intermediate fact.
+
+Simplify using `only [map_sub, D.equiv, ← this]`. Simplify using `[Prod.snd_sum, Finset.sum_apply]`. Rewrite `a1` using `[hk]`. Use `add_mem a1 (Submodule.sum_mem _ fun i (_ : i ∈ Finset.univ) => (N w).smul_mem (c i) (hτ i w g)) using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Pi.add_apply, amitsur_d0_apply, map_sub, map_add, map_sum, he, smul_sub, Finset.sum_sub_distrib, map_smul ι (c _)]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem translGen {P : Pl Γ} (D : Dat A P) (M : FRep A Γ) (ι : D.M.X →ₗ[A] M.X) (hi : Function.Injective ι)
     (he : ∀ g m, ι (D.M.ρ g m) = M.ρ g (ι m)) (N : P.ι → Submodule A M.X)
     (hN : ∀ w g, ∀ m ∈ N w, M.ρ (P.φ w g) m ∈ N w) (hk : ∀ w m, D.π w m = 0 ↔ ι m ∈ N w) (c0 : Γ)

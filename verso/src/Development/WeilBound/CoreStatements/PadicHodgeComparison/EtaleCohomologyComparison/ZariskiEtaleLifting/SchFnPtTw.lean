@@ -18,6 +18,9 @@ variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O]
 
 variable (F : Fn O) (κ : O →+* OC l)
 
+/- English proof (translation)
+Establish `e : f ≫ g = f' ≫ g'` using `CommRingCat.hom_ext h`. Rewrite using `[← Functor.map_comp_apply, ← Functor.map_comp_apply, e]`.
+-/
 theorem map_sq (P : CommRingCat.{0} ⥤ Type) {A B C D : CommRingCat.{0}} (f : A ⟶ B) (g : B ⟶ D) (f' : A ⟶ C) (g' : C ⟶ D)
     (h : g.hom.comp f.hom = g'.hom.comp f'.hom) (y : P.obj A) : P.map g (P.map f y) = P.map g' (P.map f' y) := by
   have e : f ≫ g = f' ≫ g' := CommRingCat.hom_ext h
@@ -28,15 +31,24 @@ def basePt {k₁ k₂ : Type} [CommRing k₁] [CommRing k₂] {κ₁ : O →+* k
   app B := TypeCat.ofHom fun z => ⟨(z.1.1.comp τ, z.1.2), by rw [RingHom.comp_assoc, h]; exact z.2⟩
   naturality _ _ _ := rfl
 
+/- English proof (translation)
+The claim follows from `Ideal.map_le_iff_le_comap.1 (dd_red k _ h).1`.
+-/
 theorem red_le (k : Bool) {m n : ℕ} (h : n ≤ m) : JJ k (base l) m ≤ (JJ k (base l) n).comap ((base l).red h) :=
   Ideal.map_le_iff_le_comap.1 (dd_red k _ h).1
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun x => by change Ideal.quotientMap _ _ (red_le k h) (uJ k (base l) m ((base l).oC (κ x))) = uJ k (base l) n ((base l).oC (κ x)) obtain ⟨w, hw⟩ := Ideal.Quotient.mk_surjective ((base l).oC (κ x)) rw [← hw]; rfl`.
+-/
 theorem red_κb (k : Bool) {m n : ℕ} (h : n ≤ m) :
     (Ideal.quotientMap _ ((base l).red h) (red_le k h)).comp (κb κ k m) = κb κ k n := RingHom.ext fun x => by
   change Ideal.quotientMap _ _ (red_le k h) (uJ k (base l) m ((base l).oC (κ x))) = uJ k (base l) n ((base l).oC (κ x))
   obtain ⟨w, hw⟩ := Ideal.Quotient.mk_surjective ((base l).oC (κ x))
   rw [← hw]; rfl
 
+/- English proof (translation)
+The claim follows from `RingHom.congr_fun (ACris.ringHom_ext (F := (A.red h).comp (A.cris m)) (G := A.cris n) fun y => by rw [RingHom.comp_apply, cris_of, cris_of, red_mk]) a`.
+-/
 theorem red_cris (A : PAlg l) {m n : ℕ} (h : n ≤ m) (a : Acris l) : A.red h (A.cris m a) = A.cris n a :=
   RingHom.congr_fun (ACris.ringHom_ext (F := (A.red h).comp (A.cris m)) (G := A.cris n) fun y => by
     rw [RingHom.comp_apply, cris_of, cris_of, red_mk]) a
@@ -54,9 +66,15 @@ def HcSys (k : Bool) (j : ℕ) : Sys.{1} (Acris l) where
 section Gal
 variable {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (σ : Gal(PadicAlgCl l/K))
 
+/- English proof (translation)
+The claim follows from `Ideal.map_le_iff_le_comap.1 (dd_gal k σ n).1`.
+-/
 theorem gal_le (k : Bool) (n : ℕ) : JJ k (base l) n ≤ (JJ k (base l) n).comap (galBase σ n) :=
   Ideal.map_le_iff_le_comap.1 (dd_gal k σ n).1
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun x => by change Ideal.quotientMap _ _ (gal_le σ k n) (uJ k (base l) n ((base l).oC (κ x))) = uJ k (base l) n ((base l).oC (κ x)) obtain ⟨w, hw⟩ := IsPerfectoidField.surjective_fontaineTheta (K := ℂ_[l]) l (κ x) have hw' : theta0 l w = κ x := hw conv_rhs => rw [← hσ …`.
+-/
 theorem gal_κb (hσ : ∀ x, galOC σ (κ x) = κ x) (k : Bool) (n : ℕ) :
     (Ideal.quotientMap _ (galBase σ n) (gal_le σ k n)).comp (κb κ k n) = κb κ k n := RingHom.ext fun x => by
   change Ideal.quotientMap _ _ (gal_le σ k n) (uJ k (base l) n ((base l).oC (κ x))) = uJ k (base l) n ((base l).oC (κ x))
@@ -90,6 +108,9 @@ def ptTw (hσ : ∀ x, galOC σ (κ x) = κ x) : F.pt κ ⟶ twF σ ⋙ F.pt κ 
         ((twU_mapU σ f _).trans (congrArg (mapU f) ((twUEquiv σ A).apply_symm_apply x))).symm
     exact map_sq F.Pt _ _ _ _ e _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem schFn_ptTw {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) (hσ : ∀ x, galOC σ (κ x) = κ x) :
     ptTw (schFn q) κ σ hσ = pxTw q κ σ hσ := rfl
 
@@ -98,6 +119,9 @@ end Gal
 noncomputable def frb {B : Type} [CommRing B] (h : (l : B) = 0) : B →+* B :=
   _root_.UpperTheory.Reformulated.B.FrobeniusElementAlt.frb h
 
+/- English proof (translation)
+Establish `h : (l : (base l).Acr n) ∈ JJ true (base l) n` using `Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)`. Rewrite using `[← map_natCast ψ, ← map_natCast (Ideal.Quotient.mk _), Ideal.Quotient.eq_zero_iff_mem.2 h, map_zero]`.
+-/
 theorem l_zero {B : Type} [CommRing B] {n : ℕ} (ψ : (base l).Acr n ⧸ JJ true (base l) n →+* B) : (l : B) = 0 := by
   have h : (l : (base l).Acr n) ∈ JJ true (base l) n := Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)
   rw [← map_natCast ψ, ← map_natCast (Ideal.Quotient.mk _), Ideal.Quotient.eq_zero_iff_mem.2 h, map_zero]
@@ -109,6 +133,15 @@ def phiPt (n : ℕ) : F.ptK (κb κ true n) ⟶ F.ptK (κb κ true n) where
     exact map_sq (F.ptK _) φ (CommRingCat.ofHom (frb (l_zero (φ.hom.comp z.1.1)))) (CommRingCat.ofHom (frb (l_zero z.1.1))) φ
       (RingHom.ext fun x => (map_pow φ.hom x l).symm) z
 
+/- English proof (translation)
+Break down `eq_or_ne n 0 with rfl | hn` into its components or cases. Establish `: Subsingleton (A.Acr 0)` using `subsingleton_of_zero_eq_one (by simpa using (A.pow_l_acr 0).symm)`. Rewrite using `[← map_pow]`. Conclude with `congrArg _ (Subsingleton.elim _ _)`. Take `⟨u, hu⟩` from `(RL.uToQ A n).2.2.1 (Ideal.Quotient.mk _ r)`.
+
+Take `⟨w, rfl⟩` from `Ideal.Quotient.mk_surjective u`. Establish `hu' : Ideal.Quotient.mk (A.PFil n) (A.toAcr n w) = Ideal.Quotient.mk _ r` using `hu`. Establish `h1 : Ideal.Quotient.mk (A.PFil n) (A.phi n r) = Ideal.Quotient.mk _ (A.phi n (A.toAcr n w))`. Use `Ideal.Quotient.eq.2 ?_` and prove the remaining obligations. Rewrite using `[← map_sub]`.
+
+Conclude with `(A.dpP_phi n).1 (Ideal.mem_map_of_mem _ (Ideal.Quotient.eq.1 hu'.symm))`. Establish `h2 : A.phiW w - w ^ l ∈ Ideal.span {(l : A.W)}`. Rewrite using `[A.mem_span_l_iff, ← WittVector.constantCoeff_apply, map_sub, map_pow]`. Conclude with `sub_self _`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 h2`.
+
+Rewrite using `[h1, ← hu', phi_toAcr, ← map_pow, ← map_pow]`. Use `Ideal.Quotient.eq.2 ?_` and prove the remaining obligations. Rewrite using `[← map_sub, ← hc, map_mul, map_natCast]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_sup_left (Ideal.mem_span_singleton_self _))`.
+-/
 theorem phi_mk (A : PAlg l) (n : ℕ) (r : A.Acr n) :
     Ideal.Quotient.mk (A.PFil n) (A.phi n r) = Ideal.Quotient.mk (A.PFil n) r ^ l := by
   rcases eq_or_ne n 0 with rfl | hn

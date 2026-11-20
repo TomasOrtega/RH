@@ -22,23 +22,53 @@ noncomputable section
 
 namespace GlobalTheory.PartsSpanProof
 
+/- English proof (translation)
+Break down `h with ⟨⟨⟨-, -, v, ε, hv, he⟩, -⟩, rfl⟩ | ⟨rfl, ⟨v, ε, hv, rfl⟩, -⟩` into its components or cases. Conclude with `⟨v, ε, hv, he⟩`. Conclude with `⟨v, ε, hv, rfl⟩`.
+-/
 theorem exists_isFinIdem {D : D7} {P : HeightOneSpectrum (𝓞 D.host.E)} {e f : AE D} (h : IsPrimeIdem P e f) :
     ∃ v, IsFinIdem D v f := by
   rcases h with ⟨⟨⟨-, -, v, ε, hv, he⟩, -⟩, rfl⟩ | ⟨rfl, ⟨v, ε, hv, rfl⟩, -⟩
   · exact ⟨v, ε, hv, he⟩
   · exact ⟨v, ε, hv, rfl⟩
 
+/- English proof (translation)
+Use `⟨(LinearEquiv.ofInjective e he).symm.toLinearMap ∘ₗ (L ∘ₗ e).codRestrict _ hL, fun x => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val ((LinearEquiv.ofInjective e he).apply_symm_apply ⟨L (e x), hL x⟩)`.
+-/
 theorem exists_lift {H X : Type} [AddCommGroup H] [Module ℂ H] [AddCommGroup X] [Module ℂ X] (e : H →ₗ[ℂ] X)
     (he : Function.Injective e) (L : X →ₗ[ℂ] X) (hL : ∀ x, L (e x) ∈ LinearMap.range e) :
     ∃ h : Module.End ℂ H, ∀ x, e (h x) = L (e x) := by
   refine ⟨(LinearEquiv.ofInjective e he).symm.toLinearMap ∘ₗ (L ∘ₗ e).codRestrict _ hL, fun x => ?_⟩
   exact congrArg Subtype.val ((LinearEquiv.ofInjective e he).apply_symm_apply ⟨L (e x), hL x⟩)
 
+/- English proof (translation)
+Simplify using `[dualLab, List.map_reverse, List.map_map]`.
+-/
 theorem dualLab_dualLab (d : List ℤ) : dualLab (dualLab d) = d := by
   simp [dualLab, List.map_reverse, List.map_map]
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `hC D G _ _ Pl0 T A Ks _ _ _ R F hL hF i S`. Establish `hLP` using `GlobalTheory.LevelProduct.levProd_of_laws D G Pl0 T A Ks R F hL hF i`. Establish `hS` using `(GlobalTheory.Hk3.schurAll_of_cuspRapidDecay hC R).2.2 i`. Take `⟨inj, hr, hip⟩` from `hL.models.HW i (sg0 D A)`. Establish `hmem : ∀ x, (R.HW i (sg0 D A)).e x ∈ R.Wall i (sg0 D A)` using `fun x => hr ▸ LinearMap.mem_range_self _ x`.
+
+Establish `hlv` using `fun x v => ((GlobalTheory.MultMem.mem_mult_iff ..).1 (hmem x)).lev v`. Set `ι` to `{x : HeightOneSpectrum (𝓞 D.host.E) × List ℤ × Finset (GA D (Wc D i)) // Hecke₂ (Wc D i) (levS _ (R.βW i) (R.datWp i R.triv)) (levChi _ (R.βW i) (R.datWp i R.triv)) S x.1 x.2.1 x.2.2}`. Establish `keep : ∀ x : ι, ∀ U ∈ R.Wall i (sg0 D A), heckeOn (R.MW i (sg0 D A)) x.1.2.2 U ∈ R.Wall i (sg0 D A)`. Introduce and unpack `⟨⟨P, d, B⟩, e, f, ϖ, α, -, hP, -, -, -, -, -, hα, -, hB, hc⟩ U hU`. Take `⟨v, hv⟩` from `exists_isFinIdem hP`.
+
+Conclude with `GlobalTheory.LocalHeckeLevel.heckeOn_mem_wall hLP v f hv α hα B hB hc U hU`. Establish `hex : ∀ x : ι, ∃ h : Module.End ℂ (R.HW i (sg0 D A)).H, ∀ y, (R.HW i (sg0 D A)).e (h y) = heckeOn (R.MW i (sg0 D A)) x.1.2.2 ((R.HW i (sg0 D A)).e y)` using `fun x => exists_lift _ inj _ fun y => hr ▸ keep x _ (hmem y)`. Use `choose op hop using hex`. Establish `hcomm : Formalism.L2.Col.PairComm op` using `fun x x' => by`. Use `LinearMap.ext fun y => inj ?_` and prove the remaining obligations.
+
+Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, hop, hop, hop, hop]`. Conclude with `MultilinearMap.ext fun v => GlobalTheory.SphericalOps.comm_heckeLin (J := levW R i) (GlobalTheory.HeckeAdjoint.realUnif D _) x.2 x'.2 (hlv y v)`. Establish `hadj : ∀ x : ι, ∃ x', op x' = LinearMap.adjoint (op x)`. Introduce `x`. Take `⟨B', hB', -⟩` from `GlobalTheory.SphericalOps.exists_dual (J := levW R i) (GlobalTheory.HeckeAdjoint.realUnif D x.1.1) x.2`.
+
+Set `x' : ι` to `⟨(x.1.1, dualLab x.1.2.1, B'), hB'⟩`. Use `⟨x', ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.eq_adjoint_iff]`. Introduce `a b`. Rewrite using `[hip, hip, hop, hop]`.
+
+Unfold `ipAt`. Use `congr 1`. Conclude with `GlobalTheory.HeckeAdjoint.ipM_heckeOn_dualLab D (Wc D i) _ R.θ (R.MW i (sg0 D A)) (levW R i) _ S (R.νW i) (R.fdW i) hL.models.inf (hL.models.νW i).1.1 (hL.models.νW i).2 hS x.1.1 (dualLab x.1.2.1) B' x.1.2.2 hB' (by rw [dualLab_dualLab]; exact x.2) _ (hmem a) _ (hmem b) (keep x' …`. Take `⟨h1, h2, -⟩` from `GlobalTheory.normalFamily_orthogonal_decomposition op hcomm hadj`. Unfold `PartsSpan`.
+
+Use `eq_top_iff.2 (h2 ▸ iSup_le fun y => ?_)` and prove the remaining obligations. Use `le_iSup_of_le (fun P d => if h : ∃ B, Hecke₂ (Wc D i) (levS _ (R.βW i) (R.datWp i R.triv)) (levChi _ (R.βW i) (R.datWp i R.triv)) S P d B then y ⟨(P, d, h.choose), h.choose_spec⟩ else 0) ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[h1, Submodule.mem_iInf]`. Use `show (R.HW i (sg0 D A)).e x ∈ partFull _ _ _ _ _ _`.
+
+Unfold `partFull`. Use `Submodule.mem_inf.2 ⟨hmem x, ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Introduce `P d B hB`. Establish `hE : ∃ B, Hecke₂ (Wc D i) (levS _ (R.βW i) (R.datWp i R.triv)) (levChi _ (R.βW i) (R.datWp i R.triv)) S P d B` using `⟨B, hB⟩`.
+
+Rewrite using `[dif_pos hE]`. Establish `e1` using `Module.End.mem_eigenspace_iff.1 (hx ⟨(P, d, hE.choose), hE.choose_spec⟩)`. Establish `e2` using `congrArg (R.HW i (sg0 D A)).e e1`. Rewrite `e2` using `[hop, map_smul]`. Rewrite using `[← e2]`.
+
+Conclude with `MultilinearMap.ext fun v => GlobalTheory.SphericalOps.labelUnique (J := levW R i) (GlobalTheory.HeckeAdjoint.realUnif D) P d B _ hB hE.choose_spec _ (hlv x v)`.
+-/
 theorem partsSpan : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type)
     (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
     (R : RealDat D A Ks) (F : Face D A), Laws R F → R.FullP → ∀ i S, PartsSpan R i S := by

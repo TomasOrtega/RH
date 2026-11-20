@@ -27,6 +27,13 @@ instance (i : X.Tw) (M : ℕ) (ι : Type) : TopologicalSpace (ResLam X i M ι) :
 
 instance (i : X.Tw) (M : ℕ) (ι : Type) : DiscreteTopology (ResLam X i M ι) := ⟨rfl⟩
 
+/- English proof (translation)
+Set `ε : abelian₂ X i M ι →ₐ[X.O0 i] X.O0 i` to `MonoidAlgebra.lift (X.O0 i) (X.O0 i) (Del X i M ι) 1`. Set `φ : abelian₂ X i M ι →+* IsLocalRing.ResidueField (X.O0 i)` to `(IsLocalRing.residue (X.O0 i)).comp ε.toRingHom`. Establish `hle : maxLam X i M ι ≤ RingHom.ker φ`. Unfold `maxLam`. Use `sup_le ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `c hc`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`. Simplify `hc` using `[φ, ε, IsLocalRing.residue_eq_zero_iff]`. Rewrite using `[Ideal.span_le]`.
+
+Introduce and unpack `_ ⟨q, rfl⟩`. Simplify using `[φ, ε, toLam]`. Conclude with `ne_top_of_le_ne_top (RingHom.ker_ne_top φ) hle`.
+-/
 theorem maxLam_ne_top (i : X.Tw) (M : ℕ) (ι : Type) : maxLam X i M ι ≠ ⊤ := by
   classical
   let ε : abelian₂ X i M ι →ₐ[X.O0 i] X.O0 i := MonoidAlgebra.lift (X.O0 i) (X.O0 i) (Del X i M ι) 1
@@ -78,6 +85,13 @@ def SelmerMatrixChosenPrimes : Prop :=
 
 variable (X) in
 
+/- English proof (translation)
+Take `⟨hv, hinj, hgood⟩` from `h`. Use `⟨hM, hQ, hinj, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hvQ`. Take `⟨q, hq⟩` from `(hQ v).1 hvQ`. Establish `hS0 : v ∉ X.S0 i` using `(hv q v hq).2.2.2.1`.
+
+Use `⟨fun hl => hS0 (X.twistExcludedPlaces_contains_residueChar i hl), fun hsp => hS0 ?_⟩` and prove the remaining obligations. Simplify using `only [Spl, Set.mem_sdiff, Set.mem_union, Set.mem_iUnion] at hsp`. Break down `hsp.1 with ⟨k, hk⟩ | hp` into its components or cases. Conclude with `X.placesOver_subset_exceptional i k hk`. Conclude with `X.primes_subset_exceptional i hp`.
+
+Introduce `q`. Take `⟨hopen, -, htriv, hout, -⟩` from `hgood q`. Use `⟨hopen, htriv, ?_⟩` and prove the remaining obligations. Introduce `v _ _ hvQ B hB σ hσ`. Conclude with `hout v (fun ho => hvQ ((hQ v).2 ⟨q, ho⟩)) B hB σ hσ`.
+-/
 theorem setting_of_auxiliaryPrimes (i : X.Tw) (M : ℕ) (hM : 1 ≤ M) (A : Finset (PlE D.host)) {ι : Type} (P : ι → PlE D.host)
     (d : ι → (GE N →* Multiplicative (ZMod (X.l i ^ M)))) (Q : Finset (PlE D.host))
     (h : SlopeTestRemainingChoices X i M A P d) (hQ : IsQ P Q) : HidaSetting X i M P Q d := by
@@ -97,6 +111,11 @@ theorem setting_of_auxiliaryPrimes (i : X.Tw) (M : ℕ) (hM : 1 ≤ M) (A : Fins
     intro v _ _ hvQ B hB σ hσ
     exact hout v (fun ho => hvQ ((hQ v).2 ⟨q, ho⟩)) B hB σ hσ
 
+/- English proof (translation)
+Unfold `SelmerMatrixChosenPrimes`. Introduce `i s hG M hM A ι _ P d Q haux hQ`. Unfold `GalHyp at hG`. Take `⟨h1, h2, h3, h4, -, h6, h7⟩` from `hG`. Establish `hT : TripleHyp bkP i s`.
+
+Unfold `TripleHyp`. Conclude with `⟨h1, h2, h3, h4, h6, by omega⟩`. Conclude with `h i s hT M ι P Q d (setting_of_auxiliaryPrimes X i M hM A P d Q haux hQ)`.
+-/
 theorem selmerMatrixAuxiliaryPrimes_of_selMatrix (h : SelMatrix bkP) : SelmerMatrixChosenPrimes bkP := by
   unfold SelmerMatrixChosenPrimes
   intro i s hG M hM A ι _ P d Q haux hQ

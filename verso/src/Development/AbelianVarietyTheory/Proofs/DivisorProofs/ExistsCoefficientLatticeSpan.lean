@@ -28,6 +28,9 @@ namespace GlobalTheory.BigOn.Exp
 
 open GlobalTheory.TraceIncl in
 
+/- English proof (translation)
+Use `clSum_act (presV R i t) (kernelLaws hS.models hS.thP hS.typ) (R.B.L i t).act_tie (envV R i t).J_le (actS R i) (fun q y w => funext fun v => ?_) g f` and prove the remaining obligations. Conclude with `(GlobalTheory.T.thetaKernelFiniteAdelic_laws R i t hS.models.inf hS.models.cV hS.thP.ωP hS.thP.pt_theta hS.thP.ioP hS.typ).2.2.2 _ q (hS.red i t q) (hl _) y w v`.
+-/
 theorem clSum_equiv_of_lift {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {i : Fin D.R.m} {t : T0}
     (hS : HidaSetting R i t) (hl : (∀ g0 : G0 R.Pg D.R.r, ∃ κ', Formalism.IndefR.Lev.IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) g0 κ')) (g : G) (f : (A.MtCSD i t).Forms) :
@@ -39,6 +42,9 @@ theorem clSum_equiv_of_lift {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : 
 
 open GlobalTheory.TraceIncl in
 
+/- English proof (translation)
+Unfold `levelTrace gaL`. Rewrite using `[trU_apply, map_sum, Finset.sum_apply, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, clSum_equiv_of_lift hS hl, LinearMap.smul_apply, invChar, apply_dite D.what₂.embLL, map_zero]`. Both sides reduce to the same expression.
+-/
 theorem clSum_trU_of_lift {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {i : Fin D.R.m} {t : T0}
     (hS : HidaSetting R i t) (hl : (∀ g0 : G0 R.Pg D.R.r, ∃ κ', Formalism.IndefR.Lev.IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) g0 κ')) (U : Subgroup G) (ψ : U →* D.what₂.LLˣ) (f : (A.MtCSD i t).Forms)
@@ -54,6 +60,15 @@ theorem clSum_trU_of_lift {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Ty
 open GlobalTheory.TraceIncl in
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨gramR, c0R, c0L, hT, P, hP, rfl⟩` from `hw`. Take `⟨e, r, h1, hL⟩` from `exists_latSys (i := i) (t := t) hS.lev hT`. Take `⟨f, hf, j, hj⟩` from `hL.exists_trace (GlobalTheory.LevelCharOrder.levEnv_chi_isOfFinOrder _ _ _) (kernelLaws hS.models hS.thP hS.typ) (h := fin _ h) (x := e.symm P) (Submodule.mem_comap.2 ((e.apply_symm_apply P).symm ▸ hP : e (e.symm P) ∈ nabAtr (labLL D) (lamV D i) _))`. Take `⟨y, -, ey⟩` from `exists_src_trU i t U ψ hS.act hf`. Establish `hcw : (presV R i t).coef (e.symm P) = c0L i P` using `(h1 _).trans (congrArg (c0L i) (e.apply_symm_apply P))`.
+
+Take `⟨a, ha⟩` from `hχ j`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `ha` using `[map_zero]`. Conclude with `(Units.ne_zero _) ha.symm`.
+
+Use `⟨θ (a⁻¹ • y), LinearMap.mem_range_self _ _, fun v => ?_⟩` and prove the remaining obligations. Establish `e1 : singleSeries R i (R.ωP i t) (R.vP i t) h (c0L i P) v = ((((envV R i t).χ j)⁻¹ : ℂˣ) : ℂ) • clSum (presV R i t) (kern R i t) f v` using `(hS.kern_fin hh _ v).symm.trans ((congrArg (fun w' => kern R i t (fin _ h) w' v) hcw.symm).trans (congrFun hj v))`. Establish `e2 : adForm R i (θ y) (fun ρ => v ρ) = (1 : ℂ) • levelTrace R i U ψ (clSum (presV R i t) (kern R i t) f v)`. Rewrite using `[hS.adForm_theta hθ y v, ey, clSum_trU_of_lift hS hl]`. Establish `e3 : adForm R i (θ (a⁻¹ • y)) (fun ρ => v ρ) = D.what₂.embLL a⁻¹ • adForm R i (θ y) (fun ρ => v ρ)`.
+
+Rewrite using `[map_smul, adForm_smul]`. Both sides reduce to the same expression. Rewrite using `[e3, e2, one_smul, e1, (levelTrace R i U ψ).map_smul, map_inv₀, ha, Units.val_inv_eq_inv_val]`.
+-/
 theorem exists_adForm_levelTrace {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {i : Fin D.R.m} {t : T0}
     (hS : HidaSetting R i t) (hl : ∀ g0 : G0 R.Pg D.R.r, ∃ κ', Formalism.IndefR.Lev.IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) g0 κ')
@@ -85,6 +100,19 @@ theorem exists_adForm_levelTrace {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 
     rfl
   rw [e3, e2, one_smul, e1, (levelTrace R i U ψ).map_smul, map_inv₀, ha, Units.val_inv_eq_inv_val]
 
+/- English proof (translation)
+Introduce `_ _ _ _`. Establish `hR` using `GlobalTheory.T.rational_estimate_statement`. Establish `hC` using `GlobalTheory.T.twisted_character_rational_values`. Establish `hN` using `GlobalTheory.T.level_zero_lift_exists`. Unfold `RatSt AtPts at hR`.
+
+Unfold `AtTw AtPts at hC hN ⊢`. Use `((hR.and hC).and hN).imp fun Fm CH _ H => ?_` and prove the remaining obligations. Take `⟨⟨h1, h2⟩, h3⟩` from `H`. Take `⟨x0, hE⟩` from `(h1.and h2).and h3`. Use `⟨x0, fun x hx hle i p hp hM w hw j h hh w' hw' => ?_⟩` and prove the remaining obligations.
+
+Take `⟨⟨a1, a2⟩, a3⟩` from `hE x hx hle i p hp`. Take `⟨θ, hθ⟩` from `a1 hM _ hw j`. Take `⟨hCh, hOk, hU, -⟩` from `GlobalTheory.T.second_link_of_weight_rows _ _ _ _ _ _ _ _ _ _ p hp hM.1`. Establish `hS : GlobalTheory.TraceIncl.HidaSetting (R2 p) j ((R2 p).mu ((Fm.D x i).plEq w))` using `⟨hCh.lev, hCh.grp.red_L, hCh.fam.tie, hCh.models, hCh.thP, hU, ⟨_, ((fw2 p).hv₀ j _).1⟩, (hOk.lifts _ _).act, fun g0 κ κ' k1 k2 => GlobalTheory.VecInv.omega_lifts_vP (R2 p) hCh.lev hCh.models.inf hCh.thP.ωP hCh.thP.vP j _ g0 κ κ' k1 k2⟩`. Take `⟨y, -, hy⟩` from `exists_adForm_levelTrace hS (a3 hM w hw j) (a2 hM w hw j) hθ hh hw'`.
+
+Use `⟨y, ?_, hy⟩` and prove the remaining obligations. Take `⟨n, b, hbK, -, -, -, hsp⟩` from `(fw2 p).ks j`. Establish `hy0` using `hsp.symm ▸ (Submodule.mem_top (x := y))`. Use `Submodule.span_le.2 ?_ hy0` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Establish `hk : (p.nexp.fi j).e ((p.nexp.fi j).e.symm (b k)) = b k` using `(p.nexp.fi j).e.apply_symm_apply (b k)`. Use `Submodule.subset_span ⟨(p.nexp.fi j).e.symm (b k), ((p.nexp.fi j).wk _).2 ?_, hk⟩` and prove the remaining obligations. Use `first`. Consider the case `exact hk.symm ▸ hbK k`. Consider the case `exact (congrArg (fun z => z ∈ (p.R.FW j).WK) hk).mpr (hbK k)`.
+
+Consider the case `(rw [hk]; exact hbK k)`.
+-/
 theorem levelTraced_series_rational : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt → GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.SeriesRat → AtTw fun Fm x hx i p w j => ∀ h ∈ GfC (Vc (Fm.D x i) j), ∀ w' : ((R2 p).cV j).W, InCoefLat (R2 p) j h w' →
   ∃ y ∈ Submodule.span (Fm.D x i).what₂.LL ((p.nexp.fi j).e '' ((p.Sx.A ((j : ℕ) + 1)).WK : Set _)), ∀ v : ∀ τ, lowT ((R2 p).MW j (sg0 (Fm.D x i) p.P.A3.A)) τ, adForm (R2 p) j y (fun τ => v τ) = levelTrace (R2 p) j (F2 p).P0 (F2 p).ψ0⁻¹ (singleSeries (R2 p) j ((R2 p).ωP j ((R2 p).mu ((Fm.D x i).plEq w))) ((R2 p).vP j ((R2 p).mu ((Fm.D x i).plEq w))) h w' v) := by
   intro _ _ _ _

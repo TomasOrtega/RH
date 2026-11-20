@@ -25,6 +25,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz]
   {β : Oz →+* c.F} (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β)
 
+/- English proof (translation)
+Establish `h1 : ∀ i, IsCombAtG Z.t x u (fun j => (Matrix.diagonal fun _ : Fin r => k) j i) (spMap (epsMul k) ≫ u i)`. Introduce `i`. Use `comb_smul hu (isCombAtG_single Z.t x hu i) k` as an intermediate fact. Use `this using 2 with j` and compare the differences between its conclusion and the goal. Distinguish the cases in `h : j = i`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Establish `h2 : ∀ w', IsCombAtG Z.t x (fun i => spMap (epsMul k) ≫ u i) a w' → IsCombAtG Z.t x u (fun i => k * a i) w'`. Introduce `w' h`.
+
+Use `Formalism.L2.Pj.tanLinG u hu _ _ a w' h1 h` as an intermediate fact. Use `this using 2 with j` and compare the differences between its conclusion and the goal. Simplify using `[Matrix.mulVec_diagonal]`. Use `⟨h2 w, fun h => ?_⟩` and prove the remaining obligations. Take `⟨w', -, hw'⟩` from `exists_comb (fun i => comb_tan hu (h1 i)) a`.
+
+Rewrite using `[comb_unique hu h (h2 w' hw')]` and apply the resulting hypothesis.
+-/
 theorem comb_scale {K : Type} [CommRing K] {x : Sp K ⟶ Z.X} {r : ℕ}
     {u : Fin r → (Sp (DualNumber K) ⟶ Z.t.G.left)} (hu : ∀ i, IsTanAtG Z.t x (u i)) (k : K) (a : Fin r → K)
     (w : Sp (DualNumber K) ⟶ Z.t.G.left) :
@@ -45,6 +54,11 @@ theorem comb_scale {K : Type} [CommRing K] {x : Sp K ⟶ Z.X} {r : ℕ}
   obtain ⟨w', -, hw'⟩ := exists_comb (fun i => comb_tan hu (h1 i)) a
   rwa [comb_unique hu h (h2 w' hw')]
 
+/- English proof (translation)
+Use `⟨fun i => Trans.isEigTan_smul Z (hu.1 i) k, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, hq⟩` from `hu.2 w hw`. Use `⟨fun i => n * a i, ?_, fun b hb => ?_⟩` and prove the remaining obligations. Use `(comb_scale Z (fun i => (hu.1 i).1) k _ w).2 ?_` and prove the remaining obligations. Simplify `ha` using `only [← mul_assoc, hk, one_mul]`.
+
+Use `hq _ ((comb_scale Z (fun i => (hu.1 i).1) k _ w).1 hb)` as an intermediate fact. Use function extensionality and compare the values at `i`. Rewrite using `[← this, ← mul_assoc, mul_comm n k, hk, one_mul]`.
+-/
 theorem isEigBasis_scale {K : Type} [CommRing K] {φ : c.F →+* K} {x : Sp K ⟶ Z.X} {τ : E →+* ℂ} {r : ℕ}
     {u : Fin r → (Sp (DualNumber K) ⟶ Z.t.G.left)} (hu : IsEigBasis Z φ x τ u) {k n : K} (hk : k * n = 1) :
     IsEigBasis Z φ x τ (fun i => spMap (epsMul k) ≫ u i) := by
@@ -57,15 +71,26 @@ theorem isEigBasis_scale {K : Type} [CommRing K] {φ : c.F →+* K} {x : Sp K �
     funext i
     rw [← this, ← mul_assoc, mul_comm n k, hk, one_mul]
 
+/- English proof (translation)
+Rewrite using `[sp_comp, sp_comp]`. Use `congr 1`. Apply the tactic sequence `refine RingHom.ext fun z => TrivSqZeroExt.ext ?_ ?_ <;> simp [Formalism.L2.Pj.dualMap, epsMul, mul_comm]`.
+-/
 theorem dual_eps {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) (a : S) :
     spMap (dualMap ψ) ≫ spMap (epsMul a) = spMap (epsMul (ψ a)) ≫ spMap (dualMap ψ) := by
   rw [sp_comp, sp_comp]
   congr 1
   refine RingHom.ext fun z => TrivSqZeroExt.ext ?_ ?_ <;> simp [Formalism.L2.Pj.dualMap, epsMul, mul_comm]
 
+/- English proof (translation)
+Simplify using `using ((Nat.cast_ne_zero.2 hn : ((n : ℕ) : c.F) ≠ 0).isUnit).map φ`.
+-/
 theorem isUnit_nat {K : Type} [CommRing K] (φ : c.F →+* K) {n : ℕ} (hn : n ≠ 0) : IsUnit (n : K) := by
   simpa using ((Nat.cast_ne_zero.2 hn : ((n : ℕ) : c.F) ≠ 0).isUnit).map φ
 
+/- English proof (translation)
+Establish `h1 : genι Z ≫ Z.s = genStr Z ≫ spMap β` using `Limits.pullback.condition`. Establish `h2 : spMap e.toRingHom ≫ spMap e.symm.toRingHom = 𝟙 _`. Rewrite using `[sp_comp, show e.toRingHom.comp e.symm.toRingHom = RingHom.id _ from by ext; simp]`. Conclude with `Spec.map_id _`. Rewrite using `[h1, ← sp_comp, ← sp_comp, ← h]`.
+
+Simplify using `only [Category.assoc]`. Rewrite using `[reassoc_of% h2]`.
+-/
 theorem over_struct {F : Type} [Field F] (e : F ≃+* c.F) {K : Type} [CommRing K] (y : Sp K ⟶ gen Z) (ψ : F →+* K)
     (h : y ≫ genStr Z ≫ spMap e.toRingHom = spMap ψ) :
     y ≫ genι Z ≫ Z.s = spMap ((ψ.comp e.symm.toRingHom).comp β) := by
@@ -77,6 +102,9 @@ theorem over_struct {F : Type} [Field F] (e : F ≃+* c.F) {K : Type} [CommRing 
   simp only [Category.assoc]
   rw [reassoc_of% h2]
 
+/- English proof (translation)
+Establish `h : (spMap ψ ≫ x) ≫ j = spMap ψ ≫ x ≫ j` using `Category.assoc _ _ _`. Generalize the expression as in `(spMap ψ ≫ x) ≫ j = y at h hx'`. Substitute `h` using the available equality. Conclude with `RingHom.ext fun f => evalPt_spMap_comp ψ (x ≫ j) U hx hx' f`.
+-/
 theorem evalPt_bc {K K' : Type} [CommRing K] [CommRing K'] (ψ : K →+* K') {X W : Scheme.{0}} (x : Sp K ⟶ W) (j : W ⟶ X)
     (U : X.Opens) (hx : ⊤ ≤ (x ≫ j) ⁻¹ᵁ U) (hx' : ⊤ ≤ ((spMap ψ ≫ x) ≫ j) ⁻¹ᵁ U) :
     evalPt ((spMap ψ ≫ x) ≫ j) U hx' = ψ.comp (evalPt (x ≫ j) U hx) := by
@@ -85,6 +113,9 @@ theorem evalPt_bc {K K' : Type} [CommRing K] [CommRing K'] (ψ : K →+* K') {X 
   subst h
   exact RingHom.ext fun f => evalPt_spMap_comp ψ (x ≫ j) U hx hx' f
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨((ι.comp O.subtype).codRestrict O' fun a => hι _ a.2).comp (evalPt xt U ht), RingHom.ext fun f => congrArg ι (evalPt_spMap_comp _ xt U ht hy f).symm⟩`.
+-/
 theorem exists_int {K C : Type} [Field K] [CommRing C] (O : ValuationSubring K) (O' : Subring C) (ι : K →+* C)
     (hι : ∀ a ∈ O, ι a ∈ O') {X : Scheme.{0}} (y : Sp K ⟶ X) (xt : Sp O ⟶ X) (h : spMap O.subtype ≫ xt = y)
     (U : X.Opens) (ht : ⊤ ≤ xt ⁻¹ᵁ U) (hy : ⊤ ≤ y ⁻¹ᵁ U) :
@@ -98,6 +129,11 @@ def GrSpan (p : ℕ) [Fact p.Prime] (φ : c.F →+* ℂ_[p]) (y : Sp ℂ_[p] ⟶
   ∀ w, IsEigTan Z φ y τ w →
     ((∃ a : Fin r → ℂ_[p], (∀ i, Q (a i)) ∧ IsCombAtG Z.t y u a w) ↔ InGr Z φ y (latDR Z.t y) τ w)
 
+/- English proof (translation)
+Introduce `w hw`. Use `Iff.trans ?_ (h w hw)` and prove the remaining obligations. Simplify using `only [comb_scale Z ht]`. Use `⟨fun ⟨a, ha, hc⟩ => ⟨_, fun i => ?_, hc⟩, fun ⟨a, ha, hc⟩ => ⟨_, ha, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, Ring.mul_inverse_cancel _ hu, one_mul]`.
+
+Conclude with `ha i`. Simplify `hc` using `only [← mul_assoc, Ring.inverse_mul_cancel _ hu, one_mul]`.
+-/
 theorem GrSpan.scale {p : ℕ} [Fact p.Prime] {φ : c.F →+* ℂ_[p]} {y : Sp ℂ_[p] ⟶ Z.X} {τ : E →+* ℂ} {r : ℕ}
     {u : Fin r → (Sp (DualNumber ℂ_[p]) ⟶ Z.t.G.left)} {N : ℕ} (hu : IsUnit (N : ℂ_[p]))
     (ht : ∀ i, IsTanAtG Z.t y (u i)) (h : GrSpan Z p φ y τ u fun a => ‖(N : ℂ_[p]) * a‖ ≤ 1) :
@@ -109,6 +145,9 @@ theorem GrSpan.scale {p : ℕ} [Fact p.Prime] {φ : c.F →+* ℂ_[p]} {y : Sp �
   · rw [← mul_assoc, Ring.mul_inverse_cancel _ hu, one_mul]; exact ha i
   · simpa only [← mul_assoc, Ring.inverse_mul_cancel _ hu, one_mul] using hc
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem grSpan_of_grBasis {R : Type} [CommRing R] {x : Sp R ⟶ Z.X} {τ : E →+* ℂ} {r : ℕ} (h : GrBasis Z x τ r) :
     ∃ (N : ℕ) (u : Fin r → (Sp (DualNumber R) ⟶ Z.t.G.left)), N ≠ 0 ∧
       (∀ (K : Type) [CommRing K] (ψ : R →+* K) (φ : c.F →+* K), spMap ψ ≫ x ≫ Z.s = spMap (φ.comp β) →
@@ -119,6 +158,9 @@ theorem grSpan_of_grBasis {R : Type} [CommRing R] {x : Sp R ⟶ Z.X} {τ : E →
             (fun i => spMap (dualMap ((intO ℂ_[p]).subtype.comp ψ)) ≫ u i) fun a => ‖(N : ℂ_[p]) * a‖ ≤ 1 :=
   h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem isLocGrLat_of_forall {F : Type} [Field F] [NumberField F] (e : F ≃+* c.F) {X W : Scheme.{0}} (jB : W ⟶ X)
     (πB : W ⟶ gen Z) (r : ℕ) (τ : E →+* ℂ) (U : X.Opens) (u : LocAssign Z r jB U)
     (h : ∀ (v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) (hp : (resP v).Prime) (ε : TrueGeo.Ext v)
@@ -136,6 +178,9 @@ theorem isLocGrLat_of_forall {F : Type} [Field F] [NumberField F] (e : F ≃+* c
     IsLocGrLat Z e jB πB r τ U u :=
   h
 
+/- English proof (translation)
+The claim follows from `isLocGrLat_of_forall Z e jB πB r τ U u fun v hp => @h v ⟨hp⟩`.
+-/
 theorem isLocGrLat_of_grSpan {F : Type} [Field F] [NumberField F] (e : F ≃+* c.F) {X W : Scheme.{0}} (jB : W ⟶ X)
     (πB : W ⟶ gen Z) (r : ℕ) (τ : E →+* ℂ) (U : X.Opens) (u : LocAssign Z r jB U)
     (h : ∀ (v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) [Fact (resP v).Prime] (ε : TrueGeo.Ext v)
@@ -154,6 +199,23 @@ namespace GlobalTheory.TwoLat
 
 open GlobalTheory.ShFam.Pad.Guard GlobalTheory.TangentOrigin
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Oz _ β Z F _ _ e X W jB πB ρ hρ U hU τ r hb`. Take `⟨N, u, hN, hg, hl⟩` from `GrLoc.grSpan_of_grBasis Z hb`. Establish `hpt : ∀ {K : Type} [CommRing K] (x : Sp K ⟶ W) (hx : ⊤ ≤ (x ≫ jB) ⁻¹ᵁ U), spMap (evalPt (x ≫ jB) U hx) ≫ hU.fromSpec ≫ ρ = x ≫ πB ≫ genι Z`. Introduce `K _ x hx`. Rewrite using `[← hρ, ← Category.assoc x, ← Category.assoc]`.
+
+Conclude with `congrArg (· ≫ ρ) (eq_spec_fromSpec hU (x ≫ jB) hx).symm`. Establish `hun : ∀ {K : Type} [CommRing K] (x : Sp K ⟶ W), IsUnit (N : K)` using `fun x => GrLoc.isUnit_nat (Spec.preimage (x ≫ πB ≫ genStr Z)).hom hN`. Establish `hnat : ∀ (K K' : Type) [CommRing K] [CommRing K'] (ψ : K →+* K') (x : Sp K ⟶ W) (hx : ⊤ ≤ (x ≫ jB) ⁻¹ᵁ U) (i : Fin r), spMap (dualMap ψ) ≫ spMap (epsMul (Ring.inverse (N : K))) ≫ spMap (dualMap (evalPt (x ≫ jB) U hx)) ≫ u i = spMap (epsMul (Ring.inverse (N : K'))) ≫ spMap (dualMa …`. Introduce `K K' _ _ ψ x hx i`. Establish `h1 : ψ (Ring.inverse (N : K)) = Ring.inverse (N : K')`.
+
+Establish `h2 : ψ (Ring.inverse (N : K)) * (N : K') = 1`. Rewrite using `[← map_natCast ψ, ← map_mul, Ring.inverse_mul_cancel _ (hun x), map_one]`. Conclude with `((Ring.eq_mul_inverse_iff_mul_eq _ _ _ (hun (spMap ψ ≫ x))).2 h2).trans (one_mul _)`. Rewrite using `[← Category.assoc, GrLoc.dual_eps, h1, Category.assoc, GlobalTheory.HTPres.bc_bc]`. Establish `hstr : ∀ {K : Type} [CommRing K] (x : Sp K ⟶ W) (hx : ⊤ ≤ (x ≫ jB) ⁻¹ᵁ U) (ψ : F →+* K), x ≫ πB ≫ genStr Z ≫ spMap e.toRingHom = spMap ψ → spMap (evalPt (x ≫ jB) U hx) ≫ (hU.fromSpec ≫ ρ) ≫ Z.s = spMap ((ψ.comp e.symm.toRingHom).comp β)`.
+
+Introduce `K _ x hx ψ h`. Rewrite using `[← Category.assoc, hpt x hx, ← GrLoc.over_struct Z e (x ≫ πB) ψ (by simpa only [Category.assoc] using h)]`. Simplify using `only [Category.assoc]`. Use `⟨fun K _ x hx i => spMap (epsMul (Ring.inverse (N : K))) ≫ spMap (dualMap (evalPt (x ≫ jB) U hx)) ≫ u i, ⟨fun K _ x hx ψ h => ?_, fun K K' _ _ ψ x hx hx' i => ?_⟩, GrLoc.isLocGrLat_of_grSpan Z e jB πB r τ U _ fun v _ ε xg xt h1 h2 h3 hx => ?_⟩` and prove the remaining obligations. Establish `h4` using `hg K _ _ (hstr x hx ψ h)`.
+
+Rewrite `h4` using `[hpt x hx]`. Conclude with `GrLoc.isEigBasis_scale Z h4 (Ring.inverse_mul_cancel _ (hun x))`. Establish `h4` using `hnat K K' ψ x hx i`. Rewrite `h4` using `[← GrLoc.evalPt_bc ψ x jB U hx hx']`. Conclude with `h4.symm`.
+
+Take `⟨_, hio, -⟩` from `ioOf_spec F v ε`. Establish `hy : ⊤ ≤ ((spMap (ioOf (resP v) ε) ≫ xg) ≫ jB) ⁻¹ᵁ U` using `fun p _ => hx (Set.mem_univ _)`. Establish `h5` using `(GrLoc.evalPt_bc (ioOf (resP v) ε) xg jB U hx hy).symm`. Take `⟨ψ₀, h6⟩` from `GrLoc.exists_int ε.O (intO ℂ_[resP v]) (ioOf (resP v) ε) (fun a ha => (hio a).2 ha) _ xt h2 U h3 hx`. Establish `h4 : (spMap (ioOf (resP v) ε) ≫ xg) ≫ πB ≫ genStr Z ≫ spMap e.toRingHom = spMap ((ioOf (resP v) ε).comp (algebraMap F (AlgebraicClosure F)))`.
+
+Rewrite using `[Category.assoc, h1, sp_comp]`. Establish `h7` using `hstr _ hy _ h4`. Establish `h8` using `hg _ _ _ h7`. Establish `h9` using `hl (resP v) ψ₀ _ (by rw [h6, h5]; exact h7)`. Rewrite `h9` using `[h6, h5, hpt _ hy, Category.assoc]`.
+
+Rewrite `h8` using `[hpt _ hy, Category.assoc]`. Establish `h10` using `funext (hnat _ _ (ioOf (resP v) ε) xg hx)`. Rewrite `h10` using `[h5]`. Rewrite using `[h10]`. Conclude with `GrLoc.GrSpan.scale Z (hun (spMap (ioOf (resP v) ε) ≫ xg)) (fun i => (h8.1 i).1) h9`.
+-/
 theorem exists_locFrame_of_grBasis : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
     {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz]

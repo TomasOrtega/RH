@@ -14,6 +14,9 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj
 
 namespace GlobalTheory.CompanionTheory.Ar.Approx
 
+/- English proof (translation)
+Use `⟨h'.lift t (v ≫ g) (by simpa using h.w), ?_⟩` and prove the remaining obligations. Use `IsPullback.of_right (h₁₂ := t') (h₂₂ := f) (v₁₃ := p) ?_ (by simp) h'` and prove the remaining obligations. Simplify using `using h`.
+-/
 theorem exists_isPullback_left {P Q X S T U : Scheme.{0}} {t : P ⟶ X} {v : P ⟶ U} {p : X ⟶ S}
     {g : U ⟶ T} {f : T ⟶ S} {t' : Q ⟶ X} {v' : Q ⟶ T}
     (h : IsPullback t v p (g ≫ f)) (h' : IsPullback t' v' p f) :
@@ -22,10 +25,28 @@ theorem exists_isPullback_left {P Q X S T U : Scheme.{0}} {t : P ⟶ X} {v : P �
   refine IsPullback.of_right (h₁₂ := t') (h₂₂ := f) (v₁₃ := p) ?_ (by simp) h'
   simpa using h
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp, CommRingCat.ofHom_comp]`.
+-/
 theorem spMap_comp_spMap {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : R →+* S)
     (g : S →+* T) : spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, ← Spec.map_comp, CommRingCat.ofHom_comp]
 
+/- English proof (translation)
+Establish `hPA : IsPullback (pullback.fst p (spMap φ)) (pullback.snd p (spMap φ)) p (spMap φ)` using `.of_hasPullback _ _`. Use `haveI : Smooth (pullback.snd p (spMap φ)) := MorphismProperty.of_isPullback hPA ‹_›`. Use `haveI : IsProper (pullback.snd p (spMap φ)) := MorphismProperty.of_isPullback hPA ‹_›`. Use `haveI : Flat (pullback.snd p (spMap φ)) := inferInstance`. Set `eA : Sp A ⟶ pullback p (spMap φ)` to `pullback.lift (spMap φ ≫ e) (𝟙 _) (by rw [Category.assoc, hs]; simp)`.
+
+Establish `heA : eA ≫ pullback.snd p (spMap φ) = 𝟙 _` using `pullback.lift_snd _ _ _`. Establish `hW : IsPullback (pullback.fst (pullback.snd p (spMap φ)) (spMap (IsLocalRing.residue A))) (pullback.snd (pullback.snd p (spMap φ)) (spMap (IsLocalRing.residue A))) (pullback.snd p (spMap φ)) (spMap (IsLocalRing.residue A))` using `.of_hasPullback _ _`. Establish `hbot : spMap (IsLocalRing.residue A) ≫ spMap φ = spMap b ≫ spMap a`. Rewrite using `[spMap_comp_spMap, spMap_comp_spMap, hb]`. Establish `hW'` using `hW.paste_horiz hPA`.
+
+Rewrite `hW'` using `[hbot]`. Take `⟨u, hu⟩` from `exists_isPullback_left hW' (.of_hasPullback p (spMap a))`. Use `haveI : Smooth (pullback.snd (pullback.snd p (spMap φ)) (spMap (IsLocalRing.residue A))) := MorphismProperty.of_isPullback hW ‹_›`. Use `haveI : GeometricallyConnected (pullback.snd (pullback.snd p (spMap φ)) (spMap (IsLocalRing.residue A))) := MorphismProperty.of_isPullback hu hE`. Establish `hGI : GeometricallyIntegral (pullback.snd (pullback.snd p (spMap φ)) (spMap (IsLocalRing.residue A)))` using `GlobalTheory.geometricallyIntegral_of_smooth _`.
+
+Use `haveI hA : IsIso (pullback.snd p (spMap φ)).appTop := isIso_appTop_of_closedFibre A _ _ eA heA inferInstance inferInstance hGI`. Establish `hL : IsPullback (pullback.fst (pullback.snd p (spMap φ)) (spMap j)) (pullback.snd (pullback.snd p (spMap φ)) (spMap j)) (pullback.snd p (spMap φ)) (spMap j)` using `.of_hasPullback _ _`. Use `haveI : Flat (spMap j) := Flat.SpecMap_iff.2 hj`. Use `haveI hL1 : IsIso (pullback.snd (pullback.snd p (spMap φ)) (spMap j)).appTop := GlobalTheory.ProperFunctions.isIso_appTop_of_isPullback hL`. Establish `hbot' : spMap j ≫ spMap φ = spMap d ≫ spMap c`.
+
+Rewrite using `[spMap_comp_spMap, spMap_comp_spMap, hd]`. Establish `hL'` using `hL.paste_horiz hPA`. Rewrite `hL'` using `[hbot']`. Take `⟨w, hw⟩` from `exists_isPullback_left hL' (.of_hasPullback p (spMap c))`. Use `haveI : Flat (spMap d) := Flat.SpecMap_iff.2 (by algebraize [d]`.
+
+Conclude with `RingHom.flat_algebraMap_iff.2 inferInstance)`. Use `haveI : Surjective (spMap d) := by`. Use `⟨fun x => ?_⟩` and prove the remaining obligations. Establish `y : PrimeSpectrum L` using `⟨⊥, Ideal.isPrime_bot⟩`. Conclude with `⟨y, Subsingleton.elim (α := PrimeSpectrum K) _ _⟩`.
+
+Use `haveI hK : IsIso (pullback.snd p (spMap c)).appTop := GlobalTheory.ProperFunctions.isIso_appTop_of_isPullback_of_surjective hw`. Conclude with `geometricallyConnected_of_isIso_appTop K _ _ inferInstance inferInstance hK`.
+-/
 theorem geometricallyConnected_of_local {k A E L K : Type} [CommRing k] [CommRing A] [IsLocalRing A]
     [IsNoetherianRing A] [Field E] [Field L] [Field K] (X : Scheme.{0}) (p : X ⟶ Sp k)
     (e : Sp k ⟶ X) (hs : e ≫ p = 𝟙 _) [Smooth p] [IsProper p] (φ : k →+* A) (a : k →+* E)
@@ -84,6 +105,9 @@ theorem geometricallyConnected_of_local {k A E L K : Type} [CommRing k] [CommRin
     GlobalTheory.ProperFunctions.isIso_appTop_of_isPullback_of_surjective hw
   exact geometricallyConnected_of_isIso_appTop K _ _ inferInstance inferInstance hK
 
+/- English proof (translation)
+Establish `hinj : Function.Injective ((algebraMap A (FractionRing A)).comp ψ)` using `(IsFractionRing.injective A (FractionRing A)).comp hψ`. Use `geometricallyConnected_of_local (A := A) (E := E) (L := FractionRing A) X p e hs (ψ.comp q) a b hb hE (algebraMap A (FractionRing A)) (RingHom.flat_algebraMap_iff.2 inferInstance) _ (IsFractionRing.lift hinj) ?_` and prove the remaining obligations. Use extensionality with `r`. Simplify using `only [RingHom.comp_apply]`. Conclude with `IsFractionRing.lift_algebraMap hinj (q r)`.
+-/
 theorem geometricallyConnected_of_localDomain {k B A E K : Type} [CommRing k] [CommRing B]
     [IsDomain B] [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A] [Field E] [Field K]
     [Algebra B K] [IsFractionRing B K] (X : Scheme.{0}) (p : X ⟶ Sp k)
@@ -101,6 +125,13 @@ theorem geometricallyConnected_of_localDomain {k B A E K : Type} [CommRing k] [C
   simp only [RingHom.comp_apply]
   exact IsFractionRing.lift_algebraMap hinj (q r)
 
+/- English proof (translation)
+Introduce `k _ _ X p e hs _ _ x y hyx hx`. Establish `hle : y.asIdeal ≤ x.asIdeal` using `(PrimeSpectrum.le_iff_specializes y x).2 hyx`. Establish `hq : Function.Surjective (Ideal.Quotient.mk y.asIdeal)` using `Ideal.Quotient.mk_surjective`. Choose the witnesses or unpack the hypotheses as in `⟨Q, hQ, hcomap⟩ : ∃ Q : Ideal (k ⧸ y.asIdeal), ∃ _ : Q.IsPrime, x.asIdeal = Q.comap (Ideal.Quotient.mk y.asIdeal) := by`. Use `⟨x.asIdeal.map (Ideal.Quotient.mk y.asIdeal), Ideal.map_isPrime_of_surjective hq (by rw [Ideal.mk_ker]; exact hle), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Ideal.comap_map_of_surjective _ hq, eq_comm, sup_eq_left]`. Use `le_trans ?_ hle` and prove the remaining obligations. Rewrite using `[show Ideal.comap (Ideal.Quotient.mk y.asIdeal) ⊥ = RingHom.ker (Ideal.Quotient.mk y.asIdeal) from rfl, Ideal.mk_ker]`. Use `haveI : IsNoetherianRing (Localization.AtPrime Q) := IsLocalization.isNoetherianRing Q.primeCompl _ inferInstance`. Use `haveI : IsDomain (Localization.AtPrime Q) := IsLocalization.isDomain_localization Q.primeCompl_le_nonZeroDivisors`.
+
+Use `geometricallyConnected_of_localDomain (K := y.asIdeal.ResidueField) X p e hs (Ideal.Quotient.mk y.asIdeal) (algebraMap (k ⧸ y.asIdeal) (Localization.AtPrime Q)) (IsLocalization.injective _ Q.primeCompl_le_nonZeroDivisors) (algebraMap k x.asIdeal.ResidueField) (Ideal.ResidueField. …` as an intermediate fact. Use extensionality with `r`. Simplify using `only [RingHom.comp_apply, Ideal.ResidueField.map_algebraMap]`. Use the proof step `rfl) hx`. Conclude with `this`.
+-/
 theorem stableUnderGeneralization_geometricallyConnected_fibre :
     ∀ (k : Type) [CommRing k] [IsNoetherianRing k] (X : Scheme.{0}) (p : X ⟶ Sp k)
       (e : Sp k ⟶ X), e ≫ p = 𝟙 _ → Smooth p → IsProper p →

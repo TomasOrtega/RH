@@ -16,6 +16,13 @@ variable {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algeb
 def locDeg (K : Type) [Field K] [NumberField K] [Algebra K L] (w : HeightOneSpectrum (𝓞 L)) : ℕ :=
   w.asIdeal.ramificationIdx (𝓞 K) * w.asIdeal.inertiaDeg (𝓞 K)
 
+/- English proof (translation)
+Use `set v := w.under (𝓞 K) with hv`. Establish `: w.asIdeal.LiesOver v.asIdeal` using `⟨rfl⟩`. Establish `he : 0 < w.asIdeal.ramificationIdx (𝓞 K)` using `Ideal.ramificationIdx_pos _ _`. Establish `hf : 0 < w.asIdeal.inertiaDeg (𝓞 K)` using `Ideal.inertiaDeg_pos _ _`. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases.
+
+Rewrite using `[map_zero, map_zero, map_zero, locDeg, zero_pow (Nat.mul_pos he hf).ne']`. Establish `hn` using `Ideal.absNorm_eq_pow_inertiaDeg'_of_liesOver w.asIdeal v.asIdeal v.isPrime v.ne_bot`. Rewrite `hn` using `[Ideal.inertiaDeg'_eq_inertiaDeg]`. Establish `h0 : v.valuation K x ≠ 0` using `(v.valuation K).ne_zero_iff.2 hx`. Rewrite using `[FinitePlace.mk_apply, FinitePlace.mk_apply, FinitePlace.norm_embedding', FinitePlace.norm_embedding', ← HeightOneSpectrum.valuation_liesOver L v w x, map_pow, WithZeroMulInt.toNNReal_neg_apply _ h0, WithZeroMulInt.toNNReal_neg_apply _ h0, Ideal.ramificationIdx'_eq_ramificationId …`.
+
+Use `push_cast`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, ← zpow_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mk_algebraMap (w : HeightOneSpectrum (𝓞 L)) (x : K) :
     FinitePlace.mk w (algebraMap K L x) = FinitePlace.mk (w.under (𝓞 K)) x ^ locDeg K w := by
   set v := w.under (𝓞 K) with hv
@@ -36,6 +43,9 @@ theorem mk_algebraMap (w : HeightOneSpectrum (𝓞 L)) (x : K) :
   push_cast
   ring
 
+/- English proof (translation)
+Establish `h : (v.asIdeal.primesOver (𝓞 L)).Finite` using `Set.toFinite _`. Use `(h.preimage (f := fun w : HeightOneSpectrum (𝓞 L) => w.asIdeal) (fun a _ b _ hab => HeightOneSpectrum.ext hab)).subset fun w hw => ?_` and prove the remaining obligations. Conclude with `⟨w.isPrime, ⟨(congrArg HeightOneSpectrum.asIdeal hw).symm⟩⟩`.
+-/
 theorem finite_fiber (v : HeightOneSpectrum (𝓞 K)) :
     {w : HeightOneSpectrum (𝓞 L) | w.under (𝓞 K) = v}.Finite := by
   have h : (v.asIdeal.primesOver (𝓞 L)).Finite := Set.toFinite _
@@ -43,6 +53,11 @@ theorem finite_fiber (v : HeightOneSpectrum (𝓞 K)) :
     (fun a _ b _ hab => HeightOneSpectrum.ext hab)).subset fun w hw => ?_
   exact ⟨w.isPrime, ⟨(congrArg HeightOneSpectrum.asIdeal hw).symm⟩⟩
 
+/- English proof (translation)
+Establish `hsumN : ∑ q : v.asIdeal.primesOver (𝓞 L), q.1.ramificationIdx (𝓞 K) * q.1.inertiaDeg (𝓞 K) = Module.finrank K L`. Rewrite using `[Ideal.sum_ramification_inertia_eq_finrank, IsFractionRing.finrank_eq (𝓞 K) K (𝓞 L) L]`. Rewrite using `[← hsumN]`. Use `Finset.sum_bij (fun w hw => ⟨w.asIdeal, w.isPrime, ⟨(congrArg HeightOneSpectrum.asIdeal (((finite_fiber (L := L) v).mem_toFinset).1 hw)).symm⟩⟩) (fun _ _ => Finset.mem_univ _) (fun a _ b _ h => HeightOneSpectrum.ext (congrArg Subtype.val h)) (fun q _ => ?_) fun _ _ => rfl` and prove the remaining obligations. Use `⟨⟨q.1, q.2.1, fun h0 => v.ne_bot ?_⟩, (Set.Finite.mem_toFinset _).2 (HeightOneSpectrum.ext q.2.2.over.symm), rfl⟩` and prove the remaining obligations.
+
+Establish `h1 : v.asIdeal = q.1.comap (algebraMap (𝓞 K) (𝓞 L))` using `q.2.2.over`. Rewrite using `[h1, h0]`. Conclude with `Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective _ _)`.
+-/
 theorem sum_locDeg (v : HeightOneSpectrum (𝓞 K)) :
     ∑ w ∈ (finite_fiber (L := L) v).toFinset, locDeg K w = Module.finrank K L := by
   classical
@@ -59,6 +74,13 @@ theorem sum_locDeg (v : HeightOneSpectrum (𝓞 K)) :
   rw [h1, h0]
   exact Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective _ _)
 
+/- English proof (translation)
+Establish `hS : {w : HeightOneSpectrum (𝓞 L) | w.under (𝓞 K) ∈ Function.support g}.Finite` using `(hg.biUnion fun v _ => finite_fiber (L := L) v).subset fun w hw => Set.mem_biUnion hw rfl`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := hS.toFinset) fun w hw => by`. Simplify using `using right_ne_zero_of_mul hw,`. Use `finsum_eq_sum g hg, Finset.mul_sum,`. Use the proof step `← Finset.sum_fiberwise_of_maps_to (t := hg.toFinset) (g := fun w => w.under (𝓞 K)) fun w hw => by simpa using hw]`.
+
+Use `Finset.sum_congr rfl fun v hv => ?_` and prove the remaining obligations. Rewrite using `[← sum_locDeg v, Nat.cast_sum, Finset.sum_mul]`. Use `Finset.sum_congr ?_ fun w hw => by rw [(Set.Finite.mem_toFinset _).1 hw]` and prove the remaining obligations. Use extensionality with `w`. Simplify using `only [Finset.mem_filter, Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hv ⊢`.
+
+Conclude with `⟨fun h => h.2, fun h => ⟨h ▸ hv, h⟩⟩`.
+-/
 theorem finsum_locDeg_mul (g : HeightOneSpectrum (𝓞 K) → ℝ) (hg : (Function.support g).Finite) :
     ∑ᶠ w : HeightOneSpectrum (𝓞 L), (locDeg K w : ℝ) * g (w.under (𝓞 K)) = Module.finrank K L * ∑ᶠ v, g v := by
   classical
@@ -75,6 +97,11 @@ theorem finsum_locDeg_mul (g : HeightOneSpectrum (𝓞 K) → ℝ) (hg : (Functi
   simp only [Finset.mem_filter, Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hv ⊢
   exact ⟨fun h => h.2, fun h => ⟨h ▸ hv, h⟩⟩
 
+/- English proof (translation)
+Establish `hfib : ∀ τ : K →+* ℂ, (Finset.univ.filter fun σ : L →+* ℂ => σ.comp (algebraMap K L) = τ).card = Module.finrank K L`. Introduce `τ`. Set `_ : Algebra K ℂ` to `τ.toAlgebra`. Set `e : {σ : L →+* ℂ // σ.comp (algebraMap K L) = τ} ≃ (L →ₐ[K] ℂ)` to `{ toFun := fun σ => ⟨σ.1, fun a => congrFun (congrArg DFunLike.coe σ.2) a⟩ invFun := fun φ => ⟨φ.toRingHom, RingHom.ext fun a => φ.commutes a⟩ left_inv := fun σ => rfl right_inv := fun φ => rfl }`. Rewrite using `[← Fintype.card_subtype, Fintype.card_congr e, AlgHom.card]`.
+
+Rewrite using `[← Finset.sum_fiberwise Finset.univ (fun σ : L →+* ℂ => σ.comp (algebraMap K L)) (fun σ => f (σ.comp (algebraMap K L))), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl fun σ hσ => by rw [(Finset.mem_filter.1 hσ).2], Finset.sum_const, hfib τ, nsmul_eq_mul]`.
+-/
 theorem sum_comp_algebraMap (f : (K →+* ℂ) → ℝ) :
     ∑ σ : L →+* ℂ, f (σ.comp (algebraMap K L)) = Module.finrank K L * ∑ τ : K →+* ℂ, f τ := by
   classical
@@ -96,6 +123,9 @@ theorem sum_comp_algebraMap (f : (K →+* ℂ) → ℝ) :
 
 end Places
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `exists_eq_ciSup_of_finite (f := a)`. Use `le_antisymm (ciSup_le fun j => pow_le_pow_left₀ (ha j) (le_ciSup (Set.finite_range _).bddAbove j) m) ?_` and prove the remaining obligations. Rewrite using `[← hi]`. Conclude with `le_ciSup (f := fun i => a i ^ m) (Set.finite_range _).bddAbove i`.
+-/
 theorem iSup_pow {ι : Type} [Finite ι] [Nonempty ι] (a : ι → ℝ) (ha : ∀ i, 0 ≤ a i) (m : ℕ) :
     ⨆ i, a i ^ m = (⨆ i, a i) ^ m := by
   obtain ⟨i, hi⟩ := exists_eq_ciSup_of_finite (f := a)
@@ -103,6 +133,13 @@ theorem iSup_pow {ι : Type} [Finite ι] [Nonempty ι] (a : ι → ℝ) (ha : �
   rw [← hi]
   exact le_ciSup (f := fun i => a i ^ m) (Set.finite_range _).bddAbove i
 
+/- English proof (translation)
+Take `⟨k₀, hk₀⟩` from `Function.ne_iff.1 hz`. Establish `: Nonempty ι` using `⟨k₀⟩`. Use `(Set.finite_iUnion fun k : {k // z k ≠ 0} => FinitePlace.hasFiniteMulSupport k.2).subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Simplify using `only [Set.mem_iUnion, Function.mem_mulSupport, not_exists, not_not] at h`.
+
+Use `hv ?_` and prove the remaining obligations. Establish `: ⨆ k, v (z k) = 1` using `le_antisymm (ciSup_le fun k => by`. Break down `eq_or_ne (z k) 0 with h0 | h0` into its components or cases. Rewrite using `[h0, map_zero]`. Conclude with `zero_le_one`.
+
+Conclude with `(h ⟨k, h0⟩).le)`. Use the proof step `((h ⟨k₀, hk₀⟩).ge.trans (le_ciSup (f := fun k => v (z k)) (Set.finite_range _).bddAbove k₀))`. Simplify using `only [this, Real.log_one]`.
+-/
 theorem finite_support_log_iSup {K ι : Type} [Field K] [NumberField K] [Finite ι] {z : ι → K} (hz : z ≠ 0) :
     (Function.support fun v : FinitePlace K => Real.log (⨆ k, v (z k))).Finite := by
   obtain ⟨k₀, hk₀⟩ := Function.ne_iff.1 hz
@@ -118,6 +155,11 @@ theorem finite_support_log_iSup {K ι : Type} [Field K] [NumberField K] [Finite 
     ((h ⟨k₀, hk₀⟩).ge.trans (le_ciSup (f := fun k => v (z k)) (Set.finite_range _).bddAbove k₀))
   simp only [this, Real.log_one]
 
+/- English proof (translation)
+Take `⟨k₀, -⟩` from `Function.ne_iff.1 hz`. Establish `: Nonempty ι` using `⟨k₀⟩`. Rewrite using `[← finsum_comp_equiv (FinitePlace.equivHeightOneSpectrum (K := L)).symm, ← finsum_comp_equiv (FinitePlace.equivHeightOneSpectrum (K := K)).symm, ← finsum_locDeg_mul _ ((finite_support_log_iSup hz).preimage (FinitePlace.equivHeightOneSpectrum (K := K)).symm.injective.injOn)]`. Use `finsum_congr fun w => ?_` and prove the remaining obligations. Rewrite using `[← Real.log_pow, ← iSup_pow _ fun _ => apply_nonneg _ _]`.
+
+Conclude with `congrArg Real.log (iSup_congr fun k => mk_algebraMap w (z k))`.
+-/
 theorem finsum_log_iSup_algebraMap {K L ι : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     [Finite ι] {z : ι → K} (hz : z ≠ 0) :
     ∑ᶠ w : FinitePlace L, Real.log (⨆ k, w (algebraMap K L (z k))) =
@@ -132,6 +174,15 @@ theorem finsum_log_iSup_algebraMap {K L ι : Type} [Field K] [NumberField K] [Fi
   rw [← Real.log_pow, ← iSup_pow _ fun _ => apply_nonneg _ _]
   exact congrArg Real.log (iSup_congr fun k => mk_algebraMap w (z k))
 
+/- English proof (translation)
+Introduce `F K _ _ _ _ _ N n w A hw _ K' _ _ _ _ _ y hy`. Establish `hz : (fun k => ∑ j, algebraMap F K (w j k) * y j) ≠ 0` using `fun h => by`. Establish `hp` using `finSize_pos hw (algebraMap F K) AbsoluteValue.trivial hy`. Establish `h' : ∀ k, ∑ j, algebraMap F K (w j k) * y j = 0` using `congrFun h`. Simplify using `[finSize, h'] at hp`.
+
+Establish `h₁` using `finsum_log_iSup_algebraMap (L := K') hz`. Establish `h₂` using `sum_comp_algebraMap (L := K') fun τ : K →+* ℂ => Real.log (archSize (A (τ.comp (algebraMap F K))) fun j => τ (y j))`. Simplify using `only [map_sum, map_mul, ← IsScalarTower.algebraMap_apply] at h₁`. Simplify using `only [RingHom.comp_assoc, ← IsScalarTower.algebraMap_eq, RingHom.comp_apply] at h₂`. Establish `hK : (0 : ℝ) < Module.finrank ℚ K` using `by exact_mod_cast Module.finrank_pos`.
+
+Establish `hKL : (0 : ℝ) < Module.finrank K K'` using `by exact_mod_cast Module.finrank_pos`. Rewrite using `[pointHeight_eq, pointHeight_eq, h₂, ← Module.finrank_mul_finrank ℚ K K']`. Simplify using `only [finSize, ← FinitePlace.coe_apply]`. Rewrite using `[h₁]`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem pointHeight_algebraMap : ∀ (F K : Type) [Field F] [NumberField F] [Field K] [NumberField K] [Algebra F K]
     (N n : ℕ) (w : Matrix (Fin N) (Fin n) F) (A : (F →+* ℂ) → Matrix (Fin N) (Fin N) ℂ),
     Submodule.span F (Set.range w.col) = ⊤ → (∀ σ, (A σ).det ≠ 0) →

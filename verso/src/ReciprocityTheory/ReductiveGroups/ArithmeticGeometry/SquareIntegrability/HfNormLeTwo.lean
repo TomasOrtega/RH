@@ -10,6 +10,9 @@ section Core
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Rewrite using `[Hf_eq_inner']`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem Hf_norm_le_two {dim : (E →+* ℂ) → ℕ} (e y : Vsp dim) (he : ‖e‖ = 1) (hy : ‖y‖ ≤ 2) :
     ‖Hf e y‖ ≤ 2 := by
   rw [Hf_eq_inner']
@@ -17,6 +20,9 @@ theorem Hf_norm_le_two {dim : (E →+* ℂ) → ℕ} (e y : Vsp dim) (he : ‖e�
     _ ≤ 2 := by rw [he, mul_one]; exact hy
 
 open Classical in
+/- English proof (translation)
+Use `⟨fun k hk => ?_, by simp [eU]⟩` and prove the remaining obligations. Simplify using `only [eU, PiLp.single_apply]`. Rewrite using `[if_neg]`. Introduce and unpack `rfl`. Conclude with `hk rfl`.
+-/
 theorem eU_props {dim : (E →+* ℂ) → ℕ} {n nb : ℕ} (bs : Fin nb → Block E n dim) (j : Fin nb)
     (a : Fin (bs j).i) : InPart (bs j).τ (eU bs j a) ∧ ‖eU bs j a‖ = 1 := by
   refine ⟨fun k hk => ?_, by simp [eU]⟩
@@ -25,6 +31,11 @@ theorem eU_props {dim : (E →+* ℂ) → ℕ} {n nb : ℕ} (bs : Fin nb → Blo
   rintro rfl
   exact hk rfl
 
+/- English proof (translation)
+Unfold `sgnT`. Rewrite using `[norm_prod]`. Use `Finset.prod_le_one (fun _ _ => norm_nonneg _) fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_prod]`. Use `Finset.prod_le_one (fun _ _ => norm_nonneg _) fun r _ => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (T j r)) with h | h <;> simp [h]`.
+-/
 theorem norm_sgnT {dim : (E →+* ℂ) → ℕ} {n nb : ℕ} (bs : Fin nb → Block E n dim) (T : Choice bs) :
     ‖sgnT bs T‖ ≤ 1 := by
   unfold sgnT
@@ -36,6 +47,115 @@ theorem norm_sgnT {dim : (E →+* ℂ) → ℕ} {n nb : ℕ} (bs : Fin nb → Bl
 
 set_option maxHeartbeats 1000000 in
 open Classical in
+/- English proof (translation)
+Take `⟨I, hI⟩` from `hs E X (DF bs) P`. Use `choose yB sB μB hsB hbd hl2 hyB hdet hμ using block_data_all X bs hx hc ht ha P I hI`. Take `⟨se, hse, hse0, hsel⟩` from `he E X (DF bs) P I hI`. Use `set y : (Σ j : Fin nb, Fin (bs j).i) → Vsp X.dim := fun p => yB p.1 p.2 with hydef`. Use `set μ : (Σ j : Fin nb, Fin (bs j).i) → ℂ := fun p => μB p.1 p.2 with hμdef`.
+
+Use `set sc : Fin n → (Fin 1 → Vsp X.dim) → ℂ := fun k => match owner bs k with`. Consider the case `some p => sB p.1 p.2`. Consider the case `none => se with hscdef`. Establish `hsc_col : ∀ p, sc (colB bs p) = sB p.1 p.2` using `fun p => by`. Simplify using `only [hscdef, owner_colB hD p]`.
+
+Establish `hsc_none : ∀ k, owner bs k = none → sc k = se` using `fun k hk => by`. Simplify using `only [hscdef, hk]`. Establish `hsc : ∀ k, sc k ∈ X.Sec P.q 1`. Introduce `k`. Break down `hk : owner bs k with _ | p` into its components or cases.
+
+Rewrite using `[hsc_none k hk]`. Conclude with `hse`. Rewrite using `[← colB_of_owner hk, hsc_col]`. Conclude with `hsB _ _`. Establish `hcd : ∀ k, ContDiff ℂ (⊤ : ℕ∞) (sc k)` using `fun k => sec_contDiff X (hsc k)`.
+
+Use `set F₀ := tens X sc with hF₀def`. Establish `hF₀ : F₀ ∈ X.Sec P.q n` using `tens_mem X hsc`. Use `set V0 := polyDeriv (P1 bs) dir F₀ 0 with hV0def`. Establish `hV0` using `polyDeriv_determinantPoly_tensor X bs sc hcd`. Use `set ε := P.eps1 with hεdef`.
+
+Use `set ee : Fin n → ℂ := fun _ => se 0 with heedef`. Use `set A := idealA bs μ y ee with hAdef`. Use `set D : Choice bs → Fin n → ℂ := fun T k => d1 (sc k) (colL (lst X bs T) k).length (fun j => (colL (lst X bs T) k).get j) with hDdef`. Use `set α : Fin n → ℝ := fun k => match owner bs k with`. Consider the case `some p => ‖μ p‖ * 2 ^ (bs p.1).c`.
+
+Consider the case `none => ‖se 0‖ with hαdef`. Use `set δ : Fin n → ℝ := fun k => match owner bs k with`. Consider the case `some p => ε * ‖μ p‖`. Consider the case `none => 0 with hδdef`. Establish `hε0 : 0 ≤ ε`.
+
+Rewrite using `[hεdef, Par.eps1]`. Check the signs of the components of the expression. Establish `hAb : ∀ T k, ‖A T k‖ ≤ α k`. Introduce `T k`. Break down `hk : owner bs k with _ | p` into its components or cases.
+
+Simplify using `only [hAdef, idealA, hk, hαdef, heedef, le_refl]`. Simplify using `only [hAdef, idealA, hk, hαdef]`. Rewrite using `[norm_mul, norm_prod]`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hDb : ∀ T k, ‖D T k - A T k‖ ≤ δ k`. Introduce `T k`. Break down `hk : owner bs k with _ | p` into its components or cases. Simplify using `only [hAdef, idealA, hk, hδdef, hDdef, heedef]`. Rewrite using `[colL_empty X hD T hk, hsc_none k hk]`.
+
+Simplify using `[d1_zero]`. Establish `hkp` using `colB_of_owner hk`. Substitute `hkp` using the available equality. Simplify using `only [hAdef, idealA, hk, hδdef, hDdef]`. Rewrite using `[hsc_col]`.
+
+Conclude with `iteratedDeriv_list_bound (sB p.1 p.2) (bs p.1).c (μ p) (y p) (ε * ‖μ p‖) (bs p.1).τ (hbd p.1 p.2) _ (fun r => eU bs p.1 (T p.1 r p.2)) (colL_block X hD T p) (fun r => eU_props bs p.1 _)`. Establish `herr` using `norm_sum_prod_sub_le (sgnT bs) (norm_sgnT bs) D A α δ hAb hDb`. Rewrite `herr` using `[main_term bs hD μ y ee]`. Establish `hV0e : V0 = ∑ T, sgnT bs T * ∏ k, D T k` using `hV0`. Rewrite `herr` using `[← hV0e]`.
+
+Use `set N := Fintype.card (Choice bs) with hNdef`. Use `set Ce : ℝ := ∏ k ∈ Finset.univ.filter (fun k => owner bs k = none), ‖se 0‖ with hCedef`. Use `set Mμ : ℝ := ∏ p, ‖μ p‖ with hMμdef`. Use `set Dt : ℝ := ∏ j, ‖(blockM bs y j).det‖ ^ (bs j).c with hDtdef`. Use `set A1 : ℝ := ∏ p : (Σ j : Fin nb, Fin (bs j).i), ((2 : ℝ) ^ (bs p.1).c + ε) with hA1def`.
+
+Establish `hCe0 : 0 ≤ Ce` using `Finset.prod_nonneg fun _ _ => norm_nonneg _`. Establish `hMμ0 : 0 ≤ Mμ` using `Finset.prod_nonneg fun _ _ => norm_nonneg _`. Establish `hCm : ‖(∏ k ∈ Finset.univ.filter (fun k => owner bs k = none), ee k) * (∏ p, μ p) * ∏ j, (blockM bs y j).det ^ (bs j).c‖ = Ce * Mμ * Dt`. Simplify using `only [norm_mul, norm_prod, norm_pow, hCedef, hMμdef, hDtdef, heedef]`. Establish `hα : ∏ k, α k = Ce * (Mμ * 2 ^ DF bs)`.
+
+Rewrite using `[prod_cols hD]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k hk => ?_` and prove the remaining obligations. Rewrite `hk` using `[Finset.mem_filter]`. Simplify using `only [hαdef, hk.2]`.
+
+Rewrite using `[hMμdef, ← prod_two_pow bs, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `only [hαdef, owner_colB hD p]`. Establish `hαδ : ∏ k, (α k + δ k) = Ce * (Mμ * A1)`. Rewrite using `[prod_cols hD]`.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun k hk => ?_` and prove the remaining obligations. Rewrite `hk` using `[Finset.mem_filter]`. Simplify using `only [hαdef, hδdef, hk.2, add_zero]`. Rewrite using `[hMμdef, hA1def, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `only [hαdef, hδdef, owner_colB hD p]`. Expand and normalize the polynomial expressions, which then agree. Establish `hr1 : 1 ≤ X.r`. Use `P.hfr` as an intermediate fact.
+
+Break down `Nat.eq_zero_or_pos X.r with h | h` into its components or cases. Rewrite `this` using `[h, mul_zero]`. Use linear arithmetic over natural numbers and integers. Conclude with `h`. Establish `hir : ∀ j, (bs j).i ≤ X.r` using `fun j => by`.
+
+Establish `h1` using `(bs j).hi`. Establish `h2` using `X.dim_conj (bs j).τ`. Use linear arithmetic over natural numbers and integers. Establish `hcard` using `card_choice_le bs X.r hir`. Establish `hm` using `card_pos_le bs`.
+
+Establish `hK : ε ≤ Real.exp (-(((DF bs : ℝ) + 1) * ((X.r : ℝ) * Real.log X.r + 3 * X.r + 3)))`. Establish `h6` using `P.C6`. Rewrite using `[hεdef, Par.eps1]`. Conclude with `eps_bound X.gA (dstar (E := E) P.m) (t0 (E := E) P.q P.R0) _ (by push_cast at h6 ⊢; linarith)`. Establish `hε1 : ε ≤ 1`.
+
+Establish `hlog` using `Real.log_nonneg (show (1 : ℝ) ≤ X.r by exact_mod_cast hr1)`. Establish `hr0 : (0 : ℝ) ≤ X.r` using `Nat.cast_nonneg _`. Establish `h1 : 0 ≤ ((DF bs : ℝ) + 1) * ((X.r : ℝ) * Real.log X.r + 3 * X.r + 3)` using `mul_nonneg (by positivity) (by have := mul_nonneg hr0 hlog; linarith)`. Conclude with `hK.trans (Real.exp_le_one_iff.2 (by linarith))`. Establish `hnum` using `num_bound X.r (DF bs) hr1 ε hε0 hK`.
+
+Use `set m := Fintype.card (Σ j : Fin nb, Fin (bs j).i) with hmdef`. Establish `hA1le : A1 - 2 ^ DF bs ≤ 2 ^ DF bs * (m * ε * 2 ^ DF bs)`. Establish `h1 : A1 ≤ 2 ^ DF bs * (1 + ε) ^ m`. Rewrite using `[hA1def, ← prod_two_pow bs, hmdef, ← Finset.card_univ, ← Finset.prod_const, ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun _ _ => by positivity) fun p _ => ?_` and prove the remaining obligations.
+
+Establish `: (1 : ℝ) ≤ 2 ^ (bs p.1).c` using `one_le_pow₀ (by norm_num)`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2` using `one_add_pow_sub_one_le ε hε0 m`. Establish `h3 : (1 + ε) ^ m ≤ 2 ^ DF bs` using `(pow_le_pow_left₀ (by linarith) (by linarith) m).trans (pow_le_pow_right₀ (by norm_num) hm)`. Establish `h4 : (0 : ℝ) ≤ 2 ^ DF bs` using `by positivity`.
+
+Establish `h5 : (0 : ℝ) ≤ m * ε` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Use `set δ0 : ℝ := (2 : ℝ) ^ (-(X.r : ℝ) / 2) / 2 with hδ0def`. Establish `hδ0pos : 0 < δ0` using `by positivity`. Establish `hδ01 : δ0 ≤ 1`.
+
+Establish `: (2 : ℝ) ^ (-(X.r : ℝ) / 2) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos (by norm_num) (by`. Use `Nat.cast_nonneg (α := ℝ) X.r` as an intermediate fact. Use the proof step `linarith)`. Rewrite using `[hδ0def]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hDt : δ0 ^ DF bs ≤ Dt`. Rewrite using `[hDtdef]`. Use `prod_det_ge bs _ δ0 hδ0pos.le hδ01 (fun j hj => hdet j) (fun j hj => ?_)` and prove the remaining obligations. Use `haveI : IsEmpty (Fin (bs j).i) := by rw [hj]; infer_instance`. Rewrite using `[Matrix.det_isEmpty, norm_one]`.
+
+Establish `hδ0exp : Real.exp (-((X.r : ℝ) / 2 + 1)) ≤ δ0`. Rewrite using `[hδ0def, Real.rpow_def_of_pos (by norm_num)]`. Establish `hl2 : Real.log 2 ≤ 1`. Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 2 by norm_num); linarith` as an intermediate fact. Establish `hl2' : 0 ≤ Real.log 2` using `Real.log_nonneg (by norm_num)`.
+
+Establish `he1 : Real.exp (-1) ≤ 1 / 2`. Rewrite using `[Real.exp_neg, one_div]`. Use `Real.add_one_le_exp (1 : ℝ)` as an intermediate fact. Conclude with `inv_anti₀ (by norm_num) (by linarith)`. Establish `hr0 : (0 : ℝ) ≤ X.r` using `Nat.cast_nonneg _`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_add]`. Put the polynomial expressions in normal form. Use `_ ≤ Real.exp (Real.log 2 * (-(X.r : ℝ) / 2)) * (1 / 2) := by gcongr`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use `_ = Real.exp (Real.log 2 * (-(X.r : ℝ) / 2)) / 2 := by ring`. Establish `hnum2 : (N : ℝ) * (A1 - 2 ^ DF bs) ≤ Dt / 2`. Establish `hc : (N : ℝ) ≤ (X.r : ℝ) ^ DF bs` using `by exact_mod_cast hcard`. Establish `hm' : (m : ℝ) ≤ DF bs` using `by exact_mod_cast hm`. Establish `hA0 : 0 ≤ A1 - 2 ^ DF bs`.
+
+Rewrite using `[hA1def, ← prod_two_pow bs, sub_nonneg]`. Conclude with `Finset.prod_le_prod (fun _ _ => by positivity) fun p _ => le_add_of_nonneg_right hε0`. Establish `hexp : Real.exp (-((X.r : ℝ) / 2 + 1)) ^ DF bs = Real.exp (-(((X.r : ℝ) / 2 + 1) * DF bs))`. Rewrite using `[← Real.exp_nat_mul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hE : 0 < Real.exp ((X.r / 2 + 1) * DF bs)` using `Real.exp_pos _`. Establish `hfin : (DF bs : ℝ) * ε * (4 * X.r) ^ DF bs ≤ Real.exp (-(((X.r : ℝ) / 2 + 1) * DF bs)) / 2`. Rewrite using `[Real.exp_neg, ← one_div, div_div, le_div_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h4r : ((4 : ℝ) * X.r) ^ DF bs = 2 ^ DF bs * 2 ^ DF bs * (X.r : ℝ) ^ DF bs`. Rewrite using `[← mul_pow, ← mul_pow]`. Evaluate the numerical expressions. Establish `hmε : (m : ℝ) * ε * 2 ^ DF bs ≤ (DF bs : ℝ) * ε * 2 ^ DF bs` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hm' hε0) (by positivity)`. Establish `hr0 : (0 : ℝ) ≤ (X.r : ℝ) ^ DF bs` using `by positivity`.
+
+Establish `h20 : (0 : ℝ) ≤ 2 ^ DF bs` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hexp]`. Use `pow_le_pow_left₀ (Real.exp_pos _).le hδ0exp (DF bs)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `herr2 : ‖V0 - (∏ k ∈ Finset.univ.filter (fun k => owner bs k = none), ee k) * (∏ p, μ p) * ∏ j, (blockM bs y j).det ^ (bs j).c‖ ≤ Ce * Mμ * Dt / 2`. Use `herr.trans ?_` and prove the remaining obligations. Rewrite using `[hαδ, hα]`. Combine the equalities or inequalities in the displayed calculation. Establish `hV0ge : Ce * Mμ * Dt / 2 ≤ ‖V0‖`.
+
+Use `norm_sub_norm_le ((∏ k ∈ Finset.univ.filter (fun k => owner bs k = none), ee k) * (∏ p, μ p) * ∏ j, (blockM bs y j).det ^ (bs j).c) V0` as an intermediate fact. Rewrite `this` using `[hCm, norm_sub_rev]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hCepos : 0 < Ce` using `Finset.prod_pos fun _ _ => by`. Use `hse0` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hMμpos : 0 < Mμ` using `Finset.prod_pos fun p _ => norm_pos_iff.2 (hμ p.1 p.2)`. Establish `hDtpos : 0 < Dt` using `lt_of_lt_of_le (pow_pos hδ0pos _) hDt`. Establish `hV0pos : 0 < ‖V0‖` using `lt_of_lt_of_le (by positivity) hV0ge`. Establish `hl2F : X.l2 P.q F₀ = ∏ k, X.l2 P.q (sc k)` using `l2_tens_eq_prod X P.q sc`.
+
+Establish `hl2pos : 0 < X.l2 P.q F₀`. Break down `(l2NormSq_nonneg_gaussianTorus X P.q F₀).lt_or_eq with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Rewrite `h` using `[hl2F]`.
+
+Take `⟨k, -, hk⟩` from `Finset.prod_eq_zero_iff.1 h.symm`. Establish `hz` using `eq_zero_of_l2_eq_zero X hx.1 P.hq (hsc k) hk`. Establish `hF0 : F₀ = 0`. Use function extensionality and compare the values at `v`. Rewrite using `[hF₀def, tens]`.
+
+Conclude with `Finset.prod_eq_zero (Finset.mem_univ k) (by rw [hz]; rfl)`. Establish `: V0 = 0` using `by rw [hV0def, hF0]; exact polyDeriv_zero_fun _ _ _`. Rewrite `hV0pos` using `[this, norm_zero]`. Conclude with `lt_irrefl 0 hV0pos`. Use `set a : ℝ := 2 * Real.pi * Cchi (E := E) P.m * P.ph / P.q with hadef`.
+
+Establish `ha0 : 0 ≤ a`. Use `Cchi_nonneg (E := E) P.m` as an intermediate fact. Use `ph_nonneg P` as an intermediate fact. Use `Real.pi_pos` as an intermediate fact. Rewrite using `[hadef]`.
+
+Check the signs of the components of the expression. Use `set w : ℝ := 4⁻¹ * P.K6⁻¹ * Real.exp (-a) with hwdef`. Establish `hK6` using `inv_constant_nonneg P`. Establish `hJ : P.Jbound n = (∏ _k : Fin n, w) * (2 : ℝ)⁻¹ ^ ((X.r + 2) * DF bs)`. Establish `hwn : w ^ n = (4 : ℝ)⁻¹ ^ n * P.K6⁻¹ ^ n * Real.exp (-(2 * Real.pi * n * Cchi (E` using `E) P.m * P.ph / P.q)) := by`.
+
+Rewrite using `[hwdef, mul_pow, mul_pow, ← Real.exp_nat_mul]`. Use `congr 2`. Rewrite using `[hadef]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin, hwn, Par.Jbound, Par.K6]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hmain : P.Jbound n * X.l2 P.q F₀ ≤ ‖V0‖ ^ 2`. Establish `hsq : (Ce * Mμ * Dt / 2) ^ 2 ≤ ‖V0‖ ^ 2` using `pow_le_pow_left₀ (by positivity) hV0ge 2`. Use `le_trans ?_ hsq` and prove the remaining obligations. Rewrite using `[hJ, hl2F, prod_cols hD (fun _ => w), prod_cols hD (fun k => X.l2 P.q (sc k))]`.
+
+Establish `he1 : (∏ k ∈ Finset.univ.filter (fun k => owner bs k = none), w) * (∏ k ∈ Finset.univ.filter (fun k => owner bs k = none), X.l2 P.q (sc k)) ≤ Ce ^ 2`. Rewrite using `[← Finset.prod_mul_distrib, hCedef, ← Finset.prod_pow]`. Use `Finset.prod_le_prod (fun k _ => mul_nonneg (by positivity) (l2NormSq_nonneg_gaussianTorus X P.q _)) fun k hk => ?_` and prove the remaining obligations. Rewrite `hk` using `[Finset.mem_filter]`. Rewrite using `[hsc_none k hk.2, hwdef]`.
+
+Establish `h1 : Real.exp (-a) ≤ 1` using `Real.exp_le_one_iff.2 (by linarith)`. Establish `h2` using `hsel`. Establish `h3 : (1 : ℝ) / 4 ≤ ‖se 0‖ ^ 2` using `by nlinarith`. Establish `h4` using `l2NormSq_nonneg_gaussianTorus X P.q se`. Establish `h5 : 0 ≤ Real.exp (-a)` using `(Real.exp_pos _).le`.
+
+Use polynomial arithmetic with `[mul_nonneg hK6 h4, mul_le_mul_of_nonneg_left h1 (mul_nonneg hK6 h4)]`. Establish `he2 : (∏ p : (Σ j : Fin nb, Fin (bs j).i), w) * (∏ p : (Σ j : Fin nb, Fin (bs j).i), X.l2 P.q (sc (colB bs p))) ≤ 4⁻¹ * Mμ ^ 2`. Rewrite using `[← Finset.prod_mul_distrib]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_le_prod (fun p _ => mul_nonneg (by positivity) (l2NormSq_nonneg_gaussianTorus X P.q _)) fun p _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hsc_col, hwdef]`. Use `hl2 p.1 p.2` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use `_ = (4⁻¹) ^ m * Mμ ^ 2 := by`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, hMμdef, Finset.prod_pow]`.
+
+Use `_ ≤ 4⁻¹ * Mμ ^ 2 := by`. Establish `hm1 : 1 ≤ m` using `card_pos_pos bs P.hDF`. Establish `: ((4 : ℝ)⁻¹) ^ m ≤ 4⁻¹`. Combine the equalities or inequalities in the displayed calculation. Use `gcongr`.
+
+Establish `he3 : (2 : ℝ)⁻¹ ^ ((X.r + 2) * DF bs) ≤ Dt ^ 2`. Establish `hδsq : δ0 ^ 2 = (2 : ℝ)⁻¹ ^ (X.r + 2)`. Rewrite using `[hδ0def, div_pow, ← Real.rpow_natCast ((2 : ℝ) ^ (-(X.r : ℝ) / 2)) 2, ← Real.rpow_mul (by norm_num)]`. Establish `h2 : (-(X.r : ℝ) / 2 * ((2 : ℕ) : ℝ)) = -(X.r : ℝ)` using `by push_cast; ring`. Rewrite using `[h2, Real.rpow_neg (by norm_num), Real.rpow_natCast, pow_add, inv_pow, inv_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h1 : (2 : ℝ)⁻¹ ^ ((X.r + 2) * DF bs) = (δ0 ^ DF bs) ^ 2`. Rewrite using `[pow_mul, ← hδsq, ← pow_mul, ← pow_mul, mul_comm]`. Rewrite using `[h1]`. Conclude with `pow_le_pow_left₀ (by positivity) hDt 2`.
+
+Establish `hA : 0 ≤ (∏ k ∈ Finset.univ.filter (fun k => owner bs k = none), w) * (∏ k ∈ Finset.univ.filter (fun k => owner bs k = none), X.l2 P.q (sc k))` using `mul_nonneg (Finset.prod_nonneg fun _ _ => by positivity) (Finset.prod_nonneg fun _ _ => l2NormSq_nonneg_gaussianTorus X P.q _)`. Establish `hB : 0 ≤ (∏ p : (Σ j : Fin nb, Fin (bs j).i), w) * (∏ p : (Σ j : Fin nb, Fin (bs j).i), X.l2 P.q (sc (colB bs p)))` using `mul_nonneg (Finset.prod_nonneg fun _ _ => by positivity) (Finset.prod_nonneg fun _ _ => l2NormSq_nonneg_gaussianTorus X P.q _)`. Combine the equalities or inequalities in the displayed calculation. Use `set c : ℂ := (((Real.sqrt (X.l2 P.q F₀))⁻¹ : ℝ) : ℂ) with hcdef`. Establish `hsq : 0 < Real.sqrt (X.l2 P.q F₀)` using `Real.sqrt_pos.2 hl2pos`.
+
+Use `⟨c • F₀, Submodule.smul_mem _ _ hF₀, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[l2_smul, hcdef, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_of_pos hsq, inv_pow, Real.sq_sqrt hl2pos.le, inv_mul_cancel₀ hl2pos.ne']`. Rewrite using `[polyDeriv_smul_fun _ _ (sec_contDiff X hF₀), ← hV0def, norm_mul, mul_pow, hcdef, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_of_pos hsq, inv_pow, Real.sq_sqrt hl2pos.le, inv_mul_eq_div, le_div_iff₀ hl2pos]`. Conclude with `hmain`.
+-/
 theorem jof_core (hx : Ext.All) (hs : SplitStatement) (hc : CharStatement) (ht : ColTorusStatement)
     (ha : ColAbelStatement) (he : ColEmptyStatement) [IsCMField E] (X : PT E) {n nb : ℕ}
     (bs : Fin nb → Block E n X.dim) (hD : Disj bs) (P : Par X (DF bs)) :
@@ -366,6 +486,9 @@ theorem jof_core (hx : Ext.All) (hs : SplitStatement) (hc : CharStatement) (ht :
 
 end Core
 
+/- English proof (translation)
+Introduce `E _ _ _ X n nb bs hD P`. Conclude with `jof_core hx hs hc ht ha he X bs hD P`.
+-/
 theorem jOf (hx : Ext.All) (hs : SplitStatement) (hc : CharStatement) (ht : ColTorusStatement)
     (ha : ColAbelStatement) (he : ColEmptyStatement) : JStatement := by
   intro E _ _ _ X n nb bs hD P

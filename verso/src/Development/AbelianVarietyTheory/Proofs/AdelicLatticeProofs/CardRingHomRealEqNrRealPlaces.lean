@@ -5,6 +5,13 @@ open scoped WithZero
 
 namespace GlobalTheory.QNorm
 
+/- English proof (translation)
+Introduce `F _ _`. Set `e : (F →+* ℝ) ≃ {φ : F →+* ℂ // ComplexEmbedding.IsReal φ}` to `{ toFun := fun ψ => ⟨Complex.ofRealHom.comp ψ, by`. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]⟩`.
+
+Use `invFun := fun φ => φ.2.embedding`. Use `left_inv := fun ψ => by`. Use extensionality with `x`. Simplify using `[ComplexEmbedding.IsReal.embedding]`. Use `right_inv := fun φ => by`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `x`. Simplify using `}`. Rewrite using `[Nat.card_congr (e.trans InfinitePlace.mkReal), Nat.card_eq_fintype_card]`.
+-/
 theorem card_ringHom_real_eq_nrRealPlaces :
     ∀ (F : Type) [Field F] [NumberField F], Nat.card (F →+* ℝ) = InfinitePlace.nrRealPlaces F := by
   intro F _ _

@@ -3,6 +3,13 @@ open NumberField
 
 namespace GlobalTheory.Div.CMAlgChar
 
+/- English proof (translation)
+Rewrite using `[Complex.norm_conj]`. Use `set r : ℂ := ((‖z‖ : ℝ) : ℂ) with hr`. Establish `hr0 : r ≠ 0` using `by simp [hr, hz]`. Rewrite using `[← Complex.cpow_add _ _ hr0]`. Establish `hsum : ((((w0 : ℝ) / 2 : ℝ)) : ℂ) + ((((w0 : ℝ) / 2 : ℝ)) : ℂ) = ((w0 : ℤ) : ℂ)` using `by push_cast; ring`.
+
+Rewrite using `[hsum, Complex.cpow_intCast]`. Establish `hc : starRingEnd ℂ z = r ^ 2 / z`. Rewrite using `[eq_div_iff hz, mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, hr]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Rewrite using `[hc]`. Substitute `hab` using the available equality. Establish `he : 2 * a - (a + b) = a - b` using `by ring`. Rewrite using `[he, div_zpow, div_zpow, zpow_sub₀ hz, zpow_sub₀ hr0, zpow_add₀ hr0, pow_two, mul_zpow]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem place_factor (z : ℂ) (hz : z ≠ 0) (a b w0 : ℤ) (hab : a + b = w0) :
     (z / ((‖z‖ : ℝ) : ℂ)) ^ (2 * a - w0) *
       (((‖z‖ : ℝ) : ℂ) ^ ((((w0 : ℝ) / 2 : ℝ)) : ℂ) *
@@ -24,6 +31,13 @@ theorem place_factor (z : ℂ) (hz : z ≠ 0) (a b w0 : ℤ) (hab : a + b = w0) 
   rw [he, div_zpow, div_zpow, zpow_sub₀ hz, zpow_sub₀ hr0, zpow_add₀ hr0, pow_two, mul_zpow]
   field_simp
 
+/- English proof (translation)
+Use extensionality with `φ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`. Establish `h1 : InfinitePlace.mk φ = w ↔ InfinitePlace.mk φ = InfinitePlace.mk w.embedding`. Rewrite using `[w.mk_embedding]`. Rewrite using `[h1, InfinitePlace.mk_eq_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `(h | h)`. Conclude with `Or.inl h`. Use `right`. Rewrite using `[← h, ComplexEmbedding.involutive_conjugate E]`.
+
+Introduce and unpack `(h | h)`. Conclude with `Or.inl h`. Use `right`. Rewrite using `[h, ComplexEmbedding.involutive_conjugate E]`.
+-/
 theorem fiber_eq {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] [DecidableEq (E →+* ℂ)]
     [DecidableEq (InfinitePlace E)]
     (w : InfinitePlace E) :
@@ -43,6 +57,9 @@ theorem fiber_eq {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] [Deci
     · exact Or.inl h
     · right; rw [h, ComplexEmbedding.involutive_conjugate E]
 
+/- English proof (translation)
+Introduce `h`. Establish `hc` using `IsTotallyComplex.isComplex w`. Rewrite `hc` using `[← InfinitePlace.not_isReal_iff_isComplex, InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]`. Conclude with `hc h.symm`.
+-/
 theorem embedding_ne_conjugate {E : Type} [Field E] [IsTotallyComplex E] (w : InfinitePlace E) :
     w.embedding ≠ ComplexEmbedding.conjugate w.embedding := by
   intro h
@@ -51,6 +68,13 @@ theorem embedding_ne_conjugate {E : Type} [Field E] [IsTotallyComplex E] (w : In
     ComplexEmbedding.isReal_iff] at hc
   exact hc h.symm
 
+/- English proof (translation)
+Introduce `E _ _ _ n w0 hn k hk`. Establish `hfib : ∀ f : (E →+* ℂ) → ℂ, ∏ φ, f φ = ∏ w : InfinitePlace E, (f w.embedding * f (ComplexEmbedding.conjugate w.embedding))`. Introduce `f`. Rewrite using `[← Finset.prod_fiberwise Finset.univ (fun φ => InfinitePlace.mk φ) f]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[fiber_eq w, Finset.prod_pair (embedding_ne_conjugate w)]`. Rewrite using `[hfib (fun φ => ((‖φ k‖ : ℝ) : ℂ) ^ ((((w0 : ℝ) / 2 : ℝ)) : ℂ)), hfib (fun φ => φ k ^ n φ), ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hz : w.embedding k ≠ 0` using `(map_ne_zero _).2 hk`. Simplify using `only [ComplexEmbedding.conjugate_coe_eq]`.
+
+Conclude with `place_factor _ hz _ _ _ (hn _)`.
+-/
 theorem algChar_eq_arg_mul_abs : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     (n : (E →+* ℂ) → ℤ) (w0 : ℤ),
     (∀ φ, n φ + n (NumberField.ComplexEmbedding.conjugate φ) = w0) → ∀ k : E, k ≠ 0 →

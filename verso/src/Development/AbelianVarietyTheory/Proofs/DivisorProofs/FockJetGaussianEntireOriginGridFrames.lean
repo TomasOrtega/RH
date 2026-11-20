@@ -20,6 +20,13 @@ open GlobalTheory.VacUnique (hAt omAt omO omO_apply)
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `him` using `Formalism.L2.Theta.xi_zero_im_pos D τ`. Establish `hre` using `GlobalTheory.FockInj.xi_re (D := D) τ`. Establish `hn` using `GlobalTheory.AdTh.Fock.norm_embedding_hostFormConstant_eq D (tauE D τ)`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[hre]`.
+
+Rewrite using `[← hn]`. Establish `: ‖tauE D τ D.host.xi0‖ = (tauE D τ D.host.xi0).im`. Rewrite using `[Complex.norm_def, Complex.normSq_apply, hre]`. Simplify using `only [zero_mul, zero_add]`. Conclude with `Real.sqrt_mul_self him.le`.
+
+Simplify using `[this]`.
+-/
 theorem realPlace_cmTrace_zero_element_eq_I_mul_abs (τ : D.what₂.Tau) :
     tauE D τ D.host.xi0 = Complex.I * ((Formalism.L2.Pj.xiR D : ℝ) : ℂ) := by
   have him := Formalism.L2.Theta.xi_zero_im_pos D τ
@@ -34,6 +41,19 @@ theorem realPlace_cmTrace_zero_element_eq_I_mul_abs (τ : D.what₂.Tau) :
       exact Real.sqrt_mul_self him.le
     simp [this]
 
+/- English proof (translation)
+Take `⟨h1, -, h3⟩` from `hs`. Establish `hBi : B * (Bᴴ * G) = 1` using `mul_eq_one_comm.1 hB`. Establish `hu : IsUnit B` using `(Matrix.isUnit_iff_isUnit_det _).2 (Matrix.isUnit_det_of_right_inverse hBi)`. Use `set P := Bᴴ * G * s * B with hP`. Establish `hPd : P.PosDef`.
+
+Use `h3.conjTranspose_mul_mul_same (B := B) (Matrix.mulVec_injective_of_isUnit hu)` as an intermediate fact. Simplify `this` using `[hP, Matrix.mul_assoc]`. Establish `hC : (Bᴴ * G) * B = 1` using `hB`. Establish `hPP : P * P = 1`. Establish `: P * P = Bᴴ * G * s * (B * (Bᴴ * G)) * s * B` using `by simp only [hP, Matrix.mul_assoc]`.
+
+Rewrite using `[this, hBi, Matrix.mul_one, Matrix.mul_assoc (Bᴴ * G), h1, Matrix.mul_one]`. Conclude with `hB`. Establish `h1P : (P + 1).PosDef` using `hPd.add_posSemidef Matrix.PosSemidef.one`. Establish `hP1 : IsUnit (P + 1)` using `h1P.isUnit`. Establish `hz : (P - 1) * (P + 1) = 0`.
+
+Rewrite using `[Matrix.sub_mul, Matrix.mul_add, hPP]`. Simplify using `only [Matrix.mul_one, Matrix.one_mul]`. Normalize the expressions using the abelian group laws. Establish `hP0 : P - 1 = 0`. Use `congrArg (· * ((P + 1)⁻¹)) hz` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 hP1)]`. Establish `hPe : P = 1` using `sub_eq_zero.1 hP0`. Establish `: s = B * P * (Bᴴ * G)`. Establish `e : B * P * (Bᴴ * G) = (B * (Bᴴ * G)) * s * (B * (Bᴴ * G))` using `by simp only [hP, Matrix.mul_assoc]`. Rewrite using `[e, hBi]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this, hPe, Matrix.mul_one, hBi]`.
+-/
 theorem cartan_eq_one {n : ℕ} {G s B : Matrix (Fin n) (Fin n) ℂ} (hB : Bᴴ * G * B = 1) (hs : IsCartanInv G s) : s = 1 := by
   obtain ⟨h1, -, h3⟩ := hs
   have hBi : B * (Bᴴ * G) = 1 := mul_eq_one_comm.1 hB
@@ -72,16 +92,25 @@ noncomputable def zc (w : WO S T) : Formalism.MainNotions.TaylorLogMetric.VC D S
 noncomputable def nrm {N N' : ℕ} (z : Formalism.MainNotions.TaylorLogMetric.VC D N N') : ℂ :=
   ∑ τ, ∑ a, ∑ b, ((‖z τ a b‖ ^ 2 : ℝ) : ℂ)
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `show θ τ (infPart D (x i j + y i j)) = θ τ (infPart D (x i j)) + θ τ (infPart D (y i j))`. Rewrite using `[RingHom.map_add, RingHom.map_add]`.
+-/
 theorem compAt_add {m n : ℕ} (τ : D.what₂.Tau) (x y : Mx D m n) : compAt θ τ (x + y) = compAt θ τ x + compAt θ τ y := by
   ext i j
   show θ τ (infPart D (x i j + y i j)) = θ τ (infPart D (x i j)) + θ τ (infPart D (y i j))
   rw [RingHom.map_add, RingHom.map_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `show (BT τ)⁻¹ * compAt θ τ (w + w') * BS τ = (BT τ)⁻¹ * compAt θ τ w * BS τ + (BT τ)⁻¹ * compAt θ τ w' * BS τ`. Rewrite using `[compAt_add, Matrix.mul_add, Matrix.add_mul]`.
+-/
 theorem zc_add (w w' : WO S T) : zc θ BS BT (w + w') = zc θ BS BT w + zc θ BS BT w' := by
   funext τ
   show (BT τ)⁻¹ * compAt θ τ (w + w') * BS τ = (BT τ)⁻¹ * compAt θ τ w * BS τ + (BT τ)⁻¹ * compAt θ τ w' * BS τ
   rw [compAt_add, Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+Use `zc_add θ BS BT (0 : WO S T) 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.mp this`.
+-/
 theorem zc_zero : zc θ BS BT (0 : WO S T) = 0 := by
   have := zc_add θ BS BT (0 : WO S T) 0
   rw [add_zero] at this
@@ -89,6 +118,11 @@ theorem zc_zero : zc θ BS BT (0 : WO S T) = 0 := by
 
 variable {BS BT}
 
+/- English proof (translation)
+Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_single, Matrix.smul_mul, Matrix.trace_smul]`. Establish `: (Matrix.single b a (star (1 : ℂ)) * X).trace = X a b`. Unfold `Matrix.trace`. Rewrite using `[Finset.sum_eq_single b]`. Simplify using `[Matrix.diag, Matrix.single_mul_apply_same]`.
+
+Introduce `x _ h`. Simplify using `[Matrix.diag, Matrix.mul_apply, Matrix.single_apply, Ne.symm h]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem trace_smul_single {m n : ℕ} (c : ℂ) (a : Fin m) (b : Fin n) (X : Matrix (Fin m) (Fin n) ℂ) :
     ((c • Matrix.single a b (1 : ℂ))ᴴ * X).trace = starRingEnd ℂ c * X a b := by
   rw [Matrix.conjTranspose_smul, Matrix.conjTranspose_single, Matrix.smul_mul, Matrix.trace_smul]
@@ -101,6 +135,17 @@ theorem trace_smul_single {m n : ℕ} (c : ℂ) (a : Fin m) (b : Fin n) (X : Mat
     · simp
   rw [this]; rfl
 
+/- English proof (translation)
+Use `set P := BS τ`. Use `set Q := BT τ`. Use `set GS := gramAt D S τ`. Use `set GT := gramAt D T τ`. Establish `hP1 : (Pᴴ * GS) * P = 1` using `hS`.
+
+Establish `hP2 : P * (Pᴴ * GS) = 1` using `mul_eq_one_comm.1 hP1`. Establish `hP3 : GS * P * Pᴴ = 1` using `mul_eq_one_comm.1 (by rw [← Matrix.mul_assoc]; exact hS)`. Establish `hGS : GS⁻¹ = P * Pᴴ` using `Matrix.inv_eq_right_inv (by rw [← Matrix.mul_assoc]; exact hP3)`. Establish `hQ1 : (Qᴴ * GT) * Q = 1` using `hT`. Establish `hQ2 : Q⁻¹ = Qᴴ * GT` using `Matrix.inv_eq_left_inv hQ1`.
+
+Establish `hQ3 : Q * Q⁻¹ = 1` using `by rw [hQ2]; exact mul_eq_one_comm.1 hQ1`. Establish `hQ4 : (Q⁻¹)ᴴ * Qᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hQ3, Matrix.conjTranspose_one]`. Establish `hGT : (Q⁻¹)ᴴ * Q⁻¹ = GT`. Combine the equalities or inequalities in the displayed calculation. Use `show (GS⁻¹ * yᴴ * GT * x).trace = _`.
+
+Rewrite using `[hGS]`. Simplify using `only [Matrix.conjTranspose_mul]`. Rewrite using `[← hGT]`. Establish `e : Pᴴ * (yᴴ * (Q⁻¹)ᴴ) * (Q⁻¹ * x * P) = (Pᴴ * yᴴ * ((Q⁻¹)ᴴ * Q⁻¹) * x) * P`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[e, Matrix.trace_mul_comm (Pᴴ * yᴴ * ((Q⁻¹)ᴴ * Q⁻¹) * x) P]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem hAt_coord {τ : D.what₂.Tau} (hS : (BS τ)ᴴ * gramAt D S τ * BS τ = 1) (hT : (BT τ)ᴴ * gramAt D T τ * BT τ = 1)
     (x y : Matrix (Fin T.rank) (Fin S.rank) ℂ) :
     hAt S T τ x y = (((BT τ)⁻¹ * y * BS τ)ᴴ * ((BT τ)⁻¹ * x * BS τ)).trace := by
@@ -128,6 +173,15 @@ theorem hAt_coord {τ : D.what₂.Tau} (hS : (BS τ)ᴴ * gramAt D S τ * BS τ 
   rw [e, Matrix.trace_mul_comm (Pᴴ * yᴴ * ((Q⁻¹)ᴴ * Q⁻¹) * x) P]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `e : (fun t : ℝ => ‖x + (t : ℂ) * c‖ ^ 2) = fun t : ℝ => (x.re + t * c.re) ^ 2 + (x.im + t * c.im) ^ 2`. Use function extensionality and compare the values at `t`. Rewrite using `[← Complex.normSq_eq_norm_sq, Complex.normSq_apply]`. Simplify using `only [Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero, add_zero]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h1 : HasDerivAt (fun t : ℝ => (x.re + t * c.re) ^ 2 + (x.im + t * c.im) ^ 2) (2 * (starRingEnd ℂ c * x).re) 0`. Establish `a1 : HasDerivAt (fun t : ℝ => x.re + t * c.re) c.re 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).mul_const c.re).const_add x.re`. Establish `a2 : HasDerivAt (fun t : ℝ => x.im + t * c.im) c.im 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).mul_const c.im).const_add x.im`.
+
+Use `((a1.fun_pow 2).fun_add (a2.fun_pow 2)).congr_deriv ?_` and prove the remaining obligations. Simplify using `only [Complex.mul_re, Complex.conj_re, Complex.conj_im]`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[← e]`.
+
+Conclude with `h1.ofReal_comp`.
+-/
 theorem entry_deriv (x c : ℂ) :
     HasDerivAt (fun t : ℝ => ((‖x + (t : ℂ) * c‖ ^ 2 : ℝ) : ℂ)) (((2 * (starRingEnd ℂ c * x).re : ℝ)) : ℂ) 0 := by
   have e : (fun t : ℝ => ‖x + (t : ℂ) * c‖ ^ 2) = fun t : ℝ => (x.re + t * c.re) ^ 2 + (x.im + t * c.im) ^ 2 := by
@@ -148,6 +202,13 @@ theorem entry_deriv (x c : ℂ) :
   rw [← e] at h1
   exact h1.ofReal_comp
 
+/- English proof (translation)
+Take `⟨τ, a, b⟩` from `v`. Rewrite using `[Finset.sum_eq_single τ, Finset.sum_eq_single a, Finset.sum_eq_single b]`. Introduce `b' _ hb`. Conclude with `h _ _ _ fun e => hb e.2.2`. Simplify using the standard rewrite rules.
+
+Introduce `a' _ ha`. Conclude with `Finset.sum_eq_zero fun b' _ => h _ _ _ fun e => ha e.2.1`. Simplify using the standard rewrite rules. Introduce `τ' _ hτ`. Conclude with `Finset.sum_eq_zero fun a' _ => Finset.sum_eq_zero fun b' _ => h _ _ _ fun e => hτ e.1`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem sum_placeRowColumn_eq_single {N N' : ℕ} (g : D.what₂.Tau → Fin N' → Fin N → ℂ) (v : D.what₂.Tau × Fin N' × Fin N)
     (h : ∀ τ a b, ¬ (τ = v.1 ∧ a = v.2.1 ∧ b = v.2.2) → g τ a b = 0) :
     ∑ τ, ∑ a, ∑ b, g τ a b = g v.1 v.2.1 v.2.2 := by
@@ -160,6 +221,13 @@ theorem sum_placeRowColumn_eq_single {N N' : ℕ} (g : D.what₂.Tau → Fin N' 
   · intro τ' _ hτ; exact Finset.sum_eq_zero fun a' _ => Finset.sum_eq_zero fun b' _ => h _ _ _ fun e => hτ e.1
   · simp
 
+/- English proof (translation)
+Establish `h : HasDerivAt (fun t : ℝ => nrm (z + ((t : ℂ) * α) • Formalism.MainNotions.TaylorLogMetric.coordV D v)) (∑ τ, ∑ a, ∑ b, (((2 * (starRingEnd ℂ (α * Formalism.MainNotions.TaylorLogMetric.coordV D v τ a b) * z τ a b).re : ℝ)) : ℂ)) 0`. Unfold `nrm`. Use `HasDerivAt.fun_sum fun τ _ => HasDerivAt.fun_sum fun a _ => HasDerivAt.fun_sum fun b _ => ?_` and prove the remaining obligations. Use `entry_deriv (z τ a b) (α * Formalism.MainNotions.TaylorLogMetric.coordV D v τ a b)` as an intermediate fact. Establish `e : (fun t : ℝ => ((‖(z + ((t : ℂ) * α) • Formalism.MainNotions.TaylorLogMetric.coordV D v) τ a b‖ ^ 2 : ℝ) : ℂ)) = fun t : ℝ => ((‖z τ a b + (t : ℂ) * (α * Formalism.MainNotions.TaylorLogMetric.coordV D v τ a b)‖ ^ 2 : ℝ) : ℂ)`.
+
+Use function extensionality and compare the values at `t`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Rewrite using `[e]`. Conclude with `this`. Rewrite `h` using `[sum_placeRowColumn_eq_single _ v]`.
+
+Simplify `h` using `[Formalism.MainNotions.TaylorLogMetric.coordV]`. Introduce `τ a b hn`. Simplify using `[Formalism.MainNotions.TaylorLogMetric.coordV, hn]`.
+-/
 theorem nrm_deriv {N N' : ℕ} (z : Formalism.MainNotions.TaylorLogMetric.VC D N N') (v : D.what₂.Tau × Fin N' × Fin N) (α : ℂ) :
     HasDerivAt (fun t : ℝ => nrm (z + ((t : ℂ) * α) • Formalism.MainNotions.TaylorLogMetric.coordV D v))
       (((2 * (starRingEnd ℂ α * z v.1 v.2.1 v.2.2).re : ℝ)) : ℂ) 0 := by
@@ -179,9 +247,15 @@ theorem nrm_deriv {N N' : ℕ} (z : Formalism.MainNotions.TaylorLogMetric.VC D N
   · intro τ a b hn
     simp [Formalism.MainNotions.TaylorLogMetric.coordV, hn]
 
+/- English proof (translation)
+Rewrite using `[Matrix.inv_eq_left_inv hB]`. Conclude with `hB`.
+-/
 theorem inv_mul_of_frame {n : ℕ} {G B : Matrix (Fin n) (Fin n) ℂ} (hB : Bᴴ * G * B = 1) : B⁻¹ * B = 1 := by
   rw [Matrix.inv_eq_left_inv hB]; exact hB
 
+/- English proof (translation)
+Rewrite using `[unitMap]`. Establish `h1` using `inv_mul_of_frame hS`. Establish `h2` using `inv_mul_of_frame hT`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem coord_unit {τ : D.what₂.Tau} (hS : (BS τ)ᴴ * gramAt D S τ * BS τ = 1) (hT : (BT τ)ᴴ * gramAt D T τ * BT τ = 1)
     (a : Fin T.rank) (b : Fin S.rank) :
     (BT τ)⁻¹ * unitMap (BS τ) (BT τ) a b * BS τ = Matrix.single a b 1 := by
@@ -195,6 +269,15 @@ theorem coord_unit {τ : D.what₂.Tau} (hS : (BS τ)ᴴ * gramAt D S τ * BS τ
 variable (hS : ∀ τ, (BS τ)ᴴ * gramAt D S τ * BS τ = 1) (hT : ∀ τ, (BT τ)ᴴ * gramAt D T τ * BT τ = 1)
 include hS hT
 
+/- English proof (translation)
+Take `⟨τ, a, b⟩` from `v`. Use function extensionality and compare the values at `τ' i j`. Establish `hL` using `(GlobalTheory.OrientedHeis.isLineAt_lineAt hθ τ (α • unitMap (BS τ) (BT τ) a b)).2.2 t τ'`. Use `show ((BT τ')⁻¹ * compAt θ τ' _ * BS τ' : Matrix (Fin T.rank) (Fin S.rank) ℂ) i j = ((t : ℂ) * α) * Formalism.MainNotions.TaylorLogMetric.coordV D (τ, a, b) τ' i j`. Rewrite using `[hL]`.
+
+Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Establish `key : (BT τ')⁻¹ * ((t : ℂ) • α • unitMap (BS τ') (BT τ') a b) * BS τ' = ((t : ℂ) * α) • Matrix.single a b (1 : ℂ)`. Rewrite using `[← coord_unit (hS τ') (hT τ') a b]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, smul_smul]`.
+
+Rewrite using `[if_pos rfl, key]`. Use `show ((t : ℂ) * α) * (Matrix.single a b (1 : ℂ)) i j = ((t : ℂ) * α) * Formalism.MainNotions.TaylorLogMetric.coordV D (τ', a, b) τ' i j`. Use `congr 1`. Establish `hiff : (a = i ∧ b = j) ↔ (i = a ∧ j = b)`. Apply the tactic sequence `constructor <;> rintro ⟨rfl, rfl⟩ <;> exact ⟨rfl, rfl⟩`.
+
+Simplify using `only [Formalism.MainNotions.TaylorLogMetric.coordV, Matrix.single_apply, hiff, true_and]`. Rewrite using `[if_neg h, Matrix.mul_zero, Matrix.zero_mul]`. Simplify using `[Formalism.MainNotions.TaylorLogMetric.coordV, h]`.
+-/
 theorem zc_line (hθ : IsInfFam θ) (v : FVar D T.rank S.rank) (α : ℂ) (t : ℝ) :
     zc θ BS BT (lineAt θ v.1 (α • unitMap (BS v.1) (BT v.1) v.2.1 v.2.2) t) =
       ((t : ℂ) * α) • Formalism.MainNotions.TaylorLogMetric.coordV D v := by
@@ -219,6 +302,19 @@ theorem zc_line (hθ : IsInfFam θ) (v : FVar D T.rank S.rank) (α : ℂ) (t : �
   · rw [if_neg h, Matrix.mul_zero, Matrix.zero_mul]
     simp [Formalism.MainNotions.TaylorLogMetric.coordV, h]
 
+/- English proof (translation)
+Take `⟨τ, a, b⟩` from `v`. Establish `hL` using `fun τ' => (GlobalTheory.OrientedHeis.isLineAt_lineAt hθ τ (α • unitMap (BS τ) (BT τ) a b)).2.2 t τ'`. Rewrite using `[omO_apply, Finset.sum_eq_single τ]`. Establish `e : GlobalTheory.FockCompare.piW θ T S (lineAt θ τ (α • unitMap (BS τ) (BT τ) a b) t) τ = (t : ℂ) • α • unitMap (BS τ) (BT τ) a b`. Use `hL τ` as an intermediate fact.
+
+Rewrite `this` using `[if_pos rfl]`. Conclude with `this`. Establish `e2 : GlobalTheory.FockCompare.piW θ T S w τ = compAt θ τ w` using `rfl`. Rewrite using `[e, e2, omAt, hAt_coord (hS τ) (hT τ)]`. Establish `key : (BT τ)⁻¹ * ((t : ℂ) • α • unitMap (BS τ) (BT τ) a b) * BS τ = ((t : ℂ) * α) • Matrix.single a b (1 : ℂ)`.
+
+Rewrite using `[← coord_unit (hS τ) (hT τ) a b]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, smul_smul]`. Rewrite using `[key]`. Rewrite using `[trace_smul_single, map_mul, Complex.conj_ofReal]`. Use `show 2 * (tauE D τ D.host.xi0 * ((t : ℂ) * starRingEnd ℂ α * ((BT τ)⁻¹ * compAt θ τ w * BS τ) a b)).re = t * (2 * (tauE D τ D.host.xi0 * (starRingEnd ℂ α * ((BT τ)⁻¹ * compAt θ τ w * BS τ) a b)).re)`.
+
+Establish `e3 : tauE D τ D.host.xi0 * ((t : ℂ) * starRingEnd ℂ α * ((BT τ)⁻¹ * compAt θ τ w * BS τ) a b) = (t : ℂ) * (tauE D τ D.host.xi0 * (starRingEnd ℂ α * ((BT τ)⁻¹ * compAt θ τ w * BS τ) a b))` using `by ring`. Rewrite using `[e3, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `τ' _ h`. Establish `e : GlobalTheory.FockCompare.piW θ T S (lineAt θ τ (α • unitMap (BS τ) (BT τ) a b) t) τ' = 0`.
+
+Use `hL τ'` as an intermediate fact. Rewrite `this` using `[if_neg h]`. Conclude with `this`. Rewrite using `[e]`. Establish `z0 : ∀ x : Matrix (Fin T.rank) (Fin S.rank) ℂ, omAt S T τ' x 0 = 0` using `fun x => by simp [omAt, hAt]`.
+
+Conclude with `z0 _`. Simplify using the standard rewrite rules.
+-/
 theorem omO_line (hθ : IsInfFam θ) (v : FVar D T.rank S.rank) (α : ℂ) (t : ℝ) (w : WO S T) :
     omO S T (GlobalTheory.FockCompare.piW θ T S w)
         (GlobalTheory.FockCompare.piW θ T S (lineAt θ v.1 (α • unitMap (BS v.1) (BT v.1) v.2.1 v.2.2) t)) =
@@ -257,6 +353,25 @@ theorem omO_line (hθ : IsInfFam θ) (v : FVar D T.rank S.rank) (α : ℂ) (t : 
 noncomputable def gs {N N' : ℕ} (z : Formalism.MainNotions.TaylorLogMetric.VC D N N') : ℂ :=
   Complex.exp (-((Real.pi * Formalism.L2.Pj.xiR D : ℝ) : ℂ) * nrm z)
 
+/- English proof (translation)
+Use `set z := zc θ BS BT w with hz`. Use `set L := lineAt θ v.1 (α • unitMap (BS v.1) (BT v.1) v.2.1 v.2.2) with hL`. Use `set om : ℝ := 2 * (tauE D v.1 D.host.xi0 * (starRingEnd ℂ α * z v.1 v.2.1 v.2.2)).re with hom`. Establish `hfin : ∀ t, (L t).map (finPart D) = 0` using `(GlobalTheory.OrientedHeis.isLineAt_lineAt hθ _ _).2.1`. Establish `hreal : ∀ t, (w + L t).map (finPart D) = 0`.
+
+Introduce `t`. Use extensionality with `i j`. Establish `a1` using `congrFun (congrFun hw i) j`. Establish `a2` using `congrFun (congrFun (hfin t) i) j`. Simplify using `only [Matrix.map_apply, Matrix.zero_apply] at a1 a2 ⊢`.
+
+Rewrite using `[Matrix.add_apply, (finPart D).map_add, a1, a2, add_zero]`. Establish `hfun : (fun t : ℝ => heisO ψ S T (L t) G w) = fun t : ℝ => Complex.exp (-(Real.pi * Complex.I) * ((t * om : ℝ) : ℂ)) * (Complex.exp (-((Real.pi * Formalism.L2.Pj.xiR D : ℝ) : ℂ) * nrm (z + ((t : ℂ) * α) • Formalism.MainNotions.TaylorLogMetric.coordV D v)) * Φ (z + ((t : ℂ) * α) • …`. Use function extensionality and compare the values at `t`. Establish `hzl : zc θ BS BT (w + L t) = z + ((t : ℂ) * α) • Formalism.MainNotions.TaylorLogMetric.coordV D v`. Rewrite using `[zc_add, hL, zc_line θ hS hT hθ]`.
+
+Rewrite using `[heisO, GlobalTheory.OrientedChar.char_symplOH D θ ψ hθ hψ S T w (L t) (Or.inl hw), hG _ (hreal t), hzl, omO_line θ hS hT hθ v α t w]`. Both sides reduce to the same expression. Establish `hA : HasDerivAt (fun t : ℝ => Complex.exp (-(Real.pi * Complex.I) * ((t * om : ℝ) : ℂ))) (Complex.exp (-(Real.pi * Complex.I) * (((0 : ℝ) * om : ℝ) : ℂ)) * (-(Real.pi * Complex.I) * (om : ℂ))) 0`. Establish `h0 : HasDerivAt (fun t : ℝ => ((t * om : ℝ) : ℂ)) (om : ℂ) 0`. Use `((hasDerivAt_id (0 : ℝ)).mul_const om).ofReal_comp` as an intermediate fact.
+
+Simplify using `using this`. Conclude with `(h0.const_mul _).cexp`. Establish `hB : HasDerivAt (fun t : ℝ => Complex.exp (-((Real.pi * Formalism.L2.Pj.xiR D : ℝ) : ℂ) * nrm (z + ((t : ℂ) * α) • Formalism.MainNotions.TaylorLogMetric.coordV D v))) (Complex.exp (-((Real.pi * Formalism.L2.Pj.xiR D : ℝ) : ℂ) * nrm (z + (((0 : ℝ) : ℂ) * α) • Formalism.MainNotions …` using `((nrm_deriv z v α).const_mul _).cexp`. Establish `hC : HasDerivAt (fun t : ℝ => Φ (z + ((t : ℂ) * α) • Formalism.MainNotions.TaylorLogMetric.coordV D v)) (fderiv ℝ Φ z (α • Formalism.MainNotions.TaylorLogMetric.coordV D v)) 0`. Establish `h1 : HasDerivAt (fun t : ℝ => z + ((t : ℂ) * α) • Formalism.MainNotions.TaylorLogMetric.coordV D v) (α • Formalism.MainNotions.TaylorLogMetric.coordV D v) 0`.
+
+Establish `h2 : HasDerivAt (fun t : ℝ => t • (α • Formalism.MainNotions.TaylorLogMetric.coordV D v)) (α • Formalism.MainNotions.TaylorLogMetric.coordV D v) 0`. Simplify using `using (hasDerivAt_id (0 : ℝ)).smul_const (α • Formalism.MainNotions.TaylorLogMetric.coordV D v)`. Establish `e : (fun t : ℝ => z + ((t : ℂ) * α) • Formalism.MainNotions.TaylorLogMetric.coordV D v) = fun t : ℝ => z + t • (α • Formalism.MainNotions.TaylorLogMetric.coordV D v)`. Use function extensionality and compare the values at `t`. Rewrite using `[mul_smul, Complex.coe_smul]`.
+
+Rewrite using `[e]`. Conclude with `h2.const_add z`. Establish `hz0 : z + (((0 : ℝ) : ℂ) * α) • Formalism.MainNotions.TaylorLogMetric.coordV D v = z` using `by simp`. Conclude with `HasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) (hΦ z).hasFDerivAt h1 hz0.symm`. Establish `hall` using `(hA.fun_mul (hB.fun_mul hC)).deriv`.
+
+Establish `hz0 : z + (((0 : ℝ) : ℂ) * α) • Formalism.MainNotions.TaylorLogMetric.coordV D v = z` using `by simp`. Rewrite using `[Formalism.IndefR.Datum.dRho]`. Use `show deriv (fun t : ℝ => heisO ψ S T (L t) G w) 0 = _`. Rewrite using `[hfun, hall, hz0, gs]`. Simplify using `only [Complex.ofReal_zero, zero_mul, mul_zero, Complex.exp_zero, one_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dRho_dir {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     {G : WO S T → ℂ} {Φ : Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank → ℂ} (hΦ : Differentiable ℝ Φ)
     (hG : ∀ w : WO S T, w.map (finPart D) = 0 → G w = gs (zc θ BS BT w) * Φ (zc θ BS BT w))
@@ -324,6 +439,15 @@ theorem dRho_dir {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (h
 noncomputable def lam (v : FVar D T.rank S.rank) (z : Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank) : ℂ :=
   -(2 * Real.pi * Formalism.L2.Pj.xiR D) * starRingEnd ℂ (z v.1 v.2.1 v.2.2)
 
+/- English proof (translation)
+Establish `h1` using `dRho_dir θ hS hT hψ hθ hΦ hG v 1 w hw`. Establish `h2` using `dRho_dir θ hS hT hψ hθ hΦ hG v Complex.I w hw`. Rewrite `h1` using `[one_smul, one_smul]`. Establish `hJ : cplxO (1 : Matrix (Fin S.rank) (Fin S.rank) ℂ) (1 : Matrix (Fin T.rank) (Fin T.rank) ℂ) (unitMap (BS v.1) (BT v.1) v.2.1 v.2.2) = Complex.I • unitMap (BS v.1) (BT v.1) v.2.1 v.2.2`. Simplify using `[cplxO]`.
+
+Rewrite using `[crea, hJ, Pi.sub_apply, Pi.smul_apply, h1, h2, smul_eq_mul, lam, realPlace_cmTrace_zero_element_eq_I_mul_abs]`. Use `set x := zc θ BS BT w v.1 v.2.1 v.2.2 with hx`. Establish `hc : starRingEnd ℂ x = (x.re : ℂ) - (x.im : ℂ) * Complex.I`. Apply the tactic sequence `apply Complex.ext <;> simp`. Establish `r1 : (Complex.I * ((Formalism.L2.Pj.xiR D : ℝ) : ℂ) * (starRingEnd ℂ 1 * x)).re = -(Formalism.L2.Pj.xiR D * x.im)`.
+
+Simplify using the standard rewrite rules. Establish `r2 : (starRingEnd ℂ 1 * x).re = x.re` using `by simp`. Establish `r3 : (Complex.I * ((Formalism.L2.Pj.xiR D : ℝ) : ℂ) * (starRingEnd ℂ Complex.I * x)).re = Formalism.L2.Pj.xiR D * x.re`. Simplify using the standard rewrite rules. Establish `r4 : (starRingEnd ℂ Complex.I * x).re = x.im` using `by simp`.
+
+Rewrite using `[r1, r2, r3, r4, hc]`. Use `push_cast`. Take the linear combination `(gs (zc θ BS BT w) * Φ (zc θ BS BT w) * 2 * (Real.pi : ℂ) * ((Formalism.L2.Pj.xiR D : ℝ) : ℂ) * (x.re : ℂ)) * Complex.I_mul_I`.
+-/
 theorem crea_dir {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     {G : WO S T → ℂ} {Φ : Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank → ℂ} (hΦ : Differentiable ℝ Φ)
     (hG : ∀ w : WO S T, w.map (finPart D) = 0 → G w = gs (zc θ BS BT w) * Φ (zc θ BS BT w))
@@ -352,6 +476,29 @@ theorem crea_dir {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (h
   push_cast
   linear_combination (gs (zc θ BS BT w) * Φ (zc θ BS BT w) * 2 * (Real.pi : ℂ) * ((Formalism.L2.Pj.xiR D : ℝ) : ℂ) * (x.re : ℂ)) * Complex.I_mul_I
 
+/- English proof (translation)
+Use `set c₀ : ℂ := ((Real.sqrt (2 * Real.pi * Formalism.L2.Pj.xiR D) : ℝ) : ℂ)⁻¹ with hc₀`. Set `u : FVar D T.rank S.rank → Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank` to `fun v => Formalism.MainNotions.TaylorLogMetric.coordV D v`. Set `Dl : FVar D T.rank S.rank → (Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank → ℂ) → Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank → ℂ` to `fun l Φ z => lam l z * Φ z + (1 / 2 : ℂ) * (fderiv ℝ Φ z (u l) - Complex.I * fderiv ℝ Φ z (Complex.I • u l))`. Establish `hlam : ∀ l : FVar D T.rank S.rank, (∀ a b : Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank, lam l (a + b) = lam l a + lam l b) ∧ ∀ (t : ℂ) (a : Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank), lam l (t • a) = starRingEnd ℂ t * lam l a`. Introduce `l`.
+
+Use `⟨fun a b => ?_, fun t a => ?_⟩` and prove the remaining obligations. Simplify using `only [lam, Pi.add_apply, map_add]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [lam, Pi.smul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hops` using `GlobalTheory.Ker.CreOp.foldr_creation_zero _ _ u (lam (S := S) (T := T)) Θ hlam hΘ Dl (fun _ _ _ => rfl)`. Set `A` to `aPlusAll (heisO ψ S T) θ (fun _ => cplxO 1 1) BS BT`. Establish `key : ∀ L : List (FVar D T.rank S.rank), ∀ w : WO S T, w.map (finPart D) = 0 → L.foldr (fun i g => A i g) F w = gs (zc θ BS BT w) * (c₀ ^ L.length * L.foldr Dl Θ (zc θ BS BT w))`. Introduce `L`. Proceed by induction on `L with`.
+
+Consider the case `nil`. Introduce `w hw`. Simplify using `[hF w hw]`. Consider the case `cons a L ih`. Introduce `w hw`.
+
+Establish `hdf : Differentiable ℝ (L.foldr Dl Θ)` using `(hops L).1.differentiable (by simp)`. Establish `h` using `crea_dir θ hS hT hψ hθ (Φ := fun z => c₀ ^ L.length * L.foldr Dl Θ z) (hdf.const_mul _) ih a w hw`. Rewrite using `[List.foldr_cons]`. Express the relevant statement in the definitionally equal form `((fockScale D a.1 : ℂ)⁻¹) * crea (heisO ψ S T) θ a.1 (cplxO 1 1) (unitMap (BS a.1) (BT a.1) a.2.1 a.2.2) (L.foldr (fun i g => A i g) F) w = _`. Establish `hf : (fockScale D a.1 : ℂ)⁻¹ = c₀ / 2`.
+
+Rewrite using `[fockScale, GlobalTheory.AdTh.Fock.norm_embedding_hostFormConstant_eq, hc₀, Complex.ofReal_mul, _root_.mul_inv_rev]`. Evaluate the numerical expressions using `[div_eq_mul_inv]`. Rewrite using `[h, fderiv_const_mul (hdf _), hf]`. Simplify using `only [List.foldr_cons, List.length_cons, _root_.smul_apply, smul_eq_mul]`. Simplify using `only [Dl, u, pow_succ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h0 : zc θ BS BT (0 : WO S T) = 0` using `zc_zero θ BS BT`. Establish `hr0 : (0 : WO S T).map (finPart D) = 0`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Establish `hg0 : gs (0 : Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank) = 1`. Simplify using `[gs, nrm]`. Establish `h2 : pureTensorO ψ θ S T (fun _ => 1) (fun _ => 1) BS BT F (MvPolynomial.monomial k (1 : ℂ)) = opPow A k F`. Use `(MvPolynomial.basisMonomials (FVar D T.rank S.rank) ℂ).constr_basis ℂ (fun k => opPow A k F) k` as an intermediate fact. Rewrite `this` using `[MvPolynomial.coe_basisMonomials]`. Then use the resulting hypothesis.
+
+Establish `hlen : (Finsupp.toMultiset k).toList.length = k.sum fun _ n => n`. Rewrite using `[Multiset.length_toList, Finsupp.card_toMultiset]`. Both sides reduce to the same expression. Establish `hprod : (k.prod fun _ n => (n.factorial : ℂ)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun _ _ => Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _)`. Establish `hgen : ∀ (L : List (FVar D T.rank S.rank)) (n : ℕ) (h : n = L.length), iteratedFDeriv ℂ n Θ 0 (fun i => u (L.get ⟨i, h ▸ i.2⟩)) = iteratedFDeriv ℂ L.length Θ 0 fun i => u (L.get i)`.
+
+Introduce and unpack `L _ rfl`. Both sides reduce to the same expression. Establish `hap : Formalism.MainNotions.GL3Theta.applyAt0 D (MvPolynomial.monomial k 1) Θ = iteratedFDeriv ℂ (Finsupp.toMultiset k).toList.length Θ 0 fun i => u ((Finsupp.toMultiset k).toList.get i)` using `by classical`. Unfold `Formalism.MainNotions.GL3Theta.applyAt0`. Rewrite using `[MvPolynomial.support_monomial, if_neg one_ne_zero, Finset.sum_singleton, MvPolynomial.coeff_monomial, if_pos rfl, one_mul, Formalism.MainNotions.TaylorLogMetric.taylor, mul_div_cancel₀ _ hprod]`.
+
+Conclude with `hgen _ _ (Multiset.length_toList _).symm`. Rewrite using `[h2, opPow, key _ 0 hr0, h0, hg0, one_mul, (hops _).2, hap, ← hlen]`.
+-/
 theorem fock_monomial_zero {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     (F : WO S T → ℂ) (Θ : Formalism.MainNotions.TaylorLogMetric.VC D S.rank T.rank → ℂ) (hΘ : Differentiable ℂ Θ)
     (hF : ∀ w : WO S T, w.map (finPart D) = 0 → F w = gs (zc θ BS BT w) * Θ (zc θ BS BT w))
@@ -424,6 +571,9 @@ theorem fock_monomial_zero {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D �
 
 end Coord
 
+/- English proof (translation)
+Establish `hc : (M.map (tauE D τ))ᴴ = (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) M).map (tauE D τ)`. Use extensionality with `i j`. Conclude with `(GlobalTheory.FockCompare.tauE_star τ (M j i)).symm`. Rewrite using `[hc, ← Matrix.map_mul, ← Matrix.map_mul, h]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem frame_map (τ : D.what₂.Tau) {n : ℕ} {M Gm : Matrix (Fin n) (Fin n) D.host.E}
     (h : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) M * Gm * M = 1) :
     (M.map (tauE D τ))ᴴ * Gm.map (tauE D τ) * M.map (tauE D τ) = 1 := by
@@ -435,6 +585,13 @@ theorem frame_map (τ : D.what₂.Tau) {n : ℕ} {M Gm : Matrix (Fin n) (Fin n) 
 
 end GlobalTheory.FockJetOrigin
 
+/- English proof (translation)
+Introduce `D T L sc G W U N t j hj F Θ hΘ hF k`. Establish `hS : ∀ τ, (N.frC (.top j) τ)ᴴ * gramAt D (G.V (.top j)) τ * N.frC (.top j) τ = 1` using `fun τ => GlobalTheory.FockJetOrigin.frame_map τ (N.fr_on (.top j) (by show j ≤ D.R.m; omega))`. Establish `hT : ∀ τ, (N.frC (.top (j + 1)) τ)ᴴ * gramAt D (G.V (.top (j + 1))) τ * N.frC (.top (j + 1)) τ = 1` using `fun τ => GlobalTheory.FockJetOrigin.frame_map τ (N.fr_on (.top (j + 1)) hj)`. Establish `hc1 : ∀ τ, IsCartanInv (gramAt D (G.V (.top j)) τ) (W.cart (.top j) τ)` using `W.cart_is (.top j) (by show j ≤ D.R.m; omega)`. Establish `hc2 : ∀ τ, IsCartanInv (gramAt D (G.V (.top (j + 1))) τ) (W.cart (.top (j + 1)) τ)` using `W.cart_is (.top (j + 1)) hj`.
+
+Establish `c1' : ∀ τ, W.cart (.top j) τ = 1` using `fun τ => GlobalTheory.FockJetOrigin.cartan_eq_one (hS τ) (hc1 τ)`. Establish `c2' : ∀ τ, W.cart (.top (j + 1)) τ = 1` using `fun τ => GlobalTheory.FockJetOrigin.cartan_eq_one (hT τ) (hc2 τ)`. Establish `c1 : W.cart (.top j) = fun (_ : D.what₂.Tau) => (1 : Matrix (Fin (G.V (.top j)).rank) (Fin (G.V (.top j)).rank) ℂ)`. Use function extensionality and compare the values at `c1'`. Establish `c2 : W.cart (.top (j + 1)) = fun (_ : D.what₂.Tau) => (1 : Matrix (Fin (G.V (.top (j + 1))).rank) (Fin (G.V (.top (j + 1))).rank) ℂ)`.
+
+Use function extensionality and compare the values at `c2'`. Establish `main` using `GlobalTheory.FockJetOrigin.fock_monomial_zero W.θ (S := G.V (.top j)) (T := G.V (.top (j + 1))) hS hT W.ψ_std W.θ_is F Θ hΘ hF k`. Use `show pureTensorO W.ψ W.θ (G.V (.top j)) (G.V (.top (j + 1))) (W.cart (.top j)) (W.cart (.top (j + 1))) (N.frC (.top j)) (N.frC (.top (j + 1))) F (MvPolynomial.monomial k 1) 0 = _`. Rewrite using `[c1, c2]`. Conclude with `main`.
+-/
 theorem GlobalTheory.FockJetOrigin.fockIn_gauss_zero : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GlobalTheory.ChiGrid.GridData L sc} (W : G.Weil) {U : Set T} (N : GlobalTheory.FunObj.Std G U) (t : T) (j : ℕ), j + 1 ≤ D.R.m → ∀ (F : WO (G.pS (.top t j)) (G.pT (.top t j)) → ℂ) (Θ : Formalism.MainNotions.TaylorLogMetric.VC D (G.pS (.top t j)).rank (G.pT (.top t j)).rank → ℂ), Differentiable ℂ Θ → (∀ w : WO (G.pS (.top t j)) (G.pT (.top t j)), w.map (finPart D) = 0 → F w = Complex.exp (-((Real.pi * Formalism.L2.Pj.xiR D : ℝ) : ℂ) * ∑ τ, ∑ a, ∑ b, ((‖((N.frC (.top (j + 1)) τ)⁻¹ * compAt W.θ τ w * N.frC (.top j) τ) a b‖ ^ 2 : ℝ) : ℂ)) * Θ (fun τ => (N.frC (.top (j + 1)) τ)⁻¹ * compAt W.θ τ w * N.frC (.top j) τ)) → ∀ k : FVar D (G.pT (.top t j)).rank (G.pS (.top t j)).rank →₀ ℕ, GlobalTheory.FunObj.fockIn W N.frC (.top t j) F (MvPolynomial.monomial k 1) 0 = (((Real.sqrt (2 * Real.pi * Formalism.L2.Pj.xiR D) : ℝ) : ℂ)⁻¹) ^ (k.sum fun _ n => n) * Formalism.MainNotions.GL3Theta.applyAt0 D (MvPolynomial.monomial k 1) Θ := by
   intro D T L sc G W U N t j hj F Θ hΘ hF k
   have hS : ∀ τ, (N.frC (.top j) τ)ᴴ * gramAt D (G.V (.top j)) τ * N.frC (.top j) τ = 1 := fun τ =>

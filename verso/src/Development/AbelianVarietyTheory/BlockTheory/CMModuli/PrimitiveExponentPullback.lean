@@ -28,8 +28,14 @@ def lamExp : LamK → ℤ := fun I => (-1) ^ (2 - I.down.card)
 def lamAt (L : LB G.left) {T : Over S} (x z : T ⟶ G) : LB T.left :=
   LB.LinComb L (lamPt G x z) lamExp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lamAt_fst_snd (L : LB G.left) : lamAt G L (fst G G) (snd G G) = abelian₂ G L := rfl
 
+/- English proof (translation)
+Simplify using `only [lamPt, psum]`. Rewrite using `[← Over.comp_left, ← foldr_padd_pre]`. Use `congr 2`. Use function extensionality and compare the values at `k acc`. Apply the tactic sequence `fin_cases k <;> rfl`.
+-/
 theorem lamPt_comp {T T' : Over S} (h : T' ⟶ T) (x z : T ⟶ G) (I : LamK) :
     h.left ≫ lamPt G x z I = lamPt G (h ≫ x) (h ≫ z) I := by
   simp only [lamPt, psum]
@@ -60,6 +66,9 @@ def IsPrimitiveFor (L : RigLB G) (w : G ⟶ G) : Prop :=
     LB.Gen.Corr L.L _ _ (fun _ : PUnit.{1} => eSec G) (fun _ => 1)
       (LB.pullGen L.L (primPt G w) primExp t (eSec G)) L.rig
 
+/- English proof (translation)
+Rewrite using `[← (Equiv.ulift (α := Finset (Fin 2))).symm.sum_comp]`. Establish `: (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}}` using `by decide`. Rewrite using `[this, Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_singleton]`. Simplify using `only [add_assoc]`. Both sides reduce to the same expression.
+-/
 theorem sum_lamK (f : LamK → ℤ) :
     ∑ I, f I = f ⟨∅⟩ + f ⟨{0}⟩ + f ⟨{1}⟩ + f ⟨{0, 1}⟩ := by
   rw [← (Equiv.ulift (α := Finset (Fin 2))).symm.sum_comp]
@@ -69,6 +78,11 @@ theorem sum_lamK (f : LamK → ℤ) :
   simp only [add_assoc]
   rfl
 
+/- English proof (translation)
+Use `⟨rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(x * 1).left = _`. Rewrite using `[_root_.mul_one]`. Express the relevant statement in the definitionally equal form `(z * 1).left = _`. Rewrite using `[_root_.mul_one]`.
+
+Express the relevant statement in the definitionally equal form `(x * (z * 1)).left = _`. Rewrite using `[_root_.mul_one]`.
+-/
 theorem lamPt_values {T : Over S} (x z : T ⟶ G) :
     lamPt G x z ⟨∅⟩ = (1 : T ⟶ G).left ∧ lamPt G x z ⟨{0}⟩ = x.left ∧
       lamPt G x z ⟨{1}⟩ = z.left ∧ lamPt G x z ⟨{0, 1}⟩ = (x * z).left := by
@@ -81,6 +95,11 @@ theorem lamPt_values {T : Over S} (x z : T ⟶ G) :
     rw [_root_.mul_one]
 
 open scoped Classical in
+/- English proof (translation)
+Take `⟨h0, h1, h2, h3⟩` from `lamPt_values G x z`. Establish `e0 : lamExp ⟨∅⟩ = 1` using `rfl`. Establish `e1 : lamExp ⟨{0}⟩ = -1` using `rfl`. Establish `e2 : lamExp ⟨{1}⟩ = -1` using `rfl`. Establish `e3 : lamExp ⟨{0, 1}⟩ = 1` using `rfl`.
+
+Rewrite using `[sum_lamK, h0, h1, h2, h3, e0, e1, e2, e3]`. Break down `h with rfl | rfl` into its components or cases. Apply the tactic sequence `rw [_root_.one_mul]; split_ifs <;> simp`. Apply the tactic sequence `rw [_root_.mul_one]; split_ifs <;> simp`.
+-/
 theorem sum_lam {T : Over S} (x z : T ⟶ G) (h : x = 1 ∨ z = 1) (ψ : T.left ⟶ G.left) :
     (∑ I, if lamPt G x z I = ψ then lamExp I else 0) = 0 := by
   obtain ⟨h0, h1, h2, h3⟩ := lamPt_values G x z
@@ -93,6 +112,13 @@ theorem sum_lam {T : Over S} (x z : T ⟶ G) (h : x = 1 ∨ z = 1) (ψ : T.left 
   · rw [_root_.one_mul]; split_ifs <;> simp
   · rw [_root_.mul_one]; split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `ψ`. Establish `ha : (1 : T ⟶ G) ≫ a = 1` using `by simp [Hom.one_def]`. Establish `hb : (1 : T ⟶ G) ≫ b = 1` using `by simp [Hom.one_def]`. Establish `h1` using `sum_lam G (h ≫ fst G G) (h ≫ snd G G ≫ b) (hh.imp id fun e => by rw [← Category.assoc, e, hb]) ψ`. Establish `h2` using `sum_lam G (h ≫ fst G G ≫ a) (h ≫ snd G G) (hh.imp (fun e => by rw [← Category.assoc, e, ha]) id) ψ`.
+
+Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [adjPt, adjExp, Sum.elim_inl, Sum.elim_inr, lamPt_comp, Finset.univ_eq_empty, Finset.sum_empty]`. Establish `h3 : ∀ (p : Prop) [Decidable p] (n : ℤ), (if p then -n else 0) = -(if p then n else 0)`. Apply the tactic sequence `intro p _ n; split_ifs <;> simp`. Simplify using `only [h3, Finset.sum_neg_distrib]`.
+
+Rewrite using `[h1, h2]`. Both sides reduce to the same expression.
+-/
 theorem sameSum_adj (a b : G ⟶ G) [IsMonHom a] [IsMonHom b] {T : Over S} (h : T ⟶ G ⊗ G)
     (hh : h ≫ fst G G = 1 ∨ h ≫ snd G G = 1) :
     LB.SameSum (fun k => h.left ≫ adjPt G a b k) adjExp
@@ -113,6 +139,11 @@ theorem sameSum_adj (a b : G ⟶ G) [IsMonHom a] [IsMonHom b] {T : Over S} (h : 
   simp only [h3, Finset.sum_neg_distrib]
   rw [h1, h2]; rfl
 
+/- English proof (translation)
+Introduce `ψ`. Establish `h1` using `sum_lam G (η[G] ≫ 𝟙 G) (η[G] ≫ w) (Or.inl (by simp [Hom.one_def])) ψ`. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [primPt, primExp, Sum.elim_inl, Sum.elim_inr, eSec, lamPt_comp, Category.comp_id] at h1 ⊢`. Establish `h3 : ∀ (p : Prop) [Decidable p] (n : ℤ), (if p then -n else 0) = -(if p then n else 0)`.
+
+Apply the tactic sequence `intro p _ n; split_ifs <;> simp`. Simplify using `only [h3, Finset.sum_neg_distrib]`. Use `erw [h1]`. Rewrite using `[neg_zero, add_zero]`. Both sides reduce to the same expression.
+-/
 theorem sameSum_prim (w : G ⟶ G) :
     LB.SameSum (fun k => eSec G ≫ primPt G w k) primExp
       (fun _ : PUnit.{1} => eSec G) (fun _ => 1) := by
@@ -181,11 +212,17 @@ def PullIso.toPull {t' : Triple H S'} {t : Triple H S} {f : S' ⟶ S} (p : PullI
     Pull t' t f :=
   ⟨p.m.F, p.isGrpPullback, p.act_comm, p.m, rfl, p.base, p.w, p.isGen, p.rig, p.cube⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨φ, h1, h2, m, rfl, h3, w, h4, h5, h6⟩`. Conclude with `⟨⟨m, h3, h1, h2, w, h4, h5, h6⟩, rfl⟩`.
+-/
 theorem PullIso.toPull_surjective {t' : Triple H S'} {t : Triple H S} {f : S' ⟶ S} :
     Function.Surjective (PullIso.toPull (t' := t') (t := t) (f := f)) := by
   rintro ⟨φ, h1, h2, m, rfl, h3, w, h4, h5, h6⟩
   exact ⟨⟨m, h3, h1, h2, w, h4, h5, h6⟩, rfl⟩
 
+/- English proof (translation)
+Establish `h` using `m.psum_comm {i}`. Apply the tactic sequence `have e : psum G (x3 G) {i} = x3 G i := by fin_cases i <;> exact _root_.mul_one (M := G3 G ⟶ G) _`. Apply the tactic sequence `have e' : psum G' (x3 G') {i} = x3 G' i := by fin_cases i <;> exact _root_.mul_one (M := G3 G' ⟶ G') _`. Rewrite `h` using `[e, e']`. Conclude with `h.symm`.
+-/
 theorem cubeMap_coord {G' : Over S'} {G : Over S} [GrpObj G'] [IsCommMonObj G'] [GrpObj G]
     [IsCommMonObj G] (m : CubeMap G' G) (i : Fin 3) :
     m.F3 ≫ (x3 G i).left = (x3 G' i).left ≫ m.F := by
@@ -197,6 +234,11 @@ theorem cubeMap_coord {G' : Over S'} {G : Over S} [GrpObj G'] [IsCommMonObj G'] 
   rw [e, e'] at h
   exact h.symm
 
+/- English proof (translation)
+Establish `h0` using `(cubeMap_coord m 0).trans (h ▸ (cubeMap_coord m' 0).symm)`. Establish `h1` using `(cubeMap_coord m 1).trans (h ▸ (cubeMap_coord m' 1).symm)`. Establish `h2` using `(cubeMap_coord m 2).trans (h ▸ (cubeMap_coord m' 2).symm)`. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `h0`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc]`. Conclude with `h1`. Rewrite using `[Category.assoc, Category.assoc]`. Conclude with `h2`.
+-/
 theorem cubeMap_tripleProduct_unique {G' : Over S'} {G : Over S} [GrpObj G'] [IsCommMonObj G'] [GrpObj G]
     [IsCommMonObj G] (m m' : CubeMap G' G) (h : m.F = m'.F) : m.F3 = m'.F3 := by
   have h0 := (cubeMap_coord m 0).trans (h ▸ (cubeMap_coord m' 0).symm)
@@ -208,27 +250,48 @@ theorem cubeMap_tripleProduct_unique {G' : Over S'} {G : Over S} [GrpObj G'] [Is
     · rw [Category.assoc, Category.assoc]; exact h1
     · rw [Category.assoc, Category.assoc]; exact h2
 
+/- English proof (translation)
+Rewrite using `[hx, map_one]`.
+-/
 theorem res_eq_one {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) {x : Γ(X, U)ˣ} (hx : x = 1) :
     res h x = 1 := by rw [hx, map_one]
 
+/- English proof (translation)
+Rewrite using `[hx, map_one]`.
+-/
 theorem pullU_eq_one {X Y : Scheme.{0}} (f : Y ⟶ X) (U : X.Opens) {x : Γ(X, U)ˣ} (hx : x = 1) :
     pullU f U x = 1 := by rw [hx, map_one]
 
+/- English proof (translation)
+Rewrite using `[hx, hy, _root_.one_mul]`.
+-/
 theorem mul_eq_one_of_both {M : Type} [Monoid M] {x y : M} (hx : x = 1) (hy : y = 1) :
     x * y = 1 := by rw [hx, hy, _root_.one_mul]
 
+/- English proof (translation)
+Rewrite using `[hx, one_zpow]`.
+-/
 theorem zpow_eq_one_of {M : Type} [Group M] {x : M} (hx : x = 1) (n : ℤ) : x ^ n = 1 := by
   rw [hx, one_zpow]
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [hg, res_eq_one _ rfl, res_eq_one _ rfl, _root_.one_mul]`.
+-/
 theorem isGen_one {X : Scheme.{0}} (L : LB X) (hg : ∀ i j, L.g i j = 1) :
     (⟨fun _ => 1⟩ : LB.Gen L).IsGen := fun i j => by
   rw [hg, res_eq_one _ rfl, res_eq_one _ rfl, _root_.one_mul]
 
+/- English proof (translation)
+The claim follows from `Finset.prod_eq_one fun _ _ => zpow_eq_one_of (res_eq_one _ (pullU_eq_one _ _ (hg _ _))) _`.
+-/
 theorem linComb_g_one {X Y : Scheme.{0}} (L : LB X) (hg : ∀ i j, L.g i j = 1) {K : Type}
     [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ) (i j) : (LB.LinComb L φ ε).g i j = 1 :=
   Finset.prod_eq_one fun _ _ =>
     zpow_eq_one_of (res_eq_one _ (pullU_eq_one _ _ (hg _ _))) _
 
+/- English proof (translation)
+Unfold `LB.linCombIso`. Use `Finset.prod_eq_one fun k _ => ?_` and prove the remaining obligations. Use `zpow_eq_one_of ?_ _` and prove the remaining obligations. Use `res_eq_one _ ?_` and prove the remaining obligations. Conclude with `map_one (pullU (φ k) (M.U (p.1 k) ⊓ L.U (p.2 k)))`.
+-/
 theorem linCombIso_one {X Y : Scheme.{0}} (L M : LB X) {K : Type} [Fintype K]
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) (p) :
     (LB.linCombIso (L := L) (M := M) ⟨fun _ => 1⟩ φ ε).s p = 1 := by
@@ -238,6 +301,9 @@ theorem linCombIso_one {X Y : Scheme.{0}} (L M : LB X) {K : Type} [Fintype K]
   refine res_eq_one _ ?_
   exact map_one (pullU (φ k) (M.U (p.1 k) ⊓ L.U (p.2 k)))
 
+/- English proof (translation)
+Introduce `j j' _ _ _` and use `(res_eq_one _ (h j)).trans (res_eq_one _ (h' j')).symm`.
+-/
 theorem corr_one {X Y : Scheme.{0}} (L : LB X) {K K' : Type} [Fintype K] [Fintype K']
     {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
     {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen (LB.LinComb L φ' ε')}

@@ -15,6 +15,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 
 namespace GlobalTheory.CompanionTheory.PerfModels
 
+/- English proof (translation)
+Establish `hfl : RingHom.Flat (s.appLE ⊤ U.1 le_top).hom` using `s.flat_appLE (isAffineOpen_top _) U.2 le_top`. Establish `hi : RingHom.Flat (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom` using `RingHom.Flat.of_bijective (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv)`. Establish `h : RingHom.Flat (secMap s U.1).hom` using `RingHom.Flat.comp hi hfl`. Conclude with `(RingHom.flat_algebraMap_iff (R := R) (S := Sec s U.1)).1 h`.
+-/
 theorem flat_sec {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) [Flat s] (U : X.affineOpens) :
     Module.Flat R (Sec s U.1) := by
   have hfl : RingHom.Flat (s.appLE ⊤ U.1 le_top).hom := s.flat_appLE (isAffineOpen_top _) U.2 le_top
@@ -23,11 +26,17 @@ theorem flat_sec {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) [Flat
   have h : RingHom.Flat (secMap s U.1).hom := RingHom.Flat.comp hi hfl
   exact (RingHom.flat_algebraMap_iff (R := R) (S := Sec s U.1)).1 h
 
+/- English proof (translation)
+Take `⟨J, hf, hl, U, -, hm, hc⟩` from `GlobalTheory.exists_finite_affine_cover_infClosed R X s inferInstance inferInstance`. Conclude with `⟨J, hl, hf, ⟨⟨U, hm, hc⟩⟩⟩`.
+-/
 theorem exists_sys {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) [IsSeparated s] [QuasiCompact s] :
     ∃ (P : Type) (_ : SemilatticeInf P) (_ : Finite P), Nonempty (Sys X P) := by
   obtain ⟨J, hf, hl, U, -, hm, hc⟩ := GlobalTheory.exists_finite_affine_cover_infClosed R X s inferInstance inferInstance
   exact ⟨J, hl, hf, ⟨⟨U, hm, hc⟩⟩⟩
 
+/- English proof (translation)
+Take `⟨P, _, _, ⟨S⟩⟩` from `exists_sys s`. Take `⟨h₀, h₁⟩` from `hF R X s inferInstance P S`. Conclude with `⟨P, inferInstance, inferInstance, S, hN R P (OSys s S) inferInstance (fun T ↦ flat_sec s (S.u T.unop)) h₀ h₁⟩`.
+-/
 theorem perf_noeth (hF : FinCohSt) (hN : PerfNoethSt) (R : Type) [CommRing R] [IsNoetherianRing R]
     (X : Scheme.{0}) (s : X ⟶ Sp R) [Smooth s] [IsProper s] :
     ∃ (P : Type) (_ : SemilatticeInf P) (_ : Finite P) (S : Sys X P), Perf (OSys s S) := by
@@ -36,6 +45,9 @@ theorem perf_noeth (hF : FinCohSt) (hN : PerfNoethSt) (R : Type) [CommRing R] [I
   exact ⟨P, inferInstance, inferInstance, S,
     hN R P (OSys s S) inferInstance (fun T ↦ flat_sec s (S.u T.unop)) h₀ h₁⟩
 
+/- English proof (translation)
+Take `⟨P, _, _, S, hS⟩` from `hY`. Use `letI := φ.toAlgebra`. Take `⟨S', m, -⟩` from `hB R₀ R Y X f s π h inferInstance P S`. Conclude with `⟨P, inferInstance, inferInstance, S', hP R₀ P (OSys f S) hS R (OSys s S') m⟩`.
+-/
 theorem perf_base (hB : SysBCSt) (hP : PerfBaseSt) {R₀ R : Type} [CommRing R₀] [CommRing R] (φ : R₀ →+* R)
     {Y X : Scheme.{0}} (f : Y ⟶ Sp R₀) (s : X ⟶ Sp R) (π : X ⟶ Y) [IsSeparated f]
     (h : IsPullback π s f (spMap φ))
@@ -46,6 +58,11 @@ theorem perf_base (hB : SysBCSt) (hP : PerfBaseSt) {R₀ R : Type} [CommRing R�
   obtain ⟨S', m, -⟩ := hB R₀ R Y X f s π h inferInstance P S
   exact ⟨P, inferInstance, inferInstance, S', hP R₀ P (OSys f S) hS R (OSys s S') m⟩
 
+/- English proof (translation)
+Introduce `hS hSm hPr _ _ hBC hF hN hP R _ X s hsm hpr`. Take `⟨R₀, _, φ, Y₀, f₀, π, hm⟩` from `hS R X s inferInstance inferInstance inferInstance`. Take `⟨R₁, _, ψ₁, φ₁, e₁, ft₁, sm₁⟩` from `hSm R R₀ φ X Y₀ s f₀ π hm hsm`. Establish `m₁` using `GlobalTheory.CompanionTheory.CubeModels.model_refine' e₁ ft₁ hm`. Take `⟨R₂, _, ψ₂, φ₂, e₂, ft₂, pr₂⟩` from `hPr R R₁ φ₁ X _ s _ _ m₁ hpr`.
+
+Establish `m₂` using `GlobalTheory.CompanionTheory.CubeModels.model_refine' e₂ ft₂ m₁`. Establish `sm₁' : Smooth (Limits.pullback.snd f₀ (Spec.map (CommRingCat.ofHom ψ₁)))` using `sm₁`. Establish `pr₂' : IsProper (Limits.pullback.snd (Limits.pullback.snd f₀ (Spec.map (CommRingCat.ofHom ψ₁))) (Spec.map (CommRingCat.ofHom ψ₂)))` using `pr₂`. Use `haveI : IsNoetherianRing R₂ := Algebra.FiniteType.isNoetherianRing ℤ R₂`. Conclude with `perf_base hBC hP φ₂ _ s _ m₂.2.2.2.2 (perf_noeth hF hN R₂ _ _)`.
+-/
 theorem perfSt_of_spreads : GlobalTheory.SpreadingModels.SchemeModels → GlobalTheory.SpreadingModels.Spreads (fun _ _ f => Smooth f) →
     GlobalTheory.SpreadingModels.Spreads (fun _ _ f => IsProper f) → DescentSt → LowSt → SysBCSt → FinCohSt → PerfNoethSt →
     PerfBaseSt → PerfSt := by

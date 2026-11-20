@@ -12,6 +12,9 @@ namespace UpperTheory.TNZ.Grp.P_spLift
 variable {Γ V W : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
   [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.DYka2.main hρ f hL χ u hu hχ`.
+-/
 theorem exists_eigen_lift {ρ : Representation ℂ Γ V} {σ : Representation ℂ Γ W} (hρ : IsSmooth ρ)
     (f : ρ.IntertwiningMap σ) {L : Subgroup Γ} (hL : IsCompact (L : Set Γ)) (χ : Γ → ℂ)
     (u : V) (hu : f u ≠ 0) (hχ : ∀ g ∈ L, σ g (f u) = χ g • f u) :
@@ -24,6 +27,15 @@ namespace UpperTheory.TNZ.Grp
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Introduce `W X _ _ _ _ ρ σ hρ hsq hη`. Take `⟨S, f, hf⟩` from `hsq`. Take `⟨y, hy, hyη⟩` from `hη`. Take `⟨u, rfl⟩` from `hf y`. Establish `hS : IsSmooth S.toRepresentation` using `fun v => by`.
+
+Establish `: {g | S.toRepresentation g v = v} = {g | ρ g (v : W) = v}`. Use extensionality with `g`. Simplify using `only [Set.mem_ofPred_eq, Subtype.ext_iff]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Conclude with `hρ v`. Establish `hL : IsCompact ((leviK k (fun a : Fin G.s => Fin (G.d a))) : Set (Levi k fun a : Fin G.s => Fin (G.d a)))`. Rewrite using `[leviK, Subgroup.coe_pi]`. Conclude with `isCompact_univ_pi fun a => GlobalTheory.SplitFlip.isCompact_KO`. Take `⟨v, hv, hvη⟩` from `P_spLift.exists_eigen_lift hS f hL G.eta u hy hyη`.
+
+Use `⟨(v : W), fun h => hv (Subtype.ext h), fun m hm => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (hvη m hm)`.
+-/
 theorem step_spLift {n : ℕ} (G : Grp k n) : G.SpecialLiftProp := by
   intro W X _ _ _ _ ρ σ hρ hsq hη
   obtain ⟨S, f, hf⟩ := hsq

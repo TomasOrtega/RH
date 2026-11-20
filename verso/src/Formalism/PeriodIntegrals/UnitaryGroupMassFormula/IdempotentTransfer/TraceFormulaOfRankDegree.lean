@@ -28,6 +28,9 @@ def MuPart : Prop :=
       (0 < rkT T P0 P A ρ →
         muMaxL A (cut A ρ (eps P * eG T) A.L) ≤ muMaxL A (cut A ρ (eps P0 * eG T) A.L) + 10 * laG G)
 
+/- English proof (translation)
+Introduce `K _ _ _ _ G _ _ T P0 P hM A ρ hA`. Conclude with `⟨h1 K G T P0 P hM A ρ hA, h2 K G T P0 P hM A ρ hA, h3 K G T P0 P hM A ρ hA⟩`.
+-/
 theorem trace_formula_of_rank_degree (h1 : RankPart) (h2 : DegPart) (h3 : MuPart) : PI.Dv.Conclusion4a := by
   intro K _ _ _ _ G _ _ T P0 P hM A ρ hA
   exact ⟨h1 K G T P0 P hM A ρ hA, h2 K G T P0 P hM A ρ hA, h3 K G T P0 P hM A ρ hA⟩

@@ -9,6 +9,21 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial ComplexSets Filter Topology
 
+/- English proof (translation)
+Introduce `n I q hdim`. Take `⟨N, hN, hcomp⟩` from `hG n I q hdim`. Establish `hZc : ∀ J : Ideal (MvPolynomial (Fin n) ℂ), IsClosed (zeroSet J)` using `fun J ↦ by`. Establish `: zeroSet J = ⋂ p ∈ J, {x : Fin n → ℂ | eval x p = 0}` using `by ext x; simp [zeroSet]`. Rewrite using `[this]`.
+
+Conclude with `isClosed_biInter fun p _ ↦ isClosed_eq (MvPolynomial.continuous_eval p) continuous_const`. Establish `hM : I.minimalPrimes.Finite` using `Ideal.finite_minimalPrimes_of_isNoetherianRing _ I`. Use `set S := {W | W ∈ I.minimalPrimes ∧ ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ W) = 1}`. Establish `hS : S.Finite` using `hM.subset fun W hW ↦ hW.1`. Use `choose! F hFfin hFchart using fun W (hW : W ∈ S) ↦ hR n W hW.1.1.1 hW.2`.
+
+Establish `hnle : ∀ W ∈ S, ∀ W' ∈ I.minimalPrimes \ {W}, ¬ W' ≤ W` using `fun W hW W' hW' hle ↦ hW'.2 (le_antisymm hle (hW.1.2 hW'.1.1 hle))`. Use `set Bad := (⋃ W ∈ S, F W) ∪ ⋃ W ∈ S, ⋃ W' ∈ I.minimalPrimes \ {W}, zeroSet W ∩ zeroSet W'`. Establish `hBad : Bad.Finite` using `(hS.biUnion hFfin).union (hS.biUnion fun W hW ↦ hM.sdiff.biUnion fun W' hW' ↦ hF n W W' hW.1.1.1 hW.2 (hnle W hW W' hW'))`. Establish `hN'o : IsOpen (interior N \ (Bad \ {q}))` using `isOpen_interior.sdiff hBad.sdiff.isClosed`. Use `⟨_, hN'o.mem_nhds ⟨mem_interior_iff_mem_nhds.2 hN, fun h ↦ h.2 rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `x ⟨hxI, hxN, hxB⟩ hxq`. Establish `hxBad : x ∉ Bad` using `fun h ↦ hxB ⟨h, hxq⟩`. Take `⟨W, hWm, hWd, -, hxW⟩` from `hcomp x ⟨hxI, interior_subset hxN⟩`. Establish `hWS : W ∈ S` using `⟨hWm, hWd⟩`. Take `⟨A, O, V, g, hO, hV, hxV, hg, hAg, hWV⟩` from `hFchart W hWS x hxW fun h ↦ hxBad (Or.inl (Set.mem_biUnion hWS h))`.
+
+Use `set V' := V ∩ interior N ∩ ⋂ W' ∈ I.minimalPrimes \ {W}, (zeroSet W')ᶜ`. Establish `hV' : IsOpen V'` using `(hV.inter isOpen_interior).inter (hM.sdiff.isOpen_biInter fun W' _ ↦ (hZc W').isOpen_compl)`. Establish `hIV' : zeroSet I ∩ V' = zeroSet W ∩ V'`. Use extensionality with `z`. Use `⟨fun ⟨hzI, hzV⟩ ↦ ⟨?_, hzV⟩, fun ⟨hzW, hzV⟩ ↦ ⟨fun p hp ↦ hzW p (hWm.1.2 hp), hzV⟩⟩` and prove the remaining obligations.
+
+Take `⟨W'', hW''m, -, -, hzW''⟩` from `hcomp z ⟨hzI, interior_subset hzV.1.2⟩`. Distinguish the cases in `h : W'' = W`. Conclude with `h ▸ hzW''`. Conclude with `absurd hzW'' (Set.mem_iInter₂.1 hzV.2 W'' ⟨hW''m, h⟩)`. Use `⟨A, O ∩ g ⁻¹' V', V', g, hg.continuousOn.isOpen_inter_preimage hO hV', hV', ⟨⟨hxV, hxN⟩, Set.mem_iInter₂.2 fun W' hW' hxW' ↦ hxBad (Or.inr (Set.mem_biUnion hWS (Set.mem_biUnion hW' ⟨hxW, hxW'⟩)))⟩, hg.mono Set.inter_subset_left, fun y hy ↦ hAg y hy.1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hIV', Set.image_inter_preimage, ← hWV]`. Use extensionality with `z`. Conclude with `⟨fun ⟨hzW, hzV⟩ ↦ ⟨⟨hzW, hzV.1.1⟩, hzV⟩, fun ⟨⟨hzW, _⟩, hzV⟩ ↦ ⟨hzW, hzV⟩⟩`.
+-/
 theorem CurveRegularOffCentre.proof (hG : CurveGermComponents.Statement) (hR : CurveRegularOffFinite.Statement)
     (hF : CurveProperClosedFinite.Statement) : CurveRegularOffCentre.Statement := by
   classical

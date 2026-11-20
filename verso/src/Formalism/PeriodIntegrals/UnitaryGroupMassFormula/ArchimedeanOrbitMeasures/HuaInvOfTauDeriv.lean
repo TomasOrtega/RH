@@ -10,6 +10,11 @@ section MatDet
 
 variable {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Set `e : Matrix n n ℂ ≃ₗ[ℂ] (n → n → ℂ)` to `{ toFun := fun X i j => X i j invFun := fun v => Matrix.of v map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Set `g : (n → n → ℂ) →ₗ[ℂ] (n → n → ℂ)` to `LinearMap.pi fun i => (Matrix.toLin' Bᵀ).comp (LinearMap.proj i)`. Establish `key : (LinearMap.mulRight ℂ B : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ) = (e.symm : (n → n → ℂ) →ₗ[ℂ] Matrix n n ℂ).comp (g.comp (e.symm.symm : Matrix n n ℂ →ₗ[ℂ] (n → n → ℂ)))`. Use `LinearMap.ext fun X => ?_` and prove the remaining obligations. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.mulRight_apply, Matrix.mul_apply]`. Express the relevant statement in the definitionally equal form `∑ k, X i k * B k j = ∑ k, B k j * X i k`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Rewrite using `[key, LinearMap.det_conj, LinearMap.det_pi]`. Simplify using `[LinearMap.det_toLin', Matrix.det_transpose]`.
+-/
 theorem det_mulRight_mat (B : Matrix n n ℂ) :
     LinearMap.det (LinearMap.mulRight ℂ B : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ) =
       B.det ^ Fintype.card n := by
@@ -34,6 +39,9 @@ theorem det_mulRight_mat (B : Matrix n n ℂ) :
   rw [key, LinearMap.det_conj, LinearMap.det_pi]
   simp [LinearMap.det_toLin', Matrix.det_transpose]
 
+/- English proof (translation)
+Set `e : Matrix n n ℂ ≃ₗ[ℂ] Matrix n n ℂ` to `Matrix.transposeLinearEquiv n n ℂ ℂ`. Establish `key : (LinearMap.mulLeft ℂ A : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ) = (e : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ).comp ((LinearMap.mulRight ℂ Aᵀ : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ).comp (e.symm : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ))`. Use `LinearMap.ext fun X => ?_` and prove the remaining obligations. Simplify using `[e, Matrix.transpose_mul]`. Rewrite using `[key, LinearMap.det_conj, det_mulRight_mat, Matrix.det_transpose]`.
+-/
 theorem det_mulLeft_mat (A : Matrix n n ℂ) :
     LinearMap.det (LinearMap.mulLeft ℂ A : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ) =
       A.det ^ Fintype.card n := by
@@ -57,16 +65,28 @@ local notation "Mat" => Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ
 
 def sigJ (W : Mat) : Mat := HcS.UG.Jpq P Q * Wᴴ * HcS.UG.Jpq P Q
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc]`. Simplify using `[HcS.UG.Jpq, Matrix.fromBlocks_multiply]`.
+-/
 theorem Jpq_mul_mul (X : Mat) : HcS.UG.Jpq P Q * (HcS.UG.Jpq P Q * X) = X := by
   rw [← Matrix.mul_assoc]
   simp [HcS.UG.Jpq, Matrix.fromBlocks_multiply]
 
+/- English proof (translation)
+Simplify using `only [sigJ, Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul]`.
+-/
 theorem sigJ_add (V W : Mat) : sigJ (V + W) = sigJ V + sigJ W := by
   simp only [sigJ, Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+Simplify using `only [sigJ, Matrix.conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem sigJ_smul (c : ℂ) (W : Mat) : sigJ (c • W) = star c • sigJ W := by
   simp only [sigJ, Matrix.conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Establish `hJ : (HcS.UG.Jpq P Q)ᴴ = HcS.UG.Jpq P Q`. Simplify using `[HcS.UG.Jpq, Matrix.fromBlocks_conjTranspose]`. Establish `hJJ : HcS.UG.Jpq P Q * HcS.UG.Jpq P Q = 1`. Simplify using `using Jpq_mul_mul (P := P) (Q := Q) 1`. Simplify using `only [sigJ, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hJ, Matrix.mul_assoc, Jpq_mul_mul, hJJ, Matrix.mul_one]`.
+-/
 theorem sigJ_sigJ (W : Mat) : sigJ (sigJ W) = W := by
   have hJ : (HcS.UG.Jpq P Q)ᴴ = HcS.UG.Jpq P Q := by
     simp [HcS.UG.Jpq, Matrix.fromBlocks_conjTranspose]
@@ -75,6 +95,13 @@ theorem sigJ_sigJ (W : Mat) : sigJ (sigJ W) = W := by
   simp only [sigJ, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hJ,
     Matrix.mul_assoc, Jpq_mul_mul, hJJ, Matrix.mul_one]
 
+/- English proof (translation)
+Use `show Xᴴ * HcS.UG.Jpq P Q + HcS.UG.Jpq P Q * X = 0 ↔ HcS.UG.Jpq P Q * Xᴴ * HcS.UG.Jpq P Q = -X`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : Xᴴ * HcS.UG.Jpq P Q = -(HcS.UG.Jpq P Q * X)` using `eq_neg_of_add_eq_zero_left h`. Rewrite using `[Matrix.mul_assoc, h', Matrix.mul_neg, Jpq_mul_mul]`.
+
+Introduce `h`. Establish `e1 : HcS.UG.Jpq P Q * (Xᴴ * HcS.UG.Jpq P Q) = -X`. Rewrite using `[← Matrix.mul_assoc]`. Conclude with `h`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Jpq_mul_mul]`. Use `_ = 0 := by rw [e1, Matrix.mul_neg, neg_add_cancel]`.
+-/
 theorem mem_lieU_iff_sigJ (X : Mat) : X ∈ lieU P Q ↔ sigJ X = -X := by
   show Xᴴ * HcS.UG.Jpq P Q + HcS.UG.Jpq P Q * X = 0 ↔ HcS.UG.Jpq P Q * Xᴴ * HcS.UG.Jpq P Q = -X
   constructor
@@ -99,9 +126,23 @@ def cplx : (lieU P Q × lieU P Q) →ₗ[ℝ] Mat where
     simp only [Prod.smul_fst, Prod.smul_snd, Submodule.coe_smul, RingHom.id_apply, smul_add]
     rw [smul_comm c Complex.I]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cplx_apply (p : lieU P Q × lieU P Q) :
     cplx p = ((p.1 : lieU P Q) : Mat) + Complex.I • ((p.2 : lieU P Q) : Mat) := rfl
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨⟨Y, hY⟩, ⟨Z, hZ⟩⟩ h`. Establish `h1 : Y + Complex.I • Z = 0` using `h`. Establish `hY' : sigJ Y = -Y` using `(mem_lieU_iff_sigJ Y).1 hY`. Establish `hZ' : sigJ Z = -Z` using `(mem_lieU_iff_sigJ Z).1 hZ`.
+
+Establish `hs : star Complex.I = -Complex.I` using `by simp [Complex.star_def]`. Establish `h2 : -Y + Complex.I • Z = 0`. Establish `h3 : sigJ (Y + Complex.I • Z) = 0`. Rewrite using `[h1]`. Simplify using `[sigJ]`.
+
+Rewrite `h3` using `[sigJ_add, sigJ_smul, hY', hZ', hs, neg_smul_neg]`. Conclude with `h3`. Establish `hY0 : Y = 0`. Establish `h4 : (2 : ℂ) • Y = 0`. Rewrite using `[two_smul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `(smul_eq_zero.1 h4).resolve_left two_ne_zero`. Establish `hZ0 : Z = 0`. Rewrite `h1` using `[hY0, zero_add]`. Conclude with `(smul_eq_zero.1 h1).resolve_left Complex.I_ne_zero`.
+
+Substitute `hY0` using the available equality. Substitute `hZ0` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cplx_injective : Function.Injective (cplx (P := P) (Q := Q)) := by
   rw [injective_iff_map_eq_zero]
   rintro ⟨⟨Y, hY⟩, ⟨Z, hZ⟩⟩ h
@@ -127,6 +168,15 @@ theorem cplx_injective : Function.Injective (cplx (P := P) (Q := Q)) := by
   subst hZ0
   rfl
 
+/- English proof (translation)
+Introduce `W`. Establish `hsub : ∀ V U : Mat, sigJ (V - U) = sigJ V - sigJ U`. Introduce `V U`. Simplify using `only [sigJ, Matrix.conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul]`. Establish `hh : star ((1 : ℂ) / 2) = 1 / 2` using `by simp`.
+
+Establish `hi : star (-Complex.I / 2) = Complex.I / 2` using `by simp [Complex.star_def]`. Establish `hI2 : Complex.I * (-Complex.I / 2) = 1 / 2`. Rewrite using `[mul_div_assoc', mul_neg, Complex.I_mul_I, neg_neg]`. Establish `hY : ((1 : ℂ) / 2) • (W - sigJ W) ∈ lieU P Q`. Rewrite using `[mem_lieU_iff_sigJ, sigJ_smul, hsub, sigJ_sigJ, hh, ← smul_neg, neg_sub]`.
+
+Establish `hZ : (-Complex.I / 2) • (W + sigJ W) ∈ lieU P Q`. Rewrite using `[mem_lieU_iff_sigJ, sigJ_smul, sigJ_add, sigJ_sigJ, hi, ← neg_smul, add_comm (sigJ W)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `⟨(⟨_, hY⟩, ⟨_, hZ⟩), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[cplx_apply]`. Use `show ((1 : ℂ) / 2) • (W - sigJ W) + Complex.I • ((-Complex.I / 2) • (W + sigJ W)) = W`. Rewrite using `[smul_smul, hI2, ← smul_add, show W - sigJ W + (W + sigJ W) = (2 : ℂ) • W by rw [two_smul]; abel, smul_smul]`. Evaluate the numerical expressions.
+-/
 theorem cplx_surjective : Function.Surjective (cplx (P := P) (Q := Q)) := by
   intro W
   have hsub : ∀ V U : Mat, sigJ (V - U) = sigJ V - sigJ U := by
@@ -152,10 +202,22 @@ theorem cplx_surjective : Function.Surjective (cplx (P := P) (Q := Q)) := by
 def cplxE : (lieU P Q × lieU P Q) ≃ₗ[ℝ] Mat :=
   LinearEquiv.ofBijective cplx ⟨cplx_injective, cplx_surjective⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cplxE_apply (p : lieU P Q × lieU P Q) : cplxE p = cplx p := rfl
 
 end Real
 
+/- English proof (translation)
+Introduce `P Q A B L hL`. Set `M : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ →ₗ[ℂ] Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ` to `(LinearMap.mulLeft ℂ A).comp (LinearMap.mulRight ℂ B)`. Establish `hM : LinearMap.det M = (A.det * B.det) ^ (P + Q)`. Rewrite using `[LinearMap.det_comp, det_mulLeft_mat, det_mulRight_mat, mul_pow, Fintype.card_sum, Fintype.card_fin, Fintype.card_fin]`. Establish `key : ((cplxE (P` using `P) (Q := Q) : (lieU P Q × lieU P Q) →ₗ[ℝ] _).comp ((L.prodMap L).comp ((cplxE (P := P) (Q := Q)).symm : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ →ₗ[ℝ] (lieU P Q × lieU P Q)))) = M.restrictScalars ℝ := by`.
+
+Use `LinearMap.ext fun W => ?_` and prove the remaining obligations. Take `⟨p, rfl⟩` from `(cplxE (P := P) (Q := Q)).surjective W`. Use `show cplxE ((L.prodMap L) ((cplxE (P := P) (Q := Q)).symm (cplxE p))) = A * (cplxE p * B)`. Rewrite using `[LinearEquiv.symm_apply_apply, cplxE_apply, cplxE_apply, cplx_apply, cplx_apply]`. Use `show ((L p.1 : lieU P Q) : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) + Complex.I • ((L p.2 : lieU P Q) : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) = A * ((((p.1 : lieU P Q) : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) + Complex.I • ((p.2 : lieU P Q) : Matrix (Fin P ⊕ Fin Q) (Fin P …`.
+
+Rewrite using `[hL, hL, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_assoc, Matrix.mul_assoc]`. Establish `h2 : LinearMap.det (L.prodMap L) = Algebra.norm ℝ (LinearMap.det M)`. Rewrite using `[← LinearMap.det_conj (L.prodMap L) (cplxE (P := P) (Q := Q)), key, LinearMap.det_restrictScalars]`. Rewrite `h2` using `[LinearMap.det_prodMap, hM, Algebra.norm_complex_apply]`. Establish `h3 : |LinearMap.det L| ^ 2 = (‖A.det‖ ^ (P + Q) * ‖B.det‖ ^ (P + Q)) ^ 2`.
+
+Rewrite using `[sq_abs, sq, h2, Complex.normSq_eq_norm_sq, norm_pow, norm_mul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(pow_left_inj₀ (abs_nonneg _) (by positivity) two_ne_zero).1 h3`.
+-/
 theorem det_ayb : DetAYB := by
   intro P Q A B L hL
   classical
@@ -187,6 +249,9 @@ theorem det_ayb : DetAYB := by
     ring
   exact (pow_left_inj₀ (abs_nonneg _) (by positivity) two_ne_zero).1 h3
 
+/- English proof (translation)
+The claim follows from `huaInv_of det_ayb h2`.
+-/
 theorem huaInv_of_tauDeriv (h2 : TauDeriv) : HuaInv := huaInv_of det_ayb h2
 
 end HcInf

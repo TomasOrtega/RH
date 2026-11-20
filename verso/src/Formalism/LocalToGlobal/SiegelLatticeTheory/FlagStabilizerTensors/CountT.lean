@@ -19,6 +19,9 @@ def InstTie (I : AutInst) : Prop :=
     (∀ v, (Finset.univ.filter fun i => fr.ε v i = true).card = P) ∧ V.SigOK ∧ (∀ τ, V.sig τ = (P, Q)) ∧
     VolTie D ∧ Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.VolSigIndep D ∧ Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.ClassItemsAt D V.rank ∧ cdScaleTie D
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨D, VS D, Formalism.L2.SG.Pf.DstarVolPf.frOf D, _, Q, h, rfl, fun _ => rfl, hSig, hs, hV, hI, hC, hcd⟩`.
+-/
 theorem instTie_of_inst {D : D7} {I : AutInst} (h : I = Formalism.L2.SG.InstExistsPf.instOf D) (hSig : (VS D).SigOK) (Q : ℕ)
     (hs : ∀ τ, (VS D).sig τ =
       ((Finset.univ.filter fun i => Formalism.L2.SG.InstExistsPf.epsV D i = true).card, Q))
@@ -29,6 +32,9 @@ theorem instTie_of_inst {D : D7} {I : AutInst} (h : I = Formalism.L2.SG.InstExis
 def PLevT : ∀ I : AutInst, Measure I.Gf → ℕ → (I.Gf → ℂ) → Prop :=
   fun I μf g₀ e => I.IsLevelCharIdem μf g₀ e ∧ InstTie I
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(rowsTieP_of T).1, (rowsTieP_of T).2, hI⟩`.
+-/
 theorem rowsTiePT_of {D : D7} (T : Formalism.L2.SG.SpectralTiesReal.STies D) (hI : InstTie T.X.B.I) :
     CountE.RowsTieP PLevT D T.X.B :=
   ⟨(rowsTieP_of T).1, (rowsTieP_of T).2, hI⟩
@@ -38,16 +44,33 @@ def qqI (I : AutInst) : ℕ := Finset.univ.sup fun v => Formalism.MainNotions.Pl
 def PLevT' : ∀ I : AutInst, Measure I.Gf → ℕ → (I.Gf → ℂ) → Prop :=
   fun I μf g₀ e => PLevT I μf g₀ e ∧ 1 ≤ qqI I
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(rowsTieP_of T).1, ⟨(rowsTieP_of T).2, hI⟩, hq⟩`.
+-/
 theorem rowsTiePT'_of {D : D7} (T : Formalism.L2.SG.SpectralTiesReal.STies D) (hI : InstTie T.X.B.I) (hq : 1 ≤ qqI T.X.B.I) :
     CountE.RowsTieP PLevT' D T.X.B :=
   ⟨(rowsTieP_of T).1, ⟨(rowsTieP_of T).2, hI⟩, hq⟩
 
+/- English proof (translation)
+The claim follows from `instTie_of_inst h (D.sp.Y_sig 0) (D.R.rS + 1) (fun τ => by rw [Formalism.L2.SG.InstExistsPf.card_epsV D]; exact D.sp.baseSpace_signature_eq τ) hV hI hC hcd`.
+-/
 theorem instTie_of_record {D : D7} {I : AutInst} (h : I = Formalism.L2.SG.InstExistsPf.instOf D) (hV : VolTie D)
     (hI : Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.VolSigIndep D) (hC : Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.ClassItemsAt D (VS D).rank) (hcd : cdScaleTie D) :
     InstTie I :=
   instTie_of_inst h (D.sp.Y_sig 0) (D.R.rS + 1)
     (fun τ => by rw [Formalism.L2.SG.InstExistsPf.card_epsV D]; exact D.sp.baseSpace_signature_eq τ) hV hI hC hcd
 
+/- English proof (translation)
+Establish `hk` using `Formalism.MainNotions.BridgeLemma.five_le_k D`. Take `⟨v⟩ : Nonempty (NumberField.InfinitePlace (Formalism.L2.SG.InstExistsPf.instOf D).F)` from `inferInstance`. Use `le_trans ?_ (Finset.le_sup (f := fun v => Formalism.MainNotions.PlaceDegreeData.q0At (Formalism.L2.SG.InstExistsPf.instOf D) v) (Finset.mem_univ v))` and prove the remaining obligations. Establish `ht : (Formalism.L2.SG.InstExistsPf.instOf D).pAt v = D.R.k + D.R.rS` using `Formalism.L2.SG.InstExistsPf.card_epsV D`. Establish `hn : (Finset.univ : Finset (Fin (Formalism.L2.SG.InstExistsPf.instOf D).n)).card = D.R.k + 2 * D.R.rS + 1`.
+
+Rewrite using `[Finset.card_univ, Fintype.card_fin]`. Conclude with `(Formalism.L2.SG.InstExistsPf.rank_eq D).trans (Formalism.MainNotions.BridgeLemma.sza_r_eq D)`. Establish `hq : 1 ≤ (Formalism.L2.SG.InstExistsPf.instOf D).qAt v`. Unfold `AutInst.qAt`. Apply `Finset.card_pos.mpr` to reduce the goal to its premises.
+
+Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[Finset.not_nonempty_iff_eq_empty, Finset.filter_eq_empty_iff]`. Establish `hall : (Finset.univ.filter fun a => (Formalism.L2.SG.InstExistsPf.instOf D).ε v a = true) = Finset.univ` using `Finset.filter_true_of_mem fun a _ => by`. Consider the cases of `h : (Formalism.L2.SG.InstExistsPf.instOf D).ε v a`. Conclude with `absurd h (hne (Finset.mem_univ a))`.
+
+Both sides reduce to the same expression. Use `congrArg Finset.card hall` as an intermediate fact. Unfold `AutInst.pAt at ht`. Rewrite `this` using `[ht, hn]`. Use linear arithmetic over natural numbers and integers.
+
+Use `show 1 ≤ min _ _`. Conclude with `le_min (by rw [ht]; omega) hq`.
+-/
 theorem one_le_qqI_instOf (D : D7) : 1 ≤ qqI (Formalism.L2.SG.InstExistsPf.instOf D) := by
   have hk := Formalism.MainNotions.BridgeLemma.five_le_k D
   obtain ⟨v⟩ : Nonempty (NumberField.InfinitePlace (Formalism.L2.SG.InstExistsPf.instOf D).F) := inferInstance
@@ -74,9 +97,15 @@ theorem one_le_qqI_instOf (D : D7) : 1 ≤ qqI (Formalism.L2.SG.InstExistsPf.ins
   show 1 ≤ min _ _
   exact le_min (by rw [ht]; omega) hq
 
+/- English proof (translation)
+Rewrite using `[h]`. Conclude with `one_le_qqI_instOf D`.
+-/
 theorem one_le_qqI_of_inst {D : D7} {I : AutInst} (h : I = Formalism.L2.SG.InstExistsPf.instOf D) : 1 ≤ qqI I := by
   rw [h]; exact one_le_qqI_instOf D
 
+/- English proof (translation)
+The claim follows from `closed_of_large (linkThresholds (fun _ => caZero) c30) (hRes.and (hRows.and (hK1.and (hK2.and (hK3.and (hK4.and (S30.and A30))))))) fun Fm CH hL h a0 => by obtain ⟨-, g2, g3, g4⟩ := link_thresholds_spec Fm CH (fun _ => caZero) c30 hL obtain ⟨a1, a2, k1, k2, k3, k4, a6, a7⟩ := h e …`.
+-/
 theorem linkS_concreteEvP (P : ∀ I : AutInst, Measure I.Gf → ℕ → (I.Gf → ℂ) → Prop)
     (𝒞 : FamClass) (C0 : ℝ) (c30 : List ℝ → CountingConstants) (h1 : 1 ≤ C0)
     (hc30 : ∀ {eps : ℝ} (Fm : FamP eps), 0 ≤ (c30 Fm.cOut).C ∧ 2 * (Fm.CYL + 1) ≤ (c30 Fm.cOut).A)
@@ -103,6 +132,9 @@ variable (C0 : ℝ)
 
 variable [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] in
 
+/- English proof (translation)
+The claim follows from `have hFX := Formalism.L2.SG.Pf.finXC_of hWu hRF have hOK := selOK_of C0 hFX hWu sel hLoc hTF have hE : Closed 𝒞 fun Fm _ => ConcEv C0 Fm := closed_with hOK (fun _ => 0) (fun _ => 0) fun Fm _ hc h _ _ _ => concEv_of_sel C0 (h hc) have hRows : Closed 𝒞 fun Fm _ => ∃ xR : ℝ, ∀ x ≥ x …`.
+-/
 theorem theoremS_link_transport_zero (𝒞 : FamClass) (sel : SSel 𝒞)
     (hWu : Formalism.L2.SG.Pf.WuDecayOfGap) (hRF : Formalism.L2.SG.RowsDef.RowsFinDim)
     (hLoc : ∀ {eps : ℝ} (Fm : FamP eps) (hc : 𝒞 Fm) x (hx : Fm.x1 < x) (h0 : (sel Fm hc).1 ≤ x) (i : Fm.Ix x),

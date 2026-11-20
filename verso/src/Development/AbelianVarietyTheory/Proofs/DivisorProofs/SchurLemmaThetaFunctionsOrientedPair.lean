@@ -17,11 +17,17 @@ namespace GlobalTheory.ThetaSchur
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
+/- English proof (translation)
+Establish `h : ‖ψ a‖ = 1` using `hψ.1.2.1 a`. Rewrite using `[Complex.star_def, Complex.mul_conj', h]`. Simplify using the standard rewrite rules.
+-/
 theorem mul_star_psi (hψ : IsStdChar D ψ (-1)) (a : AF D.host.F) : ψ a * star (ψ a) = 1 := by
   have h : ‖ψ a‖ = 1 := hψ.1.2.1 a
   rw [Complex.star_def, Complex.mul_conj', h]
   simp
 
+/- English proof (translation)
+Take `⟨γ, rfl⟩` from `hγ`. Establish `h` using `hf.quasi γ x`. Rewrite `h` using `[← GlobalTheory.WeilVacMove.symplOH_skew]`. Use `show ψ (symplOH S T x (ratW T S γ)) * f (x + ratW T S γ) = ψ (symplO S T x (ratW T S γ)) * f x`. Rewrite using `[add_comm x, h, ← mul_assoc, ← AddChar.map_add_eq_mul, (GlobalTheory.OrientedFormLaws.symplOH_laws D S T).2.2.2.1]`.
+-/
 theorem heisO_rat {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) {γ : WO S T} (hγ : γ ∈ ratL T S) (x : WO S T) :
     heisO ψ S T γ f x = ψ (symplO S T x γ) * f x := by
   obtain ⟨γ, rfl⟩ := hγ
@@ -30,6 +36,9 @@ theorem heisO_rat {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) {γ : WO S T}
   show ψ (symplOH S T x (ratW T S γ)) * f (x + ratW T S γ) = ψ (symplO S T x (ratW T S γ)) * f x
   rw [add_comm x, h, ← mul_assoc, ← AddChar.map_add_eq_mul, (GlobalTheory.OrientedFormLaws.symplOH_laws D S T).2.2.2.1]
 
+/- English proof (translation)
+Take `⟨γ, rfl⟩` from `hγ`. Use `show f (ratW T S γ + x) * star (f' (ratW T S γ + x)) = _`. Rewrite using `[hf.quasi, hf'.quasi, star_mul']`. Take the linear combination `(f x * star (f' x)) * mul_star_psi hψ (-(symplOH S T (ratW T S γ) x))`.
+-/
 theorem prod_periodic (hψ : IsStdChar D ψ (-1)) {f f' : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
     (hf' : IsThetaFunO ψ S T f') {γ : WO S T} (hγ : γ ∈ ratL T S) (x : WO S T) :
     f (γ + x) * star (f' (γ + x)) = f x * star (f' x) := by
@@ -38,6 +47,25 @@ theorem prod_periodic (hψ : IsStdChar D ψ (-1)) {f f' : WO S T → ℂ} (hf : 
   rw [hf.quasi, hf'.quasi, star_mul']
   linear_combination (f x * star (f' x)) * mul_star_psi hψ (-(symplOH S T (ratW T S γ) x))
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Use `haveI : Countable (ratL T S) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Take `⟨μ, 𝓕, hμ, h𝓕, -⟩` from `(GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact (WO S T) (ratL T S) K hK hKc).1`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by`.
+
+Rewrite using `[Measure.restrict_apply_univ]`. Conclude with `GlobalTheory.measure_addFundamentalDomain_lt_top_of_cocompact (G := WO S T) (ratL T S) hK hKc μ h𝓕⟩`. Take `⟨l1, l2, -, l4, -⟩` from `GlobalTheory.OrientedFormLaws.symplOH_laws D S T`. Establish `hth` using `(GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T).1`. Establish `hint : ∀ g g', IsThetaFunO ψ S T g → IsThetaFunO ψ S T g' → Integrable (fun x => g x * star (g' x)) (μ.restrict 𝓕)` using `fun g g' hg hg' => by`.
+
+Establish `hcont : Continuous fun x => g x * star (g' x)` using `hg.cont.mul hg'.cont.star`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hcont.continuousOn`. Use `Integrable.of_bound hcont.aestronglyMeasurable C (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Take `⟨γ, hγ, h⟩` from `hKc w`. Rewrite using `[← prod_periodic hψ hg hg' hγ w]`.
+
+Conclude with `hC _ h`. Establish `key` using `GlobalTheory.SeparatingCharacters.eq_zero_of_coefficients_eq_zero (WO S T) (ratL T S) K hK hKc (ratL T S) (fun γ x => ψ (symplO S T x γ)) (fun γ => by`. Establish `: Continuous fun x : WO S T => symplOH S T x (γ : WO S T)` using `GlobalTheory.WeilVacMove.continuous_symplOH S T continuous_id' continuous_const`. Simplify using `only [← l4]`. Conclude with `hψ.1.1.comp (this.add this))`.
+
+Use the proof step `(fun γ x y => by`. Simplify using `only [← l4, l1, AddChar.map_add_eq_mul]`. Use the proof step `ring)`. Use the proof step `(fun γ γ' x => by`. Simplify using `only [← l4, AddSubgroup.coe_add, l2, AddChar.map_add_eq_mul]`.
+
+Use the proof step `ring)`. Use the proof step `(fun x => by`. Simplify using `only [← l4, AddSubgroup.coe_zero, GlobalTheory.WeilVacMove.symplOH_zero_right, add_zero, AddChar.map_zero_eq_one])`. Use the proof step `(fun γ x => hψ.1.2.1 _)`. Use the proof step `(fun x => by`.
+
+Rewrite using `[← GlobalTheory.RatAnnih.ratL_annihilator D ψ hψ S T x]`. Conclude with `⟨fun h γ hγ => h ⟨γ, hγ⟩, fun h γ => h γ γ.2⟩)`. Use `μ 𝓕 hμ h𝓕 (fun x => M f x * star (M f' x) - f x * star (f' x))`. Use the proof step `(((hM f hf).cont.mul (hM f' hf').cont.star).sub (hf.cont.mul hf'.cont.star))`. Use the proof step `(fun γ hγ x => by rw [prod_periodic hψ hf hf' hγ, prod_periodic hψ (hM f hf) (hM f' hf') hγ])`.
+
+Use the proof step `(fun γ => by`. Establish `e : (fun x => ψ (symplO S T x γ) * (M f x * star (M f' x) - f x * star (f' x))) = fun x => M (heisO ψ S T γ f) x * star (M f' x) - heisO ψ S T γ f x * star (f' x)`. Use function extensionality and compare the values at `x`. Rewrite using `[hc _ f hf, heisO_rat hf γ.2, heisO_rat (hM f hf) γ.2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, integral_sub (hint _ _ (hM _ (hth _ f hf)) (hM f' hf')) (hint _ _ (hth _ f hf) hf'), GlobalTheory.Mem.LiftPolar.scalar_eq D ψ hψ S T μ 𝓕 hμ h𝓕 M hM (hn μ 𝓕 hμ h𝓕) _ _ (hth _ f hf) hf', sub_self])`. Conclude with `sub_eq_zero.1 (congrFun key x)`.
+-/
 theorem prod_eq (hψ : IsStdChar D ψ (-1)) (M : Module.End ℂ (WO S T → ℂ))
     (hM : ∀ f, IsThetaFunO ψ S T f → IsThetaFunO ψ S T (M f))
     (hc : ∀ w f, IsThetaFunO ψ S T f → M (heisO ψ S T w f) = heisO ψ S T w (M f))
@@ -95,6 +123,19 @@ theorem prod_eq (hψ : IsStdChar D ψ (-1)) (M : Module.End ℂ (WO S T → ℂ)
         GlobalTheory.Mem.LiftPolar.scalar_eq D ψ hψ S T μ 𝓕 hμ h𝓕 M hM (hn μ 𝓕 hμ h𝓕) _ _ (hth _ f hf) hf', sub_self])
   exact sub_eq_zero.1 (congrFun key x)
 
+/- English proof (translation)
+Introduce `D ψ hψ S T M hM hc hn`. Establish `hth` using `(GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T).1`. Establish `h2 : ∀ f f', IsThetaFunO ψ S T f → IsThetaFunO ψ S T f' → ∀ x y, M f x * star (M f' y) = f x * star (f' y)` using `fun f f' hf hf' x y => by`. Establish `h` using `prod_eq hψ M hM hc hn hf (hth (y - x) f' hf') x`. Rewrite `h` using `[hc _ _ hf']`.
+
+Simplify using `only [heisO, add_sub_cancel, star_mul'] at h`. Take the linear combination `ψ (symplOH S T x (y - x)) * h - (M f x * star (M f' y) - f x * star (f' y)) * mul_star_psi hψ (symplOH S T x (y - x))`. Distinguish the cases in `h0 : ∃ f₀ y, IsThetaFunO ψ S T f₀ ∧ f₀ y ≠ 0`. Take `⟨f₀, y, hf₀, hy⟩` from `h0`. Establish `h1` using `h2 f₀ f₀ hf₀ hf₀ y y`.
+
+Establish `hn1 : ‖M f₀ y‖ = ‖f₀ y‖`. Use `congrArg norm h1` as an intermediate fact. Rewrite `this` using `[norm_mul, norm_mul, norm_star, norm_star]`. Conclude with `(mul_self_inj_of_nonneg (norm_nonneg _) (norm_nonneg _)).1 this`. Establish `hy' : M f₀ y ≠ 0`.
+
+Rewrite using `[← norm_ne_zero_iff, hn1]`. Conclude with `norm_ne_zero_iff.2 hy`. Establish `hs : star (M f₀ y) ≠ 0` using `star_ne_zero.2 hy'`. Use `⟨star (f₀ y) / star (M f₀ y), ?_, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, norm_star, norm_star, hn1, div_self (norm_ne_zero_iff.2 hy)]`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[Pi.smul_apply, smul_eq_mul, div_mul_eq_mul_div, eq_div_iff hs, h2 f f₀ hf hf₀, mul_comm]`. Use `⟨1, norm_one, fun f hf => ?_⟩` and prove the remaining obligations. Establish `: f = 0` using `funext fun y => by`. Assume the negation of the conclusion as `hy`.
+
+Conclude with `h0 ⟨f, y, hf, hy⟩`. Rewrite using `[this, map_zero, smul_zero]`.
+-/
 theorem schur : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (M : Module.End ℂ (WO S T → ℂ)), (∀ f, IsThetaFunO ψ S T f → IsThetaFunO ψ S T (M f)) → (∀ w f, IsThetaFunO ψ S T f → M (heisO ψ S T w f) = heisO ψ S T w (M f)) → (∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), μ.IsAddHaarMeasure → IsAddFundamentalDomain (ratL T S) 𝓕 μ → ∀ f, IsThetaFunO ψ S T f → ∫⁻ w in 𝓕, ‖M f w‖ₑ ^ 2 ∂μ = ∫⁻ w in 𝓕, ‖f w‖ₑ ^ 2 ∂μ) → ∃ c : ℂ, ‖c‖ = 1 ∧ ∀ f, IsThetaFunO ψ S T f → M f = c • f := by
   intro D ψ hψ S T M hM hc hn
   have hth := (GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T).1

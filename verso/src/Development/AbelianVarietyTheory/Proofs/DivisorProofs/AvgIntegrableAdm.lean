@@ -15,6 +15,15 @@ noncomputable section
 
 namespace GlobalTheory.DblSiegelX
 
+/- English proof (translation)
+Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he hne dd dd₁ hdd hdd₁ ed hmap hheis hinv hadm hnz l₁ hl₁ hl₁inv μ hμ`. Take `⟨Λ, hiso, hrk, hinvΛ, b, w, hw, hnd, hcoord⟩` from `GlobalTheory.T.pair_adapted_model_transfer F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ dd dd₁ hdd hdd₁ ed hmap hheis hinv l₁ hl₁inv`. Take `⟨ν, hν, htr⟩` from `GlobalTheory.T.adelic_haar_coordinates F E (Fin 2) b d μ hμ`. Take `⟨hI, l', hl', hl'eq⟩` from `GlobalTheory.T.lagrangian_span_finrank F B.ψ hP.base.std _ Λ hiso hrk (Fin d × Fin 2) w hw hnd (l₁ ∘ₗ ed) (hadm l₁ hl₁) hinvΛ ν hν`. Establish `hfun : ∀ Φ, GlobalTheory.DblSiegelX.avgFun dd B.ψ (GlobalTheory.DblSiegelX.zs H) (l₁ ∘ₗ ed) Φ = fun u => (fun t : Fin d × Fin 2 → AF F => (l₁ ∘ₗ ed) (schr B.ψ (∑ p, t p • ((fun k => algebraMap F (AF F) ((w p).1 k)), (fun k => algebraMap F (AF F) ((w p).2 k)))) Φ)) (fun p => (Alge …`.
+
+Introduce `Φ`. Use function extensionality and compare the values at `u`. Simplify using `only [GlobalTheory.DblSiegelX.avgFun, Darboux.rho]`. Rewrite using `[hcoord u]`. Establish `hint : ∀ Φ ∈ schA F (Fin n × Fin d ⊕ Fin n × Fin d), Integrable (GlobalTheory.DblSiegelX.avgFun dd B.ψ (GlobalTheory.DblSiegelX.zs H) (l₁ ∘ₗ ed) Φ) μ`.
+
+Introduce `Φ hΦ`. Rewrite using `[hfun]`. Conclude with `(htr _).1 (hI Φ hΦ)`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Introduce `g hg`.
+
+Take `⟨T, hT⟩` from `hl' g hg`. Use `⟨T, fun f => ?_⟩` and prove the remaining obligations. Establish `hmem : pureA F (⇑f) g ∈ schA F (Fin n × Fin d ⊕ Fin n × Fin d)` using `Submodule.subset_span ⟨f, g, hg, rfl⟩`. Rewrite using `[GlobalTheory.DblSiegelX.avgL_apply _ _ _ _ _ _ (hint _ hmem), hfun, (htr _).2, ← hl'eq _ hmem, hT]`.
+-/
 theorem avg_integrable_adm : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (n₁ : ℕ) (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ : ℕ) (M₁ : Model σ X₁ W) (om₁ : Rep σ X₁ W) (r₁ s₁ : ℕ),

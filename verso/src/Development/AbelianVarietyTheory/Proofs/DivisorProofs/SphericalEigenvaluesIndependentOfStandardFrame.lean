@@ -26,18 +26,30 @@ noncomputable section
 
 namespace GlobalTheory.FrameTransport
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.standardFrames_match_completedLattices_at_prime`.
+-/
 theorem latMatch : ∀ {D : D7} {V V' : HSp D} {n : ℕ} (hF : D.host.F = maximalRealSubfield D.host.E) (Q : principalLevelFrame.RowPsi V n) (Q' : principalLevelFrame.RowPsi V' n), StdPsi hF Q → StdPsi hF Q' → ∀ (P : Pl D.host.E) (e f : Formalism.L2.Theta.AE D), IsPrimeIdem P e f → V'.rank = V.rank ∧ ∃ (J : Matrix (Fin V'.rank) (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)) (J' : Matrix (Fin V.rank) (Fin V'.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)), J * J' = 1 ∧ J' * J = 1 ∧ (∀ κ, finMat D.sp.cm.sig V'.gram (Q'.ψ κ) * J = J * finMat D.sp.cm.sig V.gram (Q.ψ κ)) ∧ ∀ y, finPart D f • y ∈ Formalism.L2.NTheta.LamHat V ↔ finPart D f • J.mulVec y ∈ Formalism.L2.NTheta.LamHat V' :=
   GlobalTheory.T.standardFrames_match_completedLattices_at_prime
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.placeIdempotent_smul_mem_completedSelfDualLattice`.
+-/
 theorem lamHat_idem : ∀ {D : D7} (V : HSp D) (P : Pl D.host.E) (e f : Formalism.L2.Theta.AE D), IsPrimeIdem P e f → ∀ y ∈ Formalism.L2.NTheta.LamHat V, finPart D f • y ∈ Formalism.L2.NTheta.LamHat V :=
   GlobalTheory.T.placeIdempotent_smul_mem_completedSelfDualLattice
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc β', hb2, Matrix.one_mul, hg1]`.
+-/
 theorem rect_conj_one {R : Type} [CommRing R] {a b c : Type} [Fintype a] [Fintype b] [Fintype c]
     [DecidableEq a] [DecidableEq b] [DecidableEq c]
     {β : Matrix a b R} {β' : Matrix b a R} {γ : Matrix c b R} {γ' : Matrix b c R}
     (hb2 : β' * β = 1) (hg1 : γ * γ' = 1) : γ * β' * (β * γ') = 1 := by
   rw [Matrix.mul_assoc, ← Matrix.mul_assoc β', hb2, Matrix.one_mul, hg1]
 
+/- English proof (translation)
+Rewrite using `[hM, hM']`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc γ' γ, hg2, Matrix.one_mul, ← Matrix.mul_assoc β' β, hb2, Matrix.one_mul]`.
+-/
 theorem rect_conj {R : Type} [CommRing R] {a b c : Type} [Fintype a] [Fintype b] [Fintype c]
     [DecidableEq a] [DecidableEq b] [DecidableEq c]
     {β : Matrix a b R} {β' : Matrix b a R} {γ : Matrix c b R} {γ' : Matrix b c R} {K : Matrix b b R}
@@ -50,6 +62,9 @@ theorem rect_conj {R : Type} [CommRing R] {a b c : Type} [Fintype a] [Fintype b]
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨⟨β, β', hb1, hb2, hβ⟩, -⟩` from `hQ`. Take `⟨⟨γ, γ', hg1, hg2, hγ⟩, -⟩` from `hQ'`. Conclude with `⟨γ * β', β * γ', rect_conj_one hb2 hg1, rect_conj_one hg2 hb1, fun κ => rect_conj hb2 hg2 (hβ κ) (hγ κ)⟩`.
+-/
 theorem conj_of_stdPsi {V V' : HSp D} {n : ℕ} {hF : D.host.F = maximalRealSubfield D.host.E}
     {Q : principalLevelFrame.RowPsi V n} {Q' : principalLevelFrame.RowPsi V' n} (hQ : StdPsi hF Q) (hQ' : StdPsi hF Q') :
     ∃ (J : Matrix (Fin V'.rank) (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E))
@@ -61,6 +76,9 @@ theorem conj_of_stdPsi {V V' : HSp D} {n : ℕ} {hF : D.host.F = maximalRealSubf
   exact ⟨γ * β', β * γ', rect_conj_one hb2 hg1, rect_conj_one hg2 hb1,
     fun κ => rect_conj hb2 hg2 (hβ κ) (hγ κ)⟩
 
+/- English proof (translation)
+Take `⟨J, J', h1, -, hc⟩` from `conj_of_stdPsi hQ hQ'`. Rewrite using `[GlobalTheory.SphTrans.suppF_iff f (Q.into κ), GlobalTheory.SphTrans.suppF_iff f (Q'.into κ)]`. Conclude with `GlobalTheory.HeckeTrans.supp_conj h1 (hc κ)`.
+-/
 theorem suppF_of_stdPsi {V V' : HSp D} {n : ℕ} {hF : D.host.F = maximalRealSubfield D.host.E}
     {Q : principalLevelFrame.RowPsi V n} {Q' : principalLevelFrame.RowPsi V' n} (hQ : StdPsi hF Q) (hQ' : StdPsi hF Q')
     (f : Formalism.L2.Theta.AE D) (κ : Formalism.AUTREP.GAf D.host.E n) :
@@ -69,6 +87,11 @@ theorem suppF_of_stdPsi {V V' : HSp D} {n : ℕ} {hF : D.host.F = maximalRealSub
   rw [GlobalTheory.SphTrans.suppF_iff f (Q.into κ), GlobalTheory.SphTrans.suppF_iff f (Q'.into κ)]
   exact GlobalTheory.HeckeTrans.supp_conj h1 (hc κ)
 
+/- English proof (translation)
+Introduce and unpack `⟨hlen, hdiv⟩`. Take `⟨hr, J, J', h1, -, hc, hL⟩` from `latMatch hF Q Q' hQ hQ' P e f hP`. Take `⟨-, -, T3, -⟩` from `GlobalTheory.IdemSupport.supported_group_and_prime_idempotents V`. Take `⟨hff, -⟩` from `T3 P e f hP`. Establish `hef : finPart D e * finPart D f = finPart D e`.
+
+Rewrite using `[← RingHom.map_mul, GlobalTheory.SphTrans.mul_of_isPrimeIdem hP hff]`. Conclude with `⟨hlen.trans hr.symm, GlobalTheory.SphTrans.div_conj hr (intAE D) (fun i => finPart D (incA D (ϖ ^ (d.getD i 0)))) hef h1 (hc κ) hL (lamHat_idem V P e f hP) (lamHat_idem V' P e f hP) hdiv⟩`.
+-/
 theorem divAt_of_stdPsi {V V' : HSp D} {n : ℕ} {hF : D.host.F = maximalRealSubfield D.host.E}
     {Q : principalLevelFrame.RowPsi V n} {Q' : principalLevelFrame.RowPsi V' n} (hQ : StdPsi hF Q) (hQ' : StdPsi hF Q')
     (P : Pl D.host.E) (e f : Formalism.L2.Theta.AE D) (hP : IsPrimeIdem P e f) (ϖ : D.host.E) (d : List ℤ)
@@ -94,16 +117,25 @@ section Pre
 
 variable {V : HSp D} {n : ℕ}
 
+/- English proof (translation)
+Establish `h : ∃ x, Q.ψ x = Q.ψ κ` using `⟨κ, rfl⟩`. Unfold `principalLevelFrame.pre`. Rewrite using `[dif_pos h]`. Conclude with `Q.inj h.choose_spec`.
+-/
 theorem pre_psi (Q : principalLevelFrame.RowPsi V n) (κ : Formalism.AUTREP.GAf D.host.E n) : principalLevelFrame.pre Q (Q.ψ κ) = κ := by
   have h : ∃ x, Q.ψ x = Q.ψ κ := ⟨κ, rfl⟩
   unfold principalLevelFrame.pre
   rw [dif_pos h]
   exact Q.inj h.choose_spec
 
+/- English proof (translation)
+Take `⟨h, rfl⟩` from `Q.onto γ hγ`. Rewrite using `[pre_psi]`.
+-/
 theorem psi_pre (Q : principalLevelFrame.RowPsi V n) {γ : GA D V} (hγ : γ ∈ GfC V) : Q.ψ (principalLevelFrame.pre Q γ) = γ := by
   obtain ⟨h, rfl⟩ := Q.onto γ hγ
   rw [pre_psi]
 
+/- English proof (translation)
+Unfold `principalLevelFrame.pre`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `hγ (Q.into x)`.
+-/
 theorem pre_of_not_mem (Q : principalLevelFrame.RowPsi V n) {γ : GA D V} (hγ : γ ∉ GfC V) : principalLevelFrame.pre Q γ = 1 := by
   unfold principalLevelFrame.pre
   rw [dif_neg]
@@ -115,14 +147,23 @@ end Pre
 variable {V V' : HSp D} {n : ℕ} {hF : D.host.F = maximalRealSubfield D.host.E}
     {Q : principalLevelFrame.RowPsi V n} {Q' : principalLevelFrame.RowPsi V' n}
 
+/- English proof (translation)
+The claim follows from `(hQ.2 κ).symm.trans (hQ'.2 κ)`.
+-/
 theorem ksph_iff (hQ : StdPsi hF Q) (hQ' : StdPsi hF Q') (κ : Formalism.AUTREP.GAf D.host.E n) :
     Q.ψ κ ∈ KsphC V ∅ ↔ Q'.ψ κ ∈ KsphC V' ∅ :=
   (hQ.2 κ).symm.trans (hQ'.2 κ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨suppF_of_stdPsi hQ hQ' f κ, suppF_of_stdPsi hQ' hQ f κ⟩`.
+-/
 theorem suppF_iff (hQ : StdPsi hF Q) (hQ' : StdPsi hF Q') (f : Formalism.L2.Theta.AE D) (κ : Formalism.AUTREP.GAf D.host.E n) :
     SuppF V f (Q.ψ κ) ↔ SuppF V' f (Q'.ψ κ) :=
   ⟨suppF_of_stdPsi hQ hQ' f κ, suppF_of_stdPsi hQ' hQ f κ⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, e, f, hp, hs⟩`. Conclude with `⟨(ksph_iff hQ hQ' κ).1 h1, e, f, hp, (suppF_iff hQ hQ' f κ).1 hs⟩`. Introduce and unpack `⟨h1, e, f, hp, hs⟩`. Conclude with `⟨(ksph_iff hQ hQ' κ).2 h1, e, f, hp, (suppF_iff hQ hQ' f κ).2 hs⟩`.
+-/
 theorem hyp_iff (hQ : StdPsi hF Q) (hQ' : StdPsi hF Q') (Pr : Pl D.host.E) (κ : Formalism.AUTREP.GAf D.host.E n) :
     Q.ψ κ ∈ hyp V Pr ↔ Q'.ψ κ ∈ hyp V' Pr := by
   constructor
@@ -137,10 +178,16 @@ namespace GlobalTheory.FrameTransport
 
 variable {D : D7}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨one_mem _, fun y => by rw [Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.finMat_one, Matrix.one_mulVec], fun v hv => absurd hv (Finset.notMem_empty v)⟩`.
+-/
 theorem one_mem_KsphC (V : HSp D) : (1 : GA D V) ∈ KsphC V ∅ :=
   ⟨one_mem _, fun y => by rw [Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.finMat_one, Matrix.one_mulVec],
     fun v hv => absurd hv (Finset.notMem_empty v)⟩
 
+/- English proof (translation)
+Introduce `i j`. Establish `: Formalism.L2.Theta.mt V 1 - 1 = 0` using `sub_self _`. Rewrite using `[this]`. Conclude with `mul_zero _`.
+-/
 theorem suppF_one (V : HSp D) (f : Formalism.L2.Theta.AE D) : SuppF V f (1 : GA D V) := by
   intro i j
   have : Formalism.L2.Theta.mt V 1 - 1 = 0 := sub_self _
@@ -150,12 +197,36 @@ theorem suppF_one (V : HSp D) (f : Formalism.L2.Theta.AE D) : SuppF V f (1 : GA 
 variable {V V' : HSp D} {n : ℕ} {hF : D.host.F = maximalRealSubfield D.host.E}
     {Q : principalLevelFrame.RowPsi V n} {Q' : principalLevelFrame.RowPsi V' n}
 
+/- English proof (translation)
+The claim follows from `and_congr (ksph_iff hQ hQ' κ) (suppF_iff hQ hQ' f κ)`.
+-/
 theorem loc_iff (hQ : StdPsi hF Q) (hQ' : StdPsi hF Q') (f : Formalism.L2.Theta.AE D) (κ : Formalism.AUTREP.GAf D.host.E n) :
     Q.ψ κ ∈ {k | k ∈ KsphC V ∅ ∧ SuppF V f k} ↔ Q'.ψ κ ∈ {k | k ∈ KsphC V' ∅ ∧ SuppF V' f k} :=
   and_congr (ksph_iff hQ hQ' κ) (suppF_iff hQ hQ' f κ)
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨e, f, ϖ, α, -, hpi, hϖ1, hϖ2, hd, -, -, hsα, hdiv, hsR, hcos⟩` from `hB`. Establish `hK : ∀ k ∈ {k | k ∈ KsphC V ∅ ∧ SuppF V f k}, k ∈ GfC V` using `fun k hk => hk.1.1`. Establish `hK' : ∀ k ∈ {k | k ∈ KsphC V' ∅ ∧ SuppF V' f k}, k ∈ GfC V'` using `fun k hk => hk.1.1`. Establish `h1 : (1 : GA D V) ∈ {k | k ∈ KsphC V ∅ ∧ SuppF V f k}` using `⟨one_mem_KsphC V, suppF_one V f⟩`. Establish `hαf : α ∈ GfC V`.
+
+Take `⟨γ, ⟨hγ, -⟩, -⟩` from `hcos.2 α ⟨1, h1, 1, h1, by simp⟩`. Take `⟨hγf, k₁, hk₁, k₂, hk₂, hγe⟩` from `hcos.1 γ hγ`. Establish `: α = k₁⁻¹ * γ * k₂⁻¹` using `by rw [hγe]; group`. Rewrite using `[this]`. Conclude with `mul_mem (mul_mem (inv_mem (hK k₁ hk₁)) hγf) (inv_mem (hK k₂ hk₂))`.
+
+Use `set a := principalLevelFrame.pre Q α with ha`. Establish `hαa : Q.ψ a = α` using `psi_pre Q hαf`. Use `⟨e, f, ϖ, Q'.ψ a, fun v hv => absurd hv (Finset.notMem_empty v), hpi, hϖ1, hϖ2, hd, fun _ _ => Iff.rfl, fun _ _ _ => rfl, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `suppF_of_stdPsi hQ hQ' f a (hαa ▸ hsα)`. Conclude with `divAt_of_stdPsi hQ hQ' Pr e f hpi ϖ d a (hαa ▸ hdiv)`.
+
+Introduce `γ' hγ'`. Take `⟨γ, hγ, rfl⟩` from `Finset.mem_image.1 hγ'`. Establish `hγf` using `(hcos.1 γ hγ).1`. Conclude with `suppF_of_stdPsi hQ hQ' f _ ((psi_pre Q hγf).symm ▸ hsR γ hγ)`. Introduce `γ' hγ'`.
+
+Take `⟨γ, hγ, rfl⟩` from `Finset.mem_image.1 hγ'`. Take `⟨hγf, k₁, hk₁, k₂, hk₂, hγe⟩` from `hcos.1 γ hγ`. Use `⟨Q'.into _, Q'.ψ (principalLevelFrame.pre Q k₁), (loc_iff hQ hQ' f _).1 ((psi_pre Q (hK k₁ hk₁)).symm ▸ hk₁), Q'.ψ (principalLevelFrame.pre Q k₂), (loc_iff hQ hQ' f _).1 ((psi_pre Q (hK k₂ hk₂)).symm ▸ hk₂), ?_⟩` and prove the remaining obligations. Establish `e1 : principalLevelFrame.pre Q γ = principalLevelFrame.pre Q k₁ * a * principalLevelFrame.pre Q k₂`. Apply `Q.inj` to reduce the goal to its premises.
+
+Rewrite using `[psi_pre Q hγf, map_mul, map_mul, psi_pre Q (hK k₁ hk₁), psi_pre Q (hK k₂ hk₂), hαa, hγe]`. Rewrite using `[e1, map_mul, map_mul]`. Introduce and unpack `x' ⟨k₁', hk₁', k₂', hk₂', rfl⟩`. Take `⟨c₁, rfl⟩` from `Q'.onto k₁' (hK' _ hk₁')`. Take `⟨c₂, rfl⟩` from `Q'.onto k₂' (hK' _ hk₂')`.
+
+Establish `hc₁` using `(loc_iff hQ hQ' f c₁).2 hk₁'`. Establish `hc₂` using `(loc_iff hQ hQ' f c₂).2 hk₂'`. Take `⟨γ, ⟨hγ, hγx⟩, huniq⟩` from `hcos.2 (Q.ψ c₁ * α * Q.ψ c₂) ⟨_, hc₁, _, hc₂, rfl⟩`. Establish `hγf` using `(hcos.1 γ hγ).1`. Establish `key : ∀ g : Formalism.AUTREP.GAf D.host.E n, (Q.ψ g)⁻¹ * (Q.ψ c₁ * α * Q.ψ c₂) ∈ {k | k ∈ KsphC V ∅ ∧ SuppF V f k} ↔ (Q'.ψ g)⁻¹ * (Q'.ψ c₁ * Q'.ψ a * Q'.ψ c₂) ∈ {k | k ∈ KsphC V' ∅ ∧ SuppF V' f k}`.
+
+Introduce `g`. Use `loc_iff hQ hQ' f (g⁻¹ * (c₁ * a * c₂))` as an intermediate fact. Simplify using `only [map_mul, map_inv, hαa] at this`. Conclude with `this`. Use `⟨Q'.ψ (principalLevelFrame.pre Q γ), ⟨Finset.mem_image_of_mem _ hγ, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(key _).1 (by rw [psi_pre Q hγf]; exact hγx)`. Introduce and unpack `δ' ⟨hδ', hδx⟩`. Take `⟨δ, hδ, rfl⟩` from `Finset.mem_image.1 hδ'`. Establish `hδf` using `(hcos.1 δ hδ).1`. Establish `: δ = γ` using `huniq δ ⟨hδ, by rw [← psi_pre Q hδf]; exact (key _).2 hδx⟩`.
+
+Rewrite using `[this]`.
+-/
 theorem sphOp_image (hQ : StdPsi hF Q) (hQ' : StdPsi hF Q') {Pr : Pl D.host.E} {d : List ℤ} {B : Finset (GA D V)}
     (hB : SphOp V Pr d B) : SphOp V' Pr d (B.image fun γ => Q'.ψ (principalLevelFrame.pre Q γ)) := by
   obtain ⟨e, f, ϖ, α, -, hpi, hϖ1, hϖ2, hd, -, -, hsα, hdiv, hsR, hcos⟩ := hB
@@ -224,6 +295,9 @@ namespace GlobalTheory.FrameTransport
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨e, f, ϖ, α, -, -, -, -, -, -, -, -, -, -, hcos⟩` from `hR`. Conclude with `fun γ hγ => (hcos.1 γ hγ).1`.
+-/
 theorem sphOp_sub_GfC {V : HSp D} {Pr : Pl D.host.E} {d : List ℤ} {R : Finset (GA D V)} (hR : SphOp V Pr d R) :
     ∀ γ ∈ R, γ ∈ GfC V := by
   obtain ⟨e, f, ϖ, α, -, -, -, -, -, -, -, -, -, -, hcos⟩ := hR
@@ -232,6 +306,9 @@ theorem sphOp_sub_GfC {V : HSp D} {Pr : Pl D.host.E} {d : List ℤ} {R : Finset 
 variable {V V' : HSp D} {n : ℕ} {hF : D.host.F = maximalRealSubfield D.host.E}
     {Q : principalLevelFrame.RowPsi V n} {Q' : principalLevelFrame.RowPsi V' n}
 
+/- English proof (translation)
+Unfold `principalLevelFrame.Hecke₃ principalLevelFrame.heckeG`. Rewrite using `[LinearMap.sum_apply, Finset.sum_apply]`. Both sides reduce to the same expression.
+-/
 theorem heckeOperator_apply (Q : principalLevelFrame.RowPsi V n) (R : Finset (GA D V)) (x : Formalism.AUTREP.GAf D.host.E n → ℂ)
     (h : Formalism.AUTREP.GAf D.host.E n) : principalLevelFrame.Hecke₃ Q R x h = ∑ γ ∈ R, x (h * principalLevelFrame.pre Q γ) := by
   unfold principalLevelFrame.Hecke₃ principalLevelFrame.heckeG
@@ -239,6 +316,11 @@ theorem heckeOperator_apply (Q : principalLevelFrame.RowPsi V n) (R : Finset (GA
   rfl
 
 open Classical in
+/- English proof (translation)
+Use function extensionality and compare the values at `h`. Rewrite using `[heckeOperator_apply, heckeOperator_apply, Finset.sum_image]`. Simplify using `only [pre_psi]`. Introduce `a ha b hb hab`. Use `congrArg (principalLevelFrame.pre Q') hab` as an intermediate fact.
+
+Simplify using `only [pre_psi] at this`. Rewrite using `[← psi_pre Q (hB a ha), ← psi_pre Q (hB b hb), this]`.
+-/
 theorem heckeOperator_image {B : Finset (GA D V)} (hB : ∀ γ ∈ B, γ ∈ GfC V) (x : Formalism.AUTREP.GAf D.host.E n → ℂ) :
     principalLevelFrame.Hecke₃ Q B x = principalLevelFrame.Hecke₃ Q' (B.image fun γ => Q'.ψ (principalLevelFrame.pre Q γ)) x := by
   funext h
@@ -249,6 +331,17 @@ theorem heckeOperator_image {B : Finset (GA D V)} (hB : ∀ γ ∈ B, γ ∈ GfC
     simp only [pre_psi] at this
     rw [← psi_pre Q (hB a ha), ← psi_pre Q (hB b hb), this]
 
+/- English proof (translation)
+Establish `hu : ∀ k ∈ hyp V' Pr, rreg V' k (fun g => x (principalLevelFrame.pre Q' g)) = fun g => x (principalLevelFrame.pre Q' g)`. Introduce `k hk`. Establish `hkf : k ∈ GfC V'` using `hk.1.1`. Take `⟨c, rfl⟩` from `Q'.onto k hkf`. Use function extensionality and compare the values at `g`.
+
+Use `show x (principalLevelFrame.pre Q' (g * Q'.ψ c)) = x (principalLevelFrame.pre Q' g)`. Distinguish the cases in `hg : g ∈ GfC V'`. Take `⟨g0, rfl⟩` from `Q'.onto g hg`. Rewrite using `[← map_mul, pre_psi, pre_psi]`. Conclude with `congrFun (hx c hk) g0`.
+
+Establish `hgk : g * Q'.ψ c ∉ GfC V'` using `fun h' => hg (by`. Establish `: g = g * Q'.ψ c * (Q'.ψ c)⁻¹` using `by group`. Rewrite using `[this]`. Conclude with `mul_mem h' (inv_mem hkf))`. Rewrite using `[pre_of_not_mem Q' hg, pre_of_not_mem Q' hgk]`.
+
+Establish `key` using `((GlobalTheory.SphLabelOps.label_operators V' Pr).1 d R hR).2 (GA D V' → ℂ) (rreg V') (fun g => x (principalLevelFrame.pre Q' g)) hu`. Use function extensionality and compare the values at `h`. Rewrite using `[← key, heckeOperator_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun γ hγ => ?_` and prove the remaining obligations. Use `show x (h * principalLevelFrame.pre Q' γ) = x (principalLevelFrame.pre Q' (Q'.ψ h * γ))`.
+
+Rewrite using `[← psi_pre Q' (sphOp_sub_GfC hR γ hγ), ← map_mul, pre_psi, pre_psi]`.
+-/
 theorem heckeOperator_eq_heckeAlgebraAction {Pr : Pl D.host.E} {d : List ℤ} {R : Finset (GA D V')}
     (hR : SphOp V' Pr d R) (x : Formalism.AUTREP.GAf D.host.E n → ℂ)
     (hx : ∀ κ, Q'.ψ κ ∈ hyp V' Pr → Formalism.L2.NG.rt D.host.E n κ x = x) :
@@ -275,6 +368,9 @@ theorem heckeOperator_eq_heckeAlgebraAction {Pr : Pl D.host.E} {d : List ℤ} {R
   show x (h * principalLevelFrame.pre Q' γ) = x (principalLevelFrame.pre Q' (Q'.ψ h * γ))
   rw [← psi_pre Q' (sphOp_sub_GfC hR γ hγ), ← map_mul, pre_psi, pre_psi]
 
+/- English proof (translation)
+Introduce `D V V' n hF Q Q' hQ hQ' Pr d`. Use `⟨hyp_iff hQ hQ' Pr, ?_⟩` and prove the remaining obligations. Introduce `B B' hB hB' x hx`. Establish `hx' : ∀ κ, Q'.ψ κ ∈ hyp V' Pr → Formalism.L2.NG.rt D.host.E n κ x = x` using `fun κ hk => hx κ ((hyp_iff hQ hQ' Pr κ).2 hk)`. Rewrite using `[heckeOperator_image (Q' := Q') (sphOp_sub_GfC hB) x, heckeOperator_eq_heckeAlgebraAction (sphOp_image hQ hQ' hB) x hx', heckeOperator_eq_heckeAlgebraAction hB' x hx']`.
+-/
 theorem sph_eigen_frame_indep : ∀ {D : D7} {V V' : HSp D} {n : ℕ} (hF : D.host.F = maximalRealSubfield D.host.E) (Q : principalLevelFrame.RowPsi V n) (Q' : principalLevelFrame.RowPsi V' n), StdPsi hF Q → StdPsi hF Q' → ∀ Pr d, (∀ κ, Q.ψ κ ∈ hyp V Pr ↔ Q'.ψ κ ∈ hyp V' Pr) ∧ ∀ B B', SphOp V Pr d B → SphOp V' Pr d B' → ∀ x : Formalism.AUTREP.GAf D.host.E n → ℂ, (∀ κ, Q.ψ κ ∈ hyp V Pr → Formalism.L2.NG.rt D.host.E n κ x = x) → principalLevelFrame.Hecke₃ Q B x = principalLevelFrame.Hecke₃ Q' B' x := by
   intro D V V' n hF Q Q' hQ hQ' Pr d
   refine ⟨hyp_iff hQ hQ' Pr, ?_⟩

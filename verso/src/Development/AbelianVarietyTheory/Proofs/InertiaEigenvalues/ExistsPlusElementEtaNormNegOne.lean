@@ -12,6 +12,11 @@ namespace GlobalTheory.UnitLemma.Desc
 
 open GlobalTheory.UnitLemma Polynomial
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.LocalFiniteOddFixed.exists_plus_eta_norm`. Consider the case `exact _root_.GlobalTheory.LocalFiniteOddFixed.exists_plus_eta_norm`. Consider the case `(apply _root_.GlobalTheory.LocalFiniteOddFixed.exists_plus_eta_norm <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.LocalFiniteOddFixed.exists_plus_eta_norm <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.LocalFiniteOddFixed.exists_plus_eta_norm <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LocalFiniteOddFixed.exists_plus_eta_norm ..)`.
+-/
 theorem exists_plus_eta_norm_neg_one : ∀ (K : UQ) (B : InvAlg K) (f : B.A), IsIdempotentElem f → f ≠ 0 →
     (∀ y, f * y ≠ 0 → ∃ z, f * y * z = f) → B.σ f = f →
     ∃ y : B.A, B.Plus y ∧ y * (1 - f) = 1 - f ∧ K.eta (Algebra.norm K.E y) = -1 := by

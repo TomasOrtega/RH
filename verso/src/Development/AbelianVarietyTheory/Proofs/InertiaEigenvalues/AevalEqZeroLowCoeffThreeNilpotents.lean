@@ -5,6 +5,17 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace GlobalTheory.NewPrime
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on`. Use `case empty => exact ⟨0, 0, 0, by simp, by simp⟩`. Use `case insert q s hq ih =>`. Take `⟨a, b, c, habc, hd⟩` from `ih`. Rewrite using `[Finset.sum_insert hq, Finset.prod_insert hq]`.
+
+Break down `hξ q with ⟨r, hr⟩ | hx | hy` into its components or cases. Use `⟨u q + a, b, c, by omega, ?_⟩` and prove the remaining obligations. Establish `h` using `mul_dvd_mul (dvd_mul_right (t ^ u q) (r ^ u q)) hd`. Rewrite using `[hr, mul_pow]`. Use `h using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨a, u q + b, c, by omega, ?_⟩` and prove the remaining obligations. Establish `h` using `mul_dvd_mul_left (x ^ u q) hd`. Rewrite using `[hx]`. Use `h using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨a, b, u q + c, by omega, ?_⟩` and prove the remaining obligations. Establish `h` using `mul_dvd_mul_left (y ^ u q) hd`. Rewrite using `[hy]`. Use `h using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_pow_mul_pow_mul_pow_dvd_prod_pow {B : Type} [CommRing B] {ι : Type} (t x y : B)
     (ξ : ι → B) (hξ : ∀ q, t ∣ ξ q ∨ ξ q = x ∨ ξ q = y) (u : ι → ℕ) (s : Finset ι) :
     ∃ a b c : ℕ, a + b + c = ∑ q ∈ s, u q ∧ t ^ a * x ^ b * y ^ c ∣ ∏ q ∈ s, ξ q ^ u q := by
@@ -31,6 +42,17 @@ theorem exists_pow_mul_pow_mul_pow_dvd_prod_pow {B : Type} [CommRing B] {ι : Ty
       convert h using 1
       ring
 
+/- English proof (translation)
+Introduce `O B _ _ _ ι t x y K m ξ F ht hx hy hξ hF`. Rewrite using `[F.as_sum, map_sum]`. Use `Finset.sum_eq_zero fun u _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.aeval_monomial]`. Distinguish the cases in `hu : u.degree < K + m`.
+
+Rewrite using `[hF u hu, zero_mul]`. Take `⟨a, b, c, habc, hd⟩` from `exists_pow_mul_pow_mul_pow_dvd_prod_pow t x y ξ hξ u u.support`. Establish `hdeg : u.degree = ∑ q ∈ u.support, u q` using `rfl`. Establish `hzero : t ^ a * x ^ b * y ^ c = 0`. Distinguish the cases in `hc : m ≤ c`.
+
+Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hc`. Rewrite using `[pow_add, hy]`. Simplify using the standard rewrite rules. Distinguish the cases in `hb : 2 ≤ b`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hb`.
+
+Rewrite using `[pow_add, pow_two, hx]`. Simplify using the standard rewrite rules. Establish `hK : K ≤ a` using `by omega`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hK`. Rewrite using `[pow_add, ht]`.
+
+Simplify using the standard rewrite rules. Rewrite `hd` using `[hzero, zero_dvd_iff]`. Rewrite using `[Finsupp.prod]`. Simplify using `only [hd, mul_zero]`.
+-/
 theorem aeval_eq_zero_of_low_coeff_of_three_nilpotent :
     ∀ (O B : Type) [CommRing O] [CommRing B] [Algebra O B] (ι : Type) (t x y : B) (K m : ℕ)
       (ξ : ι → B) (F : MvPolynomial ι O), t ^ K = 0 → x * x = 0 → y ^ m = 0 →

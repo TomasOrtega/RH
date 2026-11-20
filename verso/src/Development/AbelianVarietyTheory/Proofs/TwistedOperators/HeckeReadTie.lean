@@ -17,6 +17,11 @@ namespace GlobalTheory.HeckeReadProof
 
 open GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues
 
+/- English proof (translation)
+Use `show T.phiJ _ σ a f _ = _`. Rewrite using `[CoreJ.phiJ_apply]`. Simplify using `only [Core.phiAd, Pi.smul_apply, smul_eq_mul, adel, rdU, LinearMap.coe_mk, AddHom.coe_mk]`. Simplify using `only [dictW, castDict] at hx ⊢`. Use `split_ifs with h1`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `absurd hx h1`.
+-/
 theorem phiW_eq {D : D7} (T : CoreJ D) (i : Fin D.R.m) (σ : T.Q.c.F →+* ℂ) (hV : T.V ((i : ℕ) + 1) σ = Wc D i)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ) (f : T.R ((i : ℕ) + 1)) (h : GA D (Wc D i))
     (hx : (dictW T i σ hV h).2 ∈ ((T.U ((i : ℕ) + 1) σ).X (dictW T i σ hV h).1).dom) :
@@ -31,6 +36,21 @@ theorem phiW_eq {D : D7} (T : CoreJ D) (i : Fin D.R.m) (σ : T.Q.c.F →+* ℂ) 
   · ring
   · exact absurd hx h1
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hlev hgrp hfam hmod hthP ht i σ hσ hV hpin`. Introduce `P p k α Rc hs cq f g hf hg hr h`. Use `letI : Field (CAt σ) := inferInstanceAs (Field ℂ)`. Use `haveI : IsAlgClosed (CAt σ) := inferInstanceAs (IsAlgClosed ℂ)`. Establish `hgood : GoodEmb T.Q.c σ` using `hσ ▸ T.toCore.good_σ₀`.
+
+Take `⟨hx, -, -⟩` from `exists_witness T i σ hV ht.laws.toLawsM hgood h`. Take `⟨e, he⟩` from `GlobalTheory.T.heckeReading_kernels_match_cosets_through_frame D GlobalTheory.HeckePointLaw.heckePointLaws (hSL D) (hVF D) G Pl0 T0 A T R F κ v₀ hlev hgrp hfam hmod hthP ht i σ hσ hV hpin P p k α Rc hs h hx`. Establish `hfin : Finite (hkKer (Xo` using `T.Q.Xo ((i : ℕ) + 1)) P.asIdeal p k (CAt σ) ((T.U ((i : ℕ) + 1) σ).un (dictW T i σ hV h).1 ⟨(dictW T i σ hV h).2, hx⟩)) := Finite.of_equiv _ e.symm`. Rewrite using `[phiW_eq T i σ hV _ g h hx]`. Establish `hr'` using `hr (CAt σ) ((T.U ((i : ℕ) + 1) σ).un (dictW T i σ hV h).1 ⟨(dictW T i σ hV h).2, hx⟩)`.
+
+Establish `e1 : toC (evR (T.Q.Xo ((i : ℕ) + 1)) T.Q.c g ((T.U ((i : ℕ) + 1) σ).un (dictW T i σ hV h).1 ⟨(dictW T i σ hV h).2, hx⟩)) = σ cq * σ (hkScal T.Q.c 1 P.asIdeal k D.R.nV) * ∑ᶠ C, toC (evR (T.Q.Xo ((i : ℕ) + 1)) T.Q.c f (he C).1.choose)`. Use `(congrArg toC hr').trans ?_` and prove the remaining obligations. Establish `hs1 : σ (hkScal T.Q.c cq P.asIdeal k D.R.nV) = σ cq * σ (hkScal T.Q.c 1 P.asIdeal k D.R.nV)`. Simplify using `only [hkScal, one_mul, map_mul]`. Use `show σ (hkScal T.Q.c cq P.asIdeal k D.R.nV) * toC (hkVal _ _ _ _ f _) = _`.
+
+Rewrite using `[hs1]`. Use `congr 1`. Unfold `hkVal`. Use `show (∑ᶠ C, toC (hkTerm _ _ _ _ f _ C)) = _`. Use `finsum_congr fun C => ?_` and prove the remaining obligations.
+
+Unfold `hkTerm`. Use `split_ifs with h1`. Both sides reduce to the same expression. Conclude with `absurd (he C).1 h1`. Rewrite using `[e1]`.
+
+Establish `e2 : ∀ C, (lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA (κ i)) : ℂ) * (T.cE ((i : ℕ) + 1) σ (dictW T i σ hV h).1 * castDict hV (T.mu ((i : ℕ) + 1) σ) h) * σ (hkScal T.Q.c 1 P.asIdeal k D.R.nV) * toC (evR (T.Q.Xo ((i : ℕ) + 1)) T.Q.c f (he C).1.choose) = (muAt T R i P)⁻¹ ^ k * phiW …` using `fun C => (he C).2 _ (he C).1.choose_spec f hf`. Establish `e3 : ∑ᶠ C, (muAt T R i P)⁻¹ ^ k * phiW T i σ hV (wtA (κ i)) f (h * (e C : GA D (Wc D i))) = (muAt T R i P)⁻¹ ^ k * ∑ a ∈ Rc, phiW T i σ hV (wtA (κ i)) f (h * a)`. Rewrite using `[finsum_comp_equiv e (f := fun a : Rc => (muAt T R i P)⁻¹ ^ k * phiW T i σ hV (wtA (κ i)) f (h * (a : GA D (Wc D i))))]`. Rewrite using `[finsum_eq_sum_of_fintype, Finset.sum_coe_sort Rc (fun a => (muAt T R i P)⁻¹ ^ k * phiW T i σ hV (wtA (κ i)) f (h * a)), Finset.mul_sum]`. Rewrite using `[mul_assoc (σ cq) ((muAt T R i P)⁻¹ ^ k), ← e3, ← finsum_congr e2, ← mul_finsum]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heckeReadTie (hSL : ∀ D, GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.SplitLinearModel D) (hVF : ∀ D, GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.VacFixed D) :
     GlobalTheory.HeckeSupSt.HeckeReadTie := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ hlev hgrp hfam hmod hthP ht i σ hσ hV hpin

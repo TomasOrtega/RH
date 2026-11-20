@@ -33,11 +33,27 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT
 
 namespace GlobalTheory.LamT.CMMetric
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualMap_eq_dualMapR {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) :
     Formalism.L2.Pj.dualMap φ = Chart.dualMapR φ := rfl
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l}
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Take `⟨Φ₀⟩` from `nonempty_fibKey E H Dw l Xo ℂ x' hpq`. Take `⟨-, t2, t3⟩` from `GlobalTheory.SecTieEx.secTie_exists_unique E H Dw l Xo ℂ x' Φ₀.T.t Φ₀.m`. Take `⟨th, hth⟩` from `t2 s'`. Establish `hne` using `(t3 th s' hth).2.1 (secNZ_of_secGen GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo ℂ x' s' hg)`.
+
+Take `⟨e, v', hv', hK, hv⟩` from `GlobalTheory.LamT.fibKey_keyPB E H Dw l Xo K ℂ σ x₀ x' Φ { Φ₀ with th := th, th_ne := hne } s s' hx' hs hth hb`. Use `⟨{ Φ₀ with th := th, th_ne := hne, v := v', basis := hv' }, hth, hK, fun _ cf w hw => ?_⟩` and prove the remaining obligations. Establish `hp` using `Φ.m.cart.1`. Establish `hc : IsGrpPullback Φ₀.T.t.G Xo.univ.t.G (spMap σ ≫ x₀) Φ₀.m.φ` using `hx' ▸ Φ₀.m.cart`. Establish `w₁ : Φ₀.m.φ ≫ Xo.univ.t.G.hom = (Φ₀.T.t.G.hom ≫ spMap σ) ≫ x₀` using `by rw [hc.1.w, Category.assoc]`.
+
+Establish `hF : hp.lift _ _ w₁ ≫ Φ.m.φ = Φ₀.m.φ` using `hp.lift_fst _ _ _`. Establish `hψ : IsGrpPullback Φ₀.T.t.G Φ.T.t.G (spMap σ) (hp.lift _ _ w₁)` using `Φ.m.cart.cancel (by rw [hF]; exact hc) (hp.lift_snd _ _ _)`. Generalize the expression as in `hp.lift _ _ w₁ = ψ at hF hψ`. Establish `hov : ∀ j : Fin Φ.T.g, IsVecOver σ ψ (Φ.v j) (v' (j.cast e.symm))` using `fun j => by`. Take `⟨a, ha, -⟩` from `existsUnique_isVecOver hψ.1 (Φ.v j)`.
+
+Establish `: v' (j.cast e.symm) = a`. Use `Over.OverMorphism.ext (hc.1.hom_ext ?_ ((Over.w _).trans (Over.w a).symm))` and prove the remaining obligations. Use `(hv _).trans ?_` and prove the remaining obligations. Rewrite using `[← hF, ← Category.assoc a.left, ha, Category.assoc]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `ha`. Take `⟨w', hw', -⟩` from `existsUnique_isVecOver hψ.1 w`. Use `⟨w', (lieComb_baseChange K ℂ σ _ _ ψ hψ _ Φ.v w cf _ w' hov hw).1 hw', ?_⟩` and prove the remaining obligations. Use `show w'.left ≫ Φ₀.m.φ = _`.
+
+Rewrite using `[← hF, ← Category.assoc, hw', Category.assoc]`. Both sides reduce to the same expression.
+-/
 theorem exists_fibre {K : Type} [Field K] (σ : K →+* ℂ) {x x₀ : Sp K ⟶ Xo.X} (hx : x₀ = x) (Φ : FibKey Xo K x)
     (s : LB.Sec (PPx x₀)) (hs : SecTie Φ.m Φ.th s) (x' : Sp ℂ ⟶ Xo.X) (s' : LB.Sec (PPx x')) (hg : SecGen x' s')
     (hx' : x' = spMap σ ≫ x₀) (hb : SecBC σ 1 x₀ x' s s') (hpq : 1 ≤ Dw.p + Dw.q) :
@@ -73,6 +89,9 @@ theorem exists_fibre {K : Type} [Field K] (σ : K →+* ℂ) {x x₀ : Sp K ⟶ 
   rw [← hF, ← Category.assoc, hw', Category.assoc]
   rfl
 
+/- English proof (translation)
+Substitute `hg` using the available equality. Conclude with `⟨u, Hm, χ, θ, Fd, h⟩`.
+-/
 theorem exists_unif_of_eq (x : KeyIn ℂ) {g : ℕ} (hg : g = x.P.g) (u : HolUnif x.P.A x.P.L g)
     (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ) (θ : (Fin g → ℂ) → ℂ) (Fd : Set (Fin g → ℂ)) (N : ℝ)
     (h : u.IsAH Hm χ ∧ u.IsRig x.rig ∧ u.IsFn x.th θ ∧ IsAddFundamentalDomain u.Λ Fd volume ∧
@@ -83,6 +102,11 @@ theorem exists_unif_of_eq (x : KeyIn ℂ) {g : ℕ} (hg : g = x.P.g) (u : HolUni
   subst hg
   exact ⟨u, Hm, χ, θ, Fd, h⟩
 
+/- English proof (translation)
+Take `⟨xσ, u, Hm, W, χ, θ, Fd, hK, hA, hR, hF, -, hD, hN, -⟩` from `h`. Establish `hI` using `GlobalTheory.KeyCancel.keyPB_id_of_keyPB K ℂ σ x x' xσ hx hK`. Establish `hg : x'.P.g = xσ.P.g`. Take `⟨_, _, _, hg, _⟩` from `hI`. Conclude with `hg`.
+
+Take `⟨u', χ', θ', Fd', a, b, c, d, e, -⟩` from `GlobalTheory.KeyTransport.uniformisation_transport xσ x' hI hg _ u Hm χ θ Fd ⟨hA, hR, hF, hD⟩`. Conclude with `exists_unif_of_eq x' hg.symm u' _ χ' θ' Fd' _ ⟨a, b, c, d, hN.trans e.symm⟩`.
+-/
 theorem exists_unif {K : Type} [Field K] [NumberField K] {x : KeyIn K} {T abelian₂ : MLine K} {σ : K →+* ℂ}
     (h : KeyArchAt x T abelian₂ σ) (x' : KeyIn ℂ) (hx : KeyPB x' x σ) :
     ∃ (u : HolUnif x'.P.A x'.P.L x'.P.g) (Hm : Matrix (Fin x'.P.g) (Fin x'.P.g) ℂ) (χ : u.Λ → ℂ)
@@ -97,6 +121,9 @@ theorem exists_unif {K : Type} [Field K] [NumberField K] {x : KeyIn K} {T abelia
   obtain ⟨u', χ', θ', Fd', a, b, c, d, e, -⟩ := GlobalTheory.KeyTransport.uniformisation_transport xσ x' hI hg _ u Hm χ θ Fd ⟨hA, hR, hF, hD⟩
   exact exists_unif_of_eq x' hg.symm u' _ χ' θ' Fd' _ ⟨a, b, c, d, hN.trans e.symm⟩
 
+/- English proof (translation)
+Rewrite using `[LieMetric.form_eq_sum_sum, Finset.sum_comm]`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, ReciprocityTheory.MultiplicativeHeights.embVec, Pi.star_apply, ReciprocityTheory.GeometryOfNumbersTheory.HermFam.gram, Matrix.of_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem form_eq_gram {K : Type} [Field K] [NumberField K] {n : ℕ} (h : ReciprocityTheory.GeometryOfNumbersTheory.HermFam K (Fin n → K)) (s : K →+* ℂ)
     (a b : Fin n → K) :
     star (ReciprocityTheory.MultiplicativeHeights.embVec s a) ⬝ᵥ (h.gram s (fun i => Pi.single i 1)).mulVec (ReciprocityTheory.MultiplicativeHeights.embVec s b) =
@@ -106,6 +133,29 @@ theorem form_eq_gram {K : Type} [Field K] [NumberField K] {n : ℕ} (h : Recipro
     ReciprocityTheory.GeometryOfNumbersTheory.HermFam.gram, Matrix.of_apply]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ z f La hz σ yσ hy`. Take `⟨hG, hL, -, hx, hs, hu⟩` from `hz`. Establish `hU` using `GlobalTheory.thetaUnifAV_all`. Establish `hLaw : Out.Laws` using `GlobalTheory.firstFiveLaws.1`. Establish `hfib : LamF.IsFibreOf z.B.pol z.Φ.key (LamF.gmap z.K) z.m'.φ` using `hG.2.2.2.1`.
+
+Establish `hp : IsPolFibre (algebraMap (𝓞 z.K) z.K) z.B.pol z.Φ.key.P z.m'.φ` using `(LamF.isFibreOf_iff_isPolFibre _ _ _ _ _ _).1 hfib`. Take `⟨h, Hh⟩` from `(LieMetric.exists_unique_isHerm hU hLaw z.K z.B.pol (GenFib.mk z.Φ.key.P z.m'.φ hp z.Φ.key.v z.Φ.key.basis)).1`. Take `⟨a₁, a₂⟩` from `LamF.gram_stdBasis_posDef_and_hq z.K z.Φ.T.g h σ`. Take `⟨b₁, b₂⟩` from `LamF.lamLen_of_isHerm hU hLaw E H l c _ _ f z.obj La hG z.letters hL hp h Hh σ`. Use `⟨h.gram σ (fun i => Pi.single i 1), a₁, b₁, fun j => (a₂ _).trans_le (b₂ j), ?_⟩` and prove the remaining obligations.
+
+Establish `hpq : 1 ≤ Dw.p + Dw.q`. Establish `e : z.Φ.T.g = f * (Dw.p + Dw.q)` using `hG.2.2.2.2.2.2.2.2.1`. Use `z.Φ.g_pos` as an intermediate fact. Break down `Nat.eq_zero_or_pos (Dw.p + Dw.q) with h0 | h0` into its components or cases. Rewrite `e` using `[h0]`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `h0`. Establish `harch : KeyArchAt z.Φ.key z.Tl z.LamL σ` using `hG.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 σ`. Take `⟨y₁, y₂, pm, y₃, y₄, y₅⟩` from `hy`. Establish `hb : GlobalTheory.Frames.SecBC σ 1 z.y.x yσ.x z.y.s yσ.s` using `⟨pm, y₃, y₄, fun i hi => by`.
+
+Establish `e₁ : scal z.y.x 1 i = 1` using `by simp only [scal, Out.liftFun, map_one]`. Rewrite using `[e₁, _root_.one_mul]`. Conclude with `y₅ i hi⟩`. Take `⟨Φ', ht, hK, hc⟩` from `exists_fibre σ hx z.Φ z.y.s hs yσ.x yσ.s yσ.gen y₁ hb hpq`. Take `⟨u, Hm, χ, θ, Fd, hA, hR, hF, hD, hN⟩` from `exists_unif harch Φ'.key hK`.
+
+Take `⟨ψ, e, hψ, hv⟩` from `KeyFibre.exists_isPolFibre_of_keyPB _ _ σ _ _ hK`. Take `⟨-, -, -, -, t1, -, -⟩` from `AHWeil.tangent_and_weil_of_isAH hU Φ'.key.P _ u Hm χ hA`. Establish `key : ∀ (b : E →+* ℂ) (i : Fin (Dw.mult b)), ∃ (w₀ : epsR z.K ⟶ z.Φ.T.t.G) (w : epsR ℂ ⟶ Φ'.key.P.A) (W : Fin Φ'.key.P.g → ℂ), IsLieComb (z.U (z.e ⟨b, i⟩)) z.Φ.v w₀ ∧ IsVecOver σ ψ w₀ w ∧ w.left ≫ Φ'.m.φ = yσ.u b i ∧ u.IsDiff W w` using `fun b i => by`. Take `⟨w₀, l₀, c₀⟩` from `hL.2.2.1 (z.e ⟨b, i⟩)`. Take `⟨w₁, l₁, c₁⟩` from `hu b i`.
+
+Establish `e₀ : w₀ = w₁`. Use `Over.OverMorphism.ext (z.m'.cart.1.hom_ext ?_ ((Over.w _).trans (Over.w w₁).symm))` and prove the remaining obligations. Unfold `LamF.LamLetters.IsLetter at l₀ l₁`. Consider the cases of `hs : z.src (z.e ⟨b, i⟩) with`. Consider the case `inl q`.
+
+Simplify using `only [hs] at l₀ l₁`. Conclude with `l₀.trans l₁.symm`. Consider the case `inr q`. Simplify using `only [hs] at l₀ l₁`. Conclude with `l₀.trans l₁.symm`.
+
+Substitute `e₀` using the available equality. Take `⟨w, hw, hw'⟩` from `hc e _ w₀ c₀`. Establish `ho : IsVecOver σ ψ w₀ w` using `(lieComb_baseChange z.K ℂ σ _ _ ψ hψ.2.1 _ z.Φ.v w₀ _ _ w (fun j => hv (j.cast e.symm)) c₀).2 hw`. Take `⟨W, hW, -⟩` from `t1 w (ho.isTangent hψ.2.1 (Reg.isTangent_of_isLieComb z.Φ.basis.1 c₀))`. Use `⟨w₀, w, W, c₀, ho, hw'.trans ?_, hW⟩` and prove the remaining obligations.
+
+Rewrite using `[y₂, c₁]`. Both sides reduce to the same expression. Use `choose w₀ w W k₁ k₂ k₃ k₄ using key`. Use `⟨Φ', u, Hm, χ, θ, Fd, w, W, ht, hA, hR, hF, hD, hN, fun b i => ⟨k₃ b i, k₄ b i⟩, fun b i k => ?_⟩` and prove the remaining obligations. Use `(form_eq_gram h σ _ _).trans ?_` and prove the remaining obligations.
+
+Conclude with `LieMetric.form_eq_pi_mul_hermForm hU hLaw z.K z.B.pol _ h Hh σ Φ'.key.P ψ u Hm χ hψ hA _ _ _ _ _ _ _ _ (k₁ b i) (k₁ b k) (k₂ b i) (k₂ b k) (k₄ b i) (k₄ b k)`.
+-/
 theorem exists_isMetric : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (z : CMPt Xo c) (f : ℕ) (La : ℝ), z.Good f La → ∀ (σ : z.K →+* ℂ) (yσ : FrPt Xo c (CAt (σ.comp (algebraMap c.F z.K)))), FrMap (embAlg σ) z.y yσ → ∃ Hm : Matrix (Fin z.Φ.T.g) (Fin z.Φ.T.g) ℂ, Hm.PosDef ∧ z.LamL.n σ = Real.sqrt Hm.det.re ∧ (∀ j, ReciprocityTheory.MultiplicativeHeights.hq Hm (ReciprocityTheory.MultiplicativeHeights.embVec σ (z.U j)) ≤ (La * (z.ℓ j).n σ) ^ 2) ∧ IsMetric yσ (z.Tl.n σ ^ 2) (gramBlock z.e z.U Hm σ) := by
   intro E _ _ _ H Dw l Xo c _ z f La hz σ yσ hy
   obtain ⟨hG, hL, -, hx, hs, hu⟩ := hz

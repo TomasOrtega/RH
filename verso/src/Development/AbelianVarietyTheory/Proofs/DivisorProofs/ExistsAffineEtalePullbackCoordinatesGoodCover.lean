@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.CoverDeg
 
+/- English proof (translation)
+Take `⟨hU, hπU, -, hét, -⟩` from `hG`. Use `haveI : IsAffine U := hU`. Use `haveI : IsAffine (π ⁻¹ᵁ U) := hπU`. Rewrite using `[HasRingHomProperty.iff_of_isAffine (P := @Etale), Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE, morphismRestrict_appLE]`. Use `(Scheme.Hom.appLE_congr π _ (Scheme.Opens.ι_image_top U) (V' := π ⁻¹ᵁ U) ?_ (fun φ => RingHom.Etale φ.hom)).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[Scheme.Hom.preimage_top, Scheme.Opens.ι_image_top]`. Rewrite using `[← Scheme.Hom.app_eq_appLE]`. Conclude with `hét`.
+-/
 theorem etale_morphismRestrict_of_goodCover {k : Type} [CommRing k] {X Y : Scheme.{0}}
     (p : X ⟶ Sp k) (π : Y ⟶ X) (D δ : ℕ) (U : X.Opens) (hG : GoodCover p π D δ U) :
     Etale (π ∣_ U) := by
@@ -22,6 +27,9 @@ theorem etale_morphismRestrict_of_goodCover {k : Type} [CommRing k] {X Y : Schem
   · rw [Scheme.Hom.preimage_top, Scheme.Opens.ι_image_top]
   · rw [← Scheme.Hom.app_eq_appLE]; exact hét
 
+/- English proof (translation)
+Substitute `hO` using the available equality. Use `hW.isLocalization_basicOpen g` as an intermediate fact. Conclude with `Algebra.Etale.of_isLocalizationAway g`.
+-/
 theorem etale_map_basicOpen {X : Scheme.{0}} {W : X.Opens} (hW : IsAffineOpen W) (g : Γ(X, W))
     (O : X.Opens) (hO : O = X.basicOpen g) (hle : O ≤ W) :
     (X.presheaf.map (homOfLE hle).op).hom.Etale := by
@@ -29,6 +37,11 @@ theorem etale_map_basicOpen {X : Scheme.{0}} {W : X.Opens} (hW : IsAffineOpen W)
   have := hW.isLocalization_basicOpen g
   exact Algebra.Etale.of_isLocalizationAway g
 
+/- English proof (translation)
+Establish `e : (π ≫ p).appLE ⊤ V (le_top.trans (Scheme.Hom.preimage_top _).ge) = p.appLE ⊤ W (le_top.trans (Scheme.Hom.preimage_top _).ge) ≫ π.appLE W V h` using `by first`. Consider the case `rw [Scheme.Hom.appLE_comp_appLE]`. Consider the case `(rw [Scheme.Hom.comp_appLE, Scheme.Hom.app_eq_appLE, ← Scheme.Hom.appLE_comp_appLE])`. Consider the case `(simp only [Scheme.Hom.comp_appLE, Scheme.Hom.appLE, Category.assoc, Scheme.Hom.naturality_assoc]; rfl)`. Use extensionality with `r`.
+
+Simplify using `only [ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX, RingHom.comp_apply]`. Rewrite using `[e, CommRingCat.comp_apply]`.
+-/
 theorem algX_comp {k : Type} [CommRing k] {X Y : Scheme.{0}} (p : X ⟶ Sp k) (π : Y ⟶ X)
     (W : X.Opens) (V : Y.Opens) (h : V ≤ π ⁻¹ᵁ W) :
     ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX (π ≫ p) V =
@@ -43,6 +56,21 @@ theorem algX_comp {k : Type} [CommRing k] {X Y : Scheme.{0}} (p : X ⟶ Sp k) (�
   simp only [ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX, RingHom.comp_apply]
   rw [e, CommRingCat.comp_apply]
 
+/- English proof (translation)
+Introduce `k _ X Y p q π hπ D δ U hG W x hW hx z hzU hzW`. Substitute `hπ` using the available equality. Establish `hE` using `etale_morphismRestrict_of_goodCover p π D δ U hG`. Take `⟨hU, hπU, -⟩` from `hG`. Take `⟨f, g, hfg, hz⟩` from `exists_basicOpen_le_affine_inter hU hW (π z) ⟨hzU, hzW⟩`.
+
+Establish `hW'U : X.basicOpen f ≤ U` using `X.basicOpen_le f`. Establish `hW'W : X.basicOpen f ≤ W` using `hfg ▸ X.basicOpen_le g`. Establish `hW' : IsAffineOpen (X.basicOpen f)` using `hU.basicOpen f`. Establish `hV : IsAffineOpen (π ⁻¹ᵁ X.basicOpen f)`. Rewrite using `[Scheme.Hom.preimage_basicOpen]`.
+
+Conclude with `hπU.basicOpen _`. Establish `hVU : π ⁻¹ᵁ X.basicOpen f ≤ π ⁻¹ᵁ U` using `fun y hy => hW'U hy`. Establish `h : π ⁻¹ᵁ X.basicOpen f ≤ π ⁻¹ᵁ W` using `fun y hy => hW'W hy`. Use `⟨π ⁻¹ᵁ X.basicOpen f, hV, hz, h, ?_⟩` and prove the remaining obligations. Establish `e1 : MvPolynomial.eval₂Hom (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX (π ≫ p) (π ⁻¹ᵁ X.basicOpen f)) (fun a => (π.appLE W _ h).hom (x a)) = (π.appLE W _ h).hom.comp (MvPolynomial.eval₂Hom (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p W) x)`.
+
+Rewrite using `[MvPolynomial.comp_eval₂Hom, algX_comp p π W _ h]`. Rewrite using `[e1]`. Use `RingHom.Etale.stableUnderComposition _ _ hx ?_` and prove the remaining obligations. Establish `e2 : π.appLE W (π ⁻¹ᵁ X.basicOpen f) h = X.presheaf.map (homOfLE hW'W).op ≫ π.appLE (X.basicOpen f) (π ⁻¹ᵁ X.basicOpen f) le_rfl`. Rewrite using `[Scheme.Hom.map_appLE]`.
+
+Rewrite using `[e2, CommRingCat.hom_comp]`. Use `RingHom.Etale.stableUnderComposition _ _ (etale_map_basicOpen hW g _ hfg hW'W) ?_` and prove the remaining obligations. Establish `ha : IsAffineOpen (U.ι ⁻¹ᵁ X.basicOpen f)` using `hW'.preimage_of_isOpenImmersion U.ι (by rw [Scheme.Opens.opensRange_ι]; exact hW'U)`. Establish `hb : IsAffineOpen ((π ⁻¹ᵁ U).ι ⁻¹ᵁ (π ⁻¹ᵁ X.basicOpen f))` using `hV.preimage_of_isOpenImmersion _ (by rw [Scheme.Opens.opensRange_ι]; exact hVU)`. Establish `e3 : (π ⁻¹ᵁ U).ι ⁻¹ᵁ (π ⁻¹ᵁ X.basicOpen f) ≤ (π ∣_ U) ⁻¹ᵁ (U.ι ⁻¹ᵁ X.basicOpen f)`.
+
+Rewrite using `[← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, morphismRestrict_ι]`. Use `HasRingHomProperty.appLE @Etale (π ∣_ U) hE ⟨_, ha⟩ ⟨_, hb⟩ e3` as an intermediate fact. Rewrite `this` using `[morphismRestrict_appLE]`. Use `(Scheme.Hom.appLE_congr π _ ?_ ?_ (fun φ => RingHom.Etale φ.hom)).1 this` and prove the remaining obligations. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`.
+
+Conclude with `inf_eq_right.2 hW'U`. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`. Conclude with `inf_eq_right.2 hVU`.
+-/
 theorem etale_pullback_coords : ∀ {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k} (π : Y ⟶ X) (hπ : π ≫ p = q) (D δ : ℕ) (U : X.Opens), GlobalTheory.CoverDeg.GoodCover p π D δ U → ∀ (W : X.Opens) (x : Fin D → Γ(X, W)), IsAffineOpen W → (MvPolynomial.eval₂Hom (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p W) x).Etale → ∀ z : Y, π z ∈ U → π z ∈ W → ∃ V : Y.Opens, IsAffineOpen V ∧ z ∈ V ∧ ∃ h : V ≤ π ⁻¹ᵁ W, (MvPolynomial.eval₂Hom (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX q V) (fun a => (π.appLE W V h).hom (x a))).Etale := by
   intro k _ X Y p q π hπ D δ U hG W x hW hx z hzU hzW
   subst hπ

@@ -36,9 +36,15 @@ def Norm (e : Y ⟶ X) (W : X.Opens) (L M : LB X) (w : Cmp W L M) (r : RigD e L)
 
 def FnBij (p : X ⟶ Y) : Prop := ∀ V : Y.Opens, Function.Bijective (p.app V).hom
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ ↦ le_top, fun x _ ↦ exists_chart hL x, fun x _ _ _ ha hb hc ↦ gm_cocycle hL (𝟙 X) x ha hb hc⟩`.
+-/
 theorem isOn_top {L : LB X} (hL : L.IsLB) : IsOn ⊤ L :=
   ⟨fun _ ↦ le_top, fun x _ ↦ exists_chart hL x, fun x _ _ _ ha hb hc ↦ gm_cocycle hL (𝟙 X) x ha hb hc⟩
 
+/- English proof (translation)
+The claim follows from `fun _ ↦ Function.bijective_id`.
+-/
 theorem fnBij_id : FnBij (𝟙 X) := fun _ ↦ Function.bijective_id
 
 variable {S : Scheme.{0}} (A : Over S) [GrpObj A]
@@ -47,6 +53,9 @@ def AddCls {T : Over S} (c : Pic (A ⊗ T).left) : Prop :=
   ∀ (Z : Over S) (a a' : Z ⟶ A) (t : Z ⟶ T),
     CechPic.pull (lift (a * a') t).left c = CechPic.pull (lift a t).left c + CechPic.pull (lift a' t).left c
 
+/- English proof (translation)
+The claim follows from `fun Z a a' t ↦ by simpa only [← pull_comp, ← Over.comp_left, lift_whiskerLeft] using h Z a a' (t ≫ u)`.
+-/
 theorem AddCls.pull {T T' : Over S} {c : Pic (A ⊗ T).left} (h : AddCls A c) (u : T' ⟶ T) :
     AddCls A (CechPic.pull (A ◁ u).left c) := fun Z a a' t ↦ by
   simpa only [← pull_comp, ← Over.comp_left, lift_whiskerLeft] using h Z a a' (t ≫ u)
@@ -64,6 +73,9 @@ def addF : (Over S)ᵒᵖ ⥤ Type 1 where
       CechPic.pull (A ◁ v.unop).left (CechPic.pull (A ◁ u.unop).left c.1)
     rw [MonoidalCategory.whiskerLeft_comp, Over.comp_left, pull_comp]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem addF_map_val {T T' : Over S} (u : T' ⟶ T) (c : (addF A).obj (Opposite.op T)) :
     ((addF A).map u.op c).1 = CechPic.pull (A ◁ u).left c.1 := rfl
 
@@ -72,6 +84,9 @@ variable {A}
 def famCls {T : Over S} {N : LB (A ⊗ T).left} (h : Fam A N) : (addF A).obj (Opposite.op T) :=
   ⟨cls N h.isLB, (isAdditive_iff h.isLB).1 h.add⟩
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `c`. Take `⟨N, hN, rfl⟩` from `cls_surj c`. Conclude with `⟨N, ⟨hN, (isAdditive_iff hN).2 hc⟩, rfl⟩`.
+-/
 theorem famCls_surj {T : Over S} (c : (addF A).obj (Opposite.op T)) :
     ∃ (N : LB (A ⊗ T).left) (h : Fam A N), famCls h = c := by
   obtain ⟨c, hc⟩ := c
@@ -80,9 +95,15 @@ theorem famCls_surj {T : Over S} (c : (addF A).obj (Opposite.op T)) :
 
 omit [GrpObj A] in
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp`.
+-/
 theorem whiskerLeft_eq_lift {T T' : Over S} (u : T' ⟶ T) : A ◁ u = lift (fst A T') (snd A T' ≫ u) := by
   ext <;> simp
 
+/- English proof (translation)
+Use `(same_iff hN.isLB hM.isLB y u).trans (Iff.trans ?_ Subtype.ext_iff.symm)` and prove the remaining obligations. Rewrite using `[addF_map_val, addF_map_val, whiskerLeft_eq_lift, whiskerLeft_eq_lift]`. Both sides reduce to the same expression.
+-/
 theorem same_iff_map {T U Z : Over S} {N : LB (A ⊗ T).left} {M : LB (A ⊗ U).left} (hN : Fam A N) (hM : Fam A M)
     (y : Z ⟶ T) (u : Z ⟶ U) : Same A N M y u ↔ (addF A).map y.op (famCls hN) = (addF A).map u.op (famCls hM) := by
   refine (same_iff hN.isLB hM.isLB y u).trans (Iff.trans ?_ Subtype.ext_iff.symm)

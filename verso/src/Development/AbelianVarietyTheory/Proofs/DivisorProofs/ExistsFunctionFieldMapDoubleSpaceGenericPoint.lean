@@ -11,6 +11,15 @@ noncomputable section
 
 namespace GlobalTheory.FlagPush
 
+/- English proof (translation)
+Introduce `F _ Y W K _ ψ₁ ψ₂ ζ h h₁ h₂`. Establish `hs : ζ (IsLocalRing.closedPoint K) ⤳ genericPoint W.Z` using `h ▸ specializes_rfl`. Set `j : W.Z.functionField →+* K` to `(W.Z.presheaf.stalkSpecializes hs ≫ Scheme.stalkClosedPointTo (R := .of K) ζ).hom`. Establish `e : spMap j ≫ W.Z.fromSpecStalk (genericPoint W.Z) = ζ`. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom j) ≫ W.Z.fromSpecStalk (genericPoint W.Z) = ζ`.
+
+Rewrite using `[CommRingCat.ofHom_hom, Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk]`. Conclude with `spMap_stalkClosedPointTo ζ`. Establish `key : ∀ (p : W.Z ⟶ Y.X) [IsDominant p] (ψ : Y.Fn →+* K), ζ ≫ p = spMap ψ ≫ (ratOf Y).pt → j.comp (functionFieldMap p) = ψ`. Introduce `p _ ψ hp`. Establish `e2 : spMap (j.comp (functionFieldMap p)) ≫ Y.X.fromSpecStalk (genericPoint Y.X) = spMap ψ ≫ Y.X.fromSpecStalk (genericPoint Y.X)`.
+
+Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (j.comp (functionFieldMap p))) ≫ genericFieldPoint Y.X = _`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc, specMap_functionFieldMap, ← Category.assoc]`. Express the relevant statement in the definitionally equal form `(spMap j ≫ W.Z.fromSpecStalk (genericPoint W.Z)) ≫ p = _`. Rewrite using `[e, hp]`. Both sides reduce to the same expression.
+
+Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective ((cancel_mono _).mp e2))`. Conclude with `⟨j, key W.p₁ ψ₁ h₁, key W.p₂ ψ₂ h₂⟩`.
+-/
 theorem exists_functionField_map_of_genericPoint :
     ∀ (F : Type) [Field F] (Y : Var F) (W : Dbl Y), ∀ (K : Type) [Field K] (ψ₁ ψ₂ : Y.Fn →+* K)
       (ζ : Sp K ⟶ W.Z), ζ (IsLocalRing.closedPoint K) = genericPoint W.Z → ζ ≫ W.p₁ = spMap ψ₁ ≫ (ratOf Y).pt →

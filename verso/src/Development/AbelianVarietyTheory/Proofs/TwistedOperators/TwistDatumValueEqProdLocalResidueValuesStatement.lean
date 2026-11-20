@@ -7,6 +7,9 @@ open scoped TensorProduct ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.StepVec.omegaQ_one_eq_prod_qLoc | exact GlobalTheory.StepVec.omegaQ_one_eq_prod_qLoc | (intros; apply GlobalTheory.StepVec.omegaQ_one_eq_prod_qLoc <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twistDatumValue_eq_prod_localResidueValues : ∀ (D : D7) (a b r : ℕ) (Q : Finset (Formalism.L2.DIV.Pl D.host.E))
     (ξ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ)
     (y : ∀ PP : Formalism.L2.DIV.Pl D.host.E, Matrix (Fin b) (Fin a) (Formalism.L2.DIV.kP PP)),

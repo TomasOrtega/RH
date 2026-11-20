@@ -10,6 +10,19 @@ noncomputable section
 
 namespace GlobalTheory.TrEll
 
+/- English proof (translation)
+Set `ψ : Fld P →ₐ[E] Matrix (Fin n) (Fin n) E` to `Ideal.Quotient.liftₐ (Ideal.span {P.1}) (Polynomial.aeval A) (fun a ha => by`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Rewrite using `[map_mul, ← hA, Matrix.aeval_self_charpoly, mul_zero])`. Establish `hψα : ψ (alpha P) = A`. Express the relevant statement in the definitionally equal form `Polynomial.aeval A Polynomial.X = A`.
+
+Conclude with `Polynomial.aeval_X A`. Establish `hdim : Module.finrank E (Fld P) = n`. Establish `h1` using `(AdjoinRoot.powerBasis P.2.2.1.ne_zero).finrank`. Rewrite `h1` using `[AdjoinRoot.powerBasis_dim]`. Conclude with `h1.trans P.2.2.2.1`.
+
+Establish `hpos : 0 < n` using `hdim ▸ Module.finrank_pos`. Use `haveI : Nonempty (Fin n) := ⟨⟨0, hpos⟩⟩`. Take `⟨v, hv⟩` from `exists_ne (0 : Fin n → E)`. Set `f : Fld P →ₗ[E] (Fin n → E)` to `{ toFun := fun y => ψ y *ᵥ v map_add' := fun y z => by simp [Matrix.add_mulVec] map_smul' := fun c y => by simp [Matrix.smul_mulVec] }`. Establish `hinj : Function.Injective f`.
+
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Assume the negation of the conclusion as `hne`. Apply `hv` to reduce the goal to its premises. Establish `h1 : ψ y⁻¹ * ψ y = 1` using `by rw [← map_mul, inv_mul_cancel₀ hne, map_one]`.
+
+Establish `h2 : ψ y *ᵥ v = 0` using `hy`. Combine the equalities or inequalities in the displayed calculation. Use `⟨LinearMap.linearEquivOfInjective f hinj (by rw [hdim, Module.finrank_fin_fun]), fun y => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.linearEquivOfInjective_apply]`. Express the relevant statement in the definitionally equal form `A *ᵥ (ψ y *ᵥ v) = ψ (alpha P * y) *ᵥ v`.
+
+Rewrite using `[map_mul, hψα, Matrix.mulVec_mulVec]`.
+-/
 theorem exists_linearEquiv_mulVec_of_charpoly (F E : Type) [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (P : PPol σ n) (A : Matrix (Fin n) (Fin n) E) (hA : A.charpoly = P.1) :
     ∃ φ : Fld P ≃ₗ[E] (Fin n → E), ∀ y, A *ᵥ φ y = φ (alpha P * y) := by

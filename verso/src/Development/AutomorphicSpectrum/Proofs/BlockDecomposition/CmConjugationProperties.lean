@@ -8,6 +8,29 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.HS
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hinv : ∀ x, σ (σ x) = x`. Introduce `x`. Apply `τ.injective` to reduce the goal to its premises.
+
+Rewrite using `[h.2.2.2, h.2.2.2, star_star]`. Establish `hval : ∀ o : 𝓞 E, ((sO σ o : 𝓞 E) : E) = σ (o : E)` using `fun o => rfl`. Establish `hmoved : ∃ θ : E, σ θ ≠ θ`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+
+Establish `hc'` using `h.2.1`. Use `IsTotallyComplex.complexEmbedding_not_isReal τ ?_` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `y`. Use `h.2.2.2 τ y` as an intermediate fact.
+
+Rewrite `this` using `[hc y]`. Simplify using `using this.symm`. Use `⟨hinv, ?_, hval, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Assume the negation of the conclusion as `hne`.
+
+Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [h.2.2.1]; norm_num)`. Establish `hli : LinearIndependent F ![(1 : E), x]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Distinguish the cases in `ht : t = 0`.
+
+Substitute `ht` using the available equality. Use `⟨?_, rfl⟩` and prove the remaining obligations. Simplify using `using hst`. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises.
+
+Use `⟨-s / t, ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap F E s + algebraMap F E t * x = 0`. Simplify `hst` using `[Algebra.smul_def]`. Establish `ht' : algebraMap F E t ≠ 0` using `by simpa using ht`. Rewrite using `[map_div₀, map_neg, div_eq_iff ht']`.
+
+Take the linear combination `-h1`. Establish `hspan : Submodule.span F (Set.range ![(1 : E), x]) = ⊤` using `hli.span_eq_top_of_card_eq_finrank' (by rw [h.2.2.1]; simp)`. Establish `hid : σ.toLinearMap = LinearMap.id`. Use `LinearMap.ext_on_range hspan ?_` and prove the remaining obligations. Introduce `i`.
+
+Use `fin_cases i`. Simplify using the standard rewrite rules. Simplify using `using hx`. Take `⟨θ, hθ⟩` from `hmoved`. Conclude with `hθ (by simpa using LinearMap.congr_fun hid θ)`.
+
+Introduce `I`. Establish `hs : ∀ o : 𝓞 E, sO σ (sO σ o) = o`. Introduce `o`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[hval, hval, hinv]`.
+
+Set `e : 𝓞 E ≃+* 𝓞 E` to `RingEquiv.ofRingHom (sO σ) (sO σ) (RingHom.ext hs) (RingHom.ext hs)`. Conclude with `GlobalTheory.absNorm_map_ringEquiv_self e I`.
+-/
 theorem isCMExt_conj_fixed_integers : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → (∀ x, σ (σ x) = x) ∧
       (∀ x, σ x = x → ∃ y : F, algebraMap F E y = x) ∧

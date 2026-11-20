@@ -15,6 +15,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ConstNorm
 
+/- English proof (translation)
+Establish `hv : CubeValues.ValueRules` using `valAt'_rules`. Establish `hch : ∀ y : W, ∃ i, ⊤ ≤ e y ⁻¹ᵁ L.U i` using `fun y => by`. Establish `h : e y (default : PrimeSpectrum ℂ) ∈ (⨆ i, L.U i)` using `by rw [hL.cover]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 h`. Conclude with `⟨i, (top_le_preimage_iff_mem _ _).2 hi⟩`.
+
+Use `choose ch hch using hch`. Establish `hiff : ∀ z (j : K → L.ι), ⊤ ≤ c z ⁻¹ᵁ LB.wchart L m j ↔ ∀ k, ⊤ ≤ e (w k z) ⁻¹ᵁ L.U (j k)` using `fun z j => by`. Simplify using `only [CubeValues.le_preimage_wchart, hw]`. Set `R : (K → L.ι) → V → ℂ` to `fun j z => valAt' (c z) (LB.wchart L m j) (α.s j).val * ∏ k, fr (j k) (w k z) ^ (-ε k)`. Set `r : V → ℂ` to `fun z => R (fun k => ch (w k z)) z`.
+
+Establish `hc0 : ∀ z, ⊤ ≤ c z ⁻¹ᵁ LB.wchart L m (fun k => ch (w k z))` using `fun z => (hiff z _).2 fun k => hch _`. Establish `hrR : ∀ z (j : K → L.ι), (∀ k, ⊤ ≤ e (w k z) ⁻¹ᵁ L.U (j k)) → r z = R j z` using `fun z j hj => by`. Establish `hj'` using `(hiff z j).2 hj`. Establish `e1` using `(CubeValues.val_gen _ hv α hα _ j (hc0 z) hj').trans (congrArg (· * _) (CubeValues.val_linComb (c z) hv L _ _ _ j (hc0 z) hj'))`. Simplify using `only [hw] at e1`.
+
+Use `(congrArg (fun t => t * _) e1).trans ?_` and prove the remaining obligations. Rewrite using `[mul_right_comm, _root_.mul_comm, ← Finset.prod_mul_distrib]`. Use `congrArg (_ * ·) (Finset.prod_congr rfl fun k _ => ?_)` and prove the remaining obligations. Establish `k0` using `(CubeValues.le_preimage_inf _ _ _).2 ⟨hch (w k z), hj k⟩`. Establish `n0` using `zpow_ne_zero (ε k) (CubeValues.val_unit_ne_zero _ hv k0 (L.g _ _))`.
+
+Rewrite using `[hcomp _ _ _ k0, mul_zpow, zpow_neg, mul_inv_cancel_left₀ n0]`. Establish `hopen : ∀ i, IsOpen {z | ⊤ ≤ e z ⁻¹ᵁ L.U i}` using `fun i => by simpa using (he (L.U i) 0).1`. Use `⟨r, fun z => ?_, fun z => ?_, fun z j hj => ?_⟩` and prove the remaining obligations. Use `set j : K → L.ι := fun k => ch (w k z)`. Take `⟨ho, hd'⟩` from `hc _ (α.s j).val`.
+
+Establish `hn` using `ho.mem_nhds ⟨Set.mem_univ z, hc0 z⟩`. Establish `d1 : ∀ k, DifferentiableAt ℂ (fun y => fr (j k) (w k y) ^ (-ε k)) z` using `fun k => (((hd _).differentiableAt ((hopen _).mem_nhds (hch (w k z)))).comp z (hwd k z)).zpow (Or.inl (hne _ _ (hch (w k z))))`. Establish `hq : DifferentiableAt ℂ (R j) z` using `(hd'.differentiableAt hn).mul (HasFDerivAt.finset_prod fun k _ => (d1 k).hasFDerivAt).differentiableAt`. Use `hq.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hn] with y hy`.
+
+Conclude with `hrR y j ((hiff y j).1 hy.2)`. Conclude with `mul_ne_zero (CubeValues.val_unit_ne_zero _ hv (hc0 z) _) (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hne _ _ (hch _)))`. Rewrite using `[hrR z j hj]`. Simplify using `only [R]`. Rewrite using `[_root_.mul_assoc, ← Finset.prod_mul_distrib, Finset.prod_eq_one, _root_.mul_one]`.
+
+Introduce `k _`. Rewrite using `[← zpow_add₀ (hne _ _ (hj k)), neg_add_cancel, zpow_zero]`.
+-/
 theorem exists_entire {V W : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedAddCommGroup W] [NormedSpace ℂ W]
     {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {e : W → (Sp ℂ ⟶ X)} (he : IsHolTo Set.univ e)
     {c : V → (Sp ℂ ⟶ Y)} (hc : IsHolTo Set.univ c) {fr : L.ι → W → ℂ}
@@ -73,6 +90,9 @@ theorem exists_entire {V W : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [N
 
 open AppellHumbertTrivial in
 
+/- English proof (translation)
+Rewrite using `[h, norm_mul, norm_mul, hχ, _root_.one_mul, Complex.norm_exp, _root_.mul_comm _ ‖y‖, _root_.mul_assoc, ← Real.exp_add, re_hermForm_add_self hH]`. Establish `e : ((Real.pi : ℂ) / 2) = ((Real.pi / 2 : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[e, Complex.add_re, Complex.re_ofReal_mul, Complex.re_ofReal_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_mul_exp_add {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian) {x y χ : ℂ} {z l : Fin g → ℂ}
     (hχ : ‖χ‖ = 1) (h : x = χ * Complex.exp (Real.pi * hermForm Hm z l + Real.pi / 2 * hermForm Hm l l) * y) :
     ‖y‖ * Real.exp (Real.pi / 2 * (hermForm Hm (z + l) (z + l)).re) =
@@ -86,6 +106,15 @@ theorem norm_mul_exp_add {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.Is
 
 open AppellHumbertTrivial in
 
+/- English proof (translation)
+Use `⟨fun z => ∑ k, (((ε k * n k * Real.pi : ℝ) : ℂ) * hermForm Hm z (a k) + ((ε k * (Real.pi / 2) : ℝ) : ℂ) * hermForm Hm (a k) (a k)), ?_, fun z => ?_⟩` and prove the remaining obligations. Unfold `hermForm dotProduct fun_prop`. Establish `hz : ∀ (t : ℝ) (s : ℤ), Real.exp t ^ s = Real.exp (s * t)` using `fun t s => by`. Rewrite using `[← Real.rpow_intCast, ← Real.exp_mul, _root_.mul_comm]`. Simplify using `only [hz]`.
+
+Rewrite using `[← Real.exp_sum, Complex.re_sum]`. Use `congr 1`. Establish `h1 : ∑ k, ((ε k * n k ^ 2 : ℤ) : ℝ) * (Real.pi / 2 * (hermForm Hm z z).re) = 0`. Rewrite using `[← Finset.sum_mul, ← Int.cast_sum, h0, Int.cast_zero, zero_mul]`. Rewrite using `[← add_zero (∑ k, _), ← h1, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[re_hermForm_add_self hH, hermForm_smul_left, hermForm_smul_left, hermForm_smul_right]`. Simplify using `only [Complex.add_re, Complex.re_ofReal_mul, star_intCast]`. Rewrite using `[← Complex.ofReal_intCast, Complex.re_ofReal_mul, Complex.re_ofReal_mul, Complex.re_ofReal_mul]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_entire_weight {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian) {K : Type} [Fintype K]
     (ε n : K → ℤ) (a : K → Fin g → ℂ) (h0 : ∑ k, ε k * n k ^ 2 = 0) :
     ∃ φ : (Fin g → ℂ) → ℂ, Differentiable ℂ φ ∧ ∀ z, Real.exp (φ z).re =
@@ -109,6 +138,11 @@ theorem exists_entire_weight {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : H
     push_cast
     ring
 
+/- English proof (translation)
+Establish `h1 : ∀ z, (Out.ptSecT G (e z)).left ≫ (fst (Over.mk y) G).left = 𝟙 _` using `fun z => by`. Rewrite using `[← Over.comp_left, Out.ptSecT, lift_fst, Over.id_left]`. Establish `h2 : ∀ z, (Out.ptSecT G (e z)).left ≫ (snd (Over.mk y) G).left = (e z).left` using `fun z => by`. Rewrite using `[← Over.comp_left, Out.ptSecT, lift_snd]`. Use `HolFibre.isHolTo_of_isPullback (Z := (Over.mk y ⊗ G).left) (p := (fst (Over.mk y) G).left) (q := (snd (Over.mk y) G).left) (s := (Over.mk y).hom) (t := G.hom) (IsPullback.of_hasPullback (Over.mk y).hom G.hom) ?_ ?_` and prove the remaining obligations.
+
+Conclude with `(funext h1).symm ▸ HolFibre.isHolTo_const isOpen_univ _`. Conclude with `(funext h2).symm ▸ he`.
+-/
 theorem isHolTo_ptSecT {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X : Scheme.{0}} (G : Over X)
     (y : Sp ℂ ⟶ X) (e : V → (Over.mk y ⟶ G)) (he : IsHolTo Set.univ fun z => (e z).left) :
     IsHolTo Set.univ fun z => (Out.ptSecT G (e z)).left := by
@@ -122,6 +156,9 @@ theorem isHolTo_ptSecT {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X 
   · exact (funext h1).symm ▸ HolFibre.isHolTo_const isOpen_univ _
   · exact (funext h2).symm ▸ he
 
+/- English proof (translation)
+Introduce `U f` and use `by obtain ⟨ho, hf⟩ := he U f have hι : Differentiable ℂ (fun w : W => (v, w)) := by fun_prop refine ⟨?_, hf.comp hι.differentiableOn fun z hz => ⟨⟨trivial, trivial⟩, hz.2⟩⟩ have h := ho.preimage hι.continuous simp only [Set.univ_prod_univ] at h exact h`.
+-/
 theorem isHolTo_slice {V W : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedAddCommGroup W] [NormedSpace ℂ W]
     {X : Scheme.{0}} {e : V × W → (Sp ℂ ⟶ X)} (he : IsHolTo (Set.univ ×ˢ Set.univ) e) (v : V) :
     IsHolTo Set.univ fun w => e (v, w) := fun U f => by
@@ -132,6 +169,23 @@ theorem isHolTo_slice {V W : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [N
   simp only [Set.univ_prod_univ] at h
   exact h
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo σ g ty Fu i Pm Hm χl fr hP hF K _ m ε n a α hα h0 hm`. Take `⟨hH, -, -, hd, hne, hcomp, -, hAH⟩` from `hF`. Establish `he : IsHolTo Set.univ (fun z => (Fu.ex i Pm z).left)` using `isHolTo_slice (Fu.hol i 0 Set.univ (fun _ => Pm) isOpen_univ ⟨fun _ _ => hP, fun _ => differentiableOn_const _⟩).2 0`. Establish `hc` using `isHolTo_ptSecT Xo.univ.t.G _ _ he`. Establish `hper : ∀ z b, Fu.ex i Pm (z + Pm b) = Fu.ex i Pm z` using `fun z b => by`.
+
+Rewrite using `[Fu.ex_add i Pm hP, (Fu.ex_ker i Pm hP _).2 ⟨b, rfl⟩, _root_.mul_one]`. Establish `hL : Xo.univ.t.PP.L.IsLB` using `Xo.univ.t.PP.isLB`. Take `⟨r, hrd, hr0, hr⟩` from `exists_entire hL he hc hd hne hcomp (w := fun k z => (n k : ℂ) • z + a k) (fun k => by fun_prop) hm α hα`. Take `⟨φ, hφd, hφ⟩` from `exists_entire_weight hH ε n a h0`. Set `F : (Fin g → ℂ) → ℂ` to `fun z => r z * Complex.exp (-φ z)`.
+
+Establish `hFd : Differentiable ℂ F` using `hrd.mul hφd.neg.cexp`. Establish `key : ∀ (z : Fin g → ℂ) (j : K → Xo.univ.t.PP.L.ι), (∀ k, ⊤ ≤ (Fu.ex i Pm ((n k : ℂ) • z + a k)).left ⁻¹ᵁ Xo.univ.t.PP.L.U (j k)) → ‖valAt' (Out.ptSecT Xo.univ.t.G (Fu.ex i Pm z)).left ((LB.LinComb Xo.univ.t.PP.L m ε).U j) (α.s j).val‖ = ‖F z‖ * ∏ k, (‖fr (j k) ((n k : ℂ) • z + a …` using `fun z j hj => by`. Use `(congrArg norm (hr z j hj)).trans ?_` and prove the remaining obligations. Simplify using `only [F, mul_zpow, Finset.prod_mul_distrib, ← hφ, norm_mul, norm_prod, norm_zpow, Complex.norm_exp, Complex.neg_re, Real.exp_neg]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hFp : ∀ b z, ‖F (z + Pm b)‖ = ‖F z‖` using `fun b z => by`. Establish `hch : ∀ k, ∃ j, ⊤ ≤ (Fu.ex i Pm ((n k : ℂ) • z + a k)).left ⁻¹ᵁ Xo.univ.t.PP.L.U j` using `fun k => by`. Establish `h : (Fu.ex i Pm ((n k : ℂ) • z + a k)).left (default : PrimeSpectrum ℂ) ∈ (⨆ j, Xo.univ.t.PP.L.U j)` using `by rw [hL.cover]; trivial`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 h`. Conclude with `⟨j, (top_le_preimage_iff_mem _ _).2 hj⟩`.
+
+Use `choose j hj using hch`. Establish `hs : ∀ k, (n k : ℂ) • (z + Pm b) + a k = (n k : ℂ) • z + a k + Pm (n k • b)` using `fun k => by`. Rewrite using `[map_zsmul, ← Int.cast_smul_eq_zsmul ℂ, smul_add]`. Normalize the expressions using the abelian group laws. Establish `e1` using `key z j hj`.
+
+Establish `e2` using `key (z + Pm b) j fun k => by rw [hs, hper]; exact hj k`. Rewrite `e2` using `[hper, e1]`. Simplify using `only [hs] at e2`. Rewrite `e2` using `[Finset.prod_congr rfl fun k _ => congrArg (· ^ ε k) (norm_mul_exp_add hH (hAH (n k • b) (j k) ((n k : ℂ) • z + a k)).1 ((hAH (n k • b) (j k) _).2 (hj k)))]`. Conclude with `(mul_right_cancel₀ (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (mul_ne_zero (norm_ne_zero_iff.2 (hne _ _ (hj k))) (Real.exp_ne_zero _))) e2).symm`.
+
+Use `haveI : DiscreteTopology (AddSubgroup.toIntSubmodule Pm.range) := hP.2.2.1`. Establish `hb : Bornology.IsBounded (Set.range F)`. Take `⟨C, hC⟩` from `isBounded_iff_forall_norm_le.1 (AppellHumbertTrivial.exists_bound_of_periodic (AddSubgroup.toIntSubmodule Pm.range) hP.2.2.2.1 (fun z => ‖F z‖) hFd.continuous.norm (by rintro ⟨_, b, rfl⟩ z; exact hFp b z))`. Rewrite using `[isBounded_iff_forall_norm_le]`. Use `⟨C, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨z, rfl⟩`. Simplify using `using hC _ ⟨z, rfl⟩`. Use `⟨‖F 0‖, norm_pos_iff.2 (mul_ne_zero (hr0 0) (Complex.exp_ne_zero _)), fun z j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[key z j hj, hFd.apply_eq_apply_of_bounded hb z 0]`.
+-/
 theorem norm_gen_eq_const_mul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (σ : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (Fu : FamilyUnif Xo σ ty) (i : Fin Fu.n) (Pm : (Fu.Di i).La →+ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ) (χl : (Fin g → ℂ) → ℂ) (fr : Xo.univ.t.PP.L.ι → (Fin g → ℂ) → ℂ), IsPeriod (Fu.Di i) ty Pm → AHFrame Fu i Pm Hm χl fr → ∀ (K : Type) [Fintype K] (m : K → (Gx (Fu.u i Pm) ⟶ Xo.univ.t.G.left)) (ε n : K → ℤ) (a : K → Fin g → ℂ) (α : LB.Gen (LB.LinComb Xo.univ.t.PP.L m ε)), α.IsGen → ∑ k, ε k * n k ^ 2 = 0 → (∀ k z, (Out.ptSecT Xo.univ.t.G (Fu.ex i Pm z)).left ≫ m k = (Fu.ex i Pm ((n k : ℂ) • z + a k)).left) → ∃ C : ℝ, 0 < C ∧ ∀ (z : Fin g → ℂ) (j : K → Xo.univ.t.PP.L.ι), (∀ k, ⊤ ≤ (Fu.ex i Pm ((n k : ℂ) • z + a k)).left ⁻¹ᵁ Xo.univ.t.PP.L.U (j k)) → ‖valAt' (Out.ptSecT Xo.univ.t.G (Fu.ex i Pm z)).left ((LB.LinComb Xo.univ.t.PP.L m ε).U j) (α.s j).val‖ = C * ∏ k, (‖fr (j k) ((n k : ℂ) • z + a k)‖ * Real.exp (Real.pi / 2 * (hermForm Hm ((n k : ℂ) • z + a k) ((n k : ℂ) • z + a k)).re)) ^ ε k := by
   intro E _ _ _ H Dw l Xo σ g ty Fu i Pm Hm χl fr hP hF K _ m ε n a α hα h0 hm
   obtain ⟨hH, -, -, hd, hne, hcomp, -, hAH⟩ := hF

@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `R _ W _ _ S L x y hx hy`. Take `⟨s, hs, hx⟩` from `hx`. Take `⟨t, ht, hy⟩` from `hy`. Use `⟨s * t, S.mul_mem hs ht, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`.
+
+Use `L.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `L.smul_mem t hx`. Rewrite using `[mul_smul]`. Conclude with `L.smul_mem s hy`.
+-/
 theorem UpperTheory.Reformulated.B.Qi33.aux1.{u_1, u_2} :
     ∀ {R : Type u_2} [inst : CommRing R] {W : Type u_1} [inst_1 : AddCommGroup W] [inst_2 : _root_.Module R W]
       (S : Submonoid R) (L : Submodule R W) {x y : W},
@@ -15,12 +20,18 @@ theorem UpperTheory.Reformulated.B.Qi33.aux1.{u_1, u_2} :
   · rw [mul_smul]
     exact L.smul_mem s hy
 
+/- English proof (translation)
+Introduce `R _ W _ _ S L`. Conclude with `⟨1, S.one_mem, by simp⟩`.
+-/
 theorem UpperTheory.Reformulated.B.Qi33.aux2.{u_1, u_2} :
     ∀ {R : Type u_1} [inst : CommRing R] {W : Type u_2} [inst_1 : AddCommGroup W] [inst_2 : _root_.Module R W]
       (S : Submonoid R) (L : Submodule R W), ∃ s ∈ S, s • (0 : W) ∈ L := by
   intro R _ W _ _ S L
   exact ⟨1, S.one_mem, by simp⟩
 
+/- English proof (translation)
+Introduce `R _ W _ _ S L r x hx`. Take `⟨s, hs, hx⟩` from `hx`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm]`. Conclude with `L.smul_mem r hx`.
+-/
 theorem UpperTheory.Reformulated.B.Qi33.aux3.{u_1, u_2} :
     ∀ {R : Type u_2} [inst : CommRing R] {W : Type u_1} [inst_1 : AddCommGroup W] [inst_2 : _root_.Module R W]
       (S : Submonoid R) (L : Submodule R W) (r : R) {x : W},
@@ -51,6 +62,13 @@ noncomputable def UpperTheory.Reformulated.B.Qi33.localization₂.{u_1, u_4} :
         (L : Submodule R W) ↦
       UpperTheory.Reformulated.B.Qi33.locS p.primeCompl L
 
+/- English proof (translation)
+Rewrite using `[IsLocalization.mem_span_iff S, Submodule.span_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hx⟩`. Use `⟨s • x, hx, ⟨s, hs⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul R' s x, smul_smul]`.
+
+Establish `h` using `IsLocalization.mk'_spec R' (1 : R) (⟨s, hs⟩ : S)`. Simplify using `only [map_one] at h`. Rewrite using `[h, one_smul]`. Introduce and unpack `⟨y, hy, z, rfl⟩`. Use `⟨z, z.2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← algebraMap_smul R' (z : R), smul_smul]`. Establish `h` using `IsLocalization.mk'_spec' R' (1 : R) z`. Simplify using `only [map_one] at h`. Rewrite using `[h, one_smul]`. Conclude with `hy`.
+-/
 private theorem UpperTheory.Reformulated.B.Qi33.mem_locS_iff {R : Type*} [CommRing R] {W : Type*} [AddCommGroup W]
     [Module R W] (S : Submonoid R) (R' : Type*) [CommRing R'] [Algebra R R'] [IsLocalization S R']
     [Module R' W] [IsScalarTower R R' W] (L : Submodule R W) (x : W) :
@@ -71,6 +89,15 @@ private theorem UpperTheory.Reformulated.B.Qi33.mem_locS_iff {R : Type*} [CommRi
     rw [h, one_smul]
     exact hy
 
+/- English proof (translation)
+Use `haveI : Module.Finite D M := Module.Finite.iff_fg.mpr hM`. Use `haveI : Module.IsTorsionFree D Z := Module.IsTorsionFree.trans_faithfulSMul D K Z`. Use `haveI : Module.Free D M := inferInstance`. Set `c` to `Module.finBasis D M`. Set `v : Fin (Module.finrank D M) → Z` to `fun i => (c i : Z)`.
+
+Establish `hli : LinearIndependent D v` using `c.linearIndependent.map' M.subtype M.ker_subtype`. Establish `hliK : LinearIndependent K v` using `(LinearIndependent.iff_fractionRing D K).mp hli`. Establish `hsp : Submodule.span D (Set.range v) = M`. Establish `h1 : Set.range v = M.subtype '' Set.range c`. Rewrite using `[← Set.range_comp]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1, ← Submodule.map_span, c.span_eq, Submodule.map_top, Submodule.range_subtype]`. Establish `hspK : ⊤ ≤ Submodule.span K (Set.range v)`. Rewrite using `[← Submodule.span_span_of_tower D K (Set.range v), hsp, hs]`. Set `b0` to `Module.Basis.mk hliK hspK`.
+
+Establish `hn : Module.finrank K Z = Module.finrank D M`. Simplify using `using Module.finrank_eq_card_basis b0`. Use `⟨b0.reindex (finCongr hn.symm), ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.range_reindex, Module.Basis.coe_mk, hsp]`.
+-/
 private theorem UpperTheory.Reformulated.B.Qi33.exists_basis_of_pid {D K Z : Type} [CommRing D] [IsDomain D]
     [IsPrincipalIdealRing D] [Field K] [Algebra D K] [IsFractionRing D K] [AddCommGroup Z]
     [Module K Z] [Module D Z] [IsScalarTower D K Z] (M : Submodule D Z) (hM : M.FG)
@@ -95,6 +122,13 @@ private theorem UpperTheory.Reformulated.B.Qi33.exists_basis_of_pid {D K Z : Typ
   refine ⟨b0.reindex (finCongr hn.symm), ?_⟩
   rw [Module.Basis.range_reindex, Module.Basis.coe_mk, hsp]
 
+/- English proof (translation)
+Introduce `K _ _ _ Z _ _ _ _ _ w A hA hsp`. Set `D` to `Localization.subalgebra.ofField K w.asIdeal.primeCompl (Ideal.primeCompl_le_nonZeroDivisors w.asIdeal)`. Use `haveI hloc : IsLocalization w.asIdeal.primeCompl D := Localization.subalgebra.isLocalization_ofField K _ _`. Use `haveI : IsFractionRing D K := Localization.subalgebra.isFractionRing_ofField K _ _`. Use `haveI : IsDiscreteValuationRing D := IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (NumberField.RingOfIntegers K) w.ne_bot D`.
+
+Use `haveI : IsScalarTower (NumberField.RingOfIntegers K) D Z := IsScalarTower.of_algebraMap_smul fun r z => algebraMap_smul K r z`. Establish `hfg : (Submodule.span D (A : Set Z)).FG`. Take `⟨t, rfl⟩` from `hA`. Conclude with `⟨t, (Submodule.span_span_of_tower _ _ _).symm⟩`. Take `⟨b, hb⟩` from `UpperTheory.Reformulated.B.Qi33.exists_basis_of_pid (D := D) (K := K) _ hfg (by rw [Submodule.span_span_of_tower, hsp])`.
+
+Use `⟨b, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Unfold `UpperTheory.Reformulated.B.Qi33.localization₂`. Rewrite using `[UpperTheory.Reformulated.B.Qi33.mem_locS_iff _ D, UpperTheory.Reformulated.B.Qi33.mem_locS_iff _ D, Submodule.span_span_of_tower, hb]`.
+-/
 theorem UpperTheory.Reformulated.B.Qi33.exists_loc_basis :
     ∀ {K : Type} [inst : Field K] [NumberField K] [StarRing K] {Z : Type} [inst_3 : AddCommGroup Z]
       [inst_4 : _root_.Module K Z] [inst_5 : _root_.Module (NumberField.RingOfIntegers K) Z]

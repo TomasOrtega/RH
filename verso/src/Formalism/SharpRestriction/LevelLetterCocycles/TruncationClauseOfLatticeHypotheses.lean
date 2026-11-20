@@ -8,6 +8,11 @@ namespace Formalism.MainNotions.CrystallineLiftingInputs.truncatedSeriesData
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc
 
+/- English proof (translation)
+Use `⟨Formalism.MainNotions.CrystallineLiftingInputs.TToolAlg_holds, fun l _ K LL hg _ => ?_⟩` and prove the remaining obligations. Establish `hP9W : Formalism.MainNotions.DeltaInvariantLattices.P9W ((HW l).W K 1 LL hg)` using `hP9 l K 1 LL hg`. Establish `hinj : Function.Injective (algebraMap ↥(OL LL) ↥LL.1)` using `Subtype.val_injective`. Establish `hO2 : ∀ x : ↥LL.1, 0 ≤ (D.loc l).v LL x → ∃ o : ↥(OL LL), algebraMap ↥(OL LL) ↥LL.1 o = x` using `fun x hx => ⟨⟨x, ((D.loc l).v_O LL x).1 hx⟩, rfl⟩`. Use `letI : IsLocalRing ↥(OL LL) := Formalism.MainNotions.LiftingTheory.lkd_local (D.loc l) LL`.
+
+Establish `: IsAdicComplete (IsLocalRing.maximalIdeal ↥(OL LL)) ↥(OL LL)` using `Formalism.MainNotions.CrystallineLiftingInputs.OL.OL_complete_max (D.loc l) LL`. Establish `hlm : (((((D.loc l).PD K).p : ℕ)) : ↥(OL LL)) ∈ IsLocalRing.maximalIdeal ↥(OL LL)`. Rewrite using `[(D.loc l).PD_p K]`. Conclude with `Formalism.MainNotions.CrystallineLiftingInputs.OL.l_mem_max (D.loc l) LL`. Conclude with `⟨tTool1_of _ hinj hO2 hP9W (h8 l K 1 LL hg), tTool2_of _ hinj hO2 hlm hP9W (h8 l K 1 LL hg) (h9 l K 1 LL hg)⟩`.
+-/
 theorem truncation_clause_of_lattice_hypotheses (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F)
     (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F) (h8 : Formalism.MainNotions.CrystallineLiftingInputs.adm8 D HW F) (h9 : Formalism.MainNotions.CrystallineLiftingInputs.adm9 D HW F) :
     Formalism.MainNotions.CrystallineLiftingInputs.adm15 D HW F Cm := by
@@ -23,6 +28,11 @@ theorem truncation_clause_of_lattice_hypotheses (D : D7) (HW : HWOf D.loc) (F : 
   exact ⟨tTool1_of _ hinj hO2 hP9W (h8 l K 1 LL hg),
     tTool2_of _ hinj hO2 hlm hP9W (h8 l K 1 LL hg) (h9 l K 1 LL hg)⟩
 
+/- English proof (translation)
+Introduce `l _ K LL hg _`. Establish `hP9W : Formalism.MainNotions.DeltaInvariantLattices.P9W ((HW l).W K 1 LL hg)` using `hP9 l K 1 LL hg`. Establish `hinj : Function.Injective (algebraMap ↥(OL LL) ↥LL.1)` using `Subtype.val_injective`. Establish `hO2 : ∀ x : ↥LL.1, 0 ≤ (D.loc l).v LL x → ∃ o : ↥(OL LL), algebraMap ↥(OL LL) ↥LL.1 o = x` using `fun x hx => ⟨⟨x, ((D.loc l).v_O LL x).1 hx⟩, rfl⟩`. Use `letI : IsLocalRing ↥(OL LL) := Formalism.MainNotions.LiftingTheory.lkd_local (D.loc l) LL`.
+
+Establish `: IsAdicComplete (IsLocalRing.maximalIdeal ↥(OL LL)) ↥(OL LL)` using `Formalism.MainNotions.CrystallineLiftingInputs.OL.OL_complete_max (D.loc l) LL`. Establish `hlm : (((((D.loc l).PD K).p : ℕ)) : ↥(OL LL)) ∈ IsLocalRing.maximalIdeal ↥(OL LL)`. Rewrite using `[(D.loc l).PD_p K]`. Conclude with `Formalism.MainNotions.CrystallineLiftingInputs.OL.l_mem_max (D.loc l) LL`. Conclude with `tTool2Z_of _ hinj hO2 hlm hP9W (h8 l K 1 LL hg) (h9 l K 1 LL hg)`.
+-/
 theorem tTool2Z_DU (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9 D HW F) (h8 : Formalism.MainNotions.CrystallineLiftingInputs.adm8 D HW F) (h9 : Formalism.MainNotions.CrystallineLiftingInputs.adm9 D HW F) :
     ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hg : Good K 1 LL)

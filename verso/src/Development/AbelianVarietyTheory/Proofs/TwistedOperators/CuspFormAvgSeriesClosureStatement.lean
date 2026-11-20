@@ -29,5 +29,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open GlobalTheory.Grow GlobalTheory.Size
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AvgCuspType.avg_isCuspOfType | exact GlobalTheory.AvgCuspType.avg_isCuspOfType | (intros; apply GlobalTheory.AvgCuspType.avg_isCuspOfType <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cusp_form_avg_series_closure : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → GlobalTheory.FunPr.Hypotheses₂ → ∀ (N : GlobalTheory.Grid.Node D) (ψ : GA D N.V → ℂ), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.IsCuspOfType θ N ψ → ∀ (τ : D.what₂.Tau) (e : Formalism.REAL.KG (N.M.ε τ) → ℂ), GlobalTheory.TypeSum.KFinFun (N.M.ε τ) e → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.IsCuspOfType θ N (GlobalTheory.SeriesToClosure.avg θ N.V τ (N.M.ε τ) (N.M.fr τ) e ψ) := by
   first | exact @GlobalTheory.AvgCuspType.avg_isCuspOfType | exact GlobalTheory.AvgCuspType.avg_isCuspOfType | (intros; apply GlobalTheory.AvgCuspType.avg_isCuspOfType <;> assumption)

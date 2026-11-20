@@ -8,6 +8,11 @@ noncomputable section
 
 namespace GlobalTheory.VacLn.TrNondeg
 
+/- English proof (translation)
+Set `b : ∀ c, Module.Basis (Fin (Module.finrank R (E c))) R (E c)` to `fun c => Module.finBasis R (E c)`. Rewrite using `[Algebra.trace_eq_matrix_trace (Pi.basis b), Matrix.trace, Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.trace_eq_matrix_trace (b c), Matrix.trace]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `[Algebra.leftMulMatrix_eq_repr_mul, Pi.basis_repr, Pi.basis_apply]`.
+-/
 theorem trace_pi' {R : Type} [Field R] {ι : Type} [Fintype ι]
     {E : ι → Type} [∀ c, CommRing (E c)] [∀ c, Algebra R (E c)] [∀ c, Module.Finite R (E c)]
     (x : ∀ c, E c) : Algebra.trace R (∀ c, E c) x = ∑ c, Algebra.trace R (E c) (x c) := by
@@ -23,6 +28,11 @@ def conjM {F : Type} [Field F] [NumberField F] (z : mixedEmbedding.mixedSpace F)
     mixedEmbedding.mixedSpace F :=
   (z.1, fun w => starRingEnd ℂ (z.2 w))
 
+/- English proof (translation)
+Rewrite using `[Algebra.trace_prod_apply, trace_pi', trace_pi']`. Use `congr 1`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `[conjM, Algebra.trace_self_apply, sq]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Simplify using `[conjM, Algebra.trace_complex_apply, Complex.normSq_apply, Complex.mul_re]`.
+-/
 theorem trace_conjM_mul {F : Type} [Field F] [NumberField F] (z : mixedEmbedding.mixedSpace F) :
     Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (conjM z * z) =
       ∑ w, z.1 w ^ 2 + ∑ w, 2 * Complex.normSq (z.2 w) := by
@@ -33,6 +43,11 @@ theorem trace_conjM_mul {F : Type} [Field F] [NumberField F] (z : mixedEmbedding
   · refine Finset.sum_congr rfl fun w _ => ?_
     simp [conjM, Algebra.trace_complex_apply, Complex.normSq_apply, Complex.mul_re]
 
+/- English proof (translation)
+Rewrite `h` using `[trace_conjM_mul]`. Establish `h1 : 0 ≤ ∑ w, z.1 w ^ 2` using `Finset.sum_nonneg fun w _ => sq_nonneg _`. Establish `h2 : 0 ≤ ∑ w, 2 * Complex.normSq (z.2 w)` using `Finset.sum_nonneg fun w _ => mul_nonneg (by norm_num) (Complex.normSq_nonneg _)`. Establish `e1` using `(Finset.sum_eq_zero_iff_of_nonneg fun w _ => sq_nonneg (z.1 w)).1 (by linarith)`. Establish `e2` using `(Finset.sum_eq_zero_iff_of_nonneg fun w _ => mul_nonneg (by norm_num : (0:ℝ) ≤ 2) (Complex.normSq_nonneg (z.2 w))).1 (by linarith)`.
+
+Use extensionality with `w`. Simplify using `using e1 w (Finset.mem_univ _)`. Use `e2 w (Finset.mem_univ _)` as an intermediate fact. Establish `: Complex.normSq (z.2 w) = 0` using `by linarith`. Simplify using `using Complex.normSq_eq_zero.1 this`.
+-/
 theorem eq_zero_of_trace_conjM_mul {F : Type} [Field F] [NumberField F]
     (z : mixedEmbedding.mixedSpace F)
     (h : Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (conjM z * z) = 0) : z = 0 := by
@@ -53,6 +68,11 @@ end GlobalTheory.VacLn.TrNondeg
 
 namespace GlobalTheory.VacLn
 
+/- English proof (translation)
+Introduce `F _ _ κ _ y h`. Establish `h0` using `h (fun i => TrNondeg.conjM (y i))`. Rewrite `h0` using `[trPair_apply, map_sum]`. Establish `hnn : ∀ i, 0 ≤ Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (TrNondeg.conjM (y i) * y i)`. Introduce `i`.
+
+Rewrite using `[TrNondeg.trace_conjM_mul]`. Conclude with `add_nonneg (Finset.sum_nonneg fun w _ => sq_nonneg _) (Finset.sum_nonneg fun w _ => mul_nonneg (by norm_num) (Complex.normSq_nonneg _))`. Establish `e` using `(Finset.sum_eq_zero_iff_of_nonneg fun i _ => hnn i).1 h0`. Use function extensionality and compare the values at `i`. Conclude with `TrNondeg.eq_zero_of_trace_conjM_mul _ (e i (Finset.mem_univ _))`.
+-/
 theorem trPair_nondeg : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (y : κ → mixedEmbedding.mixedSpace F),
     (∀ x, trPair F κ x y = 0) → y = 0 := by

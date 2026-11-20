@@ -29,6 +29,21 @@ def NrmAlong (fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) → Ix Dw → ℝ)
     ∀ {X : Type} [TopologicalSpace X] (U : Set X) (Q : X → (Om Z →+* ℂ)), (∀ x ∈ U, Q x ∈ PT sg) →
       (∀ a, ContinuousOn (fun x => Q x a) U) → ContinuousOn (fun x => nrmC fn (yP Z) G f (Q x)) U
 
+/- English proof (translation)
+Introduce `Z sg G f hf hf0`. Take `⟨S, hSm, hS0, hloc⟩` from `hst htr hfg hwb Z sg`. Use `⟨S, hSm, hS0, ?_⟩` and prove the remaining obligations. Establish `hne : ∀ P : Om Z →+* ℂ, nrmC fn (yP Z) G f P ≠ 0`. Introduce `P`.
+
+Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hf`. Establish `ha : a ≠ 0` using `by rintro rfl; exact hf0 (zero_smul _ _)`. Unfold `nrmC`. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Rewrite using `[norm_ne_zero_iff, map_ne_zero]`.
+
+Simplify using `using ha`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => by`. Use `abs_pos.2 (hfn _ (yP Z P) i)` as an intermediate fact. Check the signs of the components of the expression. Introduce `t0 ht0`.
+
+Take `⟨U, hU, n, Q, hQc, hQ⟩` from `hloc t0 ht0`. Establish `hg : ContinuousOn (fun t => ∑ k, Real.log (nrmC fn (yP Z) G f (Q k t))) (U ∩ Sᶜ)`. Use `continuousOn_finset_sum _ fun k _ => ContinuousOn.log ?_ fun t _ => hne _` and prove the remaining obligations. Use `hna Z sg hf hf0 (U ∩ Sᶜ) (fun t => Q k t) ?_ (fun a => hQc k a)` and prove the remaining obligations. Introduce `t ht`.
+
+Establish `hm : Q k t ∈ Set.range (fun k => Q k t)` using `⟨k, rfl⟩`. Rewrite `hm` using `[(hQ t ht).2]`. Conclude with `hm.1`. Establish `key : ∀ t ∈ U ∩ Sᶜ, ∑ᶠ P ∈ Set.range (fun k => Q k t), Real.log (nrmC fn (yP Z) G f P) = ∑ k, Real.log (nrmC fn (yP Z) G f (Q k t))` using `fun t ht => by`. Rewrite using `[finsum_mem_range (hQ t ht).1, finsum_eq_sum_of_fintype]`.
+
+Establish `hgw` using `hg.continuousWithinAt ⟨mem_of_mem_nhds hU, ht0⟩`. Rewrite `hgw` using `[Set.inter_comm]`. Use `((continuousWithinAt_inter hU).1 hgw).congr_of_eventuallyEq ?_ ?_` and prove the remaining obligations. Use `filter_upwards [inter_mem_nhdsWithin Sᶜ hU] with t ht`. Rewrite using `[← key t ⟨ht.2, ht.1⟩, (hQ t ⟨ht.2, ht.1⟩).2]`.
+
+Both sides reduce to the same expression. Rewrite using `[← key t0 ⟨mem_of_mem_nhds hU, ht0⟩, (hQ t0 ⟨mem_of_mem_nhds hU, ht0⟩).2]`.
+-/
 theorem nrmContOff_of (h : GenFrEx Xo c) (fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) → Ix Dw → ℝ)
     (yP : ∀ Z : Comp Xo c, ∀ P : Om Z →+* ℂ, FrPt Xo c (CAt (sgOf P)))
     (Dd N : ℕ) (uL : WtR E) (wR : Fin (N + 1) → Rul Xo c) (jc : Comp Xo c → Fin (N + 1))

@@ -21,6 +21,21 @@ namespace GlobalTheory.RigRescale
 
 open GlobalTheory GlobalTheory.ArchMetricCompare
 
+/- English proof (translation)
+Introduce `A _ L g u rig hL hr`. Establish `h0 : (u.ex 0).left = eSec A`. Rewrite using `[(u.ker 0).2 u.Λ.zero_mem, Hom.one_def]`. Simplify using `[eSec]`. Take `⟨j₀, hj₀⟩` from `exists_chart_at hL (u.ex 0).left`.
+
+Establish `hj₀' : ⊤ ≤ (𝟙 (Sp ℂ) : Sp ℂ ⟶ Sp ℂ) ⁻¹ᵁ (L.pull (eSec A)).U (fun _ => j₀)`. Conclude with `(le_pull_iff L (eSec A) (𝟙 (Sp ℂ)) (fun _ => j₀)).2 (by rw [Category.id_comp, ← h0]; exact hj₀)`. Establish `hr₀` using `valAt'_unit_ne_zero _ hj₀' (rig.s (fun _ => j₀))`. Establish `hf₀ : u.fr j₀ 0 ≠ 0` using `u.fr_ne j₀ 0 hj₀`. Use `set r₀ := valAt' (𝟙 (Sp ℂ)) ((L.pull (eSec A)).U (fun _ => j₀)) (rig.s (fun _ => j₀)).val with hr₀def`.
+
+Set `u' : HolUnif A L g` to `{ u with fr := fun i z => r₀ / u.fr j₀ 0 * u.fr i z fr_hol := fun i => (u.fr_hol i).const_mul _ fr_ne := fun i z h => mul_ne_zero (div_ne_zero hr₀ hf₀) (u.fr_ne i z h) fr_compat := fun i j z h => by show r₀ / u.fr j₀ 0 * u.fr i z = _ * (r₀ / u.fr j₀ 0 * u.fr j z)`. Rewrite using `[u.fr_compat i j z h]`. Use `ring }`. Use `⟨u', r₀ / u.fr j₀ 0, div_ne_zero hr₀ hf₀, rfl, rfl, ?_, fun _ _ => rfl⟩` and prove the remaining obligations. Introduce `j hj`.
+
+Establish `hj1 : ⊤ ≤ (𝟙 (Sp ℂ) : Sp ℂ ⟶ Sp ℂ) ⁻¹ᵁ (L.pull (eSec A)).U j` using `fun p _ => hj trivial`. Establish `hm : ⊤ ≤ (𝟙 (Sp ℂ) : Sp ℂ ⟶ Sp ℂ) ⁻¹ᵁ ((L.pull (eSec A)).U j ⊓ (L.pull (eSec A)).U (fun _ => j₀))` using `(top_le_preimage_inf _ _ _).2 ⟨hj1, hj₀'⟩`. Establish `hz : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ (L.U (j PUnit.unit) ⊓ L.U j₀)`. Rewrite using `[top_le_preimage_inf, h0]`. Conclude with `⟨by simpa only [Category.id_comp] using (le_pull_iff L (eSec A) (𝟙 (Sp ℂ)) j).1 hj1, by rw [← h0]; exact hj₀⟩`.
+
+Establish `e` using `congrArg (fun a => valAt' (𝟙 (Sp ℂ)) _ (Units.val a)) (hr j (fun _ => j₀))`. Simplify using `only [Units.val_mul] at e`. Rewrite `e` using `[valAt'_mul]`. Establish `e1` using `(valAt'_res _ inf_le_left _ hm).symm.trans (e.trans (congrArg _ (valAt'_res _ inf_le_right _ hm)))`. Establish `hg` using `val_pull_g L (eSec A) (𝟙 (Sp ℂ)) j (fun _ => j₀) hm`.
+
+Rewrite `hg` using `[Category.id_comp]`. Establish `hc` using `u.fr_compat (j PUnit.unit) j₀ 0 hz`. Rewrite `hc` using `[h0]`. Use `show r₀ / u.fr j₀ 0 * u.fr (j PUnit.unit) 0 = _`. Rewrite using `[e1, hg, hc, ← hr₀def]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_rescale_rig : ∀ (A : Over (Sp ℂ)) [GrpObj A] (L : LB A.left) (g : ℕ) (u : HolUnif A L g) (rig : LB.Gen (L.pull (eSec A))), L.IsLB → rig.IsGen → ∃ (u' : HolUnif A L g) (lam : ℂ), lam ≠ 0 ∧ u'.ex = u.ex ∧ u'.Λ = u.Λ ∧ u'.IsRig rig ∧ ∀ i z, u'.fr i z = lam * u.fr i z := by
   intro A _ L g u rig hL hr
   have h0 : (u.ex 0).left = eSec A := by

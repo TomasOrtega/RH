@@ -13,6 +13,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.IwLevel.PrimeToP
 
+/- English proof (translation)
+Introduce `p _ D R _ b N S s o _hdeg 𝔟 h𝔟 K i hi hK`. Take `⟨K', i', hi', hfin, het, hK'⟩` from `GlobalTheory.T.killed_by_ideal_finite_etale p D R b N S s o 𝔟 h𝔟`. Establish `hne : 𝔟 ≠ ⊥`. Introduce and unpack `rfl`. Rewrite `h𝔟` using `[bot_sup_eq]`.
+
+Establish `h1` using `congrArg Ideal.absNorm h𝔟`. Rewrite `h1` using `[Ideal.absNorm_span_singleton, Ideal.absNorm_top]`. Establish `h2 : Algebra.norm ℤ ((p : ℤ) : 𝓞 D.F) = (p : ℤ) ^ Module.finrank ℤ (𝓞 D.F)`. Rewrite using `[← Algebra.norm_algebraMap]`. Both sides reduce to the same expression.
+
+Rewrite `h2` using `[Int.cast_natCast]`. Rewrite `h1` using `[h2, Int.natAbs_pow, Int.natAbs_natCast]`. Establish `hp` using `(Fact.out : p.Prime).one_lt`. Establish `hr : 0 < Module.finrank ℤ (𝓞 D.F)` using `Module.finrank_pos`. Use `Nat.one_lt_pow hr.ne' hp` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hd : 1 ≤ Ideal.absNorm 𝔟 ^ (D.m * D.n)` using `Nat.one_le_pow _ _ (Nat.pos_of_ne_zero (fun h => hne (Ideal.absNorm_eq_zero_iff.1 h)))`. Take `⟨u, hu⟩ : GlobalTheory.IwLevel.InSub i' i` from `(hK' K i).2 ((hK K i).1 ⟨𝟙 _, Category.id_comp _⟩)`. Take `⟨v, hv⟩ : GlobalTheory.IwLevel.InSub i i'` from `(hK K' i').2 ((hK' K' i').1 ⟨𝟙 _, Category.id_comp _⟩)`. Establish `: IsIso u` using `⟨⟨v, by rw [← cancel_mono i, Category.assoc, hv, hu, Category.id_comp], by rw [← cancel_mono i', Category.assoc, hu, hv, Category.id_comp]⟩⟩`.
+
+Establish `h3` using `GlobalTheory.T.isogeny_degree_of_point_count o.A K' i' hi' hfin het _ hd fun k _ _ t => by`. Rewrite using `[← GlobalTheory.T.harrisTaylor_card_killed_by_ideal_eq_absNorm_pow p D R b N S s o 𝔟 h𝔟 k t]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun y => hK' _ y)`. Establish `h4` using `(GlobalTheory.IwLevel.IsIsogDeg.of_isIso u).comp h3`. Rewrite `h4` using `[_root_.one_mul, toUnit_unique (u ≫ toUnit K') (toUnit K)]`. Then use the resulting hypothesis.
+-/
 theorem isIsogDeg_killedBy : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ) (S : Scheme.{0}) (s : S ⟶ Sp R) (o : GlobalTheory.UPel.HT.Obj b N s), (∀ c : 𝓞 D.F, c ≠ 0 → GlobalTheory.IwLevel.IsIsogDeg (o.act.act (algebraMap (𝓞 D.F) D.O c)) ((Algebra.norm ℤ c).natAbs ^ (D.m * D.n))) → ∀ (𝔟 : Ideal (𝓞 D.F)), 𝔟 ⊔ Ideal.span {(p : 𝓞 D.F)} = ⊤ → ∀ (K : Over S) (i : K ⟶ o.A), Mono i → (∀ (T : Over S) (x : T ⟶ o.A), GlobalTheory.IwLevel.InSub i x ↔ GlobalTheory.IwLevel.KilledBy (GlobalTheory.IwLevel.htAct o) (𝔟.map (algebraMap (𝓞 D.F) D.O)) x) → GlobalTheory.IwLevel.IsIsogDeg (toUnit K) (Ideal.absNorm 𝔟 ^ (D.m * D.n)) := by
   intro p _ D R _ b N S s o _hdeg 𝔟 h𝔟 K i hi hK
   obtain ⟨K', i', hi', hfin, het, hK'⟩ := GlobalTheory.T.killed_by_ideal_finite_etale p D R b N S s o 𝔟 h𝔟

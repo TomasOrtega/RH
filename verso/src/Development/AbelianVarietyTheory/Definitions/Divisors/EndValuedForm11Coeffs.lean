@@ -83,6 +83,9 @@ structure GoodPatch (E : Fr (ratOf X) (fun _ : Unit => m) 0) (O : X.X.Opens)
   dbar : ∀ z ∈ W, z ∈ ptsIn X.str σ O → ∀ a b i j,
     ‖curv (fun v => H A (e.symm v) ()) (e z) (coordVec a) (coordVec b) i j‖ * (poinWt S (e z) a * poinWt S (e z) b) ≤ c
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem hasChernIntegral_iff (E : Fr (ratOf X) (fun _ : Unit => m) 0) (O : X.X.Opens)
     (H : Mat (fun _ : Unit => m) X.Fn → CxPts X.str σ → Mat (fun _ : Unit => m) ℂ) (t : ℝ) :
     HasChernIntegral E O H (MvPolynomial.X ((), X.dim)) t ↔

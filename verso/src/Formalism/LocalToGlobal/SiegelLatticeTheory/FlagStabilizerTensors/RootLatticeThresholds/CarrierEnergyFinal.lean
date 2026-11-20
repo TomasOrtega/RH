@@ -26,6 +26,13 @@ def PlaceNormG (P : Parts X u u') (hr : P.S.G.r = D.R.rS) : Prop :=
       ‖Formalism.FourierDecayAlt.B.hsVec (Formalism.FourierDecayAlt.B.JF (P.T (P.τ.symm v)).base (P.f (P.τ.symm v))
         (Formalism.FourierDecayAlt.B.gq (P.T (P.τ.symm v)).base (phiQ P hr cv)))‖ ^ 2
 
+/- English proof (translation)
+Introduce `v cv hcv`. Set `c : Cinf X` to `fun _ => cv`. Establish `hc : c ∈ Good X u u'` using `fun _ => hcv`. Take `⟨γ, hγ⟩` from `InfCut.ProductExactness.StepReal_holds D X u u' 1 one_pos c hc`. Establish `hex : ∃ γ, HasDiag X u u' 1 c γ` using `⟨γ, hγ⟩`.
+
+Establish `hd : HasDiag X u u' 1 c (hOf X u u' 1 c)`. Unfold `hOf`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`. Establish `h1 : hs2 (JvX X u u' v ((hOf X u u' 1 c) v)) = L v cv` using `hL.2 c hc v`.
+
+Establish `h2` using `hG v ((hOf X u u' 1 c) v) cv hcv (hd v)`. Conclude with `h1.symm.trans h2`.
+-/
 theorem placeNorm_of_G (P : Parts X u u') (hr : P.S.G.r = D.R.rS) (hG : PlaceNormG P hr)
     (L : InfinitePlace X.B.I.F → (Fin (D.R.rS + 1) → ℂ) → ℝ) (hL : LocRep X u u' L) : PlaceNorm P hr L := by
   intro v cv hcv

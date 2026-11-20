@@ -11,6 +11,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.MultAction
 
+/- English proof (translation)
+Introduce `D V β L S θ M hl hP`. Establish `e : Formalism.IndefR.Lev.flag1L L = L`. Rewrite using `[flag1L, withP, ← hP]`. Establish `hM : Mult θ M (levS V β L) (levChi V β L) = MultP θ M β L`. Rewrite using `[MultP, e]`.
+
+Rewrite using `[hM]`. Use `⟨fun g T hT => act_mem g hT, fun T hT => act_one hT, fun g h T hT => act_mul hl g h hT, ?_⟩` and prove the remaining obligations. Introduce `G _ _ eG c hc g T hT`. Establish `h` using `gaL_act eG hl (c := c) (fun a b => hc a b) (eG.symm g) hT`. Rewrite `h` using `[MulEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+-/
 theorem actRep : ∀ D : D7, ActRep D := by
   intro D V β L S θ M hl hP
   have e : Formalism.IndefR.Lev.flag1L L = L := by

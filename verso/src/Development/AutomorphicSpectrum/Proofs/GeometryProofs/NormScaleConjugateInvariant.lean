@@ -10,6 +10,11 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 open MvPolynomial NumberField ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I2
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ F _ _ y φ A M f g dg κ hO hM hg hgy hA hκ hN σ`. Take `⟨z, hz, hgz⟩` from `GlobalTheory.T.exists_complex_point_nonvanishing K ι Ω F y φ σ g dg hO hg hgy`. Establish `h1` using `hN σ z hz`. Establish `h2` using `hN _ _ (ptOver_conj K ι Ω F y φ σ z hz)`. Rewrite `h2` using `[evC_conj, evC_conj, hA z, RCLike.norm_conj, RCLike.norm_conj]`.
+
+Establish `hgn : ‖evC z g‖ ≠ 0` using `norm_ne_zero_iff.2 hgz`. Establish `hh : 0 < A.h z` using `A.pos z hz.1.1`. Establish `h3 : (κ (ComplexEmbedding.conjugate σ) * A.h z) ^ M = (κ σ * A.h z) ^ M` using `mul_right_cancel₀ hgn (h2.symm.trans h1)`. Establish `h4` using `(pow_left_inj₀ (mul_pos (hκ _) hh).le (mul_pos (hκ _) hh).le hM.ne').1 h3`. Conclude with `mul_right_cancel₀ hh.ne' h4`.
+-/
 theorem kappa_conj : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (F : Type)
     [Field F] [NumberField F] (y : (Σ k, ι k) → Ω) (φ : F →+* Ω) (A : HermLine ι) (M : ℕ) (f g : MRing ι) (dg : K → ℕ)
     (κ : (F →+* ℂ) → ℝ), OverInt y φ → 0 < M → IsMultiHomog g dg → g ∉ mCoordIdeal y → IsConjInvariantH A →

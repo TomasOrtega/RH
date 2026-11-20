@@ -40,17 +40,35 @@ abbrev refine (A : FinHolAtlas e X) {m : ℕ} (j : Fin m → Fin A.n) (V : Fin m
 variable (A : FinHolAtlas e X) {m : ℕ} (j : Fin m → Fin A.n) (V : Fin m → Set X)
     (hV : ∀ i, IsOpen (V i)) (hcov : ∀ x, ∃ i, x ∈ (A.chart (j i)).source ∩ V i)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_refine_source {i : Fin m} {x : X} :
     x ∈ ((refine A j V hV hcov).chart i).source ↔ x ∈ (A.chart (j i)).source ∧ x ∈ V i := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_refine_target {i : Fin m} {y : Fin e → ℂ} :
     y ∈ ((refine A j V hV hcov).chart i).target ↔ y ∈ (A.chart (j i)).target ∧ (A.chart (j i)).symm y ∈ V i :=
   Iff.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i k => (A.holo (j i) k).mono fun _ hy => ⟨hy.1.1, hy.2⟩, fun i k => (A.holo i (j k)).mono fun _ hy => ⟨hy.1, hy.2.1⟩⟩`.
+-/
 theorem refine_compatible : (refine A j V hV hcov).Compatible A :=
   ⟨fun i k => (A.holo (j i) k).mono fun _ hy => ⟨hy.1.1, hy.2⟩,
     fun i k => (A.holo i (j k)).mono fun _ hy => ⟨hy.1, hy.2.1⟩⟩
 
+/- English proof (translation)
+Use `set T := c.target ∩ c.symm ⁻¹' W with hT`. Establish `hTm : MeasurableSet T` using `(c.isOpen_inter_preimage_symm hW).measurableSet`. Establish `hsymm : AEMeasurable c.symm (volume.restrict T)` using `(c.continuousOn_symm.mono inter_subset_left).aemeasurable hTm`. Establish `hdens : AEMeasurable (fun y => ENNReal.ofReal (ν y)) (volume.restrict T)` using `ENNReal.measurable_ofReal.comp_aemeasurable ((hνc.mono inter_subset_left).aemeasurable hTm)`. Establish `hsymm' : AEMeasurable c.symm ((volume.restrict T).withDensity fun y => ENNReal.ofReal (ν y))` using `hsymm.mono_ac (withDensity_absolutelyContinuous _ _)`.
+
+Establish `hmeas : μ.restrict (c.source ∩ W) = ((volume.restrict T).withDensity fun y => ENNReal.ofReal (ν y)).map c.symm`. Use extensionality with `S hS`. Rewrite using `[Measure.restrict_apply hS, Measure.map_apply_of_aemeasurable hsymm' hS, withDensity_apply', Measure.restrict_restrict' hTm, hν _ (hS.inter (c.open_source.inter hW).measurableSet) (inter_subset_right.trans inter_subset_left)]`. Establish `hset : c.target ∩ c.symm ⁻¹' (S ∩ (c.source ∩ W)) = c.symm ⁻¹' S ∩ T`. Use extensionality with `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hyt, hyS, -, hyW⟩`. Conclude with `⟨hyS, hyt, hyW⟩`. Introduce and unpack `⟨hyS, hyt, hyW⟩`. Conclude with `⟨hyt, hyS, c.map_target hyt, hyW⟩`.
+
+Rewrite using `[hset]`. Rewrite using `[hmeas, lintegral_map' hg.aemeasurable hsymm', lintegral_withDensity_eq_lintegral_mul₀ (g := fun a => g (c.symm a)) hdens (hg.comp_aemeasurable hsymm)]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Simplify using `[mul_comm]`.
+-/
 theorem lintegral_chart [MeasurableSpace X] [BorelSpace X] (c : OpenPartialHomeomorph X (Fin e → ℂ))
     (μ : Measure X) (ν : (Fin e → ℂ) → ℝ) (hνc : ContinuousOn ν c.target)
     (hν : ∀ S : Set X, MeasurableSet S → S ⊆ c.source →
@@ -90,6 +108,11 @@ section Torus
 
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Rewrite using `[eval_eq', eval_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hdeg` using `hf m (support_map_subset _ _ hm)`. Establish `hc : ∏ p : (Σ k, ι k), c p.1 ^ m p = c k₀ ^ n`. Rewrite using `[Fintype.prod_sigma]`.
+
+Repeatedly rewrite using `[Finset.prod_pow_eq_pow_sum, hdeg]`. Rewrite using `[Fintype.prod_eq_single k₀ fun k hk => by simp [blockDeg, hk]]`. Simplify using `[blockDeg]`. Repeatedly rewrite using `[mul_pow, Finset.prod_mul_distrib, hc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eval_torus {R : Type} [CommRing R] (φ : R →+* ℂ) {f : MvPolynomial (Σ k, ι k) R} {k₀ : K} {n : ℕ}
     (hf : IsMultiHomog f (blockDeg k₀ n)) (c : K → ℂ) (z : (Σ k, ι k) → ℂ) :
     eval (fun p => c p.1 * z p) (map φ f) = c k₀ ^ n * eval z (map φ f) := by
@@ -104,12 +127,18 @@ theorem eval_torus {R : Type} [CommRing R] (φ : R →+* ℂ) {f : MvPolynomial 
   simp_rw [mul_pow, Finset.prod_mul_distrib, hc]
   ring
 
+/- English proof (translation)
+Rewrite using `[Fintype.prod_eq_single k₀ fun k hk => by simp [unitDeg, hk]]`. Simplify using `[unitDeg]`.
+-/
 theorem prod_norm_unitDeg (c : K → ℂ) (k₀ : K) : ∏ k, ‖c k‖ ^ unitDeg k₀ k = ‖c k₀‖ := by
   rw [Fintype.prod_eq_single k₀ fun k hk => by simp [unitDeg, hk]]
   simp [unitDeg]
 
 omit [DecidableEq K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Simplify using `only [Set.ofPred_forall, Set.ofPred_exists]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const`.
+-/
 theorem isOpen_blockNonzero : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} := by
   simp only [Set.ofPred_forall, Set.ofPred_exists]
   exact isOpen_iInter_of_finite fun k => isOpen_iUnion fun i =>
@@ -118,17 +147,28 @@ theorem isOpen_blockNonzero : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z
 def blockRatio (k₀ : K) (z z' : (Σ k, ι k) → ℂ) : ℂ :=
   if h : ∃ i : ι k₀, z' ⟨k₀, i⟩ ≠ 0 then z ⟨k₀, h.choose⟩ / z' ⟨k₀, h.choose⟩ else 1
 
+/- English proof (translation)
+Rewrite using `[blockRatio, dif_pos h]`. Conclude with `mul_div_cancel_right₀ _ h.choose_spec`.
+-/
 theorem blockRatio_eq {k₀ : K} {z' : (Σ k, ι k) → ℂ} (c : K → ℂ) (h : ∃ i : ι k₀, z' ⟨k₀, i⟩ ≠ 0) :
     blockRatio k₀ (fun p => c p.1 * z' p) z' = c k₀ := by
   rw [blockRatio, dif_pos h]
   exact mul_div_cancel_right₀ _ h.choose_spec
 
+/- English proof (translation)
+Take `⟨c, -, rfl⟩` from `hzz`. Rewrite using `[blockRatio_eq c ⟨i, hi⟩]`. Conclude with `(mul_div_cancel_right₀ _ hi).symm`.
+-/
 theorem blockRatio_eq_div {k₀ : K} {z z' : (Σ k, ι k) → ℂ} (hzz : SameOrbit z z') {i : ι k₀}
     (hi : z' ⟨k₀, i⟩ ≠ 0) : blockRatio k₀ z z' = z ⟨k₀, i⟩ / z' ⟨k₀, i⟩ := by
   obtain ⟨c, -, rfl⟩ := hzz
   rw [blockRatio_eq c ⟨i, hi⟩]
   exact (mul_div_cancel_right₀ _ hi).symm
 
+/- English proof (translation)
+Introduce `f hf`. Use `set F := map (Int.castRingHom ℂ) f`. Establish `hzero : (fun w => eval w F) ∘ γ =ᶠ[𝓝 y] fun _ => (0 : ℂ)` using `by filter_upwards [hpts] with w hw`. Conclude with `hw.2 f (hP0 hf)`. Establish `hd` using `(adens_hasFDerivAt_eval F (γ y)).comp y hγ.differentiableAt.hasFDerivAt`.
+
+Establish `h0 : HasFDerivAt ((fun w => eval w F) ∘ γ) (0 : (Fin e → ℂ) →L[ℂ] ℂ) y` using `(hasFDerivAt_const (0 : ℂ) y).congr_of_eventuallyEq hzero`. Use `congrArg (fun L => L ξ) (hd.unique h0)` as an intermediate fact. Simplify `this` using `[_root_.sum_apply, smul_eq_mul]`.
+-/
 theorem isConeTangent_of_map {P0 P : Ideal (MRing ι)} (hP0 : P0 ≤ P) {e : ℕ}
     {γ : (Fin e → ℂ) → (Σ k, ι k) → ℂ} {y : Fin e → ℂ} (hγ : AnalyticAt ℂ γ y)
     (hpts : ∀ᶠ y' in 𝓝 y, γ y' ∈ mcPts P) (ξ : Fin e → ℂ) :
@@ -144,6 +184,9 @@ theorem isConeTangent_of_map {P0 P : Ideal (MRing ι)} (hP0 : P0 ≤ P) {e : ℕ
   have := congrArg (fun L => L ξ) (hd.unique h0)
   simpa [_root_.sum_apply, smul_eq_mul] using this
 
+/- English proof (translation)
+Establish `h` using `levi_add_smul (f := fun _ => (0 : ℝ)) c contDiffAt_const hf w`. Simplify using `only [zero_add] at h`. Rewrite using `[h]`. Simplify using `[levi]`.
+-/
 theorem levi_const_mul {κ : Type} [Fintype κ] {f : (κ → ℂ) → ℝ} {z : κ → ℂ} (c : ℝ)
     (hf : ContDiffAt ℝ 2 f z) (w : κ → ℂ) : levi (fun y => c * f y) z w = c * levi f z w := by
   have h := levi_add_smul (f := fun _ => (0 : ℝ)) c contDiffAt_const hf w
@@ -160,10 +203,21 @@ variable {D : ℕ} {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀
 
 def nbhd (x : d.R.X) : Set d.R.X := d.R.U x ∩ (d.R.A.chart (chartIdx d.R.A x)).source
 
+/- English proof (translation)
+The claim follows from `(d.R.isOpen_U x).inter (d.R.A.chart _).open_source`.
+-/
 theorem isOpen_nbhd (x : d.R.X) : IsOpen (nbhd d x) := (d.R.isOpen_U x).inter (d.R.A.chart _).open_source
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨d.R.mem_U x, Classical.choose_spec (d.R.A.cover x)⟩`.
+-/
 theorem mem_nbhd (x : d.R.X) : x ∈ nbhd d x := ⟨d.R.mem_U x, Classical.choose_spec (d.R.A.cover x)⟩
 
+/- English proof (translation)
+Establish `h₀` using `isPotentialRsmul d.R.A (1 - t) _ (AnResBridge.isPotential_potOf d.R d.semipos.1)`. Establish `h₁` using `isPotentialRsmul d.R.A t _ (AnResBridge.isPotential_potOf d.R hA')`. Establish `hs` using `isPotentialAdd d.R.A _ _ h₀ h₁`. Use `isPotential_mul d.R.A _ hs 1 _ ?_ fun x y => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+
+Conclude with `(Set.inter_self _).symm`. Use `show _ = 1 * ((1 - t) * Real.log (d.A.h (d.R.lift x y)) + t * Real.log (A'.h (d.R.lift x y)))`. Simplify using `[blockInterpPot]`.
+-/
 theorem isPotential_blockInterpPot {A' : HermLine ι} (hA' : IsSmoothHerm A') (t : ℝ) :
     IsPotential d.R.A (blockInterpPot d d.A A' t) := by
   have h₀ := isPotentialRsmul d.R.A (1 - t) _ (AnResBridge.isPotential_potOf d.R d.semipos.1)
@@ -181,24 +235,39 @@ abbrev atlas : FinHolAtlas D d.R.X :=
   refine d.R.A (fun i => chartIdx d.R.A (pt i)) (fun i => d.R.U (pt i)) (fun i => d.R.isOpen_U (pt i))
     fun x => (hcov x).imp fun _ hx => ⟨hx.2, hx.1⟩
 
+/- English proof (translation)
+The claim follows from `((mem_refine_source _ _ _ _ _).1 hx).2`.
+-/
 theorem mem_atlas_source {i : Fin r} {x : d.R.X} (hx : x ∈ ((atlas d pt hcov).chart i).source) :
     x ∈ d.R.U (pt i) :=
   ((mem_refine_source _ _ _ _ _).1 hx).2
 
+/- English proof (translation)
+The claim follows from `(mem_refine_target _ _ _ _ _).1 hy`.
+-/
 theorem mem_atlas_target {i : Fin r} {y : Fin D → ℂ} (hy : y ∈ ((atlas d pt hcov).chart i).target) :
     y ∈ (d.R.A.chart (chartIdx d.R.A (pt i))).target ∧
       ((atlas d pt hcov).chart i).symm y ∈ d.R.U (pt i) :=
   (mem_refine_target _ _ _ _ _).1 hy
 
+/- English proof (translation)
+The claim follows from `d.R.compat _ _ x ⟨mem_atlas_source d pt hcov hi, mem_atlas_source d pt hcov hk⟩`.
+-/
 theorem sameOrbit_lift {i k : Fin r} {x : d.R.X} (hi : x ∈ ((atlas d pt hcov).chart i).source)
     (hk : x ∈ ((atlas d pt hcov).chart k).source) :
     SameOrbit (d.R.lift (pt i) x) (d.R.lift (pt k) x) :=
   d.R.compat _ _ x ⟨mem_atlas_source d pt hcov hi, mem_atlas_source d pt hcov hk⟩
 
+/- English proof (translation)
+The claim follows from `d.R.mem _ x (mem_atlas_source d pt hcov hi)`.
+-/
 theorem lift_mem {i : Fin r} {x : d.R.X} (hi : x ∈ ((atlas d pt hcov).chart i).source) :
     d.R.lift (pt i) x ∈ mcPts (mCoordIdeal d.y) :=
   d.R.mem _ x (mem_atlas_source d pt hcov hi)
 
+/- English proof (translation)
+The claim follows from `analyticAt_pi_iff.2 fun p => d.R.holo (pt i) p (chartIdx d.R.A (pt k)) y ⟨(mem_atlas_target d pt hcov hy).1, hU⟩`.
+-/
 theorem analyticAt_lift (i k : Fin r) {y : Fin D → ℂ} (hy : y ∈ ((atlas d pt hcov).chart k).target)
     (hU : ((atlas d pt hcov).chart k).symm y ∈ d.R.U (pt i)) :
     AnalyticAt ℂ (fun y p => d.R.lift (pt i) (((atlas d pt hcov).chart k).symm y) p) y :=
@@ -241,6 +310,11 @@ def bundle : HolLineBundle (atlas d pt hcov) where
       blockRatio_eq_div (sameOrbit_lift d pt hcov hi hk) hkp, blockRatio_eq_div hkl hp]
     field_simp
 
+/- English proof (translation)
+Establish `hG` using `analyticAt_lift d pt hcov i l hy hU`. Establish `hmem` using `d.R.mem (pt i) _ hU`. Establish `hh : ContDiffAt ℝ ∞ A.h (d.R.lift (pt i) (((atlas d pt hcov).chart l).symm y))` using `hs.contDiffAt (isOpen_blockNonzero.mem_nhds hmem.1)`. Establish `hu : ContDiffAt ℝ ∞ (fun z => 2 * Real.log (A.h z)) (d.R.lift (pt i) (((atlas d pt hcov).chart l).symm y))` using `contDiffAt_const.mul (hh.log (A.pos _ hmem.1).ne')`. Use `hu.comp y (hG.contDiffAt.restrict_scalars ℝ)` as an intermediate fact.
+
+Conclude with `this`.
+-/
 theorem contDiffAt_weight (A : HermLine ι) (hs : IsSmoothHerm A) (i l : Fin r) {y : Fin D → ℂ}
     (hy : y ∈ ((atlas d pt hcov).chart l).target) (hU : ((atlas d pt hcov).chart l).symm y ∈ d.R.U (pt i)) :
     ContDiffAt ℝ ∞ (fun y => 2 * Real.log (A.h (d.R.lift (pt i) (((atlas d pt hcov).chart l).symm y)))) y := by
@@ -269,6 +343,13 @@ def weight (A : HermLine ι) (hA : A.a = unitDeg d.k₀) (hs : IsSmoothHerm A) :
     push_cast
     ring
 
+/- English proof (translation)
+Introduce `l y hy w`. Establish `hU` using `(mem_atlas_target d pt hcov hy).2`. Establish `hG` using `analyticAt_lift d pt hcov l l hy hU`. Establish `hmem` using `d.R.mem (pt l) _ hU`. Establish `hh : ContDiffAt ℝ 2 A.h (d.R.lift (pt l) (((atlas d pt hcov).chart l).symm y))` using `(hsp.1.contDiffAt (isOpen_blockNonzero.mem_nhds hmem.1)).of_le (WithTop.coe_le_coe.2 le_top)`.
+
+Establish `hlog : ContDiffAt ℝ 2 (fun z => Real.log (A.h z)) (d.R.lift (pt l) (((atlas d pt hcov).chart l).symm y))` using `hh.log (A.pos _ hmem.1).ne'`. Establish `hpts : ∀ᶠ y' in 𝓝 y, (fun y p => d.R.lift (pt l) (((atlas d pt hcov).chart l).symm y) p) y' ∈ mcPts (mCoordIdeal d.y)` using `by filter_upwards [((atlas d pt hcov).chart l).open_target.mem_nhds hy] with y' hy'`. Conclude with `d.R.mem _ _ (mem_atlas_target d pt hcov hy').2`. Establish `hcomp : (weight d pt hcov A hA hsp.1).φ l ∘ ((atlas d pt hcov).chart l).symm = (fun z => 2 * Real.log (A.h z)) ∘ (fun y p => d.R.lift (pt l) (((atlas d pt hcov).chart l).symm y) p)` using `rfl`. Rewrite using `[hcomp, levi_comp w hG (contDiffAt_const.mul hlog), levi_const_mul 2 hlog]`.
+
+Conclude with `mul_nonneg (by norm_num) (hsp.2 _ hmem _ (isConeTangent_of_map hP0 hG hpts w))`.
+-/
 theorem weight_isSemipositive (A : HermLine ι) (hA : A.a = unitDeg d.k₀) (P0 : Ideal (MRing ι))
     (hP0 : P0 ≤ mCoordIdeal d.y) (hsp : IsSemipositiveRel P0 (mCoordIdeal d.y) A) :
     (weight d pt hcov A hA hsp.1).IsSemipositive := by
@@ -304,11 +385,21 @@ def sec (b : MvPolynomial (Σ k, ι k) ℚ) : Fin (atlas d pt hcov).n → d.R.X 
   fun i => ((atlas d pt hcov).chart i).source.indicator
     fun x => eval (d.R.lift (pt i) x) (map (algebraMap ℚ ℂ) b)
 
+/- English proof (translation)
+The claim follows from `indicator_of_mem hx _`.
+-/
 theorem sec_apply_of_mem (b : MvPolynomial (Σ k, ι k) ℚ) {i : Fin r} {x : d.R.X}
     (hx : x ∈ ((atlas d pt hcov).chart i).source) :
     sec d pt hcov b i x = eval (d.R.lift (pt i) x) (map (algebraMap ℚ ℂ) b) :=
   indicator_of_mem hx _
 
+/- English proof (translation)
+Use `⟨fun i l y hy => ?_, fun i k x hx => ?_, fun i x hx => indicator_of_notMem hx _⟩` and prove the remaining obligations. Establish `hS : IsOpen (((atlas d pt hcov).chart l).target ∩ ((atlas d pt hcov).chart l).symm ⁻¹' ((atlas d pt hcov).chart i).source)` using `((atlas d pt hcov).chart l).isOpen_inter_preimage_symm ((atlas d pt hcov).chart i).open_source`. Establish `hG` using `analyticAt_lift d pt hcov i l hy.1 (mem_atlas_source d pt hcov hy.2)`. Use `(AnalyticAt.aeval_mvPolynomial (f := fun y p => d.R.lift (pt i) (((atlas d pt hcov).chart l).symm y) p) (analyticAt_pi_iff.1 hG) (map (algebraMap ℚ ℂ) b)).congr ?_` and prove the remaining obligations. Use `filter_upwards [hS.mem_nhds hy] with y' hy'`.
+
+Establish `hm : ((atlas d pt hcov).chart l).symm y' ∈ ((atlas d pt hcov).chart i).source` using `hy'.2`. Rewrite using `[Function.comp_apply, sec_apply_of_mem d pt hcov b hm]`. Simplify using `[aeval_def, eval]`. Take `⟨c, hc, hz⟩` from `sameOrbit_lift d pt hcov hx.1 hx.2`. Rewrite using `[sec_apply_of_mem d pt hcov b hx.1, sec_apply_of_mem d pt hcov b hx.2]`.
+
+Use `show _ = blockRatio d.k₀ (d.R.lift (pt i) x) (d.R.lift (pt k) x) ^ n * _`. Rewrite using `[hz, blockRatio_eq c ((lift_mem d pt hcov hx.2).1 d.k₀), eval_torus _ hb]`.
+-/
 theorem sec_mem {n : ℕ} {b : MvPolynomial (Σ k, ι k) ℚ} (hb : IsMultiHomog b (blockDeg d.k₀ n)) :
     sec d pt hcov b ∈ (bundle d pt hcov).sections n := by
   refine ⟨fun i l y hy => ?_, fun i k x hx => ?_, fun i x hx => indicator_of_notMem hx _⟩
@@ -328,6 +419,9 @@ theorem sec_mem {n : ℕ} {b : MvPolynomial (Σ k, ι k) ℚ} (hb : IsMultiHomog
     show _ = blockRatio d.k₀ (d.R.lift (pt i) x) (d.R.lift (pt k) x) ^ n * _
     rw [hz, blockRatio_eq c ((lift_mem d pt hcov hx.2).1 d.k₀), eval_torus _ hb]
 
+/- English proof (translation)
+Establish `hx : y ∈ ((atlas d pt hcov).chart (chartIdx (atlas d pt hcov) y)).source` using `Classical.choose_spec ((atlas d pt hcov).cover y)`. Conclude with `d.R.compat _ _ y ⟨mem_atlas_source d pt hcov hx, d.R.mem_U y⟩`.
+-/
 theorem lift_chartIdx (y : d.R.X) :
     ∃ c : K → ℂ, (∀ k, c k ≠ 0) ∧
       d.R.lift (pt (chartIdx (atlas d pt hcov) y)) y = fun p => c p.1 * blockPt d y p := by
@@ -335,6 +429,15 @@ theorem lift_chartIdx (y : d.R.X) :
     Classical.choose_spec ((atlas d pt hcov).cover y)
   exact d.R.compat _ _ y ⟨mem_atlas_source d pt hcov hx, d.R.mem_U y⟩
 
+/- English proof (translation)
+Take `⟨hy1, hyU⟩` from `mem_atlas_target d pt hcov hy`. Establish `hΦ : ∀ _ : Fin D, IsPotential d.R.A (blockInterpPot d d.A A' t)` using `fun _ => isPotential_blockInterpPot d hs t`. Establish `hbase` using `locDensBase d.R.A (fun _ => blockInterpPot d d.A A' t) hΦ (chartIdx d.R.A (pt j)) y hy1 (fun _ => pt j) (fun _ => hyU)`. Use `set ψ : (Fin D → ℂ) → ℝ := fun y' => (1 - t) * Real.log (d.A.h (d.R.lift (pt j) (((atlas d pt hcov).chart j).symm y'))) + t * Real.log (A'.h (d.R.lift (pt j) (((atlas d pt hcov).chart j).symm y'))) with hψ`. Establish `hL : locDens (atlas d pt hcov) (fun _ => blockInterpPot d d.A A' t) j y = maDens (fun _ => ψ) y` using `hbase`.
+
+Establish `hgerm : ((weight d pt hcov d.A d.deg d.semipos.1).lerp (weight d pt hcov A' hA' hs) t).φ j ∘ ((atlas d pt hcov).chart j).symm =ᶠ[𝓝 y] fun y' => 2 * ψ y'`. Use `Filter.Eventually.of_forall fun y' => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Weight.lerp, weight, hψ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hL]`.
+
+Unfold `chernTopDens maDens`. Rewrite using `[hessCGerm _ _ y hgerm, hessC_const_mul', ReciprocityTheory.AnForm.A.mdisc_const, smul_smul, Matrix.det_smul, Fintype.card_fin]`. Establish `hc : ((1 / Real.pi : ℝ) : ℂ) * ((2 : ℝ) : ℂ) = ((2 / Real.pi : ℝ) : ℂ)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hc, ← Complex.ofReal_pow, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem locDens_eq_chernTopDens (A' : HermLine ι) (hA' : A'.a = unitDeg d.k₀) (hs : IsSmoothHerm A') (t : ℝ)
     (j : Fin r) {y : Fin D → ℂ} (hy : y ∈ ((atlas d pt hcov).chart j).target) :
     locDens (atlas d pt hcov) (fun _ => blockInterpPot d d.A A' t) j y =
@@ -370,6 +473,19 @@ end BlockResolutionMetricPair
 
 open BlockResolutionMetricPair in
 
+/- English proof (translation)
+Introduce `D K _ _ ι _ Ω _ _ d A' P0' hA' hP0' hsp'`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (nbhd d) (isOpen_nbhd d) fun x _ => mem_iUnion.2 ⟨x, mem_nbhd d x⟩`. Set `pt : Fin t.card → d.R.X` to `fun i => (t.equivFin.symm i : d.R.X)`. Establish `hcov : ∀ x, ∃ i, x ∈ nbhd d (pt i)`. Introduce `x`.
+
+Take `⟨x', hx', hx⟩` from `mem_iUnion₂.1 (ht (mem_univ x))`. Conclude with `⟨t.equivFin ⟨x', hx'⟩, by simpa [pt] using hx⟩`. Use `⟨atlas d pt hcov, bundle d pt hcov, weight d pt hcov d.A d.deg d.semipos.1, weight d pt hcov A' hA' hsp'.1, smoothVol d pt hcov, fun _ b => sec d pt hcov b, refine_compatible _ _ _ _ _, weight_isSemipositive d pt hcov d.A d.deg d.P0 d.normalForm_baseLattice_le_dualSpan_sup_line d …` and prove the remaining obligations. Take `⟨c, hc, hz⟩` from `lift_chartIdx d pt hcov y`. Establish `hx : y ∈ ((atlas d pt hcov).chart (chartIdx (atlas d pt hcov) y)).source` using `Classical.choose_spec ((atlas d pt hcov).cover y)`.
+
+Use `⟨c, hc, fun n b _ => ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show sec d pt hcov b (chartIdx (atlas d pt hcov) y) y = _`. Rewrite using `[sec_apply_of_mem d pt hcov b hx, hz]`. Use `show 2 * Real.log (d.A.h (d.R.lift (pt _) y)) = _`. Rewrite using `[hz]`.
+
+Use `show 2 * Real.log (A'.h (d.R.lift (pt _) y)) = _`. Rewrite using `[hz]`. Establish `hΦ : ∀ _ : Fin D, IsPotential d.R.A (blockInterpPot d d.A A' s)` using `fun _ => isPotential_blockInterpPot d hsp'.1 s`. Establish `hMI` using `mIntegrableCont d.R.A _ hΦ g hg`. Establish `hcomp` using `refine_compatible d.R.A (fun i => chartIdx d.R.A (pt i)) (fun i => d.R.U (pt i)) (fun i => d.R.isOpen_U (pt i)) fun x => (hcov x).imp fun _ hx => ⟨hx.2, hx.1⟩`.
+
+Rewrite using `[(mIntAtlasIndep d.R.A (atlas d pt hcov) ⟨hcomp.2, hcomp.1⟩ _ hΦ g hMI).2]`. Establish `hP : Nonempty (ChartPartition (atlas d pt hcov))` using `existsPartition _`. Rewrite using `[h (atlas d pt hcov) (bundle d pt hcov) _ (smoothVol d pt hcov) hP.some g hg]`. Unfold `mInt`. Rewrite using `[dif_pos hP]`.
+
+Unfold `integralWith`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => setIntegral_congr_fun (((atlas d pt hcov).chart j).open_target.measurableSet) fun y hy => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[locDens_eq_chernTopDens d pt hcov A' hA' hsp'.1 s j hy]`.
+-/
 theorem BlockResolutionMetricPair.proof (h : BergmanDensChartSum.Statement) : BlockResolutionMetricPair.Statement := by
   intro D K _ _ ι _ Ω _ _ d A' P0' hA' hP0' hsp'
   obtain ⟨t, ht⟩ := isCompact_univ.elim_finite_subcover (nbhd d) (isOpen_nbhd d)

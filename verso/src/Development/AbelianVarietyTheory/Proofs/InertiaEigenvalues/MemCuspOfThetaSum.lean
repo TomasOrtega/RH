@@ -31,6 +31,11 @@ noncomputable def secZero (Xo : Moduli Dw l) (c : Coeff l) : Subring (Rul Xo c) 
       rfl⟩
     mul_mem' := fun ha hb => by simpa using sec_mul Xo c 0 0 0 0 ha hb }
 
+/- English proof (translation)
+Distinguish the cases in `h0 : z = 0`. Simplify using `[h0, he.ne']`. Establish `h1 : z ^ e = 1` using `mul_right_cancel₀ h0 (by rw [← pow_succ, hz, one_mul])`. Establish `h2 : ‖z‖ = 1` using `(pow_eq_one_iff_of_nonneg (norm_nonneg z) he.ne').1 (by rw [← norm_pow, h1, norm_one])`. Rewrite using `[h1]`.
+
+Evaluate the numerical expressions using `[h2]`.
+-/
 theorem cases_of_pow_succ {z : ℂ} {e : ℕ} (he : 0 < e) (hz : z ^ (e + 1) = z) :
     ‖z + 1 - z ^ e‖ = 1 ∧ ‖1 - (z ^ e + z ^ e)‖ = 1 := by
   by_cases h0 : z = 0
@@ -40,6 +45,15 @@ theorem cases_of_pow_succ {z : ℂ} {e : ℕ} (he : 0 < e) (hz : z ^ (e + 1) = z
     rw [h1]
     norm_num [h2]
 
+/- English proof (translation)
+Take `⟨σ, rfl⟩ : ∃ σ : c.F →+* ℂ, inst = σ.toAlgebra` from `⟨algebraMap c.F ℂ, Algebra.algebra_ext _ _ fun _ => rfl⟩`. Use `letI : Algebra c.F ℂ := σ.toAlgebra`. Establish `hf' : f ∈ secZero Xo c` using `hf`. Establish `hz : ∀ z : FrPt Xo c ℂ, evHom z f ^ (m + 1) = evHom z f` using `fun z => by rw [← map_pow, hfm]`. Establish `e1 : ∀ z : FrPt Xo c ℂ, evR Xo c (f + 1 - f ^ m) z = evHom z f + 1 - evHom z f ^ m` using `fun z => by`.
+
+Express the relevant statement in the definitionally equal form `evHom z _ = _`. Rewrite using `[map_sub, map_add, map_one, map_pow]`. Establish `e2 : ∀ z : FrPt Xo c ℂ, evR Xo c (1 - (f ^ m + f ^ m)) z = 1 - (evHom z f ^ m + evHom z f ^ m)` using `fun z => by`. Express the relevant statement in the definitionally equal form `evHom z _ = _`. Rewrite using `[map_sub, map_add, map_one, map_pow]`.
+
+Establish `h1` using `evR_eq_of_marked σ hσ hA (f := f + 1 - f ^ m) (show _ ∈ secZero Xo c from sub_mem (add_mem hf' (one_mem _)) (pow_mem hf' m)) (fun z => (congrArg norm (e1 z)).trans (cases_of_pow_succ hm0 (hz z)).1) hr hs hm x hx x' hx' y y' A A' hk hk'`. Establish `h2` using `evR_eq_of_marked σ hσ hA (f := 1 - (f ^ m + f ^ m)) (show _ ∈ secZero Xo c from sub_mem (one_mem _) (add_mem (pow_mem hf' m) (pow_mem hf' m))) (fun z => (congrArg norm (e2 z)).trans (cases_of_pow_succ hm0 (hz z)).2) hr hs hm x hx x' hx' y y' A A' hk hk'`. Rewrite `h1` using `[e1, e1]`. Rewrite `h2` using `[e2, e2]`. Express the relevant statement in the definitionally equal form `evHom y f = evHom y' f`.
+
+Take the linear combination `h1 - (1 / 2 : ℂ) * h2`.
+-/
 theorem evR_eq_of_marked_pow [inst : Algebra c.F ℂ] (hσ : GoodEmb c (algebraMap c.F ℂ)) (hA : l.A = 1) {f : Rul Xo c}
     (hf : f ∈ sec Xo c 0 0) {m : ℕ} (hm0 : 0 < m) (hfm : f ^ (m + 1) = f) {r g : ℕ} {X : Data E r}
     {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} {idx : Fin g ≃ X.Ψ × Fin r} {e : Fin g ≃ Lt1 Dw} {L : Lt E r} (hr : 1 ≤ r)
@@ -68,6 +82,35 @@ theorem evR_eq_of_marked_pow [inst : Algebra c.F ℂ] (hσ : GoodEmb c (algebraM
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hci` using `GlobalTheory.chartIndependence_unconditional`. Use `(Formalism.L2.PjFree.mem_cusp Xo c U a n f).2 ⟨hsec, fun σ hσ => Formalism.L2.PjFree.holCusp_mem_holSub _ _ fun k => ?_⟩` and prove the remaining obligations. Establish `hu` using `hU σ hσ`. Take `⟨W⟩` from `nonempty_uw hu`. Use `letI : Algebra c.F ℂ := σ.toAlgebra`.
+
+Use `letI A₂ : Algebra d.c₂.F ℂ := (σ.comp (d.eF.symm : d.c₂.F →+* c.F)).toAlgebra`. Establish `halg : ∀ t : c.F, algebraMap d.c₂.F ℂ (d.eF t) = algebraMap c.F ℂ t` using `fun t => by`. Express the relevant statement in the definitionally equal form `σ (d.eF.symm (d.eF t)) = σ t`. Rewrite using `[AlgEquiv.symm_apply_apply]`. Establish `hcomp : (algebraMap d.c₂.F ℂ).comp (d.eF : c.F →+* d.c₂.F) = σ` using `RingHom.ext fun t => halg t`.
+
+Establish `hσ₂ : GoodEmb d.c₂ (algebraMap d.c₂.F ℂ)`. Establish `h1 : d.eF (IntermediateField.inclusion c.le (baseKA l).ρ) = IntermediateField.inclusion d.c₂.le (baseKA d.l₂).ρ` using `Subtype.ext rfl`. Express the relevant statement in the definitionally equal form `algebraMap d.c₂.F ℂ (IntermediateField.inclusion d.c₂.le (baseKA d.l₂).ρ) = _`. Rewrite using `[← h1, halg]`. Conclude with `hσ`.
+
+Establish `hn : Even n` using `hD.2`. Take `⟨-, hsd, hmk, -⟩` from `uw_lattice E H Dw l Xo c σ r (U σ) hσ hu hr1 W k`. Take `⟨Dc, hDe, hk⟩` from `exists_dic E H Dw l c σ r W.g n ((U σ).X k) a W.e hσ hu.1 (hu.2.1 k).1 (hu.2.1 k).2 hsd hD`. Establish `hw : IsIntegral ℤ (H.w0 : E)` using `H.w0.isIntegral_coe`. Establish `hw'` using `ShortRead.halfIntegralGenerator_add_conj_eq_one H`.
+
+Establish `hM : 0 < d.l₂.M` using `lt_of_lt_of_le (by norm_num) d.l₂.three_le`. Establish `hΛ : Λ.La ∈ Vset E n d.l₂.M` using `(GenLatCmp.genLat_vset E n Λ.La).2.1 _ N hM hun hT hO`. Take `⟨v, hv⟩` from `(TensVac.vacua E r _ _ Dc.bas Dc.idx n Dc.sympl hn _ hw hw' _ hsd 1 _ (Base.stdL_mem_Vset n 1)).1`. Take `⟨x₁, hx₁⟩` from `(GlobalTheory.frames_isConnected E r ((U σ).X k)).nonempty`. Take `⟨b, -, hx₀, hux₀⟩` from `exists_unitFr_rmul ((U σ).X k) hx₁`.
+
+Take `⟨A₀, hAm, -⟩` from `uw_anFib E H Dw l Xo c σ r (U σ) hσ hu hr1 W k Dc.bas Dc.idx Dc.sympl (hDe ▸ Dc.per_eq) (hDe ▸ Dc.ty_eq) ⟨_, hx₀⟩ hux₀`. Take `⟨z₀, hz₀⟩` from `hlev.2.2.2.2.2.2.1 ℂ halg (unC (U σ) k ⟨_, hx₀⟩)`. Take `⟨B₀, -, mk₂, hmk₂, hB₀, hover⟩` from `Lift.anFib_lift E H Dw l Xo c n d halg hlev r _ _ Dc.bas Dc.idx W.e _ _ _ A₀ Dc.sympl hx₀ hsd z₀ hz₀ _ hAm`. Take `⟨Y, hY⟩` from `(DualMark.dual_marking E H Dw d.l₂ r _ _ mk₂ _ hsd hmk₂ (Complex.isPrimitiveRoot_exp _ hM.ne')).2.2.2.2 n N hO.1.pos`. Take `⟨ρ, hρ, hnorm⟩` from `VacNorm.norm_factor_eq E r _ _ Dc.bas Dc.idx n Dc.sympl hn _ hw hw' _ hsd v hv`.
+
+Establish `hpt : ∀ x (hx : x ∈ ((U σ).X k).dom), IsUnitFr ((U σ).X k) x → ∃ κ : ℂ, ‖κ‖ = ρ ∧ ∃ (A : AnFib ((U σ).X k) Dc.bas Dc.idx W.e x ((U σ).X k).Λ (unC (U σ) k ⟨x, hx⟩)) (θ : (Fin W.g → ℂ) → ℂ), A.Marked (W.mark k) ∧ A.Reads 1 (unC (U σ) k ⟨x, hx⟩).s θ ∧ ∀ z : Fin n → Fin W.g → ℂ, ∏ b, …`. Introduce `x hx hux`. Take `⟨A, hA, θ, hθ, hmean⟩` from `uw_anFib E H Dw l Xo c σ r (U σ) hσ hu hr1 W k Dc.bas Dc.idx Dc.sympl (hDe ▸ Dc.per_eq) (hDe ▸ Dc.ty_eq) ⟨x, hx⟩ hux`. Establish `hT` using `isTheta1_of_reads_generator E H Dw l Xo c r _ _ Dc.bas Dc.idx W.e x _ _ A Dc.sympl hx hsd θ hθ`. Take `⟨κ, hκ⟩` from `VacProd.prod_eq_mul_thA E r _ _ Dc.bas Dc.idx n Dc.sympl hn _ hw hw' _ hsd v hv x hx θ hT`.
+
+Conclude with `⟨κ, hnorm x hx hux θ κ hT hmean hκ, A, θ, hA, hθ, hκ⟩`. Use `choose κ hκ hpt using hpt`. Take `⟨C, -, hCe⟩` from `Const.exists_const ((U σ).X k) (Formalism.L2.PjFree.laU (U σ) a n k) ρ hρ κ hκ`. Establish `hG` using `fun j => ShortRead.sb_gphi Dc.idx Dc.sympl hn hw hw' hsd hΛ hv.1 (fun q => σ (w j q)) Y`. Establish `hth` using `fun j => theta_holomorphic_weight E r _ _ _ Dc.hr Dc.bas Dc.idx n Dc.sympl hn _ _ _ (hG j) _ (Dc.mem _ (hP j))`.
+
+Rewrite `hth` using `[Dc.wt_eq]`. Establish `hs` using `hu.2.2.2.2.1 a n hD f hsec k`. Set `co : T → ℂ` to `fun j => evR d.Xo₂ d.c₂ (cs j) z₀ * algebraMap d.c₂.F ℂ (1⁻¹ * ((Λ.mIdx N r : d.c₂.F))⁻¹ * ((Nat.card (Fin n → LevQ Dw d.l₂) : d.c₂.F))⁻¹ * (Λ.zCard N r : d.c₂.F))`. Establish `hrd` using `hCe (Formalism.L2.PjFree.rdU (U σ) f k) (fun x => ∑ j, co j * thP ((U σ).X k) Dc.hr Dc.bas Dc.idx (gphi ((U σ).X k) Dc.bas (H.w0 : E) Λ.La ((U σ).X k).Λ v (fun q => σ (w j q)) Y) (MvPolynomial.rename Dc.eL (MvPolynomial.map σ (P j))) x) hs.1 (DifferentiableOn.fun_sum fun j _ => ( …`. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[(hth j).2.1 x hx b hb, mul_left_comm]`. Use the proof step `rfl⟩) (by`. Introduce `x hx hux`. Take `⟨A, θ, hAk, hθ, hprod⟩` from `hpt x hx hux`.
+
+Take `⟨y₂, B, hy₂, hB, hrd⟩` from `Reach.exists_lift_of_reached d halg hσ₂ hlev hA hA₂ hr1 A Dc.sympl hx hsd hmk hAk hmk₂ hover hx₀ B₀ hz₀ hB₀`. Take `⟨vc, hvc, hev⟩` from `hval ℂ halg _ y₂ hy₂`. Establish `hrd' : Formalism.L2.PjFree.rdU (U σ) f k x = evR Xo c f (unC (U σ) k ⟨x, hx⟩)` using `dif_pos hx`. Rewrite using `[hrd', hev, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Establish `h` using `GlobalTheory.T.shortThetaValue_complexPoint_eq_classicalTheta hci E H Dw d.l₂ d.Xo₂ d.c₂ r _ _ Dc.bas Dc.idx W.e x _ y₂ B Dc.sympl hx hsd _ n Dc.hr Dc.eL hu.1 hn (hDe ▸ Dc.dir_eq) d.nab₂ hnab θ v _ (hrd θ hθ) hv hprod mk₂ hmk₂ hB Λ.La hΛ N hO Y hY a _ ((GlobalTheory.admissible_co …`. Rewrite using `[h, MvPolynomial.map_map, hcomp, evR_eq_of_marked_pow hσ₂ hA₂ (hcs j).1 hm (hcs j).2 hr1 Dc.sympl hmk₂.mem hx hx₀ B B₀ hB hB₀]`. Simplify using `only [halg, co]`. Express the relevant statement in the definitionally equal form `_ * (_ * _ * thP _ _ _ _ (gphi _ _ _ _ _ _ (fun q => σ (w j q)) _) _ _) = _`. Use the proof step `ring)`.
+
+Establish `hwt : Formalism.L2.PjFree.laU (U σ) a n k = wtOf ((U σ).X k) Dc.hr Dc.k Dc.k' n` using `Dc.wt_eq.symm`. Rewrite `hs`, the goal using `[hwt]`. Use `CuspSum.mem_SS_of_eq_sum_thP E r ((U σ).X k) W.g Dw.p Dc.hr Dc.bas Dc.idx n Dc.sympl hn Dc.k Dc.k' ?_ T _ _ (fun j => ShortRead.sb_smul (C * co j) (hG j)) (fun j => Dc.mem _ (hP j)) _ (fun x hx => ?_) hs.2.2` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos Dw.p with h0 | h0` into its components or cases. Conclude with `Or.inr h0`.
+
+Conclude with `Or.inl (hk hL h0)`. Rewrite using `[hrd x hx, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[ShortRead.theta_smul₂ Dc.hr Dc.idx Dc.sympl hn (hG j) (Dc.mem _ (hP j)) hx, mul_assoc C]`.
+-/
 theorem mem_cusp_of_thetaSum (d : DeltaDat Xo c n) {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Formalism.L2.PjFree.Unf Xo c σ r) (hr1 : 1 ≤ r)
     (hU : ∀ σ, GoodEmb c σ → Formalism.L2.PjFree.IsUnf (U σ)) (hA : l.A = 1) (hlev : d.IsLev) (hA₂ : d.l₂.A = 1)
     [StarRing (𝓞 E)] (hnab : IsNab d.Xo₂ d.c₂ d.nab₂) (Λ : GenLat E n) (N : ℕ) (hun : Λ.Unimod) (hT : Λ.TrivAt d.l₂.M)

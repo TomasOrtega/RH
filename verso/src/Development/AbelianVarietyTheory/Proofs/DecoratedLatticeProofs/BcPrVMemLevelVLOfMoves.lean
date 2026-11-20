@@ -14,6 +14,9 @@ namespace GlobalTheory.FamTrace
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x e => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`.
+-/
 theorem prV_toEAf_eq_swap (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (a : AE D) :
     Formalism.UG.prV (E := D.host.E) v (Formalism.IndefR.Datum.toEAf D a) =
       GlobalTheory.StabConjIndex.swap v (GlobalTheory.AdelicU.compFin D.host.F D.host.E v a) := by
@@ -24,6 +27,17 @@ theorem prV_toEAf_eq_swap (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (a : 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D S n hn L Λ hL hΛ κ g hg v hm`. Substitute `hn` using the available equality. Establish `hΛL : Λ = L`. Use extensionality with `x`. Rewrite using `[hΛ x]`.
+
+Both sides reduce to the same expression. Substitute `hΛL` using the available equality. Establish `h1` using `(GlobalTheory.StMoves.moves_iff_stabLoc S Λ hL v κ).1 hm`. Establish `h2` using `GlobalTheory.StabConjIndex.map_stabLoc (Formalism.L2.Forms.sigD D) S.gram v Λ`. Establish `h3 : GlobalTheory.StabConjIndex.toGL (Formalism.L2.Forms.sigD D) S.gram v (GlobalTheory.AdelicU.proj _ S.gram v κ) ∈ Formalism.UG.levelVL (Formalism.L2.Forms.sigD D) S.gram v Λ` using `h2 ▸ ⟨_, h1, rfl⟩`.
+
+Establish `hgram : (S.gram.reindex (finCongr (rfl : S.rank = S.rank)) (finCongr rfl)) = S.gram`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hp` using `GlobalTheory.AdelicU.matHom_proj (Formalism.L2.Forms.sigD D) S.gram v κ`. Establish `hE : Formalism.UG.bc (Formalism.UG.prV (E` using `D.host.E) v) g = GlobalTheory.StabConjIndex.toGL (Formalism.L2.Forms.sigD D) S.gram v (GlobalTheory.AdelicU.proj _ S.gram v κ) := by`.
+
+Use extensionality with `i j`. Establish `hij` using `congrFun (congrFun hg i) j`. Establish `e1 : (GlobalTheory.StabConjIndex.toGL (Formalism.L2.Forms.sigD D) S.gram v (GlobalTheory.AdelicU.proj _ S.gram v κ)).val i j = GlobalTheory.StabConjIndex.swap v ((GlobalTheory.AdelicU.matHom (Fv D.host.F v) (Formalism.L2.Forms.sigD D) S.gram (GlobalTheory.AdelicU.proj (Formalism. …` using `rfl`. Rewrite using `[e1, hp]`. Use `show Formalism.UG.prV v (g.1 i j) = GlobalTheory.StabConjIndex.swap v (GlobalTheory.AdelicU.compFin _ _ v _)`.
+
+Rewrite using `[← hij]`. Conclude with `prV_toEAf_eq_swap D v _`. Rewrite using `[hgram, hE]`. Conclude with `h3`.
+-/
 theorem bc_prV_mem_levelVL_of_moves : ∀ (D : D7) (S : HSp D) (n : ℕ) (hn : S.rank = n) (L : GlobalTheory.FinPl.Lat S)
     (Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)), L.FG →
     (∀ x : Fin n → D.host.E, x ∈ Λ ↔ (fun i => x (finCongr hn i)) ∈ L) →
@@ -58,6 +72,9 @@ theorem bc_prV_mem_levelVL_of_moves : ∀ (D : D7) (S : HSp D) (n : ℕ) (hn : S
   rw [hgram, hE]
   exact h3
 
+/- English proof (translation)
+Establish `e1` using `GlobalTheory.Mem.Col2.ChartLevel.latS_eq_std hT h1 h2`. Establish `e2` using `GlobalTheory.Mem.Col2.ChartLevel.latS_eq_std hT h1' h2'`. Unfold `Formalism.UG.levelVL`. Conclude with `congrArg _ (e1.trans e2.symm)`.
+-/
 theorem levelVL_eq_of_std {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) {Lb Λ : Submodule (𝓞 E) (Fin n → E)} {T : ℕ}
     {v : HeightOneSpectrum (𝓞 F)} (hT : (T : 𝓞 F) ∉ v.asIdeal)

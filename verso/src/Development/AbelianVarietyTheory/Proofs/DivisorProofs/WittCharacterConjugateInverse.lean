@@ -8,6 +8,13 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling (absE)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' h z`. Establish `hcm` using `h.base.cm`. Use `set a : (AF F)ˣ := Units.map (Algebra.norm (AF F) (S := AE F E)) z with ha`. Establish `h1` using `h.resX a`. Rewrite `h1` using `[if_pos (Subgroup.mem_sup_right (MonoidHom.mem_range.mpr ⟨z, ha.symm⟩))]`.
+
+Establish `h2 : χX (Units.map ↑(algebraMap (AF F) (AE F E)) a) = 1` using `by ext; simpa using h1`. Establish `h3 : (Units.map ↑(algebraMap (AF F) (AE F E)) a) = z * Units.map (cA σ).toMonoidHom z`. Use `ext`. Simplify using `only [ha, Units.coe_map, MonoidHom.coe_coe, Units.val_mul]`. Conclude with `GlobalTheory.Doubling.algebraMap_norm_eq hcm (R := AF F) (z : AE F E)`.
+
+Rewrite `h2` using `[h3, map_mul]`. Conclude with `eq_inv_of_mul_eq_one_right h2`.
+-/
 theorem GlobalTheory.chrX_conj_inv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ z : (AE F E)ˣ, χX (Units.map (cA σ).toMonoidHom z) = (χX z)⁻¹ := by

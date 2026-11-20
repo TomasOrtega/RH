@@ -4,6 +4,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.CompositumCompletion
 
+/- English proof (translation)
+Use `letI : Algebra L L' := jL.toAlgebra`. Use `haveI : v'.asIdeal.LiesOver v.asIdeal := ⟨by ext x; exact (h x).symm⟩`. Establish `hc` using `(HeightOneSpectrum.uniformContinuous_algebraMap_liesOver L L' v v').continuous`. Set `φ : v.adicCompletion L →+* v'.adicCompletion L'` to `((HeightOneSpectrum.adicCompletion.equiv L' v').symm.toRingHom.comp (UniformSpace.Completion.mapRingHom (algebraMap (WithVal (v.valuation L)) (WithVal (v'.valuation L'))) hc)).comp (HeightOneSpectrum.adicCompletion.equiv L v).toRingHom`. Use `⟨φ, ?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(HeightOneSpectrum.adicCompletion.continuous_ofCompletion L' v').comp ((UniformSpace.Completion.continuous_map (f := algebraMap (WithVal (v.valuation L)) (WithVal (v'.valuation L')))).comp (HeightOneSpectrum.adicCompletion.continuous_toCompletion L v))`. Apply `HeightOneSpectrum.adicCompletion.ext` to reduce the goal to its premises. Conclude with `UniformSpace.Completion.mapRingHom_coe hc (WithVal.toVal _ x)`.
+-/
 theorem exists_completion_map {L L' : Type} [Field L] [NumberField L] [Field L'] [NumberField L']
     (jL : L →+* L') (v : HeightOneSpectrum (𝓞 L)) (v' : HeightOneSpectrum (𝓞 L'))
     (h : ∀ x : 𝓞 L, RingOfIntegers.mapRingHom jL x ∈ v'.asIdeal ↔ x ∈ v.asIdeal) :
@@ -25,6 +30,33 @@ theorem exists_completion_map {L L' : Type} [Field L] [NumberField L] [Field L']
   · apply HeightOneSpectrum.adicCompletion.ext
     exact UniformSpace.Completion.mapRingHom_coe hc (WithVal.toVal _ x)
 
+/- English proof (translation)
+Introduce `E L E' L' _ _ _ _ _ _ _ _ _ _ w v w' v' j jL i hv hv' hjv hjL hadj hic hij`. Take `⟨κ, hκc, hκ⟩` from `exists_completion_map (algebraMap E L) w v (fun x => hv x)`. Take `⟨κ', hκ'c, hκ'⟩` from `exists_completion_map (algebraMap E' L') w' v' (fun x => hv' x)`. Take `⟨μ, hμc, hμ⟩` from `exists_completion_map jL v v' hjv`. Establish `hcomm : ∀ a, μ (κ a) = κ' (i a)` using `fun a => congrFun ((HeightOneSpectrum.denseRange_algebraMap E w).equalizer (hμc.comp hκc) (hκ'c.comp hic) (funext fun x => by simp only [Function.comp_apply, hκ, hμ, hjL, hij, hκ'])) a`.
+
+Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := E) (M := L)`. Establish `hrange : Set.range jL ⊆ Submodule.span E' (jL '' (s : Set L))`. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hx : x ∈ Submodule.span E (s : Set L)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem y hy => exact Submodule.subset_span ⟨y, hy, rfl⟩`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha`.
+
+Rewrite using `[Algebra.smul_def, map_mul, hjL, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ ha`. Establish `htop : Submodule.span E' (Set.range jL) = ⊤`. Establish `h1` using `Algebra.adjoin_eq_span E' (Set.range jL)`. Rewrite `h1` using `[hadj, Algebra.top_toSubmodule]`.
+
+Establish `hcl : (Submonoid.closure (Set.range jL) : Set L') = Set.range jL` using `congrArg SetLike.coe (Submonoid.closure_eq (MonoidHom.mrange jL))`. Rewrite using `[h1, hcl]`. Establish `hspan : ∀ y : L', y ∈ Submodule.span E' (jL '' (s : Set L))` using `fun y => by`. Establish `hy : y ∈ Submodule.span E' (Set.range jL)` using `htop ▸ Submodule.mem_top`. Conclude with `(Submodule.span_le.2 hrange) hy`.
+
+Use `letI : Algebra (w'.adicCompletion E') (v'.adicCompletion L') := κ'.toAlgebra`. Use `haveI : ContinuousSMul (w'.adicCompletion E') (v'.adicCompletion L') := continuousSMul_of_algebraMap _ _ hκ'c`. Use `letI : NontriviallyNormedField (w'.adicCompletion E') := Valued.toNontriviallyNormedField _ _`. Set `M : Submodule (w'.adicCompletion E') (v'.adicCompletion L')` to `Submodule.span _ ((fun y => algebraMap L' (v'.adicCompletion L') (jL y)) '' (s : Set L))`. Use `haveI : FiniteDimensional (w'.adicCompletion E') M := FiniteDimensional.span_of_finite _ (s.finite_toSet.image _)`.
+
+Establish `hcl : IsClosed (M : Set (v'.adicCompletion L'))` using `Submodule.closed_of_finiteDimensional _`. Establish `hM : ∀ y : L', algebraMap L' (v'.adicCompletion L') y ∈ M` using `fun y => by`. Proceed by induction on `hspan y using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, hx, rfl⟩` from `hz`.
+
+Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha`.
+
+Establish `e : algebraMap L' (v'.adicCompletion L') (c • a) = (algebraMap E' (w'.adicCompletion E') c) • algebraMap L' (v'.adicCompletion L') a`. Rewrite using `[Algebra.smul_def c a, map_mul, ← hκ']`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ ha`.
+
+Establish `hMμ : ∀ z ∈ M, z ∈ Set.range μ` using `fun z hz => by`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, _, rfl⟩` from `hz`. Conclude with `⟨algebraMap L _ x, hμ x⟩`.
+
+Consider the case `zero => exact ⟨0, map_zero μ⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨a', rfl⟩` from `ha`. Take `⟨b', rfl⟩` from `hb`. Conclude with `⟨a' + b', map_add μ a' b'⟩`.
+
+Consider the case `smul c a _ ha`. Take `⟨a', rfl⟩` from `ha`. Conclude with `⟨κ (i.symm c) * a', by rw [map_mul, hcomm, i.apply_symm_apply]; rfl⟩`. Establish `hsurj : Function.Surjective μ` using `fun y => by`. Establish `hy : y ∈ (M : Set (v'.adicCompletion L'))` using `(HeightOneSpectrum.denseRange_algebraMap L' v').induction_on (p := fun y => y ∈ (M : Set (v'.adicCompletion L'))) y hcl hM`.
+
+Conclude with `hMμ y hy`. Conclude with `⟨RingEquiv.ofBijective μ ⟨μ.injective, hsurj⟩, hμc, fun x => hμ x⟩`.
+-/
 theorem exists_ringEquiv_completion : ∀ (E L E' L' : Type) [Field E] [NumberField E] [Field L] [NumberField L] [Algebra E L] [Field E'] [NumberField E'] [Field L'] [NumberField L'] [Algebra E' L'] (w : HeightOneSpectrum (𝓞 E)) (v : HeightOneSpectrum (𝓞 L)) (w' : HeightOneSpectrum (𝓞 E')) (v' : HeightOneSpectrum (𝓞 L')) (j : E →+* E') (jL : L →+* L') (i : w.adicCompletion E ≃+* w'.adicCompletion E'), (∀ x : 𝓞 E, algebraMap (𝓞 E) (𝓞 L) x ∈ v.asIdeal ↔ x ∈ w.asIdeal) → (∀ x : 𝓞 E', algebraMap (𝓞 E') (𝓞 L') x ∈ v'.asIdeal ↔ x ∈ w'.asIdeal) → (∀ x : 𝓞 L, RingOfIntegers.mapRingHom jL x ∈ v'.asIdeal ↔ x ∈ v.asIdeal) → (∀ x, jL (algebraMap E L x) = algebraMap E' L' (j x)) → Algebra.adjoin E' (Set.range jL) = ⊤ → Continuous i → (∀ x, i (algebraMap E _ x) = algebraMap E' _ (j x)) → ∃ iL : v.adicCompletion L ≃+* v'.adicCompletion L', Continuous iL ∧ ∀ x, iL (algebraMap L _ x) = algebraMap L' _ (jL x) := by
   intro E L E' L' _ _ _ _ _ _ _ _ _ _ w v w' v' j jL i hv hv' hjv hjL hadj hic hij
   obtain ⟨κ, hκc, hκ⟩ := exists_completion_map (algebraMap E L) w v (fun x => hv x)

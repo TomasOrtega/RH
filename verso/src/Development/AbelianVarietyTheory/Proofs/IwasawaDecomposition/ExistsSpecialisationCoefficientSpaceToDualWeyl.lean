@@ -12,6 +12,11 @@ noncomputable def specAt (τ₀ : ι) (y : ι × Fin n × Fin n → K) :
     Formalism.L2.DIV.Pol K ι n →ₐ[K] MvPolynomial (Fin n × Fin n) K :=
   MvPolynomial.aeval fun v => if v.1 = τ₀ then MvPolynomial.X v.2 else MvPolynomial.C (y v)
 
+/- English proof (translation)
+Establish `h : (MvPolynomial.eval z).comp (specAt τ₀ y).toRingHom = MvPolynomial.eval (fun v : ι × Fin n × Fin n => if v.1 = τ₀ then z v.2 else y v)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[specAt]`. Introduce `v`.
+
+Apply the tactic sequence `by_cases hv : v.1 = τ₀ <;> simp [specAt, hv]`. Conclude with `congrArg (fun f : Formalism.L2.DIV.Pol K ι n →+* K => f w) h`.
+-/
 theorem eval_specAt (τ₀ : ι) (y : ι × Fin n × Fin n → K) (z : Fin n × Fin n → K) (w : Formalism.L2.DIV.Pol K ι n) :
     MvPolynomial.eval z (specAt τ₀ y w) =
       MvPolynomial.eval (fun v => if v.1 = τ₀ then z v.2 else y v) w := by
@@ -23,6 +28,15 @@ theorem eval_specAt (τ₀ : ι) (y : ι × Fin n × Fin n → K) (z : Fin n × 
       by_cases hv : v.1 = τ₀ <;> simp [specAt, hv]
   exact congrArg (fun f : Formalism.L2.DIV.Pol K ι n →+* K => f w) h
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hw` to reduce the goal to its premises. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `z`.
+
+Use `congrArg (MvPolynomial.eval (fun v : Fin n × Fin n => z (τ₀, v))) (h z)` as an intermediate fact. Rewrite `this` using `[eval_specAt, map_zero]`. Rewrite using `[map_zero, ← this]`. Use `congr 2`. Use function extensionality and compare the values at `v`.
+
+Use `split_ifs with hv`. Take `⟨a, b⟩` from `v`. Simplify using `only at hv`. Substitute `hv` using the available equality. Both sides reduce to the same expression.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_specAt_ne [Infinite K] (τ₀ : ι) (w : Formalism.L2.DIV.Pol K ι n) (hw : w ≠ 0) :
     ∃ y, specAt τ₀ y w ≠ 0 := by
   by_contra h
@@ -39,6 +53,13 @@ theorem exists_specAt_ne [Infinite K] (τ₀ : ι) (w : Formalism.L2.DIV.Pol K �
   · obtain ⟨a, b⟩ := v; simp only at hv; subst hv; rfl
   · rfl
 
+/- English proof (translation)
+Unfold `specAt Formalism.GradedWeylDivisibility.blockEmb`. Rewrite using `[MvPolynomial.aeval_rename]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `only [Function.comp_def, if_true]`.
+
+Conclude with `MvPolynomial.aeval_X_left_apply F`. Simplify using `only [Function.comp_def, h, if_false]`. Establish `hh : (MvPolynomial.aeval (R` using `K) fun x : Fin n × Fin n => (MvPolynomial.C (y (τ, x)) : MvPolynomial (Fin n × Fin n) K)).toRingHom = MvPolynomial.C.comp (MvPolynomial.eval fun v => y (τ, v)) := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`.
+
+Simplify using the standard rewrite rules. Introduce `v`. Simplify using the standard rewrite rules. Conclude with `congrArg (fun f : MvPolynomial (Fin n × Fin n) K →+* MvPolynomial (Fin n × Fin n) K => f F) hh`.
+-/
 theorem specAt_blockEmb (τ₀ : ι) (y : ι × Fin n × Fin n → K) (τ : ι) (F : MvPolynomial (Fin n × Fin n) K) :
     specAt τ₀ y (Formalism.GradedWeylDivisibility.blockEmb K τ F) =
       if τ = τ₀ then F else MvPolynomial.C (MvPolynomial.eval (fun v => y (τ, v)) F) := by
@@ -64,6 +85,15 @@ open MvPolynomial
 
 variable {K : Type} [Field K] {ι : Type} [Fintype ι] [DecidableEq ι] {n : ℕ}
 
+/- English proof (translation)
+Unfold `Formalism.L2.DIV.VV Formalism.GradedWeylDivisibility.tensorLat at hP`. Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨F, hF, rfl⟩` from `hx`. Rewrite using `[map_prod]`.
+
+Simplify using `only [specAt_blockEmb]`. Rewrite using `[Fintype.prod_eq_mul_prod_compl τ₀, if_pos rfl, mul_comm]`. Establish `: ∏ i ∈ ({τ₀}ᶜ : Finset ι), (if i = τ₀ then F i else MvPolynomial.C (MvPolynomial.eval (fun v => y (i, v)) (F i))) = MvPolynomial.C (∏ i ∈ ({τ₀}ᶜ : Finset ι), MvPolynomial.eval (fun v => y (i, v)) (F i))`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations.
+
+Rewrite using `[if_neg (by simpa using hi)]`. Rewrite using `[this, ← MvPolynomial.smul_eq_C_mul]`. Conclude with `Submodule.smul_mem _ _ (hF τ₀)`. Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => rw [map_add]`.
+
+Conclude with `Submodule.add_mem _ hx hz`. Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem specAt_mem (lam : ι → DomWeight n) (τ₀ : ι) (y : ι × Fin n × Fin n → K) (P : Formalism.L2.DIV.Pol K ι n)
     (hP : P ∈ Formalism.L2.DIV.VV K lam) : specAt τ₀ y P ∈ nablaSq K n (lam τ₀) := by
   unfold Formalism.L2.DIV.VV Formalism.GradedWeylDivisibility.tensorLat at hP
@@ -85,6 +115,13 @@ theorem specAt_mem (lam : ι → DomWeight n) (τ₀ : ι) (y : ι × Fin n × F
   | add x z _ _ hx hz => rw [map_add]; exact Submodule.add_mem _ hx hz
   | smul a x _ hx => rw [map_smul]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Establish `h : (specAt τ₀ y).comp (Formalism.GradedWeylDivisibility.blockAct K (n` using `n) (fun τ => if τ = τ₀ then M else 1)) = (Formalism.GradedWeylDivisibility.rowAct K M).comp (specAt τ₀ y) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨τ, a, b⟩`. Distinguish the cases in `hτ : τ = τ₀`. Substitute `hτ` using the available equality.
+
+Simplify using `[specAt, Formalism.GradedWeylDivisibility.blockAct, Formalism.GradedWeylDivisibility.rowAct]`. Simplify using `only [AlgHom.comp_apply, Formalism.GradedWeylDivisibility.blockAct, specAt, MvPolynomial.aeval_X, hτ, if_false, map_sum, map_mul, MvPolynomial.aeval_C, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using `[hτ]`. Introduce `c _ hc`.
+
+Simplify using `[Ne.symm hc]`. Simplify using the standard rewrite rules. Conclude with `congrArg (fun f : Formalism.L2.DIV.Pol K ι n →ₐ[K] MvPolynomial (Fin n × Fin n) K => f P) h`.
+-/
 theorem specAt_blockAct (τ₀ : ι) (y : ι × Fin n × Fin n → K) (M : Matrix (Fin n) (Fin n) K)
     (P : Formalism.L2.DIV.Pol K ι n) :
     specAt τ₀ y (Formalism.GradedWeylDivisibility.blockAct K (fun τ => if τ = τ₀ then M else 1) P) =
@@ -106,6 +143,9 @@ theorem specAt_blockAct (τ₀ : ι) (y : ι × Fin n × Fin n → K) (M : Matri
 
 end GlobalTheory.SpecFactor
 
+/- English proof (translation)
+Introduce `K _ _ n ι _ _ lam τ₀ w _ hw`. Take `⟨y, hy⟩` from `GlobalTheory.SpecFactor.exists_specAt_ne τ₀ w hw`. Conclude with `⟨(GlobalTheory.SpecFactor.specAt τ₀ y).toLinearMap, hy, fun P hP => GlobalTheory.SpecFactor.specAt_mem lam τ₀ y P hP, fun M P => GlobalTheory.SpecFactor.specAt_blockAct τ₀ y M P⟩`.
+-/
 theorem GlobalTheory.specialise_factor : ∀ (K : Type) [Field K] [Infinite K] (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι]
     (lam : ι → DomWeight n) (τ₀ : ι) (w : Formalism.L2.DIV.Pol K ι n), w ∈ Formalism.L2.DIV.VV K lam → w ≠ 0 →
     ∃ φ : Formalism.L2.DIV.Pol K ι n →ₗ[K] MvPolynomial (Fin n × Fin n) K, φ w ≠ 0 ∧

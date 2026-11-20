@@ -23,18 +23,27 @@ open Ad3 Ad3.K
 section Alg
 variable {F : Type} [Field F]
 
+/- English proof (translation)
+Establish `: Algebra.lmul F (F × F) x = LinearMap.prodMap (Algebra.lmul F F x.1) (Algebra.lmul F F x.2)`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[Algebra.norm_apply, this, LinearMap.det_prodMap]`. Simplify using `[← Algebra.norm_apply]`.
+-/
 theorem norm_pair (x : F × F) : Algebra.norm F x = x.1 * x.2 := by
   have : Algebra.lmul F (F × F) x = LinearMap.prodMap (Algebra.lmul F F x.1) (Algebra.lmul F F x.2) := by
     ext <;> simp
   rw [Algebra.norm_apply, this, LinearMap.det_prodMap]
   simp [← Algebra.norm_apply]
 
+/- English proof (translation)
+Rewrite using `[norm_pair]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_unit_pair (u : Fˣ) : Algebra.norm F (((u : F), ((u⁻¹ : Fˣ) : F)) : F × F) = 1 := by
   rw [norm_pair]; simp
 end Alg
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Unfold `GL2LocalData.nsg`. Rewrite using `[if_pos]`. Apply the tactic sequence `refine ⟨⟨(a, 1), (a⁻¹, 1), by ext <;> simp [ha], by ext <;> simp [ha]⟩, ?_⟩`. Rewrite using `[norm_pair]`. Simplify using the standard rewrite rules.
+-/
 theorem nsg_pair {a : F} (ha : a ≠ 0) : GL2LocalData.nsg (F × F) a = 1 := by
   unfold GL2LocalData.nsg
   rw [if_pos]

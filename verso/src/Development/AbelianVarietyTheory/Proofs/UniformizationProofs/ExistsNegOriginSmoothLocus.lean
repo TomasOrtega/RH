@@ -23,6 +23,9 @@ open HomogeneousIdeal
 
 attribute [local instance] MvPolynomial.gradedAlgebra
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[WeierstrassCurve.Projective.equation_iff]`. Simplify using `only [WeierstrassCurve.Projective.neg, WeierstrassCurve.Projective.negY, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val]`. Take the linear combination `h`.
+-/
 theorem equation_neg {A : Type*} [CommRing A] {V : WeierstrassCurve A} {P : Fin 3 → A}
     (h : V.toProjective.Equation P) : V.toProjective.Equation (V.toProjective.neg P) := by
   rw [WeierstrassCurve.Projective.equation_iff] at h ⊢
@@ -30,6 +33,11 @@ theorem equation_neg {A : Type*} [CommRing A] {V : WeierstrassCurve A} {P : Fin 
     Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val]
   linear_combination h
 
+/- English proof (translation)
+Establish `h0 : P 0 ∈ Ideal.span (Set.range (V.toProjective.neg P))` using `Ideal.subset_span ⟨0, rfl⟩`. Establish `h2 : P 2 ∈ Ideal.span (Set.range (V.toProjective.neg P))` using `Ideal.subset_span ⟨2, rfl⟩`. Establish `h1 : -P 1 - V.a₁ * P 0 - V.a₃ * P 2 ∈ Ideal.span (Set.range (V.toProjective.neg P))` using `Ideal.subset_span ⟨1, rfl⟩`. Establish `h1' : P 1 ∈ Ideal.span (Set.range (V.toProjective.neg P))`. Establish `: P 1 = -((-P 1 - V.a₁ * P 0 - V.a₃ * P 2) + V.a₁ * P 0 + V.a₃ * P 2)` using `by ring`.
+
+Rewrite using `[this]`. Conclude with `neg_mem (add_mem (add_mem h1 (Ideal.mul_mem_left _ _ h0)) (Ideal.mul_mem_left _ _ h2))`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Apply the tactic sequence `fin_cases i <;> assumption`.
+-/
 theorem span_le_span_neg {A : Type*} [CommRing A] (V : WeierstrassCurve A) (P : Fin 3 → A) :
     Ideal.span (Set.range P) ≤ Ideal.span (Set.range (V.toProjective.neg P)) := by
   have h0 : P 0 ∈ Ideal.span (Set.range (V.toProjective.neg P)) := Ideal.subset_span ⟨0, rfl⟩
@@ -44,6 +52,9 @@ theorem span_le_span_neg {A : Type*} [CommRing A] (V : WeierstrassCurve A) (P : 
   rintro _ ⟨i, rfl⟩
   fin_cases i <;> assumption
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨equation_neg h.equation, top_le_iff.mp (h.span_eq_top.ge.trans (span_le_span_neg V P))⟩`.
+-/
 theorem isUnimodularSol_neg {A : Type*} [CommRing A] {V : WeierstrassCurve A} {P : Fin 3 → A}
     (h : IsUnimodularSol V P) : IsUnimodularSol V (V.toProjective.neg P) :=
   ⟨equation_neg h.equation, top_le_iff.mp (h.span_eq_top.ge.trans (span_le_span_neg V P))⟩
@@ -52,6 +63,11 @@ variable {R : Type} [CommRing R] (W : WeierstrassCurve R)
 
 def negCoord : Fin 3 → HomRing W := (W.map (algebraMap R (HomRing W))).toProjective.neg (coord W)
 
+/- English proof (translation)
+Use `fin_cases i`. Conclude with `coord_mem W 0`. Express the relevant statement in the definitionally equal form `-coord W 1 - algebraMap R _ W.a₁ * coord W 0 - algebraMap R _ W.a₃ * coord W 2 ∈ _`. Rewrite using `[← Algebra.smul_def, ← Algebra.smul_def]`. Conclude with `sub_mem (sub_mem (neg_mem (coord_mem W 1)) (Submodule.smul_mem _ _ (coord_mem W 0))) (Submodule.smul_mem _ _ (coord_mem W 2))`.
+
+Conclude with `coord_mem W 2`.
+-/
 theorem negCoord_mem (i : Fin 3) : negCoord W i ∈ grading W 1 := by
   fin_cases i
   · exact coord_mem W 0
@@ -79,6 +95,11 @@ def negGraded : grading W →+*ᵍ grading W where
     rw [hp'.degree_eq_sum_deg_support hd]
     simpa using this
 
+/- English proof (translation)
+Rewrite using `[← toIdeal_le_toIdeal_iff, irrelevant_eq_span_coord]`. Use `(span_le_span_neg (W.map (algebraMap R (HomRing W))) (coord W)).trans ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `: (W.map (algebraMap R (HomRing W))).toProjective.neg (coord W) i = negGraded W (coord W i)` using `(evalHom_coord W (algebraMap R (HomRing W)) (negCoord W) (equation_neg (equation_coord W)) i).symm`.
+
+Rewrite using `[this]`. Conclude with `Ideal.mem_map_of_mem (negGraded W) (mem_irrelevant_of_mem _ one_pos (coord_mem W i))`.
+-/
 theorem irrelevant_le_map_negGraded :
     irrelevant (grading W) ≤ (irrelevant (grading W)).map (negGraded W) := by
   rw [← toIdeal_le_toIdeal_iff, irrelevant_eq_span_coord]
@@ -95,6 +116,13 @@ theorem irrelevant_le_map_negGraded :
 def negMap : scheme W ⟶ scheme W := Proj.map (negGraded W) (irrelevant_le_map_negGraded W)
 
 @[reassoc]
+/- English proof (translation)
+Use `(ProjPoint.ofHom_map (negGraded W) (irrelevant_le_map_negGraded W) _ (map_irrelevant_evalHom W hP)).trans ?_` and prove the remaining obligations. Establish `: (evalHom W ρ P hP.equation).comp (negGraded W).toRingHom = evalHom W ρ _ (isUnimodularSol_neg hP).equation`. Use `homRing_hom_ext W (fun r => ?_) (fun i => ?_)` and prove the remaining obligations. Use `(congrArg (evalHom W ρ P hP.equation) (evalHom_algebraMap W _ (negCoord W) (equation_neg (equation_coord W)) r)).trans ?_` and prove the remaining obligations. Rewrite using `[evalHom_algebraMap, evalHom_algebraMap]`.
+
+Use `(congrArg (evalHom W ρ P hP.equation) (evalHom_coord W _ (negCoord W) (equation_neg (equation_coord W)) i)).trans ?_` and prove the remaining obligations. Rewrite using `[evalHom_coord]`. Use `fin_cases i`. Conclude with `evalHom_coord W ρ P hP.equation 0`. Express the relevant statement in the definitionally equal form `evalHom W ρ P hP.equation (-coord W 1 - algebraMap R _ W.a₁ * coord W 0 - algebraMap R _ W.a₃ * coord W 2) = -P 1 - ρ W.a₁ * P 0 - ρ W.a₃ * P 2`.
+
+Simplify using `only [map_sub, map_neg, map_mul, evalHom_coord, evalHom_algebraMap]`. Conclude with `evalHom_coord W ρ P hP.equation 2`. Simplify using `only [this]`. Both sides reduce to the same expression.
+-/
 theorem ptHom_negMap {A : Type} [CommRing A] (ρ : R →+* A) (P : Fin 3 → A)
     (hP : IsUnimodularSol (W.map ρ) P) :
     ptHom W ρ P hP ≫ negMap W = ptHom W ρ _ (isUnimodularSol_neg hP) := by
@@ -119,11 +147,19 @@ theorem ptHom_negMap {A : Type} [CommRing A] (ρ : R →+* A) (P : Fin 3 → A)
   simp only [this]
   rfl
 
+/- English proof (translation)
+Apply `scheme_hom_ext` to reduce the goal to its premises. Rewrite using `[chartY, pt_eq_ptHom, ptHom_negMap_assoc, ptHom_toSpec, ptHom_toSpec]`. Rewrite using `[chartZ, pt_eq_ptHom, ptHom_negMap_assoc, ptHom_toSpec, ptHom_toSpec]`.
+-/
 theorem negMap_toSpec : negMap W ≫ toSpec W = toSpec W := by
   apply scheme_hom_ext
   · rw [chartY, pt_eq_ptHom, ptHom_negMap_assoc, ptHom_toSpec, ptHom_toSpec]
   · rw [chartZ, pt_eq_ptHom, ptHom_negMap_assoc, ptHom_toSpec, ptHom_toSpec]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨t, rfl⟩`. Use `h (T.residueField t) (T.fromSpecResidueField t) (Set.mem_univ (IsLocalRing.closedPoint (T.residueField t)))` as an intermediate fact. Rewrite using `[Scheme.Opens.range_ι]`. Establish `e : (T.fromSpecResidueField t ≫ f) (IsLocalRing.closedPoint (T.residueField t)) = f t` using `(Scheme.Hom.comp_apply _ _ _).trans (congrArg f (Scheme.fromSpecResidueField_apply t _))`. Rewrite using `[← e]`.
+
+Conclude with `this`.
+-/
 theorem range_subset_of_forall_field {T Y : Scheme.{0}} (f : T ⟶ Y) (U : Y.Opens)
     (h : ∀ (k : Type) [Field k] (x : Spec (.of k) ⟶ T), ⊤ ≤ (x ≫ f) ⁻¹ᵁ U) :
     Set.range f ⊆ Set.range U.ι := by
@@ -140,6 +176,19 @@ end SmoothNeg
 
 open SmoothNeg in
 
+/- English proof (translation)
+Introduce `R _ _ _ W U hU`. Establish `hneg : Set.range (U.ι ≫ negMap W) ⊆ Set.range U.ι`. Use `range_subset_of_forall_field _ U fun k _ x => ?_` and prove the remaining obligations. Take `⟨ρ, hρ⟩` from `Spec.map_surjective (x ≫ U.ι ≫ toSpec W)`. Take `⟨P, hP, e⟩` from `exists_eq_ptHom W ρ.hom (x ≫ U.ι) (by simpa using hρ.symm)`.
+
+Establish `hns : (W.map ρ.hom).toProjective.Nonsingular P`. Rewrite using `[← hU k ρ.hom P hP, ← e]`. Introduce `y _`. Simplify using the standard rewrite rules. Rewrite using `[← Category.assoc, e, ptHom_negMap, hU]`.
+
+Conclude with `WeierstrassCurve.Projective.nonsingular_neg hns`. Establish `hzero : Set.range (zero W) ⊆ Set.range U.ι`. Use `range_subset_of_forall_field _ U fun k _ x => ?_` and prove the remaining obligations. Take `⟨ρ, rfl⟩` from `Spec.map_surjective x`. Use `SpecMap_zero W ρ.hom` as an intermediate fact.
+
+Rewrite `this` using `[CommRingCat.ofHom_hom]`. Rewrite using `[this, hU]`. Conclude with `WeierstrassCurve.Projective.nonsingular_zero`. Use `⟨Over.homMk (IsOpenImmersion.lift U.ι (U.ι ≫ negMap W) hneg) ?_, Over.homMk (IsOpenImmersion.lift U.ι (zero W) hzero) ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsOpenImmersion.lift U.ι (U.ι ≫ negMap W) hneg ≫ U.ι ≫ toSpec W = U.ι ≫ toSpec W`.
+
+Rewrite using `[IsOpenImmersion.lift_fac_assoc, Category.assoc, negMap_toSpec]`. Express the relevant statement in the definitionally equal form `IsOpenImmersion.lift U.ι (zero W) hzero ≫ U.ι ≫ toSpec W = 𝟙 _`. Rewrite using `[IsOpenImmersion.lift_fac_assoc, zero_toSpec]`. Conclude with `IsOpenImmersion.lift_fac _ _ _`. Introduce `k _ ρ x P hP e`.
+
+Use `⟨isUnimodularSol_neg hP, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(x.left ≫ IsOpenImmersion.lift U.ι (U.ι ≫ negMap W) hneg) ≫ U.ι = _`. Rewrite using `[Category.assoc, IsOpenImmersion.lift_fac, ← ptHom_negMap W ρ P hP, ← e]`. Conclude with `(Category.assoc _ _ _).symm`.
+-/
 theorem exists_neg_origin_smoothLocus :
     ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (W : WeierstrassCurve R) (U : (GlobalTheory.WeierstrassCurve.scheme W).Opens), (∀ (k : Type) [Field k] (ρ : R →+* k) (P : Fin 3 → k) (h : GlobalTheory.WeierstrassCurve.IsUnimodularSol (W.map ρ) P), ⊤ ≤ GlobalTheory.WeierstrassCurve.ptHom W ρ P h ⁻¹ᵁ U ↔ (W.map ρ).toProjective.Nonsingular P) → ∃ (neg : (Over.mk (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W)) ⟶ (Over.mk (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W))) (o : 𝟙_ _ ⟶ (Over.mk (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W))), o.left ≫ U.ι = GlobalTheory.WeierstrassCurve.zero W ∧ ∀ (k : Type) [Field k] (ρ : R →+* k) (x : Over.mk (Spec.map (CommRingCat.ofHom ρ)) ⟶ (Over.mk (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W))) (P : Fin 3 → k) (hP : GlobalTheory.WeierstrassCurve.IsUnimodularSol (W.map ρ) P), x.left ≫ U.ι = GlobalTheory.WeierstrassCurve.ptHom W ρ P hP → ∃ h : GlobalTheory.WeierstrassCurve.IsUnimodularSol (W.map ρ) ((W.map ρ).toProjective.neg P), (x ≫ neg).left ≫ U.ι = GlobalTheory.WeierstrassCurve.ptHom W ρ _ h := by
   intro R _ _ _ W U hU

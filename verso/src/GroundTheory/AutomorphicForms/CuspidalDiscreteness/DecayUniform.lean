@@ -21,6 +21,17 @@ local notation "Γ₁" => rationalGLOne K n
 
 variable (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Take `⟨Cc, N, hCc⟩` from `exists_encard_le_siegel hω ht f.hasCompactSupport`. Establish `hf2 : ∫⁻ y, ‖f y‖ₑ ^ 2 ∂μ ≠ ⊤`. Use `(f.continuous.memLp_of_hasCompactSupport (μ := μ) (p := 2) f.hasCompactSupport).2` as an intermediate fact. Rewrite using `[← L2Kernel.eLpNorm_two_sq]`. Conclude with `(ENNReal.pow_lt_top this).ne`.
+
+Use `set A := (∫⁻ y, ‖f y‖ₑ ^ 2 ∂μ).toReal`. Establish `hA : 0 ≤ A` using `ENNReal.toReal_nonneg`. Use `⟨√(A * max Cc 0), N, ?_⟩` and prove the remaining obligations. Introduce `φ b hb ρ hρ hsieg kk hkk x hx R hR1 hR`. Take `⟨m, hmC, hm⟩` from `hCc b hb ρ hρ hsieg kk hkk x hx R hR1 hR`.
+
+Establish `hS : MeasurableSet ((fun y => x * y) '' tsupport (f : normOneGL K n → ℂ))` using `(f.hasCompactSupport.image (continuous_const_mul x)).measurableSet`. Establish `h1` using `enorm_rconv_sq_le Γ₁ μ f φ x hS (fun y hy => image_eq_zero_of_notMem_tsupport fun h' => hy ⟨x⁻¹ * y, h', by simp⟩) hm`. Rewrite `h1` using `[← mul_assoc]`. Establish `h2` using `norm_le_of_enorm_sq_le (ENNReal.mul_ne_top hf2 (by simp)) h1`. Use `h2.trans ?_` and prove the remaining obligations.
+
+Use `gcongr`. Rewrite using `[ENNReal.toReal_mul, ENNReal.toReal_natCast, ← Real.sqrt_mul (mul_nonneg hA (le_max_right _ _))]`. Use `Real.sqrt_le_sqrt ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `mul_le_mul_of_nonneg_left (hmC.trans ?_) hA` and prove the remaining obligations.
+
+Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (pow_nonneg (by linarith) _)`.
+-/
 theorem exists_norm_rconv_le_siegel_basic (f : CompactlySupportedContinuousMap (normOneGL K n) ℂ)
     {ω : Set (AdelicGLn.AdelicGL K n)} (hω : IsCompact ω) {t : ℝ} (ht : 0 < t) :
     ∃ (C : ℝ) (N : ℕ), ∀ φ : Lp ℂ 2 (quotientMeasure Γ₁ μ), ∀ b ∈ ω, ∀ (ρ : Fin n → ℝ)
@@ -54,6 +65,17 @@ theorem exists_norm_rconv_le_siegel_basic (f : CompactlySupportedContinuousMap (
   refine mul_le_mul_of_nonneg_left (hmC.trans ?_) hA
   exact mul_le_mul_of_nonneg_right (le_max_left _ _) (pow_nonneg (by linarith) _)
 
+/- English proof (translation)
+Establish `: Nonempty (Fin (n - 1))` using `⟨⟨0, by omega⟩⟩`. Take `⟨l₀, hl₀⟩` from `Finite.exists_max fun l : Fin (n - 1) => ρ ⟨l, by omega⟩ / ρ ⟨l + 1, by omega⟩`. Use `⟨l₀ + 1, by omega, by omega, fun i j hij => ?_⟩` and prove the remaining obligations. Use `set M := max 1 (ρ ⟨l₀ + 1 - 1, by omega⟩ / ρ ⟨l₀ + 1, by omega⟩)`. Establish `hM1 : 1 ≤ M` using `le_max_left _ _`.
+
+Establish `hstep : ∀ l : ℕ, ∀ (hl : l + 1 < n), ρ ⟨l, by omega⟩ ≤ M * ρ ⟨l + 1, hl⟩`. Introduce `l hl`. Establish `h1` using `hl₀ ⟨l, by omega⟩`. Rewrite using `[← div_le_iff₀ (hρ _)]`. Conclude with `h1.trans (le_max_right _ _)`.
+
+Establish `hchain : ∀ d : ℕ, ∀ (a : ℕ) (ha : a + d < n), ρ ⟨a, by omega⟩ ≤ M ^ d * ρ ⟨a + d, ha⟩`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intro a ha`. Simplify using the standard rewrite rules.
+
+Consider the case `succ d ih`. Introduce `a ha`. Combine the equalities or inequalities in the displayed calculation. Establish `hij' : (i : ℕ) < j` using `hij`. Establish `h1` using `hchain (j - i) i (by omega)`.
+
+Establish `hj : (⟨(i : ℕ) + (j - i), by omega⟩ : Fin n) = j` using `Fin.ext (by simp; omega)`. Rewrite `h1` using `[hj]`. Rewrite using `[div_le_iff₀ (hρ _)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_le_max_pow (hn : 2 ≤ n) (ρ : Fin n → ℝ) (hρ : ∀ i, 0 < ρ i) :
     ∃ (r : ℕ) (hr : 0 < r) (hrn : r < n), ∀ i j : Fin n, i < j →
       ρ i / ρ j ≤ max 1 (ρ ⟨r - 1, by omega⟩ / ρ ⟨r, hrn⟩) ^ n := by
@@ -89,6 +111,29 @@ theorem exists_le_max_pow (hn : 2 ≤ n) (ρ : Fin n → ℝ) (hρ : ∀ i, 0 < 
 
 variable (ν : Measure (ArchUnits K n)) [ν.IsHaarMeasure]
 
+/- English proof (translation)
+Use `set f := archConv ν hβ.continuous hβc hβu (finAvg U hU g)`. Take `⟨C₀, N₀, hC₀⟩` from `exists_norm_rconv_le_siegel_basic μ f hω ht`. Establish `hdec` using `fun (r : ℕ) (hr : 0 < r) (hrn : r < n) => exists_norm_rconv_le_siegel μ ν hβ hβc hβu U hU g hω hωB ht hr hrn`. Use `choose Nf hNf using hdec`. Establish `hdec2` using `fun (r : ℕ) (hr : 0 < r) (hrn : r < n) => hNf r hr hrn (n * Nf r hr hrn + n * N')`.
+
+Use `choose Cf hCf using hdec2`. Use `set Cmax := max C₀ 0 + ∑ r : Fin n, if h : 0 < (r : ℕ) then max (Cf r h r.2) 0 else 0`. Apply the tactic sequence `have hsum0 : 0 ≤ ∑ r : Fin n, if h : 0 < (r : ℕ) then max (Cf r h r.2) 0 else 0 := Finset.sum_nonneg fun r _ => by split_ifs <;> simp`. Establish `hCf_le : ∀ (r : ℕ) (hr : 0 < r) (hrn : r < n), Cf r hr hrn ≤ Cmax`. Introduce `r hr hrn`.
+
+Apply the tactic sequence `have h1 := Finset.single_le_sum (f := fun r : Fin n => if h : 0 < (r : ℕ) then max (Cf r h r.2) 0 else 0) (fun r _ => by split_ifs <;> simp) (Finset.mem_univ ⟨r, hrn⟩)`. Simplify using `only [hr, dif_pos] at h1`. Conclude with `(le_max_left _ _).trans (h1.trans (le_add_of_nonneg_left (le_max_right _ _)))`. Establish `hC₀_le : C₀ ≤ Cmax` using `(le_max_left _ _).trans (le_add_of_nonneg_right hsum0)`. Establish `hCmax0 : 0 ≤ Cmax` using `(le_max_right _ _).trans (le_add_of_nonneg_right hsum0)`.
+
+Use `⟨Cmax, ?_⟩` and prove the remaining obligations. Introduce `φ hφ b hb ρ hρ hsieg kk hkk x hx R hR1 ⟨i₀, j₀, hij₀, hRij⟩`. Establish `hn : 2 ≤ n`. Establish `: (i₀ : ℕ) < j₀` using `hij₀`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨r, hr, hrn, hratio⟩` from `exists_le_max_pow hn ρ hρ`. Use `set α := ρ ⟨r - 1, by omega⟩ / ρ ⟨r, hrn⟩`. Establish `hα0 : 0 < α` using `div_pos (hρ _) (hρ _)`. Break down `le_or_gt α 1 with hα1 | hα1` into its components or cases. Establish `hM : max 1 α = 1` using `max_eq_left hα1`.
+
+Establish `hR1' : R = 1` using `le_antisymm (hRij.trans ((hratio i₀ j₀ hij₀).trans (by rw [hM, one_pow]))) hR1`. Establish `h` using `hC₀ φ b hb ρ hρ hsieg kk hkk x hx 1 le_rfl fun i j hij => (hratio i j hij).trans (by rw [hM, one_pow])`. Rewrite `h` using `[one_pow, Real.sqrt_one, mul_one]`. Rewrite using `[hR1', one_pow, inv_one, mul_one]`. Conclude with `h.trans (mul_le_mul_of_nonneg_right hC₀_le (norm_nonneg _))`.
+
+Establish `hM : max 1 α = α` using `max_eq_right hα1.le`. Establish `h` using `hCf r hr hrn φ hφ b hb ρ hρ hsieg kk hkk x hx (α ^ n) (one_le_pow₀ hα1.le) fun i j hij => (hratio i j hij).trans (by rw [hM])`. Establish `hgain : ρ ⟨r, hrn⟩ / ρ ⟨r - 1, by omega⟩ = α⁻¹` using `by rw [inv_div]`. Rewrite `h` using `[hgain]`. Use `set a := n * Nf r hr hrn`.
+
+Use `set c := n * N'`. Establish `hy1 : 1 ≤ α ^ a` using `one_le_pow₀ hα1.le`. Establish `hsq : √((α ^ n) ^ Nf r hr hrn) ≤ α ^ a`. Rewrite using `[← pow_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hpow : (α⁻¹) ^ (a + c) * α ^ a = (α ^ c)⁻¹`. Rewrite using `[inv_pow, pow_add]`. Clear the denominators using the available nonvanishing facts. Establish `hRc : (α ^ c)⁻¹ ≤ (R ^ N')⁻¹`. Establish `hRα : R ≤ α ^ n` using `hRij.trans ((hratio i₀ j₀ hij₀).trans (by rw [hM]))`.
+
+Rewrite using `[show c = n * N' from rfl, pow_mul]`. Conclude with `inv_anti₀ (pow_pos (by linarith) _) (pow_le_pow_left₀ (by linarith) hRα _)`. Establish `hX : 0 ≤ (α⁻¹) ^ (a + c) * √((α ^ n) ^ Nf r hr hrn)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc (Cf r hr hrn)]`.
+
+Use `mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `_ = Cmax * (α ^ c)⁻¹ * ‖φ‖ := by rw [hpow]`. Use `_ ≤ Cmax * (R ^ N')⁻¹ * ‖φ‖ := mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hRc hCmax0) (norm_nonneg _)`.
+-/
 theorem exists_norm_rconv_le_decay {β : ArchMatrix K n → ℝ}
     (hβ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) β) (hβc : HasCompactSupport β)
     (hβu : tsupport β ⊆ range (Units.val : ArchUnits K n → ArchMatrix K n))
@@ -176,6 +221,17 @@ theorem exists_norm_rconv_le_decay {β : ArchMatrix K n → ℝ}
       _ ≤ Cmax * (R ^ N')⁻¹ * ‖φ‖ :=
           mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hRc hCmax0) (norm_nonneg _)
 
+/- English proof (translation)
+Use `set f := archConv ν hβ.continuous hβc hβu (finAvg U hU g)`. Take `⟨ω, hω, hωB, t, ht, hsieg⟩` from `exists_siegelSet (K := K) n`. Take `⟨C₀, N₀, hC₀⟩` from `exists_norm_rconv_le_siegel_basic μ f hω ht`. Take `⟨C₁, hC₁⟩` from `exists_norm_rconv_le_decay μ ν hβ hβc hβu U hU g hω hωB ht 0`. Use `⟨max C₀ 0 + max C₁ 0, fun φ hφ x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨γ, hγ⟩` from `hsieg (x : AdelicGLn.AdelicGL K n)`. Establish `hγ1 : AdelicGLn.diagonal K n γ ∈ normOneGL K n` using `rationalGL_le_normOneGL ⟨γ, rfl⟩`. Use `set γ₁ : normOneGL K n := ⟨AdelicGLn.diagonal K n γ, hγ1⟩`. Establish `hγΓ : γ₁ ∈ Γ₁` using `⟨γ, rfl⟩`. Rewrite using `[← rconv_mul_left Γ₁ μ f φ hγΓ x]`.
+
+Take `⟨b, hb, a, ⟨ρ, hρ, hs, rfl⟩, kk, hkk, hx⟩` from `hγ`. Establish `hx' : ((γ₁ * x : normOneGL K n) : AdelicGLn.AdelicGL K n) = b * diagUnits n (fun i => posIdele (K` using `K) (ρ i) (hρ i)) * kk := hx`. Establish `hB0 : 0 ≤ max C₀ 0 + max C₁ 0` using `add_nonneg (le_max_right _ _) (le_max_right _ _)`. Distinguish the cases in `hcase : ∃ i j : Fin n, i < j ∧ 1 ≤ ρ i / ρ j`. Establish `h` using `hC₁ φ hφ b hb ρ hρ hs kk hkk (γ₁ * x) hx' 1 le_rfl hcase`.
+
+Rewrite `h` using `[pow_zero, inv_one, mul_one]`. Use `h.trans (mul_le_mul_of_nonneg_right ?_ (norm_nonneg _))` and prove the remaining obligations. Conclude with `(le_max_left _ _).trans (le_add_of_nonneg_left (le_max_right _ _))`. Simplify using `only [not_exists, not_and, not_le] at hcase`. Establish `h` using `hC₀ φ b hb ρ hρ hs kk hkk (γ₁ * x) hx' 1 le_rfl fun i j hij => (hcase i j hij).le`.
+
+Rewrite `h` using `[one_pow, Real.sqrt_one, mul_one]`. Use `h.trans (mul_le_mul_of_nonneg_right ?_ (norm_nonneg _))` and prove the remaining obligations. Conclude with `(le_max_left _ _).trans (le_add_of_nonneg_right (le_max_right _ _))`.
+-/
 theorem exists_norm_rconv_le_uniform {β : ArchMatrix K n → ℝ}
     (hβ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) β) (hβc : HasCompactSupport β)
     (hβu : tsupport β ⊆ range (Units.val : ArchUnits K n → ArchMatrix K n))

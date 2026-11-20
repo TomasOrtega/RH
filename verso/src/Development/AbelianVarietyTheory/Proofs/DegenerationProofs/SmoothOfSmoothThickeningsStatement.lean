@@ -11,5 +11,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SmoothThickenings.smooth_of_smooth_thickenings | exact GlobalTheory.SmoothThickenings.smooth_of_smooth_thickenings | (intros; apply GlobalTheory.SmoothThickenings.smooth_of_smooth_thickenings <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.smooth_of_smooth_thickenings' : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (I : Ideal R), I ≠ ⊤ → ∀ (B : Over (Spec (CommRingCat.of R))), IsProper B.hom → ∀ (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (b : ∀ e, (Y e).left ⟶ B.left), (∀ e, IsPullback (b e) (Y e).hom B.hom (thick R I e)) → (∀ e, Smooth (Y e).hom) → Smooth B.hom := by
   first | exact @GlobalTheory.SmoothThickenings.smooth_of_smooth_thickenings | exact GlobalTheory.SmoothThickenings.smooth_of_smooth_thickenings | (intros; apply GlobalTheory.SmoothThickenings.smooth_of_smooth_thickenings <;> assumption)

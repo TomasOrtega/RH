@@ -19,6 +19,9 @@ open Matrix MeasureTheory Finset in
 open scoped InnerProductSpace ENNReal in
 variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin n → Bool}
   {σ σ' : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} in
+/- English proof (translation)
+Establish `hg' : g ∈ unitaryGroup (Fin n) ℂ ∧ g * _root_.PI.UpqRep.Jm ε = _root_.PI.UpqRep.Jm ε * g` using `hg`. Take `⟨hu, hc⟩` from `hg'`. Use `show gᴴ * _root_.PI.UpqRep.Jm ε * g = _root_.PI.UpqRep.Jm ε`. Rewrite using `[Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, ← star_eq_conjTranspose, (mem_unitaryGroup_iff').mp hu, Matrix.one_mul]`.
+-/
 theorem _root_.GlobalTheory.CayleyChoice.Kset_sub {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : g ∈ _root_.PI.UpqRep.Kset ε) : g ∈ _root_.PI.UpqRep.UJset ε := by
   have hg' : g ∈ unitaryGroup (Fin n) ℂ ∧ g * _root_.PI.UpqRep.Jm ε = _root_.PI.UpqRep.Jm ε * g := hg
@@ -31,6 +34,9 @@ open Matrix MeasureTheory Finset in
 open scoped InnerProductSpace ENNReal in
 variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin n → Bool}
   {σ σ' : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} in
+/- English proof (translation)
+Establish `ha' : aᴴ * _root_.PI.UpqRep.Jm ε * a = _root_.PI.UpqRep.Jm ε` using `ha`. Establish `hb' : bᴴ * _root_.PI.UpqRep.Jm ε * b = _root_.PI.UpqRep.Jm ε` using `hb`. Use `show (a * b)ᴴ * _root_.PI.UpqRep.Jm ε * (a * b) = _root_.PI.UpqRep.Jm ε`. Rewrite using `[conjTranspose_mul, show bᴴ * aᴴ * _root_.PI.UpqRep.Jm ε * (a * b) = bᴴ * (aᴴ * _root_.PI.UpqRep.Jm ε * a) * b by`. Simplify using `only [Matrix.mul_assoc], ha', hb']`.
+-/
 private theorem mul_mem_UJset_jet_harmonics {a b : Matrix (Fin n) (Fin n) ℂ}
     (ha : a ∈ _root_.PI.UpqRep.UJset ε) (hb : b ∈ _root_.PI.UpqRep.UJset ε) : a * b ∈ _root_.PI.UpqRep.UJset ε := by
   have ha' : aᴴ * _root_.PI.UpqRep.Jm ε * a = _root_.PI.UpqRep.Jm ε := ha
@@ -43,6 +49,23 @@ open Matrix MeasureTheory Finset in
 open scoped InnerProductSpace ENNReal in
 variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin n → Bool}
   {σ σ' : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} in
+/- English proof (translation)
+Take `⟨hfin, hinv, hirr, ⟨v, hvS, hv0, hvw⟩, hmax⟩` from `hS`. Establish `inv_map : ∀ T : Submodule ℂ H, _root_.PI.UpqRep.IsKStableOn ε σ₁ T → _root_.PI.UpqRep.IsKStableOn ε σ₂ (T.map (e : H →ₗ[ℂ] H))`. Introduce `T hT k hk y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Conclude with `⟨σ₁ k x, hT k hk x hx, (he k hk x).symm⟩`.
+
+Establish `inv_comap : ∀ T : Submodule ℂ H, _root_.PI.UpqRep.IsKStableOn ε σ₂ T → _root_.PI.UpqRep.IsKStableOn ε σ₁ (T.comap (e : H →ₗ[ℂ] H))`. Introduce `T hT k hk x hx`. Use `show e (σ₁ k x) ∈ T`. Rewrite using `[← he k hk x]`. Conclude with `hT k hk _ hx`.
+
+Establish `wt : ∀ (ν : Fin n → ℝ) (x : H), _root_.PI.UpqRep.IsWtOn (_root_.PI.UpqRep.Kset ε) σ₁ ν x → _root_.PI.UpqRep.IsWtOn (_root_.PI.UpqRep.Kset ε) σ₂ ν (e x)`. Introduce `ν x hx θ hθ`. Rewrite using `[he _ hθ, hx θ hθ, map_smul]`. Establish `wt' : ∀ (ν : Fin n → ℝ) (x : H), _root_.PI.UpqRep.IsWtOn (_root_.PI.UpqRep.Kset ε) σ₂ ν (e x) → _root_.PI.UpqRep.IsWtOn (_root_.PI.UpqRep.Kset ε) σ₁ ν x`. Introduce `ν x hx θ hθ`.
+
+Apply `e.injective` to reduce the goal to its premises. Rewrite using `[← he _ hθ, hx θ hθ, map_smul]`. Use `⟨?_, inv_map S hinv, ?_, ⟨e v, ⟨v, hvS, rfl⟩, by simpa using hv0, wt μ v hvw⟩, ?_⟩` and prove the remaining obligations. Use `haveI := hfin infer_instance`. Introduce `T hT hTinv`.
+
+Establish `hle : T.comap (e : H →ₗ[ℂ] H) ≤ S`. Introduce `x hx`. Take `⟨y, hy, hxy⟩` from `hT hx`. Rewrite using `[← e.injective hxy]` and apply the resulting hypothesis. Break down `hirr _ hle (inv_comap T hTinv) with h | h` into its components or cases.
+
+Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `y hy`. Establish `hy' : e.symm y ∈ T.comap (e : H →ₗ[ℂ] H)` using `by simpa using hy`. Rewrite `hy'` using `[h, Submodule.mem_bot]`.
+
+Simplify using `using congrArg e hy'`. Use `right`. Use `le_antisymm hT ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite `hx` using `[← h]`.
+
+Conclude with `hx`. Introduce `ν y hy hy0 hyw`. Take `⟨x, hx, rfl⟩` from `hy`. Conclude with `hmax ν x hx (by rintro rfl; simp at hy0) (wt' ν x hyw)`.
+-/
 private theorem isKTypeOf_map_of_intertwining {σ₁ σ₂ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (e : H ≃ₗ[ℂ] H)
     (he : ∀ k ∈ _root_.PI.UpqRep.Kset ε, ∀ x, σ₂ k (e x) = e (σ₁ k x)) {μ : Fin n → ℝ} {S : Submodule ℂ H}
     (hS : _root_.PI.UpqRep.IsKTypeOf ε σ₁ μ S) : _root_.PI.UpqRep.IsKTypeOf ε σ₂ μ (S.map (e : H →ₗ[ℂ] H)) := by
@@ -96,6 +119,37 @@ open scoped InnerProductSpace ENNReal in
 variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin n → Bool}
   {σ σ' : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} in
 
+/- English proof (translation)
+Take `⟨hc, hnt, ⟨⟨h1σ, hmul⟩, hiso, hcont⟩, hirr, hL2, ⟨S, hS⟩, hmin⟩` from `hσ`. Establish `hu'u : u' * u = 1` using `mul_eq_one_comm.mp h1`. Establish `conj_mem : ∀ {g}, g ∈ _root_.PI.UpqRep.UJset ε → u' * g * u ∈ _root_.PI.UpqRep.UJset ε` using `fun hg => mul_mem_UJset_jet_harmonics (mul_mem_UJset_jet_harmonics hu' hg) hu`. Establish `hAB : ∀ x, σ u (σ u' x) = x`. Introduce `x`.
+
+Rewrite using `[← ContinuousLinearMap.comp_apply, ← hmul _ hu _ hu', h1, h1σ]`. Both sides reduce to the same expression. Establish `hBA : ∀ x, σ u' (σ u x) = x`. Introduce `x`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hmul _ hu' _ hu, hu'u, h1σ]`.
+
+Both sides reduce to the same expression. Establish `hconj : ∀ g ∈ _root_.PI.UpqRep.UJset ε, ∀ x, σ (u' * g * u) x = σ u' (σ g (σ u x))`. Introduce `g hg x`. Rewrite using `[hmul _ (mul_mem_UJset_jet_harmonics hu' hg) _ hu, hmul _ hu' _ hg]`. Both sides reduce to the same expression.
+
+Establish `hinner : ∀ x y, ⟪σ u x, σ u y⟫_ℂ = ⟪x, y⟫_ℂ`. Introduce `x y`. Set `L : H →ₗᵢ[ℂ] H` to `⟨(σ u : H →ₗ[ℂ] H), hiso u hu⟩`. Conclude with `L.inner_map_map x y`. Set `e : H ≃ₗ[ℂ] H` to `{ toLinearMap := (σ u' : H →ₗ[ℂ] H) invFun := σ u left_inv := hAB right_inv := hBA }`.
+
+Establish `he : ∀ k ∈ _root_.PI.UpqRep.Kset ε, ∀ x, σ (u' * k * u) (e x) = e (σ k x)`. Introduce `k hk x`. Use `show σ (u' * k * u) (σ u' x) = σ u' (σ k x)`. Rewrite using `[hconj k (_root_.GlobalTheory.CayleyChoice.Kset_sub hk), hAB]`. Establish `he' : ∀ k ∈ _root_.PI.UpqRep.Kset ε, ∀ x, σ k (e.symm x) = e.symm (σ (u' * k * u) x)`.
+
+Introduce `k hk x`. Use `show σ k (σ u x) = σ u (σ (u' * k * u) x)`. Rewrite using `[hconj k (_root_.GlobalTheory.CayleyChoice.Kset_sub hk), hAB]`. Use `⟨hc, hnt, ⟨⟨?_, ?_⟩, ?_, ?_⟩, ?_, ?_, ⟨_, isKTypeOf_map_of_intertwining e he hS⟩, ?_⟩` and prove the remaining obligations. Use `show σ (u' * 1 * u) = 1`.
+
+Rewrite using `[Matrix.mul_one, hu'u, h1σ]`. Introduce `a ha b hb show σ (u' * (a * b) * u) = σ (u' * a * u) ∘SL σ (u' * b * u)`. Rewrite using `[← hmul _ (conj_mem ha) _ (conj_mem hb)]`. Use `congr 1`. Rewrite using `[show u' * a * u * (u' * b * u) = u' * a * (u * u') * b * u by`.
+
+Simplify using `only [Matrix.mul_assoc], h1, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Introduce `g hg v`. Conclude with `hiso _ (conj_mem hg) v`. Introduce `v`.
+
+Conclude with `(hcont v).comp ((continuous_const.mul continuous_id).mul continuous_const).continuousOn (fun g hg => conj_mem hg)`. Introduce `T hTc hTinv`. Establish `hT'c : IsClosed (↑(T.comap (σ u' : H →ₗ[ℂ] H)) : Set H)` using `hTc.preimage (σ u').continuous`. Establish `hT'inv : ∀ g ∈ _root_.PI.UpqRep.UJset ε, ∀ x ∈ T.comap (σ u' : H →ₗ[ℂ] H), σ g x ∈ T.comap (σ u' : H →ₗ[ℂ] H)`. Introduce `g hg x hx`.
+
+Establish `hx' : σ u' x ∈ T` using `hx`. Use `show σ u' (σ g x) ∈ T`. Use `hTinv g hg (σ u' x) hx'` as an intermediate fact. Rewrite using `[show σ u' (σ g x) = σ (u' * g * u) (σ u' x) by rw [hconj g hg, hAB]]`. Conclude with `this`.
+
+Break down `hirr _ hT'c hT'inv with h | h` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `y hy`. Establish `hmem : σ u y ∈ T.comap (σ u' : H →ₗ[ℂ] H)` using `by show σ u' (σ u y) ∈ T`.
+
+Rewrite using `[hBA]` and apply the resulting hypothesis. Rewrite `hmem` using `[h, Submodule.mem_bot]`. Rewrite using `[Submodule.mem_bot, ← hBA y, hmem, map_zero]`. Use `right`. Rewrite using `[eq_top_iff]`.
+
+Introduce `y _`. Establish `hmem : σ u y ∈ T.comap (σ u' : H →ₗ[ℂ] H)`. Rewrite using `[h]`. Conclude with `Submodule.mem_top`. Establish `hmem' : σ u' (σ u y) ∈ T` using `hmem`.
+
+Rewrite `hmem'` using `[hBA]`. Then use the resulting hypothesis. Introduce `v w`. Establish `key` using `hL2 (σ u v) (σ u w)`. Use `key using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`.
+
+Establish `hg : ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) ∈ _root_.PI.UpqRep.UJset ε` using `g.2`. Use `show ⟪w, σ (u' * _ * u) v⟫_ℂ = ⟪σ u w, σ _ (σ u v)⟫_ℂ`. Rewrite using `[hconj _ hg, ← hinner, hAB]`. Introduce `μ T hT`. Conclude with `hmin μ _ (isKTypeOf_map_of_intertwining e.symm he' hT)`.
+-/
 theorem _root_.GlobalTheory.CayleyChoice.isDS_conj {lam : Fin n → ℝ} (hσ : _root_.PI.UpqRep.IsDS ε lam σ)
     {u u' : Matrix (Fin n) (Fin n) ℂ}
     (hu : u ∈ _root_.PI.UpqRep.UJset ε) (hu' : u' ∈ _root_.PI.UpqRep.UJset ε) (h1 : u * u' = 1) :
@@ -189,6 +243,27 @@ theorem _root_.GlobalTheory.CayleyChoice.isDS_conj {lam : Fin n → ℝ} (hσ : 
 open Matrix MeasureTheory Finset in
 open scoped InnerProductSpace ENNReal in
 
+/- English proof (translation)
+Introduce `k r`. Use `⟨fun hk => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.UnitaryCayley.exists_isCayleyU_iff]`. Establish `hcount : ∀ m : ℕ, (∑ x ∈ range (2 * m + 2), if x % 2 = 0 then 1 else 0) = m + 1`. Introduce `m`.
+
+Proceed by induction on `m with`. Consider the case `zero => decide`. Consider the case `succ m ih`. Rewrite using `[show 2 * (m + 1) + 2 = 2 * m + 2 + 1 + 1 by ring, sum_range_succ, sum_range_succ, ih]`. Establish `h1 : (2 * m + 2) % 2 = 0` using `by omega`.
+
+Establish `h2 : (2 * m + 2 + 1) % 2 ≠ 0` using `by omega`. Simplify using `[h1, h2]`. Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Rewrite using `[card_filter]`. Simplify using `only [_root_.PI.BesselPeriodGGP.eps48, Nat.add_sub_cancel]`.
+
+Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => if (if i < j then true else decide ((i - j) % 2 = 0)) = true then 1 else 0)]`. Rewrite using `[show 2 * r + (j + 1) + 1 = j + (2 * r + 2) by ring, sum_range_add]`. Establish `e1 : (∑ x ∈ range j, if (if x < j then true else decide ((x - j) % 2 = 0)) = true then 1 else 0) = j`. Rewrite using `[sum_congr rfl (g := fun _ => 1) (fun x hx => by simp [mem_range.mp hx])]`. Simplify using the standard rewrite rules.
+
+Establish `e2 : (∑ x ∈ range (2 * r + 2), if (if j + x < j then true else decide ((j + x - j) % 2 = 0)) = true then 1 else 0) = r + 1`. Rewrite using `[← hcount r]`. Use `sum_congr rfl (fun x _ => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[e1, e2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `ε mu R hR Q hQ`. Take `⟨_, P, hP, hDS⟩` from `hR`. Establish `hPd : IsUnit P ∧ Pᴴ * _root_.PI.UpqRep.Jm ε * P = _root_.PI.UpqRep.Hpk k r` using `hP.1`. Establish `hQd : IsUnit Q ∧ Qᴴ * _root_.PI.UpqRep.Jm ε * Q = _root_.PI.UpqRep.Hpk k r` using `hQ.1`.
+
+Establish `hPi : P * P⁻¹ = 1` using `mul_nonsing_inv P ((isUnit_iff_isUnit_det P).mp hPd.1)`. Establish `hPi' : P⁻¹ * P = 1` using `nonsing_inv_mul P ((isUnit_iff_isUnit_det P).mp hPd.1)`. Establish `hQi : Q * Q⁻¹ = 1` using `mul_nonsing_inv Q ((isUnit_iff_isUnit_det Q).mp hQd.1)`. Establish `mem : ∀ {A B : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}, Aᴴ * _root_.PI.UpqRep.Jm ε * A = _root_.PI.UpqRep.Hpk k r → Bᴴ * _root_.PI.UpqRep.Jm ε * B = _root_.PI.UpqRep.Hpk k r → B * B⁻¹ = 1 → A * B⁻¹ ∈ _root_.PI.UpqRep.UJset ε`. Introduce `A B hA hB hBB`.
+
+Use `show (A * B⁻¹)ᴴ * _root_.PI.UpqRep.Jm ε * (A * B⁻¹) = _root_.PI.UpqRep.Jm ε`. Rewrite using `[conjTranspose_mul, show (B⁻¹)ᴴ * Aᴴ * _root_.PI.UpqRep.Jm ε * (A * B⁻¹) = (B⁻¹)ᴴ * (Aᴴ * _root_.PI.UpqRep.Jm ε * A) * B⁻¹ by simp only [Matrix.mul_assoc], hA, ← hB, show (B⁻¹)ᴴ * (Bᴴ * _root_.PI.UpqRep.Jm ε * B) * B⁻¹ = (B * B⁻¹)ᴴ * _root_.PI.UpqRep.Jm ε * (B * B⁻¹) by`. Rewrite using `[conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc],`. Use the proof step `hBB, conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+
+Establish `hprod : Q * P⁻¹ * (P * Q⁻¹) = 1`. Rewrite using `[show Q * P⁻¹ * (P * Q⁻¹) = Q * (P⁻¹ * P) * Q⁻¹ by simp only [Matrix.mul_assoc], hPi', Matrix.mul_one, hQi]`. Establish `key` using `_root_.GlobalTheory.CayleyChoice.isDS_conj hDS (mem hQd.2 hPd.2 hPi) (mem hPd.2 hQd.2 hQi) hprod`. Use `key using 2 with g` and compare the differences between its conclusion and the goal. Rewrite using `[show P⁻¹ * (P * Q⁻¹ * g * (Q * P⁻¹)) * P = (P⁻¹ * P) * Q⁻¹ * g * Q * (P⁻¹ * P) by`.
+
+Simplify using `only [Matrix.mul_assoc], hPi', Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem _root_.GlobalTheory.CayleyChoice.cayley_exists_and_any : ∀ (k r : ℕ),
     (1 ≤ k → ∃ Q, _root_.PI.UpqRep.IsCayleyU k r (_root_.PI.BesselPeriodGGP.eps48 k r) Q) ∧
     ∀ (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ)

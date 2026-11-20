@@ -19,12 +19,20 @@ local notation "𝒜" => E ⊗[F] FiniteAdeleRing (𝓞 F) F
 local notation "𝒮" => tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)
 local notation "ιA" => inclE (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)
 
+/- English proof (translation)
+Establish `h : IsIntegral ℤ (star (algebraMap (𝓞 E) E r))` using `(RingOfIntegers.isIntegral_coe r).map (starRingEnd E).toIntAlgHom`. Conclude with `⟨⟨_, h⟩, rfl⟩`.
+-/
 theorem star_int (r : 𝓞 E) :
     star (algebraMap (𝓞 E) E r) ∈ Set.range (algebraMap (𝓞 E) E) := by
   have h : IsIntegral ℤ (star (algebraMap (𝓞 E) E r)) :=
     (RingOfIntegers.isIntegral_coe r).map (starRingEnd E).toIntAlgHom
   exact ⟨⟨_, h⟩, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[Submodule.mem_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `RingOfIntegers.isIntegral_coe y`. Introduce `h`.
+
+Conclude with `⟨⟨e, h⟩, rfl⟩`.
+-/
 theorem mem_one_iff (e : E) : e ∈ (1 : Submodule (𝓞 E) E) ↔ IsIntegral ℤ e := by
   rw [Submodule.mem_one]
   constructor
@@ -33,12 +41,34 @@ theorem mem_one_iff (e : E) : e ∈ (1 : Submodule (𝓞 E) E) ↔ IsIntegral �
   · intro h
     exact ⟨⟨e, h⟩, rfl⟩
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.hform, Formalism.DivisionValues.hform, Matrix.toLinearMapₛₗ₂'_apply, AlgHom.coe_toRingHom, hσ, starRingEnd_apply, RingHom.id_apply]`. Use `Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => by ring))` and prove the remaining obligations.
+-/
 theorem hform_sig {n : ℕ} (σ : E →ₐ[F] E) (hσ : ∀ x, σ x = star x) (J : Matrix (Fin n) (Fin n) E)
     (x y : Fin n → E) : Formalism.UG.hform (σ : E →+* E) J x y = Formalism.DivisionValues.hform J x y := by
   simp only [Formalism.UG.hform, Formalism.DivisionValues.hform, Matrix.toLinearMapₛₗ₂'_apply, AlgHom.coe_toRingHom, hσ,
     starRingEnd_apply, RingHom.id_apply]
   refine Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => by ring))
 
+/- English proof (translation)
+Establish `mem` using `Formalism.HermitianLatticesTheory.dualBasic_mem_dual (R := 𝓞 E) (Formalism.DivisionValues.hform J)`. Establish `hstar : ∀ r : 𝓞 E, star (algebraMap (𝓞 E) E r) ∈ Set.range (algebraMap (𝓞 E) E)` using `star_int`. Establish `hfin : Module.Finite (𝓞 E) Λ` using `Module.Finite.iff_fg.mpr hΛ.fg`. Establish `hspan` using `hΛ.span_eq_top`. Establish `hU' : Formalism.HermitianLatticesTheory.dual (Formalism.DivisionValues.hform J) Λ = Λ` using `hU`.
+
+Use `show Formalism.HermitianLatticesTheory.dual (Formalism.DivisionValues.hform J) (Formalism.UG.CS.globLat g Λ) = Formalism.UG.CS.globLat g Λ`. Use extensionality with `x`. Rewrite using `[mem]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Take `⟨k, gg, w, hgg, hw, hfr⟩` from `dual_frame (R := 𝓞 E) (Formalism.DivisionValues.hform J) hs hnd hstar Λ hΛ`. Rewrite `hw` using `[hU']`. Establish `hF` using `isFrame_of J gg w hfr`. Establish `hx' : ∀ y ∈ Formalism.UG.CS.globLat g Λ, hform (σ : E →+* E) J y x ∈ (algebraMap (𝓞 E) E).range`. Introduce `y hy`.
+
+Rewrite using `[hform_sig σ hσ]`. Conclude with `Submodule.mem_one.mp (hx y hy)`. Establish `hUg : cT (sigR σ (FiniteAdeleRing (𝓞 F) F)) ((g : GL (Fin n) 𝒜) : Matrix (Fin n) (Fin n) 𝒜) * J.map ιA * (g : Matrix (Fin n) (Fin n) 𝒜) = J.map ιA` using `hg`. Take `⟨z, hz⟩ : ∃ z, z = ((g⁻¹ : GL (Fin n) 𝒜) : Matrix (Fin n) (Fin n) 𝒜) *ᵥ (fun i => ιA (x i))` from `⟨_, rfl⟩`. Establish `hxz : (fun i => ιA (x i)) = (g : Matrix (Fin n) (Fin n) 𝒜) *ᵥ z`.
+
+Rewrite using `[hz, mulVec_mulVec, Units.mul_inv, one_mulVec]`. Establish `hwz : ∀ u ∈ latS (F` using `F) (FiniteAdeleRing (𝓞 F) F) 𝒮 Λ, hform (sigR σ (FiniteAdeleRing (𝓞 F) F)) (J.map ιA) u z ∈ 𝒮 := by`. Introduce `u hu`. Establish `hu'` using `(span_recovery_of_integral_adelic_approx integral_adele_approximation_holds F E (Fin n) Λ hfin hspan g ((g : Matrix (Fin n) (Fin n) 𝒜) *ᵥ u)).2 (by rwa [mulVec_mulVec, Units.inv_mul, one_mulVec])`. Use `csDual_span σ J (Formalism.UG.CS.globLat g Λ) x hx' _ hu'` as an intermediate fact.
+
+Rewrite `this` using `[hxz, hform_mulVec, hUg]`. Then use the resulting hypothesis. Establish `hzz` using `hF.map ιA (sigR σ (FiniteAdeleRing (𝓞 F) F)) (fun a => by rw [csDual_sig_incl, hσ]) z`. Use `show ((g⁻¹ : GL (Fin n) 𝒜) : Matrix (Fin n) (Fin n) 𝒜) *ᵥ (fun i => ιA (x i)) ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) 𝒮 Λ`. Rewrite using `[← hz, hzz]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+
+Establish `h1 : (fun c => ιA (w i c)) ∈ latS (F` using `F) (FiniteAdeleRing (𝓞 F) F) 𝒮 Λ := Submodule.subset_span ⟨w i, hw i, rfl⟩`. Establish `h2 : (fun c => ιA (gg i c)) ∈ latS (F` using `F) (FiniteAdeleRing (𝓞 F) F) 𝒮 Λ := Submodule.subset_span ⟨gg i, hgg i, rfl⟩`. Conclude with `Submodule.smul_mem _ (⟨_, hwz _ h1⟩ : 𝒮) h2`. Introduce `hx y hy`. Establish `hm : ∀ x ∈ Λ, ∀ y ∈ Λ, IsIntegral ℤ (((1 : ℤ) : E) * hform (σ : E →+* E) J x y)`.
+
+Introduce `a ha b hb`. Rewrite using `[hform_sig σ hσ, Int.cast_one, one_mul, ← mem_one_iff]`. Rewrite `hb` using `[← hU', mem]`. Conclude with `hb a ha`. Establish `h1` using `csScale_glob σ J Λ 1 hm g hg hy hx`.
+
+Establish `h2` using `csGlob_int _ h1`. Rewrite `h2` using `[hform_sig σ hσ, Int.cast_one, one_mul]`. Conclude with `(mem_one_iff _).2 h2`.
+-/
 theorem globLat_unimod {n : ℕ} (σ : E →ₐ[F] E) (hσ : ∀ x, σ x = star x) (J : Matrix (Fin n) (Fin n) E)
     (hs : (Formalism.DivisionValues.hform J).IsSymm) (hnd : (Formalism.DivisionValues.hform J).Nondegenerate)
     (Λ : Submodule (𝓞 E) (Fin n → E)) (hΛ : Submodule.IsLattice E Λ)

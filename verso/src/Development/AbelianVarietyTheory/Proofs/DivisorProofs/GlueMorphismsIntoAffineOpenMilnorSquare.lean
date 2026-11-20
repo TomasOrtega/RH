@@ -10,6 +10,27 @@ set_option autoImplicit false
 
 namespace GlobalTheory.DualOpen
 
+/- English proof (translation)
+Use `haveI : IsAffine V.toScheme := hV`. Establish `r₁ : Set.range u₁.left ⊆ Set.range V.ι`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `h₁ x`.
+
+Establish `r₂ : Set.range u₂.left ⊆ Set.range V.ι`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `h₂ x`. Use `set a₁ := IsOpenImmersion.lift V.ι u₁.left r₁ with ha₁`.
+
+Use `set a₂ := IsOpenImmersion.lift V.ι u₂.left r₂ with ha₂`. Establish `f₁ : a₁ ≫ V.ι = u₁.left` using `IsOpenImmersion.lift_fac _ _ _`. Establish `f₂ : a₂ ≫ V.ι = u₂.left` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hk' : k₁.left ≫ a₁ = k₂.left ≫ a₂`. Rewrite using `[← cancel_mono V.ι, Category.assoc, Category.assoc, f₁, f₂]`.
+
+Conclude with `congrArg CommaMorphism.left hk`. Establish `w : a₁.appTop ≫ k₁.left.appTop = a₂.appTop ≫ k₂.left.appTop`. Rewrite using `[← Scheme.Hom.comp_appTop, ← Scheme.Hom.comp_appTop, hk']`. Use `set b := hM.cart.lift a₁.appTop a₂.appTop w with hb`. Establish `b₁ : b ≫ j₁.left.appTop = a₁.appTop` using `hM.cart.lift_fst _ _ _`.
+
+Establish `b₂ : b ≫ j₂.left.appTop = a₂.appTop` using `hM.cart.lift_snd _ _ _`. Use `haveI := hM.aff`. Set `a : T.left ⟶ V.toScheme` to `T.left.toSpecΓ ≫ Spec.map b ≫ V.toScheme.isoSpec.inv`. Establish `e₁ : j₁.left ≫ a = a₁`. Simplify using `only [a]`.
+
+Rewrite using `[Scheme.toSpecΓ_naturality_assoc, ← Spec.map_comp_assoc, b₁, ← Scheme.toSpecΓ_naturality_assoc, ← Scheme.isoSpec_hom, Iso.hom_inv_id, Category.comp_id]`. Establish `e₂ : j₂.left ≫ a = a₂`. Simplify using `only [a]`. Rewrite using `[Scheme.toSpecΓ_naturality_assoc, ← Spec.map_comp_assoc, b₂, ← Scheme.toSpecΓ_naturality_assoc, ← Scheme.isoSpec_hom, Iso.hom_inv_id, Category.comp_id]`. Establish `hover : (a ≫ V.ι) ≫ U.hom = T.hom`.
+
+Apply `ext_of_isAffine` to reduce the goal to its premises. Apply `hM.cart.hom_ext` to reduce the goal to its premises. Rewrite using `[← Scheme.Hom.comp_appTop, ← Scheme.Hom.comp_appTop]`. Use `congr 1`. Simplify using `only [Category.assoc]`.
+
+Rewrite using `[reassoc_of% e₁, reassoc_of% f₁, Over.w u₁, Over.w j₁]`. Rewrite using `[← Scheme.Hom.comp_appTop, ← Scheme.Hom.comp_appTop]`. Use `congr 1`. Simplify using `only [Category.assoc]`. Rewrite using `[reassoc_of% e₂, reassoc_of% f₂, Over.w u₂, Over.w j₂]`.
+
+Use `⟨Over.homMk (a ≫ V.ι) hover, ?_, ?_⟩` and prove the remaining obligations. Use `ext1`. Simplify using `only [Over.comp_left, Over.homMk_left]`. Rewrite using `[← Category.assoc, e₁, f₁]`. Use `ext1`.
+
+Simplify using `only [Over.comp_left, Over.homMk_left]`. Rewrite using `[← Category.assoc, e₂, f₂]`.
+-/
 theorem glue_into_affineOpen (S : Scheme.{0}) [IsAffine S] (U T T₁ T₂ T₀ : Over S) (j₁ : T₁ ⟶ T) (j₂ : T₂ ⟶ T)
     (k₁ : T₀ ⟶ T₁) (k₂ : T₀ ⟶ T₂) (hM : Milnor j₁.left j₂.left k₁.left k₂.left) (V : U.left.Opens)
     (hV : IsAffineOpen V) (u₁ : T₁ ⟶ U) (u₂ : T₂ ⟶ U) (hk : k₁ ≫ u₁ = k₂ ≫ u₂)

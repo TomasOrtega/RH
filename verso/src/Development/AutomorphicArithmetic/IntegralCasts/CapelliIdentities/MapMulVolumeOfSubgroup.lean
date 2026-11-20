@@ -5,19 +5,33 @@ open MeasureTheory Set
 private noncomputable def mulE {n : ℕ} (a x : Fin n → Fin n → ℂ) : Fin n → Fin n → ℂ :=
   Matrix.of.symm (Matrix.of a * Matrix.of x)
 
+/- English proof (translation)
+Simplify using `[mulE, Matrix.mul_apply]`.
+-/
 private lemma mulE_apply {n : ℕ} (a x : Fin n → Fin n → ℂ) (i j : Fin n) :
     mulE a x i j = ∑ k, a i k * x k j := by
   simp [mulE, Matrix.mul_apply]
 
+/- English proof (translation)
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [mulE_apply]`. Use `fun_prop`.
+-/
 private lemma continuous_mulE {n : ℕ} :
     Continuous (fun p : (Fin n → Fin n → ℂ) × (Fin n → Fin n → ℂ) => mulE p.1 p.2) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
   simp only [mulE_apply]
   fun_prop
 
+/- English proof (translation)
+The claim follows from `(continuous_mulE.comp (Continuous.prodMk_right a)).measurable`.
+-/
 private lemma measurable_mulE {n : ℕ} (a : Fin n → Fin n → ℂ) : Measurable (mulE a) :=
   (continuous_mulE.comp (Continuous.prodMk_right a)).measurable
 
+/- English proof (translation)
+Establish `h0 : (0 : ℝ) ≤ n * (‖a‖ * ‖x‖)` using `by positivity`. Use `(pi_norm_le_iff_of_nonneg h0).2 fun i => (pi_norm_le_iff_of_nonneg h0).2 fun j => ?_` and prove the remaining obligations. Rewrite using `[mulE_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_mul ((norm_le_pi_norm (a i) k).trans (norm_le_pi_norm a i)) ((norm_le_pi_norm (x k) j).trans (norm_le_pi_norm x k)) (norm_nonneg _) (norm_nonneg _)`. Use `_ = n * (‖a‖ * ‖x‖) := by simp`.
+-/
 private lemma norm_mulE_le {n : ℕ} (a x : Fin n → Fin n → ℂ) :
     ‖mulE a x‖ ≤ n * (‖a‖ * ‖x‖) := by
   have h0 : (0 : ℝ) ≤ n * (‖a‖ * ‖x‖) := by positivity
@@ -31,21 +45,39 @@ private lemma norm_mulE_le {n : ℕ} (a x : Fin n → Fin n → ℂ) :
           ((norm_le_pi_norm (x k) j).trans (norm_le_pi_norm x k)) (norm_nonneg _) (norm_nonneg _)
     _ = n * (‖a‖ * ‖x‖) := by simp
 
+/- English proof (translation)
+The claim follows from `Continuous.matrix_det (A := fun v : Fin n → Fin n → ℂ => Matrix.of v) continuous_id`.
+-/
 private lemma continuous_detE {n : ℕ} :
     Continuous (fun v : Fin n → Fin n → ℂ => (Matrix.of v).det) :=
   Continuous.matrix_det (A := fun v : Fin n → Fin n → ℂ => Matrix.of v) continuous_id
 
+/- English proof (translation)
+The claim follows from `Continuous.matrix_adjugate (A := fun v : Fin n → Fin n → ℂ => Matrix.of v) continuous_id`.
+-/
 private lemma continuous_adjE {n : ℕ} :
     Continuous (fun v : Fin n → Fin n → ℂ =>
       (Matrix.of.symm (Matrix.of v).adjugate : Fin n → Fin n → ℂ)) :=
   Continuous.matrix_adjugate (A := fun v : Fin n → Fin n → ℂ => Matrix.of v) continuous_id
 
+/- English proof (translation)
+Use `haveI : (volume : Measure (Fin n → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure fun _ : Fin n => (volume : Measure ℂ)`. Conclude with `Measure.pi.isAddHaarMeasure fun _ : Fin n => (volume : Measure (Fin n → ℂ))`.
+-/
 private lemma haarE (n : ℕ) :
     (volume : Measure (Fin n → Fin n → ℂ)).IsAddHaarMeasure := by
   haveI : (volume : Measure (Fin n → ℂ)).IsAddHaarMeasure :=
     Measure.pi.isAddHaarMeasure fun _ : Fin n => (volume : Measure ℂ)
   exact Measure.pi.isAddHaarMeasure fun _ : Fin n => (volume : Measure (Fin n → ℂ))
 
+/- English proof (translation)
+Use `haveI := haarE n`. Establish `hU : IsOpen {v : Fin n → Fin n → ℂ | (Matrix.of v).det ≠ 0}` using `isOpen_ne_fun continuous_detE continuous_const`. Establish `h1 : (Matrix.of.symm (1 : Matrix (Fin n) (Fin n) ℂ)) ∈ {v : Fin n → Fin n → ℂ | (Matrix.of v).det ≠ 0}` using `by simp`. Take `⟨V, hV, hi, hsub⟩` from `exists_compact_subset hU h1`. Use `⟨V, (fun p : (Fin n → Fin n → ℂ) × (Fin n → Fin n → ℂ) => ((Matrix.of p.2).det)⁻¹ • mulE p.1 (Matrix.of.symm (Matrix.of p.2).adjugate)) '' (V ×ˢ V), hV, ?_, Measure.measure_pos_of_nonempty_interior _ ⟨_, hi⟩, ?_⟩` and prove the remaining obligations.
+
+Use `(hV.prod hV).image_of_continuousOn ?_` and prove the remaining obligations. Use `ContinuousOn.fun_smul ?_ ?_` and prove the remaining obligations. Conclude with `(continuous_detE.comp continuous_snd).continuousOn.inv₀ fun p hp => hsub hp.2`. Conclude with `(continuous_mulE.comp (continuous_fst.prodMk (continuous_adjE.comp continuous_snd))).continuousOn`. Introduce and unpack `y v hv w hw rfl`.
+
+Use `⟨(mulE y v, v), ⟨hw, hv⟩, ?_⟩` and prove the remaining obligations. Establish `hd : (Matrix.of v).det ≠ 0` using `hsub hv`. Establish `: mulE (mulE y v) (Matrix.of.symm (Matrix.of v).adjugate) = (Matrix.of v).det • y`. Simplify using `only [mulE, Equiv.apply_symm_apply, Matrix.mul_assoc, Matrix.mul_adjugate, Matrix.mul_smul, Matrix.mul_one]`. Both sides reduce to the same expression.
+
+Simplify using `only [this, smul_smul, inv_mul_cancel₀ hd, one_smul]`.
+-/
 private lemma exists_pair (n : ℕ) :
     ∃ V K : Set (Fin n → Fin n → ℂ), IsCompact V ∧ IsCompact K ∧ 0 < volume V ∧
       ∀ y, ∀ v ∈ V, ∀ w ∈ V, mulE y v = w → y ∈ K := by
@@ -72,6 +104,9 @@ private lemma exists_pair (n : ℕ) :
       rfl
     simp only [this, smul_smul, inv_mul_cancel₀ hd, one_smul]
 
+/- English proof (translation)
+Establish `hu : IsUnit (Matrix.of a)` using `(Matrix.isUnit_iff_isUnit_det _).2 (Ne.isUnit ha)`. Establish `h' : Matrix.of a * (Matrix.of y * Matrix.of v) = Matrix.of a * Matrix.of w`. Rewrite using `[← Matrix.mul_assoc]`. Conclude with `h`. Conclude with `hu.mul_left_cancel h'`.
+-/
 private lemma mulE_cancel {n : ℕ} {a y v w : Fin n → Fin n → ℂ} (ha : (Matrix.of a).det ≠ 0)
     (h : mulE (mulE a y) v = mulE a w) : mulE y v = w := by
   have hu : IsUnit (Matrix.of a) := (Matrix.isUnit_iff_isUnit_det _).2 (Ne.isUnit ha)
@@ -80,6 +115,19 @@ private lemma mulE_cancel {n : ℕ} {a y v w : Fin n → Fin n → ℂ} (ha : (M
     exact h
   exact hu.mul_left_cancel h'
 
+/- English proof (translation)
+Use `set S : Set ((Fin n → Fin n → ℂ) × (Fin n → Fin n → ℂ)) := (fun p => (p.1, mulE p.1 p.2)) '' (B ×ˢ V) with hS`. Establish `hSm : MeasurableSet S` using `((hB.prod hV).image (continuous_fst.prodMk continuous_mulE)).measurableSet`. Establish `hae : ∀ᵐ g ∂μ, g ∈ G` using `hG`. Establish `h1 : volume V * μ B ≤ (μ.prod volume) S`. Rewrite using `[Measure.prod_apply hSm, ← lintegral_indicator_const hB.measurableSet]`.
+
+Use `lintegral_mono_ae (hae.mono fun g hg => ?_)` and prove the remaining obligations. Distinguish the cases in `hgB : g ∈ B`. Rewrite using `[indicator_of_mem hgB]`. Establish `hm : MeasurableSet (Prod.mk g ⁻¹' S)` using `measurable_prodMk_left hSm`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← Measure.map_apply (measurable_mulE g) hm, hvol g hg]`. Rewrite using `[indicator_of_notMem hgB]`. Conclude with `zero_le`. Establish `h2 : (μ.prod volume) S ≤ μ K * volume D`. Rewrite using `[Measure.prod_apply_symm hSm, ← lintegral_indicator_const hD]`.
+
+Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Establish `hm : MeasurableSet ((fun g => (g, x)) ⁻¹' S)` using `measurable_prodMk_right hSm`. Distinguish the cases in `hne : (((fun g => (g, x)) ⁻¹' S) ∩ G).Nonempty`. Take `⟨a, ⟨⟨a', w⟩, ⟨haB, hw⟩, he⟩, haG⟩` from `hne`. Take `⟨rfl, rfl⟩` from `Prod.mk.inj he`.
+
+Use `show μ _ ≤ _`. Rewrite using `[indicator_of_mem (hBD _ haB _ hw), ← hinv _ haG, Measure.map_apply (measurable_mulE _) hm, hinv _ haG]`. Use `measure_mono ?_` and prove the remaining obligations. Introduce and unpack `y ⟨⟨g, v⟩, ⟨-, hv⟩, he'⟩`. Take `⟨rfl, h'⟩` from `Prod.mk.inj he'`.
+
+Conclude with `hK y v hv w hw (mulE_cancel (hdet _ haG) h')`. Establish `: μ ((fun g => (g, x)) ⁻¹' S) = 0` using `measure_mono_null (fun g hg hgG => hne ⟨g, hg, hgG⟩) hG show μ _ ≤ _`. Rewrite using `[this]`. Conclude with `zero_le`. Conclude with `h1.trans h2`.
+-/
 private lemma key {n : ℕ} {G : Set (Fin n → Fin n → ℂ)} {μ : Measure (Fin n → Fin n → ℂ)}
     [SFinite μ] (hG : μ Gᶜ = 0) (hdet : ∀ a ∈ G, (Matrix.of a).det ≠ 0)
     (hvol : ∀ a ∈ G, Measure.map (mulE a) volume = volume)
@@ -127,6 +175,21 @@ private lemma key {n : ℕ} {G : Set (Fin n → Fin n → ℂ)} {μ : Measure (F
       exact zero_le
   exact h1.trans h2
 
+/- English proof (translation)
+Introduce `n G μ hG hdet hvol hinv hfin`. Use `haveI : IsFiniteMeasureOnCompacts μ := ⟨fun K hK => hfin K hK⟩`. Use `haveI := haarE n`. Take `⟨V, K, hV, hK, hpos, hVK⟩` from `exists_pair n`. Take `⟨M, hM0, hM⟩` from `hV.isBounded.exists_pos_norm_le`.
+
+Establish `hdim : Module.finrank ℝ (Fin n → Fin n → ℂ) = 2 * n ^ 2`. Simplify using `[Module.finrank_pi_fintype]`. Expand and normalize the polynomial expressions, which then agree. Use `set c : ENNReal := μ K * volume (Metric.ball (0 : Fin n → Fin n → ℂ) 1) / volume V with hc`. Establish `hcf : c ≠ ⊤` using `ENNReal.div_ne_top (ENNReal.mul_ne_top (hfin K hK).ne measure_ball_lt_top.ne) hpos.ne'`.
+
+Use `⟨c.toReal * (n * M) ^ (2 * n ^ 2), fun R hR => ?_⟩` and prove the remaining obligations. Establish `hR0 : 0 ≤ R` using `zero_le_one.trans hR`. Establish `hk` using `key (μ := μ) hG (fun a ha h => by simpa [h] using hdet a ha) hvol hinv hV (isCompact_closedBall (0 : Fin n → Fin n → ℂ) R) (D := Metric.closedBall 0 (n * M * R)) measurableSet_closedBall hVK (fun g hg v hv => by`. Rewrite `hg`, the goal using `[mem_closedBall_zero_iff]`. Use `(norm_mulE_le g v).trans ?_` and prove the remaining obligations.
+
+Use `hM v hv` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Rewrite `hk` using `[Measure.addHaar_closedBall volume _ (by positivity), hdim]`. Establish `hsub : {g : Fin n → Fin n → ℂ | Real.sqrt (∑ i, ∑ j, Complex.normSq (g i j)) ≤ R} ⊆ Metric.closedBall 0 R`. Introduce `g hg`.
+
+Rewrite using `[mem_closedBall_zero_iff]`. Use `(pi_norm_le_iff_of_nonneg hR0).2 fun i => (pi_norm_le_iff_of_nonneg hR0).2 fun j => ?_` and prove the remaining obligations. Use `le_trans (Real.le_sqrt_of_sq_le ?_) hg` and prove the remaining obligations. Rewrite using `[← Complex.normSq_eq_norm_sq]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `(measure_mono hsub).trans ?_` and prove the remaining obligations. Establish `hVf : volume V ≠ ⊤` using `hV.measure_lt_top.ne`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.le_div_iff_mul_le (Or.inl hpos.ne') (Or.inl hVf), mul_comm]`. Conclude with `hk`.
+
+Use `_ = c * ENNReal.ofReal ((n * M * R) ^ (2 * n ^ 2)) := by`. Rewrite using `[hc, div_eq_mul_inv, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ENNReal.ofReal (c.toReal * (n * M) ^ (2 * n ^ 2) * R ^ (2 * n ^ 2)) := by`. Rewrite using `[mul_assoc c.toReal, ← mul_pow, ENNReal.ofReal_mul ENNReal.toReal_nonneg, ENNReal.ofReal_toReal hcf]`.
+-/
 theorem UpperTheory.map_mul_volume_of_subgroup :
     ∀ (n : ℕ) (G : Set (Fin n → Fin n → ℂ)) (μ : MeasureTheory.Measure (Fin n → Fin n → ℂ)),
         μ Gᶜ = 0 →

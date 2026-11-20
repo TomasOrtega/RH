@@ -11,6 +11,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.HintSmaller
 
+/- English proof (translation)
+Introduce `H _ K S u hSK hSu hfin _`. Conclude with `GlobalTheory.CompanionTheory.HintLevel.hint_eq_level H K S u hSK hSu hfin`.
+-/
 theorem hint_eq_of_le : ∀ {H : Type} [Group H] (K S : Subgroup H) (u : H → ℂ), S ≤ K → S ≤ rStab u →
     S.relIndex K ≠ 0 → (Function.support fun q : H ⧸ S => u q.out).Finite →
     hint K u = ((S.relIndex K : ℂ))⁻¹ * ∑ᶠ q : H ⧸ S, u q.out := by

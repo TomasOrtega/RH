@@ -18,6 +18,9 @@ section Values
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
   {x : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ}
 
+/- English proof (translation)
+Introduce `h` and use `hq (by have hm : (X q : MRing ι) ∈ mCoordIdeal x := by show mConeMap x (X q) = 0 rw [mConeMap, aeval_X, h, map_zero, zero_mul] have h0 : z q = 0 := by simpa using hz.2 _ hm show mConeMap z (X q) = 0 rw [mConeMap, aeval_X, h0, map_zero, zero_mul])`.
+-/
 theorem coord_ne (hz : z ∈ mcPts (mCoordIdeal x)) {q : Σ k, ι k} (hq : (X q : MRing ι) ∉ mCoordIdeal z) :
     x q ≠ 0 := fun h => hq (by
   have hm : (X q : MRing ι) ∈ mCoordIdeal x := by
@@ -27,6 +30,9 @@ theorem coord_ne (hz : z ∈ mcPts (mCoordIdeal x)) {q : Σ k, ι k} (hq : (X q 
   show mConeMap z (X q) = 0
   rw [mConeMap, aeval_X, h0, map_zero, zero_mul])
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using ValRing.isValueAt_zero_self x z`. Consider the case `insert a S ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `ValRing.isValueAt_add (h a (Finset.mem_insert_self a S)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem isValueAt_sum {α : Type} (S : Finset α) (f : α → Ω) (v : α → ℂ)
     (h : ∀ i ∈ S, IsValueAt x (f i) z (v i)) : IsValueAt x (∑ i ∈ S, f i) z (∑ i ∈ S, v i) := by
   induction S using Finset.induction_on with
@@ -36,12 +42,18 @@ theorem isValueAt_sum {α : Type} (S : Finset α) (f : α → Ω) (v : α → �
     exact ValRing.isValueAt_add (h a (Finset.mem_insert_self a S))
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `ValRing.exists_isValueAt hz hs`. Rewrite using `[valAt_eq hz hv]`. Conclude with `hv`.
+-/
 theorem isValueAt_valAt (hz : z ∈ mcPts (mCoordIdeal x)) {s : Ω} (hs : RegAt x (mCoordIdeal z) s) :
     IsValueAt x s z (valAt x s z) := by
   obtain ⟨v, hv⟩ := ValRing.exists_isValueAt hz hs
   rw [valAt_eq hz hv]
   exact hv
 
+/- English proof (translation)
+The claim follows from `valAt_eq hz (isValueAt_sum S _ _ fun i hi => isValueAt_mul (isValueAt_valAt hz (hf i hi)) (isValueAt_valAt hz (hg i hi)))`.
+-/
 theorem valAt_sum_mul (hz : z ∈ mcPts (mCoordIdeal x)) {α : Type} (S : Finset α) (f g : α → Ω)
     (hf : ∀ i ∈ S, RegAt x (mCoordIdeal z) (f i)) (hg : ∀ i ∈ S, RegAt x (mCoordIdeal z) (g i)) :
     valAt x (∑ i ∈ S, f i * g i) z = ∑ i ∈ S, valAt x (f i) z * valAt x (g i) z :=
@@ -50,6 +62,13 @@ theorem valAt_sum_mul (hz : z ∈ mcPts (mCoordIdeal x)) {α : Type} (S : Finset
 
 end Values
 
+/- English proof (translation)
+Introduce `e`. Establish `hi` using `i.2`. Distinguish the cases in `c : (i : ℕ) + 1 ≤ j`. Establish `hlt : N - j < N` using `by omega`. Establish `hm : (⟨N - j, hlt⟩ : Fin N) ∈ stepCols N j i`.
+
+Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, if_pos c]`. Use linear arithmetic over natural numbers and integers. Rewrite `hm` using `[e]`. Simplify using `at hm`. Establish `hm : (⟨0, by omega⟩ : Fin N) ∈ stepCols N j i`.
+
+Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, if_neg c]`. Use linear arithmetic over natural numbers and integers. Rewrite `hm` using `[e]`. Simplify using `at hm`.
+-/
 theorem stepCols_ne {N j : ℕ} (i : Fin N) (hj : j ≤ N) : stepCols N j i ≠ ∅ := by
   intro e
   have hi := i.2
@@ -66,6 +85,13 @@ theorem stepCols_ne {N j : ℕ} (i : Fin N) (hj : j ≤ N) : stepCols N j i ≠ 
     rw [e] at hm
     simp at hm
 
+/- English proof (translation)
+Establish `e : ∑ m, A I' m * w m = a * ∑ I, (∑ m, A I' m * B m I) * μ I`. Simplify using `only [hw, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun I _ => Finset.sum_congr rfl fun m _ => by ring`. Rewrite using `[e, Finset.sum_eq_single I']`.
+
+Rewrite using `[hAB I' I' hI' hI', if_pos rfl, one_mul]`. Introduce `I _ hne`. Distinguish the cases in `hI : P I`. Rewrite using `[hAB I' I hI' hI, if_neg hne.symm, zero_mul]`. Rewrite using `[hμ I hI, mul_zero]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem read_minor {κ : Type} [Fintype κ] {N : ℕ} (P : Finset (Fin N) → Prop)
     (A : Finset (Fin N) → κ → ℂ) (B : κ → Finset (Fin N) → ℂ)
     (hAB : ∀ I I', P I → P I' → ∑ m, A I m * B m I' = if I = I' then 1 else 0)
@@ -84,6 +110,13 @@ theorem read_minor {κ : Type} [Fintype κ] {N : ℕ} (P : Finset (Fin N) → Pr
     · rw [hμ I hI, mul_zero]
   · simp
 
+/- English proof (translation)
+Establish `e : ∑ m, (∑ I, ∑ I' ∈ S, D I * Tm I I' * A I' m) * w m = ∑ I, ∑ I' ∈ S, D I * Tm I I' * ∑ m, A I' m * w m`. Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Conclude with `Finset.sum_congr rfl fun I' _ => Finset.sum_congr rfl fun m _ => by ring`. Rewrite using `[e, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_subset (Finset.subset_univ S) fun I' _ h => by`. Rewrite using `[hμ I' fun hp => h ((hS I').2 hp), mul_zero], Finset.mul_sum, Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun I' h => by rw [hA I' ((hS I').1 h)]; ring`.
+-/
 theorem move_minor {κ : Type} [Fintype κ] {N : ℕ} (P : Finset (Fin N) → Prop)
     (S : Finset (Finset (Fin N))) (hS : ∀ I, I ∈ S ↔ P I) (A : Finset (Fin N) → κ → ℂ)
     (D : Finset (Fin N) → ℂ) (Tm : Finset (Fin N) → Finset (Fin N) → ℂ)
@@ -103,6 +136,29 @@ theorem move_minor {κ : Type} [Fintype κ] {N : ℕ} (P : Finset (Fin N) → Pr
     rw [hμ I' fun hp => h ((hS I').2 hp), mul_zero], Finset.mul_sum, Finset.mul_sum]
   exact Finset.sum_congr rfl fun I' h => by rw [hA I' ((hS I').1 h)]; ring
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv z₁ z₀ F' F h p k hz₁ hF' hF hG' hG hfl' hfl horb hp`. Use `set zb := basePart M'.blk z₁ with hzbdef`. Establish `hzb : zb ∈ mcPts (mCoordIdeal M'.x)` using `(GlobalTheory.T.flag_model_base_projection_points K' ι' Φ' y' Ψ N j M').1 z₁ hz₁`. Establish `hzv` using `GlobalTheory.T.flag_cover_base_point_maps_to_points K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv zb hzb`. Establish `hstep : IsProperStep N j p.2`.
+
+Assume the negation of the conclusion as `hn`. Rewrite `hp` using `[(M.blk_none p).2 hn]`. Conclude with `absurd hp (by simp)`. Take `⟨k', hk'⟩ : ∃ k', M'.blk p = some k'` from `Option.ne_none_iff_exists'.1 fun e => (M'.blk_none p).1 e hstep`. Take `⟨c', hc'⟩` from `hz₁.1 k'`.
+
+Take `⟨hy0, hratio⟩` from `GlobalTheory.T.coordinate_ratio_value_at_point K' ι' Φ' y' z₁ k' c' hz₁ hc'`. Establish `ch' : ∀ k, M'.x ⟨k, F'.c k⟩ ≠ 0` using `fun k => coord_ne hzb (hG'.1 k)`. Establish `ch : ∀ k, M.x ⟨k, F.c k⟩ ≠ 0` using `fun k => coord_ne hzv (hG.1 k)`. Take `⟨c, hc0, htr⟩` from `GlobalTheory.T.flag_cover_frames_pullback K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv F' F hF' hF ch' ch p k k' hp hk'`. Take `⟨a', ha', hz1⟩` from `hfl'.2.2 p k' hk'`.
+
+Take `⟨a, ha, hz0⟩` from `hfl.2.2 p k hp`. Establish `hE` using `fun m m' => GlobalTheory.T.flag_cover_frames_at_base_point K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv zb F' F hzb hF' hF hG' hG p ⟨k, m⟩ ⟨k', m'⟩`. Establish `hmin` using `GlobalTheory.T.block_diagonal_minor_vanishing ℂ N j p.2 M.j_le`. Establish `hne : stepCols N j p.2 ≠ ∅` using `stepCols_ne p.2 M.j_le`. Take `⟨cc, hcc, horbE⟩` from `horb`.
+
+Establish `hval : ∀ s, valAt M.x s (basePart M.blk z₀) = valAt M.x s (zb ∘ Cv.v)` using `fun s => by`. Rewrite using `[horbE]`. Conclude with `((StepW.TorusAct.main _ _ _ M.x (zb ∘ Cv.v) cc hcc).2 hzv).2 s`. Establish `hμ : ∀ I, ¬ IsStepRows N j p.2 I → minorIJ (h p.1) I (stepCols N j p.2) = 0` using `fun I hI => (hmin.2.1 (h p.1) I (hfl'.2.1 p.1).1 hI).resolve_right hne`. Establish `hAB : ∀ I I', IsStepRows N j p.2 I → IsStepRows N j p.2 I' → ∑ m, valAt M'.x (F'.u' I ⟨k', m⟩) zb * valAt M'.x (F'.u ⟨k', m⟩ I') zb = if I = I' then 1 else 0` using `fun I I' hI hI' => by`.
+
+Rewrite using `[← valAt_sum_mul hzb Finset.univ _ _ (fun m _ => (hG'.2.1 ⟨k', m⟩ I).2) (fun m _ => (hG'.2.1 ⟨k', m⟩ I').1), hF'.2.2.1 p k' hk' I I' hI hI']`. Establish `h3` using `ValRing.regAt_valAt_ring _ _ _ M'.x zb hzb`. Use `split_ifs`. Conclude with `h3.2.2.2.1`. Conclude with `h3.2.2.1`.
+
+Establish `hread` using `read_minor (IsStepRows N j p.2) _ _ hAB _ hμ (fun m => z₁ ⟨k', m⟩) a' hz1`. Establish `key : ∀ m, ∑ m', valAt M'.x (coE Cv F' F p ⟨k, m⟩ ⟨k', m'⟩) zb * z₁ ⟨k', m'⟩ = a' * ∑ I, valAt M.x (F.u ⟨k, m⟩ I) (zb ∘ Cv.v) * minorIJ (Cv.trans F' F zb p.1 * h p.1) I (stepCols N j p.2)` using `fun m => by`. Simplify using `only [fun m' => (hE m m').2, hmin.1]`. Conclude with `move_minor (IsStepRows N j p.2) _ (fun I => by simp) _ _ _ _ hμ _ a' hread`. Use `⟨c * y' ⟨k', c'⟩, fun m => ∑ m', algebraMap M'.Ω Φ' (coE Cv F' F p ⟨k, m⟩ ⟨k', m'⟩) * (y' ⟨k', m'⟩ / y' ⟨k', c'⟩), a' / (a * z₁ ⟨k', c'⟩), mul_ne_zero hc0 hy0, div_ne_zero ha' (mul_ne_zero ha hc'), fun m => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Use `show transPt Cv ⟨k, m⟩ = c * y' ⟨k', c'⟩ * ∑ m', algebraMap M'.Ω Φ' (coE Cv F' F p ⟨k, m⟩ ⟨k', m'⟩) * (y' ⟨k', m'⟩ / y' ⟨k', c'⟩)`. Rewrite using `[htr m, mul_assoc]`. Use `congr 1`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m' _ => ?_` and prove the remaining obligations.
+
+Clear the denominators using the available nonvanishing facts. Establish `hv` using `isValueAt_sum Finset.univ (fun m' => algebraMap M'.Ω Φ' (coE Cv F' F p ⟨k, m⟩ ⟨k', m'⟩) * (y' ⟨k', m'⟩ / y' ⟨k', c'⟩)) (fun m' => valAt M'.x (coE Cv F' F p ⟨k, m⟩ ⟨k', m'⟩) zb * ((z₁ ⟨k', c'⟩)⁻¹ * z₁ ⟨k', m'⟩)) fun m' _ => isValueAt_mul (GlobalTheory.T.base_function_value_at_poin …`. Establish `e : ∑ m', valAt M'.x (coE Cv F' F p ⟨k, m⟩ ⟨k', m'⟩) zb * ((z₁ ⟨k', c'⟩)⁻¹ * z₁ ⟨k', m'⟩) = a' / (a * z₁ ⟨k', c'⟩) * z₀ ⟨k, m⟩`. Establish `e1 : ∑ m', valAt M'.x (coE Cv F' F p ⟨k, m⟩ ⟨k', m'⟩) zb * ((z₁ ⟨k', c'⟩)⁻¹ * z₁ ⟨k', m'⟩) = (z₁ ⟨k', c'⟩)⁻¹ * ∑ m', valAt M'.x (coE Cv F' F p ⟨k, m⟩ ⟨k', m'⟩) zb * z₁ ⟨k', m'⟩`. Rewrite using `[Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun m' _ => by ring`. Rewrite using `[e1, key m, hz0 m]`. Simplify using `only [hval]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← e]`.
+
+Conclude with `hv`.
+-/
 theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (Φ' : Type) [Field Φ'] (y' : (Σ k, ι' k) → Φ') (M' : FlagModel y' Ψ N j) (Cv : FlagCover M' M) (z₁ : (Σ k, ι' k) → ℂ) (z₀ : (Σ k, ι k) → ℂ) (F' : FrameData ι' Ψ N M'.Ω M'.blk) (F : FrameData ι Ψ N M.Ω M.blk) (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (p : Ψ × Fin N) (k : K), z₁ ∈ mcPts (mCoordIdeal y') → M'.IsFrame F' → M.IsFrame F → M'.GoodAt F' (mCoordIdeal (basePart M'.blk z₁)) → M.GoodAt F (mCoordIdeal (basePart M'.blk z₁ ∘ Cv.v)) → M'.IsFlagOf F' z₁ h → M.IsFlagOf F z₀ (fun τ => Cv.trans F' F (basePart M'.blk z₁) τ * h τ) → SameOrbit (basePart M.blk z₀) (basePart M'.blk z₁ ∘ Cv.v) → M.blk p = some k → ∃ (e : Φ') (s : ι k → Φ') (t : ℂ), e ≠ 0 ∧ t ≠ 0 ∧ ∀ m, transPt Cv ⟨k, m⟩ = e * s m ∧ IsValueAt y' (s m) z₁ (t * z₀ ⟨k, m⟩) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv z₁ z₀ F' F h p k hz₁ hF' hF hG' hG hfl' hfl horb hp
   set zb := basePart M'.blk z₁ with hzbdef

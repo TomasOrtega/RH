@@ -12,6 +12,13 @@ namespace GlobalTheory.QFam
 
 open ReciprocityTheory.PGsh in
 
+/- English proof (translation)
+Introduce `w F hF`. Take `⟨g, hg⟩` from `hF`. Establish `hm` using `coe_mem_monoSpanF w g`. Rewrite `hm` using `[monoSpanF, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨c, hc⟩` from `hm`.
+
+Use `⟨(monoIdx w).image fun a => (a, monoB w a), fun p => if h : p.1 ∈ monoIdx w then c ⟨p.1, h⟩ else 0, ?_, fun τ => ?_⟩` and prove the remaining obligations. Introduce `p hp`. Take `⟨a, ha, rfl⟩` from `Finset.mem_image.mp hp`. Conclude with `monoIdx_wt ha`. Rewrite using `[Finset.sum_image (fun a _ b _ h => congrArg Prod.fst h), ← hg τ, ← hc, Finset.sum_apply, ← Finset.sum_coe_sort (monoIdx w)]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[coe_monoW a.2]`. Simplify using `[a.2]`.
+-/
 theorem isMF_eq_sum_monomials :
     ∀ (w : ℕ) (F : ℍ → ℂ), IsMF w F → ∃ (s : Finset (ℕ × ℕ)) (c : ℕ × ℕ → ℂ),
       (∀ p ∈ s, 4 * p.1 + 6 * p.2 = w) ∧

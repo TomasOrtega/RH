@@ -15,6 +15,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ZH
 
+/- English proof (translation)
+Introduce `h₁ h₂ h₃ o Ω _ _ _ _ S ρ p _ y₀ u hy`. Take `⟨q, hq, hq'⟩` from `GlobalTheory.ZH.PsiForm.main o Ω S ρ p y₀ u`. Take `⟨yy, hs, he⟩` from `GlobalTheory.T.exists_labelMap_torsion_characters h₁ h₂ h₃ o Ω S ρ p y₀ u`. Establish `hk` using `GlobalTheory.T.label_map_kernel_eq_integral_torsion h₁ h₂ h₃ o Ω S ρ p y₀ u yy hs he hy`. Take `⟨hi, wt, hw⟩` from `GlobalTheory.T.isoFree_perp_labelKernel_weights h₁ h₂ h₃ o Ω S ρ p y₀ u yy hs he`.
+
+Conclude with `⟨⟨q, hq, hq', yy, hs, he, hk, hi, wt, hw⟩⟩`.
+-/
 theorem labels_exist : Laws → Laws2 → UTorsSt → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀), (∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1) → Nonempty u.Lab := by
   intro h₁ h₂ h₃ o Ω _ _ _ _ S ρ p _ y₀ u hy
   obtain ⟨q, hq, hq'⟩ := GlobalTheory.ZH.PsiForm.main o Ω S ρ p y₀ u

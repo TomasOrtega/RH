@@ -13,6 +13,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Introduce `l hl`. Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons y l ih`. Simplify using `only [List.map_cons, List.cons.injEq]`.
+
+Conclude with `⟨hl y (List.mem_cons_self ..), ih fun z hz => hl z (List.mem_cons_of_mem _ hz)⟩`.
+-/
 lemma tags_map (φ : Bool × Mat k r → Bool × Mat k r) :
     ∀ l : List (Bool × Mat k r), (∀ y ∈ l, (φ y).1 = y.1) → (l.map φ).map Prod.fst = l.map Prod.fst := by
   intro l hl
@@ -22,6 +27,51 @@ lemma tags_map (φ : Bool × Mat k r → Bool × Mat k r) :
     simp only [List.map_cons, List.cons.injEq]
     exact ⟨hl y (List.mem_cons_self ..), ih fun z hz => hl z (List.mem_cons_of_mem _ hz)⟩
 
+/- English proof (translation)
+Establish `hCk : ∀ n : ℕ, n ≤ m → CkOn (n : ℕ∞) (GV k r) F`. Introduce `n hn g₀ hg₀`. Take `⟨U, f', hU, hg, hcd, hfe⟩` from `h.1 g₀ hg₀`. Conclude with `⟨U, f', hU, hg, hcd.of_le (by exact_mod_cast hn), hfe⟩`. Establish `hsubL : ∀ X Y : Mat k r, inLie k r X → inLie k r Y → inLie k r (X - Y)`.
+
+Introduce `X Y hX hY`. Unfold `inLie at hX hY ⊢`. Rewrite using `[Matrix.conjTranspose_sub, sub_mul, mul_sub]`. Combine the equalities or inequalities in the displayed calculation. Establish `hpn0 : ∀ l : List (Bool × Mat k r), 0 ≤ pn l` using `fun l => List.prod_nonneg fun a ha => by`.
+
+Take `⟨y, -, rfl⟩` from `List.mem_map.mp ha`. Conclude with `norm_nonneg _`. Establish `hpnK : ∀ l : List (Bool × Mat k r), (∀ y ∈ l, ‖y.2‖ ≤ K) → pn l ≤ K ^ l.length`. Introduce `l hlK`. Proceed by induction on `l with`.
+
+Consider the case `nil => simp [pn]`. Consider the case `cons y l ih`. Establish `h1` using `hlK y (List.mem_cons_self ..)`. Establish `h2` using `ih fun z hz => hlK z (List.mem_cons_of_mem _ hz)`. Establish `h3 : pn (y :: l) = ‖y.2‖ * pn l` using `by simp [pn]`.
+
+Rewrite using `[h3, List.length_cons, pow_succ]`. Combine the equalities or inequalities in the displayed calculation. Establish `hgN : ∀ g : Mat k r, 0 ≤ gN g ^ A` using `fun g => Real.rpow_nonneg (by unfold gN; exact Real.sqrt_nonneg _) A`. Introduce `w`. Proceed by induction on `w with`.
+
+Consider the case `nil`. Introduce `pre _ _ _ _ g _`. Simplify using the standard rewrite rules. Consider the case `cons x w ih`. Introduce `pre hpre hw ht hl g hg`.
+
+Take `⟨hφ1, hψ1, hφL, hψL, hφK, hψK, hε⟩` from `hw x (List.mem_cons_self ..)`. Establish `hw' : ∀ y ∈ w, (φ y).1 = y.1 ∧ (ψ y).1 = y.1 ∧ inLie k r (φ y).2 ∧ inLie k r (ψ y).2 ∧ ‖(φ y).2‖ ≤ K ∧ ‖(ψ y).2‖ ≤ K ∧ ‖(φ y).2 - (ψ y).2‖ ≤ ε` using `fun y hy => hw y (List.mem_cons_of_mem _ hy)`. Establish `hpre' : ∀ y ∈ pre ++ [φ x], inLie k r y.2 ∧ ‖y.2‖ ≤ K`. Introduce `y hy`. Break down `List.mem_append.mp hy with h' | h'` into its components or cases.
+
+Conclude with `hpre y h'`. Rewrite `h'` using `[List.mem_singleton]`. Substitute `h'` using the available equality. Conclude with `⟨hφL, hφK⟩`. Establish `ht' : LRt ((pre ++ [φ x] ++ w).map Prod.fst)`.
+
+Establish `e : (pre ++ [φ x] ++ w).map Prod.fst = (pre ++ x :: w).map Prod.fst` using `by simp [hφ1]`. Rewrite using `[e]`. Conclude with `ht`. Establish `hl' : (pre ++ [φ x] ++ w).length ≤ m` using `by simpa using hl`. Establish `ih'` using `ih (pre ++ [φ x]) hpre' hw' ht' hl' g hg`.
+
+Establish `hwψ : (w.map ψ).map Prod.fst = w.map Prod.fst` using `tags_map ψ w fun y hy => (hw' y hy).2.1`. Establish `hallpre : AllLie pre` using `fun y hy => (hpre y hy).1`. Establish `hallq : AllLie (w.map ψ)`. Introduce `y hy`. Take `⟨z, hz, rfl⟩` from `List.mem_map.mp hy`.
+
+Conclude with `(hw' z hz).2.2.2.1`. Establish `hlen : pre.length + 1 + w.length ≤ m` using `by simp at hl; omega`. Establish `hCk' : CkOn ((pre.length + 1 + (w.map ψ).length : ℕ) : ℕ∞) (GV k r) F`. Rewrite using `[List.length_map]`. Conclude with `hCk _ hlen`.
+
+Establish `hDL : inLie k r ((φ x).2 - (ψ x).2)` using `hsubL _ _ hφL hψL`. Establish `hmid` using `W_mid_add (F := F) pre (w.map ψ) x.1 hallpre hallq hψL hDL hCk' g hg`. Rewrite `hmid` using `[add_sub_cancel]`. Establish `hφx : φ x = (x.1, (φ x).2)` using `Prod.ext hφ1 rfl`. Establish `hψx : ψ x = (x.1, (ψ x).2)` using `Prod.ext hψ1 rfl`.
+
+Establish `e1 : pre ++ (x :: w).map φ = pre ++ [φ x] ++ w.map φ` using `by simp`. Establish `e2 : pre ++ (x :: w).map ψ = pre ++ (x.1, (ψ x).2) :: w.map ψ`. Rewrite using `[List.map_cons, ← hψx]`. Establish `e3 : pre ++ [φ x] ++ w.map ψ = pre ++ (x.1, (φ x).2) :: w.map ψ`. Rewrite using `[List.append_assoc, List.singleton_append, ← hφx]`.
+
+Establish `hsplit : W (pre ++ (x :: w).map φ) F g - W (pre ++ (x :: w).map ψ) F g = (W (pre ++ [φ x] ++ w.map φ) F g - W (pre ++ [φ x] ++ w.map ψ) F g) + W (pre ++ (x.1, (φ x).2 - (ψ x).2) :: w.map ψ) F g`. Rewrite using `[e1, e2, e3, hmid]`. Normalize the expressions using the abelian group laws. Establish `ht2 : LRt ((pre ++ (x.1, (φ x).2 - (ψ x).2) :: w.map ψ).map Prod.fst)`. Establish `e : (pre ++ (x.1, (φ x).2 - (ψ x).2) :: w.map ψ).map Prod.fst = (pre ++ x :: w).map Prod.fst`.
+
+Simplify using `only [List.map_append, List.map_cons, hwψ]`. Rewrite using `[e]`. Conclude with `ht`. Establish `hall2 : AllLie (pre ++ (x.1, (φ x).2 - (ψ x).2) :: w.map ψ)`. Introduce `y hy`.
+
+Break down `List.mem_append.mp hy with h' | h'` into its components or cases. Conclude with `hallpre y h'`. Break down `List.mem_cons.mp h' with h'' | h''` into its components or cases. Substitute `h''` using the available equality. Conclude with `hDL`.
+
+Conclude with `hallq y h''`. Establish `hl2 : (pre ++ (x.1, (φ x).2 - (ψ x).2) :: w.map ψ).length ≤ m` using `by simpa using hl`. Establish `hb2` using `bound_scaled h _ ht2 hall2 hl2 g hg`. Establish `hε0 : 0 ≤ ε` using `le_trans (norm_nonneg _) hε`. Establish `hK0 : 0 ≤ K` using `by linarith`.
+
+Establish `hpn2 : pn (pre ++ (x.1, (φ x).2 - (ψ x).2) :: w.map ψ) ≤ K ^ m * ε`. Establish `hpre_pn : pn pre ≤ K ^ pre.length` using `hpnK pre fun y hy => (hpre y hy).2`. Establish `hq_pn : pn (w.map ψ) ≤ K ^ w.length`. Establish `h5` using `hpnK (w.map ψ) (by`. Introduce `y hy`.
+
+Take `⟨z, hz, rfl⟩` from `List.mem_map.mp hy`. Conclude with `(hw' z hz).2.2.2.2.2.1)`. Simplify using `using h5`. Establish `e : pn (pre ++ (x.1, (φ x).2 - (ψ x).2) :: w.map ψ) = pn pre * (‖(φ x).2 - (ψ x).2‖ * pn (w.map ψ))`. Simplify using `[pn, List.map_append, List.prod_append]`.
+
+Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ hε0` to reduce the goal to its premises. Conclude with `pow_le_pow_right₀ hK (by omega)`. Rewrite using `[hsplit]`.
+
+Establish `hg0` using `hgN g`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_add]`. Conclude with `mul_le_mul_of_nonneg_left (norm_add_le _ _) hg0`. Use `_ ≤ w.length * (K ^ m * ε * c) + K ^ m * ε * c := add_le_add ih' (hb2.trans (by`.
+
+Use `mul_le_mul_of_nonneg_right hpn2 hc` as an intermediate fact. Use the proof step `linarith))`. Use `_ = ((x :: w).length : ℝ) * (K ^ m * ε * c) := by push_cast [List.length_cons]; ring`.
+-/
 lemma tele {F : Mat k r → E} {A c K ε : ℝ} {m : ℕ} (h : CCle A m F c) (hc : 0 ≤ c) (hK : 1 ≤ K)
     (φ ψ : Bool × Mat k r → Bool × Mat k r) :
     ∀ (w pre : List (Bool × Mat k r)), (∀ x ∈ pre, inLie k r x.2 ∧ ‖x.2‖ ≤ K) →
@@ -150,10 +200,18 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
 
 def adM (p : SS k r) (x : Bool × Mat k r) : Bool × Mat k r := (x.1, cond x.1 (AdL p x.2) (AdR p x.2))
 
+/- English proof (translation)
+Simplify using `[lr, List.map_append, List.map_map, Function.comp_def, adM]`.
+-/
 lemma lr_ad (p : SS k r) (u v : List (Mat k r)) :
     lr (u.map (AdL p)) (v.map (AdR p)) = (lr u v).map (adM p) := by
   simp [lr, List.map_append, List.map_map, Function.comp_def, adM]
 
+/- English proof (translation)
+Introduce `x hx`. Unfold `lr at hx`. Simplify using `only [List.mem_append, List.mem_map] at hx`. Break down `hx with ⟨X, hX, rfl⟩ | ⟨X, hX, rfl⟩` into its components or cases. Conclude with `hu X hX`.
+
+Conclude with `hv X hX`.
+-/
 lemma unit_lr' {u v : List (Mat k r)} (hu : ∀ X ∈ u, unitLie k r X) (hv : ∀ X ∈ v, unitLie k r X) :
     ∀ x ∈ lr u v, unitLie k r x.2 := by
   intro x hx
@@ -163,6 +221,15 @@ lemma unit_lr' {u v : List (Mat k r)} (hu : ∀ X ∈ u, unitLie k r X) (hv : �
   · exact hu X hX
   · exact hv X hX
 
+/- English proof (translation)
+Establish `hHH : Hpk k r * Hpk k r = 1` using `Formalism.QuantumDeterminants.GBasic.Hpk_sq k r`. Establish `hHH' : ∀ A : Mat k r, Hpk k r * (Hpk k r * A) = A` using `fun A => by rw [← mul_assoc, hHH, one_mul]`. Establish `hX' : Xᴴ * Hpk k r + Hpk k r * X = 0` using `hX`. Establish `hy' : yᴴ * Hpk k r * y = Hpk k r` using `hy`. Establish `hinv : y⁻¹ = Hpk k r * yᴴ * Hpk k r`.
+
+Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Simplify using `only [mul_assoc] at hy' ⊢`. Rewrite using `[hy', hHH]`. Establish `e1 : (y⁻¹ * X * y)ᴴ * Hpk k r = yᴴ * (Xᴴ * Hpk k r) * y`. Rewrite using `[hinv]`.
+
+Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Formalism.QuantumDeterminants.GBasic.Hpk_herm, mul_assoc, hHH, mul_one]`. Establish `e2 : Hpk k r * (y⁻¹ * X * y) = yᴴ * (Hpk k r * X) * y`. Rewrite using `[hinv]`. Simplify using `only [mul_assoc, hHH']`. Use `show (y⁻¹ * X * y)ᴴ * Hpk k r + Hpk k r * (y⁻¹ * X * y) = 0`.
+
+Rewrite using `[e1, e2, ← add_mul, ← mul_add, hX', mul_zero, zero_mul]`.
+-/
 private theorem inLie_conj_of_mem_GV {y X : Mat k r} (hy : y ∈ GV k r) (hX : inLie k r X) : inLie k r (y⁻¹ * X * y) := by
   have hHH : Hpk k r * Hpk k r = 1 := Formalism.QuantumDeterminants.GBasic.Hpk_sq k r
   have hHH' : ∀ A : Mat k r, Hpk k r * (Hpk k r * A) = A := fun A => by rw [← mul_assoc, hHH, one_mul]
@@ -182,6 +249,9 @@ private theorem inLie_conj_of_mem_GV {y X : Mat k r} (hy : y ∈ GV k r) (hX : i
   show (y⁻¹ * X * y)ᴴ * Hpk k r + Hpk k r * (y⁻¹ * X * y) = 0
   rw [e1, e2, ← add_mul, ← mul_add, hX', mul_zero, zero_mul]
 
+/- English proof (translation)
+Take `⟨b, X⟩` from `x`. Consider the cases of `b`. Conclude with `inLie_conj_of_mem_GV (JFxDs2.sR_mem hp) hx`. Conclude with `inLie_conj_of_mem_GV (JFxDs2.sL_mem hp) hx`.
+-/
 lemma adM_lie {D : RealPlaceData k r Wp Wq} {p : SS k r} (hp : D.inSS p) {x : Bool × Mat k r} (hx : inLie k r x.2) :
     inLie k r (adM p x).2 := by
   obtain ⟨b, X⟩ := x
@@ -189,6 +259,15 @@ lemma adM_lie {D : RealPlaceData k r Wp Wq} {p : SS k r} (hp : D.inSS p) {x : Bo
   · exact inLie_conj_of_mem_GV (JFxDs2.sR_mem hp) hx
   · exact inLie_conj_of_mem_GV (JFxDs2.sL_mem hp) hx
 
+/- English proof (translation)
+Take `⟨b, X⟩` from `x`. Establish `hof : ∀ q : SS k r → (Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → ℂ), Continuous q → Continuous fun p => (Matrix.of (q p) : Mat k r)` using `fun q hq => hq`. Establish `hcL : Continuous fun p : SS k r => sL p`. Unfold `sL; exact (hof _ (by fun_prop)).mul (hof _ (by fun_prop))`. Establish `hcR : Continuous fun p : SS k r => sR p`.
+
+Unfold `sR; exact (hof _ (by fun_prop)).mul (hof _ (by fun_prop))`. Establish `hinvOn : ∀ s : SS k r → Mat k r, Continuous s → (∀ p, D.inSS p → s p ∈ GV k r) → ContinuousOn (fun p => (s p)⁻¹) {p | D.inSS p}`. Introduce `s hs hG p hp`. Establish `hy' : (s p)ᴴ * Hpk k r * s p = Hpk k r` using `hG p hp`. Establish `hl : (Hpk k r * (s p)ᴴ * Hpk k r) * s p = 1`.
+
+Simplify using `only [mul_assoc] at hy' ⊢`. Rewrite using `[hy', Formalism.QuantumDeterminants.GBasic.Hpk_sq]`. Take `⟨u, hu⟩` from `Matrix.isUnit_det_of_left_inverse hl`. Establish `hc : ContinuousAt Inv.inv (s p)` using `continuousAt_matrix_inv _ (by rw [← hu]; exact NormedRing.inverse_continuousAt u)`. Conclude with `(hc.comp hs.continuousAt).continuousWithinAt`.
+
+Consider the cases of `b`. Use `show ContinuousOn (fun p => (sR p)⁻¹ * X * sR p) {p | D.inSS p}`. Conclude with `((hinvOn _ hcR fun p hp => JFxDs2.sR_mem hp).mul continuousOn_const).mul hcR.continuousOn`. Use `show ContinuousOn (fun p => (sL p)⁻¹ * X * sL p) {p | D.inSS p}`. Conclude with `((hinvOn _ hcL fun p hp => JFxDs2.sL_mem hp).mul continuousOn_const).mul hcL.continuousOn`.
+-/
 lemma adM_cont (D : RealPlaceData k r Wp Wq) (x : Bool × Mat k r) :
     ContinuousOn (fun p => (adM p x).2) {p : SS k r | D.inSS p} := by
   obtain ⟨b, X⟩ := x
@@ -214,6 +293,11 @@ lemma adM_cont (D : RealPlaceData k r Wp Wq) (x : Bool × Mat k r) :
   · show ContinuousOn (fun p => (sL p)⁻¹ * X * sL p) {p | D.inSS p}
     exact ((hinvOn _ hcL fun p hp => JFxDs2.sL_mem hp).mul continuousOn_const).mul hcL.continuousOn
 
+/- English proof (translation)
+Introduce `l hl`. Proceed by induction on `l with`. Consider the case `nil => simpa using continuousOn_const`. Consider the case `cons y l ih`. Simplify using `only [List.map_cons, List.sum_cons]`.
+
+Conclude with `(hl y (List.mem_cons_self ..)).add (ih fun z hz => hl z (List.mem_cons_of_mem _ hz))`.
+-/
 lemma cont_sum {α : Type*} (S : Set (SS k r)) (f : α → SS k r → ℝ) :
     ∀ l : List α, (∀ x ∈ l, ContinuousOn (f x) S) → ContinuousOn (fun p => (l.map (fun x => f x p)).sum) S := by
   intro l hl
@@ -223,12 +307,46 @@ lemma cont_sum {α : Type*} (S : Set (SS k r)) (f : α → SS k r → ℝ) :
     simp only [List.map_cons, List.sum_cons]
     exact (hl y (List.mem_cons_self ..)).add (ih fun z hz => hl z (List.mem_cons_of_mem _ hz))
 
+/- English proof (translation)
+Conclude with `List.single_le_sum (fun y hy => by`. Take `⟨z, -, rfl⟩` from `List.mem_map.mp hy`. Conclude with `hf z) _ (List.mem_map_of_mem hx)`.
+-/
 lemma le_sum_map {α : Type*} (f : α → ℝ) (hf : ∀ x, 0 ≤ f x) (l : List α) {x : α} (hx : x ∈ l) :
     f x ≤ (l.map f).sum := by
   exact List.single_le_sum (fun y hy => by
     obtain ⟨z, -, rfl⟩ := List.mem_map.mp hy
     exact hf z) _ (List.mem_map_of_mem hx)
 
+/- English proof (translation)
+Introduce `k r Wp Wq _ _ _ _ _ _ D A m F hThr hF u v hu hv hl g hg`. Take `⟨c, hc⟩` from `hF`. Establish `hc0 : 0 ≤ c` using `cc_nonneg hc`. Establish `hgG : g ∈ GV k r` using `hg.1`. Establish `hA : 0 ≤ A`.
+
+Establish `h1 : (0 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ) ^ 2` using `sq_nonneg _`. Establish `h2` using `lt_of_le_of_lt h1 hThr`. Establish `h3 : (0 : ℝ) < 9 * ((r : ℝ) + 1)` using `by positivity`. Rewrite `h2` using `[lt_div_iff₀ h3, zero_mul]`. Establish `: (0 : ℝ) ≤ 6 * (r : ℝ) * (m : ℝ)` using `by positivity`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hwu : ∀ x ∈ lr u v, unitLie k r x.2` using `unit_lr' hu hv`. Establish `hwt : LRt ((lr u v).map Prod.fst)` using `lrt_lr u v`. Establish `hwl : (lr u v).length ≤ m` using `by rw [length_lr]; exact hl`. Establish `hx : ContinuousOn (fun p => sgs p g) {p : SS k r | D.inSS p}` using `B6.conjugated_pair_continuous_on D g`.
+
+Establish `hxG : ∀ p ∈ {p : SS k r | D.inSS p}, sgs p g ∈ GV k r` using `fun p hp => B7.sgs_mem D hp hgG`. Establish `hmain : ContinuousOn (fun p => W ((lr u v).map (adM p)) F (sgs p g)) {p : SS k r | D.inSS p}`. Introduce `p₀ hp₀`. Establish `hAL : AllLie ((lr u v).map (adM p₀))`. Introduce `y hy`.
+
+Take `⟨y', hy', rfl⟩` from `List.mem_map.mp hy`. Conclude with `adM_lie hp₀ (hwu y' hy').1`. Establish `hck : CkOn ((0 : ℕ) : ℕ∞) (GV k r) (W ((lr u v).map (adM p₀)) F)` using `smooth_on_of_word_derivatives ((lr u v).map (adM p₀)) hAL 0 (ckOn_mono (by simpa using hwl) hc.1)`. Establish `hsec : ContinuousWithinAt (fun p => W ((lr u v).map (adM p₀)) F (sgs p g)) {p : SS k r | D.inSS p} p₀` using `((B6.continuousOn_of_contDiffOn_group hck).comp hx hxG) p₀ hp₀`. Set `Kf : SS k r → ℝ` to `fun p => 1 + ((lr u v).map fun x => ‖(adM p x).2‖ + ‖(adM p₀ x).2‖).sum`.
+
+Set `εf : SS k r → ℝ` to `fun p => ((lr u v).map fun x => ‖(adM p x).2 - (adM p₀ x).2‖).sum`. Establish `hKc : ContinuousOn Kf {p : SS k r | D.inSS p}` using `continuousOn_const.add (cont_sum _ (fun x p => ‖(adM p x).2‖ + ‖(adM p₀ x).2‖) (lr u v) (fun x _ => (adM_cont D x).norm.add continuousOn_const))`. Establish `hεc : ContinuousOn εf {p : SS k r | D.inSS p}` using `cont_sum _ (fun x p => ‖(adM p x).2 - (adM p₀ x).2‖) (lr u v) (fun x _ => ((adM_cont D x).sub continuousOn_const).norm)`. Establish `hε0 : εf p₀ = 0` using `by simp [εf]`. Set `Bf : SS k r → ℝ` to `fun p => ((lr u v).length : ℝ) * (Kf p ^ m * εf p * c)`.
+
+Establish `hBc : ContinuousWithinAt Bf {p : SS k r | D.inSS p} p₀` using `continuousWithinAt_const.mul ((((hKc p₀ hp₀).pow m).mul (hεc p₀ hp₀)).mul continuousWithinAt_const)`. Establish `hB0 : Bf p₀ = 0` using `by simp [Bf, hε0]`. Establish `hd : Tendsto (fun p => W ((lr u v).map (adM p)) F (sgs p g) - W ((lr u v).map (adM p₀)) F (sgs p g)) (𝓝[{p : SS k r | D.inSS p}] p₀) (𝓝 0)`. Establish `hBt : Tendsto Bf (𝓝[{p : SS k r | D.inSS p}] p₀) (𝓝 0)`. Use `hBc.tendsto` as an intermediate fact.
+
+Rewrite `this` using `[hB0]`. Then use the resulting hypothesis. Use `squeeze_zero_norm' ?_ hBt` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with p hp`. Establish `hxp` using `hxG p hp`. Establish `hK1 : 1 ≤ Kf p` using `le_add_of_nonneg_right (List.sum_nonneg (by`.
+
+Introduce `y hy`. Take `⟨y', _, rfl⟩` from `List.mem_map.mp hy`. Use the proof step `positivity))`. Establish `hT` using `tele hc hc0 hK1 (adM p) (adM p₀) (lr u v) [] (by simp) (by`. Introduce `x hx`.
+
+Establish `hmK` using `le_sum_map (fun x => ‖(adM p x).2‖ + ‖(adM p₀ x).2‖) (fun _ => by positivity) (lr u v) hx`. Establish `hmε` using `le_sum_map (fun x => ‖(adM p x).2 - (adM p₀ x).2‖) (fun _ => norm_nonneg _) (lr u v) hx`. Use `⟨rfl, rfl, adM_lie hp (hwu x hx).1, adM_lie hp₀ (hwu x hx).1, ?_, ?_, hmε⟩` and prove the remaining obligations. Use `norm_nonneg (adM p₀ x).2 show ‖(adM p x).2‖ ≤ Kf p` as an intermediate fact. Simplify using `only [Kf]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `norm_nonneg (adM p x).2 show ‖(adM p₀ x).2‖ ≤ Kf p` as an intermediate fact. Simplify using `only [Kf]`. Use the proof step `linarith)`. Use the proof step `(by simpa using hwt) (by simpa using hwl) _ hxp`.
+
+Simplify using `only [List.nil_append] at hT`. Establish `h1 : 1 ≤ gN (sgs p g) ^ A` using `Real.one_le_rpow (BetaSesquilinearity.gN_ge_one hxp) hA`. Combine the equalities or inequalities in the displayed calculation. Establish `hdc : ContinuousWithinAt (fun p => W ((lr u v).map (adM p)) F (sgs p g) - W ((lr u v).map (adM p₀)) F (sgs p g)) {p : SS k r | D.inSS p} p₀`. Establish `e0 : (fun p => W ((lr u v).map (adM p)) F (sgs p g) - W ((lr u v).map (adM p₀)) F (sgs p g)) p₀ = 0` using `sub_self _`.
+
+Unfold `ContinuousWithinAt`. Rewrite using `[e0]`. Conclude with `hd`. Use `(hdc.add hsec).congr (fun p _ => ?_) ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules. Establish `hΦ : ContinuousOn (fun p => rho D p (dLR (u.map (AdL p)) (v.map (AdR p)) F) g) {p : SS k r | D.inSS p}`. Establish `e : (fun p => rho D p (dLR (u.map (AdL p)) (v.map (AdR p)) F) g) = fun p => B6.Sd D p (W ((lr u v).map (adM p)) F (sgs p g))`. Use function extensionality and compare the values at `p`. Rewrite using `[B6.rho_eq, dLR_eq, lr_ad]`.
+
+Rewrite using `[e]`. Conclude with `(B6.Sd_continuousOn D).clm_apply hmain`. Use `hΦ.aestronglyMeasurable (μ := D.μSS) (B6.measurableSet_inSS D)` as an intermediate fact. Establish `hr : D.μSS.restrict {p | D.inSS p} = D.μSS` using `Measure.restrict_eq_self_of_ae_mem (B5.ae_inSS D)`. Rewrite `this` using `[hr]`. Then use the resulting hypothesis.
+-/
 theorem bessel_domain_measurable : JFxDs2.JDomMeas := by
   intro k r Wp Wq _ _ _ _ _ _ D A m F hThr hF u v hu hv hl g hg
   obtain ⟨c, hc⟩ := hF

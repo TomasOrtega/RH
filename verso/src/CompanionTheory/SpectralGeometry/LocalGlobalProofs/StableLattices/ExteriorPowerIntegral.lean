@@ -9,6 +9,11 @@ namespace GlobalTheory.CompanionTheory.ZuckWedge
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Simplify using `only [det_apply']`. Use `ContDiff.sum fun σ _ => ?_` and prove the remaining obligations. Use `contDiff_const.mul ?_` and prove the remaining obligations. Use `contDiff_prod fun i _ => ?_` and prove the remaining obligations. Simplify using `only [submatrix_apply]`.
+
+Use `fun_prop`.
+-/
 theorem contDiff_minor {n l : ℕ} (a b : Fin l → Fin n) :
     ContDiff ℝ ∞ fun g : Matrix (Fin n) (Fin n) ℂ => (g.submatrix a b).det := by
   simp only [det_apply']
@@ -18,6 +23,17 @@ theorem contDiff_minor {n l : ℕ} (a b : Fin l → Fin n) :
   simp only [submatrix_apply]
   fun_prop
 
+/- English proof (translation)
+Introduce `k r l`. Use `FRep.OK.mk ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `GlobalTheory.compound_one _ l`. Introduce `g _ h _`. Conclude with `GlobalTheory.compound_mul l g h`.
+
+Introduce `c d g₀ _`. Conclude with `⟨Set.univ, fun g => BranchingSupport.cmp l g c d, isOpen_univ, Set.mem_univ _, (contDiff_minor _ _).contDiffOn, fun g _ _ => rfl⟩`. Use `⟨(Fintype.card (Equiv.Perm (Fin l)) : ℝ), fun g _ c d => ?_⟩` and prove the remaining obligations. Establish `hent : ∀ i j, ‖g i j‖ ≤ Formalism.FourierDecayAlt.B.gN g`. Introduce `i j`.
+
+Establish `h2 : ‖g i j‖ ^ 2 ≤ ∑ i', ∑ j', Complex.normSq (g i' j')`. Rewrite using `[Complex.sq_norm]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Use `show ‖(g.submatrix _ _).det‖ ≤ _`.
+
+Rewrite using `[det_apply']`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun σ _ => ?_` and prove the remaining obligations. Establish `hs : ‖((Equiv.Perm.sign σ : ℤ) : ℂ)‖ = 1`.
+
+Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`. Rewrite using `[norm_mul, hs, one_mul, norm_prod]`. Combine the equalities or inequalities in the displayed calculation. Use `_ = (Fintype.card (Equiv.Perm (Fin l)) : ℝ) * Formalism.FourierDecayAlt.B.gN g ^ l := by`. Simplify using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+-/
 theorem okWedge : OKWedge := by
   intro k r l
   refine FRep.OK.mk ?_ ?_ ?_ ?_

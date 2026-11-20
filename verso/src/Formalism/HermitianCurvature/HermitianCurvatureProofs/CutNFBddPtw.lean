@@ -7,6 +7,15 @@ open Formalism.FourierDecayAlt Formalism.QuantumDeterminants
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `P L hTT hL b hb`. Take `⟨C, Mx, hSA, hC, hM⟩` from `Formalism.FourierDecayAlt.P.MAx3.AD.SAB_closure (hTTp := hTT) (hL := hL) (hLaw := Formalism.FourierDecayAlt.P.analytic_laws P.r P.TT hTT.le) hb`. Use `⟨(Fintype.card (M.Ty P) : ℝ) * ((Fintype.card (M.Ty P) : ℝ) * C ^ 2), fun u q => ?_⟩` and prove the remaining obligations. Establish `key : ∀ ρ, ‖MA.evQ P (MA.actA P b u ρ) q‖ ^ 2 ≤ (Fintype.card (M.Ty P) : ℝ) * (C ^ 2 * ∑ ρ', ‖MA.evQ P (u ρ') q‖ ^ 2)`. Introduce `ρ`.
+
+Rewrite using `[hSA.1 u q ρ]`. Establish `h1 : ‖∑ π', Mx q ρ π' * MA.evQ P (u π') q‖ ≤ ∑ π', C * ‖MA.evQ P (u π') q‖`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun π' _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hM q ρ π') (norm_nonneg _)`.
+
+Establish `h2` using `sq_sum_le_card_mul_sum_sq (s := (Finset.univ : Finset (M.Ty P))) (f := fun π' => C * ‖MA.evQ P (u π') q‖)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.card_univ]`. Simplify using `only [mul_pow, ← Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pointwise_bound_normal_form_holds : NFBddPtw := by
   intro P L hTT hL b hb
   obtain ⟨C, Mx, hSA, hC, hM⟩ := Formalism.FourierDecayAlt.P.MAx3.AD.SAB_closure (hTTp := hTT) (hL := hL)

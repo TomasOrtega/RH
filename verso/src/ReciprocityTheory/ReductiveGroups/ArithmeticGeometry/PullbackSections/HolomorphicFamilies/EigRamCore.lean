@@ -22,6 +22,11 @@ def IsEqv (χ : O →+* k) {n : ℕ} (b : Fin n → O) (c : Fin n → k) : Prop 
   ∀ a : O, ∃ m : Fin n → Fin n → ℤ, (∀ i, a * b i = ∑ j, m i j • b j) ∧
     ∀ j, ∑ i, (m i j : k) * c i = χ a * c j
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show ∑ j, (e • A) i j * v j = e * ∑ j, A i j * v j`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show e * A i j * v j = e * (A i j * v j)`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem smul_mulVec_lemma {S : Type} [CommRing S] {m : ℕ} (e : S)
     (A : Matrix (Fin m) (Fin m) S) (v : Fin m → S) : (e • A).mulVec v = e • A.mulVec v := by
   funext i
@@ -31,6 +36,11 @@ private theorem smul_mulVec_lemma {S : Type} [CommRing S] {m : ℕ} (e : S)
   show e * A i j * v j = e * (A i j * v j)
   ring
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset (Fin n), (∑ i ∈ s, c i • M (b i)).mulVec v = ∑ i ∈ s, (c i * χ (b i)) • v`. Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `j s hj ih`.
+
+Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, Matrix.add_mulVec, ih, smul_mulVec_lemma, hv, smul_smul]`. Unfold `actD evD`. Rewrite using `[key, Finset.sum_smul]`.
+-/
 theorem actD_mulVec_eig (M : O →+* Matrix (Fin d) (Fin d) k) (χ : O →+* k) {n : ℕ} (b : Fin n → O) (c : Fin n → k)
     (v : Fin d → k) (hv : ∀ a, (M a).mulVec v = χ a • v) : (actD M b c).mulVec v = evD χ b c • v := by
   have key : ∀ s : Finset (Fin n),
@@ -44,6 +54,15 @@ theorem actD_mulVec_eig (M : O →+* Matrix (Fin d) (Fin d) k) (χ : O →+* k) 
   unfold actD evD
   rw [key, Finset.sum_smul]
 
+/- English proof (translation)
+Take `⟨m, hm1, hm2⟩` from `h a`. Unfold `actD`. Rewrite using `[Finset.mul_sum, Finset.smul_sum]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, Matrix.mul_smul]`. Use `_ = ∑ i, c i • ∑ j, ((m i j : ℤ) : k) • M (b j) := by`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hm1 i, map_sum]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, Int.cast_smul_eq_zsmul]`. Use `_ = ∑ j, (∑ i, ((m i j : ℤ) : k) * c i) • M (b j) := by`. Repeatedly rewrite using `[Finset.smul_sum, Finset.sum_smul, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Use `_ = ∑ j, χ a • (c j • M (b j)) := by`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hm2 j, smul_smul]`.
+-/
 theorem eig_actD (M : O →+* Matrix (Fin d) (Fin d) k) (χ : O →+* k) {n : ℕ} (b : Fin n → O) (c : Fin n → k)
     (h : IsEqv χ b c) (a : O) : M a * actD M b c = χ a • actD M b c := by
   obtain ⟨m, hm1, hm2⟩ := h a
@@ -67,6 +86,17 @@ theorem eig_actD (M : O →+* Matrix (Fin d) (Fin d) k) (χ : O →+* k) {n : �
         refine Finset.sum_congr rfl fun j _ => ?_
         rw [hm2 j, smul_smul]
 
+/- English proof (translation)
+Take `⟨m, hm1, hm2⟩` from `h a`. Unfold `evD`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∑ i, c i * ∑ j, ((m i j : ℤ) : k) * χ' (b j) := by`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hm1 i, map_sum]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, zsmul_eq_mul]`. Use `_ = ∑ j, (∑ i, ((m i j : ℤ) : k) * c i) * χ' (b j) := by`. Repeatedly rewrite using `[Finset.mul_sum, Finset.sum_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∑ j, χ a * (c j * χ' (b j)) := by`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hm2 j]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem evD_eqv (χ χ' : O →+* k) {n : ℕ} (b : Fin n → O) (c : Fin n → k) (h : IsEqv χ b c) (a : O) :
     χ' a * evD χ' b c = χ a * evD χ' b c := by
   obtain ⟨m, hm1, hm2⟩ := h a
@@ -92,6 +122,9 @@ theorem evD_eqv (χ χ' : O →+* k) {n : ℕ} (b : Fin n → O) (c : Fin n → 
         rw [hm2 j]
         ring
 
+/- English proof (translation)
+Establish `h1` using `evD_eqv χ χ' b c h a`. Establish `h2 : (χ' a - χ a) * evD χ' b c = 0`. Rewrite using `[sub_mul, h1, sub_self]`. Conclude with `(mul_eq_zero.mp h2).resolve_left (sub_ne_zero.mpr ha)`.
+-/
 theorem evD_orth {K : Type} [Field K] (χ χ' : O →+* K) {n : ℕ} (b : Fin n → O) (c : Fin n → K)
     (h : IsEqv χ b c) (a : O) (ha : χ' a ≠ χ a) : evD χ' b c = 0 := by
   have h1 := evD_eqv χ χ' b c h a
@@ -99,9 +132,17 @@ theorem evD_orth {K : Type} [Field K] (χ χ' : O →+* K) {n : ℕ} (b : Fin n 
     rw [sub_mul, h1, sub_self]
   exact (mul_eq_zero.mp h2).resolve_left (sub_ne_zero.mpr ha)
 
+/- English proof (translation)
+Rewrite using `[← map_mul, ← map_mul, mul_comm]`.
+-/
 theorem M_comm (M : O →+* Matrix (Fin d) (Fin d) k) (a b : O) : M a * M b = M b * M a := by
   rw [← map_mul, ← map_mul, mul_comm]
 
+/- English proof (translation)
+Establish `hc : ∀ x, actD M b c * M x = M x * actD M b c`. Introduce `x`. Unfold `actD`. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, M_comm]`. Use `show actD M b c * ∑ j, c' j • M (b' j) = _`. Rewrite using `[Finset.mul_sum, evD, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, hc, eig_actD M χ b c h, smul_smul]`.
+-/
 theorem actD_mul_eig (M : O →+* Matrix (Fin d) (Fin d) k) (χ : O →+* k) {n n' : ℕ} (b : Fin n → O) (c : Fin n → k)
     (h : IsEqv χ b c) (b' : Fin n' → O) (c' : Fin n' → k) :
     actD M b c * actD M b' c' = evD χ b' c' • actD M b c := by
@@ -127,6 +168,9 @@ def actP (B : FB R d O) {n : ℕ} (b : Fin n → O) (c : Fin n → k) (ξ : (Fin
     (Fin d → k) × (Fin d → k) :=
   ((actD (EigA.dActH k B) b c).mulVec ξ.1, (actD (EigA.dActS k B) b c).mulVec ξ.2)
 
+/- English proof (translation)
+Establish `e1` using `eig_actD (EigA.dActH k B) χ b c h a`. Establish `e2` using `eig_actD (EigA.dActS k B) χ b c h a`. Use `show ((EigA.dActH k B a).mulVec ((actD (EigA.dActH k B) b c).mulVec ξ.1), (EigA.dActS k B a).mulVec ((actD (EigA.dActS k B) b c).mulVec ξ.2)) = _`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, e1, e2, smul_mulVec_lemma, smul_mulVec_lemma]`. Both sides reduce to the same expression.
+-/
 theorem actP_eig (B : FB R d O) (χ : O →+* k) {n : ℕ} (b : Fin n → O) (c : Fin n → k) (h : IsEqv χ b c)
     (ξ : (Fin d → k) × (Fin d → k)) (a : O) : OactH k B a (actP B b c ξ) = χ a • actP B b c ξ := by
   have e1 := eig_actD (EigA.dActH k B) χ b c h a
@@ -137,6 +181,9 @@ theorem actP_eig (B : FB R d O) (χ : O →+* k) {n : ℕ} (b : Fin n → O) (c 
     smul_mulVec_lemma]
   rfl
 
+/- English proof (translation)
+Use `show ((actD (EigA.dActH k B) b c).mulVec ((actD (EigA.dActH k B) b' c').mulVec ξ.1), (actD (EigA.dActS k B) b c).mulVec ((actD (EigA.dActS k B) b' c').mulVec ξ.2)) = _`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, actD_mul_eig (EigA.dActH k B) χ b c h b' c', actD_mul_eig (EigA.dActS k B) χ b c h b' c', smul_mulVec_lemma, smul_mulVec_lemma]`. Both sides reduce to the same expression.
+-/
 theorem actP_actP_eig (B : FB R d O) (χ : O →+* k) {n n' : ℕ} (b : Fin n → O) (c : Fin n → k) (h : IsEqv χ b c)
     (b' : Fin n' → O) (c' : Fin n' → k) (ξ : (Fin d → k) × (Fin d → k)) :
     actP B b c (actP B b' c' ξ) = evD χ b' c' • actP B b c ξ := by
@@ -147,18 +194,47 @@ theorem actP_actP_eig (B : FB R d O) (χ : O →+* k) {n n' : ℕ} (b : Fin n �
     smul_mulVec_lemma]
   rfl
 
+/- English proof (translation)
+Simplify using `only [betaH, Prod.fst_sum, Prod.snd_sum, Finset.sum_apply, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_comm`.
+-/
 theorem betaH_sum_left {ι : Type} (s : Finset ι) (f : ι → (Fin d → k) × (Fin d → k)) (η : (Fin d → k) × (Fin d → k)) :
     betaH k (∑ i ∈ s, f i) η = ∑ i ∈ s, betaH k (f i) η := by
   simp only [betaH, Prod.fst_sum, Prod.snd_sum, Finset.sum_apply, Finset.mul_sum,
     Finset.sum_mul, ← Finset.sum_sub_distrib]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Simplify using `only [betaH, Prod.fst_sum, Prod.snd_sum, Finset.sum_apply, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_comm`.
+-/
 theorem betaH_sum_right {ι : Type} (s : Finset ι) (ξ : (Fin d → k) × (Fin d → k)) (f : ι → (Fin d → k) × (Fin d → k)) :
     betaH k ξ (∑ i ∈ s, f i) = ∑ i ∈ s, betaH k ξ (f i) := by
   simp only [betaH, Prod.fst_sum, Prod.snd_sum, Finset.sum_apply, Finset.mul_sum,
     Finset.sum_mul, ← Finset.sum_sub_distrib]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Establish `hsmulL : ∀ (e : k) (x y : (Fin d → k) × (Fin d → k)), betaH k (e • x) y = e * betaH k x y`. Introduce `e x y`. Simplify using `only [betaH, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hsmulR : ∀ (e : k) (x y : (Fin d → k) × (Fin d → k)), betaH k x (e • y) = e * betaH k x y`. Introduce `e x y`. Simplify using `only [betaH, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hmv : ∀ (A : Matrix (Fin d) (Fin d) k) (v : Fin d → k) (i : Fin d), A.mulVec v i = ∑ j, A i j * v j` using `fun A v i => rfl`. Establish `hadj : ∀ (a : O) (x y : (Fin d → k) × (Fin d → k)), betaH k (OactH k B a x) y = betaH k x (OactH k B (star a) y)`. Introduce `a x y`. Simplify using `only [betaH, OactH, star_star, hmv, Matrix.transpose_apply, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `horth : ∀ (t t' : Ty) (x y : (Fin d → k) × (Fin d → k)), (∃ a, χ t a ≠ χ t' (star a)) → betaH k (actP B (bt t) (ct t) x) (actP B (bt t') (ct t') y) = 0`. Introduce `t t' x y ⟨a, ha⟩`. Establish `h1 : betaH k (OactH k B a (actP B (bt t) (ct t) x)) (actP B (bt t') (ct t') y) = χ t a * betaH k (actP B (bt t) (ct t) x) (actP B (bt t') (ct t') y)`.
+
+Rewrite using `[actP_eig B (χ t) (bt t) (ct t) (heq t) x a, hsmulL]`. Establish `h2 : betaH k (actP B (bt t) (ct t) x) (OactH k B (star a) (actP B (bt t') (ct t') y)) = χ t' (star a) * betaH k (actP B (bt t) (ct t) x) (actP B (bt t') (ct t') y)`. Rewrite using `[actP_eig B (χ t') (bt t') (ct t') (heq t') y (star a), hsmulR]`. Rewrite `h1` using `[hadj]`. Rewrite `h2` using `[h1]`.
+
+Establish `h3 : (χ t a - χ t' (star a)) * betaH k (actP B (bt t) (ct t) x) (actP B (bt t') (ct t') y) = 0`. Rewrite using `[sub_mul, h2, sub_self]`. Conclude with `(mul_eq_zero.mp h3).resolve_left (sub_ne_zero.mpr ha)`. Establish `hs : ∀ (s : Finset Ty) (N : Ty → Matrix (Fin d) (Fin d) k) (v : Fin d → k), (∑ t ∈ s, N t).mulVec v = ∑ t ∈ s, (N t).mulVec v`. Introduce `s N v`.
+
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, Matrix.add_mulVec, ih]`. Establish `hdec : ∀ x : (Fin d → k) × (Fin d → k), x = ∑ t, actP B (bt t) (ct t) x`.
+
+Introduce `x`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Prod.fst_sum]`. Conclude with `calc x.1 = (1 : Matrix (Fin d) (Fin d) k).mulVec x.1 := (Matrix.one_mulVec _).symm _ = (∑ t, actD (EigA.dActH k B) (bt t) (ct t)).mulVec x.1 := by rw [hcompH] _ = ∑ t, (actD (EigA.dActH k B) (bt t) (ct t)).mulVec x.1 := hs _ _ _`. Rewrite using `[Prod.snd_sum]`.
+
+Conclude with `calc x.2 = (1 : Matrix (Fin d) (Fin d) k).mulVec x.2 := (Matrix.one_mulVec _).symm _ = (∑ t, actD (EigA.dActS k B) (bt t) (ct t)).mulVec x.2 := by rw [hcompS] _ = ∑ t, (actD (EigA.dActS k B) (bt t) (ct t)).mulVec x.2 := hs _ _ _`. Rewrite using `[hdec (actP B bz cz ξ0), hdec (actP B bw cw η0), betaH_sum_left]`. Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations. Rewrite using `[betaH_sum_right]`. Use `Finset.sum_eq_zero fun t' _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[actP_actP_eig B (χ t) (bt t) (ct t) (heq t) bz cz ξ0, actP_actP_eig B (χ t') (bt t') (ct t') (heq t') bw cw η0, hsmulL, hsmulR]`. Distinguish the cases in `hz : evD (χ t) bz cz = 0`. Rewrite using `[hz, zero_mul]`. Distinguish the cases in `hw : evD (χ t') bw cw = 0`. Rewrite using `[hw, zero_mul, mul_zero]`.
+
+Rewrite using `[horth t t' ξ0 η0 (hsep t t' hz hw), mul_zero, mul_zero]`.
+-/
 theorem beta_vanish (B : FB R d O) {Ty : Type} [Fintype Ty] (χ : Ty → O →+* k) (nt : Ty → ℕ)
     (bt : ∀ t, Fin (nt t) → O) (ct : ∀ t, Fin (nt t) → k) (heq : ∀ t, IsEqv (χ t) (bt t) (ct t))
     (hcompH : ∑ t, actD (EigA.dActH k B) (bt t) (ct t) = 1) (hcompS : ∑ t, actD (EigA.dActS k B) (bt t) (ct t) = 1)

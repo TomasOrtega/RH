@@ -6,6 +6,11 @@ open scoped ComplexOrder ContDiff
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `ι _ p q U ψ a b h ha hb`. Establish `hu : ∀ z ∈ U, IsUnit (subGram (ψ z)).det` using `fun z hz => by`. Establish `h1 : IsUnit (subGram (ψ z))` using `by simpa using (h.neg_sub z hz).isUnit.neg`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 h1`. Establish `ha' : (0 : ℂ) < (a : ℂ)` using `by exact_mod_cast ha`.
+
+Establish `hb' : (0 : ℂ) < (b : ℂ)` using `by exact_mod_cast hb`. Use `⟨⟨h.isHermFrame.isOpen, fun i j z hz => ?_, fun z hz => (h.pos_quot z hz).smul ha'⟩, ⟨h.isHermFrame.isOpen, fun i j z hz => ?_, fun z hz => (h.neg_sub z hz).smul hb'⟩⟩` and prove the remaining obligations. Conclude with `(MContDiffAt.smul (f := fun _ => (a : ℂ)) contDiffAt_const ((h.isHermFrame.mContDiffAt hz).quotGram (hu z hz)) i j).contDiffWithinAt`. Conclude with `(MContDiffAt.smul (f := fun _ => (b : ℂ)) contDiffAt_const (h.isHermFrame.mContDiffAt hz).subGram.neg i j).contDiffWithinAt`.
+-/
 theorem isPosFrame_hodge_quot_and_sub : ∀ (ι : Type) [Fintype ι] (p q : ℕ) (U : Set (ι → ℂ))
     (ψ : (ι → ℂ) → Matrix (Fin q ⊕ Fin p) (Fin q ⊕ Fin p) ℂ) (a b : ℝ),
     IsHodgeFrame U ψ → 0 < a → 0 < b →

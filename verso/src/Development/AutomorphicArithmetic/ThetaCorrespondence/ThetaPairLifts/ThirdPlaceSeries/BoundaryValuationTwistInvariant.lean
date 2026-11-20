@@ -24,6 +24,21 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Z : Comp Xo c} {T : CDVR} {io : c.F →+* T.Fr} (y' : IntFr Xo c T io)
 end GlobalTheory.TwistVal
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Introduce `hP hD hS hF`. Establish `A` using `_root_.GlobalTheory.T.distinguished_section_boundary_valuation_eq_zero hP hD hS hF`. Establish `B` using `_root_.GlobalTheory.T.integral_frame_point_stalk_compat_third_place_series hP hD hS hF`. Unfold `_root_.GlobalTheory.CovTop.CoversCondition _root_.GlobalTheory.CovTop.LiftsCondition at *`. Use `(A.and B).imp fun Fm CH _ h => ?_` and prove the remaining obligations.
+
+Take `⟨⟨C1, h1, e1⟩, ⟨C2, h2, e2⟩⟩` from `h`. Use `⟨C1, h1, ?_⟩` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `e1.and e2`. Use `⟨x0, fun x hx hle ι p hp i hi Y hY Z TF la w m _ f hf y T io y' g hg hpt hf0 => ?_⟩` and prove the remaining obligations. Take `⟨hA, hB⟩` from `hx0 x hx hle ι p hp`.
+
+Establish `hfi : GlobalTheory.FlatLine.idem Z * f = f` using `GlobalTheory.FlatLine.idem_mul_eq (e := exZ _ (AllWt.wtOf (dat p i) (la + GlobalTheory.FlatLine.parWt (dat p i) w) m)) ⟨AllWt.cuspW_le_secZ _ hf.1, hf.2⟩`. Establish `hid : evI y' (GlobalTheory.FlatLine.idem Z) ≠ 0` using `fun h0 => hf0 (by rw [← hfi, evI_mul, h0, zero_mul])`. Establish `he` using `GlobalTheory.TwistVal.evI_idem_eq_one y' hid`. Take `⟨t1, ht1⟩` from `hA i hi Y hY Z TF y T io y' g hg hpt hid`. Take `⟨t2, ht2⟩` from `hB i hi Y hY Z TF y T io y' g hg hpt hid (-w)`.
+
+Take `⟨tk, htk⟩` from `GlobalTheory.TwistVal.exists_zpow y' t1 he ht1 (-m)`. Set `z` to `t2.mul tk`. Establish `hz` using `GlobalTheory.TwistVal.val_mul y' t2 tk he ht2 htk`. Establish `hw : AllWt.wtOf (dat p i) (la + GlobalTheory.FlatLine.parWt (dat p i) w) m + (AllWt.wtOf (dat p i) (GlobalTheory.FlatLine.parWt (dat p i) (-w)) 0 + AllWt.wtOf (dat p i) 0 (-m)) = AllWt.wtOf (dat p i) la 0`. Rewrite using `[← AllWt.wtOf_add, ← AllWt.wtOf_add]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `τ j`. Simplify using `[GlobalTheory.FlatLine.parWt]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem` using `z.cusp_sig _ (AllWt.even_wtOf _ _) f hf`.
+
+Rewrite `hmem` using `[hw]`. Use `⟨⟨f * z.sig, hmem⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show evI y' (f * z.sig) ≠ 0`. Rewrite using `[evI_mul]`. Conclude with `mul_ne_zero hf0 (GlobalTheory.TwistVal.val_inv y' z he).1`.
+
+Use `show vV T.V (evI y' (f * z.sig)) = vV T.V (evI y' f)`. Rewrite using `[evI_mul, vV_mul hf0 (GlobalTheory.TwistVal.val_inv y' z he).1, hz, add_zero]`.
+-/
 theorem GlobalTheory.TwistVal.cuspOn_local_hom_valuation_of_four_dvd : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.FlatDegreeCondition → _root_.GlobalTheory.CovTop.CoversCondition fun Fm x _ ι p i Y PP _ => ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : TorFlag Y.d.Xo₂ Y.d.c₂) (la : AllWt.Weight (dat p i)) (w : AllWt.Psi p.T.Q.H → ℤ) (m : ℤ), 4 ∣ m → ∀ f ∈ AllWt.cuspOn Y.U Z (AllWt.wtOf (dat p i) (la + GlobalTheory.FlatLine.parWt (dat p i) w) m), ∀ (y : Y₀ TF.X Z) (T : CDVR) (io : Y.d.c₂.F →+* T.Fr) (y' : IntFr Y.d.Xo₂ Y.d.c₂ T io) (g : (Y₀ TF.X Z).presheaf.stalk y →+* T.V), IsLocalHom g → (letI := io.toAlgebra; TF.X.ptY y'.1 = Spec.map (CommRingCat.ofHom ((algebraMap T.V T.Fr).comp g)) ≫ (Y₀ TF.X Z).fromSpecStalk y ≫ inc₀ TF.X Z) → evI y' f ≠ 0 → ∃ f' : Cusp Z Y.U la, evI y' ((f' : Rul Y.d.Xo₂ Y.d.c₂)) ≠ 0 ∧ vV T.V (evI y' ((f' : Rul Y.d.Xo₂ Y.d.c₂))) = vV T.V (evI y' f) := by
   intro hP hD hS hF
   have A := _root_.GlobalTheory.T.distinguished_section_boundary_valuation_eq_zero hP hD hS hF
@@ -72,6 +87,9 @@ open GlobalTheory.FlagMod (FlagCover)
 open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.TwistVal.cuspOn_local_hom_valuation_of_four_dvd | exact _root_.GlobalTheory.TwistVal.cuspOn_local_hom_valuation_of_four_dvd | (intros; apply _root_.GlobalTheory.TwistVal.cuspOn_local_hom_valuation_of_four_dvd <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cuspOn_boundary_valuation_of_four_dvd : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.FlatDegreeCondition → _root_.GlobalTheory.CovTop.CoversCondition fun Fm x _ ι p i Y PP _ => ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : TorFlag Y.d.Xo₂ Y.d.c₂) (la : AllWt.Weight (dat p i)) (w : AllWt.Psi p.T.Q.H → ℤ) (m : ℤ), 4 ∣ m → ∀ f ∈ AllWt.cuspOn Y.U Z (AllWt.wtOf (dat p i) (la + GlobalTheory.FlatLine.parWt (dat p i) w) m), ∀ (y : Y₀ TF.X Z) (T : CDVR) (io : Y.d.c₂.F →+* T.Fr) (y' : IntFr Y.d.Xo₂ Y.d.c₂ T io) (g : (Y₀ TF.X Z).presheaf.stalk y →+* T.V), IsLocalHom g → (letI := io.toAlgebra; TF.X.ptY y'.1 = Spec.map (CommRingCat.ofHom ((algebraMap T.V T.Fr).comp g)) ≫ (Y₀ TF.X Z).fromSpecStalk y ≫ inc₀ TF.X Z) → evI y' f ≠ 0 → ∃ f' : Cusp Z Y.U la, evI y' ((f' : Rul Y.d.Xo₂ Y.d.c₂)) ≠ 0 ∧ vV T.V (evI y' ((f' : Rul Y.d.Xo₂ Y.d.c₂))) = vV T.V (evI y' f) := by
   first | exact @_root_.GlobalTheory.TwistVal.cuspOn_local_hom_valuation_of_four_dvd | exact _root_.GlobalTheory.TwistVal.cuspOn_local_hom_valuation_of_four_dvd | (intros; apply _root_.GlobalTheory.TwistVal.cuspOn_local_hom_valuation_of_four_dvd <;> assumption)
 end

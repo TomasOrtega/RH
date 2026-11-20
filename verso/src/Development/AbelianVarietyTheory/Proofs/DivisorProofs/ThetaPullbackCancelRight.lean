@@ -8,6 +8,9 @@ open Limits (pullback)
 
 namespace GlobalTheory.PPAS
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [sqMap, pullback.map, Category.assoc] erw [pullback.lift_fst, pullback.lift_fst_assoc, pullback.lift_fst]`. Simplify using `only [Category.assoc]`. Simplify using `only [sqMap, pullback.map, Category.assoc] erw [pullback.lift_snd, pullback.lift_snd_assoc, pullback.lift_snd]`. Simplify using `only [Category.assoc]`.
+-/
 theorem sqMap_comp {S S' S'' : Scheme.{0}} {A : Over S} {A' : Over S'} {A'' : Over S''}
     {f : S' ⟶ S} {g : S'' ⟶ S'} {φ : A'.left ⟶ A.left} {ψ : A''.left ⟶ A'.left}
     (w : φ ≫ A.hom = A'.hom ≫ f) (w' : ψ ≫ A'.hom = A''.hom ≫ g)
@@ -21,6 +24,9 @@ theorem sqMap_comp {S S' S'' : Scheme.{0}} {A : Over S} {A' : Over S'} {A'' : Ov
     erw [pullback.lift_snd, pullback.lift_snd_assoc, pullback.lift_snd]
     simp only [Category.assoc]
 
+/- English proof (translation)
+Introduce and unpack `S T T' P P' f φ g ⟨h₁, hc₁⟩ ⟨Q, ψ, ⟨h₂, hc₂⟩, hθ⟩`. Use `⟨Q, ψ ≫ φ, ⟨h₂.comp h₁, ?_⟩, hθ⟩` and prove the remaining obligations. Rewrite using `[hc₂, hc₁, ← CechPic.pull_comp, sqMap_comp]`.
+-/
 theorem exists_pull_hasTheta_comp : ∀ (S T T' : Scheme.{0}) (P : PPAS S) (P' : PPAS T) (f : T ⟶ S)
     (φ : P'.A.left ⟶ P.A.left) (g : T' ⟶ T), P'.IsPull P f φ →
     (∃ (Q : PPAS T') (ψ : Q.A.left ⟶ P'.A.left), Q.IsPull P' g ψ ∧ Q.HasTheta) →

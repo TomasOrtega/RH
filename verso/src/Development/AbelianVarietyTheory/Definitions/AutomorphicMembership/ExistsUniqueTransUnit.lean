@@ -31,6 +31,11 @@ def FERel (mu α : D.X) (s : SecFMod D (FractionRing R) 1 α) (t : SecFMod D (Fr
 
 variable {D}
 
+/- English proof (translation)
+Take `⟨⟨u₀, hu₀, hc₀⟩, hv⟩` from `gen_fe (D := D) (F := FractionRing R) GlobalTheory.globalFns_holds 1 mu α`. Prove the components needed by the constructor for the conclusion. Introduce `H y J hJ`. Rewrite using `[← hv u₀ hu₀ hc₀ _ (𝟙 _) y J hJ]`. Conclude with `(secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u₀).1 (H u₀ hu₀ hc₀) _ _ y J hJ`.
+
+Introduce `H u hu hc`. Use `(secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u).2 fun y J hJ => ?_` and prove the remaining obligations. Use `H y J hJ` as an intermediate fact. Rewrite `this` using `[← hv u hu hc _ (𝟙 _) y J hJ]`. Conclude with `this`.
+-/
 theorem feRel_iff {mu α : D.X} {s : SecFMod D (FractionRing R) 1 α} {t : SecFMod D (FractionRing R) 1 (α + 1 • mu)} :
     FERel D mu α s t ↔ ∀ y J, Good D.P.L y J → sval t (𝟙 _) y J =
       sval s (𝟙 _ ≫ (DegPre.trF D (FractionRing R) mu).left) y J *
@@ -47,10 +52,16 @@ theorem feRel_iff {mu α : D.X} {s : SecFMod D (FractionRing R) 1 α} {t : SecFM
     rw [← hv u hu hc _ (𝟙 _) y J hJ] at this
     exact this
 
+/- English proof (translation)
+The claim follows from `sec_ext' D.P.isLB fun y J hJ => (feRel_iff.1 h y J hJ).trans (feRel_iff.1 h' y J hJ).symm`.
+-/
 theorem FERel.unique {mu α : D.X} {s : SecFMod D (FractionRing R) 1 α} {t t' : SecFMod D (FractionRing R) 1 (α + 1 • mu)}
     (h : FERel D mu α s t) (h' : FERel D mu α s t') : t = t' :=
   sec_ext' D.P.isLB fun y J hJ => (feRel_iff.1 h y J hJ).trans (feRel_iff.1 h' y J hJ).symm
 
+/- English proof (translation)
+Use `feRel_iff.2 fun y J hJ => ?_` and prove the remaining obligations. Establish `e : (DegPre.trF D (FractionRing R) mu).left ≫ strF D (FractionRing R) = strF D (FractionRing R)`. Rewrite using `[← Over.comp_left, DegPre.trF, lift_fst]`. Rewrite using `[sval_smul' hJ, sval_smul' hJ, feRel_iff.1 h y J hJ, Category.assoc, e, _root_.mul_assoc]`.
+-/
 theorem FERel.smul {mu α : D.X} {s : SecFMod D (FractionRing R) 1 α} {t : SecFMod D (FractionRing R) 1 (α + 1 • mu)}
     (h : FERel D mu α s t) (c : FractionRing R) : FERel D mu α (c • s) (c • t) := by
   refine feRel_iff.2 fun y J hJ => ?_
@@ -58,6 +69,21 @@ theorem FERel.smul {mu α : D.X} {s : SecFMod D (FractionRing R) 1 α} {t : SecF
     rw [← Over.comp_left, DegPre.trF, lift_fst]
   rw [sval_smul' hJ, sval_smul' hJ, feRel_iff.1 h y J hJ, Category.assoc, e, _root_.mul_assoc]
 
+/- English proof (translation)
+Establish `hL` using `D.P.isLB`. Take `⟨e, he⟩` from `exists_gen_of_local (V := R) D.P.L hL (K := PUnit) (fun _ => (D.c χ).left) (fun _ => -1)`. Take `⟨j, hj, le', hψ⟩` from `h`. Establish `le : (⊤ : (Spec (CommRingCat.of R)).Opens) ≤ LB.wchart D.P.L (K` using `PUnit) (fun _ => (D.c χ).left) j := fun y hy => Set.mem_iInter.2 fun _ => hj hy`. Establish `hx : D.xK χ = jK R ≫ (D.c χ).left`.
+
+Simplify using `[DegPre.xK, ptK]`. Establish `hto : ∀ a, DegPre.toOpen (R` using `R) ⊤ a = (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a := fun a => by`. Simplify using `[DegPre.toOpen]`. Set `φ` to `RingEquiv.ofBijective _ (GlobalTheory.PsiCoordLocal.toOpen_top_bijective (R := R))`. Set `b : Rˣ` to `Units.map φ.symm.toMonoidHom (res le (e.s j))⁻¹`.
+
+Establish `hb : DegPre.toOpen (R` using `R) ⊤ b = (res le (e.s j))⁻¹.val := φ.apply_symm_apply _`. Use `⟨e, he, b, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Establish `m₁ : r z ∈ LB.wchart D.P.L (K` using `PUnit) (fun _ => D.xK χ) j := le' trivial`. Establish `m₂ : (r ≫ jK R) z ∈ LB.wchart D.P.L (K` using `PUnit) (fun _ => (D.c χ).left) j := le trivial`. Establish `e₁ : val (D.psi χ) r z J = _` using `gen_trans (D.psi_gen χ) r z (hJ.mem _ r) m₁`.
+
+Establish `e₂ : val e (r ≫ jK R) z J = _` using `gen_trans he (r ≫ jK R) z (hJ.mem _ _) m₂`. Establish `e₃ : trF (L` using `D.P.L) (K := PUnit) (fun _ => D.xK χ) (fun _ => -1) r z (fun _ => J (r ≫ D.xK χ)) j = trF (L := D.P.L) (K := PUnit) (fun _ => (D.c χ).left) (fun _ => -1) (r ≫ jK R) z (fun _ => J ((r ≫ jK R) ≫ (D.c χ).left)) j := by`. Establish `hq : r ≫ D.xK χ = (r ≫ jK R) ≫ (D.c χ).left` using `(congrArg (r ≫ ·) hx).trans (Category.assoc _ _ _).symm`. Simplify using `only [trF]`. Rewrite using `[hq]`.
+
+Establish `e₄ : (gm r z (LB.wchart D.P.L (K` using `PUnit) (fun _ => D.xK χ) j) ((D.psi χ).s j)).val = constVal (r ≫ jK R) z a₀ := by`. Use `(gs_unit r z _ m₁ _).symm.trans ((gs_res r z le' trivial _).symm.trans ?_)` and prove the remaining obligations. Use `(congrArg (gs r z _) hψ.symm).trans ((gs_pull r (jK R) z ⊤ trivial _).trans ?_)` and prove the remaining obligations. Rewrite using `[hto]`. Both sides reduce to the same expression.
+
+Establish `e₅ : constVal (r ≫ jK R) z b * (gm (r ≫ jK R) z (LB.wchart D.P.L (K` using `PUnit) (fun _ => (D.c χ).left) j) (e.s j)).val = 1 := by`. Rewrite using `[constVal, ← hto, hb, gs_unit _ z ⊤ trivial, map_inv]`. Conclude with `(congrArg₂ (fun q c => q⁻¹.val * c) (gm_res (r ≫ jK R) z le trivial (e.s j)) rfl).trans (Units.inv_mul _)`. Establish `e₆ : constVal (r ≫ jK R) z (a₀ * b) = constVal (r ≫ jK R) z a₀ * constVal (r ≫ jK R) z b`. Rewrite using `[constVal, map_mul, gs_mul _ z ⊤ trivial]`.
+
+Both sides reduce to the same expression. Rewrite using `[e₁, e₂, e₆, Units.val_mul, Units.val_mul]`. Use `erw [e₃, e₄]`. Take the linear combination `(-(constVal (r ≫ jK R) z a₀ * (trF (L := D.P.L) (K := PUnit) (fun _ => (D.c χ).left) (fun _ => -1) (r ≫ jK R) z (fun _ => J ((r ≫ jK R) ≫ (D.c χ).left)) j).val)) * e₅`.
+-/
 theorem exists_psi_val [IsLocalRing R] (D : DegPre R) (χ : D.X) {a₀ : R} (h : PsiCoord D χ a₀) :
     ∃ (e : LB.Gen (LB.LinComb D.P.L (K := PUnit) (fun _ => (D.c χ).left) (fun _ => -1))), e.IsGen ∧ ∃ b : Rˣ,
       ∀ (Z : Scheme.{0}) (r : Z ⟶ (TK R).left) (z : Z) (J : (Z ⟶ D.P.A.left) → D.P.L.ι), Good D.P.L z J →
@@ -101,10 +127,26 @@ theorem exists_psi_val [IsLocalRing R] (D : DegPre R) (χ : D.X) {a₀ : R} (h :
   linear_combination (-(constVal (r ≫ jK R) z a₀ * (trF (L := D.P.L) (K := PUnit) (fun _ => (D.c χ).left) (fun _ => -1) (r ≫ jK R) z
         (fun _ => J ((r ≫ jK R) ≫ (D.c χ).left)) j).val)) * e₅
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, MonObj.comp_mul, Category.comp_id, comp_cP, trB, _root_.mul_assoc, ← cPoint_add, h, cPoint_zero, _root_.mul_one, Over.id_left]`.
+-/
 theorem trB_comp (a b : D.X) (h : a + b = 0) : (trB D a).left ≫ (trB D b).left = 𝟙 _ := by
   rw [← Over.comp_left, MonObj.comp_mul, Category.comp_id, comp_cP, trB, _root_.mul_assoc, ← cPoint_add, h, cPoint_zero,
     _root_.mul_one, Over.id_left]
 
+/- English proof (translation)
+Establish `hL` using `D.P.isLB`. Establish `h₁ : ∀ s : SecBMod D 1 α, ∃ t : SecBMod D 1 (α + 1 • mu), ∀ (Z : Scheme.{0}) (ρ : Z ⟶ D.P.A.left) (z : Z) (J), Good D.P.L z J → sval t ρ z J = sval s (ρ ≫ (trB D mu).left) z J * (val eB ρ z J).val` using `fun s => by`. Take `⟨t, ht⟩` from `exists_sec hL (φ' := D.famφB (α + 1 • mu)) (ε' := DegPre.famε 1) (fun U _ h => by`. Rewrite using `[Fintype.prod_sum_type]`. Simplify using `only [DegPre.deltaε, Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib]`.
+
+Conclude with `(mul_comm _ _).trans (inv_mul_cancel_right _ _)) (pullMulSec s (trB D mu).left eB heB)`. Conclude with `⟨t, fun Z ρ z J hJ => (ht Z ρ z J hJ).trans (sval_pullMulSec _ _ _ _ ρ z hJ)⟩`. Establish `i₁` using `trB_comp (D := D) (-mu) mu (neg_add_cancel mu)`. Establish `i₂` using `trB_comp (D := D) mu (-mu) (add_neg_cancel mu)`. Establish `h₂ : ∀ t : SecBMod D 1 (α + 1 • mu), ∃ s : SecBMod D 1 α, ∀ (Z : Scheme.{0}) (ρ : Z ⟶ D.P.A.left) (z : Z) (J), Good D.P.L z J → sval s ρ z J = sval t (ρ ≫ (trB D (-mu)).left) z J * (val eB (ρ ≫ (trB D (-mu)).left) z J)⁻¹.val` using `fun t => by`.
+
+Take `⟨s, hs⟩` from `exists_sec hL (φ' := D.famφB α) (ε' := DegPre.famε 1) (fun U _ h => by`. Rewrite using `[Fintype.prod_sum_type]`. Simplify using `only [DegPre.deltaε, Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, zpow_neg, neg_neg, Finset.prod_inv_distrib, reassoc_of% i₁]`. Rewrite using `[mul_inv, inv_inv, mul_inv_cancel_left])`. Use the proof step `(pullMulSec t (trB D (-mu)).left (LB.pullGen D.P.L _ _ (LB.invGen D.P.L _ _ eB) (trB D (-mu)).left) (pullGen_isGen _ _ _ _ (invGen_isGen _ _ _ _ heB) _))`.
+
+Use `⟨s, fun Z ρ z J hJ => (hs Z ρ z J hJ).trans ((sval_pullMulSec _ _ _ _ ρ z hJ).trans ?_)⟩` and prove the remaining obligations. Rewrite using `[val_pull hJ, val_inv]`. Use `choose f hf using h₁`. Use `choose g hg using h₂`. Establish `w : (trB D mu).left ≫ D.P.A.hom = D.P.A.hom` using `Over.w _`.
+
+Use `⟨⟨⟨⟨f, fun s t => sec_ext' hL fun y J hJ => ?_⟩, fun c s => sec_ext' hL fun y J hJ => ?_⟩, g, fun s => sec_ext' hL fun y J hJ => ?_, fun t => sec_ext' hL fun y J hJ => ?_⟩, hf⟩` and prove the remaining obligations. Rewrite using `[sval_add' hJ, hf _ _ _ _ _ hJ, hf _ _ _ _ _ hJ, hf _ _ _ _ _ hJ, sval_add' hJ, add_mul]`. Use `show sval (f (c • s)) _ _ _ = sval (c • f s : SecBMod D 1 _) _ _ _`. Rewrite using `[sval_smul' hJ, hf _ _ _ _ _ hJ, hf _ _ _ _ _ hJ, sval_smul' hJ, Category.assoc, w, _root_.mul_assoc]`. Use `show sval (g (f s)) _ _ _ = _`.
+
+Rewrite using `[hg _ _ _ _ _ hJ, hf _ _ _ _ _ hJ, Category.assoc, i₁, Category.comp_id, Units.mul_inv_cancel_right]`. Use `show sval (f (g t)) _ _ _ = _`. Rewrite using `[hf _ _ _ _ _ hJ, hg _ _ _ _ _ hJ, Category.assoc, i₂, Category.comp_id, Units.inv_mul_cancel_right]`.
+-/
 theorem exists_equiv (mu α : D.X) (eB : LB.Gen (LB.LinComb D.P.L (Sum.elim (D.famφB (α + 1 • mu))
         (fun i => (trB D mu).left ≫ D.famφB α i)) (DegPre.deltaε 1))) (heB : eB.IsGen) :
     ∃ Θ : SecBMod D 1 α ≃ₗ[R] SecBMod D 1 (α + 1 • mu), ∀ s (Z : Scheme.{0}) (ρ : Z ⟶ D.P.A.left) (z : Z) (J),
@@ -145,15 +187,40 @@ theorem exists_equiv (mu α : D.X) (eB : LB.Gen (LB.LinComb D.P.L (Sum.elim (D.f
   · show sval (f (g t)) _ _ _ = _
     rw [hf _ _ _ _ _ hJ, hg _ _ _ _ _ hJ, Category.assoc, i₂, Category.comp_id, Units.inv_mul_cancel_right]
 
+/- English proof (translation)
+Rewrite using `[constVal, map_mul, gs_mul _ z ⊤ trivial]`. Both sides reduce to the same expression.
+-/
 theorem constVal_mul {S : Type} [CommRing S] {Z : Scheme.{0}} (q : Z ⟶ Spec (CommRingCat.of S)) (z : Z) (a b : S) :
     constVal q z (a * b) = constVal q z a * constVal q z b := by
   rw [constVal, map_mul, gs_mul _ z ⊤ trivial]; rfl
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Units.val_mul, Units.eq_mul_inv_iff_mul_eq, p₁, p₂, ← k]`. Take the linear combination `(κ * c₂ * E₁.val) * Units.inv_mul E₂`.
+-/
 theorem unit_calc {S : Type} [CommRing S] {P₁ P₂ E₁ E₂ : Sˣ} {κ c₁ c₂ : S} (p₁ : P₁.val = c₁ * E₁.val)
     (p₂ : P₂.val = c₂ * E₂.val) (k : κ * c₂ = c₁) : κ * (E₁ * E₂⁻¹).val = (P₁ * P₂⁻¹).val := by
   rw [Units.val_mul, Units.val_mul, Units.eq_mul_inv_iff_mul_eq, p₁, p₂, ← k]
   linear_combination (κ * c₂ * E₁.val) * Units.inv_mul E₂
 
+/- English proof (translation)
+Set `D` to `Dg.toPre`. Take `⟨e₁, he₁, b₁, h₁⟩` from `exists_psi_val D (mu + α) (coord_spec Dg _)`. Take `⟨e₂, he₂, b₂, h₂⟩` from `exists_psi_val D α (coord_spec Dg _)`. Establish `c₁ : ∀ χ, D.P.A.hom ≫ (D.c χ).left = (SectionScalarValuation.cQ D D.P.A χ).left` using `fun χ => by simp [SectionScalarValuation.cQ]`. Take `⟨eB, heB, veB⟩` from `SectionScalarValuation.exists_eB D 1 α mu (LB.mulGen D.P.L _ _ _ _ e₁ (LB.invGen D.P.L _ _ e₂)) (mulGen_isGen _ _ _ _ _ _ _ he₁ (invGen_isGen _ _ _ _ he₂)) (fun U _ h => by`.
+
+Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fintype.prod_unique, c₁]`. Rewrite using `[add_comm mu α, SectionScalarValuation.cQ_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow, neg_neg]`. Use the proof step `module)`.
+
+Take `⟨Θ, hΘ⟩` from `exists_equiv mu α eB heB`. Establish `n₁ : coord Dg (mu + α) * b₁ ≠ 0` using `mul_ne_zero (coord_ne Dg _) b₁.ne_zero`. Establish `n₂ : coord Dg α * b₂ ≠ 0` using `mul_ne_zero (coord_ne Dg _) b₂.ne_zero`. Use `⟨Θ, toK _ n₁ * (toK _ n₂)⁻¹, ?_, fun s => feRel_iff.2 fun y J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[QuotientGroup.mk_mul, QuotientGroup.mk_inv, ← toK_cls_eq (coord_ne Dg _) n₁ ⟨b₁, rfl⟩, ← toK_cls_eq (coord_ne Dg _) n₂ ⟨b₂, rfl⟩]`.
+
+Both sides reduce to the same expression. Rewrite using `[sval_smul' hJ, sval_resF _ _ _ _ hJ, sval_resF _ _ _ _ hJ, hΘ _ _ _ _ _ hJ]`. Simplify using `only [Category.id_comp]`. Rewrite using `[← Over.comp_left, ← Over.comp_left, trF_prB, mul_left_comm]`. Use `congr 1`.
+
+Establish `w₁ : ((fst (TF (R` using `R) (FractionRing R)) D.P.A).left ≫ jFK (R := R) (FractionRing R)) ≫ jK R = (DegPre.prB D (FractionRing R)).left ≫ D.P.A.hom := (Category.assoc _ _ _).trans ((Over.w (fst (TF (R := R) (FractionRing R)) D.P.A)).trans (Over.w (DegPre.prB D (FractionRing R))).symm)`. Establish `w₂ : (DegPre.prB D (FractionRing R)).left ≫ D.P.A.hom = strF D (FractionRing R) ≫ Spec.map (CommRingCat.ofHom (toF (R` using `R) (FractionRing R))) := (isPullback_prB D (FractionRing R)).w`. Establish `v₁` using `veB _ (DegPre.prB D (FractionRing R)) y J hJ`. Establish `p₁` using `h₁ _ ((fst (TF (R := R) (FractionRing R)) D.P.A).left ≫ jFK (R := R) (FractionRing R)) y J hJ`. Establish `p₂` using `h₂ _ ((fst (TF (R := R) (FractionRing R)) D.P.A).left ≫ jFK (R := R) (FractionRing R)) y J hJ`.
+
+Rewrite `p₁`, `p₂` using `[w₁]`. Establish `fm : val (DegPre.famMult D (FractionRing R) 1 mu α) (fst (TF (R` using `R) (FractionRing R)) D.P.A).left y J = val (D.psi (mu + α)) ((fst (TF (R := R) (FractionRing R)) D.P.A).left ≫ jFK (R := R) (FractionRing R)) y J * (val (D.psi α) ((fst (TF (R := R) (FractionRing R)) D.P.A).left ≫ jFK (R := R) (FractionRing R)) y J)⁻¹ := by`. Rewrite using `[val_famMult _ hJ, UUA.val_powGen', UUA.val_powGen']`. Use `(congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_inv _ _))) (val_inv _ _))) (val_inv _ _))) rfl).trans ?_` and prove the remaining obligations. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv, pow_one]`. Normalize the expressions using the abelian group laws. Establish `k : constVal (strF D (FractionRing R)) y ((toK _ n₁ * (toK _ n₂)⁻¹ : (FractionRing R)ˣ) : FractionRing R) * constVal ((DegPre.prB D (FractionRing R)).left ≫ D.P.A.hom) y (coord Dg α * b₂) = constVal ((DegPre.prB D (FractionRing R)).left ≫ D.P.A.hom) y (coord Dg (mu + α) * b₁)`. Rewrite using `[w₂, constVal_specMap, constVal_specMap, ← constVal_mul]`. Use `congr 1`.
+
+Conclude with `congrArg Units.val (inv_mul_cancel_right (toK _ n₁) (toK _ n₂))`. Rewrite `v₁` using `[val_mul hJ, val_inv]`. Rewrite using `[fm, uVal_id, comp_cP]`. Use `erw [v₁]`. Establish `q : constVal (strF D (FractionRing R)) y ((toK _ n₁ * (toK _ n₂)⁻¹ : (FractionRing R)ˣ) : FractionRing R) * (val e₁ ((DegPre.prB D (FractionRing R)).left ≫ D.P.A.hom) y J * (val e₂ ((DegPre.prB D (FractionRing R)).left ≫ D.P.A.hom) y J)⁻¹).val = (val (D.psi (mu + α)) ((fst (TF (R` using `R) (FractionRing R)) D.P.A).left ≫ jFK (R := R) (FractionRing R)) y J * (val (D.psi α) ((fst (TF (R := R) (FractionRing R)) D.P.A).left ≫ jFK (R := R) (FractionRing R)) y J)⁻¹).val := by`.
+
+Conclude with `unit_calc p₁ p₂ k`. Rewrite using `[Units.val_mul _ (_ * _), Units.val_mul _ (_ * _), ← q, mul_left_comm]`. Both sides reduce to the same expression.
+-/
 theorem exists_transl [IsLocalRing R] (Dg : DegData R (maximalIdeal R)) (mu α : Dg.toPre.X) :
     ∃ (Θ : SecBMod Dg.toPre 1 α ≃ₗ[R] SecBMod Dg.toPre 1 (α + 1 • mu)) (κ : (FractionRing R)ˣ),
       (κ : Cls R) = psiCls Dg (mu + α) * (psiCls Dg α)⁻¹ ∧
@@ -224,6 +291,11 @@ section Gen
 
 variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] (Dg : DegData R (maximalIdeal R))
 
+/- English proof (translation)
+It suffices to establish `H : ∃ e : SecBMod Dg.toPre 1 (0 + 1 • χ), ∀ s, ∃! a : R, s = a • e by rwa [zero_add, one_smul] at H`. Take `⟨b, hb⟩` from `GlobalTheory.IndivisibleSection.exists_generator Dg.toPre GlobalTheory.abelianSchemeLaws_all.1.secBaseChange`. Take `⟨Θ, -⟩` from `exists_transl Dg χ 0`. Set `b' : SecBMod Dg.toPre 1 0` to `b`. Establish `hb' : ∀ (a : R) (s : SecBMod Dg.toPre 1 0), SecIsMul Dg.toPre.P.A.hom a s b ↔ s = a • b'` using `fun a s => ⟨fun h => SecOver.ext _ _ h, fun h _ => by rw [h]; rfl⟩`.
+
+Use `⟨Θ b', fun s => ?_⟩` and prove the remaining obligations. Use `(existsUnique_congr fun a => ?_).1 (hb (Θ.symm s))` and prove the remaining obligations. Rewrite using `[hb', LinearEquiv.symm_apply_eq, map_smul]`.
+-/
 theorem exists_secGen (χ : Dg.toPre.X) : ∃ e : SecBMod Dg.toPre 1 χ, ∀ s, ∃! a : R, s = a • e := by
   suffices H : ∃ e : SecBMod Dg.toPre 1 (0 + 1 • χ), ∀ s, ∃! a : R, s = a • e by rwa [zero_add, one_smul] at H
   obtain ⟨b, hb⟩ := GlobalTheory.IndivisibleSection.exists_generator Dg.toPre GlobalTheory.abelianSchemeLaws_all.1.secBaseChange
@@ -237,15 +309,24 @@ theorem exists_secGen (χ : Dg.toPre.X) : ∃ e : SecBMod Dg.toPre 1 χ, ∀ s, 
 
 def secGen (χ : Dg.toPre.X) : SecBMod Dg.toPre 1 χ := (exists_secGen Dg χ).choose
 
+/- English proof (translation)
+The claim follows from `(exists_secGen Dg χ).choose_spec s`.
+-/
 theorem secGen_spec (χ : Dg.toPre.X) (s : SecBMod Dg.toPre 1 χ) : ∃! a : R, s = a • secGen Dg χ :=
   (exists_secGen Dg χ).choose_spec s
 
 def secGenK (χ : Dg.toPre.X) : SecFMod Dg.toPre (FractionRing R) 1 χ := resF Dg.toPre (FractionRing R) 1 χ (secGen Dg χ)
 
+/- English proof (translation)
+Introduce `h` and use `by have h0 : secGen Dg χ = 0 := resF_injective Dg.toPre (FractionRing R) 1 χ (h.trans (map_zero _).symm) exact one_ne_zero ((secGen_spec Dg χ 0).unique (y₁ := (1 : R)) (y₂ := 0) (by rw [h0, smul_zero]) (by rw [zero_smul]))`.
+-/
 theorem secGenK_ne (χ : Dg.toPre.X) : secGenK Dg χ ≠ 0 := fun h => by
   have h0 : secGen Dg χ = 0 := resF_injective Dg.toPre (FractionRing R) 1 χ (h.trans (map_zero _).symm)
   exact one_ne_zero ((secGen_spec Dg χ 0).unique (y₁ := (1 : R)) (y₂ := 0) (by rw [h0, smul_zero]) (by rw [zero_smul]))
 
+/- English proof (translation)
+The claim follows from `map_smulₛₗ _ _ _`.
+-/
 theorem resF_smul_secGen (χ : Dg.toPre.X) (a : R) :
     resF Dg.toPre (FractionRing R) 1 χ (a • secGen Dg χ) = algebraMap R (FractionRing R) a • secGenK Dg χ :=
   map_smulₛₗ _ _ _
@@ -257,6 +338,17 @@ def IsTransUnit {O : Type} [Ring O] [Module O Dg.toPre.X] (t : Dg.toPre.X → Dg
   FERel Dg.toPre mu α (secGenK Dg α)
     ((algebraMap R (FractionRing R) u * (t mu (w • mu) : FractionRing R) * (t mu α : FractionRing R)) • secGenK Dg (α + 1 • mu))
 
+/- English proof (translation)
+Use `existsUnique_of_exists_of_unique ?_ fun u u' h h' => ?_` and prove the remaining obligations. Take `⟨Θ, κ, hκ, hΘ⟩` from `exists_transl Dg mu α`. Take `⟨v, hv, -⟩` from `secGen_spec Dg _ (Θ (secGen Dg α))`. Take `⟨c, hc, -⟩` from `secGen_spec Dg _ (Θ.symm (secGen Dg (α + 1 • mu)))`. Rewrite `hc` using `[LinearEquiv.symm_apply_eq, map_smul, hv, smul_smul]`.
+
+Establish `hcv : c * v = 1` using `(secGen_spec Dg _ _).unique hc (one_smul _ _).symm`. Establish `e : ((t mu (w • mu) * t mu α : (FractionRing R)ˣ) : Cls R) = κ`. Rewrite using `[QuotientGroup.mk_mul, ht.cls, ht.cls, tauCls_half Dg ρ hw, hκ, tauCls]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+
+Normalize the expressions using the abelian group laws. Take `⟨u₀, hu₀⟩` from `cls_eq_iff.1 e`. Use `⟨u₀ * ⟨v, c, (mul_comm _ _).trans hcv, hcv⟩, ?_⟩` and prove the remaining obligations. Establish `H` using `hΘ (secGen Dg α)`. Rewrite `H` using `[hv, resF_smul_secGen, smul_smul, ← hu₀]`.
+
+Unfold `IsTransUnit`. Use `(congrArg (fun x : FractionRing R => FERel Dg.toPre mu α (secGenK Dg α) (x • secGenK Dg (α + 1 • mu))) ?_).mp H` and prove the remaining obligations. Simplify using `only [Units.val_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e` using `smul_left_injective _ (secGenK_ne Dg _) (FERel.unique h h')`.
+
+Establish `e'` using `mul_right_cancel₀ (Units.ne_zero _) (mul_right_cancel₀ (Units.ne_zero _) e)`. Conclude with `Units.ext (IsFractionRing.injective R _ e')`.
+-/
 theorem existsUnique_transUnit [IsIntegrallyClosed R] {O : Type} [Ring O] [StarRing O] [Module O Dg.toPre.X]
     (ρ : Dg.toPre.OAct O) {t} (ht : IsReading Dg O t) {w : O} (hw : w + star w = 1) (mu α : Dg.toPre.X) :
     ∃! u, IsTransUnit t w mu α u := by
@@ -317,6 +409,9 @@ def secReg : Submodule R (SecGK U) := LinearMap.range (resG U)
 
 def expandFun (s : SecGK U) : Fam D.toPre (FractionRing R) 1 := ((U.expand 1 le_rfl).1 s).choose
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨((U.expand 1 le_rfl).1 s).choose_spec.2 F, fun h => h ▸ ((U.expand 1 le_rfl).1 s).choose_spec.1⟩`.
+-/
 theorem expands_iff (s : SecGK U) (F : Fam D.toPre (FractionRing R) 1) : U.Expands 1 s F ↔ F = expandFun U s :=
   ⟨((U.expand 1 le_rfl).1 s).choose_spec.2 F, fun h => h ▸ ((U.expand 1 le_rfl).1 s).choose_spec.1⟩
 
@@ -335,6 +430,9 @@ def expand (hR : AdmBase R I) [GeometricallyConnected G.hom] : SecGK U →ₗ[Fr
     rw [← (expands_iff U _ _).1 this, Fin.sum_univ_one]
     simp
 
+/- English proof (translation)
+The claim follows from `(Function.bijective_iff_existsUnique _).2 fun F => (existsUnique_congr fun s => (expands_iff U s F).trans eq_comm).1 ((U.expand 1 le_rfl).2 F)`.
+-/
 theorem expand_bijective (hR : AdmBase R I) [GeometricallyConnected G.hom] : Function.Bijective (expand U hR) :=
   (Function.bijective_iff_existsUnique _).2 fun F =>
     (existsUnique_congr fun s => (expands_iff U s F).trans eq_comm).1 ((U.expand 1 le_rfl).2 F)
@@ -349,6 +447,11 @@ variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing 
   {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
   (U : Unif (maximalIdeal R) D A G) (hR : AdmBase R (maximalIdeal R)) [GeometricallyConnected G.hom]
 
+/- English proof (translation)
+Use `existsUnique_of_exists_of_unique ?_ fun x y hx hy => smul_left_injective _ (secGenK_ne D χ) (hx.symm.trans hy)` and prove the remaining obligations. Take `⟨r, hr, σ, f, -, hf, -⟩` from `(expands_iff U s _).2 rfl`. Take `⟨a, ha, -⟩` from `secGen_spec D χ (f χ)`. Establish `h` using `(secScal_iff_resF D.toPre (FractionRing R) _ (f χ) r).1 (hf χ)`. Rewrite `h` using `[ha, resF_smul_secGen]`.
+
+Establish `h0 : algebraMap R (FractionRing R) r ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R _)).2 hr`. Use `⟨(algebraMap R (FractionRing R) r)⁻¹ * algebraMap R _ a, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, h]`. Conclude with `(inv_smul_smul₀ h0 _).symm`.
+-/
 theorem existsUnique_coef (s : SecGK U) (χ : D.toPre.X) :
     ∃! x : FractionRing R, famComp D.toPre (FractionRing R) 1 χ (expand U hR s) = x • secGenK D χ := by
   refine existsUnique_of_exists_of_unique ?_ fun x y hx hy => smul_left_injective _ (secGenK_ne D χ) (hx.symm.trans hy)
@@ -370,6 +473,9 @@ def coef : SecGK U →ₗ[FractionRing R] (D.toPre.X → FractionRing R) where
   map_smul' c s := funext fun χ => ((existsUnique_coef U hR (c • s) χ).choose_spec.2 _ (by
     rw [map_smul, map_smul, (existsUnique_coef U hR s χ).choose_spec.1, smul_smul]; rfl)).symm
 
+/- English proof (translation)
+The claim follows from `(existsUnique_coef U hR s χ).choose_spec.1`.
+-/
 theorem coef_spec (s : SecGK U) (χ : D.toPre.X) :
     famComp D.toPre (FractionRing R) 1 χ (expand U hR s) = coef U hR s χ • secGenK D χ :=
   (existsUnique_coef U hR s χ).choose_spec.1

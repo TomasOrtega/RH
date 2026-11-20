@@ -6,6 +6,13 @@ open CategoryTheory AlgebraicGeometry TensorProduct Opposite MonoidalCategory Ca
 
 namespace GlobalTheory.CompanionTheory.PerfVB
 
+/- English proof (translation)
+Establish `hker : LinearMap.ker g ≤ LinearMap.ker (LinearMap.id - f ∘ₗ s)`. Introduce `q hq`. Take `⟨p, rfl⟩` from `(hex q).1 hq`. Establish `hp : f (s (f p)) = f p` using `LinearMap.congr_fun hs p`. Simplify using `[LinearMap.mem_ker, hp]`.
+
+Set `t : T →ₗ[S] Q` to `(LinearMap.ker g).liftQ (LinearMap.id - f ∘ₗ s) hker ∘ₗ (g.quotKerEquivOfSurjective hg).symm.toLinearMap`. Use `Module.Projective.of_split t g ?_` and prove the remaining obligations. Use extensionality with `x`. Take `⟨q, rfl⟩` from `hg x`. Establish `h1 : (g.quotKerEquivOfSurjective hg).symm (g q) = Submodule.Quotient.mk q`.
+
+Rewrite using `[LinearEquiv.symm_apply_eq, LinearMap.quotKerEquivOfSurjective_apply_mk]`. Simplify using `only [t, LinearMap.comp_apply, LinearEquiv.coe_coe, h1, Submodule.liftQ_apply, LinearMap.sub_apply, LinearMap.id_apply, map_sub, hex.apply_apply_eq_zero, sub_zero]`.
+-/
 theorem projective_of_genInverse_of_exact {S P Q T : Type} [CommRing S]
     [AddCommGroup P] [Module S P] [AddCommGroup Q] [Module S Q] [Module.Projective S Q]
     [AddCommGroup T] [Module S T] (f : P →ₗ[S] Q) (g : Q →ₗ[S] T) (s : Q →ₗ[S] P)
@@ -26,6 +33,19 @@ theorem projective_of_genInverse_of_exact {S P Q T : Type} [CommRing S]
   simp only [t, LinearMap.comp_apply, LinearEquiv.coe_coe, h1, Submodule.liftQ_apply,
     LinearMap.sub_apply, LinearMap.id_apply, map_sub, hex.apply_apply_eq_zero, sub_zero]
 
+/- English proof (translation)
+Use `haveI : Module.FinitePresentation R B := Module.finitePresentation_of_projective R B`. Use `haveI : Module.FinitePresentation R (B ⧸ LinearMap.range f) := Module.finitePresentation_of_surjective (LinearMap.range f).mkQ (LinearMap.range f).mkQ_surjective (by rw [Submodule.ker_mkQ, LinearMap.range_eq_map]; exact Module.Finite.fg_top.map f)`. Use `haveI : ∀ (P : Ideal R) [P.IsMaximal], IsLocalizedModule P.primeCompl (TensorProduct.mk R (Localization.AtPrime P) (B ⧸ LinearMap.range f) 1) := fun P _ => (isLocalizedModule_iff_isBaseChange P.primeCompl _ _).2 (TensorProduct.isBaseChange R _ _)`. Use `haveI : Module.Projective R (B ⧸ LinearMap.range f) := by`. Use `Module.projective_of_localization_maximal' (fun P _ => Localization.AtPrime P) (fun P _ => Localization.AtPrime P ⊗[R] (B ⧸ LinearMap.range f)) (fun P _ => TensorProduct.mk R (Localization.AtPrime P) (B ⧸ LinearMap.range f) 1) ?_` and prove the remaining obligations.
+
+Introduce `m hm`. Take `⟨s, hs⟩` from `h m`. Use `GlobalTheory.CompanionTheory.PerfVB.projective_of_genInverse_of_exact (f.baseChange (Localization.AtPrime m)) ((LinearMap.range f).mkQ.baseChange (Localization.AtPrime m)) s hs ?_ ?_` and prove the remaining obligations. Rewrite using `[LinearMap.baseChange_eq_ltensor, LinearMap.baseChange_eq_ltensor]`. Conclude with `lTensor_exact _ (LinearMap.exact_map_mkQ_range f) (LinearMap.range f).mkQ_surjective`.
+
+Rewrite using `[LinearMap.baseChange_eq_ltensor]`. Conclude with `LinearMap.lTensor_surjective _ (LinearMap.range f).mkQ_surjective`. Take `⟨t, ht⟩` from `Module.projective_lifting_property (LinearMap.range f).mkQ LinearMap.id (LinearMap.range f).mkQ_surjective`. Establish `hmem : ∀ b, (LinearMap.id - t ∘ₗ (LinearMap.range f).mkQ : B →ₗ[R] B) b ∈ LinearMap.range f`. Introduce `b`.
+
+Use `(Submodule.Quotient.mk_eq_zero _).1 ?_` and prove the remaining obligations. Establish `hb : (LinearMap.range f).mkQ (t ((LinearMap.range f).mkQ b)) = (LinearMap.range f).mkQ b` using `LinearMap.congr_fun ht ((LinearMap.range f).mkQ b)`. Express the relevant statement in the definitionally equal form `(LinearMap.range f).mkQ (b - t ((LinearMap.range f).mkQ b)) = 0`. Rewrite using `[map_sub, hb, sub_self]`. Take `⟨s, hs⟩` from `Module.projective_lifting_property f.rangeRestrict (LinearMap.codRestrict (LinearMap.range f) (LinearMap.id - t ∘ₗ (LinearMap.range f).mkQ) hmem) f.surjective_rangeRestrict`.
+
+Use `⟨s, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Establish `h2 : (LinearMap.range f).mkQ (f a) = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `LinearMap.mem_range_self f a`.
+
+Establish `h1 : f (s (f a)) = f a - t ((LinearMap.range f).mkQ (f a))` using `congrArg Subtype.val (LinearMap.congr_fun hs (f a))`. Rewrite `h1` using `[h2, map_zero, sub_zero]`. Simplify `h1` using `only [LinearMap.comp_apply]`.
+-/
 theorem exists_genInverse_of_forall_maximal (R A B : Type) [CommRing R] [AddCommGroup A]
     [Module R A] [Module.Finite R A] [Module.Projective R A] [AddCommGroup B] [Module R B]
     [Module.Finite R B] [Module.Projective R B] (f : A →ₗ[R] B)

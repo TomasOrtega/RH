@@ -8,6 +8,11 @@ namespace Formalism.MainNotions.N.Ln34.LevelExpansions.V
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc TensorProduct
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (j.rTensor X)` using `Module.Flat.rTensor_preserves_injective_linearMap j hj`. Establish `h2 : (j.rTensor X) (∑ i, a i ⊗ₜ[O] g (s i)) = (j.rTensor X) (∑ k, b k ⊗ₜ[O] g (t k))`. Establish `h'` using `congrArg (g.lTensor E) h`. Simplify `h'` using `only [map_sum, LinearMap.lTensor_tmul, LinearMap.rTensor_tmul]`. Establish `h3` using `congrArg μ (hinj h2)`.
+
+Simplify `h3` using `only [map_sum]`.
+-/
 theorem expwd_core {O A E L X Y : Type*} [CommRing O] [AddCommGroup A] [Module O A]
     [AddCommGroup E] [Module O E] [AddCommGroup L] [Module O L] [AddCommGroup X] [Module O X]
     [AddCommGroup Y] [Module O Y] [Module.Flat O X]
@@ -23,6 +28,11 @@ theorem expwd_core {O A E L X Y : Type*} [CommRing O] [AddCommGroup A] [Module O
   have h3 := congrArg μ (hinj h2)
   simpa only [map_sum] using h3
 
+/- English proof (translation)
+Use `letI : Module O X := Module.compHom X (algebraMap O LL)`. Rewrite using `[IsDedekindDomain.flat_iff_torsion_eq_bot]`. Use `(Submodule.eq_bot_iff _).mpr fun x hx => ?_` and prove the remaining obligations. Take `⟨⟨o, ho⟩, hox⟩` from `(Submodule.mem_torsion_iff x).mp hx`. Establish `h1 : algebraMap O LL o • x = 0` using `hox`.
+
+Establish `h2 : algebraMap O LL o ≠ 0` using `(map_ne_zero_iff _ hinj).mpr (nonZeroDivisors.ne_zero ho)`. Conclude with `(smul_eq_zero.mp h1).resolve_left h2`.
+-/
 theorem flat_compHom {O LL X : Type*} [CommRing O] [IsDedekindDomain O] [Field LL]
     [Algebra O LL] (hinj : Function.Injective (algebraMap O LL)) [AddCommGroup X] [Module LL X] :
     letI : Module O X := Module.compHom X (algebraMap O LL)
@@ -51,12 +61,18 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {E : EtTie W (O ⊗[Zl] Ai) RW inclR φR gR πA} {ιdR : Ai →+* BdR} {p1 : Ai} {tS zS : BdR}
     (Ct : CmpTie W E ιdR p1 tS zS) (T : LocLat G Qp LL O)
 
+/- English proof (translation)
+Establish `h` using `W.lev_letter c ζ ((letE c : LetA O n) * a - a) (by simp [letE])`. Rewrite `h` using `[map_sub, sub_eq_zero]`. Conclude with `h`.
+-/
 theorem lev_letE_mul (c : ZMod n) (ζ : LL) (a : LetA O n) :
     W.lev c ζ ((letE c : LetA O n) * a) = W.lev c ζ a := by
   have h := W.lev_letter c ζ ((letE c : LetA O n) * a - a) (by simp [letE])
   rw [map_sub, sub_eq_zero] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[W.levN_smul, AlgHom.commutes, Algebra.algebraMap_eq_smul_one (A := PowerSeries LL) o]`. Apply the tactic sequence `try simp only [serMul]`. Rewrite using `[finsum_eq_single _ 0 (fun j hj => by`. Rewrite using `[PowerSeries.coeff_smul, PowerSeries.coeff_one, if_neg hj, smul_zero, zero_smul])]`. Rewrite using `[PowerSeries.coeff_smul, PowerSeries.coeff_zero_one, Nat.cast_zero, sub_zero, Algebra.smul_def o (1 : LL), mul_one]`.
+-/
 theorem levN_smul_alg (i : ZMod n) (ζ : LL) (o : O) (x : ↥(W.N T)) (k : ℤ) :
     W.levN T i ζ ((algebraMap O (LetA O n) o) • x) k = algebraMap O LL o • W.levN T i ζ x k := by
   rw [W.levN_smul, AlgHom.commutes, Algebra.algebraMap_eq_smul_one (A := PowerSeries LL) o]
@@ -66,6 +82,9 @@ theorem levN_smul_alg (i : ZMod n) (ζ : LL) (o : O) (x : ↥(W.N T)) (k : ℤ) 
   rw [PowerSeries.coeff_smul, PowerSeries.coeff_zero_one, Nat.cast_zero, sub_zero,
     Algebra.smul_def o (1 : LL), mul_one]
 
+/- English proof (translation)
+Apply `framepf_ιV_inj (PD := PD) T` to reduce the goal to its premises. Rewrite using `[← Ct.levN_eq, levN_smul_alg, Ct.levN_eq, map_smul]`.
+-/
 theorem levB_smul_alg (i : ZMod n) (ζ : LL) (o : O) (x : ↥(W.N T)) (k : ℤ) :
     Ct.levB T i ζ ((algebraMap O (LetA O n) o) • x) k = algebraMap O LL o • Ct.levB T i ζ x k := by
   apply framepf_ιV_inj (PD := PD) T
@@ -74,9 +93,15 @@ theorem levB_smul_alg (i : ZMod n) (ζ : LL) (o : O) (x : ↥(W.N T)) (k : ℤ) 
 def val1 (c : ZMod n) (x : ↥(W.N T)) : T.V ⊗[Qp] BdR :=
   ιV PD (LL := LL) (V := T.V) (φVB PD (LL := LL) (V := T.V) (Ct.levB T (c - 1) 1 x 0))
 
+/- English proof (translation)
+Simplify using `only [val1, map_add, Pi.add_apply]`.
+-/
 theorem level_value_add (c : ZMod n) (x y : ↥(W.N T)) : val1 Ct T c (x + y) = val1 Ct T c x + val1 Ct T c y := by
   simp only [val1, map_add, Pi.add_apply]
 
+/- English proof (translation)
+Simplify using `only [val1, levB_smul_alg, map_smul]`.
+-/
 theorem level_value_smul (c : ZMod n) (o : O) (x : ↥(W.N T)) :
     val1 Ct T c ((algebraMap O (LetA O n) o) • x) = algebraMap O LL o • val1 Ct T c x := by
   simp only [val1, levB_smul_alg, map_smul]
@@ -87,6 +112,9 @@ def PtHyp (c : ZMod n) (ζ : LL) : Prop :=
     (∀ (x : ↥(W.N T)) (k : ℤ), k < 0 → W.levN T (c - 1) 1 x k = 0) ∧
     ∀ x ∈ W.N T, ∃ k : ℕ, W.Q ^ k • W.φD T x ∈ W.N T
 
+/- English proof (translation)
+Take `⟨hc, hζ, hζ1, hQ0, hQ1, hneg, hex⟩` from `hP`. Use `framepf_valAt Ct T hc c ζ hζ hζ1 hQ0 hQ1 x (fun r hr => ?_) (hex _ x.2)` and prove the remaining obligations. Apply `framepf_ιV_inj (PD := PD) T` to reduce the goal to its premises. Rewrite using `[← Ct.levN_eq, hneg x r hr, map_zero]`.
+-/
 theorem valAt_eq {c : ZMod n} {ζ : LL} (hP : PtHyp (W := W) T c ζ) (x : ↥(W.N T)) :
     valAt W T c ζ (x : W.DD T) = val1 Ct T c x := by
   obtain ⟨hc, hζ, hζ1, hQ0, hQ1, hneg, hex⟩ := hP
@@ -105,6 +133,9 @@ instance (BdR : Type) [CommRing BdR] [Algebra Qp BdR] (T : LocLat G Qp LL O) :
 instance (BdR : Type) [CommRing BdR] [Algebra Qp BdR] (T : LocLat G Qp LL O) :
     Module O (XO BdR T) := Module.compHom _ (algebraMap O LL)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smul_XO (o : O) (x : XO BdR T) : o • x = algebraMap O LL o • x := rfl
 
 def valL {c : ZMod n} {ζ : LL} (hP : PtHyp (W := W) T c ζ) :
@@ -126,6 +157,17 @@ def valL {c : ZMod n} {ζ : LL} (hP : PtHyp (W := W) T c ζ) :
     change valAt W T c ζ (o • (x : W.DD T)) = algebraMap O LL o • valAt W T c ζ (x : W.DD T)
     exact e2
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx` using `[Submodule.mem_comap]`. Take `⟨z, hz, hzx⟩` from `Submodule.mem_map.1 hx.1`. Establish `hxN : (x : W.DD T) ∈ W.N T` using `x.2.1.1`. Rewrite using `[LinearMap.mem_ker]`.
+
+Express the relevant statement in the definitionally equal form `valAt W T c ζ (x : W.DD T) = 0`. Rewrite using `[valAt_eq Ct T hP ⟨x, hxN⟩]`. Establish `hzx' : (π' ^ 1) • z = (x : W.DD T)` using `hzx`. Establish `hxe : (⟨x, hxN⟩ : ↥(W.N T)) = (π' ^ 1) • ⟨z, hz⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Conclude with `hzx'.symm`. Establish `hneg` using `hP.2.2.2.2.2.1`. Establish `h0 : Ct.levB T (c - 1) 1 ⟨x, hxN⟩ 0 = 0`. Apply `framepf_ιV_inj (PD := PD) T` to reduce the goal to its premises. Rewrite using `[← Ct.levN_eq, hxe, W.levN_smul, map_zero, pow_one]`.
+
+Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `j`. Break down `Nat.eq_zero_or_pos j with rfl | hj` into its components or cases. Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, hπ, zero_smul]`. Rewrite using `[hneg ⟨z, hz⟩ _ (by omega), smul_zero]`.
+
+Simplify using `only [val1, h0, map_zero]`.
+-/
 theorem valL_ker {c : ZMod n} {ζ : LL} (hP : PtHyp (W := W) T c ζ) (π' : LetA O n)
     (hπ : PowerSeries.constantCoeff (W.lev (c - 1) 1 π') = 0) :
     (PiNS W T π' 1).comap (NcS W T (c - 1)).subtype ≤ LinearMap.ker (valL Ct T hP) := by
@@ -155,6 +197,9 @@ def valQ {c : ZMod n} {ζ : LL} (hP : PtHyp (W := W) T c ζ) (π' : LetA O n)
     (hπ : PowerSeries.constantCoeff (W.lev (c - 1) 1 π') = 0) : LcQ W T π' c →ₗ[O] XO BdR T :=
   Submodule.liftQ _ (valL Ct T hP) (valL_ker Ct T hP π' hπ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem valQ_mkL {c : ZMod n} {ζ : LL} (hP : PtHyp (W := W) T c ζ) (π' : LetA O n)
     (hπ : PowerSeries.constantCoeff (W.lev (c - 1) 1 π') = 0) (x : W.DD T) (hx : x ∈ NcS W T (c - 1)) :
     valQ Ct T hP π' hπ (mkL W T π' c x hx) = valAt W T c ζ x := rfl
@@ -182,11 +227,19 @@ def muL (c : ZMod n) (ζ : LL) : LetA O n ⊗[O] XO BdR T →ₗ[O] (ℤ → XO 
       · rw [smul_XO, smul_XO, smul_comm]
       · rw [smul_zero]))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem muL_tmul (c : ZMod n) (ζ : LL) (a : LetA O n) (d : XO BdR T) :
     muL (W := W) T c ζ (a ⊗ₜ d) = serC (W.lev c ζ a) d := rfl
 
 include Ct in
 
+/- English proof (translation)
+Establish `: Module.Flat O (XO BdR T)` using `flat_compHom (X := XO BdR T) hinj`. Establish `key` using `expwd_core (IsScalarTower.toAlgHom O (LetA O n) W.EE).toLinearMap (fun x y hxy => W.EE_inj hxy) (valQ Ct T hP π' hπ) (muL (W := W) T c ζ) (fun j => (letE c : LetA O n) * a j) (fun j => mkL W T π' c (y j) (hy j)) (fun k => (letE c : LetA O n) * b k) (fun k => mkL W T π' c (z k) (h …`. Establish `e : ∀ (u : LetA O n) (x : W.DD T) (hx : x ∈ NcS W T (c - 1)) (i : ℤ), muL (W` using `W) T c ζ (((letE c : LetA O n) * u) ⊗ₜ valQ Ct T hP π' hπ (mkL W T π' c x hx)) i = serC (W.lev c ζ u) (valAt W T c ζ x) i := by`. Introduce `u x hx i`. Rewrite using `[muL_tmul, lev_letE_mul]`.
+
+Both sides reduce to the same expression. Use function extensionality and compare the values at `i`. Use `congrFun key i` as an intermediate fact. Rewrite `this` using `[Finset.sum_apply, Finset.sum_apply, Finset.sum_congr rfl fun j _ => e (a j) (y j) (hy j) i, Finset.sum_congr rfl fun j _ => e (b j) (z j) (hz j) i]`. Conclude with `this`.
+-/
 theorem expS_wd [IsDedekindDomain O] (hinj : Function.Injective (algebraMap O LL))
     {c : ZMod n} {ζ : LL} (hP : PtHyp (W := W) T c ζ) (π' : LetA O n)
     (hπ : PowerSeries.constantCoeff (W.lev (c - 1) 1 π') = 0)

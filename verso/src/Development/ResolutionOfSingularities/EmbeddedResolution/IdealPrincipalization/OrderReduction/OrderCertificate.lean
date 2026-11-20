@@ -25,6 +25,9 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `c`.
+-/
 private theorem orderCertificate_congr_mult {k : Type u} [Field k] {W : Scheme.{u}}
     {p : W ⟶ Spec (CommRingCat.of k)} {N : W.IdealSheafData} {μ μ' : ℕ}
     {Mem : Set ↥W} {Z : W.IdealSheafData} (h : μ = μ')
@@ -32,6 +35,9 @@ private theorem orderCertificate_congr_mult {k : Type u} [Field k] {W : Scheme.{
   subst h
   exact c
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `c`.
+-/
 private theorem orderCertificate_congr_map {k : Type u} [Field k] {W : Scheme.{u}}
     {p p' : W ⟶ Spec (CommRingCat.of k)} {N : W.IdealSheafData} {μ : ℕ}
     {Mem : Set ↥W} {Z : W.IdealSheafData} (h : p = p')
@@ -39,6 +45,11 @@ private theorem orderCertificate_congr_map {k : Type u} [Field k] {W : Scheme.{u
   subst h
   exact c
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[MarkedSequenceOfBlowups.mem_boundaryLocus_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨D, hD, hx⟩`. Conclude with `Set.mem_iUnion₂.2 ⟨D, hD, hx⟩`.
+
+Introduce `hx`. Take `⟨D, hD, hx⟩` from `Set.mem_iUnion₂.1 hx`. Conclude with `⟨D, hD, hx⟩`.
+-/
 private theorem boundaryLocus_eq_iUnion_support {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
     {E : List X.IdealSheafData} (s : MarkedSequenceOfBlowups p I m E) (t : ℕ) :
@@ -53,6 +64,9 @@ private theorem boundaryLocus_eq_iUnion_support {k : Type u} [Field k] {X : Sche
     obtain ⟨D, hD, hx⟩ := Set.mem_iUnion₂.1 hx
     exact ⟨D, hD, hx⟩
 
+/- English proof (translation)
+Use `hf` as an intermediate fact. Conclude with `MarkedBlowupSequenceData.boundary_eq_comap_strictPullbackComparisonMap s D hNd hNt i hi`.
+-/
 private theorem boundary_eq_map_comap_strictPullbackComparisonMap_of_flat {k : Type u} [Field k] {X' X : Scheme.{u}}
     {q : X' ⟶ Spec (CommRingCat.of k)} {g : X' ⟶ X} {I : X.IdealSheafData} {m : ℕ}
     {E : List X.IdealSheafData} {d : BlowupSequenceData X}
@@ -66,6 +80,9 @@ private theorem boundary_eq_map_comap_strictPullbackComparisonMap_of_flat {k : T
   have := hf
   exact MarkedBlowupSequenceData.boundary_eq_comap_strictPullbackComparisonMap s D hNd hNt i hi
 
+/- English proof (translation)
+Use `hf` as an intermediate fact. Use `hs` as an intermediate fact. Conclude with `MarkedBlowupSequenceData.surjective_strictPullbackComparisonMap s D i hi`.
+-/
 private theorem surjective_strictPullbackComparisonMap_of_flat_of_surjective {k : Type u} [Field k] {X' X : Scheme.{u}}
     {q : X' ⟶ Spec (CommRingCat.of k)} {g : X' ⟶ X} {I : X.IdealSheafData} {m : ℕ}
     {E : List X.IdealSheafData} {d : BlowupSequenceData X}
@@ -78,6 +95,11 @@ private theorem surjective_strictPullbackComparisonMap_of_flat_of_surjective {k 
   have := hs
   exact MarkedBlowupSequenceData.surjective_strictPullbackComparisonMap s D i hi
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨J, hJ, hx⟩` from `Set.mem_iUnion₂.1 hx`. Take `⟨D, hD, rfl⟩` from `List.mem_map.1 hJ`.
+
+Conclude with `Set.mem_preimage.2 (Set.mem_iUnion₂.2 ⟨D, hD, (AlgebraicGeometry.Scheme.IdealSheafData.mem_support_comap ..).mp hx⟩)`. Introduce `hx`. Take `⟨D, hD, hx⟩` from `Set.mem_iUnion₂.1 (Set.mem_preimage.1 hx)`. Conclude with `Set.mem_iUnion₂.2 ⟨D.comap f, List.mem_map.2 ⟨D, hD, rfl⟩, (AlgebraicGeometry.Scheme.IdealSheafData.mem_support_comap ..).mpr hx⟩`.
+-/
 theorem iUnion_support_comap_eq_preimage {X Y : Scheme.{u}} (f : X ⟶ Y)
     (l : List Y.IdealSheafData) :
     (⋃ J ∈ l.map (fun D => D.comap f), (↑J.support : Set ↥X)) =
@@ -97,6 +119,13 @@ theorem iUnion_support_comap_eq_preimage {X Y : Scheme.{u}} (f : X ⟶ Y)
 
 namespace MaxContactFunctoriality
 
+/- English proof (translation)
+Introduce `t`. Proceed by induction on `t with`. Consider the case `zero`. Introduce `D hD`. Rewrite `hD`, the goal using `[BlowupSequenceData.boundary_zero]`.
+
+Take `⟨A, hA, rfl⟩` from `List.mem_map.1 hD`. Conclude with `List.mem_map.2 ⟨A, hEE A hA, rfl⟩`. Consider the case `succ t ih`. Introduce `D hD`. Rewrite `hD`, the goal using `[BlowupSequenceData.boundary_succ]`.
+
+Break down `List.mem_append.1 hD with hmem | hmem` into its components or cases. Take `⟨A, hA, rfl⟩` from `List.mem_map.1 hmem`. Conclude with `List.mem_append.2 (Or.inl (List.mem_map.2 ⟨A, ih A hA, rfl⟩))`. Conclude with `List.mem_append.2 (Or.inr hmem)`.
+-/
 private theorem mem_boundary_of_forall_mem {X : Scheme.{u}} (d : BlowupSequenceData X)
     (E E' : List X.IdealSheafData) (hEE : ∀ D ∈ E, D ∈ E') :
     ∀ (t : ℕ) (D : (d.obj t).IdealSheafData), D ∈ d.boundaryFrom E t → D ∈ d.boundaryFrom E' t := by
@@ -115,6 +144,9 @@ private theorem mem_boundary_of_forall_mem {X : Scheme.{u}} (d : BlowupSequenceD
         exact List.mem_append.2 (Or.inl (List.mem_map.2 ⟨A, ih A hA, rfl⟩))
       · exact List.mem_append.2 (Or.inr hmem)
 
+/- English proof (translation)
+Use `mem_boundary_of_forall_mem d _ _ ?_ t D hD` and prove the remaining obligations. Introduce `A hA`. Rewrite `hA` using `[MaxContactReduction.dropTrivialBoundary_boundary]`. Conclude with `(List.mem_filter.1 hA).1`.
+-/
 theorem mem_boundary_of_mem_boundary_dropTrivialBoundary (T : MarkedIdealWithBoundary.{u}) (d : BlowupSequenceData T.scheme) (t : ℕ)
     (D : (d.obj t).IdealSheafData)
     (hD : D ∈ d.boundaryFrom (MaxContactReduction.dropTrivialBoundary T).boundary t) :
@@ -129,6 +161,27 @@ section
 variable (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop) (A : ℕ → PrincipalizationAssignment.{u})
   (B : PrincipalizationAssignment.{u})
 
+/- English proof (translation)
+Establish `hflat` using `hd.flat_coverMap T h`. Establish `hsurjc` using `hd.surjective_coverMap T h`. Establish `htun : MaxContactCoverData.balancedTunedIdeal T h.valid = T.ideal` using `hd.tunedIdeal_of_mult_one T h.valid hone`. Establish `hmul : MaxContactCoverData.tunedMult T = T.mult` using `by show tuningExponent T.mult = T.mult`. Rewrite using `[hone]`.
+
+Conclude with `tuningExponent_one`. Establish `hstrictPullback : StrictPullbackBlowupSeq (MaxContactCoverData.coverMap T h.valid) (MaxContactCoverData.coverMarkedBlowupData T h.valid hinv (lowerDimensionalFamily A T)).toMarkedSequenceOfBlowups.toSequenceOfBlowups d.toSequenceOfBlowups` using `hpb.toStrictPullbackBlowupSeq`. Establish `hlen : (MaxContactCoverData.coverMarkedBlowupData T h.valid hinv (lowerDimensionalFamily A T)).length = d.length` using `MarkedBlowupSequenceData.length_eq_of_strictPullbackBlowupSeq _ hstrictPullback`. Establish `htu : t ≤ (MaxContactCoverData.coverMarkedBlowupData T h.valid hinv (lowerDimensionalFamily A T)).length` using `by omega`. Establish `htlt : t < (MaxContactCoverData.coverMarkedBlowupData T h.valid hinv (lowerDimensionalFamily A T)).length` using `by omega`.
+
+Establish `hN` using `hd.locallyNoetherian T h d hpb`. Establish `hdiv : ∀ i < d.length, ∃ B', Blowup.exceptionalIdeal (d.map i) (d.center i) ^ (MaxContactCoverData.tunedMult T) * B' = (d.controlledTransform (MaxContactCoverData.balancedTunedIdeal T h.valid) (MaxContactCoverData.tunedMult T) i).comap (d.map i)`. Rewrite using `[htun, hmul]`. Conclude with `hmk.1`. Establish `hid` using `MarkedBlowupSequenceData.ideal_eq_comap_controlledTransform (MaxContactCoverData.coverMarkedBlowupData T h.valid hinv (lowerDimensionalFamily A T)) hstrictPullback hdiv t htu`.
+
+Establish `hctr` using `MarkedBlowupSequenceData.center_eq_comap_strictPullbackComparisonMap (MaxContactCoverData.coverMarkedBlowupData T h.valid hinv (lowerDimensionalFamily A T)) hstrictPullback t htlt`. Establish `hbd` using `boundary_eq_map_comap_strictPullbackComparisonMap_of_flat hflat (MaxContactCoverData.coverMarkedBlowupData T h.valid hinv (lowerDimensionalFamily A T)) hstrictPullback hN.1 hN.2 t htu`. Establish `hstr` using `isPullback_projectionToBase_of_isPullback_blowupMorphism (MaxContactCoverData.coverMap T h.valid) (MaxContactCoverData.coverMarkedBlowupData T h.valid hinv (lowerDimensionalFamily A T)).toMarkedSequenceOfBlowups.toSequenceOfBlowups d.toSequenceOfBlowups (MaxContactCoverData.cover …`. Establish `hw : (MaxContactCoverData.coverMarkedBlowupData T h.valid hinv (lowerDimensionalFamily A T)).toMarkedSequenceOfBlowups.projectionToBase t ≫ MaxContactCoverData.coverMap T h.valid = hstrictPullback.comp t (MarkedBlowupSequenceData.le_toSequenceOfBlowups_length _ htu) ≫ d.projectio …`. Rewrite using `[← BlowupSequenceData.toSequenceOfBlowups_projectionToBase]`.
+
+Conclude with `hstr.w.symm`. Establish `hw' : (MaxContactCoverData.coverMarkedBlowupData T h.valid hinv (lowerDimensionalFamily A T)).toMarkedSequenceOfBlowups.projectionToBase t ≫ MaxContactCoverData.coverMap T h.valid = ((MaxContactCoverData.coverMarkedBlowupData T h.valid hinv (lowerDimensionalFamily A T)).strictPul …` using `hw`. Establish `hcs` using `MaxContactCoverData.coverTriple_structureMorphism T h.valid`. Establish `e1 : (MaxContactCoverData.coverMarkedBlowupData T h.valid hinv (lowerDimensionalFamily A T)).toMarkedSequenceOfBlowups.projectionToBase t ≫ (MaxContactCoverData.coverTriple T h.valid).structMap = ((MaxContactCoverData.coverMarkedBlowupData T h.valid hinv (lowerDimensionalFamily A …` using `(congrArg (fun φ => (MaxContactCoverData.coverMarkedBlowupData T h.valid hinv (lowerDimensionalFamily A T)).toMarkedSequenceOfBlowups.projectionToBase t ≫ φ) hcs).trans (((Category.assoc _ _ _).symm).trans ((congrArg (fun φ => φ ≫ T.structMap) hw').trans (Category.assoc _ _ _)))`. Establish `hci : d.controlledTransform (MaxContactCoverData.balancedTunedIdeal T h.valid) (MaxContactCoverData.coverTriple T h.valid).mult t = d.controlledTransform T.ideal T.mult t`.
+
+Rewrite using `[htun, MaxContactCoverData.coverTriple_mult, hmul]`. Establish `e2 : (MaxContactCoverData.coverMarkedBlowupData T h.valid hinv (lowerDimensionalFamily A T)).toMarkedSequenceOfBlowups.ideal t = (((d.toMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary hmk).toMarkedSequenceOfBlowups.ideal t).comap ((MaxContactCoverData.coverMarkedBl …`. Simplify using `only [MarkedBlowupSequenceData.toMarkedSequence_ideal, BlowupSequenceData.toMarkedBlowupSequenceData_ideal]`. Conclude with `hid.trans (congrArg (fun J => J.comap ((MaxContactCoverData.coverMarkedBlowupData T h.valid hinv (lowerDimensionalFamily A T)).strictPullbackComparisonMap hstrictPullback t htu)) hci)`. Establish `e3 : (MaxContactCoverData.coverMarkedBlowupData T h.valid hinv (lowerDimensionalFamily A T)).toMarkedSequenceOfBlowups.center t = (((d.toMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary hmk).toMarkedSequenceOfBlowups.center t).comap ((MaxContactCoverData.coverMarked …`.
+
+Simplify using `only [MarkedBlowupSequenceData.toMarkedSequence_center, BlowupSequenceData.toMarkedBlowupSequenceData_center]`. Conclude with `hctr`. Establish `e4 : MarkedSequenceOfBlowups.boundaryLocus (MaxContactCoverData.coverMarkedBlowupData T h.valid hinv (lowerDimensionalFamily A T)).toMarkedSequenceOfBlowups t = ((MaxContactCoverData.coverMarkedBlowupData T h.valid hinv (lowerDimensionalFamily A T)).strictPullbackComparisonMap hs …`. Simplify using `only [boundaryLocus_eq_iUnion_support, MarkedBlowupSequenceData.toMarkedSequence_boundary, BlowupSequenceData.toMarkedBlowupSequenceData_boundary]`. Rewrite using `[hbd]`.
+
+Conclude with `iUnion_support_comap_eq_preimage _ _`. Establish `hp : MarkedSequenceOfBlowups.projectionToSpec (d.toMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary hmk).toMarkedSequenceOfBlowups t = d.projectionToBase t ≫ T.structMap`. Simplify using `only [MarkedSequenceOfBlowups.projectionToSpec_eq, MarkedBlowupSequenceData.toMarkedSequence_projectionToBase, BlowupSequenceData.toMarkedBlowupSequenceData_projectionToBase]`. Both sides reduce to the same expression. Use `orderCertificate_congr_map hp.symm ?_` and prove the remaining obligations.
+
+Use `hd.cert_descend T.base ((MaxContactCoverData.coverMarkedBlowupData T h.valid hinv (lowerDimensionalFamily A T)).obj t) _ _ ((MaxContactCoverData.coverMarkedBlowupData T h.valid hinv (lowerDimensionalFamily A T)).strictPullbackComparisonMap hstrictPullback t htu) ?_ ?_ _ _ _ _ ?_` and prove the remaining obligations. Conclude with `hd.comp_openImmersion T h d hstrictPullback t htu`. Conclude with `surjective_strictPullbackComparisonMap_of_flat_of_surjective hflat hsurjc (MaxContactCoverData.coverMarkedBlowupData T h.valid hinv (lowerDimensionalFamily A T)) hstrictPullback t htu`. Establish `hc : OrderCertificate ((MaxContactCoverData.coverMarkedBlowupData T h.valid hinv (lowerDimensionalFamily A T)).toMarkedSequenceOfBlowups.schemeAt t) ((MaxContactCoverData.coverMarkedBlowupData T h.valid hinv (lowerDimensionalFamily A T)).toMarkedSequenceOfBlowups.projectionToBase …` using `hstar.cert T h hone t htlt`. Rewrite `hc` using `[e1, e2, e3, e4]`.
+
+Conclude with `orderCertificate_congr_mult hone.symm hc`.
+-/
 theorem orderCertificate_of_isStrictPullbackBlowupSeq (hstar : CoverSequenceProperties hinv P A) (hd : DescentHypotheses hinv P A B)
     (T : MarkedIdealWithBoundary.{u}) (h : OrderReductionHypotheses P T) (hone : T.mult = 1)
     (d : BlowupSequenceData T.scheme)
@@ -246,6 +299,21 @@ theorem orderCertificate_of_isStrictPullbackBlowupSeq (hstar : CoverSequenceProp
     rw [e1, e2, e3, e4] at hc
     exact orderCertificate_congr_mult hone.symm hc
 
+/- English proof (translation)
+Break down `Nat.lt_or_ge T.mult 2 with hm2 | hm2` into its components or cases. Establish `hone : T.mult = 1` using `le_antisymm (by omega) hv.one_le_mult`. Distinguish the cases in `hemp : orderAtLeastLocus T.ideal T.mult = ∅`. Establish `h0` using `length_eq_zero_of_orderAtLeastLocus_eq_empty hinv P A T hv hdim hord hemp`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hyp : OrderReductionHypotheses P T` using `⟨hdim, hord, Set.nonempty_iff_ne_empty.2 hemp, hv⟩`. Take `⟨d, hm', hpb', heq⟩` from `exists_blowupSequenceData_isStrictPullback_cover hinv P A B hstar hd T hyp`. Establish `honeT : (MaxContactReduction.dropTrivialBoundary T).mult = 1`. Rewrite using `[MaxContactReduction.dropTrivialBoundary_mult]`. Conclude with `hone`.
+
+Establish `htrim : OrderReductionHypotheses P (MaxContactReduction.dropTrivialBoundary T)` using `hyp.dropTrivialBoundary hd`. Establish `hmk0` using `hd.isMarked (MaxContactReduction.dropTrivialBoundary T) htrim d hpb'`. Establish `htun : MaxContactCoverData.balancedTunedIdeal (MaxContactReduction.dropTrivialBoundary T) htrim.valid = (MaxContactReduction.dropTrivialBoundary T).ideal` using `hd.tunedIdeal_of_mult_one (MaxContactReduction.dropTrivialBoundary T) htrim.valid honeT`. Establish `hmul : MaxContactCoverData.tunedMult (MaxContactReduction.dropTrivialBoundary T) = (MaxContactReduction.dropTrivialBoundary T).mult` using `by show tuningExponent (MaxContactReduction.dropTrivialBoundary T).mult = (MaxContactReduction.dropTrivialBoundary T).mult`. Rewrite using `[honeT]`.
+
+Conclude with `tuningExponent_one`. Rewrite `hmk0` using `[htun, hmul]`. Establish `htlen : t < d.length`. Rewrite `ht` using `[heq]`. Rewrite `ht` using `[MarkedBlowupSequenceData.toMarkedSequence_length, BlowupSequenceData.toMarkedBlowupSequenceData_length]`.
+
+Conclude with `ht`. Establish `hcert` using `orderCertificate_of_isStrictPullbackBlowupSeq hinv P A B hstar hd (MaxContactReduction.dropTrivialBoundary T) htrim honeT d hmk0 hpb' t htlen`. Establish `hsub : MarkedSequenceOfBlowups.boundaryLocus (d.toMarkedBlowupSequenceData (MaxContactReduction.dropTrivialBoundary T).structMap (MaxContactReduction.dropTrivialBoundary T).ideal (MaxContactReduction.dropTrivialBoundary T).mult (MaxContactReduction.dropTrivialBoundary T).boundary …`. Simplify using `only [boundaryLocus_eq_iUnion_support, MarkedBlowupSequenceData.toMarkedSequence_boundary, BlowupSequenceData.toMarkedBlowupSequenceData_boundary]`. Introduce `x hx`.
+
+Take `⟨D, hD, hxD⟩` from `Set.mem_iUnion₂.1 hx`. Conclude with `Set.mem_iUnion₂.2 ⟨D, mem_boundary_of_mem_boundary_dropTrivialBoundary T d t D hD, hxD⟩`. Establish `hfin` using `orderCertificate_mono_of_subset hsub hcert`. Rewrite using `[heq]`. Conclude with `orderCertificate_congr_mult (MaxContactReduction.dropTrivialBoundary_mult T) hfin`.
+
+Conclude with `OrderCertificate.of_two_le _ _ _ _ _ _ hm2`.
+-/
 theorem orderCertificate_of_orderAt_le_mult (hstar : CoverSequenceProperties hinv P A) (hd : DescentHypotheses hinv P A B)
     (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) (hdim : P T.krullDimSucc)
     (hord : ∀ x : ↥T.scheme, orderAt T.ideal x ≤ (T.mult : ℕ∞))

@@ -12,6 +12,9 @@ noncomputable section
 
 namespace GlobalTheory.LinSchur
 
+/- English proof (translation)
+Rewrite `hY` using `[mem_latt]`. Use `push_neg at hY`. Take `⟨i, j, o, ho, h⟩` from `hY`. Set `l : Matrix (Fin n) (Fin d) k →ₗ[k] k` to `{ toFun := fun Z => o * (s * Z i j) map_add' := fun a b => by simp only [Matrix.add_apply]; ring map_smul' := fun c a => by simp only [Matrix.smul_apply, smul_eq_mul, RingHom.id_apply]; ring }`. Conclude with `⟨l, fun Z hZ => hZ i j o ho, h⟩`.
+-/
 theorem dual {k : Type} [Field k] [ValuativeRel k] {ψ0 : AddChar k ℂ} {n d : ℕ} {s : k}
     {Y : Matrix (Fin n) (Fin d) k} (hY : Y ∉ latt ψ0 n d s) :
     ∃ l : Matrix (Fin n) (Fin d) k →ₗ[k] k, (∀ Z ∈ latt ψ0 n d s, ψ0 (l Z) = 1) ∧ ψ0 (l Y) ≠ 1 := by
@@ -24,6 +27,15 @@ theorem dual {k : Type} [Field k] [ValuativeRel k] {ψ0 : AddChar k ℂ} {n d : 
       map_smul' := fun c a => by simp only [Matrix.smul_apply, smul_eq_mul, RingHom.id_apply]; ring }
   exact ⟨l, fun Z hZ => hZ i j o ho, h⟩
 
+/- English proof (translation)
+Establish `hK : IsOpen {Z : X | Z - y ∈ L}` using `ho.preimage (continuous_sub_right y)`. Establish `hKc : IsClosed {Z : X | Z - y ∈ L}` using `(AddSubgroup.isClosed_of_isOpen L ho).preimage (continuous_sub_right y)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `Y`.
+
+Distinguish the cases in `hY : Y - y ∈ L`. Conclude with `⟨_, hK, hY, fun Z hZ => by simp only [cind, if_pos (show Z - y ∈ L from hZ), if_pos hY]⟩`. Conclude with `⟨_, hKc.isOpen_compl, hY, fun Z hZ => by simp only [cind, if_neg (show Z - y ∉ L from hZ), if_neg hY]⟩`. Establish `himg : {Z : X | Z - y ∈ L} = (fun Z => Z + y) '' (L : Set X)`. Use extensionality with `Z`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨Z - y, h, sub_add_cancel Z y⟩`. Introduce and unpack `⟨W, hW, rfl⟩ show W + y - y ∈ L`. Rewrite using `[add_sub_cancel_right]` and apply the resulting hypothesis.
+
+Use `IsCompact.of_isClosed_subset (himg ▸ hc.image (continuous_add_right y)) (isClosed_tsupport _) (closure_minimal ?_ hKc)` and prove the remaining obligations. Introduce `Z hZ`. Assume the negation of the conclusion as `h`. Conclude with `hZ (by simp only [cind, if_neg (show Z - y ∉ L from h)])`.
+-/
 theorem cind_mem {X : Type} [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X] {L : AddSubgroup X}
     (ho : IsOpen (L : Set X)) (hc : IsCompact (L : Set X)) (y : X) : cind L y ∈ GlobalTheory.WeilM.SB X := by
   have hK : IsOpen {Z : X | Z - y ∈ L} := ho.preimage (continuous_sub_right y)
@@ -48,6 +60,9 @@ theorem cind_mem {X : Type} [AddCommGroup X] [TopologicalSpace X] [IsTopological
     by_contra h
     exact hZ (by simp only [cind, if_neg (show Z - y ∉ L from h)])
 
+/- English proof (translation)
+Introduce `h`. Establish `e` using `AddChar.map_add_eq_mul ψ a (-a)`. Rewrite `e` using `[add_neg_cancel, AddChar.map_zero_eq_one, h, zero_mul]`. Conclude with `one_ne_zero e`.
+-/
 theorem addChar_ne_zero {A : Type} [AddGroup A] (ψ : AddChar A ℂ) (a : A) : ψ a ≠ 0 := by
   intro h
   have e := AddChar.map_add_eq_mul ψ a (-a)
@@ -58,6 +73,51 @@ end GlobalTheory.LinSchur
 
 open GlobalTheory.LinSchur in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n d Xt _ _ V ψ0 hcont hne ι₁ ι₂ hbij hlin Tr Mu hTr hMu`. Take `⟨hLoc, hBasis⟩` from `GlobalTheory.T.characterTrivialMatrixLattice_open_compact_basis n d ψ0 hcont hne`. Establish `inj : ∀ x ∈ V, ∀ y ∈ V, ι₁ x = ι₁ y → x = y` using `fun x hx y hy h => hbij.injOn hx hy h`. Establish `surj : ∀ f ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k), ∃ x, x ∈ V ∧ ι₁ x = f` using `fun f hf => hbij.surjOn hf`. Establish `maps : ∀ x ∈ V, ι₁ x ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k)` using `fun x hx => hbij.mapsTo hx`.
+
+Establish `h20 : ι₂ 0 = 0`. Establish `e` using `hlin 0 V.zero_mem 0 V.zero_mem 1`. Simplify using `using e`. Establish `hsmul : ∀ x ∈ V, ∀ c : ℂ, ι₂ (c • x) = c • ι₂ x`. Introduce `x hx c`.
+
+Establish `e` using `hlin x hx 0 V.zero_mem c`. Rewrite `e` using `[add_zero, h20, add_zero]`. Then use the resulting hypothesis. Establish `hsum : ∀ (F : Finset (Matrix (Fin n) (Fin d) k)) (a : Matrix (Fin n) (Fin d) k → ℂ) (xs : Matrix (Fin n) (Fin d) k → Xt), (∀ y ∈ F, xs y ∈ V) → ι₂ (∑ y ∈ F, a y • xs y) = ∑ y ∈ F, a y • ι₂ (xs y)`. Introduce `F a xs hxs`. Proceed by induction on `F using Finset.induction_on with`.
+
+Consider the case `empty => simpa using h20`. Consider the case `insert y F hy ih`. Rewrite using `[Finset.sum_insert hy, Finset.sum_insert hy, hlin _ (hxs y (Finset.mem_insert_self _ _)) _ (V.sum_mem fun z hz => V.smul_mem _ (hxs z (Finset.mem_insert_of_mem hz))), ih fun z hz => hxs z (Finset.mem_insert_of_mem hz)]`. Establish `stepB : ∀ x ∈ V, ∀ C, (∀ Y, ι₁ x (Y + C) = ι₁ x Y) → ∀ Y, ι₂ x (Y + C) = ι₂ x Y`. Introduce `x hx C hper Y`.
+
+Take `⟨h1, h2, h3⟩` from `hTr C x hx`. Establish `e0 : Tr C x = x` using `inj _ h1 _ hx (by rw [h2]; funext Y; exact hper Y)`. Establish `e` using `congrFun h3 Y`. Rewrite `e` using `[e0]`. Conclude with `e.symm`.
+
+Establish `stepA : ∀ s : k, ∀ x ∈ V, ∀ y, ι₁ x = cind (latt ψ0 n d s) y → ∀ Y, Y - y ∉ latt ψ0 n d s → ι₂ x Y = 0`. Introduce `s x hx y hxy Y hY`. Take `⟨l, hl1, hl2⟩` from `dual hY`. Take `⟨m1, m2, m3⟩` from `hMu l x hx`. Establish `e1 : ι₁ (Mu l x) = ι₁ (ψ0 (l y) • x)`.
+
+Rewrite using `[m2, map_smul, hxy]`. Use function extensionality and compare the values at `Z`. Simplify using `only [cind, Pi.smul_apply, smul_eq_mul]`. Use `split_ifs with hZ`. Rewrite using `[mul_one, mul_one, show l Z = l (Z - y) + l y by rw [← map_add, sub_add_cancel], AddChar.map_add_eq_mul, hl1 _ hZ, one_mul]`.
+
+Simplify using the standard rewrite rules. Establish `e2 : Mu l x = ψ0 (l y) • x` using `inj _ m1 _ (V.smul_mem _ hx) e1`. Establish `e3` using `congrFun m3 Y`. Rewrite `e3` using `[e2, hsmul x hx]`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at e3`.
+
+Establish `hYy : ψ0 (l Y) = ψ0 (l (Y - y)) * ψ0 (l y)`. Rewrite using `[← AddChar.map_add_eq_mul, ← map_add, sub_add_cancel]`. Rewrite `e3` using `[hYy]`. Establish `e4 : ψ0 (l y) * (1 - ψ0 (l (Y - y))) * ι₂ x Y = 0` using `by linear_combination e3`. Break down `mul_eq_zero.mp e4 with h | h` into its components or cases.
+
+Break down `mul_eq_zero.mp h with h | h` into its components or cases. Conclude with `absurd h (addChar_ne_zero ψ0 _)`. Conclude with `absurd (sub_eq_zero.mp h).symm hl2`. Conclude with `h`. Establish `stepC : ∀ s : k, ∀ x ∈ V, ∀ y, ι₁ x = cind (latt ψ0 n d s) y → ι₂ x = ι₂ x y • ι₁ x`.
+
+Introduce `s x hx y hxy`. Use function extensionality and compare the values at `Y`. Rewrite using `[hxy]`. Simplify using `only [cind, Pi.smul_apply, smul_eq_mul]`. Use `split_ifs with hY`.
+
+Rewrite using `[mul_one]`. Establish `e` using `stepB x hx (Y - y) (fun Z => by`. Rewrite using `[hxy]`. Simplify using `only [cind]`. Rewrite using `[show Z + (Y - y) - y = (Z - y) + (Y - y) by abel, (latt ψ0 n d s).add_mem_cancel_right hY]) y`.
+
+Rewrite `e` using `[add_sub_cancel]`. Then use the resulting hypothesis. Rewrite using `[mul_zero]`. Conclude with `stepA s x hx y hxy Y hY`. Establish `hcind : ∀ s : k, s ≠ 0 → ∀ y, cind (latt ψ0 n d s) y ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k)` using `fun s hs y => cind_mem (hLoc s hs).1 (hLoc s hs).2 y`. Use `choose! xs hxsV hxs1 using fun s (hs : s ≠ 0) y => surj _ (hcind s hs y)`.
+
+Establish `stepD : ∀ s : k, s ≠ 0 → ∀ x ∈ V, ∀ y, ι₁ x = cind (latt ψ0 n d s) y → ι₂ x = ι₂ (xs s 0) 0 • ι₁ x`. Introduce `s hs x hx y hxy`. Rewrite using `[stepC s x hx y hxy]`. Use `congr 1`. Take `⟨t1, t2, t3⟩` from `hTr y x hx`.
+
+Establish `e0 : Tr y x = xs s 0` using `inj _ t1 _ (hxsV s hs 0) (by`. Rewrite using `[t2, hxs1 s hs 0, hxy]`. Use function extensionality and compare the values at `Z`. Simplify using `only [cind, add_sub_cancel_right, sub_zero])`. Establish `e` using `congrFun t3 0`.
+
+Rewrite `e` using `[e0, zero_add]`. Conclude with `e.symm`. Establish `stepE : ∀ s : k, s ≠ 0 → ∀ x ∈ V, (∀ Y, ∀ C ∈ latt ψ0 n d s, ι₁ x (Y + C) = ι₁ x Y) → ι₂ x = ι₂ (xs s 0) 0 • ι₁ x`. Introduce `s hs x hx hper`. Take `⟨F, hF⟩` from `GlobalTheory.T.exists_finset_eq_sum_addCosetIndicator _ (hLoc s hs).1 (ι₁ x) (maps x hx) hper`.
+
+Establish `hxeq : x = ∑ y ∈ F, ι₁ x y • xs s y` using `inj _ hx _ (V.sum_mem fun y _ => V.smul_mem _ (hxsV s hs y)) (by`. Rewrite using `[map_sum]`. Simplify using `only [map_smul, hxs1 s hs]`. Conclude with `hF)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[stepD s hs (xs s y) (hxsV s hs y) y (hxs1 s hs y), hxs1 s hs y]`. Use `_ = ι₂ (xs s 0) 0 • ∑ y ∈ F, ι₁ x y • cind (latt ψ0 n d s) y := by`. Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun y _ => smul_comm _ _ _`. Use `_ = ι₂ (xs s 0) 0 • ι₁ x := by rw [← hF]`.
+
+Establish `stepF : ∀ s : k, s ≠ 0 → ∀ s' : k, s' ≠ 0 → (latt ψ0 n d s' : Set (Matrix (Fin n) (Fin d) k)) ⊆ latt ψ0 n d s → ι₂ (xs s 0) 0 = ι₂ (xs s' 0) 0`. Introduce `s hs s' hs' hsub`. Establish `e0` using `stepE s' hs' (xs s 0) (hxsV s hs 0) (fun Y C hC => by`. Rewrite using `[hxs1 s hs 0]`. Simplify using `only [cind, sub_zero, (latt ψ0 n d s).add_mem_cancel_right (hsub hC)])`.
+
+Establish `e` using `congrFun e0 0`. Rewrite `e` using `[hxs1 s hs 0]`. Simplify `e` using `[cind]`. Use `⟨ι₂ (xs 1 0) 0, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨⟨s, hs⟩, hper⟩` from `GlobalTheory.T.exists_openSubgroup_periodic (fun s : {s : k // s ≠ 0} => latt ψ0 n d s) (fun s => (hLoc s.1 s.2).1) (fun W hW => by`.
+
+Take `⟨s, hs, h⟩` from `hBasis W hW`. Conclude with `⟨⟨s, hs⟩, h⟩) (ι₁ x) (maps x hx)`. Rewrite using `[stepE s hs x hx hper]`. Use `congr 1`. Take `⟨s'', hs'', hsub⟩` from `hBasis ((latt ψ0 n d s : Set (Matrix (Fin n) (Fin d) k)) ∩ latt ψ0 n d 1) (inter_mem ((hLoc s hs).1.mem_nhds (latt ψ0 n d s).zero_mem) ((hLoc 1 one_ne_zero).1.mem_nhds (latt ψ0 n d 1).zero_mem))`.
+
+Rewrite using `[stepF s hs s'' hs'' (fun z hz => (hsub hz).1), stepF 1 one_ne_zero s'' hs'' (fun z hz => (hsub hz).2)]`.
+-/
 theorem GlobalTheory.LinSchur.eq_smul_of_commute : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n d : ℕ} {Xt : Type} [AddCommGroup Xt] [Module ℂ Xt] (V : Submodule ℂ Xt)
     (ψ0 : AddChar k ℂ), Continuous ψ0 → ψ0 ≠ 1 →
     ∀ (ι₁ : Xt →ₗ[ℂ] (Matrix (Fin n) (Fin d) k → ℂ)) (ι₂ : Xt → Matrix (Fin n) (Fin d) k → ℂ),

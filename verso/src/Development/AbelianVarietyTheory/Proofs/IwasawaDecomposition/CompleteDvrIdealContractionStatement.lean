@@ -9,5 +9,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.TorRef
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MemberReflect.mem_of_map_mem_map | exact GlobalTheory.MemberReflect.mem_of_map_mem_map | (intros; apply GlobalTheory.MemberReflect.mem_of_map_mem_map <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.complete_dvr_ideal_contraction : ∀ (O : Type) [CommRing O] [IsDomain O] [IsLocalRing O], IsIntegrallyClosed O → IsNoetherianRing O → ringKrullDim O = 1 → ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], CDvr W → ∀ (g : O →+* W), Function.Injective g → IsLocalHom g → ∀ (I : Ideal O) (a : O), g a ∈ I.map g → a ∈ I := by
   first | exact @GlobalTheory.MemberReflect.mem_of_map_mem_map | exact GlobalTheory.MemberReflect.mem_of_map_mem_map | (intros; apply GlobalTheory.MemberReflect.mem_of_map_mem_map <;> assumption)

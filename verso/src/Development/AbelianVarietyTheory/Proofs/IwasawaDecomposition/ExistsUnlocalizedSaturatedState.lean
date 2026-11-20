@@ -54,8 +54,14 @@ structure Carried (D D' : D7) : Prop where
     D.what₂.embLL (x : D.what₂.LL) = D'.what₂.embLL (x' : D'.what₂.LL) →
       HEq (D.ntw.emb0 i x) (D'.ntw.emb0 i' x') ∧ HEq (D.ntw.emb0b i x) (D'.ntw.emb0b i' x')
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(SameExport.refl D).gal, HEq.rfl⟩`.
+-/
 theorem SameGal.refl (D : D7) : SameGal D D := ⟨(SameExport.refl D).gal, HEq.rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨SameExport.refl D, fun i i' h x x' e => by obtain rfl := eq_of_heq h obtain rfl : x = x' := Subtype.ext (D.what₂.embLL.injective e) exact ⟨HEq.rfl, HEq.rfl⟩⟩`.
+-/
 theorem Carried.refl (D : D7) : Carried D D := ⟨SameExport.refl D, fun i i' h x x' e => by
   obtain rfl := eq_of_heq h
   obtain rfl : x = x' := Subtype.ext (D.what₂.embLL.injective e)

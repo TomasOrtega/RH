@@ -17,6 +17,11 @@ noncomputable section
 
 namespace GlobalTheory.LevGeo.RankBd
 
+/- English proof (translation)
+Unfold `supConst locConst massLev GlobalTheory.UCls.massBd multBd`. Establish `h1 : 0 ≤ rdE E` using `Real.rpow_nonneg (abs_nonneg _) _`. Establish `h2 : Even (2 * fdeg E * r ^ 2)` using `by rw [mul_assoc]; exact even_two_mul _`. Use `mul_nonneg (mul_nonneg (div_nonneg (by positivity) (pow_nonneg (mul_nonneg Real.pi_pos.le (sq_nonneg _)) _)) (h2.pow_nonneg _)) ?_` and prove the remaining obligations. Use `Real.rpow_nonneg h1 ((fdeg E : ℝ) * ((r : ℝ) ^ 2 - 1) / 2)` as an intermediate fact.
+
+Check the signs of the components of the expression.
+-/
 theorem supConst_nonneg (E : Type) [Field E] [NumberField E] (r d M : ℕ) (w : ℝ) : 0 ≤ supConst E r d M w := by
   unfold supConst locConst massLev GlobalTheory.UCls.massBd multBd
   have h1 : 0 ≤ rdE E := Real.rpow_nonneg (abs_nonneg _) _
@@ -28,6 +33,11 @@ theorem supConst_nonneg (E : Type) [Field E] [NumberField E] (r d M : ℕ) (w : 
 
 variable {D : D7} {r : ℕ} {Comp : Type} [Fintype Comp] {X : Comp → Data D.host.E r}
 
+/- English proof (translation)
+Establish `hne : ∀ τ i, dmin Y.Gm x τ i ≠ 0` using `fun τ i h => by`. Use `(hx τ).2 i` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`. Use `Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => Real.rpow_pos_of_pos ?_ _` and prove the remaining obligations.
+
+Conclude with `norm_pos_iff.2 (div_ne_zero (hne τ _) (hne τ _))`.
+-/
 theorem pnorm_fac_pos (Y : Data D.host.E r) (la : Wt Y.Ψ r) {x : Frame Y.Ψ r} (hx : x ∈ Y.dom) :
     0 < ∏ τ, ∏ i : Fin r, ‖dmin Y.Gm x τ i.succ / dmin Y.Gm x τ i.castSucc‖ ^ (-(la τ i : ℝ) / 2) := by
   have hne : ∀ τ i, dmin Y.Gm x τ i ≠ 0 := fun τ i h => by
@@ -37,6 +47,11 @@ theorem pnorm_fac_pos (Y : Data D.host.E r) (la : Wt Y.Ψ r) {x : Frame Y.Ψ r} 
   refine Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => Real.rpow_pos_of_pos ?_ _
   exact norm_pos_iff.2 (div_ne_zero (hne τ _) (hne τ _))
 
+/- English proof (translation)
+Establish `hint : Integrable (fun x => f x ^ 2) μ` using `Integrable.of_bound (hm.pow 2) (B ^ 2) (Filter.Eventually.of_forall fun x => by`. Rewrite using `[Real.norm_of_nonneg (by positivity)]`. Conclude with `pow_le_pow_left₀ (hf0 x) (hB x) 2)`. Rewrite using `[ofReal_integral_eq_lintegral_ofReal hint (Filter.Eventually.of_forall fun x => by positivity), eLpNorm_eq_lintegral_rpow_enorm two_ne_zero ENNReal.ofNat_ne_top]`. Rewrite using `[← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]`.
+
+Evaluate the numerical expressions. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[Real.enorm_eq_ofReal (hf0 x), ← ENNReal.ofReal_pow (hf0 x)]`.
+-/
 theorem eLpNorm_sq_eq {α : Type*} [MeasurableSpace α] {μ : Measure α} [IsProbabilityMeasure μ] {f : α → ℝ}
     (hf0 : ∀ x, 0 ≤ f x) (hm : AEStronglyMeasurable f μ) {B : ℝ} (hB : ∀ x, f x ≤ B) :
     eLpNorm f 2 μ ^ 2 = ENNReal.ofReal (∫ x, f x ^ 2 ∂μ) := by
@@ -57,6 +72,31 @@ open scoped TensorProduct
 
 variable {D : D7} {r : ℕ} {Comp : Type} [Fintype Comp] {X : Comp → Data D.host.E r}
 
+/- English proof (translation)
+Establish `hpt : ∀ (P : FDSec X) (g : GA D V), ptN la P (dict g) = ‖P (dict g).1 (dict g).2‖` using `fun P g => pnorm_eq_of_unit _ _ _ _ (hu g)`. Establish `hdom : ∀ g, (dict g).2 ∈ (X (dict g).1).dom` using `hd.2.2.2.1`. Establish `hle : ∀ (P : FDSec X) (g : GA D V), ENNReal.ofReal ‖P (dict g).1 (dict g).2‖ ≤ supE X la P` using `fun P g => by`. Rewrite using `[← hpt]`. Conclude with `le_iSup (fun p : FPt X => ENNReal.ofReal ((X p.1).pnorm (la p.1) (P p.1) p.2)) ⟨(dict g).1, ⟨_, hdom g⟩⟩`.
+
+Establish `hmeas : ∀ P ∈ S, AEStronglyMeasurable (fun q : AutQ V => ‖P (dict q.out).1 (dict q.out).2‖) (muQ1 V)`. Introduce `P hP`. Take `⟨-, hc, hΓ, -⟩` from `hS P hP`. Establish `hmu : MuUnit V dict (fun _ => 1)` using `⟨fun _ _ => (mul_one 1).symm, fun _ => norm_one, fun _ _ => rfl, hu⟩`. Establish `h` using `GlobalTheory.PeterssonCompare.measurable_onQ_adel V hN hth hd hK hmu continuous_const P hc hΓ`.
+
+Establish `e : (fun q : AutQ V => ‖P (dict q.out).1 (dict q.out).2‖) = fun q => ‖onQ V (adel V dict (fun _ => 1) P) q‖`. Use function extensionality and compare the values at `q`. Simplify using `[onQ, adel]`. Rewrite using `[e]`. Conclude with `h.norm.aestronglyMeasurable`.
+
+Establish `hpet : ∀ P ∈ S, petE V dict (muQ1 V) la P ^ 2 = ENNReal.ofReal (∫ q, ‖P (dict q.out).1 (dict q.out).2‖ ^ 2 ∂(muQ1 V))`. Introduce `P hP`. Establish `hfin` using `supE_ne_top X la (hS P hP).1`. Establish `e : petE V dict (muQ1 V) la P = eLpNorm (fun q : AutQ V => ‖P (dict q.out).1 (dict q.out).2‖) 2 (muQ1 V)`. Unfold `petE`.
+
+Use `congr 1`. Use function extensionality and compare the values at `q`. Conclude with `hpt P _`. Rewrite using `[e]`. Conclude with `eLpNorm_sq_eq (fun _ => norm_nonneg _) (hmeas P hP) (B := (supE X la P).toReal) fun q => (ENNReal.ofReal_le_iff_le_toReal hfin).1 (hle P _)`.
+
+Use `GlobalTheory.Bergman.finite_and_finrank_le_of_pointwise (μ := muQ1 V) (fun q (P : S) => ‖(P : FDSec X) (dict q.out).1 (dict q.out).2‖) (fun q => ⟨(LinearMap.proj (R := ℂ) (φ := fun _ : Frame (X (dict q.out).1).Ψ r => ℂ) (dict q.out).2 ∘ₗ LinearMap.proj (R := ℂ) (φ := fun k => Fra …` and prove the remaining obligations. Introduce `P hP0`. Establish `h0 : petE V dict (muQ1 V) la (P : FDSec X) = 0`. Establish `e : (fun q : AutQ V => ptN la (P : FDSec X) (dict q.out)) = fun _ => 0`. Use function extensionality and compare the values at `q`.
+
+Rewrite using `[hpt]`. Conclude with `hP0 q`. Unfold `petE`. Rewrite using `[e]`. Conclude with `eLpNorm_zero`.
+
+Establish `hs` using `hsup P P.2`. Rewrite `hs` using `[h0]`. Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, mul_zero, nonpos_iff_eq_zero, pow_eq_zero_iff] at hs`. Take `⟨-, -, -, hoff⟩` from `hS P P.2`. Use `Subtype.ext (funext fun k => funext fun x => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hx : x ∈ (X k).dom`. Establish `h1 : ENNReal.ofReal ((X k).pnorm (la k) ((P : FDSec X) k) x) ≤ supE X la P` using `le_iSup (fun p : FPt X => ENNReal.ofReal ((X p.1).pnorm (la p.1) ((P : FDSec X) p.1) p.2)) ⟨k, ⟨x, hx⟩⟩`. Rewrite `h1` using `[hs, nonpos_iff_eq_zero, ENNReal.ofReal_eq_zero]`. Establish `h2 : ‖(P : FDSec X) k x‖ * _ ≤ 0` using `h1`. Establish `h3` using `pnorm_fac_pos (X k) (la k) hx`.
+
+Establish `h4 : ‖(P : FDSec X) k x‖ ≤ 0` using `nonpos_of_mul_nonpos_left h2 h3`. Simplify using `using h4`. Simplify using `using hoff k x hx`. Introduce `P q`. Establish `h1` using `hle (P : FDSec X) q.out`.
+
+Establish `h2` using `hsup P P.2`. Rewrite `h2` using `[hpet P P.2]`. Establish `h3 : ENNReal.ofReal (‖(P : FDSec X) (dict q.out).1 (dict q.out).2‖ ^ 2) ≤ ENNReal.ofReal (C * ∫ q, ‖(P : FDSec X) (dict q.out).1 (dict q.out).2‖ ^ 2 ∂(muQ1 V))`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ENNReal.ofReal_mul hC]`. Conclude with `(pow_le_pow_left' h1 2).trans h2`.
+
+Conclude with `(ENNReal.ofReal_le_ofReal_iff (mul_nonneg hC (integral_nonneg fun _ => by positivity))).1 h3`.
+-/
 theorem finrank_le_of_sup (V : HSp D) (dict : GA D V → Σ k, Frame (X k).Ψ r) (la : ∀ k, Wt (X k).Ψ r)
     {Kf : Subgroup (GA D V)} {th : ∀ k, (X k).Ψ → (GlobalTheoryTheory.GenusMassVolumes.Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)}
     {hr : V.rank = r} {N : ℕ} (hN : 0 < N) (hth : ∀ k τ, StandardLattice.IsInfEmb τ.1 (th k τ))
@@ -140,6 +180,33 @@ open Module
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hM hT D j H Dw l Xo c U dict hL a n hDom`. Take `⟨σ, hσ⟩ : ∃ σ : c.F →+* ℂ, GoodEmb c σ` from `⟨_, goodEmb_goodOf c c.F.val.toRingHom⟩`. Take `⟨Kf, th, hr, hK, hth, hd, hu⟩` from `hL.dictU σ hσ`. Establish `hU : IsUnf (U σ)` using `hL.unf σ hσ`. Take `⟨w, hw_def⟩ : ∃ w : ℝ, w = ((absA Dw a : ℕ) : ℝ) + ((fdeg D.host.E * D.R.r * n : ℕ) : ℝ) + 1` from `⟨_, rfl⟩`.
+
+Rewrite using `[← hw_def]`. Establish `hw : 0 < w` using `by rw [hw_def]; positivity`. Establish `hspread : ∀ k, (∑ τ, ((U σ).X k).spread (laU (U σ) a n k) τ) ≤ w` using `fun k => (GlobalTheory.T.sum_weightSpread_le_exponentNorm_add D j H Dw l Xo c U dict hL σ hσ a n k).trans (by rw [hw_def]; linarith)`. Establish `hχ` using `hL.chiTriv σ hσ a n hDom`. Establish `hsup` using `GlobalTheory.T.weighted_frame_sum_positive hM hT D j H Dw l Xo c U dict hL σ hσ (laU (U σ) a n) w hw hspread hχ`.
+
+Take `⟨Cw, hCw⟩ : ∃ Cw, Cw = cuspW Xo c U (wtZ a n)` from `⟨_, rfl⟩`. Rewrite using `[← hCw]`. Establish `hsecOf : ∀ f ∈ Cw, f ∈ sec Xo c a n` using `fun f hf => by`. Rewrite `hf` using `[hCw, cuspW_wtZ]`. Conclude with `cusp_le_sec Xo c U a n hf`.
+
+Establish `hgen : ∀ f ∈ Cw, rdU (U σ) f ∈ holSub (U σ).X (laU (U σ) a n) ∧ (∀ k, ContinuousOn (rdU (U σ) f k) ((U σ).X k).dom) ∧ (∀ k, ∀ γ ∈ ((U σ).X k).Γ, ∀ x ∈ ((U σ).X k).dom, rdU (U σ) f k (lact γ x) = rdU (U σ) f k x) ∧ (∀ k x, x ∉ ((U σ).X k).dom → rdU (U σ) f k x = 0)`. Introduce `f hf`. Establish `hs` using `hU.2.2.2.2.1 a n hDom f (hsecOf f hf)`. Use `⟨?_, fun k => (hs k).1.continuousOn, fun k γ hγ x hx => ?_, fun k x hx => ?_⟩` and prove the remaining obligations. Rewrite `hf` using `[hCw]`.
+
+Use `(mem_cuspW.1 hf).2 σ hσ` as an intermediate fact. Rewrite `this` using `[modelWt_wtZ]`. Then use the resulting hypothesis. Rewrite using `[(hs k).2.2 γ hγ x hx, hχ k γ hγ, one_mul]`. Rewrite using `[dif_neg hx]`. Take `⟨S, hS_def⟩ : ∃ S : Submodule ℂ (FDSec (U σ).X), S = Submodule.span ℂ (rdU (U σ) '' (Cw : Set (Rul Xo c)))` from `⟨_, rfl⟩`.
+
+Establish `hS : ∀ P ∈ S, P ∈ holSub (U σ).X (laU (U σ) a n) ∧ (∀ k, ContinuousOn (P k) ((U σ).X k).dom) ∧ (∀ k, ∀ γ ∈ ((U σ).X k).Γ, ∀ x ∈ ((U σ).X k).dom, P k (lact γ x) = P k x) ∧ (∀ k x, x ∉ ((U σ).X k).dom → P k x = 0)`. Introduce `P hP`. Rewrite `hP` using `[hS_def]`. Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem P hP`.
+
+Take `⟨f, hf, rfl⟩` from `hP`. Conclude with `hgen f hf`. Consider the case `zero => exact ⟨Submodule.zero_mem _, fun k => continuousOn_const, fun _ _ _ _ _ => rfl, fun _ _ _ => rfl⟩`. Consider the case `add P Q _ _ hP hQ`. Use `⟨Submodule.add_mem _ hP.1 hQ.1, fun k => (hP.2.1 k).add (hQ.2.1 k), fun k γ hγ x hx => ?_, fun k x hx => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Pi.add_apply]`. Rewrite using `[hP.2.2.1 k γ hγ x hx, hQ.2.2.1 k γ hγ x hx]`. Simplify using `only [Pi.add_apply]`. Rewrite using `[hP.2.2.2 k x hx, hQ.2.2.2 k x hx, add_zero]`. Consider the case `smul z P _ hP`.
+
+Use `⟨Submodule.smul_mem _ z hP.1, fun k => (hP.2.1 k).const_smul z, fun k γ hγ x hx => ?_, fun k x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply]`. Rewrite using `[hP.2.2.1 k γ hγ x hx]`. Simplify using `only [Pi.smul_apply]`. Rewrite using `[hP.2.2.2 k x hx, smul_zero]`.
+
+Take `⟨hSfin, hSle⟩` from `finrank_le_of_sup (D.sp.W j) (dict σ) (laU (U σ) a n) (Nat.pos_of_ne_zero (by`. Use `l.three_le` as an intermediate fact. Use the proof step `omega)) hth hd hK hu S hS (supConst_nonneg _ _ _ _ _) fun P hP => hsup P (hS P hP).1`. Establish `hind : ∀ (m : ℕ) (b : Fin m → Rul Xo c), (∀ i, b i ∈ Cw) → LinearIndependent c.F b → LinearIndependent ℂ (fun i => rdU (U σ) (b i))` using `fun m b hb hli => (GlobalTheory.reading_linearIndependent_and_injective GlobalTheory.lawsFieldsSeparately.2.1 _ H Dw l Xo c σ _ (Formalism.L2.PjFree.Unf.ofPj (U σ)) ((Formalism.L2.PjFree.isUnf_ofPj _).2 hU) a n).1 m b (fun i => hsecOf _ (hb i)) hli`. Establish `hcard : ∀ s : Finset Cw, LinearIndependent c.F (fun i : s => (i : Cw)) → s.card ≤ finrank ℂ S`.
+
+Introduce `s hs`. Set `e : Fin s.card ≃ s` to `s.equivFin.symm`. Set `b : Fin s.card → Rul Xo c` to `fun i => ((e i : Cw) : Rul Xo c)`. Establish `hb : LinearIndependent c.F b` using `((hs.comp e e.injective).map' Cw.subtype (Submodule.ker_subtype _))`. Establish `hrd` using `hind s.card b (fun i => (e i : Cw).2) hb`.
+
+Set `v : Fin s.card → S` to `fun i => ⟨rdU (U σ) (b i), hS_def ▸ Submodule.subset_span ⟨b i, (e i : Cw).2, rfl⟩⟩`. Establish `hv : LinearIndependent ℂ v` using `LinearIndependent.of_comp S.subtype hrd`. Simplify using `using hv.fintype_card_le_finrank`. Use `haveI : Module.Free c.F Cw := Module.Free.of_divisionRing c.F Cw`. Establish `hrank : Module.rank c.F Cw ≤ ((finrank ℂ S : ℕ) : Cardinal)` using `rank_le hcard`.
+
+Establish `hfin : FiniteDimensional c.F Cw` using `Module.rank_lt_aleph0_iff.1 (lt_of_le_of_lt hrank (Cardinal.nat_lt_aleph0 _))`. Establish `h2 : finrank c.F Cw ≤ finrank ℂ S` using `finrank_le_of_rank_le hrank`. Use `⟨hfin, le_trans ?_ hSle⟩` and prove the remaining obligations. Conclude with `Nat.cast_le.2 h2`.
+-/
 theorem finrank_cuspW_le : GlobalTheory.UCls.MassBound → GlobalTheory.UCls.TorusBound → ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (dict : ∀ σ : c.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r), Laws D j Xo c U dict → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → FiniteDimensional c.F (cuspW Xo c U (wtZ a n)) ∧ (Module.finrank c.F (cuspW Xo c U (wtZ a n)) : ℝ) ≤ supConst D.host.E D.R.r D.host.d l.M (((absA Dw a : ℕ) : ℝ) + ((fdeg D.host.E * D.R.r * n : ℕ) : ℝ) + 1) := by
   intro hM hT D j H Dw l Xo c U dict hL a n hDom
   obtain ⟨σ, hσ⟩ : ∃ σ : c.F →+* ℂ, GoodEmb c σ := ⟨_, goodEmb_goodOf c c.F.val.toRingHom⟩

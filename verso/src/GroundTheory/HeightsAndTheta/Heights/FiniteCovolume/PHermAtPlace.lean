@@ -11,6 +11,9 @@ variable {F E : Type*} [Field F] [Field E] [NumberField F] [NumberField E] [Alge
   [Algebra.IsQuadraticExtension F E] [IsTotallyReal F] [IsTotallyComplex E]
 variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Introduce `w x y`. Rewrite using `[sesq_eq_sum h.toSesq v x y]`. Simplify using `only [map_sum, map_mul, embedding_conj, dotProduct, mulVec, gramAt, vecAt, Pi.star_apply, Matrix.map_apply, Finset.mul_sum, RCLike.star_def]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem HermAtPlace.proof (h : HermitianForm F E W) (v : Basis ι E W) :
     HermAtPlace.Statement h v := by
   intro w x y

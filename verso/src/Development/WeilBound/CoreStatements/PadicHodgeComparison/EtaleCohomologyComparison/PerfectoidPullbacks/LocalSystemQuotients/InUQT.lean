@@ -17,12 +17,18 @@ variable {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] [PerfectRing 
   {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) (ρ : O →+* k) {n : ℕ} (hn : n ≠ 0)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pt_qT (T : Thick (Wc.L l (B.schFn q) ρ (n + 1))) :
     pt (γ := Wc.pd l k n) (p := l) (q := q) (κ := (Wc.res l k n).comp ρ) (qT (F := B.schFn q) (ρ := ρ) hn T) =
       Spec.map (CommRingCat.ofHom (qe T)) ≫ pt (γ := Wc.pd l k (n + 1)) (p := l) (q := q) (κ := (Wc.res l k (n + 1)).comp ρ) T :=
   rfl
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Unfold `InU at hV ⊢`. Rewrite using `[pt_qT, Scheme.Hom.comp_preimage, top_le_iff.1 hV]`. Simplify using the standard rewrite rules.
+-/
 theorem inU_qT (T : Thick (Wc.L l (B.schFn q) ρ (n + 1))) {V : X.Opens}
     (hV : InU (γ := Wc.pd l k (n + 1)) (p := l) (q := q) (κ := (Wc.res l k (n + 1)).comp ρ) V T) :
     InU (γ := Wc.pd l k n) (p := l) (q := q) (κ := (Wc.res l k n).comp ρ) V (qT (F := B.schFn q) (ρ := ρ) hn T) := by
@@ -30,6 +36,9 @@ theorem inU_qT (T : Thick (Wc.L l (B.schFn q) ρ (n + 1))) {V : X.Opens}
   rw [pt_qT, Scheme.Hom.comp_preimage, top_le_iff.1 hV]
   simp
 
+/- English proof (translation)
+Take `⟨-, V, hV, hin⟩` from `T.property`. Conclude with `⟨((mq (F := B.schFn q) (ρ := ρ) hn).G.obj ⟨T.obj, T.property.1⟩).property, V, hV, inU_qT q ρ hn T.obj hin⟩`.
+-/
 theorem hGq (𝒱 : Set X.Opens) (T : (stF q ρ (n + 1) 𝒱).FullSubcategory) :
     stF q ρ n 𝒱 ((mq (F := B.schFn q) (ρ := ρ) hn).G.obj ⟨T.obj, T.property.1⟩).obj := by
   obtain ⟨-, V, hV, hin⟩ := T.property

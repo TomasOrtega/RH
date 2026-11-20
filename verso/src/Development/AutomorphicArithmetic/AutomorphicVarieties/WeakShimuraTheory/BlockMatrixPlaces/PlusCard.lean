@@ -2,6 +2,39 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Bl
 
+/- English proof (translation)
+Introduce `hFin hEul Ω _ _ _ l _ r M _ _ _ _ _ B v ρ hr hB hl hc P hP hs`. Set `ρP : Representation (ZMod (l ^ r)) (Dec (F` to `ℚ) B) P := { toFun := fun h => (ρ h).restrict (fun x hx => hP h x hx) map_one' := by`. Use extensionality with `x`. Simplify using the standard rewrite rules. Use the proof step `map_mul' := by`.
+
+Introduce `a b`. Use extensionality with `x`. Simplify using `}`. Establish `hρP : ∀ h (x : P), ((ρP h x : P) : M) = ρ h x` using `fun _ _ => rfl`. Establish `hcP : ContAction ρP`.
+
+Establish `h1 : Continuous fun p : Dec (F` using `ℚ) B × P => ρ p.1 (p.2 : M) := hc.comp (continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd))`. Conclude with `continuous_induced_rng.2 h1`. Take `⟨hH0, hH1, hH2, -⟩` from `hFin ℚ Ω l r P B ρP v hr hB hcP`. Establish `hE` using `(hEul ℚ Ω l r P B ρP v hr hB hcP).1 hl`. Establish `hdeg : 0 < locDeg v`.
+
+Unfold `locDeg`. Conclude with `Nat.mul_pos (Ideal.ramificationIdx_pos _ _) (Ideal.inertiaDeg_pos _ _)`. Establish `hle : Nat.card P ≤ Nat.card (H1 ρP)`. Rewrite using `[hE]`. Establish `a0 : 0 < Nat.card (H0 ρP)` using `Nat.card_pos`.
+
+Establish `a2 : 0 < Nat.card (H2 ρP)` using `Nat.card_pos`. Combine the equalities or inequalities in the displayed calculation. Establish `hu : Continuous (P.subtype : P → M)` using `continuous_subtype_val`. Establish `heq : ∀ (g : Dec (F` using `ℚ) B) (m : P), P.subtype (ρP g m) = ρ g (P.subtype m) := fun _ _ => rfl`. Set `φ` to `mapH1 ρP ρ P.subtype hu heq`.
+
+Take `⟨s, hsb⟩` from `hs`. Establish `hinj : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `w hw`. Proceed by induction on `w using Submodule.Quotient.induction_on with`.
+
+Consider the case `_ w`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Establish `hw' : (φ (Submodule.Quotient.mk w)) = 0` using `hw`. Simplify using `only [φ, mapH1, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype] at hw'`. Rewrite `hw'` using `[mem_coboundaries1]`.
+
+Take `⟨m, hm⟩` from `hw'`. Establish `hm' : ∀ g, ((w.1 g : P) : M) = ρ g m - m` using `fun g => hm g`. Establish `hmP : m ∈ P`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : ∃ q : P, ρP s q - q = w.1 s := by`. Establish `hinjP : Function.Injective fun q : P => ρP s q - q`.
+
+Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `hsb.1` to reduce the goal to its premises. Use `congrArg Subtype.val hab` as an intermediate fact. Simplify `this` using `[hρP]`.
+
+Conclude with `(Finite.injective_iff_surjective.1 hinjP) (w.1 s)`. Establish `h1 : ρ s (q : M) - q = ρ s m - m`. Use `congrArg Subtype.val hq` as an intermediate fact. Simplify using `only [AddSubgroupClass.coe_sub, hρP] at this`. Rewrite using `[this, hm' s]`.
+
+Use `hsb.1 h1` as an intermediate fact. Rewrite using `[← this]`. Conclude with `q.2`. Rewrite using `[Submodule.mem_comap, Submodule.coe_subtype, mem_coboundaries1]`. Use `⟨⟨m, hmP⟩, fun g => ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hm' g]`. Both sides reduce to the same expression. Use `⟨LinearMap.range φ, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce `z hz`. Take `⟨w, hw⟩` from `LinearMap.mem_range.1 hz`. Proceed by induction on `w using Submodule.Quotient.induction_on with`. Consider the case `_ w`. Simplify using `only [φ, mapH1, Submodule.mapQ_apply] at hw`.
+
+Rewrite `hw` using `[Submodule.Quotient.eq, Submodule.mem_comap, Submodule.coe_subtype, mem_coboundaries1]`. Take `⟨y, hy⟩` from `hw`. Use `⟨-y, fun h => ?_⟩` and prove the remaining obligations. Establish `h1` using `hy h`. Establish `h2 : ((cocycles1MapOfEquivariant ρP ρ P.subtype hu heq w : Z1 ρ) : _ → M) h = (w.1 h : M)` using `rfl`.
+
+Simplify using `only [Submodule.coe_sub, Pi.sub_apply, h2] at h1`. Establish `h3 : z.1 h - (ρ h (-y) - -y) = (w.1 h : M)`. Rewrite using `[map_neg]`. Rewrite `h1` using `[sub_eq_iff_eq_add]`. Rewrite using `[h1]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[h3]`. Conclude with `(w.1 h).2`.
+-/
 theorem UpperTheory.V.Ws.Bl.plusCard :
     LocalFiniteness → LocalEulerChar → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] (r : ℕ) (M : Type) [AddCommGroup M] [Module (ZMod (l ^ r)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M] (B : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 ℚ)) (ρ : Representation (ZMod (l ^ r)) (Dec (F := ℚ) B) M), 0 < r → IsPlaceOver B v → ((l : ℕ) : 𝓞 ℚ) ∈ v.asIdeal → ContAction ρ →
           ∀ P : Submodule (ZMod (l ^ r)) M, (∀ h, ∀ x ∈ P, ρ h x ∈ P) → (∃ s, Function.Bijective fun x => ρ s x - x) →

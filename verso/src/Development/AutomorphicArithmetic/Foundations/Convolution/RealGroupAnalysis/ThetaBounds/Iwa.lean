@@ -9,6 +9,15 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F _ _ _`. Take `⟨hK, hKc⟩` from `M.kkCpt F`. Take `⟨hB, e, he⟩` from `M.borHomeo F`. Use `⟨hKc, fun C hC => ?_⟩` and prove the remaining obligations. Establish `hemb : IsClosedEmbedding (Subtype.val : M.Bor F → G1 F)` using `hB.isClosedEmbedding_subtypeVal`.
+
+Establish `hS : IsCompact ((fun p : G1 F × G1 F => p.1 * p.2) '' (C ×ˢ KK F))` using `(hC.prod hKc).image continuous_mul`. Use `⟨Prod.fst '' (e.symm '' ((Subtype.val : M.Bor F → G1 F) ⁻¹' ((fun p : G1 F × G1 F => p.1 * p.2) '' (C ×ˢ KK F)))), ((hemb.isCompact_preimage hS).image e.symm.continuous).image continuous_fst, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨b, a, k, hk, rfl⟩` from `M.iwa F g`. Use `⟨b, a, ?_, k, hk, rfl⟩` and prove the remaining obligations. Use `⟨(a, b), ⟨e (a, b), ?_, e.symm_apply_apply _⟩, rfl⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `((e (a, b) : M.Bor F) : G1 F) ∈ (fun p : G1 F × G1 F => p.1 * p.2) '' (C ×ˢ KK F)`. Rewrite using `[he]`. Use `⟨(nU b * mD a * k, k⁻¹), ⟨hg, ?_⟩, by simp⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `k⁻¹ ∈ KK F`. Rewrite `hk`, the goal using `[hK]`.
+
+Conclude with `(M.Ks F).inv_mem hk`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.iwa :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], Iwa F := by
   intro F _ _ _

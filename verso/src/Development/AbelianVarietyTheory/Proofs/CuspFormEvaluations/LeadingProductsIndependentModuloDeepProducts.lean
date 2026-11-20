@@ -18,6 +18,13 @@ open ReciprocityTheory.ChartRestriction.G.AR ReciprocityTheory.L2DbarEstimates T
 
 namespace GlobalTheory.Shares.LeadDeep
 
+/- English proof (translation)
+Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨α, f, hα, hf, rfl⟩` from `hg`. Establish `h1` using `GlobalTheory.JetsPure.monomial_isBigO (fun k z => s k (φ z)) (fun k => (hs k).differentiableAt (hU.mem_nhds h0U)) (fun k => by simp only [hφ0, hs0]) α`. Establish `h2 : (fun z => f (φ z)) =O[𝓝 (0 : V D)] (fun _ => (1 : ℝ))` using `Filter.Tendsto.isBigO_one ℝ (((hH f hf).differentiableAt (hU.mem_nhds h0U)).continuousAt)`.
+
+Establish `h3` using `h1.mul h2`. Rewrite `h3` using `[hα]`. Simplify `h3` using `[Finset.prod_apply]`. Consider the case `zero => simpa using Asymptotics.isBigO_zero (fun z : V D => ‖z‖ ^ a) (𝓝 (0 : V D))`. Consider the case `add x y _ _ hx hy => simpa using hx.add hy`.
+
+Consider the case `smul r x _ hx => simpa using hx.const_mul_left r`.
+-/
 private theorem isBigO_norm_pow_of_mem_span_monomial_mul {Y : Type} {D : ℕ} (a : ℕ) (x : Y) (s : Fin D → Y → ℂ) (H : Set (Y → ℂ))
     (φ : V D → Y) (U : Set (V D)) (hU : IsOpen U) (h0U : (0 : V D) ∈ U) (hφ0 : φ 0 = x)
     (hs : ∀ k, DifferentiableOn ℂ (fun z => s k (φ z)) U)
@@ -39,6 +46,15 @@ private theorem isBigO_norm_pow_of_mem_span_monomial_mul {Y : Type} {D : ℕ} (a
   | add x y _ _ hx hy => simpa using hx.add hy
   | smul r x _ hx => simpa using hx.const_mul_left r
 
+/- English proof (translation)
+Set `p : MvPolynomial (Fin D) ℂ` to `∑ α ∈ M, MvPolynomial.monomial (Finsupp.equivFunOnFinite.symm α) (A α)`. Establish `hp : p = 0`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `y`. Simplify using `only [p, map_sum, MvPolynomial.eval_monomial, map_zero]`.
+
+Rewrite using `[← h y]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.prod_fintype _ _ (fun i => pow_zero _)]`. Simplify using the standard rewrite rules. Introduce `α hα`.
+
+Establish `h1` using `congrArg (MvPolynomial.coeff (Finsupp.equivFunOnFinite.symm α)) hp`. Simplify using `only [p, MvPolynomial.coeff_sum, MvPolynomial.coeff_monomial, MvPolynomial.coeff_zero] at h1`. Rewrite `h1` using `[Finset.sum_eq_single α]`. Simplify using `using h1`. Introduce `β _ hβα`.
+
+Rewrite using `[if_neg]`. Introduce `h'`. Conclude with `hβα (Finsupp.equivFunOnFinite.symm.injective h')`. Introduce `h'`. Conclude with `absurd hα h'`.
+-/
 private theorem coeff_lemma_3 {D : ℕ} (M : Finset (Fin D → ℕ)) (A : (Fin D → ℕ) → ℂ)
     (h : ∀ y : Fin D → ℂ, ∑ α ∈ M, A α * ∏ q, y q ^ α q = 0) : ∀ α ∈ M, A α = 0 := by
   classical
@@ -64,6 +80,15 @@ private theorem coeff_lemma_3 {D : ℕ} (M : Finset (Fin D → ℕ)) (A : (Fin D
   · intro h'
     exact absurd hα h'
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `(isBigO_norm_pow_of_mem_span_monomial_mul a x s H φ U hU h0U hφ0 hs hH hs0 _ hmem).bound`. Establish `hb : ∃ C : ℝ, ∀ᶠ v in 𝓝 (0 : V D), ‖∑ α ∈ multiLt D a, ∑ k, c α k * (∏ q, s q (φ v) ^ α q) * w0 (φ v) ^ (T - ∑ q, α q) * θ k (φ v)‖ ≤ C * ‖v - 0‖ ^ a` using `⟨C, by filter_upwards [hC] with v hv; simpa only [sub_zero, norm_pow, norm_norm] using hv⟩`. Establish `hL` using `GlobalTheory.LeadIndep.lowest_degree U hU 0 h0U (fun k z => s k (φ z)) (fun z => w0 (φ z)) (fun k z => θ k (φ z)) (multiLt D a) T a d c hs hw hθ (fun k => by simp only [hφ0, hs0]) (by simpa only [hφ0] using hw0) hlow hda hb`. Simplify using `only [hφ0] at hL`. Establish `hsurj : Function.Surjective (fderiv ℂ (fun z => (WithLp.toLp 2 fun k => s k (φ z) / w0 (φ z) : V D)) 0)`.
+
+Establish `hu : IsUnit ((fderiv ℂ (fun z => (WithLp.toLp 2 fun k => s k (φ z) / w0 (φ z) : V D)) 0 : V D →L[ℂ] V D) : V D →ₗ[ℂ] V D)` using `(LinearMap.isUnit_iff_isUnit_det _).mpr (isUnit_iff_ne_zero.mpr hdet)`. Conclude with `((Module.End.isUnit_iff _).mp hu).2`. Establish `hpoly : ∀ y : Fin D → ℂ, ∑ α ∈ multiLt D a, ((∑ k, c α k * θ k x) * 0 ^ (∑ q, α q - d) * w0 x ^ (∑ q, α q + (T - ∑ q, α q))) * ∏ q, y q ^ α q = 0`. Introduce `y`. Take `⟨h0, hh0⟩` from `hsurj (WithLp.toLp 2 y)`.
+
+Establish `h1` using `hL h0`. Rewrite `h1` using `[hh0]`. Simplify `h1` using `only [PiLp.toLp_apply]`. Establish `hA` using `coeff_lemma_3 _ _ hpoly`. Introduce `α hα hαd`.
+
+Establish `h2` using `hA α hα`. Rewrite `h2` using `[hαd, Nat.sub_self, pow_zero, mul_one]`. Conclude with `(mul_eq_zero.mp h2).resolve_right (pow_ne_zero _ hw0)`.
+-/
 private theorem gs_id_linComb_eq_trF_mul_sval {Y : Type} {D m : ℕ} (T a d : ℕ) (x : Y) (s : Fin D → Y → ℂ) (w0 : Y → ℂ)
     (θ : Fin m → Y → ℂ) (H : Set (Y → ℂ)) (φ : V D → Y) (U : Set (V D)) (hU : IsOpen U)
     (h0U : (0 : V D) ∈ U) (hφ0 : φ 0 = x)
@@ -105,6 +130,17 @@ private theorem gs_id_linComb_eq_trF_mul_sval {Y : Type} {D m : ℕ} (T a d : �
   rw [hαd, Nat.sub_self, pow_zero, mul_one] at h2
   exact (mul_eq_zero.mp h2).resolve_right (pow_ne_zero _ hw0)
 
+/- English proof (translation)
+Establish `key : ∀ d, ∀ α ∈ multiLt D a, ∑ q, α q = d → ∀ k, c α k = 0`. Introduce `d`. Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`. Introduce `α hα hαd`.
+
+Establish `hda : d < a` using `by rw [← hαd]; exact GlobalTheory.LeadIndep.mem_multiLt.mp hα`. Establish `hlow : ∀ β ∈ multiLt D a, ∀ k, c β k ≠ 0 → d ≤ ∑ q, β q`. Introduce `β hβ k hc`. Assume the negation of the conclusion as `hlt`. Conclude with `hc (ih _ (not_le.mp hlt) β hβ rfl k)`.
+
+Establish `hz : ∀ q, ∑ k, c α k * θ k (xs q) = 0`. Introduce `q`. Take `⟨n, hn, φ, U, hU, h0U, hφ0, hs, hw, hθ', hH', hs0, hw0, hdet⟩` from `hch q`. Substitute `hn` using the available equality. Conclude with `gs_id_linComb_eq_trF_mul_sval T a d (xs q) s w0 θ H φ U hU h0U hφ0 hs hw hθ' hH' hs0 hw0 (by simpa only [Fin.cast_eq_self] using hdet) c hlow hda hmem α hα hαd`.
+
+Establish `hsum : ∑ k, c α k • vals xs θ k = 0`. Use function extensionality and compare the values at `q`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, vals, Pi.zero_apply]`. Conclude with `hz q`. Conclude with `Fintype.linearIndependent_iff.mp hθ (c α) hsum`.
+
+Introduce `α hα k`. Conclude with `key _ α hα rfl k`.
+-/
 theorem coeff_eq_zero {Y : Type} {δ D m : ℕ} (T a : ℕ) (xs : Fin δ → Y) (s : Fin D → Y → ℂ) (w0 : Y → ℂ)
     (θ : Fin m → Y → ℂ) (H : Set (Y → ℂ))
     (hch : ∀ q, ∃ (n : ℕ) (hn : n = D) (φ : V n → Y) (U : Set (V n)), IsOpen U ∧ 0 ∈ U ∧ φ 0 = xs q ∧
@@ -141,6 +177,15 @@ theorem coeff_eq_zero {Y : Type} {δ D m : ℕ} (T a : ℕ) (xs : Fin δ → Y) 
   intro α hα k
   exact key _ α hα rfl k
 
+/- English proof (translation)
+Use `haveI : Fintype {α : Fin D → ℕ // ∑ i, α i < a} := Fintype.subtype (multiLt D a) (fun α => GlobalTheory.LeadIndep.mem_multiLt)`. Establish `key : ∀ g : {α : Fin D → ℕ // ∑ i, α i < a} × Fin m → ℂ, (∑ p, g p • ((∏ i, s i ^ p.1.1 i) * w0 ^ (T - ∑ i, p.1.1 i) * θ p.2)) ∈ Submodule.span ℂ {g | ∃ (α : Fin D → ℕ) (f : Y → ℂ), ∑ i, α i = a ∧ f ∈ H ∧ g = (∏ i, s i ^ α i) * f} → ∀ p, g p = 0`. Introduce `g hg p`. Establish `h1` using `coeff_eq_zero T a xs s w0 θ H hch hθ (fun α k => if h : ∑ i, α i < a then g (⟨α, h⟩, k) else 0) (by`. Use `hg using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `y`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.mul_apply, Finset.prod_apply, Pi.pow_apply]`. Rewrite using `[Finset.sum_subtype (multiLt D a) (fun α => GlobalTheory.LeadIndep.mem_multiLt), Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[dif_pos i.2]`.
+
+Use the proof step `ring)`. Use the proof step `p.1.1 (GlobalTheory.LeadIndep.mem_multiLt.mpr p.1.2) p.2`. Simplify `h1` using `[p.1.2]`. Use `⟨Fintype.linearIndependent_iff.mpr fun g hg => key g (hg ▸ Submodule.zero_mem _), ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.disjoint_def]`.
+
+Introduce `x hx hx'`. Take `⟨g, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).mp hx`. Establish `h2` using `key g hx'`. Simplify using `[h2]`.
+-/
 theorem indep_disjoint {Y : Type} {δ D m : ℕ} (T a : ℕ) (xs : Fin δ → Y) (s : Fin D → Y → ℂ) (w0 : Y → ℂ)
     (θ : Fin m → Y → ℂ) (H : Set (Y → ℂ))
     (hch : ∀ q, ∃ (n : ℕ) (hn : n = D) (φ : V n → Y) (U : Set (V n)), IsOpen U ∧ 0 ∈ U ∧ φ 0 = xs q ∧
@@ -183,6 +228,31 @@ theorem indep_disjoint {Y : Type} {δ D m : ℕ} (T a : ℕ) (xs : Fin δ → Y)
   have h2 := key g hx'
   simp [h2]
 
+/- English proof (translation)
+Introduce `D T h j hj n R e hR N wL wF w Tn c1 A t Fl δ xs en hxs m θ hθ hli`. Establish `hSS : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) la c (P : Frame X.Ψ r → ℂ), P ∈ X.SSgt la c → DifferentiableOn ℂ P X.dom`. Introduce `E _ _ _ r X la c P hP`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.Data.SSgt, ReciprocityTheory.ChartRestriction.G.FD.Data.SS, ReciprocityTheory.ChartRestriction.G.FD.Data.IsBddSec, ReciprocityTheory.ChartRestriction.G.FD.Data.IsSec, Set.mem_ofPred_eq] at hP`. Conclude with `hP.1.1.1.1`.
+
+Establish `hspan` using `span_readings_components D T h j hj n R e hR`. Establish `hRs : ∀ i' y, R.s w t i' y = ∑ l, t (i', l) * rdR h j (w l) (e y).1 (e y).2.1`. Introduce `i' y`. Simplify using `only [Rdg.s, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hR.2]`. Establish `hsmem : ∀ i', R.s w t i' ∈ R.sp wL Set.univ`.
+
+Introduce `i'`. Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨w l, Set.mem_univ _, rfl⟩)`. Use `indep_disjoint Tn (a0 D j Tn) xs (fun i => R.s w t i.succ) (R.s w t 0) θ (R.sp _ Set.univ) (fun q => ?_) hli` and prove the remaining obligations. Break down `hq : en q with ⟨k, i⟩` into its components or cases. Establish `hx` using `hxs q`.
+
+Rewrite `hx` using `[hq]`. Establish `hx0 : (Fl.Fl k).xs i ∈ ((T.U j T.σ₀).X k).dom` using `(Fl.Fl k).xs_mem i`. Set `φ : V (nd ((T.U j T.σ₀).X k)) → R.Y` to `fun z => if hz : cpt ((T.U j T.σ₀).X k) ((Fl.Fl k).xs i) z ∈ ((T.U j T.σ₀).X k).dom then e.symm ⟨k, ⟨cpt ((T.U j T.σ₀).X k) ((Fl.Fl k).xs i) z, hz⟩⟩ else xs q`. Set `U : Set (V (nd ((T.U j T.σ₀).X k)))` to `cpt ((T.U j T.σ₀).X k) ((Fl.Fl k).xs i) ⁻¹' ((T.U j T.σ₀).X k).dom`. Establish `hU : IsOpen U` using `(FourierCoefficientDomain.isOpen_dom _).preimage (IW.cpt_diff _ _).continuous`.
+
+Establish `h0U : (0 : V (nd ((T.U j T.σ₀).X k))) ∈ U`. Simplify using `only [U, Set.mem_preimage, IW.cpt_zero]`. Conclude with `hx0`. Establish `heφ : ∀ z (hz : z ∈ U), e (φ z) = ⟨k, ⟨cpt ((T.U j T.σ₀).X k) ((Fl.Fl k).xs i) z, hz⟩⟩`. Introduce `z hz`.
+
+Simplify using `only [φ, dif_pos (show cpt ((T.U j T.σ₀).X k) ((Fl.Fl k).xs i) z ∈ ((T.U j T.σ₀).X k).dom from hz), Equiv.apply_symm_apply]`. Establish `hφ0 : φ 0 = xs q`. Establish `h0 : cpt ((T.U j T.σ₀).X k) ((Fl.Fl k).xs i) 0 ∈ ((T.U j T.σ₀).X k).dom` using `h0U`. Simplify using `only [φ, dif_pos h0]`. Rewrite using `[Equiv.symm_apply_eq, hx]`.
+
+Conclude with `Sigma.ext rfl (heq_of_eq (Subtype.ext (IW.cpt_zero _ _)))`. Establish `hdg : ∀ u (g : R.Y → ℂ), g ∈ R.sp u Set.univ → DifferentiableOn ℂ (fun z => g (φ z)) U`. Introduce `u g hg`. Take `⟨f, hf, hgf⟩` from `(hspan u).1 g hg`. Use `((hSS _ _ _ _ _ _ (hf k)).comp (IW.cpt_diff _ _).differentiableOn (fun z hz => hz)).congr ?_` and prove the remaining obligations.
+
+Introduce `z hz`. Use `show g (φ z) = f k (cpt ((T.U j T.σ₀).X k) ((Fl.Fl k).xs i) z)`. Rewrite using `[hgf, heφ z hz]`. Establish `hseq : ∀ z ∈ U, ∀ a, R.s w t (Fin.cast (A.dim k) a).succ (φ z) = (Fl.Fl k).s a (cpt ((T.U j T.σ₀).X k) ((Fl.Fl k).xs i) z)`. Introduce `z hz a`.
+
+Rewrite using `[hRs, heφ z hz, Fl.hs]`. Establish `hw0eq : ∀ z ∈ U, R.s w t 0 (φ z) = (Fl.Fl k).w0 (cpt ((T.U j T.σ₀).X k) ((Fl.Fl k).xs i) z)`. Introduce `z hz`. Rewrite using `[hRs, heφ z hz, Fl.h0]`. Use `⟨nd ((T.U j T.σ₀).X k), A.dim k, φ, U, hU, h0U, hφ0, fun k' => hdg _ _ (hsmem _), hdg _ _ (hsmem 0), fun i' => hdg _ _ (hθ i'), fun f hf => hdg _ f hf, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `k'`. Establish `h1` using `hseq 0 h0U (Fin.cast (A.dim k).symm k')`. Simplify using `only [Fin.cast_cast, Fin.cast_eq_self, hφ0, IW.cpt_zero] at h1`. Rewrite using `[h1]`. Conclude with `DivLC.s_xs_zero ((T.U j T.σ₀).X k) (Fl.Fl k) i _`.
+
+Establish `h1` using `hw0eq 0 h0U`. Rewrite `h1` using `[hφ0, IW.cpt_zero]`. Rewrite using `[h1]`. Conclude with `(Fl.Fl k).w0_ne i`. Establish `hev : (fun z => (WithLp.toLp 2 fun a => (fun i => R.s w t i.succ) (Fin.cast (A.dim k) a) (φ z) / R.s w t 0 (φ z) : V (nd ((T.U j T.σ₀).X k)))) =ᶠ[𝓝 0] (fun z => (WithLp.toLp 2 fun a => (Fl.Fl k).s a (cpt ((T.U j T.σ₀).X k) ((Fl.Fl k).xs i) z) / (Fl.Fl k).w0 (cpt ((T.U j T.σ₀).X k …` using `by filter_upwards [hU.mem_nhds h0U] with z hz`.
+
+Simplify using `only [hseq z hz, hw0eq z hz]`. Rewrite using `[hev.fderiv_eq]`. Conclude with `(Fl.Fl k).coord i`.
+-/
 theorem main : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (n : SecNorm (recB h.toLawsCore)) (R : Rdg (recPlusN h j hj n)) (e : R.Y ≃ DomPt T j), IsRdgU h j hj n R e → ∀ (N : ℕ) (wL wF : WeightFamilies.Wt D j) (w : Fin N → (recB h.toLawsCore).Cusp j wL) (Tn : ℕ) (c1 : ℝ) (A : ArchAt h j w wF Tn c1) (t : Idx D j N → ℂ) (Fl : FlatAt h j A t) (δ : ℕ) (xs : Fin δ → R.Y) (en : Fin δ ≃ Σ k : (T.U j T.σ₀).Comp, Fin (Fl.Fl k).δ), (∀ q, e (xs q) = ⟨(en q).1, ⟨(Fl.Fl (en q).1).xs (en q).2, (Fl.Fl (en q).1).xs_mem _⟩⟩) → ∀ (m : ℕ) (θ : Fin m → R.Y → ℂ), (∀ i, θ i ∈ R.sp wF Set.univ) → LinearIndependent ℂ (vals xs θ) → LinearIndependent ℂ (R.lead w t Tn (a0 D j Tn) θ) ∧ Disjoint (Submodule.span ℂ (Set.range (R.lead w t Tn (a0 D j Tn) θ))) (R.deep w t ((recPlusN h j hj n).wF0 wL wF) (a0 D j Tn)) := by
   classical
   intro D T h j hj n R e hR N wL wF w Tn c1 A t Fl δ xs en hxs m θ hθ hli

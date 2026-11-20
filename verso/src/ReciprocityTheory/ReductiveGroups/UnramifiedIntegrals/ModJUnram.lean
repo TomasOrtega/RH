@@ -12,6 +12,9 @@ open NumberField IsDedekindDomain Formalism.L2.Th1.CM Neutral.HilbertClassField
 
 namespace ReciprocityTheory.ChartRestriction.L1
 
+/- English proof (translation)
+Introduce `d L hsf hd hL l _ hl hld ι`. Take `⟨x, hx, -⟩` from `exists_Om d (cm1 d L hsf hd hL)`. Rewrite using `[← hx]`. Conclude with `inertKur (by omega) hld ι x fun σ hσ => fixJ hH hC hsf hd hL x hx σ (inertiaEl_mem_hilbert hσ)`.
+-/
 theorem jUnram (hH : _root_.Neutral.HilbertClassField.Statement) (hC : ChebOmSt) : JUnram := by
   intro d L hsf hd hL l _ hl hld ι
   obtain ⟨x, hx, -⟩ := exists_Om d (cm1 d L hsf hd hL)

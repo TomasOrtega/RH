@@ -14,6 +14,9 @@ open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G Globa
 open scoped NNReal
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompHt.finrank_eigW_embInt_eq_mult | exact GlobalTheory.CompHt.finrank_eigW_embInt_eq_mult | (intros; apply GlobalTheory.CompHt.finrank_eigW_embInt_eq_mult <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.pdiv_point_valuation_property : GlobalTheory.CovTop.Hypotheses2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C ℝ≥0) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)]

@@ -14,8 +14,14 @@ def apL : List ι → P →ₗ[R] P
   | [] => LinearMap.id
   | i :: T => apL T ∘ₗ (δ i).toLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem apL_nil (M : P) : apL δ [] M = M := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem apL_cons (i : ι) (T : List ι) (M : P) : apL δ (i :: T) M = apL δ T (δ i M) := rfl
 
 def Fil (a : ℕ) : Submodule R P where

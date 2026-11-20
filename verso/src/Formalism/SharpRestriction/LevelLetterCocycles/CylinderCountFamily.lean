@@ -88,8 +88,14 @@ def AllRows.toAt {D : D7} (A : AllRows D) : AllRowsAt D D.what₂.Dall D.what₂
   ReT_univ := A.ReT_univ
   eT_one := A.eT_one
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.1, h.2.2.2⟩`.
+-/
 theorem labelCountSpace_toAt_of_labelCountGoodInjective {D : D7} (A : AllRows D) (h : LabelCountGoodInjective A) : LabelCountSpace A.toAt := ⟨h.1, h.2.1, h.2.2.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.1, labelCountSpace_toAt_of_labelCountGoodInjective A h.2.2.2.2.1, h.2.2.2.2.2.1, h.2.2.2.2.2.2⟩`.
+-/
 theorem admissibleDeficitAt_toAt_of_adm2 {D : D7} (A : AllRows D) {n₀ : ℕ} {Alev C₃ c₃ cb CL : ℝ} (h : Adm2 D A n₀ Alev C₃ c₃ cb CL) :
     Adm2At D A.toAt n₀ Alev C₃ c₃ cb CL := ⟨h.1, h.2.1, labelCountSpace_toAt_of_labelCountGoodInjective A h.2.2.2.2.1, h.2.2.2.2.2.1, h.2.2.2.2.2.2⟩
 
@@ -99,6 +105,51 @@ namespace Formalism.MainNotions.N.CylinderCountFamily
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.ArithmeticCylinders Formalism.MainNotions.FamilyNumericLemmas Filter Topology Polynomial
 
+/- English proof (translation)
+Take `⟨h1, hL, ⟨hT3a, hinj, hgood⟩, ⟨b, hh, hSC, hgap, hC, hf, hb, hpos⟩, -⟩` from `h`. Establish `hcount : ∀ (k : Fin 2) (S : Set (Tup D k)), |(A.dimT (cyl D k S) : ℝ) - A.B.I.Dstar (Formalism.MainNotions.PlaceDegreeData.fdegAll A.B.I A.B.σ A.B.w) A.B.μf A.B.fund (A.eT (cyl D k S))| ≤ Real.exp (-c₃ * (A.B.I.n : ℝ) * (A.B.I.f : ℝ) * Real.log (A.B.I.n : ℝ)) * A.B.I.Dstar (Forma …` using `fun k S => h1 A.B.I b A.B.lam A.B.g (D.host.g (1 - k)) (A.eT (cyl D k S)) A.B.H A.B.σ A.B.w A.B.Hs A.B.σs A.B.tens A.B.μf A.B.fund A.B.R (A.ReT (cyl D k S)) hh (hSC k S).1 (hSC k S).2 hgap hC hf hb`. Use `set dS := A.B.I.Dstar (Formalism.MainNotions.PlaceDegreeData.fdegAll A.B.I A.B.σ A.B.w) A.B.μf A.B.fund A.B.e with hdS`. Use `set ε := Real.exp (-c₃ * (A.B.I.n : ℝ) * (A.B.I.f : ℝ) * Real.log (A.B.I.n : ℝ)) with hε`. Establish `hDS : ∀ (k : Fin 2) (S : Finset (Tup D k)), A.B.I.Dstar (Formalism.MainNotions.PlaceDegreeData.fdegAll A.B.I A.B.σ A.B.w) A.B.μf A.B.fund (A.eT (cyl D k (S : Set (Tup D k)))) = dS * locShare D A.eVec k S`.
+
+Introduce `k S`. Simplify using `only [hdS, Formalism.MainNotions.S.AutInst.Dstar, locShare]`. Rewrite using `[A.eT_one k S]`. Expand and normalize the polynomial expressions, which then agree. Establish `hn : (6 : ℝ) ≤ (A.B.I.n : ℝ)`.
+
+Rewrite using `[A.n_eq]`. Conclude with `Formalism.MainNotions.N.CuspidalLatticeIdempotents.r_ge_six D` after adjusting the coercions. Establish `hf1 : (1 : ℝ) ≤ (A.B.I.f : ℝ)`. Rewrite using `[A.f_eq]`. Establish `: 1 ≤ D.R.f` using `by show 1 ≤ 2 * D.R.ord`.
+
+Use `D.R.ord_pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions. Establish `hlog6 : Real.log 6 ≤ Real.log (A.B.I.n : ℝ)` using `Real.log_le_log (by norm_num) hn`. Establish `hlog6p : 0 < Real.log 6` using `Real.log_pos (by norm_num)`.
+
+Establish `hεle : ε ≤ Real.exp (-(c₃ * Real.log 6))`. Rewrite using `[hε]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `hnf : (1 : ℝ) ≤ (A.B.I.n : ℝ) * (A.B.I.f : ℝ)` using `by nlinarith`. Establish `: Real.log 6 ≤ (A.B.I.n : ℝ) * (A.B.I.f : ℝ) * Real.log (A.B.I.n : ℝ)` using `by nlinarith`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hε0 : 0 ≤ ε` using `(Real.exp_pos _).le`. Establish `hε1 : ε < 1` using `lt_of_le_of_lt hεle (exp_neg_log_six_lt_one hc)`. Establish `hdimU : A.dimT (cyl D 0 Set.univ) = Dall`. Rewrite using `[hT3a]`.
+
+Establish `hall : ∀ τ : Fin Dall, (fun k => A.labAll k τ) ∈ cyl D 0 Set.univ` using `fun τ => by simp [cyl]`. Rewrite using `[Nat.card_congr (Equiv.subtypeUnivEquiv hall), Nat.card_eq_fintype_card, Fintype.card_fin]`. Establish `hU` using `hcount 0 Set.univ`. Rewrite `hU` using `[hdimU, cyl_univ, A.eT_univ]`. Establish `hDall : (1 - ε) * dS ≤ (Dall : ℝ)`.
+
+Use `(abs_le.mp hU).1` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hDallpos : 0 < (Dall : ℝ)` using `lt_of_lt_of_le (mul_pos (by linarith) hpos) hDall`. Set `Sk : (k : Fin 2) → Finset (Tup D k)` to `fun k => (Finset.univ.filter fun τ : Fin Dall => ¬ goodAt D k (A.labAll k τ)).image fun τ => A.labAll k τ`. Establish `hSk : ∀ k, ∀ t ∈ Sk k, ¬ goodAt D k t`.
+
+Introduce `k t ht`. Take `⟨τ, hτ, rfl⟩` from `Finset.mem_image.mp ht`. Conclude with `(Finset.mem_filter.mp hτ).2`. Establish `hmem : ∀ (k : Fin 2) (τ : Fin Dall), (fun k => A.labAll k τ) ∈ cyl D k ((Sk k : Finset (Tup D k)) : Set (Tup D k)) ↔ ¬ goodAt D k (A.labAll k τ)`. Introduce `k τ`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hτ`. Conclude with `hSk k _ hτ`. Introduce `hτ show A.labAll k τ ∈ ((Sk k : Finset (Tup D k)) : Set (Tup D k))`. Conclude with `Finset.mem_coe.mpr (Finset.mem_image.mpr ⟨τ, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hτ⟩, rfl⟩)`.
+
+Establish `hdimK : ∀ k, A.dimT (cyl D k ((Sk k : Finset (Tup D k)) : Set (Tup D k))) = (Finset.univ.filter fun τ : Fin Dall => ¬ goodAt D k (A.labAll k τ)).card`. Introduce `k`. Rewrite using `[hT3a, ← Nat.card_eq_finsetCard]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight (fun τ => by rw [hmem k τ]; simp))`. Establish `hDrows : (Finset.univ.filter fun τ : Fin Dall => D.ntypes.goodTuple (fun k => A.labAll k τ)).card = Dgood`.
+
+Establish `: (Finset.univ.filter fun τ : Fin Dall => D.ntypes.goodTuple (fun k => A.labAll k τ)) = Finset.univ.image A.inc`. Use extensionality with `τ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image]`. Rewrite using `[hgood τ]`. Simplify using `[Set.mem_range]`.
+
+Rewrite using `[this, Finset.card_image_of_injective _ hinj, Finset.card_univ, Fintype.card_fin]`. Establish `hbad : Dall - Dgood ≤ (Finset.univ.filter fun τ : Fin Dall => ¬ goodAt D 0 (A.labAll 0 τ)).card + (Finset.univ.filter fun τ : Fin Dall => ¬ goodAt D 1 (A.labAll 1 τ)).card`. Establish `hsub : (Finset.univ : Finset (Fin Dall)) ⊆ ((Finset.univ.filter fun τ : Fin Dall => D.ntypes.goodTuple (fun k => A.labAll k τ)) ∪ (Finset.univ.filter fun τ : Fin Dall => ¬ goodAt D 0 (A.labAll 0 τ))) ∪ (Finset.univ.filter fun τ : Fin Dall => ¬ goodAt D 1 (A.labAll 1 τ))`. Introduce `τ _`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union]`.
+
+Distinguish the cases in `hg : D.ntypes.goodTuple (fun k => A.labAll k τ)`. Conclude with `Or.inl (Or.inl hg)`. Assume the negation of the conclusion as `hc push_neg at hc`. Apply `hg` to reduce the goal to its premises. Introduce `k`.
+
+Use `fin_cases k`. Conclude with `hc.1.2`. Conclude with `hc.2`. Use `(Finset.card_le_card hsub).trans ((Finset.card_union_le _ _).trans (Nat.add_le_add_right (Finset.card_union_le _ _) _))` as an intermediate fact. Rewrite `this` using `[Finset.card_univ, Fintype.card_fin, hDrows]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hK : ∀ k, ((Finset.univ.filter fun τ : Fin Dall => ¬ goodAt D k (A.labAll k τ)).card : ℝ) ≤ (1 + ε) * (dS * locShare D A.eVec k (Sk k))`. Introduce `k`. Establish `h` using `hcount k ((Sk k : Finset (Tup D k)) : Set (Tup D k))`. Rewrite `h` using `[hdimK k, hDS k (Sk k)]`.
+
+Use `(abs_le.mp h).2` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use `⟨Sk 0, Sk 1, hSk 0, hSk 1, ?_⟩` and prove the remaining obligations. Establish `hl0` using `locShare_nonneg D A.eVec CL hL 0 (Sk 0)`. Establish `hl1` using `locShare_nonneg D A.eVec CL hL 1 (Sk 1)`.
+
+Use `set L := locShare D A.eVec 0 (Sk 0) + locShare D A.eVec 1 (Sk 1) with hLdef`. Establish `hL0 : 0 ≤ L` using `by linarith`. Establish `hDle : Dgood ≤ Dall`. Rewrite using `[← hDrows]; exact (Finset.card_filter_le _ _).trans (by simp)`. Establish `hbadR : (Dall : ℝ) - (Dgood : ℝ) ≤ (1 + ε) * dS * L`.
+
+Establish `hcast : ((Dall - Dgood : ℕ) : ℝ) = (Dall : ℝ) - (Dgood : ℝ)`. Move the coercions through the operations in `[hDle]`. Expand and normalize the polynomial expressions, which then agree. Establish `hb : ((Dall - Dgood : ℕ) : ℝ) ≤ ((Finset.univ.filter fun τ : Fin Dall => ¬ goodAt D 0 (A.labAll 0 τ)).card : ℝ) + ((Finset.univ.filter fun τ : Fin Dall => ¬ goodAt D 1 (A.labAll 1 τ)).card : ℝ)`. Conclude with `hbad` after adjusting the coercions.
+
+Rewrite `hb` using `[hcast]`. Use `hK 0` as an intermediate fact. Use `hK 1` as an intermediate fact. Rewrite using `[hLdef]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hkf` using `kF_mul hc`. Establish `hkf0` using `kF_nonneg hc`. Establish `hstep : (1 + ε) * dS * L ≤ kF c₃ * L * (Dall : ℝ)`. Establish `h1' : (1 + ε) ≤ kF c₃ * (1 - ε)` using `by nlinarith`. Establish `h2' : kF c₃ * L * ((1 - ε) * dS) ≤ kF c₃ * L * (Dall : ℝ)` using `mul_le_mul_of_nonneg_left hDall (mul_nonneg hkf0 hL0)`.
+
+Establish `h3` using `mul_le_mul_of_nonneg_right h1' (mul_nonneg hpos.le hL0)`. Combine the equalities or inequalities in the displayed calculation. Establish `hfin : (Dall : ℝ) - (Dgood : ℝ) ≤ kF c₃ * L * (Dall : ℝ)` using `by linarith`. Conclude with `hfin`.
+-/
 theorem badAt_le (D : D7) {Dall Dgood : ℕ} (A : AllRowsAt D Dall Dgood) (n₀ : ℕ) (Alev C₃ c₃ cb CL : ℝ) (hc : 0 < c₃)
     (h : Adm2At D A n₀ Alev C₃ c₃ cb CL) :
     ∃ (S0 : Finset (Tup D 0)) (S1 : Finset (Tup D 1)), (∀ t ∈ S0, ¬ goodAt D 0 t) ∧ (∀ t ∈ S1, ¬ goodAt D 1 t) ∧
@@ -254,6 +305,19 @@ def LocU {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (J : ∀ x, Fm.Ix x �
       ∃ C c : ℝ, 0 < c ∧ ∃ o : ℝ → ℝ, Tendsto o atTop (𝓝 0) ∧
         ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (i : Fm.Ix x) (ι : J x i), LocalShareBound (Fm.D x i) (A x i ι).eVec C c (o x)
 
+/- English proof (translation)
+Unfold `FamilyDeficitTheorem`. Introduce `n₀ Alev C₃ c₃ cb CL x₂ hc hAdm hO`. Take `⟨C, c, hc0, o, ho, x0, hx0⟩` from `hL CL x₂ (fun x hx i ι => ⟨(hAdm x hx i ι).2.1, (hAdm x hx i ι).2.2.2.2⟩) hO`. Establish `hk` using `Formalism.MainNotions.FamilyNumericLemmas.kF_nonneg hc`. Establish `key : ∀ x ≥ max x0 x₂, ∀ (i : Fm.Ix x) (ι : J x i), (Dall x i ι : ℝ) - Dgood x i ι ≤ (kF c₃ * (2 * C)) * br2 (Fm.D x i) c (o x) * Dall x i ι`.
+
+Introduce `x hx i ι`. Take `⟨S0, S1, h0, h1, hle⟩` from `badAt_le (Fm.D x i) (A x i ι) n₀ Alev C₃ c₃ cb CL hc (hAdm x (le_trans (le_max_right _ _) hx) i ι)`. Establish `hp` using `hx0 x (le_trans (le_max_left _ _) hx) i ι`. Establish `e0` using `hp 0 S0 h0`. Establish `e1` using `hp 1 S1 h1`.
+
+Establish `hD : (0 : ℝ) ≤ Dall x i ι` using `Nat.cast_nonneg _`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_right _ hD` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_left _ hk` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `_ = (kF c₃ * (2 * C)) * br2 (Fm.D x i) c (o x) * Dall x i ι := by ring`. Prove the components needed by the constructor for the conclusion. Unfold `FamilyDeficitBracketBound`. Conclude with `⟨kF c₃ * (2 * C), c, hc0, o, ho, max x0 x₂, key⟩`. Introduce `hX`.
+
+Unfold `Formalism.MainNotions.ArithmeticCylinders.ParX at hX`. Take `⟨x1, hx1⟩` from `hX (kF c₃ * (2 * C)) c o hc0 ho`. Unfold `FamilyExpDeficitBound`. Use `⟨max x1 (max x0 x₂), fun x hx i ι => ?_⟩` and prove the remaining obligations. Unfold `ExpDeficitBound'`.
+
+Conclude with `le_trans (key x (le_trans (le_max_right _ _) hx) i ι) (mul_le_mul_of_nonneg_right (hx1 x (le_trans (le_max_left _ _) hx) i) (Nat.cast_nonneg _))`.
+-/
 theorem family_bound_of_uniform_local {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (J : ∀ x, Fm.Ix x → Type) (Dall Dgood : ∀ x i, J x i → ℕ)
     (A : ∀ x (i : Fm.Ix x) (ι : J x i), AllRowsAt (Fm.D x i) (Dall x i ι) (Dgood x i ι)) (hL : LocU Fm J A) :
     FamilyDeficitTheorem Fm J Dall Dgood A := by
@@ -291,6 +355,9 @@ theorem family_bound_of_uniform_local {eps : ℝ} (Fm : Formalism.MainNotions.Fa
     exact le_trans (key x (le_trans (le_max_right _ _) hx) i ι)
       (mul_le_mul_of_nonneg_right (hx1 x (le_trans (le_max_left _ _) hx) i) (Nat.cast_nonneg _))
 
+/- English proof (translation)
+Introduce `k v`. Take `⟨h1, h2, h3⟩` from `hL k v`. Use `⟨h1, fun f hf hsq => ⟨(h2 f hf hsq).1, (h2 f hf hsq).2.trans ?_⟩, h3⟩` and prove the remaining obligations. Use `gcongr`.
+-/
 private theorem lawL_mono' {D : D7} {eV : ∀ k, D.nd.PlG k → MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.host.g k)))}
     {CL CL' : ℝ} (h : CL ≤ CL') (hL : lawL D eV CL) : lawL D eV CL' := by
   intro k v
@@ -298,6 +365,13 @@ private theorem lawL_mono' {D : D7} {eV : ∀ k, D.nd.PlG k → MonoidAlgebra �
   refine ⟨h1, fun f hf hsq => ⟨(h2 f hf hsq).1, (h2 f hf hsq).2.trans ?_⟩, h3⟩
   gcongr
 
+/- English proof (translation)
+Unfold `LocU`. Introduce `CL x₂ hLT hO`. Establish `hCL' : 0 ≤ max CL 0` using `le_max_right _ _`. Establish `hpos : 0 < 1 / ((max CL 0 + 1) * 2 ^ 12)` using `div_pos one_pos (mul_pos (by linarith) (by norm_num))`. Unfold `Formalism.MainNotions.ArithmeticCylinders.ParO at hO`.
+
+Take `⟨x₁, hx₁⟩` from `hO _ hpos`. Use `⟨10 ^ 10, 1 / 5, by norm_num, fun _ => 0, tendsto_const_nhds, max x₁ (max x₂ x₃), fun x hx i ι => ?_⟩` and prove the remaining obligations. Establish `hx1 : x ≥ x₁` using `le_trans (le_max_left _ _) hx`. Establish `hx2 : x ≥ x₂` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx`. Establish `hx3 : x ≥ x₃` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx`.
+
+Take `⟨hL, hA⟩` from `hLT x hx2 i ι`. Conclude with `Formalism.MainNotions.N.LocalShareBounds.provedLocal_of_law (hW x hx3 i) hCL' (lawL_mono' (le_max_left CL 0) hL) hA (fun k => hx₁ x hx1 i k)`.
+-/
 theorem locU_of_propW {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (J : ∀ x, Fm.Ix x → Type) {Dall Dgood : ∀ x i, J x i → ℕ}
     (A : ∀ x (i : Fm.Ix x) (ι : J x i), AllRowsAt (Fm.D x i) (Dall x i ι) (Dgood x i ι))
     (x₃ : ℝ) (hW : ∀ x ≥ x₃, ∀ i : Fm.Ix x, Formalism.MainNotions.N.LocalShareBounds.PropW (Fm.D x i)) : LocU Fm J A := by
@@ -317,10 +391,16 @@ theorem locU_of_propW {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (J : ∀
   exact Formalism.MainNotions.N.LocalShareBounds.provedLocal_of_law (hW x hx3 i) hCL' (lawL_mono' (le_max_left CL 0) hL) hA
     (fun k => hx₁ x hx1 i k)
 
+/- English proof (translation)
+The claim follows from `family_bound_of_uniform_local Fm J Dall Dgood A (locU_of_propW Fm J A x₃ hW)`.
+-/
 theorem family_bound_of_weight_property {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (J : ∀ x, Fm.Ix x → Type) (Dall Dgood : ∀ x i, J x i → ℕ)
     (A : ∀ x (i : Fm.Ix x) (ι : J x i), AllRowsAt (Fm.D x i) (Dall x i ι) (Dgood x i ι))
     (x₃ : ℝ) (hW : ∀ x ≥ x₃, ∀ i : Fm.Ix x, Formalism.MainNotions.N.LocalShareBounds.PropW (Fm.D x i)) : FamilyDeficitTheorem Fm J Dall Dgood A := family_bound_of_uniform_local Fm J Dall Dgood A (locU_of_propW Fm J A x₃ hW)
 
+/- English proof (translation)
+The claim follows from `family_bound_of_weight_property Fm J Dall Dgood A 0 fun x _ i => Formalism.MainNotions.N.LocalShareBounds.propW_of_counts (Formalism.MainNotions.N.LocalShareBounds.counts_closed _)`.
+-/
 theorem family_bound_all {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (J : ∀ x, Fm.Ix x → Type) (Dall Dgood : ∀ x i, J x i → ℕ)
     (A : ∀ x (i : Fm.Ix x) (ι : J x i), AllRowsAt (Fm.D x i) (Dall x i ι) (Dgood x i ι)) : FamilyDeficitTheorem Fm J Dall Dgood A := family_bound_of_weight_property Fm J Dall Dgood A 0 fun x _ i =>
     Formalism.MainNotions.N.LocalShareBounds.propW_of_counts (Formalism.MainNotions.N.LocalShareBounds.counts_closed _)

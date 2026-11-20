@@ -17,6 +17,11 @@ section Abstract
 
 variable {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Establish `e : ∀ c : G ⧸ K, (∑ p ∈ s, f p * h p c.out) • ρ c.out x = ∑ p ∈ s, f p • (h p c.out • ρ c.out x)` using `fun c => by`. Rewrite using `[Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun p _ => mul_smul _ _ _`. Unfold `heckeVec`. Rewrite using `[finsum_congr e, finsum_sum_comm]`.
+
+Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[smul_finsum]`. Introduce `p hp`. Conclude with `(hf p hp).subset fun c hc h0 => hc (by simp [h0])`.
+-/
 theorem heckeVec_finset_sum {ι : Type} (ρ : Representation ℂ G V) (K : Subgroup G) (s : Finset ι) (f : ι → ℂ)
     (h : ι → G → ℂ) (x : V) (hf : ∀ p ∈ s, {c : G ⧸ K | h p c.out ≠ 0}.Finite) :
     heckeVec ρ K (fun g => ∑ p ∈ s, f p * h p g) x = ∑ p ∈ s, f p • heckeVec ρ K (h p) x := by
@@ -31,6 +36,9 @@ theorem heckeVec_finset_sum {ι : Type} (ρ : Representation ℂ G V) (K : Subgr
   · intro p hp
     exact (hf p hp).subset fun c hc h0 => hc (by simp [h0])
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K g`. Establish `e` using `hh 1 k g`. Simplify using `only [OneMemClass.coe_one, one_mul] at e`. Rewrite using `[hk, e]`.
+-/
 theorem biInv_out {K : Subgroup G} {h : G → ℂ} (hh : IsBiInv K h) (g : G) :
     h ((g : G ⧸ K).out) = h g := by
   obtain ⟨k, hk⟩ := QuotientGroup.mk_out_eq_mul K g
@@ -40,6 +48,13 @@ theorem biInv_out {K : Subgroup G} {h : G → ℂ} (hh : IsBiInv K h) (g : G) :
 
 variable {A B : Type} [Group A] [Group B]
 
+/- English proof (translation)
+Use `Set.Finite.of_finite_image (f := fun c : (A × B) ⧸ KA.prod KB => (((c.out.1 : A ⧸ KA)), ((c.out.2 : B ⧸ KB)))) ((fa.prod fb).subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Establish `hc' : fA c.out.1 * fB c.out.2 ≠ 0` using `hc`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `fA ((c.out.1 : A ⧸ KA).out) ≠ 0`.
+
+Rewrite using `[biInv_out hA]`. Conclude with `left_ne_zero_of_mul hc'`. Express the relevant statement in the definitionally equal form `fB ((c.out.2 : B ⧸ KB).out) ≠ 0`. Rewrite using `[biInv_out hB]`. Conclude with `right_ne_zero_of_mul hc'`.
+
+Introduce `c _ d _ e`. Establish `e1` using `QuotientGroup.eq.1 (congrArg Prod.fst e)`. Establish `e2` using `QuotientGroup.eq.1 (congrArg Prod.snd e)`. Rewrite using `[← c.out_eq', ← d.out_eq']`. Conclude with `QuotientGroup.eq.2 (Subgroup.mem_prod.2 ⟨by simpa using e1, by simpa using e2⟩)`.
+-/
 theorem finite_pair {KA : Subgroup A} {KB : Subgroup B} {fA : A → ℂ} {fB : B → ℂ}
     (hA : IsBiInv KA fA) (hB : IsBiInv KB fB) (fa : {c : A ⧸ KA | fA c.out ≠ 0}.Finite)
     (fb : {c : B ⧸ KB | fB c.out ≠ 0}.Finite) :
@@ -64,6 +79,9 @@ theorem finite_pair {KA : Subgroup A} {KB : Subgroup B} {fA : A → ℂ} {fB : B
 
 end Abstract
 
+/- English proof (translation)
+Introduce `E _ _ _ a b w ϖ hϖ s f V _ _ ρ x`. Use `heckeVec_finset_sum ρ (K2 a b w) s f (fun p g => Tj ℂ a (Ov E w) ϖ p.1 g.1 * Tj ℂ b (Ov E w) ϖ p.2 g.2) x fun p _ => ?_` and prove the remaining obligations. Establish `ha` using `Tj_mem_hecke (n := a) hϖ p.1`. Establish `hb` using `Tj_mem_hecke (n := b) hϖ p.2`. Conclude with `finite_pair ha.1 hb.1 (Formalism.UG.P.finite_support_cosets (Final.GLintComm E w a) ha.2) (Formalism.UG.P.finite_support_cosets (Final.GLintComm E w b) hb.2)`.
+-/
 theorem heckeVec_Tj_sum : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (w : Pl E)
     (ϖ : w.adicCompletion E), IsUnifV E w ϖ → ∀ (s : Finset (ℕ × ℕ)) (f : ℕ × ℕ → ℂ) (V : Type) [AddCommGroup V]
     [Module ℂ V] (ρ : Representation ℂ (GLw a w × GLw b w) V) (x : V),

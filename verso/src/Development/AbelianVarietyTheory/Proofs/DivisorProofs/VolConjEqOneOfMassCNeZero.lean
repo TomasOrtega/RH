@@ -7,6 +7,11 @@ open GlobalTheory.LKCount
 
 namespace GlobalTheory.LKCount
 
+/- English proof (translation)
+Establish `hC' : C.map (MulAut.conj t).toMonoidHom ≤ T`. Introduce and unpack `x ⟨c, hc, rfl⟩`. Establish `hcT` using `hC hc`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Conclude with `T.mul_mem (T.mul_mem ht hcT) (T.inv_mem ht)`.
+
+Establish `hchange` using `GlobalTheory.T.mass_mul_volume_commensurable Γ' T C (C.map (MulAut.conj t).toMonoidHom) hC hC' h1 h2 hf hf'`. Rewrite `hchange` using `[GlobalTheory.T.twistedCentralizerMass_map_conj Γ' T C t ht hC]`. Use `mul_left_cancel₀ hm (hchange.trans (mul_one _).symm)` as an intermediate fact. Conclude with `this`.
+-/
 theorem vol_conj_eq_one_of_massC_ne_zero {G : Type} [Group G] (Γ' T C : Subgroup G) (t : G) (ht : t ∈ T)
     (hC : C ≤ T) (h1 : C.relIndex (C.map (MulAut.conj t).toMonoidHom) ≠ 0)
     (h2 : (C.map (MulAut.conj t).toMonoidHom).relIndex C ≠ 0)

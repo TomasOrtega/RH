@@ -5,6 +5,15 @@ open CategoryTheory AlgebraicGeometry Polynomial LateralTheory.E.t_E2Cut Lateral
 
 namespace LateralTheory.E.StalkSHSPf
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Take `⟨U, hU, hx, -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp S.isBasis_affineOpens) (show x ∈ (⊤ : S.Opens) from trivial)`. Conclude with `⟨U, hU, hx, fun _ => 0, by simp⟩`. Consider the case `insert a s ha ih`.
+
+Take `⟨U, hU, hx, f, hf⟩` from `ih`. Take `⟨V, hxV, g, hg⟩` from `S.presheaf.exists_germ_eq (c a)`. Take `⟨W, hW, hxW, hWUV⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp S.isBasis_affineOpens) (show x ∈ U ⊓ V from ⟨hx, hxV⟩)`. Use `⟨W, hW, hxW, fun i => if i = a then (S.presheaf.map (homOfLE (hWUV.trans inf_le_right)).op).hom g else (S.presheaf.map (homOfLE (hWUV.trans inf_le_left)).op).hom (f i), ?_⟩` and prove the remaining obligations. Introduce `i hi`.
+
+Break down `Finset.mem_insert.mp hi with rfl | hi` into its components or cases. Simplify using `only [if_true]`. Rewrite using `[← hg, ← CommRingCat.comp_apply, TopCat.Presheaf.germ_res]`. Establish `: i ≠ a` using `fun h => ha (h ▸ hi)`. Simplify using `only [this, if_false]`.
+
+Rewrite using `[← hf i hi, ← CommRingCat.comp_apply, TopCat.Presheaf.germ_res]`.
+-/
 theorem germs (S : Scheme.{0}) (x : S) (c : ℕ → S.presheaf.stalk x) (s : Finset ℕ) :
     ∃ (U : S.Opens) (_ : IsAffineOpen U) (hx : x ∈ U) (f : ℕ → Γ(S, U)),
       ∀ i ∈ s, (S.presheaf.germ U x hx).hom (f i) = c i := by
@@ -28,6 +37,11 @@ theorem germs (S : Scheme.{0}) (x : S) (c : ℕ → S.presheaf.stalk x) (s : Fin
       simp only [this, if_false]
       rw [← hf i hi, ← CommRingCat.comp_apply, TopCat.Presheaf.germ_res]
 
+/- English proof (translation)
+Introduce `S hS x p hm hd`. Take `⟨U, hU, hx, f, hf⟩` from `germs S x (fun i => p.coeff i) (Finset.range (p.natDegree + 1))`. Establish `hl : p ∈ Polynomial.lifts (S.presheaf.germ U x hx).hom`. Use `(lifts_iff_coeff_lifts p).2 fun i => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i < p.natDegree + 1`.
+
+Conclude with `⟨f i, hf i (Finset.mem_range.2 hi)⟩`. Conclude with `⟨0, by rw [map_zero, coeff_eq_zero_of_natDegree_lt (by omega)]⟩`. Take `⟨P, hP, hdeg, hPm⟩` from `lifts_and_natDegree_eq_and_monic hl hm`. Take `⟨r, hr⟩` from `hS.2 U hU ⟨x, hx⟩ P hPm (by omega)`. Conclude with `⟨(S.presheaf.germ U x hx).hom r, by rw [← hP, Polynomial.eval_map, eval₂_at_apply, hr, map_zero]⟩`.
+-/
 theorem stalkAIC : StalkAIC := by
   intro S hS x p hm hd
   obtain ⟨U, hU, hx, f, hf⟩ := germs S x (fun i => p.coeff i) (Finset.range (p.natDegree + 1))

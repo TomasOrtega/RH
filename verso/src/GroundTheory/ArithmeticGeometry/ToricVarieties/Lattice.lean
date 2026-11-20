@@ -10,6 +10,17 @@ section Comb
 variable {𝕜 : Type*} [Field 𝕜] [LinearOrder 𝕜] [IsStrictOrderedRing 𝕜]
 variable {E : Type*} [AddCommGroup E] [Module 𝕜 E]
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on generalizing x with`. Consider the case `empty`. Simplify using `only [Finset.coe_empty, Set.image_empty, Submodule.span_empty, Submodule.mem_bot, Finset.sum_empty]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`.
+
+Conclude with `⟨0, fun _ => le_rfl, rfl⟩`. Introduce and unpack `⟨_, _, rfl⟩`. Both sides reduce to the same expression. Consider the case `insert a T ha ih`. Rewrite using `[Finset.coe_insert, Set.image_insert_eq, mem_hull_insert]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, y, hy, rfl⟩`. Take `⟨d, hd, rfl⟩` from `ih.1 hy`. Use `⟨Function.update d a c, fun i => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : i = a`.
+
+Substitute `h` using the available equality. Simplify using `using hc`. Simplify `hd i` using `[h]`. Rewrite using `[Finset.sum_insert ha, Function.update_self]`. Use `congr 1`.
+
+Conclude with `Finset.sum_congr rfl fun i hi => by`. Rewrite using `[Function.update_of_ne (ne_of_mem_of_not_mem hi ha)]`. Introduce and unpack `⟨c, hc, rfl⟩`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `⟨c a, hc a, _, ih.2 ⟨c, hc, rfl⟩, rfl⟩`.
+-/
 theorem mem_hull_image_finset_iff {ι : Type*} [DecidableEq ι] (T : Finset ι) (v : ι → E)
     {x : E} : x ∈ hull 𝕜 (v '' T) ↔ ∃ c : ι → 𝕜, (∀ i, 0 ≤ c i) ∧ ∑ i ∈ T, c i • v i = x := by
   induction T using Finset.induction_on generalizing x with
@@ -36,6 +47,15 @@ theorem mem_hull_image_finset_iff {ι : Type*} [DecidableEq ι] (T : Finset ι) 
       rw [Finset.sum_insert ha]
       exact ⟨c a, hc a, _, ih.2 ⟨c, hc, rfl⟩, rfl⟩
 
+/- English proof (translation)
+Use `top_le_iff.1 fun x _ => ?_` and prove the remaining obligations. Establish `key : ∀ y ∈ Submodule.span 𝕜 (Set.range b), y ∈ hull 𝕜 (Set.range b ∪ Set.range (fun i => -b i)) ∧ -y ∈ hull 𝕜 (Set.range b ∪ Set.range (fun i => -b i))`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨i, rfl⟩` from `hy`. Conclude with `⟨subset_hull (Or.inl ⟨i, rfl⟩), subset_hull (Or.inr ⟨i, rfl⟩)⟩`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz`. Conclude with `⟨add_mem hy.1 hz.1, by rw [neg_add]; exact add_mem hy.2 hz.2⟩`.
+
+Consider the case `smul c y _ hy`. Break down `le_total 0 c with hc | hc` into its components or cases. Conclude with `⟨smul_mem _ hc hy.1, by rw [← smul_neg]; exact smul_mem _ hc hy.2⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← neg_neg c, neg_smul, ← smul_neg]`.
+
+Conclude with `smul_mem _ (neg_nonneg.2 hc) hy.2`. Rewrite using `[← neg_smul]`. Conclude with `smul_mem _ (neg_nonneg.2 hc) hy.1`. Conclude with `(key x (by rw [b.span_eq]; exact Submodule.mem_top)).1`.
+-/
 theorem hull_basis_neg_eq_top {ι : Type*} (b : Basis ι 𝕜 E) :
     hull 𝕜 (Set.range b ∪ Set.range (fun i => -b i)) = ⊤ := by
   refine top_le_iff.1 fun x _ => ?_
@@ -67,12 +87,24 @@ variable {L E : Type*} [AddCommGroup L] [AddCommGroup E] [Module ℝ E]
 def IsRationalPolyhedral (ι : L →ₗ[ℤ] E) (σ : PointedCone ℝ E) : Prop :=
   ∃ S : Finset L, hull ℝ (ι '' S) = σ
 
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `hσ`. Conclude with `⟨S.image ι, by rw [Finset.coe_image]⟩`.
+-/
 theorem IsRationalPolyhedral.fg {ι : L →ₗ[ℤ] E} {σ : PointedCone ℝ E}
     (hσ : IsRationalPolyhedral ι σ) : σ.FG := by
   classical
   obtain ⟨S, rfl⟩ := hσ
   exact ⟨S.image ι, by rw [Finset.coe_image]⟩
 
+/- English proof (translation)
+Establish `h` using `hull_inf_halfspace (𝕜 := ℝ) (T.image ι) g`. Rewrite `h` using `[Finset.coe_image]`. Rewrite using `[h]`. Establish `hcomb : ∀ a b, g (ι a) • ι b - g (ι b) • ι a = ι (gL a • b - gL b • a)`. Introduce `a b`.
+
+Simplify using `[hg, map_sub, Int.cast_smul_eq_zsmul]`. Use `congr 1`. Use extensionality with `y`. Simplify using `only [Finset.coe_union, Finset.coe_filter, Finset.coe_image, Set.mem_union, Set.mem_ofPred_eq, Set.mem_image, Finset.mem_image, Finset.mem_product, Prod.exists]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `(⟨⟨a, ha, rfl⟩, hga⟩ | ⟨s, t, ⟨⟨⟨a, ha, rfl⟩, ⟨b, hb, rfl⟩⟩, h1, h2⟩, rfl⟩)`. Rewrite `hga` using `[hg]`. Conclude with `⟨a, Or.inl ⟨ha, by exact_mod_cast hga⟩, rfl⟩`. Rewrite `h1`, `h2` using `[hg]`. Use `⟨gL a • b - gL b • a, Or.inr ⟨a, b, ⟨⟨ha, hb⟩, by exact_mod_cast h1, by exact_mod_cast h2⟩, rfl⟩, (hcomb a b).symm⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨l, (⟨hl, hgl⟩ | ⟨a, b, ⟨⟨ha, hb⟩, h1, h2⟩, rfl⟩), rfl⟩`. Conclude with `Or.inl ⟨⟨l, hl, rfl⟩, by rw [hg]; exact_mod_cast hgl⟩`. Use `Or.inr ⟨ι a, ι b, ⟨⟨⟨a, ha, rfl⟩, ⟨b, hb, rfl⟩⟩, by rw [hg]; exact_mod_cast h1, by rw [hg]; exact_mod_cast h2⟩, hcomb a b⟩` and prove the remaining obligations.
+-/
 theorem hull_image_inf_halfspace_int [DecidableEq L] (ι : L →ₗ[ℤ] E) (T : Finset L)
     (g : Dual ℝ E) (gL : L →ₗ[ℤ] ℤ) (hg : ∀ l, g (ι l) = gL l) :
     hull ℝ (ι '' T) ⊓ (positive ℝ ℝ).comap g =
@@ -106,6 +138,9 @@ def latticePoints (ι : L →ₗ[ℤ] E) (τ : PointedCone ℝ E) : AddSubmonoid
   τ.toAddSubmonoid.comap ι.toAddMonoidHom
 
 @[simp]
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_latticePoints {ι : L →ₗ[ℤ] E} {τ : PointedCone ℝ E} {m : L} :
     m ∈ latticePoints ι τ ↔ ι m ∈ τ := Iff.rfl
 
@@ -121,13 +156,22 @@ def toRealDual : Dual ℤ N →ₗ[ℤ] Dual ℝ (ℝ ⊗[ℤ] N) := Module.Dual
 
 variable {N}
 
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem toRealSpan_apply (n : N) : toRealSpan N n = (1 : ℝ) ⊗ₜ n := rfl
 
 @[simp]
+/- English proof (translation)
+Simplify using `[toRealDual, toRealSpan_apply, Module.Dual.baseChange_apply_tmul]`.
+-/
 theorem toRealDual_apply_toRealSpan (m : Dual ℤ N) (n : N) :
     toRealDual N m (toRealSpan N n) = (m n : ℝ) := by
   simp [toRealDual, toRealSpan_apply, Module.Dual.baseChange_apply_tmul]
 
+/- English proof (translation)
+Use `(e.baseChange ℝ).ext fun i => ?_` and prove the remaining obligations. Rewrite using `[Basis.dualBasis_apply_self, Basis.baseChange_apply, ← toRealSpan_apply, toRealDual_apply_toRealSpan, Basis.dualBasis_apply_self]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem toRealDual_dualBasis {ι : Type*} [Fintype ι] [DecidableEq ι] (e : Basis ι ℤ N) (j : ι) :
     toRealDual N (e.dualBasis j) = (e.baseChange ℝ).dualBasis j := by
   refine (e.baseChange ℝ).ext fun i => ?_
@@ -137,6 +181,11 @@ theorem toRealDual_dualBasis {ι : Type*} [Fintype ι] [DecidableEq ι] (e : Bas
 
 variable [Module.Free ℤ N] [Module.Finite ℤ N]
 
+/- English proof (translation)
+Set `e` to `Module.Free.chooseBasis ℤ N`. Use `⟨Finset.univ.image e.dualBasis ∪ Finset.univ.image (fun j => -e.dualBasis j), ?_⟩` and prove the remaining obligations. Establish `h1 : (toRealDual N ∘ e.dualBasis) = (e.baseChange ℝ).dualBasis`. Use function extensionality and compare the values at `fun j => toRealDual_dualBasis e j`. Establish `h2 : (toRealDual N ∘ fun j => -e.dualBasis j) = fun j => -(e.baseChange ℝ).dualBasis j`.
+
+Use function extensionality and compare the values at `fun j => by simp only [Function.comp_apply, map_neg, toRealDual_dualBasis]`. Rewrite using `[← hull_basis_neg_eq_top (e.baseChange ℝ).dualBasis, Finset.coe_union, Finset.coe_image, Finset.coe_image, Finset.coe_univ, Set.image_univ, Set.image_univ, Set.image_union, ← Set.range_comp, ← Set.range_comp, h1, h2]`.
+-/
 theorem isRationalPolyhedral_top_dual :
     IsRationalPolyhedral (toRealDual N) (⊤ : PointedCone ℝ (Dual ℝ (ℝ ⊗[ℤ] N))) := by
   classical
@@ -150,6 +199,11 @@ theorem isRationalPolyhedral_top_dual :
     Finset.coe_image, Finset.coe_univ, Set.image_univ, Set.image_univ, Set.image_union,
     ← Set.range_comp, ← Set.range_comp, h1, h2]
 
+/- English proof (translation)
+Set `e` to `Module.Free.chooseBasis ℤ N`. Use `⟨Finset.univ.image e ∪ Finset.univ.image (fun j => -e j), ?_⟩` and prove the remaining obligations. Establish `h1 : (toRealSpan N ∘ e) = e.baseChange ℝ`. Use function extensionality and compare the values at `fun j => by simp [Basis.baseChange_apply, toRealSpan_apply]`. Establish `h2 : (toRealSpan N ∘ fun j => -e j) = fun j => -(e.baseChange ℝ) j`.
+
+Use function extensionality and compare the values at `fun j => by simp [Basis.baseChange_apply, toRealSpan_apply, TensorProduct.tmul_neg]`. Rewrite using `[← hull_basis_neg_eq_top (e.baseChange ℝ), Finset.coe_union, Finset.coe_image, Finset.coe_image, Finset.coe_univ, Set.image_univ, Set.image_univ, Set.image_union, ← Set.range_comp, ← Set.range_comp, h1, h2]`.
+-/
 theorem isRationalPolyhedral_top :
     IsRationalPolyhedral (toRealSpan N) (⊤ : PointedCone ℝ (ℝ ⊗[ℤ] N)) := by
   classical
@@ -163,6 +217,11 @@ theorem isRationalPolyhedral_top :
     Finset.coe_image, Finset.coe_univ, Set.image_univ, Set.image_univ, Set.image_union,
     ← Set.range_comp, ← Set.range_comp, h1, h2]
 
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `hσ`. Rewrite using `[dual_hull]`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using isRationalPolyhedral_top_dual`. Consider the case `insert n S _ ih`.
+
+Take `⟨T, hT⟩` from `ih`. Rewrite using `[Finset.coe_insert, Set.image_insert_eq, dual_insert, dual_singleton, inf_comm, ← hT, hull_image_inf_halfspace_int (toRealDual N) T _ (Dual.eval ℤ N n) (fun m => by simp)]`. Conclude with `⟨_, rfl⟩`.
+-/
 theorem IsRationalPolyhedral.dual {σ : PointedCone ℝ (ℝ ⊗[ℤ] N)}
     (hσ : IsRationalPolyhedral (toRealSpan N) σ) :
     IsRationalPolyhedral (toRealDual N) (dual (Dual.eval ℝ (ℝ ⊗[ℤ] N)) (σ : Set (ℝ ⊗[ℤ] N))) := by
@@ -177,6 +236,11 @@ theorem IsRationalPolyhedral.dual {σ : PointedCone ℝ (ℝ ⊗[ℤ] N)}
       hull_image_inf_halfspace_int (toRealDual N) T _ (Dual.eval ℤ N n) (fun m => by simp)]
     exact ⟨_, rfl⟩
 
+/- English proof (translation)
+Take `⟨T, rfl⟩` from `hτ`. Rewrite using `[dual_hull]`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simpa using isRationalPolyhedral_top`. Consider the case `insert m T _ ih`.
+
+Take `⟨S, hS⟩` from `ih`. Rewrite using `[Finset.coe_insert, Set.image_insert_eq, dual_insert, dual_singleton, inf_comm, ← hS, hull_image_inf_halfspace_int (toRealSpan N) S _ m (fun n => by simp)]`. Conclude with `⟨_, rfl⟩`.
+-/
 theorem IsRationalPolyhedral.predual {τ : PointedCone ℝ (Dual ℝ (ℝ ⊗[ℤ] N))}
     (hτ : IsRationalPolyhedral (toRealDual N) τ) :
     IsRationalPolyhedral (toRealSpan N)
@@ -198,10 +262,16 @@ section Duality
 
 variable {V : Type*} [AddCommGroup V] [Module ℝ V]
 
+/- English proof (translation)
+The claim follows from `dual_dual_flip_of_fg _ Function.surjective_id hσ`.
+-/
 theorem dual_dual_eq_self {σ : PointedCone ℝ V} (hσ : σ.FG) :
     dual (LinearMap.id : Dual ℝ V →ₗ[ℝ] Dual ℝ V) (dual (Dual.eval ℝ V) (σ : Set V)) = σ :=
   dual_dual_flip_of_fg _ Function.surjective_id hσ
 
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `h`. Take `⟨S', rfl⟩` from `h'`. Conclude with `⟨S ∪ S', by rw [Finset.coe_union, Set.image_union]; exact Submodule.span_union _ _⟩`.
+-/
 theorem IsRationalPolyhedral.sup {L : Type*} [AddCommGroup L] [DecidableEq L] {ι : L →ₗ[ℤ] V}
     {σ σ' : PointedCone ℝ V} (h : IsRationalPolyhedral ι σ) (h' : IsRationalPolyhedral ι σ') :
     IsRationalPolyhedral ι (σ ⊔ σ') := by
@@ -215,6 +285,9 @@ section Operations
 
 variable {N : Type*} [AddCommGroup N] [Module.Free ℤ N] [Module.Finite ℤ N]
 
+/- English proof (translation)
+Establish `key : σ ⊓ σ' = PointedCone.dual (LinearMap.id : Dual ℝ (ℝ ⊗[ℤ] N) →ₗ[ℝ] _) ((PointedCone.dual (Dual.eval ℝ (ℝ ⊗[ℤ] N)) (σ : Set _) ⊔ PointedCone.dual (Dual.eval ℝ (ℝ ⊗[ℤ] N)) (σ' : Set _) : PointedCone ℝ _) : Set _)`. Rewrite using `[dual_sup, dual_union, dual_dual_eq_self h.fg, dual_dual_eq_self h'.fg]`. Rewrite using `[key]`. Conclude with `(h.dual.sup h'.dual).predual`.
+-/
 theorem IsRationalPolyhedral.inf {σ σ' : PointedCone ℝ (ℝ ⊗[ℤ] N)}
     (h : IsRationalPolyhedral (toRealSpan N) σ) (h' : IsRationalPolyhedral (toRealSpan N) σ') :
     IsRationalPolyhedral (toRealSpan N) (σ ⊓ σ') := by
@@ -235,11 +308,35 @@ variable {N : Type*} [AddCommGroup N]
 def dualMonoid (σ : PointedCone ℝ (ℝ ⊗[ℤ] N)) : AddSubmonoid (Dual ℤ N) :=
   latticePoints (toRealDual N) (dual (Dual.eval ℝ (ℝ ⊗[ℤ] N)) (σ : Set (ℝ ⊗[ℤ] N)))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_dualMonoid {σ : PointedCone ℝ (ℝ ⊗[ℤ] N)} {m : Dual ℤ N} :
     m ∈ dualMonoid σ ↔ ∀ x ∈ σ, 0 ≤ toRealDual N m x := Iff.rfl
 
 variable [Module.Free ℤ N] [Module.Finite ℤ N]
 
+/- English proof (translation)
+Take `⟨T, rfl⟩` from `hτ`. Set `e` to `Module.Free.chooseBasis ℤ N`. Set `B : Module.Free.ChooseBasisIndex ℤ N → ℤ` to `fun j => ∑ t ∈ T, |t (e j)|`. Set `K : Set (Dual ℤ N)` to `{m | m ∈ latticePoints (toRealDual N) (hull ℝ (toRealDual N '' T)) ∧ ∀ j, m (e j) ∈ Set.Icc (-B j) (B j)}`. Establish `hKfin : K.Finite`.
+
+Establish `hbig : ((fun m : Dual ℤ N => fun j => m (e j)) ⁻¹' Set.univ.pi (fun j => Set.Icc (-B j) (B j))).Finite` using `(Set.Finite.pi (fun j => Set.finite_Icc _ _)).preimage (fun m _ m' _ h => e.ext fun j => congrFun h j)`. Conclude with `hbig.subset fun m hm => Set.mem_preimage.2 (Set.mem_univ_pi.2 fun j => hm.2 j)`. Use `⟨(hKfin.union T.finite_toSet).toFinset, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.Finite.coe_toFinset]`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Rewrite using `[AddSubmonoid.closure_le]`. Introduce and unpack `m (hm | hm)`. Conclude with `hm.1`. Conclude with `subset_hull ⟨m, hm, rfl⟩`. Introduce `m hm`.
+
+Take `⟨c, hc, hcm⟩` from `(mem_hull_image_finset_iff T (toRealDual N)).1 hm`. Use `replace hcm : ∑ t ∈ T, c t • toRealDual N t = toRealDual N m := hcm`. Use `set m' := m - ∑ t ∈ T, (⌊c t⌋₊) • t with hm'`. Establish `him' : toRealDual N m' = ∑ t ∈ T, (c t - ⌊c t⌋₊) • toRealDual N t`. Rewrite using `[hm', map_sub, map_sum, ← hcm, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_nsmul, ← Nat.cast_smul_eq_nsmul ℝ]`. Conclude with `(sub_smul _ _ _).symm`. Establish `hm'K : m' ∈ K`. Use `⟨?_, fun j => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mem_latticePoints, him']`. Conclude with `(mem_hull_image_finset_iff T (toRealDual N)).2 ⟨fun t => c t - ⌊c t⌋₊, fun t => sub_nonneg.2 (Nat.floor_le (hc t)), rfl⟩`. Establish `hval : (m' (e j) : ℝ) = ∑ t ∈ T, (c t - ⌊c t⌋₊) * (t (e j) : ℝ)`. Rewrite using `[← toRealDual_apply_toRealSpan, him']`. Express the relevant statement in the definitionally equal form `Dual.eval ℝ (ℝ ⊗[ℤ] N) (toRealSpan N (e j)) (∑ t ∈ T, (c t - ⌊c t⌋₊) • toRealDual N t) = _`.
+
+Rewrite using `[map_sum]`. Simplify using the standard rewrite rules. Establish `hbound : |(m' (e j) : ℝ)| ≤ (B j : ℝ)`. Rewrite using `[hval]`. Simplify using `only [B]`.
+
+Use `push_cast`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun t _ => ?_)` and prove the remaining obligations. Rewrite using `[abs_mul]`. Establish `h0 : 0 ≤ c t - ⌊c t⌋₊` using `sub_nonneg.2 (Nat.floor_le (hc t))`. Establish `h1 : c t - ⌊c t⌋₊ ≤ 1` using `by linarith [Nat.lt_floor_add_one (c t)]`.
+
+Rewrite using `[abs_of_nonneg h0]`. Conclude with `mul_le_of_le_one_left (abs_nonneg _) h1`. Establish `h2 : |m' (e j)| ≤ B j` using `by exact_mod_cast hbound`. Conclude with `Set.mem_Icc.2 (abs_le.1 h2)`. Establish `hmeq : m = m' + ∑ t ∈ T, (⌊c t⌋₊) • t` using `by rw [hm', sub_add_cancel]`.
+
+Rewrite using `[hmeq]`. Conclude with `add_mem (AddSubmonoid.subset_closure (Or.inl hm'K)) (AddSubmonoid.sum_mem _ fun t ht => AddSubmonoid.nsmul_mem _ (AddSubmonoid.subset_closure (show t ∈ K ∪ (T : Set (Dual ℤ N)) from Or.inr ht)) _)`.
+-/
 theorem latticePoints_fg {τ : PointedCone ℝ (Dual ℝ (ℝ ⊗[ℤ] N))}
     (hτ : IsRationalPolyhedral (toRealDual N) τ) : (latticePoints (toRealDual N) τ).FG := by
   classical
@@ -299,6 +396,9 @@ theorem latticePoints_fg {τ : PointedCone ℝ (Dual ℝ (ℝ ⊗[ℤ] N))}
       (AddSubmonoid.sum_mem _ fun t ht => AddSubmonoid.nsmul_mem _
         (AddSubmonoid.subset_closure (show t ∈ K ∪ (T : Set (Dual ℤ N)) from Or.inr ht)) _)
 
+/- English proof (translation)
+The claim follows from `latticePoints_fg hσ.dual`.
+-/
 theorem dualMonoid_fg {σ : PointedCone ℝ (ℝ ⊗[ℤ] N)}
     (hσ : IsRationalPolyhedral (toRealSpan N) σ) : (dualMonoid σ).FG :=
   latticePoints_fg hσ.dual

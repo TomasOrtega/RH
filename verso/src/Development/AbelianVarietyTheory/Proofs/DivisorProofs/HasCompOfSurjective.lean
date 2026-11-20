@@ -12,13 +12,26 @@ namespace GlobalTheory.BCT.DimFac
 variable {Γ V W M : Type} [Group Γ] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
   [AddCommGroup M] [Module ℂ M]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(∀ h : L, _) ↔ _`. Simplify using the standard rewrite rules.
+-/
 theorem mem_fix {ρ : Representation ℂ Γ V} {L : Subgroup Γ} {v : V} : v ∈ fixed ρ L ↔ ∀ g ∈ L, ρ g v = v := by
   change (∀ h : L, _) ↔ _
   simp
 
+/- English proof (translation)
+Rewrite using `[map_mul, Module.End.mul_apply]`.
+-/
 theorem rep_mul (ρ : Representation ℂ Γ V) (a b : Γ) (v : V) : ρ a (ρ b v) = ρ (a * b) v := by
   rw [map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Establish `hT' : ∀ g x, T (σ g x) = σ g (T x)` using `fun g x => LinearMap.congr_fun (hT g) x`. Establish `hm : ∀ x ∈ fixed σ U, T x ∈ fixed σ U` using `fun x hx => mem_fix.2 fun g hg => by`. Rewrite using `[← hT', mem_fix.1 hx g hg]`. Use `haveI : Nontrivial (fixed σ U) := Submodule.nontrivial_iff_ne_bot.2 h0`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue (T.restrict hm)`.
+
+Take `⟨x, hx⟩` from `hc.exists_hasEigenvector`. Establish `hx1 : T x.1 = c • x.1` using `congrArg Subtype.val hx.apply_eq_smul`. Use `⟨c, ?_⟩` and prove the remaining obligations. Break down `((GlobalTheory.CuspRep.isIrreducible_iff σ).1 hσ).2 (LinearMap.ker (T - c • 1)) (fun g v hv => by` into its components or cases. Simplify using `only [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero] at hv ⊢`.
+
+Rewrite using `[hT', hv, map_smul]) with h | h`. Establish `: x.1 ∈ LinearMap.ker (T - c • 1)` using `by simp [hx1]`. Rewrite `this` using `[h]`. Conclude with `absurd (Subtype.ext ((Submodule.mem_bot ℂ).1 this)) hx.2`. Conclude with `sub_eq_zero.1 (LinearMap.ker_eq_top.1 h)`.
+-/
 theorem schur_of_fixed {σ : Representation ℂ Γ W} (hσ : σ.IsIrreducible) (U : Subgroup Γ) (h0 : fixed σ U ≠ ⊥)
     [FiniteDimensional ℂ (fixed σ U)] (T : End ℂ W) (hT : ∀ g, T * σ g = σ g * T) : ∃ c : ℂ, T = c • 1 := by
   have hT' : ∀ g x, T (σ g x) = σ g (T x) := fun g x => LinearMap.congr_fun (hT g) x
@@ -64,6 +77,9 @@ def homRep (σ : Representation ℂ Γ W) (ρ : Representation ℂ Γ V) (e : Γ
   map_one' := LinearMap.ext fun f => Subtype.ext (LinearMap.ext fun x => by simp)
   map_mul' a b := LinearMap.ext fun f => Subtype.ext (LinearMap.ext fun x => by simp)
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [contractLeft_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem contractLeft_map {W' M' : Type} [AddCommGroup W'] [Module ℂ W'] [AddCommGroup M'] [Module ℂ M']
     (l : Dual ℂ W') (A : W →ₗ[ℂ] W') (B : M →ₗ[ℂ] M') (t : W ⊗[ℂ] M) :
     contractLeft l (TensorProduct.map A B t) = B (contractLeft (l ∘ₗ A) t) := by
@@ -72,6 +88,9 @@ theorem contractLeft_map {W' M' : Type} [AddCommGroup W'] [Module ℂ W'] [AddCo
   | tmul x y => simp [contractLeft_tmul]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [contractRight_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem contractRight_map {W' M' : Type} [AddCommGroup W'] [Module ℂ W'] [AddCommGroup M'] [Module ℂ M']
     (l : Dual ℂ M') (A : W →ₗ[ℂ] W') (B : M →ₗ[ℂ] M') (t : W ⊗[ℂ] M) :
     contractRight l (TensorProduct.map A B t) = A (contractRight (l ∘ₗ B) t) := by
@@ -80,6 +99,9 @@ theorem contractRight_map {W' M' : Type} [AddCommGroup W'] [Module ℂ W'] [AddC
   | tmul x y => simp [contractRight_tmul]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x m => simp [contractLeft_tmul, TensorProduct.smul_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, TensorProduct.tmul_add]`.
+-/
 theorem map_smulRight (l : Dual ℂ W) (y : W) (t : W ⊗[ℂ] M) :
     TensorProduct.map (l.smulRight y) LinearMap.id t = y ⊗ₜ contractLeft l t := by
   induction t using TensorProduct.induction_on with
@@ -87,6 +109,25 @@ theorem map_smulRight (l : Dual ℂ W) (y : W) (t : W ⊗[ℂ] M) :
   | tmul x m => simp [contractLeft_tmul, TensorProduct.smul_tmul]
   | add x y hx hy => simp only [map_add, hx, hy, TensorProduct.tmul_add]
 
+/- English proof (translation)
+Set `ev : W ⊗[ℂ] homSp σ ρ e →ₗ[ℂ] V` to `TensorProduct.lift (homSp σ ρ e).subtype.flip`. Establish `hev : ∀ x (u : homSp σ ρ e), ev (x ⊗ₜ u) = u.1 x` using `fun x u => rfl`. Establish `heq : ∀ g t, ev (TensorProduct.map (σ g) (homRep σ ρ e hc g) t) = ρ g (ev t)`. Introduce `g t`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul x u`. Rewrite using `[TensorProduct.map_tmul, hev, hev]`. Express the relevant statement in the definitionally equal form `ρ ((e g)⁻¹ * g) (u.1 (σ g x)) = _`. Rewrite using `[u.2 g x, rep_mul, (hc g g).eq, mul_inv_cancel_left]`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hsurj : Function.Surjective ev`. Break down `((GlobalTheory.CuspRep.isIrreducible_iff ρ).1 hρ).2 (LinearMap.range ev) (by` into its components or cases. Introduce and unpack `g _ ⟨t, rfl⟩`. Conclude with `⟨_, heq g t⟩) with h | h`.
+
+Use `absurd (LinearMap.ext fun x => ?_) hf0` and prove the remaining obligations. Establish `: ev (x ⊗ₜ ⟨f, hf⟩) ∈ LinearMap.range ev` using `⟨_, rfl⟩`. Rewrite `this` using `[h]`. Conclude with `this`. Conclude with `LinearMap.range_eq_top.1 h`.
+
+Establish `hinj : Function.Injective ev`. Use `(injective_iff_map_eq_zero ev).2 fun t ht => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Take `⟨l, hl⟩` from `exists_contractLeft_ne_zero h0`. Use `hl (Subtype.ext (LinearMap.ext fun y => ?_))` and prove the remaining obligations.
+
+Take `⟨s, rfl⟩` from `TensorProduct.exists_finset t`. Take `⟨r, hr⟩` from `exists_asAlgebraHom_eq hσ hs (l.smulRight y) (s.image Prod.fst)`. Establish `key : ∀ (r : MonoidAlgebra ℂ Γ) (u : homSp σ ρ e) x, u.1 (σ.asAlgebraHom r x) = Representation.asAlgebraHom (ρ.comp e) r (u.1 x)`. Introduce `r u x`. Proceed by induction on `r using MonoidAlgebra.induction_on with`.
+
+Consider the case `of g => simpa using u.2 g x`. Consider the case `add a b ha hb => simp [ha, hb]`. Consider the case `smul c a ha => simp [ha]`. Establish `h1 : ev (TensorProduct.map (l.smulRight y) LinearMap.id (∑ i ∈ s, i.1 ⊗ₜ[ℂ] i.2)) = Representation.asAlgebraHom (ρ.comp e) r (ev (∑ i ∈ s, i.1 ⊗ₜ[ℂ] i.2))`. Simplify using `only [map_sum]`.
+
+Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.map_tmul, hev, hev, ← key, hr _ (Finset.mem_image_of_mem _ hi)]`. Both sides reduce to the same expression. Rewrite `h1` using `[ht, map_zero, map_smulRight, hev]`. Conclude with `h1`.
+
+Use `⟨homSp σ ρ e, inferInstance, inferInstance, homRep σ ρ e hc, LinearEquiv.ofBijective ev ⟨hinj, hsurj⟩, fun g => LinearMap.ext fun u => Subtype.ext (LinearMap.ext fun x => ?_), heq⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ρ ((e (e g))⁻¹ * e g) (u.1 x) = u.1 x`. Rewrite using `[he, inv_mul_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem exists_split {ρ : Representation ℂ Γ V} (hρ : ρ.IsIrreducible) {σ : Representation ℂ Γ W}
     (hσ : σ.IsIrreducible) (hs : ∀ T : End ℂ W, (∀ g, T * σ g = σ g * T) → ∃ c : ℂ, T = c • 1) {e : Γ →* Γ}
     (he : ∀ g, e (e g) = e g) (hc : ∀ g y, Commute ((e g)⁻¹ * g) (e y))
@@ -141,6 +182,9 @@ theorem exists_split {ρ : Representation ℂ Γ V} (hρ : ρ.IsIrreducible) {σ
   change ρ ((e (e g))⁻¹ * e g) (u.1 x) = u.1 x
   rw [he, inv_mul_cancel, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l : Dual ℂ W, l x ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hx ((Module.forall_dual_apply_eq_zero_iff ℂ x).1 h)`. Conclude with `⟨(l x)⁻¹ • l, by simp [hl]⟩`.
+-/
 theorem exists_dual_one {x : W} (hx : x ≠ 0) : ∃ l : Dual ℂ W, l x = 1 := by
   obtain ⟨l, hl⟩ : ∃ l : Dual ℂ W, l x ≠ 0 := by
     by_contra h
@@ -148,6 +192,19 @@ theorem exists_dual_one {x : W} (hx : x ≠ 0) : ∃ l : Dual ℂ W, l x = 1 := 
     exact hx ((Module.forall_dual_apply_eq_zero_iff ℂ x).1 h)
   exact ⟨(l x)⁻¹ • l, by simp [hl]⟩
 
+/- English proof (translation)
+Take `⟨hV, hV'⟩` from `(GlobalTheory.CuspRep.isIrreducible_iff ρ).1 hρ`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Establish `ht : Φ.symm v ≠ 0` using `by simpa using hv`. Take `⟨l₀, hl₀⟩` from `exists_contractLeft_ne_zero ht`. Take `⟨l₁, hl₁⟩` from `exists_contractRight_ne_zero ht`.
+
+Take `⟨l, hl⟩` from `exists_dual_one hl₁`. Use `set x := contractRight l₁ (Φ.symm v)`. Use `(GlobalTheory.CuspRep.isIrreducible_iff τ).2 ⟨⟨_, _, hl₀⟩, fun N hN => ?_⟩` and prove the remaining obligations. Set `X : Submodule ℂ V` to `⨅ l : Dual ℂ W, N.comap (contractLeft l ∘ₗ Φ.symm.toLinearMap)`. Establish `hX : ∀ t, Φ t ∈ X ↔ ∀ l : Dual ℂ W, contractLeft l t ∈ N` using `fun t => by simp [X]`.
+
+Break down `hV' X (fun g v hv => by` into its components or cases. Take `⟨t, rfl⟩` from `Φ.surjective v`. Rewrite using `[← hΦ, hX]`. Introduce `l`. Rewrite using `[contractLeft_map]`.
+
+Conclude with `hN g _ ((hX t).1 hv _)) with h | h`. Use `Or.inl ((Submodule.eq_bot_iff _).2 fun m hm => ?_)` and prove the remaining obligations. Establish `h1 : Φ (x ⊗ₜ m) ∈ X` using `(hX _).2 fun l => by`. Rewrite using `[contractLeft_tmul]`. Conclude with `N.smul_mem _ hm`.
+
+Rewrite `h1` using `[h, Submodule.mem_bot, map_eq_zero_iff _ Φ.injective]`. Establish `h2` using `congrArg (contractLeft l) h1`. Rewrite `h2` using `[contractLeft_tmul, hl, one_smul, map_zero]`. Then use the resulting hypothesis. Use `Or.inr (Submodule.eq_top_iff'.2 fun m => ?_)` and prove the remaining obligations. Establish `h2` using `(hX (x ⊗ₜ m)).1 (h ▸ Submodule.mem_top) l`.
+
+Rewrite `h2` using `[contractLeft_tmul, hl, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem irred_right {ρ : Representation ℂ Γ V} (hρ : ρ.IsIrreducible) {σ : Representation ℂ Γ W}
     {τ : Representation ℂ Γ M} (Φ : W ⊗[ℂ] M ≃ₗ[ℂ] V) (hΦ : ∀ g t, Φ (TensorProduct.map (σ g) (τ g) t) = ρ g (Φ t)) :
     τ.IsIrreducible := by
@@ -178,6 +235,11 @@ theorem irred_right {ρ : Representation ℂ Γ V} (hρ : ρ.IsIrreducible) {σ 
     have h2 := (hX (x ⊗ₜ m)).1 (h ▸ Submodule.mem_top) l
     rwa [contractLeft_tmul, hl, one_smul] at h2
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Take `⟨l, hl⟩` from `exists_contractRight_ne_zero (sub_ne_zero.2 h)`. Apply `hl` to reduce the goal to its premises. Rewrite using `[map_sub, contractRight_map, LinearMap.comp_id, hp, sub_self]`. Use `mem_fix.2 fun g hg => ?_` and prove the remaining obligations.
+
+Use `conv_rhs => rw [← ht g hg, contractRight_map, LinearMap.comp_id]`.
+-/
 theorem map_left_of_fixed {σ : Representation ℂ Γ W} {L : Subgroup Γ} {t : W ⊗[ℂ] M}
     (ht : ∀ g ∈ L, TensorProduct.map (σ g) LinearMap.id t = t) (p : W →ₗ[ℂ] W) (hp : ∀ x ∈ fixed σ L, p x = x) :
     TensorProduct.map p LinearMap.id t = t := by
@@ -188,6 +250,11 @@ theorem map_left_of_fixed {σ : Representation ℂ Γ W} {L : Subgroup Γ} {t : 
   refine mem_fix.2 fun g hg => ?_
   conv_rhs => rw [← ht g hg, contractRight_map, LinearMap.comp_id]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Take `⟨l, hl⟩` from `exists_contractLeft_ne_zero (sub_ne_zero.2 h)`. Apply `hl` to reduce the goal to its premises. Rewrite using `[map_sub, contractLeft_map, LinearMap.comp_id, hp, sub_self]`. Use `mem_fix.2 fun g hg => ?_` and prove the remaining obligations.
+
+Use `conv_rhs => rw [← ht g hg, contractLeft_map, LinearMap.comp_id]`.
+-/
 theorem map_right_of_fixed {τ : Representation ℂ Γ M} {L : Subgroup Γ} {t : W ⊗[ℂ] M}
     (ht : ∀ g ∈ L, TensorProduct.map LinearMap.id (τ g) t = t) (p : M →ₗ[ℂ] M) (hp : ∀ x ∈ fixed τ L, p x = x) :
     TensorProduct.map LinearMap.id p t = t := by
@@ -198,6 +265,19 @@ theorem map_right_of_fixed {τ : Representation ℂ Γ M} {L : Subgroup Γ} {t :
   refine mem_fix.2 fun g hg => ?_
   conv_rhs => rw [← ht g hg, contractLeft_map, LinearMap.comp_id]
 
+/- English proof (translation)
+Set `j` to `TensorProduct.map (fixed σ L).subtype (fixed τ L).subtype`. Establish `hj : Function.Injective j` using `TensorProduct.map_injective_of_flat_flat _ _ (Submodule.injective_subtype _) (Submodule.injective_subtype _)`. Establish `hr : fixed ρ L = (LinearMap.range j).map Φ.toLinearMap`. Use `le_antisymm (fun v hv => ?_) ?_` and prove the remaining obligations. Take `⟨t, rfl⟩` from `Φ.surjective v`.
+
+Establish `h0 : ∀ g ∈ L, TensorProduct.map (σ g) (τ g) t = t` using `fun g hg => Φ.injective ((hΦ g t).trans (mem_fix.1 hv g hg))`. Establish `h1 : ∀ g ∈ L, TensorProduct.map (σ g) LinearMap.id t = t` using `fun g hg => by`. Use `h0 _ (hL g hg)` as an intermediate fact. Rewrite `this` using `[hσ, hτ]`. Then use the resulting hypothesis. Establish `h2 : ∀ g ∈ L, TensorProduct.map LinearMap.id (τ g) t = t` using `fun g hg => by`.
+
+Use `h0 _ (L.mul_mem (L.inv_mem (hL g hg)) hg)` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, ← map_inv e, hσ, hτ, one_mul, ← map_mul, inv_mul_cancel, map_one]`. Then use the resulting hypothesis. Take `⟨p, hp⟩` from `(fixed σ L).subtype.exists_leftInverse_of_injective (Submodule.ker_subtype _)`. Take `⟨q, hq⟩` from `(fixed τ L).subtype.exists_leftInverse_of_injective (Submodule.ker_subtype _)`. Establish `h3` using `map_left_of_fixed h1 ((fixed σ L).subtype ∘ₗ p) fun x hx => congrArg Subtype.val (LinearMap.congr_fun hp ⟨x, hx⟩)`.
+
+Establish `h4` using `map_right_of_fixed h2 ((fixed τ L).subtype ∘ₗ q) fun x hx => congrArg Subtype.val (LinearMap.congr_fun hq ⟨x, hx⟩)`. Use `⟨t, ⟨TensorProduct.map p q t, ?_⟩, rfl⟩` and prove the remaining obligations. Use `conv_rhs => rw [← h3, ← h4]`. Simplify using `only [j, TensorProduct.map_map, LinearMap.comp_id, LinearMap.id_comp]`. Introduce and unpack `_ ⟨_, ⟨t, rfl⟩, rfl⟩`.
+
+Use `mem_fix.2 fun g hg => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ρ g (Φ (j t)) = Φ (j t)`. Rewrite using `[← hΦ]`. Use `congr 1`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul x y => simp [j, mem_fix.1 x.2 g hg, mem_fix.1 y.2 g hg]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite using `[hr, LinearEquiv.finrank_map_eq, LinearMap.finrank_range_of_inj hj, Module.finrank_tensorProduct]`.
+-/
 theorem finrank_fixed_split {ρ : Representation ℂ Γ V} {σ : Representation ℂ Γ W} {τ : Representation ℂ Γ M}
     (Φ : W ⊗[ℂ] M ≃ₗ[ℂ] V) (hΦ : ∀ g t, Φ (TensorProduct.map (σ g) (τ g) t) = ρ g (Φ t)) {e : Γ →* Γ}
     (hσ : ∀ g, σ (e g) = σ g) (hτ : ∀ g, τ (e g) = 1) {L : Subgroup Γ} (hL : ∀ g ∈ L, e g ∈ L) :
@@ -241,6 +321,13 @@ def HasComp (ρ : Representation ℂ Γ V) (e : Γ →* Γ) (L : Subgroup Γ) (d
     (∀ T : End ℂ W, (∀ g, T * σ g = σ g * T) → ∃ c : ℂ, T = c • 1) ∧ (∀ g, σ (e g) = σ g) ∧
     (∃ f : W →ₗ[ℂ] V, f ≠ 0 ∧ ∀ g x, f (σ g x) = ρ (e g) (f x)) ∧ finrank ℂ (fixed σ L) = d
 
+/- English proof (translation)
+Take `⟨h0, h3⟩` from `(GlobalTheory.CuspRep.isIrreducible_iff _).1 hσ`. Use `⟨W, _, _, σ.comp q, (GlobalTheory.CuspRep.isIrreducible_iff _).2 ⟨h0, fun N hN => h3 N fun k v hv => ?_⟩, fun T hT => schur_of_fixed hσ U hU T fun k => ?_, fun g => congrArg σ (hqe g), ⟨f, hf0, hf⟩, ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `hq k`. Conclude with `hN g v hv`. Take `⟨g, rfl⟩` from `hq k`.
+
+Conclude with `hT g`. Establish `: fixed (σ.comp q) L = fixed σ K`. Use extensionality with `x`. Rewrite using `[mem_fix, mem_fix]`. Use `⟨fun h k hk => ?_, fun h g hg => h _ (h1 g hg)⟩` and prove the remaining obligations.
+
+Take `⟨g, hg, rfl⟩` from `h2 k hk`. Conclude with `h g hg`. Rewrite using `[this]`.
+-/
 theorem hasComp_of_surjective {H : Type} [Group H] (ρ : Representation ℂ Γ V) (e : Γ →* Γ) (L : Subgroup Γ)
     (q : Γ →* H) (hq : Function.Surjective q) (hqe : ∀ g, q (e g) = q g) (σ : Representation ℂ H W)
     (hσ : σ.IsIrreducible) (U : Subgroup H) (hU : fixed σ U ≠ ⊥) [FiniteDimensional ℂ (fixed σ U)]
@@ -261,6 +348,9 @@ theorem hasComp_of_surjective {H : Type} [Group H] (ρ : Representation ℂ Γ V
       exact h g hg
     rw [this]
 
+/- English proof (translation)
+Use `haveI := ((GlobalTheory.CuspRep.isIrreducible_iff τ).1 h).1`. Take `⟨m, hm⟩` from `exists_ne (0 : M)`. Use `⟨ℂ, inferInstance, inferInstance, 1, (GlobalTheory.CuspRep.isIrreducible_iff _).2 ⟨inferInstance, fun N _ => eq_bot_or_eq_top N⟩, fun T _ => ⟨T 1, LinearMap.ext_ring (by simp)⟩, fun _ => rfl, ⟨LinearMap.toSpanSingleton ℂ M m, fun h => hm (by simpa using LinearMap.congr_fun h 1), …` and prove the remaining obligations. Establish `: fixed (1 : Representation ℂ Γ ℂ) L = ⊤` using `Submodule.eq_top_iff'.2 fun x => mem_fix.2 fun _ _ => rfl`. Rewrite using `[this, finrank_top, finrank_self]`.
+-/
 theorem hasComp_of_trivial {τ : Representation ℂ Γ M} (h : τ.IsIrreducible) {e : Γ →* Γ} (hτ : ∀ g, τ (e g) = 1)
     (L : Subgroup Γ) : HasComp τ e L 1 := by
   haveI := ((GlobalTheory.CuspRep.isIrreducible_iff τ).1 h).1
@@ -271,6 +361,13 @@ theorem hasComp_of_trivial {τ : Representation ℂ Γ M} (h : τ.IsIrreducible)
   have : fixed (1 : Representation ℂ Γ ℂ) L = ⊤ := Submodule.eq_top_iff'.2 fun x => mem_fix.2 fun _ _ => rfl
   rw [this, finrank_top, finrank_self]
 
+/- English proof (translation)
+Take `⟨W', _, _, σ', h1, h2, h3, ⟨f, hf0, hf⟩, h4⟩` from `h`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, f x ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hf0 (LinearMap.ext h)`.
+
+Take `⟨l, hl⟩` from `exists_contractLeft_ne_zero (z := Φ.symm (f x)) (by simpa using hx)`. Use `⟨W', _, _, σ', h1, h2, h3, ⟨contractLeft l ∘ₗ Φ.symm.toLinearMap ∘ₗ f, fun h => hl (LinearMap.congr_fun h x), fun g y => ?_⟩, h4⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `Φ.surjective (f y)`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[hf, ← ht, ← hΦ, Φ.symm_apply_apply, Φ.symm_apply_apply, contractLeft_map, hσ]`.
+
+Both sides reduce to the same expression.
+-/
 theorem HasComp.right {ρ : Representation ℂ Γ V} {σ : Representation ℂ Γ W} {τ : Representation ℂ Γ M}
     (Φ : W ⊗[ℂ] M ≃ₗ[ℂ] V) (hΦ : ∀ g t, Φ (TensorProduct.map (σ g) (τ g) t) = ρ g (Φ t)) {e : Γ →* Γ}
     (hσ : ∀ g, σ (e g) = 1) {L : Subgroup Γ} {d : ℕ} (h : HasComp ρ e L d) : HasComp τ e L d := by
@@ -287,6 +384,17 @@ theorem HasComp.right {ρ : Representation ℂ Γ V} {σ : Representation ℂ Γ
   rw [hf, ← ht, ← hΦ, Φ.symm_apply_apply, Φ.symm_apply_apply, contractLeft_map, hσ]
   rfl
 
+/- English proof (translation)
+Take `⟨W, _, _, σ, h1, h2, h3, ⟨f, hf0, hf⟩, h4⟩` from `h`. Take `⟨M, _, _, τ, Φ, hτ, hΦ⟩` from `exists_split hρ h1 h2 he hc hf0 hf`. Take `⟨x, hx0, hx⟩` from `finrank_eq_one_iff'.1 h4`. Take `⟨l, hl⟩` from `exists_dual_one (x := x.1) fun h => hx0 (Subtype.ext h)`. Use `⟨Φ.toLinearMap ∘ₗ TensorProduct.map (l.smulRight x.1) LinearMap.id ∘ₗ Φ.symm.toLinearMap, fun g hg v => ?_, fun v hv => ?_⟩` and prove the remaining obligations.
+
+Take `⟨t, rfl⟩` from `Φ.surjective v`. Establish `: σ g = LinearMap.id` using `by rw [← h3, hg, map_one]; rfl`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[← hΦ, ← hΦ, Φ.symm_apply_apply, Φ.symm_apply_apply, this]`. Simplify using `only [TensorProduct.map_map, LinearMap.comp_id, LinearMap.id_comp]`.
+
+Take `⟨t, rfl⟩` from `Φ.surjective v`. Establish `h5 : ∀ g ∈ L, TensorProduct.map (σ g) LinearMap.id t = t` using `fun g hg => by`. Use `Φ.injective ((hΦ (e g) t).trans (hv g hg))` as an intermediate fact. Rewrite `this` using `[h3, hτ]`. Then use the resulting hypothesis. Establish `h6` using `map_left_of_fixed h5 (l.smulRight x.1) fun y hy => by`.
+
+Take `⟨c, hc⟩` from `hx ⟨y, hy⟩`. Establish `: y = c • x.1` using `(congrArg Subtype.val hc).symm`. Simplify using `[this, hl]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Use `⟨by rw [Φ.symm_apply_apply, h6], fun y => ⟨l (σ y x.1), ?_⟩⟩` and prove the remaining obligations.
+
+Establish `h7 : t = x.1 ⊗ₜ contractLeft l t` using `by rw [← map_smulRight, h6]`. Rewrite using `[← hΦ, Φ.symm_apply_apply, h3, hτ, ← map_smul, h7]`. Simplify using `[TensorProduct.smul_tmul']`.
+-/
 theorem HasComp.exists_op {ρ : Representation ℂ Γ V} (hρ : ρ.IsIrreducible) {e : Γ →* Γ}
     (he : ∀ g, e (e g) = e g) (hc : ∀ g y, Commute ((e g)⁻¹ * g) (e y)) {L : Subgroup Γ} (h : HasComp ρ e L 1) :
     ∃ P : V →ₗ[ℂ] V, (∀ g, e g = 1 → ∀ v, P (ρ g v) = ρ g (P v)) ∧
@@ -320,6 +428,25 @@ section Family
 
 variable {ι : Type} {e : ι → Γ →* Γ} {L : Subgroup Γ}
 
+/- English proof (translation)
+Set `N : Finset ι → Submodule ℂ V` to `fun U => Submodule.span ℂ {v | ∃ g, (∀ i ∉ U, e i g ∈ L) ∧ ρ g m = v}`. Establish `hmono : Monotone N` using `fun U U' hU => Submodule.span_mono fun v ⟨g, hg, hv⟩ => ⟨g, fun i hi => hg i fun h => hi (hU h), hv⟩`. Establish `htop : ∀ v, ∃ U, v ∈ N U`. Establish `h1 : Submodule.span ℂ (Set.range fun g => ρ g m) = ⊤`. Use `(((GlobalTheory.CuspRep.isIrreducible_iff ρ).1 hρ).2 _ fun g v hv => ?_).resolve_left fun h0 => hm0 ?_` and prove the remaining obligations.
+
+Use `(Submodule.span_le (p := (Submodule.span ℂ (Set.range fun g => ρ g m)).comap (ρ g))).2 ?_ hv` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `Submodule.subset_span ⟨g * a, (rep_mul ρ g a m).symm⟩`. Establish `: m ∈ Submodule.span ℂ (Set.range fun g => ρ g m)` using `Submodule.subset_span ⟨1, by simp⟩`. Rewrite `this` using `[h0]`. Then use the resulting hypothesis.
+
+Establish `h2 : Submodule.span ℂ (Set.range fun g => ρ g m) ≤ ⨆ U, N U`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `Submodule.mem_iSup_of_mem (hfin g).toFinset (Submodule.subset_span ⟨g, fun i hi => by simpa using hi, rfl⟩)`. Conclude with `fun v => (Submodule.mem_iSup_of_directed _ hmono.directed_le).1 (h2 (h1 ▸ Submodule.mem_top))`.
+
+Establish `hdown : ∀ v ∈ fixed ρ L, ∀ U, v ∈ N U → v ∈ N ∅`. Introduce `v hv U`. Proceed by induction on `U using Finset.induction_on with`. Consider the case `empty => exact id`. Consider the case `insert i U hi ih`.
+
+Introduce `hU`. Take `⟨P, hP1, hP2⟩` from `(h i).exists_op hρ (he i) (hc i)`. Establish `hfx : ∀ u ∈ fixed ρ L, ∀ g ∈ L, ρ (e i g) u = u` using `fun u hu g hg => mem_fix.1 hu _ ((hL g).1 hg i)`. Use `ih ?_` and prove the remaining obligations. Rewrite using `[← (hP2 v (hfx v hv)).1]`.
+
+Use `(Submodule.span_le (p := (N U).comap P)).2 ?_ hU` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Take `⟨c, hc'⟩` from `(hP2 m (hfx m hm)).2 g`. Establish `h1 : e i ((e i g)⁻¹ * g) = 1` using `by rw [map_mul, map_inv, he, inv_mul_cancel]`. Establish `h2 : ρ g m = ρ ((e i g)⁻¹ * g) (ρ (e i g) m)` using `by rw [rep_mul, (hc i g g).eq, mul_inv_cancel_left]`.
+
+Express the relevant statement in the definitionally equal form `P (ρ g m) ∈ N U`. Rewrite using `[h2, hP1 _ h1, hc', map_smul]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, fun j hj => ?_, rfl⟩)` and prove the remaining obligations. Distinguish the cases in `hji : j = i`. Rewrite using `[hji, h1]`.
+
+Conclude with `L.one_mem`. Rewrite using `[map_mul, map_inv, hne j i hji, inv_one, one_mul]`. Conclude with `hg j (by simp [hji, hj])`. Use `finrank_eq_one_iff'.2 ⟨⟨m, hm⟩, fun h => hm0 (congrArg Subtype.val h), fun v => ?_⟩` and prove the remaining obligations. Take `⟨U, hU⟩` from `htop v.1`.
+
+Establish `h3 : N ∅ ≤ Submodule.span ℂ {m}` using `Submodule.span_mono (by`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `mem_fix.1 hm g ((hL g).2 fun i => hg i (by simp)))`. Take `⟨c, hc'⟩` from `Submodule.mem_span_singleton.1 (h3 (hdown v.1 v.2 U hU))`. Conclude with `⟨c, Subtype.ext hc'⟩`.
+-/
 theorem finrank_fixed_eq_one (he : ∀ i g, e i (e i g) = e i g) (hne : ∀ i j, i ≠ j → ∀ g, e i (e j g) = 1)
     (hc : ∀ i g y, Commute ((e i g)⁻¹ * g) (e i y)) (hL : ∀ g, g ∈ L ↔ ∀ i, e i g ∈ L)
     (hfin : ∀ g, {i | e i g ∉ L}.Finite) {ρ : Representation ℂ Γ V} (hρ : ρ.IsIrreducible)
@@ -371,6 +498,21 @@ theorem finrank_fixed_eq_one (he : ∀ i g, e i (e i g) = e i g) (hne : ∀ i j,
   obtain ⟨c, hc'⟩ := Submodule.mem_span_singleton.1 (h3 (hdown v.1 v.2 U hU))
   exact ⟨c, Subtype.ext hc'⟩
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Introduce and unpack `V _ _ ρ hρ d h hd ⟨m, hm0, hm⟩`. Conclude with `finrank_fixed_eq_one he hne hc hL hfin hρ (fun i => hd i (by simp) ▸ h i) hm0 (mem_fix.2 fun g hg => hm g hg (by simp))`. Consider the case `insert i T hi ih`.
+
+Introduce and unpack `V _ _ ρ hρ d h hd ⟨m, hm0, hm⟩`. Take `⟨W, _, _, σ, h1, h2, h3, ⟨f, hf0, hf⟩, h4⟩` from `h i`. Take `⟨M, _, _, τ, Φ, hτ, hΦ⟩` from `exists_split hρ h1 h2 (he i) (hc i) hf0 hf`. Establish `hirr` using `irred_right hρ Φ hΦ`. Rewrite using `[finrank_fixed_split Φ hΦ h3 hτ fun g hg => (hL g).1 hg i, Finset.prod_insert hi, h4, ih M τ hirr (Function.update d i 1) ?_ ?_ ?_]`.
+
+Use `congr 1`. Conclude with `Finset.prod_congr rfl fun j hj => Function.update_of_ne (fun (h : j = i) => hi (h ▸ hj)) _ _`. Introduce `j`. Distinguish the cases in `hji : j = i`. Rewrite using `[hji, Function.update_self]`.
+
+Conclude with `hasComp_of_trivial hirr hτ L`. Rewrite using `[Function.update_of_ne hji]`. Conclude with `(h j).right Φ hΦ fun g => by rw [← h3, hne i j (Ne.symm hji), map_one]`. Introduce `j hj`. Distinguish the cases in `hji : j = i`.
+
+Rewrite using `[hji, Function.update_self]`. Rewrite using `[Function.update_of_ne hji]`. Conclude with `hd j (by simp [hji, hj])`. Take `⟨t, rfl⟩` from `Φ.surjective m`. Take `⟨l, hl⟩` from `exists_contractLeft_ne_zero (z := t) (by simpa using hm0)`.
+
+Use `⟨_, hl, fun g hg hT => ?_⟩` and prove the remaining obligations. Establish `h5 : e i ((e i g)⁻¹ * g) = 1` using `by rw [map_mul, map_inv, he, inv_mul_cancel]`. Establish `h6` using `Φ.injective ((hΦ _ t).trans (hm ((e i g)⁻¹ * g) (L.mul_mem (L.inv_mem ((hL g).1 hg i)) hg) fun j hj => by`. Break down `Finset.mem_insert.1 hj with rfl | hj` into its components or cases. Conclude with `h5`.
+
+Rewrite using `[map_mul, map_inv, hne j i (fun h => hi (h ▸ hj)), hT j hj, inv_one, one_mul]))`. Rewrite `h6` using `[← h3, h5, map_one, map_mul, ← map_inv (e i), hτ, one_mul]`. Use `conv_rhs => rw [← h6, contractLeft_map]`. Both sides reduce to the same expression.
+-/
 theorem finrank_fixed_eq_prod (he : ∀ i g, e i (e i g) = e i g) (hne : ∀ i j, i ≠ j → ∀ g, e i (e j g) = 1)
     (hc : ∀ i g y, Commute ((e i g)⁻¹ * g) (e i y)) (hL : ∀ g, g ∈ L ↔ ∀ i, e i g ∈ L)
     (hfin : ∀ g, {i | e i g ∉ L}.Finite) (T : Finset ι) :

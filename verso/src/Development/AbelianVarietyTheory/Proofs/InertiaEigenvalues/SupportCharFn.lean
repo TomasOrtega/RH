@@ -16,11 +16,17 @@ def charFn (σ : Representation ℂ K U) (g : G) : ℂ :=
 def IsKMap (σ : Representation ℂ K U) (ρ : Representation ℂ G V) (f : U →ₗ[ℂ] V) : Prop :=
   ∀ κ : K, f ∘ₗ σ κ = ρ κ ∘ₗ f
 
+/- English proof (translation)
+Introduce `g hg`. Assume the negation of the conclusion as `h`. Conclude with `hg (by simp [charFn, show g ∉ K from h])`.
+-/
 theorem support_charFn (σ : Representation ℂ K U) : Function.support (charFn K σ) ⊆ (K : Set G) := by
   intro g hg
   by_contra h
   exact hg (by simp [charFn, show g ∉ K from h])
 
+/- English proof (translation)
+Introduce `_` and use `by simp`.
+-/
 theorem isKMap_zero (σ : Representation ℂ K U) (ρ : Representation ℂ G V) : IsKMap K σ ρ 0 := fun _ => by simp
 
 end GlobalTheory.KTypeTest

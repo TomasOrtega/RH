@@ -32,6 +32,39 @@ open scoped TensorProduct Matrix
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB n J hJ`. Establish `hcm` using `hB.cm`. Establish `hσ` using `GlobalTheory.SplitDetCharF.sig_invol hcm`. Take `⟨c, rfl⟩ : ∃ c : E ≃ₐ[F] E, (c : E →ₐ[F] E) = σ` from `⟨AlgEquiv.ofAlgHom σ σ (AlgHom.ext hσ) (AlgHom.ext hσ), rfl⟩`. Introduce `ν hν hq hs`.
+
+Establish `hH` using `isHermForm hcm hJ`. Take `⟨e, he⟩` from `GlobalTheory.Mem.VolSplit.exists_adelic_split F E (c : E →ₐ[F] E) n J`. Establish `he1 : ∀ g, (Formalism.IndefR.DatumF.mtF _ J g).map (Formalism.IndefR.DatumF.infPartF F E) = (HA.mat _ _ J (e g).1).1` using `fun g => (he g).2.symm`. Establish `he2 : ∀ g, (Formalism.IndefR.DatumF.mtF _ J g).map (Formalism.IndefR.DatumF.finPartF F E) = (HA.mat _ _ J (e g).2).1` using `fun g => (he g).1.symm`. Establish `hc1 : Continuous fun x : HA (Ainf F) (c : E →ₐ[F] E) J => ν (e.symm (x, 1))` using `hν.comp (e.symm.continuous.comp (continuous_id.prodMk continuous_const))`.
+
+Establish `hc2 : Continuous fun x : HA (Af F) (c : E →ₐ[F] E) J => ν (e.symm (1, x))` using `hν.comp (e.symm.continuous.comp (continuous_const.prodMk continuous_id))`. Establish `hinf : ∀ x, ν (e.symm (x, 1)) = 1`. Establish `hd` using `GlobalTheory.RealApprox.dense_inf F E (c : E →ₐ[F] E) hσ (GlobalTheory.SplitDetCharF.sig_ne hcm) J (Matrix.ext fun i j => hJ.1 i j) hJ.2`. Use `fun x => hd.induction (P := fun x => ν (e.symm (x, 1)) = 1) ?_ (isClosed_eq hc1 continuous_const) x` and prove the remaining obligations. Introduce and unpack `x ⟨γ, hγ, hx⟩`.
+
+Take `⟨l, hl, e'⟩` from `GlobalTheory.UnRep.isUnE_eq_prod_refl _ _ c n Jᵀ hH γ.1 ((isUnE_iff γ).2 hγ)`. Establish `h3` using `eq_one_rat hcm hH hν hq hs l hl (ratPt γ hγ) (by rw [← e']; rfl)`. Establish `h4 : e.symm (x, 1) = pInf _ J (ratPt γ hγ)`. Use `ga_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[he1, e.apply_symm_apply, inf_pInf, mt_ratPt]`.
+
+Use `(congrArg Units.val hx).symm.trans ?_` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `(Algebra.TensorProduct.map_tmul _ _ _ _ |>.trans (by rw [map_one]; rfl)).symm`. Rewrite using `[he2, e.apply_symm_apply, fin_pInf]`. Both sides reduce to the same expression.
+
+Rewrite using `[h4, h3]`. Establish `hsplit : ∀ g, ν g = ν (e.symm (1, (e g).2))` using `fun g => by`. Establish `: g = e.symm ((e g).1, 1) * e.symm (1, (e g).2)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one, one_mul, Prod.mk.eta, e.symm_apply_apply]`. Use `conv_lhs => rw [this, map_mul, hinf, one_mul]`.
+
+Set `μ : HA (Af F) (c : E →ₐ[F] E) J →* Circle` to `ν.comp (e.symm.toMonoidHom.comp (MonoidHom.inr _ _))`. Establish `hμ : ∀ x, μ x = ν (e.symm (1, x))` using `fun _ => rfl`. Introduce `g`. Rewrite using `[hsplit, ← hμ]`. Generalize the expression as in `(e g).2 = x`.
+
+Set `L : Submodule (𝓞 E) (Fin n → E)` to `Submodule.span (𝓞 E) (Set.range (Pi.basisFun E (Fin n)))`. Establish `hfg : L.FG` using `Submodule.fg_span (Set.finite_range _)`. Establish `hsp : Submodule.span E (L : Set (Fin n → E)) = ⊤`. Rewrite using `[Submodule.span_span_of_tower, (Pi.basisFun E (Fin n)).span_eq]`. Use `choose γ h k u1 u2 u3 hg hsup hk hk' using fun N : ℕ => GlobalTheory.T.exists_unitary_adelic_decomposition_split_support F E c n Jᵀ hH hcm.2.2.1 L hfg hsp (HA.mat _ _ J x) N.factorial ((isUnA_iff _).2 (show HR (Af F) (c : E →ₐ[F] E) J from x).2) N.factorial_pos`.
+
+Set `k' : ℕ → HA (Af F) (c : E →ₐ[F] E) J` to `fun N => (⟨k N, (isUnA_iff _).1 (u3 N)⟩ : HR (Af F) (c : E →ₐ[F] E) J)`. Establish `h1 : ∀ N, μ x = μ (k' N)` using `fun N => by`. Set `h' : HA (Af F) (c : E →ₐ[F] E) J` to `(⟨h N, (isUnA_iff _).1 (u2 N)⟩ : HR (Af F) (c : E →ₐ[F] E) J)`. Set `r` to `ratPt (γ N) ((isUnE_iff _).1 (u1 N))`. Establish `ex : x = (e r).2 * h' * k' N`.
+
+Use `Subtype.ext (Units.ext ((hg N).trans ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (HA.mat _ _ J (e r).2).1 * (h N).1 * (k N).1`. Rewrite using `[← he2, mt_ratPt]`. Use `congr 2`. Establish `a1 : μ (e r).2 = 1` using `by rw [hμ, ← hsplit]; exact hq _ (ratPt_mem _ _)`.
+
+Establish `a2 : μ h' = 1`. Take `⟨ε, b1, b2, b3, b4⟩` from `hsup N`. Use `eq_one_of_idem hcm hs ε b1 b2 (fun v hv => (b3 v hv).1) (e.symm (1, h')) ?_` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`.
+
+Use `parts_inj _ _ ?_ ?_` and prove the remaining obligations. Establish `h6 : (Formalism.IndefR.DatumF.mtF _ J (e.symm (1, h'))).map (Formalism.IndefR.DatumF.infPartF F E) = 1`. Rewrite using `[he1, e.apply_symm_apply]`. Both sides reduce to the same expression. Rewrite using `[RingHom.map_mul, map_sub_one, h6, sub_self, Matrix.zero_apply, mul_zero]`.
+
+Establish `h6 : (Formalism.IndefR.DatumF.mtF _ J (e.symm (1, h'))).map (Formalism.IndefR.DatumF.finPartF F E) = (h N).1`. Rewrite using `[he2, e.apply_symm_apply]`. Both sides reduce to the same expression. Rewrite using `[RingHom.map_mul, map_sub_one, h6]`. Conclude with `congrFun (congrFun b4 i) j`.
+
+Rewrite using `[ex, map_mul, map_mul, a1, a2, one_mul, one_mul]`. Establish `t1` using `GlobalTheory.SplitRepsOpen.tendsto_one_of_cong F E L hfg hsp (fun N => (k N).1) hk`. Establish `t2` using `GlobalTheory.SplitRepsOpen.tendsto_one_of_cong F E L hfg hsp (fun N => ((k N)⁻¹).1) fun N z hz => by`. Take `⟨y, hy, e'⟩` from `hk N _ (hk' N z hz)`. Use `⟨-y, neg_mem hy, ?_⟩` and prove the remaining obligations.
+
+Rewrite `e'` using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[neg_nsmul, ← e', neg_sub]`. Establish `t3 : Tendsto k' atTop (𝓝 1)` using `tendsto_UJ (sigR (Af F) (c : E →ₐ[F] E)) (JR (Af F) J) t1 t2`. Establish `t` using `(hc2.tendsto _).comp t3`. Establish `h0 : ν (e.symm (1, 1)) = 1` using `by rw [← hμ, map_one]`.
+
+Rewrite `t` using `[h0]`. Conclude with `tendsto_nhds_unique (tendsto_const_nhds.congr h1) t`.
+-/
 theorem PositivityTheory.ThKW.unitary_character_trivial_global : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
       ∀ ν : Formalism.IndefR.DatumF.GAF σ J →* Circle, Continuous ν → (∀ γ ∈ Formalism.IndefR.DatumF.GQF σ J, ν γ = 1) →

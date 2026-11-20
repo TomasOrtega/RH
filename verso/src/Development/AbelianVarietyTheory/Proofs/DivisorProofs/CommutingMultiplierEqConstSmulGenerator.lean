@@ -3,6 +3,47 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CommutingMapEqSmulM
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `expand : ∀ (U : Submodule K A) [FiniteDimensional K U] (f : U), rd (f : A) = ∑ j, σ ((Module.finBasis K U).repr f j) • rd ((Module.finBasis K U j : U) : A)`. Introduce `U _ f`. Use `conv_lhs => rw [← (Module.finBasis K U).sum_repr f]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, map_sum, hsemi]`. Use `set bV := Module.finBasis K V with hbV`.
+
+Use `set bV' := Module.finBasis K V' with hbV'`. Set `gV : Fin (Module.finrank K V) → R` to `fun j => ⟨rd (bV j : A), hV _ (bV j).2⟩`. Set `gV' : Fin (Module.finrank K V') → R` to `fun j => ⟨rd (bV' j : A), hV' _ (bV' j).2⟩`. Establish `liV : LinearIndependent ℂ gV`. Apply `LinearIndependent.of_comp R.val.toLinearMap` to reduce the goal to its premises.
+
+Conclude with `hind _ (fun j => (bV j : A)) (fun j => (bV j).2) (bV.linearIndependent.map' V.subtype V.ker_subtype)`. Establish `liV' : LinearIndependent ℂ gV'`. Apply `LinearIndependent.of_comp R.val.toLinearMap` to reduce the goal to its premises. Conclude with `hind' _ (fun j => (bV' j : A)) (fun j => (bV' j).2) (bV'.linearIndependent.map' V'.subtype V'.ker_subtype)`. Set `W` to `Submodule.span ℂ (Set.range gV)`.
+
+Set `W'` to `Submodule.span ℂ (Set.range gV')`. Establish `eqV : ∀ f : V, (⟨rd f, hV _ f.2⟩ : R) = ∑ j, σ (bV.repr f j) • gV j`. Introduce `f`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [AddSubmonoidClass.coe_finset_sum, SetLike.val_smul, gV]`.
+
+Conclude with `expand V f`. Establish `eqV' : ∀ f : V', (⟨rd f, hV' _ f.2⟩ : R) = ∑ j, σ (bV'.repr f j) • gV' j`. Introduce `f`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [AddSubmonoidClass.coe_finset_sum, SetLike.val_smul, gV']`.
+
+Conclude with `expand V' f`. Establish `memW : ∀ f : V, (⟨rd f, hV _ f.2⟩ : R) ∈ W`. Introduce `f`. Rewrite using `[eqV f]`. Conclude with `Submodule.sum_mem _ (fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩))`.
+
+Establish `memW' : ∀ f : V', (⟨rd f, hV' _ f.2⟩ : R) ∈ W'`. Introduce `f`. Rewrite using `[eqV' f]`. Conclude with `Submodule.sum_mem _ (fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩))`. Set `bW : Module.Basis (Fin (Module.finrank K V)) ℂ W` to `Module.Basis.span liV`.
+
+Establish `bW_apply : ∀ j, (bW j : R) = gV j` using `fun j => congrArg Subtype.val (Module.Basis.span_apply liV j)`. Set `img : Fin (Module.finrank K V) → W'` to `fun j => ⟨⟨rd (T (bV j) : A), hV' _ (T (bV j)).2⟩, memW' (T (bV j))⟩`. Set `Tc : W →ₗ[ℂ] W'` to `bW.constr ℂ img`. Establish `Tc_rd : ∀ f : V, Tc ⟨⟨rd f, hV _ f.2⟩, memW f⟩ = ⟨⟨rd (T f : A), hV' _ (T f).2⟩, memW' (T f)⟩`. Introduce `f`.
+
+Establish `e1 : (⟨⟨rd f, hV _ f.2⟩, memW f⟩ : W) = ∑ j, σ (bV.repr f j) • bW j`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, bW_apply]`. Conclude with `eqV f`. Rewrite using `[e1, map_sum]`.
+
+Simplify using `only [map_smul, Tc, Module.Basis.constr_basis]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, AddSubmonoidClass.coe_finset_sum, SetLike.val_smul, img]`. Use `conv_rhs => rw [← bV.sum_repr f]`.
+
+Simplify using `only [map_sum, map_smul, Submodule.coe_sum, Submodule.coe_smul, hsemi]`. Establish `Tc_basis : ∀ i, Tc (bW i) = img i` using `fun i => by`. Simplify using `only [Tc, Module.Basis.constr_basis]`. Use `haveI : FiniteDimensional ℂ W := Module.Finite.of_basis bW`. Establish `Tc_ne : Tc ≠ 0`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f, T f ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hT (LinearMap.ext hc)`. Establish `hfA : (T f : A) ≠ 0` using `fun hz => hf (Subtype.ext hz)`.
+
+Establish `li1 : LinearIndependent ℂ (fun _ : Fin 1 => rd (T f : A))` using `hind' 1 (fun _ => (T f : A)) (fun _ => (T f).2) (linearIndependent_unique_iff.mpr hfA)`. Establish `hne : rd (T f : A) ≠ 0` using `li1.ne_zero 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Use `congrArg (fun x : W' => ((x : R) : B)) (Tc_rd f)` as an intermediate fact.
+
+Simplify using `only [h0, LinearMap.zero_apply] at this`. Simplify using `using this.symm`. Establish `spanLe : Submodule.span ℂ (rd '' (V : Set A)) ≤ W.map R.val.toLinearMap`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨f, hf, rfl⟩`.
+
+Conclude with `⟨⟨rd f, hV _ hf⟩, memW ⟨f, hf⟩, rfl⟩`. Establish `hW'W : ∀ w ∈ W', (⟨h', hh'⟩ : R) * w ∈ W`. Introduce `w hw`. Establish `hle : W' ≤ W.comap (LinearMap.mulLeft ℂ (⟨h', hh'⟩ : R))`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Use `show (⟨h', hh'⟩ : R) * gV' i ∈ W`. Take `⟨z, hz, hzeq⟩` from `spanLe (hsub _ (bV' i).2)`. Establish `: z = (⟨h', hh'⟩ : R) * gV' i` using `Subtype.ext hzeq`. Rewrite using `[← this]`.
+
+Conclude with `hz`. Conclude with `hle hw`. Establish `hcommTc : ∀ x y : W, ((Tc x : R)) * (y : R) = (x : R) * (Tc y : R)`. Set `B1 : W →ₗ[ℂ] W →ₗ[ℂ] R` to `(LinearMap.mul ℂ R).compl₁₂ (W'.subtype ∘ₗ Tc) W.subtype`. Set `B2 : W →ₗ[ℂ] W →ₗ[ℂ] R` to `(LinearMap.mul ℂ R).compl₁₂ W.subtype (W'.subtype ∘ₗ Tc)`.
+
+Establish `hB : B1 = B2`. Use `bW.ext fun i => bW.ext fun j => ?_` and prove the remaining obligations. Simplify using `only [B1, B2, LinearMap.compl₁₂_apply, LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.mul_apply', Tc_basis, bW_apply]`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [img, gV, Subalgebra.coe_mul, ← map_mul]`.
+
+Rewrite using `[hcomm]`. Introduce `x y`. Use `LinearMap.congr_fun₂ hB x y` as an intermediate fact. Simplify `this` using `[B1, B2]`. Establish `hhhR : (⟨h, hh⟩ : R) * ⟨h', hh'⟩ = 1` using `Subtype.ext (by simpa using hhh)`.
+
+Take `⟨a, ha, hkey⟩` from `commuting_map_eq_smul_multiplier R W W' ⟨h, hh⟩ ⟨h', hh'⟩ hhhR hW'W Tc Tc_ne hcommTc`. Use `⟨a, ha, fun f => ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val (hkey ⟨⟨rd f, hV _ f.2⟩, memW f⟩)` as an intermediate fact. Rewrite `this` using `[Tc_rd]`. Simplify using `using this`.
+-/
 theorem commuting_multiplier_eq_const_smul_generator
     (K A B : Type) [Field K] [CommRing A] [Algebra K A] [CommRing B] [Algebra ℂ B]
     (σ : K →+* ℂ) (rd : A →+* B)

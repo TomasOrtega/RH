@@ -13,6 +13,9 @@ open NumberField NumberField.Units NumberField.Units.dirichletUnitTheorem Global
 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Balance
 
+/- English proof (translation)
+The claim follows from `|f w| ≤ (Fintype.card (InfinitePlace F) : ℝ) * C := by classical have hcard : (1 : ℝ) ≤ Fintype.card (InfinitePlace F) := by exact_mod_cast Fintype.card_pos_iff.mpr ⟨w⟩ by_cases hw : w = w₀ · subst hw have h1 : f w₀ = -∑ v ∈ Finset.univ.erase w₀, f v := by rw [← Finset.add_sum_er …`.
+-/
 theorem abs_le_of_sum_eq_zero {F : Type} [Field F] [NumberField F] (f : InfinitePlace F → ℝ) (C : ℝ) (hC : 0 ≤ C)
     (hs : ∑ w, f w = 0) (hf : ∀ w, w ≠ w₀ → |f w| ≤ C) (w : InfinitePlace F) :
     |f w| ≤ (Fintype.card (InfinitePlace F) : ℝ) * C := by
@@ -37,11 +40,43 @@ theorem abs_le_of_sum_eq_zero {F : Type} [Field F] [NumberField F] (f : Infinite
       _ = 1 * C := (one_mul C).symm
       _ ≤ (Fintype.card (InfinitePlace F) : ℝ) * C := mul_le_mul_of_nonneg_right hcard hC
 
+/- English proof (translation)
+Rewrite using `[InfinitePlace.apply]`. Simplify using the standard rewrite rules.
+-/
 theorem place_apply {F : Type} [Field F] [NumberField F] (σ : F →+* ℝ) (y : F) :
     (InfinitePlace.mk (Complex.ofRealHom.comp σ)) y = |σ y| := by
   rw [InfinitePlace.apply]
   simp
 
+/- English proof (translation)
+Introduce `F _ _ _ 𝔣 h𝔣`. Take `⟨e, he, hpow⟩` from `GlobalTheory.T.exists_unit_power_in_congruence F 𝔣 h𝔣`. Take `⟨C, hC, hbound⟩` from `GlobalTheory.T.unit_log_lattice_bounded_translate F e he`. Take `⟨n, hn⟩ : ∃ n : ℝ, n = (Fintype.card (InfinitePlace F) : ℝ)` from `⟨_, rfl⟩`. Use `⟨Real.exp (2 * (n * C)), fun x hx => ?_⟩` and prove the remaining obligations.
+
+Establish `hx0 : x ≠ 0`. Introduce `h0`. Establish `h` using `hx (InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal (w₀ : InfinitePlace F)))`. Rewrite `h` using `[h0, map_zero]`. Conclude with `lt_irrefl _ h`.
+
+Establish `hwx : ∀ w : InfinitePlace F, 0 < w x` using `fun w => InfinitePlace.pos_iff.mpr hx0`. Establish `hn0 : n ≠ 0`. Rewrite using `[hn]`. Conclude with `(Fintype.card_pos_iff.mpr ⟨(w₀ : InfinitePlace F)⟩).ne'` after adjusting the coercions. Take `⟨s, hs⟩ : ∃ s : ℝ, s = ∑ w : InfinitePlace F, Real.log (w x)` from `⟨_, rfl⟩`.
+
+Take `⟨u, hu⟩` from `hbound (fun w => Real.log (w.1 x) - s / n)`. Establish `hv` using `hpow u`. Use `⟨u ^ e, hv, fun σ τ => ?_⟩` and prove the remaining obligations. Take `⟨-, hvpos⟩` from `hv`. Establish `hpowc : (((u ^ e : (𝓞 F)ˣ) : 𝓞 F) : F) = (algebraMap (𝓞 F) F (u : 𝓞 F)) ^ e`.
+
+Rewrite using `[Units.val_pow_eq_pow_val]`. Conclude with `map_pow (algebraMap (𝓞 F) F) _ _`. Establish `hξpos : ∀ ρ : F →+* ℝ, 0 < ρ ((((u ^ e : (𝓞 F)ˣ) : 𝓞 F) : F) * x)`. Introduce `ρ`. Rewrite using `[map_mul]`.
+
+Conclude with `mul_pos (hvpos ρ) (hx ρ)`. Generalize the expression as in `hξ : (((u ^ e : (𝓞 F)ˣ) : 𝓞 F) : F) * x = ξ at hξpos ⊢`. Establish `hlog : ∀ w : InfinitePlace F, Real.log (w ξ) = e * Real.log (w (algebraMap (𝓞 F) F (u : 𝓞 F))) + Real.log (w x)`. Introduce `w`. Establish `hwu : w (algebraMap (𝓞 F) F (u : 𝓞 F)) ≠ 0` using `(InfinitePlace.pos_iff.mpr (NumberField.Units.coe_ne_zero u)).ne'`.
+
+Rewrite using `[← hξ, hpowc, map_mul, map_pow, Real.log_mul (pow_ne_zero _ hwu) (hwx w).ne', Real.log_pow]`. Use `set f : InfinitePlace F → ℝ := fun w => Real.log (w ξ) - s / n with hf`. Establish `hsumu : ∑ w : InfinitePlace F, Real.log (w (algebraMap (𝓞 F) F (u : 𝓞 F))) = 0`. Establish `h` using `NumberField.Units.sum_mult_mul_log u`. Simplify `h` using `only [IsTotallyReal.mult_eq, Nat.cast_one, one_mul]`.
+
+Establish `hsum : ∑ w, f w = 0`. Establish `h1 : ∀ w, f w = (e : ℝ) * Real.log (w (algebraMap (𝓞 F) F (u : 𝓞 F))) + Real.log (w x) - s / n` using `fun w => by show Real.log (w ξ) - s / n = _`. Rewrite using `[hlog w]`. Rewrite using `[Finset.sum_congr rfl (fun w _ => h1 w), Finset.sum_sub_distrib, Finset.sum_add_distrib, ← Finset.mul_sum, hsumu, ← hs, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← hn]`. Establish `h2 : n * (s / n) = s` using `by field_simp`.
+
+Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfC : ∀ w, w ≠ w₀ → |f w| ≤ C`. Introduce `w hw`. Establish `h` using `hu ⟨w, hw⟩`.
+
+Simplify using `only [logEmbedding_component, IsTotallyReal.mult_eq, Nat.cast_one, one_mul] at h`. Establish `h2 : f w = Real.log (w x) - s / n + e * Real.log (w (algebraMap (𝓞 F) F (u : 𝓞 F)))` using `by show Real.log (w ξ) - s / n = _`. Rewrite using `[hlog w]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`.
+
+Conclude with `h`. Establish `hbd : ∀ w, |f w| ≤ n * C` using `fun w => by`. Rewrite using `[hn]`. Conclude with `GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Balance.abs_le_of_sum_eq_zero f C hC hsum hfC w`. Establish `hρ : ∀ ρ : F →+* ℝ, Real.log (ρ ξ) = f (InfinitePlace.mk (Complex.ofRealHom.comp ρ)) + s / n`.
+
+Introduce `ρ`. Rewrite using `[hf]`. Simplify using `only []`. Rewrite using `[GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Balance.place_apply, abs_of_pos (hξpos ρ)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `key : Real.log (σ ξ) ≤ 2 * (n * C) + Real.log (τ ξ)`. Rewrite using `[hρ σ, hρ τ]`. Establish `h1` using `abs_le.mp (hbd (InfinitePlace.mk (Complex.ofRealHom.comp σ)))`. Establish `h2` using `abs_le.mp (hbd (InfinitePlace.mk (Complex.ofRealHom.comp τ)))`. Combine the linear relations using `[h1.2, h2.1]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem balance : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔣 : Ideal (𝓞 F)), 𝔣 ≠ ⊥ →
     ∃ M : ℝ, ∀ x : F, TotPos F x → ∃ u : (𝓞 F)ˣ, u ∈ congUnits 𝔣 ∧
       ∀ σ τ : F →+* ℝ, σ (((u : 𝓞 F) : F) * x) ≤ M * τ (((u : 𝓞 F) : F) * x) := by

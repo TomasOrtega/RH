@@ -3,6 +3,23 @@ open IsDedekindDomain
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hI hc`. Take `⟨a, J, ha, haJ⟩` from `FractionalIdeal.exists_eq_spanSingleton_mul I`. Establish `hJ : J ≠ 0`. Introduce and unpack `rfl`. Apply `hI` to reduce the goal to its premises.
+
+Rewrite using `[haJ]`. Simplify using the standard rewrite rules. Establish `hv : Irreducible (Associates.mk v.asIdeal)` using `v.associates_irreducible`. Rewrite `hc` using `[FractionalIdeal.count_well_defined K v hI haJ, sub_eq_zero, Nat.cast_inj]`. Use `set n := (Associates.mk v.asIdeal).count (Associates.mk J).factors with hn`.
+
+Establish `hJne : Associates.mk J ≠ 0` using `Associates.mk_ne_zero.mpr hJ`. Establish `haspan : Ideal.span {a} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `ha`. Establish `haNe : Associates.mk (Ideal.span {a}) ≠ 0` using `Associates.mk_ne_zero.mpr haspan`.
+
+Establish `hdJ : v.asIdeal ^ n ∣ J`. Rewrite using `[← Associates.mk_le_mk_iff_dvd, Associates.mk_pow]`. Conclude with `(Associates.prime_pow_dvd_iff_le hJne hv).mpr le_rfl`. Establish `hda : v.asIdeal ^ n ∣ Ideal.span {a}`. Rewrite using `[← Associates.mk_le_mk_iff_dvd, Associates.mk_pow]`.
+
+Conclude with `(Associates.prime_pow_dvd_iff_le haNe hv).mpr hc.le`. Take `⟨J1, hJ1⟩` from `hdJ`. Establish `hnot : ¬ v.asIdeal ∣ J1`. Introduce `h`. Establish `h2 : v.asIdeal ^ (n + 1) ∣ J`.
+
+Rewrite using `[hJ1, pow_succ]`. Conclude with `mul_dvd_mul_left _ h`. Rewrite `h2` using `[← Associates.mk_le_mk_iff_dvd, Associates.mk_pow, Associates.prime_pow_dvd_iff_le hJne hv]`. Use linear arithmetic over natural numbers and integers. Rewrite `hnot` using `[Ideal.dvd_iff_le, SetLike.not_le_iff_exists]`.
+
+Take `⟨s, hsJ1, hsv⟩` from `hnot`. Use `⟨s, hsv, ?_⟩` and prove the remaining obligations. Establish `hsa : s * a ∈ J`. Rewrite using `[hJ1, mul_comm s a]`. Conclude with `Ideal.mul_mem_mul (Ideal.dvd_iff_le.mp hda (Ideal.mem_span_singleton_self a)) hsJ1`.
+
+Rewrite using `[haJ, FractionalIdeal.mem_singleton_mul]`. Use `⟨algebraMap R K (s * a), FractionalIdeal.mem_coeIdeal_of_mem _ hsa, ?_⟩` and prove the remaining obligations. Establish `ha' : algebraMap R K a ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R K)).mpr ha`. Rewrite using `[map_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem fractionalIdeal_exists_int_not_mem_of_count_eq_zero
     {R K : Type} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
     (v : HeightOneSpectrum R) (I : FractionalIdeal (nonZeroDivisors R) K) :

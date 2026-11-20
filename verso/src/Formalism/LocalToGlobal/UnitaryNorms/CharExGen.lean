@@ -21,6 +21,9 @@ def unitIdeles : Subgroup (Ideles L) where
     rw [map_mul, ha v, one_mul, map_one] at h
     exact h
 
+/- English proof (translation)
+Rewrite using `[rayUnits_top_iff]`. Conclude with `Iff.rfl`.
+-/
 theorem mem_unitIdeles_iff (u : Ideles L) : u ∈ unitIdeles L ↔ u ∈ rayUnits L ⊤ ∅ := by
   rw [rayUnits_top_iff]
   exact Iff.rfl
@@ -32,6 +35,11 @@ def DivExtC : Prop :=
 
 def ClassExp : Prop := ∃ h : ℕ, 0 < h ∧ ∀ x : Ideles L, ∃ k : Lˣ, x ^ h * diagUnits L k ∈ unitIdeles L
 
+/- English proof (translation)
+Use `⟨Fintype.card (ClassGroup (𝓞 L)), Fintype.card_pos, fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : classOf L (x ^ Fintype.card (ClassGroup (𝓞 L))) = 1`. Rewrite using `[map_pow, pow_card_eq_one]`. Take `⟨k, u, hu, hx⟩` from `(classOf_eq_one_iff L _).mp h1`. Use `⟨k⁻¹, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hx, map_inv, mul_comm (diagUnits L k) u, mul_inv_cancel_right]`. Conclude with `(mem_unitIdeles_iff L u).mpr hu`.
+-/
 theorem classExp : ClassExp L := by
   refine ⟨Fintype.card (ClassGroup (𝓞 L)), Fintype.card_pos, fun x => ?_⟩
   have h1 : classOf L (x ^ Fintype.card (ClassGroup (𝓞 L))) = 1 := by
@@ -43,6 +51,25 @@ theorem classExp : ClassExp L := by
 
 variable {L}
 
+/- English proof (translation)
+Use `set D : Subgroup (Ideles L) := (diagUnits L).range`. Set `K0 : Subgroup M` to `D.comap M.subtype`. Establish `hK : K0 ≤ (Φ.comp M.subtype).ker`. Introduce `x hx`. Establish `hx' : (x : Ideles L) ∈ (diagUnits L).range` using `hx`.
+
+Take `⟨k, hk⟩` from `hx'`. Establish `hkM : diagUnits L k ∈ M` using `hk ▸ x.2`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, Subgroup.coe_subtype, ← hk]`. Conclude with `h1 k hkM`. Set `φ1 : M ⧸ K0 →* ℂˣ` to `QuotientGroup.lift K0 (Φ.comp M.subtype) hK`.
+
+Set `ι : M ⧸ K0 →* Ideles L ⧸ D` to `QuotientGroup.map K0 D M.subtype le_rfl`. Establish `hι : Function.Injective ι`. Use `(injective_iff_map_eq_one ι).mpr fun a ha => ?_` and prove the remaining obligations. Proceed by induction on `a using QuotientGroup.induction_on with`. Consider the case `H x`.
+
+Rewrite `ha` using `[QuotientGroup.map_mk, QuotientGroup.eq_one_iff]`. Conclude with `(QuotientGroup.eq_one_iff x).mpr ha`. Set `e : M ⧸ K0 ≃* ι.range` to `MonoidHom.ofInjective hι`. Set `g : ι.range →* ℂˣ` to `φ1.comp e.symm.toMonoidHom`. Take `⟨g', hg'⟩` from `hD (Ideles L ⧸ D) ι.range g`.
+
+Set `χ0 : Ideles L →* ℂˣ` to `g'.comp (QuotientGroup.mk' D)`. Establish `hχM : ∀ m ∈ M, χ0 m = Φ m`. Introduce `m hm`. Establish `hq : ((e (QuotientGroup.mk ⟨m, hm⟩) : ι.range) : Ideles L ⧸ D) = (m : Ideles L ⧸ D)`. Rewrite using `[MonoidHom.ofInjective_apply]`.
+
+Both sides reduce to the same expression. Establish `h2` using `hg' (e (QuotientGroup.mk ⟨m, hm⟩))`. Rewrite `h2` using `[hq]`. Express the relevant statement in the definitionally equal form `g' (m : Ideles L ⧸ D) = Φ m`. Rewrite using `[h2]`.
+
+Simplify using `[g, φ1]`. Establish `hcont : Continuous χ0`. Use `continuous_of_continuousAt_one χ0 ?_` and prove the remaining obligations. Establish `hev : Φ =ᶠ[nhds 1] χ0` using `by filter_upwards [hO.mem_nhds (unitIdeles L).one_mem] with x hx`. Conclude with `(hχM x (hM hx)).symm`.
+
+Conclude with `hΦ.continuousAt.congr hev`. Establish `hdiag : ∀ k : Lˣ, χ0 (diagUnits L k) = 1`. Introduce `k`. Establish `hmem : diagUnits L k ∈ D` using `⟨k, rfl⟩`. Express the relevant statement in the definitionally equal form `g' (QuotientGroup.mk' D (diagUnits L k)) = 1`.
+
+Rewrite using `[QuotientGroup.mk'_apply, (QuotientGroup.eq_one_iff _).mpr hmem, map_one]`. Conclude with `⟨⟨χ0, hcont, hdiag⟩, hχM⟩`.
+-/
 theorem exists_hchar_eq_on (hD : DivExtC) (hO : OpenUnits L) (M : Subgroup (Ideles L)) (hM : unitIdeles L ≤ M)
     (Φ : Ideles L →* ℂˣ) (hΦ : Continuous Φ) (h1 : ∀ k : Lˣ, diagUnits L k ∈ M → Φ (diagUnits L k) = 1) :
     ∃ χ : HChar L, ∀ m ∈ M, χ.1 m = Φ m := by
@@ -90,10 +117,18 @@ theorem exists_hchar_eq_on (hD : DivExtC) (hO : OpenUnits L) (M : Subgroup (Idel
     rw [QuotientGroup.mk'_apply, (QuotientGroup.eq_one_iff _).mpr hmem, map_one]
   exact ⟨⟨χ0, hcont, hdiag⟩, hχM⟩
 
+/- English proof (translation)
+Rewrite `hz` using `[Units.val_pow_eq_pow_val, norm_pow]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hh.ne').mp hz`.
+-/
 theorem norm_pow_eq_one {z : ℂˣ} {h : ℕ} (hh : 0 < h) (hz : ‖((z ^ h : ℂˣ) : ℂ)‖ = 1) : ‖(z : ℂ)‖ = 1 := by
   rw [Units.val_pow_eq_pow_val, norm_pow] at hz
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hh.ne').mp hz
 
+/- English proof (translation)
+Take `⟨n, hn, hx⟩` from `classExp L`. Introduce `x`. Take `⟨k, hk⟩` from `hx x`. Apply `norm_pow_eq_one hn` to reduce the goal to its premises. Establish `h2` using `h _ hk`.
+
+Rewrite `h2` using `[map_mul, χ.2.2 k, mul_one, map_pow]`. Then use the resulting hypothesis.
+-/
 theorem isUnitary_of_unitIdeles (χ : HChar L) (h : ∀ u ∈ unitIdeles L, ‖((χ.1 u : ℂˣ) : ℂ)‖ = 1) : χ.IsUnitary := by
   obtain ⟨n, hn, hx⟩ := classExp L
   intro x

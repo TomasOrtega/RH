@@ -20,6 +20,11 @@ noncomputable section
 
 namespace GlobalTheory.Mum.TensTor
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Establish `h` using `he 0 0 i`. Rewrite `h` using `[add_zero]`. Simplify using `using h`.
+
+Consider the case `succ k ih => rw [succ_nsmul, he, ih, succ_nsmul]`.
+-/
 theorem comp_nsmul {F : Type} [Field F] {N N' : NumD F} {r : ℕ} {e : N'.X → Fin r → N.X}
     (he : ∀ χ χ' i, e (χ + χ') i = e χ i + e χ' i) (k : ℕ) (z : N'.X) (i : Fin r) : e (k • z) i = k • e z i := by
   induction k with
@@ -29,6 +34,17 @@ theorem comp_nsmul {F : Type} [Field F] {N N' : NumD F} {r : ℕ} {e : N'.X → 
     simpa using h
   | succ k ih => rw [succ_nsmul, he, ih, succ_nsmul]
 
+/- English proof (translation)
+Establish `hadd` using `hT.2.2.1`. Establish `he` using `hT.2.2.2.1`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hy, hg⟩ i`. Use `⟨e z i, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hb.1 i, hy, hadd, comp_nsmul hadd, ha.1 i]`. Establish `h1` using `GlobalTheory.T.tensorTorusValueCorrespondence_mul F N N' W φ e wv hT _ _ _ _ ha.2 (GlobalTheory.T.tensorTorusValueCorrespondence_period F N N' W φ e wv hT z)`. Rewrite `h1` using `[← hg]`. Establish `h2` using `congrFun (GlobalTheory.T.tensorTorusValueCorrespondence_unique_components F N N' W φ e wv hT hW _ _ _ hb.2 h1) i`. Simplify using `using h2`.
+
+Introduce `h choose z hz using h`. Take `⟨z', hz'⟩` from `he.2 z`. Use `⟨z', ?_, ?_⟩` and prove the remaining obligations. Apply `he.1` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[hadd, comp_nsmul hadd, hz', ha.1 i, hb.1 i]`. Conclude with `(hz i).1`. Establish `h1` using `GlobalTheory.T.tensorTorusValueCorrespondence_mul F N N' W φ e wv hT _ _ _ _ ha.2 (GlobalTheory.T.tensorTorusValueCorrespondence_period F N N' W φ e wv hT z')`. Establish `h2 : ((fun j => (as j).1.2) * fun j => N.io (e z' j)) = fun j => (bs j).1.2`. Use function extensionality and compare the values at `fun j => by rw [Pi.mul_apply, hz']; exact ((hz j).2).symm`.
+
+Rewrite `h1` using `[h2]`. Conclude with `GlobalTheory.T.tensorTorusValueCorrespondence_unique_point F N N' W φ e wv hT _ _ _ hb.2 h1`.
+-/
 theorem qEq_iff_of_rel {F : Type} [Field F] {N N' : NumD F} {r : ℕ} {W : Matrix (Fin r) (Fin r) ℤ}
     {φ : N'.A → Fin r → N.A} {e : N'.X → Fin r → N.X} {wv : N'.A → F} (hT : TensFacts W φ e wv)
     (hW : IsUnit (W + W.transpose).det) {k : ℕ} {a' b' : N'.QT k} {as bs : Fin r → N.QT k}
@@ -57,6 +73,11 @@ theorem qEq_iff_of_rel {F : Type} [Field F] {N N' : NumD F} {r : ℕ} {W : Matri
       rw [h2] at h1
       exact GlobalTheory.T.tensorTorusValueCorrespondence_unique_point F N N' W φ e wv hT _ _ _ hb.2 h1
 
+/- English proof (translation)
+Introduce `R _ _ _ hB D D' r W T F _ _ _ N N' ν ν' hW k p' q' ps qs hp hq`. Take `⟨a', as, ha', has, ha⟩` from `hp`. Take `⟨b', bs, hb', hbs, hb⟩` from `hq`. Establish `hT` using `GlobalTheory.T.tensorData_values_facts R hB D D' W T F N N' ν ν'`. Establish `G` using `GlobalTheory.Ex.GtValues.points_correspond`.
+
+Rewrite using `[((G R D'.toPre D'.psi_even D'.tau_bimult F N' ν').2.2.2.2 k).2.2 p' q' a' b' ha' hb', qEq_iff_of_rel hT hW ha hb]`. Conclude with `forall_congr' fun i => (((G R D.toPre D.psi_even D.tau_bimult F N ν).2.2.2.2 k).2.2 _ _ _ _ (has i) (hbs i)).symm`.
+-/
 theorem qkPt_equiv_iff_components : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R →
     ∀ (D D' : DegData R (maximalIdeal R)) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D.toPre D'.toPre W)
     (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] (N N' : NumD F) (ν : NumOf D.toPre F N)

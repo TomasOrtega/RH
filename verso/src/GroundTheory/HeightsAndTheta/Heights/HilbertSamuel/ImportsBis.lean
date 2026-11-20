@@ -6,6 +6,19 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 
 open MeasureTheory Set Filter Topology
 
+/- English proof (translation)
+Introduce `Ω _ μ _ g b C hg hb hC hlim hint`. Establish `hp_int : ∀ n, Integrable (fun x => max (g n x - b x) 0) μ` using `fun n => ((hg n).sub hb).pos_part`. Establish `hbound_int : Integrable (fun x => C + |b x|) μ` using `(integrable_const C).add hb.abs`. Establish `hpt : Tendsto (fun n => ∫ x, max (g n x - b x) 0 ∂μ) atTop (𝓝 0)`. Establish `h` using `tendsto_integral_of_dominated_convergence (μ := μ) (F := fun n x => max (g n x - b x) 0) (f := fun _ => (0 : ℝ)) (fun x => C + |b x|) (fun n => (hp_int n).aestronglyMeasurable) hbound_int (fun n => Filter.Eventually.of_forall fun x => by`.
+
+Establish `h1` using `hC n x`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (le_max_right _ _)]`. Conclude with `max_le (by linarith [neg_abs_le (b x)]) (by linarith [abs_nonneg (b x)]))`. Use the proof step `(Filter.Eventually.of_forall fun x => by`. Use `tendsto_order.2 ⟨fun a ha => Filter.Eventually.of_forall fun n => lt_of_lt_of_le ha (le_max_right _ _), fun a ha => ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [hlim x (a / 2) (by linarith)] with n hn`. Conclude with `lt_of_le_of_lt (max_le (show g n x - b x ≤ a / 2 by linarith) (show (0 : ℝ) ≤ a / 2 by linarith)) (by linarith))`. Simplify using `using h`. Establish `hid : ∀ n, ∫ x, |g n x - b x| ∂μ = 2 * ∫ x, max (g n x - b x) 0 ∂μ - (∫ x, g n x ∂μ - ∫ x, b x ∂μ)`. Introduce `n`.
+
+Establish `hpt' : ∀ x, |g n x - b x| = 2 * max (g n x - b x) 0 - (g n x - b x)`. Introduce `x`. Break down `le_total 0 (g n x - b x) with h | h` into its components or cases. Rewrite using `[abs_of_nonneg h, max_eq_left h]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[abs_of_nonpos h, max_eq_right h]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[hpt']`. Establish `hgb : Integrable (fun x => g n x - b x) μ` using `(hg n).sub hb`. Rewrite using `[integral_sub ((hp_int n).const_mul 2) hgb, integral_const_mul, integral_sub (hg n) hb]`.
+
+Use `tendsto_order.2 ⟨fun a ha => Filter.Eventually.of_forall fun n => lt_of_lt_of_le ha (integral_nonneg fun x => abs_nonneg _), fun a ha => ?_⟩` and prove the remaining obligations. Use `filter_upwards [(tendsto_order.1 hpt).2 (a / 4) (by linarith), hint (a / 4) (by linarith)] with n hn1 hn2`. Rewrite using `[hid n]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem L1Convergence.proof : L1Convergence.Statement := by
   intro Ω _ μ _ g b C hg hb hC hlim hint
 

@@ -18,6 +18,15 @@ section Abstract
 
 variable {Y : Type} [MeasurableSpace Y] {ν : Measure Y}
 
+/- English proof (translation)
+Establish `m₁ : Measurable fun y => ENNReal.ofReal (g y)` using `hg.ennreal_ofReal`. Establish `m₂ : Measurable fun y => ENNReal.ofReal (-g y)` using `hg.neg.ennreal_ofReal`. Establish `t₁ : ∀ᵐ y ∂(ν.restrict S), ENNReal.ofReal (g y) < ⊤` using `Eventually.of_forall fun _ => ENNReal.ofReal_lt_top`. Establish `t₂ : ∀ᵐ y ∂(ν.restrict S), ENNReal.ofReal (-g y) < ⊤` using `Eventually.of_forall fun _ => ENNReal.ofReal_lt_top`. Unfold `IntegrableOn at h₁ h₂ ⊢`.
+
+Rewrite `h₁`, `h₂` using `[restrict_withDensity hS]`. Rewrite using `[restrict_withDensity hS, restrict_withDensity hS]`. Establish `i₁` using `(integrable_withDensity_iff_integrable_smul' m₁ t₁).1 h₁`. Establish `i₂` using `(integrable_withDensity_iff_integrable_smul' m₂ t₂).1 h₂`. Establish `e : ∀ y, g y * F y = (ENNReal.ofReal (g y)).toReal • F y - (ENNReal.ofReal (-g y)).toReal • F y` using `fun y => by`.
+
+Rewrite using `[ENNReal.toReal_ofReal', ENNReal.toReal_ofReal', smul_eq_mul, smul_eq_mul, ← sub_mul]`. Use `congr 1`. Break down `le_total 0 (g y) with h | h` into its components or cases. Simplify using `[h]`. Simplify using `[h]`.
+
+Use `⟨(i₁.sub i₂).congr (Eventually.of_forall fun y => (e y).symm), ?_⟩` and prove the remaining obligations. Rewrite using `[integral_withDensity_eq_integral_toReal_smul₀ m₁.aemeasurable t₁, integral_withDensity_eq_integral_toReal_smul₀ m₂.aemeasurable t₂, ← integral_sub i₁ i₂]`. Conclude with `integral_congr_ae (Eventually.of_forall fun y => (e y).symm)`.
+-/
 theorem integrableOn_and_sub_withDensity {g F : Y → ℝ} {S : Set Y} (hg : Measurable g)
     (hS : MeasurableSet S)
     (h₁ : IntegrableOn F S (ν.withDensity fun y => ENNReal.ofReal (g y)))
@@ -49,12 +58,18 @@ theorem integrableOn_and_sub_withDensity {g F : Y → ℝ} {S : Set Y} (hg : Mea
     integral_withDensity_eq_integral_toReal_smul₀ m₂.aemeasurable t₂, ← integral_sub i₁ i₂]
   exact integral_congr_ae (Eventually.of_forall fun y => (e y).symm)
 
+/- English proof (translation)
+Use `(Real.hasSum_pow_div_log_of_abs_lt_one (x := x) (by rwa [abs_of_nonneg h0])).tendsto_sum_nat` as an intermediate fact. Conclude with `this`.
+-/
 theorem tendsto_partial_log {x : ℝ} (h0 : 0 ≤ x) (h1 : x < 1) :
     Tendsto (fun N : ℕ => ∑ n ∈ Finset.range N, x ^ (n + 1) / ((n : ℝ) + 1)) atTop
       (𝓝 (-Real.log (1 - x))) := by
   have := (Real.hasSum_pow_div_log_of_abs_lt_one (x := x) (by rwa [abs_of_nonneg h0])).tendsto_sum_nat
   exact this
 
+/- English proof (translation)
+Establish `hs` using `Real.hasSum_pow_div_log_of_abs_lt_one (x := x) (by rwa [abs_of_nonneg h0])`. Establish `hn : ∀ n : ℕ, 0 ≤ x ^ (n + 1) / ((n : ℝ) + 1)` using `fun n => by positivity`. Use `⟨Finset.sum_nonneg fun n _ => hn n, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs.tsum_eq]`. Conclude with `hs.summable.sum_le_tsum _ fun n _ => hn n`.
+-/
 theorem partial_log_bound {x : ℝ} (h0 : 0 ≤ x) (h1 : x < 1) (N : ℕ) :
     0 ≤ ∑ n ∈ Finset.range N, x ^ (n + 1) / ((n : ℝ) + 1) ∧
       ∑ n ∈ Finset.range N, x ^ (n + 1) / ((n : ℝ) + 1) ≤ -Real.log (1 - x) := by
@@ -64,6 +79,31 @@ theorem partial_log_bound {x : ℝ} (h0 : 0 ≤ x) (h1 : x < 1) (N : ℕ) :
   rw [← hs.tsum_eq]
   exact hs.summable.sum_le_tsum _ fun n _ => hn n
 
+/- English proof (translation)
+Take `⟨CD, hCD⟩` from `bD`. Take `⟨Cd, hCd⟩` from `bd`. Establish `hdi : Integrable d ν` using `Integrable.of_bound hd.aestronglyMeasurable Cd (Eventually.of_forall fun y => by simpa [Real.norm_eq_abs] using hCd y)`. Establish `hhm : ∀ n : ℕ, Measurable fun y => v y ^ (n + 1) * D y + ((n : ℝ) + 1) * v y ^ n * (1 - v y) * d y` using `fun n => ((hv.pow_const _).mul hD).add (((measurable_const.mul (hv.pow_const _)).mul (measurable_const.sub hv)).mul hd)`. Establish `hhi : ∀ n : ℕ, Integrable (fun y => v y ^ (n + 1) * D y + ((n : ℝ) + 1) * v y ^ n * (1 - v y) * d y) ν` using `fun n => by`.
+
+Use `Integrable.of_bound (hhm n).aestronglyMeasurable (CD + ((n : ℝ) + 1) * Cd) ?_` and prove the remaining obligations. Use `filter_upwards [h1] with y hy`. Establish `a0 : 0 ≤ v y ^ (n + 1)` using `pow_nonneg (h0 y) _`. Establish `a1 : v y ^ (n + 1) ≤ 1` using `pow_le_one₀ (h0 y) hy.le`. Establish `b0 : 0 ≤ v y ^ n * (1 - v y)` using `mul_nonneg (pow_nonneg (h0 y) _) (by linarith)`.
+
+Establish `b1 : v y ^ n * (1 - v y) ≤ 1` using `mul_le_one₀ (pow_le_one₀ (h0 y) hy.le) (by linarith) (by linarith [h0 y])`. Establish `hn : (0 : ℝ) ≤ (n : ℝ) + 1` using `by positivity`. Rewrite using `[Real.norm_eq_abs]`. Use `(abs_add_le _ _).trans (add_le_add ?_ ?_)` and prove the remaining obligations. Rewrite using `[abs_mul, abs_of_nonneg a0]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `e : ((n : ℝ) + 1) * v y ^ n * (1 - v y) * d y = ((n : ℝ) + 1) * ((v y ^ n * (1 - v y)) * d y)` using `by ring`. Rewrite using `[e, abs_mul, abs_mul, abs_of_nonneg hn, abs_of_nonneg b0]`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hQ : ∀ N : ℕ, ∫ y, (∑ n ∈ Finset.range N, (((n : ℝ) + 1)⁻¹ * (v y ^ (n + 1) * D y + ((n : ℝ) + 1) * v y ^ n * (1 - v y) * d y))) ∂ν = 0` using `fun N => by`. Rewrite using `[integral_finset_sum _ fun n _ => (hhi n).const_mul _]`. Use `Finset.sum_eq_zero fun n _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul]`. Use `H n` as an intermediate fact.
+
+Move the coercions through the operations in `at this`. Rewrite using `[this, mul_zero]`. Establish `hform : ∀ (N : ℕ) (y : Y), (∑ n ∈ Finset.range N, (((n : ℝ) + 1)⁻¹ * (v y ^ (n + 1) * D y + ((n : ℝ) + 1) * v y ^ n * (1 - v y) * d y))) = (∑ n ∈ Finset.range N, v y ^ (n + 1) / ((n : ℝ) + 1)) * D y + (1 - v y ^ N) * d y`. Introduce `N y`. Rewrite using `[← geom_sum_mul_neg, Finset.sum_mul, Finset.sum_mul, Finset.sum_mul, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Establish `hn : (n : ℝ) + 1 ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts. Establish `hlim : Tendsto (fun N : ℕ => ∫ y, (∑ n ∈ Finset.range N, (((n : ℝ) + 1)⁻¹ * (v y ^ (n + 1) * D y + ((n : ℝ) + 1) * v y ^ n * (1 - v y) * d y))) ∂ν) atTop (𝓝 (∫ y, (-(D y * Real.log (1 - v y)) + d y) ∂ν))`. Use `tendsto_integral_of_dominated_convergence (fun y => |D y * Real.log (1 - v y)| + |d y|) (fun N => (Finset.measurable_sum _ fun n _ => measurable_const.mul (hhm n)).aestronglyMeasurable) (hi.abs.add hdi.abs) (fun N => ?_) ?_` and prove the remaining obligations.
+
+Use `filter_upwards [h1] with y hy`. Rewrite using `[hform, Real.norm_eq_abs]`. Take `⟨q0, q1⟩` from `partial_log_bound (h0 y) hy N`. Establish `l0 : 0 ≤ -Real.log (1 - v y)` using `neg_nonneg.2 (Real.log_nonpos (by linarith) (by linarith [h0 y]))`. Establish `p0 : 0 ≤ v y ^ N` using `pow_nonneg (h0 y) _`.
+
+Establish `p1 : v y ^ N ≤ 1` using `pow_le_one₀ (h0 y) hy.le`. Use `(abs_add_le _ _).trans (add_le_add ?_ ?_)` and prove the remaining obligations. Rewrite using `[abs_mul, abs_mul, abs_of_nonneg q0, mul_comm, ← abs_neg (Real.log _), abs_of_nonneg l0] gcongr`. Rewrite using `[abs_mul, abs_of_nonneg (by linarith : 0 ≤ 1 - v y ^ N)]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `filter_upwards [h1] with y hy`. Repeatedly rewrite using `[hform]`. Establish `t1` using `tendsto_partial_log (h0 y) hy`. Establish `t2 : Tendsto (fun N : ℕ => v y ^ N) atTop (𝓝 0)` using `tendsto_pow_atTop_nhds_zero_of_lt_one (h0 y) hy`. Use `(t1.mul_const (D y)).add ((tendsto_const_nhds (x := (1 : ℝ)).sub t2).mul_const (d y))` as an intermediate fact.
+
+Use `this using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hz : ∫ y, (-(D y * Real.log (1 - v y)) + d y) ∂ν = 0`. Use `tendsto_nhds_unique hlim ?_` and prove the remaining obligations. Repeatedly rewrite using `[hQ]`.
+
+Conclude with `tendsto_const_nhds`. Rewrite `hz` using `[integral_add (show Integrable (fun y => -(D y * Real.log (1 - v y))) ν from hi.neg) hdi, integral_neg]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem integral_log_eq_of_forall_pow [IsFiniteMeasure ν] {v D d : Y → ℝ}
     (hv : Measurable v) (hD : Measurable D) (hd : Measurable d)
     (bD : ∃ C, ∀ y, |D y| ≤ C) (bd : ∃ C, ∀ y, |d y| ≤ C)
@@ -157,6 +197,23 @@ theorem integral_log_eq_of_forall_pow [IsFiniteMeasure ν] {v D d : Y → ℝ}
 
 end Abstract
 
+/- English proof (translation)
+Introduce `k _ X p σ _ _ _ hR κ κ' δ hκ hκ' hδ v f S hv hv01 hSo hSf hSv i1 i2 i3 i4 H`. Take `⟨ν, w, hfin, hno, hdens, hmeas⟩` from `GlobalTheory.T.finite_measure_density_exists k X p σ hR`. Take `⟨g, hg, hgw⟩` from `hdens κ hκ`. Take `⟨g', hg', hgw'⟩` from `hdens κ' hκ'`. Take `⟨d, hd, hdw⟩` from `hdens δ hδ`.
+
+Establish `p1` using `(hmeas κ g hg hgw).1`. Establish `p2` using `(hmeas (fun c y => -κ c y) (fun y => -g y) hg.neg fun c y hy => by rw [hgw c y hy, neg_mul]).1`. Establish `p3` using `(hmeas κ' g' hg' hgw').1`. Establish `p4` using `(hmeas (fun c y => -κ' c y) (fun y => -g' y) hg'.neg fun c y hy => by rw [hgw' c y hy, neg_mul]).1`. Establish `hSm : MeasurableSet S` using `hSo.measurableSet`.
+
+Use `haveI : NullSingletonClass ν := hno`. Establish `hae : ∀ᵐ y ∂ν, y ∈ S` using `mem_ae_iff.2 (hSf.measure_zero ν)`. Establish `hres : ν.restrict S = ν` using `Measure.restrict_eq_self_of_ae_mem hae`. Establish `hF : Set.EqOn f (fun y => Real.log (1 - v y) / 2) S` using `fun y hy => (hSv y hy).2`. Rewrite `i1` using `[p1]`.
+
+Rewrite `i2` using `[p2]`. Rewrite `i3` using `[p3]`. Rewrite `i4` using `[p4]`. Take `⟨a1, e1⟩` from `integrableOn_and_sub_withDensity hg.measurable hSm (i1.congr_fun hF hSm) (i2.congr_fun hF hSm)`. Take `⟨a2, e2⟩` from `integrableOn_and_sub_withDensity hg'.measurable hSm (i3.congr_fun hF hSm) (i4.congr_fun hF hSm)`.
+
+Unfold `IntegrableOn at a1 a2`. Rewrite `a1`, `a2`, `e1`, `e2` using `[hres]`. Establish `hi : Integrable (fun y => (g y - g' y) * Real.log (1 - v y)) ν` using `((a1.sub a2).const_mul 2).congr (Eventually.of_forall fun y => by simp only [Pi.sub_apply]; ring)`. Establish `key` using `integral_log_eq_of_forall_pow (ν := ν) (v := v) (D := fun y => g y - g' y) (d := d) hv.measurable (hg.sub hg').measurable hd.measurable (by`. Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn (hg.sub hg').continuousOn`.
+
+Conclude with `⟨C, fun y => by simpa [Real.norm_eq_abs] using hC y (Set.mem_univ y)⟩)`. Use the proof step `(by`. Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn hd.continuousOn`. Conclude with `⟨C, fun y => by simpa [Real.norm_eq_abs] using hC y (Set.mem_univ y)⟩)`. Use the proof step `(fun y => (hv01 y).1) (hae.mono fun y hy => (hSv y hy).1) hi`.
+
+Use the proof step `(fun n => by`. Establish `hc : Continuous fun y => v y ^ (n + 1) * (g y - g' y) + ((n : ℝ) + 1) * v y ^ n * (1 - v y) * d y` using `by fun_prop`. Rewrite using `[← (hmeas _ _ hc fun c y hy => ?_).2]`. Conclude with `H n`. Rewrite using `[hgw c y hy, hgw' c y hy, hdw c y hy] ring)`.
+
+Rewrite using `[p1, p2, p3, p4, (hmeas δ d hd hdw).2, ← key, setIntegral_congr_fun hSm hF, setIntegral_congr_fun hSm hF, setIntegral_congr_fun hSm hF, setIntegral_congr_fun hSm hF, e1, e2, ← integral_sub a1 a2, ← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem green_sum : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) [CompactSpace (CxPts p σ)] [T2Space (CxPts p σ)] [SecondCountableTopology (CxPts p σ)], Nonempty (AnRead p σ 1) → ∀ (κ κ' δ : AlgChart p σ 1 → CxPts p σ → ℝ), IsDens κ → IsDens κ' → IsDens δ → ∀ (v f : CxPts p σ → ℝ) (S : Set (CxPts p σ)), Continuous v → (∀ y, 0 ≤ v y ∧ v y ≤ 1) → IsOpen S → Sᶜ.Finite → (∀ y ∈ S, v y < 1 ∧ f y = Real.log (1 - v y) / 2) → IntegrableOn f S (part κ) → IntegrableOn f S (part fun c y => -κ c y) → IntegrableOn f S (part κ') → IntegrableOn f S (part fun c y => -κ' c y) → (∀ n : ℕ, total (fun c y => v y ^ (n + 1) * (κ c y - κ' c y) + (n + 1) * v y ^ n * (1 - v y) * δ c y) = 0) → 2 * ((∫ y in S, f y ∂(part κ) - ∫ y in S, f y ∂(part fun c y => -κ c y)) - (∫ y in S, f y ∂(part κ') - ∫ y in S, f y ∂(part fun c y => -κ' c y))) = total δ := by
   intro k _ X p σ _ _ _ hR κ κ' δ hκ hκ' hδ v f S hv hv01 hSo hSf hSv i1 i2 i3 i4 H
   obtain ⟨ν, w, hfin, hno, hdens, hmeas⟩ := GlobalTheory.T.finite_measure_density_exists k X p σ hR

@@ -14,20 +14,37 @@ variable {K : Type} [Field K] [NumberField K]
 
 def expV (b : ℝ) (e : EReal) : ℝ := if e = ⊤ then 0 else b ^ (-e.toReal)
 
+/- English proof (translation)
+Simplify using `[expV]`.
+-/
 theorem expV_top (b : ℝ) : expV b ⊤ = 0 := by simp [expV]
 
+/- English proof (translation)
+Simplify using `[expV]`.
+-/
 theorem expV_coe (b x : ℝ) : expV b (x : EReal) = b ^ (-x) := by simp [expV]
 
+/- English proof (translation)
+Unfold `expV`. Use `split_ifs`. Conclude with `le_rfl`. Conclude with `(Real.rpow_pos_of_pos hb _).le`.
+-/
 theorem expV_nonneg {b : ℝ} (hb : 0 < b) (e : EReal) : 0 ≤ expV b e := by
   unfold expV; split_ifs
   · exact le_rfl
   · exact (Real.rpow_pos_of_pos hb _).le
 
+/- English proof (translation)
+Unfold `expV`. Use `split_ifs with h`. Simplify using `[h]`. Simplify using `[h, (Real.rpow_pos_of_pos hb _).ne']`.
+-/
 theorem expV_eq_zero {b : ℝ} (hb : 0 < b) {e : EReal} : expV b e = 0 ↔ e = ⊤ := by
   unfold expV; split_ifs with h
   · simp [h]
   · simp [h, (Real.rpow_pos_of_pos hb _).ne']
 
+/- English proof (translation)
+Proceed by induction on `e' using EReal.rec with`. Consider the case `bot => exact absurd (le_bot_iff.mp h) he`. Consider the case `top => rw [expV_top]; exact expV_nonneg (by linarith) e`. Consider the case `coe y`. Proceed by induction on `e using EReal.rec with`.
+
+Consider the case `bot => exact absurd rfl he`. Consider the case `top => exact absurd h (by simp)`. Consider the case `coe x`. Rewrite using `[expV_coe, expV_coe]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hb (by have := EReal.coe_le_coe_iff.mp h; linarith)`.
+-/
 theorem expV_anti {b : ℝ} (hb : 1 ≤ b) {e e' : EReal} (he : e ≠ ⊥) (h : e ≤ e') : expV b e' ≤ expV b e := by
   induction e' using EReal.rec with
   | bot => exact absurd (le_bot_iff.mp h) he
@@ -40,6 +57,11 @@ theorem expV_anti {b : ℝ} (hb : 1 ≤ b) {e e' : EReal} (he : e ≠ ⊥) (h : 
       rw [expV_coe, expV_coe]
       exact Real.rpow_le_rpow_of_exponent_le hb (by have := EReal.coe_le_coe_iff.mp h; linarith)
 
+/- English proof (translation)
+Proceed by induction on `e using EReal.rec with`. Consider the case `bot => exact absurd rfl he`. Consider the case `top => rw [EReal.top_add_of_ne_bot he', expV_top, zero_mul]`. Consider the case `coe x`. Proceed by induction on `e' using EReal.rec with`.
+
+Consider the case `bot => exact absurd rfl he'`. Consider the case `top => rw [EReal.coe_add_top, expV_top, mul_zero]`. Consider the case `coe y => rw [← EReal.coe_add, expV_coe, expV_coe, expV_coe, neg_add, Real.rpow_add hb]`.
+-/
 theorem expV_add {b : ℝ} (hb : 0 < b) {e e' : EReal} (he : e ≠ ⊥) (he' : e' ≠ ⊥) :
     expV b (e + e') = expV b e * expV b e' := by
   induction e using EReal.rec with
@@ -51,6 +73,9 @@ theorem expV_add {b : ℝ} (hb : 0 < b) {e e' : EReal} (he : e ≠ ⊥) (he' : e
     | top => rw [EReal.coe_add_top, expV_top, mul_zero]
     | coe y => rw [← EReal.coe_add, expV_coe, expV_coe, expV_coe, neg_add, Real.rpow_add hb]
 
+/- English proof (translation)
+Break down `le_total e e' with h | h` into its components or cases. Rewrite using `[min_eq_left h, max_eq_left (expV_anti hb he h)]`. Rewrite using `[min_eq_right h, max_eq_right (expV_anti hb he' h)]`.
+-/
 theorem expV_min {b : ℝ} (hb : 1 ≤ b) {e e' : EReal} (he : e ≠ ⊥) (he' : e' ≠ ⊥) :
     expV b (min e e') = max (expV b e) (expV b e') := by
   rcases le_total e e' with h | h
@@ -59,12 +84,18 @@ theorem expV_min {b : ℝ} (hb : 1 ≤ b) {e e' : EReal} (he : e ≠ ⊥) (he' :
 
 def nrmP (la : HeightOneSpectrum (𝓞 K)) : ℝ := (Ideal.absNorm la.asIdeal : ℝ)
 
+/- English proof (translation)
+Unfold `nrmP`. Establish `h1 : Ideal.absNorm la.asIdeal ≠ 0` using `fun h => la.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)`. Establish `h2 : Ideal.absNorm la.asIdeal ≠ 1` using `fun h => la.isPrime.ne_top (Ideal.absNorm_eq_one_iff.mp h)`. Conclude with `(by omega : 1 < Ideal.absNorm la.asIdeal)` after adjusting the coercions.
+-/
 theorem one_lt_nrmP (la : HeightOneSpectrum (𝓞 K)) : 1 < nrmP la := by
   unfold nrmP
   have h1 : Ideal.absNorm la.asIdeal ≠ 0 := fun h => la.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)
   have h2 : Ideal.absNorm la.asIdeal ≠ 1 := fun h => la.isPrime.ne_top (Ideal.absNorm_eq_one_iff.mp h)
   exact_mod_cast (by omega : 1 < Ideal.absNorm la.asIdeal)
 
+/- English proof (translation)
+Apply the tactic sequence `rcases min_choice (vEK la a) (vEK la b) with h | h <;> rw [h] <;> exact vEK_ne_bot la _`.
+-/
 theorem min_vEK_ne_bot (la : HeightOneSpectrum (𝓞 K)) (a b : K) : min (vEK la a) (vEK la b) ≠ ⊥ := by
   rcases min_choice (vEK la a) (vEK la b) with h | h <;> rw [h] <;> exact vEK_ne_bot la _
 
@@ -92,8 +123,16 @@ def avP (la : HeightOneSpectrum (𝓞 K)) : AbsoluteValue K ℝ where
           expV_min hb.le (vEK_ne_bot la a) (vEK_ne_bot la b)
       _ ≤ _ := max_le_add_of_nonneg (expV_nonneg (by linarith) _) (expV_nonneg (by linarith) _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem adicAbv_apply (la : HeightOneSpectrum (𝓞 K)) (a : K) : avP la a = expV (nrmP la) (vEK la a) := rfl
 
+/- English proof (translation)
+Rewrite using `[adicAbv_apply]`. Distinguish the cases in `ha : (a : K) = 0`. Rewrite using `[ha, vEK_zero, expV_top]`. Conclude with `zero_le_one`. Rewrite using `[vEK_of_ne la ha, expV_coe]`.
+
+Establish `h` using `fv_vAdd_nonneg la ha`. Conclude with `Real.rpow_le_one_of_one_le_of_nonpos (one_lt_nrmP la).le (by`. Establish `: (0 : ℝ) ≤ ((vAdd la (a : K) : ℤ) : ℝ)` using `by exact_mod_cast h`. Use the proof step `linarith)`.
+-/
 theorem adicAbv_coe_le_one₂ (la : HeightOneSpectrum (𝓞 K)) (a : 𝓞 K) : avP la (a : K) ≤ 1 := by
   rw [adicAbv_apply]
   by_cases ha : (a : K) = 0
@@ -112,6 +151,11 @@ variable {D : D7} {G : DV.Geo D.what₂.LL} {NW : ℕ → ℕ} {CompW : ℕ → 
   {algW : ∀ j, AlgPkg G D.what₂.Tau (NW j) (CompW j)} {PtY : ℕ → ℕ → Type}
   (P : FormsPkg D G NW CompW algW PtY)
 
+/- English proof (translation)
+Unfold `FormsPkg.scal`. Establish `hs : ∀ p : WithZero (WeightFamilies.Wt D j) × WithZero (WeightFamilies.Wt D j), p ∈ ({((0 : WithZero (WeightFamilies.Wt D j)), (0 : WithZero (WeightFamilies.Wt D j)))} : Finset _) ↔ p.1 + p.2 = 0`. Introduce and unpack `⟨a, b⟩`. Simplify using `only [Finset.mem_singleton, Prod.mk.injEq]`. Apply the tactic sequence `induction a using WithZero.recZeroCoe <;> induction b using WithZero.recZeroCoe <;>`.
+
+Simplify using `[← WithZero.coe_add]`. Rewrite using `[Subalgebra.coe_mul, AddMonoidAlgebra.coeff_mul_antidiag _ _ 0 _ (fun {p} => hs p), Finset.sum_singleton, Prod.fst_mul]`.
+-/
 theorem scal_mul {j : ℕ} (x y : P.FormsS j) : P.scal (x * y) = P.scal x * P.scal y := by
   classical
   unfold FormsPkg.scal
@@ -130,12 +174,21 @@ def scalL (j : ℕ) : P.Forms j →ₗ[P.KO] P.KO where
 
 def cuspF (j : ℕ) : Submodule P.KO (P.Forms j) := LinearMap.ker (P.scalL j)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_cuspF {j : ℕ} (x : P.Forms j) : x ∈ P.cuspF j ↔ P.scal (x : P.FormsS j) = 0 := Iff.rfl
 
+/- English proof (translation)
+Rewrite `hf`, the goal using `[mem_cuspF]`. Conclude with `(P.scal_mul f u).trans (by rw [hf, zero_mul])`.
+-/
 theorem cuspF_mul {j : ℕ} (f u : P.Forms j) (hf : f ∈ P.cuspF j) : f * u ∈ P.cuspF j := by
   rw [mem_cuspF] at hf ⊢
   exact (P.scal_mul f u).trans (by rw [hf, zero_mul])
 
+/- English proof (translation)
+The claim follows from `P.scal_incS F`.
+-/
 theorem inc_mem_cuspF {j : ℕ} {w : WeightFamilies.Wt D j} (F : P.Cusp j w) : P.inc j w F ∈ P.cuspF j :=
   P.scal_incS F
 
@@ -146,6 +199,9 @@ open Classical in
 def suppW (x : P.Forms j) : Finset (WeightFamilies.Wt D j) :=
   (P.amb x).coeff.support.preimage (fun w => (w : WithZero (WeightFamilies.Wt D j))) WithZero.coe_injective.injOn
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, P.amb_add, ih]`.
+-/
 theorem amb_sum {ι : Type} (s : Finset ι) (f : ι → P.Forms j) :
     P.amb (∑ i ∈ s, f i) = ∑ i ∈ s, P.amb (f i) := by
   classical
@@ -153,8 +209,16 @@ theorem amb_sum {ι : Type} (s : Finset ι) (f : ι → P.Forms j) :
   | empty => simp
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, P.amb_add, ih]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem amb_alg (a : P.KO) : P.amb (algebraMap P.KO (P.Forms j) a) = algebraMap P.KO (P.Amb j) a := rfl
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `(P.mem_Vm_zero _).mp ((x : P.FormsS j).2 0)`. Establish `h1 : P.scal (x : P.FormsS j) = a`. Establish `h` using `congrArg Prod.fst ha`. Simplify using `only [Prod.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply] at h`. Conclude with `h.symm`.
+
+Rewrite using `[h1]`. Conclude with `ha.symm`.
+-/
 theorem coeff_zero_eq (x : P.Forms j) :
     (P.amb x).coeff 0 = algebraMap P.KO (P.Coef j) (P.scal (x : P.FormsS j)) := by
   obtain ⟨a, ha⟩ := (P.mem_Vm_zero _).mp ((x : P.FormsS j).2 0)
@@ -164,10 +228,22 @@ theorem coeff_zero_eq (x : P.Forms j) :
     exact h.symm
   rw [h1]; exact ha.symm
 
+/- English proof (translation)
+The claim follows from `(P.tup_Fof w x).symm`.
+-/
 theorem coeff_coe_eq (x : P.Forms j) (w : WeightFamilies.Wt D j) :
     (P.amb x).coeff (w : WithZero (WeightFamilies.Wt D j)) = P.tup j w (P.Fof w (x : P.FormsS j)) :=
   (P.tup_Fof w x).symm
 
+/- English proof (translation)
+Apply `P.amb_injective` to reduce the goal to its premises. Rewrite using `[P.amb_add, amb_alg, amb_sum]`. Use `AddMonoidAlgebra.ext (Finsupp.ext fun m => ?_)` and prove the remaining obligations. Rewrite using `[AddMonoidAlgebra.coeff_add, AddMonoidAlgebra.coeff_sum, Finsupp.add_apply, Finsupp.finsetSum_apply]`. Simplify using `only [P.amb_inc, AddMonoidAlgebra.coeff_single, AddMonoidAlgebra.coe_algebraMap, Function.comp_apply]`.
+
+Proceed by induction on `m using WithZero.recZeroCoe with`. Consider the case `zero`. Rewrite using `[coeff_zero_eq]`. Simplify using `[Finsupp.single_apply]`. Consider the case `coe w`.
+
+Rewrite using `[coeff_coe_eq]`. Simplify using `only [Finsupp.single_apply, WithZero.coe_inj, WithZero.zero_ne_coe, if_false, zero_add]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with hw`. Both sides reduce to the same expression.
+
+Establish `: (P.amb x).coeff (w : WithZero (WeightFamilies.Wt D j)) = 0`. Simplify `hw` using `[suppW, Finsupp.mem_support_iff]`. Rewrite using `[← coeff_coe_eq, this]`.
+-/
 theorem decomp (x : P.Forms j) :
     x = algebraMap P.KO (P.Forms j) (P.scal (x : P.FormsS j)) +
       ∑ w ∈ P.suppW x, P.inc j w (P.Fof w (x : P.FormsS j)) := by
@@ -191,10 +267,20 @@ theorem decomp (x : P.Forms j) :
         simpa [suppW, Finsupp.mem_support_iff] using hw
       rw [← coeff_coe_eq, this]
 
+/- English proof (translation)
+Use `show ((algebraMap P.KO (P.Amb j) a).coeff 0).1 = a`. Simplify using `[AddMonoidAlgebra.coe_algebraMap, Prod.algebraMap_apply]`.
+-/
 theorem scal_alg (a : P.KO) : P.scal ((algebraMap P.KO (P.Forms j) a : P.Forms j) : P.FormsS j) = a := by
   show ((algebraMap P.KO (P.Amb j) a).coeff 0).1 = a
   simp [AddMonoidAlgebra.coe_algebraMap, Prod.algebraMap_apply]
 
+/- English proof (translation)
+Establish `hx` using `P.decomp x`. Establish `h1 : h • algebraMap P.KO (P.Forms j) (P.scal (x : P.FormsS j)) = algebraMap P.KO (P.Forms j) (P.scal (x : P.FormsS j))`. Rewrite using `[Algebra.algebraMap_eq_smul_one, hs, smul_one]`. Establish `h2 : ∀ w, P.scalL j (h • P.inc j w (P.Fof w (x : P.FormsS j))) = 0`. Introduce `w`.
+
+Take `⟨F', hF'⟩` from `hw h w (P.Fof w (x : P.FormsS j))`. Rewrite using `[hF']`. Conclude with `P.scal_incS F'`. Establish `key : P.scalL j (h • x) = P.scalL j x` using `by conv_lhs => rw [hx]`. Rewrite using `[smul_add, Finset.smul_sum, map_add, map_sum, h1]`.
+
+Simplify using `only [h2, Finset.sum_const_zero, add_zero]`. Use `show P.scal _ = P.scal _`. Rewrite using `[scal_alg]`. Conclude with `key`.
+-/
 theorem act_scal_of {H : Type} [Group H] [MulSemiringAction H (P.Forms j)]
     (hs : ∀ (h : H) (a : P.KO) (x : P.Forms j), h • (a • x) = a • (h • x))
     (hw : ∀ (h : H) (w : WeightFamilies.Wt D j) (F : P.Cusp j w), ∃ F' : P.Cusp j w, h • P.inc j w F = P.inc j w F')
@@ -221,9 +307,17 @@ section Gauss
 
 variable (la : HeightOneSpectrum (𝓞 P.KO)) (y : P.Pt j la)
 
+/- English proof (translation)
+The claim follows from `(le_min h1 h2).trans (P.vAt_add la y p q)`.
+-/
 theorem le_vAt_add {c : EReal} {p q : P.Forms j} (h1 : c ≤ P.vAt la y p) (h2 : c ≤ P.vAt la y q) :
     c ≤ P.vAt la y (p + q) := (le_min h1 h2).trans (P.vAt_add la y p q)
 
+/- English proof (translation)
+Use `show min (vEK la (P.scal _)) (⨅ w, P.vAtC j la y w (P.Fof w _)) = _`. Establish `h0 : ∀ w, P.Fof w ((algebraMap P.KO (P.Forms j) a : P.Forms j) : P.FormsS j) = 0` using `fun w => by`. Apply `P.Fof_eq_zero_of_coeff` to reduce the goal to its premises. Use `show (algebraMap P.KO (P.Amb j) a).coeff (w : WithZero (WeightFamilies.Wt D j)) = 0`. Simplify using `[AddMonoidAlgebra.coe_algebraMap, Finsupp.single_apply]`.
+
+Simplify using `only [h0, P.vAtC_zero, iInf_top, scal_alg]`. Conclude with `min_eq_left le_top`.
+-/
 theorem vAt_alg (a : P.KO) : P.vAt la y (algebraMap P.KO (P.Forms j) a) = vEK la a := by
   show min (vEK la (P.scal _)) (⨅ w, P.vAtC j la y w (P.Fof w _)) = _
   have h0 : ∀ w, P.Fof w ((algebraMap P.KO (P.Forms j) a : P.Forms j) : P.FormsS j) = 0 := fun w => by
@@ -233,21 +327,38 @@ theorem vAt_alg (a : P.KO) : P.vAt la y (algebraMap P.KO (P.Forms j) a) = vEK la
   simp only [h0, P.vAtC_zero, iInf_top, scal_alg]
   exact min_eq_left le_top
 
+/- English proof (translation)
+The claim follows from `min_le_left _ _`.
+-/
 theorem vAt_le_scal (x : P.Forms j) : P.vAt la y x ≤ vEK la (P.scal (x : P.FormsS j)) := min_le_left _ _
 
+/- English proof (translation)
+Rewrite using `[P.vAt_inc]`. Conclude with `(min_le_right _ _).trans (iInf_le _ w)`.
+-/
 theorem vAt_le_part (x : P.Forms j) (w : WeightFamilies.Wt D j) :
     P.vAt la y x ≤ P.vAt la y (P.inc j w (P.Fof w (x : P.FormsS j))) := by
   rw [P.vAt_inc]; exact (min_le_right _ _).trans (iInf_le _ w)
 
+/- English proof (translation)
+Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Rewrite using `[zero_smul, P.vAt_zero]`. Conclude with `le_top`. Rewrite using `[P.vAt_smul la y a z ha, vEK_of_ne la ha]`.
+-/
 theorem smul_ge (a : P.KO) (z : P.Forms j) : vEK la a + P.vAt la y z ≤ P.vAt la y (a • z) := by
   by_cases ha : a = 0
   · subst ha; rw [zero_smul, P.vAt_zero]; exact le_top
   · rw [P.vAt_smul la y a z ha, vEK_of_ne la ha]
 
+/- English proof (translation)
+Rewrite using `[← Algebra.smul_def]`. Conclude with `P.smul_ge la y a z`.
+-/
 theorem smul_ge' (a : P.KO) (z : P.Forms j) :
     vEK la a + P.vAt la y z ≤ P.vAt la y (algebraMap P.KO (P.Forms j) a * z) := by
   rw [← Algebra.smul_def]; exact P.smul_ge la y a z
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, mul_zero, P.vAt_zero]`. Conclude with `le_top`. Consider the case `insert a t ha ih`. Rewrite using `[Finset.sum_insert ha, mul_add]`.
+
+Conclude with `P.le_vAt_add la y (h a (Finset.mem_insert_self a t)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem le_vAt_mul_sum {c : EReal} (A : P.Forms j) {κ : Type} (t : Finset κ) (g : κ → P.Forms j)
     (h : ∀ u ∈ t, c ≤ P.vAt la y (A * g u)) : c ≤ P.vAt la y (A * ∑ u ∈ t, g u) := by
   classical
@@ -258,10 +369,16 @@ theorem le_vAt_mul_sum {c : EReal} (A : P.Forms j) {κ : Type} (t : Finset κ) (
     exact P.le_vAt_add la y (h a (Finset.mem_insert_self a t))
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Rewrite using `[mul_comm]; exact P.le_vAt_mul_sum la y B s f fun w hw => by rw [mul_comm]; exact h w hw`.
+-/
 theorem le_vAt_sum_mul {c : EReal} (B : P.Forms j) {ι : Type} (s : Finset ι) (f : ι → P.Forms j)
     (h : ∀ w ∈ s, c ≤ P.vAt la y (f w * B)) : c ≤ P.vAt la y ((∑ w ∈ s, f w) * B) := by
   rw [mul_comm]; exact P.le_vAt_mul_sum la y B s f fun w hw => by rw [mul_comm]; exact h w hw
 
+/- English proof (translation)
+Rewrite using `[add_mul, mul_add, mul_add]`. Conclude with `P.le_vAt_add la y (P.le_vAt_add la y h1 (P.le_vAt_mul_sum la y A t g h2)) (P.le_vAt_add la y (P.le_vAt_sum_mul la y B s f h3) (P.le_vAt_sum_mul la y _ s f fun w hw => P.le_vAt_mul_sum la y _ t g (h4 w hw)))`.
+-/
 theorem expand_le {c : EReal} (A B : P.Forms j) {ι κ : Type} (s : Finset ι) (t : Finset κ)
     (f : ι → P.Forms j) (g : κ → P.Forms j) (h1 : c ≤ P.vAt la y (A * B))
     (h2 : ∀ u ∈ t, c ≤ P.vAt la y (A * g u)) (h3 : ∀ w ∈ s, c ≤ P.vAt la y (f w * B))
@@ -272,6 +389,15 @@ theorem expand_le {c : EReal} (A B : P.Forms j) {ι κ : Type} (s : Finset ι) (
     (P.le_vAt_add la y (P.le_vAt_sum_mul la y B s f h3)
       (P.le_vAt_sum_mul la y _ s f fun w hw => P.le_vAt_mul_sum la y _ t g (h4 w hw)))
 
+/- English proof (translation)
+Establish `hA : P.vAt la y x ≤ vEK la (P.scal (x : P.FormsS j))` using `P.vAt_le_scal la y x`. Establish `hB : P.vAt la y x' ≤ vEK la (P.scal (x' : P.FormsS j))` using `P.vAt_le_scal la y x'`. Establish `e : x * x' = (algebraMap P.KO (P.Forms j) (P.scal (x : P.FormsS j)) + ∑ w ∈ P.suppW x, P.inc j w (P.Fof w (x : P.FormsS j))) * (algebraMap P.KO (P.Forms j) (P.scal (x' : P.FormsS j)) + ∑ u ∈ P.suppW x', P.inc j u (P.Fof u (x' : P.FormsS j)))`. Rewrite using `[← P.decomp x, ← P.decomp x']`. Rewrite using `[e]`.
+
+Use `P.expand_le la y _ _ _ _ _ _ ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `(add_le_add hA hB).trans ?_` and prove the remaining obligations. Rewrite using `[← P.vAt_alg la y (P.scal (x' : P.FormsS j))]`. Conclude with `P.smul_ge' la y _ _`. Conclude with `fun u _ => (add_le_add hA (P.vAt_le_part la y x' u)).trans (P.smul_ge' la y _ _)`.
+
+Introduce `w _`. Rewrite using `[mul_comm]`. Use `(add_le_add (P.vAt_le_part la y x w) hB).trans ?_` and prove the remaining obligations. Rewrite using `[add_comm]`. Conclude with `P.smul_ge' la y _ _`.
+
+Introduce `w _ u _`. Rewrite using `[P.vAt_mul]`. Conclude with `add_le_add (P.vAt_le_part la y x w) (P.vAt_le_part la y x' u)`.
+-/
 theorem vAt_mul_le (x x' : P.Forms j) : P.vAt la y x + P.vAt la y x' ≤ P.vAt la y (x * x') := by
   classical
   have hA : P.vAt la y x ≤ vEK la (P.scal (x : P.FormsS j)) := P.vAt_le_scal la y x
@@ -378,10 +504,16 @@ variable {F : ShimFam D G Lev} (P : FormsKPkg F)
 def sn {j : ℕ} (la : HeightOneSpectrum (𝓞 P.fs.KO)) (y : P.fs.Pt j la) (x : P.fs.Forms j) : ℝ :=
   expV (nrmP la) (P.fs.vAt la y x)
 
+/- English proof (translation)
+The claim follows from `P.fs.act_scal_of (P.act_smul j) (P.act_wt j) h x`.
+-/
 theorem act_scal {j : ℕ} (h : P.Hb) (x : P.fs.Forms j) :
     P.fs.scal ((h • x : P.fs.Forms j) : P.fs.FormsS j) = P.fs.scal (x : P.fs.FormsS j) :=
   P.fs.act_scal_of (P.act_smul j) (P.act_wt j) h x
 
+/- English proof (translation)
+Rewrite `hf`, the goal using `[FormsPkg.mem_cuspF]`. Rewrite using `[P.act_scal, hf]`.
+-/
 theorem cusp_act {j : ℕ} (h : P.Hb) (f : P.fs.Forms j) (hf : f ∈ P.fs.cuspF j) : h • f ∈ P.fs.cuspF j := by
   rw [FormsPkg.mem_cuspF] at hf ⊢
   rw [P.act_scal, hf]
@@ -438,6 +570,9 @@ def toFormDataG (j : ℕ) : ExtensionFiltration.FormDataG P.fs.KO (P.fs.Forms j)
   toFormData := P.toFormData j
   ip_posDef := fun v => P.ip_posDef j v.embedding
 
+/- English proof (translation)
+Use `⟨P.prC_sum j, P.prC_orth j, fun la y x => ?_, fun la y c x hc => ?_, fun v c d f g h => P.ip_prC j _ c d f g h⟩` and prove the remaining obligations. Use `show expV _ _ = expV _ _`. Rewrite using `[P.vAt_prC_self]`. Use `show expV _ _ = 0`. Rewrite using `[P.vAt_prC_ne j la y c x hc, expV_top]`.
+-/
 theorem comp_laws (j : ℕ) :
     (∀ x : P.fs.cuspF j, ∑ c, P.prC j c x = x) ∧
     (∀ c d (x : P.fs.cuspF j), c ≠ d → P.prC j c (P.prC j d x) = 0) ∧

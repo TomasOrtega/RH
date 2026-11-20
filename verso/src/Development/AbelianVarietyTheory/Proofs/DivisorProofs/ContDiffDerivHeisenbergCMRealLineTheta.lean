@@ -19,26 +19,43 @@ section Form
 
 variable (σ : E →ₐ[F] E) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E) (ξ : E)
 
+/- English proof (translation)
+Unfold `symplOHF symplOF hOF`. Simplify using `only [Matrix.add_apply, mul_add, Finset.sum_add_distrib, map_add]`.
+-/
 theorem symplOHF_add_left (x x' y : WOF F E nS nT) :
     symplOHF σ JS JT ξ (x + x') y = symplOHF σ JS JT ξ x y + symplOHF σ JS JT ξ x' y := by
   unfold symplOHF symplOF hOF
   simp only [Matrix.add_apply, mul_add, Finset.sum_add_distrib, map_add]
 
+/- English proof (translation)
+Unfold `symplOHF symplOF hOF`. Simplify using `only [Matrix.add_apply, mul_add, add_mul, Finset.sum_add_distrib, map_add]`.
+-/
 theorem symplOHF_add_right (x y y' : WOF F E nS nT) :
     symplOHF σ JS JT ξ x (y + y') = symplOHF σ JS JT ξ x y + symplOHF σ JS JT ξ x y' := by
   unfold symplOHF symplOF hOF
   simp only [Matrix.add_apply, mul_add, add_mul, Finset.sum_add_distrib, map_add]
 
+/- English proof (translation)
+Use `symplOHF_add_right σ JS JT ξ y 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.1 this`.
+-/
 theorem symplOHF_zero_right (y : WOF F E nS nT) : symplOHF σ JS JT ξ y 0 = 0 := by
   have := symplOHF_add_right σ JS JT ξ y 0 0
   rw [add_zero] at this
   exact left_eq_add.1 this
 
+/- English proof (translation)
+Use `symplOHF_add_left σ JS JT ξ 0 0 y` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.1 this`.
+-/
 theorem symplOHF_zero_left (y : WOF F E nS nT) : symplOHF σ JS JT ξ 0 y = 0 := by
   have := symplOHF_add_left σ JS JT ξ 0 0 y
   rw [add_zero] at this
   exact left_eq_add.1 this
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by`. Simplify using `only [Matrix.transpose_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_reorder {A : Type} [CommRing A] {m n : ℕ} (c : A → A) (P : Fin m → Fin m → A)
     (Q : Fin n → Fin n → A) (x y : Matrix (Fin n) (Fin m) A) :
     ∑ a, ∑ b, ∑ c', ∑ d, P a b * c (y c' b) * Q c' d * x d a =
@@ -49,6 +66,11 @@ theorem sum_reorder {A : Type} [CommRing A] {m n : ℕ} (c : A → A) (P : Fin m
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by
     simp only [Matrix.transpose_apply]; ring
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `h1 : sndA F (symplOF σ JS JT ξ x y) = 0`. Unfold `symplOF hOF`. Rewrite using `[sum_reorder (cAF σ) (fun k i => incAF F E (JS⁻¹ k i)) (fun j l => incAF F E (JT j l)) x y]`. Use `GlobalTheory.FockCompare.map_trace_sesq_eq_zero (sndA F) σ _ (fun k i => incAF F E (JS⁻¹ k i)) (fun j l => incAF F E (JT j l)) xᵀ yᵀ (Or.inr ?_)` and prove the remaining obligations.
+
+Use extensionality with `i j`. Conclude with `congrFun (congrFun h j) i`. Unfold `symplOHF`. Rewrite using `[map_mul, h1, mul_zero]`.
+-/
 theorem snd_symplOHF (x y : WOF F E nS nT) (h : y.map (finPartF F E) = 0) :
     sndA F (symplOHF σ JS JT ξ x y) = 0 := by
   haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -62,6 +84,13 @@ theorem snd_symplOHF (x y : WOF F E nS nT) (h : y.map (finPartF F E) = 0) :
   unfold symplOHF
   rw [map_mul, h1, mul_zero]
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _`. Establish `hconj : Continuous (cAF σ : AEF F E → AEF F E)`. Use `IsModuleTopology.continuous_of_ringHom (R := AF F) (cAF σ) ?_` and prove the remaining obligations. Establish `h : (cAF σ).comp (algebraMap (AF F) (AF F ⊗[F] E)) = algebraMap (AF F) (AF F ⊗[F] E)`.
+
+Use extensionality with `a`. Use `show (Algebra.TensorProduct.map (AlgHom.id F (AF F)) σ) (a ⊗ₜ[F] (1 : E)) = a ⊗ₜ[F] (1 : E)`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply]`. Rewrite using `[h]`. Conclude with `continuous_algebraMap _ _`.
+
+Establish `hy' : ∀ i j, Continuous fun t => cAF σ (y t i j)` using `fun i j => hconj.comp ((continuous_apply j).comp ((continuous_apply i).comp hy))`. Establish `hx' : ∀ i j, Continuous fun t => x t i j` using `fun i j => (continuous_apply j).comp ((continuous_apply i).comp hx)`. Establish `hh : Continuous fun t => hOF σ JS JT (x t) (y t)` using `continuous_finset_sum _ fun _ _ => continuous_finset_sum _ fun _ _ => continuous_finset_sum _ fun _ _ => continuous_finset_sum _ fun _ _ => ((continuous_const.mul (hy' _ _)).mul continuous_const).mul (hx' _ _)`. Establish `ht : Continuous (Algebra.trace (AF F) (AEF F E))` using `IsModuleTopology.continuous_of_linearMap _`. Conclude with `continuous_const.mul (ht.comp (continuous_const.mul hh))`.
+-/
 theorem continuous_symplOHF {X : Type} [TopologicalSpace X] {x y : X → WOF F E nS nT} (hx : Continuous x)
     (hy : Continuous y) : Continuous fun t => symplOHF σ JS JT ξ (x t) (y t) := by
   haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
@@ -86,6 +115,11 @@ theorem continuous_symplOHF {X : Type} [TopologicalSpace X] {x y : X → WOF F E
 
 end Form
 
+/- English proof (translation)
+Take `⟨θ, hθ⟩` from `hψ.2.1`. Set `lam : AF F →+ ℂ` to `{ toFun := fun a => 2 * Real.pi * Complex.I * ((-1 : ℤ) : ℂ) * ∑ ρ, θ ρ (fstA F a ⊗ₜ[F] (1 : E)) map_zero' := by simp only [map_zero, TensorProduct.zero_tmul, Finset.sum_const_zero, mul_zero] map_add' := fun a b => by`. Simplify using `only [map_add, TensorProduct.add_tmul, Finset.sum_add_distrib, mul_add] }`. Use `⟨lam, ?_, fun a ha => ?_⟩` and prove the remaining obligations. Conclude with `continuous_const.mul (continuous_finset_sum _ fun ρ _ => (hθ ρ).2.comp continuous_fst)`.
+
+Establish `hc` using `hψ.2.2 θ hθ (fstA F a)`. Establish `e : pairA F (fstA F a) 0 = a` using `Prod.ext rfl ha.symm`. Rewrite `hc` using `[psiInf, e]`. Conclude with `hc`.
+-/
 theorem exists_log {ψ : AddChar (AF F) ℂ} {Tau : Type} [Fintype Tau] {tauE : Tau → (E →+* ℂ)}
     (hψ : IsStdCharF tauE ψ (-1)) :
     ∃ lam : AF F →+ ℂ, Continuous lam ∧ ∀ a, sndA F a = 0 → ψ a = Complex.exp (lam a) := by
@@ -102,6 +136,31 @@ theorem exists_log {ψ : AddChar (AF F) ℂ} {Tau : Type} [Fintype Tau] {tauE : 
     rw [psiInf, e] at hc
     exact hc
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B _ nS nT JS JT _ _ ξ₀ _ _ hψ f hf L hL hL0 k L' hL' hL0' w`. Take `⟨lam, hl, hlam⟩` from `exists_log hψ`. Establish `hi : Continuous (fun v : Fin (k + 1) → ℝ => Fin.init v)` using `continuous_pi fun i => continuous_apply _`. Set `M : (Fin (k + 1) → ℝ) →+ WOF F E nS nT` to `{ toFun := fun v => L' (Fin.init v) + L (v (Fin.last k)) map_zero' := by show L' (Fin.init (0 : Fin (k + 1) → ℝ)) + L ((0 : Fin (k + 1) → ℝ) (Fin.last k)) = 0`. Rewrite using `[show Fin.init (0 : Fin (k + 1) → ℝ) = (0 : Fin k → ℝ) from rfl, Pi.zero_apply, map_zero, map_zero, add_zero]`.
+
+Use the proof step `map_add' := fun u v => by show L' (Fin.init (u + v)) + L (u (Fin.last k) + v (Fin.last k)) = _`. Rewrite using `[show Fin.init (u + v) = Fin.init u + Fin.init v from rfl, map_add, map_add]`. Use `abel }`. Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _`.
+
+Use `haveI : ContinuousAdd (WOF F E nS nT) := inferInstanceAs (ContinuousAdd (Fin nT → Fin nS → AF F ⊗[F] E))`. Establish `hM : Continuous M` using `(hL'.comp hi).add (hL.comp (continuous_apply _))`. Establish `hM0 : ∀ v, (M v).map (finPartF F E) = 0` using `fun v => by show (L' (Fin.init v) + L (v (Fin.last k))).map (finPartF F E) = 0`. Rewrite using `[Matrix.map_add _ (map_add _), hL0', hL0, add_zero]`. Establish `hg : ContDiff ℝ ∞ fun v => f (w + M v)` using `hf.smooth (k + 1) M hM hM0 w`.
+
+Establish `hsnoc : ContDiff ℝ ∞ (fun p : (Fin k → ℝ) × ℝ => (Fin.snoc (α` using `fun _ => ℝ) p.1 p.2 : Fin (k + 1) → ℝ)) := by`. Use `contDiff_pi.2 fun i => ?_` and prove the remaining obligations. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp only [Fin.snoc_last]`. Conclude with `contDiff_snd`.
+
+Consider the case `cast j => simp only [Fin.snoc_castSucc]`. Conclude with `(contDiff_apply ℝ ℝ j).comp contDiff_fst`. Set `h : (Fin k → ℝ) × ℝ → ℂ` to `fun p => f (w + M (Fin.snoc (α := fun _ => ℝ) p.1 p.2))`. Establish `hh : ContDiff ℝ ∞ h` using `hg.comp hsnoc`. Establish `hfe : ∀ x t, f (w + L' x + L t) = h (x, t)`.
+
+Introduce `x t`. Use `show _ = f (w + (L' (Fin.init (Fin.snoc (α := fun _ => ℝ) x t)) + L (Fin.snoc (α := fun _ => ℝ) x t (Fin.last k))))`. Rewrite using `[Fin.init_snoc, Fin.snoc_last, add_assoc]`. Establish `hpsi : ∀ y (t : ℝ), B.ψ (symplOHF σ JS JT ξ₀ y (L t)) = Complex.exp (t * lam (symplOHF σ JS JT ξ₀ y (L 1)))`. Introduce `y t`.
+
+Rewrite using `[hlam _ (snd_symplOHF σ JS JT ξ₀ y _ (hL0 t))]`. Use `congr 1`. Set `φ : ℝ →+ ℂ` to `{ toFun := fun t => lam (symplOHF σ JS JT ξ₀ y (L t)) map_zero' := by rw [map_zero L, symplOHF_zero_right, map_zero] map_add' := fun a b => by rw [map_add L, symplOHF_add_right, map_add] }`. Establish `hφ : Continuous φ` using `hl.comp (continuous_symplOHF σ JS JT ξ₀ continuous_const hL)`. Use `(φ.toRealLinearMap hφ).map_smul t 1` as an intermediate fact.
+
+Rewrite `this` using `[smul_eq_mul, mul_one, Complex.real_smul]`. Conclude with `this`. Establish `hd : ∀ x, HasDerivAt (fun t : ℝ => heisOF σ JS JT ξ₀ B.ψ (L t) f (w + L' x)) (lam (symplOHF σ JS JT ξ₀ (w + L' x) (L 1)) * h (x, 0) + fderiv ℝ h (x, 0) (0, 1)) 0`. Introduce `x`. Establish `e : (fun t : ℝ => heisOF σ JS JT ξ₀ B.ψ (L t) f (w + L' x)) = fun t : ℝ => Complex.exp (t * lam (symplOHF σ JS JT ξ₀ (w + L' x) (L 1))) * h (x, t)`.
+
+Use function extensionality and compare the values at `t`. Use `show B.ψ (symplOHF σ JS JT ξ₀ (w + L' x) (L t)) * f (w + L' x + L t) = _`. Rewrite using `[hpsi, hfe]`. Rewrite using `[e]`. Establish `h0 : HasDerivAt (fun t : ℝ => (t : ℂ) * lam (symplOHF σ JS JT ξ₀ (w + L' x) (L 1))) (lam (symplOHF σ JS JT ξ₀ (w + L' x) (L 1))) 0`.
+
+Simplify using `using (HasDerivAt.ofReal_comp (hasDerivAt_id (0 : ℝ))).mul_const (lam (symplOHF σ JS JT ξ₀ (w + L' x) (L 1)))`. Establish `hp : HasDerivAt (fun t : ℝ => (x, t)) ((0 : Fin k → ℝ), (1 : ℝ)) 0` using `(hasDerivAt_const (0 : ℝ) x).prodMk (hasDerivAt_id 0)`. Establish `h2 : HasDerivAt (fun t : ℝ => h (x, t)) (fderiv ℝ h (x, 0) (0, 1)) 0` using `((hh.differentiable (by simp)).differentiableAt.hasFDerivAt).comp_hasDerivAt (0 : ℝ) hp`. Establish `h3 : HasDerivAt (fun t : ℝ => Complex.exp (t * lam (symplOHF σ JS JT ξ₀ (w + L' x) (L 1))) * h (x, t)) (Complex.exp (((0 : ℝ) : ℂ) * lam (symplOHF σ JS JT ξ₀ (w + L' x) (L 1))) * lam (symplOHF σ JS JT ξ₀ (w + L' x) (L 1)) * h (x, 0) + Complex.exp (((0 : ℝ) : ℂ) * lam (symplOHF σ …` using `h0.cexp.mul h2`. Use `h3.congr_deriv ?_` and prove the remaining obligations.
+
+Simplify using `only [Complex.ofReal_zero, zero_mul, Complex.exp_zero, one_mul]`. Set `φ' : (Fin k → ℝ) →+ ℂ` to `{ toFun := fun x => lam (symplOHF σ JS JT ξ₀ (L' x) (L 1)) map_zero' := by rw [map_zero L', symplOHF_zero_left, map_zero] map_add' := fun a b => by rw [map_add L', symplOHF_add_left, map_add] }`. Establish `hφ' : ContDiff ℝ ∞ φ'` using `(φ'.toRealLinearMap (hl.comp (continuous_symplOHF σ JS JT ξ₀ hL' continuous_const))).contDiff`. Establish `e : (fun x => deriv (fun t : ℝ => heisOF σ JS JT ξ₀ B.ψ (L t) f (w + L' x)) 0) = fun x => (lam (symplOHF σ JS JT ξ₀ w (L 1)) + φ' x) * h (x, 0) + fderiv ℝ h (x, 0) (0, 1)`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[(hd x).deriv, symplOHF_add_left, map_add]`. Both sides reduce to the same expression. Rewrite using `[e]`. Establish `hin : ContDiff ℝ ∞ (fun x : Fin k → ℝ => (x, (0 : ℝ)))` using `contDiff_id.prodMk contDiff_const`. Conclude with `((contDiff_const.add hφ').mul (hh.comp hin)).add (((hh.fderiv_right (m := ∞) (by simp)).comp hin).clm_apply contDiff_const)`.
+-/
 theorem contDiff_deriv_heisOF_line : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →

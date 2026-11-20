@@ -14,6 +14,17 @@ open scoped Classical MatrixGroups nonZeroDivisors
 
 namespace GlobalTheory.HilbFam
 
+/- English proof (translation)
+Introduce `F _ _ _ k 𝔞 𝔟 a₀ a x τ c t z hk ha hz`. Establish `hw : (fun i : Emb F ↦ τ + t * z i / (1 + z i * c)) ∈ upperHalf F` using `fun i ↦ (hz i).2`. Establish `h1` using `GlobalTheory.T.hasSum_hilbertEisenstein_shiftedLattice_fourier F k 𝔞 𝔟 a₀ a x _ hk ha hw`. Establish `h2` using `GlobalTheory.T.hilbertEisensteinValue_linear_change F k (split 𝔞 𝔟 x) (split 𝔞 𝔟 x) (LinearEquiv.refl F _) (fun i ↦ τ + z i * (c * τ + t)) (fun i ↦ 1 + z i * c) (fun i ↦ τ + t * z i / (1 + z i * c)) 1 (fun i ↦ 1 + z i * c) hk (fun _ ↦ Iff.rfl) (fun i ↦ (hz i).1) (fun v i ↦ by`. Use `(hz i).1` as an intermediate fact.
+
+Simplify using `only [coord, LinearEquiv.refl_apply, Pi.one_apply]`. Clear the denominators using the available nonvanishing facts. Use the proof step `ring)`. Establish `h3` using `h1.mul_left ((∏ i, (1 + z i * c))⁻¹ ^ k)`. Rewrite using `[h2]`.
+
+Use `h3 using 1` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Use function extensionality and compare the values at `ξ`. Establish `hq : qPow ξ (fun i : Emb F ↦ τ + t * z i / (1 + z i * c)) = Complex.exp ((2 * Real.pi * Complex.I) * ((Algebra.trace ℚ F ξ : ℚ) : ℂ) * τ) * ∏ i : Emb F, Complex.exp ((2 * Real.pi * Complex.I) * (i ξ : ℂ) * t * z i / (1 + z i * c))`. Rewrite using `[← Complex.exp_sum, ← Complex.exp_add, ← GlobalTheory.T.sum_realEmbeddings_eq_trace_totallyReal F ξ]`.
+
+Unfold `qPow`. Use `congr 1`. Simplify using `only [Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hq, Finset.prod_mul_distrib, Finset.prod_pow, Finset.prod_inv_distrib]`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasSum_movedPoint : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ) (𝔞 𝔟 : Frac F) (a₀ : ℂ) (a : F → ℂ) (x : F) (τ c t : ℂ) (z : Emb F → ℂ), Even k → IsCoef k 𝔞 𝔟 a₀ a → (∀ i, 1 + z i * c ≠ 0 ∧ 0 < (τ + t * z i / (1 + z i * c)).im) → HasSum (fun ξ : F ↦ a ξ * eTr (ξ * x) * Complex.exp ((2 * Real.pi * Complex.I) * ((Algebra.trace ℚ F ξ : ℚ) : ℂ) * τ) * ∏ i : Emb F, ((1 + z i * c)⁻¹ ^ k * Complex.exp ((2 * Real.pi * Complex.I) * (i ξ : ℂ) * t * z i / (1 + z i * c)))) ((cK F k : ℂ) * gval k (split 𝔞 𝔟 x) (fun i ↦ τ + z i * (c * τ + t)) (fun i ↦ 1 + z i * c) / ((2 * Real.pi * Complex.I) ^ Module.finrank ℚ F * (omegaFactor 𝔞 : ℂ)) ^ k) := by
   intro F _ _ _ k 𝔞 𝔟 a₀ a x τ c t z hk ha hz
   have hw : (fun i : Emb F ↦ τ + t * z i / (1 + z i * c)) ∈ upperHalf F := fun i ↦ (hz i).2

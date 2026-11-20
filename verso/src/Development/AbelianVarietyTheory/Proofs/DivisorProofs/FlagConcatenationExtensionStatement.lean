@@ -9,6 +9,9 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4O GlobalTheory.MixedLocalChains
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Vert.Flag.concat_spec | exact GlobalTheory.Vert.Flag.concat_spec | (intros; apply GlobalTheory.Vert.Flag.concat_spec <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flag_concatenation_extension : ∀ (X : Scheme.{0}) (E₁ E₂ E₃ : X.Modules) (a : E₁ ⟶ E₂) (b : E₂ ⟶ E₃)
     (h : a ≫ b = 0), (ShortComplex.mk a b h).ShortExact → ∀ (r₁ r₃ : ℕ)
     (fl₁ : GlobalTheory.Vert.Flag E₁ r₁) (fl₃ : GlobalTheory.Vert.Flag E₃ r₃), ∃ fl₂ : GlobalTheory.Vert.Flag E₂ (r₁ + r₃),

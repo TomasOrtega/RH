@@ -22,9 +22,15 @@ namespace SqFubini
 def eY (d : ℕ) : ((Fin d → ℂ) × ℂ) ≃ᵐ (Fin (d + 1) → ℂ) :=
   MeasurableEquiv.prodComm.trans (MeasurableEquiv.piFinSuccAbove (fun _ => ℂ) 0).symm
 
+/- English proof (translation)
+Apply the tactic sequence `first | rfl | (simp [eY, MeasurableEquiv.piFinSuccAbove, Fin.consEquiv]; done) | (simp [eY, MeasurableEquiv.piFinSuccAbove]; rfl)`.
+-/
 theorem eY_apply {d : ℕ} (x : (Fin d → ℂ) × ℂ) : eY d x = Fin.cons x.2 x.1 := by
   first | rfl | (simp [eY, MeasurableEquiv.piFinSuccAbove, Fin.consEquiv]; done) | (simp [eY, MeasurableEquiv.piFinSuccAbove]; rfl)
 
+/- English proof (translation)
+The claim follows from `(Measure.measurePreserving_swap).trans (volume_preserving_piFinSuccAbove (fun _ => ℂ) 0).symm`.
+-/
 theorem eY_measurePreserving (d : ℕ) : MeasurePreserving (eY d) volume volume :=
   (Measure.measurePreserving_swap).trans
     (volume_preserving_piFinSuccAbove (fun _ => ℂ) 0).symm
@@ -35,16 +41,29 @@ def eW (d : ℕ) : ((Fin d → ℂ) × (ℂ × ℂ)) ≃ᵐ (Fin (d + 2) → ℂ
       (MeasurableEquiv.piFinSuccAbove (fun _ => ℂ) 0).symm).trans
       (MeasurableEquiv.piFinSuccAbove (fun _ => ℂ) 0).symm)
 
+/- English proof (translation)
+Apply the tactic sequence `first | rfl | (simp [eW, MeasurableEquiv.piFinSuccAbove, Fin.consEquiv]; done) | (simp [eW, MeasurableEquiv.piFinSuccAbove]; rfl)`.
+-/
 theorem eW_apply {d : ℕ} (x : (Fin d → ℂ) × (ℂ × ℂ)) :
     eW d x = Fin.cons x.2.1 (Fin.cons x.2.2 x.1) := by
   first | rfl | (simp [eW, MeasurableEquiv.piFinSuccAbove, Fin.consEquiv]; done) | (simp [eW, MeasurableEquiv.piFinSuccAbove]; rfl)
 
+/- English proof (translation)
+The claim follows from `((Measure.measurePreserving_swap).trans (measurePreserving_prodAssoc volume volume volume)).trans (((MeasurePreserving.id volume).prod (volume_preserving_piFinSuccAbove (fun _ => ℂ) 0).symm).trans (volume_preserving_piFinSuccAbove (fun _ => ℂ) 0).symm)`.
+-/
 theorem eW_measurePreserving (d : ℕ) : MeasurePreserving (eW d) volume volume :=
   ((Measure.measurePreserving_swap).trans (measurePreserving_prodAssoc volume volume volume)).trans
     (((MeasurePreserving.id volume).prod
       (volume_preserving_piFinSuccAbove (fun _ => ℂ) 0).symm).trans
       (volume_preserving_piFinSuccAbove (fun _ => ℂ) 0).symm)
 
+/- English proof (translation)
+Establish `h1 : IntegrableOn (F ∘ e) (B ×ˢ Set.univ) (μ.prod ν)`. Rewrite using `[← hS]`. Conclude with `(he.integrableOn_comp_preimage e.measurableEmbedding).2 hF`. Establish `h2 : ∫ z in S, F z ∂ρ = ∫ x in B ×ˢ Set.univ, F (e x) ∂(μ.prod ν)`. Rewrite using `[← hS]`.
+
+Conclude with `(he.setIntegral_preimage_emb e.measurableEmbedding F S).symm`. Prove the components needed by the constructor for the conclusion. Establish `h3 : Integrable (F ∘ e) ((μ.restrict B).prod (ν.restrict Set.univ))`. Rewrite using `[Measure.prod_restrict]`. Conclude with `h1`.
+
+Simplify `h3.integral_prod_left` using `[IntegrableOn, Function.comp_def]`. Rewrite using `[h2]`. Simplify `setIntegral_prod (F ∘ e) h1` using `[Function.comp_def]`.
+-/
 theorem fubini_piece {Y P Z : Type*} [MeasurableSpace Y] [MeasurableSpace P] [MeasurableSpace Z]
     (μ : Measure Y) (ν : Measure P) (ρ : Measure Z) [SFinite μ] [SFinite ν]
     (e : (Y × P) ≃ᵐ Z) (he : MeasurePreserving e (μ.prod ν) ρ) (B : Set Y) (S : Set Z)
@@ -65,6 +84,13 @@ theorem fubini_piece {Y P Z : Type*} [MeasurableSpace Y] [MeasurableSpace P] [Me
   · rw [h2]
     simpa [Function.comp_def] using setIntegral_prod (F ∘ e) h1
 
+/- English proof (translation)
+Establish `hSW : (eW d) ⁻¹' {z : Fin (d + 2) → ℂ | Fin.tail (Fin.tail z) ∈ B} = B ×ˢ Set.univ`. Use extensionality with `x`. Simplify using `[eW_apply]`. Establish `hSY : (eY d) ⁻¹' {z : Fin (d + 1) → ℂ | Fin.tail z ∈ B} = B ×ˢ Set.univ`. Use extensionality with `x`.
+
+Simplify using `[eY_apply]`. Establish `hW` using `fun i (hi : i < k) => fubini_piece volume volume volume (eW d) (eW_measurePreserving d) B _ hSW (F i) (hF i hi)`. Establish `hY` using `fubini_piece volume volume volume (eY d) (eY_measurePreserving d) B _ hSY H hH`. Simplify using `only [eW_apply, eY_apply] at hW hY`. Rewrite using `[hY.2, Finset.sum_congr rfl fun i hi => (hW i (Finset.mem_range.1 hi)).2, ← integral_finset_sum _ fun i hi => (hW i (Finset.mem_range.1 hi)).1, ← integral_const_mul]`.
+
+Conclude with `setIntegral_congr_fun hB fun y hy => hpt y hy`.
+-/
 theorem fibre_sum {d k : ℕ} (B : Set (Fin d → ℂ)) (F : ℕ → (Fin (d + 2) → ℂ) → ℝ)
     (H : (Fin (d + 1) → ℂ) → ℝ) (κ : ℝ)
     (hF : ∀ i < k, IntegrableOn (F i) {z : Fin (d + 2) → ℂ | Fin.tail (Fin.tail z) ∈ B})
@@ -88,6 +114,11 @@ theorem fibre_sum {d k : ℕ} (B : Set (Fin d → ℂ)) (F : ℕ → (Fin (d + 2
     ← integral_finset_sum _ fun i hi => (hW i (Finset.mem_range.1 hi)).1, ← integral_const_mul]
   exact setIntegral_congr_fun hB fun y hy => hpt y hy
 
+/- English proof (translation)
+Set `L : (Fin (d + 2) → ℂ) →ₗ[ℝ] ℂ` to `(LinearMap.proj (R := ℝ) (φ := fun _ : Fin (d + 2) => ℂ) 0) - (LinearMap.proj (R := ℝ) (φ := fun _ : Fin (d + 2) => ℂ) 1)`. Establish `hs : LinearMap.ker L ≠ ⊤`. Introduce `h`. Establish `h1 : (Pi.single 0 1 : Fin (d + 2) → ℂ) ∈ LinearMap.ker L` using `by rw [h]; trivial`. Simplify using `[L, LinearMap.mem_ker, Pi.single_apply] at h1`.
+
+Establish `h0` using `Measure.addHaar_submodule (volume : Measure (Fin (d + 2) → ℂ)) (LinearMap.ker L) hs`. Use `measure_mono_null ?_ h0` and prove the remaining obligations. Introduce `z hz`. Simplify using `only [Set.mem_compl_iff, Set.mem_setOf_eq, not_not] at hz`. Simplify using `[L, LinearMap.mem_ker, hz]`.
+-/
 theorem ae_ne (d : ℕ) : ∀ᵐ z : Fin (d + 2) → ℂ, z 0 ≠ z 1 := by
   let L : (Fin (d + 2) → ℂ) →ₗ[ℝ] ℂ :=
     (LinearMap.proj (R := ℝ) (φ := fun _ : Fin (d + 2) => ℂ) 0) -
@@ -102,6 +133,9 @@ theorem ae_ne (d : ℕ) : ∀ᵐ z : Fin (d + 2) → ℂ, z 0 ≠ z 1 := by
   simp only [Set.mem_compl_iff, Set.mem_setOf_eq, not_not] at hz
   simp [L, LinearMap.mem_ker, hz]
 
+/- English proof (translation)
+Introduce `j hj`. Establish `: (sumPot c P).φ x ∘ (A.chart j).symm = fun y => ∑ a, c a * ((P a).φ x ∘ (A.chart j).symm) y` using `rfl`. Rewrite using `[this]`. Conclude with `ContDiffAt.sum fun a _ => contDiffAt_const.mul (h a j hj)`.
+-/
 theorem isC2At_sumPot {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) {σ : Type} [Fintype σ]
     (c : σ → ℝ) (P : σ → LocPot X) (x : X) (h : ∀ a, IsTwiceDifferentiableAt A (P a) x) : IsTwiceDifferentiableAt A (sumPot c P) x := by
   intro j hj
@@ -127,6 +161,27 @@ end SqFubini
 
 open SqFubini in
 
+/- English proof (translation)
+Introduce `hI hF d σ _ SY a₀ ε Q c hc k hk1 hk2`. Establish `hlim` using `GlobalTheory.T.analytic_square_regularized_convergence hI d σ SY a₀ ε Q`. Take `⟨-, hnW, hC2W, -, -⟩` from `anSys_open_basics (d + 2) (Option σ) Q.SW`. Take `⟨-, hnY, hC2Y, -, -⟩` from `anSys_open_basics (d + 1) σ SY`. Establish `hhom` using `AnSys.mIntegrable_potH_and_mInt_eq_degNum hI.convergenceSigned (d + 1) σ SY`.
+
+Establish `hexW` using `fun i => mInt_sumPot_expand (d + 2) Q.SW.X Q.SW.A (Option σ) Q.SW.open' Q.SW.potH (Q.wcoef c k i) Q.gH hnW hC2W fun w => (hlim w).1`. Establish `hexY` using `mInt_sumPot_expand (d + 1) SY.X SY.A σ SY.open' SY.potH (mix (2 * k - 1) (fun a => (ε a : ℝ)) c) (fun _ => 1) hnY hC2Y fun w => (hhom w).1`. Establish `hpolW : ∀ i, polar (d + 2) (fun w => mInt Q.SW.A (fun r => Q.SW.potH (w r)) Q.gH) (Q.wcoef c k i) = mInt Q.SW.A (fun r => sumPot (Q.wcoef c k i r) Q.SW.potH) Q.gH` using `fun i => (hexW i).2.symm`. Establish `hpolY : polar (d + 1) SY.degNum (mix (2 * k - 1) (fun a => (ε a : ℝ)) c) = mInt SY.A (fun r => sumPot (mix (2 * k - 1) (fun a => (ε a : ℝ)) c r) SY.potH) (fun _ => 1)`. Rewrite using `[hexY.2]`.
+
+Conclude with `Finset.sum_congr rfl fun w _ => by rw [(hhom w).2]`. Establish `hoW : ∀ n (z : Fin (d + 2) → ℂ), Fin.tail (Fin.tail z) ∈ Q.U n → Q.ΦW n z ∈ Q.SW.open'`. Introduce `n z hz`. Rewrite using `[Q.bdry_eq 0, Set.mem_preimage, Q.first_projection_chart_compat n z hz]`. Conclude with `Q.ΦY_open n _ (by simpa using hz)`.
+
+Establish `hcW` using `fun i => integrableOn_hasSum_paramCover (d + 2) Q.SW.X Q.SW.A _ _ Q.ΦW (fun r => sumPot (Q.wcoef c k i r) Q.SW.potH) Q.gH Q.coverW (fun n z hz r => isC2At_sumPot _ _ _ _ fun a => hC2W a _ (hoW n z (Q.B_meas n |>.2 hz))) (hexW i).1`. Establish `hcY` using `integrableOn_hasSum_paramCover (d + 1) SY.X SY.A _ _ Q.ΦY (fun r => sumPot (mix (2 * k - 1) (fun a => (ε a : ℝ)) c r) SY.potH) (fun _ => 1) Q.coverY (fun n z hz r => isC2At_sumPot _ _ _ _ fun a => hC2Y a _ (Q.ΦY_open n z (Q.B_meas n |>.2 hz))) hexY.1`. Establish `key : ∀ n, ∑ i ∈ Finset.range k, ∫ z in {z : Fin (d + 2) → ℂ | Fin.tail (Fin.tail z) ∈ Q.B n}, Q.gH (Q.ΦW n z) * paramDens (fun r => sumPot (Q.wcoef c k i r) Q.SW.potH) (Q.ΦW n) z = 2 * kappa k * ∫ z in {z : Fin (d + 1) → ℂ | Fin.tail z ∈ Q.B n}, (fun _ => (1 : ℝ)) (Q.ΦY n z) * p …`. Introduce `n`. Set `α : (Fin d → ℂ) → ℝ` to `fun y => ∑ a, c a * Q.α n a y`.
+
+Establish `hd` using `GlobalTheory.T.square_parametrized_density_formula d σ SY a₀ ε Q c hc n k hk1 hk2`. Establish `hmW : MeasurableSet {z : Fin (d + 2) → ℂ | Fin.tail (Fin.tail z) ∈ Q.B n}` using `(Q.coverW.2.1 n).1`. Establish `hmY : MeasurableSet {z : Fin (d + 1) → ℂ | Fin.tail z ∈ Q.B n}` using `(Q.coverY.2.1 n).1`. Set `F : ℕ → (Fin (d + 2) → ℂ) → ℝ` to `fun i z => logSin (Q.G n (Fin.tail (Fin.tail z))) (z 0) (z 1) * maDens (EW (Q.G n) α k i) z`. Establish `hae : ∀ i < k, ∀ᵐ z ∂(volume.restrict {z : Fin (d + 2) → ℂ | Fin.tail (Fin.tail z) ∈ Q.B n}), Q.gH (Q.ΦW n z) * paramDens (fun r => sumPot (Q.wcoef c k i r) Q.SW.potH) (Q.ΦW n) z = F i z`.
+
+Introduce `i hi`. Use `filter_upwards [ae_restrict_of_ae (ae_ne d), ae_restrict_mem hmW] with z hne hz`. Establish `hU : Fin.tail (Fin.tail z) ∈ Q.U n` using `(Q.B_meas n).2 hz`. Establish `h1 : Q.gH (Q.ΦW n z) = logSin (Q.G n (Fin.tail (Fin.tail z))) (z 0) (z 1)` using `Q.norm_hom n z hU hne`. Establish `h2 : paramDens (fun r => sumPot (Q.wcoef c k i r) Q.SW.potH) (Q.ΦW n) z = maDens (EW (Q.G n) α k i) z` using `hd.2 i hi z hU`.
+
+Rewrite using `[h1, h2]`. Establish `hH : ∀ z ∈ {z : Fin (d + 1) → ℂ | Fin.tail z ∈ Q.B n}, (fun _ => (1 : ℝ)) (Q.ΦY n z) * paramDens (fun r => sumPot (mix (2 * k - 1) (fun a => (ε a : ℝ)) c r) SY.potH) (Q.ΦY n) z = maDens (EY (Q.G n) α k) z`. Introduce `z hz`. Establish `h2 : paramDens (fun r => sumPot (mix (2 * k - 1) (fun a => (ε a : ℝ)) c r) SY.potH) (Q.ΦY n) z = maDens (EY (Q.G n) α k) z` using `hd.1 z ((Q.B_meas n).2 hz)`. Rewrite using `[h2, one_mul]`.
+
+Establish `hFint : ∀ i < k, IntegrableOn (F i) {z : Fin (d + 2) → ℂ | Fin.tail (Fin.tail z) ∈ Q.B n}` using `fun i hi => ((hcW i).1 n).congr (hae i hi)`. Establish `hHint : IntegrableOn (maDens (EY (Q.G n) α k)) {z : Fin (d + 1) → ℂ | Fin.tail z ∈ Q.B n}` using `(integrableOn_congr_fun hH hmY).1 (hcY.1 n)`. Establish `hpt : ∀ y ∈ Q.B n, ∑ i ∈ Finset.range k, ∫ p : ℂ × ℂ, F i (Fin.cons p.1 (Fin.cons p.2 y)) = (2 * kappa k) * ∫ a : ℂ, maDens (EY (Q.G n) α k) (Fin.cons a y)`. Introduce `y hy`. Establish `hyU : y ∈ Q.U n` using `(Q.B_meas n).2 hy`.
+
+Establish `hnh : Q.U n ∈ 𝓝 y` using `(Q.U_open n).mem_nhds hyU`. Establish `h2 : (2 : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞)` using `ENat.LEInfty.out`. Conclude with `GlobalTheory.T.log_sine_monge_ampere_integral hF d k hk1 hk2 (Q.G n) α y (by filter_upwards [hnh] with y' hy' using Q.G_pos n y' hy') (fun p q => ((Q.G_smooth n p q).contDiffAt hnh).of_le h2) (ContDiffAt.sum fun a _ => contDiffAt_const.mul (((Q.α_smooth n a).contDiffAt hnh).of_le …`. Rewrite using `[Finset.sum_congr rfl fun i hi => integral_congr_ae (hae i (Finset.mem_range.1 hi)), setIntegral_congr_fun hmY hH]`. Conclude with `fibre_sum (Q.B n) F _ _ hFint hHint hpt (Q.B_meas n).1`.
+
+Establish `hsW : HasSum (fun n => ∑ i ∈ Finset.range k, ∫ z in {z : Fin (d + 2) → ℂ | Fin.tail (Fin.tail z) ∈ Q.B n}, Q.gH (Q.ΦW n z) * paramDens (fun r => sumPot (Q.wcoef c k i r) Q.SW.potH) (Q.ΦW n) z) (∑ i ∈ Finset.range k, mInt Q.SW.A (fun r => sumPot (Q.wcoef c k i r) Q.SW.potH) Q.gH)` using `hasSum_sum fun i _ => (hcW i).2`. Rewrite `hsW` using `[funext key]`. Rewrite using `[Finset.sum_congr rfl fun i _ => hpolW i, hpolY]`. Conclude with `hsW.unique (hcY.2.mul_left _)`.
+-/
 theorem AnSq.sum_polar_gH_eq : Inputs → GroundTheory.Heights₂.Heights.Inter.FibreLocal.Statement → ∀ (d : ℕ) (σ : Type) [Fintype σ] (SY : AnSys (d + 1) σ) (a₀ : σ) (ε : σ → ℤ) (Q : AnSq SY a₀ ε) (c : σ → ℝ), c a₀ = 0 → ∀ k : ℕ, 1 ≤ k → 2 * k ≤ d + 2 → ∑ i ∈ Finset.range k, polar (d + 2) (fun w => mInt Q.SW.A (fun r => Q.SW.potH (w r)) Q.gH) (Q.wcoef c k i) = 2 * kappa k * polar (d + 1) SY.degNum (mix (2 * k - 1) (fun a => (ε a : ℝ)) c) := by
   intro hI hF d σ _ SY a₀ ε Q c hc k hk1 hk2
   have hlim := GlobalTheory.T.analytic_square_regularized_convergence hI d σ SY a₀ ε Q

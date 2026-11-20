@@ -8,6 +8,15 @@ namespace Formalism.MainNotions.Gaps.T0
 
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ}
 
+/- English proof (translation)
+Unfold `PJ.phiC`. Use `split_ifs with h`. Use `mul_nonneg (Nat.cast_nonneg _) ?_` and prove the remaining obligations. Unfold `ModuliIntegralCharts.Loc.phiCy ModuliIntegralCharts.phiC`. Use `Real.sInf_nonneg ?_` and prove the remaining obligations.
+
+Introduce and unpack `x ⟨l, -, h2, rfl⟩`. Distinguish the cases in `hb : (P.loc X.dat (resCh la)).beS (X.pt66 la y) = 0`. Rewrite using `[hb]`. Simplify using the standard rewrite rules. Use `(h2 _ ?_ hb).le` and prove the remaining obligations.
+
+Introduce `a`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Simplify using the standard rewrite rules. Conclude with `((P.loc X.dat (resCh la)).be_pos (X.pt66 la y) a ha).le`.
+
+Conclude with `le_rfl`.
+-/
 theorem phiC_nonneg (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) (y : X.Pt la) :
     0 ≤ X.phiC la y := by
   unfold PJ.phiC
@@ -72,6 +81,9 @@ abbrev trivDat (X : PJ D B P j) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j) 
   σ := fun _ => 0
   u := Empty.elim
 
+/- English proof (translation)
+Rewrite using `[LocDat.up]`. Establish `himg : ((trivDat X S ka wL wF T la ϖ).bc '' (N : Set ↥(WL X ka la))) = (N : Set ↥(WL X ka la))` using `Set.image_id _`. Rewrite using `[himg]`. Conclude with `Submodule.span_eq N`.
+-/
 theorem up_trivDat (X : PJ D B P j) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j) (T : ℕ)
     (la : HeightOneSpectrum (𝓞 B.KO)) (ϖ : X.Ol la) (N : Submodule (X.Ol la) ↥(WL X ka la)) :
     (trivDat X S ka wL wF T la ϖ).up N = N := by
@@ -81,6 +93,9 @@ theorem up_trivDat (X : PJ D B P j) (S : Scal B) (ka wL wF : WeightFamilies.Wt D
   rw [himg]
   exact Submodule.span_eq N
 
+/- English proof (translation)
+Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective N a`. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective N b`. Rewrite using `[Subsingleton.elim x y]`.
+-/
 theorem subsingleton_quot {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] [Subsingleton M]
     (N : Submodule R M) : Subsingleton (M ⧸ N) := by
   refine ⟨fun a b => ?_⟩
@@ -88,6 +103,19 @@ theorem subsingleton_quot {R M : Type} [CommRing R] [AddCommGroup M] [Module R M
   obtain ⟨y, rfl⟩ := Submodule.mkQ_surjective N b
   rw [Subsingleton.elim x y]
 
+/- English proof (translation)
+Use `⟨hL, ⟨?_, hϖ, hϖ⟩, fun z => z.elim, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `IsBaseChange.ofEquiv (LinearEquiv.refl (X.Kl la) ↥(WL X ka la))`. Unfold `LocDat.InRes`. Rewrite using `[up_trivDat, up_trivDat]`. Simplify using `(config := {instances := true}) only [trivDat]`.
+
+Establish `hspan : Submodule.span (X.Kl la) (((⊥ : Submodule (X.Ol la) ↥(WL X ka la)) ⊔ ThW X S ka wL wF T la : Submodule (X.Ol la) ↥(WL X ka la)) : Set ↥(WL X ka la)) = ⊤`. Rewrite using `[bot_sup_eq]`. Conclude with `hL.2.2`. Use `⟨?_, fun i => i.elim0, fun i => i.elim0, ?_, ?_, fun _ _ i => i.elim0, one_ne_zero, one_ne_zero, ?_, ?_, bot_le, hle, le_rfl, ?_, ?_, ?_, le_rfl, le_rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[bot_sup_eq]`.
+
+Rewrite using `[hspan]`. Conclude with `le_top`. Rewrite using `[LinearMap.ker_zero, top_sup_eq]`. Simplify using the standard rewrite rules. Use `inf_le_left.trans ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `(MW X ka la).smul_mem _ hx`. Introduce `x`. Simplify using the standard rewrite rules. Rewrite using `[LinearMap.ker_zero]`.
+
+Simplify using the standard rewrite rules. Conclude with `Subsingleton.elim _ _`. Conclude with `Formalism.LatticeIndexTer.latFinite _ (X.Kl la) _ _ _ hL.1 hL.2`. Use `⟨fun z => z.elim, fun z => z.elim, fun z => z.elim, fun z => z.elim, fun z => z.elim, fun z => z.elim, fun z => z.elim, ?_⟩ dsimp (config := {instances := true}) only [trivDat]` and prove the remaining obligations. Use `subsingleton_quot ((⊥ : Submodule (X.Ol la) PUnit).comap (⊥ : Submodule (X.Ol la) PUnit).subtype)` as an intermediate fact.
+
+Conclude with `⟨LinearEquiv.ofSubsingleton _ _⟩`. Unfold `LocDat.InLead dsimp (config := {instances := true}) only [trivDat]`. Use `⟨rfl, Subsingleton.elim _ _, fun _ => le_rfl, fun _ => Subsingleton.elim _ _, fun _ y => ⟨0, Subsingleton.elim _ _⟩, fun α => α.elim, fun α => α.elim, linearIndependent_empty_type, Subsingleton.elim _ _, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_zero, Module.length_eq_zero_iff]`. Conclude with `subsingleton_quot _`.
+-/
 theorem triv_ok (X : PJ D B P j) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j) (T e : ℕ)
     (la : HeightOneSpectrum (𝓞 B.KO)) (ϖ : X.Ol la) (hϖ : Irreducible ϖ)
     (hL : InLat X ka la S wL wF T) (hle : ThW X S ka wL wF T la ≤ MW X ka la) :
@@ -128,6 +156,9 @@ theorem triv_ok (X : PJ D B P j) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j)
     rw [Nat.cast_zero, Module.length_eq_zero_iff]
     exact subsingleton_quot _
 
+/- English proof (translation)
+Simplify using `[LocDat.err, trivDat]`.
+-/
 theorem triv_err (X : PJ D B P j) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j) (T : ℕ)
     (la : HeightOneSpectrum (𝓞 B.KO)) (ϖ : X.Ol la) (c : ℝ) :
     (trivDat X S ka wL wF T la ϖ).err T c =
@@ -135,6 +166,9 @@ theorem triv_err (X : PJ D B P j) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j
         (↥(MW X ka la) ⧸ (ThW X S ka wL wF T la).comap (MW X ka la).subtype)).toNat : ℝ) := by
   simp [LocDat.err, trivDat]
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (X.Ol la)`. Conclude with `⟨trivDat X S ka wL wF T la ϖ, triv_ok X S ka wL wF T e la ϖ hϖ hL hle, fun c => triv_err X S ka wL wF T la ϖ c⟩`.
+-/
 theorem exists_ok_err (X : PJ D B P j) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j) (T e : ℕ)
     (la : HeightOneSpectrum (𝓞 B.KO)) (hL : InLat X ka la S wL wF T)
     (hle : ThW X S ka wL wF T la ≤ MW X ka la) :
@@ -159,11 +193,17 @@ def OkW (S : Scal B) (wL wF : WeightFamilies.Wt D j) (T e : ℕ) : Prop :=
 
 variable {L}
 
+/- English proof (translation)
+Introduce `z`. Take `⟨h1, h2, h3, -⟩` from `h z`. Conclude with `⟨h1.symm.le, h2, h3⟩`.
+-/
 theorem InTie.toW {S : Scal B} {wL : WeightFamilies.Wt D j} (h : L.InTie S wL) : L.InTieW S wL := by
   intro z
   obtain ⟨h1, h2, h3, -⟩ := h z
   exact ⟨h1.symm.le, h2, h3⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `h`. Conclude with `(show _ ∧ _ ∧ _ ∧ _ from ⟨h1, h2, InTie.toW h3, h4⟩)`.
+-/
 theorem Ok.toW {S : Scal B} {wL wF : WeightFamilies.Wt D j} {T e : ℕ} (h : L.Ok S wL wF T e) :
     L.OkW S wL wF T e := by
   obtain ⟨h1, h2, h3, h4⟩ := h
@@ -171,6 +211,15 @@ theorem Ok.toW {S : Scal B} {wL wF : WeightFamilies.Wt D j} {T e : ℕ} (h : L.O
 
 end LocDat
 
+/- English proof (translation)
+Take `⟨hMlat, hΘlat⟩` from `hLat`. Take `⟨hbc, hϖ, hϖ'⟩` from `hExt`. Establish `: FiniteDimensional (X.Kl la) ↥(WL X ka la)` using `finDim_of_isLat _ hMlat`. Establish `hM₁` using `Formalism.LatticeBaseChangeAlt.isLattice_span_image_alt (X.Ol la) L.O' (X.Kl la) L.K' ↥(WL X ka la) L.V₁ L.bc hbc _ hMlat`. Establish `hΘ₁` using `Formalism.LatticeBaseChangeAlt.isLattice_span_image_alt (X.Ol la) L.O' (X.Kl la) L.K' ↥(WL X ka la) L.V₁ L.bc hbc _ hΘlat`.
+
+Establish `: FiniteDimensional L.K' L.V₁` using `finDim_of_isLat _ hM₁`. Take `⟨r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15, r16, r17, r18, r19⟩` from `hRes`. Take `⟨p1, p2, p3, p4, p5, p6, p7, p8⟩` from `hPts`. Take `⟨l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, l11⟩` from `hLead`. Establish `key` using `Formalism.LatticeBaseChangeAlt.localStepClosed L.ι L.ep L.f L.ν L.v nu c T L.R L.I hep hT hc (fun z => phiC_nonneg X la (L.y z)) hν L.O' L.K' L.K₁ L.V₁ L.Wsec (algebraMap (X.Ol la) L.O' L.ϖ) hϖ' (L.up (MW X ka la)) (L.up (ThW X S ka wL wF T la)) L.N₁ L.Z L.Zm L.N' e L.be L.n L.th …`.
+
+Establish `hd : (0 : ℝ) < (finrank L.K' L.K₁ : ℝ)` using `by exact_mod_cast (finrank_pos : 0 < finrank L.K' L.K₁)`. Establish `desc` using `Formalism.LatticeBaseChangeAlt.localStepDescent (X.Ol la) L.O' (X.Kl la) L.K' ↥(WL X ka la) L.V₁ L.bc hbc L.ϖ hϖ hϖ' (MW X ka la) (ThW X S ka wL wF T la) U hMlat hΘlat (finrank L.K' L.K₁ : ℝ) ((L.R : ℝ) * ((T : ℝ) * c * ∑ z, ((L.ep z : ℝ) * L.f z) * L.v z) + (L.R : ℝ) * (L.I : ℝ) …`. Use `le_trans key (le_of_eq ?_)` and prove the remaining obligations. Use the proof step `ring)`. Unfold `LocDat.err`.
+
+Rewrite using `[← mul_le_mul_iff_right₀ hd]`. Use `le_trans desc (le_of_eq ?_)` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem idx_bound_of_le (X : PJ D B P j) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j) (T : ℕ)
     (la : HeightOneSpectrum (𝓞 B.KO)) (e : ℕ) (nu c : ℝ) (hT : 1 ≤ T) (hc : 0 ≤ c)
     (hTe : (T : ℝ) * nu ≤ (e : ℝ)) (L : LocDat X ka la) (hLat : InLat X ka la S wL wF T)
@@ -215,6 +264,9 @@ theorem idx_bound_of_le (X : PJ D B P j) (S : Scal B) (ka wL wF : WeightFamilies
   field_simp
   ring
 
+/- English proof (translation)
+Establish `h : L.ν z ≤ nus la + cc D large₂ H.Cc H.Ac H.CRc wL * X.phiC la (L.y z)` using `EReal.coe_le_coe_iff.1 ((hTie z).1.trans (hH1.2.2.2 la (L.y z)))`. Establish `hv : 0 ≤ X.phiC la (L.y z)` using `phiC_nonneg X la (L.y z)`. Establish `hm : cc D large₂ H.Cc H.Ac H.CRc wL * X.phiC la (L.y z) ≤ max 0 (cc D large₂ H.Cc H.Ac H.CRc wL) * X.phiC la (L.y z)` using `mul_le_mul_of_nonneg_right (le_max_right _ _) hv`. Use `show L.ν z ≤ nus la + max 0 (cc D large₂ H.Cc H.Ac H.CRc wL) * X.phiC la (L.y z)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem nu_le_of_tieW (large₂ : SizeData₂ D) (X : PJ D B P j) (H : KHyp) (S : Scal B) (ka wL : WeightFamilies.Wt D j)
     (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ) (la : HeightOneSpectrum (𝓞 B.KO))
     (hH1 : H1 large₂ X H S wL nus) (L : LocDat X ka la) (hTie : L.InTieW S wL) (z : L.ι) :
@@ -242,6 +294,15 @@ def Thm0LocalW : Prop :=
           (X.loc la (X.Theta S ka wL wF T) ⊓ X.ofK la V')).toNat : ℝ) ≤
         (e : ℝ) * (finrank (X.Kl la) V' : ℝ) + L.err T (max 0 (cc D large₂ H.Cc H.Ac H.CRc wL))
 
+/- English proof (translation)
+Introduce `large₂ X H S ka wL wF T nus la e hH1 hT hΘM hTe L hOk V' hV'`. Take `⟨hLat, hExt, hTie, hRes, hPts, hLead⟩` from `hOk`. Establish `hb` using `idx_bound_of_le X S ka wL wF T la e (nus la) (max 0 (cc D large₂ H.Cc H.Ac H.CRc wL)) hT (le_max_left _ _) hTe L hLat hExt (nu_le_of_tieW large₂ X H S ka wL nus la hH1 L hTie) (fun z => (hTie z).2.1) (fun z => (hTie z).2.2) hRes hPts hLead (V'.comap (WL X ka la).subtype)`. Establish `hrk : finrank (X.Kl la) ↥(V'.comap (WL X ka la).subtype) = finrank (X.Kl la) V'` using `(Submodule.comapSubtypeEquivOfLe hV').finrank_eq`. Establish `hq` using `qlen_eq_inW X ka la (X.loc la (X.Msup ka)) (X.loc la (X.Theta S ka wL wF T)) V' hV'`.
+
+Establish `hle : ThW X S ka wL wF T la ≤ MW X ka la` using `Submodule.comap_mono (Submodule.span_mono (Set.image_mono hΘM))`. Establish `h0` using `qlen_eq_zero_of_le (MW X ka la ⊓ (V'.comap (WL X ka la).subtype).restrictScalars (X.Ol la)) (ThW X S ka wL wF T la ⊓ (V'.comap (WL X ka la).subtype).restrictScalars (X.Ol la)) (inf_le_inf_right _ hle)`. Establish `hfin` using `qlen_inf_ne_top (X.Ol la) (X.Kl la) ↥(WL X ka la) (MW X ka la) (ThW X S ka wL wF T la) hLat.1 hLat.2 ((V'.comap (WL X ka la).subtype).restrictScalars (X.Ol la))`. Rewrite using `[← hq]`. Use `⟨hfin, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hb` using `[hrk]`. Unfold `Formalism.LatticeIndexTer.idx at hb`. Rewrite `hb` using `[h0]`. Establish `hb'` using `hb`. Simplify using `only [ENat.toNat_zero, Nat.cast_zero, sub_zero, Int.cast_natCast] at hb'`.
+
+Conclude with `hb'`.
+-/
 theorem thm0LocalW : @Thm0LocalW D B P j := by
   intro large₂ X H S ka wL wF T nus la e hH1 hT hΘM hTe L hOk V' hV'
   obtain ⟨hLat, hExt, hTie, hRes, hPts, hLead⟩ := hOk
@@ -268,6 +329,9 @@ theorem thm0LocalW : @Thm0LocalW D B P j := by
   simp only [ENat.toNat_zero, Nat.cast_zero, sub_zero, Int.cast_natCast] at hb'
   exact hb'
 
+/- English proof (translation)
+Introduce `large₂ X H S ka wL wF T nus la e hH1 hT hc hTh hTe L hOk V' hV'`. Establish `hW` using `h large₂ X H S ka wL wF T nus la e hH1 hT hTh hTe L (LocDat.Ok.toW hOk) V' hV'`. Use `first`. Consider the case `exact hW`. Consider the case `simpa only [max_eq_right hc] using hW`.
+-/
 theorem localForm_of_weakForm (h : Thm0LocalW (D := D) (B := B) (P := P) (j := j)) :
     Thm0Local (D := D) (B := B) (P := P) (j := j) := by
   intro large₂ X H S ka wL wF T nus la e hH1 hT hc hTh hTe L hOk V' hV'
@@ -287,6 +351,13 @@ def Thm0ConclW : Prop :=
         L.err T (max 0 (cc D large₂ H.Cc H.Ac H.CRc wL)) ≤ r la) →
     Concl X S ka wL wF T nus β
 
+/- English proof (translation)
+Introduce `large₂ X H S ka wL wF T nus β r hH1 hT hle hr hs hb hL`. Use `⟨r, hr, hs, hb, ?_⟩` and prove the remaining obligations. Introduce `la e he V' hV`. Establish `h0 : (0 : ℝ) ≤ (T : ℝ) * nus la` using `mul_nonneg (Nat.cast_nonneg _) (hH1.1 la)`. Establish `he0 : (0 : ℤ) ≤ e`.
+
+Establish `: (0 : ℝ) ≤ (e : ℝ)` using `h0.trans he`. Conclude with `this` after adjusting the coercions. Take `⟨n, rfl⟩` from `Int.eq_ofNat_of_zero_le he0`. Establish `he' : (T : ℝ) * nus la ≤ (n : ℝ)` using `by simpa using he`. Take `⟨L, hOk, herr⟩` from `hL la n he'`.
+
+Take `⟨h1, h2⟩` from `thm0LocalW large₂ X H S ka wL wF T nus la n hH1 hT hle he' L hOk V' hV`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `h3 : (((n : ℤ) : ℝ)) = (n : ℝ)` using `by simp`. Rewrite using `[h3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem thm0ConclW : Thm0ConclW (D := D) (B := B) (P := P) (j := j) := by
   intro large₂ X H S ka wL wF T nus β r hH1 hT hle hr hs hb hL
   refine ⟨r, hr, hs, hb, ?_⟩
@@ -304,6 +375,9 @@ theorem thm0ConclW : Thm0ConclW (D := D) (B := B) (P := P) (j := j) := by
   rw [h3]
   linarith
 
+/- English proof (translation)
+Establish `hT : 1 ≤ T`. Take `⟨_, hS, _⟩` from `hH`. Conclude with `(hS.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 : 0 < T)`. Conclude with `thm0ConclW large₂ X H S ka wL wF T nus β r hH.2.2.2.1 hT (theta_le_msup_of_hyp X S hH) hr0 hrs hrb hloc`.
+-/
 theorem concl_of_hypW (large₂ : SizeData₂ D) (X : PJ D B P j) (H : KHyp) (C2 A2 CR Bx CT : ℝ) (S : Scal B)
     (ka wL wF : WeightFamilies.Wt D j) (T nP nW : ℕ) (h0 : ℝ) (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ) (β : ℝ)
     (r : HeightOneSpectrum (𝓞 B.KO) → ℝ)

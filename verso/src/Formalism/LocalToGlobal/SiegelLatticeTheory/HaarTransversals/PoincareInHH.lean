@@ -74,6 +74,11 @@ def iotaF : Gam X u →* Hfin X u :=
   MonoidHom.codRestrict ((MonoidHom.snd _ _).comp (Gam X u).subtype) (Hfin X u)
     (fun γ => (Subgroup.mem_prod.1 (Subgroup.mem_inf.1 γ.2).2).2)
 
+/- English proof (translation)
+Establish `hs' : ∀ v, ∀ x ∈ fixSet X u, uMat (s v) *ᵥ rv X.B.I v x = rv X.B.I v x` using `hs`. Simplify using `only [HidaSetting.SinfU, Sinf, Set.mem_setOf_eq]`. Introduce `v`. Prove the components needed by the constructor for the conclusion. Introduce `a`.
+
+Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, hs' v _ (Or.inl (Or.inl ⟨a, rfl⟩)), sub_self]`. Conclude with `Submodule.zero_mem _`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, hs' v _ (Or.inr rfl), sub_self]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem hinf_le_sinf (s : X.B.I.Ginf) (hs : s ∈ Hinf X u) : s ∈ X.SinfU u := by
   have hs' : ∀ v, ∀ x ∈ fixSet X u, uMat (s v) *ᵥ rv X.B.I v x = rv X.B.I v x := hs
   simp only [HidaSetting.SinfU, Sinf, Set.mem_setOf_eq]
@@ -113,6 +118,11 @@ def Ku (hK : X.LevelSubgroupCharacter) : Subgroup (Hfin X u) where
     have := hK.2.2.1 _ ha
     simpa [mul_assoc] using this
 
+/- English proof (translation)
+Establish `h1` using `hK.2.2.2.1 1 hK.1 1 hK.1`. Establish `hn` using `hK.2.2.2.2 1 hK.1`. Rewrite `h1` using `[one_mul]`. Establish `h0 : X.chi2 1 ≠ 0`. Introduce `h`.
+
+Rewrite `hn` using `[h, norm_zero]`. Conclude with `zero_ne_one hn`. Conclude with `mul_left_cancel₀ h0 (h1.symm.trans (mul_one _).symm)`.
+-/
 theorem chi2_apply_one (hK : X.LevelSubgroupCharacter) : X.chi2 1 = 1 := by
   have h1 := hK.2.2.2.1 1 hK.1 1 hK.1
   have hn := hK.2.2.2.2 1 hK.1
@@ -217,6 +227,9 @@ def Pu (hK : X.LevelSubgroupCharacter) (Dt : Set X.B.I.GA) (hD : IsReps X u Dt) 
     ext1
     exact (hlin hD hin).2 c T
 
+/- English proof (translation)
+Establish `h1 : X.B.I.fmat 1 = 1` using `by simp [AutInst.fmat]`. Simplify using `only [HidaSetting.K2, K2set, K2cong, InMod, Set.mem_setOf_eq, h1, sub_self, Matrix.zero_mulVec, Submodule.zero_mem, implies_true, and_true]`. Use `first`. Consider the case `simp [AutInst.Kset]`. Consider the case `exact (Formalism.UG.stabGL X.B.I.Lf).one_mem`.
+-/
 theorem one_mem_level_subgroup : (1 : X.B.I.Gf) ∈ X.K2 := by
   have h1 : X.B.I.fmat 1 = 1 := by simp [AutInst.fmat]
   simp only [HidaSetting.K2, K2set, K2cong, InMod, Set.mem_setOf_eq, h1, sub_self, Matrix.zero_mulVec,

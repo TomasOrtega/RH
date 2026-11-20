@@ -17,6 +17,9 @@ variable {X Y : Scheme.{0}}
 
 abbrev L1 (L : LB X) : LB X := LB.LinComb L (K := Fin 1) (fun _ => 𝟙 X) (fun _ => 1)
 
+/- English proof (translation)
+Introduce `_ hx` and use `Set.mem_iInter.2 fun _ => hx`.
+-/
 theorem lineBundle_chart_le_firstPower_chart (L : LB X) (i : L.ι) : L.U i ≤ (L1 L).U (fun _ => i) :=
   fun _ hx => Set.mem_iInter.2 fun _ => hx
 
@@ -38,6 +41,23 @@ def toPre (Zh : ZH.ZHOut ρ M U₀ EE) : ZH.ZHPre ρ M U₀ :=
 
 end GlobalTheory.KeyTheta
 
+/- English proof (translation)
+Introduce `X Y π L δ W N hNW σ t hσ`. Establish `rr : ∀ {A B C : X.Opens} (e : B ≤ A) (e' : C ≤ B) (s : Γ(X, A)), resG X e' (resG X e s) = resG X (e'.trans e) s` using `fun e e' s => by`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]`. Both sides reduce to the same expression. Establish `ar : ∀ {U : Y.Opens} {V V' : X.Opens} (e : V ≤ π ⁻¹ᵁ U) (h : V' ≤ V) (x : Γ(Y, U)), resG X h ((π.appLE U V e).hom x) = (π.appLE U V' (h.trans e)).hom x` using `fun e h x => by`.
+
+Express the relevant statement in the definitionally equal form `(π.appLE _ _ e ≫ X.presheaf.map (homOfLE h).op).hom x = _`. Rewrite using `[Scheme.Hom.appLE_map]`. Establish `ra : ∀ {U U' : Y.Opens} {V : X.Opens} (h : U' ≤ U) (e : V ≤ π ⁻¹ᵁ U') (x : Γ(Y, U)), (π.appLE U' V e).hom (resG Y h x) = (π.appLE U V (fun _ hx => h (e hx))).hom x` using `fun h e x => by`. Express the relevant statement in the definitionally equal form `(Y.presheaf.map (homOfLE h).op ≫ π.appLE _ _ e).hom x = _`. Rewrite using `[Scheme.Hom.map_appLE]`.
+
+Introduce and unpack `⟨i, j⟩ ⟨i', j'⟩`. Establish `hO1 : π ⁻¹ᵁ N ⊓ (CechPic.tens L (δ.pull π)).U (i, j) ⊓ (CechPic.tens L (δ.pull π)).U (i', j') ≤ π ⁻¹ᵁ (δ.U (j PUnit.unit) ⊓ δ.U (j' PUnit.unit))` using `fun x hx => ⟨Set.mem_iInter.1 hx.1.2.2 PUnit.unit, Set.mem_iInter.1 hx.2.2 PUnit.unit⟩`. Establish `ht` using `congrArg (π.appLE _ _ hO1).hom (t.compat (j PUnit.unit) (j' PUnit.unit))`. Rewrite `ht` using `[map_mul]`. Express the relevant statement in the definitionally equal form `(π.appLE _ _ hO1).hom (resG Y _ _) = (π.appLE _ _ hO1).hom _ * (π.appLE _ _ hO1).hom (resG Y _ _) at ht`.
+
+Rewrite `ht` using `[ra, ra]`. Establish `hs` using `LB.secOn_rel hσ (fun _ => i) (fun _ => i') (W := π ⁻¹ᵁ N ⊓ (CechPic.tens L (δ.pull π)).U (i, j) ⊓ (CechPic.tens L (δ.pull π)).U (i', j')) (le_inf (fun x hx => hNW hx.1.1) (fun x hx => lineBundle_chart_le_firstPower_chart L i hx.1.2.1)) (le_inf (fun x hx => hNW hx.1.1) (fun x hx = …`. Establish `hg : ∀ (h : π ⁻¹ᵁ N ⊓ (CechPic.tens L (δ.pull π)).U (i, j) ⊓ (CechPic.tens L (δ.pull π)).U (i', j') ≤ (CechPic.tens L (δ.pull π)).U (i, j) ⊓ (CechPic.tens L (δ.pull π)).U (i', j')), resG X h ((CechPic.tens L (δ.pull π)).g (i, j) (i', j') : Γ(X, _)) = resG X (fun x hx => ⟨hx.1.2.1 …`. Introduce `h`. Establish `e1 : ((CechPic.tens L (δ.pull π)).g (i, j) (i', j') : Γ(X, _)) = resG X (le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left) : (CechPic.tens L (δ.pull π)).U (i, j) ⊓ (CechPic.tens L (δ.pull π)).U (i', j') ≤ L.U i ⊓ L.U i') (L.g i i' : Γ(X, L.U i ⊓ L.U i')) * r …` using `rfl`.
+
+Establish `e2 : ((δ.pull π).g j j' : Γ(X, (δ.pull π).U j ⊓ (δ.pull π).U j')) = (π.appLE _ _ (fun x hx => ⟨Set.mem_iInter.1 hx.1 PUnit.unit, Set.mem_iInter.1 hx.2 PUnit.unit⟩ : (δ.pull π).U j ⊓ (δ.pull π).U j' ≤ π ⁻¹ᵁ (δ.U (j PUnit.unit) ⊓ δ.U (j' PUnit.unit)))).hom (δ.g (j PUnit.unit) (j' P …`. Simplify using `only [LB.pull, LB.LinComb, Fintype.prod_unique, zpow_one]`. Both sides reduce to the same expression. Rewrite using `[e1, map_mul, rr, e2, rr]`. Use `congr 1`.
+
+Conclude with `ar _ _ _`. Establish `hl : ∀ (h : π ⁻¹ᵁ N ⊓ (CechPic.tens L (δ.pull π)).U (i, j) ⊓ (CechPic.tens L (δ.pull π)).U (i', j') ≤ (L1 L).U (fun _ => i) ⊓ (L1 L).U (fun _ => i')), resG X h ((L1 L).g (fun _ => i) (fun _ => i') : Γ(X, _)) = resG X (fun x hx => ⟨hx.1.2.1, hx.2.1⟩ : π ⁻¹ᵁ N ⊓ (CechPic.tens L (δ. …`. Introduce `h`. Simplify using `only [L1, LB.LinComb, Fin.prod_univ_one, zpow_one]`. Conclude with `rr _ _ _`.
+
+Rewrite `hs` using `[hl]`. Simplify using `only [prodSec]`. Rewrite using `[hg]`. Simplify using `only [map_mul, rr, ar]`. Rewrite using `[hs, ht]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.KeyTheta.prodSec_mem : ∀ {X Y : Scheme.{0}} (π : X ⟶ Y) (L : LB X) (δ : LB Y) {W N : Y.Opens} (hNW : N ≤ W) (σ : ∀ j, Γ(X, π ⁻¹ᵁ W ⊓ (GlobalTheory.KeyTheta.L1 L).U j)) (t : δ.Sec), σ ∈ secOn (GlobalTheory.KeyTheta.L1 L) (π ⁻¹ᵁ W) → GlobalTheory.KeyTheta.prodSec π L δ hNW σ t ∈ secOn (CechPic.tens L (δ.pull π)) (π ⁻¹ᵁ N) := by
   intro X Y π L δ W N hNW σ t hσ
   have rr : ∀ {A B C : X.Opens} (e : B ≤ A) (e' : C ≤ B) (s : Γ(X, A)),
@@ -100,6 +120,13 @@ theorem GlobalTheory.KeyTheta.prodSec_mem : ∀ {X Y : Scheme.{0}} (π : X ⟶ Y
   rw [hs, ht]
   ring
 
+/- English proof (translation)
+Introduce `X Y π L δ W σ t hne k hk y hy`. Take `⟨K, _, _, x, hx⟩` from `GlobalTheory.TripleOut.exists_geomPoint y`. Take `⟨g, j, hg, hv⟩` from `hne K x (by rintro _ ⟨w, rfl⟩; rw [hx]; exact hk hy)`. Establish `hzy : π (g (IsLocalRing.closedPoint K)) = y` using `(Scheme.Hom.comp_apply g π _).symm.trans (hg ▸ hx _)`. Establish `hz1 : g (IsLocalRing.closedPoint K) ∈ X.basicOpen (σ j)` using `GlobalTheory.TripleOut.mem_basicOpen_of_valF g (σ j) hv _`.
+
+Take `⟨i, rfl⟩ : ∃ i, j = fun _ => i` from `⟨j 0, funext fun m => congrArg j (Subsingleton.elim _ _)⟩`. Establish `hyb : π (g (IsLocalRing.closedPoint K)) ∈ Y.basicOpen (t.f k)` using `by rw [hzy]; exact hy`. Establish `hyk : π (g (IsLocalRing.closedPoint K)) ∈ δ.U k` using `Y.basicOpen_le _ hyb`. Establish `hw : g (IsLocalRing.closedPoint K) ∈ LB.wchart δ (fun _ : PUnit => π) (fun _ => k)` using `Set.mem_iInter.2 fun _ => hyk`. Establish `hV : g (IsLocalRing.closedPoint K) ∈ π ⁻¹ᵁ Y.basicOpen (t.f k) ⊓ (CechPic.tens L (δ.pull π)).U (i, fun _ => k)` using `⟨hyb, Set.mem_iInter.1 (X.basicOpen_le _ hz1).2 0, hw⟩`.
+
+Use `⟨g (IsLocalRing.closedPoint K), (i, fun _ => k), hzy, ?_⟩` and prove the remaining obligations. Use `(Scheme.basicOpen_mul X _ _).ge ⟨(Scheme.basicOpen_res X _ _).ge ⟨hV, hz1⟩, (Scheme.basicOpen_res X _ _).ge ⟨hV, ?_⟩⟩` and prove the remaining obligations. Conclude with `(Scheme.basicOpen_appLE π _ _ _ _).ge ⟨hw, hyb⟩`.
+-/
 theorem GlobalTheory.KeyTheta.prodSec_fib : ∀ {X Y : Scheme.{0}} (π : X ⟶ Y) (L : LB X) (δ : LB Y) {W : Y.Opens} (σ : ∀ j, Γ(X, π ⁻¹ᵁ W ⊓ (GlobalTheory.KeyTheta.L1 L).U j)) (t : δ.Sec), (∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ Y), Set.range x ⊆ W → ∃ (g : Sp K ⟶ X) (j : (GlobalTheory.KeyTheta.L1 L).ι), g ≫ π = x ∧ valF g _ (σ j) ≠ 0) → ∀ (k : δ.ι) (hk : Y.basicOpen (t.f k) ≤ W) (y : Y), y ∈ Y.basicOpen (t.f k) → ∃ (z : X) (p : (CechPic.tens L (δ.pull π)).ι), π z = y ∧ z ∈ X.basicOpen (GlobalTheory.KeyTheta.prodSec π L δ hk σ t p) := by
   intro X Y π L δ W σ t hne k hk y hy
   obtain ⟨K, _, _, x, hx⟩ := GlobalTheory.TripleOut.exists_geomPoint y
@@ -118,6 +145,15 @@ theorem GlobalTheory.KeyTheta.prodSec_fib : ∀ {X Y : Scheme.{0}} (π : X ⟶ Y
   refine (Scheme.basicOpen_mul X _ _).ge ⟨(Scheme.basicOpen_res X _ _).ge ⟨hV, hz1⟩, (Scheme.basicOpen_res X _ _).ge ⟨hV, ?_⟩⟩
   exact (Scheme.basicOpen_appLE π _ _ _ _).ge ⟨hw, hyb⟩
 
+/- English proof (translation)
+Introduce `X B τ hτ`. Establish `rr : ∀ {A B C : X.Opens} (e : B ≤ A) (e' : C ≤ B) (s : Γ(X, A)), resG X e' (resG X e s) = resG X (e'.trans e) s` using `fun e e' s => by`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]`. Both sides reduce to the same expression. Use `⟨⟨fun i => resG X (le_inf le_top le_rfl : B.U i ≤ ⊤ ⊓ B.U i) (τ i), fun i j => ?_⟩, fun p z hz => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `congrArg (resG X (le_inf (le_inf le_top inf_le_left) inf_le_right : B.U i ⊓ B.U j ≤ ⊤ ⊓ B.U i ⊓ B.U j)) (hτ i j)`. Rewrite `h` using `[map_mul, rr, rr, rr]`. Express the relevant statement in the definitionally equal form `resG X _ (resG X _ (τ i)) = (B.g i j : Γ(X, B.U i ⊓ B.U j)) * resG X _ (resG X _ (τ j))`. Rewrite using `[rr, rr, h]`. Use `congr 1`.
+
+Establish `e : (homOfLE (le_rfl : B.U i ⊓ B.U j ≤ B.U i ⊓ B.U j)).op = 𝟙 _` using `rfl`. Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE _).op).hom _ = _`. Rewrite using `[e, X.presheaf.map_id]`. Both sides reduce to the same expression. Use `TopologicalSpace.Opens.mem_iSup.2 ⟨p, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `z ∈ X.basicOpen (resG X _ (τ p))`. Rewrite using `[Scheme.basicOpen_res]`. Conclude with `⟨(X.basicOpen_le (τ p) hz).2, hz⟩`.
+-/
 theorem GlobalTheory.KeyTheta.sec_of_secOn_top : ∀ {X : Scheme.{0}} (B : LB X) (τ : ∀ p, Γ(X, ⊤ ⊓ B.U p)), τ ∈ secOn B ⊤ → ∃ s : B.Sec, ∀ p, ∀ z ∈ X.basicOpen (τ p), z ∈ nonzeroLocus s := by
   intro X B τ hτ
   have rr : ∀ {A B C : X.Opens} (e : B ≤ A) (e' : C ≤ B) (s : Γ(X, A)),
@@ -137,6 +173,17 @@ theorem GlobalTheory.KeyTheta.sec_of_secOn_top : ∀ {X : Scheme.{0}} (B : LB X)
     rw [Scheme.basicOpen_res]
     exact ⟨(X.basicOpen_le (τ p) hz).2, hz⟩
 
+/- English proof (translation)
+Introduce `Y δ ta tb k M₀ hM`. Establish `rr : ∀ {A B C : Y.Opens} (e : B ≤ A) (e' : C ≤ B) (s : Γ(Y, A)), resG Y e' (resG Y e s) = resG Y (e'.trans e) s` using `fun e e' s => by`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]`. Both sides reduce to the same expression. Establish `hMk : M₀ ≤ δ.U k` using `hM.trans (Y.basicOpen_le _)`.
+
+Establish `hunit : IsUnit (resG Y hMk (ta.f k))`. Establish `h1` using `(RingedSpace.isUnit_res_basicOpen Y.toLocallyRingedSpace.toRingedSpace (ta.f k)).map (resG Y hM)`. Express the relevant statement in the definitionally equal form `IsUnit (resG Y hM (resG Y (Y.basicOpen_le (ta.f k)) (ta.f k))) at h1`. Rewrite `h1` using `[rr]`. Then use the resulting hypothesis. Take `⟨v, hv⟩` from `hunit`.
+
+Use `⟨resG Y hMk (tb.f k) * ↑v⁻¹, fun j => ?_⟩` and prove the remaining obligations. Establish `e : M₀ ⊓ δ.U j ≤ δ.U j ⊓ δ.U k` using `fun x hx => ⟨hx.2, hMk hx.1⟩`. Establish `ca` using `congrArg (resG Y e) (ta.compat j k)`. Establish `cb` using `congrArg (resG Y e) (tb.compat j k)`. Express the relevant statement in the definitionally equal form `resG Y e (resG Y _ (ta.f j)) = resG Y e (_ * resG Y _ (ta.f k)) at ca`.
+
+Express the relevant statement in the definitionally equal form `resG Y e (resG Y _ (tb.f j)) = resG Y e (_ * resG Y _ (tb.f k)) at cb`. Rewrite `ca`, `cb` using `[map_mul, rr, rr]`. Rewrite using `[ca, cb, map_mul]`. Establish `hk1 : resG Y (fun x hx => hMk hx.1 : M₀ ⊓ δ.U j ≤ δ.U k) (ta.f k) = resG Y (inf_le_left : M₀ ⊓ δ.U j ≤ M₀) (v : Γ(Y, M₀))` using `by rw [hv, rr]`. Establish `hk2 : resG Y (fun x hx => hMk hx.1 : M₀ ⊓ δ.U j ≤ δ.U k) (tb.f k) = resG Y (inf_le_left : M₀ ⊓ δ.U j ≤ M₀) (resG Y hMk (tb.f k))` using `by rw [rr]`.
+
+Establish `hinv : resG Y (inf_le_left : M₀ ⊓ δ.U j ≤ M₀) ((v⁻¹ : (Γ(Y, M₀))ˣ) : Γ(Y, M₀)) * resG Y (inf_le_left : M₀ ⊓ δ.U j ≤ M₀) (v : Γ(Y, M₀)) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Rewrite using `[hk1, hk2]`. Take the linear combination `(resG Y e (δ.g j k : Γ(Y, δ.U j ⊓ δ.U k)) * resG Y (inf_le_left : M₀ ⊓ δ.U j ≤ M₀) (resG Y hMk (tb.f k))) * hinv`.
+-/
 theorem GlobalTheory.KeyTheta.ratio_exists : ∀ {Y : Scheme.{0}} (δ : LB Y) (ta tb : δ.Sec) (k : δ.ι) (M₀ : Y.Opens), M₀ ≤ Y.basicOpen (ta.f k) → ∃ u : Γ(Y, M₀), ∀ j, resG Y (inf_le_left : M₀ ⊓ δ.U j ≤ M₀) u * resG Y (inf_le_right : M₀ ⊓ δ.U j ≤ δ.U j) (ta.f j) = resG Y (inf_le_right : M₀ ⊓ δ.U j ≤ δ.U j) (tb.f j) := by
   intro Y δ ta tb k M₀ hM
   have rr : ∀ {A B C : Y.Opens} (e : B ≤ A) (e' : C ≤ B) (s : Γ(Y, A)),
@@ -167,6 +214,23 @@ theorem GlobalTheory.KeyTheta.ratio_exists : ∀ {Y : Scheme.{0}} (δ : LB Y) (t
   linear_combination (resG Y e (δ.g j k : Γ(Y, δ.U j ⊓ δ.U k)) *
     resG Y (inf_le_left : M₀ ⊓ δ.U j ≤ M₀) (resG Y hMk (tb.f k))) * hinv
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ M δ I t th hsc a b k l M₀ hne hk hl u hu`. Take `⟨τ, -, hτ⟩` from `hsc`. Establish `hV : ∀ m : δ.ι, M₀ ≤ δ.U m → ⊤ ≤ (𝟙 (Sp Ω)) ⁻¹ᵁ (δ.pull M.pt).U (fun _ => m)` using `fun m hm x _ => Set.mem_iInter.2 fun _ => M.top_le_preimage_pt (hne.mono hm) (x := x) trivial`. Establish `key : ∀ (i : I) (m : δ.ι), M₀ ≤ δ.U m → valF M.pt (δ.U m) ((t i).f m) = th i * valR (𝟙 (Sp Ω)) _ (τ.s (fun _ => m)).val`. Introduce `i m hm`.
+
+Establish `hw : (δ.pull M.pt).U (fun _ => m) ≤ M.pt ⁻¹ᵁ δ.U m` using `LB.wchart_le δ _ _ PUnit.unit`. Establish `h` using `congrArg (valR (𝟙 (Sp Ω)) _) (hτ i (fun _ => m) hw)`. Rewrite `h` using `[GlobalTheory.Points.valR_appLE _ _ _ (hV m hm), Category.id_comp, GlobalTheory.Points.valR_mul _ _ (hV m hm), GlobalTheory.Points.valR_res _ _ (hV m hm)]`. Establish `hs : valR (𝟙 (Sp Ω)) ⊤ ((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom (th i)) = th i`. Use `GlobalTheory.Points.valR_specMap (𝟙 (CommRingCat.of Ω)) (th i)` as an intermediate fact.
+
+Rewrite `this` using `[Spec.map_id]`. Conclude with `this`. Rewrite `h` using `[hs]`. Conclude with `h`. Establish `cne : ∀ m : δ.ι, M₀ ≤ δ.U m → valR (𝟙 (Sp Ω)) _ (τ.s (fun _ => m)).val ≠ 0`.
+
+Introduce `m hm`. Rewrite using `[GlobalTheory.Points.valR_eq _ _ (hV m hm)]`. Conclude with `((τ.s _).isUnit.map _).ne_zero`. Establish `hMk : M₀ ≤ δ.U k` using `hk.trans (M.Z.basicOpen_le _)`. Establish `hMl : M₀ ≤ δ.U l` using `hl.trans (M.Z.basicOpen_le _)`.
+
+Establish `unitVal : ∀ (i : I) (m : δ.ι), M₀ ≤ M.Z.basicOpen ((t i).f m) → valF M.pt (δ.U m) ((t i).f m) ≠ 0`. Introduce `i m hm`. Establish `hp : ⊤ ≤ M.pt ⁻¹ᵁ δ.U m` using `M.top_le_preimage_pt (hne.mono (hm.trans (M.Z.basicOpen_le _)))`. Establish `hb` using `M.top_le_preimage_pt (hne.mono hm)`. Conclude with `((GlobalTheory.Points.le_preimage_basicOpen_iff M.pt hp _).1 hb).ne_zero`.
+
+Establish `ha : th a ≠ 0` using `fun h0 => unitVal a k hk (by rw [key a k hMk, h0, zero_mul])`. Establish `hb : th b ≠ 0` using `fun h0 => unitVal b l hl (by rw [key b l hMl, h0, zero_mul])`. Use `⟨ha, hb, ?_⟩` and prove the remaining obligations. Establish `hne' : ((M₀ ⊓ δ.U k : M.Z.Opens) : Set M.Z).Nonempty`. Rewrite using `[inf_eq_left.2 hMk]`.
+
+Conclude with `hne`. Establish `h` using `congrArg (valF M.pt (M₀ ⊓ δ.U k)) (hu k)`. Express the relevant statement in the definitionally equal form `valR M.pt _ (_ * _) = _ at h`. Rewrite `h` using `[GlobalTheory.Points.valR_mul _ _ (M.top_le_preimage_pt hne')]`. Express the relevant statement in the definitionally equal form `valF M.pt _ _ * valF M.pt _ _ = valF M.pt _ _ at h`.
+
+Rewrite `h` using `[M.valF_resG _ hne', M.valF_resG _ hne', M.valF_resG _ hne', key a k hMk, key b k hMk]`. Establish `hc` using `cne k hMk`. Rewrite using `[eq_div_iff ha]`. Conclude with `mul_right_cancel₀ hc (by rw [← h]; ring)`.
+-/
 theorem GlobalTheory.KeyTheta.ratio_value : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M : ZH.RatModel o Ω) (δ : LB M.Z) {I : Type} (t : I → δ.Sec) (th : I → Ω), ZM.SecCoord δ t M.pt th → ∀ (a b : I) (k l : δ.ι) (M₀ : M.Z.Opens), (M₀ : Set M.Z).Nonempty → M₀ ≤ M.Z.basicOpen ((t a).f k) → M₀ ≤ M.Z.basicOpen ((t b).f l) → ∀ u : Γ(M.Z, M₀), (∀ j, resG M.Z (inf_le_left : M₀ ⊓ δ.U j ≤ M₀) u * resG M.Z (inf_le_right : M₀ ⊓ δ.U j ≤ δ.U j) ((t a).f j) = resG M.Z (inf_le_right : M₀ ⊓ δ.U j ≤ δ.U j) ((t b).f j)) → th a ≠ 0 ∧ th b ≠ 0 ∧ valF M.pt M₀ u = th b / th a := by
   intro o Ω _ _ _ M δ I t th hsc a b k l M₀ hne hk hl u hu
   obtain ⟨τ, -, hτ⟩ := hsc
@@ -210,6 +274,17 @@ theorem GlobalTheory.KeyTheta.ratio_value : ∀ (o Ω : Type) [CommRing o] [Fiel
   rw [eq_div_iff ha]
   exact mul_right_cancel₀ hc (by rw [← h]; ring)
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ S ρ M U₀ EE Zh hU a b W W' M₀ hW hW' σ σ' hg hg' hne u ha hb hv j V hV`. Establish `rr : ∀ {A B C : Zh.G.left.Opens} (e : B ≤ A) (e' : C ≤ B) (s : Γ(Zh.G.left, A)), resG Zh.G.left e' (resG Zh.G.left e s) = resG Zh.G.left (e'.trans e) s` using `fun e e' s => by`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]`. Both sides reduce to the same expression. Establish `ar : ∀ {U : M.Z.Opens} {V V' : Zh.G.left.Opens} (e : V ≤ Zh.G.hom ⁻¹ᵁ U) (h : V' ≤ V) (x : Γ(M.Z, U)), resG Zh.G.left h ((Zh.G.hom.appLE U V e).hom x) = (Zh.G.hom.appLE U V' (h.trans e)).hom x` using `fun e h x => by`.
+
+Express the relevant statement in the definitionally equal form `(Zh.G.hom.appLE _ _ e ≫ Zh.G.left.presheaf.map (homOfLE h).op).hom x = _`. Rewrite using `[Scheme.Hom.appLE_map]`. Set `Q : ZH.ZHPre ρ M U₀` to `toPre Zh`. Establish `g1` using `Q.genVal_res 1 (fun _ : Unit => ρ.th₁) (fun _ => (S.th a)⁻¹) (V := Zh.G.hom ⁻¹ᵁ W) (V' := Zh.G.hom ⁻¹ᵁ M₀) (fun x hx => hW hx) σ hg`. Establish `g2` using `Q.genVal_res 1 (fun _ : Unit => ρ.th₁) (fun _ => (S.th b)⁻¹) (V := Zh.G.hom ⁻¹ᵁ W') (V' := Zh.G.hom ⁻¹ᵁ M₀) (fun x hx => hW' hx) σ' hg'`.
+
+Establish `g3` using `Q.genVal_sum 1 (I := Unit) (J := Unit) (fun _ => ρ.th₁) (fun _ _ => (S.th b)⁻¹) M₀ hne (fun _ => u) (fun _ => _) (fun _ => g2)`. Establish `hcoef : (fun _ : Unit => ∑ _i : Unit, valF M.pt M₀ ((fun _ : Unit => u) _i) * (S.th b)⁻¹) = fun _ => (S.th a)⁻¹`. Apply function extensionality and compare values at an arbitrary argument. Simplify using `only [Finset.univ_unique, Finset.sum_singleton, hv]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite `g3` using `[hcoef]`. Establish `heq` using `congrFun (Q.eq_of_genVal hU 1 _ _ _ _ _ g1 g3) j`. Establish `heq' : resG Zh.G.left (fun x hx => ⟨hW hx.1, hx.2⟩ : Zh.G.hom ⁻¹ᵁ M₀ ⊓ (L1 Zh.L.L).U j ≤ Zh.G.hom ⁻¹ᵁ W ⊓ (L1 Zh.L.L).U j) (σ j) = resG Zh.G.left (inf_le_left : Zh.G.hom ⁻¹ᵁ M₀ ⊓ (L1 Zh.L.L).U j ≤ Zh.G.hom ⁻¹ᵁ M₀) ((Zh.G.hom.appLE M₀ (Zh.G.hom ⁻¹ᵁ M₀) le_rfl).hom u) * resG Zh.G.l …`. Establish `h` using `heq`. Simplify using `only [Finset.univ_unique, Finset.sum_singleton] at h`.
+
+Conclude with `h`. Rewrite using `[← rr (fun x hx => ⟨hW hx.1, hx.2⟩ : Zh.G.hom ⁻¹ᵁ M₀ ⊓ (L1 Zh.L.L).U j ≤ Zh.G.hom ⁻¹ᵁ W ⊓ (L1 Zh.L.L).U j) hV, heq', map_mul, rr, ar]`. Use `congr 1`. Conclude with `rr _ _ _`.
+-/
 theorem GlobalTheory.KeyTheta.theta_ratio : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : ZH.ThetaSys o Ω) (ρ : S.Real) (M : ZH.RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (Zh : ZH.ZHOut ρ M U₀ EE), (U₀ : Set M.Z).Nonempty → ∀ (a b : S.Gam) (W W' M₀ : M.Z.Opens) (hW : M₀ ≤ W) (hW' : M₀ ≤ W') (σ : ∀ j, Γ(Zh.G.left, Zh.G.hom ⁻¹ᵁ W ⊓ (GlobalTheory.KeyTheta.L1 Zh.L.L).U j)) (σ' : ∀ j, Γ(Zh.G.left, Zh.G.hom ⁻¹ᵁ W' ⊓ (GlobalTheory.KeyTheta.L1 Zh.L.L).U j)), ZH.GenVal ρ M U₀ Zh.u₀ Zh.G Zh.φ Zh.L.L Zh.w 1 (fun _ : Unit => ρ.th₁) (fun _ => (S.th a)⁻¹) _ σ → ZH.GenVal ρ M U₀ Zh.u₀ Zh.G Zh.φ Zh.L.L Zh.w 1 (fun _ : Unit => ρ.th₁) (fun _ => (S.th b)⁻¹) _ σ' → (M₀ : Set M.Z).Nonempty → ∀ u : Γ(M.Z, M₀), S.th a ≠ 0 → S.th b ≠ 0 → valF M.pt M₀ u = S.th b / S.th a → ∀ (j : (GlobalTheory.KeyTheta.L1 Zh.L.L).ι) (V : Zh.G.left.Opens) (hV : V ≤ Zh.G.hom ⁻¹ᵁ M₀ ⊓ (GlobalTheory.KeyTheta.L1 Zh.L.L).U j), resG Zh.G.left (fun x hx => ⟨hW (hV hx).1, (hV hx).2⟩ : V ≤ Zh.G.hom ⁻¹ᵁ W ⊓ (GlobalTheory.KeyTheta.L1 Zh.L.L).U j) (σ j) = (Zh.G.hom.appLE M₀ V (hV.trans inf_le_left)).hom u * resG Zh.G.left (fun x hx => ⟨hW' (hV hx).1, (hV hx).2⟩ : V ≤ Zh.G.hom ⁻¹ᵁ W' ⊓ (GlobalTheory.KeyTheta.L1 Zh.L.L).U j) (σ' j) := by
   intro o Ω _ _ _ S ρ M U₀ EE Zh hU a b W W' M₀ hW hW' σ σ' hg hg' hne u ha hb hv j V hV
   have rr : ∀ {A B C : Zh.G.left.Opens} (e : B ≤ A) (e' : C ≤ B) (s : Γ(Zh.G.left, A)),
@@ -247,6 +322,19 @@ theorem GlobalTheory.KeyTheta.theta_ratio : ∀ (o Ω : Type) [CommRing o] [Fiel
   congr 1
   exact rr _ _ _
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ S ρ M U₀ EE Zh hU δ t hsc a b W W' σ σ' hσ hσ' hg hg' k l hk hl p`. Establish `rr : ∀ {A B C : Zh.G.left.Opens} (e : B ≤ A) (e' : C ≤ B) (s : Γ(Zh.G.left, A)), resG Zh.G.left e' (resG Zh.G.left e s) = resG Zh.G.left (e'.trans e) s` using `fun e e' s => by`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]`. Both sides reduce to the same expression. Establish `ar : ∀ {U : M.Z.Opens} {V V' : Zh.G.left.Opens} (e : V ≤ Zh.G.hom ⁻¹ᵁ U) (h : V' ≤ V) (x : Γ(M.Z, U)), resG Zh.G.left h ((Zh.G.hom.appLE U V e).hom x) = (Zh.G.hom.appLE U V' (h.trans e)).hom x` using `fun e h x => by`.
+
+Express the relevant statement in the definitionally equal form `(Zh.G.hom.appLE _ _ e ≫ Zh.G.left.presheaf.map (homOfLE h).op).hom x = _`. Rewrite using `[Scheme.Hom.appLE_map]`. Establish `ra : ∀ {U U' : M.Z.Opens} {V : Zh.G.left.Opens} (h : U' ≤ U) (e : V ≤ Zh.G.hom ⁻¹ᵁ U') (x : Γ(M.Z, U)), (Zh.G.hom.appLE U' V e).hom (resG M.Z h x) = (Zh.G.hom.appLE U V (fun _ hx => h (e hx))).hom x` using `fun h e x => by`. Express the relevant statement in the definitionally equal form `(M.Z.presheaf.map (homOfLE h).op ≫ Zh.G.hom.appLE _ _ e).hom x = _`. Rewrite using `[Scheme.Hom.map_appLE]`.
+
+Take `⟨i, jj⟩` from `p`. Distinguish the cases in `hne : ((M.Z.basicOpen ((t a).f k) ⊓ M.Z.basicOpen ((t b).f l) : M.Z.Opens) : Set M.Z).Nonempty`. Use `swap`. Use `Zh.G.left.sheaf.eq_of_locally_eq' (fun e : Empty => e.elim) _ (fun e => e.elim) (fun x hx => ?_) _ _ (fun e => e.elim)` and prove the remaining obligations. Conclude with `(hne ⟨Zh.G.hom x, hx.1.1, hx.1.2⟩).elim`.
+
+Use `set M₀ : M.Z.Opens := M.Z.basicOpen ((t a).f k) ⊓ M.Z.basicOpen ((t b).f l) with hM₀`. Take `⟨u, hu⟩` from `GlobalTheory.KeyTheta.ratio_exists δ (t a) (t b) k M₀ inf_le_left`. Take `⟨ha, hb, hv⟩` from `GlobalTheory.KeyTheta.ratio_value o Ω M δ t S.th hsc a b k l M₀ hne inf_le_left inf_le_right u hu`. Establish `hO : Zh.G.hom ⁻¹ᵁ M.Z.basicOpen ((t a).f k) ⊓ Zh.G.hom ⁻¹ᵁ M.Z.basicOpen ((t b).f l) ⊓ (CechPic.tens Zh.L.L (δ.pull Zh.G.hom)).U (i, jj) ≤ Zh.G.hom ⁻¹ᵁ M₀ ⊓ (L1 Zh.L.L).U (fun _ => i)` using `fun x hx => ⟨⟨hx.1.1, hx.1.2⟩, lineBundle_chart_le_firstPower_chart Zh.L.L i hx.2.1⟩`. Establish `h1` using `GlobalTheory.KeyTheta.theta_ratio o Ω S ρ M U₀ EE Zh hU a b W W' M₀ (inf_le_left.trans hk) (inf_le_right.trans hl) σ σ' hg hg' hne u ha hb hv (fun _ => i) _ hO`.
+
+Establish `hδ : Zh.G.hom ⁻¹ᵁ M.Z.basicOpen ((t a).f k) ⊓ Zh.G.hom ⁻¹ᵁ M.Z.basicOpen ((t b).f l) ⊓ (CechPic.tens Zh.L.L (δ.pull Zh.G.hom)).U (i, jj) ≤ Zh.G.hom ⁻¹ᵁ (M₀ ⊓ δ.U (jj PUnit.unit))` using `fun x hx => ⟨⟨hx.1.1, hx.1.2⟩, Set.mem_iInter.1 hx.2.2 PUnit.unit⟩`. Establish `h2` using `congrArg (Zh.G.hom.appLE _ _ hδ).hom (hu (jj PUnit.unit))`. Simplify using `only [map_mul, ra] at h2`. Simplify using `only [prodSec]`. Simplify using `only [map_mul, rr, ar]`.
+
+Rewrite using `[h1, ← h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.KeyTheta.prodSec_agree : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : ZH.ThetaSys o Ω) (ρ : S.Real) (M : ZH.RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (Zh : ZH.ZHOut ρ M U₀ EE), (U₀ : Set M.Z).Nonempty → ∀ (δ : LB M.Z) (t : S.Gam → δ.Sec), ZM.SecCoord δ t M.pt S.th → ∀ (a b : S.Gam) (W W' : M.Z.Opens) (σ : ∀ j, Γ(Zh.G.left, Zh.G.hom ⁻¹ᵁ W ⊓ (GlobalTheory.KeyTheta.L1 Zh.L.L).U j)) (σ' : ∀ j, Γ(Zh.G.left, Zh.G.hom ⁻¹ᵁ W' ⊓ (GlobalTheory.KeyTheta.L1 Zh.L.L).U j)), σ ∈ secOn (GlobalTheory.KeyTheta.L1 Zh.L.L) (Zh.G.hom ⁻¹ᵁ W) → σ' ∈ secOn (GlobalTheory.KeyTheta.L1 Zh.L.L) (Zh.G.hom ⁻¹ᵁ W') → ZH.GenVal ρ M U₀ Zh.u₀ Zh.G Zh.φ Zh.L.L Zh.w 1 (fun _ : Unit => ρ.th₁) (fun _ => (S.th a)⁻¹) _ σ → ZH.GenVal ρ M U₀ Zh.u₀ Zh.G Zh.φ Zh.L.L Zh.w 1 (fun _ : Unit => ρ.th₁) (fun _ => (S.th b)⁻¹) _ σ' → ∀ (k l : δ.ι) (hk : M.Z.basicOpen ((t a).f k) ≤ W) (hl : M.Z.basicOpen ((t b).f l) ≤ W') (p : (CechPic.tens Zh.L.L (δ.pull Zh.G.hom)).ι), resG Zh.G.left (inf_le_inf_right _ inf_le_left : (Zh.G.hom ⁻¹ᵁ M.Z.basicOpen ((t a).f k) ⊓ Zh.G.hom ⁻¹ᵁ M.Z.basicOpen ((t b).f l)) ⊓ (CechPic.tens Zh.L.L (δ.pull Zh.G.hom)).U p ≤ Zh.G.hom ⁻¹ᵁ M.Z.basicOpen ((t a).f k) ⊓ (CechPic.tens Zh.L.L (δ.pull Zh.G.hom)).U p) (GlobalTheory.KeyTheta.prodSec Zh.G.hom Zh.L.L δ hk σ (t a) p) = resG Zh.G.left (inf_le_inf_right _ inf_le_right : (Zh.G.hom ⁻¹ᵁ M.Z.basicOpen ((t a).f k) ⊓ Zh.G.hom ⁻¹ᵁ M.Z.basicOpen ((t b).f l)) ⊓ (CechPic.tens Zh.L.L (δ.pull Zh.G.hom)).U p ≤ Zh.G.hom ⁻¹ᵁ M.Z.basicOpen ((t b).f l) ⊓ (CechPic.tens Zh.L.L (δ.pull Zh.G.hom)).U p) (GlobalTheory.KeyTheta.prodSec Zh.G.hom Zh.L.L δ hl σ' (t b) p) := by
   intro o Ω _ _ _ S ρ M U₀ EE Zh hU δ t hsc a b W W' σ σ' hσ hσ' hg hg' k l hk hl p
   have rr : ∀ {A B C : Zh.G.left.Opens} (e : B ≤ A) (e' : C ≤ B) (s : Γ(Zh.G.left, A)),
@@ -284,6 +372,15 @@ theorem GlobalTheory.KeyTheta.prodSec_agree : ∀ (o Ω : Type) [CommRing o] [Fi
   rw [h1, ← h2]
   ring
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ _ S ρ M U₀ EE Zh hO δ t hδ hcov hsc hsup`. Use `choose σ hσ hg hne using fun a => Zh.theta (nonzeroLocus (t a)) a (hsup a)`. Establish `hle : ∀ q : S.Gam × δ.ι, M.Z.basicOpen ((t q.1).f q.2) ≤ nonzeroLocus (t q.1)` using `fun q => le_iSup (fun k => M.Z.basicOpen ((t q.1).f k)) q.2`. Establish `hcovY : ∀ y : M.Z, ∃ q : S.Gam × δ.ι, y ∈ M.Z.basicOpen ((t q.1).f q.2)`. Introduce `y`.
+
+Establish `hy : y ∈ (⨆ a, nonzeroLocus (t a))` using `hcov ▸ trivial`. Take `⟨a, ha⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 ha`. Conclude with `⟨(a, k), hk⟩`. Take `⟨τ, hτ, hres⟩` from `ZH.exists_secOn_glue (CechPic.tens Zh.L.L (δ.pull Zh.G.hom)) ⊤ (fun q : S.Gam × δ.ι => Zh.G.hom ⁻¹ᵁ M.Z.basicOpen ((t q.1).f q.2)) (fun _ => le_top) (fun x _ => hcovY (Zh.G.hom x)) (fun q => GlobalTheory.KeyTheta.prodSec Zh.G.hom Zh.L.L δ (hle q) (σ q.1) (t q.1)) (fun q => Global …`.
+
+Take `⟨s, hs⟩` from `GlobalTheory.KeyTheta.sec_of_secOn_top _ τ hτ`. Use `⟨s, fun y => ?_⟩` and prove the remaining obligations. Take `⟨q, hq⟩` from `hcovY y`. Take `⟨z, p, hz, hzb⟩` from `GlobalTheory.KeyTheta.prodSec_fib Zh.G.hom Zh.L.L δ (σ q.1) (t q.1) (hne q.1) q.2 (hle q) y hq`. Use `⟨z, hz, hs p z ?_⟩` and prove the remaining obligations.
+
+Rewrite `hzb` using `[← hres q p, Scheme.basicOpen_res]`. Conclude with `hzb.2`.
+-/
 theorem GlobalTheory.KeyTheta.exists_nzFib : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ZH.ArithBase o Ω] (S : ZH.ThetaSys o Ω) (ρ : S.Real) (M : ZH.RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (Zh : ZH.ZHOut ρ M U₀ EE), S.Over₀ M U₀ → ∀ (δ : LB M.Z) (t : S.Gam → δ.Sec), δ.IsLB → (⨆ a, nonzeroLocus (t a)) = ⊤ → ZM.SecCoord δ t M.pt S.th → (∀ a, ∀ z ∈ nonzeroLocus (t a), a ∈ S.supI M z) → ∃ σ : (CechPic.tens Zh.L.L (δ.pull Zh.G.hom)).Sec, NzFib σ := by
   intro o Ω _ _ _ _ S ρ M U₀ EE Zh hO δ t hδ hcov hsc hsup
   choose σ hσ hg hne using fun a => Zh.theta (nonzeroLocus (t a)) a (hsup a)

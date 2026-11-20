@@ -11,6 +11,11 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology Globa
 
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
+/- English proof (translation)
+Introduce `Ψ _ _ N T hA1 hM1 hM2 hAN abelian₂`. Take `⟨s₀, hs₀, h⟩` from `hA1 abelian₂`. Use `⟨s₀, hs₀, fun B hB c lam s hl hs hss hd ht => ⟨?_, h B hB c lam s hl hs hss hd⟩⟩` and prove the remaining obligations. Introduce `p hp`. Establish `hn` using `RootTower.nefFib_of_nefThreshold Ψ N T hM1 hM2 B c (T.lamS lam s) hd ht p hp`.
+
+Conclude with `(GlobalTheory.T.curve_degree_linear_nef_cone Ψ N (T.M B c) (T.lamS lam s) 0 s 0 0).2.2.1 p hs.le hn (hAN B c p hp)`.
+-/
 theorem RootTower.tower_I3_of_nef_inputs :
     ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (T : RootTower Ψ N), T.A1 → T.ModelNefStatement → T.M2 → T.ANef → T.I3 := by
   intro Ψ _ _ N T hA1 hM1 hM2 hAN abelian₂

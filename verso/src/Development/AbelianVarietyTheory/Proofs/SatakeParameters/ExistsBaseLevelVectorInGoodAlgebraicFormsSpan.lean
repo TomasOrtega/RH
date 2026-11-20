@@ -21,6 +21,15 @@ noncomputable section
 
 namespace GlobalTheory.Hk3
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hW hEx hSch s hOk hGG hU j c hne`. Take `⟨hCoreF, hSF, -, -, -, hWc, -⟩` from `GlobalTheory.T.heckeCharacterisation_places_of_weakCharacterisation R F hW`. Establish `hCore` using `hCoreF hEx`. Establish `hX : ∀ χ ∈ A3.A.X, IsAbsIrrChar χ` using `hOk.ok2.irr`. Take `⟨h, -, -, -, hsup, hstab, -, -⟩` from `GlobalTheory.T.sphericalOperators_forms_on_rank_space_normal R.toRealDat F.lv2 hCore hSch hX R.SF hSF j`.
+
+Take `⟨hid, -, -, -⟩` from `eH_laws R.toRealDat F.lv2 hCore hX j`. Establish `hfix : ∀ u ∈ Wcc R.toRealDat R.SF j c, eH R.toRealDat j u = u`. Introduce `u hu`. Establish `hr : u ∈ LinearMap.range (eH R.toRealDat j)` using `hsup ▸ (le_iSup (fun c => Wcc R.toRealDat R.SF j c) c) hu`. Take `⟨x, rfl⟩` from `hr`.
+
+Rewrite using `[← Module.End.mul_apply, hid]`. Rewrite `hne`, the goal using `[hWc]`. Take `⟨u, huU, hu0, hup⟩` from `GlobalTheory.T.exists_level_vector_goodType_stable_subspace (sg0 D A3.A) A3.A.X F.P0 F.ψ0⁻¹ (R.gW j (sg0 D A3.A)) (Wcc R.toRealDat R.SF j c) hX hGG (fun g => hstab c g) hne (fun u hu => by`. Use `hfix u hu` as an intermediate fact. Simplify `this)` using `[eH, RealDat.eC]`.
+
+Use `⟨u, huU, hu0, ?_⟩` and prove the remaining obligations. Establish `hlev` using `(GlobalTheory.T.goodForms_baseLevel_iff_goodProjection R.toRealDat F.lv2 hCore hX j u).2 ⟨hfix u huU, hup⟩`. Establish `hL` using `GlobalTheory.LevelForms.levelW_of_irr R.toRealDat F.lv2 hX hU hCore.models.HW`. Rewrite using `[hL false j (sg0 D A3.A)]`. Conclude with `hlev`.
+-/
 theorem exists_part_level_vector : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), R.WeakCharacterisation F → R.toRealDat.ExAt → SchurAll R.toRealDat → ∀ s, A3.fam3.Ok3 s → GoodGeneric A3.A.X F.P0 F.ψ0⁻¹ → R.toRealDat.LUnif → ∀ j c, R.Wc' j c ≠ ⊥ → ∃ w ∈ R.Wc' j c, w ≠ 0 ∧ w ∈ R.toRealDat.WS F.lv2 false j (sg0 D A3.A) := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hW hEx hSch s hOk hGG hU j c hne
   obtain ⟨hCoreF, hSF, -, -, -, hWc, -⟩ := GlobalTheory.T.heckeCharacterisation_places_of_weakCharacterisation R F hW

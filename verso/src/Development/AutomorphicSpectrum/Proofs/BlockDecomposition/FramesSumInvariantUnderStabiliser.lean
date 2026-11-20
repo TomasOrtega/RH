@@ -10,6 +10,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.WeilSiegel.HypStep.Unf
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (Matrix.mulVecLin (A : Matrix (Fin M) (Fin M) E))`. Introduce `x y hxy`. Establish `h : ∀ z : Fin M → E, ((A⁻¹ : GL (Fin M) E) : Matrix (Fin M) (Fin M) E) *ᵥ ((A : Matrix (Fin M) (Fin M) E) *ᵥ z) = z`. Introduce `z`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul]`.
+
+Simplify using the standard rewrite rules. Establish `hxy' : (A : Matrix (Fin M) (Fin M) E) *ᵥ x = (A : Matrix (Fin M) (Fin M) E) *ᵥ y` using `hxy`. Rewrite using `[← h x, ← h y, hxy']`. Conclude with `hX.map' (Matrix.mulVecLin (A : Matrix (Fin M) (Fin M) E)) (LinearMap.ker_eq_bot.2 hinj)`.
+-/
 theorem linearIndependent_mulVec_unit {E : Type} [Field E] {M n : ℕ} (A : GL (Fin M) E)
     {X : Fin n → Fin M → E} (hX : LinearIndependent E X) :
     LinearIndependent E (fun a => (A : Matrix (Fin M) (Fin M) E) *ᵥ X a) := by
@@ -24,18 +29,27 @@ theorem linearIndependent_mulVec_unit {E : Type} [Field E] {M n : ℕ} (A : GL (
     rw [← h x, ← h y, hxy']
   exact hX.map' (Matrix.mulVecLin (A : Matrix (Fin M) (Fin M) E)) (LinearMap.ker_eq_bot.2 hinj)
 
+/- English proof (translation)
+The claim follows from `linearIndependent_mulVec_unit (g : GL (Fin M) E) hX`.
+-/
 theorem linearIndependent_gact_unitary {F E : Type} [Field F] [Field E] [Algebra F E]
     (σ : E →ₐ[F] E) {M n : ℕ} {J : Matrix (Fin M) (Fin M) E}
     (g : UJ (σ : E →+* E) J) {X : Fin n → Fin M → E} (hX : LinearIndependent E X) :
     LinearIndependent E (gact σ g X) :=
   linearIndependent_mulVec_unit (g : GL (Fin M) E) hX
 
+/- English proof (translation)
+Use `conv_lhs => rw [← hw]`. Conclude with `gact_inv_gact σ w _`.
+-/
 theorem gact_inv_e0 {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {M : ℕ}
     {J : Matrix (Fin M) (Fin M) E} {w : UJ (σ : E →+* E) (hypOne J)}
     (hw : gact σ w (e0 E M) = e0 E M) : gact σ w⁻¹ (e0 E M) = e0 E M := by
   conv_lhs => rw [← hw]
   exact gact_inv_gact σ w _
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((w : GL (Fin (M + 2)) E) : Matrix (Fin (M + 2)) (Fin (M + 2)) E) *ᵥ X 0 = ((w : GL (Fin (M + 2)) E) : Matrix (Fin (M + 2)) (Fin (M + 2)) E) *ᵥ e0 E M 0`. Rewrite using `[hX]`.
+-/
 theorem gact_zero_of_first {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E)
     {M n : ℕ} {J : Matrix (Fin M) (Fin M) E} (w : UJ (σ : E →+* E) (hypOne J))
     {X : Fin (n + 1) → Fin (M + 2) → E} (hX : X 0 = e0 E M 0) :
@@ -44,6 +58,9 @@ theorem gact_zero_of_first {F E : Type} [Field F] [Field E] [Algebra F E] (σ : 
     ((w : GL (Fin (M + 2)) E) : Matrix (Fin (M + 2)) (Fin (M + 2)) E) *ᵥ e0 E M 0
   rw [hX]
 
+/- English proof (translation)
+Use `⟨⟨linearIndependent_gact_unitary σ w hX.1.1, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[gramE_gact]`. Conclude with `hX.1.2`. Rewrite using `[gact_zero_of_first σ w hX.2, hw]`.
+-/
 theorem gact_mem_framesOne {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E)
     {M n : ℕ} {J : Matrix (Fin M) (Fin M) E} {w : UJ (σ : E →+* E) (hypOne J)}
     (hw : gact σ w (e0 E M) = e0 E M) {X : Fin (n + 1) → Fin (M + 2) → E}
@@ -60,6 +77,9 @@ def framesOneEquiv {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ
   left_inv X := Subtype.ext (gact_inv_gact σ w X.1)
   right_inv X := Subtype.ext (gact_gact_inv σ w X.1)
 
+/- English proof (translation)
+The claim follows from `(framesOneEquiv σ n hw).tsum_eq (fun X => f X.1)`.
+-/
 theorem tsum_gact_framesOne (F E : Type) [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ)
     (J : Matrix (Fin M) (Fin M) E) (n : ℕ) (w : UJ (σ : E →+* E) (hypOne J))
     (hw : gact σ w (e0 E M) = e0 E M) (f : (Fin (n + 1) → Fin (M + 2) → E) → ℝ≥0∞) :

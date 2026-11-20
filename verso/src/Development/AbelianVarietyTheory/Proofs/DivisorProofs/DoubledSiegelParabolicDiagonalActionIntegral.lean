@@ -7,6 +7,11 @@ open scoped TensorProduct Matrix
 
 namespace GlobalTheory.InertDbl
 
+/- English proof (translation)
+Establish `key : ∀ y : Fin d → AE F E, (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)) *ᵥ y = Sum.elim y y`. Introduce `y`. Simplify using `[diagCols, Matrix.fromRows_mulVec]`. Establish `h1 : (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)) *ᵥ z ∈ latAtD W v`. Rewrite using `[key]`.
+
+Conclude with `⟨hz, hz⟩`. Establish `h2` using `hM _ h1`. Rewrite `h2` using `[Matrix.mulVec_mulVec, h, ← Matrix.mulVec_mulVec, key]`. Conclude with `h2.1`.
+-/
 theorem diag_mulVec_mem_latAt {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {d : ℕ} (W : Spc F E d) (v : Pl F) (M : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E))
     (t : Matrix (Fin d) (Fin d) (AE F E)) (h : M * (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)) = (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)) * t)
@@ -22,6 +27,15 @@ theorem diag_mulVec_mem_latAt {F E : Type} [Field F] [NumberField F] [Field E] [
   rw [Matrix.mulVec_mulVec, h, ← Matrix.mulVec_mulVec, key] at h2
   exact h2.1
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d W v p hp t h'`. Establish `h : matD p * (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)) = (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)) * (t : Matrix (Fin d) (Fin d) (AE F E))` using `h'`. Take `⟨⟨hAt, hK⟩, -⟩` from `hp`. Establish `hinv : matD p⁻¹ * (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)) = (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)) * ((t⁻¹ : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E))`. Establish `h1 : matD p⁻¹ * matD p = 1` using `p.1.inv_mul`.
+
+Establish `h2 : (t : Matrix (Fin d) (Fin d) (AE F E)) * ((t⁻¹ : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E)) = 1` using `t.mul_inv`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)), ← h, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Matrix.one_mul]`. Use `⟨?_, fun z hz => ⟨diag_mulVec_mem_latAt W v _ _ h (fun y hy => (hK y hy).1) z hz, diag_mulVec_mem_latAt W v _ _ hinv (fun y hy => (hK y hy).2) z hz⟩⟩` and prove the remaining obligations. Introduce `u hu`.
+
+Establish `h0` using `hAt u hu`. Establish `h3 : (matD p - 1) * (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)) = (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)) * ((t : Matrix (Fin d) (Fin d) (AE F E)) - 1)`. Rewrite using `[Matrix.sub_mul, Matrix.mul_sub, h, Matrix.one_mul, Matrix.mul_one]`. Establish `h4 : (diagCols (Fin d) : Matrix (Fin d ⊕ Fin d) (Fin d) (AE F E)) * (u • ((t : Matrix (Fin d) (Fin d) (AE F E)) - 1)) = 0`. Rewrite using `[Matrix.mul_smul, ← h3, ← Matrix.smul_mul, h0, Matrix.zero_mul]`.
+
+Use extensionality with `i j`. Establish `h5` using `congrFun (congrFun h4 (Sum.inl i)) j`. Rewrite `h5` using `[diagCols, Matrix.fromRows_mul, Matrix.one_mul]`. Conclude with `h5`.
+-/
 theorem parD_diag_action :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {d : ℕ} (W : Spc F E d) (v : Pl F),
     ∀ p ∈ GlobalTheory.InertDbl.ParD σ W v, ∀ t : GL (Fin d) (AE F E),

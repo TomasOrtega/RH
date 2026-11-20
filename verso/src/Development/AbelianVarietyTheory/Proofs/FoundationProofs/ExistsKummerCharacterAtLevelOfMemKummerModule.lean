@@ -8,6 +8,13 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsIsRootOfMe
 open GlobalTheory.KZ GlobalTheory.KZ.H3 Matrix
 open scoped MatrixGroups TensorProduct
 
+/- English proof (translation)
+Introduce `Ω _ _ ε X l _ hJ n x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨f, hf, he⟩` from `hy n`. Establish `hm : 0 < l ^ n` using `pow_pos (Fact.out : l.Prime).pos n`.
+
+Take `⟨a, b, hab⟩` from `GlobalTheory.T.exists_isRoot_of_mem_Un_of_jHol Ω ε X hJ (l ^ n) hm f hf`. Conclude with `GlobalTheory.T.exists_kummerCharacter_of_upperHalfPlane_root Ω ε X l n y f a b he hab`. Consider the case `zero => exact ⟨0, (GlobalTheory.T.isKummerCharacterAtLevel_add_zero_congr Ω ε X l n).2.1⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨χ, hχ⟩` from `hy`.
+
+Take `⟨χ', hχ'⟩` from `hz`. Conclude with `⟨χ + χ', (GlobalTheory.T.isKummerCharacterAtLevel_add_zero_congr Ω ε X l n).1 y z χ χ' hχ hχ'⟩`. Consider the case `smul c y _ hy`. Take `⟨χ, hχ⟩` from `hy`. Conclude with `⟨_, GlobalTheory.T.isKummerCharacterAtLevel_padicInt_smul Ω ε X l n c y χ hχ⟩`.
+-/
 theorem GlobalTheory.KZ.H3.exists_kum_of_mem_A : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (l : ℕ)
     [Fact l.Prime], JHol X → ∀ (n : ℕ), ∀ x ∈ X.A l, ∃ χ : SL(2, ℤ) → ZMod (l ^ n), Kum X l n x χ := by
   intro Ω _ _ ε X l _ hJ n x hx

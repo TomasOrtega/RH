@@ -5,6 +5,9 @@ noncomputable section
 
 namespace GlobalTheory.JSW
 
+/- English proof (translation)
+Rewrite using `[← Finset.tsum_subtype (antiParts m d) F]`. Set `e : ((fun l : {l : Fin m → ℕ // Antitone l} => ∑ i, l.1 i) ⁻¹' {d}) ≃ {x // x ∈ antiParts m d}` to `{ toFun := fun b => ⟨b.1.1, mem_antiParts.2 ⟨b.2, b.1.2⟩⟩ invFun := fun x => ⟨⟨x.1, (mem_antiParts.1 x.2).2⟩, (mem_antiParts.1 x.2).1⟩ left_inv := fun b => rfl right_inv := fun x => rfl }`. Conclude with `e.tsum_eq (fun x => F x.1)`.
+-/
 theorem tsum_fibre_entrySum_eq {m : ℕ} {E : Type*} [AddCommMonoid E] [TopologicalSpace E]
     (F : (Fin m → ℕ) → E) (d : ℕ) :
     ∑' b : (fun l : {l : Fin m → ℕ // Antitone l} => ∑ i, l.1 i) ⁻¹' {d}, F b.1.1 =
@@ -18,6 +21,13 @@ theorem tsum_fibre_entrySum_eq {m : ℕ} {E : Type*} [AddCommMonoid E] [Topologi
       right_inv := fun x => rfl }
   exact e.tsum_eq (fun x => F x.1)
 
+/- English proof (translation)
+Use `set σ : {l : Fin m → ℕ // Antitone l} → ℕ := fun l => ∑ i, l.1 i with hσ`. Establish `h1` using `hG.hasSum.tsum_fiberwise σ`. Establish `h1' : Summable (fun d => ∑ l ∈ antiParts m d, ‖G l‖)`. Use `h1.summable.congr fun d => ?_` and prove the remaining obligations. Conclude with `tsum_fibre_entrySum_eq (fun l => ‖G l‖) d`.
+
+Use `⟨Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun d => norm_sum_le _ _) h1', ?_⟩` and prove the remaining obligations. Introduce `s hs`. Establish `hg : Summable fun l : {l : Fin m → ℕ // Antitone l} => G l.1` using `hG.of_norm`. Establish `h2` using `hg.hasSum.tsum_fiberwise σ`. Establish `h2' : HasSum (fun d => ∑ l ∈ antiParts m d, G l) (∑' l : {l : Fin m → ℕ // Antitone l}, G l.1)` using `h2.congr_fun fun d => (tsum_fibre_entrySum_eq G d).symm`.
+
+Rewrite using `[hs.unique h2']`. Conclude with `hg.hasSum`.
+-/
 theorem regroup_antiParts {m : ℕ} (G : (Fin m → ℕ) → ℂ)
     (hG : Summable fun l : {l : Fin m → ℕ // Antitone l} => ‖G l.1‖) :
     Summable (fun d => ‖∑ l ∈ antiParts m d, G l‖) ∧
@@ -37,6 +47,9 @@ theorem regroup_antiParts {m : ℕ} (G : (Fin m → ℕ) → ℂ)
   rw [hs.unique h2']
   exact hg.hasSum
 
+/- English proof (translation)
+Introduce `G hG` and use `regroup_antiParts G hG`.
+-/
 example : ∀ {m : ℕ} (G : (Fin m → ℕ) → ℂ),
     (Summable fun l : {l : Fin m → ℕ // Antitone l} => ‖G l.1‖) →
     Summable (fun d => ‖∑ l ∈ GlobalTheory.JSW.antiParts m d, G l‖) ∧

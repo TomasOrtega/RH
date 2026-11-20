@@ -30,19 +30,51 @@ namespace GlobalTheory.HoweIrrCompact
 section FockLin
 variable {D : D7} {a b : ℕ} (τ : D.what₂.Tau) (ε : Fin a → Bool) (ε' : Fin b → Bool)
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT]`.
+-/
 theorem fockT_zero : GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT τ ε ε' (0 : Matrix (Fin b) (Fin b) ℂ) = 0 := by
   simp [GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT]
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT, Matrix.add_apply, add_smul, Finset.sum_add_distrib]`.
+-/
 theorem fockT_add (Y Y' : Matrix (Fin b) (Fin b) ℂ) :
     GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT τ ε ε' (Y + Y') = GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT τ ε ε' Y + GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT τ ε ε' Y' := by
   simp only [GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT, Matrix.add_apply, add_smul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT, Matrix.smul_apply, smul_eq_mul, mul_smul, Finset.smul_sum]`.
+-/
 theorem fockT_smul (c : ℂ) (Y : Matrix (Fin b) (Fin b) ℂ) :
     GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT τ ε ε' (c • Y) = c • GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT τ ε ε' Y := by
   simp only [GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT, Matrix.smul_apply, smul_eq_mul, mul_smul, Finset.smul_sum]
 
 end FockLin
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG hFull i t M hMeq hMlie hM0 φ hφ`. Establish `hC` using `hG.core`. Take `⟨-, -, hinj⟩` from `GlobalTheory.CoefActIo.thetaVector_laws (i := i) hC t`. Take `⟨w, BS, r, hact, hU, hsurj, hε⟩` from `GlobalTheory.T.realPoints_act_fock_by_realComponents_basis D G Pl0 T A Ks R F hG hFull i t`. Use `set ρ' : ↥(GinfC (Vc D i)) →* Module.End ℂ (R.cV i).W := (R.cV i).ρ.comp (GinfC (Vc D i)).subtype with hρ'`.
+
+Establish `eqv : ∀ ψ : (R.cV i).W →ₗ[ℂ] PolF D (Wc D i).rank (Vc D i).rank, (∀ u ∈ GinfC (Vc D i), ∀ w', R.ptP i t (ψ ((R.cV i).ρ u w')) = R.ωP i t (u, 1) (R.ptP i t (ψ w'))) → ∀ (k : ↥(GinfC (Vc D i))) (w' : (R.cV i).W), ψ (ρ' k w') = GlobalTheory.ExportSeries.fockGL (Wc D i).rank w BS (r …`. Introduce `ψ hψ k w'`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[← hact k (ψ w')]`. Conclude with `hψ k k.2 w'`.
+
+Establish `hirr : ∀ U : Submodule ℂ (R.cV i).W, (∀ k, U.map (ρ' k) ≤ U) → U = ⊥ ∨ U = ⊤`. Introduce `U hUk`. Use `(hC.models.cV i).2.2.2.2 U fun h => ?_` and prove the remaining obligations. Establish `e` using `GlobalTheory.AutMult.toInf_mul_toFin (V := Vc D i) h`. Establish `h1 : (R.cV i).ρ h = ρ' (GlobalTheory.AutMult.toInf (Vc D i) h)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, (hC.models.cV i).1 _ (GlobalTheory.AutMult.toFin (Vc D i) h).2, mul_one]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Conclude with `hUk _`.
+
+Establish `hlie : ∀ ψ ∈ M, ∀ (τ : D.what₂.Tau) (Z : Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) ℂ), GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT τ (fun _ : Fin (Vc D i).rank => true) (fun j : Fin (Wc D i).rank => decide ((j : ℕ) < w.p τ)) Z ∘ₗ ψ ∈ M`. Introduce `ψ hψ τ`. Take `⟨κ, hκ⟩` from `GlobalTheory.T.hasDerivAt_fockVectors_targetLie_realPlace D G Pl0 T A Ks R F hG hFull i t τ`. Establish `hε' : (R.MW i (sg0 D A)).ε τ = fun j : Fin (Wc D i).rank => decide ((j : ℕ) < w.p τ)` using `funext (hε τ)`. Use `set fr := (R.MW i (sg0 D A)).fr τ with hfr`.
+
+Establish `base : ∀ Y ∈ lieAt (Wc D i) τ, GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT τ (fun _ : Fin (Vc D i).rank => true) ((R.MW i (sg0 D A)).ε τ) (fr * Y * fr⁻¹) ∘ₗ ψ ∈ M`. Introduce `Y hY`. Establish `h1 : (GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT τ (fun _ : Fin (Vc D i).rank => true) ((R.MW i (sg0 D A)).ε τ) (fr * Y * fr⁻¹) + κ Y • (1 : Module.End ℂ (PolF D (Wc D i).rank (Vc D i).rank))) ∘ₗ ψ ∈ M` using `hMlie ψ hψ τ Y hY _ fun w' z => by`. Simplify using `using hκ Y hY (ψ w') z`. Establish `h2 : κ Y • ψ ∈ M` using `M.smul_mem _ hψ`.
+
+Establish `h3` using `M.sub_mem h1 h2`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hsp` using `GlobalTheory.T.span_conj_unitaryLieAlgebra_realPlace_eq_top D (Wc D i) τ fr ((R.MW i (sg0 D A)).fr_unit τ)`.
+
+Introduce `Z`. Establish `hZ : Z ∈ Submodule.span ℂ {Z : Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) ℂ | ∃ Y ∈ lieAt (Wc D i) τ, Z = fr * Y * fr⁻¹}`. Rewrite using `[hsp]`. Conclude with `Submodule.mem_top`. Rewrite using `[← hε']`.
+
+Proceed by induction on `hZ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨Y, hY, rfl⟩` from `hx`. Conclude with `base Y hY`. Consider the case `zero`.
+
+Rewrite using `[fockT_zero, LinearMap.zero_comp]`. Conclude with `M.zero_mem`. Consider the case `add x y _ _ hx hy`. Rewrite using `[fockT_add, LinearMap.add_comp]`. Conclude with `M.add_mem hx hy`.
+
+Consider the case `smul c x _ hx`. Rewrite using `[fockT_smul, LinearMap.smul_comp]`. Conclude with `M.smul_mem c hx`. Conclude with `GlobalTheory.T.howeDuality_compactPair_polynomialFock_allRealPlaces D (Vc D i).rank (Wc D i).rank w BS ↥(GinfC (Vc D i)) r hU hsurj (R.cV i).W ρ' hirr M (fun ψ hψ => eqv ψ (hMeq ψ hψ)) hlie hM0 φ (eqv φ hφ)`.
+-/
 theorem howe_irr : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ (i : Fin D.R.m) (t : T) (M : Submodule ℂ ((R.cV i).W →ₗ[ℂ] PolF D (Wc D i).rank (Vc D i).rank)), (∀ ψ ∈ M, (∀ u ∈ GinfC (Vc D i), ∀ w', R.ptP i t (ψ ((R.cV i).ρ u w')) = R.ωP i t (u, 1) (R.ptP i t (ψ w')))) → (∀ ψ ∈ M, ∀ (τ : D.what₂.Tau) (Y : Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) ℂ), Y ∈ lieAt (Wc D i) τ → ∀ ψ' : ((R.cV i).W →ₗ[ℂ] PolF D (Wc D i).rank (Vc D i).rank), (∀ w z, HasDerivAt (fun s : ℝ => R.ωP i t (1, oneP R.θ (Wc D i) τ Y s) (R.ptP i t (ψ w)) z) (R.ptP i t (ψ' w) z) 0) → ψ' ∈ M) → M ≠ ⊥ → ∀ φ : ((R.cV i).W →ₗ[ℂ] PolF D (Wc D i).rank (Vc D i).rank), (∀ u ∈ GinfC (Vc D i), ∀ w', R.ptP i t (φ ((R.cV i).ρ u w')) = R.ωP i t (u, 1) (R.ptP i t (φ w'))) → φ ∈ M := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hG hFull i t M hMeq hMlie hM0 φ hφ
   classical

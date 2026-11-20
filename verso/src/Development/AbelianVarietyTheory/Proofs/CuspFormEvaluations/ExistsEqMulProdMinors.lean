@@ -15,6 +15,11 @@ namespace HighestUnique
 
 variable {K σ : Type*} [Field K]
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial d r`. Rewrite using `[X_mul_pderiv_monomial, coeff_smul, coeff_monomial]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider the case `add P Q hP hQ => simp only [map_add, mul_add, coeff_add, hP, hQ]`.
+-/
 theorem coeff_X_mul_pderiv (u : σ) (m : σ →₀ ℕ) (P : MvPolynomial σ K) :
     coeff m (X u * pderiv u P) = (m u : K) * coeff m P := by
   classical
@@ -26,10 +31,24 @@ theorem coeff_X_mul_pderiv (u : σ) (m : σ →₀ ℕ) (P : MvPolynomial σ K) 
     · simp
   | add P Q hP hQ => simp only [map_add, mul_add, coeff_add, hP, hQ]
 
+/- English proof (translation)
+The claim follows from `eval₂Hom_congr' rfl (fun s hs _ => h s hs) rfl`.
+-/
 theorem eval_congr_vars {P : MvPolynomial σ K} {x x' : σ → K} (h : ∀ s ∈ P.vars, x s = x' s) :
     eval x P = eval x' P :=
   eval₂Hom_congr' rfl (fun s hs _ => h s hs) rfl
 
+/- English proof (translation)
+Establish `key : ∀ S : Finset J, eval x P * ∏ j ∈ S, eval x₀ (D j) = eval (fun s => if ∃ j ∈ S, s ∈ B j then x₀ s else x s) P * ∏ j ∈ S, eval x (D j)`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j S hj ih`.
+
+Take `⟨Q, hQ, e⟩` from `hP j`. Rewrite using `[Finset.prod_insert hj, Finset.prod_insert hj, mul_left_comm, ih]`. Use `set x' : σ → K := fun s => if ∃ j ∈ S, s ∈ B j then x₀ s else x s with hx'`. Use `set x'' : σ → K := fun s => if ∃ i ∈ insert j S, s ∈ B i then x₀ s else x s with hx''`. Establish `h₁ : eval x' (D j) = eval x (D j)` using `hD j _ _ fun s hs => by`.
+
+Rewrite using `[hx']`. Conclude with `if_neg fun ⟨i, hi, hs'⟩ => hB i j (fun e => hj (e ▸ hi)) s hs' hs`. Establish `h₂ : eval x'' (D j) = eval x₀ (D j)` using `hD j _ _ fun s hs => by`. Rewrite using `[hx'']`. Conclude with `if_pos ⟨j, Finset.mem_insert_self _ _, hs⟩`.
+
+Establish `h₃ : eval x'' Q = eval x' Q` using `eval_congr_vars fun s hs => by`. Establish `: s ∉ B j` using `fun h => hQ s h hs`. Simplify using `[hx', hx'', this]`. Rewrite using `[e, map_mul, map_mul, h₁, h₂, h₃]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[key]`. Use `congr 1`. Conclude with `eval_congr_vars fun s hs => if_pos (by simpa using hv s hs)`.
+-/
 theorem eval_mul_prod_eq {J : Type*} [Fintype J] (B : J → Set σ)
     (hB : ∀ i j, i ≠ j → ∀ s ∈ B i, s ∉ B j) (D : J → MvPolynomial σ K)
     (hD : ∀ j (x x' : σ → K), (∀ s ∈ B j, x s = x' s) → eval x (D j) = eval x' (D j))
@@ -64,6 +83,9 @@ theorem eval_mul_prod_eq {J : Type*} [Fintype J] (B : J → Set σ)
 
 variable [CharZero K] {p q n : ℕ}
 
+/- English proof (translation)
+Use `congrArg (coeff m) h` as an intermediate fact. Rewrite `this` using `[mixedOp_apply, coeff_sub, coeff_sum, coeff_sum, coeff_smul]`. Simplify using `only [coeff_X_mul_pderiv, ← Finset.sum_mul, ← sub_mul, smul_eq_mul] at this`. Establish `h2` using `mul_right_cancel₀ (mem_support_iff.1 hm) this`. Conclude with `h2` after adjusting the coercions.
+-/
 theorem weight_of_mem_support (z : Fin p × Fin n → σ) (y : Fin q × Fin n → σ)
     {P : MvPolynomial σ K} {k : Fin n} {w : ℤ} (h : mixedOp K z y k k P = (w : K) • P)
     {m : σ →₀ ℕ} (hm : m ∈ P.support) :
@@ -76,6 +98,11 @@ theorem weight_of_mem_support (z : Fin p × Fin n → σ) (y : Fin q × Fin n �
 
 omit [CharZero K] in
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[rowOp_apply, coeff_sum, coeff_smul]`. Simplify using `only [coeff_X_mul_pderiv, ← Finset.sum_mul, smul_eq_mul]`. Distinguish the cases in `hm : m ∈ P.support`. Rewrite using `[← h m hm]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[notMem_support_iff.1 hm, mul_zero, mul_zero]`.
+-/
 theorem rowOp_self (z : Fin p × Fin n → σ) {P : MvPolynomial σ K} {a : Fin p} {d : ℕ}
     (h : ∀ m ∈ P.support, ∑ k, m (z (a, k)) = d) : rowOp K z a a P = ((d : ℤ) : K) • P := by
   ext m
@@ -85,6 +112,11 @@ theorem rowOp_self (z : Fin p × Fin n → σ) {P : MvPolynomial σ K} {a : Fin 
   · rw [← h m hm]; simp
   · rw [notMem_support_iff.1 hm, mul_zero, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[casimir_on_highest (rowOp K z) (rowOp_lie z hz) P (fun i => l i) ?_ fun a => rowOp_self z (hrow a)]`. Simplify using `only [fun a => rowOp_self z (hrow a), ← Finset.sum_smul, smul_smul, ← add_smul]`. Use `congr 1`. Use `push_cast`. Both sides reduce to the same expression.
+
+Introduce `a b hab`. Rewrite using `[rowOp_apply]`. Conclude with `((rowAdd_invariant_iff (fun k => z (a, k)) (fun k => z (b, k)) (fun k l e => by simpa using hz e) (fun k l e => hab.ne (congrArg Prod.fst (hz e))) P).out 1 2).1 (hinv a b hab)`.
+-/
 theorem casimir_rows [DecidableEq σ] (z : Fin p × Fin n → σ) (hz : Function.Injective z)
     {P : MvPolynomial σ K} (l : Fin p → ℕ) (hrow : ∀ a, ∀ m ∈ P.support, ∑ k, m (z (a, k)) = l a)
     (hinv : ∀ a b : Fin p, a < b → ∀ t : K,
@@ -104,6 +136,9 @@ theorem casimir_rows [DecidableEq σ] (z : Fin p × Fin n → σ) (hz : Function
       (fun k l e => by simpa using hz e)
       (fun k l e => hab.ne (congrArg Prod.fst (hz e))) P).out 1 2).1 (hinv a b hab)
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_filter, Finset.sum_filter, ← sum_dite_lt hp]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem sum_filter_pad (hp : p ≤ n) (a : Fin p → ℕ) (i : ℕ) :
     ∑ k ∈ Finset.univ.filter (fun k : Fin n => (k : ℕ) < i),
       (if h : (k : ℕ) < p then (a ⟨k, h⟩ : ℤ) else 0) =
@@ -112,6 +147,9 @@ theorem sum_filter_pad (hp : p ≤ n) (a : Fin p → ℕ) (i : ℕ) :
   refine Finset.sum_congr rfl fun k _ => ?_
   split_ifs <;> rfl
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_filter, Finset.sum_filter, ← sum_dite_rev_lt hq]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `k.2` as an intermediate fact. Simplify using `only`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+-/
 theorem sum_filter_pad_rev (hq : q ≤ n) (b : Fin q → ℕ) (i : ℕ) :
     ∑ k ∈ Finset.univ.filter (fun k : Fin n => ¬ (k : ℕ) < i),
       (if h : n - 1 - (k : ℕ) < q then (b ⟨n - 1 - k, h⟩ : ℤ) else 0) =
@@ -140,6 +178,21 @@ variable [DecidableEq σ] (h : p + q ≤ n) (z : Fin p × Fin n → σ) (hz : Fu
 
 include h hz hy hzy ha hb hrz hry hiz hiy hharm hκ hup hwt
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `support_nonempty.2 hP`. Establish `hw` using `fun k => weight_of_mem_support z y (hwt k) hm`. Establish `hsa : ∑ k, ∑ i, (m (z (i, k)) : ℤ) = ∑ i, (a i : ℤ)`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => by exact_mod_cast hrz i m hm`.
+
+Establish `hsb : ∑ k, ∑ i, (m (y (i, k)) : ℤ) = ∑ i, (b i : ℤ)`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => by exact_mod_cast hry i m hm`. Use `casimir_value_strict κ _ hκ (antitone_mixedWeight n ha hb) (fun i => ?_) ?_ (le_of_eq ?_)` and prove the remaining obligations. Establish `h₁` using `column_degree_le z hz P a hrz hiz (Finset.univ.filter fun k : Fin n => (k : ℕ) < i) m hm`.
+
+Establish `h₂` using `column_degree_le y hy P b hry hiy (Finset.univ.filter fun k : Fin n => ¬ (k : ℕ) < i) m hm`. Establish `c₁ : (Finset.univ.filter fun k : Fin n => (k : ℕ) < i).card = min n i` using `Fin.card_filter_val_lt`. Establish `c₂ : (Finset.univ.filter fun k : Fin n => ¬ (k : ℕ) < i).card = n - i`. Use `Finset.card_filter_add_card_filter_not (s := Finset.univ) (fun k : Fin n => (k : ℕ) < i)` as an intermediate fact. Rewrite `this` using `[c₁, Finset.card_univ, Fintype.card_fin]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite `h₁` using `[c₁, Finset.filter_congr (q := fun j : Fin p => (j : ℕ) < i) (fun j _ => by have := j.2; omega), Finset.sum_comm]`. Rewrite `h₂` using `[c₂, Finset.sum_comm]`. Rewrite `h₁`, `h₂` using `[← Nat.cast_le (α := ℤ)]`. Simplify using `only [Nat.cast_sum] at h₁ h₂`.
+
+Rewrite `h₁` using `[← sum_filter_pad (show p ≤ n by omega)]`. Rewrite `h₂` using `[← sum_filter_pad_rev (show q ≤ n by omega)]`. Establish `e₁` using `Finset.sum_filter_add_sum_filter_not Finset.univ (fun k : Fin n => (k : ℕ) < i) fun k => ∑ j, (m (y (j, k)) : ℤ)`. Establish `e₂` using `Finset.sum_filter_add_sum_filter_not Finset.univ (fun k : Fin n => (k : ℕ) < i) fun k => if h : n - 1 - (k : ℕ) < q then (b ⟨n - 1 - k, h⟩ : ℤ) else 0`. Rewrite `e₂` using `[sum_dite_rev_lt (show q ≤ n by omega) fun i => (b i : ℤ)]`.
+
+Simplify using `only [← hw, mixedWeight_apply, Finset.sum_sub_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[sum_mixedWeight h, ← hsa, ← hsb, ← Finset.sum_sub_distrib]`. Simplify using `only [hw]`. Establish `c` using `casimir_mixedOp z hz y hy hzy P`.
+
+Rewrite `c` using `[casimir_on_highest _ (mixedOp_lie z hz y hy hzy) P κ hup hwt, casimir_rows z hz a hrz hiz, casimir_rows y hy b hry hiy]`. Simplify using `only [hharm, mul_zero, Finset.sum_const_zero, smul_zero, sub_zero] at c`. Rewrite `c` using `[← add_smul, ← Int.cast_add, ← casimir_value_mixedWeight h]`. Conclude with `(Int.cast_injective (smul_left_injective K hP c)).symm`.
+-/
 theorem weight_eq_mixedWeight (hP : P ≠ 0) : κ = mixedWeight n a b := by
   obtain ⟨m, hm⟩ := support_nonempty.2 hP
   have hw := fun k => weight_of_mem_support z y (hwt k) hm
@@ -184,6 +237,27 @@ theorem weight_eq_mixedWeight (hP : P ≠ 0) : κ = mixedWeight n a b := by
     rw [← add_smul, ← Int.cast_add, ← casimir_value_mixedWeight h] at c
     exact (Int.cast_injective (smul_left_injective K hP c)).symm
 
+/- English proof (translation)
+Distinguish the cases in `hP : P = 0`. Simplify using `[hP]`. Take `rfl` from `weight_eq_mixedWeight h z hz y hy hzy a b ha hb hrz hry hiz hiy hharm κ hκ hup hwt hP`. Establish `key : ∀ m ∈ P.support, (∀ i (k : Fin n), p ≤ k → m (z (i, k)) = 0) ∧ ∀ j (k : Fin n), (k : ℕ) < n - q → m (y (j, k)) = 0`. Introduce `m hm`.
+
+Establish `hw` using `fun k => weight_of_mem_support z y (hwt k) hm`. Establish `hsa : ∑ k, ∑ i, (m (z (i, k)) : ℤ) = ∑ i, (a i : ℤ)`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => by exact_mod_cast hrz i m hm`. Establish `hsb : ∑ k, ∑ i, (m (y (i, k)) : ℤ) = ∑ i, (b i : ℤ)`.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => by exact_mod_cast hry i m hm`. Prove the components needed by the constructor for the conclusion. Establish `h₁ : ∀ k ∈ (Finset.univ : Finset (Fin n)), (if h : (k : ℕ) < p then (a ⟨k, h⟩ : ℤ) else 0) ≤ ∑ i, (m (z (i, k)) : ℤ)`. Introduce `k _`.
+
+Establish `h₂` using `hw k`. Establish `h₃ : 0 ≤ ∑ i, (m (y (i, k)) : ℤ)` using `by positivity`. Use `k.2` as an intermediate fact. Rewrite `h₂` using `[mixedWeight_apply]`. Use `split_ifs with hk`.
+
+Rewrite `h₂` using `[dif_pos hk, dif_neg (by omega)]`. Combine the linear equalities and inequalities to obtain the conclusion. Check the signs of the components of the expression. Establish `h₄` using `(Finset.sum_eq_sum_iff_of_le h₁).1 ((sum_dite_lt (by omega) fun i => (a i : ℤ)).trans hsa.symm)`. Introduce `i k hk`.
+
+Establish `h₅` using `h₄ k (Finset.mem_univ _)`. Rewrite `h₅` using `[dif_neg (by omega), eq_comm, Finset.sum_eq_zero_iff_of_nonneg fun _ _ => by positivity]`. Conclude with `h₅ i (Finset.mem_univ _)` after adjusting the coercions. Establish `h₁ : ∀ k ∈ (Finset.univ : Finset (Fin n)), (if h : n - 1 - (k : ℕ) < q then (b ⟨n - 1 - k, h⟩ : ℤ) else 0) ≤ ∑ i, (m (y (i, k)) : ℤ)`. Introduce `k _`.
+
+Establish `h₂` using `hw k`. Establish `h₃ : 0 ≤ ∑ i, (m (z (i, k)) : ℤ)` using `by positivity`. Use `k.2` as an intermediate fact. Rewrite `h₂` using `[mixedWeight_apply]`. Use `split_ifs with hk`.
+
+Rewrite `h₂` using `[dif_pos hk, dif_neg (by omega)]`. Combine the linear equalities and inequalities to obtain the conclusion. Check the signs of the components of the expression. Establish `h₄` using `(Finset.sum_eq_sum_iff_of_le h₁).1 ((sum_dite_rev_lt (by omega) fun i => (b i : ℤ)).trans hsb.symm)`. Introduce `i k hk`.
+
+Establish `h₅` using `h₄ k (Finset.mem_univ _)`. Rewrite `h₅` using `[dif_neg (by omega), eq_comm, Finset.sum_eq_zero_iff_of_nonneg fun _ _ => by positivity]`. Conclude with `h₅ i (Finset.mem_univ _)` after adjusting the coercions. Prove the components needed by the constructor for the conclusion. Introduce `i k hk hv`.
+
+Take `⟨m, hm, hv⟩` from `(mem_vars_iff_mem_support _).1 hv`. Conclude with `Finsupp.mem_support_iff.1 hv ((key m hm).1 i k hk)`. Introduce `i k hk hv`. Take `⟨m, hm, hv⟩` from `(mem_vars_iff_mem_support _).1 hv`. Conclude with `Finsupp.mem_support_iff.1 hv ((key m hm).2 i k hk)`.
+-/
 theorem notMem_vars : (∀ i (k : Fin n), p ≤ k → z (i, k) ∉ P.vars) ∧
     ∀ j (k : Fin n), (k : ℕ) < n - q → y (j, k) ∉ P.vars := by
   by_cases hP : P = 0
@@ -247,6 +321,11 @@ theorem notMem_vars : (∀ i (k : Fin n), p ≤ k → z (i, k) ∉ P.vars) ∧
 
 end OnePlace
 
+/- English proof (translation)
+Use `eq_mul_prod_minors (fun w => z (w.1, e w.2)) (hz.comp (Function.injective_id.prodMap he)) P c (fun i m hm => ?_) (fun i j hij => ?_) fun k l hkl => ?_` and prove the remaining obligations. Rewrite using `[← partOf, ← hrow i m hm]`. Use `Fintype.sum_of_injective e he _ _ (fun k hk => ?_) fun _ => rfl` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Conclude with `hv i k hk ((mem_vars_iff_mem_support _).2 ⟨m, hm, Finsupp.mem_support_iff.2 h0⟩)`.
+
+Establish `h₁` using `((rowAdd_invariant_iff (fun k => z (i, k)) (fun k => z (j, k)) (fun k l e => by simpa using hz e) (fun k l e => hij.ne (congrArg Prod.fst (hz e))) P).out 1 2).1 (hinv i j hij)`. Use `((rowAdd_invariant_iff (fun k => z (i, e k)) (fun k => z (j, e k)) (fun k l e => he (by simpa using hz e)) (fun k l e => hij.ne (congrArg Prod.fst (hz e))) P).out 2 1).1 (Eq.trans ?_ h₁)` and prove the remaining obligations. Use `Fintype.sum_of_injective e he _ _ (fun k hk => ?_) fun _ => rfl` and prove the remaining obligations. Rewrite using `[pderiv_eq_zero_of_notMem_vars (hv j k hk), mul_zero]`. Conclude with `((rowAdd_invariant_iff (fun i => z (i, e k)) (fun i => z (i, e l)) (fun k l e => by simpa using hz e) (fun i j e => hkl.ne (he (congrArg Prod.snd (hz e)))) P).out 2 1).1 ((colOp_apply _ _ _ _).symm.trans (hcol k l hkl))`.
+-/
 theorem exists_eq_mul_prod_minors [DecidableEq σ] (z : Fin p × Fin n → σ)
     (hz : Function.Injective z) (e : Fin p → Fin n) (he : Function.Injective e)
     {P : MvPolynomial σ K} (c : Fin p → ℕ)
@@ -282,6 +361,35 @@ end HighestUnique
 
 open HighestUnique in
 
+/- English proof (translation)
+Take `⟨hh, hrx, hry, hix, hiy⟩` from `mem_rowHighest_iff_of_charZero.1 hP`. Simplify using `only [rowAddX_eq_bind₁] at hix`. Simplify using `only [rowAddY_eq_bind₁] at hiy`. Set `z : T → Fin p × Fin n → Var T p q (Fin n)` to `fun t w => xVar t w.1 w.2`. Set `y : T → Fin q × Fin n → Var T p q (Fin n)` to `fun t w => yVar t w.1 w.2`.
+
+Establish `hz : ∀ t, Function.Injective (z t)` using `fun t u w e => by simpa [z, Prod.ext_iff] using e`. Establish `hy : ∀ t, Function.Injective (y t)` using `fun t u w e => by simpa [y, Prod.ext_iff] using e`. Establish `hzy : ∀ t u w, z t u ≠ y t w` using `fun t u w => by simp [z, y]`. Establish `hv` using `fun t => notMem_vars h (z t) (hz t) (y t) (hy t) (hzy t) (partOf (c t)) (partOf (c' t)) (partOf_antitone _) (partOf_antitone _) (hrx t) (hry t) (hix t) (hiy t) (fun i j => (laplacian_apply t i j P).symm.trans (hh t i j)) (κ t) (hκ t) (fun k l hkl => (mixedOp_apply _ _ _ _ _).tran …`. Set `e : Fin p → Fin n` to `Fin.castLE (by omega)`.
+
+Set `e' : Fin q → Fin n` to `fun b => Fin.rev (Fin.castLE (by omega) b)`. Establish `he : ∀ k : Fin n, k ∉ Set.range e → p ≤ k` using `fun k hk => not_lt.1 fun h' => hk ⟨⟨k, h'⟩, rfl⟩`. Establish `he' : ∀ k : Fin n, k ∉ Set.range e' → (k : ℕ) < n - q` using `fun k hk => not_le.1 fun h' => hk ⟨⟨n - 1 - k, by have := k.2; omega⟩, by ext; have := k.2; simp only [e', Fin.val_rev, Fin.val_castLE]; omega⟩`. Establish `hX` using `fun t => exists_eq_mul_prod_minors (z t) (hz t) e (Fin.castLE_injective _) (c t) (hrx t) (hix t) (fun i k hk => (hv t).1 i k (he k hk)) fun k l hkl => by`. Establish `h₁` using `hup t (e k) (e l) hkl`.
+
+Rewrite `h₁` using `[Finset.sum_eq_zero (f := fun b => X (yVar t b (e l)) * pderiv (yVar t b (e k)) P), sub_zero]`. Conclude with `(colOp_apply _ _ _ _).trans h₁`. Introduce `b _`. Rewrite using `[pderiv_eq_zero_of_notMem_vars ((hv t).2 b (e k) ?_), mul_zero]`. Use `k.2` as an intermediate fact.
+
+Simplify using `only [e, Fin.val_castLE]`. Use linear arithmetic over natural numbers and integers. Establish `hY` using `fun t => exists_eq_mul_prod_minors (y t) (hy t) e' (Fin.rev_injective.comp (Fin.castLE_injective _)) (c' t) (hry t) (hiy t) (fun i k hk => (hv t).2 i k (he' k hk)) fun k l hkl => by`. Establish `h₁` using `hup t (e' l) (e' k) (Fin.rev_lt_rev.2 hkl)`. Rewrite `h₁` using `[Finset.sum_eq_zero (f := fun a => X (xVar t a (e' l)) * pderiv (xVar t a (e' k)) P), zero_sub, neg_eq_zero]`.
+
+Conclude with `(colOp_apply _ _ _ _).trans h₁`. Introduce `b _`. Rewrite using `[pderiv_eq_zero_of_notMem_vars ((hv t).1 b (e' k) ?_), mul_zero]`. Use `k.2` as an intermediate fact. Simplify using `only [e', Fin.val_rev, Fin.val_castLE]`.
+
+Use linear arithmetic over natural numbers and integers. Set `B : T ⊕ T → Set (Var T p q (Fin n))` to `Sum.elim (fun t => Set.range fun w : Fin p × Fin p => z t (w.1, e w.2)) (fun t => Set.range fun w : Fin q × Fin q => y t (w.1, e' w.2))`. Set `D : T ⊕ T → Poly K T p q (Fin n)` to `Sum.elim (fun t => ∏ i : Fin p, (Matrix.of fun a b : Fin (i.val + 1) => (X (z t (lead i a, e (lead i b))) : Poly K T p q (Fin n))).det ^ c t i) (fun t => ∏ i : Fin q, (Matrix.of fun a b : Fin (i.val + 1) => (X (y t (lead i a, e' (lead i b))) : Poly K T p q (Fin n))).det ^ c' t i)`. Establish `hD : ∏ j, D j = basePoly K h c c'`. Simplify using `only [D, Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, basePoly, minorProd, xMinor, yMinor, baseCovec, baseVec, xForm_single, yForm_single, ← Finset.prod_mul_distrib]`.
+
+Both sides reduce to the same expression. Set `x₀ : Var T p q (Fin n) → K` to `fun v => Sum.elim (baseCovec K h) (baseVec K h) v.2.1 v.2.2`. Use `⟨eval x₀ P, MvPolynomial.funext fun x => ?_⟩` and prove the remaining obligations. Establish `key` using `eval_mul_prod_eq B ?_ D ?_ P ?_ ?_ x₀ x`. Rewrite `key` using `[← map_prod, ← map_prod, hD, eval_basePoly, mul_one]`.
+
+Rewrite using `[key, smul_eval]`. Introduce and unpack `(t | t) (t' | t') hne _ ⟨w, rfl⟩ ⟨w', e⟩`. Conclude with `hne (congrArg Sum.inl (congrArg Prod.fst e).symm)`. Simplify using `[z, y] at e`. Simplify using `[z, y] at e`.
+
+Conclude with `hne (congrArg Sum.inr (congrArg Prod.fst e).symm)`. Introduce and unpack `(t | t) x x' hx all_goals`. Simplify using `only [D, Sum.elim_inl, Sum.elim_inr, map_prod, map_pow, RingHom.map_det]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 2`.
+
+Use extensionality with `a b`. Simplify using `only [RingHom.mapMatrix_apply, map_apply, of_apply, eval_X]`. Conclude with `hx _ ⟨(lead i a, lead i b), rfl⟩`. Introduce and unpack `(t | t)`. Take `⟨Q, hQ, e⟩` from `hX t`.
+
+Conclude with `⟨Q, by rintro _ ⟨w, rfl⟩; exact hQ w, e⟩`. Take `⟨Q, hQ, e⟩` from `hY t`. Conclude with `⟨Q, by rintro _ ⟨w, rfl⟩; exact hQ w, e⟩`. Introduce and unpack `⟨t, a | b, k⟩ hs`. Distinguish the cases in `hk : k ∈ Set.range e`.
+
+Take `⟨k, rfl⟩` from `hk`. Conclude with `⟨Sum.inl t, (a, k), rfl⟩`. Conclude with `absurd hs ((hv t).1 a k (he k hk))`. Distinguish the cases in `hk : k ∈ Set.range e'`. Take `⟨k, rfl⟩` from `hk`.
+
+Conclude with `⟨Sum.inr t, (b, k), rfl⟩`. Conclude with `absurd hs ((hv t).2 b k (he' k hk))`.
+-/
 theorem exists_eq_smul_basePoly {K T : Type*} [Field K] [CharZero K] [Fintype T] {p q n : ℕ}
     (h : p + q ≤ n) (c : T → Fin p → ℕ) (c' : T → Fin q → ℕ) {P : Poly K T p q (Fin n)}
     (hP : P ∈ rowHighest K c c') (κ : T → Fin n → ℤ) (hκ : ∀ t, Antitone (κ t))

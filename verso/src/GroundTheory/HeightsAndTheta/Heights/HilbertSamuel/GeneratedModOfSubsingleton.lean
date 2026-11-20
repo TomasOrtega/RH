@@ -31,11 +31,17 @@ variable {S : Type} [CommRing S] {K : Type} [Fintype K] [LinearOrder K] {ι : K 
 
 omit [LinearOrder K] [∀ k, LinearOrder (ι k)] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun I J => Subtype.ext (funext fun k => (I.2.1 k).eq_univ.trans (J.2.1 k).eq_univ.symm)⟩`.
+-/
 theorem cell_zero_subsingleton : Subsingleton (KH.Cell K ι 0) :=
   ⟨fun I J => Subtype.ext (funext fun k => (I.2.1 k).eq_univ.trans (J.2.1 k).eq_univ.symm)⟩
 
 omit [LinearOrder K] [∀ k, Fintype (ι k)] [∀ k, LinearOrder (ι k)] in
 
+/- English proof (translation)
+Use `⟨fun I => ?_⟩` and prove the remaining obligations. Establish `h : ∑ k, ((I.1 k).card - 1) = 0` using `Finset.sum_eq_zero fun k _ => Nat.sub_eq_zero_of_le (Finset.card_le_one_of_subsingleton _)`. Use `I.2.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem cell_succ_isEmpty (n : ℕ) : IsEmpty (KH.Cell K ι (n + 1)) := by
   refine ⟨fun I => ?_⟩
   have h : ∑ k, ((I.1 k).card - 1) = 0 :=
@@ -43,6 +49,11 @@ theorem cell_succ_isEmpty (n : ℕ) : IsEmpty (KH.Cell K ι (n + 1)) := by
   have := I.2.2
   omega
 
+/- English proof (translation)
+Use `cell_succ_isEmpty (K := K) (ι := ι) 0` as an intermediate fact. Establish `: Subsingleton (KH.CechC S ι M 1)` using `⟨fun f g => funext fun I => (IsEmpty.false I).elim⟩`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+
+Rewrite using `[Subsingleton.elim x y]`.
+-/
 theorem cechHc_one_subsingleton {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M] [Module S M]
     [IsScalarTower S (MRingOver S ι) M] (𝓜 : (K → ℤ) → Submodule S M) (d : K → ℤ) :
     Subsingleton (KH.cechHc ι 𝓜 d 1) := by
@@ -55,6 +66,11 @@ theorem cechHc_one_subsingleton {M : Type} [AddCommGroup M] [Module (MRingOver S
 
 omit [Fintype K] [∀ k, Subsingleton (ι k)] in
 
+/- English proof (translation)
+Introduce `m hm k`. Establish `: m = 0`. Rewrite `hm` using `[mem_support_iff, coeff_one]`. Use `split_ifs at hm with h`. Conclude with `h.symm`.
+
+Conclude with `absurd rfl hm`. Simplify using `[this]`.
+-/
 theorem isMultiHomog_one_zero : IsMultiHomog (1 : MRingOver S ι) 0 := by
   classical
   intro m hm k
@@ -65,6 +81,13 @@ theorem isMultiHomog_one_zero : IsMultiHomog (1 : MRingOver S ι) 0 := by
     · exact absurd rfl hm
   simp [this]
 
+/- English proof (translation)
+Use `cell_zero_subsingleton (K := K) (ι := ι)` as an intermediate fact. Use `cell_succ_isEmpty (K := K) (ι := ι) 0` as an intermediate fact. Introduce `I x hx`. Set `z : KH.CechC S ι M 0` to `fun J => (Subsingleton.elim I J ▸ x : LocalizedModule (KH.cellMon S J.1) M)`. Use `⟨1, 0, 1, fun _ => 1, fun _ => z, Submonoid.one_mem _, isMultiHomog_one_zero, fun _ => isMultiHomog_one_zero, fun _ => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `J _`. Take `rfl : I = J` from `Subsingleton.elim _ _`. Conclude with `hx`. Use `show KH.cechD S ι M 0 z = 0`. Conclude with `funext fun J => (IsEmpty.false J).elim`.
+
+Simplify using `only [one_smul, Finset.univ_unique, Finset.sum_singleton]`. Both sides reduce to the same expression.
+-/
 theorem generatedMod_of_subsingleton {M : Type} [AddCommGroup M] [Module (MRingOver S ι) M] [Module S M]
     [IsScalarTower S (MRingOver S ι) M] (𝓜 : (K → ℤ) → Submodule S M) (d : K → ℤ) :
     GeneratedMod S ι 𝓜 d := by
@@ -82,6 +105,9 @@ theorem generatedMod_of_subsingleton {M : Type} [AddCommGroup M] [Module (MRingO
   · simp only [one_smul, Finset.univ_unique, Finset.sum_singleton]
     rfl
 
+/- English proof (translation)
+Introduce `M _ _ _ _ 𝓜 _ _ _ e`. Conclude with `⟨0, fun c _ => ⟨cechHc_one_subsingleton 𝓜 _, generatedMod_of_subsingleton 𝓜 _⟩⟩`.
+-/
 theorem h1GenAmple_of_subsingleton (V : Ideal (MRingOver S ι)) (N : K → ℤ) : H1GenAmple S V N := by
   intro M _ _ _ _ 𝓜 _ _ _ e
   exact ⟨0, fun c _ => ⟨cechHc_one_subsingleton 𝓜 _, generatedMod_of_subsingleton 𝓜 _⟩⟩
@@ -90,9 +116,15 @@ end Point
 
 abbrev pointIdx : Unit → Type := fun _ => Fin 1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Ideal.isPrime_bot, ⟨∅, by simp, by simp⟩, fun _ => ⟨0, by simp [X_ne_zero]⟩⟩`.
+-/
 theorem bot_isMultiProjPrime_point : IsMultiProjPrime (⊥ : Ideal (MRingOver ℚ pointIdx)) :=
   ⟨Ideal.isPrime_bot, ⟨∅, by simp, by simp⟩, fun _ => ⟨0, by simp [X_ne_zero]⟩⟩
 
+/- English proof (translation)
+The claim follows from `h1GenAmple_of_subsingleton _ _`.
+-/
 theorem h1GenAmple_projectivePoint : H1GenAmple ℚ (⊥ : Ideal (MRingOver ℚ pointIdx)) 0 :=
   h1GenAmple_of_subsingleton _ _
 

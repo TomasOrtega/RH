@@ -4,6 +4,15 @@ noncomputable section
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.EtaleTrace CrystallineSemistableComparison ReciprocityTheory.ChartRestriction.G.Geo.Tor UpperTheory.Gal.KunnethLefschetz
 open scoped TensorProduct DirectSum
 
+/- English proof (translation)
+Introduce `X r Y j hj s`. Take `⟨hop, hcov, hdis⟩` from `hj`. Use `haveI := hop s`. Apply `AlgebraicGeometry.IsClosedImmersion.of_isPreimmersion` to reduce the goal to its premises. Establish `hc : (Set.range (j s).base)ᶜ = ⋃ t ∈ {t : Fin r | t ≠ s}, Set.range (j t).base`.
+
+Use extensionality with `x`. Simplify using `only [Set.mem_compl_iff, Set.mem_iUnion, Set.mem_setOf_eq, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨t, ht⟩` from `hcov x`.
+
+Use `⟨t, ?_, ht⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hx ht`. Introduce and unpack `⟨t, hts, ht⟩ hx`. Conclude with `Set.disjoint_left.mp (hdis t s hts) ht hx`.
+
+Rewrite using `[← isOpen_compl_iff, hc]`. Use `isOpen_biUnion fun t _ => ?_` and prove the remaining obligations. Use `haveI := hop t`. Conclude with `(j t).isOpenEmbedding.isOpen_range`.
+-/
 theorem UpperTheory.Gal.KunnethLefschetz.sumCl_holds :
     UpperTheory.Gal.KunnethLefschetz.SumCl := by
   intro X r Y j hj s

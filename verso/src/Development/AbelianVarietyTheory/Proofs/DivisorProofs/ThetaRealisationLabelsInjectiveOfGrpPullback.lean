@@ -21,12 +21,28 @@ noncomputable section
 
 namespace GlobalTheory.Poinc.Sep
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero, MonObj.comp_one]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]`.
+-/
 theorem realPt_comp_pow {S : Scheme.{0}} {A T T₀ : Over S} [GrpObj A] (u : T₀ ⟶ T) (x : T ⟶ A) (n : ℕ) :
     u ≫ x ^ n = (u ≫ x) ^ n := by
   induction n with
   | zero => rw [pow_zero, pow_zero, MonObj.comp_one]
   | succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]
 
+/- English proof (translation)
+Introduce `o₂ Ω₂ _ _ _ S₂ ρ₂ T G _ f φ hφ x y hxy`. Establish `hpt : ρ₂.pt x = ρ₂.pt y`. Use `ext`. Conclude with `hφ.1.hom_ext hxy (by simp only [Category.assoc, Over.w])`. Establish `hzero : ρ₂.pt 0 = 1`.
+
+Establish `h` using `ρ₂.pt_add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)`. Establish `hsmul : ∀ (a : S₂.Gam) (n : ℕ), ρ₂.pt (n • a) = ρ₂.pt a ^ n`. Introduce `a n`.
+
+Proceed by induction on `n with`. Consider the case `zero => rw [zero_smul, pow_zero, hzero]`. Consider the case `succ n ih => rw [succ_nsmul, ρ₂.pt_add, ih, pow_succ]`. Establish `hkill : ∀ a : S₂.Gam, ρ₂.pt a ^ (S₂.r * S₂.N) = 1`. Introduce `a`.
+
+Rewrite using `[← hsmul]`. Establish `: (S₂.r * S₂.N) • a = 0`. Use function extensionality and compare the values at `i`. Simplify using `[Pi.smul_apply, nsmul_eq_mul, ZMod.natCast_self]`. Rewrite using `[this, hzero]`.
+
+Set `K` to `AlgebraicClosure Ω₂`. Set `x₀ : Sp K ⟶ Sp S₂.R` to `spMap ((algebraMap Ω₂ K).comp (S₂.R.val : S₂.R →+* Ω₂))`. Set `u : Over.mk x₀ ⟶ baseOver (Sp S₂.R)` to `Over.homMk x₀ (by simp)`. Establish `hz : (u ≫ ρ₂.pt x) ^ (S₂.r * S₂.N) = 1`. Rewrite using `[← realPt_comp_pow, hkill, MonObj.comp_one]`.
+
+Take `⟨a, _, huniq⟩` from `ρ₂.pt_bij K x₀ (u ≫ ρ₂.pt x) hz`. Establish `h1` using `huniq x rfl`. Establish `h2` using `huniq y (by rw [hpt])`. Conclude with `h1.trans h2.symm`.
+-/
 theorem realPt_inj_of_grpPullback : ∀ {o₂ Ω₂ : Type} [CommRing o₂] [Field Ω₂] [Algebra o₂ Ω₂] (S₂ : ThetaSys o₂ Ω₂) (ρ₂ : S₂.Real) {T : Scheme.{0}} (G : Over T) [GrpObj G] (f : Sp S₂.R ⟶ T) (φ : ρ₂.P.A.left ⟶ G.left), IsGrpPullback ρ₂.P.A G f φ → ∀ x y : S₂.Gam, (ρ₂.pt x).left ≫ φ = (ρ₂.pt y).left ≫ φ → x = y := by
   intro o₂ Ω₂ _ _ _ S₂ ρ₂ T G _ f φ hφ x y hxy
   have hpt : ρ₂.pt x = ρ₂.pt y := by

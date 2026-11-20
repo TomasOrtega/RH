@@ -16,6 +16,9 @@ open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `PPAS.exists_isDualRiemann_of GlobalTheory.CovFactor.exists_cov_eq_mulVec GlobalTheory.UnifTangent.riemannData_tangent GlobalTheory.UnifImmersive.eq_zero_of_cov GlobalTheory.PPAS.exists_conj_riemannData GlobalTheory.RiemannExists.nonempty_riemannData GlobalTheory.RiemIndep.riemann …`.
+-/
 theorem PPAS.exists_isDualRiemann : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k)
     (P : PPAS X) (t : ℝ), 0 < t → ∃ h : VMetric p (LieVB.omega P.A) P.g, P.IsDualRiemann t h :=
   PPAS.exists_isDualRiemann_of GlobalTheory.CovFactor.exists_cov_eq_mulVec GlobalTheory.UnifTangent.riemannData_tangent GlobalTheory.UnifImmersive.eq_zero_of_cov GlobalTheory.PPAS.exists_conj_riemannData

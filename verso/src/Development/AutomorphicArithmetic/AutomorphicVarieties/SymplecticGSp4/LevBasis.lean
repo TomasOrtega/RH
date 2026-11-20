@@ -7,6 +7,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 import Development.AbelianVarietyTheory.Proofs.JetHarmonics.ExistsGeneratingCharacters
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
+/- English proof (translation)
+Set `f : ι → Module.End k (Fin n → k)` to `fun a => Matrix.toLinAlgEquiv' (X a)`. Establish `hss : ∀ a, (f a).IsFinitelySemisimple` using `fun a => by`. Take `⟨m, hm, h1⟩` from `isOfFinOrder_iff_pow_eq_one.1 (hf a)`. Use `(Module.End.isSemisimple_of_squarefree_aeval_eq_zero (Polynomial.separable_X_pow_sub_C (1 : k) (Nat.cast_ne_zero.2 hm.ne') one_ne_zero).squarefree ?_).isFinitelySemisimple` and prove the remaining obligations. Simplify using `only [map_sub, map_pow, Polynomial.aeval_X, map_one, f]`.
+
+Rewrite using `[← map_pow, h1, map_one, sub_self]`. Establish `htop` using `Module.End.iSup_iInf_maxGenEigenspace_eq_top_of_iSup_maxGenEigenspace_eq_top_of_commute f (fun a b _ => (hc a b).map _) fun a => Module.End.iSup_maxGenEigenspace_eq_top _`. Simplify using `only [fun a => (hss a).maxGenEigenspace_eq_eigenspace] at htop`. Set `S : Set (Fin n → k)` to `{v | ∃ d : ι → k, ∀ a, (X a).mulVec v = d a • v}`. Establish `hS : Submodule.span k S = ⊤`.
+
+Rewrite using `[eq_top_iff, ← htop]`. Use `iSup_le fun d v hv => Submodule.subset_span ⟨d, fun a => ?_⟩` and prove the remaining obligations. Conclude with `Module.End.mem_eigenspace_iff.1 ((Submodule.mem_iInf _).1 hv a)`. Take `⟨t, ht, hsp, hli⟩` from `exists_linearIndependent k S`. Set `b₀ : Module.Basis t k (Fin n → k)` to `Module.Basis.mk hli (by rw [Subtype.range_coe, hsp, hS])`.
+
+Set `b` to `b₀.reindex (b₀.indexEquiv (Pi.basisFun k (Fin n)))`. Establish `hb : ∀ i, b i ∈ S` using `fun i => by`. Rewrite using `[Module.Basis.reindex_apply, Module.Basis.mk_apply]`. Conclude with `ht (Subtype.coe_prop _)`. Use `choose d hd using hb`.
+
+Use `haveI := (Pi.basisFun k (Fin n)).invertibleToMatrix b`. Use `⟨unitOfInvertible ((Pi.basisFun k (Fin n)).toMatrix b), fun a i => d i a, fun a => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `congrFun (hd j a) i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at this`.
+
+Rewrite using `[Matrix.mul_diagonal]`. Simplify using `[Matrix.mul_apply, Module.Basis.toMatrix_apply, this, mul_comm]`.
+-/
 private theorem lev_basis {ι k : Type} [Field k] [IsAlgClosed k] [CharZero k] {n : ℕ} (X : ι → Matrix (Fin n) (Fin n) k)
     (hc : ∀ a b, Commute (X a) (X b)) (hf : ∀ a, IsOfFinOrder (X a)) :
     ∃ (P : GL (Fin n) k) (d : ι → Fin n → k), ∀ a, X a * P = P * Matrix.diagonal (d a) := by
@@ -41,6 +54,21 @@ private theorem lev_basis {ι k : Type} [Field k] [IsAlgClosed k] [CharZero k] {
   rw [Matrix.mul_diagonal]
   simp [Matrix.mul_apply, Module.Basis.toMatrix_apply, this, mul_comm]
 
+/- English proof (translation)
+Take `⟨P, d, hP⟩` from `lev_basis (fun s : H => (r s : Matrix (Fin n) (Fin n) k)) (fun a b => by`. Establish `h` using `hr ((a : Γ) * b * ((b : Γ) * a)⁻¹) (mul_mem (mul_mem a.2 b.2) (inv_mem (mul_mem b.2 a.2))) (by`. Rewrite using `[map_mul, map_inv, map_mul, map_mul, mul_comm (φ a), mul_inv_cancel])`. Rewrite `h` using `[map_mul, map_inv, mul_inv_eq_one, map_mul, map_mul]`. Conclude with `congrArg Units.val h) fun a => by`.
+
+Take `⟨m, hm, h1⟩` from `isOfFinOrder_iff_pow_eq_one.1 (hφ a)`. Use `isOfFinOrder_iff_pow_eq_one.2 ⟨m, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, hr _ (pow_mem a.2 m) (by rw [map_pow, h1]), Units.val_one]`. Establish `hd : ∀ s : H, ((P⁻¹ * r s * P : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = Matrix.diagonal (d s)` using `fun s => by`. Rewrite using `[Units.val_mul, Units.val_mul, mul_assoc, hP, Units.inv_mul_cancel_left]`.
+
+Set `κ : Fin n → H →* kˣ` to `fun i => MonoidHom.toHomUnits { toFun := fun s => d s i map_one' := by simpa using (congrFun (congrFun (hd 1) i) i).symm map_mul' := fun s t => by`. Establish `h : (P⁻¹ * r (s * t : H) * P : GL (Fin n) k) = (P⁻¹ * r s * P) * (P⁻¹ * r t * P)`. Rewrite using `[Subgroup.coe_mul, map_mul]`. Use `group`. Establish `h1` using `hd (s * t)`.
+
+Rewrite `h1` using `[h, Units.val_mul, hd, hd, Matrix.diagonal_mul_diagonal]`. Simplify using `using (congrFun (congrFun h1 i) i).symm }`. Establish `hsurj` using `(φ.comp H.subtype).rangeRestrict_surjective`. Establish `hker : ∀ i, (φ.comp H.subtype).rangeRestrict.ker ≤ (κ i).ker` using `fun i s hs => by`. Establish `h1` using `hd s`.
+
+Rewrite `h1` using `[hr s s.2 (congrArg Subtype.val hs), mul_one, inv_mul_cancel]`. Apply `Units.ext` to reduce the goal to its premises. Use `show d s i = 1`. Simplify using `using (congrFun (congrFun h1 i) i).symm`. Use `choose χ hχ using fun i => GlobalTheory.PrimaryCharacter.exists_extend_of_injective (φ.comp H.subtype).range.subtype (Subgroup.subtype_injective _) ((φ.comp H.subtype).rangeRestrict.liftOfSurjective hsurj ⟨κ i, hker i⟩)`.
+
+Use `⟨fun i => (χ i).comp φ, fun i s hs => by rw [MonoidHom.comp_apply, hs, map_one], P⁻¹, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[inv_inv, hd ⟨s, hs⟩]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `h` using `hχ i ((φ.comp H.subtype).rangeRestrict ⟨s, hs⟩)`.
+
+Rewrite `h` using `[MonoidHom.liftOfRightInverse_comp_apply]`. Conclude with `(congrArg Units.val h).symm`.
+-/
 private theorem lev_diag {Γ A k : Type} [Group Γ] [CommGroup A] [Field k] [IsAlgClosed k] [CharZero k] {n : ℕ}
     (r : Γ →* GL (Fin n) k) (H : Subgroup Γ) (φ : Γ →* A) (hφ : ∀ s, IsOfFinOrder (φ s))
     (hr : ∀ s ∈ H, φ s = 1 → r s = 1) :
@@ -82,6 +110,11 @@ private theorem lev_diag {Γ A k : Type} [Group Γ] [CommGroup A] [Field k] [IsA
   rw [MonoidHom.liftOfRightInverse_comp_apply] at h
   exact (congrArg Units.val h).symm
 
+/- English proof (translation)
+Use `haveI : Fact p.Prime := ⟨hp⟩`. Take `⟨p1, p2, p3, -⟩` from `places ℚ Ω p A`. Take `⟨v, hv⟩` from `p1 fun h => (p2 h).2 hA`. Establish `hpr : Prime (p : 𝓞 ℚ)`. Establish `e : (p : 𝓞 ℚ) = Rat.ringOfIntegersEquiv.symm (p : ℤ)` using `by simp`.
+
+Rewrite using `[e]`. Conclude with `(MulEquiv.prime_iff Rat.ringOfIntegersEquiv.symm.toMulEquiv).mpr (Nat.prime_iff_prime_int.1 hp)`. Establish `hm : (Ideal.span {(p : 𝓞 ℚ)}).IsMaximal` using `((Ideal.span_singleton_prime hpr.ne_zero).2 hpr).isMaximal (by rw [Ne, Ideal.span_singleton_eq_bot]; exact hpr.ne_zero)`. Establish `e : v = w` using `HeightOneSpectrum.ext ((hm.eq_of_le v.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 ((p3 v hv).1 hA))).symm.trans (hm.eq_of_le w.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 hw)))`. Conclude with `e ▸ hv`.
+-/
 private theorem lev_place {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {p : ℕ} (hp : p.Prime)
     {A : ValuationSubring Ω} (hA : A.valuation (p : Ω) < 1) {w : HeightOneSpectrum (𝓞 ℚ)} (hw : (p : 𝓞 ℚ) ∈ w.asIdeal) :
     IsPlaceOver A w := by
@@ -100,6 +133,11 @@ private theorem lev_place {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ
   exact e ▸ hv
 
 open Matrix in
+/- English proof (translation)
+Set `J : M4 k` to `!![0, 0, 0, 1; 0, 0, 1, 0; 0, -1, 0, 0; -1, 0, 0, 0]`. Establish `hJ : J * -J = 1`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [J, Matrix.mul_apply, Fin.sum_univ_four]`. Use `⟨⟨J, -J, hJ, by rw [neg_mul, ← mul_neg, hJ]⟩, fun ν X h => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : Xᵀ * J = J * adj X`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [J, Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn, Fin.rev]`. Use `show Xᵀ * J * X = ν • J`. Rewrite using `[h1, mul_assoc, h, Matrix.mul_smul, mul_one]`.
+-/
 private theorem lev_dual {k : Type} [Field k] : ∃ P : GL (Fin 4) k, ∀ (ν : k) (X : M4 k), IsGSp ν X →
     Xᵀ * (P : M4 k) * X = ν • (P : M4 k) := by
   let J : M4 k := !![0, 0, 0, 1; 0, 0, 1, 0; 0, -1, 0, 0; -1, 0, 0, 0]
@@ -113,6 +151,31 @@ private theorem lev_dual {k : Type} [Field k] : ∃ P : GL (Fin 4) k, ∀ (ν : 
   show Xᵀ * J * X = ν • J
   rw [h1, mul_assoc, h, Matrix.mul_smul, mul_one]
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l hl c D hD N hN hψ hξ hom r hr`. Take `⟨hmult, hunr, -, -, hP, -⟩` from `ptIn D hD _ r hr`. Establish `hcont` using `(eptInt D hD r hr).1`. Set `m : c.Oˣ →* (PadicAlgCl l)ˣ` to `Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom`. Establish `hcyc : ∀ s : G ℚ Ω, GlobalTheory.GalOfCusp.cycBar ℚ Ω l s = m (chiO ℚ Ω l c.O s)` using `fun s => Units.ext rfl`.
+
+Set `χ₀ : Fin 4 → G ℚ Ω →* c.Oˣ` to `![D.om⁻¹ * D.ξ * D.ψ, D.ψ, D.om⁻¹ * D.ξ, 1]`. Apply the tactic sequence `have hχ₀ : ∀ i s, D.ψ s = 1 → D.ξ s = 1 → D.om s = 1 → χ₀ i s = 1 := fun i s h1 h2 h3 => by fin_cases i <;> simp [χ₀, h1, h2, h3]`. Apply the tactic sequence `have hps : ∀ i s, D.ps i s = chiO ℚ Ω l c.O s ^ (![(D.e : ℤ) + 1, D.e, 1, 0] i) * χ₀ i s := fun i s => by fin_cases i <;> simp [χ₀, Raw.ps, Raw.th, Raw.al, Raw.Psi, Chr.Psi, zpow_add_one, mul_comm, mul_left_comm, mul_assoc]`. Establish `hK : ∀ i, Af.KillsMu N (m.comp (χ₀ i))` using `fun i s hs => by`. Rewrite using `[MonoidHom.comp_apply, hχ₀ i s (hψ s hs) (hξ s hs) (hom s hs), map_one]`.
+
+Use `⟨⟨?_, fun w hw => ?_, fun w hw => ?_⟩, m.comp D.th, ⟨N, m.comp (χ₀ 0), hN, hK 0, ?_⟩, ?_, fun _ => rfl⟩` and prove the remaining obligations. Conclude with `Units.continuous_iff.2 ⟨hcont, hcont.comp continuous_inv⟩`. Set `φ` to `D.ψ.prod (D.ξ.prod D.om)`. Establish `hφ : ∀ s, IsOfFinOrder (φ s)` using `fun s => by haveI : Finite (G ℚ Ω ⧸ D.ψ.ker) := Subgroup.quotient_finite_of_isOpen _ hD.psi_open haveI : Finite (G ℚ Ω ⧸ D.ξ.ker) := Subgroup.quotient_finite_of_isOpen _ hD.xi_open`. Use `IsOfFinOrder.prod_mk ?_ (IsOfFinOrder.prod_mk ?_ ?_)` and prove the remaining obligations.
+
+Conclude with `(QuotientGroup.kerLift D.ψ).isOfFinOrder (isOfFinOrder_of_finite (s : G ℚ Ω ⧸ D.ψ.ker))`. Conclude with `(QuotientGroup.kerLift D.ξ).isOfFinOrder (isOfFinOrder_of_finite (s : G ℚ Ω ⧸ D.ξ.ker))`. Conclude with `isOfFinOrder_iff_pow_eq_one.2 ⟨l - 1, Nat.sub_pos_of_lt hl.out.one_lt, DFunLike.congr_fun hD.om_pow s⟩`. Take `⟨A, hA, h⟩ : ∃ A : ValuationSubring Ω, IsPlaceOver A w ∧ ∀ s ∈ Ine (F` from `ℚ) A, φ s = 1 → r s = 1 := by`. Take `⟨B, hB⟩` from `exists_isPlaceOver Ω w`.
+
+Distinguish the cases in `hT : Raw.Away D.T B`. Use `⟨B, hB, fun s hs h1 => hunr B hT s hs ?_⟩` and prove the remaining obligations. Establish `h2 : cycZ ℚ Ω l s = 1` using `(places ℚ Ω l B).2.2.2 (hT l (Finset.mem_insert_self _ _)) hs`. Establish `h3 : ∀ i, D.ps i s = 1` using `fun i => by`. Rewrite using `[hps, hχ₀ i s (congrArg Prod.fst h1) (congrArg (·.2.1) h1) (congrArg (·.2.2) h1), chiO, MonoidHom.comp_apply, h2, map_one, one_zpow, mul_one]`.
+
+Establish `h4 : D.r0 s = 1` using `by show Matrix.diagonal (fun i => (D.ps i s : c.O)) = 1`. Simplify using `only [h3, Units.val_one, Matrix.diagonal_one]`. Use `show (residue c.O).mapMatrix (D.r0 s) = 1`. Rewrite using `[h4, map_one]`. Take `⟨p, hp, hB'⟩ : ∃ p ∈ D.T, B.valuation (p : Ω) < 1` from `by simpa [Raw.Away] using hT`.
+
+Establish `hpw : (p : 𝓞 ℚ) ∈ w.asIdeal` using `(hB _).1 (by simpa using hB')`. Establish `hpb : p ∈ D.Sb` using `(Finset.mem_insert.1 hp).resolve_left fun e => hw (e ▸ hpw)`. Establish `hpp` using `((facts D hD).1 p hpb).1`. Conclude with `⟨D.pl p, lev_place hpp (hD.pl_over p hpp) hpw, fun s hs h1 => (hP p hpb).2 ⟨s, hs.1⟩ ⟨hs, congrArg Prod.fst h1⟩⟩`. Take `⟨χ, h1, h2⟩` from `lev_diag r.toHomUnits (Ine (F := ℚ) A) φ hφ fun s hs e => Units.ext (h s hs e)`.
+
+Conclude with `⟨A, hA, χ, fun i s hs => h1 i s (Prod.ext (hψ s hs) (Prod.ext (hξ s hs) (hom s hs))), h2⟩`. Take `⟨R, i1, i2, i3, ρ, y, hpt, rfl⟩` from `hr`. Take `⟨h, κ, hF, h1, -, -, -, h2⟩` from `UpperTheory.V.Loc.spPtL D hD ((mapRep (y : R →+* PadicAlgCl l) ρ.hom).comp (D.Gp l).subtype) ⟨R, i1, i2, i3, D.loc ρ l, y, hpt.atL, rfl⟩`. Use `⟨D.pl l, lev_place hl.out (hD.pl_over l hl.out) hw, fun i => m.comp (χ₀ i), κ, hK, ⟨h⁻¹, fun s => ?_⟩, fun i s hs => ?_, Or.inl fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[inv_inv]`.
+
+Conclude with `hF s`. Establish `e : κ i s = m (D.ps i s)` using `Units.ext (h1 i s hs)`. Rewrite using `[e, hps, map_mul, map_zpow, hcyc]`. Both sides reduce to the same expression. Distinguish the cases in `e : i = j`.
+
+Substitute `e` using the available equality. Establish `h3` using `DFunLike.congr_fun hij D.s0`. Rewrite `h3` using `[MonoidHom.mul_apply, left_eq_mul]`. Establish `h4 : cycZ ℚ Ω l D.s0 = 1`. Use `Units.ext (Subtype.val_injective ((algebraMap ℚ_[l] (PadicAlgCl l)).injective ?_))` and prove the remaining obligations.
+
+Conclude with `(congrArg Units.val h3).trans (map_one _).symm`. Conclude with `hD.decompSigma_ord (h4 ▸ IsOfFinOrder.one)`. Take `⟨g, -, hg⟩` from `h2 i j e ⊤ isOpen_univ ⟨⟨D.sg l, ((facts D hD).2.1 l (Finset.mem_insert_self _ _)).1⟩, trivial, rfl⟩`. Conclude with `hg (congrArg Units.val (DFunLike.congr_fun hij g))`. Use extensionality with `s : 1`.
+
+Establish `e : D.th s = _` using `hps 0 s`. Rewrite using `[MonoidHom.comp_apply, e, map_mul, map_zpow, ← hcyc]`. Both sides reduce to the same expression. Take `⟨P, hP⟩` from `lev_dual (k := PadicAlgCl l)`. Conclude with `⟨P, fun s => hP _ _ (hmult s)⟩`.
+-/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.level :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ N : ℕ, 1 ≤ N → Af.KillsMu N D.ψ → Af.KillsMu N D.ξ → Af.KillsMu N D.om → ∀ r, D.EPt r → Af.Level l N ![(D.e : ℤ) + 1, D.e, 1, 0] r.toHomUnits ∧ ∃ θ, Af.IsCycWt l ((D.e : ℤ) + 1) θ ∧ Af.DualTw r.toHomUnits θ ∧ ∀ g, (θ g : PadicAlgCl l) = ((D.th g : c.O) : PadicAlgCl l) := by
   intro Ω _ _ _ l hl c D hD N hN hψ hξ hom r hr

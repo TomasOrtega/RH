@@ -18,9 +18,15 @@ def dZv (A : ℂ → (Wq →L[ℂ] Wp)) (c : ℂ) : Wq →L[ℂ] Wp :=
 def dZbv (A : ℂ → (Wq →L[ℂ] Wp)) (c : ℂ) : Wq →L[ℂ] Wp :=
   (1 / 2 : ℂ) • (fderiv ℝ A c 1 + Complex.I • fderiv ℝ A c Complex.I)
 
+/- English proof (translation)
+Rewrite using `[show r • C = (r : ℂ) • C from rfl, hs_smul_right, Complex.conj_ofReal]`.
+-/
 theorem hs_real_smul_right (r : ℝ) (A C : Wq →L[ℂ] Wp) : B.hsInner A (r • C) = r * B.hsInner A C := by
   rw [show r • C = (r : ℂ) • C from rfl, hs_smul_right, Complex.conj_ofReal]
 
+/- English proof (translation)
+Rewrite using `[show r • A = (r : ℂ) • A from rfl, hs_smul_left]`.
+-/
 theorem hs_real_smul_left (r : ℝ) (A C : Wq →L[ℂ] Wp) : B.hsInner (r • A) C = r * B.hsInner A C := by
   rw [show r • A = (r : ℂ) • A from rfl, hs_smul_left]
 
@@ -36,11 +42,26 @@ def hsB : (Wq →L[ℂ] Wp) →L[ℝ] (Wq →L[ℂ] Wp) →L[ℝ] ℂ :=
       map_add' := fun A A' => by ext C; simp [hsR, hs_add_left]
       map_smul' := fun r A => by ext C; simp [hsR, hs_real_smul_left, Complex.real_smul] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hsB_apply (A C : Wq →L[ℂ] Wp) : hsB A C = B.hsInner A C := rfl
 
+/- English proof (translation)
+Simplify using `only [hsInner_eq_sum, ContinuousLinearMap.sub_apply, inner_sub_right, Finset.sum_sub_distrib]`.
+-/
 theorem hs_sub_left (A A' C : Wq →L[ℂ] Wp) : B.hsInner (A - A') C = B.hsInner A C - B.hsInner A' C := by
   simp only [hsInner_eq_sum, ContinuousLinearMap.sub_apply, inner_sub_right, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Establish `hUo : IsOpen {c : ℂ | c ≠ 0}` using `isOpen_ne`. Establish `hcont2 : Continuous (fun P : (Wq →L[ℂ] Wp) × (Wq →L[ℂ] Wp) => B.hsInner P.1 P.2)` using `Formalism.FourierDecayAlt.P.B6.hsInner_continuous`. Establish `hc : Continuous (fun x => B.hsInner (a x) (b x))`. Use `continuous_iff_continuousAt.mpr fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ tsupport a`.
+
+Conclude with `hcont2.continuousAt.comp (ha.continuousAt.prodMk (hb.continuousAt (hUo.mem_nhds (hU hx))))`. Establish `h0 : a =ᶠ[𝓝 x] 0` using `notMem_tsupport_iff_eventuallyEq.mp hx`. Establish `h1 : (fun x => B.hsInner (a x) (b x)) =ᶠ[𝓝 x] fun _ => 0` using `h0.mono fun y hy => by simp only [hy, Pi.zero_apply]; exact hsInner_zero_left _`. Conclude with `(continuousAt_const.congr h1.symm)`. Establish `hs : HasCompactSupport (fun x => B.hsInner (a x) (b x))`.
+
+Use `hac.mono' fun x hx => subset_tsupport _ ?_` and prove the remaining obligations. Introduce `h0`. Apply `hx` to reduce the goal to its premises. Simplify using `only [h0, Pi.zero_apply]`. Conclude with `hsInner_zero_left _`.
+
+Conclude with `hc.integrable_of_hasCompactSupport hs`.
+-/
 theorem int_hs_of_cpt {a b : ℂ → (Wq →L[ℂ] Wp)} (ha : Continuous a) (hac : HasCompactSupport a)
     (hU : tsupport a ⊆ {c | c ≠ 0}) (hb : ContinuousOn b {c | c ≠ 0}) :
     Integrable (fun x => B.hsInner (a x) (b x)) := by
@@ -63,6 +84,15 @@ theorem int_hs_of_cpt {a b : ℂ → (Wq →L[ℂ] Wp)} (ha : Continuous a) (hac
     exact hsInner_zero_left _
   exact hc.integrable_of_hasCompactSupport hs
 
+/- English proof (translation)
+Establish `e1` using `integral_bilinear_fderiv_right_eq_neg_left_of_integrable (B := hsB) (v := (1 : ℂ)) (μ := volume) h1 h2 h5 hA hG`. Establish `e2` using `integral_bilinear_fderiv_right_eq_neg_left_of_integrable (B := hsB) (v := Complex.I) (μ := volume) h3 h4 h5 hA hG`. Simplify using `only [hsB_apply] at e1 e2`. Establish `l1 : ∫ x, B.hsInner (dZv A x) (G x) = (1 / 2 : ℂ) * ((∫ x, B.hsInner (fderiv ℝ A x 1) (G x)) - Complex.I * ∫ x, B.hsInner (fderiv ℝ A x Complex.I) (G x))`. Rewrite using `[← integral_const_mul, ← integral_sub h1 (h3.const_mul _), ← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Unfold `dZv`. Rewrite using `[hs_smul_left, hs_sub_left, hs_smul_left]`. Establish `l2 : ∫ x, B.hsInner (A x) (dZbv G x) = (1 / 2 : ℂ) * ((∫ x, B.hsInner (A x) (fderiv ℝ G x 1)) - Complex.I * ∫ x, B.hsInner (A x) (fderiv ℝ G x Complex.I))`.
+
+Rewrite using `[← integral_const_mul, ← integral_sub h2 (h4.const_mul _), ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Unfold `dZbv`. Rewrite using `[hs_smul_right, hs_add_right, hs_smul_right]`.
+
+Simplify using `only [map_div₀, map_one, map_ofNat, Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[l1, l2, e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem int_dZv_hs (A G : ℂ → (Wq →L[ℂ] Wp))
     (hA : ∀ x ∈ tsupport G, DifferentiableAt ℝ A x) (hG : ∀ x ∈ tsupport A, DifferentiableAt ℝ G x)
     (h1 : Integrable (fun x => B.hsInner (fderiv ℝ A x 1) (G x)))
@@ -91,6 +121,13 @@ theorem int_dZv_hs (A G : ℂ → (Wq →L[ℂ] Wp))
   rw [l1, l2, e1, e2]
   ring
 
+/- English proof (translation)
+Establish `hinv` using `(hasDerivAt_inv hc).hasFDerivAt.restrictScalars ℝ`. Establish `hs : HasFDerivAt (fun w => (w⁻¹ : ℂ) • Bf w) _ c` using `hinv.smul h.hasFDerivAt`. Unfold `dZbv`. Rewrite using `[hs.fderiv]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.coe_restrictScalars', ContinuousLinearMap.toSpanSingleton_apply]`.
+
+Use `set a : ℂ := -(c ^ 2)⁻¹ with ha`. Establish `hI : (1 : ℂ) • a + Complex.I * (Complex.I • a) = 0`. Simplify using `only [smul_eq_mul, one_mul]`. Rewrite using `[← mul_assoc, Complex.I_mul_I]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2 : ((1 : ℂ) • a) • Bf c + Complex.I • ((Complex.I • a) • Bf c) = 0`. Rewrite using `[smul_smul Complex.I, ← add_smul, hI, zero_smul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, smul_zero, add_zero]`. Use `module`.
+-/
 theorem dZbv_inv_smul {Bf : ℂ → (Wq →L[ℂ] Wp)} {c : ℂ} (hc : c ≠ 0) (h : DifferentiableAt ℝ Bf c) :
     dZbv (fun w => (w⁻¹ : ℂ) • Bf w) c = c⁻¹ • dZbv Bf c := by
   have hinv := (hasDerivAt_inv hc).hasFDerivAt.restrictScalars ℝ
@@ -111,6 +148,25 @@ theorem dZbv_inv_smul {Bf : ℂ → (Wq →L[ℂ] Wp)} {c : ℂ} (hc : c ≠ 0) 
     _ = c⁻¹ • ((1 / 2 : ℂ) • (fderiv ℝ Bf c 1 + Complex.I • fderiv ℝ Bf c Complex.I)) := by
         rw [h2, smul_zero, add_zero]; module
 
+/- English proof (translation)
+Use `set U : Set ℂ := {c | c ≠ 0} with hUdef`. Establish `hUo : IsOpen U` using `isOpen_ne`. Establish `hAU : tsupport A ⊆ U` using `fun x hx h => hA0 (h ▸ hx)`. Use `set G : ℂ → (Wq →L[ℂ] Wp) := fun w => (w⁻¹ : ℂ) • Bf w with hGdef`. Establish `hinv : ContDiffOn ℝ 1 (fun w : ℂ => w⁻¹) U` using `fun x hx => (contDiffAt_inv ℝ hx).contDiffWithinAt`.
+
+Establish `hGc : ContDiffOn ℝ 1 G U` using `hinv.smul hB`. Establish `hGd : ∀ x ∈ U, DifferentiableAt ℝ G x` using `fun x hx => (hGc.differentiableOn one_ne_zero x hx).differentiableAt (hUo.mem_nhds hx)`. Establish `hBd : ∀ x ∈ U, DifferentiableAt ℝ Bf x` using `fun x hx => (hB.differentiableOn one_ne_zero x hx).differentiableAt (hUo.mem_nhds hx)`. Establish `hGf : ContinuousOn (fderiv ℝ G) U` using `hGc.continuousOn_fderiv_of_isOpen hUo le_rfl`. Establish `hAd : Differentiable ℝ A` using `hA.differentiable one_ne_zero`.
+
+Establish `hAf : Continuous (fderiv ℝ A)` using `hA.continuous_fderiv one_ne_zero`. Establish `hDA : ∀ v : ℂ, Continuous (fun x => fderiv ℝ A x v) ∧ HasCompactSupport (fun x => fderiv ℝ A x v) ∧ tsupport (fun x => fderiv ℝ A x v) ⊆ U`. Introduce `v`. Establish `h0 : (fun L : ℂ →L[ℝ] (Wq →L[ℂ] Wp) => L v) 0 = 0` using `rfl`. Use `⟨hAf.clm_apply continuous_const, HasCompactSupport.comp_left (g := fun L : ℂ →L[ℝ] (Wq →L[ℂ] Wp) => L v) (hAc.fderiv (𝕜 := ℝ)) h0, ?_⟩` and prove the remaining obligations.
+
+Conclude with `((tsupport_comp_subset (g := fun L : ℂ →L[ℝ] (Wq →L[ℂ] Wp) => L v) h0 (fderiv ℝ A)).trans (tsupport_fderiv_subset ℝ (f := A))).trans hAU`. Establish `hGv : ∀ v : ℂ, ContinuousOn (fun x => fderiv ℝ G x v) U` using `fun v => hGf.clm_apply continuousOn_const`. Establish `e` using `int_dZv_hs A G (fun x _ => hAd x) (fun x hx => hGd x (hAU hx)) (int_hs_of_cpt (hDA 1).1 (hDA 1).2.1 (hDA 1).2.2 hGc.continuousOn) (int_hs_of_cpt hA.continuous hAc hAU (hGv 1)) (int_hs_of_cpt (hDA Complex.I).1 (hDA Complex.I).2.1 (hDA Complex.I).2.2 hGc.continuousOn) (int_hs_of_cp …`. Establish `hL : (fun c => B.hsInner (c • dZv A c) (Bf c) / ((‖c‖ ^ 2 : ℝ) : ℂ)) = fun c => B.hsInner (dZv A c) (G c)`. Use function extensionality and compare the values at `c`.
+
+Distinguish the cases in `hc : c = 0`. Substitute `hc show B.hsInner ((0 : ℂ) • dZv A 0) (Bf 0) / _ = B.hsInner (dZv A 0) ((0 : ℂ)⁻¹ • Bf 0)` using the available equality. Rewrite using `[hs_smul_left, inv_zero, hs_smul_right, map_zero]`. Simplify using the standard rewrite rules. Establish `hcc : conj c ≠ 0` using `(map_ne_zero _).mpr hc`.
+
+Establish `hn : ((‖c‖ ^ 2 : ℝ) : ℂ) = c * conj c` using `by rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Rewrite using `[hn, hGdef]`. Simplify using `only [hs_smul_left, hs_smul_right, map_inv₀]`. Clear the denominators using the available nonvanishing facts. Establish `hR : (fun c => B.hsInner (A c) (conj c • dZbv Bf c) / ((‖c‖ ^ 2 : ℝ) : ℂ)) = fun c => B.hsInner (A c) (dZbv G c)`.
+
+Use function extensionality and compare the values at `c`. Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Establish `: A 0 = 0` using `image_eq_zero_of_notMem_tsupport hA0`. Simplify using `[this, hsInner_zero_left]`.
+
+Establish `hcc : conj c ≠ 0` using `(map_ne_zero _).mpr hc`. Establish `hn : ((‖c‖ ^ 2 : ℝ) : ℂ) = c * conj c` using `by rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Rewrite using `[hn, hGdef, dZbv_inv_smul hc (hBd c hc)]`. Simplify using `only [hs_smul_right, map_inv₀, Complex.conj_conj]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[hL, hR]`. Conclude with `e`.
+-/
 theorem pLogAdjHS_cpt (A Bf : ℂ → (Wq →L[ℂ] Wp)) (hA : ContDiff ℝ 1 A) (hAc : HasCompactSupport A)
     (hA0 : (0 : ℂ) ∉ tsupport A) (hB : ContDiffOn ℝ 1 Bf {c | c ≠ 0}) :
     ∫ c, B.hsInner (c • dZv A c) (Bf c) / ((‖c‖ ^ 2 : ℝ) : ℂ) =
@@ -171,6 +227,9 @@ theorem pLogAdjHS_cpt (A Bf : ℂ → (Wq →L[ℂ] Wp)) (hA : ContDiff ℝ 1 A)
   rw [hL, hR]
   exact e
 
+/- English proof (translation)
+Establish `h : HasFDerivAt (fun w => φ w • A w) _ c` using `hφ.hasFDerivAt.smul hA.hasFDerivAt`. Unfold `dZv NF.dZ`. Rewrite using `[h.fderiv]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply]`. Use `module`.
+-/
 theorem dZv_smul {φ : ℂ → ℂ} {A : ℂ → (Wq →L[ℂ] Wp)} {c : ℂ} (hφ : DifferentiableAt ℝ φ c)
     (hA : DifferentiableAt ℝ A c) : dZv (fun w => φ w • A w) c = NF.dZ φ c • A c + φ c • dZv A c := by
   have h : HasFDerivAt (fun w => φ w • A w) _ c := hφ.hasFDerivAt.smul hA.hasFDerivAt
@@ -179,6 +238,25 @@ theorem dZv_smul {φ : ℂ → ℂ} {A : ℂ → (Wq →L[ℂ] Wp)} {c : ℂ} (h
   simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply]
   module
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `exists_deriv_bump_bound`. Establish `hUo : IsOpen {c : ℂ | c ≠ 0}` using `isOpen_ne`. Establish `hAd : ∀ c ≠ 0, DifferentiableAt ℝ A c` using `fun c hc => (hA.differentiableOn one_ne_zero c hc).differentiableAt (hUo.mem_nhds hc)`. Use `set F : ℕ → ℂ → (Wq →L[ℂ] Wp) := fun n c => psiC n c • A c with hF`. Establish `hFc : ∀ n, ContDiff ℝ 1 (F n)`.
+
+Introduce `n`. Use `contDiff_iff_contDiffAt.mpr fun c => ?_` and prove the remaining obligations. Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Use `ContDiffAt.congr_of_eventuallyEq (contDiffAt_const (c := (0 : Wq →L[ℂ] Wp))) ?_` and prove the remaining obligations.
+
+Use `filter_upwards [psiL_zero_near0 n] with w hw`. Simplify using `[hF, psiC, hw]`. Conclude with `((psiC_contDiff n).contDiffAt.of_le (by simp)).smul (hA.contDiffAt (hUo.mem_nhds hc))`. Establish `hψs : ∀ n, tsupport (psiC n) ⊆ tsupport (psiL n)` using `fun n => tsupport_comp_subset (g := fun x : ℝ => (x : ℂ)) Complex.ofReal_zero (psiL n)`. Establish `hFs : ∀ n, HasCompactSupport (F n)` using `fun n => (((psiL_hasCompactSupport n).comp_left (g := fun x : ℝ => (x : ℂ)) Complex.ofReal_zero).smul_right)`.
+
+Establish `hF0 : ∀ n, (0 : ℂ) ∉ tsupport (F n)` using `fun n h => zero_notMem_tsupport_psiL n (hψs n ((tsupport_smul_subset_left _ _) h))`. Establish `key` using `fun n => pLogAdjHS_cpt (F n) Bf (hFc n) (hFs n) (hF0 n) hB`. Establish `hLe : ∀ n, (fun c => B.hsInner (c • dZv (F n) c) (Bf c) / ((‖c‖ ^ 2 : ℝ) : ℂ)) = fun c => psiC n c * (B.hsInner (c • dZv A c) (Bf c) / ((‖c‖ ^ 2 : ℝ) : ℂ)) + (c * NF.dZ (psiC n) c) * (B.hsInner (A c) (Bf c) / ((‖c‖ ^ 2 : ℝ) : ℂ))`. Introduce `n`. Use function extensionality and compare the values at `c`.
+
+Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Simplify using `[hs_smul_left]`. Establish `hd` using `dZv_smul (φ := psiC n) (A := A) (((psiC_contDiff n).differentiable (by simp)) c) (hAd c hc)`. Rewrite using `[show dZv (F n) c = dZv (fun w => psiC n w • A w) c from rfl, hd]`.
+
+Simplify using `only [smul_add, hs_add_left, hs_smul_left]`. Expand and normalize the polynomial expressions, which then agree. Establish `hRe : ∀ n, (fun c => B.hsInner (F n c) (conj c • dZbv Bf c) / ((‖c‖ ^ 2 : ℝ) : ℂ)) = fun c => psiC n c * (B.hsInner (A c) (conj c • dZbv Bf c) / ((‖c‖ ^ 2 : ℝ) : ℂ)) + (0 : ℂ) * (B.hsInner (A c) (Bf c) / ((‖c‖ ^ 2 : ℝ) : ℂ))`. Introduce `n`. Use function extensionality and compare the values at `c`.
+
+Simplify using `only [hF, hs_smul_left]`. Expand and normalize the polynomial expressions, which then agree. Establish `hψm : ∀ n, AEStronglyMeasurable (psiC n) volume` using `fun n => (psiC_contDiff n).continuous.aestronglyMeasurable`. Establish `hvm : ∀ n, AEStronglyMeasurable (fun c : ℂ => c * NF.dZ (psiC n) c) volume` using `fun n => (continuous_id.mul (dZ_contDiff (psiC_contDiff n)).continuous).aestronglyMeasurable`. Establish `hae : ∀ᵐ c ∂(volume : Measure ℂ), c ≠ 0` using `Measure.ae_ne volume 0`.
+
+Establish `hL` using `tendsto_int_uv_ae _ _ h1 h0 (fun n => psiC n) (fun n c => c * NF.dZ (psiC n) c) C hψm hvm (fun n c => by simpa [psiC] using psiL_le_one n c) (fun n c => norm_c_dZ_psiC_le hC n c) (hae.mono fun c hc => psiC_eventually c hc)`. Establish `hR` using `tendsto_int_uv_ae _ _ h2 h0 (fun n => psiC n) (fun _ _ => (0 : ℂ)) C hψm (fun _ => aestronglyMeasurable_const) (fun n c => by simpa [psiC] using psiL_le_one n c) (fun _ _ => by simpa using (norm_nonneg _).trans (hC 0)) (hae.mono fun c hc => (psiC_eventually c hc).mono fun n hn => …`. Establish `hL' : Tendsto (fun n => ∫ c, B.hsInner (c • dZv (F n) c) (Bf c) / ((‖c‖ ^ 2 : ℝ) : ℂ)) atTop (𝓝 (∫ c, B.hsInner (c • dZv A c) (Bf c) / ((‖c‖ ^ 2 : ℝ) : ℂ)))`. Simplify using `only [hLe]`. Conclude with `hL`.
+
+Establish `hR' : Tendsto (fun n => ∫ c, B.hsInner (c • dZv (F n) c) (Bf c) / ((‖c‖ ^ 2 : ℝ) : ℂ)) atTop (𝓝 (-∫ c, B.hsInner (A c) (conj c • dZbv Bf c) / ((‖c‖ ^ 2 : ℝ) : ℂ)))`. Simplify using `only [key, hRe]`. Conclude with `hR.neg`. Conclude with `tendsto_nhds_unique hL' hR'`.
+-/
 theorem pLogAdjHS (A Bf : ℂ → (Wq →L[ℂ] Wp)) (hA : ContDiffOn ℝ 1 A {c | c ≠ 0})
     (hB : ContDiffOn ℝ 1 Bf {c | c ≠ 0})
     (h0 : Integrable (fun c => B.hsInner (A c) (Bf c) / ((‖c‖ ^ 2 : ℝ) : ℂ)))

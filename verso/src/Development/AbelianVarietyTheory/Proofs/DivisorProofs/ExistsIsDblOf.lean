@@ -37,6 +37,9 @@ def IsDblOf (ψ : AddChar (AF F) ℂ) {n d : ℕ} {X : Spc F E n} {W : Spc F E d
       gd.1.1 = Matrix.fromBlocks (mat g) 0 0 1 →
       ∀ φ₁ ∈ schA F (Fin n × Fin d), ∀ φ₂ ∈ schA F (Fin n × Fin d), omd gd (boxFun φ₁ φ₂) = boxFun (om (g, 1) φ₁) φ₂
 
+/- English proof (translation)
+Take `⟨-, ⟨d', hd', -, dd, omd, h1, h2, h3⟩, -⟩` from `hP.weil`. Conclude with `⟨dd, omd, d', hd', h1, h2, fun g gd hgd φ₁ h₁ φ₂ h₂ => h3 g gd hgd φ₁ h₁ φ₂ h₂⟩`.
+-/
 theorem exists_isDblOf {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {χX χW : Chr F E}
     {om : Rep σ X W} {r s r' s' : ℕ} (hP : IsPair B M χX χW om r s r' s') :
     ∃ dd omd, IsDblOf B.ψ M χW om dd omd := by

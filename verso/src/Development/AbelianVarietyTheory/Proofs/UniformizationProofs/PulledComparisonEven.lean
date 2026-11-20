@@ -15,6 +15,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.EvenPull
 
+/- English proof (translation)
+Take `⟨t₁, ht₁, hv⟩` from `exists_up hw hL hL' a ha`. Establish `key` using `gen_unique' hL (φ := fun k => h ≫ φ k) (ε := ε) (fun V _ k => Finset.prod_congr rfl fun I _ => congrArg (fun q => k q ^ ε I) (hψ I)) π e he hp (DVR.pullGen_isGen _ _ _ _ ht h) ht₁ (fun y J hJ => by choose J' hJ' using fun χ : S₀ ⟶ X' => exists_chart hL' (χ y)`. Use `(val_pull hJ _ _ _).trans ((H y J J' hJ hJ').trans (Eq.trans ?_ (hv _ e y _ _ (hJ.mem _ e) (Good.mem hJ' _ e)).symm))` and prove the remaining obligations. Use `congrArg₂ (· * ·) (Finset.prod_congr rfl fun I _ => ?_) rfl` and prove the remaining obligations. Rewrite using `[Category.assoc])`.
+
+Introduce `Z r z p q hp hq`. Use `choose J hJ using fun χ : Z ⟶ X => exists_chart hL (χ z)`. Establish `m₁ : r z ∈ LB.wchart L (fun k => φ' k ≫ F) p` using `Set.mem_iInter.2 hp`. Establish `m₂ : (r ≫ h) z ∈ LB.wchart L φ p` using `Set.mem_iInter.2 fun k => (congrArg (fun g => g (r z) ∈ L.U (p k)) (hψ k)).mp (hp k)`. Establish `c₁` using `gen_trans ht (r ≫ h) z m₂ (Good.mem hJ _ _)`.
+
+Establish `c₂` using `gen_trans ht₁ r z m₁ (Good.mem hJ _ _)`. Establish `c₃ : trF φ ε (r ≫ h) z p (fun k => J ((r ≫ h) ≫ φ k)) = trF (fun k => φ' k ≫ F) ε r z p (fun k => J (r ≫ φ' k ≫ F))`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `: (r ≫ h) ≫ φ k = r ≫ φ' k ≫ F` using `by rw [hψ, Category.assoc]`. Use `show gm ((r ≫ h) ≫ φ k) z (L.U (p k) ⊓ L.U (J ((r ≫ h) ≫ φ k))) (L.g (p k) (J ((r ≫ h) ≫ φ k))) ^ _ = gm (r ≫ φ' k ≫ F) z (L.U (p k) ⊓ L.U (J (r ≫ φ' k ≫ F))) (L.g (p k) (J (r ≫ φ' k ≫ F))) ^ _`.
+
+Rewrite using `[this]`. Establish `c₄ : val t (r ≫ h) z J = val t₁ r z J` using `(val_pull hJ _ _ _).symm.trans (key Z r z J hJ)`. Conclude with `c₁.trans ((congrArg₂ (· * ·) c₃ c₄).trans (c₂.symm.trans (hv Z r z p q m₁ (Set.mem_iInter.2 hq))))`.
+-/
 theorem pmaps_of_section {X X' Y Y' S₀ : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} {K : Type} [Fintype K]
     {w : LB.Iso L' (L.pull F)} (hw : PGen w) (hL : L.IsLB) (hL' : L'.IsLB) {φ' : K → (Y' ⟶ X')}
     {φ : K → (Y ⟶ X)} {ε : K → ℤ} (h : Y' ⟶ Y) (hψ : ∀ k, φ' k ≫ F = h ≫ φ k)
@@ -49,24 +58,43 @@ theorem pmaps_of_section {X X' Y Y' S₀ : Scheme.{0}} {L : LB X} {L' : LB X'} {
   have c₄ : val t (r ≫ h) z J = val t₁ r z J := (val_pull hJ _ _ _).symm.trans (key Z r z J hJ)
   exact c₁.trans ((congrArg₂ (· * ·) c₃ c₄).trans (c₂.symm.trans (hv Z r z p q m₁ (Set.mem_iInter.2 hq))))
 
+/- English proof (translation)
+Rewrite using `[Functor.obj.ι_def]`. Conclude with `pullback.lift_fst _ _ _`.
+-/
 theorem inv_fst {S S' : Scheme.{0}} (f : S' ⟶ S) (G : Over S) [GrpObj G] :
     (ι[(Over.pullback f).obj G]).left ≫ pullback.fst G.hom f = pullback.fst G.hom f ≫ (ι[G]).left := by
   rw [Functor.obj.ι_def]
   exact pullback.lift_fst _ _ _
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, ← Over.comp_left, GrpObj.inv_hom]`.
+-/
 theorem inv_left_comp {S : Scheme.{0}} {G' G : Over S} [GrpObj G'] [GrpObj G] (b : G' ⟶ G) [IsMonHom b] :
     (ι[G']).left ≫ b.left = b.left ≫ (ι[G]).left := by
   rw [← Over.comp_left, ← Over.comp_left, GrpObj.inv_hom]
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, inv_left_comp b, Category.assoc, Category.assoc]`. Conclude with `congrArg (b.left ≫ ·) (inv_fst f G)`.
+-/
 theorem inv_hom_fst {S S' : Scheme.{0}} (f : S' ⟶ S) (G : Over S) [GrpObj G] {G' : Over S'} [GrpObj G']
     (b : G' ⟶ (Over.pullback f).obj G) [IsMonHom b] :
     (ι[G']).left ≫ b.left ≫ pullback.fst G.hom f = (b.left ≫ pullback.fst G.hom f) ≫ (ι[G]).left := by
   rw [← Category.assoc, inv_left_comp b, Category.assoc, Category.assoc]
   exact congrArg (b.left ≫ ·) (inv_fst f G)
 
+/- English proof (translation)
+Rewrite using `[eSec, ← Over.comp_left, GrpObj.one_inv]`.
+-/
 theorem eSec_inv {S : Scheme.{0}} (H : Over S) [GrpObj H] : eSec H ≫ (ι[H]).left = eSec H := by
   rw [eSec, ← Over.comp_left, GrpObj.one_inv]
 
+/- English proof (translation)
+Use `hD.e_hom` as an intermediate fact. Use `pmaps_of_section ((isGen_iff _).1 hD.w_gen) D.P.isLB D'.P.isLB _ (fun k => ?_) _ D'.sym_gen _ D.sym_gen D'.P.A.hom (eSec D'.P.A) (Over.w η[D'.P.A]) (hG _ _ D'.P.isAb).2 (fun y J J' hJ hJ' => ?_)` and prove the remaining obligations. Use `fin_cases k`. Conclude with `inv_hom_fst _ _ hD.e.hom`. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`.
+
+Establish `a₁` using `val_corr hJ D.sym_rig (specOf φ)`. Establish `a₂` using `val_corr hJ' D'.sym_rig (𝟙 _)`. Rewrite `a₁` using `[val_pull hJ, val_one]`. Rewrite `a₂` using `[val_pull hJ', val_one, Category.id_comp]`. Rewrite using `[hD.he, a₂, Fin.prod_univ_two]`.
+
+Use `a₁.trans ?_` and prove the remaining obligations. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, eSec_inv, Category.comp_id]`. Simplify using the standard rewrite rules.
+-/
 theorem sym_pmaps (hG : GlobalFnsSt) {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R']
     {φ : R →+* R'} {D : DegPre R} {D' : DegPre R'} (hD : IsPullDeg φ D D') :
     PMaps hD.w (K := Fin 2) ![(ι[D'.P.A]).left, 𝟙 D'.P.A.left] ![(ι[D.P.A]).left, 𝟙 D.P.A.left] ![1, -1]
@@ -86,6 +114,9 @@ theorem sym_pmaps (hG : GlobalFnsSt) {R R' : Type} [CommRing R] [IsDomain R] [Co
     simp only [Matrix.cons_val_zero, Matrix.cons_val_one, eSec_inv, Category.comp_id]
     simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_res r z h₁ hz _).trans (gm_pull r p z _ (h₁ hz) _)) (gm_res r z h₂ hz _)), (map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_res r z h₃ hz _).trans (gm_pull r iT z ((M.pull p).U (fun _ => jT 0) ⊓ (L.pull f).U (fun _ => jS 0)) (@h₃ (r z) …`.
+-/
 theorem even_stalk {T G B Z : Scheme.{0}} {L : LB G} {M : LB B} {f : T ⟶ G} {p : T ⟶ B} {iT : T ⟶ T} {iG : G ⟶ G}
     {iB : B ⟶ B} (w : LB.Iso (L.pull f) (M.pull p))
     (s : LB.Gen (LB.LinComb L (K := Fin 2) ![iG, 𝟙 G] ![1, -1]))
@@ -103,6 +134,25 @@ theorem even_stalk {T G B Z : Scheme.{0}} {L : LB G} {M : LB B} {f : T ⟶ G} {p
     (map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_res r z h₃ hz _).trans (gm_pull r iT z ((M.pull p).U (fun _ => jT 0) ⊓ (L.pull f).U (fun _ => jS 0)) (@h₃ (r z) hz) _))
       ((gm_res r z h₄ hz _).trans (gm_pull r f z _ (h₄ hz) _)))⟩
 
+/- English proof (translation)
+Use `unit_ext fun z hz => ?_` and prove the remaining obligations. Take `⟨k₁, k₂⟩` from `even_stalk w' s' σ' jS' jT' V h₁ h₂ h₃ h₄ (𝟙 T') z hz`. Use `k₁.trans (Eq.trans ?_ k₂.symm)` and prove the remaining obligations. Use `choose JL hJL using fun χ : T' ⟶ G => exists_chart hL (χ z)`. Use `choose JM hJM using fun χ : T' ⟶ B => exists_chart hM (χ z)`.
+
+Take `⟨jS, hjS, cS⟩ : ∃ jS : Fin 2 → L.ι, (∀ k, (h ≫ f ≫ (![iG, 𝟙 G] : Fin 2 → _) k) z ∈ L.U (jS k)) ∧ LB.Coh L (fun k => f ≫ (![iG, 𝟙 G] : Fin 2 → _) k) jS` from `⟨fun k => JL (h ≫ f ≫ (![iG, 𝟙 G] : Fin 2 → _) k), fun k => hJL _, fun a b e => congrArg (fun q => JL (h ≫ q)) e⟩`. Take `⟨jT, hjT, cT⟩ : ∃ jT : Fin 2 → M.ι, (∀ k, (h ≫ p ≫ (![iB, 𝟙 B] : Fin 2 → _) k) z ∈ M.U (jT k)) ∧ LB.Coh M (fun k => p ≫ (![iB, 𝟙 B] : Fin 2 → _) k) jT` from `⟨fun k => JM (h ≫ p ≫ (![iB, 𝟙 B] : Fin 2 → _) k), fun k => hJM _, fun a b e => congrArg (fun q => JM (h ≫ q)) e⟩`. Establish `S0 : (h ≫ f ≫ iG) z ∈ L.U (jS 0)` using `hjS 0`. Establish `S1 : (h ≫ f) z ∈ L.U (jS 1)` using `hjS 1`. Establish `T0 : (h ≫ p ≫ iB) z ∈ M.U (jT 0)` using `hjT 0`.
+
+Establish `T1 : (h ≫ p) z ∈ M.U (jT 1)` using `hjT 1`. Establish `OrbitIntegralProperties : (h ≫ iT ≫ f) z ∈ L.U (jS 0)` using `by rw [iF]; exact S0`. Establish `T0a : (h ≫ iT ≫ p) z ∈ M.U (jT 0)` using `by rw [iP]; exact T0`. Establish `S0b : (iT' ≫ f' ≫ Ψ) z ∈ L.U (jS 0)` using `by rw [← hf, ← Category.assoc, ih, Category.assoc]; exact OrbitIntegralProperties`. Establish `T0b : (iT' ≫ p' ≫ Φ) z ∈ M.U (jT 0)` using `by rw [hp, ← Category.assoc, ih, Category.assoc]; exact T0a`.
+
+Establish `S0c : ((f' ≫ iG') ≫ Ψ) z ∈ L.U (jS 0)` using `by rw [← iF', Category.assoc]; exact S0b`. Establish `T0c : ((p' ≫ iB') ≫ Φ) z ∈ M.U (jT 0)` using `by rw [← iP', Category.assoc]; exact T0b`. Establish `TopsChoiceSecondBound : (f' ≫ Ψ) z ∈ L.U (jS 1)` using `by rw [← hf]; exact S1`. Establish `T1b : (p' ≫ Φ) z ∈ M.U (jT 1)` using `by rw [hp]; exact T1`. Set `W : T.Opens` to `p ⁻¹ᵁ (LB.LinComb M (K := Fin 2) ![iB, 𝟙 B] ![1, -1]).U jT ⊓ ((M.pull p).U (fun _ => jT 1) ⊓ (L.pull f).U (fun _ => jS 1)) ⊓ iT ⁻¹ᵁ ((M.pull p).U (fun _ => jT 0) ⊓ (L.pull f).U (fun _ => jS 0)) ⊓ f ⁻¹ᵁ (LB.LinComb L (K := Fin 2) ![iG, 𝟙 G] ![1, -1]).U jS`.
+
+Establish `hW : h z ∈ W` using `⟨⟨⟨Set.mem_iInter.2 hjT, mem_pull.2 T1, mem_pull.2 S1⟩, mem_pull.2 T0a, mem_pull.2 OrbitIntegralProperties⟩, Set.mem_iInter.2 hjS⟩`. Establish `l₁ : W ≤ _` using `inf_le_left.trans (inf_le_left.trans inf_le_left)`. Establish `l₂ : W ≤ _` using `inf_le_left.trans (inf_le_left.trans inf_le_right)`. Establish `l₃ : W ≤ _` using `inf_le_left.trans inf_le_right`. Establish `l₄ : W ≤ _` using `inf_le_right`.
+
+Take `⟨n₁, n₂⟩` from `even_stalk w s σ jS jT W l₁ l₂ l₃ l₄ h z hW`. Establish `E` using `n₁.symm.trans ((congrArg (gm h z W) (ev jS jT cS cT W l₁ l₂ l₃ l₄)).trans n₂)`. Establish `A₁` using `sq _ (𝟙 T') z (jT 1) (jT' 1) (jS 1) (jS' 1) T1b (mem_pull.1 (h₂ hz).1) TopsChoiceSecondBound (mem_pull.1 (h₂ hz).2)`. Establish `A₀` using `sq _ iT' z (jT 0) (jT' 0) (jS 0) (jS' 0) T0b (mem_pull.1 (h₃ hz).1) S0b (mem_pull.1 (h₃ hz).2)`. Establish `Bσ` using `hσ _ p' z jT jT' (Fin.forall_fin_two.2 ⟨T0c, T1b⟩) (Set.mem_iInter.1 (h₁ hz))`.
+
+Establish `Bs` using `hs _ f' z jS jS' (Fin.forall_fin_two.2 ⟨S0c, TopsChoiceSecondBound⟩) (Set.mem_iInter.1 (h₄ hz))`. Rewrite `Bσ`, `Bs` using `[Fin.prod_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Category.comp_id, zpow_one, zpow_neg] at Bσ Bs`. Simplify using `only [Category.id_comp] at A₁ ⊢`. Rewrite `A₀` using `[iP', iF', ih]`.
+
+Rewrite `Bσ` using `[hp]`. Rewrite `Bs` using `[← hf]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `e₁` using `congrArg Additive.ofMul E`. Establish `e₂` using `congrArg Additive.ofMul A₁`.
+
+Establish `e₃` using `congrArg Additive.ofMul A₀`. Establish `e₄` using `congrArg Additive.ofMul Bσ`. Establish `e₅` using `congrArg Additive.ofMul Bs`. Simplify using `only [ofMul_mul, ofMul_inv] at e₁ e₂ e₃ e₄ e₅ ⊢`. Take the linear combination `(norm := abel) e₁ + e₂ - e₃ - e₄ + e₅`.
+-/
 theorem even_of_square {T G B T' G' B' : Scheme.{0}} {L : LB G} {M : LB B} {L' : LB G'} {M' : LB B'}
     (hL : L.IsLB) (hM : M.IsLB)
     {f : T ⟶ G} {p : T ⟶ B} {iT : T ⟶ T} {iG : G ⟶ G} {iB : B ⟶ B}
@@ -200,6 +250,13 @@ namespace GlobalTheory
 
 open GlobalTheory.EvenPull in
 
+/- English proof (translation)
+Introduce `hG R R' _ _ _ _ I I' φ D D' hD A A' G _ _ G' _ _ bc _ hbc U L' wL _ _ _ gt' w' _ _ H s' _ hs e jS jT _ _ V h₁ h₂ h₃ h₄`. Take `⟨h, hf, ⟨hp, -⟩, sq⟩` from `H e`. Establish `iF : ∀ {R : Type} [CommRing R] [IsDomain R] (I : Ideal R) (G : Over (Spec (CommRingCat.of R))) [GrpObj G], (ι[thickObj R I e G]).left ≫ (fstG I e G).left = (fstG I e G).left ≫ (ι[G]).left` using `fun I G _ => inv_fst _ G`. Establish `iP : ∀ {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R} {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (g : GtCoord I D e G), (ι[thickObj R I e G]).left ≫ g.pG.left = g.pG.left ≫ (ι[D.P.A]).left` using `fun g => by`. Use `g.q_hom` as an intermediate fact.
+
+Conclude with `inv_hom_fst _ _ g.q`. Establish `: Mono (thick R I e)`. Establish `: IsClosedImmersion (thick R I e)` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Use `infer_instance`. Establish `m : Mono (fstG I e G).left` using `pullback.fst_of_mono`.
+
+Establish `ih : (ι[thickObj R' I' e G']).left ≫ h = h ≫ (ι[thickObj R I e G]).left`. Rewrite using `[← cancel_mono (fstG I e G).left, Category.assoc, Category.assoc, hf, iF, ← Category.assoc, iF, Category.assoc, inv_hom_fst _ _ bc.hom, ← Category.assoc h, hf]`. Simplify using `only [Category.assoc]`. Conclude with `even_of_square U.LG.isLB D.toPre.P.isLB hf hp ih (iF I G) (iP _) (iF I' G') (iP _) (U.w e) (w' e) wL hD.w U.symG D.toPre.sym s' D'.toPre.sym hs (sym_pmaps hG hD) sq (U.w_even e) jS jT V h₁ h₂ h₃ h₄`.
+-/
 theorem pulled_comparison_even : GlobalFnsSt → ∀ (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] (I : Ideal R) (I' : Ideal R') (φ : R →+* R') (D : DegData R I) (D' : DegData R' I') (hD : IsPullDeg φ D.toPre D'.toPre) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (A' : PolAV (Spec (CommRingCat.of (FractionRing R')))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (G' : Over (Spec (CommRingCat.of R'))) [GrpObj G'] [IsCommMonObj G'] (bc : G' ≅ (Over.pullback (specOf φ)).obj G), I.map φ ≤ I' → IsMonHom bc.hom → ∀ (U : UnifPre I D A G) (L' : RigLB G') (wL : LB.Iso L'.L (U.LG.L.pull (bc.hom.left ≫ pullback.fst G.hom (specOf φ)))) (he : eSec G' ≫ bc.hom.left ≫ pullback.fst G.hom (specOf φ) = specOf φ ≫ eSec G), wL.IsGen → LB.Gen.Maps (LB.linCombIso wL (K := PUnit) (fun _ => eSec G') (fun _ => 1)) L'.rig (rigPullOf (bc.hom.left ≫ pullback.fst G.hom (specOf φ)) (specOf φ) he U.LG.L U.LG.rig) → ∀ (gt' : ∀ e : ℕ, GtCoord I' D'.toPre e G') (w' : ∀ e : ℕ, LB.Iso (L'.L.pull (fstG I' e G').left) (D'.toPre.P.L.pull (gt' e).pG.left)), (∀ e, (w' e).IsGen) → (∀ e, thickMap R' I' e G' ≫ (gt' (e + 1)).pG.left = (gt' e).pG.left) → (∀ e : ℕ, ∃ (h : (thickObj R' I' e G').left ⟶ (thickObj R I e G).left), h ≫ (fstG I e G).left = (fstG I' e G').left ≫ (bc.hom.left ≫ pullback.fst G.hom (specOf φ)) ∧ ((gt' e).pG.left ≫ (hD.e.hom.left ≫ pullback.fst D.toPre.P.A.hom (specOf φ)) = h ≫ (U.gt e).pG.left ∧ ∀ x : D'.toPre.X, (∀ κ : Fin 4, D'.toPre.Oφ (gt' e).pG x κ ≫ (hD.e.hom.left ≫ pullback.fst D.toPre.P.A.hom (specOf φ)) = h ≫ D.toPre.Oφ (U.gt e).pG (hD.xe x) κ) ∧ Geo.Tor.PMaps hD.w (D'.toPre.Oφ (gt' e).pG x) (D.toPre.Oφ (U.gt e).pG (hD.xe x)) Oinvε ((gt' e).t x) ((U.gt e).t (hD.xe x)) h) ∧ (∀ (Z : Scheme.{0}) (r : Z ⟶ (thickObj R' I' e G').left) (z : Z) (jM : D.toPre.P.L.ι) (jM' : D'.toPre.P.L.ι) (jL : U.LG.L.ι) (jL' : L'.L.ι), ((hD.e.hom.left ≫ pullback.fst D.toPre.P.A.hom (specOf φ))) ((gt' e).pG.left (r z)) ∈ D.toPre.P.L.U jM → (gt' e).pG.left (r z) ∈ D'.toPre.P.L.U jM' → ((bc.hom.left ≫ pullback.fst G.hom (specOf φ))) ((fstG I' e G').left (r z)) ∈ U.LG.L.U jL → (fstG I' e G').left (r z) ∈ L'.L.U jL' → Geo.Tor.gw hD.w (r ≫ (gt' e).pG.left) z jM jM' * Geo.Tor.gw (w' e) r z jM' (fun _ => jL') = Geo.Tor.gw (U.w e) (r ≫ h) z jM (fun _ => jL) * Geo.Tor.gw wL (r ≫ (fstG I' e G').left) z jL jL')) → ∀ (s' : LB.Gen (LB.LinComb L'.L (K := Fin 2) ![(ι[G']).left, 𝟙 G'.left] ![1, -1])), s'.IsGen → Geo.Tor.PMaps wL (K := Fin 2) ![(ι[G']).left, 𝟙 G'.left] ![(ι[G]).left, 𝟙 G.left] ![1, -1] s' U.symG (bc.hom.left ≫ pullback.fst G.hom (specOf φ)) → ∀ (e : ℕ) (jS : Fin 2 → L'.L.ι) (jT : Fin 2 → D'.toPre.P.L.ι), LB.Coh L'.L (fun k => (fstG I' e G').left ≫ (![(ι[G']).left, 𝟙 G'.left] : Fin 2 → _) k) jS → LB.Coh D'.toPre.P.L (fun k => (gt' e).pG.left ≫ (![(ι[D'.toPre.P.A]).left, 𝟙 D'.toPre.P.A.left] : Fin 2 → _) k) jT → ∀ (V : (thickObj R' I' e G').left.Opens) (h₁ : V ≤ (gt' e).pG.left ⁻¹ᵁ (LB.LinComb D'.toPre.P.L (K := Fin 2) ![(ι[D'.toPre.P.A]).left, 𝟙 D'.toPre.P.A.left] ![1, -1]).U jT) (h₂ : V ≤ (D'.toPre.P.L.pull (gt' e).pG.left).U (fun _ => jT 1) ⊓ (L'.L.pull (fstG I' e G').left).U (fun _ => jS 1)) (h₃ : V ≤ (ι[thickObj R' I' e G']).left ⁻¹ᵁ ((D'.toPre.P.L.pull (gt' e).pG.left).U (fun _ => jT 0) ⊓ (L'.L.pull (fstG I' e G').left).U (fun _ => jS 0))) (h₄ : V ≤ (fstG I' e G').left ⁻¹ᵁ (LB.LinComb L'.L (K := Fin 2) ![(ι[G']).left, 𝟙 G'.left] ![1, -1]).U jS), res h₁ (pullU (gt' e).pG.left _ (D'.toPre.sym.s jT)) * res h₂ ((w' e).s (fun _ => jT 1, fun _ => jS 1)) = res h₃ (pullU (ι[thickObj R' I' e G']).left _ ((w' e).s (fun _ => jT 0, fun _ => jS 0))) * res h₄ (pullU (fstG I' e G').left _ (s'.s jS)) := by
   intro hG R R' _ _ _ _ I I' φ D D' hD A A' G _ _ G' _ _ bc _ hbc U L' wL _ _ _ gt' w' _ _ H s' _ hs e jS jT _ _
     V h₁ h₂ h₃ h₄

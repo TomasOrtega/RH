@@ -34,6 +34,33 @@ def conjInv (x0 : X) (s : G) (h1 : ∀ h ∈ MulAction.stabilizer G x0, s⁻¹ *
 variable [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]
   [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] [MeasurableSpace X]
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace (MulAction.stabilizer G x0) := hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology (MulAction.stabilizer G x0) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `set e := conjInv x0 s h1 h2 with he`. Establish `hec : Continuous e`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations.
+
+Conclude with `(continuous_const.mul continuous_subtype_val).mul continuous_const`. Establish `hes : Continuous e.symm`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Conclude with `(continuous_const.mul continuous_subtype_val).mul continuous_const`. Use `haveI : (μ1.map e).IsHaarMeasure := e.isHaarMeasure_map μ1 hec hes`.
+
+Establish `hc : μ1.map e = Measure.haarScalarFactor (μ1.map e) μ1 • μ1` using `Measure.isMulLeftInvariant_eq_smul _ _`. Use `set c : NNReal := Measure.haarScalarFactor (μ1.map e) μ1 with hcdef`. Set `sec : X → G` to `fun y => if h : ∃ g : G, g • x0 = y then h.choose else 1`. Establish `hsec : ∀ y, (∃ g : G, g • x0 = y) → sec y • x0 = y`. Introduce `y h`.
+
+Simplify using `only [sec, dif_pos h]`. Conclude with `h.choose_spec`. Establish `horb : ∀ y, (∃ g : G, g • x0 = y) → ∃ g : G, g • x0 = R.symm y`. Introduce and unpack `y ⟨g, rfl⟩`. Use `⟨g * s⁻¹, ?_⟩` and prove the remaining obligations.
+
+Apply `R.injective` to reduce the goal to its premises. Rewrite using `[MeasurableEquiv.apply_symm_apply, hR, mul_smul, ← hs, inv_smul_smul]`. Set `sec' : X → G` to `fun y => sec (R.symm y) * s`. Establish `hsec' : ∀ y, (∃ g : G, g • x0 = y) → sec' y • x0 = y`. Introduce `y hy`.
+
+Simplify using `only [sec', mul_smul]`. Rewrite using `[hs, ← hR, hsec _ (horb y hy), MeasurableEquiv.apply_symm_apply]`. Establish `key : ∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ g, f g ∂μG = c * ∫⁻ g, f g ∂μG`. Introduce `f hf`. Establish `hfs : Measurable (fun g => f (g * s))` using `hf.comp (measurable_mul_const s)`.
+
+Establish `hA : ∫⁻ g, f (g * s) ∂μG = ∫⁻ g, f g ∂μG` using `lintegral_mul_right_eq_self f s`. Establish `hB` using `hw _ hfs sec hsec`. Establish `hC` using `hw f hf sec' hsec'`. Establish `hinner : ∀ y, ∫⁻ h' : MulAction.stabilizer G x0, f (sec y * (h' : G) * s) ∂μ1 = c * ∫⁻ h' : MulAction.stabilizer G x0, f (sec y * s * (h' : G)) ∂μ1`. Introduce `y`.
+
+Establish `hm : Measurable (fun h' : MulAction.stabilizer G x0 => f (sec y * s * (h' : G)))` using `hf.comp ((measurable_const_mul _).comp measurable_subtype_coe)`. Establish `h3 : ∫⁻ h', f (sec y * s * (h' : G)) ∂(μ1.map e) = ∫⁻ h' : MulAction.stabilizer G x0, f (sec y * (h' : G) * s) ∂μ1`. Rewrite using `[lintegral_map hm hec.measurable]`. Use `lintegral_congr fun h => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use `show sec y * s * (s⁻¹ * (h : G) * s) = _`. Use `group`. Rewrite using `[← h3, hc, lintegral_smul_measure]`. Both sides reduce to the same expression. Establish `hD : ∫⁻ y, ∫⁻ h' : MulAction.stabilizer G x0, f (sec' y * (h' : G)) ∂μ1 ∂ρ = ∫⁻ y, ∫⁻ h' : MulAction.stabilizer G x0, f (sec y * s * (h' : G)) ∂μ1 ∂ρ` using `by conv_lhs => rw [← hρ]`.
+
+Rewrite using `[lintegral_map_equiv]`. Simplify using `only [sec', MeasurableEquiv.symm_apply_apply]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hinner]`. Use `_ = c * ∫⁻ y, ∫⁻ h' : MulAction.stabilizer G x0, f (sec y * s * (h' : G)) ∂μ1 ∂ρ := lintegral_const_mul' _ _ ENNReal.coe_ne_top`.
+
+Use `_ = c * ∫⁻ g, f g ∂μG := by rw [hC, hD]`. Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : G)`. Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Establish `h4` using `key (K.indicator 1) (measurable_one.indicator hKm)`. Rewrite `h4` using `[lintegral_indicator_one hKm]`.
+
+Establish `hpos : μG K ≠ 0` using `(Measure.measure_pos_of_mem_nhds μG hK1).ne'`. Establish `hfin : μG K ≠ ∞` using `hK.measure_lt_top.ne`. Establish `hc1 : (c : ℝ≥0∞) = 1`. Establish `h5 : (1 : ℝ≥0∞) * μG K = c * μG K` using `by rw [one_mul]; exact h4`. Conclude with `((ENNReal.mul_left_inj hpos hfin).1 h5).symm`.
+
+Establish `hc2 : c = 1` using `by exact_mod_cast hc1`. Rewrite using `[hc, hc2, one_smul]`.
+-/
 theorem conj_map_eq (x0 : X) (hcl : IsClosed (MulAction.stabilizer G x0 : Set G))
     (μG : Measure G) [μG.IsHaarMeasure] [μG.IsMulRightInvariant] (ρ : Measure X)
     (μ1 : Measure (MulAction.stabilizer G x0)) [μ1.IsHaarMeasure]
@@ -121,6 +148,19 @@ theorem conj_map_eq (x0 : X) (hcl : IsClosed (MulAction.stabilizer G x0 : Set G)
   have hc2 : c = 1 := by exact_mod_cast hc1
   rw [hc, hc2, one_smul]
 
+/- English proof (translation)
+Use `haveI := hμ1`. Use `haveI := hμ0`. Use `haveI : LocallyCompactSpace (MulAction.stabilizer G x0) := hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology (MulAction.stabilizer G x0) := TopologicalSpace.Subtype.secondCountableTopology _`. Establish `h1 : ∀ h ∈ MulAction.stabilizer G x0, s⁻¹ * h * s ∈ MulAction.stabilizer G x0`.
+
+Introduce `h hh`. Rewrite `hh`, the goal using `[MulAction.mem_stabilizer_iff]`. Rewrite using `[mul_smul, mul_smul, hs, ← hR, hh, ← hs, inv_smul_smul]`. Establish `h2 : ∀ h ∈ MulAction.stabilizer G x0, s * h * s⁻¹ ∈ MulAction.stabilizer G x0`. Introduce `h hh`.
+
+Rewrite `hh`, the goal using `[MulAction.mem_stabilizer_iff]`. Apply `R.injective` to reduce the goal to its premises. Rewrite using `[hR, ← hs, mul_smul, mul_smul, inv_smul_smul, hh]`. Establish `hmap` using `conj_map_eq x0 hcl μG ρ μ1 hw R hR hρ s hs h1 h2`. Establish `hc : μ0 = Measure.haarScalarFactor μ0 μ1 • μ1` using `Measure.isMulLeftInvariant_eq_smul _ _`.
+
+Establish `hm : Measurable (fun h : MulAction.stabilizer G x0 => f (s * (h : G) * s⁻¹))` using `hf.comp (((measurable_const_mul s).comp measurable_subtype_coe).mul_const _)`. Establish `hec : Continuous (conjInv x0 s h1 h2)`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Conclude with `(continuous_const.mul continuous_subtype_val).mul continuous_const`. Establish `h3 : ∫⁻ h : MulAction.stabilizer G x0, f (s * (h : G) * s⁻¹) ∂μ1 = ∫⁻ h : MulAction.stabilizer G x0, f (h : G) ∂μ1` using `by conv_lhs => rw [← hmap]`.
+
+Rewrite using `[lintegral_map hm hec.measurable]`. Use `lintegral_congr fun h => ?_` and prove the remaining obligations. Use `congr 1`. Use `show s * (s⁻¹ * (h : G) * s) * s⁻¹ = _`. Use `group`.
+
+Rewrite using `[hc, lintegral_smul_measure, lintegral_smul_measure, h3]`.
+-/
 theorem conj_lintegral_eq (x0 : X) (hcl : IsClosed (MulAction.stabilizer G x0 : Set G))
     (μG : Measure G) [μG.IsHaarMeasure] [μG.IsMulRightInvariant] (ρ : Measure X)
     (μ1 : Measure (MulAction.stabilizer G x0)) (hμ1 : μ1.IsHaarMeasure)
@@ -174,6 +214,9 @@ variable {A : Type} [CommRing A] {n a : ℕ}
 def mv (u : Matrix (Fin a) (Fin a) A) (X : Fin a → Fin n → A) : Fin a → Fin n → A :=
   fun b => ∑ c, u c b • X c
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Simplify using `only [mv, Matrix.mul_apply, Finset.smul_sum, Finset.sum_smul, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by rw [mul_comm]`.
+-/
 theorem mv_mv (u w : Matrix (Fin a) (Fin a) A) (X : Fin a → Fin n → A) :
     mv w (mv u X) = mv (u * w) X := by
   funext b
@@ -181,14 +224,23 @@ theorem mv_mv (u w : Matrix (Fin a) (Fin a) A) (X : Fin a → Fin n → A) :
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by rw [mul_comm]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Simplify using `[mv, Matrix.one_apply]`.
+-/
 theorem mv_one (X : Fin a → Fin n → A) : mv 1 X = X := by
   funext b
   simp [mv, Matrix.one_apply]
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun b => continuous_finset_sum _ fun c _ => (continuous_apply c).const_smul (u c b)`.
+-/
 theorem continuous_mv [TopologicalSpace A] [IsTopologicalRing A] (u : Matrix (Fin a) (Fin a) A) :
     Continuous (mv (n := n) u) :=
   continuous_pi fun b => continuous_finset_sum _ fun c _ => (continuous_apply c).const_smul (u c b)
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => h2 i j hij)]`. Simplify using `[h1]`.
+-/
 theorem det_unitriangular (u : Matrix (Fin a) (Fin a) A) (h1 : ∀ i, u i i = 1)
     (h2 : ∀ i j, j < i → u i j = 0) : u.det = 1 := by
   rw [Matrix.det_of_upperTriangular (fun i j hij => h2 i j hij)]
@@ -210,6 +262,9 @@ section Gram
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
   (σ : E →ₐ[F] E) {n a : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Use `show lin R σ J g (∑ c, u c b • X c) = ∑ c, u c b • lin R σ J g (X c)`. Rewrite using `[map_sum]`. Simplify using `only [map_smul]`.
+-/
 theorem smul_mv [TopologicalSpace R] (g : HA R σ J) (u : Matrix (Fin a) (Fin a) (R ⊗[F] E))
     (X : Fin a → Fin n → R ⊗[F] E) : g • mv u X = mv u (g • X) := by
   funext b
@@ -217,6 +272,9 @@ theorem smul_mv [TopologicalSpace R] (g : HA R σ J) (u : Matrix (Fin a) (Fin a)
   rw [map_sum]
   simp only [map_smul]
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp [hR_zero_left]`. Consider the case `insert i t hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hR_add_left, ih]`.
+-/
 theorem hR_sum_left {ι : Type} (t : Finset ι) (x : ι → Fin n → R ⊗[F] E) (y : Fin n → R ⊗[F] E) :
     hR R σ J (∑ i ∈ t, x i) y = ∑ i ∈ t, hR R σ J (x i) y := by
   classical
@@ -224,10 +282,18 @@ theorem hR_sum_left {ι : Type} (t : Finset ι) (x : ι → Fin n → R ⊗[F] E
   | empty => simp [hR_zero_left]
   | insert i t hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, hR_add_left, ih]
 
+/- English proof (translation)
+The claim follows from `map_sum (GlobalTheory.UnitriangularCoeff.hRight R σ J x) y t`.
+-/
 theorem hR_sum_right {ι : Type} (t : Finset ι) (x : Fin n → R ⊗[F] E) (y : ι → Fin n → R ⊗[F] E) :
     hR R σ J x (∑ i ∈ t, y i) = ∑ i ∈ t, hR R σ J x (y i) :=
   map_sum (GlobalTheory.UnitriangularCoeff.hRight R σ J x) y t
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [gramR, mv, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply]`. Rewrite using `[hR_sum_left]`. Simplify using `only [hR_smul_left, hR_sum_right, GlobalTheory.UnitriangularCoeff.hR_smul_right, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by ring`.
+-/
 theorem gramR_mv (u : Matrix (Fin a) (Fin a) (R ⊗[F] E)) (X : Fin a → Fin n → R ⊗[F] E) :
     gramR R σ J (mv u X) = (u.map (sigR R σ)).transpose * gramR R σ J X * u := by
   ext i j
@@ -238,11 +304,17 @@ theorem gramR_mv (u : Matrix (Fin a) (Fin a) (R ⊗[F] E)) (X : Fin a → Fin n 
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[gramR, gramE, hE, hR, Formalism.UG.hform, ratTup, JR, sigR, inclR, Matrix.map_apply, mul_assoc]`.
+-/
 theorem gramR_ratTup (X : Fin a → Fin n → E) :
     gramR R σ J (ratTup (F := F) R X) = (gramE σ J X).map (inclR R) := by
   ext i j
   simp [gramR, gramE, hE, hR, Formalism.UG.hform, ratTup, JR, sigR, inclR, Matrix.map_apply, mul_assoc]
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `hR_lin g (X i) (X j)`.
+-/
 theorem gramR_smul [TopologicalSpace R] (g : HA R σ J) (X : Fin a → Fin n → R ⊗[F] E) :
     gramR R σ J (g • X) = gramR R σ J X := by
   ext i j
@@ -250,6 +322,23 @@ theorem gramR_smul [TopologicalSpace R] (g : HA R σ J) (X : Fin a → Fin n →
 
 end Gram
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM n J hJ v r P T hP hT μ ν hμ hν fib hfib μ0 hμ0 s hs f hf`. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9⟩` from `GlobalTheory.LocalUnitaryTop.top_facts F E σ hCM n J hJ v`. Use `haveI := h1`. Use `haveI := h2`. Use `haveI := h3`.
+
+Use `haveI := h4`. Use `haveI := h5`. Use `haveI := h6`. Use `haveI := h7`. Use `haveI := h8`.
+
+Use `haveI : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩`. Use `haveI : BorelSpace (HA (Fv F v) σ J) := ⟨rfl⟩`. Take `⟨⟨-, -, -, -, -, ⟨μG, hμG⟩, hright⟩, -⟩` from `GlobalTheory.LocalUnitaryUnimod.unimodularOver_adicCompletion F E σ hCM n J hJ v`. Use `haveI := hμG`. Use `haveI := hright μG hμG`.
+
+Take `⟨μ1, hμ1, -, hw⟩` from `GlobalTheory.T.exists_haar_frameStabiliser_compatible_fibre F E σ hCM n J hJ v r P T hP hT μ ν hμ hν fib hfib μG hμG`. Use `set x0 := ratTup (F := F) (Fv F v) (F0 P) with hx0def`. Use `set S := hermOf (Fv F v) σ (gramE σ J (F0 P)) hT with hS`. Establish `hgram : gramR (Fv F v) σ J x0 = (S : Matrix (Fin (r + 1)) (Fin (r + 1)) (Fv F v ⊗[F] E))` using `gramR_ratTup (Fv F v) σ J (F0 P)`. Take `⟨co, -, hco⟩` from `GlobalTheory.UnitriangularCoeff.exists_coeff F E σ hCM n J hJ v r P T hP`.
+
+Set `u : Matrix (Fin (r + 1)) (Fin (r + 1)) (Fv F v ⊗[F] E)` to `fun a b => if a = b then 1 else if h : a < b then co ⟨s, hs⟩ ⟨(a, b), h⟩ else 0`. Establish `hu1 : ∀ i, u i i = 1` using `fun i => by simp [u]`. Establish `hu2 : ∀ i j, j < i → u i j = 0`. Introduce `i j hij`. Simplify using `[u, hij.ne', not_lt.2 hij.le]`.
+
+Establish `hsu : s • x0 = mv u x0`. Use function extensionality and compare the values at `b`. Conclude with `(hco ⟨s, hs⟩ (co ⟨s, hs⟩)).1 rfl b`. Establish `hg : (u.map (sigR (Fv F v) σ)).transpose * (S : Matrix (Fin (r + 1)) (Fin (r + 1)) (Fv F v ⊗[F] E)) * u = (S : Matrix (Fin (r + 1)) (Fin (r + 1)) (Fv F v ⊗[F] E))`. Rewrite using `[← hgram, ← gramR_mv, ← hsu, gramR_smul]`.
+
+Establish `hfu` using `GlobalTheory.T.gramMap_fibreMeasure_unitriangular_invariant F E σ hCM n J hJ v (r + 1) μ ν hμ hν fib hfib S u hu1 hu2 hg`. Establish `hdet : IsUnit u.det`. Rewrite using `[det_unitriangular u hu1 hu2]`. Conclude with `isUnit_one`. Set `Rm` to `(mvHomeo (n := n) u hdet).toMeasurableEquiv`.
+
+Establish `hcl : IsClosed (MulAction.stabilizer (HA (Fv F v) σ J) x0 : Set (HA (Fv F v) σ J))`. Establish `hc : Continuous (fun g : HA (Fv F v) σ J => g • x0)` using `(h9 (r + 1)).2.comp (Continuous.prodMk continuous_id continuous_const)`. Conclude with `isClosed_singleton.preimage hc`. Conclude with `conj_lintegral_eq x0 hcl μG (fib S) μ1 hμ1 hw Rm (fun g x => (smul_mv (Fv F v) σ J g u x).symm) hfu s hsu μ0 hμ0 f hf`.
+-/
 theorem conj_preserves_haar : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (v : HeightOneSpectrum (𝓞 F)), ∀ (r : ℕ) (P : Frame E n r) (T : F), P.IsStd σ J T → ∀ (hT : ∀ i j, σ (gramE σ J (F0 P) j i) = gramE σ J (F0 P) i j), ∀ (μ : Measure (Fin (r + 1) → Fin n → Fv F v ⊗[F] E)) (ν : Measure (HermR (Fv F v) σ (r + 1))), μ.IsAddHaarMeasure → ν.IsAddHaarMeasure → ∀ fib : HermR (Fv F v) σ (r + 1) → Measure (Fin (r + 1) → Fin n → Fv F v ⊗[F] E), IsFibreFamily μ (gramR (Fv F v) σ J) Subtype.val {X | LinearIndependent (Fv F v ⊗[F] E) X} ν Set.univ fib → ∀ μ0 : Measure (S0 (Fv F v) σ J P), μ0.IsHaarMeasure → ∀ s ∈ Ssub (Fv F v) σ J P, ∀ f : HA (Fv F v) σ J → ℝ≥0∞, Measurable f → ∫⁻ h, f (s * (h : HA (Fv F v) σ J) * s⁻¹) ∂μ0 = ∫⁻ h, f (h : HA (Fv F v) σ J) ∂μ0 := by
   intro F E _ _ _ _ _ σ hCM n J hJ v r P T hP hT μ ν hμ hν fib hfib μ0 hμ0 s hs f hf
   obtain ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9⟩ := GlobalTheory.LocalUnitaryTop.top_facts F E σ hCM n J hJ v

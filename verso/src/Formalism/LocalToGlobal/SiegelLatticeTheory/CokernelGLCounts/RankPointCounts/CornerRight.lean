@@ -15,6 +15,11 @@ variable {K : Type*} [CommRing K] (cj : K →+* K) {r : ℕ}
 def cornerM (g : K) : Matrix (Fin (r + 1)) (Fin (r + 1)) K :=
   Matrix.of fun a b => if a = Fin.last r ∧ b = Fin.last r then g else 0
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, cornerM, Matrix.of_apply, cjT, Matrix.transpose_apply, Matrix.map_apply]`. Simplify using `only [mul_ite, mul_zero, ite_and, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[Finset.sum_eq_single (Fin.last r)]`. Simplify using `only [Finset.sum_ite_eq', Finset.mem_univ, if_true, if_pos rfl]`.
+
+Rewrite using `[hL i, hL j]`. Apply the tactic sequence `by_cases hi : i = Fin.last r <;> by_cases hj : j = Fin.last r <;> simp [hi, hj, hcj]`. Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules.
+-/
 theorem corner_left (L : Matrix (Fin (r + 1)) (Fin (r + 1)) K) (hL : ∀ i, L i (Fin.last r) = if i = Fin.last r then 1 else 0)
     (hcj : cj 1 = 1) (g : K) : L * cornerM (r := r) g * cjT cj L = cornerM g := by
   ext i j
@@ -27,6 +32,11 @@ theorem corner_left (L : Matrix (Fin (r + 1)) (Fin (r + 1)) K) (hL : ∀ i, L i 
   · intro b _ hb; simp [hb]
   · simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, cornerM, Matrix.of_apply, cjT, Matrix.transpose_apply, Matrix.map_apply]`. Simplify using `only [mul_ite, mul_zero, ite_and, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[hP i]`. Simplify using `only [ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+
+Rewrite using `[hP j]`. Apply the tactic sequence `by_cases hi : i = Fin.last r <;> by_cases hj : j = Fin.last r <;> simp [hi, hj, hcj]`.
+-/
 theorem corner_right (P : Matrix (Fin (r + 1)) (Fin (r + 1)) K) (hP : ∀ j, P (Fin.last r) j = if j = Fin.last r then 1 else 0)
     (hcj : cj 1 = 1) (g : K) : cjT cj P * cornerM (r := r) g * P = cornerM g := by
   ext i j
@@ -41,6 +51,9 @@ end Corner
 
 variable {D : D7} (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [gDiag, cornerM, Matrix.of_apply]`. Distinguish the cases in `h : a = Fin.last D.R.rS ∧ b = Fin.last D.R.rS`. Rewrite using `[if_pos h, if_pos h, h.1, h.2]`. Rewrite using `[if_neg h, if_neg h, map_zero, mul_zero]`.
+-/
 theorem gDiag_corner (p : PlF D) (T : D.host.E) :
     gDiag δ M p T = cornerM (frFac δ p (Fin.last D.R.rS) * (M p).L.cj (frFac δ p (Fin.last D.R.rS)) *
       (D.s.atP p).ιE (-T)) := by
@@ -50,6 +63,19 @@ theorem gDiag_corner (p : PlF D) (T : D.host.E) :
   · rw [if_pos h, if_pos h, h.1, h.2]
   · rw [if_neg h, if_neg h, map_zero, mul_zero]
 
+/- English proof (translation)
+Use `set cj : (D.s.atP p).Ep →+* (D.s.atP p).Ep := ((M p).L.cj : (D.s.atP p).Ep →+* (D.s.atP p).Ep) with hcj`. Establish `hinv : ∀ x, cj (cj x) = x` using `fun x => (M p).L.cj_cj x`. Use `⟨Matrix.fromBlocks (cjT cj L) 0 0 P, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`.
+
+Conclude with `Formalism.MainNotions.LocalModelPeriodLattices.cj_mem_O (M p).L _ (hLO j i)`. Conclude with `(M p).L.O.zero_mem`. Conclude with `(M p).L.O.zero_mem`. Conclude with `hPO i j`. Take `⟨y, hy, hLy⟩` from `hLu`.
+
+Take `⟨z, hz, hPz⟩` from `hPu`. Use `⟨cj y * z, (M p).L.O.mul_mem (Formalism.MainNotions.LocalModelPeriodLattices.cj_mem_O (M p).L _ hy) hz, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_fromBlocks_zero₂₁]`. Establish `hd : (cjT cj L).det = cj L.det`. Unfold `cjT`.
+
+Rewrite using `[Matrix.det_transpose]`. Conclude with `(RingHom.map_det cj L).symm`. Rewrite using `[hd]`. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : GaPlus M δ p T T' Z' = GaLoc M δ p T T' Z'` using `by unfold GaPlus; rw [hs]`.
+
+Establish `e2 : GaPlus M δ p T T' Z = GaLoc M δ p T T' Z` using `by unfold GaPlus; rw [hs]`. Rewrite using `[e1, e2, gaLoc_blocks δ M hA, gaLoc_blocks δ M hA]`. Use `show _ = cjT cj _ * _ * _`. Use `(block_cong cj hinv _ _ _ _ _ _ _ _ ?_ ?_ ?_).symm` and prove the remaining obligations. Rewrite using `[cjT_cjT cj hinv, gDiag_corner]`.
+
+Conclude with `corner_left cj L hL (map_one cj) _`. Rewrite using `[cjT_cjT cj hinv, hX]`. Rewrite using `[gDiag_corner]`. Conclude with `corner_right cj P hP (map_one cj) _`.
+-/
 theorem gaCong_L (hA : ∀ q, Agree δ M q) (p : PlF D) (hs : (M p).split = none) (T T' : D.host.E) (Z Z' : MatZ D)
     (L P : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (D.s.atP p).Ep)
     (hL : ∀ i, L i (Fin.last D.R.rS) = if i = Fin.last D.R.rS then 1 else 0)

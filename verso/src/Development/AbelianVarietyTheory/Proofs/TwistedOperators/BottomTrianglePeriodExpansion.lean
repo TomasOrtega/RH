@@ -20,6 +20,19 @@ open GlobalTheory.RowEx MeasureTheory
 
 namespace GlobalTheory.BotFormulaI'
 
+/- English proof (translation)
+Introduce `D T _ L μ₀ sc G W i j A A' WW X hP hI hL hX`. Take `⟨v, N, z, w, κ, hv, hz, hw, hκ1, hκ2, hcls⟩` from `GlobalTheory.T.exists_weighted_average_haar_lifted hP hI hL hX`. Take `⟨n, hproj⟩` from `GlobalTheory.T.exists_degree_bound_fourier_lifted hP hI hL hX`. Take `⟨Ω, hΩ, hdict⟩` from `GlobalTheory.T.period_algebraic_lifted_kernel hP hI hL hX n`. Take `⟨δ, hδ⟩` from `GlobalTheory.NormSum.exists_crv_top D`.
+
+Take `⟨t0, ht0⟩` from `((hI D).t0Ex ⊤ δ hδ).1`. Establish `hv' : (v : ℂ) ≠ 0` using `by exact_mod_cast hv.ne'`. Use `⟨(v : ℂ) * Ω, mul_ne_zero hv' hΩ, fun t h hh k => ?_⟩` and prove the remaining obligations. Use `choose m r U hr heq using fun l => hproj κ hκ1 hκ2 t (z l) (hz l) h hh k`. Use `set S : ℂ := ∑ l, ((w l : ℂ))⁻¹ * ∑ p, r l p * (X.ker' W.ψ W.θ t (GlobalTheory.NormSum.minorPol D (U l p)) h (z l) / Ω) with hSdef`.
+
+Establish `hval : X.I' W.ψ W.θ t (MvPolynomial.monomial k 1) h = (v : ℂ) * Ω * S`. Rewrite using `[hcls t _ h hh, hSdef]`. Simplify using `only [heq, Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `p _`. Clear the denominators using the available nonvanishing facts. Establish `hS : IsAlgebraic ℚ S`. Rewrite `*` using `[← mem_algebraicClosure_iff]`.
+
+Use `sum_mem fun l _ => mul_mem (inv_mem ?_) (sum_mem fun p _ => mul_mem ?_ ?_)` and prove the remaining obligations. Rewrite using `[mem_algebraicClosure_iff]`. Simplify using `using (isAlgebraic_algebraMap (R := ℚ) (A := ℂ) ((w l : ℚ)))`. Rewrite using `[mem_algebraicClosure_iff]`. Conclude with `hr l p`.
+
+Rewrite using `[mem_algebraicClosure_iff]`. Conclude with `hdict t (z l) (hz l) h hh (U l p)`. Use `⟨1, fun _ => S, fun _ => 1, fun _ => hS, fun _ => ⟨δ, t0, 1, GlobalTheory.NormSum.RankZero.pair0 hδ ht0, 1, fun τ j => j.elim0, ((GlobalTheory.NormSum.RankZero.normSumPairRankZeroOfCurve_coord_norm hδ ht0).1 _ _).symm⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hval]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_period_I'_eq_algebraic_sum : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
     IsBottomTri W i j X →

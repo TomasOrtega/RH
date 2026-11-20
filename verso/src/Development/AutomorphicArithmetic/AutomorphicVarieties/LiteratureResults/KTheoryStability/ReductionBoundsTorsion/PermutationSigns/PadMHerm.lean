@@ -41,6 +41,11 @@ def ncyc {q : ℕ} (σ : Equiv.Perm (Fin q)) : ℕ := Nat.card (Quotient (Equiv.
 def padM {n M : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin M) (Fin M) ℂ :=
   Matrix.of fun i j => if hij : (i : ℕ) < n ∧ (j : ℕ) < n then A ⟨i, hij.1⟩ ⟨j, hij.2⟩ else 0
 
+/- English proof (translation)
+Apply `Matrix.IsHermitian.ext` to reduce the goal to its premises. Introduce `i j`. Distinguish the cases in `h : (i : ℕ) < n ∧ (j : ℕ) < n`. Establish `h' : (j : ℕ) < n ∧ (i : ℕ) < n` using `⟨h.2, h.1⟩`. Simplify using `only [padM, Matrix.of_apply, dif_pos h, dif_pos h']`.
+
+Conclude with `hA.apply _ _`. Establish `h' : ¬((j : ℕ) < n ∧ (i : ℕ) < n)` using `fun h' => h ⟨h'.2, h'.1⟩`. Simplify using `[padM, h, h']`.
+-/
 theorem padM_herm {n M : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian) :
     (padM (M := M) A).IsHermitian := by
   apply Matrix.IsHermitian.ext
@@ -72,6 +77,11 @@ def eL (n M : ℕ) : HS L M :=
       · subst e; simp [padMat]
       · simp [padMat, h, e, Ne.symm e]
 
+/- English proof (translation)
+Rewrite using `[Matrix.reindex_apply]`. Apply `Matrix.IsHermitian.submatrix` to reduce the goal to its premises. Apply `Matrix.IsHermitian.ext` to reduce the goal to its premises. Introduce `x y`. Rewrite using `[Matrix.kroneckerMap_apply, Matrix.kroneckerMap_apply, star_mul', hA.apply]`.
+
+Use `congr 1`. Distinguish the cases in `e : x.1 = y.1`. Simplify using `[Matrix.one_apply, e]`. Simplify using `[Matrix.one_apply, e, Ne.symm e]`.
+-/
 theorem blk_herm {d n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian) :
     (Matrix.reindex finProdFinEquiv finProdFinEquiv
       ((1 : Matrix (Fin d) (Fin d) ℂ) ⊗ₖ A)).IsHermitian := by

@@ -16,39 +16,65 @@ namespace GlobalTheory.Vert.Model.Hom
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B B' : GlobalTheory.Vert.Model O}
   (f : GlobalTheory.Vert.Model.Hom B' B)
 
+/- English proof (translation)
+Establish `h` using `f.fibreDeg_prod (ι := Fin 0) (L := finZeroElim) finZeroElim`. Simplify using `only [Finset.univ_eq_empty, Finset.prod_empty, Fintype.card_fin] at h`. Rewrite using `[h, interNum_of_isEmpty]`.
+-/
 theorem fibreDeg_one_eq_ite : f.fibreDeg 1 =
     if 0 = f.relDim then (chi f.fnField (structureModule f.genFibre) : ℚ) else 0 := by
   have h := f.fibreDeg_prod (ι := Fin 0) (L := finZeroElim) finZeroElim
   simp only [Finset.univ_eq_empty, Finset.prod_empty, Fintype.card_fin] at h
   rw [h, interNum_of_isEmpty]
 
+/- English proof (translation)
+The claim follows from `QuasiCompact.compactSpace_of_compactSpace f.genFibreStr`.
+-/
 theorem compactSpace_genFibre : CompactSpace f.genFibre :=
   QuasiCompact.compactSpace_of_compactSpace f.genFibreStr
 
+/- English proof (translation)
+The claim follows from `have := f.compactSpace_genFibre isNoetherian_of_locallyOfFiniteType_field f.genFibreStr`.
+-/
 theorem isNoetherian_genFibre : AlgebraicGeometry.IsNoetherian f.genFibre :=
   have := f.compactSpace_genFibre
   isNoetherian_of_locallyOfFiniteType_field f.genFibreStr
 
+/- English proof (translation)
+Establish `h` using `suppDim_structureModule.trans_le f.dim_genFibre_le`. Rewrite `h` using `[hr]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem suppDim_genFibre_le_zero (hr : f.relDim = 0) :
     suppDim (structureModule f.genFibre) ≤ 0 := by
   have h := suppDim_structureModule.trans_le f.dim_genFibre_le
   rw [hr] at h
   exact_mod_cast h
 
+/- English proof (translation)
+The claim follows from `((coh.zeroUnitEquiv f.genFibre).restrictScalars f.fnField).finrank_eq`.
+-/
 theorem hdim_zero_genFibre : hdim f.fnField (structureModule f.genFibre) 0 =
     Module.finrank f.fnField Γ(f.genFibre, ⊤) :=
   ((coh.zeroUnitEquiv f.genFibre).restrictScalars f.fnField).finrank_eq
 
+/- English proof (translation)
+Use `f.compactSpace_genFibre` as an intermediate fact. Use `(finiteCohTwists_of_suppDim_le_zero f.genFibreStr (f.suppDim_genFibre_le_zero hr)).finiteCoh.finite 0` as an intermediate fact. Conclude with `Module.Finite.equiv ((coh.zeroUnitEquiv f.genFibre).restrictScalars f.fnField)`.
+-/
 theorem finite_Γ_genFibre (hr : f.relDim = 0) : Module.Finite f.fnField Γ(f.genFibre, ⊤) := by
   have := f.compactSpace_genFibre
   have := (finiteCohTwists_of_suppDim_le_zero f.genFibreStr
     (f.suppDim_genFibre_le_zero hr)).finiteCoh.finite 0
   exact Module.Finite.equiv ((coh.zeroUnitEquiv f.genFibre).restrictScalars f.fnField)
 
+/- English proof (translation)
+The claim follows from `have : Nonempty (⊤ : f.genFibre.Opens) := ⟨⟨Classical.arbitrary f.genFibre, trivial⟩⟩ Scheme.component_nontrivial f.genFibre ⊤`.
+-/
 theorem nontrivial_Γ_genFibre : Nontrivial Γ(f.genFibre, ⊤) :=
   have : Nonempty (⊤ : f.genFibre.Opens) := ⟨⟨Classical.arbitrary f.genFibre, trivial⟩⟩
   Scheme.component_nontrivial f.genFibre ⊤
 
+/- English proof (translation)
+Use `f.isNoetherian_genFibre` as an intermediate fact. Use `f.finite_Γ_genFibre hr` as an intermediate fact. Use `f.nontrivial_Γ_genFibre` as an intermediate fact. Use `⟨Module.finrank_pos, ?_⟩` and prove the remaining obligations. Rewrite using `[f.fibreDeg_one_eq_ite, if_pos hr.symm, chi_eq_hdim_zero_of_suppDim_le_zero f.fnField (f.suppDim_genFibre_le_zero hr), f.hdim_zero_genFibre]`.
+
+Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem fibreDeg_one_of_relDim_eq_zero (O : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] (B B' : GlobalTheory.Vert.Model O) (f : GlobalTheory.Vert.Model.Hom B' B)
     (hr : f.relDim = 0) :

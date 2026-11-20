@@ -9,11 +9,20 @@ namespace Formalism.L2.SG.Pf
 
 open Formalism.L2.SG.TermOp.Vanish
 
+/- English proof (translation)
+The claim follows from `nilradical_conj_level_of_mem fun _ X u => unipotent_in_level X u`.
+-/
 theorem nilradical_conj_level' : NilradicalConjLevel :=
   nilradical_conj_level_of_mem fun _ X u => unipotent_in_level X u
 
+/- English proof (translation)
+The claim follows from `chiTrivialC_of_nconj nilradical_conj_level'`.
+-/
 theorem chiTrivialC_outright : ChiTrivialC := chiTrivialC_of_nconj nilradical_conj_level'
 
+/- English proof (translation)
+The claim follows from `lemmaVC_of_nconj hA nilradical_conj_level' h3 h4`.
+-/
 theorem lemmaVC_of_rest (hA : AvgCore) (h3 : RCocompactC) (h4 : NonRelCharC) : Formalism.L2.SG.Full.LemmaVC :=
   lemmaVC_of_nconj hA nilradical_conj_level' h3 h4
 

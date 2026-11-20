@@ -8,6 +8,9 @@ noncomputable section
 
 namespace Formalism.FourierDecayAlt.P.PBM
 
+/- English proof (translation)
+Establish `h0` using `p.hT 0 (Nat.zero_le _)`. Establish `hr` using `p.hT P.r le_rfl`. Conclude with `vecV_append_singleton_eq_vecV_sliceAt P.k P.r (P.r - P.r) (Nat.sub_self _) (by omega) p.T.base (p.T.bs P.r) (p.T.z_lev P.r le_rfl) (p.T.z'_lev P.r le_rfl) (p.T.π_lev P.r le_rfl) (p.T.π'_lev P.r le_rfl) h0.2.2 h0.1 h0.2.1 hr.1 hr.2.1 hr.2.2 p.ν' p.m₀ ν'r m₀r hν hm p.hF (CompactCoe …`.
+-/
 theorem top_unipotent_integral_positive (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq)
     (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (h : C.LPt) (ζ : ℂ) (hh : D.IsLocPt h P.r)
@@ -25,6 +28,9 @@ theorem top_unipotent_integral_positive (Wp Wq : Type) [NormedAddCommGroup Wp] [
     h0.2.2 h0.1 h0.2.1 hr.1 hr.2.1 hr.2.2 p.ν' p.m₀ ν'r m₀r hν hm p.hF
     (CompactCoefficientAppend.baseFrame_last p ν'r m₀r hν hm) h hh ζ hζ F hF hR _
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P p F h ζ hh ν'r m₀r hF hζ hν hm`. Distinguish the cases in `hR : P.r = 0`. Conclude with `CompactCoefficientAppend.top_unipotent_integral_zero Wp Wq P p F h ζ hh ν'r m₀r hR hF hζ hν hm`. Conclude with `top_unipotent_integral_positive Wp Wq P p F h ζ hh ν'r m₀r hF hζ hν hm (by omega)`.
+-/
 theorem highestUnipotentIntegral : PBI.HighestUnipotentIntegral := by
   intro Wp Wq _ _ _ _ _ _ P p F h ζ hh ν'r m₀r hF hζ hν hm
   by_cases hR : P.r = 0
@@ -35,6 +41,9 @@ end Formalism.FourierDecayAlt.P.PBM
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `PBM.highestUnipotentIntegral`.
+-/
 theorem top_unipotent_integral : PBI.HighestUnipotentIntegral := PBM.highestUnipotentIntegral
 
 end Formalism.FourierDecayAlt.P

@@ -12,6 +12,9 @@ namespace GlobalTheory.CompanionTheory.LatPolyB
 
 variable (l : ℕ) [Fact l.Prime]
 
+/- English proof (translation)
+Establish `h` using `PadicInt.unitCoeff_spec hx`. Use `⟨x.valuation, ((PadicInt.unitCoeff hx)⁻¹ : ℤ_[l]ˣ), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem dvd_pow_of_ne_zero {x : ℤ_[l]} (hx : x ≠ 0) : ∃ n : ℕ, x ∣ (l : ℤ_[l]) ^ n := by
   have h := PadicInt.unitCoeff_spec hx
   refine ⟨x.valuation, ((PadicInt.unitCoeff hx)⁻¹ : ℤ_[l]ˣ), ?_⟩
@@ -25,8 +28,16 @@ theorem dvd_pow_of_ne_zero {x : ℤ_[l]} (hx : x ≠ 0) : ∃ n : ℕ, x ∣ (l 
 def quotX : (ℤ_[l][X] ⧸ Ideal.span {(X : ℤ_[l][X])}) ≃+* ℤ_[l] :=
   (Ideal.quotEquivOfEq (by simp)).trans (Polynomial.quotientSpanXSubCAlgEquiv (0 : ℤ_[l])).toRingEquiv
 
+/- English proof (translation)
+The claim follows from `map_natCast _ n`.
+-/
 theorem quotX_natCast (n : ℕ) : quotX l (n : ℤ_[l][X] ⧸ Ideal.span {(X : ℤ_[l][X])}) = n := map_natCast _ n
 
+/- English proof (translation)
+Establish `h : IsAdicComplete (Ideal.span {(l : ℤ_[l])}) ℤ_[l]`. Rewrite using `[← PadicInt.maximalIdeal_eq_span_p]`. Use `infer_instance`. Establish `e : (Ideal.span {(l : ℤ_[l])}).map ((quotX l).symm : ℤ_[l] →+* _) = Ideal.span {((l : ℕ) : ℤ_[l][X] ⧸ Ideal.span {(X : ℤ_[l][X])})}`. Rewrite using `[Ideal.map_span, Set.image_singleton]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← e]`. Conclude with `(IsAdicComplete.congr_ringEquiv _ (quotX l).symm).2 h`.
+-/
 theorem cpl : IsAdicComplete (Ideal.span {((l : ℕ) : ℤ_[l][X] ⧸ Ideal.span {(X : ℤ_[l][X])})})
     (ℤ_[l][X] ⧸ Ideal.span {(X : ℤ_[l][X])}) := by
   have h : IsAdicComplete (Ideal.span {(l : ℤ_[l])}) ℤ_[l] := by
@@ -38,6 +49,13 @@ theorem cpl : IsAdicComplete (Ideal.span {((l : ℕ) : ℤ_[l][X] ⧸ Ideal.span
   rw [← e]
   exact (IsAdicComplete.congr_ringEquiv _ (quotX l).symm).2 h
 
+/- English proof (translation)
+Take `⟨b', rfl⟩` from `Ideal.Quotient.mk_surjective b`. Simplify using `only [RingHom.comp_apply, Polynomial.coe_mapRingHom, Polynomial.map_X] at h`. Rewrite `h` using `[← map_pow, ← map_mul, ← map_pow, ← map_mul, Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Establish `h1 : (X : ℚ_[l][X]) ^ (i + 1) ∣ a.map (PadicInt.Coe.ringHom (p` using `l)) * X ^ i := by`. Establish `h2 : (X : ℚ_[l][X]) ^ (i + 1) ∣ a.map (PadicInt.Coe.ringHom (p` using `l)) * X ^ i - X ^ (i + 1) * b' := (pow_dvd_pow _ hi).trans h`.
+
+Conclude with `(dvd_sub_left (Dvd.intro _ rfl)).1 h2`. Rewrite `h1` using `[pow_succ', mul_comm]`. Establish `h3 : (X : ℚ_[l][X]) ∣ a.map (PadicInt.Coe.ringHom (p` using `l)) := (mul_dvd_mul_iff_left (pow_ne_zero i Polynomial.X_ne_zero)).1 (by simpa [pow_succ, mul_comm, mul_left_comm, mul_assoc] using h1)`. Rewrite `h3` using `[Polynomial.X_dvd_iff, Polynomial.coeff_map]`. Rewrite using `[Polynomial.X_dvd_iff]`.
+
+Conclude with `PadicInt.coe_eq_zero.1 h3`.
+-/
 theorem padic_poly_graded_smul_pow (m i : ℕ) (hi : i < m) (a : ℤ_[l][X])
     (b : ℚ_[l][X] ⧸ Ideal.span {(X : ℚ_[l][X]) ^ m})
     (h : ((Ideal.Quotient.mk (Ideal.span {(X : ℚ_[l][X]) ^ m})).comp (Polynomial.mapRingHom (PadicInt.Coe.ringHom (p := l)))) a *
@@ -58,6 +76,17 @@ theorem padic_poly_graded_smul_pow (m i : ℕ) (hi : i < m) (a : ℤ_[l][X])
   rw [Polynomial.X_dvd_iff]
   exact PadicInt.coe_eq_zero.1 h3
 
+/- English proof (translation)
+Introduce `l _ m hm`. Establish `hl0 : (l : ℤ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Use `{ one_le := hm nil := ?_ gr := fun i hi a b h => padic_poly_graded_smul_pow l m i hi a b h dom := (quotX l).toMulEquiv.isDomain _ val := fun x y => ?_ dv := fun x hx => ?_ l0 := ?_ cpl := cpl l unit := fun n hn => ?_ }` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, Polynomial.coe_mapRingHom, Polynomial.map_X]`. Rewrite using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `Ideal.subset_span rfl`. Break down `ValuationRing.dvd_total (quotX l x) (quotX l y) with h | h` into its components or cases. Conclude with `Or.inl ((map_dvd_iff (quotX l)).1 h)`. Conclude with `Or.inr ((map_dvd_iff (quotX l)).1 h)`. Take `⟨n, hn⟩` from `dvd_pow_of_ne_zero l (x := quotX l x) (by simpa using hx)`.
+
+Use `⟨n, (map_dvd_iff (quotX l)).1 ?_⟩` and prove the remaining obligations. Simplify `hn` using `[quotX_natCast]`. Introduce `h`. Apply `hl0` to reduce the goal to its premises. Use `congrArg (quotX l) h` as an intermediate fact.
+
+Simplify `this` using `[quotX_natCast]`. Establish `hn0 : (n : ℤ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Take `⟨k, u, hu⟩` from `dvd_pow_of_ne_zero l hn0`. Use `⟨k, C u, ?_⟩` and prove the remaining obligations. Use `congrArg (C : ℤ_[l] →+* ℤ_[l][X]) hu` as an intermediate fact.
+
+Simplify using `using this.symm`.
+-/
 theorem hyp : ∀ (l : ℕ) [Fact l.Prime] (m : ℕ), 1 ≤ m → Lat.Hyp ((Ideal.Quotient.mk (Ideal.span {(Polynomial.X : Polynomial ℚ_[l]) ^ m})).comp (Polynomial.mapRingHom (PadicInt.Coe.ringHom (p := l)))) Polynomial.X l m := by
   intro l _ m hm
   have hl0 : (l : ℤ_[l]) ≠ 0 := Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero

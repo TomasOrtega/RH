@@ -5,6 +5,11 @@ namespace Formalism.HermitianLattices.GenusMassVolumes
 
 open Finset
 
+/- English proof (translation)
+Establish `hne : ∃ j, 0 < P j`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `: ∑ j, P j ≤ 0` using `sum_nonpos fun j _ => hc j`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨j, hj⟩` from `hne`. Conclude with `lt_of_lt_of_le (mul_pos hj (Real.exp_pos _)) (single_le_sum (f := fun j => P j * Real.exp (t * y j)) (fun i _ => mul_nonneg (hP i) (Real.exp_pos _).le) (mem_univ j))`.
+-/
 private lemma exponential_moment_pos {ι : Type} [Fintype ι] (P y : ι → ℝ) (hP : ∀ j, 0 ≤ P j) (h1 : ∑ j, P j = 1)
     (t : ℝ) : 0 < ∑ j, P j * Real.exp (t * y j) := by
   have hne : ∃ j, 0 < P j := by
@@ -17,6 +22,23 @@ private lemma exponential_moment_pos {ι : Type} [Fintype ι] (P y : ι → ℝ)
     (single_le_sum (f := fun j => P j * Real.exp (t * y j))
       (fun i _ => mul_nonneg (hP i) (Real.exp_pos _).le) (mem_univ j))
 
+/- English proof (translation)
+Establish `hzero : ∀ u : ℝ, ∑ j, P j * Real.exp (u * y j) = 0 → ∀ j, P j = 0`. Introduce `u hu j`. Use `(sum_eq_zero_iff_of_nonneg (fun i _ => mul_nonneg (hP i) (Real.exp_pos (u * y i)).le)).1 hu j (mem_univ j)` as an intermediate fact. Conclude with `(mul_eq_zero.1 this).resolve_right (Real.exp_pos _).ne'`. Establish `hL0 : (∀ j, P j = 0) → ∑ j, P j * Real.exp ((a * s + b * t) * y j) = 0`.
+
+Introduce `h0`. Simplify using `[h0]`. Establish `hS0 : 0 ≤ ∑ j, P j * Real.exp (s * y j)` using `sum_nonneg fun j _ => mul_nonneg (hP j) (Real.exp_pos _).le`. Establish `hT0 : 0 ≤ ∑ j, P j * Real.exp (t * y j)` using `sum_nonneg fun j _ => mul_nonneg (hP j) (Real.exp_pos _).le`. Break down `hS0.eq_or_lt with hS | hS` into its components or cases.
+
+Rewrite using `[hL0 (hzero s hS.symm), ← hS, Real.zero_rpow ha.ne', zero_mul]`. Break down `hT0.eq_or_lt with hT | hT` into its components or cases. Rewrite using `[hL0 (hzero t hT.symm), ← hT, Real.zero_rpow hb.ne', mul_zero]`. Use `set S := ∑ j, P j * Real.exp (s * y j) with hSdef`. Use `set T := ∑ j, P j * Real.exp (t * y j) with hTdef`.
+
+Establish `key : ∀ j, Real.exp ((a * s + b * t) * y j) = Real.exp (s * y j) ^ a * Real.exp (t * y j) ^ b`. Introduce `j`. Rewrite using `[← Real.exp_mul, ← Real.exp_mul, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hSa : 0 < S ^ a` using `Real.rpow_pos_of_pos hS a`. Establish `hTb : 0 < T ^ b` using `Real.rpow_pos_of_pos hT b`. Establish `pt : ∀ j, P j * Real.exp ((a * s + b * t) * y j) / (S ^ a * T ^ b) ≤ a * (P j * Real.exp (s * y j) / S) + b * (P j * Real.exp (t * y j) / T)`. Introduce `j`. Establish `g` using `Real.geom_mean_le_arith_mean2_weighted ha.le hb.le (div_nonneg (Real.exp_pos (s * y j)).le hS.le) (div_nonneg (Real.exp_pos (t * y j)).le hT.le) hab`.
+
+Rewrite `g` using `[Real.div_rpow (Real.exp_pos _).le hS.le, Real.div_rpow (Real.exp_pos _).le hT.le]`. Rewrite using `[key j]`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Use `_ ≤ P j * (a * (Real.exp (s * y j) / S) + b * (Real.exp (t * y j) / T)) := mul_le_mul_of_nonneg_left g (hP j)`.
+
+Use `_ = a * (P j * Real.exp (s * y j) / S) + b * (P j * Real.exp (t * y j) / T) := by ring`. Establish `hsum` using `sum_le_sum fun j (_ : j ∈ univ) => pt j`. Establish `e1 : ∑ j, (a * (P j * Real.exp (s * y j) / S) + b * (P j * Real.exp (t * y j) / T)) = 1`. Simplify using `only [sum_add_distrib, ← mul_sum, ← sum_div]`. Rewrite using `[← hSdef, ← hTdef, div_self hS.ne', div_self hT.ne', mul_one, mul_one, hab]`.
+
+Rewrite `hsum` using `[e1, ← sum_div, div_le_one (mul_pos hSa hTb)]`. Conclude with `hsum`.
+-/
 private lemma holder_exponential_moments {ι : Type} [Fintype ι] (P y : ι → ℝ) (hP : ∀ j, 0 ≤ P j)
     (s t a b : ℝ) (ha : 0 < a) (hb : 0 < b) (hab : a + b = 1) :
     ∑ j, P j * Real.exp ((a * s + b * t) * y j) ≤
@@ -67,6 +89,21 @@ private lemma holder_exponential_moments {ι : Type} [Fintype ι] (P y : ι → 
   rw [e1, ← sum_div, div_le_one (mul_pos hSa hTb)] at hsum
   exact hsum
 
+/- English proof (translation)
+Introduce `ι _ P y hP h1`. Establish `hpos` using `fun t => exponential_moment_pos P y hP h1 t`. Establish `hconv : ConvexOn ℝ Set.univ (fun t : ℝ => Real.log (∑ j, P j * Real.exp (t * y j)))`. Use `⟨convex_univ, ?_⟩` and prove the remaining obligations. Introduce `s _ t _ a b ha hb hab`.
+
+Simplify using `only [smul_eq_mul]`. Break down `ha.eq_or_lt with ha0 | ha0` into its components or cases. Substitute `ha0` using the available equality. Establish `hb1 : b = 1` using `by linarith`. Substitute `hb1` using the available equality.
+
+Simplify using the standard rewrite rules. Break down `hb.eq_or_lt with hb0 | hb0` into its components or cases. Substitute `hb0` using the available equality. Establish `ha1 : a = 1` using `by linarith`. Substitute `ha1` using the available equality.
+
+Simplify using the standard rewrite rules. Establish `hh` using `holder_exponential_moments P y hP s t a b ha0 hb0 hab`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.log_mul (Real.rpow_pos_of_pos (hpos s) a).ne' (Real.rpow_pos_of_pos (hpos t) b).ne', Real.log_rpow (hpos s), Real.log_rpow (hpos t)]`. Use `⟨hconv, ?_⟩` and prove the remaining obligations.
+
+Introduce `t₀ t ht₀ ht`. Establish `htpos : 0 < t` using `lt_of_lt_of_le ht₀ ht`. Establish `ht0ne : t₀ ≠ 0` using `ht₀.ne'`. Establish `htne : t ≠ 0` using `htpos.ne'`. Establish `hf0 : Real.log (∑ j, P j * Real.exp (0 * y j)) = 0` using `by simp [h1]`.
+
+Establish `hc` using `hconv.2 (Set.mem_univ t) (Set.mem_univ 0) (div_nonneg ht₀.le htpos.le) (sub_nonneg.2 ((div_le_one htpos).2 ht)) (by ring)`. Simplify using `only [smul_eq_mul, mul_zero, add_zero, hf0] at hc`. Establish `e : t₀ / t * t = t₀` using `by field_simp`. Rewrite `hc` using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← mul_assoc, div_mul_div_comm, mul_comm t t₀, div_self (mul_ne_zero ht0ne htne), one_mul]`.
+-/
 theorem log_moment_convexity : LogMomentConvexity := by
   intro ι _ P y hP h1
   have hpos := fun t => exponential_moment_pos P y hP h1 t
@@ -109,11 +146,23 @@ theorem log_moment_convexity : LogMomentConvexity := by
     _ = Real.log (∑ j, P j * Real.exp (t * y j)) := by
         rw [← mul_assoc, div_mul_div_comm, mul_comm t t₀, div_self (mul_ne_zero ht0ne htne), one_mul]
 
+/- English proof (translation)
+Rewrite using `[Real.Gamma_add_one (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 private lemma half_le_gamma_succ (x : ℝ) (hx : 1 ≤ x) (h : 1 / 2 ≤ Real.Gamma x) :
     1 / 2 ≤ Real.Gamma (x + 1) := by
   rw [Real.Gamma_add_one (by linarith)]
   nlinarith
 
+/- English proof (translation)
+Use `revert hn`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `hn`. Break down `(show n = 2 ∨ n = 3 ∨ 4 ≤ n by omega) with rfl | rfl | h4` into its components or cases.
+
+Evaluate the numerical expressions using `[Real.Gamma_one]`. Establish `e : ((3 : ℕ) : ℝ) / 2 = 1 / 2 + 1` using `by norm_num`. Rewrite using `[e, Real.Gamma_add_one (by norm_num), Real.Gamma_one_half_eq]`. Establish `: (1 : ℝ) ≤ Real.sqrt Real.pi`. Rewrite using `[← Real.sqrt_one]`.
+
+Conclude with `Real.sqrt_le_sqrt (by linarith [Real.pi_gt_three])`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : (n : ℝ) / 2 = ((n - 2 : ℕ) : ℝ) / 2 + 1`. Rewrite using `[Nat.cast_sub (by omega)]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hx : (2 : ℝ) ≤ ((n - 2 : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 2 ≤ n - 2)`. Rewrite using `[e]`. Conclude with `half_le_gamma_succ _ (by linarith) (ih (n - 2) (by omega) (by omega))`.
+-/
 private lemma half_le_gamma_half_nat (n : ℕ) (hn : 2 ≤ n) : 1 / 2 ≤ Real.Gamma ((n : ℝ) / 2) := by
   revert hn
   induction n using Nat.strong_induction_on with
@@ -135,6 +184,25 @@ private lemma half_le_gamma_half_nat (n : ℕ) (hn : 2 ≤ n) : 1 / 2 ≤ Real.G
       rw [e]
       exact half_le_gamma_succ _ (by linarith) (ih (n - 2) (by omega) (by omega))
 
+/- English proof (translation)
+Use `⟨20, ?_⟩` and prove the remaining obligations. Introduce `n Q hn hQ`. Establish `hn2 : (2 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hn0 : (0 : ℝ) ≤ n` using `by linarith`. Establish `hl2a` using `Real.log_two_gt_d9`.
+
+Establish `hl2b` using `Real.log_two_lt_d9`. Establish `hL : Real.log 2 ≤ Real.log n` using `Real.log_le_log (by norm_num) hn2`. Establish `hnL : (n : ℝ) * Real.log 2 ≤ n * Real.log n` using `mul_le_mul_of_nonneg_left hL hn0`. Establish `hnl2 : (0.6931471803 : ℝ) * n ≤ n * Real.log 2` using `by nlinarith`. Establish `hQpos : 0 < Q` using `by nlinarith`.
+
+Establish `h2n : (0 : ℝ) < 2 * n` using `by linarith`. Establish `hlogQ : Real.log Q ≤ Q / (2 * n) - 1 + (Real.log 2 + Real.log n)`. Establish `h1` using `Real.log_le_sub_one_of_pos (div_pos hQpos h2n)`. Rewrite `h1` using `[Real.log_div hQpos.ne' h2n.ne', Real.log_mul (by norm_num) (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hm : (n : ℝ) / 2 * Real.log Q ≤ Q / 4 - n / 2 + n / 2 * Real.log 2 + n / 2 * Real.log n`. Establish `h1` using `mul_le_mul_of_nonneg_left hlogQ (by linarith : (0 : ℝ) ≤ n / 2)`. Establish `e : (n : ℝ) / 2 * (Q / (2 * n) - 1 + (Real.log 2 + Real.log n)) = Q / 4 - n / 2 + n / 2 * Real.log 2 + n / 2 * Real.log n`. Establish `hnne : (n : ℝ) ≠ 0` using `by linarith`. Apply the tactic sequence `first | (field_simp; ring) | field_simp | ring`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hG` using `half_le_gamma_half_nat n hn`. Establish `hQm : 0 < Q ^ ((n : ℝ) / 2)` using `Real.rpow_pos_of_pos hQpos _`. Establish `h4Qm : 0 < 4 * Q ^ ((n : ℝ) / 2)` using `by linarith`. Establish `h2Qm : 0 < 2 * Q ^ ((n : ℝ) / 2)` using `by linarith`.
+
+Establish `hE : (3 : ℝ) ≤ -(n : ℝ) + Q / 2 - Real.log Q * ((n : ℝ) / 2)` using `by nlinarith`. Establish `hexp : Real.exp (-(Q / 2)) * (4 * Q ^ ((n : ℝ) / 2)) ≤ Real.exp (-(n : ℝ))`. Rewrite using `[Real.rpow_def_of_pos hQpos]`. Establish `h4 : (4 : ℝ) ≤ Real.exp (-(n : ℝ) + Q / 2 - Real.log Q * ((n : ℝ) / 2))`. Use `Real.add_one_le_exp (-(n : ℝ) + Q / 2 - Real.log Q * ((n : ℝ) / 2))` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left _ (Real.exp_pos _).le` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_right h4 (Real.exp_pos _).le`. Use `_ = Real.exp (-(n : ℝ)) := by`.
+
+Rewrite using `[← Real.exp_add, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_div_assoc, div_self h4Qm.ne', mul_one]`.
+
+Use `_ ≤ Real.exp (-(n : ℝ)) / (4 * Q ^ ((n : ℝ) / 2)) := by gcongr`. Use `_ = Real.exp (-(n : ℝ)) * (1 / 2 / (2 * Q ^ ((n : ℝ) / 2))) := by`. Rewrite using `[div_div, ← mul_assoc, show (2 : ℝ) * 2 = 4 by norm_num, mul_one_div]`. Use `_ ≤ Real.exp (-(n : ℝ)) * (Real.Gamma ((n : ℝ) / 2) / (2 * Q ^ ((n : ℝ) / 2))) := by gcongr`.
+-/
 theorem tail_negligible : TailNegligible := by
   refine ⟨20, ?_⟩
   intro n Q hn hQ
@@ -187,9 +255,25 @@ theorem tail_negligible : TailNegligible := by
     _ ≤ Real.exp (-(n : ℝ)) * (Real.Gamma ((n : ℝ) / 2) / (2 * Q ^ ((n : ℝ) / 2))) := by
         gcongr
 
+/- English proof (translation)
+The claim follows from `prod_pos fun i _ => by exact_mod_cast Nat.factorial_pos i`.
+-/
 private lemma prod_range_factorial_pos (n : ℕ) : 0 < ∏ i ∈ range n, (i.factorial : ℝ) :=
   prod_pos fun i _ => by exact_mod_cast Nat.factorial_pos i
 
+/- English proof (translation)
+Introduce `p q`. Establish `hF : ∀ n, 0 < ∏ i ∈ range n, (i.factorial : ℝ)` using `prod_range_factorial_pos`. Establish `hPpos : ∀ n, 0 < ∏ i ∈ range n, Real.pi ^ (i + 1)` using `fun n => prod_pos fun i _ => pow_pos Real.pi_pos _`. Establish `hA : ∀ n, ∏ i ∈ range n, 2 * Real.pi ^ (i + 1) / (i.factorial : ℝ) = 2 ^ n * (∏ i ∈ range n, Real.pi ^ (i + 1)) / ∏ i ∈ range n, (i.factorial : ℝ)`. Introduce `n`.
+
+Rewrite using `[prod_div_distrib, prod_mul_distrib, prod_const, card_range]`. Establish `hP : ∏ i ∈ range (p + q), Real.pi ^ (i + 1) = (∏ i ∈ range p, Real.pi ^ (i + 1)) * (∏ i ∈ range q, Real.pi ^ (i + 1)) * Real.pi ^ (p * q)`. Rewrite using `[prod_range_add]`. Establish `e : ∀ j ∈ range q, Real.pi ^ (p + j + 1) = Real.pi ^ p * Real.pi ^ (j + 1)`. Introduce `j _`.
+
+Rewrite using `[← pow_add]`. Use `congr 1`. Rewrite using `[prod_congr rfl e, prod_mul_distrib, prod_const, card_range, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hFF : (∏ i ∈ range p, (i.factorial : ℝ)) * ∏ i ∈ range q, (i.factorial : ℝ) ≤ ∏ i ∈ range (p + q), (i.factorial : ℝ)`.
+
+Rewrite using `[prod_range_add]`. Apply `mul_le_mul_of_nonneg_left _ (hF p).le` to reduce the goal to its premises. Apply `prod_le_prod (fun i _ => by positivity) (fun i _ => ?_)` to reduce the goal to its premises. Conclude with `Nat.factorial_le (by omega)` after adjusting the coercions. Establish `h1` using `(hF p).ne'`.
+
+Establish `h2` using `(hF q).ne'`. Establish `h3` using `(hF (p + q)).ne'`. Establish `h4` using `(hPpos p).ne'`. Establish `h5` using `(hPpos q).ne'`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hA, hA, hA, hP, pow_add]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[mul_div_assoc]`. Conclude with `mul_le_of_le_one_right (by positivity) ((div_le_one (hF _)).2 hFF)`.
+-/
 theorem grassmannian_volume : GrassmannianVolume := by
   intro p q
   have hF : ∀ n, 0 < ∏ i ∈ range n, (i.factorial : ℝ) := prod_range_factorial_pos

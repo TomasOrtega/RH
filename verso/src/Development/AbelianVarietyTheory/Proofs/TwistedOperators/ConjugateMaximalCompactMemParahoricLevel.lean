@@ -15,22 +15,34 @@ noncomputable section
 open Matrix
 namespace GlobalTheory.KapLevel
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `⟨rfl, hk⟩`.
+-/
 theorem cast_one_fin {I I' : Formalism.MainNotions.S.AutInst} (e : I = I') (k : I'.Gf) (hk : k ∈ I'.Kset) :
     ((Formalism.L2.SG.RowsJoinPinned.castGA e).symm (1, k)).1 = 1 ∧
       ((Formalism.L2.SG.RowsJoinPinned.castGA e).symm (1, k)).2 ∈ I.Kset := by
   subst e
   exact ⟨rfl, hk⟩
 
+/- English proof (translation)
+Rewrite using `[Formalism.L2.SG.InstExistsPf.Lv_eq_map]`. Both sides reduce to the same expression.
+-/
 theorem lat_eq (D : D7) : Formalism.L2.SG.InstExistsPf.Lv D = Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0 := by
   rw [Formalism.L2.SG.InstExistsPf.Lv_eq_map]
   rfl
 
+/- English proof (translation)
+Use `show Formalism.MainNotions.S.lamAf (F := D.host.F) (Formalism.L2.SG.InstExistsPf.Lv D) = _`. Rewrite using `[Formalism.MainNotions.S.Inh.aut_lamAf_eq, lat_eq]`. Both sides reduce to the same expression.
+-/
 theorem hatL_eq (D : D7) :
     (Formalism.IndefR.RationalEmbedding.inst D).Lf = Formalism.L2.Herm.hatL (F := D.host.F) (Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0) := by
   show Formalism.MainNotions.S.lamAf (F := D.host.F) (Formalism.L2.SG.InstExistsPf.Lv D) = _
   rw [Formalism.MainNotions.S.Inh.aut_lamAf_eq, lat_eq]
   rfl
 
+/- English proof (translation)
+Substitute `hg` using the available equality. Establish `h0 : x.1 ∈ Formalism.UG.stabGL (Formalism.IndefR.RationalEmbedding.inst D).Lf` using `hx`. Establish `h1 : x.1⁻¹ ∈ Formalism.UG.stabGL (Formalism.IndefR.RationalEmbedding.inst D).Lf` using `(Formalism.UG.stabGL (Formalism.IndefR.RationalEmbedding.inst D).Lf).inv_mem h0`. Establish `e` using `SetLike.ext_iff.1 (hatL_eq D)`. Use `⟨fun y hy => (e _).1 ((h0 y).1 ((e y).2 hy)), fun y hy => (e _).1 ((h1 y).1 ((e y).2 hy))⟩` and prove the remaining obligations.
+-/
 theorem kset_stab {D : D7} (x : (Formalism.IndefR.RationalEmbedding.inst D).Gf) (hx : x ∈ (Formalism.IndefR.RationalEmbedding.inst D).Kset)
     (g : GL (Fin (Yc D 0).rank) (Formalism.IndefR.Lev.EAf D)) (hg : g = x.1) :
     (∀ y ∈ Formalism.L2.Herm.hatL (F := D.host.F) (Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0),
@@ -43,6 +55,11 @@ theorem kset_stab {D : D7} (x : (Formalism.IndefR.RationalEmbedding.inst D).Gf) 
   have e := SetLike.ext_iff.1 (hatL_eq D)
   refine ⟨fun y hy => (e _).1 ((h0 y).1 ((e y).2 hy)), fun y hy => (e _).1 ((h1 y).1 ((e y).2 hy))⟩
 
+/- English proof (translation)
+Establish `hS : g ∈ Formalism.L2.DIV.St (ft * β)` using `(GlobalTheory.LevSplit.mem_St_iff (ft * β) _ hF g).2 ⟨h0, h1⟩`. Take `⟨z, hz⟩` from `hS`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz]`. Use `show β * Formalism.L2.DIV.intGL _ _ _ z * β⁻¹ = ft⁻¹ * ((ft * β) * Formalism.L2.DIV.intGL _ _ _ z * (ft * β)⁻¹) * ft`.
+
+Use `group`.
+-/
 theorem st_of_stab {D : D7} (g ft β : GL (Fin (Yc D 0).rank) (Formalism.IndefR.Lev.EAf D))
     (hF : Formalism.L2.DIV.IsFrame (ft * β) (Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0))
     (h0 : ∀ y ∈ Formalism.L2.Herm.hatL (F := D.host.F) (Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0),
@@ -57,6 +74,17 @@ theorem st_of_stab {D : D7} (g ft β : GL (Fin (Yc D 0).rank) (Formalism.IndefR.
   show β * Formalism.L2.DIV.intGL _ _ _ z * β⁻¹ = ft⁻¹ * ((ft * β) * Formalism.L2.DIV.intGL _ _ _ z * (ft * β)⁻¹) * ft
   group
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F X h _ _ _ cG t _ _ _ ht _ hF k hk`. Take `⟨hy1, hy2⟩` from `cast_one_fin h.symm k hk`. Establish `hkap : kap X h t k = (@id (GA D (D.sp.Y 0)) t)⁻¹ * (Formalism.IndefR.RationalEmbedding.iota D).symm ((Formalism.L2.SG.RowsJoinPinned.castGA h.symm).symm (1, k)) * @id (GA D (D.sp.Y 0)) t` using `rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hkap]`.
+
+Conclude with `mul_mem (mul_mem (inv_mem ht) ((Formalism.L2.SG.EvalTIota.brg_mem_GfC_i _).2 hy1)) ht`. Establish `hU` using `GlobalTheory.LevSplit.finE_mem_UA (Yc D 0) (kap X h t k)`. Establish `hfin0 : Formalism.IndefR.Lev.finE (D.sp.Y 0) (kap X h t k) = (Formalism.IndefR.Lev.finE (D.sp.Y 0) t)⁻¹ * @id (GL (Fin (D.sp.Y 0).rank) (Formalism.IndefR.Lev.EAf D)) ((Formalism.L2.SG.RowsJoinPinned.castGA h.symm).symm (1, k)).2.1 * Formalism.IndefR.Lev.finE (D.sp.Y 0) t`. Rewrite using `[hkap, map_mul, map_mul, map_inv, Formalism.L2.SG.EvalTIota.finE_brg_i]`. Both sides reduce to the same expression.
+
+Establish `hfin : Formalism.IndefR.Lev.finE (Yc D 0) (kap X h t k) = (Formalism.IndefR.Lev.finE (Yc D 0) t)⁻¹ * @id (GL (Fin (Yc D 0).rank) (Formalism.IndefR.Lev.EAf D)) ((Formalism.L2.SG.RowsJoinPinned.castGA h.symm).symm (1, k)).2.1 * Formalism.IndefR.Lev.finE (Yc D 0) t` using `hfin0`. Rewrite `hU`, the goal using `[hfin]`. Take `⟨s0, s1⟩` from `kset_stab _ hy2 _ rfl`. Establish `hr : ∀ a : Fin (Yc D 0).rank, (a : ℕ) < (R.dat0 R.triv).r` using `fun a => lt_of_lt_of_eq a.2 (Formalism.L2.SG.InstExistsPf.rank_eq D)`. Use `Formalism.L2.DIV.mem_parLev.2 ⟨hU, st_of_stab _ _ _ hF s0 s1, fun PP _ => ?_, fun PP hP => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Formalism.L2.DIV.mem_blockTri]`. Introduce `i j hij`. It suffices to derive a contradiction. Unfold `Formalism.L2.DIV.blkOf at hij`. Rewrite `hij` using `[if_pos (hr i), if_pos (hr j)]`.
+
+Conclude with `lt_irrefl 0 hij`. Conclude with `absurd hP (Finset.notMem_empty PP)`.
+-/
 theorem kap_mem_parLev : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsModels → ∀ (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (t : GA D (Yc D 0)), (∀ x : X.B.I.E, HEq (X.ιE x) x) → (∃ (plg : (Σ k : Fin 2, D.nd.PlG k) ≃ R.Pg) (iso : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), ZMod (D.host.g kv.1) ≃+* kP (plg kv).1), (∀ kv, ((plg kv : R.Pg) : Pl D.host.E) = D.naut.plGw kv.1 kv.2) ∧ (∀ g, D.what₂.embLL ((idemOf A.X).coeff g) = D.ntypes.e0.coeff ((R.eG.trans cG) g)) ∧ (∀ kv, R.C.P.Div kv.1 (plg kv).1) ∧ ∀ g kv, R.eG g (plg kv) = Formalism.UG.bc (iso kv : ZMod (D.host.g kv.1) →+* kP (plg kv).1) ((R.eG.trans cG) g kv)) → IdempotentRealFixed D → t ∈ GfC (Yc D 0) → ConjLevel (t)⁻¹ (levS (Yc D 0) (R.βY 0) (R.dat0 (R.levR F true))) (levChi (Yc D 0) (R.βY 0) (R.dat0 (R.levR F true))) ((iotaX X h).toMulEquiv ⁻¹' {x : X.B.I.GA | x.1 = 1 ∧ x.2 ∈ X.K2}) (fun k => star (X.chi2 ((iotaX X h).toMulEquiv k).2)) → IsFrame (finE (Yc D 0) t * R.βY 0) (Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0) → ∀ k ∈ X.B.I.Kset, kap X h t k ∈ GfC (Yc D 0) ∧ finE (Yc D 0) (kap X h t k) ∈ Formalism.L2.DIV.parLev D.sp.cm (Yc D 0).gram (R.βY 0) (R.dat0 R.triv) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F X h _ _ _ cG t _ _ _ ht _ hF k hk
   obtain ⟨hy1, hy2⟩ := cast_one_fin h.symm k hk

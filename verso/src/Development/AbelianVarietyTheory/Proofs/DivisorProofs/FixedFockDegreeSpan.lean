@@ -23,24 +23,39 @@ namespace GlobalTheory.FixGen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {n d : ℕ} {Y : Spc F E n} {W : Spc F E d}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[tens, add_mul]`.
+-/
 theorem tens_add (φ φ' : SInf F (Fin n × Fin d)) (r : (Fin n × Fin d → AF F) → ℂ) :
     tens (evI F) ⇑(φ + φ') r = tens (evI F) ⇑φ r + tens (evI F) ⇑φ' r := by
   funext x
   simp [tens, add_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[tens, mul_assoc]`.
+-/
 theorem tens_smul (c : ℂ) (φ : SInf F (Fin n × Fin d)) (r : (Fin n × Fin d → AF F) → ℂ) :
     tens (evI F) ⇑(c • φ) r = c • tens (evI F) ⇑φ r := by
   funext x
   simp [tens, mul_assoc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[tens]`.
+-/
 theorem tens_zero (r : (Fin n × Fin d → AF F) → ℂ) : tens (evI F) ⇑(0 : SInf F (Fin n × Fin d)) r = 0 := by
   funext x
   simp [tens]
 
+/- English proof (translation)
+Introduce `k _ r _`. Rewrite using `[tens_zero, map_zero]`.
+-/
 theorem isKFix_zero (B : Base F E) (om : Rep σ Y W) : IsKFix B om 0 := by
   intro k _ r _
   rw [tens_zero, map_zero]
 
+/- English proof (translation)
+Introduce `k hk r hr`. Distinguish the cases in `h0 : f + g = 0`. Rewrite using `[h0, tens_zero, map_zero]`. Rewrite using `[tens_add, map_add, hf k hk r (rest_of_rest_ne_zero h0 hr f), hg k hk r (rest_of_rest_ne_zero h0 hr g)]`.
+-/
 theorem isKFix_add {B : Base F E} {om : Rep σ Y W} {f g : SInf F (Fin n × Fin d)} (hf : IsKFix B om f)
     (hg : IsKFix B om g) : IsKFix B om (f + g) := by
   intro k hk r hr
@@ -48,6 +63,9 @@ theorem isKFix_add {B : Base F E} {om : Rep σ Y W} {f g : SInf F (Fin n × Fin 
   · rw [h0, tens_zero, map_zero]
   · rw [tens_add, map_add, hf k hk r (rest_of_rest_ne_zero h0 hr f), hg k hk r (rest_of_rest_ne_zero h0 hr g)]
 
+/- English proof (translation)
+Introduce `k hk r hr`. Distinguish the cases in `h0 : c • f = 0`. Rewrite using `[h0, tens_zero, map_zero]`. Rewrite using `[tens_smul, map_smul, hf k hk r (rest_of_rest_ne_zero h0 hr f)]`.
+-/
 theorem isKFix_smul {B : Base F E} {om : Rep σ Y W} (c : ℂ) {f : SInf F (Fin n × Fin d)} (hf : IsKFix B om f) :
     IsKFix B om (c • f) := by
   intro k hk r hr
@@ -55,6 +73,9 @@ theorem isKFix_smul {B : Base F E} {om : Rep σ Y W} (c : ℂ) {f : SInf F (Fin 
   · rw [h0, tens_zero, map_zero]
   · rw [tens_smul, map_smul, hf k hk r (rest_of_rest_ne_zero h0 hr f)]
 
+/- English proof (translation)
+Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx => exact hs x hx`. Consider the case `zero => exact isKFix_zero B om`. Consider the case `add x y _ _ hx hy => exact isKFix_add hx hy`. Consider the case `smul c x _ hx => exact isKFix_smul c hx`.
+-/
 theorem isKFix_of_mem_span {B : Base F E} {om : Rep σ Y W} {s : Set (SInf F (Fin n × Fin d))}
     (hs : ∀ f ∈ s, IsKFix B om f) {f : SInf F (Fin n × Fin d)} (hf : f ∈ Submodule.span ℂ s) : IsKFix B om f := by
   induction hf using Submodule.span_induction with
@@ -63,6 +84,19 @@ theorem isKFix_of_mem_span {B : Base F E} {om : Rep σ Y W} {s : Set (SInf F (Fi
   | add x y _ _ hx hy => exact isKFix_add hx hy
   | smul c x _ hx => exact isKFix_smul c hx
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B a a' G X om om' R Rf hM j f hf hfk`. Take `⟨k, hk, A, hA, c, hc⟩` from `GlobalTheory.FockParity.exists_parity_op hM.triple.base.std hM.triple.weil B.emb (GlobalTheory.GaussLine.gauss_eq_smul B G X om om' hM.triple)`. Establish `hL` using `GlobalTheory.RealLift.actsLaws F (Fin a × Fin (a + a'))`. Establish `hfix : ∀ g, IsKFix B om g → A g = g` using `fun g hg => ((hL g g (A g)).2.2.2.1 _ (hg k hk) (hA g)).symm`. Establish `hp : ∀ m, ∀ g ∈ fockDeg G.M B.ψ B.emb m, IsKFix B om g → (1 - c * (-1) ^ m) • g ∈ GlobalTheory.FockParity.fockLt G.M B.ψ B.emb m`.
+
+Introduce `m g hg hgk`. Establish `h` using `hc m g hg`. Rewrite `h` using `[hfix g hgk]`. Rewrite using `[sub_smul, one_smul]` and apply the resulting hypothesis. Distinguish the cases in `hne : {m | ∃ f ∈ fockDeg G.M B.ψ B.emb m, f ≠ 0 ∧ IsKFix B om f}.Nonempty`.
+
+Take `⟨g, hg, hg0, hgk⟩ : ∃ g ∈ fockDeg G.M B.ψ B.emb (fixDeg B G.M om), g ≠ 0 ∧ IsKFix B om g` from `Nat.sInf_mem hne`. Establish `hone : c * (-1) ^ fixDeg B G.M om = 1`. Assume the negation of the conclusion as `hc1`. Establish `hne1 : (1 - c * (-1) ^ fixDeg B G.M om : ℂ) ≠ 0` using `sub_ne_zero.2 (Ne.symm hc1)`. Establish `h2 : g ∈ GlobalTheory.FockParity.fockLt G.M B.ψ B.emb (fixDeg B G.M om)` using `(Submodule.smul_mem_iff _ hne1).1 (hp _ g hg hgk)`.
+
+Break down `hd : fixDeg B G.M om with _ | m'` into its components or cases. Rewrite `h2` using `[hd]`. Conclude with `hg0 ((Submodule.mem_bot ℂ).1 h2)`. Rewrite `h2` using `[hd]`. Conclude with `Nat.notMem_of_lt_sInf (s := {m | ∃ f ∈ fockDeg G.M B.ψ B.emb m, f ≠ 0 ∧ IsKFix B om f}) (show m' < fixDeg B G.M om by omega) ⟨g, h2, hg0, hgk⟩`.
+
+Establish `h2` using `hp _ f hf hfk`. Establish `e : (1 - c * (-1) ^ (fixDeg B G.M om + 2 * j + 1) : ℂ) = 2`. Rewrite using `[pow_succ, pow_add, pow_mul, ← mul_assoc, ← mul_assoc, hone]`. Evaluate the numerical expressions. Rewrite `h2` using `[e]`.
+
+Conclude with `(Submodule.smul_mem_iff _ two_ne_zero).1 h2`. Distinguish the cases in `hf0 : f = 0`. Rewrite using `[hf0]`. Conclude with `zero_mem _`. Conclude with `absurd ⟨_, f, hf, hf0, hfk⟩ hne`.
+-/
 theorem fix_odd : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)
     (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf →
@@ -104,12 +138,18 @@ theorem fix_odd : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberFiel
       exact zero_mem _
     · exact absurd ⟨_, f, hf, hf0, hfk⟩ hne
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.matched_line_polynomial_k_fixed`.
+-/
 theorem deriv_fix : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)
     (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf →
       ∀ γ ∈ Lines σ G.W, ∀ g ∈ G.M.Pol B.ψ B.emb, IsKFix B om g → ∀ f₁ : SInf F (Fin a × Fin (a + a')),
         ActsD (evI F) (fun t => om (1, γ (Multiplicative.ofAdd t))) g f₁ → IsKFix B om f₁ := GlobalTheory.T.matched_line_polynomial_k_fixed
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.fock_degree_k_fixed_reduction`.
+-/
 theorem fix_even : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)
     (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf →
@@ -118,6 +158,15 @@ theorem fix_even : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberFie
           {f₁ | ∃ γ ∈ Lines σ G.W, ∃ g ∈ fockDeg G.M B.ψ B.emb (fixDeg B G.M om + 2 * k + 1), IsKFix B om g ∧
             ActsD (evI F) (fun t => om (1, γ (Multiplicative.ofAdd t))) g f₁} := GlobalTheory.T.fock_degree_k_fixed_reduction
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM m hm f hf hfk`. Take `⟨t, ht⟩ : ∃ t, m + 1 = fixDeg B G.M om + t` from `⟨m + 1 - fixDeg B G.M om, by omega⟩`. Break down `Nat.even_or_odd t with ⟨k, hk⟩ | ⟨j, hj⟩` into its components or cases. Take `⟨k', rfl⟩ : ∃ k', k = k' + 1` from `⟨k - 1, by omega⟩`. Rewrite `hf` using `[show m + 1 = fixDeg B G.M om + 2 * k' + 2 by omega]`.
+
+Establish `h3` using `fix_even hKP F E σ B a a' G X om om' R Rf hM k' f hf hfk`. Rewrite `h3` using `[show fixDeg B G.M om + 2 * k' + 1 = m by omega]`. Take `⟨h, hh, s, hs, rfl⟩` from `Submodule.mem_sup.1 h3`. Establish `hsk : IsKFix B om s` using `isKFix_of_mem_span (fun f₁ hf₁ => by`. Take `⟨γ, hγ, g, hg, hgk, hd⟩` from `hf₁`.
+
+Conclude with `deriv_fix hKP F E σ B a a' G X om om' R Rf hM γ hγ g (fockDeg_le_pol _ _ _ _ hg) hgk f₁ hd) hs`. Establish `hhk : IsKFix B om h`. Use `isKFix_add hfk (isKFix_smul (-1) hsk)` as an intermediate fact. Simplify using `using this`. Conclude with `add_mem (Submodule.subset_span (Or.inl ⟨hh, hhk⟩)) (Submodule.span_mono Set.subset_union_right hs)`.
+
+Rewrite `hf` using `[show m + 1 = fixDeg B G.M om + 2 * j + 1 by omega]`. Establish `h1` using `fix_odd hKP F E σ B a a' G X om om' R Rf hM j f hf hfk`. Rewrite `h1` using `[show fixDeg B G.M om + 2 * j = m by omega]`. Conclude with `Submodule.subset_span (Or.inl ⟨h1, hfk⟩)`.
+-/
 theorem fix_gen : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)
     (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf →

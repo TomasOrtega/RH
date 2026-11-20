@@ -14,6 +14,21 @@ open scoped Classical
 
 namespace GlobalTheory.ConeSoB
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B a b G G₁ H H' hC e' he' K hK X om om' om₁ om₁' hT hT₁ ei ev hei hev hloc μK μ hμK hμ f φ hφ hvac`. Establish `hKc : IsCompact (K : Set (UA σ G.V'.J))`. Take `⟨K', -, -, hK', hc, -, -⟩` from `GlobalTheory.StabHaar.stabEx hP F E σ B (b + 2) G.V' G.q ((b + 2) - G.q) hT.base hT.geo.hV'`. Establish `e : K = K'` using `Subgroup.ext fun g => (hK g).trans (hK' g).symm`. Rewrite using `[e]`.
+
+Conclude with `hc`. Take `⟨μKi, hμKi, -⟩` from `existsUnique_isNormK hKc (evI F)`. Take `⟨μi, hμi⟩` from `exists_haar_idelesAt E (evI F)`. Set `μKv : ∀ v : Pl F, Measure (KAt K (evFin F v))` to `fun v => (existsUnique_isNormK hKc (evFin F v)).choose`. Set `μv : ∀ v : Pl F, Measure (idelesAt E (evFin F v))` to `fun v => (existsUnique_isNormE E v).choose`.
+
+Establish `hμKv : ∀ v, IsNormK K (evFin F v) (μKv v)` using `fun v => (existsUnique_isNormK hKc (evFin F v)).choose_spec.1`. Establish `hμv : ∀ v, IsNormE E v (μv v)` using `fun v => (existsUnique_isNormE E v).choose_spec.1`. Establish `hfin : Set.Finite {v | ¬ φ v = G.M'.vac v}` using `Filter.eventually_cofinite.1 hvac`. Set `S : Finset (Pl F)` to `X.T ∪ {B.v₁} ∪ hfin.toFinset`. Establish `hS : ∀ v ∉ S, φ v = G.M'.vac v` using `fun v hv => by`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hv (Finset.mem_union_right _ (hfin.mem_toFinset.2 h))`. Establish `hT0 : X.T ⊆ S` using `fun v hv => Finset.mem_union_left _ (Finset.mem_union_left _ hv)`. Establish `hv₁ : B.v₁ ∈ S` using `Finset.mem_union_left _ (Finset.mem_union_right _ (Finset.mem_singleton_self _))`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_schwartz_eq_coneInfFun_shiftB hP B G G₁ H H' hC e' he' K hK X om om' om₁ om₁' hT hT₁ ei ev hei hev hloc μKi μi hμKi hμi f`.
+
+Take `⟨c, hc⟩` from `GlobalTheory.T.config_B_stabilizer_period_eval hP B G G₁ H H' hC e' he' K hK X om om' om₁ om₁' hT hT₁ ei ev hei hev hloc μK μ hμK hμ μKi μi hμKi hμi μKv μv hμKv hμv f φ S hφ hS hT0 hv₁`. Use `⟨GlobalTheory.T.config_B_stabilizer_local_eval hP B G G₁ H H' hC e' he' K hK X om om' om₁ om₁' hT hT₁ ei ev hei hev hloc μK μ hμK hμ f φ hφ hvac, c, g, fun v => if v ∈ S then coneFin B G.M' om' v (ev v) K (μKv v) (μv v) (shiftB σ H H') X.ν ((a - (b + 2)) / 2 + 1) (φ v) else G₁.M' …` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ S`. Simplify using `only [if_pos hv]`. Conclude with `GlobalTheory.T.config_B_stabilizer_theta_eval hP B G G₁ H H' hC e' he' K hK X om om' om₁ om₁' hT hT₁ ei ev hei hev hloc v _ _ (hμKv v) (hμv v) _ (hφ v)`.
+
+Simplify using `only [if_neg hv]`. Conclude with `(hT₁.geo.hM'.vac v).1`. Use `(S.finite_toSet.subset fun v hv => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hv (if_neg h)`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[hc y]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, hg]`.
+-/
 theorem cone_pure_euler : GlobalTheory.FunPr.Hypotheses₂ → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E) {a b : ℕ}
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →
     ∀ (e' : Fn F (b + 2) (a + (b + 2)) →ₗ[ℂ] Fn F b (a + b)), IsEv B G.M' G₁.M' H.ι H'.ι (isoB H H') e' →

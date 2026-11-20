@@ -30,6 +30,27 @@ namespace GlobalTheory.MultLatDecomp
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D ψ S T ΛS ΛT hψ hS hT f hf n hn w hw`. Establish `hinf : w.map (infPart D) = 0`. Establish `h1` using `GlobalTheory.VacUnique.latO_inf S T _ _ _ hw`. Use function extensionality and compare the values at `i j`. Establish `h2 : infPart D ((n • w) i j) = 0` using `congrFun (congrFun h1 i) j`.
+
+Rewrite `h2` using `[Matrix.smul_apply, map_nsmul]`. Establish `hn' : (n : D.host.F) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `h3 : (n : D.host.F) • infPart D (w i j) = 0` using `by rw [Nat.cast_smul_eq_nsmul]; exact h2`. Use `show infPart D (w i j) = 0`. Rewrite using `[← inv_smul_smul₀ hn' (infPart D (w i j)), h3, smul_zero]`.
+
+Take `⟨M, u, hu, hM⟩` from `GlobalTheory.LatVac.approx hS hT w`. Establish `hw_eq : w = GlobalTheory.VacUnique.finRat S T M + u`. Use extensionality with `i j`. Rewrite using `[← sub_eq_zero]`. Apply `GlobalTheory.LatVac.eq_zero_of_parts` to reduce the goal to its premises.
+
+Establish `h1 : infPart D (w i j) = 0` using `congrFun (congrFun hinf i) j`. Establish `h2 : infPart D (GlobalTheory.VacUnique.finRat S T M i j) = 0` using `congrFun (congrFun (GlobalTheory.VacUnique.finRat_inf S T M) i) j`. Rewrite using `[Matrix.add_apply, RingHom.map_sub, RingHom.map_add, h1, h2, GlobalTheory.LatVac.infPart_of_mem hu, add_zero, sub_zero]`. Rewrite using `[Matrix.add_apply, RingHom.map_sub, RingHom.map_add, hM, sub_eq_zero]`. Both sides reduce to the same expression.
+
+Establish `hmem : GlobalTheory.VacUnique.finRat S T (n • M) ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun _ => True)`. Establish `e : GlobalTheory.VacUnique.finRat S T (n • M) = n • w - n • u`. Rewrite using `[map_nsmul, hw_eq, smul_add, add_sub_cancel_right]`. Rewrite using `[e]`. Conclude with `sub_mem hw (nsmul_mem hu n)`.
+
+Take `⟨ε, hε, hεf⟩` from `(GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T ΛS ΛT hψ hS hT).2.2 f hf u hu`. Establish `h1` using `GlobalTheory.LatVac.heisO_heisO ψ (GlobalTheory.VacUnique.finRat S T M) u f`. Rewrite `h1` using `[hεf f hf, GlobalTheory.LatVac.heisO_smul]`. Establish `hinv : ψ (-symplOH S T (GlobalTheory.VacUnique.finRat S T M) u) * ψ (symplOH S T (GlobalTheory.VacUnique.finRat S T M) u) = 1`. Rewrite using `[← ψ.map_add_eq_mul, neg_add_cancel, ψ.map_zero_eq_one]`.
+
+Establish `hX : ψ (symplOH S T (GlobalTheory.VacUnique.finRat S T M) u) * ψ (symplOH S T (GlobalTheory.VacUnique.finRat S T M) u) = ψ (symplO S T (GlobalTheory.VacUnique.finRat S T M) u)`. Rewrite using `[← ψ.map_add_eq_mul, symplOH, ← add_mul, ← RingHom.map_add, add_halves, RingHom.map_one, one_mul]`. Establish `hY : ψ (symplO S T (GlobalTheory.VacUnique.finRat S T M) u) ^ n = 1`. Rewrite using `[← AddChar.map_nsmul_eq_pow]`. Establish `e : n • symplO S T (GlobalTheory.VacUnique.finRat S T M) u = symplO S T (GlobalTheory.VacUnique.finRat S T (n • M)) u`.
+
+Express the relevant statement in the definitionally equal form `n • GlobalTheory.LatVac.symplHom S T (GlobalTheory.VacUnique.finRat S T M) u = GlobalTheory.LatVac.symplHom S T (GlobalTheory.VacUnique.finRat S T (n • M)) u`. Rewrite using `[map_nsmul (GlobalTheory.VacUnique.finRat S T), map_nsmul (GlobalTheory.LatVac.symplHom S T), AddMonoidHom.nsmul_apply]`. Rewrite using `[e]`. Conclude with `GlobalTheory.LatVac.char_sympl_eq_one hψ hS hT hmem hu`. Apply the tactic sequence `have e1 : ε ^ 2 = 1 := by rcases hε with rfl | rfl <;> norm_num`.
+
+Establish `e2 : (ψ (symplOH S T (GlobalTheory.VacUnique.finRat S T M) u) * ψ (symplOH S T (GlobalTheory.VacUnique.finRat S T M) u)) ^ n = 1`. Rewrite using `[hX]`. Conclude with `hY`. Use `⟨M, ε * ψ (-symplOH S T (GlobalTheory.VacUnique.finRat S T M) u), ⟨2 * n, by omega, ?_⟩, hmem, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[e2, mul_one]`. Use `_ = (ε ^ 2) ^ n * ((ψ (-symplOH S T (GlobalTheory.VacUnique.finRat S T M) u) * ψ (symplOH S T (GlobalTheory.VacUnique.finRat S T M) u)) ^ 2) ^ n := by ring`. Use `_ = 1 := by rw [e1, hinv]; simp`. Rewrite using `[hw_eq, mul_comm, mul_smul, h1, smul_smul, hinv, one_smul]`.
+-/
 theorem heisO_eq_root_smul_finRat : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsStdChar D ψ (-1) → IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∀ f : WO S T → ℂ, IsLatVac (heisO ψ S T) (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) f → ∀ n : ℕ, 0 < n → ∀ w : WO S T, n • w ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun _ => True) → ∃ (M : Matrix (Fin T.rank) (Fin S.rank) D.host.E) (ζ : ℂ), (∃ m : ℕ, 0 < m ∧ ζ ^ m = 1) ∧ GlobalTheory.VacUnique.finRat S T (n • M) ∈ latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun _ => True) ∧ heisO ψ S T w f = ζ • heisO ψ S T (GlobalTheory.VacUnique.finRat S T M) f := by
   intro D ψ S T ΛS ΛT hψ hS hT f hf n hn w hw
   classical

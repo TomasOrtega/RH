@@ -12,6 +12,27 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Fo
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `k r Wp Wq _ _ _ _ _ _ D X hX C hC hCO`. Establish `hX' : X ∈ Q.FFl k r D.z D.z' D.π D.π' 0 (Q.OmPlus k r D.z D.z')`. Rewrite `hX` using `[rdb_ffl_om_eq]`. Then use the resulting hypothesis. Establish `hqC : IsCompact (Formalism.FourierDecayAlt.P.CutMP.JA.SA.QO.qOf D.z D.z' '' C)` using `hC.image_of_continuousOn ((Formalism.FourierDecayAlt.P.CutMP.JA.SA.QO.qOf_contOn D.z D.z').mono fun g hg => (hCO hg).2)`. Establish `hqQ : Formalism.FourierDecayAlt.P.CutMP.JA.SA.QO.qOf D.z D.z' '' C ⊆ JF.QDom k r D.z D.z'`.
+
+Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `(Formalism.FourierDecayAlt.P.CutMP.JA.SA.QO.om_eq_sgs D (hCO hg)).choose_spec.2.1`. Take `⟨K', hK'c, hCK', hK'Q⟩` from `exists_compact_between hqC (Formalism.FourierDecayAlt.P.BigCellOpenDomain.qdom_open D.z D.z') hqQ`. Take `⟨φ, hφ, ⟨C', hC'c, hC'O, hC'φ⟩, hint⟩` from `Formalism.FourierDecayAlt.P.CutMP.JA.SA.average_one_cutoff_on_orbits k r Wp Wq D K' hK'c hK'Q`. Establish `hsuppC : tsupport (fun g => φ g • X g) ⊆ C'`.
+
+Use `closure_minimal (fun g hg => ?_) hC'c.isClosed` and prove the remaining obligations. Assume the negation of the conclusion as `hgC`. Conclude with `hg (by simp [hC'φ g hgC])`. Use `⟨fun g => φ g • X g, Q.OmPlus k r D.z D.z' ∩ Formalism.FourierDecayAlt.P.CutMP.JA.SA.QO.qOf D.z D.z' ⁻¹' interior K', ?_, ?_, ?_, Formalism.FourierDecayAlt.P.CutMP.JA.SA.QO.isOpen_qOf D.z D.z' isOpen_interior, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g₀ hg₀`.
+
+Distinguish the cases in `hO : g₀ ∈ Q.OmPlus k r D.z D.z'`. Take `⟨U₁, φ', hU₁, hg₁, hφ', hφe⟩` from `hφ g₀ hg₀`. Take `⟨U₂, f', hU₂, hg₂, hf', hfe⟩` from `hX'.1 g₀ ⟨(Formalism.FourierDecayAlt.P.CapelliUnderIntegral.glev0 g₀).2 hg₀, hO⟩`. Use `⟨U₁ ∩ U₂, fun g => φ' g • f' g, hU₁.inter hU₂, ⟨hg₁, hg₂⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hφ'.mono Set.inter_subset_left).smul (hf'.mono Set.inter_subset_right)`.
+
+Introduce `g hg hgG`. Simplify using `only [hφe g hg.1 hgG, hfe g hg.2 ((Formalism.FourierDecayAlt.P.CapelliUnderIntegral.glev0 g).2 hgG)]`. Use `⟨C'ᶜ, fun _ => 0, hC'c.isClosed.isOpen_compl, fun h => hO (hC'O h).2, contDiffOn_const, ?_⟩` and prove the remaining obligations. Introduce `g hg _`. Simplify using `[hC'φ g hg]`.
+
+Conclude with `hC'c.of_isClosed_subset (isClosed_tsupport _) hsuppC`. Conclude with `hsuppC.trans hC'O`. Introduce `g hg`. Conclude with `⟨(hCO hg).2, hCK' ⟨g, hg, rfl⟩⟩`. Introduce `p hp g hg hs`.
+
+Use `⟨hg.2, ?_⟩` and prove the remaining obligations. Establish `h2` using `hs.2`. Simplify using `only [Set.mem_preimage] at h2 ⊢`. Rewrite `h2` using `[Formalism.FourierDecayAlt.P.CutMP.JA.SA.QO.qOf_sgs D hp]`. Then use the resulting hypothesis. Introduce `g hg`.
+
+Establish `hJ : B.JF D (fun g => φ g • X g) g = (∫ p, φ (B.sgs p g) ∂D.μSS) • X g`. Express the relevant statement in the definitionally equal form `∫ p, JF.xiP D p • B.rho D p (fun g => φ g • X g) g ∂D.μSS = _`. Rewrite using `[← integral_smul_const]`. Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [Formalism.FourierDecayAlt.P.B5.ae_inSS D] with p hp`.
+
+Establish `hr : B.rho D p (fun g => φ g • X g) g = φ (B.sgs p g) • B.rho D p X g`. Unfold `B.rho`. Rewrite using `[ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul]`. Rewrite using `[hr, smul_comm, Formalism.FourierDecayAlt.P.CutMP.JA.SA.eqv_of_FFl D X hX' hp hg]`. Use `⟨fun hgU => ?_, fun h0 => by rw [hJ, h0, smul_zero]⟩` and prove the remaining obligations.
+
+Take `⟨p₀, hp₀, -, hge⟩` from `Formalism.FourierDecayAlt.P.CutMP.JA.SA.QO.om_eq_sgs D hg`. Establish `h1` using `hint p₀ hp₀ _ (interior_subset hgU.2)`. Rewrite `h1` using `[← hge]`. Rewrite using `[hJ, h1, one_smul]`.
+-/
 theorem spectral_pairing_exhaustion : RDSPExh := by
   intro k r Wp Wq _ _ _ _ _ _ D X hX C hC hCO
   have hX' : X ∈ Q.FFl k r D.z D.z' D.π D.π' 0 (Q.OmPlus k r D.z D.z') := by

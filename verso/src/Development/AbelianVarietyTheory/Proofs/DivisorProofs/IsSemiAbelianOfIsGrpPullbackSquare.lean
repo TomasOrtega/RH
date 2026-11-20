@@ -14,6 +14,9 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `S S' f G _ G' _ F h hG`. Use `hG.comm` as an intermediate fact. Establish `: IsCommMonObj G'` using `GlobalTheory.PolPull.isCommMonObj_of_isGrpPullback h`. Take `⟨bc, mbc, -⟩` from `grpPullback_iso h (isGrpPullback_pullback G f)`. Conclude with `GlobalTheory.isSemiAbelian_of_grpIso bc (IsSemiAbelian.pullback f G hG)`.
+-/
 theorem isSemiAbelian_of_isGrpPullback_square : ∀ (S S' : Scheme.{0}) (f : S' ⟶ S) (G : Over S) [GrpObj G] (G' : Over S')
     [GrpObj G'] (F : G'.left ⟶ G.left), IsGrpPullback G' G f F → IsSemiAbelian G → IsSemiAbelian G' := by
   intro S S' f G _ G' _ F h hG

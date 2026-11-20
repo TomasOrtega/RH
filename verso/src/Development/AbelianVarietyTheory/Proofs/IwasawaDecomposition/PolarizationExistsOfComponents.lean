@@ -11,23 +11,40 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory.TorRef
 
+/- English proof (translation)
+Consider the cases of `φ`. Consider the cases of `ψ`. Reduce the equality to equality of the corresponding arguments. Use function extensionality and compare the values at `n B`. Conclude with `h n B`.
+-/
 theorem asm_invFun_ext {O : Type} [CommRing O] {φ ψ : InvFun O} (h : ∀ n B, φ.toFun n B = ψ.toFun n B) : φ = ψ := by
   cases φ; cases ψ; congr; funext n B; exact h n B
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Introduce `σ hσ n B` and use `by show _ * ψ.toFun n _ + _ * φ.toFun n _ = _ * ψ.toFun n _ + _ * φ.toFun n _ rw [hψ σ hσ, hφ σ hσ]`.
+-/
 theorem asm_isTwInv_comb {H : Host E} {ψ φ : InvFun (𝓞 E)} (a b : ℕ) (hψ : IsTwInv H ψ) (hφ : IsTwInv H φ) :
     IsTwInv H (comb a ψ b φ) := fun σ hσ n B => by
   show _ * ψ.toFun n _ + _ * φ.toFun n _ = _ * ψ.toFun n _ + _ * φ.toFun n _
   rw [hψ σ hσ, hφ σ hσ]
 
+/- English proof (translation)
+Introduce `σ _ n B` and use `by let e : (Fin n → 𝓞 E) ≃ₗ[ℤ] (Fin n → 𝓞 E) := LinearEquiv.piCongrRight fun _ => σ.toAddEquiv.toIntLinearEquiv exact φs.eval_equiv e B`.
+-/
 theorem asm_isTwInv_resInt (H : Host E) (φs : InvFun ℤ) : IsTwInv H (resInt (𝓞 E) φs) := fun σ _ n B => by
   let e : (Fin n → 𝓞 E) ≃ₗ[ℤ] (Fin n → 𝓞 E) := LinearEquiv.piCongrRight fun _ => σ.toAddEquiv.toIntLinearEquiv
   exact φs.eval_equiv e B
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun n k B => h.1 _ k _, fun n B => h.2 _ _⟩`.
+-/
 theorem asm_isTame_resInt {O : Type} [CommRing O] [Module.Finite ℤ O] {φs : InvFun ℤ} (h : IsTame φs) :
     IsTame (resInt O φs) := ⟨fun n k B => h.1 _ k _, fun n B => h.2 _ _⟩
 
+/- English proof (translation)
+Use `⟨fun n k B => ?_, fun n B => ?_⟩` and prove the remaining obligations. Use `show _ * ψ.toFun n _ + _ * φ.toFun n _ = _ * (_ * ψ.toFun n _ + _ * φ.toFun n _)`. Rewrite using `[hψ.1, hφ.1]`. Expand and normalize the polynomial expressions, which then agree. Use `show 0 ≤ _ * ψ.toFun n _ + _ * φ.toFun n _`.
+
+Use `hψ.2 n B` as an intermediate fact. Use `hφ.2 n B` as an intermediate fact. Check the signs of the components of the expression.
+-/
 theorem asm_isTame_comb {O : Type} [CommRing O] {ψ φ : InvFun O} (a b : ℕ) (hψ : IsTame ψ) (hφ : IsTame φ) :
     IsTame (comb a ψ b φ) := by
   refine ⟨fun n k B => ?_, fun n B => ?_⟩
@@ -36,6 +53,11 @@ theorem asm_isTame_comb {O : Type} [CommRing O] {ψ φ : InvFun O} (a b : ℕ) (
   · show 0 ≤ _ * ψ.toFun n _ + _ * φ.toFun n _
     have := hψ.2 n B; have := hφ.2 n B; positivity
 
+/- English proof (translation)
+Introduce `X _ _ _ _ be hbe hp`. Establish `h1 : 0 ≤ ψ.evalZ be` using `hψ.2 _ _`. Establish `h2` using `hφ X be hbe hp`. Use `show 0 < _ * ψ.evalZ be + _ * φ.evalZ be`. Establish `: (0:ℝ) < b` using `by exact_mod_cast hb`.
+
+Check the signs of the components of the expression.
+-/
 theorem asm_isPosFn_comb {H : Host E} {ψ φ : InvFun (𝓞 E)} (a : ℕ) {b : ℕ} (hb : 0 < b) (hψ : IsTame ψ)
     (hφ : IsPosFn H φ) : IsPosFn H (comb a ψ b φ) := by
   intro X _ _ _ _ be hbe hp
@@ -45,6 +67,9 @@ theorem asm_isPosFn_comb {H : Host E} {ψ φ : InvFun (𝓞 E)} (a : ℕ) {b : �
   have : (0:ℝ) < b := by exact_mod_cast hb
   positivity
 
+/- English proof (translation)
+Introduce `z`. Take `⟨R, i1, i2, i3, ξ, t, hm, P, m, γ, hCN, hz, het, hfu, hti, hcn, hin⟩` from `hZ z`. Establish `hrk` using `GlobalTheory.T.formally_unramified_etale_completion E H D l Xo c Z R ξ t hm P hCN het hfu hti`. Use `haveI : Module.Projective (𝓞 E) P.D.toPre.X := GlobalTheory.Forms.projective_of_int (𝓞 E) P.D.toPre.X`. Conclude with `⟨R, i1, i2, i3, ξ, t, hm, P, m, γ, hCN, hz, het, hfu, hti, (hφ.2.2.2.2.2 _ hrk m γ hcn).2, hin⟩`.
+-/
 theorem asm_hasCones_fine {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l}
     {Z : GMod Xo c} {φs : InvFun ℤ} {𝒩 : Finset ℕ} {φ : InvFun (𝓞 E)} (hφ : Refines H (min D.p D.q) φs 𝒩 φ)
     (hZ : HasCones (ConeO H φ) Z) : HasCones (fun _ _ _ _ _ γ => ∀ N ∈ 𝒩, IsFine N γ) Z := by
@@ -58,9 +83,29 @@ end GlobalTheory.TorRef
 
 namespace GlobalTheory.TorRef
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨inferInstance, inferInstance⟩, inferInstance, IsFractionRing.self_iff_nonZeroDivisors_le_isUnit.2 fun _ h => (IsUnit.mk0 _ (nonZeroDivisors.ne_zero h))⟩`.
+-/
 theorem asm_isDedFrac_id (F : Type) [Field F] [CharZero F] : IsDedFrac (RingHom.id F) :=
   ⟨⟨inferInstance, inferInstance⟩, inferInstance, IsFractionRing.self_iff_nonZeroDivisors_le_isUnit.2 fun _ h => (IsUnit.mk0 _ (nonZeroDivisors.ne_zero h))⟩
 
+/- English proof (translation)
+Introduce `hSu hSg hGl hPZ hPO hUn hRf hGF hGM hBE hBO hBP hCA hDo`. Introduce `E _ _ _ H D h1 Xo`. Take `⟨s, 𝒩, h𝒩, hdom⟩` from `hDo E H D h1 Xo`. Take `⟨g, φs, hg, hfan, htame, hloc⟩` from `hSg E H D h1 Xo`. Establish `hrtw : IsTwInv H (resInt (𝓞 E) φs)` using `asm_isTwInv_resInt H φs`.
+
+Establish `h0tw : IsTwInv H (comb 0 (resInt (𝓞 E) φs) 0 (resInt (𝓞 E) φs))` using `asm_isTwInv_comb 0 0 hrtw hrtw`. Establish `hX : ∀ (l : Level H) (c : Coeff l) (hgd : ∀ p : ℕ, p.Prime → l.GoodAt p), ∃ X : GMod (Xo l) c, HasCones (ConeZ E φs) X ∧ PolRay (comb 0 (resInt (𝓞 E) φs) 0 (resInt (𝓞 E) φs)) (resInt (𝓞 E) φs) 1 X`. Introduce `l c hgd`. Take `⟨I, hI, R, hR, a, b, ω, C, hcov, hC⟩` from `hloc l c hgd`. Conclude with `hGl E H D l (Xo l) c I hI R hR a b ω C _ _ 1 _ h0tw hrtw hcov hC`.
+
+Use `choose X hXc hXr using hX`. Take `⟨a, b, ha, hb, hXp⟩` from `hUn E H D h1 Xo _ _ 1 X h0tw hrtw (fun l c hgd => ⟨hXr l c hgd, fun a b => hPZ E H D l (Xo l) c (X l c hgd) g φs hg hfan (hXc l c hgd) a b⟩)`. Take `⟨φ', hφ'⟩` from `hRf E H (min D.p D.q) g φs 𝒩 hg hfan h𝒩`. Take `⟨hpf, hns, htw', hpos', htame', -⟩` from `id hφ'`. Establish `hψeq : comb a (comb 0 (resInt (𝓞 E) φs) 0 (resInt (𝓞 E) φs)) b (resInt (𝓞 E) φs) = comb b (resInt (𝓞 E) φs) 0 φ'` using `asm_invFun_ext fun n B => by show (a : ℝ) * ((0 : ℕ) * _ + (0 : ℕ) * _) + _ = _ + ((0 : ℕ) : ℝ) * _`.
+
+Simplify using the standard rewrite rules. Establish `hψtw : IsTwInv H (comb b (resInt (𝓞 E) φs) 0 φ')` using `asm_isTwInv_comb b 0 hrtw htw'`. Establish `hψtame : IsTame (comb b (resInt (𝓞 E) φs) 0 φ')` using `asm_isTame_comb b 0 (asm_isTame_resInt htame) htame'`. Establish `hXP : ∀ l c hgd, ∃ DX, IsPol (comb b (resInt (𝓞 E) φs) 0 φ') a (X l c hgd) DX` using `fun l c hgd => by`. Take `⟨DX, h⟩` from `hXp l c hgd`.
+
+Rewrite `h` using `[hψeq, mul_one]`. Conclude with `⟨DX, h⟩`. Establish `hZ : ∀ (l : Level H) (c : Coeff l) (hgd : ∀ p : ℕ, p.Prime → l.GoodAt p), ∃ Z : GMod (Xo l) c, HasCones (ConeO H φ') Z ∧ PolRay (comb b (resInt (𝓞 E) φs) 0 φ') φ' a Z ∧ GenTor Z`. Introduce `l c hgd`. Take `⟨DX, hDX⟩` from `hXP l c hgd`.
+
+Take `⟨Y, BY, d, k, hd, hYt, hYc, hYp⟩` from `hGF E H D h1 φ' hpf hns l (Xo l) c`. Take `⟨ρ, hρ⟩` from `hGM E H D l (Xo l) c (X l c hgd) Y g φs 𝒩 φ' b a DX hg hfan hφ' hDX hYc`. Establish `hsupp : ∀ x ∈ BY.idealSheaf.support, x ∉ abLocus Y.t.G` using `fun x hx => (hSu E H D l (Xo l) c c.F (RingHom.id c.F) Y BY (comb 0 φ' d φ') (asm_isDedFrac_id c.F) (asm_isPosFn_comb 0 hd htame' hpos') hYp.1 x).1 hx`. Take `⟨Z, π, e, J, EX, n, hbl⟩` from `hBE E H D l (Xo l) c (X l c hgd) Y BY k ρ hρ hYp.2 hsupp`. Establish `hN4` using `hCA E H D h1 Xo l c hgd (X l c hgd) _ a DX hψtame hDX`.
+
+Take `⟨hZd, hZc⟩` from `hBO E H D l (Xo l) c (X l c hgd) Z Y BY π e J EX n b d a g φs 𝒩 φ' DX hg hfan hφ' (hXc l c hgd) hN4 hDX hd hYp.1 hbl`. Take `⟨hZr, hZt⟩` from `hBP E H D l (Xo l) c (X l c hgd) Z Y BY π e J EX n a (n * d) _ φ' DX hDX hbl (Nat.mul_pos hbl.1 hd) hZd hYt`. Conclude with `⟨Z, hZc, hZr, hZt⟩`. Use `choose Z hZc hZr hZt using hZ`. Take `⟨a', b', ha', hb', hZp⟩` from `hUn E H D h1 Xo _ φ' a Z hψtw htw' (fun l c hgd => ⟨hZr l c hgd, fun a'' b'' => hPO E H D l (Xo l) c (Z l c hgd) g φs 𝒩 φ' hg hfan hφ' (hZc l c hgd) a'' b b''⟩)`.
+
+Establish `htf : IsTame (comb a' (comb b (resInt (𝓞 E) φs) 0 φ') b' φ')` using `asm_isTame_comb a' b' hψtame htame'`. Use `⟨s, comb a' (comb b (resInt (𝓞 E) φs) 0 φ') b' φ', a' * a, Nat.mul_pos ha' ha, asm_isTwInv_comb a' b' hψtw htw', asm_isPosFn_comb a' hb' hψtame hpos', htf.1, fun l c hgd => ?_⟩` and prove the remaining obligations. Take `⟨BD, hBD⟩` from `hZp l c hgd`. Take `⟨hsm, hsnc, htor⟩` from `hZt l c hgd`. Conclude with `⟨Z l c hgd, BD, hdom l c hgd _ (asm_hasCones_fine hφ' (hZc l c hgd)), hBD, hsm, hsnc, htor⟩`.
+-/
 theorem polExSt_of_steps : PolSuppSt → SiegLocSt → PolGlueSt → PhiDivZSt → PhiDivOSt → UniformSt → RefineSt → GenFanSt →
     GenMapSt → BlowExSt → BlowOrdSt → BlowPolSt → ConeArcSt → DomSt → PolExSt := by
   intro hSu hSg hGl hPZ hPO hUn hRf hGF hGM hBE hBO hBP hCA hDo

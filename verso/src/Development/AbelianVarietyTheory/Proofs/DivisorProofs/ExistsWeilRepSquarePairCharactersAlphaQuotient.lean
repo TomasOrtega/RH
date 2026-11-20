@@ -22,6 +22,11 @@ noncomputable section
 
 namespace GlobalTheory.FunObj
 
+/- English proof (translation)
+Introduce `a`. Establish `e` using `h a`. Establish `e'` using `h' a`. Rewrite using `[MonoidHom.div_apply, Circle.coe_div, e, e']`. Use `split_ifs`.
+
+Simplify using the standard rewrite rules. Rewrite using `[pow_add]`. Apply the tactic sequence `rcases neg_one_pow_eq_or ℂ m with hm | hm <;> rw [hm] <;> ring`.
+-/
 theorem resEtaPow_div {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {χ χ' : (AF F ⊗[F] E)ˣ →* Circle} {n m : ℕ}
     (h : GlobalTheory.WeilM.ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χ n)
@@ -36,11 +41,27 @@ theorem resEtaPow_div {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
   · rw [pow_add]
     rcases neg_one_pow_eq_or ℂ m with hm | hm <;> rw [hm] <;> ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.div' h'.1, fun x => by simp only [MonoidHom.div_apply, h.2 x, h'.2 x, div_self']⟩`.
+-/
 theorem isHecke_div {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {χ χ' : (AF F ⊗[F] E)ˣ →* Circle} (h : GlobalTheory.LFun.IsHecke F E χ) (h' : GlobalTheory.LFun.IsHecke F E χ') :
     GlobalTheory.LFun.IsHecke F E (χ / χ') :=
   ⟨h.1.div' h'.1, fun x => by simp only [MonoidHom.div_apply, h.2 x, h'.2 x, div_self']⟩
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL t i j _hst B hB X Y r s r' s' hX hY Mo hMo`. Establish `hα : GlobalTheory.LFun.IsHecke D.host.F D.host.E (alpha G t i j)`. Establish `hm` using `(hL.mu0 j).1`. Establish `hx` using `(hL.xi t).1`. Establish `he` using `hL.eta.1`.
+
+Use `⟨(hm.1.mul hx.1).mul (he.1.pow _), fun x => ?_⟩` and prove the remaining obligations. Establish `e1` using `hm.2 x`. Establish `e2` using `hx.2 x`. Establish `e3` using `he.2 x`. Use `show L.mu0 ((j : ℕ) + 1) _ * L.xi t _ * (L.eta ^ _) _ = 1`.
+
+Rewrite using `[MonoidHom.pow_apply]`. Rewrite using `[e1, e2, e3]`. Simplify using the standard rewrite rules. Establish `hβ : GlobalTheory.LFun.IsHecke D.host.F D.host.E (beta G i j)`. Establish `hc` using `(G.ch.chi_eq (D.R.m - (i : ℕ)) (by omega) (by omega)).1`.
+
+Establish `he` using `hL.eta.1`. Use `⟨hc.1.mul (he.1.pow _), fun x => ?_⟩` and prove the remaining obligations. Establish `e1` using `hc.2 x`. Establish `e3` using `he.2 x`. Use `show G.ch.chi (D.R.m - (i : ℕ)) _ * (L.eta ^ _) _ = 1`.
+
+Rewrite using `[MonoidHom.pow_apply, e1, e3]`. Simplify using the standard rewrite rules. Establish `h2 : Module.finrank D.host.F D.host.E = 2` using `D.sp.cm.deg2`. Take `⟨rα, rβ⟩` from `GlobalTheory.T.thetaGrid_alpha_beta_restrict_quadratic_pow_rank hL t i j`. Establish `pα` using `GlobalTheory.LFun.resEtaPow_of_resEta _ _ h2 _ _ rα`.
+
+Establish `pβ` using `GlobalTheory.LFun.resEtaPow_of_resEta _ _ h2 _ _ rβ`. Conclude with `GlobalTheory.T.exists_adelicWeilRep_unitaryPair_schroedingerModel D B hB _ _ X Y r s r' s' hX hY Mo hMo _ _ hα (isHecke_div hα hβ) pα (resEtaPow_div pα pβ)`.
+-/
 theorem squareWeil₁ : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (t : T)
     (i j : Fin D.R.m), SquareStanding G t → ∀ (B : Base D.host.F D.host.E), B.IsGood D.sp.cm.sig →
     ∀ (X : Spc D.host.F D.host.E (spW₁ G i j).rank) (Y : Spc D.host.F D.host.E ((spW G i j).rank + (spW₁ G i j).rank))

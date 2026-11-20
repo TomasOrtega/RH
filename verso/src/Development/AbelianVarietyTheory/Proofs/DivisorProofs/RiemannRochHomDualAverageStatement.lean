@@ -11,5 +11,8 @@ open GlobalTheory.VB
 open GlobalTheory.IndefiniteRowSideFullHecke.GenericFiniteMaps
 open GlobalTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RRDev.psi_eq_genRank_mul_degCh2 | exact GlobalTheory.RRDev.psi_eq_genRank_mul_degCh2 | (intros; apply GlobalTheory.RRDev.psi_eq_genRank_mul_degCh2 <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.riemann_roch_hom_dual_average : ∀ (k : Type) [Field k] (T : Scheme.{0}) [Algebra k Γ(T, ⊤)] [IsIntegral T], IsProjSurface k T → ∀ (E : T.Modules) (r : ℕ), IsVB E r → ∀ (F : T.Modules), QCoh.IsFiniteQC F → ((chi k (homMod (dual E) F) : ℚ) + (chi k (homMod E F) : ℚ)) / 2 - (r : ℚ) * (chi k F : ℚ) = (genRank F : ℚ) * degCh2 k E := by
   first | exact @GlobalTheory.RRDev.psi_eq_genRank_mul_degCh2 | exact GlobalTheory.RRDev.psi_eq_genRank_mul_degCh2 | (intros; apply GlobalTheory.RRDev.psi_eq_genRank_mul_degCh2 <;> assumption)

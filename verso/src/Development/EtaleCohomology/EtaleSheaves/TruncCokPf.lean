@@ -33,6 +33,9 @@ def Levels : Prop := Hyp → ∀ (q : ℕ) [NeZero q] (i n : ℤ) {A Y : CommRin
     (hpo : IsPushout φ' e u φ''), Et e → SpS e → P E (d ≫ e) →
     LevelLow (ZMod q) (tw q i) n e φ' u φ'' hpo.w
 
+/- English proof (translation)
+Introduce `hH q _ i n A Y φ hq P hpush het hlow D d hD' Y' w φ' hpo E e Y'' u φ'' he hs hE hpo' m hm y hy`. Conclude with `hD hH (ZMod q) (tw q i) n e φ' u φ'' hpo' he hs (hL hH q i n φ hq P hpush het hlow D d hD' Y' w φ' hpo E e Y'' u φ'' hpo' he hs hE) m hm y hy`.
+-/
 theorem TruncCok_of (hD : Desc) (hL : Levels) : LateralTheory.E.DescLocPf.Fine.TruncCok := by
   intro hH q _ i n A Y φ hq P hpush het hlow D d hD' Y' w φ' hpo E e Y'' u φ'' he hs hE hpo' m hm y hy
   exact hD hH (ZMod q) (tw q i) n e φ' u φ'' hpo' he hs

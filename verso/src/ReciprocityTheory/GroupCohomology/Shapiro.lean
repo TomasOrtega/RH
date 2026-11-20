@@ -16,6 +16,9 @@ section QI
 
 variable {R : Type u} [CommRing R] {A B : Cx R}
 
+/- English proof (translation)
+Consider the cases of `φ`. Consider the cases of `ψ`. Use `congr 1`. Use function extensionality and compare the values at `n`. Conclude with `h n`.
+-/
 theorem shp_hom_ext {φ ψ : Hom A B} (h : ∀ n, φ.f n = ψ.f n) : φ = ψ := by
   cases φ
   cases ψ
@@ -23,6 +26,13 @@ theorem shp_hom_ext {φ ψ : Hom A B} (h : ∀ n, φ.f n = ψ.f n) : φ = ψ := 
   funext n
   exact h n
 
+/- English proof (translation)
+Establish `hcomp : ∀ {P Q S : Cx R} (α : Hom Q S) (β : Hom P Q) (x : P.H n), (α.comp β).H n x = α.H n (β.H n x)`. Introduce `P Q S α β x`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression. Establish `hid : ∀ {P : Cx R} (x : P.H n), (Hom.id P).H n x = x`.
+
+Introduce `P x`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression. Use `⟨fun x y hxy => ?_, fun y => ⟨ψ.H n y, ?_⟩⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← hcomp φ ψ y, h2, hid]`.
+-/
 theorem shp_bij_of_inv (φ : Hom A B) (ψ : Hom B A) (n : ℕ) (h1 : (ψ.comp φ).H n = (Hom.id A).H n)
     (h2 : (φ.comp ψ).H n = (Hom.id B).H n) : Bijective (φ.H n) := by
   have hcomp : ∀ {P Q S : Cx R} (α : Hom Q S) (β : Hom P Q) (x : P.H n),
@@ -44,6 +54,15 @@ theorem shp_bij_of_inv (φ : Hom A B) (ψ : Hom B A) (n : ℕ) (h1 : (ψ.comp φ
       _ = y := hid y
   · rw [← hcomp φ ψ y, h2, hid]
 
+/- English proof (translation)
+Set `e : ∀ n, A.X n ≃ₗ[R] B.X n` to `fun n => LinearEquiv.ofBijective (φ.f n) (h n)`. Establish `h1 : ∀ m (y : B.X m), φ.f m ((e m).symm y) = y` using `fun m y => (e m).apply_symm_apply y`. Establish `h0 : ∀ m (x : A.X m), (e m).symm (φ.f m x) = x` using `fun m x => (e m).symm_apply_apply x`. Set `ψ : Hom B A` to `⟨fun n => (e n).symm.toLinearMap, fun n x => by`. Apply `(h (n + 1)).1` to reduce the goal to its premises.
+
+Use `show φ.f (n + 1) ((e (n + 1)).symm (B.d n x)) = φ.f (n + 1) (A.d n ((e n).symm x))`. Rewrite using `[φ.comm, h1, h1]⟩`. Introduce `n`. Apply `shp_bij_of_inv φ ψ n` to reduce the goal to its premises. Use `congr 1`.
+
+Apply `shp_hom_ext` to reduce the goal to its premises. Introduce `m`. Use extensionality with `x`. Conclude with `h0 m x`. Use `congr 1`.
+
+Apply `shp_hom_ext` to reduce the goal to its premises. Introduce `m`. Use extensionality with `y`. Conclude with `h1 m y`.
+-/
 theorem shp_qi_of_bij (φ : Hom A B) (h : ∀ n, Bijective (φ.f n)) : φ.QuasiIso := by
   let e : ∀ n, A.X n ≃ₗ[R] B.X n := fun n => LinearEquiv.ofBijective (φ.f n) (h n)
   have h1 : ∀ m (y : B.X m), φ.f m ((e m).symm y) = y := fun m y => (e m).apply_symm_apply y
@@ -73,6 +92,9 @@ variable {R : Type u} [CommRing R] {G : Type u} [Group G] [TopologicalSpace G] [
   {U : Subgroup G} {M : TRep R U} {C : TRep R G} (ev : Pair C M) (hφ : ev.φ = U.subtype)
 
 include hφ in
+/- English proof (translation)
+Rewrite using `[hφ]`. Both sides reduce to the same expression.
+-/
 theorem shp_phi (y : U) : ev.φ y = (y : G) := by
   rw [hφ]
   rfl
@@ -86,8 +108,14 @@ def shpPush (n : ℕ) : hcoch C G n →ₗ[R] hcoch M G n where
   map_add' F F' := Subtype.ext (funext fun x => map_add ev.u _ _)
   map_smul' c F := Subtype.ext (funext fun x => map_smul ev.u _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem shpPush_apply (n : ℕ) (F : hcoch C G n) (x) : (shpPush ev hφ n F).1 x = ev.u (F.1 x) := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Rewrite using `[shpPush_apply, h]`. Simplify using `only [hd, map_sum, map_zsmul, shpPush_apply]`.
+-/
 theorem shpPush_hd (n : ℕ) (F : hcoch C G n) (F' : hcoch C G (n + 1)) (h : F'.1 = hd n F.1) :
     (shpPush ev hφ (n + 1) F').1 = hd n (shpPush ev hφ n F).1 := by
   funext x
@@ -98,6 +126,25 @@ variable (j : C.V → C(G, M.V)) (hj : Topology.IsEmbedding j) (hjc : ∀ c g, j
   (hr : ∀ f : C(G, M.V), (∀ (x : U) g, f (x * g) = M.rho x (f g)) → f ∈ Set.range j)
 
 include hj hjc hr in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `F F' hFF'`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `p`. Apply `hj.injective` to reduce the goal to its premises.
+
+Use extensionality with `g`. Rewrite using `[hjc, hjc, ← F.2.2 g p, ← F'.2.2 g p]`. Establish `h'` using `congrArg (fun K : hcoch M G n => K.1 fun i => g • p i) hFF'`. Simplify `h'` using `only [shpPush_apply]`. Introduce `K`.
+
+Establish `hKc : Continuous K.1` using `K.2.1`. Set `m2 : C((Fin (n + 1) → G) × G, M.V)` to `⟨fun q => K.1 fun i => q.2 * q.1 i, hKc.comp (continuous_pi fun i => continuous_snd.mul ((continuous_apply i).comp continuous_fst))⟩`. Set `Φ : (Fin (n + 1) → G) → C(G, M.V)` to `fun q => ContinuousMap.curry m2 q`. Establish `hΦ : Continuous Φ` using `(ContinuousMap.curry m2).continuous`. Establish `hΦr : ∀ q, ∃ c, j c = Φ q`.
+
+Introduce `q`. Use `hr _ fun u g => ?_` and prove the remaining obligations. Use `show K.1 (fun i => (u : G) * g * q i) = M.rho u (K.1 fun i => g * q i)`. Establish `h'` using `K.2.2 u (fun i => g * q i)`. Simplify using `only [mul_assoc]`.
+
+Conclude with `h'`. Use `choose c hc using hΦr`. Establish `hcont : Continuous c`. Use `hj.isInducing.continuous_iff.2 ?_` and prove the remaining obligations. Establish `hjc' : j ∘ c = Φ` using `funext hc`.
+
+Rewrite using `[hjc']`. Conclude with `hΦ`. Establish `hequiv : ∀ (g : G) q, c (fun i => g • q i) = C.rho g (c q)`. Introduce `g q`. Apply `hj.injective` to reduce the goal to its premises.
+
+Use extensionality with `h`. Establish `e1 : C.rho h (C.rho g (c q)) = C.rho (h * g) (c q)`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Rewrite using `[hc, hjc, e1, ← hjc, hc]`.
+
+Use `show K.1 (fun i => h * (g • q i)) = K.1 (fun i => h * g * q i)`. Simplify using `only [smul_eq_mul, mul_assoc]`. Use `⟨⟨c, hcont, hequiv⟩, Subtype.ext (funext fun q => ?_)⟩` and prove the remaining obligations. Use `show ev.u (c q) = K.1 q`. Establish `h'` using `congrArg (fun f : C(G, M.V) => f 1) (hc q)`.
+
+Simplify using `only [hjc, map_one, Module.End.one_apply] at h'`. Rewrite using `[h']`. Use `show K.1 (fun i => 1 * q i) = K.1 q`. Simplify using `only [one_mul]`.
+-/
 theorem shpPush_bij (n : ℕ) : Bijective (shpPush ev hφ n) := by
   constructor
   · intro F F' hFF'
@@ -147,6 +194,27 @@ theorem shpPush_bij (n : ℕ) : Bijective (shpPush ev hφ n) := by
 
 end Push
 
+/- English proof (translation)
+Introduce `R _ G _ _ _ _ U M C ev hev hr'`. Take `⟨hφ, j, hj, hjc, hrj⟩` from `hev`. Take `⟨r, hrc, hrx⟩` from `hr'`. Take `⟨eC, hC, hCf, -⟩` from `homogIso_holds R G C`. Take `⟨eM, hM, hMf, -⟩` from `homogIso_holds R U M`.
+
+Take `⟨B, eB, hB⟩` from `homogExists_holds R U M G`. Take `⟨P, hP⟩ : ∃ P : Hom C.coch B, ∀ n f, eB n (P.f n f) = shpPush ev hφ n (eC n f)` from `⟨⟨fun n => ((eB n).symm.toLinearMap.comp (shpPush ev hφ n)).comp (eC n).toLinearMap, fun n F => by`. Apply `(eB (n + 1)).injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hB]`.
+
+Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Conclude with `shpPush_hd ev hφ n _ _ (hC n F)⟩,`. Use `fun n f => (eB n).apply_symm_apply _⟩`. Take `⟨φ1, hφ1⟩` from `(prism_holds R U M U G M.coch B eM eB hM hB).1 Subtype.val continuous_subtype_val (fun g x => rfl)`. Take `⟨φ2, hφ2⟩` from `(prism_holds R U M G U B M.coch eB eM hB hM).1 r hrc (fun g x => hrx g x)`.
+
+Establish `h12 : ∀ n, (φ1.comp φ2).H n = (Hom.id M.coch).H n` using `(prism_holds R U M U U M.coch M.coch eM eM hM hM).2 (fun u => r u) id (φ1.comp φ2) (Hom.id _) (hrc.comp continuous_subtype_val) continuous_id (fun g x => hrx g x) (fun g x => rfl) (fun n F x => by show (eM n (φ1.f n (φ2.f n F))).1 x = _`. Rewrite using `[hφ1, hφ2])`. Use the proof step `(fun n F x => rfl)`. Establish `h21 : ∀ n, (φ2.comp φ1).H n = (Hom.id B).H n` using `(prism_holds R U M G G B B eB eB hB hB).2 (fun g => (r g : G)) id (φ2.comp φ1) (Hom.id _) (continuous_subtype_val.comp hrc) continuous_id (fun g x => by show ((r (↑g * x) : U) : G) = ↑g * ↑(r x)`. Rewrite using `[hrx, Subgroup.coe_mul])`.
+
+Use the proof step `(fun g x => rfl)`. Use the proof step `(fun n F x => by show (eB n (φ2.f n (φ1.f n F))).1 x = _`. Rewrite using `[hφ2, hφ1])`. Use the proof step `(fun n F x => rfl)`. Establish `hPb : ∀ n, Bijective (P.f n)` using `fun n => by`.
+
+Establish `hfun : ⇑(P.f n) = (eB n).symm ∘ (shpPush ev hφ n) ∘ (eC n)`. Use function extensionality and compare the values at `f`. Simplify using `only [Function.comp_apply]`. Rewrite using `[← hP, LinearEquiv.symm_apply_apply]`. Rewrite using `[hfun]`.
+
+Conclude with `(eB n).symm.bijective.comp ((shpPush_bij (ev := ev) (hφ := hφ) (j := j) (hj := hj) (hjc := hjc) (hr := hrj) n).comp (eC n).bijective)`. Establish `hL : ∀ n f x, (eM n (ev.hom.f n f)).1 x = ev.u (C.rho (x 0 : G) (f.1 fun i => ((x i.castSucc : G))⁻¹ * x i.succ))`. Introduce `n f x`. Rewrite using `[hMf]`. Use `show M.rho (x 0) (ev.u (f.1 fun i => ev.φ ((x i.castSucc)⁻¹ * x i.succ))) = _`.
+
+Rewrite using `[← ev.equiv]`. Simplify using `only [shp_phi ev hφ, Subgroup.coe_mul, Subgroup.coe_inv]`. Establish `hR : ∀ n f x, (eM n ((φ1.comp P).f n f)).1 x = ev.u (C.rho (x 0 : G) (f.1 fun i => ((x i.castSucc : G))⁻¹ * x i.succ))`. Introduce `n f x`. Use `show (eM n (φ1.f n (P.f n f))).1 x = _`.
+
+Rewrite using `[hφ1, hP, shpPush_apply, hCf]`. Establish `hev : ev.hom = φ1.comp P` using `shp_hom_ext fun n => LinearMap.ext fun f => (eM n).injective (Subtype.ext (funext fun x => (hL n f x).trans (hR n f x).symm))`. Introduce `n`. Rewrite using `[hev]`. Establish `hc : ∀ y, (φ1.comp P).H n y = φ1.H n (P.H n y)` using `fun y => by`.
+
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Both sides reduce to the same expression. Establish `hfun : ⇑((φ1.comp P).H n) = φ1.H n ∘ P.H n` using `funext hc`. Rewrite using `[hfun]`. Conclude with `(shp_bij_of_inv φ1 φ2 n (h21 n) (h12 n)).comp (shp_qi_of_bij P hPb n)`.
+-/
 theorem shapiro_holds : ShapiroStatement.{u} := by
   intro R _ G _ _ _ _ U M C ev hev hr'
   obtain ⟨hφ, j, hj, hjc, hrj⟩ := hev
@@ -235,6 +303,9 @@ def coindTr (g : G) : coindSub U M →ₗ[R] coindSub U M where
   map_add' f f' := rfl
   map_smul' c f := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coindTr_apply (g : G) (f : coindSub U M) (h : G) : (coindTr g f).1 h = f.1 (h * g) := rfl
 
 variable (U M)
@@ -251,6 +322,11 @@ instance : ContinuousConstSMul R (coindSub U M) :=
 
 variable [LocallyCompactSpace G]
 
+/- English proof (translation)
+Set `m : C(G × G, G)` to `⟨fun q => q.2 * q.1, continuous_snd.mul continuous_fst⟩`. Establish `h1 : Continuous fun p : G × coindSub U M => (ContinuousMap.curry m p.1, (p.2 : C(G, M.V)))` using `((ContinuousMap.curry m).continuous.comp continuous_fst).prodMk (continuous_subtype_val.comp continuous_snd)`. Establish `h2` using `ContinuousMap.continuous_comp'.comp h1`. Use `show Continuous fun p : G × coindSub U M => coindRho U M p.1 p.2`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations.
+
+Conclude with `h2`.
+-/
 theorem coindRho_cont : ContAction (coindRho U M) := by
   let m : C(G × G, G) := ⟨fun q => q.2 * q.1, continuous_snd.mul continuous_fst⟩
   have h1 : Continuous fun p : G × coindSub U M => (ContinuousMap.curry m p.1, (p.2 : C(G, M.V))) :=
@@ -277,6 +353,9 @@ def coindEv : Pair (coindRep U M) M where
     rw [mul_one] at h
     rw [one_mul]; exact h
 
+/- English proof (translation)
+Unfold `IsCoind`. Use `⟨rfl, fun f => f.1, Topology.IsEmbedding.subtypeVal, fun c g => ?_, fun f hf => ⟨⟨f, hf⟩, rfl⟩⟩` and prove the remaining obligations. Use `show c.1 g = c.1 (1 * g)`. Rewrite using `[one_mul]`.
+-/
 theorem coindEv_isCoind : IsCoind U M (coindRep U M) (coindEv U M) := by
   unfold IsCoind
   refine ⟨rfl, fun f => f.1, Topology.IsEmbedding.subtypeVal, fun c g => ?_,
@@ -286,6 +365,9 @@ theorem coindEv_isCoind : IsCoind U M (coindRep U M) (coindEv U M) := by
 
 end Coind
 
+/- English proof (translation)
+Introduce `R _ G _ _ _ _ U M`. Conclude with `⟨coindRep U M, coindEv U M, coindEv_isCoind U M⟩`.
+-/
 theorem coind_holds : CoindStatement.{u} := by
   intro R _ G _ _ _ _ U M
   exact ⟨coindRep U M, coindEv U M, coindEv_isCoind U M⟩

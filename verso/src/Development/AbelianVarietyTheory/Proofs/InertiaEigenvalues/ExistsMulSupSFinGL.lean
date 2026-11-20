@@ -38,9 +38,15 @@ def idemOff (S : Finset (HeightOneSpectrum (𝓞 E))) : Af E :=
     · simp only [h, if_true]; exact zero_mem _
     · simp only [h, if_false]; exact one_mem _⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pLoc_idemOff (S : Finset (HeightOneSpectrum (𝓞 E))) (v : HeightOneSpectrum (𝓞 E)) :
     pLoc E v (idemOff S) = if v ∈ S then 0 else 1 := rfl
 
+/- English proof (translation)
+The claim follows from `FiniteAdeleRing.ext _ fun v => by change pLoc E v (idemOff S) * pLoc E v (idemOff S) = pLoc E v (idemOff S) rw [pLoc_idemOff]; split_ifs <;> simp`.
+-/
 theorem idemOff_mul_self (S : Finset (HeightOneSpectrum (𝓞 E))) : idemOff S * idemOff S = idemOff S :=
   FiniteAdeleRing.ext _ fun v => by
     change pLoc E v (idemOff S) * pLoc E v (idemOff S) = pLoc E v (idemOff S)
@@ -54,16 +60,31 @@ def cutS (S : Finset (HeightOneSpectrum (𝓞 E))) : Af E →ₙ+* Af E where
   map_zero' := mul_zero _
   map_add' x y := mul_add _ _ _
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `pLoc E v (idemOff S * x) = _`. Rewrite using `[map_mul, pLoc_idemOff]`.
+-/
 theorem pLoc_cutS (S : Finset (HeightOneSpectrum (𝓞 E))) (v : HeightOneSpectrum (𝓞 E)) (x : Af E) :
     pLoc E v (cutS S x) = (if v ∈ S then 0 else 1) * pLoc E v x := by
   change pLoc E v (idemOff S * x) = _
   rw [map_mul, pLoc_idemOff]
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Conclude with `congrArg (fun x : GL (Fin a) (Af E) => pLoc E v (x i j)) (pFin_finGL k)`.
+-/
 theorem map_pLoc_pFin_finGL {a : ℕ} (v : HeightOneSpectrum (𝓞 E)) (k : GL (Fin a) (Af E)) :
     Matrix.GeneralLinearGroup.map ((pLoc E v).comp (pFin E)) (finGL E a k) = Matrix.GeneralLinearGroup.map (pLoc E v) k := by
   refine Units.ext (Matrix.ext fun i j => ?_)
   exact congrArg (fun x : GL (Fin a) (Af E) => pLoc E v (x i j)) (pFin_finGL k)
 
+/- English proof (translation)
+Introduce `E _ _ a S g hg`. Take `⟨u, hu, k₁, hk₁, rfl⟩` from `hg`. Use `set k : GL (Fin a) (Af E) := cornerGL a (cutS S) (Matrix.GeneralLinearGroup.map (pFin E) k₁) with hk`. Establish `hkv : ∀ v, v ∉ S → Matrix.GeneralLinearGroup.map (pLoc E v) k = Matrix.GeneralLinearGroup.map ((pLoc E v).comp (pFin E)) k₁`. Introduce `v hv`.
+
+Rewrite using `[hk, map_cornerGL_of_hom _ _ (pLoc E v) (fun x => by rw [pLoc_cutS, if_neg hv, one_mul])]`. Conclude with `Units.ext (Matrix.ext fun i j => rfl)`. Establish `hkS : ∀ v ∈ S, Matrix.GeneralLinearGroup.map (pLoc E v) k = 1` using `fun v hv => map_cornerGL_of_zero _ _ (fun x => by rw [pLoc_cutS, if_pos hv, zero_mul]) _`. Establish `hK : ∀ v, v ∉ S → Matrix.GeneralLinearGroup.map ((pLoc E v).comp (pFin E)) k₁ ∈ KGL v a`. Introduce `v hv`.
+
+Conclude with `Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hk₁ v) hv`. Use `⟨u, hu, k₁ * (finGL E a k)⁻¹, ?_, k, fun v => ?_, hkS, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Rewrite using `[map_mul, map_inv, map_pLoc_pFin_finGL, hkv w hw, mul_inv_cancel]`. Distinguish the cases in `hv : v ∈ S`.
+
+Rewrite using `[hkS v hv]`. Conclude with `one_mem _`. Rewrite using `[hkv v hv]`. Conclude with `hK v hv`. Use `group`.
+-/
 theorem exists_mul_supS_finGL : ∀ (E : Type) [Field E] [NumberField E] (a : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))) (g : GA E a),
     g ∈ GlobalTheory.CellDec.C0 E a S →
     ∃ u ∈ GlobalTheory.CellDec.NA E a, ∃ h ∈ GlobalTheory.JSW.supS E a S, ∃ k : GL (Fin a) (Af E),

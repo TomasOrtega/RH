@@ -8,6 +8,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.PairStep GlobalTheory.FieldPair
 
+/- English proof (translation)
+Introduce `X _ _ _ p n Δ D η x m mD gG fD δ hΔ hD hδ hm hmD hlog hDz E hE`. Take `⟨z, hzx, hEz⟩` from `(isPrimeOf_placeEquiv E x).1 hE`. Rewrite using `[hlog.discrep_eq_neg hm hzx hEz, ← hDz z hzx E hEz]`. Establish `h1 : 0 ≤ Δ z` using `hΔ.nonneg z`. Establish `h2 : 0 ≤ D z`.
+
+Take `⟨m₀, D₀, -, hD₀, rfl⟩` from `hD`. Use `div_nonneg (Int.cast_nonneg ?_) (Nat.cast_nonneg m₀)` and prove the remaining obligations. Take `⟨g, hg⟩` from `D₀.exists_isEqn z`. Take `⟨a, ha⟩` from `CartierDiv.eff_iff.1 hD₀ z g hg`. Distinguish the cases in `hz : Order.coheight z = 1`.
+
+Rewrite using `[hg.mult_eq, ← ha, ord_algebraMap hz fun h => g.ne_zero (by rw [← ha, h, map_zero])]`. Conclude with `Int.natCast_nonneg _`. Rewrite using `[hg.mult_eq, Scheme.ord_eq_zero_of_coheight_neq_one hz]`. Establish `h3 : 0 ≤ 1 - δ` using `by linarith`. Use polynomial arithmetic with `[mul_nonneg h3 h2]`.
+-/
 theorem GlobalTheory.PairStep.discrep_sub_le_zero_of_isQCart : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp ℂ) (n : ℕ)
     (Δ D : X → ℚ) (η : RatForms p n) (x : X) (m mD : ℕ) (gG fD : X.functionFieldˣ) (δ : ℚ),
     IsEffQDiv Δ → IsQCart D → δ ≤ 1 → 0 < m → 0 < mD → IsLogEqn p Δ η x m gG →

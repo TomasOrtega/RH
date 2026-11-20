@@ -26,6 +26,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 namespace GlobalTheory.ChainTw
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h2 : ((⟨u.1, hle u.2⟩ : (flat c w j s hr).CC c) : SmT (flat c w j s hr).M →ₗ[ℂ] (GA D (flat c w j s hr).V → ℂ)) = 0` using `(Submodule.coe_eq_zero).2 h`. Conclude with `hB.1 ((Submodule.coe_eq_zero).1 h2)`. Establish `h3` using `hB.2 v hv`. Unfold `ParFun at h3 ⊢`.
+
+Conclude with `h3`.
+-/
 theorem isPar_flat_of_le {D : D7} {c : Com D} {w : Twist D} {j : ℕ} {s : PiLocalization₂ D} (hr : D.R.r ≤ s.V.rank)
     (hle : s.CC c ≤ (flat c w j s hr).CC c) (u : s.CC c) (B : GlobalTheory.LFun.Fam D.host.E) (hB : IsPar u B) :
     IsPar (⟨u.1, hle u.2⟩ : (flat c w j s hr).CC c) B := by
@@ -37,6 +42,11 @@ theorem isPar_flat_of_le {D : D7} {c : Com D} {w : Twist D} {j : ℕ} {s : PiLoc
     unfold ParFun at h3 ⊢
     exact h3
 
+/- English proof (translation)
+Establish `hrank : s'.V.rank = D.R.r`. Rewrite using `[hflat.rank]`. Simplify using `[Formalism.BasicNotions.Ranks.rankY]`. Establish `hbd0` using `GlobalTheory.T.thetaChain_heckeParams_trivialBound_rapidDecay hCRD D (GlobalTheory.T.thetaChain_level_properties D) c hc 0 hj s' hflat u' B hB'`. Rewrite `hbd0` using `[hrank]`.
+
+Conclude with `hbd0`.
+-/
 theorem bounded_first_member (hCRD : GlobalTheory.Published.CuspRapidDecay) {D : D7} {c : Com D} (hc : c.Is) (hj : 0 ≤ D.R.m) {s' : PiLocalization₂ D}
     (hflat : s'.Is c 0) (u' : s'.CC c) (B : GlobalTheory.LFun.Fam D.host.E) (hB' : IsPar u' B) :
     GlobalTheory.LFun.Bounded (GlobalTheory.LFun.above D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F)))) B D.R.r (((D.R.r : ℝ) - 1) / 2) := by
@@ -46,6 +56,15 @@ theorem bounded_first_member (hCRD : GlobalTheory.Published.CuspRapidDecay) {D :
   rw [hrank] at hbd0
   exact hbd0
 
+/- English proof (translation)
+Establish `hex : ∃ v, PiLocalization₂.val u' v ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hB'.1` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Conclude with `h v`. Take `⟨v, hv⟩` from `hex`. Use `set f : GA D s'.V → ℂ := fun g => conj (PiLocalization₂.val u' v g) with hfdef`.
+
+Establish `hPF : ParFun c s' (PiLocalization₂.val u' v) B` using `hB'.2 v hv`. Establish `h3 : GlobalTheory.LFun.IsParamFunV s'.V c.S f B` using `((GlobalTheory.T.thetaChainStage_lattice_stabilizer_params_off_set D c hc 0 hj s' hflat).2 f B).1 hPF`. Take `⟨h4a, _, _⟩` from `GlobalTheory.T.thetaChainStage_conjugate_values_hecke_operators hCRD D c hc 0 hj s' hflat`. Take `⟨hcont, ⟨C, hC⟩, hinv, _⟩` from `h4a u' v`. Establish `hfmem : f ∈ GlobalTheory.FinZeta.bddAut s'.V`.
+
+Use `⟨(Complex.continuous_conj).comp hcont, fun γ hγ g => ?_, C, fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [hfdef, hinv γ hγ g]`. Simplify `hC g` using `[hfdef]`. Conclude with `GlobalTheory.T.boundedAutomorphic_parameters_star_stable D s'.V c.S f hfmem B h3`.
+-/
 theorem conjStable_first_member (hCRD : GlobalTheory.Published.CuspRapidDecay) {D : D7} {c : Com D} (hc : c.Is) (hj : 0 ≤ D.R.m) {s' : PiLocalization₂ D}
     (hflat : s'.Is c 0) (u' : s'.CC c) (B : GlobalTheory.LFun.Fam D.host.E) (hB' : IsPar u' B) :
     ∀ w ∉ GlobalTheory.LFun.above D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F))),
@@ -75,6 +94,15 @@ end GlobalTheory.ChainTw
 
 namespace GlobalTheory.ChainTw
 
+/- English proof (translation)
+Introduce `hCRD D c w hw j hj s hs hj0 u B hB`. Substitute `hj0` using the available equality. Establish `hc` using `hw.com`. Take `⟨hr, hL, hflat⟩` from `hs`. Establish `hle` using `GlobalTheory.T.chain_stage_forms_twisted_level_le_finer_level D c w hw 0 hj s ⟨hr, hL, hflat⟩ hr`.
+
+Establish `hB'` using `isPar_flat_of_le hr hle u B hB`. Establish `hbd : GlobalTheory.LFun.Bounded (GlobalTheory.LFun.above D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F)))) B D.R.r ((D.R.r : ℝ) / 2)` using `GlobalTheory.LiftPole.Bounded.mono (bounded_first_member hCRD hc hj hflat _ B hB') (by linarith)`. Use `⟨hbd, fun k hk => ?_⟩` and prove the remaining obligations. Establish `hst` using `conjStable_first_member hCRD hc hj hflat _ B hB'`. Establish `hch` using `hc.chars.2.2.2.2 (k + 1) (Finset.mem_Icc.2 ⟨by omega, by omega⟩)`.
+
+Establish `hrt : ((D.R.r : ℝ) / 2) + 1 < (1 + (D.R.t : ℝ)) / 2`. Establish `h5 : D.R.r + 5 ≤ D.R.t` using `by simpa [Formalism.BasicNotions.Ranks.r] using D.R.rank_add_five_le`. Establish `h5' : (D.R.r : ℝ) + 5 ≤ D.R.t` using `by exact_mod_cast h5`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨l, hl, he⟩` from `GlobalTheory.T.euler_product_conjugation_stable_parameters_pos D c.S B (c.μ (k + 1)) D.R.r ((D.R.r : ℝ) / 2) ((1 + (D.R.t : ℝ)) / 2) hch.1 hch.2 (hc.unr ⟨k, hk⟩) hbd hrt hst`.
+
+Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Rewrite using `[← he]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lPos_of_rapidDecay : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, LPos D := by
   intro hCRD D c w hw j hj s hs hj0 u B hB
   subst hj0

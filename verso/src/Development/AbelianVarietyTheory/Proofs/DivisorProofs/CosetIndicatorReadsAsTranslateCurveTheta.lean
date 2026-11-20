@@ -28,12 +28,18 @@ open GlobalTheory.ThetaLatticePoints (ptHom)
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hb0` using `bb_ne_zero D`. Use `(show (1 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≤ D.host.AA0 from ?_) (FractionalIdeal.one_mem_one _)` and prove the remaining obligations. Rewrite using `[Formalism.BasicNotions.Host.AA0, ← one_div, FractionalIdeal.le_div_iff_mul_le hb0, one_mul]`. Conclude with `FractionalIdeal.coeIdeal_le_one`.
+-/
 private theorem one_mem_inverse_halfDifferent (D : D7) : (1 : D.host.E) ∈ D.host.AA0 := by
   have hb0 := bb_ne_zero D
   refine (show (1 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≤ D.host.AA0 from ?_) (FractionalIdeal.one_mem_one _)
   rw [Formalism.BasicNotions.Host.AA0, ← one_div, FractionalIdeal.le_div_iff_mul_le hb0, one_mul]
   exact FractionalIdeal.coeIdeal_le_one
 
+/- English proof (translation)
+Establish `hn0` using `GlobalTheory.SkewLatSelfDual.coe_ne_zero (GlobalTheory.SkewLatSelfDual.conj_smul_ne_bot h𝔪)`. Establish `hle : (𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≤ skewEnt D 𝔪`. Rewrite using `[skewEnt, FractionalIdeal.le_div_iff_mul_le hn0]`. Simplify using `using mul_le_mul' (le_refl (𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)) (FractionalIdeal.coeIdeal_le_one (I := D.host.conj • 𝔪))`. Conclude with `hle (FractionalIdeal.mem_coeIdeal_of_mem (𝓞 D.host.E)⁰ hb)`.
+-/
 private theorem mem_skewEnt {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) {b : 𝓞 D.host.E} (hb : b ∈ 𝔪) :
     (b : D.host.E) ∈ skewEnt D 𝔪 := by
   have hn0 := GlobalTheory.SkewLatSelfDual.coe_ne_zero (GlobalTheory.SkewLatSelfDual.conj_smul_ne_bot h𝔪)
@@ -43,6 +49,9 @@ private theorem mem_skewEnt {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥
       (FractionalIdeal.coeIdeal_le_one (I := D.host.conj • 𝔪))
   exact hle (FractionalIdeal.mem_coeIdeal_of_mem (𝓞 D.host.E)⁰ hb)
 
+/- English proof (translation)
+Introduce `i j` and use `by obtain ⟨b, hb⟩ := hz i j have h := FractionalIdeal.mul_mem_mul (one_mem_inverse_halfDifferent D) (mem_skewEnt h𝔪 (𝔪.mul_mem_right b hc)) rw [one_mul] at h rw [Matrix.smul_apply, smul_eq_mul, hb] exact h`.
+-/
 private theorem mem_skewMat {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) {a d : ℕ} {z : Matrix (Fin d) (Fin a) D.host.E}
     (hz : IsIntE z) {c : 𝓞 D.host.E} (hc : c ∈ 𝔪) : (c : D.host.E) • z ∈ skewMat D 𝔪 a d := fun i j => by
   obtain ⟨b, hb⟩ := hz i j
@@ -51,6 +60,9 @@ private theorem mem_skewMat {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥
   rw [Matrix.smul_apply, smul_eq_mul, hb]
   exact h
 
+/- English proof (translation)
+Introduce `i j` and use `by obtain ⟨b, hb⟩ := hz i j have h := Submodule.smul_mem (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) b (one_mem_inverse_halfDifferent D) rw [Algebra.smul_def, mul_one] at h rw [hb] exact h`.
+-/
 private theorem mem_stdMat {a d : ℕ} {z : Matrix (Fin d) (Fin a) D.host.E} (hz : IsIntE z) :
     z ∈ stdMat D a d := fun i j => by
   obtain ⟨b, hb⟩ := hz i j
@@ -61,15 +73,40 @@ private theorem mem_stdMat {a d : ℕ} {z : Matrix (Fin d) (Fin a) D.host.E} (hz
 
 variable {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {δ : ℂ}
 
+/- English proof (translation)
+Simplify using `only [cosInd, Matrix.zero_apply, RingHom.map_zero, mul_zero, sub_zero, inId_iff]`.
+-/
 private theorem cosInd_zero (e : AE D) (𝔪 : Ideal (𝓞 D.host.E)) (t : WO S T) :
     cosInd e 𝔪 rfl rfl 0 t = if IsHalf e t ∧ ∀ i j, toEAf D (t i j) ∈ idGrp 𝔪 then 1 else 0 := by
   simp only [cosInd, Matrix.zero_apply, RingHom.map_zero, mul_zero, sub_zero, inId_iff]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.PlaceModel.isHalf_iff, GlobalTheory.PlaceModel.isHalf_iff]`. Conclude with `add_mem_cancel_right ((GlobalTheory.PlaceModel.isHalf_iff S T).1 hue)`.
+-/
 private theorem half_add {e : AE D} {u : WO S T} (hue : IsHalf e u) (t : WO S T) : IsHalf e (t + u) ↔ IsHalf e t := by
   rw [GlobalTheory.PlaceModel.isHalf_iff, GlobalTheory.PlaceModel.isHalf_iff]
   exact add_mem_cancel_right ((GlobalTheory.PlaceModel.isHalf_iff S T).1 hue)
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Establish `h𝔪` using `h.ne_bot`. Establish `hn0 : 0 < Ideal.absNorm 𝔪` using `Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 h𝔪)`. Establish `hnm` using `Ideal.absNorm_mem 𝔪`. Generalize the expression as in `Ideal.absNorm 𝔪 = n at hn0 hnm`. Establish `hsupp : ∀ t : WO S T, cosInd e 𝔪 rfl rfl 0 t ≠ 0 → IsHalf e t ∧ ∀ i j, toEAf D (t i j) ∈ idGrp 𝔪` using `fun t ht => by`.
+
+Assume the negation of the conclusion as `hh`. Conclude with `ht (by rw [cosInd_zero, if_neg hh])`. Use `⟨fun t ht => (hsupp t ht).1, n, hn0, fun u hu hue t => ?_, fun t ht => nsmul_mem ?_ _⟩` and prove the remaining obligations. Establish `h1 : n • u ∈ latO S T (stdL D S.rank : Set (Fin S.rank → D.host.E)) (skewLat D 𝔪 T.rank : Set (Fin T.rank → D.host.E)) fun _ => True`. Use `latO_induction (p := fun u => n • u ∈ latO S T (stdL D S.rank : Set (Fin S.rank → D.host.E)) (skewLat D 𝔪 T.rank : Set (Fin T.rank → D.host.E)) fun _ => True) ?_ ?_ ?_ ?_ hu` and prove the remaining obligations.
+
+Introduce `α hα M hM`. Establish `h2 : n • M ∈ latRat S T (stdL D S.rank : Set (Fin S.rank → D.host.E)) (skewLat D 𝔪 T.rank : Set (Fin T.rank → D.host.E))`. Use `(mem_latRat_iff hc hS (GlobalTheory.SkewLatSelfDual.mem_skewLat (𝔪 := 𝔪)) _).2 fun i j => ?_` and prove the remaining obligations. Establish `h3` using `(mem_latRat_iff hc hS mem_stdL M).1 hM i j`. Rewrite `h3` using `[mul_one]`.
+
+Establish `h4` using `FractionalIdeal.mul_mem_mul h3 (mem_skewEnt h𝔪 hnm)`. Rewrite using `[Matrix.smul_apply, nsmul_eq_mul, mul_comm (n : D.host.E)]`. Conclude with `h4`. Establish `h5 : finTens α (n • M) = n • finTens α M` using `by clear h2 hnm hn0`. Proceed by induction on `n with`.
+
+Consider the case `zero => rw [zero_nsmul, zero_nsmul, finTens_zero]`. Consider the case `succ k ih => rw [succ_nsmul, succ_nsmul, finTens_add, ih]`. Rewrite using `[← h5]`. Conclude with `finTens_mem_latO hα h2`. Rewrite using `[smul_zero]`.
+
+Conclude with `zero_mem _`. Introduce `x y hx hy`. Rewrite using `[smul_add]`. Conclude with `add_mem hx hy`. Introduce `x hx`.
+
+Rewrite using `[smul_neg]`. Conclude with `neg_mem hx`. Establish `h6 : IsHalf e (n • u)` using `(GlobalTheory.PlaceModel.isHalf_iff S T).2 (nsmul_mem ((GlobalTheory.PlaceModel.isHalf_iff S T).1 hue) n)`. Establish `h7 : ∀ i j, toEAf D ((t + n • u) i j) ∈ idGrp 𝔪 ↔ toEAf D (t i j) ∈ idGrp 𝔪` using `fun i j => by`. Use `inId_of_mem hc hS h h1 i j` as an intermediate fact.
+
+Rewrite `this` using `[h6 i j]`. Rewrite using `[Matrix.add_apply, RingHom.map_add]`. Conclude with `add_mem_cancel_right this`. Rewrite using `[cosInd_zero, cosInd_zero]`. Simplify using `only [half_add h6, h7]`.
+
+Take `⟨ht1, ht2⟩` from `hsupp t ht`. Establish `h0 : ∀ i j, infPart D (t i j) = 0` using `fun i j => by`. Take `⟨SS, c, he, -⟩` from `h`. Rewrite using `[← ht1 i j, RingHom.map_mul, (GlobalTheory.IdemSumIdeal.isIdemSum_props e SS c he).1, zero_mul]`. Conclude with `mem_of_inId hc hS mem_stdL FractionalIdeal.coeIdeal_le_one h0 ht2`.
+-/
 private theorem sb_cosInd (hc : D.host.ccK = ⊤) (hS : S.gram = 1) {e : AE D} {𝔪 : Ideal (𝓞 D.host.E)} (h : GoodMod e 𝔪) :
     IsSBHalf e (latO S T (stdL D S.rank : Set (Fin S.rank → D.host.E))
       (stdL D T.rank : Set (Fin T.rank → D.host.E)) fun _ => True) (cosInd e 𝔪 rfl rfl 0) := by
@@ -121,6 +158,31 @@ private theorem sb_cosInd (hc : D.host.ccK = ⊤) (hS : S.gram = 1) {e : AE D} {
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Establish `h𝔪` using `h.ne_bot`. Establish `hidx` using `GlobalTheory.SkewIndex.index_inter_skew D δ hs.crv 𝔪 h𝔪 (coprime_conj h) S.rank T.rank`. Establish `hB` using `GlobalTheory.SkewIndex.La_skew_eq_map D δ 𝔪 S.rank T.rank`. Establish `hA` using `La0_eq (D := D) δ S.rank T.rank`. Establish `hn : 0 < Ideal.absNorm 𝔪 ^ (S.rank * T.rank)` using `pow_pos (Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 h𝔪)) _`.
+
+Generalize the expression as in `La0 D (tor0 D ⊤ δ) S.rank T.rank = A at hidx hA`. Generalize the expression as in `La D (tor0 D ⊤ δ) (stdL D S.rank) (skewLat D 𝔪 T.rank) = B at hidx hB`. Generalize the expression as in `Ideal.absNorm 𝔪 ^ (S.rank * T.rank) = N at hidx hn`. Establish `hnm` using `Ideal.absNorm_mem 𝔪`. Generalize the expression as in `Ideal.absNorm 𝔪 = n at hnm ⊢`.
+
+Establish `hnc : (n : 𝓞 D.host.E) ∈ D.host.conj • 𝔪`. Use `starO_mem_conj hnm` as an intermediate fact. Rewrite `this` using `[show starO (n : 𝓞 D.host.E) = n from map_natCast Formalism.L2.DIV.starOHom n]`. Then use the resulting hypothesis. Use `haveI : Finite (B ⧸ A.addSubgroupOf B) := Nat.finite_of_card_ne_zero (by`. Express the relevant statement in the definitionally equal form `(A.addSubgroupOf B).index ≠ 0`.
+
+Rewrite using `[hidx]`. Conclude with `hn.ne')`. Use `haveI := Fintype.ofFinite (B ⧸ A.addSubgroupOf B)`. Use `choose z hz hz' using fun q : B ⧸ A.addSubgroupOf B => hB.le (Quotient.out q : B).2`. Establish `hee : cA D e * cA D e = cA D e`.
+
+Take `⟨SS, c, he, -⟩` from `h`. Rewrite using `[← RingHom.map_mul, GlobalTheory.PlaceDatum.idemSum_mul_self he]`. Establish `hce : finPart D (cA D e) ∈ intAE D`. Take `⟨SS, c, he, -⟩` from `h`. Rewrite using `[Formalism.IndefR.Fin.finPart_cA]`.
+
+Conclude with `Formalism.IndefR.Fin.cF_int (GlobalTheory.PlaceDatum.finPart_mem_of_toEAf (GlobalTheory.IdemSumIdeal.isIdemSum_props e SS c he).2.1)`. Establish `hSB : IsSBHalf e (latO S T (stdL D S.rank : Set (Fin S.rank → D.host.E)) (stdL D T.rank : Set (Fin T.rank → D.host.E)) fun _ => True) (halfInd e (latO S T (stdL D S.rank : Set (Fin S.rank → D.host.E)) (stdL D T.rank : Set (Fin T.rank → D.host.E)) fun _ => True))`. Use `⟨fun t ht => ?_, 1, one_pos, fun u hu hue t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hh`. Conclude with `ht (if_neg fun h' => hh h'.2)`.
+
+Simplify using `only [one_smul, halfInd, add_mem_cancel_right hu, half_add hue]`. Rewrite using `[one_smul]`. Assume the negation of the conclusion as `hh`. Conclude with `ht (if_neg fun h' => hh h'.1)`. Establish `hvac` using `hTm.vac`.
+
+Rewrite `hvac` using `[one_smul]`. Establish `hT : ∑ q, heisO ψ S T (cA D e • finTens 1 (-z q)) v = (Fintype.card (B ⧸ A.addSubgroupOf B) : ℂ) • Tm (cosInd e 𝔪 rfl rfl 0)`. Rewrite using `[← map_smul, show (Fintype.card (B ⧸ A.addSubgroupOf B) : ℂ) • cosInd e 𝔪 rfl rfl 0 = ∑ q, fun t => ψ (symplO S T t (cA D e • finTens 1 (-z q))) * halfInd e (latO S T (stdL D S.rank : Set (Fin S.rank → D.host.E)) (stdL D T.rank : Set (Fin T.rank → D.host.E)) fun _ => True) t from`. Use function extensionality and compare the values at `fun t => by rw [Finset.sum_apply]; exact (sum_char hc hs h A B hA hB z hz hz' t).symm, map_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hTm.modul _ hSB _ fun i j => by rw [Matrix.smul_apply, smul_eq_mul, ← mul_assoc, hee], hvac]`. Establish `hq : ∀ q, GlobalTheory.PlaceModel.heisL S T ψ (2 • (n • l)) (heisO ψ S T (cA D e • finTens 1 (-z q)) v) = heisO ψ S T (cA D e • finTens 1 (-z q)) v` using `fun q => by`. Establish `h1` using `finTens_mem_std hc hs.gS (smul_mem_stdMat h𝔪 hnc (neg_mem (hz q)))`. Rewrite `h1` using `[finTens_smul, show ((n : 𝓞 D.host.E) : D.host.E) = n from rfl, map_natCast, Nat.cast_smul_eq_nsmul]`. Establish `h2` using `GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ _ hce _ h1`.
+
+Rewrite `h2` using `[smul_comm]`. Generalize the expression as in `cA D e • finTens 1 (-z q) = y at h2 ⊢`. Establish `h3` using `GlobalTheory.PlaceModel.heisL_comm S T ψ (2 • (n • l)) y v`. Establish `h4 : ψ (symplO S T (2 • (n • l)) y) = 1`. Rewrite using `[smul_comm]`.
+
+Conclude with `((GlobalTheory.PlaceModel.isBichar_symplO S T ψ).nsmul n _ _).trans (char_sympl_eq_one hs.std (sdC_std hs.gS) (sdC_std hs.gT) (nsmul_mem hl 2) h2)`. Establish `h5 : GlobalTheory.PlaceModel.heisL S T ψ (2 • (n • l)) v = v` using `hv.1 _ (nsmul_mem hl n)`. Rewrite `h3` using `[h4, h5, one_smul]`. Conclude with `h3`. Establish `h6` using `congrArg (GlobalTheory.PlaceModel.heisL S T ψ (2 • (n • l))) hT`.
+
+Rewrite `h6` using `[map_sum, map_smul, Finset.sum_congr rfl fun q _ => hq q, hT]`. Conclude with `(smul_right_injective _ (Nat.cast_ne_zero.2 Fintype.card_ne_zero) h6).symm`.
+-/
 private theorem fix_deep (hc : D.host.ccK = ⊤) (hs : Setup ψ θ S T ⊤ δ 1) {v : WO S T → ℂ}
     (hv : IsLatVac (heisO ψ S T) (latO S T (stdL D S.rank : Set (Fin S.rank → D.host.E))
       (stdL D T.rank : Set (Fin T.rank → D.host.E)) fun _ => True) v)
@@ -200,6 +262,37 @@ end GlobalTheory.CosRead
 
 open GlobalTheory.CosRead GlobalTheory.LatVac GlobalTheory.IopRead in
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Introduce `D ψ θ S T a d hS hT δ hc hs v hv G hG hr e 𝔪 h Tm hTm h0 z hz`. Substitute `hS hT` using the available equality. Establish `h𝔪` using `h.ne_bot`. Establish `h1` using `(GlobalTheory.InducedType.induced_type D).1`. Establish `hfd` using `fun l hl => fix_deep hc hs hv.2.lat h hTm (l := l) hl`.
+
+Establish `hn0 : 0 < Ideal.absNorm 𝔪` using `Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 h𝔪)`. Establish `hnm` using `Ideal.absNorm_mem 𝔪`. Take `⟨n, hn⟩ : ∃ n, n = Ideal.absNorm 𝔪` from `⟨_, rfl⟩`. Rewrite `hfd`, `hn0`, `hnm` using `[← hn]`. Take `⟨μ, s, hsi, hμ, hμ1, k, hk⟩` from `exists_near_idem h (N := 2 * (2 * n)) (by positivity) (by push_cast; exact Ideal.mul_mem_left _ _ (Ideal.mul_mem_left _ _ hnm))`.
+
+Establish `hmm : (μ : D.host.E) * D.host.conj μ = 4 * ((n * k : 𝓞 D.host.E) : D.host.E)`. Use `congrArg (algebraMap (𝓞 D.host.E) D.host.E) hk` as an intermediate fact. Simplify using `only [map_mul, map_natCast] at this`. Rewrite using `[← GlobalTheory.SkewLatSelfDual.star_eq_conj, ← Formalism.L2.DIV.starO_coe]`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 D.host.E) D.host.E μ * algebraMap (𝓞 D.host.E) D.host.E (Formalism.L2.DIV.starO μ) = 4 * algebraMap (𝓞 D.host.E) D.host.E _`.
+
+Simplify using `only [map_mul, map_natCast]`. Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `k0 : Formalism.MainNotions.StandardLatticesGL3.KLat D (tor0 D ⊤ δ) (La0 D (tor0 D ⊤ δ) S.rank T.rank)` using `GlobalTheory.NormSum.VacMove.klat _ (GlobalTheory.NormSum.VacMove.moves_one D _) (GlobalTheory.NormSum.VacMove.moves_one D _)`.
+
+Establish `kB` using `klat_skew δ h𝔪 S.rank T.rank`. Establish `hH` using `(GlobalTheory.T.intertwinerUnitary_all D ⊤ δ hs.crv _ _ _ _ k0 kB G hG).2.1`. Establish `htop : (⊤ : Ideal (𝓞 D.host.E)) ≠ ⊥` using `top_ne_bot`. Establish `hz1 : z ∈ skewMat D ⊤ S.rank T.rank`. Simplify using `using mem_skewMat htop hz (c := 1) trivial`.
+
+Establish `hcurve : cosV δ 𝔪 z G = Formalism.MainNotions.TaylorLogMetric.U D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ ((μ : D.host.E) • z)) (cosV δ 𝔪 0 G)`. Establish `hfix` using `GlobalTheory.NormSum.VacMove.wd_fix h1 hs.crv kB hH (pt_mem δ (mem_skewMat h𝔪 hz hμ1))`. Rewrite using `[cosV, cosV, GlobalTheory.NormSum.VacMove.pt_zero, GlobalTheory.NormSum.VacMove.wd_zero]`. Generalize the expression as in `Iop D (tor0 D ⊤ δ) (La0 D (tor0 D ⊤ δ) S.rank T.rank) (La D (tor0 D ⊤ δ) (stdL D S.rank) (skewLat D 𝔪 T.rank)) G = H at hfix ⊢`. Establish `hW` using `wd_pt_mul hs.crv htop (smul_mem_skewMat μ hz1) (smul_mem_skewMat (1 - μ) hz1) H`.
+
+Establish `hsum : (μ : D.host.E) • z + ((1 - μ : 𝓞 D.host.E) : D.host.E) • z = z`. Rewrite using `[← add_smul, show ((1 - μ : 𝓞 D.host.E) : D.host.E) = 1 - (μ : D.host.E) from rfl, add_sub_cancel, one_smul]`. Rewrite `hW` using `[hfix, hsum]`. Rewrite using `[← hW]`. Use function extensionality and compare the values at `y`.
+
+Simplify using `only [Wd, wdPh_eq_one hs.crv htop hz1 hmm, one_mul, Formalism.MainNotions.TaylorLogMetric.U, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Establish `hR` using `GlobalTheory.NormExact.heisO_finPt_reads ψ θ S T rfl rfl ⊤ δ 1 hs _ _ h0 ((μ : D.host.E) • z)`. Rewrite using `[hcurve]`. Use `hR using 1` and compare the differences between its conclusion and the goal. Choose the witnesses or unpack the hypotheses as in `⟨hee, hei⟩ : e * e = e ∧ finPart D e ∈ intAE D := by`.
+
+Take `⟨SS, c, he, -⟩` from `h`. Conclude with `⟨GlobalTheory.PlaceDatum.idemSum_mul_self he, GlobalTheory.PlaceDatum.finPart_mem_of_toEAf (GlobalTheory.IdemSumIdeal.isIdemSum_props e SS c he).2.1⟩`. Establish `hhalf : IsHalf e (e • finTens 1 (-z) : WO S T)` using `fun i j => by`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, ← mul_assoc, hee]`. Establish `hcos : cosInd e 𝔪 rfl rfl z = fun t : WO S T => cosInd e 𝔪 rfl rfl 0 (t + e • finTens 1 (-z))`.
+
+Use function extensionality and compare the values at `t`. Establish `h2 : ∀ i j, toEAf D ((t + e • finTens 1 (-z) : WO S T) i j) = toEAf D (t i j) - toEAf D e * eToEAf D (z i j)` using `fun i j => by`. Rewrite using `[Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, RingHom.map_add, RingHom.map_mul, sub_eq_add_neg, ← mul_neg, ← RingHom.map_neg]`. Both sides reduce to the same expression. Rewrite using `[cosInd_zero]`.
+
+Simplify using `only [cosInd, half_add hhalf, h2, inId_iff, Fin.cast_eq_self]`. Rewrite using `[hcos, hTm.trans _ (sb_cosInd hc hs.gS h) _ hhalf, finPt_eq, ← smul_neg, finTens_smul]`. Establish `hu` using `finTens_mem_std hc hs.gS (neg_mem (mem_stdMat hz))`. Establish `hu0 : ∀ i j, infPart D (finTens 1 (-z) i j) = 0` using `fun i j => infPart_pair _ _`. Generalize the expression as in `finTens 1 (-z) = u at hu hu0 ⊢`.
+
+Generalize the expression as in `Tm (cosInd e 𝔪 rfl rfl 0) = φ at hfd ⊢`. Establish `hl` using `nsmul_mem (GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ _ hsi _ hu) 2`. Establish `hx` using `GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ _ hei _ hu`. Establish `h5 : incA D (μ : D.host.E) • u = e • u + 2 • (n • (2 • (s • u)))`. Use `Matrix.ext fun i j => GlobalTheory.SplitScalar.adele_ext ?_ ?_` and prove the remaining obligations.
+
+Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, nsmul_eq_mul, RingHom.map_add, RingHom.map_mul, hu0, mul_zero, add_zero]`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, nsmul_eq_mul, RingHom.map_add, RingHom.map_mul, hμ, map_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h6` using `heisO_heisO ψ (e • u) (2 • (n • (2 • (s • u)))) φ`.
+
+Rewrite `h6` using `[hfd _ hl, ← h5]`. Establish `h7 : ψ (symplOH S T (e • u) (2 • (n • (2 • (s • u))))) = 1`. Establish `h8 : ∀ x w : WO S T, symplOH S T x (2 • w) = symplO S T x w` using `fun x w => by`. Rewrite using `[two_nsmul, symplOH, symplO_add_right, mul_add, ← add_mul, ← RingHom.map_add, add_halves, RingHom.map_one, one_mul]`. Rewrite using `[h8]`.
+
+Conclude with `char_sympl_eq_one hs.std (sdC_std hs.gS) (sdC_std hs.gT) hx (nsmul_mem hl n)`. Rewrite using `[h6, h7, one_smul]`.
+-/
 theorem _root_.GlobalTheory.T.cosetIndicator_reads_as_translate_curveTheta : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d) (δ : ℂ),
   D.host.ccK = ⊤ → Setup ψ θ S T ⊤ δ 1 → ∀ v : WO S T → ℂ, IsVacO ψ θ S T (fun _ => 1) (fun _ => 1) (stdL D S.rank : Set (Fin S.rank → D.host.E)) (stdL D T.rank : Set (Fin T.rank → D.host.E)) v →
   ∀ G ∈ Th D (tor0 D ⊤ δ) (stdL D a) (stdL D d), Reads ψ θ hS hT ⊤ δ 1 G v → ∀ (e : AE D) (𝔪 : Ideal (𝓞 D.host.E)), GoodMod e 𝔪 →

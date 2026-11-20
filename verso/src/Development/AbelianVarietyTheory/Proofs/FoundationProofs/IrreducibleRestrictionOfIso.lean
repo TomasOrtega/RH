@@ -5,6 +5,11 @@ open scoped Matrix
 
 namespace GlobalTheory.IrrConj
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.ConjugateIrreducibility.target`. Consider the case `exact _root_.GlobalTheory.ConjugateIrreducibility.target`. Consider the case `(apply _root_.GlobalTheory.ConjugateIrreducibility.target <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ConjugateIrreducibility.target <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.ConjugateIrreducibility.target <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ConjugateIrreducibility.target ..)`.
+-/
 theorem isIrrSub_conj {Γ k : Type} [Group Γ] [Field k] {n : ℕ}
     (H H' : Subgroup Γ) (hH : ∀ s, s ∈ H → s ∈ H')
     (r r' : Γ →* GL (Fin n) k) (g : GL (Fin n) k) (hg : ∀ s, r' s = g * r s * g⁻¹)
@@ -17,12 +22,18 @@ theorem isIrrSub_conj {Γ k : Type} [Group Γ] [Field k] {n : ℕ}
   | (intros; apply @_root_.GlobalTheory.ConjugateIrreducibility.target <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.ConjugateIrreducibility.target ..)
 
+/- English proof (translation)
+Simplify using `only [dt, MonoidHom.comp_apply, hg s, map_mul, map_inv]`. Rewrite using `[mul_comm (Matrix.GeneralLinearGroup.det g), mul_assoc, mul_inv_cancel, mul_one]`.
+-/
 theorem dt_eq_of_repIso {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime]
     (W W' : R2 Ω l) (g : GL (Fin 2) (Qbar l)) (hg : ∀ s, W' s = g * W s * g⁻¹) (s : G ℚ Ω) :
     dt W' s = dt W s := by
   simp only [dt, MonoidHom.comp_apply, hg s, map_mul, map_inv]
   rw [mul_comm (Matrix.GeneralLinearGroup.det g), mul_assoc, mul_inv_cancel, mul_one]
 
+/- English proof (translation)
+Introduce `Ω _ _ l _ W W' ⟨g, hg⟩ h`. Use `isIrrSub_conj (H0g W) (H0g W') ?_ W W' g hg h` and prove the remaining obligations. Introduce `s hs`. Simplify using `only [H0g, Subgroup.mem_inf, MonoidHom.mem_ker] at hs ⊢`. Conclude with `⟨hs.1, by rw [dt_eq_of_repIso W W' g hg]; exact hs.2⟩`.
+-/
 theorem irr_of_repIso : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (l : ℕ) [Fact l.Prime] (W W' : R2 Ω l),
     RepIso W W' → IsIrr (W.comp (H0g W).subtype) → IsIrr (W'.comp (H0g W').subtype) := by
   intro Ω _ _ l _ W W' ⟨g, hg⟩ h

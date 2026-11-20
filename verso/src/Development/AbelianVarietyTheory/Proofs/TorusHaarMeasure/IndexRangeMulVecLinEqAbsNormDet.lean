@@ -12,6 +12,17 @@ open scoped ComplexOrder ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 omit [IsCMField E] in
 
+/- English proof (translation)
+Introduce `ι _ _ A hA`. Use `set f := A.mulVecLin with hf`. Establish `hinj : Function.Injective f`. Introduce `u v huv`. Establish `h : A.mulVec (u - v) = 0`.
+
+Rewrite using `[Matrix.mulVec_sub]`. Conclude with `sub_eq_zero.mpr huv`. Conclude with `sub_eq_zero.mp (Matrix.eq_zero_of_mulVec_eq_zero hA h)`. Set `b` to `Module.Free.chooseBasis ℤ (ι → 𝓞 E)`. Set `fZ : (ι → 𝓞 E) →ₗ[ℤ] (ι → 𝓞 E)` to `f.restrictScalars ℤ`.
+
+Establish `hinjZ : Function.Injective fZ` using `hinj`. Set `e` to `LinearEquiv.ofInjective fZ hinjZ`. Establish `key` using `AddSubgroup.index_eq_natAbs_det b (LinearMap.range f).toAddSubgroup (b.map e)`. Rewrite using `[key]`. Establish `hdet : (b.det fun i ↦ ((b.map e i : LinearMap.range fZ) : ι → 𝓞 E)) = LinearMap.det fZ`.
+
+Rewrite using `[Module.Basis.det_apply, ← LinearMap.det_toMatrix b]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Module.Basis.toMatrix_apply, LinearMap.toMatrix_apply, e]`. Establish `h2 : (((b.det fun i ↦ ((b.map e i : LinearMap.range fZ) : ι → 𝓞 E)).natAbs : ℕ) : ℚ) = |Algebra.norm ℚ ((A.det : 𝓞 E) : E)|`.
+
+Rewrite using `[hdet, LinearMap.det_restrictScalars, hf, ← Matrix.toLin'_apply', LinearMap.det_toLin', Nat.cast_natAbs, Int.cast_abs, Algebra.coe_norm_int]`. Conclude with `h2`.
+-/
 theorem _root_.GlobalTheory.index_range_mulVecLin_eq_abs_norm_det :
     (∀ (ι : Type) [Fintype ι] [DecidableEq ι] (A : Matrix ι ι (𝓞 E)), A.det ≠ 0 →
       (((LinearMap.range A.mulVecLin).toAddSubgroup.index : ℕ) : ℚ) =

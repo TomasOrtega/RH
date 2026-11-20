@@ -19,6 +19,9 @@ def pullbackIsoLastObj (d : LocalResolutionData k f s) (i : d.cover.I₀) :
     ((pullback s.lastStructMap (d.cover.f i) : Scheme.{u}) ≅ (d.seq i).lastObj) :=
   (pullbackSymmetry s.lastStructMap (d.cover.f i)).trans (d.lastObjIsoPullback i).symm
 
+/- English proof (translation)
+Rewrite using `[pullbackIsoLastObj]`. Simplify using `only [Iso.trans_hom, Iso.symm_hom, Category.assoc]`. Rewrite using `[← d.lastObjIsoPullback_hom_fst i, Iso.inv_hom_id_assoc]`. Conclude with `pullbackSymmetry_hom_comp_fst _ _`.
+-/
 theorem pullbackIsoLastObj_hom_lastStructMap (d : LocalResolutionData k f s) (i : d.cover.I₀) :
     (d.pullbackIsoLastObj i).hom ≫ (d.seq i).lastStructMap = pullback.snd s.lastStructMap (d.cover.f i) := by
   rw [pullbackIsoLastObj]
@@ -26,6 +29,13 @@ theorem pullbackIsoLastObj_hom_lastStructMap (d : LocalResolutionData k f s) (i 
   rw [← d.lastObjIsoPullback_hom_fst i, Iso.inv_hom_id_assoc]
   exact pullbackSymmetry_hom_comp_fst _ _
 
+/- English proof (translation)
+Establish `key : ∀ i : d.cover.I₀, IsProper (d.seq i).lastStructMap`. Introduce `i`. Take `⟨-, h, -⟩` from `d.isResolution i`. Conclude with `h`. Take `⟨-, h2⟩` from `(inferInstance : MorphismProperty.IsLocalAtTarget (@IsProper) Scheme.zariskiPrecoverage)`.
+
+Use `h2 (R := d.cover.presieve₀) d.cover.mem₀ ?_` and prove the remaining obligations. Introduce `U g _inst hg`. Take `⟨i⟩` from `hg`. Rewrite using `[← d.pullbackIsoLastObj_hom_lastStructMap i]`. Use `key i` as an intermediate fact.
+
+Use `infer_instance`.
+-/
 theorem isProper_lastStructMap (d : LocalResolutionData k f s) : IsProper s.lastStructMap := by
   have key : ∀ i : d.cover.I₀, IsProper (d.seq i).lastStructMap := by
     intro i

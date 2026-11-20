@@ -16,6 +16,9 @@ variable {R : Type*} [CommRing R] [TopologicalSpace R] [DiscreteTopology R]
   {D : Type*} [Group D] [TopologicalSpace D]
   (χ : Γ →* Rˣ) (ρ : Representation R Γ M) (φ : D →* Γ) (χ' : D →* Rˣ)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use extensionality with `m`. Simplify using `only [MonoidHom.comp_apply, MonoidHom.id_apply, twDual_apply, map_inv]`.
+-/
 theorem twDual_comp_apply (h : χ.comp φ = χ') (g : D) (y : TDual R M) :
     ((twDual χ ρ).comp φ) g y = ((twDual χ' (ρ.comp φ)).comp (MonoidHom.id D)) g y := by
   subst h
@@ -29,6 +32,9 @@ def dualMap (h : χ.comp φ = χ') :
 def coefMap : H1 (ρ.comp φ) →ₗ[R] H1 ((ρ.comp φ).comp (MonoidHom.id D)) :=
   mapH1 _ _ LinearMap.id continuous_id (fun _ _ => rfl)
 
+/- English proof (translation)
+Use `Function.bijective_iff_has_inverse.2 ⟨mapH1 _ _ LinearMap.id continuous_id (fun g y => (twDual_comp_apply χ ρ φ χ' h g y).symm), fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z => rfl`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z => rfl`.
+-/
 theorem dualMap_bijective (h : χ.comp φ = χ') : Function.Bijective (dualMap χ ρ φ χ' h) := by
   refine Function.bijective_iff_has_inverse.2 ⟨mapH1 _ _ LinearMap.id continuous_id
     (fun g y => (twDual_comp_apply χ ρ φ χ' h g y).symm), fun x => ?_, fun x => ?_⟩
@@ -37,6 +43,9 @@ theorem dualMap_bijective (h : χ.comp φ = χ') : Function.Bijective (dualMap �
   · induction x using Submodule.Quotient.induction_on with
     | H z => rfl
 
+/- English proof (translation)
+Use `Function.bijective_iff_has_inverse.2 ⟨mapH1 ((ρ.comp φ).comp (MonoidHom.id D)) (ρ.comp φ) LinearMap.id continuous_id (fun _ _ => rfl), fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z => rfl`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z => rfl`.
+-/
 theorem coefMap_bijective : Function.Bijective (coefMap ρ φ) := by
   refine Function.bijective_iff_has_inverse.2 ⟨mapH1 ((ρ.comp φ).comp (MonoidHom.id D)) (ρ.comp φ)
     LinearMap.id continuous_id (fun _ _ => rfl), fun x => ?_, fun x => ?_⟩
@@ -45,6 +54,9 @@ theorem coefMap_bijective : Function.Bijective (coefMap ρ φ) := by
   · induction x using Submodule.Quotient.induction_on with
     | H z => rfl
 
+/- English proof (translation)
+Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H y`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H x => rfl`.
+-/
 theorem mapH2_cup_product_naturality (h : χ.comp φ = χ') (hc : ContAction (ρ.comp φ))
     (hc' : ContAction ((ρ.comp φ).comp (MonoidHom.id D)))
     (hq : ∀ (g : D) (m : R), ((charRep χ).comp φ) g m = charRep χ' g m)
@@ -57,6 +69,11 @@ theorem mapH2_cup_product_naturality (h : χ.comp φ = χ') (hc : ContAction (ρ
     induction x using Submodule.Quotient.induction_on with
     | H x => rfl
 
+/- English proof (translation)
+Establish `key : ∀ y x y' x', P (mapH2 ((charRep χ).comp φ) (charRep χ') LinearMap.id continuous_id hq (cupH1H1TwistedDual χ ρ φ hc y x)) = P (mapH2 ((charRep χ).comp φ) (charRep χ') LinearMap.id continuous_id hq (cupH1H1TwistedDual χ ρ φ hc y' x')) → cupH1H1TwistedDual χ' (ρ.comp φ) (Monoi …`. Introduce `y x y' x' e`. Use `hP e` as an intermediate fact. Rewrite `this` using `[mapH2_cup_product_naturality χ ρ φ χ' h hc hc' hq, mapH2_cup_product_naturality χ ρ φ χ' h hc hc' hq]`. Then use the resulting hypothesis. Use `⟨fun y y' e => (dualMap_bijective χ ρ φ χ' h).1 (hL (LinearMap.ext fun x => ?_)), fun x x' e => (coefMap_bijective ρ φ).1 (hF (LinearMap.ext fun y => ?_))⟩` and prove the remaining obligations.
+
+Take `⟨x, rfl⟩` from `(coefMap_bijective ρ φ).2 x`. Conclude with `key y x y' x (LinearMap.congr_fun e x)`. Take `⟨y, rfl⟩` from `(dualMap_bijective χ ρ φ χ' h).2 y`. Conclude with `key y x y x' (LinearMap.congr_fun e y)`.
+-/
 theorem injective_compr₂ (h : χ.comp φ = χ') (hc : ContAction (ρ.comp φ))
     (hc' : ContAction ((ρ.comp φ).comp (MonoidHom.id D)))
     (hq : ∀ (g : D) (m : R), ((charRep χ).comp φ) g m = charRep χ' g m)
@@ -85,6 +102,9 @@ theorem injective_compr₂ (h : χ.comp φ = χ') (hc : ContAction (ρ.comp φ))
 
 end General
 
+/- English proof (translation)
+Establish `hc` using `hρ.comp' (continuous_locFam S Av v)`. Establish `hχ : μ.comp (locFam S Av v) = (cycMod F Ω l r).comp (Dec (F` using `F) (Av v)).subtype := MonoidHom.ext fun g => DFunLike.congr_fun hμ (g : G F Ω)`. Take `⟨-, -, h1, h2, -⟩` from `hT F Ω l r M (Av v) (ρ.comp (locFam S Av v)) v.1 hr (hA v) hc`. Conclude with `injective_compr₂ μ ρ (locFam S Av v) _ hχ _ (hc.comp' continuous_id) (locFam_apply_eq S Av μ hμ v) (hinv _ _ (hA v)).1 h1.1 h2.1`.
+-/
 theorem locPerfect (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (r : ℕ) (M : Type) [AddCommGroup M]
     [Module (ZMod (l ^ r)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M]

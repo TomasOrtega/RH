@@ -15,12 +15,22 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) {r : ℕ}
 
+/- English proof (translation)
+Establish `hx : x ∈ U ⊔ W`. Rewrite using `[h.sup_eq_top]`. Conclude with `Submodule.mem_top`. Conclude with `Submodule.mem_sup.mp hx`.
+-/
 theorem dec_of {U W : Submodule E V} (h : IsCompl U W) (x : V) : ∃ a ∈ U, ∃ b ∈ W, a + b = x := by
   have hx : x ∈ U ⊔ W := by
     rw [h.sup_eq_top]
     exact Submodule.mem_top
   exact Submodule.mem_sup.mp hx
 
+/- English proof (translation)
+Establish `h1 : a - a' ∈ U` using `U.sub_mem ha ha'`. Establish `heq : a - a' = b' - b`. Rewrite using `[sub_eq_sub_iff_add_eq_add, e, add_comm]`. Establish `h2 : a - a' ∈ W`. Rewrite using `[heq]`.
+
+Conclude with `W.sub_mem hb' hb`. Establish `h0 : a - a' = 0`. Establish `hbot` using `h.inf_eq_bot`. Rewrite `hbot` using `[Submodule.eq_bot_iff]`. Conclude with `hbot _ ⟨h1, h2⟩`.
+
+Establish `haa : a = a'` using `sub_eq_zero.mp h0`. Use `⟨haa, ?_⟩` and prove the remaining obligations. Rewrite `e` using `[haa]`. Conclude with `add_left_cancel e`.
+-/
 theorem dec_unique {U W : Submodule E V} (h : IsCompl U W) {a a' b b' : V} (ha : a ∈ U) (ha' : a' ∈ U)
     (hb : b ∈ W) (hb' : b' ∈ W) (e : a + b = a' + b') : a = a' ∧ b = b' := by
   have h1 : a - a' ∈ U := U.sub_mem ha ha'
@@ -38,6 +48,9 @@ theorem dec_unique {U W : Submodule E V} (h : IsCompl U W) {a a' b b' : V} (ha :
   rw [haa] at e
   exact add_left_cancel e
 
+/- English proof (translation)
+Establish `hsum : (a - a') + (b - b') = c • a'' + c • b''`. Rewrite using `[← smul_add, hy, ← hd, ← hx, ← hx']`. Normalize the expressions using the abelian group laws. Conclude with `dec_unique h (U.sub_mem ha ha') (U.smul_mem c ha'') (W.sub_mem hb hb') (W.smul_mem c hb'') hsum`.
+-/
 theorem dec_diff {U W : Submodule E V} (h : IsCompl U W) (c : E) {a a' a'' b b' b'' x x' y : V}
     (ha : a ∈ U) (ha' : a' ∈ U) (ha'' : a'' ∈ U) (hb : b ∈ W) (hb' : b' ∈ W) (hb'' : b'' ∈ W)
     (hx : a + b = x) (hx' : a' + b' = x') (hy : a'' + b'' = y) (hd : x - x' = c • y) :
@@ -47,6 +60,25 @@ theorem dec_diff {U W : Submodule E V} (h : IsCompl U W) (c : E) {a a' a'' b b' 
     abel
   exact dec_unique h (U.sub_mem ha ha') (U.smul_mem c ha'') (W.sub_mem hb hb') (W.smul_mem c hb'') hsum
 
+/- English proof (translation)
+Establish `hmm_le : ∀ i, H.MMfam t i ∈ H.Xp t.f ⊔ H.Xp t.f'`. Introduce `i`. Unfold `Formalism.MainNotions.S.Loc.HermSp.MMfam`. Break down `hs : M.split with _ | g` into its components or cases. Simplify using `only`.
+
+Break down `i with i | i` into its components or cases. Conclude with `Submodule.mem_sup_left (Submodule.subset_span ⟨i, rfl⟩)`. Conclude with `Submodule.mem_sup_right (Submodule.subset_span ⟨i, rfl⟩)`. Simplify using `only`. Break down `i with i | i` into its components or cases.
+
+Conclude with `Submodule.mem_sup_left (Submodule.subset_span ⟨i, rfl⟩)`. Conclude with `Submodule.smul_mem _ _ (Submodule.sub_mem _ (Submodule.mem_sup_right (Submodule.subset_span ⟨i, rfl⟩)) (Submodule.mem_sup_left (Submodule.subset_span ⟨i, rfl⟩)))`. Establish `hspan : Submodule.span E (Set.range (Sum.elim t.f t.f')) ≤ Submodule.span E (Set.range (H.MMfam t))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Unfold `Formalism.MainNotions.S.Loc.HermSp.MMfam`. Break down `hs : M.split with _ | g` into its components or cases. Simplify using `only`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Simplify using `only`.
+
+Break down `i with i | i` into its components or cases. Conclude with `Submodule.subset_span ⟨Sum.inl i, rfl⟩`. Establish `hq : (g.q : F) ≠ 0` using `fun h0 => g.q_irr.ne_zero (Subtype.ext h0)`. Establish `e : t.f' i = t.f i + algebraMap F E (g.q : F) • (algebraMap F E ((g.q : F)⁻¹) • (t.f' i - t.f i))`. Rewrite using `[smul_smul, ← map_mul, mul_inv_cancel₀ hq, map_one, one_smul]`.
+
+Normalize the expressions using the abelian group laws. Use `show t.f' i ∈ _`. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (Submodule.subset_span ⟨Sum.inl i, rfl⟩) (Submodule.smul_mem _ _ (Submodule.subset_span ⟨Sum.inr i, rfl⟩))`. Use `⟨hspan ha, fun m hm => ?_⟩` and prove the remaining obligations.
+
+Establish `hmΛ : m ∈ Λ` using `hMM hm`. Establish `hab'` using `(hsd.2.2 (a + b)).mp hab m hmΛ`. Establish `hmX : m ∈ H.Xp t.f ⊔ H.Xp t.f'`. Establish `hle : MMo H t ≤ (H.Xp t.f ⊔ H.Xp t.f').restrictScalars M.L.O`. Unfold `Formalism.L2.SG.LsDatumA.MMo`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hmm_le i`. Conclude with `hle hm`. Establish `hbm : H.h b m = 0` using `(show ∀ x ∈ H.Xp t.f ⊔ H.Xp t.f', H.h b x = 0 from hb) m hmX`.
+
+Rewrite `hab'` using `[H.h_add_left, hbm, add_zero]`. Conclude with `hab'`.
+-/
 theorem part_MMsharp (t : Term V M r) (Λ : Submodule M.L.O V) (hsd : H.IsSelfDual Λ) (hMM : MMo H t ≤ Λ)
     {a b : V} (ha : a ∈ Submodule.span E (Set.range (Sum.elim t.f t.f'))) (hb : b ∈ H.W0 t.f t.f')
     (hab : a + b ∈ Λ) : a ∈ MMsharp H t := by
@@ -96,17 +128,32 @@ theorem part_MMsharp (t : Term V M r) (Λ : Submodule M.L.O V) (hsd : H.IsSelfDu
   rw [H.h_add_left, hbm, add_zero] at hab'
   exact hab'
 
+/- English proof (translation)
+Establish `h1` using `(H.perp (H.X g)).sub_mem hab hb`. Simplify using `using h1`.
+-/
 theorem perp_left {g : Fin (r + 1) → V} {a b : V} (hb : b ∈ H.perp (H.X g)) (hab : a + b ∈ H.perp (H.X g)) :
     a ∈ H.perp (H.X g) := by
   have h1 := (H.perp (H.X g)).sub_mem hab hb
   simpa using h1
 
+/- English proof (translation)
+Establish `hq : (g.q : F) ≠ 0` using `fun h0 => g.q_irr.ne_zero (Subtype.ext h0)`. Establish `hu : IsUnit (algebraMap F E (g.q : F))` using `(IsUnit.mk0 _ hq).map _`. Conclude with `(hu.smul_left_cancel).mp h`.
+-/
 theorem smul_cancel_q (g : SplitG M.L) {v w : V}
     (h : algebraMap F E (g.q : F) • v = algebraMap F E (g.q : F) • w) : v = w := by
   have hq : (g.q : F) ≠ 0 := fun h0 => g.q_irr.ne_zero (Subtype.ext h0)
   have hu : IsUnit (algebraMap F E (g.q : F)) := (IsUnit.mk0 _ hq).map _
   exact (hu.smul_left_cancel).mp h
 
+/- English proof (translation)
+Take `⟨u', hu'U, hu'p, hχu⟩` from `hC2 u₁ hu₁U hu₁p`. Establish `hsplit : (⟨u₁ + n, hx₁⟩ : H.perp (H.X g₁)) = ⟨u₁, hu₁p⟩ + ⟨(n : V), hW₁ n.2⟩` using `rfl`. Rewrite `h` using `[hsplit, map_add, map_add, hχu, hC1, ← map_add]`. Unfold `HermSp.mkW at h`. Rewrite `h` using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`.
+
+Establish `hz : u' + (ψ n : V) - (a + b) ∈ H.X g₂` using `h`. Establish `hzU` using `hY₂ hz`. Establish `e : (u' - a - (u' + (ψ n : V) - (a + b))) + ((ψ n : V) - b) = 0 + 0` using `by abel`. Establish `key` using `dec_unique hU₂ (Submodule.sub_mem _ (Submodule.sub_mem _ hu'U ha) hzU) (Submodule.zero_mem _) (Submodule.sub_mem _ (ψ n).2 hb) (Submodule.zero_mem _) e`. Establish `hbψ : b = ψ n` using `(sub_eq_zero.mp key.2).symm`.
+
+Use `⟨hbψ, ?_⟩` and prove the remaining obligations. Rewrite using `[hχu]`. Unfold `HermSp.mkW`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Use `show u' - a ∈ H.X g₂`.
+
+Establish `: u' - a = u' + (ψ n : V) - (a + b)` using `by rw [hbψ]; abel`. Rewrite using `[this]`. Conclude with `hz`.
+-/
 theorem transfer (t₁ t₂ : Term V M r) (ψ : ↥(H.W0 t₁.f t₁.f') ≃ₗ[E] ↥(H.W0 t₂.f t₂.f'))
     (hU₂ : IsCompl (Submodule.span E (Set.range (Sum.elim t₂.f t₂.f'))) (H.W0 t₂.f t₂.f'))
     (g₁ g₂ : Fin (r + 1) → V)

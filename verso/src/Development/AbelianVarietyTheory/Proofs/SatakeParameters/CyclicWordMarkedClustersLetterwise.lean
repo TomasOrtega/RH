@@ -8,6 +8,17 @@ open NumberField IsDedekindDomain GlobalTheory.HTW GlobalTheory.HTW.Rec Formalis
 
 namespace GlobalTheory.HTW.Rec
 
+/- English proof (translation)
+Introduce `n th j hC t ht`. Take `⟨F, sp, hF, huniq⟩` from `hC`. Take `⟨x, ⟨hxF, hxt⟩, -⟩` from `huniq t ht`. Take `⟨hthx, hspj, -, -, hbetween, hbefore⟩` from `hF x hxF`. Break down `hxt with rfl | rfl` into its components or cases.
+
+Conclude with `Or.inl hbefore`. Distinguish the cases in `hsp0 : sp x = 0`. Use `left`. Rewrite using `[hsp0, Nat.cast_zero, add_zero]`. Conclude with `hbefore`.
+
+Use `right`. Use `⟨sp x, Nat.one_le_iff_ne_zero.2 hsp0, hspj, by simpa using hthx, fun k hk1 hk2 hkd => ?_⟩` and prove the remaining obligations. Break down `lt_or_gt_of_ne hkd with hlt | hgt` into its components or cases. Establish `e : x + (sp x : ZMod n) - k = x + ((sp x - k : ℕ) : ZMod n)`. Rewrite using `[Nat.cast_sub hlt.le]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hbetween (sp x - k) (by omega) (by omega)`. Establish `e : x + (sp x : ZMod n) - k = x - ((k - sp x : ℕ) : ZMod n)`. Rewrite using `[Nat.cast_sub hgt.le]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hbefore (k - sp x) (by omega) (by omega)`.
+-/
 theorem clusters_letterwise : ∀ {n : ℕ} (th : ZMod n → Prop) (j : ℕ), Clusters th j → ∀ t, th t →
     (∀ k : ℕ, 1 ≤ k → k ≤ j → ¬ th (t - k)) ∨
       ∃ d : ℕ, 1 ≤ d ∧ d ≤ j ∧ th (t - d) ∧ ∀ k : ℕ, 1 ≤ k → k ≤ d + j → k ≠ d → ¬ th (t - k) := by

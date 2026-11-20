@@ -13,6 +13,11 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Au
 
 namespace GlobalTheory.CompanionTheory.Conc.LevAt
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[PositivityTheory.Rg.Rs.JFinTr.aT_val, GlobalTheory.SmGL.val_emb₂]`. Use extensionality with `i j`. Take `⟨i, rfl⟩` from `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective i`. Take `⟨j, rfl⟩` from `(GlobalTheory.SmGL.stdSum (rfl : r + s = r + s)).surjective j`.
+
+Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `[GlobalTheory.SmGL.stdSum_inl, GlobalTheory.SmGL.stdSum_inr, PositivityTheory.Rg.Rs.JFinTr.aT_val, Matrix.diagonal_apply]`. Establish `h1 : (fun _ : InfinitePlace E => (1 : ℂ)) = (1 : Cinf E)` using `rfl`. Rewrite using `[h1, sub_add_cancel, Matrix.one_apply]`.
+-/
 theorem aT_eq_lev (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (r s : ℕ) (t : ℝ) :
     aT E (r + s) r t = GlobalTheory.CompanionTheory.CTFin.lev (Ad E) r s (aT E r r t, 1) := by
   apply Units.ext

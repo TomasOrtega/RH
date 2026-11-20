@@ -12,6 +12,15 @@ open scoped Matrix
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Take `⟨h0, -, h2⟩` from `hR`. Use `haveI : Nontrivial (Fin n → k) := by`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`. Conclude with `h0 (Subsingleton.elim _ _)`.
+
+Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue (Matrix.toLin' A)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hinv : IsInv R (Module.End.eigenspace (Matrix.toLin' A) c)`. Introduce `g v hv`. Rewrite `hv`, the goal using `[Module.End.mem_eigenspace_iff, Matrix.toLin'_apply]`.
+
+Rewrite using `[Matrix.mulVec_mulVec, hA, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_smul]`. Break down `h2 _ le_top hinv with h | h` into its components or cases. Conclude with `absurd h hc`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `v`. Establish `hv : v ∈ Module.End.eigenspace (Matrix.toLin' A) c` using `by rw [h]; trivial`. Rewrite `hv` using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[hv]`. Simplify using the standard rewrite rules.
+-/
 private theorem twistOf_schur {k H : Type} [Field k] [IsAlgClosed k] [Group H] {n : ℕ} (R : H →* GL (Fin n) k)
     (hR : IsIrr R) (A : Matrix (Fin n) (Fin n) k)
     (hA : ∀ h, A * (R h : Matrix (Fin n) (Fin n) k) = (R h : Matrix (Fin n) (Fin n) k) * A) :
@@ -37,6 +46,25 @@ private theorem twistOf_schur {k H : Type} [Field k] [IsAlgClosed k] [Group H] {
     rw [hv]
     simp
 
+/- English proof (translation)
+Establish `hn : Nonempty (Fin n)`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nonempty_iff]`. Conclude with `hR.1 (Subsingleton.elim _ _)`. Establish `inj : ∀ (X : GL (Fin n) k) (a b : k), a • (X : Matrix (Fin n) (Fin n) k) = b • (X : Matrix (Fin n) (Fin n) k) → a = b`.
+
+Introduce `X a b hab`. Conclude with `smul_left_injective k X.ne_zero hab`. Establish `key : ∀ g, ∃ u : kˣ, (S g : Matrix (Fin n) (Fin n) k) = (u : k) • (R g : Matrix (Fin n) (Fin n) k)`. Introduce `g`. Take `⟨c, hc⟩` from `twistOf_schur (R.comp H.subtype) hR ((R g)⁻¹ * S g : GL (Fin n) k) (by`.
+
+Introduce `h`. Establish `e : (R g)⁻¹ * S g * R h = R h * ((R g)⁻¹ * S g)`. Establish `e1` using `hS _ (hN.conj_mem h h.2 g)`. Establish `e2` using `hS _ h.2`. Simplify using `only [map_mul, map_inv, e2] at e1`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `congrArg Units.val e)`. Establish `h1 : (S g : Matrix (Fin n) (Fin n) k) = c • (R g : Matrix (Fin n) (Fin n) k)`. Establish `: S g = R g * ((R g)⁻¹ * S g)` using `by group`. Rewrite using `[this, Units.val_mul, hc, Matrix.mul_smul, Matrix.mul_one]`.
+
+Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Rewrite `h1` using `[zero_smul]`. Conclude with `(S g).ne_zero h1`. Conclude with `⟨Units.mk0 c hc0, h1⟩`.
+
+Use `choose u hu using key`. Establish `hmul : ∀ a b, u (a * b) = u a * u b`. Introduce `a b`. Apply `Units.ext` to reduce the goal to its premises. Apply `inj (R (a * b))` to reduce the goal to its premises.
+
+Rewrite using `[← hu, map_mul, map_mul, Units.val_mul, Units.val_mul, Units.val_mul, hu, hu, Matrix.smul_mul, Matrix.mul_smul, smul_smul]`. Use `⟨MonoidHom.mk' u hmul, ?_, ?_⟩` and prove the remaining obligations. Introduce `h hh`. Rewrite using `[MonoidHom.mem_ker]`. Apply `Units.ext` to reduce the goal to its premises.
+
+Apply `inj (R h)` to reduce the goal to its premises. Use `hu h` as an intermediate fact. Rewrite `this` using `[hS h hh]`. Simplify using `using this.symm`. Introduce `g`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[tw_val, hu]`. Both sides reduce to the same expression.
+-/
 private theorem twistOf_ratio {k Γ : Type} [Field k] [IsAlgClosed k] [Group Γ] {n : ℕ} (R S : Γ →* GL (Fin n) k)
     (H : Subgroup Γ) (hN : H.Normal) (hR : IsIrr (R.comp H.subtype)) (hS : ∀ h ∈ H, S h = R h) :
     ∃ ξ : Γ →* kˣ, H ≤ ξ.ker ∧ ∀ g, S g = tw R ξ g := by
@@ -87,6 +115,15 @@ private theorem twistOf_ratio {k Γ : Type} [Field k] [IsAlgClosed k] [Group Γ]
     rw [tw_val, hu]
     rfl
 
+/- English proof (translation)
+Introduce `l _ Γ _ _ _ _ _ n R R' hR V hV hne htr`. Take `⟨g₀, hg₀⟩` from `hne`. Take `⟨H, hN, hO, hH⟩` from `Ga.coset Γ V hV g₀ hg₀`. Take `⟨P, hP⟩` from `Ga.conjOn (Qbar l) H n (R.comp H.subtype) (R'.comp H.subtype) (hR H hO) (R g₀) (R' g₀) (by`. Introduce `h`.
+
+Use `htr _ (hH h h.2)` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul]`. Conclude with `this.symm)`. Take `⟨ξ, h1, h2⟩` from `twistOf_ratio R ((MulAut.conj P⁻¹).toMonoidHom.comp R') H hN (hR H hO) (by`. Introduce `h hh`.
+
+Establish `: R' h = P * R h * P⁻¹` using `hP ⟨h, hh⟩`. Express the relevant statement in the definitionally equal form `P⁻¹ * R' h * P⁻¹⁻¹ = R h`. Rewrite using `[this]`. Use the proof step `group)`. Use `⟨ξ, Subgroup.isOpen_mono h1 hO, P, fun s => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← h2]`. Express the relevant statement in the definitionally equal form `R' s = P * (P⁻¹ * R' s * P⁻¹⁻¹) * P⁻¹`. Use `group`.
+-/
 theorem UpperTheory.V.Z.Sym.Ga.twistOf :
     ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [TotallyDisconnectedSpace Γ] (n : ℕ) (R R' : Γ →* GL (Fin n) (Qbar l)), IrrOpen R → ∀ V : Set Γ, IsOpen V → V.Nonempty → (∀ g ∈ V, Ga.tr (R' g) = Ga.tr (R g)) → ∃ ξ : Γ →* (Qbar l)ˣ, IsOpen (ξ.ker : Set Γ) ∧ RepIso (tw R ξ) R' := by
   intro l _ Γ _ _ _ _ _ n R R' hR V hV hne htr

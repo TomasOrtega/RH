@@ -9,6 +9,11 @@ open Formalism.BasicNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual 
 
 namespace GlobalTheory.RowRegAlg
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `R.k_even`. Take `⟨b, hb⟩` from `R.m_even`. Establish `h2` using `R.two_le_m`. Take `⟨c, hc⟩ : ∃ c : ℕ, R.r = 2 * c + 1` from `⟨a + b - 1, by simp only [Ranks.r]; omega⟩`. Use `⟨hn, fun z hz => ?_⟩` and prove the remaining obligations.
+
+Take `⟨n, rfl⟩` from `hi z hz`. Use `⟨n - c, ?_⟩` and prove the remaining obligations. Rewrite using `[hc]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nodup_int_shift (R : Ranks) (S : Multiset ℂ) (hn : S.Nodup) (hi : ∀ z ∈ S, ∃ n : ℤ, z = (n : ℂ)) :
     S.Nodup ∧ ∀ z ∈ S, ∃ n : ℤ, z = (n : ℂ) + ((R.r : ℂ) - 1) / 2 := by
   obtain ⟨a, ha⟩ := R.k_even
@@ -22,6 +27,13 @@ theorem nodup_int_shift (R : Ranks) (S : Multiset ℂ) (hn : S.Nodup) (hi : ∀ 
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `D π h`. Rewrite using `[D.naut.ralg_def]`. Introduce `φ`. Take `⟨τ, hτ | hτ⟩` from `Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.FL.emb_cases D φ`. Establish `e : φ = embTau D τ` using `hτ`.
+
+Rewrite using `[e, (h τ).1]`. Conclude with `nodup_int_shift D.R _ (GlobalTheory.Survey.EmbeddingValuationsAnti.nodup_hcSigma _) (hcSigma_int _)`. Establish `e : φ = embTauBar D τ` using `hτ`. Rewrite using `[e, (h τ).2]`. Use `nodup_int_shift D.R _ ((GlobalTheory.Survey.EmbeddingValuationsAnti.nodup_hcSigma _).map neg_injective) fun z hz => ?_` and prove the remaining obligations.
+
+Take `⟨y, hy, rfl⟩` from `Multiset.mem_map.1 hz`. Take `⟨n, rfl⟩` from `hcSigma_int _ y hy`. Conclude with `⟨-n, by push_cast; ring⟩`.
+-/
 theorem ralg_of_infG : ∀ (D : D7) (π : D.naut.CG D.R.r),
     (∀ τ : D.what₂.Tau, D.naut.infG π (embTau D τ) = hcSigma (D.hc τ) ∧
       D.naut.infG π (embTauBar D τ) = (hcSigma (D.hc τ)).map (fun z => -z)) →

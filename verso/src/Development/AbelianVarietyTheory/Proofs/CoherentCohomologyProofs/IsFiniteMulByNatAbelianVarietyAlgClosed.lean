@@ -20,10 +20,16 @@ namespace GlobalTheory.MulFiniteAny
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+Consider the cases of `H`. Simplify using `[AbLaw.pw]`.
+-/
 theorem pw_one {X : Scheme.{0}} (H : LB X) : pw H ((1 : ℕ) : ℤ) = H := by
   cases H
   simp [AbLaw.pw]
 
+/- English proof (translation)
+Establish `h : ∀ (s : Fin (M + 1) → LB.Sec (pw L ((1 : ℕ) : ℤ))), VeryAmpleBy A.hom (pw L ((1 : ℕ) : ℤ)) s → RelAmple A L` using `fun s hs => GlobalTheory.Unif.relAmple_of_veryAmpleBy hL le_rfl s hs`. Rewrite `h` using `[pw_one]`. Conclude with `h s hA`.
+-/
 theorem relAmple_of_veryAmpleBy' {R : Type} [CommRing R] {A : Over (Spec (CommRingCat.of R))}
     {L : LB A.left} (hL : L.IsLB) {M : ℕ} (s : Fin (M + 1) → LB.Sec L)
     (hA : VeryAmpleBy A.hom L s) : RelAmple A L := by
@@ -33,11 +39,23 @@ theorem relAmple_of_veryAmpleBy' {R : Type} [CommRing R] {A : Over (Spec (CommRi
   rw [pw_one] at h
   exact h s hA
 
+/- English proof (translation)
+Simplify using `only [mul_inv, inv_inv, zpow_neg, zpow_one]`. Rewrite using `[_root_.mul_comm a]`.
+-/
 theorem mul_eq_one_of_covolume_identity {G : Type} [CommGroup G] (a b c : G) :
     a * b ^ (-1 : ℤ) * c⁻¹ = (b * a⁻¹ * c)⁻¹ := by
   simp only [mul_inv, inv_inv, zpow_neg, zpow_one]
   rw [_root_.mul_comm a]
 
+/- English proof (translation)
+Establish `le : ∀ j : Fin 2 → L.ι, LB.wchart L (K` using `Fin 2) ![𝟙 X, m] j ≤ (L.pull m).U (fun _ => j 1) ⊓ (pw L e).U (j 0) := fun j y hy => ⟨Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hy 1, Set.mem_iInter.1 hy 0⟩`. Use `⟨⟨fun j => (res (le j) (w.s (fun _ => j 1, j 0)))⁻¹⟩, fun p q => unit_ext fun y hy => ?_⟩` and prove the remaining obligations. Establish `val : ∀ p : Fin 2 → L.ι, y ∈ LB.wchart L (K` using `Fin 2) ![𝟙 X, m] p → gm (𝟙 X) y _ (res (le p) (w.s (fun _ => p 1, p 0)))⁻¹ = (gm (𝟙 X) y ((L.pull m).U (fun _ => p 1) ⊓ (pw L e).U (p 0)) (w.s (fun _ => p 1, p 0)))⁻¹ := fun p hp => (map_inv _ _).trans (congrArg (·⁻¹) (gm_res (𝟙 X) y (le p) hp _))`. Establish `hm : (𝟙 X : X ⟶ X) y ∈ (L.pull m).U (fun _ => p 1) ⊓ (pw L e).U (p 0) ⊓ ((L.pull m).U (fun _ => q 1) ⊓ (pw L e).U (q 0))` using `⟨le p hy.1, le q hy.2⟩`. Establish `e₀` using `congrArg (gm (𝟙 X) y ((L.pull m).U (fun _ => p 1) ⊓ (pw L e).U (p 0) ⊓ ((L.pull m).U (fun _ => q 1) ⊓ (pw L e).U (q 0)))) (hw (fun _ => p 1, p 0) (fun _ => q 1, q 0))`.
+
+Establish `e'` using `(gm_res (𝟙 X) y _ hm _).symm.trans (e₀.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_div (pw L e) (L.pull m) (𝟙 X) y (fun _ => p 1, p 0) (fun _ => q 1, q 0) hm) (gm_res (𝟙 X) y _ hm _))))`. Establish `g₁` using `gm_pull_g L m (𝟙 X) y (fun _ => p 1) (fun _ => q 1) hm.1.1 hm.2.1`. Establish `g₂ : gm (𝟙 X) y ((pw L e).U (p 0) ⊓ (pw L e).U (q 0)) ((pw L e).g (p 0) (q 0)) = gm (𝟙 X) y (L.U (p 0) ⊓ L.U (q 0)) (L.g (p 0) (q 0)) ^ e` using `map_zpow _ _ _`. Establish `g₃ : gm (𝟙 X) y _ ((LB.LinComb L (K` using `Fin 2) ![𝟙 X, m] ![e, -1]).g p q) = gm (𝟙 X) y (L.U (p 0) ⊓ L.U (q 0)) (L.g (p 0) (q 0)) ^ e * gm (𝟙 X ≫ m) y (L.U (p 1) ⊓ L.U (q 1)) (L.g (p 1) (q 1)) ^ (-1 : ℤ) := by`. Use `(gm_linComb L ![𝟙 X, m] ![e, -1] (𝟙 X) y p q hy.1 hy.2).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Fin.prod_univ_two]`. Both sides reduce to the same expression. Establish `e''` using `e'.trans (congrArg₂ (· * ·) (congrArg₂ (· * ·) g₁ (congrArg (·⁻¹) g₂)) rfl)`. Use `((gm_res (𝟙 X) y _ hy _).trans (val p hy.1)).trans ((congrArg (·⁻¹) e'').trans (Eq.symm ?_))` and prove the remaining obligations. Use `(map_mul _ _ _).trans ((congrArg₂ (· * ·) g₃ ((gm_res (𝟙 X) y _ hy _).trans (val q hy.2))).trans ?_)` and prove the remaining obligations.
+
+Conclude with `mul_eq_one_of_covolume_identity _ _ _`.
+-/
 theorem exists_gen {X : Scheme.{0}} (L : LB X) (m : X ⟶ X) (e : ℤ)
     (w : LB.Iso (pw L e) (L.pull m)) (hw : w.IsGen) :
     ∃ α : LB.Gen (LB.LinComb L (K := Fin 2) ![𝟙 X, m] ![e, -1]), α.IsGen := by
@@ -71,6 +89,11 @@ theorem exists_gen {X : Scheme.{0}} (L : LB X) (m : X ⟶ X) (e : ℤ)
   refine (map_mul _ _ _).trans ((congrArg₂ (· * ·) g₃ ((gm_res (𝟙 X) y _ hy _).trans (val q hy.2))).trans ?_)
   exact mul_eq_one_of_covolume_identity _ _ _
 
+/- English proof (translation)
+Introduce `K _ _ B _ hB n hn`. Take `⟨H, m, s, hH, hs, hsym⟩` from `GlobalTheory.SymVeryAmple.exists_symmetric_veryAmple K B hB`. Take `⟨w, hw⟩` from `GlobalTheory.MulPullAny.mulPull_of_symm K B hB H hH hsym n`. Take `⟨α, hα⟩` from `exists_gen H (mulA B n).left _ w hw`. Use `hB.proper` as an intermediate fact.
+
+Conclude with `GlobalTheory.MulFinite.isFinite_of_relAmple B H hH (relAmple_of_veryAmpleBy' hH s hs) _ (n ^ 2) (by positivity) α hα`.
+-/
 theorem isFinite_mulA : ∀ (K : Type) [Field K] [IsAlgClosed K] (B : Over (Spec (CommRingCat.of K))) [GrpObj B], IsAbelianScheme B → ∀ n : ℕ, 1 ≤ n → IsFinite (mulA B n).left := by
   intro K _ _ B _ hB n hn
   obtain ⟨H, m, s, hH, hs, hsym⟩ := GlobalTheory.SymVeryAmple.exists_symmetric_veryAmple K B hB

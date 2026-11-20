@@ -7,6 +7,21 @@ namespace GroundTheory.Heights₂.Heights.NumbersDVR
 
 open MvPolynomial
 
+/- English proof (translation)
+Use `set G := G'.comap (liftForm (J := J) (ι := ι) (R := R)) with hGdef`. Set `φ : (MRing ι R ⧸ G) →+* (MRing (extIdx ι J) R ⧸ G')` to `Ideal.quotientMap G' (liftForm (J := J) (ι := ι) (R := R)).toRingHom le_rfl`. Set `ψ : Polynomial (MRing ι R ⧸ G) →+* (MRing (extIdx ι J) R ⧸ G')` to `Polynomial.eval₂RingHom φ (Ideal.Quotient.mk G' (newVar j₀))`. Establish `hψ : Function.Surjective ψ`. Introduce `y`.
+
+Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Use `⟨Polynomial.C (Ideal.Quotient.mk G (C a)), ?_⟩` and prove the remaining obligations. Simplify using `[ψ, φ, Ideal.quotientMap_mk, liftForm]`.
+
+Consider the case `add p q hp hq`. Take `⟨a, ha⟩` from `hp`. Take `⟨b, hb⟩` from `hq`. Conclude with `⟨a + b, by rw [map_add, ha, hb, map_add]⟩`. Consider the case `mul_X p v hp`.
+
+Take `⟨a, ha⟩` from `hp`. Take `⟨o, i⟩` from `v`. Consider the cases of `o with`. Consider the case `none`. Distinguish the cases in `hi : i = j₀`.
+
+Substitute `hi` using the available equality. Use `⟨a * Polynomial.X, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ha, map_mul]`. Use `congr 1`. Simplify using `[ψ, newVar]`.
+
+Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, eq_comm, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `G'.mul_mem_left _ (hY i hi)`. Consider the case `some k`. Use `⟨a * Polynomial.C (Ideal.Quotient.mk G (X ⟨k, i⟩)), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, ha, map_mul]`. Use `congr 1`. Simplify using `[ψ, φ, Ideal.quotientMap_mk, liftForm, rename_X]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ringKrullDim_quotient_le_comap_add_one {K : Type} [Fintype K] {ι : K → Type}
     [∀ k, Fintype (ι k)] {J : Type} {R : Type*} [CommRing R] [IsNoetherianRing R]
     (G' : Ideal (MRing (extIdx ι J) R)) [G'.IsPrime] (j₀ : J)
@@ -52,6 +67,13 @@ theorem ringKrullDim_quotient_le_comap_add_one {K : Type} [Fintype K] {ι : K �
       ≤ ringKrullDim (Polynomial (MRing ι R ⧸ G)) := ringKrullDim_le_of_surjective ψ hψ
     _ = ringKrullDim (MRing ι R ⧸ G) + 1 := Polynomial.ringKrullDim_of_isNoetherianRing
 
+/- English proof (translation)
+Use `⟨⟨inferInstance, hle⟩, fun Q hQ hQG => ?_⟩` and prove the remaining obligations. Establish `: Q.IsPrime` using `hQ.1`. Assume the negation of the conclusion as `hGQ`. Establish `hsQ : s ∈ Q` using `hQ.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self s))`. Establish `hPQ : P < Q` using `lt_of_le_of_ne (le_sup_left.trans hQ.2) fun h => hsP (h ▸ hsQ)`.
+
+Establish `h1` using `DimStrictDrop.proof A Q G (lt_of_le_not_ge hQG hGQ)`. Establish `h2` using `DimStrictDrop.proof A P Q hPQ`. Establish `h3 : (N : WithBot ℕ∞) + 1 ≤ (N : WithBot ℕ∞)`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : ((N + 1 : ℕ) : WithBot ℕ∞) ≤ (N : WithBot ℕ∞)` using `by exact_mod_cast h3`.
+
+Establish `h5 : N + 1 ≤ N` using `by exact_mod_cast h4`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem mem_minimalPrimes_of_ringKrullDim {A : Type*} [CommRing A] (P G : Ideal A) [P.IsPrime]
     [G.IsPrime] (s : A) (hsP : s ∉ P) (N : ℕ) (hP : ringKrullDim (A ⧸ P) = (N : WithBot ℕ∞))
     (hle : P ⊔ Ideal.span {s} ≤ G) (hG : (N : WithBot ℕ∞) ≤ ringKrullDim (A ⧸ G) + 1) :

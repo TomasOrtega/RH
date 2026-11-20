@@ -12,6 +12,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.BlockSupp
 
+/- English proof (translation)
+Introduce `hBZ hGL _ hDZ k _ _ _ _ r t χ π v hχs hχt hv hbv`. Take `⟨s, d, σ, hsupp⟩` from `GlobalTheory.T.exists_cuspidalSupport_irreducibleSmoothGL hBZ hGL k (r + t) π`. Take `⟨e, x, hx, hxe⟩` from `GlobalTheory.T.tame_block_vector_jacquet_nonzero hDZ k r t χ π v hχt hv hbv`. Use `⟨s, d, σ, hsupp, ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.card_le_unramifiedTwists_cuspidalSupport_jacquet hBZ hGL k (r + t) s (t + 1) χ π d σ _ e (Finset.univ.map (Fin.succEmb t)) x hχs hsupp (by intro j hj; obtain ⟨i, -, rfl⟩ := Finset.mem_map.1 hj; rfl) hx (by intro j hj g hg; obtain ⟨i, -, rfl⟩ := Finset.mem_map.1 hj; …`.
+
+Simplify using `using h`.
+-/
 theorem main : GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.UnlinkedProductIrreducible → GlobalTheory.Published.DepthZeroJacquetInjective → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], ∀ (r t : ℕ) (χ : kˣ →* ℂˣ) (π : Irr k (r + t)) (v : π.V), GlobalTheory.SmGL.IsSmoothChar χ → GlobalTheory.SplitWeil.IsTame χ → v ≠ 0 → IsBlockVec χ π.π v → ∃ (s : ℕ) (d : Fin s → ℕ) (σ : ∀ a, Irr k (d a)), GlobalTheory.SmGL.IsCuspSupport π.π d (fun a => (σ a).π) ∧ t ≤ Set.ncard {a | d a = 1 ∧ ∃ α : ℂˣ, Nonempty ((σ a).π.Equiv (GlobalTheory.SmGL.detRep (Fin (d a)) (χ * GlobalTheory.SmGL.unrChar k α)))} := by
   intro hBZ hGL _ hDZ k _ _ _ _ r t χ π v hχs hχt hv hbv
   obtain ⟨s, d, σ, hsupp⟩ := GlobalTheory.T.exists_cuspidalSupport_irreducibleSmoothGL hBZ hGL k (r + t) π

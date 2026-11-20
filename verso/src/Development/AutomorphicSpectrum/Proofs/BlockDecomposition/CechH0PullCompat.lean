@@ -5,6 +5,9 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Opposite Limits GroundThe
 
 namespace GlobalTheory.CompanionTheory.CechZero
 
+/- English proof (translation)
+Substitute `hσ` using the available equality. Simplify using `only [GroundTheory.Arith.SchemeCoh.cechHZeroEquiv, AddEquiv.trans_apply]`. Conclude with `(globalCocycleEquiv P U hP hU).symm_apply_apply s`.
+-/
 theorem cechHZeroEquiv_cls {X : TopCat.{0}} {ι : Type} (P : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{0})
     (U : ι → Opens X) (hP : Presheaf.IsSheaf (Opens.grothendieckTopology X) P) (hU : iSup U = ⊤)
     (s : P.obj (op ⊤)) (σ : Cochain P U 0) (h : GroundTheory.Arith.SchemeCoh.d P U 0 σ = 0)
@@ -14,6 +17,9 @@ theorem cechHZeroEquiv_cls {X : TopCat.{0}} {ι : Type} (P : (Opens X)ᵒᵖ ⥤
   simp only [GroundTheory.Arith.SchemeCoh.cechHZeroEquiv, AddEquiv.trans_apply]
   exact (globalCocycleEquiv P U hP hU).symm_apply_apply s
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Express the relevant statement in the definitionally equal form `GroundTheory.Arith.SchemeCoh.res Q _ (φ.app _ (GroundTheory.Arith.SchemeCoh.res P _ s)) = GroundTheory.Arith.SchemeCoh.res Q _ (GroundTheory.Arith.SchemeCoh.res Q _ (φ.app (op ⊤) s))`. Rewrite using `[app_res_map, res_res, res_res]`.
+-/
 theorem pullCoch_globalCocycle {X Y : TopCat.{0}} (f : X ⟶ Y) {P : (Opens Y)ᵒᵖ ⥤ AddCommGrpCat.{0}}
     {Q : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{0}} (φ : P ⟶ (Opens.map f).op ⋙ Q)
     {κ ι : Type} (V : κ → Opens Y) (U : ι → Opens X) (τ : ι → κ)
@@ -26,12 +32,18 @@ theorem pullCoch_globalCocycle {X Y : TopCat.{0}} (f : X ⟶ Y) {P : (Opens Y)�
     GroundTheory.Arith.SchemeCoh.res Q _ (GroundTheory.Arith.SchemeCoh.res Q _ (φ.app (op ⊤) s))
   rw [app_res_map, res_res, res_res]
 
+/- English proof (translation)
+Take `⟨φ, rfl⟩` from `(Abelian.Ext.mk₀_bijective _ _).surjective x`. Rewrite using `[GlobalTheory.SheafLES.equivZero_mk₀]`. Conclude with `GlobalTheory.SiteCoh.zeroEquiv_mk₀ F W φ`.
+-/
 theorem zeroEquiv_eq_equivZero {X : TopCat.{0}} (F : AbSheaf X) (W : Opens X) (x : Sheaf.H'.{0} F 0 W) :
     GlobalTheory.SiteCoh.zeroEquiv F W x = GlobalTheory.SheafLES.equivZero.{0} F W x := by
   obtain ⟨φ, rfl⟩ := (Abelian.Ext.mk₀_bijective _ _).surjective x
   rw [GlobalTheory.SheafLES.equivZero_mk₀]
   exact GlobalTheory.SiteCoh.zeroEquiv_mk₀ F W φ
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `(GlobalTheory.SiteCoh.terminalEquiv G 0 isTerminalTop).surjective z`. Express the relevant statement in the definitionally equal form `Sheaf.H.equiv₀ G' isTerminalTop (GlobalTheory.SiteCoh.terminalEquiv G' 0 isTerminalTop (pull.{0, 0} f φ 0 (homOfLE le_top : (⊤ : Opens X) ⟶ (Opens.map f).obj ⊤) ((GlobalTheory.SiteCoh.terminalEquiv G 0 isTerminalTop).symm (GlobalTheory.SiteCoh.terminalEquiv G 0 isTerminalTop y))) …`. Rewrite using `[AddEquiv.symm_apply_apply, GlobalTheory.SiteCoh.equiv₀_terminalEquiv, GlobalTheory.SiteCoh.equiv₀_terminalEquiv, zeroEquiv_eq_equivZero, zeroEquiv_eq_equivZero, GlobalTheory.SheafPull.equivZero_pull]`. Both sides reduce to the same expression.
+-/
 theorem hPull_zero {X Y : TopCat.{0}} (f : X ⟶ Y) {G : AbSheaf Y} {G' : AbSheaf X}
     (φ : G ⟶ (push f).obj G') (z : Sheaf.H.{0} G 0) :
     Sheaf.H.equiv₀ G' isTerminalTop (hPull f φ 0 z) =
@@ -47,6 +59,11 @@ theorem hPull_zero {X Y : TopCat.{0}} (f : X ⟶ Y) {G : AbSheaf Y} {G' : AbShea
     GlobalTheory.SheafPull.equivZero_pull]
   rfl
 
+/- English proof (translation)
+Take `⟨σ, hσ, rfl⟩` from `exists_cls x`. Take `⟨s, hs⟩` from `globalCocycle_surjective G.obj V G.property hV ⟨σ, (mem_cocycles σ).2 hσ⟩`. Establish `hσs : σ = (globalCocycle G.obj V s).1` using `(congrArg Subtype.val hs).symm`. Apply `(Sheaf.H.equiv₀ G' isTerminalTop).injective` to reduce the goal to its premises. Rewrite using `[hPull_zero, cechPullH_cls]`.
+
+Simplify using `only [GroundTheory.Arith.SchemeCoh.cechHZeroEquivH, AddEquiv.trans_apply, AddEquiv.apply_symm_apply]`. Rewrite using `[cechHZeroEquiv_cls G.obj V G.property hV s σ hσ hσs]`. Use `cechHZeroEquiv_cls G'.obj U G'.property hU _ _ _ ?_` and prove the remaining obligations. Rewrite using `[hσs]`. Conclude with `pullCoch_globalCocycle f φ.hom V U τ hτ s`.
+-/
 theorem cechHZeroEquivH_pull {X Y : TopCat.{0}} (f : X ⟶ Y) {κ ι : Type} (V : κ → Opens Y)
     (hV : iSup V = ⊤) (U : ι → Opens X) (hU : iSup U = ⊤) (τ : ι → κ)
     (hτ : ∀ i, U i ≤ (Opens.map f).obj (V (τ i)))

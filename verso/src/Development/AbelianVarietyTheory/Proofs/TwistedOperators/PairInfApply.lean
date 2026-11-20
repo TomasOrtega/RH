@@ -24,9 +24,15 @@ def pairInf (κ : Type) [Fintype κ] :
     (fun x y y' => by simp only [Pi.add_apply, mul_add, Finset.sum_add_distrib, map_add])
     (fun c x y => by simp [mul_smul_comm, ← Finset.smul_sum])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pairInf_apply (κ : Type) [Fintype κ] (x y : κ → mixedEmbedding.mixedSpace F) :
     pairInf F κ x y = Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (∑ i, x i * y i) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem heisFun_apply {V : Type} [AddCommGroup V] [Module ℝ V] (β : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (p q : V) (f : V → ℂ) (x : V) :
     heisFun β p q f x = Complex.exp (-(2 * Real.pi * Complex.I) * ((β x q + β p q / 2 : ℝ) : ℂ)) * f (x + p) := rfl
 

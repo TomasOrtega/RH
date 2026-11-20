@@ -8,6 +8,21 @@ noncomputable section
 
 namespace GlobalTheory.Mem.Col2.PerIn
 
+/- English proof (translation)
+Introduce `E K ι _ _ _ _ _ _ _ R I Q emb σ _hH w hw hinv`. Set `φ : ∀ b, Q.S'.G b → Pol ℂ ι (R.N R.m - 1) → Pol ℂ ι (R.N R.m - 1)` to `fun b g x => (σ (Q.S'.chr b g : K))⁻¹ • rhoP Q.sgT (embGL (Formalism.L2.Col.embAt σ emb) (Q.S'.gam b g)) x`. Establish `φmul : ∀ b (g h : Q.S'.G b) x, φ b (g * h) x = φ b g (φ b h x)`. Introduce `b g h x`. Simplify using `only [φ, map_mul, Units.val_mul, mul_inv, Module.End.mul_apply, map_smul, smul_smul]`.
+
+Establish `hinv' : ∀ c (s : Q.S'.G c.1), s • Q.S'.rep c = Q.S'.rep c → w c = φ c.1 s (w c)` using `fun c s hs => hinv c ⟨s, hs⟩`. Set `F : ∀ b, Q.S'.D b → Pol ℂ ι (R.N R.m - 1)` to `fun b d => φ b (Q.S'.mv b d) (w (Q.S'.cl b d))`. Establish `hcl : ∀ b (g : Q.S'.G b) (d : Q.S'.D b), Q.S'.cl b (g • d) = Q.S'.cl b d` using `fun b g d => Sigma.ext rfl (heq_of_eq (Quotient.sound (MulAction.mem_orbit d g)))`. Establish `hlaw : ∀ b (g : Q.S'.G b) d, F b (g • d) = φ b g (F b d)`. Introduce `b g d`.
+
+Use `set c := Q.S'.cl b d with hc`. Establish `hrep : Q.S'.rep (Q.S'.cl b (g • d)) = Q.S'.rep c` using `congrArg (Q.S'.rp b) (Quotient.sound (MulAction.mem_orbit d g))`. Establish `h1 : Q.S'.mv b (g • d) • Q.S'.rep c = g • d`. Use `Q.S'.mv_smul b (g • d) using 2` and compare the differences between its conclusion and the goal. Conclude with `hrep.symm`.
+
+Establish `h2` using `Q.S'.mv_smul b d`. Establish `hs : ((g * Q.S'.mv b d)⁻¹ * Q.S'.mv b (g • d)) • Q.S'.rep c = Q.S'.rep c`. Rewrite using `[mul_smul, h1, _root_.mul_inv_rev, mul_smul, inv_smul_smul, inv_smul_eq_iff, h2]`. Establish `hw` using `hinv' c _ hs`. Use `show φ b (Q.S'.mv b (g • d)) (w (Q.S'.cl b (g • d))) = φ b g (φ b (Q.S'.mv b d) (w c))`.
+
+Rewrite using `[hcl, ← φmul]`. Use `conv_rhs => rw [hw, ← φmul, mul_inv_cancel_left]`. Use `⟨⟨F, fun b d => ⟨?_, fun g _ => hlaw b g d⟩⟩, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ _ (polyAction_mem_VV _ _ (hw _))`. Introduce and unpack `⟨b, q⟩`.
+
+Establish `hq : Q.S'.cl b (Q.S'.rep ⟨b, q⟩) = ⟨b, q⟩` using `Sigma.ext rfl (heq_of_eq (Q.S'.rp_spec b q))`. Establish `hr : Q.S'.rep (Q.S'.cl b (Q.S'.rep ⟨b, q⟩)) = Q.S'.rep ⟨b, q⟩` using `congrArg (Q.S'.rp b) (Q.S'.rp_spec b q)`. Establish `h1 : Q.S'.mv b (Q.S'.rep ⟨b, q⟩) • Q.S'.rep ⟨b, q⟩ = Q.S'.rep ⟨b, q⟩`. Use `Q.S'.mv_smul b (Q.S'.rep ⟨b, q⟩) using 2` and compare the differences between its conclusion and the goal. Conclude with `hr.symm`.
+
+Use `show φ b (Q.S'.mv b (Q.S'.rep ⟨b, q⟩)) (w (Q.S'.cl b (Q.S'.rep ⟨b, q⟩))) = w ⟨b, q⟩`. Rewrite using `[hq]`. Conclude with `(hinv' ⟨b, q⟩ _ h1).symm`.
+-/
 theorem exists_Mt_of_rep_values : ∀ {E K ι : Type} [Field E] [NumberField E] [StarRing E] [Field K] [NumberField K] [StarRing K] [Fintype ι] {R : Formalism.BasicNotions.Ranks} {I : GlobalTheory.Mem.Col2.ChainIn E K ι R} (Q : GlobalTheory.Mem.Col2.PerIn I) (emb : ι → E →+* K) (σ : K →+* ℂ), (∀ b, Q.H b = ⊤) → ∀ (w : Q.S'.Cl → Formalism.L2.DIV.Pol ℂ ι (R.N R.m - 1)), (∀ c, w c ∈ Formalism.L2.DIV.VV ℂ Q.sgT) → (∀ c (s : Q.S'.Stab c), w c = (σ (Q.S'.chr c.1 s.1 : K))⁻¹ • Formalism.L2.DIV.rhoP Q.sgT (Formalism.L2.DIV.embGL (Formalism.L2.Col.embAt σ emb) (Q.S'.gam c.1 s.1)) (w c)) → ∃ F : Q.Mt emb σ, ∀ c, F.1 c.1 (Q.S'.rep c) = w c := by
   intro E K ι _ _ _ _ _ _ _ R I Q emb σ _hH w hw hinv
   classical

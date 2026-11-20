@@ -9,6 +9,15 @@ open scoped TensorProduct Matrix
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hTr v w hin hvT L _ _ ϖ σL q δ JS JT ψL κ ιS ιT hC ρ hρ s m hs hm`. Take `⟨unr, odd, intS, intT, hermS, hermT, hδ, psiInt, psiNe, hAt, hSurj, hLat, hPsi, hEq, hιS, hιT, hKS, hKT⟩` from `hC`. Take `⟨-, -, θ, hθ, hvac⟩` from `hTr.geo.hM'.vac v`. Establish `h2 : evFin F v (⅟(2 : AF F)) ∈ v.adicCompletionIntegers F`. Establish `h2e : evFin F v (⅟(2 : AF F)) = algebraMap F (Fv F v) (2 : F)⁻¹` using `by show evFin F v (algebraMap F (AF F) 2⁻¹) = _`.
+
+Conclude with `AlgHom.commutes _ _`. Rewrite using `[h2e]`. Conclude with `GlobalTheory.LatVac.half_mem_adicCompletionIntegers F v (hTr.base.inert v w hin).1`. Establish `hone : ∀ γ ∈ latAtV G.V' G.W v, B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F` using `F) (AF F) (θ : E)) (incM F G.V'.J) (incM F G.W.J) γ γ) = 1 := fun γ hγ => GlobalTheory.LatVacArith.psi_symp_latAtV σ B G.V' G.W _ _ _ _ hTr.base hTr.geo.hV' hTr.geo.hW v θ _ h2 γ hγ γ hγ`. Establish `hm' : ∀ γ ∈ latAtV G.V' G.W v, Acts (evFin F v) (G.M'.co.rho B.ψ γ) (m : (Fin a' × Fin (a + a') → Fv F v) → ℂ) (B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F` using `F) (AF F) (θ : E)) (incM F G.V'.J) (incM F G.W.J) γ γ) • (m : (Fin a' × Fin (a + a') → Fv F v) → ℂ)) := by`.
+
+Introduce `γ hγ`. Rewrite using `[hone γ hγ, one_smul]`. Take `⟨x, rfl⟩` from `hSurj γ ((GlobalTheory.LatVac.latAtV_at_stable G.V' G.W v).1 γ hγ)`. Establish `hx` using `(hLat x).2 hγ`. Establish `h` using `hρ x m`.
+
+Rewrite `h` using `[hm x hx]`. Then use the resulting hypothesis. Take `⟨c, hc⟩` from `GlobalTheory.T.inertPlace_schwartzBruhat_vacuumCondition_eq_smul F E σ B a a' G X om om' hTr v w hin θ hθ hvac m m.2 hm'`. Use `⟨c, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, hs]`. Conclude with `hc`.
+-/
 theorem GlobalTheory.InertBridgeLine.locVac_line : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w → v ∉ X.T →

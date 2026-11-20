@@ -15,6 +15,11 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.tweyl
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 variable (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ)
+/- English proof (translation)
+Unfold `actB`. Establish `hx : (x.1.1)ᵀ * ((x⁻¹ : d.G).1.1)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, ← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = v := by rw [_root_.PositivityTheory.SiegelWeilFormula.tweyl.mat_mul_inv_k, hx, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem actB_conj_k (x : d.G) (g : UA σ d.A.J) (v : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) :
     actB (cA σ) x⁻¹ (mat g * actB (cA σ) x (mat g⁻¹ * v)) = v := by
   unfold actB
@@ -24,6 +29,13 @@ theorem actB_conj_k (x : d.G) (g : UA σ d.A.J) (v : Matrix (Fin d.m) (Fin d.n �
   calc _ = (mat g * mat g⁻¹) * v * ((x.1.1)ᵀ * ((x⁻¹ : d.G).1.1)ᵀ) := by
         simp only [Matrix.mul_assoc]
     _ = v := by rw [_root_.PositivityTheory.SiegelWeilFormula.tweyl.mat_mul_inv_k, hx, Matrix.one_mul, Matrix.mul_one]
+/- English proof (translation)
+Introduce `w φ hφ`. Take `⟨v, rfl⟩` from `d.dd.e.surjective w`. Establish `e1 : ∀ u, schr d.B.ψ (d.dd.e u) = d.dd.rho d.B.ψ u` using `fun u => rfl`. Simplify using `only [Module.End.mul_apply, e1]`. Establish `h1` using `(_root_.PositivityTheory.SiegelWeilFormula.tweyl.hS_k d).impl g⁻¹ v φ hφ`.
+
+Establish `hp1` using `(_root_.PositivityTheory.SiegelWeilFormula.tweyl.hS_k d).pres g⁻¹ φ hφ`. Establish `h2` using `(_root_.PositivityTheory.SiegelWeilFormula.tweyl.hO_k d).impl x (mat g⁻¹ * v) _ hp1`. Establish `hp2` using `(_root_.PositivityTheory.SiegelWeilFormula.tweyl.hO_k d).pres x _ hp1`. Establish `h3` using `(_root_.PositivityTheory.SiegelWeilFormula.tweyl.hS_k d).impl g (actB (cA σ) x (mat g⁻¹ * v)) _ hp2`. Establish `hp3` using `(_root_.PositivityTheory.SiegelWeilFormula.tweyl.hS_k d).pres g _ hp2`.
+
+Establish `h4` using `(_root_.PositivityTheory.SiegelWeilFormula.tweyl.hO_k d).impl x⁻¹ (mat g * actB (cA σ) x (mat g⁻¹ * v)) _ hp3`. Use `beta_reduce at h1 h3`. Rewrite using `[h1, h2, h3, h4, _root_.PositivityTheory.SiegelWeilFormula.tweyl.actB_conj_k]`.
+-/
 theorem comm_schr_k (g : UA σ d.A.J) (x : d.G) : ∀ w, ∀ φ ∈ schA F d.κ,
     (d.om x⁻¹ * d.S g * d.om x * d.S g⁻¹) (schr d.B.ψ w φ) =
       schr d.B.ψ w ((d.om x⁻¹ * d.S g * d.om x * d.S g⁻¹) φ) := by
@@ -40,6 +52,11 @@ theorem comm_schr_k (g : UA σ d.A.J) (x : d.G) : ∀ w, ∀ φ ∈ schA F d.κ,
   have h4 := (_root_.PositivityTheory.SiegelWeilFormula.tweyl.hO_k d).impl x⁻¹ (mat g * actB (cA σ) x (mat g⁻¹ * v)) _ hp3
   beta_reduce at h1 h3
   rw [h1, h2, h3, h4, _root_.PositivityTheory.SiegelWeilFormula.tweyl.actB_conj_k]
+/- English proof (translation)
+Take `⟨c, hc⟩` from `GlobalTheory.WeilSchUnique.scalar_of_commute d.B.ψ (_root_.PositivityTheory.SiegelWeilFormula.tweyl.std_k d) (d.om x⁻¹ * d.S g * d.om x * d.S g⁻¹) (fun l hl => by`. Simplify using `only [Module.End.mul_eq_comp, ← LinearMap.comp_assoc]`. Conclude with `(_root_.PositivityTheory.SiegelWeilFormula.tweyl.hS_k d).adm _ _ ((_root_.PositivityTheory.SiegelWeilFormula.tweyl.hO_k d).adm _ _ ((_root_.PositivityTheory.SiegelWeilFormula.tweyl.hS_k d).adm _ _ ((_root_.PositivityTheory.SiegelWeilFormula.tweyl.hO_k d).adm _ _ hl))))`. Use the proof step `(_root_.PositivityTheory.SiegelWeilFormula.tweyl.comm_schr_k d g x)`. Use `⟨c, fun φ hφ => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `congrArg (d.om x) (hc φ hφ)`. Rewrite `h` using `[map_smul]`. Rewrite using `[← h]`. Simplify using `only [Module.End.mul_apply]`. Rewrite using `[← Module.End.mul_apply (d.om x) (d.om x⁻¹), ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem exists_scalar_k (g : UA σ d.A.J) (x : d.G) :
     ∃ c : ℂ, ∀ φ ∈ schA F d.κ, (d.S g * d.om x * d.S g⁻¹) φ = c • d.om x φ := by
   obtain ⟨c, hc⟩ := GlobalTheory.WeilSchUnique.scalar_of_commute d.B.ψ (_root_.PositivityTheory.SiegelWeilFormula.tweyl.std_k d) (d.om x⁻¹ * d.S g * d.om x * d.S g⁻¹)

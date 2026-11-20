@@ -22,14 +22,23 @@ def LocalDualAgreement : Prop :=
       δ p = (D.s.atP p).ιF (((D.host.g 0 : ℕ) : D.host.F) * ((D.host.g 1 : ℕ) : D.host.F) /
         ((D.host.g i : ℕ) : D.host.F))
 
+/- English proof (translation)
+Introduce `D hT` and use `by obtain ⟨δ, M, hA, hpin⟩ := Formalism.L2.SG.Pf.LocCP.locBody_of D hT h1 h2 Formalism.L2.SG.Pf.LocCP.locPsiContC h4 exact ⟨δ, M, hA, fun p i hi => hpin p i hi⟩`.
+-/
 theorem locCTied_of (h1 : Formalism.L2.SG.Pf.LocCP.LocDualC) (h2 : Formalism.L2.SG.Pf.LocCP.LocUnramC)
     (h4 : Formalism.L2.SG.Pf.LocCP.LocHaarC) : LocalDualAgreement := fun D hT => by
   obtain ⟨δ, M, hA, hpin⟩ := Formalism.L2.SG.Pf.LocCP.locBody_of D hT h1 h2 Formalism.L2.SG.Pf.LocCP.locPsiContC h4
   exact ⟨δ, M, hA, fun p i hi => hpin p i hi⟩
 
+/- English proof (translation)
+The claim follows from `locCTied_of h1 Formalism.L2.SG.Pf.LocUnramP.locUnramC h4`.
+-/
 theorem locCTied_of' (h1 : Formalism.L2.SG.Pf.LocCP.LocDualC) (h4 : Formalism.L2.SG.Pf.LocCP.LocHaarC) : LocalDualAgreement :=
   locCTied_of h1 Formalism.L2.SG.Pf.LocUnramP.locUnramC h4
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.Pf.LocCP.locDualC_of hG Formalism.L2.SG.Pf.LocUnramP.locUnramC hP`.
+-/
 theorem locDualC_of' (hG : Formalism.L2.SG.Pf.LocCP.LocDualGenC) (hP : Formalism.L2.SG.Pf.LocCP.PinHostC) :
     Formalism.L2.SG.Pf.LocCP.LocDualC :=
   Formalism.L2.SG.Pf.LocCP.locDualC_of hG Formalism.L2.SG.Pf.LocUnramP.locUnramC hP
@@ -40,6 +49,13 @@ namespace Formalism.L2.SG.Pf
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D X hK hT`. Establish `hRS : RowStepsC` using `rowStepsC_of (fun D X hK u =>`. Set `⟨a2, a3, a4, a5⟩` to `hR D X hK u`. Use the proof step `⟨latSub X u, latRow_of X u a2, a3, a4, classFin_of X u hK a5, gamIsom_of X (inclInj_holds X) u⟩)`. Take `⟨TR, hTR⟩` from `h1 D X hK`.
+
+Establish `h2 : ∀ u : D.what₂.Word, ∃ what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V), IsRowReps D (X.Fu u) what₂ ∧ (∀ Λ ∈ what₂, Formalism.L2.SG.Saturated.IsSplitRow D (X.Fu u) Λ) ∧ ∃ cs : ColSys X u what₂, ColReps hK cs`. Introduce `u`. Take `⟨a0, a1, a2, a3, a4, a5, a6⟩` from `hRS D X hK u`. Conclude with `rowsCols_of X u hK a0 a1 a2 a3 a4 a5 a6`. Use `choose what₂ hrows hsplit cs hcs using h2`.
+
+Use `choose Dt hDt using fun u => repsExist X u`. Use `choose FN hFN using fundNC_holds D X hK`. Take `⟨δ, M, hag, hpin⟩` from `hL D hT`. Conclude with `⟨⟨hK, TR, hTR, what₂, hrows, hsplit, cs, hcs, Dt, hDt, FN, hFN, δ, M, hag, hpin⟩⟩`.
+-/
 theorem fullExists_tied (h1 : TRExistsC) (hR : LatticeRowBijectionClassFinite) (hL : FullLocalDualAgreement.LocalDualAgreement) :
     ∀ (D : D7) (X : HidaSetting D), X.LevelSubgroupCharacter → Formalism.L2.SG.Pf.LocCP.LocTied D → Nonempty (Full X) := by
   intro D X hK hT

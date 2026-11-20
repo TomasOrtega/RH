@@ -11,11 +11,29 @@ section LocRegAux
 
 variable {L : Type} [Field L] [Algebra ℂ L]
 
+/- English proof (translation)
+Introduce `b hb` and use `⟨1, by simp, by simpa using hb⟩`.
+-/
 private lemma le_loc (B : Subalgebra ℂ L) (e : B →ₐ[ℂ] ℂ) : B ≤ loc B e := fun b hb =>
   ⟨1, by simp, by simpa using hb⟩
 
 end LocRegAux
 
+/- English proof (translation)
+Rewrite using `[isWeaklyRegular_iff_Fin]`. Introduce `i`. Establish `hlen : i.val < d` using `by simpa using i.isLt`. Establish `hI : (Ideal.ofList ((List.ofFn (MvPolynomial.X : Fin d → MvPolynomial (Fin d) k)).take i) • (⊤ : Submodule (MvPolynomial (Fin d) k) (MvPolynomial (Fin d) k))) = Ideal.span (MvPolynomial.X '' {j : Fin d | j.val < i.val})`. Rewrite using `[smul_eq_mul, Ideal.mul_top, Ideal.ofList]`.
+
+Use `congr 1`. Use extensionality with `p`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image, List.mem_take_iff_getElem, List.getElem_ofFn, List.length_ofFn]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, hj, rfl⟩`.
+
+Conclude with `⟨⟨j, by omega⟩, by simp; omega, rfl⟩`. Introduce and unpack `⟨j, hj, rfl⟩`. Conclude with `⟨j.val, by omega, rfl⟩`. Establish `hget : (List.ofFn (MvPolynomial.X : Fin d → MvPolynomial (Fin d) k))[i] = MvPolynomial.X ⟨i.val, hlen⟩`. Rewrite using `[Fin.getElem_fin, List.getElem_ofFn]`.
+
+Rewrite using `[hI, hget]`. Use `isSMulRegular_iff_right_eq_zero_of_smul.mpr ?_` and prove the remaining obligations. Introduce `q hq`. Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `H p`.
+
+Rewrite `hq` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Rewrite `hq` using `[smul_eq_mul, MvPolynomial.mem_ideal_span_X_image]`. Rewrite using `[MvPolynomial.mem_ideal_span_X_image]`. Introduce `m hm`.
+
+Establish `hm' : m + Finsupp.single (⟨i.val, hlen⟩ : Fin d) 1 ∈ (MvPolynomial.X (⟨i.val, hlen⟩ : Fin d) * p).support`. Rewrite using `[MvPolynomial.mem_support_iff, mul_comm, MvPolynomial.coeff_mul_X]`. Conclude with `MvPolynomial.mem_support_iff.mp hm`. Take `⟨j, hj, hne⟩` from `hq _ hm'`. Use `⟨j, hj, ?_⟩` and prove the remaining obligations.
+
+Establish `hji : j ≠ ⟨i.val, hlen⟩`. Introduce `h`. Substitute `h` using the available equality. Simplify using `at hj`. Simplify `hne` using `[Finsupp.single_apply, Ne.symm hji]`.
+-/
 private theorem isWeaklyRegular_mvPolynomial_X (k : Type) [Field k] (d : ℕ) :
     IsWeaklyRegular (MvPolynomial (Fin d) k)
       (List.ofFn (MvPolynomial.X : Fin d → MvPolynomial (Fin d) k)) := by
@@ -60,6 +78,17 @@ private theorem isWeaklyRegular_mvPolynomial_X (k : Type) [Field k] (d : ℕ) :
       simp at hj
     simpa [Finsupp.single_apply, Ne.symm hji] using hne
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨j, hj, rfl⟩` from `hy`.
+
+Use `⟨Pi.single j 1, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hj⟩) h`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨c1, rfl⟩` from `hy`.
+
+Take `⟨c2, rfl⟩` from `hz`. Conclude with `⟨c1 + c2, by simp [mul_add, Finset.sum_add_distrib]⟩`. Consider the case `smul r y _ hy`. Take `⟨c, rfl⟩` from `hy`. Use `⟨fun j => r * c j, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Introduce and unpack `⟨c, rfl⟩`. Conclude with `Ideal.sum_mem _ fun j hj => Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨j, (Finset.mem_filter.mp hj).2, rfl⟩)`.
+-/
 private theorem mem_span_image_lt_iff_exists_sum {S : Type} [CommRing S] {d : ℕ} (τ : Fin d → S) (k : Fin d)
     (x : S) : x ∈ Ideal.span (τ '' {j | j < k}) ↔
       ∃ c : Fin d → S, x = ∑ j ∈ Finset.univ.filter (· < k), τ j * c j := by
@@ -89,6 +118,15 @@ private theorem mem_span_image_lt_iff_exists_sum {S : Type} [CommRing S] {d : �
     exact Ideal.sum_mem _ fun j hj =>
       Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨j, (Finset.mem_filter.mp hj).2, rfl⟩)
 
+/- English proof (translation)
+Establish `h1` using `(isWeaklyRegular_iff_Fin _ _).mp h ⟨k.val, by simp⟩`. Establish `hI : (Ideal.ofList ((List.ofFn τ).take k.val) • (⊤ : Submodule S S)) = Ideal.span (τ '' {j | j < k})`. Rewrite using `[smul_eq_mul, Ideal.mul_top, Ideal.ofList]`. Use `congr 1`. Use extensionality with `p`.
+
+Simplify using `only [Set.mem_setOf_eq, Set.mem_image, List.mem_take_iff_getElem, List.getElem_ofFn, List.length_ofFn]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, hj, rfl⟩`. Conclude with `⟨⟨j, by omega⟩, Fin.mk_lt_of_lt_val (by omega), rfl⟩`. Introduce and unpack `⟨j, hj, rfl⟩`.
+
+Conclude with `⟨j.val, by rw [Fin.lt_def] at hj; omega, rfl⟩`. Establish `hget : (List.ofFn τ)[(⟨k.val, by simp⟩ : Fin (List.ofFn τ).length)] = τ k`. Rewrite using `[Fin.getElem_fin, List.getElem_ofFn]`. Rewrite `h1` using `[hI, hget]`. Establish `hz` using `h1 (a₁ := Submodule.Quotient.mk a) (a₂ := 0) (by beta_reduce`.
+
+Rewrite using `[smul_zero, ← Submodule.Quotient.mk_smul, smul_eq_mul, Submodule.Quotient.mk_eq_zero]`. Conclude with `ha)`. Conclude with `(Submodule.Quotient.mk_eq_zero _).mp hz`.
+-/
 private theorem mem_span_image_lt_of_mul_mem_of_weaklyRegular {S : Type} [CommRing S] {d : ℕ} (τ : Fin d → S)
     (h : IsWeaklyRegular S (List.ofFn τ)) (k : Fin d) (a : S)
     (ha : τ k * a ∈ Ideal.span (τ '' {j | j < k})) : a ∈ Ideal.span (τ '' {j | j < k}) := by
@@ -114,6 +152,11 @@ private theorem mem_span_image_lt_of_mul_mem_of_weaklyRegular {S : Type} [CommRi
     exact ha)
   exact (Submodule.Quotient.mk_eq_zero _).mp hz
 
+/- English proof (translation)
+Use `haveI : Module.Flat R0 (integralClosure R0 L) := Module.Flat.of_projective`. Establish `r1` using `r0.of_flat (S := integralClosure R0 L)`. Rewrite `r1` using `[List.map_ofFn]`. Set `τ : Fin d → integralClosure R0 L` to `fun j => algebraMap R0 (integralClosure R0 L) (τ0 j)`. Establish `hτ : ∀ j, (τ j : L) = algebraMap R0 L (τ0 j)` using `fun j => rfl`.
+
+Establish `key` using `mem_span_image_lt_of_mul_mem_of_weaklyRegular τ r1 i ⟨a, ha⟩ ((mem_span_image_lt_iff_exists_sum τ i _).mpr ⟨fun j => ⟨c j, hc j⟩, Subtype.ext (by simpa [hτ] using h)⟩)`. Take `⟨b, hb⟩` from `(mem_span_image_lt_iff_exists_sum τ i _).mp key`. Use `⟨fun j => (b j : L), fun j => (b j).2, ?_⟩` and prove the remaining obligations. Use `congrArg (fun y : integralClosure R0 L => (y : L)) hb` as an intermediate fact. Simplify `this` using `[hτ]`.
+-/
 private theorem exists_integral_coeffs_of_algebraMap_mul_eq_sum {R0 L : Type} [CommRing R0] [Field L] [Algebra R0 L] {d : ℕ}
     (τ0 : Fin d → R0) (r0 : IsWeaklyRegular R0 (List.ofFn τ0))
     (hp : Module.Projective R0 (integralClosure R0 L)) (i : Fin d) (a : L)
@@ -134,6 +177,15 @@ private theorem exists_integral_coeffs_of_algebraMap_mul_eq_sum {R0 L : Type} [C
   have := congrArg (fun y : integralClosure R0 L => (y : L)) hb
   simpa [hτ] using this
 
+/- English proof (translation)
+Take `⟨e0, he0⟩` from `GlobalTheory.T.standardAffineOpen_ring_polynomialEquiv k F d (xv x) hc.pd 0`. Set `τ0 : Fin d → rA k (xv x) {0}` to `fun j => e0 (MvPolynomial.X j)`. Establish `r0 : IsWeaklyRegular (rA k (xv x) {0}) (List.ofFn τ0)`. Establish `hl : List.ofFn τ0 = (List.ofFn MvPolynomial.X).map e0`. Rewrite using `[List.map_ofFn]`.
+
+Both sides reduce to the same expression. Rewrite using `[hl]`. Use `(e0.toAddEquiv.isWeaklyRegular_congr ?_).mp (isWeaklyRegular_mvPolynomial_X k d)` and prove the remaining obligations. Use `List.forall₂_map_right_iff.mpr (List.forall₂_same.mpr fun r _ y => ?_)` and prove the remaining obligations. Use `show e0 (r * y) = e0 r * e0 y`.
+
+Conclude with `map_mul e0 r y`. Establish `hτ : ∀ j, algebraMap (rA k (xv x) {0}) L (τ0 j) = tt L x j`. Introduce `j`. Use `show algebraMap F L ((e0 (MvPolynomial.X j) : F)) = _`. Rewrite using `[he0 j, Fin.succAbove_zero]`.
+
+Both sides reduce to the same expression. Take `⟨b, hb, hab⟩` from `exists_integral_coeffs_of_algebraMap_mul_eq_sum τ0 r0 (GlobalTheory.T.integralClosure_projective_over_standardOpenRing k F L d (xv x) hc 0) i a ha c hc' (by simpa [hτ] using h)`. Conclude with `⟨b, hb, by simpa [hτ] using hab⟩`.
+-/
 private theorem exists_rB_coeffs_of_tt_mul_eq_sum (k : Type) [Field k] [CharZero k] (F L : Type) [Field F] [Field L]
     [Algebra k F] [Algebra k L] [Algebra F L] [IsScalarTower k F L] (d : ℕ) (x : Fin (d + 1) → Fˣ)
     (hc : IsFinCover k L (xv x)) (i : Fin d) (a : L) (ha : a ∈ rB k L (xv x) {0})
@@ -161,6 +213,25 @@ private theorem exists_rB_coeffs_of_tt_mul_eq_sum (k : Type) [Field k] [CharZero
     (by simpa [hτ] using h)
   exact ⟨b, hb, by simpa [hτ] using hab⟩
 
+/- English proof (translation)
+Establish `ha' : ∃ u : B, e u ≠ 0 ∧ (u : L) * a ∈ B` using `ha`. Establish `hc' : ∀ j, ∃ u : B, e u ≠ 0 ∧ (u : L) * c j ∈ B` using `hc`. Take `⟨u0, hu0, hau⟩` from `ha'`. Use `choose u hu hcu using hc'`. Use `set s : B := u0 * ∏ j, u j with hs`.
+
+Establish `hes : e s ≠ 0`. Rewrite using `[hs, map_mul, map_prod]`. Conclude with `mul_ne_zero hu0 (Finset.prod_ne_zero_iff.mpr fun j _ => hu j)`. Establish `hs0 : (s : L) ≠ 0`. Introduce `h0`.
+
+Apply `hes` to reduce the goal to its premises. Establish `: s = 0` using `Subtype.ext h0`. Rewrite using `[this, map_zero]`. Establish `hsa : (s : L) * a ∈ B`. Establish `: (s : L) * a = ((∏ j, u j : B) : L) * ((u0 : L) * a)`.
+
+Rewrite using `[hs]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `B.mul_mem (∏ j, u j).2 hau`.
+
+Establish `hsc : ∀ j, (s : L) * c j ∈ B`. Introduce `j`. Establish `: (s : L) * c j = ((u0 * ∏ l ∈ Finset.univ.erase j, u l : B) : L) * ((u j : L) * c j)`. Rewrite using `[hs, ← Finset.mul_prod_erase Finset.univ u (Finset.mem_univ j)]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `B.mul_mem (u0 * ∏ l ∈ Finset.univ.erase j, u l).2 (hcu j)`. Establish `hsh : t i * ((s : L) * a) = ∑ j ∈ Finset.univ.filter (· < i), t j * ((s : L) * c j)`. Use `congrArg (fun y => (s : L) * y) h` as an intermediate fact.
+
+Simplify using `only [Finset.mul_sum] at this`. Rewrite using `[show t i * ((s : L) * a) = (s : L) * (t i * a) by ring, this]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Take `⟨b, hb, hab⟩` from `hB _ hsa _ hsc hsh`. Use `⟨fun j => b j * (s : L)⁻¹, fun j => ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show ∃ u : B, e u ≠ 0 ∧ (u : L) * (b j * (s : L)⁻¹) ∈ B`. Use `⟨s, hes, ?_⟩` and prove the remaining obligations. Rewrite using `[show (s : L) * (b j * (s : L)⁻¹) = b j by field_simp]`. Conclude with `hb j`. Establish `: a = (s : L)⁻¹ * ((s : L) * a)` using `by field_simp`.
+
+Rewrite using `[this, hab, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+-/
 private theorem exists_loc_coeffs_of_mul_eq_sum {L : Type} [Field L] [Algebra ℂ L] (B : Subalgebra ℂ L)
     (e : B →ₐ[ℂ] ℂ) {d : ℕ} (t : Fin d → L) (i : Fin d)
     (hB : ∀ a : L, a ∈ B → ∀ c : Fin d → L, (∀ j, c j ∈ B) →
@@ -213,6 +284,29 @@ private theorem exists_loc_coeffs_of_mul_eq_sum {L : Type} [Field L] [Algebra �
     rw [this, hab, Finset.mul_sum]
     exact Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Introduce `hLF _ _ F L _ _ _ _ _ _ d x hcov hred e`. Establish `hM : ∀ m : DR ℂ L, m ∈ omB ℂ L (loc (rB ℂ L (xv x) {0}) e.1) d ↔ ∃ a ∈ loc (rB ℂ L (xv x) {0}) e.1, m = a • dtS L x Finset.univ`. Introduce `m`. Establish `hp : Finset.powersetCard d (Finset.univ : Finset (Fin d)) = {Finset.univ}`. Simplify using `using Finset.powersetCard_self (Finset.univ : Finset (Fin d))`.
+
+Rewrite using `[hLF F L d x hcov hred e d m]`. Simplify using `only [hp, Finset.sum_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, rfl⟩`. Conclude with `⟨c Finset.univ, hc _, rfl⟩`.
+
+Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨fun _ => a, fun _ => ha, rfl⟩`. Introduce `k m hm hkm`. Establish `hadd : ∀ y1 y2 : DR ℂ L, (∃ c : Fin d → L, (∀ j, c j ∈ loc (rB ℂ L (xv x) {0}) e.1) ∧ y1 = (∑ j ∈ Finset.univ.filter (· < k), tt L x j * c j) • dtS L x Finset.univ) → (∃ c : Fin d → L, (∀ j, c j ∈ loc (rB ℂ L (xv x) {0}) e.1) ∧ y2 = (∑ j ∈ Finset.univ.filter (· < k), tt L x j * c …`. Introduce and unpack `y1 y2 ⟨c1, hc1, rfl⟩ ⟨c2, hc2, rfl⟩`.
+
+Conclude with `⟨c1 + c2, fun j => Subalgebra.add_mem _ (hc1 j) (hc2 j), by simp [mul_add, Finset.sum_add_distrib, add_smul]⟩`. Establish `hsm : ∀ w ∈ sm (Algebra.lsmul ℂ ℂ (DR ℂ L)) (omB ℂ L (loc (rB ℂ L (xv x) {0}) e.1) d) (tt L x '' {j | j < k}), ∃ c : Fin d → L, (∀ j, c j ∈ loc (rB ℂ L (xv x) {0}) e.1) ∧ w = (∑ j ∈ Finset.univ.filter (· < k), tt L x j * c j) • dtS L x Finset.univ`. Introduce `w hw`. Unfold `sm at hw`. Use `Submodule.iSup_induction (motive := fun y => ∃ c : Fin d → L, (∀ j, c j ∈ loc (rB ℂ L (xv x) {0}) e.1) ∧ y = (∑ j ∈ Finset.univ.filter (· < k), tt L x j * c j) • dtS L x Finset.univ) _ hw (fun r y hy => ?_) ⟨0, fun _ => Subalgebra.zero_mem _, by simp⟩ hadd` and prove the remaining obligations.
+
+Use `Submodule.iSup_induction (motive := fun y => ∃ c : Fin d → L, (∀ j, c j ∈ loc (rB ℂ L (xv x) {0}) e.1) ∧ y = (∑ j ∈ Finset.univ.filter (· < k), tt L x j * c j) • dtS L x Finset.univ) _ hy (fun hr z hz => ?_) ⟨0, fun _ => Subalgebra.zero_mem _, by simp⟩ hadd` and prove the remaining obligations. Take `⟨j0, hj0, rfl⟩` from `hr`. Take `⟨m', hm', rfl⟩` from `hz`. Take `⟨a, ha, rfl⟩` from `(hM m').mp hm'`. Use `⟨Pi.single j0 a, fun j => ?_, ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hj : j = j0`. Substitute `hj` using the available equality. Simplify using `using ha`. Simplify using `only [Pi.single_apply, hj, if_false]`. Conclude with `Subalgebra.zero_mem _`.
+
+Rewrite using `[Finset.sum_eq_single j0]`. Simplify using `only [Pi.single_eq_same]`. Conclude with `smul_smul _ _ _`. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hj0⟩) h`. Take `⟨a, ha, rfl⟩` from `(hM m).mp hm`. Take `⟨c, hc, hcw⟩` from `hsm _ hkm`. Distinguish the cases in `hω : dtS L x Finset.univ = 0`.
+
+Rewrite using `[hω, smul_zero]`. Conclude with `Submodule.zero_mem _`. Establish `heq : tt L x k * a = ∑ j ∈ Finset.univ.filter (· < k), tt L x j * c j`. Establish `h2 : (tt L x k * a) • dtS L x Finset.univ = (∑ j ∈ Finset.univ.filter (· < k), tt L x j * c j) • dtS L x Finset.univ`. Rewrite using `[← smul_smul]`.
+
+Conclude with `hcw`. Conclude with `smul_left_injective L hω h2`. Take `⟨b, hb, hab⟩` from `exists_loc_coeffs_of_mul_eq_sum _ _ (tt L x) k (fun a' ha' c' hc' h' => exists_rB_coeffs_of_tt_mul_eq_sum ℂ F L d x hcov k a' ha' c' hc' h') a ha c hc heq`. Rewrite using `[hab, Finset.sum_smul]`. Use `Submodule.sum_mem _ fun j hj => ?_` and prove the remaining obligations.
+
+Unfold `sm`. Use `Submodule.mem_iSup_of_mem (tt L x j) (Submodule.mem_iSup_of_mem ⟨j, (Finset.mem_filter.mp hj).2, rfl⟩ ?_)` and prove the remaining obligations. Conclude with `⟨b j • dtS L x Finset.univ, (hM _).mpr ⟨b j, hb j, rfl⟩, smul_smul _ _ _⟩`.
+-/
 theorem UpperTheory.Gal.productCup_of_system.locReg_of :
     LocForms → DtBasic → ValBasic → LocReg := by
   intro hLF _ _ F L _ _ _ _ _ _ d x hcov hred e

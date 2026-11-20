@@ -19,6 +19,11 @@ def InvLine (ch : Choice R) : Prop :=
       IsTermVol t ch.S.toGridChoice (ch.Phi a) β M → ∀ τ, ch.S.IsExpansion t (ch.Phi a) β τ → ∀ d ∈ τ.support, ∀ y,
         ∃ l ∈ invFun (omRep P), ∀ Q, defPer t ch.S.toGridChoice M Q d (colFn ch a) (formTop ch t y) = l (e Q)
 
+/- English proof (translation)
+Take `⟨ι, _, _, S, P, hP, e, he⟩` from `h`. Use `haveI : Module.Free ℂ (invFun (omRep P)) := Module.Free.of_divisionRing ℂ _`. Take `⟨L0, -, hL0⟩` from `finrank_eq_one_iff'.1 (hL ι S P hP)`. Use `⟨fun Q => L0.1 (e Q), fun t a hS β hβ M hM τ hτ d hd y => ?_⟩` and prove the remaining obligations. Take `⟨l, hl, hle⟩` from `he t a hS β hβ M hM τ hτ d hd y`.
+
+Take `⟨c, hc⟩` from `hL0 ⟨l, hl⟩`. Use `⟨c, fun Q => ?_⟩` and prove the remaining obligations. Establish `hc' : c • L0.1 = l` using `congrArg Subtype.val hc`. Rewrite using `[hle Q, ← hc']`. Both sides reduce to the same expression.
+-/
 theorem periodsOnLine_of_invLine (hL : OneLine) (ch : Choice R) (h : InvLine ch) : PeriodsOnLine ch := by
   obtain ⟨ι, _, _, S, P, hP, e, he⟩ := h
   haveI : Module.Free ℂ (invFun (omRep P)) := Module.Free.of_divisionRing ℂ _

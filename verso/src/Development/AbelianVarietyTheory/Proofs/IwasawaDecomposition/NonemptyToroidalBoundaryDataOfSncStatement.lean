@@ -7,5 +7,8 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ShFam.nonempty_toroidal_boundary_data | exact GlobalTheory.ShFam.nonempty_toroidal_boundary_data | (intros; apply GlobalTheory.ShFam.nonempty_toroidal_boundary_data <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.nonempty_toroidal_boundary_data_of_snc : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) [SmoothOfRelativeDimension Dw.dim (genStr Z)], ReciprocityTheory.AnForm.R.FinalTheorems.Snc (genBdIdeal Z) → Nonempty (OddPrimesWithRootsOfUnity Z) := by
   first | exact @GlobalTheory.ShFam.nonempty_toroidal_boundary_data | exact GlobalTheory.ShFam.nonempty_toroidal_boundary_data | (intros; apply GlobalTheory.ShFam.nonempty_toroidal_boundary_data <;> assumption)

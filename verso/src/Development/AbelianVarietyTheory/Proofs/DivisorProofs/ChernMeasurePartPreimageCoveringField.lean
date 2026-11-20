@@ -16,6 +16,13 @@ noncomputable section
 
 namespace GlobalTheory.CoverChernField
 
+/- English proof (translation)
+Introduce `k _ X Y _ _ p q σ D hp hq π hπ B φ hφ ε U hU n hfib hchart hlift`. Use `CxPts.t2Space_cxPts_of_isProjOver σ hq` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver (σ := σ) hp` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver (σ := σ) hq` as an intermediate fact. Establish `hφ'` using `hφ.pull π hπ`.
+
+Unfold `Weight.chernPart`. Use `GlobalTheory.CoverChern.glueMeas_preimage_of_cover_on (fun c c' => c.holo_trans c') (fun c c' y hy hy' => ?_) (fun c c' => c.holo_trans c') (fun c c' y hy hy' => ?_) (PtsOver.continuous_map π hπ _) hU hfib (fun z hz => ?_) hU.measurableSet subset_rfl` and prove the remaining obligations. Rewrite using `[c.chernDens_trans c' hφ hy hy', mul_left_comm, ENNReal.ofReal_mul (sq_nonneg _)]`. Rewrite using `[c.chernDens_trans c' hφ' hy hy', mul_left_comm, ENNReal.ofReal_mul (sq_nonneg _)]`. Take `⟨c, hc⟩` from `hchart _ hz`.
+
+Take `⟨c', hz', hc'⟩` from `hlift z hz c hc`. Conclude with `⟨c, c', hz', hc, fun w hw _ => ⟨(hc' w hw).2, by`. Rewrite using `[GlobalTheory.PullChartDens.chernDens_pull_of_chart π hπ φ hφ c c' hc' w hw]⟩⟩`.
+-/
 theorem chernPart_preimage_of_cover : ∀ (k : Type) [Field k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ), IsProjOver p → IsProjOver q → ∀ (π : Y ⟶ X) (hπ : π ≫ p = q) (B : LB X) (φ : Weight p σ B), φ.IsCInf → ∀ (ε : ℤˣ) (U : Set (CxPts p σ)), IsOpen U → ∀ n : ℕ, (∀ y ∈ U, (PtsOver.map π hπ (spMap σ) ⁻¹' {y}).encard = (n : ℕ∞)) → (∀ y ∈ U, ∃ c : AlgChart p σ D, y ∈ c.e.source) → (∀ z : CxPts q σ, PtsOver.map π hπ (spMap σ) z ∈ U → ∀ c : AlgChart p σ D, PtsOver.map π hπ (spMap σ) z ∈ c.e.source → ∃ c' : AlgChart q σ D, z ∈ c'.e.source ∧ ∀ w ∈ c'.e.source, PtsOver.map π hπ (spMap σ) w ∈ c.e.source ∧ c'.e w = c.e (PtsOver.map π hπ (spMap σ) w)) → (φ.pull π hπ).chernPart D ε (PtsOver.map π hπ (spMap σ) ⁻¹' U) = (n : ENNReal) * φ.chernPart D ε U := by
   intro k _ X Y _ _ p q σ D hp hq π hπ B φ hφ ε U hU n hfib hchart hlift
   have := CxPts.t2Space_cxPts_of_isProjOver σ hq

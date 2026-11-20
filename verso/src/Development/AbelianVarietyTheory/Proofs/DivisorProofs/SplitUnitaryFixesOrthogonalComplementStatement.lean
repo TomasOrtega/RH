@@ -18,6 +18,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open scoped TensorProduct
 open Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ConjFix.conj_fix | exact GlobalTheory.ConjFix.conj_fix | (intros; apply GlobalTheory.ConjFix.conj_fix <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.split_unitary_fixes_orthogonal_complement : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {σ : E →ₐ[F] E}
     {n : ℕ} {J : Matrix (Fin n) (Fin n) E}, IsHermND σ J → ∀ {v : HeightOneSpectrum (𝓞 F)} (τ : E →ₐ[F] Fv F v)
     (x : GLoc σ J v) (W : Submodule (Fv F v) (Fin n → Fv F v)), (∀ z, ((splitHom σ J τ x).1 - 1) *ᵥ z ∈ W) →

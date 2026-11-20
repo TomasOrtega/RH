@@ -18,6 +18,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Hk3
 
+/- English proof (translation)
+Use `choose ca hca using ha`. Use `⟨Finsupp.linearCombination ℂ ca cA, fun s hs => ?_⟩` and prove the remaining obligations. Establish `h : Finsupp.linearCombination ℂ (fun x => r x s) (Finsupp.linearCombination ℂ ca cA) = Finsupp.linearCombination ℂ (fun p => a p s) cA`. Rewrite using `[LinearMap.map_finsupp_linearCombination]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `p`. Simplify using `only [Function.comp, hca p s hs, Finsupp.linearCombination_apply]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem comb_of_scalar {X A M : Type} [AddCommGroup M] [Module ℂ M] (vac : M → Prop) (r : X → Module.End ℂ M)
     (a : A → Module.End ℂ M) (ha : ∀ p, ∃ c : X →₀ ℂ, ∀ s, vac s → a p s = c.sum fun x z => z • r x s) (cA : A →₀ ℂ) :
     ∃ C : X →₀ ℂ, ∀ s, vac s → (cA.sum fun p z => z • a p s) = C.sum fun x z => z • r x s := by
@@ -34,6 +39,13 @@ theorem comb_of_scalar {X A M : Type} [AddCommGroup M] [Module ℂ M] (vac : M �
     _ = _ := h.symm
     _ = _ := Finsupp.linearCombination_apply ℂ _
 
+/- English proof (translation)
+Take `⟨CA, hA⟩` from `comb_of_scalar vac r a ha cA`. Take `⟨CB, hB⟩` from `comb_of_scalar vac r b hb cB`. Establish `hsub : ∀ s, ((CA - CB).sum fun x z => z • r x s) = (CA.sum fun x z => z • r x s) - CB.sum fun x z => z • r x s`. Introduce `s`. Establish `e : ∀ C : X →₀ ℂ, (C.sum fun x z => z • r x s) = Finsupp.linearCombination ℂ (fun x => r x s) C` using `fun C => (Finsupp.linearCombination_apply ℂ C).symm`.
+
+Rewrite using `[e, e, e, map_sub]`. Establish `h0' : ((CA - CB).sum fun x z => z • r x s0) = 0`. Rewrite using `[hsub, ← hA _ hv, ← hB _ hv, heq, sub_self]`. Introduce `s hs`. Establish `h` using `hmodel (CA - CB) s0 h0 hv h0' s hs`.
+
+Rewrite `h` using `[hsub, sub_eq_zero, ← hA s hs, ← hB s hs]`. Conclude with `h`.
+-/
 theorem comb_transfer {X A B M : Type} [AddCommGroup M] [Module ℂ M] (vac : M → Prop) (r : X → Module.End ℂ M)
     (a : A → Module.End ℂ M) (b : B → Module.End ℂ M)
     (hmodel : ∀ c : X →₀ ℂ, ∀ s, s ≠ 0 → vac s → (c.sum fun x z => z • r x s) = 0 →
@@ -58,6 +70,41 @@ theorem comb_transfer {X A B M : Type} [AddCommGroup M] [Module ℂ M] (vac : M 
   rw [hsub, sub_eq_zero, ← hA s hs, ← hB s hs] at h
   exact h
 
+/- English proof (translation)
+Establish `scal` using `GlobalTheory.T.unramifiedLocalPair_acts_on_vacua_by_heisenberg_comb L ϖ σ q δ n n' JS JT ψ M ρ ω hp`. Use `set M0 := Submodule.span ℂ (Set.range fun x => ρ x s0) with hM0`. Establish `hs0 : s0 ∈ M0`. Use `Submodule.subset_span ⟨0, ?_⟩` and prove the remaining obligations. Simplify using `[hp.rho_zero]`.
+
+Establish `hρ : ∀ x, ∀ m ∈ M0, ρ x m ∈ M0`. Introduce `x m hm`. Establish `hle : M0 ≤ M0.comap (ρ x)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Establish `e : ρ x (ρ y s0) = (ρ x * ρ y) s0` using `rfl`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap]`. Rewrite using `[e, hp.rho_mul x y]`. Conclude with `M0.smul_mem _ (Submodule.subset_span ⟨x + y, rfl⟩)`. Conclude with `hle hm`.
+
+Establish `hω : ∀ p, ∀ m ∈ M0, ω p m ∈ M0`. Introduce and unpack `⟨g, h⟩ m hm`. Establish `hle : M0 ≤ M0.comap (ω (g, h))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Establish `e : ω (g, h) (ρ y s0) = (ω (g, h) * ρ y) s0` using `rfl`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap]`. Rewrite using `[e, hp.norm g h y]`. Use `hρ _ _ ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `scal (g, h)`.
+
+Rewrite using `[hc s0 hv]`. Conclude with `Finsupp.mem_span_range_iff_exists_finsupp.2 ⟨c, rfl⟩`. Conclude with `hle hm`. Set `ρ0 : Matrix (Fin n') (Fin n) L → Module.End ℂ M0` to `fun x => (ρ x).restrict (hρ x)`. Set `ω0 : Formalism.UG.UJ σ (JS : Matrix (Fin n) (Fin n) L) × Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L) →* Module.End ℂ M0` to `{ toFun := fun p => (ω p).restrict (hω p) map_one' := by`.
+
+Use extensionality with `m`. Simplify using the standard rewrite rules. Use the proof step `map_mul' := by`. Introduce `p p'`. Use extensionality with `m`.
+
+Simplify using `}`. Establish `ρ0_val : ∀ x (m : M0), ((ρ0 x m : M0) : M) = ρ x m` using `fun _ _ => rfl`. Establish `ω0_val : ∀ p (m : M0), ((ω0 p m : M0) : M) = ω p m` using `fun _ _ => rfl`. Set `t0 : M0` to `⟨s0, hs0⟩`. Establish `hv0 : LocVac ρ0 t0` using `fun u hu => Subtype.ext (hv u hu)`.
+
+Establish `ht0 : t0 ≠ 0` using `fun h => h0 (congrArg Subtype.val h)`. Establish `hspan : Submodule.span ℂ (Set.range fun x => ρ0 x t0) = ⊤`. Establish `e : (Set.range fun x => ρ0 x t0) = (Subtype.val ⁻¹' (Set.range fun x => ρ x s0) : Set M0)`. Use extensionality with `m`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨x, rfl⟩`. Introduce and unpack `⟨x, hx⟩`. Conclude with `⟨x, Subtype.ext hx⟩`. Rewrite using `[e]`.
+
+Conclude with `Submodule.span_span_coe_preimage`. Establish `hp0 : LocPair ϖ σ q δ JS JT ψ ρ0 ω0` using `{ unr := hp.unr odd := hp.odd intS := hp.intS intT := hp.intT hermS := hp.hermS hermT := hp.hermT delta := hp.delta psi_int := hp.psi_int psi_ne := hp.psi_ne rho_zero := by`. Use extensionality with `m`. Simplify using `[ρ0, hp.rho_zero]`. Use `rho_mul := by`.
+
+Introduce `x y`. Use extensionality with `m`. Establish `h` using `congrArg (fun T : Module.End ℂ M => T (m : M)) (hp.rho_mul x y)`. Conclude with `h`. Use `span := by`.
+
+Rewrite using `[eq_top_iff, ← hspan]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨x, t0, hv0, rfl⟩`. Use `norm := by`.
+
+Introduce `g h x`. Use extensionality with `m`. Establish `e` using `congrArg (fun T : Module.End ℂ M => T (m : M)) (hp.norm g h x)`. Conclude with `e`. Use `fix := by`.
+
+Introduce `g h hg hh s hs`. Conclude with `Subtype.ext (hp.fix g h hg hh s (fun u hu => congrArg Subtype.val (hs u hu))) }`. Take `⟨h1, h2⟩` from `hH L ϖ σ q δ n n' JS JT ψ M0 ρ0 ω0 hp0 t0 ht0 hv0 hspan`. Prove the components needed by the constructor for the conclusion. Introduce `w hw hfix`.
+
+Establish `h` using `Submodule.mem_map_of_mem (f := M0.subtype) (h1 ⟨w, hw⟩ (fun g hg => Subtype.ext (hfix g hg)))`. Rewrite `h` using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `h`. Introduce `w hw hfix`. Establish `h` using `Submodule.mem_map_of_mem (f := M0.subtype) (h2 ⟨w, hw⟩ (fun g hg => Subtype.ext (hfix g hg)))`.
+
+Rewrite `h` using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `h`.
+-/
 theorem howe_on_span (hH : HoweUnram) {L : Type} [Field L] [CharZero L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L]
     {ϖ : L} {σ : L →+* L} {q : ℕ} {δ : L} {n n' : ℕ} {JS : GL (Fin n) L} {JT : GL (Fin n') L} {ψ : AddChar L ℂ}
     {M : Type} [AddCommGroup M] [Module ℂ M] {ρ : Matrix (Fin n') (Fin n) L → Module.End ℂ M}
@@ -166,6 +213,19 @@ theorem howe_on_span (hH : HoweUnram) {L : Type} [Field L] [CharZero L] [Valued 
     rw [Submodule.map_span, ← Set.range_comp] at h
     exact h
 
+/- English proof (translation)
+Introduce `hH L _ _ _ _ ϖ σ q δ n n' JS JT ψ M _ _ ρ ω hp`. Establish `scal` using `GlobalTheory.T.unramifiedLocalPair_acts_on_vacua_by_heisenberg_comb L ϖ σ q δ n n' JS JT ψ M ρ ω hp`. Establish `model` using `GlobalTheory.T.locPair_vacuum_relation_independent L ϖ σ q δ n n' JS JT ψ M ρ ω hp`. Distinguish the cases in `hz : ∃ s0 : M, s0 ≠ 0 ∧ LocVac ρ s0`. Take `⟨s0, h0, hv⟩` from `hz`.
+
+Take `⟨hA, hB⟩` from `howe_on_span hH hp s0 h0 hv`. Use `⟨fun cT hT => ?_, fun cS hS => ?_⟩` and prove the remaining obligations. Establish `hw : (cT.sum fun b z => z • ω (1, b) s0) ∈ Submodule.span ℂ (Set.range fun x => ρ x s0)`. Take `⟨C, hC⟩` from `comb_of_scalar (LocVac ρ) ρ (fun b => ω (1, b)) (fun b => scal (1, b)) cT`. Rewrite using `[hC s0 hv]`.
+
+Conclude with `Finsupp.mem_span_range_iff_exists_finsupp.2 ⟨C, rfl⟩`. Take `⟨cS, hcS⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 (hB _ hw (hT s0 hv))`. Conclude with `⟨cS, comb_transfer (LocVac ρ) ρ (fun b => ω (1, b)) (fun a => ω (a, 1)) model (fun b => scal (1, b)) (fun a => scal (a, 1)) cT cS s0 h0 hv hcS.symm⟩`. Establish `hw : (cS.sum fun a z => z • ω (a, 1) s0) ∈ Submodule.span ℂ (Set.range fun x => ρ x s0)`. Take `⟨C, hC⟩` from `comb_of_scalar (LocVac ρ) ρ (fun a => ω (a, 1)) (fun a => scal (a, 1)) cS`.
+
+Rewrite using `[hC s0 hv]`. Conclude with `Finsupp.mem_span_range_iff_exists_finsupp.2 ⟨C, rfl⟩`. Take `⟨cT, hcT⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 (hA _ hw (hS s0 hv))`. Conclude with `⟨cT, comb_transfer (LocVac ρ) ρ (fun a => ω (a, 1)) (fun b => ω (1, b)) model (fun a => scal (a, 1)) (fun b => scal (1, b)) cS cT s0 h0 hv hcT.symm⟩`. Establish `hz' : ∀ s, LocVac ρ s → s = 0`.
+
+Introduce `s hs`. Assume the negation of the conclusion as `hne`. Conclude with `hz ⟨s, hne, hs⟩`. Use `⟨fun cT _ => ⟨0, fun s hs => ?_⟩, fun cS _ => ⟨0, fun s hs => ?_⟩⟩` and prove the remaining obligations. Simplify using `[hz' s hs, Finsupp.sum]`.
+
+Simplify using `[hz' s hs, Finsupp.sum]`.
+-/
 theorem howe_all_vacua : HoweUnram → ∀ (L : Type) [Field L] [CharZero L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q : ℕ) (δ : L) (n n' : ℕ) (JS : GL (Fin n) L) (JT : GL (Fin n') L) (ψ : AddChar L ℂ) (M : Type) [AddCommGroup M] [Module ℂ M] (ρ : Matrix (Fin n') (Fin n) L → Module.End ℂ M) (ω : Formalism.UG.UJ σ (JS : Matrix (Fin n) (Fin n) L) × Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L) →* Module.End ℂ M), LocPair ϖ σ q δ JS JT ψ ρ ω → (∀ cT : Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L) →₀ ℂ, (∀ s, LocVac ρ s → ∀ k : Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L), (k : GL (Fin n') L) ∈ Formalism.UG.GLint (Fin n') (Formalism.UG.intL L) → ω (1, k) (cT.sum fun b z => z • ω (1, b) s) = cT.sum fun b z => z • ω (1, b) s) → ∃ cS : Formalism.UG.UJ σ (JS : Matrix (Fin n) (Fin n) L) →₀ ℂ, ∀ s, LocVac ρ s → (cT.sum fun b z => z • ω (1, b) s) = cS.sum fun a z => z • ω (a, 1) s) ∧ ∀ cS : Formalism.UG.UJ σ (JS : Matrix (Fin n) (Fin n) L) →₀ ℂ, (∀ s, LocVac ρ s → ∀ k : Formalism.UG.UJ σ (JS : Matrix (Fin n) (Fin n) L), (k : GL (Fin n) L) ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L) → ω (k, 1) (cS.sum fun a z => z • ω (a, 1) s) = cS.sum fun a z => z • ω (a, 1) s) → ∃ cT : Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L) →₀ ℂ, ∀ s, LocVac ρ s → (cS.sum fun a z => z • ω (a, 1) s) = cT.sum fun b z => z • ω (1, b) s := by
   intro hH L _ _ _ _ ϖ σ q δ n n' JS JT ψ M _ _ ρ ω hp
   have scal := GlobalTheory.T.unramifiedLocalPair_acts_on_vacua_by_heisenberg_comb L ϖ σ q δ n n' JS JT ψ M ρ ω hp

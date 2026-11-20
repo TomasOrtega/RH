@@ -9,6 +9,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CayleyIrreducibility.Hi
 
 namespace Formalism.L2.SG.Pf
 
+/- English proof (translation)
+The claim follows from `ColDictValCPf.valCIrr_of ColDictValCPf.transfer_holds (ColDictValCPf.divisor_closed_holds ColDictValCPf.density_holds) ColDictValCPf.high_existence_holds ColDictValCPf.highest_weight_vector_unique ColDictValCPf.generation_holds`.
+-/
 theorem valuation_character_irreducible : ColDictPf.ValCIrr :=
   ColDictValCPf.valCIrr_of ColDictValCPf.transfer_holds
     (ColDictValCPf.divisor_closed_holds ColDictValCPf.density_holds)

@@ -8,6 +8,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 section SlopeTestRemainingChoices
 open GlobalTheory.SmGL GlobalTheory.PRep Matrix
 
+/- English proof (translation)
+Set `S : Subrepresentation ρ` to `⟨{ carrier := {v | ∀ g, L (ρ g v) = 0} add_mem' := fun {a b} ha hb g => by simp [ha g, hb g] zero_mem' := fun g => by simp smul_mem' := fun c a ha g => by simp [ha g] }, fun x a ha g => by`. Use `ha (g * x)` as an intermediate fact. Simplify using `using this⟩`. Use `haveI := hρ`. Break down `eq_bot_or_eq_top S with h | h` into its components or cases.
+
+Establish `: v ∈ S.toSubmodule` using `hv`. Rewrite `this` using `[h]`. Conclude with `this`. It suffices to derive a contradiction. Apply `hL` to reduce the goal to its premises.
+
+Use extensionality with `a`. Establish `: a ∈ S.toSubmodule` using `by rw [h]; trivial`. Simplify using `using this 1`.
+-/
 private theorem sep_of_irred {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)
     (hρ : ρ.IsIrreducible) (L : V →ₗ[ℂ] ℂ) (hL : L ≠ 0) (v : V) (hv : ∀ g, L (ρ g v) = 0) : v = 0 := by
   let S : Subrepresentation ρ :=
@@ -31,6 +38,9 @@ private theorem sep_of_irred {G V : Type} [Group G] [AddCommGroup V] [Module ℂ
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[val_diagT]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[aff, GeneralLinearGroup.scalar, Matrix.mul_apply, Fin.sum_univ_succ, mul_div_cancel₀]`.
+-/
 private theorem diag_eq (a d : kˣ) :
     diagT k (Fin 2) ![a, d] = GeneralLinearGroup.scalar (Fin 2) d * aff (a / d) 0 := by
   ext i j
@@ -38,9 +48,47 @@ private theorem diag_eq (a d : kˣ) :
   fin_cases i <;> fin_cases j <;>
     simp [aff, GeneralLinearGroup.scalar, Matrix.mul_apply, Fin.sum_univ_succ, mul_div_cancel₀]
 
+/- English proof (translation)
+The claim follows from `(continuous_leviEmb k (points (Fin 2))).comp (continuous_leviTorus k (Fin 2))`.
+-/
 private theorem cont_diag : Continuous (diagT k (Fin 2)) :=
   (continuous_leviEmb k (points (Fin 2))).comp (continuous_leviTorus k (Fin 2))
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨v₀, hv₀⟩ : ∃ v, L v ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hL (LinearMap.ext hc)`. Establish `hst : ∀ a d : kˣ, σ.ρ (diagT k (Fin 2) ![a, d]) v₀ = v₀ → μ₁ a * μ₂ d = 1`.
+
+Introduce `a d had`. Use `h a d 0 v₀` as an intermediate fact. Rewrite `this` using `[← diag_eq, had]`. Use `ext`. Conclude with `(mul_eq_right₀ hv₀).1 this.symm`.
+
+Establish `hopen : IsOpen {g | σ.ρ g v₀ = v₀}` using `σ.smooth v₀`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun a : kˣ => diagT k (Fin 2) ![a, 1]` using `cont_diag.comp (continuous_pi fun i => by fin_cases i; exacts [continuous_id, continuous_const])`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset ((hopen.preimage hc).mem_nhds ?_) ?_)` and prove the remaining obligations. Apply the tactic sequence `have : (![1, 1] : Fin 2 → kˣ) = 1 := by funext i; fin_cases i <;> rfl`.
+
+Simplify using `[this]`. Introduce `a ha`. Simplify using `using hst a 1 ha`. Establish `hc : Continuous fun a : kˣ => diagT k (Fin 2) ![1, a]` using `cont_diag.comp (continuous_pi fun i => by fin_cases i; exacts [continuous_const, continuous_id])`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset ((hopen.preimage hc).mem_nhds ?_) ?_)` and prove the remaining obligations.
+
+Apply the tactic sequence `have : (![1, 1] : Fin 2 → kˣ) = 1 := by funext i; fin_cases i <;> rfl`. Simplify using `[this]`. Introduce `a ha`. Simplify using `using hst 1 a ha`. Set `τ : Representation ℂ (Levi k fun _ : Fin 2 => Unit) ℂ` to `(ofChar (torusChar fun i => ![μ₁ * absPow k (-1), μ₂] i * absPow k ((((2 : ℕ) : ℂ) - 1) / 2))).comp (leviTorus k (Fin 2)).symm.toMonoidHom`.
+
+Establish `law : ∀ (p : parab k (points (Fin 2))) (u : σ.V), L (σ.ρ p u) = (deltaHalf k (fun _ : Fin 2 => Unit) (leviProj k (points (Fin 2)) p) : ℂ) • τ (leviProj k (points (Fin 2)) p) (L u)`. Introduce `p u`. Use `set t : Fin 2 → kˣ := (leviTorus k (Fin 2)).symm (leviProj k (points (Fin 2)) p) with ht`. Establish `ht1 : ∀ i, GeneralLinearGroup.det (leviProj k (points (Fin 2)) p i) = t i` using `fun i => rfl`. Establish `ht2 : ∀ i, (t i : k) = ((p : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) i i`.
+
+Introduce `i`. Rewrite using `[← ht1]`. Simplify using the standard rewrite rules. Establish `h10 : ((p : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) 1 0 = 0` using `(mem_borel k).1 p.2 1 0 (by decide)`. Establish `hp : (p : GL (Fin 2) k) = GeneralLinearGroup.scalar (Fin 2) (t 1) * aff (t 0 / t 1) (((p : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) 0 1 / t 1)`.
+
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[aff, GeneralLinearGroup.scalar, Matrix.mul_apply, Fin.sum_univ_succ, mul_div_cancel₀, ← ht2, h10]`. Rewrite using `[hp, h]`. Use `show _ = _ • ofChar _ t (L u)`.
+
+Rewrite using `[ofChar_apply, deltaHalf_apply, torusChar_apply, Fin.prod_univ_two, Fin.prod_univ_two, ht1, ht1, modExp_fin _ (fun _ => by simp), modExp_fin _ (fun _ => by simp), smul_eq_mul, ← mul_assoc, ← Units.val_mul]`. Use `congr 2`. Establish `e1 : absPow k (-1) = (absPow k (1 / 2))⁻¹ * (absPow k (1 / 2))⁻¹`. Rewrite using `[← absPow_neg, ← absPow_add]`. Evaluate the numerical expressions.
+
+Establish `e2 : ((((2 : ℕ) : ℤ) - 1 - 2 * ((0 : Fin 2) : ℕ) : ℤ) : ℂ) / 2 = 1 / 2` using `by norm_num`. Establish `e3 : ((((2 : ℕ) : ℤ) - 1 - 2 * ((1 : Fin 2) : ℕ) : ℤ) : ℂ) / 2 = -(1 / 2)` using `by norm_num`. Establish `e4 : (((2 : ℕ) : ℂ) - 1) / 2 = 1 / 2` using `by norm_num`. Rewrite using `[e2, e3, e4, absPow_neg, e1]`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply, Matrix.cons_val_zero, Matrix.cons_val_one]`.
+
+Generalize the expression as in `absPow k (1 / 2) (t 0) = x`. Generalize the expression as in `absPow k (1 / 2) (t 1) = y`. Use `ext`. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts.
+
+Set `f : σ.V →ₗ[ℂ] IndSp (points (Fin 2)) τ` to `{ toFun := fun v => ⟨⟨fun g => L (σ.ρ g v), fun p g => by`. Use `Eq.trans ?_ (law p (σ.ρ g v))` and prove the remaining obligations. Use `show L (σ.ρ (p * g) v) = _`. Rewrite using `[map_mul, Module.End.mul_apply]⟩,`. Use `mem_smoothPart_of_nhds (Filter.mem_of_superset (IsOpen.mem_nhds (σ.smooth v) (by simp)) fun g hg => by`.
+
+Establish `hg' : σ.ρ g v = v` using `hg`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show L (σ.ρ (x * g) v) = L (σ.ρ x v)`. Rewrite using `[map_mul, Module.End.mul_apply, hg'])⟩`.
+
+Use the proof step `map_add' := fun c d => by ext g; simp`. Use the proof step `map_smul' := fun c d => by ext g; simp }`. Use `IsSubquotient.of_injective (ρ := parInd (points (Fin 2)) τ) ⟨f, fun g => ?_⟩ fun c d hcd => ?_` and prove the remaining obligations. Use `LinearMap.ext fun c => Subtype.ext (Subtype.ext (funext fun x => ?_)) show L (σ.ρ x (σ.ρ g c)) = L (σ.ρ (x * g) c)` and prove the remaining obligations. Rewrite using `[map_mul, Module.End.mul_apply]`.
+
+Use `sub_eq_zero.1 (sep_of_irred σ.ρ σ.irred L hL _ fun g => ?_)` and prove the remaining obligations. Establish `: L (σ.ρ g c) = L (σ.ρ g d)` using `congrFun (congrArg (fun φ => φ.1.1) hcd) g`. Rewrite using `[map_sub, map_sub, this, sub_self]`. Introduce `z v`. Use `sub_eq_zero.1 (sep_of_irred σ.ρ σ.irred L hL _ fun g => ?_)` and prove the remaining obligations.
+
+Establish `hc : g * GeneralLinearGroup.scalar (Fin 2) z = GeneralLinearGroup.scalar (Fin 2) z * aff (z / z) 0 * g`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[aff, GeneralLinearGroup.scalar, Matrix.mul_apply, Fin.sum_univ_succ, mul_comm]`. Rewrite using `[map_sub, map_sub, ← Module.End.mul_apply, ← map_mul, hc, map_mul, Module.End.mul_apply, h]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem finiteRing_sq_sub_mul_sq_eq_of_card (σ : SmIrr (GL (Fin 2) k)) (μ₁ μ₂ : kˣ →* ℂˣ) (L : σ.V →ₗ[ℂ] ℂ) (hL : L ≠ 0)
     (h : ∀ (a d : kˣ) (x : k) v, L (σ.ρ (GeneralLinearGroup.scalar (Fin 2) d * aff (a / d) x) v) =
       ((μ₁ a * μ₂ d : ℂˣ) : ℂ) * L v) :
@@ -142,6 +190,9 @@ private theorem finiteRing_sq_sub_mul_sq_eq_of_card (σ : SmIrr (GL (Fin 2) k)) 
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `F _ _ w σ μ₁ μ₂ L hL h`. Conclude with `finiteRing_sq_sub_mul_sq_eq_of_card σ μ₁ μ₂ L hL h`.
+-/
 theorem UpperTheory.isSubquotient_principalSeries_of_borel_functional :
     ∀ (F : Type) [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F)) (σ : SmIrr (GL (Fin 2) (w.adicCompletion F))) (μ₁ μ₂ : (w.adicCompletion F)ˣ →* ℂˣ) (L : σ.V →ₗ[ℂ] ℂ), L ≠ 0 → (∀ (a d : (w.adicCompletion F)ˣ) (x : w.adicCompletion F) v, L (σ.ρ (Matrix.GeneralLinearGroup.scalar (Fin 2) d * aff (a / d) x) v) = ((μ₁ a * μ₂ d : ℂˣ) : ℂ) * L v) → GlobalTheory.SmGL.IsSmoothChar μ₁ ∧ GlobalTheory.SmGL.IsSmoothChar μ₂ ∧ GlobalTheory.SmGL.IsSubquotient σ.ρ (Hi.PS ![μ₁ * GlobalTheory.SmGL.absPow (w.adicCompletion F) (-1), μ₂]) ∧ ∀ (z : (w.adicCompletion F)ˣ) v, σ.ρ (Matrix.GeneralLinearGroup.scalar (Fin 2) z) v = ((μ₁ z * μ₂ z : ℂˣ) : ℂ) • v := by
   intro F _ _ w σ μ₁ μ₂ L hL h

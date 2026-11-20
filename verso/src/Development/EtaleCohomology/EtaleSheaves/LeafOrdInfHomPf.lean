@@ -16,6 +16,21 @@ def LeafLocGlobInf : Prop := ∀ (k L : Type) [Field k] [Field L] [Algebra k L] 
   ∀ (x : L) (h : Polynomial k), h.eval 0 ≠ 0 → IsIntegral (Algebra.adjoin k {t}) x →
   IsIntegral (Algebra.adjoin k {t⁻¹, (Polynomial.aeval t⁻¹ h)⁻¹}) x → IsIntegral (Algebra.adjoin k {t⁻¹}) x
 
+/- English proof (translation)
+Introduce `k B _ _ _ _ _ _ g hg hf`. Take `⟨n, φ, hφ⟩` from `hO k B g hg hf`. Use `⟨n, φ, fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨h, h0, hloc⟩` from `hφ u hu`. Use `set L := FractionRing B`.
+
+Use `set T : L := algebraMap B L (g Polynomial.X)`. Establish `hinjL : Function.Injective (algebraMap B L)` using `IsFractionRing.injective B L`. Set `G : Polynomial k →ₐ[k] L` to `(IsScalarTower.toAlgHom k B L).comp g`. Establish `hG' : Function.Injective G` using `hinjL.comp hg`. Establish `hT : Transcendental k T`.
+
+Introduce `⟨p, hp0, hp⟩`. Apply `hp0` to reduce the goal to its premises. Apply `hG'` to reduce the goal to its premises. Rewrite using `[map_zero]`. Establish `: G p = Polynomial.aeval T p`.
+
+Rewrite using `[show G p = G (Polynomial.aeval Polynomial.X p) by simp, ← Polynomial.aeval_algHom_apply]; rfl`. Rewrite using `[this]`. Conclude with `hp`. Establish `hint : IsIntegral (Algebra.adjoin k {T}) (algebraMap B L (u : B))`. Take `⟨p, hpm, hp⟩` from `(RingHom.IsIntegral.of_finite hf) (u : B)`.
+
+Set `f : Polynomial k →ₐ[k] Algebra.adjoin k {T}` to `Polynomial.aeval ⟨T, Algebra.subset_adjoin rfl⟩`. Establish `hfG : ((algebraMap (Algebra.adjoin k {T}) L).comp f.toRingHom) = (algebraMap B L).comp g.toRingHom`. Establish `: (IsScalarTower.toAlgHom k (Algebra.adjoin k {T}) L).comp f = G`. Apply `Polynomial.algHom_ext` to reduce the goal to its premises. Simplify using `[f, G, T]`.
+
+Conclude with `congrArg AlgHom.toRingHom this`. Use `⟨p.map f.toRingHom, hpm.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map, hfG, ← Polynomial.hom_eval₂]`. Express the relevant statement in the definitionally equal form `algebraMap B L (Polynomial.eval₂ g.toRingHom (u : B) p) = 0`. Rewrite using `[hp, map_zero]`.
+
+Conclude with `hG k L T hT _ h h0 hint hloc`.
+-/
 theorem LeafOrdInfHom_of (hO : LeafOrdInfLocal) (hG : LeafLocGlobInf) : ∀ (k B : Type) [Field k] [IsAlgClosed k] [CommRing B] [IsDedekindDomain B]
   [Algebra k B] [Algebra.FiniteType k B] (g : Polynomial k →ₐ[k] B), Function.Injective g → g.Finite →
   ∃ (n : ℕ) (φ : Bˣ →* Multiplicative (Fin n → ℤ)), ∀ u : Bˣ, φ u = 1 →
@@ -68,6 +83,9 @@ def lgiDen {k L : Type} [Field k] [Field L] [Algebra k L] (R : Subalgebra k L) (
     rw [this]; exact R.add_mem (R.mul_mem (R.pow_mem hc _) hm) (R.mul_mem (R.pow_mem hc _) hn)
   algebraMap_mem' := fun a => ⟨0, by simpa using R.algebraMap_mem a⟩
 
+/- English proof (translation)
+Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `y (rfl | rfl)`. Conclude with `⟨0, by simpa using Algebra.subset_adjoin rfl⟩`. Conclude with `⟨1, by rw [pow_one, mul_inv_cancel₀ hc0]; exact Subalgebra.one_mem _⟩`.
+-/
 theorem lgi_adjoin_le {k L : Type} [Field k] [Field L] [Algebra k L] (s c : L) (hc : c ∈ Algebra.adjoin k {s})
     (hc0 : c ≠ 0) : Algebra.adjoin k {s, c⁻¹} ≤ lgiDen (Algebra.adjoin k {s}) c hc := by
   rw [Algebra.adjoin_le_iff]
@@ -75,6 +93,21 @@ theorem lgi_adjoin_le {k L : Type} [Field k] [Field L] [Algebra k L] (s c : L) (
   · exact ⟨0, by simpa using Algebra.subset_adjoin rfl⟩
   · exact ⟨1, by rw [pow_one, mul_inv_cancel₀ hc0]; exact Subalgebra.one_mem _⟩
 
+/- English proof (translation)
+Use `set R := Algebra.adjoin k {s}`. Use `set A := Algebra.adjoin k {s, c⁻¹}`. Take `⟨p, hpm, hp⟩` from `hx`. Establish `hD : ∀ i, ∃ m : ℕ, c ^ m * (p.coeff i : L) ∈ R` using `fun i => lgi_adjoin_le s c hc hc0 (p.coeff i).2`. Use `choose m hm using hD`.
+
+Use `set M := ∑ i ∈ Finset.range (p.natDegree + 1), m i`. Establish `hM : ∀ i, c ^ M * (p.coeff i : L) ∈ R`. Introduce `i`. Distinguish the cases in `hi : i ≤ p.natDegree`. Establish `hle : m i ≤ M` using `Finset.single_le_sum (f := m) (fun _ _ => Nat.zero_le _) (Finset.mem_range.mpr (Nat.lt_succ_of_le hi))`.
+
+Rewrite using `[show M = (M - m i) + m i by omega, pow_add, mul_assoc]`. Conclude with `R.mul_mem (R.pow_mem hc _) (hm i)`. Rewrite using `[coeff_eq_zero_of_natDegree_lt (by omega)]; simp`. Use `set q : L[X] := C (c ^ M) * p.map (algebraMap A L)`. Establish `hl : q ∈ lifts (algebraMap R L)`.
+
+Rewrite using `[lifts_iff_coeff_lifts]`. Introduce `n`. Use `⟨⟨c ^ M * (p.coeff n : L), hM n⟩, ?_⟩` and prove the remaining obligations. Use `show _ = (C (c ^ M) * p.map (algebraMap A L)).coeff n`. Rewrite using `[coeff_C_mul, coeff_map]`.
+
+Both sides reduce to the same expression. Take `⟨Q, hQ0⟩` from `hl`. Establish `hQ : Q.map (algebraMap R L) = q` using `hQ0`. Establish `hinj : Function.Injective (algebraMap R L)` using `Subtype.val_injective`. Establish `hlc : (algebraMap R L) Q.leadingCoeff = c ^ M`.
+
+Rewrite using `[← leadingCoeff_map_of_injective hinj, hQ]`. Simplify using `only [q, leadingCoeff_mul, leadingCoeff_C, (hpm.map (algebraMap A L)).leadingCoeff, mul_one]`. Establish `hQx : aeval x Q = 0`. Rewrite using `[aeval_def, ← eval_map, hQ]`. Simplify using `only [q, eval_mul, eval_C, eval_map]`.
+
+Rewrite using `[hp, mul_zero]`. Use `⟨M, ?_⟩` and prove the remaining obligations. Use `isIntegral_leadingCoeff_smul Q x hQx` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def, hlc]`. Conclude with `this`.
+-/
 theorem lgi_mult {k L : Type} [Field k] [Field L] [Algebra k L] (s c : L) (hc : c ∈ Algebra.adjoin k {s})
     (hc0 : c ≠ 0) (x : L) (hx : IsIntegral (Algebra.adjoin k {s, c⁻¹}) x) :
     ∃ M : ℕ, IsIntegral (Algebra.adjoin k {s}) (c ^ M * x) := by
@@ -114,6 +147,9 @@ theorem lgi_mult {k L : Type} [Field k] [Field L] [Algebra k L] (s c : L) (hc : 
   rw [Algebra.smul_def, hlc] at this
   exact this
 
+/- English proof (translation)
+Take `⟨p, hm, hp⟩` from `hx`. Use `⟨p.map (Subalgebra.inclusion hST).toRingHom, hm.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[eval₂_map]`. Conclude with `hp`.
+-/
 theorem lgi_mono {k L : Type} [Field k] [Field L] [Algebra k L] {S T : Subalgebra k L} (hST : S ≤ T) (x : L)
     (hx : IsIntegral S x) : IsIntegral T x := by
   obtain ⟨p, hm, hp⟩ := hx
@@ -121,6 +157,21 @@ theorem lgi_mono {k L : Type} [Field k] [Field L] [Algebra k L] {S T : Subalgebr
   rw [eval₂_map]
   exact hp
 
+/- English proof (translation)
+Introduce `k L _ _ _ t ht x h h0 hx hloc`. Establish `ht0 : t ≠ 0` using `by rintro rfl; exact ht isAlgebraic_zero`. Use `set s := t⁻¹`. Establish `hs' : Transcendental k s` using `fun hh => ht (by simpa [s] using hh.inv)`. Use `set R := Algebra.adjoin k {s}`.
+
+Establish `hsR : s ∈ R` using `Algebra.subset_adjoin rfl`. Establish `hs0 : s ≠ 0` using `inv_ne_zero ht0`. Establish `h1 : IsIntegral (Algebra.adjoin k {s, s⁻¹}) x`. Use `lgi_mono ?_ x hx` and prove the remaining obligations. Rewrite using `[Algebra.adjoin_le_iff, Set.singleton_subset_iff]`.
+
+Conclude with `Algebra.subset_adjoin (by simp [s])`. Take `⟨M1, hM1⟩` from `lgi_mult s s hsR hs0 x h1`. Establish `hcR : aeval s h ∈ R` using `Polynomial.aeval_mem_adjoin_singleton k s`. Establish `hh0 : h ≠ 0` using `by rintro rfl; simp at h0`. Establish `hc0 : aeval s h ≠ 0` using `fun e => hs' ⟨h, hh0, e⟩`.
+
+Take `⟨M2, hM2⟩` from `lgi_mult s (aeval s h) hcR hc0 x hloc`. Establish `hcop : IsCoprime ((X : k[X]) ^ M1) (h ^ M2)`. Apply `IsCoprime.pow` to reduce the goal to its premises. Rewrite using `[Irreducible.coprime_iff_not_dvd irreducible_X, X_dvd_iff, coeff_zero_eq_eval_zero]`. Conclude with `h0`.
+
+Take `⟨a, b, hab⟩` from `hcop`. Establish `hab' : aeval s a * s ^ M1 + aeval s b * (aeval s h) ^ M2 = 1`. Use `congrArg (aeval s) hab` as an intermediate fact. Simplify using `using this`. Establish `hxe : x = aeval s a * (s ^ M1 * x) + aeval s b * ((aeval s h) ^ M2 * x)`.
+
+Take the linear combination `(-x) * hab'`. Establish `hA : ∀ f : k[X], IsIntegral R (aeval s f)` using `fun f => by`. Establish `: aeval s f ∈ R` using `Polynomial.aeval_mem_adjoin_singleton k s`. Conclude with `isIntegral_algebraMap (x := (⟨_, this⟩ : R))`. Rewrite using `[hxe]`.
+
+Conclude with `((hA a).mul hM1).add ((hA b).mul hM2)`.
+-/
 theorem integral_over_inverse_transcendental_of_local_at_infinity_holds : LeafLocGlobInf := by
   intro k L _ _ _ t ht x h h0 hx hloc
   have ht0 : t ≠ 0 := by rintro rfl; exact ht isAlgebraic_zero
@@ -155,6 +206,9 @@ theorem integral_over_inverse_transcendental_of_local_at_infinity_holds : LeafLo
   rw [hxe]
   exact ((hA a).mul hM1).add ((hA b).mul hM2)
 
+/- English proof (translation)
+The claim follows from `LeafOrdInfHom_of hO integral_over_inverse_transcendental_of_local_at_infinity_holds`.
+-/
 theorem LeafOrdInfHom_of_local (hO : LeafOrdInfLocal) : ∀ (k B : Type) [Field k] [IsAlgClosed k] [CommRing B] [IsDedekindDomain B]
   [Algebra k B] [Algebra.FiniteType k B] (g : Polynomial k →ₐ[k] B), Function.Injective g → g.Finite →
   ∃ (n : ℕ) (φ : Bˣ →* Multiplicative (Fin n → ℤ)), ∀ u : Bˣ, φ u = 1 →

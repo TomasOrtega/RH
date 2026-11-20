@@ -31,6 +31,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar Formalism.IndefR.p
 
 variable {D : D7} {V : HSp D} {n : ℕ} {hF : D.host.F = maximalRealSubfield D.host.E} {Q : principalLevelFrame.RowPsi V n}
 
+/- English proof (translation)
+Take `⟨⟨β, β', h1, h2, hβ⟩, -⟩` from `hQ`. Rewrite using `[range_emb, mem_atPts, triv_cast hF, and_iff_right (show Q.ψ κ ∈ finPts D.sp.cm.sig V.gram from Q.into κ)]`. Use `forall_congr' fun u => imp_congr (by simp) ?_` and prove the remaining obligations. Set `φ` to `(Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV D.host.F u) (AlgHom.id D.host.F D.host.E)).toRingHom`. Establish `e : (matHom _ D.sp.cm.sig V.gram (proj D.sp.cm.sig V.gram u (Q.ψ κ))).1 = (finMat D.sp.cm.sig V.gram (Q.ψ κ)).map φ`.
+
+Rewrite using `[← projFinLoc_projFin]`. Both sides reduce to the same expression. Establish `e2` using `e.trans (congrArg (fun M => Matrix.map M φ) (hβ κ))`. Use `(map_conj_eq_one_iff φ h1 h2 _).trans ?_` and prove the remaining obligations. Conclude with `⟨fun h => Subtype.ext (Units.ext (e2.trans h)), fun h => e2.symm.trans (by rw [h]; rfl)⟩`.
+-/
 theorem triv_iff (hQ : StdPsi hF Q) (s : SplitPlace D.host.E) (κ : GAf D.host.E n) :
     TrivOutside {s.v} κ ↔ Q.ψ κ ∈ (emb D.sp.cm.sig V.gram (s.w.under (𝓞 D.host.F))).range := by
   obtain ⟨⟨β, β', h1, h2, hβ⟩, -⟩ := hQ
@@ -43,6 +48,11 @@ theorem triv_iff (hQ : StdPsi hF Q) (s : SplitPlace D.host.E) (κ : GAf D.host.E
   refine (map_conj_eq_one_iff φ h1 h2 _).trans ?_
   exact ⟨fun h => Subtype.ext (Units.ext (e2.trans h)), fun h => e2.symm.trans (by rw [h]; rfl)⟩
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.HypDict.mem_hyp_iff_embV D _ s.w rfl]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, e⟩`. Conclude with `⟨(hQ.2 κ).2 (e ▸ (Supp.emb_mem_KsphC V k).2 hk), (triv_iff hQ s κ).2 ⟨k, e.symm⟩⟩`. Introduce and unpack `⟨h1, h2⟩`.
+
+Take `⟨k, e⟩` from `(triv_iff hQ s κ).1 h2`. Conclude with `⟨k, (Supp.emb_mem_KsphC V k).1 (e ▸ (hQ.2 κ).1 h1), e.symm⟩`.
+-/
 theorem hyp_iff (hQ : StdPsi hF Q) (s : SplitPlace D.host.E) (κ : GAf D.host.E n) :
     Q.ψ κ ∈ hyp V s.w ↔ κ ∈ locK n s.v := by
   rw [GlobalTheory.HypDict.mem_hyp_iff_embV D _ s.w rfl]
@@ -53,6 +63,11 @@ theorem hyp_iff (hQ : StdPsi hF Q) (s : SplitPlace D.host.E) (κ : GAf D.host.E 
     obtain ⟨k, e⟩ := (triv_iff hQ s κ).1 h2
     exact ⟨k, (Supp.emb_mem_KsphC V k).1 (e ▸ (hQ.2 κ).1 h1), e.symm⟩
 
+/- English proof (translation)
+Take `⟨⟨β, β', h1, h2, hβ⟩, -⟩` from `hQ`. Use `⟨⟨β.map (GlobalTheory.LFun.compAt D.host.F s.w), β'.map (GlobalTheory.LFun.compAt D.host.F s.w), map_mul_eq_one _ h1, map_mul_eq_one _ h2⟩, fun κ => Units.ext ?_⟩` and prove the remaining obligations. Establish `e : (κ.1.1.map (tensCastR hF).symm).map (GlobalTheory.LFun.compAt D.host.F s.w) = (Matrix.GeneralLinearGroup.map i.toRingHom (s.loc V.rank κ)).1` using `Matrix.ext fun a b => compAt_cast hF s i hi hic _`. Use `(finMat_map_compAt _ _ _ _).symm.trans ((congrArg (fun M => Matrix.map M (GlobalTheory.LFun.compAt D.host.F s.w)) (hβ κ)).trans ((map_conj _ _).trans ?_))` and prove the remaining obligations. Rewrite using `[e]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_locMat {Q : principalLevelFrame.RowPsi V V.rank} (hQ : StdPsi hF Q) (s : SplitPlace D.host.E)
     (i : s.v.adicCompletion (maximalRealSubfield D.host.E) ≃+* s.w.adicCompletion D.host.E) (hi : Continuous i)
     (hic : ∀ x : D.host.E, i (s.i x) = algebraMap D.host.E (s.w.adicCompletion D.host.E) x) :
@@ -69,6 +84,11 @@ theorem exists_locMat {Q : principalLevelFrame.RowPsi V V.rank} (hQ : StdPsi hF 
   rw [e]
   rfl
 
+/- English proof (translation)
+Take `⟨⟨β, β', h1, h2, -⟩, -⟩` from `hQ`. Establish `m1` using `map_mul_eq_one (GlobalTheory.LFun.compAt D.host.F w) h1`. Establish `m2` using `map_mul_eq_one (GlobalTheory.LFun.compAt D.host.F w) h2`. Establish `a` using `(Matrix.rank_mul_le_left _ _).trans' (congrArg Matrix.rank m1).ge`. Establish `b` using `(Matrix.rank_mul_le_left _ _).trans' (congrArg Matrix.rank m2).ge`.
+
+Rewrite `a`, `b` using `[Matrix.rank_one, Fintype.card_fin]`. Conclude with `le_antisymm (b.trans (Matrix.rank_le_width _)) (a.trans (Matrix.rank_le_width _))`.
+-/
 theorem rank_eq (hQ : StdPsi hF Q) (w : HeightOneSpectrum (𝓞 D.host.E)) : n = V.rank := by
   obtain ⟨⟨β, β', h1, h2, -⟩, -⟩ := hQ
   have m1 := map_mul_eq_one (GlobalTheory.LFun.compAt D.host.F w) h1
@@ -80,6 +100,27 @@ theorem rank_eq (hQ : StdPsi hF Q) (w : HeightOneSpectrum (𝓞 D.host.E)) : n =
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `rfl` from `rank_eq hQ s.w`. Take `⟨i, T, hi, hic, hinj, hTS, hT⟩` from `hτ`. Take `⟨u, hu⟩` from `(GlobalTheory.LFun.SatBridge.hasSatGL_of_hasSatake D.host.E s.w _ _ τ.ρ α hα).exists_vec`. Take `⟨b, hb⟩` from `exists_locMat hQ s i hi hic`. Establish `hL` using `GlobalTheory.HeckeDual.isLattice_frameLat V`.
+
+Take `⟨e, he, -⟩` from `SplitChart.exists_isSplitChart (isCMExt_host D) ((GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND _ _ D.sp.cm).2 V) hL.fg hL.span_eq_top (rfl : s.w.under (𝓞 D.host.F) = _) hs (GlobalTheory.AdelicU.SelfDual.isSelfDualAt_frameLat D V _)`. Take `⟨⟨a, -, ha⟩, hK⟩` from `id he`. Establish `hκ : ∀ g, ∃ κ, Q.ψ κ = emb D.sp.cm.sig V.gram (s.w.under (𝓞 D.host.F)) g` using `fun g => Q.onto _ (mem_finPts.2 (projInf_emb _ _ _ g))`. Use `choose κ hκ using hκ`. Establish `htr : ∀ g, TrivOutside {s.v} (κ g)` using `fun g => (triv_iff hQ s _).2 ⟨g, (hκ g).symm⟩`.
+
+Establish `hM : ∀ g, Matrix.GeneralLinearGroup.map i.toRingHom (s.loc V.rank (κ g)) = (a⁻¹ * b)⁻¹ * e g * (a⁻¹ * b)` using `fun g => by`. Use `hb (κ g)` as an intermediate fact. Rewrite `this` using `[hκ, proj_emb_self]`. Rewrite using `[ha, this]`. Use `group`.
+
+Take `⟨c, hc, hcc⟩` from `conj_eq_of_normalises s.w (a⁻¹ * b) fun y hy => by`. Take `⟨g, rfl⟩` from `e.surjective y`. Rewrite using `[← hM, map_loc_mem_iff s i hi hic (htr g), hQ.2, hκ, Supp.emb_mem_KsphC]`. Conclude with `(hK g).2 hy`. Establish `hfix : ∀ y ∈ KGL s.w V.rank, τ.ρ y u = u` using `GlobalTheory.LGrp.mem_fixed.1 hu.2.1`.
+
+Establish `hx : IsSphVec Q π s.w (T u)` using `⟨hTS u, fun y hy => by`. Take `⟨h1, h2⟩` from `(hyp_iff hQ s y).1 hy`. Rewrite using `[← hT y h2, hfix _ ((map_loc_mem_iff s i hi hic h2).2 h1)]⟩`. Set `Φ : τ.V →ₗ[ℂ] (GA D V → ℂ)` to `GlobalTheory.SphScalar.ext0 Q ∘ₗ T ∘ₗ τ.ρ c⁻¹`. Establish `hΦu : Φ u = GlobalTheory.SphScalar.ext0 Q (T u)`.
+
+Simplify using `only [Φ, LinearMap.comp_apply, hfix _ (inv_mem hc)]`. Establish `hΦ : ∀ y w, Φ (τ.ρ y w) = (((rightReg ℂ _ ℂ).comp (emb D.sp.cm.sig V.gram (s.w.under (𝓞 D.host.F)))).comp e.symm.toMonoidHom) y (Φ w)` using `fun y w => by`. Take `⟨g, rfl⟩` from `e.surjective y`. Establish `h1 : τ.ρ c⁻¹ (τ.ρ (e g) w) = τ.ρ (c⁻¹ * e g * c) (τ.ρ c⁻¹ w)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel_right]`.
+
+Simplify using `only [Φ, LinearMap.comp_apply]`. Rewrite using `[h1, ← hcc, ← hM, hT _ (htr g), GlobalTheory.SphScalar.extendByZeroThroughUnitaryFrame_right_translate, hκ]`. Simplify using `only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.symm_apply_apply]`. Both sides reduce to the same expression. Establish `h0 : Φ u ≠ 0` using `fun h => hu.1 (hinj (GlobalTheory.SphScalar.extendByZeroThroughUnitaryFrame_injective Q (by rw [← hΦu, h, map_zero, map_zero])))`.
+
+Establish `hsat` using `hu.map Φ hΦ h0`. Establish `hfx` using `(mem_fixed_comp_symm e hK).1 hsat.2.1`. Establish `hsys` using `isEigenSys_of_heckeLin (sphOff_KsphC V ∅) (Finset.notMem_empty _) (rfl : s.w.under (𝓞 D.host.F) = _) hfx (c := sphEig Q π s.w) fun d R hR => by`. Establish `h1` using `congrArg (GlobalTheory.SphScalar.ext0 Q) (actsOnSph_sphEig hQ π s.w d R hR _ hx)`. Rewrite `h1` using `[GlobalTheory.SphScalar.extendByZeroThroughUnitaryFrame_hecke Q R fun γ hγ => Q.onto γ ?_, map_smul, ← hΦu]`.
+
+Rewrite using `[← h1]`. Use function extensionality and compare the values at `g`. Rewrite using `[Finset.sum_apply]`. Both sides reduce to the same expression. Take `⟨_, _, _, _, -, -, -, -, -, -, -, -, -, -, h2⟩` from `hR`.
+
+Conclude with `(h2.1 γ hγ).1`. Take `⟨ϖ, hϖ⟩` from `exists_isUnifV s.w`. Conclude with `smul_left_injective ℂ h0 ((hsys.split hfx he hϖ hk).symm.trans (hsat.2.2.2 ϖ hϖ k hk))`.
+-/
 theorem sphEig_eq_satEig (hQ : StdPsi hF Q) (π : NG.FinTyp D.host.E n) (s : SplitPlace D.host.E)
     (hs : Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) (s.w.under (𝓞 D.host.F)))
     (τ : GlobalTheory.SmGL.IrrRep (GL (Fin n) (s.w.adicCompletion D.host.E))) (hτ : IsLocS π.S s τ) {α : Fin n → ℂˣ}
@@ -155,6 +196,9 @@ set_option synthInstance.maxHeartbeats 400000
 def Low (D : D7) (Sb : Finset (PlE D.host)) : Prop :=
   ∀ P : PlE D.host, ((2 * (D.host.g 0 * D.host.g 1) : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal → P ∈ Sb
 
+/- English proof (translation)
+Establish `hf` using `GlobalTheory.RowTie.placesOver_finite_of_ne_zero D.host.E (2 * (D.host.g 0 * D.host.g 1)) (mul_ne_zero two_ne_zero (mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero))`. Conclude with `⟨Sb ∪ hf.toFinset, Finset.subset_union_left, fun P hP => Finset.mem_union_right _ (hf.mem_toFinset.2 hP), fun i => Finset.union_subset (h i) fun P hP => h' i P (hf.mem_toFinset.1 hP)⟩`.
+-/
 theorem exists_low {D : D7} {ι : Type} (Sb : Finset (PlE D.host)) (S₀ : ι → Finset (PlE D.host)) (h : ∀ i, Sb ⊆ S₀ i)
     (h' : ∀ i, Low D (S₀ i)) : ∃ Sb', Sb ⊆ Sb' ∧ Low D Sb' ∧ ∀ i, Sb' ⊆ S₀ i := by
   classical
@@ -163,6 +207,11 @@ theorem exists_low {D : D7} {ι : Type} (Sb : Finset (PlE D.host)) (S₀ : ι �
   exact ⟨Sb ∪ hf.toFinset, Finset.subset_union_left, fun P hP => Finset.mem_union_right _ (hf.mem_toFinset.2 hP),
     fun i => Finset.union_subset (h i) fun P hP => h' i P (hf.mem_toFinset.1 hP)⟩
 
+/- English proof (translation)
+Introduce `P hP`. Use `(RatSide.lowSet_finite D).mem_toFinset.2 ?_` and prove the remaining obligations. Rewrite `hP` using `[Nat.cast_mul, Nat.cast_mul]`. Break down `P.isPrime.mem_or_mem hP with h | h` into its components or cases. Conclude with `⟨2, by simp [lowAll, lowPr], two_ne_zero, h⟩`.
+
+Break down `P.isPrime.mem_or_mem h with h | h` into its components or cases. Conclude with `⟨_, by simp [lowAll], (D.host.g_prime 0).ne_zero, h⟩`. Conclude with `⟨_, by simp [lowAll], (D.host.g_prime 1).ne_zero, h⟩`.
+-/
 theorem low_SbD (D : D7) : Low D (RatSide.SbD D) := by
   intro P hP
   refine (RatSide.lowSet_finite D).mem_toFinset.2 ?_
@@ -173,15 +222,24 @@ theorem low_SbD (D : D7) : Low D (RatSide.SbD D) := by
     · exact ⟨_, by simp [lowAll], (D.host.g_prime 0).ne_zero, h⟩
     · exact ⟨_, by simp [lowAll], (D.host.g_prime 1).ne_zero, h⟩
 
+/- English proof (translation)
+Introduce `P hP` and use `hs (h P hP)`.
+-/
 theorem Low.mono {D : D7} {S S' : Finset (PlE D.host)} (h : Low D S) (hs : S ⊆ S') : Low D S' := fun P hP => hs (h P hP)
 
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type}
   [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat3 D A3 Ks} {F : Face3 D A3} {X0 : BaseLevelRowSide D}
   {Sb Sb' : Finset (PlE D.host)}
 
+/- English proof (translation)
+Introduce `h2` and use `hP (h P (by rw [Nat.cast_mul]; exact Ideal.mul_mem_right _ _ h2))`.
+-/
 theorem Low.odd (h : Low D Sb) {P : PlE D.host} (hP : P ∉ Sb) : ((2 : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal := fun h2 =>
   hP (h P (by rw [Nat.cast_mul]; exact Ideal.mul_mem_right _ _ h2))
 
+/- English proof (translation)
+Introduce `h2` and use `hP (h P (by rw [Nat.cast_mul, Nat.cast_mul] refine Ideal.mul_mem_left _ _ ?_ fin_cases k exacts [Ideal.mul_mem_right _ _ h2, Ideal.mul_mem_left _ _ h2]))`.
+-/
 theorem Low.type (h : Low D Sb) {P : PlE D.host} (hP : P ∉ Sb) (k : Fin 2) : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal := fun h2 =>
   hP (h P (by
     rw [Nat.cast_mul, Nat.cast_mul]
@@ -189,6 +247,11 @@ theorem Low.type (h : Low D Sb) {P : PlE D.host} (hP : P ∉ Sb) (k : Fin 2) : (
     fin_cases k
     exacts [Ideal.mul_mem_right _ _ h2, Ideal.mul_mem_left _ _ h2]))
 
+/- English proof (translation)
+Introduce `PP hPP`. Take `⟨k, hk⟩` from `(hL.Pg PP).1 hPP`. Establish `h1` using `R.C.P.pb_over k`. Rewrite `h1` using `[← hk]`. Establish `h2 : algebraMap (𝓞 D.host.K) (𝓞 D.host.E) (D.host.g k : ℕ) ∈ PP.asIdeal` using `h1`.
+
+Rewrite `h2` using `[map_natCast]`. Use `⟨fun e => h.type hP k (e ▸ h2), fun e => h.type hP k ?_⟩` and prove the remaining obligations. Take `⟨c, hc, e⟩` from `e _ h2`. Establish `: c = (D.host.g k : ℕ)` using `RingOfIntegers.ext (by rw [e]; simp)`. Conclude with `this ▸ hc`.
+-/
 theorem Low.offPg (h : Low D Sb) (hL : R.toLevCh.Is A3.A.μ0) {P : PlE D.host} (hP : P ∉ Sb) :
     ∀ PP ∈ R.Pg, PP ≠ P ∧ ¬ Lev.IsConjPl PP P := by
   intro PP hPP
@@ -202,6 +265,9 @@ theorem Low.offPg (h : Low D Sb) (hL : R.toLevCh.Is A3.A.μ0) {P : PlE D.host} (
   have : c = (D.host.g k : ℕ) := RingOfIntegers.ext (by rw [e]; simp)
   exact this ▸ hc
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `GlobalTheory.MovedIdem.exists_isIdemAt P ((GlobalTheory.HeckeTieCompare.isSplitPl_iff P).1 hs)`. Take `⟨ϖ, h1, h2⟩` from `SetLike.exists_of_lt (Ideal.pow_lt_self P.asIdeal P.ne_bot P.isPrime.ne_top 2 le_rfl)`. Take `⟨α, hα⟩` from `((GlobalTheory.SplitPlace.split_local (Wc D i) P e he).2.2 ϖ h1 h2).1 k ((rank_Wc i).symm ▸ hk)`. Take `⟨B, hB, hD⟩` from `exists_local (A3 := A3) (R := R.toRealDat) (F := F.lv2) hL i (hlow.offPg hL hP) hk ⟨e, ϖ, he, h1, h2, hα⟩`. Conclude with `⟨α, B, ⟨hs, fun h => hP (hsub h), hlow.odd hP, hk, ⟨e, ϖ, he, h1, h2, hα⟩, hD⟩, hB⟩`.
+-/
 theorem exists_hkDat (F : Face3 D A3) (hL : R.toLevCh.Is A3.A.μ0) (hsub : Sb ⊆ Sb') (hlow : Low D Sb') (i : Fin D.R.m) {P : PlE D.host}
     (hs : IsSplitPl D.host P) (hP : P ∉ Sb') {k : ℕ} (hk : k ≤ D.R.r) : ∃ α B, HkDat R Sb i k P α B ∧
       IsDiagOpAt (Wc D i) (levW R.toRealDat F.lv2 i) (chiW R.toRealDat F.lv2 i) ∅ P k B := by
@@ -211,6 +277,13 @@ theorem exists_hkDat (F : Face3 D A3) (hL : R.toLevCh.Is A3.A.μ0) (hsub : Sb �
   obtain ⟨B, hB, hD⟩ := exists_local (A3 := A3) (R := R.toRealDat) (F := F.lv2) hL i (hlow.offPg hL hP) hk ⟨e, ϖ, he, h1, h2, hα⟩
   exact ⟨α, B, ⟨hs, fun h => hP (hsub h), hlow.odd hP, hk, ⟨e, ϖ, he, h1, h2, hα⟩, hD⟩, hB⟩
 
+/- English proof (translation)
+Establish `hodd : Odd Rk.r`. Take `⟨a, ha⟩` from `Rk.k_even`. Take `⟨b, hb⟩` from `Rk.m_even`. Use `Rk.two_le_m` as an intermediate fact. Conclude with `⟨a + b - 1, by unfold Ranks.r; omega⟩`.
+
+Establish `he : Even (k * (Rk.r - k))`. Break down `Nat.even_or_odd k with h | h` into its components or cases. Conclude with `h.mul_right _`. Conclude with `(Nat.Odd.sub_odd hodd h).mul_left _`. Take `⟨c, hc⟩` from `he`.
+
+Establish `h1 : ((k : ℂ) * ((Rk.r : ℂ) - k)) / 2 = (c : ℕ)`. Rewrite using `[← Nat.cast_sub hk, ← Nat.cast_mul, hc]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[GlobalTheory.LFun.satEig, h1, Complex.cpow_natCast, hc, show (c + c) / 2 = c by omega]`.
+-/
 theorem satEig_eq (Rk : Ranks) (q : ℕ) (B : Multiset ℂˣ) {k : ℕ} (hk : k ≤ Rk.r) :
     GlobalTheory.LFun.satEig q Rk.r B k = (q : ℂ) ^ (k * (Rk.r - k) / 2) * (B.map fun b : ℂˣ => (b : ℂ)).esymm k := by
   have hodd : Odd Rk.r := by
@@ -229,6 +302,21 @@ theorem satEig_eq (Rk : Ranks) (q : ℕ) (B : Multiset ℂˣ) {k : ℕ} (hk : k 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `j σ hne hgood P hs hP`. Take `⟨s, rfl⟩` from `GlobalTheory.TypeBlockPf.splitAt D P hs`. Establish `hQ` using `stdPsi_PW Y j`. Take `⟨_, B₀, -, hB₀⟩` from `exists_hkDat (Sb := Sb) F hlev hsub hlow j hs hP (Nat.zero_le _)`. Take `⟨x, hx, hx0⟩` from `exists_sphVec hQ (partR_ne_bot Y hne) hB₀.full`.
+
+Establish `hK : ∀ κ ∈ GlobalTheory.HeckeScalarSph.locK D.R.r s.v, NG.rt D.host.E D.R.r κ x = x` using `fun κ hκ => hx.2 κ ((hyp_iff hQ s κ).2 hκ)`. Take `⟨τ, hτ⟩` from `exists_isLocS (typeR Y σ) s hx.1 hx0 hK`. Establish `hrec` using `GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 s.w)`. Establish `hu` using `(GlobalTheory.CuspRep.ParLaws.unr_iff hrec τ).2 (isSpherical_of_isLocS (typeR Y σ) s τ hτ hx.1 hx0 hK)`. Take `⟨α, hα⟩` from `GlobalTheory.CuspRep.ParLaws.exists_hasSatake_of_unr hrec hu`.
+
+Establish `hpar : W.e s.w (Rw.locR σ s.w) = _` using `hrow.1 σ s τ hτ`. Establish `hunr : D.naut.unr (Rw.locR σ s.w)` using `(W.unr _ _).2 (hpar ▸ hu)`. Use `⟨hunr, fun k _ hk => ?_⟩` and prove the remaining obligations. Take `⟨a, B, hd, -⟩` from `exists_hkDat (Sb := Sb) F hlev hsub hlow j hs hP hk`. Take `⟨y, hy, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`.
+
+Establish `h1 : hkNorm R j k s.w • heckeOn _ B (readW Y j y) = _ • readW Y j y` using `he j σ k s.w a B hd hgood y hy`. Rewrite `h1` using `[heckeOn_partR Y hlev j (hlow.offPg hlev hP) hk hd.elt hd.reps σ ((mem_isot_iff Y j σ y).1 hy), smul_smul]`. Establish `h2` using `smul_left_injective ℂ (fun h => hy0 (readW_injective Y j (h.trans (map_zero _).symm))) h1`. Establish `h3` using `sphEig_eq_satEig hQ (typeR Y σ) s ((GlobalTheory.PlaceDict.isSplit_iff_conjPl_ne D _ s.w rfl).2 (GlobalTheory.HeckeDatumExists.conj_ne_of_split hs)) τ hτ hα hk`. Establish `hq : Formalism.UG.qV D.host.E s.w = normV s.w` using `Ideal.absNorm_apply _`.
+
+Establish `h4 : D.naut.frobEig (Rw.locR σ s.w) = Finset.univ.val.map fun i => (((α i)⁻¹ : ℂˣ) : ℂ)`. Rewrite using `[W.frobEig _ _ hunr, hpar, GlobalTheory.CuspRep.ParLaws.rec_eq_diag hrec hα, GlobalTheory.WeilDeligne.WD.frobEig_diag]`. Rewrite using `[← h2, rowEig, h3, satEig_eq _ _ _ hk, hq, h4, Multiset.map_map, Multiset.map_map]`. Use `set c : ℂ := (((R.C.mu0 j).val s.w : ℂˣ) : ℂ)⁻¹ * (((normV s.w : ℕ) : ℂ) ^ (D.R.nV / 2))⁻¹ with hc`. Establish `h5 : (Finset.univ.val.map ((fun a : ℂ => a⁻¹ * (((R.C.mu0 j).val s.w : ℂˣ) : ℂ)⁻¹ * (((normV s.w : ℕ) : ℂ) ^ (D.R.nV / 2))⁻¹) ∘ fun i => (((α i)⁻¹ : ℂˣ) : ℂ))) = (Finset.univ.val.map ((fun b : ℂˣ => (b : ℂ)) ∘ α)).map (c • ·)`.
+
+Rewrite using `[Multiset.map_map]`. Use `Multiset.map_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Units.val_inv_eq_inv_val, inv_inv, smul_eq_mul, hc]`. Expand and normalize the polynomial expressions, which then agree. Establish `h6 : hkNorm R j k s.w = c ^ k`.
+
+Rewrite using `[hc, mul_pow, inv_pow (_ ^ _), ← pow_mul, mul_comm (D.R.nV / 2)]`. Both sides reduce to the same expression. Rewrite using `[h5, ← Multiset.pow_smul_esymm, h6, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eigTrue (hL : GlobalTheory.Published.LocalLanglandsGL) (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (hlev : R.toLevCh.Is A3.A.μ0)
     (W : GlobalTheory.RowTie.WDTie D.nd D.naut) (Rw : RowSide D) {sat : D.what₂.FT → PlE D.host → Multiset ℂ}
     (hrow : RowTrue hL D (typeR Y) (fun σ w => W.e w (Rw.locR σ w)) sat)
@@ -275,6 +363,21 @@ theorem eigTrue (hL : GlobalTheory.Published.LocalLanglandsGL) (Y : R3.Read (A3 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `h0 : sg0 D A3.A = D.what₂.embLL` using `sgAt_mk _ R.hv0`. Take `⟨y, hy, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Establish `hz0 : Y.mj.eW i y ≠ 0` using `fun h => hy0 (readW_injective Y i (by show (R.HW i (sg0 D A3.A)).e (Y.mj.eW i y) = _`. Rewrite using `[h, map_zero, map_zero]))`. Establish `hzW : (R.HW i (sg0 D A3.A)).e (Y.mj.eW i y) ∈ R.toRealDat.Wat i (sg0 D A3.A) (R.toRealDat.levL F.lv2 false (sg0 D A3.A))` using `(Y.mj.eW_range i).le (LinearMap.mem_range_self _ y)`.
+
+Take `⟨act, hact, hty, hpr⟩ : ∃ act : G → Module.End ℂ (MMap (R.MW i (sg0 D A3.A))), (∀ g x, (R.HW i (sg0 D A3.A)).e ((R.FW i).j (sg0 D A3.A) ((R.FW i).ρ g x)) = sg0 D A3.A (((R.FW i).chi g : D.what₂.LLˣ) : D.what₂.LL) • act g ((R.HW i (sg0 D A3.A)).e ((R.FW i).j (sg0 D A3.A) x))) ∧ (∀ …` from `⟨_, (hU i _).2.2, (GlobalTheory.LevelForms.mem_wat_iff R.toRealDat F.lv2 hU hW false i _ _).1 hzW⟩`. Establish `hact' : ∀ g x, (R.HW i (sg0 D A3.A)).e ((R.FW i).j (sg0 D A3.A) ((((R.FW i).chi g : D.what₂.LLˣ) : D.what₂.LL)⁻¹ • (R.FW i).ρ g x)) = act g ((R.HW i (sg0 D A3.A)).e ((R.FW i).j (sg0 D A3.A) x))` using `fun g x => by`. Rewrite using `[map_smulₛₗ, map_smul, hact, smul_smul, ← map_mul, inv_mul_cancel₀ (Units.ne_zero _), map_one, one_smul]`. Establish `hex : ∀ t : {t : ℕ × PlE D.host // t.1 ≤ D.R.r ∧ IsSplitPl D.host t.2 ∧ t.2 ∉ Sb'}, ∃ α B, HkDat R Sb' i t.1.1 t.1.2 α B` using `fun t => (exists_hkDat F hlev subset_rfl hlow i t.2.2.1 t.2.2.2 t.2.1).imp fun _ h => h.imp fun _ h => h.1`. Use `choose α B hd using hex`.
+
+Take `⟨x, hx0, hx⟩` from `descent (ι := Unit ⊕ F.P0 ⊕ {t : ℕ × PlE D.host // t.1 ≤ D.R.r ∧ IsSplitPl D.host t.2 ∧ t.2 ∉ Sb'}) (sg0 D A3.A) ((R.FW i).j (sg0 D A3.A)) ((hU i _).1 _ _ (Pi.basisFun D.what₂.LL _).linearIndependent) (hU i _).2.1 (R.HW i (sg0 D A3.A)).e (hW i _).1 (Sum.elim (fun _ => ∑ g, (idemO …`. Introduce and unpack `(_ | p | t) x`. Simplify using `only [Sum.elim_inl, LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub, map_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun g _ => by rw [map_smulₛₗ, map_smul, hact']`.
+
+Simplify using `only [Sum.elim_inl, Sum.elim_inr, LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub]`. Rewrite using `[hact', map_smulₛₗ, map_smul]`. Simplify using `only [Sum.elim_inr, LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub]`. Rewrite using `[hOp _ _ _ _ (hd t), map_smulₛₗ, map_smul])`. Use `hz0`.
+
+Use the proof step `(by`. Introduce and unpack `(_ | p | t)`. Simplify using `only [Sum.elim_inl, LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Conclude with `hpr`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`.
+
+Conclude with `hty p`. Simplify using `only [Sum.elim_inr, LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Establish `h1` using `he i σ _ _ _ _ ⟨(hd t).split, fun h => (hd t).offS (hsub h), (hd t).odd, (hd t).le, (hd t).elt, (hd t).reps⟩ hgood y hy`. Rewrite `h1` using `[← h0]`. Conclude with `h1)`.
+
+Use `⟨x, hx0, ?_, fun p => ?_, fun k P hk hs hP => ?_⟩` and prove the remaining obligations. Simplify `hx (Sum.inl ())` using `only [Sum.elim_inl, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Simplify `hx (Sum.inr (Sum.inl p))` using `only [Sum.elim_inl, Sum.elim_inr, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Simplify `hx (Sum.inr (Sum.inr ⟨(k, P), hk, hs, hP⟩))` using `only [Sum.elim_inr, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`.
+-/
 theorem exists_rat (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (hlev : R.toLevCh.Is A3.A.μ0) (hU : R.toRealDat.LUnif)
     (hW : R.toRealDat.models_HW) {eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0} (he : EigAd Y Sb eig) (hsub : Sb ⊆ Sb')
     (hlow : Low D Sb') (i : Fin D.R.m) {σ : D.what₂.FT} (hne : D.what₂.isot (i.1 + 1) σ ≠ ⊥) (hgood : D.nd.goodRow σ)
@@ -357,6 +460,17 @@ variable {cG : G0 R.Pg D.R.r ≃* G0g D.nd} {θ : ∀ kk : Fin 2, Multiplicative
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨x, hx0, h1, h2, h3⟩` from `exists_rat Y hlev hU hW he hsub hlow i (hj ▸ hne) hgood (fun k P => fi.e.toLinearMap ∘ₗ Op k P ∘ₗ fi.e.symm.toLinearMap) fun k P α Rr hd x => by`. Simplify `hOp k P α Rr hd (fi.e.symm x)` using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Take `⟨x, rfl⟩` from `fi.e.surjective x`. Establish `hact : ∀ g : G, fi.e (GlobalTheory.HeightCounting.actL D S j ((R.eG.trans cG) g) x) = (((R.FW i).chi g : D.what₂.LLˣ) : D.what₂.LL)⁻¹ • (R.FW i).ρ g (fi.e x)` using `fun g => by`. Take `⟨g, rfl⟩` from `fi.eG.surjective g`.
+
+Rewrite using `[MulEquiv.trans_apply, geq, GlobalTheory.HeightCounting.actL, MulEquiv.symm_apply_apply, LinearMap.smul_apply, map_smul, fi.rho, fi.chi]`. Use `⟨x, Submodule.mem_inf.2 ⟨Module.End.mem_eigenspace_iff.2 ?_, (Submodule.mem_iInf _).2 fun u => Module.End.mem_eigenspace_iff.2 ?_⟩, fun h => hx0 (by rw [h, map_zero]), fun k P hk hs hP => ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul, ← finsum_comp_equiv (R.eG.trans cG).toEquiv, finsum_eq_sum_of_fintype, LinearMap.sum_apply]`. Apply `fi.e.injective` to reduce the goal to its premises. Rewrite using `[map_sum, ← h1]`.
+
+Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Establish `hc : ((D.nexp.eLL0 ((R.eG.trans cG) g) : ↥D.LL0) : D.what₂.LL) = (idemOf A3.A.X).coeff g` using `D.what₂.embLL.injective ((D.nStage_trivialCharacter_coeff_eq _).trans (hidem g).symm)`. Rewrite using `[← hc, ← hact, ← map_smul]`. Both sides reduce to the same expression. Take `⟨u, hu⟩` from `u`.
+
+Take `⟨g, rfl⟩` from `(R.eG.trans cG).surjective u`. Apply `fi.e.injective` to reduce the goal to its premises. Rewrite using `[map_smul, hψ.2 ⟨g, (hψ.1 g).2 hu⟩ hu, ← h2]`. Conclude with `hact g`. Apply `fi.e.injective` to reduce the goal to its premises.
+
+Use `h3 k P hk hs hP` as an intermediate fact. Rewrite `this` using `[hj]`. Simplify `this` using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, map_smul]`.
+-/
 theorem exists_goodL (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (hlev : R.toLevCh.Is A3.A.μ0) (hU : R.toRealDat.LUnif)
     (hW : R.toRealDat.models_HW)
     (hidem : ∀ g, D.what₂.embLL ((idemOf A3.A.X).coeff g) = D.ntypes.e0.coeff ((R.eG.trans cG) g))
@@ -396,6 +510,9 @@ theorem exists_goodL (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (hlev : R.toL
     rw [hj] at this
     simpa only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, map_smul] using this
 
+/- English proof (translation)
+Introduce `j h1 h2 σ hne hgood`. Take `⟨x, hx, hx0, h⟩` from `exists_goodL Y hlev hU hW hidem hψ he hsub hlow (S := ratDatR R cG kKs hk) j (idxOf D j) (by simp only [idxOf]; omega) ⟨RingEquiv.refl _, fun _ => rfl, LinearEquiv.refl _ _, MulEquiv.refl _, fun _ => LinearIsometryEquiv.refl _ _, fun _ => Iff.rfl, fun _ => Iff.rfl, fun _ _ => rfl …`. Conclude with `⟨x, hx, hx0, fun k P _ => h k P⟩`.
+-/
 theorem eigOcc (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (hlev : R.toLevCh.Is A3.A.μ0) (hU : R.toRealDat.LUnif)
     (hW : R.toRealDat.models_HW)
     (hidem : ∀ g, D.what₂.embLL ((idemOf A3.A.X).coeff g) = D.ntypes.e0.coeff ((R.eG.trans cG) g))
@@ -411,6 +528,9 @@ theorem eigOcc (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (hlev : R.toLevCh.I
     (fun k P α Rr hd x => hrd j k P α Rr h1 h2 hd x) hne hgood
   exact ⟨x, hx, hx0, fun k P _ => h k P⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨eigTrue hL Y hlev W Rw hrow h.eig hsub hlow, eigOcc Y hlev hU hW hidem ⟨h.lvl, h.psi⟩ h.eig hsub hlow fun j k P α Rr h1 h2 hd => h.hecke j k P α Rr h1 h2 ⟨hd.split, fun e => hd.offS (hsub e), hd.odd, hd.le, hd.elt, hd.reps⟩⟩`.
+-/
 theorem eig_of_ratAd (hL : GlobalTheory.Published.LocalLanglandsGL) (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (hlev : R.toLevCh.Is A3.A.μ0)
     (hU : R.toRealDat.LUnif) (hW : R.toRealDat.models_HW)
     (hidem : ∀ g, D.what₂.embLL ((idemOf A3.A.X).coeff g) = D.ntypes.e0.coeff ((R.eG.trans cG) g))

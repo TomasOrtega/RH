@@ -8,6 +8,11 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.G
 open scoped Classical ENNReal nonZeroDivisors
 
+/- English proof (translation)
+Introduce `h`. Establish `hl` using `Fintype.linearIndependent_iff.1 D.b.linearIndependent ![ξ 0, -ξ 1] (by`. Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, D.b0, D.b1, Algebra.smul_def, map_neg]`. Simplify using `only [Matrix.cons_val_fin_one, mul_one, map_neg]`. Take the linear combination `h)`.
+
+Apply `hξ` to reduce the goal to its premises. Use extensionality with `i`. Use `fin_cases i`. Simplify using `using hl 0`. Simplify using `using hl 1`.
+-/
 private theorem conj_ne {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (D : Dat F E)
     {ξ : Fin 2 → F} (hξ : ξ ≠ 0) : algebraMap F E (ξ 0) - algebraMap F E (ξ 1) * D.θ ≠ 0 := by
   intro h
@@ -21,6 +26,9 @@ private theorem conj_ne {F E : Type} [Field F] [NumberField F] [Field E] [Number
   · simpa using hl 0
   · simpa using hl 1
 
+/- English proof (translation)
+Establish `e` using `D.mkE_rt (ξ 0) (-ξ 1)`. Establish `e' : -rt (ξ 1) = (rt (-ξ 1) : A F)` using `(map_neg _ _).symm`. Rewrite using `[e', e, al, dif_neg h, IdeleGroup.coe_diagonal]`. Simplify using `[sub_eq_add_neg]`.
+-/
 private theorem coe_al {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (D : Dat F E)
     (ξ : Fin 2 → F) (h : algebraMap F E (ξ 0) - algebraMap F E (ξ 1) * D.θ ≠ 0) :
     ((al D ξ : (A E)ˣ) : A E) = D.mkE (rt (ξ 0)) (-rt (ξ 1)) := by
@@ -29,14 +37,26 @@ private theorem coe_al {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
   rw [e', e, al, dif_neg h, IdeleGroup.coe_diagonal]
   simp [sub_eq_add_neg]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem vcD {F : Type} [Field F] [NumberField F] (t : (A F)ˣ) (x : G1 F) :
     (gl (cD t x)).val = !![x 0 0, x 0 1 * ((t⁻¹ : (A F)ˣ) : A F); (t : A F) * x 1 0, x 1 1] := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem vgl {F : Type} [Field F] [NumberField F] (x : G1 F) : (gl x).val = x.1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem vmD {F : Type} [Field F] [NumberField F] (t : (A F)ˣ) :
     (gl (mD t)).val = !![(t : A F), 0; 0, ((t⁻¹ : (A F)ˣ) : A F)] := rfl
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, vcD, vgl]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dM, Matrix.mul_apply, Fin.sum_univ_two, mul_assoc] <;> ring`.
+-/
 private theorem cD_dM {F : Type} [Field F] [NumberField F] (t : (A F)ˣ) (x : G1 F) :
     gl (cD t x) * dM t = dM t * gl x := by
   refine Units.ext ?_
@@ -44,16 +64,43 @@ private theorem cD_dM {F : Type} [Field F] [NumberField F] (t : (A F)ˣ) (x : G1
   ext i j
   fin_cases i <;> fin_cases j <;> simp [dM, Matrix.mul_apply, Fin.sum_univ_two, mul_assoc] <;> ring
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, vmD]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dM, aE, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 private theorem dM_mD {F : Type} [Field F] [NumberField F] (t : (A F)ˣ) : dM t * gl (mD t) = aE t := by
   refine Units.ext ?_
   rw [Units.val_mul, vmD]
   ext i j
   fin_cases i <;> fin_cases j <;> simp [dM, aE, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Rewrite using `[UpperTheory.ConvolutionTheory.R2.dM_mul, ← mul_assoc, cD_dM, gl_mul, ← mul_assoc (dM t), dM_mD, mul_assoc]`.
+-/
 private theorem pt_move {F : Type} [Field F] [NumberField F] (t n : (A F)ˣ) (g : G1 F) :
     gl (cD t (mD t * g)) * dM (t * n) = aE t * (gl g * dM n) := by
   rw [UpperTheory.ConvolutionTheory.R2.dM_mul, ← mul_assoc, cD_dM, gl_mul, ← mul_assoc (dM t), dM_mD, mul_assoc]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W ξ hξ`. Establish `hz` using `conj_ne D hξ`. Establish `hα` using `coe_al D ξ hz`. Use `set α := al D ξ with hαdef`. Set `t : Fˣ` to `Units.map (Algebra.norm F : E →* F) (Units.mk0 _ hz)`.
+
+Establish `hT : ideleNorm F E α = IdeleGroup.diagonal F t`. Rewrite using `[hαdef, al, dif_neg hz, ideleNorm_diagonal]`. Establish `hco : D.co (α : A E) = ![rt (ξ 0), -rt (ξ 1)]` using `by rw [hα, D.co_mkE]`. Establish `ht : (t : F) = ξ 0 ^ 2 - D.δ * ξ 1 ^ 2` using `by haveI := AdeleBaseChange.nontrivial_adeleRing F`. Apply `(algebraMap F (A F)).injective` to reduce the goal to its premises.
+
+Establish `h1` using `D.coe_ideleNorm α`. Rewrite `h1` using `[hT, IdeleGroup.coe_diagonal, hco]`. Simplify using `using h1`. Use `⟨t, fun f hf φ h g => ?_⟩` and prove the remaining obligations. Use `set T := IdeleGroup.diagonal F t with hTdef`.
+
+Establish `hnu : nu F (aE α * h) = T * nu F h` using `by rw [nu_mul, nu_aE, hT]`. Establish `hpoint : ![T * (0 : A F), ((T⁻¹ : (A F)ˣ) : A F) * ((ideleNorm F E α : (A F)ˣ) * 1), T * D.co (((α⁻¹ : (A E)ˣ) : A E) * D.mkE 1 0) 0, T * D.co (((α⁻¹ : (A E)ˣ) : A E) * D.mkE 1 0) 1] = pt ξ`. Establish `hb : am E (T : A F) * ((α⁻¹ : (A E)ˣ) : A E) = D.mkE (rt (ξ 0)) (rt (ξ 1))`. Rewrite using `[← hT, D.am_ideleNorm, mul_comm (α : A E), mul_assoc, Units.mul_inv, mul_one, hα, D.bar_mkE, neg_neg]`. Establish `hc` using `D.co_am_mul (T : A F) ((α⁻¹ : (A E)ˣ) : A E)`.
+
+Rewrite `hc` using `[hb, D.co_mkE]`. Establish `h0` using `congrFun hc 0`. Establish `h1` using `congrFun hc 1`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h0 h1`. Rewrite using `[D.mkE_one, mul_one, hT]`.
+
+Simplify using `[pt, ← h0, ← h1]`. Establish `hhat : hat (W.Om (cD T (mD T * g)) (W.L (aE α * h) φ)).1 ![0, 1, 1, 0] = hat (W.Om g (W.L h φ)).1 (pt ξ)`. Establish `hcm : W.Om (cD T (mD T * g)) (W.L (aE α) (W.L h φ)) = W.L (aE α) (W.Om (mD T * g) (W.L h φ))`. Use `W.comm (aE α) (mD T * g)` as an intermediate fact. Rewrite `this` using `[nu_aE, hT]`.
+
+Conclude with `(LinearMap.congr_fun this (W.L h φ)).symm`. Rewrite using `[map_mul, Module.End.mul_apply, hcm]`. Establish `hS` using `hatSt F E D W`. Establish `e1` using `hS.aE α (W.Om (mD T * g) (W.L h φ)) 0 1 1 0`. Establish `e2` using `hS.m T (W.Om g (W.L h φ))`.
+
+Establish `e3 : ((W.η.1 T : ℂˣ) : ℂ) = 1` using `by rw [← hT, W.η_norm]; rfl`. Establish `e4 : ab T = 1` using `ab_diagonal t`. Rewrite using `[e1, map_mul, Module.End.mul_apply, e2, e3, e4]`. Establish `hv` using `hpoint`. Rewrite using `[← hv]`.
+
+Simplify using the standard rewrite rules. Establish `hw : ∫ b in fundamentalSet F, f (gl (nU b) * (gl g * dM (nu F h))) * ψ (rt (ξ 0 ^ 2 - D.δ * ξ 1 ^ 2) * b) ∂(adeleMeasure F) = Wf f (aE T * (gl g * dM (nu F h)))`. Rewrite using `[← ht]`. Conclude with `Pp.wfT F f hf t _`. Simplify using `only [w1, wx]`.
+
+Rewrite using `[hhat, hnu, pt_move, hw]`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.G.wxPt :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (ξ : Fin 2 → F), ξ ≠ 0 → ∃ t : Fˣ, ∀ f : GL (Fin 2) (A F) → ℂ, Pp.Lf f → ∀ φ h g,
     w1 W f φ (aE (al D ξ) * h) (cD (IdeleGroup.diagonal F t) (mD (IdeleGroup.diagonal F t) * g)) = wx W f φ h ξ g := by

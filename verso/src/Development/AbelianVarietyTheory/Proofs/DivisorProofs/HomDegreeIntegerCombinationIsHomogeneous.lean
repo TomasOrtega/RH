@@ -12,6 +12,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.HTLat GlobalTheory.Published.AbVarRed GlobalTheory.CechPic GlobalTheory.AV GlobalTheory.AV.AbVar
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Set `φ : (Fin n → Fin n → ℤ) →ₗ[ℤ] P` to `{ toFun := fun x => ∑ i, ∑ j, x i j • a i j map_add' := fun x y => by`. Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib]`. Use the proof step `map_smul' := fun r x => by`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_smul, Finset.smul_sum, RingHom.id_apply] }`. Set `e : Fin n → Fin n → (Fin n → Fin n → ℤ)` to `fun i j => Pi.single i (Pi.single j 1)`.
+
+Establish `he : ∀ i j, φ (e i j) = a i j`. Introduce `i j`. Simplify using `only [φ, e, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[Finset.sum_eq_single i (fun k _ hk => by simp [Pi.single_apply, hk]) (by simp)]`. Rewrite using `[Finset.sum_eq_single j (fun k _ hk => by simp [Pi.single_apply, hk]) (by simp)]`.
+
+Simplify using the standard rewrite rules. Take `⟨F, hF, hFe⟩` from `GlobalTheory.multilinear_quadratic_isHomogeneous (Fin n → Fin n → ℤ) g n (M.compLinearMap (fun _ => φ)) e`. Use `⟨F, hF, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[hFe m, MultilinearMap.compLinearMap_apply]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `_`. Simplify using `only [map_sum, map_zsmul, he]`.
+-/
 theorem GlobalTheory.AV.AbVar.multilinear_quadratic_isHomogeneous' (P : Type*) [AddCommGroup P] (g n : ℕ)
     (M : MultilinearMap ℤ (fun _ : Fin g => P) ℤ) (a : Fin n → Fin n → P) :
     ∃ F : MvPolynomial (Fin n) ℤ, F.IsHomogeneous (2 * g) ∧
@@ -37,6 +46,19 @@ theorem GlobalTheory.AV.AbVar.multilinear_quadratic_isHomogeneous' (P : Type*) [
   funext _
   simp only [map_sum, map_zsmul, he]
 
+/- English proof (translation)
+Introduce `K _ A B hAB n f`. Take `⟨c, hamp, hsym⟩` from `GlobalTheory.AV.AbVar.exists_symm_ample K B`. Take `⟨⟨M, hM⟩, -⟩` from `GlobalTheory.T.intersection_number_multilinear_symm K A (Fin A.dim) (Fintype.card_fin _)`. Use `set D : ℤ := inter B (fun _ : Fin A.dim => c) with hD`. Establish `hDpos : 0 < D` using `GlobalTheory.T.abelianVariety_topSelfIntersection_ample_pos K B c hamp (Fin A.dim) (by rw [Fintype.card_fin, hAB])`.
+
+Take `⟨F, hFh, hFe⟩` from `GlobalTheory.AV.AbVar.multilinear_quadratic_isHomogeneous' (Pic A.X.left) A.dim n M (fun i j => AbVar.lam c (f i).hom (f j).hom)`. Use `⟨MvPolynomial.C ((1 : ℚ) / ((2 : ℚ) ^ A.dim * D)) * MvPolynomial.map (Int.castRingHom ℚ) F, ?_, ?_⟩` and prove the remaining obligations. Use `(MvPolynomial.isHomogeneous_C (Fin n) ((1 : ℚ) / ((2 : ℚ) ^ A.dim * D))).mul (hFh.map (Int.castRingHom ℚ))` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Introduce `m`.
+
+Establish `hq` using `GlobalTheory.T.two_smul_pullback_symmetric_class_integral_combination K A B c hsym n f m`. Establish `hp` using `GlobalTheory.T.intersection_pullback_eq_degree_mul_intersection K A B (show A ⟶ B from ∑ i, m i • f i) hAB (Fin A.dim) (Fintype.card_fin _) (fun _ => c)`. Establish `key : MvPolynomial.eval m F = 2 ^ A.dim * ((deg (show A ⟶ B from ∑ i, m i • f i) : ℤ) * D)`. Rewrite using `[hFe m, ← hq, ← hp, ← hM]`. Use `M.map_smul_univ (fun _ => (2 : ℤ)) (fun _ => CechPic.pull (Hom.hom (show A ⟶ B from ∑ i, m i • f i)).left c)` as an intermediate fact.
+
+Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul] at this`. Rewrite using `[← this]`. Use `congr 1`. Rewrite using `[MvPolynomial.eval_mul, MvPolynomial.eval_C, MvPolynomial.eval_map]`. Establish `e2 : MvPolynomial.eval₂ (Int.castRingHom ℚ) (fun i => (m i : ℚ)) F = ((MvPolynomial.eval m F : ℤ) : ℚ)`.
+
+Rewrite using `[MvPolynomial.eval, MvPolynomial.coe_eval₂Hom, ← eq_intCast (Int.castRingHom ℚ), MvPolynomial.eval₂_comp_left]`. Both sides reduce to the same expression. Rewrite using `[e2, key]`. Establish `hD0 : (D : ℚ) ≠ 0` using `by exact_mod_cast hDpos.ne'`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem GlobalTheory.AV.AbVar.deg_isHomogeneousPoly : ∀ (K : Type) [Field K] (A B : AbVar K), A.dim = B.dim → ∀ (n : ℕ) (f : Fin n → (A ⟶ B)), ∃ F : MvPolynomial (Fin n) ℚ, F.IsHomogeneous (2 * A.dim) ∧ ∀ m : Fin n → ℤ, MvPolynomial.eval (fun i => (m i : ℚ)) F = (deg (∑ i, m i • f i) : ℚ) := by
   intro K _ A B hAB n f
   obtain ⟨c, hamp, hsym⟩ := GlobalTheory.AV.AbVar.exists_symm_ample K B

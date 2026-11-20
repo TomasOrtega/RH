@@ -20,6 +20,13 @@ def rmulL (x : M2 n) : M2 n →L[ℝ] M2 n :=
       map_add' := fun _ _ => Matrix.add_mul _ _ _
       map_smul' := fun c M => by simp }
 
+/- English proof (translation)
+Establish `h1 : HasDerivAt (fun t => γ t * x) (Y * x) 0`. Use `(rmulL x).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hγ` as an intermediate fact. Conclude with `this`. Establish `hx : γ 0 * x = x` using `by simp [hγ0]`. Establish `hF : HasFDerivAt Θ ((fderiv ℂ Θ x).restrictScalars ℝ) (γ 0 * x)`.
+
+Rewrite using `[hx]`. Conclude with `hΘ.hasFDerivAt.restrictScalars ℝ`. Establish `h2 : HasDerivAt (fun t => Θ (γ t * x)) (fderiv ℂ Θ x (Y * x)) 0`. Use `hF.comp_hasDerivAt (0 : ℝ) h1` as an intermediate fact. Conclude with `this`.
+
+Establish `h3 : HasDerivAt (fun t => Θ (γ t * x)) (r * Θ x) 0` using `(hf.mul_const (Θ x)).congr_of_eventuallyEq hlaw`. Conclude with `h2.unique h3`.
+-/
 theorem deriv_piece (Θ : M2 n → ℂ) (x : M2 n) (hΘ : DifferentiableAt ℂ Θ x)
     (γ : ℝ → M2 n) (Y : M2 n) (hγ : HasDerivAt γ Y 0) (hγ0 : γ 0 = 1)
     (f : ℝ → ℂ) (r : ℂ) (hf : HasDerivAt f r 0)
@@ -38,10 +45,18 @@ theorem deriv_piece (Θ : M2 n → ℂ) (x : M2 n) (hΘ : DifferentiableAt ℂ �
     (hf.mul_const (Θ x)).congr_of_eventuallyEq hlaw
   exact h2.unique h3
 
+/- English proof (translation)
+Rewrite using `[← Matrix.fromBlocks_one, Matrix.fromBlocks_smul, Matrix.fromBlocks_add]`. Simplify using the standard rewrite rules.
+-/
 theorem one_add_smul_fromBlocks (t : ℝ) (A B C D : Matrix (Fin n) (Fin n) ℂ) :
     (1 : M2 n) + t • fromBlocks A B C D = fromBlocks (1 + t • A) (t • B) (t • C) (1 + t • D) := by
   rw [← Matrix.fromBlocks_one, Matrix.fromBlocks_smul, Matrix.fromBlocks_add]; simp
 
+/- English proof (translation)
+Unfold `InG`. Establish `key : ((1 : M2 n) + t • P)ᴴ * JJ n * (1 + t • P) = JJ n + t • (Pᴴ * JJ n + JJ n * P) + (t * t) • (Pᴴ * JJ n * P)`. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_one, Matrix.conjTranspose_smul, star_trivial]`. Simplify using `only [add_mul, mul_add, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, smul_add, smul_smul, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[key, h1, h2]`. Simplify using the standard rewrite rules.
+-/
 theorem inG_one_add (P : M2 n) (h1 : Pᴴ * JJ n + JJ n * P = 0) (h2 : Pᴴ * JJ n * P = 0) (t : ℝ) :
     InG ((1 : M2 n) + t • P) := by
   unfold InG
@@ -54,12 +69,22 @@ theorem inG_one_add (P : M2 n) (h1 : Pᴴ * JJ n + JJ n * P = 0) (h2 : Pᴴ * JJ
   rw [key, h1, h2]
   simp
 
+/- English proof (translation)
+Unfold `InG JJ`. Rewrite using `[Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `[h1, h2]`.
+-/
 theorem inG_fromBlocks_diag (a d : Matrix (Fin n) (Fin n) ℂ) (h1 : aᴴ * d = 1) (h2 : dᴴ * a = 1) :
     InG (fromBlocks a 0 0 d) := by
   unfold InG JJ
   rw [Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]
   simp [h1, h2]
 
+/- English proof (translation)
+Establish `h : (1 : Matrix (Fin n) (Fin n) ℂ) + s • Matrix.single i i 1 = Matrix.diagonal (fun j => if j = i then 1 + s else 1)`. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Distinguish the cases in `hai : a = i`.
+
+Substitute `hai` using the available equality. Simplify using `[Matrix.single_apply]`. Simplify using `[Matrix.single_apply, hai, Ne.symm hai]`. Establish `hn : ¬ (i = a ∧ i = b)` using `fun h => hab (h.1.symm.trans h.2)`. Simplify using `[Matrix.single_apply, hn, hab, Matrix.one_apply_ne hab]`.
+
+Rewrite using `[h, Matrix.det_diagonal]`. Simplify using the standard rewrite rules.
+-/
 theorem det_one_add_smul_single_same (i : Fin n) (s : ℂ) :
     ((1 : Matrix (Fin n) (Fin n) ℂ) + s • Matrix.single i i 1).det = 1 + s := by
   have h : (1 : Matrix (Fin n) (Fin n) ℂ) + s • Matrix.single i i 1 =
@@ -81,9 +106,19 @@ def LawH (Θ : M2 n → ℂ) : Prop :=
 
 def lam (Y : M2 n) : ℂ := (n : ℂ) * (Y.toBlocks₁₁.trace - Y.toBlocks₂₂.trace)
 
+/- English proof (translation)
+Conclude with `(((hasDerivAt_id (0 : ℝ)).smul_const P).const_add (1 : M2 n)).congr_deriv (one_smul ℝ P)`.
+-/
 theorem hasDerivAt_affine (P : M2 n) : HasDerivAt (fun t : ℝ => (1 : M2 n) + t • P) P 0 := by
   exact (((hasDerivAt_id (0 : ℝ)).smul_const P).const_add (1 : M2 n)).congr_deriv (one_smul ℝ P)
 
+/- English proof (translation)
+Establish `hc1 : (fromBlocks 0 β 0 0 : M2 n)ᴴ * JJ n + JJ n * fromBlocks 0 β 0 0 = 0`. Simplify using `[JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_add, hβ]`. Establish `hc2 : (fromBlocks 0 β 0 0 : M2 n)ᴴ * JJ n * fromBlocks 0 β 0 0 = 0`. Simplify using `[JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, hβ]`. Establish `key` using `deriv_piece Θ x hd (fun t : ℝ => 1 + t • (fromBlocks 0 β 0 0 : M2 n)) _ (hasDerivAt_affine _) (by simp) (fun _ => (1 : ℂ)) 0 (hasDerivAt_const _ _) (Filter.Eventually.of_forall fun t => by`.
+
+Establish `h21 : ((1 : M2 n) + t • (fromBlocks 0 β 0 0 : M2 n)).toBlocks₂₁ = 0`. Rewrite using `[one_add_smul_fromBlocks]`. Simplify using the standard rewrite rules. Rewrite using `[hl _ x (inG_one_add _ hc1 hc2 t) h21 hx, one_add_smul_fromBlocks]`. Use the proof step `simp)`.
+
+Rewrite using `[key]`. Simplify using `[lam]`.
+-/
 theorem pieceN (Θ : M2 n → ℂ) (hl : LawH Θ) (x : M2 n) (hx : InG x) (hd : DifferentiableAt ℂ Θ x)
     (β : Matrix (Fin n) (Fin n) ℂ) (hβ : βᴴ = β) :
     fderiv ℂ Θ x (fromBlocks 0 β 0 0 * x) = lam (fromBlocks 0 β 0 0) * Θ x := by
@@ -104,6 +139,15 @@ theorem pieceN (Θ : M2 n → ℂ) (hl : LawH Θ) (x : M2 n) (hx : InG x) (hd : 
 
 def Pij (c : ℂ) (i j : Fin n) : M2 n := fromBlocks (c • Matrix.single i j 1) 0 0 (-(conj c) • Matrix.single j i 1)
 
+/- English proof (translation)
+Establish `hc1 : (Pij c i j)ᴴ * JJ n + JJ n * Pij c i j = 0`. Simplify using `[Pij, JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_add, Matrix.conjTranspose_smul, Matrix.conjTranspose_single, Complex.star_def]`. Establish `hc2 : (Pij c i j)ᴴ * JJ n * Pij c i j = 0`. Simplify using `[Pij, JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, Matrix.conjTranspose_smul, Matrix.conjTranspose_single, Complex.star_def, Matrix.single_mul_single_of_ne, hij, Ne.symm hij]`. Establish `hdet : ∀ t : ℝ, ((1 : Matrix (Fin n) (Fin n) ℂ) + t • (-(conj c) • Matrix.single j i 1)).det = 1`.
+
+Introduce `t`. Rewrite using `[← smul_assoc, Matrix.smul_single, smul_eq_mul, mul_one]`. Conclude with `Matrix.det_transvection_of_ne j i (Ne.symm hij) _`. Establish `key` using `deriv_piece Θ x hd (fun t : ℝ => 1 + t • Pij c i j) _ (hasDerivAt_affine _) (by simp) (fun _ => (1 : ℂ)) 0 (hasDerivAt_const _ _) (Filter.Eventually.of_forall fun t => by`. Establish `h21 : ((1 : M2 n) + t • Pij c i j).toBlocks₂₁ = 0`.
+
+Rewrite using `[Pij, one_add_smul_fromBlocks]`. Simplify using the standard rewrite rules. Rewrite using `[hl _ x (inG_one_add _ hc1 hc2 t) h21 hx, Pij, one_add_smul_fromBlocks, Matrix.toBlocks_fromBlocks₂₂, hdet]`. Use the proof step `simp)`. Rewrite using `[key]`.
+
+Simplify using `[lam, Pij, Matrix.trace_smul, Matrix.trace_single_eq_of_ne _ _ _ hij, Matrix.trace_single_eq_of_ne _ _ _ (Ne.symm hij)]`.
+-/
 theorem pieceOff (Θ : M2 n → ℂ) (hl : LawH Θ) (x : M2 n) (hx : InG x) (hd : DifferentiableAt ℂ Θ x)
     (c : ℂ) (i j : Fin n) (hij : i ≠ j) :
     fderiv ℂ Θ x (Pij c i j * x) = lam (Pij c i j) * Θ x := by
@@ -131,6 +175,9 @@ theorem pieceOff (Θ : M2 n → ℂ) (hl : LawH Θ) (x : M2 n) (hx : InG x) (hd 
   simp [lam, Pij, Matrix.trace_smul, Matrix.trace_single_eq_of_ne _ _ _ hij,
     Matrix.trace_single_eq_of_ne _ _ _ (Ne.symm hij)]
 
+/- English proof (translation)
+Simplify using `only [add_mul, mul_add, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, smul_add, smul_smul, Matrix.single_mul_single_same, add_smul]`. Simplify using `only [mul_comm v u]`. Normalize the expressions using the abelian group laws.
+-/
 theorem one_add_smul_single_mul (i : Fin n) (u v : ℂ) :
     ((1 : Matrix (Fin n) (Fin n) ℂ) + u • Matrix.single i i 1) * (1 + v • Matrix.single i i 1) =
       1 + (u + v + u * v) • Matrix.single i i 1 := by
@@ -139,6 +186,9 @@ theorem one_add_smul_single_mul (i : Fin n) (u v : ℂ) :
   simp only [mul_comm v u]
   abel
 
+/- English proof (translation)
+Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_one, Matrix.conjTranspose_smul, Matrix.conjTranspose_single, star_one, one_add_smul_single_mul]`. Establish `h0 : star a + b + star a * b = 0` using `by linear_combination h`. Rewrite using `[h0, zero_smul, add_zero]`.
+-/
 private theorem one_add_smul_single_conjTranspose_mul_eq_one (a b : ℂ) (h : (1 + star a) * (1 + b) = 1) (i : Fin n) :
     ((1 : Matrix (Fin n) (Fin n) ℂ) + a • Matrix.single i i 1)ᴴ * (1 + b • Matrix.single i i 1) = 1 := by
   rw [Matrix.conjTranspose_add, Matrix.conjTranspose_one, Matrix.conjTranspose_smul,
@@ -146,6 +196,25 @@ private theorem one_add_smul_single_conjTranspose_mul_eq_one (a b : ℂ) (h : (1
   have h0 : star a + b + star a * b = 0 := by linear_combination h
   rw [h0, zero_smul, add_zero]
 
+/- English proof (translation)
+Establish `e : ∀ w : ℂ, (1 : ℂ) + (w - 1) = w` using `fun w => by ring`. Establish `hu : HasDerivAt (fun t : ℝ => Complex.exp (↑t * c) - 1) c 0`. Establish `h` using `(((hasDerivAt_id' (0 : ℝ)).ofReal_comp).mul_const c).cexp.sub_const 1`. Conclude with `h.congr_deriv (by simp)`. Establish `hv : HasDerivAt (fun t : ℝ => Complex.exp (-↑t * conj c) - 1) (-(conj c)) 0`.
+
+Establish `h` using `(((hasDerivAt_id' (0 : ℝ)).ofReal_comp).neg.mul_const (conj c)).cexp.sub_const 1`. Conclude with `h.congr_deriv (by simp)`. Establish `hγ : HasDerivAt (fun t : ℝ => (1 : M2 n) + ((Complex.exp (↑t * c) - 1) • (fromBlocks (Matrix.single i i 1) 0 0 0 : M2 n) + (Complex.exp (-↑t * conj c) - 1) • (fromBlocks 0 0 0 (Matrix.single i i 1) : M2 n))) (Pij c i i) 0`. Establish `h` using `((hu.smul_const (fromBlocks (Matrix.single i i 1) 0 0 0 : M2 n)).add (hv.smul_const (fromBlocks 0 0 0 (Matrix.single i i 1) : M2 n))).const_add (1 : M2 n)`. Use `h.congr_deriv ?_` and prove the remaining obligations.
+
+Rewrite using `[Pij, Matrix.fromBlocks_smul, Matrix.fromBlocks_smul, Matrix.fromBlocks_add]`. Simplify using the standard rewrite rules. Establish `hform : ∀ t : ℝ, (1 : M2 n) + ((Complex.exp (↑t * c) - 1) • (fromBlocks (Matrix.single i i 1) 0 0 0 : M2 n) + (Complex.exp (-↑t * conj c) - 1) • (fromBlocks 0 0 0 (Matrix.single i i 1) : M2 n)) = fromBlocks (1 + (Complex.exp (↑t * c) - 1) • Matrix.single i i 1) 0 0 (1 + (Complex. …`. Introduce `t`. Rewrite using `[← Matrix.fromBlocks_one, Matrix.fromBlocks_smul, Matrix.fromBlocks_smul, Matrix.fromBlocks_add, Matrix.fromBlocks_add]`.
+
+Simplify using the standard rewrite rules. Establish `hG : ∀ t : ℝ, InG (fromBlocks (1 + (Complex.exp (↑t * c) - 1) • Matrix.single i i 1) 0 0 (1 + (Complex.exp (-↑t * conj c) - 1) • Matrix.single i i 1) : M2 n)`. Introduce `t`. Apply `inG_fromBlocks_diag` to reduce the goal to its premises. Apply `one_add_smul_single_conjTranspose_mul_eq_one` to reduce the goal to its premises.
+
+Rewrite using `[star_sub, star_one, e, e, Complex.star_def, ← Complex.exp_conj, ← Complex.exp_add, show (conj (↑t * c) + -↑t * conj c : ℂ) = 0 by rw [map_mul, Complex.conj_ofReal]; ring, Complex.exp_zero]`. Apply `one_add_smul_single_conjTranspose_mul_eq_one` to reduce the goal to its premises. Rewrite using `[star_sub, star_one, e, e, Complex.star_def, ← Complex.exp_conj, ← Complex.exp_add, show (conj (-↑t * conj c) + ↑t * c : ℂ) = 0 by`. Rewrite using `[map_mul, map_neg, Complex.conj_ofReal, Complex.conj_conj]`. Use the proof step `ring,`.
+
+Use the proof step `Complex.exp_zero]`. Establish `hf` using `(((hasDerivAt_id' (0 : ℝ)).const_mul (2 * (n : ℝ) * c.re)).exp).ofReal_comp`. Establish `key` using `deriv_piece Θ x hd _ _ hγ (by simp) _ _ hf (Filter.Eventually.of_forall fun t => by`. Establish `h21 : ((1 : M2 n) + ((Complex.exp (↑t * c) - 1) • (fromBlocks (Matrix.single i i 1) 0 0 0 : M2 n) + (Complex.exp (-↑t * conj c) - 1) • (fromBlocks 0 0 0 (Matrix.single i i 1) : M2 n))).toBlocks₂₁ = 0`. Rewrite using `[hform]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hl _ x (by rw [hform]; exact hG t) h21 hx, hform, Matrix.toBlocks_fromBlocks₂₂, det_one_add_smul_single_same, e, Complex.norm_exp]`. Use `congr 2`. Rewrite using `[← Real.rpow_intCast, ← Real.exp_mul]`. Use `congr 1`.
+
+Simplify using `only [Complex.mul_re, Complex.neg_re, Complex.ofReal_re, Complex.ofReal_im, Complex.neg_im, Complex.conj_re, Complex.conj_im]`. Use `push_cast`. Use the proof step `ring)`. Rewrite using `[key]`. Use `congr 1`.
+
+Simplify using `[lam, Pij, Matrix.trace_smul]`. Apply the tactic sequence `apply Complex.ext <;> simp <;> ring`.
+-/
 theorem pieceDiag (Θ : M2 n → ℂ) (hl : LawH Θ) (x : M2 n) (hx : InG x) (hd : DifferentiableAt ℂ Θ x)
     (c : ℂ) (i : Fin n) :
     fderiv ℂ Θ x (Pij c i i * x) = lam (Pij c i i) * Θ x := by
@@ -209,12 +278,20 @@ theorem pieceDiag (Θ : M2 n → ℂ) (hl : LawH Θ) (x : M2 n) (hx : InG x) (hd
   simp [lam, Pij, Matrix.trace_smul]
   apply Complex.ext <;> simp <;> ring
 
+/- English proof (translation)
+Establish `e1 : (Y + Y').toBlocks₁₁ = Y.toBlocks₁₁ + Y'.toBlocks₁₁` using `by ext; rfl`. Establish `e2 : (Y + Y').toBlocks₂₂ = Y.toBlocks₂₂ + Y'.toBlocks₂₂` using `by ext; rfl`. Simplify using `only [lam, e1, e2, Matrix.trace_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lam_add (Y Y' : M2 n) : lam (Y + Y') = lam Y + lam Y' := by
   have e1 : (Y + Y').toBlocks₁₁ = Y.toBlocks₁₁ + Y'.toBlocks₁₁ := by ext; rfl
   have e2 : (Y + Y').toBlocks₂₂ = Y.toBlocks₂₂ + Y'.toBlocks₂₂ := by ext; rfl
   simp only [lam, e1, e2, Matrix.trace_add]
   ring
 
+/- English proof (translation)
+Simplify using `only [lam]`. Establish `h1 : (c • Y).toBlocks₁₁ = c • Y.toBlocks₁₁` using `by ext; simp [Matrix.toBlocks₁₁]`. Establish `h2 : (c • Y).toBlocks₂₂ = c • Y.toBlocks₂₂` using `by ext; simp [Matrix.toBlocks₂₂]`. Rewrite using `[h1, h2, Matrix.trace_smul, Matrix.trace_smul]`. Simplify using `only [smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lam_smul (c : ℂ) (Y : M2 n) : lam (c • Y) = c * lam Y := by
   simp only [lam]
   have h1 : (c • Y).toBlocks₁₁ = c • Y.toBlocks₁₁ := by ext; simp [Matrix.toBlocks₁₁]
@@ -224,6 +301,9 @@ theorem lam_smul (c : ℂ) (Y : M2 n) : lam (c • Y) = c * lam Y := by
 def Gen (n : ℕ) : Set (M2 n) :=
   {Y | (∃ β : Matrix (Fin n) (Fin n) ℂ, βᴴ = β ∧ Y = fromBlocks 0 β 0 0) ∨ ∃ c i j, Y = Pij c i j}
 
+/- English proof (translation)
+Rewrite using `[Matrix.matrix_eq_sum_single M, map_sum]`. Conclude with `Submodule.sum_mem _ fun i _ => by rw [map_sum]; exact Submodule.sum_mem _ fun j _ => h i j _`.
+-/
 theorem sum_single_mem (W : Submodule ℂ (M2 n)) (Φ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] M2 n)
     (h : ∀ i j a, Φ (Matrix.single i j a) ∈ W) (M : Matrix (Fin n) (Fin n) ℂ) : Φ M ∈ W := by
   rw [Matrix.matrix_eq_sum_single M, map_sum]
@@ -239,6 +319,25 @@ def fb22 (n : ℕ) : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] M2 n where
   map_add' A B := by rw [Matrix.fromBlocks_add]; simp
   map_smul' c A := by rw [Matrix.fromBlocks_smul]; simp
 
+/- English proof (translation)
+Establish `hE1 : ∀ i j (a : ℂ), (fromBlocks (Matrix.single i j a) 0 0 0 : M2 n) ∈ Submodule.span ℂ (Gen n)`. Introduce `i j a`. Establish `h : (fromBlocks (Matrix.single i j a) 0 0 0 : M2 n) = (a / 2) • (Pij 1 i j - Complex.I • Pij Complex.I i j)`. Use extensionality with `(p|p) (q|q)`. Apply the tactic sequence `all_goals simp [Pij, Matrix.single_apply]`.
+
+Apply the tactic sequence `all_goals split_ifs`. Apply the tactic sequence `all_goals ring_nf`. Apply the tactic sequence `all_goals simp [Complex.I_sq]`. Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ _ (Submodule.sub_mem _ (Submodule.subset_span (Or.inr ⟨1, i, j, rfl⟩)) (Submodule.smul_mem _ _ (Submodule.subset_span (Or.inr ⟨Complex.I, i, j, rfl⟩))))`.
+
+Establish `hE2 : ∀ i j (a : ℂ), (fromBlocks 0 0 0 (Matrix.single i j a) : M2 n) ∈ Submodule.span ℂ (Gen n)`. Introduce `i j a`. Establish `h : (fromBlocks 0 0 0 (Matrix.single i j a) : M2 n) = (-a / 2) • (Pij 1 j i + Complex.I • Pij Complex.I j i)`. Use extensionality with `(p|p) (q|q)`. Apply the tactic sequence `all_goals simp [Pij, Matrix.single_apply]`.
+
+Apply the tactic sequence `all_goals split_ifs`. Apply the tactic sequence `all_goals ring_nf`. Apply the tactic sequence `all_goals simp [Complex.I_sq]`. Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ _ (Submodule.add_mem _ (Submodule.subset_span (Or.inr ⟨1, j, i, rfl⟩)) (Submodule.smul_mem _ _ (Submodule.subset_span (Or.inr ⟨Complex.I, j, i, rfl⟩))))`.
+
+Establish `hA : ∀ A, fb11 n A ∈ Submodule.span ℂ (Gen n)` using `sum_single_mem _ (fb11 n) (fun i j a => hE1 i j a)`. Establish `hD : ∀ D, fb22 n D ∈ Submodule.span ℂ (Gen n)` using `sum_single_mem _ (fb22 n) (fun i j a => hE2 i j a)`. Establish `hB : ∀ B : Matrix (Fin n) (Fin n) ℂ, (fromBlocks 0 B 0 0 : M2 n) ∈ Submodule.span ℂ (Gen n)`. Introduce `B`. Establish `hH1 : ((1 / 2 : ℂ) • (B + Bᴴ))ᴴ = (1 / 2 : ℂ) • (B + Bᴴ)`.
+
+Use extensionality with `p q`. Simplify using `[Matrix.conjTranspose_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hH2 : ((-Complex.I / 2) • (B - Bᴴ))ᴴ = (-Complex.I / 2) • (B - Bᴴ)`. Use extensionality with `p q`.
+
+Simplify using `[Matrix.conjTranspose_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsplit : (fromBlocks 0 B 0 0 : M2 n) = fromBlocks 0 ((1 / 2 : ℂ) • (B + Bᴴ)) 0 0 + Complex.I • fromBlocks 0 ((-Complex.I / 2) • (B - Bᴴ)) 0 0`. Use extensionality with `(p|p) (q|q)`. Apply the tactic sequence `all_goals simp`.
+
+Put the polynomial expressions in normal form. Simplify using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit]`. Conclude with `Submodule.add_mem _ (Submodule.subset_span (Or.inl ⟨_, hH1, rfl⟩)) (Submodule.smul_mem _ _ (Submodule.subset_span (Or.inl ⟨_, hH2, rfl⟩)))`.
+
+Establish `hYe : Y = fb11 n Y.toBlocks₁₁ + fromBlocks 0 Y.toBlocks₁₂ 0 0 + fb22 n Y.toBlocks₂₂` using `by conv_lhs => rw [← Matrix.fromBlocks_toBlocks Y, hY]`. Simplify using `[fb11, fb22, Matrix.fromBlocks_add]`. Rewrite using `[hYe]`. Conclude with `Submodule.add_mem _ (Submodule.add_mem _ (hA _) (hB _)) (hD _)`.
+-/
 theorem mem_span_gen (Y : M2 n) (hY : Y.toBlocks₂₁ = 0) : Y ∈ Submodule.span ℂ (Gen n) := by
   have hE1 : ∀ i j (a : ℂ), (fromBlocks (Matrix.single i j a) 0 0 0 : M2 n) ∈ Submodule.span ℂ (Gen n) := by
     intro i j a
@@ -296,6 +395,15 @@ theorem mem_span_gen (Y : M2 n) (hY : Y.toBlocks₂₁ = 0) : Y ∈ Submodule.sp
   rw [hYe]
   exact Submodule.add_mem _ (Submodule.add_mem _ (hA _) (hB _)) (hD _)
 
+/- English proof (translation)
+Introduce `n Θ Ω hΩ hsub hdiff hlaw x hx Y hY`. Establish `hd : DifferentiableAt ℂ Θ x` using `hdiff.differentiableAt (hΩ.mem_nhds (hsub hx))`. Use `show fderiv ℂ Θ x (Y * x) = lam Y * Θ x`. Use `Submodule.span_induction (p := fun Y _ => fderiv ℂ Θ x (Y * x) = lam Y * Θ x) ?_ ?_ ?_ ?_ (mem_span_gen Y hY)` and prove the remaining obligations. Introduce `Z hZ`.
+
+Break down `hZ with ⟨β, hβ, rfl⟩ | ⟨c, i, j, rfl⟩` into its components or cases. Conclude with `pieceN Θ hlaw x hx hd β hβ`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Conclude with `pieceDiag Θ hlaw x hx hd c i`.
+
+Conclude with `pieceOff Θ hlaw x hx hd c i j hij`. Establish `h0 : lam (0 : M2 n) = 0` using `by simpa using lam_smul 0 (0 : M2 n)`. Rewrite using `[zero_mul, map_zero, h0, zero_mul]`. Introduce `a b _ _ ha hb`. Rewrite using `[add_mul, map_add, ha, hb, lam_add, add_mul]`.
+
+Introduce `a b _ hb`. Rewrite using `[smul_mul_assoc, map_smul, hb, lam_smul, smul_eq_mul, mul_assoc]`.
+-/
 theorem lawDeriv : LawDeriv := by
   intro n Θ Ω hΩ hsub hdiff hlaw x hx Y hY
   have hd : DifferentiableAt ℂ Θ x := hdiff.differentiableAt (hΩ.mem_nhds (hsub hx))

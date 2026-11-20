@@ -9,12 +9,18 @@ namespace GlobalTheory.CompanionTheory.SW.PiLocalization₂.VecFree
 
 variable {K : Type} [CommRing K] {M n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_apply, Fin.sum_univ_succ]`. Simplify using `[vec]`.
+-/
 theorem sum_vec_zero (α : K) (c : Fin n → K) (X : Fin n → Fin M → K) (g : Fin (n + 1) → K) :
     (∑ a, g a • (vec α c X : Fin (n + 1) → Fin (M + 1) → K) a) 0
       = g 0 * α + ∑ j : Fin n, g j.succ * c j := by
   rw [Finset.sum_apply, Fin.sum_univ_succ]
   simp [vec]
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_apply, Fin.sum_univ_succ, Finset.sum_apply]`. Simplify using `[vec]`.
+-/
 theorem sum_vec_succ (α : K) (c : Fin n → K) (X : Fin n → Fin M → K) (g : Fin (n + 1) → K)
     (i : Fin M) :
     (∑ a, g a • (vec α c X : Fin (n + 1) → Fin (M + 1) → K) a) i.succ
@@ -22,6 +28,19 @@ theorem sum_vec_succ (α : K) (c : Fin n → K) (X : Fin n → Fin M → K) (g :
   rw [Finset.sum_apply, Fin.sum_univ_succ, Finset.sum_apply]
   simp [vec]
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff, Fintype.linearIndependent_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h w hw j`. Take `⟨β, hβ⟩` from `hα.exists_left_inv`. Establish `key` using `h (Fin.cons (-(∑ j : Fin n, w j * c j) * β) w) (by`.
+
+Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[sum_vec_zero]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, Pi.zero_apply]`. Rewrite using `[mul_assoc, hβ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[sum_vec_succ]`. Simplify using `only [Fin.cons_succ, Pi.zero_apply]`. Rewrite using `[hw]`. Use the proof step `rfl) j.succ`.
+
+Simplify using `using key`. Introduce `h w hw`. Establish `hs : ∀ j : Fin n, w j.succ = 0`. Use `h (fun j => w j.succ) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Use `congrFun hw i.succ` as an intermediate fact. Rewrite `this` using `[sum_vec_succ]`. Then use the resulting hypothesis. Establish `h0 : w 0 = 0`. Use `congrFun hw 0` as an intermediate fact. Rewrite `this` using `[sum_vec_zero]`.
+
+Simplify using `only [hs, zero_mul, Finset.sum_const_zero, add_zero, Pi.zero_apply] at this`. Conclude with `(hα.mul_left_eq_zero).1 this`. Introduce `a`. Use `Fin.cases h0 hs a` and prove the remaining obligations.
+-/
 theorem linearIndependent_vec_iff (K : Type) [CommRing K] (M n : ℕ) (α : K) (hα : IsUnit α)
     (c : Fin n → K) (X : Fin n → Fin M → K) :
     LinearIndependent K (vec α c X : Fin (n + 1) → Fin (M + 1) → K) ↔ LinearIndependent K X := by

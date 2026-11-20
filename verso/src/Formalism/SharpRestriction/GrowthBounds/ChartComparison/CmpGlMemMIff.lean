@@ -48,6 +48,9 @@ def cmpB (β : X.Cb) (x : V) : (X.gat β).Fn :=
 
 def cmpGl (x : V) : G.Fn := fun i L => X.cmpB e pos (X.eC.symm i).1 x (X.eC.symm i).2 L
 
+/- English proof (translation)
+Unfold `cmpGl`. Rewrite using `[Equiv.symm_apply_apply]`.
+-/
 theorem cmpGl_eC (x : V) (β : X.Cb) (a : X.cmpt β) (L : G.P.Tup) :
     X.cmpGl e pos x (X.eC ⟨β, a⟩) L = X.cmpB e pos β x a L := by
   unfold cmpGl
@@ -74,6 +77,9 @@ structure Hyp (tE : Tau → E →+* LL) (β : X.Cb) : Prop where
 
 variable {X e pos}
 
+/- English proof (translation)
+The claim follows from `valUniq_of hc (Formalism.L2.G.evInj_pf emb (X.gat β) (X.A β) pos) H.ptEx`.
+-/
 theorem Hyp.uniq {tE : Tau → E →+* LL} {β : X.Cb} (H : X.Hyp e pos tE β)
     (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) :
     ValUniq (X.S β) emb embLL (X.gat β) (X.A β) pos (X.embV β) (X.yc β) :=
@@ -83,9 +89,15 @@ def cmpBL {tE : Tau → E →+* LL} {β : X.Cb} (H : X.Hyp e pos tE β) (hc : �
     V →ₛₗ[e] (X.gat β).Fn :=
   cmpL (G := X.gat β) (e := e) H.ex (H.uniq hc)
 
+/- English proof (translation)
+The claim follows from `(cmpBL H hc).map_add x y`.
+-/
 theorem cmpB_add {tE : Tau → E →+* LL} {β : X.Cb} (H : X.Hyp e pos tE β) (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x))
     (x y : V) : X.cmpB e pos β (x + y) = X.cmpB e pos β x + X.cmpB e pos β y := (cmpBL H hc).map_add x y
 
+/- English proof (translation)
+The claim follows from `(cmpBL H hc).map_smulₛₗ a x`.
+-/
 theorem cmpB_smul {tE : Tau → E →+* LL} {β : X.Cb} (H : X.Hyp e pos tE β) (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x))
     (a : LL) (x : V) : X.cmpB e pos β (a • x) = e a • X.cmpB e pos β x := (cmpBL H hc).map_smulₛₗ a x
 
@@ -99,13 +111,26 @@ def cmpGlL (tE : Tau → E →+* LL) (hc : ∀ τ x, emb τ (σ x) = starRingEnd
     funext i L
     exact congrFun (congrFun (cmpB_smul (H (X.eC.symm i).1) hc a x) (X.eC.symm i).2) L
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cmpGlL_apply (tE : Tau → E →+* LL) (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) (H : ∀ β, X.Hyp e pos tE β)
     (x : V) : cmpGlL tE hc H x = X.cmpGl e pos x := rfl
 
+/- English proof (translation)
+Introduce `i L` and use `cmpC_rat (S := X.S (X.eC.symm i).1) (G := X.gat (X.eC.symm i).1) (e := e) (A := X.A (X.eC.symm i).1) (pos := pos) (embV := X.embV (X.eC.symm i).1) (yc := X.yc (X.eC.symm i).1) x (X.eC.symm i).2 L`.
+-/
 theorem cmpGl_rat (x : V) : RatFn G e (X.cmpGl e pos x) := fun i L =>
   cmpC_rat (S := X.S (X.eC.symm i).1) (G := X.gat (X.eC.symm i).1) (e := e) (A := X.A (X.eC.symm i).1) (pos := pos)
     (embV := X.embV (X.eC.symm i).1) (yc := X.yc (X.eC.symm i).1) x (X.eC.symm i).2 L
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c z'`. Take `⟨i, g, γ, κ, hγ, hpt⟩` from `H.ptAll c`. Take `⟨z, hz⟩` from `frames_tr' emb hc γ hγ z'`. Set `L : G.P.Tup` to `fun v => colSpan (G.P.W v) (g v : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v))`. Establish `hL : G.P.IsLatTup L` using `fun v => ⟨_, (Matrix.isUnit_iff_isUnit_det _).1 (g v).isUnit, rfl⟩`.
+
+Establish `h0 : MvPolynomial.map e (valC (X.S β) emb embLL (X.gat β) (X.A β) pos (X.embV β) (X.yc β) x i L) = 0`. Use `congrFun (congrFun hx i) L` as an intermediate fact. Unfold `cmpB cmpC at this`. Rewrite `this` using `[if_pos hL]`. Then use the resulting hypothesis. Establish `h1 : valC (X.S β) emb embLL (X.gat β) (X.A β) pos (X.embV β) (X.yc β) x i L = 0` using `MvPolynomial.map_injective e e.injective (by rw [h0, map_zero])`.
+
+Establish `h2` using `(valC_spec H.ex x i L hL).2 g (fun _ => rfl) c γ hγ κ hpt z z' hz`. Rewrite `h2` using `[h1, map_zero, map_zero]`. Establish `h3 : ((X.S β).chi κ : ℂ) ≠ 0` using `((X.S β).chi κ).ne_zero`. Conclude with `(mul_eq_zero.1 h2.symm).resolve_left h3`.
+-/
 theorem embV_zero_of {tE : Tau → E →+* LL} {β : X.Cb} (H : X.Hyp e pos tE β)
     (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) (x : V) (hx : X.cmpB e pos β x = 0) : X.embV β x = 0 := by
   funext c z'
@@ -124,6 +149,9 @@ theorem embV_zero_of {tE : Tau → E →+* LL} {β : X.Cb} (H : X.Hyp e pos tE �
   have h3 : ((X.S β).chi κ : ℂ) ≠ 0 := ((X.S β).chi κ).ne_zero
   exact (mul_eq_zero.1 h2.symm).resolve_left h3
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero _).2 fun x hx => hinj x fun β => embV_zero_of (H β) hc x ?_` and prove the remaining obligations. Use function extensionality and compare the values at `a L`. Rewrite using `[← X.cmpGl_eC e pos x β a L]`. Conclude with `congrFun (congrFun hx (X.eC ⟨β, a⟩)) L`.
+-/
 theorem cmpGl_inj (tE : Tau → E →+* LL) (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) (H : ∀ β, X.Hyp e pos tE β)
     (hinj : ∀ x : V, (∀ β, X.embV β x = 0) → x = 0) : Function.Injective (cmpGlL tE hc H) := by
   refine (injective_iff_map_eq_zero _).2 fun x hx => hinj x fun β => embV_zero_of (H β) hc x ?_
@@ -131,6 +159,11 @@ theorem cmpGl_inj (tE : Tau → E →+* LL) (hc : ∀ τ x, emb τ (σ x) = star
   rw [← X.cmpGl_eC e pos x β a L]
   exact congrFun (congrFun hx (X.eC ⟨β, a⟩)) L
 
+/- English proof (translation)
+Unfold `GAtP.M GAtP.funMod`. Simplify using `only [Submodule.mem_pi, Set.mem_univ, forall_true_left]`. Prove the components needed by the constructor for the conclusion. Introduce `h β a`. Conclude with `h (X.eC ⟨β, a⟩)`.
+
+Introduce `h i`. Take `⟨⟨β, a⟩, rfl⟩` from `X.eC.surjective i`. Conclude with `h β a`.
+-/
 theorem mem_M_iff (Fn : G.Fn) : Fn ∈ G.M ↔ ∀ β, (fun a : X.cmpt β => Fn (X.eC ⟨β, a⟩)) ∈ (X.gat β).M := by
   unfold GAtP.M GAtP.funMod
   simp only [Submodule.mem_pi, Set.mem_univ, forall_true_left]
@@ -141,6 +174,11 @@ theorem mem_M_iff (Fn : G.Fn) : Fn ∈ G.M ↔ ∀ β, (fun a : X.cmpt β => Fn 
     obtain ⟨⟨β, a⟩, rfl⟩ := X.eC.surjective i
     exact h β a
 
+/- English proof (translation)
+Rewrite using `[X.mem_M_iff]`. Use `forall_congr' fun β => ?_` and prove the remaining obligations. Establish `h1 : (fun a : X.cmpt β => X.cmpGl e pos x (X.eC ⟨β, a⟩)) = cmpC (X.S β) emb embLL (X.gat β) e (X.A β) pos (X.embV β) (X.yc β) x`. Use function extensionality and compare the values at `a L`. Conclude with `X.cmpGl_eC e pos x β a L`.
+
+Rewrite using `[h1]`. Conclude with `cmpC_mem_M_iff tE htE hc (H β).std (H β).actB (H β).ex (H β).pos_emb (H β).chi (Formalism.L2.G.evInj_pf emb (X.gat β) (X.A β) pos) (H β).ptEx (H β).ptAll (H β).gamU (H β).away (IntAt β) (hloc β) x`.
+-/
 theorem cmpGl_mem_M_iff (tE : Tau → E →+* LL) (htE : ∀ τ x, embLL (tE τ x) = emb τ x)
     (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) (H : ∀ β, X.Hyp e pos tE β)
     (IntAt : ∀ β, V → X.cls β → Prop)

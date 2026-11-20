@@ -15,6 +15,31 @@ open scoped Matrix nonZeroDivisors
 
 namespace GlobalTheory.FrameUnif
 
+/- English proof (translation)
+Establish `hcc : ∀ τ : E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ` using `fun τ => ComplexEmbedding.involutive_conjugate E τ`. Establish `hf : ∀ s : Σ τ, Fin (m τ), ∃ t : Ψ × Fin r, (ρ s.1 ∈ Ψ ∧ t.1.1 = ρ s.1 ∧ (t.2 : ℕ) = q + s.2) ∨ (ρ s.1 ∉ Ψ ∧ t.1.1 = ComplexEmbedding.conjugate (ρ s.1) ∧ (t.2 : ℕ) = q - 1 - s.2 ∧ (s.2 : ℕ) < q)`. Introduce and unpack `⟨τ, i⟩`. Establish `hi` using `i.2`. Distinguish the cases in `h : ρ τ ∈ Ψ`.
+
+Use `hp τ h` as an intermediate fact. Conclude with `⟨(⟨ρ τ, h⟩, ⟨q + i, by omega⟩), Or.inl ⟨h, rfl, rfl⟩⟩`. Use `hq τ h` as an intermediate fact. Establish `h' : ComplexEmbedding.conjugate (ρ τ) ∈ Ψ`. Assume the negation of the conclusion as `h'`.
+
+Conclude with `h ((hΨ _).2 h')`. Conclude with `⟨(⟨_, h'⟩, ⟨q - 1 - i, by omega⟩), Or.inr ⟨h, rfl, rfl, by show (i : ℕ) < q; omega⟩⟩`. Use `choose f hf using hf`. Establish `hext : ∀ s s' : Σ τ, Fin (m τ), ρ s.1 = ρ s'.1 → (s.2 : ℕ) = s'.2 → s = s'`. Introduce and unpack `⟨τ, i⟩ ⟨τ', i'⟩ h1 h2`.
+
+Take `rfl : τ = τ'` from `hρ.1 h1`. Take `rfl : i = i'` from `Fin.ext h2`. Both sides reduce to the same expression. Use `⟨Equiv.ofBijective f ⟨?_, ?_⟩, hf⟩` and prove the remaining obligations. Introduce `s s' hss`.
+
+Establish `h1` using `hf s`. Establish `h2` using `hf s'`. Rewrite `h2` using `[← hss]`. Apply the tactic sequence `rcases h1 with ⟨a1, b1, c1⟩ | ⟨a1, b1, c1, d1⟩ <;> rcases h2 with ⟨a2, b2, c2⟩ | ⟨a2, b2, c2, d2⟩`. Conclude with `hext _ _ (b1.symm.trans b2) (by omega)`.
+
+Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Use `hext _ _ ?_ (by omega)` and prove the remaining obligations. Rewrite using `[← hcc (ρ s.1), ← b1, b2, hcc]`. Introduce and unpack `⟨⟨τ, hτ⟩, j⟩`.
+
+Establish `hj` using `j.2`. Distinguish the cases in `h : (j : ℕ) < q`. Take `⟨τ0, h0⟩` from `hρ.2 (ComplexEmbedding.conjugate τ)`. Establish `hn : ρ τ0 ∉ Ψ` using `h0 ▸ (hΨ τ).1 hτ`. Use `hq τ0 hn` as an intermediate fact.
+
+Use `⟨⟨τ0, ⟨q - 1 - j, by omega⟩⟩, ?_⟩` and prove the remaining obligations. Break down `hf ⟨τ0, ⟨q - 1 - j, by omega⟩⟩ with ⟨a, -⟩ | ⟨-, b, c, -⟩` into its components or cases. Conclude with `absurd a hn`. Use `Prod.ext (Subtype.ext ?_) (Fin.ext ?_)` and prove the remaining obligations. Rewrite using `[b]`.
+
+Use `show ComplexEmbedding.conjugate (ρ τ0) = τ`. Rewrite using `[h0, hcc]`. Rewrite using `[c]`. Use `show q - 1 - (q - 1 - j) = j`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨τ0, h0⟩` from `hρ.2 τ`. Establish `hn : ρ τ0 ∈ Ψ` using `h0 ▸ hτ`. Use `hp τ0 hn` as an intermediate fact. Use `⟨⟨τ0, ⟨j - q, by omega⟩⟩, ?_⟩` and prove the remaining obligations. Break down `hf ⟨τ0, ⟨j - q, by omega⟩⟩ with ⟨-, b, c⟩ | ⟨a, -⟩` into its components or cases.
+
+Use `Prod.ext (Subtype.ext ?_) (Fin.ext ?_)` and prove the remaining obligations. Rewrite using `[b]`. Conclude with `h0`. Rewrite using `[c]`. Use `show q + (j - q) = j`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `absurd hn a`.
+-/
 theorem exists_letter_equiv {E : Type} [Field E] (Ψ : Finset (E →+* ℂ))
     (hΨ : ∀ τ : E →+* ℂ, τ ∈ Ψ ↔ ComplexEmbedding.conjugate τ ∉ Ψ) (p q r : ℕ) (hr : r = p + q)
     (ρ : (E →+* ℂ) → (E →+* ℂ)) (hρ : Function.Bijective ρ) (m : (E →+* ℂ) → ℕ)
@@ -77,6 +102,29 @@ theorem exists_letter_equiv {E : Type} [Field E] (Ψ : Finset (E →+* ℂ))
         · rw [c]; show q + (j - q) = j; omega
       · exact absurd hn a
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ g e F r M hσ hB hN k`. Take `⟨hbij, hrt, -, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hσ`. Take `⟨hp, hq⟩` from `F.sig k`. Take `⟨hp0, hty⟩` from `hB.type k`. Establish `hcc : ∀ τ : E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ` using `fun τ => ComplexEmbedding.involutive_conjugate E τ`.
+
+Use `⟨?_, hp0.trans hq.symm, by rw [hp, hq]; exact hB.rank, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨f, hf⟩` from `exists_letter_equiv (M.X k).Ψ (M.X k).cmType Dw.p Dw.q r hB.rank (relab c σ) hbij Dw.mult (fun τ h => by unfold Datum.mult; rw [if_pos ((hrt τ).1 ((hty _).1 h))]) (fun τ h => by unfold Datum.mult; rw [if_neg (fun h' => h ((hty _).2 ((hrt τ).2 h')))])`. Take `⟨idx, hi⟩ : ∃ idx : Fin g ≃ (M.X k).Ψ × Fin r, ∀ j, (relab c σ (e j).1 ∈ (M.X k).Ψ ∧ (idx j).1.1 = relab c σ (e j).1 ∧ ((idx j).2 : ℕ) = Dw.q + (e j).2) ∨ (relab c σ (e j).1 ∉ (M.X k).Ψ ∧ (idx j).1.1 = ComplexEmbedding.conjugate (relab c σ (e j).1) ∧ ((idx j).2 : ℕ) = Dw.q - 1 - …` from `⟨e.trans f, fun j => hf (e j)⟩`. Rewrite using `[hq]`. Use `⟨idx, fun j => ?_, fun j => ?_, fun x v j => ?_⟩` and prove the remaining obligations.
+
+Break down `hi j with ⟨a, b, c'⟩ | ⟨a, b, c', d⟩` into its components or cases. Rewrite using `[if_neg (by omega), b]`. Rewrite using `[if_pos (by omega), b, hcc]`. Break down `hi j with ⟨a, b, c'⟩ | ⟨a, b, c', d⟩` into its components or cases. Rewrite using `[if_neg (by omega), c']`.
+
+Rewrite using `[if_pos (by omega), c']`. Establish `h` using `hi j`. Generalize the expression as in `idx j = t at h ⊢`. Take `⟨⟨τ, hτ⟩, ⟨n, hn⟩⟩` from `t`. Simplify using `only at h ⊢`.
+
+Rewrite `h`, the goal using `[← hp0]`. Break down `h with ⟨a, rfl, rfl⟩ | ⟨a, rfl, rfl, d⟩` into its components or cases. Rewrite using `[if_neg (by omega)]`. Unfold `perFr`. Rewrite using `[dif_pos a, dif_pos hn]`.
+
+Rewrite using `[if_pos (by omega)]`. Unfold `perFr`. Rewrite using `[dif_neg a, dif_pos (show conjEmb (relab c σ (e j).1) ∈ (M.X k).Ψ from hτ), dif_pos hn]`. Both sides reduce to the same expression. Establish `h` using `(M.X k).ξ0_im`.
+
+Unfold `cc at h ⊢`. Rewrite using `[map_neg, h]`. Introduce `τ hτ`. Use `hN k τ hτ` as an intermediate fact. Rewrite using `[map_neg, Complex.neg_im]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce `φ hφ`. Establish `hrange : LinearMap.range φ = (M.X k).Λ`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[hφ]`. Conclude with `(M.φ k a).2`. Introduce `hy`. Conclude with `⟨(M.φ k).symm ⟨y, hy⟩, by rw [hφ, LinearEquiv.apply_symm_apply]⟩`.
+
+Use `⟨hrange, ?_, ?_, (M.X k).Gm_herm, (M.X k).Gm_det, fun x y => ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Rewrite `hab` using `[hφ, hφ]`. Conclude with `(M.φ k).injective (Subtype.ext hab)`. Rewrite using `[← LinearMap.coe_range, hrange]`.
+
+Conclude with `(M.X k).Λ_span`. Rewrite using `[hφ, hφ]`. Conclude with `hB.ef k x y`.
+-/
 theorem letter_column_dictionary : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1)) (r : ℕ) (M : ModelsOf F r), GoodEmb c σ → ModelBase M → NegXi M → ∀ k, (∃ idx : Fin g ≃ (M.X k).Ψ × Fin r, (∀ j, relab c σ (e j).1 = if ((idx j).2 : ℕ) < (F.Di k).q then ComplexEmbedding.conjugate (idx j).1.1 else (idx j).1.1) ∧ (∀ j, ((idx j).2 : ℕ) = if ((idx j).2 : ℕ) < (F.Di k).q then (F.Di k).q - 1 - (e j).2 else (F.Di k).q + (e j).2) ∧ ∀ (x : Frame (M.X k).Ψ r) (v : Fin r → E) j, perFr (M.X k) x v (relab c σ (e j).1) (e j).2 = if ((idx j).2 : ℕ) < (F.Di k).q then hermC (idx j).1.1 (M.X k).Gm (col (mat x (idx j).1) (idx j).2) (Data.emb (idx j).1.1 v) else ((mat x (idx j).1)⁻¹ *ᵥ Data.emb (idx j).1.1 v) (idx j).2) ∧ (M.X k).p0 = (F.Di k).q ∧ r = (F.Di k).p + (F.Di k).q ∧ cc (-(M.X k).ξ0) = -(-(M.X k).ξ0) ∧ (∀ τ ∈ (M.X k).Ψ, 0 < (τ (-(M.X k).ξ0)).im) ∧ ∀ φ : (F.Di k).La →ₗ[𝓞 E] (Fin r → E), (∀ a, φ a = (M.φ k a : Fin r → E)) → LinearMap.range φ = (M.X k).Λ ∧ (Function.Injective φ ∧ Submodule.span E (Set.range φ) = ⊤ ∧ (∀ a b, cc ((M.X k).Gm a b) = (M.X k).Gm b a) ∧ (M.X k).Gm.det ≠ 0 ∧ ∀ x y, (((F.Di k).EF x y : ℤ) : ℚ) = Algebra.trace ℚ E (-(M.X k).ξ0 * herm (M.X k).Gm (φ x) (φ y))) := by
   intro E _ _ _ H Dw l Xo c σ g e F r M hσ hB hN k
   obtain ⟨hbij, hrt, -, -⟩ := GlobalTheory.Relab.relab_good E H l c σ hσ

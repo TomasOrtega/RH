@@ -7,5 +7,8 @@ open scoped TensorProduct ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LatticeLocal.wAt_mem_latO | exact GlobalTheory.LatticeLocal.wAt_mem_latO | (intros; apply GlobalTheory.LatticeLocal.wAt_mem_latO <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.weilMatrixComponentAtPlace_mem_completedLattice : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (P : FinPl D → Prop) (u : WO S T), u ∈ latO S T ΛS ΛT P → ∀ p : Place D, wAt p u ∈ (latO S T ΛS ΛT fun v => P v ∧ Sum.inl v = p) ∧ u - wAt p u ∈ (latO S T ΛS ΛT fun v => P v ∧ Sum.inl v ≠ p) ∧ ((∀ v, P v → Sum.inl v ≠ p) → wAt p u = 0) := by
   first | exact @GlobalTheory.LatticeLocal.wAt_mem_latO | exact GlobalTheory.LatticeLocal.wAt_mem_latO | (intros; apply GlobalTheory.LatticeLocal.wAt_mem_latO <;> assumption)

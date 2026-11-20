@@ -15,8 +15,14 @@ def multiDiff {ι : Type*} [Fintype ι] (g : ι → G) (φ : G → M) : G → M 
 
 def DiffVanish (n : ℕ) (φ : G → M) : Prop := ∀ g : Fin n → G, multiDiff g φ = 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bwdDiff_apply (g : G) (φ : G → M) (x : G) : bwdDiff g φ x = φ x - φ (x - g) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem multiDiff_apply {ι : Type*} [Fintype ι] (g : ι → G) (φ : G → M) (x : G) :
     multiDiff g φ x = ∑ S : Finset ι, (-1 : ℤ) ^ S.card • φ (x - ∑ i ∈ S, g i) := rfl
 
@@ -35,18 +41,30 @@ noncomputable def shiftAct (G M : Type*) [AddCommGroup G] [AddCommGroup M] :
 
 noncomputable def diffElt (g : G) : AddMonoidAlgebra ℤ G := 1 - AddMonoidAlgebra.of' ℤ G g
 
+/- English proof (translation)
+Simplify using `[shiftAct, shiftRep]`.
+-/
 theorem shiftAct_of (g : G) (φ : G → M) (x : G) :
     shiftAct G M (AddMonoidAlgebra.of' ℤ G g) φ x = φ (x - g) := by
   simp [shiftAct, shiftRep]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[diffElt, map_sub, map_one, LinearMap.sub_apply, Pi.sub_apply, shiftAct_of]`. Both sides reduce to the same expression.
+-/
 theorem shiftAct_diffElt (g : G) (φ : G → M) : shiftAct G M (diffElt g) φ = bwdDiff g φ := by
   ext x
   rw [diffElt, map_sub, map_one, LinearMap.sub_apply, Pi.sub_apply, shiftAct_of]; rfl
 
+/- English proof (translation)
+Simplify using `[AddMonoidAlgebra.single_mul_single]`.
+-/
 theorem of'_add (a b : G) : AddMonoidAlgebra.of' ℤ G (a + b) =
     AddMonoidAlgebra.of' ℤ G a * AddMonoidAlgebra.of' ℤ G b := by
   simp [AddMonoidAlgebra.single_mul_single]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [AddMonoidAlgebra.one_def]`. Consider the case `insert a s ha ih => rw [sum_insert ha, prod_insert ha, of'_add, ih]`.
+-/
 theorem of'_sum {ι : Type*} (s : Finset ι) (g : ι → G) :
     AddMonoidAlgebra.of' ℤ G (∑ i ∈ s, g i) = ∏ i ∈ s, AddMonoidAlgebra.of' ℤ G (g i) := by
   classical
@@ -54,18 +72,32 @@ theorem of'_sum {ι : Type*} (s : Finset ι) (g : ι → G) :
   | empty => simp [AddMonoidAlgebra.one_def]
   | insert a s ha ih => rw [sum_insert ha, prod_insert ha, of'_add, ih]
 
+/- English proof (translation)
+Simplify using `[diffElt, AddMonoidAlgebra.one_def]`.
+-/
 theorem diffElt_zero : diffElt (0 : G) = 0 := by
   simp [diffElt, AddMonoidAlgebra.one_def]
 
+/- English proof (translation)
+Simplify using `only [diffElt, of'_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem diffElt_add (a b : G) :
     diffElt (a + b) = diffElt a + diffElt b - diffElt a * diffElt b := by
   simp only [diffElt, of'_add]; ring
 
+/- English proof (translation)
+Establish `: AddMonoidAlgebra.of' ℤ G (-a) * AddMonoidAlgebra.of' ℤ G a = 1`. Rewrite using `[← of'_add]`. Simplify using `[AddMonoidAlgebra.one_def]`. Simplify using `only [diffElt]`. Take the linear combination `(-1 : AddMonoidAlgebra ℤ G) * this`.
+-/
 theorem diffElt_neg (a : G) : diffElt (-a) = -(AddMonoidAlgebra.of' ℤ G (-a)) * diffElt a := by
   have : AddMonoidAlgebra.of' ℤ G (-a) * AddMonoidAlgebra.of' ℤ G a = 1 := by
     rw [← of'_add]; simp [AddMonoidAlgebra.one_def]
   simp only [diffElt]; linear_combination (-1 : AddMonoidAlgebra ℤ G) * this
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [diffElt, sub_eq_add_neg]`. Rewrite using `[prod_one_add, powerset_univ, map_sum, LinearMap.sum_apply, Finset.sum_apply, multiDiff_apply]`. Use `sum_congr rfl fun S _ ↦ ?_` and prove the remaining obligations. Rewrite using `[prod_neg, ← of'_sum]`.
+
+Establish `: (-1 : AddMonoidAlgebra ℤ G) ^ S.card * AddMonoidAlgebra.of' ℤ G (∑ i ∈ S, g i) = ((-1 : ℤ) ^ S.card) • AddMonoidAlgebra.of' ℤ G (∑ i ∈ S, g i)`. Rewrite using `[zsmul_eq_mul]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[this, map_smul, LinearMap.smul_apply, Pi.smul_apply, shiftAct_of]`.
+-/
 theorem multiDiff_eq_shiftAct {ι : Type*} [Fintype ι] (g : ι → G) (φ : G → M) :
     multiDiff g φ = shiftAct G M (∏ i, diffElt (g i)) φ := by
   classical
@@ -80,19 +112,33 @@ theorem multiDiff_eq_shiftAct {ι : Type*} [Fintype ι] (g : ι → G) (φ : G �
     rw [zsmul_eq_mul]; push_cast; rfl
   rw [this, map_smul, LinearMap.smul_apply, Pi.smul_apply, shiftAct_of]
 
+/- English proof (translation)
+Simplify using `[multiDiff_eq_shiftAct]`.
+-/
 @[simp] theorem multiDiff_of_isEmpty {ι : Type*} [Fintype ι] [IsEmpty ι] (g : ι → G)
     (φ : G → M) : multiDiff g φ = φ := by
   simp [multiDiff_eq_shiftAct]
 
+/- English proof (translation)
+Simplify using `[multiDiff_eq_shiftAct, Fin.prod_univ_succ, shiftAct_diffElt]`.
+-/
 theorem multiDiff_cons {d : ℕ} (a : G) (g : Fin d → G) (φ : G → M) :
     multiDiff (Fin.cons a g : Fin (d + 1) → G) φ = bwdDiff a (multiDiff g φ) := by
   simp [multiDiff_eq_shiftAct, Fin.prod_univ_succ, shiftAct_diffElt]
 
+/- English proof (translation)
+Simplify using `only [multiDiff_eq_shiftAct, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[mul_comm, map_mul, Module.End.mul_apply, shiftAct_diffElt]`.
+-/
 theorem multiDiff_cons' {d : ℕ} (a : G) (g : Fin d → G) (φ : G → M) :
     multiDiff (Fin.cons a g : Fin (d + 1) → G) φ = multiDiff g (bwdDiff a φ) := by
   simp only [multiDiff_eq_shiftAct, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ]
   rw [mul_comm, map_mul, Module.End.mul_apply, shiftAct_diffElt]
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero => simp`. Consider the case `succ d ih`. Rewrite using `[Function.iterate_succ_apply', ← ih, ← multiDiff_cons]`. Use `congr 1`.
+
+Apply the tactic sequence `ext i; cases i using Fin.cases <;> simp`.
+-/
 theorem multiDiff_const {d : ℕ} (a : G) (φ : G → M) :
     multiDiff (fun _ : Fin d ↦ a) φ = (bwdDiff a)^[d] φ := by
   induction d with
@@ -102,27 +148,45 @@ theorem multiDiff_const {d : ℕ} (a : G) (φ : G → M) :
     congr 1
     ext i; cases i using Fin.cases <;> simp
 
+/- English proof (translation)
+Simplify using `only [multiDiff_eq_shiftAct, Function.comp]`. Rewrite using `[Equiv.prod_comp e (fun i ↦ diffElt (g i))]`.
+-/
 theorem multiDiff_comp_equiv {ι κ : Type*} [Fintype ι] [Fintype κ] (e : κ ≃ ι) (g : ι → G)
     (φ : G → M) : multiDiff (g ∘ e) φ = multiDiff g φ := by
   simp only [multiDiff_eq_shiftAct, Function.comp]
   rw [Equiv.prod_comp e (fun i ↦ diffElt (g i))]
 
+/- English proof (translation)
+Simplify using `[multiDiff_eq_shiftAct]`.
+-/
 theorem multiDiff_add {ι : Type*} [Fintype ι] (g : ι → G) (φ ψ : G → M) :
     multiDiff g (φ + ψ) = multiDiff g φ + multiDiff g ψ := by
   simp [multiDiff_eq_shiftAct]
 
+/- English proof (translation)
+Simplify using `[multiDiff_eq_shiftAct]`.
+-/
 theorem multiDiff_sub {ι : Type*} [Fintype ι] (g : ι → G) (φ ψ : G → M) :
     multiDiff g (φ - ψ) = multiDiff g φ - multiDiff g ψ := by
   simp [multiDiff_eq_shiftAct]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [multiDiff, Function.comp, map_sum, map_zsmul]`.
+-/
 theorem multiDiff_map {ι N : Type*} [Fintype ι] [AddCommGroup N] (f : M →+ N) (g : ι → G)
     (φ : G → M) : multiDiff g (f ∘ φ) = f ∘ multiDiff g φ := by
   ext x; simp only [multiDiff, Function.comp, map_sum, map_zsmul]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [multiDiff, Function.comp, map_sum, map_sub]`.
+-/
 theorem multiDiff_comap {ι H : Type*} [Fintype ι] [AddCommGroup H] (f : H →+ G) (g : ι → H)
     (φ : G → M) : multiDiff g (φ ∘ f) = multiDiff (f ∘ g) φ ∘ f := by
   ext x; simp only [multiDiff, Function.comp, map_sum, map_sub]
 
+/- English proof (translation)
+Simplify using `only [multiDiff, add_sub_assoc]`.
+-/
 theorem multiDiff_translate {ι : Type*} [Fintype ι] (g : ι → G) (φ : G → M) (a x : G) :
     multiDiff g (fun y ↦ φ (a + y)) x = multiDiff g φ (a + x) := by
   simp only [multiDiff, add_sub_assoc]
@@ -130,8 +194,18 @@ theorem multiDiff_translate {ι : Type*} [Fintype ι] (g : ι → G) (φ : G →
 noncomputable def diffIdeal (G : Type*) [AddCommGroup G] : Ideal (AddMonoidAlgebra ℤ G) :=
   Ideal.span (Set.range (diffElt : G → _))
 
+/- English proof (translation)
+The claim follows from `Ideal.subset_span ⟨g, rfl⟩`.
+-/
 theorem diffElt_mem (g : G) : diffElt g ∈ diffIdeal G := Ideal.subset_span ⟨g, rfl⟩
 
+/- English proof (translation)
+Use `le_antisymm (Ideal.span_mono (Set.image_subset_range _ _)) (Ideal.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`. Establish `hg : g ∈ AddSubgroup.closure S` using `hS ▸ AddSubgroup.mem_top g`. Proceed by induction on `hg using AddSubgroup.closure_induction with`. Consider the case `mem x hx => exact Ideal.subset_span ⟨x, hx, rfl⟩`.
+
+Consider the case `zero => rw [diffElt_zero]`. Conclude with `Ideal.zero_mem _`. Consider the case `add x y _ _ hx hy`. Rewrite using `[diffElt_add]`. Conclude with `Ideal.sub_mem _ (Ideal.add_mem _ hx hy) (Ideal.mul_mem_left _ _ hy)`.
+
+Consider the case `neg x _ hx => rw [diffElt_neg]`. Conclude with `Ideal.mul_mem_left _ _ hx`.
+-/
 theorem span_diffElt_image {S : Set G} (hS : AddSubgroup.closure S = ⊤) :
     Ideal.span (diffElt '' S) = diffIdeal G := by
   refine le_antisymm (Ideal.span_mono (Set.image_subset_range _ _)) (Ideal.span_le.2 ?_)
@@ -145,11 +219,19 @@ theorem span_diffElt_image {S : Set G} (hS : AddSubgroup.closure S = ⊤) :
     exact Ideal.sub_mem _ (Ideal.add_mem _ hx hy) (Ideal.mul_mem_left _ _ hy)
   | neg x _ hx => rw [diffElt_neg]; exact Ideal.mul_mem_left _ _ hx
 
+/- English proof (translation)
+Rewrite using `[← prod_const]`. Conclude with `Ideal.prod_mem_prod fun i _ ↦ diffElt_mem _`.
+-/
 theorem prod_diffElt_mem {ι : Type*} (s : Finset ι) (g : ι → G) :
     ∏ i ∈ s, diffElt (g i) ∈ diffIdeal G ^ s.card := by
   rw [← prod_const]
   exact Ideal.prod_mem_prod fun i _ ↦ diffElt_mem _
 
+/- English proof (translation)
+Rewrite `hr` using `[← span_diffElt_image hS, Ideal.span, Submodule.span_pow]`. Proceed by induction on `hr using Submodule.span_induction with`. Consider the case `mem r hr`. Take `⟨f, rfl⟩` from `Set.mem_pow.1 hr`. Use `choose g hg hg' using fun i ↦ (f i).2`.
+
+Rewrite using `[List.prod_ofFn, ← h g hg, multiDiff_eq_shiftAct]`. Simplify using `only [hg']`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `smul a x _ hx => simp [hx]`.
+-/
 theorem shiftAct_eq_zero_of_generators {S : Set G} (hS : AddSubgroup.closure S = ⊤) {n : ℕ}
     {φ : G → M} (h : ∀ g : Fin n → G, (∀ i, g i ∈ S) → multiDiff g φ = 0)
     {r : AddMonoidAlgebra ℤ G} (hr : r ∈ diffIdeal G ^ n) : shiftAct G M r φ = 0 := by
@@ -164,50 +246,85 @@ theorem shiftAct_eq_zero_of_generators {S : Set G} (hS : AddSubgroup.closure S =
   | add x y _ _ hx hy => simp [hx, hy]
   | smul a x _ hx => simp [hx]
 
+/- English proof (translation)
+The claim follows from `fun g ↦ by rw [multiDiff_eq_shiftAct] exact shiftAct_eq_zero_of_generators hS h (by simpa using prod_diffElt_mem univ g)`.
+-/
 theorem diffVanish_of_generators {S : Set G} (hS : AddSubgroup.closure S = ⊤) {n : ℕ}
     {φ : G → M} (h : ∀ g : Fin n → G, (∀ i, g i ∈ S) → multiDiff g φ = 0) :
     DiffVanish n φ := fun g ↦ by
   rw [multiDiff_eq_shiftAct]
   exact shiftAct_eq_zero_of_generators hS h (by simpa using prod_diffElt_mem univ g)
 
+/- English proof (translation)
+The claim follows from `shiftAct_eq_zero_of_generators (S := Set.univ) (by simp) (fun g _ ↦ h g) hr`.
+-/
 theorem DiffVanish.shiftAct_eq_zero {n : ℕ} {φ : G → M} (h : DiffVanish n φ)
     {r : AddMonoidAlgebra ℤ G} (hr : r ∈ diffIdeal G ^ n) : shiftAct G M r φ = 0 :=
   shiftAct_eq_zero_of_generators (S := Set.univ) (by simp) (fun g _ ↦ h g) hr
 
+/- English proof (translation)
+Rewrite using `[multiDiff_eq_shiftAct]`. Conclude with `h.shiftAct_eq_zero (Ideal.pow_le_pow_right hn (prod_diffElt_mem univ g))`.
+-/
 theorem DiffVanish.multiDiff_eq_zero {n : ℕ} {φ : G → M} (h : DiffVanish n φ)
     {ι : Type*} [Fintype ι] (hn : n ≤ Fintype.card ι) (g : ι → G) : multiDiff g φ = 0 := by
   rw [multiDiff_eq_shiftAct]
   exact h.shiftAct_eq_zero (Ideal.pow_le_pow_right hn (prod_diffElt_mem univ g))
 
+/- English proof (translation)
+The claim follows from `fun g ↦ h.multiDiff_eq_zero (by simpa) g`.
+-/
 theorem DiffVanish.mono {m n : ℕ} {φ : G → M} (h : DiffVanish m φ) (hmn : m ≤ n) :
     DiffVanish n φ := fun g ↦ h.multiDiff_eq_zero (by simpa) g
 
+/- English proof (translation)
+Simplify using `[DiffVanish]`.
+-/
 theorem diffVanish_zero_iff {φ : G → M} : DiffVanish 0 φ ↔ φ = 0 := by
   simp [DiffVanish]
 
+/- English proof (translation)
+Use `⟨fun h a g ↦ by rw [← multiDiff_cons', h], fun h g ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← Fin.cons_self_tail g, multiDiff_cons', h]`.
+-/
 theorem diffVanish_succ_iff {n : ℕ} {φ : G → M} :
     DiffVanish (n + 1) φ ↔ ∀ a, DiffVanish n (bwdDiff a φ) := by
   refine ⟨fun h a g ↦ by rw [← multiDiff_cons', h], fun h g ↦ ?_⟩
   rw [← Fin.cons_self_tail g, multiDiff_cons', h]
 
+/- English proof (translation)
+The claim follows from `fun g ↦ by rw [multiDiff_map, h]; ext; simp`.
+-/
 theorem DiffVanish.map {N : Type*} [AddCommGroup N] {n : ℕ} {φ : G → M} (h : DiffVanish n φ)
     (f : M →+ N) : DiffVanish n (f ∘ φ) := fun g ↦ by
   rw [multiDiff_map, h]; ext; simp
 
+/- English proof (translation)
+The claim follows from `fun g ↦ by rw [multiDiff_comap, h]; rfl`.
+-/
 theorem DiffVanish.comap {H : Type*} [AddCommGroup H] {n : ℕ} {φ : G → M} (h : DiffVanish n φ)
     (f : H →+ G) : DiffVanish n (φ ∘ f) := fun g ↦ by
   rw [multiDiff_comap, h]; rfl
 
+/- English proof (translation)
+The claim follows from `fun g ↦ by ext x; rw [multiDiff_translate, h]; rfl`.
+-/
 theorem DiffVanish.translate {n : ℕ} {φ : G → M} (h : DiffVanish n φ) (a : G) :
     DiffVanish n (fun y ↦ φ (a + y)) := fun g ↦ by
   ext x; rw [multiDiff_translate, h]; rfl
 
+/- English proof (translation)
+Use `congrFun (h (Fin.cons (x - y) g)) x` as an intermediate fact. Rewrite `this` using `[multiDiff_cons, bwdDiff_apply, sub_sub_cancel]`. Conclude with `sub_eq_zero.1 this`.
+-/
 theorem DiffVanish.multiDiff_eq {d : ℕ} {φ : G → M} (h : DiffVanish (d + 1) φ) (g : Fin d → G)
     (x y : G) : multiDiff g φ x = multiDiff g φ y := by
   have := congrFun (h (Fin.cons (x - y) g)) x
   rw [multiDiff_cons, bwdDiff_apply, sub_sub_cancel] at this
   exact sub_eq_zero.1 this
 
+/- English proof (translation)
+Establish `key : ∀ c : G, ∏ j, diffElt (Function.update g i c j) = diffElt c * ∏ j ∈ univ.erase i, diffElt (g j)` using `fun c ↦ by`. Rewrite using `[← mul_prod_erase univ _ (mem_univ i), Function.update_self]`. Use `congr 1`. Conclude with `prod_congr rfl fun j hj ↦ by rw [Function.update_of_ne (ne_of_mem_erase hj)]`. Establish `hm : diffElt a * (diffElt b * ∏ j ∈ univ.erase i, diffElt (g j)) ∈ diffIdeal G ^ (d + 1)`.
+
+Rewrite using `[← key b, pow_succ']`. Conclude with `Ideal.mul_mem_mul (diffElt_mem a) (by simpa using prod_diffElt_mem univ (Function.update g i b))`. Simplify using `only [multiDiff_eq_shiftAct, key]`. Rewrite using `[diffElt_add, sub_mul, add_mul, mul_assoc, map_sub, map_add, LinearMap.sub_apply, h.shiftAct_eq_zero hm, sub_zero, LinearMap.add_apply]`.
+-/
 theorem DiffVanish.multiDiff_update_add {d : ℕ} {φ : G → M} (h : DiffVanish (d + 1) φ)
     (g : Fin d → G) (i : Fin d) (a b : G) :
     multiDiff (Function.update g i (a + b)) φ =
@@ -234,9 +351,15 @@ def DiffVanish.form {d : ℕ} {φ : G → M} (h : DiffVanish (d + 1) φ) :
       exact map_zsmul (AddMonoidHom.mk' (fun a ↦ multiDiff (Function.update g i a) φ 0)
         (fun a b ↦ congrFun (h.multiDiff_update_add g i a b) 0)) c a)
 
+/- English proof (translation)
+The claim follows from `h.multiDiff_eq g 0 x`.
+-/
 theorem DiffVanish.form_apply {d : ℕ} {φ : G → M} (h : DiffVanish (d + 1) φ) (g : Fin d → G)
     (x : G) : h.form g = multiDiff g φ x := h.multiDiff_eq g 0 x
 
+/- English proof (translation)
+Rewrite using `[h.form_apply _ 0, h.form_apply _ 0, multiDiff_comp_equiv]`.
+-/
 theorem DiffVanish.form_comp_perm {d : ℕ} {φ : G → M} (h : DiffVanish (d + 1) φ)
     (g : Fin d → G) (σ : Equiv.Perm (Fin d)) : h.form (g ∘ σ) = h.form g := by
   rw [h.form_apply _ 0, h.form_apply _ 0, multiDiff_comp_equiv]
@@ -245,6 +368,17 @@ end Calculus
 
 section Polarization
 
+/- English proof (translation)
+Proceed by induction on `d generalizing p with`. Consider the case `zero`. Rewrite using `[Polynomial.eq_C_of_natDegree_le_zero hp]`. Simplify using the standard rewrite rules. Consider the case `succ d ih`.
+
+Rewrite using `[← Fin.cons_self_tail z, multiDiff_cons']`. Use `set a := z 0`. Establish `e : bwdDiff a (fun t ↦ p.eval t) = fun t ↦ (p - Polynomial.taylor (-a) p).eval t`. Use extensionality with `t`. Simplify using `[bwdDiff, Polynomial.taylor_eval, sub_eq_add_neg]`.
+
+Establish `hc : ∀ m, d + 1 ≤ m → (Polynomial.taylor (-a) p).coeff m = p.coeff m` using `fun m hm ↦ by`. Establish `h0 : (Polynomial.hasseDeriv m p).natDegree ≤ 0` using `(Polynomial.natDegree_hasseDeriv_le p m).trans (by omega)`. Rewrite using `[Polynomial.taylor_coeff, Polynomial.eq_C_of_natDegree_le_zero h0]`. Simplify using `[Polynomial.hasseDeriv_coeff]`. Establish `hd : (Polynomial.taylor (-a) p).coeff d = p.coeff d - (d + 1) * p.coeff (d + 1) * a`.
+
+Establish `h1 : (Polynomial.hasseDeriv d p).natDegree ≤ 1` using `(Polynomial.natDegree_hasseDeriv_le p d).trans (by omega)`. Rewrite using `[Polynomial.taylor_coeff, Polynomial.eq_X_add_C_of_natDegree_le_one h1]`. Simplify using `[Polynomial.hasseDeriv_coeff, add_comm 1 d]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ih]`.
+
+Simplify using `only [Polynomial.coeff_sub, hd, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ, Nat.factorial_succ] push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Polynomial.natDegree_le_iff_coeff_eq_zero]`. Introduce `m hm`. Rewrite using `[Polynomial.coeff_sub, hc m hm, sub_self]`.
+-/
 theorem multiDiff_polynomial_eval {R : Type*} [CommRing R] {d : ℕ} (z : Fin d → R)
     (p : Polynomial R) (hp : p.natDegree ≤ d) (y : R) :
     multiDiff z (fun t ↦ p.eval t) y = d.factorial * p.coeff d * ∏ i, z i := by
@@ -276,16 +410,27 @@ theorem multiDiff_polynomial_eval {R : Type*} [CommRing R] {d : ℕ} (z : Fin d 
       intro m hm
       rw [Polynomial.coeff_sub, hc m hm, sub_self]
 
+/- English proof (translation)
+The claim follows from `fun z ↦ by ext y rw [multiDiff_polynomial_eval z p (by omega), Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)] simp`.
+-/
 theorem diffVanish_polynomial_eval {R : Type*} [CommRing R] {d : ℕ} (p : Polynomial R)
     (hp : p.natDegree ≤ d) : DiffVanish (d + 1) (fun t ↦ p.eval t) := fun z ↦ by
   ext y
   rw [multiDiff_polynomial_eval z p (by omega), Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)]
   simp
 
+/- English proof (translation)
+Simplify using `using multiDiff_polynomial_eval z (Polynomial.X ^ d) (Polynomial.natDegree_X_pow_le d) y`.
+-/
 theorem multiDiff_pow {R : Type*} [CommRing R] {d : ℕ} (z : Fin d → R) (y : R) :
     multiDiff z (fun t ↦ t ^ d) y = d.factorial * ∏ i, z i := by
   simpa using multiDiff_polynomial_eval z (Polynomial.X ^ d) (Polynomial.natDegree_X_pow_le d) y
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero => simp`. Consider the case `succ d ih`. Establish `: a ^ (d + 1) - b ^ (d + 1) = a * (a ^ d - b ^ d) + (a - b) * b ^ d` using `by ring`. Rewrite using `[this]`.
+
+Use `Ideal.add_mem _ ?_ ?_` and prove the remaining obligations. Rewrite using `[pow_succ']`. Conclude with `Ideal.mul_mem_mul ha ih`. Rewrite using `[show d + 1 + 1 = 2 + d by ring, pow_add]`. Conclude with `Ideal.mul_mem_mul hab (Ideal.pow_mem_pow hb d)`.
+-/
 theorem pow_sub_pow_mem_pow_succ {R : Type*} [CommRing R] {I : Ideal R} {a b : R} (ha : a ∈ I)
     (hb : b ∈ I) (hab : a - b ∈ I ^ 2) (d : ℕ) : a ^ d - b ^ d ∈ I ^ (d + 1) := by
   induction d with
@@ -300,6 +445,11 @@ theorem pow_sub_pow_mem_pow_succ {R : Type*} [CommRing R] {I : Ideal R} {a b : R
 
 variable {G M : Type*} [AddCommGroup G] [AddCommGroup M]
 
+/- English proof (translation)
+Set `f : G →+ AddMonoidAlgebra ℤ G ⧸ diffIdeal G ^ 2` to `AddMonoidHom.mk' (fun g ↦ Ideal.Quotient.mk _ (diffElt g)) fun a b ↦ by`. Rewrite using `[← map_add, Ideal.Quotient.eq, diffElt_add, sub_sub_cancel_left, neg_mem_iff, sq]`. Conclude with `Ideal.mul_mem_mul (diffElt_mem a) (diffElt_mem b)`. Establish `hf : ∀ g, Ideal.Quotient.mk _ (diffElt g) = f g` using `fun _ ↦ rfl`. Rewrite using `[← Ideal.Quotient.eq]`.
+
+Simplify using `only [map_sub, map_sum, hf]`.
+-/
 theorem diffElt_sub_sum_mem {ι : Type*} (s : Finset ι) (g : ι → G) (x : G) :
     diffElt (x - ∑ i ∈ s, g i) - (diffElt x - ∑ i ∈ s, diffElt (g i)) ∈ diffIdeal G ^ 2 := by
   let f : G →+ AddMonoidAlgebra ℤ G ⧸ diffIdeal G ^ 2 :=
@@ -310,6 +460,11 @@ theorem diffElt_sub_sum_mem {ι : Type*} (s : Finset ι) (g : ι → G) (x : G) 
   rw [← Ideal.Quotient.eq]
   simp only [map_sub, map_sum, hf]
 
+/- English proof (translation)
+Establish `e : ∀ S : Finset (Fin d), (h.form fun _ ↦ x - ∑ i ∈ S, g i) = shiftAct G M ((diffElt x - ∑ i ∈ S, diffElt (g i)) ^ d) φ 0` using `fun S ↦ by`. Use `h.shiftAct_eq_zero (pow_sub_pow_mem_pow_succ (diffElt_mem _) (Ideal.sub_mem _ (diffElt_mem x) (Ideal.sum_mem _ fun i _ ↦ diffElt_mem (g i))) (diffElt_sub_sum_mem S g x) d)` as an intermediate fact. Rewrite `this` using `[map_sub, LinearMap.sub_apply, sub_eq_zero]`. Rewrite using `[← this, h.form_apply _ 0, multiDiff_eq_shiftAct]`. Simplify using the standard rewrite rules.
+
+Use `multiDiff_pow (fun i ↦ diffElt (g i)) (diffElt x)` as an intermediate fact. Rewrite `this` using `[multiDiff_apply]`. Rewrite using `[multiDiff_apply, h.form_apply _ 0, multiDiff_eq_shiftAct, ← Pi.smul_apply, ← LinearMap.smul_apply, ← map_nsmul, nsmul_eq_mul, ← this, map_sum, LinearMap.sum_apply, Finset.sum_apply]`. Use `sum_congr rfl fun S _ ↦ ?_` and prove the remaining obligations. Rewrite using `[e, map_zsmul, LinearMap.smul_apply, Pi.smul_apply]`.
+-/
 theorem DiffVanish.multiDiff_form_diag {d : ℕ} {φ : G → M} (h : DiffVanish (d + 1) φ)
     (g : Fin d → G) (x : G) :
     multiDiff g (fun y ↦ h.form fun _ ↦ y) x = d.factorial • h.form g := by
@@ -335,6 +490,9 @@ section Polynomial
 
 variable {G K : Type*} [AddCommGroup G] [Field K] [CharZero K]
 
+/- English proof (translation)
+The claim follows from `fun g ↦ by ext x have := congrFun (multiDiff_map (AddMonoidHom.mulLeft (d.factorial : K)⁻¹) g (fun y ↦ h.form fun _ ↦ y)) x simp only [Function.comp_def, AddMonoidHom.coe_mulLeft] at this have hd : (d.factorial : K) ≠ 0 := by exact_mod_cast d.factorial_ne_zero rw [multiDiff_sub, …`.
+-/
 theorem DiffVanish.sub_form_diag {d : ℕ} {φ : G → K} (h : DiffVanish (d + 1) φ) :
     DiffVanish d (φ - fun y ↦ (d.factorial : K)⁻¹ * h.form fun _ ↦ y) := fun g ↦ by
   ext x
@@ -351,6 +509,9 @@ noncomputable def diffTopPoly (d : ℕ) {ι : Type*} [Fintype ι] [DecidableEq �
     ∏ j, MvPolynomial.X (a j)
 
 omit [CharZero K] in
+/- English proof (translation)
+Use `MvPolynomial.IsHomogeneous.sum _ _ _ fun a _ ↦ MvPolynomial.IsHomogeneous.C_mul ?_ _` and prove the remaining obligations. Simplify using `using MvPolynomial.IsHomogeneous.prod univ (fun j : Fin d ↦ (MvPolynomial.X (a j) : MvPolynomial ι K)) (fun _ ↦ 1) fun j _ ↦ MvPolynomial.isHomogeneous_X K (a j)`.
+-/
 theorem isHomogeneous_diffTopPoly (d : ℕ) {ι : Type*} [Fintype ι] [DecidableEq ι] (g : ι → G)
     (φ : G → K) (x : G) : (diffTopPoly d g φ x).IsHomogeneous d := by
   refine MvPolynomial.IsHomogeneous.sum _ _ _ fun a _ ↦ MvPolynomial.IsHomogeneous.C_mul ?_ _
@@ -358,6 +519,9 @@ theorem isHomogeneous_diffTopPoly (d : ℕ) {ι : Type*} [Fintype ι] [Decidable
     MvPolynomial ι K)) (fun _ ↦ 1) fun j _ ↦ MvPolynomial.isHomogeneous_X K (a j)
 
 omit [CharZero K] in
+/- English proof (translation)
+Rewrite using `[MultilinearMap.map_sum, mul_sum, diffTopPoly, map_sum]`. Use `sum_congr rfl fun a _ ↦ ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ, ← h.form_apply]`. Simplify using `[Function.comp_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem DiffVanish.eval_diffTopPoly {d : ℕ} {φ : G → K} (h : DiffVanish (d + 1) φ) {ι : Type*}
     [Fintype ι] [DecidableEq ι] (g : ι → G) (x : G) (n : ι → ℤ) :
     MvPolynomial.eval (fun i ↦ (n i : K)) (diffTopPoly d g φ x) =
@@ -368,6 +532,15 @@ theorem DiffVanish.eval_diffTopPoly {d : ℕ} {φ : G → K} (h : DiffVanish (d 
   simp [Function.comp_def]
   ring
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero`. Introduce `φ h`. Establish `h0` using `isHomogeneous_diffTopPoly 0 g φ 0`. Use `⟨diffTopPoly 0 g φ 0, h0.totalDegree_le, fun n ↦ ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h.eval_diffTopPoly, h.form_apply _ (∑ i, n i • g i)]`. Simplify using the standard rewrite rules. Rewrite using `[MvPolynomial.homogeneousComponent_of_mem h0, if_pos rfl]`. Consider the case `succ d ih`. Introduce `φ h`.
+
+Take `⟨Q, hQ, hQ', -⟩` from `ih _ h.sub_form_diag`. Establish `h0` using `isHomogeneous_diffTopPoly (d + 1) g φ 0`. Use `⟨Q + diffTopPoly (d + 1) g φ 0, (MvPolynomial.totalDegree_add _ _).trans (max_le (by omega) h0.totalDegree_le), fun n ↦ ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hQ', h.eval_diffTopPoly]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[map_add, MvPolynomial.homogeneousComponent_of_mem h0, if_pos rfl, MvPolynomial.homogeneousComponent_eq_zero _ _ (by omega), zero_add]`.
+-/
 theorem exists_mvPolynomial_of_iteratedBackwardDifferenceVanish {ι : Type*} [Fintype ι] [DecidableEq ι]
     (g : ι → G) (d : ℕ) : ∀ φ : G → K, DiffVanish (d + 1) φ → ∃ P : MvPolynomial ι K,
       P.totalDegree ≤ d ∧ (∀ n : ι → ℤ, P.eval (fun i ↦ (n i : K)) = φ (∑ i, n i • g i)) ∧
@@ -389,6 +562,9 @@ theorem exists_mvPolynomial_of_iteratedBackwardDifferenceVanish {ι : Type*} [Fi
     · rw [map_add, MvPolynomial.homogeneousComponent_of_mem h0, if_pos rfl,
         MvPolynomial.homogeneousComponent_eq_zero _ _ (by omega), zero_add]
 
+/- English proof (translation)
+Take `⟨P, h1, h2, h3⟩` from `exists_mvPolynomial_of_iteratedBackwardDifferenceVanish g d _ (h.translate x)`. Establish `h4 : MvPolynomial.homogeneousComponent d P = diffTopPoly d g φ x`. Rewrite using `[h3]`. Simplify using `only [diffTopPoly, multiDiff_translate, add_zero]`. Conclude with `⟨P, h1, h2, h4, fun n ↦ by rw [h4, h.eval_diffTopPoly]⟩`.
+-/
 theorem DiffVanish.exists_mvPolynomial {d : ℕ} {φ : G → K} (h : DiffVanish (d + 1) φ)
     {ι : Type*} [Fintype ι] [DecidableEq ι] (g : ι → G) (x : G) : ∃ P : MvPolynomial ι K,
       P.totalDegree ≤ d ∧ (∀ n : ι → ℤ, P.eval (fun i ↦ (n i : K)) = φ (x + ∑ i, n i • g i)) ∧
@@ -400,6 +576,15 @@ theorem DiffVanish.exists_mvPolynomial {d : ℕ} {φ : G → K} (h : DiffVanish 
     rw [h3]; simp only [diffTopPoly, multiDiff_translate, add_zero]
   exact ⟨P, h1, h2, h4, fun n ↦ by rw [h4, h.eval_diffTopPoly]⟩
 
+/- English proof (translation)
+Take `⟨P, h1, h2, -, -⟩` from `h.exists_mvPolynomial (fun _ : Unit ↦ a) x`. Set `p : Polynomial K` to `MvPolynomial.aeval (fun _ ↦ Polynomial.X) P`. Establish `hp : p.natDegree ≤ d`. Simplify using `using MvPolynomial.aeval_natDegree_le P h1 (fun _ ↦ Polynomial.X) (n := 1) (fun _ ↦ Polynomial.natDegree_X_le)`. Establish `he : ∀ n : ℤ, p.eval (n : K) = φ (x + n • a)` using `fun n ↦ by`.
+
+Use `h2 fun _ ↦ n` as an intermediate fact. Simplify using `only [univ_unique, sum_singleton] at this`. Rewrite using `[← this, ← Polynomial.coe_aeval_eq_eval, ← AlgHom.comp_apply, MvPolynomial.comp_aeval]`. Simplify using `[MvPolynomial.aeval_eq_eval]`. Use `⟨p, hp, he, ?_⟩` and prove the remaining obligations.
+
+Establish `hd : (d.factorial : K) ≠ 0` using `by exact_mod_cast d.factorial_ne_zero`. Establish `e1` using `multiDiff_polynomial_eval (fun _ : Fin d ↦ (1 : K)) p hp 0`. Establish `e2` using `congrFun (multiDiff_comap (Int.castAddHom K) (fun _ : Fin d ↦ (1 : ℤ)) (fun t ↦ p.eval t)) 0`. Establish `e3` using `congrFun (multiDiff_comap (zmultiplesHom G a) (fun _ : Fin d ↦ (1 : ℤ)) (fun y ↦ φ (x + y))) 0`. Simplify using `only [Function.comp_def, Int.coe_castAddHom, Int.cast_one, Int.cast_zero, he, zmultiplesHom_apply, one_smul, zero_smul, multiDiff_translate, add_zero] at e2 e3`.
+
+Rewrite using `[← e3, e2, e1]`. Simplify using `[hd]`.
+-/
 theorem DiffVanish.exists_polynomial {d : ℕ} {φ : G → K} (h : DiffVanish (d + 1) φ) (a x : G) :
     ∃ p : Polynomial K, p.natDegree ≤ d ∧ (∀ n : ℤ, p.eval (n : K) = φ (x + n • a)) ∧
       p.coeff d = (d.factorial : K)⁻¹ * multiDiff (fun _ : Fin d ↦ a) φ x := by
@@ -425,6 +610,9 @@ theorem DiffVanish.exists_polynomial {d : ℕ} {φ : G → K} (h : DiffVanish (d
   rw [← e3, e2, e1]
   simp [hd]
 
+/- English proof (translation)
+Take `⟨p, h1, h2, h3⟩` from `(h.map (Int.castAddHom K)).exists_polynomial a x`. Conclude with `⟨p, h1, h2, by rw [h3, multiDiff_map]; rfl⟩`.
+-/
 theorem DiffVanish.exists_polynomial_int {d : ℕ} {φ : G → ℤ} (h : DiffVanish (d + 1) φ)
     (K : Type*) [Field K] [CharZero K] (a x : G) :
     ∃ p : Polynomial K, p.natDegree ≤ d ∧ (∀ n : ℤ, p.eval (n : K) = φ (x + n • a)) ∧
@@ -434,6 +622,9 @@ theorem DiffVanish.exists_polynomial_int {d : ℕ} {φ : G → ℤ} (h : DiffVan
 
 end Polynomial
 
+/- English proof (translation)
+Use `⟨by simpa using (diffVanish_polynomial_eval (Polynomial.X ^ d : Polynomial ℤ) (Polynomial.natDegree_X_pow_le d)), fun h ↦ ?_⟩` and prove the remaining obligations. Use `congrFun (h fun _ ↦ 1) 0` as an intermediate fact. Rewrite `this` using `[multiDiff_pow]`. Simplify using `[Nat.factorial_ne_zero] at this`.
+-/
 theorem diffVanish_pow_int (d : ℕ) :
     DiffVanish (d + 1) (fun t : ℤ ↦ t ^ d) ∧ ¬ DiffVanish d (fun t : ℤ ↦ t ^ d) := by
   refine ⟨by simpa using (diffVanish_polynomial_eval (Polynomial.X ^ d : Polynomial ℤ)

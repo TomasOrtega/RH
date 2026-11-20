@@ -11,6 +11,25 @@ open scoped Kronecker ComplexOrder TensorProduct
 
 namespace GlobalTheory.ClassFin
 
+/- English proof (translation)
+Introduce `ι _ _ Γ hΓ hss`. Take `⟨Rey, hRey⟩` from `GlobalTheory.T.exists_leftTranslation_reynoldsOperator ι Γ hΓ.toIsPre hss`. Take `⟨m, d, t, hfix, hgen⟩` from `GlobalTheory.T.exists_rational_invariant_tensor' ι Γ hΓ.toIsPre hss`. Take `⟨h1, hmul, -⟩` from `(GlobalTheory.T.matrixKroneckerPower_tensorAction_algebra ι ℂ).2 m d (fun k => ((t k : ℚ) : ℂ))`. Use `⟨m, d, t, hfix, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `y hy hyt`. Assume the negation of the conclusion as `hn`. Take `⟨f, hf, hne⟩` from `GlobalTheory.T.exists_leftInvariantPoly_separating_coset ι Γ Rey hΓ hRey y hy hn`. Take `⟨P, hP⟩` from `hgen f hf`. Apply `hne` to reduce the goal to its premises.
+
+Rewrite using `[hP, hP, h1, hyt]`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.exists_ratPoly_eval_eq_tensorPowerSumRightAction ι m d t`. Establish `hev : ∀ (y : Matrix ι ι ℂ) (k : TIdx ι d), evC (MvPolynomial.map (algebraMap ℚ ℂ) (Φ k)) y = act d (fun k => ((t k : ℚ) : ℂ)) y k`. Introduce `y k`. Establish `h` using `hΦ ℂ y k`.
+
+Simplify using `only [eq_ratCast] at h`. Rewrite using `[← h, evC, ev, MvPolynomial.eval_map, MvPolynomial.aeval_def]`. Establish `hcl` using `GlobalTheory.T.isClosed_image_SL_under_generating_invariants ι Γ Rey (TIdx ι d) (fun k => MvPolynomial.map (algebraMap ℚ ℂ) (Φ k)) hRey hΓ.det_eq (fun k g hg y => by rw [hev, hev, hmul, hfix g hg]) (fun f hf => by`. Take `⟨P, hP⟩` from `hgen f hf`. Rewrite using `[Algebra.adjoin_range_eq_range_aeval]`.
+
+Use `⟨P, ?_⟩` and prove the remaining obligations. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`. Establish `h` using `hP (Matrix.of fun i j => x (i, j))`. Establish `hx : (fun ij : ι × ι => (Matrix.of fun i j => x (i, j)) ij.1 ij.2) = x` using `rfl`.
+
+Establish `h2 : act d (fun k => ((t k : ℚ) : ℂ)) (Matrix.of fun i j => x (i, j)) = fun k => MvPolynomial.eval x (MvPolynomial.map (algebraMap ℚ ℂ) (Φ k))`. Use function extensionality and compare the values at `k`. Rewrite using `[← hev, evC, hx]`. Rewrite `h` using `[evC, hx, h2]`. Rewrite using `[h]`.
+
+Use `show MvPolynomial.eval x (MvPolynomial.aeval _ P) = _`. Use `clear hP h`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+
+Consider the case `mul_X p n hp => simp only [map_mul, hp, MvPolynomial.aeval_X, MvPolynomial.eval_X])`. Establish `: orb d (fun k => ((t k : ℚ) : ℂ)) = {z : TIdx ι d → ℂ | ∃ y : Matrix ι ι ℂ, y.det = 1 ∧ z = fun k => evC (MvPolynomial.map (algebraMap ℚ ℂ) (Φ k)) y}`. Use extensionality with `z`. Simplify using `only [orb, hev]`. Rewrite using `[this]`.
+
+Conclude with `hcl`.
+-/
 theorem exists_tensor_stabiliser_closed_orbit : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)), IsQGroup Γ → SS Γ → ∃ (m : ℕ) (d : Fin m → ℕ) (t : TIdx ι d → ℚ), (∀ g ∈ Γ, act d (fun k => ((t k : ℚ) : ℂ)) g = (fun k => ((t k : ℚ) : ℂ))) ∧ (∀ y : Matrix ι ι ℂ, y.det = 1 → act d (fun k => ((t k : ℚ) : ℂ)) y = (fun k => ((t k : ℚ) : ℂ)) → y ∈ Γ) ∧ IsClosed (orb d (fun k => ((t k : ℚ) : ℂ))) := by
   intro ι _ _ Γ hΓ hss
   obtain ⟨Rey, hRey⟩ := GlobalTheory.T.exists_leftTranslation_reynoldsOperator ι Γ hΓ.toIsPre hss

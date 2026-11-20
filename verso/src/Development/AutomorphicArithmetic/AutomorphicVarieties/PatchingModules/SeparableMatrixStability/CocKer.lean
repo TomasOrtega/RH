@@ -2,6 +2,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
+/- English proof (translation)
+Establish `hset : {g | f g = 0} = ⋂ N : ℕ, {g | Ideal.Quotient.mk ((Ideal.span {(PowerSeries.X : PowerSeries K)}) ^ N) (f g) = 0}`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter, Ideal.Quotient.eq_zero_iff_mem, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `h N`.
+
+Rewrite using `[h]`. Conclude with `dvd_zero _`. Introduce `h`. Use extensionality with `n`. Use `(PowerSeries.X_pow_dvd_iff).1 (h (n + 1)) n (Nat.lt_succ_self n)` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[hset]`. Conclude with `isClosed_iInter fun N => (hf N).isClosed_fiber 0`.
+-/
 private theorem closed_zero {Γ K : Type} [TopologicalSpace Γ] [Field K] {f : Γ → PowerSeries K}
     (hf : AdicCont (Ideal.span {(PowerSeries.X : PowerSeries K)}) f) : IsClosed {g | f g = 0} := by
   have hset : {g | f g = 0} = ⋂ N : ℕ,
@@ -20,6 +27,41 @@ private theorem closed_zero {Γ K : Type} [TopologicalSpace Γ] [Field K] {f : �
   rw [hset]
   exact isClosed_iInter fun N => (hf N).isClosed_fiber 0
 
+/- English proof (translation)
+Introduce `l _ L G G0 h n x s z hker hs hz`. Take `⟨-, hcont, hcoc, hconj, -, -⟩` from `hz`. Establish `coc : ∀ g k : G.G₀, z (g * k) = z g + x.ρX x.A (h.p₀ g) * z k * x.ρX x.A (h.p₀ g⁻¹)` using `hcoc`. Establish `hρ1 : ∀ g : G.G₀, h.p₀ g = 1 → x.ρX x.A (h.p₀ g) = 1`. Introduce `g hg`.
+
+Rewrite using `[hg]`. Simplify using `[NP.ρX]`. Establish `hz1 : z 1 = 0`. Establish `e` using `coc 1 1`. Rewrite `e` using `[hρ1 1 (map_one _), inv_one, hρ1 1 (map_one _), one_mul, mul_one]`.
+
+Simplify using `using e`. Establish `hR : ∀ g k : G.G₀, z k = 0 → z (g * k) = z g`. Introduce `g k hk`. Rewrite using `[coc, hk]`. Simplify using the standard rewrite rules.
+
+Set `H : Subgroup G.G₀` to `{ carrier := {k | h.p₀ k = 1 ∧ z k = 0} one_mem' := ⟨map_one _, hz1⟩ mul_mem' := by`. Introduce and unpack `a b ⟨ha, za⟩ ⟨hb, zb⟩`. Use `⟨by rw [map_mul, ha, hb, one_mul], ?_⟩` and prove the remaining obligations. Rewrite using `[hR a b zb, za]`. Use the proof step `inv_mem' := by`.
+
+Introduce and unpack `a ⟨ha, za⟩`. Use `⟨by rw [map_inv, ha, inv_one], ?_⟩` and prove the remaining obligations. Establish `e` using `hR a⁻¹ a za`. Rewrite `e` using `[inv_mul_cancel, hz1]`. Conclude with `e.symm }`.
+
+Establish `hHconj : ∀ g k : G.G₀, k ∈ H → g * k * g⁻¹ ∈ H`. Introduce and unpack `g k ⟨hk1, hk2⟩`. Use `⟨by rw [map_mul, map_mul, hk1, mul_one, map_inv, mul_inv_cancel], ?_⟩` and prove the remaining obligations. Establish `hkg : z (k * g⁻¹) = z g⁻¹`. Rewrite using `[coc, hk2, hρ1 k hk1]`.
+
+Establish `: h.p₀ k⁻¹ = 1` using `by rw [map_inv, hk1, inv_one]`. Rewrite using `[hρ1 _ this]`. Simplify using the standard rewrite rules. Rewrite using `[mul_assoc, coc, hkg, ← coc, mul_inv_cancel, hz1]`. Establish `hHc : ∀ k : G.G₀, k ∈ H → G.frame.conj k ∈ H`.
+
+Introduce and unpack `k ⟨hk1, hk2⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h.p₀_conj, hk1, map_one]`. Rewrite using `[hconj, hk2]`. Simplify using the standard rewrite rules.
+
+Set `N : Subgroup G.Γ` to `H.map G.η.ker.subtype`. Establish `hN : N.Normal`. Prove the components needed by the constructor for the conclusion. Introduce `m hm γ`. Take `⟨k, hk, rfl⟩` from `Subgroup.mem_map.1 hm`.
+
+Break down `Int.units_eq_one_or (G.η γ) with hγ | hγ` into its components or cases. Establish `e : γ * (k : G.Γ) * γ⁻¹ = (((⟨γ, hγ⟩ : G.G₀) * k * (⟨γ, hγ⟩ : G.G₀)⁻¹ : G.G₀) : G.Γ)` using `rfl`. Conclude with `Subgroup.mem_map.2 ⟨_, hHconj _ _ hk, e.symm⟩`. Establish `hg : G.c⁻¹ * γ ∈ G.η.ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, G.η_c, hγ]`.
+
+Both sides reduce to the same expression. Set `g : G.G₀` to `⟨G.c⁻¹ * γ, hg⟩`. Establish `e : γ * (k : G.Γ) * γ⁻¹ = ((G.frame.conj (g * k * g⁻¹) : G.G₀) : G.Γ)` using `by show γ * (k : G.Γ) * γ⁻¹ = G.c * ((G.c⁻¹ * γ) * (k : G.Γ) * (G.c⁻¹ * γ)⁻¹) * G.c⁻¹ group`. Conclude with `Subgroup.mem_map.2 ⟨_, hHc _ (hHconj _ _ hk), e.symm⟩`. Establish `hHclosed : IsClosed (H : Set G.G₀)`.
+
+Establish `e1 : (H : Set G.G₀) = {k | h.p₀ k = 1} ∩ ⋂ i, ⋂ j, {k | z k i j = 0}`. Use extensionality with `k`. Simplify using `only [Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_iInter]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `⟨h1, fun i j => by rw [h2]; rfl⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, Matrix.ext fun i j => h2 i j⟩`. Rewrite using `[e1]`. Conclude with `IsClosed.inter ((isClosed_singleton (x := (1 : G0.G₀))).preimage h.p₀_cont) (isClosed_iInter fun i => isClosed_iInter fun j => closed_zero (hcont i j))`.
+
+Establish `hNclosed : IsClosed (N : Set G.Γ)` using `by show IsClosed (Subtype.val '' (H : Set G.G₀))`. Conclude with `hHclosed.trans (Subgroup.isClosed_of_isOpen _ G.η_open)`. Establish `hsN : Subtype.val '' s ⊆ (N : Set G.Γ)`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `Subgroup.mem_map.2 ⟨a, ⟨(hs a ha).1, (hs a ha).2⟩, rfl⟩`.
+
+Establish `hkerN : h.p.ker ≤ N` using `hker.trans (Subgroup.topologicalClosure_minimal _ (Subgroup.normalClosure_le_normal (N := N) hsN) hNclosed)`. Establish `hfac : ∀ g g' : G.G₀, h.p₀ g = h.p₀ g' → z g = z g'`. Introduce `g g' e`. Establish `h1 : h.p₀ (g⁻¹ * g') = 1` using `by rw [map_mul, map_inv, e, inv_mul_cancel]`. Establish `h2 : ((g⁻¹ * g' : G.G₀) : G.Γ) ∈ h.p.ker`.
+
+Rewrite using `[MonoidHom.mem_ker]`. Conclude with `congrArg Subtype.val h1`. Take `⟨k, hk, hk'⟩` from `Subgroup.mem_map.1 (hkerN h2)`. Establish `hkk : k = g⁻¹ * g'` using `Subtype.ext hk'`. Rewrite `hk` using `[hkk]`.
+
+Establish `e2` using `hR g _ hk.2`. Rewrite `e2` using `[mul_inv_cancel_left]`. Conclude with `e2.symm`. Conclude with `⟨fun g0 => z (Classical.choose (h.p₀_surj g0)), fun g => hfac _ _ (Classical.choose_spec (h.p₀_surj (h.p₀ g)))⟩`.
+-/
 theorem UpperTheory.V.Pa.coc_ker :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n) (s : Set G.G₀) (z : G.G₀ → Matrix (Fin n) (Fin n) x.A), h.p.ker ≤ (Subgroup.normalClosure (Subtype.val '' s)).topologicalClosure → (∀ a ∈ s, h.p₀ a = 1 ∧ z a = 0) → z ∈ SelM h x x.A → ∃ y : G0.G₀ → Matrix (Fin n) (Fin n) x.A, ∀ g, y (h.p₀ g) = z g := by
   intro l _ L G G0 h n x s z hker hs hz

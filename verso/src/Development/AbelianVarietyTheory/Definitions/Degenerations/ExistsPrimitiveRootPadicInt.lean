@@ -14,10 +14,19 @@ open ReciprocityTheory.ChartRestriction.G.Out Classical
 namespace DimZero
 open Inh
 
+/- English proof (translation)
+The claim follows from `map_one _`.
+-/
 theorem res_one {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) : res h (1 : Γ(X, U)ˣ) = 1 := map_one _
 
+/- English proof (translation)
+The claim follows from `map_one _`.
+-/
 theorem pullU_one {X Y : Scheme.{0}} (f : Y ⟶ X) (U : X.Opens) : pullU f U (1 : Γ(X, U)ˣ) = 1 := map_one _
 
+/- English proof (translation)
+Use `ext`. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem res_res {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (u : Γ(X, U)ˣ) :
     res h' (res h u) = res (h'.trans h) u := by
   ext
@@ -28,6 +37,9 @@ theorem res_res {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) 
 def oneG {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ) :
     LB.Gen (LB.LinComb (trivLB X) φ ε) := ⟨fun _ => 1⟩
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[linComb_triv_g, _root_.one_mul]`. Conclude with `(res_one _).trans (res_one _).symm`.
+-/
 theorem oneG_gen {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ) :
     (oneG φ ε).IsGen := by
   intro i j; rw [linComb_triv_g, _root_.one_mul]; exact (res_one _).trans (res_one _).symm
@@ -36,18 +48,27 @@ def oneS {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : 
     LB.Sec (LB.LinComb (trivLB X) φ ε) := ⟨fun _ => 1, by
   intro i j; rw [linComb_triv_g, Units.val_one, _root_.one_mul]; exact (map_one _).trans (map_one _).symm⟩
 
+/- English proof (translation)
+Apply `top_unique` to reduce the goal to its premises. Introduce `x _`. Conclude with `Set.mem_iInter.2 fun _ => trivial`.
+-/
 theorem wchart_triv {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (j : K → (trivLB X).ι) :
     LB.wchart (trivLB X) φ j = ⊤ := by
   apply top_unique
   intro x _
   exact Set.mem_iInter.2 fun _ => trivial
 
+/- English proof (translation)
+Introduce `j j' _ _ _`. Conclude with `((congrArg _ (h j)).trans (res_one _)).trans ((congrArg _ (h' j')).trans (res_one _)).symm`.
+-/
 theorem corr_of_one {X Y : Scheme.{0}} (L : LB X) {K K' : Type} [Fintype K] [Fintype K'] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ) (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb L φ' ε'))
     (h : ∀ j, t.s j = 1) (h' : ∀ j, t'.s j = 1) : LB.Gen.Corr L φ ε φ' ε' t t' := by
   intro j j' _ _ _
   exact ((congrArg _ (h j)).trans (res_one _)).trans ((congrArg _ (h' j')).trans (res_one _)).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun _ => 1⟩, by intro i j have : (LB.div M L).g i j = 1 := by simp only [LB.div, hL, hM] erw [res_one, res_one]; simp; rfl rw [this, _root_.one_mul]; exact (res_one _).trans (res_one _).symm⟩`.
+-/
 theorem isoOne {X : Scheme.{0}} (L M : LB X) (hL : ∀ i j, L.g i j = 1) (hM : ∀ i j, M.g i j = 1) : LBIso L M :=
   ⟨⟨fun _ => 1⟩, by
     intro i j
@@ -58,11 +79,21 @@ theorem isoOne {X : Scheme.{0}} (L M : LB X) (hL : ∀ i j, L.g i j = 1) (hM : �
 
 variable (B : Scheme.{0})
 
+/- English proof (translation)
+Use `⟨𝟙 _, 𝟙 _, inferInstance, inferInstance, toUnit_unique _ _, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isoOne _ _ (fun _ _ => rfl) (fun _ _ => linComb_triv_g _ _ _ _)`. Conclude with `isoOne _ _ (fun _ _ => linComb_triv_g _ _ _ _) (fun _ _ => linComb_triv_g _ _ _ _)`.
+-/
 theorem hypS_zero : HypS (zeroPolAV B).A (zeroPolAV B).L := by
   refine ⟨𝟙 _, 𝟙 _, inferInstance, inferInstance, toUnit_unique _ _, ?_, ?_⟩
   · exact isoOne _ _ (fun _ _ => rfl) (fun _ _ => linComb_triv_g _ _ _ _)
   · exact isoOne _ _ (fun _ _ => linComb_triv_g _ _ _ _) (fun _ _ => linComb_triv_g _ _ _ _)
 
+/- English proof (translation)
+Substitute `hW` using the available equality. Use `haveI : IsIso (fst T (zeroPolAV B).A) := by show IsIso (fst T (𝟙_ (Over B)))`. Rewrite using `[← rightUnitor_hom]`. Use `infer_instance`. Use `haveI : IsIso (fst T (zeroPolAV B).A).left := inferInstanceAs (IsIso ((Over.forget B).map (fst T (zeroPolAV B).A)))`.
+
+Establish `h` using `ConcreteCategory.bijective_of_isIso ((fst T (zeroPolAV B).A).left.app ⊤)`. Establish `e : liftFun (zeroPolAV B).A (T` using `T) ⊤ = (fst T (zeroPolAV B).A).left.appTop.hom := by`. Use function extensionality and compare the values at `r`. Simplify using `only [liftFun]`. Establish `: (homOfLE (le_top : (⊤ : (T ⊗ (zeroPolAV B).A).left.Opens) ≤ ⊤)).op = 𝟙 _` using `rfl`.
+
+Rewrite using `[this, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem liftFun_bij (T : Over B) (W : (T ⊗ (zeroPolAV B).A).left.Opens) (hW : W = ⊤) :
     Function.Bijective (liftFun (zeroPolAV B).A (T := T) W) := by
   subst hW
@@ -78,6 +109,11 @@ theorem liftFun_bij (T : Over B) (W : (T ⊗ (zeroPolAV B).A).left.Opens) (hW : 
     rw [this, CategoryTheory.Functor.map_id]; rfl
   rw [e]; exact h
 
+/- English proof (translation)
+Establish `: translT (zeroPolAV B).A x = 𝟙 _`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[translT]`. Conclude with `toUnit_unique _ _`. Rewrite using `[this]`.
+
+Both sides reduce to the same expression.
+-/
 theorem translT_id {T : Over B} (x : T ⟶ (zeroPolAV B).A) : (translT (zeroPolAV B).A x).left = 𝟙 _ := by
   have : translT (zeroPolAV B).A x = 𝟙 _ := by
     apply CartesianMonoidalCategory.hom_ext
@@ -85,6 +121,13 @@ theorem translT_id {T : Over B} (x : T ⟶ (zeroPolAV B).A) : (translT (zeroPolA
     · exact toUnit_unique _ _
   rw [this]; rfl
 
+/- English proof (translation)
+Substitute `hh hh'` using the available equality. Introduce `j j' _ _ _`. Set `d : K → (trivLB X).ι` to `fun _ => PUnit.unit`. Establish `ha : ⊤ ≤ LB.wchart (trivLB X) φ d` using `by rw [wchart_triv]`. Establish `hb : ⊤ ≤ LB.wchart (trivLB X) φ' d` using `by rw [wchart_triv]`.
+
+Establish `e1 : ∀ (V W : Y.Opens) (h1 : V ≤ W) (U U' : Y.Opens) (h2 : W ≤ U) (h3 : W ≤ U') (u : Γ(Y, U)ˣ) (v : Γ(Y, U')ˣ), res h1 (res h2 u * res h3 v) = res (h1.trans h2) u * res (h1.trans h3) v` using `by intros; rw [map_mul, res_res, res_res]`. Use `(e1 _ _ _ _ _ _ _ _ _).trans (Eq.trans ?_ (e1 _ _ _ _ _ _ _ _ _).symm)` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg₂ (· * ·) (e1 _ _ _ _ _ _ _ _ _) ((congrArg _ (hc _)).trans (res_one _))).symm` and prove the remaining obligations. Rewrite using `[_root_.mul_one, _root_.mul_comm]`. Use `congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations.
+
+Conclude with `(res_res _ _ _)`. Conclude with `(res_res _ _ _).symm`.
+-/
 theorem corr_comm {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ φ' : K → (Y ⟶ X)) (ε : K → ℤ)
     (a : LB.Gen (LB.LinComb (trivLB X) φ ε)) (b : LB.Gen (LB.LinComb (trivLB X) φ' ε)) (h h' : Y ⟶ Y)
     (hh : h = 𝟙 Y) (hh' : h' = 𝟙 Y)
@@ -106,6 +149,11 @@ theorem corr_comm {X Y : Scheme.{0}} {K : Type} [Fintype K] (φ φ' : K → (Y �
   · exact (res_res _ _ _)
   · exact (res_res _ _ _).symm
 
+/- English proof (translation)
+Introduce `p`. Use `⟨⊤, trivial, ⟨⟨_, oneG _ _, oneG_gen _ _⟩, ⟨_, oneG _ _, oneG_gen _ _⟩, rfl, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `θx θy _ _`. Establish `hc : unitRes (T` using `T) ⊤ 1 = 1 := map_one _`. Rewrite using `[hc]`.
+
+Conclude with `corr_comm _ _ _ _ _ _ _ (translT_id B _) (translT_id B _) _ (fun j => (congrArg _ (map_one _)).trans (res_one _))`.
+-/
 theorem weil_zero (k : ℤ) {T : Over B} (x y : T ⟶ (zeroPolAV B).A) :
     WeilIs (zeroPolAV B).A (zeroPolAV B).L k x y 1 := by
   intro p
@@ -143,11 +191,24 @@ def sys0 (ζ : o) (hζ : IsPrimitiveRoot ζ ((3 * 81) ^ 2)) (hu : IsUnit ((3 * 8
   supp := by simp
   th_ne := ⟨0, one_ne_zero⟩
 
+/- English proof (translation)
+The claim follows from `map_one _`.
+-/
 theorem fn_one {R : Type} [CommRing R] : fn (1 : R) = 1 := map_one _
 
+/- English proof (translation)
+Simplify using `only [liftFun, map_one]`.
+-/
 theorem liftFun_one {T : Over B} (A : Over B) (W : (T ⊗ A).left.Opens) : liftFun A (T := T) W 1 = 1 := by
   simp only [liftFun, map_one]
 
+/- English proof (translation)
+Set `d : (LPow (zeroPolAV B).A (zeroPolAV B).L k T).ι` to `fun _ => PUnit.unit`. Establish `hb` using `liftFun_bij B T ((LPow (zeroPolAV B).A (zeroPolAV B).L k T).U d) (wchart_triv _ _)`. Take `⟨c, hc⟩` from `hb.2 (σ.f d)`. Use `⟨fun _ => c, fun j => ?_, fun c' h' => ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.sum_unique]`.
+
+Conclude with `hc.symm.trans (_root_.mul_one _).symm`. Use function extensionality and compare the values at `i`. Use `h' d` as an intermediate fact. Rewrite `this` using `[Fintype.sum_unique]`. Rewrite using `[Subsingleton.elim i default]`.
+
+Conclude with `hb.1 (((_root_.mul_one _).symm.trans this.symm).trans hc.symm)`.
+-/
 theorem basis_zero (T : Over B) (k : ℤ) (J : Type) [Fintype J] [Unique J] (σ : LB.Sec (LPow (zeroPolAV B).A (zeroPolAV B).L k T)) :
     ∃! c : J → Γ(T.left, ⊤), ∀ j, σ.f j = ∑ i, liftFun (zeroPolAV B).A _ (c i) *
       (oneS _ _ : LB.Sec (LPow (zeroPolAV B).A (zeroPolAV B).L k T)).f j := by
@@ -162,6 +223,9 @@ theorem basis_zero (T : Over B) (k : ℤ) (J : Type) [Fintype J] [Unique J] (σ 
     rw [Subsingleton.elim i default]
     exact hb.1 (((_root_.mul_one _).symm.trans this.symm).trans hc.symm)
 
+/- English proof (translation)
+Introduce `j`. Use `((congrArg _ (map_one _)).trans (map_one _)).trans ?_` and prove the remaining obligations. Rewrite using `[map_one, _root_.one_mul]`. Conclude with `(congrArg Units.val (hτ j)).symm`.
+-/
 theorem value_one (k : ℤ) {T : Over B} (z : T ⟶ (zeroPolAV B).A)
     (τ : LB.Gen (LB.LinComb (zeroPolAV B).L (Y := T.left) (K := Fin 1) (fun _ => z.left) (fun _ => k))) (hτ : ∀ j, τ.s j = 1) :
     IsValueAt (zeroPolAV B).A (zeroPolAV B).L k (oneS _ _) z τ 1 := by
@@ -170,22 +234,37 @@ theorem value_one (k : ℤ) {T : Over B} (z : T ⟶ (zeroPolAV B).A)
   rw [map_one, _root_.one_mul]
   exact (congrArg Units.val (hτ j)).symm
 
+/- English proof (translation)
+The claim follows from `(congrArg₂ (· * ·) ((congrArg _ (h _)).trans (res_one _)) ((congrArg _ (h' _)).trans (res_one _))).trans (_root_.one_mul _)`.
+-/
 theorem mul_s_one {X Y : Scheme.{0}} (L : LB X) {K K' : Type} [Fintype K] [Fintype K'] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ) (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb L φ' ε'))
     (h : ∀ j, t.s j = 1) (h' : ∀ j, t'.s j = 1) (j) : (LB.mulGen L φ ε φ' ε' t t').s j = 1 :=
   (congrArg₂ (· * ·) ((congrArg _ (h _)).trans (res_one _)) ((congrArg _ (h' _)).trans (res_one _))).trans (_root_.one_mul _)
 
+/- English proof (translation)
+The claim follows from `(congrArg _ ((congrArg _ (h _)).trans (pullU_one _ _))).trans (res_one _)`.
+-/
 theorem pull_s_one {X Y Z : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (f : Z ⟶ Y) (h : ∀ j, t.s j = 1) (j) : (LB.pullGen L φ ε t f).s j = 1 :=
   (congrArg _ ((congrArg _ (h _)).trans (pullU_one _ _))).trans (res_one _)
 
+/- English proof (translation)
+The claim follows from `(congrArg (·⁻¹) (h j)).trans inv_one`.
+-/
 theorem inv_s_one {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (h : ∀ j, t.s j = 1) (j) : (LB.invGen L φ ε t).s j = 1 :=
   (congrArg (·⁻¹) (h j)).trans inv_one
 
+/- English proof (translation)
+The claim follows from `(congrArg (· ^ k) ((congrArg _ (pullU_one _ _)).trans (res_one _))).trans (one_zpow _)`.
+-/
 theorem rigT_one (T : Over B) (k : ℤ) (j) : (rigT (zeroPolAV B).A (zeroPolAV B).L (oneG _ _) T k).s j = 1 :=
   (congrArg (· ^ k) ((congrArg _ (pullU_one _ _)).trans (res_one _))).trans (one_zpow _)
 
+/- English proof (translation)
+Use `⟨toUnit_unique _ _, oneG_gen _ _, oneG _ _, oneG_gen _ _, ?_, ?_⟩` and prove the remaining obligations. Conclude with `corr_of_one _ _ _ _ _ _ _ (pull_s_one _ _ _ _ _ fun _ => rfl) (mul_s_one _ _ _ _ _ _ _ (fun _ => one_zpow _) (inv_s_one _ _ _ _ fun _ => rfl))`. Conclude with `corr_of_one _ _ _ _ _ _ _ (fun _ => one_zpow _) (mul_s_one _ _ _ _ _ _ _ (pull_s_one _ _ _ _ _ fun _ => rfl) (rigT_one B _ _))`.
+-/
 theorem tors_zero (n : ℕ) {T : Over B} (x : T ⟶ (zeroPolAV B).A) :
     IsTorsFrame (zeroPolAV B) (oneG _ _) n x (oneG _ _) := by
   refine ⟨toUnit_unique _ _, oneG_gen _ _, oneG _ _, oneG_gen _ _, ?_, ?_⟩
@@ -194,6 +273,9 @@ theorem tors_zero (n : ℕ) {T : Over B} (x : T ⟶ (zeroPolAV B).A) :
   · exact corr_of_one _ _ _ _ _ _ _ (fun _ => one_zpow _)
       (mul_s_one _ _ _ _ _ _ _ (pull_s_one _ _ _ _ _ fun _ => rfl) (rigT_one B _ _))
 
+/- English proof (translation)
+Use `⟨rfl, corr_of_one _ _ _ _ _ _ _ (fun j => ?_) (fun _ => rfl), oneG _ _, oneG_gen _ _, corr_of_one _ _ _ _ _ _ _ ?_ (fun _ => rfl)⟩` and prove the remaining obligations. Use `show (∏ j₀ : Fin n, (_ : Γ((T ⊗ (zeroPolAV B).A).left, LB.wchart (zeroPolAV B).L (powφ (zeroPolAV B).A x n) j)ˣ)) = 1`. Use `Finset.prod_eq_one fun j₀ _ => ?_` and prove the remaining obligations. Conclude with `(congrArg _ ((congrArg _ (pullU_one _ _)).trans (res_one _))).trans (res_one _)`. Conclude with `mul_s_one _ _ _ _ _ _ _ (mul_s_one _ _ _ _ _ _ _ (pull_s_one _ _ _ _ _ fun _ => rfl) fun _ => rfl) (mul_s_one _ _ _ _ _ _ _ (pull_s_one _ _ _ _ _ fun _ => rfl) (inv_s_one _ _ _ _ (pull_s_one _ _ _ _ _ fun _ => rfl)))`.
+-/
 theorem symLift_zero (k : ℤ) (n : ℕ) {T : Over B} (x : T ⟶ (zeroPolAV B).A) :
     SymLift (zeroPolAV B).A (zeroPolAV B).L k n x ⟨x, oneG _ _, oneG_gen _ _⟩ := by
   refine ⟨rfl, corr_of_one _ _ _ _ _ _ _ (fun j => ?_) (fun _ => rfl), oneG _ _, oneG_gen _ _,
@@ -205,12 +287,20 @@ theorem symLift_zero (k : ℤ) (n : ℕ) {T : Over B} (x : T ⟶ (zeroPolAV B).A
       (mul_s_one _ _ _ _ _ _ _ (pull_s_one _ _ _ _ _ fun _ => rfl)
         (inv_s_one _ _ _ _ (pull_s_one _ _ _ _ _ fun _ => rfl)))
 
+/- English proof (translation)
+Introduce `j`. Use `(map_one _).trans ?_` and prove the remaining obligations. Conclude with `((congrArg₂ (· * ·) rfl ((congrArg _ (map_one _)).trans (map_one _))).trans (_root_.one_mul _)).symm`.
+-/
 theorem twist_one {T : Over B} (ψ : T ⊗ (zeroPolAV B).A ⟶ T ⊗ (zeroPolAV B).A) (m) (hm : ψ ≫ snd T _ = m) (a b : ℤ) :
     IsTwistPull (zeroPolAV B).A (zeroPolAV B).L ψ m hm a b (oneG _ _) (oneS _ _) (oneS _ _) := by
   intro j
   refine (map_one _).trans ?_
   exact ((congrArg₂ (· * ·) rfl ((congrArg _ (map_one _)).trans (map_one _))).trans (_root_.one_mul _)).symm
 
+/- English proof (translation)
+Establish `h1` using `(h (fun _ => PUnit.unit)).trans ((congrArg₂ (· * ·) rfl ((congrArg _ (map_one _)).trans (map_one _))).trans (_root_.one_mul _))`. Establish `key : ∀ (Y : Scheme.{0}) (U V : Y.Opens) (hle : V ≤ U) (_ : U = ⊤) (_ : V = ⊤) (f : Γ(Y, U)), (Y.presheaf.map (homOfLE hle).op).hom f = 1 → f = 1`. Introduce `Y U V hle hU hV f hf`. Substitute `hU hV` using the available equality. Establish `: (homOfLE hle).op = 𝟙 _` using `rfl`.
+
+Rewrite `hf` using `[this, CategoryTheory.Functor.map_id]`. Conclude with `hf`. Conclude with `key _ _ _ _ (wchart_triv _ _) (wchart_triv _ _) _ h1`.
+-/
 theorem act_one {T : Over B} (x : T ⟶ (zeroPolAV B).A) (k : ℤ) (σ : LB.Sec (LPow (zeroPolAV B).A (zeroPolAV B).L k T))
     (h : IsActOf (zeroPolAV B).A (zeroPolAV B).L k ⟨x, oneG _ _, oneG_gen _ _⟩ (oneS _ _) σ) (j) : σ.f j = 1 := by
   have h1 := (h (fun _ => PUnit.unit)).trans
@@ -287,6 +377,11 @@ variable (p : ℕ) [Fact p.Prime]
 def fracToCl : FractionRing ℤ_[p] →+* PadicAlgCl p :=
   (algebraMap ℚ_[p] (PadicAlgCl p)).comp (FractionRing.algEquiv ℤ_[p] ℚ_[p]).toRingEquiv.toRingHom
 
+/- English proof (translation)
+Establish `h : ‖fracToCl p x‖ = ‖FractionRing.algEquiv ℤ_[p] ℚ_[p] x‖` using `PadicAlgCl.norm_extends _ _`. Rewrite using `[h]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨⟨_, hx⟩, (FractionRing.algEquiv ℤ_[p] ℚ_[p]).injective ?_⟩` and prove the remaining obligations.
+
+Conclude with `AlgEquiv.commutes _ _`. Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[AlgEquiv.commutes]`. Conclude with `a.2`.
+-/
 theorem norm_fracToCl_le (x : FractionRing ℤ_[p]) :
     ‖fracToCl p x‖ ≤ 1 ↔ x ∈ Set.range (algebraMap ℤ_[p] (FractionRing ℤ_[p])) := by
   have h : ‖fracToCl p x‖ = ‖FractionRing.algEquiv ℤ_[p] ℚ_[p] x‖ := PadicAlgCl.norm_extends _ _
@@ -351,11 +446,17 @@ def labOfZero {S : ThetaSys o Ω} {ρ : S.Real} {p : ℕ} [Fact p.Prime] {y₀ :
     have h0 : eStd S.g _ t.1 x = 0 := Finset.sum_eq_zero fun i _ => hg.elim i
     rw [h0, map_zero]; rfl
 
+/- English proof (translation)
+Substitute `hU hf` using the available equality. Rewrite using `[valF, dif_pos (by simp), map_one, map_one]`.
+-/
 theorem valF_one {F : Type} [Field F] {X : Scheme.{0}} (x : Sp F ⟶ X) (U : X.Opens) (hU : U = ⊤) (f : Γ(X, U))
     (hf : f = 1) : valF x U f = 1 := by
   subst hU hf
   rw [valF, dif_pos (by simp), map_one, map_one]
 
+/- English proof (translation)
+Introduce `j _`. Use `(congrArg (fun z => ‖fracToCl p z‖) (valF_one _ _ (wchart_triv _ _) _ ?_)).trans (by simp)` and prove the remaining obligations. Conclude with `congrArg Units.val (((ToricData.psi_isConst (K := ℤ_[p]) (X := PUnit) (fun _ => 1) χ).of_eq ToricData.unitOn_one j).trans (UnifZero.gv_one _))`.
+-/
 theorem psiNorm_utest0 (χ) : (utest0 ζ hζ hu R fg frac p yK).PsiNorm χ 1 := by
   intro j _
   refine (congrArg (fun z => ‖fracToCl p z‖) (valF_one _ _ (wchart_triv _ _) _ ?_)).trans (by simp)
@@ -363,6 +464,9 @@ theorem psiNorm_utest0 (χ) : (utest0 ζ hζ hu R fg frac p yK).PsiNorm χ 1 := 
     (((ToricData.psi_isConst (K := ℤ_[p]) (X := PUnit) (fun _ => 1) χ).of_eq ToricData.unitOn_one j).trans
       (UnifZero.gv_one _))
 
+/- English proof (translation)
+Use `⟨𝟙 _, pullback.lift (jK ℤ_[p]) (𝟙 _) ((Category.comp_id _).trans (Category.id_comp _).symm), Category.comp_id _, (pullback.lift_fst _ _ _).trans (Category.comp_id _).symm, pullback.lift_snd _ _ _, ?_⟩` and prove the remaining obligations. Establish `h1 : (utest0 ζ hζ hu R fg frac p yK).U.gen.hom.left = pullback.snd (𝟙 (Sp ℤ_[p])) (jK ℤ_[p])` using `(Category.comp_id _).symm.trans (Over.w (utest0 ζ hζ hu R fg frac p yK).U.gen.hom)`. Establish `h2 : ((real0 ζ hζ hu R fg frac).pt a).left = 𝟙 _` using `(Category.comp_id _).symm.trans (Over.w ((real0 ζ hζ hu R fg frac).pt a))`. Rewrite using `[h1, h2]`. Conclude with `((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ spMap yK) (pullback.lift_snd _ _ _)).trans (Category.id_comp _))).trans (Category.comp_id _).symm`.
+-/
 theorem integral_utest0 (a) : (utest0 ζ hζ hu R fg frac p yK).Integral a := by
   refine ⟨𝟙 _, pullback.lift (jK ℤ_[p]) (𝟙 _) ((Category.comp_id _).trans (Category.id_comp _).symm),
     Category.comp_id _, (pullback.lift_fst _ _ _).trans (Category.comp_id _).symm, pullback.lift_snd _ _ _, ?_⟩
@@ -386,6 +490,9 @@ abbrev intAway (K : Type) [Field K] [NumberField K] : Subalgebra (𝓞 K) K :=
   Localization.subalgebra.ofField K (Submonoid.powers (3 : 𝓞 K))
     (powers_le_nonZeroDivisors_of_noZeroDivisors (by norm_num))
 
+/- English proof (translation)
+The claim follows from `IsLocalization.isDedekindDomain (𝓞 K) (M := Submonoid.powers (3 : 𝓞 K)) (powers_le_nonZeroDivisors_of_noZeroDivisors (by norm_num)) _ ft := by haveI : Algebra.FinitePresentation (𝓞 K) (intAway K) := IsLocalization.Away.finitePresentation (3 : 𝓞 K) exact Algebra.FiniteType.trans ( …`.
+-/
 theorem arithBase_intAway (K : Type) [Field K] [NumberField K] : ArithBase (intAway K) K where
   ded := IsLocalization.isDedekindDomain (𝓞 K) (M := Submonoid.powers (3 : 𝓞 K))
     (powers_le_nonZeroDivisors_of_noZeroDivisors (by norm_num)) _
@@ -395,18 +502,29 @@ theorem arithBase_intAway (K : Type) [Field K] [NumberField K] : ArithBase (intA
   char := inferInstance
   inj := Subtype.val_injective
 
+/- English proof (translation)
+Use `IsLocalization.Away.algebraMap_isUnit (S := intAway K) (3 : 𝓞 K)` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis.
+-/
 theorem isUnit_three_intAway (K : Type) [Field K] [NumberField K] : IsUnit (3 : intAway K) := by
   have := IsLocalization.Away.algebraMap_isUnit (S := intAway K) (3 : 𝓞 K)
   rwa [map_ofNat] at this
 
 end Arith
 
+/- English proof (translation)
+Establish `: ∀ x, ‖y₀ ⟨(sys0 ζ hζ hu R fg frac).th x, (sys0 ζ hζ hu R fg frac).th_mem x⟩‖ = 1` using `fun x => (congrArg _ (map_one y₀)).trans norm_one`. Conclude with `(iSup_congr this).trans ciSup_const`.
+-/
 example {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (ζ : o) (hζ) (hu) (R : Subalgebra o Ω) (fg) (frac)
     (p : ℕ) [Fact p.Prime] (y₀ : R →+* PadicAlgCl p) : (sys0 ζ hζ hu R fg frac).delta y₀ = 1 := by
   have : ∀ x, ‖y₀ ⟨(sys0 ζ hζ hu R fg frac).th x, (sys0 ζ hζ hu R fg frac).th_mem x⟩‖ = 1 := fun x =>
     (congrArg _ (map_one y₀)).trans norm_one
   exact (iSup_congr this).trans ciSup_const
 
+/- English proof (translation)
+Establish `h1 : (2 : ℝ) ^ ((1 : ℝ) / 2) ≤ 2 ^ (1 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le (by norm_num) (by norm_num)`. Establish `h2 : (2 : ℝ) ^ ((1 : ℝ) / 2 - 1) < 1` using `Real.rpow_lt_one_of_one_lt_of_neg (by norm_num) (by norm_num)`. Rewrite `h1` using `[Real.rpow_one]`. Simplify using `only [ThetaSys.Big, hg, hN, hr]`. Use `push_cast`.
+
+Use `⟨by linarith, by simp only [Nat.factorial_one, Nat.cast_one]; linarith, by norm_num⟩` and prove the remaining obligations.
+-/
 example {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (hg : S.g = 1) (hN : S.N = 81)
     (hr : S.r = 243) : S.Big := by
   have h1 : (2 : ℝ) ^ ((1 : ℝ) / 2) ≤ 2 ^ (1 : ℝ) := Real.rpow_le_rpow_of_exponent_le (by norm_num) (by norm_num)
@@ -416,6 +534,11 @@ example {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω)
   push_cast
   refine ⟨by linarith, by simp only [Nat.factorial_one, Nat.cast_one]; linarith, by norm_num⟩
 
+/- English proof (translation)
+Establish `h2 : (2 : ℝ) ^ (-1 : ℝ) ≤ (2 : ℝ) ^ ((1 : ℝ) / 2 - 1)` using `Real.rpow_le_rpow_of_exponent_le (by norm_num) (by norm_num)`. Rewrite `h2` using `[Real.rpow_neg_one]`. Simplify using `only [ThetaSys.Big, hg, hN, hr]`. Use `push_cast`. Introduce and unpack `⟨-, h, -⟩`.
+
+Simplify using `only [Nat.factorial_one, Nat.cast_one] at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 example {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (hg : S.g = 1) (hN : S.N = 81)
     (hr : S.r = 81) : ¬ S.Big := by
   have h2 : (2 : ℝ) ^ (-1 : ℝ) ≤ (2 : ℝ) ^ ((1 : ℝ) / 2 - 1) := Real.rpow_le_rpow_of_exponent_le (by norm_num) (by norm_num)

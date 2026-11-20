@@ -8,6 +8,11 @@ namespace Formalism.RepresentationBoundsCohomology.JN
 
 open Formalism.CoboundaryTransfers Formalism.RepresentationBoundsCohomology.N1 Formalism.RepresentationBoundsCohomology.N2
 
+/- English proof (translation)
+Establish `h2 : 2 ≤ ℓ` using `(Fact.out : ℓ.Prime).two_le`. Rewrite using `[hn, Nat.cast_sub (by omega), Nat.cast_one]`. Establish `h0 : IsUnit (1 - (ℓ : ℤ_[ℓ]))` using `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits _ PadicInt.prime_p.not_isUnit`. Establish `: (ℓ : ℤ_[ℓ]) - 1 = -(1 - (ℓ : ℤ_[ℓ]))` using `by ring`. Rewrite using `[this]`.
+
+Conclude with `h0.neg`.
+-/
 theorem card_unit (ℓ : ℕ) [Fact ℓ.Prime] (n : ℕ) (hn : n = ℓ - 1) : IsUnit ((n : ℕ) : ℤ_[ℓ]) := by
   have h2 : 2 ≤ ℓ := (Fact.out : ℓ.Prime).two_le
   rw [hn, Nat.cast_sub (by omega), Nat.cast_one]
@@ -17,11 +22,27 @@ theorem card_unit (ℓ : ℕ) [Fact ℓ.Prime] (n : ℕ) (hn : n = ℓ - 1) : Is
   rw [this]
   exact h0.neg
 
+/- English proof (translation)
+Use `(card_unit ℓ n hn).map (algebraMap ℤ_[ℓ] A)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem card_unit' (ℓ : ℕ) [Fact ℓ.Prime] (A : Type) [CommRing A] [Algebra ℤ_[ℓ] A] (n : ℕ)
     (hn : n = ℓ - 1) : IsUnit ((n : ℕ) : A) := by
   have := (card_unit ℓ n hn).map (algebraMap ℤ_[ℓ] A)
   rwa [map_natCast] at this
 
+/- English proof (translation)
+Introduce `ℓ _ A A₀ _ _ _ _ S B Δ _ _ _ IB ι _ pr D _ _ _ _ W ρ M₀ D' _ _ _ _ V J Hh _ _ cl Hf M h H hs hR hD hP2 hP5 hL hM hH hcard hΔ hGQ hcap hJ hE κ hκ`. Take `⟨Dp, Dt, i1, i2, i3, i4, i5, i6, i7, i8, Wp, Wt, E, ρp, ρt, e, p2p, p2t, p5p, p5t, lp, lt, p6, dp, dt, hι, hπ, he, hφe, hγe, hρe, hdict⟩` from `hE κ hκ`. Take `⟨np, κp, _, bp, hbp⟩` from `delta_basis_holds ℤ_[ℓ] A S Δ ι pr Dp Wp ρp hR (card_unit' ℓ A _ hcard) dp`. Take `⟨nt, κt, _, bt, hbt⟩` from `delta_basis_holds ℤ_[ℓ] A S Δ ι pr Dt Wt ρt hR (card_unit' ℓ A _ hcard) dt`. Take `⟨sp, fp, gp, -, -⟩` from `dp`.
+
+Take `⟨st, ft, gt, -, -⟩` from `dt`. Take `⟨Dp', k1, k2, k3, k4, jp, φp, γp, x1, x2, x3, x4, x5, x6⟩` from `invariants_exist_holds ℤ_[ℓ] A A₀ S B Δ IB ι pr Dp Wp ρp sp fp gp`. Take `⟨Dt', m1, m2, m3, m4, jt, φt, γt, y1, y2, y3, y4, y5, y6⟩` from `invariants_exist_holds ℤ_[ℓ] A A₀ S B Δ IB ι pr Dt Wt ρt st ft gt`. Establish `g9p` using `gamma_sub_one_invariants_holds ℤ_[ℓ] A A₀ S B Δ IB ι pr Dp Wp ρp κp bp hs p2p sp np hbp gp hcap`. Establish `g9t` using `gamma_sub_one_invariants_holds ℤ_[ℓ] A A₀ S B Δ IB ι pr Dt Wt ρt κt bt hs p2t st nt hbt gt hcap`.
+
+Take `⟨Vp, Jp, ep, epφ, epγ⟩` from `wach_invariants_holds ℤ_[ℓ] A A₀ S B Δ IB ι pr Dp Wp ρp M h M₀ Dp' jp φp γp hs hΔ hGQ p5p hM x1 x2 x3 x4 x5 x6 g9p`. Take `⟨Vt, Jt, et, etφ, etγ⟩` from `wach_invariants_holds ℤ_[ℓ] A A₀ S B Δ IB ι pr Dt Wt ρt M h M₀ Dt' jt φt γt hs hΔ hGQ p5t hM y1 y2 y3 y4 y5 y6 g9t`. Take `⟨-, -, -, hsat, -⟩` from `wach_top_statement ℤ_[ℓ] A S ι pr D Dp Dt W Wp Wt E M h M₀ H H hR hD hP2 p2p p2t hP5 p5p p5t hL lp lt p6 hM (fun i => by have := hH i; omega) hH`. Establish `cp : Jp.Compat` using `⟨by rw [ep, epφ]; exact x4, by rw [ep, epγ]; exact x5⟩`. Establish `ct : Jt.Compat` using `⟨by rw [et, etφ]; exact y4, by rw [et, etγ]; exact y5⟩`.
+
+Take `⟨Sq, hSι, hSπ⟩` from `invariants_short_exact ℤ_[ℓ] A A₀ S B Δ IB ι pr D Dp Dt W Wp Wt E ρ ρp ρt M₀ D' Dp' Dt' V Vp Vt J Jp Jt hJ cp ct hι hπ hsat`. Take `⟨e', he'⟩` from `(Jt.j_range e).1 hρe`. Use `⟨{ Dp := Dp', Dt := Dt', Wp := Vp, Wt := Vt, S := Sq, e := e', e_mem := ?_, φe := ?_, γe := ?_ }, Dp, Dt, i1, i2, i3, i4, i5, i6, i7, i8, Wp, Wt, E, ρp, ρt, Jp, Jt, p2p, p2t, p5p, p5t, lp, lt, p6, cp, ct, ⟨np, hπ, st⟩, hSπ, ?_⟩` and prove the remaining obligations. Conclude with `(Jt.j_N e').2 fun i => by rw [he']; exact he i`. Conclude with `Jt.j_inj (funext fun i => by rw [ct.1, he', hφe])`.
+
+Conclude with `Jt.j_inj (funext fun i => by rw [ct.2, he', hγe])`. Introduce `c x p h1 h2 h3`. Use `hdict c (Jp.j x) p ((Jp.j_range _).2 ⟨x, rfl⟩) (fun i => ?_) (fun i => ?_) (fun i => ?_)` and prove the remaining obligations. Establish `h1' : Sq.π.f x = c • e'` using `h1`. Rewrite using `[← hSπ, h1', map_smul, he']`.
+
+Both sides reduce to the same expression. Establish `h2' : Sq.ι.f (p : D' × D').1 = Vp.φ x - x` using `h2`. Rewrite using `[← hSι, h2', map_sub, Pi.sub_apply, cp.1]`. Establish `h3' : Sq.ι.f (p : D' × D').2 = Vp.γ x - x` using `h3`. Rewrite using `[← hSι, h3', map_sub, Pi.sub_apply, cp.2]`.
+-/
 theorem extension_nonlinear_holds : StatExtNL := by
   intro ℓ _ A A₀ _ _ _ _ S B Δ _ _ _ IB ι _ pr D _ _ _ _ W ρ M₀ D' _ _ _ _ V J Hh _ _ cl Hf M h H hs hR
     hD hP2 hP5 hL hM hH hcard hΔ hGQ hcap hJ hE κ hκ
@@ -64,6 +85,17 @@ theorem extension_nonlinear_holds : StatExtNL := by
     · have h3' : Sq.ι.f (p : D' × D').2 = Vp.γ x - x := h3
       rw [← hSι, h3', map_sub, Pi.sub_apply, cp.2]
 
+/- English proof (translation)
+Introduce `ℓ _ hℓ2 A A₀ _ _ _ _ S B Δ _ _ _ IB ι _ pr D₀ D₁ D₂ _ _ _ _ _ _ _ _ _ _ _ _ W₀ W₁ W₂ E M h M₀ H ρ₀ ρ₁ ρ₂ D₀' D₁' D₂' _ _ _ _ _ _ _ _ _ _ _ _ j₀ j₁ j₂ φ₀ γ₀ φ₁ γ₁ φ₂ γ₂ u jumps hℓ hs hc hu hR hD a0 a1 a2 b0 b1 b2 c0 c1 c2 hP6 hM hH hp hcard hΔ hmodπ hcap hreg hQL hdiv hjac i0 i1 i …`. Establish `hGQ` using `gamma_quotient_case_a ℤ_[ℓ] A₀ B hQL hdiv hjac`. Take `⟨n0, κ0, _, β0, hβ0⟩` from `delta_basis_holds ℤ_[ℓ] A S Δ ι pr D₀ W₀ ρ₀ hR (card_unit' ℓ A _ hcard) d0`. Take `⟨n1, κ1, _, β1, hβ1⟩` from `delta_basis_holds ℤ_[ℓ] A S Δ ι pr D₁ W₁ ρ₁ hR (card_unit' ℓ A _ hcard) d1`. Take `⟨n2, κ2, _, β2, hβ2⟩` from `delta_basis_holds ℤ_[ℓ] A S Δ ι pr D₂ W₂ ρ₂ hR (card_unit' ℓ A _ hcard) d2`.
+
+Take `⟨s0, -, q0, -, -⟩` from `d0`. Take `⟨s1, -, q1, -, -⟩` from `d1`. Take `⟨s2, -, q2, -, -⟩` from `d2`. Establish `g0` using `gamma_sub_one_invariants_holds ℤ_[ℓ] A A₀ S B Δ IB ι pr D₀ W₀ ρ₀ κ0 β0 hs a0 s0 n0 hβ0 q0 hcap`. Establish `g1` using `gamma_sub_one_invariants_holds ℤ_[ℓ] A A₀ S B Δ IB ι pr D₁ W₁ ρ₁ κ1 β1 hs a1 s1 n1 hβ1 q1 hcap`.
+
+Establish `g2` using `gamma_sub_one_invariants_holds ℤ_[ℓ] A A₀ S B Δ IB ι pr D₂ W₂ ρ₂ κ2 β2 hs a2 s2 n2 hβ2 q2 hcap`. Take `⟨x1, x2, x3, x4, x5, x6⟩` from `i0`. Take `⟨y1, y2, y3, y4, y5, y6⟩` from `i1`. Take `⟨z1, z2, z3, z4, z5, z6⟩` from `i2`. Take `⟨V₀, J₀, e0, e0φ, e0γ⟩` from `wach_invariants_holds ℤ_[ℓ] A A₀ S B Δ IB ι pr D₀ W₀ ρ₀ M h M₀ D₀' j₀ φ₀ γ₀ hs hΔ hGQ b0 hM x1 x2 x3 x4 x5 x6 g0`.
+
+Take `⟨V₁, J₁, e1, e1φ, e1γ⟩` from `wach_invariants_holds ℤ_[ℓ] A A₀ S B Δ IB ι pr D₁ W₁ ρ₁ M h M₀ D₁' j₁ φ₁ γ₁ hs hΔ hGQ b1 hM y1 y2 y3 y4 y5 y6 g1`. Take `⟨V₂, J₂, e2, e2φ, e2γ⟩` from `wach_invariants_holds ℤ_[ℓ] A A₀ S B Δ IB ι pr D₂ W₂ ρ₂ M h M₀ D₂' j₂ φ₂ γ₂ hs hΔ hGQ b2 hM z1 z2 z3 z4 z5 z6 g2`. Take `⟨-, -, -, hsat, -⟩` from `wach_top_statement ℤ_[ℓ] A S ι pr D₀ D₁ D₂ W₀ W₁ W₂ E M h M₀ H H hR hD a0 a1 a2 b0 b1 b2 c0 c1 c2 hP6 hM (fun i => by have := hH i; omega) hH`. Establish `k0 : J₀.Compat` using `⟨by rw [e0, e0φ]; exact x4, by rw [e0, e0γ]; exact x5⟩`. Establish `k1 : J₁.Compat` using `⟨by rw [e1, e1φ]; exact y4, by rw [e1, e1γ]; exact y5⟩`.
+
+Establish `k2 : J₂.Compat` using `⟨by rw [e2, e2φ]; exact z4, by rw [e2, e2γ]; exact z5⟩`. Take `⟨Sq, hSι, hSπ⟩` from `invariants_short_exact ℤ_[ℓ] A A₀ S B Δ IB ι pr D₀ D₁ D₂ W₀ W₁ W₂ E ρ₀ ρ₁ ρ₂ M₀ D₀' D₁' D₂' V₀ V₁ V₂ J₀ J₁ J₂ k0 k1 k2 hι hπ hsat`. Use `⟨V₀, V₁, V₂, Sq, J₀, J₁, J₂, ⟨e0, e0φ, e0γ⟩, ⟨e1, e1φ, e1γ⟩, ⟨e2, e2φ, e2γ⟩, hSι, hSπ, ?_⟩` and prove the remaining obligations. Introduce `δ R P ρ κ _ _ _ _ _ _ _ L H₁ H₂ _ _ _ _ cl₁ cl₂ Hf₁ Hf₂ g _ hδ hP4 hj hnat hc1 hc2 hinj he1 he2 hrat`. Conclude with `composition_case_a ℓ hℓ2 A A₀ S B Δ IB ι pr D₀ D₁ D₂ W₀ W₁ W₂ E M h M₀ H ρ₀ ρ₁ ρ₂ D₀' D₁' D₂' V₀ V₁ V₂ Sq J₀ J₁ J₂ u jumps δ R P ρ κ L H₁ H₂ cl₁ cl₂ Hf₁ Hf₂ g hℓ hs hc hu hR hD a0 a1 a2 b0 b1 b2 c0 c1 c2 hP6 hM hH hp hcard hΔ hmodπ hcap hreg hQL hdiv hjac k0 k1 k2 ⟨n1, hπ, s2⟩ hS …`.
+-/
 theorem lift_case_a_odd_prime : LiftCaseAOddPrime := by
   intro ℓ _ hℓ2 A A₀ _ _ _ _ S B Δ _ _ _ IB ι _ pr D₀ D₁ D₂ _ _ _ _ _ _ _ _ _ _ _ _ W₀ W₁ W₂ E M h M₀ H
     ρ₀ ρ₁ ρ₂ D₀' D₁' D₂' _ _ _ _ _ _ _ _ _ _ _ _ j₀ j₁ j₂ φ₀ γ₀ φ₁ γ₁ φ₂ γ₂ u jumps hℓ hs hc hu hR hD

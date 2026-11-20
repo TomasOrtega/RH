@@ -21,9 +21,19 @@ def aL : ∀ {p : ℕ}, (Fin (p + 1) → Co A 1) → Co A p := fun {p} =>
   Nat.rec (motive := fun p => (Fin (p + 1) → Co A 1) → Co A p) (fun _ => one0 A)
     (fun p ih β => (CH.mulP A).cupC (by omega : 1 + p = p + 1) (β 0 - β 1) (ih fun i => β i.succ)) p
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem aL_succ {p : ℕ} (β : Fin (p + 2) → Co A 1) :
     aL A β = (CH.mulP A).cupC (by omega : 1 + p = p + 1) (β 0 - β 1) (aL A fun i => β i.succ) := rfl
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Establish `e1 : cupListC A l = (CH.mulP A).cupC (Nat.zero_add 1) (one0 A) (l (Fin.last 0))` using `rfl`. Establish `e2 : (cupListC A fun i : Fin 0 => l i.succ) = one0 A` using `rfl`. Rewrite using `[e1, e2]`.
+
+Conclude with `(Auxff.unit_left A _).trans (Auxff.unit_right A _).symm`. Consider the case `succ k ih`. Establish `e1 : cupListC A l = (CH.mulP A).cupC (by omega : k + 1 + 1 = k + 1 + 1) (cupListC A fun i : Fin (k + 1) => l i.castSucc) (l (Fin.last (k + 1)))` using `rfl`. Establish `e2 : (cupListC A fun i : Fin (k + 1) => l i.succ) = (CH.mulP A).cupC (by omega : k + 1 = k + 1) (cupListC A fun i : Fin k => l i.castSucc.succ) (l (Fin.last k).succ)` using `rfl`. Rewrite using `[e1, e2, ih (fun i => l i.castSucc)]`.
+
+Conclude with `Auxff.assoc A _ _ (by omega : k + 1 = k + 1) (by omega) _ _ _`.
+-/
 theorem cupList_left {k : ℕ} (l : Fin (k + 1) → Co A 1) :
     cupListC A l = (CH.mulP A).cupC (by omega : 1 + k = k + 1) (l 0) (cupListC A fun i => l i.succ) := by
   induction k with
@@ -40,6 +50,9 @@ theorem cupList_left {k : ℕ} (l : Fin (k + 1) → Co A 1) :
     rw [e1, e2, ih (fun i => l i.castSucc)]
     exact Auxff.assoc A _ _ (by omega : k + 1 = k + 1) (by omega) _ _ _
 
+/- English proof (translation)
+Proceed by induction on `p with`. Consider the case `zero => rfl`. Consider the case `succ p ih`. Rewrite using `[aL_succ, ih, cupList_left]`. Both sides reduce to the same expression.
+-/
 theorem aL_eq {p : ℕ} (β : Fin (p + 1) → Co A 1) : aL A β = cupListC A fun k : Fin p => β k.castSucc - β k.succ := by
   induction p with
   | zero => rfl
@@ -47,12 +60,18 @@ theorem aL_eq {p : ℕ} (β : Fin (p + 1) → Co A 1) : aL A β = cupListC A fun
     rw [aL_succ, ih, cupList_left]
     rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Express the relevant statement in the definitionally equal form `∑ i : Fin 2, (-1 : ℤ) ^ (i : ℕ) • (A.map (GlobalTheory.CatH.toLast i s)).hom 1 = (0 : A.obj _)`. Rewrite using `[Fin.sum_univ_two, map_one, map_one]`. Simplify using the standard rewrite rules.
+-/
 theorem cech_d_one_zero : CH.d (CH.modF A) 0 (one0 A) = 0 := by
   funext s
   change ∑ i : Fin 2, (-1 : ℤ) ^ (i : ℕ) • (A.map (GlobalTheory.CatH.toLast i s)).hom 1 = (0 : A.obj _)
   rw [Fin.sum_univ_two, map_one, map_one]
   simp
 
+/- English proof (translation)
+Proceed by induction on `p with`. Consider the case `zero => exact cech_d_one_zero A`. Consider the case `succ p ih`. Rewrite using `[aL_succ, P.leibniz, ih _ fun i j => hβ _ _, map_sub, hβ 0 1, sub_self]`. Simplify using the standard rewrite rules.
+-/
 theorem aL_closed {p : ℕ} (β : Fin (p + 1) → Co A 1) (hβ : ∀ i j, CH.d _ 1 (β i) = CH.d _ 1 (β j)) :
     CH.d _ p (aL A β) = 0 := by
   induction p with
@@ -61,6 +80,11 @@ theorem aL_closed {p : ℕ} (β : Fin (p + 1) → Co A 1) (hβ : ∀ i j, CH.d _
     rw [aL_succ, P.leibniz, ih _ fun i j => hβ _ _, map_sub, hβ 0 1, sub_self]
     simp
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact cech_d_one_zero A`. Consider the case `succ k ih`. Establish `e : cupPowC A z (k + 1) = (CH.mulP A).cupC (by omega) (cupPowC A z k) z` using `rfl`. Rewrite using `[e, P.leibniz, ih, hz]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem pow_closed (z : Co A 2) (hz : CH.d _ 2 z = 0) (k : ℕ) : CH.d _ (2 * k) (cupPowC A z k) = 0 := by
   induction k with
   | zero => exact cech_d_one_zero A
@@ -69,6 +93,29 @@ theorem pow_closed (z : Co A 2) (hz : CH.d _ 2 z = 0) (k : ℕ) : CH.d _ (2 * k)
     rw [e, P.leibniz, ih, hz]
     simp
 
+/- English proof (translation)
+Proceed by induction on `p with`. Consider the case `zero`. Rewrite using `[Fin.sum_univ_two]`. Establish `e : ∀ γ : Fin 1 → Co A 1, aL A γ = one0 A` using `fun _ => rfl`. Rewrite using `[e, e]`.
+
+Simplify using the standard rewrite rules. Consider the case `succ p ih`. Establish `ih'` using `ih fun i => β i.succ`. Rewrite `ih'` using `[Fin.sum_univ_succ]`. Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_succ]`.
+
+Establish `e0 : β ∘ (0 : Fin (p + 3)).succAbove = fun i => β i.succ`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Establish `e1 : aL A (β ∘ (Fin.succ 0 : Fin (p + 3)).succAbove) = (CH.mulP A).cupC (by omega : 1 + p = p + 1) (β 0 - β 2) (aL A ((fun i => β i.succ) ∘ (0 : Fin (p + 2)).succAbove))`. Rewrite using `[aL_succ]`.
+
+Use `congrArg₂ (fun x y => (CH.mulP A).cupC (by omega : 1 + p = p + 1) x y) ?_ (congrArg _ ?_)` and prove the remaining obligations. Simplify using `only [Function.comp]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp]`.
+
+Use `congr 1`. Establish `e2 : ∀ j : Fin (p + 1), aL A (β ∘ (Fin.succ (Fin.succ j)).succAbove) = (CH.mulP A).cupC (by omega : 1 + p = p + 1) (β 0 - β 1) (aL A ((fun i => β i.succ) ∘ (Fin.succ j).succAbove))`. Introduce `j`. Rewrite using `[aL_succ]`. Use `congrArg₂ (fun x y => (CH.mulP A).cupC (by omega : 1 + p = p + 1) x y) ?_ (congrArg _ ?_)` and prove the remaining obligations.
+
+Simplify using `only [Function.comp]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp]`. Conclude with `congrArg β (Fin.succ_succAbove_succ _ _)`.
+
+Establish `e3 : aL A (fun i => β i.succ) = (CH.mulP A).cupC (by omega : 1 + p = p + 1) (β 1 - β 2) (aL A ((fun i => β i.succ) ∘ (0 : Fin (p + 2)).succAbove))`. Rewrite using `[aL_succ]`. Use `congrArg₂ (fun x y => (CH.mulP A).cupC (by omega : 1 + p = p + 1) x y) rfl (congrArg _ ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Simplify using `only [e2]`. Rewrite using `[e0, e1, e3]`. Generalize the expression as in `aL A ((fun i => β i.succ) ∘ (0 : Fin (p + 2)).succAbove) = B at ih' ⊢`. Generalize the expression as in `hM : (CH.mulP A).cupC (by omega : 1 + p = p + 1) = M`. Establish `h1 : ∑ i : Fin (p + 1), (-1 : ℤ) ^ ((Fin.succ i : Fin (p + 2)) : ℕ) • aL A ((fun i => β i.succ) ∘ (Fin.succ i).succAbove) = -B`.
+
+Use `eq_neg_of_add_eq_zero_right ?_` and prove the remaining obligations. Simplify using `using ih'`. Establish `h2 : ∑ j : Fin (p + 1), (-1 : ℤ) ^ ((Fin.succ (Fin.succ j) : Fin (p + 3)) : ℕ) • M (β 0 - β 1) (aL A ((fun i => β i.succ) ∘ (Fin.succ j).succAbove)) = M (β 0 - β 1) B`. Rewrite using `[← neg_neg B, ← h1, map_neg, map_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zsmul, ← neg_smul]`. Use `congr 1`. Simplify using `[Fin.val_succ, pow_succ]`. Rewrite using `[h2]`. Simplify using `only [map_sub, LinearMap.sub_apply, Fin.val_zero, Fin.val_succ, pow_zero, one_smul, zero_add, pow_one, neg_smul]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem aL_cocycle {p : ℕ} (β : Fin (p + 2) → Co A 1) :
     ∑ j : Fin (p + 2), (-1 : ℤ) ^ (j : ℕ) • aL A (β ∘ j.succAbove) = 0 := by
   induction p with
@@ -126,6 +173,15 @@ theorem aL_cocycle {p : ℕ} (β : Fin (p + 2) → Co A 1) :
     simp only [map_sub, LinearMap.sub_apply, Fin.val_zero, Fin.val_succ, pow_zero, one_smul, zero_add, pow_one, neg_smul]
     abel
 
+/- English proof (translation)
+Establish `h0` using `aL_cocycle A β`. Rewrite `h0` using `[Fin.sum_univ_succ]`. Rewrite using `[Fin.sum_univ_succ]`. Establish `e0 : β ∘ (0 : Fin (p + 2)).succAbove = fun i => β i.succ`. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules. Rewrite `h0`, the goal using `[e0]`. Generalize the expression as in `hM : (CH.mulP A).cupC (by omega : 1 + p = p + 1) = M`. Establish `h1 : ∑ i : Fin (p + 1), (-1 : ℤ) ^ ((Fin.succ i : Fin (p + 2)) : ℕ) • aL A (β ∘ (Fin.succ i).succAbove) = -aL A fun i => β i.succ`. Use `eq_neg_of_add_eq_zero_right ?_` and prove the remaining obligations.
+
+Simplify using `using h0`. Establish `h2 : ∑ j : Fin (p + 1), (-1 : ℤ) ^ ((Fin.succ j : Fin (p + 2)) : ℕ) • M (β ((Fin.succ j).succAbove 0)) (aL A (β ∘ (Fin.succ j).succAbove)) = - M (β 0) (aL A fun i => β i.succ)`. Rewrite using `[← map_neg, ← h1, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, Fin.succ_succAbove_zero]`.
+
+Rewrite using `[h2, aL_succ, hM]`. Simplify using `only [map_sub, LinearMap.sub_apply, Fin.val_zero, pow_zero, one_smul, Fin.zero_succAbove]`. Establish `: (Fin.succ 0 : Fin (p + 2)) = 1` using `rfl`. Rewrite using `[this]`. Normalize the expressions using the abelian group laws.
+-/
 theorem aL_E {p : ℕ} (β : Fin (p + 2) → Co A 1) :
     ∑ j : Fin (p + 2), (-1 : ℤ) ^ (j : ℕ) • (CH.mulP A).cupC (by omega : 1 + p = p + 1) (β (j.succAbove 0)) (aL A (β ∘ j.succAbove)) =
       - aL A β := by
@@ -156,6 +212,9 @@ def fP (z : Co A 2) {p : ℕ} (β : Fin (p + 1) → Co A 1) (k q : ℕ) (h : 2 *
 def gP (z : Co A 2) {p : ℕ} (β : Fin (p + 1) → Co A 1) (k q : ℕ) (h : 2 * k + p = q) : Co A q :=
   (CH.mulP A).cupC h (cupPowC A z k) (aL A β)
 
+/- English proof (translation)
+Unfold `fP gP`. Rewrite using `[P.leibniz, pow_closed A z hz, P.leibniz, aL_closed A β (fun i j => by rw [hβ, hβ]), hβ, pow_mul]`. Simplify using `only [map_zero, LinearMap.zero_apply, smul_zero, add_zero, zero_add, neg_one_sq, one_pow, one_smul]`. Conclude with `(Auxff.assoc A _ _ _ _ _ _ _).symm`.
+-/
 theorem d_fP (z : Co A 2) (hz : CH.d _ 2 z = 0) {p : ℕ} (β : Fin (p + 1) → Co A 1) (hβ : ∀ i, CH.d _ 1 (β i) = z)
     (k q : ℕ) (h : 2 * k + (p + 1) = q) : CH.d _ q (fP A z β k q h) = gP A z β (k + 1) (q + 1) (by omega) := by
   unfold fP gP
@@ -163,6 +222,9 @@ theorem d_fP (z : Co A 2) (hz : CH.d _ 2 z = 0) {p : ℕ} (β : Fin (p + 1) → 
   simp only [map_zero, LinearMap.zero_apply, smul_zero, add_zero, zero_add, neg_one_sq, one_pow, one_smul]
   exact (Auxff.assoc A _ _ _ _ _ _ _).symm
 
+/- English proof (translation)
+Unfold `fP gP`. Rewrite using `[← map_neg, ← aL_E, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`. Both sides reduce to the same expression.
+-/
 theorem sum_fP (z : Co A 2) {p : ℕ} (β : Fin (p + 2) → Co A 1) (k q : ℕ) (h : 2 * k + (p + 1) = q) :
     ∑ j : Fin (p + 2), (-1 : ℤ) ^ (j : ℕ) • fP A z (β ∘ j.succAbove) k q h = - gP A z β k q h := by
   unfold fP gP
@@ -180,18 +242,32 @@ def resM (h : V ≤ U) : CH.Mor (CH.modF (U.ι ⋙ A)) (CH.modF (V.ι ⋙ A)) (R
   τ _ := LinearMap.id
   nat _ _ := rfl
 
+/- English proof (translation)
+The claim follows from `(resM A h).d_pullC k b`.
+-/
 theorem d_resB (h : V ≤ U) {k : ℕ} (b : CH.Cn (CH.modF (U.ι ⋙ A)) k) :
     CH.d _ k (resB A h b) = resB A h (CH.d _ k b) := (resM A h).d_pullC k b
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Rewrite using `[Auxff.cupC_apply]`. Conclude with `congrArg₂ (fun x y => (CH.mulP _).μ _ x y) (Auxff.term_pull (resM A h) s a _ _) (Auxff.term_pull (resM A h) s b _ _)`.
+-/
 theorem resB_cup (h : V ≤ U) {p q n : ℕ} (e : p + q = n) (a : CH.Cn (CH.modF (U.ι ⋙ A)) p) (b : CH.Cn (CH.modF (U.ι ⋙ A)) q) :
     resB A h ((CH.mulP _).cupC e a b) = (CH.mulP _).cupC e (resB A h a) (resB A h b) := by
   funext s
   rw [Auxff.cupC_apply]
   exact congrArg₂ (fun x y => (CH.mulP _).μ _ x y) (Auxff.term_pull (resM A h) s a _ _) (Auxff.term_pull (resM A h) s b _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resB_sub (h : V ≤ U) {k : ℕ} (a b : CH.Cn (CH.modF (U.ι ⋙ A)) k) :
     resB A h (a - b) = resB A h a - resB A h b := rfl
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Establish `e : cupPowC (U.ι ⋙ A) z (k + 1) = (CH.mulP _).cupC (by omega) (cupPowC (U.ι ⋙ A) z k) z` using `rfl`. Rewrite using `[e, resB_cup, ih]`.
+
+Both sides reduce to the same expression.
+-/
 theorem resB_pow (h : V ≤ U) (z : Co (U.ι ⋙ A) 2) (k : ℕ) :
     resB A h (cupPowC (U.ι ⋙ A) z k) = cupPowC (V.ι ⋙ A) (resB A h z) k := by
   induction k with
@@ -201,6 +277,9 @@ theorem resB_pow (h : V ≤ U) (z : Co (U.ι ⋙ A) 2) (k : ℕ) :
     rw [e, resB_cup, ih]
     rfl
 
+/- English proof (translation)
+Proceed by induction on `p with`. Consider the case `zero => rfl`. Consider the case `succ p ih`. Rewrite using `[aL_succ, resB_cup, ih, resB_sub, aL_succ]`.
+-/
 theorem resB_aL (h : V ≤ U) {p : ℕ} (β : Fin (p + 1) → Co (U.ι ⋙ A) 1) :
     resB A h (aL (U.ι ⋙ A) β) = aL (V.ι ⋙ A) fun i => resB A h (β i) := by
   induction p with
@@ -208,12 +287,18 @@ theorem resB_aL (h : V ≤ U) {p : ℕ} (β : Fin (p + 1) → Co (U.ι ⋙ A) 1)
   | succ p ih =>
     rw [aL_succ, resB_cup, ih, resB_sub, aL_succ]
 
+/- English proof (translation)
+Unfold `fP`. Rewrite using `[resB_cup, resB_cup, resB_pow, resB_aL]`.
+-/
 theorem resB_fP (h : V ≤ U) (z : Co (U.ι ⋙ A) 2) {p : ℕ} (β : Fin (p + 1) → Co (U.ι ⋙ A) 1) (k q : ℕ)
     (e : 2 * k + (p + 1) = q) :
     resB A h (fP (U.ι ⋙ A) z β k q e) = fP (V.ι ⋙ A) (resB A h z) (fun i => resB A h (β i)) k q e := by
   unfold fP
   rw [resB_cup, resB_cup, resB_pow, resB_aL]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resB_resB {T : ObjectProperty C} (h : V ≤ U) (h' : T ≤ V) (h'' : T ≤ U) {k : ℕ} (b : CH.Cn (CH.modF (U.ι ⋙ A)) k) :
     resB A h' (resB A h b) = resB A h'' b := rfl
 

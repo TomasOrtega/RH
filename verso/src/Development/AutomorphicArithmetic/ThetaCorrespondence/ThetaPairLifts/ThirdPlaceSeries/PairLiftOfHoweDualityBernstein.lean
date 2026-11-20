@@ -14,6 +14,23 @@ open GlobalTheory.WeilDeligne GlobalTheory.ThetaExh GlobalTheory.SplitPairLift
 namespace UpperTheory.One.M
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N}
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
+/- English proof (translation)
+Introduce `hBZ hB R H what₂ N A T S hL hU hP hG i σ P hpair w hw`. Establish `hne : what₂.isot (N.j i) σ ≠ ⊥`. Take `⟨f, hf, F, -, hF⟩` from `hpair`. Introduce `hb`. Rewrite `hf` using `[hb, Submodule.mem_bot]`.
+
+Apply `hF` to reduce the goal to its premises. Rewrite using `[hf, map_zero, inner_zero_right]`. Establish `hrt : R.r < R.t`. Use `R.rank_add_five_le` as an intermediate fact. Unfold `Ranks.r`.
+
+Use linear arithmetic over natural numbers and integers. Establish `L` using `hL i w hw`. Use `set X := S i w hw with hX`. Set `π'` to `twistIrr (X.rep P) X.eta_ok.1`. Set `cμ` to `detIrr 1 X.mu_ok.1`.
+
+Set `τ` to `detIrr R.t X.mu_ok.1`. Set `cη` to `detIrr 1 X.eta_ok.1.inv`. Establish `h1 : Nonempty (π'.π.Equiv (prod₂ (X.row σ).π τ.π))` using `_root_.GlobalTheory.T.theta_lift_general_linear hBZ hB _ R.r R.t X.mu _ _ (X.row σ).π π'.π hrt X.mu_ok.1 X.mu_ok.2 (X.row σ).smooth (X.row σ).irr (hU i w hw σ hne) π'.smooth π'.irr (hP i w hw σ P hpair)`. Establish `h2` using `L.prod _ _ (X.row σ) τ π' h1`. Establish `h3` using `L.det R.t X.mu cμ τ ⟨.refl _⟩ ⟨.refl _⟩`.
+
+Establish `hgπ : GoodI π'`. Establish `e : cls (⟨π'.V, π'.π, π'.smooth, π'.irr⟩ : IrrRep (GL (Fin (R.r + R.t)) (w.adicCompletion H.E))) = (cls (⟨(X.rep P).V, (X.rep P).π, (X.rep P).smooth, (X.rep P).irr⟩ : IrrRep (GL (Fin (R.r + R.t)) (w.adicCompletion H.E)))).tw X.eta X.eta_ok.1` using `(IrrGL.tw_of (X.rep P).π (X.rep P).smooth (X.rep P).irr X.eta X.eta_ok.1).symm`. Use `show UpperTheory.Zero.LLC.Good _`. Rewrite using `[e]`. Conclude with `(GlobalTheory.RecT.good_tw_iff _ _ _).2 (hG i w hw P)`.
+
+Establish `h4` using `_root_.UpperTheory.One.M.RecLawsH.twist L _ X.eta⁻¹ cη π' (X.rep P) hgπ ⟨.refl _⟩ (by show Nonempty ((X.rep P).π.Equiv (twist (twist (X.rep P).π (detChar _ X.eta)) (detChar _ X.eta⁻¹)))`. Rewrite using `[twist_twist_inv]`. Conclude with `⟨.refl _⟩)`. Establish `h5` using `X.locMu cμ ⟨.refl _⟩`. Establish `h6` using `X.locEta cη ⟨.refl _⟩`.
+
+Establish `h7 : A.lpDim (A.locG A.etaTinv w) = 1`. Rewrite using `[← T.dim, h6, L.dim]`. Apply `(T.e w).injective` to reduce the goal to its premises. Unfold `liftPar`. Rewrite using `[T.char _ _ _ h7, T.sum, e_spehLoc, X.locV, X.locW σ hne, h4, h2, h3, h6]`.
+
+Use `show _ = ((X.rc _ (X.row σ)).lpSum (speh (T.e w (A.locG (A.muC i) w)) R.t)).lpChar _`. Rewrite using `[h5]`.
+-/
 theorem pairLift_of_howeDuality_bernstein_alt : GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.BernsteinUnitaryProductIrreducible → ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R H what₂) (A : NAut N) (T : WDTie N A) (S : Reading T), _root_.GlobalTheory.SplitRead.LawsAlt S → RowUnit S → PairRead S → RepGood S → ∀ i, PairLift N A i := by
   intro hBZ hB R H what₂ N A T S hL hU hP hG i σ P hpair w hw
   have hne : what₂.isot (N.j i) σ ≠ ⊥ := by

@@ -8,6 +8,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.BT.ValEmb
 
+/- English proof (translation)
+Establish `h1 : (Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ j.appTop ≫ x.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of B)).hom = CommRingCat.ofHom ρ`. Establish `: j.appTop ≫ x.appTop = (Spec.map (CommRingCat.ofHom ρ)).appTop`. Rewrite using `[← h, Scheme.Hom.comp_appTop]`. Rewrite using `[reassoc_of% this, ← Scheme.ΓSpecIso_inv_naturality_assoc]`. Simplify using the standard rewrite rules.
+
+Establish `h2` using `congrArg (fun φ => φ.hom f) h1`. Establish `hle : x.appLE ⊤ ⊤ le_top = x.appTop`. Simplify using `only [Scheme.Hom.appLE]`. Conclude with `Category.comp_id _`. Simplify using `only [valAt]`.
+
+Rewrite using `[hle]`. Simplify using `using h2`.
+-/
 theorem valAt_pull {A B : Type} [CommRing A] [CommRing B] {X : Scheme.{0}}
     (j : X ⟶ Spec (CommRingCat.of A)) (x : Spec (CommRingCat.of B) ⟶ X) (ρ : A →+* B)
     (h : x ≫ j = Spec.map (CommRingCat.ofHom ρ)) (f : A) :
@@ -26,10 +33,18 @@ theorem valAt_pull {A B : Type} [CommRing A] [CommRing B] {X : Scheme.{0}}
   rw [hle]
   simpa using h2
 
+/- English proof (translation)
+Simplify using `[valAt]`.
+-/
 theorem valAt_sub {B : Type} [CommRing B] {X : Scheme.{0}} (x : Spec (CommRingCat.of B) ⟶ X) (U : X.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ U) (a b : Γ(X, U)) : valAt x U h (a - b) = valAt x U h a - valAt x U h b := by
   simp [valAt]
 
+/- English proof (translation)
+Introduce `R _ _ T _ _ Γ j hj f s hs B _ y ρ hy`. Establish `hz : s - j.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of (Γ.btOrder ⊤))).inv.hom f) = 0`. Use `GlobalTheory.T.section_eq_zero_of_values R T Γ ⊤ _ fun t h => ?_` and prove the remaining obligations. Rewrite using `[valAt_sub, hs t, valAt_pull j (Γ.pt t).left _ (hj.pt t) f]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[sub_eq_zero.mp hz]`. Conclude with `valAt_pull j y ρ hy f`.
+-/
 theorem val_emb : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (j : Γ.G.left ⟶ Spec (CommRingCat.of (Γ.btOrder ⊤))), Γ.IsEmb (Γ.btOrder ⊤) j → ∀ (f : Γ.btOrder ⊤) (s : Γ(Γ.G.left, ⊤)), Γ.HasValues s (f : T → R) → ∀ (B : Type) [CommRing B] (y : Spec (CommRingCat.of B) ⟶ Γ.G.left) (ρ : (Γ.btOrder ⊤) →+* B), y ≫ j = Spec.map (CommRingCat.ofHom ρ) → valAt y ⊤ le_top s = ρ f := by
   intro R _ _ T _ _ Γ j hj f s hs B _ y ρ hy
   have hz : s - j.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of (Γ.btOrder ⊤))).inv.hom f) = 0 := by

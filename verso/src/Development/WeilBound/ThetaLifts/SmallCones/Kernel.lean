@@ -19,24 +19,41 @@ variable {n d n₁ d₁ m : ℕ} {B : Base F E} {X : Spc F E n} {W : Spc F E d} 
 variable {H : Plane E n n₁} {H' : Plane E d d₁} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' i₀ i₁ j₀ j₁ : ℕ}
   {μ : Measure (unip σ W H')} {𝓕 : Set (unip σ W H')} {M₁ : Model σ X W₁} {e₀ : Fn F n d →ₗ[ℂ] Fn F n d₁}
 
+/- English proof (translation)
+The claim follows from `(Module.finBasis ℚ E).equivFun.injective.countable`.
+-/
 theorem countable_E : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable
 
+/- English proof (translation)
+The claim follows from `(hP F E σ B hp.base n d₁ X W₁ r s _ _ hp.herm ((hL F E σ B d d₁ W W₁ H' i₀ i₁ r' s' hp.base hH').2 hp.skew).2.2).2 χX χW hp.hX hp.hW hp.resX (res_low hp.resW hH'.rank) M₁ hM₁`.
+-/
 theorem pair_low (hP : PairEx) (hL : Low) (hp : IsPair B M χX χW om r s r' s') (hH' : H'.IsAdapted σ B W W₁ i₀ i₁)
     (hM₁ : M₁.IsGood B.ψ) : ∃ om₁, IsPair B M₁ χX χW om₁ r s (r' - 1) (s' - 1) :=
   (hP F E σ B hp.base n d₁ X W₁ r s _ _ hp.herm ((hL F E σ B d d₁ W W₁ H' i₀ i₁ r' s' hp.base hH').2 hp.skew).2.2).2 χX χW hp.hX hp.hW
     hp.resX (res_low hp.resW hH'.rank) M₁ hM₁
 
+/- English proof (translation)
+Use `hW F E σ B n d X W M χX χW om r s r' s' hp d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH' hp₁ e₀ he g 1 1 1 Fr.levi_one u hu Φ hΦ` as an intermediate fact. Simplify using `using this`.
+-/
 theorem mix0 (hW : MixW) (hp : IsPair B M χX χW om r s r' s') (hH' : H'.IsAdapted σ B W W₁ i₀ i₁) {om₁ r₁ s₁}
     (hp₁ : IsPair B M₁ χX χW om₁ r s r₁ s₁) (he : IsEv B M M₁ 1 H'.ι (iso0 n H') e₀) (g) {u} (hu : u ∈ unip σ W H') {Φ}
     (hΦ : Φ ∈ schA F (Fin n × Fin d)) : e₀ (om (g, u) Φ) = om₁ (g, 1) (e₀ Φ) := by
   have := hW F E σ B n d X W M χX χW om r s r' s' hp d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH' hp₁ e₀ he g 1 1 1 Fr.levi_one u hu Φ hΦ
   simpa using this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨a, (hU F E σ B d d₁ W W₁ H' i₀ i₁ r' s' hp.base (Or.inr hp.skew) hH').2.2.2.1 μ a, b, c, (hG F E σ hp.base.cm d W.J (hO F E σ B hp.base d W r' s' (Or.inr hp.skew)).1).2.2.2.1⟩`.
+-/
 theorem meanOK (hU : UnipEx) (hG : GrpTop) (hO : EpsOf) (hp : IsPair B M χX χW om r s r' s') (hH' : H'.IsAdapted σ B W W₁ i₀ i₁)
     (a : μ.IsHaarMeasure) (b : IsFundamentalDomain ((ratU σ W.J).subgroupOf (unip σ W H')) 𝓕 μ) (c : μ 𝓕 = 1) : MeanOK σ W H' μ 𝓕 :=
   ⟨a, (hU F E σ B d d₁ W W₁ H' i₀ i₁ r' s' hp.base (Or.inr hp.skew) hH').2.2.2.1 μ a, b, c,
     (hG F E σ hp.base.cm d W.J (hO F E σ B hp.base d W r' s' (Or.inr hp.skew)).1).2.2.2.1⟩
 
+/- English proof (translation)
+Use `countable_E (E := E)` as an intermediate fact. Take `⟨m, b, z, hP⟩` from `pol0 (F := F) (herm_det hp.herm) h'`. Take `⟨β, h1, h2⟩` from `slice_unif hS hp.base hp.good hM₁ he hP.toDual hΦ`. Simplify using `only [← integral_const_mul]`. Use `hm.sum (f := fun x u => C * tm B M om H' e₀ (vecMulVec x H'.y) Φ u) (fun x => continuous_const.mul (tm_cont hA hp hM₁ he _ hΦ)) (b := fun x => ‖C‖ * β (b.equivFun x)) ((b.equivFun.toEquiv.summable_iff.2 h1).mul_left _) (fun x u => ?_) fun u => hC _ (om_mem hp _ hΦ)` and prove the remaining obligations.
+
+Take `⟨w, hw⟩` from `constant_term_norm_eq_theta hp h' he hi x hΦ u`. Rewrite using `[norm_mul, hw, ← vL_apply, ← lin_basis b]`. Conclude with `mul_le_mul_of_nonneg_left (h2 _ _) (norm_nonneg _)`.
+-/
 theorem sum0 (hS : Slice) (hA : EvAdm) (hm : MeanOK σ W H' μ 𝓕) (hp : IsPair B M χX χW om r s r' s') (h' : PG σ W W₁ H' (-1))
     (hM₁ : M₁.IsGood B.ψ) (he : IsEv B M M₁ 1 H'.ι (iso0 n H') e₀)
     (hi : ∀ u ∈ unip σ W H', ∀ Φ ∈ schA F (Fin n × Fin d), e₀ (om (1, u) Φ) = e₀ Φ) {C : ℂ}
@@ -53,6 +70,9 @@ theorem sum0 (hS : Slice) (hA : EvAdm) (hm : MeanOK σ W H' μ 𝓕) (hp : IsPai
   rw [norm_mul, hw, ← vL_apply, ← lin_basis b]
   exact mul_le_mul_of_nonneg_left (h2 _ _) (norm_nonneg _)
 
+/- English proof (translation)
+Rewrite using `[← hm.const (thetaSum F (e₀ Φ))]`. Use `congr 1`. Use function extensionality and compare the values at `u`. Rewrite using `[tm, incM_vv, show incV F (0 : Fin n → E) = 0 from funext fun _ => map_zero _, Matrix.zero_vecMulVec, rho_zero, hi _ u.2 _ hΦ]`.
+-/
 theorem constant_term_integral_at_zero (hm : MeanOK σ W H' μ 𝓕) (hi : ∀ u ∈ unip σ W H', ∀ Φ ∈ schA F (Fin n × Fin d), e₀ (om (1, u) Φ) = e₀ Φ) {Φ}
     (hΦ : Φ ∈ schA F (Fin n × Fin d)) : ∫ u in 𝓕, tm B M om H' e₀ (vecMulVec 0 H'.y) Φ u ∂μ = thetaSum F (e₀ Φ) := by
   rw [← hm.const (thetaSum F (e₀ Φ))]
@@ -60,6 +80,9 @@ theorem constant_term_integral_at_zero (hm : MeanOK σ W H' μ 𝓕) (hi : ∀ u
   funext u
   rw [tm, incM_vv, show incV F (0 : Fin n → E) = 0 from funext fun _ => map_zero _, Matrix.zero_vecMulVec, rho_zero, hi _ u.2 _ hΦ]
 
+/- English proof (translation)
+Establish `h1` using `rho_mem M hp.base.std (incM F (vecMulVec x H'.y)) (om_mem hp (1, u.1) hΦ)`. Establish `h2` using `((hT F E σ B n d₁ X W₁ M₁ χX χW om₁ r s r₁ s₁ hp₁).1 _ (he.maps _ h1)).2.1 γ hγ 1 (one_mem _) 1 1`. Rewrite `h2` using `[theta, theta, mul_one, mul_one, ← mix0 hW hp hH' hp₁ he γ (one_mem _) h1, show ((1 : UA σ X.J), (1 : UA σ W₁.J)) = 1 from rfl, map_one, Module.End.one_apply, om_rho hp _ _ _ (om_mem hp _ hΦ), Fr.mat_one, Matrix.transpose_one, Matrix.mul_one, om_om, incM_vv, Matrix.mul_vecMulVec, …`. Rewrite using `[tm, tm, incM_vv, incM_vv, ← h2, om_om]`. Simplify using the standard rewrite rules.
+-/
 theorem constant_term_rational_translate (hW : MixW) (hT : ThetaBasic) (hp : IsPair B M χX χW om r s r' s') (hH' : H'.IsAdapted σ B W W₁ i₀ i₁) {om₁ r₁ s₁}
     (hp₁ : IsPair B M₁ χX χW om₁ r s r₁ s₁) (he : IsEv B M M₁ 1 H'.ι (iso0 n H') e₀) {γ : UA σ X.J} (hγ : γ ∈ ratU σ X.J)
     {x y : Fin n → E} (hx : mat γ *ᵥ incV F x = incV F y) {Φ} (hΦ : Φ ∈ schA F (Fin n × Fin d)) (u : unip σ W H') :
@@ -72,6 +95,17 @@ theorem constant_term_rational_translate (hW : MixW) (hT : ThetaBasic) (hp : IsP
   rw [tm, tm, incM_vv, incM_vv, ← h2, om_om]
   simp
 
+/- English proof (translation)
+Use `countable_E (E := E)` as an intermediate fact. Establish `hψ` using `hp.base.std`. Establish `hi : ∀ u ∈ unip σ W H', ∀ Φ ∈ schA F (Fin n × Fin d), e (om (1, u) Φ) = e Φ` using `fun u hu Φ hΦ => smul_right_injective _ hc (by simp only [← hce _ hΦ, ← hce _ (om_mem hp _ hΦ), hi₀ u hu Φ hΦ])`. Establish `hs : ∀ u, HasSum (fun w => C * c * tm B M om H' e (vA H.y H'.y H'.ι (H.x, w)) Φ u) (tm B M om H' e₀ (vecMulVec H.x H'.y) Φ u)` using `fun u => by`. Establish `h1` using `rho_mem M hψ (incM F (vecMulVec H.x H'.y)) (om_mem hp (1, u.1) hΦ)`.
+
+Use `hC _ (he₀.maps _ h1) using 2 with w` and compare the differences between its conclusion and the goal. Rewrite using `[← he₀.Heisenberg₂ _ _ h1, hce _ (rho_mem M hψ _ h1), theta_smul, vR_apply, incM_vv, ← mid_vv, incM_vv, rho_rho_of _ _ _ _ (sy_of_hT (by rw [hT_vv, h'.ad.iy, mul_zero])), tm, vA_apply, incM_add, incM_vv, incM_vv, inc_mulVec, add_comm, mul_assoc]`. Both sides reduce to the same expression. Use `hm.sum (f := fun w u => C * c * tm B M om H' e (vA H.y H'.y H'.ι (H.x, w)) Φ u) (fun w => continuous_const.mul (tm_cont hA hp hM₂ he _ hΦ)) (hs 1).summable.norm (fun w u => by` as an intermediate fact. Rewrite using `[tA_eig hp h' he hi w hΦ u, norm_mul, norm_mul, norm_mul, std_norm hψ, one_mul, norm_mul (C * c), norm_mul C]) hs`.
+
+Use `this.unique ?_` and prove the remaining obligations. Use `hasSum_single (0 : Fin d₁ → E) fun w hw => ?_ using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← hm.const (_ * _ * _)]`. Use `congr 1`. Use function extensionality and compare the values at `u`.
+
+Rewrite using `[tm_eq hp hi _ hΦ, vA_apply, Matrix.mulVec_zero, vv0, add_zero, incM_vv, vv_mul_r, shiftA, Units.val_one, one_smul]`. Take `⟨a, z, e1⟩` from `unip_y h' (inv_mem u.2)`. Rewrite using `[e1, Matrix.vecMulVec_add, ev_I hψ he ⟨a • incV F H.x, z, by`. Rewrite using `[Matrix.vecMulVec_add, Matrix.vecMulVec_smul, Matrix.smul_vecMulVec]⟩ _ hΦ,`. Use `sy_of_hT (by rw [hT_vv, h.ad.xx, zero_mul]), mul_zero, neg_zero, AddChar.map_zero_eq_one, one_smul]`.
+
+Rewrite using `[integral_const_mul, tA_zero hm hp h h' he hi hw hΦ, mul_zero]`.
+-/
 theorem constant_term_cone_integral_eq (hA : EvAdm) (hm : MeanOK σ W H' μ 𝓕) (hp : IsPair B M χX χW om r s r' s') (h : PG σ X X₁ H 1)
     (h' : PG σ W W₁ H' (-1)) {M₂ : Model σ X₁ W₁} (hM₂ : M₂.IsGood B.ψ) (he₀ : IsEv B M M₁ 1 H'.ι (iso0 n H') e₀)
     {e : Fn F n d →ₗ[ℂ] Fn F n₁ d₁} (he : IsEv B M M₂ H.ι H'.ι (sumA H H') e)
@@ -105,6 +139,11 @@ theorem constant_term_cone_integral_eq (hA : EvAdm) (hm : MeanOK σ W H' μ 𝓕
       sy_of_hT (by rw [hT_vv, h.ad.xx, zero_mul]), mul_zero, neg_zero, AddChar.map_zero_eq_one, one_smul]
   · rw [integral_const_mul, tA_zero hm hp h h' he hi hw hΦ, mul_zero]
 
+/- English proof (translation)
+Establish `h1` using `h.update 0 0`. Rewrite using `[← hasSum_subtype_iff_of_support_subset (s := {x | x ≠ 0 ∧ p x}) fun x hx => by`. Establish `: x ≠ 0` using `by rintro rfl; simp at hx`. Conclude with `⟨this, by by_contra hp; exact hx (by rw [Function.update_of_ne this, h0 x hp])⟩] at h1`. Rewrite using `[show S - g 0 = 0 - g 0 + S by ring, show (fun x : {x // x ≠ 0 ∧ p x} => g x) = Function.update g 0 0 ∘ Subtype.val from`.
+
+Use function extensionality and compare the values at `fun x => (Function.update_of_ne x.2.1 _ _).symm]`. Conclude with `h1`.
+-/
 theorem split_sum {ι : Type} [Zero ι] {g : ι → ℂ} {S : ℂ} (h : HasSum g S) (p : ι → Prop) (h0 : ∀ x, ¬ p x → g x = 0) :
     HasSum (fun x : {x // x ≠ 0 ∧ p x} => g x) (S - g 0) := by
   classical
@@ -123,6 +162,25 @@ namespace PositivityTheory.ThKCT
 open scoped Matrix
 open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK PositivityTheory.ThKEst PositivityTheory.ThKG PositivityTheory.ThKG.Tow Ker
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀`. Distinguish the cases in `hex : ∃ χX χW om r s r' s', IsPair B M χX χW om r s r' s'`. Use `swap`. Conclude with `⟨1, one_ne_zero, fun _ χX χW om r s r' s' hp => absurd ⟨χX, χW, om, r, s, r', s', hp⟩ hex, fun _ _ _ _ _ _ _ _ _ _ => ⟨1, one_ne_zero, fun _ _ χX χW om r s r' s' hp => absurd ⟨χX, χW, om, r, s, r', s', hp⟩ hex⟩⟩`. Take `⟨χ₁, χ₂, om₀, r₀, s₀, r₀', s₀', hp₀⟩` from `hex`.
+
+Establish `hB` using `hp₀.base`. Establish `h'` using `pg_skew hB hH' hp₀.skew`. Take `⟨C₀, hC₀, hs₀⟩` from `(pol0 (F := F) (herm_det hp₀.herm) h').exp hE hB hp₀.good hM₁ he₀`. Establish `hi₀ : ∀ {χX χW om r s r' s'}, IsPair B M χX χW om r s r' s' → ∀ u ∈ unip σ W H', ∀ Φ ∈ schA F (Fin n × Fin d), e₀ (om (1, u) Φ) = e₀ Φ` using `fun hp u hu Φ hΦ => by`. Take `⟨om₁, hp₁⟩` from `pair_low hP hL hp hH' hM₁`.
+
+Rewrite using `[mix0 hW hp hH' hp₁ he₀ 1 hu hΦ, show ((1 : UA σ X.J), (1 : UA σ W₁.J)) = 1 from rfl, map_one, Module.End.one_apply]`. Establish `key : ∀ {χX χW om r s r' s'}, IsPair B M χX χW om r s r' s' → ∀ {μ 𝓕}, MeanOK σ W H' μ 𝓕 → ∀ Φ ∈ schA F (Fin n × Fin d), ∀ g h, HasSum (fun x : IsoV σ X => C₀ * ∫ u in 𝓕, tm B M om H' e₀ (Matrix.vecMulVec x.1 H'.y) (om (g, h) Φ) u ∂μ) (∫ u in 𝓕, theta om Φ g (u.1 * h) ∂μ - C₀ * t …` using `fun hp μ 𝓕 hm Φ hΦ g h => by`. Establish `hΨ` using `om_mem hp (g, h) hΦ`. Use `split_sum (sum0 hS hA hm hp h' hM₁ he₀ (hi₀ hp) hs₀ hΨ) (fun x => form σ X.J x x = 0) fun x hx => by` as an intermediate fact. Rewrite using `[constant_term_anisotropic_integral_zero hm hp h' hM₁ he₀ (hi₀ hp) hx hΨ, mul_zero]`.
+
+Simplify using `only [constant_term_integral_at_zero hm (hi₀ hp) hΨ, om_om, Prod.mk_mul_mk, one_mul] at this`. Conclude with `this`. Use `⟨C₀, hC₀, fun han χX χW om r s r' s' hp Φ hΦ g μ 𝓕 a b c h => ?_, fun n₁ X₁ H j₀ j₁ M₂ hH hM₂ e he => ?_⟩` and prove the remaining obligations. Use `haveI : IsEmpty (IsoV σ X) := ⟨fun x => x.2.1 (han _ x.2.2)⟩`. Conclude with `(sub_eq_zero.1 ((key hp (meanOK hU hG hO hp hH' a b c) Φ hΦ g h).unique hasSum_empty)).symm`.
+
+Establish `h` using `pg_herm hB hH hp₀.herm`. Take `⟨om₁, hp₁⟩` from `pair_low hP hL hp₀ hH' hM₁`. Take `⟨om₂, hp₂⟩` from `(hP F E σ B hB n₁ d₁ X₁ W₁ _ _ _ _ ((hL F E σ B n n₁ X X₁ H j₀ j₁ r₀ s₀ hB hH).1 hp₀.herm).2.2 hp₁.skew).2 χ₁ χ₂ hp₀.hX hp₀.hW (res_low hp₀.resX hH.rank) hp₁.resW M₂ hM₂`. Take `⟨eX, heX⟩` from `(hX F E σ B n d₁ X W₁ M₁ χ₁ χ₂ om₁ _ _ _ _ hp₁ n₁ X₁ H j₀ j₁ M₂ om₂ _ _ hH hp₂).1`. Establish `hPX` using `polX (F := F) h (skew_det hp₁.skew)`.
+
+Take `⟨C, hC, hsX⟩` from `hPX.exp hE hB hM₁ hM₂ heX`. Establish `he'` using `isEv_sumA hB.std h' he`. Establish `hcomp` using `isEv_comp hB.std hp₀.good hM₁ hM₂ he₀ heX (comp_ne hPX hE hB hp₀.good hM₁ hM₂ he₀ heX) (K := isoA H H') (by`. Introduce and unpack `u (hu | ⟨z, rfl⟩)`. Use `exacts [Or.inl hu, Or.inr ⟨_, ⟨z, rfl⟩, mid_vv _ _⟩])`.
+
+Rewrite `hcomp` using `[Matrix.one_mul, Matrix.mul_one]`. Take `⟨c, hc, hce⟩` from `(polA h h').uniq hQ hB hp₀.good hM₂ he' (isEv_sumA hB.std h' hcomp)`. Use `⟨C₀ * (C * c), mul_ne_zero hC₀ (mul_ne_zero hC hc), fun γ hγ χX χW om r s r' s' hp Φ hΦ g => ?_⟩` and prove the remaining obligations. Establish `key2 : ∀ {μ 𝓕}, MeanOK σ W H' μ 𝓕 → ∀ k, HasSum (fun x => C₀ * (C * c) * thetaSum F (e (M.co.rho B.ψ (shiftA H H' 1) (om (γ x * g, k) Φ)))) (∫ u in 𝓕, theta om Φ g (u.1 * k) ∂μ - C₀ * thetaSum F (e₀ (om (g, k) Φ)))` using `fun hm k => by`. Take `⟨om₁, hp₁⟩` from `pair_low hP hL hp hH' hM₁`.
+
+Use `key hp hm Φ hΦ g k using 2 with x` and compare the differences between its conclusion and the goal. Simplify using `only [constant_term_rational_translate hW hT hp hH' hp₁ he₀ (hγ x).1 (hγ x).2 (om_mem hp _ hΦ), om_om, Prod.mk_mul_mk, one_mul]`. Rewrite using `[constant_term_cone_integral_eq hA hm hp h h' hM₂ he₀ he' (hi₀ hp) hc hsX hce (om_mem hp _ hΦ), mul_assoc]`. Use `⟨fun k => ?_, fun μ 𝓕 a b c' k => ?_⟩` and prove the remaining obligations. Take `⟨μ, 𝓕, a, b, c'⟩` from `(hU F E σ B d d₁ W W₁ H' i₀ i₁ r' s' hB (Or.inr hp.skew) hH').1`.
+
+Conclude with `(summable_mul_left_iff (mul_ne_zero hC₀ (mul_ne_zero hC hc))).1 (key2 (meanOK hU hG hO hp hH' a b c') k).summable`. Use `beta_reduce`. Rewrite using `[← tsum_mul_left, (key2 (meanOK hU hG hO hp hH' a b c') k).tsum_eq, add_sub_cancel]`.
+-/
 theorem ctKernel_of (hE : ThetaExp) (hQ : EvUniq) (hS : Slice) (hA : EvAdm) (hW : MixW) (hX : MixX) (hT : ThetaBasic) (hP : PairEx)
     (hL : Low) (hU : UnipEx) (hG : GrpTop) (hO : EpsOf) : CTKernel := by
   intro F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀

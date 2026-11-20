@@ -9,6 +9,13 @@ namespace GlobalTheory.HeckeLocCont
 
 open IsLocalRing
 
+/- English proof (translation)
+Apply `continuous_of_continuousAt_zero φ.toAddMonoidHom` to reduce the goal to its premises. Rewrite `hA`, `hB` using `[isAdic_iff]`. Introduce `s hs`. Simplify using `only [map_zero] at hs`. Take `⟨n, hn⟩` from `hB.2 s hs`.
+
+Establish `h1 : ((maximalIdeal A ^ n : Ideal A) : Set A) ∈ nhds (0 : A)` using `(hA.1 n).mem_nhds (Ideal.zero_mem _)`. Use `Filter.mem_map.2 (Filter.mem_of_superset h1 fun a ha => hn ?_)` and prove the remaining obligations. Establish `: (maximalIdeal A ^ n).map φ ≤ maximalIdeal B ^ n`. Rewrite using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.2 h) n`.
+
+Conclude with `this (Ideal.mem_map_of_mem φ ha)`.
+-/
 theorem continuous_of_le_comap {A B : Type} [CommRing A] [IsLocalRing A] [CommRing B] [IsLocalRing B]
     [TopologicalSpace A] [IsTopologicalRing A] [TopologicalSpace B] [IsTopologicalRing B]
     (hA : IsAdic (maximalIdeal A)) (hB : IsAdic (maximalIdeal B)) (φ : A →+* B)
@@ -26,10 +33,16 @@ theorem continuous_of_le_comap {A B : Type} [CommRing A] [IsLocalRing A] [CommRi
     exact Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.2 h) n
   exact this (Ideal.mem_map_of_mem φ ha)
 
+/- English proof (translation)
+The claim follows from `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (maximalIdeal O))`.
+-/
 theorem comap_maximalIdeal_padicInt {p : ℕ} [Fact p.Prime] (O : Type) [CommRing O] [IsLocalRing O] [Algebra ℤ_[p] O]
     [Module.Finite ℤ_[p] O] : (maximalIdeal O).comap (algebraMap ℤ_[p] O) = maximalIdeal ℤ_[p] :=
   IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (maximalIdeal O))
 
+/- English proof (translation)
+Establish `hp : ((p : ℕ) : ℤ_[p]) ∈ maximalIdeal ℤ_[p]`. Rewrite using `[PadicInt.maximalIdeal_eq_span_p]`. Conclude with `Ideal.subset_span rfl`. Rewrite `hp` using `[← comap_maximalIdeal_padicInt O]`. Simplify using `using hp`.
+-/
 theorem p_mem_maximalIdeal {p : ℕ} [Fact p.Prime] (O : Type) [CommRing O] [IsLocalRing O] [Algebra ℤ_[p] O]
     [Module.Finite ℤ_[p] O] : ((p : ℕ) : O) ∈ maximalIdeal O := by
   have hp : ((p : ℕ) : ℤ_[p]) ∈ maximalIdeal ℤ_[p] := by
@@ -37,6 +50,11 @@ theorem p_mem_maximalIdeal {p : ℕ} [Fact p.Prime] (O : Type) [CommRing O] [IsL
   rw [← comap_maximalIdeal_padicInt O] at hp
   simpa using hp
 
+/- English proof (translation)
+Establish `hc : ((maximalIdeal B).comap φ).comap (algebraMap ℤ_[p] A) = maximalIdeal ℤ_[p]`. Rewrite using `[Ideal.comap_comap, ← comap_maximalIdeal_padicInt B]`. Use `congr 1`. Conclude with `RingHom.ext hφ`. Use `haveI : ((maximalIdeal B).comap φ).IsMaximal := Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := ℤ_[p]) _ (by rw [hc]; infer_instance)`.
+
+Conclude with `(IsLocalRing.eq_maximalIdeal this).ge`.
+-/
 theorem le_comap_of_padicInt {p : ℕ} [Fact p.Prime] {A B : Type} [CommRing A] [IsLocalRing A] [Algebra ℤ_[p] A]
     [Module.Finite ℤ_[p] A] [CommRing B] [IsLocalRing B] [Algebra ℤ_[p] B] [Module.Finite ℤ_[p] B] (φ : A →+* B)
     (hφ : ∀ z, φ (algebraMap ℤ_[p] A z) = algebraMap ℤ_[p] B z) : maximalIdeal A ≤ (maximalIdeal B).comap φ := by
@@ -48,6 +66,9 @@ theorem le_comap_of_padicInt {p : ℕ} [Fact p.Prime] {A B : Type} [CommRing A] 
     Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := ℤ_[p]) _ (by rw [hc]; infer_instance)
   exact (IsLocalRing.eq_maximalIdeal this).ge
 
+/- English proof (translation)
+Substitute `hpq` using the available equality. Conclude with `continuous_of_le_comap hA hB φ (le_comap_of_padicInt φ fun z => hφ z z HEq.rfl)`.
+-/
 theorem continuous_of_heq {p q : ℕ} [Fact p.Prime] [Fact q.Prime] (hpq : p = q) {A B : Type} [CommRing A] [IsLocalRing A]
     [Algebra ℤ_[p] A] [Module.Finite ℤ_[p] A] [TopologicalSpace A] [IsTopologicalRing A] [CommRing B] [IsLocalRing B]
     [Algebra ℤ_[q] B] [Module.Finite ℤ_[q] B] [TopologicalSpace B] [IsTopologicalRing B]
@@ -56,6 +77,11 @@ theorem continuous_of_heq {p q : ℕ} [Fact p.Prime] [Fact q.Prime] (hpq : p = q
   subst hpq
   exact continuous_of_le_comap hA hB φ (le_comap_of_padicInt φ fun z => hφ z z HEq.rfl)
 
+/- English proof (translation)
+Use `continuous_of_continuousAt_zero (algebraMap ℤ_[p] O) ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero, hO.hasBasis_nhds_zero.tendsto_right_iff]`. Introduce `n _`. Establish `hl : (0 : ℝ) < (p : ℝ) ^ (-(n : ℤ))` using `zpow_pos (by exact_mod_cast (Fact.out : p.Prime).pos) _`. Use `filter_upwards [Metric.closedBall_mem_nhds (0 : ℤ_[p]) hl] with x hx`.
+
+Rewrite `hx` using `[mem_closedBall_zero_iff, PadicInt.norm_le_pow_iff_mem_span_pow, Ideal.mem_span_singleton]`. Take `⟨y, rfl⟩` from `hx`. Rewrite using `[map_mul, map_pow, map_natCast]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow (p_mem_maximalIdeal O) n)`.
+-/
 theorem continuous_algebraMap_padicInt {p : ℕ} [Fact p.Prime] (O : Type) [CommRing O] [IsLocalRing O] [Algebra ℤ_[p] O]
     [Module.Finite ℤ_[p] O] [TopologicalSpace O] [IsTopologicalRing O] (hO : IsAdic (maximalIdeal O)) :
     Continuous (algebraMap ℤ_[p] O) := by
@@ -73,6 +99,11 @@ section Units
 
 variable {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨h, ?_⟩` and prove the remaining obligations. Establish `: (fun g => ((φ g)⁻¹ : Oˣ).val) = fun g => (φ g⁻¹ : O)`. Use function extensionality and compare the values at `g`. Rewrite using `[map_inv]`. Rewrite using `[this]`.
+
+Conclude with `h.comp continuous_inv`.
+-/
 theorem continuous_units {O : Type} [Monoid O] [TopologicalSpace O] (φ : Γ →* Oˣ)
     (h : Continuous fun g => (φ g : O)) : Continuous φ := by
   refine Units.continuous_iff.2 ⟨h, ?_⟩
@@ -81,10 +112,20 @@ theorem continuous_units {O : Type} [Monoid O] [TopologicalSpace O] (φ : Γ →
   rw [this]
   exact h.comp continuous_inv
 
+/- English proof (translation)
+The claim follows from `Units.continuous_iff.2 ⟨hf.comp Units.continuous_val, hf.comp Units.continuous_coe_inv⟩`.
+-/
 theorem continuous_unitsMap {A B : Type} [Monoid A] [Monoid B] [TopologicalSpace A] [TopologicalSpace B] (f : A →* B)
     (hf : Continuous f) : Continuous (Units.map f) :=
   Units.continuous_iff.2 ⟨hf.comp Units.continuous_val, hf.comp Units.continuous_coe_inv⟩
 
+/- English proof (translation)
+Use `IsLocallyConstant.continuous fun s => ?_` and prove the remaining obligations. Establish `e : φ ⁻¹' s = ⋃ x ∈ φ ⁻¹' s, (fun g => x⁻¹ * g) ⁻¹' (φ.ker : Set Γ)`. Use extensionality with `g`. Simplify using `only [Set.mem_preimage, Set.mem_iUnion, SetLike.mem_coe, MonoidHom.mem_ker, map_mul, map_inv, exists_prop]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hg`. Conclude with `⟨g, hg, inv_mul_cancel _⟩`. Introduce and unpack `⟨x, hx, hxg⟩`. Rewrite `hxg` using `[inv_mul_eq_one]`. Rewrite using `[← hxg]` and apply the resulting hypothesis.
+
+Rewrite using `[e]`. Conclude with `isOpen_biUnion fun x _ => h.preimage (continuous_const.mul continuous_id)`.
+-/
 theorem continuous_of_isOpen_ker {N : Type} [Group N] [TopologicalSpace N] (φ : Γ →* N)
     (h : IsOpen (φ.ker : Set Γ)) : Continuous φ := by
   refine IsLocallyConstant.continuous fun s => ?_
@@ -104,6 +145,13 @@ end Units
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX GlobalTheory.HeightCounting
   NumberField IsDedekindDomain Polynomial Formalism.L2.Fam.NPC Formalism.L2.Fam.NPC.BaseC GlobalTheory.HeckeLocN
 
+/- English proof (translation)
+Introduce `D M C hR X hS twC ψ0 hP htw hker i c`. Establish `hadic : ∀ j w, IsAdic (maximalIdeal (OcC X j w))` using `oc_adic X`. Establish `htwc : ∀ j w, Continuous (twC j w)` using `fun j w => continuous_of_heq (C.twI_l w) (D.ntw.twistBaseCoefficientRing_isAdic (C.twI w)) (hadic j w) (twC j w) (htw j w)`. Establish `h1 : Continuous (D.ntw.chi1 (C.twI (wOf (base M C hR X hS) i)) (Fam.NPC.jOf (base M C hR X hS) i) (C.sd (wOf (base M C hR X hS) i)))` using `continuous_units _ (D.ntw.twistCharacterFamily_continuous _ _ _)`. Establish `h2 : Continuous (psN X ψ0 hP (Fam.NPC.jOf (base M C hR X hS) i) (wOf (base M C hR X hS) i))` using `continuous_of_isOpen_ker _ (hker _ _)`.
+
+Establish `h3 : Continuous (Units.map (twC (Fam.NPC.jOf (base M C hR X hS) i) (wOf (base M C hR X hS) i)).toMonoidHom)` using `continuous_unitsMap _ (htwc _ _)`. Use `haveI : Fact (lOf (base M C hR X hS) i).Prime := ⟨D.what₂.places.resChar_prime _⟩`. Use `letI : Algebra ℤ_[lOf (base M C hR X hS) i] (OOf (base M C hR X hS) i) := (base M C hR X hS).algOc _ _`. Use `haveI : Module.Finite ℤ_[lOf (base M C hR X hS) i] (OOf (base M C hR X hS) i) := (base M C hR X hS).finOc _ _`. Establish `h4 : Continuous (Units.map (algebraMap ℤ_[lOf (base M C hR X hS) i] (OOf (base M C hR X hS) i)).toMonoidHom)` using `continuous_unitsMap _ (continuous_algebraMap_padicInt _ (hadic _ _))`.
+
+Establish `h5` using `continuous_cycZ D.host.E D.nd.Om (lOf (base M C hR X hS) i)`. Use `Units.continuous_val.comp ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun g => ((show (OOf (base M C hR X hS) i)ˣ from (Units.map (twC (Fam.NPC.jOf (base M C hR X hS) i) (wOf (base M C hR X hS) i)).toMonoidHom) (D.ntw.chi1 (C.twI (wOf (base M C hR X hS) i)) (Fam.NPC.jOf (base M C hR X hS) i) (C.sd (wOf (base M C hR X hS) i)) g)) * (show …`. Conclude with `((h3.comp h1).mul h2).mul ((h4.comp h5).zpow _)`.
+-/
 theorem chiN_continuous : ∀ (D : D7) (M : MtFam D) (C : NChoice D) (hR : HeckeLift0 (mt0 M) C.Q) (X : CoefIn D.what₂) (hS : SplitK (mt0 M) C.Q hR X) (twC : ∀ j w, D.ntw.O0 (C.twI w) →+* OcC X j w) (ψ0 : D.what₂.places.Pl → (G D.host.E D.nd.Om →* (D.what₂.LL)ˣ)) (hP : PsiInt X ψ0), (∀ j w, TwAlgAt C X j w (twC j w)) → (∀ j w, IsOpen ((psN X ψ0 hP j w).ker : Set (G D.host.E D.nd.Om))) → ∀ (i : LocT (base M C hR X hS)) (c : ℕ), Continuous (fun g => ((chiN (base M C hR X hS) C (fun i => twC (jOf _ i) (wOf _ i)) (fun i => psN X ψ0 hP (jOf _ i) (wOf _ i)) i c g : (OOf (base M C hR X hS) i)ˣ) : OOf (base M C hR X hS) i)) := by
   intro D M C hR X hS twC ψ0 hP htw hker i c
   have hadic : ∀ j w, IsAdic (maximalIdeal (OcC X j w)) := oc_adic X

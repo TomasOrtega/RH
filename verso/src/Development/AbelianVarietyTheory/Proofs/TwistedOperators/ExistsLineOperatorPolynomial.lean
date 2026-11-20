@@ -21,6 +21,19 @@ noncomputable section
 
 namespace GlobalTheory.DerPol
 
+/- English proof (translation)
+Introduce `γ hγ`. Take `⟨m, u, v, c, c₀, hat, hQ⟩` from `GlobalTheory.T.weil_line_action_sum hP M ψ χX χW om hcm hψ hW γ hγ`. Use `choose Du hDu using fun i => GlobalTheory.T.exists_archSchwartz_derivative_heisenbergLine M ψ hψ (u i) (hat i).1`. Use `choose Dv hDv using fun i => GlobalTheory.T.exists_archSchwartz_derivative_heisenbergLine M ψ hψ (v i) (hat i).2`. Establish `closed : ∀ w, At (evI F) w → ∀ D : SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d), (∀ f : SInf F (Fin n × Fin d), ActsD (evI F) (M.heisLine ψ w) f (D f)) → ∀ f ∈ M.Pol ψ τ, D f ∈ M.Pol ψ τ`.
+
+Introduce `w hw D hD f hf`. Rewrite `hf`, the goal using `[Model.Pol, Submodule.mem_sInf]`. Introduce `N hN`. Conclude with `hN.2 w hw f (hf N hN) (D f) (hD f)`. Use `⟨∑ i, c i • (Du i ∘ₗ Dv i) + c₀ • LinearMap.id, fun f hf => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Simplify using `only [LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.id_apply]`. Use `Submodule.add_mem _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_) (Submodule.smul_mem _ _ hf)` and prove the remaining obligations. Conclude with `closed _ (hat i).1 _ (hDu i) _ (closed _ (hat i).2 _ (hDv i) _ hf)`. Introduce `r hr x choose F₁ hF₁ using fun t : ℝ => GlobalTheory.T.weil_action_unitary_compact hP M ψ χX χW om hcm hψ hW (γ (Multiplicative.ofAdd t)) (hγ.2 _) f`. Establish `hd` using `hQ f (fun i => Dv i f) (fun i => Du i (Dv i f)) (fun i => hDv i f) (fun i => hDu i _) F₁ hF₁ (fun i => evI F (x i))`.
+
+Establish `e : (fun t => om (1, γ (Multiplicative.ofAdd t)) (tens (evI F) f r) x) = fun t => F₁ t (fun i => evI F (x i)) * r x`. Use function extensionality and compare the values at `t`. Rewrite using `[hF₁ t r hr]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Use `(hd.mul_const (r x)).congr_deriv ?_` and prove the remaining obligations. Use `show _ = ((∑ i, c i • (Du i ∘ₗ Dv i) + c₀ • LinearMap.id : SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d)) f) (fun i => evI F (x i)) * r x`. Simplify using `only [LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.id_apply, SchwartzMap.add_apply, SchwartzMap.smul_apply, smul_eq_mul]`. Use `congr 2`. Proceed by induction on `(Finset.univ : Finset (Fin m)) using Finset.induction_on with`.
+
+Consider the case `empty => simp`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, SchwartzMap.add_apply, ih]`. Simplify using the standard rewrite rules.
+-/
 theorem pairDer (hP : GlobalTheory.FunPr.Hypotheses₂) {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ)
     (τ : ∀ w : InfinitePlace F, GlobalTheory.AdelicU.EmbOver (F := F) E w) (χX χW : Chr F E) (om : Rep σ X W) (hcm : IsCMExt F E σ) (hψ : IsStd ψ)
@@ -59,6 +72,9 @@ theorem pairDer (hP : GlobalTheory.FunPr.Hypotheses₂) {F E : Type} [Field F] [
     | empty => simp
     | insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, SchwartzMap.add_apply, ih]; simp
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ a a' B G X om om' hT γ hγ`. Conclude with `pairDer hP G.M' B.ψ B.emb X.α (X.α / X.β) om' hT.base.cm hT.base.std hT.weil' γ hγ`.
+-/
 theorem exists_lieDer_model' : GlobalTheory.FunPr.Hypotheses₂ → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {a a' : ℕ} (B : Base F E) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
     IsTriple B G X om om' → ∀ γ ∈ Lines σ G.W,

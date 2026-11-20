@@ -11,6 +11,27 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.SplitCompat
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨e, hne⟩ : ∃ e : L, e ≠ IsCMField.complexConj L e := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `IsCMField.complexConj_ne_one L (AlgEquiv.ext fun x => (hcon x).symm)`. Establish `hli : LinearIndependent (maximalRealSubfield L) ![(1 : L), e]`.
+
+Rewrite using `[LinearIndependent.pair_iff]`. Introduce `a t h`. Establish `h'` using `congrArg (IsCMField.complexConj L) h`. Simplify using `only [Algebra.smul_def, map_add, map_mul, AlgEquiv.commutes, map_one, map_zero] at h h'`. Establish `hd : algebraMap (maximalRealSubfield L) L t * (e - IsCMField.complexConj L e) = 0`.
+
+Take the linear combination `h - h'`. Establish `ht : t = 0`. Break down `mul_eq_zero.1 hd with h0 | h0` into its components or cases. Simplify using `using h0`. Conclude with `absurd (sub_eq_zero.1 h0) hne`.
+
+Substitute `ht` using the available equality. Simplify using `using h`. Establish `hcard : Fintype.card (Fin 2) = Module.finrank (maximalRealSubfield L) L`. Rewrite using `[Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield L) L]`. Simplify using the standard rewrite rules.
+
+Set `b` to `basisOfLinearIndependentOfCardEqFinrank hli hcard`. Establish `hb0 : b 0 = 1` using `by simp [b]`. Establish `hb1 : b 1 = e` using `by simp [b]`. Take `⟨A, B, hAB⟩` from `GlobalTheory.tensor_exists_decomp b z`. Rewrite `hAB` using `[hb0, hb1]`.
+
+Establish `h1 : s.proj z = A s.v + s.i e * B s.v`. Rewrite using `[hAB]`. Simplify using `[ReciprocityTheory.Aut.SplitPlace.proj, Algebra.TensorProduct.lift_tmul]`. Both sides reduce to the same expression. Establish `h2 : s.proj (ReciprocityTheory.Aut.conjAL L z) = A s.v + s.i (IsCMField.complexConj L e) * B s.v`.
+
+Rewrite using `[hAB]`. Simplify using `[ReciprocityTheory.Aut.SplitPlace.proj, ReciprocityTheory.Aut.conjAL, Algebra.TensorProduct.lift_tmul, Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression. Establish `hu : s.i e - s.i (IsCMField.complexConj L e) ≠ 0`. Rewrite using `[sub_ne_zero]`.
+
+Conclude with `fun h => hne (s.i.toRingHom.injective h)`. Establish `hBv : B s.v = 0`. Establish `hm : (s.i e - s.i (IsCMField.complexConj L e)) * B s.v = s.proj z - s.proj (ReciprocityTheory.Aut.conjAL L z)`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `hm` using `[hp, hq, sub_zero]`. Conclude with `(mul_eq_zero.1 hm).resolve_left hu`. Establish `hAv : A s.v = 0`. Rewrite `h1` using `[hp, hBv, mul_zero, add_zero]`. Conclude with `h1.symm`.
+
+Rewrite using `[hAB]`. Establish `hA' : evalAt L s.v A = 0` using `by rw [← hAv]; rfl`. Establish `hB' : evalAt L s.v B = 0` using `by rw [← hBv]; rfl`. Simplify using `[ReciprocityTheory.Aut.compAt, Algebra.TensorProduct.map_tmul, hA', hB']`.
+-/
 theorem compAt_eq_zero_of_proj_eq_zero {L : Type} [Field L] [NumberField L] [IsCMField L] (s : SplitPlace L)
     (z : AL L) (hp : s.proj z = 0) (hq : s.proj (conjAL L z) = 0) : compAt L s.v z = 0 := by
   obtain ⟨e, hne⟩ : ∃ e : L, e ≠ IsCMField.complexConj L e := by
@@ -64,6 +85,11 @@ theorem compAt_eq_zero_of_proj_eq_zero {L : Type} [Field L] [NumberField L] [IsC
   have hB' : evalAt L s.v B = 0 := by rw [← hBv]; rfl
   simp [ReciprocityTheory.Aut.compAt, Algebra.TensorProduct.map_tmul, hA', hB']
 
+/- English proof (translation)
+Introduce `L _ _ _ n s x y h`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply]`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Apply `compAt_eq_zero_of_proj_eq_zero s` to reduce the goal to its premises.
+
+Rewrite using `[map_sub, GlobalTheory.SplitLocEq.proj_entry, GlobalTheory.SplitLocEq.proj_entry, h, sub_self]`. Rewrite using `[map_sub, map_sub, GlobalTheory.SplitLocEq.conj_entry, GlobalTheory.SplitLocEq.conj_entry, GlobalTheory.SplitLocEq.proj_entry, GlobalTheory.SplitLocEq.proj_entry, map_inv, map_inv, h, sub_self]`.
+-/
 theorem compAt_map_eq_of_loc_eq : ∀ {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} (s : SplitPlace L)
     (x y : GAf L n), s.loc n x = s.loc n y →
       (x.1 : Matrix (Fin n) (Fin n) (AL L)).map (compAt L s.v) =

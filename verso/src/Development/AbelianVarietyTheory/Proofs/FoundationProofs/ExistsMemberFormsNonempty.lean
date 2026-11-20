@@ -19,6 +19,13 @@ variable (K : Type) [Field K] [NumberField K] [StarRing K] (κ : Type) [Fintype 
   X := fun _ => 1
   L := Submodule.pi Set.univ (fun _ => (1 : Submodule (𝓞 K) K))
 
+/- English proof (translation)
+Use `⟨fun v => ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show IsUnit (Matrix.det (1 : Matrix κ κ ℂ))`. Simplify using the standard rewrite rules. Use `show (Submodule.pi Set.univ (fun _ : κ => (1 : Submodule (𝓞 K) K))).FG`. Use `Submodule.fg_pi (fun _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Submodule.one_eq_span]`. Conclude with `Submodule.fg_span_singleton _`. Use `show Submodule.span K ((Submodule.pi Set.univ (fun _ : κ => (1 : Submodule (𝓞 K) K)) : Submodule (𝓞 K) (κ → K)) : Set (κ → K)) = ⊤`. Rewrite using `[eq_top_iff, ← (Pi.basisFun K κ).span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨a, rfl⟩ c -`. Distinguish the cases in `h : c = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+-/
 theorem stdLat_good : (stdLat K κ).Good := by
   refine ⟨fun v => ?_, ?_, ?_⟩
   · show IsUnit (Matrix.det (1 : Matrix κ κ ℂ))
@@ -44,6 +51,11 @@ def stdEmb (σ : K →+* ℂ) : (stdLat K κ).V →ₛₗ[σ] (κ → Unit → �
   map_add' x y := by funext c u; exact map_add σ _ _
   map_smul' a x := by funext c u; exact map_mul σ _ _
 
+/- English proof (translation)
+Set `B : Module.Basis κ ℂ (κ → Unit → ℂ)` to `(Pi.basisFun ℂ κ).map (LinearEquiv.piCongrRight fun _ => (LinearEquiv.funUnique Unit ℂ ℂ).symm)`. Establish `h : (fun a => stdEmb κ σ ((stdLat K κ).b a)) = B`. Use function extensionality and compare the values at `a c u`. Use `show σ ((Pi.basisFun K κ a) c) = _`. Distinguish the cases in `h : c = a`.
+
+Substitute `h` using the available equality. Simplify using `[B]`. Simplify using `[B, h]`. Rewrite using `[h]`. Conclude with `⟨B.linearIndependent, B.span_eq⟩`.
+-/
 theorem stdEmb_basis (σ : K →+* ℂ) :
     LinearIndependent ℂ (fun a => stdEmb κ σ ((stdLat K κ).b a)) ∧
       Submodule.span ℂ (Set.range (fun a => stdEmb κ σ ((stdLat K κ).b a))) = ⊤ := by
@@ -63,6 +75,11 @@ def ipUnit : (Unit → ℂ) →ₗ⋆[ℂ] (Unit → ℂ) →ₗ[ℂ] ℂ :=
     (fun _ _ _ => by simp [add_mul]) (fun _ _ _ => by simp [mul_assoc])
     (fun _ _ _ => by simp [mul_add]) (fun _ _ _ => by simp; ring)
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticesTheory.majAt Formalism.HermitianLatticesTheory.fcoord`. Rewrite using `[Complex.re_sum, Complex.re_sum]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Establish `h1 : ((stdLat K κ).X (InfinitePlace.mk σ))⁻¹.mulVec (Formalism.HermitianLatticesTheory.vecAt (stdLat K κ).b (InfinitePlace.mk σ) x) c = (InfinitePlace.mk σ).embedding ((show κ → K from x) c)` using `by show ((1 : Matrix κ κ ℂ)⁻¹.mulVec _) c = _`. Rewrite using `[inv_one, Matrix.one_mulVec]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1]`. Use `show (starRingEnd ℂ _ * _).re = (starRingEnd ℂ (σ _) * σ _).re`. Rewrite using `[Complex.conj_mul', Complex.conj_mul', InfinitePlace.norm_embedding_eq, InfinitePlace.apply]`.
+-/
 theorem stdEmb_norm (σ : K →+* ℂ) (x : (stdLat K κ).V) :
     (Formalism.HermitianLatticesTheory.majAt (stdLat K κ).b (stdLat K κ).X (InfinitePlace.mk σ) x x).re =
       (∑ c, ipUnit (stdEmb κ σ x c) (stdEmb κ σ x c)).re := by
@@ -223,6 +240,19 @@ def forms (hι : Fintype.card ι = R.f) (LL : Type) [Field LL] [NumberField LL] 
   thFree _ _ _ _ := 1
   thFree_nonneg _ _ _ _ := zero_le_one
 
+/- English proof (translation)
+Establish `: Fact (2 < T)` using `⟨h2⟩`. Establish `hne : (1 : (ZMod T)ˣ) ≠ -1` using `fun h => by`. Use `congrArg (Units.val) h` as an intermediate fact. Conclude with `ZMod.neg_one_ne_one (n := T) (by simpa using this.symm)`. Set `g : (ZMod T)ˣ → ℂ` to `fun x => (if x = 1 then 1 else 0) - (if x = -1 then 1 else 0)`.
+
+Establish `hg : ∑ x, g x = 0` using `by simp [g, Finset.sum_sub_distrib]`. Set `φ : (ι → (ZMod T)ˣ) → Unit → ℂ` to `fun c _ => ∏ w, g (c w)`. Rewrite using `[Submodule.ne_bot_iff]`. Use `⟨φ, ⟨Submodule.mem_top, ?_⟩, fun h => ?_⟩` and prove the remaining obligations. Use `(Submodule.mem_iInf _).mpr fun (v : ι) => ?_ show (∑ a : (ZMod T)ˣ, diamond ι T v a) φ = 0` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `c u`. Rewrite using `[LinearMap.sum_apply, Finset.sum_apply, Finset.sum_apply]`. Establish `h1 : ∀ a : (ZMod T)ˣ, diamond ι T v a φ c u = g (c v * a) * ∏ w ∈ Finset.univ.erase v, g (c w)`. Introduce `a`. Use `show ∏ w, g ((c * Pi.mulSingle (M := fun _ : ι => (ZMod T)ˣ) v a : ι → (ZMod T)ˣ) w) = _`.
+
+Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ v)]`. Use `congr 1`. Simplify using the standard rewrite rules. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations. Simplify using `[Pi.mulSingle_eq_of_ne (Finset.ne_of_mem_erase hw)]`.
+
+Simplify using `only [h1]`. Rewrite using `[← Finset.sum_mul, Fintype.sum_equiv (Equiv.mulLeft (c v)) (fun a => g (c v * a)) g (fun _ => rfl), hg, zero_mul]`. Both sides reduce to the same expression. Use `congrFun (congrFun h (1 : ι → (ZMod T)ˣ)) ()` as an intermediate fact. Express the relevant statement in the definitionally equal form `∏ _w : ι, g 1 = 0 at this`.
+
+Simplify using `[g, hne] at this`.
+-/
 theorem mram_ne_bot (hι : Fintype.card ι = R.f) (h2 : 2 < T) : (atT R ι hc T hι).Mram ≠ ⊥ := by
   have : Fact (2 < T) := ⟨h2⟩
   have hne : (1 : (ZMod T)ˣ) ≠ -1 := fun h => by

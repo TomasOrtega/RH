@@ -26,11 +26,17 @@ def TruncCok : Prop := Hyp → ∀ (q : ℕ) [NeZero q] (i n : ℤ) {A Y : CommR
     pull _ (sch.map (Spec.map u)) (tw q i) m y ∈ Set.range (pull _ (sch.map (Spec.map φ'')) (tw q i) m) →
     y ∈ Set.range (pull _ (sch.map (Spec.map φ')) (tw q i) m)
 
+/- English proof (translation)
+Introduce `hH q _ i n A Y φ hq P hpush het hlow D d hD hpts Y' w φ' hpo m hm y`. Take `⟨E, e, Y'', u, φ'', he, hs, hE, hpo', hy⟩` from `hK hH q i n φ hq P hpush het hlow D d hD hpts Y' w φ' hpo m hm y`. Conclude with `hT hH q i n φ hq P hpush het hlow D d hD Y' w φ' hpo E e Y'' u φ'' he hs hE hpo' m hm y hy`.
+-/
 theorem CokLoc_of (hK : KillCok) (hT : TruncCok) : CokLoc := by
   intro hH q _ i n A Y φ hq P hpush het hlow D d hD hpts Y' w φ' hpo m hm y
   obtain ⟨E, e, Y'', u, φ'', he, hs, hE, hpo', hy⟩ := hK hH q i n φ hq P hpush het hlow D d hD hpts Y' w φ' hpo m hm y
   exact hT hH q i n φ hq P hpush het hlow D d hD Y' w φ' hpo E e Y'' u φ'' he hs hE hpo' m hm y hy
 
+/- English proof (translation)
+The claim follows from `DescLoc_of (CokLoc_of hKC hTC) hK`.
+-/
 theorem DescLoc_of' (hKC : KillCok) (hTC : TruncCok) (hK : KerLoc) : LateralTheory.E.StalkCut.DescLoc :=
   DescLoc_of (CokLoc_of hKC hTC) hK
 

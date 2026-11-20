@@ -10,6 +10,17 @@ open NumberField IsDedekindDomain
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Establish `hv : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 K), v.valuation K x ≤ 1`. Introduce `v`. Establish `h1` using `h (FinitePlace.mk v)`. Use `first`. Consider the case `(rw [FinitePlace.mk_apply, FinitePlace.norm_def] at h1`.
+
+Establish `he : (1 : NNReal) < (Ideal.absNorm v.asIdeal : NNReal)`. Establish `h2 : Ideal.absNorm v.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Establish `h3 : Ideal.absNorm v.asIdeal ≠ 1`.
+
+Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Conclude with `v.isPrime.ne_top`. Establish `h4 : 1 < Ideal.absNorm v.asIdeal` using `by omega`. Conclude with `h4` after adjusting the coercions. Establish `h5 : Valued.v (FinitePlace.embedding v x) = v.valuation K x` using `by first`.
+
+Consider the case `exact IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x`. Consider the case `exact v.valuedAdicCompletion_eq_valuation' x`. Consider the case `exact FinitePlace.valuation_embedding v x`. Consider the case `exact IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation v x`. Consider the case `rfl`.
+
+Rewrite `h1` using `[h5]`. Conclude with `(WithZeroMulInt.toNNReal_le_one_iff he).mp (by exact_mod_cast h1))`. Take `⟨y, hy⟩` from `IsDedekindDomain.HeightOneSpectrum.mem_integers_of_valuation_le_one K x hv`. Conclude with `⟨y, hy⟩`.
+-/
 theorem int_of_le_one (x : K) (h : ∀ w : FinitePlace K, w x ≤ 1) : ∃ y : 𝓞 K, (y : K) = x := by
   have hv : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 K), v.valuation K x ≤ 1 := by
     intro v
@@ -37,6 +48,11 @@ theorem int_of_le_one (x : K) (h : ∀ w : FinitePlace K, w x ≤ 1) : ∃ y : �
   obtain ⟨y, hy⟩ := IsDedekindDomain.HeightOneSpectrum.mem_integers_of_valuation_le_one K x hv
   exact ⟨y, hy⟩
 
+/- English proof (translation)
+Establish `h1 : Function.support (fun a => Real.log (f a)) ⊆ (hf.toFinset : Set α)`. Introduce `a ha`. Rewrite using `[Set.Finite.coe_toFinset, Function.mem_mulSupport]`. Introduce `h`. Conclude with `(Function.mem_support.mp ha) (by rw [h, Real.log_one])`.
+
+Establish `h2 : Function.mulSupport f ⊆ (hf.toFinset : Set α)`. Rewrite using `[Set.Finite.coe_toFinset]`. Rewrite using `[finsum_eq_sum_of_support_subset _ h1, finprod_eq_prod_of_mulSupport_subset _ h2]`. Conclude with `(Real.log_prod fun a _ => (hpos a).ne').symm`.
+-/
 theorem finsum_log_eq {α : Type*} (f : α → ℝ) (hpos : ∀ a, 0 < f a)
     (hf : (Function.mulSupport f).Finite) : ∑ᶠ a, Real.log (f a) = Real.log (∏ᶠ a, f a) := by
   have h1 : Function.support (fun a => Real.log (f a)) ⊆ (hf.toFinset : Set α) := by
@@ -49,6 +65,11 @@ theorem finsum_log_eq {α : Type*} (f : α → ℝ) (hpos : ∀ a, 0 < f a)
   rw [finsum_eq_sum_of_support_subset _ h1, finprod_eq_prod_of_mulSupport_subset _ h2]
   exact (Real.log_prod fun a _ => (hpos a).ne').symm
 
+/- English proof (translation)
+Establish `hle : (F.support.sup fun s => (w (F.coeff s)).toNNReal) ≤ 1` using `Finset.sup_le fun s hs => by rw [hw s hs]; simp`. Take `⟨s, hs⟩` from `MvPolynomial.ne_zero_iff.mp hF`. Establish `hs' : s ∈ F.support` using `MvPolynomial.mem_support_iff.mpr hs`. Establish `hge : (1 : NNReal) ≤ F.support.sup fun s => (w (F.coeff s)).toNNReal`. Establish `h1` using `Finset.le_sup (f := fun s => (w (F.coeff s)).toNNReal) hs'`.
+
+Rewrite `h1` using `[hw s hs']`. Simplify using `using h1`. Unfold `ReciprocityTheory.MultiplicativeHeights.gaussAbs`. Rewrite using `[le_antisymm hle hge]`. Simplify using the standard rewrite rules.
+-/
 private lemma gaussAbs_of_lemma {κ : Type*} (F : MvPolynomial κ K) (hF : F ≠ 0) (w : FinitePlace K)
     (hw : ∀ s ∈ F.support, w (F.coeff s) = 1) : ReciprocityTheory.MultiplicativeHeights.gaussAbs w F = 1 := by
   have hle : (F.support.sup fun s => (w (F.coeff s)).toNNReal) ≤ 1 :=
@@ -63,6 +84,11 @@ private lemma gaussAbs_of_lemma {κ : Type*} (F : MvPolynomial κ K) (hF : F ≠
   rw [le_antisymm hle hge]
   simp
 
+/- English proof (translation)
+Use `⟨Set.Finite.biUnion F.support.finite_toSet fun s hs => FinitePlace.mulSupport_finite (MvPolynomial.mem_support_iff.mp (Finset.mem_coe.mp hs)), ?_⟩` and prove the remaining obligations. Introduce `w hw`. Apply `gaussAbs_of_lemma F hF w` to reduce the goal to its premises. Introduce `s hs`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hw (Set.mem_biUnion (Finset.mem_coe.mpr hs) (Function.mem_mulSupport.mpr hne))`.
+-/
 private lemma gaussAbs_cover_lemma_2 {κ : Type*} (F : MvPolynomial κ K) (hF : F ≠ 0) :
     (⋃ s ∈ (F.support : Set (κ →₀ ℕ)), Function.mulSupport fun w : FinitePlace K => w (F.coeff s)).Finite ∧
     ∀ w : FinitePlace K, w ∉ (⋃ s ∈ (F.support : Set (κ →₀ ℕ)),
@@ -75,6 +101,11 @@ private lemma gaussAbs_cover_lemma_2 {κ : Type*} (F : MvPolynomial κ K) (hF : 
   by_contra hne
   exact hw (Set.mem_biUnion (Finset.mem_coe.mpr hs) (Function.mem_mulSupport.mpr hne))
 
+/- English proof (translation)
+Distinguish the cases in `hF : F = 0`. Substitute `hF` using the available equality. Simplify using `[ReciprocityTheory.MultiplicativeHeights.gaussAbs]`. Take `⟨hfin, hone⟩` from `gaussAbs_cover_lemma_2 F hF`. Use `hfin.subset ?_` and prove the remaining obligations.
+
+Introduce `w hw`. Assume the negation of the conclusion as `hne`. Conclude with `(Function.mem_support.mp hw) (by rw [hone w hne, Real.log_one])`.
+-/
 theorem gaussAbs_support_finite {κ : Type*} (F : MvPolynomial κ K) :
     (Function.support fun w : FinitePlace K => Real.log (ReciprocityTheory.MultiplicativeHeights.gaussAbs w F)).Finite := by
   by_cases hF : F = 0
@@ -86,6 +117,13 @@ theorem gaussAbs_support_finite {κ : Type*} (F : MvPolynomial κ K) :
     by_contra hne
     exact (Function.mem_support.mp hw) (by rw [hone w hne, Real.log_one])
 
+/- English proof (translation)
+Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Simplify using `[ReciprocityTheory.MultiplicativeHeights.gaussAbs]`. Establish `hw : 0 < w c` using `by first`. Consider the case `exact w.pos_iff.mpr hc`.
+
+Consider the case `exact (FinitePlace.pos_iff).mpr hc`. Establish `hsupp : (MvPolynomial.C c * F).support = F.support`. Rewrite using `[MvPolynomial.C_mul', MvPolynomial.support_smul_eq hc]`. Unfold `ReciprocityTheory.MultiplicativeHeights.gaussAbs`. Rewrite using `[hsupp]`.
+
+Repeatedly rewrite using `[MvPolynomial.coeff_C_mul, map_mul, Real.toNNReal_mul hw.le]`. Rewrite using `[← NNReal.mul_finset_sup, NNReal.coe_mul, Real.coe_toNNReal _ hw.le]`.
+-/
 theorem gaussAbs_C_mul {κ : Type} [Fintype κ] (w : FinitePlace K) (c : K) (F : MvPolynomial κ K) :
     ReciprocityTheory.MultiplicativeHeights.gaussAbs w (MvPolynomial.C c * F) = w c * ReciprocityTheory.MultiplicativeHeights.gaussAbs w F := by
   by_cases hc : c = 0
@@ -102,6 +140,9 @@ theorem gaussAbs_C_mul {κ : Type} [Fintype κ] (w : FinitePlace K) (c : K) (F :
     simp_rw [MvPolynomial.coeff_C_mul, map_mul, Real.toNNReal_mul hw.le]
     rw [← NNReal.mul_finset_sup, NNReal.coe_mul, Real.coe_toNNReal _ hw.le]
 
+/- English proof (translation)
+Establish `hb` using `ReciprocityTheory.MultiplicativeHeights.Closed.torusMeanBasic κ`. Rewrite using `[hb.2.1 _ _ (by simpa using hz) hf, ← MvPolynomial.monomial_zero', hb.2.2]`.
+-/
 theorem torusMean_C_mul {κ : Type} [Fintype κ] (z : ℂ) (hz : z ≠ 0) (f : MvPolynomial κ ℂ)
     (hf : f ≠ 0) :
     ReciprocityTheory.MultiplicativeHeights.torusMean (MvPolynomial.C z * f) = Real.log ‖z‖ + ReciprocityTheory.MultiplicativeHeights.torusMean f := by
@@ -116,6 +157,9 @@ open NumberField IsDedekindDomain
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Take `⟨hfin, hone⟩` from `gaussAbs_cover_lemma_2 F hF`. Use `hfin.subset ?_` and prove the remaining obligations. Introduce `w hw`. Assume the negation of the conclusion as `hne`. Conclude with `(Function.mem_mulSupport.mp hw) (hone w hne)`.
+-/
 theorem gaussAbs_mulSupport_finite {κ : Type*} (F : MvPolynomial κ K) (hF : F ≠ 0) :
     (Function.mulSupport fun w : FinitePlace K => ReciprocityTheory.MultiplicativeHeights.gaussAbs w F).Finite := by
   obtain ⟨hfin, hone⟩ := gaussAbs_cover_lemma_2 F hF
@@ -124,6 +168,13 @@ theorem gaussAbs_mulSupport_finite {κ : Type*} (F : MvPolynomial κ K) (hF : F 
   by_contra hne
   exact (Function.mem_mulSupport.mp hw) (hone w hne)
 
+/- English proof (translation)
+Establish `hpos : ∀ w : FinitePlace K, 0 < w c`. Introduce `w`. Use `first`. Consider the case `exact w.pos_iff.mpr hc`. Consider the case `exact (FinitePlace.pos_iff).mpr hc`.
+
+Consider the case `exact lt_of_le_of_ne (by positivity) (fun h => hc (by simpa using h.symm))`. Rewrite using `[finsum_log_eq (fun w : FinitePlace K => w c) hpos (FinitePlace.mulSupport_finite hc), FinitePlace.prod_eq_inv_abs_norm hc]`. Use `first`. Consider the case `(rw [Rat.cast_inv, Rat.cast_abs, Real.log_inv])`. Consider the case `(push_cast; rw [Real.log_inv])`.
+
+Consider the case `simp [Real.log_inv]`.
+-/
 theorem finsum_log_norm (c : K) (hc : c ≠ 0) :
     ∑ᶠ w : FinitePlace K, Real.log (w c) = -Real.log |((Algebra.norm ℚ c : ℚ) : ℝ)| := by
   have hpos : ∀ w : FinitePlace K, 0 < w c := by
@@ -139,6 +190,17 @@ theorem finsum_log_norm (c : K) (hc : c ≠ 0) :
     | (push_cast; rw [Real.log_inv])
     | simp [Real.log_inv]
 
+/- English proof (translation)
+Unfold `hT`. Use `congr 1`. Establish `hfin : ∑ᶠ w : FinitePlace K, Real.log (ReciprocityTheory.MultiplicativeHeights.gaussAbs w (MvPolynomial.C c * F)) = ∑ᶠ w : FinitePlace K, Real.log (w c) + ∑ᶠ w : FinitePlace K, Real.log (ReciprocityTheory.MultiplicativeHeights.gaussAbs w F)`. Rewrite using `[← finsum_add_distrib]`. Use `finsum_congr fun w => ?_` and prove the remaining obligations.
+
+Rewrite using `[gaussAbs_C_mul, Real.log_mul (FinitePlace.pos_iff.mpr hc).ne' (ReciprocityTheory.MultiplicativeHeights.gauss_abs_pos_of_ne_zero w F hF).ne']`. Use `(FinitePlace.hasFiniteMulSupport hc).subset ?_` and prove the remaining obligations. Introduce `w hw h1`. Apply `hw` to reduce the goal to its premises. Simplify using `only at h1 ⊢`.
+
+Rewrite using `[h1, Real.log_one]`. Conclude with `gaussAbs_support_finite F`. Establish `harch : ∑ σ : K →+* ℂ, ReciprocityTheory.MultiplicativeHeights.torusMean (MvPolynomial.map σ (MvPolynomial.C c * F)) = ∑ σ : K →+* ℂ, Real.log ‖σ c‖ + ∑ σ : K →+* ℂ, ReciprocityTheory.MultiplicativeHeights.torusMean (MvPolynomial.map σ F)`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, MvPolynomial.map_C]`. Use `torusMean_C_mul _ ((map_ne_zero σ).mpr hc) _ ?_` and prove the remaining obligations. Introduce `h0`. Apply `hF` to reduce the goal to its premises. Conclude with `MvPolynomial.map_injective σ σ.injective (by rw [h0, map_zero])`.
+
+Rewrite using `[hfin, harch, finsum_log_norm c hc, ReciprocityTheory.MultiplicativeHeights.sum_log_norm_embedding_eq c hc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hT_C_mul {κ : Type} [Fintype κ] (F : MvPolynomial κ K) (hF : F ≠ 0) (c : K) (hc : c ≠ 0) :
     hT (MvPolynomial.C c * F) = hT F := by
   unfold hT
@@ -180,12 +242,20 @@ variable {K : Type} [Field K] [NumberField K]
 noncomputable def contId {κ : Type*} (G₀ : MvPolynomial κ (𝓞 K)) : Ideal (𝓞 K) :=
   Ideal.span (Set.range fun s : G₀.support => G₀.coeff s)
 
+/- English proof (translation)
+Introduce `hb`. Rewrite `hb` using `[contId, Ideal.span_eq_bot]`. Take `⟨s, hs⟩` from `MvPolynomial.ne_zero_iff.mp h`. Conclude with `hs (hb _ ⟨⟨s, MvPolynomial.mem_support_iff.mpr hs⟩, rfl⟩)`.
+-/
 theorem contId_ne_bot {κ : Type*} (G₀ : MvPolynomial κ (𝓞 K)) (h : G₀ ≠ 0) : contId G₀ ≠ ⊥ := by
   intro hb
   rw [contId, Ideal.span_eq_bot] at hb
   obtain ⟨s, hs⟩ := MvPolynomial.ne_zero_iff.mp h
   exact hs (hb _ ⟨⟨s, MvPolynomial.mem_support_iff.mpr hs⟩, rfl⟩)
 
+/- English proof (translation)
+Use `first`. Consider the case `positivity`. Consider the case `exact AbsoluteValue.nonneg _ _`. Consider the case `exact w.1.nonneg _`. Consider the case `exact norm_nonneg _`.
+
+Consider the case `simp`.
+-/
 private lemma place_nonneg_lemma_3 (w : FinitePlace K) (x : K) : 0 ≤ w x := by
   first
     | positivity
@@ -194,6 +264,15 @@ private lemma place_nonneg_lemma_3 (w : FinitePlace K) (x : K) : 0 ≤ w x := by
     | exact norm_nonneg _
     | simp
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (algebraMap (𝓞 K) K)` using `by first`. Consider the case `exact RingOfIntegers.coe_injective`. Consider the case `exact IsFractionRing.injective (𝓞 K) K`. Consider the case `exact FaithfulSMul.algebraMap_injective (𝓞 K) K`. Take `⟨s0, hs0⟩` from `MvPolynomial.ne_zero_iff.mp h`.
+
+Establish `hs0' : s0 ∈ G₀.support` using `MvPolynomial.mem_support_iff.mpr hs0`. Establish `hbdd : BddAbove (Set.range fun i : G₀.support => w ((G₀.coeff i : 𝓞 K) : K))` using `(Set.finite_range _).bddAbove`. Unfold `ReciprocityTheory.MultiplicativeHeights.gaussAbs`. Rewrite using `[MvPolynomial.support_map_of_injective _ hinj]`. Repeatedly rewrite using `[MvPolynomial.coeff_map]`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Take `⟨i, hi, heq⟩` from `Finset.exists_mem_eq_sup G₀.support ⟨s0, hs0'⟩ (fun s => (w (algebraMap (𝓞 K) K (G₀.coeff s))).toNNReal)`. Rewrite using `[heq, Real.coe_toNNReal _ (place_nonneg_lemma_3 w _)]`. Conclude with `le_ciSup hbdd ⟨i, hi⟩`. Use `haveI : Nonempty G₀.support := ⟨⟨s0, hs0'⟩⟩`.
+
+Apply `ciSup_le` to reduce the goal to its premises. Introduce and unpack `⟨i, hi⟩`. Establish `hle` using `Finset.le_sup (f := fun s => (w (algebraMap (𝓞 K) K (G₀.coeff s))).toNNReal) hi`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gaussAbs_eq_iSup {κ : Type*} (G₀ : MvPolynomial κ (𝓞 K)) (h : G₀ ≠ 0) (w : FinitePlace K) :
     ReciprocityTheory.MultiplicativeHeights.gaussAbs w (MvPolynomial.map (algebraMap (𝓞 K) K) G₀) =
       ⨆ i : G₀.support, w ((G₀.coeff i : 𝓞 K) : K) := by
@@ -222,6 +301,11 @@ theorem gaussAbs_eq_iSup {κ : Type*} (G₀ : MvPolynomial κ (𝓞 K)) (h : G�
           (Real.coe_toNNReal _ (place_nonneg_lemma_3 w _)).symm
       _ ≤ _ := NNReal.coe_le_coe.mpr hle
 
+/- English proof (translation)
+Establish `hx : (fun s : G₀.support => G₀.coeff s) ≠ 0`. Take `⟨s, hs⟩` from `MvPolynomial.support_nonempty.mpr h`. Introduce `h0`. Conclude with `MvPolynomial.mem_support_iff.mp hs (congrFun h0 ⟨s, hs⟩)`. Use `NumberField.absNorm_mul_finprod_finitePlace_eq_one hx` as an intermediate fact.
+
+Rewrite using `[finprod_congr (gaussAbs_eq_iSup G₀ h)]`. Conclude with `this`.
+-/
 theorem absNorm_mul_gauss {κ : Type*} (G₀ : MvPolynomial κ (𝓞 K)) (h : G₀ ≠ 0) :
     (Ideal.absNorm (contId G₀) : ℝ) *
       ∏ᶠ w : FinitePlace K, ReciprocityTheory.MultiplicativeHeights.gaussAbs w (MvPolynomial.map (algebraMap (𝓞 K) K) G₀) = 1 := by
@@ -233,6 +317,21 @@ theorem absNorm_mul_gauss {κ : Type*} (G₀ : MvPolynomial κ (𝓞 K)) (h : G�
   rw [finprod_congr (gaussAbs_eq_iSup G₀ h)]
   exact this
 
+/- English proof (translation)
+Establish `hI : ((contId G₀ : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.mpr (contId_ne_bot G₀ h)`. Rewrite using `[FractionalIdeal.mem_inv_iff hI]`. Introduce `y hy`. Establish `hy2 : ∃ y', y' ∈ contId G₀ ∧ algebraMap (𝓞 K) K y' = y` using `by first`. Consider the case `exact (FractionalIdeal.mem_coeIdeal _).mp hy`.
+
+Consider the case `exact FractionalIdeal.mem_coeIdeal.mp hy`. Take `⟨y', hy', rfl⟩` from `hy2`. Rewrite using `[FractionalIdeal.mem_one_iff]`. Establish `key : ∃ z : 𝓞 K, (z : K) = x * (y' : K)` using `by clear hy`. Unfold `contId at hy'`.
+
+Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem a ha`. Take `⟨⟨s, _⟩, rfl⟩` from `ha`. Conclude with `hx s`. Consider the case `zero => exact ⟨0, by simp⟩`.
+
+Consider the case `add a b _ _ ha hb`. Take `⟨z1, h1⟩` from `ha`. Take `⟨z2, h2⟩` from `hb`. Use `⟨z1 + z2, ?_⟩` and prove the remaining obligations. Use `first`.
+
+Consider the case `(push_cast; linear_combination h1 + h2)`. Consider the case `(simp only [map_add]; linear_combination h1 + h2)`. Consider the case `(simp; linear_combination h1 + h2)`. Consider the case `smul r a _ ha`. Take `⟨z, hz⟩` from `ha`.
+
+Use `⟨r * z, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`. Use `first`. Consider the case `(push_cast; linear_combination (r : K) * hz)`. Consider the case `(simp only [map_mul]; linear_combination (algebraMap (𝓞 K) K r) * hz)`.
+
+Consider the case `(simp; linear_combination (r : K) * hz)`. Take `⟨z, hz⟩` from `key`. Use `first`. Consider the case `exact ⟨z, hz⟩`. Consider the case `exact ⟨z, by simpa using hz⟩`.
+-/
 theorem mem_inv_of {κ : Type*} (G₀ : MvPolynomial κ (𝓞 K)) (h : G₀ ≠ 0) (x : K)
     (hx : ∀ s, ∃ y : 𝓞 K, (y : K) = x * ((G₀.coeff s : 𝓞 K) : K)) :
     x ∈ ((contId G₀ : FractionalIdeal (𝓞 K)⁰ K)⁻¹ : FractionalIdeal (𝓞 K)⁰ K) := by
@@ -275,6 +374,15 @@ theorem mem_inv_of {κ : Type*} (G₀ : MvPolynomial κ (𝓞 K)) (h : G₀ ≠ 
     | exact ⟨z, hz⟩
     | exact ⟨z, by simpa using hz⟩
 
+/- English proof (translation)
+Use `set J : FractionalIdeal (𝓞 K)⁰ K := ↑(contId G₀) with hJdef`. Establish `hJ : J ≠ 0`. Rewrite using `[hJdef, Ne, FractionalIdeal.coeIdeal_eq_zero]`. Conclude with `contId_ne_bot G₀ h`. Establish `hfg : ((J⁻¹ : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K).FG` using `FractionalIdeal.fg_of_isNoetherianRing le_rfl _`.
+
+Establish `h1 : (1 : Submodule (𝓞 K) K) ≤ ((J⁻¹ : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K)`. Establish `h2` using `FractionalIdeal.inv_anti_mono hJ one_ne_zero FractionalIdeal.coeIdeal_le_one`. Rewrite `h2` using `[inv_one]`. Establish `h3 : ((1 : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K) ≤ ((J⁻¹ : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K)` using `h2`. Rewrite `h3` using `[FractionalIdeal.coe_one]`. Then use the resulting hypothesis.
+
+Establish `key` using `ReciprocityTheory.MultiplicativeHeights.SemiDegIdx.absNorm_mul_relIndex_one _ hfg h1`. Establish `he : (⟨((J⁻¹ : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K), FractionalIdeal.isFractional_of_fg hfg⟩ : FractionalIdeal (𝓞 K)⁰ K) = J⁻¹` using `rfl`. Establish `hN : (Ideal.absNorm (contId G₀) : ℚ) ≠ 0`. Rewrite using `[Nat.cast_ne_zero, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `contId_ne_bot G₀ h`.
+
+Rewrite `key` using `[he, map_inv₀, show FractionalIdeal.absNorm J = Ideal.absNorm (contId G₀) from FractionalIdeal.coeIdeal_absNorm _, inv_mul_eq_one₀ hN]`. Conclude with `key.symm`.
+-/
 theorem relIndex_inv {κ : Type*} (G₀ : MvPolynomial κ (𝓞 K)) (h : G₀ ≠ 0) :
     (((1 : Submodule (𝓞 K) K).toAddSubgroup.relIndex
       (((contId G₀ : FractionalIdeal (𝓞 K)⁰ K)⁻¹ : FractionalIdeal (𝓞 K)⁰ K) :

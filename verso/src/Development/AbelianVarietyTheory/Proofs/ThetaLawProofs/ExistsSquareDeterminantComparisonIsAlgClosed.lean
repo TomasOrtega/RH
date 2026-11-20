@@ -28,6 +28,11 @@ noncomputable section
 
 namespace GlobalTheory.SimilDet
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Take `⟨y, hy⟩` from `hne i`. Establish `li` using `(linearIndependent_monoidHom G B).comp χ hχ`. Use `Fintype.linearIndependent_iff.1 li (fun j => κ (c j) * F j y) (by` as an intermediate fact. Use function extensionality and compare the values at `v`.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Function.comp_apply, Pi.zero_apply]`. Rewrite using `[← h (act v y)]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hF]; ring) i`. Conclude with `κ.injective (((mul_eq_zero.1 this).resolve_right hy).trans (map_zero κ).symm)`.
+-/
 theorem eq_zero_of_eigen {K B G Y N : Type} [Field K] [CommRing B] [IsDomain B] [Monoid G] [Fintype N]
     (κ : K →+* B) (χ : N → G →* B) (hχ : Function.Injective χ) (act : G → Y → Y) (F : N → Y → B)
     (hF : ∀ i v y, F i (act v y) = χ i v * F i y) (hne : ∀ i, ∃ y, F i y ≠ 0) (c : N → K)
@@ -42,6 +47,11 @@ theorem eq_zero_of_eigen {K B G Y N : Type} [Field K] [CommRing B] [IsDomain B] 
     exact Finset.sum_congr rfl fun j _ => by rw [hF]; ring) i
   exact κ.injective (((mul_eq_zero.1 this).resolve_right hy).trans (map_zero κ).symm)
 
+/- English proof (translation)
+Take `⟨t, -, hv⟩` from `exists_gen hM (K' := PEmpty) (φ' := PEmpty.elim) (ε' := PEmpty.elim) (fun U _ h => by`. Use `(Fintype.prod_sum_type _).trans (Eq.trans ?_ (Fintype.prod_empty _).symm)` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib, hF U h, mul_inv_cancel])`. Use the proof step `(LB.mulGen M _ _ _ _ u (LB.invGen M _ _ u')) (DVR.mulGen_isGen _ _ _ _ _ _ _ hu (DVR.invGen_isGen _ _ _ _ hu'))`. Establish `le : (⊤ : Y.Opens) ≤ LB.wchart M (PEmpty.elim : PEmpty → (Y ⟶ X)) PEmpty.elim` using `fun _ _ => Set.mem_iInter.2 fun k => k.elim`.
+
+Take `⟨a, ha⟩` from `hp (res le (t.s PEmpty.elim)).val`. Use `⟨a, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[← val_inv, ← val_mul hJ, ← hv Z r z J hJ, val_of t r z J PEmpty.elim (fun k => k.elim)]`. Conclude with `(congrArg Units.val (gm_res r z le trivial _)).symm.trans ((gs_unit r z ⊤ trivial _).symm.trans ((congrArg (gs r z ⊤) ha.symm).trans (gs_pull r p z ⊤ trivial a)))`.
+-/
 theorem exists_ratio {X Y S₀ : Scheme.{0}} {M : LB X} (hM : M.IsLB) {K K' : Type} [Fintype K] [Fintype K']
     {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ} (hF : FormEq φ ε φ' ε')
     (p : Y ⟶ S₀) (hp : Function.Surjective p.appTop.hom)
@@ -60,6 +70,9 @@ theorem exists_ratio {X Y S₀ : Scheme.{0}} {M : LB X} (hM : M.IsLB) {K K' : Ty
   exact (congrArg Units.val (gm_res r z le trivial _)).symm.trans ((gs_unit r z ⊤ trivial _).symm.trans
     ((congrArg (gs r z ⊤) ha.symm).trans (gs_pull r p z ⊤ trivial a)))
 
+/- English proof (translation)
+The claim follows from `(gs_res r z (V := ⊤) le_top trivial _).trans (gs_pull r f z ⊤ trivial _)`.
+-/
 theorem gs_cst {R : Type} [CommRing R] {Y Z : Scheme.{0}} (f : Y ⟶ Sp R) (r : Z ⟶ Y) (z : Z) (a : R) :
     gs r z ⊤ (cst f ⊤ a) = gs (r ≫ f) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a) :=
   (gs_res r z (V := ⊤) le_top trivial _).trans (gs_pull r f z ⊤ trivial _)
@@ -68,6 +81,9 @@ section Map
 
 variable {R : Type} [CommRing R] (x : KeyIn R) (al : Matrix (Fin 4) (Fin 4) ℤ)
 
+/- English proof (translation)
+Use `haveI := x.P.isAb.comm`. Establish `e : ∀ (a : Z ⟶ Out.powObj x.P.A 4) (ζ : Pt x), a ≫ alMap x al r ζ = (∏ c, (a ≫ Out.powPr x.P.A c) ^ al r c) * (toUnit Z ≫ ζ)` using `fun a ζ => by`. Simplify using `only [alMap, List.ofFn_succ, List.ofFn_zero, List.prod_cons, List.prod_nil, MonObj.comp_mul, GrpObj.comp_zpow, MonObj.comp_one, Fin.prod_univ_succ, Fin.prod_univ_zero, comp_toUnit_assoc]`. Simplify using `only [e, MonObj.mul_comp, mul_zpow, Finset.prod_mul_distrib, MonObj.comp_one, _root_.mul_one, _root_.mul_assoc]`.
+-/
 theorem mul_comp_alMap {Z : Over (Sp R)} (a b : Z ⟶ Out.powObj x.P.A 4) (r : Fin 4) (ζ : Pt x) :
     (a * b) ≫ alMap x al r ζ = (a ≫ alMap x al r 1) * (b ≫ alMap x al r ζ) := by
   haveI := x.P.isAb.comm
@@ -90,14 +106,25 @@ def ker : Submonoid (𝟙_ (Over (Sp R)) ⟶ Out.powObj x.P.A 4) where
 abbrev tr (v : 𝟙_ (Over (Sp R)) ⟶ Out.powObj x.P.A 4) : Out.powObj x.P.A 4 ⟶ Out.powObj x.P.A 4 :=
   (toUnit (Out.powObj x.P.A 4) ≫ v) * 𝟙 (Out.powObj x.P.A 4)
 
+/- English proof (translation)
+Rewrite using `[mul_comp_alMap, Category.assoc, v.2 r, MonObj.comp_one, _root_.one_mul, Category.id_comp]`.
+-/
 theorem tr_alMap (v : ker x al) (r : Fin 4) (ζ : Pt x) : tr x v.1 ≫ alMap x al r ζ = alMap x al r ζ := by
   rw [mul_comp_alMap, Category.assoc, v.2 r, MonObj.comp_one, _root_.one_mul, Category.id_comp]
 
+/- English proof (translation)
+Rewrite using `[MonObj.comp_mul, comp_toUnit_assoc, Category.comp_id, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`.
+-/
 theorem pt_tr (y v : 𝟙_ (Over (Sp R)) ⟶ Out.powObj x.P.A 4) : y ≫ tr x v = v * y := by
   rw [MonObj.comp_mul, comp_toUnit_assoc, Category.comp_id, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]
 
 end Map
 
+/- English proof (translation)
+Establish `hu` using `DVR.mulGen_isGen _ _ _ _ _ _ _ hw (DVR.invGen_isGen _ _ _ _ hw')`. Take `⟨a, ha⟩` from `exists_ratio x.P.isLB (fun U _ h => by`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, ← Over.comp_left, tr_alMap, zpow_neg, Finset.prod_inv_distrib, zpow_one, inv_inv]`. Simplify using `only [mul_inv, inv_inv, mul_mul_mul_comm _ _⁻¹, inv_mul_cancel])`. Use the proof step `(Out.powObj x.P.A 4).hom (laws.globalFns _ _ (AbelianSchemeGerms.isAbelianScheme_powObj _ x.P.isAb 3)).2`.
+
+Use the proof step `(DVR.pullGen_isGen _ _ _ _ hu (tr x v.1).left) hu`. Use `⟨a, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Use `ha Z r z J hJ` as an intermediate fact. Rewrite `this` using `[val_pull hJ, val_mul hJ, val_mul hJ, val_inv, val_inv]`. Then use the resulting hypothesis.
+-/
 theorem exists_transl_ratio (laws : Out.Laws) {R : Type} [CommRing R] (x : KeyIn R) (m : ℕ)
     (al : Matrix (Fin 4) (Fin 4) ℤ) (ξ ξ' : Fin 4 → Pt x) (w : LB.Gen (LB.LinComb x.P.L (K := Fin 4 ⊕ Fin 4) (Sum.elim (fun r => (alMap x al r (ξ r)).left) (fun c => (Out.powPr x.P.A c).left)) (Sum.elim (fun _ => 1) (fun _ => -(m : ℤ))))) (w' : LB.Gen (LB.LinComb x.P.L (K := Fin 4 ⊕ Fin 4) (Sum.elim (fun r => (alMap x al r (ξ' r)).left) (fun c => (Out.powPr x.P.A c).left)) (Sum.elim (fun _ => 1) (fun _ => -(m : ℤ)))))
     (hw : w.IsGen) (hw' : w'.IsGen) (v : ker x al) :
@@ -115,6 +142,39 @@ theorem exists_transl_ratio (laws : Out.Laws) {R : Type} [CommRing R] (x : KeyIn
   have := ha Z r z J hJ
   rwa [val_pull hJ, val_mul hJ, val_mul hJ, val_inv, val_inv] at this
 
+/- English proof (translation)
+Introduce `laws K _ _ x m al b hm hal hb`. Establish `hm0 : m ≠ 0` using `fun h => hm (by rw [h, Nat.cast_zero])`. Establish `hL` using `x.P.isLB`. Take `⟨ξ, hξ, hk⟩` from `GlobalTheory.T.exists_enum_ker_transpose_similitude_points laws K x m al hm hal`. Take `⟨mu, hmu, hmuv⟩` from `GlobalTheory.T.exists_normalised_iso_pullback_mul_by_m laws K x m`.
+
+Use `choose w hw using fun I => GlobalTheory.SimilPull.exists_gen_similitude_pull laws K x m al (ξ I) hal (hk I)`. Use `choose rho hrho using fun I => GlobalTheory.T.exists_normalising_unit_similitude_origin K x m al (ξ I) mu (w I) hm0 hal (hk I) hmu (hw I)`. Use `choose s hs using fun I => GlobalTheory.T.exists_section_boxProduct_div_generator _ _ x.P.L hL (Fin 4) (Fin 4) _ _ (m : ℤ) x.th (w I) (hw I)`. Use `choose Q hQ using fun I => GlobalTheory.T.boxProducts_basis_span_powObj_sections K x m _ b hb 4 (s I)`. Establish `hdet : (Matrix.of Q).det ≠ 0`.
+
+Introduce `h0`. Take `⟨c, hc, hcQ⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h0`. Take `⟨I₀, -⟩` from `Function.ne_iff.1 hc`. Use `hc ?_` and prove the remaining obligations. Set `S : Over (Sp K)` to `𝟙_ _`.
+
+Set `T` to `Out.powObj x.P.A 4`. Use `haveI : IsIntegral S.left := inferInstanceAs (IsIntegral (Spec (CommRingCat.of K)))`. Use `haveI : Subsingleton S.left := inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Set `p : S.left` to `IsLocalRing.closedPoint K`. Use `choose J hJ using fun χ : S.left ⟶ x.P.A.left => exists_chart hL (χ p)`.
+
+Use `replace hJ : Good x.P.L p J := hJ`. Set `ev : Γ(S.left, ⊤) →+* S.left.presheaf.stalk p` to `(S.left.presheaf.germ ⊤ p trivial).hom`. Establish `hev : ∀ (y : S ⟶ T) a, gs (y.left ≫ T.hom) p ⊤ a = ev a` using `fun y a => by`. Rewrite using `[Over.w y]`. Conclude with `gs_eq (𝟙 S.left) p ⊤ trivial a`.
+
+Set `κ : K →+* S.left.presheaf.stalk p` to `ev.comp (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom`. Use `choose a ha using fun I v => exists_transl_ratio laws x m al (ξ I₀) (ξ I) (w I₀) (w I) (hw I₀) (hw I) v`. Set `u : (Fin 4 → Fin (m ^ x.P.g)) → (S ⟶ T) → (S.left.presheaf.stalk p)ˣ` to `fun I y => val (w I₀) y.left p J * (val (w I) y.left p J)⁻¹`. Establish `hu : ∀ I (v : ker x al) (y : S ⟶ T), (u I (v.1 * y)).val = ev (a I v) * (u I y).val` using `fun I v y => by`. Use `ha I v _ y.left p J hJ` as an intermediate fact.
+
+Rewrite `this` using `[hev, ← Over.comp_left, pt_tr]`. Rewrite using `[← this, ← Units.val_mul, inv_mul_cancel_right]`. Set `χ : (Fin 4 → Fin (m ^ x.P.g)) → ker x al →* S.left.presheaf.stalk p` to `fun I => { toFun := fun v => ev (a I v) map_one' := by`. Use `hu I 1 1` as an intermediate fact. Rewrite `this` using `[Submonoid.coe_one, _root_.one_mul]`.
+
+Conclude with `(Units.mul_left_inj (u I 1)).1 (this.symm.trans (_root_.one_mul _).symm)`. Use the proof step `map_mul' := fun v v' => by`. Use `hu I (v * v') 1` as an intermediate fact. Rewrite `this` using `[Submonoid.coe_mul, _root_.mul_assoc, hu, hu, ← _root_.mul_assoc]`. Conclude with `((Units.mul_left_inj (u I 1)).1 this).symm }`.
+
+Establish `hχ : Function.Injective χ` using `fun I I' h => by`. Assume the negation of the conclusion as `hne`. Take `⟨r, hr⟩` from `hξ I I' hne p`. Establish `e` using `GlobalTheory.T.eq_of_similitudeIso_quotient_kernel_invariant laws K x m al (ξ I) (ξ I') (w I) (w I') hm hal (hw I) (hw I') (fun v hv Z r z J hJ => by`. Establish `e₁ : a I ⟨v, hv⟩ = a I' ⟨v, hv⟩` using `fn_ext (X := S.left) fun y _ => by`.
+
+Take `rfl : y = p` from `Subsingleton.elim _ _`. Conclude with `(gs_eq (𝟙 S.left) p ⊤ trivial _).trans ((DFunLike.congr_fun h ⟨v, hv⟩).trans (gs_eq (𝟙 S.left) p ⊤ trivial _).symm)`. Establish `e₂` using `Units.ext ((ha I ⟨v, hv⟩ Z r z J hJ).trans (e₁ ▸ (ha I' ⟨v, hv⟩ Z r z J hJ).symm))`. Establish `alg : ∀ {U : Type} [CommGroup U] (A B B' C D D' : U), A * B⁻¹ * (C * D⁻¹)⁻¹ = A * B'⁻¹ * (C * D'⁻¹)⁻¹ → B * D' = B' * D` using `fun A B B' C D D' h => by`. Rewrite `h` using `[mul_inv, mul_inv, inv_inv, inv_inv, _root_.mul_assoc, _root_.mul_assoc, mul_right_inj, mul_left_comm, mul_left_comm B'⁻¹, mul_right_inj, inv_mul_eq_iff_eq_mul]`.
+
+Rewrite using `[h, mul_left_comm B', mul_inv_cancel_left]`. Conclude with `alg _ _ _ _ _ _ e₂)`. Conclude with `hr (by rw [e])`. Set `θ : (Fin 4 → Fin (m ^ x.P.g)) → (S ⟶ T) → S.left.presheaf.stalk p` to `fun I y => ∏ r, gs (y.left ≫ (alMap x al r (ξ I r)).left) p _ (x.th.f (J (y.left ≫ (alMap x al r (ξ I r)).left)))`. Use `eq_zero_of_eigen κ χ hχ (fun v y => v.1 * y) (fun I y => θ I y * (u I y).val) (fun I v y => ?_) (fun I => ?_) c (fun y => ?_)` and prove the remaining obligations.
+
+Establish `e : θ I (v.1 * y) = θ I y` using `Finset.prod_congr rfl fun r _ => congrArg (fun ψ : S.left ⟶ x.P.A.left => gs ψ p _ (x.th.f (J ψ))) (by`. Rewrite using `[← Over.comp_left, ← Over.comp_left, ← pt_tr, Category.assoc, tr_alMap])`. Simplify using `only [hu, e]`. Conclude with `mul_left_comm _ _ _`. Take `⟨y, hy⟩` from `GlobalTheory.T.exists_point_thetaPullbacks_isUnit laws K x m al (ξ I) hm hal`.
+
+Conclude with `⟨y, mul_ne_zero (Finset.prod_ne_zero_iff.2 fun r _ => (hy p J hJ r).ne_zero) (Units.ne_zero _)⟩`. Establish `e : ∀ I, θ I y * (u I y).val = (val (w I₀) y.left p J).val * ∑ I', κ (Q I I') * ∏ c, gs (y.left ≫ (Out.powPr x.P.A c).left) p _ ((b (I' c)).f (J (y.left ≫ (Out.powPr x.P.A c).left)))` using `fun I => by`. Establish `e₁ : θ I y = _` using `hs I _ y.left p J hJ`. Rewrite using `[e₁, hQ I _ y.left p J hJ, mul_right_comm, ← Units.val_mul, mul_comm (val (w I) y.left p J), inv_mul_cancel_right]`. Use `congrArg _ (Finset.sum_congr rfl fun I' _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[gs_cst, hev]`. Both sides reduce to the same expression. Simplify using `only [e, mul_left_comm _ (val (w I₀) y.left p J).val, ← Finset.mul_sum]`. Use `mul_eq_zero_of_right _ ?_` and prove the remaining obligations. Simplify using `only [Finset.mul_sum, ← _root_.mul_assoc, ← map_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun I' _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, ← map_sum, show ∑ I, c I * Q I I' = 0 from congrFun hcQ I', map_zero, zero_mul]`. Use `⟨Units.mk0 _ hdet ^ (2 * m ^ 2) * ∏ I, rho I ^ 2, ξ, mu, w, Matrix.of Q, rho, hξ, hk, hmu, hw, fun p J hJ => ⟨hmuv p J hJ, fun I => hrho I p J hJ⟩, fun I y J hJ => ?_, by simp⟩` and prove the remaining obligations. Establish `e` using `hs I _ (𝟙 _) y J hJ`.
+
+Rewrite `e` using `[hQ I _ (𝟙 _) y J hJ]`. Establish `i : ∀ (f : ∀ j, Γ(x.P.A.left, x.P.L.U j)) (ψ : (Out.powObj x.P.A 4).left ⟶ x.P.A.left), gs (𝟙 _ ≫ ψ) y _ (f (J (𝟙 _ ≫ ψ))) = gs ψ y _ (f (J ψ))` using `fun f ψ => by rw [Category.id_comp]`. Conclude with `(Finset.prod_congr rfl fun r _ => (i _ _).symm).trans (e.trans (congrArg _ (Finset.sum_congr rfl fun I' _ => congrArg _ (Finset.prod_congr rfl fun c _ => i (b (I' c)).f _))))`.
+-/
 theorem exists_l2Val : Out.Laws → ∀ (K : Type) [Field K] [IsAlgClosed K] (x : KeyIn K) (m : ℕ) (al : Matrix (Fin 4) (Fin 4) ℤ) (b : Fin (m ^ x.P.g) → RR x m), (m : K) ≠ 0 → al.transpose * al = (m : ℤ) • (1 : Matrix (Fin 4) (Fin 4) ℤ) → IsBasis x b → ∃ lam, IsSquareDeterminantComparison x m al b lam := by
   intro laws K _ _ x m al b hm hal hb
   classical

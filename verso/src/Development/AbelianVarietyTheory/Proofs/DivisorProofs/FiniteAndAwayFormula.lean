@@ -22,6 +22,11 @@ namespace GlobalTheory.CompanionTheory.LeafFixedPointPlaceNorm
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Take `⟨t, ht, hc⟩` from `unit_at_val w s hs`. Establish `h1 : s • y ∈ Formalism.HermitianLatticesTheory.idealSmul (((1 : FractionalIdeal (nonZeroDivisors (𝓞 K)) K)) : Submodule (𝓞 K) K) M`. Use `Submodule.subset_span ⟨1, ?_, s • y, h, (one_smul _ _).symm⟩` and prove the remaining obligations. Conclude with `FractionalIdeal.mem_coe.mpr (FractionalIdeal.one_mem_one _)`. Establish `hm` using `smulK_mem_idealSmul _ _ M _ hc h1`.
+
+Rewrite `hm` using `[one_mul]`. Establish `e : (algebraMap (𝓞 K) K t * s⁻¹) • s • y = t • y`. Rewrite using `[smul_smul, mul_assoc, inv_mul_cancel₀ hs, mul_one, algebraMap_smul]`. Rewrite `hm` using `[e]`. Conclude with `GlobalTheory.FinitePlacesCompare.scaledAt_anti w M (neg_le_neg hv) ((PI.LocGlobInclWork.mem_localization_iff _ _ _).mpr ⟨t, ht, hm⟩)`.
+-/
 theorem mem_localization_of_smul_mem₂ {K : Type} [Field K] [NumberField K] [StarRing K] {n : ℕ} (w : HeightOneSpectrum (𝓞 K))
     (M : Submodule (𝓞 K) (Fin n → K)) (y : Fin n → K) (s : K) (hs : s ≠ 0) (δ : ℤ) (hv : vw w s ≤ δ) (h : s • y ∈ M) :
     y ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (Formalism.HermitianLatticesTheory.idealSmul
@@ -42,6 +47,11 @@ theorem mem_localization_of_smul_mem₂ {K : Type} [Field K] [NumberField K] [St
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hp` using `(GlobalTheory.ChiGrid.leastSplitAuxiliaryPrimeThetaChain_spec D).1`. Establish `h : (Ideal.primesOver (Ideal.span {((GlobalTheory.ChiGrid.q0 D : ℕ) : ℤ)}) (𝓞 D.host.E)).ncard = Module.finrank ℚ D.host.E`. Rewrite using `[← GlobalTheory.HostSplit.ncard_placesOver _ hp]`. Conclude with `Formalism.L2.Host.split_prime_splits_completely D`. Use `P.v0.isPrime` as an intermediate fact.
+
+Use `(GlobalTheory.ColClassCompare.unram_card_of_split (F := D.host.F) (E := D.host.E) hp h P.v0.asIdeal P.basePlace_over_qZero).2` as an intermediate fact. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Conclude with `this`.
+-/
 theorem absNorm_splitAuxiliaryPlace_eq_prime {T : Type} {Lc : LevCh D T} (P : GlobalTheory.ChiGrid.Places Lc) :
     Ideal.absNorm P.v0.asIdeal = GlobalTheory.ChiGrid.q0 D := by
   have hp := (GlobalTheory.ChiGrid.leastSplitAuxiliaryPrimeThetaChain_spec D).1
@@ -54,12 +64,18 @@ theorem absNorm_splitAuxiliaryPlace_eq_prime {T : Type} {Lc : LevCh D T} (P : Gl
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
   exact this
 
+/- English proof (translation)
+Establish `h : 0 ≤ s.L` using `Real.rpow_nonneg (by linarith [s.one_lt_alt]) _`. Conclude with `Real.one_le_exp h`.
+-/
 theorem one_le_b (s : Formalism.BasicNotions.Scale) : 1 ≤ s.b := by
   have h : 0 ≤ s.L := Real.rpow_nonneg (by linarith [s.one_lt_alt]) _
   exact Real.one_le_exp h
 
 variable {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ}
 
+/- English proof (translation)
+Establish `hb : 1 ≤ p.Z.b` using `one_le_b L.sc`. Use `le_trans (le_of_eq ?_) (GlobalTheory.FinitePlacesProbe.sigma_mono_in_constant _ hC hb)` and prove the remaining obligations. Use `show _ = ∑ q ∈ d.G.pl.S0, ((d.O.ee CF p.Z.b q : ℕ) : ℝ) * Real.log (Ideal.absNorm q.asIdeal)`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.BigTop.Fun.Model.ee_eq d (absNorm_splitAuxiliaryPlace_eq_prime d.G.pl) v]`.
+-/
 theorem sig_le {p : PtAt ex Csz} {CF C : ℝ} (d : FunIn p CF) (Tf : Finset (GlobalTheory.SumSize.PlL D)) (dF : GlobalTheory.SumSize.PlL D → ℤ) (hC : CF ≤ C) :
     sig d.G ≤ (d.data (fun _ => 1) Tf dF).Sig0 C p.Z.b := by
   have hb : 1 ≤ p.Z.b := one_le_b L.sc
@@ -68,6 +84,13 @@ theorem sig_le {p : PtAt ex Csz} {CF C : ℝ} (d : FunIn p CF) (Tf : Finset (Glo
   refine Finset.sum_congr rfl fun v _ => ?_
   rw [GlobalTheory.BigTop.Fun.Model.ee_eq d (absNorm_splitAuxiliaryPlace_eq_prime d.G.pl) v]
 
+/- English proof (translation)
+Introduce `z hz`. Take `⟨s0, hs0, hz0⟩` from `(PI.LocGlobInclWork.mem_localization_iff _ _ _).mp hz`. Take `⟨x, hx, hxz⟩` from `Submodule.mem_map.mp hz0`. Establish `e0 : (d.data (fun _ => 1) Tf dF).vmu ((p.S false).μ w) = d.V ((p.S false).μ w)` using `by show (1 : D.what₂.LL)⁻¹ • d.V _ = _`. Simplify using the standard rewrite rules.
+
+Simplify using `only [LinearMap.coe_restrictScalars, e0] at hxz`. Take `⟨s, hs, hv, hsM⟩` from `hloc d.X' d.M hT.test ((p.S false).μ w) w (hAw w) x hx (d.V _ |>.mulVec x) (fun i => hT.sums _ (Or.inr ⟨w, rfl⟩) x i)`. Establish `hy` using `mem_localization_of_smul_mem₂ w d.M _ s hs (dF w) (by rw [hF]; exact Int.le_floor.mpr hv) hsM`. Take `⟨s1, hs1, h1⟩` from `(PI.LocGlobInclWork.mem_localization_iff _ _ _).mp hy`. Use `(PI.LocGlobInclWork.mem_localization_iff _ _ _).mpr ⟨s1 * s0, w.asIdeal.primeCompl.mul_mem hs1 hs0, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_smul, ← hxz]`. Conclude with `h1`.
+-/
 theorem local_clause {p : PtAt ex Csz} {CF : ℝ} {d : FunIn p CF} {a : SlopeTestRemainingChoices p d.G d.W d.n} (hT : TieAt d a)
     {dl : GlobalTheory.SumSize.PlL D → ℝ} (hloc : ∀ X' M, IsTestLat a.ch.G a.ch.rp a.ch.n a.ch.e X' M →
       ∀ t w, Away a.ch.G t w → ∀ x ∈ (p.P.A3.A.fam.R t).Mt (p.P.A3.A.fam.lvl p.F.lv2.P0 p.F.lv2.ψ0), ∀ y : Fin a.ch.n → D.what₂.LL,
@@ -92,6 +115,17 @@ theorem local_clause {p : PtAt ex Csz} {CF : ℝ} {d : FunIn p CF} {a : SlopeTes
   rw [mul_smul, ← hxz]
   exact h1
 
+/- English proof (translation)
+Establish `hb : 1 ≤ p.Z.b` using `one_le_b L.sc`. Establish `hb0 : 0 ≤ p.Z.b` using `by linarith`. Establish `hL : 0 ≤ Real.log p.Z.b` using `Real.log_nonneg hb`. Establish `h1 : ∑ w ∈ Tf, lw w * (dF w : ℝ) ≤ ∑ w ∈ Tf, lw w * dl w`. Use `Finset.sum_le_sum fun w _ => mul_le_mul_of_nonneg_left ?_ (GlobalTheory.FinitePlacesCompare.lw_nonneg w)` and prove the remaining obligations.
+
+Rewrite using `[hF]`. Conclude with `Int.floor_le _`. Establish `h2` using `hsum Tf`. Establish `hS` using `sig_le d Tf dF hC`. Establish `hS0` using `Sig0_nonneg (d.data (fun _ => 1) Tf dF) C p.Z.b`.
+
+Establish `hN : (d.data (fun _ => 1) Tf dF).N = bigN D` using `GlobalTheory.BigTop.Fun.Model.N_eq d`. Unfold `FunData.bFP`. Rewrite using `[hN]`. Use `show _ ≤ C * (D.R.f : ℝ) * p.Z.b * (bigN D : ℝ) * (D.R.m : ℝ) * ((D.R.m : ℝ) * Real.log p.Z.b + (D.R.m : ℝ) * _) + C * (D.R.f : ℝ) * (D.R.m : ℝ) ^ 2 * (bigN D : ℝ) ^ 2 * (Real.log p.Z.b + _) * p.Z.b`. Use `set S := (d.data (fun _ => 1) Tf dF).Sig0 C p.Z.b`.
+
+Establish `h3 : 0 ≤ C * (D.R.f : ℝ) * p.Z.b * (bigN D : ℝ) * (D.R.m : ℝ) * ((D.R.m : ℝ) * Real.log p.Z.b + (D.R.m : ℝ) * S)`. Check the signs of the components of the expression. Establish `h4 : (D.R.m : ℝ) * bOne d.G C p.Z.b ≤ C * (D.R.f : ℝ) * (D.R.m : ℝ) ^ 2 * (bigN D : ℝ) ^ 2 * (Real.log p.Z.b + S) * p.Z.b`. Unfold `bOne`. Establish `: (D.R.m : ℝ) * (C * D.R.f * D.R.m * (bigN D : ℝ) ^ 2 * (Real.log p.Z.b + sig d.G) * p.Z.b) = C * (D.R.f : ℝ) * (D.R.m : ℝ) ^ 2 * (bigN D : ℝ) ^ 2 * (Real.log p.Z.b + sig d.G) * p.Z.b` using `by ring`.
+
+Rewrite using `[this]`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sum_clause {p : PtAt ex Csz} {CF C : ℝ} (d : FunIn p CF) (hC0 : 0 ≤ C) (hC : CF ≤ C) {dl : GlobalTheory.SumSize.PlL D → ℝ}
     (hsum : ∀ s : Finset (GlobalTheory.SumSize.PlL D), ∑ w ∈ s, lw w * dl w ≤ D.R.m * bOne d.G C p.Z.b / 2)
     (Tf : Finset (GlobalTheory.SumSize.PlL D)) (dF : GlobalTheory.SumSize.PlL D → ℤ) (hF : ∀ w, dF w = ⌊dl w⌋) :
@@ -122,6 +156,11 @@ theorem sum_clause {p : PtAt ex Csz} {CF C : ℝ} (d : FunIn p CF) (hC0 : 0 ≤ 
     gcongr
   linarith
 
+/- English proof (translation)
+Take `⟨dl, ⟨-, hfin, hsum⟩, hloc⟩` from `hFin`. Use `⟨hfin.toFinset, fun w => ⌊dl w⌋, ?_, fun w hw => ?_, ?_⟩` and prove the remaining obligations. Conclude with `local_clause hT hloc hAw _ _ (fun _ => rfl)`. Establish `hw' : w ∉ hfin.toFinset` using `hw`. Establish `: dl w = 0` using `by simpa using hw'`.
+
+Use `show ⌊dl w⌋ = 0`. Simplify using `[this]`. Conclude with `sum_clause d hC0 hC hsum _ _ (fun _ => rfl)`.
+-/
 theorem leaf_at {p : PtAt ex Csz} {CF C : ℝ} {d : FunIn p CF} {a : SlopeTestRemainingChoices p d.G d.W d.n} (hT : TieAt d a) (hC0 : 0 ≤ C) (hC : CF ≤ C)
     (hFin : FinAt p.F.lv2 a.ch C p.Z.b) (hAw : AwayAt (R := p.R.toRealDat) a.ch) :
     ∃ Tf dF, LeafFP (d.data (fun _ => 1) Tf dF) (p.S false).μ C p.Z.b := by
@@ -135,6 +174,17 @@ theorem leaf_at {p : PtAt ex Csz} {CF C : ℝ} {d : FunIn p CF} {a : SlopeTestRe
     simp [this]
   · exact sum_clause d hC0 hC hsum _ _ (fun _ => rfl)
 
+/- English proof (translation)
+Introduce `hS hF hA`. Take `⟨c1, hF⟩` from `hF`. Take `⟨c2, hA⟩` from `hA`. Use `⟨max c1 c2, fun CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C1, hF⟩` from `hF CF ((le_max_left _ _).trans hCF)`.
+
+Take `⟨C2, hA⟩` from `hA CF ((le_max_right _ _).trans hCF)`. Use `hS.imp fun {eps} Fm _ _ a _ => ⟨max (max C1 C2) (max CF 0), fun C hC => ?_⟩` and prove the remaining obligations. Take `⟨x₁, a⟩` from `a`. Establish `hC1 : C1 ≤ C` using `((le_max_left _ _).trans (le_max_left _ _)).trans hC`. Establish `hC2 : C2 ≤ C` using `((le_max_right _ _).trans (le_max_left _ _)).trans hC`.
+
+Establish `hCF' : CF ≤ C` using `((le_max_left _ _).trans (le_max_right _ _)).trans hC`. Establish `hC0 : 0 ≤ C` using `((le_max_right _ _).trans (le_max_right _ _)).trans hC`. Take `⟨x₂, hF⟩` from `hF eps C hC1`. Take `⟨x₃, hA⟩` from `hA eps C hC2`. Use `⟨max x₁ (max x₂ x₃), fun x hx hle i p hp d hd => ?_⟩` and prove the remaining obligations.
+
+Take `⟨-, b, hT⟩` from `hd`. Establish `hx₁ : x₁ ≤ x` using `(le_max_left _ _).trans hle`. Establish `hx₂ : x₂ ≤ (Fm.L x i).sc.x` using `((le_max_left _ _).trans ((le_max_right _ _).trans hle)).trans (Fm.L_x x i hx).ge`. Establish `hx₃ : x₃ ≤ (Fm.L x i).sc.x` using `((le_max_right _ _).trans ((le_max_right _ _).trans hle)).trans (Fm.L_x x i hx).ge`. Establish `hset` using `a x hx hx₁ i p hp hT.ok.eser`.
+
+Conclude with `leaf_at hT hC0 hCF' (hF _ (Fm.L x i) (Fm.L_eps x i) hx₂ _ _ _ _ _ _ _ hset b.ch hT.ok.is b.atScale hT.ok.field) (hA _ (Fm.L x i) (Fm.L_eps x i) hx₃ _ _ _ _ _ _ _ hset b.ch hT.ok.is b.atScale hT.ok.field)`.
+-/
 theorem fp_tie : SetAt → FinK → AwayK → FP @Comparison₂ := by
   intro hS hF hA
   obtain ⟨c1, hF⟩ := hF
@@ -169,6 +219,9 @@ end
 end LeafFixedPointPairing
 section
 open GlobalTheory.BigTop GlobalTheory.BigTop.Fun GlobalTheory.SumSize
+/- English proof (translation)
+Apply the tactic sequence `first | exact @LeafFixedPointPairing.GlobalTheory.CompanionTheory.LeafFixedPointPlaceNorm.fp_tie | exact LeafFixedPointPairing.GlobalTheory.CompanionTheory.LeafFixedPointPlaceNorm.fp_tie | (intros; apply LeafFixedPointPairing.GlobalTheory.CompanionTheory.LeafFixedPointPlaceNorm.f …`.
+-/
 theorem _root_.GlobalTheory.Adopt.finite_and_away_formula : SetAt → FinK → AwayK → FP @Comparison₂ := by
   first | exact @LeafFixedPointPairing.GlobalTheory.CompanionTheory.LeafFixedPointPlaceNorm.fp_tie | exact LeafFixedPointPairing.GlobalTheory.CompanionTheory.LeafFixedPointPlaceNorm.fp_tie | (intros; apply LeafFixedPointPairing.GlobalTheory.CompanionTheory.LeafFixedPointPlaceNorm.fp_tie <;> assumption)
 

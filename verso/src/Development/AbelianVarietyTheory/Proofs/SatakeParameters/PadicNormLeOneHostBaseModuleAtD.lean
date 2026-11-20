@@ -18,6 +18,9 @@ open Formalism.MainNotions.G (HH)
 
 namespace GlobalTheory.IntegralAtPlace
 
+/- English proof (translation)
+Establish `h : x ∈ (NormedField.valuation (K` using `ℂ_[p])).integer := (Valuation.integer.integers (NormedField.valuation (K := ℂ_[p]))).mem_of_integral hx.tower_top`. Rewrite `h` using `[Valuation.mem_integer_iff, NormedField.valuation_apply]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem norm_le_one_of_isIntegral {p : ℕ} [Fact p.Prime] {x : ℂ_[p]}
     (hx : IsIntegral ℤ x) : ‖x‖ ≤ 1 := by
   have h : x ∈ (NormedField.valuation (K := ℂ_[p])).integer :=
@@ -25,6 +28,25 @@ theorem norm_le_one_of_isIntegral {p : ℕ} [Fact p.Prime] {x : ℂ_[p]}
   rw [Valuation.mem_integer_iff, NormedField.valuation_apply] at h
   exact_mod_cast h
 
+/- English proof (translation)
+Introduce `D p hpF hpd φ a ha`. Take `⟨-, -, hqd, -, hd2⟩` from `hypOdd_of_hostHyp D.host.hyp`. Establish `hint : ∀ y : 𝓞 D.host.E, ‖φ (y : D.host.E)‖ ≤ 1` using `fun y => by`. Establish `h : IsIntegral ℤ (φ (y : D.host.E))`. Take `⟨f, hf, hx⟩` from `RingOfIntegers.isIntegral_coe y`.
+
+Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Use `congrArg φ hx` as an intermediate fact. Rewrite `this` using `[Polynomial.hom_eval₂, map_zero]`. Rewrite `this` using `[RingHom.ext_int (φ.comp (algebraMap ℤ D.host.E)) (algebraMap ℤ ℂ_[p])]`. Then use the resulting hypothesis. Conclude with `norm_le_one_of_isIntegral h`.
+
+Set `Q : Ideal (𝓞 D.host.E)` to `{ carrier := {y | ‖φ (y : D.host.E)‖ < 1} add_mem' := fun {x y} hx hy => by`. Simplify using `only [Set.mem_setOf_eq, map_add] at *`. Conclude with `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt hx hy)`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun c x hx => by`.
+
+Simplify using `only [Set.mem_setOf_eq, smul_eq_mul, map_mul] at *`. Rewrite using `[norm_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left (norm_nonneg _) (hint c)) hx }`. Establish `hmem : ∀ y, y ∈ Q ↔ ‖φ (y : D.host.E)‖ < 1` using `fun y => Iff.rfl`. Use `haveI hQ : Q.IsPrime := by`.
+
+Use `⟨fun h => ?_, fun {x y} hxy => ?_⟩` and prove the remaining obligations. Establish `h1` using `(hmem 1).1 (h ▸ Submodule.mem_top)`. Simplify using `at h1`. Rewrite `hxy` using `[hmem, show ((x * y : 𝓞 D.host.E) : D.host.E) = (x : D.host.E) * y from rfl, map_mul, norm_mul]`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Rewrite `hc` using `[hmem, hmem, not_lt, not_lt]`. Use `mul_le_mul hc.1 hc.2 zero_le_one (norm_nonneg _)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpQ : (p : 𝓞 D.host.E) ∈ Q`.
+
+Rewrite using `[hmem]`. Establish `e : ((p : 𝓞 D.host.E) : D.host.E) = (p : D.host.E)` using `by simp`. Rewrite using `[e, map_natCast]`. Establish `: ((p : ℕ) : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] (p : ℚ_[p])` using `by simp`. Rewrite using `[this, norm_algebraMap']`.
+
+Conclude with `Padic.norm_p_lt_one`. Take `⟨z, hz, hden⟩` from `GlobalTheory.AAUnitAway.exists_den D Q hpF.out (by rw [hpd]; exact UpperTheory.Small.d_not_mem D.host) (by rw [hpd]; exact hqd.symm) hpQ`. Establish `hz1 : ‖φ (z : D.host.E)‖ = 1` using `le_antisymm (hint z) (not_lt.1 ((hmem z).not.1 hz))`. Take `⟨w, hw⟩` from `hden a ha`. Use `hint w` as an intermediate fact.
+
+Rewrite `this` using `[hw, map_mul, norm_mul, hz1, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem norm_le_one : ∀ (D : D7) (p : ℕ) [Fact p.Prime], p = D.host.d → ∀ (φ : D.host.E →+* ℂ_[p]) (a : D.host.E), a ∈ D.host.AA0 → ‖φ a‖ ≤ 1 := by
   intro D p hpF hpd φ a ha
   obtain ⟨-, -, hqd, -, hd2⟩ := hypOdd_of_hostHyp D.host.hyp

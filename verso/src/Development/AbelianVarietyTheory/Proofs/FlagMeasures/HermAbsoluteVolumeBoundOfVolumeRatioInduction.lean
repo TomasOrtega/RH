@@ -12,6 +12,11 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.FlagMeas.AbsVol
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticesTheory.fDeg`. Use `Fintype.card_congr { toFun := fun w => w.comap (e.symm : L →+* K) invFun := fun w => w.comap (e : K →+* L) left_inv := fun w => ?_ right_inv := fun w => ?_ }` and prove the remaining obligations. Use extensionality with `x`. Simplify using the standard rewrite rules. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem fDeg_congr {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] (e : K ≃+* L) :
     Formalism.HermitianLatticesTheory.fDeg K = Formalism.HermitianLatticesTheory.fDeg L := by
   unfold Formalism.HermitianLatticesTheory.fDeg
@@ -25,15 +30,36 @@ theorem fDeg_congr {K L : Type} [Field K] [NumberField K] [Field L] [NumberField
   · ext x
     simp
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticesTheory.vInv`. Rewrite using `[fDeg_congr e, NumberField.discr_eq_discr_of_ringEquiv K e]`.
+-/
 theorem vInv_congr {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] (e : K ≃+* L) :
     Formalism.HermitianLatticesTheory.vInv K = Formalism.HermitianLatticesTheory.vInv L := by
   unfold Formalism.HermitianLatticesTheory.vInv
   rw [fDeg_congr e, NumberField.discr_eq_discr_of_ringEquiv K e]
 
+/- English proof (translation)
+Unfold `volU sphV`. Check the signs of the components of the expression.
+-/
 theorem volU_nonneg (i : ℕ) : 0 ≤ volU i := by
   unfold volU sphV
   positivity
 
+/- English proof (translation)
+Introduce `hstep I p q hsig hq hn X hX hrd hfrd c μf _ _ hc`. Take `⟨hf, hv, -, -, -, hpq⟩` from `GlobalTheory.T.autInst_degree_rootDiscriminant_rank I`. Establish `hpq'` using `hpq p q hsig`. Establish `hp : 2 ≤ p`. Assume the negation of the conclusion as `h`.
+
+Establish `h1 : 7 ≤ q` using `by omega`. Establish `h2 : 7 * q ≤ q ^ 2` using `by nlinarith`. Use linear arithmetic over natural numbers and integers. Take `⟨⟨I₀, hsame, hsig₀⟩, hrat⟩` from `GlobalTheory.T.hermVolumeRatioSameKind_of_volumeRatioInduction hstep I p q 2 0 hsig hp (Nat.zero_le _) le_rfl`. Take `⟨μ₀, hH, hS⟩` from `GlobalTheory.T.exists_sigmaFinite_haar_finiteAdelicUnitary I₀`.
+
+Use `choose c₀ _ hc₀ _ using fun v : InfinitePlace I₀.F => GlobalTheory.T.riemannianHaarGauge_exists_pos_unique I₀.n (I₀.ε v)`. Establish `hg₀ : IsGaugeAll I₀ c₀` using `hc₀`. Establish `hE` using `hrat I₀ hsame hsig₀ c μf c₀ μ₀ hc hg₀`. Establish `hD` using `GlobalTheory.T.unitaryGaugeVolume_le_classNumber_definite I₀ 2 hsig₀ c₀ μ₀ hg₀`. Establish `hV` using `GlobalTheory.T.rank_two_definite_unimodular_hermitian_class_bound I₀.E I₀.cm.cmUnram`.
+
+Take `⟨e, -⟩` from `hsame`. Take `⟨hf₀, -, -, -, -, -⟩` from `GlobalTheory.T.autInst_degree_rootDiscriminant_rank I₀`. Rewrite `hD` using `[← hf₀, fDeg_congr e]`. Rewrite `hV` using `[fDeg_congr e, vInv_congr e]`. Establish `hA` using `GlobalTheory.T.absolute_hermitian_volume_bound_arith I.E I.cm.cmUnram I.n X hn hX (hv ▸ hrd) (by rw [hf, hv]; exact hfrd)`.
+
+Establish `hv0 : 0 ≤ 2 * Formalism.HermitianLatticesTheory.vInv I.E`. Unfold `Formalism.HermitianLatticesTheory.vInv`. Check the signs of the components of the expression. Establish `hv1 : 1 ≤ 2 * Formalism.HermitianLatticesTheory.vInv I.E` using `hv ▸ (GlobalTheory.T.autInst_degree_rootDiscriminant_rank I).2.2.1`. Establish `hlog : 0 ≤ Real.log (2 * Formalism.HermitianLatticesTheory.vInv I.E)` using `Real.log_nonneg hv1`.
+
+Establish `hU : 0 ≤ volU 2 ^ Formalism.HermitianLatticesTheory.fDeg I.E` using `pow_nonneg (volU_nonneg 2) _`. Rewrite using `[hE, hpq', ← hf]`. Use `le_trans ?_ (ENNReal.ofReal_le_ofReal hA)` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_mul hU]`. Use `gcongr`.
+
+Conclude with `hD.trans (by gcongr)`.
+-/
 theorem absoluteVolume_of_volumeStep : VolumeStep → AbsoluteVolume := by
   intro hstep I p q hsig hq hn X hX hrd hfrd c μf _ _ hc
   obtain ⟨hf, hv, -, -, -, hpq⟩ := GlobalTheory.T.autInst_degree_rootDiscriminant_rank I

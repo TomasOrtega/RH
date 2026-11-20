@@ -22,6 +22,9 @@ def trRep {G : Type} [Group G] (T : ((κ → R) → ℂ) ≃ₗ[ℂ] ((κ → R)
     ext φ x
     simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trRep_apply {G : Type} [Group G] (T : ((κ → R) → ℂ) ≃ₗ[ℂ] ((κ → R) → ℂ)) (om : G →* Module.End ℂ ((κ → R) → ℂ))
     (g : G) (φ : (κ → R) → ℂ) : trRep T om g φ = T (om g (T.symm φ)) := rfl
 
@@ -52,6 +55,17 @@ def HasDbl [TopologicalSpace R] (C : TestClass R) (ψ : AddChar R ℂ) (ξ : E) 
 
 end Dbl
 
+/- English proof (translation)
+Take `⟨hsp, hheis, hadm, hunit⟩` from `hT`. Establish `hinv : ∀ φ ∈ C.sp κ, T.symm φ ∈ C.sp κ` using `fun φ hφ => (hsp _).2 (by simpa using hφ)`. Establish `hrho : ∀ w, ∀ φ ∈ C.sp κ, T.symm (d₁.rho ψ w φ) = d.rho ψ w (T.symm φ)` using `fun w φ hφ => by`. Rewrite using `[LinearEquiv.symm_apply_eq, hheis w _ (hinv φ hφ), LinearEquiv.apply_symm_apply]`. Use `⟨⟨fun g φ hφ => ?_, fun g w φ hφ => ?_, fun g l hl => ?_⟩, fun μ hμ g φ hφ => ?_, fun l hl φ hφ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[trRep_apply]`. Conclude with `(hsp _).1 (h.pres g _ (hinv φ hφ))`. Rewrite using `[trRep_apply, trRep_apply, hrho w φ hφ, h.impl g w _ (hinv φ hφ), hheis _ _ (h.pres g _ (hinv φ hφ))]`. Establish `h1 : l ∘ₗ T.toLinearMap ∈ C.adm κ` using `(hadm l).1 hl`. Establish `h2` using `h.adm g _ h1`.
+
+Establish `h3 : (l ∘ₗ T.toLinearMap ∘ₗ om g) ∘ₗ T.symm.toLinearMap ∈ C.adm κ`. Rewrite using `[hadm]`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `φ`. Simplify using the standard rewrite rules.
+
+Use `h3 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `φ`. Simplify using `[trRep_apply]`. Take `⟨c, hc⟩` from `hunit μ hμ`. Rewrite using `[trRep_apply, hc _ (h.pres g _ (hinv φ hφ)), h.unit μ hμ g _ (hinv φ hφ)]`.
+
+Use `conv_rhs => rw [← LinearEquiv.apply_symm_apply T φ]`. Rewrite using `[hc _ (hinv φ hφ)]`. Use `h.cont _ ((hadm l).1 hl) _ (hinv φ hφ)` as an intermediate fact. Simplify `this` using `[trRep_apply]`.
+-/
 theorem isUSplitting_trRep {R : Type} [CommRing R] [Invertible (2 : R)] [TopologicalSpace R] {W : Type} [AddCommGroup W] [Module R W]
     {B : W → W → R} {κ : Type} [Fintype κ] {C : TestClass R} {ψ : AddChar R ℂ} {d d₁ : Darboux B κ}
     {T : ((κ → R) → ℂ) ≃ₗ[ℂ] ((κ → R) → ℂ)} (hT : IsGoodInt C ψ d d₁ T)
@@ -82,6 +96,11 @@ theorem isUSplitting_trRep {R : Type} [CommRing R] [Invertible (2 : R)] [Topolog
   · have := h.cont _ ((hadm l).1 hl) _ (hinv φ hφ)
     simpa [trRep_apply] using this
 
+/- English proof (translation)
+Take `⟨hsp, hheis, hadm, -⟩` from `hT`. Establish `hinv : ∀ φ ∈ C.sp κ, T.symm φ ∈ C.sp κ` using `fun φ hφ => (hsp _).2 (by simpa using hφ)`. Introduce `l hl hinvl p t hpt φ hφ`. Establish `key` using `h (l ∘ₗ T.toLinearMap) ((hadm l).1 hl) (fun z φ' hφ' => by`. Simplify using `only [LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply]`.
+
+Rewrite using `[hheis _ _ hφ', hinvl z _ ((hsp _).1 hφ')]) p t hpt (T.symm φ) (hinv φ hφ)`. Simplify `key` using `[trRep_apply]`.
+-/
 theorem siegelRule_trRep {R : Type} [CommRing R] [Invertible (2 : R)] [TopologicalSpace R] {E : Type} [CommRing E] [Algebra R E]
     {c : E →ₐ[R] E} {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] {κ : Type} [Fintype κ]
     {C : TestClass R} {ψ : AddChar R ℂ} {ξ : E} {JA : Matrix α α E} {JB : Matrix β β E} {d d₁ : Darboux (symp c ξ JA JB) κ}
@@ -96,6 +115,11 @@ theorem siegelRule_trRep {R : Type} [CommRing R] [Invertible (2 : R)] [Topologic
     rw [hheis _ _ hφ', hinvl z _ ((hsp _).1 hφ')]) p t hpt (T.symm φ) (hinv φ hφ)
   simpa [trRep_apply] using key
 
+/- English proof (translation)
+Take `⟨hs, dd, omd, hdd, ⟨hL, hsd, hsg⟩, hbox⟩` from `h`. Take `⟨dd₁, Td, S, hdd₁, hTd, hS, hTbox⟩` from `hD dd hdd`. Establish `hinvT : ∀ φ ∈ C.sp κ, T.symm φ ∈ C.sp κ` using `fun φ hφ => (hT.1 _).2 (by simpa using hφ)`. Establish `hinvS : ∀ φ ∈ C.sp κ, S.symm φ ∈ C.sp κ` using `fun φ hφ => (hS _).2 (by simpa using hφ)`. Use `⟨isUSplitting_trRep hT hs, dd₁, trRep Td omd, hdd₁, ⟨hL, isUSplitting_trRep hTd hsd, siegelRule_trRep hTd hsg⟩, fun g gd hg φ₁ hφ₁ φ₂ hφ₂ => ?_⟩` and prove the remaining obligations.
+
+Establish `hb : Td.symm (boxFun φ₁ φ₂) = boxFun (T.symm φ₁) (S.symm φ₂)`. Rewrite using `[LinearEquiv.symm_apply_eq, hTbox _ (hinvT φ₁ hφ₁) _ (hinvS φ₂ hφ₂), LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[trRep_apply, hb, hbox g gd hg _ (hinvT φ₁ hφ₁) _ (hinvS φ₂ hφ₂), hTbox _ (hs.pres g _ (hinvT φ₁ hφ₁)) _ (hinvS φ₂ hφ₂), LinearEquiv.apply_symm_apply, trRep_apply]`.
+-/
 theorem isUWeilB_trRep {R : Type} [CommRing R] [Invertible (2 : R)] [TopologicalSpace R] {E : Type} [CommRing E] [Algebra R E]
     [TopologicalSpace E] [IsModuleTopology R E]
     {c : E →ₐ[R] E} {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] {κ : Type} [Fintype κ]
@@ -114,6 +138,11 @@ theorem isUWeilB_trRep {R : Type} [CommRing R] [Invertible (2 : R)] [Topological
   rw [trRep_apply, hb, hbox g gd hg _ (hinvT φ₁ hφ₁) _ (hinvS φ₂ hφ₂),
     hTbox _ (hs.pres g _ (hinvT φ₁ hφ₁)) _ (hinvS φ₂ hφ₂), LinearEquiv.apply_symm_apply, trRep_apply]
 
+/- English proof (translation)
+Unfold `symp hTens`. Use `congr 2`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.transpose_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem symp_transpose {R : Type} [CommRing R] {E : Type} [CommRing E] [Algebra R E] (c : E →ₐ[R] E) {α β : Type}
     [Fintype α] [Fintype β] (ξ : E) (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix β α E) :
     symp c ξ JB JA x y = symp c ξ JA JB xᵀ yᵀ := by
@@ -134,10 +163,20 @@ def transpCoord {R : Type} [CommRing R] [Invertible (2 : R)] {E : Type} [CommRin
     rw [symp_transpose, d.form]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem transpCoord_e {R : Type} [CommRing R] [Invertible (2 : R)] {E : Type} [CommRing E] [Algebra R E] {c : E →ₐ[R] E}
     {α β : Type} [Fintype α] [Fintype β] {κ : Type} [Fintype κ] {ξ : E} {JA : Matrix α α E} {JB : Matrix β β E}
     (d : Darboux (symp c ξ JA JB) κ) (x : Matrix α β E) : (transpCoord d).e xᵀ = d.e x := rfl
 
+/- English proof (translation)
+Establish `hsplit` using `isUSplitting_trRep hT h.isUSplitting`. Take `⟨hB, ⟨d', hd', hA⟩, -⟩` from `h`. Establish `hT' : IsGoodInt C ψ d' (transpCoord d₁) T`. Take `⟨h1, h2, h3, h4⟩` from `hT`. Use `⟨h1, fun w φ hφ => ?_, h3, h4⟩` and prove the remaining obligations.
+
+Establish `e1 : d'.e w = d.e wᵀ` using `by rw [← hd', Matrix.transpose_transpose]`. Establish `e2 : (transpCoord d₁).e w = d₁.e wᵀ` using `by rw [← transpCoord_e d₁ wᵀ, Matrix.transpose_transpose]`. Use `h2 wᵀ φ hφ` as an intermediate fact. Simplify using `only [Darboux.rho] at this ⊢`. Rewrite using `[e1, e2, this]`.
+
+Conclude with `⟨isUWeilB_trRep hT hD hB, ⟨transpCoord d₁, transpCoord_e d₁, isUWeilB_trRep hT' (hD' d' _ hd' (transpCoord_e d₁)) hA⟩, hsplit.cont⟩`.
+-/
 theorem isUWeilPair_trRep {R : Type} [CommRing R] [Invertible (2 : R)] [TopologicalSpace R] {E : Type} [CommRing E] [Algebra R E]
     [TopologicalSpace E] [IsModuleTopology R E]
     {c : E →ₐ[R] E} {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] {κ : Type} [Fintype κ]

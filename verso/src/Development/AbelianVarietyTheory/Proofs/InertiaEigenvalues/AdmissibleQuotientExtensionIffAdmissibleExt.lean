@@ -26,16 +26,27 @@ def redExt (c : O) : ((↥L.T ⊗[O] X) × O) →ₗ[O] ((↥L.T ⊗[O] X) × (O
   LinearMap.prodMap LinearMap.id (Ideal.span {c}).mkQ
 
 omit [TopologicalSpace G] in
+/- English proof (translation)
+Introduce and unpack `⟨m, y⟩`. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective _ y`. Conclude with `⟨(m, y), rfl⟩`.
+-/
 theorem redExt_surjective (c : O) : Function.Surjective (redExt L X c) := by
   rintro ⟨m, y⟩
   obtain ⟨y, rfl⟩ := Submodule.mkQ_surjective _ y
   exact ⟨(m, y), rfl⟩
 
 omit [TopologicalSpace G] in
+/- English proof (translation)
+Rewrite using `[redExt, LinearMap.ker_prodMap, LinearMap.ker_id, Submodule.ker_mkQ]`. Both sides reduce to the same expression.
+-/
 theorem ker_redExt (lam : O) (a : ℕ) : LinearMap.ker (redExt L X (lam ^ a)) = tableLineDegreeTwo.kerExt L X lam a := by
   rw [redExt, LinearMap.ker_prodMap, LinearMap.ker_id, Submodule.ker_mkQ]
   rfl
 
+/- English proof (translation)
+Take `⟨m, y⟩` from `x`. Establish `h` using `Ea_apply (latRep L) χ₁ hc ⟨z, hz⟩ g m y`. Express the relevant statement in the definitionally equal form `(_, _) = Ea (latRep L) χ₁ hc ⟨z, hz⟩ g (m, Ideal.Quotient.mk _ y)`. Rewrite using `[h]`. Simplify using `only [tableLineDegreeTwo.actExt, smul_smul, mul_comm y]`.
+
+Both sides reduce to the same expression.
+-/
 theorem redExt_actExt (χ₁ : G →* Oˣ) {c : O} (hc : ∀ x : X, c • x = 0)
     (z : G → ↥L.T ⊗[O] X) (hz : z ∈ Z1 (twCoef (latRep L) χ₁ X) ⊤) (g : G) (x : (↥L.T ⊗[O] X) × O) :
     redExt L X c (tableLineDegreeTwo.actExt L X χ₁ z g x) = Ea (latRep L) χ₁ hc ⟨z, hz⟩ g (redExt L X c x) := by
@@ -50,6 +61,9 @@ end Gen
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `l _ P S jT hj T L X _ _ z hz a ha`. Establish `h` using `GlobalTheory.FullCharpoly.admissibleQuotient_iff_admissible_module S jT hj _ _ (tableLineDegreeTwo.actExt L X S.Γ.χ₁ z) (Ea (latRep L) S.Γ.χ₁ ha ⟨z, hz⟩) (redExt L X (S.Γ.lam ^ a)) (redExt_surjective L X _) (redExt_actExt L X S.Γ.χ₁ ha z hz)`. Rewrite `h` using `[ker_redExt L X S.Γ.lam a]`. Conclude with `h`.
+-/
 theorem admissible_quotientExtension_iff_admissible_ext' : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P) (jT : ZMod S.n → ℤ → ℤ),
     (∀ i a, ((S.D.Ut i).count a : ℤ) = jT i a) →
     ∀ (T : LocLat S.G ℚ_[l] ↥S.LL.1 S.O) (L : Lattice (O := S.O) T.ρ) (X : Type) [AddCommGroup X] [Module S.O X]

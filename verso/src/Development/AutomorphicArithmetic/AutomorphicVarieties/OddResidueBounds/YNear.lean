@@ -7,6 +7,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.StickelbergerEleme
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Bern UpperTheory.V.B4 UpperTheory.V.B5 UpperTheory.V.Odd
 
+/- English proof (translation)
+Introduce `l _ Γ _ _ N _ φ e a r ha hodd hdvd`. Establish `hy` using `(Stk.twistedStickelbergerElements_agree N a ha Γ φ (e + 1)).1`. Establish `hyt` using `(Stk.twistedStickelbergerElements_agree N a ha Γ φ e).2.1`. Establish `hcf` using `(Stk.twistedStickelbergerElements_agree N a ha Γ φ e).2.2.2`. Use `choose z hz using Stk.twistedBernoulliValue_congr_pow_mul_first N a e ha hodd`.
+
+Rewrite using `[hy, hyt, hcf]`. Establish `key : Stk.yForm (e + 1) a φ - Stk.cf ℚ Γ (Stk.ytEl e a φ) = ((N : ℚ) / (Stk.dk (e + 1) : ℚ)) • Stk.cf ℚ Γ (Stk.sumEl φ (fun b => -z b))`. Rewrite using `[Stk.cf_sumEl]`. Unfold `Stk.yForm Stk.ytEl`. Rewrite using `[map_neg, Stk.cf_sumEl]`.
+
+Unfold `Stk.sumEl`. Rewrite using `[neg_sub_neg, ← Finset.sum_sub_distrib, Finset.smul_sum]`. Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[hz _, MonoidAlgebra.smul_single]`. Use `first`.
+
+Consider the case `rw [← MonoidAlgebra.single_sub]`. Consider the case `erw [← Finsupp.single_sub]`. Use `congr 1`. Simplify using `only [smul_eq_mul]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Establish `hN0 : N ≠ 0` using `NeZero.ne N`. Establish `hv` using `(padicValNat_dvd_iff_le hN0).mp hdvd`. Apply `Stk.groupRing_intAt_div_smul_of_padicValNat_le l N (Stk.dk (e + 1)) r (Nat.pos_of_ne_zero hN0) (Stk.dk_pos (Nat.succ_pos e))` to reduce the goal to its premises.
+
+Establish `hck : ck l (e + 1) = padicValNat l (Stk.dk (e + 1))` using `rfl`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.V.Odd.yNear :
     ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [CommGroup Γ] [Finite Γ] (N : ℕ) [NeZero N] (φ : (ZMod N)ˣ →* Γ) (e a r : ℕ) (ha : a.Coprime N), Odd a → l ^ (r + ck l (e + 1) + 1) ∣ N → IntAt l r (yEl (e + 1) a ha φ - coefMap ℚ Γ (ytEl e a φ)) := by
   intro l _ Γ _ _ N _ φ e a r ha hodd hdvd

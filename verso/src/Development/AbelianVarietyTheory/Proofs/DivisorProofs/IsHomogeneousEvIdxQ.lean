@@ -14,6 +14,19 @@ open GlobalTheory.PairTerm GlobalTheory.TrivFlag
 
 section Algebra
 
+/- English proof (translation)
+Rewrite using `[g.as_sum]`. Use `Submodule.sum_mem _ fun u hu => ?_` and prove the remaining obligations. Establish `h1 : u.degree = d`. Use `hg (mem_support_iff.1 hu)` as an intermediate fact. Rewrite using `[Finsupp.degree_eq_weight_one]`.
+
+Conclude with `this`. Establish `e₁ : (monomial u (g.coeff u) : MvPolynomial ι ℚ) = g.coeff u • monomial u 1`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e₁]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations.
+
+Establish `e₂ : (monomial u 1 : MvPolynomial ι ℚ) = ((Finsupp.toMultiset u).map X).prod`. Rewrite using `[monomial_eq, C_1, one_mul, Finsupp.toMultiset_map, Finsupp.prod_toMultiset, Finsupp.prod_mapDomain_index (fun _ => pow_zero _) fun _ _ _ => pow_add _ _ _]`. Establish `e₃ : Multiset.card (Finsupp.toMultiset u) = d`. Rewrite using `[Finsupp.card_toMultiset, ← h1]`. Both sides reduce to the same expression.
+
+Take `⟨l, hl⟩` from `Quotient.exists_rep (Finsupp.toMultiset u)`. Rewrite using `[e₂, ← hl]`. Rewrite `e₃` using `[← hl]`. Take `rfl : l.length = d` from `e₃`. Use `⟨l.get, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `_ = (Multiset.map X (l : Multiset ι)).prod`. Rewrite using `[Multiset.map_coe, Multiset.prod_coe]`. Use `beta_reduce`. Rewrite using `[← List.prod_ofFn]`. Use `congr 1`.
+
+Use `conv_rhs => rw [← List.ofFn_get l, List.map_ofFn]`. Both sides reduce to the same expression.
+-/
 theorem mem_span_prod_X {ι : Type} {d : ℕ} {g : MvPolynomial ι ℚ} (hg : g.IsHomogeneous d) :
     g ∈ Submodule.span ℚ (Set.range fun ν : Fin d → ι => ∏ i, (X (ν i) : MvPolynomial ι ℚ)) := by
   classical
@@ -44,6 +57,11 @@ theorem mem_span_prod_X {ι : Type} {d : ℕ} {g : MvPolynomial ι ℚ} (hg : g.
   conv_rhs => rw [← List.ofFn_get l, List.map_ofFn]
   rfl
 
+/- English proof (translation)
+Establish `e₂ : (monomial (Multiset.toFinsupp μ) 1 : MvPolynomial A ℝ) = (μ.map X).prod` using `by conv_rhs => rw [← Multiset.toFinsupp_toMultiset μ]`. Rewrite using `[monomial_eq, C_1, one_mul, Finsupp.toMultiset_map, Finsupp.prod_toMultiset, Finsupp.prod_mapDomain_index (fun _ => pow_zero _) fun _ _ _ => pow_add _ _ _]`. Rewrite using `[← e₂, ← congrFun (coe_basisMonomials A ℝ), numL, Module.Basis.constr_basis, if_pos, Multiset.toFinsupp_toMultiset]`. Rewrite using `[← h]`. Use `conv_rhs => rw [← Multiset.toFinsupp_toMultiset μ, Finsupp.card_toMultiset]`.
+
+Both sides reduce to the same expression.
+-/
 theorem numL_prod_X {A : Type} (num : Multiset A → ℝ) (d : ℕ) (μ : Multiset A) (h : Multiset.card μ = d) :
     numL num d (μ.map X).prod = num μ := by
   classical
@@ -61,6 +79,11 @@ def evIdxQ (D : D7) (N : ℕ) : MvPolynomial (Vm D.what₂.Tau N) ℚ →ₐ[ℚ
     | Sum.inl q => X (Sum.inl q)
     | Sum.inr (b, k) => C ((k.factorial : ℚ)⁻¹) * ∑ l, X (Sum.inr (b, l)) ^ k
 
+/- English proof (translation)
+Proceed by induction on `G using MvPolynomial.induction_on with`. Consider the case `C a => simp [toR]`. Consider the case `add P Q hP hQ => simp only [toR, map_add] at *`. Rewrite using `[hP, hQ]`. Consider the case `mul_X P v hP`.
+
+Simplify using `only [toR, map_mul] at *`. Rewrite using `[hP]`. Use `congr 1`. Apply the tactic sequence `rcases v with q | ⟨b, k⟩ <;> simp [evIdx, evIdxQ]`.
+-/
 theorem evIdx_toR (D : D7) (N : ℕ) (G : MvPolynomial (Vm D.what₂.Tau N) ℚ) :
     evIdx D N (toR G) = toR (evIdxQ D N G) := by
   induction G using MvPolynomial.induction_on with
@@ -72,6 +95,15 @@ theorem evIdx_toR (D : D7) (N : ℕ) (G : MvPolynomial (Vm D.what₂.Tau N) ℚ)
     congr 1
     rcases v with q | ⟨b, k⟩ <;> simp [evIdx, evIdxQ]
 
+/- English proof (translation)
+Establish `hv : ∀ v, (evIdxQ D N (X v)).IsHomogeneous (wt D.what₂.Tau N v)`. Introduce and unpack `(q | ⟨b, k⟩)`. Simplify `isHomogeneous_X ℚ (Sum.inl q : Idx D N)` using `[evIdxQ, wt]`. Simplify using `only [evIdxQ, aeval_X, wt]`. Use `IsHomogeneous.C_mul ?_ _` and prove the remaining obligations.
+
+Conclude with `IsHomogeneous.sum _ _ _ fun l _ => by simpa using (isHomogeneous_X ℚ (Sum.inr (b, l) : Idx D N)).pow k`. Rewrite using `[G.as_sum, map_sum]`. Use `IsHomogeneous.sum _ _ _ fun u hu => ?_` and prove the remaining obligations. Establish `h1 : Finsupp.weight (wt D.what₂.Tau N) u = d` using `hG (mem_support_iff.1 hu)`. Rewrite using `[monomial_eq, map_mul, Finsupp.prod, map_prod, ← h1, Finsupp.weight_apply, Finsupp.sum]`.
+
+Establish `: evIdxQ D N (C (G.coeff u)) = C (G.coeff u)` using `by simp [evIdxQ]`. Rewrite using `[this]`. Use `IsHomogeneous.C_mul ?_ _` and prove the remaining obligations. Use `IsHomogeneous.prod _ _ _ fun v _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, smul_eq_mul, mul_comm]`.
+
+Conclude with `(hv v).pow _`.
+-/
 theorem isHomogeneous_evIdxQ (D : D7) (N : ℕ) {G : MvPolynomial (Vm D.what₂.Tau N) ℚ} {d : ℕ}
     (hG : G.IsWeightedHomogeneous (wt D.what₂.Tau N) d) : (evIdxQ D N G).IsHomogeneous d := by
   classical
@@ -92,6 +124,17 @@ theorem isHomogeneous_evIdxQ (D : D7) (N : ℕ) {G : MvPolynomial (Vm D.what₂.
   rw [map_pow, smul_eq_mul, mul_comm]
   exact (hv v).pow _
 
+/- English proof (translation)
+Establish `hs` using `mem_span_prod_X hg`. Use `clear hg`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨ν, rfl⟩` from `hg`.
+
+Simplify using `only [map_prod, aeval_X, toR, map_X]`. Rewrite using `[← h ν]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Establish `e (a : ι) : rename w (X a * ∏ i, (X (ν i) : MvPolynomial ι ℝ)) = ((w a ::ₘ Finset.univ.val.map fun i => w (ν i)).map X).prod`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, Multiset.map_map, map_mul, map_prod, rename_X]`.
+
+Simplify using `only [rename_X]`. Both sides reduce to the same expression. Rewrite using `[sub_mul, map_sub, map_sub, e, e, numL_prod_X _ _ _ (by simp), numL_prod_X _ _ _ (by simp)]`. Consider the case `zero => simp [toR]`. Consider the case `add P Q _ _ hP hQ`.
+
+Simplify using `only [toR, map_add, mul_add, Finset.sum_add_distrib, Rat.cast_add, add_div] at *`. Rewrite using `[hP, hQ]`. Consider the case `smul q P _ hP`. Establish `e : toR (q • P) = (q : ℝ) • toR P`. Simplify using `only [toR, smul_eq_C_mul, map_mul, map_C]`.
+
+Both sides reduce to the same expression. Simplify using `only [e, mul_smul_comm, map_smul, smul_eq_mul, Rat.cast_mul, ← Finset.mul_sum, hP]`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun la _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_numL_of_prod {ι A Comp La : Type} [Fintype Comp] [Fintype La] (w : ι → A) (num : Comp → Multiset A → ℝ)
     (d : ℕ) (a b : ι) (Ch : La → Type) [∀ la, CommRing (Ch la)] [∀ la, Algebra ℚ (Ch la)] (φ : ∀ la, Ch la →ₗ[ℚ] ℚ)
     (cl : ∀ la, ι → Ch la) (t c : La → ℝ) (k : ℝ)
@@ -153,11 +196,17 @@ def wholeLn : Fin (D.R.f * N) ⊕ Fin (D.R.f * N) → Ln S.Dw
 
 def lnOf : Idx D N → Bool × Ln S.Dw := Sum.elim (fun q => (q.1, rootLn S q.2)) fun q => (q.1, wholeLn S q.2)
 
+/- English proof (translation)
+Unfold `rootLn rootSym`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem lnSym_rootLn (a : ℕ → Bool) (R : Option ℝ) (y : Rt D.what₂.Tau N) :
     lnSym a R (rootLn S y) = rootSym S.Dw a R (tauEmb D y.1) y.2 := by
   unfold rootLn rootSym
   split_ifs <;> rfl
 
+/- English proof (translation)
+Break down `k with q | ⟨b, k | k⟩` into its components or cases. Conclude with `lnSym_rootLn S _ _ _`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem lnSym_lnOf (Sx : Finset ℕ) (R : ℝ) (p : ℕ) (k : Idx D N) :
     lnSym (Function.update (ArIn.ind Sx) p (lnOf S k).1) (some R) (lnOf S k).2 = symOf S Sx R p k := by
   rcases k with q | ⟨b, k | k⟩
@@ -168,12 +217,20 @@ theorem lnSym_lnOf (Sx : Finset ℕ) (R : ℝ) (p : ℕ) (k : Idx D N) :
 variable {S} {κ : Lv A} {p : ℕ} [Fact p.Prime] {hp : p.Prime}
   {W : ValuationSubring ℂ} {hW : (p : ℂ) ∈ W.nonunits} (z : AdmAt S κ hp hW) (jc : KW p →+* ℂ)
 
+/- English proof (translation)
+Unfold `rootLn rootOf admitted.rootLB`. Use `split_ifs`. Conclude with `lnLB_false z b _`. Conclude with `lnLB_true z b _`.
+-/
 theorem lnLB_rootLn (b : Bool) (y : Rt D.what₂.Tau N) : lnLB z b (rootLn S y) = rootOf z jc (b, y) := by
   unfold rootLn rootOf admitted.rootLB
   split_ifs
   · exact lnLB_false z b _
   · exact lnLB_true z b _
 
+/- English proof (translation)
+Establish `: (aeval (mdlOf z jc).Z.c1).comp (evV (mdlOf z jc) (rootOf z jc)) = (aeval (fun k => (mdlOf z jc).Z.c1 (lnLB z (lnOf S k).1 (lnOf S k).2))).comp (evIdxQ D N)`. Use `MvPolynomial.algHom_ext fun v => ?_` and prove the remaining obligations. Break down `v with ⟨b, y⟩ | ⟨b, k⟩` into its components or cases. Simplify using `only [AlgHom.comp_apply, evV, evIdxQ, aeval_X, lnOf, Sum.elim_inl, lnLB_rootLn z jc]`. Apply the tactic sequence `cases b <;>`.
+
+Apply the tactic sequence `simp only [AlgHom.comp_apply, evV, evIdxQ, aeval_X, lnOf, Sum.elim_inr, map_mul, map_add, map_sum, map_pow, aeval_C, Fintype.sum_sum_type, wholeLn, lnLB_false, lnLB_true, mdlOf_lieW, mdlOf_omW] <;>`. Apply the tactic sequence `congr 2 <;> exact Finset.sum_congr rfl fun _ _ => congrArg (· ^ k) (aeval_X _ _)`. Conclude with `congrArg (fun f => f G) this`.
+-/
 theorem evC_eq_aeval (G : MvPolynomial (Vm D.what₂.Tau N) ℚ) :
     evC (mdlOf z jc) (rootOf z jc) G =
       aeval (fun k => (mdlOf z jc).Z.c1 (lnLB z (lnOf S k).1 (lnOf S k).2)) (evIdxQ D N G) := by
@@ -188,6 +245,11 @@ theorem evC_eq_aeval (G : MvPolynomial (Vm D.what₂.Tau N) ℚ) :
       congr 2 <;> exact Finset.sum_congr rfl fun _ _ => congrArg (· ^ k) (aeval_X _ _)
   exact congrArg (fun f => f G) this
 
+/- English proof (translation)
+Establish `hi : (i' : ℕ) < S.Dw.p`. Establish `hr : rkOf (PsiOf D jc) N j τ = j` using `if_pos ⟨t, ht⟩`. Use `i.2` as an intermediate fact. Use `S.p_eq` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `e : rootLn S (t, i') = (false, ⟨.inl (jc.comp τ, i), by rw [letterOf_lie S jc τ i]; rfl⟩)`. Rewrite using `[rootLn, dif_pos hi]`. Simplify using `only [ht, h]`. Rewrite using `[mdlOf_lie_Dv, e, vdiv_lnId_false z hp hW _ _ (letterOf_lie S jc τ i)]`.
+-/
 theorem lie_Dv_eq {t : D.what₂.Tau} {τ : Emb D p} (ht : jc.comp τ = tauEmb D t)
     (i : Fin (rkOf (PsiOf D jc) N j τ)) (i' : Fin N) (h : (i' : ℕ) = i) :
     ((mdlOf z jc).lie τ).Dv i = vdiv hp hW _ _ _ (lnId z hp hW (rootLn S (t, i'))) := by
@@ -201,6 +263,11 @@ theorem lie_Dv_eq {t : D.what₂.Tau} {τ : Emb D p} (ht : jc.comp τ = tauEmb D
     simp only [ht, h]
   rw [mdlOf_lie_Dv, e, vdiv_lnId_false z hp hW _ _ (letterOf_lie S jc τ i)]
 
+/- English proof (translation)
+Establish `hr : rkOf (PsiOf D jc) N j τ = j` using `if_pos ⟨t, ht⟩`. Establish `h₁` using `S.p_eq`. Establish `h₂` using `S.rank_eq`. Establish `hi : ¬ (i' : ℕ) < S.Dw.p` using `by omega`. Establish `e' : (i.rev : ℕ) = S.Dw.p + S.Dw.q - 1 - i'` using `by rw [Fin.val_rev]; omega`.
+
+Establish `e : rootLn S (t, i') = (true, ⟨.inl (conjEmb (jc.comp τ), i.rev), by rw [letterOf_om S jc τ i]; rfl⟩)`. Rewrite using `[rootLn, dif_neg hi]`. Simplify using `only [ht, e']`. Rewrite using `[mdlOf_om_Dv, e, vdiv_lnId_true z hp hW _ _ (letterOf_om S jc τ i)]`.
+-/
 theorem om_Dv_eq {t : D.what₂.Tau} {τ : Emb D p} (ht : jc.comp τ = tauEmb D t)
     (i : Fin (N - rkOf (PsiOf D jc) N j τ)) (i' : Fin N) (h : (i' : ℕ) = j + i) :
     ((mdlOf z jc).om τ).Dv i = vdiv hp hW _ _ _ (lnId z hp hW (rootLn S (t, i'))) := by
@@ -216,6 +283,19 @@ theorem om_Dv_eq {t : D.what₂.Tau} {τ : Emb D p} (ht : jc.comp τ = tauEmb D 
 
 end Lines
 
+/- English proof (translation)
+Use `letI := Formalism.L2.Geo.finPl D p`. Establish `key` using `sum_numL_of_prod (symOf O.S Sx R p) (fun c => (arIn O.s O.Φ O.met.hm).num c) (dimFl D.what₂.Tau O.N) (Sum.inl (false, y)) (Sum.inl (true, y)) (fun la => (mdlOf (z la) (jc la)).Z.Ch) (fun la => (mdlOf (z la) (jc la)).Z.capDeg (vdiv Fact.out (hW la) _ _ _ (lnId (z la) Fact.out (hW …`. Use `hP D O hO p W hW hWv z Sx R hR (rootLn O.S y) fun i => lnOf O.S (ν i)` as an intermediate fact. Simplify using `only [lnSym_lnOf, lnSym_rootLn] at this`. Conclude with `this) (isHomogeneous_evIdxQ D O.N hG)`.
+
+Simplify using `only [evC_eq_aeval]`. Use `Eq.trans ?_ key` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(arIn O.s O.Φ O.met.hm).arMix Sx R p _ = _`. Rewrite using `[ArIn.arMix]`. Use `erw [LinearMap.sum_apply]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `hev : (arIn O.s O.Φ O.met.hm).mixEv Sx R p c = (rename (symOf O.S Sx R p)).comp (evIdx D O.N)`. Use `MvPolynomial.algHom_ext fun v => ?_` and prove the remaining obligations. Break down `v with ⟨b, y⟩ | ⟨b, k⟩` into its components or cases. Use `(aeval_X _ _).trans (Eq.symm ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `rename (symOf O.S Sx R p) (evIdx D O.N (X (Sum.inl (b, y)))) = X (symOf O.S Sx R p (Sum.inl (b, y)))`. Simplify using `only [evIdx, aeval_X, rename_X]`. Use `(aeval_X _ _).trans (Eq.symm ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `rename (symOf O.S Sx R p) (evIdx D O.N (X (Sum.inr (b, k)))) = (C ((k.factorial : ℝ)⁻¹) : MvPolynomial (Sym D.host.E →₀ ℤ) ℝ) * ∑ l, X (symOf O.S Sx R p (Sum.inr (b, l))) ^ k`. Simplify using `only [evIdx, aeval_X, rename_X, map_mul, rename_C, map_sum, map_pow]`.
+
+Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `numL _ _ ((arIn O.s O.Φ O.met.hm).mixEv Sx R p c _) = _`. Rewrite using `[hev, ← evIdx_toR]`. Use `congrArg (numL _ _) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `rename (symOf O.S Sx R p) (evIdx D O.N _) = _`.
+
+Rewrite using `[map_mul, dRt, map_sub]`. Simplify using `only [evIdx, aeval_X]`.
+-/
 theorem arMix_dRt_of_pair (hP : PairSt) (D : D7) (O : Setup D) (hO : O.Core) (p : ℕ) [Fact p.Prime]
     (W : Formalism.L2.Geo.PlL D p → ValuationSubring ℂ) (hW : ∀ la, (p : ℂ) ∈ (W la).nonunits)
     (jc : Formalism.L2.Geo.PlL D p → (KW p →+* ℂ))

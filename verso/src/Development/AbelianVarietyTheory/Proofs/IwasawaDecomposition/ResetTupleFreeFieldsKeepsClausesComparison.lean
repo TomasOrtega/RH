@@ -30,6 +30,13 @@ namespace GlobalTheory.Mem.R3.Rw
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 h5 h6 h7`. Use `Step.of_evLgG (GlobalTheory.Mem.Top.evLgG_of_evLg ?_)` and prove the remaining obligations. Use `GlobalTheory.Mem.Top.V4.TwoPass.ev_mono ?_ (GlobalTheory.Mem.Top.V4.TwoPass.ev_and GlobalTheory.Mem.HostFrames.hostHyp_frames_ev GlobalTheory.T.valsIn_and_fam3_ok_of_coefficientField)` and prove the remaining obligations. Introduce and unpack `K ⟨hK, hO⟩`. Use `hO.imp ?_` and prove the remaining obligations.
+
+Introduce and unpack `B' f' T' hOv hOB w' ⟨pin⟩ B f T w hE hf _ hp Z hX Wt z _ _ hFine _ Z' hX' _ hgrp _ core' alg' ha _ hKs hc _ _ _ _`. Introduce `Xg tr R₀ cG hKept`. Use `letI := alg'`. Take `⟨hHH, -, -, hPos, hStd, hStdX, -, -⟩` from `hK (w'.st Z') hOv`. Take `⟨hVals, -⟩` from `hOB w'.px w'.I hX' w'.ok w'.C_eq w'.xi_range`.
+
+Use `(GlobalTheory.T.definiteFormsReading_reset_baseEnlargement z hE hf hp hFine.2.2.2 (fun i => (hStd _).2.1) hStdX hVals R₀ cG hKept).elim fun Ra h => h.elim fun cGa h => ?_` and prove the remaining obligations. Use `(GlobalTheory.T.reset_modelsMeasuresForms_enlargedCoefficientBase z hE hf hp core' ha hc.1 hc.2.1 hc.2.2.1 Ra cGa h.1 h.2).elim fun R₁ h => h.elim fun cG₁ h => ?_` and prove the remaining obligations. Take `⟨⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11⟩, b⟩` from `h`. Conclude with `⟨R₁, cG₁, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, b⟩`.
+-/
 theorem reset_stepW : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)
     (z : Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GrpAt (w.st Z) w.I → Fine z → HoldsL z.R z.F →

@@ -7,6 +7,23 @@ open Matrix Module ValuativeRel MeasureTheory
 
 namespace PositivityTheory.RgUd.T.Nil.Orb.BModbound
 
+/- English proof (translation)
+Establish `hfi : (H.addSubgroupOf K).FiniteIndex` using `⟨hi⟩`. Use `haveI : Finite (K ⧸ H.addSubgroupOf K) := AddSubgroup.finite_quotient_of_finiteIndex`. Use `haveI : Fintype (K ⧸ H.addSubgroupOf K) := Fintype.ofFinite _`. Set `c : (K ⧸ H.addSubgroupOf K) → Set G` to `fun q => (fun x => -((Quotient.out q : K) : G) + x) ⁻¹' (H : Set G)`. Establish `hmem : ∀ q x, x ∈ c q ↔ -((Quotient.out q : K) : G) + x ∈ H` using `fun q x => Iff.rfl`.
+
+Establish `hU : (K : Set G) = ⋃ q ∈ (Finset.univ : Finset (K ⧸ H.addSubgroupOf K)), c q`. Use extensionality with `x`. Simplify using `only [Finset.mem_univ, Set.iUnion_true, Set.mem_iUnion, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Use `⟨QuotientAddGroup.mk (⟨x, hx⟩ : K), ?_⟩` and prove the remaining obligations. Rewrite using `[hmem]`. Establish `h1 : ((Quotient.out (QuotientAddGroup.mk (⟨x, hx⟩ : K) : K ⧸ H.addSubgroupOf K) : K) : K ⧸ H.addSubgroupOf K) = QuotientAddGroup.mk (⟨x, hx⟩ : K)` using `QuotientAddGroup.out_eq' _`. Establish `h2` using `QuotientAddGroup.eq.1 h1`. Simplify `h2` using `[AddSubgroup.mem_addSubgroupOf]`.
+
+Introduce and unpack `⟨q, hq⟩`. Establish `h1 : -((Quotient.out q : K) : G) + x ∈ K` using `hHK ((hmem q x).1 hq)`. Establish `h2` using `K.add_mem (Quotient.out q : K).2 h1`. Simplify using `using h2`. Establish `hd : Set.PairwiseDisjoint (↑(Finset.univ : Finset (K ⧸ H.addSubgroupOf K))) c`.
+
+Introduce `q _ q' _ hne`. Use `Set.disjoint_left.2 fun x hx hx' => hne ?_` and prove the remaining obligations. Establish `h1` using `(hmem q x).1 hx`. Establish `h2` using `(hmem q' x).1 hx'`. Establish `h3 : -((Quotient.out q : K) : G) + ((Quotient.out q' : K) : G) ∈ H`.
+
+Use `H.add_mem h1 (H.neg_mem h2)` as an intermediate fact. Simplify `this` using `[add_assoc]`. Establish `h4 : ((Quotient.out q : K) : K ⧸ H.addSubgroupOf K) = (Quotient.out q' : K)`. Apply `QuotientAddGroup.eq.2` to reduce the goal to its premises. Simplify `h3` using `[AddSubgroup.mem_addSubgroupOf]`.
+
+Rewrite `h4` using `[QuotientAddGroup.out_eq', QuotientAddGroup.out_eq']`. Then use the resulting hypothesis. Establish `hm : ∀ q ∈ (Finset.univ : Finset (K ⧸ H.addSubgroupOf K)), MeasurableSet (c q)` using `fun q _ => (measurable_const_add _) hH`. Establish `hμ : ∀ q, μ (c q) = μ (H : Set G)` using `fun q => MeasureTheory.measure_preimage_add μ _ _`. Rewrite using `[hU, MeasureTheory.measure_biUnion_finset hd hm]`. Simplify using `only [hμ, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+
+Use `congr 2`. Rewrite using `[AddSubgroup.relIndex, AddSubgroup.index_eq_card, Nat.card_eq_fintype_card]`.
+-/
 theorem measure_eq_relIndex_mul' (G : Type) [AddGroup G] [MeasurableSpace G] [MeasurableAdd G]
     (μ : MeasureTheory.Measure G) [μ.IsAddLeftInvariant] (H K : AddSubgroup G) (hHK : H ≤ K)
     (hH : MeasurableSet (H : Set G)) (hi : H.relIndex K ≠ 0) :
@@ -55,6 +72,9 @@ theorem measure_eq_relIndex_mul' (G : Type) [AddGroup G] [MeasurableSpace G] [Me
   congr 2
   rw [AddSubgroup.relIndex, AddSubgroup.index_eq_card, Nat.card_eq_fintype_card]
 
+/- English proof (translation)
+Use `haveI : CompactSpace A := isCompact_iff_compactSpace.mp hA`. Establish `hopen : IsOpen ((H.addSubgroupOf A : AddSubgroup A) : Set A)` using `hH.preimage continuous_subtype_val`. Use `haveI : Finite (A ⧸ H.addSubgroupOf A) := AddSubgroup.quotient_finite_of_isOpen _ hopen`. Conclude with `AddSubgroup.index_ne_zero_of_finite`.
+-/
 theorem relIndex_ne_zero_of_isCompact_of_isOpen' {X : Type} [TopologicalSpace X] [AddCommGroup X]
     [IsTopologicalAddGroup X] (A H : AddSubgroup X) (hA : IsCompact (A : Set X)) (hH : IsOpen (H : Set X))
     (_hle : H ≤ A) : H.relIndex A ≠ 0 := by
@@ -67,6 +87,23 @@ theorem relIndex_ne_zero_of_isCompact_of_isOpen' {X : Type} [TopologicalSpace X]
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hLc : Continuous L` using `L.toLinearMap.continuous_on_pi`. Establish `hLsc : Continuous L.symm` using `L.symm.toLinearMap.continuous_on_pi`. Establish `hYeq : (Y' : Set (Fin d → k)) = L.symm ⁻¹' (X' : Set (Fin d → k))`. Rewrite using `[hY]`. Use extensionality with `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Simplify using `using hx`. Introduce `h`. Conclude with `⟨L.symm y, h, by simp⟩`.
+
+Establish `hYo : IsOpen (Y' : Set (Fin d → k))` using `hYeq ▸ hXo.preimage hLsc`. Establish `hYc : IsCompact (Y' : Set (Fin d → k))` using `hY ▸ hXc.image hLc`. Establish `hJo : IsOpen ((X' ⊓ Y' : AddSubgroup (Fin d → k)) : Set (Fin d → k))`. Rewrite using `[AddSubgroup.coe_inf]`. Conclude with `hXo.inter hYo`.
+
+Establish `n1` using `relIndex_ne_zero_of_isCompact_of_isOpen' X' (X' ⊓ Y') hXc hJo inf_le_left`. Establish `n2` using `relIndex_ne_zero_of_isCompact_of_isOpen' Y' (X' ⊓ Y') hYc hJo inf_le_right`. Use `⟨n1, n2, ?_⟩` and prove the remaining obligations. Use `borelize (Fin d → k)`. Set `μ : Measure (Fin d → k)` to `Measure.addHaar`.
+
+Establish `e1` using `measure_eq_relIndex_mul' _ μ (X' ⊓ Y') X' inf_le_left hJo.measurableSet n1`. Establish `e2` using `measure_eq_relIndex_mul' _ μ (X' ⊓ Y') Y' inf_le_right hJo.measurableSet n2`. Establish `e3 : μ (Y' : Set (Fin d → k)) = distribHaarChar (Fin d → k) L * μ (X' : Set (Fin d → k))`. Rewrite using `[distribHaarChar_mul μ L, hY]`. Both sides reduce to the same expression.
+
+Rewrite `e3` using `[GroundTheory.Automorphic.Measures.distribHaarChar_pi_eq]`. Establish `hJ0 : μ ((X' ⊓ Y' : AddSubgroup (Fin d → k)) : Set (Fin d → k)) ≠ 0` using `hJo.measure_ne_zero μ ⟨0, (X' ⊓ Y').zero_mem⟩`. Establish `hJt : μ ((X' ⊓ Y' : AddSubgroup (Fin d → k)) : Set (Fin d → k)) ≠ ⊤` using `ne_top_of_le_ne_top hXc.measure_lt_top.ne (measure_mono (by simp [AddSubgroup.coe_inf]))`. Establish `key : ((X' ⊓ Y').relIndex Y' : ENNReal) = (distribHaarChar k (LinearEquiv.det L) : ENNReal) * ((X' ⊓ Y').relIndex X' : ENNReal)`. Establish `h` using `e3`.
+
+Rewrite `h` using `[e1, e2, ← mul_assoc]`. Conclude with `(ENNReal.mul_left_inj hJ0 hJt).1 h`. Establish `key'` using `congrArg ENNReal.toReal key`. Rewrite `key'` using `[ENNReal.toReal_mul]`. Simplify using `only [ENNReal.toReal_natCast, ENNReal.coe_toReal] at key'`.
+
+Rewrite using `[key', mul_div_assoc, div_self (by exact_mod_cast n1), mul_one]`.
+-/
 theorem ratio_pi {d : ℕ} (X' Y' : AddSubgroup (Fin d → k)) (hXc : IsCompact (X' : Set (Fin d → k)))
     (hXo : IsOpen (X' : Set (Fin d → k))) (L : (Fin d → k) ≃ₗ[k] (Fin d → k))
     (hY : (Y' : Set (Fin d → k)) = L '' (X' : Set (Fin d → k))) :

@@ -18,11 +18,17 @@ namespace GlobalTheory.MBLow.TanExp
 
 open IsLocalRing GlobalTheory.FormalValue
 
+/- English proof (translation)
+The claim follows from `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => by simp only [TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.fst_sub, TrivSqZeroExt.fst_one] exact isUnit_or_isUnit_one_sub_self _`.
+-/
 theorem isLocalRing_dualNumber (V : Type) [CommRing V] [IsLocalRing V] : IsLocalRing (DualNumber V) :=
   IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => by
     simp only [TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.fst_sub, TrivSqZeroExt.fst_one]
     exact isUnit_or_isUnit_one_sub_self _
 
+/- English proof (translation)
+Use `show PrimeSpectrum.comap (Ideal.Quotient.mk (maximalIdeal V ^ (0 + 1))) (closedPoint _) = closedPoint V`. Use `PrimeSpectrum.ext (IsLocalRing.eq_maximalIdeal ?_)` and prove the remaining obligations. Use `haveI : (closedPoint (V ⧸ maximalIdeal V ^ (0 + 1))).asIdeal.IsMaximal := IsLocalRing.maximalIdeal.isMaximal _`. Conclude with `Ideal.comap_isMaximal_of_surjective _ Ideal.Quotient.mk_surjective`.
+-/
 theorem thick_closedPoint (V : Type) [CommRing V] [IsLocalRing V] [IsLocalRing (V ⧸ maximalIdeal V ^ (0 + 1))] :
     thick V (maximalIdeal V) 0 (closedPoint (V ⧸ maximalIdeal V ^ (0 + 1))) = closedPoint V := by
   show PrimeSpectrum.comap (Ideal.Quotient.mk (maximalIdeal V ^ (0 + 1))) (closedPoint _) = closedPoint V
@@ -30,6 +36,9 @@ theorem thick_closedPoint (V : Type) [CommRing V] [IsLocalRing V] [IsLocalRing (
   haveI : (closedPoint (V ⧸ maximalIdeal V ^ (0 + 1))).asIdeal.IsMaximal := IsLocalRing.maximalIdeal.isMaximal _
   exact Ideal.comap_isMaximal_of_surjective _ Ideal.Quotient.mk_surjective
 
+/- English proof (translation)
+Rewrite using `[← Ideal.map_pow, Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Simplify using `only [Ideal.mem_comap, RingHom.mem_ker, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, TrivSqZeroExt.fstHom_apply, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.fst_inl, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `ha`.
+-/
 theorem pow_map_le_ker (V : Type) [CommRing V] (m : Ideal V) (e : ℕ) :
     (m.map (algebraMap V (DualNumber V))) ^ (e + 1) ≤
       RingHom.ker ((Ideal.Quotient.mk (m ^ (e + 1))).comp (TrivSqZeroExt.fstHom V V V).toRingHom) := by
@@ -40,6 +49,13 @@ theorem pow_map_le_ker (V : Type) [CommRing V] (m : Ideal V) (e : ℕ) :
     Ideal.Quotient.eq_zero_iff_mem]
   exact ha
 
+/- English proof (translation)
+Introduce `z hz`. Rewrite `hz` using `[RingHom.mem_ker]`. Establish `h₁ : Ideal.Quotient.mk (m ^ (e + 1)) z.fst = 0`. Use `congrArg TrivSqZeroExt.fst hz` as an intermediate fact. Simplify `this` using `[dualMap]`.
+
+Establish `h₂ : Ideal.Quotient.mk (m ^ (e + 1)) z.snd = 0`. Use `congrArg TrivSqZeroExt.snd hz` as an intermediate fact. Simplify `this` using `[dualMap]`. Rewrite `h₁`, `h₂` using `[Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[← Ideal.map_pow]`.
+
+Establish `hz' : z = algebraMap V (DualNumber V) z.fst + algebraMap V (DualNumber V) z.snd * DualNumber.eps`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[hz']`. Conclude with `Ideal.add_mem _ (Ideal.mem_map_of_mem _ h₁) (Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ h₂))`.
+-/
 theorem ker_dualMap_le (V : Type) [CommRing V] (m : Ideal V) (e : ℕ) :
     RingHom.ker (dualMap (Ideal.Quotient.mk (m ^ (e + 1)))) ≤ (m.map (algebraMap V (DualNumber V))) ^ (e + 1) := by
   intro z hz
@@ -57,6 +73,9 @@ theorem ker_dualMap_le (V : Type) [CommRing V] (m : Ideal V) (e : ℕ) :
   rw [hz']
   exact Ideal.add_mem _ (Ideal.mem_map_of_mem _ h₁) (Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ h₂))
 
+/- English proof (translation)
+Introduce `w`. Take `⟨a, ha⟩` from `hf w.fst`. Take `⟨b, hb⟩` from `hf w.snd`. Use `⟨TrivSqZeroExt.inl a + TrivSqZeroExt.inr b, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap, ha, hb]`.
+-/
 theorem dualMap_surjective {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (hf : Function.Surjective f) :
     Function.Surjective (dualMap f) := by
   intro w
@@ -65,6 +84,33 @@ theorem dualMap_surjective {A B : Type} [CommRing A] [CommRing B] (f : A →+* B
   refine ⟨TrivSqZeroExt.inl a + TrivSqZeroExt.inr b, ?_⟩
   ext <;> simp [dualMap, ha, hb]
 
+/- English proof (translation)
+Introduce `V _ _ _ _ hV D A G _ _ _ U y gm₀ hy hT k jG J hjG hJ`. Use `haveI : IsLocalRing (DualNumber V) := isLocalRing_dualNumber V`. Use `haveI : Module.Finite V (DualNumber V) := inferInstanceAs (Module.Finite V (V × V))`. Use `haveI : IsAdicComplete (maximalIdeal V) V := hV`. Use `haveI hJd : IsAdicComplete ((maximalIdeal V).map (algebraMap V (DualNumber V))) (DualNumber V) := InertNorm.isAdicComplete_map_of_finite (maximalIdeal V) (DualNumber V)`.
+
+Establish `hx : IsFormalPt U.toUnifPre ((maximalIdeal V).map (algebraMap V (DualNumber V))) gm₀ y.left` using `isFormalPt_of_surjective _ fun e => by`. Take `⟨ye, h₁, h₂, h₃⟩` from `hT e`. Conclude with `⟨DualNumber (V ⧸ maximalIdeal V ^ (e + 1)), inferInstance, dualMap (Ideal.Quotient.mk _), ye, dualMap_surjective _ Ideal.Quotient.mk_surjective, ker_dualMap_le V _ e, h₁, h₂, h₃⟩`. Establish `hL : ⊤ ≤ y.left ⁻¹ᵁ U.LG.L.U jG` using `hjG`. Establish `hM : ⊤ ≤ basePt gm₀ ⁻¹ᵁ D.toPre.P.L.U (J gm₀.b.left)` using `hJ _`.
+
+Use `⟨(tau U.toUnifPre ((maximalIdeal V).map (algebraMap V (DualNumber V))) y.left jG (J gm₀.b.left))⁻¹, ?_, fun σ f hE => ?_⟩` and prove the remaining obligations. Take `⟨g₀, hg₀⟩` from `exists_isZero D.toPre (Over.mk (spMap (RingHom.id V))) haveI : IsAdicComplete ((maximalIdeal V).map (RingHom.id V)) V := by rw [Ideal.map_id]; exact hV`. Establish `h₀` using `isFormalPt_zero U.toUnifPre (RingHom.id V) hg₀`. Establish `hid : spMap (RingHom.id V) = 𝟙 (Sp V)` using `by show Spec.map (CommRingCat.ofHom (RingHom.id V)) = _`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id]`.
+
+Establish `hb₀ : basePt g₀ = spMap (RingHom.id V) ≫ eSec D.toPre.P.A`. Use `(congrArg Over.Hom.left hg₀.1).trans ?_` and prove the remaining obligations. Conclude with `congrArg (· ≫ eSec D.toPre.P.A) ((Category.comp_id _).symm.trans (Over.w (toUnit (Over.mk (spMap (RingHom.id V))))))`. Establish `hyE : spMap (TrivSqZeroExt.fstHom V V V).toRingHom ≫ y.left = eSec G` using `hy`. Establish `hL₀ : ⊤ ≤ (spMap (RingHom.id V) ≫ eSec G) ⁻¹ᵁ U.LG.L.U jG`.
+
+Rewrite using `[← hyE, ← Category.assoc]`. Conclude with `top_le_comp hL _`. Establish `hxe : ∀ e, eSec (thickObj V (maximalIdeal V) e G) ≫ (fstG (maximalIdeal V) e G).left = spMap ((Ideal.Quotient.mk (maximalIdeal V ^ (e + 1))).comp (TrivSqZeroExt.fstHom V V V).toRingHom) ≫ y.left` using `fun e => by`. Rewrite using `[ExpansionValueZero.eSec_fstG, ← hyE]`. Use `show _ = Spec.map (CommRingCat.ofHom ((Ideal.Quotient.mk (maximalIdeal V ^ (e + 1))).comp (TrivSqZeroExt.fstHom V V V).toRingHom)) ≫ _`.
+
+Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`. Establish `hM₀ : ⊤ ≤ basePt g₀ ⁻¹ᵁ D.toPre.P.L.U (J gm₀.b.left)` using `by haveI : IsLocalRing (V ⧸ maximalIdeal V ^ (0 + 1)) := isLocalRing_quotient_pow (IsLocalRing.maximalIdeal.isMaximal V).ne_top 0`. Establish `HC` using `hx.hasCoords (e := 0) _ (pow_map_le_ker V _ 0) (hxe 0)`. Establish `h₂ : thick V (maximalIdeal V) 0 ≫ eSec D.toPre.P.A = spMap _ ≫ gm₀.b.left` using `(ExpansionValueZero.eSec_pG _ (U.gt 0)).symm.trans HC.2.1`. Establish `h₃ : ⊤ ≤ (thick V (maximalIdeal V) 0 ≫ eSec D.toPre.P.A) ⁻¹ᵁ D.toPre.P.L.U (J gm₀.b.left)`.
+
+Rewrite using `[h₂]`. Conclude with `top_le_comp hM _`. Establish `h₄ : eSec D.toPre.P.A (thick V (maximalIdeal V) 0 (closedPoint (V ⧸ maximalIdeal V ^ (0 + 1)))) ∈ D.toPre.P.L.U (J gm₀.b.left)` using `h₃ (Set.mem_univ _)`. Rewrite `h₄` using `[thick_closedPoint]`. Rewrite using `[hb₀]`.
+
+Conclude with `top_le_comp (Scheme.preimage_eq_top_of_closedPoint_mem (R := CommRingCat.of V) _ h₄).ge _`. Establish `hfst : (tau U.toUnifPre ((maximalIdeal V).map (algebraMap V (DualNumber V))) y.left jG (J gm₀.b.left) : DualNumber V).fst = (tau U.toUnifPre ((maximalIdeal V).map (RingHom.id V)) (spMap (RingHom.id V) ≫ eSec G) jG (J gm₀.b.left) : V)`. Use `eq_of_forall_mk_eq (maximalIdeal V) fun e => ?_` and prove the remaining obligations. Establish `a₁` using `map_tau_mul_wVal hx hL hM _ (pow_map_le_ker V _ e) (hxe e)`. Establish `a₂` using `map_tau_mul_wVal h₀ hL₀ hM₀ (Ideal.Quotient.mk (maximalIdeal V ^ (e + 1))) (by rw [Ideal.map_id, Ideal.mk_ker]) (xe := eSec (thickObj V (maximalIdeal V) e G)) (by rw [hid, Category.id_comp]; exact ExpansionValueZero.eSec_fstG _ e G)`.
+
+Conclude with `(IsUnit.of_mul_eq_one_right _ a₂).mul_right_cancel (a₁.trans a₂.symm)`. Establish `r₀` using `tau_rig h₀ hb₀ hL₀ hM₀`. Establish `hv : ∀ (U' : (Sp V).Opens) (f : Γ(Sp V, U')), valR (spMap (RingHom.id V)) U' f = valR (𝟙 (Sp V)) U' f` using `fun _ _ => by rw [hid]`. Rewrite `r₀` using `[hv, hv]`. Establish `hW : (((tau U.toUnifPre ((maximalIdeal V).map (algebraMap V (DualNumber V))) y.left jG (J gm₀.b.left))⁻¹ : (DualNumber V)ˣ) : DualNumber V).fst * (tau U.toUnifPre ((maximalIdeal V).map (algebraMap V (DualNumber V))) y.left jG (J gm₀.b.left) : DualNumber V).fst = 1`.
+
+Rewrite using `[← TrivSqZeroExt.fst_mul, Units.inv_mul, TrivSqZeroExt.fst_one]`. Unfold `rigVal rigValD`. Rewrite using `[← r₀, ← _root_.mul_assoc, ← hfst, hW, _root_.one_mul]`. Both sides reduce to the same expression. Use `⟨⊤, Module.Finite.fg_top, Submodule.mem_top, fun _ => Submodule.mem_top, fun n => ?_⟩ haveI : IsLocalRing (DualNumber V ⧸ ((maximalIdeal V).map (algebraMap V (DualNumber V))) ^ (n + 1)) := isLocalRing_quotient_pow (ne_top_of_isHausdorff _) n` and prove the remaining obligations.
+
+Take `⟨F, hF⟩` from `map_secVal_eq U.toUnifPre (hE n)`. Take `⟨-, h₁⟩` from `hF (DualNumber V) ((maximalIdeal V).map (algebraMap V (DualNumber V))) _ gm₀ y.left hx _ (Ideal.Quotient.mk (((maximalIdeal V).map (algebraMap V (DualNumber V))) ^ (n + 1))) (by rw [Ideal.mk_ker])`. Use `⟨F, fun T hT => ?_⟩` and prove the remaining obligations. Establish `hc : ∀ α ∈ T, CohCharts gm₀ α (J gm₀.b.left) (fun i => J (gm₀.b.left ≫ D.toPre.famφB α i)) (fun i => J (D.toPre.gtφT (epsR V) gm₀.b α i))` using `fun α _ => by`. Use `⟨fun p _ => Set.mem_iInter.2 fun i => hJ (gm₀.b.left ≫ D.toPre.famφB α i) (Set.mem_univ p), fun p _ => Set.mem_iInter.2 fun i => hJ (D.toPre.gtφT (epsR V) gm₀.b α i) (Set.mem_univ p), ?_⟩` and prove the remaining obligations.
+
+Establish `c : ∀ a, Sum.elim (fun _ : PUnit.{1} => J gm₀.b.left) (Sum.elim (fun i => J (gm₀.b.left ≫ D.toPre.famφB α i)) (fun i => J (D.toPre.gtφT (epsR V) gm₀.b α i))) a = J (Sum.elim (fun _ : PUnit.{1} => basePt gm₀) (Sum.elim (fun a => basePt gm₀ ≫ D.toPre.famφB α a) (coordφ gm₀ α)) a)`. Apply the tactic sequence `rintro (a | a | a) <;> rfl`. Conclude with `fun a b hab => (c a).trans ((congrArg J hab).trans (c b).symm)`. Establish `e` using `h₁ T jG (J gm₀.b.left) (fun α i => J (gm₀.b.left ≫ D.toPre.famφB α i)) (fun α i => J (D.toPre.gtφT (epsR V) gm₀.b α i)) hT hL hM hc`. Rewrite `e` using `[Ideal.Quotient.eq]`.
+
+Establish `key` using `Ideal.mul_mem_left _ (((tau U.toUnifPre ((maximalIdeal V).map (algebraMap V (DualNumber V))) y.left jG (J gm₀.b.left))⁻¹ : (DualNumber V)ˣ) ^ k : DualNumber V) e`. Rewrite `key` using `[mul_sub, ← _root_.mul_assoc, ← mul_pow, Units.inv_mul, one_pow, _root_.one_mul]`. Rewrite using `[Ideal.smul_top_eq_map, Submodule.restrictScalars_mem, Ideal.map_pow]`. Conclude with `Ideal.pow_le_pow_right (Nat.le_succ n) key`.
+-/
 theorem value_mul_sumI : AllV fun {V} _ _ _ {D} {A} {G} _ _ U => ∀ (y : epsR V ⟶ G) (gm₀ : GtPt D.toPre (epsR V)), IsTangent y → TanRel U.toUnifPre y gm₀ → ∀ (k : ℕ) (jG : U.LG.L.ι) (J : (Sp (DualNumber V) ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι), ⊤ ≤ y.left ⁻¹ᵁ U.LG.L.U jG → (∀ ψ, ⊤ ≤ ψ ⁻¹ᵁ D.toPre.P.L.U (J ψ)) → ∃ W : (DualNumber V)ˣ, (W : DualNumber V).fst * GlobalTheory.MBLow.TanExp.rigVal U.LG jG = GlobalTheory.MBLow.TanExp.rigValD D.toPre (J gm₀.b.left) ∧ ∀ (σ : H0 U.LG.L k) (f : ∀ α : D.toPre.X, D.toPre.SecB k α), (∀ e, U.toUnifPre.ExpandsAt e k σ f) → GlobalTheory.UT.SumI (IsLocalRing.maximalIdeal V) (fun α => GlobalTheory.MBLow.TanExp.termV J gm₀ (f α)) ((W : DualNumber V) ^ k * valR y.left (LB.wchart U.LG.L (fun _ : Fin 1 => 𝟙 G.left) fun _ => jG) (σ.f fun _ => jG)) := by
   intro V _ _ _ _ hV D A G _ _ _ U y gm₀ hy hT k jG J hjG hJ
   haveI : IsLocalRing (DualNumber V) := isLocalRing_dualNumber V

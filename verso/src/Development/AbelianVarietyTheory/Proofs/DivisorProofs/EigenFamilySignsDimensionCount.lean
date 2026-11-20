@@ -19,6 +19,19 @@ noncomputable section
 
 namespace GlobalTheory.RelabDR
 
+/- English proof (translation)
+Simplify using `only [Fin.lt_iff_val_lt_val]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun b => if (a : ℕ) < b ∧ b < j then 1 else 0) N, Fin.sum_univ_eq_sum_range (fun b => if (a : ℕ) < b ∧ j ≤ (a : ℕ) then 1 else 0) N]`. Rewrite using `[Finset.sum_boole, Finset.sum_boole]`. Use `split_ifs with ha`. Establish `e1 : (Finset.range N).filter (fun b => (a : ℕ) < b ∧ b < j) = Finset.Ioo (a : ℕ) j`.
+
+Use extensionality with `b`. Simplify using `only [Finset.mem_filter, Finset.mem_range, Finset.mem_Ioo]`. Use linear arithmetic over natural numbers and integers. Establish `e2 : (Finset.range N).filter (fun b => (a : ℕ) < b ∧ j ≤ (a : ℕ)) = ∅`. Use extensionality with `b`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_range, Finset.notMem_empty, iff_false]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e1, e2, Nat.card_Ioo, Finset.card_empty]`. Simplify using `only [Nat.cast_id]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `e1 : (Finset.range N).filter (fun b => (a : ℕ) < b ∧ b < j) = ∅`. Use extensionality with `b`. Simplify using `only [Finset.mem_filter, Finset.mem_range, Finset.notMem_empty, iff_false]`. Use linear arithmetic over natural numbers and integers. Establish `e2 : (Finset.range N).filter (fun b => (a : ℕ) < b ∧ j ≤ (a : ℕ)) = Finset.Ioo (a : ℕ) N`.
+
+Use extensionality with `b`. Simplify using `only [Finset.mem_filter, Finset.mem_range, Finset.mem_Ioo]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e1, e2, Nat.card_Ioo, Finset.card_empty]`. Simplify using `only [Nat.cast_id]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem count_pairs {N j : ℕ} (hj : j ≤ N) (a : Fin N) :
     (∑ b : Fin N, if a < b ∧ (b : ℕ) < j then 1 else 0) + (∑ b : Fin N, if a < b ∧ j ≤ (a : ℕ) then 1 else 0) =
       if (a : ℕ) < j then j - 1 - (a : ℕ) else N - 1 - (a : ℕ) := by
@@ -42,6 +55,15 @@ theorem count_pairs {N j : ℕ} (hj : j ≤ N) (a : Fin N) :
     simp only [Nat.cast_id]
     omega
 
+/- English proof (translation)
+Unfold `GlobalTheory.CovTestDR.vdmCl`. Establish `hτ : ∀ τ : ι, ((C ((Nat.factorial j : ℝ)⁻¹) * ∏ a : Fin N, ∏ b : Fin N, if a < b ∧ (b : ℕ) < j then X (τ, b) - X (τ, a) else 1) * (C ((Nat.factorial (N - j) : ℝ)⁻¹) * ∏ a : Fin N, ∏ b : Fin N, if a < b ∧ j ≤ (a : ℕ) then X (τ, b) - X (τ, a) else 1) : Pol ι N).IsHomogeneous (∑ i : …`. Introduce `τ`. Establish `h1 : (∏ a : Fin N, ∏ b : Fin N, if a < b ∧ (b : ℕ) < j then X (τ, b) - X (τ, a) else 1 : Pol ι N).IsHomogeneous (∑ a : Fin N, ∑ b : Fin N, if a < b ∧ (b : ℕ) < j then 1 else 0)` using `IsHomogeneous.prod _ _ _ fun a _ => IsHomogeneous.prod _ _ _ fun b _ => by split_ifs`. Conclude with `(isHomogeneous_X ℝ _).sub (isHomogeneous_X ℝ _)`.
+
+Conclude with `isHomogeneous_one _ _`. Establish `h2 : (∏ a : Fin N, ∏ b : Fin N, if a < b ∧ j ≤ (a : ℕ) then X (τ, b) - X (τ, a) else 1 : Pol ι N).IsHomogeneous (∑ a : Fin N, ∑ b : Fin N, if a < b ∧ j ≤ (a : ℕ) then 1 else 0)` using `IsHomogeneous.prod _ _ _ fun a _ => IsHomogeneous.prod _ _ _ fun b _ => by split_ifs`. Conclude with `(isHomogeneous_X ℝ _).sub (isHomogeneous_X ℝ _)`. Conclude with `isHomogeneous_one _ _`. Establish `h` using `((isHomogeneous_C (ι × Fin N) ((Nat.factorial j : ℝ)⁻¹)).mul h1).mul ((isHomogeneous_C (ι × Fin N) ((Nat.factorial (N - j) : ℝ)⁻¹)).mul h2)`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[zero_add, zero_add, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => (count_pairs hj a).symm`. Use `IsHomogeneous.prod (Finset.univ : Finset ι) _ _ fun τ _ => hτ τ` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Simplify using the standard rewrite rules.
+-/
 theorem vdmCl_isHomogeneous (ι : Type) [Fintype ι] {N j : ℕ} (hj : j ≤ N) :
     (GlobalTheory.CovTestDR.vdmCl ι N j).IsHomogeneous
       (Fintype.card ι * ∑ i : Fin N, (if (i : ℕ) < j then j - 1 - (i : ℕ) else N - 1 - (i : ℕ))) := by
@@ -75,6 +97,9 @@ theorem vdmCl_isHomogeneous (ι : Type) [Fintype ι] {N j : ℕ} (hj : j ≤ N) 
 
 open Classical in
 
+/- English proof (translation)
+Unfold `GlobalTheory.GoodMetric.antisymm`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[map_sub, smul_sub]`.
+-/
 theorem antisymm_sub {ι : Type} [Fintype ι] {m : ι → ℕ} (P Q : MvPolynomial (GlobalTheory.GoodMetric.Root m) ℝ) :
     GlobalTheory.GoodMetric.antisymm (P - Q) = GlobalTheory.GoodMetric.antisymm P - GlobalTheory.GoodMetric.antisymm Q := by
   unfold GlobalTheory.GoodMetric.antisymm
@@ -84,6 +109,9 @@ theorem antisymm_sub {ι : Type} [Fintype ι] {m : ι → ℕ} (P Q : MvPolynomi
 
 open Classical in
 
+/- English proof (translation)
+Unfold `GlobalTheory.GoodMetric.antisymm`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_comm]`.
+-/
 theorem antisymm_smul {ι : Type} [Fintype ι] {m : ι → ℕ} (r : ℝ) (P : MvPolynomial (GlobalTheory.GoodMetric.Root m) ℝ) :
     GlobalTheory.GoodMetric.antisymm (r • P) = r • GlobalTheory.GoodMetric.antisymm P := by
   unfold GlobalTheory.GoodMetric.antisymm
@@ -91,6 +119,25 @@ theorem antisymm_smul {ι : Type} [Fintype ι] {m : ι → ℕ} (r : ℝ) (P : M
   refine Finset.sum_congr rfl fun w _ => ?_
   rw [map_smul, smul_comm]
 
+/- English proof (translation)
+Introduce `D O`. Take `⟨hsg, hfam⟩` from `GlobalTheory.T.eigen_family_relabelled_signs D O`. Establish `hι : 0 < Fintype.card D.what₂.Tau` using `Fintype.card_pos_iff.2 ⟨D.eTau.symm (Classical.arbitrary _)⟩`. Establish `hj : 1 ≤ O.j` using `O.indef.1`. Establish `hjN : O.j < O.N` using `O.indef.2`.
+
+Establish `hpos : 1 ≤ dimGr D.what₂.Tau O.N O.j`. Unfold `dimGr`. Conclude with `Nat.mul_pos hι (Nat.mul_pos hj (by omega))`. Establish `hF` using `GlobalTheory.Mean4.WholeShift.fibPt_isHomogeneous (ι := D.what₂.Tau) (N := O.N) O.j`. Establish `hV` using `vdmCl_isHomogeneous D.what₂.Tau hjN.le`.
+
+Establish `hdim : dimGr D.what₂.Tau O.N O.j + Fintype.card D.what₂.Tau * ∑ i : Fin O.N, (if (i : ℕ) < O.j then O.j - 1 - (i : ℕ) else O.N - 1 - (i : ℕ)) = dimFl D.what₂.Tau O.N`. Establish `h` using `congrArg (Fintype.card D.what₂.Tau * ·) (GlobalTheory.Mean4.WholeShift.sum_exp (N := O.N) O.j hjN.le)`. Simplify using `only [mul_add] at h`. Unfold `dimFl dimGr`. Rewrite using `[← h]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hsub : ∀ x, (rootSub O x).IsHomogeneous 1` using `fun x => isHomogeneous_C_mul_X _ _`. Generalize the expression as in `Fintype.card D.what₂.Tau * ∑ i : Fin O.N, (if (i : ℕ) < O.j then O.j - 1 - (i : ℕ) else O.N - 1 - (i : ℕ)) = e at hF hV hdim`. Use `⟨ix O, sg O, dimGr D.what₂.Tau O.N O.j - 1, e, ((-1 : ℝ) ^ (dimGr D.what₂.Tau O.N O.j - 1)) • (aeval (rootSub O) (fibPt D.what₂.Tau O.N O.j) - aeval (rootSub O) (GlobalTheory.CovTestDR.vdmCl D.what₂.Tau O.N O.j)), by omega, by omega, hsg, hfam, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `(hF.aeval (rootSub O) hsub).sub (hV.aeval (rootSub O) hsub)`.
+
+Rewrite `h1` using `[one_mul]`. Rewrite using `[smul_eq_C_mul]`. Establish `h2` using `(isHomogeneous_C (Letter O.S.Dw) ((-1 : ℝ) ^ (dimGr D.what₂.Tau O.N O.j - 1))).mul h1`. Rewrite `h2` using `[zero_add]`. Then use the resulting hypothesis. Rewrite using `[antisymm_smul, antisymm_sub, GlobalTheory.T.root_substitution_fibre_discriminant, GlobalTheory.T.root_substitution_vandermonde_class, sub_self, smul_zero]`.
+
+Unfold `GlobalTheory.EigWholeDR.diffPolDR GlobalTheory.EigWholeDR.testG`. Establish `hA : (C (1 / 2 : ℝ) * ∑ l, X (Sum.inr l) ^ 2 - ∑ x, X (Sum.inl x) ^ 2 : MvPolynomial (GlobalTheory.EigWhole.Var O) ℝ).IsHomogeneous 2`. Use `IsHomogeneous.sub ?_ ?_` and prove the remaining obligations. Establish `h3` using `(isHomogeneous_C (GlobalTheory.EigWhole.Var O) (1 / 2 : ℝ)).mul (IsHomogeneous.sum (Finset.univ : Finset (Fin (D.R.f * O.N) ⊕ Fin (D.R.f * O.N))) (fun l => (X (Sum.inr l : GlobalTheory.EigWhole.Var O) : MvPolynomial (GlobalTheory.EigWhole.Var O) ℝ) ^ 2) 2 fun l _ => isHomogeneous …`. Rewrite `h3` using `[zero_add]`. Then use the resulting hypothesis.
+
+Conclude with `IsHomogeneous.sum (Finset.univ : Finset (DV.Rt D.what₂.Tau O.N)) (fun x => (X (Sum.inl x : GlobalTheory.EigWhole.Var O) : MvPolynomial (GlobalTheory.EigWhole.Var O) ℝ) ^ 2) 2 fun x _ => isHomogeneous_X_pow _ 2`. Establish `hG` using `(((GlobalTheory.Mean4.WholeShift.lamA_isHomogeneous (ι := D.what₂.Tau) (N := O.N) O.j).pow (dimGr D.what₂.Tau O.N O.j - 1)).mul (hF.sub hV)).rename_isHomogeneous (f := (Sum.inl : DV.Rt D.what₂.Tau O.N → GlobalTheory.EigWhole.Var O))`. Use `hA.mul hG using 1` and compare the differences between its conclusion and the goal. Use linear arithmetic over natural numbers and integers. Unfold `GlobalTheory.EigWholeDR.diffPolDR GlobalTheory.EigWholeDR.testG`.
+
+Rewrite using `[map_mul, GlobalTheory.T.quadratic_form_relabelling D O, aeval_rename]`. Establish `hc : ((fun i => (C (sg O i : ℝ) * X (ix O i) : MvPolynomial (Letter O.S.Dw ⊕ Letter O.S.Dw) ℝ)) ∘ (Sum.inl : DV.Rt D.what₂.Tau O.N → GlobalTheory.EigWhole.Var O)) = fun x => rename Sum.inl (rootSub O x)`. Use function extensionality and compare the values at `x`. Simplify using `[sg, ix, rootSub]`. Establish `hc2 : ∀ P : MvPolynomial (DV.Rt D.what₂.Tau O.N) ℝ, aeval (fun x => rename Sum.inl (rootSub O x)) P = rename Sum.inl (aeval (rootSub O) P)` using `fun P => (congrArg (fun φ => φ P) (comp_aeval (rootSub O) (rename (Sum.inl : Letter O.S.Dw → Letter O.S.Dw ⊕ Letter O.S.Dw)))).symm`.
+
+Rewrite using `[hc, hc2]`. Use `congr 2`. Rewrite using `[map_mul, map_pow, GlobalTheory.T.root_substitution_lambda, map_sub, smul_eq_C_mul, map_pow, map_neg, map_one, neg_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem relabel_diffPolDR : ∀ (D : D7) (O : Setup D), ∃ (ix : GlobalTheory.EigWhole.Var O → Letter O.S.Dw ⊕ Letter O.S.Dw) (sg : GlobalTheory.EigWhole.Var O → ℤ) (n e : ℕ) (Q : MvPolynomial (Letter O.S.Dw) ℝ), n + 1 = dimGr D.what₂.Tau O.N O.j ∧ n + 1 + e = dimFl D.what₂.Tau O.N ∧ (∀ i, sg i = 1 ∨ sg i = -1) ∧ (∀ (R : ℝ) i, (∃ z, ix i = .inl z ∧ GlobalTheory.EigWhole.fam O ∅ R i = Finsupp.single (ArIn.ind ∅, some R, .inl (z.1, (z.2 : ℕ))) (sg i)) ∨ ∃ z k, ix i = .inr z ∧ (letters O.S.Dw)[k]? = some z ∧ GlobalTheory.EigWhole.fam O ∅ R i = Finsupp.single (ArIn.ind ∅, some R, .inr k) (sg i)) ∧ Q.IsHomogeneous e ∧ GlobalTheory.GoodMetric.antisymm Q = 0 ∧ (GlobalTheory.EigWholeDR.diffPolDR O).IsHomogeneous (n + 1 + e + 1) ∧ aeval (fun i => (C (sg i : ℝ) * X (ix i) : MvPolynomial (Letter O.S.Dw ⊕ Letter O.S.Dw) ℝ)) (GlobalTheory.EigWholeDR.diffPolDR O) = (∑ z, X (Sum.inr z) ^ 2 - ∑ z, X (Sum.inl z) ^ 2) * rename Sum.inl ((∑ z, X z) ^ n * Q) := by
   intro D O
   obtain ⟨hsg, hfam⟩ := GlobalTheory.T.eigen_family_relabelled_signs D O

@@ -10,6 +10,9 @@ noncomputable section
 
 universe u w
 
+/- English proof (translation)
+Use `Submodule.mul_mem_mul hq hm` as an intermediate fact. Rewrite `this` using `[hPM, Submodule.mem_one]`. Take `⟨c, hc⟩` from `this`. Rewrite using `[← hc]`. Conclude with `c.2`.
+-/
 theorem mul_mem_chartRing_of_mul_eq_one {S : Type u} [CommRing S] {Ω : Type w} [Field Ω]
     [Algebra S Ω] {N : ℕ} {x : Fin (N + 1) → Ω} {I : Chart x} {P M : Submodule (chartRing S x I) Ω}
     (hPM : P * M = 1) {q m : Ω} (hq : q ∈ P) (hm : m ∈ M) : q * m ∈ chartRing S x I := by
@@ -23,12 +26,36 @@ variable {k : Type u} [Field k] {Ω : Type w} [Field Ω] [Algebra k Ω] {K' : Ty
   (hsp : primeOf (S := k) x ≤ primeOf (S := k) y) (hxy : ∀ i, y i ≠ 0 → x i ≠ 0)
   {Nb : LineBundle k x} {r : ℕ} {h : Fin (r + 1) → Ω}
 
+/- English proof (translation)
+The claim follows from `(Submodule.mem_iInf _).mp (hV.mem_secs l) I`.
+-/
 theorem mem_sub_of_isVeryAmpleBy (hV : IsVeryAmpleBy Nb.toSubSystem h) (l : Fin (r + 1)) (I : Chart x) :
     h l ∈ Nb.sub I :=
   (Submodule.mem_iInf _).mp (hV.mem_secs l) I
 
 include hsp
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `Nb.invertible (liftChart hxy I₀)`. Establish `hgen` using `hV.generates (liftChart hxy I₀)`. Establish `hA : ∀ {q m : Ω}, q ∈ Nb.sub (liftChart hxy I₀) → m ∈ M → q * m ∈ locAt k x y` using `fun hq hm => (chartRing_sub_locAt hsp hxy I₀ (mul_mem_chartRing_of_mul_eq_one hM hq hm)).1`. Establish `h1 : (1 : Ω) ∈ Nb.sub (liftChart hxy I₀) * M`. Rewrite using `[hM]`.
+
+Conclude with `Submodule.mem_one.mpr ⟨1, map_one _⟩`. Choose the witnesses or unpack the hypotheses as in `⟨l₀, m₀, hm₀, hne⟩ : ∃ l₀, ∃ m₀ ∈ M, redAt k x y (h l₀ * m₀) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hzero : ∀ q ∈ Nb.sub (liftChart hxy I₀), ∀ m ∈ M, redAt k x y (q * m) = 0`.
+
+Introduce `q hq m hm`. Rewrite `hq` using `[← hgen]`. Use `Submodule.span_induction (p := fun q _ => redAt k x y (q * m) = 0) ?_ ?_ ?_ ?_ hq` and prove the remaining obligations. Introduce and unpack `_ ⟨l, rfl⟩`. Conclude with `hcon l m hm`.
+
+Rewrite using `[zero_mul]`. Conclude with `(locAt_zero hsp).2`. Introduce `u v hu hv ihu ihv`. Rewrite using `[add_mul, (locAt_add hsp (hA (hgen ▸ hu) hm) (hA (hgen ▸ hv) hm)).2, ihu, ihv, add_zero]`. Introduce `c u hu ihu`.
+
+Rewrite using `[chartRing_smul_def, mul_assoc, (locAt_mul hsp (chartRing_sub_locAt hsp hxy I₀ c.2).1 (hA (hgen ▸ hu) hm)).2, ihu, mul_zero]`. Use `Submodule.mul_induction_on (C := fun z => z ∈ locAt k x y ∧ redAt k x y z = 0) h1 (fun q hq m hm => ⟨hA hq hm, hzero q hq m hm⟩) (fun u v hu hv => ⟨(locAt_add hsp hu.1 hv.1).1, by` as an intermediate fact. Rewrite using `[(locAt_add hsp hu.1 hv.1).2, hu.2, hv.2, add_zero]⟩)`. Rewrite `this` using `[(locAt_one hsp).2]`. Conclude with `one_ne_zero this.2`.
+
+Establish `hgm : h l₀ * m₀ ∈ locAt k x y` using `hA (mem_sub_of_isVeryAmpleBy hV l₀ _) hm₀`. Establish `hgm0` using `(locAt_inv hsp hgm hne).1`. Establish `hg0 : h l₀ ≠ 0` using `left_ne_zero_of_mul hgm0`. Establish `hm0 : m₀ ≠ 0` using `right_ne_zero_of_mul hgm0`. Establish `hl : ∀ l, h l / h l₀ ∈ locAt k x y`.
+
+Introduce `l`. Rewrite using `[← mul_div_mul_right (h l) (h l₀) hm0]`. Conclude with `(locAt_div hsp (hA (mem_sub_of_isVeryAmpleBy hV l _) hm₀) hgm hne).1`. Use `⟨l₀, hg0, hl, ?_⟩` and prove the remaining obligations. Introduce `I q hq`.
+
+Establish `hgenI` using `hV.generates (liftChart hxy I)`. Rewrite `hq` using `[← hgenI]`. Use `Submodule.span_induction (p := fun q _ => q / h l₀ ∈ locAt k x y) ?_ ?_ ?_ ?_ hq` and prove the remaining obligations. Introduce and unpack `_ ⟨l, rfl⟩`. Conclude with `hl l`.
+
+Rewrite using `[zero_div]`. Conclude with `(locAt_zero hsp).1`. Introduce `u v _ _ hu hv`. Rewrite using `[add_div]`. Conclude with `(locAt_add hsp hu hv).1`.
+
+Introduce `c u _ hu`. Rewrite using `[chartRing_smul_def, mul_div_assoc]`. Conclude with `(locAt_mul hsp (chartRing_sub_locAt hsp hxy I c.2).1 hu).1`.
+-/
 theorem exists_redGood (hV : IsVeryAmpleBy Nb.toSubSystem h) (I₀ : Chart y) :
     ∃ l₀ : Fin (r + 1), h l₀ ≠ 0 ∧ (∀ l, h l / h l₀ ∈ locAt k x y) ∧
       RedGood hxy Nb.toSubSystem (h l₀) := by
@@ -80,6 +107,17 @@ theorem exists_redGood (hV : IsVeryAmpleBy Nb.toSubSystem h) (I₀ : Chart y) :
 
 variable {g : Ω}
 
+/- English proof (translation)
+Establish `hgen` using `hV.generates (liftChart hxy I)`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, rfl⟩`. Establish `hq'` using `hq`.
+
+Rewrite `hq'` using `[← hgen]`. Use `Submodule.span_induction (p := fun q _ => redAt k x y (q / g) ∈ Submodule.span (chartRing k y I) (Set.range fun l => redAt k x y (h l / g))) ?_ ?_ ?_ ?_ hq'` and prove the remaining obligations. Introduce and unpack `_ ⟨l, rfl⟩`. Conclude with `Submodule.subset_span ⟨l, rfl⟩`. Rewrite using `[zero_div, (locAt_zero hsp).2]`.
+
+Conclude with `Submodule.zero_mem _`. Introduce `u v hu hv ihu ihv`. Rewrite using `[add_div, (locAt_add hsp (hg I u (hgen ▸ hu)) (hg I v (hgen ▸ hv))).2]`. Conclude with `Submodule.add_mem _ ihu ihv`. Introduce `c u hu ihu`.
+
+Rewrite using `[chartRing_smul_def, mul_div_assoc, (locAt_mul hsp (chartRing_sub_locAt hsp hxy I c.2).1 (hg I u (hgen ▸ hu))).2]`. Use `Submodule.smul_mem _ (⟨_, (chartRing_sub_locAt hsp hxy I c.2).2⟩ : chartRing k y I) ihu` as an intermediate fact. Rewrite `this` using `[chartRing_smul_def]`. Then use the resulting hypothesis. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, rfl⟩`.
+
+Conclude with `Submodule.subset_span ⟨h l, mem_sub_of_isVeryAmpleBy hV l _, rfl⟩`.
+-/
 theorem redSys_sub_eq (hV : IsVeryAmpleBy Nb.toSubSystem h) (hg : RedGood hxy Nb.toSubSystem g)
     (I : Chart y) : (redSys hxy Nb.toSubSystem g).sub I =
       Submodule.span (chartRing k y I) (Set.range fun l => redAt k x y (h l / g)) := by
@@ -105,6 +143,21 @@ theorem redSys_sub_eq (hV : IsVeryAmpleBy Nb.toSubSystem h) (hg : RedGood hxy Nb
     rintro _ ⟨l, rfl⟩
     exact Submodule.subset_span ⟨h l, mem_sub_of_isVeryAmpleBy hV l _, rfl⟩
 
+/- English proof (translation)
+Use `⟨LineBundle.mk (SubFamily.mk (redSys hxy Nb.toSubSystem g) ?_) ?_ ?_, rfl⟩` and prove the remaining obligations. Introduce `I J hIJ z`. Rewrite using `[redSys_sub_eq hsp hxy hV hg, redSys_sub_eq hsp hxy hV hg]`. Conclude with `res_mem_span_iff_exists_isUnit hIJ z`. Introduce `I`.
+
+Rewrite using `[redSys_sub_eq hsp hxy hV hg]`. Conclude with `Submodule.fg_span (Set.finite_range _)`. Introduce `I`. Take `⟨M, hM⟩` from `Nb.invertible (liftChart hxy I)`. Use `⟨Submodule.span (chartRing k y I) ((fun m => redAt k x y (m * g)) '' M), ?_⟩` and prove the remaining obligations.
+
+Establish `hA : ∀ {q m : Ω}, q ∈ Nb.sub (liftChart hxy I) → m ∈ M → q * m ∈ chartRing k x (liftChart hxy I)` using `fun hq hm => mul_mem_chartRing_of_mul_eq_one hM hq hm`. Establish `hmg : ∀ {m : Ω}, m ∈ M → m * g ∈ locAt k x y` using `fun hm => (chartRing_sub_locAt hsp hxy I (by rw [mul_comm]; exact hA (hgsec _) hm)).1`. Establish `hsplit : ∀ q m : Ω, q * m = q / g * (m * g)` using `fun q m => by field_simp`. Apply `le_antisymm` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Submodule.span _ _ * Submodule.span _ _ ≤ 1`.
+
+Rewrite using `[Submodule.span_mul_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨q, hq, rfl⟩, _, ⟨m, hm, rfl⟩, rfl⟩`. Use `show redAt k x y (q / g) * redAt k x y (m * g) ∈ (1 : Submodule (chartRing k y I) K')`. Rewrite using `[← (locAt_mul hsp (hg I q hq) (hmg hm)).2, ← hsplit]`. Conclude with `Submodule.mem_one.mpr ⟨⟨_, (chartRing_sub_locAt hsp hxy I (hA hq hm)).2⟩, rfl⟩`.
+
+Rewrite using `[Submodule.one_le]`. Establish `h1 : (1 : Ω) ∈ Nb.sub (liftChart hxy I) * M`. Rewrite using `[hM]`. Conclude with `Submodule.mem_one.mpr ⟨1, map_one _⟩`. Use `Submodule.mul_induction_on (C := fun z => z ∈ locAt k x y ∧ redAt k x y z ∈ (redSys hxy Nb.toSubSystem g).sub I * Submodule.span (chartRing k y I) ((fun m => redAt k x y (m * g)) '' M)) h1 (fun q hq m hm => ⟨(chartRing_sub_locAt hsp hxy I (hA hq hm)).1, by` as an intermediate fact.
+
+Rewrite using `[hsplit, (locAt_mul hsp (hg I q hq) (hmg hm)).2]`. Conclude with `Submodule.mul_mem_mul (Submodule.subset_span ⟨q, hq, rfl⟩) (Submodule.subset_span ⟨m, hm, rfl⟩)⟩)`. Use the proof step `(fun u v hu hv => ⟨(locAt_add hsp hu.1 hv.1).1, by`. Rewrite using `[(locAt_add hsp hu.1 hv.1).2]`. Conclude with `Submodule.add_mem _ hu.2 hv.2⟩)`.
+
+Rewrite `this` using `[(locAt_one hsp).2]`. Conclude with `this.2`.
+-/
 theorem exists_lineBundle_redSys (hV : IsVeryAmpleBy Nb.toSubSystem h) (hg0 : g ≠ 0)
     (hg : RedGood hxy Nb.toSubSystem g) (hgsec : ∀ I : Chart x, g ∈ Nb.sub I) :
     ∃ Q' : LineBundle k y, Q'.toSubSystem = redSys hxy Nb.toSubSystem g := by
@@ -146,6 +199,11 @@ theorem exists_lineBundle_redSys (hV : IsVeryAmpleBy Nb.toSubSystem h) (hg0 : g 
       rw [(locAt_one hsp).2] at this
       exact this.2
 
+/- English proof (translation)
+Rewrite using `[hQ]`. Conclude with `{ mem := fun I q hq => Submodule.subset_span ⟨q, hq, rfl⟩ add := fun I q hq q' hq' => by`. Rewrite using `[add_div]`. Conclude with `(locAt_add hsp (hg I q hq) (hg I q' hq')).2`. Use `smul := fun I q hq f s e hs hf hse => by`.
+
+Establish `hsy : aeval y s ≠ 0` using `eval_ne_zero_of_mem_monos I hs`. Rewrite using `[mul_div_assoc, (locAt_mul hsp (mem_locAt hf hse hsy) (hg I q hq)).2, redAt_eq hsp hf hse hsy]`. Use `span := fun I => rfl }`.
+-/
 theorem restrictData_redSys (hg : RedGood hxy Nb.toSubSystem g) (Q' : LineBundle k y)
     (hQ : Q'.toSubSystem = redSys hxy Nb.toSubSystem g) :
     RestrictData Nb.toSubSystem hxy Q'.toSubSystem (fun q => redAt k x y (q / g)) := by
@@ -162,9 +220,19 @@ theorem restrictData_redSys (hg : RedGood hxy Nb.toSubSystem g) (Q' : LineBundle
 
 variable {σ : Ω}
 
+/- English proof (translation)
+Introduce `h0` and use `(locAt_inv hsp hσ hσr).1 (by rw [h0, zero_div])`.
+-/
 theorem ne_zero_of_redAt_div (hσ : σ / g ∈ locAt k x y) (hσr : redAt k x y (σ / g) ≠ 0) : σ ≠ 0 :=
   fun h0 => (locAt_inv hsp hσ hσr).1 (by rw [h0, zero_div])
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `hc`. Rewrite `hn` using `[one_mul]`. Establish `hpow` using `redSys_pow hsp hxy hg n`. Establish `h1 : c * σ ^ n / g ^ n ∈ locAt k x y` using `hpow.1 I _ hn`. Establish `hσ0` using `ne_zero_of_redAt_div hsp hσ hσr`.
+
+Establish `hg0 : g ≠ 0` using `fun h0 => (locAt_inv hsp hσ hσr).1 (by rw [h0, div_zero])`. Establish `hσn` using `locAt_pow hsp hσ n`. Establish `hσnr : redAt k x y ((σ / g) ^ n) ≠ 0` using `by rw [hσn.2]; exact pow_ne_zero _ hσr`. Establish `hc_eq : c * σ ^ n / g ^ n / (σ / g) ^ n = c` using `by rw [div_pow]; field_simp`. Take `⟨hcl, hcr⟩` from `locAt_div hsp h1 hσn.1 hσnr`.
+
+Rewrite `hcl`, `hcr` using `[hc_eq]`. Use `⟨hcl, n, ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul, hQ, ← hpow.2, hcr, hσn.2, div_mul_cancel₀ _ (pow_ne_zero _ hσr)]`. Conclude with `Submodule.subset_span ⟨_, hn, rfl⟩`.
+-/
 theorem redAt_mem_ampleChart (hg : RedGood hxy Nb.toSubSystem g) (Q' : LineBundle k y)
     (hQ : Q'.toSubSystem = redSys hxy Nb.toSubSystem g) (hσ : σ / g ∈ locAt k x y)
     (hσr : redAt k x y (σ / g) ≠ 0) (I : Chart y) {c : Ω}
@@ -185,6 +253,13 @@ theorem redAt_mem_ampleChart (hg : RedGood hxy Nb.toSubSystem g) (Q' : LineBundl
   rw [one_mul, hQ, ← hpow.2, hcr, hσn.2, div_mul_cancel₀ _ (pow_ne_zero _ hσr)]
   exact Submodule.subset_span ⟨_, hn, rfl⟩
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `ha`. Establish `hpow` using `redSys_pow hsp hxy hg n`. Rewrite `hn` using `[one_mul, hQ, ← hpow.2, mem_redSys_iff hsp hxy hpow.1]`. Take `⟨q, hq, hqa⟩` from `hn`. Establish `hσ0` using `ne_zero_of_redAt_div hsp hσ hσr`.
+
+Establish `hg0 : g ≠ 0` using `fun h0 => (locAt_inv hsp hσ hσr).1 (by rw [h0, div_zero])`. Use `⟨q / σ ^ n, ⟨n, by rw [one_mul, div_mul_cancel₀ _ (pow_ne_zero _ hσ0)]; exact hq⟩, ?_⟩` and prove the remaining obligations. Establish `hσn` using `locAt_pow hsp hσ n`. Establish `hσnr : redAt k x y ((σ / g) ^ n) ≠ 0` using `by rw [hσn.2]; exact pow_ne_zero _ hσr`. Establish `heq : q / σ ^ n = q / g ^ n / (σ / g) ^ n` using `by rw [div_pow]; field_simp`.
+
+Rewrite using `[heq, (locAt_div hsp (hpow.1 I q hq) hσn.1 hσnr).2, hqa, hσn.2, mul_div_cancel_right₀ _ (pow_ne_zero _ hσr)]`.
+-/
 theorem exists_lift_ampleChart (hg : RedGood hxy Nb.toSubSystem g) (Q' : LineBundle k y)
     (hQ : Q'.toSubSystem = redSys hxy Nb.toSubSystem g) (hσ : σ / g ∈ locAt k x y)
     (hσr : redAt k x y (σ / g) ≠ 0) (I : Chart y) {a : K'}
@@ -203,6 +278,13 @@ theorem exists_lift_ampleChart (hg : RedGood hxy Nb.toSubSystem g) (Q' : LineBun
   rw [heq, (locAt_div hsp (hpow.1 I q hq) hσn.1 hσnr).2, hqa, hσn.2,
     mul_div_cancel_right₀ _ (pow_ne_zero _ hσr)]
 
+/- English proof (translation)
+Use `Algebra.adjoin_induction (p := fun z _ => z ∈ locAt k x y ∧ redAt k x y z ∈ ampleBase (S := k) (fun l => redAt k x y (h l / g)) j) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨l, rfl⟩ dsimp only`. Rewrite using `[← div_div_div_cancel_right₀ hg0 (h l) (h j)]`. Take `⟨h1, h2⟩` from `locAt_div hsp (hgl l) (hgl j) hr`. Conclude with `⟨h1, by rw [h2]; exact Algebra.subset_adjoin ⟨l, rfl⟩⟩`.
+
+Introduce `c`. Take `⟨h1, h2⟩` from `locAt_algebraMap hsp c`. Conclude with `⟨h1, by rw [h2]; exact Subalgebra.algebraMap_mem _ c⟩`. Introduce `u v _ _ hu hv`. Take `⟨h1, h2⟩` from `locAt_add hsp hu.1 hv.1`.
+
+Conclude with `⟨h1, by rw [h2]; exact add_mem hu.2 hv.2⟩`. Introduce `u v _ _ hu hv`. Take `⟨h1, h2⟩` from `locAt_mul hsp hu.1 hv.1`. Conclude with `⟨h1, by rw [h2]; exact mul_mem hu.2 hv.2⟩`.
+-/
 theorem redAt_mem_ampleBase (hg0 : g ≠ 0) (hgl : ∀ l, h l / g ∈ locAt k x y) {j : Fin (r + 1)}
     (hr : redAt k x y (h j / g) ≠ 0) {z : Ω} (hz : z ∈ ampleBase (S := k) h j) :
     z ∈ locAt k x y ∧
@@ -224,6 +306,25 @@ theorem redAt_mem_ampleBase (hg0 : g ≠ 0) (hgl : ∀ l, h l / g ∈ locAt k x 
     obtain ⟨h1, h2⟩ := locAt_mul hsp hu.1 hv.1
     exact ⟨h1, by rw [h2]; exact mul_mem hu.2 hv.2⟩
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `hbJ (liftChart hxy I₀)`. Establish `h1 : b ^ e * (xProd (liftChart hxy I₀) ^ J.1.card / xProd J ^ (liftChart hxy I₀).1.card) ∈ locAt k x y`. Take `⟨n, hn⟩` from `he`. Rewrite `hn` using `[one_mul]`. Establish `hpow` using `redSys_pow hsp hxy hg n`.
+
+Establish `hc1` using `hpow.1 I₀ _ hn`. Establish `hσn` using `locAt_pow hsp hσ n`. Establish `hσnr : redAt k x y ((σ / g) ^ n) ≠ 0` using `by rw [hσn.2]; exact pow_ne_zero _ hσr`. Establish `hσ0` using `ne_zero_of_redAt_div hsp hσ hσr`. Establish `hg0 : g ≠ 0` using `fun h0 => (locAt_inv hsp hσ hσr).1 (by rw [h0, div_zero])`.
+
+Use `(locAt_div hsp hc1 hσn.1 hσnr).1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[div_pow]`. Clear the denominators using the available nonvanishing facts. Establish `hbe` using `locAt_pow hsp hb e`.
+
+Establish `hber : redAt k x y (b ^ e) ≠ 0` using `by rw [hbe.2]; exact pow_ne_zero _ hbr`. Establish `hb0 : b ≠ 0` using `(locAt_inv hsp hb hbr).1`. Establish `ht` using `(locAt_div hsp h1 hbe.1 hber).1`. Rewrite `ht` using `[mul_div_cancel_left₀ _ (pow_ne_zero _ hb0)]`. Establish `hf` using `(res_isHomogeneous_prod_X (S := k) J.1).pow I₀.1.card`.
+
+Establish `hs : ((∏ l ∈ I₀.1, (X l : Poly k N)) ^ J.1.card).IsHomogeneous (J.1.card * I₀.1.card)`. Rewrite using `[mul_comm]`. Conclude with `(res_isHomogeneous_prod_X (S := k) I₀.1).pow J.1.card`. Establish `hsy : aeval y ((∏ l ∈ I₀.1, (X l : Poly k N)) ^ J.1.card) ≠ 0`. Rewrite using `[map_pow, res_aeval_prod_X]`.
+
+Conclude with `pow_ne_zero _ (res_xProd_ne_zero I₀)`. Establish `hti : (xProd (liftChart hxy I₀) ^ J.1.card / xProd J ^ (liftChart hxy I₀).1.card)⁻¹ = aeval x ((∏ l ∈ J.1, (X l : Poly k N)) ^ I₀.1.card) / aeval x ((∏ l ∈ I₀.1, (X l : Poly k N)) ^ J.1.card)`. Rewrite using `[inv_div, map_pow, map_pow, res_aeval_prod_X, res_aeval_prod_X]`. Both sides reduce to the same expression. Establish `ht0 : xProd (liftChart hxy I₀) ^ J.1.card / xProd J ^ (liftChart hxy I₀).1.card ≠ 0` using `div_ne_zero (pow_ne_zero _ (res_xProd_ne_zero _)) (pow_ne_zero _ (res_xProd_ne_zero _))`.
+
+Establish `hmem` using `mem_locAt (x := x) hf hs hsy`. Rewrite `hmem` using `[← hti]`. Establish `hmul` using `(locAt_mul hsp ht hmem).2`. Rewrite `hmul` using `[mul_inv_cancel₀ ht0, (locAt_one hsp).2, hti, redAt_eq hsp hf hs hsy]`. Establish `hJy : aeval y ((∏ l ∈ J.1, (X l : Poly k N)) ^ I₀.1.card) ≠ 0`.
+
+Introduce `h0`. Rewrite `hmul` using `[h0, zero_div, mul_zero]`. Conclude with `one_ne_zero hmul`. Rewrite `hJy` using `[map_pow, res_aeval_prod_X]`. Introduce `i hi`.
+
+Conclude with `(mem_support y).mpr (Finset.prod_ne_zero_iff.mp (pow_ne_zero_iff (Finset.card_pos.mpr I₀.2.1).ne' |>.mp hJy) i hi)`.
+-/
 theorem subset_support_of_redAt_ne_zero (hg : RedGood hxy Nb.toSubSystem g)
     (hσ : σ / g ∈ locAt k x y) (hσr : redAt k x y (σ / g) ≠ 0) (I₀ : Chart y) {b : Ω}
     (hb : b ∈ locAt k x y) (hbr : redAt k x y b ≠ 0) {J : Chart x}

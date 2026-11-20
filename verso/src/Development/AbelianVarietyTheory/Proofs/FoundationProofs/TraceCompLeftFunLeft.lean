@@ -5,6 +5,13 @@ open Polynomial Classical GlobalTheory.BadShare
 noncomputable section
 namespace GlobalTheory.BadShare
 
+/- English proof (translation)
+Establish `h : A.compLeft G ∘ₗ LinearMap.funLeft ℂ W f = ∑ x, LinearMap.single ℂ (fun _ : G => W) x ∘ₗ (A ∘ₗ LinearMap.proj (f x))`. Use `LinearMap.ext fun φ => funext fun y => ?_` and prove the remaining obligations. Simplify using `[LinearMap.sum_apply, Finset.sum_apply, Pi.single_apply, LinearMap.funLeft_apply]`. Rewrite using `[h, map_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.trace_comp_comm']`. Use `split_ifs with hx`. Use `congr 1`. Use extensionality with `w`. Simplify using `[hx]`.
+
+Establish `: (A ∘ₗ LinearMap.proj (f x)) ∘ₗ LinearMap.single ℂ (fun _ : G => W) x = 0`. Use extensionality with `w`. Simplify using `[hx]`. Rewrite using `[this, map_zero]`.
+-/
 theorem trace_compLeft_funLeft {G W : Type} [Fintype G] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (A : W →ₗ[ℂ] W) (f : G → G) :
     LinearMap.trace ℂ (G → W) (A.compLeft G ∘ₗ LinearMap.funLeft ℂ W f) =
@@ -40,11 +47,23 @@ def coindSum : (G → W) →ₗ[ℂ] Representation.coindV r σ :=
       rw [← Module.End.mul_apply, ← map_mul σ, mul_inv_cancel_left])
 
 omit [Fintype G] [FiniteDimensional ℂ W] in
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(∑ γ : Γ, (σ γ⁻¹ : W →ₗ[ℂ] W).compLeft G ∘ₗ LinearMap.funLeft ℂ W fun x => r γ * x) φ x = _`. Simplify using `[LinearMap.sum_apply, Finset.sum_apply, LinearMap.funLeft_apply]`.
+-/
 theorem coindSum_apply (φ : G → W) (x : G) :
     (coindSum r σ φ).1 x = ∑ γ : Γ, σ γ⁻¹ (φ (r γ * x)) := by
   change (∑ γ : Γ, (σ γ⁻¹ : W →ₗ[ℂ] W).compLeft G ∘ₗ LinearMap.funLeft ℂ W fun x => r γ * x) φ x = _
   simp [LinearMap.sum_apply, Finset.sum_apply, LinearMap.funLeft_apply]
 
+/- English proof (translation)
+Establish `h1 : (Fintype.card Γ : ℂ) • (Representation.coind r σ g : _ →ₗ[ℂ] _) = coindSum r σ ∘ₗ (LinearMap.funLeft ℂ W (fun x => x * g) ∘ₗ (Representation.coindV r σ).subtype)`. Use `LinearMap.ext fun φ => Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, coindSum_apply]`. Establish `: ∀ γ : Γ, σ γ⁻¹ ((LinearMap.funLeft ℂ W (fun x => x * g) ∘ₗ (Representation.coindV r σ).subtype) φ (r γ * x)) = φ.1 (x * g)`. Introduce `γ`.
+
+Express the relevant statement in the definitionally equal form `σ γ⁻¹ (φ.1 (r γ * x * g)) = _`. Rewrite using `[mul_assoc, φ.2 γ, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite using `[Finset.sum_congr rfl fun γ _ => this γ, Finset.sum_const, Finset.card_univ]`. Express the relevant statement in the definitionally equal form `(Fintype.card Γ : ℂ) • φ.1 (x * g) = _`. Rewrite using `[Nat.cast_smul_eq_nsmul]`.
+
+Establish `h2 : (LinearMap.funLeft ℂ W (fun x => x * g) ∘ₗ (Representation.coindV r σ).subtype) ∘ₗ coindSum r σ = ∑ γ : Γ, (σ γ⁻¹ : W →ₗ[ℂ] W).compLeft G ∘ₗ LinearMap.funLeft ℂ W fun x => r γ * (x * g)`. Use `LinearMap.ext fun φ => funext fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(coindSum r σ φ).1 (x * g) = _`. Rewrite using `[coindSum_apply]`. Simplify using `[LinearMap.sum_apply, Finset.sum_apply, LinearMap.funLeft_apply]`.
+
+Rewrite using `[mul_comm, ← smul_eq_mul, ← map_smul, h1, LinearMap.trace_comp_comm', h2, map_sum]`. Conclude with `Finset.sum_congr rfl fun γ _ => trace_compLeft_funLeft _ _`.
+-/
 theorem trace_coind_mul_card (g : G) :
     LinearMap.trace ℂ _ (Representation.coind r σ g) * (Fintype.card Γ : ℂ) =
       ∑ γ : Γ, ∑ x : G, if r γ * (x * g) = x then LinearMap.trace ℂ W (σ γ⁻¹) else 0 := by

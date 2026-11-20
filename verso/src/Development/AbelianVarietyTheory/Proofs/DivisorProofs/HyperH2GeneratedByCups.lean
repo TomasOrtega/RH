@@ -13,12 +13,26 @@ noncomputable section
 
 namespace GlobalTheory.AbCoh.SpanCup
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_add]`. Simplify using `[Fin.append_left, Fin.append_right]`.
+-/
 theorem sum_append {R M N P : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
     [AddCommGroup P] [Module R P] (B : M →ₗ[R] N →ₗ[R] P) {n m : ℕ} (a : Fin n → M) (b : Fin n → N)
     (a' : Fin m → M) (b' : Fin m → N) :
     ∑ k, B (a k) (b k) + ∑ k, B (a' k) (b' k) = ∑ k, B (Fin.append a a' k) (Fin.append b b' k) := by
   rw [Fin.sum_univ_add]; simp [Fin.append_left, Fin.append_right]
 
+/- English proof (translation)
+Establish `hw : w ∈ Submodule.span R (Set.range (exteriorPower.ιMulti R 2 (M` using `M))) := by`. Rewrite using `[exteriorPower.ιMulti_span]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem v hv`.
+
+Take `⟨v, rfl⟩` from `hv`. Use `⟨1, fun _ ↦ v 0, fun _ ↦ v 1, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_one]`. Use `congr 1`. Apply the tactic sequence `ext i; fin_cases i <;> rfl`.
+
+Consider the case `zero => exact ⟨0, Fin.elim0, Fin.elim0, by simp⟩`. Consider the case `add u v _ _ hu hv`. Take `⟨n, x, y, rfl⟩` from `hu`. Take `⟨m, x', y', rfl⟩` from `hv`. Use `⟨n + m, Fin.append x x', Fin.append y y', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Fin.sum_univ_add]`. Simplify using `[Fin.append_left, Fin.append_right]`. Consider the case `smul r v _ hv`. Take `⟨n, x, y, rfl⟩` from `hv`. Use `⟨n, fun k ↦ r • x k, y, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Establish `e : (![r • x k, y k] : Fin 2 → M) = Function.update ![x k, y k] 0 (r • ![x k, y k] 0)`. Apply the tactic sequence `ext i; fin_cases i <;> simp`. Rewrite using `[e, AlternatingMap.map_update_smul, Function.update_eq_self]`.
+-/
 theorem exists_sum_ιMulti {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (w : ⋀[R]^2 M) :
     ∃ (n : ℕ) (x y : Fin n → M), w = ∑ k, exteriorPower.ιMulti R 2 ![x k, y k] := by
   have hw : w ∈ Submodule.span R (Set.range (exteriorPower.ιMulti R 2 (M := M))) := by
@@ -53,12 +67,28 @@ def fn2 : cechDeRhamTotalCocyclesTwo F →ₗ[R] Z2 F where
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cechDeRhamFunctionPart_cup_eq_cup (a b : cechDeRhamTotalCocyclesOne F) : fn2 F (cupZZ F a b) = cupZ F (cechDeRhamTotalCocyclesOne.fn F a) (cechDeRhamTotalCocyclesOne.fn F b) := rfl
 
 end GlobalTheory.AbCoh.SpanCup
 
 open GlobalTheory.AbCoh.SpanCup in
 
+/- English proof (translation)
+Introduce `R _ C _ F hfr h0 hc hsurj hw z`. Take `⟨c, rfl⟩` from `Hyp2.mk_surjective F z`. Take `⟨e, he⟩` from `hw`. Take `⟨n, x, y, hxy⟩` from `exists_sum_ιMulti (e.symm (H2.mk F (fn2 F c)))`. Establish `hrep : ∀ u : H1 F, ∃ p : cechDeRhamTotalCocyclesOne F, toO F (Hyp1.mk F p) = u` using `fun u ↦ by`.
+
+Take `⟨q, hq⟩` from `hsurj u`. Take `⟨p, rfl⟩` from `Hyp1.mk_surjective F q`. Conclude with `⟨p, hq⟩`. Use `choose p hp using hrep`. Establish `hcls : H2.mk F (fn2 F c) = ∑ k, cup F (x k) (y k)`.
+
+Establish `h` using `congrArg e hxy`. Rewrite `h` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[h, map_sum]`. Simplify using `only [he]`. Take `⟨c', hc'⟩ : ∃ c' : cechDeRhamTotalCocyclesTwo F, c' = c - ∑ k, cupZZ F (p (x k)) (p (y k))` from `⟨_, rfl⟩`.
+
+Establish `hfn : ∃ f, d1 F f = c'.1.1`. Establish `h : H2.mk F (fn2 F c') = 0`. Rewrite using `[hc']`. Simplify using `only [map_sub, map_sum]`. Rewrite using `[hcls, sub_eq_zero]`.
+
+Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[cechDeRhamFunctionPart_cup_eq_cup, ← cup_mk, ← toO_mk, ← toO_mk, hp, hp]`. Conclude with `H2.mk_eq_zero.1 h`. Take `⟨m, a, w, hm⟩` from `GlobalTheory.T.hyper_h2_sum_of_cups_exact R C F hfr h0 hc hsurj c' hfn`. Use `⟨m + n, Fin.append a (fun k ↦ Hyp1.mk F (p (x k))), Fin.append (fun k ↦ clAll F hc (w k)) (fun k ↦ Hyp1.mk F (p (y k))), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← sum_append, ← hm, hc']`. Simplify using `only [map_sub, map_sum, cupHyp_mk, sub_add_cancel]`.
+-/
 theorem GlobalTheory.AbCoh.hyp2_eq_sum_cupHyp : ∀ (R : Type) [CommRing R] (C : Type) [Category.{0} C]
     (F : C ⥤ CommAlgCat.{0} R), HasFrame F → CohomZeroIsConstants F → Closed1 F = ⊤ → Function.Surjective (toO F) →
     WedgeO F → ∀ z : Hyp2 F, ∃ (n : ℕ) (a b : Fin n → Hyp1 F), z = ∑ k, cupHyp F (a k) (b k) := by

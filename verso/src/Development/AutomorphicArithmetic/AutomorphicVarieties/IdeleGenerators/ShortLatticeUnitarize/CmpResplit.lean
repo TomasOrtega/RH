@@ -11,6 +11,9 @@ namespace UpperTheory.V.Sd.Wc
 def nu {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) : Valuation ℂ ℝ≥0 :=
   (NormedField.valuation (K := Qbar l)).comap ι.symm.toRingHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nu_apply {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (x : ℂ) : nu ι x = ‖ι.symm x‖₊ := rfl
 
 def IsPos {W : Type} [AddCommGroup W] [Module ℂ W] (B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ) : Prop :=
@@ -29,6 +32,9 @@ def sbs (g : I → GL (Fin 2) ℂ) : MvPolynomial (I × Fin 2) ℂ →ₐ[ℂ] M
   aeval fun p => ∑ j, X (p.1, j) * C ((g p.1 : Matrix (Fin 2) (Fin 2) ℂ) j p.2)
 
 omit [Fintype I] in
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp [sbs]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => rw [map_mul, map_mul, map_mul, hp]`. Simplify using `[sbs, act]`.
+-/
 theorem eval_sbs (g : I → GL (Fin 2) ℂ) (x : I × Fin 2 → ℂ) (P : MvPolynomial (I × Fin 2) ℂ) :
     eval x (sbs g P) = eval (act g x) P := by
   induction P using MvPolynomial.induction_on with
@@ -37,10 +43,16 @@ theorem eval_sbs (g : I → GL (Fin 2) ℂ) (x : I × Fin 2 → ℂ) (P : MvPoly
   | mul_X p i hp => rw [map_mul, map_mul, map_mul, hp]; simp [sbs, act]
 
 omit [Fintype I] in
+/- English proof (translation)
+Apply the tactic sequence `funext p; obtain ⟨v, i⟩ := p; fin_cases i <;> simp [act]`.
+-/
 theorem act_one (x : I × Fin 2 → ℂ) : act 1 x = x := by
   funext p; obtain ⟨v, i⟩ := p; fin_cases i <;> simp [act]
 
 omit [Fintype I] in
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `[act, Matrix.mul_apply, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem act_mul (g h : I → GL (Fin 2) ℂ) (x : I × Fin 2 → ℂ) : act (g * h) x = act h (act g x) := by
   funext p; simp [act, Matrix.mul_apply, Fin.sum_univ_two]; ring
 
@@ -55,6 +67,9 @@ def detE (e : I → ℤ) : (I → GL (Fin 2) ℂ) →* ℂˣ where
   map_one' := by simp
   map_mul' g h := by simp [mul_zpow, Finset.prod_mul_distrib]
 
+/- English proof (translation)
+Introduce `s x`. Rewrite using `[eval_sbs, eval_sbs, ← h]`. Use `congr 2`. Use function extensionality and compare the values at `p`. Simplify using `[act, mul_add, mul_assoc]`.
+-/
 theorem sbs_mem {n : I → ℕ} (g : I → GL (Fin 2) ℂ) {P : MvPolynomial (I × Fin 2) ℂ} (h : P ∈ Wt n) : sbs g P ∈ Wt n := by
   intro s x
   rw [eval_sbs, eval_sbs, ← h]
@@ -73,6 +88,9 @@ def wRep (n : I → ℕ) (e : I → ℤ) : Representation ℂ (I → GL (Fin 2) 
     change eval x ((detE e (g * h) : ℂ) • sbs (g * h) P.1) = eval x ((detE e g : ℂ) • sbs g ((detE e h : ℂ) • sbs h P.1))
     rw [smul_eval, smul_eval, eval_sbs, eval_sbs, smul_eval, eval_sbs, act_mul, map_mul, Units.val_mul, mul_assoc]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `eval x ((detE e g : ℂ) • sbs g P.1) = _`. Rewrite using `[smul_eval, eval_sbs]`.
+-/
 theorem eval_wRep (n : I → ℕ) (e : I → ℤ) (g : I → GL (Fin 2) ℂ) (P : Wt n) (x : I × Fin 2 → ℂ) :
     eval x (wRep n e g P).1 = (detE e g : ℂ) * eval (act g x) P.1 := by
   change eval x ((detE e g : ℂ) • sbs g P.1) = _
@@ -82,6 +100,9 @@ def rowE (I : Type) : I × Fin 2 → ℂ := fun p => ![0, 1] p.2
 
 def tc (n : I → ℕ) : Wt n →ₗ[ℂ] ℂ := (aeval (rowE I)).toLinearMap.comp (Wt n).subtype
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tc_apply (n : I → ℕ) (P : Wt n) : tc n P = eval (rowE I) P.1 := rfl
 
 def eY (n : I → ℕ) : Wt n := ⟨∏ v, X (v, 1) ^ n v, fun s x => by simp [mul_pow, Finset.prod_mul_distrib]⟩
@@ -103,10 +124,16 @@ def psi (R : Representation ℂ G W) (t : W →ₗ[ℂ] ℂ) : (G → W) →ₗ[
   map_add' f f' := by funext g; simp
   map_smul' c f := by funext g; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem psi_apply (R : Representation ℂ G W) (t : W →ₗ[ℂ] ℂ) (f : G → W) (g : G) : psi R t f g = t (R g⁻¹ (f g)) := rfl
 
 def stab (j : Γ →* G) (H : Subgroup G) (g : G) : Subgroup Γ := H.comap ((MulAut.conj g⁻¹).toMonoidHom.comp j)
 
+/- English proof (translation)
+Simplify using `[stab]`.
+-/
 theorem mem_stab {j : Γ →* G} {H : Subgroup G} {g : G} {γ : Γ} : γ ∈ stab j H g ↔ g⁻¹ * j γ * g ∈ H := by
   simp [stab]
 
@@ -198,8 +225,14 @@ def resplit (Q : DefQuat F) : DefQuat F :=
       ext i j
       simp [Matrix.algebraMap_matrix_apply, apply_ite (D.ea v), h] }
 
+/- English proof (translation)
+Introduce `_ _` and use `rfl`.
+-/
 theorem cmp_resplit (Q : DefQuat F) : D.Cmp (D.resplit Q) := fun _ _ => rfl
 
+/- English proof (translation)
+The claim follows from `funext fun v => Units.ext (h v γ)`.
+-/
 theorem Cmp.toInf {D : LDat F ι} {Q : DefQuat F} (h : D.Cmp Q) (γ : Q.Dˣ) : Q.toInf γ = D.gl (Q.toFin γ) :=
   funext fun v => Units.ext (h v γ)
 

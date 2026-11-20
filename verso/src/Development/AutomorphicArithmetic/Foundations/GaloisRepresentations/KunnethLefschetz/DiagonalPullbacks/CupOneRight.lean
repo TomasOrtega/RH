@@ -10,11 +10,17 @@ namespace UpperTheory.Gal.KunnethLefschetz.Di.PUntw
 
 open LateralTheory.EtaleTrace.LRingPf
 
+/- English proof (translation)
+Introduce `U ⟨f⟩`. Establish `h` using `hq.map (Scheme.Hom.appTop f).hom`. Simplify using `using h`.
+-/
 private theorem inv_sch {q : ℕ} {X : Scheme.{0}} (hq : IsUnit (q : Γ(X, ⊤))) : Inv q (sch.obj X) := by
   intro U ⟨f⟩
   have h := hq.map (Scheme.Hom.appTop f).hom
   simpa using h
 
+/- English proof (translation)
+Establish `hc : cup q c ρ = Ht.cast (by ring) (by ring) (cup q ρ c)`. Rewrite using `[(h6 q E).2.2 c ρ]`. Simplify using the standard rewrite rules. Establish `hA : cup q (cup q a ρ) c = Ht.cast (by ring) (by ring) (cup q a (cup q ρ c))` using `(h6 q E).2.1 a ρ c`. Rewrite using `[hc, cup_cast_right, LRingPf.cast_cast, hA, LRingPf.cast_cast]`.
+-/
 private theorem swap0 (h6 : DivisorRingCompatibility) {q : ℕ} [NeZero q] {E : Spc} {m d n i t s w : ℤ}
     (a : Ht q E m i) (c : Ht q E d t) (ρ : Ht q E 0 s)
     (hn : m + (d + 0) = n) (hi : i + (t + s) = w) (hn' : m + 0 + d = n) (hi' : i + s + t = w) :
@@ -26,6 +32,11 @@ private theorem swap0 (h6 : DivisorRingCompatibility) {q : ℕ} [NeZero q] {E : 
     (h6 q E).2.1 a ρ c
   rw [hc, cup_cast_right, LRingPf.cast_cast, hA, LRingPf.cast_cast]
 
+/- English proof (translation)
+Establish `hc : cup q a (one q E) = Ht.cast (by ring) (by ring) (cup q (one q E) a)`. Rewrite using `[(h6 q E).2.2 a (one q E)]`. Simplify using the standard rewrite rules. Establish `hu : cup q (one q E) a = Ht.cast (by ring) (by ring) a` using `(h6 q E).1 hE a`. Rewrite using `[hc, hu, LRingPf.cast_cast, LRingPf.cast_cast]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem cup_one_right (h6 : DivisorRingCompatibility) {q : ℕ} [NeZero q] {E : Spc} (hE : Inv q E) {m t : ℤ}
     (a : Ht q E m t) (hn : m + 0 = m) (ht : t + 0 = t) : Ht.cast hn ht (cup q a (one q E)) = a := by
   have hc : cup q a (one q E) = Ht.cast (by ring) (by ring) (cup q (one q E) a) := by
@@ -35,10 +46,16 @@ private theorem cup_one_right (h6 : DivisorRingCompatibility) {q : ℕ} [NeZero 
   rw [hc, hu, LRingPf.cast_cast, LRingPf.cast_cast]
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem root_idx {q : ℕ} {X : Scheme.{0}} (ζ : Prim q Γ(X, ⊤)) {i j : ℤ} (h : i = j) :
     rootClass j ζ = Ht.cast rfl h (rootClass i ζ) := by
   subst h; rfl
 
+/- English proof (translation)
+Establish `hA : cup q (cup q a (rootClass i ζ)) (rootClass j ζ) = Ht.cast (by ring) (by ring) (cup q a (cup q (rootClass i ζ) (rootClass j ζ)))` using `(h6 q (sch.obj X)).2.1 a _ _`. Rewrite using `[hA, ((GlobalTheory.T.tateTwistCup_unit_and_primitiveRoot_classes q).2 X ζ i j).1, root_idx ζ hij.symm, ((GlobalTheory.T.tateTwistCup_unit_and_primitiveRoot_classes q).2 X ζ 0 0).2, LRingPf.cast_cast, LRingPf.cast_cast, cup_cast_right, LRingPf.cast_cast]`. Conclude with `cup_one_right h6 hE a (by ring) (by ring)`.
+-/
 private theorem two_roots (h6 : DivisorRingCompatibility) {q : ℕ} [NeZero q] {X : Scheme.{0}} (hE : Inv q (sch.obj X))
     (ζ : Prim q Γ(X, ⊤)) {m t i j : ℤ} (a : Ht q (sch.obj X) m t) (hij : i + j = 0)
     (hn : m + 0 + 0 = m) (ht : t + i + j = t) :
@@ -50,6 +67,11 @@ private theorem two_roots (h6 : DivisorRingCompatibility) {q : ℕ} [NeZero q] {
     LRingPf.cast_cast, LRingPf.cast_cast, cup_cast_right, LRingPf.cast_cast]
   exact cup_one_right h6 hE a (by ring) (by ring)
 
+/- English proof (translation)
+Use `Function.bijective_iff_has_inverse.mpr ⟨fun b => Ht.cast (add_zero m) (add_neg_cancel w) (cup q b (rootClass (-w) ζ)), ?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Simplify using `only`. Rewrite using `[cup_cast_left, LRingPf.cast_cast]`. Conclude with `two_roots h6 hE ζ a (add_neg_cancel w) (by ring) (by ring)`.
+
+Introduce `b`. Simplify using `only`. Rewrite using `[cup_cast_left, LRingPf.cast_cast]`. Conclude with `two_roots h6 hE ζ b (neg_add_cancel w) (by ring) (by ring)`.
+-/
 private theorem bij_root (h6 : DivisorRingCompatibility) {q : ℕ} [NeZero q] {X : Scheme.{0}} (hE : Inv q (sch.obj X))
     (ζ : Prim q Γ(X, ⊤)) (m w : ℤ) :
     Function.Bijective fun a : Ht q (sch.obj X) m 0 =>
@@ -65,6 +87,11 @@ private theorem bij_root (h6 : DivisorRingCompatibility) {q : ℕ} [NeZero q] {X
     rw [cup_cast_left, LRingPf.cast_cast]
     exact two_roots h6 hE ζ b (neg_add_cancel w) (by ring) (by ring)
 
+/- English proof (translation)
+Establish `h6` using `hI.a6ring`. Establish `hN` using `(hI.a6nat q).1 (sch.map r) a (rootClass ((0 : ℤ) - (j : ℤ)) ζ)`. Rewrite using `[hP hI q (ζ.map r.appTop.hom) x j]`. Simplify using `only [cup0]`. Rewrite using `[cup_cast_right, LRingPf.cast_cast, pull_cast, hN, hR q _ r ζ, cup_cast_left, LRingPf.cast_cast, root_idx (ζ.map r.appTop.hom) (show (0 : ℤ) - j = -j by ring), cup_cast_right, cup_cast_right, LRingPf.cast_cast]`.
+
+Conclude with `swap0 h6 _ _ _ _ _ _ _`.
+-/
 private theorem term (hI : In) (hR : RootNat) (hP : PowRoot) {q : ℕ} [NeZero q] {E Z : Scheme.{0}} (r : E ⟶ Z)
     (ζ : Prim q Γ(Z, ⊤)) (x : Ht q (sch.obj E) 2 1) (n : ℤ) (j : ℕ) (a : Ht q (sch.obj Z) (n - 2 * (j : ℤ)) 0) :
     cup0 q (sub_add_cancel n _) (pull _ (sch.map r) _ _ a)
@@ -83,6 +110,15 @@ private theorem term (hI : In) (hR : RootNat) (hP : PowRoot) {q : ℕ} [NeZero q
 end UpperTheory.Gal.KunnethLefschetz.Di.PUntw
 
 open UpperTheory.Gal.KunnethLefschetz.Di.PUntw in
+/- English proof (translation)
+Introduce `hI hR hP q _ N E Z r ζ x hT n`. Establish `h6` using `hI.a6ring`. Establish `hE : Inv q (sch.obj Z)` using `inv_sch ζ.2.1`. Set `Φ : ((j : Fin N) → Ht q (sch.obj Z) (n - 2 * ((j : ℕ) : ℤ)) 0) → ((j : Fin N) → Ht q (sch.obj Z) (n - 2 * ((j : ℕ) : ℤ)) ((0 : ℤ) - ((j : ℕ) : ℤ)))` to `fun a j => Ht.cast (add_zero _) (zero_add _) (cup q (a j) (rootClass ((0 : ℤ) - ((j : ℕ) : ℤ)) ζ))`. Establish `hΦ : Function.Bijective Φ`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `a b h`. Use function extensionality and compare the values at `j`. Conclude with `(bij_root h6 hE ζ _ _).1 (congrFun h j)`. Introduce `c choose a ha using fun j : Fin N => (bij_root h6 hE ζ _ ((0 : ℤ) - ((j : ℕ) : ℤ))).2 (c j)`.
+
+Conclude with `⟨a, funext ha⟩`. Establish `hc` using `(hT n 0).comp hΦ`. Use `hc using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`. Simplify using `only [Function.comp, Φ]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `term hI hR hP r ζ x n j (a j)`.
+-/
 theorem UpperTheory.Gal.KunnethLefschetz.Di.untw_holds :
     UpperTheory.Gal.KunnethLefschetz.Di.Untw := by
   intro hI hR hP q _ N E Z r ζ x hT n

@@ -85,6 +85,11 @@ def StepV (I : AllFam) (D : ℕ) : Prop :=
     ∀ (A : Matrix (Ix d.κ) (Ix d.κ) ℚ) (e : Fin (D + 1) → Ix d.κ), IsInvMat A →
       IsProjFrame (matAct A d.x) e → projDeg (matAct A d.x) e = 2 ^ D
 
+/- English proof (translation)
+Take `⟨A, e, hAinv, hPF⟩` from `hN d.Ω d.κ d.x d.m d.μ d.good`. Take `⟨m', μ', hTr, hG'⟩` from `hT d.Ω d.κ d.x d.m d.μ A e d.good hAinv hPF`. Take `⟨m₀, hPull, hG₀⟩` from `hM d.Ω d.κ (matAct A d.x) m' μ' e hG' hPF`. Use `⟨A, e, hAinv, hPF, ?_⟩` and prove the remaining obligations. Establish `h1` using `hC d.Ω d.κ (matAct A d.x) m₀ μ' e hG₀ hPF hPull`.
+
+Establish `h2` using `hA d.Ω d.κ (matAct A d.x) m₀ m' μ' e hPF hG₀ hG'`. Establish `h3` using `hB d.Ω d.κ d.x d.m m' d.μ μ' A e d.good hAinv hPF hTr hG'`. Use `((h1.add h2).sub h3).congr_left (fun n => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_projDeg_defect (I : AllFam) (D : ℕ) (hA : StepA I D) (hT : StepT D)
     (hB : StepB I D) (hN : StepN D) (hM : StepM D) (hC : StepC I D) (d : GDatum D) :
     ∃ (A : Matrix (Ix d.κ) (Ix d.κ) ℚ) (e : Fin (D + 1) → Ix d.κ), IsInvMat A ∧
@@ -101,6 +106,13 @@ theorem exists_projDeg_defect (I : AllFam) (D : ℕ) (hA : StepA I D) (hT : Step
   refine ((h1.add h2).sub h3).congr_left (fun n => ?_)
   ring
 
+/- English proof (translation)
+Take `⟨d₂, hchi, htop, hdeg⟩` from `hV`. Establish `hH : hsDefect D (chiP D) (hhOf I D) =o[atTop] fun n : ℕ => (n : ℝ) ^ (D + 1)`. Apply `hilbertSamuelDefect_projectiveSpace_isLittleO` to reduce the goal to its premises. Take `⟨A, e, hAi, hPF, hlo⟩` from `exists_projDeg_defect I D hA hT hB hN hM hC d₂`. Rewrite `hlo` using `[hdeg A e hAi hPF]`.
+
+Establish `hc : chi d₂.x d₂.m d₂.μ = fun m => chiP D (2 * m)` using `funext hchi`. Simplify using `only [defect, hc, htop] at hlo`. Move the coercions through the operations in `at hlo`. Conclude with `hlo`. Take `⟨A, e, -, -, hlo⟩` from `exists_projDeg_defect I D hA hT hB hN hM hC d`.
+
+Use `(hlo.add (hH.const_mul_left (projDeg (matAct A d.x) e : ℝ))).congr_left (fun n => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hs_of_steps (I : AllFam) (D : ℕ) (hA : StepA I D) (hT : StepT D) (hB : StepB I D)
     (hN : StepN D) (hM : StepM D) (hC : StepC I D) (hV : StepV I D) (d : GDatum D) :
     defect I D d.x d.m d.μ =o[atTop] pw D := by

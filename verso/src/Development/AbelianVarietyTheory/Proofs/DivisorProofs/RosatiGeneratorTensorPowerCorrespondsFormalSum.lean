@@ -12,38 +12,66 @@ namespace GlobalTheory.TensRos
 open GlobalTheory.TensBal GlobalTheory.TensAct
 variable {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : ℕ} {W : Matrix (Fin r) (Fin r) ℤ}
 
+/- English proof (translation)
+Simplify using `only [vecHom, Pi.add_apply, zpow_add, Finset.prod_mul_distrib]`. Conclude with `mul_mul_mul_comm _ _ _ _`.
+-/
 theorem vecHom_add (T : Tens D D' W) (u v : Vec r) : vecHom T (u + v) = vecHom T u * vecHom T v := by
   simp only [vecHom, Pi.add_apply, zpow_add, Finset.prod_mul_distrib]
   exact mul_mul_mul_comm _ _ _ _
 
+/- English proof (translation)
+Simplify using `[vecHom]`.
+-/
 theorem vecHom_zero (T : Tens D D' W) : vecHom T 0 = 1 := by
   simp [vecHom]
 
+/- English proof (translation)
+Rewrite using `[Fintype.prod_eq_single i (fun k hk => by rw [Pi.single_eq_of_ne hk, zpow_zero])]`. Rewrite using `[Pi.single_eq_same, zpow_one]`.
+-/
 theorem prod_single {G : Type} [CommGroup G] (f : Fin r → G) (i : Fin r) :
     ∏ k, f k ^ (Pi.single i (1 : ℤ) : Fin r → ℤ) k = f i := by
   rw [Fintype.prod_eq_single i (fun k hk => by rw [Pi.single_eq_of_ne hk, zpow_zero])]
   rw [Pi.single_eq_same, zpow_one]
 
+/- English proof (translation)
+Simplify using `only [vecHom, xv, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, zpow_zero, Finset.prod_const_one, _root_.mul_one]`. Conclude with `prod_single _ i`.
+-/
 theorem vecHom_xv (T : Tens D D' W) (i : Fin r) : vecHom T (xv i) = fst D'.P.A D'.P.A ≫ T.pr i := by
   simp only [vecHom, xv, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, zpow_zero, Finset.prod_const_one, _root_.mul_one]
   exact prod_single _ i
 
+/- English proof (translation)
+Simplify using `only [vecHom, zv, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, zpow_zero, Finset.prod_const_one, _root_.one_mul]`. Conclude with `prod_single _ i`.
+-/
 theorem vecHom_zv (T : Tens D D' W) (i : Fin r) : vecHom T (zv i) = snd D'.P.A D'.P.A ≫ T.pr i := by
   simp only [vecHom, zv, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, zpow_zero, Finset.prod_const_one, _root_.one_mul]
   exact prod_single _ i
 
+/- English proof (translation)
+Simplify using `only [vecHom, axv, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, zpow_zero, Finset.prod_const_one, _root_.mul_one]`. Rewrite using `[matAct_pr, GlobalTheory.MatrixAction.comp_finsetProd]`. Conclude with `Finset.prod_congr rfl fun k _ => (GrpObj.comp_zpow _ _ _).symm`.
+-/
 theorem vecHom_axv (T : Tens D D' W) (A : Matrix (Fin r) (Fin r) ℤ) (i : Fin r) :
     vecHom T (axv A i) = fst D'.P.A D'.P.A ≫ matAct T A ≫ T.pr i := by
   simp only [vecHom, axv, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, zpow_zero, Finset.prod_const_one, _root_.mul_one]
   rw [matAct_pr, GlobalTheory.MatrixAction.comp_finsetProd]
   exact Finset.prod_congr rfl fun k _ => (GrpObj.comp_zpow _ _ _).symm
 
+/- English proof (translation)
+Simplify using `only [vecHom, azv, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, zpow_zero, Finset.prod_const_one, _root_.one_mul]`. Rewrite using `[matAct_pr, GlobalTheory.MatrixAction.comp_finsetProd]`. Conclude with `Finset.prod_congr rfl fun k _ => (GrpObj.comp_zpow _ _ _).symm`.
+-/
 theorem vecHom_azv (T : Tens D D' W) (A : Matrix (Fin r) (Fin r) ℤ) (i : Fin r) :
     vecHom T (azv A i) = snd D'.P.A D'.P.A ≫ matAct T A ≫ T.pr i := by
   simp only [vecHom, azv, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, zpow_zero, Finset.prod_const_one, _root_.one_mul]
   rw [matAct_pr, GlobalTheory.MatrixAction.comp_finsetProd]
   exact Finset.prod_congr rfl fun k _ => (GrpObj.comp_zpow _ _ _).symm
 
+/- English proof (translation)
+Establish `hp` using `T.pr_hom`. Use `fin_cases a`. Use `⟨(fst D'.P.A D'.P.A ≫ matAct T A) * snd D'.P.A D'.P.A, rfl, fun k => ?_⟩ show _ = vecHom T (axv A k + zv k)` and prove the remaining obligations. Rewrite using `[MonObj.mul_comp, Category.assoc, vecHom_add, vecHom_axv, vecHom_zv]`. Use `⟨fst D'.P.A D'.P.A ≫ matAct T A, rfl, fun k => ?_⟩ show _ = vecHom T (axv A k)` and prove the remaining obligations.
+
+Rewrite using `[vecHom_axv, Category.assoc]`. Use `⟨snd D'.P.A D'.P.A, rfl, fun k => ?_⟩ show _ = vecHom T (zv k)` and prove the remaining obligations. Rewrite using `[vecHom_zv]`. Use `⟨fst D'.P.A D'.P.A * (snd D'.P.A D'.P.A ≫ matAct T A'), rfl, fun k => ?_⟩ show _ = vecHom T (xv k + azv A' k)` and prove the remaining obligations. Rewrite using `[MonObj.mul_comp, Category.assoc, vecHom_add, vecHom_xv, vecHom_azv]`.
+
+Use `⟨fst D'.P.A D'.P.A, rfl, fun k => ?_⟩ show _ = vecHom T (xv k)` and prove the remaining obligations. Rewrite using `[vecHom_xv]`. Use `⟨snd D'.P.A D'.P.A ≫ matAct T A', rfl, fun k => ?_⟩ show _ = vecHom T (azv A' k)` and prove the remaining obligations. Rewrite using `[vecHom_azv, Category.assoc]`.
+-/
 theorem ros_pr (T : Tens D D' W) (A A' : Matrix (Fin r) (Fin r) ℤ) (a : Fin 6) :
     ∃ q : D'.P.A ⊗ D'.P.A ⟶ D'.P.A, rosatiφ D'.P.A (matAct T A) (matAct T A') a = q.left ∧
       ∀ k, q ≫ T.pr k = vecHom T (rosVec A A' a k) := by
@@ -70,6 +98,15 @@ theorem ros_pr (T : Tens D D' W) (A A' : Matrix (Fin r) (Fin r) ℤ) (a : Fin 6)
 
 def lamV (u v : Vec r) : Fin 4 → Vec r := ![u + v, u, v, 0]
 
+/- English proof (translation)
+Take `⟨q, hq, hk⟩` from `ros_pr T A A' a`. Rewrite using `[hq]`. Use `fin_cases s`. Use `show q.left ≫ (T.pr i * T.pr j).left = _`. Rewrite using `[← Over.comp_left, MonObj.comp_mul, hk, hk]`.
+
+Use `show _ = (vecHom T (rosVec A A' a i + rosVec A A' a j)).left`. Rewrite using `[vecHom_add]`. Use `show q.left ≫ (T.pr i).left = _`. Rewrite using `[← Over.comp_left, hk]`. Both sides reduce to the same expression.
+
+Use `show q.left ≫ (T.pr j).left = _`. Rewrite using `[← Over.comp_left, hk]`. Both sides reduce to the same expression. Use `show q.left ≫ (1 : D'.P.A ⟶ D.P.A).left = _`. Rewrite using `[← Over.comp_left, MonObj.comp_one]`.
+
+Use `show _ = (vecHom T 0).left`. Rewrite using `[vecHom_zero]`.
+-/
 theorem ros_lam (T : Tens D D' W) (A A' : Matrix (Fin r) (Fin r) ℤ) (a : Fin 6) (i j : Fin r) (s : Fin 4) :
     rosatiφ D'.P.A (matAct T A) (matAct T A') a ≫ GlobalTheory.PolDeg.lamPts (T.pr i) (T.pr j) s =
       (vecHom T (lamV (rosVec A A' a i) (rosVec A A' a j) s)).left := by
@@ -88,6 +125,19 @@ theorem ros_lam (T : Tens D D' W) (A A' : Matrix (Fin r) (Fin r) ℤ) (a : Fin 6
     rw [← Over.comp_left, MonObj.comp_one]
     show _ = (vecHom T 0).left
     rw [vecHom_zero]
+/- English proof (translation)
+Introduce `U _ h`. Set `H : Vec r → Additive U` to `fun v => Additive.ofMul (h (vecHom T v).left)`. Set `F : (Vec r →₀ ℤ) →+ Additive U` to `Finsupp.liftAddHom fun v => zmultiplesHom (Additive U) (H v)`. Establish `hF1 : ∀ x, F (Finsupp.single x 1) = H x` using `fun x => by`. Simplify using `only [F, Finsupp.liftAddHom_apply_single, zmultiplesHom_apply, one_zsmul]`.
+
+Establish `hlam : ∀ u v, F (lam u v) = ∑ s : Fin 4, Oε s • H (lamV u v s)` using `fun u v => by`. Simplify using `only [lam, map_add, map_sub, hF1, Fin.sum_univ_four]`. Simplify using `[Oε, lamV]`. Normalize the expressions using the abelian group laws. Establish `hR : Additive.ofMul (∏ v : (sig W A A').support, h (vecHom T v.1).left ^ sig W A A' v.1) = F (sig W A A')`.
+
+Rewrite using `[ofMul_prod]`. Simplify using `only [ofMul_zpow]`. Rewrite using `[Finset.sum_coe_sort (sig W A A').support (fun v => sig W A A' v • H v)]`. Simplify using `only [F, Finsupp.liftAddHom_apply, zmultiplesHom_apply]`. Both sides reduce to the same expression.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Rewrite using `[hR]`. Simplify using `only [ofMul_prod, ofMul_zpow, sig, map_sum, map_zsmul, hlam]`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Fintype.sum_prod_type, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `show (rosatiε a * (W i j * Oε s)) • Additive.ofMul (h (rosatiφ D'.P.A (matAct T A) (matAct T A') a ≫ GlobalTheory.PolDeg.lamPts (T.pr i) (T.pr j) s)) = _`.
+
+Rewrite using `[ros_lam, ← _root_.mul_assoc, mul_smul]`.
+-/
 theorem formEq_sig (T : Tens D D' W) (A A' : Matrix (Fin r) (Fin r) ℤ) :
     FormEq (fun p : Fin 6 × ((Fin r × Fin r) × Fin 4) =>
         rosatiφ D'.P.A (matAct T A) (matAct T A') p.1 ≫ tensφ T.pr p.2)
@@ -122,6 +172,15 @@ theorem formEq_sig (T : Tens D D' W) (A A' : Matrix (Fin r) (Fin r) ℤ) :
     GlobalTheory.PolDeg.lamPts (T.pr i) (T.pr j) s)) = _
   rw [ros_lam, ← _root_.mul_assoc, mul_smul]
 
+/- English proof (translation)
+Introduce `R _ _ D D' r W T A A' u' hu' hn' Ξ hΞ hΞ0 z J J' hJ hJ' y y'`. Establish `hG : GlobalFnsSt` using `GlobalTheory.SemiRigid.globalFns`. Use `haveI := matAct_hom T A`. Use `haveI := matAct_hom T A'`. Establish `sj : Function.Surjective ((snd D'.P.A D'.P.A).left ≫ D'.P.A.hom).appTop.hom` using `surj_comp (surj_snd hG D'.P.isAb _) (hG _ _ D'.P.isAb).2`.
+
+Establish `he : zero2 D'.P.A ≫ (snd D'.P.A D'.P.A).left ≫ D'.P.A.hom = 𝟙 _`. Rewrite using `[Over.w]`. Conclude with `Over.w (lift η[D'.P.A] η[D'.P.A])`. Use `GlobalTheory.T.transported_generator_unique_globalFunctions_base D.P.isLB D'.P.isLB T.w T.w_gen (formEq_sig T A A') hu' hΞ _ (zero2 D'.P.A) he sj (fun s I I' hI hI' => ?_) _ (D'.pt2 y y') z J J' hJ hJ'` and prove the remaining obligations. Establish `o : (η[D'.P.A] : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ D'.P.A) = 1` using `by simp [Hom.one_def]`.
+
+Establish `p` using `prod_ros (matAct T A) (matAct T A') η[D'.P.A] η[D'.P.A] (fun q => isoV T.w s I I' q)`. Rewrite `p` using `[IsMonHom.one_hom, IsMonHom.one_hom, show η[D'.P.A] * η[D'.P.A] = η[D'.P.A] by rw [o, _root_.mul_one]]`. Establish `v'` using `val_corr hI' hn' (𝟙 _)`. Rewrite `v'` using `[val_pull hI', Category.id_comp, val_one]`. Rewrite using `[hΞ0 s I hI]`.
+
+Use `(congrArg₂ (· * ·) p v').trans (by simp)` and prove the remaining obligations.
+-/
 theorem ros_sig : ∀ (R : Type) [CommRing R] [IsDomain R] (D D' : DegPre R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (T : Tens D D' W) (A A' : Matrix (Fin r) (Fin r) ℤ) (u' : LB.Gen (LB.LinComb D'.P.L (rosatiφ D'.P.A (GlobalTheory.TensAct.matAct T A) (GlobalTheory.TensAct.matAct T A')) rosatiε)), u'.IsGen → LB.Gen.Corr D'.P.L _ _ _ _ (LB.pullGen D'.P.L _ _ u' (zero2 D'.P.A)) (LB.oneGen D'.P.L) → ∀ (Ξ : LB.Gen (LB.LinComb D.P.L (fun v : (GlobalTheory.TensBal.sig W A A').support => (GlobalTheory.TensBal.vecHom T v.1).left) (fun v => GlobalTheory.TensBal.sig W A A' v.1))), Ξ.IsGen → (∀ (z : (𝟙_ (Over (Spec (CommRingCat.of R)))).left) (J : ((𝟙_ (Over (Spec (CommRingCat.of R)))).left ⟶ D.P.A.left) → D.P.L.ι), Good D.P.L z J → val Ξ (zero2 D'.P.A) z J = 1) → ∀ (z : (TK R).left) (J : ((TK R).left ⟶ D.P.A.left) → D.P.L.ι) (J' : ((TK R).left ⟶ D'.P.A.left) → D'.P.L.ι), Good D.P.L z J → Good D'.P.L z J' → ∀ y y' : D'.X, (∏ a, GlobalTheory.TensBal.isoV T.w z J J' (D'.pt2 y y' ≫ rosatiφ D'.P.A (GlobalTheory.TensAct.matAct T A) (GlobalTheory.TensAct.matAct T A') a) ^ rosatiε a) * val u' (D'.pt2 y y') z J' = val Ξ (D'.pt2 y y') z J := by
   intro R _ _ D D' r W T A A' u' hu' hn' Ξ hΞ hΞ0 z J J' hJ hJ' y y'
   have hG : GlobalFnsSt := GlobalTheory.SemiRigid.globalFns

@@ -6,6 +6,27 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatt
 
 namespace GlobalTheory.CharVal.DetFrame
 
+/- English proof (translation)
+Rewrite using `[LinearEquiv.coe_det]`. Use `⟨val_le_of_span ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `a ⟨A, hA, rfl⟩`. Set `g : Sp E n →ₗ[E] Sp E n` to `Matrix.toLin' A`. Establish `hg : ∀ x ∈ stdAt E n P, ((f.symm : Sp E n →ₗ[E] Sp E n) ∘ₗ g) x ∈ stdAt E n P`.
+
+Introduce `x hx`. Rewrite using `[← hf]`. Take `⟨s, hs, hx⟩` from `(mem_locP P _ _).1 hx`. Use `(mem_locP P _ _).2 ⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `h1` using `hA _ hx`.
+
+Establish `h2 : A.mulVec (s • x) = s • f (((f.symm : Sp E n →ₗ[E] Sp E n) ∘ₗ g) x)`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Rewrite using `[Matrix.mulVec_smul]`. Both sides reduce to the same expression. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+
+Establish `h` using `GlobalTheory.Survey.StandardDeterminantUnits.val_det_le_one _ hg`. Establish `h3 : LinearMap.det (f : Sp E n →ₗ[E] Sp E n) * LinearMap.det ((f.symm : Sp E n →ₗ[E] Sp E n) ∘ₗ g) = A.det`. Rewrite using `[LinearMap.det_comp, ← mul_assoc, LinearEquiv.det_mul_det_symm, one_mul]`. Conclude with `LinearMap.det_toLin' A`. Rewrite using `[← h3, map_mul]`.
+
+Conclude with `mul_le_of_le_one_right' h`. Establish `h1 : ∀ i : Fin n, ∃ s : 𝓞 E, s ∉ P.asIdeal ∧ s • f (Pi.single i (1 : E)) ∈ N` using `fun i => (mem_locP P _ _).1 ((hf _).2 (le_locP P _ (by simpa using single_mem_stdLat (E := E) i 1))) choose s hs hs' using h1 set t : 𝓞 E := ∏ i, s i with ht`. Establish `htP : t ∉ P.asIdeal`. Introduce `hm`. Take `⟨i, -, h⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := P.isPrime)).1 hm`.
+
+Conclude with `hs i h`. Establish `ht' : ∀ i, t • f (Pi.single i (1 : E)) ∈ N`. Introduce `i`. Rewrite using `[ht, ← Finset.prod_erase_mul _ s (Finset.mem_univ i), mul_smul]`. Conclude with `N.smul_mem _ (hs' i)`.
+
+Set `g : Sp E n →ₗ[E] Sp E n` to `(algebraMap (𝓞 E) E t) • (f : Sp E n →ₗ[E] Sp E n)`. Use `⟨(LinearMap.toMatrix' g).det, Submodule.subset_span ⟨LinearMap.toMatrix' g, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Establish `h2 : (LinearMap.toMatrix' g).mulVec v = t • f v`. Rewrite using `[LinearMap.toMatrix'_mulVec]`.
+
+Simplify using `[g]`. Rewrite using `[h2]`. Use `clear h2`. Rewrite `hv` using `[stdLat_eq_span]`. Proceed by induction on `hv using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `ht' i`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, smul_add]`.
+
+Conclude with `N.add_mem hx hy`. Consider the case `smul r x _ hx`. Rewrite using `[← algebraMap_smul E r x, map_smul, algebraMap_smul, smul_comm]`. Conclude with `N.smul_mem r hx`. Rewrite using `[LinearMap.det_toMatrix', LinearMap.det_smul, map_mul, map_pow, (HeightOneSpectrum.valuation_eq_one_iff_notMem P).2 htP, one_pow, one_mul]`.
+-/
 theorem maxV_detLat (E : Type) [Field E] [NumberField E] [StarRing E] (n : ℕ) (N : Submodule (𝓞 E) (Sp E n))
     (P : HeightOneSpectrum (𝓞 E)) (f : Sp E n ≃ₗ[E] Sp E n)
     (hf : ∀ x, f x ∈ localization₂ P.asIdeal N ↔ x ∈ stdAt E n P) :

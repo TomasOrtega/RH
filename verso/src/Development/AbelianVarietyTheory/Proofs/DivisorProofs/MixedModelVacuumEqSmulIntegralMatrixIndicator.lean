@@ -20,6 +20,17 @@ namespace GlobalTheory.TopFlip.MixVacSmall
 open GlobalTheory.SmallDat GlobalTheory.SmallPlaces
 open GlobalTheory.BigDat (atW)
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.HalfOInt.mem_latO_iff_frMapO_int D S T ΛS ΛT βS βT hS hT fS fT {w} _ he (by simpa using hw) _ hx]`. Establish `hmap : ∀ Q, (frMapO S T βS βT x).map (cpt (D` using `D) Q) = ((loc Q βT)⁻¹).val * (x : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map (atW Q) * (loc Q βS).val := by`. Introduce `Q`. Rewrite using `[← map_inv]`. Unfold `frMapO`.
+
+Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Both sides reduce to the same expression. Unfold `IsIntM`. Use `⟨fun h a b => ?_, fun h a b => ?_⟩` and prove the remaining obligations. Use `(mem_OA_iff _).1 (h a b) w` as an intermediate fact.
+
+Rewrite using `[← hmap, Valuation.mem_integer_iff, (Good.isEquiv_Kw w).le_one_iff_le_one]`. Conclude with `this`. Use `(mem_OA_iff _).2 fun Q => ?_` and prove the remaining obligations. Distinguish the cases in `hQ : Q = w`. Substitute `hQ` using the available equality.
+
+Use `h a b` as an intermediate fact. Rewrite `this` using `[← hmap, Valuation.mem_integer_iff, (Good.isEquiv_Kw Q).le_one_iff_le_one]`. Conclude with `this`. Establish `h0 : (x : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map (atW Q) = 0`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h1` using `congrFun (congrFun (hmap Q) a) b`. Rewrite `h1` using `[h0, Matrix.mul_zero, Matrix.zero_mul, Matrix.map_apply, Matrix.zero_apply]`. Rewrite using `[h1]`. Conclude with `zero_mem _`.
+-/
 theorem mem_latO_iff_at {D : D7} {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT)
     {βS : GL (Fin S.rank) (Lev.EAf D)} {βT : GL (Fin T.rank) (Lev.EAf D)} (fS : IsFrame βS ΛS) (fT : IsFrame βT ΛT)
@@ -57,11 +68,23 @@ theorem mem_latO_iff_at {D : D7} {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) 
       rw [h1]
       exact zero_mem _
 
+/- English proof (translation)
+Substitute `hm hn` using the available equality. Conclude with `forall_comm`.
+-/
 theorem forall_cast_transpose {K : Type} {m m' n n' : ℕ} (hm : m' = m) (hn : n' = n) (A : Matrix (Fin m) (Fin n) K)
     (p : K → Prop) : (∀ r s, p ((A.submatrix (Fin.cast hm) (Fin.cast hn))ᵀ r s)) ↔ ∀ a b, p (A a b) := by
   subst hm hn
   exact forall_comm
 
+/- English proof (translation)
+Take `⟨_, ⟨es, hes, -⟩, -⟩` from `GlobalTheory.FunObj.LocTensor.exists_idemSum_locPl hL G t`. Establish `h1 : Formalism.L2.NTheta.IsIdemAt (atPl w 1) w` using `GlobalTheory.IdemAtPl.eq_atPl_of_isIdemAt (hes w hw) ▸ hes w hw`. Establish `he : IsIdemSum (atPl w 1) {w}` using `⟨⟨fun _ => atPl w 1, fun PP h => by rw [Finset.mem_singleton] at h; subst h; exact h1, by simp⟩, h1.1.2.1⟩`. Establish `hb : ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal` using `fun h => hst.2 w hw (by`. Use `Ideal.mul_mem_left _ ((D.host.d : ℕ) : 𝓞 D.host.E) h` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Use the proof step `ring)`. Establish `sW : IsSelfDualC (spW₁ G i j) (G.Λ (.grid (i : ℕ) (j : ℕ)))` using `(node_isV G hL (X := .grid (i : ℕ) (j : ℕ)) ⟨i.2.le, j.2.le⟩).sd`. Establish `sV : IsSelfDualC (spV G i j) (G.Λ (.grid (i : ℕ) ((j : ℕ) + 1)))` using `(node_isV G hL (X := .grid (i : ℕ) ((j : ℕ) + 1)) ⟨i.2.le, j.2⟩).sd`.
+
+Establish `sV₁ : IsSelfDualC (negSp (spV₁ G i j)) (G.Λ (.grid ((i : ℕ) + 1) (j : ℕ)))` using `isSelfDualC_neg (node_isV G hL (X := .grid ((i : ℕ) + 1) (j : ℕ)) ⟨i.2, j.2.le⟩).sd`. Establish `kA` using `mem_latO_iff_at sW sV (B.isFrame_β hL i.2.le j.2.le) (B.isFrame_β hL i.2.le j.2) he hb (mapA t e x) hx.1`. Establish `kB` using `mem_latO_iff_at sV₁ sW (B.isFrame_β hL i.2 j.2.le) (B.isFrame_β hL i.2.le j.2.le) he hb (mapB e x) hx.2`. Establish `cA` using `forall_cast_transpose (rank_vertex G t w (X := (i, j + 1)) ⟨i.2.le, j.2⟩) (rank_vertex G t w (X := (i, j)) ⟨i.2.le, j.2.le⟩) (((loc w (B.β i (j + 1)))⁻¹).val * (mapA t e x).map (atW w) * (loc w (B.β i j)).val) (· ∈ (ValuativeRel.valuation (Kw w)).integer)`. Establish `cB` using `forall_cast_transpose (rank_vertex G t w (X := (i, j)) ⟨i.2.le, j.2.le⟩) (rank_vertex G t w (X := (i + 1, j)) ⟨i.2, j.2.le⟩) (((loc w (B.β i j))⁻¹).val * (mapB e x).map (atW w) * (loc w (B.β (i + 1) j)).val) (· ∈ (ValuativeRel.valuation (Kw w)).integer)`.
+
+Rewrite using `[mixCoS_eq]`. Use `⟨fun h r s => ?_, fun h => ⟨hat, kA.2 (cA.1 fun r s => h r (.inl s)), kB.2 (cB.1 fun r s => h s (.inr r))⟩⟩` and prove the remaining obligations. Break down `s with s | s` into its components or cases. Conclude with `cA.2 (kA.1 h.2.1) r s`. Conclude with `cB.2 (kB.1 h.2.2) s r`.
+-/
 theorem mem_latPtS_iff {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀)
     (B : Frames G) (t : T) (i j : Fin D.R.m) (hst : SquareStanding G t) (e : Num G i j) {w : Pl D.host.E} (hw : w ∈ locPl G t)
     {x : PtS G i j} (hx : x ∈ mixHalfS e (atPl w 1)) (hat : At (evFin D.host.F (w.under (𝓞 D.host.F))) x) :
@@ -98,6 +121,13 @@ theorem mem_latPtS_iff {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.Ch
   · exact cA.2 (kA.1 h.2.1) r s
   · exact cB.2 (kB.1 h.2.2) s r
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL W B t i j M hst e Bs Γ X om om' h hT hti w hw I hI`. Establish `hG : Γ.M'.IsGood W.ψ` using `h.ψ ▸ hT.geo.hM'`. Take `⟨hid, -⟩` from `GlobalTheory.IdemAtPl.main hL (G := G) t`. Establish `hh` using `halves_split hL W t i j e Γ h.JW₁ h.JWW _ _ (hid w hw).1 (hid w hw).2`. Establish `hco` using `mixCoS_spec B t i j e w`.
+
+Establish `hv` using `lagr_vac hI (hG.vac _).1 (hG.vac _).2.1 (latPtS t e (w.under (𝓞 D.host.F)) : Set _) (fun γ hγ hγ' => VacFix.vac_fixed W M t i j e Bs Γ X om om' h hT _ (latPtS_le_latAtV t i j e Bs Γ X hti _) γ (.inr ⟨hγ, hγ'.elim (fun h => ⟨_, (hid w hw).1, h⟩) fun h => ⟨_, splitIdem_conj (hid w …`. Use function extensionality and compare the values at `Z`. Take `⟨x, hx, rfl⟩` from `hco.2.1 Z`. Establish `k` using `mem_latPtS_iff hL B t i j hst e hw hx (hh.1 x hx)`. Use `(hv.2 x hx).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hl : x ∈ latPtS t e (w.under (𝓞 D.host.F))`. Rewrite using `[Set.indicator_of_mem hl, Set.indicator_of_mem (s := {Z : MatB G t i j w | ∀ r s, Z r s ∈ (ValuativeRel.valuation (Kw w)).integer}) (a := mixCoS B t e w x) (k.1 hl), Pi.one_apply, mul_one]`. Rewrite using `[Set.indicator_of_notMem hl, Set.indicator_of_notMem (s := {Z : MatB G t i j w | ∀ r s, Z r s ∈ (ValuativeRel.valuation (Kw w)).integer}) (a := mixCoS B t e w x) (fun h' => hl (k.2 h')), mul_zero]`.
+-/
 theorem mixVac_eq_indicator : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ (W : G.Weil) (B : Frames G) (t : T) (i j : Fin D.R.m) (M : Vol G), SquareStanding G t →
     ∀ (e : Num G i j) (Bs : Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (X : Chars D.host.F D.host.E)
       (om : Rep D.sp.cm.sig Γ.V Γ.W) (om' : Rep D.sp.cm.sig Γ.V' Γ.W), IsTripleOf W M t i j e Bs Γ X →

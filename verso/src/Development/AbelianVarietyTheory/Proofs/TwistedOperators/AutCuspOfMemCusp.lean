@@ -20,6 +20,11 @@ namespace GlobalTheory.FinLift
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨T, hT, rfl⟩` from `Submodule.mem_map.1 hΦ`. Use `replace hT := (GlobalTheory.MultMem.mem_mult_iff D θ N.V N.S N.M ∅ 1 T).1 hT`. Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Simplify using `only [map_smul, LinearEquiv.coe_coe, PiTensorProduct.lift.tprod]`.
+
+Conclude with `⟨(GlobalTheory.MultMem.isAutFunSm_smul r (hT.aut f)).toIsAutFun, GlobalTheory.MultMem.isCuspFun_smul r (hT.cusp f)⟩`. Consider the case `add x y hx hy`. Rewrite using `[map_add]`. Conclude with `⟨GlobalTheory.RowLift.isAutFun_add hx.1 hy.1, GlobalTheory.MultMem.isCuspFun_add hx.1 hy.1 hx.2 hy.2⟩`.
+-/
 theorem autCusp_of_mem_cusp (N : Node D) (θ : InfFam D) {Φ : N.Maps} (hΦ : Φ ∈ N.Cusp θ) (v : SmT N.M) :
     IsAutFun N.V (Φ v) ∧ IsCuspFun N.V (Φ v) := by
   obtain ⟨T, hT, rfl⟩ := Submodule.mem_map.1 hΦ
@@ -32,6 +37,9 @@ theorem autCusp_of_mem_cusp (N : Node D) (θ : InfFam D) {Φ : N.Maps} (hΦ : Φ
     rw [map_add]
     exact ⟨GlobalTheory.RowLift.isAutFun_add hx.1 hy.1, GlobalTheory.MultMem.isCuspFun_add hx.1 hy.1 hx.2 hy.2⟩
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction φ (fun ψ => IsAutFun V ψ ∧ IsCuspFun V ψ) (fun a b ha hb => ⟨GlobalTheory.RowLift.isAutFun_add ha.1 hb.1, GlobalTheory.MultMem.isCuspFun_add ha.1 hb.1 ha.2 hb.2⟩) ⟨GlobalTheory.RowLift.isAutFun_zero V, fun r C hC μ 𝓕 hμ h𝓕 g => by simp⟩ h`.
+-/
 theorem autCusp_sum (V : HSp D) {ι : Type} (s : Finset ι) (φ : ι → GA D V → ℂ) (h : ∀ i ∈ s, IsAutFun V (φ i) ∧ IsCuspFun V (φ i)) :
     IsAutFun V (∑ i ∈ s, φ i) ∧ IsCuspFun V (∑ i ∈ s, φ i) :=
   Finset.sum_induction φ (fun ψ => IsAutFun V ψ ∧ IsCuspFun V ψ)
@@ -44,10 +52,22 @@ namespace GlobalTheory.FinLift
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `only [thetaKO, map_sum, Finset.sum_apply]`.
+-/
 theorem thetaKO_sum {S T : HSp D} (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (g : GA D S) (h : GA D T)
     {ι : Type} (s : Finset ι) (x : ι → WO S T → ℂ) : thetaKO om g h (∑ i ∈ s, x i) = ∑ i ∈ s, thetaKO om g h (x i) := by
   simp only [thetaKO, map_sum, Finset.sum_apply]
 
+/- English proof (translation)
+Use `choose F' hF' hI using fun l k => hK l (Fs k) (hF k)`. Establish `hsplit : ∀ h g, (∑ l, K l (ps l) h g) * ∑ k, Fs k (vs k) g = ∑ l, ∑ k, K l (ps l) h g * Fs k (vs k) g` using `fun h g => by rw [Finset.sum_mul_sum]`. Establish `hint : ∀ h, IntegrableOn (fun g => (∑ l, K l (ps l) h g) * ∑ k, Fs k (vs k) g) m.fd m.ν` using `fun h => by`. Repeatedly rewrite using `[hsplit]`. Conclude with `integrable_finset_sum _ fun l _ => integrable_finset_sum _ fun k _ => (hI l k (ps l) (vs k) h).1`.
+
+Establish `heq : (fun h => ∫ g in m.fd, (∑ l, K l (ps l) h g) * ∑ k, Fs k (vs k) g ∂m.ν) = ∑ l, ∑ k, F' l k (It (ps l) (vs k))`. Use function extensionality and compare the values at `h`. Repeatedly rewrite using `[hsplit]`. Rewrite using `[integral_finset_sum _ fun l _ => integrable_finset_sum _ fun k _ => (hI l k (ps l) (vs k) h).1]`. Simplify using `only [Finset.sum_apply]`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[integral_finset_sum _ fun k _ => (hI l k (ps l) (vs k) h).1]`. Conclude with `Finset.sum_congr rfl fun k _ => (hI l k (ps l) (vs k) h).2`. Rewrite using `[heq]`. Conclude with `⟨hint, autCusp_sum B.V _ _ fun l _ => by`.
+
+Simplify `autCusp_sum B.V _ _ fun k _ => autCusp_of_mem_cusp B θ (hF' l k) _⟩` using `only [Finset.sum_apply]`.
+-/
 theorem lift_finSum {θ : InfFam D} {A B : Node D} {P : Type} {m : A.MeasDat} {n : ℕ}
     (K : Fin n → P → GA D B.V → GA D A.V → ℂ) (It : P → SmT A.M → SmT B.M)
     (hK : ∀ l, GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsMult θ m (K l) It) (ps : Fin n → P) {n' : ℕ} (Fs : Fin n' → A.Maps)

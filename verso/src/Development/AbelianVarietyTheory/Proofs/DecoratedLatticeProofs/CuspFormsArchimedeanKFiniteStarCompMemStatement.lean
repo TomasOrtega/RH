@@ -11,5 +11,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.CuspConj.conj_comp_mem_A0 | exact GlobalTheory.Core.Rk.CuspConj.conj_comp_mem_A0 | (intros; apply GlobalTheory.Core.Rk.CuspConj.conj_comp_mem_A0 <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cuspFormsArchimedeanKFinite_star_comp_mem : ∀ (D : D7) (θ : InfFam D) (A : HSp D) (cA : CptF A), IsInfFam θ → ∀ u ∈ A0 θ A cA, (fun g => conj (u g)) ∈ A0 θ A cA := by
   first | exact @GlobalTheory.Core.Rk.CuspConj.conj_comp_mem_A0 | exact GlobalTheory.Core.Rk.CuspConj.conj_comp_mem_A0 | (intros; apply GlobalTheory.Core.Rk.CuspConj.conj_comp_mem_A0 <;> assumption)

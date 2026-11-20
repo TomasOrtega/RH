@@ -26,6 +26,11 @@ open Formalism.L2.Col (IntAt redP qOf)
 section Loc
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih`. Rewrite using `[TypeDatum.iter_succ, TypeDatum.iter_succ, ih (by omega)]`. Establish `key : ∀ (Q : TypeDatum k (Ix r t j)) (a b : kˣ →* ℂˣ) (ha : IsTame a) (hb : IsTame b), a = b → TypeDatum.step t Q a ha = TypeDatum.step t Q b hb` using `fun Q a b ha hb E => by subst E; rfl`.
+
+Rewrite using `[key _ _ _ (h _) (h' _) (e (j + 1) (by omega) hj)]`.
+-/
 theorem iter_le {r t : Type} [Fintype r] [DecidableEq r] [Fintype t] [DecidableEq t] (P : TypeDatum k r) {μ μ' : ℕ → kˣ →* ℂˣ}
     (h : ∀ j, IsTame (μ j)) (h' : ∀ j, IsTame (μ' j)) (n : ℕ) (e : ∀ j, 1 ≤ j → j ≤ n → μ j = μ' j) (j : ℕ) (hj : j ≤ n) :
     P.iter t μ h j = P.iter t μ' h' j := by
@@ -37,6 +42,13 @@ theorem iter_le {r t : Type} [Fintype r] [DecidableEq r] [Fintype t] [DecidableE
         TypeDatum.step t Q a ha = TypeDatum.step t Q b hb := fun Q a b ha hb E => by subst E; rfl
     rw [key _ _ _ (h _) (h' _) (e (j + 1) (by omega) hj)]
 
+/- English proof (translation)
+Establish `hΦ : ∀ j, j ≤ s + 1 → S.P.iterPhi t μ h j = S.P.iterPhi t S.μ S.tame j` using `fun j hj => by`. Unfold `TypeDatum.iterPhi`. Rewrite using `[iter_le S.P h S.tame (s + 2) e j (by omega), e (j + 1) (by omega) (by omega)]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j a ha`.
+
+Express the relevant statement in the definitionally equal form `LatFrame.transport _ _ (S.P.iterPhi t μ h j) = LatFrame.transport _ _ (S.P.iterPhi t S.μ S.tame j)`. Rewrite using `[hΦ j (by omega)]; rfl`. Express the relevant statement in the definitionally equal form `LatFrame.transport _ _ (S.P.iterPhi t μ h _) = LatFrame.transport _ _ (S.P.iterPhi t S.μ S.tame _)`. Rewrite using `[hΦ _ le_rfl]`. Both sides reduce to the same expression.
+
+Use function extensionality and compare the values at `j a ha`. Express the relevant statement in the definitionally equal form `(S.P.iter t μ h j).toLevel.map _ = (S.P.iter t S.μ S.tame j).toLevel.map _`. Rewrite using `[iter_le S.P h S.tame (s + 2) e j (by omega)]; rfl`.
+-/
 theorem withMu_le {s κ : ℕ} (S : SymData k s κ) (μ : ℕ → kˣ →* ℂˣ) (h : ∀ j, IsTame (μ j))
     (e : ∀ j, 1 ≤ j → j ≤ s + 2 → μ j = S.μ j) (t : Type) [Fintype t] [DecidableEq t] :
     ((withMu S μ h).T t).Phi = (S.T t).Phi ∧ ((withMu S μ h).T t).PhiTop = (S.T t).PhiTop ∧
@@ -62,6 +74,17 @@ def SameData {s κ : ℕ} (S' S : SymData k s κ) (τ : ℕ) (ν : Measure k) : 
     (S'.T (Fin τ)).xiTop (box _ (1 : kˣ)) S'.ψ ν (-1) (Submodule.Quotient.mk (S'.y0 (Fin τ))) =
       (S.T (Fin τ)).xiTop (box _ (1 : kˣ)) S.ψ ν (-1) (Submodule.Quotient.mk (S.y0 (Fin τ)))
 
+/- English proof (translation)
+Take `⟨S₁, h1, h2, -, -, h5, h6⟩` from `exists_symData_of_unif_congr S ϖ' h`. Take `⟨-, h7, h8, h9⟩` from `h6 τ ν`. Set `μ : ℕ → kˣ →* ℂˣ` to `fun j => if j ≤ s + 2 then S₁.μ j else 1`. Establish `ht : ∀ j, IsTame (μ j)` using `fun j => by`. Simplify using `only [μ]`.
+
+Use `split_ifs`. Conclude with `S₁.tame j`. Conclude with `fun _ _ => rfl`. Establish `e : ∀ j, 1 ≤ j → j ≤ s + 2 → μ j = S₁.μ j` using `fun j _ hj => if_pos hj`. Take `⟨w1, w2, w3⟩` from `withMu_le S₁ μ ht e (Fin τ)`.
+
+Use `⟨withMu S₁ μ ht, h1, h2, fun j hj => (if_pos hj).trans (congrFun h5 j), fun j hj => if_neg (by omega), fun j c H => ?_, fun x₀ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← h7]`. Use function extensionality and compare the values at `x₀`. Establish `hbas : ((withMu S₁ μ ht).T (Fin τ)).bas = (S₁.T (Fin τ)).bas` using `rfl`. Establish `hψ : (withMu S₁ μ ht).ψ = S₁.ψ` using `rfl`.
+
+Simplify using `only [Chain.entry, xi, StepData.flat, GlobalTheory.EntryBridge.om_one_one, w1, w3, hbas, hψ]`. Rewrite using `[← h8]`. Simplify using `only [Chain.Psi, GlobalTheory.EntryBridge.om_one_one, w1]`. Both sides reduce to the same expression. Rewrite using `[← h9]`.
+
+Unfold `Chain.xiTop`. Rewrite using `[w2]`. Both sides reduce to the same expression.
+-/
 theorem exists_normal {s κ : ℕ} (S : SymData k s κ) (ϖ' : kˣ) (h : valuation k ((ϖ' : k) - (S.ϖ : k)) < valuation k (S.ϖ : k))
     (τ : ℕ) (ν : Measure k) : ∃ S' : SymData k s κ, S'.ϖ = ϖ' ∧ S'.ψ = S.ψ ∧ (∀ j, j ≤ s + 2 → S'.μ j = S.μ j) ∧
       (∀ j, s + 2 < j → S'.μ j = 1) ∧ SameData S' S τ ν := by
@@ -91,6 +114,9 @@ theorem exists_normal {s κ : ℕ} (S : SymData k s κ) (ϖ' : kˣ) (h : valuati
     rfl
 
 omit [MeasurableSpace k] [BorelSpace k] in
+/- English proof (translation)
+Unfold `GlobalTheory.EntryBridge.crd LatFrame.coords`. Rewrite using `[GlobalTheory.SymSupport.typeFrame_inv_val, GlobalTheory.SymSupport.typeFrame_val]`. Use `⟨_, by simp only [typeFrame, submatrix_apply, Equiv.refl_apply, diagonal_mul, mul_diagonal]; exact mul_right_comm _ _ _, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, b, rfl, rfl⟩`. Simplify using the standard rewrite rules.
+-/
 theorem crd_inl {s κ : ℕ} (S : SymData k s κ) {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c c' : ℕ}
     (x : Matrix (n ⊕ Fin c) (n' ⊕ Fin c') k) (r s') :
     ∃ d : k, GlobalTheory.EntryBridge.crd S x r s' = d * x r s' ∧ ((∃ a b, r = .inl a ∧ s' = .inl b) → d = 1) := by
@@ -102,6 +128,19 @@ theorem crd_inl {s κ : ℕ} (S : SymData k s κ) {n n' : Type} [Fintype n] [Dec
 
 omit [BorelSpace k] in
 
+/- English proof (translation)
+Use `UnifChange.apply_mul_KOne (fun x hx => ?_) (fun x y hy => ?_) ha hb x` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Apply `hx` to reduce the goal to its premises. Simplify using `only [Chain.entry, xi, StepData.flat, GlobalTheory.EntryBridge.om_one_one, RootEx.opE]`. Use `mul_eq_zero_of_right _ (integral_eq_zero_of_ae (Filter.Eventually.of_forall fun e => ?_))` and prove the remaining obligations.
+
+Establish `: (S.T t).Phi j (c + 1) (by omega) (affPt 1 x e) = 0`. Assume the negation of the conclusion as `h0`. Use `hn fun r s' => ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.EntryBridge.phi_supp S t j (c + 1) _ _ h0 (.inl r) (.inl s')`. Take `⟨d, hd, hd'⟩` from `crd_inl S (affPt 1 x e) (.inl r) (.inl s')`.
+
+Rewrite `h1` using `[hd, hd' ⟨_, _, rfl, rfl⟩, one_mul]`. Simplify `h1` using `[affPt, basePt, Free]`. Simplify using `only [this, zero_mul, Pi.zero_apply]`. Simplify using `only [Chain.entry, xi, StepData.flat, GlobalTheory.EntryBridge.om_one_one, RootEx.opE]`. Use `congrArg _ (integral_congr_ae (Filter.Eventually.of_forall fun e => ?_))` and prove the remaining obligations.
+
+Establish `e1 : affPt 1 (x + y) e = affPt 1 x e + fromBlocks y 0 0 0`. Unfold `affPt basePt`. Apply the tactic sequence `ext (r | r) (s' | s') <;> simp [add_right_comm]`. Establish `e2 : ch (affPt 1 (x + y) e) = ch (affPt 1 x e)`. Rewrite using `[e1]`.
+
+Simplify using `[ch]`. Simplify using `only`. Rewrite using `[e2, e1, GlobalTheory.EntryBridge.phi_per]`. Introduce `r s'`. Take `⟨d, hd, hd'⟩` from `crd_inl S (fromBlocks y 0 0 0 : Matrix (_ ⊕ Fin (c + 1)) (_ ⊕ Fin (c + 1 + 1)) k) r s'`.
+
+Rewrite using `[hd]`. Apply the tactic sequence `rcases r with r | r <;> rcases s' with s' | s'`. Rewrite using `[hd' ⟨_, _, rfl, rfl⟩, one_mul]`. Conclude with `hy r s'`. Apply the tactic sequence `all_goals simp`.
+-/
 theorem entry_mul_KOne {s κ : ℕ} (S : SymData k s κ) (t : Type) [Fintype t] [DecidableEq t] (ν : Measure k) (j c : ℕ) (H : j + 1 + c = s)
     {a : GL (XIx (Fin κ) t (j + 1)) k} (ha : a ∈ KOne k _) {b : GL (XIx (Fin κ) t j) k} (hb : b ∈ KOne k _) (x) :
     (S.T t).entry S.ψ ν j c H 1 1 (a.val * x * b.val) = (S.T t).entry S.ψ ν j c H 1 1 x := by
@@ -139,6 +178,15 @@ end Loc
 section Comparison₂
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Set `ι : D.host.E →+* k` to `q.pr.comp (incA D)`. Take `⟨ϖ, hϖ, hu⟩` from `LevelData.exists_unif (ι := ι) hi hd hsq`. Take `⟨r, -, hr0, hr⟩` from `GlobalTheory.SymTieExists.exists_residue PP ι hi hd`. Establish `hch' : ∀ y, (ψk y : ℂ) = psiE ψ (q.sec (ι D.host.xi0 * y))` using `fun y => (hch y).trans (congrArg _ (LevelData.mul_sec q _ y))`. Establish `hx1 : ι D.host.xi0 ∈ 𝒪[k]` using `(hi _).2 hxi`.
+
+Use `haveI : Finite (𝓞 D.host.E ⧸ PP.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ PP.ne_bot`. Use `letI := Fintype.ofFinite (𝓞 D.host.E ⧸ PP.asIdeal)`. Set `e` to `ZMod.ringEquivOfPrime (𝓞 D.host.E ⧸ PP.asIdeal) hp (by rw [← Nat.card_eq_fintype_card]; rfl)`. Take `⟨b, hb⟩` from `ZMod.intCast_surjective (e.symm (redP PP D.host.xi0 * redP PP a))`. Establish `hb' : redP PP D.host.xi0 * redP PP a = b` using `by rw [← e.apply_symm_apply (_ * _), ← hb, map_intCast]`.
+
+Establish `ha1 : ι a ∈ 𝒪[k]` using `(hi _).2 ha`. Establish `h1` using `(hr0 (⟨_, hx1⟩ * ⟨_, ha1⟩ - b)).1 (by rw [map_sub, map_mul, hr, hr, map_intCast, hb', sub_self])`. Establish `h2 : valuation k (ι D.host.xi0 * ι a - b) ≤ valuation k (ϖ : k)` using `(hu _).1 h1`. Rewrite using `[hW _ b hb', hch', ← map_mul]`. Use `GlobalTheory.SplitDegOneChar.psiE_sec_pr_eq_exp D k q PP _ hp rfl hsq hv hi ψ hψ _ b ((hi _).1 ?_)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `ι _ ∈ _`. Rewrite using `[← mul_div_assoc, ← sub_div, map_div₀, ← hϖ, map_sub, map_mul, map_intCast, Valuation.mem_integer_iff, map_div₀]`. Conclude with `div_le_one_of_le₀ h2 zero_le`.
+-/
 theorem psi_tie (q : GlobalTheory.FinPl.SplitPt D k) {PP : Formalism.L2.DIV.Pl D.host.E}
     (hv : q.v = PP.under (𝓞 D.host.F)) (hi : ∀ x, (ofSplit q).pr x ∈ 𝒪[k] ↔ IntAt PP x) (hd : DenseRange (ofSplit q).pr)
     (hp : (qOf PP).Prime) (hsq : ((qOf PP : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal ^ 2)
@@ -167,6 +215,13 @@ theorem psi_tie (q : GlobalTheory.FinPl.SplitPt D k) {PP : Formalism.L2.DIV.Pl D
   rw [← mul_div_assoc, ← sub_div, map_div₀, ← hϖ, map_sub, map_mul, map_intCast, Valuation.mem_integer_iff, map_div₀]
   exact div_le_one_of_le₀ h2 zero_le
 
+/- English proof (translation)
+Take `⟨ma, hma⟩` from `Witness.exists_isComp (ofSplit q) (μ j)`. Take `⟨mb, hmb⟩` from `Witness.exists_isComp (ofSplit q) η`. Establish `e1` using `(GlobalTheory.T.splitPoint_heckeComponent_tame_and_residual D k q PP hid hi hd _ _ _ _ h1 h2 hma).2 a u r ha hr hu`. Establish `e2` using `(GlobalTheory.T.splitPoint_heckeComponent_tame_and_residual D k q PP hid hi hd _ _ _ _ h3 h4 hmb).2 a u r ha hr hu`. Establish `f0` using `hm u (SymChainAt.idl q u) rfl`.
+
+Establish `f1` using `hma u (SymChainAt.idl q u) rfl`. Establish `f2` using `hmb u (SymChainAt.idl q u) rfl`. Rewrite `f1` using `[e1]`. Rewrite `f2` using `[e2]`. Use `Units.ext (f0.trans ?_)` and prove the remaining obligations.
+
+Unfold `Lift.chrStep`. Apply the tactic sequence `split_ifs <;> simp [← f1, ← f2]`.
+-/
 theorem chi_tie (q : GlobalTheory.FinPl.SplitPt D k) {PP : Formalism.L2.DIV.Pl D.host.E} (hid : Formalism.L2.NTheta.IsIdemAt q.e PP)
     (hi : ∀ x, (ofSplit q).pr x ∈ 𝒪[k] ↔ IntAt PP x) (hd : DenseRange (ofSplit q).pr)
     (μ : ℕ → (AE D)ˣ →* Circle) (η : (AE D)ˣ →* Circle) (j : ℕ) {H Hη : Formalism.L2.Host.HChar D.host.E}
@@ -194,6 +249,13 @@ variable {E k : Type} [Field E] [NumberField E] [StarRing E] [Field k] [Valuativ
 
 omit [NumberField E] [StarRing E] in
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `hγ : F.γ = (1 : Matrix (Fin n) (Fin n) k).submatrix e id`. Establish `: F.β * (1 : Matrix (Fin n) (Fin n) k).submatrix e id = 1`. Rewrite using `[hF, submatrix_mul_equiv, Matrix.one_mul, submatrix_id_id]`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨g, hg, e1⟩` from `exists_mul_KOne (g := (1 : GL Y k)) (one_mem _) (M := F.γ * Matrix.of fun r c => ι (f (Pi.single (e.trans (finCongr rfl) c) 1) (finCongr rfl r))) fun r c => by`. Use `hf (e r) (e c)` as an intermediate fact. Rewrite `this` using `[map_sub, apply_ite ι, map_one, map_zero]`. Use `this using 2` and compare the differences between its conclusion and the goal. Simplify using `[hγ, Matrix.mul_apply, Matrix.one_apply]`.
+
+Conclude with `⟨g, hg, by rw [← e1, one_mul]⟩`.
+-/
 theorem exists_KOne (ι : E →+* k) {Y : Type} [Fintype Y] [DecidableEq Y] {a n : ℕ} (h : n = a) (F : Frame k n Y) (e : Y ≃ Fin n)
     (hF : F.β = (1 : Matrix (Fin n) (Fin n) k).submatrix id e) (f : (Fin a → E) ≃ₗ[E] (Fin a → E))
     (hf : ∀ r s, valuation k (ι (f (Pi.single s 1) r - if r = s then 1 else 0)) < 1) :
@@ -212,6 +274,9 @@ theorem exists_KOne (ι : E →+* k) {Y : Type} [Fintype Y] [DecidableEq Y] {a n
       simp [hγ, Matrix.mul_apply, Matrix.one_apply]
   exact ⟨g, hg, by rw [← e1, one_mul]⟩
 
+/- English proof (translation)
+Take `⟨g, hg, e1⟩` from `exists_KOne ι hT FT e hFT f' hf'`. Take `⟨g', hg', e2⟩` from `exists_KOne ι hS FS e' hFS f hf`. Use `⟨g⁻¹, inv_mem hg, g', hg', fun z => ?_⟩` and prove the remaining obligations. Establish `h` using `StdMatch.mul_toLoc ι hS hT f f' (e'.trans (finCongr hS)) (e.trans (finCongr hT)) (Matrix.of fun r c => ι (f (Pi.single (e'.trans (finCongr hS) c) 1) (finCongr hS r))) (Matrix.of fun r c => ι (f' (Pi.single (e.trans (finCongr hT) c) 1) (finCongr hT r))) (fun _ _ => rfl) (fun _ _ = …`. Rewrite using `[e2, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc FS.β, FS.βγ, Matrix.one_mul, Matrix.mul_assoc, ← h, ← Matrix.mul_assoc FT.γ, ← e1, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`.
+-/
 theorem toLoc_inFr (ι : E →+* k) {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] {a b nS nT : ℕ} (hS : nS = a)
     (hT : nT = b) (FS : Frame k nS Y') (FT : Frame k nT Y) (e' : Y' ≃ Fin nS) (e : Y ≃ Fin nT)
     (hFS : FS.β = (1 : Matrix (Fin nS) (Fin nS) k).submatrix id e') (hFT : FT.β = (1 : Matrix (Fin nT) (Fin nT) k).submatrix id e)
@@ -235,6 +300,11 @@ end Mat
 section Tuple
 open Formalism.L2.Col
 
+/- English proof (translation)
+Take `⟨P, h1⟩` from `P`. Take `⟨P', h2⟩` from `P'`. Take `rfl : P = P'` from `h`. Unfold `XiAt E1at`. Rewrite using `[funext (GlobalTheory.SymBridge.PsiStep.omPhi_one_one Ch sel mu _ _ i), funext (GlobalTheory.SymBridge.PsiStep.omPhi_one_one Ch sel mu' _ _ i)]`.
+
+Unfold `PhiAt twCst`. Simplify using `only [if_pos hP]`. Both sides reduce to the same expression.
+-/
 theorem xiAt_tw_eq {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu mu' : Formalism.L2.DIV.Tup X.F X.E X.K S) (G : ChGlob X R.m)
     (P : rowSG Pr sel mu) (P' : rowSG Pr sel mu') (h : P.1 = P'.1) (hP : P.1 ∈ Pr.vGs) (i : ℕ) :
@@ -257,6 +327,23 @@ variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hs : (a.G n).s + 1 + 1 = B.R.m` using `(a.G n).hs`. Take `⟨hid, hv⟩` from `hR.idem n`. Take `⟨hi, hd⟩` from `SymChainAt.place_facts (a.G n).q hid`. Establish `hPm : (a.pl n).1 ∈ (B.primes X).vGs` using `(hW.lev.2.1 _).1 (a.pl n).2`. Take `⟨i, g1, g2, -, g4, -⟩` from `LevelData.type_prime hPm`.
+
+Take `⟨ϖ, hϖq, -⟩` from `LevelData.exists_unif (ι := (a.G n).q.pr.comp (incA (I.rec7 l Z))) hi hd (g1 ▸ g4)`. Take `⟨S', e1, e2, e3, e4, e5⟩` from `exists_normal (a.G n).S ϖ (by rw [hϖq, map_natCast, Valuation.map_sub_swap]; exact hϖ) B.R.t (a.G n).ν`. Use `⟨S', e5, fun b P hP => ?_⟩` and prove the remaining obligations. Take `⟨PP, hPP⟩` from `P`. Take `rfl : PP = (a.pl n).1` from `hP`.
+
+Establish `ok` using `hW.tr.ok`. Establish `hok` using `ok.idx_ok b`. Establish `f1 : Formalism.L2.Col.psi0P I.Ch (a.pl n).1 = I.Ch.psi0 ⟨_, hPm⟩` using `dif_pos hPm`. Establish `f2 : Formalism.L2.Col.chiP I.Ch (a.pl n).1 = Formalism.L2.Col.chiAt I.Ch ⟨_, hPm⟩` using `dif_pos hPm`. Use `⟨hPm, hs.symm, hok.cst_ok, ok.sharp _, by rw [hW.tr.tw.cst_eq]; exact Nat.le_succ _, fun x hx => hok.psi0 ⟨_, hPP⟩ x hPm hx, ⟨hi, hd, rfl, e1 ▸ hϖq⟩, fun x hx => ?_, fun j x v h1 h2 h3 => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e2]`. Conclude with `psi_tie (a.G n).q hv hi hd (g1 ▸ g2) (g1 ▸ g4) (hok.xiUnitAtPrime ⟨_, hPP⟩).1 (pk W).ψ W.Q.stdChar B.embLL _ (fun z c h => f1 ▸ ok.weil ⟨_, hPm⟩ z c h) _ (a.G n).char x hx`. Rewrite using `[Formalism.L2.Col.LocE.unitV, dif_pos h2]`. Distinguish the cases in `hj : j < B.R.m`. Rewrite using `[e3 _ (by omega)]`.
+
+Establish `key` using `chi_tie (a.G n).q hid hi hd (pk W).mu0 (pk W).eta (j + 1) (c := (Units.map (B.embLL : B.fields.K →* ℂ)).comp (Formalism.L2.Col.chiP I.Ch (a.pl n).1 j)) (hW.tr.chr ⟨j, hj⟩) (fun y x c hx hy => Units.ext (by`. Establish `h` using `hok.mu0G ⟨j, hj⟩ ⟨_, hPm⟩ x y c hx hy`. Establish `e3 : Formalism.L2.Col.chiP I.Ch (a.pl n).1 j = I.Ch.chi ⟨j, hj⟩ ⟨_, hPm⟩` using `(congrFun f2 j).trans (dif_pos hj)`. Rewrite using `[e3]`. Conclude with `h.symm))`.
+
+Use the proof step `W.Q.charW.base.lev.eta`. Use the proof step `(fun y x c hx hy => ((pk W).C.isEta.unr (a.pl n).1 _ (by`. Establish `hy' : y ∉ (a.pl n).1.asIdeal` using `fun h => by haveI := (a.pl n).1.isPrime`. Conclude with `c.ne_zero (hy.trans (Ideal.Quotient.eq_zero_iff_mem.2 h))`. Express the relevant statement in the definitionally equal form `Valued.v (((x : (I.rec7 l Z).host.E)) : (a.pl n).1.adicCompletion (I.rec7 l Z).host.E) = 1`.
+
+Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', hx]`. Conclude with `((a.pl n).1.valuation_eq_one_iff_notMem (K := (I.rec7 l Z).host.E)).2 hy')).symm)`. Use `_ (hR.mu n (j + 1) (by omega) hj) x v h2.unit h1 rfl h3`. Rewrite using `[key]`. Both sides reduce to the same expression.
+
+Rewrite using `[e4 _ (by omega), ((congrFun f2 j).trans (dif_neg hj) : Formalism.L2.Col.chiP I.Ch (a.pl n).1 j = 1)]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_atType (hW : AllTrue W) (a : GeoAll W u) {row col} (hR : GRead (a.fam row col) a.G a.pl) (n : Fin a.n)
     (hϖ : valuation (a.G n).k ((((a.G n).S.ϖ : (a.G n).kˣ) : (a.G n).k) - ((qOf (a.pl n).1 : ℕ) : (a.G n).k)) <
       valuation (a.G n).k (((a.G n).S.ϖ : (a.G n).kˣ) : (a.G n).k)) :
@@ -307,6 +394,17 @@ theorem exists_atType (hW : AllTrue W) (a : GeoAll W u) {row col} (hR : GRead (a
     · rw [e4 _ (by omega), ((congrFun f2 j).trans (dif_neg hj) : Formalism.L2.Col.chiP I.Ch (a.pl n).1 j = 1)]
       simp
 
+/- English proof (translation)
+Use `letI := GlobalTheory.Mem.Col2.starE B`. Establish `hT` using `GlobalTheory.Mem.LevTwist.T_notMem_under_uSG B X I hI u P.1 (Finset.mem_union_left _ hP)`. Establish `hb` using `(GlobalTheory.Mem.Col2.MemChart.kStd_spec (X := X) (GlobalTheory.BasePrimes.primes_ok B X).1 u (B.R.N j)).2.1 _ hT`. Establish `hb' : Formalism.UG.bc (Formalism.UG.prV (E` using `B.host.E) (P.1.under (𝓞 B.host.F))) (TC.kStd X u (B.R.N j))⁻¹ = 1 := by`. Rewrite using `[map_inv, hb, inv_one]`.
+
+Establish `h1 : ∀ r s, adAt B.host.F P.1 (((TC.kStd X u (B.R.N j))⁻¹).1 r s) = if r = s then 1 else 0` using `fun r s => by`. Establish `he` using `congrArg (fun g => (g.1 : Matrix (Fin (B.R.N j)) (Fin (B.R.N j)) _) r s) hb'`. Simplify using `only [Units.val_one] at he`. Apply the tactic sequence `rw [AdT.LocSplice.adAt_eq_of_prV P.1 (z' := (1 : Matrix (Fin (B.R.N j)) (Fin (B.R.N j)) (AfE B.host.F B.host.E)) r s) (he.trans (by by_cases h : r = s <;> simp [Matrix.one_apply, h]))]`. Apply the tactic sequence `by_cases h : r = s <;> simp [Matrix.one_apply, h]`.
+
+Establish `h2` using `AdT.FrameMove.val_sub_lt_of_liftFr hp ⟨P.1, hP⟩ r s`. Establish `e3 : Formalism.L2.Col.frsF I.sel (I.tup b) p P = p.deco.1.liftFr ⟨P.1, hP⟩` using `dif_pos hP`. Rewrite using `[e3, ← HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Use `h2 using 2` and compare the differences between its conclusion and the goal. Establish `e4 : ∀ y : Fin (B.R.N j) → B.host.E, adAt B.host.F P.1 (GlobalTheory.Mem.Col2.pullV (TC.kStd X u (B.R.N j)) y r) = algebraMap B.host.E (P.1.adicCompletion B.host.E) (y r)` using `fun y => by`.
+
+Unfold `GlobalTheory.Mem.Col2.pullV`. Rewrite using `[Matrix.mulVec, dotProduct, map_sum]`. Simplify using `only [map_mul, h1, adAt_inclE]`. Simplify using the standard rewrite rules. Use `Eq.trans ?_ (congrArg (· - _) (e4 _).symm)` and prove the remaining obligations.
+
+Use `((algebraMap B.host.E (P.1.adicCompletion B.host.E)).map_sub _ _).trans (congrArg₂ (· - ·) rfl ?_)` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem frame_cong (hI : I.Ok) {b : I.ι} {j : ℕ} (p : Formalism.L2.Col.ChPt (Pr := B.primes X) (R := B.R) I.sel (I.tup b) u j)
     (hp : TC.PtOf (TC.kStd X u (B.R.N j)) (extTo I.SQ p)) (P : BadPr I b) (hP : P.1 ∈ (B.primes X).vGs) (r s : Fin (B.R.N j)) :
     P.1.valuation B.fields.E (Formalism.L2.Col.frsF I.sel (I.tup b) p P (Pi.single s 1) r - if r = s then 1 else 0) < 1 := by
@@ -348,6 +446,9 @@ def midXi (a : GeoAll W u) (n : Fin a.n) (j c : ℕ) (H : j + 1 + c = (a.G n).s)
   ((a.G n).S.T (Fin B.R.t)).entry (a.G n).S.ψ (a.G n).ν j c H 1 1
     (((a.G n).FX (j + 1) (by omega)).γ * z.map (ofSplit (a.G n).q).pr * ((a.G n).FX j (by omega)).β)
 
+/- English proof (translation)
+Establish `hs : (a.G n).s + 1 + 1 = B.R.m` using `(a.G n).hs`. Establish `hid` using `(hR.idem n).1`. Establish `hpf` using `SymChainAt.place_facts (a.G n).q hid`. Establish `hL : ∀ j, j ≤ B.R.m → IsSelfDualC _ (a.g.x j).L ∧ ((a.g.x j).L : Set (Fin ((I.rec7 l Z).sp.X j).rank → (I.rec7 l Z).host.E)) = intVec _ _` using `fun j hj => ⟨(ha.x j hj).sd, Set.ext (hat.pinX.xs j hj).2.2⟩`. Conclude with `⟨(a.G n).k, _, _, _, _, ofSplit (a.G n).q, _, _, _, _, _, _, _, _, _, hpf.2, hid, StdMatch.int_iff_up_mem (a.G n).q (a.G n).unit _ _ (hL _ (by omega)).1 (hL _ (by omega)).1 (hL _ (by omega)).2 (hL _ (by omega)).2 ((a.G n).latX _ _) ((a.G n).latX _ _), (SB _).smul_mem _ (opE_mem_S …`.
+-/
 theorem midXi_isLocFac {a : GeoAll W u} (ha : a.Is) (hat : a.True) {row col} (hR : GRead (a.fam row col) a.G a.pl) (n : Fin a.n)
     (j c : ℕ) (H : j + 1 + c = (a.G n).s) :
     IsLocFac (I.rec7 l Z) (pk W).ψ _ _ (a.pl n).1 ((a.G n).cg j) (midXi a n j c H) := by
@@ -365,6 +466,17 @@ theorem midXi_isLocFac {a : GeoAll W u} (ha : a.Is) (hat : a.True) {row col} (hR
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hs : (a.G n).s + 1 + 1 = B.R.m` using `(a.G n).hs`. Distinguish the cases in `h0 : ∃ (b : I.ι) (P : BadPr I b), P.1 = (a.pl n).1`. Use `swap`. Conclude with `⟨1, one_ne_zero, fun t _ _ _ _ P hP => absurd ⟨_, P, hP⟩ h0⟩`. Take `⟨b₀, P₀, hP₀⟩` from `h0`.
+
+Take `⟨S', hS, hA⟩` from `exists_atType hW a hR n hϖ`. Take `⟨e', he', hF'⟩` from `(ha.stdG n).1 j (by omega)`. Take `⟨e, he, hF⟩` from `(ha.stdG n).1 (j + 1) (by omega)`. Establish `hr'` using `rankN (I.rec7 l Z) j (Nat.le_of_succ_le hj)`. Establish `hr` using `rankN (I.rec7 l Z) (j + 1) hj`.
+
+Take `⟨C, hC0, hC⟩` from `GlobalTheory.EntryBridge.entry_agree _ _ _ _ _ _ _ _ _ _ _ _ _ _ (a.G n).ν (a.G n).unitVol (hA b₀ P₀ hP₀) j c H (e'.trans (finCongr hr')) (e.trans (finCongr hr)) he' he`. Use `⟨C⁻¹, inv_ne_zero hC0, fun t J hJ α γ P hP z => ?_⟩` and prove the remaining obligations. Establish `hPv : P.1 ∈ (B.primes X).vGs` using `(hA _ P hP).mem`. Establish `hh : ∀ i b, (I.idx (W.P.I.tup t)).h i b P = 1`. Rewrite using `[(hW.tr.tw (W.P.I.tup t)).2]`.
+
+Conclude with `fun i b => StdMatch.twSt_h _ _ _ _ _ _ b P hPv`. Establish `hlt` using `LevelData.val_lt_one_iff (hA _ P hP).tie.compl.int`. Establish `hfr : ∀ i, i + 1 < B.R.m → ∀ β r s, _` using `fun i hi β r s => (hlt _).2 (frame_cong hW.tr.ok (J.A.p0 i β).1.1 (hJ.std i hi β ▸ (hJ.is.base i (by omega) β).1) P hPv r s)`. Take `⟨g, hg, g', hg', hz⟩` from `toLoc_inFr ((a.G n).q.pr.comp (incA (I.rec7 l Z))) hr' hr _ _ e' e hF' hF _ _ (hfr j (by omega) (J.ι j α)) (hfr (j + 1) (by omega) (J.ι (j + 1) γ))`. Establish `key` using `(congrArg _ (hz z)).symm.trans (hC _)`.
+
+Rewrite `key` using `[hS.1, hW.tr.tw.cst_eq, xiAt_tw_eq _ _ _ _ _ P₀ P (hP₀.trans hP.symm) (hA _ P₀ hP₀).mem]`. Use `replace key := (entry_mul_KOne (a.G n).S (Fin B.R.t) (a.G n).ν j c H hg hg' _).symm.trans key`. Unfold `locXi`. Rewrite using `[dif_pos (by omega), hh, hh, eq_inv_mul_iff_mul_eq₀ hC0]`. Conclude with `(congrArg (fun y => C * B.embLL (Formalism.L2.Col.XiAt I.Ch I.sel (I.tup (W.P.I.tup t)) y j P 1 1 _)) (hW.tr.tw.cst_eq (W.P.I.tup t))).trans key.symm`.
+-/
 theorem locXi_eq_mul_midXi (hW : AllTrue W) {a : GeoAll W u} (ha : a.Is) {row col} (hR : GRead (a.fam row col) a.G a.pl) (n : Fin a.n)
     (hϖ : valuation (a.G n).k ((((a.G n).S.ϖ : (a.G n).kˣ) : (a.G n).k) - ((qOf (a.pl n).1 : ℕ) : (a.G n).k)) <
       valuation (a.G n).k (((a.G n).S.ϖ : (a.G n).kˣ) : (a.G n).k))

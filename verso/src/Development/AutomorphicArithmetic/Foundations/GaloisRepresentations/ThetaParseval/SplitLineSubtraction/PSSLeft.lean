@@ -25,19 +25,35 @@ private def inc (a b : ℕ) : (Fin a → k) →ₗ[k] (Fin (a + b) → k) where
     obtain ⟨j, rfl⟩ := finSumFinEquiv.surjective i
     cases j <;> simp
 
+/- English proof (translation)
+Simplify using `[inc]`.
+-/
 private theorem inc_inl {a b : ℕ} (x : Fin a → k) (i : Fin a) :
     inc a b x (finSumFinEquiv (Sum.inl i)) = x i := by
   simp [inc]
 
+/- English proof (translation)
+Simplify using `[inc]`.
+-/
 private theorem inc_inr {a b : ℕ} (x : Fin a → k) (j : Fin b) :
     inc a b x (finSumFinEquiv (Sum.inr j)) = 0 := by
   simp [inc]
 
+/- English proof (translation)
+Introduce `x y h`. Use function extensionality and compare the values at `i`. Rewrite using `[← inc_inl (b := b) x i, ← inc_inl (b := b) y i, h]`.
+-/
 private theorem inc_injective {a b : ℕ} : Function.Injective (inc (k := k) a b) := by
   intro x y h
   funext i
   rw [← inc_inl (b := b) x i, ← inc_inl (b := b) y i, h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective i`. Break down `j with j | j` into its components or cases. Rewrite using `[GlobalTheory.EigTwist.sumRep_mulVec_inl, inc_inl]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Conclude with `inc_inl x i`. Rewrite using `[GlobalTheory.EigTwist.sumRep_mulVec_inr, inc_inr]`. Establish `: (inc a b x ∘ finSumFinEquiv ∘ Sum.inr : Fin b → k) = 0`. Use function extensionality and compare the values at `i`.
+
+Conclude with `inc_inr x i`. Rewrite using `[this, Matrix.mulVec_zero]`. Both sides reduce to the same expression.
+-/
 private theorem sum_mulVec_inc {a b : ℕ} (r : Γ →* GL (Fin a) k) (s : Γ →* GL (Fin b) k) (g : Γ)
     (x : Fin a → k) :
     (sumRep r s g : Matrix (Fin (a + b)) (Fin (a + b)) k) *ᵥ inc a b x =
@@ -56,6 +72,17 @@ private theorem sum_mulVec_inc {a b : ℕ} (r : Γ →* GL (Fin a) k) (s : Γ �
     rw [this, Matrix.mulVec_zero]
     rfl
 
+/- English proof (translation)
+Introduce `W hW`. Take `⟨C, hC, hc⟩` from `h (W.map (inc a b)) (by`. Introduce and unpack `g _ ⟨x, hx, rfl⟩`. Conclude with `⟨_, hW g x hx, (sum_mulVec_inc r s g x).symm⟩)`. Use `⟨C.comap (inc a b), fun g v hv => ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show inc a b _ ∈ C`. Rewrite using `[← sum_mulVec_inc r s g v]`. Conclude with `hC g _ hv`. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hx'`.
+
+Establish `h0 : inc a b x ∈ W.map (inc a b) ⊓ C` using `⟨⟨x, hx, rfl⟩, hx'⟩`. Rewrite `h0` using `[hc.disjoint.eq_bot, Submodule.mem_bot]`. Conclude with `inc_injective (h0.trans (map_zero _).symm)`. Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce `x _`.
+
+Establish `hx : inc a b x ∈ W.map (inc a b) ⊔ C`. Rewrite using `[hc.codisjoint.eq_top]`. Conclude with `Submodule.mem_top`. Take `⟨_, ⟨w, hw, rfl⟩, z, hz, hzx⟩` from `Submodule.mem_sup.1 hx`. Establish `hz' : z = inc a b (x - w)`.
+
+Rewrite using `[map_sub, ← hzx]`. Normalize the expressions using the abelian group laws. Use `Submodule.mem_sup.2 ⟨w, hw, x - w, ?_, by abel⟩` and prove the remaining obligations. Use `show inc a b (x - w) ∈ C`. Rewrite using `[← hz']` and apply the resulting hypothesis.
+-/
 private theorem ss_left {a b : ℕ} (r : Γ →* GL (Fin a) k) (s : Γ →* GL (Fin b) k)
     (h : IsSSRep (sumRep r s)) : IsSSRep r := by
   intro W hW
@@ -84,6 +111,15 @@ private theorem ss_left {a b : ℕ} (r : Γ →* GL (Fin a) k) (s : Γ →* GL (
     show inc a b (x - w) ∈ C
     rwa [← hz']
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `h`. Set `e : (Fin n → k) ≃ₗ[k] (Fin n → k)` to `Matrix.toLin'OfInv (M := ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) (M' := (g : Matrix (Fin n) (Fin n) k)) (Units.inv_mul g) (Units.mul_inv g)`. Establish `he : ∀ v, e v = (g : Matrix (Fin n) (Fin n) k) *ᵥ v` using `fun v => rfl`. Establish `key : ∀ s v, e ((r s : Matrix (Fin n) (Fin n) k) *ᵥ v) = (r' s : Matrix (Fin n) (Fin n) k) *ᵥ e v`. Introduce `s v`.
+
+Rewrite using `[he, he, hg, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, ← Units.val_mul, inv_mul_cancel_right]`. Introduce `W hW`. Take `⟨C, hC, hc⟩` from `hr (W.comap (e : (Fin n → k) →ₗ[k] (Fin n → k))) (by`. Introduce `s v hv`. Use `show e _ ∈ W`.
+
+Rewrite using `[key]`. Conclude with `hW s _ hv)`. Use `⟨C.map (e : (Fin n → k) →ₗ[k] (Fin n → k)), ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `s _ ⟨u, hu, rfl⟩`. Conclude with `⟨_, hC s u hu, key s u⟩`.
+
+Establish `h2 : IsCompl ((W.comap (e : (Fin n → k) →ₗ[k] (Fin n → k))).map (e : (Fin n → k) →ₗ[k] (Fin n → k))) (C.map (e : (Fin n → k) →ₗ[k] (Fin n → k)))` using `(Submodule.orderIsoMapComap e).isCompl hc`. Rewrite `h2` using `[Submodule.map_comap_eq_of_surjective e.surjective]`. Then use the resulting hypothesis.
+-/
 private theorem ss_of_iso {n : ℕ} (r r' : Γ →* GL (Fin n) k) (h : RepIso r r') (hr : IsSSRep r) :
     IsSSRep r' := by
   obtain ⟨g, hg⟩ := h
@@ -108,6 +144,11 @@ private theorem ss_of_iso {n : ℕ} (r r' : Γ →* GL (Fin n) k) (h : RepIso r 
         (C.map (e : (Fin n → k) →ₗ[k] (Fin n → k))) := (Submodule.orderIsoMapComap e).isCompl hc
     rwa [Submodule.map_comap_eq_of_surjective e.surjective] at h2
 
+/- English proof (translation)
+Introduce `W hW`. Establish `hW' : IsInv r W`. Introduce `g v hv`. Establish `h1` using `W.smul_mem ((c g)⁻¹ : kˣ).val (hW g v hv)`. Rewrite `h1` using `[UpperTheory.V.Af.tw_val, Matrix.smul_mulVec, smul_smul, Units.val_inv_eq_inv_val, inv_mul_cancel₀ (c g).ne_zero, one_smul]`.
+
+Conclude with `h1`. Take `⟨C, hC, hc⟩` from `hr W hW'`. Use `⟨C, fun g v hv => ?_, hc⟩` and prove the remaining obligations. Rewrite using `[UpperTheory.V.Af.tw_val, Matrix.smul_mulVec]`. Conclude with `C.smul_mem _ (hC g v hv)`.
+-/
 private theorem ss_tw {n : ℕ} (r : Γ →* GL (Fin n) k) (c : Γ →* kˣ) (hr : IsSSRep r) :
     IsSSRep (tw r c) := by
   intro W hW
@@ -124,6 +165,9 @@ private theorem ss_tw {n : ℕ} (r : Γ →* GL (Fin n) k) (c : Γ →* kˣ) (hr
 
 end
 
+/- English proof (translation)
+Introduce `Γ k _ _ a b`. Conclude with `⟨fun r s h => ss_left r s h, fun r r' h hr => ss_of_iso r r' h hr, fun r c h => ss_tw r c h⟩`.
+-/
 theorem UpperTheory.Gal.TP.Sub.sSLeft_holds :
     SSLeft := by
   intro Γ k _ _ a b

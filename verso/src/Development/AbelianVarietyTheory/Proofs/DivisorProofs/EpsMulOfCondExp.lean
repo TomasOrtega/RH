@@ -26,6 +26,9 @@ namespace GlobalTheory.SqStepArith
 
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Chars Base stepFac chrW eps idealVal gauss unifAt)
 
+/- English proof (translation)
+Establish `e : (GlobalTheory.SqStep.chs G i j t).ν = G.nu t i (j + 1)` using `by show (Lc.mu t (j + 1) * Lc.eta ^ _) / (G.ch.chi _ * Lc.eta ^ _) = _`. Rewrite using `[mul_div_mul_right_eq_div]`. Both sides reduce to the same expression. Use `show GlobalTheory.LFun.locChar (GlobalTheory.SqStep.chs G i j t).ν _ _ = _`. Rewrite using `[e, GlobalTheory.LFun.locChar_eq_of_chrEq (chrEq_nu G t i j hL)]`.
+-/
 theorem chrW_chs {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) {μ₀ : T} (hL : Lc.Is μ₀)
     (i j : Fin D.R.m) (t : T) {v : HeightOneSpectrum (𝓞 D.host.F)} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v)
     (x : (Fv D.host.F v)ˣ) :
@@ -38,6 +41,11 @@ theorem chrW_chs {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridDat
   show GlobalTheory.LFun.locChar (GlobalTheory.SqStep.chs G i j t).ν _ _ = _
   rw [e, GlobalTheory.LFun.locChar_eq_of_chrEq (chrEq_nu G t i j hL)]
 
+/- English proof (translation)
+Unfold `eps`. Rewrite using `[h]`. Simplify using `only [MonoidHom.mul_apply, map_mul, map_pow, Units.val_mul, Units.val_pow_eq_pow_val, mul_inv, Units.val_inv_eq_inv_val]`. Establish `h1 : (ξ s : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `h2 : (ξ (unifAt v) : ℂ) ≠ 0` using `Units.ne_zero _`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eps_mul_of_condExp {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) {v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F}
     (ν₀ ξ : (Fv F v)ˣ →* ℂˣ) (s : (Fv F v)ˣ) (z : ℤ)
     (h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.condExp (ν₀ * ξ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.condExp ν₀) :
@@ -52,6 +60,13 @@ theorem eps_mul_of_condExp {F : Type} [Field F] [NumberField F] (ψ : AddChar (A
   field_simp
   ring
 
+/- English proof (translation)
+Establish `hQ : Lc.Q μ₀ = ∅`. Use `Finset.eq_empty_of_forall_notMem fun PP hPP => ?_` and prove the remaining obligations. Establish `h` using `(hL.Q_ram μ₀ PP).2 (Or.inl hPP)`. Apply `h` to reduce the goal to its premises. Rewrite using `[hL.xi_base]`.
+
+Introduce `x _`. Both sides reduce to the same expression. Establish `htw : twPl G μ₀ = ∅`. Unfold `twPl locPl`. Rewrite using `[hQ, Finset.union_empty]`.
+
+Conclude with `Finset.filter_false_of_mem fun w hw h => h hw`. Use `show G.pl.S0 ∪ (twPl G μ₀).image _ = _`. Rewrite using `[htw, Finset.image_empty, Finset.union_empty]`.
+-/
 theorem chs_T_base {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) {μ₀ : T} (hL : Lc.Is μ₀)
     (i j : Fin D.R.m) : (GlobalTheory.SqStep.chs G i j μ₀).T = G.pl.S0 := by
   classical

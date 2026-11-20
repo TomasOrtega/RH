@@ -4,6 +4,29 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open NumberField IsDedekindDomain UpperTheory.V UpperTheory.V.KL UpperTheory.V.ZK UpperTheory.V.ZK.Cl
 
+/- English proof (translation)
+Introduce `L F _ _ _ _ _ k _ r b hb q v`. Take `⟨_, hmul, hone, hmem, hinv, hadd, hpow⟩` from `cAct L F`. Establish `hres` using `(cRes L F k r).2.2.2 b hb |>.2`. Establish `h1 : ∀ P : HeightOneSpectrum (𝓞 F), ordP P 1 = 0` using `fun P => by`. Simplify using `using hpow P 1 0`.
+
+Set `U : Subgroup Fˣ` to `{ carrier := {x | IsBU b x} mul_mem' := fun {x y} hx hy P hP => by rw [hadd, hx P hP, hy P hP, add_zero] one_mem' := fun P _ => h1 P inv_mem' := fun {x} hx P hP => by`. Use `hpow P x (-1)` as an intermediate fact. Rewrite `this` using `[zpow_neg_one]`. Rewrite using `[this, hx P hP, mul_zero] }`. Establish `uniq : ∀ (x : Fˣ) (u u' : kˣ), Res r x u → Res r x u' → u = u'`.
+
+Introduce and unpack `x u u' ⟨a, c, hc, hxc, hac⟩ ⟨a', c', hc', hxc', hac'⟩`. Establish `e0 : ((a * c' : 𝓞 F) : F) = ((a' * c : 𝓞 F) : F)`. Use `push_cast`. Take the linear combination `(-(c' : F)) * hxc + (c : F) * hxc'`. Establish `e : a * c' = a' * c` using `by exact_mod_cast e0`.
+
+Establish `e2` using `congrArg r e`. Rewrite `e2` using `[map_mul, map_mul, hac, hac']`. Establish `: (u : k) = u'`. Establish `hcc : r c * r c' ≠ 0` using `mul_ne_zero hc hc'`. Apply `mul_right_cancel₀ hcc` to reduce the goal to its premises.
+
+Take the linear combination `e2`. Conclude with `Units.ext this`. Set `f : Fˣ → ZMod q` to `fun x => if h : ∃ u, Res r x u then Multiplicative.toAdd (v h.choose) else 0`. Establish `fspec : ∀ (x : Fˣ) (u : kˣ), Res r x u → f x = Multiplicative.toAdd (v u)`. Introduce `x u hu`.
+
+Establish `h : ∃ u, Res r x u` using `⟨u, hu⟩`. Simplify using `only [f, dif_pos h]`. Rewrite using `[uniq x _ _ h.choose_spec hu]`. Establish `resmul : ∀ (x y : Fˣ) (u w : kˣ), Res r x u → Res r y w → Res r (x * y) (u * w)`. Introduce and unpack `x y u w ⟨a, c, hc, hxc, hac⟩ ⟨a', c', hc', hxc', hac'⟩`.
+
+Use `⟨a * a', c * c', by rw [map_mul]; exact mul_ne_zero hc hc', ?_, ?_⟩` and prove the remaining obligations. Use `push_cast`. Take the linear combination `(y * (c' : F)) * hxc + (a : F) * hxc'`. Rewrite using `[map_mul, map_mul, hac, hac', Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨U, f, fun x => Iff.rfl, ?_, ?_, ?_, fspec, fun x hx => hres x hx⟩` and prove the remaining obligations. Introduce `σ x hx P hP`. Establish `hQ : actP σ (actP σ⁻¹ P) = P` using `by rw [← hmul, mul_inv_cancel, hone]`. Establish `hb' : (algebraMap (𝓞 L) (𝓞 F)) b ∉ (actP σ⁻¹ P).asIdeal`. Rewrite using `[← hmem σ (actP σ⁻¹ P) b, hQ]`.
+
+Conclude with `hP`. Use `hinv σ (actP σ⁻¹ P) x` as an intermediate fact. Rewrite `this` using `[hQ]`. Rewrite using `[this]`. Conclude with `hx _ hb'`.
+
+Introduce `x hx y hy`. Take `⟨u, hu⟩` from `hres x hx`. Take `⟨w, hw⟩` from `hres y hy`. Rewrite using `[fspec _ _ (resmul x y u w hu hw), fspec _ _ hu, fspec _ _ hw, map_mul, toAdd_mul]`. Establish `h11 : Res r 1 1` using `⟨1, 1, by simp, by simp, by simp⟩`.
+
+Rewrite using `[fspec _ _ h11, map_one, toAdd_one]`.
+-/
 theorem UpperTheory.V.ZK.Cl.cUnit :
     UpperTheory.V.ZK.Cl.CUnit := by
   intro L F _ _ _ _ _ k _ r b hb q v

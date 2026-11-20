@@ -9,6 +9,13 @@ import Formalism.LocalRingCardinality.DataSpaces
 
 attribute [local instance] Submodule.module._proof_1 Formalism.MainNotions.S.lf._proof_1 Formalism.MainNotions.S.starE
 
+/- English proof (translation)
+Introduce `D T F0 M h m`. Simplify using `only [Nat.cast_smul_eq_nsmul]`. Use `Submodule.span_induction (p := fun x _ => ∃ k : ℕ, k ≠ 0 ∧ k • x ∈ M) (fun x hx => ⟨1, one_ne_zero, by simpa using hx⟩) ⟨1, one_ne_zero, by simp⟩ ?_ ?_ (h ▸ Submodule.mem_top : m ∈ Submodule.span D.host.E (M : Set _))` and prove the remaining obligations. Introduce and unpack `x y - - ⟨a, ha, hx⟩ ⟨b, hb, hy⟩`. Conclude with `⟨a * b, mul_ne_zero ha hb, by`.
+
+Rewrite using `[smul_add, mul_nsmul' y, mul_nsmul x]`. Conclude with `M.add_mem (nsmul_mem hx b) (nsmul_mem hy a)⟩`. Introduce and unpack `c x - ⟨a, ha, hx⟩`. Take `⟨b, s, hb, hs⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ D.host.E).2 (Algebra.IsAlgebraic.isAlgebraic c)).exists_nsmul_eq (NumberField.RingOfIntegers D.host.E)`. Conclude with `⟨b * a, mul_ne_zero hb ha, by`.
+
+Rewrite using `[mul_smul, smul_comm a c, ← smul_assoc, hs, algebraMap_smul]`. Conclude with `M.smul_mem s hx⟩`.
+-/
 theorem UpperTheory.Reformulated.B.IntegralHeckeForms.M_nat_smul :
     ∀ (D : Formalism.BasicNotions.D7) {T : D.host.E}
     (F0 : Formalism.MainNotions.S.FlagG (Formalism.MainNotions.S.VS D) D.R.rS T)

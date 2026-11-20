@@ -25,6 +25,11 @@ def thriceY : type_of% (letI := alg c iK; (real3 c R).ioY) := letI := alg c iK; 
 
 def thriceX : type_of% (letI := alg c iK; (real3 c R).ioX) := letI := alg c iK; (by with_unfolding_all exact ((thrice b c R).ioX :))
 
+/- English proof (translation)
+Establish `h1` using `real_ioY c R.toRealDat`. Establish `h2` using `real_ioY b R.toRealDat`. Establish `h3` using `real_ioY (a := b) c (iK := alg b iK) (real b R.toRealDat)`. Establish `h4 : HEq _ (thriceY b c R)` using `HEq.trans (HEq.trans h1.symm h2) ((by with_unfolding_all exact (h3 :)))`. Use `letI := alg c iK`.
+
+Conclude with `eq_of_heq ((by with_unfolding_all exact (h4 :)))`.
+-/
 theorem thriceY_eq : letI := alg c iK; (real3 c R).ioY = thriceY b c R := by
   have h1 := real_ioY c R.toRealDat
   have h2 := real_ioY b R.toRealDat
@@ -33,6 +38,11 @@ theorem thriceY_eq : letI := alg c iK; (real3 c R).ioY = thriceY b c R := by
   letI := alg c iK
   exact eq_of_heq ((by with_unfolding_all exact (h4 :)))
 
+/- English proof (translation)
+Establish `h1` using `real_ioX c R.toRealDat`. Establish `h2` using `real_ioX b R.toRealDat`. Establish `h3` using `real_ioX (a := b) c (iK := alg b iK) (real b R.toRealDat)`. Establish `h4 : HEq _ (thriceX b c R)` using `HEq.trans (HEq.trans h1.symm h2) ((by with_unfolding_all exact (h3 :)))`. Use `letI := alg c iK`.
+
+Conclude with `eq_of_heq ((by with_unfolding_all exact (h4 :)))`.
+-/
 theorem thriceX_eq : letI := alg c iK; (real3 c R).ioX = thriceX b c R := by
   have h1 := real_ioX c R.toRealDat
   have h2 := real_ioX b R.toRealDat
@@ -41,10 +51,16 @@ theorem thriceX_eq : letI := alg c iK; (real3 c R).ioX = thriceX b c R := by
   letI := alg c iK
   exact eq_of_heq ((by with_unfolding_all exact (h4 :)))
 
+/- English proof (translation)
+Use `letI := alg c iK`. Conclude with `(by with_unfolding_all exact ((congrArg₂ (DatCopy.setIo (real3 c R)) (thriceY_eq b c R) (thriceX_eq b c R)) :))`.
+-/
 theorem thrice_eq : real3 c R = thrice b c R := by
   letI := alg c iK
   exact (by with_unfolding_all exact ((congrArg₂ (DatCopy.setIo (real3 c R)) (thriceY_eq b c R) (thriceX_eq b c R)) :))
 
+/- English proof (translation)
+The claim follows from `(by with_unfolding_all exact ((HEq.symm (heq_of_eq (thrice_eq b c R))) :))`.
+-/
 theorem inertTransport_twice_heq_direct : HEq (real3 (a := b) c (iK := alg b iK) (real3 b R)) (real3 c R) :=
   (by with_unfolding_all exact ((HEq.symm (heq_of_eq (thrice_eq b c R))) :))
 
@@ -55,10 +71,18 @@ section Copy
 variable {B : Base} {C : Cols B} {a : Late B C} (b c : Late B C) {px : PreX B.toPre} {I : ColIn B px} {hX : B.fields.Ok}
   {T : TwDat B} {Wt : Set B.places.Pl}
 
+/- English proof (translation)
+Take `rfl : k = coreJ b k₀` from `eq_of_heq h`. Conclude with `(by with_unfolding_all exact ((HEq.refl (coreJ c k₀)) :))`.
+-/
 theorem coreJ_heq {k₀ : Formalism.L2.Pj.CoreJ a.D} {k : Formalism.L2.Pj.CoreJ b.D} (h : HEq k (coreJ b k₀)) : HEq (coreJ c k) (coreJ c k₀) := by
   obtain rfl : k = coreJ b k₀ := eq_of_heq h
   exact (by with_unfolding_all exact ((HEq.refl (coreJ c k₀)) :))
 
+/- English proof (translation)
+Substitute `hXg htr` using the available equality. Take `rfl : k = coreJ b z₀.core` from `eq_of_heq hc`. Establish `ha : i = (by with_unfolding_all exact ((alg b z₀.alg) :))` using `Algebra.algebra_ext _ _ fun y => (by with_unfolding_all exact ((B.embLL.injective ((hi y).trans ((by with_unfolding_all exact ((z₀.alg_eq ((y))).symm : _)))) : _ = (@algebraMap _ _ _ _ z₀.alg ((by with_unfolding_all exact (y :))) : B.LL)) :))`. Substitute `ha` using the available equality. Establish `hR' : R = (by with_unfolding_all exact ((real3 b (iK` using `z₀.alg) z₀.R) :)) := eq_of_heq ((by with_unfolding_all exact (hR :)))`.
+
+Substitute `hR'` using the available equality. Conclude with `(by with_unfolding_all exact ((inertTransport_twice_heq_direct b c (iK := z₀.alg) z₀.R) :))`.
+-/
 theorem realAdelicInertTransport_heq_of_transport (z₀ : Dat a.st I hX T Wt) (Xg : Finset (Gc B px → B.LL)) (tr : TrI B px) (k : Formalism.L2.Pj.CoreJ b.D)
     (i : Algebra k.Q.c.F b.D.what₂.LL) (hi : ∀ y : k.Q.c.F, B.embLL (algebraMap k.Q.c.F b.D.what₂.LL y) = (y : ℂ))
     (R : Links.RealDat3 b.D (famR b.st I hX (usedOf I T Wt) Xg tr) k.Q.c.F) (hXg : Xg = z₀.Xg)
@@ -81,10 +105,18 @@ section Move
 variable {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z₀ : w.Lt} {hX : B.fields.Ok} {Wt : Set B.places.Pl}
   {z₀ : Dat (w.st Z₀) w.I hX T Wt} {q : RowPk w z₀} {o o' : q.Over}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(by with_unfolding_all exact ((Mv.lawsCore_tr (a := Z) Z' h.1) :)), (by with_unfolding_all exact (h.2.1 :)), (by with_unfolding_all exact (h.2.2.1 :)), (by with_unfolding_all exact (h.2.2.2 :))⟩`.
+-/
 theorem coreP_transfer {Z Z' : w.Lt} (s : SameGrp (B := B) (C := w.C) Z Z') {z : Dat (w.st Z) w.I hX T Wt} (h : CoreP z) :
     CoreP (w := w) (Z := Z') (Dat.transfer (B := B) (C := w.C) (a := Z) (b := Z') s z) :=
   ⟨(by with_unfolding_all exact ((Mv.lawsCore_tr (a := Z) Z' h.1) :)), (by with_unfolding_all exact (h.2.1 :)), (by with_unfolding_all exact (h.2.2.1 :)), (by with_unfolding_all exact (h.2.2.2 :))⟩
 
+/- English proof (translation)
+Establish `h1` using `coreJ_heq (a := Z₀) o.Z o'.Z (k₀ := z₀.core) (k := m.z.core) ((by with_unfolding_all exact (hm.core :)))`. Establish `h2` using `realAdelicInertTransport_heq_of_transport (a := Z₀) o.Z o'.Z z₀ m.z.Xg m.z.tr m.z.core m.z.alg m.z.alg_eq m.z.R m.Xg m.tr ((by with_unfolding_all exact (hm.core :))) ((by with_unfolding_all exact (hm.R :)))`. Establish `e1` using `congr_arg_heq (fun z : Dat (w.st o'.Z) w.I hX T Wt => z.core) e`. Establish `e2` using `congr_arg_heq (fun z : Dat (w.st o'.Z) w.I hX T Wt => z.R) e`. Establish `h3 : HEq (Dat.transfer (B` using `B) (C := w.C) (a := o.Z) (b := o'.Z) s m.z).core (coreJ (a := Z₀) o'.Z z₀.core) := (by with_unfolding_all exact (h1 :))`.
+
+Establish `h4 : HEq (Dat.transfer (B` using `B) (C := w.C) (a := o.Z) (b := o'.Z) s m.z).R (real3 (a := Z₀) o'.Z (iK := z₀.alg) z₀.R) := (by with_unfolding_all exact (h2 :))`. Conclude with `⟨(by with_unfolding_all exact ((HEq.trans e1 h3) :)), (by with_unfolding_all exact ((HEq.trans e2 h4) :))⟩`.
+-/
 theorem copy_transfer (s : SameGrp (B := B) (C := w.C) o.Z o'.Z) {m : Moved o} {m' : Moved o'} (hm : m.Copy)
     (e : m'.z = Dat.transfer (B := B) (C := w.C) (a := o.Z) (b := o'.Z) s m.z) : m'.Copy := by
   have h1 := coreJ_heq (a := Z₀) o.Z o'.Z (k₀ := z₀.core) (k := m.z.core) ((by with_unfolding_all exact (hm.core :)))
@@ -95,6 +127,19 @@ theorem copy_transfer (s : SameGrp (B := B) (C := w.C) o.Z o'.Z) {m : Moved o} {
   have h4 : HEq (Dat.transfer (B := B) (C := w.C) (a := o.Z) (b := o'.Z) s m.z).R (real3 (a := Z₀) o'.Z (iK := z₀.alg) z₀.R) := (by with_unfolding_all exact (h2 :))
   exact ⟨(by with_unfolding_all exact ((HEq.trans e1 h3) :)), (by with_unfolding_all exact ((HEq.trans e2 h4) :))⟩
 
+/- English proof (translation)
+Take `⟨y', hy⟩` from `@GlobalTheory.Mem.R3.Rw.hd_tr B w.C o.Z o'.Z _ _ _ _ _ _ _ _ m.z.alg _ m.z.R.toRealDat m.y`. Take `⟨t, a1, a2, a3, a4, a5, a6, a7⟩` from `Mv.pkT_tr (a := o.Z) o'.Z (iK := m.z.alg) m.z.F m.y y' hy m.t`. Establish `he` using `(@GlobalTheory.T.rowBasis_congruenceLengths_other_later_stages B w.C o.Z o'.Z _ _ _ _ _ _ _ _ _ m.z.alg _ m.z.R m.z.F).1`. Establish `hW` using `Dat.nonzeroIndexPlaces_transferAlongSameFiniteGroup (B := B) (C := w.C) (a := o.Z) (b := o'.Z) s m.z`. Use `letI : Algebra m.z.core.Q.c.F (Late.D o'.Z).what₂.LL := alg (a := o.Z) o'.Z m.z.alg`.
+
+Establish `hA : ((by with_unfolding_all exact (t.tA :)) : type_of% m.t.tA) = m.t.tA` using `eq_of_heq ((by with_unfolding_all exact (a1 :)))`. Establish `b2` using `HEq.trans hy.PY hm.PY`. Establish `b3` using `HEq.trans hy.PW hm.PW`. Establish `b4` using `HEq.trans a2 hm.rep`. Establish `b5` using `fun c => HEq.trans (a3 c) (hm.jE c)`.
+
+Establish `b6` using `fun c => HEq.trans (a4 c) (hm.jM c)`. Establish `b7` using `fun c => HEq.trans (a5 c) (hm.jX c)`. Establish `b8` using `HEq.trans a6 hm.eW`. Establish `b9` using `HEq.trans a7 hm.jMt`. Establish `c1` using `fun j v => (he j v).trans (m.eta j ((by with_unfolding_all exact (v :))))`.
+
+Establish `c2` using `fun F0 => (hW F0).symm.trans (m.W1 ((by with_unfolding_all exact (F0 :))))`. Establish `c3` using `fun c u => HEq.trans (heq_of_eq (congrArg (fun r : type_of% m.t.tA => (r c u).j) hA)) (m.tA c u)`. Use `⟨{ z := Dat.transfer (B := B) (C := w.C) (a := o.Z) (b := o'.Z) s m.z intersectionNumber_baseChange := (by with_unfolding_all exact ((Dat.holds_transfer (B := B) (C := w.C) (a := o.Z) (b := o'.Z) s m.intersectionNumber_baseChange) :)) exAt := (by with_unfolding_all exact ((Dat.ex …` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact (hm.tupT :))`. Conclude with `(by with_unfolding_all exact (b2 :))`.
+
+Conclude with `(by with_unfolding_all exact (b3 :))`. Conclude with `(by with_unfolding_all exact (b4 :))`. Conclude with `(by with_unfolding_all exact (b5 :))`. Conclude with `(by with_unfolding_all exact (b6 :))`. Conclude with `(by with_unfolding_all exact (b7 :))`.
+
+Conclude with `(by with_unfolding_all exact (b8 :))`. Conclude with `(by with_unfolding_all exact (b9 :))`.
+-/
 theorem exists_moved_transfer (s : SameGrp (B := B) (C := w.C) o.Z o'.Z) (m : Moved o) (hm : m.Coh) :
     ∃ m' : Moved o', m'.z = Dat.transfer (B := B) (C := w.C) (a := o.Z) (b := o'.Z) s m.z ∧ m'.Coh := by
   obtain ⟨y', hy⟩ := @GlobalTheory.Mem.R3.Rw.hd_tr B w.C o.Z o'.Z _ _ _ _ _ _ _ _ m.z.alg _ m.z.R.toRealDat m.y
@@ -139,6 +184,9 @@ theorem exists_moved_transfer (s : SameGrp (B := B) (C := w.C) o.Z o'.Z) (m : Mo
 
 end Move
 
+/- English proof (translation)
+Introduce `K B f T w P x L`. Take `⟨m, h1, h2⟩` from `exists_moved_transfer (o := x.o) (o' := oL x L) (sameL x L) x.m x.coh`. Conclude with `⟨m, h1, copy_transfer (o := x.o) (o' := oL x L) (sameL x L) x.copy h1, h2⟩`.
+-/
 theorem exists_moved_loc : ∀ {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w} (x : St P)
     (L : LocAll (lay0 (Dof x))), ∃ m : Moved (oL x L), m.z = datL x L ∧ m.Copy ∧ m.Coh := by
   intro K B f T w P x L

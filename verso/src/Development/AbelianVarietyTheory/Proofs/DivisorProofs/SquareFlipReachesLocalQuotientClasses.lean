@@ -15,6 +15,15 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 attribute [local instance] GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.measFv GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.borelFv
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL W B t i j M hst e Bs Γ X om om' h R Rf hm hti w hw v ev φ₀ hφ₀`. Establish `hvT : v ∈ X.T` using `(hti.2.2.1 v).2 ⟨w, hw, ev⟩`. Establish `hP : v ∈ Bs.P` using `hm.triple.chars.sub hvT`. Take `⟨ιA, ιB, hA, hB, -, -, hiff⟩` from `hm.fin.zeta ⟨v, hP⟩ hvT`. Take `⟨φ', hφ', e'⟩ : Rf.p v φ₀ ∈ (GlobalTheory.WeilM.SB _).map (Rf.p' v)` from `hm.fin.onto' v ▸ Submodule.mem_top`.
+
+Establish `hΨ : ιB φ' ∈ GlobalTheory.WeilM.SB _` using `hB.bij.mapsTo hφ'`. Take `⟨ι, hι, c, hc, g₀, c₀, hcmp, htr⟩` from `G1 hL W B t i j M hst e Bs Γ X om om' h R Rf hm hti w hw v ev hP ιA hA`. Use `choose gK cK hcK hK using htr`. Take `⟨n, Φ, K₁, K₂, hn, hΦ, hbig⟩` from `G2 hL W B t i j M hst e Bs Γ X om om' h R Rf hm hti w hw v ev hP g₀ c₀ (ιB φ') hΨ (fun K₁ K₂ => c * cK K₁ K₂) (fun K₁ K₂ => mul_ne_zero hc (hcK K₁ K₂))`. Take `⟨φ₂, hφ₂, hιφ₂, hc₂⟩` from `hcmp n Φ hn hΦ`.
+
+Take `⟨φ₃, hφ₃, hact, hc₃⟩` from `hK K₁ K₂ φ₂ hφ₂`. Use `⟨n, Φ, φ₂, gK K₁ K₂, φ₃, hn, hΦ, ⟨hφ₂, ι, hι, hιφ₂⟩, hφ₃, hact, ?_⟩` and prove the remaining obligations. Establish `e1 : ιA φ₃ = fun Z => c * cK K₁ K₂ * GlobalTheory.SquareFlipReach.sqCore W t i j w n Φ (GlobalTheory.SquareFlipReach.trA t ev e (g₀.1 * Z * c₀.1 * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk e K₁.1 K₂.1))`. Use function extensionality and compare the values at `Z`. Rewrite using `[hc₃, hc₂]`.
+
+Establish `e2 : g₀.1 * (Z * (c₀.1 * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk e K₁.1 K₂.1 * (c₀⁻¹).1)) * c₀.1 = g₀.1 * Z * c₀.1 * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk e K₁.1 K₂.1`. Simplify using `only [Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one]`. Rewrite using `[e2, mul_comm c (cK K₁ K₂), mul_assoc]`. Establish `e3` using `(hiff φ₃ hφ₃ φ' hφ').2 (by rw [e1]; exact hbig)`. Conclude with `e3.trans e'`.
+-/
 theorem GlobalTheory.SquareFlipReach.flip_reach_of (G1 : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G) (t : T) (i j : Fin D.R.m) (M : Vol G) (hst : SquareStanding G t) (e : Num G i j) (Bs : Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (X : Chars D.host.F D.host.E) (om : Rep D.sp.cm.sig Γ.V Γ.W) (om' : Rep D.sp.cm.sig Γ.V' Γ.W) (h : IsTripleOf W M t i j e Bs Γ X) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps D.host.F _ _) (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps D.host.F _ _),
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched Bs Γ X om om' R Rf → IsTied t i j e Bs Γ X →
     ∀ w ∈ locPl G t, ∀ v (hv : w.under (𝓞 D.host.F) = v) (hP : v ∈ Bs.P) ιA,
@@ -70,6 +79,9 @@ theorem GlobalTheory.SquareFlipReach.flip_reach_of (G1 : ∀ {D : D7} {T : Type}
   have e3 := (hiff φ₃ hφ₃ φ' hφ').2 (by rw [e1]; exact hbig)
   exact e3.trans e'
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.SquareFlipReach.flip_reach_of GlobalTheory.T.theta_triple_realization_square_class GlobalTheory.T.zetaIntegral_block_translate_of_flip_datum`.
+-/
 theorem GlobalTheory.SquareFlipReach.flip_reach : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G) (t : T) (i j : Fin D.R.m) (M : Vol G) (hst : SquareStanding G t)
     (e : Num G i j) (Bs : Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (X : Chars D.host.F D.host.E)
     (om : Rep D.sp.cm.sig Γ.V Γ.W) (om' : Rep D.sp.cm.sig Γ.V' Γ.W) (h : IsTripleOf W M t i j e Bs Γ X) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps D.host.F _ _) (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps D.host.F _ _),

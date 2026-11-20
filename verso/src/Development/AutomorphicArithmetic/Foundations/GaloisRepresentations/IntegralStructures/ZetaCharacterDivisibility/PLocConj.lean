@@ -17,6 +17,11 @@ open GlobalTheory.BlockSum (blockRep)
 open PositivityTheory.AutomorphicGaloisHodgeTate.Div (DivWCoreLac SenWLac HTLac IsSSMat)
 open UpperTheory.Gal.Int.Div
 
+/- English proof (translation)
+Set `s : Set (Qbar l)` to `Set.range (fun p : Fin n × Fin n => (A : Matrix (Fin n) (Fin n) (Qbar l)) p.1 p.2) ∪ Set.range (fun p : Fin n × Fin n => ((A⁻¹ : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l)) p.1 p.2)`. Establish `hs : s.Finite` using `(Set.finite_range _).union (Set.finite_range _)`. Use `haveI : Finite s := hs.to_subtype`. Use `⟨⟨IntermediateField.adjoin ℚ_[l] s, IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x⟩, fun i j => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `IntermediateField.subset_adjoin _ _ (Or.inl ⟨(i, j), rfl⟩)`.
+
+Conclude with `IntermediateField.subset_adjoin _ _ (Or.inr ⟨(i, j), rfl⟩)`.
+-/
 private theorem exists_finExt_gl {l n : ℕ} [Fact l.Prime] (A : GL (Fin n) (Qbar l)) :
     ∃ K : FinExt l, ∀ i j, (A : Matrix (Fin n) (Fin n) (Qbar l)) i j ∈ K.1 ∧
       ((A⁻¹ : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l)) i j ∈ K.1 := by
@@ -29,6 +34,9 @@ private theorem exists_finExt_gl {l n : ℕ} [Fact l.Prime] (A : GL (Fin n) (Qba
   · exact IntermediateField.subset_adjoin _ _ (Or.inl ⟨(i, j), rfl⟩)
   · exact IntermediateField.subset_adjoin _ _ (Or.inr ⟨(i, j), rfl⟩)
 
+/- English proof (translation)
+Take `⟨LL', r₀, hm, hc⟩` from `hr`. Take `⟨h, M, hM⟩` from `GlobalTheory.ConjCrys.exists_conj_model A K hA hm`. Take `⟨-, hdR2, -, -⟩` from `GlobalTheory.Pst.local_ext P Bw h r₀`. Conclude with `⟨_, _, hM, (GlobalTheory.ConjCrys.local_conj P Bw _ M _).2.1 (hdR2.2 hc)⟩`.
+-/
 private theorem isdRAt_conj' {l : ℕ} [Fact l.Prime] {P : LocPrime l} {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω]
     {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] {Gw : Subgroup (Ω ≃ₐ[E] Ω)}
     {Bw : LocBridge l E Ω Gw O} {m : ℕ} {r : ↥Gw →* GL (Fin m) (Qbar l)} (A : GL (Fin m) (Qbar l)) (K : FinExt l)
@@ -40,6 +48,11 @@ private theorem isdRAt_conj' {l : ℕ} [Fact l.Prime] {P : LocPrime l} {E Ω : T
   obtain ⟨-, hdR2, -, -⟩ := GlobalTheory.Pst.local_ext P Bw h r₀
   exact ⟨_, _, hM, (GlobalTheory.ConjCrys.local_conj P Bw _ M _).2.1 (hdR2.2 hc)⟩
 
+/- English proof (translation)
+Take `⟨LL', r₀, hm, hc⟩` from `h`. Take `⟨T⟩` from `hT`. Use `⟨LL', r₀, hm, ?_⟩` and prove the remaining obligations. Establish `h1` using `(GlobalTheory.Per.CrisDR.isDR_of_isCrys l P AI T Bw.Kw LL' _ _ hc).1`. Unfold `Formalism.BasicNotions.LocBridge.IsdRE`.
+
+Unfold `Formalism.MainNotions.N.IsDR at h1`. Simplify `h1` using `only [Module.finrank_fin_fun]`.
+-/
 private theorem isdRAt_of_isCrysAt {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P)
     (hT : Nonempty (LocTied l P AI)) {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω]
     {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] {Gw : Subgroup (Ω ≃ₐ[E] Ω)}
@@ -53,6 +66,15 @@ private theorem isdRAt_of_isCrysAt {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI
   unfold Formalism.MainNotions.N.IsDR at h1
   simpa only [Module.finrank_fin_fun] using h1
 
+/- English proof (translation)
+Introduce `l _ P AI hT E Ω _ _ _ _ _ A O _ _ _ Bw a r r'`. Establish `pst : ∀ {s : ↥(Dec (F` using `E) A) →* GL (Fin a) (Qbar l)}, IsCrysAt P Bw s → IsPstAt P Bw s := fun {s} h => GlobalTheory.GalCut.IwaTwist.isPstAt_of_isSstAt P AI hT Bw s (GlobalTheory.CrysSst.isSstAt_of_isCrysAt l P AI hT E Ω _ O Bw a s h)`. Use `⟨fun h => ⟨isdRAt_of_isCrysAt P AI hT h, pst h⟩, fun hiso => ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `id hiso`. Take `⟨K, hK⟩` from `exists_finExt_gl (g⁻¹)`.
+
+Establish `e : r' = (MulAut.conj (g⁻¹)⁻¹).toMonoidHom.comp r` using `by ext1 x`. Simplify using `[hg, MulAut.conj_apply]`. Establish `c' : IsCrysAt P Bw r → IsCrysAt P Bw r'` using `fun h => by`. Rewrite using `[e]`. Conclude with `GlobalTheory.ConjCrys.isCrysAt_conj _ K hK h`.
+
+Use `⟨c', fun h => ?_, fun τ J h => ?_, fun ι w hw hj h => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `isdRAt_conj' _ K hK h`. Rewrite using `[e]`. Conclude with `GlobalTheory.ConjCrys.isJumpsAt_conj _ K hK h`.
+
+Conclude with `GlobalTheory.ConjGal.wdAt_conj P ι Bw hw hj r r' g hg (pst h) (pst (c' h))`.
+-/
 theorem UpperTheory.Gal.Int.Div.locConj_of :
     LocConj := by
   intro l _ P AI hT E Ω _ _ _ _ _ A O _ _ _ Bw a r r'

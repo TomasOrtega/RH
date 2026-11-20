@@ -15,6 +15,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PtExt.NatSec
 
+/- English proof (translation)
+Establish `h1 : x.left ≫ Y.hom = spMap (algebraMap R D)` using `Over.w x`. Establish `h2 : x'.left ≫ Y.hom = spMap (algebraMap R D')` using `Over.w x'`. Establish `h3 : CommRingCat.ofHom (algebraMap R D) ≫ CommRingCat.ofHom φ = CommRingCat.ofHom (algebraMap R D')`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp]`.
+
+Express the relevant statement in the definitionally equal form `spMap φ ≫ spMap _ = spMap _`. Rewrite using `[← h1, ← h2, ← h, Category.assoc]`. Set `ψ : D →ₐ[R] D'` to `⟨φ, fun r ↦ congrArg (fun f ↦ CommRingCat.Hom.hom f r) h3⟩`. Establish `h4` using `ht D D' ψ x hx`. Establish `h5 : spOver ψ ≫ x = x'` using `Over.OverMorphism.ext h`.
+
+Rewrite `h4` using `[h5]`. Conclude with `h4`.
+-/
 theorem nat_of_comp (R : Type) [CommRing R] (Y : Over (Sp R)) (U : Y.left.Opens) (t : Fn0 Y)
     (ht : ∀ (E : Type) [CommRing E] [Algebra R E] (E' : Type) [CommRing E'] [Algebra R E'] (ψ : E →ₐ[R] E')
       (z : Pt Y E), ⊤ ≤ z.left ⁻¹ᵁ U → t E' (spOver ψ ≫ z) = ψ (t E z))
@@ -34,6 +41,9 @@ theorem nat_of_comp (R : Type) [CommRing R] (Y : Over (Sp R)) (U : Y.left.Opens)
   rw [h5] at h4
   exact h4
 
+/- English proof (translation)
+Introduce `z _`. Establish `hz : X.fromSpecStalk x z ⤳ x`. Establish `: X.fromSpecStalk x z ∈ Set.range (X.fromSpecStalk x)` using `⟨z, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Conclude with `hz.mem_open U.2 hx`.
+-/
 theorem fromSpecStalk_top {X : Scheme.{0}} (x : X) (U : X.Opens) (hx : x ∈ U) :
     ⊤ ≤ X.fromSpecStalk x ⁻¹ᵁ U := by
   intro z _
@@ -42,6 +52,9 @@ theorem fromSpecStalk_top {X : Scheme.{0}} (x : X) (U : X.Opens) (hx : x ∈ U) 
     rwa [Scheme.range_fromSpecStalk] at this
   exact hz.mem_open U.2 hx
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.appLE, Scheme.fromSpecStalk_app hx]`. Simplify using `only [Category.assoc, ← Functor.map_comp]`. Establish `e : ((homOfLE le_top).op ≫ (homOfLE (fromSpecStalk_top x U hx)).op : Opposite.op (⊤ : (Spec (X.presheaf.stalk x)).Opens) ⟶ Opposite.op ⊤) = 𝟙 _` using `rfl`. Rewrite using `[e, CategoryTheory.Functor.map_id, Category.comp_id]`.
+-/
 theorem fromSpecStalk_appLE {X : Scheme.{0}} (x : X) (U : X.Opens) (hx : x ∈ U) :
     (X.fromSpecStalk x).appLE U ⊤ (fromSpecStalk_top x U hx) =
       X.presheaf.germ U x hx ≫ (Scheme.ΓSpecIso (X.presheaf.stalk x)).inv := by
@@ -51,6 +64,13 @@ theorem fromSpecStalk_appLE {X : Scheme.{0}} (x : X) (U : X.Opens) (hx : x ∈ U
       Opposite.op (⊤ : (Spec (X.presheaf.stalk x)).Opens) ⟶ Opposite.op ⊤) = 𝟙 _ := rfl
   rw [e, CategoryTheory.Functor.map_id, Category.comp_id]
 
+/- English proof (translation)
+Use `TopCat.Presheaf.section_ext Y.left.sheaf U a a' fun y hy ↦ ?_` and prove the remaining obligations. Set `S : CommRingCat.{0}` to `Y.left.presheaf.stalk y`. Use `letI al : Algebra R S := (Spec.preimage (R := CommRingCat.of R) (Y.left.fromSpecStalk y ≫ Y.hom)).hom.toAlgebra`. Set `z : Pt Y S` to `Over.homMk (Y.left.fromSpecStalk y) (Spec.map_preimage (R := CommRingCat.of R) (Y.left.fromSpecStalk y ≫ Y.hom)).symm`. Establish `hz : ⊤ ≤ z.left ⁻¹ᵁ U` using `fromSpecStalk_top y U hy`.
+
+Establish `e` using `h S z hz`. Unfold `evU at e`. Rewrite `e` using `[dif_pos hz, dif_pos hz]`. Unfold `evalAt at e`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso S).hom ((Y.left.fromSpecStalk y).appLE U ⊤ hz a) = (Scheme.ΓSpecIso S).hom ((Y.left.fromSpecStalk y).appLE U ⊤ hz a') at e`.
+
+Rewrite `e` using `[fromSpecStalk_appLE y U hy]`. Simplify using `only [CommRingCat.comp_apply] at e`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (Y.left.presheaf.stalk y)).hom _ = (Scheme.ΓSpecIso (Y.left.presheaf.stalk y)).hom _ at e`. Simplify using `only [Iso.inv_hom_id_apply] at e`. Conclude with `e`.
+-/
 theorem ext_of_evU (R : Type) [CommRing R] (Y : Over (Sp R)) (U : Y.left.Opens) (a a' : Γ(Y.left, U))
     (h : ∀ (E : Type) [CommRing E] [Algebra R E] (z : Pt Y E), ⊤ ≤ z.left ⁻¹ᵁ U →
       evU z.left U a = evU z.left U a') : a = a' := by
@@ -72,6 +92,25 @@ theorem ext_of_evU (R : Type) [CommRing R] (Y : Over (Sp R)) (U : Y.left.Opens) 
   simp only [Iso.inv_hom_id_apply] at e
   exact e
 
+/- English proof (translation)
+Introduce `R _ Y U t ht`. Set `Z : Scheme.{0}` to `U.toScheme`. Set `al : ∀ (D : CommRingCat.{0}) (x : Spec D ⟶ Z), Algebra R D` to `fun D x ↦ (Spec.preimage (R := CommRingCat.of R) (x ≫ U.ι ≫ Y.hom)).hom.toAlgebra`. Set `pt : ∀ (D : CommRingCat.{0}) (x : Spec D ⟶ Z), @Pt R _ Y D _ (al D x)` to `fun D x ↦ Over.homMk (x ≫ U.ι) (by rw [Category.assoc]; exact (Spec.map_preimage (R := CommRingCat.of R) (x ≫ U.ι ≫ Y.hom)).symm)`. Establish `hin : ∀ (D : CommRingCat.{0}) (x : Spec D ⟶ Z), ⊤ ≤ (x ≫ U.ι) ⁻¹ᵁ U`.
+
+Introduce `D x p _`. Conclude with `(x p).2`. Set `κ : ∀ D : CommRingCat.{0}, (Spec D ⟶ Z) → D` to `fun D x ↦ @t D _ (al D x) (pt D x)`. Take `⟨s, hs⟩` from `NatConst.exists_section Z (fun _ : Unit ↦ (⊤ : Z.Opens)) (by simp) κ fun D D' φ x _ ↦ @NatSec.nat_of_comp R _ Y U t ht D _ (al D x) D' _ (al D' (Spec.map φ ≫ x)) φ.hom (pt D x) (pt D' _) (hin D x) (by change Spec.map φ ≫ x ≫ U.ι = (Spec.map φ ≫ x) ≫ U.ι; rw [Category.assoc])`. Establish `hex : ∀ (E : Type) [CommRing E] [Algebra R E] (z : Pt Y E), ⊤ ≤ z.left ⁻¹ᵁ U → evU z.left U (U.topIso.hom s) = t E z`.
+
+Introduce `E _ inst z hz`. Establish `hr : Set.range z.left ⊆ Set.range U.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `hz (Set.mem_univ q)`.
+
+Set `w : Spec (CommRingCat.of E) ⟶ Z` to `IsOpenImmersion.lift U.ι z.left hr`. Establish `hw : w ≫ U.ι = z.left` using `IsOpenImmersion.lift_fac U.ι z.left hr`. Establish `h1 : κ (CommRingCat.of E) w = t E z`. Use `(@NatSec.nat_of_comp R _ Y U t ht E _ inst E _ (al (CommRingCat.of E) w) (RingHom.id E) z (pt (CommRingCat.of E) w) hz ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (RingHom.id E)) ≫ z.left = w ≫ U.ι`.
+
+Rewrite using `[hw, CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]`. Rewrite using `[← h1, hs (CommRingCat.of E) w ⟨(), le_top⟩]`. Unfold `evU`. Rewrite using `[dif_pos hz]`. Unfold `evalAt`.
+
+Simplify using `only [RingHom.comp_apply]`. Use `congr 1`. Establish `key : ∀ (g : Spec (CommRingCat.of E) ⟶ Y.left) (_ : w ≫ U.ι = g) (h : ⊤ ≤ g ⁻¹ᵁ U), g.appLE U ⊤ h = U.ι.appLE U ⊤ (by simp) ≫ w.appLE ⊤ ⊤ le_top`. Introduce and unpack `_ rfl h`. Conclude with `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).symm`.
+
+Rewrite using `[key _ hw hz, CommRingCat.comp_apply, Scheme.Opens.ι_appLE]`. Establish `hid : ∀ (f : Opposite.op U ⟶ Opposite.op (U.ι ''ᵁ ⊤)) (g : Opposite.op (U.ι ''ᵁ ⊤) ⟶ Opposite.op U) (x : Γ(Y.left, U.ι ''ᵁ ⊤)), Y.left.presheaf.map f (Y.left.presheaf.map g x) = x`. Introduce `f g x`. Rewrite using `[← ConcreteCategory.comp_apply, ← Functor.map_comp, Subsingleton.elim (g ≫ f) (𝟙 _), CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+
+Rewrite using `[Scheme.Opens.topIso_hom]`. Use `erw [hid]`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Use `⟨U.topIso.hom s, hex, fun a ha ↦ ?_⟩` and prove the remaining obligations.
+
+Conclude with `NatSec.ext_of_evU R Y U a _ fun E _ _ z hz ↦ (ha E z hz).trans (hex E z hz).symm`.
+-/
 theorem exists_unique_section : ∀ (R : Type) [CommRing R] (Y : Over (Sp R)) (U : Y.left.Opens) (t : Fn0 Y), (∀ (E : Type) [CommRing E] [Algebra R E] (E' : Type) [CommRing E'] [Algebra R E'] (ψ : E →ₐ[R] E') (z : Pt Y E), ⊤ ≤ z.left ⁻¹ᵁ U → t E' (spOver ψ ≫ z) = ψ (t E z)) → ∃! a : Γ(Y.left, U), ∀ (E : Type) [CommRing E] [Algebra R E] (z : Pt Y E), ⊤ ≤ z.left ⁻¹ᵁ U → evU z.left U a = t E z := by
   intro R _ Y U t ht
   let Z : Scheme.{0} := U.toScheme

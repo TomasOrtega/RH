@@ -13,6 +13,13 @@ open Formalism.NG Formalism.RepresentationBoundsCohomology.BR Formalism.Represen
 section Ko
 variable (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hϖ0 : ϖ ≠ 0` using `hϖ.ne_zero`. Set `ι` to `algebraMap O (FractionRing O)`. Establish `hc' : ι c ≠ 0` using `fun h0 => hc (IsFractionRing.injective O (FractionRing O) (h0.trans (map_zero ι).symm))`.
+
+Establish `hϖ' : ι ϖ ≠ 0` using `fun h0 => hϖ0 (IsFractionRing.injective O (FractionRing O) (h0.trans (map_zero ι).symm))`. Establish `h1` using `h (Submodule.Quotient.mk ((ι c * ι ϖ)⁻¹))`. Rewrite `h1` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Algebra.smul_def, mul_inv, ← mul_assoc, mul_inv_cancel₀ hc', one_mul]`. Take `⟨o, ho⟩` from `Submodule.mem_one.1 h1`. Apply `hϖ.not_isUnit` to reduce the goal to its premises.
+
+Use `isUnit_iff_exists_inv.2 ⟨o, IsFractionRing.injective O (FractionRing O) ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_one]`. Express the relevant statement in the definitionally equal form `ι ϖ * ι o = 1`. Rewrite using `[ho, mul_inv_cancel₀ hϖ']`.
+-/
 theorem ko_faithful (c : O) (h : ∀ z : KO O, c • z = 0) : c = 0 := by
   by_contra hc
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
@@ -36,9 +43,19 @@ section Blocks
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {A : Type} [Ring A] [Algebra O A]
   {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem latQ_act (ρ : A →ₐ[O] Matrix n n O) (x : A) (m : LatQ O n ρ.toRingHom) (i : n) :
     (x • m) i = ∑ j, ρ x i j • (m j : KO O) := rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply `sub_eq_zero.1` to reduce the goal to its premises. Apply `ko_faithful O` to reduce the goal to its premises. Introduce `z`. Establish `h1` using `congrFun (h (Pi.single j z : n → KO O)) i`.
+
+Express the relevant statement in the definitionally equal form `∑ j', ρ x i j' • (Pi.single j z : n → KO O) j' = y • (Pi.single j z : n → KO O) i at h1`. Rewrite `h1` using `[Finset.sum_eq_single j (fun b _ hb => by simp [hb]) (by simp)]`. Establish `h2 : ρ x i j • z = y • (Pi.single j z : n → KO O) i`. Establish `h3` using `h1`. Rewrite `h3` using `[Pi.single_eq_same]`. Then use the resulting hypothesis.
+
+Rewrite using `[sub_smul, h2, Matrix.smul_apply, Matrix.one_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij]`.
+-/
 theorem mat_eq_of_act (ρ : A →ₐ[O] Matrix n n O) (x : A) (y : O)
     (h : ∀ m : LatQ O n ρ.toRingHom, x • m = y • m) : ρ x = y • (1 : Matrix n n O) := by
   ext i j
@@ -56,6 +73,11 @@ theorem mat_eq_of_act (ρ : A →ₐ[O] Matrix n n O) (x : A) (y : O)
   · subst hij; simp
   · simp [hij]
 
+/- English proof (translation)
+Take `⟨i0, hi0⟩` from `Fintype.card_eq_one_iff.1 h1`. Use function extensionality and compare the values at `i`. Rewrite using `[latQ_act]`. Express the relevant statement in the definitionally equal form `_ = (ρ x).trace • (m i : KO O)`. Establish `hu : ∀ j : n, j = i` using `fun j => (hi0 j).trans (hi0 i).symm`.
+
+Rewrite using `[Finset.sum_eq_single i (fun b _ hb => absurd (hu b) hb) (by simp), Matrix.trace, Finset.sum_eq_single i (fun b _ hb => absurd (hu b) hb) (by simp)]`. Both sides reduce to the same expression.
+-/
 theorem act_trace (ρ : A →ₐ[O] Matrix n n O) (h1 : Fintype.card n = 1) (x : A) (m : LatQ O n ρ.toRingHom) :
     x • m = (ρ x).trace • m := by
   obtain ⟨i0, hi0⟩ := Fintype.card_eq_one_iff.1 h1
@@ -75,6 +97,9 @@ variable {ℓ : ℕ} [Fact ℓ.Prime]
 abbrev zlMod (O : Type) [CommRing O] [Algebra ℤ_[ℓ] O] (M : Type) [AddCommGroup M] [Module O M] : Module ℤ_[ℓ] M :=
   Module.compHom M (algebraMap ℤ_[ℓ] O)
 
+/- English proof (translation)
+The claim follows from `@IsScalarTower.mk ℤ_[ℓ] O M _ _ (zlMod O M).toSMul fun a b m => by show (a • b) • m = algebraMap ℤ_[ℓ] O a • (b • m) rw [Algebra.smul_def, mul_smul]`.
+-/
 theorem zlTower (O : Type) [CommRing O] [Algebra ℤ_[ℓ] O] (M : Type) [AddCommGroup M] [Module O M] :
     @IsScalarTower ℤ_[ℓ] O M _ _ (zlMod O M).toSMul :=
   @IsScalarTower.mk ℤ_[ℓ] O M _ _ (zlMod O M).toSMul fun a b m => by
@@ -94,6 +119,9 @@ instance {ℓ : ℕ} [Fact ℓ.Prime] [Algebra ℤ_[ℓ] O] (ρ : A →ₐ[O] Ma
 
 def vOne (ρ : A →ₐ[O] Matrix n n O) (e₁ : A) (h : SurjectionRankOneIdempotent O A n ρ.toRingHom e₁) : LatM O O n ρ.toRingHom := h.choose
 
+/- English proof (translation)
+The claim follows from `h.choose_spec`.
+-/
 theorem vOne_spec (ρ : A →ₐ[O] Matrix n n O) (e₁ : A) (h : SurjectionRankOneIdempotent O A n ρ.toRingHom e₁) :
     (∀ (a : A) v x, tensM O n ρ.toRingHom (a • v) x = a • tensM O n ρ.toRingHom v x) ∧
     (∀ m : LatQ O n ρ.toRingHom, e₁ • m = m → ∃ x, m = tensM O n ρ.toRingHom (vOne ρ e₁ h) x) ∧
@@ -123,10 +151,25 @@ def lv (p : LeftId O x) : A := @Subtype.val A (· ∈ Submodule.span A ({x} : Se
 
 def lmk (a : A) (h : a ∈ Submodule.span A ({x} : Set A)) : LeftId O x := ⟨a, h⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lv_lmk (a : A) (h : a ∈ Submodule.span A ({x} : Set A)) : lv O x (lmk O x a h) = a := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lv_add (p q : LeftId O x) : lv O x (p + q) = lv O x p + lv O x q := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lv_smul (c : O) (p : LeftId O x) : lv O x (c • p) = c • lv O x p := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lv_smulA (a : A) (p : LeftId O x) : lv O x (a • p) = a * lv O x p := rfl
+/- English proof (translation)
+The claim follows from `p.2`.
+-/
 theorem lv_mem (p : LeftId O x) : lv O x p ∈ Submodule.span A ({x} : Set A) := p.2
 
 instance : SMulCommClass A O (LeftId O x) :=
@@ -138,12 +181,21 @@ instance {ℓ : ℕ} [Fact ℓ.Prime] [Algebra ℤ_[ℓ] O] : IsScalarTower ℤ_
 
 def incl : LeftId O x →ₗ[A] A := (Submodule.span A ({x} : Set A)).subtype
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incl_apply (p : LeftId O x) : incl O x p = lv O x p := rfl
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 (lv_mem O x p)`. Conclude with `⟨c, by rw [incl_apply, ← hc, smul_eq_mul]⟩`.
+-/
 theorem incl_mul (p : LeftId O x) : ∃ c : A, incl O x p = c * x := by
   obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.1 (lv_mem O x p)
   exact ⟨c, by rw [incl_apply, ← hc, smul_eq_mul]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incl_smul (a : A) (p : LeftId O x) : incl O x (a • p) = a * incl O x p := rfl
 
 end LeftId
@@ -163,9 +215,15 @@ def eveM (ρ : A →ₐ[O] Matrix n n O) (e₁ : A) (v₁ : LatM O O n ρ.toRing
     rw [map_smul, Finset.mul_sum]
     exact Finset.sum_congr rfl fun j _ => by rw [Matrix.smul_apply, smul_eq_mul, mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eveM_apply (ρ : A →ₐ[O] Matrix n n O) (e₁ : A) (v₁ : LatM O O n ρ.toRingHom) (p : LeftId O e₁) :
     eveM ρ e₁ v₁ p = incl O e₁ p • v₁ := rfl
 
+/- English proof (translation)
+Introduce `v`. Take `⟨c, hc⟩` from `(vOne_spec ρ e₁ h).2.2.2.2.2.2.2.2.2.2 v`. Use `⟨lmk O e₁ (c * e₁) (Submodule.mem_span_singleton.2 ⟨c, rfl⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[eveM_apply, incl_apply, lv_lmk]`. Conclude with `hc`.
+-/
 theorem eveM_onto (ρ : A →ₐ[O] Matrix n n O) (e₁ : A) (h : SurjectionRankOneIdempotent O A n ρ.toRingHom e₁) :
     Function.Surjective (eveM ρ e₁ (vOne ρ e₁ h)) := by
   intro v
@@ -180,6 +238,9 @@ section PE
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {A : Type} [Ring A] [Algebra O A]
   {m : Type} [Fintype m] [DecidableEq m]
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `incl_mul O E p`. Rewrite using `[hc, map_mul, hE, Matrix.mul_smul, mul_one, Matrix.trace_smul, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self δO)`.
+-/
 theorem trace_mem (ρ₁ : A →ₐ[O] Matrix m m O) (E : A) (δO : O) (hE : ρ₁ E = δO • (1 : Matrix m m O))
     (p : LeftId O E) : (ρ₁ (incl O E p)).trace ∈ Ideal.span ({δO} : Set O) := by
   obtain ⟨c, hc⟩ := incl_mul O E p
@@ -196,14 +257,25 @@ def evEM (ρ₁ : A →ₐ[O] Matrix m m O) (E : A) (δO : O) (hE : ρ₁ E = δ
     show (ρ₁ (lv O E (c • p))).trace = c * (ρ₁ (lv O E p)).trace
     rw [lv_smul, map_smul, Matrix.trace_smul, smul_eq_mul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evEM_val (ρ₁ : A →ₐ[O] Matrix m m O) (E : A) (δO : O) (hE : ρ₁ E = δO • (1 : Matrix m m O))
     (p : LeftId O E) : ((evEM ρ₁ E δO hE p : ↥(Ideal.span ({δO} : Set O))) : O) = (ρ₁ (incl O E p)).trace := rfl
 
+/- English proof (translation)
+Rewrite using `[evEM_val]`. Conclude with `act_trace ρ₁ h1 _ v`.
+-/
 theorem evEM_act (ρ₁ : A →ₐ[O] Matrix m m O) (h1 : Fintype.card m = 1) (E : A) (δO : O)
     (hE : ρ₁ E = δO • (1 : Matrix m m O)) (p : LeftId O E) (v : LatQ O m ρ₁.toRingHom) :
     incl O E p • v = ((evEM ρ₁ E δO hE p : ↥(Ideal.span ({δO} : Set O))) : O) • v := by
   rw [evEM_val]; exact act_trace ρ₁ h1 _ v
 
+/- English proof (translation)
+Introduce and unpack `⟨x, hx⟩`. Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton'.1 hx`. Use `⟨lmk O E (y • E) (Submodule.smul_of_tower_mem _ y (Submodule.mem_span_singleton_self E)), Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[evEM_val, incl_apply, lv_lmk]`. Use `show (ρ₁ (y • E)).trace = y * δO`.
+
+Rewrite using `[map_smul, hE, Matrix.trace_smul, Matrix.trace_smul, Matrix.trace_one, h1, smul_eq_mul, smul_eq_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem evEM_onto (ρ₁ : A →ₐ[O] Matrix m m O) (h1 : Fintype.card m = 1) (E : A) (δO : O)
     (hE : ρ₁ E = δO • (1 : Matrix m m O)) : Function.Surjective (evEM ρ₁ E δO hE) := by
   rintro ⟨x, hx⟩
@@ -214,6 +286,9 @@ theorem evEM_onto (ρ₁ : A →ₐ[O] Matrix m m O) (h1 : Fintype.card m = 1) (
   rw [map_smul, hE, Matrix.trace_smul, Matrix.trace_smul, Matrix.trace_one, h1, smul_eq_mul, smul_eq_mul]
   simp
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[evEM_val, evEM_val, incl_smul, map_mul, mat_eq_of_act ρ₁ (uElt r χ g) 1 (fun v => by rw [one_smul]; exact hu g v), one_smul, one_mul]`.
+-/
 theorem evEM_inv {T' G : Type} [CommRing T'] [Algebra T' A] [Group G] (r : G →* A) (χ : G →* T'ˣ)
     (ρ₁ : A →ₐ[O] Matrix m m O) (E : A) (δO : O) (hE : ρ₁ E = δO • (1 : Matrix m m O))
     (hu : ∀ g (v : LatQ O m ρ₁.toRingHom), uElt r χ g • v = v) (g : G) (p : LeftId O E) :
@@ -237,6 +312,9 @@ def rhoTwo (ρ : A →ₐ[O] Matrix n n O) (r : G →* A) (χ : G →* T'ˣ) (ε
     rw [Module.End.mul_eq_comp, ← Matrix.mulVecLin_mul, mul_inv_rev, uElt_mul, map_mul ρ, Matrix.transpose_mul,
       map_mul ε, Units.val_mul, smul_mul_smul_comm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rhoTwo_apply (ρ : A →ₐ[O] Matrix n n O) (r : G →* A) (χ : G →* T'ˣ) (ε : G →* Oˣ) (g : G) (t : n → O) :
     rhoTwo ρ r χ ε g t = (((ε g : Oˣ) : O) • (ρ (uElt r χ g⁻¹)).transpose).mulVec t := rfl
 
@@ -252,6 +330,9 @@ def gamM (ρ : A →ₐ[O] Matrix n n O) : (n → O) →ₗ[O] LatQ O n ρ.toRin
       rw [Finset.smul_sum]
       exact Finset.sum_congr rfl fun a _ => smul_comm _ _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gamM_apply (ρ : A →ₐ[O] Matrix n n O) (t : n → O) (m : LatQ O n ρ.toRingHom) :
     gamM ρ t m = ∑ a, t a • (m a : KO O) := rfl
 
@@ -262,15 +343,26 @@ def piM (ρ : A →ₐ[O] Matrix n n O) (e₁ : A) (w : n → O) : FirstSummandS
   map_add' b b' := by rw [Submodule.coe_add, map_add, Matrix.vecMul_add]
   map_smul' c b := by rw [Submodule.coe_smul, map_smul, Matrix.vecMul_smul, RingHom.id_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piM_apply (ρ : A →ₐ[O] Matrix n n O) (e₁ : A) (w : n → O) (b : FirstSummandSubmodule O e₁) :
     piM ρ e₁ w b = Matrix.vecMul w (ρ (b : A)) := rfl
 
+/- English proof (translation)
+Use `show ∑ a, (Matrix.vecMul w (ρ (b : A))) a • (m a : KO O) = ∑ i, w i • (((b : A) • m) i : KO O)`. Simplify using `only [latQ_act, Matrix.vecMul, dotProduct, Finset.sum_smul, Finset.smul_sum, mul_smul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem gam_pi (ρ : A →ₐ[O] Matrix n n O) (e₁ : A) (w : n → O) (b : FirstSummandSubmodule O e₁) (m : LatQ O n ρ.toRingHom) :
     gamM ρ (piM ρ e₁ w b) m = lamM ρ w ((FirstSummandSubmodule O e₁).subtype b • m) := by
   show ∑ a, (Matrix.vecMul w (ρ (b : A))) a • (m a : KO O) = ∑ i, w i • (((b : A) • m) i : KO O)
   simp only [latQ_act, Matrix.vecMul, dotProduct, Finset.sum_smul, Finset.smul_sum, mul_smul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Introduce `g b`. Establish `hu : ((χ g : T'ˣ) : T') • ((b : A) * r g⁻¹) = (b : A) * uElt r χ g⁻¹`. Rewrite using `[uElt, map_inv χ, inv_inv, mul_smul_comm]`. Rewrite using `[rhoTwo_apply, piM_apply, piM_apply]`. Use `show Matrix.vecMul w (ρ (((ε g : Oˣ) : O) • (((χ g : T'ˣ) : T') • ((b : A) * r g⁻¹)))) = _`.
+
+Rewrite using `[hu, map_smul, map_mul, Matrix.vecMul_smul]`. Use function extensionality and compare the values at `a`. Simplify using `only [Matrix.vecMul, Matrix.mulVec, dotProduct, Matrix.smul_apply, Matrix.transpose_apply, Matrix.mul_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem pi_equiv (ρ : A →ₐ[O] Matrix n n O) (r : G →* A) (χ : G →* T'ˣ) (e₁ : A) (ε : G →* Oˣ) (w : n → O) :
     IsEquivMap (firstSummandRep O r χ e₁ ε) (rhoTwo ρ r χ ε) (piM ρ e₁ w) := by
   intro g b
@@ -285,6 +377,13 @@ theorem pi_equiv (ρ : A →ₐ[O] Matrix n n O) (r : G →* A) (χ : G →* T'�
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Introduce `t`. Take `⟨b', hb'⟩` from `hs (Matrix.vecMulVec v t)`. Use `⟨⟨e₁ * b', b', rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[piM_apply]`. Use `show Matrix.vecMul w (ρ (e₁ * b')) = t`.
+
+Rewrite using `[map_mul, ← Matrix.vecMul_vecMul, hb']`. Establish `h1 : Matrix.vecMul w (ρ e₁) = w`. Use function extensionality and compare the values at `j`. Simplify using `only [Matrix.vecMul, dotProduct, hvw, ← mul_assoc]`. Rewrite using `[← Finset.sum_mul, hwv, one_mul]`.
+
+Rewrite using `[h1]`. Use function extensionality and compare the values at `j`. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.vecMulVec_apply, ← mul_assoc]`. Rewrite using `[← Finset.sum_mul, hwv, one_mul]`.
+-/
 theorem pi_onto (ρ : A →ₐ[O] Matrix n n O) (hs : Function.Surjective ρ) (e₁ : A) (v w : n → O)
     (hvw : ∀ i j, ρ e₁ i j = v i * w j) (hwv : ∑ j, w j * v j = 1) : Function.Surjective (piM ρ e₁ w) := by
   intro t
@@ -302,6 +401,9 @@ theorem pi_onto (ρ : A →ₐ[O] Matrix n n O) (hs : Function.Surjective ρ) (e
   simp only [Matrix.vecMul, dotProduct, Matrix.vecMulVec_apply, ← mul_assoc]
   rw [← Finset.sum_mul, hwv, one_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem inc_equiv (r : G →* A) (χ : G →* T'ˣ) (e₁ : A) (ε : G →* Oˣ) (g : G) (b : FirstSummandSubmodule O e₁) :
     (FirstSummandSubmodule O e₁).subtype (firstSummandRep O r χ e₁ ε g b) =
       ((ε g : Oˣ) : O) • (((χ g : T'ˣ) : T') • ((FirstSummandSubmodule O e₁).subtype b * r g⁻¹)) := rfl
@@ -318,10 +420,22 @@ section Top
 variable {O : Type} [CommRing O] {A : Type} [Ring A] [Algebra O A] [TopologicalSpace A] [IsTopologicalAddGroup A]
   [ContinuousConstSMul O A] (e₁ : A)
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : TopologicalSpace (FirstSummandSubmodule O e₁) := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : IsTopologicalAddGroup (FirstSummandSubmodule O e₁) := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : ContinuousConstSMul O (FirstSummandSubmodule O e₁) := inferInstance
 
+/- English proof (translation)
+The claim follows from `continuous_subtype_val`.
+-/
 theorem inc_cont : Continuous (FirstSummandSubmodule O e₁).subtype := continuous_subtype_val
 
 end Top
@@ -334,6 +448,9 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {X d G
 
 def cOne (ht : 1 ≤ t) : Fin (t + 1) := ⟨1, by omega⟩
 
+/- English proof (translation)
+Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `[cOne] at this`.
+-/
 theorem cOne_ne (ht : 1 ≤ t) : cOne ht ≠ 0 := by
   intro h
   have := congrArg Fin.val h
@@ -342,6 +459,9 @@ theorem cOne_ne (ht : 1 ≤ t) : cOne ht ≠ 0 := by
 variable (Dd : RingData O X d G t bl) (T : Subalgebra O (X → O)) (ht : 1 ≤ t)
   [∀ k, SMulCommClass Dd.R' O (blockRestrictedRepresentationType bl Dd.ρk k)]
 
+/- English proof (translation)
+Take `⟨-, -, -, -, hee, -, -, -, hsurj, -, hcard1, -, -, -, -, -, -, hOne⟩` from `hT`. Take `⟨p1, -, p3, -⟩` from `hOne`. Conclude with `⟨hee, hsurj, hcard1 _ (cOne_ne ht), mat_eq_of_act _ _ _ p3, p1⟩`.
+-/
 theorem top_facts (hT : Dd.Top T ht) :
     Dd.e₁ * Dd.e₁ = Dd.e₁ ∧ (∀ k, Function.Surjective (Dd.ρk k)) ∧ Fintype.card {a // bl a = cOne ht} = 1 ∧
     Dd.ρk (cOne ht) Dd.E = Dd.δO • (1 : Matrix {a // bl a = cOne ht} {a // bl a = cOne ht} O) ∧
@@ -350,15 +470,24 @@ theorem top_facts (hT : Dd.Top T ht) :
   obtain ⟨p1, -, p3, -⟩ := hOne
   exact ⟨hee, hsurj, hcard1 _ (cOne_ne ht), mat_eq_of_act _ _ _ p3, p1⟩
 
+/- English proof (translation)
+The claim follows from `idempotent_rank_one_at_point hI hD`.
+-/
 theorem rank_reduction_idempotent_one {T : Subalgebra O (X → O)} {r₀ : G →* (X → Matrix d d O)} {π : X} {χ₁ ε : G →* Oˣ} {g₀ : G}
     {eB e₁ s : X → Matrix d d O} (hI : IdemHyp O T r₀ π bl eB e₁) (hD : RingDef O T r₀ π χ₁ ε g₀ eB e₁ s Dd) :
     ((Dd.ρk 0 Dd.e₁).map (algebraMap O (FractionRing O))).rank = 1 :=
   idempotent_rank_one_at_point hI hD
 
+/- English proof (translation)
+The claim follows from `surjection_of_rank_one_idempotent O Dd.R' _ (Dd.ρk 0).toRingHom Dd.e₁ ((top_facts Dd T ht hT).2.1 0) (top_facts Dd T ht hT).1 hrk`.
+-/
 theorem rho_hypotheses_of_ring_data (hT : Dd.Top T ht) (hrk : ((Dd.ρk 0 Dd.e₁).map (algebraMap O (FractionRing O))).rank = 1) :
     SurjectionRankOneIdempotent O Dd.R' {a // bl a = 0} (Dd.ρk 0).toRingHom Dd.e₁ :=
   surjection_of_rank_one_idempotent O Dd.R' _ (Dd.ρk 0).toRingHom Dd.e₁ ((top_facts Dd T ht hT).2.1 0) (top_facts Dd T ht hT).1 hrk
 
+/- English proof (translation)
+The claim follows from `rank_one_factor O _ (Dd.ρk 0 Dd.e₁) (by rw [← map_mul, (top_facts Dd T ht hT).1]) hrk`.
+-/
 theorem rankOne_Dd (hT : Dd.Top T ht) (hrk : ((Dd.ρk 0 Dd.e₁).map (algebraMap O (FractionRing O))).rank = 1) :
     ∃ v w : {a // bl a = 0} → O, (∀ i j, Dd.ρk 0 Dd.e₁ i j = v i * w j) ∧ ∑ j, w j * v j = 1 :=
   rank_one_factor O _ (Dd.ρk 0 Dd.e₁) (by rw [← map_mul, (top_facts Dd T ht hT).1]) hrk
@@ -386,6 +515,9 @@ def lamDd (hT : Dd.Top T ht) (hrk : ((Dd.ρk 0 Dd.e₁).map (algebraMap O (Fract
     blockRestrictedRepresentationType bl Dd.ρk 0 →ₗ[O] KO O :=
   lamM (Dd.ρk 0) (wDd Dd T ht hT hrk)
 
+/- English proof (translation)
+Introduce `ρ0 v₁ c1`. Establish `hs` using `vOne_spec (Dd.ρk 0) Dd.e₁ (rho_hypotheses_of_ring_data Dd T ht hT hrk)`. Establish `hf` using `top_facts Dd T ht hT`. Establish `hvw` using `(rankOne_Dd Dd T ht hT hrk).choose_spec.choose_spec`. Use `⟨⟨hs.1, hs.2.1, hs.2.2.1, hs.2.2.2.1, hs.2.2.2.2.1, hs.2.2.2.2.2.1, hs.2.2.2.2.2.2.1, hs.2.2.2.2.2.2.2.1, hs.2.2.2.2.2.2.2.2.1, hs.2.2.2.2.2.2.2.2.2.1⟩, fun a => rfl, eveM_onto _ _ _, evEM_inv Dd.r Dd.χ _ _ _ _ hf.2.2.2.2, evEM_onto _ hf.2.2.1 _ _ _, incl_mul O Dd.E, evEM_act _ h …` and prove the remaining obligations.
+-/
 theorem tensor_lattice_facts (hT : Dd.Top T ht) (hrk : ((Dd.ρk 0 Dd.e₁).map (algebraMap O (FractionRing O))).rank = 1)
     (ε : G →* Oˣ) :
     let ρ0 := (Dd.ρk 0).toRingHom
@@ -433,12 +565,33 @@ variable {ℓ : ℕ} [Fact ℓ.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDi
   {A : Type} [Ring A] [Algebra O A] [TopologicalSpace A] [IsTopologicalAddGroup A] [ContinuousConstSMul O A]
   {n : Type} [Fintype n] [DecidableEq n] (ρ : A →ₐ[O] Matrix n n O) (x e₁ : A)
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : Module ℤ_[ℓ] (LatM O O n ρ.toRingHom) := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : IsScalarTower ℤ_[ℓ] O (LatM O O n ρ.toRingHom) := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : SMulCommClass A O (LeftId O x) := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : Module ℤ_[ℓ] (LeftId O x) := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : IsScalarTower ℤ_[ℓ] O (LeftId O x) := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : IsTopologicalAddGroup (FirstSummandSubmodule O e₁) := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : ContinuousConstSMul O (FirstSummandSubmodule O e₁) := inferInstance
 
 end Checks
@@ -449,6 +602,11 @@ open ReciprocityTheory.ChartRestriction.T2 (PadicCoeff IsFGTop)
 variable {ℓ : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O]
   {A : Type} [Ring A] [Algebra O A] [TopologicalSpace A] [IsTopologicalAddGroup A]
 
+/- English proof (translation)
+Use `hO.ring` as an intermediate fact. Use `hO.compact` as an intermediate fact. Use `hA.t2` as an intermediate fact. Use `hA.csmul` as an intermediate fact. Use `hA.fg` as an intermediate fact.
+
+Take `⟨k, f, hf⟩` from `Module.Finite.exists_fin' O A`. Establish `hfc : Continuous f` using `LinearMap.continuous_on_pi f`. Establish `hq : Topology.IsQuotientMap f` using `hfc.isClosedMap.isQuotientMap hfc hf`. Conclude with `hq.continuous_iff.2 (LinearMap.continuous_on_pi (g ∘ₗ f))`.
+-/
 theorem lin_cont (hO : PadicCoeff ℓ O) (hA : IsFGTop O A) {N : Type} [AddCommGroup N] [Module O N] [TopologicalSpace N]
     [ContinuousAdd N] [ContinuousSMul O N] (g : A →ₗ[O] N) : Continuous g := by
   have := hO.ring; have := hO.compact; have := hA.t2; have := hA.csmul; have := hA.fg
@@ -464,11 +622,17 @@ def piA (ρ : A →ₐ[O] Matrix n n O) (w : n → O) : A →ₗ[O] (n → O) wh
   map_add' b b' := by rw [map_add, Matrix.vecMul_add]
   map_smul' c b := by rw [map_smul, Matrix.vecMul_smul, RingHom.id_apply]
 
+/- English proof (translation)
+Use `hO.ring` as an intermediate fact. Conclude with `(lin_cont hO hA (piA ρ w)).comp continuous_subtype_val`.
+-/
 theorem piM_cont (hO : PadicCoeff ℓ O) (hA : IsFGTop O A) (ρ : A →ₐ[O] Matrix n n O) (e₁ : A) (w : n → O) :
     Continuous (piM ρ e₁ w) := by
   have := hO.ring
   exact (lin_cont hO hA (piA ρ w)).comp continuous_subtype_val
 
+/- English proof (translation)
+Use `hO.ring` as an intermediate fact. Conclude with `lin_cont hO hA ρ.toLinearMap`.
+-/
 theorem rho_cont (hO : PadicCoeff ℓ O) (hA : IsFGTop O A) (ρ : A →ₐ[O] Matrix n n O) : Continuous ρ := by
   have := hO.ring
   exact lin_cont hO hA ρ.toLinearMap

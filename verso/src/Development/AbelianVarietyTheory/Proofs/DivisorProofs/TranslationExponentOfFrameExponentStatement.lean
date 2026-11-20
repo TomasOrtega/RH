@@ -19,5 +19,8 @@ open GlobalTheory.Poinc.Sep
 open GlobalTheory.UT.CoefBasic
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GSep.TransTerms.transExp_of_frExp | exact GlobalTheory.GSep.TransTerms.transExp_of_frExp | (intros; apply GlobalTheory.GSep.TransTerms.transExp_of_frExp <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.translationExponent_of_frameExponent : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (x₀ : X₁.S.Gam), X₁.M.Div X₁.S.th x₀ z₁ → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (Y : Type) [AddCommGroup Y] (t : Y → V) (δ : I → Y → Y) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev Y t δ), ∀ a ∈ X₁.S.HH X₁.M z₁, ∀ τ ∈ X₁.S.TT X₁.M z₁, ∀ e : ℕ, GlobalTheory.GSep.TransTerms.FrExp 𝔪 a τ e → GlobalTheory.GSep.TransTerms.TransExp 𝔪 x₀ a τ e := by
   first | exact @GlobalTheory.GSep.TransTerms.transExp_of_frExp | exact GlobalTheory.GSep.TransTerms.transExp_of_frExp | (intros; apply GlobalTheory.GSep.TransTerms.transExp_of_frExp <;> assumption)

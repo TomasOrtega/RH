@@ -18,6 +18,11 @@ open Filter Topology
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hi : Function.Injective fun A : Matrix (Fin n) (Fin n) O => A.map O.subtype` using `Matrix.map_injective Subtype.val_injective`. Use `⟨⟨Matrix.of fun i j => ⟨_, h1 i j⟩, Matrix.of fun i j => ⟨_, h2 i j⟩, hi ?_, hi ?_⟩, Units.ext rfl⟩` and prove the remaining obligations. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `g.mul_inv`. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Conclude with `g.inv_mul`.
+-/
 theorem mem_GLint_of_entries {L : Type} [Field L] {n : ℕ} (O : Subring L) (g : GL (Fin n) L)
     (h1 : ∀ i j, g.1 i j ∈ O) (h2 : ∀ i j, g⁻¹.1 i j ∈ O) : g ∈ Formalism.UG.GLint (Fin n) O := by
   have hi : Function.Injective fun A : Matrix (Fin n) (Fin n) O => A.map O.subtype :=
@@ -28,9 +33,21 @@ theorem mem_GLint_of_entries {L : Type} [Field L] {n : ℕ} (O : Subring L) (g :
   · simp only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]
     exact g.inv_mul
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem inBasis_apply {n n' : ℕ} (h : n' = n) (β x : GL (Fin n) (Lev.EAf D)) (w : Pl D.host.E) (i j : Fin n') :
     (inBasis h β w x).1 i j = cpt w ((β⁻¹ * x * β).1 (finCongr h i) (finCongr h j)) := rfl
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hx`. Rewrite using `[GlobalTheory.SmGL.SphCompletion.KO_completion w n]`. Establish `hm : ∀ z : GL (Fin n) (Lev.EAf D), z ∈ ({Formalism.L2.DIV.intGL _ _ n y, (Formalism.L2.DIV.intGL _ _ n y)⁻¹} : Set _) → ∀ a b, cpt w (z.1 a b) ∈ Formalism.UG.Ov D.host.E w`. Introduce `z hz a b`. Use `(mem_OA_iff _).1 ?_ w` and prove the remaining obligations.
+
+Break down `hz with rfl | rfl` into its components or cases. Conclude with `(y.1 a b).2`. Rewrite using `[← map_inv]`. Conclude with `((y⁻¹).1 a b).2`. Establish `e1 : β⁻¹ * Formalism.L2.DIV.frGL β y * β = Formalism.L2.DIV.intGL _ _ n y`.
+
+Simplify using `only [Formalism.L2.DIV.frGL, MonoidHom.coe_comp, MulEquiv.coe_toMonoidHom, Function.comp_apply, MulAut.conj_apply]`. Use `group`. Establish `e2 : β⁻¹ * (Formalism.L2.DIV.frGL β y)⁻¹ * β = (Formalism.L2.DIV.intGL _ _ n y)⁻¹`. Rewrite using `[← e1]`. Use `group`.
+
+Use `mem_GLint_of_entries _ _ (fun i j => ?_) (fun i j => ?_)` and prove the remaining obligations. Rewrite using `[inBasis_apply, e1]`. Conclude with `hm _ (Or.inl rfl) _ _`. Rewrite using `[← map_inv, inBasis_apply, e2]`. Conclude with `hm _ (Or.inr rfl) _ _`.
+-/
 theorem inBasis_mem_KO {n : ℕ} (β x : GL (Fin n) (Lev.EAf D)) (hx : x ∈ St β) (w : Pl D.host.E) :
     inBasis rfl β w x ∈ KO (Kw w) (Fin n) := by
   obtain ⟨y, rfl⟩ := hx

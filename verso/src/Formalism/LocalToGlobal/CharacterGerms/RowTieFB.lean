@@ -159,6 +159,9 @@ section Record
 variable [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ} {d : ℕ} [NeZero d] {I : Fin 2 → Type}
   [∀ g, Fintype (I g)]
 
+/- English proof (translation)
+The claim follows from `inferInstance algClosed := Y.algClosed l_odd := Y.l_odd k_unit := Y.k_unit cartH := hCart C V O dd Y d I p rank := hrk axes := hAx C V O dd Y d I p G0 := hG0 C V O dd Y d I p _ CEq := hC C V O dd Y d I p hrk _ R1 := hR1 C V O dd Y d I p hrk _ hR2 R2 := hR2 CH := hCH`.
+-/
 theorem FBChart.hyps (hCart : CartFBSt) (hAx : AxesFBSt) (hG0 : IntegralGermIndependentAllCharts) (hC : CEqFBSt) (hR1 : IndependenceBoundAllCharts)
     (Y : FBChart C V O dd) (p : PairData Y d I) (hrk : (Y.raw p).RankHyp)
     (hR2 : RawChart.RankMaximalCondition (hCart C V O dd Y d I p)) (hCH : RawChart.CHSt (hCart C V O dd Y d I p)) :

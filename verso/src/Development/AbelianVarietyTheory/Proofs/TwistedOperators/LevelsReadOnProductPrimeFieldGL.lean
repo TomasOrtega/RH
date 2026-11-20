@@ -20,9 +20,17 @@ variable {κ κ' : Type} [CommRing κ] [CommRing κ'] {r : ℕ}
 def rx (κ : Type) [CommRing κ] (π : Equiv.Perm (Fin r)) : GL (Fin r) κ ≃* GL (Fin r) κ :=
   Units.mapEquiv (Matrix.reindexAlgEquiv κ κ π.symm).toRingEquiv.toMulEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rx_apply (π : Equiv.Perm (Fin r)) (u : GL (Fin r) κ) (a c : Fin r) :
     (rx κ π u).val a c = u.val (π a) (π c) := rfl
 
+/- English proof (translation)
+Use `⟨⟨π.toPEquiv.toMatrix, π.symm.toPEquiv.toMatrix, ?_, ?_⟩, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[← PEquiv.toMatrix_trans, ← Equiv.toPEquiv_trans, Equiv.self_trans_symm, Equiv.toPEquiv_refl, PEquiv.toMatrix_refl]`. Rewrite using `[← PEquiv.toMatrix_trans, ← Equiv.toPEquiv_trans, Equiv.symm_trans_self, Equiv.toPEquiv_refl, PEquiv.toMatrix_refl]`. Use extensionality with `a c`. Rewrite using `[rx_apply]`.
+
+Simplify using `[Units.inv_mk, PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]`.
+-/
 theorem rx_conj (π : Equiv.Perm (Fin r)) : ∃ c : GL (Fin r) κ, ∀ u, rx κ π u = c * u * c⁻¹ := by
   refine ⟨⟨π.toPEquiv.toMatrix, π.symm.toPEquiv.toMatrix, ?_, ?_⟩, fun u => ?_⟩
   · rw [← PEquiv.toMatrix_trans, ← Equiv.toPEquiv_trans, Equiv.self_trans_symm, Equiv.toPEquiv_refl,
@@ -46,10 +54,18 @@ open Classical in
 
 def sumK (b : Bool) (s k : ℕ) (u : Fin r → Fin r → κ) : κ := ∑ a, ∑ c, if EdK b s k a c then u a c else 0
 
+/- English proof (translation)
+Simplify using `[MemK]`.
+-/
 theorem memK_map (e : κ ≃+* κ') (b : Bool) (s k : ℕ) (u : Fin r → Fin r → κ) :
     MemK b s k (fun a c => e (u a c)) ↔ MemK b s k u := by
   simp [MemK]
 
+/- English proof (translation)
+Unfold `sumK`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem sumK_map (e : κ ≃+* κ') (b : Bool) (s k : ℕ) (u : Fin r → Fin r → κ) :
     sumK b s k (fun a c => e (u a c)) = e (sumK b s k u) := by
   unfold sumK
@@ -59,6 +75,11 @@ theorem sumK_map (e : κ ≃+* κ') (b : Bool) (s k : ℕ) (u : Fin r → Fin r 
   refine Finset.sum_congr rfl fun c _ => ?_
   split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `only [unip, blockTri, Subgroup.mem_mk, Submonoid.mem_mk, Subsemigroup.mem_mk, Set.mem_setOf_eq, Matrix.BlockTriangular]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hb, hd⟩`. Conclude with `⟨hd, fun a c hca => hb hca⟩`. Introduce and unpack `⟨hd, hl⟩`.
+
+Conclude with `⟨fun a c hca => hl a c hca, hd⟩`.
+-/
 theorem mem_unip_iff (u : GL (Fin r) κ) :
     u ∈ unip κ r ↔ (∀ a, u.val a a = 1) ∧ ∀ a c, c < a → u.val a c = 0 := by
   simp only [unip, blockTri, Subgroup.mem_mk, Submonoid.mem_mk, Subsemigroup.mem_mk, Set.mem_setOf_eq,
@@ -69,21 +90,35 @@ theorem mem_unip_iff (u : GL (Fin r) κ) :
   · rintro ⟨hd, hl⟩
     exact ⟨fun a c hca => hl a c hca, hd⟩
 
+/- English proof (translation)
+Rewrite using `[mem_unip_iff]`. Simplify using `[MemK]`.
+-/
 theorem mem_unip_memK (s k : ℕ) (u : GL (Fin r) κ) : u ∈ unip κ r ↔ MemK false s k u.val := by
   rw [mem_unip_iff]
   simp [MemK]
 
+/- English proof (translation)
+Unfold `unipSym unipCol`. Simplify using `only [Subgroup.mem_mk, Submonoid.mem_mk, Subsemigroup.mem_mk, Set.mem_setOf_eq, mem_unip_iff, MemK]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_unipSym_memK (s k : ℕ) (u : GL (Fin r) κ) : u ∈ unipSym κ r s k ↔ MemK true s k u.val := by
   unfold unipSym unipCol
   simp only [Subgroup.mem_mk, Submonoid.mem_mk, Subsemigroup.mem_mk, Set.mem_setOf_eq, mem_unip_iff, MemK]
   simp
 
+/- English proof (translation)
+Unfold `edgeSum supEdge sumK EdK`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [Bool.false_eq_true, if_false]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+-/
 theorem edgeSum_sup (s k : ℕ) (u : GL (Fin r) κ) : edgeSum supEdge u = sumK false s k u.val := by
   unfold edgeSum supEdge sumK EdK
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_
   simp only [Bool.false_eq_true, if_false]
   split_ifs <;> simp_all
 
+/- English proof (translation)
+Unfold `edgeSum symEdge sumK EdK`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `e : ∀ x : ℕ, (¬ (0 < k ∧ x = s + k)) ↔ x ≠ s + k` using `fun x => by simp [hk]`. Simplify using `only [e, ↓reduceIte]`. Distinguish the cases in `h : ((c : ℕ) = a + 1 ∧ (a : ℕ) + 1 ≠ s ∧ (a : ℕ) + 1 ≠ s + k) ∨ ((a : ℕ) + 1 = s ∧ (c : ℕ) = s + k)`.
+
+Simplify using `only [h, ↓reduceIte]`. Simplify using `only [h, ↓reduceIte]`.
+-/
 theorem edgeSum_sym (s k : ℕ) (hk : 0 < k) (u : GL (Fin r) κ) : edgeSum (symEdge s k) u = sumK true s k u.val := by
   unfold edgeSum symEdge sumK EdK
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_
@@ -95,6 +130,9 @@ theorem edgeSum_sym (s k : ℕ) (hk : 0 < k) (u : GL (Fin r) κ) : edgeSum (symE
 
 end Loc
 
+/- English proof (translation)
+Unfold `LevelP.ofLocal`. Simplify using `only [MonoidHom.finset_prod_apply, MonoidHom.comp_apply]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem ofLocal_chi {E : Type} [Field E] [NumberField E] {Pg : Finset (Pl E)} {r : ℕ}
     (Hl : ∀ PP : ↥Pg, Subgroup (GL (Fin r) (kP PP.1))) (cl : ∀ PP : ↥Pg, Hl PP →* ℂˣ)
     (x : (Subgroup.pi Set.univ Hl : Subgroup (G0 Pg r))) :
@@ -107,15 +145,38 @@ theorem ofLocal_chi {E : Type} [Field E] [NumberField E] {Pg : Finset (Pl E)} {r
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A}
 
+/- English proof (translation)
+Establish `h` using `S.m_add_three_le_k`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem k_pos (S : Ranks) : 0 < S.k := by
   have h := S.m_add_three_le_k
   omega
 
+/- English proof (translation)
+Establish `h` using `S.two_le_m`. Unfold `Ranks.rS Ranks.r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rS_add_k_lt (S : Ranks) : S.rS + S.k < S.r := by
   have h := S.two_le_m
   unfold Ranks.rS Ranks.r
   omega
 
+/- English proof (translation)
+Take `⟨ψ0, hψ, h0, π, hπ, hmem, hchi⟩` from `h`. Consider the cases of `b`. Use `clear hchi hmem hπ`. Use `⟨ψ0, Equiv.refl _, hψ, ?_, ?_⟩` and prove the remaining obligations. Introduce `g`.
+
+Rewrite using `[h0]`. Unfold `P0 LevelP.ofLocal`. Simplify using `only [Subgroup.mem_pi, Set.mem_univ, true_implies, Equiv.refl_apply]`. Conclude with `forall_congr' fun PP => mem_unip_memK _ _ _`. Introduce `g hg`.
+
+Generalize the expression as in `hL : R.levR F false = L at hg ⊢`. Rewrite `hL` using `[h0]`. Substitute `hL` using the available equality. Use `clear h0 hψ`. Unfold `P0`.
+
+Use `(ofLocal_chi _ _ ⟨g, hg⟩).trans ?_` and prove the remaining obligations. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Use `show (ψ0 PP.1) (edgeSum supEdge (g PP)) = _`. Rewrite using `[edgeSum_sup D.R.rS D.R.k]`. Both sides reduce to the same expression.
+
+Use `clear h0 hπ`. Use `⟨ψ0, π, hψ, ?_, ?_⟩` and prove the remaining obligations. Introduce `g`. Rewrite using `[hmem]`. Unfold `PsharpSym LevelP.ofLocal reord`.
+
+Simplify using `only [Subgroup.mem_pi, Set.mem_univ, true_implies]`. Use `forall_congr' fun PP => ?_` and prove the remaining obligations. Rewrite using `[mem_unipSym_memK]`. Conclude with `Iff.rfl`. Introduce `g hg`.
+
+Rewrite using `[hchi g hg ((hmem g).1 hg)]`. Use `clear hchi hψ`. Unfold `PsharpSym`. Use `(ofLocal_chi _ _ _).trans ?_` and prove the remaining obligations. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations.
+
+Use `show (ψ0 PP.1) (edgeSum (symEdge D.R.rS D.R.k) (reord π g PP)) = _`. Rewrite using `[edgeSum_sym D.R.rS D.R.k (k_pos D.R)]`. Both sides reduce to the same expression.
+-/
 theorem levels_entries (h : R.grp_levels F) (b : Bool) :
     ∃ (ψ0 : ∀ PP : Pl D.host.E, AddChar (kP PP) ℂ) (π : Equiv.Perm (Fin D.R.r)), IsGenericPsi R.Pg ψ0 ∧
       (∀ g, g ∈ (R.levR F b).H ↔ ∀ PP, MemK b D.R.rS D.R.k fun a c => (g PP).val (π a) (π c)) ∧
@@ -175,6 +236,49 @@ def splitEq (D : D7) (π : Equiv.Perm (Fin D.R.r)) : G0g D.nd ≃* GProd D where
   map_mul' γ γ' := by
     ext : 2 <;> simp
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG b`. Take `⟨-, -, hlev, hrec, -⟩` from `hG`. Take `⟨ψ0, π, hψ, hmem, hchi⟩` from `levels_entries (R := R) (F := F) hlev b`. Take `⟨eR, plg, iso, h1, -, h3⟩` from `hrec`. Establish `hne : ∀ k, Nonempty (D.nd.PlG k)` using `fun k => by`.
+
+Establish `e1` using `D.nd.card_PlG k`. Establish `e2` using `D.R.two_le_m`. Establish `e3` using `D.R.m_le_f`. Unfold `Ranks.f Ranks.n at e1`. Conclude with `Fintype.card_pos_iff.mp (by omega)`.
+
+Establish `hR : ∀ (κ : Type) [CommRing κ] (u : GL (Fin D.R.r) κ), ((rx κ π u : GL (Fin D.R.r) κ) : Matrix (Fin D.R.r) (Fin D.R.r) κ) = fun a c => u.val (π a) (π c)` using `fun κ _ u => funext fun a => funext fun c => rx_apply π u a c`. Establish `hX : ∀ (g : G) (kv : (Σ k : Fin 2, D.nd.PlG k)), (fun a c => (R.eG g (plg kv)).val (π a) (π c)) = fun a c => iso kv ((eR g kv).val (π a) (π c))`. Introduce `g kv`. Rewrite using `[h3]`. Both sides reduce to the same expression.
+
+Establish `hψne : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), ((ψ0 (plg kv).1).compAddMonoidHom (iso kv).toAddMonoidHom)⁻¹ ≠ 1`. Introduce `kv h`. Apply `hψ (plg kv).1 (plg kv).2` to reduce the goal to its premises. Use extensionality with `x`. Use `congrArg (fun χ : AddChar (ZMod (D.host.g kv.1)) ℂ => χ (-((iso kv).symm x))) h` as an intermediate fact.
+
+Simplify using `using this`. Establish `hmemG : ∀ g : G, g ∈ (F.lvl b).P ↔ ∀ kv : (Σ k : Fin 2, D.nd.PlG k), MemK b D.R.rS D.R.k (fun a c => (eR g kv).val (π a) (π c))`. Introduce `g`. Establish `e : g ∈ (F.lvl b).P ↔ R.eG g ∈ (R.levR F b).H`. Unfold `RealDat.levR levPOf`.
+
+Simplify using `[Subgroup.mem_comap]`. Use `(e.trans (hmem _)).trans (plg.forall_congr_right.symm.trans (forall_congr' fun kv => ?_))` and prove the remaining obligations. Conclude with `(Iff.of_eq (congrArg (MemK b D.R.rS D.R.k) (hX g kv))).trans (memK_map (iso kv) b D.R.rS D.R.k _)`. Establish `hchiL : ∀ (p : ℕ) [Fact p.Prime] (L' : GlobalTheory.BadShare.Lev p D.R.r) (x : GL (Fin D.R.r) (ZMod p)), (∀ a, L'.co a = 1) → L'.chi x = L'.ψ (sumK L'.sharp L'.s L'.k x.val)`. Introduce `p _ L' x hco`.
+
+Unfold `GlobalTheory.BadShare.Lev.chi GlobalTheory.BadShare.Lev.Edge sumK EdK`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hco a, Units.val_one, one_mul]`. Set `L : ∀ k : Fin 2, D.nd.PlG k → GlobalTheory.BadShare.Lev (D.host.g k) D.R.r` to `fun k v => { sharp := b, s := D.R.rS, k := D.R.k, hk := rS_add_k_lt D.R, ψ := ((ψ0 (plg ⟨k, v⟩).1).compAddMonoidHom (iso ⟨k, v⟩).toAddMonoidHom)⁻¹, hψ := hψne ⟨k, v⟩, co := fun _ => 1 }`.
+
+Use `⟨eR.trans (splitEq D π), L 0, L 1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g`. Rewrite using `[hmemG g, Sigma.forall, Fin.forall_fin_two]`. Use `and_congr (forall_congr' fun v => ?_) (forall_congr' fun v => ?_)` and prove the remaining obligations. Use `show _ ↔ MemK b D.R.rS D.R.k (rx _ π (eR g ⟨0, v⟩)).val`.
+
+Rewrite using `[hR]`. Use `show _ ↔ MemK b D.R.rS D.R.k (rx _ π (eR g ⟨1, v⟩)).val`. Rewrite using `[hR]`. Introduce and unpack `⟨g, hg⟩`. Establish `hg' : R.eG g ∈ (R.levR F b).H`.
+
+Unfold `RealDat.levR levPOf`. Simplify `hg` using `[Subgroup.mem_comap]`. Establish `hl : ((R.levR F b).chi ⟨R.eG g, hg'⟩ : ℂ) = D.what₂.embLL (((F.lvl b).ψ ⟨g, hg⟩ : D.what₂.LLˣ) : D.what₂.LL)`. Establish `hψg : ∀ x : (F.lvl b).P, (x : G) = g → (F.lvl b).ψ x = (F.lvl b).ψ ⟨g, hg⟩`. Introduce and unpack `x rfl`.
+
+Both sides reduce to the same expression. Unfold `RealDat.levR levPOf`. Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply, hψg (R.eG.symm.toMonoidHom.subgroupComap (F.lvl b).P ⟨R.eG g, hg'⟩) (R.eG.symm_apply_apply g)]`. Both sides reduce to the same expression. Establish `hc` using `hchi (R.eG g) hg'`.
+
+Rewrite `hc` using `[hl]`. Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val, map_inv₀, hc, ← Finset.prod_inv_distrib, ← plg.prod_comp, Fintype.prod_sigma, Fin.prod_univ_two]`. Use `congr 1`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[hchiL _ (L 0 v) _ (fun _ => rfl)]`.
+
+Use `show _ = ((ψ0 (plg ⟨0, v⟩).1).compAddMonoidHom (iso ⟨0, v⟩).toAddMonoidHom)⁻¹ (sumK b D.R.rS D.R.k (rx _ π (eR g ⟨0, v⟩)).val)`. Rewrite using `[AddChar.inv_apply', AddChar.compAddMonoidHom_apply, hR, hX g ⟨0, v⟩, sumK_map]`. Both sides reduce to the same expression. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[hchiL _ (L 1 v) _ (fun _ => rfl)]`.
+
+Use `show _ = ((ψ0 (plg ⟨1, v⟩).1).compAddMonoidHom (iso ⟨1, v⟩).toAddMonoidHom)⁻¹ (sumK b D.R.rS D.R.k (rx _ π (eR g ⟨1, v⟩)).val)`. Rewrite using `[AddChar.inv_apply', AddChar.compAddMonoidHom_apply, hR, hX g ⟨1, v⟩, sumK_map]`. Both sides reduce to the same expression. Introduce `g hU`. Establish `key : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), IsNilpotent ((rx _ π (eR g kv)).val - 1) → CharP (kP (plg kv).1) (D.host.g kv.1) ∧ IsNilpotent ((R.eG g (plg kv)).val - 1)`.
+
+Introduce `kv hN`. Use `⟨charP_of_injective_ringHom (f := (iso kv : ZMod (D.host.g kv.1) →+* kP (plg kv).1)) (iso kv).injective _, ?_⟩` and prove the remaining obligations. Establish `hN2 : IsNilpotent ((eR g kv).val - 1)`. Establish `e1 : (rx _ π (eR g kv)).val - 1 = Matrix.reindexAlgEquiv (ZMod (D.host.g kv.1)) (ZMod (D.host.g kv.1)) π.symm ((eR g kv).val - 1)`. Rewrite using `[map_sub, map_one]`.
+
+Both sides reduce to the same expression. Rewrite `hN` using `[e1]`. Simplify using `using hN.map (Matrix.reindexAlgEquiv (ZMod (D.host.g kv.1)) (ZMod (D.host.g kv.1)) π.symm).symm`. Establish `e2 : (R.eG g (plg kv)).val - 1 = (iso kv : ZMod (D.host.g kv.1) →+* kP (plg kv).1).mapMatrix ((eR g kv).val - 1)`. Rewrite using `[map_sub, map_one, h3]`.
+
+Both sides reduce to the same expression. Rewrite using `[e2]`. Conclude with `hN2.map _`. Break down `hU with hU | hU` into its components or cases. Take `⟨v⟩` from `hne 0`.
+
+Take `⟨hc, hn⟩` from `key ⟨0, v⟩ (hU v)`. Conclude with `⟨0, plg ⟨0, v⟩, hc, hn⟩`. Take `⟨v⟩` from `hne 1`. Take `⟨hc, hn⟩` from `key ⟨1, v⟩ (hU v)`. Conclude with `⟨1, plg ⟨1, v⟩, hc, hn⟩`.
+
+Introduce `g γ hγ1 hγ2`. Rewrite using `[h1 g]`. Establish `hc : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), ∃ c : GL (Fin D.R.r) (ZMod (D.host.g kv.1)), ∀ u, rx _ π u = c * u * c⁻¹` using `fun kv => rx_conj π`. Use `choose C hC using hc`. Establish `hk : ∀ k (v : D.nd.PlG k), γ ⟨k, v⟩ = C ⟨k, v⟩ * eR g ⟨k, v⟩ * (C ⟨k, v⟩)⁻¹`.
+
+Rewrite using `[Fin.forall_fin_two]`. Use `⟨fun v => ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[hγ1 v, ← hC]`. Both sides reduce to the same expression. Rewrite using `[hγ2 v, ← hC]`.
+
+Both sides reduce to the same expression. Establish `hγ : γ = (C : G0g D.nd) * eR g * C⁻¹` using `funext fun kv => hk kv.1 kv.2`. Rewrite using `[hγ, GlobalTheory.ProjComm.goodProjector_coeff_classFunction]`.
+-/
 theorem levels_prod : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.IsGrp F → ∀ b : Bool, ∃ (Φ : G ≃* GProd D) (L₁ : D.nd.PlG 0 → GlobalTheory.BadShare.Lev (D.host.g 0) D.R.r) (L₂ : D.nd.PlG 1 → GlobalTheory.BadShare.Lev (D.host.g 1) D.R.r), (∀ g : G, g ∈ (F.lvl b).P ↔ (∀ v, (L₁ v).Mem ((Φ g).1 v)) ∧ ∀ v, (L₂ v).Mem ((Φ g).2 v)) ∧ (∀ g : (F.lvl b).P, D.what₂.embLL (((F.lvl b).ψ⁻¹ g : D.what₂.LLˣ) : D.what₂.LL) = (∏ v, (L₁ v).chi ((Φ g).1 v)) * ∏ v, (L₂ v).chi ((Φ g).2 v)) ∧ (∀ g : G, GlobalTheory.BadShare.AllUnip (Φ g).1 ∨ GlobalTheory.BadShare.AllUnip (Φ g).2 → ∃ (k : Fin 2) (PP : R.Pg), CharP (kP PP.1) (D.host.g k) ∧ IsNilpotent ((R.eG g PP).val - 1)) ∧ ∀ (g : G) (γ : G0g D.nd), (∀ v, γ ⟨0, v⟩ = (Φ g).1 v) → (∀ v, γ ⟨1, v⟩ = (Φ g).2 v) → D.what₂.embLL ((idemOf A.X).coeff g) = D.ntypes.e0.coeff γ := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hG b
   obtain ⟨-, -, hlev, hrec, -⟩ := hG

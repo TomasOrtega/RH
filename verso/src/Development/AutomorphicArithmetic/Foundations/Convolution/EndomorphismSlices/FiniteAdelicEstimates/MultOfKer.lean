@@ -19,11 +19,17 @@ namespace UpperTheory.Zero.ConvolutionTheory.EB
 
 attribute [local instance] borelG borelF borelA borelH
 
+/- English proof (translation)
+Use `⟨Equiv.refl _, fun i => ?_⟩` and prove the remaining obligations. Simplify using `[chi, infOf, Complex.conj_ofReal, map_sub, map_add, map_div₀, map_natCast, map_intCast, map_one, map_ofNat]`.
+-/
 private theorem herm_chi {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
     (l : InfinitePlace E → DomWeight n) (v : InfinitePlace E) : IsHerm (chi l v) := by
   refine ⟨Equiv.refl _, fun i => ?_⟩
   simp [chi, infOf, Complex.conj_ofReal, map_sub, map_add, map_div₀, map_natCast, map_intCast, map_one, map_ofNat]
 
+/- English proof (translation)
+Use `⟨1, fun _ => 1, fun _ => w, fun _ => g, fun _ => k, fun _ => ⟨hg, hk⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `y _`. Simplify using the standard rewrite rules. Introduce `χ`. Simplify using the standard rewrite rules.
+-/
 private theorem mult_of_ker {n : ℕ} [MeasurableSpace (G n)] {μ : Measure (G n)} {M : KMod n}
     {w : List (Bool × ℕ)} {g : ℝ → ℝ} {T : ℝ} {k : Mat n → (M.V →L[ℂ] M.V)}
     (hg : IsBump g T) (hk : IsKer μ M w g k) :
@@ -34,6 +40,15 @@ private theorem mult_of_ker {n : ℕ} [MeasurableSpace (G n)] {μ : Measure (G n
   · intro χ
     simp
 
+/- English proof (translation)
+Introduce `E _ _ _ a b l₁ l₂ D A`. Establish `hsize : ∀ ψ : Matrix Unit Unit (Hf E a b → ℂ), IsFinM ψ → 0 ≤ PositivityTheory.Rg.BcB.F.sizeOf ψ ∧ ∀ x y g, ψ x y g ≠ 0 → logSize (finGL E a g.1) ≤ PositivityTheory.Rg.BcB.F.sizeOf ψ ∧ logSize (finGL E b g.2) ≤ PositivityTheory.Rg.BcB.F.sizeOf ψ`. Introduce `ψ hψ`. Establish `h : ∃ r, 0 ≤ r ∧ ∀ x y g, ψ x y g ≠ 0 → logSize (finGL E a g.1) ≤ r ∧ logSize (finGL E b g.2) ≤ r` using `(PositivityTheory.Rg.BcB.F.BlockFiniteConvolution.rtAlg' E A.blk 1 1).2.2 ψ hψ`. Rewrite using `[PositivityTheory.Rg.BcB.F.sizeOf, dif_pos h]`.
+
+Conclude with `h.choose_spec`. Use `⟨herm_chi l₁, herm_chi l₂, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `wa wb ψ hψ`. Conclude with `{ T := A.T_nonneg r := (hsize ψ hψ).1 ka := fun v => mult_of_ker A.isBump (A.kera (wa v) v) kb := fun v => mult_of_ker A.isBump (A.kerb (wb v) v) ψ := hψ size := (hsize ψ hψ).2 }`. Introduce `ψ`.
+
+Use `A.one` as an intermediate fact. Simplify `this` using `[Ar.ptB, Ar.pt, PT.val, valA, Ar.valW, zVal]`. Introduce `wa wb ψ χa χb`. Simplify using `only [Ar.ptB, Ar.pt, PT.val, valA, Ar.valW, Finset.prod_mul_distrib]`. Simplify using `only [zVal, List.map_nil, List.prod_nil, one_mul, Finset.prod_const_one]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ptOk : PtOk := by
   intro E _ _ _ a b l₁ l₂ D A
   have hsize : ∀ ψ : Matrix Unit Unit (Hf E a b → ℂ), IsFinM ψ →

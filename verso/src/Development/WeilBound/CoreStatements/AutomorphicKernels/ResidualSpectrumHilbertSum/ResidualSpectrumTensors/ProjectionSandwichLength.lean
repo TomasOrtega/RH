@@ -14,6 +14,11 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ}
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Establish `h0 : (ν * ν'⁻¹).IsAbsPow 0`. Use `⟨fun v x hx => ?_, fun v => ?_, fun k => ?_⟩` and prove the remaining obligations. Simplify using `only [HChar.loc_mul, HChar.loc_inv, h.1 v x hx, h'.1 v x hx, inv_one, mul_one]`. Establish `e : ν.val v = ν'.val v` using `Units.ext ((h.2.1 v).trans (h'.2.1 v).symm)`. Simplify using `[HChar.val_mul, HChar.val_inv, e]`.
+
+Establish `e : ν.inf k = ν'.inf k` using `Units.ext ((h.2.2 k).trans (h'.2.2 k).symm)`. Simplify using `[HChar.inf_mul, HChar.inf_inv, e]`. Conclude with `mul_inv_eq_one.1 (GlobalTheory.DiscSpec.Model.eq_one_of_isAbsPow h0)`.
+-/
 theorem eq_of_isAbsPow {ν ν' : HChar E} {s : ℝ} (h : ν.IsAbsPow s) (h' : ν'.IsAbsPow s) : ν = ν' := by
   have h0 : (ν * ν'⁻¹).IsAbsPow 0 := by
     refine ⟨fun v x hx => ?_, fun v => ?_, fun k => ?_⟩

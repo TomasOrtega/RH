@@ -5,11 +5,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Lat
 
+/- English proof (translation)
+Unfold `nCo`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem vx_nCo_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (X : M4 R) (w : ℤ × ℤ) :
     nCo (X.map f) w = f (nCo X w) := by
   unfold nCo
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `nCo`. Use `split_ifs with h1 h2 h3 h4`. Rewrite using `[h1]`. Both sides reduce to the same expression. Rewrite using `[h2]`.
+
+Both sides reduce to the same expression. Rewrite using `[h3]`. Both sides reduce to the same expression. Rewrite using `[h4]`. Both sides reduce to the same expression.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem vx_nCo_tconj {R : Type} [CommRing R] (t : Rˣ × Rˣ) (X : M4 R) (w : ℤ × ℤ) :
     nCo (tconj t X) w = (wv t w : R) * nCo X w := by
   unfold nCo
@@ -20,6 +30,13 @@ private theorem vx_nCo_tconj {R : Type} [CommRing R] (t : Rˣ × Rˣ) (X : M4 R)
   · rw [h4]; rfl
   · simp
 
+/- English proof (translation)
+Unfold `nCo at h`. Use `split_ifs at h with h1 h2 h3 h4`. Rewrite using `[h1]`. Evaluate the decidable proposition. Rewrite using `[h2]`.
+
+Evaluate the decidable proposition. Rewrite using `[h3]`. Evaluate the decidable proposition. Rewrite using `[h4]`. Evaluate the decidable proposition.
+
+Conclude with `absurd rfl h`.
+-/
 private theorem vx_nCo_mem {R : Type} [CommRing R] (X : M4 R) (w : ℤ × ℤ) (h : nCo X w ≠ 0) : w ∈ nM := by
   unfold nCo at h
   split_ifs at h with h1 h2 h3 h4
@@ -29,6 +46,11 @@ private theorem vx_nCo_mem {R : Type} [CommRing R] (X : M4 R) (w : ℤ × ℤ) (
   · rw [h4]; decide
   · exact absurd rfl h
 
+/- English proof (translation)
+Unfold `nCo`. Use `split_ifs with h1 h2 h3`. Conclude with `h _ _ (by decide) (by decide)`. Conclude with `h _ _ (by decide) (by decide)`. Conclude with `h _ _ (by decide) (by decide)`.
+
+Conclude with `I.zero_mem`.
+-/
 private theorem vx_nCo_ideal {R : Type} [CommRing R] (I : Ideal R) (X : M4 R)
     (h : ∀ i j, i ≠ j → wt i j ≠ -wPs → X i j ∈ I) (w : ℤ × ℤ) (hw : w ≠ -wPs) : nCo X w ∈ I := by
   unfold nCo
@@ -38,10 +60,38 @@ private theorem vx_nCo_ideal {R : Type} [CommRing R] (I : Ideal R) (X : M4 R)
   · exact h _ _ (by decide) (by decide)
   · exact I.zero_mem
 
+/- English proof (translation)
+Rewrite using `[residue_ne_zero_iff_isUnit, V.valuation_eq_one_iff]`.
+-/
 private theorem vx_res {K : Type} [Field K] (V : ValuationSubring K) (x : V) :
     residue V x ≠ 0 ↔ V.valuation (x : K) = 1 := by
   rw [residue_ne_zero_iff_isUnit, V.valuation_eq_one_iff]
 
+/- English proof (translation)
+Introduce and unpack `l _ 𝔞 Γ _ _ P ⟨A, _, _, _, f, P₁, hf, -, rfl⟩ hlow hr hn ⟨s1, s2, s3⟩`. Establish `hm : ∀ x : A, f x ∈ maximalIdeal 𝔞.V → x ∈ maximalIdeal A` using `fun x hx hu => hx (hu.map f)`. Establish `hwt : ∀ i j : Fin 4, i ≠ j ↔ wt i j ∈ roots` using `by decide`. Establish `hw0 : ∀ i : Fin 4, wt i i = 0` using `by decide`. Set `E : ℤ × ℤ → Set A` to `fun w => {x | ∃ g i j, i ≠ j ∧ wt i j = w ∧ P₁.r g i j = x}`.
+
+Establish `hE : ∀ w ∈ roots, Ent (P₁.map f).r w → ∃ x ∈ E w, x ≠ 0`. Introduce and unpack `w hw ⟨g, i, j, e, h⟩`. Use `⟨_, ⟨g, i, j, (hwt i j).2 (e ▸ hw), e, rfl⟩, fun h0 => h ?_⟩` and prove the remaining obligations. Use `show f (P₁.r g i j) = 0`. Rewrite using `[h0, map_zero]`.
+
+Take `⟨t, Si, h1, h2, h3, h4⟩` from `h7 𝔞.K 𝔞.V A f hf.inj hf.loc E (nCo (P₁.n ())) (by`. Introduce and unpack `w x ⟨g, i, j, hij, -, rfl⟩`. Conclude with `hm _ (hr g i j hij))`. Use the proof step `(vx_nCo_ideal _ _ fun i j a b => hm _ (hn i j a b))`. Use the proof step `(hE _ (by decide) s1) (hE _ (by decide) s2)`.
+
+Use the proof step `(by`. Break down `s3 with s | s | s` into its components or cases. Conclude with `⟨_, by decide, hE _ (by decide) s⟩`. Conclude with `⟨_, by decide, hE _ (by decide) s⟩`. Conclude with `⟨_, by decide, hE _ (by decide) s⟩)`.
+
+Take `⟨P', hP'⟩` from `tcEx 𝔞.V t (P₁.map f) (fun _ => hlow) (by`. Introduce `g i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[hw0]`.
+
+Simplify `𝔞.V.valuation_le_one _` using `[wv]`. Conclude with `h1 _ ((hwt i j).1 hij) _ ⟨g, i, j, hij, rfl, rfl⟩)`. Use the proof step `(by`. Introduce `v w hw`. Rewrite using `[PD.map_n, vx_nCo_map]`.
+
+Conclude with `h2 w hw)`. Use `⟨t, P', hP', ?_⟩` and prove the remaining obligations. Establish `er : ∀ g i j, ((P'.r g i j : 𝔞.V) : 𝔞.K) = (wv t (wt i j) : 𝔞.K) * (f (P₁.r g i j) : 𝔞.K)` using `fun g i j => congrFun (congrFun (hP'.1 g) i) j`. Establish `en : ∀ w, ((nCo (P'.n ()) w : 𝔞.V) : 𝔞.K) = (wv t w : 𝔞.K) * (f (nCo (P₁.n ()) w) : 𝔞.K)`. Introduce `w`.
+
+Establish `e` using `congrArg (fun X => nCo X w) (hP'.2 ())`. Simplify using `only [vx_nCo_tconj, PD.map_n, vx_nCo_map] at e`. Conclude with `e`. Establish `hS : Tight (P'.map (residue 𝔞.V)) = Si`. Use extensionality with `w`.
+
+Rewrite using `[h3]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hw, ⟨g, i, j, e, h⟩ | ⟨v, h⟩⟩`. Use `.inl ⟨hw, _, ⟨g, i, j, (hwt i j).2 (e ▸ hw), e, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, ← er]`.
+
+Conclude with `(vx_res _ _).1 h`. Use `.inr ⟨vx_nCo_mem _ _ h, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[PD.map_n, vx_nCo_map]`. Rewrite using `[← en]`. Conclude with `(vx_res _ _).1 h`.
+
+Introduce and unpack `(⟨hw, x, ⟨g, i, j, -, e, rfl⟩, h⟩ | ⟨hw, h⟩)`. Use `⟨hw, .inl ⟨g, i, j, e, ?_⟩⟩` and prove the remaining obligations. Rewrite `h` using `[← e, ← er]`. Conclude with `(vx_res _ _).2 h`. Use `⟨(by decide : nM ⊆ roots) hw, .inr ⟨(), ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[PD.map_n, vx_nCo_map]`. Rewrite `h` using `[← en]`. Conclude with `(vx_res _ _).2 h`. Rewrite using `[hS]`. Conclude with `h4`.
+-/
 theorem UpperTheory.V.Ws.Lat.vertex :
     ∀ {l : ℕ} [Fact l.Prime] (𝔞 : Amb l) {Γ : Type} [Group Γ] [TopologicalSpace Γ] (P : PD Unit Γ 𝔞.V), 𝔞.Small P → IsLow (P.n ()) →
       (∀ g i j, i ≠ j → P.r g i j ∈ maximalIdeal 𝔞.V) → (∀ i j, i ≠ j → wt i j ≠ -wPs → P.n () i j ∈ maximalIdeal 𝔞.V) → StarE P.r →

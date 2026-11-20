@@ -15,6 +15,13 @@ namespace CrystallineSemistableComparison.Om.Nt2
 
 open GroundTheory.Arith.SchemeCoh GlobalTheory.SheafPull CrystallineSemistableComparison.Om.Cech
 
+/- English proof (translation)
+Introduce `X Y f κ ι V U τ hτ S S' hS _ hC hI hS' _ hC' hI' α m e e' he x`. Establish `h₁₂ : ∀ (W : (Opens Y)ᵒᵖ) (z : S.X₁.obj.obj W), α.τ₂.hom.app W (S.f.hom.app W z) = S'.f.hom.app _ (α.τ₁.hom.app W z)` using `fun W z => by`. Establish `h` using `congrArg (fun g : S.X₁ ⟶ (S'.map (push f)).X₂ => g.hom.app W z) α.comm₁₂`. Conclude with `h.symm`. Establish `h₂₃ : ∀ (W : (Opens Y)ᵒᵖ) (z : S.X₂.obj.obj W), α.τ₃.hom.app W (S.g.hom.app W z) = S'.g.hom.app _ (α.τ₂.hom.app W z)` using `fun W z => by`.
+
+Establish `h` using `congrArg (fun g : S.X₂ ⟶ (S'.map (push f)).X₃ => g.hom.app W z) α.comm₂₃`. Conclude with `h.symm`. Take `⟨y, rfl⟩` from `(hC.deltaEquiv hI m).surjective x`. Establish `hδ : (hC'.deltaEquiv hI' m).symm (cechPullH f α.τ₁.hom V U τ hτ (m + 2) (hC.deltaEquiv hI m y)) = cechPullH f α.τ₃.hom V U τ hτ (m + 1) y`. Rewrite using `[AddEquiv.symm_apply_eq]`.
+
+Take `⟨σ, hσ, rfl⟩` from `exists_cls y`. Conclude with `GlobalTheory.T.cech_short_exact_pull_compat f V U τ hτ hC hC' α.τ₁.hom α.τ₂.hom α.τ₃.hom h₁₂ h₂₃ (m + 1) ⟨σ, (mem_cocycles σ).2 hσ⟩`. Simplify using `only [cechHEquivStep, AddEquiv.trans_apply]`. Rewrite using `[AddEquiv.symm_apply_apply, hδ, he]`. Conclude with `(GlobalTheory.T.sheaf_pull_connecting_compat f hS hS' α (m + 1) (e y)).symm`.
+-/
 theorem cechHStep_pull' : ∀ {X Y : TopCat.{0}} (f : X ⟶ Y) {κ ι : Type} (V : κ → Opens Y) (U : ι → Opens X) (τ : ι → κ)
     (hτ : ∀ i, U i ≤ (Opens.map f).obj (V (τ i))) {S : ShortComplex (AbSheaf Y)} {S' : ShortComplex (AbSheaf X)}
     (hS : S.ShortExact) [Injective S.X₂] (hC : IsCechShortExact V S.f.hom S.g.hom) (hI : CechAcyclic S.X₂.obj V)

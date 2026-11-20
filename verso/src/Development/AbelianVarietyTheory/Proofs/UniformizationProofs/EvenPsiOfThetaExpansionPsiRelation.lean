@@ -25,6 +25,19 @@ open GlobalTheory.UU
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hL hL2 V _ _ _ hV D A G _ _ U θ f hθ hψ`. Establish `hG : GlobalFnsSt` using `hL.globalFns`. Take `⟨th, hth, -⟩` from `GlobalTheory.UU.PullSec.existsUnique_pullG U (Kbar V) (toUnit _) 1 θ`. Take `⟨s₀, hs₀, -⟩` from `GlobalTheory.UU.PullSec.existsUnique_pullB D (Kbar V) (toUnit _) 1 f`. Take `⟨r, n, t, t', s, s', hr, hE, -, hB⟩` from `GlobalTheory.AddClosure.main hL hL2 V hV D A G U θ f hθ th s₀ hth hs₀`.
+
+Establish `hP : PsiRel D (TF (R` using `V) (Kbar V)) s₀ := GlobalTheory.psiRel_of_pullB V D (Kbar V) f s₀ hs₀ hψ`. Establish `hsupp` using `GlobalTheory.T.thetaSection_support_eq_univ hL hL2 V hV D A G U θ f hθ`. Establish `h0 : ∃ j, (s₀ 0).f j ≠ 0` using `(GlobalTheory.pullB_ne_zero_iff V D (Kbar V) 1 f s₀ hs₀ 0).2 (hsupp.1 0)`. Rewrite using `[← (GlobalTheory.TauValues.main V D (Kbar V)).2]`. Introduce `z J hJ m`.
+
+Take `⟨⟨u, hu, -⟩, -⟩` from `ReciprocityTheory.ChartRestriction.G.DVR.gen_fe (D := D) (F := Kbar V) hG 2 m 0`. Take `⟨a, ha⟩` from `GlobalTheory.T.expansionComponents_proportional_shift_multiple hL hL2 V hV D A G U 2 (by norm_num) 0 m u hu (hsupp.2 0)`. Establish `e1` using `GlobalTheory.psi_mul_psi_of_addition_first_variable V D (Kbar V) s₀ r n s s' hr hB hP h0 0 0 m 0 (add_zero 0).symm a u (fun i z J hJ => ha _ _ (hE i).1 z J hJ) z J hJ`. Establish `e2` using `GlobalTheory.T.psi_mul_psi_addition_second_variable V D (Kbar V) s₀ r n s s' hr hB hP h0 m 0 rfl a u (fun i z J hJ => ha _ _ (hE i).2 z J hJ) z J hJ`. Establish `hc0 : cT D (TF (R` using `V) (Kbar V)) 0 = 1 := by`.
+
+Establish `h` using `GlobalTheory.FirstSlot.cT_add D (TF (R := V) (Kbar V)) 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)`. Establish `hcub : cubV D.cub z J (cT D (TF (R` using `V) (Kbar V)) 0) (cT D (TF (R := V) (Kbar V)) 0) (cT D (TF (R := V) (Kbar V)) m) = 1 := by`. Rewrite using `[hc0]`.
+
+Conclude with `(isCub_cubV D.cub hJ).face _ _`. Simplify using `only [hcub, _root_.mul_one] at e1`. Establish `e4` using `Units.ext (e1.trans e2.symm)`. Rewrite `e4` using `[_root_.mul_assoc]`. Use `erw [_root_.zero_add] at e4`.
+
+Conclude with `(mul_left_cancel e4).symm`.
+-/
 theorem psiEven_of_psiRel : Laws → Laws2 → (AllPre fun {V} _ _ _ {D} {A} {G} _ _ U => ∀ θ f, U.Theta θ f → PsiRel D (𝟙_ _) f → D.PsiEven) := by
   intro hL hL2 V _ _ _ hV D A G _ _ U θ f hθ hψ
   have hG : GlobalFnsSt := hL.globalFns

@@ -9,6 +9,33 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.UnramInTrans
 
 open NumberField IsDedekindDomain GlobalTheory.NT GlobalTheory.Mem.Fld GlobalTheory.Published
 
+/- English proof (translation)
+Introduce `K L _ _ _ _ _ _ h 𝔞`. Establish `hKL` using `h.1`. Establish `: IsTotallyComplex L` using `isTotallyComplex_of_algebra K L`. Take `⟨N, _, _, _, hN⟩` from `rayField_iff.1 H.rayClassFieldSt L ⊤ top_ne_bot`. Set `: Algebra K N` to `((algebraMap L N).comp (algebraMap K L)).toAlgebra`.
+
+Establish `: IsScalarTower K L N` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `GlobalTheory.RayTopGalois.isGalois_of_isRayField_top K L N hN` as an intermediate fact. Use `hN.1` as an intermediate fact. Establish `h'` using `(GlobalTheory.HilbertClass.isRayField_top_iff L).1 h`. Establish `hN'` using `(GlobalTheory.HilbertClass.isRayField_top_iff N).1 hN`.
+
+Establish `hun` using `GlobalTheory.Mem.UnramTower.unramIn_trans K L N h'.2.1 hN'.2.1`. Establish `hker : (AlgEquiv.restrictNormalHom (F` using `K) (K₁ := N) L).ker = commutator (N ≃ₐ[K] N) := by`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Set `M` to `IntermediateField.fixedField (commutator (N ≃ₐ[K] N))`. Establish `: IsAbelianGalois K M`.
+
+Establish `: IsMulCommutative (M ≃ₐ[K] M)` using `⟨⟨fun a b => by`. Take `⟨a, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := M) N a`. Take `⟨b, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := M) N b`. Rewrite using `[← commutatorElement_eq_one_iff_mul_comm, ← map_commutatorElement, ← MonoidHom.mem_ker, IntermediateField.restrictNormalHom_ker, IntermediateField.fixingSubgroup_fixedField]`. Conclude with `Subgroup.commutator_mem_commutator (Subgroup.mem_top _) (Subgroup.mem_top _)⟩⟩`.
+
+Conclude with `{}`. Take `⟨f⟩` from `rayClassFieldMaximalSt_holds K L M ⊤ top_ne_bot h.2 (GlobalTheory.UnramModulus.isModulus_top_of_isTotallyComplex H K M fun 𝔭 => GlobalTheory.RayMaximal.unramIn_of_tower (hun 𝔭))`. Introduce `σ hσ`. Rewrite using `[← IntermediateField.fixingSubgroup_fixedField (commutator (N ≃ₐ[K] N)), IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`.
+
+Set `g : M →ₐ[K] N` to `(IsScalarTower.toAlgHom K L N).comp f`. Establish `hr : g.fieldRange = M`. Rewrite using `[AlgHom.fieldRange_of_normal]`. Take `⟨y, rfl⟩ : x ∈ g.fieldRange` from `hr.symm ▸ hx`. Use `σ.restrictNormal_commutes L (f y)` as an intermediate fact.
+
+Rewrite `this` using `[show σ.restrictNormal L = 1 from hσ]`. Conclude with `this.symm`. Rewrite using `[commutator_def, Subgroup.commutator_le]`. Introduce `a _ b _`. Rewrite using `[MonoidHom.mem_ker, map_commutatorElement, commutatorElement_eq_one_iff_mul_comm]`.
+
+Conclude with `mul_comm' _ _`. Proceed by induction on `𝔞 using UniqueFactorizationMonoid.induction_on_prime with`. Consider the case `h₁ => rw [Ideal.zero_eq_bot, Ideal.map_bot]`. Use `infer_instance`. Consider the case `h₂ I hI => rw [Ideal.isUnit_iff.1 hI, Ideal.map_top]`.
+
+Use `infer_instance`. Consider the case `h₃ I p _ hp ih`. Set `𝔭 : HeightOneSpectrum (𝓞 K)` to `⟨p, Ideal.isPrime_of_prime hp, hp.ne_zero⟩`. Establish `hP : (p.map (algebraMap (𝓞 K) (𝓞 L))).IsPrincipal`. Use `(hN'.2.2.2 _ (Ideal.map_ne_bot_of_ne_bot hp.ne_zero)).1 fun χ => ?_` and prove the remaining obligations.
+
+Take `⟨σ, hσ⟩` from `GlobalTheory.NT.exists_isFrob N 𝔭`. Set `r : (N ≃ₐ[L] N) →* (AlgEquiv.restrictNormalHom (F` to `K) (K₁ := N) L).ker := { toFun := fun τ => ⟨τ.restrictScalars K, AlgEquiv.ext fun x => (algebraMap L N).injective (((τ.restrictScalars K).restrictNormal_commutes L x).trans (τ.commutes x))⟩ map_one' := rfl map_mul' := fun _ _ => rfl }`. Establish `hr : Function.Bijective r` using `⟨fun a b e => AlgEquiv.ext fun x => congrArg (fun t => t.1 x) e, fun t => ⟨AlgEquiv.ofRingEquiv (f := t.1.toRingEquiv) fun x => by`. Use `t.1.restrictNormal_commutes L x` as an intermediate fact. Rewrite `this` using `[show t.1.restrictNormal L = 1 from t.2]`.
+
+Conclude with `this.symm, rfl⟩⟩`. Set `φ` to `χ.comp (MulEquiv.ofBijective r hr).symm.toMonoidHom`. Establish `hv` using `GlobalTheory.FrobTransfer.heckeIdeal_map_eq_transfer K L N 𝔭 (hun 𝔭) σ hσ χ φ fun τ _ => congrArg χ ((MulEquiv.ofBijective r hr).symm_apply_apply τ)`. Establish `key : ∀ (A : Subgroup (N ≃ₐ[K] N)) (_ : A = commutator _) (ψ : A →* ℂˣ), MonoidHom.transfer ψ = 1`. Introduce and unpack `_ rfl ψ`.
+
+Conclude with `GlobalTheory.TransferCommutator.transfer_eq_one _ _ ψ`. Rewrite `hv` using `[key _ hker φ]`. Conclude with `hv`. Take `⟨a, ha⟩` from `hP`. Take `⟨b, hb⟩` from `ih`.
+
+Rewrite using `[Ideal.map_mul, ha, hb]`. Conclude with `⟨a * b, Ideal.span_singleton_mul_span_singleton a b⟩`.
+-/
 theorem GlobalTheory.Published.GlobalArtinReciprocity.principalIdealSt (H : GlobalArtinReciprocity) : PrincipalIdealSt := by
   intro K L _ _ _ _ _ _ h 𝔞
   have hKL := h.1

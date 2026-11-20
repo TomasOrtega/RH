@@ -11,6 +11,19 @@ open GlobalTheory.Points
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M : RatModel o Ω} {H : LB M.Z} {d : H.ι → Ω}
   {J : Type} {σ : J → H.Sec} {t : J → Ω}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hz`. Take `⟨l, hl⟩` from `TopologicalSpace.Opens.mem_iSup.1 hz`. Establish `hzl : z ∈ H.U l` using `M.Z.basicOpen_le _ hl`. Take `⟨h0, h1⟩` from `(isUnit_O_iff _).1 ((isUnit_valF_iff hzl _).2 hl)`.
+
+Establish `e` using `hv i l ⟨z, hzl⟩`. Simplify using `only at h0 h1`. Rewrite `h0`, `h1` using `[e]`. Establish `hi : t i ≠ 0` using `fun h => h0 (by rw [h, zero_div])`. Use `⟨hi, fun j => ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `valF_mem_O hzl ((σ j).f l)`. Rewrite `h2` using `[hv j l ⟨z, hzl⟩]`. Establish `h3` using `mul_mem h2 h1`. Establish `hdl` using `hd.ne l`. Establish `e' : t j / d l * (t i / d l)⁻¹ = t j / t i` using `by field_simp`.
+
+Rewrite `h3` using `[e']`. Then use the resulting hypothesis. Introduce `hz`. Establish `hc : z ∈ ⨆ l, H.U l` using `by rw [hH.cover]; trivial`. Take `⟨l, hzl⟩` from `TopologicalSpace.Opens.mem_iSup.1 hc`. Take `⟨i', hi', h1⟩` from `hg l z hzl`.
+
+Use `TopologicalSpace.Opens.mem_iSup.2 ⟨l, (isUnit_valF_iff hzl _).1 ((isUnit_O_iff _).2 ?_)⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hv i l ⟨z, hzl⟩]`. Use `⟨div_ne_zero hz.1 (hd.ne l), ?_⟩` and prove the remaining obligations. Establish `h3` using `mul_mem h1 (hz.2 i')`.
+
+Establish `hi` using `hz.1`. Establish `e' : d l / t i' * (t i' / t i) = (t i / d l)⁻¹` using `by field_simp`. Rewrite `h3` using `[e']`. Then use the resulting hypothesis.
+-/
 theorem mem_nonzeroLocus_iff_div (hH : H.IsLB) (hd : M.GenTriv H d) (hv : ∀ j, M.HasVal d (σ j) (t j))
     (hg : ∀ l, ∀ z ∈ H.U l, ∃ i, t i ≠ 0 ∧ d l / t i ∈ M.O z) (i : J) (z : M.Z) :
     z ∈ Out.nonzeroLocus (σ i) ↔ M.Div t i z := by
@@ -43,6 +56,29 @@ theorem mem_nonzeroLocus_iff_div (hH : H.IsLB) (hd : M.GenTriv H d) (hv : ∀ j,
     have e' : d l / t i' * (t i' / t i) = (t i / d l)⁻¹ := by field_simp
     rwa [e'] at h3
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ M H d J σ t k _ p ψ hH hd hv hg hp hU`. Establish `key` using `mem_nonzeroLocus_iff_div hH hd hv hg`. Use `⟨top_unique fun z _ => ?_, fun i _ => ?_⟩` and prove the remaining obligations. Establish `hc : z ∈ ⨆ l, H.U l` using `by rw [hH.cover]; trivial`. Take `⟨l, hzl⟩` from `TopologicalSpace.Opens.mem_iSup.1 hc`.
+
+Take `⟨i, hi, h1⟩` from `hg l z hzl`. Use `TopologicalSpace.Opens.mem_iSup.2 ⟨i, TopologicalSpace.Opens.mem_iSup.2 ⟨trivial, (key i z).2 ⟨hi, fun j => ?_⟩⟩⟩` and prove the remaining obligations. Establish `h2` using `valF_mem_O hzl ((σ j).f l)`. Rewrite `h2` using `[hv j l ⟨z, hzl⟩]`. Establish `h3` using `mul_mem h2 h1`.
+
+Establish `hdl` using `hd.ne l`. Establish `e' : t j / d l * (d l / t i) = t j / t i` using `by field_simp`. Rewrite `h3` using `[e']`. Then use the resulting hypothesis. Establish `hempty : ∀ V : M.Z.Opens, ¬ (V : Set M.Z).Nonempty → Subsingleton Γ(M.Z, V)` using `fun V hV => by`. Establish `: V = ⊥` using `SetLike.coe_injective (Set.not_nonempty_iff_eq_empty.1 hV)`.
+
+Substitute `this` using the available equality. Use `infer_instance`. Establish `key'` using `key i`. Generalize the expression as in `Out.nonzeroLocus (σ i) = W at key' ⊢`. Distinguish the cases in `hi : t i = 0`.
+
+Establish `hW : W = ⊥` using `eq_bot_iff.2 fun z hz => (((key' z).1 hz).1 hi).elim`. Substitute `hW` using the available equality. Use `⟨isAffineOpen_bot _, fun _ => 0, fun j l => ?_, top_unique fun f _ => Subsingleton.elim 0 f ▸ zero_mem _⟩` and prove the remaining obligations. Use `hempty (⊥ ⊓ H.U l) (fun ⟨z, hz⟩ => hz.1)` as an intermediate fact. Conclude with `Subsingleton.elim _ _`.
+
+Take `⟨U, hUa, hUe, hR⟩` from `hU i hi`. Establish `hWU : W = U` using `SetLike.ext fun z => (key' z).trans (Set.ext_iff.1 hUe z).symm`. Substitute `hWU` using the available equality. Establish `hne : (W : Set M.Z).Nonempty` using `⟨_, (key' _).2 (div_genericPoint hi)⟩`. Establish `hr : ∀ j, ∃ f : Γ(M.Z, W), valF M.pt W f = t j / t i` using `fun j => (mem_ringOn_iff_exists hne).1 (mem_ringOn.2 fun z hz => ((key' z).1 hz).2 j)`.
+
+Use `choose r hr using hr`. Use `⟨hUa, r, fun j l => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hl : ((W ⊓ H.U l : M.Z.Opens) : Set M.Z).Nonempty`. Establish `hl' : (H.U l : Set M.Z).Nonempty` using `hl.mono fun z hz => hz.2`. Apply `M.res_injective _ hl` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, res_apply, res_apply, res_apply, M.valF_resG _ hl, M.valF_resG _ hl, M.valF_resG _ hl, hv j l hl', hv i l hl', hr]`. Establish `hdl` using `hd.ne l`. Clear the denominators using the available nonvanishing facts. Use `hempty _ hl` as an intermediate fact. Conclude with `Subsingleton.elim _ _`.
+
+Use `top_unique fun f _ => ?_` and prove the remaining obligations. Establish `h1` using `hR _ ((mem_ringOn_iff_exists hne).2 ⟨f, rfl⟩)`. Establish `e : (Set.range ψ ∪ Set.range fun j => t j / t i) = M.res W hne '' (Set.range (constFn p W) ∪ Set.range r)`. Rewrite using `[Set.image_union, ← Set.range_comp, ← Set.range_comp]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `a`. Conclude with `((M.res_apply W hne _).trans (valR_constFn_of_over p ψ M.pt hp W (M.top_le_preimage_pt hne) a)).symm`. Use function extensionality and compare the values at `j`. Conclude with `((M.res_apply W hne _).trans (hr j)).symm`. Rewrite `h1` using `[e, ← RingHom.map_closure]`.
+
+Take `⟨g, hg1, hg2⟩` from `h1`. Establish `: g = f` using `M.res_injective W hne (hg2.trans (M.res_apply W hne f).symm)`. Conclude with `this ▸ hg1`.
+-/
 theorem immBy_of_div : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) (H : LB M.Z) (d : H.ι → Ω) (J : Type) (σ : J → H.Sec) (t : J → Ω) (k : Type) [CommRing k] (p : M.Z ⟶ Sp k) (ψ : k →+* Ω), H.IsLB → M.GenTriv H d → (∀ j, M.HasVal d (σ j) (t j)) → (∀ l, ∀ z ∈ H.U l, ∃ i, t i ≠ 0 ∧ d l / t i ∈ M.O z) → M.pt ≫ p = spMap ψ → (∀ i, t i ≠ 0 → ∃ U : M.Z.Opens, IsAffineOpen U ∧ (U : Set M.Z) = {z | M.Div t i z} ∧ ∀ x ∈ M.ringOn U, x ∈ Subring.closure (Set.range ψ ∪ Set.range fun j => t j / t i)) → ImmBy p H σ Set.univ := by
   intro o Ω _ _ _ M H d J σ t k _ p ψ hH hd hv hg hp hU
   have key := mem_nonzeroLocus_iff_div hH hd hv hg

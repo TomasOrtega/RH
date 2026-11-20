@@ -22,6 +22,11 @@ open GlobalTheory.TestFibre
 noncomputable section
 namespace GlobalTheory.TestFibre
 
+/- English proof (translation)
+Introduce `hL o Ω _ _ _ _ S ρ p _ y₀ u`. Take `⟨x₀, h₀, hadd, hinj, hsurj⟩` from `utest_torsion_points o Ω S ρ p y₀ u`. Use `⟨⟨x₀, h₀⟩, fun x hx => ?_⟩` and prove the remaining obligations. Take `rfl : x = x₀` from `funext fun a => Over.OverMorphism.ext (u.cart.1.hom_ext ((hx a).trans (h₀ a).symm) ((Over.w _).trans (Over.w _).symm))`. Use `⟨hadd, fun a => GlobalTheory.FrameMove.pow_eq_one_of (T := baseOver (Sp S.R)) u.cart (hx a) (ρ.fr_tors a).1, fun z hz => ?_, fun a b c hc => weilIs_uTest hL o Ω S ρ p y₀ u x hx a b c ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, ha⟩` from `hsurj z hz`. Conclude with `⟨a, ha.symm, fun b hb => hinj (hb.trans ha)⟩`. Rewrite using `[hc, map_pow, map_pow]`.
+-/
 theorem ptsOver_group_pairing : Laws → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀), (∃ x, PtsOver u x) ∧ ∀ (x : S.Gam → (TFK (R := u.V) (PadicAlgCl p) ⟶ u.A.A)), PtsOver u x → (∀ a b, x (a + b) = x a * x b) ∧ (∀ a, x a ^ (S.r * S.N) = 1) ∧ (∀ z, z ^ (S.r * S.N) = 1 → ∃! a, x a = z) ∧ ∀ a b (c : (PadicAlgCl p)ˣ), (c : PadicAlgCl p) = y₀ (algebraMap o S.R S.ζ) ^ (S.r * S.N * (eStd S.g _ a b).val) → WeilIs u.A.A u.A.L (S.r * S.N : ℕ) (x a) (x b) (unitOn c) := by
   intro hL o Ω _ _ _ _ S ρ p _ y₀ u
   obtain ⟨x₀, h₀, hadd, hinj, hsurj⟩ := utest_torsion_points o Ω S ρ p y₀ u

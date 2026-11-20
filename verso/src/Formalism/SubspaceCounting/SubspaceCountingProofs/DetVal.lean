@@ -8,6 +8,9 @@ open Formalism.G0
 
 variable {K ι : Type} [Field K] [DecidableEq ι]
 
+/- English proof (translation)
+Unfold `detLetters`. Rewrite using `[AlgHom.map_det, RingHom.map_det]`. Use `congr 1`.
+-/
 lemma substS_det {L : Type} [Field L] [Algebra K L] {r : ℕ} (vec : ι → Bool) (S : Finset ι)
     (g : GL (Fin r) L) (A : Fin r → ι) {R : Type} [CommRing R]
     (φ : MvPolynomial (ι × Fin r) (Polynomial L) →+* R) :
@@ -17,6 +20,9 @@ lemma substS_det {L : Type} [Field L] [Algebra K L] {r : ℕ} (vec : ι → Bool
   rw [AlgHom.map_det, RingHom.map_det]
   congr 1
 
+/- English proof (translation)
+Simplify using `[substS]`.
+-/
 lemma substS_X {L : Type} [Field L] [Algebra K L] {r : ℕ} (vec : ι → Bool) (S : Finset ι)
     (g : GL (Fin r) L) (p : ι × Fin r) :
     substS (K := K) vec S g (MvPolynomial.X p) =
@@ -26,6 +32,9 @@ lemma substS_X {L : Type} [Field L] [Algebra K L] {r : ℕ} (vec : ι → Bool) 
     else MvPolynomial.X p) := by
   simp [substS]
 
+/- English proof (translation)
+Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_filter]`. Establish `: i ∉ Set.range A` using `by rintro ⟨l, rfl⟩; simp [hv l] at hi`. Simplify using `[this]`.
+-/
 lemma sum_cov_zero {r : ℕ} (vec : ι → Bool) (S : Finset ι) (A : Fin r → ι)
     (hv : ∀ l, vec (A l) = true) :
     ∑ i ∈ S.filter (fun i => vec i = false), (if i ∈ Set.range A then 1 else 0) = 0 := by
@@ -35,6 +44,9 @@ lemma sum_cov_zero {r : ℕ} (vec : ι → Bool) (S : Finset ι) (A : Fin r → 
   have : i ∉ Set.range A := by rintro ⟨l, rfl⟩; simp [hv l] at hi
   simp [this]
 
+/- English proof (translation)
+Simplify using `[msMat]`.
+-/
 lemma msMat_one {L : Type} [Field L] {r : ℕ} :
     msMat (1 : GL (Fin r) L) =
       Matrix.diagonal (fun a : Fin r => if a.val + 1 = r then Polynomial.X else 1) := by
@@ -47,6 +59,13 @@ open Formalism.G0
 
 variable {K ι : Type} [Field K] [DecidableEq ι]
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_eq_single (⟨r - 1, by omega⟩ : Fin r)]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Introduce `b _ hb`. Establish `: b.val + 1 ≠ r`.
+
+Introduce `h`. Apply `hb` to reduce the goal to its premises. Use `ext`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `[this]`. Simplify using the standard rewrite rules.
+-/
 lemma prod_last {L : Type} [Field L] {r : ℕ} (hr : 1 ≤ r) :
     ∏ a : Fin r, (if a.val + 1 = r then (Polynomial.X : Polynomial L) else 1) = Polynomial.X := by
   rw [Finset.prod_eq_single (⟨r - 1, by omega⟩ : Fin r)]
@@ -57,6 +76,15 @@ lemma prod_last {L : Type} [Field L] {r : ℕ} (hr : 1 ≤ r) :
     simp [this]
   · simp
 
+/- English proof (translation)
+Establish `h1 : substS (K` using `K) vec S g (detLetters A) = Matrix.det ((Matrix.of fun (l b : Fin r) => (MvPolynomial.X (A l, b) : MvPolynomial (ι × Fin r) (Polynomial L))) * ((msMat g).map MvPolynomial.C).transpose) := by`. Use `substS_det (K := K) vec S g A (RingHom.id _)` as an intermediate fact. Simplify using `only [RingHom.id_apply] at this`. Rewrite using `[this]`. Use `congr 1`.
+
+Use `Matrix.ext fun l a => ?_` and prove the remaining obligations. Rewrite using `[Matrix.of_apply, substS_X]`. Simplify using `only [hS l, hv l, if_true, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun b _ => mul_comm _ _` and prove the remaining obligations. Establish `hC` using `RingHom.map_det (MvPolynomial.C : Polynomial L →+* MvPolynomial (ι × Fin r) (Polynomial L)) (msMat g)`.
+
+Rewrite `hC` using `[RingHom.mapMatrix_apply]`. Rewrite using `[h1, Matrix.det_mul, Matrix.det_transpose, ← hC]`. Apply `dvd_mul_of_dvd_right` to reduce the goal to its premises. Apply `map_dvd` to reduce the goal to its premises. Unfold `msMat`.
+
+Rewrite using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, prod_last hr]`. Conclude with `dvd_mul_of_dvd_left (dvd_mul_left _ _) _`.
+-/
 lemma part1a {L : Type} [Field L] [Algebra K L] {r : ℕ} (hr : 1 ≤ r) (vec : ι → Bool)
     (S : Finset ι) (A : Fin r → ι) (hv : ∀ l, vec (A l) = true) (hS : ∀ l, A l ∈ S)
     (g : GL (Fin r) L) :
@@ -90,6 +118,11 @@ open Formalism.G0
 
 variable {K ι : Type} [Field K] [DecidableEq ι]
 
+/- English proof (translation)
+Rewrite using `[substS_X]`. Simplify using `only [hi, hvi, if_true, msMat_one, map_sum, map_mul, MvPolynomial.eval₂Hom_C, MvPolynomial.eval₂Hom_X', Matrix.diagonal_apply]`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+-/
 lemma entry_one_mem {R : Type} [CommRing R] {r : ℕ} (vec : ι → Bool) (S : Finset ι)
     (φ : Polynomial K →+* R) (v : ι × Fin r → R) (i : ι) (hi : i ∈ S) (hvi : vec i = true)
     (a : Fin r) :
@@ -103,6 +136,9 @@ lemma entry_one_mem {R : Type} [CommRing R] {r : ℕ} (vec : ι → Bool) (S : F
   · intro b _ hb; simp [Ne.symm hb]
   · simp
 
+/- English proof (translation)
+Rewrite using `[substS_X]`. Simplify using `[hi]`.
+-/
 lemma entry_one_nmem {R : Type} [CommRing R] {r : ℕ} (vec : ι → Bool) (S : Finset ι)
     (φ : Polynomial K →+* R) (v : ι × Fin r → R) (i : ι) (hi : i ∉ S) (a : Fin r) :
     MvPolynomial.eval₂Hom φ v (substS (K := K) vec S (1 : GL (Fin r) K) (MvPolynomial.X (i, a))) =
@@ -110,6 +146,13 @@ lemma entry_one_nmem {R : Type} [CommRing R] {r : ℕ} (vec : ι → Bool) (S : 
   rw [substS_X]
   simp [hi]
 
+/- English proof (translation)
+Introduce `h`. Set `v : ι × Fin r → Polynomial K` to `fun p => if p.1 = A p.2 then 1 else 0`. Establish `h2` using `map_dvd (MvPolynomial.eval₂Hom (RingHom.id (Polynomial K)) v) h`. Rewrite `h2` using `[MvPolynomial.eval₂Hom_C, RingHom.id_apply, substS_det]`. Establish `hM : (Matrix.of fun l a => MvPolynomial.eval₂Hom (RingHom.id (Polynomial K)) v (substS (K` using `K) vec S (1 : GL (Fin r) K) (MvPolynomial.X (A l, a)))) = Matrix.diagonal (fun a : Fin r => if a.val + 1 = r then Polynomial.X else 1) := by`.
+
+Use `Matrix.ext fun l a => ?_` and prove the remaining obligations. Rewrite using `[Matrix.of_apply, entry_one_mem vec S _ v (A l) (hS l) (hv l) a, Matrix.diagonal_apply]`. Distinguish the cases in `hla : l = a`. Substitute `hla` using the available equality. Simplify using `[v]`.
+
+Establish `: A l ≠ A a` using `fun e => hla (hA e)`. Simplify using `[v, this, hla]`. Rewrite `h2` using `[hM, Matrix.det_diagonal, prod_last hr]`. Use `Polynomial.natDegree_le_of_dvd h2 Polynomial.X_ne_zero` as an intermediate fact. Simplify using `at this`.
+-/
 lemma part1b {r : ℕ} (hr : 1 ≤ r) (vec : ι → Bool)
     (S : Finset ι) (A : Fin r → ι) (hA : Function.Injective A) (hv : ∀ l, vec (A l) = true)
     (hS : ∀ l, A l ∈ S) :
@@ -132,6 +175,21 @@ lemma part1b {r : ℕ} (hr : 1 ≤ r) (vec : ι → Bool)
   have := Polynomial.natDegree_le_of_dvd h2 Polynomial.X_ne_zero
   simp at this
 
+/- English proof (translation)
+Introduce `h`. Take `⟨l₀, hl₀⟩` from `not_forall.mp hS`. Set `last : Fin r` to `⟨r - 1, by omega⟩`. Set `τ : Equiv.Perm (Fin r)` to `Equiv.swap l₀ last`. Set `v : ι × Fin r → K` to `fun p => if p.1 = A (τ p.2) then 1 else 0`.
+
+Establish `h2` using `map_dvd (MvPolynomial.eval₂Hom (Polynomial.evalRingHom (0 : K)) v) h`. Rewrite `h2` using `[MvPolynomial.eval₂Hom_C, substS_det]`. Simplify using `only [Polynomial.coe_evalRingHom, pow_one, Polynomial.eval_X, zero_dvd_iff] at h2`. Establish `hM : (Matrix.of fun l a => MvPolynomial.eval₂Hom (Polynomial.evalRingHom (0 : K)) v (substS (K` using `K) vec S (1 : GL (Fin r) K) (MvPolynomial.X (A l, a)))) = (1 : Matrix (Fin r) (Fin r) K).submatrix id τ := by`. Use `Matrix.ext fun l a => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.of_apply, Matrix.submatrix_apply, id, Matrix.one_apply]`. Establish `hvv : v (A l, a) = if l = τ a then 1 else 0`. Simplify using `only [v]`. Distinguish the cases in `e : l = τ a`. Simplify using `[e]`.
+
+Establish `: A l ≠ A (τ a)` using `fun x => e (hA x)`. Simplify using `[e, this]`. Distinguish the cases in `hl : A l ∈ S`. Rewrite using `[entry_one_mem vec S _ v (A l) hl (hv l) a, hvv]`. Distinguish the cases in `e : l = τ a`.
+
+Establish `ha : a.val + 1 ≠ r`. Introduce `ha`. Establish `: a = last` using `by ext; simp [last]; omega`. Apply `hl₀` to reduce the goal to its premises. Establish `hll : l = l₀` using `by rw [e, this]; exact Equiv.swap_apply_right l₀ last`.
+
+Rewrite using `[← hll]`. Conclude with `hl`. Simplify using `[e, ha]`. Simplify using `[e]`. Rewrite using `[entry_one_nmem vec S _ v (A l) hl a, hvv]`.
+
+Rewrite `h2` using `[hM, Matrix.det_permute', Matrix.det_one, mul_one]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign τ) with e | e <;> simp [e] at h2`.
+-/
 lemma part2 {r : ℕ} (hr : 1 ≤ r) (vec : ι → Bool)
     (S : Finset ι) (A : Fin r → ι) (hA : Function.Injective A) (hv : ∀ l, vec (A l) = true)
     (hS : ¬ ∀ l, A l ∈ S) :
@@ -174,6 +232,13 @@ lemma part2 {r : ℕ} (hr : 1 ≤ r) (vec : ι → Bool)
 end Formalism.G0.DetValP
 
 open Formalism.G0.DetValP in
+/- English proof (translation)
+Introduce `K ι _ _ _ r vec S' A hr hA hv`. Simplify using `only`. Establish `hsum` using `sum_cov_zero vec S' A hv`. Use `⟨fun hS => ⟨?_, ?_⟩, fun hS => ?_⟩` and prove the remaining obligations. Introduce `L _ _ g`.
+
+Rewrite using `[hsum]`. Simplify using `using part1a (K := K) hr vec S' A hv hS g`. Introduce `hval`. Use `hval K (1 : GL (Fin r) K)` as an intermediate fact. Rewrite `this` using `[hsum]`.
+
+Conclude with `part1b hr vec S' A hA hv hS this`. Introduce `hval`. Use `hval K (1 : GL (Fin r) K)` as an intermediate fact. Rewrite `this` using `[hsum]`. Conclude with `part2 hr vec S' A hA hv hS this`.
+-/
 theorem Formalism.G0.det_valuation : Formalism.G0.DetVal := by
   intro K ι _ _ _ r vec S' A hr hA hv
   simp only

@@ -25,6 +25,11 @@ open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction
 
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {T T' : Over (Sp R)}
 
+/- English proof (translation)
+Use `choose s hs vs using fun χ => exists_gen D.P.isLB (φ' := DegPre.gtφT D T' (ρ ≫ g.b) χ) (ε' := DegPre.gtε) (fun U _ f => Finset.prod_congr rfl fun k _ => congrArg (fun q => f q ^ DegPre.gtε k) (ConstTanRed.comp_gtφT D ρ g.b _ rfl χ k)) (LB.pullGen D.P.L _ _ (g.s χ) ρ.left) (pullGe …`. Establish `vs' : ∀ χ y J, Good D.P.L y J → val (s χ) (𝟙 _) y J = val (g.s χ) ρ.left y J` using `fun χ y J hJ => by`. Rewrite using `[vs χ _ _ y J hJ, val_pull hJ, Category.id_comp]`. Use `⟨⟨ρ ≫ g.b, s, hs, corr_of_val D.P.isLB fun y J hJ => ?_, fun χ χ' => corr_of_val D.P.isLB fun y J hJ => ?_⟩, rfl, fun χ => corr_of_val D.P.isLB fun y J hJ => vs χ _ _ y J hJ⟩` and prove the remaining obligations. Conclude with `(vs' 0 y J hJ).trans ((val_corr hJ g.s_zero _).trans ((val_one _).trans (val_one _).symm))`.
+
+Establish `e` using `val_s_add g ρ (z := y) hJ χ χ'`. Establish `c` using `val_cub D.cub (𝟙 T') hJ (cP D T' χ) (cP D T' χ') (ρ ≫ g.b)`. Rewrite `c` using `[Category.id_comp, Category.id_comp, Category.id_comp]`. Use `(val_mul hJ _ _ _).trans (Eq.trans (congrArg₂ (· * ·) (vs' _ y J hJ) c) (e.trans ?_))` and prove the remaining obligations. Conclude with `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (vs' _ y J hJ) (vs' _ y J hJ))).symm`.
+-/
 theorem exists_isPullGt (ρ : T' ⟶ T) (g : GtPt D T) : ∃ g' : GtPt D T', GtPt.IsPull ρ.left g g' := by
   choose s hs vs using fun χ => exists_gen D.P.isLB (φ' := DegPre.gtφT D T' (ρ ≫ g.b) χ) (ε' := DegPre.gtε)
     (fun U _ f => Finset.prod_congr rfl fun k _ => congrArg (fun q => f q ^ DegPre.gtε k)
@@ -44,6 +49,9 @@ theorem exists_isPullGt (ρ : T' ⟶ T) (g : GtPt D T) : ∃ g' : GtPt D T', GtP
 def ZeroAlong (g : GtPt D T) (ρ : T' ⟶ T) : Prop :=
   ρ ≫ g.b = 1 ∧ ∀ χ (Z : Scheme.{0}) (r : Z ⟶ T'.left) (z : Z) J, Good D.P.L z J → val (g.s χ) (r ≫ ρ.left) z J = 1
 
+/- English proof (translation)
+Establish `hb : g'.b = ρ ≫ g.b` using `Over.OverMorphism.ext h.1`. Use `and_congr (by rw [hb]; rfl) (forall_congr' fun χ => ⟨fun H Z r z J hJ => ?_, fun H => ?_⟩)` and prove the remaining obligations. Conclude with `(val_pull hJ _ _ _).symm.trans ((val_corr hJ (h.2 χ) r).symm.trans ((val_corr hJ H r).trans (val_one _)))`. Conclude with `corr_of_val D.P.isLB fun y J hJ => (val_corr hJ (h.2 χ) _).trans ((val_pull hJ _ _ _).trans ((H _ _ y J hJ).trans (val_one _).symm))`.
+-/
 theorem isZero_iff_zeroAlong {ρ : T' ⟶ T} {g : GtPt D T} {g' : GtPt D T'} (h : GtPt.IsPull ρ.left g g') :
     g'.IsZero ↔ ZeroAlong g ρ := by
   have hb : g'.b = ρ ≫ g.b := Over.OverMorphism.ext h.1
@@ -62,6 +70,19 @@ variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] {I : Ideal R} [IsH
   {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] {U : UnifPre I D A G}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `Over.OverMorphism.ext (hom_ext_of_isHausdorff I fun e => ?_)` and prove the remaining obligations. Establish `w : (thick R I e ≫ x.left) ≫ G.hom = 𝟙 _ ≫ thick R I e`. Rewrite using `[Category.assoc, Over.w x, Category.id_comp]`.
+
+Conclude with `Category.comp_id _`. Establish `hy : pullback.lift _ _ w ≫ (fstG I e G).left = thick R I e ≫ x.left` using `pullback.lift_fst _ _ _`. Conclude with `hy.symm.trans ((isPointOf_one U h).comp_fstG_eq (hx e _ _ _ hy))`. Introduce and unpack `rfl`. Rewrite `hx` using `[isPointOf_iff]`.
+
+Establish `H : ∀ e, thick R I e ≫ g.b.left = thick R I e ≫ (1 : Over.mk (𝟙 (Sp R)) ⟶ D.toPre.P.A).left ∧ ∀ χ z J, Good D.toPre.P.L z J → val (g.s χ) (thick R I e) z J = 1` using `fun e => by`. Set `Z : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))` to `Over.mk (𝟙 _)`. Set `r : (Over.map (thick R I e)).obj Z ⟶ Over.mk (𝟙 (Sp R))` to `Over.homMk (thick R I e) ((Category.comp_id _).trans (Category.id_comp _).symm)`. Establish `h1 : (Over.map (thick R I e)).map (1 : Z ⟶ thickObj R I e G) ≫ fstG I e G = 1`. Use `map_mul_fstG (1 : Z ⟶ thickObj R I e G) 1` as an intermediate fact.
+
+Rewrite `this` using `[_root_.mul_one]`. Conclude with `mul_eq_left.1 this.symm`. Take `⟨h₁, h₂⟩` from `hx e Z r 1 (h1.trans (MonObj.comp_one r).symm)`. Rewrite `h₁` using `[TorusCoord.im_one]`. Conclude with `⟨congrArg (fun q => q.left) (h₁.symm.trans (MonObj.comp_one r).symm), fun χ z J hJ => (h₂ χ z J hJ).symm.trans (TorusCoord.val_unit (U.gt e) χ (Z := Z) (z := z) hJ)⟩`.
+
+Establish `hb : g.b = 1` using `Over.OverMorphism.ext (hom_ext_of_isHausdorff I fun e => (H e).1)`. Use `⟨hb, fun χ => CompletePoint.corr_of_thick I D.toPre.P.isLB (fun V _ f => ?_) (g.isGen χ) (fun _ _ => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm) fun e z J hJ => ((H e).2 χ z J hJ).trans (val_one _).symm⟩` and prove the remaining obligations. Establish `p` using `prod_gtφT (𝟙 _) g.b χ f`. Simplify using `only [Over.id_left, Category.id_comp] at p`. Use `p.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hb, _root_.mul_one]`. Simplify using the standard rewrite rules.
+-/
 theorem isZero_iff_eq_one {g : GtPt D.toPre (Over.mk (𝟙 (Sp R)))} {x : Over.mk (𝟙 (Sp R)) ⟶ G}
     (hx : IsPointOf U g x) : g.IsZero ↔ x = 1 := by
   constructor
@@ -115,6 +136,21 @@ def Through (g₀ : GtPt D T) (g : GtPt D' T') : Prop :=
 
 variable {w e h}
 
+/- English proof (translation)
+Establish `b₁ : (ρ' ≫ g.b).left ≫ Φ = c ≫ (ρ ≫ g₀.b).left`. Establish `: g.b.left ≫ Φ = h ≫ g₀.b.left` using `(H 0).1 2`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, this, reassoc_of% hc]`. Establish `b₂ : (1 : S' ⟶ D'.P.A).left ≫ Φ = c ≫ (1 : S ⟶ D.P.A).left`. Establish `: (1 : T' ⟶ D'.P.A).left ≫ Φ = h ≫ (1 : T ⟶ D.P.A).left` using `(H 0).1 3`.
+
+Rewrite using `[← MonObj.comp_one ρ, ← MonObj.comp_one ρ', Over.comp_left, Over.comp_left, Category.assoc, this, reassoc_of% hc]`. Establish `hv : ρ' ≫ g.b = 1 → ∀ x (Z : Scheme.{0}) (r : Z ⟶ S'.left) (z : Z) J J', Good D.P.L z J → Good D'.P.L z J' → val (g₀.s x) ((r ≫ c) ≫ ρ.left) z J = val (g.s (e x)) (r ≫ ρ'.left) z J'`. Introduce `hb x Z r z J J' hJ hJ'`. Establish `v` using `(H x).2 Z (r ≫ ρ'.left) z J J' hJ hJ'`. Establish `p` using `prod_gtφT ρ' g.b (e x) (fun q => ConstFam.wVal w z J J' (r ≫ q))`.
+
+Rewrite `p` using `[hb, _root_.mul_one, inv_mul_cancel, _root_.one_mul, mul_inv_cancel]`. Simplify using `only [Category.assoc] at v ⊢`. Rewrite `v` using `[p, _root_.one_mul, hc]`. Conclude with `v`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h₁, h₂⟩`. Establish `hb : ρ' ≫ g.b = 1` using `Over.OverMorphism.ext (gp.hom_ext (by rw [b₁, b₂, h₁]) ((Over.w _).trans (Over.w _).symm))`. Use `⟨hb, fun y Z r z J' hJ' => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `he y`. Take `⟨J, hJ⟩` from `ConstFam.exists_good' D.P.isLB z`.
+
+Conclude with `(hv hb x Z r z J J' hJ hJ').symm.trans (h₂ x Z _ z J hJ)`. Introduce and unpack `⟨h₁, h₂⟩`. Use `⟨Over.OverMorphism.ext ?_, fun x Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite `b₁` using `[h₁, b₂]`. Use `congrArg (σ ≫ ·) b₁` as an intermediate fact.
+
+Simplify using `only [reassoc_of% hσ] at this`. Conclude with `this.symm`. Take `⟨J', hJ'⟩` from `ConstFam.exists_good' D'.P.isLB z`. Establish `v` using `hv h₁ x Z (r ≫ σ) z J J' hJ hJ'`. Rewrite `v` using `[Category.assoc r, hσ, Category.comp_id]`.
+
+Conclude with `v.trans (h₂ _ Z _ z J' hJ')`.
+-/
 theorem Through.zeroAlong_iff {f : Sp R' ⟶ Sp R} (gp : IsPullback Φ D'.P.A.hom D.P.A.hom f)
     (he : Function.Surjective e) {g₀ : GtPt D T} {g : GtPt D' T'} (H : Through w e h g₀ g)
     {S : Over (Sp R)} {S' : Over (Sp R')} (ρ : S ⟶ T) (ρ' : S' ⟶ T') (c : S'.left ⟶ S.left)
@@ -155,6 +191,9 @@ theorem Through.zeroAlong_iff {f : Sp R' ⟶ Sp R} (gp : IsPullback Φ D'.P.A.ho
       rw [Category.assoc r, hσ, Category.comp_id] at v
       exact v.trans (h₂ _ Z _ z J' hJ')
 
+/- English proof (translation)
+Use `ConstPoint.genRelR_of_val hw D'.P.isLB D.P.isLB ht (pullGen_isGen _ _ _ _ (g₀.isGen x) _) (fun k => by rw [hp, Category.assoc, (H x).1, Category.assoc]) fun J J' hJ hJ' => ?_` and prove the remaining obligations. Rewrite using `[val_pull hJ, Category.id_comp, hv J' hJ']`. Simplify using `only [Category.id_comp, hp]`. Conclude with `(H x).2 _ r _ J J' hJ hJ'`.
+-/
 theorem Through.genRelR {A : Type} [CommRing A] [IsLocalRing A] (hw : w.IsGen) {g₀ : GtPt D T} {g : GtPt D' T'}
     (H : Through w e h g₀ g) (r : Sp A ⟶ T'.left) (x : D.X) {pt : Fin 4 → (Sp A ⟶ D'.P.A.left)}
     {t : LB.Gen (LB.LinComb D'.P.L pt DegPre.gtε)} (ht : t.IsGen)
@@ -178,14 +217,25 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {A : Type} [CommRing A] [IsDomain A] [IsLocalRing A] {b : O →+* A} {a : ArcIn Dw l β A b}
   {χ : Sp A⟦X⟧ ⟶ Y.X} {W : Wit Y a χ} {ν : Out.GtPt a.D₀ (epsR A)} {g : Out.GtPt W.P.D.toPre (epsR A⟦X⟧)}
 
+/- English proof (translation)
+The claim follows from `(Spec.map_comp _ _).symm`.
+-/
 theorem spMap_comp' {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : R →+* S) (g : S →+* T) :
     spMap g ≫ spMap f = spMap (g.comp f) := (Spec.map_comp _ _).symm
 
 omit [IsDomain A] in
+/- English proof (translation)
+Rewrite using `[Ne, Ideal.span_singleton_eq_top, PowerSeries.isUnit_iff_constantCoeff, constantCoeff_X]`. Conclude with `not_isUnit_zero`.
+-/
 theorem span_X_ne_top : Ideal.span {(X : A⟦X⟧)} ≠ ⊤ := by
   rw [Ne, Ideal.span_singleton_eq_top, PowerSeries.isUnit_iff_constantCoeff, constantCoeff_X]
   exact not_isUnit_zero
 
+/- English proof (translation)
+Introduce `n ρ κ vn h₁ h₂ h₃ h₄ _ h₆ x`. Use `isLocalRing_quotient_pow (span_X_ne_top (A := A)) n` as an intermediate fact. Use `isLocalRing_dual (A⟦X⟧ ⧸ Ideal.span {(X : A⟦X⟧)} ^ (n + 1))` as an intermediate fact. Establish `hκ : κ = ρ.comp (dualMapR (C (R` using `A))) := (eq_dualMapR ((Ideal.Quotient.mk _).comp C) κ h₃ h₄).trans (eq_dualMapR _ _ (fun r => (congrArg ρ (dualMapR_inl _ r)).trans (h₁ _)) ((congrArg ρ (dualMapR_eps _)).trans h₂)).symm`. Take `⟨k₁, k₂⟩` from `(hasCoords_iff _ _ _ _ _).1 (hv n _ (spMap ρ) vn h₆)`.
+
+Rewrite using `[hκ, ← spMap_comp']`. Conclude with `hT.genRelR W.spec.2.1 (spMap ρ) x (DVR.pullGen_isGen _ _ _ _ ((W.P.U.gt n).t_gen _) vn) (fun k => ((TorusCoord.comp_eq_of_left g.b (W.P.U.gt n).pG (spMap ρ) vn k₁.symm).1 _ k).symm) fun J hJ => (val_pull hJ _ _ _).trans ((congrArg (fun q => val _ q _ J) (Category.id_comp vn)).tra …`.
+-/
 theorem lieImg_of_isPointOf (hT : Through W.w W.e (spMap (dualMapR (C (R := A)))) ν g) {v : epsR A⟦X⟧ ⟶ W.t.G}
     (hv : IsPointOf W.P.U.toUnifPre g v) : LieImg W ν v := by
   intro n ρ κ vn h₁ h₂ h₃ h₄ _ h₆ x
@@ -200,6 +250,21 @@ theorem lieImg_of_isPointOf (hT : Through W.w W.e (spMap (dualMapR (C (R := A)))
     (fun k => ((TorusCoord.comp_eq_of_left g.b (W.P.U.gt n).pG (spMap ρ) vn k₁.symm).1 _ k).symm)
     fun J hJ => (val_pull hJ _ _ _).trans ((congrArg (fun q => val _ q _ J) (Category.id_comp vn)).trans (k₂ _ _ J hJ))
 
+/- English proof (translation)
+Use `isLocalRing_dual A⟦X⟧` as an intermediate fact. Set `I : Ideal A⟦X⟧` to `Ideal.span {X}`. Use `Over.OverMorphism.ext (hom_ext_of_isHausdorff (I.map (algebraMap A⟦X⟧ (DualNumber A⟦X⟧))) fun e => ?_)` and prove the remaining obligations. Establish `: IsLocalRing (A⟦X⟧ ⧸ I ^ (e + 1))` using `isLocalRing_quotient_pow (span_X_ne_top (A := A)) e`. Use `isLocalRing_dual (A⟦X⟧ ⧸ I ^ (e + 1))` as an intermediate fact.
+
+Set `ρ : DualNumber A⟦X⟧ →+* DualNumber (A⟦X⟧ ⧸ I ^ (e + 1))` to `dualMapR (Ideal.Quotient.mk _)`. Set `s : Sp (DualNumber (A⟦X⟧ ⧸ I ^ (e + 1))) ⟶ Sp (A⟦X⟧ ⧸ I ^ (e + 1))` to `spMap (algebraMap _ _)`. Establish `hs : s ≫ Out.thick A⟦X⟧ I e = spMap ρ ≫ (epsR A⟦X⟧).hom` using `(spMap_comp' _ _).trans ((congrArg spMap (RingHom.ext fun r => (dualMapR_inl (Ideal.Quotient.mk (I ^ (e + 1))) r).symm)).trans (spMap_comp' _ _).symm)`. Set `xe : Sp (DualNumber (A⟦X⟧ ⧸ I ^ (e + 1))) ⟶ (Out.thickObj A⟦X⟧ I e W.t.G).left` to `pullback.lift (spMap ρ ≫ v'.left) s (by rw [Category.assoc, Over.w v', hs])`. Establish `hx : xe ≫ (Out.fstG I e W.t.G).left = spMap ρ ≫ v'.left` using `pullback.lift_fst _ _ _`.
+
+Establish `hx' : xe ≫ ((Over.map (Out.thick A⟦X⟧ I e)).obj (Out.thickObj A⟦X⟧ I e W.t.G)).hom = spMap ρ ≫ (epsR A⟦X⟧).hom` using `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) (pullback.lift_snd _ _ _)).trans hs)`. Establish `hκ` using `spMap_comp' (dualMapR (C (R := A))) ρ`. Establish `h'` using `hD e ρ (ρ.comp (dualMapR (C (R := A)))) xe (dualMapR_inl _) (dualMapR_eps _) (fun r => (congrArg ρ (dualMapR_inl _ r)).trans (dualMapR_inl _ _)) ((congrArg ρ (dualMapR_eps _)).trans (dualMapR_eps _)) (pullback.lift_snd _ _ _) hx`. Establish `hb : xe ≫ (W.P.U.gt e).pG.left = spMap ρ ≫ g.b.left`. Use `W.spec.1.1.hom_ext ?_ ?_` and prove the remaining obligations.
+
+Use `(Category.assoc _ _ _).trans (((Category.assoc _ _ _).symm.trans ((h' 0).1 2)).trans ?_)` and prove the remaining obligations. Conclude with `(congrArg (· ≫ _) hκ.symm).trans ((Category.assoc _ _ _).trans ((congrArg (spMap ρ ≫ ·) ((hT 0).1 2).symm).trans (Category.assoc _ _ _).symm))`. Rewrite using `[Category.assoc, Category.assoc, Over.w, Over.w]`. Conclude with `hx'`. Establish `hg : ∀ x, GenRelR W.w (g.s (W.e x)) (LB.pullGen _ _ _ (ν.s x) (𝟙 _ ≫ spMap (dualMapR (C (R` using `A))))) := fun x => hT.genRelR W.spec.2.1 (𝟙 _) x (g.isGen _) (fun k => (Category.id_comp _).symm) fun _ _ => rfl`.
+
+Establish `hC : HasCoords W.P.U.toUnifPre e g (spMap ρ) xe` using `⟨hb, fun y => by`. Take `⟨x, rfl⟩` from `W.e.surjective y`. Conclude with `ConstTanFormal.corr_of_genRelR W.spec.2.1 W.P.D.toPre.P.isLB a.D₀.P.isLB (g.isGen _) (DVR.pullGen_isGen _ _ _ _ ((W.P.U.gt e).t_gen _) xe) (ν.isGen x) ((congrArg (spMap ρ ≫ ·) (Category.id_comp _)).trans hκ) (fun k => ((TorusCoord.comp_eq_of_left g.b (W.P.U.gt e).pG (spMap ρ) xe …`. Establish `key : spMap ρ ≫ v'.left = spMap ρ ≫ v.left` using `hx.symm.trans (hv.comp_fstG_eq hC)`. Establish `hk : RingHom.ker ρ ≤ RingHom.ker (Ideal.Quotient.mk (I.map (algebraMap A⟦X⟧ (DualNumber A⟦X⟧)) ^ (e + 1)))`.
+
+Rewrite using `[Ideal.mk_ker, ← Ideal.map_pow]`. Conclude with `ConstTanFormal.ker_dualMapR_mk _`. Establish `hρ : Function.Surjective ρ` using `ConstTanFormal.dualMapR_surjective Ideal.Quotient.mk_surjective`. Establish `hl` using `ρ.liftOfSurjective_comp hρ ⟨_, hk⟩`. Establish `e₁ : adicLevelι (I.map (algebraMap A⟦X⟧ (DualNumber A⟦X⟧))) (e + 1) = spMap (ρ.liftOfSurjective hρ ⟨_, hk⟩) ≫ spMap ρ`.
+
+Rewrite using `[spMap_comp', hl]`. Rewrite using `[e₁, Category.assoc, Category.assoc, key]`.
+-/
 theorem eq_of_lieImg [IsHausdorff ((Ideal.span {(X : A⟦X⟧)}).map (algebraMap A⟦X⟧ (DualNumber A⟦X⟧)))
       (DualNumber A⟦X⟧)] (hT : Through W.w W.e (spMap (dualMapR (C (R := A)))) ν g) {v v' : epsR A⟦X⟧ ⟶ W.t.G}
     (hv : IsPointOf W.P.U.toUnifPre g v) (hD : LieImg W ν v') : v' = v := by
@@ -251,6 +316,17 @@ theorem eq_of_lieImg [IsHausdorff ((Ideal.span {(X : A⟦X⟧)}).map (algebraMap
 
 end ThetaShiftProofs
 
+/- English proof (translation)
+Introduce `hG E _ _ _ H Dw l Xo c O _ β Y A _ _ _ _ b a χ W ν`. Use `isLocalRing_dual (PowerSeries A)` as an intermediate fact. Establish `: Module.Finite (PowerSeries A) (DualNumber (PowerSeries A))` using `inferInstanceAs (Module.Finite (PowerSeries A) (PowerSeries A × PowerSeries A))`. Use `isAdicComplete_map_of_finite (Ideal.span {(PowerSeries.X : PowerSeries A)}) (DualNumber (PowerSeries A))` as an intermediate fact. Take `⟨gp, hw, -, -, hc, -⟩` from `W.spec`.
+
+Take `⟨g, hg⟩` from `ConstPoint.exists_gtPt_through hG gp hw W.e.symm.toAddEquiv.toAddMonoidHom (fun y => by have := hc (W.e.symm y); rwa [LinearEquiv.apply_symm_apply] at this) (T := epsR A) (T' := epsR (PowerSeries A)) (spMap (dualMapR (PowerSeries.C (R := A)))) ((spMap_comp' _ _).trans ((congrArg …`. Establish `hT : Through W.w W.e (spMap (dualMapR (PowerSeries.C (R` using `A)))) ν g := fun x => by`. Use `hg (W.e x)` as an intermediate fact. Establish `e : W.e.symm.toAddEquiv.toAddMonoidHom (W.e x) = x` using `W.e.symm_apply_apply x`. Rewrite `this` using `[e]`.
+
+Conclude with `this`. Take `⟨v, hv, -⟩` from `existsUnique_isPointOf W.P.U.toUnifPre g`. Use `⟨⟨v, lieImg_of_isPointOf hT hv, fun v' h => eq_of_lieImg hT hv h⟩, fun v' h => ?_⟩` and prove the remaining obligations. Take `rfl` from `eq_of_lieImg hT hv h`. Establish `sec : ∀ (R : Type) [CommRing R], spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ (epsR R).hom = 𝟙 (Sp R)` using `fun R _ => (spMap_comp' _ _).trans (Spec.map_id _)`.
+
+Set `p₀ : Over.mk (𝟙 (Sp A)) ⟶ epsR A` to `Over.homMk _ (sec A)`. Set `p : Over.mk (𝟙 (Sp (PowerSeries A))) ⟶ epsR (PowerSeries A)` to `Over.homMk _ (sec _)`. Take `⟨g₀, h₀⟩` from `exists_isPullGt p₀ ν`. Take `⟨g₁, h₁⟩` from `exists_isPullGt p g`. Establish `e₁ : GtTanR ν ↔ ZeroAlong ν p₀` using `⟨fun ⟨_, hz, hp⟩ => (isZero_iff_zeroAlong (ρ := p₀) hp).1 hz, fun hz => ⟨g₀, (isZero_iff_zeroAlong h₀).2 hz, h₀⟩⟩`.
+
+Establish `e₂ : ZeroAlong ν p₀ ↔ ZeroAlong g p` using `hT.zeroAlong_iff gp.1 W.e.surjective p₀ p (spMap (PowerSeries.C (R := A))) ((spMap_comp' _ _).trans ((congrArg spMap (RingHom.ext fun r => fst_dualMapR _ r)).trans (spMap_comp' _ _).symm)) (spMap (PowerSeries.constantCoeff (R := A))) ((spMap_comp' _ _).trans ((congrArg spMap Powe …`. Establish `e₃ : p ≫ v' = 1 ↔ IsTangent v'`. Establish `o : (1 : Over.mk (𝟙 (Sp (PowerSeries A))) ⟶ W.t.G).left = η[W.t.G].left` using `Category.id_comp _`. Conclude with `⟨fun h => (congrArg (fun q : Over.mk (𝟙 (Sp (PowerSeries A))) ⟶ W.t.G => q.left) h).trans o, fun h => Over.OverMorphism.ext (h.trans o.symm)⟩`. Conclude with `e₁.trans (e₂.trans ((isZero_iff_zeroAlong h₁).symm.trans ((isZero_iff_eq_one (hv.pull p h₁)).trans e₃)))`.
+-/
 theorem main : Out.GlobalFnsSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A] (b : O →+* A) (a : ArcIn Dw l β A b) (χ : Sp (PowerSeries A) ⟶ Y.X) (W : Wit Y a χ) (ν : Out.GtPt a.D₀ (epsR A)), (∃! v : epsR (PowerSeries A) ⟶ W.t.G, LieImg W ν v) ∧ ∀ v, LieImg W ν v → (GtTanR ν ↔ IsTangent v) := by
   intro hG E _ _ _ H Dw l Xo c O _ β Y A _ _ _ _ b a χ W ν
   have := isLocalRing_dual (PowerSeries A)

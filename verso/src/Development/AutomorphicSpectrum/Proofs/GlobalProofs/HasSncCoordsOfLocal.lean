@@ -11,6 +11,17 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Geo.SncCoords
 open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R ReciprocityTheory.ChartRestriction.G.Geo.ResK
 
+/- English proof (translation)
+Use `choose n V hV hd using ReciprocityTheory.ChartRestriction.G.H1.exists_dim f`. Establish `two : ∀ (A B : X.Opens) (a b : ℕ), SmoothOfRelativeDimension a (A.ι ≫ f) → SmoothOfRelativeDimension b (B.ι ≫ f) → ∀ x, x ∈ A → x ∈ B → a = b`. Introduce `A B a b ha hb x hA hB`. Establish `e₁ : SmoothOfRelativeDimension (0 + a) ((A ⊓ B).ι ≫ f)`. Rewrite using `[← Scheme.homOfLE_ι _ (inf_le_left : A ⊓ B ≤ A), Category.assoc]`.
+
+Use `infer_instance`. Establish `e₂ : SmoothOfRelativeDimension (0 + b) ((A ⊓ B).ι ≫ f)`. Rewrite using `[← Scheme.homOfLE_ι _ (inf_le_right : A ⊓ B ≤ B), Category.assoc]`. Use `infer_instance`. Simplify using `using ReciprocityTheory.ChartRestriction.G.H1.dim_unique _ e₁ e₂ ⟨x, hA, hB⟩`.
+
+Establish `hc : IsLocallyConstant n` using `(IsLocallyConstant.iff_exists_open n).2 fun x => ⟨V x, (V x).isOpen, hV x, fun y hy => two _ _ _ _ (hd y) (hd x) y (hV y) hy⟩`. Establish `hWsub : (W : Set X) ⊆ n ⁻¹' {D}` using `fun x hx => two _ _ _ _ (hd x) hWD x (hV x) hx`. Establish `hall : ∀ x, n x = D`. Establish `hcl : IsClosed (n ⁻¹' {D})` using `(hc.isClopen_fiber D).isClosed`. Use `hcl.closure_subset_iff.2 hWsub` as an intermediate fact.
+
+Rewrite `this` using `[hW.closure_eq]`. Conclude with `fun x => this (Set.mem_univ x)`. Establish `: IsZariskiLocalAtSource (@SmoothOfRelativeDimension D)` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `IsZariskiLocalAtSource.of_iSup_eq_top (P := @SmoothOfRelativeDimension D) V (top_le_iff.1 fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨x, hV x⟩) fun x => ?_` and prove the remaining obligations. Rewrite using `[← hall x]`.
+
+Conclude with `hd x`.
+-/
 theorem relDim_of_dense {X S : Scheme.{0}} (f : X ⟶ S) [Smooth f] (D : ℕ) (W : X.Opens)
     (hW : Dense (W : Set X)) (hWD : SmoothOfRelativeDimension D (W.ι ≫ f)) :
     SmoothOfRelativeDimension D f := by
@@ -36,6 +47,9 @@ theorem relDim_of_dense {X S : Scheme.{0}} (f : X ⟶ S) [Smooth f] (D : ℕ) (W
     (top_le_iff.1 fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨x, hV x⟩) fun x => ?_
   rw [← hall x]; exact hd x
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.kaehler_basis_spreads_to_neighbourhood K A P x hx`.
+-/
 theorem basis_spread (K A : Type) [Field K] [CommRing A] [Algebra K A] [Algebra.FinitePresentation K A]
     (P : Ideal A) [P.IsPrime] {n : ℕ} (x : Fin n → A)
     (hx : LinearIndependent (Localization.AtPrime P)
@@ -47,6 +61,9 @@ theorem basis_spread (K A : Type) [Field K] [CommRing A] [Algebra K A] [Algebra.
       LinearIndependent B (fun i => KaehlerDifferential.D K B (algebraMap A B (x i))) ∧
         Submodule.span B (Set.range fun i => KaehlerDifferential.D K B (algebraMap A B (x i))) = ⊤ := GlobalTheory.T.kaehler_basis_spreads_to_neighbourhood K A P x hx
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.smooth_local_ring_free_differentials K D Y g hD U P`.
+-/
 theorem omega_free (K : Type) [Field K] (D : ℕ) (Y : Scheme.{0}) (g : Y ⟶ Sp K)
     (hD : SmoothOfRelativeDimension D g) (U : Y.affineOpens) (P : Ideal Γ(Y, U.1)) [P.IsPrime] :
     letI := secAlgebra g U.1
@@ -55,6 +72,9 @@ theorem omega_free (K : Type) [Field K] (D : ℕ) (Y : Scheme.{0}) (g : Y ⟶ Sp
       Module.Finite (Localization.AtPrime P) Ω[Localization.AtPrime P⁄K] ∧
       Module.finrank (Localization.AtPrime P) Ω[Localization.AtPrime P⁄K] = D := GlobalTheory.T.smooth_local_ring_free_differentials K D Y g hD U P
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.regular_sequence_germs_regular_local Y U y hy hreg m f hf`.
+-/
 theorem stalk_transfer (Y : Scheme.{0}) (U : Y.affineOpens) (y : Y) (hy : y ∈ U.1)
     (hreg : IsRegularLocalRing (Y.presheaf.stalk y)) (m : ℕ) (f : Fin m → Γ(Y, U.1))
     (hf : FinalTheorems.Rsp (Y.presheaf.stalk y) m (fun i => Y.presheaf.germ U.1 y hy (f i))) :
@@ -63,6 +83,9 @@ theorem stalk_transfer (Y : Scheme.{0}) (U : Y.affineOpens) (y : Y) (hy : y ∈ 
         (fun i => algebraMap Γ(Y, U.1) _ (f i)) ∧
       ∀ s : Γ(Y, U.1), y ∈ Y.basicOpen s ↔ s ∉ (U.2.primeIdealOf ⟨y, hy⟩).asIdeal := GlobalTheory.T.regular_sequence_germs_regular_local Y U y hy hreg m f hf
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.kaehler_basis_on_localization_away K Y g U s x h`.
+-/
 theorem isCoords_basicOpen (K : Type) [Field K] (Y : Scheme.{0}) (g : Y ⟶ Sp K) (U : Y.affineOpens)
     (s : Γ(Y, U.1)) {n : ℕ} (x : Fin n → Γ(Y, U.1))
     (h : letI := secAlgebra g U.1
@@ -72,6 +95,11 @@ theorem isCoords_basicOpen (K : Type) [Field K] (Y : Scheme.{0}) (g : Y ⟶ Sp K
           Submodule.span B (Set.range fun i => KaehlerDifferential.D K B (algebraMap Γ(Y, U.1) B (x i))) = ⊤) :
     IsCoords g (Y.basicOpen s) (fun i => Y.presheaf.map (homOfLE (Y.basicOpen_le s)).op (x i)) := GlobalTheory.T.kaehler_basis_on_localization_away K Y g U s x h
 
+/- English proof (translation)
+Set `_` to `secAlgebra g U.1`. Take `⟨hregP, hrspP, hmem⟩` from `stalk_transfer Y U y hy hreg m f hf`. Take `⟨hfp, hfree, hfin, hrank⟩` from `omega_free K D Y g hD U (U.2.primeIdealOf ⟨y, hy⟩).asIdeal`. Take `⟨x, e, hxe, bs, hbs⟩` from `GlobalTheory.exists_coords_extending_regularParams K Γ(Y, U.1) (Localization.AtPrime (U.2.primeIdealOf ⟨y, hy⟩).asIdeal) (U.2.primeIdealOf ⟨y, hy⟩).asIdeal D hrank m f hrspP`. Establish `hb : (fun i => KaehlerDifferential.D K (Localization.AtPrime (U.2.primeIdealOf ⟨y, hy⟩).asIdeal) (algebraMap Γ(Y, U.1) _ (x i))) = bs` using `funext fun i => (hbs i).symm`.
+
+Take `⟨s, hs, hspread⟩` from `basis_spread K Γ(Y, U.1) (U.2.primeIdealOf ⟨y, hy⟩).asIdeal x ⟨by rw [hb]; exact bs.linearIndependent, by rw [hb]; exact bs.span_eq⟩`. Conclude with `⟨s, x, e, (hmem s).2 hs, hxe, isCoords_basicOpen K Y g U s x hspread⟩`.
+-/
 theorem coords_at_point (K : Type) [Field K] [CharZero K] (D : ℕ) (Y : Scheme.{0}) (g : Y ⟶ Sp K)
     (hD : SmoothOfRelativeDimension D g) (U : Y.affineOpens) (y : Y) (hy : y ∈ U.1)
     (hreg : IsRegularLocalRing (Y.presheaf.stalk y)) (m : ℕ) (f : Fin m → Γ(Y, U.1))
@@ -90,6 +118,17 @@ theorem coords_at_point (K : Type) [Field K] [CharZero K] (D : ℕ) (Y : Scheme.
     ⟨by rw [hb]; exact bs.linearIndependent, by rw [hb]; exact bs.span_eq⟩
   exact ⟨s, x, e, (hmem s).2 hs, hxe, isCoords_basicOpen K Y g U s x hspread⟩
 
+/- English proof (translation)
+Establish `hk : E.card ≤ D` using `by simpa using E.card_le_univ`. Establish `h1 : Fintype.card {i : Fin D // (i : ℕ) < E.card} = Fintype.card {b : Fin D // b ∈ E}`. Rewrite using `[Fintype.card_coe]`. Rewrite using `[Fintype.card_subtype]`. Establish `: (Finset.univ.filter fun i : Fin D => (i : ℕ) < E.card) = (Finset.range E.card).attachFin (fun _ h => by simp at h; omega)`.
+
+Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite using `[this, Finset.card_attachFin, Finset.card_range]`. Establish `h2 : Fintype.card {i : Fin D // ¬ (i : ℕ) < E.card} = Fintype.card {b : Fin D // ¬ b ∈ E}`. Rewrite using `[Fintype.card_subtype_compl, Fintype.card_subtype_compl, h1]`.
+
+Set `σ` to `Equiv.subtypeCongr (Fintype.equivOfCardEq h1) (Fintype.equivOfCardEq h2)`. Use `⟨σ, fun i => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hi : (i : ℕ) < E.card`. Establish `: σ i = ((Fintype.equivOfCardEq h1) ⟨i, hi⟩ : Fin D)`. Simplify using `only [σ, Equiv.subtypeCongr, Equiv.trans_apply]`.
+
+Rewrite using `[Equiv.sumCompl_symm_apply_of_pos (p := fun x : Fin D => (x : ℕ) < E.card) hi]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `iff_of_true hi ((Fintype.equivOfCardEq h1) ⟨i, hi⟩).2`. Establish `: σ i = ((Fintype.equivOfCardEq h2) ⟨i, hi⟩ : Fin D)`.
+
+Simplify using `only [σ, Equiv.subtypeCongr, Equiv.trans_apply]`. Rewrite using `[Equiv.sumCompl_symm_apply_of_neg (p := fun x : Fin D => (x : ℕ) < E.card) hi]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `iff_of_false hi ((Fintype.equivOfCardEq h2) ⟨i, hi⟩).2`.
+-/
 theorem exists_perm_first {D : ℕ} (E : Finset (Fin D)) :
     ∃ σ : Fin D ≃ Fin D, ∀ i : Fin D, (i : ℕ) < E.card ↔ σ i ∈ E := by
   classical
@@ -116,6 +155,11 @@ theorem exists_perm_first {D : ℕ} (E : Finset (Fin D)) :
     rw [this]
     exact iff_of_false hi ((Fintype.equivOfCardEq h2) ⟨i, hi⟩).2
 
+/- English proof (translation)
+Use `letI := secAlgebra g V`. Take `⟨h1, h2⟩` from `h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `h1.comp σ σ.injective`. Establish `: (Set.range fun i => KaehlerDifferential.D K Γ(Y, V) ((z ∘ σ) i)) = Set.range fun i => KaehlerDifferential.D K Γ(Y, V) (z i)` using `σ.surjective.range_comp (fun i => KaehlerDifferential.D K Γ(Y, V) (z i))`.
+
+Rewrite using `[this]`. Conclude with `h2`.
+-/
 theorem isCoords_comp_equiv {K : Type} [Field K] {Y : Scheme.{0}} (g : Y ⟶ Sp K) (V : Y.Opens) {D : ℕ}
     (z : Fin D → Γ(Y, V)) (σ : Fin D ≃ Fin D) (h : IsCoords g V z) : IsCoords g V (z ∘ σ) := by
   letI := secAlgebra g V
@@ -127,6 +171,11 @@ theorem isCoords_comp_equiv {K : Type} [Field K] {Y : Scheme.{0}} (g : Y ⟶ Sp 
       σ.surjective.range_comp (fun i => KaehlerDifferential.D K Γ(Y, V) (z i))
     rw [this]; exact h2
 
+/- English proof (translation)
+Proceed by induction on `J using Finset.induction_on with`. Consider the case `empty => simp [Scheme.basicOpen_one]`. Consider the case `insert a J ha ih`. Rewrite using `[Finset.prod_insert ha, Scheme.basicOpen_mul]`. Simplify using `only [TopologicalSpace.Opens.mem_inf, ih, Finset.mem_insert, forall_eq_or_imp]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨h2, h1, h3⟩`. Introduce and unpack `⟨h2, h1, h3⟩`. Conclude with `⟨h1, h2, h3⟩`.
+-/
 theorem mem_basicOpen_prod {ι : Type} {Y : Scheme.{0}} {U : Y.Opens} (J : Finset ι) (f : ι → Γ(Y, U)) (w : Y) :
     w ∈ Y.basicOpen (∏ j ∈ J, f j) ↔ w ∈ U ∧ ∀ j ∈ J, w ∈ Y.basicOpen (f j) := by
   classical
@@ -139,6 +188,15 @@ theorem mem_basicOpen_prod {ι : Type} {Y : Scheme.{0}} {U : Y.Opens} (J : Finse
     · rintro ⟨h1, h2, h3⟩; exact ⟨h2, h1, h3⟩
     · rintro ⟨h2, h1, h3⟩; exact ⟨h1, h2, h3⟩
 
+/- English proof (translation)
+Establish `hsupp : ∀ x, x ∈ (Scheme.IdealSheafData.vanishingIdeal ⟨T, hT⟩).support ↔ x ∈ T` using `fun x => by`. Rewrite using `[← SetLike.mem_coe, Scheme.IdealSheafData.coe_support_vanishingIdeal]`. Both sides reduce to the same expression. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hU, hx⟩`. Use `⟨hU, ?_⟩` and prove the remaining obligations. Establish `hs` using `(hsupp x).2 hx`. Rewrite `hs` using `[Scheme.IdealSheafData.mem_support_iff_of_mem hU, h, Scheme.mem_zeroLocus_iff]`. Conclude with `hs p (Ideal.subset_span rfl)`.
+
+Introduce and unpack `⟨hU, hx⟩`. Use `⟨hU, (hsupp x).1 ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.IdealSheafData.mem_support_iff_of_mem hU, h, Scheme.mem_zeroLocus_iff]`. Introduce `q hq hqx`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hq`.
+
+Rewrite `hqx` using `[Scheme.basicOpen_mul]`. Conclude with `hx hqx.2`.
+-/
 theorem inter_eq_of_ideal {Y : Scheme.{0}} (T : Set Y) (hT : IsClosed T) (U : Y.affineOpens) (p : Γ(Y, U.1))
     (h : (Scheme.IdealSheafData.vanishingIdeal ⟨T, hT⟩).ideal U = Ideal.span {p}) :
     ((U.1 : Y.Opens) : Set Y) ∩ T = {x | x ∈ U.1 ∧ x ∉ Y.basicOpen p} := by
@@ -159,6 +217,19 @@ theorem inter_eq_of_ideal {Y : Scheme.{0}} (T : Set Y) (hT : IsClosed T) (U : Y.
     rw [Scheme.basicOpen_mul] at hqx
     exact hx hqx.2
 
+/- English proof (translation)
+Take `⟨hreg, U, hy, m, f, J, hrsp, hid⟩` from `hsnc y`. Take `⟨s, x, e, hys, hxe, hco⟩` from `coords_at_point K D Y g hD U y hy hreg m f hrsp`. Take `⟨σ, hσ⟩` from `exists_perm_first (J.map e)`. Set `r : Fin D → Γ(Y, Y.basicOpen s)` to `fun i => Y.presheaf.map (homOfLE (Y.basicOpen_le s)).op (x i)`. Establish `hr : ∀ i w, w ∈ Y.basicOpen s → (w ∈ Y.basicOpen (r i) ↔ w ∈ Y.basicOpen (x i))` using `fun i w hw => by`.
+
+Simplify using `only [r, Scheme.basicOpen_res, TopologicalSpace.Opens.mem_inf, hw, true_and]`. Establish `hset` using `inter_eq_of_ideal T hT U _ hid`. Use `⟨⟨Y.basicOpen s, U.2.basicOpen s⟩, r ∘ σ, (J.map e).card, hys, by simpa using (J.map e).card_le_univ, isCoords_comp_equiv g _ r σ hco, ?_⟩` and prove the remaining obligations. Use extensionality with `w`. Simplify using `only [Set.mem_inter_iff, Set.mem_setOf_eq, Function.comp_apply]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hw, hwT⟩`. Establish `hwU : w ∈ U.1` using `Y.basicOpen_le s hw`. Establish `h1 : w ∉ Y.basicOpen (∏ j ∈ J, f j)` using `(hset.subset ⟨hwU, hwT⟩).2`. Rewrite `h1` using `[mem_basicOpen_prod]`.
+
+Use `push_neg at h1`. Take `⟨j, hj, hwj⟩` from `h1 hwU`. Use `⟨hw, σ.symm (e j), (hσ _).2 (by rw [Equiv.apply_symm_apply]; exact Finset.mem_map_of_mem e hj), ?_⟩` and prove the remaining obligations. Rewrite using `[Equiv.apply_symm_apply, hr _ _ hw, hxe]`. Conclude with `hwj`.
+
+Introduce and unpack `⟨hw, i, hi, hwi⟩`. Establish `hwU : w ∈ U.1` using `Y.basicOpen_le s hw`. Use `⟨hw, (hset.superset ⟨hwU, ?_⟩).2⟩` and prove the remaining obligations. Take `⟨j, hj, hje⟩` from `Finset.mem_map.1 ((hσ i).1 hi)`. Rewrite using `[mem_basicOpen_prod]`.
+
+Introduce and unpack `⟨-, hall⟩`. Rewrite `hwi` using `[hr _ _ hw, ← hje, hxe]`. Conclude with `hwi (hall j hj)`.
+-/
 theorem point_coords (K : Type) [Field K] [CharZero K] (D : ℕ) (Y : Scheme.{0}) (g : Y ⟶ Sp K)
     (T : Set Y) (hT : IsClosed T) (hD : SmoothOfRelativeDimension D g)
     (hsnc : FinalTheorems.Snc (Scheme.IdealSheafData.vanishingIdeal ⟨T, hT⟩)) (y : Y) :
@@ -194,6 +265,9 @@ theorem point_coords (K : Type) [Field K] [CharZero K] (D : ℕ) (Y : Scheme.{0}
     rw [hr _ _ hw, ← hje, hxe] at hwi
     exact hwi (hall j hj)
 
+/- English proof (translation)
+Use `choose V z k hy hk hz hT using h`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun y => ((V y).1 : Set Y)) (fun y => (V y).1.isOpen) (fun y _ => Set.mem_iUnion.2 ⟨y, hy y⟩)`. Use `⟨t.card, fun j => V (t.equivFin.symm j), fun y => ?_, fun j => ⟨z _, k _, hk _, hz _, hT _⟩⟩` and prove the remaining obligations. Take `⟨a, ha, h⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ y))`. Conclude with `⟨t.equivFin ⟨a, ha⟩, by simpa using h⟩`.
+-/
 theorem hasSncCoords_of_local {K : Type} [Field K] (D : ℕ) {Y : Scheme.{0}} [CompactSpace Y] (g : Y ⟶ Sp K)
     (T : Set Y)
     (h : ∀ y : Y, ∃ (V : Y.affineOpens) (z : Fin D → Γ(Y, V.1)) (k : ℕ), y ∈ V.1 ∧ k ≤ D ∧ IsCoords g V.1 z ∧
@@ -207,6 +281,9 @@ theorem hasSncCoords_of_local {K : Type} [Field K] (D : ℕ) {Y : Scheme.{0}} [C
   obtain ⟨a, ha, h⟩ := Set.mem_iUnion₂.1 (ht (Set.mem_univ y))
   exact ⟨t.equivFin ⟨a, ha⟩, by simpa using h⟩
 
+/- English proof (translation)
+Introduce `K _ _ D Y g W T hT hc hs hW hWD hsnc`. Establish `hD : SmoothOfRelativeDimension D g` using `relDim_of_dense g D W hW hWD`. Conclude with `⟨hD, hasSncCoords_of_local D g T (point_coords K D Y g T hT hD hsnc)⟩`.
+-/
 theorem coordsStatement : CoordsStatement := by
   intro K _ _ D Y g W T hT hc hs hW hWD hsnc
   have hD : SmoothOfRelativeDimension D g := relDim_of_dense g D W hW hWD

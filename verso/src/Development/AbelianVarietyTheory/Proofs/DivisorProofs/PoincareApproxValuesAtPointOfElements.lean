@@ -13,6 +13,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.Poinc.ValuationRepresentative
 
+/- English proof (translation)
+Set `p : Submodule ℤ M` to `Submodule.span ℤ (v '' {j | j ≠ k})`. Establish `hx : p.mkQ (v k) ∉ Submodule.torsion ℤ (M ⧸ p)`. Introduce `h`. Take `⟨⟨a, ha⟩, hax⟩` from `(Submodule.mem_torsion_iff _).1 h`. Establish `h1 : a • v k ∈ p`.
+
+Rewrite using `[← Submodule.Quotient.mk_eq_zero]`. Simplify using `using hax`. Take `⟨l, hl, hle⟩` from `(Finsupp.mem_span_image_iff_linearCombination ℤ).1 h1`. Establish `h2 : Finsupp.linearCombination ℤ v (l - Finsupp.single k a) = 0`. Simplify using `[map_sub, hle]`.
+
+Establish `h3` using `linearIndependent_iff.1 hv _ h2`. Establish `h4 : l k = 0` using `(Finsupp.mem_supported' ℤ l).1 hl k (by simp)`. Establish `h5` using `congrArg (fun f => f k) h3`. Simplify using `[h4] at h5`. Conclude with `nonZeroDivisors.ne_zero ha h5`.
+
+Use `haveI : Module.IsTorsionFree ℤ ((M ⧸ p) ⧸ Submodule.torsion ℤ (M ⧸ p)) := Submodule.isTorsionFree_iff_torsion_eq_bot.2 Submodule.QuotientTorsion.torsion_eq_bot`. Take `⟨f, hf, hf0⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hx inferInstance`. Set `g : M →ₗ[ℤ] ℤ` to `f ∘ₗ p.mkQ`. Establish `hg : ∀ j, j ≠ k → g (v j) = 0` using `fun j hj => by`. Establish `: p.mkQ (v j) = 0`.
+
+Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.subset_span ⟨j, hj, rfl⟩`. Simplify using `only [g, LinearMap.comp_apply, this, map_zero]`. Establish `hgk : g (v k) ≠ 0` using `hf`. Break down `lt_or_gt_of_ne hgk with hn | hp` into its components or cases.
+
+Conclude with `⟨-g, fun j hj => by simp [hg j hj], by simp; omega⟩`. Conclude with `⟨g, hg, hp⟩`.
+-/
 theorem exists_dual_pos {M : Type} [AddCommGroup M] [Module.Finite ℤ M] {m : ℕ} (v : Fin m → M)
     (hv : LinearIndependent ℤ v) (k : Fin m) :
     ∃ f : M →ₗ[ℤ] ℤ, (∀ j, j ≠ k → f (v j) = 0) ∧ 0 < f (v k) := by
@@ -46,16 +59,31 @@ theorem exists_dual_pos {M : Type} [AddCommGroup M] [Module.Finite ℤ M] {m : �
   · exact ⟨-g, fun j hj => by simp [hg j hj], by simp; omega⟩
   · exact ⟨g, hg, hp⟩
 
+/- English proof (translation)
+Rewrite using `[finProdFinEquiv.symm.sum_comp (fun p : Fin l × Fin n => f p.1), Fintype.sum_prod_type]`. Simplify using `[Finset.smul_sum]`.
+-/
 theorem sum_rep {R : Type} [AddCommMonoid R] {l n : ℕ} (f : Fin l → R) :
     ∑ i : Fin (l * n), f (finProdFinEquiv.symm i).1 = n • ∑ i, f i := by
   rw [finProdFinEquiv.symm.sum_comp (fun p : Fin l × Fin n => f p.1), Fintype.sum_prod_type]
   simp [Finset.smul_sum]
 
+/- English proof (translation)
+Rewrite using `[finProdFinEquiv.symm.prod_comp (fun p : Fin l × Fin n => f p.1), Fintype.prod_prod_type]`. Simplify using `[Finset.prod_pow]`.
+-/
 theorem prod_rep {R : Type} [CommMonoid R] {l n : ℕ} (f : Fin l → R) :
     ∏ i : Fin (l * n), f (finProdFinEquiv.symm i).1 = (∏ i, f i) ^ n := by
   rw [finProdFinEquiv.symm.prod_comp (fun p : Fin l × Fin n => f p.1), Fintype.prod_prod_type]
   simp [Finset.prod_pow]
 
+/- English proof (translation)
+Establish `hs : ∀ β : LinearMap.BilinForm ℤ X, (∑ i : Fin (m * n), β (a (finProdFinEquiv.symm i).1) (a (finProdFinEquiv.symm i).1)) = n * ∑ i, β (a i) (a i)` using `fun β => by`. Rewrite using `[sum_rep (fun j => β (a j) (a j)), nsmul_eq_mul]`. Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hn`. Use `⟨?_, fun β hβ hp => ?_, fun j => ?_, fun β hβ hp he => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← h.span]`.
+
+Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨finProdFinEquiv (j, ⟨0, by omega⟩), by simp⟩`. Rewrite using `[hs, Int.cast_mul, Int.cast_natCast, Nat.cast_mul]`. Use `mul_le_mul_of_nonneg_left (h.le β hβ hp) hn'.le` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hs, Int.cast_mul, Int.cast_natCast, ← h.eq j, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `he` using `[hs, Int.cast_mul, Int.cast_natCast, Nat.cast_mul]`. Use `h.only β hβ hp ?_` and prove the remaining obligations.
+
+Establish `: (n : ℝ) * (d * φ.evalZ β) = n * ((∑ i, β (a i) (a i) : ℤ) : ℝ)` using `by rw [← he]; ring`. Conclude with `mul_left_cancel₀ hn'.ne' this`.
+-/
 theorem supports_rep {O : Type} [CommRing O] {bar : O → O} {φ : InvFun O} {d : ℕ} {X : Type} [AddCommGroup X]
     [Module O X] [Module.Finite O X] {r : ℕ} {ga : Fin r → LinearMap.BilinForm ℤ X} {m : ℕ} {a : Fin m → X}
     (h : Supports bar φ d ga a) (n : ℕ) (hn : 1 ≤ n) :
@@ -78,12 +106,20 @@ theorem supports_rep {O : Type} [CommRing O] {bar : O → O} {φ : InvFun O} {d 
     have : (n : ℝ) * (d * φ.evalZ β) = n * ((∑ i, β (a i) (a i) : ℤ) : ℝ) := by rw [← he]; ring
     exact mul_left_cancel₀ hn'.ne' this
 
+/- English proof (translation)
+Simplify using `only [lin, qW, LinearMap.smul_apply, Finset.mul_sum, smul_eq_mul]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lin_smul {s l : ℕ} (W : Matrix (Fin s) (Fin s) ℤ) {X : Type} [AddCommGroup X]
     (a : Fin l × Fin s → X) (M : ℤ) (δ : LinearMap.BilinForm ℤ X) : lin W a (M • δ) = M * lin W a δ := by
   simp only [lin, qW, LinearMap.smul_apply, Finset.mul_sum, smul_eq_mul]
   refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [mono]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_pow_eq_pow_sum]`. Use `congr 1`.
+
+Establish `h0 : 0 ≤ lin W a (δ j)` using `Finset.sum_nonneg fun i _ => h j _`. Apply `Int.natCast_inj.1` to reduce the goal to its premises. Rewrite using `[Int.toNat_of_nonneg h0, lin, Nat.cast_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Int.toNat_of_nonneg (h j _)`.
+-/
 theorem prod_mono {s l m : ℕ} (W : Matrix (Fin s) (Fin s) ℤ) {X V : Type} [AddCommGroup X] [CommRing V] (t : Fin m → V)
     (δ : Fin m → LinearMap.BilinForm ℤ X) (h : ∀ i y, 0 ≤ qW W (δ i) y) (a : Fin l × Fin s → X) :
     ∏ i, mono W t δ (fun v => a (i, v)) = ∏ j, t j ^ (lin W a (δ j)).toNat := by
@@ -101,6 +137,67 @@ end GlobalTheory.Poinc.ValuationRepresentative
 
 open GlobalTheory.Poinc.ValuationRepresentative in
 
+/- English proof (translation)
+Introduce `O _ _ _ _ bar q φ hF hNS d₀ d hd₀ hd hSupp s W hW N₁ hN₁ A _ _ Φ y ga M hM hcone hδ K _ ev k₀ hE`. Take `⟨O', g₀, b, hO', hb, ⟨w, hw⟩, happ⟩` from `hE`. Take `⟨m₀, a₀, hs₀⟩` from `hSupp (Φ.X y) (Φ.rank_le y) _ ga hcone`. Take `⟨m₁, a₁, hs₁⟩ : ∃ (m₁ : ℕ) (a₁ : Fin m₁ → Φ.X y), Supports bar φ (d₀ * d) ga a₁` from `⟨_, _, supports_rep hs₀ d hd⟩`. Establish `hφX : IsPolFanOn bar φ (Φ.X y)` using `hF (Φ.X y) (Φ.rank_le y)`.
+
+Establish `hne : NoEquivRays O ga` using `hNS (Φ.X y) (Φ.rank_le y) _ ga hcone`. Establish `hpos : ∀ x, x ≠ 0 → ∃ j, 0 < ga j x x` using `fun x hx => by`. Take `⟨i, hi⟩` from `Φ.pos y x hx`. Use `⟨i, ?_⟩` and prove the remaining obligations. Rewrite `hi` using `[hδ i]`.
+
+Simplify using `only [LinearMap.smul_apply, smul_eq_mul] at hi`. Conclude with `pos_of_mul_pos_right hi (by positivity)`. Take `⟨cW, hcW0, hcW⟩` from `GlobalTheory.T.weightedLatticeQuadraticSum_ge_diagonal (s + 1) W hW`. Establish `hq : ∀ k mv, 0 ≤ qW W (Φ.δ y k) mv` using `fun k mv => by`. Establish `h1` using `hcW (Φ.X y) (Φ.δ y k) (Φ.bal y k).1 (Φ.nonneg y k) mv`.
+
+Establish `h2 : (0 : ℝ) ≤ ((∑ u, Φ.δ y k (mv u) (mv u) : ℤ) : ℝ)`. Conclude with `Finset.sum_nonneg fun u _ => Φ.nonneg y k _` after adjusting the coercions. Conclude with `(mul_nonneg hcW0.le h2).trans h1` after adjusting the coercions. Use `haveI : IsNoetherianRing (Φ.V y) := (Φ.cn y).1`. Use `haveI hp : (RingHom.ker ev).IsPrime := RingHom.ker_isPrime ev`.
+
+Establish `hOp : ∀ h ∈ O', h ∈ maximalIdeal (Φ.V y) → h ∈ RingHom.ker ev` using `fun h hh hm => RingHom.mem_ker.2 ((hO' h hh).2 hm)`. Establish `hg₀0 : g₀ ≠ 0`. Introduce `h0`. Rewrite `hw` using `[h0, zero_mul]`. Conclude with `(Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (Φ.t_mem y k).2) hw.symm`.
+
+Establish `hI : Ideal.span (Set.range (Φ.t y)) ≤ maximalIdeal (Φ.V y)` using `Ideal.span_le.2 (by rintro _ ⟨k, rfl⟩; exact (Φ.t_mem y k).1)`. Establish `hexp : ∀ (D : ℕ) k, (M : ℤ) * (D * ∑ i, ga k (a₁ i) (a₁ i)) = ((D * d₀ * b k : ℕ) : ℤ)`. Introduce `D k`. Establish `h1 : ((∑ i, ga k (a₁ i) (a₁ i) : ℤ) : ℝ) = d₀ * d * φ.evalZ (ga k)`. Rewrite using `[← hs₁.eq k]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ((b k : ℕ) : ℝ) = d * (M * φ.evalZ (ga k))`. Rewrite using `[hb k, hδ k, hcone.evalZ_smul]`. Establish `: ((M * (D * ∑ i, ga k (a₁ i) (a₁ i)) : ℤ) : ℝ) = ((D * d₀ * b k : ℕ) : ℝ)`.
+
+Rewrite using `[Int.cast_mul, Int.cast_mul, h1, Nat.cast_mul, h2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions. Establish `key : ∀ lam : LinearMap.BilinForm ℤ (Φ.X y) →ₗ[ℤ] ℤ, (∀ j, 0 ≤ lam (ga j)) → ∀ mv : Fin (s + 1) → Φ.X y, ∃ (D D' l : ℕ) (a : Fin l × Fin (s + 1) → Φ.X y) (i₀ : Fin l), 1 ≤ D ∧ 1 ≤ D' ∧ (∀ u, a (i₀, u) = mv u) ∧ (∀ β ∈ balForms bar (Φ.X y), lin W a β = D * ∑ i, β (a₁ i) (a₁ i) + D …`.
+
+Introduce `lam hlam mv`. Take `⟨D, D', l, a, i₀, hD, hD', hmv, hdom, hlin⟩` from `GlobalTheory.T.exists_dominant_tuple_prescribed_member_linearForm O bar φ (d₀ * d) (Φ.X y) hφX (Φ.m y) m₁ ga a₁ hcone hne hpos hs₁ s W hW N₁ hN₁ lam hlam mv`. Use `⟨D, D', l, a, i₀, hD, hD', hmv, hlin, fun c => ?_⟩` and prove the remaining obligations. Use `set T := (w : Φ.V y) ^ (D * d₀) * ∏ k, Φ.t y k ^ (M * D' * (lam (ga k)).toNat) with hT`. Establish `hmono : Φ.monoT y a = T * g₀ ^ (D * d₀)`.
+
+Establish `e1 : Φ.monoT y a = ∏ k, Φ.t y k ^ (D * d₀ * b k + M * D' * (lam (ga k)).toNat)` using `by show ∏ i, mono W (Φ.t y) (Φ.δ y) (fun v => a (i, v)) = _`. Rewrite using `[prod_mono W _ _ hq a]`. Use `Finset.prod_congr rfl fun k _ => congrArg _ ?_` and prove the remaining obligations. Establish `: lin W a (Φ.δ y k) = ((D * d₀ * b k + M * D' * (lam (ga k)).toNat : ℕ) : ℤ)`. Rewrite using `[hδ k, lin_smul, hlin _ (hcone.mem k)]`.
+
+Use `push_cast`. Rewrite using `[Int.toNat_of_nonneg (hlam k)]`. Establish `h3` using `hexp D k`. Move the coercions through the operations in `at h3`. Take the linear combination `h3`.
+
+Rewrite using `[this, Int.toNat_natCast]`. Establish `e2 : ∀ k, Φ.t y k ^ (D * d₀ * b k + M * D' * (lam (ga k)).toNat) = (Φ.t y k ^ b k) ^ (D * d₀) * Φ.t y k ^ (M * D' * (lam (ga k)).toNat)` using `fun k => by`. Rewrite using `[← pow_mul, pow_add, mul_comm (b k)]`. Rewrite using `[e1, Finset.prod_congr rfl fun k _ => e2 k, Finset.prod_mul_distrib, Finset.prod_pow, ← hw, mul_pow, hT]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `H : ∀ e : ℕ, ∃ h ∈ O', h * g₀ ^ (D * d₀) - Φ.coefT y a c * (T * g₀ ^ (D * d₀)) ∈ Ideal.span {T * g₀ ^ (D * d₀)} * Ideal.span (Set.range (Φ.t y)) ⊔ maximalIdeal (Φ.V y) ^ e`. Introduce `e`. Establish `hdom' : Dominant bar φ (D * d₀ * d) N₁ W ga a` using `by rwa [_root_.mul_assoc]`. Take `⟨h, hh, hm⟩` from `happ (D * d₀) l a hdom' c e`. Conclude with `⟨h, hh, by rwa [hmono] at hm⟩`.
+
+Conclude with `GlobalTheory.Poinc.const_mod_prime_of_approx (Φ.V y) (RingHom.ker ev) O' hOp (g₀ ^ (D * d₀)) T _ _ (pow_ne_zero _ hg₀0) hI H`. Establish `hunit : ∀ {l : ℕ} (a : Fin l × Fin (s + 1) → Φ.X y), IsUnit (Φ.coefT y a fun i => (Φ.u_unit y (fun v => a (i, v))).choose)` using `fun a => Finset.prod_induction _ IsUnit (fun _ _ => IsUnit.mul) isUnit_one fun i _ => (Φ.u_unit y _).choose_spec`. Establish `hwne : ∀ n : ℕ, ev ((w : Φ.V y) ^ n) ≠ 0` using `fun n => ((w.isUnit.pow n).map ev).ne_zero`. Establish `ht : ∀ k, Φ.t y k ∈ RingHom.ker ev`. Introduce `k`.
+
+Take `⟨lam, hl0, hlk⟩` from `exists_dual_pos ga hcone.linearIndependent k`. Establish `hlam : ∀ j, 0 ≤ lam (ga j)` using `fun j => by`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Conclude with `hlk.le`.
+
+Rewrite using `[hl0 j hj]`. Take `⟨D, D', l, a, i₀, hD, hD', -, -, hc⟩` from `key lam hlam 0`. Establish `hprod : ∏ j, Φ.t y j ^ (M * D' * (lam (ga j)).toNat) = Φ.t y k ^ (M * D' * (lam (ga k)).toNat)` using `Fintype.prod_eq_single k fun j hj => by rw [hl0 j hj]; simp`. Establish `hn : 0 < M * D' * (lam (ga k)).toNat`. Establish `: 0 < (lam (ga k)).toNat` using `by omega`.
+
+Check the signs of the components of the expression. Establish `hTm : (w : Φ.V y) ^ (D * d₀) * ∏ j, Φ.t y j ^ (M * D' * (lam (ga j)).toNat) ∈ maximalIdeal (Φ.V y)`. Rewrite using `[hprod]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.pow_mem_of_mem _ (Φ.t_mem y k).1 _ hn)`. Establish `h1` using `(hc _).1 (hunit a) hTm`.
+
+Rewrite `h1` using `[hprod]`. Establish `hw' : (w : Φ.V y) ^ (D * d₀) ∉ RingHom.ker ev` using `fun h => hwne _ (RingHom.mem_ker.1 h)`. Conclude with `hp.mem_of_pow_mem _ ((hp.mem_or_mem h1).resolve_left hw')`. Establish `hIp : Ideal.span (Set.range (Φ.t y)) ≤ RingHom.ker ev` using `Ideal.span_le.2 (by rintro _ ⟨k, rfl⟩; exact ht k)`. Establish `hzero : ∀ D' : ℕ, ∏ k, Φ.t y k ^ (M * D' * ((0 : LinearMap.BilinForm ℤ (Φ.X y) →ₗ[ℤ] ℤ) (ga k)).toNat) = 1` using `fun D' => by simp`.
+
+Use `⟨fun k => RingHom.mem_ker.1 (ht k), fun mu c c' hc' => ?_, fun lam hlam => ?_⟩` and prove the remaining obligations. Take `⟨D, D', l, a, i₀, -, -, hmv, -, hc⟩` from `key 0 (fun j => le_rfl) mu`. Set `c₀ : Fin l → Φ.Q` to `fun i => (Φ.u_unit y (fun v => a (i, v))).choose`. Establish `hsplit : ∀ e : Φ.Q, Φ.coefT y a (Function.update c₀ i₀ e) = Φ.u y mu e * ∏ i ∈ Finset.univ.erase i₀, Φ.u y (fun v => a (i, v)) (c₀ i)`. Introduce `e`.
+
+Rewrite using `[VSys.coefT, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ i₀)]`. Use `congr 1`. Rewrite using `[Function.update_self]`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+
+Conclude with `hmv v`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hi)]`. Establish `hU : IsUnit (∏ i ∈ Finset.univ.erase i₀, Φ.u y (fun v => a (i, v)) (c₀ i))` using `Finset.prod_induction _ IsUnit (fun _ _ => IsUnit.mul) isUnit_one fun i _ => (Φ.u_unit y _).choose_spec`. Take `⟨h, hh, hhp⟩` from `(hc (Function.update c₀ i₀ c)).2 hIp`.
+
+Take `⟨h', hh', hhp'⟩` from `(hc (Function.update c₀ i₀ c')).2 hIp`. Rewrite `hhp`, `hhp'` using `[hsplit, hzero, _root_.mul_one]`. Rewrite `hhp`, `hhp'` using `[RingHom.mem_ker, map_sub, sub_eq_zero]`. Establish `hUe : ev (∏ i ∈ Finset.univ.erase i₀, Φ.u y (fun v => a (i, v)) (c₀ i)) ≠ 0` using `(hU.map ev).ne_zero`. Establish `hce : ev (Φ.u y mu c') ≠ 0` using `(hc'.map ev).ne_zero`.
+
+Use `⟨ev h / ev h', div_mem (hO' h hh).1 (hO' h' hh').1, ?_⟩` and prove the remaining obligations. Rewrite using `[hhp, hhp']`. Simplify using `only [map_mul]`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff (mul_ne_zero (mul_ne_zero hce hUe) (by simpa using hwne (D * d₀)))]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hlam0 : ∀ j, lam (ga j) = 0` using `fun j => by`. Use `hlam j` as an intermediate fact. Rewrite `this` using `[hδ j, map_smul, smul_eq_mul]`. Break down `mul_eq_zero.1 this with h | h` into its components or cases. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `h`. Take `⟨D, D', l, a, -, -, hD', -, hlin, hc⟩` from `key lam (fun j => (hlam0 j).ge) 0`. Take `⟨E, E', l', a', -, hE, -, -, hlin', hc'⟩` from `key 0 (fun j => le_rfl) 0`. Take `⟨h, hh, hhp⟩` from `(hc fun i => (Φ.u_unit y (fun v => a (i, v))).choose).2 hIp`. Take `⟨h', hh', hhp'⟩` from `(hc' fun i => (Φ.u_unit y (fun v => a' (i, v))).choose).2 hIp`.
+
+Establish `hprod1 : ∏ k, Φ.t y k ^ (M * D' * (lam (ga k)).toNat) = 1` using `by simp [hlam0]`. Rewrite `hhp` using `[hprod1, _root_.mul_one, RingHom.mem_ker, map_sub, sub_eq_zero]`. Rewrite `hhp'` using `[hzero, _root_.mul_one, RingHom.mem_ker, map_sub, sub_eq_zero]`. Establish `hce'` using `((hunit a').map ev).ne_zero`. Establish `hrepc : ∀ {l n : ℕ} (a : Fin l × Fin (s + 1) → Φ.X y) (c : Fin l → Φ.Q), Φ.coefT y (fun p : Fin (l * n) × Fin (s + 1) => a ((finProdFinEquiv.symm p.1).1, p.2)) (fun i => c (finProdFinEquiv.symm i).1) = Φ.coefT y a c ^ n` using `fun a c => prod_rep (fun j => Φ.u y (fun v => a (j, v)) (c j))`.
+
+Establish `hrepl : ∀ {l n : ℕ} (a : Fin l × Fin (s + 1) → Φ.X y) (β : LinearMap.BilinForm ℤ (Φ.X y)), lin W (fun p : Fin (l * n) × Fin (s + 1) => a ((finProdFinEquiv.symm p.1).1, p.2)) β = n * lin W a β` using `fun a β => (sum_rep (fun j => qW W β fun u => a (j, u))).trans (nsmul_eq_mul _ _)`. Use `⟨l * E, l' * D, E * D', fun p => a ((finProdFinEquiv.symm p.1).1, p.2), fun p => a' ((finProdFinEquiv.symm p.1).1, p.2), fun i => (Φ.u_unit y (fun v => a ((finProdFinEquiv.symm i).1, v))).choose, fun i => (Φ.u_unit y (fun v => a' ((finProdFinEquiv.symm i).1, v))).choose, Nat.mul_ …` and prove the remaining obligations. Establish `eA : Φ.coefT y (fun p : Fin (l * E) × Fin (s + 1) => a ((finProdFinEquiv.symm p.1).1, p.2)) (fun i => (Φ.u_unit y (fun v => a ((finProdFinEquiv.symm i).1, v))).choose) = Φ.coefT y a (fun i => (Φ.u_unit y (fun v => a (i, v))).choose) ^ E` using `hrepc (n := E) a (fun i => (Φ.u_unit y (fun v => a (i, v))).choose)`. Establish `eA' : Φ.coefT y (fun p : Fin (l' * D) × Fin (s + 1) => a' ((finProdFinEquiv.symm p.1).1, p.2)) (fun i => (Φ.u_unit y (fun v => a' ((finProdFinEquiv.symm i).1, v))).choose) = Φ.coefT y a' (fun i => (Φ.u_unit y (fun v => a' (i, v))).choose) ^ D` using `hrepc (n := D) a' (fun i => (Φ.u_unit y (fun v => a' (i, v))).choose)`. Establish `hwe : ev (w : Φ.V y) ≠ 0` using `by simpa using hwne 1`.
+
+Use `⟨?_, ?_, fun β hβ => ?_, ⟨ev h ^ E / ev h' ^ D, div_mem (pow_mem (hO' h hh).1 _) (pow_mem (hO' h' hh').1 _), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eA]`. Conclude with `(hunit a).pow _`. Rewrite using `[eA']`. Conclude with `(hunit a').pow _`.
+
+Rewrite using `[hrepl a β, hrepl a' β, hlin β hβ, hlin' β hβ, LinearMap.zero_apply] push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eA, eA', map_pow, map_pow, hhp, hhp']`. Simplify using `only [map_mul, map_pow]`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff (pow_ne_zero _ (mul_ne_zero hce' (pow_ne_zero _ hwe)))]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.Poinc.Sep.values_of_elements : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O) (q : ℕ) (φ : InvFun O), IsPolFan bar q φ → NoSelfInt bar q φ → ∀ d₀ d : ℕ, 1 ≤ d₀ → 1 ≤ d → HasSupports bar q φ d₀ → ∀ (s : ℕ) (W : Matrix (Fin (s + 1)) (Fin (s + 1)) ℤ), PosW W → ∀ N₁ : ℕ, 3 ≤ N₁ → ∀ (A : Type) [CommRing A] [IsLocalRing A] (Φ : VSys bar q W N₁ A) (y : Φ.Y) (ga : Fin (Φ.m y) → LinearMap.BilinForm ℤ (Φ.X y)) (M : ℕ), 1 ≤ M → IsCone bar φ ga → (∀ k, Φ.δ y k = (M : ℤ) • ga k) → ∀ (K : Type) [Field K] (ev : Φ.V y →+* K) (k₀ : Subfield K), Elements Φ y φ d ga ev k₀ → Values Φ y ev k₀ := by
   classical
   intro O _ _ _ _ bar q φ hF hNS d₀ d hd₀ hd hSupp s W hW N₁ hN₁ A _ _ Φ y ga M hM hcone hδ K _ ev k₀ hE

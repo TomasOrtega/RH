@@ -45,6 +45,11 @@ def lnkScale (L : HSp D) (ζ ζ' : Fin L.rank → D.host.E) (h : ζ = (-D.host.x
 abbrev stdLat (S T : HSp D) : AddSubgroup (WO S T) :=
   latO S T (GlobalTheory.PlaceModel.latFrame S : Set _) (GlobalTheory.PlaceModel.latFrame T : Set _) fun _ => True
 
+/- English proof (translation)
+Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig W.gram` as an intermediate fact. Establish `ho : IsOpen (((Formalism.L2.DIV.St β).comap (Lev.finE W) : Subgroup (GA D W)) : Set (GA D W))`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.ThetaIntegrand.eventually_princ W β ∅] with κ hh`. Conclude with `hh.2.1`.
+
+Take `⟨C, hC, hCm⟩` from `GlobalTheory.ParahoricCompact.exists_compact W β`. Use `⟨hC.of_isClosed_subset ((GlobalTheory.Ker.CongTop.isClosed_GfC W).inter (Subgroup.isClosed_of_isOpen _ ho)) fun k hk => hCm k hk.1 hk.2, ?_⟩` and prove the remaining obligations. Use `ho.preimage (continuous_subtype_val (p := fun x => x ∈ GfC W)) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k`. Conclude with `⟨fun hk => hk.2, fun hk => ⟨k.2, hk⟩⟩`.
+-/
 theorem stab_compact_open (W : HSp D) (β : GL (Fin W.rank) (Lev.EAf D)) :
     IsCompact (Lev.levA W (Formalism.L2.DIV.St β) : Set (GA D W)) ∧
       IsOpen (((Lev.levA W (Formalism.L2.DIV.St β)).subgroupOf (GfC W) : Subgroup (GfC W)) : Set (GfC W)) := by
@@ -60,12 +65,18 @@ theorem stab_compact_open (W : HSp D) (β : GL (Fin W.rank) (Lev.EAf D)) :
   ext k
   exact ⟨fun hk => hk.2, fun hk => ⟨k.2, hk⟩⟩
 
+/- English proof (translation)
+Introduce `i j`. Use `show e * ∑ r, p i r * u r j = ∑ r, p i r * u r j`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun r _ => by rw [mul_left_comm, hu r j]`.
+-/
 theorem isHalf_mul {k l m : ℕ} {e : AE D} (p : Mx D k l) {u : Mx D l m} (hu : IsHalf e u) : IsHalf e (p ⬝ u) := by
   intro i j
   show e * ∑ r, p i r * u r j = ∑ r, p i r * u r j
   rw [Finset.mul_sum]
   exact Finset.sum_congr rfl fun r _ => by rw [mul_left_comm, hu r j]
 
+/- English proof (translation)
+Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+-/
 theorem gram_mul {n k l k' l' : ℕ} (M : Matrix (Fin n) (Fin n) D.host.E) (a : Matrix (Fin n) (Fin k) D.host.E)
     (b : Matrix (Fin n) (Fin l) D.host.E) (u : Matrix (Fin k) (Fin k') D.host.E) (v : Matrix (Fin l) (Fin l') D.host.E) :
     (a * u)ᴴ * M * (b * v) = uᴴ * (aᴴ * M * b) * v := by
@@ -101,6 +112,9 @@ def lineDec {A B : HSp D} (d : HermitianOrthogonalExtensionData A B 1 1) : OrthD
   orth := GlobalTheory.RowUnf.perp_sub' d id
   rank_add := d.rank
 
+/- English proof (translation)
+The claim follows from `pow_ne_zero _ (neg_ne_zero.2 (Inhab.cmHost_imaginaryGenerator_ne_zero D))`.
+-/
 theorem xiPow_ne (D : D7) (n : ℕ) : (-D.host.xi0) ^ n ≠ 0 := pow_ne_zero _ (neg_ne_zero.2 (Inhab.cmHost_imaginaryGenerator_ne_zero D))
 
 variable {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc)

@@ -8,6 +8,21 @@ namespace Formalism.MainNotions.S.Pv.AmpDDPf
 
 open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.MainNotions.S.Pv.AmpDD
 
+/- English proof (translation)
+Establish `hN1 : (1 : ℝ) ≤ N` using `by linarith`. Establish `hN0 : (0 : ℝ) ≤ N` using `by linarith`. Establish `hs0 : (0 : ℝ) < s` using `by linarith`. Establish `hsN : s ≤ N` using `le_trans hsm hmN`. Establish `hm0 : (0 : ℝ) ≤ m` using `by linarith`.
+
+Establish `h35 : N ^ 3 ≤ N ^ 5` using `pow_le_pow_right₀ hN1 (by norm_num)`. Establish `h319 : N ^ 3 ≤ N ^ 19` using `pow_le_pow_right₀ hN1 (by norm_num)`. Establish `h619 : N ^ 6 ≤ N ^ 19` using `pow_le_pow_right₀ hN1 (by norm_num)`. Establish `h15 : (1 : ℝ) ≤ N ^ 5` using `one_le_pow₀ hN1`. Establish `h19 : (0 : ℝ) ≤ N ^ 19` using `pow_nonneg hN0 19`.
+
+Establish `hClN : 1000 * N ^ 19 ≤ Cl * N ^ 19` using `mul_le_mul_of_nonneg_right hCl h19`. Establish `hmm : m ^ 2 ≤ N ^ 2` using `by nlinarith`. Establish `hMb : M ≤ N ^ 2 / 2` using `by linarith`. Establish `hA : AS + AG ≤ 6 * N ^ 3` using `by linarith`. Establish `hA0 : 0 ≤ AS + AG` using `by linarith`.
+
+Establish `key : ∀ X : ℝ, X ≤ 30 * N ^ 5 → X ≤ h / (8 * s)`. Introduce `X hX`. Rewrite using `[le_div_iff₀ (by linarith)]`. Establish `q1 : X * (8 * s) ≤ 30 * N ^ 5 * (8 * s)` using `mul_le_mul_of_nonneg_right hX (by linarith)`. Establish `q2 : 30 * N ^ 5 * (8 * s) ≤ 30 * N ^ 5 * (8 * N)` using `mul_le_mul_of_nonneg_left (by linarith) (by positivity)`.
+
+Establish `q3 : 30 * N ^ 5 * (8 * N) = 240 * N ^ 6` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨by linarith, key _ ?_, key _ ?_, key _ ?_⟩` and prove the remaining obligations. Establish `q : M * (AS + AG) ≤ N ^ 2 / 2 * (6 * N ^ 3)` using `mul_le_mul hMb hA hA0 (by positivity)`. Establish `e : N ^ 2 / 2 * (6 * N ^ 3) = 3 * N ^ 5` using `by ring`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `q : m * N ^ 2 ≤ N * N ^ 2` using `mul_le_mul_of_nonneg_right hmN (by positivity)`. Establish `e : N * N ^ 2 = N ^ 3` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hm4 : (m / 2) ^ 2 ≤ N ^ 2 / 4` using `by nlinarith`.
+
+Establish `q : (m / 2) ^ 2 * (AS + AG) ≤ N ^ 2 / 4 * (6 * N ^ 3)` using `mul_le_mul hm4 hA hA0 (by positivity)`. Establish `e : N ^ 2 / 4 * (6 * N ^ 3) = 3 / 2 * N ^ 5` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem arith (N m s h Cl M AS AG : ℝ) (hN : 6 ≤ N) (hm2 : 2 ≤ m) (hmN : m ≤ N) (hs1 : 1 ≤ s) (hsm : s ≤ m)
     (hCl : 1000 ≤ Cl) (hh : 8 * Cl * N ^ 19 ≤ h) (hM : M ≤ m ^ 2 / 2) (_hM0 : 0 ≤ M) (hAS : AS ≤ 2 * N ^ 3)
     (hAS0 : 0 ≤ AS) (hAG : AG ≤ 4 * N ^ 3) (hAG0 : 0 ≤ AG) :
@@ -49,6 +64,55 @@ theorem arith (N m s h Cl M AS AG : ℝ) (hN : 6 ≤ N) (hm2 : 2 ≤ m) (hmN : m
     have e : N ^ 2 / 4 * (6 * N ^ 3) = 3 / 2 * N ^ 5 := by ring
     linarith
 
+/- English proof (translation)
+Introduce `hH τ lam' hdist`. Take `⟨hS0, -, -⟩` from `hH`. Establish `hg` using `Formalism.MainNotions.BridgeLemma.szh_gap hS0 τ`. Establish `hkL` using `Formalism.MainNotions.BridgeLemma.szh_k_le hS0 (by linarith) τ`. Establish `hm2` using `D.R.two_le_m`.
+
+Establish `hkm` using `D.R.m_add_three_le_k`. Establish `hrS : 2 * D.R.rS + 2 = D.R.m` using `Ranks.rS_two D.R`. Establish `hr : D.R.r = 2 * D.R.rS + D.R.k + 1` using `by unfold Ranks.r; omega`. Use `set N : ℝ := (D.R.r : ℝ) with hNdef`. Use `set m : ℝ := (D.R.m : ℝ) with hmdef`.
+
+Use `set kk : ℝ := (D.R.k : ℝ) with hkdef`. Establish `hNr : N = kk + m - 1`. Rewrite using `[hNdef, hkdef, hmdef]; unfold Ranks.r; push_cast [show 1 ≤ D.R.k + D.R.m by omega]; ring`. Establish `hm2' : (2 : ℝ) ≤ m` using `by rw [hmdef]; exact_mod_cast hm2`. Establish `hk5 : m + 3 ≤ kk` using `by rw [hmdef, hkdef]; exact_mod_cast hkm`.
+
+Establish `hN6 : (6 : ℝ) ≤ N` using `by linarith`. Establish `hmN : m ≤ N` using `by linarith`. Establish `hkN : kk ≤ N` using `by linarith`. Establish `hf : (2 : ℝ) ≤ (D.R.f : ℝ)`. Establish `: 2 ≤ D.R.f`.
+
+Unfold `Ranks.f Ranks.n`. Use `D.R.ord_pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions. Establish `hL : (1 / 2 : ℝ) ≤ large₂.sc.L`.
+
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `h1 : Real.exp (2 * large₂.sc.L) < Real.exp 1` using `Real.exp_lt_exp.mpr (by linarith)`. Establish `h2 : Real.exp 1 < 3` using `by have := Real.exp_one_lt_d9; linarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `set h0 : ℝ := Cl * N ^ 19 * (D.R.f : ℝ) ^ 5 * large₂.sc.L with hh0`. Establish `hf5 : (32 : ℝ) ≤ (D.R.f : ℝ) ^ 5`. Establish `: (2 : ℝ) ^ 5 ≤ (D.R.f : ℝ) ^ 5` using `pow_le_pow_left₀ (by norm_num) hf 5`. Evaluate the numerical expressions using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hN19 : (0 : ℝ) ≤ N ^ 19` using `by positivity`. Establish `hClN : (0 : ℝ) ≤ Cl * N ^ 19` using `by positivity`. Establish `hh0big : 16 * (Cl * N ^ 19) ≤ h0`. Establish `e1 : Cl * N ^ 19 * 32 ≤ Cl * N ^ 19 * (D.R.f : ℝ) ^ 5` using `mul_le_mul_of_nonneg_left hf5 (by positivity)`. Establish `e2 : Cl * N ^ 19 * (D.R.f : ℝ) ^ 5 * (1 / 2) ≤ h0` using `mul_le_mul_of_nonneg_left hL (by positivity)`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hkm3 : kk * m ^ 3 ≤ N ^ 19`. Establish `a1 : kk * m ^ 3 ≤ N * N ^ 3` using `mul_le_mul hkN (pow_le_pow_left₀ (by linarith) hmN 3) (by positivity) (by linarith)`. Establish `a2 : N * N ^ 3 = N ^ 4` using `by ring`. Establish `a3 : N ^ 4 ≤ N ^ 19` using `pow_le_pow_right₀ (by linarith) (by norm_num)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpert : 4 * (Cn * kk * m ^ 3) ≤ h0 / 2`. Establish `hkm0 : 0 ≤ kk * m ^ 3` using `by positivity`. Establish `b1 : Cn * kk * m ^ 3 ≤ Cl * N ^ 19`. Break down `le_total Cn 0 with hc | hc` into its components or cases.
+
+Establish `: Cn * (kk * m ^ 3) ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg hc hkm0`. Establish `: (0 : ℝ) ≤ Cl * N ^ 19` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `: Cn * (kk * m ^ 3) ≤ Cl * N ^ 19` using `mul_le_mul hCn hkm3 hkm0 (by linarith)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨h0 / 2, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Establish `h1` using `hg a b hab`. Establish `da : |lam' a - lamD D τ a| ≤ l1dist lam' (lamD D τ)`.
+
+Unfold `l1dist`. Conclude with `Finset.single_le_sum (f := fun i => |lam' i - lamD D τ i|) (fun i _ => abs_nonneg _) (Finset.mem_univ a)`. Establish `db : |lam' b - lamD D τ b| ≤ l1dist lam' (lamD D τ)`. Unfold `l1dist`. Conclude with `Finset.single_le_sum (f := fun i => |lam' i - lamD D τ i|) (fun i _ => abs_nonneg _) (Finset.mem_univ b)`.
+
+Establish `hlam : lamD D τ = lamSH D.R (D.hc τ)` using `rfl`. Rewrite `da`, `db` using `[hlam]`. Establish `tri : |lamSH D.R (D.hc τ) a - lamSH D.R (D.hc τ) b| ≤ |lam' a - lam' b| + |lam' a - lamSH D.R (D.hc τ) a| + |lam' b - lamSH D.R (D.hc τ) b|`. Use `abs_sub_le (lamSH D.R (D.hc τ) a) (lam' a) (lamSH D.R (D.hc τ) b)` as an intermediate fact. Establish `h2` using `abs_sub_le (lam' a) (lam' b) (lamSH D.R (D.hc τ) b)`.
+
+Rewrite `this` using `[abs_sub_comm (lamSH D.R (D.hc τ) a) (lam' a)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd2 : l1dist lam' (lamD D τ) ≤ Cn * kk * m ^ 3` using `by rw [hkdef, hmdef]; exact hdist`. Rewrite `hd2` using `[hlam]`. Establish `: h0 ≤ |lamSH D.R (D.hc τ) a - lamSH D.R (D.hc τ) b|` using `h1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk1 : 1 ≤ D.R.k` using `by omega`. Take `⟨cM, cM0, cS, cS0, cG, cG0⟩` from `Formalism.MainNotions.NearParameterGap.consts D.R.k D.R.rS hk1`. Establish `eN : ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) = N` using `by rw [hNdef, hr]`. Establish `eM : (2 * (D.R.rS : ℝ) + 2) = m` using `by rw [hmdef, ← hrS]; push_cast; ring`.
+
+Establish `eN' : 2 * (D.R.rS : ℝ) + D.R.k + 1 = N` using `by rw [← eN]; push_cast; ring`. Rewrite `cM` using `[eM]`. Rewrite `cS`, `cG` using `[eN']`. Establish `hsq : Real.sqrt (2 * ((D.R.rS : ℝ) + 1)) = Real.sqrt m` using `by rw [← eM]; ring_nf`. Establish `hs1 : (1 : ℝ) ≤ Real.sqrt m`.
+
+Rewrite using `[show (1 : ℝ) = Real.sqrt 1 by simp]; exact Real.sqrt_le_sqrt (by linarith)`. Establish `hsm : Real.sqrt m ≤ m`. Rewrite using `[Real.sqrt_le_left (by linarith)]; nlinarith`. Establish `hh8 : 8 * Cl * N ^ 19 ≤ h0 / 2`. Rewrite using `[show 8 * Cl * N ^ 19 = 8 * (Cl * N ^ 19) by ring]; linarith`.
+
+Take `⟨g1, g2, g3, -⟩` from `arith N m (Real.sqrt m) (h0 / 2) Cl (Formalism.FourierDecayAlt.ThreeDimData.Mexp D.R.rS) (Formalism.FourierDecayAlt.ThreeDimData.AS D.R.k D.R.rS) (Formalism.FourierDecayAlt.ThreeDimData.AG D.R.k D.R.rS) hN6 hm2' hmN hs1 hsm hCl hh8 cM cM0 cS cS0 cG cG0`. Unfold `Formalism.FourierDecayAlt.ThreeDimData.GapOK Formalism.FourierDecayAlt.ThreeDimData.aOf`. Rewrite using `[hsq, eN]`. Establish `hrS1 : 9 * ((D.R.rS : ℝ) + 1) = 9 * (m / 2)` using `by rw [← eM]; ring`. Use `⟨hk1, g1, g2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hrS1]`. Conclude with `g3`. Establish `hk1 : 1 ≤ D.R.k` using `by omega`. Take `⟨cM, cM0, cS, cS0, cG, cG0⟩` from `Formalism.MainNotions.NearParameterGap.consts D.R.k D.R.rS hk1`. Establish `eN : ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) = N` using `by rw [hNdef, hr]`.
+
+Establish `eM : (2 * (D.R.rS : ℝ) + 2) = m` using `by rw [hmdef, ← hrS]; push_cast; ring`. Establish `eN' : 2 * (D.R.rS : ℝ) + D.R.k + 1 = N` using `by rw [← eN]; push_cast; ring`. Rewrite `cM` using `[eM]`. Rewrite `cS`, `cG` using `[eN']`. Establish `hsq : Real.sqrt (2 * ((D.R.rS : ℝ) + 1)) = Real.sqrt m` using `by rw [← eM]; ring_nf`.
+
+Establish `hs1 : (1 : ℝ) ≤ Real.sqrt m`. Rewrite using `[show (1 : ℝ) = Real.sqrt 1 by simp]; exact Real.sqrt_le_sqrt (by linarith)`. Establish `hsm : Real.sqrt m ≤ m`. Rewrite using `[Real.sqrt_le_left (by linarith)]; nlinarith`. Establish `hh8 : 8 * Cl * N ^ 19 ≤ h0 / 2`.
+
+Rewrite using `[show 8 * Cl * N ^ 19 = 8 * (Cl * N ^ 19) by ring]; linarith`. Take `⟨-, -, -, g4⟩` from `arith N m (Real.sqrt m) (h0 / 2) Cl (Formalism.FourierDecayAlt.ThreeDimData.Mexp D.R.rS) (Formalism.FourierDecayAlt.ThreeDimData.AS D.R.k D.R.rS) (Formalism.FourierDecayAlt.ThreeDimData.AG D.R.k D.R.rS) hN6 hm2' hmN hs1 hsm hCl hh8 cM cM0 cS cS0 cG cG0`. Unfold `GapCell Formalism.FourierDecayAlt.ThreeDimData.aOf`. Rewrite using `[hsq]`. Establish `hrS1 : 10 * ((D.R.rS : ℝ) + 1) ^ 2 = 10 * (m / 2) ^ 2` using `by rw [← eM]; ring`.
+
+Rewrite using `[hrS1]`. Conclude with `g4`.
+-/
 theorem gap_of_hypotheses (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 Cn : ℝ) (hCl : 1000 ≤ Cl) (hCn : Cn ≤ Cl) :
     GapOfHyp0 D large₂ C' Cl Cg cb Cu cT CT C0 Cn := by
   intro hH τ lam' hdist

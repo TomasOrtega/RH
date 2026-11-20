@@ -25,6 +25,9 @@ namespace GlobalTheory.Heat.WtLocal
 open GlobalTheory.ZH.CrdCalc (valR_res valR_spMap)
 open GlobalTheory.TorusModel (isPull_iff)
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[← gs_unit (r ≫ q) z U h, ← gs_pull r q z U h, gs_stalkMap r z (q ⁻¹ᵁ U) h, gs_pull (𝟙 Y) q (r z) U h, Category.id_comp, gs_unit q (r z) U h]`. Both sides reduce to the same expression.
+-/
 theorem gm_comp' {X Y Z : Scheme.{0}} (r : Z ⟶ Y) (q : Y ⟶ X) (z : Z) (U : X.Opens) (h : q (r z) ∈ U) (a : Γ(X, U)ˣ) :
     gm (r ≫ q) z U a = Units.map (r.stalkMap z).hom.toMonoidHom (gm q (r z) U a) := by
   refine Units.ext ?_
@@ -35,6 +38,17 @@ theorem gm_comp' {X Y Z : Scheme.{0}} (r : Z ⟶ Y) (q : Y ⟶ X) (z : Z) (U : X
 variable {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRing O] [StarRing O] [Module O Q.X]
   {oa : Q.OAct O} (Y : Ray oa)
 
+/- English proof (translation)
+Introduce `S _ φ x x' c a a' ha ha' hV hV' hq hc`. Substitute `ha ha'` using the available equality. Use `sub_eq_zero.1 (eq_zero_of_localization _ fun P hP => (map_sub _ _ _).trans (sub_eq_zero.2 ?_))` and prove the remaining obligations. Set `l` to `algebraMap S (Localization.AtPrime P)`. Set `k : Over.mk (spMap (l.comp φ)) ⟶ Over.mk (spMap φ)` to `Over.homMk (spMap l) (Spec.map_comp (CommRingCat.ofHom φ) (CommRingCat.ofHom l)).symm`.
+
+Take `⟨a₁, a₂⟩` from `valR_spMap l x.left V hV`. Take `⟨b₁, b₂⟩` from `valR_spMap l x'.left V hV'`. Use `h _ (l.comp φ) (k ≫ x) (k ≫ x') (fun χ => Units.map l.toMonoidHom (c χ)) a₁ b₁ (by rw [Category.assoc, Category.assoc, hq]) fun χ y J hJ => by` as an intermediate fact. Establish `hJ' : Good Q.P.L (k.left y) fun ψ => J (k.left ≫ ψ)` using `fun ψ => hJ (k.left ≫ ψ)`. Establish `key : ∀ u : Over.mk (spMap φ) ⟶ Y.H, val ((Y.Φ _ (k ≫ u)).s χ) (𝟙 _) y J = Units.map (k.left.stalkMap y).hom.toMonoidHom (val ((Y.Φ _ u).s χ) (𝟙 _) (k.left y) fun ψ => J (k.left ≫ ψ))` using `fun u => by`.
+
+Use `(((isPull_iff _ _ _).1 (Y.rep.1 _ _ k u)).2 χ y J hJ).trans ?_` and prove the remaining obligations. Rewrite using `[val_of _ (𝟙 _) _ _ (fun i => J (k.left ≫ DegPre.gtφT Q _ (Y.Φ _ u).b χ i)) (fun i => by rw [Category.id_comp])]`. Use `Eq.trans ?_ (gm_comp' k.left (𝟙 _) y _ (hJ.mem _ k.left) _)` and prove the remaining obligations. Rewrite using `[Category.comp_id]`. Both sides reduce to the same expression.
+
+Rewrite using `[key, key, hc χ _ _ hJ', map_mul, ← gm_comp' k.left (𝟙 _) y ⊤ trivial]`. Use `congr 1`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[gm_val _ _ ⊤ trivial, gm_val _ _ ⊤ trivial]`. Use `congrArg ((Sp (Localization.AtPrime P)).presheaf.germ ⊤ y trivial).hom ?_` and prove the remaining obligations.
+
+Conclude with `(congrArg (fun q => q.hom (c χ : S)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom l))).symm`. Rewrite using `[map_mul]`. Conclude with `(b₂ f).symm.trans (this.trans (congrArg (_ * ·) (a₂ f)))`.
+-/
 theorem isWt_of_local (α : Q.X) (V : Y.H.left.Opens) (f : Γ(Y.H.left, V))
     (h : ∀ (S : Type) [CommRing S] [IsLocalRing S] (φ : R →+* S) (x x' : Over.mk (spMap φ) ⟶ Y.H) (c : Q.X → Sˣ),
       ⊤ ≤ x.left ⁻¹ᵁ V → ⊤ ≤ x'.left ⁻¹ᵁ V → x' ≫ Y.q = x ≫ Y.q →
@@ -75,6 +89,13 @@ namespace GlobalTheory.Heat.WtLocal
 
 open GlobalTheory.ZH.CrdCalc (valR_res)
 
+/- English proof (translation)
+Introduce `R _ _ Q O _ _ _ oa Y V V' hV α f hf`. Use `isWt_of_local Y α _ _ fun S _ _ φ x x' c hx hx' hq hc => ?_` and prove the remaining obligations. Establish `e : x'.left ≫ Y.q.left = x.left ≫ Y.q.left` using `congrArg (fun q => q.left) hq`. Establish `hp : Y.q.left (x'.left (closedPoint S)) ∈ V'` using `hx' trivial`. Take `⟨g, hg, hpg⟩` from `V.2.exists_basicOpen_le ⟨_, hp⟩ (hV hp)`.
+
+Establish `m' : ⊤ ≤ x'.left ⁻¹ᵁ (Y.q.left ⁻¹ᵁ Q.P.A.left.basicOpen g)` using `(Scheme.preimage_eq_top_of_closedPoint_mem (R := .of S) x'.left hpg).ge`. Establish `m : ⊤ ≤ x.left ⁻¹ᵁ (Y.q.left ⁻¹ᵁ Q.P.A.left.basicOpen g)`. Rewrite using `[← Scheme.Hom.comp_preimage, ← e]`. Conclude with `m'`. Establish `t` using `hf g hg S φ x x' c _ _ rfl rfl m m' hq hc`.
+
+Conclude with `(valR_res (R := S) x'.left _ m' f).symm.trans (t.trans (congrArg (_ * ·) (valR_res (R := S) x.left _ m f)))`.
+-/
 theorem isWt_of_basicOpen : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (O : Type) [CommRing O] [StarRing O] [Module O Q.X] (oa : Q.OAct O) (Y : Ray oa) (V : Q.P.A.left.affineOpens) (V' : Q.P.A.left.Opens), V' ≤ V.1 → ∀ (α : Q.X) (f : Γ(Y.H.left, Y.q.left ⁻¹ᵁ V')), (∀ (g : Γ(Q.P.A.left, V.1)) (h : Q.P.A.left.basicOpen g ≤ V'), IsWt Y α (Y.q.left ⁻¹ᵁ Q.P.A.left.basicOpen g) (resG Y.H.left (Y.q.left.preimage_mono h) f)) → IsWt Y α (Y.q.left ⁻¹ᵁ V') f := by
   intro R _ _ Q O _ _ _ oa Y V V' hV α f hf
   refine isWt_of_local Y α _ _ fun S _ _ φ x x' c hx hx' hq hc => ?_

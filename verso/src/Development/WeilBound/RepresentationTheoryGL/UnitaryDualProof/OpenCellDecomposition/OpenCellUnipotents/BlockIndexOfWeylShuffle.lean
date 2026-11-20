@@ -9,6 +9,11 @@ namespace PositivityTheory.RgUd.CellA
 
 variable {r m : ℕ}
 
+/- English proof (translation)
+Take `⟨⟨a, j⟩, rfl⟩` from `(stdBlocks (dd r m) (hdd r m)).surjective i`. Rewrite using `[blk_apply, stdBlocks_val]`. Establish `hj` using `j.2`. Use `fin_cases a`. Simplify using `at hj ⊢`.
+
+Simplify using `[hj]`. Simplify using `at hj ⊢`.
+-/
 theorem blk_two (i : Fin (r + m)) :
     blk (stdBlocks (dd r m) (hdd r m)) i = if (i : ℕ) < r then 0 else 1 := by
   obtain ⟨⟨a, j⟩, rfl⟩ := (stdBlocks (dd r m) (hdd r m)).surjective i
@@ -23,6 +28,11 @@ variable (r m) in
 
 def w2 : Equiv.Perm (Fin (r + m)) := (finCongr (add_comm r m)).trans finAddFlip
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `j`. Unfold `w2`. Rewrite using `[Equiv.trans_apply]`. Simplify using `only [Fin.val_mk]`. Use `split_ifs with h`.
+
+Rewrite using `[show (finCongr (add_comm r m) ⟨j, hj⟩ : Fin (m + r)) = ⟨j, by omega⟩ from rfl, finAddFlip_apply_mk_left h]`. Rewrite using `[show (finCongr (add_comm r m) ⟨j, hj⟩ : Fin (m + r)) = ⟨j, by omega⟩ from rfl, finAddFlip_apply_mk_right (by omega) (by omega)]`.
+-/
 theorem weyl_shuffle_val (j : Fin (r + m)) : (w2 r m j : ℕ) = if (j : ℕ) < m then r + j else j - m := by
   obtain ⟨j, hj⟩ := j
   unfold w2
@@ -34,12 +44,24 @@ theorem weyl_shuffle_val (j : Fin (r + m)) : (w2 r m j : ℕ) = if (j : ℕ) < m
   · rw [show (finCongr (add_comm r m) ⟨j, hj⟩ : Fin (m + r)) = ⟨j, by omega⟩ from rfl,
       finAddFlip_apply_mk_right (by omega) (by omega)]
 
+/- English proof (translation)
+Rewrite using `[blk_two, weyl_shuffle_val]`. Use `j.2` as an intermediate fact. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem block_index_of_weyl_shuffle (j : Fin (r + m)) :
     blk (stdBlocks (dd r m) (hdd r m)) (w2 r m j) = if (j : ℕ) < m then 1 else 0 := by
   rw [blk_two, weyl_shuffle_val]
   have := j.2
   split_ifs <;> omega
 
+/- English proof (translation)
+Use `symm`. Rewrite using `[wOpen, Tuple.eq_sort_iff]`. Use `⟨fun i j hij => ?_, fun i j hij he => ?_⟩` and prove the remaining obligations. Simplify using `only [Function.comp_apply, wKey]`. Rewrite using `[Prod.Lex.toLex_le_toLex]`.
+
+Simplify using `only [block_index_of_weyl_shuffle, OrderDual.toDual_lt_toDual, Fin.le_iff_val_le_val, weyl_shuffle_val]`. Establish `hij' : (i : ℕ) ≤ j` using `hij`. Apply the tactic sequence `by_cases hi : (i : ℕ) < m <;> by_cases hj : (j : ℕ) < m`. Simplify using `[hi, hj, hij']`. Use `left`.
+
+Simplify using `[hi, hj]`. Use linear arithmetic over natural numbers and integers. Simplify using `[hi, hj]`. Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction.
+
+Establish `h2` using `congrArg (fun p => (ofLex p).2) he`. Simplify using `only [wKey, ofLex_toLex] at h2`. Conclude with `hij.ne ((w2 r m).injective h2)`.
+-/
 theorem wOpen_two : wOpen (dd r m) (hdd r m) = w2 r m := by
   symm
   rw [wOpen, Tuple.eq_sort_iff]
@@ -61,6 +83,9 @@ theorem wOpen_two : wOpen (dd r m) (hdd r m) = w2 r m := by
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Establish `h` using `block_index_of_weyl_shuffle ((w2 r m).symm i)`. Rewrite `h` using `[Equiv.apply_symm_apply]`. Rewrite using `[h]`. Apply the tactic sequence `split_ifs with hh <;> simp [hh]`.
+-/
 theorem weyl_shuffle_symm_lt_iff (i : Fin (r + m)) :
     ((w2 r m).symm i : ℕ) < m ↔ blk (stdBlocks (dd r m) (hdd r m)) i = 1 := by
   have h := block_index_of_weyl_shuffle ((w2 r m).symm i)
@@ -68,9 +93,15 @@ theorem weyl_shuffle_symm_lt_iff (i : Fin (r + m)) :
   rw [h]
   split_ifs with hh <;> simp [hh]
 
+/- English proof (translation)
+The claim follows from `Units.ext rfl`.
+-/
 theorem aDiag_inv (N n : ℕ) (z : kˣ) : (aDiag k N n z)⁻¹ = aDiag k N n z⁻¹ :=
   Units.ext rfl
 
+/- English proof (translation)
+Rewrite using `[aDiag_inv, Units.val_mul, Units.val_mul]`. Use `show (diagonal (fun i : Fin N => if (i : ℕ) < n then (z : k) else 1) * (u : Matrix (Fin N) (Fin N) k) * diagonal (fun i : Fin N => if (i : ℕ) < n then ((z⁻¹ : kˣ) : k) else 1)) i j = _`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+-/
 theorem aDiag_conj_apply (N n : ℕ) (z : kˣ) (u : GL (Fin N) k) (i j : Fin N) :
     ((aDiag k N n z * u * (aDiag k N n z)⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) i j =
       (if (i : ℕ) < n then (z : k) else 1) * (u : Matrix (Fin N) (Fin N) k) i j *
@@ -80,6 +111,11 @@ theorem aDiag_conj_apply (N n : ℕ) (z : kˣ) (u : GL (Fin N) k) (i j : Fin N) 
     diagonal (fun i : Fin N => if (i : ℕ) < n then ((z⁻¹ : kˣ) : k) else 1)) i j = _
   rw [Matrix.mul_diagonal, Matrix.diagonal_mul]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(mem_unipB k).1 hu`. Use `(mem_unipB k).2 ⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[aDiag_conj_apply, h1 i j hij, mul_zero, zero_mul]`. Rewrite using `[aDiag_conj_apply, h2 i, mul_one] split_ifs`. Conclude with `Units.mul_inv z`.
+
+Conclude with `one_mul 1`.
+-/
 theorem aDiag_conj_mem_unipB (N n : ℕ) (z : kˣ) {u : GL (Fin N) k} (hu : u ∈ unipB k (Fin N)) :
     aDiag k N n z * u * (aDiag k N n z)⁻¹ ∈ unipB k (Fin N) := by
   obtain ⟨h1, h2⟩ := (mem_unipB k).1 hu
@@ -92,6 +128,9 @@ theorem aDiag_conj_mem_unipB (N n : ℕ) (z : kˣ) {u : GL (Fin N) k} (hu : u �
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Unfold `levZ`. Apply the tactic sequence `split_ifs <;> simp_all [Matrix.one_apply, Matrix.scalar_apply, Matrix.diagonal_apply]`.
+-/
 theorem levZ_apply (z : kˣ) (a : Fin 2) (i j : Fin (dd r m a)) :
     ((levZ k r m z a : GL (Fin (dd r m a)) k) : Matrix (Fin (dd r m a)) (Fin (dd r m a)) k) i j =
       if i = j then (if a = 0 then 1 else (z : k)) else 0 := by
@@ -100,6 +139,17 @@ theorem levZ_apply (z : kˣ) (a : Fin 2) (i j : Fin (dd r m a)) :
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[wOpen_two, ← map_inv, Units.val_mul, Units.val_mul, GroundTheory.Automorphic.mul_permGL_apply, GroundTheory.Automorphic.permGL_mul_apply]`. Use `show diagonal (fun i : Fin (r + m) => if (i : ℕ) < m then (z : k) else 1) _ _ = _`. Rewrite using `[Matrix.diagonal_apply]`. Take `⟨⟨a, i'⟩, rfl⟩` from `(stdBlocks (dd r m) (hdd r m)).surjective i`.
+
+Take `⟨⟨b, j'⟩, rfl⟩` from `(stdBlocks (dd r m) (hdd r m)).surjective j`. Establish `key` using `weyl_shuffle_symm_lt_iff (r := r) (m := m) ((stdBlocks (dd r m) (hdd r m)) ⟨a, i'⟩)`. Rewrite `key` using `[blk_apply]`. Rewrite using `[show (w2 r m)⁻¹ = (w2 r m).symm from rfl]`. Distinguish the cases in `hab : a = b`.
+
+Substitute `hab` using the available equality. Rewrite using `[leviEmb_apply_same, levZ_apply]`. Distinguish the cases in `hij : i' = j'`. Substitute `hij` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`.
+
+Apply the tactic sequence `have h01 : a = 0 ∨ a = 1 := by fin_cases a <;> simp`. Break down `h01 with rfl | rfl` into its components or cases. Rewrite using `[if_neg (fun h => absurd (key.1 h) (by decide)), if_pos rfl]`. Rewrite using `[if_pos (key.2 rfl), if_neg (by decide)]`. Rewrite using `[if_neg (fun h => hij (by simpa using (w2 r m).symm.injective h)), if_neg hij]`.
+
+Rewrite using `[leviEmb_apply_ne _ _ _ hab, if_neg]`. Introduce `h`. Use `(stdBlocks (dd r m) (hdd r m)).injective ((w2 r m).symm.injective h)` as an intermediate fact. Conclude with `hab (congrArg Sigma.fst this)`.
+-/
 theorem conj_aDiag (z : kˣ) :
     pm k (wOpen (dd r m) (hdd r m)) * aDiag k (r + m) m z * (pm k (wOpen (dd r m) (hdd r m)))⁻¹ =
       leviEmb k (stdBlocks (dd r m) (hdd r m)) (levZ k r m z) := by
@@ -129,6 +179,11 @@ theorem conj_aDiag (z : kˣ) :
     have := (stdBlocks (dd r m) (hdd r m)).injective ((w2 r m).symm.injective h)
     exact hab (congrArg Sigma.fst this)
 
+/- English proof (translation)
+Use `⟨aDiag_conj_mem_unipB k _ _ z hu.1, ?_⟩` and prove the remaining obligations. Establish `h2 : pm k (wOpen (dd r m) (hdd r m)) * u * (pm k (wOpen (dd r m) (hdd r m)))⁻¹ ∈ unipRadLower k (stdBlocks (dd r m) (hdd r m))` using `hu.2`. Establish `hN` using `leviEmb_mem_normalizer_lower k (stdBlocks (dd r m) (hdd r m)) (levZ k r m z)`. Establish `h3` using `(Subgroup.mem_normalizer_iff.1 hN _).1 h2`. Rewrite `h3` using `[← conj_aDiag]`.
+
+Use `show pm k (wOpen (dd r m) (hdd r m)) * (aDiag k (r + m) m z * u * (aDiag k (r + m) m z)⁻¹) * (pm k (wOpen (dd r m) (hdd r m)))⁻¹ ∈ unipRadLower k (stdBlocks (dd r m) (hdd r m))`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use `group`.
+-/
 theorem aDiag_conj_mem_unipU (z : kˣ) {u : GL (Fin (r + m)) k} (hu : u ∈ unipU k (dd r m) (hdd r m)) :
     aDiag k (r + m) m z * u * (aDiag k (r + m) m z)⁻¹ ∈ unipU k (dd r m) (hdd r m) := by
   refine ⟨aDiag_conj_mem_unipB k _ _ z hu.1, ?_⟩
@@ -144,6 +199,11 @@ theorem aDiag_conj_mem_unipU (z : kˣ) {u : GL (Fin (r + m)) k} (hu : u ∈ unip
 
 open ValuativeRel GroundTheory.Automorphic.GLnLocal in
 
+/- English proof (translation)
+Rewrite using `[aDiag_conj_apply]`. Establish `hz : (z : k) * ((z⁻¹ : kˣ) : k) = 1` using `Units.mul_inv z`. Apply the tactic sequence `by_cases hi : (i : ℕ) < n <;> by_cases hj : (j : ℕ) < n`. Simplify using `only [hi, hj, if_true, not_true, and_false, if_false, one_mul]`. Rewrite using `[mul_comm, ← mul_assoc, mul_comm _ (z : k), hz, one_mul]`.
+
+Simplify using `[hi, hj]`. Establish `hji : j < i` using `by rw [Fin.lt_iff_val_lt_val]; omega`. Rewrite using `[((mem_unipB k).1 hu).1 i j hji]`. Simplify using the standard rewrite rules. Simplify using `[hi, hj]`.
+-/
 theorem aDiag_conj_apply_unipB (N n : ℕ) (z : kˣ) {u : GL (Fin N) k} (hu : u ∈ unipB k (Fin N)) (i j : Fin N) :
     ((aDiag k N n z * u * (aDiag k N n z)⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) i j =
       (if (i : ℕ) < n ∧ ¬ (j : ℕ) < n then (z : k) else 1) * (u : Matrix (Fin N) (Fin N) k) i j := by
@@ -160,6 +220,21 @@ theorem aDiag_conj_apply_unipB (N n : ℕ) (z : kˣ) {u : GL (Fin N) k} (hu : u 
 
 open ValuativeRel GroundTheory.Automorphic.GLnLocal in
 
+/- English proof (translation)
+Establish `hc : ∀ i j : Fin N, valuation k (if (i : ℕ) < n ∧ ¬ (j : ℕ) < n then (z : k) else 1) ≤ 1`. Introduce `i j`. Use `split_ifs`. Conclude with `hz`. Simplify using the standard rewrite rules.
+
+Establish `hc1 : ∀ i : Fin N, (if (i : ℕ) < n ∧ ¬ (i : ℕ) < n then (z : k) else 1) = 1` using `fun i => by simp`. Take `⟨hI, hcong⟩` from `(mem_congruenceSubgroup_iff k N).1 hK`. Take `⟨hI1, hI2⟩` from `(mem_integralGL_iff k N).1 hI`. Establish `hu' : u⁻¹ ∈ unipB k (Fin N)` using `inv_mem hu`. Use `(mem_congruenceSubgroup_iff k N).2 ⟨(mem_integralGL_iff k N).2 ⟨fun i j => ?_, fun i j => ?_⟩, fun i j => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[aDiag_conj_apply_unipB k N n z hu]`. Use `hI1 i j` as an intermediate fact. Rewrite `this`, the goal using `[Valuation.mem_integer_iff]`. Rewrite using `[map_mul]`. Conclude with `mul_le_one' (hc i j) this`.
+
+Establish `e : (aDiag k N n z * u * (aDiag k N n z)⁻¹)⁻¹ = aDiag k N n z * u⁻¹ * (aDiag k N n z)⁻¹` using `by group`. Rewrite using `[e, aDiag_conj_apply_unipB k N n z hu']`. Use `hI2 i j` as an intermediate fact. Rewrite `this`, the goal using `[Valuation.mem_integer_iff]`. Rewrite using `[map_mul]`.
+
+Conclude with `mul_le_one' (hc i j) this`. Rewrite using `[aDiag_conj_apply_unipB k N n z hu]`. Establish `e : (if (i : ℕ) < n ∧ ¬ (j : ℕ) < n then (z : k) else 1) * (u : Matrix (Fin N) (Fin N) k) i j - (1 : Matrix (Fin N) (Fin N) k) i j = (if (i : ℕ) < n ∧ ¬ (j : ℕ) < n then (z : k) else 1) * ((u : Matrix (Fin N) (Fin N) k) i j - (1 : Matrix (Fin N) (Fin N) k) i j)`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Rewrite using `[hc1, one_mul, one_mul]`. Rewrite using `[Matrix.one_apply_ne hij, sub_zero, sub_zero]`. Rewrite using `[e, map_mul]`. Use `first`. Consider the case `exact (mul_le_of_le_one_left' (hc i j)).trans (hcong i j)`.
+
+Consider the case `exact (mul_le_of_le_one_left₀ (zero_le _) (hc i j)).trans (hcong i j)`.
+-/
 theorem aDiag_conj_mem_congr (N n : ℕ) (z : kˣ) (hz : valuation k (z : k) ≤ 1) (c : ℕ) {u : GL (Fin N) k}
     (hu : u ∈ unipB k (Fin N)) (hK : u ∈ congruenceSubgroup k N c) :
     aDiag k N n z * u * (aDiag k N n z)⁻¹ ∈ congruenceSubgroup k N c := by

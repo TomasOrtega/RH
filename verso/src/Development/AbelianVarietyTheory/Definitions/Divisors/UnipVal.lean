@@ -61,6 +61,9 @@ def weyl (ν : Type) [Fintype ν] [DecidableEq ν] : UG c (stdJ ν E) :=
     rw [h, stdJ_mul_stdJ]
     simp⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem weyl_val : ((weyl c ν : GL (ν ⊕ ν) E) : Matrix (ν ⊕ ν) (ν ⊕ ν) E) = stdJ ν E := rfl
 
 def unip (b : Matrix ν ν E) (hb : (b.map c)ᵀ = b) : UG c (stdJ ν E) :=
@@ -70,11 +73,19 @@ def unip (b : Matrix ν ν E) (hb : (b.map c)ᵀ = b) : UG c (stdJ ν E) :=
     have h1 : (1 : Matrix ν ν E).map c = 1 := Matrix.map_one _ (map_zero c) (map_one c)
     simp [stdJ, fromBlocks_map, fromBlocks_transpose, fromBlocks_multiply, h0, h1, hb]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unip_val (b : Matrix ν ν E) (hb : (b.map c)ᵀ = b) :
     ((unip c b hb : GL (ν ⊕ ν) E) : Matrix (ν ⊕ ν) (ν ⊕ ν) E) = fromBlocks 1 b 0 1 := rfl
 
 abbrev mat (g : UG c (stdJ ν E)) : Matrix (ν ⊕ ν) (ν ⊕ ν) E := ((g : GL (ν ⊕ ν) E) : Matrix (ν ⊕ ν) (ν ⊕ ν) E)
 
+/- English proof (translation)
+Establish `hg : mat c g * stdJ ν E * ((mat c g).map c)ᵀ = stdJ ν E` using `(mem_UG_iff c (g : GL (ν ⊕ ν) E)).1 g.2`. Establish `hr : mat c g * -(stdJ ν E * ((mat c g).map c)ᵀ * stdJ ν E) = 1`. Rewrite using `[Matrix.mul_neg, ← mul_assoc, ← mul_assoc, hg, stdJ_mul_stdJ, neg_neg]`. Establish `hl : mat c g⁻¹ * mat c g = 1`. Simplify using `[mat]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hr, mul_one]`. Use `_ = -(stdJ ν E * ((mat c g).map c)ᵀ * stdJ ν E) := by`. Rewrite using `[← mul_assoc, hl, one_mul]`.
+-/
 theorem mat_inv (g : UG c (stdJ ν E)) : mat c g⁻¹ = -(stdJ ν E * ((mat c g).map c)ᵀ * stdJ ν E) := by
   have hg : mat c g * stdJ ν E * ((mat c g).map c)ᵀ = stdJ ν E := (mem_UG_iff c (g : GL (ν ⊕ ν) E)).1 g.2
   have hr : mat c g * -(stdJ ν E * ((mat c g).map c)ᵀ * stdJ ν E) = 1 := by
@@ -104,6 +115,9 @@ def sieg (ν : Type) [Fintype ν] [DecidableEq ν] : Subgroup (UG c (stdJ ν E))
     rw [mat_inv, ← fromBlocks_toBlocks (mat c g), show (mat c g).toBlocks₂₁ = 0 from hg]
     simp [stdJ, fromBlocks_map, fromBlocks_transpose, fromBlocks_multiply, fromBlocks_neg, h0]
 
+/- English proof (translation)
+Conclude with `Iff.rfl`.
+-/
 theorem mem_sieg {g : UG c (stdJ ν E)} : g ∈ sieg c ν ↔ (mat c g).toBlocks₂₁ = 0 := by
   exact Iff.rfl
 

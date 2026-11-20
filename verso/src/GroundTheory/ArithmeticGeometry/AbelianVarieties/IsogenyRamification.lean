@@ -15,6 +15,9 @@ variable {F : Type u} [Field F] [IsAlgClosed F] [DecidableEq F] {E E' E'' : Weie
 
 namespace Isogeny
 
+/- English proof (translation)
+Rewrite using `[divisorOf_apply, divisorOf_apply, φ.ordPoint_comap R hf]`.
+-/
 theorem divisorOf_comap (φ : Isogeny E E') {f : E'.toAffine.FunctionField} (hf : f ≠ 0)
     (R : E.toAffine.Point) :
     divisorOf E (φ.comap f) R = (φ.ramIdx : ℤ) * divisorOf E' f (φ.pointMap R) := by
@@ -26,6 +29,11 @@ section Poly
 
 variable (E)
 
+/- English proof (translation)
+Establish `hvF : ∀ c : F, c ≠ 0 → valuationInfty E (algebraMap F E.toAffine.FunctionField c) = 1` using `fun c hc => valuationInfty_algebraMap_const_eq_one E hc`. Establish `h` using `valuation_poly_of_one_lt (valuationInfty E) hvF two_pos (valuationInfty_genX E) hp`. Establish `hne : algebraMap F[X] E.toAffine.FunctionField p ≠ 0`. Rewrite using `[← aeval_genX]`. Conclude with `(aeval_genX_eq_zero_iff E p).not.mpr hp`.
+
+Establish `h2` using `valuationPoint_eq_exp E 0 hne`. Rewrite `h2` using `[valuationPoint_zero_eq, h, exp_inj]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ordPoint_zero_poly {p : F[X]} (hp : p ≠ 0) :
     ordPoint E 0 (algebraMap F[X] E.toAffine.FunctionField p) = -2 * (p.natDegree : ℤ) := by
   have hvF : ∀ c : F, c ≠ 0 → valuationInfty E (algebraMap F E.toAffine.FunctionField c) = 1 :=
@@ -37,6 +45,15 @@ theorem ordPoint_zero_poly {p : F[X]} (hp : p ≠ 0) :
   rw [valuationPoint_zero_eq, h, exp_inj] at h2
   linarith
 
+/- English proof (translation)
+Establish `hp0 : p ≠ 0` using `by rintro rfl; simp at hp`. Establish `hne : algebraMap F[X] E.toAffine.FunctionField p ≠ 0`. Rewrite using `[← aeval_genX]`. Conclude with `(aeval_genX_eq_zero_iff E p).not.mpr hp0`. Establish `hnot : algebraMap F[X] E.toAffine.CoordinateRing p ∉ (heightOneOfNonsingular h).asIdeal`.
+
+Introduce `hmem`. Use `XYIdeal_le_ker h.1 hmem` as an intermediate fact. Rewrite `this` using `[RingHom.mem_ker]`. Apply `hp` to reduce the goal to its premises. Rewrite using `[← this]`.
+
+Use `show _ = evalPoint h.1 (AdjoinRoot.mk _ (C p))`. Rewrite using `[evalPoint_mk, evalEval_C]`. Establish `hv : valuationPoint E (.some x₀ y₀ h) (algebraMap F[X] E.toAffine.FunctionField p) = 1` using `by show (heightOneOfNonsingular h).valuation _ _ = 1`. Rewrite using `[IsScalarTower.algebraMap_apply F[X] E.toAffine.CoordinateRing E.toAffine.FunctionField, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff_mem_primeCompl]`. Conclude with `hnot`.
+
+Establish `h2` using `valuationPoint_eq_exp E (.some x₀ y₀ h) hne`. Rewrite `h2` using `[hv, ← exp_zero, exp_inj]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ordPoint_some_poly_of_eval_ne {x₀ y₀ : F} (h : E.toAffine.Nonsingular x₀ y₀) {p : F[X]}
     (hp : p.eval x₀ ≠ 0) :
     ordPoint E (.some x₀ y₀ h) (algebraMap F[X] E.toAffine.FunctionField p) = 0 := by
@@ -62,10 +79,16 @@ theorem ordPoint_some_poly_of_eval_ne {x₀ y₀ : F} (h : E.toAffine.Nonsingula
   linarith
 
 omit [IsAlgClosed F] [DecidableEq F] in
+/- English proof (translation)
+Rewrite using `[← aeval_genX]`. Conclude with `(aeval_genX_eq_zero_iff E p).not.mpr hp`.
+-/
 theorem algebraMap_poly_ne_zero {p : F[X]} (hp : p ≠ 0) :
     algebraMap F[X] E.toAffine.FunctionField p ≠ 0 := by
   rw [← aeval_genX]; exact (aeval_genX_eq_zero_iff E p).not.mpr hp
 
+/- English proof (translation)
+Use `ordPoint_mul E P (div_ne_zero hf hg) hg` as an intermediate fact. Rewrite `this` using `[div_mul_cancel₀ f hg]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ordPoint_div (P : E.toAffine.Point) {f g : E.toAffine.FunctionField} (hf : f ≠ 0)
     (hg : g ≠ 0) : ordPoint E P (f / g) = ordPoint E P f - ordPoint E P g := by
   have := ordPoint_mul E P (div_ne_zero hf hg) hg
@@ -78,6 +101,39 @@ section Mul
 
 variable (E)
 
+/- English proof (translation)
+Use `set φ := mulIsogeny E n hn`. Use `set e := φ.ramIdx`. Establish `hΨ0 : E.ΨSq n ≠ 0` using `ΨSq_ne_zero_of_ne_zero E hn`. Establish `hΦ0 : E.Φ n ≠ 0`. Introduce `h`.
+
+Use `E.natDegree_Φ n` as an intermediate fact. Rewrite `this` using `[h, natDegree_zero]`. Establish `: 0 < n.natAbs ^ 2` using `by have := Int.natAbs_pos.mpr hn; positivity`. Use linear arithmetic over natural numbers and integers. Use `set a := algebraMap F[X] E.toAffine.FunctionField (E.ΨSq n)`.
+
+Use `set b := algebraMap F[X] E.toAffine.FunctionField (E.Φ n)`. Establish `ha : a ≠ 0` using `algebraMap_poly_ne_zero E hΨ0`. Establish `hb : b ≠ 0` using `algebraMap_poly_ne_zero E hΦ0`. Establish `hx : φ.comap (genX E) = b / a`. Rewrite using `[Isogeny.comap_genX, mulIsogeny_alt, aeval_genX, aeval_genX]`.
+
+Establish `hgx : genX E ≠ 0` using `genX_ne_zero' E`. Establish `hordx : ordPoint E 0 (genX E) = -2`. Use `ordPoint_zero_poly E (p := X) X_ne_zero` as an intermediate fact. Rewrite `this` using `[natDegree_X]`. Rewrite using `[genX_eq]`.
+
+Simplify using `using this`. Establish `hker : ∀ T : E.toAffine.Point, T ∈ φ.pointHom.ker ↔ n • T = 0` using `fun T => by`. Rewrite using `[AddMonoidHom.mem_ker, Isogeny.pointHom_apply, Isogeny.pointMap_mulIsogeny]`. Establish `hO : (e : ℤ) = (n.natAbs ^ 2 : ℕ) - ((E.ΨSq n).natDegree : ℤ)`. Establish `h1` using `φ.ordPoint_comap 0 hgx`.
+
+Rewrite `h1` using `[Isogeny.pointMap_mulIsogeny, smul_zero, hordx, hx, ordPoint_div E 0 hb ha, ordPoint_zero_poly E hΦ0, ordPoint_zero_poly E hΨ0, E.natDegree_Φ n]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA : ∀ {x₀ y₀ : F} (h : E.toAffine.Nonsingular x₀ y₀), ordPoint E (.some x₀ y₀ h) a = if n • (Point.some x₀ y₀ h) = 0 then 2 * (e : ℤ) else 0`. Introduce `x₀ y₀ h`. Use `split_ifs with hT`.
+
+Establish `hz : (E.ΨSq n).eval x₀ = 0` using `(zsmul_eq_zero_iff E h n).mp hT`. Establish `hΦe : (E.Φ n).eval x₀ ≠ 0`. Introduce `hΦ`. Take `⟨u, v, huv⟩` from `isCoprime_Φ_ΨSq E n`. Use `congrArg (eval x₀) huv` as an intermediate fact.
+
+Simplify using `only [eval_add, eval_mul, hΦ, hz, mul_zero, add_zero, eval_one] at this`. Conclude with `zero_ne_one this`. Establish `h1` using `φ.ordPoint_comap (.some x₀ y₀ h) hgx`. Rewrite `h1` using `[Isogeny.pointMap_mulIsogeny, hT, hordx, hx, ordPoint_div E _ hb ha, ordPoint_some_poly_of_eval_ne E h hΦe]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `ordPoint_some_poly_of_eval_ne E h (fun hz => hT ((zsmul_eq_zero_iff E h n).mpr hz))`. Establish `hfin : Set.Finite {T : E.toAffine.Point | n • T = 0}`. Establish `: Finite φ.pointHom.ker` using `φ.finite_ker`. Establish `h2 : ({T : E.toAffine.Point | n • T = 0} : Set E.toAffine.Point) = φ.pointHom.ker`. Use extensionality with `T`.
+
+Conclude with `(hker T).symm`. Rewrite using `[h2]`. Conclude with `Set.toFinite _`. Use `set S := hfin.toFinset`. Establish `hcard : Nat.card φ.pointHom.ker = S.card`.
+
+Rewrite using `[← Nat.card_eq_card_finite_toFinset hfin]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun T => hker T)`. Establish `h0S : (0 : E.toAffine.Point) ∈ S` using `by simp [S]`. Use `set D : CurveDivisor E := (∑ T ∈ S.erase 0, Finsupp.single T (2 * (e : ℤ))) + Finsupp.single 0 (-2 * ((E.ΨSq n).natDegree : ℤ))`. Establish `hD : divisorOf E a = D`.
+
+Use extensionality with `P`. Rewrite using `[divisorOf_apply]`. Simplify using `only [D, Finsupp.add_apply, Finsupp.finset_sum_apply, Finsupp.single_apply]`. Distinguish the cases in `hP : P = 0`. Substitute `hP` using the available equality.
+
+Rewrite using `[Finset.sum_eq_zero (fun T hT => if_neg (Finset.ne_of_mem_erase hT)), if_pos rfl, zero_add, ordPoint_zero_poly E hΨ0]`. Rewrite using `[if_neg (Ne.symm hP), add_zero, Finset.sum_ite_eq']`. Take `⟨h, hP'⟩` from `eq_some_xOf_yOf E hP`. Establish `hmem : P ∈ S.erase 0 ↔ n • P = 0` using `by simp [S, hP]`. Rewrite using `[hP', hA h, ← hP']`.
+
+Distinguish the cases in `hT : n • P = 0`. Rewrite using `[if_pos hT, if_pos (hmem.mpr hT)]`. Rewrite using `[if_neg hT, if_neg (fun h' => hT (hmem.mp h'))]`. Establish `hdeg` using `divisorDegree_divisorOf E ha`. Rewrite `hdeg` using `[hD, map_add, map_sum, divisorDegree_single]`.
+
+Simplify using `only [divisorDegree_single, Finset.sum_const, Finset.card_erase_of_mem h0S, smul_eq_mul] at hdeg`. Establish `hS : 1 ≤ S.card` using `Finset.card_pos.mpr ⟨0, h0S⟩`. Rewrite using `[hcard]`. Rewrite `hdeg` using `[nsmul_eq_mul, Nat.cast_sub hS]`. Establish `h2 : 2 * ((e : ℤ) * S.card) = 2 * ((n.natAbs ^ 2 : ℕ) : ℤ)`.
+
+Move the coercions through the operations in `at hdeg hO ⊢`. Take the linear combination `hdeg + 2 * hO`. Establish `h3 : (e : ℤ) * S.card = ((n.natAbs ^ 2 : ℕ) : ℤ)` using `by linarith`. Conclude with `h3` after adjusting the coercions.
+-/
 theorem ramIdx_mulIsogeny_mul_card_ker (n : ℤ) (hn : n ≠ 0) :
     (mulIsogeny E n hn).ramIdx * Nat.card (mulIsogeny E n hn).pointHom.ker = n.natAbs ^ 2 := by
   classical
@@ -171,6 +227,9 @@ end Mul
 
 section Dvd
 
+/- English proof (translation)
+Establish `: Infinite F` using `infinite_of_isSepClosed F`. Use `choose y hy using fun x : F => exists_equation E x`. Use `Infinite.of_injective (fun x : F => Point.some x (y x) (equation_iff_nonsingular.mp (hy x))) fun a b hab => ?_` and prove the remaining obligations. Simplify using `only [Point.some.injEq] at hab`. Conclude with `hab.1`.
+-/
 theorem infinite_point (E : WeierstrassCurve F) [E.IsElliptic] : Infinite E.toAffine.Point := by
   have : Infinite F := infinite_of_isSepClosed F
   choose y hy using fun x : F => exists_equation E x
@@ -181,6 +240,17 @@ theorem infinite_point (E : WeierstrassCurve F) [E.IsElliptic] : Infinite E.toAf
 
 namespace Isogeny
 
+/- English proof (translation)
+Use `infinite_point E` as an intermediate fact. Take `⟨B, hB⟩` from `Infinite.exists_notMem_finset S`. Take `⟨C, hC⟩` from `Infinite.exists_notMem_finset (S ∪ S.image (· - B))`. Establish `hC1 : C ∉ S` using `fun h => hC (Finset.mem_union_left _ h)`. Establish `hC2 : B + C ∉ S` using `fun h => hC (Finset.mem_union_right _ (Finset.mem_image.mpr ⟨B + C, h, by abel⟩))`.
+
+Use `set D : CurveDivisor E := Finsupp.single 0 1 + Finsupp.single (B + C) 1 - Finsupp.single B 1 - Finsupp.single C 1`. Establish `hdeg : divisorDegree E D = 0`. Simplify using `only [D, map_sub, map_add, divisorDegree_single]`. Evaluate the numerical expressions. Establish `hsum : divisorSum E D = 0`.
+
+Simplify using `only [D, map_sub, map_add, divisorSum_single, one_smul]`. Normalize the expressions using the abelian group laws. Take `⟨t, ht, htD⟩` from `exists_divisorOf_eq E hdeg hsum`. Use `⟨t, ht, fun T hT => ?_⟩` and prove the remaining obligations. Rewrite using `[← divisorOf_apply, htD]`.
+
+Establish `h1 : B + C ≠ T` using `fun h => hC2 (h ▸ hT)`. Establish `h2 : B ≠ T` using `fun h => hB (h ▸ hT)`. Establish `h3 : C ≠ T` using `fun h => hC1 (h ▸ hT)`. Simplify using `only [D, Finsupp.sub_apply, Finsupp.add_apply, Finsupp.single_apply, if_neg h1, if_neg h2, if_neg h3]`. Distinguish the cases in `h0 : T = 0`.
+
+Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (Ne.symm h0), if_neg h0]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_ordPoint_eq_ite (S : Finset E.toAffine.Point) :
     ∃ t : E.toAffine.FunctionField, t ≠ 0 ∧
       ∀ T ∈ S, ordPoint E T t = if T = 0 then 1 else 0 := by
@@ -208,6 +278,21 @@ theorem exists_ordPoint_eq_ite (S : Finset E.toAffine.Point) :
   · subst h0; simp
   · rw [if_neg (Ne.symm h0), if_neg h0]; simp
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite φ.pointHom.ker`. Use `set S : Finset E.toAffine.Point := Finset.univ.image (fun T : φ.pointHom.ker => (T : E.toAffine.Point))`. Take `⟨t, ht, hord⟩` from `exists_ordPoint_eq_ite (E := E) S`. Use `set u := ∏ T : φ.pointHom.ker, translate E T t`. Establish `hu0 : u ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun T _ => translate_ne_zero E _ ht`.
+
+Establish `hfix : u ∈ φ.fixedKer`. Apply `mem_fixedKer_of_forall` to reduce the goal to its premises. Introduce `R hR`. Rewrite using `[map_prod]`. Simplify using `only [translate_translate]`.
+
+Conclude with `Fintype.prod_equiv (Equiv.addLeft (⟨R, hR⟩ : φ.pointHom.ker)) _ _ (fun T => rfl)`. Establish `hu : ordPoint E 0 u = 1`. Rewrite using `[← divisorOf_apply, divisorOf_prod E _ _ (fun T _ => translate_ne_zero E _ ht), Finsupp.finset_sum_apply]`. Establish `: ∀ T : φ.pointHom.ker, divisorOf E (translate E T t) 0 = if (T : E.toAffine.Point) = 0 then 1 else 0`. Introduce `T`.
+
+Rewrite using `[divisorOf_apply, ordPoint_translate E 0 _ ht, zero_add, hord _ (Finset.mem_image_of_mem _ (Finset.mem_univ T))]`. Simplify using `only [this]`. Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, nsmul_eq_mul, mul_one]`. Establish `: (Finset.univ.filter fun T : φ.pointHom.ker => (T : E.toAffine.Point) = 0) = {0}`. Use extensionality with `T`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]`. Conclude with `⟨fun h => Subtype.ext h, fun h => by rw [h]; rfl⟩`. Rewrite using `[this, Finset.card_singleton, Nat.cast_one]`. Take `⟨g, hg⟩` from `φ.exists_comap_eq_pow hfix`. Establish `hg0 : g ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hg` using `[map_zero, eq_comm]`. Conclude with `pow_ne_zero _ hu0 hg`. Establish `h1` using `φ.ordPoint_comap 0 hg0`. Rewrite `h1` using `[hg, ← divisorOf_apply, divisorOf_pow E hu0, Finsupp.smul_apply, divisorOf_apply, hu, nsmul_eq_mul, mul_one, show φ.pointMap 0 = 0 from φ.pointHom.map_zero]`.
+
+Conclude with `Int.natCast_dvd_natCast.mp ⟨_, h1⟩`.
+-/
 theorem ramIdx_dvd_insepDeg (φ : Isogeny E E') : φ.ramIdx ∣ φ.insepDeg := by
   classical
   haveI := Fintype.ofFinite φ.pointHom.ker
@@ -254,6 +339,17 @@ section Degree
 
 namespace Isogeny
 
+/- English proof (translation)
+Use `set K := (ψ.comp φ).pointHom.ker`. Establish `hK : ∀ T, T ∈ K ↔ φ.pointMap T ∈ ψ.pointHom.ker` using `fun T => by`. Rewrite using `[AddMonoidHom.mem_ker, AddMonoidHom.mem_ker, pointHom_apply, pointHom_apply, pointMap_comp]`. Set `h : K →+ ψ.pointHom.ker` to `{ toFun := fun T => ⟨φ.pointMap T, (hK T).mp T.2⟩ map_zero' := Subtype.ext (φ.pointHom.map_zero) map_add' := fun S T => Subtype.ext (φ.pointMap_add S T) }`. Establish `hsurj : Function.Surjective h`.
+
+Introduce and unpack `⟨S, hS⟩`. Take `⟨T, rfl⟩` from `φ.pointMap_surjective S`. Conclude with `⟨⟨T, (hK T).mpr hS⟩, rfl⟩`. Establish `e1` using `AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup h.ker`. Rewrite `e1` using `[Nat.card_congr (QuotientAddGroup.quotientKerEquivOfSurjective h hsurj).toEquiv]`.
+
+Rewrite using `[e1]`. Use `congr 1`. Use `Nat.card_congr { toFun := fun x => ⟨x.1.1, by` and prove the remaining obligations. Use `x.2` as an intermediate fact. Rewrite `this`, the goal using `[AddMonoidHom.mem_ker]`.
+
+Conclude with `congrArg Subtype.val this⟩`. Use `invFun := fun T => ⟨⟨T.1, (hK T.1).mpr (by`. Rewrite the goal using `[AddMonoidHom.mem_ker]`. Use `T.2` as an intermediate fact. Rewrite `this` using `[AddMonoidHom.mem_ker, pointHom_apply]`.
+
+Rewrite using `[pointHom_apply, this]; exact ψ.pointHom.map_zero)⟩, by`. Rewrite using `[AddMonoidHom.mem_ker]`. Conclude with `Subtype.ext (by have := T.2; rwa [AddMonoidHom.mem_ker] at this)⟩`. Use `left_inv := fun x => rfl`. Use `right_inv := fun T => rfl }`.
+-/
 theorem card_ker_comp (ψ : Isogeny E' E'') (φ : Isogeny E E') :
     Nat.card (ψ.comp φ).pointHom.ker = Nat.card ψ.pointHom.ker * Nat.card φ.pointHom.ker := by
   set K := (ψ.comp φ).pointHom.ker
@@ -286,6 +382,21 @@ theorem card_ker_comp (ψ : Isogeny E' E'') (φ : Isogeny E E') :
       left_inv := fun x => rfl
       right_inv := fun T => rfl }
 
+/- English proof (translation)
+Use `set d := φ.degree`. Establish `hd : (d : ℤ) ≠ 0` using `Nat.cast_ne_zero.mpr φ.degree_pos.ne'`. Establish `hc` using `φ.dual_comp`. Establish `he : φ.dual.ramIdx * φ.ramIdx = (mulIsogeny E d hd).ramIdx`. Rewrite using `[← ramIdx_comp, hc]`.
+
+Establish `hk : Nat.card φ.dual.pointHom.ker * Nat.card φ.pointHom.ker = Nat.card (mulIsogeny E d hd).pointHom.ker`. Rewrite using `[← card_ker_comp, hc]`. Establish `h1` using `ramIdx_mulIsogeny_mul_card_ker E (d : ℤ) hd`. Rewrite `h1` using `[Int.natAbs_natCast, ← he, ← hk]`. Establish `hq1` using `φ.degree_eq_insepDeg_mul`.
+
+Establish `hq2` using `φ.dual.degree_eq_insepDeg_mul`. Rewrite `hq2` using `[degree_dual]`. Establish `hk1 : 0 < Nat.card φ.pointHom.ker` using `Nat.card_pos`. Establish `hk2 : 0 < Nat.card φ.dual.pointHom.ker` using `Nat.card_pos`. Establish `heq : φ.dual.ramIdx * φ.ramIdx = φ.dual.insepDeg * φ.insepDeg`.
+
+Establish `: (φ.dual.ramIdx * φ.ramIdx) * (Nat.card φ.dual.pointHom.ker * Nat.card φ.pointHom.ker) = (φ.dual.insepDeg * φ.insepDeg) * (Nat.card φ.dual.pointHom.ker * Nat.card φ.pointHom.ker)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sq]`. Use `show φ.degree * φ.degree = _`. Use `nth_rewrite 1 [hq2]`.
+
+Rewrite using `[hq1]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `Nat.eq_of_mul_eq_mul_right (Nat.mul_pos hk2 hk1) this`. Establish `l1` using `Nat.le_of_dvd φ.insepDeg_pos φ.ramIdx_dvd_insepDeg`. Establish `l2` using `Nat.le_of_dvd φ.dual.insepDeg_pos φ.dual.ramIdx_dvd_insepDeg`.
+
+Establish `p1` using `φ.ramIdx_pos`. Establish `p2` using `φ.dual.ramIdx_pos`. Assume the negation of the conclusion as `hne`. Establish `hlt : φ.ramIdx < φ.insepDeg` using `lt_of_le_of_ne l1 hne`. Establish `: φ.dual.ramIdx * φ.ramIdx < φ.dual.insepDeg * φ.insepDeg`.
+
+Combine the equalities or inequalities in the displayed calculation. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ramIdx_eq_insepDeg (φ : Isogeny E E') : φ.ramIdx = φ.insepDeg := by
   set d := φ.degree
   have hd : (d : ℤ) ≠ 0 := Nat.cast_ne_zero.mpr φ.degree_pos.ne'
@@ -325,6 +436,9 @@ theorem ramIdx_eq_insepDeg (φ : Isogeny E E') : φ.ramIdx = φ.insepDeg := by
       _ ≤ φ.dual.insepDeg * φ.insepDeg := Nat.mul_le_mul_right _ l2
   omega
 
+/- English proof (translation)
+Rewrite using `[ramIdx_eq_insepDeg, degree_eq_insepDeg_mul]`.
+-/
 theorem ramIdx_mul_card_ker (φ : Isogeny E E') : φ.ramIdx * Nat.card φ.pointHom.ker = φ.degree := by
   rw [ramIdx_eq_insepDeg, degree_eq_insepDeg_mul]
 

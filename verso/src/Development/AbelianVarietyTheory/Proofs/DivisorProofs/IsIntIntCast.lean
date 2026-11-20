@@ -29,25 +29,58 @@ variable {p : ℕ} [Fact p.Prime]
 
 abbrev fAf (D : Datum p) : LinearMap.BilinForm (AfP p) (AfP p ⊗[ℚ] VQ D) := (D.EF.baseChange ℚ).baseChange (AfP p)
 
+/- English proof (translation)
+Introduce `v` and use `by rw [map_one]; exact one_mem _`.
+-/
 theorem isInt_one : IsIntAf (1 : AfP p) := fun v => by rw [map_one]; exact one_mem _
+/- English proof (translation)
+Introduce `v` and use `by rw [map_mul]; exact mul_mem (ha v) (hb v)`.
+-/
 theorem isInt_mul {a b : AfP p} (ha : IsIntAf a) (hb : IsIntAf b) : IsIntAf (a * b) := fun v => by
   rw [map_mul]; exact mul_mem (ha v) (hb v)
+/- English proof (translation)
+Introduce `v` and use `by rw [map_add]; exact add_mem (ha v) (hb v)`.
+-/
 theorem isInt_add {a b : AfP p} (ha : IsIntAf a) (hb : IsIntAf b) : IsIntAf (a + b) := fun v => by
   rw [map_add]; exact add_mem (ha v) (hb v)
+/- English proof (translation)
+Introduce `v` and use `by rw [map_sub]; exact sub_mem (ha v) (hb v)`.
+-/
 theorem isInt_sub {a b : AfP p} (ha : IsIntAf a) (hb : IsIntAf b) : IsIntAf (a - b) := fun v => by
   rw [map_sub]; exact sub_mem (ha v) (hb v)
+/- English proof (translation)
+Introduce `v` and use `by rw [map_intCast]; exact intCast_mem _ k`.
+-/
 theorem isInt_intCast (k : ℤ) : IsIntAf (k : AfP p) := fun v => by rw [map_intCast]; exact intCast_mem _ k
+/- English proof (translation)
+Introduce `v` and use `by rw [map_natCast]; exact natCast_mem _ k`.
+-/
 theorem isInt_natCast (k : ℕ) : IsIntAf (k : AfP p) := fun v => by rw [map_natCast]; exact natCast_mem _ k
 
 def inAfH (D : Datum p) : D.La →+ AfP p ⊗[ℚ] VQ D := AddMonoidHom.mk' (inAf D) (fun x y => by
   simp only [inAf, TensorProduct.tmul_add])
 
+/- English proof (translation)
+The claim follows from `map_sub (inAfH D) x y`.
+-/
 theorem inAf_sub (D : Datum p) (x y : D.La) : inAf D (x - y) = inAf D x - inAf D y := map_sub (inAfH D) x y
+/- English proof (translation)
+The claim follows from `map_add (inAfH D) x y`.
+-/
 theorem inAf_add (D : Datum p) (x y : D.La) : inAf D (x + y) = inAf D x + inAf D y := map_add (inAfH D) x y
+/- English proof (translation)
+The claim follows from `map_nsmul (inAfH D) n x`.
+-/
 theorem inAf_nsmul (D : Datum p) (n : ℕ) (x : D.La) : inAf D (n • x) = n • inAf D x := map_nsmul (inAfH D) n x
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨1, x, isInt_one, rfl⟩`.
+-/
 theorem inAf_mem (D : Datum p) (x : D.La) : inAf D x ∈ LaHat D :=
   AddSubgroup.subset_closure ⟨1, x, isInt_one, rfl⟩
 
+/- English proof (translation)
+Simplify using `[fAf, inAf, LinearMap.BilinForm.baseChange_tmul, Algebra.smul_def]`.
+-/
 theorem form_inAf (D : Datum p) (x y : D.La) : fAf D (inAf D x) (inAf D y) = (D.EF x y : AfP p) := by
   simp [fAf, inAf, LinearMap.BilinForm.baseChange_tmul, Algebra.smul_def]
 

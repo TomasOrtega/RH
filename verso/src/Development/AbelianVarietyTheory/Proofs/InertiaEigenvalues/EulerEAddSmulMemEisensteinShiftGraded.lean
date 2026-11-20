@@ -14,6 +14,11 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Comple
 
 omit [CompleteSpace K] in
 
+/- English proof (translation)
+Establish `hf : ∀ i τ, (Matrix.mulVec (D.mxInv τ) (y τ)) i ∈ Rpi O K l e` using `fun i τ => D.mem_extc_iff.1 (mem_tot.1 hy τ) i`. Rewrite using `[D.eq_sum_phi_bas y, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `hL : D.phi (bas i) ∈ D.L` using `D.phi_mem_L (D.bas_mem_M i)`. Establish `hM : D.phi (bas i) ∈ D.MM` using `D.ext_mono (A_le_S l e) hL`.
+
+Rewrite using `[PhiMod.conn_smul_tot]`. Use `Submodule.add_mem _ ?_ ?_` and prove the remaining obligations. Conclude with `D.smul_tot_mem_ext (fun τ => N_mem (derivative_mem_R l (hf i τ))) (D.ext_mono (S_le_R l e) hM)`. Conclude with `D.smul_tot_mem_ext (hf i) (D.ext_mono (S_le_R l e) (D.conn_mem_MM hM))`.
+-/
 theorem conn_mem_ext_Rpi (D : BKDat O K l e a ι η H) {y : Vec K a ι}
     (hy : y ∈ D.ext (Rpi O K l e)) : D.conn y ∈ D.ext (Rpi O K l e) := by
   have hf : ∀ i τ, (Matrix.mulVec (D.mxInv τ) (y τ)) i ∈ Rpi O K l e := fun i τ =>
@@ -29,6 +34,15 @@ theorem conn_mem_ext_Rpi (D : BKDat O K l e a ι η H) {y : Vec K a ι}
   · exact D.smul_tot_mem_ext (hf i) (D.ext_mono (S_le_R l e) (D.conn_mem_MM hM))
 
 omit [CompleteSpace K] in
+/- English proof (translation)
+Rewrite `hx`, the goal using `[mem_shiftE]`. Use `set y := Ezpow K l e (-j) • x with hy`. Establish `hxy : x = Ezpow K l e j • y`. Rewrite using `[hy, smul_smul, mul_comm, Ezpow_neg_mul, one_smul]`. Use `clear_value y`.
+
+Use `clear hy`. Establish `h1 : Ezpow K l e (j + 1) = Ezpow K l e j * E K l e`. Rewrite using `[Ezpow_add, show Ezpow K l e 1 = E K l e from (Ezpow_natCast l e 1).trans (pow_one _)]`. Establish `hc : ((j * e * l : ℤ) : K) • x = ((j * e * l : ℤ) : K⟦X⟧) • x`. Rewrite using `[Int.cast_smul_eq_zsmul, Int.cast_smul_eq_zsmul]`.
+
+Establish `hN : E K l e * N K (Ezpow K l e j) + ((j * e * l : ℤ) : K⟦X⟧) * Ezpow K l e j = Ezpow K l e (j + 1) * ((j * e : ℤ) : K⟦X⟧)`. Rewrite using `[E_mul_N_Ezpow, N_E, h1, E]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `key : D.EN x + ((j * e * l : ℤ) : K) • x = Ezpow K l e (j + 1) • ((j * e : ℤ) • y + D.conn y)`.
+
+Rewrite using `[hc, PhiMod.EN_apply, hxy, PhiMod.conn_smul, smul_add, smul_add, smul_smul, smul_smul, smul_smul, ← Int.cast_smul_eq_zsmul K⟦X⟧ (j * e : ℤ), smul_smul, ← hN, add_smul, h1, mul_comm (E K l e) (Ezpow K l e j)]`. Normalize the expressions using the abelian group laws. Rewrite using `[key, smul_smul, Ezpow_neg_mul, one_smul]`. Conclude with `Submodule.add_mem _ (zsmul_mem hx _) (conn_mem_ext_Rpi D hx)`.
+-/
 theorem EN_add_smul_mem_shiftE' (D : BKDat O K l e a ι η H) (j : ℤ) (x : Vec K a ι)
     (hx : x ∈ shiftE l e j (D.ext (Rpi O K l e))) :
     D.EN x + ((j * e * l : ℤ) : K) • x ∈ shiftE l e (j + 1) (D.ext (Rpi O K l e)) := by
@@ -55,6 +69,9 @@ theorem EN_add_smul_mem_shiftE' (D : BKDat O K l e a ι η H) (j : ℤ) (x : Vec
   rw [key, smul_smul, Ezpow_neg_mul, one_smul]
   exact Submodule.add_mem _ (zsmul_mem hx _) (conn_mem_ext_Rpi D hx)
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ η H D j x hx`. Conclude with `EN_add_smul_mem_shiftE' D j x hx`.
+-/
 theorem EN_add_smul_mem_shiftE :
     ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] (η H : ℕ) (D : BKDat O K l e a ι η H) (j : ℤ) (x : Vec K a ι), x ∈ shiftE l e j (D.ext (Rpi O K l e)) → D.EN x + ((j * e * l : ℤ) : K) • x ∈ shiftE l e (j + 1) (D.ext (Rpi O K l e)) := by
   intro O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ η H D j x hx

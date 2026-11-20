@@ -11,14 +11,31 @@ namespace GlobalTheory.Survey.NumericBoundConstants
 
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ}
 
+/- English proof (translation)
+Establish `h1` using `D.R.f_le_k`. Establish `h2` using `D.R.two_le_m`. Unfold `Ranks.f Ranks.n Ranks.r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem f_le_r (D : D7) : D.R.f ≤ D.R.r := by
   have h1 := D.R.f_le_k
   have h2 := D.R.two_le_m
   unfold Ranks.f Ranks.n Ranks.r
   omega
 
+/- English proof (translation)
+The claim follows from `D.eight_le_f.trans (f_le_r D)`.
+-/
 theorem row_r (D : D7) : 8 ≤ D.R.r := D.eight_le_f.trans (f_le_r D)
 
+/- English proof (translation)
+Establish `h1 : Real.sqrt ((D.host.q : ℝ) * D.host.d) ≤ D.host.rdE` using `(UpperTheory.KR.log_qd_le_rd D.host.toHostAx D.host.flPS).2.2.1`. Use `set a : ℝ := 4 * (D.R.t : ℝ) * D.R.r + 1 with ha`. Establish `ha0 : 0 ≤ a` using `by positivity`. Establish `hq : a ≤ D.host.q`. Use `D.host.qd_big.1.le` as an intermediate fact.
+
+Rewrite using `[ha]`. Conclude with `this` after adjusting the coercions. Establish `hd : a ≤ D.host.d`. Use `D.host.qd_big.2.le` as an intermediate fact. Rewrite using `[ha]`.
+
+Conclude with `this` after adjusting the coercions. Establish `hs : a ≤ Real.sqrt ((D.host.q : ℝ) * D.host.d)`. Combine the equalities or inequalities in the displayed calculation. Establish `hfr : (D.R.f : ℝ) ≤ D.R.r` using `by exact_mod_cast f_le_r D`. Establish `hm : (D.R.f : ℝ) ^ 2 ≤ a`.
+
+Establish `h2` using `Num.Pm.r_le_alt_alt D`. Establish `hf0 : (0 : ℝ) ≤ D.R.f` using `Nat.cast_nonneg _`. Establish `h3 : (D.R.f : ℝ) * D.R.f ≤ (D.R.t : ℝ) * D.R.r` using `mul_le_mul (hfr.trans h2) hfr hf0 (Nat.cast_nonneg _)`. Rewrite using `[ha]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Conclude with `hm.trans (hs.trans h1)`.
+-/
 theorem row_rd (D : D7) : (D.R.f : ℝ) ^ 2 ≤ D.host.rdE := by
   have h1 : Real.sqrt ((D.host.q : ℝ) * D.host.d) ≤ D.host.rdE :=
     (UpperTheory.KR.log_qd_le_rd D.host.toHostAx D.host.flPS).2.2.1
@@ -43,6 +60,21 @@ theorem row_rd (D : D7) : (D.R.f : ℝ) ^ 2 ≤ D.host.rdE := by
     nlinarith
   exact hm.trans (hs.trans h1)
 
+/- English proof (translation)
+Take `⟨-, -, -, hh0, -, hlast, -, -, -, -, -, -, -, -, hL, -, -, -, -, h40, hTm, -⟩` from `h`. Establish `hp : 0 < (D.R.sigW j).1`. Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.sigW`. Simplify using `only`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hne : Nonempty D.what₂.Tau`. Rewrite using `[← Fintype.card_pos_iff, D.what₂.card_Tau]`. Use `D.eight_le_f` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨τ⟩` from `hne`. Set `i : Fin (D.R.sigW j).1` to `⟨(D.R.sigW j).1 - 1, by omega⟩`. Establish `hi : i.1 + 1 = (D.R.sigW j).1` using `by simp only [i]; omega`. Establish `h1` using `hL.2.1 τ i`. Rewrite `h1` using `[if_neg (by omega)]`.
+
+Unfold `gapZ at h1`. Rewrite `h1` using `[dif_neg (by omega)]`. Establish `h2` using `hlast τ i hi`. Establish `h3 : 2 * T ^ 2 ≤ ka.aP τ i`. Establish `: (2 * (T : ℝ) ^ 2) ≤ (ka.aP τ i : ℝ)` using `by linarith`.
+
+Conclude with `this` after adjusting the coercions. Establish `hTp : (0 : ℤ) < (Tp D j T : ℕ)` using `by unfold Tp; positivity`. Establish `h4 : (3 : ℤ) ≤ wL.aP τ i`. Rewrite using `[h1, Int.fdiv_eq_ediv_of_nonneg _ hTp.le, Int.le_ediv_iff_mul_le hTp]`. Unfold `Tp`.
+
+Use `zify at h3 h40 hTm`. Use `push_cast`. Use polynomial arithmetic with `[Int.natCast_nonneg (WeightFamilies.dimY D j)]`. Establish `h5 : 3 ≤ wL.aP τ i` using `by exact_mod_cast h4`. Unfold `DF degP`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem row_DF {large₂ : SizeData₂ D} {X : PJ D B P j} {CK C1 A1 : ℝ} {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ} {h0 : ℝ}
     (h : SetC large₂ X CK C1 A1 ka wL wF T nP nW h0) : 3 ≤ DF wL := by
   obtain ⟨-, -, -, hh0, -, hlast, -, -, -, -, -, -, -, -, hL, -, -, -, -, h40, hTm, -⟩ := h
@@ -78,6 +110,17 @@ theorem row_DF {large₂ : SizeData₂ D} {X : PJ D B P j} {CK C1 A1 : ℝ} {ka 
     _ ≤ _ := Finset.single_le_sum (f := fun τ => (∑ i, wL.aP τ i) + ∑ i, wL.aM τ i)
         (fun _ _ => Nat.zero_le _) (Finset.mem_univ _)
 
+/- English proof (translation)
+Establish `hfZ : f ≤ Z` using `le_trans (le_mul_of_one_le_right (by linarith) hr) hZ`. Establish `hrZ : r ≤ Z` using `le_trans (le_mul_of_one_le_left (by linarith) hf) hZ`. Establish `hZ1 : 1 ≤ Z` using `by linarith`. Establish `hm4Z : m ^ 4 ≤ Z` using `hm4.trans hfZ`. Establish `a4 : (2 * f * m) ^ 4 ≤ 16 * Z ^ 5`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `a3 : (2 * f * m) ^ 3 ≤ 16 * Z ^ 5` using `(pow_le_pow_right₀ (by nlinarith) (by norm_num)).trans a4`. Establish `hZ2 : 1100000 ≤ Z ^ 3` using `le_trans (by norm_num) (pow_le_pow_left₀ (by norm_num) hZ0 3)`. Establish `hZ2' : 1000000 ≤ Z ^ 2` using `le_trans (by norm_num) (pow_le_pow_left₀ (by norm_num) hZ0 2)`. Establish `hpi : Real.pi ≤ 3.15` using `Real.pi_lt_d2.le`.
+
+Establish `hpi0` using `Real.pi_pos.le`. Establish `hCZ : Z ^ 9 ≤ C * Z ^ 9` using `le_mul_of_one_le_left (by positivity) hC`. Establish `h59 : Z ^ 5 ≤ Z ^ 9` using `pow_le_pow_right₀ hZ1 (by norm_num)`. Establish `h69 : Z ^ 6 ≤ Z ^ 9` using `pow_le_pow_right₀ hZ1 (by norm_num)`. Establish `hbig : 1100000 * (C * Z ^ 9) ≤ C * Z ^ 12`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h9 : 0 ≤ C * Z ^ 9` using `by positivity`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `: (2 * f * m) ^ 4 * n ≤ 16 * (C * Z ^ 9)`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: r * (2 * f * m) ^ 3 ≤ 16 * Z ^ 6`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem numeric_bounds_constants_pow_twelve (f m r n Z C : ℝ) (hf : 1 ≤ f) (hm : 1 ≤ m) (hr : 1 ≤ r) (hn0 : 0 ≤ n) (hm4 : m ^ 4 ≤ f) (hZ : f * r ≤ Z)
     (hZ0 : 1000 ≤ Z) (hC : 1 ≤ C) (hn : n ≤ C * Z ^ 4) :
     16200 * Real.pi * n * m ^ 4 * (2 * f * m) ^ 4 ≤ C * Z ^ 12 ∧
@@ -117,6 +160,15 @@ theorem numeric_bounds_constants_pow_twelve (f m r n Z C : ℝ) (hf : 1 ≤ f) (
         _ = _ := by ring
     linarith
 
+/- English proof (translation)
+Rewrite `hd` using `[ht.1]`. Establish `hA : 12 ≤ A2` using `ht.2.2.2.2.2.2.2.1`. Establish `hC : 1000 ≤ C2` using `hd.1`. Establish `hZe : Zb D large₂ = zBase large₂` using `rfl`. Establish `hZ0 : 1000 ≤ zBase large₂`.
+
+Rewrite using `[← hZe]`. Conclude with `hC.trans ((le_self_pow₀ (by linarith) (by norm_num)).trans hd.2.1)`. Establish `hn : (nW : ℝ) ≤ C2 * zBase large₂ ^ 4`. Use `le_trans ?_ hd.2.2.2.2.2.2.2.2.1` and prove the remaining obligations. Unfold `sizeConstantAtParamsWeight`.
+
+Conclude with `le_max_of_le_right (le_max_of_le_right (le_max_of_le_right (le_max_left _ _)))`. Take `⟨a, b, c⟩` from `numeric_bounds_constants_pow_twelve D.R.f D.R.m D.R.r nW (zBase large₂) C2 (by linarith [Num.Pm.two_le_f D]) (by linarith [Num.Pm.two_le_m D]) (by linarith [Num.Pm.six_le_r D]) (Nat.cast_nonneg _) (lift_index_pow_four_le_degree hPg) (Num.Pm.fr_le_Z large₂) hZ0 (by linarith) hn`. Establish `hP : C2 * zBase large₂ ^ 12 ≤ WeightFamilies.PPv D large₂ C2 A2`. Unfold `WeightFamilies.PPv`. Use `mul_le_mul_of_nonneg_left ?_ (by linarith)` and prove the remaining obligations.
+
+Rewrite using `[← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le (by linarith) (by exact_mod_cast hA)`. Conclude with `max_le (a.trans hP) (max_le (b.trans hP) (c.trans hP))`.
+-/
 theorem page_bound_le_of_constants {large₂ : SizeData₂ D} {K : KAdm} {H : KHyp} {Ch Ah Cq Aq C2 A2 CR : ℝ} {nW : ℕ}
     (hPg : PageAt large₂ C2 A2) (ht : TieC K H Ch Ah Cq Aq C2 A2 CR) (hd : DomAt D large₂ j nW H.C1) :
     flipOneThree D nW ≤ WeightFamilies.PPv D large₂ C2 A2 := by
@@ -141,6 +193,9 @@ theorem page_bound_le_of_constants {large₂ : SizeData₂ D} {K : KAdm} {H : KH
     exact Real.rpow_le_rpow_of_exponent_le (by linarith) (by exact_mod_cast hA)
   exact max_le (a.trans hP) (max_le (b.trans hP) (c.trans hP))
 
+/- English proof (translation)
+Use `⟨fun h => h.2.1, fun h => ⟨?_, h, row_rd D, row_r D, row_DF hH.2.1⟩⟩` and prove the remaining obligations. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hd⟩` from `hH.2.1`. Conclude with `page_bound_le_of_constants hPg ht hd`.
+-/
 theorem pageSupp_iff {large₂ : SizeData₂ D} {X : PJ D B P j} {K : KAdm} {H : KHyp} {Ch Ah Cq Aq C2 A2 CR Bx CT : ℝ}
     {S : Scal B} {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ} {h0 : ℝ} {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ}
     (hH : HypC large₂ X H C2 A2 CR Bx CT S ka wL wF T nP nW h0 nus) (ht : TieC K H Ch Ah Cq Aq C2 A2 CR)
@@ -151,6 +206,19 @@ theorem pageSupp_iff {large₂ : SizeData₂ D} {X : PJ D B P j} {K : KAdm} {H :
   obtain ⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hd⟩ := hH.2.1
   exact page_bound_le_of_constants hPg ht hd
 
+/- English proof (translation)
+Establish `h0` using `(D.host.g_prime 0).two_le`. Establish `h1` using `(D.host.g_prime 1).two_le`. Establish `hne` using `D.host.g_ne`. Establish `hq : 2 ≤ qq D` using `le_min h0 h1`. Establish `hq' : (1 : ℝ) ≤ qq D` using `by exact_mod_cast (by omega : 1 ≤ qq D)`.
+
+Establish `hlog : ∀ σ : B.KO →+* ℂ, Real.log ‖σ (S.sW : B.KO)‖ = (DF wL : ℝ) * Real.log (qq D)` using `fun σ => by`. Rewrite using `[hS]`. Simplify using the standard rewrite rules. Use `⟨fun σ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hlog]`.
+
+Use `Real.log_nonneg hq'` as an intermediate fact. Establish `: (0 : ℝ) ≤ DF wL` using `Nat.cast_nonneg _`. Use the polynomial consequences of the given equalities and inequalities. Introduce and unpack `⟨-, h, -, -, h3⟩`. Take `⟨σ⟩ : Nonempty (B.KO →+* ℂ)` from `inferInstance`.
+
+Establish `h4` using `h σ`. Rewrite `h4` using `[hlog]`. Establish `hlt : qq D * qq D < D.host.g 0 * D.host.g 1`. Unfold `qq`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases.
+
+Rewrite using `[min_eq_left h.le]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[min_eq_right h.le]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hlt' : (qq D : ℝ) * qq D < (D.host.g 0 : ℝ) * D.host.g 1` using `by exact_mod_cast hlt`.
+
+Establish `h5` using `Real.log_lt_log (by positivity) hlt'`. Rewrite `h5` using `[Real.log_mul (by positivity) (by positivity)]`. Establish `h6 : (3 : ℝ) ≤ DF wL` using `by exact_mod_cast h3`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem not_pageSupp_min {large₂ : SizeData₂ D} {C2 A2 : ℝ} {nW : ℕ} {S : Scal B} {wL : WeightFamilies.Wt D j}
     (hS : S.sW = ((qq D : ℕ) : 𝓞 B.KO) ^ DF wL) :
     (∀ σ : B.KO →+* ℂ, (DF wL : ℝ) / 2 * Real.log (qq D) ≤ Real.log ‖σ (S.sW : B.KO)‖) ∧
@@ -182,6 +250,11 @@ theorem not_pageSupp_min {large₂ : SizeData₂ D} {C2 A2 : ℝ} {nW : ℕ} {S 
     have h6 : (3 : ℝ) ≤ DF wL := by exact_mod_cast h3
     nlinarith
 
+/- English proof (translation)
+Establish `h0 : WeightFamilies.rho D j = 0` using `by unfold WeightFamilies.rho Ranks.sigW; simp only; omega`. Establish `ht : WeightFamilies.MggK B CR T c j ka = ⊤`. Unfold `WeightFamilies.MggK`. Simplify using `only [iInf_eq_top]`. Introduce and unpack `cu χ ⟨xi, -, hxi, -⟩`.
+
+Conclude with `absurd (funext fun i => absurd i.2 (by omega)) hxi`. Establish `: WeightFamilies.MggIn B CR T c j ka = ⊤` using `by unfold WeightFamilies.MggIn; rw [ht]; rfl`. Establish `: Subsingleton (WeightFamilies.Qm B CR T c j ka)` using `Submodule.Quotient.subsingleton_iff.2 this`. Conclude with `Module.finrank_zero_of_subsingleton`.
+-/
 theorem rhoP_top (hj : D.R.m ≤ j) (CR T c : ℝ) (ka : WeightFamilies.Wt D j) : WeightFamilies.rhoP B CR T c j ka = 0 := by
   have h0 : WeightFamilies.rho D j = 0 := by unfold WeightFamilies.rho Ranks.sigW; simp only; omega
   have ht : WeightFamilies.MggK B CR T c j ka = ⊤ := by
@@ -195,11 +268,17 @@ theorem rhoP_top (hj : D.R.m ≤ j) (CR T c : ℝ) (ka : WeightFamilies.Wt D j) 
 
 variable {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => h hj hD, fun h _ _ => h⟩`.
+-/
 theorem conclAtM_iff {large₂ : SizeData₂ D} {S : Scal B} {T : ℕ} {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ}
     (hj : D.R.m ≤ j) (hD : DepthAtM X S wL nus) : ConclAtM large₂ X S ka wL wF T nus ↔
       Concl X S ka wL wF T nus (X.rk ka (B.Mlat j ka) * D.R.f * D.R.m * large₂.sc.b * large₂.de2) :=
   ⟨fun h => h hj hD, fun h _ _ => h⟩
 
+/- English proof (translation)
+Establish `: G.rq = 0` using `hQ.1.trans (rhoP_top hj _ _ _ _)`. Unfold `ShareRhoT at h`. Rewrite `h` using `[this]`. Simplify `h` using `[ShareRho]`.
+-/
 theorem shareRho_top (hj : D.R.m ≤ j) {large₂ : SizeData₂ D} {S : Scal B} {G : GlobalFamilyData X ka wL wF} {CRm c Ch Ah : ℝ} {T d : ℕ}
     (hQ : G.TiedQ large₂ S CRm T c Ch Ah) (h : ShareRhoT (D := D) (j := j) T G.rz G.rq d) :
     ShareRho (D := D) (j := j) T G.rz d := by
@@ -208,6 +287,11 @@ theorem shareRho_top (hj : D.R.m ≤ j) {large₂ : SizeData₂ D} {S : Scal B} 
   rw [this] at h
   simpa [ShareRho] using h
 
+/- English proof (translation)
+Introduce `hj hD`. Use `theorem_zero_of_named_inputs large₂ X K H Ch Ah Cq Aq C2 A2 CR CT j h1 h2 S ka wL wF T nP nW h0 nus hH lA sA mA (fun h => absurd h (by omega)) G Gc PH Prw Pet Pd Qf tW tTh tZ tQ (fun h => absurd h (by omega)) dH dS dL pG sRd (shareRho_top hj tQ sRho) ?_ hP iB iC iT iL iZ iM (fun …` and prove the remaining obligations. Unfold `ShareRhoP`. Establish `e : G.rq = 0` using `tQ.1.trans (rhoP_top hj _ _ _ _)`. Rewrite using `[e, Nat.cast_zero]`.
+
+Check the signs of the components of the expression.
+-/
 theorem conclAtM_of_local (large₂ : SizeData₂ D) (X : Prov D B P) (K : KAdm) (H : KHyp) (Ch Ah Cq Aq C2 A2 CR CT : ℝ)
     (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j) (T nP nW : ℕ) (h0 : ℝ)
     (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ)
@@ -234,6 +318,11 @@ theorem conclAtM_of_local (large₂ : SizeData₂ D) (X : Prov D B P) (K : KAdm)
   rw [e, Nat.cast_zero]
   positivity
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `h la y`. Establish `: X.depth S.sW wL la y = ⊤`. Unfold `PJ.depth`. Simplify using `only [iInf_eq_top]`.
+
+Introduce and unpack `F ⟨F', -, rfl⟩`. Simplify using `[hS, X.vAt_zero]`. Rewrite `h1` using `[this]`. Conclude with `absurd h1 (by simp)`.
+-/
 theorem not_depthAtM_zero {S : Scal B} (hS : S.sW = 0) {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ}
     {la : HeightOneSpectrum (𝓞 B.KO)} (y : X.Pt la) : ¬ DepthAtM X S wL nus := by
   intro h
@@ -246,6 +335,9 @@ theorem not_depthAtM_zero {S : Scal B} (hS : S.sW = 0) {nus : HeightOneSpectrum 
   rw [this] at h1
   exact absurd h1 (by simp)
 
+/- English proof (translation)
+Introduce `la ζ`. Use `⟨(h la ζ).1, fun hne => ?_⟩` and prove the remaining obligations. Use `(h la ζ).2 hne` as an intermediate fact. Establish `e : (G.iet : ℝ) = 0` using `by exact_mod_cast hi`. Simplify `this` using `[e]`.
+-/
 theorem combBound4_iet_zero {G : GlobalFamilyData X ka wL wF} (hi : G.iet = 0) {Qf : ∀ la, LocalPointData G la} {S : Scal B} {c c' : ℝ}
     {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ} (h : CombBound4 G Qf S c nus) : CombBound4 G Qf S c' nus := by
   intro la ζ

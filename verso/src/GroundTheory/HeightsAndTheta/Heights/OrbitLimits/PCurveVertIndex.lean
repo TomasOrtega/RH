@@ -17,6 +17,11 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : 
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Use extensionality with `z`. Simplify using `only [Submodule.mem_toAddSubgroup, Submodule.mem_span_singleton, curveMul, AddSubgroup.mem_map, AddMonoidHom.coe_mulLeft, Subring.mem_toAddSubgroup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨b, b.2, by rw [Subring.smul_def, smul_eq_mul, mul_comm]⟩`.
+
+Introduce and unpack `⟨b, hb, rfl⟩`. Conclude with `⟨⟨b, hb⟩, by rw [Subring.smul_def, smul_eq_mul, mul_comm]⟩`.
+-/
 theorem span_toAddSubgroup (y : (Σ k, ι k) → Ω) (x : Ω) :
     (Submodule.span (curveRing y) {x}).toAddSubgroup = curveMul y x := by
   ext z
@@ -30,6 +35,11 @@ theorem span_toAddSubgroup (y : (Σ k, ι k) → Ω) (x : Ω) :
 
 omit [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Establish `hle : curveMul y x ≤ chartLat y a 1`. Rewrite using `[← span_toAddSubgroup]`. Introduce `z hz`. Conclude with `(Submodule.span_le.mpr (Set.singleton_subset_iff.mpr hx)) hz`. Rewrite using `[genIndex, AddSubgroup.relIndex_eq_one.mpr hle, Nat.cast_one, div_one, ← span_toAddSubgroup]`.
+
+Both sides reduce to the same expression.
+-/
 theorem genIndex_eq_card (y : (Σ k, ι k) → Ω) (a : K → ℤ) {x : Ω} (hx : x ∈ curveSectionMod y a) :
     genIndex (chartLat y a 1) (curveMul y x) = Nat.card (curveSectionQuot y a x) := by
   have hle : curveMul y x ≤ chartLat y a 1 := by
@@ -41,6 +51,13 @@ theorem genIndex_eq_card (y : (Σ k, ι k) → Ω) (a : K → ℤ) {x : Ω} (hx 
 
 end CurveVerticalIndex
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ y s d hP hs hsP`. Use `hF K ι Ω y s d hP hs hsP` as an intermediate fact. Take `⟨hbij, hmult⟩` from `hV K ι Ω y s d hP hs hsP`. Rewrite using `[CurveVerticalIndex.genIndex_eq_card y _ (HilbertSamuel.LiftBirationalAmple.chartLat_form hs), LogCardLength.proof (curveRing y) (curveSectionQuot y (fun k => (d k : ℤ)) (aeval y s)), vertR]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `finsum_mem_congr rfl fun W hW => ?_` and prove the remaining obligations. Rewrite using `[if_neg (IndefiniteRowSideFullHecke.HeightsSet.CurveDivVertical.full K ι _ s d hP hs hsP W hW), hmult W hW, ← hR K ι Ω y s d hP hs hsP W hW]`. Use `congr 3`. Use `_ = ∑ᶠ m ∈ {m : Ideal (curveRing y) | m.IsMaximal ∧ locLen m (curveSectionQuot y (fun k => (d k : ℤ)) (aeval y s)) ≠ 0}, (locLen m (curveSectionQuot y (fun k => (d k : ℤ)) (aeval y s)) : ℝ) * Real.log (Nat.card (curveRing y ⧸ m)) := finsum_mem_eq_of_bijOn _ hbij fun _ _ => rfl`. Use `_ = _ := by`.
+
+Use `finsum_mem_inter_support_eq _ _ {m : Ideal (curveRing y) | m.IsMaximal} ?_` and prove the remaining obligations. Use extensionality with `m`. Simplify using `only [Set.mem_inter_iff, Set.mem_ofPred_eq, Function.mem_support]`. Conclude with `⟨fun ⟨⟨h1, _⟩, h2⟩ => ⟨h1, h2⟩, fun ⟨h1, h2⟩ => ⟨⟨h1, fun h0 => h2 (by simp [h0])⟩, h2⟩⟩`.
+-/
 theorem CurveVertIndex.proof (hF : CurveSectionQuotFinite.Statement) (hV : CurveVertPointLength.Statement)
     (hR : CurveVertPointResidue.Statement) : CurveVertIndex.Statement := by
   intro K _ ι _ Ω _ y s d hP hs hsP

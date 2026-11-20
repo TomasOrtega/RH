@@ -11,6 +11,9 @@ namespace GlobalTheory.CommutatorCharacter
 
 variable {D : D7} {N N' : ℕ}
 
+/- English proof (translation)
+Unfold `Hf`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, nsmul_eq_mul, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Hf_nsmul_swap (T : Tor D) (k : ℕ) (w x : VC D N N') : Hf D T (k • w) x = Hf D T w (k • x) := by
   unfold Hf
   congr 1
@@ -18,6 +21,9 @@ theorem Hf_nsmul_swap (T : Tor D) (k : ℕ) (w x : VC D N N') : Hf D T (k • w)
   simp only [Pi.smul_apply, nsmul_eq_mul, map_mul, map_natCast]
   ring
 
+/- English proof (translation)
+Take `⟨a, b, -, h⟩` from `hI w hw _ hx`. Establish `him : (Hf D T (k • w) x).im = b` using `by rw [Hf_nsmul_swap, h]; simp`. Unfold `kap`. Rewrite using `[Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.IO.Hf_add_left, Complex.add_im, him, Complex.exp_eq_exp_iff_exists_int]`. Conclude with `⟨-b, by push_cast; ring⟩`.
+-/
 theorem kap_add_nsmul (T : Tor D) {Λ : AddSubgroup (VC D N N')} (hI : Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.IO.HfInt T Λ) (k : ℕ)
     (u : VC D N N') {w x : VC D N N'} (hw : w ∈ Λ) (hx : k • x ∈ Λ) : kap D T (u + k • w) x = kap D T u x := by
   obtain ⟨a, b, -, h⟩ := hI w hw _ hx
@@ -29,9 +35,17 @@ theorem kap_add_nsmul (T : Tor D) {Λ : AddSubgroup (VC D N N')} (hI : Formalism
 def vecHom (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) : Matrix (Fin N') (Fin N) D.host.E →+ VC D N N' :=
   AddMonoidHom.mk' (vecOf D cc δ) (GlobalTheory.PlaceComponents.vecOf_add D cc δ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem vecHom_apply (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (A : Matrix (Fin N') (Fin N) D.host.E) :
     vecHom cc δ A = vecOf D cc δ A := rfl
 
+/- English proof (translation)
+Use `(IsLocallyConstant.comp (f := PadicInt.toZModPow n) ?_ f).continuous` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `a`. Establish `hp : (0 : ℝ) < (p : ℝ) ^ (-(n : ℤ))` using `zpow_pos (by exact_mod_cast (Fact.out : p.Prime).pos) _`. Use `filter_upwards [Metric.closedBall_mem_nhds a hp] with y hy`.
+
+Rewrite using `[← sub_eq_zero, ← map_sub, ← RingHom.mem_ker, PadicInt.ker_toZModPow, ← PadicInt.norm_le_pow_iff_mem_span_pow]`. Simplify `hy` using `[dist_eq_norm]`.
+-/
 theorem continuous_toZModPow {p : ℕ} [Fact p.Prime] (n : ℕ) {X : Type*} [TopologicalSpace X]
     (f : ZMod (p ^ n) → X) : Continuous fun a : ℤ_[p] => f (PadicInt.toZModPow n a) := by
   refine (IsLocallyConstant.comp (f := PadicInt.toZModPow n) ?_ f).continuous
@@ -42,6 +56,15 @@ theorem continuous_toZModPow {p : ℕ} [Fact p.Prime] (n : ℕ) {X : Type*} [Top
   rw [← sub_eq_zero, ← map_sub, ← RingHom.mem_ker, PadicInt.ker_toZModPow, ← PadicInt.norm_le_pow_iff_mem_span_pow]
   simpa [dist_eq_norm] using hy
 
+/- English proof (translation)
+Introduce `D cc δ p _ lam N N' Λ hI n r b x hb hx`. Use `haveI : NeZero (p ^ n) := ⟨pow_ne_zero _ (Fact.out : p.Prime).ne_zero⟩`. Set `F : (Fin r → ZMod (p ^ n)) → ℂ_[p]` to `fun c => lamC lam (kap D (tor0 D cc δ) (vecOf D cc δ (∑ i, (((c i).val : ℕ) : D.host.E) • b i)) x)`. Establish `hc : Continuous fun a : Fin r → ℤ_[p] => F fun i => PadicInt.toZModPow n (a i)`. Use `letI : TopologicalSpace (ZMod (p ^ n)) := ⊥`.
+
+Use `haveI : DiscreteTopology (ZMod (p ^ n)) := ⟨rfl⟩`. Conclude with `(continuous_of_discreteTopology (f := F)).comp (continuous_pi fun i => (continuous_toZModPow n id).comp (continuous_apply i))`. Use `⟨⟨_, hc⟩, fun a => rfl, fun a => ?_⟩` and prove the remaining obligations. Use `show F _ = _`. Establish `hw : vecOf D cc δ (∑ i, (a i / (p ^ n : ℕ)) • b i) ∈ Λ`.
+
+Rewrite using `[← vecHom_apply, map_sum]`. Conclude with `sum_mem fun i _ => by rw [map_zsmul]; exact zsmul_mem (hb i) _`. Establish `hs : ∑ i, (a i : D.host.E) • b i = ∑ i, (((PadicInt.toZModPow n (a i : ℤ_[p])).val : ℕ) : D.host.E) • b i + p ^ n • ∑ i, (a i / (p ^ n : ℕ)) • b i`. Rewrite using `[Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_intCast, ← Int.cast_natCast, ZMod.val_intCast, Int.cast_smul_eq_zsmul, Int.cast_smul_eq_zsmul, ← natCast_zsmul, smul_smul, ← add_smul, Int.emod_add_mul_ediv]`. Simplify using `only [F]`. Rewrite using `[hs, ← vecHom_apply cc δ (_ + _), map_add, map_nsmul, vecHom_apply, vecHom_apply, kap_add_nsmul _ hI _ _ hw hx]`.
+-/
 theorem exists_continuous_character :
     ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (N N' : ℕ)
       (Λ : AddSubgroup (VC D N N')), Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.IO.HfInt (tor0 D cc δ) Λ →

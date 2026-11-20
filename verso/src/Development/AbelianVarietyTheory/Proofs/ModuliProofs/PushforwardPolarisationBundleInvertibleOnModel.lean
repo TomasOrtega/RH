@@ -19,6 +19,15 @@ open GlobalTheory.Models
 
 namespace GlobalTheory.PushInv
 
+/- English proof (translation)
+Introduce `hL hL2 hL3 E _ _ _ H D l B F O _ _ _ b U s o c β C hβ hθ`. Establish `hS : Out.SecBaseChangeAnySt` using `by cases hL; cases hL2; cases hL3; assumption`. Establish `hH : Out.GlobalSectionsRankAlgClosed` using `by cases hL; cases hL2; cases hL3; assumption`. Take `⟨⟨hDom, hDed⟩, -, hFr⟩` from `hβ`. Set `_ : Algebra O F` to `β.toAlgebra`.
+
+Take `⟨hN, -, -, hPre, hFl, hDo, hQC⟩` from `GlobalTheory.genericPart_dense_proOpen O F C.X U C.s C.jQ C.flat C.proj C.jQ_open C.jQ_dense`. Establish `hPB : IsPullback C.m.φ o.t.G.hom C.t.G.hom (C.jQ ≫ pullback.fst C.s (spMap β))` using `C.m.cart.1`. Take `⟨w, hw, -⟩` from `C.m.lin`. Establish `hIso : LBIso o.t.PP.L (C.t.PP.L.pull C.m.φ)` using `⟨w, hw⟩`. Establish `hSm : Smooth C.t.G.hom`.
+
+Establish `sa` using `C.t.semi`. Apply the tactic sequence `first | infer_instance | exact sa.1 | (cases sa; assumption)`. Establish `hGI : GeometricallyIntegral C.t.G.hom`. Establish `sa` using `C.t.semi`. Establish `_` using `hSm`.
+
+Apply the tactic sequence `have _ : GeometricallyConnected C.t.G.hom := by first | infer_instance | (cases sa; assumption)`. Conclude with `GlobalTheory.grpObj_geometricallyIntegral_of_smooth C.X C.t.G`. Conclude with `@GlobalTheory.PushInv.pushInvertible_of_densePart C.X U hN (C.jQ ≫ pullback.fst C.s (spMap β)) C.normal hPre hFl hDo hQC C.t.G o.t.G C.m.φ C.t.PP.L o.t.PP.L hSm hGI hPB C.t.PP.isLB o.t.PP.isLB hIso (GlobalTheory.PushInv.pushInvertible_any hS hH U (GlobalTheory.Obj.toPolAV o)) hθ`.
+-/
 theorem pushInvertible_of_model : Out.Laws → Out.Laws2 → Out.Laws3 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (B F O : Type) [CommRing B] [Field F] [CommRing O] (b : Base l B) (U : Scheme.{0}) (s : U ⟶ Sp B) (o : Obj D l b s) (c : U ⟶ Sp F) (β : O →+* F) (C : Cpt c o.t β), IsDedFrac β → HasTheta C.t.G C.t.PP.L → PushInvertible C.t.G C.t.PP.L := by
   intro hL hL2 hL3 E _ _ _ H D l B F O _ _ _ b U s o c β C hβ hθ
   have hS : Out.SecBaseChangeAnySt := by cases hL; cases hL2; cases hL3; assumption

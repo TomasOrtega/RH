@@ -2,6 +2,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `nil`. Introduce `a ha`. Simplify using `only [List.map_nil, List.prod_nil, mul_one]`. Rewrite using `[hg, mul_add, hJ a ha, zero_add]`.
+
+Consider the case `cons z s ih`. Introduce `a ha`. Simplify using `only [List.map_cons, List.prod_cons]`. Establish `hmem : π (a * g' * z) = 0` using `by simp [map_mul, ha]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hJ a ha, zero_add]`. Simplify using `only [mul_assoc]`. Use `_ = e * (a * g' * z) * (g' * (s.map (· * g')).prod) := ih _ hmem`. Use `_ = e * a * (g' * (z * g' * (s.map (· * g')).prod)) := by simp only [mul_assoc]`.
+-/
 private theorem idempotent_sandwich_list_prod_eq_of_kernel {k E : Type} [Field k] [Ring E] [Algebra k E] {n : ℕ}
     (π : E →ₐ[k] (Fin n → k)) (e g g' : E) (hg : g = e + g')
     (hJ : ∀ z, π z = 0 → e * z * e = 0) (t : List E) :
@@ -23,6 +30,25 @@ private theorem idempotent_sandwich_list_prod_eq_of_kernel {k E : Type} [Field k
       _ = e * (a * g' * z) * (g' * (s.map (· * g')).prod) := ih _ hmem
       _ = e * a * (g' * (z * g' * (s.map (· * g')).prod)) := by simp only [mul_assoc]
 
+/- English proof (translation)
+Introduce `n k E _ _ _ e π he hπ hsc`. Establish `hJ : ∀ z, π z = 0 → ∀ i, e i * z * e i = 0`. Introduce `z hz i`. Take `⟨a, ha⟩` from `hsc i z`. Establish `ha0 : a = 0`.
+
+Simplify `(congrFun (congrArg π ha) i).symm` using `[map_mul, hz, hπ]`. Rewrite using `[ha, ha0, zero_smul]`. Use `⟨fun x => ⟨fun hz i => hJ x hz i, fun h => ?_⟩, fun x hx => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Establish `h2` using `congrFun (congrArg π (h i)) i`.
+
+Simplify `h2` using `[map_mul, hπ]`. Take `⟨F, hF⟩ : ∃ F : Finset (Fin n) → E, ∀ T, F T = ∑ i ∈ T, e i` from `⟨_, fun _ => rfl⟩`. Establish `D : ∀ (m : ℕ) (T : Finset (Fin n)), T.card = m → ∀ t : List E, (∀ y ∈ t, π y = 0) → m ≤ t.length → F T * (t.map (· * F T)).prod = 0`. Introduce `m`. Proceed by induction on `m with`.
+
+Consider the case `zero`. Introduce `T hT t _ _`. Rewrite `hT` using `[Finset.card_eq_zero]`. Substitute `hT` using the available equality. Simplify using `[hF]`.
+
+Consider the case `succ m ih`. Introduce `T hT t ht hlen`. Consider the cases of `t with`. Consider the case `nil => simp at hlen`. Consider the case `cons y s`.
+
+Rewrite using `[show F T * ((y :: s).map (· * F T)).prod = ∑ i ∈ T, e i * ((y :: s).map (· * F T)).prod by rw [hF T, Finset.sum_mul]]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i hi`. Simplify using `only [List.map_cons, List.prod_cons]`. Rewrite using `[show e i * (y * F T * (s.map (· * F T)).prod) = e i * y * (F T * (s.map (· * F T)).prod) by simp only [mul_assoc]]`.
+
+Establish `hsplit : F T = e i + F (T.erase i)`. Rewrite using `[hF, hF, Finset.add_sum_erase T e hi]`. Rewrite using `[idempotent_sandwich_list_prod_eq_of_kernel π (e i) (F T) (F (T.erase i)) hsplit (fun z hz => hJ z hz i) s y (ht y (by simp))]`. Rewrite using `[ih (T.erase i) (by rw [Finset.card_erase_of_mem hi, hT]; rfl) s (fun z hz => ht z (by simp [hz])) (by simp at hlen; omega), mul_zero]`. Establish `key` using `D n Finset.univ (by simp) (List.ofFn x) (by`.
+
+Introduce `y hy`. Rewrite `hy` using `[List.mem_ofFn]`. Take `⟨s, rfl⟩` from `hy`. Conclude with `hx s)`. Use the proof step `(by simp)`.
+
+Establish `h1 : F Finset.univ = 1` using `by rw [hF]; exact he.complete`. Rewrite `key` using `[h1, one_mul, show (fun y : E => y * 1) = id from funext mul_one, List.map_id]`. Conclude with `key`.
+-/
 theorem UpperTheory.V.CA.f_nil :
     ∀ {n : ℕ} {k E : Type} [Field k] [Ring E] [Algebra k E] (e : Fin n → E) (π : E →ₐ[k] (Fin n → k)), CompleteOrthogonalIdempotents e → (∀ i, π (e i) = Pi.single i 1) → (∀ i x, ∃ a : k, e i * x * e i = a • e i) → (∀ x, π x = 0 ↔ ∀ i, e i * x * e i = 0) ∧ ∀ x : Fin n → E, (∀ s, π (x s) = 0) → (List.ofFn x).prod = 0 := by
   intro n k E _ _ _ e π he hπ hsc

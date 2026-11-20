@@ -27,20 +27,38 @@ variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V]
 def matRep {n : ℕ} (b : Module.Basis (Fin n) K V) (ρ : Representation K Γ V) : Γ →* GL (Fin n) K :=
   (Units.map (LinearMap.toMatrixAlgEquiv b).toMonoidHom).comp ρ.toHomUnits
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[matRep, LinearMap.toMatrixAlgEquiv_apply, LinearMap.toMatrix_apply]`.
+-/
 theorem matRep_coe {n : ℕ} (b : Module.Basis (Fin n) K V) (ρ : Representation K Γ V) (g : Γ) :
     ((matRep b ρ g : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = LinearMap.toMatrix b b (ρ g) := by
   ext i j
   simp [matRep, LinearMap.toMatrixAlgEquiv_apply, LinearMap.toMatrix_apply]
 
+/- English proof (translation)
+Rewrite using `[matRep_coe]`. Simplify `LinearMap.toMatrix_mulVec_repr b b (ρ g) v` using `[Module.Basis.equivFun_apply]`.
+-/
 theorem matRep_mulVec {n : ℕ} (b : Module.Basis (Fin n) K V) (ρ : Representation K Γ V) (g : Γ) (v : V) :
     ((matRep b ρ g : GL (Fin n) K) : Matrix (Fin n) (Fin n) K).mulVec (b.equivFun v) = b.equivFun (ρ g v) := by
   rw [matRep_coe]
   simpa [Module.Basis.equivFun_apply] using LinearMap.toMatrix_mulVec_repr b b (ρ g) v
 
+/- English proof (translation)
+Rewrite using `[matRep_coe, LinearMap.charpoly_toMatrix]`.
+-/
 theorem charpoly_matRep {n : ℕ} (b : Module.Basis (Fin n) K V) (ρ : Representation K Γ V) (g : Γ) :
     ((matRep b ρ g : GL (Fin n) K) : Matrix (Fin n) (Fin n) K).charpoly = (ρ g).charpoly := by
   rw [matRep_coe, LinearMap.charpoly_toMatrix]
 
+/- English proof (translation)
+Use `haveI := h`. Introduce `W hW`. Set `e` to `b.equivFun`. Set `S : Subrepresentation ρ` to `⟨W.comap (e : V →ₗ[K] Fin n → K), fun g v hv => by`. Simplify using `only [Submodule.mem_comap, LinearEquiv.coe_coe] at hv ⊢`.
+
+Rewrite using `[← matRep_mulVec]`. Conclude with `hW g _ hv⟩`. Take `⟨C, hC⟩` from `exists_isCompl S`. Use `⟨C.toSubmodule.map (e : V →ₗ[K] Fin n → K), ?_, ?_⟩` and prove the remaining obligations. Introduce `g w hw`.
+
+Take `⟨c, hc, rfl⟩` from `Submodule.mem_map.1 hw`. Use `Submodule.mem_map.2 ⟨ρ g c, C.apply_mem_toSubmodule g hc, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearEquiv.coe_coe]`. Rewrite using `[matRep_mulVec]`. Establish `h1 : IsCompl S.toSubmodule C.toSubmodule` using `⟨disjoint_iff.2 (congrArg Subrepresentation.toSubmodule hC.inf_eq_bot), codisjoint_iff.2 (congrArg Subrepresentation.toSubmodule hC.sup_eq_top)⟩`.
+
+Establish `h2` using `(Submodule.orderIsoMapComap e).isCompl_iff.1 h1`. Establish `h3 : (Submodule.orderIsoMapComap e) S.toSubmodule = W` using `by show Submodule.map (e : V →ₗ[K] Fin n → K) (W.comap (e : V →ₗ[K] Fin n → K)) = W`. Conclude with `Submodule.map_comap_eq_of_surjective e.surjective W`. Rewrite `h2` using `[h3]`. Conclude with `h2`.
+-/
 theorem isSSRep_matRep {n : ℕ} (b : Module.Basis (Fin n) K V) (ρ : Representation K Γ V)
     (h : ρ.IsSemisimpleRepresentation) : IsSSRep (matRep b ρ) := by
   haveI := h
@@ -67,6 +85,15 @@ theorem isSSRep_matRep {n : ℕ} (b : Module.Basis (Fin n) K V) (ρ : Representa
     rw [h3] at h2
     exact h2
 
+/- English proof (translation)
+Establish `hn : Module.finrank K V = Module.finrank K W`. Use `congrArg natDegree (hc 1)` as an intermediate fact. Rewrite `this` using `[LinearMap.charpoly_natDegree, LinearMap.charpoly_natDegree]`. Then use the resulting hypothesis. Set `bV : Module.Basis (Fin (Module.finrank K W)) K V` to `Module.finBasisOfFinrankEq K V hn`. Set `bW : Module.Basis (Fin (Module.finrank K W)) K W` to `Module.finBasisOfFinrankEq K W rfl`.
+
+Take `⟨Pm, hP⟩` from `Formalism.MainNotions.SumRepresentations.brauerNesbitt_matrix (matRep bV ρ) (matRep bW σ) (isSSRep_matRep bV ρ ((Representation.isSemisimpleRepresentation_iff_isSemisimpleModule_asModule ρ).2 hρ)) (isSSRep_matRep bW σ ((Representation.isSemisimpleRepresentation_iff_isSemisimpleMo …`. Set `e0 : (Fin (Module.finrank K W) → K) ≃ₗ[K] (Fin (Module.finrank K W) → K)` to `Matrix.toLin'OfInv (M := ((Pm : GL (Fin (Module.finrank K W)) K) : Matrix (Fin (Module.finrank K W)) (Fin (Module.finrank K W)) K)) (M' := ((Pm⁻¹ : GL (Fin (Module.finrank K W)) K) : Matrix (Fin (Module.finrank K W)) (Fin (Module.finrank K W)) K)) Pm.mul_inv Pm.inv_mul`. Use `⟨bV.equivFun ≪≫ₗ e0 ≪≫ₗ bW.equivFun.symm, fun g => LinearMap.ext fun x => ?_⟩` and prove the remaining obligations. Establish `hg : ((Pm⁻¹ : GL (Fin (Module.finrank K W)) K) : Matrix (Fin (Module.finrank K W)) (Fin (Module.finrank K W)) K) * ((matRep bV ρ g : GL (Fin (Module.finrank K W)) K) : Matrix (Fin (Module.finrank K W)) (Fin (Module.finrank K W)) K) = ((matRep bW σ g : GL (Fin (Module.finrank K W) …`. Rewrite using `[hP g]`.
+
+Simplify using `only [Units.val_mul, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Establish `key : bW.equivFun (σ g (bW.equivFun.symm (e0 (bV.equivFun x)))) = bW.equivFun (bW.equivFun.symm (e0 (bV.equivFun (ρ g x))))`. Rewrite using `[← matRep_mulVec, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply, ← matRep_mulVec]`. Establish `he0 : ∀ y, e0 y = ((Pm⁻¹ : GL (Fin (Module.finrank K W)) K) : Matrix (Fin (Module.finrank K W)) (Fin (Module.finrank K W)) K).mulVec y` using `fun y => Matrix.toLin'_apply _ _`. Rewrite using `[he0, he0, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg]`.
+
+Simplify using `using (bW.equivFun.injective key).symm`.
+-/
 theorem bn_gen {W : Type} [AddCommGroup W] [Module K W] [FiniteDimensional K W]
     (ρ : Representation K Γ V) (σ : Representation K Γ W)
     (hρ : IsSemisimpleModule (MonoidAlgebra K Γ) ρ.asModule)
@@ -105,25 +132,43 @@ def sumRep (L : List (Σ m : ℕ, Γ →* GL (Fin m) K)) : FRep K Γ :=
 def cpL (L : List (Σ m : ℕ, Γ →* GL (Fin m) K)) (g : Γ) : K[X] :=
   (L.map fun p => ((p.2 g : GL _ _) : Matrix (Fin p.1) (Fin p.1) K).charpoly).prod
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cpL_nil (g : Γ) : cpL ([] : List (Σ m : ℕ, Γ →* GL (Fin m) K)) g = 1 := rfl
 
+/- English proof (translation)
+Simplify using `[cpL]`.
+-/
 theorem cpL_cons (p : Σ m : ℕ, Γ →* GL (Fin m) K) (L : List (Σ m : ℕ, Γ →* GL (Fin m) K)) (g : Γ) :
     cpL (p :: L) g = ((p.2 g : GL _ _) : Matrix (Fin p.1) (Fin p.1) K).charpoly * cpL L g := by
   simp [cpL]
 
+/- English proof (translation)
+The claim follows from `(h.map _).prod_eq`.
+-/
 theorem cpL_perm {L L' : List (Σ m : ℕ, Γ →* GL (Fin m) K)} (h : L.Perm L') (g : Γ) :
     cpL L g = cpL L' g :=
   (h.map _).prod_eq
 
+/- English proof (translation)
+Rewrite using `[Formalism.MainNotions.SumRepresentations.glRep_apply, Matrix.toLin'_apply]`.
+-/
 theorem glRep_app {m : ℕ} (ρ : Γ →* GL (Fin m) K) (g : Γ) (v : Fin m → K) :
     glRep ρ g v = ((ρ g : GL (Fin m) K) : Matrix (Fin m) (Fin m) K).mulVec v := by
   rw [Formalism.MainNotions.SumRepresentations.glRep_apply, Matrix.toLin'_apply]
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.charpoly_toMatrix f (Pi.basisFun K (Fin 0))]`. Conclude with `eq_one_of_monic_natDegree_zero (Matrix.charpoly_monic _) (by rw [Matrix.charpoly_natDegree_eq_dim]; simp)`.
+-/
 theorem charpoly_fin_zero (f : Module.End K (Fin 0 → K)) : f.charpoly = 1 := by
   rw [← LinearMap.charpoly_toMatrix f (Pi.basisFun K (Fin 0))]
   exact eq_one_of_monic_natDegree_zero (Matrix.charpoly_monic _)
     (by rw [Matrix.charpoly_natDegree_eq_dim]; simp)
 
+/- English proof (translation)
+The claim follows from `| [], g => charpoly_fin_zero _ | p :: L, g => by rw [cpL_cons, ← cp_sumRep L g] show (((glRep p.2) g).prodMap ((sumRep L).ρ g)).charpoly = _ rw [LinearMap.charpoly_prodMap] congr 1 exact Matrix.charpoly_toLin' _`.
+-/
 theorem cp_sumRep : ∀ (L : List (Σ m : ℕ, Γ →* GL (Fin m) K)) (g : Γ),
     ((sumRep L).ρ g).charpoly = cpL L g
   | [], g => charpoly_fin_zero _
@@ -134,6 +179,9 @@ theorem cp_sumRep : ∀ (L : List (Σ m : ℕ, Γ →* GL (Fin m) K)) (g : Γ),
     congr 1
     exact Matrix.charpoly_toLin' _
 
+/- English proof (translation)
+The claim follows from `| [], g => ⟨monic_one, by simp [cpL]⟩ | p :: L, g => by have ih := cpL_deg L g rw [cpL_cons] refine ⟨(Matrix.charpoly_monic _).mul ih.1, ?_⟩ rw [(Matrix.charpoly_monic _).natDegree_mul ih.1, ih.2, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin] simp`.
+-/
 theorem cpL_deg : ∀ (L : List (Σ m : ℕ, Γ →* GL (Fin m) K)) (g : Γ),
     (cpL L g).Monic ∧ (cpL L g).natDegree = (L.map Sigma.fst).sum
   | [], g => ⟨monic_one, by simp [cpL]⟩
@@ -145,6 +193,11 @@ theorem cpL_deg : ∀ (L : List (Σ m : ℕ, Γ →* GL (Fin m) K)) (g : Γ),
       Fintype.card_fin]
     simp
 
+/- English proof (translation)
+Proceed by induction on `r using MonoidAlgebra.induction_on with`. Consider the case `of g`. Rewrite using `[Representation.asAlgebraHom_of, Representation.asAlgebraHom_of, Representation.asAlgebraHom_of]`. Both sides reduce to the same expression. Consider the case `add a b ha hb => simp only [map_add, LinearMap.add_apply, ha, hb, Prod.mk_add_mk]`.
+
+Consider the case `smul c a ha => simp only [map_smul, LinearMap.smul_apply, ha, Prod.smul_mk]`.
+-/
 theorem asAlg_prod {V W : Type} [AddCommGroup V] [Module K V] [AddCommGroup W] [Module K W]
     (ρ : Representation K Γ V) (σ : Representation K Γ W) (r : MonoidAlgebra K Γ) (x : V × W) :
     (ρ.prod σ).asAlgebraHom r x = (ρ.asAlgebraHom r x.1, σ.asAlgebraHom r x.2) := by
@@ -169,6 +222,9 @@ def prodEquiv {V W : Type} [AddCommGroup V] [Module K V] [AddCommGroup W] [Modul
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Establish `h : IsSemisimpleModule R ↥(LinearMap.range (LinearMap.inl R M N) ⊔ LinearMap.range (LinearMap.inr R M N))` using `IsSemisimpleModule.sup (IsSemisimpleModule.range _) (IsSemisimpleModule.range _)`. Rewrite `h` using `[LinearMap.sup_range_inl_inr]`. Conclude with `IsSemisimpleModule.congr (Submodule.topEquiv (R := R) (M := M × N)).symm`.
+-/
 theorem ss_prod {R M N : Type} [Ring R] [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
     [IsSemisimpleModule R M] [IsSemisimpleModule R N] : IsSemisimpleModule R (M × N) := by
   have h : IsSemisimpleModule R ↥(LinearMap.range (LinearMap.inl R M N) ⊔
@@ -177,6 +233,11 @@ theorem ss_prod {R M N : Type} [Ring R] [AddCommGroup M] [Module R M] [AddCommGr
   rw [LinearMap.sup_range_inl_inr] at h
   exact IsSemisimpleModule.congr (Submodule.topEquiv (R := R) (M := M × N)).symm
 
+/- English proof (translation)
+Rewrite using `[← Representation.irreducible_iff_isSimpleModule_asModule]`. Use `{ exists_pair_ne := ⟨⊥, ⊤, fun hbt => h.1 ?_⟩, eq_bot_or_eq_top := fun W => ?_ }` and prove the remaining obligations. Conclude with `(congrArg Subrepresentation.toSubmodule hbt).symm`. Break down `h.2.2 W.toSubmodule le_top (fun g v hv => by` into its components or cases. Rewrite using `[← glRep_app]`.
+
+Conclude with `W.apply_mem_toSubmodule g hv) with h0 | h0`. Conclude with `Or.inl (Subrepresentation.toSubmodule_injective h0)`. Conclude with `Or.inr (Subrepresentation.toSubmodule_injective h0)`.
+-/
 theorem simple_of_irr {m : ℕ} (ρ : Γ →* GL (Fin m) K) (h : IsIrrSub ρ ⊤) :
     IsSimpleModule (MonoidAlgebra K Γ) (glRep ρ).asModule := by
   rw [← Representation.irreducible_iff_isSimpleModule_asModule]
@@ -187,6 +248,9 @@ theorem simple_of_irr {m : ℕ} (ρ : Γ →* GL (Fin m) K) (h : IsIrrSub ρ ⊤
     · exact Or.inl (Subrepresentation.toSubmodule_injective h0)
     · exact Or.inr (Subrepresentation.toSubmodule_injective h0)
 
+/- English proof (translation)
+The claim follows from `| [], _ => by have : Subsingleton (sumRep ([] : List (Σ m : ℕ, Γ →* GL (Fin m) K))).ρ.asModule := inferInstanceAs (Subsingleton (Fin 0 → K)) exact IsSemisimpleModule.of_sSup_simples_eq_top (Subsingleton.elim _ _) | p :: L, hL => by have := simple_of_irr p.2 (hL p (by simp)) have …`.
+-/
 theorem ss_sumRep : ∀ (L : List (Σ m : ℕ, Γ →* GL (Fin m) K)), (∀ p ∈ L, IsIrrSub p.2 ⊤) →
     IsSemisimpleModule (MonoidAlgebra K Γ) (sumRep L).ρ.asModule
   | [], _ => by
@@ -199,6 +263,17 @@ theorem ss_sumRep : ∀ (L : List (Σ m : ℕ, Γ →* GL (Fin m) K)), (∀ p �
     have := ss_prod (R := MonoidAlgebra K Γ) (M := (glRep p.2).asModule) (N := (sumRep L).ρ.asModule)
     exact IsSemisimpleModule.congr (prodEquiv (glRep p.2) (sumRep L).ρ)
 
+/- English proof (translation)
+Introduce `L'`. Proceed by induction on `L' with`. Consider the case `nil`. Introduce `F hF _`. It suffices to derive a contradiction.
+
+Establish `: Subsingleton (sumRep ([] : List (Σ m : ℕ, Γ →* GL (Fin m) K))).V` using `inferInstanceAs (Subsingleton (Fin 0 → K))`. Establish `hex` using `(Submodule.ne_bot_iff _).1 hp.1`. Conclude with `hex.elim fun v hv => hv.2 (hF (Subsingleton.elim _ _))`. Consider the case `cons q L'' ih`. Introduce `F hF hint`.
+
+Set `F1 : (Fin p.1 → K) →ₗ[K] (Fin q.1 → K)` to `LinearMap.fst K _ _ ∘ₗ F`. Set `F2 : (Fin p.1 → K) →ₗ[K] (sumRep L'').V` to `LinearMap.snd K _ _ ∘ₗ F`. Establish `h1 : ∀ g v, F1 (glRep p.2 g v) = glRep q.2 g (F1 v)` using `fun g v => congrArg Prod.fst (hint g v)`. Establish `h2 : ∀ g v, F2 (glRep p.2 g v) = (sumRep L'').ρ g (F2 v)` using `fun g v => congrArg Prod.snd (hint g v)`. Establish `hinv : IsInv p.2 (LinearMap.ker F1)`.
+
+Introduce `g v hv`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[← glRep_app, h1, hv, map_zero]`. Break down `hp.2.2 (LinearMap.ker F1) le_top hinv with hk | hk` into its components or cases. Conclude with `⟨q, by simp, F1, LinearMap.ker_eq_bot.1 hk, h1⟩`.
+
+Establish `hz : ∀ v, F1 v = 0` using `fun v => LinearMap.mem_ker.1 (hk ▸ Submodule.mem_top)`. Establish `hF2 : Function.Injective F2` using `fun v w hvw => hF (Prod.ext ((hz v).trans (hz w).symm) hvw)`. Establish `hr` using `ih F2 hF2 h2`. Conclude with `hr.elim fun r hr => ⟨r, by simp [hr.1], hr.2⟩`.
+-/
 theorem exists_summand (p : Σ m : ℕ, Γ →* GL (Fin m) K) (hp : IsIrrSub p.2 ⊤) :
     ∀ (L' : List (Σ m : ℕ, Γ →* GL (Fin m) K)) (F : (Fin p.1 → K) →ₗ[K] (sumRep L').V),
       Function.Injective F → (∀ g v, F (glRep p.2 g v) = (sumRep L').ρ g (F v)) →
@@ -233,6 +308,19 @@ theorem exists_summand (p : Σ m : ℕ, Γ →* GL (Fin m) K) (hp : IsIrrSub p.2
       have hr := ih F2 hF2 h2
       exact hr.elim fun r hr => ⟨r, by simp [hr.1], hr.2⟩
 
+/- English proof (translation)
+Establish `hinv : IsInv q.2 (LinearMap.range φ)`. Introduce `g v hv`. Rewrite using `[← glRep_app]`. Break down `LinearMap.mem_range.1 hv with ⟨w, hw⟩` into its components or cases. Rewrite using `[← hw, ← hint]`.
+
+Conclude with `LinearMap.mem_range_self _ _`. Establish `hne : LinearMap.range φ ≠ ⊥`. Introduce `h0`. Establish `hex` using `(Submodule.ne_bot_iff _).1 hp.1`. Use `hex.elim fun v hv => hv.2 (hφ ?_)` and prove the remaining obligations.
+
+Establish `hm : φ v ∈ LinearMap.range φ` using `LinearMap.mem_range_self _ _`. Rewrite `hm` using `[h0, Submodule.mem_bot]`. Rewrite using `[hm, map_zero]`. Break down `hq.2.2 _ le_top hinv with h0 | htop` into its components or cases. Conclude with `absurd h0 hne`.
+
+Establish `hsurj : Function.Surjective φ` using `LinearMap.range_eq_top.1 htop`. Set `e` to `LinearEquiv.ofBijective φ ⟨hφ, hsurj⟩`. Use `⟨?_, fun g => ?_⟩` and prove the remaining obligations. Simplify using `using e.finrank_eq`. Establish `key : ∀ w, e (glRep p.2 g w) = glRep q.2 g (e w)`.
+
+Introduce `w`. Simplify using `only [e]`. Conclude with `hint g w`. Establish `hc : e.conj (glRep p.2 g) = glRep q.2 g`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearEquiv.conj_apply_apply, key, LinearEquiv.apply_symm_apply]`. Establish `hcp` using `LinearEquiv.charpoly_conj e (glRep p.2 g)`. Rewrite `hcp` using `[hc]`. Rewrite using `[← Matrix.charpoly_toLin', ← Matrix.charpoly_toLin']`. Conclude with `hcp.symm`.
+-/
 theorem iso_of_inj (p q : Σ m : ℕ, Γ →* GL (Fin m) K) (hp : IsIrrSub p.2 ⊤) (hq : IsIrrSub q.2 ⊤)
     (φ : (Fin p.1 → K) →ₗ[K] (Fin q.1 → K)) (hφ : Function.Injective φ)
     (hint : ∀ g v, φ (glRep p.2 g v) = glRep q.2 g (φ v)) :
@@ -269,6 +357,9 @@ theorem iso_of_inj (p q : Σ m : ℕ, Γ →* GL (Fin m) K) (hp : IsIrrSub p.2 �
     rw [← Matrix.charpoly_toLin', ← Matrix.charpoly_toLin']
     exact hcp.symm
 
+/- English proof (translation)
+The claim follows from `| [], [], _, _, _ => List.Perm.refl _ | [], q :: t, _, hL', h => by exfalso have h1 := (cpL_deg (q :: t) 1).2 rw [← h 1, cpL_nil, natDegree_one] at h1 have hq := (hL' q (by simp)).1 simp only [List.map_cons, List.sum_cons] at h1 omega | p :: L, L', hL, hL', h => by have hp := hL …`.
+-/
 theorem main : ∀ (L L' : List (Σ m : ℕ, Γ →* GL (Fin m) K)),
     (∀ p ∈ L, 1 ≤ p.1 ∧ IsIrrSub p.2 ⊤) → (∀ p ∈ L', 1 ≤ p.1 ∧ IsIrrSub p.2 ⊤) →
     (∀ g, cpL L g = cpL L' g) → (L.map Sigma.fst).Perm (L'.map Sigma.fst)
@@ -327,6 +418,11 @@ section Closure
 
 variable {k : Type} [Field k] {Γ : Type} [Group Γ]
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← (Pi.basisFun (AlgebraicClosure k) (Fin m)).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨Pi.single i 1, Submodule.mem_top, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`.
+
+Apply the tactic sequence `by_cases hj : j = i <;> simp [hj]`.
+-/
 theorem span_image_top (m : ℕ) :
     Submodule.span (AlgebraicClosure k)
       ((fun v : Fin m → k => (algebraMap k (AlgebraicClosure k)) ∘ v) '' (⊤ : Submodule k (Fin m → k))) = ⊤ := by
@@ -340,6 +436,9 @@ theorem span_image_top (m : ℕ) :
 def liftL (L : List (Σ m : ℕ, Γ →* GL (Fin m) k)) : List (Σ m : ℕ, Γ →* GL (Fin m) (AlgebraicClosure k)) :=
   L.map fun p => ⟨p.1, mapRep (algebraMap k (AlgebraicClosure k)) p.2⟩
 
+/- English proof (translation)
+The claim follows from `| [], g => by simp [liftL, cpL] | p :: L, g => by have ih := cpL_liftL L g simp only [liftL, List.map_cons] at ih ⊢ rw [cpL_cons, cpL_cons, ih, Polynomial.map_mul, ← Matrix.charpoly_map] rfl`.
+-/
 theorem cpL_liftL : ∀ (L : List (Σ m : ℕ, Γ →* GL (Fin m) k)) (g : Γ),
     cpL (liftL L) g = (cpL L g).map (algebraMap k (AlgebraicClosure k))
   | [], g => by simp [liftL, cpL]
@@ -349,11 +448,19 @@ theorem cpL_liftL : ∀ (L : List (Σ m : ℕ, Γ →* GL (Fin m) k)) (g : Γ),
     rw [cpL_cons, cpL_cons, ih, Polynomial.map_mul, ← Matrix.charpoly_map]
     rfl
 
+/- English proof (translation)
+Rewrite using `[liftL, List.map_map]`. Both sides reduce to the same expression.
+-/
 theorem fst_liftL (L : List (Σ m : ℕ, Γ →* GL (Fin m) k)) :
     (liftL L).map Sigma.fst = L.map Sigma.fst := by
   rw [liftL, List.map_map]
   rfl
 
+/- English proof (translation)
+Introduce `p hp`. Rewrite `hp` using `[liftL, List.mem_map]`. Use `hp.elim fun a ha => ?_` and prove the remaining obligations. Rewrite using `[← ha.2]`. Use `⟨(hL a ha.1).1, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `(hL a ha.1).2`. Unfold `AbsIrrSub at h`. Rewrite `h` using `[span_image_top]`. Conclude with `h`.
+-/
 theorem irr_liftL (L : List (Σ m : ℕ, Γ →* GL (Fin m) k)) (hL : ∀ p ∈ L, 1 ≤ p.1 ∧ AbsIrrSub p.2 ⊤) :
     ∀ p ∈ liftL L, 1 ≤ p.1 ∧ IsIrrSub p.2 ⊤ := by
   intro p hp
@@ -368,6 +475,11 @@ theorem irr_liftL (L : List (Σ m : ℕ, Γ →* GL (Fin m) k)) (hL : ∀ p ∈ 
 
 end Closure
 
+/- English proof (translation)
+Introduce `k _ Γ _ L L' hL hL' h`. Establish `hP` using `main (liftL L) (liftL L') (irr_liftL L hL) (irr_liftL L' hL') (fun g => by`. Rewrite using `[cpL_liftL, cpL_liftL]`. Conclude with `congrArg _ (h g))`. Rewrite `hP` using `[fst_liftL, fst_liftL]`.
+
+Conclude with `Multiset.coe_eq_coe.2 hP`.
+-/
 theorem ssRankUnique_holds : GlobalTheory.StringRepresentationDecomposition.SSRankUnique := by
   intro k _ Γ _ L L' hL hL' h
   have hP := main (liftL L) (liftL L') (irr_liftL L hL) (irr_liftL L' hL') (fun g => by

@@ -5,6 +5,9 @@ open MvPolynomial GlobalTheory.PsCo.Pc1 GlobalTheory.PsCo.Pc1.A
 
 namespace GlobalTheory.PsCo.Cw2a
 
+/- English proof (translation)
+Introduce `A _ _ D L la m J hD hsq`. Conclude with `GlobalTheory.dualProd_logDeriv_modSq (K := ℂ) D la m J hD hsq`.
+-/
 theorem t_dual_prod : T_dual_prod := by
   intro A _ _ D L la m J hD hsq
   exact GlobalTheory.dualProd_logDeriv_modSq (K := ℂ) D la m J hD hsq

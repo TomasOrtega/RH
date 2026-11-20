@@ -58,6 +58,9 @@ def GapPoly : Prop := ∀ (q n : ℕ), 2 ≤ q → ∀ (V : Type) [AddCommGroup 
     ((q : ℂ) ^ (n + 1 - j) - 1) * ((q : ℂ) ^ (((j : ℂ) * (((n + 1 : ℕ) : ℂ) - j)) / 2) * S.esymm j) * B (Z 0) (Z 0)) →
   ∀ z : ℂ, ‖z‖ < (q : ℝ) ^ (-(1 / 2) : ℝ) → S.count z ≤ S.count ((q : ℂ) * z)
 
+/- English proof (translation)
+Introduce `k _ _ n V Γ _ _ _ B red ρ t v S hD hE h0 z hz`. Take `⟨W, U, Z, a1, a2, a3, a4, a5, a6, a7⟩` from `h1 k n V Γ B red ρ t v _ hD hE.2`. Conclude with `h2 (Fintype.card k) n Fintype.one_lt_card V B W U Z S hD.pos hE.1 h0 (a4 ▸ hD.ne) a1 a2 a3 a5 (fun j hj => by rw [a4]; exact a6 j hj) (fun j hj => by rw [a4]; exact a7 j hj) z hz`.
+-/
 theorem gapAbs_of (h1 : GapOp) (h2 : GapPoly) : GapAbs := by
   intro k _ _ n V Γ _ _ _ B red ρ t v S hD hE h0 z hz
   obtain ⟨W, U, Z, a1, a2, a3, a4, a5, a6, a7⟩ := h1 k n V Γ B red ρ t v _ hD hE.2

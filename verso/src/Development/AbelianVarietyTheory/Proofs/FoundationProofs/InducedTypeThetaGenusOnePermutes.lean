@@ -13,19 +13,38 @@ namespace GlobalTheory.InducedType
 
 open Formalism.FrobeniusOrbits Formalism.MainNotions.UnusedSlot33.HK
 
+/- English proof (translation)
+The claim follows from `map_mul (H.gal).symm g g'`.
+-/
 theorem sigmaOf_mul {R : Ranks} (H : Host R) (g g' : R.GG) :
     H.sigmaOf (g * g') = H.sigmaOf g * H.sigmaOf g' := map_mul (H.gal).symm g g'
 
+/- English proof (translation)
+The claim follows from `map_one (H.gal).symm`.
+-/
 theorem sigmaOf_one {R : Ranks} (H : Host R) : H.sigmaOf 1 = 1 := map_one (H.gal).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem emb_apply {R : Ranks} (H : Host R) (g : R.GG) (x : H.E) : H.emb g x = H.φ₀ (H.sigmaOf g x) := rfl
 
 def galK {R : Ranks} (H : Host R) (g : R.Psi) : H.E ≃ₐ[H.K] H.E :=
   { (H.sigmaOf g : H.E ≃+* H.E) with
     commutes' := fun a => sigmaOf_fix_K H g g.2 a a.2 }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galK_apply {R : Ranks} (H : Host R) (g : R.Psi) (x : H.E) : galK H g x = H.sigmaOf g x := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `g g' h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `(H.gal).symm.injective` to reduce the goal to its premises. Conclude with `AlgEquiv.ext fun x => congrArg (fun f : H.E ≃ₐ[H.K] H.E => f x) h`.
+
+Introduce `s`. Use `⟨⟨H.galE (s.restrictScalars ℚ), ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[H.galE_mem_Psi_iff]`. Conclude with `s.commutes ⟨_, bE_mem H⟩`. Use `AlgEquiv.ext fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[galK_apply, sigmaOf_galE]`. Both sides reduce to the same expression.
+-/
 theorem galK_bijective {R : Ranks} (H : Host R) : Function.Bijective (galK H) := by
   constructor
   · intro g g' h
@@ -40,10 +59,16 @@ theorem galK_bijective {R : Ranks} (H : Host R) : Function.Bijective (galK H) :=
       rw [galK_apply, sigmaOf_galE]
       rfl
 
+/- English proof (translation)
+Introduce `τ a` and use `by change D.host.φ₀ (D.host.sigmaOf _ _) = _ rw [sigmaOf_fix_K D.host _ (D.eTau τ).2 _ a.2]`.
+-/
 theorem restrict_K (D : D7) : GL3Theta.InducedCMType D := fun τ a => by
   change D.host.φ₀ (D.host.sigmaOf _ _) = _
   rw [sigmaOf_fix_K D.host _ (D.eTau τ).2 _ a.2]
 
+/- English proof (translation)
+Introduce `y` and use `by have hE := D.host.hostE_isGalois have h := trace_eq_sum_automorphisms (K := D.host.K) (L := D.host.E) y change _ = D.host.φ₀ (algebraMap D.host.K D.host.E _) rw [h, map_sum] exact Fintype.sum_bijective (galK D.host ∘ D.eTau) ((galK_bijective D.host).comp D.eTau.bijective) _ _ …`.
+-/
 theorem sum_eq_trace (D : D7) : TraceMapNormalisation D := fun y => by
   have hE := D.host.hostE_isGalois
   have h := trace_eq_sum_automorphisms (K := D.host.K) (L := D.host.E) y
@@ -52,6 +77,9 @@ theorem sum_eq_trace (D : D7) : TraceMapNormalisation D := fun y => by
   exact Fintype.sum_bijective (galK D.host ∘ D.eTau) ((galK_bijective D.host).comp D.eTau.bijective) _ _
     (fun τ => rfl)
 
+/- English proof (translation)
+Introduce `M ρ hK hM` and use `by have h0 : ∀ x, D.host.φ₀ x ∈ M := fun x => by have := hM (D.eTau.symm 1) x rwa [embT, Equiv.apply_symm_apply, emb_apply, Subgroup.coe_one, sigmaOf_one] at this let ψ : D.host.E →+* ℂ := (ρ : M →+* ℂ).comp (D.host.φ₀.codRestrict M h0) have hψ : ∀ x, cj M ρ (D.host.φ₀ x) = ψ x : …`.
+-/
 theorem permutes (D : D7) : EmbeddingPermutesTypes D := fun M ρ hK hM => by
   have h0 : ∀ x, D.host.φ₀ x ∈ M := fun x => by
     have := hM (D.eTau.symm 1) x
@@ -71,6 +99,9 @@ theorem permutes (D : D7) : EmbeddingPermutesTypes D := fun M ρ hK hM => by
     Equiv.coe_mulLeft, Subgroup.coe_mul, emb_apply, emb_apply, sigmaOf_mul]
   rfl
 
+/- English proof (translation)
+Introduce `D` and use `⟨⟨restrict_K D, sum_eq_trace D⟩, permutes D⟩`.
+-/
 theorem induced_type : ∀ D : D7, admG1 D ∧ EmbeddingPermutesTypes D :=
   fun D => ⟨⟨restrict_K D, sum_eq_trace D⟩, permutes D⟩
 

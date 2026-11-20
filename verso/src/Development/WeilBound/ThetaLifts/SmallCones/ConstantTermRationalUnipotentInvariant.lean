@@ -27,6 +27,11 @@ section Gen
 variable {n₂ d₂ : ℕ} {X₂ : Spc F E n₂} {W₂ : Spc F E d₂} {M₂ : Model σ X₂ W₂} {e : Fn F n d →ₗ[ℂ] Fn F n₂ d₂}
   {ι : Matrix (Fin n) (Fin n₂) E} {ι' : Matrix (Fin d) (Fin d₂) E} {I : Set (Ten F E n d)}
 
+/- English proof (translation)
+Take `⟨⟨l, hl, hθ⟩, -, h⟩` from `hA F E σ B n d n₂ d₂ X W X₂ W₂ M M₂ hp.base hp.good hM₂`. Take `⟨l', hl', h'⟩` from `h ι ι' I e he (incM F U) l hl`. Establish `hc` using `((IsUWeilPair.isUSplitting hp.weil).cont l' hl' Φ hΦ).comp (f := fun u : unip σ W H' => ((1 : UA σ X.J), u.1)) (continuous_const.prodMk continuous_subtype_val)`. Use `hc.congr fun u => ?_` and prove the remaining obligations. Rewrite using `[Function.comp_apply, h' _ (om_mem hp _ hΦ), hθ _ (he.maps _ (rho_mem M hp.base.std _ (om_mem hp _ hΦ)))]`.
+
+Both sides reduce to the same expression.
+-/
 theorem tm_cont (hA : EvAdm) (hp : IsPair B M χX χW om r s r' s') (hM₂ : M₂.IsGood B.ψ) (he : IsEv B M M₂ ι ι' I e) (U) {Φ}
     (hΦ : Φ ∈ schA F (Fin n × Fin d)) : Continuous (tm B M om H' e U Φ) := by
   obtain ⟨⟨l, hl, hθ⟩, -, h⟩ := hA F E σ B n d n₂ d₂ X W X₂ W₂ M M₂ hp.base hp.good hM₂
@@ -37,15 +42,24 @@ theorem tm_cont (hA : EvAdm) (hp : IsPair B M χX χW om r s r' s') (hM₂ : M�
   rw [Function.comp_apply, h' _ (om_mem hp _ hΦ), hθ _ (he.maps _ (rho_mem M hp.base.std _ (om_mem hp _ hΦ)))]
   rfl
 
+/- English proof (translation)
+Rewrite using `[tm, rho_om hp _ _ hΦ, hi _ u.2 _ (rho_mem M hp.base.std _ hΦ)]`.
+-/
 theorem tm_eq (hp : IsPair B M χX χW om r s r' s') (hi : ∀ u ∈ unip σ W H', ∀ Φ ∈ schA F (Fin n × Fin d), e (om (1, u) Φ) = e Φ)
     (U) {Φ} (hΦ : Φ ∈ schA F (Fin n × Fin d)) (u : unip σ W H') :
     tm B M om H' e U Φ u = thetaSum F (e (M.co.rho B.ψ (incM F U * (mat u.1⁻¹)ᵀ) Φ)) := by
   rw [tm, rho_om hp _ _ hΦ, hi _ u.2 _ (rho_mem M hp.base.std _ hΦ)]
 
+/- English proof (translation)
+Rewrite using `[tm, tm, om_om]`. Simplify using the standard rewrite rules.
+-/
 theorem tm_mul (U) (Φ) (u v : unip σ W H') : tm B M om H' e U Φ (u * v) = tm B M om H' e U (om (1, v.1) Φ) u := by
   rw [tm, tm, om_om]
   simp
 
+/- English proof (translation)
+Rewrite using `[tm, show ((1 : UA σ X.J), (1 : unip σ W H').1) = 1 from rfl, map_one]`. Both sides reduce to the same expression.
+-/
 theorem tm_one (U) (Φ) : tm B M om H' e U Φ 1 = thetaSum F (e (M.co.rho B.ψ (incM F U) Φ)) := by
   rw [tm, show ((1 : UA σ X.J), (1 : unip σ W H').1) = 1 from rfl, map_one]
   rfl
@@ -63,6 +77,11 @@ structure MeanOK (μ : Measure (unip σ W H')) (𝓕 : Set (unip σ W H')) : Pro
 
 variable {μ : Measure (unip σ W H')} {𝓕 : Set (unip σ W H')}
 
+/- English proof (translation)
+Establish `: BorelSpace (UA σ W.J)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AE F E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Establish `: IsTopologicalGroup (UA σ W.J)` using `Subgroup.instIsTopologicalGroupSubtypeMem _`. Use `h.haar` as an intermediate fact. Use `h.right` as an intermediate fact.
+
+Use `h.cnt` as an intermediate fact. Establish `: Countable ((ratU σ W.J).subgroupOf (unip σ W H'))` using `Function.Injective.countable (f := fun x => (⟨x.1.1, x.2⟩ : ratU σ W.J)) fun a b e => Subtype.ext (Subtype.ext (congrArg (fun y : ratU σ W.J => y.1) e))`. Conclude with `mean_zero _ μ h.dom hl hc hr`.
+-/
 theorem MeanOK.zero (h : MeanOK σ W H' μ 𝓕) {f : unip σ W H' → ℂ} (hl : ∀ γ : unip σ W H', γ.1 ∈ ratU σ W.J → ∀ x, f (γ * x) = f x)
     {g} {c : ℂ} (hc : c ≠ 1) (hr : ∀ x, f (x * g) = c * f x) : ∫ x in 𝓕, f x ∂μ = 0 := by
   have : BorelSpace (UA σ W.J) := ⟨rfl⟩
@@ -76,6 +95,9 @@ theorem MeanOK.zero (h : MeanOK σ W H' μ 𝓕) {f : unip σ W H' → ℂ} (hl 
       Subtype.ext (Subtype.ext (congrArg (fun y : ratU σ W.J => y.1) e))
   exact mean_zero _ μ h.dom hl hc hr
 
+/- English proof (translation)
+Establish `: BorelSpace (UA σ W.J)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AE F E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Establish `: IsTopologicalGroup (UA σ W.J)` using `Subgroup.instIsTopologicalGroupSubtypeMem _`. Establish `hb' : BorelSpace (unip σ W H')` using `Subtype.borelSpace _`. Conclude with `@mean_hasSum (unip σ W H') _ _ hb' _ _ μ _ h.one _ hf _ hb hfb _ hs`.
+-/
 theorem MeanOK.sum (h : MeanOK σ W H' μ 𝓕) {ι : Type} [Countable ι] {f : ι → unip σ W H' → ℂ} (hf : ∀ i, Continuous (f i))
     {b : ι → ℝ} (hb : Summable b) (hfb : ∀ i x, ‖f i x‖ ≤ b i) {s : unip σ W H' → ℂ} (hs : ∀ x, HasSum (fun i => f i x) (s x)) :
     HasSum (fun i => ∫ x in 𝓕, f i x ∂μ) (∫ x in 𝓕, s x ∂μ) := by
@@ -85,16 +107,28 @@ theorem MeanOK.sum (h : MeanOK σ W H' μ 𝓕) {ι : Type} [Countable ι] {f : 
   have hb' : BorelSpace (unip σ W H') := Subtype.borelSpace _
   exact @mean_hasSum (unip σ W H') _ _ hb' _ _ μ _ h.one _ hf _ hb hfb _ hs
 
+/- English proof (translation)
+Rewrite using `[setIntegral_const, Measure.real, h.one, ENNReal.toReal_one, one_smul]`.
+-/
 theorem MeanOK.const (h : MeanOK σ W H' μ 𝓕) (c : ℂ) : ∫ _x in 𝓕, c ∂μ = c := by
   rw [setIntegral_const, Measure.real, h.one, ENNReal.toReal_one, one_smul]
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `DFunLike.ne_iff.1 (std_ne_one h)`. Conclude with `⟨a, by simpa using ha⟩`.
+-/
 theorem exists_psi {ψ : AddChar (AF F) ℂ} (h : IsStd ψ) : ∃ a, ψ a ≠ 1 := by
   obtain ⟨a, ha⟩ := DFunLike.ne_iff.1 (std_ne_one h)
   exact ⟨a, by simpa using ha⟩
 
+/- English proof (translation)
+Simplify using `using bf_smul_r (c := c) (J := J) 0 u 0`.
+-/
 theorem bf0 {R : Type} [CommRing R] {c : R →+* R} {J : Matrix (Fin n) (Fin n) R} (u) : bf c J u 0 = 0 := by
   simpa using bf_smul_r (c := c) (J := J) 0 u 0
 
+/- English proof (translation)
+Rewrite using `[incM_one, Matrix.one_mul, vv_mul_r]`.
+-/
 theorem mid_vv (a : Fin n → AE F E) (z : Fin d₁ → AE F E) : vecMulVec a (incM F H'.ι *ᵥ z) =
     incM F (1 : Matrix (Fin n) (Fin n) E) * vecMulVec a z * (incM F H'.ι)ᵀ := by
   rw [incM_one, Matrix.one_mul, vv_mul_r]
@@ -103,6 +137,9 @@ section Zero
 
 variable {M₁ : Model σ X W₁} {e₀ : Fn F n d →ₗ[ℂ] Fn F n d₁}
 
+/- English proof (translation)
+Take `⟨a, z, e⟩` from `unip_y h' (inv_mem u.2)`. Establish `h` using `hp.base.std`. Use `⟨vecMulVec (incV F x) z, ?_⟩` and prove the remaining obligations. Rewrite using `[tm_eq hp hi _ hΦ, incM_vv, vv_mul_r, e, Matrix.vecMulVec_add, Matrix.vecMulVec_add, add_assoc, ev_I h he ⟨a • incV F x, by rw [Matrix.vecMulVec_smul, Matrix.smul_vecMulVec]⟩ _ hΦ, mid_vv, ev_mid h he _ _ hΦ, theta_smul, theta_smul, norm_mul, norm_mul, std_norm h, std_norm h, one …`.
+-/
 theorem constant_term_norm_eq_theta (hp : IsPair B M χX χW om r s r' s') (h' : PG σ W W₁ H' (-1)) (he : IsEv B M M₁ 1 H'.ι (iso0 n H') e₀)
     (hi : ∀ u ∈ unip σ W H', ∀ Φ ∈ schA F (Fin n × Fin d), e₀ (om (1, u) Φ) = e₀ Φ) (x : Fin n → E) {Φ}
     (hΦ : Φ ∈ schA F (Fin n × Fin d)) (u : unip σ W H') : ∃ w, ‖tm B M om H' e₀ (vecMulVec x H'.y) Φ u‖ =
@@ -114,6 +151,11 @@ theorem constant_term_norm_eq_theta (hp : IsPair B M χX χW om r s r' s') (h' :
     ev_I h he ⟨a • incV F x, by rw [Matrix.vecMulVec_smul, Matrix.smul_vecMulVec]⟩ _ hΦ, mid_vv, ev_mid h he _ _ hΦ,
     theta_smul, theta_smul, norm_mul, norm_mul, std_norm h, std_norm h, one_mul, one_mul]
 
+/- English proof (translation)
+Take `⟨a, z, e⟩` from `unip_y_rat h' (inv_mem γ.2) (inv_mem hγ)`. Establish `h` using `hp.base.std`. Establish `hΨ` using `om_mem hp (1, u.1) hΦ`. Establish `e1 : vecMulVec (incV F x) (incV F (H'.ι *ᵥ z)) = incM F (1 : Matrix (Fin n) (Fin n) E) * incM F (vecMulVec x z) * (incM F H'.ι)ᵀ` using `by rw [← inc_mulVec, mid_vv, incM_vv]`. Rewrite using `[tm_mul, tm_eq hp hi _ hΨ, incM_vv, vv_mul_r, e, Matrix.vecMulVec_add, Matrix.vecMulVec_add, add_assoc, ev_I h he ⟨inclR (F := F) (AF F) a • incV F x, by rw [incV_smul, Matrix.vecMulVec_smul, Matrix.smul_vecMulVec]⟩ _ hΨ, ← incM_vv, ← incM_vv, ← incM_vv, ← incM_add, psi_rat h, on …`.
+
+Both sides reduce to the same expression.
+-/
 theorem constant_term_rational_unipotent_invariant (hp : IsPair B M χX χW om r s r' s') (h' : PG σ W W₁ H' (-1)) (hM₁ : M₁.IsGood B.ψ)
     (he : IsEv B M M₁ 1 H'.ι (iso0 n H') e₀)
     (hi : ∀ u ∈ unip σ W H', ∀ Φ ∈ schA F (Fin n × Fin d), e₀ (om (1, u) Φ) = e₀ Φ) (x : Fin n → E) {Φ}
@@ -130,6 +172,15 @@ theorem constant_term_rational_unipotent_invariant (hp : IsPair B M χX χW om r
     ← incM_vv, psi_rat h, one_smul, theta_rho_rat h hM₁]
   rfl
 
+/- English proof (translation)
+Establish `h` using `hp.base.std`. Take `⟨a, ha⟩` from `exists_psi h`. Establish `hq : σ (form σ X.J x x) = form σ X.J x x`. Rewrite using `[PositivityTheory.ThKG.Tow.Pln.form_swap hp.base.cm (ε := 1) (fun i j => by rw [hp.herm.herm, one_mul]), one_mul]`. Use `set c : AE F E := algebraMap (AF F) (AE F E) a * inclR (F := F) (AF F) (form σ X.J x x)⁻¹ with hc`.
+
+Take `⟨g, hg⟩` from `exists_eich h' 0 c (by`. Rewrite using `[hc, map_mul, AlgHom.commutes, cA_inc, map_inv₀ σ, hq, Matrix.mulVec_zero, bf0]`. Use `push_cast`. Use the proof step `ring)`. Use `hm.zero (constant_term_rational_unipotent_invariant hp h' hM₁ he hi x hΦ) (g := g) ha fun u => ?_` and prove the remaining obligations.
+
+Take `⟨b, z, e⟩` from `unip_y h' (inv_mem u.2)`. Establish `e2 : mat (u * g).1⁻¹ *ᵥ incV F H'.y = c • incV F H'.x + mat u.1⁻¹ *ᵥ incV F H'.y`. Rewrite using `[Subgroup.coe_mul, mul_inv_rev, Fr.mat_mul, ← Matrix.mulVec_mulVec, hg, eich_apply, e]`. Simplify using `only [Matrix.mulVec_zero, bf_add_l, bf_smul_l, h'.ad.xx, h'.ad.ix, h'.ad.yx, mul_zero, zero_add, h'.ad.ee, one_smul, bf0, neg_zero, zero_smul, add_zero]`. Conclude with `add_comm _ _`.
+
+Rewrite using `[tm_eq hp hi _ hΦ, tm_eq hp hi _ hΦ, incM_vv, vv_mul_r, vv_mul_r, e2, Matrix.vecMulVec_add, ev_I h he ⟨c • incV F x, by rw [Matrix.vecMulVec_smul, Matrix.smul_vecMulVec]⟩ _ hΦ, theta_smul, half_sy hp.base (a := a)]`. Rewrite using `[hT_vv, e, bf_inc]`. Simplify using `only [bf_add_r, bf_smul_l, bf_smul_r, h'.ad.xx, h'.ad.xi, h'.ad.xy, mul_zero, zero_add, mul_one]`. Rewrite using `[hc, mul_left_comm, ← map_mul, mul_inv_cancel₀ hx, map_one, mul_one]`.
+-/
 theorem constant_term_anisotropic_integral_zero (hm : MeanOK σ W H' μ 𝓕) (hp : IsPair B M χX χW om r s r' s') (h' : PG σ W W₁ H' (-1)) (hM₁ : M₁.IsGood B.ψ)
     (he : IsEv B M M₁ 1 H'.ι (iso0 n H') e₀)
     (hi : ∀ u ∈ unip σ W H', ∀ Φ ∈ schA F (Fin n × Fin d), e₀ (om (1, u) Φ) = e₀ Φ) {x : Fin n → E} (hx : form σ X.J x x ≠ 0) {Φ}
@@ -162,6 +213,11 @@ section Cone
 
 variable {M₂ : Model σ X₁ W₁} {e : Fn F n d →ₗ[ℂ] Fn F n₁ d₁}
 
+/- English proof (translation)
+Take `⟨a, z, e1⟩` from `unip_y h' (inv_mem u.2)`. Take `⟨b, e2⟩` from `(Fr.mem_unip.1 (inv_mem u.2)).2 (incV F w)`. Rewrite using `[tm_eq hp hi _ hΦ, tm_one, ← theta_smul, ← ev_I hp.base.std he ?_ _ hΦ, sub_add_cancel]`. Use `⟨a • incV F H.x + b • incV F H.y, z, ?_⟩` and prove the remaining obligations. Rewrite using `[vA_apply, incM_add, incM_vv, incM_vv, Matrix.add_mul, vv_mul_r, vv_mul_r, ← inc_mulVec, e1, e2]`.
+
+Simplify using `only [Matrix.vecMulVec_add, Matrix.add_vecMulVec, Matrix.vecMulVec_smul, Matrix.smul_vecMulVec]`. Normalize the expressions using the abelian group laws.
+-/
 theorem tA_eig (hp : IsPair B M χX χW om r s r' s') (h' : PG σ W W₁ H' (-1)) (he : IsEv B M M₂ H.ι H'.ι (sumA H H') e)
     (hi : ∀ u ∈ unip σ W H', ∀ Φ ∈ schA F (Fin n × Fin d), e (om (1, u) Φ) = e Φ) (w : Fin d₁ → E) {Φ}
     (hΦ : Φ ∈ schA F (Fin n × Fin d)) (u : unip σ W H') : tm B M om H' e (vA H.y H'.y H'.ι (H.x, w)) Φ u =
@@ -175,6 +231,23 @@ theorem tA_eig (hp : IsPair B M χX χW om r s r' s') (h' : PG σ W W₁ H' (-1)
   simp only [Matrix.vecMulVec_add, Matrix.add_vecMulVec, Matrix.vecMulVec_smul, Matrix.smul_vecMulVec]
   abel
 
+/- English proof (translation)
+Establish `hψ` using `hp.base.std`. Take `⟨a, ha⟩` from `exists_psi hψ`. Choose the witnesses or unpack the hypotheses as in `⟨z₀, hz₀⟩ : ∃ z, bf σ.toRingHom W.J (H'.ι *ᵥ z) (H'.ι *ᵥ w) ≠ 0 := by`. Assume the negation of the conclusion as `h0`. Use `push Not at h0`.
+
+Conclude with `hw (h'.nd_low w h0)`. Use `set i2 : AE F E := algebraMap (AF F) (AE F E) (⅟2) with hi2`. Establish `h2 : i2 * 2 = 1` using `by rw [hi2, ← map_ofNat (algebraMap (AF F) (AE F E)) 2, ← map_mul, invOf_mul_self, map_one]`. Establish `hc2 : cA σ i2 = i2` using `AlgHom.commutes _ _`. Use `set z : Fin d₁ → AE F E := (i2 * algebraMap (AF F) (AE F E) a) • incV F ((bf σ.toRingHom W.J (H'.ι *ᵥ z₀) (H'.ι *ᵥ w))⁻¹ • z₀) with hz`.
+
+Establish `hb : bf (cA σ).toRingHom (incM F W.J) (incM F H'.ι *ᵥ z) (incM F H'.ι *ᵥ incV F w) = i2 * algebraMap (AF F) (AE F E) a`. Rewrite using `[hz, Matrix.mulVec_smul, bf_smul_l, inc_mulVec, inc_mulVec, bf_inc, Matrix.mulVec_smul]`. Rewrite using `[show form σ W.J _ _ = 1 from (bf_smul_l (c := σ.toRingHom) _ _ _).trans (inv_mul_cancel₀ hz₀), map_one, mul_one]`. Establish `hb' : bf (cA σ).toRingHom (incM F W.J) (incM F H'.ι *ᵥ incV F w) (incM F H'.ι *ᵥ z) = -(i2 * algebraMap (AF F) (AE F E) a)`. Rewrite using `[h'.ad.symm, hb, map_mul]`.
+
+Express the relevant statement in the definitionally equal form `_ * (cA σ _ * cA σ _) = _`. Rewrite using `[hc2, AlgHom.commutes]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `clear_value z`.
+
+Take `⟨g, hg⟩` from `exists_eich h' z (-(i2 * bf (cA σ).toRingHom (incM F W.J) (incM F H'.ι *ᵥ z) (incM F H'.ι *ᵥ z))) (by`. Use `h'.ad.symm (incM F H'.ι *ᵥ z) (incM F H'.ι *ᵥ z)` as an intermediate fact. Rewrite using `[map_neg, map_mul, hc2]`. Express the relevant statement in the definitionally equal form `_ = _ * cA σ _ at this`. Take the linear combination `i2 * this - bf (cA σ).toRingHom (incM F W.J) (incM F H'.ι *ᵥ z) (incM F H'.ι *ᵥ z) * h2)`.
+
+Establish `hgc : tm B M om H' e (vA H.y H'.y H'.ι (H.x, w)) Φ g = B.ψ a * tm B M om H' e (vA H.y H'.y H'.ι (H.x, w)) Φ 1`. Rewrite using `[tA_eig hp h' he hi w hΦ g, half_sy hp.base (a := a)]`. Rewrite using `[vA_apply, incM_add, incM_vv, incM_vv, Matrix.add_mul, vv_mul_r, vv_mul_r, ← inc_mulVec, hg, eich_y h'.ad, eich_i h'.ad, hb', sub_eq_add_neg, ← neg_one_smul (AE F E) (vecMulVec _ _ + vecMulVec _ _)]`. Simplify using `only [hT_add_l, hT_add_r, hT_smul_l, hT_vv, bf_add_l, bf_smul_l, h.ad.xx, h.ad.xy, h.ad.yx, h.ad.yy, h'.ad.xi, h'.ad.yi, h'.ad.xy, h'.ad.yy, h'.ad.iy, hb]`. Use `push_cast`.
+
+Take the linear combination `algebraMap (AF F) (AE F E) a * h2`. Use `hm.zero (fun γ hγ u => ?_) (g := g) ha fun u => ?_` and prove the remaining obligations. Take `⟨D, hD⟩` from `Fr.mem_ratU.1 (inv_mem hγ)`. Rewrite using `[tm_mul, tA_eig hp h' he hi w (om_mem hp _ hΦ), hD, show ∀ U : Matrix (Fin n) (Fin d) E, incM F U * (incM F D)ᵀ - incM F U = incM F (U * Dᵀ - U) from fun U => by`. Simplify using `only [incM, Matrix.map_sub _ (map_sub _), Matrix.map_mul, Matrix.transpose_map],`.
+
+Use `psi_rat hψ, one_mul, ← tm_mul, one_mul]`. Rewrite using `[tm_mul, tA_eig hp h' he hi w (om_mem hp _ hΦ), ← tm_mul, one_mul, hgc, tA_eig hp h' he hi w hΦ u]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tA_zero (hm : MeanOK σ W H' μ 𝓕) (hp : IsPair B M χX χW om r s r' s') (h : PG σ X X₁ H 1) (h' : PG σ W W₁ H' (-1))
     (he : IsEv B M M₂ H.ι H'.ι (sumA H H') e)
     (hi : ∀ u ∈ unip σ W H', ∀ Φ ∈ schA F (Fin n × Fin d), e (om (1, u) Φ) = e Φ) {w : Fin d₁ → E} (hw : w ≠ 0) {Φ}

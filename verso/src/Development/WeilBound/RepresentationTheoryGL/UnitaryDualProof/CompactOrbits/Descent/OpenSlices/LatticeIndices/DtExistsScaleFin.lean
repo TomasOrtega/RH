@@ -29,6 +29,9 @@ def LatO (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : Submodule 𝒪[k] (Matr
             mul_le_mul' h1 (hv i j)
         _ = valuation k (pi k) ^ 0 := one_mul _
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_LatO {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {x : Matrix (Fin n) (Fin n) k} :
     x ∈ LatO Z ↔ x ∈ Lat Z 0 := Iff.rfl
 
@@ -51,12 +54,21 @@ instance (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : Module.IsTorsionFree �
     · exact Or.inl (Subtype.ext h1)
     · exact Or.inr (Subtype.ext h1)
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : Module.Free 𝒪[k] (LatO Z) := inferInstance
 
+/- English proof (translation)
+The claim follows from `(Subalgebra.mem_centralizer_iff k).2 fun a ha => hx.1 a ha`.
+-/
 theorem LatO_le (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {x : Matrix (Fin n) (Fin n) k} (hx : x ∈ LatO Z) :
     x ∈ Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k)) :=
   (Subalgebra.mem_centralizer_iff k).2 fun a ha => hx.1 a ha
 
+/- English proof (translation)
+Use `choose N hN using fun i => exists_scale (c i)`. Use `⟨∑ i, N i, fun i => le_trans ?_ (hN i)⟩` and prove the remaining obligations. Establish `h1 : valuation k (pi k) ^ (∑ i, N i) ≤ valuation k (pi k) ^ N i` using `pow_le_pow_right_of_le_one' (GLnLocal.valuation_uniformizer_lt_one k).le (Finset.single_le_sum (fun j _ => Nat.zero_le (N j)) (Finset.mem_univ i))`. Conclude with `mul_le_mul_left h1 _`.
+-/
 theorem dt_exists_scale_fin {ι : Type*} [Fintype ι] (c : ι → k) :
     ∃ N : ℕ, ∀ i, valuation k (pi k) ^ N * valuation k (c i) ≤ 1 := by
   choose N hN using fun i => exists_scale (c i)
@@ -66,8 +78,38 @@ theorem dt_exists_scale_fin {ι : Type*} [Fintype ι] (c : ι → k) :
       (Finset.single_le_sum (fun j _ => Nat.zero_le (N j)) (Finset.mem_univ i))
   exact mul_le_mul_left h1 _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dt_smul_coe_O (o : 𝒪[k]) (x : Matrix (Fin n) (Fin n) k) : o • x = (o : k) • x := rfl
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis 𝒪[k] (LatO Z)`. Set `v : Module.Free.ChooseBasisIndex 𝒪[k] (LatO Z) → Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))` to `fun i => ⟨(b i : Matrix (Fin n) (Fin n) k), LatO_le Z (b i).2⟩`. Establish `hpi : pi k ≠ 0` using `fun h => valuation_pi_ne_zero (k := k) (by rw [h, map_zero])`. Establish `hli : LinearIndependent k v`. Rewrite using `[Fintype.linearIndependent_iff]`.
+
+Introduce `c hc i`. Take `⟨N, hN⟩` from `dt_exists_scale_fin c`. Set `d : _ → 𝒪[k]` to `fun i => ⟨pi k ^ N * c i, by`. Rewrite using `[Valuation.mem_integer_iff, map_mul, map_pow]`. Conclude with `hN i⟩`.
+
+Establish `hd : ∑ i, d i • b i = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hc'` using `congrArg Subtype.val hc`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Submodule.coe_zero] at hc' ⊢`. Simplify using `only [dt_smul_coe_O, d]`.
+
+Repeatedly rewrite using `[mul_smul]`. Rewrite using `[← Finset.smul_sum]`. Establish `: ∑ x, c x • (b x : Matrix (Fin n) (Fin n) k) = 0`. Simplify `hc'` using `[AddSubmonoidClass.coe_finset_sum, SetLike.val_smul, v]`. Rewrite using `[this, smul_zero]`.
+
+Use `(Fintype.linearIndependent_iff.mp b.linearIndependent) d hd i` as an intermediate fact. Establish `h2 : pi k ^ N * c i = 0` using `congrArg Subtype.val this`. Conclude with `(mul_eq_zero.mp h2).resolve_left (pow_ne_zero _ hpi)`. Establish `hsp : ⊤ ≤ Submodule.span k (Set.range v)`. Introduce and unpack `x -`.
+
+Take `⟨N, hN⟩` from `dt_exists_scale_fin (fun p : Fin n × Fin n => (x : Matrix (Fin n) (Fin n) k) p.1 p.2)`. Establish `hy : pi k ^ N • (x : Matrix (Fin n) (Fin n) k) ∈ LatO Z`. Rewrite using `[mem_LatO, mem_Lat]`. Use `⟨fun a ha => ?_, fun i j => ?_⟩` and prove the remaining obligations. Establish `hx` using `(Subalgebra.mem_centralizer_iff k).1 x.2 a ha`.
+
+Rewrite using `[mul_smul_comm, smul_mul_assoc, hx]`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul, map_pow, pow_zero]`. Conclude with `hN (i, j)`. Set `y : LatO Z` to `⟨_, hy⟩`. Establish `hyx : (x : Matrix (Fin n) (Fin n) k) = ∑ i, ((pi k ^ N)⁻¹ * (b.repr y i : k)) • (b i : Matrix (Fin n) (Fin n) k)`.
+
+Establish `h` using `congrArg Subtype.val (b.sum_repr y)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, dt_smul_coe_O] at h`. Repeatedly rewrite using `[mul_smul]`. Rewrite using `[← Finset.smul_sum, h]`. Use `show (x : Matrix (Fin n) (Fin n) k) = (pi k ^ N)⁻¹ • (pi k ^ N • (x : Matrix (Fin n) (Fin n) k))`.
+
+Rewrite using `[smul_smul, inv_mul_cancel₀ (pow_ne_zero _ hpi), one_smul]`. Establish `hx : x = ∑ i, ((pi k ^ N)⁻¹ * (b.repr y i : k)) • v i`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hyx]`. Simplify using `[v]`.
+
+Rewrite using `[hx]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Set `bB` to `Module.Basis.mk hli hsp`. Establish `hbB : ∀ i, bB i = v i` using `fun i => Module.Basis.mk_apply hli hsp i`. Establish `key : ∀ j, F (v j) = ∑ i, algebraMap 𝒪[k] k (LinearMap.toMatrix b b f i j) • v i`.
+
+Introduce `j`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1 : ((F (v j) : _) : Matrix (Fin n) (Fin n) k) = (f (b j) : _)` using `hf (b j)`. Establish `h2` using `congrArg Subtype.val (b.sum_repr (f (b j)))`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, dt_smul_coe_O] at h2`.
+
+Rewrite using `[h1, ← h2]`. Simplify using `only [v, LinearMap.toMatrix_apply, AddSubmonoidClass.coe_finset_sum, SetLike.val_smul]`. Both sides reduce to the same expression. Establish `hM : LinearMap.toMatrix bB bB F = (LinearMap.toMatrix b b f).map (algebraMap 𝒪[k] k)`. Use extensionality with `i j`.
+
+Rewrite using `[LinearMap.toMatrix_apply, hbB, key, Matrix.map_apply]`. Repeatedly rewrite using `[← hbB]`. Rewrite using `[bB.repr_sum_self]`. Rewrite using `[← LinearMap.det_toMatrix bB, hM, ← LinearMap.det_toMatrix b f, RingHom.map_det, RingHom.mapMatrix_apply]`.
+-/
 theorem det_transfer (Z : Subalgebra k (Matrix (Fin n) (Fin n) k))
     (F : Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k)) →ₗ[k]
       Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k)))
@@ -139,6 +181,13 @@ theorem det_transfer (Z : Subalgebra k (Matrix (Fin n) (Fin n) k))
     rw [bB.repr_sum_self]
   rw [← LinearMap.det_toMatrix bB, hM, ← LinearMap.det_toMatrix b f, RingHom.map_det, RingHom.mapMatrix_apply]
 
+/- English proof (translation)
+Set `φ : LatO Z →+ Lat Z 0` to `{ toFun := fun x => ⟨x.1, x.2⟩, map_zero' := rfl, map_add' := fun _ _ => rfl }`. Establish `hφ : Function.Surjective φ` using `fun x => ⟨⟨x.1, x.2⟩, rfl⟩`. Establish `e : (H.addSubgroupOf (Lat Z 0)).comap φ = (LinearMap.range f).toAddSubgroup`. Use extensionality with `x`. Rewrite using `[AddSubgroup.mem_comap, AddSubgroup.mem_addSubgroupOf, hH, Submodule.mem_toAddSubgroup, LinearMap.mem_range]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y, Subtype.ext hy⟩`. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y, congrArg Subtype.val hy⟩`.
+
+Rewrite using `[AddSubgroup.relIndex, ← AddSubgroup.index_comap_of_surjective _ hφ, e]`. Both sides reduce to the same expression.
+-/
 theorem relIndex_eq_card (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (H : AddSubgroup (Matrix (Fin n) (Fin n) k))
     (f : LatO Z →ₗ[𝒪[k]] LatO Z) (hH : ∀ x, x ∈ H ↔ ∃ y, (f y : Matrix (Fin n) (Fin n) k) = x) :
     H.relIndex (Lat Z 0) = Nat.card (LatO Z ⧸ LinearMap.range f) := by
@@ -155,6 +204,11 @@ theorem relIndex_eq_card (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (H : AddS
   rw [AddSubgroup.relIndex, ← AddSubgroup.index_comap_of_surjective _ hφ, e]
   rfl
 
+/- English proof (translation)
+Establish `: Finite (𝒪[k] ⧸ Ideal.span {c})`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[k]`. Take `⟨m, hm⟩` from `IsDiscreteValuationRing.ideal_eq_span_pow_irreducible (s := Ideal.span {c}) (by rw [Ne, Ideal.span_singleton_eq_bot]; exact hc) hϖ`. Rewrite using `[IsLocalRing.finite_quotient_iff]`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hm, hϖ.maximalIdeal_eq, Ideal.span_singleton_pow]`. Conclude with `Nat.card_pos.ne'`.
+-/
 theorem card_quot_ne_zero {c : 𝒪[k]} (hc : c ≠ 0) : Nat.card (𝒪[k] ⧸ Ideal.span {c}) ≠ 0 := by
   have : Finite (𝒪[k] ⧸ Ideal.span {c}) := by
     obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[k]
@@ -165,6 +219,33 @@ theorem card_quot_ne_zero {c : 𝒪[k]} (hc : c ≠ 0) : Nat.card (𝒪[k] ⧸ I
     rw [hm, hϖ.maximalIdeal_eq, Ideal.span_singleton_pow]
   exact Nat.card_pos.ne'
 
+/- English proof (translation)
+Take `⟨c, -, hc⟩` from `exists_shift Z g hg`. Use `⟨c, fun r hr => ?_⟩` and prove the remaining obligations. Establish `hg' : g⁻¹ ∈ Gz Z` using `(GzS Z).inv_mem hg`. Establish `hL : Lat Z r = (Lat Z 0).map (smulA (pi k ^ r))` using `by simpa using Lat_add Z r 0`. Establish `hmem : ∀ y ∈ Lat Z 0, pi k ^ r • conjA g⁻¹ y ∈ Lat Z 0`.
+
+Introduce `y hy`. Establish `h1 : smulA (pi k ^ r) y ∈ Lat Z ((r - c) + c)`. Rewrite using `[show r - c + c = r by omega, hL]; exact ⟨y, hy, rfl⟩`. Establish `h2` using `(hc _ _ h1).2`. Rewrite `h2` using `[conjA_smulA]`.
+
+Conclude with `Lat_anti Z (Nat.zero_le _) h2`. Set `ϖ : 𝒪[k]` to `GLnLocal.uniformizer k`. Establish `hϖ0 : ϖ ≠ 0` using `(GLnLocal.irreducible_uniformizer k).ne_zero`. Establish `hϖk : ((ϖ ^ r : 𝒪[k]) : k) = pi k ^ r` using `by simp [ϖ]`. Set `f1 : LatO Z →ₗ[𝒪[k]] LatO Z` to `(ϖ ^ r) • LinearMap.id`.
+
+Set `f2 : LatO Z →ₗ[𝒪[k]] LatO Z` to `{ toFun := fun y => ⟨pi k ^ r • conjA g⁻¹ y, hmem y y.2⟩ map_add' := fun x y => Subtype.ext (by simp [mul_add, add_mul, smul_add]) map_smul' := fun a y => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `pi k ^ r • conjA g⁻¹ ((a : k) • (y : Matrix (Fin n) (Fin n) k)) = (a : k) • (pi k ^ r • conjA g⁻¹ (y : Matrix (Fin n) (Fin n) k))`. Rewrite using `[← smulA_apply (a : k), conjA_smulA, smulA_apply, smul_comm]) }`. Set `B` to `Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))`. Set `F1 : B →ₗ[k] B` to `(pi k ^ r) • LinearMap.id`.
+
+Set `F2 : B →ₗ[k] B` to `(pi k ^ r) • PositivityTheory.RgUd.T.Desc.UniPf.conjL Z g⁻¹ hg'`. Establish `t1` using `det_transfer Z F1 f1 (fun x => by`. Express the relevant statement in the definitionally equal form `pi k ^ r • (x : Matrix (Fin n) (Fin n) k) = ((ϖ ^ r : 𝒪[k]) : k) • (x : Matrix (Fin n) (Fin n) k)`. Rewrite using `[hϖk])`. Establish `t2` using `det_transfer Z F2 f2 (fun x => rfl)`.
+
+Establish `dF : LinearMap.det F1 = LinearMap.det F2`. Simplify using `only [F1, F2, LinearMap.det_smul, LinearMap.det_id, PositivityTheory.RgUd.T.Desc.UniPf.det_conjL Z hZ g⁻¹ hg']`. Establish `df : LinearMap.det f1 = LinearMap.det f2` using `Subtype.val_injective (t1.trans (dF.trans t2.symm))`. Establish `hf1 : LinearMap.det f1 ≠ 0`. Simplify using `only [f1, LinearMap.det_smul, LinearMap.det_id, mul_one]`.
+
+Conclude with `pow_ne_zero _ (pow_ne_zero _ hϖ0)`. Establish `i1 : (Lat Z r).relIndex (Lat Z 0) = Nat.card (LatO Z ⧸ LinearMap.range f1)`. Use `relIndex_eq_card Z _ f1 fun x => ?_` and prove the remaining obligations. Rewrite using `[hL, AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy, rfl⟩`. Use `⟨⟨y, hy⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((ϖ ^ r : 𝒪[k]) : k) • y = smulA (pi k ^ r) y`. Rewrite using `[hϖk]`. Both sides reduce to the same expression.
+
+Introduce and unpack `⟨y, rfl⟩`. Use `⟨y, y.2, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `smulA (pi k ^ r) (y : Matrix (Fin n) (Fin n) k) = ((ϖ ^ r : 𝒪[k]) : k) • (y : Matrix (Fin n) (Fin n) k)`. Rewrite using `[hϖk]`. Both sides reduce to the same expression.
+
+Establish `i2 : ((Lat Z r).map (conjA g⁻¹)).relIndex (Lat Z 0) = Nat.card (LatO Z ⧸ LinearMap.range f2)`. Use `relIndex_eq_card Z _ f2 fun x => ?_` and prove the remaining obligations. Rewrite using `[hL, AddSubgroup.map_map, AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Use `⟨⟨y, hy⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pi k ^ r • conjA g⁻¹ y = conjA g⁻¹ (smulA (pi k ^ r) y)`. Rewrite using `[conjA_smulA]`. Both sides reduce to the same expression. Introduce and unpack `⟨y, rfl⟩`.
+
+Use `⟨y, y.2, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `conjA g⁻¹ (smulA (pi k ^ r) (y : Matrix (Fin n) (Fin n) k)) = pi k ^ r • conjA g⁻¹ (y : Matrix (Fin n) (Fin n) k)`. Rewrite using `[conjA_smulA]`. Both sides reduce to the same expression. Establish `c1` using `PI.NGStepBBW.card_coker_endo f1 hf1`.
+
+Establish `c2` using `PI.NGStepBBW.card_coker_endo f2 (df ▸ hf1)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[i1, i2, c1, c2, df]`. Rewrite using `[i1, c1]`. Conclude with `card_quot_ne_zero hf1`.
+-/
 theorem core [CharZero k] (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z) (g : GL (Fin n) k)
     (hg : g ∈ Gz Z) : ∃ c : ℕ, ∀ r ≥ c, ((Lat Z r).map (conjA g⁻¹)).relIndex (Lat Z 0) = (Lat Z r).relIndex (Lat Z 0) ∧
       (Lat Z r).relIndex (Lat Z 0) ≠ 0 := by

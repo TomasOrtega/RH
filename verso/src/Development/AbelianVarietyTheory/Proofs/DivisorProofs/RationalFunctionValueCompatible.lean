@@ -9,6 +9,15 @@ open scoped Classical
 
 namespace GlobalTheory.RatValPull
 
+/- English proof (translation)
+Establish `hl : IsLocalHom (CommRingCat.Hom.hom (CommRingCat.ofHom φ : X.presheaf.stalk (genericPoint X) ⟶ G.presheaf.stalk (genericPoint G)))` using `inferInstanceAs (IsLocalHom φ)`. Establish `key : ∀ (g g' : Spec (G.presheaf.stalk (genericPoint G)) ⟶ X) (e : g = g') (hg : g (IsLocalRing.closedPoint _) ∈ U) (hg' : g' (IsLocalRing.closedPoint _) ∈ U), X.presheaf.germ U _ hg ≫ Scheme.stalkClosedPointTo g = X.presheaf.germ U _ hg' ≫ Scheme.stalkClosedPointTo g'`. Introduce and unpack `g _ rfl _ _`. Both sides reduce to the same expression. Establish `h₀ : G.fromSpecStalk (genericPoint G) (IsLocalRing.closedPoint _) ∈ π ⁻¹ᵁ U`.
+
+Rewrite using `[Scheme.fromSpecStalk_closedPoint]`. Conclude with `h'`. Establish `h₁ : (G.fromSpecStalk (genericPoint G) ≫ π) (IsLocalRing.closedPoint _) ∈ U` using `h₀`. Establish `h₂` using `h₁`. Rewrite `h₂` using `[φs]`.
+
+Establish `e` using `key _ _ φs h₁ h₂`. Establish `e₂` using `@Scheme.germ_stalkClosedPointTo_Spec_fromSpecStalk X (G.presheaf.stalk (genericPoint G)) _ (genericPoint X) (CommRingCat.ofHom φ) hl U h₂`. Establish `e₁ : X.presheaf.germ U _ h₁ ≫ Scheme.stalkClosedPointTo (G.fromSpecStalk (genericPoint G) ≫ π) = π.app U ≫ G.presheaf.germ (π ⁻¹ᵁ U) _ h'`. Rewrite using `[Scheme.stalkClosedPointTo_comp, Scheme.stalkClosedPointTo_fromSpecStalk]`. Use `erw [Scheme.Hom.germ_stalkMap_assoc π U _ h₀]`.
+
+Use `congr 1`. Conclude with `G.presheaf.germ_stalkSpecializes _ (specializes_of_eq Scheme.fromSpecStalk_closedPoint.symm)`. Establish `e₃` using `(e₁.symm.trans e).trans e₂`. Conclude with `(congrArg (fun m => CommRingCat.Hom.hom m a) e₃).symm`.
+-/
 theorem map_fnOf {X G : Scheme.{0}} [IsIntegral X] [IsIntegral G] (π : G ⟶ X)
     (φ : X.functionField →+* G.functionField)
     (φs : G.fromSpecStalk (genericPoint G) ≫ π = spMap φ ≫ X.fromSpecStalk (genericPoint X))
@@ -41,6 +50,15 @@ theorem map_fnOf {X G : Scheme.{0}} [IsIntegral X] [IsIntegral G] (π : G ⟶ X)
   have e₃ := (e₁.symm.trans e).trans e₂
   exact (congrArg (fun m => CommRingCat.Hom.hom m a) e₃).symm
 
+/- English proof (translation)
+Introduce `k _ X G _ _ qX πG φ φs σ z y hy f`. Establish `hu : under y = πG (under z)`. Express the relevant statement in the definitionally equal form `y.1 _ = _`. Rewrite using `[hy]`. Both sides reduce to the same expression.
+
+Establish `hm : ∀ {U : X.Opens}, under y ∈ U → under z ∈ πG ⁻¹ᵁ U` using `fun {U} hU => by`. Rewrite `hU` using `[hu]`. Conclude with `hU`. Use `⟨fun hf => ?_, fun hf => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, a, rfl⟩` from `hf.exists_fnOf`.
+
+Rewrite using `[map_fnOf πG φ φs U _ (gen_mem (hm hU))]`. Use `⟨regAt_fnOf (hm hU) _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[ratVal_fnOf (mem_ptsIn.2 (hm hU)), ratVal_fnOf (mem_ptsIn.2 hU)]`. Express the relevant statement in the definitionally equal form `valR z.1 _ _ = valR y.1 _ _`. Rewrite using `[hy]`.
+
+Conclude with `(GlobalTheory.Points.valR_comp z.1 πG U a).symm`. Take `⟨U, hU, a, rfl⟩` from `hf.regAt.exists_fnOf`. Rewrite using `[map_fnOf πG φ φs U _ (gen_mem (hm hU)), unitAt_fnOf_iff (hm hU), ← Scheme.preimage_basicOpen]`. Conclude with `hm ((unitAt_fnOf_iff hU _ a).1 hf)`.
+-/
 theorem regAt_ratVal_pull : ∀ {k : Type} [CommRing k] {X G : Scheme.{0}} [IsIntegral X] [IsIntegral G] (qX : X ⟶ Sp k) (πG : G ⟶ X)
     (φ : X.functionField →+* G.functionField)
     (φs : G.fromSpecStalk (genericPoint G) ≫ πG = spMap φ ≫ X.fromSpecStalk (genericPoint X))

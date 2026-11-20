@@ -12,10 +12,16 @@ variable {n : ℕ}
 def dp (p : Fin n → Fin n) (α β : Fin n → ℂ) : Matrix (Fin n) (Fin n) ℂ :=
   Matrix.of fun i j => (if j = i then α i else 0) + (if j = p i then β i else 0)
 
+/- English proof (translation)
+Simplify using `[dp, Matrix.mul_apply, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem dp_mul_apply (p : Fin n → Fin n) (α β : Fin n → ℂ) (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     (dp p α β * X) i j = α i * X i j + β i * X (p i) j := by
   simp [dp, Matrix.mul_apply, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[dp_mul_apply]`. Simplify using `only [dp, Matrix.of_apply, hp]`. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem dp_mul_dp {p : Fin n → Fin n} (hp : ∀ i, p (p i) = i) (α β α' β' : Fin n → ℂ) :
     dp p α β * dp p α' β' =
       dp p (fun i => α i * α' i + β i * β' (p i)) (fun i => α i * β' i + β i * α' (p i)) := by
@@ -24,6 +30,13 @@ theorem dp_mul_dp {p : Fin n → Fin n} (hp : ∀ i, p (p i) = i) (α β α' β'
   simp only [dp, Matrix.of_apply, hp]
   split_ifs <;> ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [dp, conjTranspose_apply, Matrix.of_apply, star_add]`. Use `congr 1`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Distinguish the cases in `h : j = p i`. Substitute `h` using the available equality. Simplify using `[hp]`.
+
+Establish `: i ≠ p j` using `fun h' => h (by rw [h', hp])`. Simplify using `[h, this]`.
+-/
 theorem dp_conjTranspose {p : Fin n → Fin n} (hp : ∀ i, p (p i) = i) (α β : Fin n → ℂ) :
     (dp p α β)ᴴ = dp p (fun i => star (α i)) (fun i => star (β (p i))) := by
   ext i j
@@ -37,6 +50,11 @@ theorem dp_conjTranspose {p : Fin n → Fin n} (hp : ∀ i, p (p i) = i) (α β 
     · have : i ≠ p j := fun h' => h (by rw [h', hp])
       simp [h, this]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [dp, Matrix.of_apply]`. Distinguish the cases in `h : p i = i`. Rewrite using `[h] split_ifs`. Conclude with `h1 i h`.
+
+Both sides reduce to the same expression. Rewrite using `[(h2 i h).1, (h2 i h).2]`.
+-/
 theorem dp_congr {p : Fin n → Fin n} {α β α' β' : Fin n → ℂ}
     (h1 : ∀ i, p i = i → α i + β i = α' i + β' i) (h2 : ∀ i, p i ≠ i → α i = α' i ∧ β i = β' i) :
     dp p α β = dp p α' β' := by
@@ -49,12 +67,20 @@ theorem dp_congr {p : Fin n → Fin n} {α β α' β' : Fin n → ℂ}
     · rfl
   · rw [(h2 i h).1, (h2 i h).2]
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[dp]`. Simplify using `[dp, h, Ne.symm h]`.
+-/
 theorem dp_diagonal (p : Fin n → Fin n) (α : Fin n → ℂ) : dp p α 0 = diagonal α := by
   ext i j
   by_cases h : i = j
   · subst h; simp [dp]
   · simp [dp, h, Ne.symm h]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (p j)]`. Simplify using `[dp, hp]`. Introduce `k _ hk`. Establish `: j ≠ p k` using `fun h => hk (by rw [h, hp])`. Simplify using `[dp, this]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem mul_dp_apply {p : Fin n → Fin n} (hp : ∀ i, p (p i) = i) (β : Fin n → ℂ)
     (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) : (X * dp p 0 β) i j = X i (p j) * β (p j) := by
   rw [Matrix.mul_apply, Finset.sum_eq_single (p j)]
@@ -64,6 +90,11 @@ theorem mul_dp_apply {p : Fin n → Fin n} (hp : ∀ i, p (p i) = i) (β : Fin n
     simp [dp, this]
   · simp
 
+/- English proof (translation)
+Set `_ : Invertible w` to `invertibleOfLeftInverse w wᴴ h1`. Establish `hinv : w⁻¹ = wᴴ` using `inv_eq_left_inv h1`. Establish `h2 : w⁻¹.BlockTriangular b` using `blockTriangular_inv_of_blockTriangular hw`. Rewrite `h2` using `[hinv]`. Break down `lt_or_gt_of_ne hij with h | h` into its components or cases.
+
+Use `h2 h` as an intermediate fact. Simplify `this` using `[conjTranspose_apply]`. Conclude with `hw h`.
+-/
 theorem eq_zero_of_unitary_blockTriangular {b : Fin n → ℤ} {w : Matrix (Fin n) (Fin n) ℂ}
     (h1 : wᴴ * w = 1) (hw : w.BlockTriangular b) {i j : Fin n} (hij : b i ≠ b j) : w i j = 0 := by
   let _ : Invertible w := invertibleOfLeftInverse w wᴴ h1
@@ -75,6 +106,11 @@ theorem eq_zero_of_unitary_blockTriangular {b : Fin n → ℤ} {w : Matrix (Fin 
     simpa [conjTranspose_apply] using this
   · exact hw h
 
+/- English proof (translation)
+Rewrite `h1` using `[hw.isHermitian.eq]`. Establish `hu : IsUnit (1 + w)` using `(PosDef.one.add_posSemidef hw).isUnit`. Establish `: (1 + w) * (w - 1) = 0`. Rewrite using `[mul_sub, add_mul, h1]`. Simplify using `[add_comm]`.
+
+Conclude with `sub_eq_zero.1 (hu.mul_right_eq_zero.1 this)`.
+-/
 theorem eq_one_of_posSemidef {w : Matrix (Fin n) (Fin n) ℂ} (h1 : wᴴ * w = 1) (hw : w.PosSemidef) : w = 1 := by
   rw [hw.isHermitian.eq] at h1
   have hu : IsUnit (1 + w) := (PosDef.one.add_posSemidef hw).isUnit
@@ -95,29 +131,65 @@ structure Adapted (p : Fin n → Fin n) (b : Fin n → ℤ) (c : Fin n → ℂ) 
 
 variable {p : Fin n → Fin n} {b : Fin n → ℤ} {c : Fin n → ℂ}
 
+/- English proof (translation)
+Rewrite using `[dp_mul_dp h.invol, ← diagonal_one, ← dp_diagonal p]`. Apply the tactic sequence `congr 1 <;> funext i <;> simp [h.symm, h.sq]`.
+-/
 theorem Adapted.mul_self (h : Adapted p b c) : dp p 0 c * dp p 0 c = 1 := by
   rw [dp_mul_dp h.invol, ← diagonal_one, ← dp_diagonal p]
   congr 1 <;> funext i <;> simp [h.symm, h.sq]
 
+/- English proof (translation)
+Rewrite using `[dp_conjTranspose h.invol]`. Apply the tactic sequence `congr 1 <;> funext i <;> simp only [h.symm, h.star_eq, Pi.zero_apply, star_zero]`.
+-/
 theorem Adapted.herm (h : Adapted p b c) : (dp p 0 c)ᴴ = dp p 0 c := by
   rw [dp_conjTranspose h.invol]
   congr 1 <;> funext i <;> simp only [h.symm, h.star_eq, Pi.zero_apply, star_zero]
 
+/- English proof (translation)
+Rewrite using `[mul_dp_apply h.invol, dp_mul_apply, h.symm, conjTranspose_apply, conjTranspose_apply]`. Simplify using `only [Pi.zero_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Adapted.conj_apply (h : Adapted p b c) (B : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     (dp p 0 c * Bᴴ * dp p 0 c) i j = c i * c j * star (B (p j) (p i)) := by
   rw [mul_dp_apply h.invol, dp_mul_apply, h.symm, conjTranspose_apply, conjTranspose_apply]
   simp only [Pi.zero_apply]
   ring
 
+/- English proof (translation)
+Introduce `_ _ hij` and use `hB (h.mono.reflect_lt hij)`.
+-/
 theorem Adapted.tri (h : Adapted p b c) {B : Matrix (Fin n) (Fin n) ℂ} (hB : B.BlockTriangular id) :
     B.BlockTriangular b := fun _ _ hij => hB (h.mono.reflect_lt hij)
 
+/- English proof (translation)
+Introduce `i j hij`. Rewrite using `[h.conj_apply, h.tri hB (by rw [h.neg, h.neg]; omega)]`. Simplify using the standard rewrite rules.
+-/
 theorem Adapted.conj_tri (h : Adapted p b c) {B : Matrix (Fin n) (Fin n) ℂ} (hB : B.BlockTriangular id) :
     (dp p 0 c * Bᴴ * dp p 0 c).BlockTriangular b := by
   intro i j hij
   rw [h.conj_apply, h.tri hB (by rw [h.neg, h.neg]; omega)]
   simp
 
+/- English proof (translation)
+Use `set E : Matrix (Fin n) (Fin n) ℂ := Matrix.of fun i j => if b i = 0 ∧ b j = 0 then B i j else 0 with hE`. Use `set d : Fin n → ℂ := fun i => if b i = 0 then 0 else ((a i * a (p i) : ℝ) : ℂ) with hd`. Establish `key : B * (dp p 0 c * Bᴴ * dp p 0 c) = diagonal d + E * Eᴴ`. Use extensionality with `i j`. Rewrite using `[Matrix.add_apply]`.
+
+Distinguish the cases in `hij : b i = b j`. Establish `hterm : ∀ k, b k ≠ b i → B i k * (dp p 0 c * Bᴴ * dp p 0 c) k j = 0`. Introduce `k hk`. Break down `lt_or_gt_of_ne hk with h' | h'` into its components or cases. Rewrite using `[h.tri hB h', zero_mul]`.
+
+Rewrite using `[h.conj_tri hB (by omega), mul_zero]`. Distinguish the cases in `hi : b i = 0`. Establish `hj : b j = 0` using `hij ▸ hi`. Establish `hdiag : diagonal d i j = 0`. Distinguish the cases in `e : i = j`.
+
+Substitute `e` using the available equality. Simplify using `[hd, hi]`. Simplify using `[e]`. Rewrite using `[hdiag, zero_add, Matrix.mul_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hk : b k = 0`. Rewrite using `[h.conj_apply, h.mid k j hk hj, h.sq, h.fix j hj, h.fix k hk]`. Simplify using `[hE, hi, hj, hk]`. Rewrite using `[hterm k (by omega)]`. Simplify using `[hE, hk]`.
+
+Take `rfl` from `h.inj i j hi hij`. Establish `hEE : (E * Eᴴ) i i = 0` using `by simp [Matrix.mul_apply, hE, hi]`. Rewrite using `[hEE, add_zero, Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[h.conj_apply, h.sq, hBa, hBa]`. Simplify using `[hd, hi]`.
+
+Introduce `k _ hk`. Conclude with `hterm k fun e => hk (h.inj i k hi e.symm).symm`. Simplify using the standard rewrite rules. Establish `e : i ≠ j` using `fun e => hij (e ▸ rfl)`. Rewrite using `[hz i j hij, diagonal_apply_ne _ e, zero_add, Matrix.mul_apply]`.
+
+Use `symm`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : b i = 0`. Establish `hj : b j ≠ 0` using `by omega`. Simplify using `[hE, hj]`.
+
+Simplify using `[hE, hi]`. Rewrite using `[key]`. Use `PosSemidef.add (posSemidef_diagonal_iff.2 fun i => ?_) (posSemidef_self_mul_conjTranspose E)` and prove the remaining obligations. Simplify using `only [hd]`. Use `split_ifs`.
+
+Conclude with `le_rfl`. Conclude with `(mul_pos (ha i) (ha (p i))).le` after adjusting the coercions.
+-/
 theorem Adapted.posSemidef (h : Adapted p b c) {B : Matrix (Fin n) (Fin n) ℂ} (hB : B.BlockTriangular id)
     {a : Fin n → ℝ} (ha : ∀ i, 0 < a i) (hBa : ∀ i, B i i = a i)
     (hz : ∀ i j, b i ≠ b j → (B * (dp p 0 c * Bᴴ * dp p 0 c)) i j = 0) :
@@ -174,6 +246,9 @@ def Dec (H : Matrix (Fin n) (Fin n) ℂ) : Prop :=
     ∃ k ∈ Matrix.unitaryGroup (Fin n) ℂ, ∃ s : Matrix (Fin n) (Fin n) ℂ, kᴴ * H * k = H ∧ sᴴ * H * s = H ∧
       g = k * s ∧ (Uᴴ * s * U).BlockTriangular id
 
+/- English proof (translation)
+Establish `h1 : (A * gᴴ * A) * g = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : g * (A * gᴴ * A) = 1` using `mul_eq_one_comm.1 h1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem flip {A g : Matrix (Fin n) (Fin n) ℂ} (hA : A * A = 1) (hg : gᴴ * A * g = A) : g * A * gᴴ = A := by
   have h1 : (A * gᴴ * A) * g = 1 := by
     calc (A * gᴴ * A) * g = A * (gᴴ * A * g) := by simp only [Matrix.mul_assoc]
@@ -183,6 +258,25 @@ theorem flip {A g : Matrix (Fin n) (Fin n) ℂ} (hA : A * A = 1) (hg : gᴴ * A 
     _ = (g * (A * gᴴ * A)) * A := by simp only [Matrix.mul_assoc]
     _ = A := by rw [h2, Matrix.one_mul]
 
+/- English proof (translation)
+Use `⟨1, one_mem _, fun g hg => ?_⟩` and prove the remaining obligations. Use `set A := dp p 0 c with hAdef`. Establish `hA : A * A = 1` using `h.mul_self`. Establish `hAH : Aᴴ = A` using `h.herm`. Establish `hg' : g * A * gᴴ = A` using `flip hA hg`.
+
+Establish `hgu : IsUnit g`. Use `⟨⟨g, A * gᴴ * A, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Take `⟨B, a, hB, ha, hBd, hBS⟩` from `exists_cholesky (PosDef.conjTranspose_mul_self g (mulVec_injective_of_isUnit hgu))`.
+
+Establish `hBdet : IsUnit B.det`. Rewrite using `[det_of_isUpperTriangular hB]`. Conclude with `IsUnit.mk0 _ (Finset.prod_ne_zero_iff.2 fun i _ => by`. Rewrite using `[hBd i]`. Conclude with `RCLike.ofReal_ne_zero.2 (ha i).ne')`.
+
+Establish `hBi : B⁻¹ * B = 1` using `Matrix.nonsing_inv_mul _ hBdet`. Establish `hBi' : B * B⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hBdet`. Establish `hBiH : B⁻¹ᴴ * Bᴴ = 1` using `by rw [← conjTranspose_mul, hBi', conjTranspose_one]`. Establish `hS : Bᴴ * B * A * (Bᴴ * B) = A`. Rewrite using `[hBS]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hS1 : A * (Bᴴ * B) * A * Bᴴ * B = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hu : B * (A * (Bᴴ * B) * A * Bᴴ) = 1` using `mul_eq_one_comm.1 hS1`. Establish `hw : (B * (A * Bᴴ * A))ᴴ * (B * (A * Bᴴ * A)) = 1`.
+
+Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, hAH]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hu, Matrix.mul_one, hA]`. Establish `hw1 : B * (A * Bᴴ * A) = 1` using `eq_one_of_posSemidef hw (h.posSemidef hB ha hBd fun i j hij => eq_zero_of_unitary_blockTriangular hw ((h.tri hB).mul (h.conj_tri hB)) hij)`.
+
+Establish `hw2 : (A * Bᴴ * A) * B = 1` using `mul_eq_one_comm.1 hw1`. Establish `hBA : Bᴴ * A * B = A`. Combine the equalities or inequalities in the displayed calculation. Use `⟨g * B⁻¹, ?_, B, ?_, hBA, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_unitaryGroup_iff', star_eq_conjTranspose, conjTranspose_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, hBi, Matrix.mul_one]`. Rewrite using `[conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+
+Conclude with `hB`.
+-/
 theorem Adapted.dec (h : Adapted p b c) : Dec (dp p 0 c) := by
   refine ⟨1, one_mem _, fun g hg => ?_⟩
   set A := dp p 0 c with hAdef
@@ -239,6 +333,17 @@ theorem Adapted.dec (h : Adapted p b c) : Dec (dp p 0 c) := by
   · rw [Matrix.mul_assoc, hBi, Matrix.mul_one]
   · rw [conjTranspose_one, Matrix.one_mul, Matrix.mul_one]; exact hB
 
+/- English proof (translation)
+Establish `hV' : V * Vᴴ = 1` using `mul_eq_one_comm.1 hV`. Establish `c1 : ∀ X : Matrix (Fin n) (Fin n) ℂ, Vᴴ * (V * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, hV, Matrix.one_mul]`. Establish `c2 : ∀ X : Matrix (Fin n) (Fin n) ℂ, V * (Vᴴ * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, hV', Matrix.one_mul]`.
+
+Establish `hVu : V ∈ Matrix.unitaryGroup (Fin n) ℂ` using `mem_unitaryGroup_iff'.2 hV`. Establish `hVu' : Vᴴ ∈ Matrix.unitaryGroup (Fin n) ℂ` using `Unitary.star_mem hVu`. Establish `back : ∀ x : Matrix (Fin n) (Fin n) ℂ, xᴴ * (Vᴴ * H * V) * x = Vᴴ * H * V → (V * x * Vᴴ)ᴴ * H * (V * x * Vᴴ) = H`. Introduce `x hx`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc]`. Use `_ = H := by rw [hx]; simp only [Matrix.mul_assoc, c2, hV', Matrix.mul_one]`. Take `⟨U, hU, h⟩` from `h`. Use `⟨V * U, mul_mem hVu hU, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨k, hk, s, hkH, hsH, hks, hs⟩` from `h (Vᴴ * g * V) (by`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc, c2]`. Use `_ = _ := by rw [hg])`. Use `⟨V * k * Vᴴ, mul_mem (mul_mem hVu hk) hVu', V * s * Vᴴ, back k hkH, back s hsH, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `: (V * U)ᴴ * (V * s * Vᴴ) * (V * U) = Uᴴ * s * U`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc, c1]`. Rewrite using `[this]`. Conclude with `hs`.
+-/
 theorem Dec.of_conj {H V : Matrix (Fin n) (Fin n) ℂ} (hV : Vᴴ * V = 1) (h : Dec (Vᴴ * H * V)) : Dec H := by
   have hV' : V * Vᴴ = 1 := mul_eq_one_comm.1 hV
   have c1 : ∀ X : Matrix (Fin n) (Fin n) ℂ, Vᴴ * (V * X) = X := fun X => by

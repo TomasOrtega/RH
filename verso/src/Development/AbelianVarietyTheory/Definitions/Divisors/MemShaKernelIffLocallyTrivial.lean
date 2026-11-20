@@ -20,6 +20,9 @@ def fixMap (c : A →ₐ[k] A) (c' : A' →ₐ[k'] A') (φ : A →+* A') (hc : �
   map_one' := by ext; simp
   map_mul' a b := by ext; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem fixMap_apply (c : A →ₐ[k] A) (c' : A' →ₐ[k'] A') (φ : A →+* A') (hc : ∀ a, φ (c a) = c' (φ a))
     (a : fixU k c) : (((fixMap c c' φ hc a : fixU k' c') : A'ˣ) : A') = φ ((a : Aˣ) : A) := rfl
 
@@ -41,6 +44,9 @@ def locInv (S : Type) [Field S] [CharZero S] {L : Type} [CommRing L] [Algebra �
     (S ⊗[ℚ] L) →ₐ[S] (S ⊗[ℚ] L) :=
   Algebra.TensorProduct.map (AlgHom.id S S) c
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem locInv_tmul (S : Type) [Field S] [CharZero S] {L : Type} [CommRing L] [Algebra ℚ L]
     (c : L →ₐ[ℚ] L) (s : S) (x : L) : locInv S c (s ⊗ₜ x) = s ⊗ₜ c x := rfl
 
@@ -57,10 +63,19 @@ def ker1 {L : Type} [CommRing L] [Algebra ℚ L] (c : L →ₐ[ℚ] L) : Subgrou
 
 end Localisation
 
+/- English proof (translation)
+The claim follows from `ker1 (AlgHom.id ℚ (ℚ × ℚ))`.
+-/
 example : Subgroup (H1 ℚ (AlgHom.id ℚ (ℚ × ℚ))) := ker1 (AlgHom.id ℚ (ℚ × ℚ))
 
+/- English proof (translation)
+The claim follows from `(ker1 c).one_mem`.
+-/
 example {L : Type} [CommRing L] [Algebra ℚ L] (c : L →ₐ[ℚ] L) : (1 : H1 ℚ c) ∈ ker1 c := (ker1 c).one_mem
 
+/- English proof (translation)
+Use `ext`. Both sides reduce to the same expression.
+-/
 example (a : fixU ℚ (AlgHom.id ℚ ℚ)) :
     fixMap (AlgHom.id ℚ ℚ) (AlgHom.id ℚ ℚ) (RingHom.id ℚ) (fun _ => rfl) a = a := by
   ext; rfl

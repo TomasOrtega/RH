@@ -16,6 +16,21 @@ noncomputable section
 
 namespace GlobalTheory.SphLine
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v hv g hg`. Establish `hσ : IsCMExt F E σ` using `hT.base.cm`. Take `⟨w, h, hw⟩` from `GlobalTheory.T.exists_inert_prime_nonsplit_place F E σ hσ hT.base.unram v hv`. Take `⟨δ, hδ, hH, hsd⟩` from `GlobalTheory.T.exists_self_dual_scaled_hermitian_inert F E σ B _ _ _ G.W hσ hT.base.unram hT.geo.hW v w h hw`. Establish `hlat` using `hT.geo.hW.lat`.
+
+Take `⟨e1, he1⟩` from `GlobalTheory.T.local_unitary_iso_stabilizer F E σ (InertChart.conj_conj hσ) _ G.W v δ hδ hlat.fg`. Take `⟨-, hI⟩` from `exists_isInertChart σ hσ v`. Take `⟨-, ⟨c, hc, -⟩, -, -, hC⟩` from `hI w h hw`. Take `⟨⟨ϖ, hU⟩, hE⟩` from `hC c hc`. Take `⟨e2, he2, -⟩` from `hE _ _ _ hH hlat.fg hlat.span_eq_top hsd`.
+
+Set `e` to `e1.trans e2`. Establish `hK : ∀ k : locU σ G.W v, k.1 ∈ locK σ G.W v ↔ e k ∈ Formalism.UG.KU c (a + a')` using `fun k => (he1 k).trans (he2.2.2 _)`. Establish `hint : ∀ i j, Formalism.UG.antiJ (w.adicCompletion E) (a + a') i j ∈ Formalism.UG.intL (w.adicCompletion E)`. Introduce `i j`. Unfold `Formalism.UG.antiJ`.
+
+Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Take `⟨J, hJ, hJe⟩` from `Formalism.UG.P.cartan_exists_glint (Formalism.UG.intL (w.adicCompletion E)) _ _ (GlobalTheory.UnitarySwap.antiJ_mul_self (L := w.adicCompletion E) (n := a + a')) hint hint`. Take `⟨k₁, hk₁, k₂, hk₂, ek⟩` from `GlobalTheory.UnitarySwap.inv_mem_doubleCoset hU hJ (g := ((e ⟨g, hg⟩ : Formalism.UG.GU c (a + a')) : GL (Fin (a + a')) (w.adicCompletion E))) (by`.
+
+Introduce `i j`. Rewrite using `[hJe]`. Simplify using `only [Formalism.UG.antiJ, add_comm i.val j.val]`. Apply the tactic sequence `split_ifs <;> simp) (by rw [hJe]; exact (e ⟨g, hg⟩).2)`. Rewrite `hk₁`, `hk₂` using `[hJe]`.
+
+Set `K₁ : Formalism.UG.GU c (a + a')` to `⟨k₁, hk₁.1⟩`. Set `K₂ : Formalism.UG.GU c (a + a')` to `⟨k₂, hk₂.1⟩`. Establish `hK₁ : K₁ ∈ Formalism.UG.KU c (a + a')` using `hk₁`. Establish `hK₂ : K₂ ∈ Formalism.UG.KU c (a + a')` using `hk₂`. Establish `key : (⟨g, hg⟩ : locU σ G.W v)⁻¹ = e.symm K₁ * ⟨g, hg⟩ * e.symm K₂`.
+
+Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_inv, map_mul, map_mul, MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply]`. Conclude with `Subtype.ext ek`. Use `⟨(e.symm K₁).1, (hK _).2 (by rw [MulEquiv.apply_symm_apply]; exact hK₁), (e.symm K₂).1, (hK _).2 (by rw [MulEquiv.apply_symm_apply]; exact hK₂), ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val key`.
+-/
 theorem inv_mem_locK_mul_locK : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W)
     (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ v : Pl F, IsEmpty (E →ₐ[F] Fv F v) →
@@ -58,6 +73,9 @@ theorem inv_mem_locK_mul_locK : ∀ (F E : Type) [Field F] [NumberField F] [Fiel
     (e.symm K₂).1, (hK _).2 (by rw [MulEquiv.apply_symm_apply]; exact hK₂), ?_⟩
   exact congrArg Subtype.val key
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v hv`. Use `⟨fun x => x⁻¹, fun x y => mul_inv_rev x y, fun x => inv_inv x, fun g => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, y, hy, e⟩` from `inv_mem_locK_mul_locK F E σ B a a' G X om om' hT v hv g.1 g.2`. Conclude with `⟨⟨x, locK_le_locU σ G.W v hx⟩, Subgroup.mem_subgroupOf.2 hx, ⟨y, locK_le_locU σ G.W v hy⟩, Subgroup.mem_subgroupOf.2 hy, Subtype.ext e⟩`.
+-/
 theorem gelfand_inv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
     IsTriple B G X om om' → ∀ v : Pl F, IsEmpty (E →ₐ[F] Fv F v) →

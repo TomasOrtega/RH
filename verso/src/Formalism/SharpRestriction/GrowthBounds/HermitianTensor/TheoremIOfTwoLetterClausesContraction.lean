@@ -9,9 +9,17 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree
 
+/- English proof (translation)
+The claim follows from `restCloudMaps_of (restCloudLat_of (cloudOne_of hQ) hCO (cloudIso hCD hCO)) hIncl`.
+-/
 theorem cloud_maps_of_contraction (hQ : ContractionStandardLattice) (hCD : CartanDomain) (hCO : CartanOnto) (hIncl : DualHeightInclusion) : RestCloudMaps :=
   restCloudMaps_of (restCloudLat_of (cloudOne_of hQ) hCO (cloudIso hCD hCO)) hIncl
 
+/- English proof (translation)
+Introduce `hA`. Establish `hT` using `tools_of_admitted_statements D hA`. Establish `h11 : GradedLatticeStable D` using `hT.2.2.2.2.2.2.1`. Establish `h13 : TypeDecompositionsCommute D` using `hT.2.2.2.2.2.2.2.2.1`. Establish `h16 : PairedPathIndependence D` using `hT.2.2.2.2.2.2.2.2.2.2.2`.
+
+Conclude with `theorem_I_of_explicit_minor_map D (tiePsi_of D h1 h2 h5 h11.2 h16.1) (cloud_maps_of_contraction hQ h11.1 h11.2 h13.2.1) hA`.
+-/
 theorem theorem_I_of_two_letter_clauses_contraction (D : Formalism.BasicNotions.D7) (h1 : ExplicitMapInjective) (h2 : ExplicitMapOntoTwoLetters) (h5 : TwoLetterLatticeGaussInverse) (hQ : ContractionStandardLattice) : SecondPartClosed D := by
   intro hA
   have hT := tools_of_admitted_statements D hA

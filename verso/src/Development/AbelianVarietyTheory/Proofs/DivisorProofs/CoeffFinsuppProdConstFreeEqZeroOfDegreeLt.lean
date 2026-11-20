@@ -3,6 +3,11 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 
 namespace GlobalTheory.DivMono
 
+/- English proof (translation)
+Introduce `R _ σ τ u hu α β hβ`. Apply `coeff_of_lt_order` to reduce the goal to its premises. Establish `hle : ((α.degree : ℕ) : ℕ∞) ≤ (α.prod fun j e => u j ^ e).order`. Unfold `Finsupp.prod`. Use `le_trans ?_ (le_order_prod (fun j => u j ^ α j) α.support)` and prove the remaining obligations.
+
+Rewrite using `[Finsupp.degree_apply, Nat.cast_sum]`. Conclude with `Finset.sum_le_sum fun j _ => le_order_pow_of_constantCoeff_eq_zero (α j) (hu j)`. Conclude with `lt_of_lt_of_le (by exact_mod_cast hβ) hle`.
+-/
 theorem coeff_finsuppProd_eq_zero_of_degree_lt :
     ∀ (R : Type) [CommRing R] (σ τ : Type) (u : τ → MvPowerSeries σ R), (∀ j, constantCoeff (u j) = 0) →
       ∀ (α : τ →₀ ℕ) (β : σ →₀ ℕ), β.degree < α.degree → coeff β (α.prod fun j e => u j ^ e) = 0 := by

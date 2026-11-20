@@ -28,21 +28,36 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : 
   {D : DegData V (maximalIdeal V)}
   {F : Type} [Field F] [Algebra (FractionRing V) F] {v : AddValuation F (WithTop ℚ)} {hv : ValOver ϖ F v}
 
+/- English proof (translation)
+Use `D.toPre.P.isAb.proper` as an intermediate fact. Conclude with `⟨by rw [← terminal.comp_from D.toPre.P.A.hom]; infer_instance⟩`.
+-/
 theorem sep (D : DegData V (maximalIdeal V)) : D.toPre.P.A.left.IsSeparated := by
   have := D.toPre.P.isAb.proper
   exact ⟨by rw [← terminal.comp_from D.toPre.P.A.hom]; infer_instance⟩
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `exists_liftO hϖ hv q`. Conclude with `⟨m.left, rfl⟩`.
+-/
 theorem lift_left (q : TF (R := V) F ⟶ D.toPre.P.A) : ∃ ψ, q.left = (ιS hϖ hv).left ≫ ψ := by
   obtain ⟨m, rfl⟩ := exists_liftO hϖ hv q
   exact ⟨m.left, rfl⟩
 
+/- English proof (translation)
+The claim follows from `exists_genV D.toPre.P.isLB (g.isGen χ) fun i => by fin_cases i <;> exact lift_left _`.
+-/
 theorem exists_genV_gt (g : GtPtF D.toPre F) (χ : D.toPre.X) : ∃ r, GenV hϖ hv (g.s χ) r :=
   exists_genV D.toPre.P.isLB (g.isGen χ) fun i => by fin_cases i <;> exact lift_left _
 
+/- English proof (translation)
+The claim follows from `exists_genV D.toPre.P.isLB hw fun i => by fin_cases i <;> exact lift_left _`.
+-/
 theorem exists_genV_frm {k : ℕ} {b : TF (R := V) F ⟶ D.toPre.P.A} {w : Frm D.toPre F k b} (hw : w.IsGen) :
     ∃ r, GenV hϖ hv w r :=
   exists_genV D.toPre.P.isLB hw fun i => by fin_cases i <;> exact lift_left _
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `exists_liftO hϖ hv x`. Take `⟨m', hm'⟩` from `exists_liftO hϖ hv x'`. Take `⟨n, hn⟩` from `exists_liftO hϖ hv y`. Conclude with `(hv_gen (L := D.toPre.P.L) (φ := thφ D.toPre.P.A (x3 D.toPre.P.A)) (ε := thε) D.toPre.cub.isGen (lift m (lift m' n)).left (r := (lift x (lift x' y)).left) (by rw [← Over.comp_left, comp_lift, comp_lift, hm, hm', hn])).congr (fun U _ h => prod_cub x x' y h) (fun _ _ _ => rfl)`.
+-/
 theorem hv_cub (x x' y : TF (R := V) F ⟶ D.toPre.P.A) :
     HV hϖ hv D.toPre.P.L (fun _ _ h => h (x * x' * y).left * (h (x * x').left)⁻¹ * (h (x * y).left)⁻¹ *
       (h (x' * y).left)⁻¹ * h x.left * h x'.left * h y.left * (h (1 : TF (R := V) F ⟶ D.toPre.P.A).left)⁻¹)
@@ -55,6 +70,11 @@ theorem hv_cub (x x' y : TF (R := V) F ⟶ D.toPre.P.A) :
     (by rw [← Over.comp_left, comp_lift, comp_lift, hm, hm', hn])).congr (fun U _ h => prod_cub x x' y h)
     (fun _ _ _ => rfl)
 
+/- English proof (translation)
+Use `sep D` as an intermediate fact. Take `⟨c, hc, H⟩` from `hv_of_genV a`. Take `⟨c', hc', H'⟩` from `hv_of_genV a'`. Take `⟨c'', hc'', H''⟩` from `hv_of_genV a''`. Establish `e` using `(H''.mul (hv_cub x x' y)).cmp D.toPre.P.isLB (H.mul H') hσ (fun z J hJ => by simpa only [Units.val_mul] using congrArg Units.val (hf z J hJ).symm)`.
+
+Rewrite `e` using `[_root_.mul_one, AddValuation.map_mul, hc, hc', hc'']`. Conclude with `e` after adjusting the coercions.
+-/
 theorem add_of_cub {g g' g'' : GtPtF D.toPre F} {χ χ' χ'' : D.toPre.X} {x x' y : TF (R := V) F ⟶ D.toPre.P.A}
     {r r' r'' : ℚ} (a : GenV hϖ hv (g.s χ) r) (a' : GenV hϖ hv (g'.s χ') r') (a'' : GenV hϖ hv (g''.s χ'') r'')
     (hσ : ∀ (U : Type) [CommGroup U] (h : ((TF (R := V) F).left ⟶ D.toPre.P.A.left) → U),
@@ -73,6 +93,11 @@ theorem add_of_cub {g g' g'' : GtPtF D.toPre F} {χ χ' χ'' : D.toPre.X} {x x' 
   rw [_root_.mul_one, AddValuation.map_mul, hc, hc', hc''] at e
   exact_mod_cast e
 
+/- English proof (translation)
+Use `sep D` as an intermediate fact. Use `choose l hl using exists_genV_gt (hϖ := hϖ) (hv := hv) g`. Use `⟨AddMonoidHom.mk' l fun χ χ' => add_of_cub (x := cP D.toPre _ χ) (x' := cP D.toPre _ χ') (y := g.b) (hl χ) (hl χ') (hl (χ + χ')) (fun U _ h => ?_) (fun z J hJ => ?_), hl, fun l' hl' => AddMonoidHom.ext fun χ => genV_unique D.toPre.P.isLB (hl' χ) (hl χ)⟩` and prove the remaining obligations. Rewrite using `[prod_gt, prod_gt, prod_gt, cPoint_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Establish `e` using `gt_mul (𝟙 (TF (R := V) F)) hJ g χ χ'`. Rewrite `e` using `[Category.id_comp, Over.id_left]`. Then use the resulting hypothesis.
+-/
 theorem exists_gtV (g : GtPtF D.toPre F) : ∃! l : D.toPre.X →+ ℚ, GtV hϖ hv g l := by
   have := sep D
   choose l hl using exists_genV_gt (hϖ := hϖ) (hv := hv) g
@@ -86,6 +111,9 @@ theorem exists_gtV (g : GtPtF D.toPre F) : ∃! l : D.toPre.X →+ ℚ, GtV hϖ 
   · have e := gt_mul (𝟙 (TF (R := V) F)) hJ g χ χ'
     rwa [Category.id_comp, Over.id_left] at e
 
+/- English proof (translation)
+Introduce `χ` and use `by obtain ⟨hb, hs⟩ := (isAdd_iff _ _ _).1 h obtain ⟨r, hr⟩ := exists_genV_gt (hϖ := hϖ) (hv := hv) g'' χ have e := add_of_cub (x := cP D.toPre _ χ) (x' := g.b) (y := g'.b) (a χ) (a' χ) hr (fun U _ h => by rw [prod_gt, prod_gt, prod_gt, hb, ← _root_.mul_assoc (cP D.toPre _ χ) g.b] …`.
+-/
 theorem gtV_add {g g' g'' : GtPtF D.toPre F} {l l' : D.toPre.X → ℚ} (h : g.IsAdd g' g'') (a : GtV hϖ hv g l)
     (a' : GtV hϖ hv g' l') : GtV hϖ hv g'' (l + l') := fun χ => by
   obtain ⟨hb, hs⟩ := (isAdd_iff _ _ _).1 h
@@ -97,6 +125,11 @@ theorem gtV_add {g g' g'' : GtPtF D.toPre F} {l l' : D.toPre.X → ℚ} (h : g.I
     abel) (hs χ)
   rwa [e] at hr
 
+/- English proof (translation)
+Use `sep D` as an intermediate fact. Take `⟨r, hr⟩` from `exists_genV_frm (hϖ := hϖ) (hv := hv) hw.1`. Take `⟨c, hc, H⟩` from `hv_of_genV hr`. Establish `e` using `H.cmp D.toPre.P.isLB HV.one (fun U _ h => by rw [prod_line, hb, mul_inv_cancel]) (fun z J hJ => by simp only [hw.2 z J hJ, Units.val_one])`. Rewrite `e` using `[hc, AddValuation.map_one]`.
+
+Take `rfl : r = 0` from `by exact_mod_cast e`. Conclude with `hr`.
+-/
 theorem genV_frmOne {k : ℕ} {b : TF (R := V) F ⟶ D.toPre.P.A} {w : Frm D.toPre F k b} (hw : FrmOne w) (hb : b = 1) :
     GenV hϖ hv w 0 := by
   have := sep D
@@ -108,6 +141,9 @@ theorem genV_frmOne {k : ℕ} {b : TF (R := V) F ⟶ D.toPre.P.A} {w : Frm D.toP
   obtain rfl : r = 0 := by exact_mod_cast e
   exact hr
 
+/- English proof (translation)
+Introduce `α` and use `by have hL := D.toPre.P.isLB have hk0 : (k : ℚ) ≠ 0 := by exact_mod_cast (show k ≠ 0 by omega) obtain ⟨m, hm⟩ := exists_liftO hϖ hv (D := D) p.g.b obtain ⟨G₀, hG₀⟩ := exists_gen_of_local D.toPre.P.L hL (gtφO hϖ hv m α) DegPre.gtε have hg : ∀ i, DegPre.gtφ D.toPre F p.g.b α i = (ι …`.
+-/
 theorem gtV_qk (hVR : VRatioGtStatement) {Q : D.toPre.X → ℤ} (hQ : QForm.IsQ D.toPre ϖ Q) {k : ℕ} (hk : 1 ≤ k)
     (p : QkPt D.toPre F k) : GtV hϖ hv p.g fun χ => (QForm.bOf D.toPre Q p.y χ : ℚ) / k := fun α => by
   have hL := D.toPre.P.isLB
@@ -137,6 +173,13 @@ theorem gtV_qk (hVR : VRatioGtStatement) {Q : D.toPre.X → ℤ} (hQ : QForm.IsQ
   · have e := ht' _ (𝟙 _) z J hJ
     rwa [Category.id_comp] at e
 
+/- English proof (translation)
+Take `⟨o, ho⟩` from `exists_zero_gt (D := D.toPre) (F := F)`. Take `⟨hb, hs⟩` from `(isZero_iff o).1 ho`. Establish `hadd : o.IsAdd g g` using `(isAdd_iff _ _ _).2 ⟨by rw [hb, _root_.one_mul], fun χ z J hJ => by`. Establish `C : IsCub (th D.toPre (T` using `TF (R := V) F) z J) := isCub_cubV D.toPre.cub hJ`. Rewrite using `[hs χ z J hJ, hb, C.face₂, mul_comm]⟩`.
+
+Establish `hn : GtPtF.IsNsmul 1 g g`. Use `⟨![o, g], ?_, fun i => ?_, rfl⟩` and prove the remaining obligations. Simplify `ho` using `only [Matrix.cons_val_zero]`. Use `fin_cases i`. Conclude with `hadd`.
+
+Establish `e` using `gtV_qk (hϖ := hϖ) (hv := hv) hVR hQ (le_refl 1) ⟨y, g, g, hn, h⟩`. Simplify `e` using `only [Nat.cast_one, div_one]`.
+-/
 theorem gtV_iota (hVR : VRatioGtStatement) {Q : D.toPre.X → ℤ} (hQ : QForm.IsQ D.toPre ϖ Q) {g : GtPtF D.toPre F}
     {y : D.toPre.X} (h : GtPtF.IsIota y g) : GtV hϖ hv g fun χ => (QForm.bOf D.toPre Q y χ : ℚ) := by
   obtain ⟨o, ho⟩ := exists_zero_gt (D := D.toPre) (F := F)
@@ -151,6 +194,17 @@ theorem gtV_iota (hVR : VRatioGtStatement) {Q : D.toPre.X → ℤ} (hQ : QForm.I
   have e := gtV_qk (hϖ := hϖ) (hv := hv) hVR hQ (le_refl 1) ⟨y, g, g, hn, h⟩
   simpa only [Nat.cast_one, div_one] using e
 
+/- English proof (translation)
+Use `sep D` as an intermediate fact. Establish `hL` using `D.toPre.P.isLB`. Take `⟨c, hc, H⟩` from `hv_of_genV hl`. Take `⟨c', hc', H'⟩` from `hv_of_genV hω`. Take `⟨m, hm⟩` from `exists_liftO hϖ hv g.b`.
+
+Take `⟨a, ha, A⟩` from `hv_sec (hϖ := hϖ) (hv := hv) hL σ m.left (r := g.b.left) (by rw [← Over.comp_left, hm])`. Establish `R` using `((hv_gen (hϖ := hϖ) (hv := hv) (L := D.toPre.P.L) (φ := fun _ : PUnit => eSec D.toPre.P.A) (ε := fun _ => 1) D.toPre.rig_gen (TO hϖ hv).hom (Over.w (ιS hϖ hv))).pow k).smul x`. Establish `e` using `R.cmp hL ((A.mul H).mul H') (fun U _ h => by`. Establish `e₀ : (TF (R` using `V) F).hom ≫ eSec D.toPre.P.A = (1 : TF (R := V) F ⟶ D.toPre.P.A).left := rfl`. Establish `e₁ : SectionScalarValuation.cQ D.toPre (TF (R` using `V) F) χ = cP D.toPre _ χ := rfl`.
+
+Rewrite using `[SectionScalarValuation.prod_famB, prod_gt, prod_line, Fintype.prod_unique, e₀, e₁, mul_comm g.b]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow]`. Use the proof step `module)`. Use the proof step `(fun z J hJ => by`.
+
+Establish `e₂` using `SectionScalarValuation.secScal_sval hσ (lift (𝟙 (TF (R := V) F)) g.b).left z hJ`. Rewrite `e₂` using `[← Over.comp_left, lift_snd]`. Establish `e₃` using `hx z J hJ`. Rewrite `e₃` using `[← e₂]`. Conclude with `e₃.symm)`.
+
+Rewrite `e` using `[one_pow, _root_.mul_one, AddValuation.map_mul, AddValuation.map_mul, hc, hc']`. Rewrite using `[e, WithTop.coe_add]`. Conclude with `add_le_add_left (le_add_of_nonneg_left ha) _`.
+-/
 theorem le_v_int {k : ℕ} {g : GtPtF D.toPre F} {w : Frm D.toPre F k g.b} {χ : D.toPre.X} {σ : D.toPre.SecB k χ} {σF}
     (hσ : GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre F χ) (DegPre.famε k) σF
       (D.toPre.famφB χ) (DegPre.famε k) σ (DegPre.prB D.toPre F).left 1) {x : F} (hx : IsCoef k g w χ σF x)
@@ -180,6 +234,15 @@ theorem le_v_int {k : ℕ} {g : GtPtF D.toPre F} {w : Frm D.toPre F k g.b} {χ :
   rw [e, WithTop.coe_add]
   exact add_le_add_left (le_add_of_nonneg_left ha) _
 
+/- English proof (translation)
+Take `⟨n, a, σ, σF, hσ, ha, hsum⟩` from `hs`. Use `choose x hx using fun i => exists_isCoef g hw χ (σF i)`. Establish `e : coef s g w χ = ∑ i, a i * x i` using `coef_eq fun z J hJ => by`. Rewrite using `[SectionScalarValuation.sval_lin (fun i => gF D.toPre F (a i)) σF (fun j => hsum j) _ z hJ, cst_eq, map_sum, Finset.sum_mul, Finset.sum_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Establish `b : gs (lift (𝟙 (TF (R` using `V) F)) g.b).left z ⊤ (gF D.toPre F (a i)) = cst F z (a i) := by`. Use `(gs_pull _ (fst (TF (R := V) F) D.toPre.P.A).left z ⊤ trivial _).trans ?_` and prove the remaining obligations. Rewrite using `[← Over.comp_left, lift_fst]`. Both sides reduce to the same expression. Establish `c` using `hx i z J hJ`.
+
+Rewrite using `[b, map_mul, ← cst_eq, ← cst_eq, _root_.mul_assoc, c]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `AddValuation.map_le_sum v fun i _ => ?_` and prove the remaining obligations. Rewrite using `[AddValuation.map_mul, add_assoc, WithTop.coe_add]`.
+
+Conclude with `add_le_add (ha i) (le_v_int (hσ i) (hx i) hl hω)`.
+-/
 theorem le_v_coef {k : ℕ} {g : GtPtF D.toPre F} {w : Frm D.toPre F k g.b} (hw : w.IsGen) {χ : D.toPre.X}
     {s : Fam D.toPre F k} {r l ω : ℚ} (hs : VGe D F v k χ (s.s χ) r) (hl : GenV hϖ hv (g.s χ) l)
     (hω : GenV hϖ hv w ω) : ((r + l + ω : ℚ) : WithTop ℚ) ≤ v (coef s g w χ) := by
@@ -200,6 +263,13 @@ theorem le_v_coef {k : ℕ} {g : GtPtF D.toPre F} {w : Frm D.toPre F k g.b} (hw 
   rw [AddValuation.map_mul, add_assoc, WithTop.coe_add]
   exact add_le_add (ha i) (le_v_int (hσ i) (hx i) hl hω)
 
+/- English proof (translation)
+Introduce `_ hTW hVR _ _ V _ _ _ _ _ ϖ hϖ D Q hQ F _ _ _ v hv g`. Use `sep D` as an intermediate fact. Establish `bound : ∀ (k : ℕ) (w : Frm D.toPre F k g.b) (s : Fam D.toPre F k), w.IsGen → ∀ l ω r, GtV hϖ hv g l → GenV hϖ hv w ω → NuGe D Q F v k s r → ∀ χ, ((r + (Q χ : ℚ) / k + l χ + ω : ℚ) : WithTop ℚ) ≤ v (coef s g w χ)` using `fun k w s hw l ω r hl hω hs χ => le_v_coef hw (hs χ) (hl χ) hω`. Use `⟨exists_gtV g, fun k w hw => ?_, fun k w => genV_frmOne, fun g' g'' l l' => gtV_add, fun k hk p => gtV_qk hVR hQ hk p, fun y => gtV_iota hVR hQ, fun k hk w s hw => ⟨fun q => ?_, bound k w s hw⟩⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `exists_genV_frm (hϖ := hϖ) (hv := hv) hw`.
+
+Conclude with `⟨r, hr, fun r' hr' => genV_unique D.toPre.P.isLB hr' hr⟩`. Take `⟨l, hl, -⟩` from `exists_gtV (hϖ := hϖ) (hv := hv) g`. Take `⟨ω, hω⟩` from `exists_genV_frm (hϖ := hϖ) (hv := hv) hw`. Take `⟨r, hr⟩` from `exists_nuGe hϖ hv hTW hQ hk s`. Use `(finite_sublevel hϖ hQ hk l (q - r - ω)).subset fun χ hχ => ?_` and prove the remaining obligations.
+
+Establish `h : r + (Q χ : ℚ) / k + l χ + ω < q` using `WithTop.coe_lt_coe.1 ((bound k w s hw l ω r hl hω hr χ).trans_lt hχ)`. Use `show (Q χ : ℚ) / k + l χ ≤ q - r - ω`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem main : LL → TwistBCSpanStatement → TWM.VRatioGtStatement → TWStatement → UUStatement → AllDV fun {V} _ _ _ {ϖ} hϖ D Q {F} _ _ {v} hv => ∀ g : GtPtF D.toPre F, (∃! l : D.toPre.X →+ ℚ, GtV hϖ hv g l) ∧ (∀ (k : ℕ) (w : Frm D.toPre F k g.b), w.IsGen → ∃! r, GenV hϖ hv w r) ∧ (∀ (k : ℕ) (w : Frm D.toPre F k g.b), FrmOne w → g.b = 1 → GenV hϖ hv w 0) ∧ (∀ (g' g'' : GtPtF D.toPre F) l l', g.IsAdd g' g'' → GtV hϖ hv g l → GtV hϖ hv g' l' → GtV hϖ hv g'' (l + l')) ∧ (∀ (k : ℕ), 1 ≤ k → ∀ p : QkPt D.toPre F k, GtV hϖ hv p.g fun χ => (QForm.bOf D.toPre Q p.y χ : ℚ) / k) ∧ (∀ y, GtPtF.IsIota y g → GtV hϖ hv g fun χ => (QForm.bOf D.toPre Q y χ : ℚ)) ∧ ∀ (k : ℕ), 1 ≤ k → ∀ (w : Frm D.toPre F k g.b) (s : Fam D.toPre F k), w.IsGen → NullV v (coef s g w) ∧ ∀ l ω r, GtV hϖ hv g l → GenV hϖ hv w ω → NuGe D Q F v k s r → ∀ χ, ((r + (Q χ : ℚ) / k + l χ + ω : ℚ) : WithTop ℚ) ≤ v (coef s g w χ) := by
   intro _ hTW hVR _ _ V _ _ _ _ _ ϖ hϖ D Q hQ F _ _ _ v hv g
   have := sep D

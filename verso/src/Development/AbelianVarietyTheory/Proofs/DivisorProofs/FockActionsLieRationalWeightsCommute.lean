@@ -6,6 +6,11 @@ open Formalism.BasicNotions.TH GlobalTheory.FockAlg GlobalTheory.RealLift Global
 
 namespace GlobalTheory.HoweR
 
+/- English proof (translation)
+Introduce `P Q R S`. Take `⟨h1, h2, hc⟩` from `GlobalTheory.FockPair.pair_lie_commute P Q R S`. Take `⟨w1, w2⟩` from `GlobalTheory.FockPolGK.pol_locFin_weights P Q R S`. Use `⟨h1, h2, fun v => (w1 v).2, fun v => (w2 v).2, fun X Y f => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun (hc X Y) f` as an intermediate fact.
+
+Simplify `this` using `only [Module.End.mul_apply]`.
+-/
 theorem fock_lie_wts_comm : ∀ P Q R S : ℕ, IsLieAct (fockAct1 P Q R S) ∧ IsLieAct (fockAct2 P Q R S) ∧
     (∀ v, v ∈ ⨆ μ : Ix P Q → ℚ, wtSub (fockAct1 P Q R S) μ) ∧ (∀ v, v ∈ ⨆ μ : Ix R S → ℚ, wtSub (fockAct2 P Q R S) μ) ∧
     ∀ X Y f, fockAct1 P Q R S X (fockAct2 P Q R S Y f) = fockAct2 P Q R S Y (fockAct1 P Q R S X f) := by

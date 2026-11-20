@@ -12,6 +12,13 @@ open CategoryTheory Limits AlgebraicGeometry
 open scoped TensorProduct
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+Introduce `R _ q T π _ _ _ C' _ _ _ _ U' e' he' hU'`. Take `⟨B, _, _, _, U₁, e₁, he₁, hpre, ⟨ψ⟩⟩` from `GlobalTheory.T.affine_open_pullback_localization_spreads R q T π C' U' e' he'`. Take `⟨r, hr, hfin, hfree⟩` from `GlobalTheory.T.finite_free_spreads_out_from_localization R q B (Module.Finite.equiv ψ.symm.toLinearEquiv) (Module.Free.of_equiv ψ.symm.toLinearEquiv)`. Take `⟨e, he⟩` from `GlobalTheory.affineOpen_inf_basicOpen_iso_tensor R T π B U₁ e₁ he₁ r`. Use `⟨r, hr, Localization.Away r ⊗[R] B, inferInstance, inferInstance, inferInstance, inferInstance, hfin, hfree, _, e, he, fun t ht => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Establish `hy : spMap (algebraMap R (Localization.AtPrime q.asIdeal)) (IsLocalRing.closedPoint (Localization.AtPrime q.asIdeal)) = q` using `PrimeSpectrum.ext (Localization.AtPrime.under_maximalIdeal (I := q.asIdeal))`. Take `⟨z, rfl, hz⟩` from `Scheme.exists_preimage_of_isPullback (IsPullback.of_hasPullback π (spMap (algebraMap R (Localization.AtPrime q.asIdeal)))) t _ (ht.trans hy.symm)`. Establish `h` using `hU' z hz`. Rewrite `h` using `[← hpre]`. Conclude with `h`.
+
+Express the relevant statement in the definitionally equal form `π t ∈ (PrimeSpectrum.basicOpen r : (Sp R).Opens)`. Rewrite using `[ht]`. Conclude with `hr`.
+-/
 theorem GlobalTheory.exists_finite_free_chart_away_of_atPrime : ∀ (R : Type) [CommRing R] (q : PrimeSpectrum R) (T : Scheme.{0}) (π : T ⟶ Sp R)
     [LocallyOfFinitePresentation π] [QuasiCompact π] [QuasiSeparated π]
     (C' : Type) [CommRing C'] [Algebra (Localization.AtPrime q.asIdeal) C']

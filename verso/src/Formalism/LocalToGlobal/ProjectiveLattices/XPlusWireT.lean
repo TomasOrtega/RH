@@ -17,21 +17,39 @@ section Up
 
 variable {j : ℕ} (X : PJ D B P j) (E : PtExt X) (hM : IntAtExt X E) {ka wL wF : WeightFamilies.Wt D j}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem hypC_xplus (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CR Bx CT : ℝ) (S : Scal B) (T nP nW : ℕ) (h0 : ℝ)
     (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ) :
     HypC large₂ (xplus X E hM) H C2 A2 CR Bx CT S ka wL wF T nP nW h0 nus ↔
       HypC large₂ X H C2 A2 CR Bx CT S ka wL wF T nP nW h0 nus := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem deepSubMul_xplus : DeepSubMul (xplus X E hM) ↔ DeepSubMul X := Iff.rfl
 
 variable {X} (G : GlobalFamilyData X ka wL wF)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem tiedW_up (S : Scal B) (Gc Prw : ℝ) : (gd2Xplus G E hM).TiedW S Gc Prw ↔ G.TiedW S Gc Prw := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem tiedTh_up (S : Scal B) (Gc : ℝ) : (gd2Xplus G E hM).TiedTh S Gc ↔ G.TiedTh S Gc := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem tiedEt_up (large₂ : SizeData₂ D) (Cf Af : ℝ) : (gd2Xplus G E hM).TiedEt large₂ Cf Af ↔ G.TiedEt large₂ Cf Af := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem inBasis_up (la : HeightOneSpectrum (𝓞 B.KO)) : InBasis (gd2Xplus G E hM) la ↔ InBasis G la := Iff.rfl
 
 end Up
@@ -52,12 +70,21 @@ section UpN
 
 variable {j : ℕ} (X : PJ D B P j) (E : PtExt X) (hM : IntAtExt X E) {ka wL wF : WeightFamilies.Wt D j}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem latAt_N : LatAt (withNorm B N n0 n1 n2 n3 n4) j ka ↔ LatAt B j ka := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem lamwAt_N (large₂ : SizeData₂ D) (C A : ℝ) : LAMwAt large₂ (withNorm B N n0 n1 n2 n3 n4) j ka C A ↔ LAMwAt large₂ B j ka C A :=
   Iff.rfl
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem qAt_N (large₂ : SizeData₂ D) (CR Ck Ch Ah Cc Ac T c : ℝ) :
     QAt large₂ (withNorm B N n0 n1 n2 n3 n4) j ka CR Ck Ch Ah Cc Ac T c ↔ QAt large₂ B j ka CR Ck Ch Ah Cc Ac T c := Iff.rfl
 

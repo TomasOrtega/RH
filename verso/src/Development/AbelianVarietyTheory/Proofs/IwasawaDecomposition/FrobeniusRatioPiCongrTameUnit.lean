@@ -4,6 +4,23 @@ open NumberField IsDedekindDomain Neutral.B1 ReciprocityTheory.Neutral.Bridge.HC
 
 namespace GlobalTheory.TameRatio
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ v A hA u hu π t hπ ht τ τ' _hτ hτ' h1 h2`. Establish `hq1 : 1 < normV v`. Unfold `normV`. Establish `: Nontrivial (𝓞 E ⧸ v.asIdeal)` using `Ideal.Quotient.nontrivial_iff.mpr v.isPrime.ne_top`. Establish `: Finite (𝓞 E ⧸ v.asIdeal)` using `v.asIdeal.finiteQuotientOfFreeOfNeBot v.ne_bot`.
+
+Conclude with `Finite.one_lt_card`. Use `set U : Ω := algebraMap E Ω (u : E) with hUdef`. Establish `hint : IsIntegral ℤ U` using `(RingOfIntegers.isIntegral_coe u).map ((algebraMap E Ω).toIntAlgHom)`. Establish `hUle : A.valuation U ≤ 1` using `(Valuation.valuationSubring.integers A.valuation).isIntegral_iff_v_le_one.mp (IsIntegral.tower_top hint)`. Establish `hU1 : A.valuation U = 1` using `le_antisymm hUle (not_lt.mp fun h => hu ((hA u).mp h))`.
+
+Use `set s : Ω := τ'⁻¹ t with hsdef`. Establish `hs : τ' s = t` using `by show τ' (τ'⁻¹ t) = t`. Rewrite using `[← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`. Establish `hsn : s ^ (normV v - 1) = U` using `by show (τ'⁻¹ t) ^ (normV v - 1) = U`. Rewrite using `[← map_pow, ht, hUdef, AlgEquiv.commutes]`.
+
+Establish `hvs : A.valuation s = 1`. Establish `h : A.valuation s ^ (normV v - 1) = 1` using `by rw [← map_pow, hsn, hU1]`. Conclude with `(pow_eq_one_iff.mp h).resolve_right (by omega)`. Establish `hs0 : s ≠ 0`. Introduce `h`.
+
+Rewrite `hvs` using `[h, map_zero]`. Conclude with `zero_ne_one hvs`. Establish `hF : A.valuation (t - s ^ normV v) < 1`. Use `hτ'.2 s hvs.le` as an intermediate fact. Rewrite `this` using `[hs]`. Then use the resulting hypothesis.
+
+Establish `hinv : τ'⁻¹ π * s = π * t`. Rewrite using `[hsdef, ← map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hrat : (τ'⁻¹ * τ) π = τ'⁻¹ π` using `by rw [AlgEquiv.mul_apply, h1]`. Establish `hqs : s ^ normV v = U * s`.
+
+Rewrite using `[← hsn, ← pow_succ]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `key : (τ'⁻¹ * τ) π / π - U = (t - s ^ normV v) / s`. Rewrite using `[hrat, hqs]`.
+
+Establish `e : τ'⁻¹ π = π * t / s` using `by rw [eq_div_iff hs0, hinv]`. Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[key, map_div₀, hvs, div_one]`. Conclude with `hF`.
+-/
 theorem ratio_cong : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] (v : HeightOneSpectrum (𝓞 E))
     (A : ValuationSubring Ω), IsPlaceOver A v → ∀ u : 𝓞 E, u ∉ v.asIdeal → ∀ π t : Ω, π ≠ 0 →
     t ^ (normV v - 1) = algebraMap E Ω (u : E) → ∀ τ τ' : G E Ω, IsFrob (F := E) A (normV v) τ →

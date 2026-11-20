@@ -3,6 +3,13 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.GeneralizedMeas
 
 open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic.Spherical UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.H
 
+/- English proof (translation)
+Introduce `K _ _ n w p h hs inst instB m instH hm`. Take `⟨i', b', m', h', hm', H, hH⟩` from `hs`. Establish `e : i' = inst` using `(@BorelSpace.measurable_eq _ _ i' b').trans (@BorelSpace.measurable_eq _ _ inst instB).symm`. Substitute `e` using the available equality. Establish `hmm : m' = m`.
+
+Establish `h1` using `Measure.isMulLeftInvariant_eq_smul m' m`. Establish `h2` using `congrArg (fun μ : Measure (GL (Fin n) (w.adicCompletion K)) => μ (GLnLocal.integralGL (w.adicCompletion K) n)) h1`. Simplify using `only [Measure.smul_apply, hm, hm'] at h2`. Establish `h3 : Measure.haarScalarFactor m' m = 1`. Simplify `h2.symm` using `[ENNReal.smul_def]`.
+
+Rewrite using `[h1, h3, one_smul]`. Substitute `hmm` using the available equality. Conclude with `⟨H, hH⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.H.sphIndep :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (w : Pl K) (p : MvPolynomial (Fin n) ℂ) (h : GL (Fin n) (w.adicCompletion K) → ℂ),
       GM.IsSph w p h → ∀ [MeasurableSpace (GL (Fin n) (w.adicCompletion K))] [BorelSpace (GL (Fin n) (w.adicCompletion K))]

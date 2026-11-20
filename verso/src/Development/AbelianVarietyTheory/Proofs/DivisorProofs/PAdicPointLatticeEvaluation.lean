@@ -20,6 +20,17 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 
 namespace GlobalTheory.ModelPointWeil
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l' Xo' c' W Y p _ n _ yb yy P π ψ hP a tt hlev z e σ he hσ hσp c hW`. Take `⟨-, -, -, hpb, -, hL⟩` from `hP`. Establish `hLaws : Out.Laws` using `GlobalTheory.firstFiveLaws.1`. Take `⟨r, hr, ⟨cu⟩⟩` from `GlobalTheory.PolAV_exists_cubical hLaws.cube P.A`. Take `⟨w, hw⟩` from `hL`.
+
+Establish `hx : Tate.lev tt n ^ p ^ n = 1` using `Tate.lev_pow tt n`. Set `T : Over (Sp ℂ_[p])` to `Over.mk (𝟙 (Sp ℂ_[p]))`. Establish `inj : ∀ {x y : T ⟶ P.A.A}, x.left ≫ ψ = y.left ≫ ψ → x = y` using `fun {x y} h => Over.OverMorphism.ext (hpb.1.hom_ext h (by rw [Over.w, Over.w]))`. Set `U : Over.mk yy ⟶ Over.mk (T.hom ≫ yy)` to `Over.homMk (𝟙 _) (by simp [T])`. Establish `hUz : U ≫ pushHom hpb T z = σ` using `Over.OverMorphism.ext (by show 𝟙 _ ≫ (z.left ≫ ψ) = σ.left`.
+
+Rewrite using `[Category.id_comp, hσ])`. Establish `hz : z ^ p ^ n = 1`. Apply `inj` to reduce the goal to its premises. Establish `h1 : U ≫ pushHom hpb T (z ^ p ^ n) = U ≫ pushHom hpb T 1`. Rewrite using `[map_pow, map_one, MonObj.comp_pow, MonObj.comp_one, hUz, hσp]`.
+
+Establish `h2` using `congrArg (fun q => q.left) h1`. Simplify using `using (show 𝟙 _ ≫ ((z ^ p ^ n).left ≫ ψ) = 𝟙 _ ≫ ((1 : T ⟶ P.A.A).left ≫ ψ) from h2)`. Establish `hk : 1 ≤ p ^ n` using `Nat.one_le_pow _ _ (Fact.out : p.Prime).pos`. Establish `h` using `GlobalTheory.WeilCube.weilIs_pull cu hLaws.globalFns P.A.isAb Y.oF.t.PP.isLB hpb w hw (T := T) (T₀ := Over.mk yy) (𝟙 _) (by rw [Category.id_comp]; exact (Category.id_comp yy).symm) hx hz (x₀ := e) (y₀ := σ) (by simp [he, hlev]) (by simp [hσ]) hW`. Establish `hu : ∀ u : Γ(Sp ℂ_[p], ⊤)ˣ, Units.map (Scheme.Hom.appTop (𝟙 (Sp ℂ_[p]))).hom.toMonoidHom u = u`.
+
+Introduce `u`. Use `ext`. Simplify using the standard rewrite rules. Use `erw [hu] at h`. Conclude with `(GlobalTheory.HTLat.weilIs_iff hk hx hz c).1 h` after adjusting the coercions.
+-/
 theorem weil_eq_of_weilIs_model : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l' : Level H)
     (Xo' : Moduli Dw l') (c' : Coeff l') (W : ValuationSubring ℂ) (Y : Model Xo' c' (c'.V W).subtype) (p : ℕ)
     [Fact p.Prime] (n : ℕ) [StarRing (𝓞 E)] (yb : Sp 𝓞_ℂ_[p] ⟶ Y.X) (yy : Sp ℂ_[p] ⟶ Xo'.XF c') (P : PtP E p)

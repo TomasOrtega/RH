@@ -30,6 +30,9 @@ def conjSub : AddSubgroup M.Fun where
 
 variable {M ε π}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem icls_fnB_congr {a b : ∀ σ : k →+* ℂ, CxPts p σ → ℝ} (h : a = b) (ha hca hb hcb) :
     (fnB a ha hca).icls = (fnB b hb hcb).icls := by
   subst h
@@ -48,6 +51,27 @@ end Cls
 
 open HermLB in
 
+/- English proof (translation)
+Introduce `H e M k _ X _ p K ε π ν ι _ L v hX hsm hN u hus hu hc n f hf hfc`. Set `L' : Option ι → HermLB p` to `fun o => o.elim (fnB (M.pull ε π ((2 : ℝ) • u)) hu hc) L`. Set `G : Option (Option ι) → HermLB p` to `fun o => o.elim (fnB (M.pull ε π f) (hsm f hf) hfc) L'`. Take `⟨Ψ, hΨ⟩` from `((H.arExists k X p e hX).2 (Option (Option ι)) G).1`. Establish `hch` using `H.arChange k X p e hX (Option ι) L' (M.pull ε π f) (hsm f hf) hfc Ψ hΨ n`.
+
+Set `U : conjSub M ε π` to `⟨(2 : ℝ) • u, (InhabCalc.smSub M).smul_mem 2 hus, hc⟩`. Set `F : conjSub M ε π` to `⟨f, hf, hfc⟩`. Set `w` to `∑ i, (n (some i) : ℝ) • v i + (n none : ℝ) • K.ar u`. Establish `key : ∀ t : ℤ, Ψ ((C (t : ℝ) * MvPolynomial.X none + rename some (lin fun i => (n i : ℝ))) ^ (e + 1)) = ν * K.num (fun _ => w + (t : ℝ) • ((1 / 2 : ℝ) • K.ar f))`. Introduce `t`.
+
+Set `g : M.Fun` to `(n none : ℝ) • u + ((t : ℝ) / 2) • f`. Establish `hg : M.Smooth g` using `(InhabCalc.smSub M).add_mem ((InhabCalc.smSub M).smul_mem _ hus) ((InhabCalc.smSub M).smul_mem _ hf)`. Set `Gt : conjSub M ε π` to `t • F + n none • U`. Establish `hGt : (Gt : M.Fun) = (2 : ℝ) • g`. Simplify using `only [Gt, g, U, F, AddSubgroup.coe_add, AddSubgroup.coe_zsmul]`.
+
+Rewrite using `[← Int.cast_smul_eq_zsmul ℝ, ← Int.cast_smul_eq_zsmul ℝ]`. Use `module`. Establish `hut : ∀ σ z, CxPts.CInfAt (M.pull ε π ((2 : ℝ) • g) σ) z` using `hsm _ ((InhabCalc.smSub M).smul_mem 2 hg)`. Establish `hct : ∀ σ σ', (Weight.ofFun (M.pull ε π ((2 : ℝ) • g) σ)).IsConj (Weight.ofFun (M.pull ε π ((2 : ℝ) • g) σ'))` using `hGt ▸ Gt.2.2`. Set `Ft : Option ι → HermLB p` to `fun o => o.elim (fnB (M.pull ε π ((2 : ℝ) • g)) hut hct) L`.
+
+Set `A : Option ι → Option (Option ι) → ℤ` to `fun j => j.elim (fun o => o.elim t fun o' => o'.elim (n none) 0) fun i => Pi.single (some (some i)) 1`. Establish `hiso : ∀ j, (comb G (A j)).Isometric (Ft j)`. Introduce and unpack `(_ | i)`. Use `icls_eq_iff.1 ?_` and prove the remaining obligations. Rewrite using `[icls_comb]`.
+
+Simplify using `only [Fintype.sum_option, A, G, L', Option.elim, Pi.zero_apply, zero_smul, Finset.sum_const_zero, add_zero]`. Establish `e1 : (fnB (M.pull ε π f) (hsm f hf) hfc).icls = fnCls hsm F` using `rfl`. Establish `e2 : (fnB (M.pull ε π ((2 : ℝ) • u)) hu hc).icls = fnCls hsm U` using `rfl`. Rewrite using `[e1, e2, ← map_zsmul, ← map_zsmul, ← map_add]`. Conclude with `icls_fnB_congr (congrArg (M.pull ε π) hGt) _ _ _ _`.
+
+Conclude with `isometric_comb_single G (some (some i))`. Establish `hΦ` using `((H.arIso k X p e hX).2 _ G Ψ hΨ).2.2 (Option ι) Ft A hiso`. Establish `hn` using `hN g hg hut hct _ hΦ (fun o => o.elim 1 fun i => (n (some i) : ℝ))`. Rewrite `hn` using `[LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_pow, aeval_lin]`. Establish `hb : ∀ o, (∑ j : Option ι, (j.elim 1 fun i => (n (some i) : ℝ)) * (A j o : ℝ)) = o.elim (t : ℝ) fun o' => (n o' : ℝ)`.
+
+Apply the tactic sequence `rintro (_ | _ | i) <;> simp [A, Fintype.sum_option, Pi.single_apply]`. Establish `hlin : (lin fun o => ∑ j : Option ι, (j.elim 1 fun i => (n (some i) : ℝ)) * (A j o : ℝ)) = C (t : ℝ) * MvPolynomial.X none + rename some (lin fun i => (n i : ℝ))`. Rewrite using `[show (fun o => ∑ j : Option ι, (j.elim 1 fun i => (n (some i) : ℝ)) * (A j o : ℝ)) = fun o => o.elim (t : ℝ) fun o' => (n o' : ℝ) from funext hb]`. Simplify using `only [lin, Fintype.sum_option (α := Option ι), Option.elim, map_sum, map_mul, rename_C, rename_X]`. Rewrite `hn` using `[hlin]`.
+
+Rewrite using `[hn, Calc.top]`. Use `congr 2`. Use function extensionality and compare the values at `_`. Simplify using `only [g, w, Option.elim, map_add, map_smul]`. Use `module`.
+
+Establish `hA` using `GlobalTheory.T.polarization_symmetric_form_identity e Ψ (MvPolynomial.X none) (rename some (lin fun i => (n i : ℝ))) K.num K.symm ν w ((1 / 2 : ℝ) • K.ar f) key`. Rewrite `hA` using `[K.num.cons_smul, K.num_ar f hf, smul_eq_mul]`. Rewrite `hch` using `[hA]`. Take the linear combination `(-2) * hch`.
+-/
 theorem chernOn_of_numOn : GlobalTheory.Published.ArCalc → ∀ (e : ℕ) (M : Man e) (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (K : Calc M) (ε : (k →+* ℂ) → Fin (M.n + 1)) (π : ∀ σ, CxPts p σ → M.X (ε σ)) (ν : ℝ) (ι : Type) [Fintype ι] (L : ι → HermLB p) (v : ι → K.V), IsArithVar p e → (∀ u, M.Smooth u → ∀ σ z, CxPts.CInfAt (M.pull ε π u σ) z) → K.NumOn ε π ν L v → ∀ u, M.Smooth u → ∀ hu hc (n : Option ι → ℤ) (f : M.Fun), M.Smooth f → (∀ σ σ', (Weight.ofFun (M.pull ε π f σ)).IsConj (Weight.ofFun (M.pull ε π f σ'))) → chInt (ArInt.comb (fun o : Option ι => o.elim (fnB (M.pull ε π ((2 : ℝ) • u)) hu hc) L) n) e (M.pull ε π f) = ν * M.int (fun _ => K.c1 (∑ i, (n (some i) : ℝ) • v i + (n none : ℝ) • K.ar u)) f := by
   intro H e M k _ X _ p K ε π ν ι _ L v hX hsm hN u hus hu hc n f hf hfc
   classical

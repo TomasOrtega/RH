@@ -16,14 +16,26 @@ namespace Formalism.L2.SG.Pf
 
 open Formalism.L2.SG.Pf.IdMeet
 
+/- English proof (translation)
+The claim follows from `volColC_of noinfEqC_holds nocolEqC_holds gcCountC_holds fundMeasEqC_holds indexVolC_holds indexTransferC_holds conjUC_holds gcFundC_holds gcConjC_holds hinfConjC_holds`.
+-/
 theorem volColC_holds : VolColC :=
   volColC_of noinfEqC_holds nocolEqC_holds gcCountC_holds fundMeasEqC_holds indexVolC_holds indexTransferC_holds
     conjUC_holds gcFundC_holds gcConjC_holds hinfConjC_holds
 
+/- English proof (translation)
+The claim follows from `idMeetOneC_of idMeetKeyC_holds`.
+-/
 theorem idMeetOneC_holds : IdMeetOneC := idMeetOneC_of idMeetKeyC_holds
 
+/- English proof (translation)
+The claim follows from `idMeetPhaseC_of idMeetKeyC_holds`.
+-/
 theorem idMeetPhaseC_holds : IdMeetPhaseC := idMeetPhaseC_of idMeetKeyC_holds
 
+/- English proof (translation)
+The claim follows from `idMeetVolC_of idMeetKeyC_holds volColC_holds`.
+-/
 theorem idMeetVolC_holds : IdMeetVolC := idMeetVolC_of idMeetKeyC_holds volColC_holds
 
 end Formalism.L2.SG.Pf

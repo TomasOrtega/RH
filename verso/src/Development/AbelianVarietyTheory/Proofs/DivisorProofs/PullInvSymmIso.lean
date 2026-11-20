@@ -11,6 +11,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.SymLB
 
+/- English proof (translation)
+Introduce `S G _ L hL`. Establish `h₁` using `LB.isLB_linComb hL (K := Fin 2) ![𝟙 G.left, (GrpObj.inv : G ⟶ G).left] ![1, 1]`. Use `(GlobalTheory.CechPic.cls_eq_iff (pull_isLB h₁ _) h₁).1 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CechPic.cls_pull h₁, GlobalTheory.CechPic.cls_linComb hL _ _ h₁]`. Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, one_smul, map_add, ← GlobalTheory.CechPic.pull_comp]`.
+
+Rewrite using `[← Over.comp_left, GrpObj.inv_comp_inv, Over.id_left, Category.comp_id, add_comm]`.
+-/
 theorem pull_inv_symm_iso : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (L : LB G.left), L.IsLB → LBIso ((LB.LinComb L (K := Fin 2) ![𝟙 G.left, (GrpObj.inv : G ⟶ G).left] ![1, 1]).pull (GrpObj.inv : G ⟶ G).left) (LB.LinComb L (K := Fin 2) ![𝟙 G.left, (GrpObj.inv : G ⟶ G).left] ![1, 1]) := by
   intro S G _ L hL
   have h₁ := LB.isLB_linComb hL (K := Fin 2) ![𝟙 G.left, (GrpObj.inv : G ⟶ G).left] ![1, 1]

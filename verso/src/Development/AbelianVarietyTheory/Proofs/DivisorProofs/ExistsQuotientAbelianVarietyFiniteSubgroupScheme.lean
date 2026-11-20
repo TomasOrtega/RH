@@ -23,6 +23,23 @@ open AffineQuotient AbelianQuotient
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Introduce `K _ _ A _ hA H _ i hi hmono hfin`. Use `hA.comm` as an intermediate fact. Use `hA.proper` as an intermediate fact. Use `hA.smooth` as an intermediate fact. Use `hA.geomConnected` as an intermediate fact.
+
+Establish `hflat : Flat H.hom` using `inferInstance`. Establish `: IsCommMonObj H` using `⟨by`. Rewrite using `[← cancel_mono i, Category.assoc, IsMonHom.mul_hom, ← BraidedCategory.braiding_naturality_assoc, IsCommMonObj.mul_comm]⟩`. Take `⟨N, hN, hH⟩` from `GlobalTheory.FiniteFlatKilled.main K H hfin hflat`. Establish `: IsLocallyNoetherian A.left` using `LocallyOfFiniteType.isLocallyNoetherian A.hom`.
+
+Establish `: IsFinite (𝟙 A ^ N : A ⟶ A).left` using `GlobalTheory.T.isFinite_mulByNat_abelianVariety K A hA N hN`. Establish `: IsFinite H.hom` using `hfin`. Take `⟨Λ, _, _, _, _, e, _⟩` from `exists_hopfAlgebra K H`. Establish `hi' : i ^ N = 1`. Rewrite using `[← Category.id_comp i, ← MonObj.pow_comp, hH, MonObj.one_comp]`.
+
+Take `⟨Q, q, π, h₁, h₂, h₃, h₄, h₅⟩` from `exists_quotient_hopf (GlobalTheory.HopfQuot.affine_quotient GlobalTheory.exists_basis_mem_of_span_eq_top_of_semilocal) (e.hom ≫ i) (𝟙 A ^ N) (by`. Rewrite using `[comp_pow, comp_pow, Category.comp_id, Category.comp_id, mul_pow, ← comp_pow, ← comp_pow i, hi', comp_one, comp_one, _root_.one_mul])`. Establish `hq : IsPullback ((fst H A ≫ i) * snd H A) (snd H A) q q`. Apply the tactic sequence `refine h₅.of_iso (whiskerRightIso e A) (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_ <;> simp [comp_mul]`. Establish `: Flat q.left` using `h₃`.
+
+Establish `: Surjective q.left` using `h₄`. Establish `: IsFinite q.left` using `h₂`. Establish `: IsFinite π.left` using `h₁`. Take `⟨inst, hcomm, hhom, hker⟩` from `exists_grpObj i q hq`. Use `⟨Q, inst, ?_, q, hhom, h₂, h₃, h₄, hker⟩` and prove the remaining obligations.
+
+Establish `hπ : π.left ≫ A.hom = Q.hom` using `Over.w π`. Establish `: IsSeparated Q.hom` using `by rw [← hπ]; infer_instance`. Establish `: LocallyOfFiniteType Q.hom` using `by rw [← hπ]; infer_instance`. Establish `hw : q.left ≫ Q.hom = A.hom` using `Over.w q`. Use `GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ A.hom hA.smooth hA.geomConnected` as an intermediate fact.
+
+Establish `: Flat (q.left ≫ Q.hom)` using `by rw [hw]; infer_instance`. Establish `: UniversallyClosed (q.left ≫ Q.hom)` using `by rw [hw]; infer_instance`. Establish `: GeometricallyReduced (q.left ≫ Q.hom)` using `by rw [hw]; infer_instance`. Establish `: GeometricallyConnected (q.left ≫ Q.hom)` using `by rw [hw]; infer_instance`. Use `flat_of_comp_of_flat_of_surjective q.left Q.hom` as an intermediate fact.
+
+Use `UniversallyClosed.of_comp_surjective q.left Q.hom` as an intermediate fact. Use `geometricallyReduced_of_comp q.left Q.hom` as an intermediate fact. Establish `: LocallyOfFinitePresentation Q.hom` using `inferInstance`. Conclude with `⟨hcomm, smooth_of_grpObj_of_flat Q, ⟨⟩, geometricallyConnected_of_comp q.left Q.hom⟩`.
+-/
 theorem exists_quotient : ∀ (K : Type) [Field K] [IsAlgClosed K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ (H : Over (Sp K)) [GrpObj H] (i : H ⟶ A), IsMonHom i → Mono i → IsFinite H.hom → ∃ (A' : Over (Sp K)) (_ : GrpObj A'), IsAbelianScheme A' ∧ ∃ q : A ⟶ A', IsMonHom q ∧ IsFinite q.left ∧ Flat q.left ∧ Surjective q.left ∧ IsPullback i (toUnit H) q η[A'] := by
   intro K _ _ A _ hA H _ i hi hmono hfin
   have := hA.comm

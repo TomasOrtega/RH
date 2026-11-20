@@ -55,8 +55,14 @@ def nMul {R : Type*} [CommRing R] (F : FormalGroup R) (n : ℕ) : PowerSeries R 
     (fun _ g => MvPowerSeries.subst (![g, PowerSeries.X] : Fin 2 → MvPowerSeries Unit R)
       F.toPowerSeries) n
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nMul_zero {R : Type*} [CommRing R] (F : FormalGroup R) : nMul F 0 = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nMul_succ {R : Type*} [CommRing R] (F : FormalGroup R) (n : ℕ) :
     nMul F (n + 1) = MvPowerSeries.subst
       (![nMul F n, PowerSeries.X] : Fin 2 → MvPowerSeries Unit R) F.toPowerSeries := rfl

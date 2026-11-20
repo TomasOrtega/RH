@@ -23,6 +23,13 @@ variable {K : Type} {ι : K → Type} {R R' : Type} [CommRing R] [CommRing R'] [
 
 include M₀ in
 
+/- English proof (translation)
+Rewrite using `[ringKrullDim_quotient, ringKrullDim_quotient]`. Set `f : PrimeSpectrum.zeroLocus (R` to `MRing ι R') (I.map (algebraMap (MRing ι R) (MRing ι R'))) → PrimeSpectrum.zeroLocus (R := MRing ι R) I := fun Q ↦ ⟨PrimeSpectrum.comap (algebraMap (MRing ι R) (MRing ι R')) Q.1, by`. Establish `h` using `Q.2`. Simplify using `only [PrimeSpectrum.mem_zeroLocus, SetLike.coe_subset_coe] at h ⊢`. Conclude with `Ideal.map_le_iff_le_comap.mp h⟩`.
+
+Use `Order.krullDim_le_of_strictMono f (Monotone.strictMono_of_injective ?_ ?_)` and prove the remaining obligations. Introduce `Q₁ Q₂ h`. Conclude with `Ideal.comap_mono (f := algebraMap (MRing ι R) (MRing ι R')) h`. Introduce `Q₁ Q₂ h`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `PrimeSpectrum.localization_comap_injective (MRing ι R') (M₀.map (C (σ := Σ k, ι k)))` to reduce the goal to its premises. Conclude with `congrArg Subtype.val h`.
+-/
 theorem ringKrullDim_quotient_map_le (I : Ideal (MRing ι R)) :
     ringKrullDim (MRing ι R' ⧸ I.map (algebraMap (MRing ι R) (MRing ι R'))) ≤
       ringKrullDim (MRing ι R ⧸ I) := by
@@ -41,6 +48,9 @@ theorem ringKrullDim_quotient_map_le (I : Ideal (MRing ι R)) :
     apply PrimeSpectrum.localization_comap_injective (MRing ι R') (M₀.map (C (σ := Σ k, ι k)))
     exact congrArg Subtype.val h
 
+/- English proof (translation)
+Use extensionality with `d`. Simplify using `only [coeff_weightedHomogeneousComponent, coeff_map]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem weightedHomogeneousComponent_map [DecidableEq K] (b : K → ℕ) (y : MRing ι R) :
     weightedHomogeneousComponent (blockWeight ι) b (map (algebraMap R R') y) =
       map (algebraMap R R') (weightedHomogeneousComponent (blockWeight ι) b y) := by
@@ -51,6 +61,13 @@ theorem weightedHomogeneousComponent_map [DecidableEq K] (b : K → ℕ) (y : MR
 
 include M₀ in
 
+/- English proof (translation)
+Introduce `z hz b`. Take `⟨⟨x, m⟩, hxm⟩` from `(IsLocalization.mem_map_algebraMap_iff (M₀.map (C (σ := Σ k, ι k))) (MRing ι R')).mp hz`. Take `⟨r, hr, hrm⟩` from `Submonoid.mem_map.mp m.2`. Establish `hu : IsUnit (C (algebraMap R R' r) : MRing ι R')` using `(IsLocalization.map_units R' (⟨r, hr⟩ : M₀)).map C`. Establish `hm : algebraMap (MRing ι R) (MRing ι R') (m : MRing ι R) = C (algebraMap R R' r)`.
+
+Rewrite using `[← hrm]`. Conclude with `map_C _ _`. Rewrite using `[← Ideal.mul_unit_mem_iff_mem _ hu, mul_comm, ← weightedHomogeneousComponent_C_mul, mul_comm, ← hm, hxm]`. Express the relevant statement in the definitionally equal form `weightedHomogeneousComponent _ b (map (algebraMap R R') (x : MRing ι R)) ∈ _`. Rewrite using `[weightedHomogeneousComponent_map]`.
+
+Conclude with `Ideal.mem_map_of_mem _ (hI x x.2 b)`.
+-/
 theorem isMultiHomogIdeal_map [DecidableEq K] {I : Ideal (MRing ι R)} (hI : IsMultiHomogIdeal I) :
     IsMultiHomogIdeal (I.map (algebraMap (MRing ι R) (MRing ι R'))) := by
   classical
@@ -71,6 +88,39 @@ theorem isMultiHomogIdeal_map [DecidableEq K] {I : Ideal (MRing ι R)} (hI : IsM
 
 include M₀ in
 
+/- English proof (translation)
+Use `set M : Submonoid (MRing ι R) := M₀.map (C (σ := Σ k, ι k)) with hM`. Use `set φ := algebraMap (MRing ι R) (MRing ι R') with hφ`. Use `set J := P ⊔ Ideal.span {f} with hJdef`. Establish `hJ : P.map φ ⊔ Ideal.span {φ f} = J.map φ`. Rewrite using `[Ideal.map_sup, Ideal.map_span, Set.image_singleton]`.
+
+Establish `hcorr : ∀ W ∈ J.minimalPrimes, (W.map φ).IsPrime ∧ (W.map φ).comap φ = W` using `fun W hW ↦ ⟨IsLocalization.isPrime_of_isPrime_disjoint M _ W hW.1.1 (hdisj W hW), IsLocalization.under_map_of_isPrime_disjoint M (MRing ι R') hW.1.1 (hdisj W hW)⟩`. Establish `hmin : ∀ W ∈ J.minimalPrimes, W.map φ ∈ (P.map φ ⊔ Ideal.span {φ f}).minimalPrimes`. Introduce `W hW`. Rewrite using `[hJ, IsLocalization.minimalPrimes_map M]`. Use `show (W.map φ).comap φ ∈ J.minimalPrimes`.
+
+Rewrite using `[(hcorr W hW).2]`. Conclude with `hW`. Establish `hkey : ∀ W ∈ J.minimalPrimes, divCycle P f W = divCycle (P.map φ) (φ f) (W.map φ)`. Introduce `W hW`. Establish `hWp : W.IsPrime` using `hW.1.1`.
+
+Take `⟨hWp', hcomap⟩` from `hcorr W hW`. Establish `hrel : IsRelevant (W.map φ) ↔ IsRelevant W`. Use `forall_congr' fun k ↦ exists_congr fun i ↦ not_congr ?_` and prove the remaining obligations. Establish `hX : (X ⟨k, i⟩ : MRing ι R') = φ (X ⟨k, i⟩)` using `(MvPolynomial.map_X _ _).symm`. Rewrite using `[hX, ← Ideal.mem_comap, hcomap]`.
+
+Establish `hl : ∀ (h₁ : W.IsPrime) (h₂ : (W.map φ).IsPrime), @multAt _ _ _ _ J W h₁ = @multAt _ _ _ _ (P.map φ ⊔ Ideal.span {φ f}) (W.map φ) h₂`. Introduce `h₁ h₂`. Use `h₂` as an intermediate fact. Unfold `multAt`. Rewrite using `[hJ]`.
+
+Conclude with `GenericCycleCorresp.length_eq M J W (hdisj W hW)`. Unfold `divCycle`. Distinguish the cases in `hr : IsRelevant W`. Rewrite using `[dif_pos ⟨hW, hr⟩, dif_pos ⟨hmin W hW, hrel.mpr hr⟩, hl]`. Rewrite using `[dif_neg (fun h ↦ hr h.2), dif_neg (fun h ↦ hr (hrel.mp h.2))]`.
+
+Establish `hsupp : ∀ (Q : Ideal (MRing ι R')) (x) (W : Ideal (MRing ι R')), divCycle Q x W ≠ 0 → W ∈ (Q ⊔ Ideal.span {x}).minimalPrimes`. Introduce `Q x W h`. Unfold `divCycle at h`. Use `split_ifs at h with hh`. Conclude with `hh.1`.
+
+Conclude with `absurd rfl h`. Establish `hsupp0 : ∀ W : Ideal (MRing ι R), divCycle P f W ≠ 0 → W ∈ J.minimalPrimes`. Introduce `W h`. Unfold `divCycle at h`. Use `split_ifs at h with hh`.
+
+Conclude with `hh.1`. Conclude with `absurd rfl h`. Unfold `cycEval`. Establish `hA : (∑ᶠ W, divCycle P f W * n (W.map φ)) = ∑ᶠ W ∈ J.minimalPrimes, divCycle P f W * n (W.map φ)`. Rewrite using `[finsum_mem_def]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `W`. Use `symm`. Rewrite using `[Set.indicator_apply_eq_self]`. Introduce `hW`.
+
+Establish `: divCycle P f W = 0`. Assume the negation of the conclusion as `h`. Conclude with `hW (hsupp0 W h)`. Rewrite using `[this, zero_mul]`. Establish `hB : (∑ᶠ W, divCycle (P.map φ) (φ f) W * n W) = ∑ᶠ W ∈ (P.map φ ⊔ Ideal.span {φ f}).minimalPrimes, divCycle (P.map φ) (φ f) W * n W`.
+
+Rewrite using `[finsum_mem_def]`. Use `congr 1`. Use function extensionality and compare the values at `W`. Use `symm`. Rewrite using `[Set.indicator_apply_eq_self]`.
+
+Introduce `hW`. Establish `: divCycle (P.map φ) (φ f) W = 0`. Assume the negation of the conclusion as `h`. Conclude with `hW (hsupp _ _ W h)`. Rewrite using `[this, zero_mul]`.
+
+Rewrite using `[hA, hB]`. Use `finsum_mem_eq_of_bijOn (fun W ↦ W.map φ) ⟨fun W hW ↦ hmin W hW, ?_, ?_⟩ ?_` and prove the remaining obligations. Introduce `W₁ hW₁ W₂ hW₂ h`. Rewrite using `[← (hcorr W₁ hW₁).2, ← (hcorr W₂ hW₂).2]`. Conclude with `congrArg _ h`.
+
+Introduce `W' hW'`. Establish `hW'm` using `hW'`. Rewrite `hW'm` using `[hJ, IsLocalization.minimalPrimes_map M]`. Conclude with `⟨W'.comap φ, hW'm, IsLocalization.map_under M (MRing ι R') W'⟩`. Introduce `W hW`.
+
+Rewrite using `[hkey W hW]`.
+-/
 theorem cycEval_divCycle_map (P : Ideal (MRing ι R)) (f : MRing ι R)
     (hdisj : ∀ W ∈ (P ⊔ Ideal.span {f}).minimalPrimes,
       Disjoint ((M₀.map (C (σ := Σ k, ι k)) : Submonoid (MRing ι R)) : Set (MRing ι R)) W)
@@ -164,6 +214,9 @@ theorem cycEval_divCycle_map (P : Ideal (MRing ι R)) (f : MRing ι R)
 
 end Localization
 
+/- English proof (translation)
+Apply `charZero_of_injective_algebraMap (R := ℤ)` to reduce the goal to its premises. Rewrite using `[RingHom.ext_int (algebraMap ℤ (FractionRing O)) ((algebraMap O (FractionRing O)).comp (Int.castRingHom O))]`. Conclude with `(IsFractionRing.injective O (FractionRing O)).comp h`.
+-/
 theorem charZero_fractionRing (O : Type) [CommRing O] [IsDomain O]
     (h : Function.Injective (Int.castRingHom O)) : CharZero (FractionRing O) := by
   apply charZero_of_injective_algebraMap (R := ℤ)
@@ -173,6 +226,51 @@ theorem charZero_fractionRing (O : Type) [CommRing O] [IsDomain O]
 
 end WeightedDegree
 
+/- English proof (translation)
+Introduce `ι _ _ n P D hdim a p hp`. Set `ι' : ι → Type` to `fun k ↦ Fin (n k + 1)`. Set `PI : Ideal (MRing ι' ℤ)` to `P.ideal`. Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp.out`. Use `set 𝔭 : Ideal ℤ := Ideal.span {(p : ℤ)} with h𝔭def`.
+
+Establish `h𝔭max : 𝔭.IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible hpZ.irreducible`. Establish `h𝔭 : 𝔭.IsPrime` using `h𝔭max.isPrime`. Establish `h𝔭0 : 𝔭 ≠ ⊥`. Rewrite using `[h𝔭def, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hpZ.ne_zero`.
+
+Set `O` to `Localization.AtPrime 𝔭`. Establish `: IsDiscreteValuationRing O` using `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain ℤ h𝔭0 O`. Set `ϖ : O` to `(p : O)`. Establish `hmax : IsLocalRing.maximalIdeal O = Ideal.span {ϖ}`. Rewrite using `[← IsLocalization.AtPrime.map_eq_maximalIdeal 𝔭 O]`.
+
+Express the relevant statement in the definitionally equal form `Ideal.map (algebraMap ℤ O) (Ideal.span {(p : ℤ)}) = _`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Simplify using `[ϖ]`. Establish `hϖ : Irreducible ϖ` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mpr hmax`. Set `M : Submonoid (MRing ι' ℤ)` to `𝔭.primeCompl.map (C (σ := Σ k, ι' k))`.
+
+Set `φ` to `algebraMap (MRing ι' ℤ) (MRing ι' O)`. Set `P' : Ideal (MRing ι' O)` to `PI.map φ`. Establish `hPdisj : Disjoint (M : Set (MRing ι' ℤ)) PI`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨r, hr, rfl⟩ hrP`.
+
+Establish `h0` using `P.horizontal r hrP`. Rewrite `hr` using `[h0]`. Conclude with `hr 𝔭.zero_mem`. Establish `hP'prime : P'.IsPrime` using `IsLocalization.isPrime_of_isPrime_disjoint M (MRing ι' O) PI P.isPrime hPdisj`. Establish `hP'comap : P'.comap φ = PI` using `IsLocalization.under_map_of_isPrime_disjoint M (MRing ι' O) P.isPrime hPdisj`.
+
+Establish `hmp : IsMultiProjPrime P'` using `{ isPrime := hP'prime multiHomog := WeightedDegree.isMultiHomogIdeal_map 𝔭.primeCompl (fun f hf m ↦ P.homogeneous f hf m) relevant := fun k ↦ by`. Take `⟨i, hi⟩` from `P.relevant k`. Use `⟨i, fun h ↦ hi ?_⟩` and prove the remaining obligations. Establish `h' : φ (X ⟨k, i⟩) ∈ P'`. Rewrite using `[show φ (X ⟨k, i⟩) = X ⟨k, i⟩ from map_X _ _]`.
+
+Conclude with `h`. Establish `h'' : (X ⟨k, i⟩ : MRing ι' ℤ) ∈ P'.comap φ` using `h'`. Rewrite `h''` using `[hP'comap]`. Conclude with `h'' }`. Establish `hnt : P'.comap (C : O →+* MRing ι' O) = ⊥`.
+
+Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Rewrite `hx` using `[Ideal.mem_comap]`. Rewrite using `[Ideal.mem_bot]`. Take `⟨⟨m, s⟩, hms⟩` from `IsLocalization.surj 𝔭.primeCompl x`.
+
+Simplify using `only at hms`. Establish `hmem : φ (C m) ∈ P'`. Rewrite using `[show φ (C m) = C (algebraMap ℤ O m) from map_C _ _, ← hms, map_mul]`. Conclude with `P'.mul_mem_right _ hx`. Establish `hmem' : (C m : MRing ι' ℤ) ∈ P'.comap φ` using `hmem`.
+
+Rewrite `hmem'` using `[hP'comap]`. Establish `hm0 : m = 0` using `P.horizontal m hmem'`. Rewrite `hms` using `[hm0, map_zero]`. Conclude with `((IsLocalization.map_units O s).mul_left_eq_zero).mp hms`. Establish `hdimle : ringKrullDim (MRing ι' O ⧸ P') ≤ ((D + 1 + Fintype.card ι : ℕ) : WithBot ℕ∞)` using `(WeightedDegree.ringKrullDim_quotient_map_le 𝔭.primeCompl PI).trans_eq hdim`.
+
+Establish `key` using `ConservationOfNumberLE.proof.{0} IntNumAssoc.full SpecialCycleEval.full SpecialPieceRank.full GenericPieceRank.full SpecialIdealMultiHomog.full O ϖ hϖ ι ι' P' D hmp hnt hdimle a`. Establish `hinjO : Function.Injective (Int.castRingHom O)`. Rewrite using `[RingHom.ext_int (Int.castRingHom O) (algebraMap ℤ O)]`. Conclude with `IsLocalization.injective O 𝔭.primeCompl_le_nonZeroDivisors`. Establish `: CharZero (FractionRing O)` using `WeightedDegree.charZero_fractionRing O hinjO`.
+
+Establish `hgen : gNum P' a = intNum ℚ (P.ideal.map (MvPolynomial.map (Int.castRingHom ℚ))) a`. Establish `hcomp : genFib P' = (PI.map (MvPolynomial.map (Int.castRingHom ℚ))).map (MvPolynomial.map (algebraMap ℚ (FractionRing O)))`. Unfold `genFib`. Rewrite using `[Ideal.map_map, Ideal.map_map]`. Use `congr 1`.
+
+Use `RingHom.ext fun x ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `MvPolynomial.map _ (MvPolynomial.map _ x) = MvPolynomial.map _ (MvPolynomial.map _ x)`. Rewrite using `[MvPolynomial.map_map, MvPolynomial.map_map]`. Conclude with `congrArg (fun g ↦ MvPolynomial.map g x) (RingHom.ext_int _ _)`. Unfold `gNum`.
+
+Rewrite using `[hcomp]`. Conclude with `(FieldNumbers.IntNumBaseChange.intersectionNumber_baseChange.1 ℚ (FractionRing O) ι ι' _).2 D a`. Establish `: CharP (IsLocalRing.ResidueField O) p` using `(CharP.charP_iff_prime_eq_zero hp.out).mpr (by`. Rewrite using `[show ((p : ℕ) : IsLocalRing.ResidueField O) = IsLocalRing.residue O ϖ by simp [ϖ], IsLocalRing.residue_eq_zero_iff, hmax]`. Conclude with `Ideal.subset_span rfl)`.
+
+Set `: Algebra (ZMod p) (IsLocalRing.ResidueField O)` to `(ZMod.castHom (dvd_refl p) (IsLocalRing.ResidueField O)).toAlgebra`. Establish `hspec : ∀ W : Ideal (MRing ι' ℤ), vNum (W.map φ) a = intNum (ZMod p) (W.map (MvPolynomial.map (Int.castRingHom (ZMod p)))) a`. Introduce `W`. Establish `hcomp : specialIdeal (W.map φ) = (W.map (MvPolynomial.map (Int.castRingHom (ZMod p)))).map (MvPolynomial.map (algebraMap (ZMod p) (IsLocalRing.ResidueField O)))`. Unfold `specialIdeal`.
+
+Rewrite using `[Ideal.map_map, Ideal.map_map]`. Use `congr 1`. Use `RingHom.ext fun x ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `MvPolynomial.map _ (MvPolynomial.map _ x) = MvPolynomial.map _ (MvPolynomial.map _ x)`. Rewrite using `[MvPolynomial.map_map, MvPolynomial.map_map]`.
+
+Conclude with `congrArg (fun g ↦ MvPolynomial.map g x) (RingHom.ext_int _ _)`. Unfold `vNum`. Rewrite using `[hcomp]`. Conclude with `(FieldNumbers.IntNumBaseChange.intersectionNumber_baseChange.1 (ZMod p) (IsLocalRing.ResidueField O) ι ι' _).2 D a`. Establish `hWdisj : ∀ W ∈ (PI ⊔ Ideal.span {(C (p : ℤ) : MRing ι' ℤ)}).minimalPrimes, Disjoint (M : Set (MRing ι' ℤ)) W`.
+
+Introduce `W hW`. Establish `: W.IsPrime` using `hW.1.1`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨r, hr, rfl⟩ hrW`. Establish `hle : 𝔭 ≤ W.comap (C : ℤ →+* MRing ι' ℤ)`.
+
+Rewrite using `[h𝔭def, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hW.1.2 (Ideal.mem_sup_right (Ideal.subset_span rfl))`. Establish `heq` using `h𝔭max.eq_of_le (Ideal.comap_isPrime (C : ℤ →+* MRing ι' ℤ) W).ne_top hle`. Establish `hr' : r ∈ W.comap (C : ℤ →+* MRing ι' ℤ)` using `hrW`. Rewrite `hr'` using `[← heq]`.
+
+Conclude with `hr hr'`. Establish `hmain` using `WeightedDegree.cycEval_divCycle_map (R' := O) 𝔭.primeCompl PI (C (p : ℤ)) hWdisj (fun W' : Ideal (MRing ι' O) ↦ vNum W' a)`. Establish `hCp : (C ϖ : MRing ι' O) = φ (C (p : ℤ))`. Rewrite using `[show φ (C (p : ℤ)) = C (algebraMap ℤ O (p : ℤ)) from map_C _ _]`. Simplify using `[ϖ]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `W`. Conclude with `hspec W`.
+-/
 theorem WeightedDegree.proof : WeightedDegree.Statement := by
   intro ι _ _ n P D hdim a p hp
   classical

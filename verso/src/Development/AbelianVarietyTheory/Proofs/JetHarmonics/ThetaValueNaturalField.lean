@@ -26,6 +26,11 @@ namespace GlobalTheory.ThetaField
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Set `h : ptO Xo z.x ⟶ ptO Xo y.x` to `Over.homMk (spMap ψ.toRingHom) hm.1.symm`. Use `choose F' hF' using fun b => GermD.exists_pullSec Xo.univ.t.G Xo.univ.t.PP.L ((l.M : ℤ) ^ 2) (h ▷ Xo.univ.t.G) (whiskerRight_snd _ _) (F b)`. Use `⟨F', fun b => ?_, ?_⟩` and prove the remaining obligations. Establish `e : h ≫ levPt Xo y.x (x b) = levPt Xo z.x (x b)`. Unfold `levPt`.
+
+Rewrite using `[← Category.assoc, comp_toUnit]`. Rewrite using `[← e]`. Conclude with `(GlobalTheory.VtBaseChange.isVtOver_isUUOver_baseChange E H Dw l Xo l.M (l.Mb ^ 2) _ _ h y.s z.s (GlobalTheory.FramedBaseChange.isPullSec ψ hm h rfl) (F b) (F' b) (hF' b)).1 _ (hF b)`. Unfold `thExpr`. Rewrite using `[map_mul, AlgHom.commutes, GlobalTheory.T.harmonicConnectionValue_baseChange_field E H Dw l Xo c nab hnab S T ψ y z hm h rfl a n P hP.1 l.M F F' hF']`.
+-/
 theorem exists_pull [StarRing (𝓞 E)] (nab : NabV Xo c) (hnab : IsNab Xo c nab)
     {S T : Type} [CommRing S] [Algebra c.F S] [Field T] [Algebra c.F T] (ψ : S →ₐ[c.F] T)
     (y : FrPt Xo c S) (z : FrPt Xo c T) (hm : FrMap ψ y z) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (x : Fin n → Dw.La)
@@ -49,11 +54,23 @@ theorem exists_pull [StarRing (𝓞 E)] (nab : NabV Xo c) (hnab : IsNab Xo c nab
     rw [map_mul, AlgHom.commutes,
       GlobalTheory.T.harmonicConnectionValue_baseChange_field E H Dw l Xo c nab hnab S T ψ y z hm h rfl a n P hP.1 l.M F F' hF']
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `Ideal.exists_maximal U`. Conclude with `⟨U ⧸ m, Ideal.Quotient.field m, inferInstance, ⟨Ideal.Quotient.mkₐ F m⟩⟩`.
+-/
 theorem exists_algHom_field (F U : Type) [Field F] [CommRing U] [Algebra F U] [Nontrivial U] :
     ∃ (K : Type) (_ : Field K) (_ : Algebra F K), Nonempty (U →ₐ[F] K) := by
   obtain ⟨m, hm⟩ := Ideal.exists_maximal U
   exact ⟨U ⧸ m, Ideal.Quotient.field m, inferInstance, ⟨Ideal.Quotient.mkₐ F m⟩⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ nab hnab S T _ _ _ _ φ y0 y hφ a n x P hP v0 w hv hw`. Establish `hL : Laws` using `GlobalTheory.firstFiveLaws.1`. Take `⟨S₁, i₁, j₁, φ₁, y₁, F₁, hff₁, hm₁, hV₁, he₁⟩` from `hv`. Take `⟨T₁, i₂, j₂, κ, y₂, F₂, hff₂, hm₂, hV₂, he₂⟩` from `hw`. Take `⟨U, iU, jU, ψ₁, ψ₂, hcomm, -, hinj⟩` from `exists_faithfullyFlat_pushout c.F S T₁ S₁ (κ.comp φ) φ₁ hff₁`.
+
+Establish `hκ : Function.Injective κ` using `hff₂.injective`. Use `haveI : Nontrivial U := (hinj.comp hκ).nontrivial`. Take `⟨K, iK, jK, ⟨π⟩⟩` from `exists_algHom_field c.F U`. Establish `hψ : (π.comp ψ₁).comp (κ.comp φ) = (π.comp ψ₂).comp φ₁`. Rewrite using `[AlgHom.comp_assoc, hcomm, AlgHom.comp_assoc]`.
+
+Take `⟨z, hz1⟩` from `GlobalTheory.FramedBaseChange.exists_frMap hL E H Dw l Xo c T₁ K (π.comp ψ₁) y₂`. Establish `hz : FrMap ((π.comp ψ₂).comp φ₁) y0 z` using `hψ ▸ GlobalTheory.FramedBaseChange.trans (κ.comp φ) (π.comp ψ₁) (FramedBaseChange.trans φ κ hφ hm₂) hz1`. Establish `hz2 : FrMap (π.comp ψ₂) y₁ z` using `GlobalTheory.FramedBaseChange.cancel φ₁ (π.comp ψ₂) hm₁ hz`. Take `⟨G1, w1, e1⟩` from `exists_pull nab hnab (π.comp ψ₁) y₂ z hz1 a n x P hP F₂ hV₂`. Take `⟨G2, w2, e2⟩` from `exists_pull nab hnab (π.comp ψ₂) y₁ z hz2 a n x P hP F₁ hV₁`.
+
+Establish `hG : G1 = G2` using `funext fun b => vtUniq_obj hL.globalFns Xo.univ (w1 b) (w2 b)`. Apply `((π.comp ψ₁).comp κ).toRingHom.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(π.comp ψ₁) (κ (φ v0)) = (π.comp ψ₁) (κ w)`. Rewrite using `[he₂, e1, hG, ← e2, ← he₁]`. Conclude with `AlgHom.congr_fun hψ v0`.
+-/
 theorem thetaValue_natural_field : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (nab : NabV Xo c), IsNab Xo c nab → ∀ (S T : Type) [CommRing S] [Algebra c.F S] [Field T] [Algebra c.F T] (φ : S →ₐ[c.F] T) (y0 : FrPt Xo c S) (y : FrPt Xo c T), FrMap φ y0 y → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (x : Fin n → Dw.La) (P : MvPolynomial (LtN Dw n) c.F), P ∈ harmA c a n → ∀ v0 w, ThValAt Xo c nab y0 x P v0 → ThValAt Xo c nab y x P w → φ v0 = w := by
   intro E _ _ _ H Dw l Xo c _ nab hnab S T _ _ _ _ φ y0 y hφ a n x P hP v0 w hv hw
   have hL : Laws := GlobalTheory.firstFiveLaws.1

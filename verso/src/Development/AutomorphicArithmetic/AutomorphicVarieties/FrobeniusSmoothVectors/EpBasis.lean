@@ -2,6 +2,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+Use `⟨_, _, (Equiv.sumCongr (Fintype.equivFin {i // v i = 0}).symm (Fintype.equivFin {i // ¬ v i = 0}).symm).trans (Equiv.sumCompl fun i => v i = 0), ?_⟩` and prove the remaining obligations. Establish `h2 : ∀ j : ZMod 2, ¬ j = 0 → j = 1` using `by decide`. Introduce and unpack `(s | s)`. Conclude with `((Fintype.equivFin {i // v i = 0}).symm s).2`. Conclude with `h2 _ ((Fintype.equivFin {i // ¬ v i = 0}).symm s).2`.
+-/
 private theorem par_equiv {ι : Type} [Fintype ι] (v : ι → ZMod 2) :
     ∃ (a g : ℕ) (e : Fin a ⊕ Fin g ≃ ι), ∀ s, v (e s) = Space.Loc.par a g s := by
   classical
@@ -12,6 +15,45 @@ private theorem par_equiv {ι : Type} [Fintype ι] (v : ι → ZMod 2) :
   · exact ((Fintype.equivFin {i // v i = 0}).symm s).2
   · exact h2 _ ((Fintype.equivFin {i // ¬ v i = 0}).symm s).2
 
+/- English proof (translation)
+Introduce `O _ _ _ _ h2 R _ _ _ σ hσ J N hJ hN hmJ`. Use `haveI : IsLocalHom (algebraMap O R) := IsCO.isLocalHom`. Take `⟨T, hT⟩` from `(IsNoetherian.noetherian J : J.FG)`. Take `⟨u, hu2, hucomm⟩ : ∃ u : R, u * 2 = 1 ∧ ∀ x, σ (u * x) = u * σ x` from `⟨algebraMap O R ↑h2.unit⁻¹, by`. Rewrite using `[← map_ofNat (algebraMap O R) 2, ← map_mul, h2.val_inv_mul, map_one],`.
+
+Use `fun x => by rw [map_mul, AlgHom.commutes]⟩`. Establish `hsg : ∀ p : ZMod 2, sg R p * sg R p = 1`. Introduce `p`. Simplify using `only [sg, ← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules.
+
+Establish `hsgσ : ∀ p : ZMod 2, σ (sg R p) = sg R p`. Introduce `p`. Simplify using `[sg]`. Establish `s0 : sg R 0 = 1` using `by simp [sg]`. Establish `s1 : sg R 1 = -1` using `by show (-1 : R) ^ ((1 : ZMod 2).val) = -1`.
+
+Rewrite using `[show (1 : ZMod 2).val = 1 from rfl]`. Simplify using the standard rewrite rules. Set `w : T × ZMod 2 → R` to `fun j => u * (j.1.1 + sg R j.2 * σ j.1.1)`. Establish `hwJ : ∀ j, w j ∈ J`. Introduce `j`.
+
+Establish `ht : (j.1 : R) ∈ J` using `hT ▸ Submodule.subset_span j.1.2`. Conclude with `J.mul_mem_left _ (J.add_mem ht (J.mul_mem_left _ (hJ _ ht)))`. Establish `hwev : ∀ j, w j ∈ evp σ j.2`. Introduce `j`. Use `show σ (w j) = sg R j.2 * w j`.
+
+Simplify using `only [w, hucomm, map_add, map_mul, hσ, hsgσ]`. Take the linear combination `(-(u * σ j.1.1)) * hsg j.2`. Establish `hmemN : ∀ c ∈ maximalIdeal O, ∀ y ∈ J, c • y ∈ N`. Introduce `c hc y hy`. Rewrite using `[Algebra.smul_def]`.
+
+Conclude with `hmJ (Ideal.mul_mem_mul (map_nonunit (algebraMap O R) c hc) hy)`. Set `Indep : Finset (T × ZMod 2) → Prop` to `fun S => ∀ c : T × ZMod 2 → O, ∑ s ∈ S, c s • w s ∈ N → ∀ s ∈ S, c s ∈ maximalIdeal O`. Take `⟨S, hS, hmax⟩` from `Finset.exists_max_image (Finset.univ.powerset.filter Indep) Finset.card ⟨∅, Finset.mem_filter.mpr ⟨by simp, fun c _ s hs => absurd hs (Finset.notMem_empty s)⟩⟩`. Establish `hS' : Indep S` using `(Finset.mem_filter.mp hS).2`. Take `⟨a, g, e, he⟩` from `par_equiv (ι := S) (fun i => i.1.2)`.
+
+Use `⟨a, g, fun s => w (e s).1, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s`. Use `⟨hwJ _, ?_⟩` and prove the remaining obligations. Rewrite using `[← he s]`. Conclude with `hwev _`.
+
+Establish `hspan : ∀ j, w j ∈ Ideal.span (Set.range fun s => w (e s).1) ⊔ N`. Introduce `j`. Distinguish the cases in `hj : j ∈ S`. Conclude with `Ideal.mem_sup_left (Ideal.subset_span ⟨e.symm ⟨j, hj⟩, by simp⟩)`. Establish `hnot : ¬ Indep (insert j S)`.
+
+Introduce `hI`. Use `hmax (insert j S) (Finset.mem_filter.mpr ⟨by simp, hI⟩)` as an intermediate fact. Rewrite `this` using `[Finset.card_insert_of_notMem hj]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Indep, not_forall] at hnot`.
+
+Take `⟨c, hc, s, hs, hcs⟩` from `hnot`. Rewrite `hc` using `[Finset.sum_insert hj]`. Establish `hcj : c j ∉ maximalIdeal O`. Introduce `hcj`. Establish `h1 : c j • w j ∈ N` using `hmemN _ hcj _ (hwJ j)`.
+
+Establish `h2' : ∑ s ∈ S, c s • w s ∈ N`. Use `N.sub_mem hc h1` as an intermediate fact. Simplify using `using this`. Break down `Finset.mem_insert.mp hs with rfl | hs` into its components or cases. Conclude with `hcs hcj`.
+
+Conclude with `hcs (hS' c h2' s hs)`. Establish `hunit : IsUnit (c j)`. Assume the negation of the conclusion as `h`. Conclude with `hcj ((IsLocalRing.mem_maximalIdeal _).mpr h)`. Establish `hsumS : ∑ s ∈ S, c s • w s ∈ Ideal.span (Set.range fun s => w (e s).1)`.
+
+Use `Ideal.sum_mem _ fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨e.symm ⟨s, hs⟩, by simp⟩)`. Establish `hcw : c j • w j ∈ Ideal.span (Set.range fun s => w (e s).1) ⊔ N`. Establish `: c j • w j = (c j • w j + ∑ s ∈ S, c s • w s) - ∑ s ∈ S, c s • w s`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ (Ideal.mem_sup_right hc) (Ideal.mem_sup_left hsumS)`. Take `⟨d, hd⟩` from `hunit.exists_left_inv`. Establish `: w j = d • (c j • w j)` using `by rw [smul_smul, hd, one_smul]`.
+
+Rewrite using `[this, Algebra.smul_def]`. Conclude with `Ideal.mul_mem_left _ _ hcw`. Rewrite using `[← hT]`. Use `show Submodule.span R (T : Set R) ≤ _`. Rewrite using `[Submodule.span_le]`.
+
+Introduce `t ht`. Establish `: t = w (⟨t, ht⟩, 0) + w (⟨t, ht⟩, 1)`. Simplify using `only [w, s0, s1]`. Take the linear combination `(-t) * hu2`. Rewrite using `[this]`.
+
+Conclude with `Submodule.add_mem _ (hspan _) (hspan _)`. Introduce `c hc s`. Set `c' : T × ZMod 2 → O` to `fun j => if h : j ∈ S then c (e.symm ⟨j, h⟩) else 0`. Establish `hsum : ∑ j ∈ S, c' j • w j = ∑ s, c s • w (e s).1`. Rewrite using `[← Finset.sum_coe_sort S, ← Equiv.sum_comp e]`.
+
+Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `[c']`. Use `hS' c' (hsum ▸ hc) (e s).1 (e s).2` as an intermediate fact. Simplify `this` using `[c']`.
+-/
 theorem UpperTheory.V.Fr.ep_basis :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O], IsUnit (2 : O) → ∀ (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (σ : R →ₐ[O] R), (∀ y, σ (σ y) = y) → ∀ J N : Ideal R, (∀ y ∈ J, σ y ∈ J) → (∀ y ∈ N, σ y ∈ N) → maximalIdeal R * J ≤ N → ∃ (a g : ℕ) (z : Fin a ⊕ Fin g → R), (∀ s, z s ∈ J ∧ z s ∈ evp σ (Space.Loc.par a g s)) ∧ J ≤ Ideal.span (Set.range z) ⊔ N ∧ ∀ c : Fin a ⊕ Fin g → O, ∑ s, c s • z s ∈ N → ∀ s, c s ∈ maximalIdeal O := by
   classical

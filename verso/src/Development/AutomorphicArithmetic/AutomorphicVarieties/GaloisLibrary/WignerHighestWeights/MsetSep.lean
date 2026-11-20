@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Multise
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.AlgRepEndIrreducible
 open scoped TensorProduct
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.MultisetSeparation.msetSep`.
+-/
 theorem UpperTheory.V.AlgRepEndIrreducible.msetSep :
     ∀ m m' : Multiset ℂ, (∀ u : ℂ, (m.map (u + ·)).prod = (m'.map (u + ·)).prod) → m = m' :=
   _root_.UpperTheory.Reformulated.B.MultisetSeparation.msetSep

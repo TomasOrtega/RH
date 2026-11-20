@@ -16,21 +16,35 @@ def Hol (ε : Fin n → Bool) (a : KG ε → ℂ) : Prop :=
   ∃ F : (Fin n → Fin n → ℂ) → ℂ, DifferentiableOn ℂ F {y | Matrix.of y ∈ KC ε} ∧
     ∀ k : KG ε, F (fun i j => toMK k i j) = a k
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => c, differentiableOn_const c, fun _ => rfl⟩`.
+-/
 lemma Hol.const (c : ℂ) : Hol ε (fun _ => c) :=
   ⟨fun _ => c, differentiableOn_const c, fun _ => rfl⟩
 
+/- English proof (translation)
+Take `⟨F, hF, hFa⟩` from `ha`. Take `⟨G, hG, hGb⟩` from `hb`. Use `⟨fun y => F y + G y, hF.add hG, fun k => ?_⟩` and prove the remaining obligations. Simplify using `only [hFa, hGb]`.
+-/
 lemma Hol.add {a b : KG ε → ℂ} (ha : Hol ε a) (hb : Hol ε b) : Hol ε (fun k => a k + b k) := by
   obtain ⟨F, hF, hFa⟩ := ha
   obtain ⟨G, hG, hGb⟩ := hb
   refine ⟨fun y => F y + G y, hF.add hG, fun k => ?_⟩
   simp only [hFa, hGb]
 
+/- English proof (translation)
+Take `⟨F, hF, hFa⟩` from `ha`. Take `⟨G, hG, hGb⟩` from `hb`. Use `⟨fun y => F y * G y, hF.mul hG, fun k => ?_⟩` and prove the remaining obligations. Simplify using `only [hFa, hGb]`.
+-/
 lemma Hol.mul {a b : KG ε → ℂ} (ha : Hol ε a) (hb : Hol ε b) : Hol ε (fun k => a k * b k) := by
   obtain ⟨F, hF, hFa⟩ := ha
   obtain ⟨G, hG, hGb⟩ := hb
   refine ⟨fun y => F y * G y, hF.mul hG, fun k => ?_⟩
   simp only [hFa, hGb]
 
+/- English proof (translation)
+Use `choose F hF hFa using ha`. Use `⟨fun y => ∑ i ∈ s, F i y, ?_, fun k => ?_⟩` and prove the remaining obligations. Establish `hs` using `DifferentiableOn.sum (𝕜 := ℂ) (u := s) (fun i _ => hF i)`. Establish `e : (fun y => ∑ i ∈ s, F i y) = ∑ i ∈ s, F i`. Use function extensionality and compare the values at `y`.
+
+Rewrite using `[Finset.sum_apply]`. Rewrite using `[e]`. Conclude with `hs`. Simplify using `only [hFa]`.
+-/
 lemma Hol.sum {ι : Type} (s : Finset ι) {a : ι → KG ε → ℂ} (ha : ∀ i, Hol ε (a i)) :
     Hol ε (fun k => ∑ i ∈ s, a i k) := by
   choose F hF hFa using ha
@@ -43,11 +57,21 @@ lemma Hol.sum {ι : Type} (s : Finset ι) {a : ι → KG ε → ℂ} (ha : ∀ i
     exact hs
   simp only [hFa]
 
+/- English proof (translation)
+Use `⟨fun y => y i j, ?_, fun k => rfl⟩` and prove the remaining obligations. Establish `hd : Differentiable ℂ (fun y : Fin n → Fin n → ℂ => y i j)` using `by fun_prop`. Conclude with `hd.differentiableOn`.
+-/
 lemma Hol.entry (i j : Fin n) : Hol ε (fun k => toMK k i j) := by
   refine ⟨fun y => y i j, ?_, fun k => rfl⟩
   have hd : Differentiable ℂ (fun y : Fin n → Fin n → ℂ => y i j) := by fun_prop
   exact hd.differentiableOn
 
+/- English proof (translation)
+Simplify using `only [Matrix.det_apply']`. Establish `hp : ∀ σ : Equiv.Perm (Fin n), Differentiable ℂ (fun y => ∏ i, f y (σ i) i)` using `fun σ => by`. Establish `h : Differentiable ℂ (∏ i, (fun y : Fin n → Fin n → ℂ => f y (σ i) i))` using `Finset.prod_induction (fun i => (fun y : Fin n → Fin n → ℂ => f y (σ i) i)) (fun g => Differentiable ℂ g) (fun a b ha hb => ha.mul hb) (differentiable_const 1) (fun i _ => hf (σ i) i)`. Establish `e : (fun y => ∏ i, f y (σ i) i) = ∏ i, (fun y => f y (σ i) i)`. Use function extensionality and compare the values at `y`.
+
+Rewrite using `[Finset.prod_apply]`. Rewrite using `[e]`. Conclude with `h`. Establish `hs` using `Differentiable.sum (𝕜 := ℂ) (u := Finset.univ) (A := fun (σ : Equiv.Perm (Fin n)) (y : Fin n → Fin n → ℂ) => ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, f y (σ i) i) (fun σ _ => (differentiable_const (((Equiv.Perm.sign σ : ℤ) : ℂ))).mul (hp σ))`. Establish `e : (fun y => ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, f y (σ i) i) = ∑ σ : Equiv.Perm (Fin n), (fun y => ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, f y (σ i) i)`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[Finset.sum_apply]`. Rewrite using `[e]`. Conclude with `hs`.
+-/
 lemma differentiable_det (f : (Fin n → Fin n → ℂ) → Matrix (Fin n) (Fin n) ℂ)
     (hf : ∀ i j, Differentiable ℂ (fun y => f y i j)) : Differentiable ℂ (fun y => (f y).det) := by
   simp only [Matrix.det_apply']
@@ -71,6 +95,9 @@ lemma differentiable_det (f : (Fin n → Fin n → ℂ) → Matrix (Fin n) (Fin 
   rw [e]
   exact hs
 
+/- English proof (translation)
+Establish `hu : toMK k * star (toMK k) = 1` using `Matrix.mem_unitaryGroup_iff.1 ((mem_KG ε (k : UJ ε)).1 k.2).1`. Establish `hl : toMK k⁻¹ * toMK k = 1` using `Units.inv_mul ((k : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma toMK_inv (k : KG ε) : toMK k⁻¹ = star (toMK k) := by
   have hu : toMK k * star (toMK k) = 1 :=
     Matrix.mem_unitaryGroup_iff.1 ((mem_KG ε (k : UJ ε)).1 k.2).1
@@ -78,8 +105,20 @@ lemma toMK_inv (k : KG ε) : toMK k⁻¹ = star (toMK k) := by
   calc toMK k⁻¹ = toMK k⁻¹ * (toMK k * star (toMK k)) := by rw [hu, mul_one]
     _ = star (toMK k) := by rw [← mul_assoc, hl, one_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma toMK_mul (g k : KG ε) : toMK (g * k) = toMK g * toMK k := rfl
 
+/- English proof (translation)
+Use `⟨fun y => ((Matrix.of y).det)⁻¹ * (Matrix.of y).adjugate j i, ?_, fun k => ?_⟩` and prove the remaining obligations. Establish `hdet : Differentiable ℂ (fun y : Fin n → Fin n → ℂ => (Matrix.of y).det)` using `differentiable_det (fun y => Matrix.of y) (fun a b => by simp only [Matrix.of_apply]; fun_prop)`. Establish `hadj : Differentiable ℂ (fun y : Fin n → Fin n → ℂ => (Matrix.of y).adjugate j i)`. Simplify using `only [Matrix.adjugate_apply]`. Conclude with `differentiable_det _ (fun a b => by`.
+
+Simplify using `only [Matrix.updateRow_apply, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> fun_prop)`. Introduce `y hy`. Establish `hy1 : IsUnit (Matrix.of y)`. Simplify using `only [Set.mem_setOf_eq, KC] at hy`.
+
+Conclude with `hy.1`. Establish `hne : (Matrix.of y).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 hy1).ne_zero`. Conclude with `((hdet y).inv hne).differentiableWithinAt.mul (hadj y).differentiableWithinAt`. Establish `hu : toMK k * star (toMK k) = 1` using `Matrix.mem_unitaryGroup_iff.1 ((mem_KG ε (k : UJ ε)).1 k.2).1`. Establish `hinv : (toMK k)⁻¹ = star (toMK k)` using `Matrix.inv_eq_right_inv hu`.
+
+Establish `key : (toMK k)⁻¹ j i = ((toMK k).det)⁻¹ * (toMK k).adjugate j i`. Rewrite using `[Matrix.inv_def, Matrix.smul_apply, Ring.inverse_eq_inv, smul_eq_mul]`. Express the relevant statement in the definitionally equal form `((toMK k).det)⁻¹ * (toMK k).adjugate j i = star (toMK k i j)`. Rewrite using `[← key, hinv, Matrix.star_apply]`.
+-/
 lemma Hol.conjEntry (i j : Fin n) : Hol ε (fun k => star (toMK k i j)) := by
   refine ⟨fun y => ((Matrix.of y).det)⁻¹ * (Matrix.of y).adjugate j i, ?_, fun k => ?_⟩
   · have hdet : Differentiable ℂ (fun y : Fin n → Fin n → ℂ => (Matrix.of y).det) :=
@@ -107,10 +146,18 @@ def Sep (ε : Fin n → Bool) (p : KG ε → ℂ) : Prop :=
   ∃ (ι : Type) (_ : Fintype ι) (a : ι → KG ε → ℂ) (b : ι → C(KG ε, ℂ)), (∀ i, Hol ε (a i)) ∧
     ∀ g k, p (g⁻¹ * k) = ∑ i, a i g * b i k
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Unit, inferInstance, fun _ _ => c, fun _ => ContinuousMap.const _ 1, fun _ => Hol.const c, fun g k => by simp⟩`.
+-/
 lemma Sep.const (c : ℂ) : Sep ε (fun _ => c) :=
   ⟨Unit, inferInstance, fun _ _ => c, fun _ => ContinuousMap.const _ 1, fun _ => Hol.const c,
     fun g k => by simp⟩
 
+/- English proof (translation)
+Take `⟨ι, _, a, b, ha, hab⟩` from `hp`. Take `⟨κ, _, c, d, hc, hcd⟩` from `hq`. Use `⟨ι ⊕ κ, inferInstance, Sum.elim a c, Sum.elim b d, ?_, fun g k => ?_⟩` and prove the remaining obligations. Introduce and unpack `(i | i)`. Conclude with `ha i`.
+
+Conclude with `hc i`. Simplify using `only [Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, hab, hcd]`.
+-/
 lemma Sep.add {p q : KG ε → ℂ} (hp : Sep ε p) (hq : Sep ε q) : Sep ε (fun k => p k + q k) := by
   obtain ⟨ι, _, a, b, ha, hab⟩ := hp
   obtain ⟨κ, _, c, d, hc, hcd⟩ := hq
@@ -120,6 +167,11 @@ lemma Sep.add {p q : KG ε → ℂ} (hp : Sep ε p) (hq : Sep ε q) : Sep ε (fu
     · exact hc i
   · simp only [Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, hab, hcd]
 
+/- English proof (translation)
+Take `⟨ι, _, a, b, ha, hab⟩` from `hp`. Take `⟨κ, _, c, d, hc, hcd⟩` from `hq`. Use `⟨ι × κ, inferInstance, fun x g => a x.1 g * c x.2 g, fun x => b x.1 * d x.2, fun x => (ha x.1).mul (hc x.2), fun g k => ?_⟩` and prove the remaining obligations. Use `show p (g⁻¹ * k) * q (g⁻¹ * k) = _`. Rewrite using `[hab, hcd, Fintype.sum_prod_type, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [ContinuousMap.mul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma Sep.mul {p q : KG ε → ℂ} (hp : Sep ε p) (hq : Sep ε q) : Sep ε (fun k => p k * q k) := by
   obtain ⟨ι, _, a, b, ha, hab⟩ := hp
   obtain ⟨κ, _, c, d, hc, hcd⟩ := hq
@@ -133,6 +185,9 @@ lemma Sep.mul {p q : KG ε → ℂ} (hp : Sep ε p) (hq : Sep ε q) : Sep ε (fu
   simp only [ContinuousMap.mul_apply]
   ring
 
+/- English proof (translation)
+Establish `hc : Continuous (fun k : KG ε => toMK k)` using `Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)`. Establish `hi : Function.Injective (fun k : KG ε => toMK k)` using `fun a b h => Subtype.ext (Subtype.ext (Units.ext h))`. Conclude with `(hc.isClosedEmbedding hi).isEmbedding`.
+-/
 lemma isEmb (ε : Fin n → Bool) : Topology.IsEmbedding (fun k : KG ε => toMK k) := by
   have hc : Continuous (fun k : KG ε => toMK k) :=
     Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)
@@ -143,6 +198,9 @@ lemma isEmb (ε : Fin n → Bool) : Topology.IsEmbedding (fun k : KG ε => toMK 
 def ent (ε : Fin n → Bool) (i j : Fin n) : C(KG ε, ℂ) :=
   ⟨fun k => toMK k i j, (continuous_apply_apply i j).comp (isEmb ε).continuous⟩
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨Fin n, inferInstance, fun l g => star (toMK g l i), fun l => ent ε l j, fun l => Hol.conjEntry l i, fun g k => ?_⟩`. Use `show toMK (g⁻¹ * k) i j = ∑ l, star (toMK g l i) * toMK k l j`. Rewrite using `[toMK_mul, toMK_inv, Matrix.mul_apply]`. Simplify using `only [Matrix.star_apply]`.
+-/
 lemma Sep.entry (i j : Fin n) : Sep ε (ent ε i j) := by
   refine ⟨Fin n, inferInstance, fun l g => star (toMK g l i), fun l => ent ε l j,
     fun l => Hol.conjEntry l i, fun g k => ?_⟩
@@ -150,6 +208,9 @@ lemma Sep.entry (i j : Fin n) : Sep ε (ent ε i j) := by
   rw [toMK_mul, toMK_inv, Matrix.mul_apply]
   simp only [Matrix.star_apply]
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨Fin n, inferInstance, fun l g => toMK g l i, fun l => star (ent ε l j), fun l => Hol.entry l i, fun g k => ?_⟩`. Use `show star (toMK (g⁻¹ * k) i j) = ∑ l, toMK g l i * star (toMK k l j)`. Rewrite using `[toMK_mul, toMK_inv, Matrix.mul_apply, star_sum]`. Simplify using `only [Matrix.star_apply, star_mul', star_star]`.
+-/
 lemma Sep.conjEntry (i j : Fin n) : Sep ε (star (ent ε i j) : C(KG ε, ℂ)) := by
   refine ⟨Fin n, inferInstance, fun l g => toMK g l i, fun l => star (ent ε l j),
     fun l => Hol.entry l i, fun g k => ?_⟩
@@ -172,6 +233,11 @@ def sepAlg (ε : Fin n → Bool) : StarSubalgebra ℂ C(KG ε, ℂ) where
     rw [this]; exact Sep.const _⟩
   star_mem' := fun {p} hp => ⟨hp.2, by rw [star_star]; exact hp.1⟩
 
+/- English proof (translation)
+Use `ContinuousMap.starSubalgebra_topologicalClosure_eq_top_of_separatesPoints _ ?_` and prove the remaining obligations. Introduce `x y hxy`. Establish `hne : toMK x ≠ toMK y` using `fun h => hxy ((isEmb ε).injective h)`. Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, toMK x i j ≠ toMK y i j := by`. Assume the negation of the conclusion as `hcon`.
+
+Use `push_neg at hcon`. Conclude with `hne (Matrix.ext hcon)`. Apply the tactic sequence `have hmem : ent ε i j ∈ sepAlg ε := ⟨Sep.entry i j, Sep.conjEntry i j⟩`. Conclude with `⟨_, ⟨ent ε i j, hmem, rfl⟩, hij⟩`.
+-/
 lemma sepAlg_dense (ε : Fin n → Bool) : (sepAlg ε).topologicalClosure = ⊤ := by
   refine ContinuousMap.starSubalgebra_topologicalClosure_eq_top_of_separatesPoints _ ?_
   intro x y hxy
@@ -183,10 +249,28 @@ lemma sepAlg_dense (ε : Fin n → Bool) : (sepAlg ε).topologicalClosure = ⊤ 
   have hmem : ent ε i j ∈ sepAlg ε := ⟨Sep.entry i j, Sep.conjEntry i j⟩
   exact ⟨_, ⟨ent ε i j, hmem, rfl⟩, hij⟩
 
+/- English proof (translation)
+The claim follows from `hf.integrable_of_hasCompactSupport (isClosed_tsupport f).isCompact`.
+-/
 private theorem integrable_of_continuous_isFiniteMeasure {E : Type*} [NormedAddCommGroup E] {f : KG ε → E} (hf : Continuous f) :
     Integrable f (muK ε) :=
   hf.integrable_of_hasCompactSupport (isClosed_tsupport f).isCompact
 
+/- English proof (translation)
+Set `L : C(KG ε, ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun p => ∫ k, p k * φ k ∂(muK ε) map_add' := fun p q => by`. Simplify using `only [ContinuousMap.add_apply, add_mul]`. Conclude with `integral_add (integrable_of_continuous_isFiniteMeasure (p.continuous.mul φ.continuous)) (integrable_of_continuous_isFiniteMeasure (q.continuous.mul φ.continuous))`. Use the proof step `map_smul' := fun c p => by`. Simplify using `only [ContinuousMap.smul_apply, smul_eq_mul, RingHom.id_apply, mul_assoc]`.
+
+Conclude with `integral_const_mul c _ }`. Establish `hL : Continuous L`. Use `AddMonoidHomClass.continuous_of_bound L (∫ k, ‖φ k‖ ∂(muK ε)) fun p => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `norm_integral_le_of_norm_le ((integrable_of_continuous_isFiniteMeasure φ.continuous).norm.const_mul _) ?_` and prove the remaining obligations.
+
+Use `Filter.Eventually.of_forall fun k => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (p.norm_coe_le_norm k) (norm_nonneg _)`. Use `_ = (∫ k, ‖φ k‖ ∂(muK ε)) * ‖p‖ := by rw [integral_const_mul, mul_comm]`. Establish `hcl : IsClosed {p : C(KG ε, ℂ) | L p = 0}` using `isClosed_eq hL continuous_const`.
+
+Establish `hsub : ((sepAlg ε : StarSubalgebra ℂ C(KG ε, ℂ)) : Set C(KG ε, ℂ)) ⊆ {p | L p = 0}`. Introduce `p hp`. Conclude with `h p hp.1`. Establish `hall : ∀ p : C(KG ε, ℂ), L p = 0`. Introduce `p`.
+
+Establish `hp : p ∈ closure ((sepAlg ε : StarSubalgebra ℂ C(KG ε, ℂ)) : Set C(KG ε, ℂ))`. Rewrite using `[← StarSubalgebra.topologicalClosure_coe, SetLike.mem_coe, sepAlg_dense]`. Conclude with `StarSubalgebra.mem_top`. Conclude with `closure_minimal hsub hcl hp`. Establish `h1 : ∫ k, (star φ) k * φ k ∂(muK ε) = 0` using `hall (star φ)`.
+
+Establish `e : ∀ k, (star φ) k * φ k = ((‖φ k‖ ^ 2 : ℝ) : ℂ)` using `fun k => by`. Rewrite using `[ContinuousMap.star_apply, Complex.star_def, Complex.conj_mul', Complex.ofReal_pow]`. Simplify using `only [e, integral_ofReal] at h1`. Establish `hreal : ∫ k, ‖φ k‖ ^ 2 ∂(muK ε) = 0` using `by exact_mod_cast h1`. Establish `hae : (fun k => ‖φ k‖ ^ 2) =ᵐ[muK ε] 0` using `(integral_eq_zero_iff_of_nonneg (fun k => sq_nonneg ‖φ k‖) (integrable_of_continuous_isFiniteMeasure (φ.continuous.norm.pow 2))).1 hreal`.
+
+Establish `heq : (fun k => ‖φ k‖ ^ 2) = 0` using `(Continuous.ae_eq_iff_eq (muK ε) (φ.continuous.norm.pow 2) continuous_const).1 hae`. Use extensionality with `k`. Establish `hk` using `congrFun heq k`. Simplify using `using hk`.
+-/
 lemma eq_zero_of_orth (φ : C(KG ε, ℂ))
     (h : ∀ p : C(KG ε, ℂ), Sep ε p → ∫ k, p k * φ k ∂(muK ε) = 0) : φ = 0 := by
   let L : C(KG ε, ℂ) →ₗ[ℂ] ℂ :=

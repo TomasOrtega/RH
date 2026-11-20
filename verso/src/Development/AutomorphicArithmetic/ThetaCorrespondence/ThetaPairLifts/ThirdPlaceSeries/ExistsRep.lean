@@ -17,6 +17,13 @@ open GlobalTheory.CuspRep GlobalTheory.GalOfCusp GlobalTheory.ThetaPull GlobalTh
 open GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele (ideleMap continuous_ideleMap ideleMap_principalIdele continuous_adeleMap)
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ}
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.WeilDeligne in
+/- English proof (translation)
+Establish `hν` using `GlobalTheory.HeckeGal.Model.absPow_isAbsPow E s`. Establish `hr' : (π.twist (GlobalTheory.HeckeGal.Model.absPow E s)).IsRegAlg` using `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by`. Rewrite using `[((ParLaws.hasInfChar_infChar π τ).twist _).infChar_eq, (InfType.expo_of_infType E _).2.1 s hν τ]`. Use `⟨(hr τ).1.map (add_left_injective _), fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `Multiset.mem_map.1 hz`.
+
+Conclude with `(hr τ).2 y hy`. Proceed by induction on `π using Quotient.inductionOn with | _ π =>`. Take `⟨r, wt, HT, H⟩` from `hG E Ω l ι a ha _ _ hr' (isPolarized_twist_absPow hc s)`. Use `⟨r, Units.continuous_val.comp H.cont, fun w hl A h => ?_⟩` and prove the remaining obligations. Establish `k` using `H.aw_locPar hL hF hl h`.
+
+Establish `e` using `_root_.GlobalTheory.HeightCounting.Blocks.local_parameter_twist_abs_pow hL hF (CG.mk π) hν h`. Conclude with `(congrArg (fun x : WD h => UpperTheory.GalS.Aw (wdOf h hl ι r) (x.lpTw ((1 - (a : ℝ)) / 2))) e).mp k`.
+-/
 theorem exists_rep_alt_alt (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL)
     (hG : _root_.UpperTheory.GalS.CuspUAlt) (Ω : Type) [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ}
     [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (ha : 1 ≤ a) (π : CG E a) (hc : π.IsCsd) (s : ℝ)

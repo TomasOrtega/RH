@@ -17,11 +17,17 @@ variable {R : Type*} [CommRing R] {A B C D E : Type*} [AddCommGroup A] [Module R
   [AddCommGroup B] [Module R B] [AddCommGroup C] [Module R C] [AddCommGroup D] [Module R D]
   [AddCommGroup E] [Module R E]
 
+/- English proof (translation)
+Rewrite using `[Submodule.card_eq_card_quotient_mul_card (LinearMap.ker f), Nat.card_congr f.quotKerEquivRange.toEquiv]`.
+-/
 theorem card_eq_ker_mul_range (f : A →ₗ[R] B) :
     Nat.card A = Nat.card (LinearMap.ker f) * Nat.card (LinearMap.range f) := by
   rw [Submodule.card_eq_card_quotient_mul_card (LinearMap.ker f),
     Nat.card_congr f.quotKerEquivRange.toEquiv]
 
+/- English proof (translation)
+Rewrite using `[card_eq_ker_mul_range g, card_eq_ker_mul_range h, h1.linearMap_ker_eq, h2.linearMap_ker_eq, h3.linearMap_ker_eq, ← Nat.card_congr (LinearEquiv.ofInjective f hf).toEquiv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem card_five {f : A →ₗ[R] B} {g : B →ₗ[R] C} {h : C →ₗ[R] D} {k : D →ₗ[R] E}
     (hf : Function.Injective f) (h1 : Function.Exact f g) (h2 : Function.Exact g h)
     (h3 : Function.Exact h k) :
@@ -31,6 +37,15 @@ theorem card_five {f : A →ₗ[R] B} {g : B →ₗ[R] C} {h : C →ₗ[R] D} {k
     ← Nat.card_congr (LinearEquiv.ofInjective f hf).toEquiv]
   ring
 
+/- English proof (translation)
+Set `u : L.comap f →ₗ[R] L` to `f.restrict (fun _ hx => hx)`. Rewrite using `[card_eq_ker_mul_range u]`. Establish `e1 : LinearMap.range u = LinearMap.ker (g.domRestrict L)`. Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker, LinearMap.domRestrict_apply, h x]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, rfl⟩`. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨⟨y, by rw [Submodule.mem_comap, hy]; exact x.2⟩, Subtype.ext hy⟩`.
+
+Establish `e2 : Nat.card (LinearMap.ker u) = Nat.card (LinearMap.ker f)` using `Nat.card_congr { toFun := fun x => ⟨x.1.1, congrArg Subtype.val x.2⟩ invFun := fun x => ⟨⟨x.1, by`. Rewrite using `[Submodule.mem_comap, LinearMap.mem_ker.1 x.2]`. Conclude with `L.zero_mem⟩, Subtype.ext x.2⟩`. Use `left_inv := fun _ => rfl`. Use `right_inv := fun _ => rfl }`.
+
+Rewrite using `[e1, e2]`.
+-/
 theorem card_comap {f : A →ₗ[R] B} {g : B →ₗ[R] C} (h : Function.Exact f g) (L : Submodule R B) :
     Nat.card (L.comap f) =
       Nat.card (LinearMap.ker f) * Nat.card (LinearMap.ker (g.domRestrict L)) := by
@@ -53,6 +68,9 @@ theorem card_comap {f : A →ₗ[R] B} {g : B →ₗ[R] C} (h : Function.Exact f
         right_inv := fun _ => rfl }
   rw [e1, e2]
 
+/- English proof (translation)
+Rewrite using `[← Nat.card_pi]`. Conclude with `Nat.card_congr { toFun := fun x i => ⟨x.1 i, x.2 i trivial⟩ invFun := fun x => ⟨fun i => (x i).1, fun i _ => (x i).2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`.
+-/
 theorem card_pi {I : Type*} [Fintype I] {P : I → Type*} [∀ i, AddCommGroup (P i)]
     [∀ i, Module R (P i)] (L : ∀ i, Submodule R (P i)) :
     Nat.card (Submodule.pi Set.univ L) = ∏ i, Nat.card (L i) := by
@@ -65,6 +83,9 @@ theorem card_pi {I : Type*} [Fintype I] {P : I → Type*} [∀ i, AddCommGroup (
 
 end Count
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem arith {k p h2 h0 s i h1 s' q h0' m : ℕ} (a1 : k * p = h2 * h0) (a2 : s = k * i)
     (a3 : i * h1 = s' * q) (a4 : h0' * h2 * m = h1) : s * h0' * p * m = s' * h0 * q := by
   calc s * h0' * p * m = (k * p) * i * h0' * m := by rw [a2]; ring
@@ -73,6 +94,15 @@ theorem arith {k p h2 h0 s i h1 s' q h0' m : ℕ} (a1 : k * p = h2 * h0) (a2 : s
 
 open PoitouTate in
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[mem_Sel, LinearMap.mem_ker, LinearMap.ext_iff]`. Simplify using `only [mem_perpCond, LinearMap.flip_apply, LinearMap.domRestrict_apply, poitouTateNineTerm_transgressionOne_apply, LinearMap.zero_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h v x hx`.
+
+Establish `hm : Pi.single v x ∈ Submodule.pi Set.univ L` using `fun w _ => by`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `hx`.
+
+Rewrite using `[Pi.single_eq_of_ne hw]`. Conclude with `zero_mem _`. Establish `e` using `h ⟨_, hm⟩`. Rewrite using `[Finset.sum_eq_single v (fun w _ hw => by`. Rewrite using `[Subtype.coe_mk, Pi.single_eq_of_ne hw, map_zero, map_zero]) (by simp),`.
+
+Use the proof step `Subtype.coe_mk, Pi.single_eq_same] at e`. Conclude with `hj v (e.trans (map_zero _).symm)`. Introduce `h x`. Conclude with `Finset.sum_eq_zero fun v _ => by rw [h v _ (x.2 v trivial), map_zero]`.
+-/
 theorem ker_flip_eq {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {r : ℕ} {S : Finset (HeightOneSpectrum (𝓞 F))}
     {Av : S → ValuationSubring Ω}
@@ -107,6 +137,19 @@ theorem ker_flip_eq {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra 
 
 open PoitouTate in
 
+/- English proof (translation)
+Introduce `hPT hLF hGF hEC F Ω _ _ _ _ _ _ l _ r M _ _ _ _ _ S ρ hr hS hρ μ hμ Av hA L`. Establish `: NeZero (l ^ r)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed F`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ r)`.
+
+Take `⟨inv, hinv, h⟩` from `hPT F Ω l r hr ζ hζ`. Take `⟨⟨δ₁, -, h0, h1, h2, h3, h4, -⟩, -⟩` from `h S hS Av hA μ hμ M ρ hρ`. Use `GlobalTheory.DualSide.finite_TDual_pow (l := l) (r := r) (M := M)` as an intermediate fact. Establish `hρ'` using `GlobalTheory.DualSide.contAction_twDual (contAction_charRep hμ) hρ`. Take `⟨-, f1, -⟩` from `hGF F Ω l r M S ρ hr hS hρ`.
+
+Take `⟨-, f1', f2', -⟩` from `hGF F Ω l r _ S (twDual μ ρ) hr hS hρ'`. Establish `fl : ∀ v : S, Finite (H1 (ρ.comp (locFam S Av v)))` using `fun v => (hLF F Ω l r M (Av v) _ v.1 hr (hA v) (hρ.comp' (continuous_locFam S Av v))).2.1`. Use `⟨inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Establish `a1` using `card_five h0 h1 h2 h3`. Rewrite `a1` using `[GlobalTheory.ZModDual.card_dual_eq, Nat.card_pi]`.
+
+Establish `a2` using `card_comap h4 (Submodule.pi Set.univ L)`. Establish `e2 : (Submodule.pi Set.univ L).comap (loc1 S Av ρ) = Sel ρ (locFam S Av) (continuous_locFam S Av) L`. Use extensionality with `x`. Rewrite using `[mem_Sel]`. Conclude with `⟨fun h v => h v trivial, fun h v _ => h v⟩`.
+
+Rewrite `a2` using `[e2]`. Establish `a3` using `GlobalTheory.ZModDual.card_ker_mul_card_eq (l ^ r) _ _ ((tr1 S Av μ (invAt S Av μ hμ inv) ρ hρ).domRestrict (Submodule.pi Set.univ L))`. Rewrite `a3` using `[ker_flip_eq (fun v => (invAt_bijective S Av μ hμ hinv v (hA v)).1), card_pi]`. Establish `a4` using `hEC F Ω l r _ S (twDual μ ρ) hr hS hρ' (fun _ => 1) (fun w hw => absurd hw (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w)))`. Establish `hM : Nat.card (TDual (ZMod (l ^ r)) M) = Nat.card M` using `GlobalTheory.ZModDual.card_dual_eq _ _`.
+
+Rewrite `a4` using `[archH0Card, Finset.filter_false_of_mem (fun w _ => InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w)), Finset.prod_empty, one_mul, hM, IsTotallyComplex.finrank, two_mul, pow_add, ← mul_assoc]`. Establish `a5` using `Nat.eq_of_mul_eq_mul_right (pow_pos Nat.card_pos _) a4`. Conclude with `arith a1 a2 a3 a5`.
+-/
 theorem greenbergWiles_totallyComplex : PoitouTateTotallyComplex → LocalFiniteness → GlobalFiniteness → GlobalEulerChar → ∀ (F Ω : Type) [Field F] [NumberField F] [IsTotallyComplex F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (r : ℕ) (M : Type) [AddCommGroup M] [Module (ZMod (l ^ r)) M] [TopologicalSpace M] [DiscreteTopology M] [Finite M] (S : Finset (HeightOneSpectrum (𝓞 F))) (rhoS : Representation (ZMod (l ^ r)) (GS Ω (S : Set (HeightOneSpectrum (𝓞 F)))) M), 0 < r → ContainsAbove S l → ∀ (hrho : ContAction rhoS) (muS : GS Ω (S : Set (HeightOneSpectrum (𝓞 F))) →* (ZMod (l ^ r))ˣ), muS.comp (toGS Ω _) = cycMod F Ω l r → ∀ Av : S → ValuationSubring Ω, (∀ v, IsPlaceOver (Av v) v.1) → ∀ L : LocCond rhoS (locFam S Av), Finite (Sel rhoS (locFam S Av) (continuous_locFam S Av) L) ∧ Finite (Sel (twDual muS rhoS) (locFam S Av) (continuous_locFam S Av) (perpCond muS rhoS (locFam S Av) (fun v => hrho.comp' (continuous_locFam S Av v)) L)) ∧ Nat.card (Sel rhoS (locFam S Av) (continuous_locFam S Av) L) * Nat.card (H0 (twDual muS rhoS)) * (∏ v : S, Nat.card (H0 (rhoS.comp (locFam S Av v)))) * Nat.card M ^ InfinitePlace.nrComplexPlaces F = Nat.card (Sel (twDual muS rhoS) (locFam S Av) (continuous_locFam S Av) (perpCond muS rhoS (locFam S Av) (fun v => hrho.comp' (continuous_locFam S Av v)) L)) * Nat.card (H0 rhoS) * ∏ v : S, Nat.card (L v) := by
   intro hPT hLF hGF hEC F Ω _ _ _ _ _ _ l _ r M _ _ _ _ _ S ρ hr hS hρ μ hμ Av hA L
   classical

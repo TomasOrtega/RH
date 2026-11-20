@@ -18,14 +18,23 @@ def signEquiv {N : ℕ} (ε : Fin N → Bool) :
   (Equiv.sumCongr (Fintype.equivFin _).symm (Fintype.equivFin _).symm).trans
     (Equiv.sumCompl (fun a => ε a = true))
 
+/- English proof (translation)
+Establish `h` using `((Fintype.equivFin {a // ε a = true}).symm i).2`. Simplify `h` using `[signEquiv]`.
+-/
 theorem signEquiv_inl {N : ℕ} (ε : Fin N → Bool) (i) : ε (signEquiv ε (Sum.inl i)) = true := by
   have h := ((Fintype.equivFin {a // ε a = true}).symm i).2
   simpa [signEquiv] using h
 
+/- English proof (translation)
+Establish `h` using `((Fintype.equivFin {a // ¬ ε a = true}).symm j).2`. Simplify `h` using `[signEquiv]`.
+-/
 theorem signEquiv_inr {N : ℕ} (ε : Fin N → Bool) (j) : ε (signEquiv ε (Sum.inr j)) = false := by
   have h := ((Fintype.equivFin {a // ¬ ε a = true}).symm j).2
   simpa [signEquiv] using h
 
+/- English proof (translation)
+Use extensionality with `A hA`. Rewrite using `[ReciprocityTheory.ChartRestriction.DS.muCD_eq_cd_vol cd (signEquiv ε) (signEquiv_inl ε) (signEquiv_inr ε) A hA, hc N ε _ _ (signEquiv ε) (signEquiv_inl ε) (signEquiv_inr ε) A hA]`.
+-/
 theorem muCD_eq_smul (cd : CDHaar) (s : (n : ℕ) → (Fin n → Bool) → NNReal)
     (hc : Formalism.MainNotions.RT.cdScaleTieR cd s) {N : ℕ} (ε : Fin N → Bool) :
     ReciprocityTheory.ChartRestriction.DS.muCD ε = (s N ε : ENNReal) • Formalism.REAL.muG ε := by
@@ -33,6 +42,11 @@ theorem muCD_eq_smul (cd : CDHaar) (s : (n : ℕ) → (Fin n → Bool) → NNRea
   rw [ReciprocityTheory.ChartRestriction.DS.muCD_eq_cd_vol cd (signEquiv ε) (signEquiv_inl ε) (signEquiv_inr ε) A hA,
     hc N ε _ _ (signEquiv ε) (signEquiv_inl ε) (signEquiv_inr ε) A hA]
 
+/- English proof (translation)
+Rewrite using `[Finset.card_filter, Finset.card_filter, ← Finset.sum_add_distrib]`. Establish `h1 : ∀ a : Fin N, ((if ε a = true then 1 else 0) + (if ε a = false then 1 else 0) : ℕ) = 1`. Introduce `a`. Apply the tactic sequence `cases ε a <;> simp`. Simplify using `only [h1]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem card_add_card {N : ℕ} (ε : Fin N → Bool) :
     (Finset.univ.filter (fun a => ε a = true)).card + (Finset.univ.filter (fun a => ε a = false)).card = N := by
   rw [Finset.card_filter, Finset.card_filter, ← Finset.sum_add_distrib]
@@ -42,6 +56,19 @@ theorem card_add_card {N : ℕ} (ε : Fin N → Bool) :
   simp only [h1]
   simp
 
+/- English proof (translation)
+Establish `hpN : ReciprocityTheory.ChartRestriction.DS.pOf ε ≤ N`. Unfold `ReciprocityTheory.ChartRestriction.DS.pOf`. Conclude with `(Finset.card_filter_le _ _).trans (by simp)`. Establish `hpR : (1 : ℝ) ≤ (ReciprocityTheory.ChartRestriction.DS.pOf ε : ℝ)` using `by exact_mod_cast hp`. Establish `hqR : (1 : ℝ) ≤ (ReciprocityTheory.ChartRestriction.DS.qOf ε : ℝ)` using `by exact_mod_cast hq`.
+
+Establish `hN : (ReciprocityTheory.ChartRestriction.DS.pOf ε : ℝ) ≤ (N : ℝ)` using `by exact_mod_cast hpN`. Establish `hN1 : (1 : ℝ) ≤ (N : ℝ)` using `le_trans hpR hN`. Establish `hm : ((ReciprocityTheory.ChartRestriction.DS.S7.q0 ε : ℕ) : ℝ) ≤ (ReciprocityTheory.ChartRestriction.DS.pOf ε : ℝ) * (ReciprocityTheory.ChartRestriction.DS.qOf ε : ℝ)`. Establish `: ReciprocityTheory.ChartRestriction.DS.S7.q0 ε ≤ ReciprocityTheory.ChartRestriction.DS.pOf ε * ReciprocityTheory.ChartRestriction.DS.qOf ε`. Unfold `ReciprocityTheory.ChartRestriction.DS.S7.q0`.
+
+Conclude with `le_trans (min_le_left _ _) (Nat.le_mul_of_pos_right _ (by omega))`. Conclude with `this` after adjusting the coercions. Establish `hm1 : (1 : ℝ) ≤ ((ReciprocityTheory.ChartRestriction.DS.S7.q0 ε : ℕ) : ℝ)`. Establish `: 1 ≤ ReciprocityTheory.ChartRestriction.DS.S7.q0 ε`. Unfold `ReciprocityTheory.ChartRestriction.DS.S7.q0`.
+
+Conclude with `le_min hp hq`. Conclude with `this` after adjusting the coercions. Establish `h2m : (0 : ℝ) ≤ 2 * ((ReciprocityTheory.ChartRestriction.DS.S7.q0 ε : ℕ) : ℝ)` using `by positivity`. Establish `hsq : Real.sqrt (2 * ((ReciprocityTheory.ChartRestriction.DS.S7.q0 ε : ℕ) : ℝ)) ≤ 2 * ((ReciprocityTheory.ChartRestriction.DS.S7.q0 ε : ℕ) : ℝ)`. Use polynomial arithmetic with `[Real.sq_sqrt h2m, Real.sqrt_nonneg (2 * ((ReciprocityTheory.ChartRestriction.DS.S7.q0 ε : ℕ) : ℝ)), sq_nonneg (Real.sqrt (2 * ((ReciprocityTheory.ChartRestriction.DS.S7.q0 ε : ℕ) : ℝ)) - 1)]`.
+
+Establish `hA : (N : ℝ) * ((ReciprocityTheory.ChartRestriction.DS.S7.q0 ε : ℕ) : ℝ) ≤ (N : ℝ) * (ReciprocityTheory.ChartRestriction.DS.pOf ε : ℝ) * (ReciprocityTheory.ChartRestriction.DS.qOf ε : ℝ)`. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left hm (by positivity)`. Establish `hB : (ReciprocityTheory.ChartRestriction.DS.pOf ε : ℝ) * (ReciprocityTheory.ChartRestriction.DS.qOf ε : ℝ) ≤ (N : ℝ) * (ReciprocityTheory.ChartRestriction.DS.pOf ε : ℝ) * (ReciprocityTheory.ChartRestriction.DS.qOf ε : ℝ)`. Rewrite using `[mul_assoc]`.
+
+Conclude with `le_mul_of_one_le_left (by positivity) hN1`. Establish `hC : (0 : ℝ) ≤ (N : ℝ) * (ReciprocityTheory.ChartRestriction.DS.pOf ε : ℝ) * (ReciprocityTheory.ChartRestriction.DS.qOf ε : ℝ)` using `by positivity`. Unfold `ReciprocityTheory.ChartRestriction.DS.thrStar`. Rewrite using `[← lt_sub_iff_add_lt, max_lt_iff]`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem thrStar_lt {N : ℕ} (ε : Fin N → Bool) (hp : 1 ≤ ReciprocityTheory.ChartRestriction.DS.pOf ε)
     (hq : 1 ≤ ReciprocityTheory.ChartRestriction.DS.qOf ε) {h : ℝ}
     (hh : 32 * (N : ℝ) * (ReciprocityTheory.ChartRestriction.DS.pOf ε : ℝ) * (ReciprocityTheory.ChartRestriction.DS.qOf ε : ℝ) + 2 < h) :
@@ -80,6 +107,13 @@ theorem thrStar_lt {N : ℕ} (ε : Fin N → Bool) (hp : 1 ≤ ReciprocityTheory
   rw [← lt_sub_iff_add_lt, max_lt_iff]
   constructor <;> linarith
 
+/- English proof (translation)
+Establish `: CompleteSpace H` using `hσ.1`. Establish `hq0 : 1 ≤ ReciprocityTheory.ChartRestriction.DS.S7.q0 ε` using `le_min hp hq`. Establish `h8 : 8 * (n : ℝ) * ReciprocityTheory.ChartRestriction.DS.S7.q0 ε < h`. Establish `h1` using `le_max_right ((n : ℝ) * (ReciprocityTheory.ChartRestriction.DS.pOf ε : ℝ) * (ReciprocityTheory.ChartRestriction.DS.qOf ε : ℝ) + 1) (16 * (n : ℝ) * (ReciprocityTheory.ChartRestriction.DS.S7.q0 ε : ℝ) + 8 * Real.sqrt (2 * (ReciprocityTheory.ChartRestriction.DS.S7.q0 ε : ℝ)))`. Establish `h2 : 0 ≤ 8 * Real.sqrt (2 * (ReciprocityTheory.ChartRestriction.DS.S7.q0 ε : ℝ))` using `by positivity`.
+
+Establish `h3 : 0 ≤ (n : ℝ) * (ReciprocityTheory.ChartRestriction.DS.S7.q0 ε : ℝ)` using `by positivity`. Unfold `ReciprocityTheory.ChartRestriction.DS.thrStar at hh`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hΨ : ∀ μ : Fin n → ℝ, ReciprocityTheory.ChartRestriction.DS.S7.IsHCParam μ → ReciprocityTheory.ChartRestriction.DS.GapAtLeast ε μ h → ∃ (T : ReciprocityTheory.ChartRestriction.DS.S7.KType ε (ReciprocityTheory.ChartRestriction.DS.lowK ε μ)) (Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ …`. Introduce `μ hμ hgμ`.
+
+Take `⟨T⟩` from `ReciprocityTheory.ChartRestriction.DS.HW.kType_exists ε μ hμ`. Take `⟨m, hm⟩` from `ReciprocityTheory.ChartRestriction.DS.Lap.LemK.exists_isMu hμ`. Conclude with `⟨T, _, (ReciprocityTheory.ChartRestriction.DS.Lap.Base.psiFor _ _ μ h T m hμ hm hgμ hq0 h8).1⟩`. Conclude with `ReciprocityTheory.ChartRestriction.DS.fdCons_cd hp hq hlam hgap hh hΨ hσ hv`.
+-/
 theorem fdeg_cd_gap {n : ℕ} {ε : Fin n → Bool} (hp : 1 ≤ ReciprocityTheory.ChartRestriction.DS.pOf ε)
     (hq : 1 ≤ ReciprocityTheory.ChartRestriction.DS.qOf ε) {lam : Fin n → ℝ} (hlam : Formalism.QuantumDeterminants.IsHCParam lam) {h : ℝ}
     (hgap : Formalism.QuantumDeterminants.GapAtLeast ε lam h) (hh : ReciprocityTheory.ChartRestriction.DS.thrStar ε + 1 < h)
@@ -105,6 +139,9 @@ theorem fdeg_cd_gap {n : ℕ} {ε : Fin n → Bool} (hp : 1 ≤ ReciprocityTheor
     exact ⟨T, _, (ReciprocityTheory.ChartRestriction.DS.Lap.Base.psiFor _ _ μ h T m hμ hm hgμ hq0 h8).1⟩
   exact ReciprocityTheory.ChartRestriction.DS.fdCons_cd hp hq hlam hgap hh hΨ hσ hv
 
+/- English proof (translation)
+Introduce `cd s hc N ε lam h hp hq hlam hgap hh H _ _ σ w hσ hw`. Rewrite using `[← muCD_eq_smul cd s hc ε]`. Conclude with `fdeg_cd_gap hp hq hlam hgap (thrStar_lt ε hp hq hh) hσ hw`.
+-/
 theorem hCFdegRGap_holds : HCFdegRGap := by
   intro cd s hc N ε lam h hp hq hlam hgap hh H _ _ σ w hσ hw
   rw [← muCD_eq_smul cd s hc ε]

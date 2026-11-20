@@ -14,6 +14,39 @@ namespace Formalism.L2.DIV.SlopeMaxB
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Pk Formalism.MainNotions.DIV.Proofs Formalism.MainNotions.DIV.Proofs.HHParts
 
+/- English proof (translation)
+Take `⟨hN, -, hK, -, -, -, hQD, hTT, -, -, -, -, -, -, -, -, hDel, -, -, -, -, -, -⟩` from `hS`. Establish `hP` using `one_le_szPol L`. Establish `hb` using `one_le_b L`. Establish `hP0 : 0 ≤ szPol L` using `by linarith`. Establish `hb0 : 0 ≤ L.sc.b` using `by linarith`.
+
+Establish `hk1` using `k_one hK`. Establish `hr1 : 1 ≤ D.host.rdE` using `hQD.2.2.2.2.2.2.1`. Take `⟨-, hr2⟩` from `log_rdE_bounds hN hQD`. Establish `hkP` using `k_le L`. Establish `hfP` using `f_le L`.
+
+Establish `hmP` using `m_le L`. Establish `hLP` using `L_le L`. Establish `hL0` using `(sc_L_pos L).le`. Establish `hf0 : (0 : ℝ) ≤ D.R.f` using `Nat.cast_nonneg _`. Establish `hk0 : (0 : ℝ) ≤ D.R.k` using `Nat.cast_nonneg _`.
+
+Establish `hm0 : (0 : ℝ) ≤ D.R.m` using `Nat.cast_nonneg _`. Establish `hT0 : (0 : ℝ) ≤ LocalQuadraticParts.nTT D` using `Nat.cast_nonneg _`. Establish `hTP : LocalQuadraticParts.nTT D ≤ szPol L` using `TT_le hTT`. Establish `ha0` using `a_nonneg L`. Establish `haP` using `a_le L hK`.
+
+Establish `hb'0` using `b'_nonneg L`. Establish `hb'P : L.sc.b' ≤ szPol L * L.sc.b` using `(b'_le_a L).trans haP`. Establish `hSc0` using `L.Sc_pos.le`. Establish `hScP` using `Sc_le' hN hK hDel`. Establish `hlkv : Real.log ((D.R.k : ℝ) * D.host.v) ≤ 3 * szPol L`.
+
+Establish `hv : D.host.v = D.host.rdE / 2` using `rfl`. Establish `hle : (D.R.k : ℝ) * D.host.v ≤ (D.R.k : ℝ) * D.host.rdE`. Rewrite using `[hv]; exact mul_le_mul_of_nonneg_left (by linarith) hk0`. Establish `hpos : 0 < (D.R.k : ℝ) * D.host.v` using `by rw [hv]; positivity`. Establish `e1` using `Real.log_le_log hpos hle`.
+
+Establish `e0 : Real.log ((D.R.k : ℝ) * D.host.rdE) = Real.log (D.R.k : ℝ) + Real.log D.host.rdE` using `Real.log_mul (by linarith) (by linarith)`. Rewrite `e1` using `[e0]`. Establish `e2 : Real.log (D.R.k : ℝ) ≤ D.R.k`. Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < D.R.k by linarith); linarith` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `set lkv := Real.log ((D.R.k : ℝ) * D.host.v) with hlkvd`. Use `set lT := Real.log ((D.mem u).A.T : ℝ) with hlTd`. Establish `hlT0 : 0 ≤ lT` using `Real.log_natCast_nonneg _`. Establish `hlTP : lT ≤ |CTu| * (szPol L * szPol L)`. Use `(hTu u).trans ?_` and prove the remaining obligations.
+
+Establish `e1 : CTu * D.R.m * L.sc.L ≤ |CTu| * D.R.m * L.sc.L` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_abs_self _) hm0) hL0`. Establish `e2 : (D.R.m : ℝ) * L.sc.L ≤ szPol L * szPol L` using `mul_le_mul hmP hLP hL0 hP0`. Establish `e3` using `mul_le_mul_of_nonneg_left e2 (abs_nonneg CTu)`. Combine the equalities or inequalities in the displayed calculation. Establish `hc0` using `abs_nonneg CTu`.
+
+Establish `hlkv0 : 0 ≤ lkv`. Apply `Real.log_nonneg` to reduce the goal to its premises. Establish `hk5 : 5 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; have := D.R.two_le_m; omega`. Establish `hkR : (5 : ℝ) ≤ D.R.k` using `by exact_mod_cast hk5`. Establish `hv : D.host.v = D.host.rdE / 2` using `rfl`.
+
+Rewrite using `[hv]`. Use the polynomial consequences of the given equalities and inequalities. Establish `q1 : LocalQuadraticParts.nTT D * L.sc.a * lkv ≤ szPol L * (szPol L * L.sc.b) * (3 * szPol L)` using `mul_le_mul (mul_le_mul hTP haP ha0 hP0) hlkv hlkv0 (by positivity)`. Establish `q2a : (D.R.k : ℝ) * lkv + lT ≤ szPol L * (3 * szPol L) + |CTu| * (szPol L * szPol L)` using `add_le_add (mul_le_mul hkP hlkv hlkv0 hP0) hlTP`. Establish `q2b : L.sc.b' + L.Sc ≤ 2 * (szPol L * L.sc.b)` using `by linarith`.
+
+Establish `q2 : (D.R.f : ℝ) * (L.sc.b' + L.Sc) * ((D.R.k : ℝ) * lkv + lT) ≤ szPol L * (2 * (szPol L * L.sc.b)) * (szPol L * (3 * szPol L) + |CTu| * (szPol L * szPol L))` using `mul_le_mul (mul_le_mul hfP q2b (by linarith) hP0) q2a (by positivity) (by positivity)`. Establish `q3 : (D.R.f : ℝ) * (D.R.k : ℝ) ^ 2 * L.sc.L ≤ szPol L * szPol L ^ 2 * szPol L` using `mul_le_mul (mul_le_mul hfP (pow_le_pow_left₀ hk0 hkP 2) (by positivity) hP0) hLP hL0 (by positivity)`. Establish `q10 : 0 ≤ LocalQuadraticParts.nTT D * L.sc.a * lkv` using `by positivity`. Establish `q20 : 0 ≤ (D.R.f : ℝ) * (L.sc.b' + L.Sc) * ((D.R.k : ℝ) * lkv + lT)` using `by positivity`. Establish `q30 : 0 ≤ (D.R.f : ℝ) * (D.R.k : ℝ) ^ 2 * L.sc.L` using `by positivity`.
+
+Establish `hsum : LocalQuadraticParts.nTT D * L.sc.a * lkv + (D.R.f : ℝ) * (L.sc.b' + L.Sc) * ((D.R.k : ℝ) * lkv + lT) + (D.R.f : ℝ) * (D.R.k : ℝ) ^ 2 * L.sc.L ≤ (12 + 2 * |CTu|) * szPol L ^ 4 * L.sc.b`. Establish `p34 : szPol L ^ 3 * L.sc.b ≤ szPol L ^ 4 * L.sc.b` using `mul_le_mul_of_nonneg_right (pow_mono_P (L := L) (by norm_num)) hb0`. Establish `p4 : szPol L ^ 4 ≤ szPol L ^ 4 * L.sc.b` using `le_mul_of_one_le_right (by positivity) hb`. Establish `r1 : szPol L * (szPol L * L.sc.b) * (3 * szPol L) = 3 * (szPol L ^ 3 * L.sc.b)` using `by ring`. Establish `r2 : szPol L * (2 * (szPol L * L.sc.b)) * (szPol L * (3 * szPol L) + |CTu| * (szPol L * szPol L)) = (6 + 2 * |CTu|) * (szPol L ^ 4 * L.sc.b)` using `by ring`.
+
+Establish `r3 : szPol L * szPol L ^ 2 * szPol L = szPol L ^ 4` using `by ring`. Rewrite `q1` using `[r1]`. Rewrite `q2` using `[r2]`. Rewrite `q3` using `[r3]`. Establish `: (12 + 2 * |CTu|) * szPol L ^ 4 * L.sc.b = 3 * (szPol L ^ 4 * L.sc.b) + (6 + 2 * |CTu|) * (szPol L ^ 4 * L.sc.b) + 3 * (szPol L ^ 4 * L.sc.b)` using `by ring`.
+
+Establish `p40 : 0 ≤ szPol L ^ 4 * L.sc.b` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2` using `(h u).2`. Establish `e : C * LocalQuadraticParts.nTT D * L.sc.a * lkv + C * D.R.f * (L.sc.b' + L.Sc) * (D.R.k * lkv + lT) + C * D.R.f * (D.R.k : ℝ) ^ 2 * L.sc.L = C * (LocalQuadraticParts.nTT D * L.sc.a * lkv + (D.R.f : ℝ) * (L.sc.b' + L.Sc) * ((D.R.k : ℝ) * lkv + lT) + (D.R.f : ℝ) * (D.R.k : ℝ) ^ 2 …` using `by ring`. Rewrite `h2` using `[e]`.
+
+Use `h2.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem muMax_le_pol {D : D7} (L : SizeData₂ D) (hS : SizesAt L) (C CTu : ℝ)
     (hTu : ∀ u, Real.log ((D.mem u).A.T : ℝ) ≤ CTu * D.R.m * L.sc.L) (h : LocalQuadraticParts.FrobeniusExpansionCongruence L C) (u : D.what₂.Word) :
     ((D.fm u).lat 0).muMax ≤ |C| * (12 + 2 * |CTu|) * szPol L ^ 4 * L.sc.b := by
@@ -121,6 +154,15 @@ def BoundB {eps : ℝ} (Fm : FamP eps) (Eb : List ℝ → ℝ) : Prop :=
   ∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ (i : Fm.Ix x) u,
     (((Fm.D x i).fm u).lat 0).muMax ≤ (Fm.L x i).sc.x ^ Eb Fm.cOut * (Fm.L x i).sc.b
 
+/- English proof (translation)
+Take `⟨C, xa, h⟩` from `h`. Take `⟨xt, hT⟩` from `hT`. Use `⟨max (max xa xt) (max 9 (|C| * (12 + 2 * |Fm.CTu|))), fun x hx hx1 i u => ?_⟩` and prove the remaining obligations. Establish `ga : xa ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx`. Establish `gt : xt ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx`.
+
+Establish `g9 : max 9 (|C| * (12 + 2 * |Fm.CTu|)) ≤ x` using `le_trans (le_max_right _ _) hx`. Establish `hsc : (Fm.L x i).sc.x = x` using `Fm.L_x x i hx1`. Establish `hCt : (Fm.L x i).Ct = Fm.Ct` using `Fm.Ct_eq x i`. Establish `h1` using `muMax_le_pol (Fm.L x i) (Fm.sizes x hx1 i) C Fm.CTu (hT x gt i).2 (h x ga i) u`. Establish `h2` using `bPol_le (Fm.sizes x hx1 i) (|C| * (12 + 2 * |Fm.CTu|)) 4 (by rw [hsc]; exact g9)`.
+
+Establish `hE : EbMu Fm.cOut = ((4 : ℕ) : ℝ) * (max (Fm.L x i).Ct 5 + 3) + 1`. Unfold `EbMu`. Rewrite using `[cOut_headD, hCt]`. Evaluate the numerical expressions. Rewrite using `[hE]`.
+
+Conclude with `h1.trans h2`.
+-/
 theorem boundB_of_slopes {eps : ℝ} (Fm : FamP eps) (hT : TuSize Fm) (h : LocalQuadraticParts.SlopesFamily Fm) : BoundB Fm EbMu := by
   obtain ⟨C, xa, h⟩ := h
   obtain ⟨xt, hT⟩ := hT
@@ -137,15 +179,26 @@ theorem boundB_of_slopes {eps : ℝ} (Fm : FamP eps) (hT : TuSize Fm) (h : Local
   rw [hE]
   exact h1.trans h2
 
+/- English proof (translation)
+The claim follows from `J.slopes_family_of_column_values Fm hT (top2c2_dlSize eps Fm) (flipTwoThree.familySlopeLower_of_open Fm (Formalism.L2.GlobalTheoryTheory.TraceIntegrality.lower_slope_inequality_family Fm)) (flipTwoThree.familySlopeMax_of_open Fm 4 (Formalism.L2.GlobalTheoryTheory.TraceIntegrality …`.
+-/
 theorem slopes_of_values {eps : ℝ} (Fm : FamP eps) (hT : TuSize Fm)
     (hCV : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (i : Fm.Ix x) u, Nonempty (flipTwoThree.ColVal (Fm.D x i) u)) : LocalQuadraticParts.SlopesFamily Fm :=
   J.slopes_family_of_column_values Fm hT (top2c2_dlSize eps Fm) (flipTwoThree.familySlopeLower_of_open Fm (Formalism.L2.GlobalTheoryTheory.TraceIntegrality.lower_slope_inequality_family Fm))
     (flipTwoThree.familySlopeMax_of_open Fm 4 (Formalism.L2.GlobalTheoryTheory.TraceIntegrality.slope_inequality_family_four Fm)) hCV
 
+/- English proof (translation)
+The claim follows from `boundB_of_slopes Fm hT (slopes_of_values Fm hT hCV)`.
+-/
 theorem boundB_of_values {eps : ℝ} (Fm : FamP eps) (hT : TuSize Fm)
     (hCV : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (i : Fm.Ix x) u, Nonempty (flipTwoThree.ColVal (Fm.D x i) u)) : BoundB Fm EbMu :=
   boundB_of_slopes Fm hT (slopes_of_values Fm hT hCV)
 
+/- English proof (translation)
+Take `⟨b, hs⟩` from `stabF Fm`. Use `⟨max (max s.1 b) (Fm.x1 + 1), fun x hx i => ?_⟩` and prove the remaining obligations. Establish `h1 : Fm.x1 < x` using `by have := le_trans (le_max_right _ _) hx; linarith`. Establish `h0 : s.1 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx`. Establish `hb : b ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx`.
+
+Conclude with `⟨⟨(s.2 x h1 h0 i).T.cols⟩, hs x hb h1 i⟩`.
+-/
 theorem colTies_of_sel {eps : ℝ} {Fm : FamP eps} (s : Formalism.L2.TSelF Fm) : RT.tCVTies Fm := by
   obtain ⟨b, hs⟩ := stabF Fm
   refine ⟨max (max s.1 b) (Fm.x1 + 1), fun x hx i => ?_⟩
@@ -154,14 +207,23 @@ theorem colTies_of_sel {eps : ℝ} {Fm : FamP eps} (s : Formalism.L2.TSelF Fm) :
   have hb : b ≤ x := le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx
   exact ⟨⟨(s.2 x h1 h0 i).T.cols⟩, hs x hb h1 i⟩
 
+/- English proof (translation)
+The claim follows from `slopes_of_values Fm hT (tCV_of_ties Fm (colTies_of_sel s))`.
+-/
 theorem slopes_of_sel {eps : ℝ} {Fm : FamP eps} (s : Formalism.L2.TSelF Fm) (hT : TuSize Fm) : LocalQuadraticParts.SlopesFamily Fm :=
   slopes_of_values Fm hT (tCV_of_ties Fm (colTies_of_sel s))
 
+/- English proof (translation)
+The claim follows from `boundB_of_slopes Fm hT (slopes_of_sel s hT)`.
+-/
 theorem boundB_of_sel {eps : ℝ} {Fm : FamP eps} (s : Formalism.L2.TSelF Fm) (hT : TuSize Fm) :
     ∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ (i : Fm.Ix x) u,
       (((Fm.D x i).fm u).lat 0).muMax ≤ (Fm.L x i).sc.x ^ EbMu Fm.cOut * (Fm.L x i).sc.b :=
   boundB_of_slopes Fm hT (slopes_of_sel s hT)
 
+/- English proof (translation)
+The claim follows from `Closed.of_class fun Fm _ _ hc hT _ => boundB_of_sel (sel Fm (Formalism.L2.Top3.d3_a hc)) hT`.
+-/
 theorem closed_boundB (𝒜 : FamClass) (sel : Formalism.L2.TSel 𝒜) :
     Closed (Formalism.L2.Top3.D3 3 𝒜) fun Fm _ => ∀ _ : Formalism.L2.Top3.D3 3 𝒜 Fm, TuSize Fm → Formalism.MainNotions.DGamSize Fm →
       ∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ (i : Fm.Ix x) u,

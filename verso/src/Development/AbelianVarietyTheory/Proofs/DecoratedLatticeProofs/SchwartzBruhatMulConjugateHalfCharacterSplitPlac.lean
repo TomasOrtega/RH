@@ -13,6 +13,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.ModSB
 
+/- English proof (translation)
+Establish `h : (fun t : Matrix Y Y' k => p.π (hO S T (p.up FS FT t) y)) = fun t => ∑ a, ∑ b, ∑ c, ∑ d, p.π (incA D (S.gram⁻¹ a b)) * p.π (cA D (y c b)) * p.π (incA D (T.gram c d)) * (FT.β * t * FS.γ) d a`. Use function extensionality and compare the values at `t`. Unfold `hO`. Simplify using `only [map_sum, map_mul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [GlobalTheory.LocMod.Place.up, Matrix.map_apply, p.π_ι]`. Rewrite using `[h]`. Establish `hm : Continuous fun t : Matrix Y Y' k => FT.β * t * FS.γ` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Use `continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun b _ => continuous_finset_sum _ fun c _ => continuous_finset_sum _ fun d _ => continuous_const.mul (hm.matrix_elem d a)` and prove the remaining obligations.
+-/
 theorem continuous_pi_hO_up {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : GlobalTheory.LocMod.Place D k) {S T : HSp D} {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y']
     (FS : GlobalTheory.LocMod.Frame k S.rank Y') (FT : GlobalTheory.LocMod.Frame k T.rank Y) (y : WO S T) :
@@ -32,6 +37,11 @@ theorem continuous_pi_hO_up {D : D7} {k : Type} [Field k] [ValuativeRel k] [Topo
   refine continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun b _ => continuous_finset_sum _ fun c _ =>
     continuous_finset_sum _ fun d _ => continuous_const.mul (hm.matrix_elem d a)
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p ψ hψ S T Y Y' _ _ _ _ FS FT y hy Φ hΦ`. Take `⟨⟨ψk, hk⟩, hc, -⟩` from `GlobalTheory.LocChar.weil_char_split D k p ψ hψ`. Establish `hcont` using `(hc ψk hk).1`. Establish `heq : (fun t => ψ (symplO S T (p.up FS FT t) y) * Φ t) = fun t => ((ψk (p.π (hO S T (p.up FS FT t) y)) : Circle) : ℂ) * Φ t`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[GlobalTheory.LocSympl.psi_sympl_up p FS FT ψ ψk hk t y]`. Rewrite using `[heq]`. Establish `hl : IsLocallyConstant (fun t : Matrix Y Y' k => ((ψk (p.π (hO S T (p.up FS FT t) y)) : Circle) : ℂ))` using `((GlobalTheory.IrredSB.char_isLocallyConstant ψk hcont).comp_continuous (continuous_pi_hO_up p FS FT y)).comp (fun z : Circle => (z : ℂ))`. Conclude with `⟨hl.mul hΦ.1, HasCompactSupport.mul_left hΦ.2⟩`.
+-/
 theorem mul_char_mem_SB : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : GlobalTheory.LocMod.Place D k) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (FS : GlobalTheory.LocMod.Frame k S.rank Y') (FT : GlobalTheory.LocMod.Frame k T.rank Y) (y : WO S T), IsHalf (cA D p.e) y → ∀ Φ ∈ SB (Matrix Y Y' k), (fun t => ψ (symplO S T (p.up FS FT t) y) * Φ t) ∈ SB (Matrix Y Y' k) := by
   intro D k _ _ _ _ p ψ hψ S T Y Y' _ _ _ _ FS FT y hy Φ hΦ
   obtain ⟨⟨ψk, hk⟩, hc, -⟩ := GlobalTheory.LocChar.weil_char_split D k p ψ hψ

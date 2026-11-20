@@ -17,6 +17,19 @@ def ex (a : Fin n) (i : Fin d) (p : ℤ) (T : Finset (Fin n)) (β γ : Fin d →
 def val (ϖ : kˣ) (l : (Matrix (Fin n) (Fin d) k → ℂ) →ₗ[ℂ] ℂ) (a : Fin n) (i : Fin d) (p : ℤ) (T : Finset (Fin n))
     (β γ : Fin d → ℤ) : ℂ := l ((Piv ϖ a i (ex a i p T β γ)).indicator 1)
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a' T ha ih`. Rewrite `hT` using `[Finset.mem_insert, not_or]`. Establish `hT1 : a' ≠ a` using `fun e => hT.1 e.symm`.
+
+Rewrite using `[Finset.card_insert_of_notMem ha, pow_succ', mul_assoc, ← ih hT.2]`. Use `move h l a i _ _ a' i (fun e => hT.1 e.1) ?_ (fun Y => Matrix.of fun x y => if x = a' then Y a y else 0) (by simp) (by simp [hT.1]) (fun t Y => by ext x y; simp [hT.1]) ?_ ?_` and prove the remaining obligations. Introduce `x y`. Apply the tactic sequence `by_cases hx : x = a' <;> by_cases hy : y = i <;> simp [ex, hx, hy, ha, hT1]`. Introduce `Y hY x y`.
+
+Distinguish the cases in `hx : x = a'`. Simplify using `only [Matrix.of_apply, if_pos hx]`. Use `(hY a y).mono h ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hy : y = i <;> simp [ex, hx, hy, hT1, hb]`. Simplify `Le.zero _` using `[hx]`.
+
+Introduce `t _`. Establish `hd : (Matrix.transvection a' a t).det = 1` using `Matrix.det_transvection_of_ne _ _ hT1 _`. Use `hl _ (piv_SB h a i (ex a i p T β γ)) (Matrix.GeneralLinearGroup.mkOfDetNeZero (Matrix.transvection a' a t) (by rw [hd]; exact one_ne_zero))` as an intermediate fact. Rewrite `this` using `[show Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.mkOfDetNeZero (Matrix.transvection a' a t) (by rw [hd]; exact one_ne_zero)) = 1 from Units.ext hd, map_one, Units.val_one, one_mul]`. Rewrite using `[← this]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `Y`. Use `congr 1`. Use extensionality with `x y`. Use `show _ = (Matrix.transvection a' a t * Y) x y`.
+
+Distinguish the cases in `hx : x = a'`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hx]`.
+-/
 theorem what₂ (h : IsUnif ϖ) (hl : LeftLaw ξ l) (a : Fin n) (i : Fin d) (p : ℤ) (β γ : Fin d → ℤ) (hb : ∀ y, γ y ≤ β y)
     (T : Finset (Fin n)) (hT : a ∉ T) :
     val ϖ l a i p T β γ = (GlobalTheory.SplitWeil.resCard k : ℂ) ^ T.card * val ϖ l a i p ∅ β γ := by
@@ -52,11 +65,27 @@ theorem what₂ (h : IsUnif ϖ) (hl : LeftLaw ξ l) (a : Fin n) (i : Fin d) (p :
       · subst hx; simp
       · simp [hx]
 
+/- English proof (translation)
+Use extensionality with `x y`. Apply the tactic sequence `by_cases hy : y = j <;> simp [colOp, Matrix.vecMulVec_apply, hy, mul_comm]`.
+-/
 theorem colOp_single (i j : Fin d) (t : k) (Y : Matrix (Fin n) (Fin d) k) :
     colOp i (Pi.single j t) Y = Y + t • Matrix.of fun x y => if y = j then Y x i else 0 := by
   ext x y
   by_cases hy : y = j <;> simp [colOp, Matrix.vecMulVec_apply, hy, mul_comm]
 
+/- English proof (translation)
+Proceed by induction on `U using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j U hj ih`. Rewrite `hU` using `[Finset.mem_insert, not_or]`. Establish `hU1 : j ≠ i₀` using `fun e => hU.1 e.symm`.
+
+Rewrite using `[Finset.card_insert_of_notMem hj, pow_succ', mul_assoc, ← ih hU.2]`. Use `move h l a i₀ _ _ a j (fun e => hU.1 e.2) ?_ (fun Y => Matrix.of fun x y => if y = j then Y x i₀ else 0) (by simp) (by simp [hU.1]) (fun t Y => by ext x y; simp [hU.1]) ?_ ?_` and prove the remaining obligations. Introduce `x y`. Apply the tactic sequence `by_cases hx : x = a <;> by_cases hy : y = j <;> simp [ex, hx, hy, hj, hU1]`. Introduce `Y hY x y`.
+
+Distinguish the cases in `hy : y = j`. Simplify using `only [Matrix.of_apply, if_pos hy]`. Use `(hY x i₀).mono h ?_` and prove the remaining obligations. Use `hb j` as an intermediate fact. Apply the tactic sequence `by_cases hx : x = a <;> simp [ex, hx, hy, hU1]`.
+
+Use linear arithmetic over natural numbers and integers. Simplify `Le.zero _` using `[hy]`. Introduce `t ht`. Use `hl _ (piv_SB h a i₀ (ex a i₀ p ∅ (fun y => β y - if y ∈ U then 1 else 0) γ)) (Pi.single j t) (by rintro s rfl; simp [hU.1])` as an intermediate fact. Simplify using `only [colOp_single] at this`.
+
+Rewrite using `[this, hψ, one_mul]`. Distinguish the cases in `e : i₁ = j`. Substitute `e` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `ht.mono h (by simpa [ex, hU1] using hc)`.
+
+Simplify `Le.zero _` using `[e]`.
+-/
 theorem cols (h : IsUnif ϖ) (hψ : ∀ x, Le ϖ c x → ψ x = 1) (hl : ColLaw ψ {i₀} i₀ i₁ l) (a : Fin n) (p : ℤ) (β γ : Fin d → ℤ)
     (hb : ∀ y, γ y ≤ β y) (hc : c ≤ β i₁ - 1 - p) (U : Finset (Fin d)) (hU : i₀ ∉ U) :
     val ϖ l a i₀ p ∅ (fun y => β y - if y ∈ U then 1 else 0) γ =
@@ -90,6 +119,15 @@ theorem cols (h : IsUnif ϖ) (hψ : ∀ x, Le ϖ c x → ψ x = 1) (hl : ColLaw 
         exact ht.mono h (by simpa [ex, hU1] using hc)
       · simpa [e] using Le.zero _
 
+/- English proof (translation)
+Establish `hd : (Matrix.diagonal (Function.update (1 : Fin n → k) a ϖ)).det = ϖ`. Simplify using `[Matrix.det_diagonal, Finset.prod_update_of_mem]`. Use `hl _ (piv_SB h a i (ex a i (p + 1) (Finset.univ.erase a) (fun y => β y + 1) γ)) (Matrix.GeneralLinearGroup.mkOfDetNeZero _ (by rw [hd]; exact ϖ.ne_zero))` as an intermediate fact. Rewrite `this` using `[show Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.mkOfDetNeZero (Matrix.diagonal (Function.update (1 : Fin n → k) a ϖ)) (by rw [hd]; exact ϖ.ne_zero)) = ϖ from Units.ext hd]`. Unfold `val`.
+
+Rewrite using `[← this]`. Use `congr 1`. Use function extensionality and compare the values at `Y`. Use `Set.indicator_eq_indicator ?_ rfl` and prove the remaining obligations. Use `show _ ↔ Matrix.diagonal (Function.update (1 : Fin n → k) a ϖ) * Y ∈ _`.
+
+Establish `hv : valuation k (ϖ : k) = valuation k (ϖ : k) ^ (1 : ℤ)` using `(zpow_one _).symm`. Use `and_congr (forall₂_congr fun x y => ?_) ?_` and prove the remaining obligations. Rewrite using `[Matrix.diagonal_mul]`. Distinguish the cases in `hx : x = a`. Substitute `hx` using the available equality.
+
+Rewrite using `[Function.update_self, mul_comm, ← le_mul_iff hv]`. Apply the tactic sequence `by_cases hy : y = i <;> simp [ex, hy]`. Apply the tactic sequence `by_cases hy : y = i <;> simp [ex, hy, hx]`. Simplify using `only [ex, Matrix.diagonal_mul, Function.update_self, map_mul, true_or, if_true]`. Rewrite using `[zpow_add_one₀ (u_pos ϖ).ne', mul_comm, mul_left_inj' (u_pos ϖ).ne']`.
+-/
 theorem scale (h : IsUnif ϖ) (hl : LeftLaw ξ l) (a : Fin n) (i : Fin d) (p : ℤ) (β γ : Fin d → ℤ) :
     val ϖ l a i p ∅ β γ = ξ ϖ * val ϖ l a i (p + 1) (Finset.univ.erase a) (fun y => β y + 1) γ := by
   have hd : (Matrix.diagonal (Function.update (1 : Fin n → k) a ϖ)).det = ϖ := by
@@ -115,6 +153,17 @@ theorem scale (h : IsUnif ϖ) (hl : LeftLaw ξ l) (a : Fin n) (i : Fin d) (p : �
   · simp only [ex, Matrix.diagonal_mul, Function.update_self, map_mul, true_or, if_true]
     rw [zpow_add_one₀ (u_pos ϖ).ne', mul_comm, mul_left_inj' (u_pos ϖ).ne']
 
+/- English proof (translation)
+Take `⟨hb, hp⟩` from `hm`. Establish `hp' : valuation k (Y a i₀) = valuation k (ϖ : k) ^ p` using `by simpa [ex] using hp`. Establish `h0 : (fun a => Y a i₀) ≠ 0` using `fun e => by`. Rewrite `hp'` using `[show Y a i₀ = 0 from congrFun e a, map_zero]`. Conclude with `(zpow_pos (u_pos ϖ) _).ne hp'`.
+
+Rewrite `hY` using `[LinearIndependent.pair_iff' h0]`. Use `push Not at hY`. Take `⟨s, hs⟩` from `hY`. Establish `hs' : ∀ x, s * Y x i₀ = Y x i₁` using `congrFun hs`. Use `⟨fun x y => ?_, by simpa [ex] using hp⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hx : x = a`. Simplify `hb x y` using `[ex, hx]`. Distinguish the cases in `hy : y = i₁`. Substitute `hy` using the available equality. Establish `h3 : Le ϖ (β y - p) s`.
+
+Rewrite using `[← le_mul_iff hp', hs', sub_add_cancel]`. Simplify `hb a y` using `[ex, hi.symm]`. Establish `h4 : Le ϖ (p + 1) (Y x i₀)` using `by simpa [ex, hx] using hb x i₀`. Rewrite using `[← hs']`. Use `(h3.mul h4).mono h ?_` and prove the remaining obligations.
+
+Simplify using `[ex, hx, hi.symm]`. Use linear arithmetic over natural numbers and integers. Simplify `hb x y` using `[ex, h1 y hy]`.
+-/
 theorem trace (h : IsUnif ϖ) (hi : i₀ ≠ i₁) (a : Fin n) (p : ℤ) (β γ γ' : Fin d → ℤ) (h1 : ∀ y, y ≠ i₁ → γ' y = γ y)
     (h2 : γ' i₁ ≤ β i₁ + 1) (Y : Matrix (Fin n) (Fin d) k) (hY : ¬ LinearIndependent k ![fun a => Y a i₀, fun a => Y a i₁])
     (hm : Y ∈ Piv ϖ a i₀ (ex a i₀ p ∅ β γ)) : Y ∈ Piv ϖ a i₀ (ex a i₀ p ∅ β γ') := by
@@ -144,6 +193,11 @@ theorem trace (h : IsUnif ϖ) (hi : i₀ ≠ i₁) (a : Fin n) (p : ℤ) (β γ 
 
 def bs (i₁ : Fin d) (μ : ℤ) : Fin d → ℤ := fun y => if y = i₁ then μ else 0
 
+/- English proof (translation)
+Establish `: ex a i p T β γ = ex a i p T β' γ`. Use function extensionality and compare the values at `x y`. Distinguish the cases in `hy : y = i`. Simplify using `[ex, hy]`. Simplify using `[ex, hy, hb y hy]`.
+
+Rewrite using `[val, val, this]`.
+-/
 theorem ex_congr (a : Fin n) (i : Fin d) (p : ℤ) (T : Finset (Fin n)) {β β' : Fin d → ℤ} (γ : Fin d → ℤ)
     (hb : ∀ y, y ≠ i → β y = β' y) : val ϖ l a i p T β γ = val ϖ l a i p T β' γ := by
   have : ex a i p T β γ = ex a i p T β' γ := by
@@ -153,10 +207,20 @@ theorem ex_congr (a : Fin n) (i : Fin d) (p : ℤ) (T : Finset (Fin n)) {β β' 
     · simp [ex, hy, hb y hy]
   rw [val, val, this]
 
+/- English proof (translation)
+Establish `: 0 < GlobalTheory.SplitWeil.resCard k` using `Nat.card_pos`. Conclude with `this.ne'` after adjusting the coercions.
+-/
 theorem q_ne : (GlobalTheory.SplitWeil.resCard k : ℂ) ≠ 0 := by
   have : 0 < GlobalTheory.SplitWeil.resCard k := Nat.card_pos
   exact_mod_cast this.ne'
 
+/- English proof (translation)
+Establish `h1` using `cols h hψ hl' a (p + 1) (fun y => bs i₁ μ y + 1) (bs i₁ μ) (fun y => by omega) (by simp [bs]; omega) (Finset.univ.erase i₀) (by simp)`. Rewrite `h1` using `[ex_congr (β' := bs i₁ μ) a i₀ _ _ _ (fun y hy => by simp [hy])]`. Rewrite using `[scale h hl, what₂ h hl a i₀ _ _ _ (fun y => by omega) _ (by simp), h1]`. Establish `hn : (n : ℤ) = ((Finset.univ.erase a).card : ℕ) + 1`. Use `Finset.card_erase_add_one (Finset.mem_univ a)` as an intermediate fact.
+
+Rewrite `this` using `[Finset.card_univ, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Establish `hd : (d : ℤ) = ((Finset.univ.erase i₀).card : ℕ) + 1`. Use `Finset.card_erase_add_one (Finset.mem_univ i₀)` as an intermediate fact. Rewrite `this` using `[Finset.card_univ, Fintype.card_fin]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hn, hd, add_sub_add_right_eq_sub, zpow_sub₀ q_ne, zpow_natCast, zpow_natCast]`. Use `pow_ne_zero (Finset.univ.erase i₀).card (q_ne (k := k))` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+-/
 theorem stepA (h : IsUnif ϖ) (hψ : ∀ x, Le ϖ c x → ψ x = 1) (hl : LeftLaw ξ l) (hl' : ColLaw ψ {i₀} i₀ i₁ l) (a : Fin n)
     (p μ : ℤ) (hc : c ≤ μ - 1 - p) : val ϖ l a i₀ p ∅ (bs i₁ μ) (bs i₁ μ) =
       ξ ϖ * (GlobalTheory.SplitWeil.resCard k : ℂ) ^ ((n : ℤ) - d) * val ϖ l a i₀ (p + 1) ∅ (bs i₁ μ) (bs i₁ μ) := by
@@ -176,6 +240,11 @@ theorem stepA (h : IsUnif ϖ) (hψ : ∀ x, Le ϖ c x → ψ x = 1) (hl : LeftLa
   have := pow_ne_zero (Finset.univ.erase i₀).card (q_ne (k := k))
   field_simp
 
+/- English proof (translation)
+Establish `h1` using `cols h hψ hl' a p (bs i₁ (μ + 1)) (bs i₁ (μ + 1)) (fun y => le_rfl) (by simpa [bs] using hc) {i₁} (by simpa using hi)`. Apply the tactic sequence `rw [ex_congr (β' := bs i₁ μ) a i₀ _ _ _ (fun y _ => by by_cases hy : y = i₁ <;> simp [bs, hy]), Finset.card_singleton, pow_one] at h1`. Rewrite using `[← h1, ← sub_eq_zero, val, val, ← map_sub]`. Use `hs _ (Submodule.sub_mem _ (piv_SB h _ _ _) (piv_SB h _ _ _)) fun Y hY => ?_` and prove the remaining obligations. Rewrite using `[Pi.sub_apply, sub_eq_zero]`.
+
+Conclude with `Set.indicator_eq_indicator ⟨trace h hi a p _ _ _ (fun y hy => by simp [bs, hy]) (by simp [bs]) Y hY, trace h hi a p _ _ _ (fun y hy => by simp [bs, hy]) (by simp [bs]) Y hY⟩ rfl`.
+-/
 theorem stepB (h : IsUnif ϖ) (hi : i₀ ≠ i₁) (hψ : ∀ x, Le ϖ c x → ψ x = 1) (hl' : ColLaw ψ {i₀} i₀ i₁ l)
     (hs : ∀ φ ∈ SB (Matrix (Fin n) (Fin d) k),
       (∀ Y, ¬ LinearIndependent k ![fun a => Y a i₀, fun a => Y a i₁] → φ Y = 0) → l φ = 0) (a : Fin n)
@@ -194,6 +263,11 @@ theorem stepB (h : IsUnif ϖ) (hi : i₀ ≠ i₁) (hψ : ∀ x, Le ϖ c x → �
 def bx (ϖ : kˣ) (l : (Matrix (Fin n) (Fin d) k → ℂ) →ₗ[ℂ] ℂ) (i₀ i₁ : Fin d) (T : Finset (Fin n)) (p μ : ℤ) : ℂ :=
   l ((Box ϖ fun x y => if y = i₀ then (if x ∈ T then p else p + 1) else bs i₁ μ y).indicator 1)
 
+/- English proof (translation)
+Rewrite using `[← what₂ h hl a i₀ p _ _ (fun _ => le_rfl) T ha, val, piv_eq h a i₀ _ (fun x y => if y = i₀ then (if x ∈ T then p else p + 1) else bs i₁ μ y), map_sub, bx, bx, add_sub_cancel]`. Use `congr 3`. Use function extensionality and compare the values at `x y`. Simplify using `[ex]`. Introduce `x y`.
+
+Apply the tactic sequence `by_cases hx : x = a <;> by_cases hy : y = i₀ <;> simp [ex, hx, hy, ha]`.
+-/
 theorem bx_insert (h : IsUnif ϖ) (hl : LeftLaw ξ l) (a : Fin n) (T : Finset (Fin n)) (ha : a ∉ T) (p μ : ℤ) :
     bx ϖ l i₀ i₁ (insert a T) p μ = bx ϖ l i₀ i₁ T p μ +
       (GlobalTheory.SplitWeil.resCard k : ℂ) ^ T.card * val ϖ l a i₀ p ∅ (bs i₁ μ) (bs i₁ μ) := by
@@ -205,6 +279,11 @@ theorem bx_insert (h : IsUnif ϖ) (hl : LeftLaw ξ l) (a : Fin n) (T : Finset (F
   · intro x y
     by_cases hx : x = a <;> by_cases hy : y = i₀ <;> simp [ex, hx, hy, ha]
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨0, by simp⟩`. Consider the case `insert a T ha ih`. Take `⟨w, hw⟩` from `ih`. Use `⟨Function.update w a ((GlobalTheory.SplitWeil.resCard k : ℂ) ^ T.card), fun p μ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[bx_insert h hl a T ha, Finset.sum_insert ha, Function.update_self, add_sub_right_comm, hw, add_comm]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun b hb => by rw [Function.update_of_ne (by rintro rfl; exact ha hb)]`.
+-/
 theorem bx_weights (h : IsUnif ϖ) (hl : LeftLaw ξ l) (T : Finset (Fin n)) : ∃ w : Fin n → ℂ, ∀ p μ,
     bx ϖ l i₀ i₁ T p μ - bx ϖ l i₀ i₁ ∅ p μ = ∑ a ∈ T, w a * val ϖ l a i₀ p ∅ (bs i₁ μ) (bs i₁ μ) := by
   induction T using Finset.induction_on with
@@ -216,8 +295,20 @@ theorem bx_weights (h : IsUnif ϖ) (hl : LeftLaw ξ l) (T : Finset (Fin n)) : �
     congr 1
     exact Finset.sum_congr rfl fun b hb => by rw [Function.update_of_ne (by rintro rfl; exact ha hb)]
 
+/- English proof (translation)
+Simplify using `[bx]`.
+-/
 theorem bx_empty (p μ : ℤ) : bx ϖ l i₀ i₁ ∅ p μ = bx ϖ l i₀ i₁ Finset.univ (p + 1) μ := by simp [bx]
 
+/- English proof (translation)
+Take `⟨t, ht, hne⟩` from `hψ`. Use `set e : Fin n → Fin d → ℤ := fun x y => if y = i₀ then (if x ∈ Finset.univ then p else p + 1) else bs i₁ μ y with he`. Establish `key : ∀ t, Le ϖ (c - 1) t → ∀ Y ∈ Box ϖ e, colOp i₀ (Pi.single i₁ t) Y ∈ Box ϖ e` using `fun t ht Y hY x y => by`. Rewrite using `[colOp_single]`. Use `(hY x y).add ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hy : y = i₁`. Use `(ht.mul (hY x i₀)).mono h (e' := e x y) (by simp [he, hy, hi.symm, bs]; omega)` as an intermediate fact. Simplify `this` using `[hy]`. Simplify `Le.zero _` using `[hy]`. Use `hl' _ (box_SB ϖ e) (Pi.single i₁ t) (by rintro s rfl; simp [hi])` as an intermediate fact.
+
+Establish `h2 : (fun Y => (Box ϖ e).indicator (1 : Matrix (Fin n) (Fin d) k → ℂ) (colOp i₀ (Pi.single i₁ t) Y)) = (Box ϖ e).indicator 1`. Use function extensionality and compare the values at `Y`. Use `Set.indicator_eq_indicator ⟨fun hY => ?_, key t ht Y⟩ rfl` and prove the remaining obligations. Use `key (-t) (by simpa using (Le.zero _).sub ht) _ hY using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x y`.
+
+Simplify using `only [colOp_single]`. Apply the tactic sequence `by_cases hy : y = i₁ <;> simp [hy, hi]`. Rewrite `this` using `[h2, Pi.single_eq_same]`. Assume the negation of the conclusion as `h0`. Conclude with `hne (mul_right_cancel₀ h0 (this.symm.trans (one_mul _).symm))`.
+-/
 theorem bx_zero (h : IsUnif ϖ) (hi : i₀ ≠ i₁) (hψ : ∃ x, Le ϖ (c - 1) x ∧ ψ x ≠ 1) (hl' : ColLaw ψ {i₀} i₀ i₁ l) (p μ : ℤ)
     (hc : μ - p < c) : bx ϖ l i₀ i₁ Finset.univ p μ = 0 := by
   obtain ⟨t, ht, hne⟩ := hψ
@@ -241,6 +332,21 @@ theorem bx_zero (h : IsUnif ϖ) (hi : i₀ ≠ i₁) (hψ : ∃ x, Le ϖ (c - 1)
   by_contra h0
   exact hne (mul_right_cancel₀ h0 (this.symm.trans (one_mul _).symm))
 
+/- English proof (translation)
+Establish `h1 : ∀ μ (j : ℕ), B (μ - c - j) μ - B (μ - c - j + 1) μ = r ^ j * B (μ - c) μ`. Introduce `μ j`. Proceed by induction on `j with`. Consider the case `zero => simp [h0 (μ - c + 1) μ (by omega)]`. Consider the case `succ j ih`.
+
+Rewrite using `[hA _ _ (by push_cast; omega), show μ - c - ((j + 1 : ℕ) : ℤ) + 1 = μ - c - j by push_cast; ring, ih]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∀ μ (j : ℕ), B (μ - c - j + 1) μ = B (μ - c) μ * ∑ i ∈ Finset.range j, r ^ i`. Introduce `μ j`. Proceed by induction on `j with`.
+
+Consider the case `zero => simp [h0 (μ - c + 1) μ (by omega)]`. Consider the case `succ j ih`. Rewrite using `[show μ - c - ((j + 1 : ℕ) : ℤ) + 1 = μ - c - j by push_cast; ring, Finset.sum_range_succ]`. Take the linear combination `h1 μ j + ih`. Establish `h3 : ∀ m : ℕ, B (m - c) m = B (0 - c) 0 * (q * r) ^ (-(m : ℤ))`.
+
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Establish `e1` using `hB (m - c) m (by omega)`.
+
+Establish `e2` using `h1 (m + 1) 1`. Rewrite `e1` using `[h0 (m - c + 1) m (by omega)]`. Rewrite `e2` using `[show (m : ℤ) + 1 - c - ((1 : ℕ) : ℤ) = m - c by push_cast; ring]`. Rewrite `e1` using `[e2, ih]`. Use `push_cast`.
+
+Rewrite using `[neg_add, zpow_add₀ hq, ← mul_assoc, zpow_neg_one, eq_mul_inv_iff_mul_eq₀ hq]`. Take the linear combination `-e1`. Use `⟨B (0 - c) 0, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[← h3, ← h2]`. Distinguish the cases in `hm : 0 ≤ 2 * (m : ℤ) - c + 1`.
+
+Use `congr 1`. Rewrite using `[Int.toNat_of_nonneg hm]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h0 _ _ (by omega), h0 _ _ (by omega)]`.
+-/
 theorem solve (B : ℤ → ℤ → ℂ) (c : ℤ) (q r : ℂ) (hq : q * r ≠ 0)
     (hA : ∀ p μ, c ≤ μ - 1 - p → B p μ - B (p + 1) μ = r * (B (p + 1) μ - B (p + 1 + 1) μ))
     (hB : ∀ p μ, c ≤ μ - p → B p μ - B (p + 1) μ = q * (B p (μ + 1) - B (p + 1) (μ + 1)))
@@ -283,6 +389,19 @@ theorem solve (B : ℤ → ℤ → ℂ) (c : ℤ) (q r : ℂ) (hq : q * r ≠ 0)
 end LocB
 
 open LocB ValuativeRel in
+/- English proof (translation)
+Introduce `k _ _ _ _ n d ϖ h ψ c hψ hψ' i₀ i₁ hi ξ _ l hl hl' r hr`. Establish `hψ1 : ∀ x, Le ϖ c x → ψ x = 1` using `fun x hx => hψ x (by simpa [Le] using hx)`. Establish `hψ2 : ∃ x, Le ϖ (c - 1) x ∧ ψ x ≠ 1` using `hψ'.imp fun x hx => ⟨by simpa [Le] using hx.1, hx.2⟩`. Establish `hs` using `H k n d ψ (by rintro rfl; obtain ⟨x, -, hx⟩ := hψ2; exact hx rfl) i₀ i₁ hi ξ l hl hl'`. Take `⟨w, hw⟩` from `bx_weights (i₀ := i₀) (i₁ := i₁) h hl Finset.univ`.
+
+Simplify using `only [bx_empty] at hw`. Take `⟨x, hx⟩` from `solve (bx ϖ l i₀ i₁ Finset.univ) c (GlobalTheory.SplitWeil.resCard k) r (mul_ne_zero q_ne (hr ▸ mul_ne_zero (ξ ϖ).ne_zero (zpow_ne_zero _ q_ne))) (fun p μ hc => by`. Rewrite using `[hw, hw, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => by rw [stepA h hψ1 hl hl' a p μ hc, hr]; ring)`. Use the proof step `(fun p μ hc => by`.
+
+Rewrite using `[hw, hw, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => by rw [stepB h hi hψ1 hl' hs a p μ hc]; ring)`. Use the proof step `(bx_zero h hi hψ2 hl')`. Use `⟨x, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[← hx, bx]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `Y`. Use `Set.indicator_eq_indicator (forall₂_congr fun a b => ?_) rfl` and prove the remaining obligations. Rewrite using `[torus, Matrix.mul_diagonal, ← le_zero_iff (ϖ := ϖ)]`. Distinguish the cases in `h0 : b = i₀`.
+
+Simplify using `only [if_pos h0, Finset.mem_univ, if_true]`. Rewrite using `[← le_mul_iff (e := -(m : ℤ)) (val_zpow m), neg_add_cancel, zpow_natCast]`. Distinguish the cases in `h1 : b = i₁`. Simplify using `only [if_neg h0, bs, if_pos h1]`. Rewrite using `[← le_mul_iff (e := (m : ℤ)) (val_zpow (-m)), add_neg_cancel, zpow_neg, zpow_natCast]`.
+
+Simplify using `[h0, h1, bs]`.
+-/
 theorem locTwo_of (H : LocSupp) : LocTwo := by
   intro k _ _ _ _ n d ϖ h ψ c hψ hψ' i₀ i₁ hi ξ _ l hl hl' r hr
   have hψ1 : ∀ x, Le ϖ c x → ψ x = 1 := fun x hx => hψ x (by simpa [Le] using hx)

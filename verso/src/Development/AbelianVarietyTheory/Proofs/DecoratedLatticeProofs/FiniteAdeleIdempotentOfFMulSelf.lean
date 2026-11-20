@@ -13,27 +13,48 @@ namespace GlobalTheory.AdForm.RdLaw
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `[finM]`.
+-/
 theorem finM_rfl (V : HSp D) (g : GA D V) : finM V rfl g = (Formalism.L2.Theta.mt V g).map (toEAf D) := by
   simp [finM]
 
+/- English proof (translation)
+Simplify using `[infM, Formalism.IndefR.Datum.compAt]`. Both sides reduce to the same expression.
+-/
 theorem infM_eq (θ : InfFam D) (V : HSp D) (g : GA D V) (τ : D.what₂.Tau) :
     infM θ V rfl g τ = (Formalism.L2.Theta.mt V g).map ((θ τ).comp (infPart D)) := by
   simp [infM, Formalism.IndefR.Datum.compAt]; rfl
 
+/- English proof (translation)
+Rewrite using `[infM_eq]`. Both sides reduce to the same expression.
+-/
 theorem infM_rfl (θ : InfFam D) (V : HSp D) (g : GA D V) (τ : D.what₂.Tau) :
     infM θ V rfl g τ = infMat D.sp.cm.sig V.gram (θ τ) g := by
   rw [infM_eq]; rfl
 
+/- English proof (translation)
+Simplify using `[Formalism.L2.Theta.mt, map_mul]`.
+-/
 theorem mt_mul (V : HSp D) (g h : GA D V) : Formalism.L2.Theta.mt V (g * h) = Formalism.L2.Theta.mt V g * Formalism.L2.Theta.mt V h := by
   simp [Formalism.L2.Theta.mt, map_mul]
 
+/- English proof (translation)
+Simplify using `only [finM_rfl, mt_mul, Matrix.map_mul]`.
+-/
 theorem finM_mul (V : HSp D) (g h : GA D V) : finM V rfl (g * h) = finM V rfl g * finM V rfl h := by
   simp only [finM_rfl, mt_mul, Matrix.map_mul]
 
+/- English proof (translation)
+Simplify using `only [infM_eq, mt_mul, Matrix.map_mul]`.
+-/
 theorem infM_mul (θ : InfFam D) (V : HSp D) (g h : GA D V) (τ) :
     infM θ V rfl (g * h) τ = infM θ V rfl g τ * infM θ V rfl h τ := by
   simp only [infM_eq, mt_mul, Matrix.map_mul]
 
+/- English proof (translation)
+Establish `h : (infHom V k) = 1` using `hk`. Establish `h2 : (infHom V k).val = 1` using `by rw [h]; rfl`. Rewrite using `[infM_eq]`. Establish `e : (Formalism.L2.Theta.mt V k).map ((θ τ).comp (infPart D)) = (infHom V k).val.map (θ τ)` using `rfl`. Rewrite using `[e, h2, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem infM_fin (θ : InfFam D) (V : HSp D) (k : GA D V) (hk : k ∈ GfC V) (τ) : infM θ V rfl k τ = 1 := by
   have h : (infHom V k) = 1 := hk
   have h2 : (infHom V k).val = 1 := by rw [h]; rfl
@@ -41,6 +62,9 @@ theorem infM_fin (θ : InfFam D) (V : HSp D) (k : GA D V) (hk : k ∈ GfC V) (τ
   have e : (Formalism.L2.Theta.mt V k).map ((θ τ).comp (infPart D)) = (infHom V k).val.map (θ τ) := rfl
   rw [e, h2, Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Establish `h : (finHom V k) = 1` using `hk`. Establish `h2 : (finHom V k).val = 1` using `by rw [h]; rfl`. Rewrite using `[finM_rfl]`. Establish `e : (Formalism.L2.Theta.mt V k).map (toEAf D) = (finHom V k).val.map (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E)` using `rfl`. Rewrite using `[e, h2, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem finM_inf (V : HSp D) (k : GA D V) (hk : k ∈ GinfC V) : finM V rfl k = 1 := by
   have h : (finHom V k) = 1 := hk
   have h2 : (finHom V k).val = 1 := by rw [h]; rfl
@@ -55,6 +79,11 @@ noncomputable section
 namespace GlobalTheory.AdForm.RdLaw
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h : matHom V γ ∈ HFin (AF D.host.F) D.sp.cm.sig V.gram` using `hγ`. Take `⟨γ0, h0, e⟩` from `Subgroup.mem_map.1 h`. Use `⟨γ0, h0, ?_⟩` and prove the remaining obligations. Use `show (matHom V γ).val = _`. Rewrite using `[← e]`.
+
+Both sides reduce to the same expression.
+-/
 theorem rat_mt (V : HSp D) (γ : GA D V) (hγ : γ ∈ GQ V) :
     ∃ γ0 : GL (Fin V.rank) D.host.E, γ0 ∈ UJ (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram ∧
       Formalism.L2.Theta.mt V γ = γ0.val.map (incA D) := by
@@ -64,10 +93,16 @@ theorem rat_mt (V : HSp D) (γ : GA D V) (hγ : γ ∈ GQ V) :
   show (matHom V γ).val = _
   rw [← e]; rfl
 
+/- English proof (translation)
+Rewrite using `[finM_rfl, e, Matrix.map_map]`. Both sides reduce to the same expression.
+-/
 theorem rat_finM (V : HSp D) (γ0 : GL (Fin V.rank) D.host.E) (γ : GA D V) (e : Formalism.L2.Theta.mt V γ = γ0.val.map (incA D)) :
     finM V rfl γ = (bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ0).val := by
   rw [finM_rfl, e, Matrix.map_map]; rfl
 
+/- English proof (translation)
+Rewrite using `[infM_eq, e, Matrix.map_map]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, atInf, Function.comp_apply, RingHom.coe_comp]`. Conclude with `(hθ τ).1 _`.
+-/
 theorem rat_infM (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) (γ0 : GL (Fin V.rank) D.host.E) (γ : GA D V)
     (e : Formalism.L2.Theta.mt V γ = γ0.val.map (incA D)) (τ) :
     infM θ V rfl γ τ = atInf (embT D) γ0.val τ := by
@@ -84,24 +119,42 @@ variable {D : D7}
 
 def e0 (D : D7) : AF D.host.F := ((0, 1) : Ainf D.host.F × Af D.host.F)
 
+/- English proof (translation)
+The claim follows from `Prod.ext (zero_mul _) (one_mul _)`.
+-/
 theorem finiteAdeleIdempotentOfF_mul_self : e0 D * e0 D = e0 D := Prod.ext (zero_mul _) (one_mul _)
 
 def eps (D : D7) : AE D := e0 D ⊗ₜ[D.host.F] (1 : D.host.E)
 
+/- English proof (translation)
+Rewrite using `[eps, Algebra.TensorProduct.tmul_mul_tmul, mul_one, finiteAdeleIdempotentOfF_mul_self]`.
+-/
 theorem eps_mul_self : eps D * eps D = eps D := by
   rw [eps, Algebra.TensorProduct.tmul_mul_tmul, mul_one, finiteAdeleIdempotentOfF_mul_self]
 
+/- English proof (translation)
+Rewrite using `[mul_sub, mul_one, eps_mul_self, sub_self]`.
+-/
 theorem eps_mul_one_sub : eps D * (1 - eps D) = 0 := by
   rw [mul_sub, mul_one, eps_mul_self, sub_self]
 
+/- English proof (translation)
+Rewrite using `[sub_mul, one_mul, mul_sub, mul_one, eps_mul_self]`. Normalize the expressions using the abelian group laws.
+-/
 theorem one_sub_mul_self : (1 - eps D) * (1 - eps D) = 1 - eps D := by
   rw [sub_mul, one_mul, mul_sub, mul_one, eps_mul_self]; abel
 
+/- English proof (translation)
+Use `show Algebra.TensorProduct.map (AlgHom.id _ _) D.sp.cm.sig (_ ⊗ₜ _) = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression.
+-/
 theorem sig_eps : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF D.host.F) D.sp.cm.sig (eps D) = eps D := by
   show Algebra.TensorProduct.map (AlgHom.id _ _) D.sp.cm.sig (_ ⊗ₜ _) = _
   rw [Algebra.TensorProduct.map_tmul, map_one]; rfl
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Establish `h1 : infPart D (eps D) = fstA D.host.F (e0 D) ⊗ₜ[D.host.F] (AlgHom.id D.host.F D.host.E 1)` using `Algebra.TensorProduct.map_tmul _ _ _ _`. Establish `: fstA D.host.F (e0 D) = 0` using `rfl`. Rewrite using `[h1, this, TensorProduct.zero_tmul]`.
+-/
 theorem infPart_eps : infPart D (eps D) = 0 := by
   have h1 : infPart D (eps D) = fstA D.host.F (e0 D) ⊗ₜ[D.host.F] (AlgHom.id D.host.F D.host.E 1) :=
     Algebra.TensorProduct.map_tmul _ _ _ _
@@ -109,12 +162,18 @@ theorem infPart_eps : infPart D (eps D) = 0 := by
   rw [h1, this, TensorProduct.zero_tmul]
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Establish `h1 : finPart D (eps D) = sndA D.host.F (e0 D) ⊗ₜ[D.host.F] (AlgHom.id D.host.F D.host.E 1)` using `Algebra.TensorProduct.map_tmul _ _ _ _`. Establish `: sndA D.host.F (e0 D) = 1` using `rfl`. Rewrite using `[h1, this]`. Both sides reduce to the same expression.
+-/
 theorem finPart_eps : finPart D (eps D) = 1 := by
   have h1 : finPart D (eps D) = sndA D.host.F (e0 D) ⊗ₜ[D.host.F] (AlgHom.id D.host.F D.host.E 1) :=
     Algebra.TensorProduct.map_tmul _ _ _ _
   have : sndA D.host.F (e0 D) = 1 := rfl
   rw [h1, this]; rfl
 
+/- English proof (translation)
+Use `show (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E) (finPart D (eps D)) = 1`. Rewrite using `[finPart_eps, map_one]`.
+-/
 theorem toEAf_eps : toEAf D (eps D) = 1 := by
   show (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E) (finPart D (eps D)) = 1
   rw [finPart_eps, map_one]
@@ -122,10 +181,16 @@ theorem toEAf_eps : toEAf D (eps D) = 1 := by
 def PM {r : ℕ} (M : Matrix (Fin r) (Fin r) (AE D)) : Matrix (Fin r) (Fin r) (AE D) :=
   eps D • M + (1 - eps D) • (1 : Matrix (Fin r) (Fin r) (AE D))
 
+/- English proof (translation)
+Simplify using `only [PM, add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.one_mul, Matrix.mul_one, eps_mul_self, one_sub_mul_self, eps_mul_one_sub, mul_comm (1 - eps D) (eps D), zero_smul, add_zero, zero_add]`.
+-/
 theorem PM_mul {r : ℕ} (M N : Matrix (Fin r) (Fin r) (AE D)) : PM (M * N) = PM M * PM N := by
   simp only [PM, add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.one_mul, Matrix.mul_one,
     eps_mul_self, one_sub_mul_self, eps_mul_one_sub, mul_comm (1 - eps D) (eps D), zero_smul, add_zero, zero_add]
 
+/- English proof (translation)
+Simplify using `only [PM, ← add_smul, add_sub_cancel, one_smul]`.
+-/
 theorem PM_one {r : ℕ} : PM (1 : Matrix (Fin r) (Fin r) (AE D)) = 1 := by
   simp only [PM, ← add_smul, add_sub_cancel, one_smul]
 

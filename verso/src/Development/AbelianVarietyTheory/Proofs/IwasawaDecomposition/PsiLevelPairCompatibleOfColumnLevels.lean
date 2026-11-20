@@ -7,6 +7,11 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 
 namespace GlobalTheory.Mem.PsiTie
 
+/- English proof (translation)
+Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[Formalism.L2.Col.symPerm_symm_val hr]`. Unfold `symPos Formalism.L2.Col.symIdxInv`. Establish `hi` using `i.2`. Use `show (if i.val < rS then k + i.val else if i.val < rS + k then i.val - rS else i.val) % r = _`.
+
+Apply the tactic sequence `rw [Nat.mod_eq_of_lt (by split_ifs <;> omega)]`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem symPos_eq_symm {r k rS : ℕ} (hr : k + rS ≤ r) (i : Fin r) :
     symPos r rS k i = (Formalism.L2.Col.symPerm r k rS).symm i := by
   apply Fin.ext
@@ -17,6 +22,11 @@ theorem symPos_eq_symm {r k rS : ℕ} (hr : k + rS ≤ r) (i : Fin r) :
   rw [Nat.mod_eq_of_lt (by split_ifs <;> omega)]
   split_ifs <;> omega
 
+/- English proof (translation)
+Simplify using `only [symPos_eq_symm hr]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `Units.ext (Matrix.ext fun i j => by rw [Formalism.L2.Col.toSymOrd_val]; exact h i j)`. Introduce and unpack `rfl i j`.
+
+Both sides reduce to the same expression.
+-/
 theorem symPos_entries_iff {κ : Type} [CommRing κ] {r k rS : ℕ} (hr : k + rS ≤ r) (M y : GL (Fin r) κ) :
     (∀ i j : Fin r, (M : Matrix (Fin r) (Fin r) κ) (symPos r rS k i) (symPos r rS k j) =
       (y : Matrix (Fin r) (Fin r) κ) i j) ↔ Formalism.L2.Col.toSymOrd κ r k rS M = y := by
@@ -27,6 +37,9 @@ theorem symPos_entries_iff {κ : Type} [CommRing κ] {r k rS : ℕ} (hr : k + rS
   · rintro rfl i j
     rfl
 
+/- English proof (translation)
+Substitute `hT` using the available equality. Establish `hid : ∀ g, e g = g` using `fun g => funext fun P => he g P.1 P.2 P.2`. Use `⟨fun g => by rw [hid], fun g h => ?_⟩` and prove the remaining obligations. Conclude with `congrArg _ (Subtype.ext (hid g).symm)`.
+-/
 theorem baseLevel_character_preserved_placewiseIdentity {E : Type} [Field E] [NumberField E] {LL : Type} [CommRing LL] {r : ℕ} {S T : Finset (Pl E)}
     (hT : T = S) (e : G0 S r ≃* G0 T r) (he : ∀ g P (h : P ∈ S) (h' : P ∈ T), e g ⟨P, h'⟩ = g ⟨P, h⟩)
     (ψ : ∀ PP : Pl E, AddChar (kP PP) LL) :
@@ -37,16 +50,37 @@ theorem baseLevel_character_preserved_placewiseIdentity {E : Type} [Field E] [Nu
   refine ⟨fun g => by rw [hid], fun g h => ?_⟩
   exact congrArg _ (Subtype.ext (hid g).symm)
 
+/- English proof (translation)
+The claim follows from `MonoidHom.finset_prod_apply _ _ _`.
+-/
 theorem piChar_apply' {K : Type} [Field K] {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (G i)] (H : ∀ i, Subgroup (G i))
     (lam : ∀ i, ↥(H i) →* Kˣ) (x : ↥(Subgroup.pi Set.univ H)) :
     Formalism.L2.Col.piChar H lam x = ∏ i, lam i (Formalism.L2.Col.piProj H i x) :=
   MonoidHom.finset_prod_apply _ _ _
 
+/- English proof (translation)
+The claim follows from `MonoidHom.finset_prod_apply _ _ _`.
+-/
 theorem ofLocal_chi_apply {E : Type} [Field E] [NumberField E] {LL : Type} [CommRing LL] {r : ℕ} {Pg : Finset (Pl E)}
     (Hl : ∀ PP : ↥Pg, Subgroup (GL (Fin r) (kP PP.1))) (cl : ∀ PP : ↥Pg, Hl PP →* LLˣ) (x : ↥(Subgroup.pi Set.univ Hl)) :
     (LevelP.ofLocal Hl cl).chi x = ∏ PP, cl PP (LevelP.prj Hl PP x) :=
   MonoidHom.finset_prod_apply _ _ _
 
+/- English proof (translation)
+Substitute `hT` using the available equality. Establish `hid : ∀ g, e g = g` using `fun g => funext fun P => he g P.1 P.2 P.2`. Establish `hr : R.k + R.rS ≤ R.r` using `by have := Formalism.L2.Col.r_eq_sym R; omega`. Use `⟨fun g => ?_, fun g y hgy => ?_⟩` and prove the remaining obligations. Rewrite using `[hid]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hg`. Use `⟨fun PP => Formalism.L2.Col.toSymOrd _ R.r R.k R.rS (g PP), (Subgroup.mem_pi _).2 fun PP _ => ?_, fun PP => (symPos_entries_iff hr _ _).2 rfl⟩` and prove the remaining obligations. Use `(Subgroup.mem_pi _).1 hg PP (Set.mem_univ _)` as an intermediate fact. Express the relevant statement in the definitionally equal form `g PP ∈ Formalism.L2.Col.HPsymF _ R.r R.k R.rS at this`.
+
+Rewrite `this` using `[Formalism.L2.Col.HPsymF_eq_comap_unipSym, Subgroup.mem_comap]`. Conclude with `this`. Introduce and unpack `⟨y, hy, hyg⟩`. Use `(Subgroup.mem_pi _).2 fun PP _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g PP ∈ Formalism.L2.Col.HPsymF _ R.r R.k R.rS`.
+
+Rewrite using `[Formalism.L2.Col.HPsymF_eq_comap_unipSym, Subgroup.mem_comap, (symPos_entries_iff hr _ _).1 (hyg PP)]`. Conclude with `(Subgroup.mem_pi _).1 hy PP (Set.mem_univ _)`. Rewrite `hgy` using `[hid]`. Establish `h1` using `piChar_apply' (fun w => (Formalism.L2.Col.rPsymF Ch w).H) (fun w => (Formalism.L2.Col.rPsymF Ch w).lam) g`. Establish `h2` using `ofLocal_chi_apply (fun PP : ↥Pr.vGs => unipSym (kP PP.1) R.r R.rS R.k) (fun PP => addCharHom (ψ PP.1) (symHom (kP PP.1) R.r R.rS R.k)) y`.
+
+Use `h1.trans (Eq.trans ?_ h2.symm)` and prove the remaining obligations. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hy : (y : G0 Pr.vGs R.r) w = Formalism.L2.Col.toSymOrd _ R.r R.k R.rS ((g : Formalism.L2.Col.G0 X.E Pr.vGs R.r) w)` using `((symPos_entries_iff hr _ _).1 (hgy w)).symm`. Establish `hM : Formalism.L2.Col.toSymOrd _ R.r R.k R.rS ((g : Formalism.L2.Col.G0 X.E Pr.vGs R.r) w) ∈ unipSym (kP w.1) R.r R.rS R.k`. Rewrite using `[← hy]`.
+
+Conclude with `(Subgroup.mem_pi _).1 y.2 w (Set.mem_univ _)`. Apply `Units.ext` to reduce the goal to its premises. Establish `e1` using `Formalism.L2.Col.chiSym_eq_symHom (Ch.psi0 w) R.r R.k R.rS ⟨_, Formalism.L2.Col.mem_HPsymF.1 ((Subgroup.mem_pi _).1 g.2 w (Set.mem_univ _))⟩ hM`. Use `e1.trans ?_` and prove the remaining obligations. Rewrite using `[hψ w.1 w.2]`.
+
+Use `congr 2`. Conclude with `Subtype.ext hy.symm`.
+-/
 theorem sym_tie {X : Formalism.L2.Col.Fields} {Pr : Formalism.L2.Col.Primes X} {R : Ranks} (Ch : Formalism.L2.Col.Chars X Pr R.m)
     {T : Finset (Pl X.E)} (hT : T = Pr.vGs) (e : Formalism.L2.Col.G0 X.E Pr.vGs R.r ≃* G0 T R.r)
     (he : ∀ g P (h : P ∈ Pr.vGs) (h' : P ∈ T), e g ⟨P, h'⟩ = g ⟨P, h⟩)
@@ -94,6 +128,17 @@ theorem sym_tie {X : Formalism.L2.Col.Fields} {Pr : Formalism.L2.Col.Primes X} {
     congr 2
     exact Subtype.ext hy.symm
 
+/- English proof (translation)
+Introduce `X px I U L eG cG plg iso hOk hLev hId hpl hbc`. Establish `hψ : ∀ P (h : P ∈ (X.B.primes px).vGs), psiC I P = I.Ch.psi0 ⟨P, h⟩` using `fun P h => psiC_of_mem I h`. Establish `hP0` using `baseLevel_character_preserved_placewiseIdentity (S := (X.B.primes px).vGs) hLev.Pg eG (fun g P h h' => hId g P h h') (psiC I)`. Establish `hS` using `sym_tie I.Ch hLev.Pg eG (fun g P h h' => hId g P h h') (psiC I) hψ`. Use `⟨L.Pg, plg, fun kv => (iso kv).symm, psiC I, eG, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `⟨hpl, ?_, ?_, hP0.1, hP0.2, hS.1, hS.2⟩` and prove the remaining obligations. Introduce `g kv`. Rewrite using `[hbc g kv]`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+
+Simplify using `[Matrix.GeneralLinearGroup.map, Formalism.UG.bc]`. Introduce `PP hPP`. Rewrite `hPP` using `[hLev.Pg]`. Rewrite using `[psiC_of_mem I hPP]`. Conclude with `hOk.ch_ok.psi_zero_nontrivial_character _`.
+
+Introduce `kv c b hb`. Establish `hw : ((plg kv : L.Pg) : Pl X.toD7.host.E) ∈ (X.B.primes px).vGs` using `hLev.Pg ▸ (plg kv).2`. Establish `h` using `hOk.weil ⟨_, hw⟩ c b hb`. Rewrite using `[psiC_of_mem I hw]`. Use `h.trans ?_` and prove the remaining obligations.
+
+Establish `hq : Formalism.L2.Col.qOf ((⟨_, hw⟩ : {w // w ∈ (X.B.primes px).vGs}) : Pl X.B.fields.E) = X.toD7.host.g kv.1` using `absNorm_eq_of_res X.toD7 (iso kv).symm`. Rewrite using `[hq]`.
+-/
 theorem psiPPTie_of_levOf : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U : Set I.ι) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r) (cG : G0 L.Pg X.toD7.R.r ≃* G0g X.toD7.nd) (plg : (Σ k : Fin 2, X.toD7.nd.PlG k) ≃ L.Pg) (iso : ∀ kv : (Σ k : Fin 2, X.toD7.nd.PlG k), ZMod (X.toD7.host.g kv.1) ≃+* kP (plg kv).1), I.Ok → LevOf X I U L → IsPlacewiseIdentity X (px := px) eG → (∀ kv, ((plg kv : L.Pg) : Pl X.toD7.host.E) = X.toD7.naut.plGw kv.1 kv.2) → (∀ g kv, eG g (plg kv) = Formalism.UG.bc (iso kv : ZMod (X.toD7.host.g kv.1) →+* kP (plg kv).1) ((eG.trans cG) g kv)) → PsiPPTie X.toD7 (lev0 I) (chr0 I) (lev1 I) (chr1 I) (eG.trans cG) := by
   intro X px I U L eG cG plg iso hOk hLev hId hpl hbc
   have hψ : ∀ P (h : P ∈ (X.B.primes px).vGs), psiC I P = I.Ch.psi0 ⟨P, h⟩ := fun P h => psiC_of_mem I h

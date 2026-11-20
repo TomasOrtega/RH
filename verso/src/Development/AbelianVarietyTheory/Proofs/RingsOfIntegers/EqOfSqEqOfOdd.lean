@@ -17,6 +17,9 @@ open GlobalTheory.PlaceInt
 
 namespace GlobalTheory.PlaceInt
 
+/- English proof (translation)
+Take `⟨t, rfl⟩` from `hk`. Rewrite `h₁`, `h₂` using `[pow_succ, pow_mul]`. Rewrite `h₁` using `[h]`. Conclude with `mul_left_cancel (h₁.trans h₂.symm)`.
+-/
 theorem eq_of_sq_eq_of_odd {U : Type} [CommGroup U] {r r' : U} {k : ℕ} (hk : Odd k) (h : r ^ 2 = r' ^ 2)
     (h₁ : r ^ k = 1) (h₂ : r' ^ k = 1) : r = r' := by
   obtain ⟨t, rfl⟩ := hk
@@ -24,6 +27,17 @@ theorem eq_of_sq_eq_of_odd {U : Type} [CommGroup U] {r r' : U} {k : ℕ} (hk : O
   rw [h] at h₁
   exact mul_left_cancel (h₁.trans h₂.symm)
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo S _ x k hk a b e ha hb he`. Establish `hLaw : Laws` using `GlobalTheory.firstFiveLaws.1`. Use `UnivPol.isLocallyNoetherian Xo` as an intermediate fact. Establish `ex : ∀ c : ptO Xo x ⟶ Xo.univ.t.G, c ^ k = 1 → ∃ U : ThetaGrp Xo.univ.t.G Xo.univ.t.PP.L (k : ℤ) (ptO Xo x), SymLift Xo.univ.t.G Xo.univ.t.PP.L (k : ℤ) k c U` using `fun c hc => (symLift_exists_unique_of_cast hLaw Xo.X (UnivPol.pol Xo) k hk (UnivPol.isUnit_natCast Xo _ hk.pos) (k : ℤ) rfl (ptO Xo x) c hc).1`. Establish `hA` using `(moduli_univ_polAV E H Dw l Xo).2.2.2.1`.
+
+Take `⟨Ua, hUa⟩` from `ex a ha`. Take `⟨Ub, hUb⟩` from `ex b hb`. Take `⟨Uab, hUab⟩` from `ex (a * b) (by rw [mul_pow, ha, hb, _root_.mul_one])`. Take `⟨r₀, h₂, hp, -⟩` from `SymLiftMul.symLift_mul hLaw.globalFns hA Xo.univ.t.PP.isLB hk hUa hUb hUab he`. Establish `bij : Function.Bijective (toΓ S)` using `ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of S)).inv`.
+
+Take `⟨r, hr⟩` from `bij.2 (r₀ : Γ((ptO Xo x).left, ⊤))`. Use `⟨r, ?_, bij.1 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hr, ← h₂]`. Conclude with `(Units.val_pow_eq_pow_val r₀ 2).symm`. Rewrite using `[map_pow, map_one, hr]`.
+
+Conclude with `(Units.val_pow_eq_pow_val r₀ k).symm.trans (congrArg Units.val hp)`. Introduce and unpack `F F₁ F₂ F₃ ⟨-, Vb, hVb, a₁⟩ ⟨-, Va, hVa, a₂⟩ ⟨-, Vab, hVab, a₃⟩ j`. Take `⟨r₁, h₂', hp', h⟩` from `SymLiftMul.symLift_mul hLaw.globalFns hA Xo.univ.t.PP.isLB hk hVa hVb hVab he`. Take `rfl : r₁ = r₀` from `eq_of_sq_eq_of_odd hk (h₂'.trans h₂.symm) hp' hp`. Rewrite using `[hr]`.
+
+Conclude with `h F F₁ F₂ F₃ a₁ a₂ a₃ j`.
+-/
 theorem moves_mul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S : Type) [CommRing S] (x : Sp S ⟶ Xo.X) (k : ℕ), Odd k → ∀ (a b : (ptO Xo x ⟶ Xo.univ.t.G)) (e : Γ((ptO Xo x).left, ⊤)ˣ), a ^ k = 1 → b ^ k = 1 → WeilIs Xo.univ.t.G Xo.univ.t.PP.L (k : ℤ) a b e → ∃ r : S, toΓ S r ^ 2 = (e : Γ((ptO Xo x).left, ⊤)) ∧ r ^ k = 1 ∧ ∀ F F₁ F₂ F₃ : SecN Xo x k, Moves Xo b F F₁ → Moves Xo a F₁ F₂ → Moves Xo (a * b) F F₃ → (∀ j, F₂.f j = liftFun Xo.univ.t.G _ (T := ptO Xo x) (toΓ S r) * F₃.f j) := by
   intro E _ _ _ H Dw l Xo S _ x k hk a b e ha hb he
   have hLaw : Laws := GlobalTheory.firstFiveLaws.1

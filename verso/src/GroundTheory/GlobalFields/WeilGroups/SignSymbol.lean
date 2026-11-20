@@ -19,6 +19,9 @@ variable {K : Type*} [Field K] [NumberField K] {L L' : Type*} [Field L] [NumberF
   [NumberField L'] [Algebra K L] [Algebra K L'] [IsGalois K L] [IsGalois K L']
   [IsMulCommutative (L ≃ₐ[K] L)] [IsMulCommutative (L' ≃ₐ[K] L')]
 
+/- English proof (translation)
+Set `_ : Algebra L L'` to `e.toRingHom.toAlgebra`. Establish `: IsScalarTower K L L'` using `IsScalarTower.of_algebraMap_eq fun a ↦ (e.commutes a).symm`. Establish `h` using `AlgEquiv.restrictNormal_commutes (ideleSymbol K L' x) L l`. Rewrite `h` using `[restrictNormal_ideleSymbol L L' x]`. Conclude with `h.symm`.
+-/
 theorem ideleSymbol_apply_algEquiv (e : L ≃ₐ[K] L') (x : IdeleGroup K) (l : L) :
     ideleSymbol K L' x (e l) = e (ideleSymbol K L x l) := by
   let _ : Algebra L L' := e.toRingHom.toAlgebra
@@ -46,6 +49,9 @@ def overFieldEquiv (K E : FiniteSubfield) [Fact (K ≤ E)] : E.1 ≃ₐ[K.1] ↥
       map_add' := fun _ _ ↦ rfl }) fun _ ↦ rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_overFieldEquiv (y : E.1) : ((overFieldEquiv K E y : ↥(overField K E)) : ℚ̄) = (y : ℚ̄) :=
   rfl
 
@@ -66,6 +72,11 @@ instance : IsMulCommutative (↥(overField K E) ≃ₐ[K.1] ↥(overField K E)) 
 
 instance : IsAbelianGalois K.1 ↥(overField K E) := ⟨⟩
 
+/- English proof (translation)
+Use `AlgEquiv.ext fun l ↦ Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[FiniteSubfield.coe_restrictHom_apply]`. Establish `hl : (l : ℚ̄) ∈ maximalAbelianExtension K.1 ℚ̄` using `le_maximalAbelianExtension (overField K E) (overFieldEquiv K E l).2`. Rewrite using `[hg _ hl]`. Establish `h` using `artinMap_apply (overField K E) (IdeleClassGroup.mk K.1 x) (overFieldEquiv K E l)`.
+
+Use `h.trans ?_` and prove the remaining obligations. Rewrite using `[reciprocityMap_mk, ideleSymbol_apply_algEquiv (overFieldEquiv K E) x l, coe_overFieldEquiv]`.
+-/
 theorem restrictHom_eq_ideleSymbol_of_artinMap (x : IdeleGroup K.1) (g : K.1.fixingSubgroup)
     (hg : ∀ (y : ℚ̄) (hy : y ∈ maximalAbelianExtension K.1 ℚ̄),
       (g : ℚ̄ ≃ₐ[ℚ] ℚ̄) y = (artinMap K.1 ℚ̄ (IdeleClassGroup.mk K.1 x) ⟨y, hy⟩ : ℚ̄)) :
@@ -97,17 +108,36 @@ variable (E : FiniteSubfield) [Fact (K ≤ E)]
 
 attribute [local instance] FiniteSubfield.isGalois_of_normal galCommGroup
 
+/- English proof (translation)
+The claim follows from `restrictHom_globalDecomp_of_finite E (ι.fin v) fun y hy ↦ AlgEquiv.liftNormal_commutes _ _ (⟨y, hy⟩ : maximalAbelianExtension (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1)))`.
+-/
 theorem restrictHom_ideleLocalSymbolAt_inr (v : HeightOneSpectrum (𝓞 K.1)) (x : IdeleGroup K.1) :
     restrictHom (E := E) (ideleLocalSymbolAt ι (.inr v) x) = localSymbol E.1 v (finiteProj v x) :=
   restrictHom_globalDecomp_of_finite E (ι.fin v) fun y hy ↦
     AlgEquiv.liftNormal_commutes _ _ (⟨y, hy⟩ : maximalAbelianExtension
       (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1)))
 
+/- English proof (translation)
+The claim follows from `restrictHom_globalDecomp_of_infinite E (ι.inf v) (exists_eq_one_iff_mem_range_norm v (infiniteProj v x : v.Completion)).choose_spec`.
+-/
 theorem restrictHom_ideleLocalSymbolAt_inl (v : InfinitePlace K.1) (x : IdeleGroup K.1) :
     restrictHom (E := E) (ideleLocalSymbolAt ι (.inl v) x) = infiniteLocalSymbol E.1 v (infiniteProj v x) :=
   restrictHom_globalDecomp_of_infinite E (ι.inf v)
     (exists_eq_one_iff_mem_range_norm v (infiniteProj v x : v.Completion)).choose_spec
 
+/- English proof (translation)
+Use `set R := (restrictHom : K.1.fixingSubgroup →* (E.1 ≃ₐ[K.1] E.1)) with hR`. Use `set χm : K.1.fixingSubgroup →* Multiplicative QZ := AddMonoidHom.toMultiplicativeRight χ.toAddMonoidHom with hχm`. Establish `hχm_apply : ∀ h, χ (Additive.ofMul h) = Multiplicative.toAdd (χm h)` using `fun _ ↦ rfl`. Establish `hker : R.ker ≤ χm.ker`. Introduce `h hh`.
+
+Rewrite `hh` using `[hR, FiniteSubfield.ker_restrictHom, Subgroup.mem_subgroupOf]`. Rewrite using `[MonoidHom.mem_ker, ← ofAdd_toAdd (χm h), ← hχm_apply, hχ h hh, ofAdd_zero]`. Use `set χ' := R.liftOfSurjective restrictHom_surjective ⟨χm, hker⟩ with hχ'`. Establish `hχ'R : ∀ h, χ' (R h) = χm h` using `fun h ↦ R.liftOfRightInverse_comp_apply _ (Function.rightInverse_surjInv restrictHom_surjective) ⟨χm, hker⟩ h`. Establish `hF_inr : ∀ v, χ (Additive.ofMul (ideleLocalSymbolAt ι (.inr v) x)) = Multiplicative.toAdd (χ' (localSymbol E.1 v (finiteProj v x)))`.
+
+Introduce `v`. Rewrite using `[hχm_apply, ← hχ'R, hR, restrictHom_ideleLocalSymbolAt_inr]`. Establish `hF_inl : ∀ w, χ (Additive.ofMul (ideleLocalSymbolAt ι (.inl w) x)) = Multiplicative.toAdd (χ' (infiniteLocalSymbol E.1 w (infiniteProj w x)))`. Introduce `w`. Rewrite using `[hχm_apply, ← hχ'R, hR, restrictHom_ideleLocalSymbolAt_inl]`.
+
+Take `⟨S, hS⟩ : ∃ S : Finset (HeightOneSpectrum (𝓞 K.1)), Function.mulSupport (fun v ↦ localSymbol E.1 v (finiteProj v x)) ⊆ S` from `⟨(hasFiniteMulSupport_localSymbol E.1 x).toFinset, fun v hv ↦ (Set.Finite.mem_toFinset _).2 hv⟩`. Establish `hψ : ideleSymbol K.1 E.1 x = (∏ v ∈ S, localSymbol E.1 v (finiteProj v x)) * ∏ w, infiniteLocalSymbol E.1 w (infiniteProj w x)`. Rewrite using `[ideleSymbol_apply, finprod_eq_prod_of_mulSupport_subset _ hS]`. Establish `hsupp : Function.support (fun v : Place K.1 ↦ χ (Additive.ofMul (ideleLocalSymbolAt ι v x))) ⊆ (Finset.univ.disjSum S : Finset (Place K.1))`. Introduce and unpack `(w | v) hv`.
+
+Conclude with `Finset.inl_mem_disjSum.2 (Finset.mem_univ w)`. Use `Finset.inr_mem_disjSum.2 (hS ?_)` and prove the remaining obligations. Introduce `h1`. Apply `hv` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `χ (Additive.ofMul (ideleLocalSymbolAt ι (.inr v) x)) = 0`.
+
+Rewrite using `[hF_inr, show localSymbol E.1 v (finiteProj v x) = 1 from h1, map_one, toAdd_one]`. Rewrite using `[finsum_eq_sum_of_support_subset _ hsupp, Finset.sum_disjSum, hχm_apply, ← hχ'R, hg, hψ, map_mul, toAdd_mul, map_prod χ', map_prod χ', toAdd_prod, toAdd_prod, add_comm]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun v _ ↦ hF_inr v`. Conclude with `Finset.sum_congr rfl fun w _ ↦ hF_inl w`.
+-/
 theorem finsum_char_ideleLocalSymbolAt_eq (χ : Additive K.1.fixingSubgroup →ₜ+ QZ)
     (hχ : ∀ h : K.1.fixingSubgroup, (h : ℚ̄ ≃ₐ[ℚ] ℚ̄) ∈ E.1.fixingSubgroup → χ (Additive.ofMul h) = 0)
     (x : IdeleGroup K.1) (g : K.1.fixingSubgroup) (hg : restrictHom (E := E) g = ideleSymbol K.1 E.1 x) :
@@ -155,6 +185,15 @@ theorem finsum_char_ideleLocalSymbolAt_eq (χ : Additive K.1.fixingSubgroup →�
 
 end Symbols
 
+/- English proof (translation)
+Set `U : OpenSubgroup K.1.fixingSubgroup` to `(charKerOpen χ).toOpenSubgroup`. Set `E` to `fieldOf U`. Establish `hEU : E.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup = (U : Subgroup K.1.fixingSubgroup)` using `subgroupOf_fieldOf U`. Establish `hmem : ∀ h : K.1.fixingSubgroup, (h : ℚ̄ ≃ₐ[ℚ] ℚ̄) ∈ E.1.fixingSubgroup ↔ χ (Additive.ofMul h) = 0`. Introduce `h`.
+
+Rewrite using `[← Subgroup.mem_subgroupOf, hEU]`. Express the relevant statement in the definitionally equal form `h ∈ charKer (charAdd χ) ↔ _`. Rewrite using `[mem_charKer]`. Conclude with `⟨fun h' ↦ QZ.toAddCircle.injective (h'.trans (map_zero _).symm), fun h' ↦ (congrArg QZ.toAddCircle h').trans (map_zero _)⟩`. Establish `hN : (E.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup).Normal`.
+
+Rewrite using `[hEU]`. Conclude with `(charKerOpen χ).isNormal'`. Establish `: IsMulCommutative (E.1 ≃ₐ[K.1] E.1)` using `⟨⟨fun τ₁ τ₂ ↦ by`. Take `⟨g₁, rfl⟩` from `restrictHom_surjective (E := E) τ₁`. Take `⟨g₂, rfl⟩` from `restrictHom_surjective (E := E) τ₂`.
+
+Rewrite using `[← map_mul, ← map_mul, ← mul_inv_eq_one, ← map_inv, ← map_mul, ← MonoidHom.mem_ker, FiniteSubfield.ker_restrictHom, Subgroup.mem_subgroupOf, hmem]`. Simplify using `only [mul_inv_rev, ofMul_mul, ofMul_inv, map_add, map_neg]`. Use the proof step `abel⟩⟩`. Conclude with `finsum_char_ideleLocalSymbolAt_eq ι E χ (fun h hh ↦ (hmem h).1 hh) x g (restrictHom_eq_ideleSymbol_of_artinMap E x g hg)`.
+-/
 theorem finsum_char_ideleLocalSymbolAt_eq_of_artinMap (χ : Additive K.1.fixingSubgroup →ₜ+ QZ)
     (x : IdeleGroup K.1) (g : K.1.fixingSubgroup)
     (hg : ∀ (y : ℚ̄) (hy : y ∈ maximalAbelianExtension K.1 ℚ̄),

@@ -14,12 +14,20 @@ variable {k : Type*} [Field k] [DecidableEq k]
 
 def quadRoots (a b c : k) : Finset k := (C a * X ^ 2 + C b * X + C c).roots.toFinset
 
+/- English proof (translation)
+Combine the equalities or inequalities in the calculation `calc (quadRoots a b c).card ≤ Multiset.card (C a * X ^ 2 + C b * X + C c).roots := by unfold quadRoots; exact Multiset.toFinset_card_le _ _ ≤ _ := card_roots' _ _ = 2 := natDegree_quadratic ha`.
+-/
 theorem card_quadRoots {a b c : k} (ha : a ≠ 0) : (quadRoots a b c).card ≤ 2 :=
   calc (quadRoots a b c).card ≤ Multiset.card (C a * X ^ 2 + C b * X + C c).roots := by
         unfold quadRoots; exact Multiset.toFinset_card_le _
     _ ≤ _ := card_roots' _
     _ = 2 := natDegree_quadratic ha
 
+/- English proof (translation)
+Unfold `quadRoots`. Rewrite using `[Multiset.mem_toFinset, mem_roots']`. Use `⟨fun h0 => ?_, by simp [h]⟩` and prove the remaining obligations. Use `congrArg natDegree h0` as an intermediate fact. Rewrite `this` using `[natDegree_quadratic ha, natDegree_zero]`.
+
+Conclude with `absurd this (by norm_num)`.
+-/
 theorem mem_quadRoots {a b c t : k} (ha : a ≠ 0) (h : a * t ^ 2 + b * t + c = 0) :
     t ∈ quadRoots a b c := by
   unfold quadRoots
@@ -31,6 +39,9 @@ theorem mem_quadRoots {a b c t : k} (ha : a ≠ 0) (h : a * t ^ 2 + b * t + c = 
 
 def cubicRoots (a b c d : k) : Finset k := (C a * X ^ 3 + C b * X ^ 2 + C c * X + C d).roots.toFinset
 
+/- English proof (translation)
+Combine the equalities or inequalities in the calculation `calc (cubicRoots a b c d).card ≤ Multiset.card (C a * X ^ 3 + C b * X ^ 2 + C c * X + C d).roots := by unfold cubicRoots; exact Multiset.toFinset_card_le _ _ ≤ _ := card_roots' _ _ = 3 := natDegree_cubic ha`.
+-/
 theorem card_cubicRoots {a b c d : k} (ha : a ≠ 0) : (cubicRoots a b c d).card ≤ 3 :=
   calc (cubicRoots a b c d).card ≤
         Multiset.card (C a * X ^ 3 + C b * X ^ 2 + C c * X + C d).roots := by
@@ -38,6 +49,11 @@ theorem card_cubicRoots {a b c d : k} (ha : a ≠ 0) : (cubicRoots a b c d).card
     _ ≤ _ := card_roots' _
     _ = 3 := natDegree_cubic ha
 
+/- English proof (translation)
+Unfold `cubicRoots`. Rewrite using `[Multiset.mem_toFinset, mem_roots']`. Use `⟨fun h0 => ?_, by simp [h]⟩` and prove the remaining obligations. Use `congrArg natDegree h0` as an intermediate fact. Rewrite `this` using `[natDegree_cubic ha, natDegree_zero]`.
+
+Conclude with `absurd this (by norm_num)`.
+-/
 theorem mem_cubicRoots {a b c d t : k} (ha : a ≠ 0) (h : a * t ^ 3 + b * t ^ 2 + c * t + d = 0) :
     t ∈ cubicRoots a b c d := by
   unfold cubicRoots
@@ -55,6 +71,11 @@ variable {𝒪 : Type*} [CommRing 𝒪] [IsDomain 𝒪] (W : WeierstrassCurve �
   (hπ : Irreducible π)
 include hπ
 
+/- English proof (translation)
+Take `⟨A₁, hA₁⟩` from `h1`. Take `⟨A₂, hA₂⟩` from `h2`. Take `⟨A₄, hA₄⟩` from `h4`. Take `⟨X, rfl⟩` from `dx`. Substitute `hy` using the available equality.
+
+Rewrite `e` using `[equation_iff, hA₁, hA₂, h3, hA₄, h6]`. Establish `hπ0 : π ^ 2 ≠ 0` using `pow_ne_zero _ hπ.ne_zero`. Use `⟨X ^ 3 + A₂ * X ^ 2 + A₄ * X - A₁ * X * Y, mul_left_cancel₀ hπ0 ?_⟩` and prove the remaining obligations. Take the linear combination `e`.
+-/
 theorem dvd_quad_IV (h1 : π ∣ W.a₁) (h2 : π ∣ W.a₂) {A₃ A₆ : 𝒪} (h3 : W.a₃ = π * A₃)
     (h4 : π ^ 2 ∣ W.a₄) (h6 : W.a₆ = π ^ 2 * A₆) {x y Y : 𝒪} (e : W.toAffine.Equation x y)
     (dx : π ∣ x) (hy : y = π * Y) : π ∣ Y ^ 2 + A₃ * Y - A₆ := by
@@ -68,6 +89,15 @@ theorem dvd_quad_IV (h1 : π ∣ W.a₁) (h2 : π ∣ W.a₂) {A₃ A₆ : 𝒪}
   refine ⟨X ^ 3 + A₂ * X ^ 2 + A₄ * X - A₁ * X * Y, mul_left_cancel₀ hπ0 ?_⟩
   linear_combination e
 
+/- English proof (translation)
+Establish `hQ` using `dvd_quad_IV W hπ h1 h2 h3 h4 h6 e dx hy`. Introduce `W'`. Simplify using `only [W', variableChange_a₁, variableChange_a₂, variableChange_a₃, variableChange_a₄, variableChange_a₆, inv_one, Units.val_one, one_pow, one_mul]`. Take `⟨A₁, hA₁⟩` from `h1`. Take `⟨A₂, hA₂⟩` from `h2`.
+
+Take `⟨A₄, hA₄⟩` from `h4`. Take `⟨Z, hZ⟩` from `hD`. Take `⟨Z', hZ'⟩` from `hQ`. Substitute `hy` using the available equality. Use `⟨⟨A₁, by rw [hA₁]; ring⟩, ⟨A₂ - 0 * A₁, by rw [hA₂, hA₁]; ring⟩, ⟨Z, ?_⟩, ⟨A₄ - Y₁ * A₁, ?_⟩, ⟨-Z', ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[h3]`. Take the linear combination `π * hZ`. Rewrite using `[hA₄, hA₁]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h6, h3]`.
+
+Take the linear combination `(-π ^ 2) * hZ'`.
+-/
 theorem vc_IV_step (h1 : π ∣ W.a₁) (h2 : π ∣ W.a₂) {A₃ A₆ : 𝒪} (h3 : W.a₃ = π * A₃)
     (h4 : π ^ 2 ∣ W.a₄) (h6 : W.a₆ = π ^ 2 * A₆) {x₁ y₁ Y₁ : 𝒪} (e : W.toAffine.Equation x₁ y₁)
     (dx : π ∣ x₁) (hy : y₁ = π * Y₁) (hD : π ∣ 2 * Y₁ + A₃) :
@@ -104,34 +134,55 @@ variable (W : WeierstrassCurve 𝒪) [(W.map (algebraMap 𝒪 K)).IsElliptic]
 
 local notation "ι" => algebraMap 𝒪 K
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.trans hnm⟩`.
+-/
 theorem KNBound.mono {W : WeierstrassCurve 𝒪} [(W.map (algebraMap 𝒪 K)).IsElliptic] {n m : ℕ}
     (h : KNBound K W n) (hnm : n ≤ m) : KNBound K W m :=
   ⟨h.1, h.2.trans hnm⟩
 
+/- English proof (translation)
+Establish `e` using `(quotientE0VariableChangeEquiv K W C).toEquiv`. Use `haveI := h.1`. Conclude with `⟨Finite.of_equiv _ e.symm, by rw [Nat.card_congr e]; exact h.2⟩`.
+-/
 theorem KNBound.of_vc (C : VariableChange 𝒪) {n : ℕ} (h : KNBound K (C • W) n) :
     KNBound K W n := by
   have e := (quotientE0VariableChangeEquiv K W C).toEquiv
   haveI := h.1
   exact ⟨Finite.of_equiv _ e.symm, by rw [Nat.card_congr e]; exact h.2⟩
 
+/- English proof (translation)
+The claim follows from `card_quotient_le_of_rel (E0 K W) s R hex hinj`.
+-/
 theorem knBound_of_rel {T : Type*} (s : Finset T) (R : (curveK K W).Point → T → Prop)
     (hex : ∀ P, P ∉ E0Set K W → ∃ t ∈ s, R P t)
     (hinj : ∀ P Q t, P ∉ E0Set K W → Q ∉ E0Set K W → R P t → R Q t → P - Q ∈ E0Set K W) :
     KNBound K W (s.card + 1) :=
   card_quotient_le_of_rel (E0 K W) s R hex hinj
 
+/- English proof (translation)
+The claim follows from `card_quotient_le_two (E0 K W) hno`.
+-/
 theorem knBound_two (hno : ∀ P Q R, P ∉ E0Set K W → Q ∉ E0Set K W → R ∉ E0Set K W →
     P + Q + R ≠ 0) : KNBound K W 2 :=
   card_quotient_le_two (E0 K W) hno
 
+/- English proof (translation)
+Use `knBound_of_rel K W (∅ : Finset Unit) (fun _ _ => True) (fun P hP => absurd (hall P) hP) (fun P _ _ hP => absurd (hall P) hP)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem knBound_one (hall : ∀ P, P ∈ E0Set K W) : KNBound K W 1 := by
   have := knBound_of_rel K W (∅ : Finset Unit) (fun _ _ => True)
     (fun P hP => absurd (hall P) hP) (fun P _ _ hP => absurd (hall P) hP)
   simpa using this
 
+/- English proof (translation)
+Introduce `h` and use `hP (by simpa using (E0 K W).neg_mem (show -P ∈ E0 K W from h) : P ∈ E0 K W)`.
+-/
 theorem neg_notMem_E0Set {P : (curveK K W).Point} (hP : P ∉ E0Set K W) : -P ∉ E0Set K W :=
   fun h => hP (by simpa using (E0 K W).neg_mem (show -P ∈ E0 K W from h) : P ∈ E0 K W)
 
+/- English proof (translation)
+Introduce `h'` and use `h (by simpa using (E0 K W).neg_mem (show Q - P ∈ E0 K W from h') : P - Q ∈ E0 K W)`.
+-/
 theorem sub_notMem_E0Set {P Q : (curveK K W).Point} (h : P - Q ∉ E0Set K W) :
     Q - P ∉ E0Set K W :=
   fun h' => h (by simpa using (E0 K W).neg_mem (show Q - P ∈ E0 K W from h') : P - Q ∈ E0 K W)
@@ -139,6 +190,13 @@ theorem sub_notMem_E0Set {P Q : (curveK K W).Point} (h : P - Q ∉ E0Set K W) :
 variable {π : 𝒪} (hπ : Irreducible π)
 include hπ
 
+/- English proof (translation)
+Take `⟨x₁, y₁, x₂, y₂, x₃, y₃, ℓ, ν, p₁, p₂, p₃, e₁, e₂, e₃, dx₁, dy₁, dx₂, dy₂, dx₃, dy₃, l1, l2, l3, v1, v2, v3⟩` from `triple_origin K W hπ h3 h4 h6 hP₁ hP₂ hP₃ hs`. Establish `hℓ : π ∣ ℓ`. Apply `hπ.prime.dvd_of_dvd_pow (n := 2)` to reduce the goal to its premises. Establish `: ℓ ^ 2 = (x₁ + x₂ + x₃) - W.a₁ * ℓ + W.a₂` using `by linear_combination -v1`. Rewrite using `[this]`.
+
+Conclude with `dvd_add (dvd_sub (dvd_add (dvd_add dx₁ dx₂) dx₃) (h1.mul_right _)) h2`. Establish `hν : π ∣ ν`. Establish `: ν = y₁ - ℓ * x₁` using `by linear_combination -l1`. Rewrite using `[this]`. Conclude with `dvd_sub dy₁ (hℓ.mul_right _)`.
+
+Conclude with `⟨x₁, y₁, x₂, y₂, x₃, y₃, ℓ, ν, p₁, p₂, p₃, e₁, e₂, e₃, dx₁, dy₁, dx₂, dy₂, dx₃, dy₃, hℓ, hν, l1, l2, l3, v1, v2, v3⟩`.
+-/
 theorem triple_cusp (h1 : π ∣ W.a₁) (h2 : π ∣ W.a₂) (h3 : π ∣ W.a₃) (h4 : π ∣ W.a₄)
     (h6 : π ∣ W.a₆) {P₁ P₂ P₃ : (curveK K W).Point} (hP₁ : P₁ ∉ E0Set K W)
     (hP₂ : P₂ ∉ E0Set K W) (hP₃ : P₃ ∉ E0Set K W) (hs : P₁ + P₂ + P₃ = 0) :
@@ -165,6 +223,11 @@ theorem triple_cusp (h1 : π ∣ W.a₁) (h2 : π ∣ W.a₂) (h3 : π ∣ W.a�
   exact ⟨x₁, y₁, x₂, y₂, x₃, y₃, ℓ, ν, p₁, p₂, p₃, e₁, e₂, e₃, dx₁, dy₁, dx₂, dy₂, dx₃, dy₃,
     hℓ, hν, l1, l2, l3, v1, v2, v3⟩
 
+/- English proof (translation)
+Use `knBound_two K W fun P Q R hP hQ hR hs => ?_` and prove the remaining obligations. Take `⟨x₁, y₁, x₂, y₂, x₃, y₃, ℓ, ν, -, -, -, -, -, -, ⟨X₁, rfl⟩, -, ⟨X₂, rfl⟩, -, ⟨X₃, rfl⟩, -, ⟨L, rfl⟩, ⟨V, rfl⟩, -, -, -, -, v2, -⟩` from `triple_cusp K W hπ h1 h2 h3 h4 h6 hP hQ hR hs`. Take `⟨A₁, hA₁⟩` from `h1`. Take `⟨A₃, hA₃⟩` from `h3`. Apply `h4'` to reduce the goal to its premises.
+
+Use `⟨X₁ * X₂ + X₁ * X₃ + X₂ * X₃ + 2 * L * V + A₁ * V + A₃ * L, ?_⟩` and prove the remaining obligations. Rewrite `v2` using `[hA₁, hA₃]`. Take the linear combination `-v2`.
+-/
 theorem knBound_III (h1 : π ∣ W.a₁) (h2 : π ∣ W.a₂) (h3 : π ∣ W.a₃) (h4 : π ∣ W.a₄)
     (h6 : π ∣ W.a₆) (h4' : ¬π ^ 2 ∣ W.a₄) : KNBound K W 2 := by
   refine knBound_two K W fun P Q R hP hQ hR hs => ?_
@@ -177,6 +240,21 @@ theorem knBound_III (h1 : π ∣ W.a₁) (h2 : π ∣ W.a₂) (h3 : π ∣ W.a�
   rw [hA₁, hA₃] at v2
   linear_combination -v2
 
+/- English proof (translation)
+Establish `h3' : π ∣ W.a₃` using `⟨A₃, h3⟩`. Establish `h4' : π ∣ W.a₄` using `(dvd_pow_self π two_ne_zero).trans h4`. Establish `h6' : π ∣ W.a₆` using `⟨π * A₆, by rw [h6]; ring⟩`. Establish `hcard` using `card_quadRoots (a := (1 : ResidueField 𝒪)) (b := residue 𝒪 A₃) (c := -residue 𝒪 A₆) one_ne_zero`. Use `(knBound_of_rel K W (quadRoots 1 (residue 𝒪 A₃) (-residue 𝒪 A₆)) (fun P c => ∃ (x y Y : 𝒪) (h : (curveK K W).Nonsingular (ι x) (ι y)), P = Point.some _ _ h ∧ π ∣ x ∧ y = π * Y ∧ residue 𝒪 Y = c) ?_ ?_).mono K (by omega)` and prove the remaining obligations.
+
+Introduce `P hP`. Take `⟨x, y, h, rfl, e, dx, Y, rfl⟩` from `exists_of_notMem_E0Set K W hπ h3' h4' h6' hP`. Use `⟨residue 𝒪 Y, mem_quadRoots one_ne_zero ?_, x, π * Y, Y, h, rfl, dx, rfl, rfl⟩` and prove the remaining obligations. Use `(dvd_iff_residue_eq_zero hπ).1 (dvd_quad_IV W hπ h1 h2 h3 h4 h6 e dx rfl)` as an intermediate fact. Simplify using `only [map_sub, map_add, map_mul, map_pow] at this`.
+
+Take the linear combination `this`. Introduce and unpack `P Q c hP hQ ⟨x, y, Y, h, rfl, dx, rfl, rfl⟩ ⟨x', y', Y', h', rfl, dx', rfl, hc⟩`. Assume the negation of the conclusion as `hPQ`. Take `⟨hn, hneg⟩` from `neg_some_integral K W h'`. Establish `hR` using `sub_notMem_E0Set K W hPQ`.
+
+Establish `hQ'` using `neg_notMem_E0Set K W hQ`. Rewrite `hQ'` using `[hneg]`. Take `⟨x₁, y₁, x₂, y₂, x₃, y₃, ℓ, ν, ⟨g₁, e₁⟩, ⟨g₂, e₂⟩, -, -, -, -, -, -, -, -, -, -, ⟨L, rfl⟩, -, l1, l2, -, -, -, -⟩` from `triple_cusp K W hπ h1 h2 h3' h4' h6' hP hQ' hR (by rw [← hneg]; abel)`. Take `⟨rfl, rfl⟩` from `coords_eq_of_some_eq K W e₁`. Take `⟨rfl, rfl⟩` from `coords_eq_of_some_eq K W e₂`.
+
+Take `⟨A₁, hA₁⟩` from `h1`. Take `⟨X, rfl⟩` from `dx`. Take `⟨X', rfl⟩` from `dx'`. Establish `hc' : π ∣ Y - Y'`. Rewrite using `[dvd_iff_residue_eq_zero hπ, map_sub, hc, sub_self]`.
+
+Apply `hD (π * X) (π * Y) Y (equation_of_map K W h.1) (dvd_mul_right π X) rfl` to reduce the goal to its premises. Rewrite `l2` using `[hA₁, h3]`. Establish `key : π * (Y + Y' + A₃) = π * (π * (L * (X - X') - A₁ * X'))`. Take the linear combination `l1 - l2`. Establish `h5 : π ∣ Y + Y' + A₃` using `⟨_, mul_left_cancel₀ hπ.ne_zero key⟩`.
+
+Use `dvd_add h5 hc'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem knBound_IV (h1 : π ∣ W.a₁) (h2 : π ∣ W.a₂) {A₃ A₆ : 𝒪} (h3 : W.a₃ = π * A₃)
     (h4 : π ^ 2 ∣ W.a₄) (h6 : W.a₆ = π ^ 2 * A₆)
     (hD : ∀ x y Y : 𝒪, W.toAffine.Equation x y → π ∣ x → y = π * Y → ¬π ∣ 2 * Y + A₃) :

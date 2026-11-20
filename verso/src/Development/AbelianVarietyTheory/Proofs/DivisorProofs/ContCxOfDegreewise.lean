@@ -13,23 +13,41 @@ variable {C : Type u} [Category.{v} C] [Preadditive C]
 def pb {A B L : CochainComplex C ℤ} {n : ℤ} (f : A ⟶ B) (z : Cochain B L n) : Cochain A L n :=
   (Cochain.ofHom f).comp z (zero_add n)
 
+/- English proof (translation)
+Simplify using `[pb]`.
+-/
 theorem pb_v {A B L : CochainComplex C ℤ} {n : ℤ} (f : A ⟶ B) (z : Cochain B L n) (p q : ℤ)
     (h : p + n = q) : (pb f z).v p q h = f.f p ≫ z.v p q h := by
   simp [pb]
 
+/- English proof (translation)
+Use extensionality with `p q h`. Simplify using `[pb_v]`.
+-/
 theorem pb_pb {A B D L : CochainComplex C ℤ} {n : ℤ} (f : A ⟶ B) (g : B ⟶ D) (z : Cochain D L n) :
     pb f (pb g z) = pb (f ≫ g) z := by
   ext p q h; simp [pb_v]
 
+/- English proof (translation)
+Simplify using `[pb]`.
+-/
 theorem pb_add {A B L : CochainComplex C ℤ} {n : ℤ} (f : A ⟶ B) (z z' : Cochain B L n) :
     pb f (z + z') = pb f z + pb f z' := by simp [pb]
 
+/- English proof (translation)
+Simplify using `[pb]`.
+-/
 theorem pb_sub {A B L : CochainComplex C ℤ} {n : ℤ} (f : A ⟶ B) (z z' : Cochain B L n) :
     pb f (z - z') = pb f z - pb f z' := by simp [pb]
 
+/- English proof (translation)
+Simplify using `[pb]`.
+-/
 theorem pb_zero {A B L : CochainComplex C ℤ} {n : ℤ} (f : A ⟶ B) :
     pb f (0 : Cochain B L n) = 0 := by simp [pb]
 
+/- English proof (translation)
+Simplify using `[pb]`.
+-/
 theorem δ_pb {A B L : CochainComplex C ℤ} {n : ℤ} (f : A ⟶ B) (z : Cochain B L n) (m : ℤ) :
     δ n m (pb f z) = pb f (δ n m z) := by simp [pb]
 
@@ -44,6 +62,13 @@ def Q (n m a : ℤ) : Prop :=
     ∃ (k : I) (f : k ⟶ i) (b : Cochain (K.obj k) L n) (y : Cochain c.pt L (n - 1)),
       δ n m b = pb (K.map f) w ∧ pb (c.π.app k) b = z + δ (n - 1) n y
 
+/- English proof (translation)
+Introduce `i w z hw hz hw0 hz0`. Establish `w0 : w = 0`. Use extensionality with `p q h`. Rewrite using `[Cochain.zero_v]`. Distinguish the cases in `hp : a < p`.
+
+Conclude with `hw0 p q h hp`. Conclude with `(hL q (by omega)).eq_of_tgt _ _`. Establish `z0 : z = 0`. Use extensionality with `p q h`. Rewrite using `[Cochain.zero_v]`.
+
+Distinguish the cases in `hp : a < p`. Conclude with `hz0 p q h hp`. Conclude with `(hL q (by omega)).eq_of_tgt _ _`. Conclude with `⟨i, 𝟙 i, 0, 0, by simp [w0, pb_zero], by simp [z0, pb_zero]⟩`.
+-/
 theorem Q_base (hL : ∀ p : ℤ, p < 0 → IsZero (L.X p)) (n m a : ℤ) (ham : a + m < 0) (han : a + n < 0) :
     Q c L n m a := by
   intro i w z hw hz hw0 hz0
@@ -67,6 +92,35 @@ section Step
 variable {I : Type w} [Category.{w'} I] [IsCofiltered I] {K : I ⥤ CochainComplex C ℤ} (c : Cone K)
   (L : CochainComplex C ℤ)
 
+/- English proof (translation)
+Introduce `i w z hw hz hw0 hz0`. Take `⟨s, hs⟩ : ∃ s, p + m = s` from `⟨_, rfl⟩`. Establish `hwc : w.v p s hs ≫ L.d s (s + 1) = 0`. Use `Cochain.congr_v hw p (s + 1) (by omega)` as an intermediate fact. Rewrite `this` using `[δ_v m (m + 1) rfl w p (s + 1) (by omega) s (p + 1) (by omega) rfl, Cochain.zero_v, hw0 (p + 1) (s + 1) (by omega) (by omega), comp_zero, smul_zero, add_zero]`.
+
+Conclude with `this`. Establish `hzw : (c.π.app i).f p ≫ w.v p s hs = z.v p (s - 1) (by omega) ≫ L.d (s - 1) s`. Use `Cochain.congr_v hz p s hs` as an intermediate fact. Rewrite `this` using `[δ_v n m hnm z p s hs (s - 1) (p + 1) rfl rfl, hz0 (p + 1) s (by omega) (by omega), comp_zero, smul_zero, add_zero, pb_v]`. Conclude with `this.symm`.
+
+Take `⟨k, f, y', hy'⟩` from `hB p s i (w.v p s hs) hwc ⟨_, hzw⟩`. Establish `hδσ` using `Cochain.δ_single y' n m hnm (p - 1) s (by omega) (by omega)`. Use `set σ : Cochain (K.obj k) L n := Cochain.single y' n with hσ`. Use `set w' := pb (K.map f) w - δ n m σ with hw'def`. Use `set z' := z - pb (A := c.pt) (c.π.app k) σ with hz'def`.
+
+Establish `hw' : δ m (m + 1) w' = 0`. Simplify using `only [hw'def, δ_sub, δ_pb, hw, pb_zero, δ_δ, sub_zero]`. Establish `hz' : δ n m z' = pb (c.π.app k) w'`. Simplify using `only [hz'def, hw'def, δ_sub, δ_pb, hz, pb_sub, pb_pb, c.w f]`. Establish `hw'0 : ∀ p'' q (h : p'' + m = q), p - 1 < p'' → w'.v p'' q h = 0`.
+
+Introduce `p'' q h hp''`. Distinguish the cases in `hpp : p'' = p`. Substitute `hpp` using the available equality. Take `rfl : q = s` from `by omega`. Simplify using `only [hw'def, hδσ, Cochain.sub_v, Cochain.add_v, Cochain.units_smul_v, pb_v, hy', Cochain.single_v, Cochain.single_v_eq_zero _ _ _ _ _ (show p'' ≠ p'' - 1 by omega), smul_zero, add_zero, sub_self]`.
+
+Simplify using `only [hw'def, hδσ, Cochain.sub_v, Cochain.add_v, Cochain.units_smul_v, pb_v, hw0 p'' q h (by omega), Cochain.single_v_eq_zero _ _ _ _ _ hpp, Cochain.single_v_eq_zero _ _ _ _ _ (show p'' ≠ p - 1 by omega), smul_zero, add_zero, comp_zero, sub_self]`. Establish `hz'0 : ∀ p'' q (h : p'' + n = q), p < p'' → z'.v p'' q h = 0`. Introduce `p'' q h hp''`. Simplify using `only [hz'def, hσ, Cochain.sub_v, pb_v, hz0 p'' q h hp'', Cochain.single_v_eq_zero _ _ _ _ _ (show p'' ≠ p by omega), comp_zero, sub_self]`. Establish `hz'c : z'.v p (s - 1) (by omega) ≫ L.d (s - 1) s = 0`.
+
+Use `Cochain.congr_v hz' p s hs` as an intermediate fact. Rewrite `this` using `[δ_v n m hnm z' p s hs (s - 1) (p + 1) rfl rfl, hz'0 (p + 1) s (by omega) (by omega), comp_zero, smul_zero, add_zero, pb_v, hw'0 p s hs (by omega), comp_zero]`. Conclude with `this`. Take `⟨j, u2, y2, hu2c, hu2⟩` from `hA p s (s - 1) (by omega) _ hz'c`. Set `l` to `IsCofiltered.min j k`.
+
+Set `g : l ⟶ j` to `IsCofiltered.minToLeft j k`. Set `h : l ⟶ k` to `IsCofiltered.minToRight j k`. Establish `hδv` using `Cochain.δ_single ((K.map g).f p ≫ u2) n m hnm (p - 1) s (by omega) (by omega)`. Rewrite `hδv` using `[Category.assoc, hu2c, comp_zero, Cochain.single_zero, zero_add]`. Use `set v : Cochain (K.obj l) L n := Cochain.single ((K.map g).f p ≫ u2) n with hv`.
+
+Establish `hδρ` using `Cochain.δ_single y2 (n - 1) n (by omega) (p - 1) (s - 1) (by omega) (by omega)`. Use `set ρ : Cochain c.pt L (n - 1) := Cochain.single y2 (n - 1) with hρ`. Use `set w'' := pb (K.map h) w' - δ n m v with hw''def`. Use `set z'' := z' - pb (A := c.pt) (c.π.app l) v + δ (n - 1) n ρ with hz''def`. Establish `hw'' : δ m (m + 1) w'' = 0`.
+
+Simplify using `only [hw''def, δ_sub, δ_pb, hw', pb_zero, δ_δ, sub_zero]`. Establish `hz'' : δ n m z'' = pb (c.π.app l) w''`. Simplify using `only [hz''def, hw''def, δ_add, δ_sub, δ_pb, hz', δ_δ, add_zero, pb_sub, pb_pb, c.w h]`. Establish `hw''0 : ∀ p'' q (hh : p'' + m = q), p - 1 < p'' → w''.v p'' q hh = 0`. Introduce `p'' q hh hp''`.
+
+Simplify using `only [hw''def, hδv, Cochain.sub_v, Cochain.units_smul_v, pb_v, hw'0 p'' q hh hp'', Cochain.single_v_eq_zero _ _ _ _ _ (show p'' ≠ p - 1 by omega), smul_zero, comp_zero, sub_self]`. Establish `hz''0 : ∀ p'' q (hh : p'' + n = q), p - 1 < p'' → z''.v p'' q hh = 0`. Introduce `p'' q hh hp''`. Distinguish the cases in `hpp : p'' = p`. Substitute `hpp` using the available equality.
+
+Take `rfl : q = s - 1` from `by omega`. Simplify using `only [hz''def, hv, hδρ, Cochain.sub_v, Cochain.add_v, Cochain.units_smul_v, pb_v, Cochain.single_v, Cochain.single_v_eq_zero _ _ _ _ _ (show p'' ≠ p'' - 1 by omega), smul_zero, add_zero]`. Rewrite using `[← Category.assoc, ← HomologicalComplex.comp_f, c.w g, hu2]`. Normalize the expressions using the abelian group laws. Simplify using `only [hz''def, hv, hδρ, Cochain.sub_v, Cochain.add_v, Cochain.units_smul_v, pb_v, hz'0 p'' q hh (by omega), Cochain.single_v_eq_zero _ _ _ _ _ hpp, Cochain.single_v_eq_zero _ _ _ _ _ (show p'' ≠ p - 1 by omega), smul_zero, add_zero, comp_zero, sub_self]`.
+
+Take `⟨k', f', b'', y'', hb'', hby''⟩` from `ih l w'' z'' hw'' hz'' hw''0 hz''0`. Use `⟨k', f' ≫ h ≫ f, b'' + pb (K.map f') v + pb (K.map (f' ≫ h)) σ, y'' + ρ, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [δ_add, δ_pb, hb'', hw''def, hw'def, pb_sub, pb_pb, Functor.map_comp, Category.assoc]`. Normalize the expressions using the abelian group laws. Simplify using `only [pb_add, pb_pb, c.w, hby'', hz''def, hz'def, δ_add]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem Q_of_Q_sub_one
     (hA : ∀ (p s s' : ℤ), s' + 1 = s → ∀ t : c.pt.X p ⟶ L.X s', t ≫ L.d s' s = 0 →
       ∃ (i : I) (u : (K.obj i).X p ⟶ L.X s') (y : c.pt.X p ⟶ L.X (s' - 1)),
@@ -164,6 +218,15 @@ section Main
 variable {I : Type w} [Category.{w'} I] [IsCofiltered I] {K : I ⥤ CochainComplex C ℤ} (c : Cone K)
   (L : CochainComplex C ℤ)
 
+/- English proof (translation)
+Establish `hA' : ∀ (p s s' : ℤ), s' + 1 = s → ∀ t : c.pt.X p ⟶ L.X s', t ≫ L.d s' s = 0 → ∃ (i : I) (u : (K.obj i).X p ⟶ L.X s') (y : c.pt.X p ⟶ L.X (s' - 1)), u ≫ L.d s' s = 0 ∧ (c.π.app i).f p ≫ u = t + y ≫ L.d (s' - 1) s'`. Introduce `p s s' h`. Substitute `h` using the available equality. Conclude with `hA p s'`. Take `⟨a, ha⟩ : ∃ a : ℤ, a = -|m| - 2` from `⟨_, rfl⟩`.
+
+Establish `hall : ∀ k : ℕ, Q c L n m (a + k)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Simplify using `using Q_base c L hL n m a (by linarith [le_abs_self m]) (by linarith [le_abs_self m])`.
+
+Consider the case `succ k ih`. Use `Q_of_Q_sub_one c L hA' hB n m hnm (a + (k + 1 : ℕ)) (by` as an intermediate fact. Rewrite using `[show a + ((k + 1 : ℕ) : ℤ) - 1 = a + k by push_cast; ring]; exact ih)`. Conclude with `this`. Establish `h0` using `hall (-a).toNat`.
+
+Rewrite using `[show a + ((-a).toNat : ℤ) = 0 by`. Establish `: 0 ≤ -a` using `by rw [ha]; linarith [abs_nonneg m]`. Use the proof step `omega] at h0`. Conclude with `h0 i w z hw hz (fun p q h hp => (hK i p hp).eq_of_src _ _) (fun p q h hp => (hc p hp).eq_of_src _ _)`.
+-/
 theorem relative
     (hK : ∀ i (p : ℤ), 0 < p → IsZero ((K.obj i).X p)) (hc : ∀ p : ℤ, 0 < p → IsZero (c.pt.X p))
     (hL : ∀ p : ℤ, p < 0 → IsZero (L.X p))
@@ -205,6 +268,17 @@ end GlobalTheory.CochainLim
 
 open GlobalTheory.CochainLim in
 
+/- English proof (translation)
+Introduce `R _ I _ _ K c L hK hc hL hAB n`. Establish `rel` using `relative c L hK hc hL (fun p s => (hAB p s).1) (fun p s => (hAB p s).2)`. Prove the components needed by the constructor for the conclusion. Introduce `x`. Take `⟨ζ, rfl⟩` from `x.mk_surjective`.
+
+Take `⟨i⟩` from `IsCofiltered.nonempty (C := I)`. Take `⟨k, f, b, y, hb, hby⟩` from `rel n (n + 1) rfl i 0 ζ.1 (by simp) (by rw [Cocycle.δ_eq_zero, pb_zero])`. Rewrite `hb` using `[pb_zero]`. Use `⟨k, CohomologyClass.mk (Cocycle.mk b (n + 1) rfl hb), ?_⟩` and prove the remaining obligations. Rewrite using `[cpre_mk, ← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`.
+
+Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[Cocycle.coe_sub]`. Express the relevant statement in the definitionally equal form `_ = pb (A := c.pt) (c.π.app k) b - ζ.1`. Rewrite using `[hby]`. Normalize the expressions using the abelian group laws.
+
+Introduce `i y hy`. Take `⟨β, rfl⟩` from `y.mk_surjective`. Rewrite `hy` using `[cpre_mk, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`. Take `⟨γ, hγ⟩` from `hy`. Take `⟨k, f, b, y, hb, -⟩` from `rel (n - 1) n (by omega) i β.1 γ (Cocycle.δ_eq_zero _ _) hγ`.
+
+Use `⟨k, f, ?_⟩` and prove the remaining obligations. Rewrite using `[cpre_mk, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`. Conclude with `⟨b, hb⟩`.
+-/
 theorem GlobalTheory.EtC.cont_cx_of_degreewise : ∀ (R : Type) [CommRing R] (I : Type) [SmallCategory I] [IsCofiltered I] (K : I ⥤ Cx R) (c : Cone K) (L : Cx R), (∀ i (p : ℤ), 0 < p → IsZero ((K.obj i).X p)) → (∀ p : ℤ, 0 < p → IsZero (c.pt.X p)) → (∀ p : ℤ, p < 0 → IsZero (L.X p)) → (∀ p s : ℤ, (∀ t : c.pt.X p ⟶ L.X s, t ≫ L.d s (s + 1) = 0 → ∃ (i : I) (u : (K.obj i).X p ⟶ L.X s) (y : c.pt.X p ⟶ L.X (s - 1)), u ≫ L.d s (s + 1) = 0 ∧ (c.π.app i).f p ≫ u = t + y ≫ L.d (s - 1) s) ∧ ∀ (i : I) (u : (K.obj i).X p ⟶ L.X s), u ≫ L.d s (s + 1) = 0 → (∃ y : c.pt.X p ⟶ L.X (s - 1), (c.π.app i).f p ≫ u = y ≫ L.d (s - 1) s) → ∃ (k : I) (f : k ⟶ i) (y : (K.obj k).X p ⟶ L.X (s - 1)), (K.map f).f p ≫ u = y ≫ L.d (s - 1) s) → ∀ n : ℤ, (∀ x : CohomologyClass c.pt L n, ∃ (i : I) (y : CohomologyClass (K.obj i) L n), cpre (Cocycle.ofHom (c.π.app i)) L n n (zero_add n) y = x) ∧ ∀ (i : I) (y : CohomologyClass (K.obj i) L n), cpre (Cocycle.ofHom (c.π.app i)) L n n (zero_add n) y = 0 → ∃ (k : I) (f : k ⟶ i), cpre (Cocycle.ofHom (K.map f)) L n n (zero_add n) y = 0 := by
   intro R _ I _ _ K c L hK hc hL hAB n
   have rel := relative c L hK hc hL (fun p s => (hAB p s).1) (fun p s => (hAB p s).2)

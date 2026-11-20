@@ -38,6 +38,9 @@ def coIp {J : Type} [Fintype J] (e : J → P) (H : M →ₗ⋆[ℂ] M →ₗ[ℂ
 def coIpStd {J : Type} [Fintype J] (e : J → P) (H : M →ₗ⋆[ℂ] M →ₗ[ℂ] ℂ) {q : ℕ} (f g : P [⋀^Fin q]→ₗ[R] M) : ℂ :=
   ((q.factorial : ℂ))⁻¹ * coIp e H f g
 
+/- English proof (translation)
+Simplify using `[coIpStd]`.
+-/
 theorem coIpStd_zero {J : Type} [Fintype J] (e : J → P) (H : M →ₗ⋆[ℂ] M →ₗ[ℂ] ℂ) (f g : P [⋀^Fin 0]→ₗ[R] M) :
     coIpStd e H f g = coIp e H f g := by
   simp [coIpStd]
@@ -60,6 +63,9 @@ structure IsPos (H : M →ₗ⋆[ℂ] M →ₗ[ℂ] ℂ) (N : Submodule ℂ M) :
 
 end Abs
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gd_eq_gdR {P M : Type} [AddCommGroup P] [Module ℝ P] [AddCommGroup M] [Module ℂ M] [Module ℝ M]
     [IsScalarTower ℝ ℂ M] (L : P →ₗ[ℝ] Module.End ℂ M) {q : ℕ} (f : P [⋀^Fin q]→ₗ[ℝ] M) :
     GlobalTheory.BorelCoh.gd L f = gdR L f := rfl
@@ -144,10 +150,16 @@ def codOp {ε : T → Fin n → Bool} (E : T → Fin n → Fin n → Module.End 
     (ξ : T → Fin n → Fin n → Matrix (Fin d) (Fin d) ℂ) (x : NC ε) : Module.End ℂ (Fin d → M) :=
   trOp (famB M ξ) x - trOp (famA d E) x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem codOp_eq {ε : T → Fin n → Bool} (E : T → Fin n → Fin n → Module.End ℂ M)
     (ξ : T → Fin n → Fin n → Matrix (Fin d) (Fin d) ℂ) :
     codOp (ε := ε) E ξ = fun x => trOp (famB M ξ) x - trOp (famA d E) x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trOp_apply {ε : T → Fin n → Bool} (E : T → Fin n → Fin n → Module.End ℂ M) (x : NC ε) :
     trOp E x = E x.1.1 x.1.2.2 x.1.2.1 := rfl
 
@@ -194,6 +206,13 @@ def tupIp (d : ℕ) (M : Type) [NormedAddCommGroup M] [InnerProductSpace ℂ M] 
 
 end Form
 
+/- English proof (translation)
+Use `⟨⟨fun τ a b c d => by simp, fun _ _ _ _ _ _ _ => by simp⟩, fun _ _ _ => by simp, fun _ => 1, ?_, by simp, by simp, ?_⟩` and prove the remaining obligations. Introduce `h`. Simplify using `using congrFun h 0`. Introduce `S hS _`. Use `eq_top_iff.2 fun w _ => ?_` and prove the remaining obligations.
+
+Establish `: w = w 0 • fun _ => (1 : ℂ)`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `S.smul_mem _ hS`.
+-/
 theorem isAlgLow_zero {T : Type} [Fintype T] [DecidableEq T] (n : ℕ) :
     IsAlgLow (T := T) (n := n) (d := 1) (fun _ _ _ => 0) (fun _ _ => 0) := by
   refine ⟨⟨fun τ a b c d => by simp, fun _ _ _ _ _ _ _ => by simp⟩, fun _ _ _ => by simp, fun _ => 1, ?_, by simp, by simp, ?_⟩
@@ -210,12 +229,18 @@ theorem isAlgLow_zero {T : Type} [Fintype T] [DecidableEq T] (n : ℕ) :
 
 section Basic₂
 
+/- English proof (translation)
+Simplify using `[codOp, trOp, famA, famB, onEach, onIdx]`.
+-/
 example {T : Type} [Fintype T] [DecidableEq T] {n : ℕ} {ε : T → Fin n → Bool} {M : Type} [AddCommGroup M] [Module ℂ M]
     (E : T → Fin n → Fin n → Module.End ℂ M) (ξ : T → Fin n → Fin n → Matrix (Fin 1) (Fin 1) ℂ) (x : NC ε)
     (v : Fin 1 → M) :
     codOp E ξ x v 0 = ξ x.1.1 x.1.2.2 x.1.2.1 0 0 • v 0 - E x.1.1 x.1.2.2 x.1.2.1 (v 0) := by
   simp [codOp, trOp, famA, famB, onEach, onIdx]
 
+/- English proof (translation)
+Simplify using `[coIpStd, Nat.factorial]`.
+-/
 example {P M J : Type} [AddCommGroup P] [Module ℂ P] [AddCommGroup M] [Module ℂ M] [Fintype J] (e : J → P)
     (H : M →ₗ⋆[ℂ] M →ₗ[ℂ] ℂ) (f g : P [⋀^Fin 2]→ₗ[ℂ] M) :
     coIpStd e H f g = (1 / 2 : ℂ) * coIp e H f g := by

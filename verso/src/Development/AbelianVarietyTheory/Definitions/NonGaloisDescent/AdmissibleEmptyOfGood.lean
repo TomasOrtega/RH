@@ -61,6 +61,9 @@ abbrev finPt (V : HSp D) (h : GA D V) : Bridge.Gf V := (finHom V).rangeRestrict 
 def realGL (θ : InfFam D) (V : HSp D) : GA D V →* GLR D V.rank :=
   MonoidHom.pi fun τ => (Formalism.UG.bc (θ τ)).comp (infHom V)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `θ τ (infPart D ((matHom V γ).val i j)) = tauE D τ (γE.val i j)`. Rewrite using `[show matHom V γ = _ from h]`. Conclude with `(hθ τ).1 _`.
+-/
 theorem realGL_rat {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {γ : GQ V} {γE : GL (Fin V.rank) D.host.E}
     (h : Bridge.IsRatMat V γ γE) : realGL θ V γ = embGL (tauE D) γE := by
   funext τ
@@ -74,6 +77,9 @@ def series (F : Frame S T) (ω : PairRep S T) (f : WO S T → ℂ) (h : GA D S) 
   map_add' P P' := by funext g; simp only [thetaKO, LinearMap.map_add, Pi.add_apply]
   map_smul' c P := by funext g; simp only [thetaKO, LinearMap.map_smul, Pi.smul_apply, RingHom.id_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem series_apply (F : Frame S T) (ω : PairRep S T) (f : WO S T → ℂ) (h : GA D S) (P : PolF D T.rank S.rank) (g : GA D T) :
     series F ω f h P g = ω (h, g) (F.fock f P) 0 := rfl
 
@@ -99,6 +105,9 @@ def lawForms {G Γ W : Type} [Group G] [Group Γ] [AddCommGroup W] [Module ℂ W
     simp only [Pi.smul_apply, hF γ h k, map_smul]
     rw [smul_comm]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_lawForms {G Γ W : Type} [Group G] [Group Γ] [AddCommGroup W] [Module ℂ W] {ι : Γ →* G} {ρ : Γ →* Module.End ℂ W}
     {J : Subgroup G} {χ : J →* ℂˣ} {F : G → W} :
     F ∈ lawForms ι ρ J χ ↔ ∀ (γ : Γ) (h : G) (k : J), F (ι γ * h * k) = (χ k : ℂ) • ρ γ (F h) := Iff.rfl
@@ -114,8 +123,14 @@ open Classical in
 
 def admitted (Q : Finset (Pl D.host.E)) : Prop := PlacesOK B.G.Pg (B.de.Q ∪ Q) ∧ Disjoint B.de.Q Q
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by simpa using h.places, Finset.disjoint_empty_right _⟩`.
+-/
 theorem admissible_empty_of_good {B : Base S T} (h : B.Good) : B.admitted ∅ := ⟨by simpa using h.places, Finset.disjoint_empty_right _⟩
 
+/- English proof (translation)
+Conclude with `⟨h.1.mono (by convert Finset.union_subset_union_right hQ), h.2.mono_right hQ⟩`.
+-/
 theorem admitted.mono {B : Base S T} {Q Q' : Finset (Pl D.host.E)} (h : B.admitted Q) (hQ : Q' ⊆ Q) : B.admitted Q' := by
   classical
   exact ⟨h.1.mono (by convert Finset.union_subset_union_right hQ), h.2.mono_right hQ⟩
@@ -137,12 +152,18 @@ def vecFam {C : Type} (Q : Finset (Pl D.host.E))
     (Φ : ∀ PP : Pl D.host.E, C → Matrix (Fin T.rank) (Fin S.rank) (kP PP) → ℚ) (a : ↥Q → C) : WO S T → ℂ :=
   B.vecAt Q fun PP y => ((Φ PP.1 (a PP) y : ℚ) : ℂ)
 
+/- English proof (translation)
+The claim follows from `congrArg (B.vecAt ∅) (funext fun PP => absurd PP.2 (Finset.notMem_empty _))`.
+-/
 theorem vecAt_empty (φ : ∀ PP : ↥(∅ : Finset (Pl D.host.E)), Matrix (Fin T.rank) (Fin S.rank) (kP PP.1) → ℂ) :
     B.vecAt ∅ φ = B.vecBase :=
   congrArg (B.vecAt ∅) (funext fun PP => absurd PP.2 (Finset.notMem_empty _))
 
 open Classical in
 
+/- English proof (translation)
+Use `Frame.isThetaAt_vec h.frame hQ.1 fun y y' hy => ?_` and prove the remaining obligations. Unfold `locFn`. Rewrite using `[Finset.prod_congr rfl fun PP hPP => by rw [hy PP (Finset.mem_union_left _ hPP)], Finset.prod_congr (s₁ := Finset.univ) rfl fun PP _ => by rw [hy PP.1 (Finset.mem_union_right _ PP.2)]]`.
+-/
 theorem isThetaAt_vecAt {B : Base S T} (h : B.Good) {Q : Finset (Pl D.host.E)} (hQ : B.admitted Q)
     (φ : ∀ PP : ↥Q, Matrix (Fin T.rank) (Fin S.rank) (kP PP.1) → ℂ) :
     IsThetaAt B.F.ψ (symplO S T) (heisO B.F.ψ S T) (halfIdem B.G.Pg (B.de.Q ∪ Q)) B.F.lat 1 B.F.f₀
@@ -152,6 +173,9 @@ theorem isThetaAt_vecAt {B : Base S T} (h : B.Good) {Q : Finset (Pl D.host.E)} (
   rw [Finset.prod_congr rfl fun PP hPP => by rw [hy PP (Finset.mem_union_left _ hPP)],
     Finset.prod_congr (s₁ := Finset.univ) rfl fun PP _ => by rw [hy PP.1 (Finset.mem_union_right _ PP.2)]]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.GalLift.Vec.theta_pureTensorO h.frame.vac.1 h.frame.vac.2.inf _ _ _ _ (GlobalTheory.GalLift.Vec.theta_of_thetaAt h.frame.vac.1 h.frame.vac.2.inf (isThetaAt_vecAt h hQ φ) h.frame.vac.2.theta) P`.
+-/
 theorem isThetaFunO_fock_vecAt {B : Base S T} (h : B.Good) {Q : Finset (Pl D.host.E)} (hQ : B.admitted Q)
     (φ : ∀ PP : ↥Q, Matrix (Fin T.rank) (Fin S.rank) (kP PP.1) → ℂ) (P : PolF D T.rank S.rank) :
     IsThetaFunO B.F.ψ S T (B.F.fock (B.vecAt Q φ) P) :=
@@ -201,6 +225,11 @@ def xiCoef (ω : PairRep S T) (u : UnivTwist D C) (Q : Finset (Pl D.host.E))
     (a : ↥Q → C) : GA D T → ℂ :=
   fun g => (B.xi ω u Q Φ h P g).coeff a
 
+/- English proof (translation)
+Unfold `xiCoef xi`. Rewrite using `[Finset.mul_sum, AddMonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply, Finset.sum_eq_single (a - Multiplicative.toAdd (detChar T (u.delQ Q) g))]`. Rewrite using `[AddMonoidAlgebra.single_mul_single, add_sub_cancel, one_mul, AddMonoidAlgebra.coeff_single, Finsupp.single_eq_same]`. Introduce `b _ hb`. Rewrite using `[AddMonoidAlgebra.single_mul_single, AddMonoidAlgebra.coeff_single, Finsupp.single_apply, if_neg]`.
+
+Conclude with `fun e => hb (by rw [← e, add_sub_cancel_left])`. Conclude with `fun hb => absurd (Finset.mem_univ _) hb`.
+-/
 theorem xiCoef_apply (ω : PairRep S T) (u : UnivTwist D C) (Q : Finset (Pl D.host.E))
     (Φ : ∀ PP : Pl D.host.E, C → Matrix (Fin T.rank) (Fin S.rank) (kP PP) → ℚ) (h : GA D S) (P : PolF D T.rank S.rank)
     (a : ↥Q → C) (g : GA D T) :
@@ -229,6 +258,9 @@ def IsAdmFam (u : UnivTwist D C) (Q : Finset (Pl D.host.E))
   ∀ PP ∈ Q, IsAdmissible (u.kap PP) (Φ PP)
 
 omit [Fintype C] in
+/- English proof (translation)
+Introduce `PP _` and use `isAdmissible_univCoef (β PP) (u.kap PP)`.
+-/
 theorem isAdmFam_univFam (u : UnivTwist D C) (Q : Finset (Pl D.host.E))
     (β : ∀ PP : Pl D.host.E, DetBases (kP PP) T.rank S.rank) : IsAdmFam u Q (univFam u β) :=
   fun PP _ => isAdmissible_univCoef (β PP) (u.kap PP)
@@ -247,9 +279,15 @@ def levJ (ψ : Twist D Circle) : Subgroup (Bridge.Gf S) :=
 def levLam (ψ : Twist D Circle) : B.levJ ψ →* ℂˣ :=
   (Lev.levCharAfE S B.F.βS (B.levS ψ)).comp ((finHom S).range.subtype.subgroupComap _)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨hk, h⟩, fun h => h.2⟩`.
+-/
 theorem finPt_mem_levJ (ψ : Twist D Circle) {k : GA D S} (hk : k ∈ GfC S) :
     finPt S k ∈ B.levJ ψ ↔ k ∈ Lev.levG S B.F.βS (B.levS ψ) := ⟨fun h => ⟨hk, h⟩, fun h => h.2⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem levLam_finPt (ψ : Twist D Circle) {k : GA D S} (hk : finPt S k ∈ B.levJ ψ) :
     ((B.levLam ψ ⟨_, hk⟩ : ℂˣ) : ℂ) = Lev.levChi S B.F.βS (B.levS ψ) k := rfl
 
@@ -261,6 +299,9 @@ def formsC (ψ : Twist D Circle) : Submodule ℂ (Bridge.Gf S → PolF D T.rank 
   Submodule.pi Set.univ (fun _ => B.valSpace) ⊓
     lawForms (Bridge.ratF S) (B.act.comp (GQ S).subtype) (B.levJ ψ) (B.levLam ψ)
 
+/- English proof (translation)
+Rewrite using `[formsC, Submodule.mem_inf, Submodule.mem_pi, mem_lawForms]`. Conclude with `and_congr ⟨fun h x => h x trivial, fun h x _ => h x⟩ Iff.rfl`.
+-/
 theorem mem_formsC {ψ : Twist D Circle} {f : Bridge.Gf S → PolF D T.rank S.rank} :
     f ∈ B.formsC ψ ↔ (∀ h, f h ∈ B.valSpace) ∧ B.HasLaw ψ f := by
   rw [formsC, Submodule.mem_inf, Submodule.mem_pi, mem_lawForms]
@@ -269,6 +310,9 @@ theorem mem_formsC {ψ : Twist D Circle} {f : Bridge.Gf S → PolF D T.rank S.ra
 def mtLat (ψ : Twist D Circle) : Submodule O (Bridge.Gf S → PolF D T.rank S.rank) :=
   (B.formsC ψ).restrictScalars O ⊓ Submodule.pi Set.univ (B.coefLat σ emb O)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨h.1, fun x => h.2 x trivial⟩, fun h => ⟨h.1, fun x _ => h.2 x⟩⟩`.
+-/
 theorem mem_mtLat {ψ : Twist D Circle} {f : Bridge.Gf S → PolF D T.rank S.rank} :
     f ∈ B.mtLat σ emb O ψ ↔ f ∈ B.formsC ψ ∧ ∀ h, f h ∈ B.coefLat σ emb O h :=
   ⟨fun h => ⟨h.1, fun x => h.2 x trivial⟩, fun h => ⟨h.1, fun x _ => h.2 x⟩⟩
@@ -281,6 +325,9 @@ def classSum (ω : PairRep S T) (ψ : Twist D Circle) {I : Type} [Fintype I] (h 
   ∑ i, ((Nat.card (Bridge.stab (Bridge.ratF S) (B.levJ ψ) (finPt S (h i))) : ℕ) : ℂ)⁻¹ •
     (series B.F ω (B.vecFlat ψ) (h i) ∘ₗ LinearMap.proj (finPt S (h i)))
 
+/- English proof (translation)
+Rewrite using `[classSum, LinearMap.sum_apply]`. Both sides reduce to the same expression.
+-/
 theorem classSum_apply (ω : PairRep S T) (ψ : Twist D Circle) {I : Type} [Fintype I] (h : I → GA D S)
     (f : Bridge.Gf S → PolF D T.rank S.rank) :
     B.classSum ω ψ h f = ∑ i, ((Nat.card (Bridge.stab (Bridge.ratF S) (B.levJ ψ) (finPt S (h i))) : ℕ) : ℂ)⁻¹ •
@@ -290,9 +337,19 @@ theorem classSum_apply (ω : PairRep S T) (ψ : Twist D Circle) {I : Type} [Fint
 
 variable {B σ emb O}
 
+/- English proof (translation)
+The claim follows from `fockGL_mem_harm _ _ _ h`.
+-/
 theorem act_mem_valSpace (g : GA D S) {P : PolF D T.rank S.rank} (h : P ∈ B.valSpace) : B.act g P ∈ B.valSpace :=
   fockGL_mem_harm _ _ _ h
 
+/- English proof (translation)
+Rewrite `hk` using `[stabilizer_eq_stabilizer_lattice _ _ _ _ _ hF.frS]`. Establish `e : Formalism.UG.bc (Lev.swapAE D) (Bridge.ratF S γ).1 = Formalism.UG.bc (Formalism.UG.inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γE := by`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Lev.swapAE D (finPart D ((matHom S γ).val i j)) = _`. Rewrite using `[show matHom S γ = _ from hγ]`.
+
+Both sides reduce to the same expression. Establish `e2 : Formalism.UG.bc (Lev.swapAE D) (Bridge.ratF S γ * h * k).1 = Formalism.UG.bc (Formalism.UG.inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γE * Formalism.UG.bc (Lev.swapAE D) h.1 * Formalism.UG.bc (Lev.swapAE D) k.1 := by`. Rewrite using `[← e, ← MonoidHom.map_mul, ← MonoidHom.map_mul]`. Both sides reduce to the same expression. Unfold `latAt`.
+
+Rewrite using `[e2]`. Conclude with `Formalism.UG.P.csEquiv_mem _ γE _ _ hk x`.
+-/
 theorem mem_latAt_iff (hF : B.F.Good) {γ : GQ S} {γE : GL (Fin S.rank) D.host.E} (hγ : Bridge.IsRatMat S γ γE)
     (h k : Bridge.Gf S) (hk : Formalism.UG.bc (Lev.swapAE D) k.1 ∈ St B.F.βS) (x : Fin S.rank → D.host.E) :
     x ∈ B.latAt (Bridge.ratF S γ * h * k) ↔ (γE⁻¹).val *ᵥ x ∈ B.latAt h := by
@@ -312,6 +369,11 @@ theorem mem_latAt_iff (hF : B.F.Good) {γ : GQ S} {γE : GL (Fin S.rank) D.host.
   rw [e2]
   exact Formalism.UG.P.csEquiv_mem _ γE _ _ hk x
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨γE, hγ⟩ : ∃ γE, Bridge.IsRatMat S γ γE := by`. Take `⟨y, -, hy⟩` from `γ.2`. Conclude with `⟨y, hy.symm⟩`. Establish `e : B.act γ = fockGL T.rank B.w B.F.BS (embGL (tauE D) γE)`. Rewrite using `[act, MonoidHom.comp_apply, realGL_rat hF.vac.2.inf hγ]`.
+
+Rewrite using `[e]`. Conclude with `fockGL_mem_harmLat hc.emb _ _ γE (mem_latAt_iff hF hγ h k hk) hP`.
+-/
 theorem act_mem_coefLat (hF : B.F.Good) (hc : IsCoefRing σ emb O) (γ : GQ S) (h k : Bridge.Gf S)
     (hk : Formalism.UG.bc (Lev.swapAE D) k.1 ∈ St B.F.βS) {P : PolF D T.rank S.rank} (hP : P ∈ B.coefLat σ emb O h) :
     B.act γ P ∈ B.coefLat σ emb O (Bridge.ratF S γ * h * k) := by
@@ -323,18 +385,36 @@ theorem act_mem_coefLat (hF : B.F.Good) (hc : IsCoefRing σ emb O) (γ : GQ S) (
   rw [e]
   exact fockGL_mem_harmLat hc.emb _ _ γE (mem_latAt_iff hF hγ h k hk) hP
 
+/- English proof (translation)
+The claim follows from `parLev_St (lev_le_parLev hk)`.
+-/
 theorem mem_St_of_mem_levJ {ψ : Twist D Circle} {k : Bridge.Gf S} (hk : k ∈ B.levJ ψ) :
     Formalism.UG.bc (Lev.swapAE D) k.1 ∈ St B.F.βS := parLev_St (lev_le_parLev hk)
 
 variable (B)
 
+/- English proof (translation)
+The claim follows from `B.vecAt_empty _`.
+-/
 theorem vecFlat_triv : B.vecFlat (Twist.triv Circle ∅) = B.vecBase := B.vecAt_empty _
 
+/- English proof (translation)
+Rewrite using `[gen, LinearMap.comp_apply, vecFlat_triv]`. Conclude with `twistBy_one _ _`.
+-/
 theorem gen_triv (ω : PairRep S T) (h : GA D S) (P : PolF D T.rank S.rank) :
     B.gen ω (Twist.triv Circle ∅) h P = B.theta ω h P := by
   rw [gen, LinearMap.comp_apply, vecFlat_triv]
   exact twistBy_one _ _
 
+/- English proof (translation)
+Establish `key : ∀ hQ : GA D S, SuppAt (idem (Twist.triv (D` using `D) Circle ∅).Q) S hQ ↔ hQ = 1 := fun hQ => by`. Express the relevant statement in the definitionally equal form `SuppAt (idem ∅) S hQ ↔ _`. Rewrite using `[idem_empty]`. Prove the components needed by the constructor for the conclusion. Introduce `h1`.
+
+Use `Subtype.ext (Units.ext (sub_eq_zero.1 (Matrix.ext fun i j => ?_)))` and prove the remaining obligations. Use `h1 i j` as an intermediate fact. Rewrite `this` using `[RingHom.map_zero, add_zero, zero_mul]`. Conclude with `this.symm`. Introduce and unpack `rfl i j`.
+
+Rewrite using `[show Formalism.L2.Theta.mt S 1 - 1 = 0 from sub_self _, Matrix.zero_apply, mul_zero]`. Use extensionality with `s`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hQ, h1, rfl⟩`. Rewrite using `[(key hQ).1 h1, mul_one, gen_triv]`.
+
+Both sides reduce to the same expression. Introduce and unpack `rfl`. Conclude with `⟨1, (key 1).2 rfl, by rw [mul_one, gen_triv]⟩`.
+-/
 theorem genSet_triv (ω : PairRep S T) (h : GA D S) (P : PolF D T.rank S.rank) :
     B.genSet ω (Twist.triv Circle ∅) h P = {B.theta ω h P} := by
   have key : ∀ hQ : GA D S, SuppAt (idem (Twist.triv (D := D) Circle ∅).Q) S hQ ↔ hQ = 1 := fun hQ => by
@@ -356,6 +436,9 @@ theorem genSet_triv (ω : PairRep S T) (h : GA D S) (P : PolF D T.rank S.rank) :
   · rintro rfl
     exact ⟨1, (key 1).2 rfl, by rw [mul_one, gen_triv]⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Rewrite using `[xiCoef_apply, vecFam, vecAt_empty]`. Both sides reduce to the same expression.
+-/
 theorem xiCoef_empty {C : Type} [AddCommGroup C] [Fintype C] (ω : PairRep S T) (u : UnivTwist D C)
     (Φ : ∀ PP : Pl D.host.E, C → Matrix (Fin T.rank) (Fin S.rank) (kP PP) → ℚ) (h : GA D S) (P : PolF D T.rank S.rank)
     (a : ↥(∅ : Finset (Pl D.host.E)) → C) : B.xiCoef ω u ∅ Φ h P a = B.theta ω h P := by
@@ -365,6 +448,13 @@ theorem xiCoef_empty {C : Type} [AddCommGroup C] [Fintype C] (ω : PairRep S T) 
 
 end Base
 
+/- English proof (translation)
+Take `⟨s, hs'⟩` from `GlobalTheory.Mem.ThetaNonzero.exists_isCartanInv hG hd`. Take `⟨B, ε, h1, h2, -⟩` from `GlobalTheory.GalLift.Vec.exists_isONBasis hs' hs`. Establish `hε : (Matrix.diagonal fun a => (ε a : ℂ)) = 1`. Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Break down `h1 a with h | h` into its components or cases. Simplify using `[h.1]`. Conclude with `absurd a.2 (not_lt.2 h.2)`. Establish `hu : IsUnit B` using `IsUnit.of_mul_eq_one_right _ (h2.trans hε)`.
+
+Conclude with `⟨hu.unit, ε, h1, h2, by rw [hε, Matrix.one_mul, Matrix.mul_one]⟩`.
+-/
 theorem exists_onb_posDef {n : ℕ} {G : Matrix (Fin n) (Fin n) ℂ} (hG : G.IsHermitian) (hd : IsUnit G.det)
     (hs : Formalism.UG.HasSignature G n 0) : ∃ B : GL (Fin n) ℂ, IsONBasis G 1 B.val n := by
   obtain ⟨s, hs'⟩ := GlobalTheory.Mem.ThetaNonzero.exists_isCartanInv hG hd
@@ -379,6 +469,13 @@ theorem exists_onb_posDef {n : ℕ} {G : Matrix (Fin n) (Fin n) ℂ} (hG : G.IsH
   have hu : IsUnit B := IsUnit.of_mul_eq_one_right _ (h2.trans hε)
   exact ⟨hu.unit, ε, h1, h2, by rw [hε, Matrix.one_mul, Matrix.mul_one]⟩
 
+/- English proof (translation)
+Take `⟨ψ, hψ⟩` from `GlobalTheory.StdAdelicChar.exists_isStdChar D`. Take `⟨θ, hθ⟩` from `hψ.2.1`. Establish `h1 : ∀ τ, ∃ B : GL (Fin S.rank) ℂ, IsONBasis (gramAt D S τ) 1 B.val S.rank` using `fun τ => exists_onb_posDef (GlobalTheory.SmoothForms.RealPts.gramAt_herm S τ) (GlobalTheory.SmoothForms.RealPts.gramAt_unit S τ) (by`. Use `hS (tauE D τ)` as an intermediate fact. Rewrite using `[hpos] at this)` and apply the resulting hypothesis.
+
+Use `choose BS hBS using h1`. Establish `h2 : ∀ τ, ∃ s, IsCartanInv (gramAt D T τ) s` using `fun τ => GlobalTheory.Mem.ThetaNonzero.exists_isCartanInv (GlobalTheory.SmoothForms.RealPts.gramAt_herm T τ) (GlobalTheory.SmoothForms.RealPts.gramAt_unit T τ)`. Use `choose sT hsT using h2`. Use `choose BT hBT using fun τ => GlobalTheory.GalLift.Vec.exists_isONBasis (hsT τ) (hT (tauE D τ))`. Establish `dS` using `GlobalTheory.PlaceModel.isSelfDualC_latFrame S`.
+
+Establish `dT` using `GlobalTheory.PlaceModel.isSelfDualC_latFrame T`. Take `⟨βS, hβS⟩` from `GlobalTheory.AdelicFrame.exists_isFrame (F := D.host.F) _ dS.1.fg dS.1.span_eq_top`. Take `⟨βT, hβT⟩` from `GlobalTheory.AdelicFrame.exists_isFrame (F := D.host.F) _ dT.1.fg dT.1.span_eq_top`. Take `⟨f₀, hf₀⟩` from `GlobalTheory.Member.vacuum_oriented_exists D ψ θ hψ hθ S T (fun _ => 1) sT hS hT (fun τ => GlobalTheory.GalLift.Vec.isCartanInv_one (hBS τ)) hsT _ _ dS dT`. Conclude with `⟨⟨ψ, θ, sT, BS, BT, _, _, βS, βT, f₀⟩, hr, hBS, hsT, hBT, dS, dT, hβS, hβT, hf₀⟩`.
+-/
 theorem exists_frame_good (S T : HSp D) (hS : S.SigOK) (hpos : S.IsPosDef) (hT : T.SigOK) (hr : T.rank ≤ S.rank) :
     ∃ F : Frame S T, F.Good := by
   obtain ⟨ψ, hψ⟩ := GlobalTheory.StdAdelicChar.exists_isStdChar D
@@ -400,6 +497,11 @@ theorem exists_frame_good (S T : HSp D) (hS : S.SigOK) (hpos : S.IsPosDef) (hT :
     (fun τ => GlobalTheory.GalLift.Vec.isCartanInv_one (hBS τ)) hsT _ _ dS dT
   exact ⟨⟨ψ, θ, sT, BS, BT, _, _, βS, βT, f₀⟩, hr, hBS, hsT, hBT, dS, dT, hβS, hβT, hf₀⟩
 
+/- English proof (translation)
+Set `S : HSp D` to `Examples₂.posSpace Examples₂.star_isIntegral (2 * k + 2)`. Set `T : HSp D` to `Examples₂.posSpace Examples₂.star_isIntegral (2 * k + 1)`. Establish `hr : T.rank ≤ S.rank` using `Nat.le_succ _`. Take `⟨F, hF⟩` from `exists_frame_good S T (Examples₂.posSpace_sigOK _ _) (fun _ => rfl) (Examples₂.posSpace_sigOK _ _) hr`. Take `⟨η, hη⟩` from `GlobalTheory.WeilParts.exists_isEtaTilde_unramified D`.
+
+Set `B : Base S T` to `⟨hr, F, TypeDat.empty D _, Twist.triv Circle ∅, Weight.first D _ (fun _ => 2 * k + 1) (fun _ => 0) fun _ => k, 1, η⟩`. Establish `hB : B.Good` using `{ even := ⟨k + 1, by change 2 * k + 2 = _; ring⟩ odd := ⟨k, rfl⟩ frame := hF de := Twist.triv_good splitSet_empty places := placesOK_empty wt := Weight.first_good _ (fun _ => Nat.succ_pos _) fun _ => Nat.le_succ _ sig := fun _ => rfl sigOK := Examples₂.posSpace_sigOK _ _ eta := h …`. Conclude with `⟨S, T, B, rfl, rfl, hB, Base.admissible_empty_of_good hB, fun _ => rfl⟩`.
+-/
 theorem exists_base_good (D : D7) (k : ℕ) : ∃ (S T : HSp D) (B : Base S T), S.rank = 2 * k + 2 ∧ T.rank = 2 * k + 1 ∧
     B.Good ∧ B.admitted ∅ ∧ ∀ τ, B.w.ap τ 0 = 1 := by
   let S : HSp D := Examples₂.posSpace Examples₂.star_isIntegral (2 * k + 2)
@@ -426,6 +528,19 @@ theorem exists_base_good (D : D7) (k : ℕ) : ∃ (S T : HSp D) (B : Base S T), 
       inf := fun τ => ⟨0, by simp [B, Weight.first]; ring, ⟨_, hF.vac.2.inf⟩, fun _ _ _ _ _ => by simp [B]⟩ }
   exact ⟨S, T, B, rfl, rfl, hB, Base.admissible_empty_of_good hB, fun _ => rfl⟩
 
+/- English proof (translation)
+Establish `h` using `(Frame.isPlaceModel_placeMap (G := TypeDat.empty D T.rank) hF placesOK_empty).vac`. Rewrite `h` using `[one_smul]`. Rewrite using `[← h, Frame.vec]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Establish `h0 : halfIdem (TypeDat.empty D T.rank).Pg (∅ : Finset (Pl D.host.E)) = 0`. Express the relevant statement in the definitionally equal form `cA D (idem ∅) + idem ∅ = 0`. Rewrite using `[idem_empty, RingHom.map_zero, add_zero]`. Establish `h1 : ∀ y : Reds D S.rank T.rank, omegaG (TypeDat.empty D T.rank).levT (TypeDat.empty D T.rank).muC y = 1` using `fun y => by haveI : IsEmpty ↥(TypeDat.empty D T.rank).levT.Pg := ⟨fun PP => absurd PP.2 (Finset.notMem_empty _)⟩`. Unfold `omegaG`.
+
+Rewrite using `[dif_pos ⟨fun _ h => absurd h (Finset.notMem_empty _), fun PP => isEmptyElim PP, fun PP => isEmptyElim PP, fun PP => isEmptyElim PP, Subgroup.mem_bot.2 (Subsingleton.elim _ _)⟩, Finset.univ_eq_empty, Finset.prod_empty, Finset.prod_empty, mul_one, mul_one]`. Both sides reduce to the same expression. Rewrite using `[Frame.datumFn, halfInd, h0]`. Distinguish the cases in `hx : IsHalf (0 : AE D) x`. Take `rfl : x = 0` from `Matrix.ext fun i j => by rw [← hx i j, zero_mul]; rfl`.
+
+Establish `i1 : IsIntM (frMapAdj S T F.βS F.βT 0)`. Use `GlobalTheory.PlaceVec.frMapAdj_add S T F.βS F.βT 0 0` as an intermediate fact. Rewrite `this` using `[add_zero, left_eq_add]`. Rewrite using `[this]`. Conclude with `fun _ _ => zero_mem _`.
+
+Establish `i2 : IsIntM (frMapO S T F.βS F.βT 0)`. Introduce `i j`. Use `GlobalTheory.PlaceDatum.frMapO_add F.βS F.βT 0 0 1 i j` as an intermediate fact. Rewrite `this` using `[one_smul, add_zero, Nat.cast_one, one_mul, left_eq_add]`. Rewrite using `[this]`.
+
+Conclude with `zero_mem _`. Rewrite using `[if_pos ⟨hx, i1⟩, if_pos ⟨hx, i2⟩, if_pos ⟨zero_mem _, hx⟩, h1, one_mul]`. Rewrite using `[if_neg fun h => hx h.1, zero_mul, if_neg fun h => hx h.2]`.
+-/
 theorem vec_empty {F : Frame S T} (hF : F.Good) : F.vec (TypeDat.empty D T.rank) ∅ (fun _ => 1) = F.f₀ := by
   classical
   have h := (Frame.isPlaceModel_placeMap (G := TypeDat.empty D T.rank) hF placesOK_empty).vac
@@ -460,12 +575,23 @@ theorem vec_empty {F : Frame S T} (hF : F.Good) : F.vec (TypeDat.empty D T.rank)
     rw [if_pos ⟨hx, i1⟩, if_pos ⟨hx, i2⟩, if_pos ⟨zero_mem _, hx⟩, h1, one_mul]
   · rw [if_neg fun h => hx h.1, zero_mul, if_neg fun h => hx h.2]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun τ => FWT.embV_spec (RingHom.id _) D.what₂.embLL (RingHom.comp_id _) τ, fun _ => trivial⟩`.
+-/
 example (D : D7) : IsCoefRing D.what₂.embLL (Links.labLL D) ⊤ :=
   ⟨fun τ => FWT.embV_spec (RingHom.id _) D.what₂.embLL (RingHom.comp_id _) τ, fun _ => trivial⟩
 
+/- English proof (translation)
+The claim follows from `B.genSet_triv ω h P`.
+-/
 example (B : Base S T) (ω : PairRep S T) (h : GA D S) (P : PolF D T.rank S.rank) :
     B.genSet ω (Twist.triv Circle ∅) h P = {B.theta ω h P} := B.genSet_triv ω h P
 
+/- English proof (translation)
+Establish `: F.fock f 1 = f`. Rewrite using `[Frame.fock, pureTensorO, pureTensorL]`. Use `(MvPolynomial.basisMonomials (FVar D T.rank S.rank) ℂ).constr_basis ℂ (fun k : FVar D T.rank S.rank →₀ ℕ => opPow (aPlusAll (heisO F.ψ S T) F.θ (fun τ => cplxO 1 (F.sT τ)) (fun τ => (F.BS τ).val) F.BT) k f) 0` as an intermediate fact. Rewrite `this` using `[MvPolynomial.coe_basisMonomials]`. Conclude with `this.trans (by simp [opPow])`.
+
+Rewrite using `[series_apply, this, show ((1, 1) : GA D S × GA D T) = 1 from rfl, MonoidHom.map_one]`. Both sides reduce to the same expression.
+-/
 example (F : Frame S T) (ω : PairRep S T) (f : WO S T → ℂ) : series F ω f 1 1 1 = f 0 := by
   have : F.fock f 1 = f := by
     rw [Frame.fock, pureTensorO, pureTensorL]

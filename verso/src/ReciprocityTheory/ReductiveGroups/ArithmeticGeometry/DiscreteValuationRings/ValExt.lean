@@ -6,6 +6,37 @@ namespace ReciprocityTheory.ChartRestriction.G.DVR
 
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
 
+/- English proof (translation)
+Set `i : V →+* F` to `(algebraMap (FractionRing V) F).comp (algebraMap V _)`. Establish `ii : Function.Injective i` using `(algebraMap (FractionRing V) F).injective.comp (IsFractionRing.injective V _)`. Take `⟨A, hA, hl⟩` from `IsLocalRing.exists_factor_valuationRing i`. Set `w` to `A.valuation`. Establish `le : ∀ r, w (i r) ≤ 1` using `fun r => (A.valuation_le_one_iff _).2 (hA r)`.
+
+Establish `un : ∀ u : Vˣ, w (i u) = 1` using `fun u => le_antisymm (le _) (by`. Use `le (↑u⁻¹ : V)` as an intermediate fact. Establish `e : w (i u) * w (i ↑u⁻¹) = 1` using `by rw [← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Combine the equalities or inequalities in the displayed calculation. Use `set p := w (i ϖ) with hp`.
+
+Establish `p0 : 0 < p` using `zero_lt_iff.2 ((Valuation.ne_zero_iff w).2 fun h => hϖ.ne_zero (ii (h.trans (map_zero i).symm)))`. Establish `p1 : p < 1` using `lt_of_le_of_ne (le ϖ) fun h => hϖ.not_isUnit ((isUnit_map_iff (i.codRestrict A.toSubring hA) ϖ).1 ((A.valuation_eq_one_iff ⟨_, hA ϖ⟩).2 h))`. Establish `hv : ∀ c n, HasVal ϖ c n → w (algebraMap _ F c) = p ^ n`. Introduce and unpack `_ n ⟨u, rfl⟩`. Rewrite using `[map_mul, map_zpow₀, map_mul, map_zpow₀]`.
+
+Conclude with `(congrArg _ (un u)).trans (mul_one _)`. Establish `ex : ∀ c : FractionRing V, c ≠ 0 → ∃ n : ℤ, w (algebraMap _ F c) = p ^ n` using `fun c hc => by`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := V) c`. Take `⟨m, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (x := a) (by rintro rfl; simp at hc) hϖ`. Take `⟨n, u', rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (nonZeroDivisors.ne_zero hb) hϖ`.
+
+Use `⟨m - n, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, map_div₀, zpow_sub₀ p0.ne', zpow_natCast, zpow_natCast]`. Use `show w (i _) / w (i _) = _`. Simplify using `only [map_mul, map_pow, un, one_mul, ← hp]`. Establish `rat : ∀ x : F, x ≠ 0 → ∃ (n : ℕ) (m : ℤ), 0 < n ∧ w x ^ n = p ^ m` using `fun x hx => by`.
+
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Take `⟨f, hf, h0⟩` from `Algebra.IsAlgebraic.isAlgebraic (R := FractionRing V) x`. Set `T` to `fun j => algebraMap _ F (f.coeff j) * x ^ j`. Establish `wx : w x ≠ 0` using `(Valuation.ne_zero_iff w).2 hx`.
+
+Establish `ne : ∀ a ∈ f.support, ∀ b ∈ f.support, a < b → w (T a) ≠ w (T b)` using `fun a ha b hb hab h => by`. Take `⟨r, hr⟩` from `ex _ (Polynomial.mem_support_iff.1 ha)`. Take `⟨s, hs⟩` from `ex _ (Polynomial.mem_support_iff.1 hb)`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_lt hab`. Simplify using `only [T, map_mul, map_pow, hr, hs] at h`.
+
+Rewrite `h` using `[add_assoc, pow_add, mul_comm (w x ^ a), ← mul_assoc]`. Use `hc (d + 1) (r - s) d.succ_pos ?_` and prove the remaining obligations. Rewrite using `[zpow_sub₀ p0.ne', mul_right_cancel₀ (pow_ne_zero a wx) h, mul_div_cancel_left₀ _ (zpow_ne_zero s p0.ne')]`. Take `⟨j, hj, hm⟩` from `f.support.exists_max_image (fun j => w (T j)) (Polynomial.support_nonempty.2 hf)`. Use `w.map_sum_eq_of_lt hj fun a ha => lt_of_le_of_ne (hm a (Finset.mem_sdiff.1 ha).1) (by` as an intermediate fact.
+
+Break down `lt_or_gt_of_ne (Finset.notMem_singleton.1 (Finset.mem_sdiff.1 ha).2) with h | h` into its components or cases. Use `exacts [ne a (Finset.mem_sdiff.1 ha).1 j hj h, (ne j hj a (Finset.mem_sdiff.1 ha).1 h).symm])`. Rewrite `this` using `[show ∑ a ∈ f.support, T a = 0 by rw [← h0, Polynomial.aeval_def, Polynomial.eval₂_eq_sum]; rfl, map_zero]`. Conclude with `mul_ne_zero ((map_ne_zero _).2 (Polynomial.mem_support_iff.1 hj)) (pow_ne_zero j hx) ((Valuation.zero_iff w).1 this.symm)`. Establish `cmp : ∀ {x y : F} {n n' : ℕ} {m m' : ℤ}, 0 < n → 0 < n' → w x ^ n = p ^ m → w y ^ n' = p ^ m' → (w x ≤ w y ↔ (m' : ℚ) / n' ≤ m / n)` using `fun {x y n n' m m'} hn hn' h h' => by`.
+
+Rewrite using `[← pow_le_pow_iff_left₀ zero_le zero_le (Nat.mul_pos hn hn').ne', pow_mul, h, mul_comm n, pow_mul, h', ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, zpow_le_zpow_iff_right_of_lt_one₀ p0 p1, div_le_div_iff₀ (by exact_mod_cast hn') (by exact_mod_cast hn)]`. Conclude with `Iff.rfl` after adjusting the coercions. Use `choose! N M hN hM using rat`. Set `v : F → WithTop ℚ` to `fun x => if x = 0 then ⊤ else ((M x : ℚ) / N x : ℚ)`. Establish `spec : ∀ {x : F} {n : ℕ} {m : ℤ}, x ≠ 0 → 0 < n → w x ^ n = p ^ m → v x = ((m : ℚ) / (n : ℕ) : ℚ)` using `fun {x n m} hx hn h => (if_neg hx).trans (congrArg _ (le_antisymm ((cmp hn (hN x hx) h (hM x hx)).1 le_rfl) ((cmp (hN x hx) hn (hM x hx) h).1 le_rfl)))`.
+
+Establish `mono : ∀ x y, w x ≤ w y → v y ≤ v x` using `fun x y h => by`. Distinguish the cases in `hx : x = 0`. Simplify using `[v, hx]`. Establish `hy : y ≠ 0` using `by rintro rfl; exact hx ((Valuation.zero_iff w).1 (le_zero_iff.1 (h.trans_eq (map_zero w))))`. Simplify using `only [v, if_neg hx, if_neg hy, WithTop.coe_le_coe]`.
+
+Conclude with `(cmp (hN x hx) (hN y hy) (hM x hx) (hM y hy)).1 h`. Use `⟨AddValuation.of v (if_pos rfl) (by simpa using spec (n := 1) (m := 0) one_ne_zero one_pos (by simp)) (fun x y => ?_) fun x y => ?_, fun c n h => ?_⟩` and prove the remaining obligations. Break down `le_max_iff.1 (w.map_add x y) with h | h exacts [(min_le_left _ _).trans (mono _ _ h), (min_le_right _ _).trans (mono _ _ h)]` into its components or cases. Distinguish the cases in `hx : x = 0`. Simplify using `[v, hx]`.
+
+Distinguish the cases in `hy : y = 0`. Simplify using `[v, hy]`. Rewrite using `[spec (n := N x * N y) (m := M x * N y + M y * N x) (mul_ne_zero hx hy) (Nat.mul_pos (hN x hx) (hN y hy)) (by`. Rewrite using `[map_mul, mul_pow, pow_mul, hM x hx, mul_comm (N x), pow_mul, hM y hy, ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, zpow_add₀ p0.ne'])]`. Simplify using `only [v, if_neg hx, if_neg hy, ← WithTop.coe_add, WithTop.coe_inj]`.
+
+Use `(hN x hx).ne'` as an intermediate fact. Use `(hN y hy).ne'` as an intermediate fact. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `e` using `hv c n h`.
+
+Use `spec (n := 1) (m := n) ((Valuation.ne_zero_iff w).1 (e ▸ zpow_ne_zero n p0.ne')) one_pos ((pow_one _).trans e)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exists_valOver {ϖ : V} (hϖ : Irreducible ϖ) (F : Type) [Field F] [Algebra (FractionRing V) F]
     [Algebra.IsAlgebraic (FractionRing V) F] : ∃ v : AddValuation F (WithTop ℚ), ValOver ϖ F v := by
   classical

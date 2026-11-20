@@ -19,11 +19,17 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : 
   {D : DegData V (maximalIdeal V)} {F : Type} [Field F] [Algebra (FractionRing V) F]
   {v : AddValuation F (WithTop ℚ)}
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left]`. Simplify using `[DegPre.trF]`.
+-/
 theorem trF_fst (mu : D.toPre.X) :
     (DegPre.trF D.toPre F mu).left ≫ (fst (TF (R := V) F) D.toPre.P.A).left = (fst (TF (R := V) F) D.toPre.P.A).left := by
   rw [← Over.comp_left]
   simp [DegPre.trF]
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Simplify using `only [DegPre.trF, CartesianMonoidalCategory.lift_snd, padd, CategoryTheory.Hom.mul_def, cQ, CartesianMonoidalCategory.comp_lift_assoc, Category.comp_id, SemiCartesianMonoidalCategory.comp_toUnit_assoc]`.
+-/
 theorem trF_prB (mu : D.toPre.X) :
     (DegPre.trF D.toPre F mu).left ≫ (DegPre.prB D.toPre F).left =
       (DegPre.prB D.toPre F).left ≫ (𝟙 D.toPre.P.A * cQ D.toPre D.toPre.P.A mu).left := by
@@ -32,6 +38,11 @@ theorem trF_prB (mu : D.toPre.X) :
   simp only [DegPre.trF, CartesianMonoidalCategory.lift_snd, padd, CategoryTheory.Hom.mul_def, cQ,
     CartesianMonoidalCategory.comp_lift_assoc, Category.comp_id, SemiCartesianMonoidalCategory.comp_toUnit_assoc]
 
+/- English proof (translation)
+Establish `h` using `gs_pull (DegPre.zF D.toPre F).left (fst (TF (R := V) F) D.toPre.P.A).left y ⊤ (by simp) ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom ζ)`. Establish `e : (DegPre.zF D.toPre F).left ≫ (fst (TF (R` using `V) F) D.toPre.P.A).left = 𝟙 _ := by`. Rewrite using `[← Over.comp_left]`. Simplify using `[DegPre.zF]`. Rewrite `h` using `[e]`.
+
+Rewrite using `[← h]`. Both sides reduce to the same expression.
+-/
 theorem gs_gF_zF (y : (TF (R := V) F).left) (ζ : F) :
     gs (DegPre.zF D.toPre F).left y ⊤ (gF D.toPre F ζ) = gs (𝟙 _) y ⊤ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom ζ) := by
   have h := gs_pull (DegPre.zF D.toPre F).left (fst (TF (R := V) F) D.toPre.P.A).left y ⊤ (by simp)
@@ -43,6 +54,11 @@ theorem gs_gF_zF (y : (TF (R := V) F).left) (ζ : F) :
   rw [← h]
   rfl
 
+/- English proof (translation)
+Establish `key : ((jFK (R` using `V) F).app ⊤).hom ((Scheme.ΓSpecIso (CommRingCat.of (FractionRing V))).inv.hom c) = (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (algebraMap (FractionRing V) F c) := by`. Use `congrArg (fun φ => φ.hom c) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap (FractionRing V) F)))` as an intermediate fact. Conclude with `this.symm`. Establish `h` using `gs_pull (𝟙 (TF (R := V) F).left) (jFK (R := V) F) y ⊤ (by simp) ((Scheme.ΓSpecIso (CommRingCat.of (FractionRing V))).inv.hom c)`. Establish `hs : scal (𝟙 (Spec (CommRingCat.of (FractionRing V)))) c = (Scheme.ΓSpecIso (CommRingCat.of (FractionRing V))).inv.hom c`.
+
+Simplify using `[scal]`. Use `erw [hs, ← h]`. Conclude with `congrArg (gs (𝟙 (TF (R := V) F).left) y ⊤) key`.
+-/
 theorem gs_scal_jFK (y : (TF (R := V) F).left) (c : FractionRing V) :
     gs (𝟙 (TF (R := V) F).left ≫ jFK (R := V) F) y ⊤ (scal (𝟙 _) c) =
       gs (𝟙 _) y ⊤ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (algebraMap (FractionRing V) F c)) := by
@@ -59,6 +75,29 @@ theorem gs_scal_jFK (y : (TF (R := V) F).left) (c : FractionRing V) :
   erw [hs, ← h]
   exact congrArg (gs (𝟙 (TF (R := V) F).left) y ⊤) key
 
+/- English proof (translation)
+Establish `hL` using `D.toPre.P.isLB`. Take `⟨Ix, _, φV, εV, e', he', hC, c₀, hc₀, hval⟩` from `famMult_data D hϖ hQ k mu α`. Take `⟨eB, heB, veB⟩` from `exists_eB D.toPre k α mu e' he' hC`. Establish `hc0 : c₀ ≠ 0` using `ne_zero_of_hasVal hϖ hc₀`. Use `set c : F := algebraMap (FractionRing V) F c₀ with hc`.
+
+Establish `hcne : c ≠ 0` using `(map_ne_zero _).2 hc0`. Set `cU : Γ((DegPre.BF D.toPre F).left, ⊤)ˣ` to `⟨gF D.toPre F c, gF D.toPre F c⁻¹, by rw [← map_mul, mul_inv_cancel₀ hcne, map_one], by rw [← map_mul, inv_mul_cancel₀ hcne, map_one]⟩`. Set `g0 : LB.Gen (LB.LinComb D.toPre.P.L (Y` to `(DegPre.BF D.toPre F).left) (K := PEmpty) PEmpty.elim PEmpty.elim) := ⟨fun _ => res le_top cU⟩`. Establish `hg0 : g0.IsGen` using `fun i j => by`. Establish `hg : (LB.LinComb D.toPre.P.L (Y` using `(DegPre.BF D.toPre F).left) (K := PEmpty) PEmpty.elim PEmpty.elim).g i j = 1 := by`.
+
+Simplify using `[LB.LinComb]`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Establish `hformU : FormEq (Sum.elim (fun i => (DegPre.prB D.toPre F).left ≫ Sum.elim (D.toPre.famφB (α + k • mu)) (fun i => (𝟙 D.toPre.P.A * cQ D.toPre D.toPre.P.A mu).left ≫ D.toPre.famφB α i) i) PEmpty.elim) (Sum.elim (DegPre.deltaε k) PEmpty.elim) (DegPre.deltaφ D.toPre F k α mu) (DegPr …` using `fun U _ h => by`. Establish `e0 : ∀ f : PEmpty → U, ∏ i, f i = 1` using `fun f => Fintype.prod_empty f`.
+
+Rewrite using `[Fintype.prod_sum_type, e0, _root_.mul_one]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Break down `i with i | i` into its components or cases. Simplify using `only [Sum.elim_inl, DegPre.deltaφ, GC.famφ_eq]`. Simplify using `only [Sum.elim_inr, DegPre.deltaφ, GC.famφ_eq]`.
+
+Rewrite using `[← Category.assoc, trF_prB, Category.assoc]`. Both sides reduce to the same expression. Take `⟨u, hu, vu⟩` from `exists_gen hL hformU (LB.mulGen D.toPre.P.L _ _ _ _ (LB.pullGen D.toPre.P.L _ _ eB (DegPre.prB D.toPre F).left) g0) (mulGen_isGen _ _ _ _ _ _ _ (pullGen_isGen _ _ _ _ heB _) hg0)`. Establish `hval_u : ∀ (Z : Scheme.{0}) (ρ : Z ⟶ (DegPre.BF D.toPre F).left) (z : Z) (J : (Z ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι), Good D.toPre.P.L z J → (val u ρ z J).val = (val eB (ρ ≫ (DegPre.prB D.toPre F).left) z J).val * gs ρ z ⊤ (gF D.toPre F c)`. Introduce `Z ρ z J hJ`.
+
+Rewrite using `[vu Z ρ z J hJ, val_mul hJ, val_pull hJ, Units.val_mul]`. Use `congr 1`. Establish `hmem : ρ z ∈ LB.wchart D.toPre.P.L (K` using `PEmpty) PEmpty.elim (fun k => J (ρ ≫ PEmpty.elim k)) := Set.mem_iInter.2 fun k => k.elim`. Conclude with `(congrArg Units.val (gm_res ρ z le_top hmem cU)).trans (gs_unit ρ z ⊤ (by trivial) cU).symm`. Establish `z₂ : DegPre.zF D.toPre F ≫ DegPre.prB D.toPre F = 1` using `lift_snd _ _`.
+
+Establish `hcorr : LB.Gen.Corr D.toPre.P.L _ _ _ _ (LB.pullGen D.toPre.P.L _ _ u (DegPre.zF D.toPre F).left) (DegPre.famMult D.toPre F k mu α)` using `corr_of_val hL fun y J hJ => Units.ext (by`. Establish `C : IsCub (cubV D.toPre.cub (T` using `TF (R := V) F) y J) := isCub_cubV D.toPre.cub hJ`. Establish `E2 : val eB ((DegPre.zF D.toPre F).left ≫ (DegPre.prB D.toPre F).left) y J = val e' (DegPre.jFR (R` using `V) F) y J := by`. Establish `E1` using `veB (TF (R := V) F) (DegPre.zF D.toPre F ≫ DegPre.prB D.toPre F) y J hJ`. Rewrite `E1` using `[z₂, C.N_one, C.face₂, inv_one, _root_.one_mul, _root_.one_mul]`.
+
+Establish `e3 : (1 : TF (R` using `V) F ⟶ D.toPre.P.A).left ≫ D.toPre.P.A.hom = DegPre.jFR (R := V) F := Over.w _`. Rewrite `E1` using `[e3]`. Establish `e4 : (DegPre.zF D.toPre F).left ≫ (DegPre.prB D.toPre F).left = (1 : TF (R` using `V) F ⟶ D.toPre.P.A).left := by`. Rewrite using `[← Over.comp_left, z₂]`. Rewrite using `[e4]`.
+
+Conclude with `E1`. Rewrite using `[val_pull hJ, Category.id_comp, hval_u _ _ y J hJ, hval F (TF (R := V) F).left (𝟙 (TF (R := V) F).left) y J hJ, E2, gs_gF_zF, gs_scal_jFK, Category.id_comp, ← hc]`. Conclude with `mul_comm _ _)`. Establish `hrel` using `s.fe mu α u hu hcorr`. Establish `hformB : FormEq (Sum.elim (fun i => (𝟙 D.toPre.P.A * cQ D.toPre D.toPre.P.A mu).left ≫ D.toPre.famφB α i) (Sum.elim (D.toPre.famφB (α + k • mu)) (fun i => (𝟙 D.toPre.P.A * cQ D.toPre D.toPre.P.A mu).left ≫ D.toPre.famφB α i))) (Sum.elim (DegPre.famε k) (DegPre.deltaε k)) (D.toPre …` using `fun U _ h => by`.
+
+Rewrite using `[Fintype.prod_sum_type, Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, DegPre.deltaε, zpow_neg, Finset.prod_inv_distrib]`. Rewrite using `[mul_left_comm, mul_inv_cancel, _root_.mul_one]`. Use `vge_move (trF_fst mu) (trF_prB mu) u hrel eB heB hformB c (fun y J hJ => ?_) ?_ hs` and prove the remaining obligations. Rewrite using `[hval_u _ _ y J hJ, Category.id_comp]`.
+
+Conclude with `mul_comm _ _`. Conclude with `le_of_eq (hv c₀ _ hc₀).symm`.
+-/
 theorem fe_move (hϖ : Irreducible ϖ) {Q : D.toPre.X → ℤ} (hQ : IsQ D.toPre ϖ Q) (hv : ValOver ϖ F v) (k : ℕ)
     (mu α : D.toPre.X) (s : Fam D.toPre F k) {r : ℚ} (hs : VGe D F v k α (s.s α) r) :
     VGe D F v k (α + k • mu) (s.s (α + k • mu)) (r + ((k * Q mu + bOf D.toPre Q mu α : ℤ) : ℚ)) := by

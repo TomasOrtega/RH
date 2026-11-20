@@ -17,6 +17,31 @@ namespace GlobalTheory.InertBridge
 
 open GlobalTheory.InertCoord
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hTr v w hw _`. Establish `h : w.under (𝓞 F) = v` using `(InertChart.under_eq_iff hw w).2 rfl`. Take `⟨ϖ, σL, q, ψL, hc, hU, hodd, hpi, hpn, hψ⟩` from `GlobalTheory.T.exists_inertPlace_localField_data F E σ B hTr.base v w hw h`. Take `⟨A, hAf, hA⟩` from `GlobalTheory.T.exists_inertPlace_orthonormal_selfDual_frame F E σ B a a' G hTr.base hTr.geo v w hw h σL hc`. Take `⟨δ, Bm, hδ1, hδ2, hBf, hB⟩` from `GlobalTheory.T.exists_frame_conjTranspose_mul_eq_smul_one F E σ B a a' G hTr.base hTr.geo v w hw h σL hc`.
+
+Establish `hσσ : ∀ x, σL (σL x) = x` using `hU.1`. Establish `hmapσσ : ∀ {k : ℕ} (M : Matrix (Fin k) (Fin k) (w.adicCompletion E)), (M.map σL).map σL = M` using `fun M => Matrix.ext fun i j => hσσ _`. Establish `hS : ∀ {k : ℕ} (g : Formalism.UG.UJ σL ((1 : GL (Fin k) (w.adicCompletion E)) : Matrix (Fin k) (Fin k) (w.adicCompletion E))), (((g : GL (Fin k) (w.adicCompletion E)) : Matrix (Fin k) (Fin k) (w.adicCompletion E)).map σL)ᵀ * ((g : GL (Fin k) (w.adicCompletion E)) : Matrix (Fin k) …` using `fun {k} g => by`. Use `g.2` as an intermediate fact. Express the relevant statement in the definitionally equal form `Formalism.UG.cT σL ((g : GL (Fin k) (w.adicCompletion E)) : Matrix (Fin k) (Fin k) (w.adicCompletion E)) * (1 : Matrix (Fin k) (Fin k) (w.adicCompletion E)) * ((g : GL (Fin k) (w.adicCompletion E)) : Matrix (Fin k) (Fin k) (w.adicCompletion E)) = 1 at this`.
+
+Rewrite `this` using `[Matrix.mul_one]`. Then use the resulting hypothesis. Establish `hS' : ∀ {k : ℕ} (g : Formalism.UG.UJ σL ((1 : GL (Fin k) (w.adicCompletion E)) : Matrix (Fin k) (Fin k) (w.adicCompletion E))), ((g : GL (Fin k) (w.adicCompletion E)) : Matrix (Fin k) (Fin k) (w.adicCompletion E))ᵀ * ((g : GL (Fin k) (w.adicCompletion E)) : Matrix (Fin k) (Fin k) …` using `fun g => by`. Establish `h2` using `congrArg (fun M => M.map σL) (hS g)`. Simplify using `only [Matrix.map_mul (f := σL), Matrix.transpose_map, hmapσσ] at h2`. Rewrite `h2` using `[Matrix.map_one _ (map_zero σL) (map_one σL)]`.
+
+Conclude with `h2`. Set `φS : Formalism.UG.UJ σL ((1 : GL (Fin a') (w.adicCompletion E)) : Matrix (Fin a') (Fin a') (w.adicCompletion E)) →* GL (Fin a') (w.adicCompletion E)` to `(Formalism.UG.bc σL).comp (Subgroup.subtype _)`. Establish `hφS : ∀ g, ((φS g : GL (Fin a') (w.adicCompletion E)) : Matrix (Fin a') (Fin a') (w.adicCompletion E)) = ((g : GL (Fin a') (w.adicCompletion E)) : Matrix (Fin a') (Fin a') (w.adicCompletion E)).map σL` using `fun g => rfl`. Establish `hφSu : ∀ g, ((φS g : GL (Fin a') (w.adicCompletion E)) : Matrix (Fin a') (Fin a') (w.adicCompletion E))ᵀ * ((φS g : GL (Fin a') (w.adicCompletion E)) : Matrix (Fin a') (Fin a') (w.adicCompletion E)).map σL = 1` using `fun g => by`. Rewrite using `[hφS, hmapσσ]`.
+
+Conclude with `hS g`. Take `⟨ιS, hSat, hSmat, hSK⟩` from `GlobalTheory.T.exists_inertPlace_unitary_adelicHom F E σ v w hw h σL hc G.V' A 1 (by rw [hA, one_smul]) φS hφSu`. Take `⟨ιT, hTat, hTmat, hTK⟩` from `GlobalTheory.T.exists_inertPlace_unitary_adelicHom F E σ v w hw h σL hc G.W Bm δ hB (Subgroup.subtype _) (fun g => hS' g)`. Establish `hgrp : ∀ {k : ℕ} (P M : GL (Fin k) (w.adicCompletion E)), ((P⁻¹ : GL (Fin k) (w.adicCompletion E)) : Matrix (Fin k) (Fin k) (w.adicCompletion E)) * ((P * M * P⁻¹ : GL (Fin k) (w.adicCompletion E)) : Matrix (Fin k) (Fin k) (w.adicCompletion E)) * (P : Matrix (Fin k) (Fin k) (w.adi …` using `fun P M => by`. Rewrite using `[← Units.val_mul, ← Units.val_mul]`.
+
+Use `congr 1`. Use `group`. Use `⟨ϖ, σL, q, δ, 1, 1, ψL, kap hw h (A : Matrix (Fin a') (Fin a') (w.adicCompletion E)) (Bm : Matrix (Fin (a + a')) (Fin (a + a')) (w.adicCompletion E)), ιS, ιT, hU, hodd, one_mem _, one_mem _, ?_, ?_, ⟨hδ1, hδ2⟩, hpi, hpn, (GlobalTheory.T.inertPlacePoint_supported_and_surjective F …` and prove the remaining obligations. Introduce `i j`. Simplify using `only [Units.val_one, Matrix.one_apply, eq_comm (a := i)]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Introduce `i j`. Simplify using `only [Units.val_one, Matrix.one_apply, eq_comm (a := i)]`. Apply the tactic sequence `split_ifs <;> simp`. Introduce `x y show _ = B.ψ (⅟(2 : AF F) * Algebra.trace (AF F) (AE F E) (-1 * hTens (cA σ) (incM F G.V'.J) (incM F G.W.J) _ _))`.
+
+Rewrite using `[GlobalTheory.T.tensorHermitianForm_inertPoint_eq_localForm F E σ v w hw h σL hc G.V'.J G.W.J _ _ δ hA hB x y]`. Conclude with `hψ _`. Introduce `g k x`. Rewrite using `[GlobalTheory.T.inertPlace_action_on_tensorCoords F E σ v w hw h G.V' G.W A Bm (ιS g) (ιT k) (hSat g) (hTat k) x, hSmat, hTmat, hgrp, hgrp, hφS]`. Use `congr 1`.
+
+Establish `key : ∀ M : GL (Fin a') (w.adicCompletion E), ((M : Matrix (Fin a') (Fin a') (w.adicCompletion E)).map σL)ᵀ * (M : Matrix (Fin a') (Fin a') (w.adicCompletion E)) = 1 → ((M : Matrix (Fin a') (Fin a') (w.adicCompletion E)).map σL)ᵀ = ((M⁻¹ : GL (Fin a') (w.adicCompletion E)) : Matr …`. Introduce `M e`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Use `_ = _ := by rw [← Matrix.mul_assoc, e, Matrix.one_mul]`.
+
+Rewrite using `[key _ (hS g)]`. Both sides reduce to the same expression. Introduce `g hg`. Use `hSK hAf g ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `hg`.
+
+Set `σO : Formalism.UG.intL (w.adicCompletion E) →+* Formalism.UG.intL (w.adicCompletion E)` to `σL.restrict _ _ fun x hx => by`. Express the relevant statement in the definitionally equal form `Valued.v (σL x) ≤ 1`. Rewrite using `[hU.2.1 x]`. Conclude with `hx`. Use `⟨Formalism.UG.bc σO k, Units.ext (Matrix.ext fun i j => ?_)⟩` and prove the remaining obligations.
+
+Rewrite using `[hφS, ← hk]`. Both sides reduce to the same expression. Introduce `g hg`. Conclude with `hTK hBf g hg`.
+-/
 theorem exists_chart : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w → v ∉ X.T →

@@ -16,6 +16,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `hx' : x.det ≠ 0` using `hx`. Establish `hy' : y.det ≠ 0` using `hy`. Use `show (x * y).det ≠ 0`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero hx' hy'`.
+-/
 theorem mul_mem {x y : Mat n} (hx : x ∈ GLs n) (hy : y ∈ GLs n) : x * y ∈ GLs n := by
   have hx' : x.det ≠ 0 := hx
   have hy' : y.det ≠ 0 := hy
@@ -23,25 +26,43 @@ theorem mul_mem {x y : Mat n} (hx : x ∈ GLs n) (hy : y ∈ GLs n) : x * y ∈ 
   rw [Matrix.det_mul]
   exact mul_ne_zero hx' hy'
 
+/- English proof (translation)
+The claim follows from `(Matrix.isUnit_nonsing_inv_det x (isUnit_iff_ne_zero.mpr hx)).ne_zero`.
+-/
 theorem inv_mem {x : Mat n} (hx : x ∈ GLs n) : x⁻¹ ∈ GLs n :=
   (Matrix.isUnit_nonsing_inv_det x (isUnit_iff_ne_zero.mpr hx)).ne_zero
 
+/- English proof (translation)
+The claim follows from `((Matrix.isUnit_iff_isUnit_det _).mp y.isUnit).ne_zero`.
+-/
 theorem val_mem (y : G n) : y.val ∈ GLs n :=
   ((Matrix.isUnit_iff_isUnit_det _).mp y.isUnit).ne_zero
 
 def step (r s : ℝ) : ℝ := Real.smoothTransition (r + 1 - s)
 
+/- English proof (translation)
+The claim follows from `Real.smoothTransition.contDiff.comp (contDiff_const.sub contDiff_id)`.
+-/
 theorem step_contDiff (r : ℝ) : ContDiff ℝ ∞ (step r) :=
   Real.smoothTransition.contDiff.comp (contDiff_const.sub contDiff_id)
 
+/- English proof (translation)
+The claim follows from `Real.smoothTransition.one_of_one_le (by linarith)`.
+-/
 theorem step_eq_one {r s : ℝ} (h : s ≤ r) : step r s = 1 :=
   Real.smoothTransition.one_of_one_le (by linarith)
 
+/- English proof (translation)
+The claim follows from `Real.smoothTransition.zero_of_nonpos (by linarith)`.
+-/
 theorem step_eq_zero {r s : ℝ} (h : r + 1 ≤ s) : step r s = 0 :=
   Real.smoothTransition.zero_of_nonpos (by linarith)
 
 def cutAt (r : ℝ) (x y : Mat n) : ℝ := step r (lg (x⁻¹ * y))
 
+/- English proof (translation)
+Establish `hm : ContDiff ℝ ∞ (fun y : Mat n => x⁻¹ * y)` using `(LinearMap.toContinuousLinearMap (LinearMap.mulLeft ℝ x⁻¹)).contDiff`. Establish `h1 : ContDiffOn ℝ ∞ (fun y : Mat n => lg (x⁻¹ * y)) (GLs n)` using `(hL n).2.2.2.1.comp hm.contDiffOn fun _ hy => mul_mem (inv_mem hx) hy`. Conclude with `(step_contDiff r).comp_contDiffOn h1`.
+-/
 theorem cutAt_smooth (hL : LgFacts) (r : ℝ) {x : Mat n} (hx : x ∈ GLs n) :
     ContDiffOn ℝ ∞ (cutAt r x) (GLs n) := by
   have hm : ContDiff ℝ ∞ (fun y : Mat n => x⁻¹ * y) :=
@@ -50,6 +71,9 @@ theorem cutAt_smooth (hL : LgFacts) (r : ℝ) {x : Mat n} (hx : x ∈ GLs n) :
     (hL n).2.2.2.1.comp hm.contDiffOn fun _ hy => mul_mem (inv_mem hx) hy
   exact (step_contDiff r).comp_contDiffOn h1
 
+/- English proof (translation)
+Establish `h` using `(hL n).2.2.1 (x⁻¹ * g) (mul_mem (inv_mem hx) hg) 1 k`. Establish `e : ((1 : Matrix.unitaryGroup (Fin n) ℂ)).1 * (x⁻¹ * g) * k.1 = x⁻¹ * (g * k.1)`. Rewrite using `[show ((1 : Matrix.unitaryGroup (Fin n) ℂ)).1 = 1 from rfl, one_mul, mul_assoc]`. Rewrite `h` using `[e]`. Simplify using `only [cutAt, h]`.
+-/
 theorem cutAt_mul_unitary (hL : LgFacts) (r : ℝ) {x g : Mat n} (hx : x ∈ GLs n) (hg : g ∈ GLs n)
     (k : Matrix.unitaryGroup (Fin n) ℂ) : cutAt r x (g * k.1) = cutAt r x g := by
   have h := (hL n).2.2.1 (x⁻¹ * g) (mul_mem (inv_mem hx) hg) 1 k
@@ -61,6 +85,9 @@ theorem cutAt_mul_unitary (hL : LgFacts) (r : ℝ) {x g : Mat n} (hx : x ∈ GLs
 def cutSec {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (r : ℝ) (x : Mat n) (f : Mat n → V) : Mat n → V :=
   fun y => ((cutAt r x y : ℝ) : ℂ) • f y
 
+/- English proof (translation)
+Use `⟨?_, fun g hg k => ?_⟩` and prove the remaining obligations. Establish `hc : ContDiffOn ℝ ∞ (fun y => ((cutAt r x y : ℝ) : ℂ)) (GLs n)` using `Complex.ofRealCLM.contDiff.comp_contDiffOn (cutAt_smooth hL r hx)`. Conclude with `hc.smul hf.1`. Simplify using `only [cutSec, cutAt_mul_unitary hL r hx hg k, hf.2 g hg k, map_smul]`.
+-/
 theorem cutSec_mem (hL : LgFacts) (r : ℝ) {x : Mat n} (hx : x ∈ GLs n) {E : KMod n} {f : Mat n → E.V}
     (hf : f ∈ CE E) : cutSec r x f ∈ CE E := by
   refine ⟨?_, fun g hg k => ?_⟩
@@ -69,6 +96,11 @@ theorem cutSec_mem (hL : LgFacts) (r : ℝ) {x : Mat n} (hx : x ∈ GLs n) {E : 
     exact hc.smul hf.1
   · simp only [cutSec, cutAt_mul_unitary hL r hx hg k, hf.2 g hg k, map_smul]
 
+/- English proof (translation)
+Use `⟨lg x + (r + 1), fun y hy h => ?_⟩` and prove the remaining obligations. Establish `e : x * (x⁻¹ * y) = y` using `Matrix.mul_nonsing_inv_cancel_left x y (isUnit_iff_ne_zero.mpr hx)`. Establish `hs` using `(hL n).1 x hx (x⁻¹ * y) (mul_mem (inv_mem hx) hy)`. Rewrite `hs` using `[e]`. Establish `h0 : cutAt r x y = 0` using `step_eq_zero (by linarith)`.
+
+Simplify using `[cutSec, h0]`.
+-/
 theorem cutSec_cpt (hL : LgFacts) (r : ℝ) {x : Mat n} (hx : x ∈ GLs n) {V : Type} [NormedAddCommGroup V]
     [NormedSpace ℂ V] (f : Mat n → V) : Cpt (cutSec r x f) := by
   refine ⟨lg x + (r + 1), fun y hy h => ?_⟩
@@ -78,6 +110,9 @@ theorem cutSec_cpt (hL : LgFacts) (r : ℝ) {x : Mat n} (hx : x ∈ GLs n) {V : 
   have h0 : cutAt r x y = 0 := step_eq_zero (by linarith)
   simp [cutSec, h0]
 
+/- English proof (translation)
+Establish `e : x⁻¹ * (x * y) = y` using `Matrix.nonsing_inv_mul_cancel_left x y (isUnit_iff_ne_zero.mpr hx)`. Establish `h1 : cutAt r x (x * y) = 1`. Rewrite using `[cutAt, e]`. Conclude with `step_eq_one h`. Simplify using `[cutSec, h1]`.
+-/
 theorem cutSec_eq {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {r : ℝ} {x y : Mat n} (hx : x ∈ GLs n)
     (f : Mat n → V) (h : lg y ≤ r) : cutSec r x f (x * y) = f (x * y) := by
   have e : x⁻¹ * (x * y) = y := Matrix.nonsing_inv_mul_cancel_left x y (isUnit_iff_ne_zero.mpr hx)
@@ -86,11 +121,27 @@ theorem cutSec_eq {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {r : ℝ
     exact step_eq_one h
   simp [cutSec, h1]
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.CompanionTheory.WaveK.Lin.wave_add hu (GlobalTheory.CompanionTheory.WaveK.Lin.wave_smul (-1 : ℂ) hv)`. Simplify `h` using `[sub_eq_add_neg]`.
+-/
 theorem wave_sub {E : KMod n} {u v : ℝ → Mat n → E.V} (hu : IsWave E u) (hv : IsWave E v) :
     IsWave E fun t y => u t y - v t y := by
   have h := GlobalTheory.CompanionTheory.WaveK.Lin.wave_add hu (GlobalTheory.CompanionTheory.WaveK.Lin.wave_smul (-1 : ℂ) hv)
   simpa [sub_eq_add_neg] using h
 
+/- English proof (translation)
+Introduce `n _ _ μ _ E g T k hg hL _ _ hS hW hk hsupp heq hker`. Use `⟨hk, hsupp, heq, fun u hu x hx => ?_⟩` and prove the remaining obligations. Take `⟨R, hR⟩` from `hsupp`. Take `⟨c, hc⟩` from `hS n`. Take `⟨r, hRr, hcr⟩ : ∃ r : ℝ, R ≤ r ∧ |c| * (1 + |T|) ≤ r` from `⟨max R (|c| * (1 + |T|)), le_max_left _ _, le_max_right _ _⟩`.
+
+Establish `hf` using `cutSec_mem hL r hx (hu.2.1 0)`. Establish `hcpt` using `cutSec_cpt hL r hx (u 0)`. Take `⟨v, hv, hv0⟩` from `hW n E _ hf hcpt`. Establish `huv : ∀ t, |t| ≤ T → u t x = v t x`. Introduce `t ht`.
+
+Use `sub_eq_zero.mp (hc E _ (wave_sub hu hv) t x hx fun y hy hly => ?_)` and prove the remaining obligations. Establish `hb : c * (1 + |t|) ≤ |c| * (1 + |T|)`. Establish `h1 : |t| ≤ |T|` using `ht.trans (le_abs_self T)`. Establish `h2 : (0 : ℝ) ≤ 1 + |t|` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `show u 0 (x * y) - v 0 (x * y) = 0`. Rewrite using `[hv0 _ (mul_mem hx hy), cutSec_eq hx _ (hly.trans (hb.trans hcr)), sub_self]`. Establish `h1 : act μ E k (u 0) x = act μ E k (cutSec r x (u 0)) x`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `show k y.val (u 0 (x * y.val)) = k y.val (cutSec r x (u 0) (x * y.val))`.
+
+Distinguish the cases in `h : R < lg y.val`. Simplify using `[hR _ (val_mem y) h]`. Rewrite using `[cutSec_eq hx _ ((not_lt.mp h).trans hRr)]`. Rewrite using `[h1, hker _ hf hcpt v hv hv0 x hx]`. Use `show _ = ∫ t, (g t : ℂ) • u t x`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `show (g t : ℂ) • v t x = (g t : ℂ) • u t x`. Distinguish the cases in `h : T < |t|`. Simplify using `[hg.2.2 t h]`. Rewrite using `[huv t (not_lt.mp h)]`.
+-/
 theorem kerLoc : KerLoc := by
   intro n _ _ μ _ E g T k hg hL _ _ hS hW hk hsupp heq hker
   refine ⟨hk, hsupp, heq, fun u hu x hx => ?_⟩

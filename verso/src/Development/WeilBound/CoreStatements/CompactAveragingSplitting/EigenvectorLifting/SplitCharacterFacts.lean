@@ -12,6 +12,11 @@ open ValuativeRel
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `x hx`. Apply `h x` to reduce the goal to its premises. Use `⟨hx.1, le_trans hx.2 ?_⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos f with hf | hf` into its components or cases. Substitute `hf` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[pow_add, Units.val_mul, map_mul]`. Apply `mul_le_of_le_one_right'` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, map_pow]`. Conclude with `(GlobalTheory.GaussNonvanish.val_pow_lt_one hϖ hf).le`.
+-/
 theorem condLE_add {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {ϖ : kˣ} (hϖ : GlobalTheory.SplitFlip.IsUnif ϖ) {e : ℕ} (f : ℕ) {χ : kˣ →* ℂˣ} (h : CondLE ϖ e χ) : CondLE ϖ (e + f) χ := by
   intro x hx
@@ -27,6 +32,13 @@ theorem condLE_add {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [I
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {v : Pl F}
 
+/- English proof (translation)
+Use `haveI hc : (Valued.v : Valuation (Fv F v) _).Compatible := by first`. Consider the case `exact ⟨fun _ _ => Iff.rfl⟩`. Consider the case `(delta GlobalTheory.LocalData.complRel; infer_instance)`. Establish `he : (valuation (Fv F v)).IsEquiv (Valued.v : Valuation (Fv F v) _)` using `ValuativeRel.isEquiv _ _`. Establish `h1` using `he.le_iff_le (x := x) (y := 1)`.
+
+Establish `h2` using `he.le_iff_le (x := 1) (y := x)`. Simplify using `only [map_one] at h1 h2`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `le_antisymm (h1.mp h.le) (h2.mp h.ge)`.
+
+Introduce `h`. Conclude with `le_antisymm (h1.mpr h.le) (h2.mpr h.ge)`.
+-/
 theorem val_eq_one_iff (x : Fv F v) : valuation (Fv F v) x = 1 ↔ Valued.v x = 1 := by
   haveI hc : (Valued.v : Valuation (Fv F v) _).Compatible := by
     first
@@ -42,6 +54,17 @@ theorem val_eq_one_iff (x : Fv F v) : valuation (Fv F v) x = 1 ↔ Valued.v x = 
   · intro h
     exact le_antisymm (h1.mpr h.le) (h2.mpr h.ge)
 
+/- English proof (translation)
+Take `⟨ψ, hψ, -, hv, -, -⟩` from `GlobalTheory.LFun.SplitChart.exists_equiv_complMap τ (GlobalTheory.AdelicU.splitPrime_under τ)`. Prove the components needed by the constructor for the conclusion. Introduce `hU y hy`. Establish `hy' : Valued.v (y : HeightOneSpectrum.adicCompletion E (splitPrime τ)) = 1` using `hy`. Set `x : (Fv F v)ˣ` to `Units.map ψ.symm.toRingHom.toMonoidHom y`.
+
+Establish `hxv : valuation (Fv F v) (x : Fv F v) = 1` using `by show valuation (Fv F v) (ψ.symm (y : HeightOneSpectrum.adicCompletion E (splitPrime τ))) = 1`. Rewrite using `[val_eq_one_iff, ← hv, RingEquiv.apply_symm_apply]`. Conclude with `hy'`. Establish `h1` using `hU x hxv`. Establish `hxy : Units.map (GlobalTheory.LFun.complMap (GlobalTheory.AdelicU.splitPrime_under τ)).toMonoidHom x = y`.
+
+Apply `Units.ext` to reduce the goal to its premises. Use `show GlobalTheory.LFun.complMap (GlobalTheory.AdelicU.splitPrime_under τ) (ψ.symm (y : HeightOneSpectrum.adicCompletion E (splitPrime τ))) = y`. Rewrite using `[← hψ, RingEquiv.apply_symm_apply]`. Rewrite using `[← hxy]`. Conclude with `h1`.
+
+Introduce `hU x hx`. Establish `hx' : Valued.v (x : Fv F v) = 1` using `(val_eq_one_iff _).mp hx`. Establish `hc : Valued.v (GlobalTheory.LFun.complMap (GlobalTheory.AdelicU.splitPrime_under τ) (x : Fv F v)) = 1`. Rewrite using `[← hψ, hv]`. Conclude with `hx'`.
+
+Conclude with `hU (Units.map (GlobalTheory.LFun.complMap (GlobalTheory.AdelicU.splitPrime_under τ)).toMonoidHom x) hc`.
+-/
 theorem isUnram_chrW_iff (χ : Chr F E) (τ : E →ₐ[F] Fv F v) :
     GlobalTheory.SplitWeil.IsUnram (chrW χ τ) ↔ UnrAt χ (splitPrime τ) := by
   obtain ⟨ψ, hψ, -, hv, -, -⟩ :=
@@ -69,16 +92,35 @@ theorem isUnram_chrW_iff (χ : Chr F E) (τ : E →ₐ[F] Fv F v) :
       exact hx'
     exact hU (Units.map (GlobalTheory.LFun.complMap (GlobalTheory.AdelicU.splitPrime_under τ)).toMonoidHom x) hc
 
+/- English proof (translation)
+Conclude with `(GlobalTheory.LFun.continuous_locChar hχ _).comp (Units.continuous_map (GlobalTheory.LFun.SplitChart.continuous_complMap (GlobalTheory.AdelicU.splitPrime_under τ)))`.
+-/
 theorem continuous_chrW {χ : Chr F E} (hχ : Continuous χ) (τ : E →ₐ[F] Fv F v) :
     Continuous fun x => (chrW χ τ x : ℂ) := by
   exact (GlobalTheory.LFun.continuous_locChar hχ _).comp
     (Units.continuous_map (GlobalTheory.LFun.SplitChart.continuous_complMap (GlobalTheory.AdelicU.splitPrime_under τ)))
 
+/- English proof (translation)
+Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.div_apply]`. Conclude with `map_div Circle.toUnits _ _`.
+-/
 theorem chrW_div (α β : Chr F E) (τ : E →ₐ[F] Fv F v) : chrW (α / β) τ = chrW α τ / chrW β τ := by
   refine MonoidHom.ext fun x => ?_
   rw [MonoidHom.div_apply]
   exact map_div Circle.toUnits _ _
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ B X a a' v τ hG`. Take `⟨heckeα, heckeβ, -, -, -, -, -, -, ram, unrα, unrβ, -⟩` from `hG`. Establish `hu : GlobalTheory.SplitFlip.IsUnif (unifAt v)` using `by delta GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.unifAt`. Conclude with `Exists.choose_spec _`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x`. Conclude with `Circle.norm_coe _`. Introduce `x`. Conclude with `Circle.norm_coe _`. Conclude with `chrW_div X.α X.β τ`.
+
+Take `⟨e₁, h₁⟩` from `GlobalTheory.GaussNonvanish.exists_condLE hu (chrW X.α τ) (continuous_chrW heckeα.1 τ)`. Take `⟨e₂, h₂⟩` from `GlobalTheory.GaussNonvanish.exists_condLE hu (chrW X.β τ) (continuous_chrW heckeβ.1 τ)`. Use `⟨e₁ + e₂, condLE_add hu e₂ h₁, ?_⟩` and prove the remaining obligations. Rewrite using `[add_comm]`. Conclude with `condLE_add hu e₁ h₂`.
+
+Introduce `hvT hU`. Rewrite `hU` using `[isUnram_chrW_iff]`. Use `ram (splitPrime τ) ?_ hU` and prove the remaining obligations. Rewrite using `[GlobalTheory.AdelicU.splitPrime_under]`. Conclude with `hvT`.
+
+Introduce `hvT`. Establish `hw : splitPrime τ ∉ GlobalTheory.LFun.above E (X.T : Set (Pl F))`. Introduce `hm`. Apply `hvT` to reduce the goal to its premises. Establish `hm' : HeightOneSpectrum.under (NumberField.RingOfIntegers F) (splitPrime τ) ∈ (X.T : Set (Pl F))` using `hm`.
+
+Rewrite `hm'` using `[GlobalTheory.AdelicU.splitPrime_under]`. Conclude with `hm'`. Conclude with `⟨(isUnram_chrW_iff _ _).mpr (unrα _ hw), (isUnram_chrW_iff _ _).mpr (unrβ _ hw)⟩`.
+-/
 theorem split_character_facts : ChrFacts := by
   intro F E _ _ _ _ _ B X a a' v τ hG
   obtain ⟨heckeα, heckeβ, -, -, -, -, -, -, ram, unrα, unrβ, -⟩ := hG

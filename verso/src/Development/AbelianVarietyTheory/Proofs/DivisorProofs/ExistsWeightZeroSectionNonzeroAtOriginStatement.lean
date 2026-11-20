@@ -9,5 +9,8 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mum.exists_secB_zero_nonzero_origin | exact GlobalTheory.Mum.exists_secB_zero_nonzero_origin | (intros; apply GlobalTheory.Mum.exists_secB_zero_nonzero_origin <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_weightZero_section_nonzero_at_origin : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)), ∃ k₀ : ℕ, ∀ k ≥ k₀, ∃ b : D.toPre.SecB k 0, eSec D.toPre.P.A (closedPoint R) ∈ nonzeroLocus b := by
   first | exact @GlobalTheory.Mum.exists_secB_zero_nonzero_origin | exact GlobalTheory.Mum.exists_secB_zero_nonzero_origin | (intros; apply GlobalTheory.Mum.exists_secB_zero_nonzero_origin <;> assumption)

@@ -8,6 +8,15 @@ noncomputable section
 
 namespace GlobalTheory.PDivGroup
 
+/- English proof (translation)
+Take `⟨r, hr, hk⟩` from `G.exists_res_le (m := k) (n := k + m) (by omega)`. Establish `hle : RingHom.ker r ≤ RingHom.ker (mulBy O (G.A (k + m)) (p ^ m))`. Rewrite using `[hk]`. Use `(kerIdeal_le_ker_iff _ (mulBy O (G.A (k + m)) (p ^ m) : G.A (k + m) →ₐ[O] G.A (k + m))).2 fun c => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mulBy O _ (p ^ m) (mulBy O _ (p ^ k) c) = _`.
+
+Rewrite using `[mulBy_mulBy, ← pow_add, add_comm m k, mulBy_pow_self]`. Set `μ` to `liftSurj r hr (mulBy O (G.A (k + m)) (p ^ m)) hle`. Establish `hμ : ∀ a, μ (r a) = mulBy O (G.A (k + m)) (p ^ m) a` using `liftSurj_apply r hr _ hle`. Use `⟨r, μ, hr, hk, hμ, fun q => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, hfk⟩` from `G.exists_res_le (m := m) (n := k + m) (by omega)`.
+
+Establish `hker : kerIdeal μ = RingHom.ker (f : G.A (k + m) →ₐ[O] G.A m)`. Rewrite using `[← kerIdeal_comp_of_surjective μ hr, show μ.comp r = mulBy O (G.A (k + m)) (p ^ m) from BialgHom.ext hμ]`. Conclude with `hfk.symm`. Establish `h1` using `fibreDim_eq_ker_mul_range μ q`. Rewrite `h1` using `[hker, fibreDim_congr (Ideal.quotientKerAlgEquivOfSurjective (f := (f : G.A (k + m) →ₐ[O] G.A m)) hf).toLinearEquiv, fibreDim_eq, fibreDim_eq, add_mul, pow_add, mul_comm (p ^ (k * G.height))]`.
+
+Rewrite using `[fibreDim_eq]`. Establish `hp : 0 < p ^ (m * G.height)` using `pow_pos (Fact.out : p.Prime).pos _`. Conclude with `(Nat.eq_of_mul_eq_mul_left hp h1).symm`.
+-/
 theorem exists_mulPow_fibreRank_eq (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O]
     (G : PDivGroup p O) (k m : ℕ) :
     ∃ (r : G.A (k + m) →ₐc[O] G.A k) (μ : G.A k →ₐc[O] G.A (k + m)), Function.Surjective r ∧

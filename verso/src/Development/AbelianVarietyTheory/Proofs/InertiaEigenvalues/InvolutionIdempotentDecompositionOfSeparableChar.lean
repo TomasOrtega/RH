@@ -18,6 +18,9 @@ variable {R : Type} [CommRing R]
 def FieldIdem (f : R) : Prop :=
   IsIdempotentElem f ∧ f ≠ 0 ∧ ∀ y, f * y ≠ 0 → ∃ z, f * y * z = f
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `hu.2.2 v h`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem FieldIdem.mul_eq_left {u v : R} (hu : FieldIdem u) (hv : IsIdempotentElem v) (h : u * v ≠ 0) :
     u * v = u := by
   obtain ⟨z, hz⟩ := hu.2.2 v h
@@ -26,6 +29,9 @@ theorem FieldIdem.mul_eq_left {u v : R} (hu : FieldIdem u) (hv : IsIdempotentEle
     _ = u * (v * v) * z := by ring
     _ = u := by rw [hv.eq, hz]
 
+/- English proof (translation)
+Establish `h1 : u * v = u` using `hu.mul_eq_left hv.1 h`. Establish `h2 : v * u = v` using `hv.mul_eq_left hu.1 (by rwa [mul_comm])`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem FieldIdem.eq_of_mul_ne_zero {u v : R} (hu : FieldIdem u) (hv : FieldIdem v) (h : u * v ≠ 0) :
     u = v := by
   have h1 : u * v = u := hu.mul_eq_left hv.1 h
@@ -34,6 +40,13 @@ theorem FieldIdem.eq_of_mul_ne_zero {u v : R} (hu : FieldIdem u) (hv : FieldIdem
     _ = v * u := mul_comm _ _
     _ = v := h2
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show σ u * σ u = σ u`. Rewrite using `[← map_mul, hu.1.eq]`. Introduce `h0`. Conclude with `hu.2.1 (σ.injective (by rw [h0, map_zero]))`.
+
+Introduce `y hy`. Establish `hy' : u * σ.symm y ≠ 0`. Introduce `h0`. Apply `hy` to reduce the goal to its premises. Establish `h1` using `congrArg σ h0`.
+
+Rewrite `h1` using `[map_mul, RingEquiv.apply_symm_apply, map_zero]`. Then use the resulting hypothesis. Take `⟨z, hz⟩` from `hu.2.2 _ hy'`. Use `⟨σ z, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg σ hz`. Rewrite `h1` using `[map_mul, map_mul, RingEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+-/
 theorem FieldIdem.map {u : R} (hu : FieldIdem u) (σ : R ≃+* R) : FieldIdem (σ u) := by
   refine ⟨?_, ?_, ?_⟩
   · show σ u * σ u = σ u
@@ -51,6 +64,21 @@ theorem FieldIdem.map {u : R} (hu : FieldIdem u) (σ : R ≃+* R) : FieldIdem (�
     have h1 := congrArg σ hz
     rwa [map_mul, map_mul, RingEquiv.apply_symm_apply] at h1
 
+/- English proof (translation)
+Set `φ` to `IsArtinianRing.equivPi R`. Establish `: Fintype (MaximalSpectrum R)` using `Fintype.ofFinite _`. Establish `hc : CompleteOrthogonalIdempotents (fun m : MaximalSpectrum R => φ.symm (Pi.single m 1))` using `(CompleteOrthogonalIdempotents.single (fun I : MaximalSpectrum R => R ⧸ I.asIdeal)).map φ.symm.toRingEquiv.toRingHom`. Use `⟨MaximalSpectrum R, inferInstance, fun m => φ.symm (Pi.single m 1), hc, fun m => ?_⟩` and prove the remaining obligations. Use `⟨hc.idem m, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `h0`. Establish `h1` using `congrArg (fun x => φ x m) h0`. Simplify using `only [AlgEquiv.apply_symm_apply, map_zero, Pi.single_eq_same, Pi.zero_apply] at h1`. Conclude with `one_ne_zero h1`. Introduce `y hy`.
+
+Establish `ha : φ y m ≠ 0`. Introduce `h0`. Apply `hy` to reduce the goal to its premises. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[map_mul, AlgEquiv.apply_symm_apply, map_zero]`.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[Pi.mul_apply, Pi.zero_apply]`. Distinguish the cases in `hj : j = m`. Substitute `hj` using the available equality. Rewrite using `[Pi.single_eq_same, one_mul]`.
+
+Conclude with `h0`. Simplify using `only [Pi.single_eq_of_ne hj, zero_mul]`. Take `⟨b, hb⟩` from `Ideal.Quotient.exists_inv ha`. Use `⟨φ.symm (Pi.single m b), ?_⟩` and prove the remaining obligations. Apply `φ.injective` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, map_mul, AlgEquiv.apply_symm_apply, AlgEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `j`. Rewrite using `[Pi.mul_apply, Pi.mul_apply]`. Distinguish the cases in `hj : j = m`. Substitute `hj` using the available equality.
+
+Rewrite using `[Pi.single_eq_same, Pi.single_eq_same, one_mul]`. Conclude with `hb`. Simplify using `only [Pi.single_eq_of_ne hj, zero_mul]`.
+-/
 theorem exists_fieldIdem_family [IsReduced R] [IsArtinianRing R] :
     ∃ (M : Type) (_ : Fintype M) (f : M → R), CompleteOrthogonalIdempotents f ∧ ∀ m, FieldIdem (f m) := by
 
@@ -92,6 +120,43 @@ theorem exists_fieldIdem_family [IsReduced R] [IsArtinianRing R] :
 
 end Generic
 
+/- English proof (translation)
+Use `InvAlg.isReduced_of_separable_P K B hP` as an intermediate fact. Establish `: IsArtinianRing B.A` using `IsArtinianRing.of_finite K.E B.A`. Take `⟨M, _, f, hf, hF⟩` from `exists_fieldIdem_family (R := B.A)`. Establish `hex : ∀ m, ∃ m', B.σ (f m) = f m'`. Introduce `m`.
+
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hσ` using `(hF m).map B.σ`. Establish `hzero : ∀ m', B.σ (f m) * f m' = 0` using `fun m' => by`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hcon m' (hσ.eq_of_mul_ne_zero (hF m') h)`. Apply `hσ.2.1` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Use `choose τ hτ using hex`. Establish `finj : Function.Injective f`.
+
+Introduce `a b hab`. Assume the negation of the conclusion as `h`. Apply `(hF a).2.1` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hττ : ∀ m, τ (τ m) = m`.
+
+Introduce `m`. Apply `finj` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Choose the witnesses or unpack the hypotheses as in `⟨rep, rep_mem, rep_tau⟩ : ∃ rep : M → M, (∀ m, rep m = m ∨ rep m = τ m) ∧ ∀ m, rep (τ m) = rep m := by`. Set `enc` to `Fintype.equivFin M`.
+
+Use `⟨fun m => if enc m ≤ enc (τ m) then m else τ m, fun m => ?_, fun m => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `dsimp only split_ifs <;> simp`. Simplify using `only`. Rewrite using `[hττ m]`. Apply the tactic sequence `by_cases h1 : enc m ≤ enc (τ m) <;> by_cases h2 : enc (τ m) ≤ enc m`.
+
+Establish `h3 : m = τ m` using `enc.injective (le_antisymm h1 h2)`. Rewrite using `[if_pos h2, if_pos h1]`. Conclude with `h3.symm`. Rewrite using `[if_neg h2, if_pos h1]`. Rewrite using `[if_pos h2, if_neg h1]`.
+
+Conclude with `(le_total (enc m) (enc (τ m))).elim (fun h => absurd h h1) (fun h => absurd h h2)`. Establish `rep_rep : ∀ m, rep (rep m) = rep m`. Introduce `m`. Break down `rep_mem m with h | h` into its components or cases. Rewrite using `[h, h]`.
+
+Rewrite using `[h, rep_tau, h]`. Take `⟨g, hg⟩ : ∃ g : M → {m : M // rep m = m}, ∀ m, (g m).1 = rep m` from `⟨fun m => ⟨rep m, rep_rep m⟩, fun _ => rfl⟩`. Establish `hfib : ∀ (i : {m : M // rep m = m}) (m : M), g m = i ↔ m = i.1 ∨ m = τ i.1`. Introduce `i m`. Rewrite using `[Subtype.ext_iff, hg]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Break down `rep_mem m with h' | h'` into its components or cases. Conclude with `Or.inl (h'.symm.trans h)`. Use `right`.
+
+Establish `h3 : τ m = i.1` using `h'.symm.trans h`. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `(h | h)`. Rewrite using `[h]`. Conclude with `i.2`.
+
+Rewrite using `[h, rep_tau]`. Conclude with `i.2`. Take `⟨e, he⟩ : ∃ e : {m : M // rep m = m} → B.A, ∀ i, e i = ∑ m ∈ Finset.univ.filter (fun m => g m = i), f m` from `⟨_, fun _ => rfl⟩`. Establish `hsum : ∀ i, e i = if τ i.1 = i.1 then f i.1 else f i.1 + f (τ i.1)`. Introduce `i`.
+
+Establish `hfil : Finset.univ.filter (fun m => g m = i) = {i.1, τ i.1}`. Use extensionality with `m`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`. Conclude with `hfib i m`. Rewrite using `[he, hfil]`.
+
+Use `split_ifs with h`. Simplify using `[h]`. Conclude with `Finset.sum_pair (Ne.symm h)`. Use `⟨{m : M // rep m = m}, inferInstance, e, Finset.univ.filter (fun i => τ i.1 = i.1), ⟨⟨fun i => ?_, fun i j hij => ?_⟩, ?_⟩, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[he]`.
+
+Conclude with `hf.1.isIdempotentElem_sum`. Use `show e i * e j = 0`. Rewrite using `[he, he, Finset.sum_mul]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `a ha`.
+
+Apply `hf.1.mul_sum_of_notMem` to reduce the goal to its premises. Introduce `ha'`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ha ha'`. Conclude with `hij (ha.symm.trans ha')`. Repeatedly rewrite using `[he]`.
+
+Rewrite using `[Finset.sum_fiberwise]`. Conclude with `hf.complete`. Use `⟨f i.1, (hF _).1, (hF _).2.1, (hF _).2.2, fun hi => ?_, fun hi => ?_⟩` and prove the remaining obligations. Establish `hi' : τ i.1 = i.1` using `(Finset.mem_filter.mp hi).2`. Conclude with `⟨by rw [hsum i, if_pos hi'], by rw [hτ, hi']⟩`.
+
+Establish `hi' : τ i.1 ≠ i.1` using `fun h => hi (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h⟩)`. Conclude with `⟨by rw [hτ]; exact hf.ortho (Ne.symm hi'), by rw [hsum i, if_neg hi', hτ]⟩`.
+-/
 theorem exists_isPre (K : UQ) (B : InvAlg K) (hP : B.P.Separable) :
     ∃ (ι : Type) (_ : Fintype ι) (e : ι → B.A) (S : Finset ι), IsPre B e S := by
   have := InvAlg.isReduced_of_separable_P K B hP
@@ -197,6 +262,9 @@ theorem exists_isPre (K : UQ) (B : InvAlg K) (hP : B.P.Separable) :
     · have hi' : τ i.1 ≠ i.1 := fun h => hi (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h⟩)
       exact ⟨by rw [hτ]; exact hf.ortho (Ne.symm hi'), by rw [hsum i, if_neg hi', hτ]⟩
 
+/- English proof (translation)
+Introduce `K B hP` and use `exists_isPre K B hP`.
+-/
 theorem isPre_of_separable : ∀ (K : UQ) (B : InvAlg K), B.P.Separable →
     ∃ (ι : Type) (_ : Fintype ι) (e : ι → B.A) (S : Finset ι), IsPre B e S := fun K B hP => exists_isPre K B hP
 

@@ -8,8 +8,14 @@ open Formalism.BasicNotions Formalism.FrobeniusOrbits NumberField
 
 def ej (R : Ranks) (p : HCParam R) (j : ℕ) : ℝ := if h : j - 1 < R.m then ((p.e ⟨j - 1, h⟩ : ℚ) : ℝ) else 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem wj_ej (D : D7) (j : ℕ) (τ : D.what₂.Tau) : wj D j τ = ej D.R (D.hc τ) j := rfl
 
+/- English proof (translation)
+Establish `h1` using `h (D.eTau τ)`. Establish `e : (coreOf D).2.2 (D.eTau τ) = D.hc τ` using `congrArg D.hc (D.eTau.symm_apply_apply τ)`. Rewrite `h1` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem forall_tau (D : D7) {Φ : ↥(D.R.Psi) → HCParam D.R → Prop} (h : ∀ g, Φ g ((coreOf D).2.2 g))
     (τ : D.what₂.Tau) : Φ (D.eTau τ) (D.hc τ) := by
   have h1 := h (D.eTau τ)

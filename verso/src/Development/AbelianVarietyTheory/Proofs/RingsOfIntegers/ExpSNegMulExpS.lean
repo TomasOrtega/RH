@@ -16,19 +16,36 @@ section Lift
 
 variable (k : Type) [CommRing k]
 
+/- English proof (translation)
+The claim follows from `hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _`.
+-/
 theorem liftX_hasSubst : HasSubst (fun p : Fin 1 × Fin d => (X (Sum.inl p.2) : AA k d)) :=
   hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _
 
+/- English proof (translation)
+The claim follows from `FormalCalc.subst_one' (liftX_hasSubst k)`.
+-/
 theorem liftX_one : liftX k (1 : PS k 1 d) = 1 :=
   FormalCalc.subst_one' (liftX_hasSubst k)
 
+/- English proof (translation)
+The claim follows from `subst_mul (liftX_hasSubst k) f g`.
+-/
 theorem liftX_mul (f g : PS k 1 d) : liftX k (f * g) = liftX k f * liftX k g :=
   subst_mul (liftX_hasSubst k) f g
 
+/- English proof (translation)
+The claim follows from `FormalCalc.subst_sum' (liftX_hasSubst k) s f`.
+-/
 theorem liftX_sum {ι : Type} (s : Finset ι) (f : ι → PS k 1 d) :
     liftX k (∑ i ∈ s, f i) = ∑ i ∈ s, liftX k (f i) :=
   FormalCalc.subst_sum' (liftX_hasSubst k) s f
 
+/- English proof (translation)
+Unfold `liftX`. Rewrite using `[FormalCalc.pderiv_subst (liftX_hasSubst k), Finset.sum_eq_single ((0 : Fin 1), j)]`. Rewrite using `[pderiv_X_self, mul_one]`. Introduce and unpack `⟨a, b⟩ _ hne`. Establish `hb : b ≠ j` using `fun h => hne (by subst h; rw [Subsingleton.elim a 0])`.
+
+Rewrite using `[pderiv_X_of_ne (fun h => hb (Sum.inl_injective h)), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem pderiv_inl_liftX (f : PS k 1 d) (j : Fin d) :
     pderiv k (Sum.inl j) (liftX k f) = liftX k (pderiv k ((0 : Fin 1), j) f) := by
   unfold liftX
@@ -39,6 +56,9 @@ theorem pderiv_inl_liftX (f : PS k 1 d) (j : Fin d) :
     rw [pderiv_X_of_ne (fun h => hb (Sum.inl_injective h)), mul_zero]
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Unfold `liftX`. Rewrite using `[FormalCalc.pderiv_subst (liftX_hasSubst k)]`. Use `Finset.sum_eq_zero fun p _ => ?_` and prove the remaining obligations. Rewrite using `[pderiv_X_of_ne Sum.inl_ne_inr, mul_zero]`.
+-/
 theorem pderiv_inr_liftX (f : PS k 1 d) (i : Fin d) : pderiv k (Sum.inr i) (liftX k f) = 0 := by
   unfold liftX
   rw [FormalCalc.pderiv_subst (liftX_hasSubst k)]
@@ -51,12 +71,18 @@ variable (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k]
 
 omit [Algebra ℚ k] in
 
+/- English proof (translation)
+Simplify using `only [Dx, Dof, pderiv_inl_liftX, liftX_sum, liftX_mul]`.
+-/
 theorem Dx_liftX (B : FB R d O) (u : Fin d → k) (f : PS k 1 d) :
     Dx k B u (liftX k f) = liftX k (Dof (B.FK k) u f) := by
   simp only [Dx, Dof, pderiv_inl_liftX, liftX_sum, liftX_mul]
 
 omit [Algebra ℚ k] in
 
+/- English proof (translation)
+Simplify using `only [Dx, Derivation.leibniz, smul_eq_mul, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun t _ => by ring`.
+-/
 theorem Dx_mul (B : FB R d O) (u : Fin d → k) (f G : AA k d) :
     Dx k B u (f * G) = Dx k B u f * G + f * Dx k B u G := by
   simp only [Dx, Derivation.leibniz, smul_eq_mul, Finset.sum_mul, Finset.mul_sum,
@@ -65,6 +91,11 @@ theorem Dx_mul (B : FB R d O) (u : Fin d → k) (f G : AA k d) :
 
 omit [Algebra ℚ k] in
 
+/- English proof (translation)
+Establish `e : ∀ c : Fin d → AA k d, ∑ i : Fin d, c i * pderiv k (Sum.inr i) (liftX k f * G) = liftX k f * ∑ i : Fin d, c i * pderiv k (Sum.inr i) G`. Introduce `c`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Derivation.leibniz, pderiv_inr_liftX, smul_zero, add_zero, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Unfold `nabla`. Rewrite using `[Dx_mul, Dx_liftX, e, e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nabla_liftX_mul (B : FB R d O) (h : PS k 2 d) (m : ℕ) (u φ : Fin d → k) (f : PS k 1 d)
     (G : AA k d) :
     nabla k B h m u φ (liftX k f * G) =
@@ -80,6 +111,11 @@ theorem nabla_liftX_mul (B : FB R d O) (h : PS k 2 d) (m : ℕ) (u φ : Fin d �
   rw [Dx_mul, Dx_liftX, e, e]
   ring
 
+/- English proof (translation)
+Establish `e : ∀ i, pderiv k i (FB.expS k g) = FB.expS k g * pderiv k i g` using `FormalCalc.pderiv_formalExp hg`. Unfold `Dof`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[e]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Dof_expS (F : Fin d → PS k 2 d) (u : Fin d → k) {g : PS k 1 d}
     (hg : constantCoeff g = 0) : Dof F u (FB.expS k g) = FB.expS k g * Dof F u g := by
   have e : ∀ i, pderiv k i (FB.expS k g) = FB.expS k g * pderiv k i g :=
@@ -90,11 +126,17 @@ theorem Dof_expS (F : Fin d → PS k 2 d) (u : Fin d → k) {g : PS k 1 d}
   rw [e]
   ring
 
+/- English proof (translation)
+Rewrite using `[mul_comm]`. Conclude with `FormalCalc.formalExp_mul_formalExp_neg hg`.
+-/
 theorem expS_neg_mul_expS {n : ℕ} {g : PS k n d} (hg : constantCoeff g = 0) :
     FB.expS k (-g) * FB.expS k g = 1 := by
   rw [mul_comm]
   exact FormalCalc.formalExp_mul_formalExp_neg hg
 
+/- English proof (translation)
+Introduce `R _ d O _ _ k _ _ _ B h m u φ g hg G`. Establish `e : liftX k (FB.expS k (-g)) * liftX k (FB.expS k g) = 1`. Rewrite using `[← liftX_mul, expS_neg_mul_expS k hg, liftX_one]`. Rewrite using `[nabla_liftX_mul, Dof_expS k _ u hg, liftX_mul]`. Take the linear combination `(nabla k B h m u φ G + liftX k (Dof (B.FK k) u g) * G) * e`.
+-/
 theorem main : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k] (B : FB R d O) (h : PS k 2 d) (m : ℕ) (u φ : Fin d → k) (g : PS k 1 d), constantCoeff g = 0 → ∀ G : AA k d, liftX k (FB.expS k (-g)) * nabla k B h m u φ (liftX k (FB.expS k g) * G) = nabla k B h m u φ G + liftX k (Dof (B.FK k) u g) * G := by
   intro R _ d O _ _ k _ _ _ B h m u φ g hg G
   have e : liftX k (FB.expS k (-g)) * liftX k (FB.expS k g) = 1 := by

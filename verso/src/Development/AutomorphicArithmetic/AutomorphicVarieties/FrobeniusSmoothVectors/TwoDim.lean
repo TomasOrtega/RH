@@ -5,6 +5,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+Establish `h0 : ∀ v ∈ W, v 0 ≠ 0 → (![1, 0] : Fin 2 → K) ∈ W` using `fun v hv h => by`. Use `W.smul_mem (v 0)⁻¹ (hE v hv) using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext i; fin_cases i <;> simp [h]`. Establish `h1 : ∀ v ∈ W, v 1 ≠ 0 → (![0, 1] : Fin 2 → K) ∈ W` using `fun v hv h => by`. Use `W.smul_mem (v 1)⁻¹ (W.sub_mem hv (hE v hv)) using 1` and compare the differences between its conclusion and the goal.
+
+Apply the tactic sequence `ext i; fin_cases i <;> simp [h, vecHead, vecTail]`. Establish `h01 : (![1, 0] : Fin 2 → K) ∈ W → (![0, 1] : Fin 2 → K) ∈ W` using `fun h => h1 _ (ha _ h) (by simpa [Matrix.mulVec, dotProduct, Fin.sum_univ_two] using ha')`. Establish `h10 : (![0, 1] : Fin 2 → K) ∈ W → (![1, 0] : Fin 2 → K) ∈ W` using `fun h => h0 _ (hb _ h) (by simpa [Matrix.mulVec, dotProduct, Fin.sum_univ_two] using hb')`. Rewrite using `[or_iff_not_imp_left]`. Introduce `hW`.
+
+Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff W).1 hW`. Establish `key : (![1, 0] : Fin 2 → K) ∈ W ∧ (![0, 1] : Fin 2 → K) ∈ W`. Distinguish the cases in `h : v 0 = 0`. Apply the tactic sequence `have h' : v 1 ≠ 0 := fun h' => hv0 (by ext i; fin_cases i <;> simp [h, h'])`. Conclude with `⟨h10 (h1 v hv h'), h1 v hv h'⟩`.
+
+Conclude with `⟨h0 v hv h, h01 (h0 v hv h)⟩`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Use `W.add_mem (W.smul_mem (x 0) key.1) (W.smul_mem (x 1) key.2) using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext i; fin_cases i <;> simp`.
+-/
 private theorem two_dim {K : Type} [Field K] (W : Submodule K (Fin 2 → K))
     (hE : ∀ v ∈ W, (![v 0, 0] : Fin 2 → K) ∈ W) (a b : Matrix (Fin 2) (Fin 2) K)
     (ha : ∀ v ∈ W, a *ᵥ v ∈ W) (hb : ∀ v ∈ W, b *ᵥ v ∈ W) (ha' : a 1 0 ≠ 0) (hb' : b 0 1 ≠ 0) :
@@ -32,6 +41,27 @@ private theorem two_dim {K : Type} [Field K] (W : Submodule K (Fin 2 → K))
   convert W.add_mem (W.smul_mem (x 0) key.1) (W.smul_mem (x 1) key.2) using 1
   ext i; fin_cases i <;> simp
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ F C₀ hF S K _ f hT W hW`. Take `⟨⟨hP, hM⟩, -, hee⟩` from `hT`. Take `⟨hco, -⟩` from `co_B hF (Or.inr rfl) S`. Establish `hid` using `idem hF (Or.inr rfl) S.B S.A S.u (cone_u hF (Or.inr rfl) S).2 0`. Establish `hspan : ∀ M ∈ Submodule.span S.B (Set.range S.u.r), ∀ v ∈ W, ((M.map f).submatrix ![0, 2] ![0, 2]) *ᵥ v ∈ W`.
+
+Introduce `M hM`. Proceed by induction on `hM using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`. Conclude with `hW g (Subgroup.mem_top g)`.
+
+Consider the case `zero`. Introduce `v _`. Rewrite using `[Matrix.map_zero _ (map_zero f), Matrix.submatrix_zero]`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`.
+
+Introduce `v hv`. Use `W.add_mem (hx v hv) (hy v hv) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← Matrix.add_mulVec]`. Use `congr 1`. Use extensionality with `i j`.
+
+Conclude with `map_add f _ _`. Consider the case `smul c x _ hx`. Introduce `v hv`. Use `W.smul_mem (f (algebraMap S.B S.A c)) (hx v hv) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← Matrix.smul_mulVec]`.
+
+Use `congr 1`. Use extensionality with `i j`. Conclude with `map_mul f (algebraMap S.B S.A c) _`. Establish `hodd : ∀ g i j, Odd (w 3 i - w 3 j) → f (S.u.r g i j) = 0` using `fun g i j h => hee (Ideal.subset_span ⟨g, i, j, h, rfl⟩)`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g, f (S.u.r g 2 0) ≠ 0 := by`.
+
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `hP (Ideal.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `x ⟨g, i, j, hij, rfl⟩`. Use `show f _ = 0`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first | exact absurd hij (by decide) | exact hc g | exact hodd g _ _ (by decide)`. Choose the witnesses or unpack the hypotheses as in `⟨g', hg'⟩ : ∃ g, f (S.u.r g 0 2) ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `hM (Ideal.span_le.2 ?_)` and prove the remaining obligations.
+
+Introduce and unpack `x ⟨g, i, j, hij, rfl⟩`. Use `show f _ = 0`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first | exact absurd hij (by decide) | exact hc g | exact hodd g _ _ (by decide)`. Use `two_dim W (fun v hv => ?_) _ _ (hW g (Subgroup.mem_top g)) (hW g' (Subgroup.mem_top g')) hg hg'` and prove the remaining obligations. Use `hspan _ hid v hv using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two, Matrix.single]`.
+-/
 theorem UpperTheory.V.Fr.typeE :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ}, F.Ok C₀ → ∀ S : Space O F 3, ∀ (K : Type) [Field K] (f : S.A →+* K), S.u.TE (RingHom.ker f) → MatIrr ⊤ fun g : F.G0 => ((S.u.map f).r g).submatrix ![0, 2] ![0, 2] := by
   intro l _ O _ _ _ _ F C₀ hF S K _ f hT W hW

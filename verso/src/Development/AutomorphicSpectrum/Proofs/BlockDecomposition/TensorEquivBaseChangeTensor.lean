@@ -3,6 +3,9 @@ open TensorProduct
 
 namespace GlobalTheory.CompanionTheory.TensorPushout
 
+/- English proof (translation)
+Introduce `K A B R X Y`. Use `intros`. Use `⟨((TensorProduct.AlgebraTensorModule.cancelBaseChange K A A X Y).symm.restrictScalars K).trans <| (((Algebra.IsPushout.cancelBaseChange K A B R Y).symm.lTensor X).restrictScalars K).trans <| ((TensorProduct.comm A X (R ⊗[B] Y)).restrictScalars K).trans <| ((TensorProduct.AlgebraT …` and prove the remaining obligations. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.restrictScalars_apply, TensorProduct.AlgebraTensorModule.cancelBaseChange_symm_tmul, LinearEquiv.lTensor_tmul, Algebra.IsPushout.cancelBaseChange_symm_tmul, map_one, TensorProduct.comm_tmul]`.
+-/
 theorem tensor_equiv_baseChange_tensor :
     ∀ (K A B R X Y : Type) [CommRing K] [CommRing A] [CommRing B] [CommRing R] [Algebra K A]
       [Algebra K B] [Algebra K R] [Algebra A R] [Algebra B R] [IsScalarTower K A R]

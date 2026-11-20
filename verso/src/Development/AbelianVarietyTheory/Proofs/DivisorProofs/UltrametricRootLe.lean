@@ -4,6 +4,11 @@ namespace GlobalTheory
 
 open Polynomial
 
+/- English proof (translation)
+Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Simplify using `[hC]`. Introduce `a s ha ih h`. Rewrite using `[Finset.sum_insert ha]`.
+
+Conclude with `(hw _ _).trans (max_le (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi)))`.
+-/
 theorem ultrametric_sum_le {K : Type} [Field K] (w : AbsoluteValue K ℝ)
     (hw : ∀ x y, w (x + y) ≤ max (w x) (w y)) {ι : Type*} (s : Finset ι) (f : ι → K)
     (C : ℝ) (hC : 0 ≤ C) : (∀ i ∈ s, w (f i) ≤ C) → w (∑ i ∈ s, f i) ≤ C := by
@@ -15,6 +20,23 @@ theorem ultrametric_sum_le {K : Type} [Field K] (w : AbsoluteValue K ℝ)
     exact (hw _ _).trans (max_le (h a (Finset.mem_insert_self a s))
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi)))
 
+/- English proof (translation)
+Introduce `A K _ _ w hw ψ d ζ hζ p hp α hα B hB hcoef`. Establish `hB0 : (0 : ℝ) ≤ B` using `le_trans zero_le_one hB`. Establish `hc : ∀ l < p.natDegree, w (MvPolynomial.eval₂Hom ψ ζ (p.coeff l)) ≤ B`. Introduce `l hl`. Rewrite using `[MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_eq]`.
+
+Use `ultrametric_sum_le w hw _ _ B hB0 ?_` and prove the remaining obligations. Introduce `s hs`. Rewrite using `[map_mul, map_prod]`. Use `(mul_le_mul (hcoef l hl s hs) ?_ (by positivity) hB0).trans_eq (mul_one B)` and prove the remaining obligations. Use `Finset.prod_le_one (fun i _ => by positivity) (fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_pow]`. Conclude with `pow_le_one₀ (by positivity) (hζ i)`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hα1 : 1 < w α` using `lt_of_le_of_lt hB hlt`.
+
+Use `set n := p.natDegree with hn`. Establish `hn0 : n ≠ 0`. Introduce `h0`. Establish `h1 : p = 1` using `(Polynomial.Monic.natDegree_eq_zero hp).mp h0`. Rewrite `hα` using `[h1, Polynomial.eval₂_one]`.
+
+Conclude with `one_ne_zero hα`. Take `⟨m, hm⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Use `set f := MvPolynomial.eval₂Hom ψ ζ with hf`. Rewrite `hα` using `[Polynomial.eval₂_eq_sum_range, ← hn, Finset.sum_range_succ]`. Establish `hlead : p.coeff n = 1` using `hp`.
+
+Rewrite `hα` using `[hlead, map_one, one_mul]`. Establish `hαn : α ^ n = -∑ i ∈ Finset.range n, f (p.coeff i) * α ^ i` using `eq_neg_of_add_eq_zero_right hα`. Establish `hwpos : 0 < w α ^ m` using `pow_pos (lt_trans zero_lt_one hα1) m`. Establish `hbound : w (α ^ n) ≤ B * w α ^ m`. Rewrite using `[hαn, AbsoluteValue.map_neg]`.
+
+Use `ultrametric_sum_le w hw _ _ _ (by positivity) ?_` and prove the remaining obligations. Introduce `i hi`. Establish `hi' : i < n` using `Finset.mem_range.mp hi`. Rewrite using `[map_mul, map_pow]`. Conclude with `mul_le_mul (hc i hi') (pow_le_pow_right₀ hα1.le (by omega)) (by positivity) hB0`.
+
+Rewrite `hbound` using `[map_pow, hm, pow_succ]`. Establish `: B * w α ^ m < w α ^ m * w α`. Rewrite using `[mul_comm]`. Conclude with `mul_lt_mul_of_pos_left hlt hwpos`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ultrametric_root_le : ∀ {A K : Type} [CommRing A] [Field K] (w : AbsoluteValue K ℝ), (∀ x y, w (x + y) ≤ max (w x) (w y)) →
     ∀ (ψ : A →+* K) {d : ℕ} (ζ : Fin d → K), (∀ j, w (ζ j) ≤ 1) →
     ∀ (p : Polynomial (MvPolynomial (Fin d) A)), p.Monic → ∀ (α : K),

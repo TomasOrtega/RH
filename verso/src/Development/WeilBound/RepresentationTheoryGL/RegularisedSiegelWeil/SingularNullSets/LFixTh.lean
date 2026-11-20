@@ -27,6 +27,39 @@ open LFixTh
 open Classical in
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Introduce `_ hG hK D ρ p m ψ hψ χ hχ θ _ b₀ hb₀`. Take `⟨S₁, hS₁⟩` from `hK D p`. Take `⟨S₃, hS₃⟩` from `LFixW.psi_kernel hψ`. Take `⟨S₄, hS₄⟩` from `LFixW.ft_supp b₀.1 hb₀ hψ`. Establish `hgood` using `eventually_goodPl hχ b₀`.
+
+Use `⟨S₁ ∪ S₃ ∪ S₄ ∪ (Filter.eventually_cofinite.1 hgood).toFinset, fun S hS e he Ω hΩ hgoodΩ => ?_⟩` and prove the remaining obligations. Establish `hSg : ∀ v ∉ S, GoodPl χ b₀ v` using `fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hv (hS (Finset.mem_union_right _ ((Set.Finite.mem_toFinset _).2 h)))`. Establish `hSI` using `hS₃ S (fun v hv => hS (by simp [hv]))`.
+
+Establish `hS4` using `hS₄ S (fun v hv => hS (by simp [hv])) e he p m.μ`. Establish `: m.μ.IsAddHaarMeasure` using `m.hμ.1`. Set `A' : Set (G D p)` to `{x | Ω x = Ω 1}`. Establish `hA'c : IsClosed A'`. Establish `e : A' = ⋂ y, {x | Ω x y = Ω 1 y}`.
+
+Use extensionality with `x`. Simplify using `only [A', Set.mem_ofPred_eq, Set.mem_iInter, funext_iff]`. Rewrite using `[e]`. Conclude with `isClosed_iInter fun y => isClosed_eq (hΩ.cont.comp (continuous_id.prodMk continuous_const)) continuous_const`. Establish `hgen : ∀ g ∈ KOff D p S, (IsN g ∨ IsM g ∨ ∃ w u, IsW w ∧ IsN u ∧ u ∈ KOff D p S ∧ g = w * u * w⁻¹) → ∀ x ∈ A', g * x ∈ A'`.
+
+Introduce `g hg hgt x hx`. Simplify using `only [A', Set.mem_ofPred_eq] at hx ⊢`. Break down `hgt with ⟨b, hb⟩ | ⟨a, ha⟩ | ⟨w, u, hw, ⟨b, hb⟩, hu, rfl⟩` into its components or cases. Use function extensionality and compare the values at `y`. Rewrite using `[hΩ.unip g b hb x y, hx]`.
+
+Distinguish the cases in `hy : IntOff S y`. Rewrite using `[unip_one hSg hSI hg hb hy, one_mul]`. Rewrite using `[hgoodΩ y, if_neg hy, mul_zero]`. Establish `hbl` using `levi_blocks hg ha`. Take `⟨h1, h2⟩` from `levi_chr hχ hSg a (fun i j w => ((hbl i j).1 w).1) (fun i j v hv => ((hbl i j).2.1 v hv).1) (fun i j v hv => (hbl i j).2.2 v hv)`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[hΩ.levi g a ha x y, hx, h1, h2, levi_good he hg ha _ hgoodΩ y]`. Simplify using `[npow]`. Set `c : ℂ` to `(χ (Matrix.GeneralLinearGroup.det (-1 : GL (Fin p) (AE D))) : ℂ) * npow (absA D (Matrix.GeneralLinearGroup.det (-1 : GL (Fin p) (AE D)))) ((ρ : ℂ) / 2)`. Establish `hΦ : ∀ y, Ω (w⁻¹ * x) y = ∫ z, (fun z => c * Ω 1 (-z)) z * ψ (trA (pr b₀ y z).trace) ∂m.μ`.
+
+Introduce `y`. Establish `e1 : w⁻¹ * x = w * ((w * w)⁻¹ * x)` using `by group`. Rewrite using `[e1, hΩ.weyl w hw]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[hΩ.levi _ (-1) (mat_ww hw) x z, hx, Units.val_neg, Units.val_one, Matrix.mul_neg, Matrix.mul_one]`. Establish `hzero : ∀ y, ψ (halfTr (b * pr b₀ y y).trace) * Ω (w⁻¹ * x) y = Ω (w⁻¹ * x) y`. Introduce `y`. Distinguish the cases in `hy : IntOff S y`. Rewrite using `[unip_one hSg hSI hu hb hy, one_mul]`.
+
+Rewrite using `[hΦ y, show (∫ z, (fun z => c * Ω 1 (-z)) z * ψ (trA (pr b₀ y z).trace) ∂m.μ) = 0 from hS4 this _ (good_neg hgoodΩ c) y hy, mul_zero]`. Use function extensionality and compare the values at `y`. Establish `e2 : w * u * w⁻¹ * x = w * (u * (w⁻¹ * x))` using `by group`. Establish `e3 : Ω 1 y = Ω (w * (w⁻¹ * x)) y` using `by rw [mul_inv_cancel_left, hx]`. Rewrite using `[e2, e3, hΩ.weyl w hw, hΩ.weyl w hw]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hΩ.unip u b hb, hzero z]`. Establish `hK' : (KOff D p S : Set (G D p)) ⊆ A'` using `hS₁ S (fun v hv => hS (by simp [hv])) A' hA'c rfl hgen`. Introduce `u hu h`.
+
+Set `A : Set (G D p)` to `{h | Ω (h * u) = Ω h}`. Establish `hAc : IsClosed A`. Establish `e : A = ⋂ y, {h | Ω (h * u) y = Ω h y}`. Use extensionality with `x`. Simplify using `only [A, Set.mem_ofPred_eq, Set.mem_iInter, funext_iff]`.
+
+Rewrite using `[e]`. Conclude with `isClosed_iInter fun y => isClosed_eq (hΩ.cont.comp ((continuous_mul_const u).prodMk continuous_const)) (hΩ.cont.comp (continuous_id.prodMk continuous_const))`. Establish `h1 : (1 : G D p) ∈ A` using `by show Ω (1 * u) = Ω 1`. Rewrite using `[one_mul]`. Conclude with `hK' hu`.
+
+Establish `hA` using `hG D p A hAc h1 fun g hgt x hx => by show Ω (g * x * u) = Ω (g * x)`. Establish `hx' : Ω (x * u) = Ω x` using `hx`. Break down `hgt with ⟨b, hb⟩ | ⟨a, ha⟩ | hw` into its components or cases. Use function extensionality and compare the values at `y`. Rewrite using `[mul_assoc, hΩ.unip g b hb, hΩ.unip g b hb, hx']`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[mul_assoc, hΩ.levi g a ha, hΩ.levi g a ha, hx']`. Use function extensionality and compare the values at `y`. Rewrite using `[mul_assoc, hΩ.weyl g hw, hΩ.weyl g hw, hx']`. Establish `hh : h ∈ A` using `hA ▸ Set.mem_univ h`.
+
+Conclude with `hh`.
+-/
 theorem fixTh : IdemEx → GenG → GenK → FixTh := by
   intro _ hG hK D ρ p m ψ hψ χ hχ θ _ b₀ hb₀
   obtain ⟨S₁, hS₁⟩ := hK D p

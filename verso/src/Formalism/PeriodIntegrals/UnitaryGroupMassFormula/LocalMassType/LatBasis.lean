@@ -6,6 +6,29 @@ namespace PI.LocMassTypL
 
 open NumberField IsDedekindDomain
 
+/- English proof (translation)
+Use `haveI : Module.Finite (v.adicCompletionIntegers F) L := Module.Finite.iff_fg.mpr hfg`. Use `haveI : Module.Free (v.adicCompletionIntegers F) L := Module.free_of_finite_type_torsion_free'`. Take `⟨ι, hιf, b, hb⟩ : ∃ (ι : Type) (_ : Fintype ι) (b : Module.Basis ι (v.adicCompletionIntegers F) L), True` from `⟨_, inferInstance, Module.Free.chooseBasis (v.adicCompletionIntegers F) L, trivial⟩`. Take `⟨w, hw⟩ : ∃ w : ι → (Fin n → v.adicCompletion F), w = fun i => (b i : Fin n → v.adicCompletion F)` from `⟨_, rfl⟩`. Establish `hsmul : ∀ (o : v.adicCompletionIntegers F) (x : Fin n → v.adicCompletion F), o • x = (o : v.adicCompletion F) • x` using `fun o x => rfl`.
+
+Establish `hliO : LinearIndependent (v.adicCompletionIntegers F) w`. Rewrite using `[hw]`. Conclude with `b.linearIndependent.map' L.subtype (Submodule.ker_subtype L)`. Establish `hliK : LinearIndependent (v.adicCompletion F) w` using `(LinearIndependent.iff_fractionRing (v.adicCompletionIntegers F) (v.adicCompletion F)).mp hliO`. Establish `hspanO : Submodule.span (v.adicCompletionIntegers F) (Set.range w) = L`.
+
+Establish `h1` using `congrArg (Submodule.map L.subtype) b.span_eq`. Rewrite `h1` using `[Submodule.map_span, Submodule.map_subtype_top, ← Set.range_comp]`. Rewrite using `[hw]`. Conclude with `h1`. Establish `hspK : ⊤ ≤ Submodule.span (v.adicCompletion F) (Set.range w)`.
+
+Rewrite using `[← hsp, Submodule.span_le]`. Introduce `y hy`. Rewrite `hy` using `[← hspanO]`. Conclude with `Submodule.span_le_restrictScalars (v.adicCompletionIntegers F) (v.adicCompletion F) _ hy`. Set `bK : Module.Basis ι (v.adicCompletion F) (Fin n → v.adicCompletion F)` to `Module.Basis.mk hliK hspK`.
+
+Establish `hcard : Fintype.card ι = n`. Establish `h1` using `Module.finrank_eq_card_basis bK`. Rewrite `h1` using `[Module.finrank_fin_fun]`. Conclude with `h1.symm`. Set `e : Fin n ≃ ι` to `(Fintype.equivFinOfCardEq hcard).symm`.
+
+Establish `hAv : ∀ c : Fin n → v.adicCompletion F, (Matrix.of fun i j => w (e j) i).mulVec c = ∑ j, c j • w (e j)`. Introduce `c`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Use `⟨Matrix.of fun i j => w (e j) i, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hA : (Matrix.of fun i j => w (e j) i) = (Pi.basisFun (v.adicCompletion F) (Fin n)).toMatrix (bK.reindex e.symm)`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `[Module.Basis.toMatrix_apply, Module.Basis.reindex_apply, bK, Module.Basis.mk_apply]`. Rewrite using `[hA]`. Use `letI := (Pi.basisFun (v.adicCompletion F) (Fin n)).invertibleToMatrix (bK.reindex e.symm)`.
+
+Conclude with `isUnit_of_invertible _`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `⟨fun j => (b.repr ⟨y, hy⟩ (e j) : v.adicCompletion F), fun j => (b.repr ⟨y, hy⟩ (e j)).2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hAv]`. Establish `h1` using `congrArg Subtype.val (b.sum_repr ⟨y, hy⟩)`. Rewrite `h1` using `[Submodule.coe_sum]`. Rewrite `h1` using `[← Equiv.sum_comp e]`. Use `(show y = _ from h1.symm).trans ?_` and prove the remaining obligations.
+
+Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, hsmul, hw]`. Introduce and unpack `⟨c, hc, rfl⟩`. Rewrite using `[hAv, ← hspanO]`. Use `Submodule.sum_mem _ (fun j _ => ?_)` and prove the remaining obligations.
+
+Establish `: c j • w (e j) = (⟨c j, hc j⟩ : v.adicCompletionIntegers F) • w (e j)` using `by rw [hsmul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨e j, rfl⟩)`.
+-/
 theorem lat_basis {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) {n : ℕ}
     (L : Submodule (v.adicCompletionIntegers F) (Fin n → v.adicCompletion F)) (hfg : L.FG)
     (hsp : Submodule.span (v.adicCompletion F) (L : Set (Fin n → v.adicCompletion F)) = ⊤) :

@@ -12,6 +12,13 @@ namespace GlobalTheory.ChernTopDens
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial u a`. Establish `: aeval (fun y => C c * X y) (monomial u a) = monomial u (c ^ (u.sum fun _ e => e) * a)`. Rewrite using `[aeval_monomial, monomial_eq]`. Simplify using `only [mul_pow, Finsupp.prod_mul, algebraMap_eq]`.
+
+Rewrite using `[Finsupp.prod, Finsupp.prod, Finsupp.sum, ← Finset.prod_pow_eq_pow_sum, C_mul, map_prod]`. Simplify using `only [map_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, coeff_monomial, coeff_monomial]`. Use `split_ifs with h`.
+
+Rewrite using `[h]`. Simplify using the standard rewrite rules. Consider the case `add p q hp hq => rw [map_add, coeff_add, coeff_add, hp, hq, mul_add]`.
+-/
 theorem coeff_aeval_C_mul_X (c : ℂ) (Q : MvPolynomial (Fin n × Fin n) ℂ) (d : Fin n × Fin n →₀ ℕ) :
     coeff d (aeval (fun y => C c * X y) Q) = c ^ (d.sum fun _ e => e) * coeff d Q := by
   induction Q using MvPolynomial.induction_on' with
@@ -32,6 +39,9 @@ section Rev
 
 variable {r : Type} [Fintype r] [DecidableEq r]
 
+/- English proof (translation)
+Unfold `Matrix.charpolyRev`. Rewrite using `[← Polynomial.coe_mapRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j : 1`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+-/
 theorem charpolyRev_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (M : Matrix r r A) :
     (M.map f).charpolyRev = M.charpolyRev.map f := by
   unfold Matrix.charpolyRev
@@ -40,6 +50,9 @@ theorem charpolyRev_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (
   ext i j : 1
   by_cases h : i = j <;> simp [Matrix.one_apply, h]
 
+/- English proof (translation)
+Unfold `Matrix.charpolyRev`. Rewrite using `[← Polynomial.coe_compRingHom_apply, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j : 1`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h] <;> ring`.
+-/
 theorem charpolyRev_smul {A : Type} [CommRing A] (c : A) (M : Matrix r r A) :
     (c • M).charpolyRev = M.charpolyRev.comp (Polynomial.C c * Polynomial.X) := by
   unfold Matrix.charpolyRev
@@ -48,6 +61,11 @@ theorem charpolyRev_smul {A : Type} [CommRing A] (c : A) (M : Matrix r r A) :
   ext i j : 1
   by_cases h : i = j <;> simp [Matrix.one_apply, h] <;> ring
 
+/- English proof (translation)
+Set `ψ : MvPolynomial (Fin n × Fin n) ℂ →+* MvPolynomial (Fin n × Fin n) ℂ` to `(aeval fun y => C c * X y : MvPolynomial (Fin n × Fin n) ℂ →ₐ[ℂ] MvPolynomial (Fin n × Fin n) ℂ).toRingHom`. Establish `e : ∀ p, aeval (fun y => C c * X y) p = ψ p` using `fun _ => rfl`. Establish `hM : (-curvPoly G v).map ψ = (C c : MvPolynomial (Fin n × Fin n) ℂ) • (-curvPoly G v)`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, Matrix.neg_apply, Matrix.smul_apply, curvPoly, Matrix.of_apply, map_neg, map_sum, map_mul, smul_eq_mul, Finset.mul_sum, mul_neg, ← e, aeval_X, aeval_C, algebraMap_eq]`.
+
+Use `congrArg _ (Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Unfold `chernPoly`. Rewrite using `[e, ← Polynomial.coeff_map, ← charpolyRev_map, hM, charpolyRev_smul, Polynomial.comp_C_mul_X_coeff, smul_eq_C_mul, map_pow, mul_comm]`.
+-/
 theorem aeval_chernPoly (c : ℂ) (G : V n → Matrix r r ℂ) (v : V n) (k : ℕ) :
     aeval (fun y => C c * X y) (chernPoly G v k) = c ^ k • chernPoly G v k := by
   let ψ : MvPolynomial (Fin n × Fin n) ℂ →+* MvPolynomial (Fin n × Fin n) ℂ :=
@@ -65,6 +83,11 @@ theorem aeval_chernPoly (c : ℂ) (G : V n → Matrix r r ℂ) (v : V n) (k : �
 
 end Rev
 
+/- English proof (translation)
+Unfold `topCoeff`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hdeg : (∑ a, Finsupp.single (a, w a) 1 : Fin n × Fin n →₀ ℕ).sum (fun _ e => e) = n`. Express the relevant statement in the definitionally equal form `Finsupp.degree (∑ a, Finsupp.single (a, w a) 1 : Fin n × Fin n →₀ ℕ) = n`.
+
+Simplify using `[map_sum]`. Rewrite using `[coeff_aeval_C_mul_X, hdeg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem topCoeff_aeval_C_mul_X (c : ℂ) (Q : MvPolynomial (Fin n × Fin n) ℂ) :
     topCoeff (aeval (fun y => C c * X y) Q) = c ^ n * topCoeff Q := by
   unfold topCoeff
@@ -76,6 +99,9 @@ theorem topCoeff_aeval_C_mul_X (c : ℂ) (Q : MvPolynomial (Fin n × Fin n) ℂ)
   rw [coeff_aeval_C_mul_X, hdeg]
   ring
 
+/- English proof (translation)
+Rewrite using `[← div_pow, Complex.ofReal_inv, Complex.ofReal_pow, ← inv_pow]`. Use `congr 1`. Establish `hπ : (Real.pi : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 Real.pi_ne_zero`. Rewrite using `[kappa]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem kappa_div : kappa ^ n / (Complex.I / 2) ^ n = (((Real.pi ^ n)⁻¹ : ℝ) : ℂ) := by
   rw [← div_pow, Complex.ofReal_inv, Complex.ofReal_pow, ← inv_pow]
   congr 1
@@ -87,6 +113,11 @@ end GlobalTheory.ChernTopDens
 
 open GlobalTheory.ChernTopDens in
 
+/- English proof (translation)
+Set `Φ : MvPolynomial (Fin n × Fin n) ℂ →ₐ[ℂ] Ev n` to `(aeval sym).comp (aeval fun y => C kappa * X y)`. Establish `h1 : (fun x : ι × ℕ => chernAt (fun u => G u x.1) v x.2) = fun x => Φ (chernPoly (fun u => G u x.1) v x.2)`. Use function extensionality and compare the values at `x`. Simplify using `only [Φ, AlgHom.comp_apply, aeval_chernPoly, map_smul, chernAt]`. Establish `h2 : aeval (fun x : ι × ℕ => chernAt (fun u => G u x.1) v x.2) (R.map (algebraMap ℝ ℂ)) = aeval sym (aeval (fun y => C kappa * X y) (aeval (fun x : ι × ℕ => chernPoly (fun u => G u x.1) v x.2) R))`.
+
+Rewrite using `[h1, ← comp_aeval, AlgHom.comp_apply, aeval_map_algebraMap]`. Both sides reduce to the same expression. Rewrite using `[h2, GlobalTheory.T.topDegreeDensityComplexForm_aeval_dzWedgeDzbar, topCoeff_aeval_C_mul_X, mul_div_right_comm, kappa_div, Complex.re_ofReal_mul]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.ChernCalc.dens_chernAt_re (n : ℕ) (ι : Type) (m : ι → ℕ) (R : MvPolynomial (ι × ℕ) ℝ) (G : V n → Mat m ℂ)
     (v : V n) :
     (dens ((aeval (fun x : ι × ℕ => chernAt (fun u => G u x.1) v x.2) (R.map (algebraMap ℝ ℂ)) : Ev n) : Alt n)).re =

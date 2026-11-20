@@ -110,6 +110,9 @@ def RReadS : Prop := RS.ReadMod → JoinMod → (∀ (E : Type) [Field E] [Numbe
 def RReadT : Prop := RS.ReadMod → ReadT
 def RExpRead : Prop := N3.N3 → ExpRead
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨wt, Set.Finite.subset (eventually_cofinite.1 good) fun _ hw hx => hw.2 (hx hw.1)⟩, atS, atT, lev, kt⟩`.
+-/
 theorem tout_of {π : Submodule ℂ (UA E n → ℂ)} {S T : Finset (Pl E)} {K : ∀ w : Pl E, Subgroup (GLw n w)}
     {W : ∀ N : ℕ, Submodule ℂ (Kinf E N → ℂ)} {D : Pre E n}
     (wt : ∀ τ lam, HasWeightAt π τ lam → ∑ i, D.m i τ = infOfWeight lam)

@@ -7,6 +7,15 @@ open scoped TensorProduct Matrix
 
 namespace GlobalTheory.UnRep
 
+/- English proof (translation)
+Set `p : Polynomial K` to `(1 + (Polynomial.X : Polynomial K) • G.map Polynomial.C).det`. Establish `hp : ∀ x : K, p.eval x = (1 + x • G).det`. Introduce `x`. Use `(Polynomial.evalRingHom x).map_det (1 + (Polynomial.X : Polynomial K) • G.map Polynomial.C)` as an intermediate fact. Rewrite `this` using `[Polynomial.coe_evalRingHom]`.
+
+Rewrite using `[this]`. Use `congr 1`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, Matrix.one_apply] <;> ring`. Establish `hp0 : p ≠ 0`.
+
+Introduce `h`. Use `hp 0` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`. Establish `hfin : (p.rootSet K).Finite` using `p.rootSet_finite K`.
+
+Use `(hfin.preimage φ.injective.injOn).subset fun l hl => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, Polynomial.mem_rootSet]`. Use `⟨hp0, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.coe_aeval_eq_eval, hp]`. Conclude with `hl`.
+-/
 theorem finite_det_one_add_smul_eq_zero {E K : Type} [Field E] [Field K] (φ : E →+* K) {n : ℕ}
     (G : Matrix (Fin n) (Fin n) K) : {l : E | (1 + φ l • G).det = 0}.Finite := by
   let p : Polynomial K := (1 + (Polynomial.X : Polynomial K) • G.map Polynomial.C).det
@@ -30,6 +39,23 @@ theorem finite_det_one_add_smul_eq_zero {E K : Type} [Field E] [Field K] (φ : E
   rw [Polynomial.coe_aeval_eq_eval, hp]
   exact hl
 
+/- English proof (translation)
+Use `set G := ε • g + (1 - ε) • (1 : Matrix (Fin n) (Fin n) R) with hG`. Establish `key : ∀ (M : Ideal R) (l : E), Ideal.Quotient.mk M (1 + φ l • G).det = (1 + ((Ideal.Quotient.mk M).comp φ) l • G.map (Ideal.Quotient.mk M)).det`. Introduce `M l`. Rewrite using `[RingHom.map_det]`. Use `congr 1`.
+
+Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, Matrix.one_apply]`. Establish `h1 : ∀ M ∈ {M : Ideal R | M.IsMaximal ∧ 1 - ε ∈ M}, {l : E | (1 + φ l • G).det ∈ M}.Finite`. Introduce and unpack `M ⟨hM, -⟩`. Use `letI := Ideal.Quotient.field M`.
+
+Use `(finite_det_one_add_smul_eq_zero ((Ideal.Quotient.mk M).comp φ) (G.map (Ideal.Quotient.mk M))).subset fun l hl => ?_` and prove the remaining obligations. Rewrite using `[Set.mem_setOf_eq, ← key, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hl`. Use `((hfin.biUnion h1).union (Set.finite_singleton (-1))).subset fun l hl => ?_` and prove the remaining obligations. Take `⟨M, hM, hl⟩` from `exists_max_ideal_of_mem_nonunits (mem_nonunits_iff.2 hl)`.
+
+Establish `h0 : ε * (1 - ε) ∈ M`. Rewrite using `[mul_sub, mul_one, hε, sub_self]`. Conclude with `M.zero_mem`. Break down `hM.isPrime.mem_or_mem h0 with h | h` into its components or cases. Use `right`.
+
+Use `letI := Ideal.Quotient.field M`. Establish `h2` using `Ideal.Quotient.eq_zero_iff_mem.2 hl`. Establish `h3` using `Ideal.Quotient.eq_zero_iff_mem.2 h`. Establish `h4 : G.map (Ideal.Quotient.mk M) = 1`. Use extensionality with `i j`.
+
+Apply the tactic sequence `by_cases hij : i = j <;> simp [hG, hij, Matrix.one_apply, h3]`. Rewrite `h2` using `[key, h4]`. Establish `h5 : (1 + ((Ideal.Quotient.mk M).comp φ) l • (1 : Matrix (Fin n) (Fin n) (R ⧸ M))) = ((Ideal.Quotient.mk M).comp φ) (1 + l) • 1`. Rewrite using `[map_add, map_one, add_smul, one_smul]`. Rewrite `h2` using `[h5, Matrix.det_smul, Matrix.det_one, mul_one]`.
+
+Establish `h6` using `(map_eq_zero _).1 (pow_eq_zero_iff (by`. Introduce `h`. Rewrite `h2` using `[h]`. Simplify using `at h2) |>.1 h2)`. Conclude with `eq_neg_of_add_eq_zero_right h6`.
+
+Use `left`. Conclude with `Set.mem_biUnion (s := {M : Ideal R | M.IsMaximal ∧ 1 - ε ∈ M}) ⟨hM, h⟩ hl`.
+-/
 theorem finite_not_isUnit_det {E R : Type} [Field E] [CommRing R] (φ : E →+* R) {n : ℕ}
     (g : Matrix (Fin n) (Fin n) R) (ε : R) (hε : ε * ε = ε)
     (hfin : {M : Ideal R | M.IsMaximal ∧ 1 - ε ∈ M}.Finite) :
@@ -76,6 +102,11 @@ noncomputable def adEval (F : Type) [Field F] [NumberField F] (v : HeightOneSpec
     FiniteAdeleRing (𝓞 F) F →+* v.adicCompletion F :=
   RestrictedProduct.evalRingHom (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletion F) v
 
+/- English proof (translation)
+Introduce `x`. Use `⟨⟨Pi.single v x, ?_⟩, ?_⟩` and prove the remaining obligations. Use `filter_upwards [(Set.finite_singleton v).compl_mem_cofinite] with w hw`. Rewrite using `[Pi.single_eq_of_ne hw]`. Conclude with `zero_mem _`.
+
+Conclude with `Pi.single_eq_same v x`.
+-/
 theorem adEval_surjective (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     Function.Surjective (adEval F v) := by
   classical
@@ -86,6 +117,15 @@ theorem adEval_surjective (F : Type) [Field F] [NumberField F] (v : HeightOneSpe
     exact zero_mem _
   · exact Pi.single_eq_same v x
 
+/- English proof (translation)
+Use `(he.image fun v => RingHom.ker (adEval F v)).subset ?_` and prove the remaining obligations. Introduce and unpack `P ⟨hP, h⟩`. Establish `hle : he.toFinset.inf (fun v => RingHom.ker (adEval F v)) ≤ P`. Introduce `a ha`. Establish `h0 : a * e = 0`.
+
+Use `FiniteAdeleRing.ext F fun v => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a v * e v = 0`. Distinguish the cases in `hv : e v = 0`. Rewrite using `[hv, mul_zero]`. Establish `h1 : a ∈ RingHom.ker (adEval F v)` using `(Finset.inf_le (f := fun v => RingHom.ker (adEval F v)) (he.mem_toFinset.2 hv)) ha`.
+
+Establish `h2 : a v = 0` using `h1`. Rewrite using `[h2, zero_mul]`. Establish `: a = a * (1 - e)` using `by rw [mul_sub, h0, mul_one, sub_zero]`. Rewrite using `[this]`. Conclude with `P.mul_mem_left _ h`.
+
+Take `⟨v, hv, hvP⟩` from `(Ideal.IsPrime.inf_le' hP).1 hle`. Conclude with `⟨v, he.mem_toFinset.1 hv, (RingHom.ker_isMaximal_of_surjective _ (adEval_surjective F v)).eq_of_le hP.ne_top hvP⟩`.
+-/
 theorem finite_primes_one_sub (F : Type) [Field F] [NumberField F] (e : FiniteAdeleRing (𝓞 F) F)
     (he : {v | e v ≠ 0}.Finite) :
     {P : Ideal (FiniteAdeleRing (𝓞 F) F) | P.IsPrime ∧ 1 - e ∈ P}.Finite := by
@@ -109,6 +149,11 @@ theorem finite_primes_one_sub (F : Type) [Field F] [NumberField F] (e : FiniteAd
   exact ⟨v, he.mem_toFinset.1 hv,
     (RingHom.ker_isMaximal_of_surjective _ (adEval_surjective F v)).eq_of_le hP.ne_top hvP⟩
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.NormOneInfinite.normOne_infinite`. Consider the case `exact _root_.GlobalTheory.NormOneInfinite.normOne_infinite`. Consider the case `(apply _root_.GlobalTheory.NormOneInfinite.normOne_infinite <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NormOneInfinite.normOne_infinite <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.NormOneInfinite.normOne_infinite <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NormOneInfinite.normOne_infinite ..)`.
+-/
 theorem infinite_norm_one {F E : Type} [Field F] [Field E] [CharZero E] [Algebra F E] (c : E ≃ₐ[F] E)
     (hc : ∀ x, c (c x) = x) (hc1 : c ≠ 1) : {l : E | l * c l = 1}.Infinite := by
   first
@@ -119,6 +164,15 @@ theorem infinite_norm_one {F E : Type} [Field F] [Field E] [CharZero E] [Algebra
   | (intros; apply @_root_.GlobalTheory.NormOneInfinite.normOne_infinite <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.NormOneInfinite.normOne_infinite ..)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ c hrk hc hc1 n g e he hfin`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by omega)`. Establish `hsub : ((1 - e) ⊗ₜ[F] (1 : E) : RA F E) = 1 - e ⊗ₜ[F] (1 : E)`. Rewrite using `[TensorProduct.sub_tmul, Algebra.TensorProduct.one_def]`. Establish `hM : {M : Ideal (RA F E) | M.IsMaximal ∧ 1 - e ⊗ₜ[F] (1 : E) ∈ M}.Finite`.
+
+Use `((finite_primes_one_sub F e hfin).biUnion fun P _ => Algebra.QuasiFinite.finite_primesOver (S := RA F E) P).subset ?_` and prove the remaining obligations. Introduce and unpack `M ⟨hM, h⟩`. Use `haveI := hM.isPrime`. Use `Set.mem_biUnion (x := M.under (FiniteAdeleRing (𝓞 F) F)) ⟨inferInstance, ?_⟩ ⟨inferInstance, inferInstance⟩` and prove the remaining obligations. Rewrite `h` using `[← hsub]`.
+
+Conclude with `h`. Establish `hbad` using `finite_not_isUnit_det (Algebra.TensorProduct.includeRight : E →ₐ[F] RA F E).toRingHom g (e ⊗ₜ[F] (1 : E)) (by rw [Algebra.TensorProduct.tmul_mul_tmul, he, mul_one]) hM`. Take `⟨l, hl, hl'⟩` from `(infinite_norm_one c hc hc1).exists_notMem_finite hbad`. Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Rewrite using `[hsub]`.
+
+Conclude with `not_not.1 hl'`.
+-/
 theorem exists_norm_one_isUnit_det : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (c : E ≃ₐ[F] E), Module.finrank F E = 2 → (∀ x, c (c x) = x) → c ≠ 1 → ∀ (n : ℕ) (g : Matrix (Fin n) (Fin n) (RA F E)) (e : FiniteAdeleRing (𝓞 F) F), e * e = e → {v | e v ≠ 0}.Finite → ∃ lam : E, lam * c lam = 1 ∧ IsUnit (1 + ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] lam) • ((e ⊗ₜ[F] (1 : E)) • g + ((1 - e) ⊗ₜ[F] (1 : E)) • (1 : Matrix (Fin n) (Fin n) (RA F E)))).det := by
   intro F E _ _ _ _ _ c hrk hc hc1 n g e he hfin
   haveI : Module.Finite F E := Module.finite_of_finrank_pos (by omega)

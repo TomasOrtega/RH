@@ -10,6 +10,13 @@ section
 
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
+/- English proof (translation)
+Establish `comp : ∀ (g h : GL (Fin a) (Cinf E)) (v : HV E a), sand g (sand h v) = sand (g * h) v` using `fun g h v => by`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Establish `h1 : sand (g⁻¹ * h) (hOne E a) = hOne E a`. Rewrite using `[← comp, ← e, comp, inv_mul_cancel, map_one]`.
+
+Both sides reduce to the same expression. Establish `h2 : (g⁻¹ * h).val * star (g⁻¹ * h).val = 1`. Establish `h3` using `sand_val (g⁻¹ * h) (hOne E a)`. Rewrite `h3` using `[h1, hOne_val, mul_one]`. Conclude with `h3.symm`.
+
+Use `⟨⟨(g⁻¹ * h).val, Matrix.mem_unitaryGroup_iff.2 h2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← inv_mul_eq_iff_eq_mul]`. Conclude with `Units.ext rfl`.
+-/
 private theorem exists_unitary {g h : GL (Fin a) (Cinf E)} (e : sand g (hOne E a) = sand h (hOne E a)) :
     ∃ k : Kinf E a, h = g * Unitary.toUnits k := by
   have comp : ∀ (g h : GL (Fin a) (Cinf E)) (v : HV E a), sand g (sand h v) = sand (g * h) v := fun g h v => by
@@ -26,6 +33,11 @@ private theorem exists_unitary {g h : GL (Fin a) (Cinf E)} (e : sand g (hOne E a
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ _ a U f Y C c f₀ hf`. Use `⟨fun s p => if h : p ∈ cone E a then f (pt h.choose s.out) else 0, fun g x => ?_⟩` and prove the remaining obligations. Establish `hp : sand g (hOne E a) ∈ cone E a` using `⟨g, rfl⟩`. Take `⟨k, hk⟩` from `exists_unitary hp.choose_spec.symm`. Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul U x`.
+
+Use `beta_reduce`. Rewrite using `[dif_pos hp, hk, pt_mul, hf.f_cpt, hu, pt, pt, map_mul (finGL E a), ← mul_assoc, hf.f_lev _ u.2]`.
+-/
 theorem UpperTheory.V.Lit.Geo.Cs.descEx :
     DescEx := by
   classical

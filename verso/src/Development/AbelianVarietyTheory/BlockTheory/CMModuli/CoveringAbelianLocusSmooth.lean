@@ -35,6 +35,9 @@ def CoveredByCharts (Y : Model Xo c β) (p : ℕ) : Prop :=
 def AbLocusSmooth (Y : Model Xo c β) : Prop :=
   ∃ U : Y.X.Opens, (U : Set Y.X) = abLocus Y.t.G ∧ SmoothOfRelativeDimension D.dim (U.ι ≫ Y.s)
 
+/- English proof (translation)
+Take `⟨h0, h1, h2, h3, -, h5, t, m, S, hS⟩` from `h`. Conclude with `⟨t, m, hY R h1 h2 h3 ξ t m h5 ⟨S, hS⟩⟩`.
+-/
 theorem IsChartAt.unif {Y : Model Xo c β} (hY : Y.N3) {x : Y.X} {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
     {ξ : Sp R ⟶ Y.X} (h : IsChartAt Y x R ξ) :
     ∃ (t : SAB H (Sp R)) (_ : SABMap t Y.t ξ), UniformisationConclusion t (ξ ⁻¹' abLocus Y.t.G) := by
@@ -58,6 +61,9 @@ def SmoothnessLemma : Prop :=
 
 def CoveringAndSmoothness : Prop := CoveringLemma ∧ SmoothnessLemma
 
+/- English proof (translation)
+Unfold `GoodPrime`. Rewrite using `[NumberField.not_dvd_discr_iff_isUnramifiedIn E (𝓞 E) (Nat.prime_iff_prime_int.mp hp)]`.
+-/
 theorem goodPrime_iff (l : Level H) {p : ℕ} (hp : p.Prime) :
     GoodPrime l p ↔ ¬ (p : ℤ) ∣ discr E ∧ ¬ p ∣ l.M' := by
   unfold GoodPrime

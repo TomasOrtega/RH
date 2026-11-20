@@ -9,6 +9,21 @@ import Development.AutomorphicArithmetic.WhittakerHecke.IdealSheafComapEqSpecIde
 open CategoryTheory Limits AlgebraicGeometry TensorProduct
 open FunctorialResolution.Blowup FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Introduce `R _ X W π I hπ N D A _ φ hφ hI`. Use `set J : Ideal (MvPolynomial (Fin D) A) := coordIdeal A Finset.univ with hJ`. Establish `hIJ : I.ideal N = Ideal.map φ J`. Rewrite using `[show I.ideal N = _ from hI, hJ, coordIdeal_eq_span, Ideal.map_span, Finset.coe_univ, Set.image_univ, ← Set.range_comp]`. Both sides reduce to the same expression.
+
+Establish `hcomap` using `UpperTheory.idealSheaf_comap_eq_specIdealSheaf_of_eq_map I N J φ hIJ`. Use `haveI hfl : Flat ((IsAffineOpen.isoSpec N.2).hom ≫ Spec.map (CommRingCat.ofHom φ)) := by`. Establish `h2 : Flat (Spec.map (CommRingCat.ofHom φ))` using `Flat.SpecMap_iff.2 hφ`. Conclude with `MorphismProperty.comp_mem @Flat _ _ inferInstance h2`. Establish `hres` using `hπ.restrict N.1`.
+
+Rewrite `hres` using `[hcomap]`. Take `⟨q, -, hpb⟩` from `(isBlowupAlongIdealSheaf_affineBlowup_toSpec J).exists_isPullback_of_flat _ hres`. Take `⟨c, hc, hcomp, hcov, hint⟩` from `UpperTheory.exists_affineBlowup_coordinate_chart_cover A D`. Use `haveI := hc`. Establish `key` using `fun j => UpperTheory.isAffineOpen_image_pullback_openImmersion_chart (Over.Hom.left π) N.1 N.2 φ (AffineBlowup.toSpec J) q hpb (coordBlowupSubst A Finset.univ j).toRingHom (c j) (hcomp j)`.
+
+Use `choose haff hle ρ hpush hbo using key`. Establish `hy : ∀ j, (fun k => ρ j (if k = j then 1 else MvPolynomial.X k)) = fun k => if k = j then 1 else ρ j (MvPolynomial.X k)`. Introduce `j`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `alg` using `fun j => UpperTheory.surjective_eval_coordBlowupSubst_pushout_of_flat φ hφ j (Scheme.Hom.appLE (Over.Hom.left π) N.1 _ (hle j)).hom (ρ j) (hpush j)`. Use `⟨{ V := fun j => (Over.Hom.left π ⁻¹ᵁ N.1).ι ''ᵁ q ⁻¹ᵁ (c j).opensRange aff := haff le := hle cov := ?_ y := fun j k => ρ j (if k = j then 1 else MvPolynomial.X k) surj := fun j => ?_ ker := fun j => ?_ inter := fun j k => hbo j _ _ (hint j k) nzd := fun j => (alg j).2.2 }⟩` and prove the remaining obligations. Apply `le_antisymm (iSup_le hle)` to reduce the goal to its premises. Introduce `x hx`. Establish `hmem : q ⟨x, hx⟩ ∈ ⨆ j, (c j).opensRange`.
+
+Rewrite using `[hcov]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hmem`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨j, ⟨x, hx⟩, hj, rfl⟩`. Rewrite using `[hy j]`.
+
+Conclude with `(alg j).1`. Rewrite using `[hy j]`. Conclude with `(alg j).2.1`.
+-/
 theorem UpperTheory.Gal.KunnethLefschetz.G.bChartEx :
     UpperTheory.Gal.KunnethLefschetz.G.BChartEx := by
   intro R _ X W π I hπ N D A _ φ hφ hI

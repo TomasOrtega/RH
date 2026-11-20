@@ -9,10 +9,18 @@ open AlgebraicGeometry CategoryTheory NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles
 
+/- English proof (translation)
+Unfold `GlobalTheory.CompanionTheory.Ar.HT.IsCp`. Simplify using the standard rewrite rules.
+-/
 theorem isCp_two : IsCp 2 (4 : ℚ) := by
   unfold GlobalTheory.CompanionTheory.Ar.HT.IsCp
   simp
 
+/- English proof (translation)
+Distinguish the cases in `h2 : p = 2`. Use `⟨4, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.CompanionTheory.Ar.HT.IsCp`. Simplify using `[h2]`. Use `⟨Complex.exp (2 * Real.pi * Complex.I / p) - 1, ?_⟩` and prove the remaining obligations.
+
+Unfold `GlobalTheory.CompanionTheory.Ar.HT.IsCp`. Rewrite using `[if_neg h2]`. Conclude with `⟨_, Complex.isPrimitiveRoot_exp p hp, rfl⟩`.
+-/
 theorem isCp_exists (p : ℕ) (hp : p ≠ 0) : ∃ κ : ℂ, IsCp p κ := by
   by_cases h2 : p = 2
   · refine ⟨4, ?_⟩
@@ -23,6 +31,11 @@ theorem isCp_exists (p : ℕ) (hp : p ≠ 0) : ∃ κ : ℂ, IsCp p κ := by
     rw [if_neg h2]
     exact ⟨_, Complex.isPrimitiveRoot_exp p hp, rfl⟩
 
+/- English proof (translation)
+Unfold `GlobalTheory.CompanionTheory.Ar.HT.IsCp at h`. Use `split_ifs at h with h2`. Rewrite using `[h]`. Evaluate the numerical expressions. Take `⟨ζ, hζ, rfl⟩` from `h`.
+
+Conclude with `sub_ne_zero.mpr (hζ.ne_one hp.one_lt)`.
+-/
 theorem isCp_ne_zero {Ω : Type} [Field Ω] [CharZero Ω] {p : ℕ} (hp : p.Prime) {κ : Ω} (h : IsCp p κ) : κ ≠ 0 := by
   unfold GlobalTheory.CompanionTheory.Ar.HT.IsCp at h
   split_ifs at h with h2
@@ -35,11 +48,23 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {S : Finset ℕ}
   {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) → Ω} (𝔐 : HodgeCpt Y S y)
 
+/- English proof (translation)
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[H.bar_eq a]`. Both sides reduce to the same expression.
+-/
 theorem bar_eq (H : Host E) (a : 𝓞 E) : RingOfIntegers.mapRingEquiv (cmConj E) a = H.bar a := by
   apply RingOfIntegers.ext
   rw [H.bar_eq a]
   rfl
 
+/- English proof (translation)
+Introduce `r hr hrq`. Assume the negation of the conclusion as `hne`. Establish `hloc : IsLocalRing (GlobalTheory.CompanionTheory.Ar.regAt 𝔐.ξ q)` using `IsLocalRing.of_surjective' (GlobalTheory.CompanionTheory.Ar.genMap 𝔐.ξ q).rangeRestrict (GlobalTheory.CompanionTheory.Ar.genMap 𝔐.ξ q).rangeRestrict_surjective`. Establish `key : ∀ m : ℕ, GlobalTheory.CompanionTheory.Ar.InFibre 𝔐.ξ m q → ¬ IsUnit ((m : GlobalTheory.CompanionTheory.Ar.regAt 𝔐.ξ q))`. Introduce `m hm hu`.
+
+Apply `hm` to reduce the goal to its premises. Take `⟨u, hu'⟩` from `hu`. Establish `h1 : (m : Ω) * (((u⁻¹ : (GlobalTheory.CompanionTheory.Ar.regAt 𝔐.ξ q)ˣ) : GlobalTheory.CompanionTheory.Ar.regAt 𝔐.ξ q) : Ω) = 1`. Establish `h2` using `congrArg (fun x : GlobalTheory.CompanionTheory.Ar.regAt 𝔐.ξ q => (x : Ω)) u.mul_inv`. Simplify `h2` using `[hu']`.
+
+Establish `h0 : (m : Ω) ≠ 0` using `left_ne_zero_of_mul_eq_one h1`. Use `⟨h0, natCast_mem _ m, ?_⟩` and prove the remaining obligations. Rewrite using `[← eq_inv_of_mul_eq_one_right h1]`. Conclude with `SetLike.coe_mem _`. Establish `hcop : Nat.Coprime r p` using `(Nat.coprime_primes hr hp).2 hne`.
+
+Take `⟨a, b, hab⟩` from `(Nat.isCoprime_iff_coprime.2 hcop).map (Int.castRingHom (GlobalTheory.CompanionTheory.Ar.regAt 𝔐.ξ q))`. Break down `IsLocalRing.isUnit_or_isUnit_of_add_one hab with h | h` into its components or cases. Conclude with `key r hrq (by simpa using isUnit_of_mul_isUnit_right h)`. Conclude with `key p hq (by simpa using isUnit_of_mul_isUnit_right h)`.
+-/
 theorem overZp_of_inFibre {p : ℕ} (hp : p.Prime) (q : Cpt 𝔐.ξ) (hq : InFibre 𝔐.ξ p q) : OverZp 𝔐 p q := by
   intro r hr hrq
   by_contra hne
@@ -63,12 +88,18 @@ theorem overZp_of_inFibre {p : ℕ} (hp : p.Prime) (q : Cpt 𝔐.ξ) (hq : InFib
   · exact key r hrq (by simpa using isUnit_of_mul_isUnit_right h)
   · exact key p hq (by simpa using isUnit_of_mul_isUnit_right h)
 
+/- English proof (translation)
+Unfold `GlobalTheory.CompanionTheory.Ar.HT.omP GlobalTheory.CompanionTheory.Ar.LieModel.htOm`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `w ⟨x, -, hx⟩`. Conclude with `hx.1`.
+-/
 theorem omP_le (p : ℕ) (q : Cpt 𝔐.ξ) : omP 𝔐 p q ≤ 𝔐.M.omLat q := by
   unfold GlobalTheory.CompanionTheory.Ar.HT.omP GlobalTheory.CompanionTheory.Ar.LieModel.htOm
   refine Submodule.span_le.mpr ?_
   rintro w ⟨x, -, hx⟩
   exact hx.1
 
+/- English proof (translation)
+Introduce `e he`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨he.2, fun w hw => ?_⟩` and prove the remaining obligations. Conclude with `omP_le 𝔐 p q hw e he.1`.
+-/
 theorem dR_le (p : ℕ) (s : CMType H ⊕ CMType H) (q : Cpt 𝔐.ξ) :
     𝔐.dR s q ≤ 𝔐.M.htDual 𝔐.t.PP.L (p ^ 𝔐.R p) 𝔐.ρ (𝔐.emb s) q := by
   intro e he
@@ -76,6 +107,11 @@ theorem dR_le (p : ℕ) (s : CMType H ⊕ CMType H) (q : Cpt 𝔐.ξ) :
   refine ⟨he.2, fun w hw => ?_⟩
   exact omP_le 𝔐 p q hw e he.1
 
+/- English proof (translation)
+Unfold `GlobalTheory.CompanionTheory.Ar.HT.Sandwich`. Prove the components needed by the constructor for the conclusion. Introduce `h q hq`. Take `⟨h1, -, h3, h4⟩` from `h q hq`. Conclude with `⟨h1, h3, fun s => (h4 s).2⟩`.
+
+Introduce `h q hq`. Take `⟨h1, h3, h4⟩` from `h q hq`. Conclude with `⟨h1, omP_le 𝔐 p q, h3, fun s => ⟨dR_le 𝔐 p s q, h4 s⟩⟩`.
+-/
 theorem sandwich_iff (p : ℕ) (κ : Ω) : Sandwich 𝔐 p κ ↔ ∀ q, InFibre 𝔐.ξ p q → κ ∈ regAt 𝔐.ξ q ∧
     (∀ w ∈ 𝔐.M.omLat q, κ • w ∈ omP 𝔐 p q) ∧
     ∀ s, ∀ e ∈ 𝔐.M.htDual 𝔐.t.PP.L (p ^ 𝔐.R p) 𝔐.ρ (𝔐.emb s) q, κ • e ∈ 𝔐.dR s q := by
@@ -92,6 +128,11 @@ variable {𝔐} {p : ℕ} {o : Type} [CommRing o] [Algebra o Ω]
   {Dc Dc' : ∀ s : {s : ∀ k, J k // mseg y s ≠ 0},
       HTChart (chartRing o (mseg y) s.1) Ω (cmConj E) p (𝔐.R p) (D.p + D.q) (Module.Dual Ω 𝔐.Li)}
 
+/- English proof (translation)
+Establish `h1` using `congrArg (fun f : Module.Dual Ω 𝔐.Li => f e) ((h.act s a w).symm.trans (hw a))`. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, smul_eq_mul] at h1`. Establish `he' : e ∈ GlobalTheory.CompanionTheory.Ar.eigSp 𝔐.ρ (𝔐.emb t)` using `he`. Establish `h2 : 𝔐.ρ (H.bar a) e = 𝔐.emb t (H.bar a) • e`. Establish `h3` using `(Submodule.mem_iInf _).1 he' (H.bar a)`.
+
+Rewrite `h3` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Simplify using `using h3`. Rewrite `h1` using `[h2, map_smul, smul_eq_mul]`. Conclude with `mul_right_cancel₀ hne h1`.
+-/
 theorem side (h : IsHTFamily 𝔐 p o Dc) (s) (σ : 𝓞 E →+* Ω) (w : Module.Dual Ω 𝔐.Li)
     (hw : ∀ a, (Dc s).ρΩ a w = σ a • w) (t : CMType H ⊕ CMType H) (e : 𝔐.Li) (he : e ∈ 𝔐.Vgen t)
     (hne : w e ≠ 0) (a : 𝓞 E) : 𝔐.emb t (H.bar a) = σ a := by
@@ -105,6 +146,9 @@ theorem side (h : IsHTFamily 𝔐 p o Dc) (s) (σ : 𝓞 E →+* Ω) (w : Module
   rw [h2, map_smul, smul_eq_mul] at h1
   exact mul_right_cancel₀ hne h1
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use extensionality with `w`. Rewrite using `[h.om_iff s w, h'.om_iff s w]`. Conclude with `RingHom.ext fun a => LinearMap.ext fun w => by rw [h.act s a w, h'.act s a w]`.
+-/
 theorem om_unique (h : IsHTFamily 𝔐 p o Dc) (h' : IsHTFamily 𝔐 p o Dc') (s) :
     (Dc s).om = (Dc' s).om ∧ (Dc s).ρΩ = (Dc' s).ρΩ := by
   refine ⟨?_, ?_⟩
@@ -112,6 +156,11 @@ theorem om_unique (h : IsHTFamily 𝔐 p o Dc) (h' : IsHTFamily 𝔐 p o Dc') (s
     rw [h.om_iff s w, h'.om_iff s w]
   · exact RingHom.ext fun a => LinearMap.ext fun w => by rw [h.act s a w, h'.act s a w]
 
+/- English proof (translation)
+Rewrite using `[h.om'_loc s q hs hq]`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `show (p ^ 𝔐.R p) • w ∈ (Dc s).om'`. Unfold `GlobalTheory.CompanionTheory.Ar.HT.HTChart.om'`. Apply `Submodule.mem_sup_right` to reduce the goal to its premises.
+
+Use `⟨w, hw, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`.
+-/
 theorem pow_smul_mem (hp : p.Prime) (h : IsHTFamily 𝔐 p o Dc) (s) (q : Cpt 𝔐.ξ) (hs : InChart 𝔐.ξ (mseg y) s.1 q)
     (hq : InFibre 𝔐.ξ p q) (w) (hw : w ∈ (Dc s).om) : (p ^ 𝔐.R p) • w ∈ omP 𝔐 p q := by
   rw [h.om'_loc s q hs hq]

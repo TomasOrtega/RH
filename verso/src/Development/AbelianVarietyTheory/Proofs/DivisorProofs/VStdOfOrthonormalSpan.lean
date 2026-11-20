@@ -12,6 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.StdFrame
 
+/- English proof (translation)
+Introduce `D i h`. Use `vStd_of_frameChoice D i ⟨h.1, fun a => ?_⟩` and prove the remaining obligations. Use `show (Vc D i).frame a ∈ (Vc D i).L0`. Rewrite using `[h.2]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩`.
+-/
 theorem vStd_of_orthonormal_span : ∀ (D : D7) (i : Fin D.R.m), ((∀ a b, (Vc D i).hT ((Vc D i).frame a) ((Vc D i).frame b) = if a = b then 1 else 0) ∧ (Vc D i).L0 = Submodule.span (𝓞 D.host.E) (Set.range (Vc D i).frame)) → VStd D i := by
   intro D i h
   refine vStd_of_frameChoice D i ⟨h.1, fun a => ?_⟩

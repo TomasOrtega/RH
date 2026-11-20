@@ -29,6 +29,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Chars Base stepFa
 
 namespace GlobalTheory.SqStepArith
 
+/- English proof (translation)
+Establish `e : nuH G t i j = nuH G μ₀ i j * Lc.xiH t`. Simplify using `only [nuH, hL.xi_base, mul_one]`. Conclude with `(div_mul_eq_mul_div _ _ _).symm`. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.mul_apply, chrW_chs G hL, chrW_chs G hL, MonoidHom.comp_apply, e]`.
+
+Both sides reduce to the same expression.
+-/
 theorem chrW_chs_eq_mul {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) {μ₀ : T} (hL : Lc.Is μ₀)
     (i j : Fin D.R.m) (t : T) {v : HeightOneSpectrum (𝓞 D.host.F)} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) :
     chrW (GlobalTheory.SqStep.chs G i j t).ν τ = chrW (GlobalTheory.SqStep.chs G i j μ₀).ν τ *
@@ -41,6 +46,11 @@ theorem chrW_chs_eq_mul {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : 
   rw [MonoidHom.mul_apply, chrW_chs G hL, chrW_chs G hL, MonoidHom.comp_apply, e]
   rfl
 
+/- English proof (translation)
+Use `GlobalTheory.StepFacNe.chrW_continuous _ ?_ τ` and prove the remaining obligations. Establish `e : (GlobalTheory.SqStep.chs G i j t).ν = G.nu t i (j + 1)` using `by show (Lc.mu t (j + 1) * Lc.eta ^ _) / (G.ch.chi _ * Lc.eta ^ _) = _`. Rewrite using `[mul_div_mul_right_eq_div]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `(chrEq_nu G t i j hL).1.1`.
+-/
 theorem chrW_chs_continuous {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) {μ₀ : T} (hL : Lc.Is μ₀)
     (i j : Fin D.R.m) (t : T) {v : HeightOneSpectrum (𝓞 D.host.F)} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) :
     Continuous (fun x : (Fv D.host.F v)ˣ => (chrW (GlobalTheory.SqStep.chs G i j t).ν τ x : ℂ)) := by
@@ -52,6 +62,9 @@ theorem chrW_chs_continuous {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (
   rw [e]
   exact (chrEq_nu G t i j hL).1.1
 
+/- English proof (translation)
+The claim follows from `Circle.norm_coe _`.
+-/
 theorem chrW_chs_norm {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc)
     (i j : Fin D.R.m) (t : T) {v : HeightOneSpectrum (𝓞 D.host.F)} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v)
     (x : (Fv D.host.F v)ˣ) : ‖(chrW (GlobalTheory.SqStep.chs G i j t).ν τ x : ℂ)‖ = 1 :=
@@ -62,20 +75,36 @@ end GlobalTheory.SqStepArith
 namespace GlobalTheory.SqStepArith
 
 open Formalism.L2.Host in
+/- English proof (translation)
+Introduce `x hx h` and use `by rw [HChar.loc_mul, ha x hx h, hb x hx h, one_mul]`.
+-/
 theorem levelLe_mul {L : Type} [Field L] [NumberField L] {a b : HChar L} {w : HeightOneSpectrum (𝓞 L)} {n : ℕ}
     (ha : a.LevelLe w n) (hb : b.LevelLe w n) : (a * b).LevelLe w n := fun x hx h => by
   rw [HChar.loc_mul, ha x hx h, hb x hx h, one_mul]
 
 open Formalism.L2.Host in
+/- English proof (translation)
+Introduce `x hx h` and use `by rw [HChar.loc_inv, ha x hx h, inv_one]`.
+-/
 theorem levelLe_inv {L : Type} [Field L] [NumberField L] {a : HChar L} {w : HeightOneSpectrum (𝓞 L)} {n : ℕ}
     (ha : a.LevelLe w n) : (a⁻¹).LevelLe w n := fun x hx h => by
   rw [HChar.loc_inv, ha x hx h, inv_one]
 
 open Formalism.L2.Host in
+/- English proof (translation)
+Introduce `x hx h` and use `ha x hx (h.trans (WithZero.exp_le_exp.2 (by omega)))`.
+-/
 theorem levelLe_mono {L : Type} [Field L] [NumberField L] {a : HChar L} {w : HeightOneSpectrum (𝓞 L)} {m n : ℕ}
     (ha : a.LevelLe w m) (hmn : m ≤ n) : a.LevelLe w n := fun x hx h =>
   ha x hx (h.trans (WithZero.exp_le_exp.2 (by omega)))
 
+/- English proof (translation)
+Establish `hm : 1 ≤ D.R.m - (i : ℕ) ∧ D.R.m - (i : ℕ) ≤ D.R.m` using `⟨by omega, by omega⟩`. Establish `hchi` using `G.ch.lev1 _ hm.1 hm.2 PP hPP`. Establish `hmu : (Lc.C.mu0 j).LevelLe PP 1` using `(Lc.C.isMu0 j).tame PP`. Establish `hxi : (Lc.xiH t).LevelLe PP 1` using `hL.xi_tame t PP`. Use `⟨?_, fun h => hchi.2 ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[nuH, div_eq_mul_inv]`. Conclude with `levelLe_mul (levelLe_mul (levelLe_mono hmu (by omega)) (levelLe_mono hxi (by omega))) (levelLe_inv hchi.1)`. Establish `e : G.ch.chiH (D.R.m - i) = Lc.C.mu0 j * Lc.xiH t / nuH G t i j`. Rewrite using `[nuH, div_div_cancel]`. Rewrite using `[e, div_eq_mul_inv]`.
+
+Conclude with `levelLe_mul (levelLe_mul hmu hxi) (levelLe_inv h)`.
+-/
 theorem nuH_levelLe_two {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) {μ₀ : T} (hL : Lc.Is μ₀)
     (i j : Fin D.R.m) (t : T) (PP : HeightOneSpectrum (𝓞 D.host.E)) (hPP : PP.under (𝓞 D.host.F) ∈ S1 D) :
     (nuH G t i j).LevelLe PP 2 ∧ ¬ (nuH G t i j).LevelLe PP 1 := by
@@ -93,6 +122,9 @@ theorem nuH_levelLe_two {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : 
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField in
 
+/- English proof (translation)
+Establish `key : ∀ n, GlobalTheory.SplitFlip.CondLE (unifAt v) n ((χ.loc (GlobalTheory.AdelicU.splitPrime τ)).comp (Units.map (GlobalTheory.LFun.complMap (GlobalTheory.AdelicU.splitPrime_under τ)).toMonoidHom)) ↔ χ.LevelLe (GlobalTheory.AdelicU.splitPrime τ) n` using `fun n => GlobalTheory.CondLESplit.condLE_iff τ _ n`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.condExp`. Use `le_antisymm (Nat.sInf_le ((key 2).2 h2)) (le_csInf ⟨2, (key 2).2 h2⟩ fun c hc => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Conclude with `h1 (levelLe_mono ((key c).1 hc) (by omega))`.
+-/
 theorem condExp_comp_eq_two {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {v : HeightOneSpectrum (𝓞 F)} (τ : E →ₐ[F] Fv F v) (χ : HChar E)
     (h2 : χ.LevelLe (GlobalTheory.AdelicU.splitPrime τ) 2) (h1 : ¬ χ.LevelLe (GlobalTheory.AdelicU.splitPrime τ) 1) :
@@ -112,6 +144,17 @@ namespace GlobalTheory.SqStepArith
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Take `⟨hc, y, hg⟩` from `GlobalTheory.GaussUnr.gauss_mul_unram ψ ν₀ ξ hξ`. Establish `he` using `eps_mul_of_condExp ψ ν₀ ξ s z hc`. Establish `hG1 : gauss ψ (ν₀ * ξ) ≠ 0`. Introduce `h`. Apply `h0` to reduce the goal to its premises.
+
+Unfold `eps`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Establish `hG0 : gauss ψ ν₀ ≠ 0`. Introduce `h`.
+
+Apply `hG1` to reduce the goal to its premises. Rewrite using `[hg, h, mul_zero]`. Use `⟨y * (s * unifAt v ^ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.condExp ν₀)⁻¹, ?_⟩` and prove the remaining obligations. Rewrite `he` using `[hg]`. Simplify using `only [Units.val_inv_eq_inv_val] at he`.
+
+Establish `hy : ((ξ y : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `hb : ((ξ (s * unifAt v ^ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.condExp ν₀) : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Rewrite using `[map_mul, map_inv, Units.val_mul, Units.val_inv_eq_inv_val]`. Use `mul_right_cancel₀ (mul_ne_zero (inv_ne_zero hy) hG0) ?_` and prove the remaining obligations. Rewrite using `[he]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem factor_unr {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) {v : HeightOneSpectrum (𝓞 F)}
     (ν₀ ξ : (Fv F v)ˣ →* ℂˣ)
     (hξ : ∀ x : (Fv F v)ˣ, (x : Fv F v) ∈ v.adicCompletionIntegers F →
@@ -136,6 +179,13 @@ theorem factor_unr {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ
 
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels in
 
+/- English proof (translation)
+Take `⟨g, g₁, hg, hgg⟩` from `GlobalTheory.GaussDiv.gauss_dvd_pow σ ψ v ν₀ hψ hcont0 hun0 (hc0 ▸ h1) hr0 (hc0 ▸ hζ)`. Take `⟨g', g₁', hg', hgg'⟩` from `GlobalTheory.GaussDiv.gauss_dvd_pow σ ψ v (ν₀ * ξ) hψ hcont1 hun1 (hc1 ▸ h1) hr1 (hc1 ▸ hζ)`. Establish `he` using `eps_mul_of_condExp ψ ν₀ ξ s z (hc1.trans hc0.symm)`. Establish `hG1 : gauss ψ (ν₀ * ξ) ≠ 0`. Introduce `h`.
+
+Apply `h0` to reduce the goal to its premises. Unfold `eps`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨g, g', ⟨g₁, by rw [hgg, hc0]⟩, ⟨g₁', by rw [hgg', hc1]⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hg, hg', ← hc0]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem factor_ram {F : Type} [Field F] [NumberField F] {K : Type} [Field K] [NumberField K] (σ : K →+* ℂ)
     (ψ : AddChar (AF F) ℂ) {v : HeightOneSpectrum (𝓞 F)} (ν₀ ξ : (Fv F v)ˣ →* ℂˣ) (s : (Fv F v)ˣ) (z : ℤ) (c : ℕ)
     (hc0 : condExp ν₀ = c) (hc1 : condExp (ν₀ * ξ) = c) (h1 : 1 ≤ c) (hψ : PsiUnr ψ v)
@@ -166,6 +216,11 @@ namespace GlobalTheory.SqStepArith
 
 open Formalism.L2.Host in
 
+/- English proof (translation)
+Establish `hm : 1 ≤ D.R.m - (i : ℕ) ∧ D.R.m - (i : ℕ) ≤ D.R.m` using `⟨by omega, by omega⟩`. Establish `h1 : _ ∈ D.what₂.embLL.fieldRange` using `RingHom.mem_fieldRange.2 (hN.chars.mu0 j w y)`. Establish `h2 : _ ∈ D.what₂.embLL.fieldRange` using `RingHom.mem_fieldRange.2 (hN.chars.xi t w y)`. Establish `h3 : _ ∈ D.what₂.embLL.fieldRange` using `RingHom.mem_fieldRange.2 (hN.chars.chi _ hm.1 hm.2 w y)`. Use `RingHom.mem_fieldRange.1 ?_` and prove the remaining obligations.
+
+Rewrite using `[nuH, div_eq_mul_inv, HChar.loc_mul, HChar.loc_mul, HChar.loc_inv, Units.val_mul, Units.val_mul, Units.val_inv_eq_inv_val]`. Conclude with `mul_mem (mul_mem h1 h2) (inv_mem h3)`.
+-/
 theorem nuH_loc_mem {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} {G : GridData Lc sc} {μ₀ : T} {W : G.Weil}
     {S : GridChoice W Set.univ} (hN : NumbersIn D.what₂.embLL S μ₀) (i j : Fin D.R.m) (t : T)
     (w : HeightOneSpectrum (𝓞 D.host.E)) (y : (w.adicCompletion D.host.E)ˣ) :
@@ -181,6 +236,11 @@ theorem nuH_loc_mem {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} {G : Grid
 
 open Formalism.L2.Host in
 
+/- English proof (translation)
+Unfold `IsUnitAt`. Rewrite using `[Units.coe_map]`. Use `show Valued.v (GlobalTheory.LFun.complMap (GlobalTheory.AdelicU.splitPrime_under τ) (x : Fv F v)) = 1`. Rewrite using `[GlobalTheory.LFun.SplitTie.valued_complMap τ (GlobalTheory.AdelicU.splitPrime_under τ)]`. Rewrite `h1`, `h2` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`.
+
+Rewrite `h2` using `[Units.val_inv_eq_inv_val, map_inv₀]`. Establish `hne : Valued.v (x : Fv F v) ≠ 0` using `(Valuation.ne_zero_iff _).2 x.ne_zero`. Conclude with `le_antisymm h1 ((inv_le_one₀ (zero_lt_iff.2 hne)).1 h2)`.
+-/
 theorem isUnitAt_complMap {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {v : HeightOneSpectrum (𝓞 F)} (τ : E →ₐ[F] Fv F v) (x : (Fv F v)ˣ) (h1 : (x : Fv F v) ∈ v.adicCompletionIntegers F)
     (h2 : ((x⁻¹ : (Fv F v)ˣ) : Fv F v) ∈ v.adicCompletionIntegers F) :
@@ -203,6 +263,41 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 set_option maxHeartbeats 1000000 in
 open Formalism.L2.Host in
 
+/- English proof (translation)
+Introduce `D T Lc sc G μ₀ hL W S hN i j t Bs hB v hv s z h0`. Establish `hwu : (GlobalTheory.AdelicU.splitPrime (Bs.τ v)).under (𝓞 D.host.F) = v.1` using `GlobalTheory.AdelicU.splitPrime_under (Bs.τ v)`. Establish `hν` using `chrW_chs_eq_mul G hL i j t (Bs.τ v)`. Rewrite `h0`, the goal using `[hν]`. Establish `hQn : 0 < Qn G t` using `Finset.prod_pos fun w _ => Nat.pos_of_ne_zero fun h => w.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`.
+
+Take `⟨hc1, -, -, -, -⟩` from `GlobalTheory.Square.isAwayUnit_closure D.what₂.LL (Qn G t) hQn`. Establish `hval : ∀ y, ∃ b : D.what₂.LL, GlobalTheory.Square.IsAwayUnit (Qn G t) b ∧ D.what₂.embLL b = (((Lc.xiH t).loc (GlobalTheory.AdelicU.splitPrime (Bs.τ v)) y : ℂˣ) : ℂ)`. Introduce `y`. Take `⟨b, hb⟩` from `hN.chars.xi t _ y`. Take `⟨n, hn, hord⟩` from `hL.xi_fin t`.
+
+Use `⟨b, hc1 b n hn ?_, hb⟩` and prove the remaining obligations. Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Rewrite using `[map_pow, hb, map_one]`. Establish `e` using `congrArg (fun χ : HChar D.host.E => ((χ.loc (GlobalTheory.AdelicU.splitPrime (Bs.τ v)) y : ℂˣ) : ℂ)) hord`. Conclude with `e`.
+
+Distinguish the cases in `hu : ∀ x : (Fv D.host.F v.1)ˣ, (x : Fv D.host.F v.1) ∈ v.1.adicCompletionIntegers D.host.F → ((x⁻¹ : (Fv D.host.F v.1)ˣ) : Fv D.host.F v.1) ∈ v.1.adicCompletionIntegers D.host.F → (((Lc.xiH t).loc (GlobalTheory.AdelicU.splitPrime (Bs.τ v))).comp (Units.map (GlobalTheory.LFun.comp …`. Take `⟨u, hu'⟩` from `factor_unr Bs.ψ _ _ hu _ z h0`. Take `⟨b, hb, hbe⟩` from `hval (Units.map (GlobalTheory.LFun.complMap (GlobalTheory.AdelicU.splitPrime_under (Bs.τ v))).toMonoidHom u)`. Use `⟨b, 1, 1, hb, one_dvd _, one_dvd _, ?_⟩` and prove the remaining obligations. Rewrite using `[hu', div_self (by simp), mul_one, hbe]`.
+
+Both sides reduce to the same expression. Establish `hy0 : ∃ y0 : (Fv D.host.F v.1)ˣ, y0 = Units.map (Int.castRingHom (Fv D.host.F v.1)).toMonoidHom s` using `⟨_, rfl⟩`. Take `⟨y0, hy0⟩` from `hy0`. Establish `hy1 : ∃ y1 : (Fv D.host.F v.1)ˣ, y1 = (y0 * GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.unifAt v.1 ^ 2)⁻¹` using `⟨_, rfl⟩`. Take `⟨y1, hy1⟩` from `hy1`.
+
+Take `⟨b, hb, hbe⟩` from `hval (Units.map (GlobalTheory.LFun.complMap (GlobalTheory.AdelicU.splitPrime_under (Bs.τ v))).toMonoidHom y1)`. Establish `hram : ¬ (Lc.xiH t).UnrAt (GlobalTheory.AdelicU.splitPrime (Bs.τ v))` using `fun h => hu fun x h1 h2 => h _ (isUnitAt_complMap (Bs.τ v) x h1 h2)`. Establish `hv0 : v.1 ≠ G.pl.v0`. Introduce `e`. Break down `(hL.Q_ram t _).1 hram with h | ⟨PP', h, hc'⟩` into its components or cases.
+
+Conclude with `G.pl.levelPlace_ne_basePlace t _ h (hwu.trans e)`. Conclude with `G.pl.levelPlace_ne_basePlace t PP' h ((GlobalTheory.LevelPlaces.under_eq_of_isConjPl hc').trans (hwu.trans e))`. Establish `hv1 : v.1 ∈ S1 D` using `(G.pl.mem_S0_of_sum_eq.1 hv).resolve_left hv0`. Establish `hce : condExp G.pl v.1 = 2` using `if_neg hv0`. Establish `hloc : GlobalTheory.AdelicU.splitPrime (Bs.τ v) ∈ locPl G t` using `hB.2.2.2 v (Finset.mem_union_left _ hv)`.
+
+Establish `hw : GlobalTheory.AdelicU.splitPrime (Bs.τ v) = G.pl.w v.1`. Break down `Finset.mem_union.1 hloc with h | h` into its components or cases. Take `⟨v', hv', e⟩` from `Finset.mem_image.1 h`. Establish `e' : v' = v.1` using `by rw [← G.pl.under_w hv', e, hwu]`. Rewrite using `[← e, e']`.
+
+Use `G.pl.w_Q t _ h (hwu.symm ▸ hv1)` as an intermediate fact. Rewrite `this` using `[hwu]`. Then use the resulting hypothesis. Establish `hdep : depthAt G (GlobalTheory.AdelicU.splitPrime (Bs.τ v)) = 2`. Rewrite using `[hw, (depthAt_w G hv).2]`. Conclude with `if_neg hv0`.
+
+Establish `hroots` using `hN.roots t _ hloc`. Rewrite `hroots` using `[hdep, GlobalTheory.LFun.SplitChart.absNorm_splitPrime]`. Establish `hchr : ∀ t', chrW (GlobalTheory.SqStep.chs G i j t').ν (Bs.τ v) = ((nuH G t' i j).loc (GlobalTheory.AdelicU.splitPrime (Bs.τ v))).comp (Units.map (GlobalTheory.LFun.complMap (GlobalTheory.AdelicU.splitPrime_under (Bs.τ v))).toMonoidHom)` using `fun t' => MonoidHom.ext fun x => chrW_chs G hL i j t' (Bs.τ v) x`. Establish `hexp : ∀ t', GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.condExp (chrW (GlobalTheory.SqStep.chs G i j t').ν (Bs.τ v)) = 2` using `fun t' => by`. Take `⟨h2, h1⟩` from `nuH_levelLe_two G hL i j t' _ (hwu.symm ▸ hv1)`.
+
+Rewrite using `[hchr]`. Conclude with `condExp_comp_eq_two (Bs.τ v) _ h2 h1`. Establish `hrange : ∀ t' x, (chrW (GlobalTheory.SqStep.chs G i j t').ν (Bs.τ v) x : ℂ) ∈ Set.range D.what₂.embLL` using `fun t' x => by`. Rewrite using `[hchr]`. Conclude with `nuH_loc_mem hN i j t' _ _`.
+
+Establish `e1` using `hexp t`. Establish `c1` using `chrW_chs_continuous G hL i j t (Bs.τ v)`. Establish `n1` using `chrW_chs_norm G i j t (Bs.τ v)`. Establish `r1` using `hrange t`. Rewrite `e1`, `c1`, `n1`, `r1` using `[hν]`.
+
+Establish `key` using `factor_ram D.what₂.embLL Bs.ψ (chrW (GlobalTheory.SqStep.chs G i j μ₀).ν (Bs.τ v)) (((Lc.xiH t).loc (GlobalTheory.AdelicU.splitPrime (Bs.τ v))).comp (Units.map (GlobalTheory.LFun.complMap (GlobalTheory.AdelicU.splitPrime_under (Bs.τ v))).toMonoidHom)) (Units.map (Int.castRingHom …`. Specialize `key (hB.2.2.1 v.1 v.2)`. Specialize `key (chrW_chs_continuous G hL i j μ₀ (Bs.τ v))`. Specialize `key c1`. Specialize `key (chrW_chs_norm G i j μ₀ (Bs.τ v))`.
+
+Specialize `key n1`. Specialize `key (fun x _ _ => hrange μ₀ x)`. Specialize `key (fun x _ _ => r1 x)`. Specialize `key hroots`. Establish `k2` using `key h0`.
+
+Break down `k2 with ⟨g, k3⟩` into its components or cases. Break down `k3 with ⟨g', k4⟩` into its components or cases. Establish `hg` using `k4.1`. Establish `hg'` using `k4.2.1`. Establish `he` using `k4.2.2`.
+
+Use `⟨b, g, g', hb, hce ▸ hg, hce ▸ hg', ?_⟩` and prove the remaining obligations. Establish `hξ : ((((Lc.xiH t).loc (GlobalTheory.AdelicU.splitPrime (Bs.τ v))) (Units.map (GlobalTheory.LFun.complMap (GlobalTheory.AdelicU.splitPrime_under (Bs.τ v))).toMonoidHom y1) : ℂˣ) : ℂ) = ((((((Lc.xiH t).loc (GlobalTheory.AdelicU.splitPrime (Bs.τ v))).comp (Units.map (GlobalTheory.L …`. Rewrite using `[hy1, hy0, map_inv, map_inv]`. Both sides reduce to the same expression. Rewrite using `[he]`.
+
+Rewrite using `[map_mul D.what₂.embLL]`. Rewrite using `[map_div₀]`. Rewrite using `[hbe, hξ]`.
+-/
 theorem base_place_factor_zero : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) {μ₀ : T}, Lc.Is μ₀ →
     ∀ (W : G.Weil) (S : GridChoice W Set.univ), NumbersIn D.what₂.embLL S μ₀ → ∀ (i j : Fin D.R.m) (t : T)
     (Bs : Base D.host.F D.host.E), GlobalTheory.SqStep.BaseFits G W i j t Bs → ∀ (v : Bs.P), v.1 ∈ G.pl.S0 → ∀ (s : ℤˣ) (z : ℤ),

@@ -25,6 +25,17 @@ namespace GlobalTheory.Mem.R3.ActExt
 open Formalism.L2.Pj Formalism.IndefR.FWT GlobalTheory.LevelActionPinned
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Datum Level Moduli Coeff)
 
+/- English proof (translation)
+Take `⟨κ, hκ, h1⟩` from `hu`. Take `⟨κ', hκ', h1'⟩` from `hu'`. Establish `hM₁ : (∏ PP ∈ L.Pg, PP.asIdeal) * Mh = Ideal.span {(M : 𝓞 D.host.E)}` using `by rw [← hMb, hM]`. Establish `hMm : (M : 𝓞 D.host.E) ∈ Mb` using `Ideal.mul_le_left (I := Mb) (J := Mh) (by rw [hM]; exact Ideal.mem_span_singleton_self _)`. Establish `hst` using `mulVec_mem_of_St hβ (Formalism.L2.DIV.parLev_St hκ.2.1)`.
+
+Establish `hd` using `Lev.lift_div_mem hκ hκ'`. Take `⟨s, hs, v, hv, huv⟩` from `Submodule.mem_sup.1 (hcop ▸ Submodule.mem_top : (1 : 𝓞 D.host.E) ∈ Mb ⊔ Mh)`. Establish `hva : v • a ∈ Mh • (⊤ : Submodule (𝓞 D.host.E) La)` using `Submodule.smul_mem_smul hv Submodule.mem_top`. Take `⟨w₁, hw₁, e₁⟩` from `h1 _ hva`. Take `⟨w₂, hw₂, e₂⟩` from `h1' _ hva`.
+
+Take `⟨w₃, hw₃, e₃⟩` from `lift_one_congr (L := L) hβ hL hι hM₁ hd.2.1 (Subgroup.mem_bot.1 hd.2.2) _ hva`. Establish `e₄ : (finHom V κ').val = (finHom V κ).val * (finHom V (κ⁻¹ * κ')).val`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel_left]`. Establish `e₅ : fvec V ι (u' (v • a) - u (v • a)) = M • (w₂ - w₁ + (finHom V κ).val *ᵥ w₃)`. Establish `e₁' : fvec V ι (u (v • a)) - (finHom V κ).val *ᵥ fvec V ι (v • a) = M • w₁` using `e₁`.
+
+Establish `e₂' : fvec V ι (u' (v • a)) - (finHom V κ').val *ᵥ fvec V ι (v • a) = M • w₂` using `e₂`. Rewrite using `[smul_add, smul_sub, ← Matrix.mulVec_smul, ← e₁', ← e₂', ← e₃, map_sub, e₄, Matrix.mulVec_sub, Matrix.mulVec_mulVec]`. Normalize the expressions using the abelian group laws. Take `⟨x, hx⟩` from `exists_eq_nsmul hι hM0 _ _ (add_mem (sub_mem hw₂ hw₁) (hst _ hw₃)) e₅`. Establish `e₆ : u' a - u a = s • (u' a - u a) + (M : 𝓞 D.host.E) • x`.
+
+Rewrite using `[Nat.cast_smul_eq_nsmul, ← hx, map_smul, map_smul, ← smul_sub, ← add_smul, huv, one_smul]`. Rewrite using `[e₆]`. Conclude with `add_mem (Submodule.smul_mem_smul hs Submodule.mem_top) (Submodule.smul_mem_smul hMm Submodule.mem_top)`.
+-/
 private theorem congr_of_two_lifts {D : D7} {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)}
     {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (hβ : IsSDFrame V β Λ 1)
     {L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank} (hL : V.rank = L.r) {La : Type} [AddCommGroup La] [Module (𝓞 D.host.E) La]
@@ -61,6 +72,9 @@ private theorem congr_of_two_lifts {D : D7} {V : HSp D} {β : GL (Fin V.rank) (L
   rw [e₆]
   exact add_mem (Submodule.smul_mem_smul hs Submodule.mem_top) (Submodule.smul_mem_smul hMm Submodule.mem_top)
 
+/- English proof (translation)
+Establish `key : ∀ (V : HSp D) (_ : T.V ((i : ℕ) + 1) T.toCore.σ₀ = V) (hr : V.rank = D.R.r), LatEmb V (LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast hr) ∘ₗ T.iota ((i : ℕ) + 1))`. Introduce and unpack `V rfl hr`. Take `⟨_, -, -, -, -, -, -, hemb, -⟩` from `hT.adPin _ (inR i) _ T.toCore.good_σ₀`. Conclude with `hemb`. Conclude with `key _ (hT.spaceW _ (inR i) _ T.toCore.good_σ₀) (rank_Wc i)`.
+-/
 private theorem latEmb_iota {D : D7} (T : CoreJ D) (hT : LawsJ T) (i : Fin D.R.m) : LatEmb (Wc D i) (iotaW T i) := by
   have key : ∀ (V : HSp D) (_ : T.V ((i : ℕ) + 1) T.toCore.σ₀ = V) (hr : V.rank = D.R.r),
       LatEmb V (LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast hr) ∘ₗ T.iota ((i : ℕ) + 1)) := by
@@ -69,6 +83,13 @@ private theorem latEmb_iota {D : D7} (T : CoreJ D) (hT : LawsJ T) (i : Fin D.R.m
     exact hemb
   exact key _ (hT.spaceW _ (inR i) _ T.toCore.good_σ₀) (rank_Wc i)
 
+/- English proof (translation)
+Substitute `eβ eP hH` using the available equality. Take `rfl` from `eq_of_heq hl`. Take `rfl` from `eq_of_heq hc`. Take `rfl` from `eq_of_heq hDw`. Take `rfl` from `eq_of_heq hXo`.
+
+Take `rfl` from `eq_of_heq hι`. Take `rfl` from `eq_of_heq heG`. Take `rfl` from `eq_of_heq hr`. Establish `key : ∀ g a, lev' g a - lev g a ∈ l'.Mb • (⊤ : Submodule (𝓞 D.host.E) (Dw' ((i : ℕ) + 1)).La)` using `fun g a => congr_of_two_lifts (L := datY _ D.R.r D.R.t 0 (r_le_rank_Wc i) Pg' ∅ (LevelP.triv _ _ _) (fun _ _ => 1) (fun _ => 1) Frm.B) hβ (rank_Wc i) hemb (by have := l'.three_le; omega) hMb l'.prod l'.coprime (hlev g) (hlev' g) a`. Establish `e : (fun {S : Type} [CommRing S] [Algebra c'.F S] (g : G) (y y' : FrPt (Xo' ((i : ℕ) + 1)) c' S) => levActR (Xo` using `Xo' ((i : ℕ) + 1)) (c := c') (fun g => (lev' g, LinearMap.id)) g y y') = fun {S : Type} [CommRing S] [Algebra c'.F S] (g : G) (y y' : FrPt (Xo' ((i : ℕ) + 1)) c' S) => levActR (Xo := Xo' ((i : ℕ) + 1)) (c := c') (fun g => (lev g, LinearMap.id)) g y y' := by`.
+
+Use function extensionality and compare the values at `S _ _ g y y'`. Conclude with `propext (GlobalTheory.LevelActionOfLifts.levR_congr (key g) y y')`. Unfold `actLev`. Rewrite using `[e]`.
+-/
 private theorem act_heq {D : D7} (i : Fin D.R.m)
     {β β' : ∀ i, GL (Fin (Wc D i).rank) (Lev.EAf D)} (eβ : β' = β)
     {Λ : Submodule (𝓞 D.host.E) (Fin (Wc D i).rank → D.host.E)} (hβ : IsSDFrame (Wc D i) (β i) Λ 1)
@@ -119,6 +140,9 @@ private theorem act_heq {D : D7} (i : Fin D.R.m)
   unfold actLev
   rw [e]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(B.pins i).2.lift.lev, ((B.pins i).2.tuple ()).half.1, latEmb_iota T B.fw.laws i⟩`.
+-/
 private theorem geo_facts {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F} {ph : Fin D.R.m → ℂ}
     (B : GlobalTheory.RealGeo.GeoHalf T R ph) (i : Fin D.R.m) :
@@ -128,6 +152,15 @@ private theorem geo_facts {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Ty
 end GlobalTheory.Mem.R3.ActExt
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Use `StepW.of_all fun K B' f' T' w' _ _ _ B f T w hE hf _ hpx Z hX Wt z _ _ _ _ Z' hX' _ _ _ z' _ hx j j' hj g g' hg r r' hr => ?_` and prove the remaining obligations. Take `⟨h1, h3, h4⟩` from `GlobalTheory.Mem.R3.ActExt.geo_facts z.geo j`. Take `⟨h2, -, -⟩` from `GlobalTheory.Mem.R3.ActExt.geo_facts z'.geo j'`. Establish `h5` using `z.lev.is.βW j`. Establish `hB` using `hE.1`.
+
+Consider the cases of `B with | mk P => ?_`. Consider the cases of `B' with | mk P' => ?_`. Simplify using `only at hB`. Substitute `hB` using the available equality. Establish `e : j' = j` using `Fin.ext hj.symm`.
+
+Substitute `e` using the available equality. Consider the cases of `w with | mk px => ?_`. Consider the cases of `w' with | mk px' => ?_`. Simplify using `only at hpx px px'`. Consider the cases of `hpx`.
+
+Establish `eg : g' = g` using `eq_of_heq hg`. Substitute `eg` using the available equality. Conclude with `GlobalTheory.Mem.R3.ActExt.act_heq j' (eq_of_heq hx.βW) h5 (eq_of_heq hx.Pg) (eq_of_heq hx.H) hx.l hx.c hx.Dw hx.Xo hx.iota h4 h3 hx.eG h1 h2 g' r r' hr`.
+-/
 theorem _root_.GlobalTheory.T.levelActions_on_liftRules_extendedData : StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)
     (z : Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GrpAt (w.st Z) w.I → Fine z → HoldsL z.R z.F →

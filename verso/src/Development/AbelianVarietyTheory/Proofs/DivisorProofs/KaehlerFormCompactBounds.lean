@@ -12,6 +12,11 @@ namespace GlobalTheory.KaehlerCmp
 
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {d : ℕ}
 
+/- English proof (translation)
+Take `⟨W, φ, hW, ho, hs, eφ⟩` from `ha.1 (c.e.symm z)`. Establish `hy : c.e.symm z ∈ c.e.source` using `c.e.map_target hz`. Establish `h1` using `CurvBound.continuousAt_ddcForm hy (hs.contDiffAt_two ho hy hW) ξ.ofLp`. Establish `h2 : ContinuousAt (fun q : V d × V d => (c.e.symm q.1, q.2.ofLp)) (z, ξ)` using `((c.e.continuousAt_symm hz).comp (f := Prod.fst) continuousAt_fst).prodMk (by fun_prop)`. Establish `h3` using `h1.comp (x := (z, ξ)) h2`.
+
+Use `h3.congr ?_` and prove the remaining obligations. Establish `h4 : ∀ᶠ w in 𝓝 z, w ∈ c.e.target ∧ c.e.symm w ∈ W` using `(show ∀ᶠ w in 𝓝 z, w ∈ c.e.target from c.e.open_target.mem_nhds hz).and (show ∀ᶠ w in 𝓝 z, c.e.symm w ∈ W from (c.e.continuousAt_symm hz).preimage_mem_nhds (ho.mem_nhds hW))`. Establish `h5 : ∀ᶠ q : V d × V d in 𝓝 (z, ξ), q.1 ∈ c.e.target ∧ c.e.symm q.1 ∈ W` using `(continuous_fst.tendsto (z, ξ)).eventually h4`. Use `filter_upwards [h5] with q hq`. Conclude with `(eφ _ _ (c.e.map_target hq.1) hq.2 _).symm`.
+-/
 theorem continuousAt_form {R : AnRead p σ d} {a : ChartForm p σ d} (ha : IsKaehlerForm R a) (c : AlgChart p σ d)
     {z : V d} (hz : z ∈ c.e.target) (ξ : V d) :
     ContinuousAt (fun q : V d × V d => a c (c.e.symm q.1) q.2.ofLp) (z, ξ) := by
@@ -30,6 +35,19 @@ theorem continuousAt_form {R : AnRead p σ d} {a : ChartForm p σ d} (ha : IsKae
   filter_upwards [h5] with q hq
   exact (eφ _ _ (c.e.map_target hq.1) hq.2 _).symm
 
+/- English proof (translation)
+Introduce `k _ Y p σ d R a ha c Kc hK hKt`. Establish `hS : IsCompact (Kc ×ˢ Metric.sphere (0 : V d) 1)` using `hK.prod (isCompact_sphere _ _)`. Establish `hc : ContinuousOn (fun q : V d × V d => a c (c.e.symm q.1) q.2.ofLp) (Kc ×ˢ Metric.sphere (0 : V d) 1)` using `fun q hq => (continuousAt_form ha c (hKt hq.1) q.2).continuousWithinAt`. Take `⟨m, hm, hmle⟩` from `hS.exists_forall_le' hc (a := 0) fun q hq => by`. Establish `h0 : q.2 ≠ 0` using `fun h => by have := hq.2; simp [h] at this`.
+
+Establish `h0' : q.2.ofLp ≠ 0` using `fun h => h0 (by simpa using congrArg (WithLp.toLp 2) h)`. Conclude with `ha.2 c _ (c.e.map_target (hKt hq.1)) _ h0'`. Take `⟨B, hB⟩` from `hS.bddAbove_image hc`. Use `⟨m, max B 1, hm, lt_max_of_lt_right one_pos, fun y hy hyK v => ?_⟩` and prove the remaining obligations. Establish `hsm` using `(ChernReg.continuous_and_smul ha hy).2`.
+
+Break down `eq_or_ne v 0 with rfl | hv` into its components or cases. Establish `h` using `hsm 0 0`. Simplify using `only [zero_smul, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, zero_mul] at h`. Simplify using `[h]`. Establish `hn : ‖v‖ ≠ 0` using `norm_ne_zero_iff.2 hv`.
+
+Establish `hw : ‖v‖⁻¹ • v ∈ Metric.sphere (0 : V d) 1` using `by simp [norm_smul, hn]`. Establish `e : v.ofLp = ‖v‖ • (‖v‖⁻¹ • v).ofLp`. Rewrite using `[WithLp.ofLp_smul, smul_smul, mul_inv_cancel₀ hn, one_smul]`. Establish `hq : (c.e y, ‖v‖⁻¹ • v) ∈ Kc ×ˢ Metric.sphere (0 : V d) 1` using `⟨hyK, hw⟩`. Establish `h1` using `hmle _ hq`.
+
+Establish `h2 : a c (c.e.symm (c.e y)) (‖v‖⁻¹ • v).ofLp ≤ B` using `hB ⟨_, hq, rfl⟩`. Rewrite `h1`, `h2` using `[c.e.left_inv hy]`. Rewrite using `[e, hsm]`. Establish `h3 : 0 ≤ ‖v‖ ^ 2` using `sq_nonneg _`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left h1 h3`. Rewrite using `[mul_comm (max B 1)]`. Conclude with `mul_le_mul_of_nonneg_left (h2.trans (le_max_left _ _)) h3`.
+-/
 theorem exists_bounds : ∀ {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {d : ℕ}
     {R : AnRead p σ d} {a : ChartForm p σ d}, IsKaehlerForm R a → ∀ (c : AlgChart p σ d) {Kc : Set (V d)},
     IsCompact Kc → Kc ⊆ c.e.target → ∃ m M : ℝ, 0 < m ∧ 0 < M ∧ ∀ y ∈ c.e.source, c.e y ∈ Kc → ∀ v : V d,

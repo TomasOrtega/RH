@@ -17,5 +17,8 @@ open ReciprocityTheory.PGsh ReciprocityTheory.PGsh.Up ReciprocityTheory.PGsh.Be2
 open ReciprocityTheory.ChartRestriction.G.Chart (sp spMap)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ChF.exists_gen_theta_tensor_and_finite_flat_surjective_pow | exact GlobalTheory.ChF.exists_gen_theta_tensor_and_finite_flat_surjective_pow | (intros; apply GlobalTheory.ChF.exists_gen_theta_tensor_and_finite_flat_surjective_pow <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cube_trivial_and_finite_flat_surjective_mul_abelianScheme : ∀ (R : Type) [CommRing R] (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (M : LB G.left) (Q : LB (G ⊗ G).left), IsAbelianScheme G → M.IsLB → Out.RelAmple G M → Q.IsLB → (∃ θ : LB.Gen (Theta (G ⊗ G) Q), θ.IsGen) ∧ ∀ n : ℕ, 1 ≤ n → IsFinite ((𝟙 G) ^ n : G ⟶ G).left ∧ Flat ((𝟙 G) ^ n : G ⟶ G).left ∧ Surjective ((𝟙 G) ^ n : G ⟶ G).left := by
   first | exact @GlobalTheory.ChF.exists_gen_theta_tensor_and_finite_flat_surjective_pow | exact GlobalTheory.ChF.exists_gen_theta_tensor_and_finite_flat_surjective_pow | (intros; apply GlobalTheory.ChF.exists_gen_theta_tensor_and_finite_flat_surjective_pow <;> assumption)

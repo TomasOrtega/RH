@@ -11,6 +11,21 @@ open GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 
+/- English proof (translation)
+Introduce `E _ _ K W _ _ _ ρH σ p q v w u hA hv hrank hfd`. Take `⟨hmem, hfst, hsnd⟩` from `hA`. Establish `hz : ∀ j : Fin q, (u (Fin.natAdd p j)).1 = 0` using `fun j => (hsnd j).1`. Establish `hli : LinearIndependent K u`. Rewrite using `[Fintype.linearIndependent_iff]`.
+
+Introduce `g hg`. Establish `h1 : ∑ i, g i • (u i).1 = 0`. Use `congrArg Prod.fst hg` as an intermediate fact. Simplify `this` using `[Prod.fst_sum]`. Establish `h2 : ∑ i, g i • (u i).2 = 0`.
+
+Use `congrArg Prod.snd hg` as an intermediate fact. Simplify `this` using `[Prod.snd_sum]`. Rewrite `h1`, `h2` using `[Fin.sum_univ_add]`. Establish `h1' : ∑ i : Fin p, g (Fin.castAdd q i) • v i = 0`. Simplify `h1` using `[hfst, hz]`.
+
+Establish `hcast : ∀ i : Fin p, g (Fin.castAdd q i) = 0` using `(Fintype.linearIndependent_iff.mp hv) _ h1'`. Establish `h2' : ∑ j : Fin q, g (Fin.natAdd p j) • (u (Fin.natAdd p j)).2 = 0`. Simplify `h2` using `[hcast]`. Establish `hnat : ∀ j' : Fin q, g (Fin.natAdd p j') = 0`. Introduce `j'`.
+
+Establish `h3` using `congrArg (fun f : Module.Dual K W => f (w j')) h2'`. Simplify `h3` using `[LinearMap.sum_apply, (hsnd _).2 j']`. Introduce `i`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left i => exact hcast i`.
+
+Consider the case `right j => exact hnat j`. Use `⟨hli, ?_⟩` and prove the remaining obligations. Apply `Submodule.eq_of_le_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Conclude with `hmem i`. Rewrite using `[finrank_span_eq_card hli, Fintype.card_fin, hrank]`.
+-/
 theorem adaptedFamily_isBasis : ∀ (E : Type) [Field E] [NumberField E] (K W : Type) [Field K] [AddCommGroup W] [Module K W]
     (ρH : 𝓞 E →+* Module.End K (W × Module.Dual K W)) (σ : E →+* K) (p q : ℕ) (v : Fin p → W) (w : Fin q → W)
     (u : Fin (p + q) → W × Module.Dual K W),

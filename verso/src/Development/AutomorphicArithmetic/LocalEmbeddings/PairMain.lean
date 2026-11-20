@@ -29,6 +29,11 @@ open GlobalTheory.PairTerm
 
 section Read
 
+/- English proof (translation)
+Establish `le : (L.pull f).U i ⊓ (L.pull f).U j ≤ f ⁻¹ᵁ (L.U (i PUnit.unit) ⊓ L.U (j PUnit.unit))` using `fun x hx => ⟨LB.pull_U_le f i hx.1, LB.pull_U_le f j hx.2⟩`. Establish `h₁` using `InducedPull.val_pull_g L f i j le`. Establish `h₂` using `InducedPull.val_pull_g (CechPic.dual L) f i j le`. Establish `e : (L.pull f).g i j = Units.map (f.appLE _ _ le).hom.toMonoidHom (L.g (i PUnit.unit) (j PUnit.unit))` using `Units.ext h₁`. Rewrite using `[e, ← map_inv]`.
+
+Conclude with `Units.ext h₂`.
+-/
 private theorem pull_dual_g {X Z : Scheme.{0}} (f : Z ⟶ X) (L : LB X) (i j : (L.pull f).ι) :
     ((CechPic.dual L).pull f).g i j = ((L.pull f).g i j)⁻¹ := by
   have le : (L.pull f).U i ⊓ (L.pull f).U j ≤ f ⁻¹ᵁ (L.U (i PUnit.unit) ⊓ L.U (j PUnit.unit)) :=
@@ -40,6 +45,11 @@ private theorem pull_dual_g {X Z : Scheme.{0}} (f : Z ⟶ X) (L : LB X) (i j : (
   rw [e, ← map_inv]
   exact Units.ext h₂
 
+/- English proof (translation)
+Take `⟨hr, W₀, hW₀, H⟩` from `h`. Use `⟨fun i j h => ?_, W ⊓ W₀, ⟨hW, hW₀⟩, fun e y z zt i hy hz hzt hi => ?_⟩` and prove the remaining obligations. Use `erw [pull_dual_g, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, map_units_inv, hr i j h, mul_inv]`. Both sides reduce to the same expression. Take `⟨hu, hv⟩` from `H e y z zt i hy.2 hz hzt hi`.
+
+Rewrite using `[Units.val_inv_eq_inv_val]`. Use `⟨hu.inv, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LineNorm.Neg.valAt_inv hu, map_inv₀, Real.log_inv, hv, hl e y hy.1]`.
+-/
 private theorem reads_dual {F : Type} [Field F] [NumberField F] {Y : Var F} {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] {b : 𝓞 F →+* O} {B : Vert.Model O} (μ : Match Y b B) (v : HeightOneSpectrum (𝓞 F))
     {X : Scheme.{0}} (f : B.X ⟶ X) (L : LB X) (s : (L.pull f).ι → B.X.functionFieldˣ) (l l' : Ext v → AlgPt Y → ℝ)
@@ -54,6 +64,9 @@ private theorem reads_dual {F : Type} [Field F] [NumberField F] {Y : Var F} {O :
     refine ⟨hu.inv, ?_⟩
     rw [GlobalTheory.LineNorm.Neg.valAt_inv hu, map_inv₀, Real.log_inv, hv, hl e y hy.1]
 
+/- English proof (translation)
+Use `map_units_inv ((fnOf _ h).comp ((Z.compι C).app _).hom) (u.u i j)` as an intermediate fact. Use `this.trans ((congrArg (·⁻¹) e).trans ?_)` and prove the remaining obligations. Simplify using `only [Units.val_inv_eq_inv_val]`. Rewrite using `[inv_div, inv_div_inv]`.
+-/
 private theorem dual_rel {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {Z : NModel O} (C : Z.Comp)
     {L L' : LB Z.X} (u : Z.GenIso L L') (i : L.ι) (j : L'.ι)
     (h : genericPoint (Z.comp C).X ∈ Z.compι C ⁻¹ᵁ (Z.gen ⊓ (L.U i ⊓ L'.U j))) (a b : (Z.comp C).X.functionFieldˣ)
@@ -65,6 +78,9 @@ private theorem dual_rel {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuati
   simp only [Units.val_inv_eq_inv_val]
   rw [inv_div, inv_div_inv]
 
+/- English proof (translation)
+The claim follows from `show GlobalTheory.IsNormalScheme C.opens.toScheme from GlobalTheory.IsNormalScheme.of_isOpenImmersion (Scheme.Opens.ι C.opens)`.
+-/
 private theorem isNormal_comp {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {Z : NModel O}
     (C : Z.Comp) : GlobalTheory.IsNormalScheme (Z.comp C).X :=
   show GlobalTheory.IsNormalScheme C.opens.toScheme from GlobalTheory.IsNormalScheme.of_isOpenImmersion (Scheme.Opens.ι C.opens)
@@ -75,11 +91,17 @@ section Syms
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 
+/- English proof (translation)
+Break down `l with ⟨_ | _, st⟩` into its components or cases. Conclude with `⟨1, .inl rfl, fun _ _ => rfl⟩`. Conclude with `⟨-1, .inr rfl, fun _ _ => rfl⟩`.
+-/
 private theorem lnSym_eq (l : Ln Dw) : ∃ n : ℤ, (n = 1 ∨ n = -1) ∧ ∀ a R, lnSym a R l = Finsupp.single (a, R, l.2.1) n := by
   rcases l with ⟨_ | _, st⟩
   · exact ⟨1, .inl rfl, fun _ _ => rfl⟩
   · exact ⟨-1, .inr rfl, fun _ _ => rfl⟩
 
+/- English proof (translation)
+Take `⟨n, -, e⟩` from `lnSym_eq l`. Rewrite `h` using `[e]`. Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset h)]`. Conclude with `⟨rfl, rfl⟩`.
+-/
 private theorem mem_support_lnSym {a : ℕ → Bool} {R : Option ℝ} {l : Ln Dw} {b : Sym E}
     (h : b ∈ (lnSym a R l).support) : b.1 = a ∧ b.2.1 = R := by
   obtain ⟨n, -, e⟩ := lnSym_eq l
@@ -87,6 +109,11 @@ private theorem mem_support_lnSym {a : ℕ → Bool} {R : Option ℝ} {l : Ln Dw
   rw [Finset.mem_singleton.1 (Finsupp.support_single_subset h)]
   exact ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Establish `h : (lnSym a R l).support.Nonempty`. Take `⟨n, hn, e⟩` from `lnSym_eq l`. Rewrite using `[e]`. Apply the tactic sequence `rcases hn with rfl | rfl <;> simp [Finsupp.support_single_ne_zero]`. Rewrite using `[parOf, dif_pos h]`.
+
+Conclude with `(mem_support_lnSym h.choose_spec).2`.
+-/
 private theorem parOf_lnSym (a : ℕ → Bool) (R : Option ℝ) (l : Ln Dw) : parOf (lnSym a R l) = R := by
   have h : (lnSym a R l).support.Nonempty := by
     obtain ⟨n, hn, e⟩ := lnSym_eq l
@@ -95,6 +122,9 @@ private theorem parOf_lnSym (a : ℕ → Bool) (R : Option ℝ) (l : Ln Dw) : pa
   rw [parOf, dif_pos h]
   exact (mem_support_lnSym h.choose_spec).2
 
+/- English proof (translation)
+Take `⟨n, -, e⟩` from `lnSym_eq l`. Use function extensionality and compare the values at `x`. Rewrite using `[e, e, expo, expo, Finsupp.sum_single_index (by simp), Finsupp.sum_single_index (by simp)]`.
+-/
 private theorem expo_lnSym (a a' : ℕ → Bool) (R : Option ℝ) (l : Ln Dw) :
     expo Dw (lnSym a R l) = expo Dw (lnSym a' R l) := by
   obtain ⟨n, -, e⟩ := lnSym_eq l
@@ -104,6 +134,9 @@ private theorem expo_lnSym (a a' : ℕ → Bool) (R : Option ℝ) (l : Ln Dw) :
 variable {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l}
   {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F}
 
+/- English proof (translation)
+Establish `key (n n' : Pad.Letter Dw → ℤ) (h : n = n') (r r' : Option ℝ) (h' : r = r') (lg) : (⟨divOf Y n, 1, fun σ => hm r σ n, 0, lg⟩ : Adl C Y.Y) = ⟨divOf Y n', 1, fun σ => hm r' σ n', 0, lg⟩`. Rewrite using `[h, h']`. Conclude with `key _ _ (expo_lnSym _ _ _ _) _ _ ((parOf_lnSym _ _ _).trans (parOf_lnSym _ _ _).symm) _`.
+-/
 private theorem adlOf_lnSym_eq {O : Type} [CommRing O] {β : O →+* c.F} {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β}
     (Y : FlagCpt Z e) {C : CxSt F} (hm : Mets Y C) (a a' : ℕ → Bool) (R : Option ℝ) (x : Ln Dw) :
     adlOf Y hm (lnSym a' R x) = { adlOf Y hm (lnSym a R x) with lg := (adlOf Y hm (lnSym a' R x)).lg } := by
@@ -112,6 +145,13 @@ private theorem adlOf_lnSym_eq {O : Type} [CommRing O] {β : O →+* c.F} {Z : R
     rw [h, h']
   exact key _ _ (expo_lnSym _ _ _ _) _ _ ((parOf_lnSym _ _ _).trans (parOf_lnSym _ _ _).symm) _
 
+/- English proof (translation)
+Break down `st with ⟨τ, k⟩ | k` into its components or cases. Rewrite using `[abs_sub_comm]`. Conclude with `LgDiff.abs_lnStep_sub_le HTBound.htBound _ _ _ _ _ _`. Establish `hv : 0 ≤ vDiff E p * Real.log p` using `mul_nonneg (by unfold vDiff; positivity) (Real.log_natCast_nonneg p)`. Establish `hL : 0 ≤ Real.log p / ((p : ℝ) - 1)`.
+
+Establish `: (1 : ℝ) < p` using `by exact_mod_cast hp.out.one_lt`. Conclude with `div_nonneg (Real.log_natCast_nonneg p) (by linarith)`. Simplify using `only [lnStep, lat]`. Use `split_ifs with h`. Use `(LgDiff.abs_log_grNorm_DR_HT_le HTBound.htBound Z p x _ _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_one_div]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[sub_self, abs_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem abs_lnStep_le (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) (p : ℕ) [hp : Fact p.Prime]
     (x : Sp ℂ_[p] ⟶ Z.X) (u : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Sp (DualNumber ℂ_[p]) ⟶ Z.t.G.left))
     (st : ((E →+* ℂ) × ℕ) ⊕ ℕ) : |lnStep Z.t x u p false st - lnStep Z.t x u p true st| ≤
@@ -131,6 +171,9 @@ private theorem abs_lnStep_le (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.
   · rw [sub_self, abs_zero]
     linarith
 
+/- English proof (translation)
+The claim follows from `|lgOf Y (lnSym (Function.update a p false) R x) v ε y - lgOf Y (lnSym (Function.update a p true) R x) v ε y| ≤ (if resP v = p then 1 / ((p : ℝ) - 1) + vDiff E p else 0) * (-Real.log (ε.w (resP v : AlgebraicClosure F))) := by have hw : 0 ≤ -Real.log (ε.w (resP v : AlgebraicClosure …`.
+-/
 private theorem abs_lgOf_lnSym_le {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)} (Y : FlagCpt Z e)
     (a : ℕ → Bool) (p : ℕ) (R : Option ℝ) (x : Ln Dw) (v : HeightOneSpectrum (𝓞 F))
     (ε : TrueGeo.Ext v) (y : AlgPt Y.Y) :
@@ -167,6 +210,15 @@ section Up
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {p : ℕ} {hp : p.Prime} {W : ValuationSubring ℂ}
   {hW : (p : ℂ) ∈ W.nonunits} (z : AdmAt S κ hp hW)
 
+/- English proof (translation)
+Establish `hle : κ.c.F ≤ z.Z.i.c.F` using `z.Z.le`. Set `ε : D.what₂.LL →+* z.Z.i.c.F` to `(IntermediateField.inclusion hle).toRingHom.comp κ.e.toRingHom`. Establish `hε (x) : ((ε x : z.Z.i.c.F) : ℂ) = D.what₂.embLL x` using `κ.e_emb x`. Establish `hV (x : D.what₂.LL) : ε x ∈ z.Z.i.c.V W ↔ v.valuation D.what₂.LL x ≤ 1`. Rewrite using `[← hv, ← hε]`.
+
+Simplify using `[Coeff.V]`. Use `⟨ε, (ε.comp (algebraMap (𝓞 D.what₂.LL) D.what₂.LL)).codRestrict (z.Z.i.c.V W).toSubring fun x => (hV _).2 (v.valuation_le_one x), hε, fun x => rfl, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← ValuationSubring.coe_mem_nonunits_iff, ValuationSubring.mem_nonunits_iff_or, ← v.valuation_lt_one_iff_mem (K := D.what₂.LL)]`. Express the relevant statement in the definitionally equal form `_ ↔ ε x = 0 ∨ (ε x)⁻¹ ∉ _`. Rewrite using `[← map_inv₀, hV, map_inv₀, map_eq_zero]`.
+
+Distinguish the cases in `h0 : (x : D.what₂.LL) = 0`. Simplify using `only [h0, true_or, iff_true]`. Rewrite using `[map_zero]`. Conclude with `zero_lt_one`. Establish `hpos : 0 < v.valuation D.what₂.LL (x : D.what₂.LL)` using `zero_lt_iff.2 ((map_ne_zero _).2 h0)`.
+
+Rewrite using `[not_le, one_lt_inv₀ hpos]`. Simplify using `only [h0, false_or]`.
+-/
 private theorem exists_up (v : HeightOneSpectrum (𝓞 D.what₂.LL))
     (hv : ∀ x : D.what₂.LL, D.what₂.embLL x ∈ W ↔ v.valuation D.what₂.LL x ≤ 1) :
     ∃ (ε : D.what₂.LL →+* z.Z.i.c.F) (b : 𝓞 D.what₂.LL →+* z.Z.i.c.V W),
@@ -194,6 +246,11 @@ end Up
 
 section Sums
 
+/- English proof (translation)
+Establish `e (i : ι) : (∑ᶠ x, if π x = v i then f x else 0) = ∑ x ∈ hf.toFinset, if π x = v i then f x else 0` using `finsum_eq_sum_of_support_subset _ fun x hx => by`. Simplify using `only [Set.Finite.coe_toFinset, Function.mem_support]`. Introduce `h0`. Conclude with `hx (by simp [h0])`. Rewrite using `[finsum_eq_sum _ hf, Finset.sum_congr rfl fun i _ => e i, Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `h x (hf.mem_toFinset.1 hx)`. Rewrite using `[Finset.sum_eq_single i (fun k _ hk => if_neg fun e => hk (hv (e.symm.trans hi))) (by simp), if_pos hi]`.
+-/
 private theorem finsum_eq_sum_places {X ι T : Type} [Fintype ι] (f : X → ℝ) (hf : (Function.support f).Finite)
     (π : X → T) (v : ι → T) (hv : Function.Injective v) (h : ∀ x, f x ≠ 0 → ∃ i, π x = v i) :
     ∑ᶠ x, f x = ∑ i, ∑ᶠ x, if π x = v i then f x else 0 := by
@@ -207,6 +264,9 @@ private theorem finsum_eq_sum_places {X ι T : Type} [Fintype ι] (f : X → ℝ
   obtain ⟨i, hi⟩ := h x (hf.mem_toFinset.1 hx)
   rw [Finset.sum_eq_single i (fun k _ hk => if_neg fun e => hk (hv (e.symm.trans hi))) (by simp), if_pos hi]
 
+/- English proof (translation)
+Simplify using `only [Finset.sum_filter]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Take `⟨t, ht, hu⟩` from `h x`. Rewrite using `[Finset.sum_eq_single t (fun k _ hk => if_neg fun e => hk (hu k e)) (by simp), if_pos ht]`.
+-/
 private theorem sum_filter_partition {X T : Type} [Fintype X] [Fintype T] (f : X → ℝ) (r : X → T → Prop)
     (h : ∀ x, ∃! t, r x t) : ∑ t, ∑ x ∈ Finset.univ.filter fun x => r x t, f x = ∑ x, f x := by
   simp only [Finset.sum_filter]
@@ -228,6 +288,11 @@ variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : Final
 
 include hd hε hb in
 
+/- English proof (translation)
+Take `⟨sg, st⟩` from `l`. Take `⟨t, ht, hu⟩` from `UpperTheory.admissible_point_height_compat D A N j S κ s fl hd p hp W hW z ε b hε hb v hv C c μ hμ Cx hm st.1 _ (Option.some_get st.2).symm`. Break down `sg with _ | _` into its components or cases. Conclude with `⟨t, fun k => ht k (a k) R (ha k), hu⟩`. Use `⟨fun k i => (t k i)⁻¹, fun k => ?_, fun i j h => ?_⟩` and prove the remaining obligations.
+
+Take `⟨W', hW', e⟩` from `UpperTheory.exists_metric_generic_open _ _ _ _ _ _ _ _ _ _ _ (fl.C c) Cx hm (a k, R, st.1)`. Conclude with `reads_dual μ v _ _ (t k) _ _ W' hW' (e v) (ht k (a k) R (ha k))`. Conclude with `dual_rel (Z := nmodel z.Z) C (z.genId hp hW (Option.some_get st.2).symm) i j h _ _ (hu i j h)`.
+-/
 private theorem reads_ln (v : HeightOneSpectrum (𝓞 D.what₂.LL)) (hv : resP v = p) (C : (nmodel z.Z).Comp) (c : s.Comp)
     (μ : Match (fl.C c).Y b ((nmodel z.Z).comp C)) (hμ : Link z.Z C (fl.C c) μ) (Cx : CxSt D.what₂.LL)
     (hm : Mets (fl.C c) Cx) (a : Bool → ℕ → Bool) (ha : ∀ k, a k p = k) (R : Option ℝ) (l : Ln S.Dw) :
@@ -251,6 +316,11 @@ private theorem reads_ln (v : HeightOneSpectrum (𝓞 D.what₂.LL)) (hv : resP 
 
 end Place
 
+/- English proof (translation)
+Use `choose t₀ t₁ a₀ a₁ a₂ using h₂`. Use `choose t ht using h₃`. Use `choose P s hP hs hPr using fun j : {C // q C} => UpperTheory.generic_iso_sections_log F Y O b Z j.1 (μ j) v _ _ B₀.isLB B₁.isLB w (t₀ j) (t₁ j) l₀ l₁ (a₀ j) (a₁ j) (a₂ j)`. Establish `key` using `UpperTheory.normal_model_complex_compat_alt F Y v p hpv F' ε O b hup σ Q hQ d hd m M hM r hr _ h₀ L hL u l h₁ {C // q C} (fun j => Z.comp j.1) (fun j => isNormal_comp j.1) (fun j => hZ j.1) μ n hn hc P s hs hPr (fun j k => (B k).lb.pull (Z.compι j.1)) (fun j k => LB.isLB_pull (B …`. Use `Eq.trans ?_ key` and prove the remaining obligations.
+
+Use `congr 1`. Rewrite using `[Finset.sum_subtype (p := q) _ (by simp)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hP, map_prod]`. Conclude with `congrArg₂ (fun x y => (((Z.comp j.1).capDeg_vp p x y : ℚ) : ℝ)) (NModel.vResQ_toQ _ _) (Finset.prod_congr rfl fun k _ => pullback_firstChern _ _ _)`.
+-/
 private theorem loc_gen {F : Type} [Field F] [NumberField F] {Y : Var F} (v : HeightOneSpectrum (𝓞 F)) (p : ℕ) [Fact p.Prime]
     (hpv : (p : 𝓞 F) ∈ v.asIdeal) {F' : Type} [Field F'] [NumberField F'] (ε : F →+* F') (O : ValuationSubring F')
     [IsDiscreteValuationRing O] [CharP (ResidueField O) p] (b : 𝓞 F →+* O) (hup : IsUp v ε O b) (σ : F' →+* ℂ)
@@ -297,6 +367,11 @@ variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : Final
 
 include hd hε in
 
+/- English proof (translation)
+Use `haveI := z.Z.i.c.fin`. Use `haveI : NumberField z.Z.i.c.F := {}`. Establish `hv : resP v = p` using `(PlaceSum.residueCharacteristic_eq_iff v hp).2 hpv`. Set `J` to `{C : (nmodel z.Z).Comp // ∃ μ : Match (fl.C c).Y b ((nmodel z.Z).comp C), Link z.Z C (fl.C c) μ}`. Use `choose μ hμ using fun j : J => j.2`.
+
+Use `choose t ht hu using fun (j : J) (x : Ln S.Dw) => reads_ln fl hd hp hW z ε b hε hup.1 v hv j.1 c (μ j) (hμ j) Cx hm a ha R x`. Conclude with `loc_gen v p hpv ε (z.Z.i.c.V W) b hup z.Z.i.c.F.val.toRingHom Q hQ (hd c) m M hM r hr _ _ h₀ L hL u _ h₁ (nmodel z.Z) (RelDim.relDim_comp D A N _ S κ p hp W hW z) _ μ (cov z) (cov_pos z) (UpperTheory.admissible_point_lattice_norm D A N _ S κ s fl hd p hp W hW z ε b hε hup.1 c μ h …`.
+-/
 private theorem loc_cmp [Fact p.Prime] [CharP (ResidueField (z.Z.i.c.V W)) p] (v : HeightOneSpectrum (𝓞 D.what₂.LL))
     (hpv : (p : 𝓞 D.what₂.LL) ∈ v.asIdeal) (hup : IsUp v ε (z.Z.i.c.V W) b) (c : s.Comp) (Cx : CxSt D.what₂.LL)
     (hm : Mets (fl.C c) Cx) (a : Bool → ℕ → Bool) (ha : ∀ k, a k p = k) (R : Option ℝ) (l : Ln S.Dw)
@@ -331,6 +406,9 @@ private theorem loc_cmp [Fact p.Prime] [CharP (ResidueField (z.Z.i.c.V W)) p] (v
 
 end Place
 
+/- English proof (translation)
+Substitute `h₀ h₁` using the available equality. Conclude with `⟨adlOf_lnSym_eq Y hm _ _ R x, abs_lgOf_lnSym_le Y a p R x⟩`.
+-/
 private theorem adl_eq_of {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} {F : Type} [Field F] [NumberField F]
     {e : F ≃+* c.F} {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)} (Y : FlagCpt Z e) {C : CxSt F}
@@ -342,16 +420,31 @@ private theorem adl_eq_of {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
   subst h₀ h₁
   exact ⟨adlOf_lnSym_eq Y hm _ _ R x, abs_lgOf_lnSym_le Y a p R x⟩
 
+/- English proof (translation)
+The claim follows from `e ▸ h`.
+-/
 private theorem greads_congr {F : Type} [Field F] [NumberField F] {C : CxSt F} {Y : Var F} {Q : TrueGeo.Model Y}
     [AlgebraicGeometry.IsIntegral Q.X] {v : HeightOneSpectrum (𝓞 F)} {L : LB Q.X} {s : L.ι → Q.X.functionFieldˣ} {m : ℝ}
     {A A' : Adl C Y} (e : A = A') (h : GReads Q v L s fun e y => m * lam A v e y) :
     GReads Q v L s fun e y => m * lam A' v e y := e ▸ h
 
+/- English proof (translation)
+The claim follows from `e ▸ e' ▸ h`.
+-/
 private theorem greads_congr₂ {F : Type} [Field F] [NumberField F] {C : CxSt F} {Y : Var F} {Q : TrueGeo.Model Y}
     [AlgebraicGeometry.IsIntegral Q.X] {v : HeightOneSpectrum (𝓞 F)} {L : LB Q.X} {s : L.ι → Q.X.functionFieldˣ} {m : ℝ}
     {A A' B B' : Adl C Y} (e : A = A') (e' : B = B') (h : GReads Q v L s fun e y => m * (lam A v e y - lam B v e y)) :
     GReads Q v L s fun e y => m * (lam A' v e y - lam B' v e y) := e ▸ e' ▸ h
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Use `haveI : AlgebraicGeometry.IsNoetherian Q.X := Q.ar.isNoetherian`. Rewrite using `[finsum_eq_sum_places _ (Dv.finite_support_mult.subset fun x hx h0 => hx (by simp [h0])) (fun x => (Q.p x).asIdeal) (fun la : Formalism.L2.Geo.PlL D p => la.1.asIdeal) (fun la la' e => Subtype.ext (HeightOneSpectrum.ext e)) fun x hx => ?_, mul_div_assoc, Finset.sum_div]`. Use `congr 1`. Use `Finset.sum_congr rfl fun la _ => ?_` and prove the remaining obligations.
+
+Establish `h₁ : cv la ≠ 0` using `hcv la`. Establish `h₂ : ((m : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 m.ne_zero`. Establish `h₃ : (Module.finrank ℚ D.what₂.LL : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Establish `h₄ : Formalism.L2.Geo.wtL D p la = placeDeg p la.1 / (Module.finrank ℚ D.what₂.LL : ℝ)`. Rewrite using `[Formalism.L2.Geo.wtL, placeDeg, div_div]`.
+
+Establish `h₅` using `(div_eq_iff h₁).2 ((key la).trans (mul_comm _ _))`. Rewrite using `[h₄]`. Use `(congrArg (· / _) h₅.symm).trans ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Establish `hx'` using `hmult x fun h0 => hx (by simp [h0])`.
+
+Use `⟨⟨⟨(Q.p x).asIdeal, (Q.p x).2, fun e => ?_⟩, hx'⟩, rfl⟩` and prove the remaining obligations. Rewrite `hx'` using `[e, Ideal.mem_bot]`. Conclude with `Nat.cast_ne_zero.2 hp.ne_zero hx'`.
+-/
 private theorem places_sum (D : D7) (p : ℕ) [Fact p.Prime] [Fintype (Formalism.L2.Geo.PlL D p)] {Y : Var D.what₂.LL}
     (Q : TrueGeo.Model Y) [AlgebraicGeometry.IsIntegral Q.X] [IsLocallyNoetherian Q.X] (Dv : CartierDiv Q.X)
     (g : Q.X → ℤ) (hmult : ∀ x, Dv.mult x ≠ 0 → (p : 𝓞 D.what₂.LL) ∈ (Q.p x).asIdeal) (m : ℕ+) (d : ℕ)
@@ -382,11 +475,17 @@ private theorem places_sum (D : D7) (p : ℕ) [Fact p.Prime] [Fintype (Formalism
     rw [e, Ideal.mem_bot] at hx'
     exact Nat.cast_ne_zero.2 hp.ne_zero hx'
 
+/- English proof (translation)
+Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.one_lt`. Conclude with `add_nonneg (div_nonneg zero_le_one (by linarith)) (by unfold vDiff; positivity)`.
+-/
 private theorem bound_nonneg (E : Type) [Field E] [NumberField E] {p : ℕ} (hp : p.Prime) :
     0 ≤ 1 / ((p : ℝ) - 1) + vDiff E p := by
   have hp1 : (1 : ℝ) < p := by exact_mod_cast hp.one_lt
   exact add_nonneg (div_nonneg zero_le_one (by linarith)) (by unfold vDiff; positivity)
 
+/- English proof (translation)
+Take `⟨Q, _, _, Nb, sb, M₀, hM₀, r, hr, hQ, hN, hs, h₀, hmult, hΨ'⟩` from `UpperTheory.arithmetic_function_induced_bound h2 _ _ M _ A L m Ψ hI hΨ p i₀ i₁ e₁ c hc e₂ d hd`. Rewrite using `[hΨ' ν]`. Conclude with `places_sum D p Q _ _ hmult m d T cv hcv fun la => key la Q hQ M₀ hM₀ r hr (h₀ la.1) (fun k => Nb (ν k)) (fun k => hN _) (fun k => sb (ν k)) fun k => hs la.1 (ν k)`.
+-/
 private theorem glob_gen (h2 : GlobalTheory.CovTop.Hypotheses2) (D : D7) (p : ℕ) [Fact p.Prime] [Fintype (Formalism.L2.Geo.PlL D p)]
     {Y : Var D.what₂.LL} (M : TrueGeo.Model Y) {ι : Type} [Fintype ι] (A : ι → Adl (cxSt D.what₂.LL) Y)
     (L : ι → HermLB M.p) (m : ℕ+) (Ψ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (hI : ∀ i, (A i).Induced M (L i) m 0)
@@ -424,6 +523,11 @@ variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : Final
 
 include hd hε hup in
 
+/- English proof (translation)
+Establish `e₀` using `adl_eq_of (fl.C c) hm a₀ p R l (hA₀ false) (hA₀ true)`. Use `glob_gen h2 D p M A' L m Ψ hI hΨ (.inl false) (.inl true) e₀.1 _ (bound_nonneg _ Fact.out) e₀.2 (hd c) Sum.inr _ (fun la => (cov (z la) : ℝ)) (fun la => Nat.cast_ne_zero.2 (cov_pos (z la)).ne') ?_` and prove the remaining obligations. Introduce `la Q _ _ hQ M₀ hM₀ r hr h₀ Nb hN sb hs`. Establish `k₀` using `greads_congr₂ (hA₀ false) (hA₀ true) h₀`. Establish `k₁ (k)` using `greads_congr (hA₁ k) (hs k)`.
+
+Establish `key` using `loc_cmp fl hd Fact.out (hW la) (z la) (ε la) (b la) (hε la) la.1 la.2 (hup la) c _ hm (Function.update a₀ p) (fun _ => Function.update_self _ _ _) R l ν Q hQ m M₀ hM₀ r hr k₀ Nb hN sb k₁`. Conclude with `key`.
+-/
 private theorem comp_cmp [Fintype (Formalism.L2.Geo.PlL D p)] (h2 : GlobalTheory.CovTop.Hypotheses2) (c : s.Comp)
     (hm : Mets (fl.C c) (cxSt D.what₂.LL)) (a₀ : ℕ → Bool) (R : Option ℝ) (l : Ln S.Dw)
     (ν : Fin (Formalism.DegreeFormula.dimFl D.what₂.Tau N) → Bool × Ln S.Dw) (M : TrueGeo.Model (fl.C c).Y)
@@ -454,6 +558,9 @@ private theorem comp_cmp [Fintype (Formalism.L2.Geo.PlL D p)] (h2 : GlobalTheory
 
 end Main
 
+/- English proof (translation)
+Rewrite using `[sum_filter_partition _ _ h, NModel.capDeg_vp_eq_sum, Finset.filter_true_of_mem fun C _ => hZ C, Rat.cast_sum]`.
+-/
 private theorem sum_part {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Z : NModel O) (p d : ℕ)
     (hZ : ∀ C, (Z.comp C).relDim = d) {T : Type} [Fintype T] (r : Z.Comp → T → Prop) (h : ∀ C, ∃! t, r C t)
     (Dv : Z.VDivQ) (G : PicSym Z.X) :
@@ -462,6 +569,11 @@ private theorem sum_part {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuati
       ((Z.capDeg_vp p d Dv G : ℚ) : ℝ) := by
   rw [sum_filter_partition _ _ h, NModel.capDeg_vp_eq_sum, Finset.filter_true_of_mem fun C _ => hZ C, Rat.cast_sum]
 
+/- English proof (translation)
+Substitute `hd` using the available equality. Establish `e (k : Bool) : num (w₀ k ::ₘ Finset.univ.val.map w₁) = Ψ (MvPolynomial.X (.inl k) * ∏ i, MvPolynomial.X (.inr i)) / (m ^ (d' + 1) * c)`. Use `h (.inl k ::ₘ Finset.univ.val.map Sum.inr) (by simp)` as an intermediate fact. Rewrite `this` using `[Multiset.map_cons, Multiset.map_cons, Multiset.prod_cons, Multiset.map_map, Multiset.map_map]`. Conclude with `this`.
+
+Rewrite using `[e, e, ← sub_div, ← map_sub, ← sub_mul]`.
+-/
 private theorem num_sub {B : Type} {d d' : ℕ} (hd : d' = d) (num : Multiset B → ℝ) (w₀ : Bool → B) (w₁ : Fin d → B)
     (Ψ : MvPolynomial (Bool ⊕ Fin d) ℝ →ₗ[ℝ] ℝ) (m c : ℝ)
     (h : ∀ μ : Multiset (Bool ⊕ Fin d), Multiset.card μ = d' + 1 →
@@ -477,6 +589,9 @@ private theorem num_sub {B : Type} {d d' : ℕ} (hd : d' = d) (num : Multiset B 
     exact this
   rw [e, e, ← sub_div, ← map_sub, ← sub_mul]
 
+/- English proof (translation)
+Use `sum_part (nmodel z.Z) p _ (RelDim.relDim_comp D A N j S κ p hp W hW z) (fun C c => ∃ μ : Match (fl.C c).Y b ((nmodel z.Z).comp C), Link z.Z C (fl.C c) μ) (fun C => ?_) Dv G` and prove the remaining obligations. Establish `h` using `UpperTheory.admissible_point_discrete_valuation D A N j S κ s fl hd p hp W hW z ε b hε hb C`. Conclude with `h.imp fun c h => ⟨h, fun c' h' => h.elim fun μ hμ => h'.elim fun μ' hμ' => UpperTheory.admissible_point_charts D A N j S κ s fl hd p hp W hW z ε b hε hb C c' c μ' μ hμ' hμ⟩`.
+-/
 private theorem sum_link {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} (fl : s.Flag) [Fintype s.Comp]
     (hd : ∀ k, (fl.C k).Y.dim = Formalism.DegreeFormula.dimFl D.what₂.Tau N) {p : ℕ} (hp : p.Prime) {W : ValuationSubring ℂ}
     (hW : (p : ℂ) ∈ W.nonunits) (z : AdmAt S κ hp hW) [IsDiscreteValuationRing (z.Z.i.c.V W)]
@@ -494,6 +609,9 @@ private theorem sum_link {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : 
   exact h.imp fun c h => ⟨h, fun c' h' => h.elim fun μ hμ => h'.elim fun μ' hμ' =>
     UpperTheory.admissible_point_charts D A N j S κ s fl hd p hp W hW z ε b hε hb C c' c μ' μ hμ' hμ⟩
 
+/- English proof (translation)
+Simplify using `only [h, ← ht]`. Rewrite using `[← Finset.mul_sum, Finset.sum_comm]`. Simplify using `only [← Finset.mul_sum, ← Finset.sum_div]`.
+-/
 private theorem sum_comp {Cp ι : Type} [Fintype Cp] [Fintype ι] (n₀ n₁ : Cp → ℝ) (lg : ℝ) (w cv T : ι → ℝ) (t : ι → Cp → ℝ)
     (h : ∀ c, n₀ c - n₁ c = lg * ∑ i, w i * (t i c / cv i)) (ht : ∀ i, ∑ c, t i c = T i) :
     ∑ c, (n₀ c - n₁ c) = lg * ∑ i, w i * (T i / cv i) := by
@@ -503,6 +621,9 @@ private theorem sum_comp {Cp ι : Type} [Fintype Cp] [Fintype ι] (n₀ n₁ : C
 
 section OnePlace
 
+/- English proof (translation)
+Rewrite using `[← ht, Finset.sum_div, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `hm c` as an intermediate fact. Rewrite using `[eq_div_iff this, ← mul_right_inj' hcv, ← h c]`. Clear the denominators using the available nonvanishing facts.
+-/
 private theorem place_arith {Cp : Type} [Fintype Cp] (pd T cv : ℝ) (hcv : cv ≠ 0) (t f mm : Cp → ℝ) (hm : ∀ c, mm c ≠ 0)
     (h : ∀ c, mm c * pd * t c = cv * f c) (ht : ∑ c, t c = T) : pd * (T / cv) = ∑ c, f c / mm c := by
   rw [← ht, Finset.sum_div, Finset.mul_sum]
@@ -514,6 +635,11 @@ private theorem place_arith {Cp : Type} [Fintype Cp] (pd T cv : ℝ) (hcv : cv �
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} {p : ℕ} [Fact p.Prime]
   {W : ValuationSubring ℂ} {hW : (p : ℂ) ∈ W.nonunits}
 
+/- English proof (translation)
+Use `haveI := isDiscreteValuationRing_V z.Z.i.c Fact.out hW`. Use `haveI := charP_residueField_of_mem_nonunits z.Z.i.c Fact.out hW`. Establish `H` using `exists_up z v hv`. Take `⟨ε, b, hε, hup⟩` from `H`. Establish `k₁ (c : s.Comp)` using `loc_cmp fl hd Fact.out hW z ε b hε v hpv hup c Cx (hm c) (Function.update a₀ p) (fun _ => Function.update_self _ _ _) R l ν (Q c) (hQ c) (m c) (M c) (hM c) (r c) (hr c) (h₀ c) (L c) (hL c) (u c) (h₁ c)`.
+
+Establish `k₂` using `sum_link fl hd Fact.out hW z ε b hε hup.1 ((nmodel z.Z).vdiv _ _ (lnId z Fact.out hW l)) (∏ k, (lnLB z (ν k).1 (ν k).2).c1)`. Conclude with `place_arith _ _ _ (Nat.cast_ne_zero.2 (cov_pos z).ne') _ _ _ (fun c => pow_ne_zero _ (Nat.cast_ne_zero.2 (hm0 c))) k₁ k₂`.
+-/
 private theorem place (z : AdmAt S κ (Fact.out : p.Prime) hW) (fl : s.Flag)
     (hd : ∀ k, (fl.C k).Y.dim = Formalism.DegreeFormula.dimFl D.what₂.Tau N) (v : HeightOneSpectrum (𝓞 D.what₂.LL))
     (hpv : (p : 𝓞 D.what₂.LL) ∈ v.asIdeal)
@@ -550,6 +676,15 @@ private theorem place (z : AdmAt S κ (Fact.out : p.Prime) hW) (fl : s.Flag)
 
 end OnePlace
 
+/- English proof (translation)
+Introduce `h2 hH D O hO p _ W hW hWv z Sx R hR l ν`. Take `⟨x, P, h⟩` from `hO`. Use `letI := Formalism.L2.Geo.finPl D p`. Use `haveI : ∀ la, IsDiscreteValuationRing ((z la).Z.i.c.V (W la)) := fun la => isDiscreteValuationRing_V (z la).Z.i.c Fact.out (hW la)`. Use `haveI : ∀ la, CharP (ResidueField ((z la).Z.i.c.V (W la))) p := fun la => charP_residueField_of_mem_nonunits (z la).Z.i.c Fact.out (hW la)`.
+
+Use `choose ε b hε hup using fun la => exists_up (z la) la.1 (hWv la)`. Set `w : Bool ⊕ Fin (Formalism.DegreeFormula.dimFl D.what₂.Tau O.N) → Sym D.host.E →₀ ℤ` to `Sum.elim (fun k => lnSym (Function.update (ArIn.ind Sx) p k) (some R) l) (fun i => lnSym (Function.update (ArIn.ind Sx) p (ν i).1) (some R) (ν i).2)`. Establish `hw : ∀ k, ∀ b ∈ (w k).support, {q | b.1 q = true}.Finite ∧ b.2.1 = some R`. Establish `ha (b : Bool) : {q | Function.update (ArIn.ind Sx) p b q = true}.Finite` using `(insert p Sx).finite_toSet.subset fun q hq => by`. Distinguish the cases in `e : q = p`.
+
+Simplify using `[e]`. Simplify `hq` using `[ArIn.ind, e]`. Apply the tactic sequence `rintro (q | q) b hb <;> obtain ⟨e₁, e₂⟩ := mem_support_lnSym hb <;> exact ⟨e₁ ▸ ha _, e₂⟩`. Use `choose M L m Ψ hI hΨ hnum using fun c => (GlobalTheory.ArTopTrue.arTop_true h2.p4 hH.deg HTBound.htBound D _ _ _ _ _ O.s x O.Φ c R hR).2 _ w hw`. Establish `key (c : O.s.Comp)` using `comp_cmp O.Φ O.dim_eq hW z ε b hε hup h2 c (metsOf x O.Φ c) (ArIn.ind Sx) (some R) l ν (M c) (L c) (m c) (Ψ c) (fun i => adlOf (O.Φ.C c) (metsOf x O.Φ c) (w i)) (fun _ => rfl) (fun _ => rfl) (hI c) (hΨ c)`.
+
+Rewrite using `[h.hm_eq]`. Establish `k₁ (c : O.s.Comp)` using `(num_sub (O.dim_eq c) ((arIn O.s O.Φ (metsOf x O.Φ)).num c) (fun k => lnSym (Function.update (ArIn.ind Sx) p k) (some R) l) (fun i => lnSym (Function.update (ArIn.ind Sx) p (ν i).1) (some R) (ν i).2) (Ψ c) _ _ (hnum c)).trans (key c)`. Establish `k₂ (la)` using `sum_link O.Φ O.dim_eq Fact.out (hW la) (z la) (ε la) (b la) (hε la) (hup la).1 ((nmodel (z la).Z).vdiv _ _ (lnId (z la) Fact.out (hW la) l)) (∏ k, (lnLB (z la) (ν k).1 (ν k).2).c1)`. Conclude with `sum_comp _ _ _ _ _ _ _ k₁ k₂`.
+-/
 theorem pairSt : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → GlobalTheory.PairTerm.PairSt := by
   intro h2 hH D O hO p _ W hW hWv z Sx R hR l ν
   obtain ⟨x, P, h⟩ := hO

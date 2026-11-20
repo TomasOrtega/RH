@@ -17,6 +17,9 @@ namespace GlobalTheory.AdelicSvN
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Simplify using `only [Prod.smul_fst, Prod.smul_snd, smul_dotProduct, dotProduct_smul, smul_eq_mul]`. Rewrite using `[show (fun i => algebraMap F (AF F) (u.1 i)) ⬝ᵥ (fun i => algebraMap F (AF F) (v.2 i)) = algebraMap F (AF F) (u.1 ⬝ᵥ v.2) from (RingHom.map_dotProduct (algebraMap F (AF F)) u.1 v.2).symm]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dot_smul_rat {κ : Type} [Fintype κ] (s t : AF F) (u v : (κ → F) × (κ → F)) :
     (s • ((fun i => algebraMap F (AF F) (u.1 i)), (fun i => algebraMap F (AF F) (u.2 i)))).1 ⬝ᵥ
       (t • ((fun i => algebraMap F (AF F) (v.1 i)), (fun i => algebraMap F (AF F) (v.2 i)))).2 =
@@ -26,6 +29,15 @@ theorem dot_smul_rat {κ : Type} [Fintype κ] (s t : AF F) (u v : (κ → F) × 
     algebraMap F (AF F) (u.1 ⬝ᵥ v.2) from (RingHom.map_dotProduct (algebraMap F (AF F)) u.1 v.2).symm]
   ring
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro φ _`. Simplify using `only [Finset.sum_empty]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[schr]`. Consider the case `insert j s hj ih`. Introduce `φ hφ`. Use `set a := t j • ((fun i => algebraMap F (AF F) ((w j).1 i)), (fun i => algebraMap F (AF F) ((w j).2 i)))`. Use `set b := ∑ k ∈ s, t k • ((fun i => algebraMap F (AF F) ((w k).1 i)), (fun i => algebraMap F (AF F) ((w k).2 i)))`.
+
+Establish `hab : a.1 ⬝ᵥ b.2 - b.1 ⬝ᵥ a.2 = 0`. Simplify using `only [a, b, Prod.fst_sum, Prod.snd_sum, dotProduct_sum, sum_dotProduct, ← Finset.sum_sub_distrib]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[dot_smul_rat, dot_smul_rat, hL _ (hw j) _ (hw k)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e` using `GlobalTheory.ThetaQuasiRat.schr_schr ψ a b φ`. Rewrite `e` using `[hab, mul_zero, AddChar.map_zero_eq_one, one_smul]`. Rewrite using `[Finset.sum_insert hj, ← e, hl _ _ (hw j) _ (GlobalTheory.HeisSchA.schr_mem_schA ψ hψ b φ hφ), ih φ hφ]`.
+-/
 theorem inv_sum (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) {κ : Type} [Fintype κ]
     (L : Submodule F ((κ → F) × (κ → F))) (hL : ∀ a ∈ L, ∀ b ∈ L, a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2)
     (l : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ)
@@ -55,6 +67,11 @@ end GlobalTheory.AdelicSvN
 namespace GlobalTheory.AdelicSvN
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Proceed by induction on `hg using Submonoid.closure_induction with`. Consider the case `mem g hg`. Break down `hg with (⟨A, hA, rfl⟩ | ⟨C, hC, rfl⟩) | rfl` into its components or cases. Conclude with `GlobalTheory.T.isRealisedOnAdelicSchwartz_levi_inverseTranspose F ψ κ A hA`. Conclude with `GlobalTheory.T.lowerUnipotent_realisedOnAdelicSchwartz F ψ hψ κ C hC`.
+
+Conclude with `GlobalTheory.T.isRealisedOnAdelicSchwartz_weyl_fourier F ψ hψ κ`. Consider the case `one => exact realised_one ψ`. Consider the case `mul g h _ _ hg hh => exact hg.mul hh`.
+-/
 theorem realised_of_mem_closure (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) {κ : Type} [Fintype κ] [DecidableEq κ]
     {g : Matrix (κ ⊕ κ) (κ ⊕ κ) F} (hg : g ∈ Submonoid.closure (gens F κ)) : Realised ψ g := by
   induction hg using Submonoid.closure_induction with
@@ -66,6 +83,11 @@ theorem realised_of_mem_closure (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) {κ :
   | one => exact realised_one ψ
   | mul g h _ _ hg hh => exact hg.mul hh
 
+/- English proof (translation)
+Establish `key : ∀ k, (g.map (algebraMap F (AF F)) *ᵥ Sum.elim 0 y) k = ∑ j, y j * algebraMap F (AF F) ((g *ᵥ Sum.elim 0 (Pi.single j 1)) k)`. Introduce `k`. Simplify using `only [Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, mul_zero, Finset.sum_const_zero, zero_add, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single j (fun m _ hm => by simp [Pi.single_apply, hm]) (by simp)]`.
+
+Simplify using `[mul_comm]`. Use extensionality with `i`. Simplify using `only [act, Function.comp_apply, key, Prod.fst_sum, Finset.sum_apply, Prod.smul_fst, Pi.smul_apply, smul_eq_mul]`. Simplify using `only [act, Function.comp_apply, key, Prod.snd_sum, Finset.sum_apply, Prod.smul_snd, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem act_zero_eq_sum {κ : Type} [Fintype κ] [DecidableEq κ] (g : Matrix (κ ⊕ κ) (κ ⊕ κ) F) (y : κ → AF F) :
     act g (0, y) = ∑ j, y j • ((fun i => algebraMap F (AF F) (((g *ᵥ Sum.elim 0 (Pi.single j 1)) ∘ Sum.inl) i)),
       (fun i => algebraMap F (AF F) (((g *ᵥ Sum.elim 0 (Pi.single j 1)) ∘ Sum.inr) i))) := by
@@ -81,6 +103,15 @@ theorem act_zero_eq_sum {κ : Type} [Fintype κ] [DecidableEq κ] (g : Matrix (�
   · simp only [act, Function.comp_apply, key, Prod.fst_sum, Finset.sum_apply, Prod.smul_fst, Pi.smul_apply, smul_eq_mul]
   · simp only [act, Function.comp_apply, key, Prod.snd_sum, Finset.sum_apply, Prod.smul_snd, Pi.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ κ _ L hL hdim l₁ hl₁ l₂ hl₂ hi₁ hi₂ ⟨φ₀, hφ₀, hne⟩`. Take `⟨g, hg, hgL⟩` from `GlobalTheory.T.exists_symplecticBlockGenerators_lagrangian_normal_form F κ L hL hdim`. Take `⟨S, hS, hSs, hSa, hSi⟩` from `realised_of_mem_closure ψ hψ hg`. Establish `key : ∀ l ∈ (adeleClass F).adm κ, (∀ (t : AF F), ∀ w ∈ L, ∀ φ ∈ schA F κ, l (schr ψ (t • ((fun i => algebraMap F (AF F) (w.1 i)), (fun i => algebraMap F (AF F) (w.2 i)))) φ) = l φ) → ∃ c : ℂ, ∀ φ ∈ schA F κ, l (S φ) = c * φ 0`. Introduce `l hl hi`.
+
+Take `⟨l', hl', e⟩` from `hSa l hl`. Take `⟨c, hc⟩` from `GlobalTheory.T.character_invariant_adelic_form_eq_mul_eval_zero F ψ hψ κ l' hl' (fun y φ hφ => by`. Establish `hm : (fun x => ψ (x ⬝ᵥ y) * φ x) = schr ψ (0, y) φ` using `by funext x; simp [schr]`. Rewrite using `[hm, e _ (GlobalTheory.HeisSchA.schr_mem_schA ψ hψ _ φ hφ), e φ hφ, hSi _ φ hφ, act_zero_eq_sum]`. Conclude with `inv_sum ψ hψ L hL l hi Finset.univ y _ (fun j => hgL _) _ (hS φ hφ))`.
+
+Conclude with `⟨c, fun φ hφ => (e φ hφ).symm.trans (hc φ hφ)⟩`. Take `⟨c₁, h₁⟩` from `key l₁ hl₁ hi₁`. Take `⟨c₂, h₂⟩` from `key l₂ hl₂ hi₂`. Take `⟨ψ₀, hψ₀, rfl⟩` from `hSs φ₀ hφ₀`. Establish `hc₂ : c₂ ≠ 0` using `fun h => hne (by rw [h₂ ψ₀ hψ₀, h, zero_mul])`.
+
+Use `⟨c₁ / c₂, fun φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨φ', hφ', rfl⟩` from `hSs φ hφ`. Rewrite using `[h₁ φ' hφ', h₂ φ' hφ']`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ]
     (L : Submodule F ((κ → F) × (κ → F))), (∀ a ∈ L, ∀ b ∈ L, a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2) →
     Module.finrank F L = Fintype.card κ →

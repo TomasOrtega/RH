@@ -12,12 +12,29 @@ open GlobalTheory.KummerEisensteinGalois
 
 variable {K : Type*} [Field K] [CharZero K]
 
+/- English proof (translation)
+Simplify using `[cmul, add_mul, sum_add_distrib]`.
+-/
 theorem cmul_add_left (f g h : ℕ → K) (n : ℕ) : cmul (f + g) h n = cmul f h n + cmul g h n := by
   simp [cmul, add_mul, sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[cmul, mul_add, sum_add_distrib]`.
+-/
 theorem cmul_add_right (f g h : ℕ → K) (n : ℕ) : cmul f (g + h) n = cmul f g n + cmul f h n := by
   simp [cmul, mul_add, sum_add_distrib]
 
+/- English proof (translation)
+Unfold `cmul`. Use `symm`. Establish `h1 : ∀ j ∈ range (r + 1), f j * g (r - j) = vp p f (p * j) * vp p g (p * r - p * j)`. Introduce `j _`. Simplify using `only [vp, dvd_mul_right, if_true, ← Nat.mul_sub, Nat.mul_div_cancel_left _ hp]`.
+
+Rewrite using `[sum_congr rfl h1, ← sum_image (f := fun i => vp p f i * vp p g (p * r - i)) (g := fun j => p * j) (fun a _ b _ h => Nat.eq_of_mul_eq_mul_left hp h)]`. Apply `sum_subset` to reduce the goal to its premises. Introduce `i hi`. Simplify using `only [mem_image, mem_range] at hi ⊢`. Take `⟨j, hj, rfl⟩` from `hi`.
+
+Establish `: j ≤ r` using `by omega`. Use `Nat.mul_le_mul_left p this` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `i hi hni`. Simplify using `only [mem_image, mem_range, not_exists, not_and] at hi hni`.
+
+Distinguish the cases in `hpi : p ∣ i`. Take `⟨j, rfl⟩` from `hpi`. Conclude with `absurd rfl (hni j (by`. Establish `: p * j ≤ p * r` using `by omega`. Use `Nat.le_of_mul_le_mul_left this hp` as an intermediate fact.
+
+Use the proof step `omega))`. Simplify using `[vp, hpi]`.
+-/
 theorem cmul_vp_vp (p : ℕ) (hp : 0 < p) (f g : ℕ → K) (r : ℕ) :
     cmul (vp p f) (vp p g) (p * r) = cmul f g r := by
   unfold cmul
@@ -44,6 +61,13 @@ theorem cmul_vp_vp (p : ℕ) (hp : 0 < p) (f g : ℕ → K) (r : ℕ) :
         omega))
     · simp [vp, hpi]
 
+/- English proof (translation)
+Unfold `cmul`. Apply `sum_eq_zero` to reduce the goal to its premises. Introduce `i hi`. Establish `hi' : i ≤ p * r` using `Nat.lt_succ_iff.mp (mem_range.mp hi)`. Distinguish the cases in `hpi : p ∣ i`.
+
+Simplify using `[hA i hpi]`. Establish `: ¬ p ∣ p * r - i`. Introduce `h`. Apply `hpi` to reduce the goal to its premises. Use `Nat.dvd_sub (dvd_mul_right p r) h` as an intermediate fact.
+
+Rewrite `this` using `[Nat.sub_sub_self hi']`. Then use the resulting hypothesis. Simplify using `[vp, this]`.
+-/
 theorem cmul_zero_left (p : ℕ) (A g : ℕ → K) (hA : ∀ i, p ∣ i → A i = 0) (r : ℕ) :
     cmul A (vp p g) (p * r) = 0 := by
   unfold cmul
@@ -59,6 +83,11 @@ theorem cmul_zero_left (p : ℕ) (A g : ℕ → K) (hA : ∀ i, p ∣ i → A i 
       rwa [Nat.sub_sub_self hi'] at this
     simp [vp, this]
 
+/- English proof (translation)
+Unfold `cmul`. Apply `sum_eq_zero` to reduce the goal to its premises. Introduce `i hi`. Establish `hi' : i ≤ p * r` using `Nat.lt_succ_iff.mp (mem_range.mp hi)`. Distinguish the cases in `hpi : p ∣ i`.
+
+Establish `: p ∣ p * r - i` using `Nat.dvd_sub (dvd_mul_right p r) hpi`. Simplify using `[hB _ this]`. Simplify using `[vp, hpi]`.
+-/
 theorem cmul_zero_right (p : ℕ) (f B : ℕ → K) (hB : ∀ i, p ∣ i → B i = 0) (r : ℕ) :
     cmul (vp p f) B (p * r) = 0 := by
   unfold cmul
@@ -74,15 +103,38 @@ def ffTerm (N p m k : ℕ) (ψ : DirichletCharacter K (p ^ m)) (x t : ℤ) (ζ :
   ψ ((n / d : ℕ) : ZMod (p ^ m)) * ((n / d : ℕ) : K) ^ (k - 2) * (ζ ^ (p ^ m)) ^ (x * t * d) -
      ψ (-((n / d : ℕ) : ZMod (p ^ m))) * (-((n / d : ℕ) : K)) ^ (k - 2) * (ζ ^ (p ^ m)) ^ (-(x * t * d))
 
+/- English proof (translation)
+Simplify using `[ffPos, ffTerm]`.
+-/
 theorem ffPos_true (N p m k : ℕ) (ψ : DirichletCharacter K (p ^ m)) (x t : ℤ) (ζ : K) (n : ℕ) :
     ffPos N p m k ψ x t ζ true n = ∑ d ∈ n.divisors, if ¬ p ∣ n / d then ffTerm N p m k ψ x t ζ n d else 0 := by
   simp [ffPos, ffTerm]
 
+/- English proof (translation)
+Simplify using `[ffPos, ffTerm]`.
+-/
 theorem ffPos_false (N p m k : ℕ) (ψ : DirichletCharacter K (p ^ m)) (x t : ℤ) (ζ : K) (n : ℕ) :
     ffPos N p m k ψ x t ζ false n =
       ∑ d ∈ n.divisors, if ¬ p ∣ d ∧ ¬ p ∣ n / d then ffTerm N p m k ψ x t ζ n d else 0 := by
   simp [ffPos, ffTerm]
 
+/- English proof (translation)
+Establish `hp0 : 0 < p` using `hp.out.pos`. Rewrite using `[ffPos_true, ffPos_false]`. Establish `hsplit : (∑ d ∈ n.divisors, if ¬ p ∣ n / d then ffTerm N p m k ψ x t ζ n d else 0) = (∑ d ∈ n.divisors, if ¬ p ∣ d ∧ ¬ p ∣ n / d then ffTerm N p m k ψ x t ζ n d else 0) + ∑ d ∈ n.divisors, if p ∣ d ∧ ¬ p ∣ n / d then ffTerm N p m k ψ x t ζ n d else 0`. Rewrite using `[← sum_add_distrib]`. Apply `sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `d _`. Apply the tactic sequence `by_cases h1 : p ∣ d <;> by_cases h2 : p ∣ n / d <;> simp [h1, h2]`. Rewrite using `[hsplit]`. Use `congr 1`. Use `split_ifs with hpn`.
+
+Take `⟨n', rfl⟩` from `hpn`. Establish `hn' : n' ≠ 0` using `by rintro rfl; simp at hn`. Rewrite using `[Nat.mul_div_cancel_left _ hp0, ffPos_true]`. Use `symm`. Establish `h1 : ∀ e ∈ n'.divisors, (if ¬ p ∣ n' / e then ffTerm N p m k ψ ((p : ℤ) * x) t ζ n' e else 0) = (fun d => if p ∣ d ∧ ¬ p ∣ (p * n') / d then ffTerm N p m k ψ x t ζ (p * n') d else 0) (p * e)`.
+
+Introduce `e _`. Simplify using `only [dvd_mul_right, true_and, Nat.mul_div_mul_left _ _ hp0]`. Use `congr 1`. Simplify using `only [ffTerm, Nat.mul_div_mul_left _ _ hp0]`. Use `push_cast`.
+
+Put the polynomial expressions in normal form. Rewrite using `[sum_congr rfl h1, ← sum_image (f := fun d => if p ∣ d ∧ ¬ p ∣ (p * n') / d then ffTerm N p m k ψ x t ζ (p * n') d else 0) (g := fun e => p * e) (fun a _ b _ h => Nat.eq_of_mul_eq_mul_left hp0 h)]`. Apply `sum_subset` to reduce the goal to its premises. Introduce `d hd`. Simplify using `only [mem_image, Nat.mem_divisors] at hd ⊢`.
+
+Take `⟨e, ⟨he, _⟩, rfl⟩` from `hd`. Conclude with `⟨Nat.mul_dvd_mul_left p he, by simpa using And.intro hp0.ne' hn'⟩`. Introduce `d hd hnd`. Simplify using `only [mem_image, Nat.mem_divisors, not_exists, not_and] at hd hnd`. Use `split_ifs with hc`.
+
+It suffices to derive a contradiction. Take `⟨e, rfl⟩` from `hc.1`. Conclude with `hnd e ⟨(Nat.mul_dvd_mul_iff_left hp0).mp hd.1, hn'⟩ rfl`. Both sides reduce to the same expression. Apply `sum_eq_zero` to reduce the goal to its premises.
+
+Introduce `d hd`. Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, _⟩`. Conclude with `hpn (h1.trans (Nat.dvd_of_mem_divisors hd))`.
+-/
 theorem ffPos_split (N p m k : ℕ) [hp : Fact p.Prime] (ψ : DirichletCharacter K (p ^ m)) (x t : ℤ) (ζ : K)
     (n : ℕ) (hn : n ≠ 0) :
     ffPos N p m k ψ x t ζ true n = ffPos N p m k ψ x t ζ false n +
@@ -131,6 +183,11 @@ theorem ffPos_split (N p m k : ℕ) [hp : Fact p.Prime] (ψ : DirichletCharacter
     rintro ⟨h1, _⟩
     exact hpn (h1.trans (Nat.dvd_of_mem_divisors hd))
 
+/- English proof (translation)
+Rewrite using `[ffPos_false]`. Apply `sum_eq_zero` to reduce the goal to its premises. Introduce `d hd`. Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, h2⟩`.
+
+Rewrite `hpn` using `[← Nat.mul_div_cancel' (Nat.dvd_of_mem_divisors hd)]`. Break down `(Nat.Prime.dvd_mul hp.out).mp hpn with h | h` into its components or cases. Conclude with `h1 h`. Conclude with `h2 h`.
+-/
 theorem ffPos_false_dvd (N p m k : ℕ) [hp : Fact p.Prime] (ψ : DirichletCharacter K (p ^ m)) (x t : ℤ) (ζ : K)
     (n : ℕ) (hpn : p ∣ n) : ffPos N p m k ψ x t ζ false n = 0 := by
   rw [ffPos_false]
@@ -147,14 +204,39 @@ def eeTerm (p m : ℕ) (ψ : DirichletCharacter K (p ^ m)) (t : ℤ) (ζ : K) (d
   ψ⁻¹ ((d : ℕ) : ZMod (p ^ m)) * (ζ ^ (p ^ m)) ^ (t * d) -
      ψ⁻¹ (-((d : ℕ) : ZMod (p ^ m))) * (ζ ^ (p ^ m)) ^ (-(t * d))
 
+/- English proof (translation)
+Simplify using `[eePos, eeTerm]`.
+-/
 theorem eePos_true (N p m : ℕ) (ψ : DirichletCharacter K (p ^ m)) (t : ℤ) (ζ : K) (n : ℕ) :
     eePos N p m ψ t ζ true n = ∑ d ∈ n.divisors, if ¬ p ∣ d then eeTerm p m ψ t ζ d else 0 := by
   simp [eePos, eeTerm]
 
+/- English proof (translation)
+Simplify using `[eePos, eeTerm]`.
+-/
 theorem eePos_false (N p m : ℕ) (ψ : DirichletCharacter K (p ^ m)) (t : ℤ) (ζ : K) (n : ℕ) :
     eePos N p m ψ t ζ false n = ∑ d ∈ n.divisors, if ¬ p ∣ n / d ∧ ¬ p ∣ d then eeTerm p m ψ t ζ d else 0 := by
   simp [eePos, eeTerm]
 
+/- English proof (translation)
+Establish `hp0 : 0 < p` using `hp.out.pos`. Rewrite using `[eePos_true, eePos_false]`. Establish `hsplit : (∑ d ∈ n.divisors, if ¬ p ∣ d then eeTerm p m ψ t ζ d else 0) = (∑ d ∈ n.divisors, if ¬ p ∣ n / d ∧ ¬ p ∣ d then eeTerm p m ψ t ζ d else 0) + ∑ d ∈ n.divisors, if p ∣ n / d ∧ ¬ p ∣ d then eeTerm p m ψ t ζ d else 0`. Rewrite using `[← sum_add_distrib]`. Apply `sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `d _`. Apply the tactic sequence `by_cases h1 : p ∣ d <;> by_cases h2 : p ∣ n / d <;> simp [h1, h2]`. Rewrite using `[hsplit]`. Use `congr 1`. Use `split_ifs with hpn`.
+
+Take `⟨n', rfl⟩` from `hpn`. Establish `hn' : n' ≠ 0` using `by rintro rfl; simp at hn`. Rewrite using `[Nat.mul_div_cancel_left _ hp0, eePos_true]`. Use `symm`. Apply `sum_subset_zero_on_sdiff` to reduce the goal to its premises.
+
+Introduce `d hd`. Simplify using `only [Nat.mem_divisors] at hd ⊢`. Conclude with `⟨hd.1.trans (dvd_mul_left n' p), by simpa using And.intro hp0.ne' hn'⟩`. Introduce `d hd0`. Take `⟨hd, hnd⟩` from `mem_sdiff.mp hd0`.
+
+Rewrite `hd`, `hnd` using `[Nat.mem_divisors]`. Use `split_ifs with hc`. It suffices to derive a contradiction. Take `⟨j, hj⟩` from `hc.1`. Apply `hnd` to reduce the goal to its premises.
+
+Use `⟨⟨j, ?_⟩, hn'⟩` and prove the remaining obligations. Establish `h3` using `Nat.div_mul_cancel hd.1`. Rewrite `h3` using `[hj]`. Establish `: p * n' = p * (d * j)` using `by rw [← h3]; ring`. Conclude with `Nat.eq_of_mul_eq_mul_left hp0 this`.
+
+Both sides reduce to the same expression. Introduce `d hd`. Establish `hdn : d ∣ n'` using `Nat.dvd_of_mem_divisors hd`. Establish `: p ∣ p * n' / d`. Rewrite using `[Nat.mul_div_assoc _ hdn]`.
+
+Conclude with `dvd_mul_right _ _`. Simplify using `[this]`. Apply `sum_eq_zero` to reduce the goal to its premises. Introduce `d hd`. Rewrite using `[if_neg]`.
+
+Introduce and unpack `⟨h1, _⟩`. Conclude with `hpn (h1.trans (Nat.div_dvd_of_dvd (Nat.dvd_of_mem_divisors hd)))`.
+-/
 theorem eePos_split (N p m : ℕ) [hp : Fact p.Prime] (ψ : DirichletCharacter K (p ^ m)) (t : ℤ) (ζ : K)
     (n : ℕ) (hn : n ≠ 0) :
     eePos N p m ψ t ζ true n = eePos N p m ψ t ζ false n +
@@ -203,6 +285,11 @@ theorem eePos_split (N p m : ℕ) [hp : Fact p.Prime] (ψ : DirichletCharacter K
     rintro ⟨h1, _⟩
     exact hpn (h1.trans (Nat.div_dvd_of_dvd (Nat.dvd_of_mem_divisors hd)))
 
+/- English proof (translation)
+Rewrite using `[eePos_false]`. Apply `sum_eq_zero` to reduce the goal to its premises. Introduce `d hd`. Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, h2⟩`.
+
+Rewrite `hpn` using `[← Nat.div_mul_cancel (Nat.dvd_of_mem_divisors hd)]`. Break down `(Nat.Prime.dvd_mul hp.out).mp hpn with h | h` into its components or cases. Conclude with `h1 h`. Conclude with `h2 h`.
+-/
 theorem eePos_false_dvd (N p m : ℕ) [hp : Fact p.Prime] (ψ : DirichletCharacter K (p ^ m)) (t : ℤ) (ζ : K)
     (n : ℕ) (hpn : p ∣ n) : eePos N p m ψ t ζ false n = 0 := by
   rw [eePos_false]
@@ -215,6 +302,13 @@ theorem eePos_false_dvd (N p m : ℕ) [hp : Fact p.Prime] (ψ : DirichletCharact
   · exact h1 h
   · exact h2 h
 
+/- English proof (translation)
+Use function extensionality and compare the values at `n`. Simplify using `only [Pi.add_apply]`. Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality. Simplify using `[ffSer, vp]`.
+
+Simplify using `only [ffSer, hn, if_false, vp]`. Rewrite using `[ffPos_split N p m k ψ x t ζ n hn]`. Use `congr 1`. Use `split_ifs with h1 h2`. Conclude with `absurd h2 (by`.
+
+Take `⟨j, rfl⟩` from `h1`. Establish `: j ≠ 0` using `by rintro rfl; simp at hn`. Simplify `this)` using `[Nat.mul_div_cancel_left _ hp.out.pos]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem ffSer_split (N p m k : ℕ) [hp : Fact p.Prime] (ψ : DirichletCharacter K (p ^ m)) (x t : ℤ) (ζ : K) :
     ffSer N p m k ψ x t ζ = (fun n => if n = 0 then 0 else ffPos N p m k ψ x t ζ false n) +
       vp p (ffSer N p m k ψ ((p : ℤ) * x) t ζ) := by
@@ -233,6 +327,13 @@ theorem ffSer_split (N p m k : ℕ) [hp : Fact p.Prime] (ψ : DirichletCharacter
     · rfl
     · rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `n`. Simplify using `only [Pi.add_apply]`. Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality. Simplify using `[eeSer, vp]`.
+
+Simplify using `only [eeSer, hn, if_false, vp]`. Rewrite using `[eePos_split N p m ψ t ζ n hn]`. Use `congr 1`. Use `split_ifs with h1 h2`. Conclude with `absurd h2 (by`.
+
+Take `⟨j, rfl⟩` from `h1`. Establish `: j ≠ 0` using `by rintro rfl; simp at hn`. Simplify `this)` using `[Nat.mul_div_cancel_left _ hp.out.pos]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem eeSer_split (N p m : ℕ) [hp : Fact p.Prime] (ψ : DirichletCharacter K (p ^ m)) (t : ℤ) (ζ : K) :
     eeSer N p m ψ t ζ = (fun n => if n = 0 then 0 else eePos N p m ψ t ζ false n) +
       vp p (eeSer N p m ψ t ζ) := by
@@ -257,6 +358,15 @@ namespace GlobalTheory.KummerEisensteinGalois
 
 open GlobalTheory.KummerEisensteinGalois.UpSplit in
 
+/- English proof (translation)
+Introduce `p hp N m k K _ _ ψ x t ζ _ _ _ _ _ r`. Establish `hp0 : 0 < p` using `hp.out.pos`. Establish `hX : xSer N p m k ψ x t ζ = cmul ((fun n => if n = 0 then 0 else ffPos N p m k ψ x t ζ false n) + vp p (ffSer N p m k ψ ((p : ℤ) * x) t ζ)) ((fun n => if n = 0 then 0 else eePos N p m ψ t ζ false n) + vp p (eeSer N p m ψ t ζ))`. Rewrite using `[xSer]`. Conclude with `congrArg₂ cmul (ffSer_split N p m k ψ x t ζ) (eeSer_split N p m ψ t ζ)`.
+
+Establish `hA : ∀ i, p ∣ i → (fun n => if n = 0 then 0 else ffPos N p m k ψ x t ζ false n) i = 0`. Introduce `i hi`. Simplify using `only`. Use `split_ifs`. Both sides reduce to the same expression.
+
+Conclude with `ffPos_false_dvd N p m k ψ x t ζ i hi`. Establish `hB : ∀ i, p ∣ i → (fun n => if n = 0 then 0 else eePos N p m ψ t ζ false n) i = 0`. Introduce `i hi`. Simplify using `only`. Use `split_ifs`.
+
+Both sides reduce to the same expression. Conclude with `eePos_false_dvd N p m ψ t ζ i hi`. Rewrite using `[up, hX, cmul_add_left, cmul_add_right, cmul_add_right, cmul_zero_left p _ _ hA, cmul_zero_right p _ _ hB, cmul_vp_vp p hp0, up, coPt, xSer]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem up_xSer_eq : ∀ (p : ℕ) [Fact p.Prime] (N m k : ℕ) (K : Type) [Field K] [CharZero K]
     (ψ : DirichletCharacter K (p ^ m)) (x t : ℤ) (ζ : K), IsPrimitiveRoot ζ (N * p ^ m) → 0 < N → ¬ p ∣ N →
     1 ≤ m → 3 ≤ k → ∀ r : ℕ,

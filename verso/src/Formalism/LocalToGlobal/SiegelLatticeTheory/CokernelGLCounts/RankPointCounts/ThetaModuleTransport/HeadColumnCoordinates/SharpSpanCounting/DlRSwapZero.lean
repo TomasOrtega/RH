@@ -11,12 +11,18 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V)
 variable {r : ℕ}
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [HermSp.Zhat, Matrix.of_apply, Matrix.map_apply, Matrix.transpose_apply]`. Conclude with `H.h_herm (f' a) (f b)`.
+-/
 theorem zhat_swap (f f' : Fin (r + 1) → V) :
     H.Zhat f' f = ((H.Zhat f f').transpose).map M.L.cj := by
   ext a b
   simp only [HermSp.Zhat, Matrix.of_apply, Matrix.map_apply, Matrix.transpose_apply]
   exact H.h_herm (f' a) (f b)
 
+/- English proof (translation)
+Unfold `HermSp.Dl`. Rewrite using `[dif_pos le_rfl, dif_pos le_rfl, zhat_swap, Matrix.submatrix_map, ← Matrix.transpose_submatrix, Matrix.transpose_map, Matrix.det_transpose]`. Conclude with `(RingHom.map_det (M.L.cj : E →+* E) _).symm`.
+-/
 theorem dl_swap_full (f f' : Fin (r + 1) → V) :
     H.Dl f' f (r + 1) = M.L.cj (H.Dl f f' (r + 1)) := by
   unfold HermSp.Dl
@@ -24,6 +30,9 @@ theorem dl_swap_full (f f' : Fin (r + 1) → V) :
     Matrix.transpose_map, Matrix.det_transpose]
   exact (RingHom.map_det (M.L.cj : E →+* E) _).symm
 
+/- English proof (translation)
+Unfold `HermSp.Dl`. Rewrite using `[dif_pos (Nat.le_succ r), dif_pos (Nat.le_succ r), zhat_swap, Matrix.submatrix_map, ← Matrix.transpose_submatrix, Matrix.transpose_map, Matrix.det_transpose]`. Conclude with `(RingHom.map_det (M.L.cj : E →+* E) _).symm`.
+-/
 theorem dl_swap_r (f f' : Fin (r + 1) → V) :
     H.Dl f' f r = M.L.cj (H.Dl f f' r) := by
   unfold HermSp.Dl
@@ -31,6 +40,11 @@ theorem dl_swap_r (f f' : Fin (r + 1) → V) :
     ← Matrix.transpose_submatrix, Matrix.transpose_map, Matrix.det_transpose]
   exact (RingHom.map_det (M.L.cj : E →+* E) _).symm
 
+/- English proof (translation)
+Unfold `HermSp.om' HermSp.om`. Rewrite using `[zhat_swap]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[Matrix.transpose_map, ← Matrix.adjugate_transpose, Matrix.transpose_apply]`.
+
+Conclude with `congrFun (congrFun (RingHom.map_adjugate (M.L.cj : E →+* E) (H.Zhat f f')).symm _) _`.
+-/
 theorem om_swap (f f' : Fin (r + 1) → V) : H.om' f' f = H.om f f' := by
   unfold HermSp.om' HermSp.om
   rw [zhat_swap]
@@ -39,6 +53,13 @@ theorem om_swap (f f' : Fin (r + 1) → V) : H.om' f' f = H.om f f' := by
   rw [Matrix.transpose_map, ← Matrix.adjugate_transpose, Matrix.transpose_apply]
   exact congrFun (congrFun (RingHom.map_adjugate (M.L.cj : E →+* E) (H.Zhat f f')).symm _) _
 
+/- English proof (translation)
+Establish `hdet : IsUnit (H.Zhat f f').det`. Establish `e : H.Dl f f' (r + 1) = (H.Zhat f f').det`. Unfold `HermSp.Dl`. Rewrite using `[dif_pos le_rfl]`. Both sides reduce to the same expression.
+
+Rewrite using `[← e]`. Conclude with `hD`. Establish `key : H.Zhat f' f * (((H.Zhat f f')⁻¹).transpose).map M.L.cj = 1`. Rewrite using `[zhat_swap]`. Establish `e2 : ((H.Zhat f f').transpose).map M.L.cj * (((H.Zhat f f')⁻¹).transpose).map M.L.cj = (((H.Zhat f f')⁻¹ * H.Zhat f f').transpose).map M.L.cj`.
+
+Rewrite using `[Matrix.transpose_mul]`. Conclude with `(Matrix.map_mul (f := (M.L.cj : E →+* E))).symm`. Rewrite using `[e2, Matrix.nonsing_inv_mul _ hdet, Matrix.transpose_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[Matrix.inv_eq_right_inv key]`. Both sides reduce to the same expression.
+-/
 theorem inv_swap (f f' : Fin (r + 1) → V) (hD : IsUnit (H.Dl f f' (r + 1))) (a b : Fin (r + 1)) :
     (H.Zhat f' f)⁻¹ a b = M.L.cj ((H.Zhat f f')⁻¹ b a) := by
   have hdet : IsUnit (H.Zhat f f').det := by
@@ -58,10 +79,20 @@ theorem inv_swap (f f' : Fin (r + 1) → V) (hD : IsUnit (H.Dl f f' (r + 1))) (a
   rw [Matrix.inv_eq_right_inv key]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Set.Sum.elim_range, Set.Sum.elim_range, Set.union_comm]`.
+-/
 theorem span_swap (f f' : Fin (r + 1) → V) :
     Submodule.span E (Set.range (Sum.elim f' f)) = Submodule.span E (Set.range (Sum.elim f f')) := by
   rw [Set.Sum.elim_range, Set.Sum.elim_range, Set.union_comm]
 
+/- English proof (translation)
+Establish `hDl' : H.Dl f' f (r + 1) = (H.Zhat f' f).det`. Unfold `HermSp.Dl`. Rewrite using `[dif_pos le_rfl]`. Both sides reduce to the same expression. Establish `e1 : omP H f' f = ∑ b, (H.Zhat f' f)⁻¹ b (Fin.last r) • f b`.
+
+Unfold `omP HermSp.om'`. Rewrite using `[Finset.smul_sum, hDl', Matrix.inv_def]`. Simplify using `only [smul_smul, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[e1, H.h_herm, h_sum_left, map_sum]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_mul, ← H.h_herm, inv_swap H f f' hD, M.L.cj_cj]`.
+-/
 theorem h_omP_swap (f f' : Fin (r + 1) → V) (hD : IsUnit (H.Dl f f' (r + 1))) (u : V) :
     H.h u (omP H f' f) = ∑ a, (H.Zhat f f')⁻¹ (Fin.last r) a * H.h u (f a) := by
   have hDl' : H.Dl f' f (r + 1) = (H.Zhat f' f).det := by
@@ -76,14 +107,23 @@ theorem h_omP_swap (f f' : Fin (r + 1) → V) (hD : IsUnit (H.Dl f f' (r + 1))) 
   refine Finset.sum_congr rfl (fun a _ => ?_)
   rw [map_mul, ← H.h_herm, inv_swap H f f' hD, M.L.cj_cj]
 
+/- English proof (translation)
+Rewrite using `[dl_swap_full]`. Conclude with `hD.map (M.L.cj : E →+* E)`.
+-/
 theorem unit_swap (f f' : Fin (r + 1) → V) (hD : IsUnit (H.Dl f f' (r + 1))) :
     IsUnit (H.Dl f' f (r + 1)) := by
   rw [dl_swap_full]
   exact hD.map (M.L.cj : E →+* E)
 
+/- English proof (translation)
+Rewrite using `[dl_swap_r, hD0, map_zero]`.
+-/
 theorem dl_r_swap_zero (f f' : Fin (r + 1) → V) (hD0 : H.Dl f f' r = 0) : H.Dl f' f r = 0 := by
   rw [dl_swap_r, hD0, map_zero]
 
+/- English proof (translation)
+The claim follows from `mkW_decomp H f' f T' T hF' hF (unit_swap H f f' hD) (dl_r_swap_zero H f f' hD0) u (by rw [span_swap]; exact hu)`.
+-/
 theorem mkW_decomp' (f f' : Fin (r + 1) → V) (T T' : F) (hF : Formalism.MainNotions.ThinScalesBound.FrameK H f T)
     (hF' : Formalism.MainNotions.ThinScalesBound.FrameK H f' T') (hD : IsUnit (H.Dl f f' (r + 1))) (hD0 : H.Dl f f' r = 0)
     (u : ↥(H.perp (H.X f'))) (hu : (u : V) ∈ Submodule.span E (Set.range (Sum.elim f f'))) :
@@ -93,6 +133,9 @@ theorem mkW_decomp' (f f' : Fin (r + 1) → V) (T T' : F) (hF : Formalism.MainNo
   mkW_decomp H f' f T' T hF' hF (unit_swap H f f' hD) (dl_r_swap_zero H f f' hD0) u
     (by rw [span_swap]; exact hu)
 
+/- English proof (translation)
+Establish `hs' : H.SendsTo φ'.toLinearMap (H.Dl f₂' f₂ (r + 1)) (H.Dl f₁' f₁ (r + 1)) (H.om' f₁' f₁) (H.om' f₂' f₂)`. Rewrite using `[dl_swap_full H f₂ f₂', dl_swap_full H f₁ f₁', om_swap H f₁ f₁', om_swap H f₂ f₂']`. Conclude with `hs`. Conclude with `sends_omP H φ' (unit_swap H f₁ f₁' hD₁) (unit_swap H f₂ f₂' hD₂) hs'`.
+-/
 theorem sends_omP' {f₁ f₁' f₂ f₂' : Fin (r + 1) → V} (φ' : H.Wb f₁' ≃ₗ[E] H.Wb f₂')
     (hD₁ : IsUnit (H.Dl f₁ f₁' (r + 1))) (hD₂ : IsUnit (H.Dl f₂ f₂' (r + 1)))
     (hs : H.SendsTo φ'.toLinearMap (M.L.cj (H.Dl f₂ f₂' (r + 1))) (M.L.cj (H.Dl f₁ f₁' (r + 1)))

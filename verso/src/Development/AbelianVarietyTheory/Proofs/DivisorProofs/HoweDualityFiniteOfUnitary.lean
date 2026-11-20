@@ -12,6 +12,21 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct
 
 open GlobalTheory.HoweAdelic in
+/- English proof (translation)
+Introduce `hP hH F E _ _ _ _ _ σ hcm n d X W M ψ χX χW om hψ hX hXd hW hWd hrX hrW hhX hhW hwe v hv`. Establish `memX : ∀ g, g ∈ Subgroup.closure (UAt σ X (evFin F v)) ↔ g ∈ UAt σ X (evFin F v)` using `fun g => ⟨fun hg => (mem_UAtGrp σ X _ g).1 ((Subgroup.closure_le (K := UAtGrp σ X (evFin F v))).2 (fun x hx => (mem_UAtGrp σ X _ x).2 hx) hg), fun hg => Subgroup.subset_closure hg⟩`. Establish `memW : ∀ h, h ∈ Subgroup.closure (UAt σ W (evFin F v)) ↔ h ∈ UAt σ W (evFin F v)` using `fun h => ⟨fun hh => (mem_UAtGrp σ W _ h).1 ((Subgroup.closure_le (K := UAtGrp σ W (evFin F v))).2 (fun x hx => (mem_UAtGrp σ W _ x).2 hx) hh), fun hh => Subgroup.subset_closure hh⟩`. Take `⟨om', hact⟩` from `GlobalTheory.ThK.LocalHom.exists_localHom F E σ n d X W M ψ χX χW om hψ hwe v`. Establish `hHD` using `GlobalTheory.HoweLocal.howeDualityFor_closure hP hH F E σ hcm n d X W M ψ χX χW om hψ hX hXd hW hWd hrX hrW hhX hhW hwe v hv om' hact`.
+
+Establish `hpres : ∀ x, ∀ φ ∈ SB (Fin n × Fin d → Fv F v), om' x φ ∈ SB _` using `fun x φ hφ => (hact x.1 x.2 φ hφ).1`. Take `⟨⟨L, hL⟩, hsum⟩` from `GlobalTheory.HoweTrivial.chain_bounded_and_sup_proper om' hHD hpres`. Establish `uniq : ∀ (T : ((Fin n × Fin d → AF F) → ℂ) → (Fin n × Fin d → AF F) → ℂ) (φ φ₁ φ₂ : (Fin n × Fin d → Fv F v) → ℂ), φ ∈ SB _ → Acts (evFin F v) T φ φ₁ → Acts (evFin F v) T φ φ₂ → φ₁ = φ₂` using `fun T φ φ₁ φ₂ hφ h1 h2 => GlobalTheory.TensUniq.eq_of_tens_eq v φ φ₁ φ₂ hφ fun r hr => (h1 r hr).symm.trans (h2 r hr)`. Establish `haug : augAt om v = locAug om'`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨g, hg, φ, hφ, φ₁, hφ₁, hA, rfl⟩`. Establish `h2` using `(hact ⟨g, (memX g).2 hg⟩ 1 φ hφ).2`. Rewrite `h2` using `[show ((1 : Subgroup.closure (UAt σ W (evFin F v))) : UA σ W.J) = 1 from rfl]`. Rewrite using `[uniq _ φ φ₁ _ hφ hA h2]`.
+
+Conclude with `Submodule.subset_span ⟨⟨g, (memX g).2 hg⟩, φ, hφ, rfl⟩`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨g, φ, hφ, rfl⟩`. Establish `h2` using `hact g 1 φ hφ`. Conclude with `Submodule.subset_span ⟨g.1, (memX _).1 g.2, φ, hφ, _, h2.1, h2.2, rfl⟩`.
+
+Establish `hsub : ∀ N, ThetaSub om v N ↔ IsLocSub om' N`. Introduce `N`. Use `⟨fun ⟨h1, h2, h3⟩ => ⟨haug ▸ h1, h2, fun h φ hφ => ?_⟩, fun ⟨h1, h2, h3⟩ => ⟨haug ▸ h1, h2, ?_⟩⟩` and prove the remaining obligations. Establish `h4` using `hact 1 h φ (h2 hφ)`. Conclude with `h3 h.1 ((memW _).1 h.2) φ hφ _ h4.1 h4.2`.
+
+Introduce `h hh φ hφ φ₁ hφ₁ hA`. Establish `h4` using `hact 1 ⟨h, (memW h).2 hh⟩ φ (h2 hφ)`. Rewrite using `[uniq _ φ φ₁ _ (h2 hφ) hA h4.2]`. Conclude with `h3 ⟨h, (memW h).2 hh⟩ φ hφ`. Use `⟨⟨L, fun m N hN hT => hL m N hN fun i => (hsub _).1 (hT i)⟩, fun N N' h h' hN hN' => ?_⟩` and prove the remaining obligations.
+
+Conclude with `hsum N N' ((hsub N).1 h) ((hsub N').1 h') hN hN'`.
+-/
 theorem _root_.GlobalTheory.T.howe_duality_finite_of_unitary : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.Published.HoweDualityUnitary → GlobalTheory.Published.HoweDualityFinite := by
   intro hP hH F E _ _ _ _ _ σ hcm n d X W M ψ χX χW om hψ hX hXd hW hWd hrX hrW hhX hhW hwe v hv
   have memX : ∀ g, g ∈ Subgroup.closure (UAt σ X (evFin F v)) ↔ g ∈ UAt σ X (evFin F v) := fun g =>

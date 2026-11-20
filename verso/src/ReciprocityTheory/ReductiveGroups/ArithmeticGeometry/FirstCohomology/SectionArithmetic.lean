@@ -46,6 +46,11 @@ def pullSec {Y' : Scheme.{0}} {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Se
       rw [sec_trans s (𝟙 Y' ≫ h) y (l j hy.1) (l j' hy.2)]
       simp only [trF, Category.assoc] }
 
+/- English proof (translation)
+Establish `hm1` using `hJ.mem (fun k => h ≫ φ k) r`. Establish `hm2` using `hJ.mem φ (r ≫ h)`. Simplify using `only [Category.assoc] at hm2`. Unfold `sval`. Simplify using `only [Category.assoc]`.
+
+Conclude with `(gs_res r z _ hm1 _).trans (gs_pull r h z _ hm2 _)`.
+-/
 theorem sval_pullSec {Y' : Scheme.{0}} {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) (h : Y' ⟶ Y)
     (r : Z ⟶ Y') (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
     sval (pullSec s h) r z J = sval s (r ≫ h) z J := by
@@ -81,6 +86,9 @@ def mulSec {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε'
       simp only [trF, Sum.elim_inl, Sum.elim_inr]
       rfl }
 
+/- English proof (translation)
+Establish `hm` using `hJ.mem (Sum.elim φ φ') r`. Unfold `sval`. Conclude with `(gs_mul r z _ hm _ _).trans (congrArg₂ (· * ·) (gs_res r z _ hm _) (gs_res r z _ hm _))`.
+-/
 theorem sval_mulSec {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
     (s : LB.Sec (LB.LinComb L φ ε)) (t : LB.Sec (LB.LinComb L φ' ε')) (r : Z ⟶ Y) (z : Z)
     {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
@@ -113,6 +121,11 @@ def powSec {I : Type} [Fintype I] {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : I
       simp only [trF]
       rw [Fintype.prod_prod_type] }
 
+/- English proof (translation)
+Establish `hm` using `hJ.mem (fun p : I × K => φ p.2) r`. Unfold `sval`. Simplify using `only [powSec]`. Use `(gs_eq r z _ hm _).trans ?_` and prove the remaining obligations. Use `erw [map_prod, map_prod]`.
+
+Conclude with `Finset.prod_congr rfl fun i _ => (gs_eq r z _ hm _).symm.trans (gs_res r z _ hm _)`.
+-/
 theorem sval_powSec {I : Type} [Fintype I] {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : I → LB.Sec (LB.LinComb L φ ε))
     (r : Z ⟶ Y) (z : Z) {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) :
     sval (powSec s) r z J = ∏ i, sval (s i) r z J := by
@@ -124,6 +137,9 @@ theorem sval_powSec {I : Type} [Fintype I] {φ : K → (Y ⟶ X)} {ε : K → �
   erw [map_prod, map_prod]
   exact Finset.prod_congr rfl fun i _ => (gs_eq r z _ hm _).symm.trans (gs_res r z _ hm _)
 
+/- English proof (translation)
+Establish `h1` using `sec_trans s (𝟙 Y) y (j' := fun k => J (𝟙 Y ≫ φ k)) hy (hJ.mem φ (𝟙 Y))`. Use `erw [gs_eq (𝟙 Y) y _ hy] at h1`. Unfold `sval`. Rewrite using `[← h1]`. Apply the tactic sequence `first | rfl | simp`.
+-/
 theorem germ_eq_sval {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) (y : Y)
     {J : (Y ⟶ X) → L.ι} (hJ : Good L y J) (j : K → L.ι) (hy : y ∈ LB.wchart L φ j) :
     (Y.presheaf.germ (LB.wchart L φ j) y hy).hom (s.f j) =
@@ -134,6 +150,11 @@ theorem germ_eq_sval {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.Lin
   rw [← h1]
   first | rfl | simp
 
+/- English proof (translation)
+Establish `hkU : r z ∈ LB.wchart L φ k` using `Y.basicOpen_le _ hk`. Establish `hm` using `hJ.mem φ r`. Unfold `sval`. Rewrite using `[sec_trans s r z hm hkU]`. Use `(Units.isUnit _).mul ?_` and prove the remaining obligations.
+
+Use `erw [gs_eq r z _ hkU]`. Establish `hz : z ∈ Z.basicOpen ((r.app _).hom (s.f k))`. Rewrite using `[← Scheme.preimage_basicOpen]`. Conclude with `hk`. Conclude with `(Z.mem_basicOpen _ z hkU).1 hz`.
+-/
 theorem isUnit_sval {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) (r : Z ⟶ Y) (z : Z)
     {J : (Z ⟶ X) → L.ι} (hJ : Good L z J) (k : (LB.LinComb L φ ε).ι) (hk : r z ∈ Y.basicOpen (s.f k)) :
     IsUnit (sval s r z J) := by

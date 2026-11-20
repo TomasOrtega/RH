@@ -11,6 +11,13 @@ namespace GlobalTheory
 
 namespace PDivGroup
 
+/- English proof (translation)
+Introduce `p _ k _ _ _ G H f hG hH hf`. Establish `hp : (p : k) = 0` using `CharP.cast_eq_zero k p`. Take `⟨hH1, -⟩` from `rigToLie_bijective_and_dual_rigOfOmega_bijective_of_isEt p k hp H hH`. Take `⟨-, hG2⟩` from `rigToLie_bijective_and_dual_rigOfOmega_bijective_of_isEt p k hp G hG`. Establish `hlie : ∀ y : H.dual.Lie, lieMap H.dual G.dual (dualHom G H f) y = 0`.
+
+Introduce `y`. Take `⟨x, rfl⟩` from `hH1.2 y`. Rewrite using `[← rigToLie_rigExtMap hp f x, hf, LinearMap.zero_apply, map_zero]`. Establish `hom : ∀ w : G.dual.omega, omegaMap H.dual G.dual (dualHom G H f) w = 0`. Introduce `w`.
+
+Use `(Module.forall_dual_apply_eq_zero_iff k _).1 fun y => ?_` and prove the remaining obligations. Conclude with `LinearMap.congr_fun (hlie y) w`. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Take `⟨w, rfl⟩` from `hG2.2 z`. Rewrite using `[rigExtMap_rigOfOmega, hom, map_zero, LinearMap.zero_apply]`.
+-/
 theorem rigExtMap_dualHom_eq_zero_of_isEt :
     ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p]
       (G H : PDivGroup p k) (f : G ⟶ H), G.IsEt → H.IsEt → rigExtMap f = 0 →

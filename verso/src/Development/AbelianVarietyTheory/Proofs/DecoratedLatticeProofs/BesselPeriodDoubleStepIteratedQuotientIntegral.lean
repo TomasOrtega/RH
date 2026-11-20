@@ -18,6 +18,13 @@ section Quot
 
 variable {G : Type} [Group G] [MeasurableSpace G] {R : Subgroup G} {μR : Measure R} {μG : Measure G}
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `IsQuotIntL1.zero`. Consider the case `insert a s ha ih`.
+
+Establish `h1` using `hF a (Finset.mem_insert_self a s)`. Establish `h2` using `ih (fun i hi => hF i (Finset.mem_insert_of_mem hi))`. Establish `h3` using `h1.add h2`. Rewrite using `[Finset.sum_insert ha]`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_insert ha]`. Both sides reduce to the same expression.
+-/
 theorem quotient_integral_finset_sum_eq {ι : Type} (s : Finset ι) (F : ι → G → ℂ) (Z : ι → ℂ)
     (hF : ∀ i ∈ s, IsQuotIntL1 μR μG (F i) (Z i)) :
     IsQuotIntL1 μR μG (fun x => ∑ i ∈ s, F i x) (∑ i ∈ s, Z i) := by
@@ -36,6 +43,9 @@ theorem quotient_integral_finset_sum_eq {ι : Type} (s : Finset ι) (F : ι → 
     rw [Finset.sum_insert ha]
     rfl
 
+/- English proof (translation)
+The claim follows from `quotient_integral_finset_sum_eq s (fun i x => a i * F i x) (fun i => a i * Z i) fun i hi => (hF i hi).smul (a i)`.
+-/
 theorem quotient_integral_finset_sum_smul {ι : Type} (s : Finset ι) (a : ι → ℂ) (F : ι → G → ℂ) (Z : ι → ℂ)
     (hF : ∀ i ∈ s, IsQuotIntL1 μR μG (F i) (Z i)) :
     IsQuotIntL1 μR μG (fun x => ∑ i ∈ s, a i * F i x) (∑ i ∈ s, a i * Z i) :=
@@ -53,6 +63,21 @@ namespace GlobalTheory.SeeSaw.Assemble
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D c t hDS hc ht j σ h P₁ P₂ φ f hφ hf hrap`. Take `⟨hom₁, hvW₁⟩` from `ht.sBF j (σ + 1) h`. Take `⟨hom₂, hvW₂⟩` from `ht.sFB j σ h`. Establish `hj1 : j + 1 < D.R.m` using `by omega`. Establish `hj2 : j + 1 + 1 < D.R.m` using `by omega`.
+
+Establish `hΦ₁` using `ht.pt j hj1 P₁`. Establish `hΦ₂` using `ht.pt (j + 1) hj2 P₂`. Establish `hstep : ∀ α, ∀ g : GA D (c.V j), ∃ f₁ : GA D (c.V (j + 1)) → ℂ, IsQuotIntL1 (c.J j (σ + 1) h).μR (c.vol (j + 1)).μ f₁ ((c.B j (σ + 1) h).per c.ψ (φ α) (rTrans g (liftS (t.om j) (c.vol (j + 1)).μ (c.vol (j + 1)).𝓕 (liftS (t.om (j + 1)) (c.vol (j + 1 + 1)).μ (c.vol (j + 1 + 1)).𝓕 f …`. Introduce `α g`. Establish `hr : RapidDec _ ((t.sFB j σ h).lift f (t.pt (j + 1) P₂))`.
+
+Unfold `Step.lift`. Rewrite using `[hom₂, hvW₂]`. Conclude with `hrap`. Take `⟨-, f₁, h1, h2⟩` from `hDS c.ψ σ (c.B j (σ + 1) h) (c.J j (σ + 1) h) (c.B (j + 1 + 1) σ (idx_step h)) (t.sBF j (σ + 1) h) (t.sFB j σ h) (c.lnk j σ h) (c.vL j σ h) (t.pt j P₁) (t.pt (j + 1) P₂) (φ α) f g hΦ₁ hΦ₂ (hφ α) hf hr`. Use `⟨f₁, ?_, fun h₁ => ?_⟩` and prove the remaining obligations.
+
+Establish `h1'` using `h1`. Unfold `Step.lift at h1'`. Rewrite `h1'` using `[hom₁, hvW₁, hom₂, hvW₂]`. Conclude with `h1'`. Establish `h2'` using `h2 h₁`.
+
+Rewrite `h2'` using `[hvW₂]`. Conclude with `h2'`. Use `choose f₁ hf₁ using hstep`. Establish `hw` using `(t.sBF j (σ + 1) h).weil`. Rewrite `hw` using `[hom₁]`.
+
+Establish `hcont` using `(GlobalTheory.Unf.LiftRapid.lift_conv_cont_growth D c.ψ (c.V j) (c.V (j + 1)) _ _ (t.om j) hw (c.vol (j + 1)) (liftS (t.om (j + 1)) (c.vol (j + 1 + 1)).μ (c.vol (j + 1 + 1)).𝓕 f (t.pt (j + 1) P₂)) (t.pt j P₁) hrap hΦ₁).2.2.1`. Use `⟨fun h₁ => ∑ α, ∑ g ∈ (t.e j α).support, t.e j α g * f₁ α g h₁, ?_, fun h₁ => ?_⟩` and prove the remaining obligations. Establish `hper : ∀ α, (c.B j (σ + 1) h).per c.ψ (φ α) (trc (t.e j α) (liftS (t.om j) (c.vol (j + 1)).μ (c.vol (j + 1)).𝓕 (liftS (t.om (j + 1)) (c.vol (j + 1 + 1)).μ (c.vol (j + 1 + 1)).𝓕 f (t.pt (j + 1) P₂)) (t.pt j P₁))) = ∑ g ∈ (t.e j α).support, t.e j α g * (c.B j (σ + 1) h).per c.ψ (φ …` using `fun α => ((GlobalTheory.T.besselPeriod_linear_and_translationCombination D c.ψ hc.std (σ + 1) (c.B j (σ + 1) h) (φ α) (hφ α)).2 (t.e j α) _ hcont).2`. Unfold `Tup.perF`. Simplify using `only [hper]`.
+
+Conclude with `quotient_integral_finset_sum_eq _ _ _ fun α _ => quotient_integral_finset_sum_smul _ _ _ _ fun g _ => (hf₁ α g).1`. Unfold `Tup.integrand`. Conclude with `quotient_integral_finset_sum_eq _ _ _ fun α _ => quotient_integral_finset_sum_smul _ _ _ _ fun g _ => (hf₁ α g).2 h₁`.
+-/
 theorem doubleStep_tuple : ∀ (D : D7) (c : Comm D) (t : Tup c), DoubleStep D → c.Is → t.Is → ∀ j σ (h : j + 2 * (σ + 1) + 2 = D.R.m) P₁ P₂ (φ : t.Ch j → GA D (c.X j) → ℂ) (f : GA D (c.V (j + 1 + 1)) → ℂ), (∀ a, IsContAut (c.X j) (φ a)) → RapidDec _ f → RapidDec _ (liftS (t.om (j + 1)) (c.vol (j + 1 + 1)).μ (c.vol (j + 1 + 1)).𝓕 f (t.pt (j + 1) P₂)) → ∃ F₁ : GA D (c.V (j + 1)) → ℂ, IsQuotIntL1 (c.J j (σ + 1) h).μR (c.vol (j + 1)).μ F₁ (t.perF j (σ + 1) h φ (liftS (t.om j) (c.vol (j + 1)).μ (c.vol (j + 1)).𝓕 (liftS (t.om (j + 1)) (c.vol (j + 1 + 1)).μ (c.vol (j + 1 + 1)).𝓕 f (t.pt (j + 1) P₂)) (t.pt j P₁))) ∧ ∀ h₁, IsQuotIntL1 (c.B (j + 1 + 1) σ (idx_step h)).μR (c.vol (j + 1 + 1)).μ (t.integrand j σ h P₁ P₂ φ f h₁) (F₁ h₁) := by
   intro D c t hDS hc ht j σ h P₁ P₂ φ f hφ hf hrap
   obtain ⟨hom₁, hvW₁⟩ := ht.sBF j (σ + 1) h

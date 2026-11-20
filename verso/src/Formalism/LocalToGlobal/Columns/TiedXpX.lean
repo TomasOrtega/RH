@@ -15,6 +15,25 @@ section Gen
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
+/- English proof (translation)
+Establish `hlast : ∀ j : Fin N, ¬ (j : ℕ) < n → j = lastIdx N` using `fun j hj => Fin.ext (by`. Use `j.2` as an intermediate fact. Use `show (j : ℕ) = N - 1`. Use the proof step `omega)`. Establish `hlv : ¬ ((lastIdx N : Fin N) : ℕ) < n` using `by show ¬ N - 1 < n`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hlt : ∀ i : Fin n, (i : ℕ) < N` using `fun i => by have := i.2; omega`. Use extensionality with `x`. Rewrite using `[rll_mem_baseLb, Submodule.mem_sup]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨r, hr, hP⟩`. Take `⟨q, hq⟩` from `(hB.dvd _).1 hP`. Use `⟨padL E n N (fun i => algebraMap (𝓞 E) E (r ⟨i, hlt i⟩)), Submodule.mem_map_of_mem (by` and prove the remaining obligations. Rewrite using `[rll_mem_baseLb]`. Conclude with `⟨fun i => r ⟨i, hlt i⟩, fun _ => rfl, fun P hP => absurd hP (Finset.notMem_empty P)⟩),`.
+
+Use `q • (Pi.single (lastIdx N) (algebraMap (𝓞 E) E π) : Fin N → E),`. Use the proof step `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _), ?_⟩`. Use function extensionality and compare the values at `j`. Rewrite using `[Pi.add_apply, Pi.smul_apply, padL_apply]`. Distinguish the cases in `hj : (j : ℕ) < n`.
+
+Establish `hne : j ≠ lastIdx N` using `fun e => hlv (e ▸ hj)`. Rewrite using `[dif_pos hj, Pi.single_eq_of_ne hne, smul_zero, add_zero]`. Conclude with `hr j`. Rewrite using `[dif_neg hj, zero_add, hlast j hj, Pi.single_eq_same, Algebra.smul_def, ← map_mul, mul_comm, ← hq]`. Conclude with `hr _`.
+
+Introduce and unpack `⟨y, hy, z, hz, rfl⟩`. Take `⟨y', hy', rfl⟩` from `hy`. Rewrite `hy'` using `[SetLike.mem_coe, rll_mem_baseLb]`. Take `⟨r', hr', -⟩` from `hy'`. Take `⟨q, rfl⟩` from `Submodule.mem_span_singleton.1 hz`.
+
+Use `⟨fun j => if h : (j : ℕ) < n then r' ⟨j, h⟩ else q * π, fun j => ?_, fun P hP => ?_⟩` and prove the remaining obligations. Use `show _ = padL E n N y' j + (q • (Pi.single (lastIdx N) (algebraMap (𝓞 E) E π) : Fin N → E)) j`. Rewrite using `[Pi.smul_apply, padL_apply]`. Use `beta_reduce`. Distinguish the cases in `hj : (j : ℕ) < n`.
+
+Establish `hne : j ≠ lastIdx N` using `fun e => hlv (e ▸ hj)`. Rewrite using `[dif_pos hj, dif_pos hj, Pi.single_eq_of_ne hne, smul_zero, add_zero]`. Conclude with `hr' _`. Rewrite using `[dif_neg hj, dif_neg hj, zero_add, hlast j hj, Pi.single_eq_same, Algebra.smul_def, map_mul]`. Use `beta_reduce`.
+
+Rewrite using `[dif_neg hlv]`. Conclude with `Ideal.mul_mem_left _ _ ((hB.dvd π).2 (dvd_refl π) P hP)`.
+-/
 theorem xp_baseLb {N n : ℕ} (hN : N = n + 1) [NeZero N] [NeZero n] {ST : Finset (Pl E)} {π : 𝓞 E} (hB : BasePi ST π) :
     baseLb E N ST = (baseLb E n ∅).map ((padL E n N).restrictScalars (𝓞 E)) ⊔
       Submodule.span (𝓞 E) {(Pi.single (lastIdx N) (algebraMap (𝓞 E) E π) : Fin N → E)} := by
@@ -69,6 +88,9 @@ section GenQ
 variable {X : Fields} {Pr : Primes X} (hc : CMData X.F X.E) (hX : X.Ok) (hPr : Pr.Ok) (σ₀ : X.K →+* ℂ) (u : Pr.Word)
   {n : ℕ} [NeZero n] (Λ : LevFam X.E X.K n Pr.vGs)
 
+/- English proof (translation)
+Take `⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩` from `Q`. Both sides reduce to the same expression.
+-/
 theorem xp_clsG_Lb (c₀ : DiaG X.E (Pr.vT u)) (s : DecoCl n (Pr.vT u) Pr.vGs Λ.grp → DecoSet X.E n (Pr.vT u) Pr.vGs)
     (hS : DecoPtSurj hc n (Pr.vT u) Pr.vGs) (hs : ∀ c, decoCls n (Pr.vT u) Pr.vGs Λ.grp (s c) = c)
     (Q : StepCrd Pr σ₀ n fun c => (s c).1.L) :
@@ -76,6 +98,9 @@ theorem xp_clsG_Lb (c₀ : DiaG X.E (Pr.vT u)) (s : DecoCl n (Pr.vT u) Pr.vGs Λ
   obtain ⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩ := Q
   rfl
 
+/- English proof (translation)
+Take `⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩` from `Q`. Both sides reduce to the same expression.
+-/
 theorem xp_clsPG_Lb (s : DecoCl n (∅ : Finset (Pl X.E)) Pr.vGs Λ.grp → DecoSet X.E n (∅ : Finset (Pl X.E)) Pr.vGs)
     (hS : DecoPtSurj hc n (∅ : Finset (Pl X.E)) Pr.vGs) (hs : ∀ c, decoCls n ∅ Pr.vGs Λ.grp (s c) = c)
     (Q : StepCrd Pr σ₀ n fun c => (s c).1.N) :
@@ -89,6 +114,11 @@ section Rec
 
 variable {d : ColDat} (a : ColArgs d) (hS : SpStd d.toColBase) (hH : HostHyp d) (hP : PtSurjP d) (hQ : PtSurj d)
 
+/- English proof (translation)
+Establish `h1` using `xp_clsG_Lb d.sp.cm d.hX d.hPr d.σ₀ u (d.lev d.R.m) (colDia (X := d.X) (Pr := d.Pr) d.R u d.R.m) (d.repr u d.R.m) (hQ u d.R.m) (fun c => (stepGSD (Pr := d.Pr) d.W d.lev u d.R.m).outSec.spec c) (stepCrd a hS hH u d.R.m le_rfl)`. Establish `h2` using `xp_clsPG_Lb d.sp.cm d.σ₀ d.levP.inv d.reprP hP (fun c => (ptGSD (Pr := d.Pr) d.W d.levP).outSec.spec c) (crdPr a hS hH)`. Establish `h3` using `xp_baseLb (E := d.X.E) (N_m_succ d.R) (basePi_of_ok (Pr := d.Pr) d.hX d.hPr u)`. Establish `h4` using `iXc_eq a hS`. Use `h1.trans (h3.trans ?_)` and prove the remaining obligations.
+
+Use `congrArg (fun t => t ⊔ Submodule.span (𝓞 d.host.E) {d.z0 u}) ?_` and prove the remaining obligations. Rewrite using `[← h2, ← h4]`. Both sides reduce to the same expression.
+-/
 theorem tilBaseLat (u : d.what₂.Word) : CF.TilBaseLat (tildeLatticeAgreement a hS hH hP u) (classAgreement a hS hH hQ u d.R.m le_rfl) := by
   have h1 := xp_clsG_Lb d.sp.cm d.hX d.hPr d.σ₀ u (d.lev d.R.m) (colDia (X := d.X) (Pr := d.Pr) d.R u d.R.m) (d.repr u d.R.m)
     (hQ u d.R.m) (fun c => (stepGSD (Pr := d.Pr) d.W d.lev u d.R.m).outSec.spec c) (stepCrd a hS hH u d.R.m le_rfl)

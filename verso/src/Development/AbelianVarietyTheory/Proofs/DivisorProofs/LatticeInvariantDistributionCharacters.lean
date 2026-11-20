@@ -10,6 +10,37 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LatticeDualFourierE
 namespace GlobalTheory.LatticeComb
 open scoped SchwartzMap
 
+/- English proof (translation)
+Introduce `V _ _ _ P hP Λ _ _ a T htr hmod`. Take `⟨h, hhc, hh1⟩` from `GlobalTheory.T.exists_schwartz_partition_of_unity_lattice Λ`. Use `⟨T h, fun f => ?_⟩` and prove the remaining obligations. Establish `hth : ∀ l : Λ, (fun x => h (x + (l : V))).HasTemperateGrowth` using `fun l => HasCompactSupport.hasTemperateGrowth (hhc.comp_homeomorph (Homeomorph.addRight (l : V))) ((h.smooth ⊤).comp (contDiff_id.add contDiff_const))`. Establish `hh : (⇑h).HasTemperateGrowth` using `HasCompactSupport.hasTemperateGrowth hhc (h.smooth ⊤)`.
+
+Set `u : Λ → 𝓢(V, ℂ)` to `fun l => SchwartzMap.smulLeftCLM ℂ (fun x => h (x + (l : V))) f`. Establish `hu : ∀ (l : Λ) (x : V), u l x = h (x + l) * f x` using `fun l x => by`. Simplify using `[u, SchwartzMap.smulLeftCLM_apply_apply (hth l)]`. Take `⟨F1, hF1p, hF1T⟩` from `GlobalTheory.T.summable_schwartz_series u (GlobalTheory.T.lattice_translates_cutoff_summable Λ h f hhc u hu)`. Establish `hF1 : F1 = f`.
+
+Use extensionality with `x`. Use `(hF1p x).unique ?_` and prove the remaining obligations. Simplify `(hh1 x).mul_right (f x)` using `[hu]`. Set `w : Λ → 𝓢(V, ℂ)` to `fun l => SchwartzMap.smulLeftCLM ℂ (⇑h) (SchwartzMap.compSubConstCLM ℂ (l : V) f)`. Establish `hw : ∀ (l : Λ) (x : V), w l x = h x * f (x - l)` using `fun l x => by`.
+
+Simplify using `[w, SchwartzMap.smulLeftCLM_apply_apply hh]`. Establish `huw : ∀ l, T (u l) = T (w l)` using `fun l => htr l l.2 (w l) (u l) (fun x => by rw [hu, hw]; simp)`. Take `⟨G, hGp, hGT⟩` from `GlobalTheory.T.summable_schwartz_series w (GlobalTheory.T.lattice_shifted_cutoff_summable Λ h f hhc w hw)`. Establish `h1 : T f = T G`. Use `hF1T T` as an intermediate fact.
+
+Rewrite `this` using `[hF1]`. Rewrite `this` using `[huw]`. Conclude with `this.unique (hGT T)`. Take `⟨c, hcs, hcP⟩` from `GlobalTheory.T.lattice_dual_fourier_expansion_schwartz P hP Λ f`. Establish `hch : ∀ μ : V, (fun x : V => Complex.exp (2 * Real.pi * Complex.I * (P x μ : ℂ))).HasTemperateGrowth`.
+
+Introduce `μ`. Establish `e : (fun x : V => Complex.exp (2 * Real.pi * Complex.I * (P x μ : ℂ))) = fun x : V => Complex.exp ((Complex.I * ((2 * Real.pi : ℝ) : ℂ)) * ((LinearMap.toContinuousLinearMap (P.flip μ) x : ℝ) : ℂ))`. Use function extensionality and compare the values at `x`. Simplify using `only [LinearMap.coe_toContinuousLinearMap']`. Use `show _ = Complex.exp (Complex.I * ((2 * Real.pi : ℝ) : ℂ) * ((P x μ : ℝ) : ℂ))`.
+
+Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[e]`. Conclude with `GlobalTheory.CharFormDeriv.hasTemperateGrowth_char (LinearMap.toContinuousLinearMap (P.flip μ)) (2 * Real.pi)`. Set `v0 : V → 𝓢(V, ℂ)` to `fun μ => SchwartzMap.smulLeftCLM ℂ (fun x : V => Complex.exp (2 * Real.pi * Complex.I * (P x μ : ℂ))) h`.
+
+Establish `hv0 : ∀ μ x, v0 μ x = Complex.exp (2 * Real.pi * Complex.I * (P x μ : ℂ)) * h x` using `fun μ x => by`. Simplify using `[v0, SchwartzMap.smulLeftCLM_apply_apply (hch μ)]`. Set `v : {μ : V // ∀ l ∈ Λ, ∃ k : ℤ, P l μ = k} → 𝓢(V, ℂ)` to `fun μ => c μ • v0 μ`. Establish `hvs : ∀ k n : ℕ, Summable (fun μ => SchwartzMap.seminorm ℂ k n (v μ))`. Introduce `k n`.
+
+Take `⟨C, hC⟩` from `GlobalTheory.T.modulated_schwartz_seminorm_polynomial P h v0 hv0 k n`. Use `Summable.of_nonneg_of_le (fun μ => apply_nonneg _ _) (fun μ => ?_) ((hcs n).mul_left C)` and prove the remaining obligations. Simplify using `only [v, map_smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨G', hG'p, hG'T⟩` from `GlobalTheory.T.summable_schwartz_series v hvs`.
+
+Establish `hGG : G = G'`. Use extensionality with `x`. Use `(hGp x).unique ?_` and prove the remaining obligations. Establish `e1 : HasSum (fun μ : {μ : V // ∀ l ∈ Λ, ∃ k : ℤ, P l μ = k} => v μ x) (h x * ∑' l : Λ, f (x + l))`. Use `(hcP x).mul_left (h x)` as an intermediate fact.
+
+Establish `hfun : (fun μ : {μ : V // ∀ l ∈ Λ, ∃ k : ℤ, P l μ = k} => v μ x) = fun μ : {μ : V // ∀ l ∈ Λ, ∃ k : ℤ, P l μ = k} => h x * (c μ * Complex.exp (2 * Real.pi * Complex.I * (P x μ : ℂ)))`. Use function extensionality and compare the values at `μ`. Simplify using `only [v, SchwartzMap.smul_apply, hv0, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun]`.
+
+Conclude with `this`. Establish `e2 : h x * ∑' l : Λ, f (x + l) = G' x` using `e1.unique (hG'p x)`. Rewrite using `[← e2]`. Establish `hsum : Summable (fun l : Λ => h x * f (x - l))` using `by simpa [hw] using (hGp x).summable`. Establish `e3 : ∑' l : Λ, f (x + l) = ∑' l : Λ, f (x - l)`.
+
+Rewrite using `[← (Equiv.neg Λ).tsum_eq]`. Simplify using `[sub_eq_add_neg]`. Rewrite using `[e3, ← tsum_mul_left]`. Simplify `hsum.hasSum` using `[hw]`. Establish `hTv : ∀ μ, T (v μ) = c μ * Complex.exp (2 * Real.pi * Complex.I * (P a μ : ℂ)) * T h`.
+
+Introduce `μ`. Simplify using `only [v, map_smul, smul_eq_mul]`. Rewrite using `[hmod μ μ.2 h (v0 μ) (hv0 μ)]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `hG'T T`.
+
+Rewrite `h2` using `[hTv]`. Rewrite using `[h1, hGG, ← h2.tsum_eq, tsum_mul_right, (hcP a).tsum_eq, mul_comm]`.
+-/
 theorem comb_unique : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (P : LinearMap.BilinForm ℝ V), P.Nondegenerate →
     ∀ (Λ : Submodule ℤ V) [DiscreteTopology Λ] [IsZLattice ℝ Λ] (a : V) (T : SchwartzMap V ℂ →L[ℂ] ℂ),

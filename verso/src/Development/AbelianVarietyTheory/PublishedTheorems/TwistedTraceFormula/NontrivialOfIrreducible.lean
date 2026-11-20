@@ -14,6 +14,9 @@ section General
 variable {F G V W U : Type} [Field F] [Group G] [AddCommGroup V] [Module F V]
   [AddCommGroup W] [Module F W] [AddCommGroup U] [Module F U]
 
+/- English proof (translation)
+Establish `: ∀ r, OccursTimes σ ρ r ↔ OccursTimes τ ρ r` using `fun r => ⟨fun ⟨S, T, h1, h2, h3⟩ => ⟨S, T, h1, h2, fun i => (h3 i).map (·.trans φ)⟩, fun ⟨S, T, h1, h2, h3⟩ => ⟨S, T, h1, h2, fun i => (h3 i).map (·.trans φ.symm)⟩⟩`. Simplify using `only [jhMult, this]`.
+-/
 theorem jhMult_congr_left {σ : Representation F G W} {τ : Representation F G U} (φ : σ.Equiv τ)
     (ρ : Representation F G V) : jhMult σ ρ = jhMult τ ρ := by
   have : ∀ r, OccursTimes σ ρ r ↔ OccursTimes τ ρ r := fun r =>
@@ -21,6 +24,9 @@ theorem jhMult_congr_left {σ : Representation F G W} {τ : Representation F G U
       fun ⟨S, T, h1, h2, h3⟩ => ⟨S, T, h1, h2, fun i => (h3 i).map (·.trans φ.symm)⟩⟩
   simp only [jhMult, this]
 
+/- English proof (translation)
+Establish `key : ∀ {V U : Type} [AddCommGroup V] [Module F V] [AddCommGroup U] [Module F U] {ρ : Representation F G V} {τ : Representation F G U} (φ : ρ.Equiv τ) (r : ℕ), OccursTimes σ ρ r → OccursTimes σ τ r` using `fun φ r ⟨S, T, h1, h2, h3⟩ => ⟨fun i => subMap φ.toIntertwiningMap (S i), fun i => subMap φ.toIntertwiningMap (T i), fun i => subMap_mono _ (h1 i), fun i j h => subMap_mono _ (h2 i j h), fun i => step_iff.2 (step_map _ φ.injective (step_iff.1 (h3 i)))⟩`. Establish `: ∀ r, OccursTimes σ ρ r ↔ OccursTimes σ τ r` using `fun r => ⟨key φ r, key φ.symm r⟩`. Simplify using `only [jhMult, this]`.
+-/
 theorem jhMult_congr_right (σ : Representation F G W) {ρ : Representation F G V}
     {τ : Representation F G U} (φ : ρ.Equiv τ) : jhMult σ ρ = jhMult σ τ := by
   have key : ∀ {V U : Type} [AddCommGroup V] [Module F V] [AddCommGroup U] [Module F U]
@@ -32,12 +38,24 @@ theorem jhMult_congr_right (σ : Representation F G W) {ρ : Representation F G 
   have : ∀ r, OccursTimes σ ρ r ↔ OccursTimes σ τ r := fun r => ⟨key φ r, key φ.symm r⟩
   simp only [jhMult, this]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hW`. Rewrite `hW` using `[not_nontrivial_iff_subsingleton]`. Conclude with `(bot_ne_top : (⊥ : Subrepresentation σ) ≠ ⊤) (Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _))`.
+-/
 theorem nontrivial_of_irreducible {σ : Representation F G W} (h : σ.IsIrreducible) : Nontrivial W := by
   by_contra hW
   rw [not_nontrivial_iff_subsingleton] at hW
   exact (bot_ne_top : (⊥ : Subrepresentation σ) ≠ ⊤)
     (Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _))
 
+/- English proof (translation)
+Take `⟨S, f, hf⟩` from `h`. Use `nontrivial_of_irreducible hσ` as an intermediate fact. Take `⟨w, hw⟩` from `exists_ne (0 : W)`. Take `⟨v, rfl⟩` from `hf w`. Break down `eq_bot_or_eq_top S with rfl | rfl` into its components or cases.
+
+Conclude with `absurd (by rw [show v = 0 from Subtype.ext v.2, map_zero]) hw`. Set `j : ρ.IntertwiningMap (⊤ : Subrepresentation ρ).toRepresentation` to `⟨LinearMap.codRestrict _ LinearMap.id (fun _ => trivial), fun _ => rfl⟩`. Establish `hs : Function.Surjective (f.comp j)` using `fun w => by`. Take `⟨u, rfl⟩` from `hf w`. Conclude with `⟨u.1, rfl⟩`.
+
+Establish `hi : Function.Injective (f.comp j)`. Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Break down `eq_bot_or_eq_top (f.comp j).ker with h | h` into its components or cases. Establish `: x ∈ (f.comp j).ker` using `hx`. Rewrite `this` using `[h]`.
+
+Conclude with `this`. Establish `: v.1 ∈ (f.comp j).ker` using `by rw [h]; trivial`. Conclude with `absurd this hw`. Conclude with `⟨.mk (LinearEquiv.ofBijective (f.comp j).toLinearMap ⟨hi, hs⟩) (f.comp j).isIntertwining'⟩`.
+-/
 theorem IsSubquotient.nonempty_equiv {σ : Representation F G W} {ρ : Representation F G V}
     (h : IsSubquotient σ ρ) (hσ : σ.IsIrreducible) (hρ : ρ.IsIrreducible) : Nonempty (ρ.Equiv σ) := by
   obtain ⟨S, f, hf⟩ := h
@@ -61,6 +79,13 @@ theorem IsSubquotient.nonempty_equiv {σ : Representation F G W} {ρ : Represent
       exact absurd this hw
   exact ⟨.mk (LinearEquiv.ofBijective (f.comp j).toLinearMap ⟨hi, hs⟩) (f.comp j).isIntertwining'⟩
 
+/- English proof (translation)
+Use `le_antisymm (iSup₂_le ?_) (Order.one_le_iff_ne_zero.2 (jhMult_ne_zero_iff.2 (IsSubquotient.refl σ)))` and prove the remaining obligations. Introduce and unpack `r ⟨S, T, -, h2, h3⟩`. Break down `r with _ | _ | r` into its components or cases. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+
+It suffices to derive a contradiction. Establish `h0` using `(step_iff.1 (h3 0)).not_le hσ`. Establish `h1` using `(step_iff.1 (h3 1)).not_le hσ`. Break down `eq_bot_or_eq_top (S 0) with h | h` into its components or cases. Conclude with `h0 (h ▸ bot_le)`.
+
+Conclude with `h1 (le_top.trans (h ▸ h2 0 1 Fin.zero_lt_one))`.
+-/
 theorem jhMult_self {σ : Representation F G W} (hσ : σ.IsIrreducible) : jhMult σ σ = 1 := by
   refine le_antisymm (iSup₂_le ?_) (Order.one_le_iff_ne_zero.2
     (jhMult_ne_zero_iff.2 (IsSubquotient.refl σ)))
@@ -75,6 +100,19 @@ theorem jhMult_self {σ : Representation F G W} (hσ : σ.IsIrreducible) : jhMul
   · exact h0 (h ▸ bot_le)
   · exact h1 (le_top.trans (h ▸ h2 0 1 Fin.zero_lt_one))
 
+/- English proof (translation)
+Set `ι : S.toRepresentation.IntertwiningMap ρ` to `⟨S.toSubmodule.subtype, fun _ => rfl⟩`. Set `p : S.toRepresentation.IntertwiningMap (subQuot S T)` to `⟨Submodule.mkQ _, fun _ => rfl⟩`. Establish `hp : ∀ v, p v = 0 ↔ v.1 ∈ T.toSubmodule` using `fun v => Submodule.Quotient.mk_eq_zero _`. Establish `: Nontrivial (Subrepresentation (subQuot S T))` using `⟨⊥, ⊤, fun h' => h.lt.not_ge fun v hv => by`. Establish `: p ⟨v, hv⟩ ∈ (⊥ : Subrepresentation (subQuot S T)).toSubmodule` using `by rw [h']; trivial`.
+
+Conclude with `(hp _).1 this⟩`. Use `⟨fun R => ?_⟩` and prove the remaining obligations. Establish `h1 : T ≤ subMap ι (subComap p R)` using `fun v hv => ⟨⟨v, h.le hv⟩, by show p _ ∈ R.toSubmodule`. Rewrite using `[(hp _).2 hv]`. Conclude with `zero_mem _, rfl⟩`.
+
+Establish `h2 : subMap ι (subComap p R) ≤ S`. Introduce and unpack `_ ⟨v, -, rfl⟩`. Conclude with `v.2`. Break down `h.eq_or_eq h1 h2 with h3 | h3` into its components or cases. Use `left`.
+
+Use `le_antisymm (fun x hx => ?_) bot_le` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `: v.1 ∈ (subMap ι (subComap p R)).toSubmodule` using `⟨v, hx, rfl⟩`. Rewrite `this` using `[h3]`. Conclude with `(hp v).2 this`.
+
+Use `right`. Use `le_antisymm le_top (fun x _ => ?_)` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `: v.1 ∈ (subMap ι (subComap p R)).toSubmodule` using `by rw [h3]; exact v.2`. Take `⟨u, hu, huv⟩` from `this`.
+
+Take `rfl : u = v` from `Subtype.ext huv`. Conclude with `hu`.
+-/
 theorem isIrreducible_subQuot {ρ : Representation F G V} {S T : Subrepresentation ρ} (h : T ⋖ S) :
     (subQuot S T).IsIrreducible := by
   let ι : S.toRepresentation.IntertwiningMap ρ := ⟨S.toSubmodule.subtype, fun _ => rfl⟩
@@ -106,6 +144,9 @@ theorem isIrreducible_subQuot {ρ : Representation F G V} {S T : Subrepresentati
     obtain rfl : u = v := Subtype.ext huv
     exact hu
 
+/- English proof (translation)
+Set `ι : T.toRepresentation.IntertwiningMap S.toRepresentation` to `⟨Submodule.inclusion h, fun _ => rfl⟩`. Set `p : S.toRepresentation.IntertwiningMap (subQuot S T)` to `⟨Submodule.mkQ _, fun _ => rfl⟩`. Establish `hp : ∀ v, p v = 0 ↔ v.1 ∈ T.toSubmodule` using `fun v => Submodule.Quotient.mk_eq_zero _`. Conclude with `jhMult_exact ι p hσ (Submodule.inclusion_injective h) (Submodule.Quotient.mk_surjective _) (fun u => (hp _).2 u.2) fun v hv => ⟨⟨v.1, (hp v).1 hv⟩, rfl⟩`.
+-/
 theorem jhMult_of_le {σ : Representation F G W} (hσ : σ.IsIrreducible) {ρ : Representation F G V}
     {S T : Subrepresentation ρ} (h : T ≤ S) :
     jhMult σ S.toRepresentation = jhMult σ T.toRepresentation + jhMult σ (subQuot S T) := by
@@ -119,6 +160,9 @@ theorem jhMult_of_le {σ : Representation F G W} (hσ : σ.IsIrreducible) {ρ : 
 def topEquiv (ρ : Representation F G V) : (⊤ : Subrepresentation ρ).toRepresentation.Equiv ρ :=
   .mk Submodule.topEquiv fun _ => rfl
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Take `⟨S, f, hf⟩` from `jhMult_ne_zero_iff.1 h`. Use `nontrivial_of_irreducible hσ` as an intermediate fact. Conclude with `not_subsingleton W hf.subsingleton`.
+-/
 theorem jhMult_of_subsingleton [Subsingleton V] {σ : Representation F G W} (hσ : σ.IsIrreducible)
     (ρ : Representation F G V) : jhMult σ ρ = 0 := by
   by_contra h
@@ -126,6 +170,13 @@ theorem jhMult_of_subsingleton [Subsingleton V] {σ : Representation F G W} (hσ
   have := nontrivial_of_irreducible hσ
   exact not_subsingleton W hf.subsingleton
 
+/- English proof (translation)
+Establish `key : ∀ (N : ℕ) (S : Fin (N + 1) → Subrepresentation ρ), Monotone S → S 0 = ⊥ → jhMult σ (S (Fin.last N)).toRepresentation = ∑ t : Fin N, jhMult σ (subQuot (S t.succ) (S t.castSucc))`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`. Introduce `S _ h0`.
+
+Rewrite using `[show Fin.last 0 = 0 from rfl, h0, Finset.univ_eq_empty, Finset.sum_empty]`. Establish `: Subsingleton (⊥ : Subrepresentation ρ).toSubmodule` using `inferInstanceAs (Subsingleton (⊥ : Submodule F V))`. Conclude with `jhMult_of_subsingleton hσ _`. Consider the case `succ N ih`. Introduce `S hS h0`.
+
+Rewrite using `[Fin.sum_univ_castSucc, jhMult_of_le hσ (hS (Fin.le_last (Fin.last N).castSucc)), ih (fun t => S t.castSucc) (fun a b h => hS h) h0]`. Both sides reduce to the same expression. Rewrite using `[← key N S hS h0, h1]`. Conclude with `(jhMult_congr_right σ (topEquiv ρ)).symm`.
+-/
 theorem jhMult_filtration {σ : Representation F G W} (hσ : σ.IsIrreducible) {ρ : Representation F G V}
     {N : ℕ} (S : Fin (N + 1) → Subrepresentation ρ) (hS : Monotone S) (h0 : S 0 = ⊥)
     (h1 : S (Fin.last N) = ⊤) :
@@ -149,6 +200,9 @@ theorem jhMult_filtration {σ : Representation F G W} (hσ : σ.IsIrreducible) {
   rw [← key N S hS h0, h1]
   exact (jhMult_congr_right σ (topEquiv ρ)).symm
 
+/- English proof (translation)
+The claim follows from `IsFiniteLength.of_surjective h (f := Representation.IntertwiningMap.equivLinearMapAsModule ρ τ φ.toIntertwiningMap) φ.surjective`.
+-/
 theorem HasFiniteLength.of_equiv {ρ : Representation F G V} {τ : Representation F G U}
     (h : HasFiniteLength ρ) (φ : ρ.Equiv τ) : HasFiniteLength τ :=
   IsFiniteLength.of_surjective h
@@ -189,15 +243,29 @@ variable {G} {V W U : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Mo
 
 def IrrRep.cl (σ : IrrRep G) : IrrCl G := Quotient.mk _ σ
 
+/- English proof (translation)
+The claim follows from `Quotient.eq`.
+-/
 theorem IrrRep.cl_eq_iff {σ τ : IrrRep G} : σ.cl = τ.cl ↔ Nonempty (σ.ρ.Equiv τ.ρ) := Quotient.eq
 
 def IrrCl.rep (c : IrrCl G) : IrrRep G := Quotient.out c
 
+/- English proof (translation)
+The claim follows from `Quotient.out_eq c`.
+-/
 @[simp] theorem IrrCl.cl_rep (c : IrrCl G) : c.rep.cl = c := Quotient.out_eq c
 
+/- English proof (translation)
+The claim follows from `IrrRep.cl_eq_iff.1 (IrrCl.cl_rep _)`.
+-/
 theorem IrrRep.nonempty_equiv_rep (σ : IrrRep G) : Nonempty (σ.cl.rep.ρ.Equiv σ.ρ) :=
   IrrRep.cl_eq_iff.1 (IrrCl.cl_rep _)
 
+/- English proof (translation)
+Use `⟨fun h => ?_, by rintro rfl; rfl⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨φ⟩` from `IrrRep.cl_eq_iff.1 h`. Establish `h1` using `Model.jhMult_ofChar_ne hne`. Establish `h2 : jhMult (SmGL.ofChar χ) (SmGL.ofChar ψ) = jhMult (SmGL.ofChar ψ) (SmGL.ofChar ψ)` using `jhMult_congr_left φ _`.
+
+Rewrite `h1` using `[h2, jhMult_self (isIrreducible_ofChar ψ)]`. Conclude with `one_ne_zero h1`.
+-/
 theorem IrrRep.cl_ofChar_inj [IsTopologicalGroup G] {χ ψ : G →* ℂˣ} (hχ : IsSmoothChar χ)
     (hψ : IsSmoothChar ψ) : (IrrRep.ofChar χ hχ).cl = (IrrRep.ofChar ψ hψ).cl ↔ χ = ψ := by
   refine ⟨fun h => ?_, by rintro rfl; rfl⟩
@@ -209,6 +277,17 @@ theorem IrrRep.cl_ofChar_inj [IsTopologicalGroup G] {χ ψ : G →* ℂˣ} (hχ 
   rw [h2, jhMult_self (isIrreducible_ofChar ψ)] at h1
   exact one_ne_zero h1
 
+/- English proof (translation)
+Establish `φ` using `Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := π)`. Take `⟨_, _⟩` from `isFiniteLength_iff_isNoetherian_isArtinian.1 h`. Establish `: WellFoundedGT (Subrepresentation π)` using `φ.toOrderEmbedding.wellFoundedGT`. Establish `: WellFoundedLT (Subrepresentation π)` using `φ.toOrderEmbedding.wellFoundedLT`. Establish `key : ∀ S : Subrepresentation π, {c : IrrCl G | jhMult c.rep.ρ S.toRepresentation ≠ 0}.Finite`.
+
+Introduce `S`. Proceed by induction on `S using WellFoundedLT.induction with`. Consider the case `ind S ih`. Break down `eq_or_ne S ⊥ with rfl | hS` into its components or cases. Establish `: Subsingleton (⊥ : Subrepresentation π).toSubmodule` using `inferInstanceAs (Subsingleton (⊥ : Submodule ℂ V))`.
+
+Simplify using `[jhMult_of_subsingleton (IrrRep.irr _)]`. Take `⟨T, -, hT⟩` from `exists_le_covBy_of_lt (bot_lt_iff_ne_bot.2 hS)`. Establish `h2 : {c : IrrCl G | jhMult c.rep.ρ (subQuot S T) ≠ 0}.Subsingleton` using `fun c hc d hd => by`. Take `⟨a⟩` from `(jhMult_ne_zero_iff.1 hc).nonempty_equiv c.rep.irr (isIrreducible_subQuot hT)`. Take `⟨b⟩` from `(jhMult_ne_zero_iff.1 hd).nonempty_equiv d.rep.irr (isIrreducible_subQuot hT)`.
+
+Rewrite using `[← c.cl_rep, ← d.cl_rep]`. Conclude with `IrrRep.cl_eq_iff.2 ⟨a.symm.trans b⟩`. Use `((ih T hT.lt).union h2.finite).subset fun c hc => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hn`.
+
+Conclude with `hc (by rw [jhMult_of_le c.rep.irr hT.le, hn.1, hn.2, add_zero])`. Simplify `key ⊤` using `only [jhMult_congr_right _ (topEquiv π)]`.
+-/
 theorem finite_constituents {π : Representation ℂ G V} (h : HasFiniteLength π) :
     {c : IrrCl G | jhMult c.rep.ρ π ≠ 0}.Finite := by
   have φ := Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := π)
@@ -240,19 +319,31 @@ def cls (π : Representation ℂ G V) (h : HasFiniteLength π) : Groth G :=
   Finsupp.ofSupportFinite (fun c => ((jhMult c.rep.ρ π).toNat : ℤ))
     ((finite_constituents h).subset fun c hc h0 => hc (by simp [h0]))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cls_apply (π : Representation ℂ G V) (h : HasFiniteLength π) (c : IrrCl G) :
     cls π h c = ((jhMult c.rep.ρ π).toNat : ℤ) := rfl
 
+/- English proof (translation)
+Take `⟨φ⟩` from `σ.nonempty_equiv_rep`. Conclude with `⟨_, (ENat.coe_toNat (jhMult_ne_top σ.irr h)).symm, by rw [cls_apply, jhMult_congr_left φ]⟩`.
+-/
 theorem cls_apply_cl (π : Representation ℂ G V) (h : HasFiniteLength π) (σ : IrrRep G) :
     ∃ r : ℕ, jhMult σ.ρ π = r ∧ cls π h σ.cl = r := by
   obtain ⟨φ⟩ := σ.nonempty_equiv_rep
   exact ⟨_, (ENat.coe_toNat (jhMult_ne_top σ.irr h)).symm, by rw [cls_apply, jhMult_congr_left φ]⟩
 
+/- English proof (translation)
+Use extensionality with `c`. Rewrite using `[cls_apply, cls_apply, jhMult_congr_right _ φ]`.
+-/
 theorem cls_congr {π : Representation ℂ G V} {τ : Representation ℂ G W} (φ : π.Equiv τ)
     (h : HasFiniteLength π) (h' : HasFiniteLength τ) : cls π h = cls τ h' := by
   ext c
   rw [cls_apply, cls_apply, jhMult_congr_right _ φ]
 
+/- English proof (translation)
+Use extensionality with `c`. Rewrite using `[Finsupp.add_apply, cls_apply, cls_apply, cls_apply, jhMult_exact ι p c.rep.irr hι hp he.apply_apply_eq_zero (fun v hv => (he v).1 hv), ENat.toNat_add (jhMult_ne_top c.rep.irr h₁) (jhMult_ne_top c.rep.irr h₂), Nat.cast_add]`.
+-/
 theorem cls_exact {π : Representation ℂ G V} {π₁ : Representation ℂ G W} {π₂ : Representation ℂ G U}
     (ι : π₁.IntertwiningMap π) (p : π.IntertwiningMap π₂) (hι : Function.Injective ι)
     (hp : Function.Surjective p) (he : Function.Exact ι p) (h : HasFiniteLength π)
@@ -262,6 +353,13 @@ theorem cls_exact {π : Representation ℂ G V} {π₁ : Representation ℂ G W}
     jhMult_exact ι p c.rep.irr hι hp he.apply_apply_eq_zero (fun v hv => (he v).1 hv),
     ENat.toNat_add (jhMult_ne_top c.rep.irr h₁) (jhMult_ne_top c.rep.irr h₂), Nat.cast_add]
 
+/- English proof (translation)
+Use extensionality with `c`. Rewrite using `[cls_apply]`. Break down `eq_or_ne c σ.cl with rfl | hc` into its components or cases. Take `⟨φ⟩` from `σ.nonempty_equiv_rep`. Rewrite using `[jhMult_congr_left φ, jhMult_self σ.irr, Finsupp.single_eq_same]`.
+
+Both sides reduce to the same expression. Rewrite using `[Finsupp.single_eq_of_ne hc]`. Establish `: jhMult c.rep.ρ σ.ρ = 0`. Assume the negation of the conclusion as `h0`. Take `⟨φ⟩` from `(jhMult_ne_zero_iff.1 h0).nonempty_equiv c.rep.irr σ.irr`.
+
+Conclude with `hc (c.cl_rep.symm.trans (IrrRep.cl_eq_iff.2 ⟨φ.symm⟩))`. Simplify using `[this]`.
+-/
 theorem cls_irr (σ : IrrRep G) (h : HasFiniteLength σ.ρ) : cls σ.ρ h = Finsupp.single σ.cl 1 := by
   ext c
   rw [cls_apply]
@@ -276,6 +374,9 @@ theorem cls_irr (σ : IrrRep G) (h : HasFiniteLength σ.ρ) : cls σ.ρ h = Fins
       exact hc (c.cl_rep.symm.trans (IrrRep.cl_eq_iff.2 ⟨φ.symm⟩))
     simp [this]
 
+/- English proof (translation)
+Establish `φ` using `Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := σ.ρ)`. Use `haveI : IsSimpleOrder (Subrepresentation σ.ρ) := σ.irr`. Use `haveI : Finite (Subrepresentation σ.ρ) := IsSimpleOrder.instFinite`. Use `haveI : Finite (Submodule (MonoidAlgebra ℂ G) σ.ρ.asModule) := Finite.of_equiv _ φ.toEquiv`. Conclude with `isFiniteLength_iff_isNoetherian_isArtinian.2 ⟨isNoetherian_iff'.2 Finite.to_wellFoundedGT, Finite.to_wellFoundedLT⟩`.
+-/
 theorem IrrRep.hasFiniteLength (σ : IrrRep G) : HasFiniteLength σ.ρ := by
   have φ := Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := σ.ρ)
   haveI : IsSimpleOrder (Subrepresentation σ.ρ) := σ.irr

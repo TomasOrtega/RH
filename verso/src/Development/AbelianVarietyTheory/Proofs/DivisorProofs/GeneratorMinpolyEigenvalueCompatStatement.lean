@@ -2,6 +2,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GeneratorMinpolyEigenvalueCompat
 import Mathlib
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.spanEquivariant_minpoly_eigen_transfer | exact GlobalTheory.spanEquivariant_minpoly_eigen_transfer | (intros; apply GlobalTheory.spanEquivariant_minpoly_eigen_transfer <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.generator_minpoly_eigenvalue_compat : ∀ (E : Type) [Field E] [NumberField E] (V : Type 1) [AddCommGroup V] [Module ℂ V] (P : E →+ V),
     Submodule.span ℂ (Set.range P) = ⊤ → ∀ (b : E) (T : Module.End ℂ V), (∀ x, T (P x) = P (b * x)) →
     IntermediateField.adjoin ℚ {b} = ⊤ →

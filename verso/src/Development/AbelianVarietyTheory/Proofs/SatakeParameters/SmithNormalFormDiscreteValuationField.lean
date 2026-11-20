@@ -13,17 +13,34 @@ noncomputable def vNN : Valuation L NNReal :=
     (WithZeroMulInt.toNNReal (e := 2) (by norm_num))
     (WithZeroMulInt.toNNReal_strictMono (e := 2) (by norm_num)).monotone
 
+/- English proof (translation)
+Establish `h` using `(WithZeroMulInt.toNNReal_strictMono (e := 2) (by norm_num)).le_iff_le (a := (Valued.v x : WithZero (Multiplicative ℤ))) (b := 1)`. Rewrite `h` using `[map_one]`. Conclude with `h`.
+-/
 theorem vNN_le_one_iff (x : L) : vNN L x ≤ 1 ↔ x ∈ Formalism.UG.intL L := by
   have h := (WithZeroMulInt.toNNReal_strictMono (e := 2) (by norm_num)).le_iff_le
     (a := (Valued.v x : WithZero (Multiplicative ℤ))) (b := 1)
   rw [map_one] at h
   exact h
 
+/- English proof (translation)
+The claim follows from `Subtype.val_injective map_le_one := fun x => (vNN_le_one_iff L _).2 x.2 exists_of_le_one := fun r hr => ⟨⟨r, (vNN_le_one_iff L _).1 hr⟩, rfl⟩`.
+-/
 theorem vNN_integers : (vNN L).Integers ↥(Formalism.UG.intL L) where
   hom_inj := Subtype.val_injective
   map_le_one := fun x => (vNN_le_one_iff L _).2 x.2
   exists_of_le_one := fun r hr => ⟨⟨r, (vNN_le_one_iff L _).1 hr⟩, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_ne_zero, one_mem _, by simp⟩`. Consider the case `insert a s _ ih`. Take `⟨c, hc0, hc, hs⟩` from `ih`. Distinguish the cases in `ha : f a ∈ Formalism.UG.intL L`.
+
+Use `⟨c, hc0, hc, fun i hi => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Conclude with `mul_mem hc ha`. Conclude with `hs i hi`. Establish `h0 : f a ≠ 0`.
+
+Introduce `h`. Conclude with `ha (h ▸ zero_mem _)`. Establish `hinv : (f a)⁻¹ ∈ Formalism.UG.intL L`. Rewrite `ha`, the goal using `[← vNN_le_one_iff]`. Rewrite using `[map_inv₀]`.
+
+Conclude with `inv_le_one_of_one_le₀ (not_le.1 ha).le`. Use `⟨(f a)⁻¹ * c, mul_ne_zero (inv_ne_zero h0) hc0, mul_mem hinv hc, fun i hi => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Establish `: (f i)⁻¹ * c * f i = c` using `by field_simp`. Rewrite using `[this]`.
+
+Conclude with `hc`. Rewrite using `[mul_assoc]`. Conclude with `mul_mem hinv (hs i hi)`.
+-/
 theorem exists_clear {ι : Type} (s : Finset ι) (f : ι → L) :
     ∃ c : L, c ≠ 0 ∧ c ∈ Formalism.UG.intL L ∧ ∀ i ∈ s, c * f i ∈ Formalism.UG.intL L := by
   classical
@@ -48,6 +65,19 @@ theorem exists_clear {ι : Type} (s : Finset ι) (f : ι → L) :
         rw [this]; exact hc
       · rw [mul_assoc]; exact mul_mem hinv (hs i hi)
 
+/- English proof (translation)
+Introduce `L _ _ m n M`. Take `⟨c, hc0, -, hc⟩` from `exists_clear L (Finset.univ : Finset (Fin m × Fin n)) (fun p => M p.1 p.2)`. Set `A : Matrix (Fin m) (Fin n) ↥(Formalism.UG.intL L)` to `Matrix.of fun i j => ⟨c * M i j, hc (i, j) (Finset.mem_univ _)⟩`. Take `⟨P, Q, a, hP, hQ, hD⟩` from `ReciprocityTheory.PGsh.Up.Smith.smith_mat (vNN_integers L) m n A`. Set `φ : ↥(Formalism.UG.intL L) →+* L` to `(Formalism.UG.intL L).subtype`.
+
+Establish `hP1 : P⁻¹.map φ * P.map φ = 1`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ hP, Matrix.map_one _ (map_zero φ) (map_one φ)]`. Establish `hQ1 : Q⁻¹.map φ * Q.map φ = 1`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ hQ, Matrix.map_one _ (map_zero φ) (map_one φ)]`. Establish `hQ2 : Q.map φ * Q⁻¹.map φ = 1`.
+
+Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ hQ, Matrix.map_one _ (map_zero φ) (map_one φ)]`. Use `⟨P⁻¹.map φ, P.map φ, Q⁻¹.map φ, Q.map φ, fun j => c⁻¹ * (a j : L), fun i j => (P⁻¹ i j).2, fun i j => (P i j).2, fun i j => (Q⁻¹ i j).2, fun i j => (Q i j).2, hP1, hQ1, ?_⟩` and prove the remaining obligations. Establish `hA : A.map φ = c • M`. Use extensionality with `i j`. Simplify using `[A, φ]`.
+
+Establish `hD' : Matrix.of (fun (j : Fin m) (k : Fin n) => if (k : ℕ) = (j : ℕ) then c⁻¹ * (a j : L) else 0) = P.map φ * M * Q.map φ`. Establish `h1 : (P * A * Q).map φ = c • (P.map φ * M * Q.map φ)`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hA, Matrix.mul_smul, Matrix.smul_mul]`. Establish `h2 : P.map φ * M * Q.map φ = c⁻¹ • (P * A * Q).map φ`. Rewrite using `[h1, smul_smul, inv_mul_cancel₀ hc0, one_smul]`.
+
+Rewrite using `[h2]`. Use extensionality with `j k`. Rewrite using `[Matrix.of_apply, Matrix.smul_apply, Matrix.map_apply, hD, smul_eq_mul]`. Use `split_ifs`. Both sides reduce to the same expression.
+
+Simplify using the standard rewrite rules. Rewrite using `[hD', ← Matrix.mul_assoc, ← Matrix.mul_assoc, hP1, Matrix.one_mul, Matrix.mul_assoc, hQ2, Matrix.mul_one]`.
+-/
 theorem smith_valued : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (m n : ℕ) (M : Matrix (Fin m) (Fin n) L),
     ∃ (P P' : Matrix (Fin m) (Fin m) L) (Q Q' : Matrix (Fin n) (Fin n) L) (d : Fin m → L),
       (∀ i j, P i j ∈ Formalism.UG.intL L) ∧ (∀ i j, P' i j ∈ Formalism.UG.intL L) ∧

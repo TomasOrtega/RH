@@ -18,6 +18,47 @@ noncomputable section
 
 namespace GlobalTheory.HTSpecTate
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `GlobalTheory.TateTransportAlg.exists_torsLift p ρ hρi`. Take `⟨W, hW⟩` from `GlobalTheory.TateTransportAlg.exists_torsLift p φ hφi`. Establish `hLx : ∀ n, 0 < n → n.Coprime p → ∀ x : Q, x ^ n = 1 → L x ^ n = 1 ∧ ρ (L x) = x`. Introduce `n hn hnp x hx`. Take `⟨g, hg, rfl⟩` from `hρs n hn hnp x hx`.
+
+Rewrite using `[hL n hn hnp g hg]`. Conclude with `⟨hg, rfl⟩`. Establish `hWx : ∀ n, 0 < n → n.Coprime p → ∀ z : kˣ, z ^ n = 1 → W z ^ n = 1 ∧ φ (W z) = z`. Introduce `n hn hnp z hz`. Take `⟨u, hu, rfl⟩` from `hφs n hn hnp z hz`.
+
+Rewrite using `[hW n hn hnp u hu]`. Conclude with `⟨hu, rfl⟩`. Establish `hLmul : ∀ n, 0 < n → n.Coprime p → ∀ x y : Q, x ^ n = 1 → y ^ n = 1 → L (x * y) = L x * L y`. Introduce `n hn hnp x y hx hy`. Take `⟨hx1, hx2⟩` from `hLx n hn hnp x hx`.
+
+Take `⟨hy1, hy2⟩` from `hLx n hn hnp y hy`. Use `hL n hn hnp (L x * L y) (by rw [(show Commute (L x) (L y) from hcomm _ _).mul_pow, hx1, hy1, _root_.one_mul])` as an intermediate fact. Rewrite `this` using `[map_mul, hx2, hy2]`. Then use the resulting hypothesis. Establish `hevt : ∀ n, 0 < n → n.Coprime p → ∀ a, I.ev n a ^ n = 1` using `fun n hn hnp a => (I.onto n hn hnp _).2 ⟨a, rfl⟩`. Establish `hζt : ∀ n, 0 < n → n.Coprime p → I.ζ n ^ n = 1` using `fun n hn hnp => (I.ζ_prim n hn hnp).pow_eq_one`.
+
+Establish `hactR1 : ∀ c, actR c 1 = 1` using `fun c => by`. Use `hactR c 1 1` as an intermediate fact. Rewrite `this` using `[_root_.mul_one]`. Conclude with `mul_left_cancel (this.symm.trans (_root_.mul_one _).symm)`. Establish `hactRpow : ∀ c g (n : ℕ), actR c (g ^ n) = actR c g ^ n`.
+
+Introduce `c g n`. Proceed by induction on `n with`. Consider the case `zero => simp [hactR1]`. Consider the case `succ n ih => rw [pow_succ, hactR, ih, pow_succ]`. Establish `hLact : ∀ n, 0 < n → n.Coprime p → ∀ c x, x ^ n = 1 → L (act c x) = actR c (L x)`.
+
+Introduce `n hn hnp c x hx`. Take `⟨h1, h2⟩` from `hLx n hn hnp x hx`. Use `hL n hn hnp (actR c (L x)) (by rw [← hactRpow, h1, hactR1])` as an intermediate fact. Rewrite `this` using `[hρact, h2]`. Then use the resulting hypothesis. Use `⟨{ ζ := fun n => φ' (W (I.ζ n)), ζ_prim := ?_, ζ_pow := ?_, ev := fun n a => if 0 < n ∧ n.Coprime p then ρ' (L (I.ev n a)) else 1, add := ?_, lin := ?_, ker := ?_, onto := ?_, tower := ?_, isom := ?_ }, ?_⟩` and prove the remaining obligations.
+
+Introduce `n hn hnp`. Take `⟨hw1, hw2⟩` from `hWx n hn hnp _ (hζt n hn hnp)`. Use `⟨by rw [← map_pow, hw1, map_one], fun l hl => ?_⟩` and prove the remaining obligations. Rewrite `hl` using `[← map_pow]`. Establish `: W (I.ζ n) ^ l = 1` using `hφ'i n hn hnp _ _ (by rw [← pow_mul, mul_comm, pow_mul, hw1, one_pow]) (one_pow n) (by rw [hl, map_one])`.
+
+Conclude with `(I.ζ_prim n hn hnp).dvd_of_pow_eq_one l (by rw [← hw2, ← map_pow, this, map_one])`. Introduce `n m hn hm hnm`. Establish `hnp : n.Coprime p` using `Nat.Coprime.coprime_dvd_left (Dvd.intro m rfl) hnm`. Take `⟨a1, a2⟩` from `hWx (n * m) (Nat.mul_pos hn hm) hnm _ (hζt _ (Nat.mul_pos hn hm) hnm)`. Take `⟨b1, b2⟩` from `hWx n hn hnp _ (hζt n hn hnp)`.
+
+Use `show φ' (W (I.ζ (n * m))) ^ m = φ' (W (I.ζ n))`. Rewrite using `[← map_pow, hφi n hn hnp (W (I.ζ (n * m)) ^ m) (W (I.ζ n)) (by rw [← pow_mul, mul_comm m n, a1]) b1 (by rw [map_pow, a2, b2, I.ζ_pow n m hn hm hnm])]`. Introduce `n a b split_ifs with h`. Rewrite using `[I.add, hLmul n h.1 h.2 _ _ (hevt n h.1 h.2 a) (hevt n h.1 h.2 b), map_mul]`. Rewrite using `[_root_.mul_one]`.
+
+Introduce `n c a split_ifs with h`. Rewrite using `[I.lin, hLact n h.1 h.2 c _ (hevt n h.1 h.2 a), hρ'act]`. Rewrite using `[hact'1]`. Introduce `n hn hnp a`. Establish `hg : 0 < n ∧ n.Coprime p` using `⟨hn, hnp⟩`.
+
+Simplify using `only [if_pos hg]`. Rewrite using `[← I.ker n hn hnp a]`. Take `⟨h1, h2⟩` from `hLx n hn hnp _ (hevt n hn hnp a)`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `hρ'i n hn hnp _ 1 h1 (one_pow n) (by rw [h, map_one])` as an intermediate fact. Rewrite using `[← h2, this, map_one]`. Introduce `h`. Rewrite using `[h, ← map_one ρ, hL n hn hnp 1 (one_pow n), map_one]`. Introduce `n hn hnp y`.
+
+Establish `hg : 0 < n ∧ n.Coprime p` using `⟨hn, hnp⟩`. Simplify using `only [if_pos hg]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨g, hg1, rfl⟩` from `hρ's n hn hnp y hy`.
+
+Take `⟨a, ha⟩` from `(I.onto n hn hnp (ρ g)).1 (by rw [← map_pow, hg1, map_one])`. Conclude with `⟨a, by rw [ha, hL n hn hnp g hg1]⟩`. Introduce and unpack `⟨a, rfl⟩`. Rewrite using `[← map_pow, (hLx n hn hnp _ (hevt n hn hnp a)).1, map_one]`. Introduce `n m hn hm hnm a`.
+
+Establish `hnp : n.Coprime p` using `Nat.Coprime.coprime_dvd_left (Dvd.intro m rfl) hnm`. Establish `hnm0 : 0 < n * m` using `Nat.mul_pos hn hm`. Establish `hg1 : 0 < n * m ∧ (n * m).Coprime p` using `⟨hnm0, hnm⟩`. Establish `hg2 : 0 < n ∧ n.Coprime p` using `⟨hn, hnp⟩`. Simplify using `only [if_pos hg1, if_pos hg2]`.
+
+Take `⟨h1, h2⟩` from `hLx (n * m) hnm0 hnm _ (hevt _ hnm0 hnm a)`. Use `hL n hn hnp (L (I.ev (n * m) a) ^ m) (by rw [← pow_mul, mul_comm m n, h1])` as an intermediate fact. Rewrite `this` using `[map_pow, h2, I.tower n m hn hm hnm]`. Rewrite using `[← map_pow, ← this]`. Introduce `n hn hnp a b`.
+
+Establish `hg : 0 < n ∧ n.Coprime p` using `⟨hn, hnp⟩`. Simplify using `only [if_pos hg]`. Take `⟨ga1, ga2⟩` from `hLx n hn hnp _ (hevt n hn hnp a)`. Take `⟨gb1, gb2⟩` from `hLx n hn hnp _ (hevt n hn hnp b)`. Take `⟨u, hu, he, he'⟩` from `hpair n hn hnp _ _ ga1 gb1`.
+
+Rewrite `he` using `[ga2, gb2]`. Take `⟨w1, w2⟩` from `hWx n hn hnp _ (hζt n hn hnp)`. Establish `hk` using `huniq n hn hnp _ _ _ _ he (I.isom n hn hnp a b)`. Establish `hu' : u = W (I.ζ n) ^ (2 * D.EF a b)` using `hφi n hn hnp _ _ hu (by rw [← zpow_natCast, ← zpow_mul, mul_comm (2 * D.EF a b), zpow_mul, zpow_natCast, w1, one_zpow]) (by rw [hk, map_zpow, w2])`. Rewrite `he'` using `[hu', map_zpow]`.
+
+Conclude with `he'`. Introduce `n hn hnp a g hg hρg`. Establish `hgd : 0 < n ∧ n.Coprime p` using `⟨hn, hnp⟩`. Simplify using `only [if_pos hgd]`. Rewrite using `[← hρg, hL n hn hnp g hg]`.
+-/
 theorem transport_algO {p : ℕ} [Fact p.Prime] (D : Datum p)
     {R k k' QR Q Q' : Type} [CommRing R] [Field k] [Field k'] [Group QR] [Group Q] [Group Q']
     (hcomm : ∀ a b : QR, a * b = b * a)
@@ -165,6 +206,11 @@ namespace GlobalTheory.HTSpecTate
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Introduce and unpack `⟨I, hI⟩`. Use `⟨I, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hf, ← hI y]`. Establish `e : (Over.homMk (𝟙 _) (by simp) : Over.mk x₀ ⟶ Over.mk x₀) = 𝟙 _` using `by ext; simp`.
+
+Rewrite using `[e, Category.id_comp]`.
+-/
 theorem tateCond_congr {D : Datum p} {S : Scheme.{0}} (A : Over S) [GrpObj A] (act : OActN D.O A)
     (L : LB A.left) (M : ℕ) {k : Type} [Field k] {x₀ x₁ : Sp k ⟶ S} (h : x₀ = x₁)
     (f₀ : D.La → (Over.mk x₀ ⟶ A)) (f₁ : D.La → (Over.mk x₁ ⟶ A))
@@ -180,6 +226,13 @@ theorem tateCond_congr {D : Datum p} {S : Scheme.{0}} (A : Over S) [GrpObj A] (a
   have e : (Over.homMk (𝟙 _) (by simp) : Over.mk x₀ ⟶ Over.mk x₀) = 𝟙 _ := by ext; simp
   rw [e, Category.id_comp]
 
+/- English proof (translation)
+Establish `hP` using `o.isLB`. Establish `hL : (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left).IsLB` using `pull_isLB hP _`. Use `(GlobalTheory.CechPic.cls_eq_zero_iff (pull_isLB hL _)).1 ?_` and prove the remaining obligations. Establish `e` using `(GlobalTheory.CechPic.cls_eq_zero_iff (pull_isLB hP _)).2 o.rig₁`. Rewrite `e` using `[GlobalTheory.CechPic.cls_pull hP]`.
+
+Establish `e'` using `congrArg (GlobalTheory.CechPic.pull (eSec o.A)) e`. Rewrite `e'` using `[map_zero, ← GlobalTheory.CechPic.pull_comp]`. Rewrite using `[GlobalTheory.CechPic.cls_pull hL, GlobalTheory.CechPic.cls_pull hP, ← GlobalTheory.CechPic.pull_comp]`. Establish `hη : η[o.A] ≫ lift (𝟙 o.A) (𝟙 o.A) = η[o.A] ≫ lift (1 : o.A ⟶ o.A) (𝟙 o.A)`. Rewrite using `[comp_lift, comp_lift, MonObj.comp_one, Category.comp_id]`.
+
+Use `congr 1`. Establish `: eSec o.A ≫ (lift (𝟙 o.A) (𝟙 o.A)).left = eSec o.A ≫ (lift (1 : o.A ⟶ o.A) (𝟙 o.A)).left`. Simplify using `only [eSec, ← Over.comp_left, hη]`. Rewrite using `[this]`. Conclude with `e'`.
+-/
 theorem exists_rig_diag {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ} {S : Scheme.{0}}
     {s : S ⟶ Sp R} (o : Obj b N s) :
     ∃ r : LB.Gen ((o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left).pull (eSec o.A)), r.IsGen := by
@@ -207,6 +260,33 @@ namespace GlobalTheory.HTSpecTate
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Introduce `hT`. Establish `hA` using `o.ab`. Establish `hN' : 0 < N'` using `levelPos_of_coprime hN'p`. Use `set L : LB o.A.left := o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left with hLdef`. Establish `hL : L.IsLB` using `pull_isLB o.isLB _`.
+
+Take `⟨r₀, hr₀⟩` from `exists_rig_diag o`. Set `M : RigLB o.A` to `⟨L, r₀, hL, hr₀⟩`. Take `⟨θ, hθ⟩` from `GlobalTheory.HkFam.cube_of_exists_relAmple hA hL o.ample hL`. Take `⟨θ', hθ', hn⟩` from `GlobalTheory.AbLaw.Cube.exists_normalised hL θ hθ`. Set `cub : CubicalStr o.A M` to `GlobalTheory.AbLaw.Cube.cubicalOfNormalised GlobalTheory.globalFns_holds hA M θ' hθ' hn`.
+
+Establish `hS : ∀ n : ℕ, n.Coprime p → IsUnit (n : Γ(S, ⊤))`. Introduce `n hnp`. Use `((b.unit n hnp).map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom).map s.appTop.hom` as an intermediate fact. Simplify using `using this`. Establish `hRu : ∀ n : ℕ, n.Coprime p → IsUnit (n : Rh)`.
+
+Introduce `n hnp`. Use `((hS n hnp).map t.appTop.hom).map (Scheme.ΓSpecIso (CommRingCat.of Rh)).hom.hom` as an intermediate fact. Simplify using `using this`. Take `⟨φ, rfl⟩ : ∃ φ : Rh →+* k, i = spMap φ` from `⟨(Spec.preimage i).hom, by simp [spMap]⟩`. Take `⟨φ', rfl⟩ : ∃ φ' : Rh →+* k', i' = spMap φ'` from `⟨(Spec.preimage i').hom, by simp [spMap]⟩`.
+
+Take `⟨I, hI⟩` from `hT`. Set `j : Over.mk (spMap φ ≫ t) ⟶ Over.mk t` to `Over.homMk (spMap φ) rfl`. Set `j' : Over.mk (spMap φ' ≫ t) ⟶ Over.mk t` to `Over.homMk (spMap φ') rfl`. Set `ρ : (Over.mk t ⟶ o.A) →* (Over.mk (spMap φ ≫ t) ⟶ o.A)` to `{ toFun := fun g => j ≫ g, map_one' := MonObj.comp_one _, map_mul' := fun g h => MonObj.comp_mul _ _ _ }`. Set `ρ' : (Over.mk t ⟶ o.A) →* (Over.mk (spMap φ' ≫ t) ⟶ o.A)` to `{ toFun := fun g => j' ≫ g, map_one' := MonObj.comp_one _, map_mul' := fun g h => MonObj.comp_mul _ _ _ }`.
+
+Establish `hpull : ∀ {K : Type} [Field K] (ψ : Rh →+* K) (n : ℕ) (g h : Over.mk t ⟶ o.A) (u : Rhˣ), Out.WeilIs o.A L (n : ℤ) g h (unitOn u) → Out.WeilIs o.A L (n : ℤ) ((Over.homMk (spMap ψ) rfl : Over.mk (spMap ψ ≫ t) ⟶ Over.mk t) ≫ g) ((Over.homMk (spMap ψ) rfl : Over.mk (spMap ψ ≫ t) ⟶ Ov …`. Introduce `K _ ψ n g h u H`. Establish `H'` using `GlobalTheory.CommPairing.weilIs_pull GlobalTheory.globalFns_holds hA hL (Over.homMk (spMap ψ) rfl : Over.mk (spMap ψ ≫ t) ⟶ Over.mk t) H`. Establish `e : Units.map (spMap ψ).appTop.hom.toMonoidHom (unitOn u) = unitOn (Units.map ψ.toMonoidHom u)` using `Units.ext (congrArg (fun q => q.hom (u : Rh)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom ψ))).symm`. Conclude with `e ▸ H'`.
+
+Establish `hpow : ∀ a, lvR a ^ N' = 1`. Introduce `a`. Establish `: ∀ m : ℕ, lvR (m • a) = lvR a ^ m`. Introduce `m`. Proceed by induction on `m with`.
+
+Consider the case `zero`. Establish `h0` using `hadd 0 0`. Rewrite `h0` using `[add_zero]`. Rewrite using `[zero_smul, pow_zero]`. Conclude with `left_eq_mul.1 h0`.
+
+Consider the case `succ m ih => rw [succ_nsmul, hadd, ih, pow_succ]`. Rewrite using `[← this]`. Conclude with `hker a`. Establish `h1 : ∀ n, 0 < n → n.Coprime p → ∀ g h : Over.mk t ⟶ o.A, g ^ n = 1 → h ^ n = 1 → ρ g = ρ h → g = h` using `fun n hn hnp => (GlobalTheory.T.abelian_scheme_torsion_points_restrict_bijective S o.A hA n hn (hS n hnp) Rh t k φ).1`. Establish `h2 : ∀ n, 0 < n → n.Coprime p → ∀ x : Over.mk (spMap φ ≫ t) ⟶ o.A, x ^ n = 1 → ∃ g : Over.mk t ⟶ o.A, g ^ n = 1 ∧ ρ g = x` using `fun n hn hnp => (GlobalTheory.T.abelian_scheme_torsion_points_restrict_bijective S o.A hA n hn (hS n hnp) Rh t k φ).2`.
+
+Establish `h3 : ∀ n, 0 < n → n.Coprime p → ∀ g h : Over.mk t ⟶ o.A, g ^ n = 1 → h ^ n = 1 → ρ' g = ρ' h → g = h` using `fun n hn hnp => (GlobalTheory.T.abelian_scheme_torsion_points_restrict_bijective S o.A hA n hn (hS n hnp) Rh t k' φ').1`. Establish `h4 : ∀ n, 0 < n → n.Coprime p → ∀ x : Over.mk (spMap φ' ≫ t) ⟶ o.A, x ^ n = 1 → ∃ g : Over.mk t ⟶ o.A, g ^ n = 1 ∧ ρ' g = x` using `fun n hn hnp => (GlobalTheory.T.abelian_scheme_torsion_points_restrict_bijective S o.A hA n hn (hS n hnp) Rh t k' φ').2`. Establish `h5` using `fun n (hn : 0 < n) (hnp : n.Coprime p) => GlobalTheory.rootsOfUnity_map_bijective_of_henselian Rh k φ n hn (hRu n hnp)`. Establish `h6` using `fun n (hn : 0 < n) (hnp : n.Coprime p) => GlobalTheory.rootsOfUnity_map_bijective_of_henselian Rh k' φ' n hn (hRu n hnp)`. Establish `h7 : ∀ (c : D.O) (g h : Over.mk t ⟶ o.A), (g * h) ≫ o.act.act c = (g ≫ o.act.act c) * (h ≫ o.act.act c)`.
+
+Introduce `c g h`. Use `haveI := o.act.hom c`. Conclude with `MonObj.mul_comp _ _ _`. Establish `h8 : ∀ c, (1 : Over.mk (spMap φ' ≫ t) ⟶ o.A) ≫ o.act.act c = 1`. Introduce `c`.
+
+Use `haveI := o.act.hom c`. Conclude with `MonObj.one_comp _`. Establish `h9 : ∀ n : ℕ, 0 < n → n.Coprime p → ∀ g h : Over.mk t ⟶ o.A, g ^ n = 1 → h ^ n = 1 → ∃ u : Rhˣ, u ^ n = 1 ∧ Out.WeilIs o.A L (n : ℤ) (ρ g) (ρ h) (unitOn (Units.map φ.toMonoidHom u)) ∧ Out.WeilIs o.A L (n : ℤ) (ρ' g) (ρ' h) (unitOn (Units.map φ'.toMonoidHom u))`. Introduce `n hn hnp g h hg hh`. Take `⟨u, hu, H⟩` from `GlobalTheory.WeilRootLocal.exists_weilIs_root_local S o.A hA M cub Rh t n g h hg hh`.
+
+Conclude with `⟨u, hu, hpull φ n g h u H, hpull φ' n g h u H⟩`. Establish `h10 : ∀ n : ℕ, 0 < n → n.Coprime p → ∀ (x y : Over.mk (spMap φ ≫ t) ⟶ o.A) (c c' : kˣ), Out.WeilIs o.A L (n : ℤ) x y (unitOn c) → Out.WeilIs o.A L (n : ℤ) x y (unitOn c') → c = c'` using `fun n _ _ x y c c' h h' => GlobalTheory.weilIs_unique_fieldPoint S o.A L hL k (spMap φ ≫ t) n x y c c' h h'`. Take `⟨I', hI'⟩` from `transport_algO D (R := Rh) (k := k) (k' := k') (QR := Over.mk t ⟶ o.A) (Q := Over.mk (spMap φ ≫ t) ⟶ o.A) (Q' := Over.mk (spMap φ' ≫ t) ⟶ o.A) (fun a b => mul_comm a b) (fun c g => g ≫ o.act.act c) (fun c g => g ≫ o.act.act c) (fun c g => g ≫ o.act.act c) (fun n g g' c => Out.Wei …`. Conclude with `⟨I', fun a => hI' N' hN' hN'p a (lvR a) (hpow a) (hI a)⟩`.
+-/
 theorem tateCond_transport (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N N' : ℕ) (hN'p : N'.Coprime p)
     (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b N s) (Rh : Type) [CommRing Rh] [HenselianLocalRing Rh]
     [IsAlgClosed (IsLocalRing.ResidueField Rh)] (t : Sp Rh ⟶ S) (lvR : D.La → (Over.mk t ⟶ o.A))
@@ -318,6 +398,15 @@ noncomputable section
 
 namespace GlobalTheory.HTSpecTate
 
+/- English proof (translation)
+Introduce `p _ D R _ b N N' hN'p S s o T _ lv hadd hker hlin k k' _ _ _ _ x x' u u' hsp`. Take `⟨Rh, _, _, _, r, i, i', hi, hi'⟩` from `GlobalTheory.geomPoints_factor_henselian_of_specializes x x' u u' hsp`. Set `lvR : D.La → (Over.mk (r ≫ T.hom) ⟶ o.A)` to `fun a => (Over.homMk r rfl : Over.mk (r ≫ T.hom) ⟶ T) ≫ lv a`. Establish `hadd' : ∀ a c, lvR (a + c) = lvR a * lvR c` using `fun a c => by simp only [lvR, hadd, MonObj.comp_mul]`. Establish `hker' : ∀ a, lvR (N' • a) = 1` using `fun a => by simp only [lvR, hker, MonObj.comp_one]`.
+
+Establish `hlin' : ∀ (c : D.O) a, lvR (c • a) = lvR a ≫ o.act.act c` using `fun c a => by`. Simplify using `only [lvR, hlin, Category.assoc]`. Establish `e1 : x ≫ T.hom = i ≫ r ≫ T.hom` using `by rw [← hi, Category.assoc]`. Establish `e2 : x' ≫ T.hom = i' ≫ r ≫ T.hom` using `by rw [← hi', Category.assoc]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `h1` using `tateCond_congr o.A o.act (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) N' e1 _ (fun a => (Over.homMk i rfl : Over.mk (i ≫ r ≫ T.hom) ⟶ Over.mk (r ≫ T.hom)) ≫ lvR a) (fun a => by simp only [lvR, ← Category.assoc]; congr 1; ext; simp [hi]) h`. Establish `h2` using `tateCond_transport D R b N N' hN'p S s o Rh (r ≫ T.hom) lvR hadd' hker' hlin' i i' h1`. Conclude with `tateCond_congr o.A o.act _ N' e2.symm _ _ (fun a => by simp only [lvR, ← Category.assoc]; congr 1; ext; simp [hi']) h2`. Introduce `h`.
+
+Establish `h1` using `tateCond_congr o.A o.act (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) N' e2 _ (fun a => (Over.homMk i' rfl : Over.mk (i' ≫ r ≫ T.hom) ⟶ Over.mk (r ≫ T.hom)) ≫ lvR a) (fun a => by simp only [lvR, ← Category.assoc]; congr 1; ext; simp [hi']) h`. Establish `h2` using `tateCond_transport D R b N N' hN'p S s o Rh (r ≫ T.hom) lvR hadd' hker' hlin' i' i h1`. Conclude with `tateCond_congr o.A o.act _ N' e1.symm _ _ (fun a => by simp only [lvR, ← Category.assoc]; congr 1; ext; simp [hi]) h2`.
+-/
 theorem tateIsoO_iff_of_specializes : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N N' : ℕ), N'.Coprime p → ∀ (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b N s) (T : Over S) [IsLocallyNoetherian T.left] (lv : D.La → (T ⟶ o.A)), (∀ x y, lv (x + y) = lv x * lv y) → (∀ x, lv (N' • x) = 1) → (∀ (c : D.O) x, lv (c • x) = lv x ≫ o.act.act c) → ∀ {k k' : Type} [Field k] [IsAlgClosed k] [Field k'] [IsAlgClosed k'] (x : Sp k ⟶ T.left) (x' : Sp k' ⟶ T.left) (u : Sp k) (u' : Sp k'), x'.base u' ⤳ x.base u → ((∃ I : TateIsoO D k (Over.mk (x ≫ T.hom) ⟶ o.A) (fun c g => g ≫ o.act.act c) (fun n g g' z => Out.WeilIs o.A (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) n g g' (unitOn z)), ∀ y, (Over.homMk x rfl : Over.mk (x ≫ T.hom) ⟶ T) ≫ lv y = I.ev N' y) ↔ (∃ I : TateIsoO D k' (Over.mk (x' ≫ T.hom) ⟶ o.A) (fun c g => g ≫ o.act.act c) (fun n g g' z => Out.WeilIs o.A (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) n g g' (unitOn z)), ∀ y, (Over.homMk x' rfl : Over.mk (x' ≫ T.hom) ⟶ T) ≫ lv y = I.ev N' y)) := by
   intro p _ D R _ b N N' hN'p S s o T _ lv hadd hker hlin k k' _ _ _ _ x x' u u' hsp
   obtain ⟨Rh, _, _, _, r, i, i', hi, hi'⟩ := GlobalTheory.geomPoints_factor_henselian_of_specializes x x' u u' hsp

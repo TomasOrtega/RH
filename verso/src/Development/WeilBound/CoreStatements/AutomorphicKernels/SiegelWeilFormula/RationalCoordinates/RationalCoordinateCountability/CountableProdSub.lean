@@ -42,8 +42,14 @@ variable {U N Z N' : Type} [AddCommGroup U] [AddCommGroup N] [AddCommGroup Z] [A
 def phi (P : N ≃ᵐ (Z × N')) : (U × N) ≃ᵐ (N' × (U × Z)) :=
   ((MeasurableEquiv.refl U).prodCongr P).trans ((MeasurableEquiv.prodAssoc.symm).trans MeasurableEquiv.prodComm)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phi_apply (P : N ≃ᵐ (Z × N')) (p : U × N) : phi P p = ((P p.2).2, (p.1, (P p.2).1)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phi_symm_apply (P : N ≃ᵐ (Z × N')) (w : N' × (U × Z)) : (phi P).symm w = (w.2.1, P.symm (w.2.2, w.1)) := rfl
 
 def sh (τ : U × N' → Z) (hτ : Measurable τ) : (N' × (U × Z)) ≃ᵐ (N' × (U × Z)) where
@@ -56,12 +62,23 @@ def sh (τ : U × N' → Z) (hτ : Measurable τ) : (N' × (U × Z)) ≃ᵐ (N' 
   measurable_invFun := measurable_fst.prodMk (measurable_snd.fst.prodMk
     (measurable_snd.snd.sub (hτ.comp (measurable_snd.fst.prodMk measurable_fst))))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sh_apply {τ : U × N' → Z} (hτ : Measurable τ) (w : N' × (U × Z)) :
     sh τ hτ w = (w.1, (w.2.1, w.2.2 + τ (w.2.1, w.1))) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sh_symm_apply {τ : U × N' → Z} (hτ : Measurable τ) (w : N' × (U × Z)) :
     (sh τ hτ).symm w = (w.1, (w.2.1, w.2.2 - τ (w.2.1, w.1))) := rfl
 
+/- English proof (translation)
+Establish `h1` using `(measurePreserving_prodAssoc l νu μZ).symm`. Establish `h2` using `shear_mp' (l.prod νu) μZ (fun p : N' × U => τ (p.2, p.1)) (hτ.comp (measurable_snd.prodMk measurable_fst))`. Establish `h3` using `measurePreserving_prodAssoc l νu μZ`. Establish `e : (sh τ hτ : N' × (U × Z) → N' × (U × Z)) = (MeasurableEquiv.prodAssoc) ∘ (fun p : (N' × U) × Z => (p.1, p.2 + τ (p.1.2, p.1.1))) ∘ (MeasurableEquiv.prodAssoc (α` using `N') (β := U) (γ := Z)).symm := by`. Use function extensionality and compare the values at `w`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `h3.comp (h2.comp h1)`.
+-/
 theorem sh_mp {τ : U × N' → Z} (hτ : Measurable τ) (l : Measure N') (νu : Measure U) (μZ : Measure Z) [SFinite l]
     [SFinite νu] [SFinite μZ] [μZ.IsAddRightInvariant] :
     MeasurePreserving (sh τ hτ) (l.prod (νu.prod μZ)) (l.prod (νu.prod μZ)) := by
@@ -87,12 +104,22 @@ variable {U N Z N' : Type} [AddCommGroup U] [AddCommGroup N] [AddCommGroup Z] [A
   {ΓN : AddSubgroup N} {ΓZ : AddSubgroup Z} {ΓN' : AddSubgroup N'} [Countable ΓN] [Countable ΓZ] [Countable ΓN']
   {P : N ≃ᵐ (Z × N')} {c : ℝ≥0∞} {𝓖 : Set N} {𝓩 : Set Z} {𝓖' : Set N'} {τ : U × N' → Z}
 
+/- English proof (translation)
+Use `show ((P (p.2 + q.2)).2, (p.1 + q.1, (P (p.2 + q.2)).1)) = _`. Rewrite using `[hPadd]`. Both sides reduce to the same expression.
+-/
 theorem phi_add (hPadd : ∀ a b, P (a + b) = P a + P b) (p q : U × N) :
     phi (U := U) P (p + q) = phi P p + phi P q := by
   show ((P (p.2 + q.2)).2, (p.1 + q.1, (P (p.2 + q.2)).1)) = _
   rw [hPadd]
   rfl
 
+/- English proof (translation)
+Establish `hg : MeasurePreserving P lam (c • (μZ.prod lam'))` using `⟨P.measurable, hPc⟩`. Establish `h1` using `(MeasurePreserving.id νu).prod hg`. Rewrite `h1` using `[Measure.prod_smul_right]`. Establish `h2` using `(measurePreserving_prodAssoc νu μZ lam').symm`. Establish `h3` using `Measure.measurePreserving_swap (μ := νu.prod μZ) (ν := lam')`.
+
+Establish `h23` using `h3.comp h2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Measure.map_map h23.measurable h1.measurable]`. Both sides reduce to the same expression. Use `_ = (c • (νu.prod (μZ.prod lam'))).map (Prod.swap ∘ (MeasurableEquiv.prodAssoc (α := U) (β := Z) (γ := N')).symm) := by`.
+
+Rewrite using `[h1.map_eq]`. Use `_ = c • (lam'.prod (νu.prod μZ)) := by rw [Measure.map_smul, h23.map_eq]`.
+-/
 theorem phi_map (hPc : lam.map P = c • (μZ.prod lam')) :
     (νu.prod lam).map (phi P) = c • (lam'.prod (νu.prod μZ)) := by
   have hg : MeasurePreserving P lam (c • (μZ.prod lam')) := ⟨P.measurable, hPc⟩
@@ -108,6 +135,41 @@ theorem phi_map (hPc : lam.map P = c • (μZ.prod lam')) :
         rw [h1.map_eq]
     _ = c • (lam'.prod (νu.prod μZ)) := by rw [Measure.map_smul, h23.map_eq]
 
+/- English proof (translation)
+Use `set Φ := phi (U := U) P`. Use `set S := sh τ hτ`. Use `set m := lam'.prod (νu.prod μZ)`. Use `set m' := (lam'.restrict 𝓖').prod (νu.prod μZ)`. Use `set S3 : Set (N' × (U × Z)) := 𝓖' ×ˢ (Set.univ ×ˢ 𝓩)`.
+
+Use `set S4 : Set (N' × (U × Z)) := Set.univ ×ˢ (Set.univ ×ˢ 𝓩)`. Use `set Γ₀ : AddSubgroup (U × N) := (⊥ : AddSubgroup U).prod ΓN`. Use `set Γt : AddSubgroup (N' × (U × Z)) := ΓN'.prod ((⊥ : AddSubgroup U).prod ΓZ)`. Use `set Γ₂ : AddSubgroup (N' × (U × Z)) := (⊥ : AddSubgroup N').prod ((⊥ : AddSubgroup U).prod ΓZ)`. Establish `: VAddInvariantMeasure Γ₀ (U × N) (νu.prod lam)` using `vaddInv_bot_prod νu lam ΓN (fun y _ => measurePreserving_add_left lam y)`.
+
+Establish `: VAddInvariantMeasure ((⊥ : AddSubgroup U).prod ΓZ) (U × Z) (νu.prod μZ)` using `vaddInv_bot_prod νu μZ ΓZ (fun y _ => measurePreserving_add_left μZ y)`. Establish `: VAddInvariantMeasure Γ₂ (N' × (U × Z)) m'` using `vaddInv_bot_prod (lam'.restrict 𝓖') (νu.prod μZ) _ (fun y hy => mp_of_vaddInv _ _ y hy)`. Establish `hT0 : IsAddFundamentalDomain Γ₀ (Set.univ ×ˢ 𝓖) (νu.prod lam)` using `fd_prod' (fd_bot_univ νu) h𝓖`. Establish `hS3 : IsAddFundamentalDomain Γt S3 m` using `fd_prod' h𝓖' (fd_prod' (fd_bot_univ νu) h𝓩)`. Establish `hmemt : ∀ g : Γt, (Φ.symm (g : N' × (U × Z))) ∈ Γ₀`.
+
+Introduce `g`. Establish `hg` using `AddSubgroup.mem_prod.1 g.2`. Establish `hg2` using `AddSubgroup.mem_prod.1 hg.2`. Rewrite using `[phi_symm_apply]`. Use `AddSubgroup.mem_prod.2 ⟨hg2.1, (hΓ _).2 ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[MeasurableEquiv.apply_symm_apply]`. Conclude with `⟨hg2.2, hg.1⟩`. Establish `hT1 : IsAddFundamentalDomain Γ₀ (Φ ⁻¹' S3) (νu.prod lam)`. Use `hS3.preimage_of_equiv (f := Φ) ⟨Φ.measurable, ?_⟩ (e := fun g => ⟨Φ.symm g, hmemt g⟩) ?_ ?_` and prove the remaining obligations. Rewrite using `[phi_map hPc]`.
+
+Conclude with `Measure.smul_absolutelyContinuous`. Use `⟨fun g g' h => Subtype.ext (Φ.symm.injective (congrArg Subtype.val h)), fun g => ?_⟩` and prove the remaining obligations. Use `⟨⟨Φ g, ?_⟩, Subtype.ext (Φ.symm_apply_apply _)⟩` and prove the remaining obligations. Establish `hg` using `AddSubgroup.mem_prod.1 g.2`. Rewrite using `[phi_apply]`.
+
+Establish `hP` using `(hΓ _).1 hg.2`. Conclude with `AddSubgroup.mem_prod.2 ⟨hP.2, AddSubgroup.mem_prod.2 ⟨hg.1, hP.1⟩⟩`. Introduce `g p show Φ (Φ.symm g + p) = g + Φ p`. Rewrite using `[phi_add hPadd, MeasurableEquiv.apply_symm_apply]`. Establish `hS4 : IsAddFundamentalDomain Γ₂ S4 m'` using `fd_prod' (fd_bot_univ _) (fd_prod' (fd_bot_univ νu) h𝓩)`.
+
+Establish `hSmp : MeasurePreserving S m' m'` using `sh_mp hτ _ _ _`. Establish `hS5 : IsAddFundamentalDomain Γ₂ (S.symm ⁻¹' S4) m'`. Use `hS4.preimage_of_equiv (f := S.symm) hSmp.symm.quasiMeasurePreserving (e := id) Function.bijective_id ?_` and prove the remaining obligations. Introduce `g w`. Establish `hg` using `AddSubgroup.mem_prod.1 g.2`.
+
+Establish `hg2` using `AddSubgroup.mem_prod.1 hg.2`. Use `show S.symm ((g : N' × (U × Z)) + w) = (g : N' × (U × Z)) + S.symm w`. Rewrite using `[sh_symm_apply, sh_symm_apply]`. Rewrite `hg2`, `hg` using `[AddSubgroup.mem_bot]`. Use `ext`.
+
+Both sides reduce to the same expression. Both sides reduce to the same expression. Simplify using `only [Prod.snd_add, Prod.fst_add, hg.1, hg2.1, zero_add]`. Normalize the expressions using the abelian group laws. Establish `eS3 : m.restrict S3 = (lam'.restrict 𝓖').prod (νu.prod (μZ.restrict 𝓩))`.
+
+Simplify using `only [m, S3, ← Measure.prod_restrict, Measure.restrict_univ]`. Establish `eS4 : m'.restrict S4 = (lam'.restrict 𝓖').prod (νu.prod (μZ.restrict 𝓩))`. Simplify using `only [m', S4, ← Measure.prod_restrict, Measure.restrict_univ]`. Establish `hpt : ∀ p, f p = H (S (Φ p))`. Introduce and unpack `⟨u, β⟩`.
+
+Rewrite using `[hfH, phi_apply, sh_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `hT0.setIntegral_eq hT1 fun g p => ?_` and prove the remaining obligations. Establish `hg` using `AddSubgroup.mem_prod.1 g.2`. Rewrite `hg` using `[AddSubgroup.mem_bot]`.
+
+Take `⟨u, β⟩` from `p`. Use `show f ((g : U × N) + (u, β)) = f (u, β)`. Apply the tactic sequence `have e : (g : U × N) + (u, β) = (u, (g : U × N).2 + β) := by ext <;> simp [hg.1]`. Rewrite using `[e, hf _ hg.2]`. Use `_ = ∫ p in Φ ⁻¹' S3, H (S (Φ p)) ∂(νu.prod lam) := by simp only [← hpt]`.
+
+Use `_ = ∫ w in S3, H (S w) ∂((νu.prod lam).map Φ) := (Φ.measurableEmbedding.setIntegral_map (μ := νu.prod lam) (fun w => H (S w)) S3).symm`. Use `_ = c.toReal • ∫ w in S3, H (S w) ∂m := by rw [phi_map hPc, Measure.restrict_smul, integral_smul_measure]`. Use `_ = c.toReal • ∫ w in S4, H (S w) ∂m' := by rw [eS3, ← eS4]`. Use `_ = c.toReal • ∫ w in S.symm ⁻¹' S4, H w ∂m' := by`. Use `congr 1`.
+
+Establish `e : S ⁻¹' (S.symm ⁻¹' S4) = S4` using `by ext w; simp`. Establish `h` using `hSmp.setIntegral_preimage_emb S.measurableEmbedding H (S.symm ⁻¹' S4)`. Rewrite `h` using `[e]`. Conclude with `h`. Use `_ = c.toReal • ∫ w in S4, H w ∂m' := by`.
+
+Use `congr 1`. Use `hS5.setIntegral_eq hS4 fun g w => ?_` and prove the remaining obligations. Establish `hg` using `AddSubgroup.mem_prod.1 g.2`. Establish `hg2` using `AddSubgroup.mem_prod.1 hg.2`. Rewrite `hg`, `hg2` using `[AddSubgroup.mem_bot]`.
+
+Use `show H ((g : N' × (U × Z)) + w) = H w`. Establish `e : (g : N' × (U × Z)) + w = (w.1, (w.2.1, (g : N' × (U × Z)).2.2 + w.2.2))`. Apply the tactic sequence `ext <;> simp [hg.1, hg2.1]`. Rewrite using `[e, hH _ hg2.2]`. Use `_ = c.toReal • ∫ q, H q ∂((lam'.restrict 𝓖').prod (νu.prod (μZ.restrict 𝓩))) := by rw [eS4]`.
+-/
 theorem chainC (hPc : lam.map P = c • (μZ.prod lam')) (hPadd : ∀ a b, P (a + b) = P a + P b)
     (hΓ : ∀ β, β ∈ ΓN ↔ (P β).1 ∈ ΓZ ∧ (P β).2 ∈ ΓN')
     (h𝓖 : IsAddFundamentalDomain ΓN 𝓖 lam) (h𝓩 : IsAddFundamentalDomain ΓZ 𝓩 μZ)
@@ -210,6 +272,43 @@ theorem chainC (hPc : lam.map P = c • (μZ.prod lam')) (hPadd : ∀ a b, P (a 
         rw [e, hH _ hg2.2]
     _ = c.toReal • ∫ q, H q ∂((lam'.restrict 𝓖').prod (νu.prod (μZ.restrict 𝓩))) := by rw [eS4]
 
+/- English proof (translation)
+Use `set Φ := phi (U := U) P`. Use `set S := sh τ hτ`. Use `set m := lam'.prod (νu.prod μZ)`. Use `set m' := (lam'.restrict 𝓖').prod (νu.prod μZ)`. Use `set S3 : Set (N' × (U × Z)) := 𝓖' ×ˢ (Set.univ ×ˢ 𝓩)`.
+
+Use `set S4 : Set (N' × (U × Z)) := Set.univ ×ˢ (Set.univ ×ˢ 𝓩)`. Use `set Γ₀ : AddSubgroup (U × N) := (⊥ : AddSubgroup U).prod ΓN`. Use `set Γt : AddSubgroup (N' × (U × Z)) := ΓN'.prod ((⊥ : AddSubgroup U).prod ΓZ)`. Use `set Γ₂ : AddSubgroup (N' × (U × Z)) := (⊥ : AddSubgroup N').prod ((⊥ : AddSubgroup U).prod ΓZ)`. Establish `: VAddInvariantMeasure Γ₀ (U × N) (νu.prod lam)` using `vaddInv_bot_prod νu lam ΓN (fun y _ => measurePreserving_add_left lam y)`.
+
+Establish `: VAddInvariantMeasure ((⊥ : AddSubgroup U).prod ΓZ) (U × Z) (νu.prod μZ)` using `vaddInv_bot_prod νu μZ ΓZ (fun y _ => measurePreserving_add_left μZ y)`. Establish `: VAddInvariantMeasure Γ₂ (N' × (U × Z)) m'` using `vaddInv_bot_prod (lam'.restrict 𝓖') (νu.prod μZ) _ (fun y hy => mp_of_vaddInv _ _ y hy)`. Establish `hT0 : IsAddFundamentalDomain Γ₀ (Set.univ ×ˢ 𝓖) (νu.prod lam)` using `fd_prod' (fd_bot_univ νu) h𝓖`. Establish `hS3 : IsAddFundamentalDomain Γt S3 m` using `fd_prod' h𝓖' (fd_prod' (fd_bot_univ νu) h𝓩)`. Establish `hmemt : ∀ g : Γt, (Φ.symm (g : N' × (U × Z))) ∈ Γ₀`.
+
+Introduce `g`. Establish `hg` using `AddSubgroup.mem_prod.1 g.2`. Establish `hg2` using `AddSubgroup.mem_prod.1 hg.2`. Rewrite using `[phi_symm_apply]`. Use `AddSubgroup.mem_prod.2 ⟨hg2.1, (hΓ _).2 ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[MeasurableEquiv.apply_symm_apply]`. Conclude with `⟨hg2.2, hg.1⟩`. Establish `hT1 : IsAddFundamentalDomain Γ₀ (Φ ⁻¹' S3) (νu.prod lam)`. Use `hS3.preimage_of_equiv (f := Φ) ⟨Φ.measurable, ?_⟩ (e := fun g => ⟨Φ.symm g, hmemt g⟩) ?_ ?_` and prove the remaining obligations. Rewrite using `[phi_map hPc]`.
+
+Conclude with `Measure.smul_absolutelyContinuous`. Use `⟨fun g g' h => Subtype.ext (Φ.symm.injective (congrArg Subtype.val h)), fun g => ?_⟩` and prove the remaining obligations. Use `⟨⟨Φ g, ?_⟩, Subtype.ext (Φ.symm_apply_apply _)⟩` and prove the remaining obligations. Establish `hg` using `AddSubgroup.mem_prod.1 g.2`. Rewrite using `[phi_apply]`.
+
+Establish `hP` using `(hΓ _).1 hg.2`. Conclude with `AddSubgroup.mem_prod.2 ⟨hP.2, AddSubgroup.mem_prod.2 ⟨hg.1, hP.1⟩⟩`. Introduce `g p show Φ (Φ.symm g + p) = g + Φ p`. Rewrite using `[phi_add hPadd, MeasurableEquiv.apply_symm_apply]`. Establish `hS4 : IsAddFundamentalDomain Γ₂ S4 m'` using `fd_prod' (fd_bot_univ _) (fd_prod' (fd_bot_univ νu) h𝓩)`.
+
+Establish `hSmp : MeasurePreserving S m' m'` using `sh_mp hτ _ _ _`. Establish `hS5 : IsAddFundamentalDomain Γ₂ (S.symm ⁻¹' S4) m'`. Use `hS4.preimage_of_equiv (f := S.symm) hSmp.symm.quasiMeasurePreserving (e := id) Function.bijective_id ?_` and prove the remaining obligations. Introduce `g w`. Establish `hg` using `AddSubgroup.mem_prod.1 g.2`.
+
+Establish `hg2` using `AddSubgroup.mem_prod.1 hg.2`. Use `show S.symm ((g : N' × (U × Z)) + w) = (g : N' × (U × Z)) + S.symm w`. Rewrite using `[sh_symm_apply, sh_symm_apply]`. Rewrite `hg2`, `hg` using `[AddSubgroup.mem_bot]`. Use `ext`.
+
+Both sides reduce to the same expression. Both sides reduce to the same expression. Simplify using `only [Prod.snd_add, Prod.fst_add, hg.1, hg2.1, zero_add]`. Normalize the expressions using the abelian group laws. Establish `eS3 : m.restrict S3 = (lam'.restrict 𝓖').prod (νu.prod (μZ.restrict 𝓩))`.
+
+Simplify using `only [m, S3, ← Measure.prod_restrict, Measure.restrict_univ]`. Establish `eS4 : m'.restrict S4 = (lam'.restrict 𝓖').prod (νu.prod (μZ.restrict 𝓩))`. Simplify using `only [m', S4, ← Measure.prod_restrict, Measure.restrict_univ]`. Establish `hpt : ∀ p, f p = H (S (Φ p))`. Introduce and unpack `⟨u, β⟩`.
+
+Rewrite using `[hfH, phi_apply, sh_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `hT0.setLIntegral_eq hT1 f fun g p => ?_` and prove the remaining obligations. Establish `hg` using `AddSubgroup.mem_prod.1 g.2`. Rewrite `hg` using `[AddSubgroup.mem_bot]`.
+
+Take `⟨u, β⟩` from `p`. Use `show f ((g : U × N) + (u, β)) = f (u, β)`. Apply the tactic sequence `have e : (g : U × N) + (u, β) = (u, (g : U × N).2 + β) := by ext <;> simp [hg.1]`. Rewrite using `[e, hf _ hg.2]`. Use `_ = ∫⁻ p in Φ ⁻¹' S3, H (S (Φ p)) ∂(νu.prod lam) := by simp only [← hpt]`.
+
+Use `_ = ∫⁻ w in S3, H (S w) ∂((νu.prod lam).map Φ) := by`. Rewrite using `[Φ.measurableEmbedding.restrict_map, Φ.measurableEmbedding.lintegral_map]`. Use `_ = c * ∫⁻ w in S3, H (S w) ∂m := by rw [phi_map hPc, Measure.restrict_smul, lintegral_smul_measure, smul_eq_mul]`. Use `_ = c * ∫⁻ w in S4, H (S w) ∂m' := by rw [eS3, ← eS4]`. Use `_ = c * ∫⁻ w in S.symm ⁻¹' S4, H w ∂m' := by`.
+
+Use `congr 1`. Establish `e : S ⁻¹' (S.symm ⁻¹' S4) = S4` using `by ext w; simp`. Establish `h` using `hSmp.setLIntegral_comp_preimage_emb S.measurableEmbedding H (S.symm ⁻¹' S4)`. Rewrite `h` using `[e]`. Conclude with `h`.
+
+Use `_ = c * ∫⁻ w in S4, H w ∂m' := by`. Use `congr 1`. Use `hS5.setLIntegral_eq hS4 H fun g w => ?_` and prove the remaining obligations. Establish `hg` using `AddSubgroup.mem_prod.1 g.2`. Establish `hg2` using `AddSubgroup.mem_prod.1 hg.2`.
+
+Rewrite `hg`, `hg2` using `[AddSubgroup.mem_bot]`. Use `show H ((g : N' × (U × Z)) + w) = H w`. Establish `e : (g : N' × (U × Z)) + w = (w.1, (w.2.1, (g : N' × (U × Z)).2.2 + w.2.2))`. Apply the tactic sequence `ext <;> simp [hg.1, hg2.1]`. Rewrite using `[e, hH _ hg2.2]`.
+
+Use `_ = c * ∫⁻ q, H q ∂((lam'.restrict 𝓖').prod (νu.prod (μZ.restrict 𝓩))) := by rw [eS4]`.
+-/
 theorem chainE (hPc : lam.map P = c • (μZ.prod lam')) (hPadd : ∀ a b, P (a + b) = P a + P b)
     (hΓ : ∀ β, β ∈ ΓN ↔ (P β).1 ∈ ΓZ ∧ (P β).2 ∈ ΓN')
     (h𝓖 : IsAddFundamentalDomain ΓN 𝓖 lam) (h𝓩 : IsAddFundamentalDomain ΓZ 𝓩 μZ)

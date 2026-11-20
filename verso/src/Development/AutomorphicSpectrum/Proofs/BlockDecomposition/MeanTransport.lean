@@ -13,6 +13,9 @@ namespace GlobalTheory.CompanionTheory.PcFc
 
 variable {D : D7} {n ρ p : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [adj, bl, Matrix.transpose_apply, Matrix.map_apply, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases h1 : (finSumFinEquiv.trans (finCongr hn)).symm i with i' | i' <;>`. Apply the tactic sequence `rcases h2 : (finSumFinEquiv.trans (finCongr hn)).symm j with j' | j' <;> rfl`.
+-/
 theorem adj_bl (hn : ρ + p = n) (a : Mx D ρ ρ) (b : Mx D ρ p) (c : Mx D p ρ) (d : Mx D p p) :
     adj (bl hn a b c d : Mx D n n) = bl hn (adj a) (adj c) (adj b) (adj d) := by
   ext i j
@@ -65,6 +68,17 @@ variable {A B : Type} [AddCommGroup A] [TopologicalSpace A] [IsTopologicalAddGro
   [AddCommGroup B] [TopologicalSpace B] [IsTopologicalAddGroup B] [T2Space B] [LocallyCompactSpace B]
   [SecondCountableTopology B] [MeasurableSpace B] [BorelSpace B]
 
+/- English proof (translation)
+Establish `hm : Measurable T` using `T.continuous.measurable`. Establish `hAC : (μ.map T).IsAddHaarMeasure` using `ContinuousAddEquiv.isAddHaarMeasure_map μ T`. Establish `hAC2 : (ν.map T.symm).IsAddHaarMeasure` using `ContinuousAddEquiv.isAddHaarMeasure_map ν T.symm`. Establish `hsm : Measure.QuasiMeasurePreserving (T.symm.toAddEquiv.toEquiv) ν μ` using `⟨T.symm.continuous.measurable, Measure.absolutelyContinuous_isAddHaarMeasure _ _⟩`. Set `eΓ : Δ ≃ Γ` to `{ toFun := fun d => ⟨T.symm d.1, (hT _).1 (by simpa using d.2)⟩ invFun := fun c => ⟨T c.1, (hT _).2 c.2⟩ left_inv := fun d => Subtype.ext (by simp) right_inv := fun c => Subtype.ext (by simp) }`.
+
+Establish `hFD : IsAddFundamentalDomain Δ (T.toAddEquiv.toEquiv '' s) ν` using `hs.image_of_equiv T.toAddEquiv.toEquiv hsm eΓ (fun g x => by show T (T.symm g.1 + x) = g.1 + T x simp)`. Establish `h1 : ν (T.toAddEquiv.toEquiv '' s) = 1` using `by rw [hFD.measure_eq ht, ht1]`. Establish `hemb : MeasurableEmbedding T` using `T.toHomeomorph.measurableEmbedding`. Establish `h2 : μ.map T (T.toAddEquiv.toEquiv '' s) = 1`. Rewrite using `[hemb.map_apply, show T ⁻¹' (T.toAddEquiv.toEquiv '' s) = s from Set.preimage_image_eq _ T.injective, hs1]`.
+
+Establish `h3 : μ.map T = ν`. Establish `h4` using `Measure.isAddLeftInvariant_eq_smul (μ.map T) ν`. Rewrite `h2` using `[h4]`. Establish `hc : Measure.addHaarScalarFactor (μ.map T) ν = 1`. Rewrite `h2` using `[Measure.smul_apply, h1, ENNReal.smul_def, smul_eq_mul, mul_one]`.
+
+Conclude with `h2` after adjusting the coercions. Rewrite using `[h4, hc, one_smul]`. Establish `h5 : ∫ a in s, f (T a) ∂μ = ∫ b in T.toAddEquiv.toEquiv '' s, f b ∂ν`. Rewrite using `[← h3, hemb.setIntegral_map, show T ⁻¹' (T.toAddEquiv.toEquiv '' s) = s from Set.preimage_image_eq _ T.injective]`. Rewrite using `[h5]`.
+
+Conclude with `hFD.setIntegral_eq ht (fun g x => hf g.1 g.2 x)`.
+-/
 theorem mean_transport (Γ : AddSubgroup A) (Δ : AddSubgroup B) [Countable Γ] [Countable Δ] (T : A ≃ₜ+ B)
     (hT : ∀ a, T a ∈ Δ ↔ a ∈ Γ) (μ : Measure A) (ν : Measure B) [μ.IsAddHaarMeasure] [ν.IsAddHaarMeasure]
     {s : Set A} {t : Set B} (hs : IsAddFundamentalDomain Γ s μ) (ht : IsAddFundamentalDomain Δ t ν) (hs1 : μ s = 1) (ht1 : ν t = 1)

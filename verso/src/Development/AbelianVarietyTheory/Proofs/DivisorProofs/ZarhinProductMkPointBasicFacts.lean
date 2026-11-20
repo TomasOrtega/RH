@@ -9,6 +9,17 @@ noncomputable section
 
 namespace GlobalTheory.ZarhinFam.PtFacts
 
+/- English proof (translation)
+Introduce `S A B _ _ _ _ T T' f u v g n`. Use `⟨?_, ?_, ⟨fun h => ⟨fun i => ?_, fun j => ?_⟩, fun ⟨hu, hv⟩ => ?_⟩, ?_⟩` and prove the remaining obligations. Apply `LevAlg.zob_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `only [Category.assoc, LevAlg.mkZ_pa]`.
+
+Introduce `j`. Simplify using `only [Category.assoc, LevAlg.mkZ_pb]`. Apply `LevAlg.zob_ext` to reduce the goal to its premises. Introduce `i`. Rewrite using `[MonObj.pow_comp, LevAlg.mkZ_pa, LevAlg.mkZ_pa]`.
+
+Introduce `j`. Rewrite using `[MonObj.pow_comp, LevAlg.mkZ_pb, LevAlg.mkZ_pb]`. Rewrite using `[← LevAlg.mkZ_pa A B u v i, h, MonObj.one_comp]`. Rewrite using `[← LevAlg.mkZ_pb A B u v j, h, MonObj.one_comp]`. Apply `LevAlg.zob_ext` to reduce the goal to its premises.
+
+Introduce `i`. Rewrite using `[LevAlg.mkZ_pa, MonObj.one_comp, hu]`. Introduce `j`. Rewrite using `[LevAlg.mkZ_pb, MonObj.one_comp, hv]`. Apply `LevAlg.zob_ext` to reduce the goal to its premises.
+
+Introduce `i`. Rewrite using `[LevAlg.mkZ_pa]`. Introduce `j`. Rewrite using `[LevAlg.mkZ_pb]`.
+-/
 theorem mkZ_facts : ∀ {S : Scheme.{0}} (A B : Over S) [GrpObj A] [GrpObj B] [IsCommMonObj A] [IsCommMonObj B] {T T' : Over S} (f : T' ⟶ T) (u : Fin 4 → (T ⟶ A)) (v : Fin 4 → (T ⟶ B)) (g : T ⟶ GlobalTheory.ZarhinFam.Zob A B) (n : ℕ), f ≫ GlobalTheory.ZarhinFam.mkZ A B u v = GlobalTheory.ZarhinFam.mkZ A B (fun i => f ≫ u i) (fun j => f ≫ v j) ∧ GlobalTheory.ZarhinFam.mkZ A B u v ^ n = GlobalTheory.ZarhinFam.mkZ A B (fun i => u i ^ n) (fun j => v j ^ n) ∧ (GlobalTheory.ZarhinFam.mkZ A B u v = 1 ↔ (∀ i, u i = 1) ∧ ∀ j, v j = 1) ∧ g = GlobalTheory.ZarhinFam.mkZ A B (fun i => g ≫ GlobalTheory.ZarhinFam.pa A B i) (fun j => g ≫ GlobalTheory.ZarhinFam.pb A B j) := by
   intro S A B _ _ _ _ T T' f u v g n
   refine ⟨?_, ?_, ⟨fun h => ⟨fun i => ?_, fun j => ?_⟩, fun ⟨hu, hv⟩ => ?_⟩, ?_⟩

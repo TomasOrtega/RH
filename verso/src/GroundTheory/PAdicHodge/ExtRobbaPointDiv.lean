@@ -16,6 +16,13 @@ variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [
   [CharP L p] [PerfectRing L p] {Γ : Type*} [CommRing Γ] (T : TeichLift p L Γ)
   {ξ : T.int} (hξ : T.IsPrimOne ξ)
 
+/- English proof (translation)
+Distinguish the cases in `hw0 : w = 0`. Use `⟨0, by rw [hw0, norm_zero, norm_zero], 0, T.int.zero_mem, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_zero, ptE_zero, hw0]`. Take `⟨q, rfl⟩` from `T.exists_toUntiltField_eq hξ hw`. Establish `hq0 : q ≠ 0` using `by rintro rfl; exact hw0 (map_zero _)`.
+
+Take `⟨z, hz0, hz, u, hu, hqu⟩` from `T.exists_teich_mul_unit hξ hq0`. Take `⟨U, rfl⟩` from `Ideal.Quotient.mk_surjective u`. Establish `hmem : T.teich z * (U : Γ) ∈ T.int` using `T.int.mul_mem (T.teich_mem_int hz) U.2`. Use `⟨z, ?_, U, U.2, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_toUntiltField, hqu, T.untiltNorm_mul hξ, T.untiltNorm_teich hξ hz, T.untiltNorm_unit hξ hu, mul_one]`.
+
+Rewrite using `[T.ptE_int hξ hmem, hqu]`. Use `congr 1`.
+-/
 theorem exists_lift_value {w : T.UntiltField hξ} (hw : ‖w‖ ≤ 1) :
     ∃ z : L, ‖z‖ = ‖w‖ ∧ ∃ V ∈ T.int, T.ptE hξ (T.teich z * V) = w := by
   by_cases hw0 : w = 0
@@ -32,12 +39,24 @@ theorem exists_lift_value {w : T.UntiltField hξ} (hw : ‖w‖ ≤ 1) :
   · rw [T.ptE_int hξ hmem, hqu]
     congr 1
 
+/- English proof (translation)
+Rewrite using `[T.gaussNorm_zcoeff_mul hρ0 hρ1 (T.convergesAt_teich z ρ) (T.convergesAt_of_mem_int hV hρ0 hρ1), T.gaussNorm_teich z hρ0]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (T.gaussNorm_le_one_of_mem_int hV hρ0 hρ1.le)`.
+-/
 theorem gaussNorm_teich_mul_int_le {z : L} {V : Γ} (hV : V ∈ T.int) {ρ : ℝ} (hρ0 : 0 < ρ)
     (hρ1 : ρ < 1) : gaussNorm (T.zcoeff (T.teich z * V)) ρ ≤ ‖z‖ := by
   rw [T.gaussNorm_zcoeff_mul hρ0 hρ1 (T.convergesAt_teich z ρ) (T.convergesAt_of_mem_int hV hρ0 hρ1),
     T.gaussNorm_teich z hρ0]
   exact mul_le_of_le_one_right (norm_nonneg _) (T.gaussNorm_le_one_of_mem_int hV hρ0 hρ1.le)
 
+/- English proof (translation)
+Take `⟨d, hd0, hd1, hdW⟩` from `hW`. Establish `hr0` using `T.ptRad_pos' hξ`. Establish `hr1` using `T.ptRad_lt_one' hξ`. Establish `hWc` using `T.convergesAt_of_isBddElt ⟨d, hd0, hd1, hdW⟩ hr0 hr1`. Establish `h1` using `T.ptE_teich_mul hξ d W hWc`.
+
+Rewrite `h1` using `[h0, mul_zero, T.ptE_int hξ hdW]`. Establish `h2 : T.toUntilt ξ ⟨T.teich d * W, hdW⟩ = 0`. Rewrite using `[← T.untiltNorm_eq_zero_iff hξ, ← norm_toUntiltField, h1, norm_zero]`. Take `⟨B, hB, hBe⟩` from `(T.toUntilt_eq_zero_iff).1 h2`. Establish `hdinv : T.teich d⁻¹ * T.teich d = 1` using `by rw [← T.teich_mul, inv_mul_cancel₀ hd0, T.teich_one]`.
+
+Use `⟨T.teich d⁻¹ * B, ⟨d, hd0, hd1, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, mul_comm (T.teich d), hdinv, one_mul]`. Conclude with `hB`. Establish `: W = T.teich d⁻¹ * (T.teich d * W)` using `by rw [← mul_assoc, hdinv, one_mul]`. Rewrite using `[this]`.
+
+Express the relevant statement in the definitionally equal form `T.teich d⁻¹ * (T.teich d * W) = ξ * (T.teich d⁻¹ * B)`. Rewrite using `[show T.teich d * W = (ξ : Γ) * B from hBe]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_eq_ξ_mul_of_ptE_eq_zero {W : Γ} (hW : T.IsBddElt W) (h0 : T.ptE hξ W = 0) :
     ∃ Y : Γ, T.IsBddElt Y ∧ W = ξ * Y := by
   obtain ⟨d, hd0, hd1, hdW⟩ := hW
@@ -59,20 +78,32 @@ theorem exists_eq_ξ_mul_of_ptE_eq_zero {W : Γ} (hW : T.IsBddElt W) (h0 : T.ptE
 
 def bddB (U : Γ) (N : ℕ) : T.B := algebraMap Γ T.B U * IsLocalization.Away.invSelf T.π ^ N
 
+/- English proof (translation)
+Rewrite using `[bddB, mul_assoc, ← mul_pow, mul_comm (IsLocalization.Away.invSelf T.π), IsLocalization.Away.mul_invSelf, one_pow, mul_one]`.
+-/
 theorem bddB_mul_pow (U : Γ) (N : ℕ) :
     T.bddB U N * algebraMap Γ T.B T.π ^ N = algebraMap Γ T.B U := by
   rw [bddB, mul_assoc, ← mul_pow, mul_comm (IsLocalization.Away.invSelf T.π),
     IsLocalization.Away.mul_invSelf, one_pow, mul_one]
 
+/- English proof (translation)
+Rewrite using `[mem_Econ, T.coeffB_eq (T.bddB_mul_pow U N), convergesAt_shift_iff ρ.2.1]`. Conclude with `T.convergesAt_of_isBddElt hU ρ.2.1 ρ.2.2`.
+-/
 theorem bddB_mem_Econ {U : Γ} (hU : T.IsBddElt U) (N : ℕ) (ρ : Set.Ioo (0 : ℝ) 1) :
     T.bddB U N ∈ T.Econ ρ := by
   rw [mem_Econ, T.coeffB_eq (T.bddB_mul_pow U N), convergesAt_shift_iff ρ.2.1]
   exact T.convergesAt_of_isBddElt hU ρ.2.1 ρ.2.2
 
+/- English proof (translation)
+The claim follows from `T.ptEvalB_eq hξ (T.bddB_mul_pow U N)`.
+-/
 theorem ptEvalB_bddB (U : Γ) (N : ℕ) :
     T.ptEvalB hξ (T.bddB U N) = T.ptPi hξ ^ (-(N : ℤ)) * T.ptE hξ U :=
   T.ptEvalB_eq hξ (T.bddB_mul_pow U N)
 
+/- English proof (translation)
+Establish `hmem : T.π ^ N ∈ T.int` using `T.int.pow_mem T.π_mem_int N`. Rewrite using `[T.ptE_int hξ hmem]`. Rewrite using `[show (⟨T.π ^ N, hmem⟩ : T.int) = T.πInt ^ N from Subtype.ext (by simp [coe_πInt]), map_pow, map_pow]`. Both sides reduce to the same expression.
+-/
 theorem ptE_π_pow (N : ℕ) : T.ptE hξ (T.π ^ N) = T.ptPi hξ ^ N := by
   have hmem : T.π ^ N ∈ T.int := T.int.pow_mem T.π_mem_int N
   rw [T.ptE_int hξ hmem]
@@ -80,6 +111,17 @@ theorem ptE_π_pow (N : ℕ) : T.ptE hξ (T.π ^ N) = T.ptPi hξ ^ N := by
     map_pow]
   rfl
 
+/- English proof (translation)
+Take `⟨z, hz, V, hV, hzV⟩` from `T.exists_lift_value hξ hw`. Establish `hr0` using `T.ptRad_pos' hξ`. Establish `hr1` using `T.ptRad_lt_one' hξ`. Establish `hzVint : T.teich z * V ∈ T.int`. Establish `hz1 : ‖z‖ ≤ 1` using `hz ▸ hw`.
+
+Conclude with `T.int.mul_mem (T.teich_mem_int hz1) hV`. Establish `hπint : T.π ^ N * (T.teich z * V) ∈ T.int` using `T.int.mul_mem (T.int.pow_mem T.π_mem_int N) hzVint`. Establish `hbdd1 : T.IsBddElt (T.π ^ N * (T.teich z * V))` using `⟨1, one_ne_zero, by simp, by rw [T.teich_one, one_mul]; exact hπint⟩`. Establish `hW : T.IsBddElt (U - T.π ^ N * (T.teich z * V))` using `hU.sub T hbdd1`. Establish `hUc` using `T.convergesAt_of_isBddElt hU hr0 hr1`.
+
+Establish `h1c` using `T.convergesAt_of_isBddElt hbdd1 hr0 hr1`. Establish `hW0 : T.ptE hξ (U - T.π ^ N * (T.teich z * V)) = 0`. Rewrite using `[sub_eq_add_neg, T.ptE_add hξ hUc (T.convergesAt_zcoeff_neg hr0 hr1 h1c), T.ptE_neg hξ h1c, T.ptE_mul hξ (T.convergesAt_of_mem_int (T.int.pow_mem T.π_mem_int N) hr0 hr1) (T.convergesAt_of_mem_int hzVint hr0 hr1), ptE_π_pow, hzV, T.ptEvalB_bddB hξ U N]`. Rewrite using `[← mul_assoc, ← zpow_natCast, ← zpow_add₀ (T.ptPi_ne_zero hξ), add_neg_cancel, zpow_zero, one_mul, add_neg_cancel]`. Take `⟨Y, hY, hWY⟩` from `T.exists_eq_ξ_mul_of_ptE_eq_zero hξ hW hW0`.
+
+Use `⟨Y, hY, z, hz, V, hV, ?_⟩` and prove the remaining obligations. Establish `hπ : IsUnit (algebraMap Γ T.B T.π ^ N)` using `(IsLocalization.Away.algebraMap_isUnit T.π).pow N`. Use `hπ.mul_left_injective ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[T.bddB_mul_pow, add_mul, mul_assoc, T.bddB_mul_pow, ← map_mul, ← map_pow, ← map_mul, ← map_add, ← hWY]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_bddB_eq_ξ_mul_add {U : Γ} (hU : T.IsBddElt U) (N : ℕ)
     (hw : ‖T.ptEvalB hξ (T.bddB U N)‖ ≤ 1) :
     ∃ Y : Γ, T.IsBddElt Y ∧ ∃ z : L, ‖z‖ = ‖T.ptEvalB hξ (T.bddB U N)‖ ∧ ∃ V ∈ T.int,
@@ -114,6 +156,19 @@ theorem exists_bddB_eq_ξ_mul_add {U : Γ} (hU : T.IsBddElt U) (N : ℕ)
 
 variable {ρ0 : Set.Ioo (0 : ℝ) 1}
 
+/- English proof (translation)
+Establish `hO : {y : T.RobbaExt ρ0 | T.extNorm ρ0 σ (x - y) < ε / 2 ∧ T.extNorm ρ0 (topRad ρ0) (x - y) < ε / 2} ∈ 𝓝 x`. Use `IsOpen.mem_nhds ?_ ?_` and prove the remaining obligations. Conclude with `(isOpen_lt ((T.continuous_extNorm _).comp (continuous_const.sub continuous_id)) continuous_const).inter (isOpen_lt ((T.continuous_extNorm _).comp (continuous_const.sub continuous_id)) continuous_const)`. Simplify using `only [Set.mem_setOf_eq, sub_self, extNorm_zero]; exact ⟨by linarith, by linarith⟩`. Take `⟨b, hb1, hb2⟩` from `Completion.denseRange_coe.mem_nhds hO`.
+
+Establish `hbρ : ∀ ρ : Set.Ioc (0 : ℝ) ρ0, (σ : ℝ) ≤ ρ → T.extNorm ρ0 ρ (x - b) < ε / 2` using `fun ρ h => (T.extNorm_le_max σ (topRad ρ0) ρ h ρ.2.2 _).trans_lt (max_lt hb1 hb2)`. Take `⟨N, X, hX⟩` from `IsLocalization.Away.surj T.π (b : T.B)`. Establish `hXc : ConvergesAt (T.zcoeff X) ρ0`. Use `b.2` as an intermediate fact. Rewrite `this` using `[mem_Econ, T.coeffB_eq hX, convergesAt_shift_iff ρ0.2.1]`. Then use the resulting hypothesis.
+
+Establish `hσ0 : 0 < (σ : ℝ)` using `σ.2.1`. Take `⟨M, hM⟩ : ∃ M, gaussNorm (T.zcoeff (X - T.partialSum X M)) ρ0 < ε / 2 * (σ : ℝ) ^ N` from `((T.tendsto_gaussNorm_sub_partialSum ρ0.2.1 hXc).eventually (gt_mem_nhds (by positivity))).exists`. Use `⟨N, T.partialSum X M, T.isBddElt_partialSum X M, fun ρ hρ => ?_⟩` and prove the remaining obligations. Establish `hρ0 : 0 < (ρ : ℝ)` using `ρ.2.1`. Use `set c : T.Econ ρ0 := ⟨T.bddB (T.partialSum X M) N, T.bddB_mem_Econ (T.isBddElt_partialSum X M) N ρ0⟩`.
+
+Establish `h2 : T.extNorm ρ0 ρ ((b : T.RobbaExt ρ0) - c) < ε / 2`. Rewrite using `[← Completion.coe_sub, extNorm_coe]`. Establish `hd : ((b - c : T.Econ ρ0) : T.B) * algebraMap Γ T.B T.π ^ N = algebraMap Γ T.B (X - T.partialSum X M)`. Rewrite using `[show ((b - c : T.Econ ρ0) : T.B) = (b : T.B) - T.bddB (T.partialSum X M) N from rfl, sub_mul, hX, T.bddB_mul_pow, map_sub]`. Rewrite using `[T.coeffB_eq hd, gaussNorm_shift hρ0]`.
+
+Establish `hmono` using `T.gaussNorm_mono (x := X - T.partialSum X M) hρ0 ρ.2.2 (T.convergesAt_sub_partialSum ρ0.2.1 hXc M)`. Establish `hρN : (ρ : ℝ) ^ (-(N : ℤ)) ≤ (σ : ℝ) ^ (-(N : ℤ))`. Rewrite using `[zpow_neg, zpow_neg, zpow_natCast, zpow_natCast]`. Conclude with `inv_anti₀ (pow_pos hσ0 N) (pow_le_pow_left₀ hσ0.le hρ N)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_assoc, ← zpow_natCast, ← zpow_add₀ hσ0.ne', add_neg_cancel, zpow_zero, mul_one]`. Establish `e : x - (c : T.RobbaExt ρ0) = (x - b) + ((b : T.RobbaExt ρ0) - c)` using `by ring`. Rewrite using `[e]`. Conclude with `(T.extNorm_add_le _ _ _).trans_lt (max_lt ((hbρ ρ hρ).trans (half_lt_self hε)) (h2.trans (half_lt_self hε)))`.
+-/
 theorem exists_bdd_approx (x : T.RobbaExt ρ0) (σ : Set.Ioc (0 : ℝ) ρ0) {ε : ℝ} (hε : 0 < ε) :
     ∃ (N : ℕ) (U : Γ) (hU : T.IsBddElt U), ∀ ρ : Set.Ioc (0 : ℝ) ρ0, (σ : ℝ) ≤ ρ →
       T.extNorm ρ0 ρ (x - ((⟨T.bddB U N, T.bddB_mem_Econ hU N ρ0⟩ : T.Econ ρ0) : T.RobbaExt ρ0)) < ε := by
@@ -162,6 +217,9 @@ theorem exists_bdd_approx (x : T.RobbaExt ρ0) (σ : Set.Ioc (0 : ℝ) ρ0) {ε 
   exact (T.extNorm_add_le _ _ _).trans_lt (max_lt ((hbρ ρ hρ).trans (half_lt_self hε))
     (h2.trans (half_lt_self hε)))
 
+/- English proof (translation)
+Rewrite using `[mem_Econ, coeffB_algebraMap]`. Conclude with `T.convergesAt_of_mem_int ξ.2 ρ0.2.1 ρ0.2.2`.
+-/
 theorem algebraMap_ξ_mem_Econ (ρ0 : Set.Ioo (0 : ℝ) 1) : algebraMap Γ T.B ξ ∈ T.Econ ρ0 := by
   rw [mem_Econ, coeffB_algebraMap]
   exact T.convergesAt_of_mem_int ξ.2 ρ0.2.1 ρ0.2.2
@@ -169,6 +227,11 @@ theorem algebraMap_ξ_mem_Econ (ρ0 : Set.Ioo (0 : ℝ) 1) : algebraMap Γ T.B �
 def ξExt (ξ : T.int) (ρ0 : Set.Ioo (0 : ℝ) 1) : T.RobbaExt ρ0 :=
   ((⟨algebraMap Γ T.B ξ, T.algebraMap_ξ_mem_Econ (ξ := ξ) ρ0⟩ : T.Econ ρ0) : T.RobbaExt ρ0)
 
+/- English proof (translation)
+Rewrite using `[ξExt, extNorm_coe]`. Use `show T.ptRad ξ ≤ gaussNorm (T.coeffB (algebraMap Γ T.B ξ)) ρ`. Rewrite using `[coeffB_algebraMap]`. Use `(T.convergesAt_of_mem_int ξ.2 ρ.2.1 (lt_of_le_of_lt ρ.2.2 ρ0.2.2)).le_gaussNorm 0` as an intermediate fact. Establish `h0 : T.zcoeff (ξ : Γ) 0 = T.coeff (ξ : Γ) 0` using `T.zcoeff_natCast _ 0`.
+
+Rewrite `this` using `[zpow_zero, mul_one, h0]`. Conclude with `this`.
+-/
 theorem ptRad_le_extNorm_ξExt (ρ : Set.Ioc (0 : ℝ) ρ0) :
     T.ptRad ξ ≤ T.extNorm ρ0 ρ (T.ξExt ξ ρ0) := by
   rw [ξExt, extNorm_coe]
@@ -181,15 +244,54 @@ theorem ptRad_le_extNorm_ξExt (ρ : Set.Ioc (0 : ℝ) ρ0) :
 
 variable (hr : T.ptRad ξ ≤ ρ0)
 
+/- English proof (translation)
+Rewrite using `[ξExt, ptEval_coe]`. Conclude with `T.ptEvalB_ξ hξ`.
+-/
 theorem ptEval_ξExt : T.ptEval hξ hr (T.ξExt ξ ρ0) = 0 := by
   rw [ξExt, ptEval_coe]
   exact T.ptEvalB_ξ hξ
 
+/- English proof (translation)
+Rewrite using `[mem_Econ, coeffB_algebraMap]`. Conclude with `T.convergesAt_of_mem_int (T.int.mul_mem (T.teich_mem_int hz) hV) ρ0.2.1 ρ0.2.2`.
+-/
 theorem coe_teich_mul_mem_Econ {z : L} (hz : ‖z‖ ≤ 1) {V : Γ} (hV : V ∈ T.int) :
     algebraMap Γ T.B (T.teich z * V) ∈ T.Econ ρ0 := by
   rw [mem_Econ, coeffB_algebraMap]
   exact T.convergesAt_of_mem_int (T.int.mul_mem (T.teich_mem_int hz) hV) ρ0.2.1 ρ0.2.2
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `swap`. Introduce and unpack `⟨y, hy⟩`. Rewrite using `[hy, map_mul, T.ptEval_ξExt hξ hr, zero_mul]`. Introduce `hx0`.
+
+Establish `hr0` using `T.ptRad_pos' hξ`. Establish `key : ∀ j : ℕ, ∃ (N : ℕ) (U : Γ) (hU : T.IsBddElt U), ∀ ρ : Set.Ioc (0 : ℝ) ρ0, ((ρ0 : ℝ) / (j + 1)) ≤ ρ → T.extNorm ρ0 ρ (x - ((⟨T.bddB U N, T.bddB_mem_Econ hU N ρ0⟩ : T.Econ ρ0) : T.RobbaExt ρ0)) < 1 / (j + 1)` using `fun j => T.exists_bdd_approx x ⟨(ρ0 : ℝ) / (j + 1), by have := ρ0.2.1; positivity, div_le_self ρ0.2.1.le (by linarith [(Nat.cast_nonneg j : (0 : ℝ) ≤ j)])⟩ Nat.one_div_pos_of_nat`. Use `choose N U hU hUx using key`. Use `set b : ℕ → T.RobbaExt ρ0 := fun j => ((⟨T.bddB (U j) (N j), T.bddB_mem_Econ (hU j) (N j) ρ0⟩ : T.Econ ρ0) : T.RobbaExt ρ0) with hbdef`. Establish `hbx : ∀ ρ : Set.Ioc (0 : ℝ) ρ0, Tendsto (fun j => T.extNorm ρ0 ρ (x - b j)) atTop (𝓝 0)`.
+
+Introduce `ρ`. Establish `hρ0 : 0 < (ρ : ℝ)` using `ρ.2.1`. Take `⟨J, hJ⟩` from `exists_nat_gt ((ρ0 : ℝ) / ρ)`. Use `squeeze_zero' (Eventually.of_forall fun j => T.extNorm_nonneg ρ _) ?_ tendsto_one_div_add_atTop_nhds_zero_nat` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop J] with j hj`.
+
+Use `(hUx j ρ ?_).le` and prove the remaining obligations. Rewrite using `[div_le_iff₀ (by positivity)]`. Establish `: (ρ0 : ℝ) / ρ < j + 1` using `hJ.trans_le (by exact_mod_cast Nat.le_succ_of_le hj)`. Rewrite `this` using `[div_lt_iff₀ hρ0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hbt : Tendsto b atTop (𝓝 x)` using `T.tendsto_of_extNorm hbx`. Use `set v : ℕ → T.UntiltField hξ := fun j => T.ptEvalB hξ (T.bddB (U j) (N j)) with hvdef`. Establish `hv : Tendsto v atTop (𝓝 0)`. Use `((T.continuous_ptEval hξ hr).tendsto x).comp hbt` as an intermediate fact. Rewrite `this` using `[hx0]`.
+
+Use `this.congr fun j => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, hbdef, ptEval_coe, hvdef]`. Establish `hvn` using `tendsto_zero_iff_norm_tendsto_zero.1 hv`. Take `⟨J0, hJ0⟩` from `eventually_atTop.1 (hvn.eventually (ge_mem_nhds one_pos))`. Establish `loc : ∀ j, ∃ (Y : Γ) (hY : T.IsBddElt Y) (e : T.Econ ρ0), J0 ≤ j → b j = T.ξExt ξ ρ0 * ((⟨T.bddB Y (N j), T.bddB_mem_Econ hY (N j) ρ0⟩ : T.Econ ρ0) : T.RobbaExt ρ0) + (e : T.RobbaExt ρ0) ∧ ∀ ρ, T.extNorm ρ0 ρ (e : T.RobbaExt ρ0) ≤ ‖v j‖`.
+
+Introduce `j`. Distinguish the cases in `hj : J0 ≤ j`. Take `⟨Y, hY, z, hz, V, hV, hUY⟩` from `T.exists_bddB_eq_ξ_mul_add hξ (hU j) (N j) (hJ0 j hj)`. Establish `hz1 : ‖z‖ ≤ 1` using `hz ▸ hJ0 j hj`. Use `⟨Y, hY, ⟨_, T.coe_teich_mul_mem_Econ hz1 hV⟩, fun _ => ⟨?_, fun ρ => ?_⟩⟩` and prove the remaining obligations.
+
+Simplify using `only [hbdef, ξExt]`. Rewrite using `[← Completion.coe_mul, ← Completion.coe_add]`. Use `congr 1`. Conclude with `Subtype.ext hUY`. Rewrite using `[extNorm_coe] show gaussNorm (T.coeffB (algebraMap Γ T.B (T.teich z * V))) ρ ≤ ‖v j‖`.
+
+Rewrite using `[coeffB_algebraMap, ← hz]`. Conclude with `T.gaussNorm_teich_mul_int_le hV ρ.2.1 (lt_of_le_of_lt ρ.2.2 ρ0.2.2)`. Conclude with `⟨0, ⟨1, one_ne_zero, by simp, by simp [T.int.zero_mem]⟩, 0, fun h => absurd h hj⟩`. Use `choose Y hY e he using loc`. Use `set y : ℕ → T.RobbaExt ρ0 := fun j => ((⟨T.bddB (Y j) (N j), T.bddB_mem_Econ (hY j) (N j) ρ0⟩ : T.Econ ρ0) : T.RobbaExt ρ0) with hydef`.
+
+Establish `hξy : ∀ ρ : Set.Ioc (0 : ℝ) ρ0, Tendsto (fun j => T.extNorm ρ0 ρ (x - T.ξExt ξ ρ0 * y j)) atTop (𝓝 0)`. Introduce `ρ`. Establish `hmax : Tendsto (fun j => max (T.extNorm ρ0 ρ (x - b j)) ‖v j‖) atTop (𝓝 0)`. Simplify using `using (hbx ρ).max hvn`. Use `squeeze_zero' (Eventually.of_forall fun j => T.extNorm_nonneg ρ _) ?_ hmax` and prove the remaining obligations.
+
+Use `filter_upwards [eventually_ge_atTop J0] with j hj`. Take `⟨hbj, hej⟩` from `he j hj`. Establish `: x - T.ξExt ξ ρ0 * y j = (x - b j) + (e j : T.RobbaExt ρ0)`. Rewrite using `[hbj]`. Simplify using `only [hydef]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `(T.extNorm_add_le _ _ _).trans (max_le_max le_rfl (hej ρ))`. Establish `hcau : CauchySeq y`. Use `T.cauchySeq_of_extNorm fun ρ ε hε => ?_` and prove the remaining obligations.
+
+Establish `hεr : 0 < ε * T.ptRad ξ` using `mul_pos hε hr0`. Take `⟨J, hJ⟩` from `eventually_atTop.1 ((hξy ρ).eventually (gt_mem_nhds hεr))`. Use `⟨J, fun j hj k hk => ?_⟩` and prove the remaining obligations. Establish `hjk : T.extNorm ρ0 ρ (T.ξExt ξ ρ0 * (y j - y k)) < ε * T.ptRad ξ`. Establish `e2 : T.ξExt ξ ρ0 * (y j - y k) = -(x - T.ξExt ξ ρ0 * y j) + (x - T.ξExt ξ ρ0 * y k)` using `by ring`.
+
+Rewrite using `[e2]`. Use `(T.extNorm_add_le _ _ _).trans_lt (max_lt ?_ (hJ k hk))` and prove the remaining obligations. Rewrite using `[extNorm_neg]`. Conclude with `hJ j hj`. Rewrite `hjk` using `[extNorm_mul]`.
+
+Establish `hξge` using `T.ptRad_le_extNorm_ξExt (ξ := ξ) ρ`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Use `mul_le_mul hξge hcon hε.le (T.extNorm_nonneg ρ _)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨y₀, hy₀⟩` from `cauchySeq_tendsto_of_complete hcau`. Use `⟨y₀, tendsto_nhds_unique (T.tendsto_of_extNorm hξy) (hy₀.const_mul _)⟩` and prove the remaining obligations.
+-/
 theorem ptEval_eq_zero_iff (x : T.RobbaExt ρ0) :
     T.ptEval hξ hr x = 0 ↔ ∃ y, x = T.ξExt ξ ρ0 * y := by
   constructor

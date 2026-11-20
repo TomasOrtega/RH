@@ -6,6 +6,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SecondCountable
 open Matrix MeasureTheory PositivityTheory.Rg.BcB PositivityTheory.Rg.Tf.Loc GlobalTheory.CompanionTheory.LocVan
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LocVan.integral_eq_zero_of_unfolding | exact GlobalTheory.CompanionTheory.LocVan.integral_eq_zero_of_unfolding | (intros; apply GlobalTheory.CompanionTheory.LocVan.integral_eq_zero_of_unfolding <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.integral_unfold_weighted_average : ∀ {G H : Type} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [MeasurableInv G]
   (μ : Measure G) [μ.IsMulLeftInvariant] [SFinite μ] [MeasurableSpace H] (ν : Measure H) [SFinite ν]
   (u : H → G), Measurable u → ∀ (w ρ : G → ℝ≥0∞) (F : G → ℂ), Measurable w → Measurable ρ → Measurable F →

@@ -11,6 +11,37 @@ noncomputable section
 namespace GlobalTheory.Mem.Col2.AdT
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Introduce `B X I hI u a i hi b P g z hmid`. Establish `hO` using `hI.idx_ok a`. Establish `hpr` using `(GlobalTheory.TwU.exists_midLev_iff (R := B.R) I.Ch I.sel (I.tup a) (I.cst a) i P ((I.idx a).h i (Idx.get b hi) P) g).mp ⟨z, hmid⟩`. Establish `hgi : g ∈ Formalism.L2.Col.GLint B.fields.E (B.R.N i) P.1` using `hO.int i (Idx.get b hi) P hpr`. Use `⟨hgi, fun g' hg' hc => ?_⟩` and prove the remaining obligations.
+
+Establish `hb : b.1 = some (Idx.get b hi)` using `(Option.some_get _).symm`. Establish `hstd : ∀ (k : ↥(Formalism.L2.Col.GLint B.fields.E (B.R.N i) P.1)) {x : Sp B.fields.E (B.R.N i)}, x ∈ stdAt B.fields.E (B.R.N i) P.1 → k.1 x ∈ stdAt B.fields.E (B.R.N i) P.1` using `fun k _ hx => GlobalTheory.TopStep.glint_mem k hx`. Use `⟨⟨1, ⟨fun w => if h : w.1 = P.1 then (GlobalTheory.TopStep.redGL (B.R.N i) w.1 ⟨g, by rw [h]; exact hgi⟩)⁻¹ else 1, ?_⟩, ⟨fun w => if h : w.1 = P.1 then (⟨g', by rw [h]; exact hg'⟩ : ↥(Formalism.L2.Col.GLint B.fields.E (B.R.N i) w.1))⁻¹ else 1, ?_⟩⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[LevFam.grp, Subgroup.mem_pi]`. Introduce `w _`.
+
+Simplify using `only [levGAt, hb, Option.elim]`. Distinguish the cases in `hw : w.1 = P.1`. Rewrite using `[dif_pos hw]`. Apply `inv_mem` to reduce the goal to its premises. Rewrite using `[hO.grpG]`.
+
+Take `⟨w, hwG⟩` from `w`. Simplify using `only at hw`. Substitute `hw` using the available equality. Conclude with `⟨g, hpr, fun x hx => GlobalTheory.TopStep.redV_redGL ⟨g, hgi⟩ hx⟩`. Rewrite using `[dif_neg hw]`.
+
+Conclude with `one_mem _`. Rewrite using `[LevQFam.grp, Subgroup.mem_pi]`. Introduce `w _`. Simplify using `only [levQAt, hb, Option.elim]`. Distinguish the cases in `hw : w.1 = P.1`.
+
+Rewrite using `[dif_pos hw]`. Apply `inv_mem` to reduce the goal to its premises. Take `⟨w, hwQ⟩` from `w`. Simplify using `only at hw`. Substitute `hw` using the available equality.
+
+Establish `hgQ : (⟨g, hgi⟩ : ↥(Formalism.L2.Col.GLint B.fields.E (B.R.N i) P.1)) ∈ ((I.idx a).levQ i (Idx.get b hi) ⟨P.1, hwQ⟩).H`. Rewrite using `[hO.grpQ, Subgroup.mem_subgroupOf]`. Conclude with `hpr`. Use `set k := (⟨g, hgi⟩ : ↥(Formalism.L2.Col.GLint B.fields.E (B.R.N i) P.1))⁻¹ with hk`. Establish `hkg : ∀ v, k.1 (g v) = v`.
+
+Introduce `v`. Establish `h1 : k * (⟨g, hgi⟩ : ↥(Formalism.L2.Col.GLint B.fields.E (B.R.N i) P.1)) = 1` using `inv_mul_cancel _`. Conclude with `congrArg (fun m : ↥(Formalism.L2.Col.GLint B.fields.E (B.R.N i) P.1) => m.1 v) h1`. Establish `hdeep` using `levQ_deep I hI a i hi (Idx.get b hi) P hwQ (k * ⟨g', hg'⟩)`. Take `⟨hd, -⟩` from `hdeep (by`.
+
+Introduce `x hx`. Establish `hneg` using `Submodule.neg_mem _ (hstd k (hc x hx))`. Rewrite `hneg` using `[map_smul, map_sub, hkg, ← smul_neg, neg_sub]`. Conclude with `hneg)`. Establish `e2 : (⟨g', hg'⟩ : ↥(Formalism.L2.Col.GLint B.fields.E (B.R.N i) P.1)) = ⟨g, hgi⟩ * (k * ⟨g', hg'⟩)`.
+
+Rewrite using `[hk, mul_inv_cancel_left]`. Rewrite using `[e2]`. Conclude with `mul_mem hgQ hd`. Rewrite using `[dif_neg hw]`. Conclude with `one_mem _`.
+
+Conclude with `map_one (ufGL B.fields.E (B.R.N i))`. Use `⟨hg', ?_, ?_⟩` and prove the remaining obligations. Introduce `h x hx dsimp only`. Rewrite using `[dif_pos rfl, inv_inv, ← GlobalTheory.TopStep.redV_redGL ⟨g, hgi⟩ hx]`. Establish `hD : (I.cst a).D P = 1` using `hO.depthG P h`.
+
+Establish `hq` using `hc x hx`. Rewrite `hq` using `[hD, pow_one]`. Use function extensionality and compare the values at `l`. Establish `h1 : IntAt P.1 (g x l)` using `GlobalTheory.TopStep.mem_stdAt.mp (hstd ⟨g, hgi⟩ hx) l`. Establish `h2 : IntAt P.1 (g' x l)` using `GlobalTheory.TopStep.mem_stdAt.mp (hstd ⟨g', hg'⟩ hx) l`.
+
+Establish `h3 : IntAt P.1 (((qOf P.1 : ℕ) : B.fields.E)⁻¹ * (g x l - g' x l))` using `GlobalTheory.TopStep.mem_stdAt.mp hq l`. Establish `h0` using `GlobalTheory.TopStep.redP_eq_zero_of_div (P := P.1) (a := g x l - g' x l) (by rw [div_eq_inv_mul]; exact h3)`. Rewrite `h0` using `[GlobalTheory.TopStep.reduction_sub h1 h2, sub_eq_zero]`. Conclude with `h0.symm`. Introduce `h dsimp only`.
+
+Rewrite using `[dif_pos rfl, inv_inv]`. Introduce `P' hP'`. Establish `hne : P'.1 ≠ P.1` using `fun e => hP' (Subtype.ext e)`. Use `⟨one_mem _, ?_, ?_⟩` and prove the remaining obligations. Introduce `h x hx dsimp only`.
+
+Rewrite using `[dif_neg hne, inv_one]`. Simplify using the standard rewrite rules. Introduce `h dsimp only`. Rewrite using `[dif_neg hne, inv_one]`. Apply the tactic sequence `all_goals rfl`.
+-/
 private theorem mem_GLint_and_exists_liftsInv_of_congE : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (u : B.Word) (a : I.ι) (i : ℕ) (hi : i < B.R.m)
     (b : (I.stp u a i).β) (P : SBof I a) (g : Sp B.fields.E (B.R.N i) ≃ₗ[B.fields.E] Sp B.fields.E (B.R.N i)) (z : B.fields.K),
     MidAt I hi b P g z → g ∈ Formalism.L2.Col.GLint B.fields.E (B.R.N i) P.1 ∧
@@ -106,6 +137,9 @@ private theorem mem_GLint_and_exists_liftsInv_of_congE : ∀ {B : Base} {X : Pre
 
 open Classical in
 
+/- English proof (translation)
+The claim follows from `mem_GLint_and_exists_liftsInv_of_congE`.
+-/
 theorem midAt_lifts : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (u : B.Word) (a : I.ι) (i : ℕ) (hi : i < B.R.m)
     (b : (I.stp u a i).β) (P : SBof I a) (g : Sp B.fields.E (B.R.N i) ≃ₗ[B.fields.E] Sp B.fields.E (B.R.N i)) (z : B.fields.K),
     MidAt I hi b P g z → g ∈ Formalism.L2.Col.GLint B.fields.E (B.R.N i) P.1 ∧

@@ -11,18 +11,27 @@ namespace GlobalTheory.Katz
 
 variable (p : ℕ) [Fact p.Prime] {k k' : Type} [Field k] [CharP k p] [Field k'] [CharP k' p]
 
+/- English proof (translation)
+Unfold `inL`. Rewrite using `[map_subst (hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _)]`. Simplify using `only [map_X]`.
+-/
 theorem map_inL_fr {R S : Type} [CommRing R] [CommRing S] (h : R →+* S) {d : ℕ}
     (f : MvPowerSeries (Fin d) R) : MvPowerSeries.map h (inL f) = inL (MvPowerSeries.map h f) := by
   unfold inL
   rw [map_subst (hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _)]
   simp only [map_X]
 
+/- English proof (translation)
+Unfold `inR`. Rewrite using `[map_subst (hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _)]`. Simplify using `only [map_X]`.
+-/
 theorem map_inR_fr {R S : Type} [CommRing R] [CommRing S] (h : R →+* S) {d : ℕ}
     (f : MvPowerSeries (Fin d) R) : MvPowerSeries.map h (inR f) = inR (MvPowerSeries.map h f) := by
   unfold inR
   rw [map_subst (hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _)]
   simp only [map_X]
 
+/- English proof (translation)
+Unfold `cob1`. Rewrite using `[map_sub, map_sub, map_inL_fr, map_inR_fr, map_subst (hasSubst_of_constantCoeff_zero fun i => constantCoeff_lift p (hμ i))]`. Simplify using `only [map_lift]`.
+-/
 theorem map_coboundaryOne_teichmullerLift_law (σ : k →+* k') {d : ℕ} (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k)
     (hμ : ∀ i, constantCoeff (μ i) = 0) (f : MvPowerSeries (Fin d) (Fr p k)) :
     MvPowerSeries.map (frMap p σ) (cob1 (fun i => lift p (μ i)) f) =
@@ -32,6 +41,9 @@ theorem map_coboundaryOne_teichmullerLift_law (σ : k →+* k') {d : ℕ} (μ : 
     map_subst (hasSubst_of_constantCoeff_zero fun i => constantCoeff_lift p (hμ i))]
   simp only [map_lift]
 
+/- English proof (translation)
+Introduce `α`. Take `⟨w, hw⟩` from `hg α`. Use `⟨WittVector.map σ w, ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_map, hw, one_mul, one_mul, frMap_algebraMap]`.
+-/
 theorem map_mem_intBy_one (σ : k →+* k') {ι : Type} {g : MvPowerSeries ι (Fr p k)}
     (hg : g ∈ intBy p k ι 1) : MvPowerSeries.map (frMap p σ) g ∈ intBy p k' ι 1 := by
   intro α
@@ -39,6 +51,9 @@ theorem map_mem_intBy_one (σ : k →+* k') {ι : Type} {g : MvPowerSeries ι (F
   refine ⟨WittVector.map σ w, ?_⟩
   rw [coeff_map, hw, one_mul, one_mul, frMap_algebraMap]
 
+/- English proof (translation)
+Introduce `α i`. Take `⟨w, hw⟩` from `hg α i`. Use `⟨WittVector.map σ w, ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_map, ← map_natCast (frMap p σ), ← map_mul, hw, frMap_algebraMap]`.
+-/
 theorem map_mem_quasiInt (σ : k →+* k') {ι : Type} {g : MvPowerSeries ι (Fr p k)}
     (hg : g ∈ quasiInt p k ι) : MvPowerSeries.map (frMap p σ) g ∈ quasiInt p k' ι := by
   intro α i
@@ -46,6 +61,9 @@ theorem map_mem_quasiInt (σ : k →+* k') {ι : Type} {g : MvPowerSeries ι (Fr
   refine ⟨WittVector.map σ w, ?_⟩
   rw [coeff_map, ← map_natCast (frMap p σ), ← map_mul, hw, frMap_algebraMap]
 
+/- English proof (translation)
+Use `⟨by rw [hx, frMap_algebraMap], ?_⟩` and prove the remaining obligations. Rewrite using `[← ha, WittVector.constantCoeff_apply, WittVector.constantCoeff_apply, WittVector.map_coeff]`.
+-/
 theorem frMap_red (σ : k →+* k') {x : Fr p k} {a : WittVector p k} {b : k}
     (hx : x = algebraMap _ (Fr p k) a) (ha : WittVector.constantCoeff a = b) :
     frMap p σ x = algebraMap _ (Fr p k') (WittVector.map σ a) ∧
@@ -53,6 +71,15 @@ theorem frMap_red (σ : k →+* k') {x : Fr p k} {a : WittVector p k} {b : k}
   refine ⟨by rw [hx, frMap_algebraMap], ?_⟩
   rw [← ha, WittVector.constantCoeff_apply, WittVector.constantCoeff_apply, WittVector.map_coeff]
 
+/- English proof (translation)
+Introduce `p _ k k' _ _ _ _ σ d μ hμ hμ' f hf`. Establish `key` using `map_coboundaryOne_teichmullerLift_law p σ μ hμ.const f`. Use `⟨⟨map_mem_quasiInt p σ hf.1, ?_⟩, map_mem_intBy_one p σ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← key]`. Conclude with `map_mem_intBy_one p σ hf.2`.
+
+Introduce `t ht α`. Take `⟨w, hw, hw0⟩` from `ht α`. Take `⟨e1, e2⟩` from `frMap_red p σ hw hw0`. Use `⟨WittVector.map σ w, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← key, coeff_map, e1]`.
+
+Rewrite using `[e2, coeff_map]`. Introduce `w hw i`. Take `⟨a, ha, ha0⟩` from `hw i`. Take `⟨e1, e2⟩` from `frMap_red p σ ha ha0`. Use `⟨WittVector.map σ a, ?_, e2⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `coeff _ (MvPowerSeries.map (frMap p σ) f) = _`. Rewrite using `[coeff_map]`. Conclude with `e1`.
+-/
 theorem quasiLog_map :
     ∀ (p : ℕ) [Fact p.Prime] (k k' : Type) [Field k] [CharP k p] [Field k'] [CharP k' p]
       (σ : k →+* k') (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k) (hμ : IsLaw μ)

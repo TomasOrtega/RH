@@ -19,6 +19,13 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.MiS
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.MiTop GlobalTheory.SeeSaw GlobalTheory.Fam ValuativeRel IsLocalRing GlobalTheory.FinPl
 namespace GlobalTheory.MiTop
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W u f d hc hl hb n h₀ t φ`. Take `⟨α₀, h1, h2, h3, -⟩` from `hc t`. Use `⟨(h3 φ).1, fun G y v => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `rfl : n = D.R.rS := by`. Establish `: D.R.rS = D.R.m / 2 - 1` using `rfl`.
+
+Use linear arithmetic over natural numbers and integers. Establish `e : ∀ g : GA D (Yc D 0) → ℂ, trc (Finsupp.single (f.g.b 0) 1) g = rTrans (f.g.b 0) g` using `fun g => by`. Unfold `trc`. Rewrite using `[Finsupp.support_single _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]`. Unfold `_root_.GlobalTheory.MiTop.BottomData.per Tup.per Tup.perF`.
+
+Rewrite using `[Finset.sum_eq_single α₀ (fun b _ hb => absurd (h1 b) hb) (by simp)]`. Use `beta_reduce`. Rewrite using `[h2, (h3 φ).2 y, hb]`. Conclude with `besLev_per_congr (hl h₀).symm _ HEq.rfl (heq_of_eq (e _))`.
+-/
 theorem linkZero_of_chartZero_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), ∀ u (f : _root_.GlobalTheory.Fam.FamilyCharacter W u) (d : _root_.GlobalTheory.MiTop.BottomData W u), _root_.GlobalTheory.MiTop.ChartAtZeroCondition f → (∀ h₀ : 0 + 2 * D.R.rS + 2 = D.R.m, d.B.lev = f.c.B 0 D.R.rS h₀) → d.b = (show GA D (D.sp.Y 0) from f.g.b 0) → _root_.GlobalTheory.MiTop.LinkVanishes f d := by
   intro D L hT Gi Gl Kc Yd cX ex W u f d hc hl hb n h₀ t φ
   obtain ⟨α₀, h1, h2, h3, -⟩ := hc t

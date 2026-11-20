@@ -21,6 +21,9 @@ open PositivityTheory.Rg.Rsw
 open GlobalTheory.CompanionTheory.ZUnf GlobalTheory.Eis
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ZUnf.law_facts | exact GlobalTheory.CompanionTheory.ZUnf.law_facts | (intros; apply GlobalTheory.CompanionTheory.ZUnf.law_facts <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.eisenstein_terms_uniformly_summable : ∀ {D : D7} {n : ℕ} {χ : (AE D)ˣ →* Circle} {s : ℂ} {f : G D n → ℂ}, IsHeckeChar D χ → Continuous f → IsLaw χ s f → (n : ℝ) / 2 < s.re →
     LeftInv (P D n ⊓ GF D n) f ∧
     (∀ q ∈ P D n, ∀ a : GL (Fin n) (AE D), blkA (mat q) = a.1 → Matrix.GeneralLinearGroup.det a = 1 → ∀ g, f (q * g) = f g) ∧

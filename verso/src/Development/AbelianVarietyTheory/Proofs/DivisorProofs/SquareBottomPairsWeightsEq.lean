@@ -22,6 +22,13 @@ noncomputable section
 
 namespace GlobalTheory.BottomWeights
 
+/- English proof (translation)
+Establish `hc` using `GlobalTheory.SplitWeight.exps_eq_zero (Formalism.L2.Host.embTau D) (GlobalTheory.SplitWeight.embTau_inj D) (GlobalTheory.SplitWeight.embTau_ne_conj D) (fun τ => e * χ.n τ - e' * χ'.n τ) (fun a ha => by set u := Units.mk0 a ha set φ := Formalism.L2.Host.embTau D`. Establish `hne : ∀ τ, φ τ a ≠ 0` using `fun τ => by simpa using ha`. Establish `hu : ∀ τ, φ τ a / ((‖φ τ a‖ : ℝ) : ℂ) ≠ 0` using `fun τ => div_ne_zero (hne τ) (by exact_mod_cast norm_ne_zero_iff.2 (hne τ))`. Establish `hA : ((χ.f (Units.map (inc D).toMonoidHom u) : ℂˣ) : ℂ) * ∏ τ, (φ τ a / ((‖φ τ a‖ : ℝ) : ℂ)) ^ (χ.n τ) = 1` using `χ.aut u`. Establish `hB : ((χ'.f (Units.map (inc D).toMonoidHom u) : ℂˣ) : ℂ) * ∏ τ, (φ τ a / ((‖φ τ a‖ : ℝ) : ℂ)) ^ (χ'.n τ) = 1` using `χ'.aut u`.
+
+Establish `hE` using `congrArg Units.val (h (Units.map (inc D).toMonoidHom u))`. Simplify using `only [Units.val_zpow_eq_zpow_val] at hE`. Rewrite `hE` using `[eq_inv_of_mul_eq_one_left hA, eq_inv_of_mul_eq_one_left hB, inv_zpow, inv_zpow, inv_inj, ← Finset.prod_zpow, ← Finset.prod_zpow]`. Repeatedly rewrite using `[zpow_sub₀ (hu _), Finset.prod_div_distrib, mul_comm e, mul_comm e', zpow_mul]`. Rewrite using `[hE]`.
+
+Conclude with `div_self (Finset.prod_ne_zero_iff.2 fun τ _ => zpow_ne_zero _ (zpow_ne_zero _ (hu τ))))`. Conclude with `sub_eq_zero.1 (congrFun hc τ)`.
+-/
 theorem mul_n_eq {D : D7} {N N' : ℕ} (χ : HeckeU D N) (χ' : HeckeU D N') (e e' : ℤ)
     (h : ∀ x, χ.f x ^ e = χ'.f x ^ e') (τ : D.what₂.Tau) : e * χ.n τ = e' * χ'.n τ := by
   have hc := GlobalTheory.SplitWeight.exps_eq_zero (Formalism.L2.Host.embTau D) (GlobalTheory.SplitWeight.embTau_inj D)
@@ -44,6 +51,11 @@ theorem mul_n_eq {D : D7} {N N' : ℕ} (χ : HeckeU D N) (χ' : HeckeU D N') (e 
       exact div_self (Finset.prod_ne_zero_iff.2 fun τ _ => zpow_ne_zero _ (zpow_ne_zero _ (hu τ))))
   exact sub_eq_zero.1 (congrFun hc τ)
 
+/- English proof (translation)
+Introduce `D T Lc sc G t i j 𝔪 δ t0 Q P P' h`. Use function extensionality and compare the values at `τ`. Establish `h1` using `mul_n_eq P.W.chV' P'.W.chV' P.W.ep' P'.W.ep' (fun x => (h.chars.2 x).trans (h.chars'.2 x).symm) τ`. Establish `h2` using `P.wt τ`. Establish `h3` using `P'.wt τ`.
+
+Establish `h4 : P'.d = P.d` using `h.rank.2.2.2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem isBottom_n_eq : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) (t : T) (i j : Fin D.R.m)
     (𝔪 : Ideal (𝓞 D.host.E)) {δ t0 : ℂ} {Q : ℕ} (P P' : Pair D ⊤ δ t0 Q), IsBottom G t i j 𝔪 P P' → P'.n = P.n := by
   intro D T Lc sc G t i j 𝔪 δ t0 Q P P' h

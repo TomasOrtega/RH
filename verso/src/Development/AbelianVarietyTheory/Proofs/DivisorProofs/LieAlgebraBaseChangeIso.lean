@@ -24,6 +24,53 @@ noncomputable section
 namespace GlobalTheory.RealMult.Obj
 open GlobalTheory.Serre GlobalTheory.FlatRow.EigLocal
 
+/- English proof (translation)
+Introduce `F _ _ 𝔠 R R' _ _ _ X X' φ h`. Use `set f := algebraMap R R' with hf`. Take `⟨ρ, hρ, -⟩` from `exists_res h.grp X.rm X'.rm h.act`. Use `letI : Module R X'.Lie := Module.compHom X'.Lie f`. Use `haveI : IsScalarTower R R' X'.Lie := ⟨fun r s v => by show (r • s) • v = f r • (s • v)`.
+
+Rewrite using `[Algebra.smul_def, mul_smul]⟩`. Set `ρR : X.Lie →ₗ[R] X'.Lie` to `{ toFun := ρ, map_add' := ρ.map_add, map_smul' := fun r v => ρ.map_smulₛₗ r v }`. Set `e₀ : R' ⊗[R] X.Lie →ₗ[R'] X'.Lie` to `LinearMap.liftBaseChange R' ρR`. Establish `he₀ : ∀ (c : R') v, e₀ (c ⊗ₜ v) = c • ρ v` using `fun c v => by`. Simplify using `[e₀, ρR, LinearMap.liftBaseChange_tmul]`.
+
+Establish `corr : ∀ v v', LieCorr f φ v v' ↔ v' = ρ v` using `fun v v' => ⟨fun e => Serre.Lie.ext ((existsUnique_isVecOver h.grp.1 v.hom).unique e (hρ v)), fun e => e ▸ hρ v⟩`. Establish `hsm` using `X.dim.smooth`. Establish `hsm'` using `X'.dim.smooth`. Establish `loc : ∀ (q : Ideal R') [q.IsPrime], (∀ z, e₀ z = 0 → ∃ u ∉ q, u • z = 0) ∧ ∀ y, ∃ u ∉ q, u • y ∈ LinearMap.range e₀`. Introduce `q _`.
+
+Set `T` to `Localization.AtPrime q`. Set `gT` to `algebraMap R' T`. Use `letI : GrpObj ((Over.pullback (spMap gT)).obj X'.A) := Functor.grpObjObj`. Use `haveI : IsCommMonObj ((Over.pullback (spMap gT)).obj X'.A) := Functor.isCommMonObj_obj`. Establish `hq` using `isGrpPullback_pullback X'.A (spMap gT)`.
+
+Take `⟨aq, haq⟩` from `GlobalTheory.OActPull.exists_oAct_of_isGrpPullback X'.rm hq`. Take `⟨ρq, hρq, -⟩` from `exists_res hq X'.rm aq haq`. Establish `hc : IsGrpPullback ((Over.pullback (spMap gT)).obj X'.A) X.A (spMap (gT.comp f)) (pullback.fst X'.A.hom (spMap gT) ≫ φ)`. Use `hq.comp h.grp` as an intermediate fact. Rewrite `this` using `[spMap_comp_spMap]`. Then use the resulting hypothesis.
+
+Use `set p := q.comap f with hp`. Take `⟨n, w₀, hw₀, hw⟩` from `GlobalTheory.T.tangent_vectors_localization_lift X.A hsm p`. Set `w : Fin n → X.Lie` to `fun i => Serre.Lie.mk X.rm (w₀ i) (hw₀ i)`. Establish `hmax : (IsLocalRing.maximalIdeal T).comap (gT.comp f) = p`. Rewrite using `[← Ideal.comap_comap]`.
+
+Conclude with `congrArg (Ideal.comap f) (Localization.AtPrime.comap_maximalIdeal (I := q))`. Establish `hB` using `GlobalTheory.T.tangent_frame_localization_spans hsm p w₀ hw T (gT.comp f) hmax _ _ hc (fun i => (ρq (ρ (w i))).hom) fun i => by`. Establish `e1` using `hρq (ρ (w i))`. Establish `e2` using `hρ (w i)`. Unfold `IsVecOver at e1 e2 ⊢`.
+
+Rewrite using `[← Category.assoc, e1, Category.assoc, e2, ← Category.assoc, spMap_comp_spMap, ← Chart.dualMapR_comp]`. Both sides reduce to the same expression. Rewrite `hB` using `[Serre.Lie.isLieBasis_iff]`. Use `⟨fun z hz => ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `span : ∀ z : R' ⊗[R] X.Lie, ∃ s ∉ p, ∃ c : Fin n → R', f s • z = ∑ i, c i ⊗ₜ w i`.
+
+Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, p.primeCompl.one_mem, 0, by simp⟩`. Consider the case `tmul r l`. Take `⟨s, hs, hl⟩` from `GlobalTheory.T.tangent_frame_localization_independent hsm X.rm p w (fun G' _ ψ hψ v hv => hw G' ψ hψ v hv) l`.
+
+Take `⟨b, hb⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 hl`. Use `⟨s, hs, fun i => f (b i) * r, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, Algebra.smul_def]`. Use `_ = r ⊗ₜ[R] (s • l) := TensorProduct.smul_tmul _ _ _`.
+
+Use `_ = _ := by`. Rewrite using `[← hb, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_smul, TensorProduct.smul_tmul', Algebra.smul_def]`. Consider the case `add z₁ z₂ h₁ h₂`.
+
+Take `⟨s₁, hs₁, c₁, e₁⟩` from `h₁`. Take `⟨s₂, hs₂, c₂, e₂⟩` from `h₂`. Use `⟨s₁ * s₂, p.primeCompl.mul_mem hs₁ hs₂, fun i => f s₂ * c₁ i + f s₁ * c₂ i, ?_⟩` and prove the remaining obligations. Establish `e₃ : f (s₁ * s₂) • (z₁ + z₂) = f s₂ • (f s₁ • z₁) + f s₁ • (f s₂ • z₂)`. Rewrite using `[map_mul, smul_add, smul_smul, smul_smul, mul_comm (f s₂)]`.
+
+Rewrite using `[e₃, e₁, e₂]`. Simplify using `only [Finset.smul_sum, TensorProduct.smul_tmul', smul_eq_mul, TensorProduct.add_tmul, Finset.sum_add_distrib]`. Take `⟨s, hs, c, hc⟩` from `span z`. Establish `h0 : ∑ i, c i • ρ (w i) = 0`. Use `congrArg e₀ hc` as an intermediate fact.
+
+Rewrite `this` using `[map_smul, hz, smul_zero, map_sum]`. Simplify `this.symm` using `[he₀]`. Establish `h1 : Fintype.linearCombination T (fun i => ρq (ρ (w i))) (fun i => gT (c i)) = 0`. Use `congrArg ρq h0` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`.
+
+Simplify `this` using `[Fintype.linearCombination_apply]`. Establish `h2 : ∀ i, gT (c i) = 0` using `fun i => by`. Use `hB.1 (h1.trans (map_zero _).symm)` as an intermediate fact. Conclude with `congrFun this i`. Use `choose u hu using fun i => (IsLocalization.map_eq_zero_iff q.primeCompl T (c i)).1 (h2 i)`.
+
+Use `⟨(∏ i, (u i : R')) * f s, q.primeCompl.mul_mem (q.primeCompl.prod_mem fun i _ => (u i).2) hs, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, hc, Finset.smul_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, ← Finset.mul_prod_erase _ _ (Finset.mem_univ i), mul_right_comm, hu i, zero_mul, TensorProduct.zero_tmul]`. Take `⟨c, hcy⟩` from `hB.2 (ρq y)`.
+
+Take `⟨⟨t, ht⟩, hta⟩` from `IsLocalization.exist_integer_multiples q.primeCompl (Finset.univ : Finset (Fin n)) c`. Use `choose a ha using fun i => hta i (Finset.mem_univ i)`. Establish `hx0 : ρq (t • y - ∑ i, a i • ρ (w i)) = 0`. Rewrite using `[map_sub, map_smulₛₗ, map_sum, ← hcy, Fintype.linearCombination_apply, Finset.smul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smulₛₗ, smul_smul, ha i, Algebra.smul_def, sub_self]`. Use `haveI := hsm'`. Take `⟨r, hr, hrx⟩` from `exists_smul_eq_zero X'.rm q (t • y - ∑ i, a i • ρ (w i)) (by`. Establish `e1` using `hρq (t • y - ∑ i, a i • ρ (w i))`. Establish `e0` using `hρq 0`.
+
+Rewrite `e1` using `[hx0]`. Rewrite `e0` using `[map_zero]`. Unfold `IsVecOver at e1 e0`. Conclude with `e1.symm.trans e0)`. Use `⟨r * t, q.primeCompl.mul_mem hr ht, ∑ i, (r * a i) ⊗ₜ w i, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hrx` using `[smul_sub, sub_eq_zero, Finset.smul_sum]`. Rewrite using `[map_sum]`. Simplify using `only [he₀]`. Rewrite using `[mul_smul, hrx]`. Simplify using `only [smul_smul]`.
+
+Use `⟨LinearEquiv.ofBijective e₀ ⟨?_, ?_⟩, fun v v' => (corr v v').trans ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Conclude with `eq_zero_of_loc fun q _ => (loc q).1 z hz`. Introduce `y`.
+
+Establish `: Submodule.Quotient.mk (p` using `LinearMap.range e₀) y = 0 := eq_zero_of_loc fun q _ => by`. Take `⟨u, hu, hm⟩` from `(loc q).2 y`. Conclude with `⟨u, hu, by rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]; exact hm⟩`. Conclude with `(Submodule.Quotient.mk_eq_zero _).1 this`. Use `show v' = ρ v ↔ v' = e₀ (1 ⊗ₜ v)`.
+
+Rewrite using `[he₀, one_smul]`.
+-/
 theorem lieBaseChange_equiv : ∀ {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R R' : Type} [CommRing R]
     [CommRing R'] [Algebra R R'] {X : Obj F 𝔠 (Sp R)} {X' : Obj F 𝔠 (Sp R')}
     {φ : X'.A.left ⟶ X.A.left}, X'.IsPullBy X (spMap (algebraMap R R')) φ →

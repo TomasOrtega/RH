@@ -8,9 +8,15 @@ namespace PI.QnHermHaar
 
 open Formalism.REAL Formalism.FourierDecayAlt.Q
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, Algebra.commutes]`.
+-/
 theorem mulAM {A : Type*} [Ring A] [Algebra ℂ A] (X : A) (c : ℂ) : X * algebraMap ℂ A c = c • X := by
   rw [Algebra.smul_def, Algebra.commutes]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem swap4a {A : Type*} [AddCommMonoid A] {p q : ℕ} (F : Fin p → Fin q → Fin p → Fin q → A) :
     ∑ i, ∑ k, ∑ j, ∑ l, F i k j l = ∑ j, ∑ i, ∑ l, ∑ k, F i k j l := by
   calc ∑ i, ∑ k, ∑ j, ∑ l, F i k j l = ∑ i, ∑ j, ∑ k, ∑ l, F i k j l :=
@@ -19,10 +25,26 @@ theorem swap4a {A : Type*} [AddCommMonoid A] {p q : ℕ} (F : Fin p → Fin q �
         Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_comm
     _ = ∑ j, ∑ i, ∑ l, ∑ k, F i k j l := Finset.sum_comm
 
+/- English proof (translation)
+The claim follows from `Finset.sum_congr rfl fun i _ => Finset.sum_comm`.
+-/
 theorem swap4b {A : Type*} [AddCommMonoid A] {p q : ℕ} (F : Fin p → Fin q → Fin p → Fin q → A) :
     ∑ i, ∑ k, ∑ j, ∑ l, F i k j l = ∑ i, ∑ j, ∑ k, ∑ l, F i k j l :=
   Finset.sum_congr rfl fun i _ => Finset.sum_comm
 
+/- English proof (translation)
+Simplify using `only [tA]`. Use `congr 1`. Use `set G : (Fin t → Fin (t + 2)) → A := fun s => ∑ j : Fin (t + 2), ∑ j' : Fin (t + 2), (if j < j' then ((-1 : ℂ) ^ ((j : ℕ) + (j' : ℕ))) • ((Y j * algebraMap ℂ A (x j') - Y j' * algebraMap ℂ A (x j)) * qminor E s (skip2 j j') (u - 1)) else 0) with hG`. Establish `h1 : ∀ i i' : Fin (t + 2), (∑ j : Fin (t + 2), ∑ j' : Fin (t + 2), if i < i' ∧ j < j' then ((-1 : ℂ) ^ ((i : ℕ) + (i' : ℕ) + (j : ℕ) + (j' : ℕ))) • ((Yb i * algebraMap ℂ A (xb i') - Yb i' * algebraMap ℂ A (xb i)) * (Y j * algebraMap ℂ A (x j') - Y j' * algebraMap ℂ A (x j)) * qmi …`. Introduce `i i'`.
+
+Distinguish the cases in `hi : i < i'`. Simplify using `only [hi, true_and, if_true, hG, Finset.mul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl (fun j _ => Finset.sum_congr rfl (fun j' _ => ?_))` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[mul_smul_comm, smul_smul, ← pow_add, mul_assoc]`.
+
+Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using `[hi]`. Simplify using `only [h1]`.
+
+Establish `hp` using `pairSum Yb (fun i => algebraMap ℂ A (xb i)) G`. Apply the tactic sequence `try simp only at hp`. Rewrite using `[hp]`. Establish `hq : ∀ s : Fin t → Fin (t + 2), G s = ∑ j : Fin (t + 2), ∑ l : Fin (t + 1), ((-1 : ℂ) ^ ((j : ℕ) + (l : ℕ))) • (Y (j.succAbove l) * algebraMap ℂ A (x j) * qminor E s (j.succAbove ∘ l.succAbove) (u - 1))`. Introduce `s`.
+
+Establish `h` using `pairSum Y (fun j => algebraMap ℂ A (x j)) (fun s' => qminor E s s' (u - 1))`. Rewrite using `[hG]`. Conclude with `h`. Simplify using `only [hq, Finset.mul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun k _ => Finset.sum_congr rfl (fun j _ => Finset.sum_congr rfl (fun l _ => ?_))))` and prove the remaining obligations.
+
+Simplify using `only [mulAM, smul_mul_assoc, mul_smul_comm, smul_smul, mul_assoc]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nested_minor_expansion_one_one {A : Type*} [Ring A] [Algebra ℂ A] {t : ℕ} (E : Fin (t + 2) → Fin (t + 2) → A)
     (Y Yb : Fin (t + 2) → A) (x xb : Fin (t + 2) → ℂ) (u : ℂ) :
     tA E Y Yb x xb u 1 1 = -∑ i : Fin (t + 2), ∑ k : Fin (t + 1), ∑ j : Fin (t + 2), ∑ l : Fin (t + 1),
@@ -73,6 +95,17 @@ theorem nested_minor_expansion_one_one {A : Type*} [Ring A] [Algebra ℂ A] {t :
   congr 1
   ring
 
+/- English proof (translation)
+Establish `hz : ∀ (p : ℕ) (X : A), (((-1 : ℤ) ^ p : ℤ) : A) * X = ((-1 : ℂ) ^ p) • X`. Introduce `p X`. Rewrite using `[← zsmul_eq_mul, ← Int.cast_smul_eq_zsmul ℂ]`. Use `push_cast`. Apply the tactic sequence `try rfl`.
+
+Establish `MC` using `fun l : Fin (t + 1) => hMC A (t + 2) t E Yb hGl hLYb hYbYb a.succAbove (b.succAbove ∘ l.succAbove) w`. Establish `MV` using `fun k : Fin (t + 1) => hMV A (t + 2) t E Y hGl hLY hYY (a.succAbove ∘ k.succAbove) b.succAbove w`. Simplify using `only [hz] at MC MV`. Establish `h1 : ∀ l : Fin (t + 1), ∑ k : Fin (t + 1), ((-1 : ℂ) ^ (k : ℕ) * (-1 : ℂ) ^ (l : ℕ)) • (qminor E (a.succAbove ∘ k.succAbove) (b.succAbove ∘ l.succAbove) w * (Yb (a.succAbove k) * Y (b.succAbove l))) = ∑ k : Fin (t + 1), ((-1 : ℂ) ^ (k : ℕ) * (-1 : ℂ) ^ (l : ℕ)) • (Yb (a.succAbove …`. Introduce `l`.
+
+Establish `e` using `congrArg (fun S => ((-1 : ℂ) ^ (l : ℕ)) • (S * Y (b.succAbove l))) (MC l)`. Simplify using `only [Finset.sum_mul, Finset.smul_sum, smul_mul_assoc, smul_smul, mul_assoc, mul_comm ((-1 : ℂ) ^ (l : ℕ))] at e`. Conclude with `e.symm`. Establish `h2 : ∀ k : Fin (t + 1), ∑ l : Fin (t + 1), ((-1 : ℂ) ^ (k : ℕ) * (-1 : ℂ) ^ (l : ℕ)) • (Yb (a.succAbove k) * (qminor E (a.succAbove ∘ k.succAbove) (b.succAbove ∘ l.succAbove) (w - 1) * Y (b.succAbove l))) = ∑ l : Fin (t + 1), ((-1 : ℂ) ^ (k : ℕ) * (-1 : ℂ) ^ (l : ℕ)) • (Yb (a.suc …`. Introduce `k`.
+
+Establish `e` using `congrArg (fun S => ((-1 : ℂ) ^ (k : ℕ)) • (Yb (a.succAbove k) * S)) (MV k)`. Simplify using `only [Finset.mul_sum, Finset.smul_sum, mul_smul_comm, smul_smul] at e`. Conclude with `e.symm`. Simplify using `only [mul_assoc]`. Rewrite using `[Finset.sum_comm, Finset.sum_congr rfl fun l _ => h1 l, Finset.sum_comm]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => h2 k`.
+-/
 theorem transfer_commutator_one_one (hMV : MoveVec) (hMC : MoveCov) {A : Type} [Ring A] [Algebra ℂ A] {t : ℕ}
     (E : Fin (t + 2) → Fin (t + 2) → A) (Y Yb : Fin (t + 2) → A) (hGl : GlRel E)
     (hYY : ∀ a b, Y a * Y b = Y b * Y a) (hYbYb : ∀ a b, Yb a * Yb b = Yb b * Yb a)
@@ -120,6 +153,9 @@ theorem transfer_commutator_one_one (hMV : MoveVec) (hMC : MoveCov) {A : Type} [
   rw [Finset.sum_comm, Finset.sum_congr rfl fun l _ => h1 l, Finset.sum_comm]
   exact Finset.sum_congr rfl fun k _ => h2 k
 
+/- English proof (translation)
+Establish `he : ((ε c : ℤ) : ℂ) * ((ε c : ℤ) : ℂ) = 1`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`. Rewrite using `[hYb c, smul_smul, he, one_smul]`.
+-/
 theorem starY {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] {m : ℕ} (Y Yb : Fin m → A)
     (ε : Fin m → ℤˣ) (hYb : ∀ c, Yb c = ((ε c : ℤ) : ℂ) • star (Y c)) (c : Fin m) :
     star (Y c) = ((ε c : ℤ) : ℂ) • Yb c := by
@@ -127,11 +163,29 @@ theorem starY {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A
     rw [← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]
   rw [hYb c, smul_smul, he, one_smul]
 
+/- English proof (translation)
+Rewrite using `[hYb c, star_smul, star_star, star_intCast]`.
+-/
 theorem starYb {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] {m : ℕ} (Y Yb : Fin m → A)
     (ε : Fin m → ℤˣ) (hYb : ∀ c, Yb c = ((ε c : ℤ) : ℂ) • star (Y c)) (c : Fin m) :
     star (Yb c) = ((ε c : ℤ) : ℂ) • Y c := by
   rw [hYb c, star_smul, star_star, star_intCast]
 
+/- English proof (translation)
+Break down `Nat.lt_or_ge m 2 with hm | hm` into its components or cases. Apply the tactic sequence `interval_cases m <;> simp [tA]`. Take `⟨t, rfl⟩ : ∃ t, m = t + 2` from `⟨m - 2, by omega⟩`. Establish `hterm : ∀ (i : Fin (t + 2)) (k : Fin (t + 1)) (j : Fin (t + 2)) (l : Fin (t + 1)), star (((-1 : ℂ) ^ ((i : ℕ) + (k : ℕ)) * (-1 : ℂ) ^ ((j : ℕ) + (l : ℕ)) * xb i * x j) • (Yb (i.succAbove k) * Y (j.succAbove l) * qminor E (i.succAbove ∘ k.succAbove) (j.succAbove ∘ l.succAbove) (u …`. Introduce `i k j l`.
+
+Rewrite using `[star_smul, star_mul (Yb _ * Y _), star_mul (Yb _), star2 hSM E ε hGl hE, starY Y Yb ε hYb, starYb Y Yb ε hYb, star_sub, star_one]`. Simplify using `only [star_mul', star_pow, star_neg, star_one, hxb, starE, star_star]`. Simplify using `only [smul_mul_assoc, mul_smul_comm, smul_smul, mul_assoc]`. Use `congr 1`. Establish `h1` using `eSq (ε i)`.
+
+Establish `h2` using `eSq (ε (i.succAbove k))`. Establish `h4` using `eSq (ε (j.succAbove l))`. Use `set p2 := ((ε (i.succAbove k) : ℤ) : ℂ)`. Use `set p4 := ((ε (j.succAbove l) : ℤ) : ℂ)`. Take the linear combination `((-1 : ℂ) ^ ((i : ℕ) + (k : ℕ)) * (-1 : ℂ) ^ ((j : ℕ) + (l : ℕ)) * x i * star (x j) * ((ε j : ℤ) : ℂ)) * (p2 * p2 * p4 * p4 * h1 + p4 * p4 * h2 + h4)`.
+
+Rewrite using `[nested_minor_expansion_one_one, nested_minor_expansion_one_one]`. Simplify using `only [star_neg, star_sum, hterm]`. Use `congr 1`. Use `conv_lhs => rw [swap4a]`. Use `conv_rhs => rw [swap4b]`.
+
+Use `Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => ?_))` and prove the remaining obligations. Establish `eL : ∑ l : Fin (t + 1), ∑ k : Fin (t + 1), ((-1 : ℂ) ^ ((b : ℕ) + (k : ℕ)) * (-1 : ℂ) ^ ((a : ℕ) + (l : ℕ)) * xb a * x b) • (qminor E (a.succAbove ∘ l.succAbove) (b.succAbove ∘ k.succAbove) (star u - 1) * Yb (a.succAbove l) * Y (b.succAbove k)) = ((-1 : ℂ) ^ (a : ℕ) * (-1 : ℂ) ^ …`. Simplify using `only [Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl (fun l _ => Finset.sum_congr rfl (fun k _ => ?_))` and prove the remaining obligations. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `eR : ∑ k : Fin (t + 1), ∑ l : Fin (t + 1), ((-1 : ℂ) ^ ((a : ℕ) + (k : ℕ)) * (-1 : ℂ) ^ ((b : ℕ) + (l : ℕ)) * xb a * x b) • (Yb (a.succAbove k) * Y (b.succAbove l) * qminor E (a.succAbove ∘ k.succAbove) (b.succAbove ∘ l.succAbove) (star u - 1)) = ((-1 : ℂ) ^ (a : ℕ) * (-1 : ℂ) ^ …`. Simplify using `only [Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl (fun k _ => Finset.sum_congr rfl (fun l _ => ?_))` and prove the remaining obligations. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eL, eR, transfer_commutator_one_one hMV hMC E Y Yb hGl hYY hYbYb hLY hLYb a b (star u - 1)]`.
+-/
 theorem lower_right_ne_zero_of_upper_right_zero (hSM : StarMinor) (hMV : MoveVec) (hMC : MoveCov) {A : Type} [Ring A] [StarRing A]
     [Algebra ℂ A] [StarModule ℂ A] {m : ℕ}
     (E : Fin m → Fin m → A) (Y Yb : Fin m → A) (x xb : Fin m → ℂ) (ε : Fin m → ℤˣ) (hGl : GlRel E)

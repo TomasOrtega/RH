@@ -33,6 +33,15 @@ def satQ (S : Subring Ω) : Subring Ω where
     rintro a ⟨n, hn, ha⟩
     exact ⟨n, hn, by simpa using S.neg_mem ha⟩
 
+/- English proof (translation)
+Set `D : Ideal A` to `{ carrier := {b | (b : Ω) * t ∈ A} add_mem' := by`. Introduce `a b ha hb`. Use `A.add_mem ha hb` as an intermediate fact. Simplify `this` using `[add_mul]`. Use the proof step `zero_mem' := by simpa using A.zero_mem`.
+
+Use the proof step `smul_mem' := by`. Introduce `c b hb`. Use `A.mul_mem c.2 hb` as an intermediate fact. Simplify `this }` using `[mul_assoc]`. Assume the negation of the conclusion as `ht`.
+
+Establish `hD : D ≠ ⊤`. Introduce `h`. Establish `h1 : (1 : A) ∈ D` using `h ▸ Submodule.mem_top`. Establish `h2 : ((1 : A) : Ω) * t ∈ A` using `h1`. Conclude with `ht (by simpa using h2)`.
+
+Take `⟨M, hM, hDM⟩` from `Ideal.exists_le_maximal D hD`. Take `⟨b, hb, hbt⟩` from `H M hM`. Conclude with `hb (hDM hbt)`.
+-/
 theorem mem_of_denominators (A : Subring Ω) (t : Ω)
     (H : ∀ M : Ideal A, M.IsMaximal → ∃ b : A, b ∉ M ∧ (b : Ω) * t ∈ A) : t ∈ A := by
   let D : Ideal A :=
@@ -56,6 +65,11 @@ theorem mem_of_denominators (A : Subring Ω) (t : Ω)
   obtain ⟨b, hb, hbt⟩ := H M hM
   exact hb (hDM hbt)
 
+/- English proof (translation)
+Introduce `h`. Establish `hn' : (n : Ω) ≠ 0` using `Nat.cast_ne_zero.mpr hn`. Establish `hinv : (n : Ω)⁻¹ ∈ satQ S` using `⟨n, Nat.pos_of_ne_zero hn, by`. Rewrite using `[mul_inv_cancel₀ hn']`. Conclude with `S.one_mem⟩`.
+
+Establish `hone : (1 : satQ S) = (⟨(n : Ω)⁻¹, hinv⟩ : satQ S) * (n : satQ S)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hn']`. Conclude with `hM.ne_top ((Ideal.eq_top_iff_one M).mpr (hone ▸ M.mul_mem_left _ h))`.
+-/
 theorem natCast_notMem [CharZero Ω] (S : Subring Ω) (M : Ideal (satQ S)) (hM : M.IsMaximal) (n : ℕ) (hn : n ≠ 0) :
     (n : satQ S) ∉ M := by
   intro h
@@ -70,6 +84,9 @@ theorem natCast_notMem [CharZero Ω] (S : Subring Ω) (M : Ideal (satQ S)) (hM :
 
 end Rings
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp only [aeval_C, eq_intCast, map_intCast]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => simp [hp]`.
+-/
 theorem map_aeval_int {σ A B : Type*} [CommRing A] [CommRing B] [Algebra ℤ A] [Algebra ℤ B] (π : A →+* B) (w : σ → A)
     (f : MvPolynomial σ ℤ) : π (aeval w f) = aeval (fun p => π (w p)) f := by
   induction f using MvPolynomial.induction_on with
@@ -81,6 +98,13 @@ section Charts
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Rewrite using `[aeval_def, aeval_def, eval₂_eq', eval₂_eq', Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `congr 1`. Establish `h1 : ∏ p : Σ k, ι k, y ⟨p.1, c p.1⟩ ^ m p = ∏ k, y ⟨k, c k⟩ ^ d k`.
+
+Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ∏ i, y ⟨k, c k⟩ ^ m ⟨k, i⟩ = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hg m hm k]`. Simplify using `only [div_pow, Finset.prod_div_distrib]`.
+
+Rewrite using `[h1, div_eq_mul_inv, ← Finset.prod_inv_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[zpow_neg, zpow_natCast]`.
+-/
 theorem aeval_chart (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) {g : MRing ι} {d : K → ℕ} (hg : IsMultiHomog g d) :
     aeval (fun p : Σ k, ι k => y p / y ⟨p.1, c p.1⟩) g = aeval y g * ∏ k, y ⟨k, c k⟩ ^ (-(d k : ℤ)) := by
   rw [aeval_def, aeval_def, eval₂_eq', eval₂_eq', Finset.sum_mul]
@@ -98,6 +122,11 @@ theorem aeval_chart (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) {g : MRing ι} {
   refine Finset.prod_congr rfl fun k _ => ?_
   rw [zpow_neg, zpow_natCast]
 
+/- English proof (translation)
+Establish `h : (aeval (fun p : Σ k, ι k => C (y p) * X p.1) f : MvPolynomial K Ω) = 0` using `RingHom.mem_ker.mp hf`. Establish `e` using `map_aeval_int (eval fun _ : K => (1 : Ω)) (fun p : Σ k, ι k => (C (y p) * X p.1 : MvPolynomial K Ω)) f`. Establish `e' : (fun p : Σ k, ι k => eval (fun _ : K => (1 : Ω)) (C (y p) * X p.1 : MvPolynomial K Ω)) = y`. Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules.
+
+Rewrite `e` using `[e', h, map_zero]`. Conclude with `e.symm`.
+-/
 theorem aeval_eq_zero_of_mem (y : (Σ k, ι k) → Ω) {f : MRing ι} (hf : f ∈ mCoordIdeal y) : aeval y f = 0 := by
   have h : (aeval (fun p : Σ k, ι k => C (y p) * X p.1) f : MvPolynomial K Ω) = 0 := RingHom.mem_ker.mp hf
   have e := map_aeval_int (eval fun _ : K => (1 : Ω)) (fun p : Σ k, ι k => (C (y p) * X p.1 : MvPolynomial K Ω)) f
@@ -107,12 +136,20 @@ theorem aeval_eq_zero_of_mem (y : (Σ k, ι k) → Ω) {f : MRing ι} (hf : f �
   rw [e', h, map_zero] at e
   exact e.symm
 
+/- English proof (translation)
+Introduce `hy`. Apply `h` to reduce the goal to its premises. Use `RingHom.mem_ker.mpr ?_` and prove the remaining obligations. Simplify using `[mConeMap, hy]`.
+-/
 theorem coord_ne_zero (y : (Σ k, ι k) → Ω) {p : Σ k, ι k} (h : (X p : MRing ι) ∉ mCoordIdeal y) : y p ≠ 0 := by
   intro hy
   apply h
   refine RingHom.mem_ker.mpr ?_
   simp [mConeMap, hy]
 
+/- English proof (translation)
+Use `charZero_of_inj_zero fun n hn => ?_` and prove the remaining obligations. Establish `hm : (n : ℤ) ∈ (mCoordIdeal y).comap (C : ℤ →+* MRing ι)`. Rewrite using `[Ideal.mem_comap]`. Use `RingHom.mem_ker.mpr ?_` and prove the remaining obligations. Establish `e : ((n : MvPolynomial K Ω)) = C (n : Ω)` using `(map_natCast C n).symm`.
+
+Simplify using `[mConeMap, e, hn]`. Rewrite `hm` using `[show (mCoordIdeal y).comap (C : ℤ →+* MRing ι) = ⊥ from h]`. Simplify using `using hm`.
+-/
 theorem charZero_of_horizontal (y : (Σ k, ι k) → Ω) (h : IsHorizontal (mCoordIdeal y)) : CharZero Ω := by
   refine charZero_of_inj_zero fun n hn => ?_
   have hm : (n : ℤ) ∈ (mCoordIdeal y).comap (C : ℤ →+* MRing ι) := by
@@ -123,6 +160,11 @@ theorem charZero_of_horizontal (y : (Σ k, ι k) → Ω) (h : IsHorizontal (mCoo
   rw [show (mCoordIdeal y).comap (C : ℤ →+* MRing ι) = ⊥ from h] at hm
   simpa using hm
 
+/- English proof (translation)
+Take `⟨-, ⟨-, -, hR⟩, hH, -⟩` from `hA`. Use `haveI := charZero_of_horizontal y hH`. Establish `hy : y ∈ ptsOver Ω (mCoordIdeal y)` using `⟨fun k => let ⟨i, hi⟩ := hR k; ⟨i, coord_ne_zero y hi⟩, fun f hf => aeval_eq_zero_of_mem y hf⟩`. Take `⟨v, hv0, dg, dh, g, h, -, -, -, hgy, hhy, hgz⟩` from `H Ω y hy`. Introduce `hu`.
+
+Rewrite `hgy` using `[hu, zero_mul]`. Rewrite `hgz` using `[hgy]`. Conclude with `mul_ne_zero hv0 hhy hgz.symm`.
+-/
 theorem ne_zero_of_genUnit {y : (Σ k, ι k) → Ω} {d : ℕ} (hA : IsArithVar (mCoordIdeal y) d) {a : K → ℤ} {u : Ω}
     (H : GenUnit y a u) : u ≠ 0 := by
   obtain ⟨-, ⟨-, -, hR⟩, hH, -⟩ := hA
@@ -135,6 +177,21 @@ theorem ne_zero_of_genUnit {y : (Σ k, ι k) → Ω} {d : ℕ} (hA : IsArithVar 
   rw [hgy] at hgz
   exact mul_ne_zero hv0 hhy hgz.symm
 
+/- English proof (translation)
+Set `w : (Σ k, ι k) → A` to `fun p => ⟨y p / y ⟨p.1, c p.1⟩, hx p⟩`. Establish `hval : ∀ f : MRing ι, ((aeval w f : A) : Ω) = aeval (fun p : Σ k, ι k => y p / y ⟨p.1, c p.1⟩) f` using `fun f => map_aeval_int A.subtype w f`. Take `⟨S, hS1, hS2⟩` from `hS`. Establish `hle : mCoordIdeal y ≤ RingHom.ker (aeval w : MRing ι →ₐ[ℤ] A)`. Establish `hspan : Ideal.span S ≤ RingHom.ker (aeval w : MRing ι →ₐ[ℤ] A)`.
+
+Use `Ideal.span_le.mpr fun f hf => ?_` and prove the remaining obligations. Take `⟨d, hd⟩` from `hS1 f hf`. Establish `hfP : f ∈ mCoordIdeal y` using `hS2 ▸ Ideal.subset_span hf`. Use `RingHom.mem_ker.mpr (Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[hval, aeval_chart y c hd, aeval_eq_zero_of_mem y hfP]`.
+
+Simplify using the standard rewrite rules. Rewrite `hspan` using `[← hS2]`. Then use the resulting hypothesis. Set `z : (Σ k, ι k) → L` to `fun p => π (w p)`. Establish `hz : z ∈ ptsOver L (mCoordIdeal y)`. Use `⟨fun k => ⟨c k, ?_⟩, fun f hf => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : w ⟨k, c k⟩ = 1` using `Subtype.ext (div_self (hc k))`. Simplify using `[z, h1]`. Establish `h0 : (aeval w f : A) = 0` using `RingHom.mem_ker.mp (hle hf)`. Rewrite using `[← map_aeval_int π w f, h0, map_zero]`. Take `⟨v, hv0, dg, dh, g, h, hg, hh, hd, hgy, hhz, hgz⟩` from `H L z hz`.
+
+Use `⟨aeval w h, aeval w g, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_aeval_int]`. Conclude with `hhz`. Rewrite using `[map_aeval_int] show aeval z g ≠ 0`. Rewrite using `[hgz]`.
+
+Conclude with `mul_ne_zero hv0 hhz`. Rewrite using `[hval, hval, aeval_chart y c hg, aeval_chart y c hh, hgy]`. Establish `e : ∏ k, y ⟨k, c k⟩ ^ (-(dg k : ℤ)) = (∏ k, y ⟨k, c k⟩ ^ (-(a k))) * ∏ k, y ⟨k, c k⟩ ^ (-(dh k : ℤ))`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← zpow_add₀ (hc k), hd k]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_ratio (y : (Σ k, ι k) → Ω) (hS : IsMultiHomogIdeal (mCoordIdeal y)) {a : K → ℤ} {u : Ω}
     (H : GenUnit y a u) (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {A : Subring Ω}
     (hx : ∀ p : Σ k, ι k, y p / y ⟨p.1, c p.1⟩ ∈ A) (L : Type) [Field L] [CharZero L] (π : A →+* L) :
@@ -178,6 +235,19 @@ theorem exists_ratio (y : (Σ k, ι k) → Ω) (hS : IsMultiHomogIdeal (mCoordId
     rw [e]
     ring
 
+/- English proof (translation)
+Use `set S := (chartRingZ y c).toSubring with hSdef`. Use `set t := u * ∏ k, y ⟨k, c k⟩ ^ (-(a k)) with ht`. Establish `hx : ∀ p : Σ k, ι k, y p / y ⟨p.1, c p.1⟩ ∈ satQ S` using `fun p => ⟨1, one_pos, by`. Establish `h : y p / y ⟨p.1, c p.1⟩ ∈ chartRingZ y c` using `Algebra.subset_adjoin ⟨p, rfl⟩`. Simplify `h⟩` using `[hSdef]`.
+
+Establish `key : ∀ M : Ideal (satQ S), M.IsMaximal → ∃ b e : satQ S, b ∉ M ∧ e ∉ M ∧ (e : Ω) = t * b`. Introduce `M hM`. Use `letI := Ideal.Quotient.field M`. Use `haveI : CharZero (satQ S ⧸ M) := charZero_of_inj_zero fun n hn => by`. Assume the negation of the conclusion as `h0`.
+
+Apply `natCast_notMem S M hM n h0` to reduce the goal to its premises. Establish `h1 : Ideal.Quotient.mk M (n : satQ S) = 0`. Rewrite using `[map_natCast]`. Conclude with `hn`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp h1`.
+
+Take `⟨b, e, hb, he, hbe⟩` from `exists_ratio y hS H c hc hx (satQ S ⧸ M) (Ideal.Quotient.mk M)`. Conclude with `⟨b, e, fun h => hb (Ideal.Quotient.eq_zero_iff_mem.mpr h), fun h => he (Ideal.Quotient.eq_zero_iff_mem.mpr h), hbe⟩`. Establish `ht0 : t ≠ 0` using `mul_ne_zero hu (Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hc k))`. Prove the components needed by the constructor for the conclusion. Use `mem_of_denominators _ _ fun M hM => ?_` and prove the remaining obligations.
+
+Take `⟨b, e, hb, -, hbe⟩` from `key M hM`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm, ← hbe]`. Conclude with `e.2`. Use `mem_of_denominators _ _ fun M hM => ?_` and prove the remaining obligations.
+
+Take `⟨b, e, -, he, hbe⟩` from `key M hM`. Use `⟨e, he, ?_⟩` and prove the remaining obligations. Rewrite using `[hbe, mul_comm t, mul_assoc, mul_inv_cancel₀ ht0, mul_one]`. Conclude with `b.2`.
+-/
 theorem chart_mem (y : (Σ k, ι k) → Ω) (hS : IsMultiHomogIdeal (mCoordIdeal y)) [CharZero Ω] {a : K → ℤ} {u : Ω}
     (hu : u ≠ 0) (H : GenUnit y a u) (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) :
     u * (∏ k, y ⟨k, c k⟩ ^ (-(a k))) ∈ satQ (chartRingZ y c).toSubring ∧
@@ -214,6 +284,9 @@ theorem chart_mem (y : (Σ k, ι k) → Ω) (hS : IsMultiHomogIdeal (mCoordIdeal
     rw [hbe, mul_comm t, mul_assoc, mul_inv_cancel₀ ht0, mul_one]
     exact b.2
 
+/- English proof (translation)
+Introduce `c hc`. Establish `h` using `hs c hc`. Simplify using `only [Nat.cast_one, one_mul]`. Conclude with `isIntegral_algebraMap (R := chartRingZ y c) (A := Ω) (x := ⟨_, h⟩)`.
+-/
 theorem mem_chartLatNm_one {y : (Σ k, ι k) → Ω} {a : K → ℤ} {s : Ω}
     (hs : ∀ c : ∀ k, ι k, (∀ k, y ⟨k, c k⟩ ≠ 0) → s * ∏ k, y ⟨k, c k⟩ ^ (-(a k)) ∈ chartRingZ y c) :
     s ∈ chartLatNm y a 1 := by
@@ -224,6 +297,25 @@ theorem mem_chartLatNm_one {y : (Σ k, ι k) → Ω} {a : K → ℤ} {s : Ω}
 
 end Charts
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ y d hA _ a u H`. Establish `hu` using `ne_zero_of_genUnit hA H`. Take `⟨-, ⟨-, hS, -⟩, hH, -⟩` from `hA`. Use `haveI := charZero_of_horizontal y hH`. Establish `hn : ∀ c : ∀ k, ι k, ∃ n : ℕ, 0 < n ∧ ((∀ k, y ⟨k, c k⟩ ≠ 0) → (n : Ω) * (u * ∏ k, y ⟨k, c k⟩ ^ (-(a k))) ∈ chartRingZ y c ∧ (n : Ω) * (u * ∏ k, y ⟨k, c k⟩ ^ (-(a k)))⁻¹ ∈ chartRingZ y c)`.
+
+Introduce `c`. Distinguish the cases in `hc : ∀ k, y ⟨k, c k⟩ ≠ 0`. Take `⟨⟨n₁, p₁, h₁⟩, ⟨n₂, p₂, h₂⟩⟩` from `chart_mem y hS hu H c hc`. Use `⟨n₁ * n₂, Nat.mul_pos p₁ p₂, fun _ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `h` using `(chartRingZ y c).mul_mem (natCast_mem (chartRingZ y c) n₂) h₁`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `(chartRingZ y c).mul_mem (natCast_mem (chartRingZ y c) n₁) h₂`. Use `h using 1` and compare the differences between its conclusion and the goal.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨1, one_pos, fun h => absurd h hc⟩`. Use `choose n hn0 hn using hn`. Establish `hm0 : 0 < ∏ c, n c` using `Finset.prod_pos fun c _ => hn0 c`.
+
+Establish `hdiv : ∀ c, ∃ r : ℕ, ∏ c, n c = n c * r` using `fun c => Finset.dvd_prod_of_mem n (Finset.mem_univ c)`. Use `⟨Real.log (∏ c, n c : ℕ), hu, 1, ∏ c, n c, one_pos, hm0, by simp, ?_, ?_⟩` and prove the remaining obligations. Use `mem_chartLatNm_one fun c hc => ?_` and prove the remaining obligations. Take `⟨r, hr⟩` from `hdiv c`. Establish `h` using `(chartRingZ y c).mul_mem (natCast_mem (chartRingZ y c) r) (hn c hc).1`.
+
+Rewrite using `[hr]`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `mem_chartLatNm_one fun c hc => ?_` and prove the remaining obligations.
+
+Take `⟨r, hr⟩` from `hdiv c`. Establish `h` using `(chartRingZ y c).mul_mem (natCast_mem (chartRingZ y c) r) (hn c hc).2`. Rewrite using `[hr]`. Use `h using 1` and compare the differences between its conclusion and the goal. Establish `e : ∏ k, y ⟨k, c k⟩ ^ (-((-a) k)) = (∏ k, y ⟨k, c k⟩ ^ (-(a k)))⁻¹`.
+
+Rewrite using `[← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[zpow_neg]`. Rewrite using `[e, mul_inv]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_vertBound : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω]
     (y : (Σ k, ι k) → Ω) (d : ℕ), IsArithVar (mCoordIdeal y) d → Birational y →
     ∀ (a : K → ℤ) (u : Ω), GenUnit y a u → ∃ c : ℝ, VertBound y a u c := by

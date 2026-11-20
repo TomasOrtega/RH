@@ -11,16 +11,25 @@ open Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.LocVol F
 
 variable {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ : AddChar (AF X.B.I.F) ℂ)
 
+/- English proof (translation)
+Introduce `v hv` and use `redP_of_gramCor X.B.I.cm.sig X.B.I.J ψ v (abelian₂ X) _ _ (fun ϖ hϖ => by rw [OmW.omVGram_holds X u' v] exact local_gram_matrix_corank_one X u' v hv hϖ)`.
+-/
 theorem redP_holds : ∀ v : PlX X, ((Tw u' : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal →
     RedP X.B.I.cm.sig X.B.I.J ψ v (abelian₂ X) (D.R.rS + 1 + D.R.rS) (yTup X u' v) := fun v hv =>
   redP_of_gramCor X.B.I.cm.sig X.B.I.J ψ v (abelian₂ X) _ _ (fun ϖ hϖ => by
     rw [OmW.omVGram_holds X u' v]
     exact local_gram_matrix_corank_one X u' v hv hϖ)
 
+/- English proof (translation)
+The claim follows from `PI.OmVf.omVBadT_of_rest X u' ψ hStd hLat hGram (redP_holds X u' ψ) hFI hFS`.
+-/
 theorem omVBadT_of_ff (hStd : OmVStd X ψ) (hLat : OmVLat X) (hGram : OmVGram X u')
     (hFI : FFInertB) (hFS : FFSplitB) : OmVBadT X u' ψ :=
   PI.OmVf.omVBadT_of_rest X u' ψ hStd hLat hGram (redP_holds X u' ψ) hFI hFS
 
+/- English proof (translation)
+The claim follows from `PI.OmVf.omVBadT_of_restX X u' ψ hStd hLat hGram (redP_holds X u' ψ) hFI hFS`.
+-/
 theorem omVBadT_of_ffX (hStd : Formalism.L2.SG.Pf.NcX.OmVSt.OmVStd X ψ) (hLat : Formalism.L2.SG.Pf.NcX.OmVSt.OmVLat X)
     (hGram : Formalism.L2.SG.Pf.NcX.OmVSt.OmVGram X u') (hFI : FFInertB) (hFS : FFSplitB) :
     Formalism.L2.SG.Pf.NcX.OmVSt.OmVBadT X u' ψ :=

@@ -54,6 +54,15 @@ def Q5 : Prop :=
   ∀ hϖ : algebraMap (Fv F v) (Fv F v ⊗[F] E) ϖ ∈ S,
     (IsField (Fv F v ⊗[F] E) ↔ IsField (S ⧸ lev (⟨_, hϖ⟩ : S) 1))
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ d bs v hB S σS hcar hsig ϖ hϖ0 hϖ1 hϖd hϖc hϖ ε hε`. Establish `hH : QuadHyp σ bs v S σS ϖ` using `⟨hσ, hB, hcar, hsig, hϖ0, hϖ1, hϖd, hϖc⟩`. Take `⟨a1, a2, a3, a4, a5⟩` from `h1 F E σ d bs v S σS ϖ hH hϖ`. Take `⟨b1, b2⟩` from `h2 F E σ d bs v S σS ϖ hH hϖ`. Take `⟨c1, c2⟩` from `h4 F E σ d bs v S σS ϖ hH hϖ`.
+
+Establish `e5` using `h5 F E σ d bs v S σS ϖ hH hϖ`. Use `⟨a1, a2, a3, a4, b1, b2, c1, c2, a5, h3 F E σ d bs v S σS ϖ hH hϖ, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hf : IsField (Fv F v ⊗[F] E)`. Use `left`. Use `⟨?_, e5.1 hf⟩` and prove the remaining obligations.
+
+Establish `: (ε : ℂ) = -1` using `by rw [hε, eSp, if_pos hf]`. Conclude with `this` after adjusting the coercions. Use `right`. Use `⟨?_, fun h => hf (e5.2 h)⟩` and prove the remaining obligations. Establish `: (ε : ℂ) = 1` using `by rw [hε, eSp, if_neg hf]`.
+
+Conclude with `this` after adjusting the coercions.
+-/
 theorem quadAt_of (h1 : Q1) (h2 : Q2) (h3 : Q3) (h4 : Q4) (h5 : Q5) : QuadAt := by
   intro F E _ _ _ _ _ σ hσ d bs v hB S σS hcar hsig ϖ hϖ0 hϖ1 hϖd hϖc hϖ ε hε
   have hH : QuadHyp σ bs v S σS ϖ := ⟨hσ, hB, hcar, hsig, hϖ0, hϖ1, hϖd, hϖc⟩

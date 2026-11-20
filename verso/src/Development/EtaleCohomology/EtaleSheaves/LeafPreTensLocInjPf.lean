@@ -10,6 +10,9 @@ open LateralTheory.E.LeafTensMonoPf LateralTheory.E.LeafTwPairExistsPf LateralTh
 section
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Establish `hZ : IsZero ((sgl F).X s)` using `HomologicalComplex.isZero_single_obj_X _ _ _ _ hs`. Establish `h1 : (𝟙 ((sgl F).X s)) = 0` using `hZ.eq_of_src _ _`. Establish `h2 : Sec.map (𝟙 ((sgl F).X s)) a = a` using `rfl`. Rewrite using `[← h2, h1]`. Both sides reduce to the same expression.
+-/
 theorem sec_sgl_zero (F : Shv R) {s : ℤ} (hs : s ≠ 0) {U : Scheme.{0}} (a : Sec ((sgl F).X s) U) : a = 0 := by
   have hZ : IsZero ((sgl F).X s) := HomologicalComplex.isZero_single_obj_X _ _ _ _ hs
   have h1 : (𝟙 ((sgl F).X s)) = 0 := hZ.eq_of_src _ _
@@ -17,6 +20,9 @@ theorem sec_sgl_zero (F : Shv R) {s : ℤ} (hs : s ≠ 0) {U : Scheme.{0}} (a : 
   rw [← h2, h1]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rfl`. Consider the case `tmul a b => rw [sec_sgl_zero F hs a, TensorProduct.zero_tmul]`. Consider the case `add x y hx hy => rw [hx, hy, add_zero]`.
+-/
 theorem tens_zero_left (F : Shv R) {J : Cx R} {s t : ℤ} (hs : s ≠ 0) {U : Scheme.{0}}
     (z : Sec ((sgl F).X s) U ⊗[ULift.{1} R] Sec (J.X t) U) : z = 0 := by
   induction z using TensorProduct.induction_on with
@@ -26,6 +32,13 @@ theorem tens_zero_left (F : Shv R) {J : Cx R} {s t : ℤ} (hs : s ≠ 0) {U : Sc
 
 abbrev p0 (w : ℤ) : {p : ℤ × ℤ // p.1 + p.2 = w} := ⟨(0, w), by simp⟩
 
+/- English proof (translation)
+Use extensionality with `p`. Distinguish the cases in `hp : p = p0 w`. Substitute `hp` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[DirectSum.of_eq_of_ne _ _ _ hp]`.
+
+Establish `: p.1.1 ≠ 0`. Introduce `h`. Apply `hp` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use `ext`.
+
+Conclude with `h`. Simplify using the standard rewrite rules. Use `p.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `tens_zero_left F this _`.
+-/
 theorem tens_single (F : Shv R) {J : Cx R} {U : Scheme.{0}} {w : ℤ} (x : Tens (sgl F) J U w) :
     x = DirectSum.of _ (p0 w) (x (p0 w)) := by
   classical
@@ -39,6 +52,9 @@ theorem tens_single (F : Shv R) {J : Cx R} {U : Scheme.{0}} {w : ℤ} (x : Tens 
       · simp; have := p.2; omega
     exact tens_zero_left F this _
 
+/- English proof (translation)
+Rewrite using `[← DirectSum.lof_eq_of (ULift.{1} R)]`. Unfold `Tens.res`. Rewrite using `[DirectSum.lmap_lof]`. Both sides reduce to the same expression.
+-/
 theorem tens_res_of {I J : Cx R} {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) (p : {p : ℤ × ℤ // p.1 + p.2 = w})
     (t : Sec (I.X p.1.1) U ⊗[ULift.{1} R] Sec (J.X p.1.2) U) :
     Tens.res g w (DirectSum.of _ p t) =
@@ -49,6 +65,9 @@ theorem tens_res_of {I J : Cx R} {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) (p :
   rw [DirectSum.lmap_lof]
   rfl
 
+/- English proof (translation)
+Unfold `Pair.lift`. Conclude with `DirectSum.toModule_lof (ULift.{1} R) (M := fun p : {p : ℤ × ℤ // p.1 + p.2 = w} => Sec (I.X p.1.1) U ⊗[ULift.{1} R] Sec (J.X p.1.2) U) p t`.
+-/
 theorem lift_of {I J K : Cx R} (μ : Pair I J K) (U : Scheme.{0}) (w : ℤ) (p : {p : ℤ × ℤ // p.1 + p.2 = w})
     (t : Sec (I.X p.1.1) U ⊗[ULift.{1} R] Sec (J.X p.1.2) U) :
     μ.lift U w (DirectSum.of _ p t) = TensorProduct.lift (μ.mul U p.1.1 p.1.2 w p.2) t := by
@@ -61,6 +80,11 @@ end
 
 section
 variable {R : Type} [CommRing R]
+/- English proof (translation)
+Establish `: (Tens.res (I` using `I) (J := J) (k ≫ g) w) = (Tens.res k w).comp (Tens.res g w) := by`. Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce `p`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`.
+
+Simplify using `[Tens.res]`. Conclude with `LinearMap.congr_fun this z`.
+-/
 theorem tens_res_comp {I J : Cx R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (w : ℤ) (z : Tens I J U w) :
     Tens.res (k ≫ g) w z = Tens.res k w (Tens.res g w z) := by
   classical
@@ -71,6 +95,27 @@ theorem tens_res_comp {I J : Cx R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶
   exact LinearMap.congr_fun this z
 end
 
+/- English proof (translation)
+Introduce `q _ i T τ hτ U w x hx`. Take `⟨S, hS0⟩` from `TensorProduct.exists_finset (x (p0 w))`. Use `set a : Fin S.card → Sec ((sgl (tw q 0)).X 0) U := fun k => (S.equivFin.symm k).1.1 with ha`. Use `set b : Fin S.card → Sec ((res _ (tw q i)).X w) U := fun k => (S.equivFin.symm k).1.2 with hb`. Establish `hxp : x (p0 w) = ∑ k, a k ⊗ₜ[ULift.{1} (ZMod q)] b k`.
+
+Rewrite using `[hS0, ← Finset.sum_coe_sort S]`. Conclude with `(Equiv.sum_comp S.equivFin.symm (fun i : S => i.1.1 ⊗ₜ[ULift.{1} (ZMod q)] i.1.2)).symm`. Establish `hx' : x = DirectSum.of _ (p0 w) (∑ k, a k ⊗ₜ[ULift.{1} (ZMod q)] b k)`. Rewrite using `[← hxp]`. Conclude with `tens_single _ x`.
+
+Use `set y : Tens (res _ (tw q 0)) (res _ (tw q i)) U w := DirectSum.of _ (p0 w) (∑ k, Sec.map ((resAug (tw q 0)).f 0) (a k) ⊗ₜ[ULift.{1} (ZMod q)] b k) with hydef`. Establish `hy : τ.lift U w y = 0`. Rewrite using `[← hx, hx', hydef, lift_of, lift_of]`. Simplify using `[pre]`. Use `loc_trans (hτ.2 U w y hy) ?_` and prove the remaining obligations.
+
+Introduce `V g hg`. Use `loc_trans (hS q V S.card (fun k => Sec.res g (a k))) ?_` and prove the remaining obligations. Introduce and unpack `W k ⟨e, c, hac, he⟩`. It suffices to establish `h : Tens.res (k ≫ g) w x = 0 from ⟨⊤, GrothendieckTopology.top_mem _ W, fun W' k' _ => by dsimp only; rw [Category.assoc, tens_res_comp, h, map_zero]⟩`. Use `set bb : Sec ((res _ (tw q i)).X w) W := ∑ j, c j • Sec.res (k ≫ g) (b j) with hbb`.
+
+Establish `hres : Tens.res (k ≫ g) w x = DirectSum.of _ (p0 w) (e ⊗ₜ[ULift.{1} (ZMod q)] bb)`. Rewrite using `[hx', tens_res_of, map_sum]`. Use `congr 1`. Rewrite using `[hbb, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[TensorProduct.map_tmul, ← TensorProduct.smul_tmul]`. Use `congr 1`. Use `show Sec.res (k ≫ g) (a j) = c j • e`. Rewrite using `[res_comp]`. Conclude with `hac j`.
+
+Establish `hy0 : Tens.res (k ≫ g) w y = DirectSum.of _ (p0 w) (Sec.map ((resAug (tw q 0)).f 0) e ⊗ₜ[ULift.{1} (ZMod q)] bb)`. Rewrite using `[hydef, tens_res_of, map_sum]`. Use `congr 1`. Rewrite using `[hbb, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[TensorProduct.map_tmul, ← TensorProduct.smul_tmul]`. Use `congr 1`. Use `show Sec.res (k ≫ g) (Sec.map ((resAug (tw q 0)).f 0) (a j)) = c j • Sec.map ((resAug (tw q 0)).f 0) e`. Rewrite using `[res_map, res_comp, hac j]`. Conclude with `map_smul (((resAug (tw q 0)).f 0).hom.app (op W)).hom (c j) e`.
+
+Establish `hg0 : Tens.res (k ≫ g) w y = 0` using `by rw [tens_res_comp, hg, map_zero]`. Establish `ht : Sec.map ((resAug (tw q 0)).f 0) e ⊗ₜ[ULift.{1} (ZMod q)] bb = 0` using `DirectSum.of_injective (p0 w) (hy0.symm.trans (hg0.trans (map_zero _).symm))`. Rewrite using `[hres]`. Break down `he with he | ⟨r, hr⟩` into its components or cases. Rewrite using `[he, TensorProduct.zero_tmul, map_zero]`.
+
+Establish `hbb0 : bb = 0`. Use `congrArg (fun z => TensorProduct.lid (ULift.{1} (ZMod q)) _ (TensorProduct.map r LinearMap.id z)) ht` as an intermediate fact. Simplify `this` using `[hr]`. Rewrite using `[hbb0, TensorProduct.tmul_zero, map_zero]`.
+-/
 theorem LeafPreTensLocInj_of (hS : LeafTw0LocSplit) : LeafPreTensLocInj := by
   intro q _ i T τ hτ U w x hx
   classical

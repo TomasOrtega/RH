@@ -8,6 +8,9 @@ namespace LateralTheory.E.SSPf
 def kbc {Y X S S₀ : Scheme.{0}} (k : Y ⟶ X) (t : X ⟶ S) (c : S₀ ⟶ S) : pullback (k ≫ t) c ⟶ pullback t c :=
   pullback.map (k ≫ t) c t c k (𝟙 _) (𝟙 _) (by simp) (by simp)
 
+/- English proof (translation)
+Unfold `kbc pullback.map`. Rewrite using `[pullback.lift_fst]`.
+-/
 theorem kbc_fst {Y X S S₀ : Scheme.{0}} (k : Y ⟶ X) (t : X ⟶ S) (c : S₀ ⟶ S) :
     pullback.fst (k ≫ t) c ≫ k = kbc k t c ≫ pullback.fst t c := by
   unfold kbc pullback.map

@@ -32,6 +32,13 @@ open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 
 namespace GlobalTheory.SmallTranslate
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hlt : ∀ i j, (r : WithTop ℚ) < v (x j i)` using `fun i j => by`. Assume the negation of the conclusion as `hle`. Take `⟨ρ, hρ, hρr⟩` from `WithTop.le_coe_iff.1 (not_lt.1 hle)`. Conclude with `hne ⟨i, j, ρ, hρ, hρr⟩`.
+
+Establish `: (r : WithTop ℚ) < v (∑ j, c j * ∑ i, a i * x j i)`. Use `AddValuation.map_lt_sum v WithTop.coe_ne_top fun j _ => ?_` and prove the remaining obligations. Rewrite using `[v.map_mul]`. Use `lt_add_of_nonneg_of_lt (hc j) (AddValuation.map_lt_sum v WithTop.coe_ne_top fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[v.map_mul]`.
+
+Conclude with `lt_add_of_nonneg_of_lt (ha i) (hlt i j)`. Conclude with `absurd h this.ne'`.
+-/
 theorem exists_term_le {F : Type} [Field F] (v : AddValuation F (WithTop ℚ)) {I J : Type} [Fintype I] [Fintype J]
     (a : I → F) (c : J → F) (x : J → I → F) (ha : ∀ i, 0 ≤ v (a i)) (hc : ∀ j, 0 ≤ v (c j)) (r : ℚ)
     (h : v (∑ j, c j * ∑ i, a i * x j i) = (r : WithTop ℚ)) :
@@ -49,6 +56,15 @@ theorem exists_term_le {F : Type} [Field F] (v : AddValuation F (WithTop ℚ)) {
     exact lt_add_of_nonneg_of_lt (ha i) (hlt i j)
   exact absurd h this.ne'
 
+/- English proof (translation)
+Set `_` to `H.starRing`. Introduce `md oD' hx hoD α N hN hα hcop hu θ θα hθ hθF hθα s hs`. Take `⟨oA', hoA, t', P', hG, hgrp, hcomm, hD, hmod, hoD', hA, hoA', hU⟩` from `GlobalTheory.exists_pelUnif_of_unifPow h1 h2 h4 hT V E H t P n D' A' G' pD pA pG U' PU oD' hx hoD`. Take `⟨Dw', ⟨I'⟩⟩` from `GlobalTheory.exists_tateIso_of_isPowPolAV h1 h2 h4 hT E H V n P.A A' pA F P.oA.act oA'.act hoA Dw I`. Establish `hQ' : IsQ D'.toPre ϖ (sumQ pD.xe Q)` using `GlobalTheory.QBox.main V ϖ hϖ n P.D D' pD Q hQ`.
+
+Establish `hUU : UUStatement` using `GlobalTheory.UnitBallFree.main h1.globalFns hT`. Establish `hP' : P'.TorsionIso` using `GlobalTheory.T.torsionIso_of_linear_uniformisation_triple ⟨h1, h2, h3, h4, h5⟩ (twistBCSpan_of hT) GlobalTheory.RatioVal.main (GlobalTheory.twisting_statements_of_laws h1 hT).1 hUU E H V _ ⟨inferInstance, inferInstance, inferInstance, hc⟩ t' P'`. Substitute `hG hD hA` using the available equality. Consider the cases of `hgrp`. Consider the cases of `hmod`.
+
+Consider the cases of `hoD'`. Consider the cases of `hoA'`. Consider the cases of `hU`. Take `⟨m, p, x, w, ζ, tt, a, e1, e2, e3, e4, e5, e6⟩` from `ReciprocityTheory.ChartRestriction.G.H1.cmLiftCondition_of_laws h1 n1c (GlobalTheory.twisting_statements_of_laws h1 hT).1 hUU E H V t' P' hP' α N hN hα hcop hu ϖ hϖ _ hQ' F v hv Dw' I' θ hθ hθF θα hθα s hs`. Use `⟨m, p, x, w, ζ, tt, a, e1, fun i k => ?_, e3, e4, e5, e6⟩` and prove the remaining obligations.
+
+Use `pA.toIsPowGrp.hom k` as an intermediate fact. Rewrite using `[← hoA, ← Category.assoc, e2 i]`. Conclude with `MonObj.one_comp _`.
+-/
 theorem span_pow (h1 : Laws) (h2 : Laws2) (h3 : Laws3) (h4 : Laws4) (h5 : Laws5) (hT : TwistBaseChangeStatement)
     (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [hc : IsAdicComplete (maximalIdeal V) V] [CharZero V]
     (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (t : SAB H (Sp V)) (P : PELUnif (maximalIdeal V) t)
@@ -101,6 +117,21 @@ theorem span_pow (h1 : Laws) (h2 : Laws2) (h3 : Laws3) (h4 : Laws4) (h5 : Laws5)
   rw [← hoA, ← Category.assoc, e2 i]
   exact MonObj.one_comp _
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 h5 hT E _ _ _ H Dw l Xo c`. Set `_` to `H.starRing`. Introduce `T io y C hFT P hP hy ϖ hϖ Q hQ F _ _ _ _ _ _ v hv I Φ M0 r b hΦ hb hbw n D' A' G' _ _ pD pA pG U' PU _ oD' hx hoD hn α N Dg hα hcop hu hN hM θ θα hθ hθF hθα J _ Pi a ha hdeg f hf gm hval`. Set `_` to `io.toAlgebra`. Establish `hN1 : 1 ≤ 1 * N` using `by omega`.
+
+Take `⟨s, σ', g, lam, hs, hσ', hg, -, ⟨ρl, hlam, hρl⟩, hjet⟩` from `GlobalTheory.T.jets_on_copies_of_compatible_frames h1 h2 h4 hT E H Dw l Xo c (fun _ => rfl) T io y hy C hFT P ϖ hϖ Q hQ Φ M0 r b hΦ hb hbw n hn D' A' G' pD pA pG U' PU F v hv (1 * N) Dg (by omega) (by rwa [Nat.one_mul]) f hf`. Take `⟨m, p, x, w, ζ, t, cf, e1, e2, e3, e4, e5, e6⟩` from `span_pow h1 h2 h3 h4 h5 hT T.V E H C.I.G P Dw ϖ hϖ Q hQ F v hv I n D' A' G' pD pA pG U' PU oD' hx hoD α N (by omega) hα hcop hu θ θα hθ hθF hθα s hs`. Take `⟨τ, hτ, hτT, hiff⟩` from `GlobalTheory.PowGerm.frameNSt_holds E H T.V C.I.G P _ C.FT C.actT C.ph1T C.ph2T C.syT C.adT C.tgT C.xT C.eT C.wPT C.chartT C.frameT C.primT n D' A' G' pD pA pG U' PU`. Establish `hz` using `GlobalTheory.T.universalJets_power_product T.V C.I.G.G G' n _ pG C.xT (GlobalTheory.T.universal_statement E H Dw l Xo c T io y C)`. Take `⟨huniq, hlin, hex⟩` from `GlobalTheory.GermBasic.main T.V D' A' G' U' _ _ hz τ hτ F (1 * N)`.
+
+Establish `hbij` using `(GlobalTheory.expandsG_bijective_of_dvr h1 h2 h4 hT T.V D' A' G' U' F (1 * N) hN1).2`. Use `choose σ hσ using fun j => (hbij (t j)).exists`. Use `choose h hh using fun j => hex (hτT hFT) (σ j)`. Establish `hsum : g = ∑ j, cf j • h j`. Set `σ₀ : U'.toUnifPre.SecGF F (1 * N)` to `GlobalTheory.ExpansionLinear.secComb (fun j => Out.scal (fst (TFK (R := T.V) F) ((Over.pullback (jK T.V)).obj G')).left (cf j)) σ`.
+
+Establish `k1` using `GlobalTheory.GroupExpansionLinear.expandsG_sum T.V D' A' G' U' F (1 * N) m cf σ t σ₀ hσ (fun _ => rfl)`. Rewrite `k1` using `[← e6]`. Establish `k2 : σ' = σ₀` using `(hbij s).unique hσ' k1`. Conclude with `huniq σ' _ _ ((hiff F _ σ' g).1 hg) (hlin m cf σ h σ' hh (fun _ => by rw [k2]; rfl))`. Take `⟨n1, n2, n3⟩` from `GlobalTheory.PowGerm.nabJet _ _ _ C.ch.B F (MvPowerSeries.map (algebraMap T.Fr F) C.ch.h) H.w0 (1 * N) n (LtN Dw n) (fun ℓ : LtN Dw n => ℓ.2.2) (fun (ℓ : LtN Dw n) i => algebraMap T.Fr F (C.ch.uvec ⟨ℓ.1, ℓ.2.1⟩ i))`.
+
+Establish `k1` using `n1 (∑ i, a i • Pi i) _ _ (fun e he => hjet e (he.trans hdeg))`. Establish `k2` using `n2 (∑ i, a i • Pi i) Unit (fun _ => lam) (fun _ => MvPowerSeries.map (algebraMap T.Fr F) f)`. Rewrite `k2` using `[Finset.univ_unique, Finset.sum_singleton, Finset.sum_singleton]`. Establish `k3` using `n2 (∑ i, a i • Pi i) (Fin m) cf h`. Rewrite `k3` using `[← hsum, k1, k2, Finset.sum_congr rfl fun j _ => congrArg (cf j * ·) (n3 (h j) J a Pi)]`.
+
+Establish `k4` using `congrArg v k3`. Rewrite `k4` using `[v.map_mul, hlam]`. Take `⟨i, j, ρ, hρ, hle⟩` from `exists_term_le v a cf _ ha e5 (ρl + gm) (k4.symm.trans (by rw [WithTop.coe_add]; exact congrArg _ hval))`. Take `⟨t₀, ht₀, ht⟩` from `e4 j`. Use `⟨i, p j, w j, ζ j, x j, t₀, t j, σ j, h j, ρ, (e3 j).1, (e3 j).2.1, (e3 j).2.2, e1 j, e2 j, ht₀, ht, hσ j, (hiff F _ _ _).2 (hh j), hρ, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hρl` using `[Nat.one_mul]`. Establish `: (ρ : ℝ) ≤ ρl + gm` using `by exact_mod_cast hle`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem main : Laws → Laws2 → Laws3 → Laws4 → Laws5 → TwistBaseChangeStatement → RPointT := by
   intro h1 h2 h3 h4 h5 hT E _ _ _ H Dw l Xo c
   let _ := H.starRing

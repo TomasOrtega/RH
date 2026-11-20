@@ -15,6 +15,9 @@ open GlobalTheory.ThK.EvAt0.PolD GlobalTheory.ArchUniq GlobalTheory.ArchUniq.Coo
 open GlobalTheory.Doubling (absE absEv unitFin ideleAt)
 open Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThK.EvAt0.PolD.schrF_dOp_conj | exact GlobalTheory.ThK.EvAt0.PolD.schrF_dOp_conj | (intros; apply GlobalTheory.ThK.EvAt0.PolD.schrF_dOp_conj <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.schrodinger_translation_operator_shift : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (w : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) (a b : κ → mixedEmbedding.mixedSpace F),
     ∃ t : ℂ, ∀ f g g' : SInf F κ, ⇑g = schrF (trP F κ) w ⇑f → ⇑g' = schrF (trP F κ) w ⇑(dOp a b f) →

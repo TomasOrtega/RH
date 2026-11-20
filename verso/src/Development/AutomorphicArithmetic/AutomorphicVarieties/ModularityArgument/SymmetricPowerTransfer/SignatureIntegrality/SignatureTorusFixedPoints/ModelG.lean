@@ -14,42 +14,73 @@ section Alg
 
 variable {K : Type} [Field K] {Δ τ : K}
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [sigL]`.
+-/
 private theorem sigL_mul' (x y : EL Δ τ) : sigL (x * y) = sigL x * sigL y := by
   ext <;> simp [sigL]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [sigL]`.
+-/
 private theorem sigL_sigL' (x : EL Δ τ) : sigL (sigL x) = x := by
   ext <;> simp [sigL]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [sigL, ofE]`.
+-/
 private theorem sigL_ofE' (z : Etau K τ) : sigL (ofE Δ z) = ofE Δ z := by
   ext <;> simp [sigL, ofE]
 
 private def Am (y : Sp Δ τ) : Sp Δ τ := (y.1, ofE Δ (QuadraticAlgebra.omega : Etau K τ) * y.2)
 
+/- English proof (translation)
+Simplify using `only [semi, Am, star_star, sigL_mul', sigL_sigL', ← mul_assoc, h]`.
+-/
 private theorem semi_semi {d : EL Δ τ} (h : d * sigL d = ofE Δ (QuadraticAlgebra.omega : Etau K τ)) (y : Sp Δ τ) :
     semi d (semi d y) = Am y := by
   simp only [semi, Am, star_star, sigL_mul', sigL_sigL', ← mul_assoc, h]
 
+/- English proof (translation)
+Simplify using `only [semi, tor, sigL_mul', sigL_ofE']`. Conclude with `Prod.ext rfl (mul_left_comm _ _ _)`.
+-/
 private theorem semi_tor (d : EL Δ τ) (z : (Etau K τ)ˣ) (y : Sp Δ τ) :
     semi d (tor Δ z y) = tor Δ z (semi d y) := by
   simp only [semi, tor, sigL_mul', sigL_ofE']
   exact Prod.ext rfl (mul_left_comm _ _ _)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_three, star_mul']`.
+-/
 private theorem star_mulVec' (M : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) (v : Fin 3 → Lsq K Δ) :
     star (M *ᵥ v) = M.map star *ᵥ star v := by
   funext i
   simp [Matrix.mulVec, dotProduct, Fin.sum_univ_three, star_mul']
 
+/- English proof (translation)
+The claim follows from `Matrix.toLin'.injective (LinearMap.ext fun v => by simpa using h (Q.symm v))`.
+-/
 private theorem mat_ext {V : Type} [AddCommGroup V] [Module (Lsq K Δ) V] (Q : V ≃ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ))
     {M M' : Matrix (Fin 3) (Fin 3) (Lsq K Δ)} (h : ∀ y, M *ᵥ Q y = M' *ᵥ Q y) : M = M' :=
   Matrix.toLin'.injective (LinearMap.ext fun v => by simpa using h (Q.symm v))
 
 variable {c : K} {d m : EL Δ τ} {δ : U3 Δ} {ι : (Etau K τ)ˣ →* U3 Δ} {Q : Sp Δ τ ≃ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ)}
 
+/- English proof (translation)
+Rewrite using `[← semi_semi hd.d_norm, h.semi, h.semi, star_mulVec', star_star, Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+-/
 private theorem N_act (hd : IsDat c d m) (h : Models c d m δ ι Q) (y : Sp Δ τ) :
     ((δ * theta Δ δ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) *ᵥ Q y = Q (Am y) := by
   rw [← semi_semi hd.d_norm, h.semi, h.semi, star_mulVec', star_star, Matrix.mulVec_mulVec]
   rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `Matrix.toLin'.injective (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Take `⟨y, rfl⟩ : ∃ y, star (Q y) = v` from `⟨Q.symm (star v), by simp⟩`. Simplify using `only [Matrix.toLin'_apply]`. Establish `e1 : ((δ * theta Δ (ι t) : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) *ᵥ star (Q y) = Q (semi d (tor Δ t y))`.
+
+Rewrite using `[h.semi, h.tor, star_mulVec', Matrix.mulVec_mulVec]`. Both sides reduce to the same expression. Establish `e2 : ((ι t * δ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) *ᵥ star (Q y) = Q (tor Δ t (semi d y))`. Rewrite using `[h.tor, h.semi, Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+
+Rewrite using `[e1, e2, semi_tor]`.
+-/
 private theorem comm_U (h : Models c d m δ ι Q) (t : (Etau K τ)ˣ) : δ * theta Δ (ι t) = ι t * δ := by
   apply Subtype.ext
   refine Matrix.toLin'.injective (LinearMap.ext fun v => ?_)
@@ -74,13 +105,28 @@ private def crd : (Fin 3 → Lsq K Δ) ≃ₗ[Lsq K Δ] Sp Δ τ where
 private def A0 (Δ τ : K) : Matrix (Fin 3) (Fin 3) (Lsq K Δ) :=
   !![1, 0, 0; 0, 0, -1; 0, 1, algebraMap K _ τ]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [Am, crd, A0, ofE, Matrix.mulVec, dotProduct, Fin.sum_univ_three]`.
+-/
 private theorem Am_crd (v : Fin 3 → Lsq K Δ) : Am (crd (τ := τ) v) = crd (A0 Δ τ *ᵥ v) := by
   ext <;> simp [Am, crd, A0, ofE, Matrix.mulVec, dotProduct, Fin.sum_univ_three]
 
+/- English proof (translation)
+Simplify using `[Matrix.charpoly, A0, Matrix.det_fin_three, Matrix.charmatrix_apply, Matrix.diagonal]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem companion_charpoly_factor : (A0 Δ τ).charpoly = (X - 1) * (X ^ 2 - C (algebraMap K _ τ) * X + 1) := by
   simp [Matrix.charpoly, A0, Matrix.det_fin_three, Matrix.charmatrix_apply, Matrix.diagonal]
   ring
 
+/- English proof (translation)
+Use `set R : (Fin 3 → Lsq K Δ) ≃ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ) := (crd (τ := τ)).trans Q with hR`. Set `B` to `LinearMap.toMatrix' (R : (Fin 3 → Lsq K Δ) →ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ))`. Set `B'` to `LinearMap.toMatrix' (R.symm : (Fin 3 → Lsq K Δ) →ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ))`. Establish `hB : ∀ v, B *ᵥ v = R v` using `fun v => by simp [B, LinearMap.toMatrix'_mulVec]`. Establish `hB' : ∀ v, B' *ᵥ v = R.symm v` using `fun v => by simp [B', LinearMap.toMatrix'_mulVec]`.
+
+Establish `h1 : B * B' = 1` using `Matrix.toLin'.injective (LinearMap.ext fun v => by`. Simplify using `[← Matrix.mulVec_mulVec, hB, hB'])`. Establish `h2 : B' * B = 1` using `Matrix.toLin'.injective (LinearMap.ext fun v => by`. Simplify using `[← Matrix.mulVec_mulVec, hB, hB'])`. Establish `h3 : ((δ * theta Δ δ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) * B = B * A0 Δ τ` using `Matrix.toLin'.injective (LinearMap.ext fun v => by`.
+
+Simplify using `only [Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, hB]`. Simplify using `only [hR, LinearEquiv.trans_apply]`. Rewrite using `[N_act hd h, Am_crd])`. Set `u : (Matrix (Fin 3) (Fin 3) (Lsq K Δ))ˣ` to `⟨B, B', h1, h2⟩`. Establish `h4 : ((δ * theta Δ δ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) = u.val * A0 Δ τ * u⁻¹.val`.
+
+Express the relevant statement in the definitionally equal form `_ = B * A0 Δ τ * B'`. Rewrite using `[← h3, mul_assoc, h1, mul_one]`. Unfold `HasTau`. Rewrite using `[h4, Matrix.coe_units_inv, Matrix.charpoly_units_conj, companion_charpoly_factor]`.
+-/
 private theorem hasTau_of (hd : IsDat c d m) (h : Models c d m δ ι Q) : HasTau δ τ := by
   set R : (Fin 3 → Lsq K Δ) ≃ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ) := (crd (τ := τ)).trans Q with hR
   let B := LinearMap.toMatrix' (R : (Fin 3 → Lsq K Δ) →ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ))
@@ -109,12 +155,18 @@ section Mid
 
 variable {K : Type} [Field K] {Δ τ : K}
 
+/- English proof (translation)
+Take `⟨w₀, w₁⟩` from `w`. Take `rfl : w₀ = 0` from `hw`. Apply the tactic sequence `ext <;> simp [tor, Am, ofE] <;> ring`.
+-/
 private theorem tor_of_fst (z : (Etau K τ)ˣ) (w : Sp Δ τ) (hw : w.1 = 0) :
     tor Δ z w = algebraMap K (Lsq K Δ) (quo z).re • w + algebraMap K (Lsq K Δ) (quo z).im • Am w := by
   obtain ⟨w₀, w₁⟩ := w
   obtain rfl : w₀ = 0 := hw
   ext <;> simp [tor, Am, ofE] <;> ring
 
+/- English proof (translation)
+Take `⟨w₀, w₁⟩` from `w`. Take `rfl : w₁ = 0` from `hw`. Simplify using `[tor]`.
+-/
 private theorem tor_of_snd (z : (Etau K τ)ˣ) (w : Sp Δ τ) (hw : w.2 = 0) : tor Δ z w = w := by
   obtain ⟨w₀, w₁⟩ := w
   obtain rfl : w₁ = 0 := hw
@@ -122,6 +174,9 @@ private theorem tor_of_snd (z : (Etau K τ)ˣ) (w : Sp Δ τ) (hw : w.2 = 0) : t
 
 variable {c : K} {d m : EL Δ τ} {δ : U3 Δ} {ι : (Etau K τ)ˣ →* U3 Δ} {Q : Sp Δ τ ≃ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ)}
 
+/- English proof (translation)
+Apply `mat_ext Q` to reduce the goal to its premises. Introduce `y`. Establish `e : (((δ * theta Δ δ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) - 1) *ᵥ Q y = Q (Am y - y)`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, N_act hd h, map_sub]`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, e, ← h.tor, tor_of_fst t _ (by simp [Am]), Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, N_act hd h, map_add, map_smul, map_smul]`.
+-/
 private theorem id1 (hd : IsDat c d m) (h : Models c d m δ ι Q) (t : (Etau K τ)ˣ) :
     (ι t : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) * (((δ * theta Δ δ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) - 1) =
       (algebraMap K (Lsq K Δ) (quo t).re • (1 : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) +
@@ -134,6 +189,11 @@ private theorem id1 (hd : IsDat c d m) (h : Models c d m δ ι Q) (t : (Etau K �
   rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, e, ← h.tor, tor_of_fst t _ (by simp [Am]),
     Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, N_act hd h, map_add, map_smul, map_smul]
 
+/- English proof (translation)
+Apply `mat_ext Q` to reduce the goal to its premises. Introduce `y`. Establish `e : (((δ * theta Δ δ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) * ((δ * theta Δ δ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) - algebraMap K (Lsq K Δ) τ • ((δ * theta Δ δ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) + 1) *ᵥ Q y = Q (Am (Am y) - algebraMap K (Lsq K Δ) τ • Am y + y …`. Rewrite using `[Matrix.add_mulVec, Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, N_act hd h, N_act hd h, map_add, map_sub, map_smul]`. Rewrite using `[← Matrix.mulVec_mulVec, e, ← h.tor, tor_of_snd]`.
+
+Apply the tactic sequence `ext <;> simp [Am, ofE] <;> ring`.
+-/
 private theorem id2 (hd : IsDat c d m) (h : Models c d m δ ι Q) (t : (Etau K τ)ˣ) :
     (ι t : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) * (((δ * theta Δ δ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) * ((δ * theta Δ δ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) -
         algebraMap K (Lsq K Δ) τ • ((δ * theta Δ δ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) + 1) =
@@ -155,6 +215,9 @@ section Lin
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Use `congrFun (congrFun h i) j` as an intermediate fact. Rewrite `this` using `[Matrix.mul_diagonal, Matrix.mul_diagonal]`. Conclude with `mul_right_cancel₀ hj this`.
+-/
 private theorem col_of {T : Matrix (Fin 3) (Fin 3) K} {u v : Fin 3 → K}
     (h : T * diagonal u = diagonal v * diagonal u) (j : Fin 3) (hj : u j ≠ 0) (i : Fin 3) :
     T i j = diagonal v i j := by
@@ -162,6 +225,15 @@ private theorem col_of {T : Matrix (Fin 3) (Fin 3) K} {u v : Fin 3 → K}
   rw [Matrix.mul_diagonal, Matrix.mul_diagonal] at this
   exact mul_right_cancel₀ hj this
 
+/- English proof (translation)
+Establish `e1 : (diagonal ![a, 1, b] - 1 : Matrix (Fin 3) (Fin 3) K) = diagonal ![a - 1, 0, b - 1]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.one_apply]`. Establish `e2 : (re • (1 : Matrix (Fin 3) (Fin 3) K) + im • diagonal ![a, 1, b]) = diagonal ![re + im * a, re + im, re + im * b]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.one_apply]`. Establish `e3 : (diagonal ![a, 1, b] * diagonal ![a, 1, b] - τ • diagonal ![a, 1, b] + 1 : Matrix (Fin 3) (Fin 3) K) = diagonal ![0, 2 - τ, 0]`.
+
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.one_apply, hA, hB]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[e1, e2]`. Rewrite `h2` using `[e3]`. Establish `h2' : T * diagonal ![0, 2 - τ, 0] = diagonal 1 * diagonal ![0, 2 - τ, 0]`.
+
+Rewrite using `[h2, show (diagonal 1 : Matrix (Fin 3) (Fin 3) K) = 1 from Matrix.diagonal_one, one_mul]`. Establish `c0` using `col_of h1 0 (by simpa using sub_ne_zero.2 ha)`. Establish `c2` using `col_of h1 2 (by simpa using sub_ne_zero.2 hb)`. Establish `c1` using `col_of h2' 1 (by simpa using ht)`. Use extensionality with `i j`.
+
+Use `fin_cases j`. Apply the tactic sequence `rw [show (⟨0, by omega⟩ : Fin 3) = 0 from rfl] ; rw [c0]; fin_cases i <;> simp`. Apply the tactic sequence `rw [show (⟨1, by omega⟩ : Fin 3) = 1 from rfl] ; rw [c1]; fin_cases i <;> simp`. Apply the tactic sequence `rw [show (⟨2, by omega⟩ : Fin 3) = 2 from rfl] ; rw [c2]; fin_cases i <;> simp`.
+-/
 private theorem diag_of {T : Matrix (Fin 3) (Fin 3) K} {a b re im τ : K} (ha : a ≠ 1) (hb : b ≠ 1) (ht : 2 - τ ≠ 0)
     (hA : a * a - τ * a + 1 = 0) (hB : b * b - τ * b + 1 = 0)
     (h1 : T * (diagonal ![a, 1, b] - 1) = (re • (1 : Matrix (Fin 3) (Fin 3) K) + im • diagonal ![a, 1, b]) * (diagonal ![a, 1, b] - 1))
@@ -189,6 +261,15 @@ private theorem diag_of {T : Matrix (Fin 3) (Fin 3) K} {a b re im τ : K} (ha : 
   · rw [show (⟨1, by omega⟩ : Fin 3) = 1 from rfl] ; rw [c1]; fin_cases i <;> simp
   · rw [show (⟨2, by omega⟩ : Fin 3) = 2 from rfl] ; rw [c2]; fin_cases i <;> simp
 
+/- English proof (translation)
+Establish `hA : (Dm - 1) * G = G * (D₀ - 1)` using `by rw [sub_mul, mul_sub, one_mul, mul_one, hD]`. Establish `hB : (re • (1 : Matrix (Fin 3) (Fin 3) K) + im • Dm) * G = G * (re • (1 : Matrix (Fin 3) (Fin 3) K) + im • D₀)`. Rewrite using `[add_mul, mul_add, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_smul, hD, one_mul, mul_one]`. Establish `hDD : Dm * Dm * G = G * (D₀ * D₀)` using `by rw [mul_assoc, hD, ← mul_assoc, hD, mul_assoc]`. Establish `hC : (Dm * Dm - τ • Dm + 1) * G = G * (D₀ * D₀ - τ • D₀ + 1)`.
+
+Rewrite using `[add_mul, sub_mul, mul_add, mul_sub, Matrix.smul_mul, Matrix.mul_smul, hD, hDD, one_mul, mul_one]`. Establish `cancel : ∀ X : Matrix (Fin 3) (Fin 3) K, Gi * (G * X) = X` using `fun X => by rw [← mul_assoc, hG, one_mul]`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`.
+
+Rewrite using `[← hA]`. Use `_ = Gi * (((re • (1 : Matrix (Fin 3) (Fin 3) K) + im • Dm) * G) * (D₀ - 1)) + 0 := by`. Rewrite using `[h1, mul_assoc (re • (1 : Matrix (Fin 3) (Fin 3) K) + im • Dm), add_zero, mul_assoc Gi, mul_assoc _ (Dm - 1), hA]`. Use `_ = _ := by rw [hB, add_zero, mul_assoc G, cancel]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [mul_assoc]`. Rewrite using `[← hC]`. Use `_ = _ := by rw [h2, mul_assoc Gi, hC, cancel]`.
+-/
 private theorem conj_ids {G Gi T D₀ Dm : Matrix (Fin 3) (Fin 3) K} {re im τ : K} (hG : Gi * G = 1) (hD : Dm * G = G * D₀)
     (h1 : T * (Dm - 1) = (re • (1 : Matrix (Fin 3) (Fin 3) K) + im • Dm) * (Dm - 1))
     (h2 : T * (Dm * Dm - τ • Dm + 1) = Dm * Dm - τ • Dm + 1) :
@@ -217,17 +298,26 @@ section Proj
 
 variable {K : Type} [Field K] {Δ s τ : K}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[proj]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem pm_smul (hs : s * s = Δ) (x : K) (M : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) :
     (proj hs).mapMatrix (algebraMap K (Lsq K Δ) x • M) = x • (proj hs).mapMatrix M := by
   ext i j
   simp [proj]
   ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem pm_coe (hs : s * s = Δ) (g : U3 Δ) :
     (proj hs).mapMatrix (g : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) = (eU hs g : Matrix (Fin 3) (Fin 3) K) := rfl
 
 variable {c : K} {d m : EL Δ τ} {δ : U3 Δ} {ι : (Etau K τ)ˣ →* U3 Δ} {Q : Sp Δ τ ≃ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ)}
 
+/- English proof (translation)
+Establish `h1` using `congrArg (proj hs).mapMatrix (id1 hd h t)`. Rewrite `h1` using `[map_mul, map_mul, map_sub, map_add, pm_smul, pm_smul, map_one, pm_coe, pm_coe]`. Conclude with `h1`.
+-/
 private theorem id1K (hs : s * s = Δ) (hd : IsDat c d m) (h : Models c d m δ ι Q) (t : (Etau K τ)ˣ) :
     (eU hs (ι t) : Matrix (Fin 3) (Fin 3) K) * ((eU hs (δ * theta Δ δ) : Matrix (Fin 3) (Fin 3) K) - 1) =
       ((quo t).re • (1 : Matrix (Fin 3) (Fin 3) K) + (quo t).im • (eU hs (δ * theta Δ δ) : Matrix (Fin 3) (Fin 3) K)) *
@@ -236,6 +326,9 @@ private theorem id1K (hs : s * s = Δ) (hd : IsDat c d m) (h : Models c d m δ �
   rw [map_mul, map_mul, map_sub, map_add, pm_smul, pm_smul, map_one, pm_coe, pm_coe] at h1
   exact h1
 
+/- English proof (translation)
+Establish `h1` using `congrArg (proj hs).mapMatrix (id2 hd h t)`. Rewrite `h1` using `[map_mul, map_add, map_sub, map_mul, pm_smul, map_one, pm_coe, pm_coe]`. Conclude with `h1`.
+-/
 private theorem id2K (hs : s * s = Δ) (hd : IsDat c d m) (h : Models c d m δ ι Q) (t : (Etau K τ)ˣ) :
     (eU hs (ι t) : Matrix (Fin 3) (Fin 3) K) * ((eU hs (δ * theta Δ δ) : Matrix (Fin 3) (Fin 3) K) * (eU hs (δ * theta Δ δ) : Matrix (Fin 3) (Fin 3) K) -
         τ • (eU hs (δ * theta Δ δ) : Matrix (Fin 3) (Fin 3) K) + 1) =
@@ -251,6 +344,9 @@ section Loc
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Rewrite using `[val_diagT]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+-/
 private theorem dg_val (x y z : kˣ) :
     ((dg ![x, y, z] : GL (Fin 3) k) : Matrix (Fin 3) (Fin 3) k) = diagonal ![(x : k), (y : k), (z : k)] := by
   rw [val_diagT]
@@ -258,6 +354,13 @@ private theorem dg_val (x y z : kˣ) :
   funext i
   fin_cases i <;> rfl
 
+/- English proof (translation)
+Establish `hGi : ((g₀⁻¹ : GL (Fin 3) k) : Matrix (Fin 3) (Fin 3) k) * (g₀ : Matrix (Fin 3) (Fin 3) k) = 1`. Rewrite using `[← Units.val_mul]`. Simplify using the standard rewrite rules. Establish `hGG : (g₀ : Matrix (Fin 3) (Fin 3) k) * ((g₀⁻¹ : GL (Fin 3) k) : Matrix (Fin 3) (Fin 3) k) = 1`. Rewrite using `[← Units.val_mul]`.
+
+Simplify using the standard rewrite rules. Take `⟨c1, c2⟩` from `conj_ids hGi hD h1 h2`. Establish `hT` using `diag_of ha hb ht hA hB c1 c2`. Rewrite `hT` using `[hr, hr']`. Rewrite using `[Units.val_mul, Units.val_mul, dg_val, Units.val_one, ← hT]`.
+
+Simplify using `only [mul_assoc]`. Rewrite using `[hGG, mul_one, ← mul_assoc, hGG, one_mul]`.
+-/
 private theorem conj_form {g₀ : GL (Fin 3) k} {T Dm : Matrix (Fin 3) (Fin 3) k} {a b r r' : kˣ} {re im τ : k}
     (hD : Dm * (g₀ : Matrix (Fin 3) (Fin 3) k) = (g₀ : Matrix (Fin 3) (Fin 3) k) * diagonal ![(a : k), 1, (b : k)])
     (ha : (a : k) ≠ 1) (hb : (b : k) ≠ 1) (ht : 2 - τ ≠ 0)
@@ -279,6 +382,23 @@ private theorem conj_form {g₀ : GL (Fin 3) k} {T Dm : Matrix (Fin 3) (Fin 3) k
 
 end Loc
 
+/- English proof (translation)
+Introduce `k _ _ _ _ O _ _ hO h2 Δ s hs hs0`. Take `⟨-, hth, -, htau⟩` from `eU_facts k O hO h2 Δ s hs hs0`. Use `⟨fun τ c d m δ ι Q hd hm => ⟨hasTau_of hd hm, fun t => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, comm_U hm t, ← mul_assoc, inv_mul_cancel, one_mul]`. Introduce `a ha c d m δ ι Q hd hm`.
+
+Establish `hab : (a : k) * ((a⁻¹ : kˣ) : k) = 1` using `by simp`. Establish `hcp` using `(htau δ _).1 (hasTau_of hd hm)`. Establish `hcp' : ((eU hs δ * th k 3 (eU hs δ) : GL (Fin 3) k) : Matrix (Fin 3) (Fin 3) k).charpoly = (X - C 1) * (X - C (a : k)) * (X - C ((a⁻¹ : kˣ) : k))`. Establish `e : (C (a : k) : k[X]) * C ((a⁻¹ : kˣ) : k) = 1` using `by rw [← C_mul, hab, C_1]`. Rewrite using `[hcp]`.
+
+Simplify using `only [C_add, C_1]`. Take the linear combination `(-(X - 1 : k[X])) * e`. Take `⟨g₀, x, y, z, hδ, hxz⟩` from `(normalG k).2 _ a ha hcp'`. Establish `hN` using `(normalG k).1 g₀ x y z`. Rewrite `hN` using `[← hδ, hxz, show z / x = a⁻¹ by rw [← hxz, inv_div]]`.
+
+Use `⟨g₀, x, y, z, hδ, hxz, fun t => ?_⟩` and prove the remaining obligations. Establish `hDm : eU hs (δ * theta Δ δ) = g₀ * dg ![a, 1, a⁻¹] * g₀⁻¹` using `by rw [map_mul, hth, hN]`. Establish `hDG : ((eU hs (δ * theta Δ δ) : GL (Fin 3) k) : Matrix (Fin 3) (Fin 3) k) * (g₀ : Matrix (Fin 3) (Fin 3) k) = (g₀ : Matrix (Fin 3) (Fin 3) k) * diagonal ![(a : k), 1, ((a⁻¹ : kˣ) : k)]`. Establish `e : eU hs (δ * theta Δ δ) * g₀ = g₀ * dg ![a, 1, a⁻¹]` using `by rw [hDm, inv_mul_cancel_right]`. Establish `e'` using `congrArg (fun g : GL (Fin 3) k => (g : Matrix (Fin 3) (Fin 3) k)) e`.
+
+Simplify using `only [Units.val_mul] at e'`. Rewrite using `[e', dg_val, Units.val_one]`. Establish `ha1 : (a : k) ≠ 1` using `fun e => by simp [e] at ha`. Establish `hb1 : ((a⁻¹ : kˣ) : k) ≠ 1` using `fun e => ha1 (by rw [e, mul_one] at hab; exact hab)`. Establish `ht : 2 - ((a : k) + (a⁻¹ : kˣ)) ≠ 0` using `fun e => hd.reg (by`.
+
+Establish `e' : (a : k) + (a⁻¹ : kˣ) = 2` using `by linear_combination -e`. Rewrite using `[e']`. Use the proof step `norm_num)`. Take `⟨-, -, hr⟩` from `roots k O hO a ha`. Take `⟨r1, r2⟩` from `hr t`.
+
+Establish `r1' : (quo t).re + (quo t).im * (a : k) = (((evU (root_left a) / evU (root_right a)) t : kˣ) : k)`. Rewrite using `[MonoidHom.div_apply, ← r1, mul_comm (quo t).im]`. Both sides reduce to the same expression. Establish `r2' : (quo t).re + (quo t).im * ((a⁻¹ : kˣ) : k) = ((((evU (root_left a) / evU (root_right a)) t)⁻¹ : kˣ) : k)`. Rewrite using `[MonoidHom.div_apply, inv_div, ← r2, mul_comm (quo t).im]`.
+
+Both sides reduce to the same expression. Apply `Units.ext` to reduce the goal to its premises. Conclude with `conj_form hDG ha1 hb1 ht (by linear_combination -hab) (by linear_combination -hab) (id1K hs hd hm t) (id2K hs hd hm t) r1' r2'`.
+-/
 theorem modelG : ModelG := by
   intro k _ _ _ _ O _ _ hO h2 Δ s hs hs0
   obtain ⟨-, hth, -, htau⟩ := eU_facts k O hO h2 Δ s hs hs0

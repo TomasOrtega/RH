@@ -12,11 +12,19 @@ open scoped CategoryTheory.Obj MonObj
 
 namespace GlobalTheory.RiemannConst
 
+/- English proof (translation)
+Introduce `U f` and use `⟨(h U f).1.preimage φ.continuous, (h U f).2.comp φ.differentiable.differentiableOn fun _ hw => hw⟩`.
+-/
 theorem isHolTo_comp_clm {E E' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup E']
     [NormedSpace ℂ E'] {Z : Scheme.{0}} {W : Set E} {a : E → (Sp ℂ ⟶ Z)} (h : IsHolTo W a) (φ : E' →L[ℂ] E) :
     IsHolTo (φ ⁻¹' W) fun v => a (φ v) := fun U f =>
   ⟨(h U f).1.preimage φ.continuous, (h U f).2.comp φ.differentiable.differentiableOn fun _ hw => hw⟩
 
+/- English proof (translation)
+Set `φ₁ : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) →L[ℂ] (Fin m → ℂ) × (Fin g → ℂ)` to `(ContinuousLinearMap.id ℂ _).prodMap (ContinuousLinearMap.fst ℂ _ _)`. Set `φ₂ : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) →L[ℂ] (Fin m → ℂ) × (Fin g → ℂ)` to `(ContinuousLinearMap.id ℂ _).prodMap (ContinuousLinearMap.snd ℂ _ _)`. Establish `h₁` using `isHolTo_comp_clm hε φ₁`. Establish `h₂` using `isHolTo_comp_clm hε φ₂`. Establish `e₁ : φ₁ ⁻¹' (B ×ˢ Set.univ) = B ×ˢ Set.univ` using `by ext q; simp [φ₁]`.
+
+Establish `e₂ : φ₂ ⁻¹' (B ×ˢ Set.univ) = B ×ˢ Set.univ` using `by ext q; simp [φ₂]`. Rewrite `h₁` using `[e₁]`. Rewrite `h₂` using `[e₂]`. Take `⟨c, hc, H⟩` from `HolTorsion.exists_isHolTo_lift (IsPullback.of_hasPullback A.hom A.hom) h₁ h₂ (fun w hw => (hy w.1 hw.1 _).trans (hy w.1 hw.1 _).symm) (b₀ := (b₀, 0, 0)) ⟨hb₀, trivial⟩`. Conclude with `⟨c, hc, fun b hb z w => H (b, z, w) ⟨hb, trivial⟩⟩`.
+-/
 theorem exists_pair {X : Scheme.{0}} (A : Over X) {m g : ℕ} {B : Set (Fin m → ℂ)}
     {y : (Fin m → ℂ) → (Sp ℂ ⟶ X)} {b₀ : Fin m → ℂ} (hb₀ : b₀ ∈ B)
     {ε : (Fin m → ℂ) × (Fin g → ℂ) → (Sp ℂ ⟶ A.left)} (hε : IsHolTo (B ×ˢ Set.univ) ε)
@@ -38,6 +46,33 @@ theorem exists_pair {X : Scheme.{0}} (A : Over X) {m g : ℕ} {B : Set (Fin m �
     (fun w hw => (hy w.1 hw.1 _).trans (hy w.1 hw.1 _).symm) (b₀ := (b₀, 0, 0)) ⟨hb₀, trivial⟩
   exact ⟨c, hc, fun b hb z w => H (b, z, w) ⟨hb, trivial⟩⟩
 
+/- English proof (translation)
+Introduce `X P m B y b₀ d ε T l l' hB hb₀ hε hT hl hl' hΛ`. Take `⟨M, hM, eM⟩` from `CechPic.cls_surj P.c`. Take `⟨c, hc, hce⟩` from `exists_pair P.A (y := y) hb₀ hε fun b hb z => by`. Rewrite using `[hT b hb, Category.assoc, (d b).isPull.1.w, ← Category.assoc, Over.w]`. Conclude with `Category.id_comp _`.
+
+Set `x : (Fin m → ℂ) → (Fin P.g → ℂ) × (Fin P.g → ℂ) → (Sp ℂ ⟶ (P.A ⊗ P.A).left)` to `fun b q => c (b, (T b).symm q.1, (T b).symm q.2)`. Establish `hx : ∀ b : B, ∀ q, x b q ≫ (fst P.A P.A).left = ((d b).u.ex q.1).left ≫ (d b).φ ∧ x b q ≫ (snd P.A P.A).left = ((d b).u.ex q.2).left ≫ (d b).φ` using `fun b q => by`. Use `hce b b.2 ((T b).symm q.1) ((T b).symm q.2)` as an intermediate fact. Rewrite `this` using `[hT b b.2, hT b b.2, ContinuousLinearEquiv.apply_symm_apply, ContinuousLinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Use `choose F hFc hF0 hFg hFp using fun b : B => GlobalTheory.T.product_abelian_continuous_coords X P (y b) (d b) M hM eM (x b) (hx b)`.
+
+Establish `hper : ∀ (b : B) (z w : Fin P.g → ℂ) (k : (d b).u.Λ), x b (z + k, w) = x b (z, w) ∧ x b (z, w + k) = x b (z, w)` using `fun b z w k => by`. Establish `e (z) : (d b).u.ex (z + k) = (d b).u.ex z`. Rewrite using `[(d b).u.ex_add, ((d b).u.ker k).2 k.2, _root_.mul_one]`. Use `⟨Limits.pullback.hom_ext ?_ ?_, Limits.pullback.hom_ext ?_ ?_⟩` and prove the remaining obligations. Conclude with `(hx b _).1.trans ((congrArg (·.left ≫ (d b).φ) (e z)).trans (hx b (z, w)).1.symm)`.
+
+Conclude with `(hx b _).2.trans (hx b (z, w)).2.symm`. Conclude with `(hx b _).1.trans (hx b (z, w)).1.symm`. Conclude with `(hx b _).2.trans ((congrArg (·.left ≫ (d b).φ) (e w)).trans (hx b (z, w)).2.symm)`. Set `p : B × ℝ × ℝ → (Fin P.g → ℂ) × (Fin P.g → ℂ)` to `fun q => ((q.2.1 : ℂ) • T q.1 (l q.1), (q.2.2 : ℂ) • T q.1 (l' q.1))`. Set `r : B × ℝ × ℝ → (Fin m → ℂ) × (Fin P.g → ℂ) × (Fin P.g → ℂ)` to `fun q => (q.1, (q.2.1 : ℂ) • l q.1, (q.2.2 : ℂ) • l' q.1)`.
+
+Establish `hr : Continuous r`. Establish `k₁ : Continuous fun b : B => l b` using `hl.domRestrict`. Establish `k₂ : Continuous fun b : B => l' b` using `hl'.domRestrict`. Conclude with `(continuous_subtype_val.comp continuous_fst).prodMk (((Complex.continuous_ofReal.comp continuous_snd.fst).smul (k₁.comp continuous_fst)).prodMk ((Complex.continuous_ofReal.comp continuous_snd.snd).smul (k₂.comp continuous_fst)))`. Establish `hxr (q : B × ℝ × ℝ) : x q.1 (p q) = c (r q)`.
+
+Simplify using `only [x, p, r, map_smul, ContinuousLinearEquiv.symm_apply_apply]`. Establish `hp (b : B) : Continuous fun v : ℝ × ℝ => p (b, v)`. Simplify using `only [p]`. Use `fun_prop`. Establish `p₁ (b : B) (s t : ℝ) : p (b, s + 1, t) = ((p (b, s, t)).1 + T b (l b), (p (b, s, t)).2)`.
+
+Simplify using `[p, add_smul]`. Establish `p₂ (b : B) (s t : ℝ) : p (b, s, t + 1) = ((p (b, s, t)).1, (p (b, s, t)).2 + T b (l' b))`. Simplify using `[p, add_smul]`. Establish `key` using `GlobalTheory.T.periodic_section_continuous_limit B ⟨b₀, hb₀⟩ M.ι (fun i => {q | ⊤ ≤ x q.1 (p q) ⁻¹ᵁ M.U i}) (fun i q => F q.1 i (p q)) (fun q => Real.pi * HermFrame.form (d q.1).H (p q).2 (T q.1 (l q.1))) (fun q => Real.pi * HermFrame.form (d q.1).H (p q).1 (T q.1 (l' q.1))) (fun …`. Rewrite using `[← hB.isOpenEmbedding_subtypeVal.map_nhds_eq ⟨b₀, hb₀⟩, eventually_map] filter_upwards [key] with b hb`.
+
+Establish `e (b : B)` using `congrArg Complex.im (HermFrame.conj_form (d b).isAH.1 (T b (l b)) (T b (l' b)))`. Establish `e₀` using `e ⟨b₀, hb₀⟩`. Establish `e₁` using `e b`. Use `congrArg Complex.im hb` as an intermediate fact. Simplify using `[p, HermFrame.form] at this e₀ e₁`.
+
+Simplify using `only [HermFrame.form]`. Rewrite `this` using `[← e₀, ← e₁]`. Apply `mul_left_cancel₀ Real.pi_ne_zero` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Use `(hc (M.U i) 0).1.preimage hr using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `q`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_preimage, hxr]`. Conclude with `⟨fun h => ⟨⟨q.1.2, trivial⟩, h⟩, fun h => h.2⟩`. Establish `h : x q.1 (p q) (default : PrimeSpectrum ℂ) ∈ ⨆ i, M.U i` using `by rw [hM.cover]; trivial`. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 h`.
+
+Conclude with `⟨i, (top_le_preimage_iff_mem _ _).2 hi⟩`. Simplify using `only [Set.mem_ofPred_eq, p₁, p₂]`. Conclude with `⟨by rw [(hper b _ _ ⟨_, (hΛ b b.2).1⟩).1], by rw [(hper b _ _ ⟨_, (hΛ b b.2).2⟩).2]⟩`. Establish `hm : ∀ q ∈ {q : B × ℝ × ℝ | ⊤ ≤ x q.1 (p q) ⁻¹ᵁ M.U i} ∩ {q | ⊤ ≤ x q.1 (p q) ⁻¹ᵁ M.U j}, ⊤ ≤ x q.1 (p q) ⁻¹ᵁ (M.U i ⊓ M.U j)` using `fun q hq => by`. Rewrite using `[Scheme.Hom.preimage_inf]`.
+
+Conclude with `le_inf hq.1 hq.2`. Use `((hc (M.U i ⊓ M.U j) (M.g i j).val).2.continuousOn.comp hr.continuousOn fun q hq => ⟨⟨q.1.2, trivial⟩, hxr q ▸ hm q hq⟩).congr fun q hq => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[hFg q.1 i j _ (hm q hq), mul_div_cancel_right₀ _ (hF0 q.1 j _ hq.2), hxr]`. Establish `k (w : Fin P.g → ℂ) : Continuous fun v => (Real.pi : ℂ) * HermFrame.form (d b).H v w` using `continuous_const.mul (continuous_id.dotProduct continuous_const)`.
+
+Establish `k₁` using `(k (T b (l b))).comp (hp b).snd`. Establish `k₂` using `(k (T b (l' b))).comp (hp b).fst`. Conclude with `⟨by simpa only [Function.comp_def] using k₁, by simpa only [Function.comp_def] using k₂⟩`. Simplify using `only [p₁, p₂]`. Conclude with `⟨(hFp b ⟨_, (hΛ b b.2).1⟩ i _ _ hq).1, (hFp b ⟨_, (hΛ b b.2).2⟩ i _ _ hq).2⟩`.
+-/
 theorem eventually_im_form_eq : ∀ (X : Scheme.{0}) (P : PPAS X) (m : ℕ) (B : Set (Fin m → ℂ)) (y : (Fin m → ℂ) → (Sp ℂ ⟶ X)) (b₀ : Fin m → ℂ) (d : ∀ b, P.RiemannData (y b)) (ε : (Fin m → ℂ) × (Fin P.g → ℂ) → (Sp ℂ ⟶ P.A.left)) (T : (Fin m → ℂ) → ((Fin P.g → ℂ) ≃L[ℂ] (Fin P.g → ℂ))) (l l' : (Fin m → ℂ) → (Fin P.g → ℂ)), IsOpen B → b₀ ∈ B → IsHolTo (B ×ˢ Set.univ) ε → (∀ b ∈ B, ∀ z, ε (b, z) = ((d b).u.ex (T b z)).left ≫ (d b).φ) → ContinuousOn l B → ContinuousOn l' B → (∀ b ∈ B, T b (l b) ∈ (d b).u.Λ ∧ T b (l' b) ∈ (d b).u.Λ) → ∀ᶠ b in nhds b₀, (HermFrame.form (d b).H (T b (l b)) (T b (l' b))).im = (HermFrame.form (d b₀).H (T b₀ (l b₀)) (T b₀ (l' b₀))).im := by
   intro X P m B y b₀ d ε T l l' hB hb₀ hε hT hl hl' hΛ
   obtain ⟨M, hM, eM⟩ := CechPic.cls_surj P.c

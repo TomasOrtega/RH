@@ -7,6 +7,15 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H UpperTh
 open UpperTheory.V.Af.Smo (Eig EigAt)
 open UpperTheory.ConvolutionTheory.RankTwoDescent
 
+/- English proof (translation)
+Take `⟨a, b, rfl⟩` from `Multiset.card_eq_two.1 hc`. Take `⟨c, d, rfl⟩` from `Multiset.card_eq_two.1 hc'`. Establish `key : ∀ u : ℂ, (u + a) * (u + b) = (-u + c) * (-u + d)` using `fun u => by`. Simplify `h u` using `[Multiset.insert_eq_cons]`. Establish `h0` using `key 0`.
+
+Establish `h1` using `key 1`. Establish `hs : a + b = -(c + d)` using `by linear_combination h1 - h0`. Establish `hz : (c + a) * (c + b) = 0`. Use `key c` as an intermediate fact. Simplify using `using this`.
+
+Break down `mul_eq_zero.1 hz with e | e` into its components or cases. Establish `e1 : c = -a` using `by linear_combination e`. Establish `e2 : d = -b` using `by linear_combination hs - e`. Simplify using `[e1, e2, Multiset.insert_eq_cons]`. Establish `e1 : c = -b` using `by linear_combination e`.
+
+Establish `e2 : d = -a` using `by linear_combination hs - e`. Simplify using `only [e1, e2, Multiset.insert_eq_cons, Multiset.map_cons, Multiset.map_singleton]`. Conclude with `Multiset.cons_swap _ _ _`.
+-/
 private theorem neg_of_prod_eq {m m' : Multiset ℂ} (hc : m.card = 2) (hc' : m'.card = 2)
     (h : ∀ u : ℂ, (m.map (u + ·)).prod = (m'.map (-u + ·)).prod) : m' = m.map Neg.neg := by
   obtain ⟨a, b, rfl⟩ := Multiset.card_eq_two.1 hc
@@ -28,6 +37,23 @@ private theorem neg_of_prod_eq {m m' : Multiset ℂ} (hc : m.card = 2) (hc' : m'
     simp only [e1, e2, Multiset.insert_eq_cons, Multiset.map_cons, Multiset.map_singleton]
     exact Multiset.cons_swap _ _ _
 
+/- English proof (translation)
+Introduce `E _ _ _ V Q B hB hne τ m m' hc hm hm'`. Choose the witnesses or unpack the hypotheses as in `⟨x, y, hxy⟩ : ∃ x y, B x y ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hne (LinearMap.ext fun x => LinearMap.ext fun y => hcon x y)`.
+
+Set `S` to `GlobalTheory.CapPair.adjPairs V Q.V B`. Establish `h1 : ∀ i j z, (GlobalTheory.CuspRep.lieS E 2 i j (GlobalTheory.CuspRep.atEmb τ z), -MulOpposite.op (GlobalTheory.CuspRep.lieS E 2 i j (GlobalTheory.CuspRep.atEmb τ z))) ∈ S`. Introduce `i j z φ ψ`. Establish `h` using `hB.lie (toL (Matrix.single i j (GlobalTheory.CuspRep.atEmb τ z))) φ ψ`. Rewrite `h` using `[add_eq_zero_iff_eq_neg, ← map_neg]`.
+
+Conclude with `⟨hB.st (.lie _) _ φ.2, neg_mem (hB.st' (.lie _) _ ψ.2), h⟩`. Establish `h2 : ∀ i j, (GlobalTheory.CuspRep.Eop (a` using `2) τ i j, -MulOpposite.op (GlobalTheory.CuspRep.Eop (a := 2) τ i j)) ∈ S := fun i j => by`. Use `S.smul_mem (S.sub_mem (h1 i j 1) (S.smul_mem (h1 i j Complex.I) Complex.I)) (1 / 2) using 1` and compare the differences between its conclusion and the goal. Use `Prod.ext rfl ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.CuspRep.Eop, MulOpposite.op_smul, MulOpposite.op_sub, Prod.smul_snd, Prod.snd_sub]`.
+
+Use `module`. Establish `h3 : ∀ w, Formalism.REAL.qdet (fun i j => (GlobalTheory.CuspRep.Eop (a` using `2) τ i j, -MulOpposite.op (GlobalTheory.CuspRep.Eop (a := 2) τ i j))) w ∈ S := fun w => by`. Use `S.sum_mem fun σ _ => S.mul_mem (intCast_mem S _) (S.list_prod_mem fun x hx => ?_)` and prove the remaining obligations. Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hx`. Use `S.add_mem ?_ (h2 _ _)` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `S.algebraMap_mem _`. Conclude with `S.zero_mem`. Establish `h4 : ∀ u, (GlobalTheory.CuspRep.cap (a` using `2) τ u, MulOpposite.op ((-1 : ℂ) ^ 2 • GlobalTheory.CuspRep.cap (a := 2) τ (-u) : Module.End ℂ (Sm E 2))) ∈ S := fun u => by`. Use `h3 (u + (((2 : ℕ) : ℂ) - 1) / 2) using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[GlobalTheory.CapPair.qdet_prod, GlobalTheory.CapPair.qdet_antipode (A := Module.End ℂ (Sm E 2)) (GlobalTheory.CuspRep.glRel_Eop (a := 2) τ), show ((2 : ℕ) : ℂ) - 1 - (u + (((2 : ℕ) : ℂ) - 1) / 2) = -u + (((2 : ℕ) : ℂ) - 1) / 2 by ring]`. Both sides reduce to the same expression. Use `neg_of_prod_eq hc hm'.1 fun u => ?_` and prove the remaining obligations. Take `⟨h, h', e'⟩` from `h4 u x y`. Establish `e1 : (⟨_, h⟩ : V) = (m.map (u + ·)).prod • x` using `Subtype.ext (hm u _ x.2)`.
+
+Establish `e3 : (⟨_, h'⟩ : Q.V) = (m'.map (-u + ·)).prod • y` using `Subtype.ext (by`. Express the relevant statement in the definitionally equal form `(-1 : ℂ) ^ 2 • GlobalTheory.CuspRep.cap (a := 2) τ (-u) y.1 = _ • y.1`. Rewrite using `[hm'.2 _ _ y.2]`. Use the proof step `simp)`. Establish `e4 : B ((m.map (u + ·)).prod • x) y = B x ((m'.map (-u + ·)).prod • y)`.
+
+Rewrite using `[← e1, ← e3]`. Conclude with `e'`. Rewrite `e4` using `[map_smul, LinearMap.smul_apply, map_smul, smul_eq_mul, smul_eq_mul]`. Conclude with `mul_right_cancel₀ hxy e4`.
+-/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.infPair :
     InfPair := by
   intro E _ _ _ V Q B hB hne τ m m' hc hm hm'

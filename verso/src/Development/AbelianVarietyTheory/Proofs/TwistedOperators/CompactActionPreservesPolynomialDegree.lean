@@ -30,11 +30,19 @@ section Mat
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[add_smul]`. Conclude with `Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left s).smul_right t)`.
+-/
 theorem exp_add_smul (X : Matrix (Fin n) (Fin n) ℂ) (s t : ℝ) :
     NormedSpace.exp ((s + t) • X) = NormedSpace.exp (s • X) * NormedSpace.exp (t • X) := by
   rw [add_smul]
   exact Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left s).smul_right t)
 
+/- English proof (translation)
+Establish `h1 : Yᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * Y = 0` using `hY.1`. Establish `h2 : Y * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * Y` using `hY.2`. Establish `h3 : Yᴴ = -Y`. Establish `h4 : (Yᴴ + Y) * Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 0`. Rewrite using `[Matrix.add_mul, h2, h1, Matrix.zero_mul]`.
+
+Rewrite `h4` using `[Matrix.mul_assoc, Formalism.REAL.Jm_mul_self, Matrix.mul_one]`. Conclude with `eq_neg_of_add_eq_zero_left h4`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose, ← Matrix.exp_conjTranspose, Matrix.conjTranspose_smul, h3, star_trivial, smul_neg, ← neg_smul, ← exp_add_smul, neg_add_cancel, zero_smul, NormedSpace.exp_zero]`. Conclude with `(Commute.exp_left (Commute.smul_left (show Commute Y (Formalism.REAL.Jm ε) from h2) t)).eq`.
+-/
 theorem exp_mem_K {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ} (hY : Formalism.REAL.inK ε Y) (t : ℝ) :
     NormedSpace.exp (t • Y) ∈ Formalism.REAL.Kset ε := by
   have h1 : Yᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * Y = 0 := hY.1
@@ -50,6 +58,13 @@ theorem exp_mem_K {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ} (hY : F
       NormedSpace.exp_zero]
   · exact (Commute.exp_left (Commute.smul_left (show Commute Y (Formalism.REAL.Jm ε) from h2) t)).eq
 
+/- English proof (translation)
+Establish `hd : IsUnit fr.det` using `(Matrix.isUnit_iff_isUnit_det _).1 hfr`. Establish `e1 : fr * fr⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hd`. Establish `e2 : (fr⁻¹)ᴴ * frᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, e1, Matrix.conjTranspose_one]`. Establish `e3 : kᴴ * k = 1` using `(Matrix.mem_unitaryGroup_iff'.1 hk.1)`. Establish `e4 : k * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * k` using `hk.2`.
+
+Use `show (fr⁻¹ * k * fr)ᴴ * G * (fr⁻¹ * k * fr) = G`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hG]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = G := by`.
+
+Rewrite using `[e1, e2, Matrix.one_mul, Matrix.mul_one, ← e4, ← Matrix.mul_assoc kᴴ, e3, Matrix.one_mul, hG]`.
+-/
 theorem conj_mem {ε : Fin n → Bool} {fr G k : Matrix (Fin n) (Fin n) ℂ} (hfr : IsUnit fr)
     (hG : frᴴ * Formalism.REAL.Jm ε * fr = G) (hk : k ∈ Formalism.REAL.Kset ε) : fr⁻¹ * k * fr ∈ Formalism.QuantumDeterminants.UH G := by
   have hd : IsUnit fr.det := (Matrix.isUnit_iff_isUnit_det _).1 hfr
@@ -64,6 +79,13 @@ theorem conj_mem {ε : Fin n → Bool} {fr G k : Matrix (Fin n) (Fin n) ℂ} (hf
     _ = G := by
         rw [e1, e2, Matrix.one_mul, Matrix.mul_one, ← e4, ← Matrix.mul_assoc kᴴ, e3, Matrix.one_mul, hG]
 
+/- English proof (translation)
+Take `⟨Y, hY, hexp, -⟩` from `Formalism.REAL.compact_exists_log_bounded ε k hk`. Establish `hd : IsUnit fr.det` using `(Matrix.isUnit_iff_isUnit_det _).1 hfr`. Establish `e1 : fr * fr⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hd`. Establish `e2 : (fr⁻¹)ᴴ * frᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, e1, Matrix.conjTranspose_one]`. Establish `h1 : Yᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * Y = 0` using `hY.1`.
+
+Establish `key : ∀ t : ℝ, NormedSpace.exp (t • (fr⁻¹ * Y * fr)) = fr⁻¹ * NormedSpace.exp (t • Y) * fr`. Introduce `t`. Rewrite using `[← Matrix.exp_conj' fr (t • Y) hfr, Matrix.mul_smul, Matrix.smul_mul]`. Use `⟨fr⁻¹ * Y * fr, ?_, ?_, fun t => ⟨_, exp_mem_K hY t, key t⟩⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← hG]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc, Matrix.mul_add, Matrix.add_mul]`. Use `_ = 0 := by rw [e1, e2, Matrix.one_mul, Matrix.one_mul, h1, Matrix.mul_zero, Matrix.zero_mul]`. Rewrite using `[key, one_smul, hexp]`.
+-/
 theorem compact_path {ε : Fin n → Bool} {fr G k : Matrix (Fin n) (Fin n) ℂ} (hfr : IsUnit fr)
     (hG : frᴴ * Formalism.REAL.Jm ε * fr = G) (hk : k ∈ Formalism.REAL.Kset ε) :
     ∃ X : Matrix (Fin n) (Fin n) ℂ, Xᴴ * G + G * X = 0 ∧ NormedSpace.exp ((1 : ℝ) • X) = fr⁻¹ * k * fr ∧
@@ -83,11 +105,17 @@ theorem compact_path {ε : Fin n → Bool} {fr G k : Matrix (Fin n) (Fin n) ℂ}
       _ = 0 := by rw [e1, e2, Matrix.one_mul, Matrix.one_mul, h1, Matrix.mul_zero, Matrix.zero_mul]
   · rw [key, one_smul, hexp]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨one_mem _, by rw [Matrix.one_mul, Matrix.mul_one]⟩`.
+-/
 theorem one_mem_K (ε : Fin n → Bool) : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ Formalism.REAL.Kset ε :=
   ⟨one_mem _, by rw [Matrix.one_mul, Matrix.mul_one]⟩
 
 end Mat
 
+/- English proof (translation)
+Take `⟨Q, L, hQ, hh, hL, rfl⟩` from `h`. Rewrite using `[add_assoc]`. Use `GlobalTheory.T.not_locallyFinite_quadraticMul_add_degreeNonraising σ Q (L + c • 1) hQ hh (fun P => ?_) φ hφ F hF` and prove the remaining obligations. Conclude with `(MvPolynomial.totalDegree_add _ _).trans (max_le (hL P) (MvPolynomial.totalDegree_smul_le c P))`.
+-/
 theorem not_locFin {σ : Type} [Finite σ] {A : Module.End ℂ (MvPolynomial σ ℂ)} (c : ℂ)
     (h : ∃ (Q : MvPolynomial σ ℂ) (L : Module.End ℂ (MvPolynomial σ ℂ)), Q ≠ 0 ∧ Q.IsHomogeneous 2 ∧
       (∀ P, (L P).totalDegree ≤ P.totalDegree) ∧ A = LinearMap.mulLeft ℂ Q + L)
@@ -100,6 +128,15 @@ theorem not_locFin {σ : Type} [Finite σ] {A : Module.End ℂ (MvPolynomial σ 
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `hl using Submodule.span_induction with`. Consider the case `mem l hl`. Take `⟨w, rfl⟩` from `hl`. Use `⟨∏ τ, ‖w τ‖, fun v => ?_⟩` and prove the remaining obligations. Establish `: ellT M w (PiTensorProduct.tprod ℂ v) = ∏ τ, inner ℂ (w τ) (v τ)` using `by simp [ellT]`.
+
+Rewrite using `[this, norm_prod, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun τ _ => norm_inner_le_norm _ _`. Consider the case `zero => exact ⟨0, fun v => by simp⟩`. Consider the case `add l l' _ _ h h'`. Take `⟨c, hc⟩` from `h`.
+
+Take `⟨c', hc'⟩` from `h'`. Use `⟨c + c', fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, add_mul]`. Conclude with `(norm_add_le _ _).trans (add_le_add (hc v) (hc' v))`. Consider the case `smul a l _ h`.
+
+Take `⟨c, hc⟩` from `h`. Use `⟨‖a‖ * c, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hc v) (norm_nonneg _)`.
+-/
 theorem span_bound {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (l : (⨂[ℂ] τ, M.H τ) →ₗ[ℂ] ℂ)
     (hl : l ∈ Submodule.span ℂ (Set.range (ellT M))) :
     ∃ c : ℝ, ∀ v : ∀ τ, M.H τ, ‖l (PiTensorProduct.tprod ℂ v)‖ ≤ c * ∏ τ, ‖v τ‖ := by
@@ -123,6 +160,11 @@ theorem span_bound {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (l
     rw [LinearMap.smul_apply, norm_smul, mul_assoc]
     exact mul_le_mul_of_nonneg_left (hc v) (norm_nonneg _)
 
+/- English proof (translation)
+Proceed by induction on `hl using Submodule.span_induction with`. Consider the case `mem l hl => obtain ⟨z, rfl⟩ := hl`. Conclude with `h z`. Consider the case `zero => exact hasDerivAt_const (0 : ℝ) (0 : ℂ)`. Consider the case `add l l' _ _ h h' => exact h.fun_add h'`.
+
+Consider the case `smul a l _ h => exact h.const_mul a`.
+-/
 theorem span_deriv {E Z : Type} [AddCommGroup E] [Module ℂ E] (e : Z → E →ₗ[ℂ] ℂ) (c : ℝ → E) (y : E)
     (h : ∀ z, HasDerivAt (fun t => e z (c t)) (e z y) 0) (l : E →ₗ[ℂ] ℂ)
     (hl : l ∈ Submodule.span ℂ (Set.range e)) : HasDerivAt (fun t => l (c t)) (l y) 0 := by
@@ -132,6 +174,9 @@ theorem span_deriv {E Z : Type} [AddCommGroup E] [Module ℂ E] (e : Z → E →
   | add l l' _ _ h h' => exact h.fun_add h'
   | smul a l _ h => exact h.const_mul a
 
+/- English proof (translation)
+Unfold `elt`. Rewrite using `[Matrix.mul_one, Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ))]`. Conclude with `GlobalTheory.PointAtPlaceHom.atTau_one hθ V τ`.
+-/
 theorem elt_one {V : HSp D} {S : D.what₂.Tau → SPar} {θ : InfFam D} (hθ : IsInfFam θ) (M : DSModel V S)
     (τ : D.what₂.Tau) : elt θ M τ 1 = 1 := by
   unfold elt
@@ -149,12 +194,18 @@ abbrev ptL (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (M : DSModel V S) (M
     PolF D W.rank V.rank →ₗ[ℂ] (WO V W → ℂ) :=
   pureTensorO ψ θ V W (cart M) (cart M') (onb M) (onb M') f
 
+/- English proof (translation)
+Unfold `srcOp`. Rewrite using `[LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply, neg_smul, sub_eq_add_neg]`.
+-/
 theorem srcOp_apply (τ : D.what₂.Tau) (a : ℚ) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) (P : PolF D W.rank V.rank) :
     srcOp M M' τ a X P = fockS τ (M.ε τ) (M'.ε τ) ((M.fr τ * X * (M.fr τ)⁻¹).map (starRingEnd ℂ)) P -
       ((a : ℂ) * X.trace) • P := by
   unfold srcOp
   rw [LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply, neg_smul, sub_eq_add_neg]
 
+/- English proof (translation)
+Rewrite using `[srcOp_apply]`. Conclude with `h.1 X hX P z`.
+-/
 theorem hasDerivAt_lieAction_source_operator {τ : D.what₂.Tau} {a b : ℚ} (h : LieFock ψ θ M M' ω f τ a b) {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ lieAt V τ) (P : PolF D W.rank V.rank) (z : WO V W) :
     HasDerivAt (fun t : ℝ => ω (atTau θ V τ (NormedSpace.exp (t • X)), 1) (ptL ψ θ M M' f P) z)
@@ -162,12 +213,18 @@ theorem hasDerivAt_lieAction_source_operator {τ : D.what₂.Tau} {a b : ℚ} (h
   rw [srcOp_apply]
   exact h.1 X hX P z
 
+/- English proof (translation)
+The claim follows from `h.2 Y hY P z`.
+-/
 theorem lie_tgt {τ : D.what₂.Tau} {a b : ℚ} (h : LieFock ψ θ M M' ω f τ a b) {Y : Matrix (Fin W.rank) (Fin W.rank) ℂ}
     (hY : Y ∈ lieAt W τ) (P : PolF D W.rank V.rank) (z : WO V W) :
     HasDerivAt (fun t : ℝ => ω (1, atTau θ W τ (NormedSpace.exp (t • Y))) (ptL ψ θ M M' f P) z)
       (ptL ψ θ M M' f (tgtOp M M' τ a Y P) z) 0 :=
   h.2 Y hY P z
 
+/- English proof (translation)
+Take `⟨x, y, -, -, h⟩` from `h`. Use `h k hk 1 (one_mem_K _) P` as an intermediate fact. Rewrite `this` using `[elt_one hθ M']`. Use `⟨_, ?_, this.trans (map_smul (ptL ψ θ M M' f) _ _).symm⟩` and prove the remaining obligations. Conclude with `(MvPolynomial.totalDegree_smul_le _ _).trans (GlobalTheory.T.substitution_total_degree_le D _ _ τ _ _ _ _ P)`.
+-/
 theorem compact_action_preserves_polynomial_degree (hθ : IsInfFam θ) {τ : D.what₂.Tau} {a b : ℚ} (h : CompactFock ψ θ M M' ω f τ a b)
     (k : Matrix (Fin V.rank) (Fin V.rank) ℂ) (hk : k ∈ Formalism.REAL.Kset (M.ε τ)) (P : PolF D W.rank V.rank) :
     ∃ Q : PolF D W.rank V.rank, Q.totalDegree ≤ P.totalDegree ∧
@@ -178,6 +235,9 @@ theorem compact_action_preserves_polynomial_degree (hθ : IsInfFam θ) {τ : D.w
   refine ⟨_, ?_, this.trans (map_smul (ptL ψ θ M M' f) _ _).symm⟩
   exact (MvPolynomial.totalDegree_smul_le _ _).trans (GlobalTheory.T.substitution_total_degree_le D _ _ τ _ _ _ _ P)
 
+/- English proof (translation)
+Take `⟨x, y, -, -, h⟩` from `h`. Use `h 1 (one_mem_K _) k hk P` as an intermediate fact. Rewrite `this` using `[elt_one hθ M]`. Use `⟨_, ?_, this.trans (map_smul (ptL ψ θ M M' f) _ _).symm⟩` and prove the remaining obligations. Conclude with `(MvPolynomial.totalDegree_smul_le _ _).trans (GlobalTheory.T.substitution_total_degree_le D _ _ τ _ _ _ _ P)`.
+-/
 theorem cpt_tgt (hθ : IsInfFam θ) {τ : D.what₂.Tau} {a b : ℚ} (h : CompactFock ψ θ M M' ω f τ a b)
     (k : Matrix (Fin W.rank) (Fin W.rank) ℂ) (hk : k ∈ Formalism.REAL.Kset (M'.ε τ)) (P : PolF D W.rank V.rank) :
     ∃ Q : PolF D W.rank V.rank, Q.totalDegree ≤ P.totalDegree ∧
@@ -188,22 +248,49 @@ theorem cpt_tgt (hθ : IsInfFam θ) {τ : D.what₂.Tau} {a b : ℚ} (h : Compac
   refine ⟨_, ?_, this.trans (map_smul (ptL ψ θ M M' f) _ _).symm⟩
   exact (MvPolynomial.totalDegree_smul_le _ _).trans (GlobalTheory.T.substitution_total_degree_le D _ _ τ _ _ _ _ P)
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.PointAtPlaceHom.atTau_one hθ]`. Conclude with `map_one ω`.
+-/
 theorem om_src_one (hθ : IsInfFam θ) (τ : D.what₂.Tau) : ω (atTau θ V τ 1, 1) = 1 := by
   rw [GlobalTheory.PointAtPlaceHom.atTau_one hθ]; exact map_one ω
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.PointAtPlaceHom.atTau_one hθ]`. Conclude with `map_one ω`.
+-/
 theorem om_tgt_one (hθ : IsInfFam θ) (τ : D.what₂.Tau) : ω (1, atTau θ W τ 1) = 1 := by
   rw [GlobalTheory.PointAtPlaceHom.atTau_one hθ]; exact map_one ω
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.PointAtPlaceHom.atTau_mul hθ V τ hg hg', ← map_mul, Prod.mk_mul_mk, mul_one]`.
+-/
 theorem om_src_mul (hθ : IsInfFam θ) (τ : D.what₂.Tau) (g) (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (g')
     (hg' : g' ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) :
     ω (atTau θ V τ (g * g'), 1) = ω (atTau θ V τ g, 1) * ω (atTau θ V τ g', 1) := by
   rw [GlobalTheory.PointAtPlaceHom.atTau_mul hθ V τ hg hg', ← map_mul, Prod.mk_mul_mk, mul_one]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.PointAtPlaceHom.atTau_mul hθ W τ hg hg', ← map_mul, Prod.mk_mul_mk, mul_one]`.
+-/
 theorem om_tgt_mul (hθ : IsInfFam θ) (τ : D.what₂.Tau) (g) (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D W τ)) (g')
     (hg' : g' ∈ Formalism.QuantumDeterminants.UH (gramAt D W τ)) :
     ω (1, atTau θ W τ (g * g')) = ω (1, atTau θ W τ g) * ω (1, atTau θ W τ g') := by
   rw [GlobalTheory.PointAtPlaceHom.atTau_mul hθ W τ hg hg', ← map_mul, Prod.mk_mul_mk, mul_one]
 
+/- English proof (translation)
+Distinguish the cases in `h0 : φ = 0`. Substitute `h0` using the available equality. Establish `: φ' = 0` using `hinj (by rw [e, map_zero, map_zero])`. Substitute `this` using the available equality. Simplify using `only [map_zero, LinearMap.zero_apply]`.
+
+Establish `T` using `GlobalTheory.T.discreteSeries_pureInnerProducts_tensorProduct D V S M`. Take `⟨k, hk, rfl⟩` from `GlobalTheory.T.mem_maximalCompact_of_maps_fockVector_to_fock V.rank (M.ε τ) (M.fr τ) (gramAt D V τ) _ _ (ptL ψ θ M M' f) (fun g => ω (atTau θ V τ g, 1)) (srcOp M M' τ (aT τ)) (M.fr_unit τ) (M.fr_gram τ) hinj (om_src_one hθ τ) (om_src_mul hθ τ) (fun X hX => hasDerivAt_lieAction_so …`. Take `⟨X, hX, h1, hK⟩` from `compact_path (M.fr_unit τ) (M.fr_gram τ) hk`. Establish `hm : ∀ t : ℝ, NormedSpace.exp (t • X) ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)` using `fun t => by`. Take `⟨k', hk', e'⟩` from `hK t`.
+
+Rewrite using `[e']`. Conclude with `conj_mem (M.fr_unit τ) (M.fr_gram τ) hk'`. Rewrite `e`, the goal using `[← h1]`. Use `GlobalTheory.T.equivariant_of_generator_oneParameterGroup _ _ _ (ptL ψ θ M M' f) (fun t : ℝ => ω (atTau θ V τ (NormedSpace.exp (t • X)), 1)) (srcOp M M' τ (aT τ) X) (fun t : ℝ => actT M τ (NormedSpace.exp (t • X))) (I.flip x) (Set.range (ellT M)) hinj ?_ ?_ ?_ (hasDerivAt_lieActi …` and prove the remaining obligations. Simplify using `only [zero_smul, NormedSpace.exp_zero]`.
+
+Conclude with `om_src_one hθ τ`. Introduce `s t`. Simplify using `only [exp_add_smul]`. Conclude with `om_src_mul hθ τ _ (hm s) _ (hm t)`. Introduce `t P`.
+
+Take `⟨k', hk', e'⟩` from `hK t`. Simplify using `only [e']`. Conclude with `compact_action_preserves_polynomial_degree hθ hC k' hk' P`. Simplify using `only [zero_smul, NormedSpace.exp_zero]`. Conclude with `T.one τ`.
+
+Introduce `s t`. Simplify using `only [exp_add_smul]`. Conclude with `T.mul τ _ (hm s) _ (hm t)`. Conclude with `fun y hy => T.sep y fun w => hy _ ⟨w, rfl⟩`. Introduce and unpack `_ ⟨w, rfl⟩ t`.
+
+Take `⟨w', hw⟩` from `T.adj τ _ (hm t) w`. Conclude with `⟨w', hw.symm⟩`. Introduce and unpack `_ ⟨w, rfl⟩ P`. Conclude with `h.src τ X hX P x w`.
+-/
 theorem equiv_alt (hθ : IsInfFam θ) (h : GlobIt M M' aS aT It I) (τ : D.what₂.Tau) (hr : 0 < W.rank)
     (hinj : Function.Injective (ptL ψ θ M M' f)) (hC : CompactFock ψ θ M M' ω f τ (aS τ) (aT τ))
     (hL : LieFock ψ θ M M' ω f τ (aS τ) (aT τ)) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ)
@@ -252,6 +339,27 @@ theorem equiv_alt (hθ : IsInfFam θ) (h : GlobIt M M' aS aT It I) (τ : D.what�
   · rintro _ ⟨w, rfl⟩ P
     exact h.src τ X hX P x w
 
+/- English proof (translation)
+Distinguish the cases in `h0 : φ = 0`. Substitute `h0` using the available equality. Establish `: φ' = 0` using `hinj (by rw [e, map_zero, map_zero])`. Substitute `this` using the available equality. Simplify using `only [map_zero, LinearMap.zero_apply]`.
+
+Establish `T` using `GlobalTheory.T.discreteSeries_pureInnerProducts_tensorProduct D V S M`. Establish `T'` using `GlobalTheory.T.discreteSeries_pureInnerProducts_tensorProduct D W S' M'`. Take `⟨k, hk, rfl⟩` from `GlobalTheory.T.mem_maximalCompact_of_maps_fockVector_to_fock W.rank (M'.ε τ) (M'.fr τ) (gramAt D W τ) _ _ (ptL ψ θ M M' f) (fun g => ω (1, atTau θ W τ g)) (tgtOp M M' τ (aS τ)) (M'.fr_unit τ) (M'.fr_gram τ) hinj (om_tgt_one hθ τ) (om_tgt_mul hθ τ) (fun X hX => lie_tgt hL hX) (cpt …`. Take `⟨X, hX, h1, hK⟩` from `compact_path (M'.fr_unit τ) (M'.fr_gram τ) hk`. Establish `hm : ∀ t : ℝ, NormedSpace.exp (t • X) ∈ Formalism.QuantumDeterminants.UH (gramAt D W τ)` using `fun t => by`.
+
+Take `⟨k', hk', e'⟩` from `hK t`. Rewrite using `[e']`. Conclude with `conj_mem (M'.fr_unit τ) (M'.fr_gram τ) hk'`. Rewrite `e`, the goal using `[← h1]`. Set `A : ℝ → Module.End ℂ (⨂[ℂ] τ, M'.H τ)` to `fun t => actT M' τ (NormedSpace.exp (t • X))`.
+
+Establish `A0 : A 0 = LinearMap.id`. Simplify using `only [A, zero_smul, NormedSpace.exp_zero]`. Conclude with `T'.one τ`. Establish `Aadd : ∀ s t, A (s + t) = A s ∘ₗ A t` using `fun s t => by`. Simplify using `only [A, exp_add_smul]`.
+
+Conclude with `T'.mul τ _ (hm s) _ (hm t)`. Set `ev : (∀ τ, M.H τ) × (⨂[ℂ] τ, M'.H τ) → ((⨂[ℂ] τ, M'.H τ) →ₗ[ℂ] ⨂[ℂ] τ, M.H τ) →ₗ[ℂ] ℂ` to `fun p => ellT M p.1 ∘ₗ LinearMap.applyₗ p.2`. Establish `key : I φ' = I φ ∘ₗ A (-1)`. Use `GlobalTheory.T.equivariant_of_generator_oneParameterGroup _ _ _ (ptL ψ θ M M' f) (fun t : ℝ => ω (1, atTau θ W τ (NormedSpace.exp (t • X)))) (tgtOp M M' τ (aS τ) X) (fun t : ℝ => LinearMap.lcomp ℂ _ (A (-t))) I (Set.range ev) hinj ?_ ?_ ?_ (lie_tgt hL hX) ?_ ?_ ?_ ?_ ?_ φ φ' e` and prove the remaining obligations. Simplify using `only [zero_smul, NormedSpace.exp_zero]`.
+
+Conclude with `om_tgt_one hθ τ`. Introduce `s t`. Simplify using `only [exp_add_smul]`. Conclude with `om_tgt_mul hθ τ _ (hm s) _ (hm t)`. Introduce `t P`.
+
+Take `⟨k', hk', e'⟩` from `hK t`. Simplify using `only [e']`. Conclude with `cpt_tgt hθ hC k' hk' P`. Use `LinearMap.ext fun B => ?_ show B ∘ₗ A (-0) = B` and prove the remaining obligations. Rewrite using `[neg_zero, A0, LinearMap.comp_id]`.
+
+Introduce `s t`. Use `LinearMap.ext fun B => ?_` and prove the remaining obligations. Use `show B ∘ₗ A (-(s + t)) = (B ∘ₗ A (-t)) ∘ₗ A (-s)`. Rewrite using `[neg_add_rev, Aadd, LinearMap.comp_assoc]`. Conclude with `fun B hB => LinearMap.ext fun y => T.sep _ fun w => hB _ ⟨(w, y), rfl⟩`.
+
+Introduce and unpack `_ ⟨⟨w, y⟩, rfl⟩ t`. Conclude with `⟨(w, A (-t) y), rfl⟩`. Introduce and unpack `_ ⟨⟨w, y⟩, rfl⟩ P`. Establish `d` using `HasDerivAt.scomp (0 : ℝ) (h := fun t : ℝ => -t) (by rw [neg_zero]; exact h.tgt τ X hX P y w) (hasDerivAt_neg (0 : ℝ))`. Rewrite `d` using `[neg_smul, one_smul, neg_neg]`.
+
+Conclude with `d`. Use `show I φ' (A 1 x) = I φ x`. Rewrite using `[key, LinearMap.comp_apply, ← LinearMap.comp_apply (A (-1)), ← Aadd, neg_add_cancel, A0, LinearMap.id_apply]`.
+-/
 theorem inv_tgt (hθ : IsInfFam θ) (h : GlobIt M M' aS aT It I) (τ : D.what₂.Tau) (hr : 0 < V.rank)
     (hinj : Function.Injective (ptL ψ θ M M' f)) (hC : CompactFock ψ θ M M' ω f τ (aS τ) (aT τ))
     (hL : LieFock ψ θ M M' ω f τ (aS τ) (aT τ)) (g : Matrix (Fin W.rank) (Fin W.rank) ℂ)
@@ -316,6 +424,19 @@ theorem inv_tgt (hθ : IsInfFam θ) (h : GlobIt M M' aS aT It I) (τ : D.what₂
   show I φ' (A 1 x) = I φ x
   rw [key, LinearMap.comp_apply, ← LinearMap.comp_apply (A (-1)), ← Aadd, neg_add_cancel, A0, LinearMap.id_apply]
 
+/- English proof (translation)
+Introduce `D V W S S' M M' θ hθ ψ ω f aS aT It I h hr hinj hC hL`. Establish `T` using `GlobalTheory.T.discreteSeries_pureInnerProducts_tensorProduct D V S M`. Use `⟨h.ne, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `φ w`. Take `⟨c, hc⟩` from `span_bound M' _ (h.adj φ w)`.
+
+Use `⟨c, fun v => ?_⟩` and prove the remaining obligations. Establish `e : inclT M' (PiTensorProduct.tprod ℂ v) = PiTensorProduct.tprod ℂ fun τ => (v τ : M'.H τ)` using `PiTensorProduct.map_tprod _ _`. Rewrite using `[h.incl, e]`. Conclude with `hc _`. Introduce `τ g hg φ φ' e v`.
+
+Rewrite using `[h.incl, h.incl]`. Conclude with `equiv_alt hθ h τ (hr τ).2 hinj (hC τ) (hL τ) g hg φ φ' e _`. Introduce `τ X hX φ φ' e v w`. Establish `: φ' = srcOp M M' τ (aT τ) X φ` using `hinj (funext fun z => (e z).unique (hasDerivAt_lieAction_source_operator (hL τ) hX φ z))`. Rewrite using `[this, h.incl, h.incl]`.
+
+Conclude with `h.src τ X hX φ _ w`. Introduce `τ g hg φ φ' v v' e e'`. Apply `T.inj` to reduce the goal to its premises. Rewrite using `[h.incl, h.incl, e']`. Conclude with `inv_tgt hθ h τ (hr τ).1 hinj (hC τ) (hL τ) g hg φ φ' e _`.
+
+Introduce `τ X hX φ φ' v v' e e'`. Establish `: φ' = tgtOp M M' τ (aS τ) X φ` using `hinj (funext fun z => (e z).unique (lie_tgt (hL τ) hX φ z))`. Apply `T.inj` to reduce the goal to its premises. Rewrite using `[map_add, map_zero, h.incl, h.incl, this]`. Use `T.sep _ fun w => ?_` and prove the remaining obligations.
+
+Establish `d` using `(span_deriv (ellT M') _ _ e' _ (h.adj φ w)).unique (h.tgt τ X hX φ (inclT M' v) w)`. Rewrite `d` using `[LinearMap.comp_apply]`. Rewrite using `[map_add, d, add_neg_cancel]`.
+-/
 theorem isItW_of_globIt : ∀ {D : D7} {V W : HSp D} {S S' : D.what₂.Tau → SPar} {M : DSModel V S} {M' : DSModel W S'}
     {θ : InfFam D}, IsInfFam θ → ∀ {ψ : AddChar (AF D.host.F) ℂ}
     {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} {f : WO V W → ℂ} {aS aT : D.what₂.Tau → ℚ}

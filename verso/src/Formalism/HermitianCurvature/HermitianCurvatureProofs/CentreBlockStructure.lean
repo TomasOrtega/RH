@@ -12,10 +12,18 @@ section Key
 
 variable {A F : Type} [CommRing A] [CommRing F]
 
+/- English proof (translation)
+Unfold `lead`. Use `congr 1`.
+-/
 theorem lead_top {r : ℕ} (M : Matrix (Fin r) (Fin r) A) : lead M r le_rfl = M.det := by
   unfold lead
   congr 1
 
+/- English proof (translation)
+Establish `e : μ = (N⁻¹.map φ) *ᵥ w`. Rewrite using `[← h, Matrix.mulVec_mulVec, ← Matrix.map_mul, Matrix.nonsing_inv_mul N hN]`. Simplify using the standard rewrite rules. Introduce `a`. Rewrite using `[e]`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply]`. Conclude with `sum_mem fun c _ => hI _ _ (hw c)`.
+-/
 theorem solveL (φ : A →+* F) (I : AddSubgroup F) (hI : ∀ a x, x ∈ I → φ a * x ∈ I) {r : ℕ}
     (N : Matrix (Fin r) (Fin r) A) (hN : IsUnit N.det) (μ w : Fin r → F)
     (h : (N.map φ) *ᵥ μ = w) (hw : ∀ a, w a ∈ I) : ∀ a, μ a ∈ I := by
@@ -27,6 +35,11 @@ theorem solveL (φ : A →+* F) (I : AddSubgroup F) (hI : ∀ a x, x ∈ I → �
   simp only [Matrix.mulVec, dotProduct, Matrix.map_apply]
   exact sum_mem fun c _ => hI _ _ (hw c)
 
+/- English proof (translation)
+Establish `e : μ = w ᵥ* (N⁻¹.map φ)`. Rewrite using `[← h, Matrix.vecMul_vecMul, ← Matrix.map_mul, Matrix.mul_nonsing_inv N hN]`. Simplify using the standard rewrite rules. Introduce `a`. Rewrite using `[e]`.
+
+Simplify using `only [Matrix.vecMul, dotProduct, Matrix.map_apply]`. Conclude with `sum_mem fun c _ => by rw [mul_comm]; exact hI _ _ (hw c)`.
+-/
 theorem solveR (φ : A →+* F) (I : AddSubgroup F) (hI : ∀ a x, x ∈ I → φ a * x ∈ I) {r : ℕ}
     (N : Matrix (Fin r) (Fin r) A) (hN : IsUnit N.det) (μ w : Fin r → F)
     (h : μ ᵥ* (N.map φ) = w) (hw : ∀ a, w a ∈ I) : ∀ a, μ a ∈ I := by
@@ -38,6 +51,37 @@ theorem solveR (φ : A →+* F) (I : AddSubgroup F) (hI : ∀ a x, x ∈ I → �
   simp only [Matrix.vecMul, dotProduct, Matrix.map_apply]
   exact sum_mem fun c _ => by rw [mul_comm]; exact hI _ _ (hw c)
 
+/- English proof (translation)
+Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `M M' L U _ _ _ _ _`. Use `⟨fun a => a.elim0, fun a => a.elim0, fun l hl => ?_⟩` and prove the remaining obligations.
+
+Take `rfl : l = 0` from `Nat.le_zero.1 hl`. Simplify using `[lead]`. Consider the case `succ r ih`. Introduce `M M' L U hL hU hE hd hu`. Establish `E : ∀ a b, ∑ c, L a c * φ (M' c b) = ∑ c, φ (M a c) * U c b` using `fun a b => by`.
+
+Use `congrFun (congrFun hE a) b` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply]`. Establish `L0 : ∀ a : Fin r, L a.castSucc (Fin.last r) = 0` using `fun a => hL.1 (by simp)`. Establish `U0 : ∀ a : Fin r, U (Fin.last r) a.castSucc = 0` using `fun a => hU.1 (by simp)`. Establish `hL' : IsLowUni (L.submatrix Fin.castSucc Fin.castSucc)` using `⟨fun i j h => hL.1 (by simpa using h), fun a => hL.2 _⟩`.
+
+Establish `hU' : IsUpUni (U.submatrix Fin.castSucc Fin.castSucc)` using `⟨fun i j h => hU.1 (by simpa using h), fun a => hU.2 _⟩`. Establish `hE' : L.submatrix Fin.castSucc Fin.castSucc * (M'.submatrix Fin.castSucc Fin.castSucc).map φ = (M.submatrix Fin.castSucc Fin.castSucc).map φ * U.submatrix Fin.castSucc Fin.castSucc`. Use extensionality with `a b`. Use `E a.castSucc b.castSucc` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_castSucc, Fin.sum_univ_castSucc, L0, U0]`.
+
+Simplify `this` using `[Matrix.mul_apply]`. Take `⟨iL, iU, il⟩` from `ih (M.submatrix Fin.castSucc Fin.castSucc) (M'.submatrix Fin.castSucc Fin.castSucc) _ _ hL' hU' hE' (fun a b => hd _ _) (fun l hl => hu l (hl.trans (Nat.le_succ r)))`. Establish `hM : IsUnit (M.submatrix Fin.castSucc Fin.castSucc).det`. Rewrite using `[← lead_top]`. Conclude with `hu r (Nat.le_succ r)`.
+
+Establish `hM' : IsUnit (M'.submatrix Fin.castSucc Fin.castSucc).det`. Rewrite using `[← lead_top, il r le_rfl, lead_top]`. Conclude with `hM`. Establish `cU : ∀ a : Fin r, U a.castSucc (Fin.last r) ∈ I`. Use `solveL φ I hI _ hM (fun c => U c.castSucc (Fin.last r)) (fun a => ∑ c, (L.submatrix Fin.castSucc Fin.castSucc - 1) a c * φ (M' c.castSucc (Fin.last r)) + φ (M' a.castSucc (Fin.last r) - M a.castSucc (Fin.last r))) ?_ ?_` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `a`. Use `E a.castSucc (Fin.last r)` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_castSucc, Fin.sum_univ_castSucc, L0, hU.2]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Matrix.submatrix_apply, Matrix.sub_apply, sub_mul, Finset.sum_sub_distrib, Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, map_sub]`. Take the linear combination `-this`.
+
+Introduce `a`. Use `add_mem (sum_mem fun c _ => ?_) (hd _ _)` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `hI _ _ (iL a c)`. Establish `rL : ∀ a : Fin r, L (Fin.last r) a.castSucc ∈ I`.
+
+Use `solveR φ I hI _ hM' (fun c => L (Fin.last r) c.castSucc) (fun b => ∑ c, φ (M (Fin.last r) c.castSucc) * (U.submatrix Fin.castSucc Fin.castSucc - 1) c b - φ (M' (Fin.last r) b.castSucc - M (Fin.last r) b.castSucc)) ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `b`. Use `E (Fin.last r) b.castSucc` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_castSucc, Fin.sum_univ_castSucc, U0, hL.2]`. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.map_apply, Matrix.submatrix_apply, Matrix.sub_apply, mul_sub, Finset.sum_sub_distrib, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, map_sub]`.
+
+Take the linear combination `this`. Introduce `b`. Use `sub_mem (sum_mem fun c _ => ?_) (hd _ _)` and prove the remaining obligations. Conclude with `hI _ _ (iU c b)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `a b`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun a => ?_) a <;> refine Fin.lastCases ?_ (fun b => ?_) b`. Simplify using `[hL.2]`. Simplify `rL b` using `[Matrix.one_apply, (Fin.castSucc_lt_last b).ne']`. Simplify using `[L0, Matrix.one_apply, (Fin.castSucc_lt_last a).ne]`.
+
+Simplify `iL a b` using `[Matrix.one_apply]`. Introduce `a b`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun a => ?_) a <;> refine Fin.lastCases ?_ (fun b => ?_) b`. Simplify using `[hU.2]`. Simplify using `[U0, Matrix.one_apply, (Fin.castSucc_lt_last b).ne']`.
+
+Simplify `cU a` using `[Matrix.one_apply, (Fin.castSucc_lt_last a).ne]`. Simplify `iU a b` using `[Matrix.one_apply]`. Introduce `l hl`. Break down `Nat.lt_or_ge l (r + 1) with h | h` into its components or cases. Conclude with `il l (Nat.lt_succ_iff.1 h)`.
+
+Take `rfl : l = r + 1` from `le_antisymm hl h`. Rewrite using `[lead_top, lead_top]`. Apply `hφ` to reduce the goal to its premises. Use `congrArg Matrix.det hE` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, isLowUni_det F hL, isUpUni_det F hU, one_mul, mul_one]`.
+
+Simplify `this` using `[RingHom.map_det, RingHom.mapMatrix_apply]`.
+-/
 theorem key (φ : A →+* F) (hφ : Function.Injective φ) (I : AddSubgroup F)
     (hI : ∀ a x, x ∈ I → φ a * x ∈ I) :
     ∀ (r : ℕ) (M M' : Matrix (Fin r) (Fin r) A) (L U : Matrix (Fin r) (Fin r) F),
@@ -137,6 +181,11 @@ section Corner
 
 variable {A F : Type} [CommRing A] [CommRing F]
 
+/- English proof (translation)
+Establish `hL : IsLowUni (v₂.submatrix Fin.rev Fin.rev)` using `⟨fun i j h => h₂.1 (by simpa using h), fun a => h₂.2 _⟩`. Establish `hE' : v₂.submatrix Fin.rev Fin.rev * (X'.submatrix Fin.rev id).map φ = (X.submatrix Fin.rev id).map φ * v₁`. Combine the equalities or inequalities in the displayed calculation. Take `⟨a1, a2, a3⟩` from `key φ hφ I hI r (X.submatrix Fin.rev id) (X'.submatrix Fin.rev id) _ _ hL h₁ hE' (fun a b => hd _ _) (fun l hl => hu l hl)`. Use `⟨fun a b => ?_, a2, fun l hl => a3 l hl⟩` and prove the remaining obligations.
+
+Use `a1 a.rev b.rev` as an intermediate fact. Simplify `this` using `[Matrix.one_apply]`.
+-/
 theorem keyCm (φ : A →+* F) (hφ : Function.Injective φ) (I : AddSubgroup F)
     (hI : ∀ a x, x ∈ I → φ a * x ∈ I) {r : ℕ} (X X' : Matrix (Fin r) (Fin r) A)
     (v₂ v₁ : Matrix (Fin r) (Fin r) F) (h₂ : IsUpUni v₂) (h₁ : IsUpUni v₁)
@@ -160,6 +209,11 @@ theorem keyCm (φ : A →+* F) (hφ : Function.Injective φ) (I : AddSubgroup F)
   have := a1 a.rev b.rev
   simpa [Matrix.one_apply] using this
 
+/- English proof (translation)
+Take `⟨a1, a2, -⟩` from `keyCm (RingHom.id F) Function.injective_id ⊥ (by simp) X X v₂ v₁ h₂ h₁ (by simpa using hE) (by simp) hu`. Prove the components needed by the constructor for the conclusion. Use extensionality with `a b`. Use `a1 a b` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`.
+
+Use extensionality with `a b`. Use `a2 a b` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`.
+-/
 theorem uniqCm {r : ℕ} (X v₂ v₁ : Matrix (Fin r) (Fin r) F) (h₂ : IsUpUni v₂) (h₁ : IsUpUni v₁)
     (hE : v₂ * X = X * v₁) (hu : ∀ (l : ℕ) (hl : l ≤ r), IsUnit (cm X l hl)) : v₂ = 1 ∧ v₁ = 1 := by
   obtain ⟨a1, a2, -⟩ := keyCm (RingHom.id F) Function.injective_id ⊥ (by simp) X X v₂ v₁ h₂ h₁
@@ -172,23 +226,35 @@ theorem uniqCm {r : ℕ} (X v₂ v₁ : Matrix (Fin r) (Fin r) F) (h₂ : IsUpUn
     have := a2 a b
     simpa [sub_eq_zero] using this
 
+/- English proof (translation)
+The claim follows from `(keyCm (RingHom.id F) Function.injective_id ⊤ (by simp) X X' v₂ v₁ h₂ h₁ (by simpa using hE) (by simp) hu).2.2`.
+-/
 theorem invCm {r : ℕ} (X X' v₂ v₁ : Matrix (Fin r) (Fin r) F) (h₂ : IsUpUni v₂) (h₁ : IsUpUni v₁)
     (hE : v₂ * X' = X * v₁) (hu : ∀ (l : ℕ) (hl : l ≤ r), IsUnit (cm X l hl)) :
     ∀ (l : ℕ) (hl : l ≤ r), cm X' l hl = cm X l hl :=
   (keyCm (RingHom.id F) Function.injective_id ⊤ (by simp) X X' v₂ v₁ h₂ h₁
     (by simpa using hE) (by simp) hu).2.2
 
+/- English proof (translation)
+Unfold `cm`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem cm_map (f : A →+* F) {r : ℕ} (X : Matrix (Fin r) (Fin r) A) (l : ℕ) (hl : l ≤ r) :
     cm (X.map f) l hl = f (cm X l hl) := by
   unfold cm
   rw [RingHom.map_det]
   rfl
 
+/- English proof (translation)
+Unfold `cm`. Rewrite using `[Matrix.submatrix_neg, Pi.neg_apply, Pi.neg_apply, Matrix.det_neg, Fintype.card_fin]`.
+-/
 theorem cm_neg {r : ℕ} (X : Matrix (Fin r) (Fin r) A) (l : ℕ) (hl : l ≤ r) :
     cm (-X) l hl = (-1) ^ l * cm X l hl := by
   unfold cm
   rw [Matrix.submatrix_neg, Pi.neg_apply, Pi.neg_apply, Matrix.det_neg, Fintype.card_fin]
 
+/- English proof (translation)
+Establish `e : cm X r le_rfl = (X.submatrix Fin.revPerm id).det`. Unfold `cm`. Use `congr 1`. Rewrite `h` using `[e, Matrix.det_permute]`. Conclude with `isUnit_of_mul_isUnit_right h`.
+-/
 theorem det_of_cm {r : ℕ} (X : Matrix (Fin r) (Fin r) A) (h : IsUnit (cm X r le_rfl)) :
     IsUnit X.det := by
   have e : cm X r le_rfl = (X.submatrix Fin.revPerm id).det := by
@@ -203,14 +269,23 @@ section Maps
 
 variable {A F : Type} [CommRing A] [CommRing F]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using the standard rewrite rules.
+-/
 theorem map_smul' (f : A →+* F) {m n : Type} (c : A) (X : Matrix m n A) :
     (c • X).map f = f c • X.map f := by
   ext a b; simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i j hij => by simp [h.1 hij], fun a => by simp [h.2 a]⟩`.
+-/
 theorem upUni_map (f : A →+* F) {r : ℕ} {x : Matrix (Fin r) (Fin r) A} (h : IsUpUni x) :
     IsUpUni (x.map f) :=
   ⟨fun i j hij => by simp [h.1 hij], fun a => by simp [h.2 a]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i j hij => hf (by simpa using h.1 hij), fun a => hf (by simpa using h.2 a)⟩`.
+-/
 theorem upUni_of_map (f : A →+* F) (hf : Function.Injective f) {r : ℕ} {x : Matrix (Fin r) (Fin r) A}
     (h : IsUpUni (x.map f)) : IsUpUni x :=
   ⟨fun i j hij => hf (by simpa using h.1 hij), fun a => hf (by simpa using h.2 a)⟩
@@ -221,42 +296,69 @@ section DVR
 
 variable {o : Type} [CommRing o] {k0 : Type} [Field k0] [Algebra o k0]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨y, rfl⟩`.
+-/
 theorem int_map {m n : Type} (y : Matrix m n o) : Integral o (y.map (algebraMap o k0)) := ⟨y, rfl⟩
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a * b, Matrix.map_mul⟩`.
+-/
 theorem int_mul {m n p : Type} [Fintype n] {x : Matrix m n k0} {y : Matrix n p k0}
     (hx : Integral o x) (hy : Integral o y) : Integral o (x * y) := by
   obtain ⟨a, rfl⟩ := hx
   obtain ⟨b, rfl⟩ := hy
   exact ⟨a * b, Matrix.map_mul⟩
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a + b, by ext; simp⟩`.
+-/
 theorem int_add {m n : Type} {x y : Matrix m n k0}
     (hx : Integral o x) (hy : Integral o y) : Integral o (x + y) := by
   obtain ⟨a, rfl⟩ := hx
   obtain ⟨b, rfl⟩ := hy
   exact ⟨a + b, by ext; simp⟩
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a - b, by ext; simp⟩`.
+-/
 theorem int_sub {m n : Type} {x y : Matrix m n k0}
     (hx : Integral o x) (hy : Integral o y) : Integral o (x - y) := by
   obtain ⟨a, rfl⟩ := hx
   obtain ⟨b, rfl⟩ := hy
   exact ⟨a - b, by ext; simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, by simp⟩`.
+-/
 theorem int_one {m : Type} [DecidableEq m] : Integral o (1 : Matrix m m k0) :=
   ⟨1, by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, by ext; simp⟩`.
+-/
 theorem int_zero {m n : Type} : Integral o (0 : Matrix m n k0) :=
   ⟨0, by ext; simp⟩
 
+/- English proof (translation)
+Use `choose y hy using h`. Conclude with `⟨Matrix.of y, by ext a b; exact hy a b⟩`.
+-/
 theorem int_of_entries {m n : Type} {x : Matrix m n k0}
     (h : ∀ a b, x a b ∈ (algebraMap o k0).toAddMonoidHom.range) : Integral o x := by
   choose y hy using h
   exact ⟨Matrix.of y, by ext a b; exact hy a b⟩
 
+/- English proof (translation)
+Use `int_add (int_of_entries h) (int_one (o := o) (k0 := k0) (m := m))` as an intermediate fact. Simplify using `using this`.
+-/
 theorem int_of_sub_one {m : Type} [DecidableEq m] {x : Matrix m m k0}
     (h : ∀ a b, (x - 1) a b ∈ (algebraMap o k0).toAddMonoidHom.range) : Integral o x := by
   have := int_add (int_of_entries h) (int_one (o := o) (k0 := k0) (m := m))
   simpa using this
 
+/- English proof (translation)
+Take `⟨b, rfl⟩` from `hx`. Conclude with `⟨a * b, by simp⟩`.
+-/
 theorem range_stable (a : o) (x : k0) (hx : x ∈ (algebraMap o k0).toAddMonoidHom.range) :
     algebraMap o k0 a * x ∈ (algebraMap o k0).toAddMonoidHom.range := by
   obtain ⟨b, rfl⟩ := hx
@@ -264,6 +366,11 @@ theorem range_stable (a : o) (x : k0) (hx : x ∈ (algebraMap o k0).toAddMonoidH
 
 variable [IsDomain o] [IsDiscreteValuationRing o]
 
+/- English proof (translation)
+Establish `: ∀ a b, ∃ c, x a b = ϖ * c` using `fun a b => by`. Establish `h1 : IsLocalRing.residue o (x a b) = 0` using `congrFun (congrFun h a) b`. Rewrite `h1` using `[IsLocalRing.residue_eq_zero_iff, hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Conclude with `h1`. Use `choose y hy using this`.
+
+Conclude with `⟨Matrix.of y, by ext a b; simp [hy]⟩`.
+-/
 theorem div_pi {ϖ : o} (hϖ : Irreducible ϖ) {m n : Type} (x : Matrix m n o)
     (h : x.map (IsLocalRing.residue o) = 0) : ∃ y : Matrix m n o, x = ϖ • y := by
   have : ∀ a b, ∃ c, x a b = ϖ * c := fun a b => by
@@ -273,12 +380,22 @@ theorem div_pi {ϖ : o} (hϖ : Irreducible ϖ) {m n : Type} (x : Matrix m n o)
   choose y hy using this
   exact ⟨Matrix.of y, by ext a b; simp [hy]⟩
 
+/- English proof (translation)
+Rewrite using `[IsLocalRing.residue_eq_zero_iff, hϖ.maximalIdeal_eq]`. Conclude with `Ideal.mem_span_singleton_self ϖ`.
+-/
 theorem res_pi {ϖ : o} (hϖ : Irreducible ϖ) : IsLocalRing.residue o ϖ = 0 := by
   rw [IsLocalRing.residue_eq_zero_iff, hϖ.maximalIdeal_eq]
   exact Ideal.mem_span_singleton_self ϖ
 
 end DVR
 
+/- English proof (translation)
+Introduce `F _ r ϖ j₁₁ j₁₃ j₃₃ X S S' hϖ hX`. Establish `h1 : X * X⁻¹ = 1` using `Matrix.mul_nonsing_inv X hX`. Establish `h2 : X⁻¹ * X = 1` using `Matrix.nonsing_inv_mul X hX`. Establish `e1 : (j₁₁ - ϖ • (S * X)) * X⁻¹ = j₁₁ * X⁻¹ - ϖ • S`. Rewrite using `[sub_mul, smul_mul_assoc, mul_assoc, h1, mul_one]`.
+
+Establish `e3 : j₁₁ * X⁻¹ * (X * S') = j₁₁ * S'` using `by rw [mul_assoc, ← mul_assoc X⁻¹, h2, one_mul]`. Establish `e2 : (j₁₁ * X⁻¹ - ϖ • S) * (j₃₃ + ϖ • (X * S')) - j₁₁ * X⁻¹ * j₃₃ = ϖ • (j₁₁ * S' - S * j₃₃ - S * (ϖ • X) * S')`. Simplify using `only [sub_mul, mul_add, mul_smul_comm, smul_mul_assoc, e3, smul_sub, mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1, e2, smul_smul, inv_mul_cancel₀ hϖ, one_smul, sub_mul]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem centreBlocks : CentreBlocks := by
   intro F _ r ϖ j₁₁ j₁₃ j₃₃ X S S' hϖ hX
   have h1 : X * X⁻¹ = 1 := Matrix.mul_nonsing_inv X hX
@@ -291,6 +408,47 @@ theorem centreBlocks : CentreBlocks := by
     simp only [sub_mul, mul_add, mul_smul_comm, smul_mul_assoc, e3, smul_sub, mul_assoc]; abel
   rw [e1, e2, smul_smul, inv_mul_cancel₀ hϖ, one_smul, sub_mul]; abel
 
+/- English proof (translation)
+Introduce `o _ _ _ k0 _ _ _ ϖ hϖ r ξ₁ ξ₂ j₁₃ X y₁ y₂ y₃ S S' hξ₁ hξ₂ hX hy₁ hy₂ e₁ e₂ e₃`. Establish `hinj : Function.Injective (algebraMap o k0)` using `IsFractionRing.injective o k0`. Establish `hϖ0 : algebraMap o k0 ϖ ≠ 0` using `(map_ne_zero_iff _ hinj).2 hϖ.ne_zero`. Establish `hXd : IsUnit X.det` using `det_of_cm X (hX r le_rfl)`. Establish `X1 : X * X⁻¹ = 1` using `Matrix.mul_nonsing_inv X hXd`.
+
+Establish `X2 : X⁻¹ * X = 1` using `Matrix.nonsing_inv_mul X hXd`. Rewrite `e₁`, `e₂`, `e₃` using `[map_smul']`. Simplify using `only [← RingHom.mapMatrix_apply] at e₁ e₂ e₃`. Generalize the expression as in `hΦ : (algebraMap o k0).mapMatrix (m := Fin r) = Φ at e₁ e₂ e₃`. Establish `Φsmul : ∀ (c : o) (x : Matrix (Fin r) (Fin r) o), Φ (c • x) = algebraMap o k0 c • Φ x`.
+
+Introduce `c x`. Rewrite using `[← hΦ]`. Conclude with `map_smul' _ c x`. Establish `Φinj : Function.Injective Φ`. Rewrite using `[← hΦ]`.
+
+Conclude with `Matrix.map_injective hinj`. Establish `X1φ : Φ X * Φ X⁻¹ = 1` using `by rw [← map_mul, X1, map_one]`. Establish `X2φ : Φ X⁻¹ * Φ X = 1` using `by rw [← map_mul, X2, map_one]`. Establish `s1 : algebraMap o k0 ϖ • S = Φ (ξ₁ - y₁) * Φ X⁻¹`. Establish `: Φ (ξ₁ - y₁) = algebraMap o k0 ϖ • (S * Φ X)`.
+
+Rewrite using `[map_sub, e₁, mul_smul_comm]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, smul_mul_assoc, mul_assoc, X1φ, mul_one]`. Establish `s2 : algebraMap o k0 ϖ • S' = Φ X⁻¹ * Φ (y₂ - ξ₂)`. Establish `: Φ (y₂ - ξ₂) = algebraMap o k0 ϖ • (Φ X * S')`.
+
+Rewrite using `[map_sub, e₂, smul_mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, mul_smul_comm, ← mul_assoc, X2φ, one_mul]`. Establish `rel : ϖ • (y₃ - j₁₃) = y₁ * X⁻¹ * y₂ - ξ₁ * X⁻¹ * ξ₂`. Apply `Φinj` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Φsmul, map_sub, e₃, ← e₁]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Use `_ = -((algebraMap o k0 ϖ • S) * Φ ξ₂) + Φ y₁ * (algebraMap o k0 ϖ • S') := by`.
+
+Rewrite using `[smul_add, smul_neg, smul_mul_assoc, mul_smul_comm]`. Use `_ = Φ (y₁ * X⁻¹ * y₂ - ξ₁ * X⁻¹ * ξ₂) := by`. Rewrite using `[s1, s2]`. Simplify using `only [map_sub, map_mul]`. Use `noncomm_ring`.
+
+Establish `hres : ∀ x : Matrix (Fin r) (Fin r) o, (ϖ • x).map (IsLocalRing.residue o) = 0`. Introduce `x`. Rewrite using `[map_smul', res_pi hϖ, zero_smul]`. Establish `rel' : y₁.map (IsLocalRing.residue o) * X⁻¹.map (IsLocalRing.residue o) * y₂.map (IsLocalRing.residue o) = ξ₁.map (IsLocalRing.residue o) * X⁻¹.map (IsLocalRing.residue o) * ξ₂.map (IsLocalRing.residue o)`. Use `congrArg (fun m => m.map (IsLocalRing.residue o)) rel` as an intermediate fact.
+
+Simplify using `only [hres] at this`. Simplify using `only [← RingHom.mapMatrix_apply, map_sub, map_mul] at this ⊢`. Conclude with `(sub_eq_zero.1 this.symm)`. Establish `xx : X.map (IsLocalRing.residue o) * X⁻¹.map (IsLocalRing.residue o) = 1`. Rewrite using `[← Matrix.map_mul, X1]`.
+
+Simplify using the standard rewrite rules. Establish `xix : X⁻¹.map (IsLocalRing.residue o) * X.map (IsLocalRing.residue o) = 1`. Rewrite using `[← Matrix.map_mul, X2]`. Simplify using the standard rewrite rules. Establish `hXr : ∀ (l : ℕ) (hl : l ≤ r), IsUnit (cm (X.map (IsLocalRing.residue o)) l hl)`.
+
+Introduce `l hl`. Rewrite using `[cm_map]`. Conclude with `(hX l hl).map _`. Generalize the expression as in `X.map (IsLocalRing.residue o) = x at xx xix hXr`. Generalize the expression as in `X⁻¹.map (IsLocalRing.residue o) = xi at xx xix rel'`.
+
+Establish `key2 : ξ₁.map (IsLocalRing.residue o) = y₁.map (IsLocalRing.residue o) ∧ ξ₂.map (IsLocalRing.residue o) = y₂.map (IsLocalRing.residue o)`. Generalize the expression as in `ξ₁.map (IsLocalRing.residue o) = a at hξ₁ rel' ⊢`. Generalize the expression as in `y₁.map (IsLocalRing.residue o) = b at hy₁ rel' ⊢`. Generalize the expression as in `ξ₂.map (IsLocalRing.residue o) = c at hξ₂ rel' ⊢`. Generalize the expression as in `y₂.map (IsLocalRing.residue o) = d at hy₂ rel' ⊢`.
+
+Establish `ua : IsUnit a.det` using `by rw [isUpUni_det _ hξ₁]; exact isUnit_one`. Establish `ud : IsUnit d.det` using `by rw [isUpUni_det _ hy₂]; exact isUnit_one`. Establish `aa : a⁻¹ * a = 1` using `Matrix.nonsing_inv_mul a ua`. Establish `aa' : a * a⁻¹ = 1` using `Matrix.mul_nonsing_inv a ua`. Establish `dd : d * d⁻¹ = 1` using `Matrix.mul_nonsing_inv d ud`.
+
+Establish `dd' : d⁻¹ * d = 1` using `Matrix.nonsing_inv_mul d ud`. Establish `h1 : a⁻¹ * b * xi = xi * c * d⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : c * d⁻¹ * x = x * (a⁻¹ * b)`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨q1, p1⟩` from `uniqCm x (c * d⁻¹) (a⁻¹ * b) (isUpUni_mul _ hξ₂ (isUpUni_inv _ hy₂)) (isUpUni_mul _ (isUpUni_inv _ hξ₁) hy₁) h2 hXr`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Take `⟨k1, k2⟩` from `key2`.
+
+Take `⟨a', ha'⟩` from `div_pi hϖ (ξ₁ - y₁) (by`. Simplify using `only [← RingHom.mapMatrix_apply, map_sub] at k1 ⊢`. Rewrite using `[k1, sub_self])`. Take `⟨b', hb'⟩` from `div_pi hϖ (y₂ - ξ₂) (by`. Simplify using `only [← RingHom.mapMatrix_apply, map_sub] at k2 ⊢`.
+
+Rewrite using `[k2, sub_self])`. Prove the components needed by the constructor for the conclusion. Use `⟨a' * X⁻¹, ?_⟩` and prove the remaining obligations. Rewrite `s1` using `[ha', Φsmul, smul_mul_assoc]`. Use `smul_right_injective _ hϖ0 s1` as an intermediate fact.
+
+Rewrite using `[this, ← map_mul, ← hΦ]`. Both sides reduce to the same expression. Use `⟨X⁻¹ * b', ?_⟩` and prove the remaining obligations. Rewrite `s2` using `[hb', Φsmul, mul_smul_comm]`. Use `smul_right_injective _ hϖ0 s2` as an intermediate fact.
+
+Rewrite using `[this, ← map_mul, ← hΦ]`. Both sides reduce to the same expression.
+-/
 theorem centreForcing : CentreForcing := by
   intro o _ _ _ k0 _ _ _ ϖ hϖ r ξ₁ ξ₂ j₁₃ X y₁ y₂ y₃ S S' hξ₁ hξ₂ hX hy₁ hy₂ e₁ e₂ e₃
   have hinj : Function.Injective (algebraMap o k0) := IsFractionRing.injective o k0
@@ -388,6 +546,13 @@ section Blocks
 
 variable {A : Type} {r k : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i | i <;> rcases j with j | j | j`. Conclude with `congrFun (congrFun h11 i) j`. Conclude with `congrFun (congrFun h12 i) j`. Conclude with `congrFun (congrFun h13 i) j`.
+
+Conclude with `congrFun (congrFun h21 i) j`. Conclude with `congrFun (congrFun h22 i) j`. Conclude with `congrFun (congrFun h23 i) j`. Conclude with `congrFun (congrFun h31 i) j`. Conclude with `congrFun (congrFun h32 i) j`.
+
+Conclude with `congrFun (congrFun h33 i) j`.
+-/
 theorem ext9 {x y : Matrix (Idx r k) (Idx r k) A} (h11 : b11 x = b11 y) (h12 : b12 x = b12 y)
     (h13 : b13 x = b13 y) (h21 : b21 x = b21 y) (h22 : b22 x = b22 y) (h23 : b23 x = b23 y)
     (h31 : b31 x = b31 y) (h32 : b32 x = b32 y) (h33 : b33 x = b33 y) : x = y := by
@@ -405,128 +570,225 @@ theorem ext9 {x y : Matrix (Idx r k) (Idx r k) A} (h11 : b11 x = b11 y) (h12 : b
 
 variable [CommRing A]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[b11, b12, b13, b11, b21, b31, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]`.
+-/
 theorem block11_mul (x y : Matrix (Idx r k) (Idx r k) A) :
     b11 (x * y) = b11 x * b11 y + b12 x * b21 y + b13 x * b31 y := by
   ext a b
   simp [b11, b12, b13, b11, b21, b31, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[b11, Matrix.one_apply]`.
+-/
 theorem one_block11 : b11 (1 : Matrix (Idx r k) (Idx r k) A) = 1 := by
   ext a b
   simp [b11, Matrix.one_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem block11_map {B : Type} (f : A → B) (x : Matrix (Idx r k) (Idx r k) A) :
     b11 (x.map f) = (b11 x).map f := rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[b11, b12, b13, b12, b22, b32, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]`.
+-/
 theorem block12_mul (x y : Matrix (Idx r k) (Idx r k) A) :
     b12 (x * y) = b11 x * b12 y + b12 x * b22 y + b13 x * b32 y := by
   ext a b
   simp [b11, b12, b13, b12, b22, b32, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[b12, Matrix.one_apply]`.
+-/
 theorem block12_one : b12 (1 : Matrix (Idx r k) (Idx r k) A) = 0 := by
   ext a b
   simp [b12, Matrix.one_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem block12_map {B : Type} (f : A → B) (x : Matrix (Idx r k) (Idx r k) A) :
     b12 (x.map f) = (b12 x).map f := rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[b11, b12, b13, b13, b23, b33, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]`.
+-/
 theorem block13_mul (x y : Matrix (Idx r k) (Idx r k) A) :
     b13 (x * y) = b11 x * b13 y + b12 x * b23 y + b13 x * b33 y := by
   ext a b
   simp [b11, b12, b13, b13, b23, b33, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[b13, Matrix.one_apply]`.
+-/
 theorem block13_one : b13 (1 : Matrix (Idx r k) (Idx r k) A) = 0 := by
   ext a b
   simp [b13, Matrix.one_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem block13_map {B : Type} (f : A → B) (x : Matrix (Idx r k) (Idx r k) A) :
     b13 (x.map f) = (b13 x).map f := rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[b21, b22, b23, b11, b21, b31, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]`.
+-/
 theorem block21_mul (x y : Matrix (Idx r k) (Idx r k) A) :
     b21 (x * y) = b21 x * b11 y + b22 x * b21 y + b23 x * b31 y := by
   ext a b
   simp [b21, b22, b23, b11, b21, b31, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[b21, Matrix.one_apply]`.
+-/
 theorem one_block21 : b21 (1 : Matrix (Idx r k) (Idx r k) A) = 0 := by
   ext a b
   simp [b21, Matrix.one_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem block21_map {B : Type} (f : A → B) (x : Matrix (Idx r k) (Idx r k) A) :
     b21 (x.map f) = (b21 x).map f := rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[b21, b22, b23, b12, b22, b32, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]`.
+-/
 theorem block22_mul (x y : Matrix (Idx r k) (Idx r k) A) :
     b22 (x * y) = b21 x * b12 y + b22 x * b22 y + b23 x * b32 y := by
   ext a b
   simp [b21, b22, b23, b12, b22, b32, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[b22, Matrix.one_apply]`.
+-/
 theorem block22_one : b22 (1 : Matrix (Idx r k) (Idx r k) A) = 1 := by
   ext a b
   simp [b22, Matrix.one_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem block22_map {B : Type} (f : A → B) (x : Matrix (Idx r k) (Idx r k) A) :
     b22 (x.map f) = (b22 x).map f := rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[b21, b22, b23, b13, b23, b33, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]`.
+-/
 theorem block23_mul (x y : Matrix (Idx r k) (Idx r k) A) :
     b23 (x * y) = b21 x * b13 y + b22 x * b23 y + b23 x * b33 y := by
   ext a b
   simp [b21, b22, b23, b13, b23, b33, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[b23, Matrix.one_apply]`.
+-/
 theorem block23_one : b23 (1 : Matrix (Idx r k) (Idx r k) A) = 0 := by
   ext a b
   simp [b23, Matrix.one_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem block23_map {B : Type} (f : A → B) (x : Matrix (Idx r k) (Idx r k) A) :
     b23 (x.map f) = (b23 x).map f := rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[b31, b32, b33, b11, b21, b31, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]`.
+-/
 theorem block31_mul (x y : Matrix (Idx r k) (Idx r k) A) :
     b31 (x * y) = b31 x * b11 y + b32 x * b21 y + b33 x * b31 y := by
   ext a b
   simp [b31, b32, b33, b11, b21, b31, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[b31, Matrix.one_apply]`.
+-/
 theorem one_block31 : b31 (1 : Matrix (Idx r k) (Idx r k) A) = 0 := by
   ext a b
   simp [b31, Matrix.one_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem block31_map {B : Type} (f : A → B) (x : Matrix (Idx r k) (Idx r k) A) :
     b31 (x.map f) = (b31 x).map f := rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[b31, b32, b33, b12, b22, b32, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]`.
+-/
 theorem block32_mul (x y : Matrix (Idx r k) (Idx r k) A) :
     b32 (x * y) = b31 x * b12 y + b32 x * b22 y + b33 x * b32 y := by
   ext a b
   simp [b31, b32, b33, b12, b22, b32, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[b32, Matrix.one_apply]`.
+-/
 theorem block32_one : b32 (1 : Matrix (Idx r k) (Idx r k) A) = 0 := by
   ext a b
   simp [b32, Matrix.one_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem block32_map {B : Type} (f : A → B) (x : Matrix (Idx r k) (Idx r k) A) :
     b32 (x.map f) = (b32 x).map f := rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[b31, b32, b33, b13, b23, b33, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]`.
+-/
 theorem block33_mul (x y : Matrix (Idx r k) (Idx r k) A) :
     b33 (x * y) = b31 x * b13 y + b32 x * b23 y + b33 x * b33 y := by
   ext a b
   simp [b31, b32, b33, b13, b23, b33, Matrix.mul_apply, Fintype.sum_sum_type, add_assoc]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[b33, Matrix.one_apply]`.
+-/
 theorem block33_one : b33 (1 : Matrix (Idx r k) (Idx r k) A) = 1 := by
   ext a b
   simp [b33, Matrix.one_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem block33_map {B : Type} (f : A → B) (x : Matrix (Idx r k) (Idx r k) A) :
     b33 (x.map f) = (b33 x).map f := rfl
 
+/- English proof (translation)
+Rewrite using `[← Matrix.nonsing_inv_mul_cancel_left f Y hf, h, Matrix.nonsing_inv_mul_cancel_left f Z hf]`.
+-/
 theorem lcancel {n m : Type} [Fintype n] [DecidableEq n] {f : Matrix n n A} (hf : IsUnit f.det)
     {Y Z : Matrix n m A} (h : f * Y = f * Z) : Y = Z := by
   rw [← Matrix.nonsing_inv_mul_cancel_left f Y hf, h, Matrix.nonsing_inv_mul_cancel_left f Z hf]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_nonsing_inv_cancel_right f Y hf, h, Matrix.mul_nonsing_inv_cancel_right f Z hf]`.
+-/
 theorem rcancel {n m : Type} [Fintype n] [DecidableEq n] {f : Matrix n n A} (hf : IsUnit f.det)
     {Y Z : Matrix m n A} (h : Y * f = Z * f) : Y = Z := by
   rw [← Matrix.mul_nonsing_inv_cancel_right f Y hf, h, Matrix.mul_nonsing_inv_cancel_right f Z hf]
 
+/- English proof (translation)
+Rewrite using `[isUpUni_det A hu]`. Conclude with `isUnit_one`.
+-/
 theorem uni_unit {n : ℕ} {u : Matrix (Fin n) (Fin n) A} (hu : IsUpUni u) : IsUnit u.det := by
   rw [isUpUni_det A hu]; exact isUnit_one
 
 def BT (x : Matrix (Idx r k) (Idx r k) A) : Prop :=
   IsUpUni (b11 x) ∧ IsUpUni (b33 x) ∧ b21 x = 0 ∧ b31 x = 0 ∧ b32 x = 0 ∧ IsUnit (b22 x).det
 
+/- English proof (translation)
+Take `⟨h11, h33, h21, h31, h32, h22⟩` from `hx`. Establish `e : x = Matrix.fromBlocks (b11 x) x.toBlocks₁₂ 0 (Matrix.fromBlocks (b22 x) (b23 x) 0 (b33 x))`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i | i <;> rcases j with j | j | j`. Both sides reduce to the same expression.
+
+Both sides reduce to the same expression. Both sides reduce to the same expression. Conclude with `congrFun (congrFun h21 i) j`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+
+Conclude with `congrFun (congrFun h31 i) j`. Conclude with `congrFun (congrFun h32 i) j`. Both sides reduce to the same expression. Rewrite using `[e, Matrix.det_fromBlocks_zero₂₁, Matrix.det_fromBlocks_zero₂₁, isUpUni_det A h11, isUpUni_det A h33]`. Simplify using `using h22`.
+-/
 theorem bt_det {x : Matrix (Idx r k) (Idx r k) A} (hx : BT x) : IsUnit x.det := by
   obtain ⟨h11, h33, h21, h31, h32, h22⟩ := hx
   have e : x = Matrix.fromBlocks (b11 x) x.toBlocks₁₂ 0 (Matrix.fromBlocks (b22 x) (b23 x) 0 (b33 x)) := by
@@ -545,6 +807,13 @@ theorem bt_det {x : Matrix (Idx r k) (Idx r k) A} (hx : BT x) : IsUnit x.det := 
     isUpUni_det A h11, isUpUni_det A h33]
   simpa using h22
 
+/- English proof (translation)
+Take `⟨h11, h33, h21, h31, h32, h22⟩` from `hx`. Take `⟨g11, g33, g21, g31, g32, g22⟩` from `hy`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[block11_mul, g21, g31]`. Simplify using `using isUpUni_mul A h11 g11`.
+
+Rewrite using `[block33_mul, h31, h32]`. Simplify using `using isUpUni_mul A h33 g33`. Rewrite using `[block21_mul, h21, g21, g31]`. Simplify using the standard rewrite rules. Rewrite using `[block31_mul, h31, h32, g31]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[block32_mul, h31, h32, g32]`. Simplify using the standard rewrite rules. Rewrite using `[block22_mul, h21, g32]`. Simplify using `using h22.mul g22`.
+-/
 theorem bt_mul {x y : Matrix (Idx r k) (Idx r k) A} (hx : BT x) (hy : BT y) : BT (x * y) := by
   obtain ⟨h11, h33, h21, h31, h32, h22⟩ := hx
   obtain ⟨g11, g33, g21, g31, g32, g22⟩ := hy
@@ -556,6 +825,19 @@ theorem bt_mul {x y : Matrix (Idx r k) (Idx r k) A} (hx : BT x) (hy : BT y) : BT
   · rw [block32_mul, h31, h32, g32]; simp
   · rw [block22_mul, h21, g32]; simpa using h22.mul g22
 
+/- English proof (translation)
+Take `⟨h11, h33, h21, h31, h32, h22⟩` from `hx`. Establish `y31 : b31 y = 0`. Use `block31_mul x y` as an intermediate fact. Rewrite `this` using `[e, one_block31, h31, h32]`. Conclude with `lcancel (uni_unit h33) (by simpa using this.symm)`.
+
+Establish `y32 : b32 y = 0`. Use `block32_mul x y` as an intermediate fact. Rewrite `this` using `[e, block32_one, h31, h32]`. Conclude with `lcancel (uni_unit h33) (by simpa using this.symm)`. Establish `y33 : b33 y = (b33 x)⁻¹`.
+
+Use `block33_mul x y` as an intermediate fact. Rewrite `this` using `[e, block33_one, h31, h32]`. Conclude with `(Matrix.inv_eq_right_inv (by simpa using this.symm)).symm`. Establish `y21 : b21 y = 0`. Use `block21_mul x y` as an intermediate fact.
+
+Rewrite `this` using `[e, one_block21, h21, y31]`. Conclude with `lcancel h22 (by simpa using this.symm)`. Establish `y22 : b22 y = (b22 x)⁻¹`. Use `block22_mul x y` as an intermediate fact. Rewrite `this` using `[e, block22_one, h21, y32]`.
+
+Conclude with `(Matrix.inv_eq_right_inv (by simpa using this.symm)).symm`. Establish `y11 : b11 y = (b11 x)⁻¹`. Use `block11_mul x y` as an intermediate fact. Rewrite `this` using `[e, one_block11, y21, y31]`. Conclude with `(Matrix.inv_eq_right_inv (by simpa using this.symm)).symm`.
+
+Conclude with `⟨y11 ▸ isUpUni_inv A h11, y33 ▸ isUpUni_inv A h33, y21, y31, y32, y22 ▸ Matrix.isUnit_nonsing_inv_det _ h22⟩`.
+-/
 theorem bt_rinv {x y : Matrix (Idx r k) (Idx r k) A} (hx : BT x) (e : x * y = 1) : BT y := by
   obtain ⟨h11, h33, h21, h31, h32, h22⟩ := hx
   have y31 : b31 y = 0 := by
@@ -585,10 +867,22 @@ theorem bt_rinv {x y : Matrix (Idx r k) (Idx r k) A} (hx : BT x) (e : x * y = 1)
   exact ⟨y11 ▸ isUpUni_inv A h11, y33 ▸ isUpUni_inv A h33, y21, y31, y32,
     y22 ▸ Matrix.isUnit_nonsing_inv_det _ h22⟩
 
+/- English proof (translation)
+Take `⟨h11, h33, h22, h21, h31, h32⟩` from `hx`. Conclude with `⟨h11, h33, h21, h31, h32, by rw [h22]; simp⟩`.
+-/
 theorem bt_of_isN {x : Matrix (Idx r k) (Idx r k) A} (hx : IsN x) : BT x := by
   obtain ⟨h11, h33, h22, h21, h31, h32⟩ := hx
   exact ⟨h11, h33, h21, h31, h32, by rw [h22]; simp⟩
 
+/- English proof (translation)
+Take `⟨n, _, hn, ⟨u, hu, rfl⟩, rfl⟩` from `hx`. Use `bt_mul (bt_of_isN hn) ⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: b11 (hEmb r u) = 1` using `by ext a b; simp [b11, hEmb]`. Rewrite using `[this]`. Conclude with `isUpUni_one A`.
+
+Establish `: b33 (hEmb r u) = 1` using `by ext a b; simp [b33, hEmb]`. Rewrite using `[this]`. Conclude with `isUpUni_one A`. Use extensionality with `a b`. Simplify using `[b21, hEmb]`.
+
+Use extensionality with `a b`. Simplify using `[b31, hEmb]`. Use extensionality with `a b`. Simplify using `[b32, hEmb]`. Establish `: b22 (hEmb r u) = midEmb u` using `by ext a b; simp [b22, hEmb]`.
+
+Rewrite using `[this]`. Simplify `uni_unit hu` using `[midEmb]`.
+-/
 theorem bt_of_isNU {x : Matrix (Idx r k) (Idx r k) A} (hx : IsNU x) : BT x := by
   obtain ⟨n, _, hn, ⟨u, hu, rfl⟩, rfl⟩ := hx
   refine bt_mul (bt_of_isN hn) ⟨?_, ?_, ?_, ?_, ?_, ?_⟩
@@ -602,6 +896,15 @@ theorem bt_of_isNU {x : Matrix (Idx r k) (Idx r k) A} (hx : IsNU x) : BT x := by
   · have : b22 (hEmb r u) = midEmb u := by ext a b; simp [b22, hEmb]
     rw [this]; simpa [midEmb] using uni_unit hu
 
+/- English proof (translation)
+Take `⟨h11, h33, h22, h21, h31, h32⟩` from `hx`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[block11_map]`. Conclude with `upUni_map f h11`. Rewrite using `[block33_map]`.
+
+Conclude with `upUni_map f h33`. Rewrite using `[block22_map, h22]`. Simplify using the standard rewrite rules. Rewrite using `[block21_map, h21]`. Use `ext`.
+
+Simplify using the standard rewrite rules. Rewrite using `[block31_map, h31]`. Use `ext`. Simplify using the standard rewrite rules. Rewrite using `[block32_map, h32]`.
+
+Use `ext`. Simplify using the standard rewrite rules.
+-/
 theorem isN_map {B : Type} [CommRing B] (f : A →+* B) {x : Matrix (Idx r k) (Idx r k) A} (hx : IsN x) :
     IsN (x.map f) := by
   obtain ⟨h11, h33, h22, h21, h31, h32⟩ := hx
@@ -621,14 +924,41 @@ def mk (a : Matrix (Fin r) (Fin r) A) (b : Matrix (Fin r) (Mid k) A) (c : Matrix
 section mk
 variable (a : Matrix (Fin r) (Fin r) A) (b : Matrix (Fin r) (Mid k) A) (c : Matrix (Fin r) (Fin r) A)
     (m : Matrix (Mid k) (Mid k) A) (e : Matrix (Mid k) (Fin r) A) (f : Matrix (Fin r) (Fin r) A)
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[b11, mk]`.
+-/
 theorem block11_of_blocks : b11 (mk a b c m e f) = a := by ext i j; simp [b11, mk]
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[b12, mk]`.
+-/
 theorem block12_of_blocks : b12 (mk a b c m e f) = b := by ext i j; simp [b12, mk]
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[b13, mk]`.
+-/
 theorem block13_of_blocks : b13 (mk a b c m e f) = c := by ext i j; simp [b13, mk]
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[b21, mk]`.
+-/
 theorem block21_of_blocks : b21 (mk a b c m e f) = 0 := by ext i j; simp [b21, mk]
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[b22, mk]`.
+-/
 theorem block22_of_blocks : b22 (mk a b c m e f) = m := by ext i j; simp [b22, mk]
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[b23, mk]`.
+-/
 theorem block23_of_blocks : b23 (mk a b c m e f) = e := by ext i j; simp [b23, mk]
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[b31, mk]`.
+-/
 theorem block31_of_blocks : b31 (mk a b c m e f) = 0 := by ext i j; simp [b31, mk]
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[b32, mk]`.
+-/
 theorem block32_of_blocks : b32 (mk a b c m e f) = 0 := by ext i j; simp [b32, mk]
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[b33, mk]`.
+-/
 theorem block33_of_blocks : b33 (mk a b c m e f) = f := by ext i j; simp [b33, mk]
 end mk
 
@@ -638,6 +968,17 @@ section Stab
 
 variable {F : Type} [Field F] {r k : ℕ}
 
+/- English proof (translation)
+Take `⟨h11, h33, h22, h21, h31, h32⟩` from `hn`. Take `⟨g11, g33, g22, g21, g31, g32⟩` from `hn'`. Establish `hu : ∀ (l : ℕ) (hl : l ≤ r), IsUnit (cm (b31 g) l hl)` using `fun l hl => (hc l hl).isUnit`. Establish `hd : IsUnit (b31 g).det` using `det_of_cm _ (hu r le_rfl)`. Establish `e31` using `congrArg b31 e`.
+
+Rewrite `e31` using `[block31_mul, block31_mul, g21, g31, h31, h32]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add] at e31`. Take `⟨u2, u1⟩` from `uniqCm (b31 g) (b33 n) (b11 n') h33 g11 e31.symm hu`. Use `⟨u2, u1, ?_, ?_⟩` and prove the remaining obligations. Establish `e21` using `congrArg b21 e`.
+
+Rewrite `e21` using `[block21_mul, block21_mul, g21, g31, h21, h22, u1]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, Matrix.one_mul] at e21`. Use `rcancel hd ?_` and prove the remaining obligations. Rewrite using `[Matrix.zero_mul]`. Conclude with `(left_eq_add.1 e21)`.
+
+Establish `e32` using `congrArg b32 e`. Rewrite `e32` using `[block32_mul, block32_mul, g22, g32, h31, h32, u2]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, Matrix.one_mul] at e32`. Use `lcancel hd ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_zero]`.
+
+Conclude with `(add_eq_right.1 e32)`.
+-/
 theorem halfStab {g n n' : Matrix (Idx r k) (Idx r k) F}
     (hc : ∀ (l : ℕ) (hl : l ≤ r), cm (b31 g) l hl ≠ 0) (hn : IsN n) (hn' : IsN n')
     (e : g * n' = n * g) : b33 n = 1 ∧ b11 n' = 1 ∧ b23 n = 0 ∧ b12 n' = 0 := by
@@ -663,6 +1004,19 @@ theorem halfStab {g n n' : Matrix (Idx r k) (Idx r k) F}
     rw [Matrix.mul_zero]
     exact (add_eq_right.1 e32)
 
+/- English proof (translation)
+Introduce `F _ r k g n n' hg hc hc' hn hn' e`. Establish `g1 : g * g⁻¹ = 1` using `Matrix.mul_nonsing_inv g hg`. Establish `g2 : g⁻¹ * g = 1` using `Matrix.nonsing_inv_mul g hg`. Establish `e' : g⁻¹ * n = n' * g⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨a33, a11', a23, a12'⟩` from `halfStab hc hn hn' e`. Take `⟨a33', a11, a23', a12⟩` from `halfStab hc' hn' hn e'`. Establish `hd : IsUnit (b31 g).det` using `det_of_cm _ (hc r le_rfl).isUnit`. Take `⟨h11, h33, h22, h21, h31, h32⟩` from `hn`. Take `⟨g11, g33, g22, g21, g31, g32⟩` from `hn'`.
+
+Establish `a13 : b13 n = 0`. Establish `e11` using `congrArg b11 e`. Rewrite `e11` using `[block11_mul, block11_mul, g21, g31, a11', a11, a12]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, Matrix.one_mul] at e11`. Use `rcancel hd ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.zero_mul]`. Conclude with `(left_eq_add.1 e11)`. Establish `a13' : b13 n' = 0`. Establish `e33` using `congrArg b33 e`. Rewrite `e33` using `[block33_mul, block33_mul, h31, h32, a33', a33, a23']`.
+
+Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, Matrix.one_mul] at e33`. Use `lcancel hd ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_zero]`. Conclude with `(add_eq_right.1 e33)`. Prove the components needed by the constructor for the conclusion.
+
+Apply the tactic sequence `apply ext9 <;> simp only [one_block11, block12_one, block13_one, one_block21, block22_one, block23_one, one_block31, block32_one, block33_one] <;> assumption`. Apply the tactic sequence `apply ext9 <;> simp only [one_block11, block12_one, block13_one, one_block21, block22_one, block23_one, one_block31, block32_one, block33_one] <;> assumption`.
+-/
 theorem stabiliserTrivial : StabiliserTrivial := by
   intro F _ r k g n n' hg hc hc' hn hn' e
   have g1 : g * g⁻¹ = 1 := Matrix.mul_nonsing_inv g hg
@@ -705,6 +1059,9 @@ variable {o : Type} [CommRing o] {k0 : Type} [Field k0] [Algebra o k0] {r k : �
 def cen {A : Type} [CommRing A] (S : Matrix (Fin r) (Fin r) A) : Matrix (Idx r k) (Idx r k) A :=
   mk 1 0 S 1 0 1
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `h`. Use `⟨cen s, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `apply ext9 <;>`. Simplify using `[cen, block11_map, block12_map, block13_map, block21_map, block22_map, block23_map, block31_map, block32_map, block33_map, block11_of_blocks, block12_of_blocks, block13_of_blocks, block21_of_blocks, block22_of_blocks, block23_of_blocks, block31_of_blocks, block32_of_blocks, block …`.
+-/
 theorem int_cen {S : Matrix (Fin r) (Fin r) k0} (h : Integral o S) :
     Integral o (cen S : Matrix (Idx r k) (Idx r k) k0) := by
   obtain ⟨s, rfl⟩ := h
@@ -713,12 +1070,18 @@ theorem int_cen {S : Matrix (Fin r) (Fin r) k0} (h : Integral o S) :
     simp [cen, block11_map, block12_map, block13_map, block21_map, block22_map, block23_map, block31_map, block32_map, block33_map,
       block11_of_blocks, block12_of_blocks, block13_of_blocks, block21_of_blocks, block22_of_blocks, block23_of_blocks, block31_of_blocks, block32_of_blocks, block33_of_blocks]
 
+/- English proof (translation)
+Establish `e : Y = Y * X.map (algebraMap o k0) * X⁻¹.map (algebraMap o k0)`. Rewrite using `[Matrix.mul_assoc, ← Matrix.map_mul, Matrix.mul_nonsing_inv X hX]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `int_mul h (int_map _)`.
+-/
 theorem int_rdiv {m : Type} {Y : Matrix m (Fin r) k0} {X : Matrix (Fin r) (Fin r) o} (hX : IsUnit X.det)
     (h : Integral o (Y * X.map (algebraMap o k0))) : Integral o Y := by
   have e : Y = Y * X.map (algebraMap o k0) * X⁻¹.map (algebraMap o k0) := by
     rw [Matrix.mul_assoc, ← Matrix.map_mul, Matrix.mul_nonsing_inv X hX]; simp
   rw [e]; exact int_mul h (int_map _)
 
+/- English proof (translation)
+Establish `e : Y = X⁻¹.map (algebraMap o k0) * (X.map (algebraMap o k0) * Y)`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.map_mul, Matrix.nonsing_inv_mul X hX]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `int_mul (int_map _) h`.
+-/
 theorem int_ldiv {m : Type} {Y : Matrix (Fin r) m k0} {X : Matrix (Fin r) (Fin r) o} (hX : IsUnit X.det)
     (h : Integral o (X.map (algebraMap o k0) * Y)) : Integral o Y := by
   have e : Y = X⁻¹.map (algebraMap o k0) * (X.map (algebraMap o k0) * Y) := by
@@ -727,6 +1090,13 @@ theorem int_ldiv {m : Type} {Y : Matrix (Fin r) m k0} {X : Matrix (Fin r) (Fin r
 
 variable [IsDomain o] [IsDiscreteValuationRing o] [IsFractionRing o k0]
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (algebraMap o k0)` using `IsFractionRing.injective o k0`. Take `⟨h11, h33, h22, h21, h31, h32⟩` from `hn`. Take `⟨u1, hu1⟩` from `i11`. Take `⟨a, ha⟩` from `i12`. Take `⟨a', ha'⟩` from `i23`.
+
+Take `⟨u2, hu2⟩` from `i33`. Use `⟨mk u1 a 0 1 a' u2, b13 n * (b33 n)⁻¹, ⟨?_, ?_, block22_of_blocks .., block21_of_blocks .., block31_of_blocks .., block32_of_blocks ..⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[block11_of_blocks]`. Conclude with `upUni_of_map _ hinj (hu1 ▸ h11)`. Rewrite using `[block33_of_blocks]`.
+
+Conclude with `upUni_of_map _ hinj (hu2 ▸ h33)`. Establish `hz : (b33 n)⁻¹ * b33 n = 1` using `Matrix.nonsing_inv_mul _ (uni_unit h33)`. Apply the tactic sequence `apply ext9 <;>`. Apply the tactic sequence `simp only [cen, block11_mul, block12_mul, block13_mul, block21_mul, block22_mul, block23_mul, block31_mul, block32_mul, block33_mul, block11_map, block12_map, block13_map, block21_map, block22_map, block23_map, block31_map, block32_map, block33_map, block11_of_blocks, block12_of_ …`. Simplify using `[Matrix.mul_assoc, hz]`.
+-/
 theorem decomp {n : Matrix (Idx r k) (Idx r k) k0} (hn : IsN n) (i11 : Integral o (b11 n))
     (i12 : Integral o (b12 n)) (i23 : Integral o (b23 n)) (i33 : Integral o (b33 n)) :
     ∃ (m : Matrix (Idx r k) (Idx r k) o) (S : Matrix (Fin r) (Fin r) k0),
@@ -748,6 +1118,21 @@ theorem decomp {n : Matrix (Idx r k) (Idx r k) k0} (hn : IsN n) (i11 : Integral 
         h22, h21, h31, h32] <;>
       simp [Matrix.mul_assoc, hz]
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (algebraMap o k0)` using `IsFractionRing.injective o k0`. Establish `hϖ0 : algebraMap o k0 ϖ ≠ 0` using `(map_ne_zero_iff _ hinj).2 hϖ.ne_zero`. Take `⟨h11, h33, h22, h21, h31, h32⟩` from `hn`. Take `⟨g11, g33, g22, g21, g31, g32⟩` from `hn'`. Take `⟨X', hX'⟩` from `div_pi hϖ (b31 j') hj'.2.2.2.1`.
+
+Take `⟨P, hP⟩` from `div_pi hϖ (b21 j) hj.2.2.1`. Take `⟨P', hP'⟩` from `div_pi hϖ (b21 j') hj'.2.2.1`. Take `⟨Q, hQ⟩` from `div_pi hϖ (b32 j) hj.2.2.2.2.1`. Take `⟨Q', hQ'⟩` from `div_pi hϖ (b32 j') hj'.2.2.2.2.1`. Establish `e31` using `congrArg b31 e`.
+
+Rewrite `e31` using `[block31_mul, block31_mul, h31, h32, g21, g31, block31_map, block31_map, hX, hX', map_smul', map_smul']`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_smul, Matrix.smul_mul] at e31`. Establish `E31` using `smul_right_injective _ hϖ0 e31`. Take `⟨c33, c11, cc⟩` from `keyCm (algebraMap o k0) hinj (algebraMap o k0).toAddMonoidHom.range range_stable X X' (b33 n) (b11 n') h33 g11 E31 (fun a b => ⟨_, rfl⟩) hc`. Establish `i33 : Integral o (b33 n)` using `int_of_sub_one c33`.
+
+Establish `i11 : Integral o (b11 n')` using `int_of_sub_one c11`. Establish `hc' : ∀ (l : ℕ) (hl : l ≤ r), IsUnit (cm X' l hl)` using `fun l hl => by rw [cc]; exact hc l hl`. Use `⟨i33, i11, ?_, ?_, X', hX', hc'⟩` and prove the remaining obligations. Establish `e21` using `congrArg b21 e`. Rewrite `e21` using `[block21_mul, block21_mul, h21, h22, g21, g31, block21_map, block21_map, block31_map, hX', hP, hP', map_smul', map_smul', map_smul']`.
+
+Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_smul, Matrix.smul_mul, Matrix.one_mul, ← smul_add] at e21`. Establish `E21` using `smul_right_injective _ hϖ0 e21`. Use `int_rdiv (det_of_cm X' (hc' r le_rfl)) ?_` and prove the remaining obligations. Rewrite using `[eq_sub_iff_add_eq'.2 E21]`. Conclude with `int_sub (int_mul (int_map _) i11) (int_map _)`.
+
+Establish `e32` using `congrArg b32 e`. Rewrite `e32` using `[block32_mul, block32_mul, h31, h32, g22, g32, block32_map, block32_map, block31_map, hX, hQ, hQ', map_smul', map_smul', map_smul']`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, ← smul_add] at e32`. Establish `E32` using `smul_right_injective _ hϖ0 e32`. Use `int_ldiv (det_of_cm X (hc r le_rfl)) ?_` and prove the remaining obligations.
+
+Rewrite using `[eq_sub_iff_add_eq.2 E32.symm]`. Conclude with `int_sub (int_mul i33 (int_map _)) (int_map _)`.
+-/
 theorem halfForce {ϖ : o} (hϖ : Irreducible ϖ) {j j' : Matrix (Idx r k) (Idx r k) o}
     {n n' : Matrix (Idx r k) (Idx r k) k0} {X : Matrix (Fin r) (Fin r) o}
     (hj : BT (j.map (IsLocalRing.residue o))) (hX : b31 j = ϖ • X)
@@ -796,6 +1181,19 @@ theorem halfForce {ϖ : o} (hϖ : Irreducible ϖ) {j j' : Matrix (Idx r k) (Idx 
     exact int_sub (int_mul i33 (int_map _)) (int_map _)
 
 omit [IsFractionRing o k0] in
+/- English proof (translation)
+Establish `j1 : j * j⁻¹ = 1` using `Matrix.mul_nonsing_inv j hd`. Establish `hi : BT (j⁻¹.map (IsLocalRing.residue o))` using `bt_rinv hj (by rw [← Matrix.map_mul, j1]; simp)`. Use `⟨hi, ?_⟩` and prove the remaining obligations. Take `⟨Y, hY⟩` from `div_pi hϖ (b31 j⁻¹) hi.2.2.2.1`. Take `⟨Q, hQ⟩` from `div_pi hϖ (b21 j⁻¹) hi.2.2.1`.
+
+Take `⟨P, hP⟩` from `div_pi hϖ (b32 j) hj.2.2.2.2.1`. Use `⟨Y, hY, ?_⟩` and prove the remaining obligations. Establish `e31` using `congrArg b31 j1`. Rewrite `e31` using `[block31_mul, one_block31, hX, hP, hQ, hY]`. Establish `e31' : ϖ • (X * b11 j⁻¹ + ϖ • (P * Q) + b33 j * Y) = ϖ • (0 : Matrix (Fin r) (Fin r) o)`.
+
+Rewrite using `[smul_zero, ← e31]`. Simplify using `only [smul_add, Matrix.mul_smul, Matrix.smul_mul]`. Establish `E` using `smul_right_injective _ hϖ.ne_zero e31'`. Establish `E'` using `congrArg (fun m => m.map (IsLocalRing.residue o)) E`. Simplify using `only [← RingHom.mapMatrix_apply, map_add, map_mul, map_zero] at E'`.
+
+Simplify using `only [RingHom.mapMatrix_apply, map_smul', res_pi hϖ, zero_smul, add_zero] at E'`. Establish `E2 : (b33 j).map (IsLocalRing.residue o) * Y.map (IsLocalRing.residue o) = (-X.map (IsLocalRing.residue o)) * (b11 j⁻¹).map (IsLocalRing.residue o)`. Rewrite using `[neg_mul]`. Conclude with `eq_neg_of_add_eq_zero_right E'`. Establish `hu : ∀ (l : ℕ) (hl : l ≤ r), IsUnit (cm (-X.map (IsLocalRing.residue o)) l hl)`.
+
+Introduce `l hl`. Rewrite using `[cm_neg, cm_map]`. Conclude with `((isUnit_one.neg).pow l).mul ((hc l hl).map _)`. Use `invCm _ _ _ _ hj.2.1 hi.1 E2 hu` as an intermediate fact. Introduce `l hl`.
+
+Use `(isUnit_map_iff (IsLocalRing.residue o) _).1 ?_` and prove the remaining obligations. Rewrite using `[← cm_map, this]`. Conclude with `hu l hl`.
+-/
 theorem invOm {ϖ : o} (hϖ : Irreducible ϖ) {j : Matrix (Idx r k) (Idx r k) o}
     {X : Matrix (Fin r) (Fin r) o} (hd : IsUnit j.det)
     (hj : BT (j.map (IsLocalRing.residue o))) (hX : b31 j = ϖ • X)
@@ -833,6 +1231,31 @@ theorem invOm {ϖ : o} (hϖ : Irreducible ϖ) {j : Matrix (Idx r k) (Idx r k) o}
 
 end Forcing
 
+/- English proof (translation)
+Introduce `o _ _ _ k0 _ _ _ ϖ hϖ r k j j' n n' hj hj' hn hn' e`. Take `⟨⟨hjd, hjNU⟩, X, hX, hc⟩` from `hj`. Establish `bj` using `bt_of_isNU hjNU`. Establish `bj'` using `bt_of_isNU hj'.2`. Establish `j1 : j⁻¹ * j = 1` using `Matrix.nonsing_inv_mul j hjd`.
+
+Establish `j1' : j' * j'⁻¹ = 1` using `Matrix.mul_nonsing_inv j' hj'.1`. Take `⟨i33, i11', i23, i12', X', hX', hc'⟩` from `halfForce hϖ bj hX hc bj' hn hn' e`. Take `⟨bi, Y, hY, hcY⟩` from `invOm hϖ hjd bj hX hc`. Establish `bi' : BT (j'⁻¹.map (IsLocalRing.residue o))` using `bt_rinv bj' (by rw [← Matrix.map_mul, j1']; simp)`. Establish `J1 : j⁻¹.map (algebraMap o k0) * j.map (algebraMap o k0) = 1`.
+
+Rewrite using `[← Matrix.map_mul, j1]`. Simplify using the standard rewrite rules. Establish `J1' : j'.map (algebraMap o k0) * j'⁻¹.map (algebraMap o k0) = 1`. Rewrite using `[← Matrix.map_mul, j1']`. Simplify using the standard rewrite rules.
+
+Establish `e' : n' * j'⁻¹.map (algebraMap o k0) = j⁻¹.map (algebraMap o k0) * n`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [← mul_assoc, J1, one_mul]`. Use `_ = j⁻¹.map (algebraMap o k0) * (n * j'.map (algebraMap o k0)) * j'⁻¹.map (algebraMap o k0) := by`. Rewrite using `[e]`.
+
+Use `_ = j⁻¹.map (algebraMap o k0) * n := by simp only [mul_assoc, J1', mul_one]`. Take `⟨i33', i11, i23', i12, -⟩` from `halfForce hϖ bi hY hcY bi' hn' hn e'`. Take `⟨m, S, hm, hnS⟩` from `decomp hn i11 i12 i23 i33`. Take `⟨m', S', hm', hnS'⟩` from `decomp hn' i11' i12' i23' i33'`. Establish `m1 : m' * m'⁻¹ = 1` using `Matrix.mul_nonsing_inv m' (bt_det (bt_of_isN hm'))`.
+
+Establish `M1 : m'.map (algebraMap o k0) * m'⁻¹.map (algebraMap o k0) = 1`. Rewrite using `[← Matrix.map_mul, m1]`. Simplify using the standard rewrite rules. Establish `bj'' : BT ((m * j' * m'⁻¹).map (IsLocalRing.residue o))`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`.
+
+Conclude with `bt_mul (bt_mul (bt_of_isN (isN_map _ hm)) bj') (bt_rinv (bt_of_isN (isN_map _ hm')) (by rw [← Matrix.map_mul, m1]; simp))`. Establish `e'' : cen S * (m * j' * m'⁻¹).map (algebraMap o k0) = j.map (algebraMap o k0) * cen S'`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`.
+
+Use `_ = j.map (algebraMap o k0) * (cen S' * m'.map (algebraMap o k0)) * m'⁻¹.map (algebraMap o k0) := by`. Rewrite using `[← hnS, e, ← hnS']`. Use `_ = j.map (algebraMap o k0) * cen S' := by simp only [mul_assoc, M1, mul_one]`. Generalize the expression as in `m * j' * m'⁻¹ = j'' at bj'' e''`. Establish `f31` using `congrArg b31 e''`.
+
+Establish `f11` using `congrArg b11 e''`. Establish `f33` using `congrArg b33 e''`. Establish `f13` using `congrArg b13 e''`. Simplify using `only [cen, block11_mul, block13_mul, block31_mul, block33_mul, block11_of_blocks, block12_of_blocks, block13_of_blocks, block21_of_blocks, block22_of_blocks, block23_of_blocks, block31_of_blocks, block32_of_blocks, block33_of_blocks, Matrix.mul_zero, Matrix.zero_mul, add_zero, ze …`. Rewrite `f11` using `[f31]`.
+
+Rewrite `f11`, `f33` using `[hX]`. Establish `E1 : (b11 j'').map (algebraMap o k0) = (b11 j).map (algebraMap o k0) - S * (ϖ • X).map (algebraMap o k0)` using `eq_sub_of_add_eq f11`. Establish `E2 : (b33 j'').map (algebraMap o k0) = (b33 j).map (algebraMap o k0) + (ϖ • X).map (algebraMap o k0) * S'` using `by rw [f33, add_comm]`. Establish `E3 : (b13 j'').map (algebraMap o k0) = (b13 j).map (algebraMap o k0) - S * (b33 j).map (algebraMap o k0) + ((b11 j).map (algebraMap o k0) - S * (ϖ • X).map (algebraMap o k0)) * S'`. Rewrite using `[eq_sub_of_add_eq f13, E2]`.
+
+Use `noncomm_ring`. Take `⟨iS, iS'⟩` from `centreForcing o k0 ϖ hϖ r (b11 j) (b33 j) (b13 j) X (b11 j'') (b33 j'') (b13 j'') S S' bj.1 bj.2.1 hc bj''.1 bj''.2.1 E1 E2 E3`. Use `⟨?_, ?_, hj', X', hX', hc'⟩` and prove the remaining obligations. Rewrite using `[hnS]`. Conclude with `int_mul (int_cen iS) (int_map m)`.
+
+Rewrite using `[hnS']`. Conclude with `int_mul (int_cen iS') (int_map m')`.
+-/
 theorem forcing : Forcing := by
   intro o _ _ _ k0 _ _ _ ϖ hϖ r k j j' n n' hj hj' hn hn' e
   obtain ⟨⟨hjd, hjNU⟩, X, hX, hc⟩ := hj
@@ -899,11 +1322,23 @@ theorem forcing : Forcing := by
 
 end Formalism.FourierDecayAlt.P.S3x8
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.S3x8.forcing`.
+-/
 theorem Formalism.FourierDecayAlt.P.block_forcing : Formalism.FourierDecayAlt.S3.Forcing := Formalism.FourierDecayAlt.P.S3x8.forcing
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.S3x8.centreBlocks`.
+-/
 theorem Formalism.FourierDecayAlt.P.centre_block_structure : Formalism.FourierDecayAlt.S3.CentreBlocks := Formalism.FourierDecayAlt.P.S3x8.centreBlocks
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.S3x8.centreForcing`.
+-/
 theorem Formalism.FourierDecayAlt.P.centreForcing_true : Formalism.FourierDecayAlt.S3.CentreForcing := Formalism.FourierDecayAlt.P.S3x8.centreForcing
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.S3x8.stabiliserTrivial`.
+-/
 theorem Formalism.FourierDecayAlt.P.stabiliserTrivial_true : Formalism.FourierDecayAlt.S3.StabiliserTrivial :=
   Formalism.FourierDecayAlt.P.S3x8.stabiliserTrivial

@@ -20,6 +20,9 @@ open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalThe
 open ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CechPic
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.VertDegHT.topSelf_comb_root_eq_zero | exact GlobalTheory.VertDegHT.topSelf_comb_root_eq_zero | (intros; apply GlobalTheory.VertDegHT.topSelf_comb_root_eq_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.top_self_curve_char_in_bad_set : Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB → ∀ (D : D7) (O : Setup D), O.Core → 2 < D.R.f * (O.N - 1) →
     ∀ (B : ℝ), 2 ≤ B → ∀ (c : O.s.Comp) (W : O.LatModel (GlobalTheory.FlagAr.setB O.Y B) c) (τ : D.what₂.Tau)
     (Z : Scheme.{0}) (i : Z ⟶ W.V.X) [IsClosedImmersion i] [IsIntegral Z] (κ : Type) [Field κ] [Finite κ]

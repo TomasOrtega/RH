@@ -19,11 +19,19 @@ namespace CutOneGenerator
 variable {k : Type u} [Field k] {Ω : Type w} [Field Ω] [Algebra k Ω] {K' : Type w} [Field K']
   [Algebra k K'] {N : ℕ} {x : Fin (N + 1) → Ω} {y : Fin (N + 1) → K'}
 
+/- English proof (translation)
+The claim follows from `(Submodule.restrictScalars_mem S _ _).mp ((Submodule.mem_iInf _).mp ht I)`.
+-/
 theorem mem_sub_of_mem_secs {S : Type u} [CommRing S] {E : Type w} [Field E] [Algebra S E] {M : ℕ}
     {z : Fin (M + 1) → E} {H : SubSystem S z E} {t : E} (ht : t ∈ H.secs) (I : Chart z) :
     t ∈ H.sub I :=
   (Submodule.restrictScalars_mem S _ _).mp ((Submodule.mem_iInf _).mp ht I)
 
+/- English proof (translation)
+Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem a ha => obtain ⟨f, s, e, -, hs, hf, hse, rfl⟩ := ha`. Conclude with `⟨f, s, e, hs, hf, hse, rfl⟩`. Consider the case `zero => exact zero_mem _`. Consider the case `add a b _ _ ha hb => exact add_mem ha hb`.
+
+Consider the case `smul c a _ ha => exact mul_mem c.2 ha`.
+-/
 theorem mem_chartRing_of_mem_idealMod {pp : Ideal (Poly k N)} {I : Chart x} {a : Ω}
     (ha : a ∈ idealMod (x := x) pp I) : a ∈ chartRing k x I := by
   induction ha using Submodule.span_induction with
@@ -34,17 +42,36 @@ theorem mem_chartRing_of_mem_idealMod {pp : Ideal (Poly k N)} {I : Chart x} {a :
 
 variable {hxy : ∀ i, y i ≠ 0 → x i ≠ 0} {Q : SubSystem k x Ω} {Q' : SubSystem k y K'} {ρ : Ω → K'}
 
+/- English proof (translation)
+Use `hR.add J 0 (Q.sub _).zero_mem 0 (Q.sub _).zero_mem` as an intermediate fact. Rewrite `this` using `[add_zero]`. Simplify using `using this`.
+-/
 theorem restrict_zero (hR : RestrictData Q hxy Q' ρ) (J : Chart y) : ρ 0 = 0 := by
   have := hR.add J 0 (Q.sub _).zero_mem 0 (Q.sub _).zero_mem
   rw [add_zero] at this
   simpa using this
 
+/- English proof (translation)
+Take `⟨f, t, e, ht, hf, hte, rfl⟩` from `hc`. Conclude with `⟨_, ⟨f, t, e, ht, hf, hte, rfl⟩, hR.smul J q hq f t e ht hf hte⟩`.
+-/
 theorem exists_restrict_mul (hR : RestrictData Q hxy Q' ρ) (J : Chart y) {c q : Ω}
     (hc : c ∈ chartRing k x (liftChart hxy J)) (hq : q ∈ Q.sub (liftChart hxy J)) :
     ∃ b ∈ chartRing k y J, ρ (c * q) = b * ρ q := by
   obtain ⟨f, t, e, ht, hf, hte, rfl⟩ := hc
   exact ⟨_, ⟨f, t, e, ht, hf, hte, rfl⟩, hR.smul J q hq f t e ht hf hte⟩
 
+/- English proof (translation)
+Establish `hgen : ∀ w ∈ Q.sub (liftChart hxy J), ∀ q ∈ idealMod (x` using `x) pp (liftChart hxy J), q * w ∈ Q.sub (liftChart hxy J) ∧ ρ (q * w) = 0 := by`. Introduce `w hw q hq`. Establish `hmw : ∀ a ∈ idealMod (x` using `x) pp (liftChart hxy J), a * w ∈ Q.sub (liftChart hxy J) := fun a ha => (Q.sub _).smul_mem ⟨a, mem_chartRing_of_mem_idealMod (pp := pp) (I := liftChart hxy J) ha⟩ hw`. Use `⟨hmw q hq, ?_⟩` and prove the remaining obligations. Proceed by induction on `hq using Submodule.span_induction with`.
+
+Consider the case `mem a ha`. Take `⟨f, t, e, hfp, ht, hf, hte, rfl⟩` from `ha`. Rewrite using `[hR.smul J w hw f t e ht hf hte, (mem_primeOf_of_isHomogeneous y hf).mp (hpp ▸ hfp), zero_div, zero_mul]`. Consider the case `zero => rw [zero_mul]`. Conclude with `restrict_zero hR J`.
+
+Consider the case `add a b ha hb iha ihb`. Rewrite using `[add_mul, hR.add J _ (hmw a ha) _ (hmw b hb), iha, ihb, add_zero]`. Consider the case `smul c a ha iha`. Take `⟨b, -, hb⟩` from `exists_restrict_mul hR J c.2 (hmw a ha)`. Rewrite using `[chartRing_smul_def, mul_assoc, hb, iha, mul_zero]`.
+
+Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz => obtain ⟨q, hq, w, hw, rfl⟩ := hz`. Conclude with `hgen w hw q hq`. Consider the case `zero => exact ⟨zero_mem _, restrict_zero hR J⟩`. Consider the case `add a b _ _ ha hb => exact ⟨add_mem ha.1 hb.1, by rw [hR.add J a ha.1 b hb.1, ha.2, hb.2, add_zero]⟩`.
+
+Consider the case `smul c a _ ha`. Use `⟨(Q.sub _).smul_mem c ha.1, ?_⟩` and prove the remaining obligations. Take `⟨b, -, hb⟩` from `exists_restrict_mul hR J c.2 ha.1`. Rewrite using `[chartRing_smul_def]`. Use `erw [hb]`.
+
+Rewrite using `[ha.2, mul_zero]`.
+-/
 theorem restrict_twist_eq_zero (hR : RestrictData Q hxy Q' ρ) {pp : Ideal (Poly k N)}
     (hpp : primeOf (S := k) y = pp) (J : Chart y) {z : Ω}
     (hz : z ∈ (Q.twist (idealSys x pp)).sub (liftChart hxy J)) :
@@ -78,6 +105,15 @@ theorem restrict_twist_eq_zero (hR : RestrictData Q hxy Q' ρ) {pp : Ideal (Poly
     erw [hb]
     rw [ha.2, mul_zero]
 
+/- English proof (translation)
+Rewrite `ht` using `[← hR.span J]`. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem t ht`. Take `⟨q, hq, rfl⟩` from `ht`. Take `⟨u, hu, v, hv, rfl⟩` from `Submodule.mem_sup.mp (hle hq)`.
+
+Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.mp hv`. Take `⟨hu', hu0⟩` from `restrict_twist_eq_zero hR hpp J hu`. Take `⟨b, hb, he⟩` from `exists_restrict_mul hR J a.2 hs`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[hR.add J u hu' _ ((Q.sub _).smul_mem a hs), hu0, zero_add, chartRing_smul_def, he]`.
+
+Consider the case `zero => exact ⟨0, zero_mem _, (zero_mul _).symm⟩`. Consider the case `add t t' _ _ ht ht'`. Take `⟨b, hb, rfl⟩` from `ht`. Take `⟨b', hb', rfl⟩` from `ht'`. Conclude with `⟨b + b', add_mem hb hb', (add_mul _ _ _).symm⟩`.
+
+Consider the case `smul c t _ ht`. Take `⟨b, hb, rfl⟩` from `ht`. Conclude with `⟨c * b, mul_mem c.2 hb, by rw [chartRing_smul_def, mul_assoc]⟩`.
+-/
 theorem exists_eq_mul_of_le (hR : RestrictData Q hxy Q' ρ) {pp : Ideal (Poly k N)}
     (hpp : primeOf (S := k) y = pp) (J : Chart y) {s : Ω} (hs : s ∈ Q.sub (liftChart hxy J))
     (hle : Q.sub (liftChart hxy J) ≤ (Q.twist (idealSys x pp)).sub (liftChart hxy J) ⊔
@@ -102,6 +138,9 @@ theorem exists_eq_mul_of_le (hR : RestrictData Q hxy Q' ρ) {pp : Ideal (Poly k 
     obtain ⟨b, hb, rfl⟩ := ht
     exact ⟨c * b, mul_mem c.2 hb, by rw [chartRing_smul_def, mul_assoc]⟩
 
+/- English proof (translation)
+Use `⟨FractionRing (R ⧸ P), inferInstance, inferInstance, (IsScalarTower.toAlgHom k (R ⧸ P) (FractionRing (R ⧸ P))).comp (Ideal.Quotient.mkₐ k P), ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Rewrite using `[RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `algebraMap (R ⧸ P) (FractionRing (R ⧸ P)) (Ideal.Quotient.mk P a) = 0 ↔ _`. Rewrite using `[IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`.
+-/
 theorem exists_algHom_ker_eq {R : Type w} [CommRing R] [Algebra k R] (P : Ideal R) [P.IsPrime] :
     ∃ (F : Type w) (_ : Field F) (_ : Algebra k F) (ψ : R →ₐ[k] F), RingHom.ker ψ = P := by
   refine ⟨FractionRing (R ⧸ P), inferInstance, inferInstance,
@@ -115,6 +154,31 @@ end CutOneGenerator
 
 open CutOneGenerator in
 
+/- English proof (translation)
+Introduce `k _ Ω _ _ N x n pp L s hW hL hs hgen`. Take `⟨r, h, hV⟩` from `hL`. Take `⟨j, hXj⟩` from `hW.relevant`. Establish `hxj : x j ≠ 0`. Introduce `h0`.
+
+Apply `hXj` to reduce the goal to its premises. Apply `hW.le` to reduce the goal to its premises. Rewrite using `[mem_primeOf_of_isHomogeneous x (isHomogeneous_X k j), aeval_X, h0]`. Take `⟨hprime, hpt⟩` from `PrimeFiltration.Point.proof k Ω N x pp hW.isPrime hW.homog hW.le j hxj hXj`. Take `⟨K', _, _, ψ, hker⟩` from `@exists_algHom_ker_eq k _ _ _ _ (chartPrime pp hxj) hprime`.
+
+Use `set y : Fin (N + 1) → K' := fun i => ψ (ratio hxj i) with hy`. Establish `hpy : primeOf (S` using `k) y = pp := hpt K' ψ hker`. Establish `hy0 : y j ≠ 0`. Establish `e : ratio (S` using `k) hxj j = 1 := Subtype.ext (div_self hxj)`. Use `show ψ (ratio hxj j) ≠ 0`.
+
+Rewrite using `[e, map_one]`. Conclude with `one_ne_zero`. Establish `hxy : ∀ i, y i ≠ 0 → x i ≠ 0`. Introduce `i hyi hxi`. Apply `hyi` to reduce the goal to its premises.
+
+Establish `e : ratio (S` using `k) hxj i = 0 := Subtype.ext (by show x i / x j = 0; rw [hxi, zero_div])`. Use `show ψ (ratio hxj i) = 0`. Rewrite using `[e, map_zero]`. Establish `hne : y ≠ 0` using `Function.ne_iff.mpr ⟨j, hy0⟩`. Take `⟨Q', ρ, hR, hV', hdim⟩` from `exists_restrictData_isVeryAmpleBy (by rw [hpy]; exact hW.le) hxy (singleChart hy0) L h hV`.
+
+Establish `hWy : IsSubvar y (primeOf (S` using `k) y) (n + 1) := by`. Rewrite using `[hpy]`. Conclude with `⟨hW.isPrime, hW.homog, hpy.le, hW.relevant, hW.dim⟩`. Establish `hdy : dimCl k y = ((n + 1 : ℕ) : Cardinal)` using `(DimTie.proof k K' N y hne (n + 1)).mp hWy`. Establish `hmul : ∀ t ∈ Q'.secs, ∀ i (hi : y i ≠ 0), ∃ b ∈ chartRing k y (singleChart hi), t = b * ρ s` using `fun t ht i hi => exists_eq_mul_of_le hR hpy (singleChart hi) (mem_sub_of_mem_secs hs _) (hgen i (hxy i hi)) (mem_sub_of_mem_secs ht _)`.
+
+Establish `hρs : ρ s ≠ 0`. Introduce `h0`. Take `⟨Q'', hQ''⟩` from `Q'.invertible (singleChart hy0)`. Establish `hbot : Q'.sub (singleChart hy0) = ⊥` using `(Submodule.eq_bot_iff _).mpr fun t ht => by`. Take `⟨b, -, rfl⟩` from `exists_eq_mul_of_le hR hpy (singleChart hy0) (mem_sub_of_mem_secs hs _) (hgen j (hxy j hy0)) ht`.
+
+Rewrite using `[h0, mul_zero]`. Rewrite `hQ''` using `[hbot, Submodule.bot_mul]`. Establish `h1 : (1 : K') ∈ (⊥ : Submodule (chartRing k y (singleChart hy0)) K')`. Rewrite using `[hQ'']`. Conclude with `Submodule.one_le.mp le_rfl`.
+
+Conclude with `one_ne_zero ((Submodule.mem_bot _).mp h1)`. Establish `hint : ∀ l, IsIntegral k (ρ (h l) / ρ s)` using `fun l => hG k K' N y _ hne fun i hi => by`. Take `⟨b, hb, he⟩` from `hmul (ρ (h l)) (hV'.mem_secs l) i hi`. Rewrite using `[he, mul_div_cancel_right₀ _ hρs]`. Conclude with `hb`.
+
+Establish `halg : Algebra.IsAlgebraic k (funField (k` using `k) (ρ ∘ h)) := by`. Apply `IntermediateField.isAlgebraic_adjoin` to reduce the goal to its premises. Introduce and unpack `_ ⟨i, l, -, rfl⟩`. Establish `e : (ρ ∘ h) l / (ρ ∘ h) i = ρ (h l) / ρ s * (ρ (h i) / ρ s)⁻¹`. Rewrite using `[inv_div, div_mul_div_cancel₀ hρs]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(hint l).mul (hint i).inv`. Establish `h0 : dimCl k (ρ ∘ h) = 0` using `trdeg_eq_zero`. Rewrite `h0` using `[← hdim, hdy]`.
+
+Conclude with `Nat.succ_ne_zero n (Nat.cast_eq_zero.mp h0)`.
+-/
 theorem CutOneGenerator.proof (hG : GlobalFunctionsIntegral.Statement.{u, w}) :
     CutOneGenerator.Statement.{u, w} := by
   intro k _ Ω _ _ N x n pp L s hW hL hs hgen

@@ -5,6 +5,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Loca
 open Matrix IsLocalRing UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.U3.Mop
 
 open Polynomial in
+/- English proof (translation)
+Establish `halg : IsIntegral ℚ_[l] x` using `(Algebra.IsAlgebraic.isAlgebraic (R := ℚ_[l]) x).isIntegral`. Establish `hmon : (minpoly ℚ_[l] x).Monic` using `minpoly.monic halg`. Establish `hn : ‖x‖ = spectralValue (minpoly ℚ_[l] x)` using `rfl`. Rewrite using `[hn, spectralValue_le_one_iff hmon]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx n`. Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] hx, Polynomial.coeff_map]`. Conclude with `PadicInt.norm_le_one ((minpoly ℤ_[l] x).coeff n)`. Introduce `h`. Establish `hl : minpoly ℚ_[l] x ∈ Polynomial.lifts (algebraMap ℤ_[l] ℚ_[l])`.
+
+Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`. Conclude with `⟨⟨_, h n⟩, rfl⟩`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hl hmon`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] (PadicAlgCl l), ← Polynomial.eval₂_map, hq, ← Polynomial.aeval_def]`. Conclude with `minpoly.aeval ℚ_[l] x`.
+-/
 private theorem pts_int {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral ℤ_[l] x ↔ ‖x‖ ≤ 1 := by
   have halg : IsIntegral ℚ_[l] x := (Algebra.IsAlgebraic.isAlgebraic (R := ℚ_[l]) x).isIntegral
   have hmon : (minpoly ℚ_[l] x).Monic := minpoly.monic halg
@@ -25,6 +34,15 @@ private theorem pts_int {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) : IsIntegral
       ← Polynomial.aeval_def]
     exact minpoly.aeval ℚ_[l] x
 
+/- English proof (translation)
+Take `⟨p, hpm, hp⟩` from `h`. Use `set y := (algebraMap B K b)⁻¹ with hy`. Establish `hy0 : y ≠ 0` using `inv_ne_zero h0`. Use `letI : Invertible y := invertibleOfNonzero hy0`. Establish `hrev` using `Polynomial.eval₂_reverse_mul_pow (algebraMap B K) y p`.
+
+Rewrite `hrev` using `[hp, invOf_eq_inv, hy, inv_inv]`. Establish `hq : Polynomial.eval₂ (algebraMap B K) (algebraMap B K b) p.reverse = 0` using `(mul_eq_zero.mp hrev).resolve_right (pow_ne_zero _ (inv_ne_zero h0))`. Rewrite `hq` using `[Polynomial.eval₂_at_apply]`. Establish `hq' : Polynomial.eval b p.reverse = 0` using `hi (by rw [hq, map_zero])`. Take `⟨r, hr⟩` from `Polynomial.X_dvd_sub_C (p := p.reverse)`.
+
+Establish `he` using `congrArg (Polynomial.eval b) hr`. Rewrite `he` using `[Polynomial.eval_sub, Polynomial.eval_C, Polynomial.coeff_zero_reverse, hpm.leadingCoeff, hq', Polynomial.eval_mul, Polynomial.eval_X]`. Establish `h1 : b * -Polynomial.eval b r = 1`. Rewrite using `[mul_neg, ← he]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `⟨⟨b, _, h1, (mul_comm _ _).trans h1⟩, rfl⟩`.
+-/
 private theorem pts_unit {B K : Type} [CommRing B] [Field K] [Algebra B K] (hi : Function.Injective (algebraMap B K))
     (b : B) (h0 : algebraMap B K b ≠ 0) (h : IsIntegral B (algebraMap B K b)⁻¹) : IsUnit b := by
   classical
@@ -47,10 +65,20 @@ private theorem pts_unit {B K : Type} [CommRing B] [Field K] [Algebra B K] (hi :
     ring
   exact ⟨⟨b, _, h1, (mul_comm _ _).trans h1⟩, rfl⟩
 
+/- English proof (translation)
+The claim follows from `mem_max_of_zero (W.origin h) (origin_presentation_var_eq_zero W h s)`.
+-/
 private theorem automorphic_points_exist {O R : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (maximalIdeal O) O] [CommRing R] [Algebra O R] [IsCO O R] (W : WPres O ℤ R) (h : W.HasOrigin)
     (s : W.σ) : W.z s ∈ maximalIdeal R := mem_max_of_zero (W.origin h) (origin_presentation_var_eq_zero W h s)
 
+/- English proof (translation)
+Establish `hu : IsUnit (⟨f x, AlgHom.mem_range_self f x⟩ : f.range)` using `pts_unit (B := f.range) (K := K) (fun a b hab => Subtype.ext hab) _ h0 h3.tower_top`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Take `⟨r, hr⟩` from `(AlgHom.mem_range f).1 v.2`. Establish `hfr : f x * f r = 1`. Rewrite using `[hr]`.
+
+Conclude with `congrArg Subtype.val hv`. Assume the negation of the conclusion as `hxu`. Establish `hm : x * r ∈ maximalIdeal R` using `Ideal.mul_mem_right r _ hxu`. Establish `hunit` using `(IsLocalRing.isUnit_one_sub_self_of_mem_nonunits (x * r) hm).map f`. Rewrite `hunit` using `[map_sub, map_one, map_mul, hfr, sub_self]`.
+
+Conclude with `not_isUnit_zero hunit`.
+-/
 private theorem pts_sur {O R K : Type} [CommRing O] [CommRing R] [Algebra O R] [IsLocalRing R] [Field K] [Algebra O K]
     (f : R →ₐ[O] K) (x : R) (h0 : f x ≠ 0) (h3 : IsIntegral O (f x)⁻¹) : IsUnit x := by
   classical
@@ -67,6 +95,11 @@ private theorem pts_sur {O R K : Type} [CommRing O] [CommRing R] [Algebra O R] [
   rw [map_sub, map_one, map_mul, hfr, sub_self] at hunit
   exact not_isUnit_zero hunit
 
+/- English proof (translation)
+Introduce `x hx`. Assume the negation of the conclusion as `hge`. Use `push_neg at hge`. Establish `h0 : f x ≠ 0`. Introduce `hz`.
+
+Rewrite `hge` using `[hz, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hint : IsIntegral ℤ_[l] (f x)⁻¹` using `(pts_int _).mpr (by rw [norm_inv]; exact inv_le_one_of_one_le₀ hge)`. Conclude with `hx (pts_sur f x h0 hint.tower_top)`.
+-/
 private theorem pts_loc {l : ℕ} [Fact l.Prime] {c : Coef l} {R : Type} [CommRing R] [Algebra c.O R] [IsLocalRing R]
     (f : R →ₐ[c.O] PadicAlgCl l) : IsLocPt f := by
   intro x hx
@@ -80,6 +113,9 @@ private theorem pts_loc {l : ℕ} [Fact l.Prime] {c : Coef l} {R : Type} [CommRi
     (pts_int _).mpr (by rw [norm_inv]; exact inv_le_one_of_one_le₀ hge)
   exact hx (pts_sur f x h0 hint.tower_top)
 
+/- English proof (translation)
+Establish `he : ξ.toLinearMap = (Ideal.Quotient.liftₐ I ξ hξ).toLinearMap ∘ₗ (Ideal.Quotient.mkₐ O I).toLinearMap`. Use extensionality with `a`. Both sides reduce to the same expression. Rewrite using `[he, Submodule.map_comp]`. Conclude with `h.map _`.
+-/
 private theorem fg_lemma {O A : Type} [CommRing O] [CommRing A] [Algebra O A] {K : Type} [Field K]
     [Algebra O K] (P : Submodule O A) (I : Ideal A) (ξ : A →ₐ[O] K) (hξ : ∀ a ∈ I, ξ a = 0)
     (h : (Submodule.map (Ideal.Quotient.mkₐ O I).toLinearMap P).FG) :
@@ -92,6 +128,21 @@ private theorem fg_lemma {O A : Type} [CommRing O] [CommRing A] [Algebra O A] {K
   exact h.map _
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `l _ c R S _ _ _ _ _ _ W h qh hqh κ g w hg hk hM ξ hOn`. Establish `hfg : (Submodule.map ξ.toLinearMap (W.gr 0)).FG` using `fg_lemma (W.gr 0) _ ξ hOn hM`. Use `haveI : IsLocalRing c.O := IsDiscreteValuationRing.toIsLocalRing`. Use `haveI : Module.Finite ℤ_[l] c.O := c.fin`. Take `⟨hcomp, -, -, hinj, -, -⟩` from `UpperTheory.V.abelian₂.dvr_finite l c.O`.
+
+Use `haveI := hcomp`. Use `haveI : Algebra.IsAlgebraic c.O (PadicAlgCl l) := Algebra.IsAlgebraic.mk fun x => ((IsFractionRing.isAlgebraic_iff ℤ_[l] ℚ_[l] (PadicAlgCl l)).mpr (Algebra.IsAlgebraic.isAlgebraic x)).extendScalars hinj`. Take `⟨t, Ξ, hΞ, -⟩` from `points_finite c.O ℤ R W (automorphic_points_exist W h) (PadicAlgCl l) ξ hfg`. Establish `hker : ∀ a ∈ RingHom.ker qh, Ξ a = 0`. Introduce `a ha`.
+
+Rewrite `ha` using `[hk]`. Establish `hle : Ideal.span (Set.range fun i => (g i : R)) ≤ RingHom.ker Ξ`. Use `Ideal.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker]`.
+
+Establish `h1` using `congrArg (fun φ : W.A →ₐ[c.O] PadicAlgCl l => φ (g i)) hΞ`. Simplify using `only [AlgHom.comp_apply, Subalgebra.coe_val] at h1`. Rewrite using `[h1, act_of_mem W.gr t ξ (hg i), hOn (g i) (Ideal.subset_span ⟨i, rfl⟩), mul_zero]`. Conclude with `RingHom.mem_ker.mp (hle ha)`. Set `f : S →ₐ[c.O] PadicAlgCl l` to `(Ideal.Quotient.liftₐ (RingHom.ker qh) Ξ hker).comp (Ideal.quotientKerAlgEquivOfSurjective hqh).symm.toAlgHom`.
+
+Establish `hf : ∀ r, f (qh r) = Ξ r`. Introduce `r`. Establish `hmk : (Ideal.quotientKerAlgEquivOfSurjective hqh).symm (qh r) = Ideal.Quotient.mk (RingHom.ker qh) r`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Both sides reduce to the same expression.
+
+Use `show Ideal.Quotient.liftₐ (RingHom.ker qh) Ξ hker ((Ideal.quotientKerAlgEquivOfSurjective hqh).symm (qh r)) = Ξ r`. Rewrite using `[hmk]`. Both sides reduce to the same expression. Use `⟨(zpowersHom (PadicAlgCl l)ˣ).symm t, f, pts_loc f, ?_⟩` and prove the remaining obligations. Rewrite using `[show tz ((zpowersHom (PadicAlgCl l)ˣ).symm t) = t from Equiv.apply_symm_apply _ _, ← hΞ]`.
+
+Use `AlgHom.ext fun a => ?_` and prove the remaining obligations. Simplify using `only [AlgHom.comp_apply, hf]`.
+-/
 theorem UpperTheory.exists_torus_twist_eq_localPoint_of_weightedPres :
     ∀ {l : ℕ} [Fact l.Prime] {c : Coef l} {R S : Type} [CommRing R] [Algebra c.O R] [IsCO c.O R] [CommRing S] [Algebra c.O S] [IsCO c.O S]
           (W : WPres c.O ℤ R) (h : W.HasOrigin) (qh : R →ₐ[c.O] S), Function.Surjective qh → ∀ {κ : Type} (g : κ → W.A) (w : κ → ℤ), (∀ i, g i ∈ W.gr (w i)) →

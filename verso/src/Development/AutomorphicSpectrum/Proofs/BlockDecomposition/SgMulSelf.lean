@@ -17,15 +17,28 @@ section Ring
 variable {ι R : Type} [Fintype ι] [DecidableEq ι] [Ring R] [Algebra ℂ R]
   (c : ι → ι → ι → ℂ) (L an cr : ι → R)
 
+/- English proof (translation)
+Establish `h : ∀ i j, an i * an j = -(an j * an i)` using `fun i j => eq_neg_of_add_eq_zero_left (haa i j)`. Rewrite using `[mul_assoc, h i l, mul_neg, ← mul_assoc, h j l, neg_mul, neg_neg, mul_assoc]`.
+-/
 theorem comm_aa (haa : ∀ i j, an i * an j + an j * an i = 0) (l i j : ι) :
     an j * an i * an l = an l * (an j * an i) := by
   have h : ∀ i j, an i * an j = -(an j * an i) := fun i j => eq_neg_of_add_eq_zero_left (haa i j)
   rw [mul_assoc, h i l, mul_neg, ← mul_assoc, h j l, neg_mul, neg_neg, mul_assoc]
 
+/- English proof (translation)
+Establish `: (2 : ℂ) • x = 0` using `by rw [two_smul]; exact add_eq_zero_iff_eq_neg.2 h`. Rewrite using `[← one_smul ℂ x, ← inv_mul_cancel₀ (two_ne_zero' ℂ), mul_smul, this, smul_zero]`.
+-/
 theorem self_neg {x : R} (h : x = -x) : x = 0 := by
   have : (2 : ℂ) • x = 0 := by rw [two_smul]; exact add_eq_zero_iff_eq_neg.2 h
   rw [← one_smul ℂ x, ← inv_mul_cancel₀ (two_ne_zero' ℂ), mul_smul, this, smul_zero]
 
+/- English proof (translation)
+Establish `e : (∑ i, L i * an i) * (∑ i, L i * an i) = ∑ i, ∑ j, L i * L j * (an i * an j)`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← mul_assoc (an i), ← (h1 j i).eq]`. Simplify using `only [mul_assoc]`.
+
+Establish `t : ∀ i j, ∑ k, c i j k • (L k * (an i * an j)) = L i * L j * (an i * an j) + L j * L i * (an j * an i)`. Introduce `i j`. Establish `ha : an j * an i = -(an i * an j)` using `eq_neg_of_add_eq_zero_right (haa i j)`. Simplify using `only [← smul_mul_assoc, ← Finset.sum_mul, ← hL, ha, mul_neg, ← sub_eq_add_neg, sub_mul]`. Establish `s : ∑ i, ∑ j, L j * L i * (an j * an i) = ∑ i, ∑ j, L i * L j * (an i * an j)` using `Finset.sum_comm`.
+
+Simplify using `only [t, Finset.sum_add_distrib]`. Rewrite using `[s, e, ← two_smul ℂ, smul_smul]`. Evaluate the numerical expressions.
+-/
 theorem a_sq (hL : ∀ i j, L i * L j - L j * L i = ∑ k, c i j k • L k) (h1 : ∀ i j, Commute (L i) (an j))
     (haa : ∀ i j, an i * an j + an j * an i = 0) :
     (∑ i, L i * an i) * (∑ i, L i * an i) =
@@ -45,6 +58,15 @@ theorem a_sq (hL : ∀ i j, L i * L j - L j * L i = ∑ k, c i j k • L k) (h1 
   rw [s, e, ← two_smul ℂ, smul_smul]
   norm_num
 
+/- English proof (translation)
+Simplify using `only [Finset.mul_sum (s := univ) (f := fun i => ∑ j, ∑ k, c i j k • (cr k * an j * an i)), Finset.sum_mul (s := univ) (f := fun i => ∑ j, ∑ k, c i j k • (cr k * an j * an i)), ← Finset.sum_add_distrib, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_mul, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, smul_mul_assoc, ← smul_add, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Establish `e : ∀ l : ι, L l * an l * (cr k * an j * an i) + cr k * an j * an i * (L l * an l) = if l = k then L l * (an j * an i) else 0`. Introduce `l`. Establish `c1 : cr k * an j * an i * (L l * an l) = L l * (cr k * an l * (an j * an i))`.
+
+Rewrite using `[← mul_assoc, ← (((h2 l k).mul_right (h1 l j)).mul_right (h1 l i)).eq, mul_assoc, mul_assoc (cr k), mul_assoc (cr k), comm_aa an haa, mul_assoc (cr k)]`. Establish `c2 : L l * an l * (cr k * an j * an i) = L l * (an l * cr k * (an j * an i))`. Simplify using `only [mul_assoc]`. Rewrite using `[c1, c2, ← mul_add, ← add_mul, hac]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Simplify using `only [e, Finset.sum_ite_eq', mem_univ, if_true]`. Rewrite using `[eq_neg_of_add_eq_zero_left (haa j i)]`. Simplify using the standard rewrite rules.
+-/
 theorem cross (h1 : ∀ i j, Commute (L i) (an j)) (h2 : ∀ i j, Commute (L i) (cr j))
     (haa : ∀ i j, an i * an j + an j * an i = 0) (hac : ∀ i j, an i * cr j + cr j * an i = if i = j then 1 else 0) :
     (∑ i, L i * an i) * (∑ i, ∑ j, ∑ k, c i j k • (cr k * an j * an i)) +
@@ -73,11 +95,23 @@ theorem cross (h1 : ∀ i j, Commute (L i) (an j)) (h2 : ∀ i j, Commute (L i) 
   rw [eq_neg_of_add_eq_zero_left (haa j i)]
   simp
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun q _ => Finset.sum_comm`.
+-/
 theorem cyc_sum {M : Type} [AddCommGroup M] (g : ι → ι → ι → M) :
     ∑ p, ∑ q, ∑ r, g q r p = ∑ p, ∑ q, ∑ r, g p q r := by
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun q _ => Finset.sum_comm
 
+/- English proof (translation)
+Establish `h0 : ∀ p q r, ∑ k, F p q r k • X k p q r + ∑ k, F q r p k • X k q r p + ∑ k, F r p q k • X k r p q = 0`. Introduce `p q r`. Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hX k q r p, hX k p q r, ← add_smul, ← add_smul, hJ, zero_smul]`.
+
+Take `⟨f, hf⟩ : ∃ f : ι → ι → ι → M, ∀ p q r, f p q r = ∑ k, F p q r k • X k p q r` from `⟨_, fun _ _ _ => rfl⟩`. Simplify using `only [← hf] at h0 ⊢`. Establish `e1 : ∑ p, ∑ q, ∑ r, f q r p = ∑ p, ∑ q, ∑ r, f p q r` using `cyc_sum f`. Establish `e2 : ∑ p, ∑ q, ∑ r, f r p q = ∑ p, ∑ q, ∑ r, f p q r` using `(cyc_sum fun p q r => f r p q).symm`. Establish `h3 : ∑ p, ∑ q, ∑ r, (f p q r + f q r p + f r p q) = 0` using `Finset.sum_eq_zero fun p _ => Finset.sum_eq_zero fun q _ => Finset.sum_eq_zero fun r _ => h0 p q r`.
+
+Simplify using `only [Finset.sum_add_distrib] at h3`. Rewrite `h3` using `[e1, e2]`. Generalize the expression as in `∑ p, ∑ q, ∑ r, f p q r = S at h3`. Establish `h4 : (3 : ℂ) • S = 0`. Rewrite using `[show (3 : ℂ) = 1 + 1 + 1 by norm_num, add_smul, add_smul, one_smul, h3]`.
+
+Rewrite using `[← one_smul ℂ S, ← inv_mul_cancel₀ (three_ne_zero' ℂ), mul_smul, h4, smul_zero]`.
+-/
 theorem cyc_zero {M : Type} [AddCommGroup M] [Module ℂ M] (F : ι → ι → ι → ι → ℂ) (X : ι → ι → ι → ι → M)
     (hX : ∀ k p q r, X k q r p = X k p q r) (hJ : ∀ p q r k, F p q r k + F q r p k + F r p q k = 0) :
     ∑ p, ∑ q, ∑ r, ∑ k, F p q r k • X k p q r = 0 := by
@@ -99,6 +133,9 @@ theorem cyc_zero {M : Type} [AddCommGroup M] [Module ℂ M] (F : ι → ι → �
     rw [show (3 : ℂ) = 1 + 1 + 1 by norm_num, add_smul, add_smul, one_smul, h3]
   rw [← one_smul ℂ S, ← inv_mul_cancel₀ (three_ne_zero' ℂ), mul_smul, h4, smul_zero]
 
+/- English proof (translation)
+Establish `h` using `cyc_sum fun p q r => ∑ k, F p q r k • X k p q r`. Rewrite `h` using `[cyc_zero F X hX hJ]`. Simplify using `only [neg_smul, Finset.sum_neg_distrib]`. Establish `e : ∑ p, ∑ q, ∑ r, ∑ k, F q r p k • X k p q r = ∑ p, ∑ q, ∑ r, ∑ k, F q r p k • X k q r p` using `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun k _ => by rw [hX k p q r]`. Rewrite using `[e, h, neg_zero]`.
+-/
 theorem cyc_zero' {M : Type} [AddCommGroup M] [Module ℂ M] (F : ι → ι → ι → ι → ℂ) (X : ι → ι → ι → ι → M)
     (hX : ∀ k p q r, X k q r p = X k p q r) (hJ : ∀ p q r k, F p q r k + F q r p k + F r p q k = 0) :
     ∑ p, ∑ q, ∑ r, ∑ k, (-F q r p k) • X k p q r = 0 := by
@@ -110,6 +147,29 @@ theorem cyc_zero' {M : Type} [AddCommGroup M] [Module ℂ M] (F : ι → ι → 
       Finset.sum_congr rfl fun k _ => by rw [hX k p q r]
   rw [e, h, neg_zero]
 
+/- English proof (translation)
+Set `t : ι × ι × ι → ℂ` to `fun p => c p.1 p.2.1 p.2.2`. Establish `e : (∑ i, ∑ j, ∑ k, c i j k • (cr k * an j * an i)) = ∑ p : ι × ι × ι, t p • (cr p.2.2 * an p.2.1 * an p.1)`. Simplify using `only [Fintype.sum_prod_type, t]`. Establish `ex : ∀ i j k i' j' k' : ι, cr k * an j * an i * (cr k' * an j' * an i') = (if i = k' then cr k * (an j * (an j' * an i')) else 0) - (if j = k' then cr k * (an j' * an i' * an i) else 0) + cr k * cr k' * ((an j * an i) * (an j' * an i'))`. Introduce `i j k i' j' k'`.
+
+Establish `a1` using `eq_sub_of_add_eq (hac i k')`. Establish `a2` using `eq_sub_of_add_eq (hac j k')`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[a1, mul_sub, mul_assoc (an j)]`. Use `_ = _ := by`.
+
+Rewrite using `[a2, comm_aa an haa i i' j']`. Apply the tactic sequence `split_ifs <;> noncomm_ring`. Rewrite using `[e, Finset.sum_mul_sum]`. Simplify using `only [smul_mul_smul_comm, ex, smul_add, smul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Establish `h3 : ∑ p : ι × ι × ι, ∑ q : ι × ι × ι, (t p * t q) • (cr p.2.2 * cr q.2.2 * ((an p.2.1 * an p.1) * (an q.2.1 * an q.1))) = 0`.
+
+Apply `self_neg` to reduce the goal to its premises. Use `conv_lhs => rw [Finset.sum_comm]`. Simplify using `only [← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm (t q), eq_neg_of_add_eq_zero_left (hcc q.2.2 p.2.2), neg_mul, smul_neg, ← mul_assoc (an q.2.1 * an q.1), comm_aa an haa, mul_assoc (an p.2.1), comm_aa an haa, ← mul_assoc (an p.2.1)]`.
+
+Rewrite using `[h3, add_zero, sub_eq_zero]`. Establish `L' : ∑ p : ι × ι × ι, ∑ q : ι × ι × ι, (t p * t q) • (if p.1 = q.2.2 then cr p.2.2 * (an p.2.1 * (an q.2.1 * an q.1)) else 0) = ∑ p, ∑ q, ∑ r, ∑ k, (∑ i, c p q i * c i r k) • (cr k * (an r * an q * an p))`. Simplify using `only [Fintype.sum_prod_type, t, smul_ite, smul_zero, Finset.sum_ite_eq, mem_univ, if_true, Finset.sum_smul]`. Use `symm`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Conclude with `(Finset.sum_congr rfl fun r _ => Finset.sum_comm).trans Finset.sum_comm`. Use `_ = ∑ x : ι × ι, ∑ y : ι × ι × ι, (c x.1 x.2 y.1 * c y.1 y.2.1 y.2.2) • (cr y.2.2 * (an y.2.1 * an x.2 * an x.1)) := by`. Simplify using `only [Fintype.sum_prod_type]`. Use `_ = _ := by`.
+
+Rewrite using `[Finset.sum_comm]`. Simplify using `only [Fintype.sum_prod_type, mul_comm (c _ _ _) (c _ _ _), mul_assoc]`. Establish `R' : ∑ p : ι × ι × ι, ∑ q : ι × ι × ι, (t p * t q) • (if p.2.1 = q.2.2 then cr p.2.2 * (an q.2.1 * an q.1 * an p.1) else 0) = ∑ p, ∑ q, ∑ r, ∑ k, (∑ j, c q r j * c p j k) • (cr k * (an r * an q * an p))`. Simplify using `only [Fintype.sum_prod_type, t, smul_ite, smul_zero, Finset.sum_ite_eq, mem_univ, if_true, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Fintype.sum_prod_type]`. Use `_ = _ := by`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Fintype.sum_prod_type]`.
+
+Use `Finset.sum_congr rfl fun q _ => Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm (c p _ _)]`. Rewrite using `[L', R']`. Establish `hX : ∀ k p q r, cr k * (an p * an r * an q) = cr k * (an r * an q * an p)`.
+
+Introduce `k p q r`. Rewrite using `[comm_aa an haa p q r, mul_assoc]`. Establish `z1` using `cyc_zero (fun p q r k => ∑ i, c p q i * c i r k) (fun k p q r => cr k * (an r * an q * an p)) hX hJ`. Establish `z2` using `cyc_zero' (fun p q r k => ∑ i, c p q i * c i r k) (fun k p q r => cr k * (an r * an q * an p)) hX hJ`. Establish `hG : ∀ p q r k, ∑ j, c q r j * c p j k = -∑ i, c q r i * c i p k`.
+
+Introduce `p q r k`. Rewrite using `[← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hanti p j k]; ring`. Simplify using `only [hG]`. Conclude with `z1.trans z2.symm`.
+-/
 theorem b_sq (hanti : ∀ i j k, c i j k = -c j i k)
     (hJ : ∀ p q r k, ∑ i, c p q i * c i r k + ∑ i, c q r i * c i p k + ∑ i, c r p i * c i q k = 0)
     (haa : ∀ i j, an i * an j + an j * an i = 0) (hcc : ∀ i j, cr i * cr j + cr j * cr i = 0)
@@ -183,6 +243,11 @@ theorem b_sq (hanti : ∀ i j k, c i j k = -c j i k)
   simp only [hG]
   exact z1.trans z2.symm
 
+/- English proof (translation)
+Establish `hA` using `a_sq c L an hL h1 haa`. Establish `hC` using `cross c L an cr h1 h2 haa hac`. Establish `hB` using `b_sq c an cr hanti hJ haa hcc hac`. Generalize the expression as in `(∑ i, L i * an i) = A at *`. Generalize the expression as in `(∑ i, ∑ j, ∑ k, c i j k • (cr k * an j * an i)) = B at *`.
+
+Generalize the expression as in `(∑ i, ∑ j, ∑ k, c i j k • (L k * (an i * an j))) = T at *`. Rewrite using `[add_mul, mul_add, mul_add, smul_mul_assoc, mul_smul_comm, smul_mul_assoc, mul_smul_comm, hB, smul_zero, smul_zero, add_zero, add_assoc, ← smul_add, hC, hA, smul_neg, add_neg_cancel]`.
+-/
 theorem d_sq (hL : ∀ i j, L i * L j - L j * L i = ∑ k, c i j k • L k) (h1 : ∀ i j, Commute (L i) (an j))
     (h2 : ∀ i j, Commute (L i) (cr j)) (hanti : ∀ i j k, c i j k = -c j i k)
     (hJ : ∀ p q r k, ∑ i, c p q i * c i r k + ∑ i, c q r i * c i p k + ∑ i, c r p i * c i q k = 0)
@@ -205,10 +270,16 @@ section Constants
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [cst, cp, Bool.and_comm j.1]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem cst_anti (i j k : Ix n) : cst i j k = -cst j i k := by
   simp only [cst, cp, Bool.and_comm j.1]
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `h : ∀ a b : Pos n, CompanionTheory.D.LK.Tri (CompanionTheory.D.LK.allT n) a b r ↔ (a.1.2 = b.1.1 ∧ r.1 = (a.1.1, b.1.2))`. Introduce `a b`. Simplify using `[CompanionTheory.D.LK.Tri, Prod.ext_iff]`. Simplify using `only [cp, tc, h]`.
+-/
 theorem cp_eq (p q r : Pos n) :
     cp p q r = tc (CompanionTheory.D.LK.allT n) p q r - tc (CompanionTheory.D.LK.allT n) q p r := by
   have h : ∀ a b : Pos n, CompanionTheory.D.LK.Tri (CompanionTheory.D.LK.allT n) a b r ↔ (a.1.2 = b.1.1 ∧ r.1 = (a.1.1, b.1.2)) := by
@@ -216,6 +287,11 @@ theorem cp_eq (p q r : Pos n) :
     simp [CompanionTheory.D.LK.Tri, Prod.ext_iff]
   simp only [cp, tc, h]
 
+/- English proof (translation)
+Establish `e : ∀ a b c : Pos n, ∑ m, cp a b m * cp m c k = ∑ m, tc (CompanionTheory.D.LK.allT n) a b m * tc (CompanionTheory.D.LK.allT n) m c k - ∑ m, tc (CompanionTheory.D.LK.allT n) c a m * tc (CompanionTheory.D.LK.allT n) m b k - ∑ m, tc (CompanionTheory.D.LK.allT n) b a m * tc (Companio …`. Introduce `a b c`. Rewrite using `[CompanionTheory.D.LK.tc_assoc c a b k, CompanionTheory.D.LK.tc_assoc c b a k]`. Simplify using `only [cp_eq, sub_mul, mul_sub, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, e, e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cp_jacobi (p q r k : Pos n) :
     ∑ m, cp p q m * cp m r k + ∑ m, cp q r m * cp m p k + ∑ m, cp r p m * cp m q k = 0 := by
   have e : ∀ a b c : Pos n, ∑ m, cp a b m * cp m c k =
@@ -230,6 +306,11 @@ theorem cp_jacobi (p q r k : Pos n) :
   rw [e, e, e]
   ring
 
+/- English proof (translation)
+Take `⟨s, p⟩` from `p`. Take `⟨t, q⟩` from `q`. Take `⟨u, r⟩` from `r`. Take `⟨w, k⟩` from `k`. Rewrite using `[Fintype.sum_prod_type]`.
+
+Apply the tactic sequence `cases s <;> cases t <;> cases u <;> cases w <;> simp [cst]`.
+-/
 theorem sum_cst (p q r k : Ix n) : ∑ i, cst p q i * cst i r k =
     if k.1 = (p.1 && q.1 && r.1) then ∑ m, cp p.2 q.2 m * cp m r.2 k.2 else 0 := by
   obtain ⟨s, p⟩ := p
@@ -239,6 +320,11 @@ theorem sum_cst (p q r k : Ix n) : ∑ i, cst p q i * cst i r k =
   rw [Fintype.sum_prod_type]
   cases s <;> cases t <;> cases u <;> cases w <;> simp [cst]
 
+/- English proof (translation)
+Rewrite using `[sum_cst, sum_cst, sum_cst]`. Apply the tactic sequence `have h1 : (q.1 && r.1 && p.1) = (p.1 && q.1 && r.1) := by cases p.1 <;> cases q.1 <;> cases r.1 <;> rfl`. Apply the tactic sequence `have h2 : (r.1 && p.1 && q.1) = (p.1 && q.1 && r.1) := by cases p.1 <;> cases q.1 <;> cases r.1 <;> rfl`. Rewrite using `[h1, h2]`. Use `split_ifs`.
+
+Conclude with `cp_jacobi _ _ _ _`. Simplify using the standard rewrite rules.
+-/
 theorem cst_jacobi (p q r k : Ix n) :
     ∑ i, cst p q i * cst i r k + ∑ i, cst q r i * cst i p k + ∑ i, cst r p i * cst i q k = 0 := by
   rw [sum_cst, sum_cst, sum_cst]
@@ -255,6 +341,9 @@ section Letters
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `ha` using `p.1.1.2`. Establish `hb` using `p.1.2.2`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem key_lt (p : Pos n) : key p < n * n := by
   have ha := p.1.1.2
   have hb := p.1.2.2
@@ -263,6 +352,11 @@ theorem key_lt (p : Pos n) : key p < n * n := by
     _ = ((p.1.1 : ℕ) + 1) * n := by ring
     _ ≤ n * n := Nat.mul_le_mul_right n ha
 
+/- English proof (translation)
+Take `⟨s, p⟩` from `i`. Take `⟨t, q⟩` from `j`. Establish `hp` using `key_lt p`. Establish `hq` using `key_lt q`. Establish `hk : key p = key q → p = q` using `fun e => CompanionTheory.D.LK.Car.key_inj e`.
+
+Apply the tactic sequence `cases s <;> cases t <;> simp only [keyR, Bool.false_eq_true, if_false, if_true] at h`. Rewrite using `[hk (by omega)]`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Rewrite using `[hk (by omega)]`.
+-/
 theorem keyR_inj {i j : Ix n} (h : keyR i = keyR j) : i = j := by
   obtain ⟨s, p⟩ := i
   obtain ⟨t, q⟩ := j
@@ -277,11 +371,20 @@ theorem keyR_inj {i j : Ix n} (h : keyR i = keyR j) : i = j := by
 
 def tw (i j : Ix n) : ℂ := if keyR j < keyR i then -1 else 1
 
+/- English proof (translation)
+Simplify using `[tw]`.
+-/
 theorem tw_self (i : Ix n) : tw i i = 1 := by simp [tw]
 
+/- English proof (translation)
+Apply the tactic sequence `unfold tw; split_ifs <;> simp`.
+-/
 theorem tw_mul_self (i j : Ix n) : tw i j * tw i j = 1 := by
   unfold tw; split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hk : keyR i ≠ keyR j` using `fun e => h (keyR_inj e)`. Unfold `tw`. Break down `lt_or_gt_of_ne hk with h1 | h1` into its components or cases. Simplify using `[h1, h1.not_gt]`. Simplify using `[h1, h1.not_gt]`.
+-/
 theorem tw_swap {i j : Ix n} (h : i ≠ j) : tw j i = -tw i j := by
   have hk : keyR i ≠ keyR j := fun e => h (keyR_inj e)
   unfold tw
@@ -289,10 +392,18 @@ theorem tw_swap {i j : Ix n} (h : i ≠ j) : tw j i = -tw i j := by
   · simp [h1, h1.not_gt]
   · simp [h1, h1.not_gt]
 
+/- English proof (translation)
+Unfold `sgR`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem sg_mul_self (i : Ix n) (A : Finset (Ix n)) : sgR i A * sgR i A = 1 := by
   unfold sgR
   rw [← mul_pow]; simp
 
+/- English proof (translation)
+Unfold `sgR tw`. Rewrite using `[Finset.filter_insert]`. Use `split_ifs with hk`. Rewrite using `[Finset.card_insert_of_notMem (fun hm => h (Finset.mem_filter.1 hm).1), pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using the standard rewrite rules.
+-/
 theorem sg_insert (i : Ix n) {j : Ix n} {A : Finset (Ix n)} (h : j ∉ A) :
     sgR i (insert j A) = tw i j * sgR i A := by
   unfold sgR tw
@@ -301,6 +412,9 @@ theorem sg_insert (i : Ix n) {j : Ix n} {A : Finset (Ix n)} (h : j ∉ A) :
   · rw [Finset.card_insert_of_notMem (fun hm => h (Finset.mem_filter.1 hm).1), pow_succ]; ring
   · simp
 
+/- English proof (translation)
+Establish `h1` using `sg_insert i (Finset.notMem_erase j A)`. Rewrite `h1` using `[Finset.insert_erase h]`. Rewrite using `[h1, ← mul_assoc, tw_mul_self, one_mul]`.
+-/
 theorem sg_erase (i : Ix n) {j : Ix n} {A : Finset (Ix n)} (h : j ∈ A) :
     sgR i (A.erase j) = tw i j * sgR i A := by
   have h1 := sg_insert i (Finset.notMem_erase j A)
@@ -309,12 +423,25 @@ theorem sg_erase (i : Ix n) {j : Ix n} {A : Finset (Ix n)} (h : j ∈ A) :
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ann_apply (i : Ix n) (x : Cr n V) (A : Finset (Ix n)) :
     annR i x A = if i ∈ A then 0 else sgR i A • x (insert i A) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cre_apply (i : Ix n) (x : Cr n V) (A : Finset (Ix n)) :
     creR i x A = if i ∈ A then sgR i A • x (A.erase i) else 0 := rfl
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, Pi.add_apply, LinearMap.zero_apply, Pi.zero_apply, ann_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `hji : j ≠ i` using `fun e => hij e.symm`. Distinguish the cases in `hi : i ∈ A`. Simplify using `[hi]`. Distinguish the cases in `hj : j ∈ A`. Simplify using `[hj]`.
+
+Simplify using `only [hi, hj, Finset.mem_insert, hij, hji, or_self, if_false]`. Rewrite using `[sg_insert j hi, sg_insert i hj, tw_swap hij, Finset.insert_comm j i, smul_smul, smul_smul, ← add_smul]`. Establish `: sgR i A * (-tw i j * sgR j A) + sgR j A * (tw i j * sgR i A) = 0` using `by ring`. Rewrite using `[this, zero_smul]`.
+-/
 theorem ann_ann (i j : Ix n) : (annR i * annR j + annR j * annR i : Module.End ℂ (Cr n V)) = 0 := by
   refine LinearMap.ext fun x => funext fun A => ?_
   simp only [LinearMap.add_apply, Module.End.mul_apply, Pi.add_apply, LinearMap.zero_apply, Pi.zero_apply,
@@ -332,6 +459,15 @@ theorem ann_ann (i j : Ix n) : (annR i * annR j + annR j * annR i : Module.End �
   have : sgR i A * (-tw i j * sgR j A) + sgR j A * (tw i j * sgR i A) = 0 := by ring
   rw [this, zero_smul]
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, Pi.add_apply, LinearMap.zero_apply, Pi.zero_apply, cre_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `hji : j ≠ i` using `fun e => hij e.symm`. Distinguish the cases in `hi : i ∈ A`. Use `swap`. Simplify using `[hi]`. Distinguish the cases in `hj : j ∈ A`.
+
+Use `swap`. Simplify using `[hj]`. Simplify using `only [hi, hj, Finset.mem_erase, ne_eq, hij, hji, not_false_eq_true, and_self, if_true]`. Rewrite using `[sg_erase j hi, sg_erase i hj, tw_swap hij, Finset.erase_right_comm (a := j) (b := i), smul_smul, smul_smul, ← add_smul]`. Establish `: sgR i A * (-tw i j * sgR j A) + sgR j A * (tw i j * sgR i A) = 0` using `by ring`.
+
+Rewrite using `[this, zero_smul]`.
+-/
 theorem cre_cre (i j : Ix n) : (creR i * creR j + creR j * creR i : Module.End ℂ (Cr n V)) = 0 := by
   refine LinearMap.ext fun x => funext fun A => ?_
   simp only [LinearMap.add_apply, Module.End.mul_apply, Pi.add_apply, LinearMap.zero_apply, Pi.zero_apply,
@@ -352,6 +488,15 @@ theorem cre_cre (i j : Ix n) : (creR i * creR j + creR j * creR i : Module.End �
   have : sgR i A * (-tw i j * sgR j A) + sgR j A * (tw i j * sgR i A) = 0 := by ring
   rw [this, zero_smul]
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, Pi.add_apply, ann_apply, cre_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Distinguish the cases in `hi : i ∈ A`.
+
+Simplify using `[hi, sg_erase i hi, tw_self, smul_smul, sg_mul_self, Finset.insert_erase hi]`. Simplify using `[hi, sg_insert i hi, tw_self, smul_smul, sg_mul_self, Finset.erase_insert hi]`. Establish `hji : j ≠ i` using `fun e => hij e.symm`. Rewrite using `[if_neg hij, LinearMap.zero_apply, Pi.zero_apply]`. Distinguish the cases in `hi : i ∈ A`.
+
+Simplify using `[hi, hij]`. Distinguish the cases in `hj : j ∈ A`. Use `swap`. Simplify using `[hj, hji]`. Simplify using `only [hi, hj, Finset.mem_insert, Finset.mem_erase, or_true, and_false, if_true, if_false]`.
+
+Rewrite using `[sg_insert j hi, sg_erase i hj, tw_swap hij, Finset.erase_insert_of_ne hij, smul_smul, smul_smul, ← add_smul]`. Establish `: sgR i A * (-tw i j * sgR j A) + sgR j A * (tw i j * sgR i A) = 0` using `by ring`. Rewrite using `[this, zero_smul]`.
+-/
 theorem ann_cre (i j : Ix n) :
     (annR i * creR j + creR j * annR i : Module.End ℂ (Cr n V)) = if i = j then 1 else 0 := by
   refine LinearMap.ext fun x => funext fun A => ?_
@@ -374,20 +519,34 @@ theorem ann_cre (i j : Ix n) :
   have : sgR i A * (-tw i j * sgR j A) + sgR j A * (tw i j * sgR i A) = 0 := by ring
   rw [this, zero_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lift_apply (T : V →ₗ[ℂ] V) (x : Cr n V) (A : Finset (Ix n)) : liftR n T x A = T (x A) := rfl
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, lift_apply, ann_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem lift_ann (T : Module.End ℂ V) (i : Ix n) :
     Commute (liftR n T : Module.End ℂ (Cr n V)) (annR i) := by
   refine LinearMap.ext fun x => funext fun A => ?_
   simp only [Module.End.mul_apply, lift_apply, ann_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, lift_apply, cre_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem lift_cre (T : Module.End ℂ V) (i : Ix n) :
     Commute (liftR n T : Module.End ℂ (Cr n V)) (creR i) := by
   refine LinearMap.ext fun x => funext fun A => ?_
   simp only [Module.End.mul_apply, lift_apply, cre_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `split_ifs with h`. Establish `hlt : p.1.1 < q.1.2` using `p.2.trans (h ▸ q.2)`. Rewrite using `[Finset.sum_eq_single (⟨(p.1.1, q.1.2), hlt⟩ : Pos n)]`. Simplify using `[h]`. Introduce `r _ hr`.
+
+Rewrite using `[if_neg fun e => hr (Subtype.ext e.2), zero_smul]`. Simplify using the standard rewrite rules. Conclude with `Finset.sum_eq_zero fun r _ => by rw [if_neg fun e => h e.1, zero_smul]`.
+-/
 theorem sum_one {M : Type} [AddCommGroup M] [Module ℂ M] (G : Fin n → Fin n → M) (p q : Pos n) :
     ∑ r : Pos n, (if p.1.2 = q.1.1 ∧ r.1 = (p.1.1, q.1.2) then (1 : ℂ) else 0) • G r.1.1 r.1.2 =
       if p.1.2 = q.1.1 then G p.1.1 q.1.2 else 0 := by
@@ -400,11 +559,19 @@ theorem sum_one {M : Type} [AddCommGroup M] [Module ℂ M] (G : Fin n → Fin n 
     · simp
   · exact Finset.sum_eq_zero fun r _ => by rw [if_neg fun e => h e.1, zero_smul]
 
+/- English proof (translation)
+Simplify using `only [cp, sub_smul, Finset.sum_sub_distrib, sum_one]`.
+-/
 theorem sum_cp {M : Type} [AddCommGroup M] [Module ℂ M] (G : Fin n → Fin n → M) (p q : Pos n) :
     ∑ r : Pos n, cp p q r • G r.1.1 r.1.2 =
       (if p.1.2 = q.1.1 then G p.1.1 q.1.2 else 0) - (if q.1.2 = p.1.1 then G q.1.1 p.1.2 else 0) := by
   simp only [cp, sub_smul, Finset.sum_sub_distrib, sum_one]
 
+/- English proof (translation)
+Introduce `a b c d`. Establish `h1` using `h.gl1 a b c d`. Establish `h2` using `h.gl2 a b c d`. Establish `h3` using `h.comm a b c d`. Establish `h4` using `h.comm c d a b`.
+
+Establish `e : (E1 a b + E2 a b) * (E1 c d + E2 c d) - (E1 c d + E2 c d) * (E1 a b + E2 a b) = (E1 a b * E1 c d - E1 c d * E1 a b) + (E2 a b * E2 c d - E2 c d * E2 a b)`. Simplify using `only [add_mul, mul_add, h3, ← h4]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, h1, h2]`. Apply the tactic sequence `split_ifs <;> simp <;> abel`.
+-/
 theorem glK {E1 E2 : Fin n → Fin n → Module.End ℂ V} (h : Pair2 E1 E2) :
     GlRel fun a b => E1 a b + E2 a b := by
   intro a b c d
@@ -419,6 +586,15 @@ theorem glK {E1 E2 : Fin n → Fin n → Module.End ℂ V} (h : Pair2 E1 E2) :
   rw [e, h1, h2]
   split_ifs <;> simp <;> abel
 
+/- English proof (translation)
+Take `⟨s, p⟩` from `i`. Take `⟨t, q⟩` from `j`. Establish `e : ∑ k, cst (s, p) (t, q) k • rl E1 E2 k = ∑ r : Pos n, cp p q r • rl E1 E2 (s && t, r)`. Rewrite using `[Fintype.sum_prod_type]`. Apply the tactic sequence `cases s <;> cases t <;> simp [cst]`.
+
+Rewrite using `[e]`. Establish `hK` using `glK h p.1.1 p.1.2 q.1.1 q.1.2`. Establish `h2` using `h.gl2 p.1.1 p.1.2 q.1.1 q.1.2`. Establish `c1` using `h.comm p.1.1 p.1.2 q.1.1 q.1.2`. Establish `c2` using `h.comm q.1.1 q.1.2 p.1.1 p.1.2`.
+
+Apply the tactic sequence `cases s <;> cases t`. Simplify `h2` using `only [rl, Bool.and_self, Bool.false_eq_true, if_false, sum_cp (fun a b => E2 a b)]`. Simplify using `only [rl, Bool.false_and, Bool.false_eq_true, if_false, if_true, sum_cp (fun a b => E2 a b)]`. Rewrite using `[← h2, mul_add, add_mul, c2]`. Normalize the expressions using the abelian group laws.
+
+Simplify using `only [rl, Bool.and_false, Bool.false_eq_true, if_false, if_true, sum_cp (fun a b => E2 a b)]`. Rewrite using `[← h2, mul_add, add_mul, c1]`. Normalize the expressions using the abelian group laws. Simplify `hK` using `only [rl, Bool.and_self, if_true, sum_cp (fun a b => E1 a b + E2 a b)]`.
+-/
 theorem rl_comm {E1 E2 : Fin n → Fin n → Module.End ℂ V} (h : Pair2 E1 E2) (i j : Ix n) :
     rl E1 E2 i * rl E1 E2 j - rl E1 E2 j * rl E1 E2 i = ∑ k, cst i j k • rl E1 E2 k := by
   obtain ⟨s, p⟩ := i
@@ -444,6 +620,11 @@ theorem rl_comm {E1 E2 : Fin n → Fin n → Module.End ℂ V} (h : Pair2 E1 E2)
 
 end Letters
 
+/- English proof (translation)
+Introduce `n V _ _ E1 E2 h`. Establish `hL : ∀ i j : Ix n, (liftR n (rl E1 E2 i) : Module.End ℂ (Cr n V)) * liftR n (rl E1 E2 j) - liftR n (rl E1 E2 j) * liftR n (rl E1 E2 i) = ∑ k, cst i j k • (liftR n (rl E1 E2 k) : Module.End ℂ (Cr n V))`. Introduce `i j`. Use `LinearMap.ext fun x => funext fun A => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun (rl_comm h i j) (x A)` as an intermediate fact.
+
+Simplify `this` using `[lift_apply, LinearMap.sum_apply, Finset.sum_apply]`. Conclude with `d_sq cst (fun i => (liftR n (rl E1 E2 i) : Module.End ℂ (Cr n V))) annR creR hL (fun i j => lift_ann _ j) (fun i j => lift_cre _ j) cst_anti cst_jacobi ann_ann cre_cre ann_cre`.
+-/
 theorem bdSqR : BdSqR := by
   intro n V _ _ E1 E2 h
   have hL : ∀ i j : Ix n, (liftR n (rl E1 E2 i) : Module.End ℂ (Cr n V)) * liftR n (rl E1 E2 j) -

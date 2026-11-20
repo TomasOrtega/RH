@@ -16,15 +16,24 @@ noncomputable def phi (n : ℕ) :
       rw [← unop_comp, ← Ψ.map_comp, h])
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Unfold `phi`. Use `erw [WidePullback.lift_π]`. Use the proof step `@[reassoc (attr := simp)]`.
+-/
 lemma phi_π (n : ℕ) (j : Fin (n+1)) :
     phi Ψ g n ≫ WidePullback.π _ j = (Ψ.map (WidePushout.ι _ j)).unop := by
   unfold phi; erw [WidePullback.lift_π]
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Unfold `phi`. Use `erw [WidePullback.lift_base]`.
+-/
 lemma phi_base (n : ℕ) :
     phi Ψ g n ≫ WidePullback.base _ = (Ψ.map (WidePushout.head _)).unop := by
   unfold phi; erw [WidePullback.lift_base]
 
+/- English proof (translation)
+Rewrite using `[← WidePullback.π_arrow (fun _ : Fin (n+1) => (Ψ.map g).unop) j]`. Both sides reduce to the same expression.
+-/
 lemma aux (n : ℕ) (j : Fin (n+1)) :
     Ψ.map g ≫ (WidePullback.π (fun _ : Fin (n+1) => (Ψ.map g).unop) j).op =
       (WidePullback.base (fun _ : Fin (n+1) => (Ψ.map g).unop)).op := by
@@ -43,6 +52,9 @@ noncomputable def cocone (n : ℕ) : Cocone (WidePushoutShape.wideSpan U (fun _ 
             Category.id_comp, Category.comp_id]
         · exact (aux Ψ g n j).trans (Category.comp_id _).symm }
 
+/- English proof (translation)
+Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `j`. Rewrite using `[Category.assoc, Category.assoc, phi_π, WidePullback.lift_π, phi_π, ← unop_comp, ← Ψ.map_comp, WidePushout.ι_desc]`. Rewrite using `[Category.assoc, Category.assoc, phi_base, WidePullback.lift_base, phi_base, ← unop_comp, ← Ψ.map_comp, WidePushout.head_desc]`.
+-/
 lemma natural (a b : ℕ) (σ : Fin (a+1) → Fin (b+1)) :
     (Ψ.map (WidePushout.desc (WidePushout.head (fun _ : Fin (b+1) => g))
       (fun i => WidePushout.ι (fun _ : Fin (b+1) => g) (σ i))
@@ -69,6 +81,11 @@ noncomputable def psi (n : ℕ) :
       (Ψ.obj (widePushout U (fun _ : Fin (n+1) => V) (fun _ => g))).unop :=
   ((hc Ψ g hΨ n).desc (cocone Ψ g n)).unop
 
+/- English proof (translation)
+Apply `(hc Ψ g hΨ n).hom_ext` to reduce the goal to its premises. Introduce and unpack `(_ | j)`. Rewrite using `[Category.comp_id]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (fun x => x ≫ (phi Ψ g n).op) ((hc Ψ g hΨ n).fac (cocone Ψ g n) none)).trans (Quiver.Hom.unop_inj (phi_base Ψ g n)))`. Rewrite using `[Category.comp_id]`.
+
+Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (fun x => x ≫ (phi Ψ g n).op) ((hc Ψ g hΨ n).fac (cocone Ψ g n) (some j))).trans (Quiver.Hom.unop_inj (phi_π Ψ g n j)))`.
+-/
 lemma desc_phi (n : ℕ) : (hc Ψ g hΨ n).desc (cocone Ψ g n) ≫ (phi Ψ g n).op = 𝟙 _ := by
   apply (hc Ψ g hΨ n).hom_ext
   rintro (_ | j)
@@ -96,6 +113,11 @@ noncomputable def levelIso (n : ℕ) :
 end LateralTheory.EtaleFoundations.ConerveIsomorphism
 
 open LateralTheory.EtaleFoundations.ConerveIsomorphism in
+/- English proof (translation)
+Introduce `T _ _ Ψ hΨ U V g`. Use `⟨NatIso.ofComponents (fun n => levelIso Ψ g hΨ n.unop.len) ?_, ?_⟩` and prove the remaining obligations. Introduce `m n h`. Conclude with `natural Ψ g _ _ h.unop.toOrderHom`. Use extensionality with `n : 1`.
+
+Conclude with `(phi_base Ψ g (unop n).len).symm`.
+-/
 theorem LateralTheory.EtaleFoundations.etale_cech_conerve_image_iso_cech_nerve_of_preserves_wide_pushouts : LateralTheory.EtaleFoundations.EtaleCechConerveImageIsoCechNerveOfPreservesWidePushouts := by
   intro T _ _ Ψ hΨ U V g
   refine ⟨NatIso.ofComponents (fun n => levelIso Ψ g hΨ n.unop.len) ?_, ?_⟩

@@ -19,6 +19,27 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 open GlobalTheory.AbDual in
 
+/- English proof (translation)
+Introduce `HG HR HD F _ _ _ 𝔠 R R₀ _ _ I κ hκ π hπ hI X₀ A _ i hi hA hdim rm hrm P l hl hLB rig₁ rig₂ hred symm add smul pos c T x hx a ha`. Take `⟨n, d, a', hd, hsum⟩` from `GlobalTheory.T.fractional_ideal_partition_of_unity F 𝔠`. Establish `k₀ : ∀ (T₀ : Over (Sp R₀)) (y₀ : T₀ ⟶ X₀.A), (∀ j, HasGen ((X₀.P (d j)).pull (lift (fst X₀.A T₀) (snd X₀.A T₀ ≫ y₀)).left)) → y₀ = 1`. Introduce `T₀ y₀ hy`. Establish `h0 : X₀.rm.act 0 = 1`.
+
+Establish `e` using `X₀.rm.add 0 0`. Rewrite `e` using `[add_zero]`. Conclude with `left_eq_mul.1 e`. Establish `hs : ∀ s : Finset (Fin n), y₀ ≫ X₀.rm.act (∑ j ∈ s, a' j) = 1`. Introduce `s`.
+
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, h0, MonObj.comp_one]`. Consider the case `@insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, X₀.rm.add, MonObj.comp_mul, ih, X₀.ker (d j) T₀ y₀ (hy j) (a' j) (hd j), _root_.mul_one]`. Establish `e` using `hs Finset.univ`.
+
+Rewrite `e` using `[hsum, X₀.rm.one, Category.comp_id]`. Then use the resulting hypothesis. Take `⟨N, hN⟩` from `GlobalTheory.AmpleNilThickening.exists_pow_eq_bot_of_isNilDP hκ`. Take `⟨D, _, Q, hDab, -, q, q'⟩` from `HD.1 _ A hA`. Take `⟨cp, hcp⟩` from `fracId_exists_totPos F 𝔠`. Establish `hL : ((P cp).pull (lift (𝟙 A) (𝟙 A)).left).IsLB` using `pull_isLB (hLB cp) _`.
+
+Use `choose lam hlam hiff using fun j ↦ GlobalTheory.PoincarePull.exists_hom_triv_iff R A hA D Q q q' _ hL (pos cp hcp) (P (d j)) (hLB _) (rig₁ _) (rig₂ _)`. Establish `key : ∀ (T : Over (Sp R)) (y : T ⟶ A), (∀ j, HasGen ((P (d j)).pull (lift (fst A T) (snd A T ≫ y)).left)) → y = 1`. Introduce `T y hy`. Use `haveI := hDab.proper`. Use `haveI := hA.proper`.
+
+Use `GlobalTheory.T.monomorphism_trivial_on_kernel R R₀ π hπ ⟨N, by rw [hI]; exact hN⟩ A inferInstance n D inferInstance lam hlam ?_ T y fun j ↦ (hiff j T y).1 (hy j)` and prove the remaining obligations. Introduce `T₀ z hz`. Set `z₀ : Over.mk T₀.hom ⟶ X₀.A` to `liftPt hi T₀.hom z.left (Over.w z)`. Establish `hz₀ : z₀.left ≫ i = z.left` using `liftPt_left hi _ _ _`. Establish `hpush : pushP hi (s` using `T₀.hom) rfl z₀ = z := Over.OverMorphism.ext hz₀`.
+
+Establish `k₁ : z₀ = 1` using `k₀ _ z₀ fun j ↦ by`. Establish `hP` using `hLB (d j)`. Establish `hP'` using `X₀.isLB (d j)`. Establish `e` using `evc_trR hi hi hl.1 hl.2 hP hP' (hred (d j)) (Over.mk T₀.hom) z₀`. Establish `e0 : evc hP (fst A (Over.mk (T₀.hom ≫ spMap π))) (snd A _ ≫ z) = 0` using `(triv_ev_iff hP _ _).1 ((hiff j _ z).2 (hz j))`.
+
+Rewrite `e` using `[hpush]`. Take `⟨s, hs⟩ : ∃ s, s ≫ (trR hi (Over.mk T₀.hom)).left = 𝟙 _` from `⟨_, trR_section hi _⟩`. Establish `e2` using `congrArg (CechPic.pull s) (e.trans e0)`. Rewrite `e2` using `[← GlobalTheory.CechPic.pull_comp, hs, GlobalTheory.CechPic.pull_id, map_zero]`. Conclude with `(triv_ev_iff hP' _ _).2 e2`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← hz₀, k₁]`. Conclude with `one_left_comp hi (s := T₀.hom) rfl`. Use `key T (x ≫ rm.act a) fun j ↦ ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `ha (d j)`.
+
+Conclude with `GlobalTheory.T.poincare_bundle_isomorphism_compat F 𝔠 _ A rm P hLB symm smul c (d j) a b hb T x hx`.
+-/
 theorem GlobalTheory.KerDeform.ker_deform : GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal →
   ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (R R₀ : Type) [CommRing R] [CommRing R₀]
     (I : Ideal R) (κ : DividedPowers I), IsNilDP κ → ∀ (π : R →+* R₀), Function.Surjective π → RingHom.ker π = I →

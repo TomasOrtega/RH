@@ -19,6 +19,9 @@ open GlobalTheory.MiTop GlobalTheory.SeeSaw GlobalTheory.Fam ValuativeRel IsLoca
 
 noncomputable section
 
+/- English proof (translation)
+Establish `e` using `congrArg (Formalism.L2.DIV.levChar hc J β L) (show (⟨x, hx⟩ * ⟨y, hy⟩ * (⟨x, hx⟩ : Formalism.L2.DIV.lev hc J β L)⁻¹ : Formalism.L2.DIV.lev hc J β L) = ⟨x * y * x⁻¹, _⟩ from rfl)`. Rewrite `e` using `[map_mul, map_mul, map_inv, mul_inv_cancel_comm]`. Conclude with `e.symm`.
+-/
 theorem GlobalTheory.MiTop.levFn_conj {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {n : ℕ}
     {LL : Type} [CommRing LL] (hc : Formalism.BasicNotions.CMData F E) (J : Matrix (Fin n) (Fin n) E)
     (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (L : Formalism.L2.DIV.LevDat E LL n) {x y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)}
@@ -35,6 +38,9 @@ namespace GlobalTheory.MiTop
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX}
 
+/- English proof (translation)
+Use `⟨hz, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.LevSplit.mem_lev_of_red _ _ _ _ _ (GlobalTheory.LevSplit.finE_mem_UA _ _) hS ?_` and prove the remaining obligations. Introduce and unpack `PP (hP | hP)`. Conclude with `hR PP hP`. Conclude with `absurd hP (Finset.notMem_empty _)`.
+-/
 theorem mem_rJ_of_red (W : RealPack ex) (z : GA D (D.sp.Y 0)) (hz : z ∈ GfC (D.sp.Y 0))
     (hS : Formalism.IndefR.Lev.finE (Yc D 0) (show GA D (Yc D 0) from z) ∈ Formalism.L2.DIV.St (W.Q.Rl.βY 0))
     (hR : ∀ PP ∈ (W.Q.Rl.dat0 (W.Q.Rl.toRealDat.levR W.Q.F.lv2 true)).Pg,
@@ -46,6 +52,9 @@ theorem mem_rJ_of_red (W : RealPack ex) (z : GA D (D.sp.Y 0)) (hz : z ∈ GfC (D
   · exact hR PP hP
   · exact absurd hP (Finset.notMem_empty _)
 
+/- English proof (translation)
+Establish `h1 : Formalism.IndefR.Lev.finE (Yc D 0) k ∈ Formalism.L2.DIV.lev D.sp.cm (Yc D 0).gram (W.Q.Rl.βY 0) (W.Q.Rl.dat0 (W.Q.Rl.toRealDat.levR W.Q.F.lv2 true))` using `hk.2`. Establish `h2 : Formalism.IndefR.Lev.finE (Yc D 0) κ ∈ Formalism.L2.DIV.lev D.sp.cm (Yc D 0).gram (W.Q.Rl.βY 0) (W.Q.Rl.dat0 (W.Q.Rl.toRealDat.levR W.Q.F.lv2 true))` using `hκ.2`. Establish `e` using `levFn_conj D.sp.cm (Yc D 0).gram (W.Q.Rl.βY 0) (W.Q.Rl.dat0 (W.Q.Rl.toRealDat.levR W.Q.F.lv2 true)) h1 h2`. Unfold `rChi Formalism.IndefR.Lev.levChi`. Use `erw [map_mul, map_mul, map_inv, e]`.
+-/
 theorem rChi_conj (W : RealPack ex) {k κ : GA D (D.sp.Y 0)} (hk : k ∈ rJ W) (hκ : κ ∈ rJ W) :
     rChi W (k * κ * k⁻¹) = rChi W κ := by
   have h1 : Formalism.IndefR.Lev.finE (Yc D 0) k ∈ Formalism.L2.DIV.lev D.sp.cm (Yc D 0).gram (W.Q.Rl.βY 0) (W.Q.Rl.dat0 (W.Q.Rl.toRealDat.levR W.Q.F.lv2 true)) := hk.2
@@ -54,11 +63,19 @@ theorem rChi_conj (W : RealPack ex) {k κ : GA D (D.sp.Y 0)} (hk : k ∈ rJ W) (
   unfold rChi Formalism.IndefR.Lev.levChi
   erw [map_mul, map_mul, map_inv, e]
 
+/- English proof (translation)
+Use `(Subgroup.mul_mem_cancel_right (Formalism.IndefR.Lev.levG (Yc D 0) (W.Q.Rl.βY 0) (W.Q.Rl.dat0 (W.Q.Rl.toRealDat.levR W.Q.F.lv2 true))) (y := k * κ) (Subgroup.inv_mem _ hk)).trans (Subgroup.mul_mem_cancel_left (Formalism.IndefR.Lev.levG (Yc D 0) (W.Q.Rl.βY 0) (W.Q.Rl.dat0 (W.Q.Rl. …` as an intermediate fact. Conclude with `this.symm`.
+-/
 theorem mem_rJ_conj (W : RealPack ex) {k κ : GA D (D.sp.Y 0)} (hk : k ∈ rJ W) : κ ∈ rJ W ↔ k * κ * k⁻¹ ∈ rJ W := by
   have := (Subgroup.mul_mem_cancel_right (Formalism.IndefR.Lev.levG (Yc D 0) (W.Q.Rl.βY 0) (W.Q.Rl.dat0 (W.Q.Rl.toRealDat.levR W.Q.F.lv2 true))) (y := k * κ) (Subgroup.inv_mem _ hk)).trans
     (Subgroup.mul_mem_cancel_left (Formalism.IndefR.Lev.levG (Yc D 0) (W.Q.Rl.βY 0) (W.Q.Rl.dat0 (W.Q.Rl.toRealDat.levR W.Q.F.lv2 true))) (y := κ) hk)
   exact this.symm
 
+/- English proof (translation)
+Establish `hkf : k ∈ GfC (D.sp.Y 0)` using `hk.1`. Use `⟨Subgroup.mul_mem _ (Subgroup.mul_mem _ hzf ht.1) hkf, fun κ => ?_⟩` and prove the remaining obligations. Establish `hz` using `Subgroup.mem_center_iff.mp hzc`. Establish `hc : (z * t * k)⁻¹⁻¹ * κ * (z * t * k)⁻¹ = t⁻¹⁻¹ * (k * κ * k⁻¹) * t⁻¹`. Establish `e : (z * t * k)⁻¹⁻¹ * κ * (z * t * k)⁻¹ = z * (t⁻¹⁻¹ * (k * κ * k⁻¹) * t⁻¹) * z⁻¹` using `by group`.
+
+Rewrite using `[e, ← hz, mul_inv_cancel_right]`. Take `⟨h1, h2⟩` from `ht.2 (k * κ * k⁻¹)`. Rewrite using `[hc]`. Use `⟨(mem_rJ_conj W hk).trans h1, fun hκ => ?_⟩` and prove the remaining obligations. Rewrite using `[h2 ((mem_rJ_conj W hk).1 hκ), rChi_conj W hk hκ]`.
+-/
 theorem matches_mul (W : RealPack ex) {z t k : GA D (D.sp.Y 0)} (hzf : z ∈ GfC (D.sp.Y 0))
     (hzc : z ∈ Subgroup.center (GA D (D.sp.Y 0))) (hk : k ∈ rJ W) (ht : Matches W.S.X W.Q.instEq (rJ W) (rChi W) t) :
     Matches W.S.X W.Q.instEq (rJ W) (rChi W) (z * t * k) := by
@@ -73,6 +90,17 @@ theorem matches_mul (W : RealPack ex) {z t k : GA D (D.sp.Y 0)} (hzf : z ∈ GfC
   refine ⟨(mem_rJ_conj W hk).trans h1, fun hκ => ?_⟩
   rw [h2 ((mem_rJ_conj W hk).1 hκ), rChi_conj W hk hκ]
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W hW hr u u' f f' B B' hP hP' hF hF' a₀ a a₀' a' hA hA'`. Take `⟨z, hzf, hzc, c, hcf, hcc, k, hk, he⟩` from `GlobalTheory.T.matching_translates_bottom W hW.bot hr u B (tOf f B a₀ a) hA.2.2.2.1 (tOf f' B' a₀' a') hA'.2.2.2.1 hA.2.2.2 hA'.2.2.2`. Establish `hcc'` using `Subgroup.mem_center_iff.mp (Subgroup.inv_mem _ hcc)`. Establish `hX : tOf f B a₀ (a * c⁻¹) = ((iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u))⁻¹ * embA B.d B.o c⁻¹ * (iotaX W.S.X W.Q.instEq).symm (1, W.S.X.xu u) * tOf f B a₀ a`. Unfold `tOf`.
+
+Rewrite using `[show a₀ * (a * c⁻¹) = c⁻¹ * (a₀ * a) by rw [← hcc' (a₀ * a), mul_assoc], map_mul]`. Establish `key : ∀ {G : Type} [Group G] (x e y b : G), x⁻¹ * (e * y) * b = x⁻¹ * e * x * (x⁻¹ * y * b)` using `by intros; group`. Conclude with `key (G := GA D (D.sp.Y 0)) _ _ _ _`. Establish `e1 : tOf f B a₀ (a * c⁻¹) = z * tOf f' B' a₀' a' * k`. Rewrite using `[hX, he, map_inv]`.
+
+Simplify using `only [mul_assoc, mul_inv_cancel_left, inv_mul_cancel_left]`. Establish `hA₁ : IsAt f B a₀ (a * c⁻¹)`. Use `⟨hA.1, Subgroup.mul_mem _ hA.2.1 (Subgroup.inv_mem _ hcf), Subgroup.mul_mem _ hA.2.2.1 (Subgroup.inv_mem _ hcc), ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `matches_mul W hzf hzc hk hA'.2.2.2`.
+
+Establish `hz : z ∈ rJ W` using `mem_rJ_of_red W z hzf (by first`. Consider the case `exact GlobalTheory.T.placed_bessel_pair_relation W hW hr u u' f f' B B' hP hP' hF hF' a₀ (a * c⁻¹) a₀' a' hA₁ hA' z hzf hzc k hk e1`. Consider the case `exact GlobalTheory.T.placed_bessel_pair_relation W hW hr u u' f f' B B' hP hP' a₀ (a * c⁻¹) a₀' a' hA₁ hA' z hzf hzc k hk e1)`. Use the proof step `(by first`. Consider the case `exact GlobalTheory.T.placed_bessel_pair_identity W hW hr u u' f f' B B' hP hP' hF hF' a₀ (a * c⁻¹) a₀' a' hA₁ hA' z hzf hzc k hk e1`.
+
+Consider the case `exact GlobalTheory.T.placed_bessel_pair_identity W hW hr u u' f f' B B' hP hP' a₀ (a * c⁻¹) a₀' a' hA₁ hA' z hzf hzc k hk e1)`. Use `⟨a * c⁻¹, hA₁, z * k, Subgroup.mul_mem _ hz hk, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, ← (Subgroup.mem_center_iff.mp hzc (tOf f' B' a₀' a')), mul_assoc]`.
+-/
 theorem matching_coset : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), PkHyp W → 1 ≤ D.R.rS → ∀ u u' (f : FamCh W u) (f' : FamCh W u') (B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)) (B' : SBes W.S.X W.Q.instEq u' W.Q.Rl.ψ (D.sp.X 0)), GlobalTheory.MiTop.PlacedP f B → GlobalTheory.MiTop.PlacedP f' B' → GlobalTheory.MiTop.Framed B → GlobalTheory.MiTop.Framed B' → ∀ a₀ a a₀' a', IsAt f B a₀ a → IsAt f' B' a₀' a' → ∃ a₁, IsAt f B a₀ a₁ ∧ ∃ k ∈ rJ W, tOf f B a₀ a₁ = tOf f' B' a₀' a' * k := by
   intro D L hT Gi Gl Kc Yd cX ex W hW hr u u' f f' B B' hP hP' hF hF' a₀ a a₀' a' hA hA'
   obtain ⟨z, hzf, hzc, c, hcf, hcc, k, hk, he⟩ :=

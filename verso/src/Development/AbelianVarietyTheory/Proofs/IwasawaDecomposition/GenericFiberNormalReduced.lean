@@ -9,6 +9,11 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory.GenFibre
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Y`. Establish `hn : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (gen Y)` using `GlobalTheory.AbelianLocusNormalisation.isNormalScheme_of_open (genι Y) Y.normal`. Use `⟨hn, GlobalTheory.AbelianLocusNormalisation.isReduced_of_normal hn, ?_⟩` and prove the remaining obligations. Establish `hq : IsQProjOver Y.s`. Take `⟨N, i, hi, hs⟩` from `Y.proj`.
+
+Conclude with `⟨N, i, inferInstance, inferInstance, hs⟩`. Establish `: IsLocallyNoetherian Y.X` using `GlobalTheory.ZM.isLocallyNoetherian_of_isQProjOver hq`. Conclude with `isLocallyNoetherian_of_isOpenImmersion (genι Y)`.
+-/
 theorem gen_normal_reduced_noetherian : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)),
     ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (gen Y) ∧ IsReduced (gen Y) ∧ IsLocallyNoetherian (gen Y) := by

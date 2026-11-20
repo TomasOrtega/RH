@@ -3,6 +3,19 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.ExistsEqNsmulOfForal
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
+/- English proof (translation)
+Establish `htf : Module.IsTorsionFree ℤ (Λ ⧸ W)`. Use `Module.IsTorsionFree.of_smul_eq_zero fun r m hrm => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective W m`. Distinguish the cases in `hr : r = 0`. Conclude with `Or.inl hr`.
+
+Use `right`. Rewrite `hrm` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `(Submodule.Quotient.mk_eq_zero W).mpr (hW r y hr hrm)`. Establish `hfree : Module.Free ℤ (Λ ⧸ W)` using `Module.free_iff_isTorsionFree.mpr htf`. Set `bs` to `Module.Free.chooseBasis ℤ (Λ ⧸ W)`.
+
+Rewrite using `[← Submodule.Quotient.mk_eq_zero W]`. Use `bs.repr.injective ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Use extensionality with `i`. Rewrite using `[Finsupp.zero_apply]`.
+
+Take `⟨w, hw, b, hb⟩` from `h ((bs.repr (Submodule.Quotient.mk x) i).natAbs + 1) (by omega)`. Generalize the expression as in `hn : (bs.repr (Submodule.Quotient.mk x) i).natAbs = n at hb`. Establish `hq : (Submodule.Quotient.mk x : Λ ⧸ W) = (n + 1) • Submodule.Quotient.mk b`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.eq, ← hb]`. Simplify using `using hw`.
+
+Establish `hc : bs.repr (Submodule.Quotient.mk x) i = ((n + 1 : ℕ) : ℤ) * bs.repr (Submodule.Quotient.mk b) i`. Rewrite using `[hq, map_nsmul, Finsupp.smul_apply, nsmul_eq_mul]`. Establish `habs` using `congrArg Int.natAbs hc`. Rewrite `habs` using `[Int.natAbs_mul, Int.natAbs_natCast, hn]`. Break down `Nat.eq_zero_or_pos (bs.repr (Submodule.Quotient.mk b) i).natAbs with ht | ht` into its components or cases.
+
+Rewrite `habs` using `[ht, mul_zero]`. Rewrite `hn` using `[habs]`. Conclude with `Int.natAbs_eq_zero.mp hn`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem mem_of_forall_exists_sub_eq_nsmul (Λ : Type) [AddCommGroup Λ] [Module.Finite ℤ Λ]
     (W : Submodule ℤ Λ) (hW : ∀ (k : ℤ) x, k ≠ 0 → k • x ∈ W → x ∈ W) (x : Λ)
     (h : ∀ N : ℕ, 0 < N → ∃ w ∈ W, ∃ b : Λ, x - w = N • b) : x ∈ W := by
@@ -37,6 +50,25 @@ theorem mem_of_forall_exists_sub_eq_nsmul (Λ : Type) [AddCommGroup Λ] [Module.
     exact Int.natAbs_eq_zero.mp hn
   · nlinarith
 
+/- English proof (translation)
+Introduce `Λ _ _ _ B hB halt W hW hT x hx`. Apply `mem_of_forall_exists_sub_eq_nsmul Λ W hW x` to reduce the goal to its premises. Introduce `N hN`. Take `⟨T, hcard, hTpair⟩` from `hT N hN`. Set `R : Λ → (W ⧸ LinearMap.range ((N : ℤ) • (LinearMap.id : W →ₗ[ℤ] W))) → Prop` to `fun a p => ∃ w : W, Submodule.Quotient.mk w = p ∧ ∃ b : Λ, a - w = N • b`.
+
+Establish `h1 : ∀ a b p, R a p → R (a + N • b) p`. Introduce and unpack `a b p ⟨w, hw, b0, hb0⟩`. Use `⟨w, hw, b0 + b, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, ← hb0]`. Normalize the expressions using the abelian group laws.
+
+Establish `h2 : ∀ a p p', R a p → R a p' → p = p'`. Introduce and unpack `a p p' ⟨w, rfl, b, hb⟩ ⟨w', rfl, b', hb'⟩`. Establish `hdiff : ((w : Λ) - w') = (N : ℤ) • (b' - b)`. Rewrite using `[natCast_zsmul, smul_sub, ← hb, ← hb']`. Normalize the expressions using the abelian group laws.
+
+Establish `hmem : b' - b ∈ W` using `hW (N : ℤ) (b' - b) (by exact_mod_cast hN.ne') (by rw [← hdiff]; exact W.sub_mem w.2 w'.2)`. Rewrite using `[Submodule.Quotient.eq]`. Use `⟨⟨b' - b, hmem⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hdiff.symm`.
+
+Establish `h3 : ∀ p, ∃ a, R a p`. Introduce `p`. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ p`. Conclude with `⟨w, w, rfl, 0, by simp⟩`. Establish `h4 : ∀ a p a' p', R a p → p ∈ T → R a' p' → (N : ℤ) ∣ B a a'`.
+
+Introduce and unpack `a p a' p' ⟨w, rfl, b, hb⟩ hp ⟨w', -, b', hb'⟩`. Establish `ha : a = w + N • b` using `by rw [← hb]; abel`. Establish `ha' : a' = w' + N • b'` using `by rw [← hb']; abel`. Establish `hww` using `hTpair w w' hp`. Establish `hexp : B (↑w + N • b) (↑w' + N • b') = B w w' + N * (B w b' + B b w' + N * B b b')`.
+
+Simplify using `only [map_add, LinearMap.add_apply, map_nsmul, LinearMap.smul_apply, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ha, ha', hexp]`. Conclude with `dvd_add hww (dvd_mul_right _ _)`. Establish `h5 : ∀ a' p', R a' p' → (N : ℤ) ∣ B x a'`.
+
+Introduce and unpack `a' p' ⟨w', -, b', hb'⟩`. Establish `ha' : a' = w' + N • b'` using `by rw [← hb']; abel`. Rewrite using `[ha', map_add, map_nsmul, hx w' w'.2, zero_add]`. Conclude with `⟨B x b', nsmul_eq_mul _ _⟩`. Take `⟨p, w, -, b, hwb⟩` from `GlobalTheory.exists_rel_of_forall_dvd_of_card_mul Λ B hB N hN _ T R h1 h2 h3 hcard h4 x h5`.
+
+Conclude with `⟨w, w.2, b, hwb⟩`.
+-/
 theorem mem_of_forall_card_mul_eq_pow :
     ∀ (Λ : Type) [AddCommGroup Λ] [Module.Free ℤ Λ] [Module.Finite ℤ Λ]
       (B : LinearMap.BilinForm ℤ Λ), Function.Bijective B → (∀ x, B x x = 0) →

@@ -13,6 +13,39 @@ noncomputable section
 
 namespace TwistIntersectionInt
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ F _ _ _ y D A B II Λ _ hII hP hbir hA hBa hB hΛ hex hloc`. Establish `hI : IsIntersectionFamily (II K ι)` using `hII K ι`. Establish `hC : IsSmoothHerm (A.tensor B)` using `hA.mul hB`. Establish `hopen : IsOpen {u : (Σ k, ι k) → ℂ | ∀ k, ∃ i, u ⟨k, i⟩ ≠ 0}`. Simplify using `only [Set.ofPred_forall, Set.ofPred_exists]`.
+
+Conclude with `isOpen_iInter_of_finite fun k => isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const`. Establish `hCloc : ∀ z ∈ mcPts (mCoordIdeal y), ∃ c : ℝ, ∀ᶠ u in 𝓝 z, Real.log ((A.tensor B).h u) = Real.log (A.h u) + c`. Introduce `z hz`. Take `⟨sg, hsg, -⟩` from `hex z hz`. Use `⟨Real.log (Λ sg), ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [hloc z hz sg hsg, hopen.mem_nhds hz.1] with u hu hu'`. Use `show Real.log (A.h u * B.h u) = _`. Rewrite using `[hu, Real.log_mul (A.pos u hu').ne' (hΛ sg).ne']`. Set `L : Finset (Fin (D + 1)) → Fin (D + 1) → HermLine ι` to `fun S i => if i ∈ S then A.tensor B else A`. Establish `hLs : ∀ S i, IsSmoothHerm (L S i)`.
+
+Introduce `S i`. Simplify using `only [L]`. Use `split_ifs`. Use `exacts [hC, hA]`. Establish `hLpot : ∀ S i, ∀ z ∈ mcPts (mCoordIdeal y), ∃ c : ℝ, ∀ᶠ u in 𝓝 z, Real.log ((L S i).h u) = Real.log (A.h u) + c`.
+
+Introduce `S i z hz`. Simplify using `only [L]`. Use `split_ifs`. Conclude with `hCloc z hz`. Conclude with `⟨0, Eventually.of_forall fun u => by rw [add_zero]⟩`.
+
+Establish `step : ∀ (S : Finset (Fin (D + 1))) (j : Fin (D + 1)), j ∉ S → II K ι (mCoordIdeal y) (D + 1) (L (insert j S)) = II K ι (mCoordIdeal y) (D + 1) (L S) + -ptsIntegral (mCoordIdeal y) (pot fun _ : Fin D => A) (logNorm B 1)`. Introduce `S j hj`. Use `set σ : Equiv.Perm (Fin (D + 1)) := Equiv.swap j (Fin.last D) with hσ`. Use `set M : Fin D → HermLine ι := Fin.init (L S ∘ σ) with hMdef`. Establish `hσl : σ (Fin.last D) = j` using `Equiv.swap_apply_right _ _`.
+
+Establish `hne : ∀ i : Fin D, σ (Fin.castSucc i) ≠ j`. Introduce `i h'`. Rewrite `h'` using `[← hσl]`. Conclude with `(Fin.castSucc_lt_last i).ne (σ.injective h')`. Establish `hM : Fin.init (L (insert j S) ∘ σ) = M`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [hMdef, Fin.init, Function.comp, L, Finset.mem_insert, hne i, false_or]`. Establish `e0 : L S ∘ σ = Fin.snoc M A`. Establish `h0` using `Fin.snoc_init_self (q := L S ∘ σ)`. Establish `hl : (L S ∘ σ) (Fin.last D) = A` using `by simp [L, hσl, hj]`.
+
+Rewrite `h0` using `[hl]`. Conclude with `h0.symm`. Establish `e1 : L (insert j S) ∘ σ = Fin.snoc M (A.tensor B)`. Establish `h0` using `Fin.snoc_init_self (q := L (insert j S) ∘ σ)`. Establish `hl : (L (insert j S) ∘ σ) (Fin.last D) = A.tensor B` using `by simp [L, hσl]`.
+
+Rewrite `h0` using `[hl, hM]`. Conclude with `h0.symm`. Establish `hMs : ∀ i, IsSmoothHerm (M i)` using `fun i => hLs S _`. Establish `hint : ptsIntegral (mCoordIdeal y) (pot M) (logNorm B 1) = ptsIntegral (mCoordIdeal y) (pot fun _ : Fin D => A) (logNorm B 1)` using `TwistIntersection.ptsIntegral_add_locConst _ (fun i z hz => hLpot S (σ (Fin.castSucc i)) z hz) _`. Rewrite using `[← hI.1 _ (D + 1) (L (insert j S)) σ hP (hLs _), ← hI.1 _ (D + 1) (L S) σ hP (hLs S), e0, e1, hI.2.1 _ D M A B hP hMs hA hB, TwistIntersection.I_snoc_degZero hI hP hMs hB hBa, hint]`.
+
+Establish `hall : ∀ S : Finset (Fin (D + 1)), II K ι (mCoordIdeal y) (D + 1) (L S) = II K ι (mCoordIdeal y) (D + 1) (L ∅) + S.card * -ptsIntegral (mCoordIdeal y) (pot fun _ : Fin D => A) (logNorm B 1)`. Introduce `S`. Use `Finset.induction_on S (by simp) ?_` and prove the remaining obligations. Introduce `j S hj ih`. Rewrite using `[step S j hj, ih, Finset.card_insert_of_notMem hj]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hL0 : L ∅ = fun _ => A`. Use function extensionality and compare the values at `i`. Simplify using `[L]`.
+
+Establish `hLu : L Finset.univ = fun _ => A.tensor B`. Use function extensionality and compare the values at `i`. Simplify using `[L]`. Establish `hw : ∀ z ∈ mcPts (mCoordIdeal y), ∀ sg : F →+* ℂ, LiesOver y sg z → logNorm B 1 =ᶠ[𝓝 z] fun _ => (fun sg => -Real.log (Λ sg)) sg`. Introduce `z hz sg hsg`.
+
+Use `filter_upwards [hloc z hz sg hsg] with u hu`. Simplify using `[logNorm, hu, Real.log_inv]`. Establish `hpc` using `hPc K ι Ω F y D (fun _ => A) (fun sg => -Real.log (Λ sg)) (logNorm B 1) hP hbir (fun _ => hA) hex hw`. Establish `hg : ptsIntegral (mCoordIdeal y) (pot fun _ : Fin D => A) (fun _ => 1) = (genDeg (mCoordIdeal y) D A.a : ℝ)`. Rewrite using `[hDG K ι (mCoordIdeal y) D (fun _ => A) hP (fun _ => hA)]`.
+
+Unfold `genDeg`. Reduce the equality to equality of the corresponding arguments. Use `hall Finset.univ` as an intermediate fact. Rewrite `this` using `[hL0, hLu, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[this, hpc, hg, Finset.sum_neg_distrib]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem proof (hPc : EmbeddingPieces.Statement) (hDG : GroundTheory.Heights₂.Heights.Inter.DegreeGeneric.Statement) :
     TwistIntersectionInt.Statement := by
   intro K _ ι _ Ω _ F _ _ _ y D A B II Λ _ hII hP hbir hA hBa hB hΛ hex hloc

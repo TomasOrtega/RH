@@ -30,6 +30,9 @@ instance evalLeft_preservesMono (S : Type 1) [Ring S] (c : Scheme.{0}ᵒᵖ) :
       NatTrans.mono_of_mono_app _
     exact Functor.map_mono colim _
 
+/- English proof (translation)
+Establish `h1 : Injective M.obj` using `(sheafificationAdjunction Scheme.etaleTopology (ModuleCat.{1} (ULift.{1} S))).map_injective M inferInstance`. Conclude with `(evaluationAdjunctionRight (ModuleCat.{1} (ULift.{1} S)) (op U)).map_injective M.obj h1`.
+-/
 theorem sec_injective (S : Type) [CommRing S] (M : Shv S) [Injective M] (U : Scheme.{0}) :
     Injective (M.obj.obj (op U)) := by
   have h1 : Injective M.obj :=
@@ -40,6 +43,11 @@ end GlobalTheory.EtC.InjFlat
 
 namespace GlobalTheory.EtC.InjFlat
 
+/- English proof (translation)
+Establish `hq : q ≠ 0` using `NeZero.ne q`. Establish `he : e ≠ 0` using `by rintro rfl; simp at hde; exact hq hde.symm`. Establish `h1 : q ∣ e * z.val`. Rewrite using `[← ZMod.natCast_eq_zero_iff, Nat.cast_mul, ZMod.natCast_zmod_val, hz]`. Establish `h1' : e * d ∣ e * z.val` using `by rw [mul_comm e d, hde]; exact h1`.
+
+Take `⟨k, hk⟩` from `(Nat.mul_dvd_mul_iff_left (Nat.pos_of_ne_zero he)).mp h1'`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[← ZMod.natCast_zmod_val z, hk, Nat.cast_mul, mul_comm]`.
+-/
 theorem zmod_mul_eq_zero (q d e : ℕ) [NeZero q] (hde : d * e = q) (z : ZMod q) (hz : (e : ZMod q) * z = 0) :
     ∃ c : ZMod q, z = c * d := by
   have hq : q ≠ 0 := NeZero.ne q
@@ -51,6 +59,27 @@ theorem zmod_mul_eq_zero (q d e : ℕ) [NeZero q] (hde : d * e = q) (z : ZMod q)
   refine ⟨k, ?_⟩
   rw [← ZMod.natCast_zmod_val z, hk, Nat.cast_mul, mul_comm]
 
+/- English proof (translation)
+Introduce `d e hde x hx`. Set `R` to `ULift.{1} (ZMod q)`. Set `I : Submodule R R` to `Submodule.span R {(d : R)}`. Establish `hI : I ≤ LinearMap.ker (LinearMap.lsmul R R (e : R))`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`.
+
+Express the relevant statement in the definitionally equal form `(e : R) • (d : R) = 0`. Rewrite using `[smul_eq_mul, ← Nat.cast_mul, mul_comm, hde]`. Use `ext`. Simplify using the standard rewrite rules. Establish `hJ : I ≤ LinearMap.ker (LinearMap.toSpanSingleton R N x)`.
+
+Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Express the relevant statement in the definitionally equal form `(d : R) • x = 0`. Rewrite using `[Nat.cast_smul_eq_nsmul, hx]`. Set `i : (R ⧸ I) →ₗ[R] R` to `I.liftQ _ hI`. Set `f : (R ⧸ I) →ₗ[R] N` to `I.liftQ _ hJ`.
+
+Establish `hmono : Mono (ModuleCat.ofHom i)`. Rewrite using `[ModuleCat.mono_iff_injective]`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `r hr`. Take `⟨r, rfl⟩` from `Submodule.Quotient.mk_surjective I r`.
+
+Rewrite `hr` using `[LinearMap.mem_ker]`. Express the relevant statement in the definitionally equal form `(e : R) • r = 0 at hr`. Rewrite using `[Submodule.mem_bot, Submodule.Quotient.mk_eq_zero]`. Take `⟨c, hc⟩` from `zmod_mul_eq_zero q d e hde r.down (by`. Use `congrArg ULift.down hr` as an intermediate fact.
+
+Rewrite `this` using `[smul_eq_mul, ULift.mul_down, ULift.down_natCast]`. Conclude with `this)`. Rewrite using `[Submodule.mem_span_singleton]`. Use `⟨ULift.up c, ?_⟩` and prove the remaining obligations. Apply `ULift.down_injective` to reduce the goal to its premises.
+
+Rewrite using `[hc]`. Express the relevant statement in the definitionally equal form `(ULift.up c * (d : R)).down = _`. Rewrite using `[ULift.mul_down, ULift.down_natCast]`. Set `g` to `Injective.factorThru (ModuleCat.ofHom f) (ModuleCat.ofHom i)`. Establish `hg` using `Injective.comp_factorThru (ModuleCat.ofHom f) (ModuleCat.ofHom i)`.
+
+Use `⟨g.hom 1, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (fun φ => φ.hom (Submodule.Quotient.mk (p := I) (1 : R))) hg`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply, ModuleCat.hom_ofHom] at h2`. Establish `hi1 : i (Submodule.Quotient.mk 1) = (e : R)`. Simplify using `only [i]`.
+
+Use `erw [Submodule.liftQ_apply]`. Simplify using the standard rewrite rules. Establish `hf1 : f (Submodule.Quotient.mk 1) = x`. Simplify using `only [f]`. Use `erw [Submodule.liftQ_apply]`.
+
+Simplify using the standard rewrite rules. Rewrite `h2` using `[hi1, hf1]`. Rewrite using `[← h2, ← Nat.cast_smul_eq_nsmul R, ← map_smul, smul_eq_mul, mul_one]`.
+-/
 theorem div_of_injective (q : ℕ) [NeZero q] (N : ModuleCat.{1} (ULift.{1} (ZMod q))) [Injective N] :
     ∀ d e : ℕ, d * e = q → ∀ x : N, d • x = 0 → ∃ y : N, x = e • y := by
   intro d e hde x hx
@@ -101,6 +130,11 @@ theorem div_of_injective (q : ℕ) [NeZero q] (N : ModuleCat.{1} (ULift.{1} (ZMo
   rw [hi1, hf1] at h2
   rw [← h2, ← Nat.cast_smul_eq_nsmul R, ← map_smul, smul_eq_mul, mul_one]
 
+/- English proof (translation)
+Introduce `q _ M _`. Establish `hflat : ∀ U : Scheme.{0}, Module.Flat (ULift.{1} (ZMod q)) (Sec M U)` using `fun U => by`. Use `sec_injective (ZMod q) M U` as an intermediate fact. Conclude with `GlobalTheory.ZModFlat.flat_of_divisibility q (Sec M U) (div_of_injective q (M.obj.obj (op U)))`. Use `⟨hflat, M.obj, 𝟙 _, ?_, ?_, fun U _ => hflat U⟩` and prove the remaining obligations.
+
+Introduce `U y`. Conclude with `⟨⊤, Scheme.etaleTopology.top_mem U, fun V g _ => ⟨(M.obj.map g.op).hom y, rfl⟩⟩`. Introduce `U x hx`. Establish `hx0 : x = 0` using `hx`. Conclude with `⟨⊤, Scheme.etaleTopology.top_mem U, fun V g _ => by beta_reduce; rw [hx0, map_zero]⟩`.
+-/
 theorem flat_of_injective : ∀ (q : ℕ) [NeZero q] (M : Shv (ZMod q)) [Injective M],
     (∀ U : Scheme.{0}, Module.Flat (ULift.{1} (ZMod q)) (Sec M U)) ∧ FlatS M := by
   intro q _ M _

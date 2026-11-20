@@ -10,6 +10,11 @@ namespace GlobalTheory.SizesArch
 
 open Formalism.BasicNotions NumberField
 
+/- English proof (translation)
+Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Establish `hg : Real.Gamma ((m + 1 : ℕ) : ℝ) = (m.factorial : ℝ)`. Rewrite using `[Nat.cast_succ, Real.Gamma_nat_eq_factorial]`. Establish `hf : (m.factorial : ℝ) ≤ ((m + 1 : ℕ) : ℝ) ^ (m + 1)`. Establish `h1 : m.factorial ≤ (m + 1) ^ (m + 1)` using `(Nat.factorial_le_pow m).trans ((Nat.pow_le_pow_left (Nat.le_succ m) m).trans (Nat.pow_le_pow_right (Nat.succ_pos m) (Nat.le_succ m)))`.
+
+Conclude with `h1` after adjusting the coercions. Rewrite using `[hg, ← Real.log_pow]`. Conclude with `Real.log_le_log (by exact_mod_cast Nat.factorial_pos m) hf`.
+-/
 theorem log_gamma_nat_le (n : ℕ) (hn : 1 ≤ n) : Real.log (Real.Gamma n) ≤ n * Real.log n := by
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
   have hg : Real.Gamma ((m + 1 : ℕ) : ℝ) = (m.factorial : ℝ) := by
@@ -22,6 +27,13 @@ theorem log_gamma_nat_le (n : ℕ) (hn : 1 ≤ n) : Real.log (Real.Gamma n) ≤ 
   rw [hg, ← Real.log_pow]
   exact Real.log_le_log (by exact_mod_cast Nat.factorial_pos m) hf
 
+/- English proof (translation)
+Establish `hk' : (1 : ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `hG : ∀ τ, 0 < Real.Gamma ((k : ℝ) + κ τ)` using `fun τ => Real.Gamma_pos_of_pos (by have : (0 : ℝ) ≤ κ τ := Nat.cast_nonneg _; linarith)`. Establish `hsd : 1 ≤ Real.sqrt d` using `by rw [Real.one_le_sqrt]; exact hd`. Establish `hq : 0 < 2 * Real.pi / Real.sqrt d` using `div_pos (by positivity) (by linarith)`. Unfold `Formalism.PairingDivisionLocalBalance.cmConst`.
+
+Rewrite using `[Real.log_mul (mul_ne_zero (Real.rpow_pos_of_pos hdF _).ne' (Finset.prod_ne_zero_iff.2 fun τ _ => (hG τ).ne')) (pow_ne_zero _ hq.ne'), Real.log_mul (Real.rpow_pos_of_pos hdF _).ne' (Finset.prod_ne_zero_iff.2 fun τ _ => (hG τ).ne'), Real.log_rpow hdF, Real.log_prod (fun τ _ => (hG …`. Establish `h1 : Real.log (2 * Real.pi / Real.sqrt d) ≤ 8`. Establish `h3` using `Real.log_le_sub_one_of_pos hq`. Establish `h2 : 2 * Real.pi / Real.sqrt d ≤ 2 * Real.pi` using `div_le_self (by positivity) hsd`. Combine the linear relations using `[Real.pi_le_four]`.
+
+Establish `h0 : (0 : ℝ) ≤ Formalism.PairingDivisionLocalBalance.absK κ` using `Nat.cast_nonneg _`. Use `mul_le_mul_of_nonneg_left h1 h0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem log_cmConst_le {Φ : Type} [Fintype Φ] (dF d : ℝ) (k : ℕ) (κ : Φ → ℕ) (hdF : 0 < dF) (hd : 1 ≤ d)
     (hk : 1 ≤ k) :
     Real.log (Formalism.PairingDivisionLocalBalance.cmConst dF d k κ) ≤ (((k : ℝ) - 1) / 2) * Real.log dF +
@@ -50,6 +62,55 @@ namespace GlobalTheory.SizesArch
 
 open Formalism.BasicNotions NumberField GlobalTheory.ChiGrid
 
+/- English proof (translation)
+Introduce `ε`. Use `⟨200, 0, fun D large₂ _ _ hR i j s hs1 hs2 => ?_⟩` and prove the remaining obligations. Take `⟨-, -, hm4, hm, -, hmfNd, -, -, -, hrd1, hrd2, -, -, -⟩` from `hR.size`. Take `⟨hgb, hb675⟩` from `GlobalTheory.BigTop.Fun.gap_le_b hR.size`. Establish `hbL : Real.log large₂.sc.b = large₂.sc.L` using `by unfold Scale.b; exact Real.log_exp _`.
+
+Establish `hL1 : 1 ≤ large₂.sc.L`. Rewrite using `[← hbL, Real.le_log_iff_exp_le (by linarith)]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx1 : 1 < large₂.sc.x` using `large₂.sc.one_lt_alt`.
+
+Establish `hlogx : 0 ≤ Real.log large₂.sc.x` using `Real.log_nonneg hx1.le`. Establish `hcard : Fintype.card D.what₂.Tau = D.R.f` using `Formalism.MainNotions.Lnk.card_Tau D`. Establish `hf1n : 1 ≤ D.R.f`. Establish `: 1 ≤ D.R.m ^ 4` using `Nat.one_le_pow _ _ (by omega)`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hf1 : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast hf1n`. Establish `hsb : (s : ℝ) ≤ large₂.sc.b`. Establish `h1` using `GlobalTheory.BigTop.Fun.rankV_lt_gap (D := D) i.2 j.2`. Establish `e` using `(ranks_exact D i j).2.2`. Apply the tactic sequence `have h3 : rankV D i j ≤ rankV D (i + 1) (j + 1) := by unfold rankV; gcongr <;> omega`.
+
+Establish `: s ≤ gap D 1` using `by omega`. Conclude with `(by exact_mod_cast this : (s : ℝ) ≤ gap D 1).trans hgb`. Establish `hκ : ∀ τ, (kap D 1 i j s τ : ℝ) ≤ 5 * large₂.sc.b`. Introduce `τ`. Take `⟨e0, e1⟩` from `GlobalTheory.BigTop.Fun.numE_bounds hR.size τ j.2`.
+
+Take `⟨c0, c1⟩` from `GlobalTheory.BigTop.Fun.cen_bounds hR.size τ (i := D.R.m - i) (by omega) (by omega)`. Establish `h : (kap D 1 i j s τ : ℤ) ≤ (num D 1 τ).e (j + 1) + cen D 1 τ (D.R.m - i)`. Unfold `kap`. Use linear arithmetic over natural numbers and integers. Establish `h' : ((kap D 1 i j s τ : ℤ) : ℝ) ≤ ((num D 1 τ).e (j + 1) : ℝ) + (cen D 1 τ (D.R.m - i) : ℝ)`.
+
+Conclude with `h` after adjusting the coercions. Move the coercions through the operations in `at h'`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hN1 : 1 ≤ D.R.N D.R.m` using `by unfold Ranks.N; have := D.R.m_add_three_le_k; omega`. Establish `hd1 : (1 : ℝ) ≤ D.host.d` using `by exact_mod_cast D.host.hyp.2.1.one_lt.le`.
+
+Establish `hdb : (D.host.d : ℝ) ≤ large₂.sc.b`. Establish `hm1 : (1 : ℝ) ≤ D.R.m` using `by exact_mod_cast (show 1 ≤ D.R.m by omega)`. Establish `hN : (1 : ℝ) ≤ (D.R.N D.R.m : ℝ)` using `by exact_mod_cast hN1`. Establish `h1 : (1 : ℝ) ≤ (D.R.m : ℝ) * D.R.f * (D.R.N D.R.m : ℝ) ^ 2` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hm1 hf1) (one_le_pow₀ hN)`. Conclude with `(le_mul_of_one_le_left (by linarith) h1).trans hmfNd`.
+
+Establish `hlogd : Real.log D.host.d ≤ large₂.sc.L` using `hbL ▸ Real.log_le_log (by linarith) hdb`. Establish `hlogd0 : 0 ≤ Real.log D.host.d` using `Real.log_nonneg hd1`. Establish `hdl : |large₂.logDerivativeAtOne| ≤ large₂.sc.L` using `hR.dlog`. Establish `hdF : |(discr (maximalRealSubfield D.host.E) : ℝ)| = (2 * D.host.v) ^ D.R.f`. Rewrite using `[← hR.hF]`.
+
+Conclude with `GlobalTheory.CovDom.NormConst.abs_discr_F D`. Establish `h2v : 2 * D.host.v = D.host.rdE` using `by show 2 * (D.host.rdE / 2) = D.host.rdE; ring`. Establish `hdF0 : 0 < |(discr (maximalRealSubfield D.host.E) : ℝ)|` using `abs_pos.2 (by exact_mod_cast discr_ne_zero _)`. Establish `hlogdF : Real.log |(discr (maximalRealSubfield D.host.E) : ℝ)| ≤ (D.R.f : ℝ) * large₂.sc.L`. Rewrite using `[hdF, Real.log_pow, h2v]`.
+
+Establish `: Real.log D.host.rdE ≤ large₂.sc.L` using `by linarith`. Conclude with `mul_le_mul_of_nonneg_left this (Nat.cast_nonneg _)`. Establish `hC` using `log_cmConst_le |(discr (maximalRealSubfield D.host.E) : ℝ)| (D.host.d : ℝ) (2 * s) (kap D 1 i j s) hdF0 hd1 (by omega)`. Establish `hC0 : C0 D.host.E D.host.d (2 * s) (kap D 1 i j s) = Formalism.PairingDivisionLocalBalance.cmConst |(discr (maximalRealSubfield D.host.E) : ℝ)| (D.host.d : ℝ) (2 * s) (kap D 1 i j s)` using `rfl`. Rewrite using `[hC0]`.
+
+Use `set b := large₂.sc.b`. Use `set L := large₂.sc.L`. Use `set F : ℝ := (D.R.f : ℝ) with hF`. Establish `hb0 : 0 ≤ b` using `by linarith`. Establish `hk : ((2 * s : ℕ) : ℝ) ≤ 2 * b` using `by push_cast; linarith`.
+
+Establish `hk1 : (1 : ℝ) ≤ ((2 * s : ℕ) : ℝ)` using `by exact_mod_cast (show 1 ≤ 2 * s by omega)`. Establish `T1 : (((2 * s : ℕ) : ℝ) - 1) / 2 * Real.log |(discr (maximalRealSubfield D.host.E) : ℝ)| ≤ 2 * (F * b * L)`. Establish `a1 : 0 ≤ (((2 * s : ℕ) : ℝ) - 1) / 2` using `by linarith`. Establish `a2` using `mul_le_mul_of_nonneg_left hlogdF a1`. Establish `a3 : (((2 * s : ℕ) : ℝ) - 1) / 2 ≤ b` using `by linarith`.
+
+Establish `a4 : 0 ≤ F * L` using `by positivity`. Establish `a5` using `mul_le_mul_of_nonneg_right a3 a4`. Use the polynomial consequences of the given equalities and inequalities. Establish `T2 : ∑ τ, Real.log (Real.Gamma (((2 * s : ℕ) : ℝ) + kap D 1 i j s τ)) ≤ 49 * (F * b * L)`. Establish `each : ∀ τ, Real.log (Real.Gamma (((2 * s : ℕ) : ℝ) + kap D 1 i j s τ)) ≤ 49 * (b * L)`.
+
+Introduce `τ`. Establish `e : ((2 * s : ℕ) : ℝ) + kap D 1 i j s τ = ((2 * s + kap D 1 i j s τ : ℕ) : ℝ)` using `by push_cast; ring`. Rewrite using `[e]`. Establish `hn1 : 1 ≤ 2 * s + kap D 1 i j s τ` using `by omega`. Use `(log_gamma_nat_le _ hn1).trans ?_` and prove the remaining obligations.
+
+Establish `hn : ((2 * s + kap D 1 i j s τ : ℕ) : ℝ) ≤ 7 * b` using `by push_cast; linarith [hκ τ]`. Establish `hn0 : (1 : ℝ) ≤ ((2 * s + kap D 1 i j s τ : ℕ) : ℝ)` using `by exact_mod_cast hn1`. Establish `hl0 : 0 ≤ Real.log ((2 * s + kap D 1 i j s τ : ℕ) : ℝ)` using `Real.log_nonneg hn0`. Establish `hl : Real.log ((2 * s + kap D 1 i j s τ : ℕ) : ℝ) ≤ 7 * L`. Establish `l1` using `Real.log_le_log (by linarith) hn`.
+
+Rewrite `l1` using `[Real.log_mul (by norm_num) (by linarith), hbL]`. Establish `l2` using `Real.log_le_sub_one_of_pos (show (0 : ℝ) < 7 by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion. Use `mul_le_mul hn hl hl0 (by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `(Finset.sum_le_sum fun τ _ => each τ).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.card_univ, hcard, nsmul_eq_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsumκ : (Formalism.PairingDivisionLocalBalance.absK (kap D 1 i j s) : ℝ) ≤ 5 * (F * b)`. Unfold `Formalism.PairingDivisionLocalBalance.absK`.
+
+Use `push_cast`. Use `(Finset.sum_le_sum fun τ _ => hκ τ).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.card_univ, hcard, nsmul_eq_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsumκ0 : (0 : ℝ) ≤ Formalism.PairingDivisionLocalBalance.absK (kap D 1 i j s)` using `Nat.cast_nonneg _`.
+
+Establish `T3 : (Formalism.PairingDivisionLocalBalance.absK (kap D 1 i j s) : ℝ) * 8 ≤ 40 * (F * b * L)`. Establish `: F * b ≤ F * b * L` using `le_mul_of_one_le_right (by positivity) hL1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hM : (Formalism.PairingDivisionLocalBalance.wtM (2 * s) (kap D 1 i j s) : ℝ) ≤ 12 * (F * b)`. Unfold `Formalism.PairingDivisionLocalBalance.wtM`.
+
+Use `push_cast`. Rewrite using `[hcard]`. Establish `: (2 * (s : ℝ)) * F ≤ 2 * b * F` using `mul_le_mul_of_nonneg_right (by linarith) (by positivity)`. Move the coercions through the operations in `at hsumκ`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `T4 : (Formalism.PairingDivisionLocalBalance.wtM (2 * s) (kap D 1 i j s) : ℝ) * ((Real.log D.host.d + |large₂.logDerivativeAtOne|) / 2) ≤ 12 * (F * b * L)`. Establish `a1 : (Real.log D.host.d + |large₂.logDerivativeAtOne|) / 2 ≤ L` using `by linarith`. Establish `a2 : 0 ≤ (Real.log D.host.d + |large₂.logDerivativeAtOne|) / 2` using `by positivity`. Use `mul_le_mul hM a1 a2 (by positivity)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hfin : 0 ≤ F * b * Real.log large₂.sc.x` using `by positivity`. Unfold `bTH`. Rewrite using `[hbL]`. Establish `e : 200 * (D.R.f : ℝ) * b * (L + Real.log large₂.sc.x) = 200 * (F * b * L) + 200 * (F * b * Real.log large₂.sc.x)`. Rewrite using `[hF]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `hP : 0 ≤ F * b * L` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sizes : ∀ ε : ℝ, ∃ Cx x₁ : ℝ, ∀ (D : Formalism.BasicNotions.D7) (large₂ : Formalism.BasicNotions.SizeData₂ D), large₂.sc.eps = ε → x₁ ≤ large₂.sc.x →
     Rec large₂ → ∀ (i j : Fin D.R.m) (s : ℕ), 1 ≤ s → s ≤ halfRank D i j →
       Real.log (C0 D.host.E D.host.d (2 * s) (kap D 1 i j s)) +

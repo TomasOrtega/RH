@@ -13,6 +13,23 @@ open scoped Classical
 
 namespace GlobalTheory.GrFilt
 
+/- English proof (translation)
+Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite using `[SetLike.mem_coe, ht]`. Use `Submodule.sum_mem _ fun z _ => ?_` and prove the remaining obligations. Distinguish the cases in `hz : o y.1 < o z.1`.
+
+Rewrite using `[h0 y z hz, zero_smul]`. Conclude with `Submodule.zero_mem _`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨z, lt_of_le_of_lt (not_lt.1 hz) hy, rfl⟩)`. Establish `key : ∀ n, ∀ z : Σ a, Fin (r a), o z.1 = n → n < k → C z ∈ Submodule.span K (t '' {z | o z.1 < k})`. Introduce `n`.
+
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce and unpack `⟨b, j⟩ hb hk`. Simplify using `only at hb`. Use `set S := Submodule.span K (t '' {z | o z.1 < k})`.
+
+Set `φ : W' b →ₗ[K] W` to `(B b).constr K fun j => C ⟨b, j⟩`. Establish `hφ : Submodule.span K (Set.range (w b)) ≤ S.comap φ`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `e1 : φ (w b i) = ∑ j, m ⟨b, i⟩ ⟨b, j⟩ • C ⟨b, j⟩`.
+
+Simplify using `only [φ, Module.Basis.constr_apply_fintype, h1, Module.Basis.equivFun_apply]`. Establish `e2 : t ⟨b, i⟩ = φ (w b i) + ∑ a ∈ Finset.univ.erase b, ∑ j, m ⟨b, i⟩ ⟨a, j⟩ • C ⟨a, j⟩`. Rewrite using `[ht, e1, Fintype.sum_sigma]`. Conclude with `(Finset.add_sum_erase _ (fun a => ∑ j, m ⟨b, i⟩ ⟨a, j⟩ • C ⟨a, j⟩) (Finset.mem_univ b)).symm`. Express the relevant statement in the definitionally equal form `φ (w b i) ∈ S`.
+
+Rewrite `e2` using `[← sub_eq_iff_eq_add]`. Rewrite using `[← e2]`. Use `S.sub_mem (Submodule.subset_span ⟨_, (hb.trans_lt hk : o b < k), rfl⟩) (S.sum_mem fun a ha => S.sum_mem fun j _ => ?_)` and prove the remaining obligations. Break down `lt_trichotomy (o a) (o b) with h | h | h` into its components or cases. Conclude with `S.smul_mem _ (ih (o a) (hb ▸ h) ⟨a, j⟩ rfl (by omega))`.
+
+Conclude with `absurd (ho h) (Finset.ne_of_mem_erase ha)`. Rewrite using `[h0 ⟨b, i⟩ ⟨a, j⟩ h, zero_smul]`. Conclude with `S.zero_mem`. Use `hφ (hw b ▸ Submodule.mem_top : B b j ∈ _)` as an intermediate fact. Simplify `this` using `[φ]`.
+
+Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `key _ z rfl hz`.
+-/
 theorem span_blockTriangular {K W : Type*} [Field K] [AddCommGroup W] [Module K W] {ι : Type} [Fintype ι]
     {r : ι → ℕ} {W' : ι → Type*} [∀ a, AddCommGroup (W' a)] [∀ a, Module K (W' a)] (o : ι → ℕ)
     (ho : Function.Injective o) (C : (Σ a, Fin (r a)) → W) (B : ∀ a, Module.Basis (Fin (r a)) K (W' a))
@@ -59,6 +76,11 @@ theorem span_blockTriangular {K W : Type*} [Field K] [AddCommGroup W] [Module K 
 
 variable {X : Scheme.{0}} [IsIntegral X] {ι : Type} [Fintype ι] {L : X.Modules} {E E' : ι → X.Modules} {r : ι → ℕ}
 
+/- English proof (translation)
+Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, U, hU, s, rfl⟩`. Establish `hUV : genericPoint X ∈ U ⊓ V` using `⟨hU, hV⟩`. Rewrite using `[SetLike.mem_coe, ← germ_resM (inf_le_left : U ⊓ V ≤ U) hUV, ← app_resM, ← ((hf a).basis (inf_le_right : U ⊓ V ≤ V)).sum_repr (resM _ inf_le_left s)]`. Simplify using `only [map_sum, Scheme.Modules.Hom.app_smul, IsFrame.basis_apply, app_resM, QCoh.germ_smul, germ_resM]`.
+
+Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨a, i⟩, ha, rfl⟩)`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `⟨z.1, hz, V, hV, _, rfl⟩`.
+-/
 theorem genSpan_eq_span_frame (o : ι → ℕ) (T : ∀ a, E a ⟶ L) {V : X.Opens} (f : ∀ a, Fin (r a) → Γ(E a, V))
     (hf : ∀ a, IsFrame (f a)) (hV : genericPoint X ∈ V) (k : ℕ) :
     genSpan o T k = Submodule.span X.functionField
@@ -76,6 +98,11 @@ theorem genSpan_eq_span_frame (o : ι → ℕ) (T : ∀ a, E a ⟶ L) {V : X.Ope
 
 end GlobalTheory.GrFilt
 
+/- English proof (translation)
+Introduce `X _ ι _ L E E' r o ho T u V f hf f' hf' c hc hA hV hsp k`. Rewrite using `[genSpan_eq_span_frame o T f hf hV]`. Use `span_blockTriangular (K := X.functionField) (W := genStalk L) (W' := fun a => genStalk (E' a)) o ho _ (fun a => (hf' a).stalkBasis _ hV) _ _ (fun y z => X.presheaf.germ V _ hV ((hc.basis le_rfl).repr ((T y.1).app V (f y.1 y.2)) z)) (fun y => ?_) (fun y z h => ?_) (fun a i j => ?_ …` and prove the remaining obligations. Use `conv_lhs => rw [← (hc.basis le_rfl).sum_repr ((T y.1).app V (f y.1 y.2))]`. Simplify using `only [map_sum, QCoh.germ_smul, IsFrame.basis_apply, germ_resM]`.
+
+Conclude with `(congrArg _ ((hA y.1 y.2).1 z h)).trans (map_zero _)`. Conclude with `(congrArg _ ((hA a i).2 j)).trans (TriFrame.FlagOf.stalkBasis_repr_germ (hf' a) le_rfl _ hV _ j).symm`.
+-/
 theorem GlobalTheory.GrFilt.genSpan_eq_of_adaptedAt :
     ∀ {X : Scheme.{0}} [IsIntegral X] {ι : Type} [Fintype ι] {L : X.Modules} {E E' : ι → X.Modules} {r : ι → ℕ}
     (o : ι → ℕ), Function.Injective o → ∀ (T : ∀ a, E a ⟶ L) (u : ∀ a, E a ⟶ E' a) {V : X.Opens}

@@ -11,6 +11,9 @@ open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory
 
 namespace GlobalTheory.CompanionTheory.MM.RealId
 
+/- English proof (translation)
+Establish `h1 : Matrix.fromBlocks p q r s * (Matrix.fromBlocks p q r s)ᴴ = 1`. Establish `h2` using `congrArg (fun M => Matrix.submatrix M (finSumFinEquiv (m := n) (n := n)) (finSumFinEquiv (m := n) (n := n))) h`. Simplify `h2` using `[blk4, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_one_equiv]`. Rewrite `h1` using `[Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one]`. Conclude with `(Matrix.fromBlocks_inj.1 h1).2.2.2`.
+-/
 theorem lower_rows {n : ℕ} (p q r s : Matrix (Fin n) (Fin n) ℂ)
     (h : blk4 p q r s * (blk4 p q r s)ᴴ = 1) : r * rᴴ + s * sᴴ = 1 := by
   have h1 : Matrix.fromBlocks p q r s * (Matrix.fromBlocks p q r s)ᴴ = 1 := by
@@ -20,16 +23,27 @@ theorem lower_rows {n : ℕ} (p q r s : Matrix (Fin n) (Fin n) ℂ)
   rw [Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one] at h1
   exact (Matrix.fromBlocks_inj.1 h1).2.2.2
 
+/- English proof (translation)
+Simplify using `only [blk4]`. Rewrite using `[← Matrix.submatrix_map, Matrix.fromBlocks_map]`.
+-/
 theorem block_matrix_map {R S : Type} {n : ℕ} (f : R → S) (a b c d : Matrix (Fin n) (Fin n) R) :
     (blk4 a b c d).map f = blk4 (a.map f) (b.map f) (c.map f) (d.map f) := by
   simp only [blk4]
   rw [← Matrix.submatrix_map, Matrix.fromBlocks_map]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[adj, Matrix.conjTranspose_apply, hφ]`.
+-/
 theorem map_adj (D : D7) (φ : AE D →+* ℂ) (hφ : ∀ z, φ (cA D z) = conj (φ z)) {m n : ℕ} (x : Mx D m n) :
     (adj x).map φ = (x.map φ)ᴴ := by
   ext i j
   simp [adj, Matrix.conjTranspose_apply, hφ]
 
+/- English proof (translation)
+Establish `e : Dm * Dmᴴ = 1 + C * C`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, mul_add, add_mul, mul_assoc]`. Use `_ = 1 + C * C := by`. Rewrite using `[hA, hB, Matrix.conjTranspose_neg, Matrix.conjTranspose_neg, hC]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[← e, Matrix.det_mul, Matrix.det_conjTranspose]`. Use `show (Dm.det * conj Dm.det).re = _`. Rewrite using `[Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`.
+-/
 theorem det_id {n : ℕ} (A B C Dm : Matrix (Fin n) (Fin n) ℂ) (hu : A * Aᴴ + B * Bᴴ = 1)
     (hA : Dm * A = -1) (hB : Dm * B = -C) (hC : Cᴴ = C) :
     (1 + C * C).det.re = ‖Dm.det‖ ^ 2 := by
@@ -44,6 +58,13 @@ theorem det_id {n : ℕ} (A B C Dm : Matrix (Fin n) (Fin n) ℂ) (hu : A * Aᴴ 
   show (Dm.det * conj Dm.det).re = _
   rw [Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+Establish `hmul : ∀ x y : Mx D n n, (x * y).map φ = x.map φ * y.map φ` using `fun x y => map_mul φ.mapMatrix x y`. Establish `hneg : ∀ x : Mx D n n, (-x).map φ = -(x.map φ)` using `fun x => map_neg φ.mapMatrix x`. Establish `hone : (1 : Mx D n n).map φ = 1` using `map_one φ.mapMatrix`. Establish `hC : ((pull a b).1).map φ = ((a⁻¹).1.map φ) * b.1.map φ * ((a⁻¹).1.map φ)ᴴ` using `by show ((a⁻¹).1 * b.1 * adj (a⁻¹).1).map φ = _`. Rewrite using `[hmul, hmul, map_adj D φ hconj]`.
+
+Establish `hherm : (((pull a b).1).map φ)ᴴ = ((pull a b).1).map φ`. Rewrite using `[← map_adj D φ hconj]`. Conclude with `congrArg (fun M => Matrix.map M φ) (pull a b).2`. Establish `hA : (d.1.map φ) * (k₃.map φ) = -1`. Rewrite using `[← hmul, h3, hneg, hone]`.
+
+Establish `hB : (d.1.map φ) * (k₄.map φ) = -((pull a b).1.map φ)`. Rewrite using `[← hmul, h4, hneg]`. Rewrite using `[← hC, det_id _ _ _ _ hl hA hB hherm]`. Establish `: (d.1.map φ).det = φ (Matrix.GeneralLinearGroup.det d).1` using `(RingHom.map_det φ d.1).symm`. Rewrite using `[this]`.
+-/
 theorem det_real_part_unitary_block_identity (D : D7) (n : ℕ) (φ : AE D →+* ℂ) (hconj : ∀ z, φ (cA D z) = conj (φ z))
     (a d : GL (Fin n) (AE D)) (b : hermA D n) (k₃ k₄ : Mx D n n)
     (hl : k₃.map φ * (k₃.map φ)ᴴ + k₄.map φ * (k₄.map φ)ᴴ = 1)
@@ -67,6 +88,13 @@ theorem det_real_part_unitary_block_identity (D : D7) (n : ℕ) (φ : AE D →+*
   have : (d.1.map φ).det = φ (Matrix.GeneralLinearGroup.det d).1 := (RingHom.map_det φ d.1).symm
   rw [this]
 
+/- English proof (translation)
+Introduce `D n θ hθ a d b k₁ k₂ k₃ k₄ τ hu h3 h4`. Establish `hconj : ∀ z, ((θ τ).comp (infPart D)) (cA D z) = conj (((θ τ).comp (infPart D)) z)` using `fun z => (GlobalTheory.StdUnn.RealComp.real_components D θ hθ).2.1 z τ`. Establish `hg : ((gAt θ a τ)⁻¹).1 = (a⁻¹).1.map ((θ τ).comp (infPart D))`. Establish `: (gAt θ a τ)⁻¹ = Matrix.GeneralLinearGroup.map ((θ τ).comp (infPart D)) a⁻¹` using `(map_inv (Matrix.GeneralLinearGroup.map ((θ τ).comp (infPart D))) a).symm`. Rewrite using `[this]`.
+
+Both sides reduce to the same expression. Establish `hb : (PositivityTheory.SiegelWeilFormula.Gen.matInf b.1).map (θ τ) = b.1.map ((θ τ).comp (infPart D))`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite `hu` using `[block_matrix_map]`.
+
+Establish `hl` using `lower_rows _ _ _ _ hu`. Rewrite using `[hg, hb]`. Conclude with `det_real_part_unitary_block_identity D n _ hconj a d b k₃ k₄ hl h3 h4`.
+-/
 theorem det_one_add_sq : ∀ (D : D7) (n : ℕ) (θ : InfFam D), IsInfFam θ → ∀ (a d : GL (Fin n) (AE D)) (b : hermA D n) (k₁ k₂ k₃ k₄ : Mx D n n) (τ : D.what₂.Tau), (blk4 k₁ k₂ k₃ k₄).map ((θ τ).comp (infPart D)) * ((blk4 k₁ k₂ k₃ k₄).map ((θ τ).comp (infPart D)))ᴴ = 1 → d.1 * k₃ = -1 → d.1 * k₄ = -(pull a b).1 → (1 + (((gAt θ a τ)⁻¹).1 * (PositivityTheory.SiegelWeilFormula.Gen.matInf b.1).map (θ τ) * (((gAt θ a τ)⁻¹).1)ᴴ) * (((gAt θ a τ)⁻¹).1 * (PositivityTheory.SiegelWeilFormula.Gen.matInf b.1).map (θ τ) * (((gAt θ a τ)⁻¹).1)ᴴ)).det.re = ‖θ τ (infPart D (Matrix.GeneralLinearGroup.det d).1)‖ ^ 2 := by
   intro D n θ hθ a d b k₁ k₂ k₃ k₄ τ hu h3 h4
   have hconj : ∀ z, ((θ τ).comp (infPart D)) (cA D z) = conj (((θ τ).comp (infPart D)) z) :=

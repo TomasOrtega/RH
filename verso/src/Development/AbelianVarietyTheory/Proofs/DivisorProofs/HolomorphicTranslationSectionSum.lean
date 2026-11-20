@@ -15,12 +15,20 @@ namespace GlobalTheory.CurveDer
 def cst (O : (Sp ℂ).Opens) : ℂ →+* Γ(Sp ℂ, O) :=
   (resG (Sp ℂ) le_top).comp (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom
 
+/- English proof (translation)
+Use `(GlobalTheory.valAt'_res (𝟙 (Sp ℂ)) le_top _ h).trans ?_` and prove the remaining obligations. Rewrite using `[valAt'_eq_valAt _ le_top]`. Use `(congrArg (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom (GlobalTheory.LB.resG_self _ _)).trans ?_` and prove the remaining obligations. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv_hom_id_apply z`.
+-/
 theorem val_cst {O : (Sp ℂ).Opens} (h : ⊤ ≤ O) (z : ℂ) : valAt' (𝟙 (Sp ℂ)) O (cst O z) = z := by
   refine (GlobalTheory.valAt'_res (𝟙 (Sp ℂ)) le_top _ h).trans ?_
   rw [valAt'_eq_valAt _ le_top]
   refine (congrArg (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom.hom (GlobalTheory.LB.resG_self _ _)).trans ?_
   exact (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv_hom_id_apply z
 
+/- English proof (translation)
+Distinguish the cases in `h : ⊤ ≤ O`. Take `rfl` from `top_le_iff.1 h`. Use `H h` as an intermediate fact. Rewrite `this` using `[valAt'_eq_valAt _ le_top, valAt'_eq_valAt _ le_top]`. Establish `h2` using `(Scheme.ΓSpecIso (CommRingCat.of ℂ)).commRingCatIsoToRingEquiv.injective this`.
+
+Conclude with `(GlobalTheory.LB.resG_self _ a).symm.trans (h2.trans (GlobalTheory.LB.resG_self _ b))`. Choose the witnesses or unpack the hypotheses as in `rfl : O = ⊥ := by`. Use `eq_bot_iff.2 fun p hp => (h fun q _ => ?_).elim` and prove the remaining obligations. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum ℂ) q p]` and apply the resulting hypothesis. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem ext {O : (Sp ℂ).Opens} {a b : Γ(Sp ℂ, O)}
     (H : ⊤ ≤ O → valAt' (𝟙 (Sp ℂ)) O a = valAt' (𝟙 (Sp ℂ)) O b) : a = b := by
   by_cases h : ⊤ ≤ O
@@ -37,19 +45,31 @@ theorem ext {O : (Sp ℂ).Opens} {a b : Γ(Sp ℂ, O)}
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {S X : Scheme.{0}} {π : X ⟶ S} {e : S ⟶ X}
   {x : Sp ℂ ⟶ S} {c : E → (Sp ℂ ⟶ X)}
 
+/- English proof (translation)
+The claim follows from `mem_of_superset ((hc W 0).1.mem_nhds ⟨trivial, h⟩) fun _ hu => hu.2`.
+-/
 theorem eventually_le (hc : IsHolTo Set.univ c) {W : X.Opens} (h : ⊤ ≤ c 0 ⁻¹ᵁ W) :
     ∀ᶠ u in 𝓝 (0 : E), ⊤ ≤ c u ⁻¹ᵁ W :=
   mem_of_superset ((hc W 0).1.mem_nhds ⟨trivial, h⟩) fun _ hu => hu.2
 
+/- English proof (translation)
+The claim follows from `(hc W f).2.differentiableAt ((hc W 0).1.mem_nhds ⟨trivial, h⟩)`.
+-/
 theorem differentiableAt (hc : IsHolTo Set.univ c) {W : X.Opens} (h : ⊤ ≤ c 0 ⁻¹ᵁ W) (f : Γ(X, W)) :
     DifferentiableAt ℂ (fun u => valAt' (c u) W f) 0 :=
   (hc W f).2.differentiableAt ((hc W 0).1.mem_nhds ⟨trivial, h⟩)
 
+/- English proof (translation)
+Rewrite using `[h0, top_le_preimage_comp]`. Conclude with `top_le_preimage_mono x h hx`.
+-/
 theorem le_of (h0 : c 0 = x ≫ e) {W : X.Opens} {V : S.Opens} (h : V ≤ e ⁻¹ᵁ W) (hx : ⊤ ≤ x ⁻¹ᵁ V) :
     ⊤ ≤ c 0 ⁻¹ᵁ W := by
   rw [h0, top_le_preimage_comp]
   exact top_le_preimage_mono x h hx
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.valAt'_comp (𝟙 _) x V a).trans (by rw [Category.id_comp])`.
+-/
 theorem val_app {V : S.Opens} (a : Γ(S, V)) :
     valAt' (𝟙 (Sp ℂ)) (x ⁻¹ᵁ V) (x.app V a) = valAt' x V a :=
   (GlobalTheory.valAt'_comp (𝟙 _) x V a).trans (by rw [Category.id_comp])
@@ -88,6 +108,13 @@ def der (hc : IsHolTo Set.univ c) (h0 : c 0 = x ≫ e) (hπ : ∀ u, c u ≫ π 
         (GlobalTheory.valAt'_appLE (c u) π U W k a hu).trans (by rw [hπ]))]
     simp
 
+/- English proof (translation)
+Use extensionality with `v`. Establish `H'` using `congrArg (QCoh.appLinear (der hc h0 hπ v).lift T) H`. Rewrite `H'` using `[map_sum]`. Simplify using `only [map_smul] at H'`. Establish `key {W : X.Opens} (hW : T ≤ e ⁻¹ᵁ W) (F : Γ(X, W)) : QCoh.appLinear (der hc h0 hπ v).lift T (Conormal.d he hW F) = (der hc h0 hπ v).app hW F` using `Conormal.Der.lift_d he _ hW F`.
+
+Simplify using `only [key] at H'`. Set `δ : Γ((Scheme.Modules.pushforward x).obj (SheafOfModules.unit (Sp ℂ).ringCatSheaf), T) →+ ℂ` to `AddMonoidHom.mk' (fun t => valAt' (𝟙 (Sp ℂ)) (x ⁻¹ᵁ T) t) (GlobalTheory.valAt'_add _ _)`. Establish `H2` using `congrArg δ H'`. Rewrite `H2` using `[map_sum]`. Rewrite using `[ContinuousLinearMap.sum_apply]`.
+
+Use `(val_cst hx _).symm.trans (Eq.trans (b := δ ((der hc h0 hπ v).app hW F)) rfl ?_)` and prove the remaining obligations. Use `H2.trans (Finset.sum_congr rfl fun a _ => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `valAt' (𝟙 (Sp ℂ)) (x ⁻¹ᵁ T) (x.app T (α a) * cst (x ⁻¹ᵁ T) _) = _`. Rewrite using `[GlobalTheory.valAt'_mul, val_cst hx, val_app]`. Both sides reduce to the same expression.
+-/
 theorem fderiv_eq_sum (he : e ≫ π = 𝟙 S) (hc : IsHolTo Set.univ c) (h0 : c 0 = x ≫ e) (hπ : ∀ u, c u ≫ π = x)
     {T : S.Opens} (hx : ⊤ ≤ x ⁻¹ᵁ T) {W : X.Opens} (hW : T ≤ e ⁻¹ᵁ W) (F : Γ(X, W)) {ι : Type} (s : Finset ι)
     (α : ι → Γ(S, T)) (W' : ι → X.Opens) (hW' : ∀ a, T ≤ e ⁻¹ᵁ W' a) (G : ∀ a, Γ(X, W' a))
@@ -113,6 +140,13 @@ theorem fderiv_eq_sum (he : e ≫ π = 𝟙 S) (hc : IsHolTo Set.univ c) (h0 : c
   rw [GlobalTheory.valAt'_mul, val_cst hx, val_app]
   rfl
 
+/- English proof (translation)
+Introduce `k _ S p σ A _ g cv hcv hol W T hTW F hx n α W' hW' G H`. Establish `hc : IsHolTo Set.univ (fun u => (RelCotAb.pairPt A (cv 0) (cv u) (hcv u)).1)`. Use `HolFibre.isHolTo_of_isPullback (IsPullback.of_hasPullback A.hom A.hom) ?_ ?_` and prove the remaining obligations. Simplify using `only [RelCotAb.pairPt, Limits.pullback.lift_fst]`. Conclude with `HolFibre.isHolTo_const isOpen_univ _`.
+
+Simplify using `only [RelCotAb.pairPt, Limits.pullback.lift_snd]`. Conclude with `hol`. Establish `h0 : (RelCotAb.pairPt A (cv 0) (cv 0) (hcv 0)).1 = (cv 0).1 ≫ Limits.pullback.diagonal A.hom` using `Limits.pullback.hom_ext ((Limits.pullback.lift_fst _ _ _).trans (by rw [Category.assoc, Limits.pullback.diagonal_fst, Category.comp_id])) ((Limits.pullback.lift_snd _ _ _).trans (by rw [Category.assoc, Limits.pullback.diagonal_snd, Category.comp_id]))`. Establish `H'` using `(Conormal.resM_d (Limits.pullback.diagonal_fst A.hom) _ hTW _).symm.trans H`. Establish `R` using `fderiv_eq_sum (Limits.pullback.diagonal_fst A.hom) hc h0 (fun u => Limits.pullback.lift_fst _ _ _) hx _ _ Finset.univ α W' hW' G H'`.
+
+Simplify using `only [GlobalTheory.valAt'_comp] at R`. Simplify using `only [RelCotAb.pairPt, Limits.pullback.lift_snd] at R`. Conclude with `R`.
+-/
 theorem fderiv_ev_eq_sum : ∀ {k : Type} [CommRing k] {S : Scheme.{0}} {p : S ⟶ Sp k} {σ : k →+* ℂ} (A : Over S) [GrpObj A] (g : ℕ)
     (cv : (Fin g → ℂ) → CxPts (A.hom ≫ p) σ) (hcv : ∀ u, (cv 0).1 ≫ A.hom = (cv u).1 ≫ A.hom),
     IsHolTo Set.univ (fun u => (cv u).1) →

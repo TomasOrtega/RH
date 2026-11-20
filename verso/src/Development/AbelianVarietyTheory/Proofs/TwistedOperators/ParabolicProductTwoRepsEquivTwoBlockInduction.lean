@@ -20,10 +20,16 @@ def boolMulti : MultilinearMap ℂ X (X false ⊗[ℂ] X true) :=
     (fun m i x y => by cases i <;> simp [TensorProduct.add_tmul, TensorProduct.tmul_add])
     (fun m i c x => by cases i <;> simp [TensorProduct.smul_tmul', TensorProduct.tmul_smul])
 
+/- English proof (translation)
+Apply the tactic sequence `funext x; cases x <;> simp [boolPair]`.
+-/
 theorem boolPair_eq_right (v : X false) (w w' : X true) :
     boolPair v w = Function.update (boolPair v w') true w := by
   funext x; cases x <;> simp [boolPair]
 
+/- English proof (translation)
+Apply the tactic sequence `funext x; cases x <;> simp [boolPair]`.
+-/
 theorem boolPair_eq_left (v v' : X false) (w : X true) :
     boolPair v w = Function.update (boolPair v' w) false v := by
   funext x; cases x <;> simp [boolPair]
@@ -55,6 +61,9 @@ def boolTensorEquiv : PiTensorProduct ℂ X ≃ₗ[ℂ] X false ⊗[ℂ] X true 
       funext i
       cases i <;> rfl)
 
+/- English proof (translation)
+Simplify using `[boolTensorEquiv, boolMulti]`.
+-/
 theorem boolTensorEquiv_tprod (x : ∀ i, X i) :
     boolTensorEquiv (PiTensorProduct.tprod ℂ x) = x false ⊗ₜ[ℂ] x true := by
   simp [boolTensorEquiv, boolMulti]
@@ -73,6 +82,9 @@ def piTensorTwoEquiv {R a b V W : Type} [CommRing R] [Fintype a] [DecidableEq a]
     rw [piTensor_tprod, boolTensorEquiv_tprod, boolTensorEquiv_tprod]
     exact (extTensor_tmul π₁ π₂ ((leviTwo R a b).symm g) (x false) (x true)).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(LocGL.parIndEquiv (two (stdSum (rfl : r + t = r + t))) (piTensorTwoEquiv π₁ π₂)).symm⟩`.
+-/
 theorem prod₂_equiv_multiProd (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (r t : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (W : Type)
     [AddCommGroup W] [Module ℂ W] (π₁ : Representation ℂ (GL (Fin r) k) V)

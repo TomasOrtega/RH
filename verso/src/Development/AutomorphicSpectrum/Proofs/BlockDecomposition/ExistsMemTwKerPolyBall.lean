@@ -10,11 +10,19 @@ namespace GlobalTheory.CompanionTheory.MirFourier
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Introduce `x hx i` and use `show valuation k (x.toAdd i) ≤ valuation k (s₂ : k) from le_trans (show valuation k (x.toAdd i) ≤ valuation k (s₁ : k) from hx i) h`.
+-/
 theorem polyBall_mono (n : ℕ) {s₁ s₂ : kˣ} (h : valuation k (s₁ : k) ≤ valuation k (s₂ : k)) :
     polyBall n s₁ ≤ polyBall n s₂ :=
   fun x hx i => show valuation k (x.toAdd i) ≤ valuation k (s₂ : k) from
     le_trans (show valuation k (x.toAdd i) ≤ valuation k (s₁ : k) from hx i) h
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `Finite.exists_le (fun i : Fin n => valuation k (x.toAdd i))`. Take `⟨y, hy⟩` from `valuation_surjective (max M 1)`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Rewrite `hy` using `[map_zero]`.
+
+Conclude with `absurd (hy.symm ▸ le_max_right M 1 : (1 : ValueGroupWithZero k) ≤ 0) (by simp)`. Use `⟨Units.mk0 y hy0, fun i => ?_⟩` and prove the remaining obligations. Use `show valuation k (x.toAdd i) ≤ valuation k y`. Rewrite using `[hy]`. Conclude with `le_trans (hM i) (le_max_left _ _)`.
+-/
 theorem exists_mem_polyBall {n : ℕ} (x : Multiplicative (Fin n → k)) :
     ∃ s : kˣ, x ∈ polyBall n s := by
   obtain ⟨M, hM⟩ := Finite.exists_le (fun i : Fin n => valuation k (x.toAdd i))
@@ -28,6 +36,9 @@ theorem exists_mem_polyBall {n : ℕ} (x : Multiplicative (Fin n → k)) :
   rw [hy]
   exact le_trans (hM i) (le_max_left _ _)
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨⟨x, hx⟩, v, rfl⟩`. Conclude with `Submodule.subset_span ⟨⟨x, polyBall_mono n h hx⟩, v, rfl⟩`.
+-/
 theorem twKer_polyBall_mono (ψ : AddChar k Circle) {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (Multiplicative (Fin n → k)) V) (a : Fin n → k) {s₁ s₂ : kˣ}
     (h : valuation k (s₁ : k) ≤ valuation k (s₂ : k)) :
@@ -37,6 +48,15 @@ theorem twKer_polyBall_mono (ψ : AddChar k Circle) {n : ℕ} {V : Type} [AddCom
   rintro w ⟨⟨x, hx⟩, v, rfl⟩
   exact Submodule.subset_span ⟨⟨x, polyBall_mono n h hx⟩, v, rfl⟩
 
+/- English proof (translation)
+Unfold `twKer at hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨⟨x, -⟩, u, rfl⟩` from `hw`. Take `⟨s, hs⟩` from `exists_mem_polyBall x`.
+
+Conclude with `⟨s, Submodule.subset_span ⟨⟨x, hs⟩, u, rfl⟩⟩`. Consider the case `zero => exact ⟨1, Submodule.zero_mem _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨s₁, h₁⟩` from `hx`. Take `⟨s₂, h₂⟩` from `hy`.
+
+Break down `le_total (valuation k (s₁ : k)) (valuation k (s₂ : k)) with h | h` into its components or cases. Conclude with `⟨s₂, Submodule.add_mem _ (twKer_polyBall_mono ψ ρ a h h₁) h₂⟩`. Conclude with `⟨s₁, Submodule.add_mem _ h₁ (twKer_polyBall_mono ψ ρ a h h₂)⟩`. Consider the case `smul c x _ hx`. Take `⟨s, hs⟩` from `hx`.
+
+Conclude with `⟨s, Submodule.smul_mem _ c hs⟩`.
+-/
 theorem exists_mem_twKer_polyBall (ψ : AddChar k Circle) {n : ℕ} {V : Type} [AddCommGroup V]
     [Module ℂ V] (ρ : Representation ℂ (Multiplicative (Fin n → k)) V) (a : Fin n → k) (v : V)
     (hv : v ∈ twKer ρ ⊤ (resChr ψ a ⊤)) :

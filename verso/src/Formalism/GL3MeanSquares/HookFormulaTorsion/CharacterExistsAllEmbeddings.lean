@@ -17,6 +17,13 @@ def allEmbeddingsUnitCircle : Subgroup ℂˣ where
     intro a ha s
     simp only [Units.val_inv_eq_inv_val, map_inv₀, norm_inv, ha s, inv_one]
 
+/- English proof (translation)
+Take `⟨β, hβ⟩` from `IsAlgClosed.exists_pow_nat_eq ((w : ℂˣ) : ℂ) (Nat.pos_of_ne_zero hn)`. Establish `hβ0 : β ≠ 0`. Introduce and unpack `rfl`. Rewrite `hβ` using `[zero_pow hn]`. Conclude with `(Units.ne_zero (w : ℂˣ)) hβ.symm`.
+
+Use `⟨⟨Units.mk0 β hβ0, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `s`. Establish `h1 : ‖s ((w : ℂˣ) : ℂ)‖ = 1` using `w.2 s`. Rewrite `h1` using `[← hβ, map_pow, norm_pow]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn).mp h1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[hβ]`.
+-/
 theorem exists_pow_eq_unit_circle (w : allEmbeddingsUnitCircle) (n : ℕ) (hn : n ≠ 0) : ∃ b : allEmbeddingsUnitCircle, b ^ n = w := by
   obtain ⟨β, hβ⟩ := IsAlgClosed.exists_pow_nat_eq ((w : ℂˣ) : ℂ) (Nat.pos_of_ne_zero hn)
   have hβ0 : β ≠ 0 := by

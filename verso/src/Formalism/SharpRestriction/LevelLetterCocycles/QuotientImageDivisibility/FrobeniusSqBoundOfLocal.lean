@@ -21,6 +21,11 @@ section Main
 
 variable (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Take `⟨y1, hy1, e1⟩` from `cmp_of_mem_X W T₂ hs hR h3₂ hM₂ (hD0c y hy)`. Take `⟨y2, hy2, e2⟩` from `cmp_up W T₂ hs h3₂ hmod₂ hU hMη hy1`. Take `⟨y3, hy3, e3⟩` from `cmp_of_mem_X W T₂ hs hR h3₂ hM₂' (hD0c2 y2 hy2)`. Establish `hG` using `hGc _ (frobenius_sq_mem_lattice_image W T₂ c hy3) (hle (frobenius_sq_comparison_letter W T₂ c hy3))`. Use `exists_inI_inPN_pow_smul_sub_map W hs hR F h3₁ h3₂ hmod₁ hmod₂ hM₁ hM₂ hy (d1 := Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ y1) (d2 := Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ y2) (d3 := Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ y3) (s₁ := S) (s₂ := S) ?_ e2 ?_ …` and prove the remaining obligations.
+
+Rewrite using `[← e1, cmpD_osmul W T₂ _ (NDl_N W T₂ hy), map_pow, map_natCast]`. Rewrite using `[← e3, cmpD_osmul W T₂ _ (NDl_N W T₂ hy2), map_pow, map_natCast]`.
+-/
 theorem frobenius_sq_bound_at_zero [IsDomain O] (hs : W.s = 1) (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)
     (h3₁ : Formalism.MainNotions.DeltaInvariantLattices.p3 W T₁) (h3₂ : Formalism.MainNotions.DeltaInvariantLattices.p3 W T₂)
@@ -52,6 +57,49 @@ theorem frobenius_sq_bound_at_zero [IsDomain O] (hs : W.s = 1) (hR : Formalism.M
   · rw [← e1, cmpD_osmul W T₂ _ (NDl_N W T₂ hy), map_pow, map_natCast]
   · rw [← e3, cmpD_osmul W T₂ _ (NDl_N W T₂ hy2), map_pow, map_natCast]
 
+/- English proof (translation)
+Introduce `d T₁ T₂ F b S η m hset`. Establish `hset'` using `hset`. Take `⟨hCA, hl, hn, ⟨hDom, hDVR, hFrac⟩, -, hSur, -, -, -, -⟩` from `hset'`. Use `haveI := hDom`. Use `haveI := hDVR`.
+
+Use `haveI := hFrac`. Take `⟨hbij, hs, hp2⟩` from `hCA`. Establish `hK1 : Module.finrank K₀ K = 1` using `Formalism.MainNotions.UnusedSlot80.SatW.finrank_one_of_bij' hbij`. Take `⟨-, -, h9₁⟩` from `h9 T₁ hSur.1 hs hp2`. Take `⟨hR, hmod₁⟩` from `h9₁ hK1`.
+
+Take `⟨-, -, h9₂⟩` from `h9 T₂ hSur.2.1 hs hp2`. Take `⟨-, hmod₂⟩` from `h9₂ hK1`. Establish `h3₁` using `h3 T₁ hSur.1`. Establish `h3₂` using `h3 T₂ hSur.2.1`. Establish `h5₁` using `h5 T₁ (boxM d b S η) (boxH d b S η) hSur.1 (rk_jumpsLet₁ W hset)`.
+
+Establish `h5₂` using `h5 T₂ (boxM d b S η) (boxH d b S η) hSur.2.1 (rk_jumpsLet₂ W hE hC hQ hset)`. Establish `hl2 : 2 ≤ PD.p` using `by omega`. Establish `hlam` using `one_le_lam PD.p (hpar n b S + η) hl2`. Establish `haR` using `aR_nonneg PD.p (hpar n b S + η) hl2`. Establish `hl1 : (0 : ℝ) < (PD.p : ℝ) - 1`.
+
+Establish `: (11 : ℝ) ≤ PD.p` using `by exact_mod_cast hl`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set σ : ℝ := Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig₂ PD.p (hpar n b S + η) with hσ`. Use `set EGv : ℝ := EG PD.p (hpar n b S) η S with hEGv`. Establish `hσ0 : 0 ≤ σ`.
+
+Rewrite using `[hσ, Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig₂]`. Check the signs of the components of the expression. Establish `hEG0 : 0 ≤ EGv`. Rewrite using `[hEGv, EG]`. Establish `: 0 ≤ (3 * (aN PD.p (hpar n b S + η) : ℝ) + (S : ℝ) + 2 * (η : ℝ)) / ((PD.p : ℝ) - 1)` using `div_nonneg (by positivity) hl1.le`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨S + ⌈EGv + σ⌉₊, ?_, ?_⟩` and prove the remaining obligations. Unfold `B6`. Establish `h1` using `Nat.ceil_lt_add_one (add_nonneg hEG0 hσ0)`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce `c hc FF _ _ _ _ Fs w hw`. Establish `hcD : (c.val + d) % 2 = 0` using `(Finset.mem_filter.1 hc).2`. Establish `hc1 : ((c - 1).val + d) % 2 = 1`. Use `parity_succ hn d (c - 1)` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_cancel]`. Use linear arithmetic over natural numbers and integers. Establish `hc2 : ((c - 1 - 1).val + d) % 2 = 0`. Use `parity_succ hn d (c - 1 - 1)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hc2m : c - 1 - 1 ∈ evens n d` using `Finset.mem_filter.2 ⟨Finset.mem_univ _, hc2⟩`. Establish `hMc : boxM d b S η c = b c + S` using `if_pos hcD`. Establish `hMc1 : boxM d b S η (c - 1) = η` using `if_neg (by omega)`. Establish `hHc1 : boxH d b S η (c - 1) = b (c - 1) + S` using `if_neg (by omega)`.
+
+Establish `hMc2 : boxM d b S η (c - 1 - 1) = b (c - 1 - 1) + S` using `if_pos hc2`. Establish `hM₁ : ∀ z ∈ W.Nl T₁ (c - 1), W.Q ^ (b c + S) • W.φD T₁ z ∈ W.N T₁`. Rewrite using `[← hMc]`. Conclude with `h5₁.1 c`. Establish `hM₂ : ∀ z ∈ W.Nl T₂ (c - 1), W.Q ^ (b c + S) • W.φD T₂ z ∈ W.N T₂`.
+
+Rewrite using `[← hMc]`. Conclude with `h5₂.1 c`. Establish `hU : ∀ y ∈ W.Nl T₂ (c - 1), W.Q ^ (b (c - 1) + S) • y ∈ Formalism.MainNotions.DeltaInvariantLattices.φspan W T₂ (W.Nl T₂ (c - 1 - 1))`. Rewrite using `[← hHc1]`. Conclude with `h5₂.2.1 (c - 1)`.
+
+Establish `hMη : ∀ z ∈ W.Nl T₂ (c - 1 - 1), W.Q ^ η • W.φD T₂ z ∈ W.N T₂`. Rewrite using `[← hMc1]`. Conclude with `h5₂.1 (c - 1)`. Establish `hM₂' : ∀ z ∈ W.Nl T₂ (c - 1 - 1 - 1), W.Q ^ (b (c - 1 - 1) + S) • W.φD T₂ z ∈ W.N T₂`. Rewrite using `[← hMc2]`.
+
+Conclude with `h5₂.1 (c - 1 - 1)`. Take `⟨E, hE', hGx⟩` from `hG d T₁ T₂ F b S η m hset (c - 1) hc1`. Establish `e12 : c - 1 - 2 = c - 1 - 1 - 1` using `by ring`. Rewrite `hGx` using `[e12]`. Establish `hEle : (E : ℝ) ≤ EGv`.
+
+Use `hE'.trans ?_` and prove the remaining obligations. Rewrite using `[hEGv, EG]`. Establish `: 3 * aR PD.p (hpar n b S + η) ≤ 3 * (aN PD.p (hpar n b S + η) : ℝ)`. Use `Nat.le_ceil (aR PD.p (hpar n b S + η))` as an intermediate fact. Unfold `aN`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `div_le_div_of_nonneg_right (a := 3 * aR PD.p (hpar n b S + η) + S + 2 * η) (b := 3 * (aN PD.p (hpar n b S + η) : ℝ) + S + 2 * η) (by linarith) hl1.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `set k : ℤ := ⌈(E : ℝ) + Formalism.MainNotions.CrystallineLiftingInputs.sig2 PD.p (hpar n b S + η) + ((b (c - 1 - 1) + S : ℕ) : ℝ) - (b (c - 1) : ℝ)⌉ with hk`. Establish `hk' : k = ⌈(E : ℝ) + σ⌉ + (((b (c - 1 - 1) + S : ℕ) : ℤ) - (b (c - 1) : ℤ))`.
+
+Rewrite using `[hk, ← Int.ceil_add_intCast]`. Use `congr 1`. Rewrite using `[hσ]`. Use `push_cast`. Simplify using `only [Formalism.MainNotions.CrystallineLiftingInputs.sig2, Formalism.TruncatedSeriesCounting.RamifiedCoefficientChains.sig₂]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hceil : ⌈(E : ℝ) + σ⌉ ≤ ((⌈EGv + σ⌉₊ : ℕ) : ℤ)`. Establish `h1 : ⌈(E : ℝ) + σ⌉ ≤ ⌈EGv + σ⌉` using `Int.ceil_le_ceil (by linarith)`. Establish `h2 : ((⌈EGv + σ⌉₊ : ℕ) : ℤ) = ⌈EGv + σ⌉` using `Int.natCast_ceil_eq_ceil (add_nonneg hEG0 hσ0)`. Use linear arithmetic over natural numbers and integers.
+
+Use `set pad : ℕ := (((⌈EGv + σ⌉₊ : ℕ) : ℤ) - ⌈(E : ℝ) + σ⌉).toNat with hpad`. Establish `hpad' : (pad : ℤ) = ((⌈EGv + σ⌉₊ : ℕ) : ℤ) - ⌈(E : ℝ) + σ⌉` using `Int.toNat_of_nonneg (by omega)`. Establish `hexp : ((S + ⌈EGv + σ⌉₊ : ℕ) : ℤ) + ((b (c - 1 - 1) + S : ℕ) : ℤ) = (pad : ℤ) + k + ((b (c - 1) + S : ℕ) : ℤ)`. Rewrite using `[hpad', hk']`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `haveI := rk_fd_letter₂ W hset (c - 1)`. Establish `hw' : ∀ f, w f ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T₂ c` using `hw`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `frobenius_sq_bound_at W hs hR F h3₁ h3₂ hmod₁ hmod₂ hM₁ hM₂ hU hMη hM₂' (hD d T₁ T₂ F b S η m hset c hc) (hD d T₁ T₂ F b S η m hset (c - 1 - 1) hc2m) (rk_corankQ₂ W hE hC hQ hset (c - 1) hc1) hGx hexp FF Fs w hw'`.
+
+Introduce `hm0 f`. Establish `h` using `frobenius_sq_bound_at_zero W hs hR F h3₁ h3₂ hmod₁ hmod₂ hM₁ hM₂ hU hMη hM₂' (hD0 d T₁ T₂ F b S η m hset hm0 c hc) (hD0 d T₁ T₂ F b S η m hset hm0 (c - 1 - 1) hc2m) (rk_corank_zero₂ W hE hC hQ hset hm0 (c - 1) hc1) hGx hexp (hw' f)`. Rewrite using `[show S + ⌈EGv + σ⌉₊ + 2 * S = S + ⌈EGv + σ⌉₊ + S + S by ring]`. Conclude with `h`.
+-/
 theorem frobenius_sq_bound_of_local [NeZero n] (h3 : Formalism.MainNotions.DeltaInvariantLattices.P3W W) (h5 : Formalism.MainNotions.DeltaInvariantLattices.P5W W)
     (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (hE : Formalism.MainNotions.RamifiedCoefficientChains.DcrisExactStrict PD LL)
     (hC : Formalism.MainNotions.RamifiedCoefficientChains.CrysSubQuot PD LL) (hQ : Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris PD LL)
@@ -168,6 +216,9 @@ end Main
 
 section Record
 
+/- English proof (translation)
+Introduce `l _ K LL hg _`. Establish `h1` using `hA.1 l K 1 LL hg`. Establish `h11` using `hA.2.2.2.2.2.2.2.2.2.2.1 l K LL`. Conclude with `frobenius_sq_bound_of_local _ h1.2.2.1 h1.2.2.2.2.1 h1.2.2.2.2.2.2.2.2.1 h11.1 h11.2.1 h11.2.2 (hG l K LL hg) (hD l K LL hg) (hD0 l K LL hg)`.
+-/
 theorem steps6_of (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (CR CA CB CK : ℝ) (hA : Formalism.MainNotions.RamifiedCoefficientChains.admitted D HW F Cm CR CA CB CK)
     (hG : ∀ (l : ℕ) [Fact l.Prime] (K LL : Loc.FinExt l) (hg : Loc.Good K 1 LL)

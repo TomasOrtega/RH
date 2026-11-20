@@ -3,6 +3,15 @@ import Development.AutomorphicArithmetic.LocalEmbeddings.ValCount
 open IsLocalRing NumberField IsDedekindDomain GlobalTheory.ValCount
 open scoped Classical
 
+/- English proof (translation)
+Distinguish the cases in `hP : P = ⊥`. Use `⟨a, b, ?_, Or.inr (mul_comm _ _)⟩` and prove the remaining obligations. Rewrite using `[hP]`. Simplify using `using hb`. Use `haveI := IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain S hP (Localization.AtPrime P)`.
+
+Establish `hinj : Function.Injective (algebraMap S (Localization.AtPrime P))` using `IsLocalization.injective _ P.primeCompl_le_nonZeroDivisors`. Take `⟨c, hc⟩` from `ValuationRing.cond (algebraMap S (Localization.AtPrime P) a) (algebraMap S (Localization.AtPrime P) b)`. Take `⟨⟨u, v⟩, huv⟩` from `IsLocalization.surj P.primeCompl c`. Use `⟨u, v, v.2, ?_⟩` and prove the remaining obligations. Simplify using `only at huv`.
+
+Break down `hc with h | h` into its components or cases. Use `left`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, ← huv, ← h, mul_assoc]`. Use `right`.
+
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, ← huv, ← h, mul_assoc]`.
+-/
 private theorem dedekind_local_divisibility (S : Type) [CommRing S] [IsDedekindDomain S] (P : Ideal S) [P.IsPrime]
     (a b : S) (hb : b ≠ 0) : ∃ u v : S, v ∉ P ∧ (a * u = b * v ∨ b * u = a * v) := by
   by_cases hP : P = ⊥
@@ -25,6 +34,25 @@ private theorem dedekind_local_divisibility (S : Type) [CommRing S] [IsDedekindD
       apply hinj
       rw [map_mul, map_mul, ← huv, ← h, mul_assoc]
 
+/- English proof (translation)
+Introduce `R K A L _ _ _ _ _ _ _ _ _ _ _ _ _ _ φ hφ ψ hψ`. Use `letI : Algebra K L := φ.toAlgebra`. Use `haveI : FiniteDimensional K L := hφ`. Use `letI : Algebra R L := (φ.comp (algebraMap R K)).toAlgebra`. Use `haveI : IsScalarTower R K L := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+
+Use `letI : Algebra R A := ψ.toAlgebra`. Use `haveI : IsScalarTower R A L := IsScalarTower.of_algebraMap_eq (fun r => (hψ r).symm)`. Use `haveI : IsDedekindDomain (integralClosure R L) := integralClosure.isDedekindDomain R K L`. Use `haveI : IsFractionRing (integralClosure R L) L := integralClosure.isFractionRing_of_finite_extension K L`. Establish `hinj : Function.Injective (algebraMap A L)` using `IsFractionRing.injective A L`.
+
+Establish `hex : ∀ s : integralClosure R L, ∃ a : A, algebraMap A L a = (s : L)` using `fun s => IsIntegrallyClosed.algebraMap_eq_of_integral (IsIntegral.tower_top (A := A) s.2)`. Use `choose f hf using hex`. Set `χ : integralClosure R L →+* A` to `{ toFun := f map_one' := hinj (by simp [hf]) map_mul' := fun x y => hinj (by simp [hf]) map_zero' := hinj (by simp [hf]) map_add' := fun x y => hinj (by simp [hf]) }`. Establish `hχ : ∀ s, algebraMap A L (χ s) = (s : L)` using `hf`. Rewrite using `[ValuationRing.iff_isInteger_or_isInteger A L]`.
+
+Introduce `x`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := integralClosure R L) x`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Take `⟨u, v, hv, h⟩` from `dedekind_local_divisibility _ ((maximalIdeal A).comap χ) a b hb0`. Establish `hvu : IsUnit (χ v)`.
+
+Rewrite `hv` using `[Ideal.mem_comap]`. Conclude with `notMem_maximalIdeal.mp hv`. Take `⟨w, hw⟩` from `hvu.exists_right_inv`. Establish `hw' : (v : L) * algebraMap A L w = 1`. Rewrite using `[← hχ, ← map_mul, hw, map_one]`.
+
+Establish `hbL : (b : L) ≠ 0` using `fun h0 => hb0 (Subtype.ext h0)`. Establish `hvL : (v : L) ≠ 0` using `left_ne_zero_of_mul_eq_one hw'`. Express the relevant statement in the definitionally equal form `IsLocalization.IsInteger A ((a : L) / (b : L)) ∨ IsLocalization.IsInteger A ((a : L) / (b : L))⁻¹`. Break down `h with h | h` into its components or cases. Use `right`.
+
+Establish `h' : (a : L) * u = b * v` using `congrArg Subtype.val h`. Establish `haL : (a : L) ≠ 0`. Introduce `h0`. Rewrite `h'` using `[h0, zero_mul]`. Conclude with `mul_ne_zero hbL hvL h'.symm`.
+
+Use `⟨χ u * w, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hχ, inv_div, eq_div_iff haL]`. Take the linear combination `algebraMap A L w * h' + (b : L) * hw'`. Use `left`. Establish `h' : (b : L) * u = a * v` using `congrArg Subtype.val h`.
+
+Use `⟨χ u * w, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hχ, eq_div_iff hbL]`. Take the linear combination `algebraMap A L w * h' + (a : L) * hw'`.
+-/
 theorem UpperTheory.valuationRing_of_finite_dominating :
     ∀ (R K A L : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [CharZero K] [Algebra R K] [IsFractionRing R K] [CommRing A] [IsDomain A] [IsLocalRing A] [IsIntegrallyClosed A] [Field L] [Algebra A L] [IsFractionRing A L] (φ : K →+* L), φ.Finite → ∀ ψ : R →+* A, (∀ r, algebraMap A L (ψ r) = φ (algebraMap R K r)) → ValuationRing A := by
   intro R K A L _ _ _ _ _ _ _ _ _ _ _ _ _ _ φ hφ ψ hψ

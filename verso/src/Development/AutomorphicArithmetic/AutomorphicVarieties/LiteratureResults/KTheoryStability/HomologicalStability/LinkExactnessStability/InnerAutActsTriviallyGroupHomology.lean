@@ -14,9 +14,17 @@ def conjActHom {k G : Type} [CommRing k] [Group G] (g : G) (A : Rep k G) :
     rw [← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]
     simp [mul_assoc]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjActHom_hom_apply {k G : Type} [CommRing k] [Group G] (g : G) (A : Rep k G) (a : A) :
     (conjActHom g A).hom a = A.ρ g a := rfl
 
+/- English proof (translation)
+Rewrite using `[← cancel_epi (groupHomology.H0π A), groupHomology.H0π_comp_map, Category.comp_id]`. Use extensionality with `a`. Establish `hv : (groupHomology.H0π A).hom (A.ρ g a) = (groupHomology.H0π A).hom a`. Rewrite using `[← groupHomology.coinvariantsMk_comp_H0Iso_inv]`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply]`.
+
+Use `congr 1`. Conclude with `Representation.Coinvariants.mk_self_apply _ _ _`. Rewrite using `[← hv, ← hu]`. Both sides reduce to the same expression.
+-/
 theorem conj_map_eq_id_zero (k G : Type) [CommRing k] [Group G] (g : G) (A : Rep k G)
     (u : A ⟶ Rep.res (MulAut.conj g).toMonoidHom A) (hu : ∀ a, u.hom a = A.ρ g a) :
     groupHomology.map (MulAut.conj g).toMonoidHom u 0 = 𝟙 _ := by
@@ -30,6 +38,15 @@ theorem conj_map_eq_id_zero (k G : Type) [CommRing k] [Group G] (g : G) (A : Rep
   rw [← hv, ← hu]
   rfl
 
+/- English proof (translation)
+Introduce `k G _ _ g n`. Proceed by induction on `n with`. Consider the case `zero => exact conj_map_eq_id_zero k G g`. Consider the case `succ n ih`. Introduce `A u hu`.
+
+Take `⟨ι, K, i, e, h, hS⟩` from `exists_free_shortExact k G A`. Establish `hP : IsZero (groupHomology (Rep.free k G ι) (n + 1))` using `GlobalTheory.T.projective_rep_groupHomology_pos_vanishes k G (Rep.free k G ι) inferInstance n`. Establish `hmono` using `groupHomology.mono_δ_of_isZero hS n hP`. Establish `hnat` using `(GlobalTheory.T.groupHomology_longExact_maps_natural_of_res k G G (MulAut.conj g).toMonoidHom _ _ hS hS (conjActHom g K) (conjActHom g (Rep.free k G ι)) u (fun a => by`. Express the relevant statement in the definitionally equal form `(Rep.free k G ι).ρ g (i.hom a) = i.hom (K.ρ g a)`.
+
+Conclude with `(Rep.hom_comm_apply i g a).symm)`. Use the proof step `(fun a => by`. Express the relevant statement in the definitionally equal form `u.hom (e.hom a) = e.hom ((Rep.free k G ι).ρ g a)`. Rewrite using `[hu]`. Conclude with `(Rep.hom_comm_apply e g a).symm) n).1`.
+
+Rewrite `hnat` using `[ih K (conjActHom g K) (fun _ => rfl), Category.comp_id]`. Rewrite using `[← cancel_mono (groupHomology.δ hS (n + 1) n rfl), Category.id_comp]`. Conclude with `hnat.symm`.
+-/
 theorem conj_map_eq_id : ∀ (k G : Type) [CommRing k] [Group G] (g : G) (n : ℕ) (A : Rep k G)
     (u : A ⟶ Rep.res (MulAut.conj g).toMonoidHom A), (∀ a, u.hom a = A.ρ g a) →
     groupHomology.map (MulAut.conj g).toMonoidHom u n = 𝟙 _ := by
@@ -59,6 +76,9 @@ end GlobalTheory.HomStab
 
 section
 open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab
+/- English proof (translation)
+Use `first`. Consider the case `exact @GlobalTheory.HomStab.conj_map_eq_id`. Consider the case `exact @GlobalTheory.HomStab.conj_map_eq_id_zero`. Consider the case `exact @GlobalTheory.HomStab.conjActHom_hom_apply`.
+-/
 theorem _root_.GlobalTheory.T.innerAut_acts_trivially_groupHomology : ∀ (k G : Type) [CommRing k] [Group G] (g : G) (n : ℕ) (A : Rep k G) (u : A ⟶ Rep.res (MulAut.conj g).toMonoidHom A), (∀ a, u.hom a = A.ρ g a) → groupHomology.map (MulAut.conj g).toMonoidHom u n = 𝟙 _ := by
   first
   | exact @GlobalTheory.HomStab.conj_map_eq_id

@@ -5,6 +5,13 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open UpperTheory.V UpperTheory.V.Af UpperTheory.V.Sd UpperTheory.V.Ws UpperTheory.V.Base UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E
 
 open GroundTheory.Global.SemiLocal in
+/- English proof (translation)
+Introduce `K M Ω _ _ _ _ _ _ _ _ _ _ _ v h w`. Use `haveI : Module.Finite K M := Module.Finite.of_restrictScalars_finite ℚ K M`. Use `haveI : Algebra.IsAlgebraic M Ω := IsAlgClosure.isAlgebraic`. Use `haveI : IsAlgClosure K Ω := ⟨IsAlgClosure.isAlgClosed M, Algebra.IsAlgebraic.trans K M Ω⟩`. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω w.1`.
+
+Establish `hv : IsPlaceOver A v` using `fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply K M Ω, w.2.over]`. Conclude with `hA (algebraMap (𝓞 K) (𝓞 M) x)`. Take `⟨he, hf⟩` from `GlobalTheory.PlaceIsoDec.ramificationIdx_eq_one_and_inertiaDeg_eq_one (F := K) (K := M) (L := M) hv hA hA (fun s hs => ⟨{ s.toRingEquiv with commutes' := h A hv s hs }, AlgEquiv.ext fun _ => rfl⟩)`. Establish `hr` using `finrank_eq_ramificationIdx_mul_inertiaDeg M v w.1`.
+
+Rewrite `hr` using `[he, hf]`. Conclude with `(Algebra.finrank_eq_one_iff_bijective_algebraMap.1 hr).2`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.splitOfDec :
     UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.SplitOfDec := by
   intro K M Ω _ _ _ _ _ _ _ _ _ _ _ v h w

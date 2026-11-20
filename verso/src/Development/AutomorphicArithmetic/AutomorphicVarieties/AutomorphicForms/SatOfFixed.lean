@@ -9,6 +9,19 @@ open NumberField IsDedekindDomain GlobalTheory.CuspRep
 
 namespace UpperTheory.V.Af
 
+/- English proof (translation)
+Use `open GlobalTheory.OrbitAvg in`. Assume the negation of the conclusion as `hn`. Take `⟨x, hx0, hx⟩` from `hf`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Establish `hfi : ∀ y, (stab σ K y).FiniteIndex` using `fun y => by`.
+
+Establish `ho : IsOpen (stab σ K y : Set K)` using `(hσ y).preimage continuous_subtype_val`. Use `haveI := (stab σ K y).quotient_finite_of_isOpen ho`. Conclude with `Subgroup.finiteIndex_of_finite_quotient`. Establish `hz : ∀ y, avg σ K y = 0` using `fun y => by`. Assume the negation of the conclusion as `h0`.
+
+Conclude with `hn ⟨_, h0, fun u hu => avg_invariant σ K (hfi y) ⟨u, hu⟩⟩`. Establish `key : ∀ z ∈ (⊤ : Submodule ℂ W), (stab ρ K z).FiniteIndex ∧ avg ρ K z = 0` using `fun z hz' => by`. Rewrite `hz'` using `[← h]`. Use `Submodule.iSup_induction _ (motive := fun z => (stab ρ K z).FiniteIndex ∧ avg ρ K z = 0) hz' ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨f, hf⟩ _ ⟨y, rfl⟩ haveI := hfi y`.
+
+Establish `hle : stab σ K y ≤ stab ρ K (f y)` using `fun l hl => by`. Rewrite `hl`, the goal using `[mem_stab]`. Rewrite using `[← hf, hl]`. Use `⟨Subgroup.finiteIndex_of_le hle, ?_⟩` and prove the remaining obligations. Use `haveI := Fintype.ofFinite (K ⧸ stab σ K y)`.
+
+Use `congrArg f (hz y)` as an intermediate fact. Rewrite using `[avg_eq ρ K hle, ← map_zero f, ← this]`. Simplify using `only [avg, avgH, cv, finsum_eq_sum_of_fintype, map_smul, map_sum, hf]`. Establish `: stab ρ K (0 : W) = ⊤` using `eq_top_iff.2 fun l _ => by rw [mem_stab, map_zero]`. Establish `h1 : (stab ρ K (0 : W)).FiniteIndex` using `this ▸ inferInstance`.
+
+Conclude with `⟨h1, avg_fixed ρ K h1 fun l _ => map_zero _⟩`. Introduce and unpack `a b ⟨ha, ha'⟩ ⟨hb, hb'⟩`. Conclude with `⟨Subgroup.finiteIndex_of_le (stab_le_add ρ K a b), by rw [avg_add ρ K ha hb, ha', hb', add_zero]⟩`. Take `⟨h1, h2⟩` from `key x trivial`. Conclude with `hx0 ((avg_fixed ρ K h1 hx).symm.trans h2)`.
+-/
 theorem hasFixed_of_sum {G V W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ G V) (hσ : GlobalTheory.PRep.IsSmooth σ) (ρ : Representation ℂ G W)
     (K : Subgroup G) (hK : IsCompact (K : Set G))
@@ -64,10 +77,20 @@ private def sInt (w : HeightOneSpectrum (𝓞 F)) : (w.adicCompletionIntegers F)
   map_zero' := Subtype.ext (map_zero (sLoc F w))
   map_add' x y := Subtype.ext (map_add (sLoc F w) _ _)
 
+/- English proof (translation)
+Rewrite using `[← nsmul_eq_mul, ← nsmul_eq_mul, map_nsmul]`.
+-/
 private theorem sInt_natMul (w : HeightOneSpectrum (𝓞 F)) (M : ℕ) (x : (w.adicCompletionIntegers F).toSubring) :
     sInt w (M * x) = M * sInt w x := by
   rw [← nsmul_eq_mul, ← nsmul_eq_mul, map_nsmul]
 
+/- English proof (translation)
+Establish `h1 : Valued.v (M : w.adicCompletion F) = 1`. Establish `: (M : w.adicCompletion F) = algebraMap F _ (algebraMap (𝓞 F) F M)` using `by simp`. Rewrite using `[this]`. Establish `h2` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w (algebraMap (𝓞 F) F M)`. Use `h2.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(HeightOneSpectrum.intValuation_eq_one_iff).2 hM`. Establish `h0 : (M : w.adicCompletion F) ≠ 0` using `fun h => by simp [h] at h1`. Use `IsUnit.of_mul_eq_one ⟨(M : w.adicCompletion F)⁻¹, ?_⟩ (Subtype.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Valued.v (M : w.adicCompletion F)⁻¹ ≤ 1`.
+
+Rewrite using `[map_inv₀, h1, inv_one]`. Simplify using `using mul_inv_cancel₀ h0`.
+-/
 private theorem isUnit_nat (w : HeightOneSpectrum (𝓞 F)) {M : ℕ} (hM : (M : 𝓞 F) ∉ w.asIdeal) :
     IsUnit (M : (w.adicCompletionIntegers F).toSubring) := by
   have h1 : Valued.v (M : w.adicCompletion F) = 1 := by
@@ -83,6 +106,13 @@ private theorem isUnit_nat (w : HeightOneSpectrum (𝓞 F)) {M : ℕ} (hM : (M :
     rw [map_inv₀, h1, inv_one]
   · simpa using mul_inv_cancel₀ h0
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `hk`. Use `⟨cornerGL n (sInt w) k, map_cornerGL_of_zero _ _ (fun x => ?_) k, ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `(isUnit_nat w hM).dvd (a := x)`. Rewrite using `[sInt_natMul]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mul_mem_right _ _ (Ideal.subset_span rfl))`.
+
+Use extensionality with `i j : 2`. Express the relevant statement in the definitionally equal form `((1 : Matrix (Fin n) (Fin n) (Ohat F)) i j : Af F) - sLoc F w ((1 : Matrix (Fin n) (Fin n) (w.adicCompletionIntegers F).toSubring) i j) + sLoc F w _ = (1 : Matrix (Fin n) (Fin n) (Af F)) i j - sLoc F w ((1 : Matrix (Fin n) (Fin n) (w.adicCompletion F)) i j) + sLoc F w _`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `only [Matrix.one_apply_eq]`.
+
+Both sides reduce to the same expression. Simplify using `only [Matrix.one_apply_ne h]`. Both sides reduce to the same expression.
+-/
 theorem locGL_mem_KLev (n : ℕ) (w : HeightOneSpectrum (𝓞 F)) {M : ℕ} (hM : (M : 𝓞 F) ∉ w.asIdeal)
     {k : GL (Fin n) (w.adicCompletion F)} (hk : k ∈ GlobalTheory.LFun.KGL w n) : locGL F n w k ∈ KLev F n M := by
   obtain ⟨k, rfl⟩ := hk
@@ -100,6 +130,9 @@ theorem locGL_mem_KLev (n : ℕ) (w : HeightOneSpectrum (𝓞 F)) {M : ℕ} (hM 
     · simp only [Matrix.one_apply_ne h]
       rfl
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hS F n w σ`. Take `⟨x, hx0, hx⟩` from `hρ`. Establish `hK : IsCompact (GlobalTheory.LFun.KGL w n : Set (GL (Fin n) (w.adicCompletion F)))` using `GlobalTheory.LFun.IntPtsUnitary.isCompact_GLint _ (PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F w)`. Take `⟨B, hB⟩` from `h1 (hasFixed_of_sum σ.ρ σ.smooth (ρ.comp (locGL F n w)) _ hK hi.2 ⟨x, hx0, fun u hu => hx _ (locGL_mem_KLev n w hw hu)⟩)`. Conclude with `⟨B, (h2 _ _ hi B).2 hB⟩`.
+-/
 theorem sat_of_isotypic (hS : SatLoc) {n M : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (GL (Fin n) (Af F)) V) (hρ : HasFixed ρ (KLev F n M)) (w : HeightOneSpectrum (𝓞 F))
     (hw : (M : 𝓞 F) ∉ w.asIdeal) (σ : SmIrr (GL (Fin n) (w.adicCompletion F))) (hi : LocIsotypic ρ w σ) :

@@ -4,6 +4,17 @@ namespace Formalism.FourierDecayAlt.P.Sz4
 
 open Finset Formalism.FourierDecayAlt.Sz
 
+/- English proof (translation)
+Establish `h1 : ∀ i ∈ Icc 1 J, ∑ j ∈ Ioc i J, F i j = ∑ d ∈ Ioc 0 (J - i), F i (i + d)`. Introduce `i hi`. Rewrite `hi` using `[mem_Icc]`. Use `Finset.sum_nbij' (fun j => j - i) (fun d => i + d) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `j hj`.
+
+Simplify using `only [mem_Ioc] at hj ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `d hd`. Simplify using `only [mem_Ioc] at hd ⊢`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `j hj`. Simplify using `only [mem_Ioc] at hj`. Use linear arithmetic over natural numbers and integers. Introduce `d hd`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `j hj`. Simplify using `only [mem_Ioc] at hj`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.sum_congr rfl h1]`.
+
+Use `Finset.sum_comm' ?_` and prove the remaining obligations. Introduce `i d`. Simplify using `only [mem_Icc, mem_Ioc]`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma sum_pairs_reindex (J : ℕ) (F : ℕ → ℕ → ℝ) :
     ∑ i ∈ Icc 1 J, ∑ j ∈ Ioc i J, F i j =
       ∑ d ∈ Ioc 0 J, ∑ i ∈ Icc 1 (J - d), F i (i + d) := by
@@ -22,11 +33,17 @@ lemma sum_pairs_reindex (J : ℕ) (F : ℕ → ℕ → ℝ) :
   simp only [mem_Icc, mem_Ioc]
   omega
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [Finset.sum_Icc_succ_top (by omega), ih]; ring`.
+-/
 lemma tele (g : ℕ → ℝ) (n : ℕ) : ∑ i ∈ Icc 1 n, (g (i + 1) - g i) = g (n + 1) - g 1 := by
   induction n with
   | zero => simp
   | succ n ih => rw [Finset.sum_Icc_succ_top (by omega), ih]; ring
 
+/- English proof (translation)
+The claim follows from `|∑ i ∈ Icc 1 n, (de (i + d) - de i)| ≤ d := by induction d with | zero => simp | succ d ih => have h : ∑ i ∈ Icc 1 n, (de (i + (d + 1)) - de i) = ∑ i ∈ Icc 1 n, (de (i + d) - de i) + (de (n + 1 + d) - de (1 + d)) := by have := tele (fun i => de (i + d)) n rw [← this, ← Finset.sum …`.
+-/
 lemma shift_bound1 (de : ℕ → ℝ) (h01 : ∀ i, de i = 0 ∨ de i = 1) (n d : ℕ) :
     |∑ i ∈ Icc 1 n, (de (i + d) - de i)| ≤ d := by
   induction d with
@@ -46,6 +63,9 @@ lemma shift_bound1 (de : ℕ → ℝ) (h01 : ∀ i, de i = 0 ∨ de i = 1) (n d 
       _ ≤ (d : ℝ) + 1 := by linarith
       _ = ((d + 1 : ℕ) : ℝ) := by push_cast; ring
 
+/- English proof (translation)
+The claim follows from `|∑ i ∈ Icc 1 n, (de (i + d) - de i)| ≤ n := by calc _ ≤ ∑ i ∈ Icc 1 n, |de (i + d) - de i| := Finset.abs_sum_le_sum_abs _ _ _ ≤ ∑ _i ∈ Icc 1 n, (1 : ℝ) := by refine Finset.sum_le_sum fun i _ => ?_ rcases h01 (i + d) with a | a <;> rcases h01 i with b | b <;> rw [a, b] <;> norm_nu …`.
+-/
 lemma shift_bound2 (de : ℕ → ℝ) (h01 : ∀ i, de i = 0 ∨ de i = 1) (n d : ℕ) :
     |∑ i ∈ Icc 1 n, (de (i + d) - de i)| ≤ n := by
   calc _ ≤ ∑ i ∈ Icc 1 n, |de (i + d) - de i| := Finset.abs_sum_le_sum_abs _ _
@@ -54,6 +74,11 @@ lemma shift_bound2 (de : ℕ → ℝ) (h01 : ∀ i, de i = 0 ∨ de i = 1) (n d 
         rcases h01 (i + d) with a | a <;> rcases h01 i with b | b <;> rw [a, b] <;> norm_num
     _ = n := by simp
 
+/- English proof (translation)
+Proceed by induction on `n, hn using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ n hn ih`. Rewrite using `[Finset.sum_Ioc_succ_top hn]`. Establish `hnpos : (0 : ℝ) < n` using `by exact_mod_cast (by omega : 0 < n)`.
+
+Use `Real.one_sub_inv_le_log_of_pos (x := ((n : ℝ) + 1) / n) (by positivity)` as an intermediate fact. Rewrite `this` using `[Real.log_div (by positivity) (by positivity)]`. Establish `e : 1 - (((n : ℝ) + 1) / n)⁻¹ = 1 / ((n : ℝ) + 1)` using `by field_simp; ring`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma harm_log (h n : ℕ) (hh : 1 ≤ h) (hn : h ≤ n) :
     ∑ d ∈ Ioc h n, (1 : ℝ) / d ≤ Real.log n - Real.log h := by
   induction n, hn using Nat.le_induction with
@@ -67,6 +92,13 @@ lemma harm_log (h n : ℕ) (hh : 1 ≤ h) (hn : h ≤ n) :
     push_cast
     linarith
 
+/- English proof (translation)
+Proceed by induction on `n, hn using Nat.le_induction with`. Consider the case `base`. Rewrite using `[Finset.sum_Ioc_succ_top (by omega), Finset.sum_Ioc_succ_top (by omega)]`. Evaluate the numerical expressions. Consider the case `succ n hn ih`.
+
+Rewrite using `[Finset.sum_Ioc_succ_top (by omega)]`. Establish `hnpos : (0 : ℝ) < n` using `by exact_mod_cast (by omega : 0 < n)`. Establish `: (1 : ℝ) / ((n : ℝ) + 1) ^ 2 ≤ 1 / n - 1 / ((n : ℝ) + 1)`. Rewrite using `[div_sub_div _ _ (by positivity) (by positivity), div_le_div_iff₀ (by positivity) (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma sum_inv_sq_le_sub (n : ℕ) (hn : 2 ≤ n) : ∑ d ∈ Ioc 0 n, (1 : ℝ) / (d : ℝ) ^ 2 ≤ 7 / 4 - 1 / n := by
   induction n, hn using Nat.le_induction with
   | base =>
@@ -81,6 +113,11 @@ lemma sum_inv_sq_le_sub (n : ℕ) (hn : 2 ≤ n) : ∑ d ∈ Ioc 0 n, (1 : ℝ) 
     push_cast
     linarith
 
+/- English proof (translation)
+Break down `Nat.lt_or_ge n 2 with h | h` into its components or cases. Use `interval_cases n`. Evaluate the numerical expressions. Rewrite using `[Finset.sum_Ioc_succ_top (by omega)]; norm_num`. Use `sum_inv_sq_le_sub n h` as an intermediate fact.
+
+Establish `h2 : (0 : ℝ) ≤ 1 / n` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma sq_sum (n : ℕ) : ∑ d ∈ Ioc 0 n, (1 : ℝ) / (d : ℝ) ^ 2 ≤ 7 / 4 := by
   rcases Nat.lt_or_ge n 2 with h | h
   · interval_cases n
@@ -90,6 +127,17 @@ lemma sq_sum (n : ℕ) : ∑ d ∈ Ioc 0 n, (1 : ℝ) / (d : ℝ) ^ 2 ≤ 7 / 4 
     have h2 : (0 : ℝ) ≤ 1 / n := by positivity
     linarith
 
+/- English proof (translation)
+Establish `h1 : |(-t)| < 1` using `by rw [abs_neg]; linarith`. Establish `h` using `Real.abs_log_sub_add_sum_range_le h1 3`. Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero, abs_neg] at h`. Establish `hpos : 0 < 1 + t` using `by have := abs_le.mp ht; linarith`. Rewrite using `[← Real.le_log_iff_exp_le hpos]`.
+
+Establish `h3` using `(abs_le.mp h).1`. Establish `hs0 : 0 ≤ |t|` using `abs_nonneg t`. Establish `hs2 : |t| ^ 2 = t ^ 2` using `sq_abs t`. Establish `h4 : |t| ^ 4 / (1 - |t|) ≤ t ^ 2 / 12`. Rewrite using `[div_le_iff₀ (by linarith)]`.
+
+Rewrite using `[← hs2]`. Use polynomial arithmetic with `[mul_nonneg hs0 hs0, pow_nonneg hs0 2, pow_nonneg hs0 3]`. Establish `h5 : -(t ^ 2 / 4) ≤ t ^ 3`. Establish `: |t ^ 3| = |t| ^ 3` using `abs_pow t 3`. Establish `h6` using `neg_abs_le (t ^ 3)`.
+
+Rewrite `h6` using `[this]`. Rewrite using `[← hs2]`. Use polynomial arithmetic with `[mul_nonneg hs0 hs0]`. Establish `e : 1 - -t = 1 + t` using `by ring`. Rewrite `h3` using `[e]`.
+
+Evaluate the numerical expressions using `at h3`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 lemma one_add_ge (t : ℝ) (ht : |t| ≤ 1 / 4) : Real.exp (t - 2 / 3 * t ^ 2) ≤ 1 + t := by
   have h1 : |(-t)| < 1 := by rw [abs_neg]; linarith
   have h := Real.abs_log_sub_add_sum_range_le h1 3
@@ -114,6 +162,9 @@ lemma one_add_ge (t : ℝ) (ht : |t| ≤ 1 / 4) : Real.exp (t - 2 / 3 * t ^ 2) �
   norm_num at h3
   nlinarith
 
+/- English proof (translation)
+The claim follows from `|∑ i ∈ Icc 1 J, ∑ j ∈ Ioc i J, (de j - de i) / (4 * ((j : ℝ) - (i : ℝ)))| ≤ (1 + J * Real.log 2) / 4 := by rw [sum_pairs_reindex] set B : ℕ → ℝ := fun d => ∑ i ∈ Icc 1 (J - d), (de (i + d) - de i) with hB have h1 : ∀ d ∈ Ioc 0 J, ∑ i ∈ Icc 1 (J - d), (de (i + d) - de i) / (4 * (( …`.
+-/
 lemma lin_bound (J : ℕ) (hJ : 1 ≤ J) (de : ℕ → ℝ) (h01 : ∀ i, de i = 0 ∨ de i = 1) :
     |∑ i ∈ Icc 1 J, ∑ j ∈ Ioc i J, (de j - de i) / (4 * ((j : ℝ) - (i : ℝ)))| ≤
       (1 + J * Real.log 2) / 4 := by
@@ -169,6 +220,17 @@ lemma lin_bound (J : ℕ) (hJ : 1 ≤ J) (de : ℕ → ℝ) (h01 : ∀ i, de i =
         linarith
     _ ≤ (1 + J * Real.log 2) / 4 := by linarith
 
+/- English proof (translation)
+Rewrite using `[sum_pairs_reindex]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun d hd => ?_` and prove the remaining obligations. Rewrite `hd` using `[mem_Ioc]`. Establish `hd0 : (0 : ℝ) < d` using `by exact_mod_cast hd.1`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `e : ((i + d : ℕ) : ℝ) - (i : ℝ) = d` using `by push_cast; ring`. Rewrite using `[e, div_pow, mul_pow]`. Establish `h2 : (de (i + d) - de i) ^ 2 ≤ 1`.
+
+Apply the tactic sequence `rcases h01 (i + d) with a | a <;> rcases h01 i with b | b <;> rw [a, b] <;> norm_num`. Rewrite using `[div_le_iff₀ (by positivity)]`. Establish `e2 : (1 : ℝ) / 16 * (1 / (d : ℝ) ^ 2) * (4 ^ 2 * (d : ℝ) ^ 2) = 1` using `by field_simp; norm_num`. Rewrite using `[e2]`. Conclude with `h2`.
+
+Use `_ = ((J - d : ℕ) : ℝ) * ((1 : ℝ) / 16 * (1 / (d : ℝ) ^ 2)) := by simp`. Use `_ ≤ (J : ℝ) * ((1 : ℝ) / 16 * (1 / (d : ℝ) ^ 2)) := by`. Apply `mul_le_mul_of_nonneg_right _ (by positivity)` to reduce the goal to its premises. Conclude with `Nat.sub_le J d` after adjusting the coercions. Use `_ = _ := by ring`.
+
+Use `_ = (J : ℝ) / 16 * ∑ d ∈ Ioc 0 J, (1 : ℝ) / (d : ℝ) ^ 2 := by rw [Finset.mul_sum]`. Use `_ ≤ (J : ℝ) / 16 * (7 / 4) := mul_le_mul_of_nonneg_left (sq_sum J) (by positivity)`. Use `_ = _ := by ring`.
+-/
 lemma quad_bound (J : ℕ) (de : ℕ → ℝ) (h01 : ∀ i, de i = 0 ∨ de i = 1) :
     ∑ i ∈ Icc 1 J, ∑ j ∈ Ioc i J, ((de j - de i) / (4 * ((j : ℝ) - (i : ℝ)))) ^ 2 ≤
       7 / 64 * (J : ℝ) := by
@@ -196,6 +258,9 @@ lemma quad_bound (J : ℕ) (de : ℕ → ℝ) (h01 : ∀ i, de i = 0 ∨ de i = 
     _ ≤ (J : ℝ) / 16 * (7 / 4) := mul_le_mul_of_nonneg_left (sq_sum J) (by positivity)
     _ = _ := by ring
 
+/- English proof (translation)
+The claim follows from `|(de j - de i) / (4 * ((j : ℝ) - (i : ℝ)))| ≤ 1 / 4 := by have h1 : (1 : ℝ) ≤ (j : ℝ) - i := by have : (i : ℝ) + 1 ≤ j := by exact_mod_cast hij linarith rw [abs_div, abs_of_pos (by linarith : (0 : ℝ) < 4 * ((j : ℝ) - i)), div_le_iff₀ (by linarith)] have h2 : |de j - de i| ≤ 1 := …`.
+-/
 lemma pair_small (de : ℕ → ℝ) (h01 : ∀ i, de i = 0 ∨ de i = 1) (i j : ℕ) (hij : i < j) :
     |(de j - de i) / (4 * ((j : ℝ) - (i : ℝ)))| ≤ 1 / 4 := by
   have h1 : (1 : ℝ) ≤ (j : ℝ) - i := by
@@ -206,6 +271,21 @@ lemma pair_small (de : ℕ → ℝ) (h01 : ∀ i, de i = 0 ∨ de i = 1) (i j : 
     rcases h01 j with a | a <;> rcases h01 i with b | b <;> rw [a, b] <;> norm_num
   linarith
 
+/- English proof (translation)
+Establish `hlin` using `abs_le.mp (lin_bound J hJ de h01)`. Establish `hquad` using `quad_bound J de h01`. Establish `hlog2` using `Real.log_two_lt_d9`. Establish `hJpos : (0 : ℝ) < J` using `by exact_mod_cast hJ`. Prove the components needed by the constructor for the conclusion.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Simplify using `only [Finset.sum_sub_distrib, ← Finset.mul_sum]`. Use polynomial arithmetic with `[hlin.1]`. Use `_ = ∏ i ∈ Icc 1 J, ∏ j ∈ Ioc i J, Real.exp ((de j - de i) / (4 * ((j : ℝ) - (i : ℝ))) - 2 / 3 * ((de j - de i) / (4 * ((j : ℝ) - (i : ℝ)))) ^ 2) := by`.
+
+Rewrite using `[Real.exp_sum]`. Conclude with `Finset.prod_congr rfl fun i _ => Real.exp_sum _ _`. Use `_ ≤ Rde J de := by`. Unfold `Rde`. Use `Finset.prod_le_prod (fun i _ => Finset.prod_nonneg fun j _ => (Real.exp_pos _).le) fun i _ => ?_` and prove the remaining obligations.
+
+Use `Finset.prod_le_prod (fun j _ => (Real.exp_pos _).le) fun j hj => ?_` and prove the remaining obligations. Conclude with `one_add_ge _ (pair_small de h01 i j (mem_Ioc.mp hj).1)`. Combine the equalities or inequalities in the displayed calculation. Unfold `Rde`. Establish `hnn : ∀ i j : ℕ, j ∈ Ioc i J → 0 ≤ 1 + (de j - de i) / (4 * ((j : ℝ) - (i : ℝ)))`.
+
+Introduce `i j hj`. Use `abs_le.mp (pair_small de h01 i j (mem_Ioc.mp hj).1)` as an intermediate fact. Combine the linear relations using `[this.1]`. Use `Finset.prod_le_prod (fun i _ => Finset.prod_nonneg fun j hj => hnn i j hj) fun i _ => ?_` and prove the remaining obligations. Use `Finset.prod_le_prod (fun j hj => hnn i j hj) fun j hj => ?_` and prove the remaining obligations.
+
+Rewrite using `[add_comm]`. Conclude with `Real.add_one_le_exp _`. Use `_ = Real.exp (∑ i ∈ Icc 1 J, ∑ j ∈ Ioc i J, (de j - de i) / (4 * ((j : ℝ) - (i : ℝ)))) := by`. Rewrite using `[Real.exp_sum]`. Conclude with `(Finset.prod_congr rfl fun i _ => Real.exp_sum _ _).symm`.
+
+Use `_ ≤ Real.exp (((J : ℝ) + 1) / 4) := by`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Use polynomial arithmetic with `[hlin.2]`.
+-/
 lemma rde_bound (J : ℕ) (hJ : 1 ≤ J) (de : ℕ → ℝ) (h01 : ∀ i, de i = 0 ∨ de i = 1) :
     Real.exp (-(((J : ℝ) + 1) / 4)) ≤ Rde J de ∧ Rde J de ≤ Real.exp (((J : ℝ) + 1) / 4) := by
   have hlin := abs_le.mp (lin_bound J hJ de h01)
@@ -249,6 +329,13 @@ lemma rde_bound (J : ℕ) (hJ : 1 ≤ J) (de : ℕ → ℝ) (h01 : ∀ i, de i =
           apply Real.exp_le_exp.mpr
           nlinarith [hlin.2]
 
+/- English proof (translation)
+Use `Finset.prod_nbij' (fun i => i + 1) (fun i => i - 1) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Simplify using `only [mem_Icc] at hi ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `i hi`.
+
+Simplify using `only [mem_Icc] at hi ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `i hi`. Simplify using `only [mem_Icc] at hi`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `i hi`. Simplify using `only [mem_Icc] at hi`. Use linear arithmetic over natural numbers and integers. Introduce `i _`. Both sides reduce to the same expression.
+-/
 lemma prod_shift (p : ℕ) (f : ℕ → ℝ) : ∏ i ∈ Icc 1 p, f (i + 1) = ∏ i ∈ Icc 2 (p + 1), f i := by
   refine Finset.prod_nbij' (fun i => i + 1) (fun i => i - 1) ?_ ?_ ?_ ?_ ?_
   · intro i hi; simp only [mem_Icc] at hi ⊢; omega
@@ -257,6 +344,13 @@ lemma prod_shift (p : ℕ) (f : ℕ → ℝ) : ∏ i ∈ Icc 1 p, f (i + 1) = �
   · intro i hi; simp only [mem_Icc] at hi; omega
   · intro i _; rfl
 
+/- English proof (translation)
+Use `Finset.prod_nbij' (fun i => i + 1) (fun i => i - 1) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `j hj`. Simplify using `only [mem_Ioc] at hj ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `j hj`.
+
+Simplify using `only [mem_Ioc] at hj ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `j hj`. Simplify using `only [mem_Ioc] at hj`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `j hj`. Simplify using `only [mem_Ioc] at hj`. Use linear arithmetic over natural numbers and integers. Introduce `j _`. Both sides reduce to the same expression.
+-/
 lemma prod_shift_Ioc (i p : ℕ) (f : ℕ → ℝ) :
     ∏ j ∈ Ioc i p, f (j + 1) = ∏ j ∈ Ioc (i + 1) (p + 1), f j := by
   refine Finset.prod_nbij' (fun i => i + 1) (fun i => i - 1) ?_ ?_ ?_ ?_ ?_
@@ -266,6 +360,11 @@ lemma prod_shift_Ioc (i p : ℕ) (f : ℕ → ℝ) :
   · intro j hj; simp only [mem_Ioc] at hj; omega
   · intro j _; rfl
 
+/- English proof (translation)
+Unfold `Vand`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations.
+
+Conclude with `h i j (mem_Icc.mp hi).1 (mem_Ioc.mp hj).1 (mem_Ioc.mp hj).2`.
+-/
 lemma vand_ratio (p : ℕ) (x y : ℕ → ℝ) (r : ℕ → ℕ → ℝ)
     (h : ∀ i j : ℕ, 1 ≤ i → i < j → j ≤ p → x i - x j = r i j * (y i - y j)) :
     Vand p x = (∏ i ∈ Icc 1 p, ∏ j ∈ Ioc i p, r i j) * Vand p y := by
@@ -276,6 +375,9 @@ lemma vand_ratio (p : ℕ) (x y : ℕ → ℝ) (r : ℕ → ℕ → ℝ)
   refine Finset.prod_congr rfl fun j hj => ?_
   exact h i j (mem_Icc.mp hi).1 (mem_Ioc.mp hj).1 (mem_Ioc.mp hj).2
 
+/- English proof (translation)
+Unfold `Vand`. Use `Finset.prod_pos fun i hi => Finset.prod_pos fun j hj => ?_` and prove the remaining obligations. Use `h i j (mem_Icc.mp hi).1 (mem_Ioc.mp hj).1 (mem_Ioc.mp hj).2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma vand_pos (p : ℕ) (x : ℕ → ℝ) (h : ∀ i j : ℕ, 1 ≤ i → i < j → j ≤ p → x j < x i) :
     0 < Vand p x := by
   unfold Vand
@@ -283,6 +385,9 @@ lemma vand_pos (p : ℕ) (x : ℕ → ℝ) (h : ∀ i j : ℕ, 1 ≤ i → i < j
   have := h i j (mem_Icc.mp hi).1 (mem_Ioc.mp hj).1 (mem_Ioc.mp hj).2
   linarith
 
+/- English proof (translation)
+Unfold `Vand`. Rewrite using `[Finset.prod_Icc_succ_top (by omega), Finset.Ioc_self, Finset.prod_empty, mul_one, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_Ioc_succ_top (mem_Icc.mp hi).2]`.
+-/
 lemma vand_succ_top (p : ℕ) (x : ℕ → ℝ) :
     Vand (p + 1) x = Vand p x * ∏ i ∈ Icc 1 p, (x i - x (p + 1)) := by
   unfold Vand
@@ -291,6 +396,13 @@ lemma vand_succ_top (p : ℕ) (x : ℕ → ℝ) :
   refine Finset.prod_congr rfl fun i hi => ?_
   rw [Finset.prod_Ioc_succ_top (mem_Icc.mp hi).2]
 
+/- English proof (translation)
+Unfold `Vand`. Establish `h1 : Icc 1 (p + 1) = insert 1 (Icc 2 (p + 1))`. Use extensionality with `a`. Simplify using `only [mem_Icc, mem_insert]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h2 : Ioc 1 (p + 1) = Icc 2 (p + 1)`. Use extensionality with `a`. Simplify using `only [mem_Icc, mem_Ioc]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h1, Finset.prod_insert (by simp), h2]`.
+
+Use `congr 1`. Rewrite using `[← prod_shift p (fun i => ∏ j ∈ Ioc i (p + 1), (x i - x j))]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `(prod_shift_Ioc i p (fun j => x (i + 1) - x j)).symm`.
+-/
 lemma vand_succ_bot (p : ℕ) (x : ℕ → ℝ) :
     Vand (p + 1) x = (∏ j ∈ Icc 2 (p + 1), (x 1 - x j)) * Vand p (fun i => x (i + 1)) := by
   unfold Vand
@@ -304,6 +416,15 @@ lemma vand_succ_bot (p : ℕ) (x : ℕ → ℝ) :
   refine Finset.prod_congr rfl fun i _ => ?_
   exact (prod_shift_Ioc i p (fun j => x (i + 1) - x j)).symm
 
+/- English proof (translation)
+Establish `hf : ∀ n : ℕ, ∏ i ∈ Icc 1 n, (i : ℝ) = (n.factorial : ℝ)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [Finset.prod_Icc_succ_top (by omega), ih, Nat.factorial_succ]; push_cast; ring`.
+
+Rewrite using `[← hf p]`. Use `Finset.prod_nbij' (fun i => p + 1 - i) (fun i => p + 1 - i) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Simplify using `only [mem_Icc] at hi ⊢`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `i hi`. Simplify using `only [mem_Icc] at hi ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `i hi`. Simplify using `only [mem_Icc] at hi`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `i hi`. Simplify using `only [mem_Icc] at hi`. Use linear arithmetic over natural numbers and integers. Introduce `i hi; simp only [mem_Icc] at hi; rw [Nat.cast_sub (by omega)]`.
+-/
 lemma prod_refl (p : ℕ) : ∏ i ∈ Icc 1 p, (((p + 1 : ℕ) : ℝ) - (i : ℝ)) = (p.factorial : ℝ) := by
   have hf : ∀ n : ℕ, ∏ i ∈ Icc 1 n, (i : ℝ) = (n.factorial : ℝ) := by
     intro n
@@ -318,15 +439,30 @@ lemma prod_refl (p : ℕ) : ∏ i ∈ Icc 1 p, (((p + 1 : ℕ) : ℝ) - (i : ℝ
   · intro i hi; simp only [mem_Icc] at hi; omega
   · intro i hi; simp only [mem_Icc] at hi; rw [Nat.cast_sub (by omega)]
 
+/- English proof (translation)
+Unfold `Cfg.v`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma v_sub (c : Cfg) (i j : ℕ) : c.v i - c.v j = 4 * c.Del * ((j : ℝ) - (i : ℝ)) := by
   unfold Cfg.v; ring
 
+/- English proof (translation)
+Establish `h` using `v_sub c i j`. Establish `h1 : (i : ℝ) + 1 ≤ j` using `by exact_mod_cast hij`. Establish `h2` using `hc.hDel`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 lemma v_anti (c : Cfg) (hc : c.Ok) (i j : ℕ) (hij : i < j) : c.v j < c.v i := by
   have h := v_sub c i j
   have h1 : (i : ℝ) + 1 ≤ j := by exact_mod_cast hij
   have h2 := hc.hDel
   nlinarith
 
+/- English proof (translation)
+Establish `h1 : i + 1 ≠ 1` using `by omega`. Distinguish the cases in `hlast : i + 1 = c.k`. Establish `ht : c.top = false`. Break down `h with h | h` into its components or cases. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `h`. Establish `hi' : i = c.k - 1` using `by omega`. Establish `hde : de i = 0` using `by rw [hi']; exact hw.2`. Establish `hiR : (i : ℝ) + 1 = c.k` using `by exact_mod_cast hlast`. Unfold `Cfg.u`.
+
+Rewrite using `[if_neg h1, if_pos hlast, hde]`. Unfold `Cfg.ulast Cfg.v`. Rewrite using `[← hiR]`. Simplify using `[ht]`. Unfold `Cfg.u`.
+
+Rewrite using `[if_neg h1, if_neg hlast]`. Simplify using the standard rewrite rules.
+-/
 lemma u_succ (c : Cfg) (de : ℕ → ℝ) (hw : IsWord c.k de) (i : ℕ) (hi : 1 ≤ i)
     (_hik : i + 1 ≤ c.k) (h : i + 2 ≤ c.k ∨ c.top = false) :
     c.u de (i + 1) = c.v i - 1 / 2 - de i * c.Del := by
@@ -343,6 +479,11 @@ lemma u_succ (c : Cfg) (de : ℕ → ℝ) (hw : IsWord c.k de) (i : ℕ) (hi : 1
     unfold Cfg.ulast Cfg.v; rw [← hiR]; simp [ht]
   · unfold Cfg.u; rw [if_neg h1, if_neg hlast]; simp
 
+/- English proof (translation)
+Rewrite using `[u_succ c de hw i hi (by omega) (Or.inl (by omega)), u_succ c de hw j (by omega) hj h, v_sub]`. Establish `hpos : (0 : ℝ) < (j : ℝ) - i`. Establish `: (i : ℝ) < j` using `by exact_mod_cast hij`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3` using `v_sub c i j`.
+
+Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma position_ratio (c : Cfg) (de : ℕ → ℝ) (hw : IsWord c.k de) (i j : ℕ) (hi : 1 ≤ i)
     (hij : i < j) (hj : j + 1 ≤ c.k) (h : j + 2 ≤ c.k ∨ c.top = false) :
     c.u de (i + 1) - c.u de (j + 1) =
@@ -355,6 +496,11 @@ lemma position_ratio (c : Cfg) (de : ℕ → ℝ) (hw : IsWord c.k de) (i j : �
   field_simp
   linarith
 
+/- English proof (translation)
+Unfold `Rde`. Use `vand_ratio p (fun i => c.u de (i + 1)) c.v (fun i j => 1 + (de j - de i) / (4 * ((j : ℝ) - (i : ℝ)))) ?_` and prove the remaining obligations. Introduce `i j hi hij hj`. Use `position_ratio c de hw i j hi hij (by omega) ?_` and prove the remaining obligations. Break down `h with h | h` into its components or cases.
+
+Use `left`. Use linear arithmetic over natural numbers and integers. Use `right`. Conclude with `h`.
+-/
 lemma vand_words_ratio (c : Cfg) (de : ℕ → ℝ) (hw : IsWord c.k de) (p : ℕ) (hp : p + 1 ≤ c.k)
     (h : p + 2 ≤ c.k ∨ c.top = false) :
     Vand p (fun i => c.u de (i + 1)) = Rde p de * Vand p c.v := by
@@ -373,6 +519,11 @@ namespace Formalism.FourierDecayAlt.P
 
 open Finset Formalism.FourierDecayAlt.Sz Formalism.FourierDecayAlt.P.Sz4
 
+/- English proof (translation)
+Introduce `c de hc hw ht`. Establish `hk` using `hc.hk`. Establish `hcast : ((c.k - 1 : ℕ) : ℝ) + 1 = c.k`. Rewrite using `[Nat.cast_sub (by omega)]; simp`. Establish `hb` using `rde_bound (c.k - 1) (by omega) de hw.1`.
+
+Rewrite `hb` using `[hcast]`. Conclude with `⟨vand_pos _ _ fun i j _ hij _ => v_anti c hc i j hij, vand_words_ratio c de hw (c.k - 1) (by omega) (Or.inr ht), hb.1, hb.2⟩`.
+-/
 theorem vandermondeNonTop : Formalism.FourierDecayAlt.Sz.VandNonTop := by
   intro c de hc hw ht
   have hk := hc.hk
@@ -383,6 +534,15 @@ theorem vandermondeNonTop : Formalism.FourierDecayAlt.Sz.VandNonTop := by
   exact ⟨vand_pos _ _ fun i j _ hij _ => v_anti c hc i j hij,
     vand_words_ratio c de hw (c.k - 1) (by omega) (Or.inr ht), hb.1, hb.2⟩
 
+/- English proof (translation)
+Introduce `c de hc hw`. Establish `hk` using `hc.hk`. Establish `hcast : ((c.k - 2 : ℕ) : ℝ) + 1 = (c.k : ℝ) - 1`. Rewrite using `[Nat.cast_sub (by omega)]; push_cast; ring`. Establish `hb` using `rde_bound (c.k - 2) (by omega) de hw.1`.
+
+Rewrite `hb` using `[hcast]`. Use `⟨vand_pos _ _ fun i j _ hij _ => v_anti c hc i j hij, vand_words_ratio c de hw (c.k - 2) (by omega) (Or.inl (by omega)), hb.1, hb.2, ?_⟩` and prove the remaining obligations. Establish `h` using `vand_succ_top (c.k - 2) c.v`. Establish `e : c.k - 2 + 1 = c.k - 1` using `by omega`. Establish `h2 : ∏ i ∈ Icc 1 (c.k - 2), (c.v i - c.v (c.k - 2 + 1)) = (4 * c.Del) ^ (c.k - 2) * ((c.k - 2).factorial : ℝ)`.
+
+Rewrite using `[← prod_refl (c.k - 2)]`. Simplify using `only [v_sub]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Nat.card_Icc]`. Simplify using the standard rewrite rules. Rewrite `h` using `[h2, e]`.
+
+Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vandermondeTop : Formalism.FourierDecayAlt.Sz.VandTop := by
   intro c de hc hw
   have hk := hc.hk
@@ -409,6 +569,11 @@ namespace Formalism.FourierDecayAlt.P.Sz4
 
 open Finset Formalism.FourierDecayAlt.Sz
 
+/- English proof (translation)
+Establish `hk : (4 : ℝ) ≤ c.k` using `by exact_mod_cast hc.hk`. Establish `h1` using `hc.hDel`. Establish `h2` using `hc.hv0`. Unfold `Cfg.v`. Use `push_cast`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 lemma v_one_nonneg (c : Cfg) (hc : c.Ok) : 0 ≤ c.v 1 := by
   have hk : (4 : ℝ) ≤ c.k := by exact_mod_cast hc.hk
   have h1 := hc.hDel
@@ -417,6 +582,15 @@ lemma v_one_nonneg (c : Cfg) (hc : c.Ok) : 0 ≤ c.v 1 := by
   push_cast
   nlinarith
 
+/- English proof (translation)
+Take `⟨l, rfl⟩ : ∃ l, i = l + 1` from `⟨i - 1, by omega⟩`. Establish `h' : l + 2 ≤ c.k ∨ c.top = false`. Break down `h with h | h` into its components or cases. Use `left`. Use linear arithmetic over natural numbers and integers.
+
+Use `right`. Conclude with `h`. Rewrite using `[u_succ c de hw l (by omega) hik h']`. Establish `hl1 : (1 : ℝ) ≤ l` using `by exact_mod_cast (by omega : 1 ≤ l)`. Establish `hlk : (l : ℝ) + 1 ≤ c.k` using `by exact_mod_cast hik`.
+
+Establish `hD` using `hc.hDel`. Establish `ha` using `hc.ha`. Establish `hv : c.v l = c.v 1 - 4 * c.Del * ((l : ℝ) - 1)` using `by unfold Cfg.v; push_cast; ring`. Rewrite using `[hv]`. Establish `m1 : 0 ≤ c.Del * ((l : ℝ) - 1)` using `mul_nonneg (by linarith) (by linarith)`.
+
+Establish `m2 : 0 ≤ c.Del * ((c.k : ℝ) - 1 - l)` using `mul_nonneg (by linarith) (by linarith)`. Apply the tactic sequence `rcases hw.1 l with e | e <;> rw [e] <;> constructor <;> nlinarith`.
+-/
 lemma edge_factor (c : Cfg) (de : ℕ → ℝ) (hc : c.Ok) (hw : IsWord c.k de) (i : ℕ) (h2 : 2 ≤ i)
     (hik : i ≤ c.k) (h : i < c.k ∨ c.top = false) :
     c.a - c.v 1 ≤ c.a - c.u de i ∧ c.a - c.u de i ≤ 2 * (c.a - c.v 1) := by
@@ -436,6 +610,11 @@ lemma edge_factor (c : Cfg) (de : ℕ → ℝ) (hc : c.Ok) (hw : IsWord c.k de) 
   have m2 : 0 ≤ c.Del * ((c.k : ℝ) - 1 - l) := mul_nonneg (by linarith) (by linarith)
   rcases hw.1 l with e | e <;> rw [e] <;> constructor <;> nlinarith
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_le_prod (fun i hi => (div_pos (hf i hi) (hg i hi)).le) fun i hi => ?_` and prove the remaining obligations. Rewrite using `[div_le_iff₀ (hg i hi)]`. Use `(h i hi).trans (mul_le_mul_of_nonneg_right ?_ (hg i hi).le)` and prove the remaining obligations. Rewrite using `[add_comm]`.
+
+Conclude with `Real.add_one_le_exp ε`. Use `_ = Real.exp ((s.card : ℝ) * ε) := by rw [Finset.prod_const, Real.exp_nat_mul]`.
+-/
 lemma prod_ratio_le (s : Finset ℕ) (f g : ℕ → ℝ) (ε : ℝ) (hg : ∀ i ∈ s, 0 < g i)
     (hf : ∀ i ∈ s, 0 < f i) (h : ∀ i ∈ s, f i ≤ (1 + ε) * g i) :
     ∏ i ∈ s, f i / g i ≤ Real.exp ((s.card : ℝ) * ε) := by
@@ -446,6 +625,9 @@ lemma prod_ratio_le (s : Finset ℕ) (f g : ℕ → ℝ) (ε : ℝ) (hg : ∀ i 
         rw [add_comm]; exact Real.add_one_le_exp ε
     _ = Real.exp ((s.card : ℝ) * ε) := by rw [Finset.prod_const, Real.exp_nat_mul]
 
+/- English proof (translation)
+Establish `e : ∏ i ∈ s, f i / g i = (∏ i ∈ s, g i / f i)⁻¹`. Rewrite using `[← Finset.prod_inv_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => (inv_div _ _).symm`. Rewrite using `[e, Real.exp_neg]`. Conclude with `inv_anti₀ (Finset.prod_pos fun i hi => div_pos (hg i hi) (hf i hi)) h`.
+-/
 lemma prod_ratio_ge (s : Finset ℕ) (f g : ℕ → ℝ) (B : ℝ) (hg : ∀ i ∈ s, 0 < g i)
     (hf : ∀ i ∈ s, 0 < f i) (h : ∏ i ∈ s, g i / f i ≤ Real.exp B) :
     Real.exp (-B) ≤ ∏ i ∈ s, f i / g i := by
@@ -455,12 +637,18 @@ lemma prod_ratio_ge (s : Finset ℕ) (f g : ℕ → ℝ) (B : ℝ) (hg : ∀ i �
   rw [e, Real.exp_neg]
   exact inv_anti₀ (Finset.prod_pos fun i hi => div_pos (hg i hi) (hf i hi)) h
 
+/- English proof (translation)
+Rewrite `hi` using `[mem_Icc]`. Use `u_succ c de hw (i - 1) (by omega) (by omega) (Or.inl (by omega))` as an intermediate fact. Rewrite `this` using `[Nat.sub_add_cancel (by omega)]`. Then use the resulting hypothesis.
+-/
 lemma u_mid (c : Cfg) (de : ℕ → ℝ) (hw : IsWord c.k de) (i : ℕ) (hi : i ∈ Icc 2 (c.k - 1)) :
     c.u de i = c.v (i - 1) - 1 / 2 - de (i - 1) * c.Del := by
   rw [mem_Icc] at hi
   have := u_succ c de hw (i - 1) (by omega) (by omega) (Or.inl (by omega))
   rwa [Nat.sub_add_cancel (by omega)] at this
 
+/- English proof (translation)
+The claim follows from `|c.u de i - c.u de' i| ≤ c.Del := by rw [u_mid c de hw i hi, u_mid c de' hw' i hi] have hD := hc.hDel rw [abs_le] rcases hw.1 (i - 1) with e | e <;> rcases hw'.1 (i - 1) with e' | e' <;> rw [e, e'] <;> constructor <;> linarith`.
+-/
 lemma u_mid_diff (c : Cfg) (de de' : ℕ → ℝ) (hc : c.Ok) (hw : IsWord c.k de)
     (hw' : IsWord c.k de') (i : ℕ) (hi : i ∈ Icc 2 (c.k - 1)) :
     |c.u de i - c.u de' i| ≤ c.Del := by
@@ -470,23 +658,41 @@ lemma u_mid_diff (c : Cfg) (de de' : ℕ → ℝ) (hc : c.Ok) (hw : IsWord c.k d
   rcases hw.1 (i - 1) with e | e <;> rcases hw'.1 (i - 1) with e' | e' <;> rw [e, e'] <;>
     constructor <;> linarith
 
+/- English proof (translation)
+Rewrite `hi` using `[mem_Icc]`. Use `(edge_factor c de hc hw i hi.1 (by omega) (Or.inl (by omega))).1` as an intermediate fact. Combine the linear relations using `[hc.ha]`.
+-/
 lemma a_sub_u_pos (c : Cfg) (de : ℕ → ℝ) (hc : c.Ok) (hw : IsWord c.k de) (i : ℕ)
     (hi : i ∈ Icc 2 (c.k - 1)) : 4 * c.k * c.Del ≤ c.a - c.u de i := by
   rw [mem_Icc] at hi
   have := (edge_factor c de hc hw i hi.1 (by omega) (Or.inl (by omega))).1
   linarith [hc.ha]
 
+/- English proof (translation)
+Establish `hk : (4 : ℝ) ≤ c.k` using `by exact_mod_cast hc.hk`. Establish `hD` using `hc.hDel`. Check the signs of the components of the expression.
+-/
 lemma kDel_pos (c : Cfg) (hc : c.Ok) : 0 < 4 * (c.k : ℝ) * c.Del := by
   have hk : (4 : ℝ) ≤ c.k := by exact_mod_cast hc.hk
   have hD := hc.hDel
   positivity
 
+/- English proof (translation)
+Establish `hk` using `hc.hk`. Rewrite using `[Nat.card_Icc]`. Establish `: c.k - 1 + 1 - 2 = c.k - 2` using `by omega`. Rewrite using `[this, Nat.cast_sub (by omega)]; simp`.
+-/
 lemma card_mid (c : Cfg) (hc : c.Ok) : (((Icc 2 (c.k - 1)).card : ℕ) : ℝ) = (c.k : ℝ) - 2 := by
   have hk := hc.hk
   rw [Nat.card_Icc]
   have : c.k - 1 + 1 - 2 = c.k - 2 := by omega
   rw [this, Nat.cast_sub (by omega)]; simp
 
+/- English proof (translation)
+Establish `hkD` using `kDel_pos c hc`. Establish `hk : (4 : ℝ) ≤ c.k` using `by exact_mod_cast hc.hk`. Establish `hD` using `hc.hDel`. Use `(prod_ratio_le (Icc 2 (c.k - 1)) (fun i => c.a - c.u de i) (fun i => c.a - c.u de' i) (1 / (4 * c.k)) (fun i hi => ?_) (fun i hi => ?_) (fun i hi => ?_)).trans ?_` and prove the remaining obligations. Use `a_sub_u_pos c de' hc hw' i hi` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `a_sub_u_pos c de hc hw i hi` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `a_sub_u_pos c de' hc hw' i hi`. Establish `h2` using `(abs_le.mp (u_mid_diff c de de' hc hw hw' i hi)).1`.
+
+Establish `h3 : c.Del ≤ 1 / (4 * c.k) * (c.a - c.u de' i)`. Rewrite using `[div_mul_eq_mul_div, one_mul, le_div_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises.
+
+Rewrite using `[card_mid c hc, mul_one_div, div_le_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma edge_ratio_le (c : Cfg) (de de' : ℕ → ℝ) (hc : c.Ok) (hw : IsWord c.k de)
     (hw' : IsWord c.k de') :
     ∏ i ∈ Icc 2 (c.k - 1), ((c.a - c.u de i) / (c.a - c.u de' i)) ≤ Real.exp (1 / 3) := by
@@ -507,10 +713,18 @@ lemma edge_ratio_le (c : Cfg) (de de' : ℕ → ℝ) (hc : c.Ok) (hw : IsWord c.
     rw [card_mid c hc, mul_one_div, div_le_iff₀ (by positivity)]
     linarith
 
+/- English proof (translation)
+Use `(hc.htop ht).1` as an intermediate fact. Combine the linear relations using `[hc.hb1]`.
+-/
 lemma bp_pos (c : Cfg) (hc : c.Ok) (ht : c.top = true) : 0 < c.bp := by
   have := (hc.htop ht).1
   linarith [hc.hb1]
 
+/- English proof (translation)
+Rewrite using `[u_mid c de hw i hi]`. Rewrite `hi` using `[mem_Icc]`. Establish `hD` using `hc.hDel`. Establish `hv0` using `hc.hv0`. Establish `hiR : ((i - 1 : ℕ) : ℝ) + 2 ≤ c.k` using `by exact_mod_cast (by omega : i - 1 + 2 ≤ c.k)`.
+
+Establish `m : 0 ≤ c.Del * ((c.k : ℝ) - 2 - ((i - 1 : ℕ) : ℝ))` using `mul_nonneg (by linarith) (by linarith)`. Unfold `Cfg.v`. Apply the tactic sequence `rcases hw.1 (i - 1) with e | e <;> rw [e] <;> nlinarith`.
+-/
 lemma u_mid_nonneg (c : Cfg) (de : ℕ → ℝ) (hc : c.Ok) (hw : IsWord c.k de) (i : ℕ)
     (hi : i ∈ Icc 2 (c.k - 1)) : 0 ≤ c.u de i := by
   rw [u_mid c de hw i hi]
@@ -522,6 +736,15 @@ lemma u_mid_nonneg (c : Cfg) (de : ℕ → ℝ) (hc : c.Ok) (hw : IsWord c.k de)
   unfold Cfg.v
   rcases hw.1 (i - 1) with e | e <;> rw [e] <;> nlinarith
 
+/- English proof (translation)
+Establish `hk : (4 : ℝ) ≤ c.k` using `by exact_mod_cast hc.hk`. Establish `hD` using `hc.hDel`. Establish `hb` using `bp_pos c hc ht`. Use `(prod_ratio_le (Icc 2 (c.k - 1)) (fun i => c.u de i + c.bp) (fun i => c.u de' i + c.bp) (c.Del / c.bp) (fun i hi => ?_) (fun i hi => ?_) (fun i hi => ?_)).trans ?_` and prove the remaining obligations. Use `u_mid_nonneg c de' hc hw' i hi` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `u_mid_nonneg c de hc hw i hi` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `u_mid_nonneg c de' hc hw' i hi`. Establish `h2` using `(abs_le.mp (u_mid_diff c de de' hc hw hw' i hi)).2`.
+
+Establish `h3 : c.Del ≤ c.Del / c.bp * (c.u de' i + c.bp)`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hb]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises.
+
+Rewrite using `[card_mid c hc]`. Establish `e : c.vthp = 4 * c.k * c.Del / c.bp` using `by simp [Cfg.vthp, ht]`. Rewrite using `[e, div_div, mul_div_assoc', div_le_div_iff₀ hb (by positivity)]`. Use polynomial arithmetic with `[mul_pos hb (by linarith : (0 : ℝ) < c.Del), mul_pos (mul_pos hb (by linarith : (0 : ℝ) < c.Del)) (by linarith : (0 : ℝ) < c.k)]`.
+-/
 lemma top_ratio_le (c : Cfg) (de de' : ℕ → ℝ) (hc : c.Ok) (ht : c.top = true)
     (hw : IsWord c.k de) (hw' : IsWord c.k de') :
     ∏ i ∈ Icc 2 (c.k - 1), ((c.u de i + c.bp) / (c.u de' i + c.bp)) ≤ Real.exp (c.vthp / 3) := by
@@ -550,6 +773,17 @@ namespace Formalism.FourierDecayAlt.P
 
 open Finset Formalism.FourierDecayAlt.Sz Formalism.FourierDecayAlt.P.Sz4
 
+/- English proof (translation)
+Introduce `c de hc hw`. Use `⟨fun i h2 hik h => edge_factor c de hc hw i h2 hik h, fun ht => ?_⟩` and prove the remaining obligations. Establish `hk` using `hc.hk`. Establish `hcard : (Icc 2 c.k).card = c.k - 1` using `by rw [Nat.card_Icc]; omega`. Establish `hpos : 0 ≤ c.a - c.v 1`.
+
+Use `kDel_pos c hc` as an intermediate fact. Combine the linear relations using `[hc.ha]`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_const, hcard]`.
+
+Use `_ ≤ _ := by`. Use `Finset.prod_le_prod (fun _ _ => hpos) fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[mem_Icc]`. Conclude with `(edge_factor c de hc hw i hi.1 hi.2 (Or.inr ht)).1`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `Finset.prod_le_prod (fun i hi => ?_) fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[mem_Icc]`. Conclude with `hpos.trans (edge_factor c de hc hw i hi.1 hi.2 (Or.inr ht)).1`. Rewrite `hi` using `[mem_Icc]`. Conclude with `(edge_factor c de hc hw i hi.1 hi.2 (Or.inr ht)).2`.
+
+Use `_ = _ := by rw [Finset.prod_const, hcard]`.
+-/
 theorem edgeFactors : Formalism.FourierDecayAlt.Sz.EdgeFactors := by
   intro c de hc hw
   refine ⟨fun i h2 hik h => edge_factor c de hc hw i h2 hik h, fun ht => ?_⟩
@@ -573,6 +807,13 @@ theorem edgeFactors : Formalism.FourierDecayAlt.Sz.EdgeFactors := by
             exact (edge_factor c de hc hw i hi.1 hi.2 (Or.inr ht)).2
       _ = _ := by rw [Finset.prod_const, hcard]
 
+/- English proof (translation)
+Introduce `c de de' hc _ hw hw'`. Establish `hkD` using `kDel_pos c hc`. Use `⟨⟨?_, edge_ratio_le c de de' hc hw hw'⟩, fun ht => ⟨?_, top_ratio_le c de de' hc ht hw hw'⟩⟩` and prove the remaining obligations. Use `prod_ratio_ge _ (fun i => c.a - c.u de i) (fun i => c.a - c.u de' i) _ (fun i hi => ?_) (fun i hi => ?_) (edge_ratio_le c de' de hc hw' hw)` and prove the remaining obligations. Use `a_sub_u_pos c de' hc hw' i hi` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `a_sub_u_pos c de hc hw i hi` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb` using `bp_pos c hc ht`. Use `prod_ratio_ge _ (fun i => c.u de i + c.bp) (fun i => c.u de' i + c.bp) _ (fun i hi => ?_) (fun i hi => ?_) (top_ratio_le c de' de hc ht hw' hw)` and prove the remaining obligations.
+
+Use `u_mid_nonneg c de' hc hw' i hi` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `u_mid_nonneg c de hc hw i hi` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem edgeRatios : Formalism.FourierDecayAlt.Sz.EdgeRatios := by
   intro c de de' hc _ hw hw'
   have hkD := kDel_pos c hc
@@ -593,10 +834,20 @@ namespace Formalism.FourierDecayAlt.P.Sz4
 
 open Finset Formalism.FourierDecayAlt.Sz
 
+/- English proof (translation)
+Establish `: c.k ≠ 1` using `by have := hc.hk; omega`. Simplify using `[Cfg.u, this]`.
+-/
 lemma u_last (c : Cfg) (de : ℕ → ℝ) (hc : c.Ok) : c.u de c.k = c.ulast := by
   have : c.k ≠ 1 := by have := hc.hk; omega
   simp [Cfg.u, this]
 
+/- English proof (translation)
+Establish `h1` using `kDel_pos c hc`. Establish `h2` using `v_one_nonneg c hc`. Establish `h3` using `hc.ha`. Establish `hk : (4 : ℝ) ≤ c.k` using `by exact_mod_cast hc.hk`. Establish `hD` using `hc.hDel`.
+
+Unfold `Cfg.ulast`. Distinguish the cases in `ht : c.top = true`. Use `bp_pos c hc ht` as an intermediate fact. Simplify using `only [ht, if_true]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hv : c.v 1 = c.vlast + 4 * c.Del * ((c.k : ℝ) - 2)` using `by unfold Cfg.v; push_cast; ring`. Establish `m : 0 ≤ c.Del * ((c.k : ℝ) - 2)` using `mul_nonneg (by linarith) (by linarith)`. Simplify using `only [ht]`. Simplify using `only [Bool.false_eq_true, if_false]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma a_sub_ulast_pos (c : Cfg) (hc : c.Ok) : 0 < c.a - c.ulast := by
   have h1 := kDel_pos c hc
   have h2 := v_one_nonneg c hc
@@ -611,6 +862,11 @@ lemma a_sub_ulast_pos (c : Cfg) (hc : c.Ok) : 0 < c.a - c.ulast := by
     have m : 0 ≤ c.Del * ((c.k : ℝ) - 2) := mul_nonneg (by linarith) (by linarith)
     simp only [ht]; simp only [Bool.false_eq_true, if_false]; linarith
 
+/- English proof (translation)
+Establish `hk` using `hc.hk`. Establish `h` using `vand_succ_bot (c.k - 1) (c.u de)`. Establish `h2` using `Finset.prod_Icc_succ_top (a := 2) (b := c.k - 1) (by omega) (fun j => c.u de 1 - c.u de j)`. Rewrite `h` using `[h2]`. Rewrite `h` using `[Nat.sub_add_cancel (by omega)]`.
+
+Establish `h1 : c.u de 1 = c.a` using `by simp [Cfg.u]`. Rewrite using `[h, h1, u_last c de hc]`.
+-/
 lemma vand_u_decomp (c : Cfg) (de : ℕ → ℝ) (hc : c.Ok) :
     Vand c.k (c.u de) = (∏ j ∈ Icc 2 (c.k - 1), (c.a - c.u de j)) * (c.a - c.ulast) *
       Vand (c.k - 1) (fun i => c.u de (i + 1)) := by
@@ -623,6 +879,11 @@ lemma vand_u_decomp (c : Cfg) (de : ℕ → ℝ) (hc : c.Ok) :
   have h1 : c.u de 1 = c.a := by simp [Cfg.u]
   rw [h, h1, u_last c de hc]
 
+/- English proof (translation)
+Establish `hk` using `hc.hk`. Establish `h` using `vand_succ_top (c.k - 2) (fun i => c.u de (i + 1))`. Establish `h2` using `prod_shift (c.k - 2) (fun i => c.u de i - c.u de (c.k - 2 + 1 + 1))`. Establish `e : c.k - 2 + 1 = c.k - 1` using `by omega`. Establish `e2 : c.k - 1 + 1 = c.k` using `by omega`.
+
+Rewrite `h` using `[h2]`. Rewrite `h` using `[e, e2, u_last c de hc]`. Rewrite using `[h]`. Establish `e3 : c.ulast = -c.bp` using `by simp [Cfg.ulast, ht]`. Simplify using `only [e3, sub_neg_eq_add]`.
+-/
 lemma vand_top_decomp (c : Cfg) (de : ℕ → ℝ) (hc : c.Ok) (ht : c.top = true) :
     Vand (c.k - 1) (fun i => c.u de (i + 1)) =
       Vand (c.k - 2) (fun i => c.u de (i + 1)) * ∏ i ∈ Icc 2 (c.k - 1), (c.u de i + c.bp) := by
@@ -637,6 +898,11 @@ lemma vand_top_decomp (c : Cfg) (de : ℕ → ℝ) (hc : c.Ok) (ht : c.top = tru
   have e3 : c.ulast = -c.bp := by simp [Cfg.ulast, ht]
   simp only [e3, sub_neg_eq_add]
 
+/- English proof (translation)
+Establish `a1 : E' * R' ≤ E' * β` using `mul_le_mul_of_nonneg_left h2 hE'.le`. Establish `a2 : E' * β ≤ α * E * β` using `mul_le_mul_of_nonneg_right h1 hβ.le`. Establish `a3 : α * β * E ≤ M * γ * E` using `mul_le_mul_of_nonneg_right h4 hE.le`. Establish `a4 : M * E * γ ≤ M * E * R` using `mul_le_mul_of_nonneg_left h3 (mul_pos hM hE).le`. Establish `a5 : E' * R' ≤ M * E * R` using `by nlinarith`.
+
+Establish `a6 : E' * R' * (C * W) ≤ M * E * R * (C * W)` using `mul_le_mul_of_nonneg_right a5 (mul_pos hC hW).le`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 lemma combine (E E' C R R' W α β γ M : ℝ) (hE : 0 < E) (hE' : 0 < E') (hC : 0 < C) (hW : 0 < W)
     (hβ : 0 < β) (hM : 0 < M) (h1 : E' ≤ α * E) (h2 : R' ≤ β) (h3 : γ ≤ R)
     (h4 : α * β ≤ M * γ) : E' * C * (R' * W) ≤ M * (E * C * (R * W)) := by
@@ -649,11 +915,21 @@ lemma combine (E E' C R R' W α β γ M : ℝ) (hE : 0 < E) (hE' : 0 < E') (hC :
     mul_le_mul_of_nonneg_right a5 (mul_pos hC hW).le
   nlinarith
 
+/- English proof (translation)
+Rewrite `h` using `[Finset.prod_div_distrib, div_le_iff₀ (Finset.prod_pos hg)]`. Conclude with `h`.
+-/
 lemma prod_le_of_ratio (s : Finset ℕ) (f g : ℕ → ℝ) (A : ℝ) (hg : ∀ i ∈ s, 0 < g i)
     (h : ∏ i ∈ s, f i / g i ≤ A) : ∏ i ∈ s, f i ≤ A * ∏ i ∈ s, g i := by
   rw [Finset.prod_div_distrib, div_le_iff₀ (Finset.prod_pos hg)] at h
   exact h
 
+/- English proof (translation)
+Establish `hb` using `bp_pos c hc ht`. Establish `hb1` using `hc.hb1`. Establish `hbb` using `(hc.htop ht).1`. Establish `hm : (2 : ℝ) ≤ c.m` using `by exact_mod_cast hc.hm`. Establish `hkD` using `kDel_pos c hc`.
+
+Establish `e : c.vthp = 4 * c.k * c.Del / c.bp` using `by simp [Cfg.vthp, ht]`. Unfold `Cfg.vth at hv`. Rewrite `hv` using `[div_le_iff₀ (by linarith)]`. Rewrite using `[e, div_le_iff₀ hb]`. Establish `: 2 * (4 * (c.k : ℝ) * c.Del) ≤ 4 * c.m * c.k * c.Del` using `by nlinarith`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma vthp_small (c : Cfg) (hc : c.Ok) (hv : c.vth ≤ 1 / 10) (ht : c.top = true) :
     c.vthp ≤ 1 / 10 := by
   have hb := bp_pos c hc ht
@@ -668,6 +944,25 @@ lemma vthp_small (c : Cfg) (hc : c.Ok) (hv : c.vth ≤ 1 / 10) (ht : c.top = tru
   have : 2 * (4 * (c.k : ℝ) * c.Del) ≤ 4 * c.m * c.k * c.Del := by nlinarith
   linarith
 
+/- English proof (translation)
+Establish `hkD` using `kDel_pos c hc`. Establish `hC` using `a_sub_ulast_pos c hc`. Establish `hEpos : ∀ d : ℕ → ℝ, IsWord c.k d → ∀ i ∈ Icc 2 (c.k - 1), 0 < c.a - c.u d i`. Introduce `d hd i hi`. Use `a_sub_u_pos c d hc hd i hi` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hE` using `Finset.prod_pos (hEpos de hw)`. Establish `hE'` using `Finset.prod_pos (hEpos de' hw')`. Establish `hEE` using `prod_le_of_ratio _ _ _ _ (hEpos de hw) (edge_ratio_le c de' de hc hw' hw)`. Rewrite using `[vand_u_decomp c de hc, vand_u_decomp c de' hc]`.
+
+Distinguish the cases in `ht : c.top = true`. Take `⟨hW, hR, hR1, _, _⟩` from `vandermondeTop c de hc hw`. Take `⟨_, hR', _, hR2', _⟩` from `vandermondeTop c de' hc hw'`. Establish `hb` using `bp_pos c hc ht`. Establish `hFpos : ∀ d : ℕ → ℝ, IsWord c.k d → ∀ i ∈ Icc 2 (c.k - 1), 0 < c.u d i + c.bp`.
+
+Introduce `d hd i hi`. Use `u_mid_nonneg c d hc hd i hi` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hF` using `Finset.prod_pos (hFpos de hw)`. Establish `hF'` using `Finset.prod_pos (hFpos de' hw')`.
+
+Establish `hFF` using `prod_le_of_ratio _ _ _ _ (hFpos de hw) (top_ratio_le c de' de hc ht hw' hw)`. Establish `hvp` using `vthp_small c hc hv ht`. Rewrite using `[vand_top_decomp c de hc ht, vand_top_decomp c de' hc ht, hR, hR']`. Establish `hRpos : 0 < Rde (c.k - 2) de` using `lt_of_lt_of_le (Real.exp_pos _) hR1`. Use `⟨by positivity, ?_⟩` and prove the remaining obligations.
+
+Establish `key` using `combine ((∏ j ∈ Icc 2 (c.k - 1), (c.a - c.u de j)) * ∏ i ∈ Icc 2 (c.k - 1), (c.u de i + c.bp)) ((∏ j ∈ Icc 2 (c.k - 1), (c.a - c.u de' j)) * ∏ i ∈ Icc 2 (c.k - 1), (c.u de' i + c.bp)) (c.a - c.ulast) (Rde (c.k - 2) de) (Rde (c.k - 2) de') (Vand (c.k - 2) c.v) (Real.exp (1 / 3) * …`. Combine the equalities or inequalities in the displayed calculation. Use the proof step `hR2' hR1`. Use the proof step `(by`. Rewrite using `[← Real.exp_add, ← Real.exp_add, ← Real.exp_add]`.
+
+Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Use the proof step `linarith)`. Combine the equalities or inequalities in the displayed calculation. Establish `ht' : c.top = false` using `by simpa using ht`. Take `⟨hW, hR, hR1, _⟩` from `vandermondeNonTop c de hc hw ht'`.
+
+Take `⟨_, hR', _, hR2'⟩` from `vandermondeNonTop c de' hc hw' ht'`. Rewrite using `[hR, hR']`. Establish `hRpos : 0 < Rde (c.k - 1) de` using `lt_of_lt_of_le (Real.exp_pos _) hR1`. Use `⟨by positivity, ?_⟩` and prove the remaining obligations. Conclude with `combine _ _ _ _ _ _ (Real.exp (1 / 3)) (Real.exp ((c.k : ℝ) / 4)) (Real.exp (-((c.k : ℝ) / 4))) (Real.exp ((c.k : ℝ) / 2 + 1)) hE hE' hC hW (Real.exp_pos _) (Real.exp_pos _) hEE hR2' hR1 (by`.
+
+Rewrite using `[← Real.exp_add, ← Real.exp_add]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Use the proof step `linarith)`.
+-/
 lemma vand_le (c : Cfg) (de de' : ℕ → ℝ) (hc : c.Ok) (hv : c.vth ≤ 1 / 10) (hw : IsWord c.k de)
     (hw' : IsWord c.k de') :
     0 < Vand c.k (c.u de) ∧
@@ -735,6 +1030,11 @@ namespace Formalism.FourierDecayAlt.P
 
 open Finset Formalism.FourierDecayAlt.Sz Formalism.FourierDecayAlt.P.Sz4
 
+/- English proof (translation)
+Introduce `c de de' hc hv hw hw'`. Take `⟨hpos, hle⟩` from `vand_le c de de' hc hv hw hw'`. Take `⟨hpos', hle'⟩` from `vand_le c de' de hc hv hw' hw`. Use `⟨hpos, hpos', ?_⟩` and prove the remaining obligations. Rewrite using `[abs_le]`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[Real.le_log_iff_exp_le (div_pos hpos' hpos), le_div_iff₀ hpos, Real.exp_neg, inv_mul_le_iff₀ (Real.exp_pos _)]`. Conclude with `hle'`. Rewrite using `[Real.log_le_iff_le_exp (div_pos hpos' hpos), div_le_iff₀ hpos]`. Conclude with `hle`.
+-/
 theorem vandermondeWords : Formalism.FourierDecayAlt.Sz.VandWords := by
   intro c de de' hc hv hw hw'
   obtain ⟨hpos, hle⟩ := vand_le c de de' hc hv hw hw'

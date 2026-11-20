@@ -15,6 +15,9 @@ section Basis
 
 variable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C]
 
+/- English proof (translation)
+Establish `e : (fun x => (B' * V.map (algebraMap R C)) x j) = ∑ α, V α j • (fun x => B' x α)`. Use extensionality with `x`. Simplify using `[Matrix.mul_apply, Finset.sum_apply, Algebra.smul_def, mul_comm]`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun α _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨α, rfl⟩)`.
+-/
 private lemma col_mem_span {X : Type} [Fintype X] (B' : Matrix X X C) (V : Matrix X X R) (j : X) :
     (fun x => (B' * V.map (algebraMap R C)) x j) ∈
       Submodule.span R (Set.range fun α x => B' x α) := by
@@ -24,6 +27,11 @@ private lemma col_mem_span {X : Type} [Fintype X] (B' : Matrix X X C) (V : Matri
   rw [e]
   exact Submodule.sum_mem _ fun α _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨α, rfl⟩)
 
+/- English proof (translation)
+Use `choose c hc using fun α => (Submodule.mem_span_range_iff_exists_fun R).1 (h α)`. Use `⟨Matrix.of fun j α => c α j, ?_⟩` and prove the remaining obligations. Use extensionality with `x α`. Establish `h1` using `congrFun (hc α) x`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Algebra.smul_def] at h1`.
+
+Rewrite using `[Matrix.mul_apply, ← h1]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[mul_comm]`.
+-/
 private lemma exists_factor {X : Type} [Fintype X] (B B' : Matrix X X C)
     (h : ∀ α, (fun x => B' x α) ∈ Submodule.span R (Set.range fun j x => B x j)) :
     ∃ W : Matrix X X R, B' = B * W.map (algebraMap R C) := by
@@ -36,6 +44,13 @@ private lemma exists_factor {X : Type} [Fintype X] (B B' : Matrix X X C)
   refine Finset.sum_congr rfl fun j _ => ?_
   simp [mul_comm]
 
+/- English proof (translation)
+Establish `hpow : ∀ j k, f j ^ k ∈ A.carrier`. Introduce `j k`. Proceed by induction on `k with`. Consider the case `zero => simpa using A.one_mem`. Consider the case `succ k ih => rw [pow_succ]`.
+
+Conclude with `A.mul_mem _ _ ih (hf j)`. Establish `: (fun y => ∏ j, f j y ^ n j) = ∏ j, f j ^ n j`. Use extensionality with `y`. Simplify using `[Finset.prod_apply]`. Rewrite using `[this]`.
+
+Conclude with `Finset.prod_induction _ (· ∈ A.carrier) (fun a b ha hb => A.mul_mem a b ha hb) A.one_mem (fun j _ => hpow j (n j))`.
+-/
 private lemma prod_pow_mem {N : Type} [AddCommGroup N] [Fintype N] [DecidableEq N]
     (A : HopfOrder (C := C) R N) {ι : Type} [Fintype ι] (f : ι → N → C)
     (hf : ∀ j, f j ∈ A.carrier) (n : ι → ℕ) : (fun y => ∏ j, f j y ^ n j) ∈ A.carrier := by
@@ -50,6 +65,9 @@ private lemma prod_pow_mem {N : Type} [AddCommGroup N] [Fintype N] [DecidableEq 
   exact Finset.prod_induction _ (· ∈ A.carrier) (fun a b ha hb => A.mul_mem a b ha hb)
     A.one_mem (fun j _ => hpow j (n j))
 
+/- English proof (translation)
+Use `⟨g, fun _ => (p : R), ⟨?_⟩, by simp⟩` and prove the remaining obligations. Conclude with `(Submodule.quotEquivOfEq _ _ H.cotangent_ker_eq.symm).trans ((LinearMap.quotKerEquivOfSurjective H.φ H.cotangent_surjective).trans (PullbackHopfOrder.qPi p g))`.
+-/
 private lemma hasLen_om {p : ℕ} [Fact p.Prime] {g : ℕ} {v : Valuation C NNReal} [Algebra ℤ_[p] R]
     {O : Type} [CommRing O] [Algebra ℤ_[p] O] {σ : O ≃ₐ[ℤ_[p]] O} {cp : R}
     (H : HodgeTateDatum p g v R O σ cp) :
@@ -58,6 +76,11 @@ private lemma hasLen_om {p : ℕ} [Fact p.Prime] {g : ℕ} {v : Valuation C NNRe
   exact (Submodule.quotEquivOfEq _ _ H.cotangent_ker_eq.symm).trans
     ((LinearMap.quotKerEquivOfSurjective H.φ H.cotangent_surjective).trans (PullbackHopfOrder.qPi p g))
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos g with rfl | hg` into its components or cases. Simplify using the standard rewrite rules. Establish `h2 : p * (p - 1) / 2 * 2 = p * (p - 1)` using `Nat.div_mul_cancel (Nat.even_mul_pred_self p).two_dvd`. Establish `h3 : p ^ (g + g - 1) * p = p ^ (g + g)`. Rewrite using `[← pow_succ]`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma exp_eq (p g : ℕ) :
     g * (p ^ (g + g - 1) * (p * (p - 1) / 2)) * 2 = (p - 1) * g * p ^ (g + g) := by
   rcases Nat.eq_zero_or_pos g with rfl | hg
@@ -74,6 +97,29 @@ private lemma exp_eq (p g : ℕ) :
 
 end Basis
 
+/- English proof (translation)
+Introduce `p _ g C _ _ _ v R _ _ _ O _ _ σ cp hS H U X hprod D`. Establish `hv` using `hS.integers`. Establish `hp1 : v (p : C) < 1` using `by simpa [map_natCast] using hS.p_lt`. Set `B' : Matrix (Nb p g) (Nb p g) C` to `Matrix.of fun (x α : Nb p g) => ∏ j, (algebraMap R C (D.ε j) * D.u j x) ^ (α j).val`. Establish `hB'v : v B'.det = ∏ j, v (algebraMap R C (D.ε j)) ^ (p ^ (Fintype.card (Ix g) - 1) * (p * (p - 1) / 2))` using `(u5 p C v R hv hp1 (Ix g) D.Λ D.u D.Λ_det D.u_int D.u_cong).2 fun j => algebraMap R C (D.ε j)`.
+
+Establish `hε : ∏ j, v (algebraMap R C (D.ε j)) = v (algebraMap R C cp) ^ g`. Rewrite using `[← Finset.prod_fiberwise Finset.univ D.κ, ← hprod]`. Conclude with `Finset.prod_congr rfl fun i _ => D.ε_prod i`. Establish `hcard : Fintype.card (Nb p g) = p ^ (g + g)`. Simplify using `[ZMod.card, Fintype.card_sum, Fintype.card_fin]`.
+
+Establish `hsq : v B'.det ^ 2 = (v (algebraMap R C (p : R)) ^ g) ^ Fintype.card (Nb p g)`. Rewrite using `[hB'v, Finset.prod_pow, hε, ← hS.cp_val, hcard]`. Simplify using `only [Fintype.card_sum, Fintype.card_fin, ← pow_mul]`. Use `congr 1`. Conclude with `exp_eq p g`.
+
+Take `⟨B, hBu, hAA⟩` from `H.AA.lat`. Establish `hcol : HasColen R v H.AA.carrier (v B.det)` using `⟨B, hAA, rfl⟩`. Establish `hN : ∀ x : Nb p g, p • x = 0`. Introduce `x`. Use extensionality with `i`.
+
+Simplify using the standard rewrite rules. Establish `hdeg` using `u4 p C v R hv hp1 (Nb p g) hN H.AA (v B.det) _ hcol (hasLen_om H)`. Establish `hmem : ∀ α : Nb p g, (fun x => B' x α) ∈ H.AA.carrier`. Introduce `α`. Conclude with `prod_pow_mem H.AA (fun j y => algebraMap R C (D.ε j) * D.u j y) (fun j => (Submodule.mem_inf.1 (D.x_mem j)).1) (fun j => (α j).val)`.
+
+Take `⟨W, hW⟩` from `exists_factor B B' (fun α => hAA ▸ hmem α)`. Establish `hdet : v B'.det = v B.det * v (algebraMap R C W.det)`. Rewrite using `[hW, Matrix.det_mul, map_mul, RingHom.map_det]`. Both sides reduce to the same expression. Establish `ha : v B.det ≠ 0` using `(Valuation.ne_zero_iff v).2 hBu.ne_zero`.
+
+Establish `hw1 : v (algebraMap R C W.det) ≤ 1` using `hv.map_le_one W.det`. Establish `hw : v (algebraMap R C W.det) = 1`. Assume the negation of the conclusion as `hne`. Establish `hlt : v (algebraMap R C W.det) < 1` using `lt_of_le_of_ne hw1 hne`. Establish `hpos : 0 < v B.det ^ 2` using `pow_pos (pos_iff_ne_zero.2 ha) 2`.
+
+Establish `: v B'.det ^ 2 < v B.det ^ 2`. Rewrite using `[hdet, mul_pow]`. Conclude with `mul_lt_of_lt_one_right hpos (pow_lt_one₀ zero_le hlt two_ne_zero)`. Rewrite `this` using `[hsq]`. Conclude with `absurd hdeg (not_le.2 this)`.
+
+Establish `hWu : IsUnit W.det` using `hv.isUnit_of_one (isUnit_iff_ne_zero.2 fun h0 => by simp [h0] at hw) hw`. Establish `hBeq : B' * (W⁻¹).map (algebraMap R C) = B`. Rewrite using `[hW, Matrix.mul_assoc, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ hWu, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`. Establish `hspan : Submodule.span R (Set.range fun (α : Nb p g) (y : Nb p g) => ∏ j, (algebraMap R C (D.ε j) * D.u j y) ^ (α j).val) = Submodule.span R (Set.range fun α x => B' x α)` using `rfl`. Rewrite using `[hspan]`.
+
+Use `le_antisymm ?_ (Submodule.span_le.2 ?_)` and prove the remaining obligations. Rewrite using `[hAA]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Use `col_mem_span B' (W⁻¹) j` as an intermediate fact.
+
+Rewrite `this` using `[hBeq]`. Then use the resulting hypothesis. Introduce and unpack `_ ⟨α, rfl⟩`. Conclude with `hmem α`.
+-/
 theorem monomials_span_of_prod_eq : EigenLiftsBasisStatement := by
   intro p _ g C _ _ _ v R _ _ _ O _ _ σ cp hS H U X hprod D
   classical

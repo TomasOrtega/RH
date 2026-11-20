@@ -5,6 +5,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Galo
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology GlobalTheory.TateLimit UpperTheory.V UpperTheory.V.Kum UpperTheory.V.K
 
+/- English proof (translation)
+Introduce `hP hF hT l hl L Ω _ _ _ _ _ D e hc`. Establish `hcase : PTCase L l` using `Or.inr (NumberField.nrRealPlaces_eq_zero_iff.2 hc)`. Establish `hS` using `fun r hr => (finite_level D e hP hcase r hr).2.1`. Establish `h3` using `(finite_level D e hP hcase 1 one_pos).2.2`. Establish `hg` using `(global_lim D e hF hT hS h3).2 1`.
+
+Introduce `n`. Establish `: NeZero (l ^ 1)` using `⟨pow_ne_zero _ hl.out.ne_zero⟩`. Establish `hfd : Finite (TDual (ZMod (l ^ 1)) (ZMod (l ^ 1)))` using `DFunLike.finite _`. Establish `hcd : Nat.card (TDual (ZMod (l ^ 1)) (ZMod (l ^ 1))) = l` using `(GlobalTheory.T.card_dual_zmod_module_eq_card (l ^ 1) (ZMod (l ^ 1))).trans ((Nat.card_zmod _).trans (pow_one l))`. Establish `hfin` using `fun v => (local_zr hF hT D (e + 1) v 1 one_pos).2.1`.
+
+Establish `hloc : ∀ v : D.S, Nat.card (H2 ((zr D (e + 1) 1).comp (locFam D.S D.A v))) ≤ l` using `fun v => by`. Rewrite using `[(local_zr hF hT D (e + 1) v 1 one_pos).2.2.2]`. Use `le_trans ?_ hcd.le` and prove the remaining obligations. Conclude with `Nat.card_le_card_of_injective Subtype.val Subtype.val_injective`. Establish `hpi : Nat.card (∀ v : D.S, H2 ((zr D (e + 1) 1).comp (locFam D.S D.A v))) ≤ l ^ Module.finrank ℚ L`.
+
+Rewrite using `[Nat.card_pi]`. Use `le_trans (Finset.prod_le_pow_card _ _ l fun v _ => hloc v) ?_` and prove the remaining obligations. Use `Nat.pow_le_pow_right hl.out.pos ?_` and prove the remaining obligations. Rewrite using `[Finset.card_univ, Fintype.card_coe]`. Conclude with `UpperTheory.V.LDataCardLeFinrank.cardAbove L Ω l D`.
+
+Establish `hker : LinearMap.ker (GlobalTheory.Published.PoitouTate.loc2 D.S D.A (zr D (e + 1) 1)) = Sha2 (zr D (e + 1) 1) (locFam D.S D.A) (continuous_locFam D.S D.A)`. Rewrite using `[GlobalTheory.Published.PoitouTate.loc2, LinearMap.ker_pi]`. Both sides reduce to the same expression. Use `(card_quot_lpow 1 _ hg.1 hg.2).le.trans ?_` and prove the remaining obligations. Rewrite using `[Submodule.card_eq_card_quotient_mul_card (LinearMap.ker (GlobalTheory.Published.PoitouTate.loc2 D.S D.A (zr D (e + 1) 1))), Nat.card_congr (LinearMap.quotKerEquivRange _).toEquiv, hker, ← (hS 1 one_pos).1.2.2.2]`.
+
+Use `first`. Consider the case `exact Nat.mul_le_mul_left _ (le_trans (Nat.card_le_card_of_injective Subtype.val Subtype.val_injective) hpi)`. Consider the case `(rw [mul_comm]; exact Nat.mul_le_mul_left _ (le_trans (Nat.card_le_card_of_injective Subtype.val Subtype.val_injective) hpi))`.
+-/
 theorem UpperTheory.V.K.card_H2_quotient_le_sha :
     GlobalTheory.Published.PoitouTateDuality → LocalFinitenessK → LocalTateDualityK → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (D : LData L Ω l) (e : ℤ), IsTotallyComplex L → let n := e + 1; Nat.card (H2 (zlTw D n) ⧸ lpow l (H2 (zlTw D n)) 1) ≤ Nat.card (Sha1 (zd D n 1) (locFam D.S D.A) (continuous_locFam D.S D.A)) * l ^ Module.finrank ℚ L := by
   intro hP hF hT l hl L Ω _ _ _ _ _ D e hc

@@ -11,6 +11,9 @@ namespace Formalism.L2.SG.Pf.KernelOfEmbedding
 variable {D : D7} {X : HidaSetting D} {Y : Formalism.L2.SG.Full.Full X} {hF : FinX Y} (W : WittDat X)
   (hI : SIso D.s (sOf hF))
 
+/- English proof (translation)
+The claim follows from `pvalForm_exists W hI (Formalism.L2.SG.Pf.WittFlags.WRowIso_holds D) hC hK hN`.
+-/
 theorem pvalForm_exists' (hC : AmpCov Y) (hK : PairAmpConst Y) (hN : FibreCountEq hF) :
     ∃ A : AmpDat X, PvalForm W hI A :=
   pvalForm_exists W hI (Formalism.L2.SG.Pf.WittFlags.WRowIso_holds D) hC hK hN

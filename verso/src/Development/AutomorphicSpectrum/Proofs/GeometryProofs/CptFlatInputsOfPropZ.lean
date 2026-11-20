@@ -32,6 +32,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat.CptIn
 
+/- English proof (translation)
+Take `⟨e, c, he, hL, hσ, hc⟩` from `h`. Use `⟨e, c, he, hL, hσ, ?_⟩` and prove the remaining obligations. Establish `h0 : ϖ ≠ 0` using `fun h => hu.1 (by simp [h])`. Establish `h1 : ϖ' ≠ 0` using `fun h => hu.1 (by simp [h])`. Establish `hz : ∀ n : ℤ, unitAt ξ p ((ϖ / ϖ') ^ n)` using `fun n => by`.
+
+Consider the cases of `n with`. Consider the case `ofNat m => simpa using ZUnit.pow hu m`. Consider the case `negSucc m => simpa using ZUnit.inv (ZUnit.pow hu (m + 1))`. Establish `: c ^ M / ϖ' ^ a = c ^ M / ϖ ^ a * (ϖ / ϖ') ^ a`. Rewrite using `[div_zpow]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `ZUnit.mul hc (hz a)`.
+-/
 theorem orderAt_of_unit {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {L : Lat ξ Ω} {σ ϖ ϖ' : Ω}
     {M : ℕ} {a : ℤ} {p : Cpt ξ} (h : OrderAt L σ ϖ M a p) (hu : unitAt ξ p (ϖ / ϖ')) : OrderAt L σ ϖ' M a p := by
   obtain ⟨e, c, he, hL, hσ, hc⟩ := h
@@ -48,6 +55,45 @@ theorem orderAt_of_unit {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (Comm
   rw [this]
   exact ZUnit.mul hc (hz a)
 
+/- English proof (translation)
+Establish `hchar : CharZero Ω` using `charZero_of_injective_ringHom ψ.injective`. Establish `hplace : ∀ (v : HeightOneSpectrum (𝓞 F')) (π : F'), v.valuation F' π = WithZero.exp (-1 : ℤ) → ∃ (M : ℕ) (a : ℤ), 0 < M ∧ ∀ p : Cpt ξ, (∀ a : F', v.valuation F' a ≤ 1 → ψ a ∈ regAt ξ p) → OrderAt L σ (ψ π) M a p`. Introduce `v π hπ`. Take `⟨O, _, _, _, _, X', ξ', s, g, ϖ, hs, hϖ, hinj, hξs, hξg, hgen', hall', hϖπ, hrange, hreg, hsurj⟩` from `GlobalTheory.T.dvr_model_of_number_field_place X Ω ξ κ x F' ψ v π hall ht hN hπ`. Take `⟨ℓ, hℓ, hℓv⟩` from `GlobalTheory.T.exists_prime_dividing_uniformizer F' v π hπ`.
+
+Take `⟨u, hu⟩ : ∃ u : O, algebraMap O Ω u = ψ ((ℓ : F') / π)` from `(hrange _).2 ⟨_, hℓv, rfl⟩`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hπ`. Conclude with `WithZero.exp_ne_zero hπ.symm`.
+
+Establish `hcc : ConstClosed O Ω`. Introduce `a ha`. Take `⟨f, hf, hfa⟩` from `ha`. Establish `hlift : f.map (algebraMap O Ω) ∈ Polynomial.lifts ψ`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`.
+
+Introduce `n`. Rewrite using `[Polynomial.coeff_map]`. Take `⟨b, -, hb⟩` from `(hrange _).1 ⟨f.coeff n, rfl⟩`. Conclude with `⟨b, hb⟩`. Take `⟨f', hf'⟩` from `(Polynomial.mem_lifts _).1 hlift`.
+
+Establish `hne : f' ≠ 0`. Introduce and unpack `rfl`. Rewrite `hf'` using `[Polynomial.map_zero]`. Conclude with `hf ((Polynomial.map_eq_zero_iff hinj).1 hf'.symm)`. Take `⟨b, rfl⟩` from `hcl a ⟨f', hne, by`.
+
+Rewrite using `[← Polynomial.eval_map, hf', Polynomial.eval_map]`. Conclude with `hfa⟩`. Distinguish the cases in `hb : v.valuation F' b ≤ 1`. Take `⟨x₀, hx₀⟩` from `(hrange (ψ b)).2 ⟨b, hb, rfl⟩`. Conclude with `⟨x₀, 1, one_ne_zero, by rw [map_one, mul_one]; exact hx₀.symm⟩`.
+
+Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hb`. Establish `hb' : v.valuation F' b⁻¹ ≤ 1`. Rewrite using `[map_inv₀]`.
+
+Conclude with `inv_le_one_of_one_le₀ (le_of_not_ge hb)`. Take `⟨y₀, hy₀⟩` from `(hrange (ψ b⁻¹)).2 ⟨b⁻¹, hb', rfl⟩`. Use `⟨1, y₀, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Rewrite `hy₀` using `[map_zero]`.
+
+Conclude with `inv_ne_zero hb0 ((map_eq_zero ψ).1 hy₀.symm)`. Rewrite using `[hy₀, ← map_mul, mul_inv_cancel₀ hb0, map_one, map_one]`. Establish `hℓu : (ℓ : Ω) = algebraMap O Ω (ϖ * u)`. Rewrite using `[map_mul, hϖπ, hu, ← map_mul, mul_div_cancel₀ _ hπ0, map_natCast]`. Take `⟨M, a, hM, h⟩` from `@GlobalTheory.T.proper_dvr_model_lattice_valuation X X' Ω _ _ ξ ξ' g O _ _ _ _ s hs ϖ L σ ℓ u hZ hϖ hinj hξs hξg ht.gen hgen' hall' hN hcc hreg hL hg hℓu (hp ℓ hℓ)`.
+
+Use `⟨M, a, hM, fun p hv => ?_⟩` and prove the remaining obligations. Use `h p (hsurj p hv)` as an intermediate fact. Rewrite `this` using `[hϖπ]`. Then use the resulting hypothesis. Take `⟨s, hs1, hs2, hs3⟩` from `GlobalTheory.T.finite_type_over_integers_model X Ω ξ κ x hall ht`. Take `⟨n, hn, hgn⟩` from `@GlobalTheory.T.lattice_generator_invert_constant X Ω _ ξ ℤ _ _ _ s _ hs1 hs2 hs3 (Int.cast_injective) ht.gen L Set.univ 1 σ one_ne_zero (fun _ _ => trivial) hL hg`.
+
+Establish `hn' : ((n : F'))⁻¹ ≠ 0` using `inv_ne_zero (by exact_mod_cast hn)`. Establish `hfin` using `HeightOneSpectrum.Support.finite (𝓞 F') ((n : F'))⁻¹`. Use `choose π hπ using fun v : HeightOneSpectrum (𝓞 F') => v.valuation_exists_uniformizer F'`. Use `choose M a hM hord using fun v => hplace v (π v) (hπ v)`. Set `T` to `HeightOneSpectrum.Support (𝓞 F') ((n : F'))⁻¹`.
+
+Set `r₀ : HeightOneSpectrum (𝓞 F') → ℚ` to `fun v => if v ∈ T then (a v : ℚ) / M v else 0`. Establish `hr₀ : (Function.support r₀).Finite` using `hfin.subset fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hv (if_neg h)`. Use `⟨Finsupp.ofSupportFinite r₀ hr₀, fun v π' hπ' => ?_⟩` and prove the remaining obligations.
+
+Establish `hrv : (Finsupp.ofSupportFinite r₀ hr₀) v = r₀ v` using `rfl`. Rewrite using `[hrv]`. Distinguish the cases in `hv : v ∈ T`. Establish `hMv : (M v : ℚ) ≠ 0` using `by exact_mod_cast (hM v).ne'`. Use `⟨M v, a v, hM v, by simp only [r₀, if_pos hv]; field_simp, fun p hp => ?_⟩` and prove the remaining obligations.
+
+Use `orderAt_of_unit (hord v p hp) ?_` and prove the remaining obligations. Establish `h0 : π' ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hπ'`. Conclude with `WithZero.exp_ne_zero hπ'.symm`.
+
+Establish `h1 : π v ≠ 0`. Introduce `h`. Use `hπ v` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`.
+
+Conclude with `WithZero.exp_ne_zero this.symm`. Establish `e1 : v.valuation F' (π v / π') = 1`. Rewrite using `[map_div₀, hπ v, hπ', div_self (WithZero.exp_ne_zero)]`. Establish `e2 : v.valuation F' (π v / π')⁻¹ = 1` using `by rw [map_inv₀, e1, inv_one]`. Rewrite using `[← map_div₀]`.
+
+Conclude with `⟨(map_ne_zero ψ).2 (div_ne_zero h1 h0), hp _ e1.le, by rw [← map_inv₀]; exact hp _ e2.le⟩`. Use `⟨1, 0, one_pos, by simp only [r₀, if_neg hv]; simp, fun p hp => ?_⟩` and prove the remaining obligations. Establish `h1 : v.valuation F' (n : F') ≤ 1`. Use `v.valuation_le_one (K := F') (n : 𝓞 F')` as an intermediate fact. Simplify using `using this`.
+
+Establish `h2 : v.valuation F' ((n : F'))⁻¹ ≤ 1` using `not_lt.1 hv`. Establish `hu : unitAt ξ p (algebraMap ℤ Ω n)`. Establish `e : algebraMap ℤ Ω n = ψ (n : F')` using `by simp`. Rewrite using `[e]`. Conclude with `⟨(map_ne_zero ψ).2 (by exact_mod_cast hn), hp _ h1, by rw [← map_inv₀]; exact hp _ h2⟩`.
+
+Use `hgn p hu` as an intermediate fact. Conclude with `orderAt_one_zero.2 this`.
+-/
 theorem exists_orders (hZ : PropZ) {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {κ : Type} [Finite κ] {x : κ → Ω} {F' : Type} [Field F'] [NumberField F'] (ψ : F' →+* Ω)
     (hcl : ∀ x : Ω, (∃ f : Polynomial F', f ≠ 0 ∧ f.eval₂ ψ x = 0) → x ∈ Set.range ψ)
@@ -157,6 +203,11 @@ theorem exists_orders (hZ : PropZ) {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ :
     have := hgn p hu
     exact orderAt_one_zero.2 this
 
+/- English proof (translation)
+Take `⟨α, β, hα, hβ, hA, hB, e⟩` from `h`. Rewrite `e` using `[one_mul]`. Substitute `e` using the available equality. Use `⟨α * d₁, α * d₂, mul_ne_zero hα h₁, mul_ne_zero hα h₂, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hA, ea, smul_smul]`.
+
+Rewrite using `[hB, eb, smul_smul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem isCoeffAt_of_smul {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {V : Type}
     [AddCommGroup V] [Module Ω V] {A B : Lat ξ V} {p q : ℕ} {a a' : ⋀[Ω]^p V} {b b' : ⋀[Ω]^q V} {x : Cpt ξ}
     {d₁ d₂ : Ω} (h₁ : d₁ ≠ 0) (h₂ : d₂ ≠ 0) (ea : a' = d₁ • a) (eb : b' = d₂ • b)

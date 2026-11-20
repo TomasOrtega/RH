@@ -8,6 +8,19 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Reciprocity
 
 namespace GlobalTheory.FormalCalc
 
+/- English proof (translation)
+Establish `ha : HasSubst a` using `hasSubst_of_constantCoeff_zero ha0`. Establish `hsplit : f = C (constantCoeff f) + ∑ s, C (coeff (Finsupp.single s 1) f) * X s + (f - C (constantCoeff f) - ∑ s, C (coeff (Finsupp.single s 1) f) * X s)` using `by ring`. Establish `hlow : ∀ e : σ →₀ ℕ, Finsupp.degree e < 2 → coeff e (f - C (constantCoeff f) - ∑ s, C (coeff (Finsupp.single s 1) f) * X s) = 0`. Introduce `e he`. Establish `hle : Finsupp.degree e ≤ 1` using `by omega`.
+
+Break down `Nat.le_one_iff_eq_zero_or_eq_one.mp hle with h0 | h1` into its components or cases. Take `rfl : e = 0` from `(Finsupp.degree_eq_zero_iff e).mp h0`. Simplify using `[coeff_zero_X, coeff_zero_eq_constantCoeff_apply]`. Establish `hr : e ∈ Set.range (fun t : σ => Finsupp.single t 1)`. Rewrite using `[Finsupp.range_single_one]`.
+
+Conclude with `h1`. Take `⟨t, rfl⟩` from `hr`. Simplify using `[coeff_X, coeff_C, Finsupp.single_eq_single_iff]`. Establish `hord : coeff (Finsupp.single j 1) (subst a (f - C (constantCoeff f) - ∑ s, C (coeff (Finsupp.single s 1) f) * X s)) = 0`. Apply `coeff_of_lt_order` to reduce the goal to its premises.
+
+Establish `h1 : (1 : ℕ∞) ≤ ⨅ i, (a i).order` using `le_iInf fun i => one_le_order_iff_constCoeff_eq_zero.mpr (ha0 i)`. Establish `h2 : (2 : ℕ∞) ≤ (f - C (constantCoeff f) - ∑ s, C (coeff (Finsupp.single s 1) f) * X s).order` using `le_order fun e he => hlow e (by exact_mod_cast he)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finsupp.degree_single]`. Evaluate the numerical expressions.
+
+Use `_ = 1 * 2 := by norm_num`. Use `_ ≤ _ := mul_le_mul' h1 h2`. Use `_ ≤ _ := le_order_subst ha _`. Establish `hexp : subst a f = subst a (C (constantCoeff f)) +`. Substitute `a (∑ s, C (coeff (Finsupp.single s 1) f) * X s) +` using the available equality.
+
+Substitute `a (f - C (constantCoeff f) - ∑ s, C (coeff (Finsupp.single s 1) f) * X s) := by` using the available equality. Use `conv_lhs => rw [hsplit]`. Rewrite using `[subst_add ha, subst_add ha]`. Rewrite using `[hexp, map_add, map_add, hord, add_zero, subst_C' ha, subst_sum' ha, map_sum]`. Simplify using `[subst_mul ha, subst_C' ha, subst_X ha, coeff_C_mul, coeff_C]`.
+-/
 theorem coeff_single_subst {σ τ R : Type*} [CommRing R] [Fintype σ]
     {a : σ → MvPowerSeries τ R} (ha0 : ∀ s, constantCoeff (a s) = 0)
     (f : MvPowerSeries σ R) (j : τ) :
@@ -51,6 +64,11 @@ theorem coeff_single_subst {σ τ R : Type*} [CommRing R] [Fintype σ]
 
 variable {R : Type} [CommRing R] {d : ℕ}
 
+/- English proof (translation)
+Establish `h0 : ∀ s : Fin 2 × Fin d, constantCoeff ((![p, q] : Fin 2 → Pt R n d) s.1 s.2) = 0`. Introduce and unpack `⟨b, i⟩`. Use `fin_cases b`. Conclude with `hp i`. Conclude with `hq i`.
+
+Unfold `ev`. Rewrite using `[coeff_single_subst h0, Fintype.sum_prod_type, Fin.sum_univ_two]`. Apply the tactic sequence `all_goals rfl`.
+-/
 theorem coeff_single_ev_two {n : ℕ} (p q : Pt R n d) (hp : ∀ i, constantCoeff (p i) = 0)
     (hq : ∀ i, constantCoeff (q i) = 0) (f : PS R 2 d) (j : Fin n × Fin d) :
     coeff (Finsupp.single j 1) (ev ![p, q] f) =
@@ -65,6 +83,9 @@ theorem coeff_single_ev_two {n : ℕ} (p q : Pt R n d) (hp : ∀ i, constantCoef
   rw [coeff_single_subst h0, Fintype.sum_prod_type, Fin.sum_univ_two]
   all_goals rfl
 
+/- English proof (translation)
+Distinguish the cases in `h : s = t`. Substitute `h` using the available equality. Simplify using `[coeff_X]`. Simplify using `[coeff_X, h, Finsupp.single_eq_single_iff]`.
+-/
 theorem coeff_single_X {σ : Type*} [DecidableEq σ] (s t : σ) :
     coeff (Finsupp.single s 1) (X t : MvPowerSeries σ R) = if s = t then 1 else 0 := by
   by_cases h : s = t
@@ -72,16 +93,25 @@ theorem coeff_single_X {σ : Type*} [DecidableEq σ] (s t : σ) :
     simp [coeff_X]
   · simp [coeff_X, h, Finsupp.single_eq_single_iff]
 
+/- English proof (translation)
+Unfold `pt`. Conclude with `constantCoeff_X (j, i)`.
+-/
 theorem constantCoeff_pt {n : ℕ} (j : Fin n) (i : Fin d) : constantCoeff (pt R d j i) = 0 := by
   unfold pt
   exact constantCoeff_X (j, i)
 
+/- English proof (translation)
+Establish `hu` using `congrArg (coeff (Finsupp.single ((0 : Fin 1), l) 1)) (G.unit i)`. Rewrite `hu` using `[coeff_single_ev_two (n := 1) 0 (pt R d 0) (fun _ => by simp) (fun m => constantCoeff_pt 0 m)]`. Simplify `hu` using `[pt, coeff_single_X, mul_boole, Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+-/
 theorem coeff_law_snd (G : FGLaw R d) (i l : Fin d) :
     coeff (Finsupp.single ((1 : Fin 2), l) 1) (G.F i) = if l = i then 1 else 0 := by
   have hu := congrArg (coeff (Finsupp.single ((0 : Fin 1), l) 1)) (G.unit i)
   rw [coeff_single_ev_two (n := 1) 0 (pt R d 0) (fun _ => by simp) (fun m => constantCoeff_pt 0 m)] at hu
   simpa [pt, coeff_single_X, mul_boole, Finset.sum_ite_eq, Finset.sum_ite_eq'] using hu
 
+/- English proof (translation)
+Establish `hc` using `congrArg (coeff (Finsupp.single ((0 : Fin 2), l) 1)) (G.comm i)`. Rewrite `hc` using `[coeff_single_ev_two (n := 2) (pt R d 1) (pt R d 0) (fun m => constantCoeff_pt 1 m) (fun m => constantCoeff_pt 0 m)]`. Rewrite using `[← hc]`. Simplify using `[pt, coeff_single_X, coeff_law_snd, mul_boole, Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+-/
 theorem coeff_law_fst (G : FGLaw R d) (i l : Fin d) :
     coeff (Finsupp.single ((0 : Fin 2), l) 1) (G.F i) = if l = i then 1 else 0 := by
   have hc := congrArg (coeff (Finsupp.single ((0 : Fin 2), l) 1)) (G.comm i)
@@ -90,6 +120,9 @@ theorem coeff_law_fst (G : FGLaw R d) (i l : Fin d) :
   rw [← hc]
   simp [pt, coeff_single_X, coeff_law_snd, mul_boole, Finset.sum_ite_eq, Finset.sum_ite_eq']
 
+/- English proof (translation)
+Use `show coeff (Finsupp.single j 1) (ev ![p, q] (G.F i)) = _`. Rewrite using `[coeff_single_ev_two p q hp hq]`. Simplify using `[coeff_law_fst, coeff_law_snd, boole_mul, Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+-/
 theorem coeff_single_law_add {n : ℕ} (G : FGLaw R d) (p q : Pt R n d)
     (hp : ∀ i, constantCoeff (p i) = 0) (hq : ∀ i, constantCoeff (q i) = 0) (i : Fin d)
     (j : Fin n × Fin d) :
@@ -99,6 +132,13 @@ theorem coeff_single_law_add {n : ℕ} (G : FGLaw R d) (p q : Pt R n d)
   rw [coeff_single_ev_two p q hp hq]
   simp [coeff_law_fst, coeff_law_snd, boole_mul, Finset.sum_ite_eq, Finset.sum_ite_eq']
 
+/- English proof (translation)
+Introduce `R _ d O _ _ k _ _ _ B`. Prove the components needed by the constructor for the conclusion. Introduce `a b`. Use extensionality with `i j`. Rewrite using `[Matrix.add_apply]`.
+
+Unfold `dAct FB.actK`. Rewrite using `[B.A.add_act]`. Simplify using `only [coeff_map]`. Rewrite using `[coeff_single_law_add B.G (B.A.act a) (B.A.act b) (B.A.const a) (B.A.const b), map_add]`. Use extensionality with `i j`.
+
+Unfold `dAct FB.actK`. Simplify using `only [B.A.one_act, coeff_map, Matrix.one_apply, pt, coeff_single_X, Prod.mk.injEq, true_and]`. Break down `eq_or_ne i j with rfl | h` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+-/
 theorem dAct_add_and_one : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O]
     (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k] (B : FB R d O),
     (∀ a b : O, dAct k B (a + b) = dAct k B a + dAct k B b) ∧ dAct k B 1 = 1 := by

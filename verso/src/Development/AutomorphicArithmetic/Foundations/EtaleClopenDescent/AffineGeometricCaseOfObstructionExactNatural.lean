@@ -21,28 +21,43 @@ private abbrev mW {S S' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} (g : S' ⟶ 
   pullback.map _ _ _ _ (mY p g h) (𝟙 W) (𝟙 B)
     (by subst h; simp [pullback.lift_snd_assoc]) (by simp)
 
+/- English proof (translation)
+Unfold `mY pullback.map`. Use `erw [pullback.lift_fst]`. Conclude with `Category.comp_id _`.
+-/
 private theorem mY_comp_pullback_fst {S S' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} (g : S' ⟶ S) (h : g ≫ s = s') :
     mY p g h ≫ pullback.fst p s = pullback.fst p s' := by
   unfold mY pullback.map
   erw [pullback.lift_fst]
   exact Category.comp_id _
 
+/- English proof (translation)
+Unfold `mY pullback.map`. Use `erw [pullback.lift_snd]`.
+-/
 private theorem mY_comp_pullback_snd {S S' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} (g : S' ⟶ S) (h : g ≫ s = s') :
     mY p g h ≫ pullback.snd p s = pullback.snd p s' ≫ g := by
   unfold mY pullback.map
   erw [pullback.lift_snd]
 
+/- English proof (translation)
+Unfold `mW pullback.map`. Use `erw [pullback.lift_fst]`.
+-/
 private theorem mW_comp_fst_eq_fst_comp_mY {S S' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} (g : S' ⟶ S) (h : g ≫ s = s') :
     mW p ι g h ≫ pullback.fst _ ι = pullback.fst _ ι ≫ mY p g h := by
   unfold mW pullback.map
   erw [pullback.lift_fst]
 
+/- English proof (translation)
+Unfold `mW pullback.map`. Use `erw [pullback.lift_snd]`. Conclude with `Category.comp_id _`.
+-/
 private theorem mW_comp_pullback_snd {S S' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} (g : S' ⟶ S) (h : g ≫ s = s') :
     mW p ι g h ≫ pullback.snd _ ι = pullback.snd _ ι := by
   unfold mW pullback.map
   erw [pullback.lift_snd]
   exact Category.comp_id _
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, mY_comp_pullback_fst, mY_comp_pullback_fst, mY_comp_pullback_fst]`. Rewrite using `[Category.assoc, mY_comp_pullback_snd, reassoc_of% (mY_comp_pullback_snd p g' h'), mY_comp_pullback_snd]`.
+-/
 private theorem mY_comp {S S' S'' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} {s'' : S'' ⟶ B} (g : S' ⟶ S) (h : g ≫ s = s')
     (g' : S'' ⟶ S') (h' : g' ≫ s' = s'') :
     mY p g' h' ≫ mY p g h = mY p (g' ≫ g) (by simp [h, h']) := by
@@ -50,6 +65,9 @@ private theorem mY_comp {S S' S'' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} {s
   · rw [Category.assoc, mY_comp_pullback_fst, mY_comp_pullback_fst, mY_comp_pullback_fst]
   · rw [Category.assoc, mY_comp_pullback_snd, reassoc_of% (mY_comp_pullback_snd p g' h'), mY_comp_pullback_snd]
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, mW_comp_fst_eq_fst_comp_mY, reassoc_of% (mW_comp_fst_eq_fst_comp_mY p ι g' h'), mW_comp_fst_eq_fst_comp_mY, mY_comp p g h g' h']`. Rewrite using `[Category.assoc, mW_comp_pullback_snd, mW_comp_pullback_snd, mW_comp_pullback_snd]`.
+-/
 private theorem mW_comp {S S' S'' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} {s'' : S'' ⟶ B} (g : S' ⟶ S) (h : g ≫ s = s')
     (g' : S'' ⟶ S') (h' : g' ≫ s' = s'') :
     mW p ι g' h' ≫ mW p ι g h = mW p ι (g' ≫ g) (by simp [h, h']) := by
@@ -57,16 +75,25 @@ private theorem mW_comp {S S' S'' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} {s
   · rw [Category.assoc, mW_comp_fst_eq_fst_comp_mY, reassoc_of% (mW_comp_fst_eq_fst_comp_mY p ι g' h'), mW_comp_fst_eq_fst_comp_mY, mY_comp p g h g' h']
   · rw [Category.assoc, mW_comp_pullback_snd, mW_comp_pullback_snd, mW_comp_pullback_snd]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `mY_comp p g h g' h'`.
+-/
 private theorem mY_comp' {S S' S'' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} {s'' : S'' ⟶ B} (g : S' ⟶ S) (h : g ≫ s = s')
     (g' : S'' ⟶ S') (h' : g' ≫ s' = s'') (g'' : S'' ⟶ S) (h'' : g'' ≫ s = s'') (e : g' ≫ g = g'') :
     mY p g' h' ≫ mY p g h = mY p g'' h'' := by
   subst e; exact mY_comp p g h g' h'
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `mW_comp p ι g h g' h'`.
+-/
 private theorem mW_comp' {S S' S'' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} {s'' : S'' ⟶ B} (g : S' ⟶ S) (h : g ≫ s = s')
     (g' : S'' ⟶ S') (h' : g' ≫ s' = s'') (g'' : S'' ⟶ S) (h'' : g'' ≫ s = s'') (e : g' ≫ g = g'') :
     mW p ι g' h' ≫ mW p ι g h = mW p ι g'' h'' := by
   subst e; exact mW_comp p ι g h g' h'
 
+/- English proof (translation)
+Rewrite using `[mW_comp_fst_eq_fst_comp_mY]`.
+-/
 private theorem mW_fst {S S' : Scheme.{0}} {s : S ⟶ B} {s' : S' ⟶ B} (g : S' ⟶ S) (h : g ≫ s = s') :
     pullback.fst _ _ ≫ mY p g h = mW p ι g h ≫ pullback.fst _ _ := by
   rw [mW_comp_fst_eq_fst_comp_mY]
@@ -81,10 +108,20 @@ private def ContP (q : ℕ) (i n : ℤ) {J : Type} [Category J] (E : J → Spc) 
   ∀ j (y : Ht q (E j) n i), pull (ZMod q) (b j) (tw q i) n y = 0 →
     ∃ (k : J) (f : j ⟶ k), pull (ZMod q) (tr f) (tw q i) n y = 0
 
+/- English proof (translation)
+Rewrite using `[← pull_comp, e.inv_hom_id, pull_id]`.
+-/
 private theorem pull_cancel {q : ℕ} {i n : ℤ} {E E' : Spc} (e : E ≅ E') (x : Ht q E' n i) :
     pull (ZMod q) e.inv (tw q i) n (pull (ZMod q) e.hom (tw q i) n x) = x := by
   rw [← pull_comp, e.inv_hom_id, pull_id]
 
+/- English proof (translation)
+Take `⟨hs, hi⟩` from `h`. Use `⟨fun x' => ?_, fun j y' hy' => ?_⟩` and prove the remaining obligations. Take `⟨j, y, hy⟩` from `hs (pull (ZMod q) φL.hom (tw q i) n x')`. Use `⟨j, pull (ZMod q) (φ j).inv (tw q i) n y, ?_⟩` and prove the remaining obligations. Establish `hc` using `pull_cancel (φ j).symm y`.
+
+Simplify using `only [Iso.symm_inv, Iso.symm_hom] at hc`. Establish `key : pull (ZMod q) φL.hom (tw q i) n (pull (ZMod q) (b' j) (tw q i) n (pull (ZMod q) (φ j).inv (tw q i) n y)) = pull (ZMod q) φL.hom (tw q i) n x'`. Rewrite using `[← pull_comp, hb, pull_comp, hc, hy]`. Establish `key2` using `congrArg (pull (ZMod q) φL.inv (tw q i) n) key`. Rewrite `key2` using `[pull_cancel, pull_cancel]`. Then use the resulting hypothesis.
+
+Take `⟨k, f, hf⟩` from `hi j (pull (ZMod q) (φ j).hom (tw q i) n y') (by rw [← pull_comp, ← hb, pull_comp, hy', map_zero])`. Use `⟨k, f, ?_⟩` and prove the remaining obligations. Establish `key : pull (ZMod q) (φ k).hom (tw q i) n (pull (ZMod q) (tr' f) (tw q i) n y') = 0`. Rewrite using `[← pull_comp, htr, pull_comp, hf]`. Rewrite using `[← pull_cancel (φ k) (pull (ZMod q) (tr' f) (tw q i) n y'), key, map_zero]`.
+-/
 private theorem transfer {q : ℕ} {i n : ℤ} {J : Type} [Category J] {E E' : J → Spc} {L L' : Spc}
     {b : ∀ j, L ⟶ E j} {b' : ∀ j, L' ⟶ E' j}
     {tr : ∀ {j k : J}, (j ⟶ k) → (E k ⟶ E j)} {tr' : ∀ {j k : J}, (j ⟶ k) → (E' k ⟶ E' j)}
@@ -120,10 +157,16 @@ private def eY {S : Scheme.{0}} (g : S ⟶ C) (s : S ⟶ B) (h : g ≫ π = s) :
     pullback (pullback.snd p π) g ≅ pullback p s :=
   pullbackLeftPullbackSndIso p π g ≪≫ pullback.congrHom rfl h
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using `[eY]`.
+-/
 @[reassoc (attr := simp)] private theorem eY_hom_fst {S : Scheme.{0}} (g : S ⟶ C) (s : S ⟶ B) (h : g ≫ π = s) :
     (eY p π g s h).hom ≫ pullback.fst _ _ = pullback.fst _ _ ≫ pullback.fst _ _ := by
   subst h; simp [eY]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using `[eY]`.
+-/
 @[reassoc (attr := simp)] private theorem eY_hom_snd {S : Scheme.{0}} (g : S ⟶ C) (s : S ⟶ B) (h : g ≫ π = s) :
     (eY p π g s h).hom ≫ pullback.snd _ _ = pullback.snd _ _ := by
   subst h; simp [eY]
@@ -133,6 +176,9 @@ end Isos
 section IsosW
 variable {Y B W C : Scheme.{0}} (p : Y ⟶ B) (ι : W ⟶ B) (π : C ⟶ B)
 
+/- English proof (translation)
+Rewrite using `[Iso.inv_comp_eq, eY_hom_snd]`.
+-/
 private theorem eY_inv_snd {S : Scheme.{0}} (g : S ⟶ C) (s : S ⟶ B) (h : g ≫ π = s) :
     (eY p π g s h).inv ≫ pullback.snd _ _ = pullback.snd _ _ := by
   rw [Iso.inv_comp_eq, eY_hom_snd]
@@ -143,6 +189,9 @@ private abbrev aW {S : Scheme.{0}} (g : S ⟶ C) : pullback (p2 p ι π) g ⟶ p
   pullback.lift (pullback.fst _ _ ≫ pullback.fst _ _) (pullback.snd _ _)
     (by rw [Category.assoc, pullback.condition])
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[Category.assoc, Category.assoc, eY_hom_snd_assoc]`. Use `erw [pullback.lift_snd_assoc]`. Rewrite using `[← pullback.condition (f := pullback.snd p π ≫ π) (g := ι), ← pullback.condition_assoc (f := p2 p ι π) (g := g)]`. Simplify using `only [Category.assoc]`.
+-/
 private theorem equiv_hom_comp_projection {S : Scheme.{0}} (g : S ⟶ C) (s : S ⟶ B) (h : g ≫ π = s) :
     (aW p ι π g ≫ (eY p π g s h).hom) ≫ pullback.snd p s ≫ s =
       (pullback.fst (p2 p ι π) g ≫ pullback.snd (pullback.snd p π ≫ π) ι) ≫ ι := by
@@ -153,6 +202,9 @@ private theorem equiv_hom_comp_projection {S : Scheme.{0}} (g : S ⟶ C) (s : S 
     ← pullback.condition_assoc (f := p2 p ι π) (g := g)]
   simp only [Category.assoc]
 
+/- English proof (translation)
+Simplify using `only [Category.assoc]`. Rewrite using `[pullback.condition_assoc, reassoc_of% (eY_inv_snd p π g s h), h]`. Conclude with `pullback.condition`.
+-/
 private theorem equiv_inv_comp_projection {S : Scheme.{0}} (g : S ⟶ C) (s : S ⟶ B) (h : g ≫ π = s) :
     ((pullback.fst (pullback.snd p s ≫ s) ι ≫ (eY p π g s h).inv) ≫ pullback.fst _ _) ≫ pullback.snd p π ≫ π =
       pullback.snd (pullback.snd p s ≫ s) ι ≫ ι := by
@@ -190,6 +242,9 @@ variable {S S' : Scheme.{0}} {g : S ⟶ C} {g' : S' ⟶ C} {s : S ⟶ B} {s' : S
 private abbrev bc {X : Scheme.{0}} (P : X ⟶ C) (k : S' ⟶ S) (hg : k ≫ g = g') : pullback P g' ⟶ pullback P g :=
   pullback.map _ _ _ _ (𝟙 _) k (𝟙 _) (by simp) (by simp [hg])
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, mY_comp_pullback_fst, eY_hom_fst, Category.assoc, eY_hom_fst] erw [pullback.lift_fst_assoc]`. Rewrite using `[Category.comp_id]`. Rewrite using `[Category.assoc, mY_comp_pullback_snd, eY_hom_snd_assoc, Category.assoc, eY_hom_snd] erw [pullback.lift_snd]`.
+-/
 private theorem eY_nat (h : g ≫ π = s) (h' : g' ≫ π = s') (k : S' ⟶ S) (hk : k ≫ s = s') (hg : k ≫ g = g') :
     (eY p π g' s' h').hom ≫ mY p k hk = bc (pullback.snd p π) k hg ≫ (eY p π g s h).hom := by
   apply pullback.hom_ext
@@ -199,37 +254,60 @@ private theorem eY_nat (h : g ≫ π = s) (h' : g' ≫ π = s') (k : S' ⟶ S) (
   · rw [Category.assoc, mY_comp_pullback_snd, eY_hom_snd_assoc, Category.assoc, eY_hom_snd]
     erw [pullback.lift_snd]
 
+/- English proof (translation)
+Unfold `bc pullback.map`. Use `erw [pullback.lift_fst]`. Conclude with `Category.comp_id _`.
+-/
 private theorem bc_comp_pullback_fst {X : Scheme.{0}} (P : X ⟶ C) (k : S' ⟶ S) (hg : k ≫ g = g') :
     bc P k hg ≫ pullback.fst P g = pullback.fst P g' := by
   unfold bc pullback.map
   erw [pullback.lift_fst]
   exact Category.comp_id _
 
+/- English proof (translation)
+Unfold `bc pullback.map`. Use `erw [pullback.lift_snd]`.
+-/
 private theorem bc_comp_pullback_snd {X : Scheme.{0}} (P : X ⟶ C) (k : S' ⟶ S) (hg : k ≫ g = g') :
     bc P k hg ≫ pullback.snd P g = pullback.snd P g' ≫ k := by
   unfold bc pullback.map
   erw [pullback.lift_snd]
 
+/- English proof (translation)
+Unfold `aW`. Use `erw [pullback.lift_fst]`.
+-/
 private theorem aW_comp_pullback_fst (g : S ⟶ C) :
     aW p ι π g ≫ pullback.fst _ _ = pullback.fst _ _ ≫ pullback.fst _ _ := by
   unfold aW
   erw [pullback.lift_fst]
 
+/- English proof (translation)
+Unfold `aW`. Use `erw [pullback.lift_snd]`.
+-/
 private theorem aW_comp_pullback_snd (g : S ⟶ C) :
     aW p ι π g ≫ pullback.snd _ _ = pullback.snd _ _ := by
   unfold aW
   erw [pullback.lift_snd]
 
+/- English proof (translation)
+Unfold `eW`. Use `erw [pullback.lift_fst]`.
+-/
 private theorem eW_hom_comp_fst_eq_aW_comp_eY (g : S ⟶ C) (h : g ≫ π = s) :
     (eW p ι π g s h).hom ≫ pullback.fst _ _ = aW p ι π g ≫ (eY p π g s h).hom := by
   unfold eW
   erw [pullback.lift_fst]
 
+/- English proof (translation)
+Unfold `eW`. Use `erw [pullback.lift_snd]`.
+-/
 private theorem eW_hom_comp_snd (g : S ⟶ C) (h : g ≫ π = s) :
     (eW p ι π g s h).hom ≫ pullback.snd _ _ = pullback.fst _ _ ≫ pullback.snd _ _ := by
   unfold eW
   erw [pullback.lift_snd]
 
+/- English proof (translation)
+Establish `hA : aW p ι π g' ≫ bc (pullback.snd p π) k hg = bc (p2 p ι π) k hg ≫ aW p ι π g`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, bc_comp_pullback_fst, aW_comp_pullback_fst, Category.assoc, aW_comp_pullback_fst, reassoc_of% (bc_comp_pullback_fst (p2 p ι π) k hg)]`. Rewrite using `[Category.assoc, bc_comp_pullback_snd, reassoc_of% (aW_comp_pullback_snd p ι π g'), Category.assoc, aW_comp_pullback_snd, bc_comp_pullback_snd]`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, mW_comp_fst_eq_fst_comp_mY, reassoc_of% (eW_hom_comp_fst_eq_aW_comp_eY p ι π g' h'), eY_nat p π h h' k hk hg, reassoc_of% hA, Category.assoc, eW_hom_comp_fst_eq_aW_comp_eY]`. Rewrite using `[Category.assoc, mW_comp_pullback_snd, eW_hom_comp_snd, Category.assoc, eW_hom_comp_snd, reassoc_of% (bc_comp_pullback_fst (p2 p ι π) k hg)]`.
+-/
 private theorem eW_nat (h : g ≫ π = s) (h' : g' ≫ π = s') (k : S' ⟶ S) (hk : k ≫ s = s') (hg : k ≫ g = g') :
     (eW p ι π g' s' h').hom ≫ mW p ι k hk = bc (p2 p ι π) k hg ≫ (eW p ι π g s h).hom := by
   have hA : aW p ι π g' ≫ bc (pullback.snd p π) k hg = bc (p2 p ι π) k hg ≫ aW p ι π g := by
@@ -249,6 +327,9 @@ variable {q : ℕ} [NeZero q] {R : CommRingCat.{0}} {J : Type} [SmallCategory J]
   (hu : ∀ {j k : J} (f : j ⟶ k), u j ≫ D.map f = u k) {v : R ⟶ c.pt} (hv : ∀ j, u j ≫ c.ι.app j = v)
 
 include hc in
+/- English proof (translation)
+The claim follows from `LateralTheory.Fin.Cont.intersectionNumber_baseChange hA hB q P hq D c hc u hu v hv n i`.
+-/
 private theorem contOf (hA : A2) (hB : B1) {X : Scheme.{0}} (P : X ⟶ Spec R) [QuasiCompact P] [IsSeparated P]
     (hq : IsUnit (q : R)) (i n : ℤ) :
     ContP q i n (fun j => sch.obj (pullback P (Spec.map (u j)))) (sch.obj (pullback P (Spec.map v)))
@@ -269,6 +350,11 @@ variable {q : ℕ} [NeZero q] {R : CommRingCat.{0}} {J : Type} [SmallCategory J]
   (h2 : ∀ {j k : J} (f : j ⟶ k), Spec.map (D.map f) ≫ s j = s k)
 
 include hc hu hv hs hsL in
+/- English proof (translation)
+Use `transfer (fun j => sch.mapIso (eY p π (Spec.map (u j)) (s j) (hs j))) (sch.mapIso (eY p π (Spec.map v) sL hsL)) (fun j => ?_) (fun {j k} f => ?_) (contOf hc hu hv hA hB (pullback.snd p π) hq i n)` and prove the remaining obligations. Simplify using `only [CategoryTheory.Functor.mapIso_hom]`. Rewrite using `[← CategoryTheory.Functor.map_comp, ← CategoryTheory.Functor.map_comp]`. Use `congr 1`. Conclude with `eY_nat p π (hs j) hsL (Spec.map (c.ι.app j)) (h1 j) (by rw [← Spec.map_comp, hv j])`.
+
+Simplify using `only [CategoryTheory.Functor.mapIso_hom]`. Rewrite using `[← CategoryTheory.Functor.map_comp, ← CategoryTheory.Functor.map_comp]`. Use `congr 1`. Conclude with `eY_nat p π (hs j) (hs k) (Spec.map (D.map f)) (h2 f) (by rw [← Spec.map_comp, hu f])`.
+-/
 private theorem contY (hA : A2) (hB : B1) [QuasiCompact (pullback.snd p π)] [IsSeparated (pullback.snd p π)]
     (hq : IsUnit (q : R)) (i n : ℤ) :
     ContP q i n (fun j => sch.obj (pullback p (s j))) (sch.obj (pullback p sL))
@@ -287,6 +373,11 @@ private theorem contY (hA : A2) (hB : B1) [QuasiCompact (pullback.snd p π)] [Is
     exact eY_nat p π (hs j) (hs k) (Spec.map (D.map f)) (h2 f) (by rw [← Spec.map_comp, hu f])
 
 include hc hu hv hs hsL in
+/- English proof (translation)
+Use `transfer (fun j => sch.mapIso (eW p ι π (Spec.map (u j)) (s j) (hs j))) (sch.mapIso (eW p ι π (Spec.map v) sL hsL)) (fun j => ?_) (fun {j k} f => ?_) (contOf hc hu hv hA hB (p2 p ι π) hq i n)` and prove the remaining obligations. Simplify using `only [CategoryTheory.Functor.mapIso_hom]`. Rewrite using `[← CategoryTheory.Functor.map_comp, ← CategoryTheory.Functor.map_comp]`. Use `congr 1`. Conclude with `eW_nat p ι π (hs j) hsL (Spec.map (c.ι.app j)) (h1 j) (by rw [← Spec.map_comp, hv j])`.
+
+Simplify using `only [CategoryTheory.Functor.mapIso_hom]`. Rewrite using `[← CategoryTheory.Functor.map_comp, ← CategoryTheory.Functor.map_comp]`. Use `congr 1`. Conclude with `eW_nat p ι π (hs j) (hs k) (Spec.map (D.map f)) (h2 f) (by rw [← Spec.map_comp, hu f])`.
+-/
 private theorem contW (hA : A2) (hB : B1) [QuasiCompact (p2 p ι π)] [IsSeparated (p2 p ι π)]
     (hq : IsUnit (q : R)) (i n : ℤ) :
     ContP q i n (fun j => sch.obj (pullback (pullback.snd p (s j) ≫ s j) ι))
@@ -309,6 +400,41 @@ end Cont2
 
 section Main
 
+/- English proof (translation)
+Use `haveI := hp`. Take `⟨J, _, _, D, c, hc, uu, hSH, hE⟩` from `LateralTheory.Fin.StrictHenselization.intersectionNumber_baseChange R (e.hom u)`. Take `⟨uj, huj⟩ : ∃ uj : ∀ j, R ⟶ D.obj j, ∀ j, uj j = uu.app j` from `⟨fun j => uu.app j, fun _ => rfl⟩`. Establish `hu : ∀ {j k : J} (f : j ⟶ k), uj j ≫ D.map f = uj k`. Introduce `j k f`.
+
+Rewrite using `[huj, huj]`. Simplify using `using (uu.naturality f).symm`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v : R ⟶ c.pt, ∀ j, uj j ≫ c.ι.app j = v := by`. Take `⟨j0⟩` from `IsFiltered.nonempty (C := J)`. Use `⟨uj j0 ≫ c.ι.app j0, fun j => ?_⟩` and prove the remaining obligations.
+
+Take `⟨k, f, g, -⟩` from `IsFilteredOrEmpty.cocone_objs j j0`. Establish `a1 : uj j ≫ c.ι.app j = uj k ≫ c.ι.app k` using `by rw [← c.w f, ← Category.assoc, hu f]`. Establish `a2 : uj j0 ≫ c.ι.app j0 = uj k ≫ c.ι.app k` using `by rw [← c.w g, ← Category.assoc, hu g]`. Conclude with `a1.trans a2.symm`. Establish `hEt : ∀ j, Etale (((Spec.map (uj j) ≫ e.inv) ≫ U.hom : Spec (D.obj j) ⟶ B))`.
+
+Introduce `j`. Use `haveI : Etale (Spec.map (uj j)) := HasRingHomProperty.Spec_iff.mpr (by rw [huj]; exact (hE j).1)`. Use `haveI : Etale U.hom := U.prop`. Use `infer_instance`. Set `π : Spec R ⟶ B` to `e.inv ≫ U.hom`.
+
+Set `s : ∀ j, Spec (D.obj j) ⟶ B` to `fun j => (Spec.map (uj j) ≫ e.inv) ≫ U.hom`. Set `sL : Spec c.pt ⟶ B` to `(Spec.map v ≫ e.inv) ≫ U.hom`. Establish `hs : ∀ j, Spec.map (uj j) ≫ π = s j` using `fun j => (Category.assoc _ _ _).symm`. Establish `hsL : Spec.map v ≫ π = sL` using `(Category.assoc _ _ _).symm`. Establish `h1 : ∀ j, Spec.map (c.ι.app j) ≫ s j = sL`.
+
+Introduce `j`. Simplify using `only [s, sL, ← Category.assoc, ← Spec.map_comp, hv j]`. Establish `h2 : ∀ {j k : J} (f : j ⟶ k), Spec.map (D.map f) ≫ s j = s k`. Introduce `j k f`. Simplify using `only [s, ← Category.assoc, ← Spec.map_comp, hu f]`.
+
+Set `V : J → B.Etale` to `fun j => MorphismProperty.Over.mk ⊤ (s j) (hEt j)`. Set `a : ∀ j, V j ⟶ U` to `fun j => MorphismProperty.Over.homMk (Spec.map (uj j) ≫ e.inv) rfl trivial`. Set `tr : ∀ {j k : J}, (j ⟶ k) → (V k ⟶ V j)` to `fun {j k} f => MorphismProperty.Over.homMk (Spec.map (D.map f)) (h2 f) trivial`. Establish `cY` using `fun n => contY (hc := hc) (hu := hu) (hv := hv) (p := p) (π := π) (hs := hs) (hsL := hsL) (h1 := h1) (h2 := h2) hA hB hq i n`. Establish `cW` using `fun n => contW (hc := hc) (hu := hu) (hv := hv) (p := p) (ι := ι) (π := π) (hs := hs) (hsL := hsL) (h1 := h1) (h2 := h2) hA hB hq i n`.
+
+Establish `ea : ∀ j, Spec.map (c.ι.app j) ≫ (a j).left = Spec.map v ≫ e.inv`. Introduce `j`. Use `show Spec.map (c.ι.app j) ≫ Spec.map (uj j) ≫ e.inv = Spec.map v ≫ e.inv`. Rewrite using `[← Category.assoc, ← Spec.map_comp, hv j]`. Establish `etr : ∀ {j k : J} (f : j ⟶ k), Spec.map (c.ι.app k) ≫ (tr f).left = Spec.map (c.ι.app j)`.
+
+Introduce `j k f`. Use `show Spec.map (c.ι.app k) ≫ Spec.map (D.map f) = Spec.map (c.ι.app j)`. Rewrite using `[← Spec.map_comp, c.w f]`. Use `⟨Sys.mk J V a ?_ tr ?_ ?_ ?_ c.pt hSH (Spec.map v ≫ e.inv) (fun j => mY p (Spec.map (c.ι.app j)) (h1 j)) (fun j => mW p ι (Spec.map (c.ι.app j)) (h1 j)) ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_⟩` and prove the remaining obligations. Introduce `j`.
+
+Take `⟨𝔮, h𝔮⟩` from `(hE j).2`. Use `⟨𝔮, ?_⟩` and prove the remaining obligations. Establish `hp𝔮 : Spec.map (uj j) 𝔮 = e.hom u`. Rewrite using `[huj]`. Conclude with `PrimeSpectrum.ext h𝔮`.
+
+Use `show e.inv (Spec.map (uj j) 𝔮) = u`. Rewrite using `[hp𝔮]`. Simplify using the standard rewrite rules. Introduce `j`. Apply `MorphismProperty.Over.Hom.ext` to reduce the goal to its premises.
+
+Use `show Spec.map (D.map (𝟙 j)) = 𝟙 _`. Rewrite using `[CategoryTheory.Functor.map_id, Spec.map_id]`. Introduce `j k l f g`. Apply `MorphismProperty.Over.Hom.ext` to reduce the goal to its premises. Use `show Spec.map (D.map (f ≫ g)) = Spec.map (D.map g) ≫ Spec.map (D.map f)`.
+
+Rewrite using `[CategoryTheory.Functor.map_comp, Spec.map_comp]`. Introduce `j k f`. Apply `MorphismProperty.Over.Hom.ext` to reduce the goal to its premises. Use `show Spec.map (D.map f) ≫ Spec.map (uj j) ≫ e.inv = Spec.map (uj k) ≫ e.inv`. Rewrite using `[← Category.assoc, ← Spec.map_comp, hu f]`.
+
+Introduce `j`. Conclude with `mW_fst p ι _ _`. Introduce `j`. Conclude with `mY_comp' p (a j).left rfl (Spec.map (c.ι.app j)) (h1 j) (Spec.map v ≫ e.inv) rfl (ea j)`. Introduce `j`.
+
+Conclude with `mW_comp' p ι (a j).left rfl (Spec.map (c.ι.app j)) (h1 j) (Spec.map v ≫ e.inv) rfl (ea j)`. Introduce `j k f`. Conclude with `mY_comp' p (tr f).left (h2 f) (Spec.map (c.ι.app k)) (h1 k) (Spec.map (c.ι.app j)) (h1 j) (etr f)`. Introduce `j k f`. Conclude with `mW_comp' p ι (tr f).left (h2 f) (Spec.map (c.ι.app k)) (h1 k) (Spec.map (c.ι.app j)) (h1 j) (etr f)`.
+
+Introduce `j y hy`. Conclude with `(cY m).2 j y hy`. Introduce `y`. Conclude with `(cY (m - 1)).1 y`. Introduce `j w hw`.
+
+Conclude with `(cW (m - 1)).2 j w hw`.
+-/
 private theorem sys_of {q : ℕ} [NeZero q] (i : ℤ) {B W Y : Scheme.{0}} (ι : W ⟶ B) [IsClosedImmersion ι] (p : Y ⟶ B)
     (hp : IsProper p) (U : B.Etale) (R : CommRingCat.{0}) (e : U.left ≅ Spec R) (m : ℤ) (u : U.left)
     (hq : IsUnit (q : R)) (hA : A2) (hB : B1) : Nonempty (Sys q i p ι U m u) := by
@@ -403,6 +529,9 @@ end Main
 
 end UpperTheory.Cb.MorphismCompositionLaws
 
+/- English proof (translation)
+Introduce `_ _ hyps q _ k _ hqk i B W Y x ι _ p hp U R e m u`. Establish `hq : IsUnit (q : R)`. Establish `h` using `hqk.map (Spec.preimage (e.inv ≫ U.hom ≫ x)).hom`. Rewrite `h` using `[map_natCast]`. Then use the resulting hypothesis. Conclude with `UpperTheory.Cb.MorphismCompositionLaws.sys_of i ι p hp U R e m u hq hyps.2.1 hyps.2.2.2.2.2.2.2.2.2.2.1`.
+-/
 theorem UpperTheory.Cb.affineGeometricCase_of_obstructionExact_natural :
     LateralTheory.E.NeighbourhoodKilling.ObsExact → LateralTheory.E.NeighbourhoodKilling.ObsNat → LateralTheory.E.GeoProof.AffGeo := by
   intro _ _ hyps q _ k _ hqk i B W Y x ι _ p hp U R e m u

@@ -20,6 +20,19 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SW.Aniso
 
+/- English proof (translation)
+Establish `hme : MeasurableEmbedding ι` using `hι.measurableEmbedding`. Establish `hνinv : ∀ p ∈ ι.range, (μ₁.map ι).map (fun g => p * g) = μ₁.map ι`. Introduce and unpack `_ ⟨u, rfl⟩`. Rewrite using `[Measure.map_map (measurable_const_mul _) hme.measurable]`. Establish `h : (fun g => ι u * g) ∘ ι = ι ∘ (fun g => u * g)`.
+
+Use extensionality with `g`. Simplify using the standard rewrite rules. Rewrite using `[h, ← Measure.map_map hme.measurable (measurable_const_mul _), map_mul_left_eq_self]`. Establish `hνpos : ∀ U ∈ 𝓝 (1 : G), (μ₁.map ι) U ≠ 0`. Introduce `U hU`.
+
+Establish `h1 : ι ⁻¹' U ∈ 𝓝 (1 : G₁)` using `hι.continuous.continuousAt.preimage_mem_nhds (by simpa using hU)`. Establish `h2 : 0 < μ₁ (ι ⁻¹' U)` using `μ₁.measure_pos_of_mem_nhds h1`. Establish `h3 : μ₁ (ι ⁻¹' U) ≤ (μ₁.map ι) U` using `Measure.le_map_apply hme.measurable.aemeasurable U`. Conclude with `(h2.trans_le h3).ne'`. Take `⟨C', K, hC', hK, hcover⟩` from `GlobalTheory.T.invariant_measure_compact_cover_bound G μ ι.range (μ₁.map ι) hνinv hνpos C hC`.
+
+Take `⟨𝓕', h𝓕', hunf⟩` from `GlobalTheory.T.fundamental_domain_of_subgroup_from_coset_reps G μ Γ (Γ ⊓ ι.range) inf_le_left 𝓕 h𝓕 Q r hr hQ`. Rewrite using `[hunf f hf]`. Use `haveI : Countable ↥(Γ ⊓ ι.range) := (Subgroup.inclusion_injective (inf_le_left : Γ ⊓ ι.range ≤ Γ)).countable`. Establish `hae : ∀ᵐ p ∂(μ₁.map ι), ∃ γ ∈ Γ ⊓ ι.range, γ * p ∈ ι '' 𝓕₁`. Use `hme.ae_map_iff.2 (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations.
+
+Take `⟨γ, hγ, hγu⟩` from `hcov u`. Conclude with `⟨ι γ, ⟨hΓ γ hγ, γ, rfl⟩, γ * u, hγu, map_mul ι γ u⟩`. Establish `hb` using `hcover (Γ ⊓ ι.range) inf_le_right 𝓕' h𝓕' (ι '' 𝓕₁) (hme.measurableSet_image.2 hm₁) hae f (fun _ => 1) hf measurable_const (fun γ hγ x => hinv γ hγ.2 x) hsupp (fun p _ c _ => hf1 _)`. Establish `hS : ∫⁻ p in ι '' 𝓕₁, (1 : ℝ≥0∞) ∂(μ₁.map ι) = μ₁ 𝓕₁`. Rewrite using `[lintegral_one, Measure.restrict_apply_univ, hme.map_apply, Set.preimage_image_eq _ hι.injective]`.
+
+Rewrite `hb` using `[hS]`. Conclude with `hb.trans_lt (ENNReal.mul_lt_top hK hfin)`.
+-/
 theorem mean_lt_top {G G₁ : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
     [Group G₁] [TopologicalSpace G₁] [IsTopologicalGroup G₁] [T2Space G₁] [LocallyCompactSpace G₁]
@@ -71,6 +84,13 @@ section Rat
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
   (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
+/- English proof (translation)
+Establish `hs : ∀ e : E, sigR R σ (inclR (F` using `F) R e) = inclR (F := F) R (σ e) := by`. Introduce `e`. Simplify using `[sigR, inclR]`. Establish `hval : ((bc (inclR (F` using `F) R) g : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) (R ⊗[F] E)) = (g : Matrix (Fin M) (Fin M) E).map (inclR (F := F) R) := rfl`. Establish `hc : cT (sigR R σ) ((g : Matrix (Fin M) (Fin M) E).map (inclR (F` using `F) R)) = (cT (σ : E →+* E) (g : Matrix (Fin M) (Fin M) E)).map (inclR (F := F) R) := by`.
+
+Use extensionality with `i j`. Simplify using `[cT, hs]`. Establish `hg' : cT (σ : E →+* E) (g : Matrix (Fin M) (Fin M) E) * J * (g : Matrix (Fin M) (Fin M) E) = J` using `hg`. Use `show cT (sigR R σ) ((bc (inclR (F := F) R) g : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) (R ⊗[F] E)) * JR R J * ((bc (inclR (F := F) R) g : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) (R ⊗[F] E)) = JR R J`. Rewrite using `[hval, hc]`.
+
+Unfold `JR`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul, hg']`.
+-/
 theorem bc_mem_HR (g : GL (Fin M) E) (hg : g ∈ UJ (σ : E →+* E) J) :
     bc (inclR (F := F) R) g ∈ HR R σ J := by
   have hs : ∀ e : E, sigR R σ (inclR (F := F) R e) = inclR (F := F) R (σ e) := by
@@ -91,9 +111,15 @@ theorem bc_mem_HR (g : GL (Fin M) E) (hg : g ∈ UJ (σ : E →+* E) J) :
 def ratH (g : GL (Fin M) E) (hg : g ∈ UJ (σ : E →+* E) J) : HA R σ J :=
   (⟨bc (inclR (F := F) R) g, bc_mem_HR R σ J g hg⟩ : HR R σ J)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_ratH (g : GL (Fin M) E) (hg : g ∈ UJ (σ : E →+* E) J) :
     HA.mat R σ J (ratH R σ J g hg) = bc (inclR (F := F) R) g := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a i`. Simplify using `only [actW, actTup, ratTup, hγ]`. Use `show ∑ j, inclR (F := F) R ((g : Matrix (Fin M) (Fin M) E) i j) * inclR (F := F) R (X a j) = inclR (F := F) R (∑ j, (g : Matrix (Fin M) (Fin M) E) i j * X a j)`. Simplify using `[map_sum]`.
+-/
 theorem act_rat (γ : HA R σ J) (g : GL (Fin M) E) (hγ : HA.mat R σ J γ = bc (inclR (F := F) R) g) {n : ℕ}
     (X : Fin n → Fin M → E) :
     actW R σ J γ (ratTup R X) = ratTup R (fun a => (g : Matrix (Fin M) (Fin M) E) *ᵥ X a) := by
@@ -105,6 +131,67 @@ theorem act_rat (γ : HA R σ J) (g : GL (Fin M) E) (hγ : HA.mat R σ J γ = bc
 
 end Rat
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ hvol t ht μ 𝓕 hμ h𝓕 Ω hΩ`. Establish `hJb : IsHermND σ (blockOne (algebraMap F E t) J)` using `(GlobalTheory.T.hyperbolic_and_block_one_nondegenerate F E σ hσ M J hJ).2 t ht`. Take `⟨⟨a1, a2, a3⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Use `haveI := a1`. Use `haveI := a2`.
+
+Use `haveI := a3`. Use `haveI : T2Space (AF F ⊗[F] E) := (GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (AF F)).2.2.2.1`. Use `haveI : Nontrivial (AF F) := inferInstanceAs (Nontrivial (Ainf F × Af F))`. Use `haveI : Nontrivial (AF F ⊗[F] E) := inferInstance`. Take `⟨tg, lc, sc, t2, bs, hact⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hσ (M + 1) (blockOne (algebraMap F E t) J) hJb (AF F)`.
+
+Take `⟨tg₁, lc₁, sc₁, t2₁, bs₁, -⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hσ M J hJ (AF F)`. Use `haveI := tg`. Use `haveI := lc`. Use `haveI := sc`. Use `haveI := t2`.
+
+Use `haveI := bs`. Use `haveI := tg₁`. Use `haveI := lc₁`. Use `haveI := sc₁`. Use `haveI := t2₁`.
+
+Use `haveI := bs₁`. Take `⟨hcont, -, hmul, hgram⟩` from `hact 1`. Use `haveI : μ.IsHaarMeasure := hμ`. Set `e0E : Fin 1 → Fin (M + 1) → E` to `fun _ => Fin.cons 1 (fun _ => 0)`. Set `e0 : Fin 1 → Fin (M + 1) → AF F ⊗[F] E` to `ratTup (AF F) e0E`.
+
+Establish `he0 : e0 = fun _ : Fin 1 => Fin.cons 1 (fun _ => 0)`. Use function extensionality and compare the values at `a i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[e0, e0E, ratTup]`. Simplify using `[e0, e0E, ratTup]`.
+
+Establish `hg0 : gramE σ (blockOne (algebraMap F E t) J) e0E = fun _ _ => algebraMap F E t`. Use function extensionality and compare the values at `a b`. Simplify using `[gramE, hE, hform, e0E, Fin.sum_univ_succ, blockOne]`. Establish `hdet : (gramE σ (blockOne (algebraMap F E t) J) e0E).det ≠ 0`. Rewrite using `[Matrix.det_fin_one]`.
+
+Establish `h00 : gramE σ (blockOne (algebraMap F E t) J) e0E 0 0 = algebraMap F E t` using `congrFun (congrFun hg0 0) 0`. Rewrite using `[h00]`. Simplify using `using ht`. Establish `hinj : Function.Injective (inclR (F` using `F) (E := E) (AF F)) := RingHom.injective _`. Establish `hratinj : Function.Injective (ratTup (F` using `F) (AF F) : (Fin 1 → Fin (M + 1) → E) → (Fin 1 → Fin (M + 1) → AF F ⊗[F] E)) := by`.
+
+Introduce `X Y h`. Use function extensionality and compare the values at `a i`. Conclude with `hinj (congrFun (congrFun h a) i)`. Take `⟨hgr1, hgr2, -⟩` from `GlobalTheory.T.rational_gram_adelic_compact_finite F E σ hσ (M + 1) (blockOne (algebraMap F E t) J) hJb`. Take `⟨ι, hιc, hιm, hιs, hιr, -⟩` from `GlobalTheory.CompanionTheory.SW.StabFirst.stab_first F E σ hσ M J hJ t ht (AF F)`.
+
+Establish `hstab : ∀ h, h ∈ ι.range ↔ actW (AF F) σ (blockOne (algebraMap F E t) J) h e0 = e0`. Introduce `h`. Rewrite using `[he0]`. Conclude with `hιs h`. Establish `hinvact : ∀ (h : HA (AF F) σ (blockOne (algebraMap F E t) J)) (Y Z : Fin 1 → Fin (M + 1) → AF F ⊗[F] E), actW (AF F) σ (blockOne (algebraMap F E t) J) h Y = Z → actW (AF F) σ (blockOne (algebraMap F E t) J) h⁻¹ Z = Y`.
+
+Introduce `h Y Z hYZ`. Take `⟨-, hone, -, -⟩` from `hact 1`. Rewrite using `[← hYZ, ← hmul, inv_mul_cancel, hone]`. Set `Q : Set (Fin 1 → Fin (M + 1) → E)` to `{X | gramE σ (blockOne (algebraMap F E t) J) X = fun _ _ => algebraMap F E t}`. Establish `hrep : ∀ q : Q, ∃ g ∈ UJ (σ : E →+* E) (blockOne (algebraMap F E t) J), ∀ a, (g : Matrix (Fin (M + 1)) (Fin (M + 1)) E) *ᵥ q.1 a = e0E a`.
+
+Introduce `q`. Establish `hq : gramE σ (blockOne (algebraMap F E t) J) q.1 = gramE σ (blockOne (algebraMap F E t) J) e0E` using `q.2.trans hg0.symm`. Conclude with `GlobalTheory.T.witt_extension_global F E σ hσ (M + 1) _ hJb 1 q.1 e0E hq (hq ▸ hdet)`. Use `choose g hg hgq using hrep`. Set `r : Q → HA (AF F) σ (blockOne (algebraMap F E t) J)` to `fun q => ratH (AF F) σ _ (g q) (hg q)`.
+
+Establish `hrq : ∀ q : Q, actW (AF F) σ (blockOne (algebraMap F E t) J) (r q) (ratTup (AF F) q.1) = e0`. Introduce `q`. Rewrite using `[act_rat (AF F) σ _ (r q) (g q) (mat_ratH (AF F) σ _ (g q) (hg q))]`. Use `show ratTup (AF F) _ = ratTup (AF F) e0E`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Conclude with `hgq q a`. Establish `hrq' : ∀ q : Q, actW (AF F) σ (blockOne (algebraMap F E t) J) (r q)⁻¹ e0 = ratTup (AF F) q.1` using `fun q => hinvact _ _ _ (hrq q)`. Set `f : HA (AF F) σ (blockOne (algebraMap F E t) J) → ℝ≥0∞` to `fun h => Set.indicator Ω (fun _ => (1 : ℝ≥0∞)) (actW (AF F) σ (blockOne (algebraMap F E t) J) h⁻¹ e0)`. Establish `hfm : Measurable f`.
+
+Establish `hc : Continuous fun h : HA (AF F) σ (blockOne (algebraMap F E t) J) => actW (AF F) σ (blockOne (algebraMap F E t) J) h⁻¹ e0` using `hcont.comp (continuous_inv.prodMk continuous_const)`. Establish `hcl : IsClosed Ω` using `hΩ.isClosed`. Establish `: f = Set.indicator ((fun h : HA (AF F) σ (blockOne (algebraMap F E t) J) => actW (AF F) σ (blockOne (algebraMap F E t) J) h⁻¹ e0) ⁻¹' Ω) (fun _ => (1 : ℝ≥0∞))`. Use function extensionality and compare the values at `h`. Distinguish the cases in `hh : actW (AF F) σ (blockOne (algebraMap F E t) J) h⁻¹ e0 ∈ Ω`.
+
+Simplify using `only [f]`. Rewrite using `[Set.indicator_of_mem hh, Set.indicator_of_mem (show h ∈ ((fun h : HA (AF F) σ (blockOne (algebraMap F E t) J) => actW (AF F) σ (blockOne (algebraMap F E t) J) h⁻¹ e0) ⁻¹' Ω) from hh)]`. Simplify using `only [f]`. Rewrite using `[Set.indicator_of_notMem hh, Set.indicator_of_notMem (show h ∉ ((fun h : HA (AF F) σ (blockOne (algebraMap F E t) J) => actW (AF F) σ (blockOne (algebraMap F E t) J) h⁻¹ e0) ⁻¹' Ω) from hh)]`. Rewrite using `[this]`.
+
+Conclude with `measurable_const.indicator (hcl.preimage hc).measurableSet`. Establish `hf1 : ∀ x, f x ≤ 1`. Introduce `x`. Simplify using `only [f, Set.indicator]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `hinv : ∀ p ∈ ι.range, ∀ x, f (p * x) = f x`. Introduce `p hp x`. Establish `hp' : p⁻¹ ∈ ι.range` using `ι.range.inv_mem hp`. Establish `: actW (AF F) σ (blockOne (algebraMap F E t) J) (p * x)⁻¹ e0 = actW (AF F) σ (blockOne (algebraMap F E t) J) x⁻¹ e0`. Rewrite using `[mul_inv_rev, hmul, (hstab _).1 hp']`.
+
+Simplify using `only [f, this]`. Take `⟨C₀, hC₀, hC₀p⟩` from `GlobalTheory.T.gram_orbit_compact_representative F E σ hσ (M + 1) _ hJb 1 e0E hdet Ω hΩ`. Establish `hsupp : ∀ x, f x ≠ 0 → ∃ p ∈ ι.range, ∃ c ∈ C₀⁻¹, x = p * c`. Introduce `x hx`. Establish `hxΩ : actW (AF F) σ (blockOne (algebraMap F E t) J) x⁻¹ e0 ∈ Ω`.
+
+Assume the negation of the conclusion as `hn`. Conclude with `hx (Set.indicator_of_notMem hn _)`. Take `⟨c, hc, hce⟩` from `hC₀p _ hxΩ (by rw [hgram]; exact hgr2 1 e0E)`. Use `⟨x * c, (hstab _).2 ?_, c⁻¹, Set.inv_mem_inv.2 hc, by group⟩` and prove the remaining obligations. Rewrite using `[hmul]`.
+
+Use `show actW (AF F) σ (blockOne (algebraMap F E t) J) x (actW (AF F) σ (blockOne (algebraMap F E t) J) c (ratTup (AF F) e0E)) = e0`. Rewrite using `[hce, ← hmul, mul_inv_cancel]`. Conclude with `(hact 1).2.1 e0`. Set `Γ : Subgroup (HA (AF F) σ (blockOne (algebraMap F E t) J))` to `HFinIn (AF F) σ (blockOne (algebraMap F E t) J)`. Set `Γ₁ : Subgroup (HA (AF F) σ J)` to `HFinIn (AF F) σ J`.
+
+Use `haveI : Countable Γ := (GlobalTheory.CompanionTheory.SW.rational_countable_discrete F E σ hσ (M + 1) _ hJb).1`. Establish `hmemΓ : ∀ γ : HA (AF F) σ (blockOne (algebraMap F E t) J), γ ∈ Γ ↔ HA.mat (AF F) σ _ γ ∈ HFin (AF F) σ (blockOne (algebraMap F E t) J)` using `fun γ => Iff.rfl`. Establish `hmemΓ₁ : ∀ γ : HA (AF F) σ J, γ ∈ Γ₁ ↔ HA.mat (AF F) σ _ γ ∈ HFin (AF F) σ J` using `fun γ => Iff.rfl`. Establish `hΓ : ∀ u ∈ Γ₁, ι u ∈ Γ` using `fun u hu => (hmemΓ _).2 ((hιr u).2 ((hmemΓ₁ u).1 hu))`. Establish `hr : ∀ q, r q ∈ Γ` using `fun q => (hmemΓ _).2 (Subgroup.mem_map.2 ⟨g q, hg q, rfl⟩)`.
+
+Establish `hQ : ∀ γ ∈ Γ, ∃! q : Q, γ * (r q)⁻¹ ∈ Γ ⊓ ι.range`. Introduce `γ hγ`. Take `⟨g₀, hg₀, hγ₀⟩` from `Subgroup.mem_map.1 ((hmemΓ γ).1 hγ)`. Establish `hinvm : HA.mat (AF F) σ _ γ⁻¹ = bc (inclR (F` using `F) (AF F)) g₀⁻¹ := by`. Rewrite using `[map_inv, hγ₀]`.
+
+Both sides reduce to the same expression. Establish `hX : actW (AF F) σ (blockOne (algebraMap F E t) J) γ⁻¹ e0 = ratTup (AF F) (fun a => ((g₀⁻¹ : GL _ E) : Matrix (Fin (M + 1)) (Fin (M + 1)) E) *ᵥ e0E a)` using `act_rat (AF F) σ _ γ⁻¹ g₀⁻¹ hinvm e0E`. Establish `hXQ : (fun a => ((g₀⁻¹ : GL _ E) : Matrix (Fin (M + 1)) (Fin (M + 1)) E) *ᵥ e0E a) ∈ Q` using `by show gramE σ _ _ = _`. Rewrite using `[← hg0]`. Establish `h1` using `hgram γ⁻¹ e0`.
+
+Rewrite `h1` using `[hX, hgr2]`. Establish `h2 : gramR (AF F) σ (blockOne (algebraMap F E t) J) e0 = (gramE σ (blockOne (algebraMap F E t) J) e0E).map (inclR (AF F))` using `hgr2 1 e0E`. Rewrite `h1` using `[h2]`. Conclude with `Matrix.map_injective hinj h1`. Use `⟨⟨_, hXQ⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `⟨Γ.mul_mem hγ (Γ.inv_mem (hr _)), (hstab _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[hmul, hrq', ← hX, ← hmul, mul_inv_cancel]`. Conclude with `(hact 1).2.1 e0`. Introduce and unpack `q ⟨-, hq⟩`. Establish `h1` using `(hstab _).1 hq`.
+
+Rewrite `h1` using `[hmul, hrq']`. Establish `h2` using `hinvact _ _ _ h1`. Rewrite `h2` using `[hX]`. Conclude with `Subtype.ext (hratinj h2).symm`. Take `⟨⟨μ₁, hμ₁⟩, hall⟩` from `hvol`.
+
+Use `haveI : μ₁.IsHaarMeasure := hμ₁`. Take `⟨𝓕₁, hm₁, hFD₁, hcov₁⟩` from `((GlobalTheory.T.haar_fundamental_domain_exists_unitary F E σ hσ M J hJ).2 μ₁ hμ₁).2.1`. Establish `hfin : μ₁ 𝓕₁ < ⊤` using `(hall μ₁ hμ₁).2 𝓕₁ hFD₁`. Establish `key` using `mean_lt_top μ μ₁ ι hιc Γ Γ₁ hΓ 𝓕 h𝓕 𝓕₁ hm₁ hfin (fun u => by`. Take `⟨γ, h1, h2⟩` from `hcov₁ u`.
+
+Conclude with `⟨γ, (hmemΓ₁ γ).2 h1, h2⟩)`. Use `Q r hr hQ f hfm hf1 hinv C₀⁻¹ hC₀.inv hsupp`. Establish `hrew : ∀ (h : HA (AF F) σ (blockOne (algebraMap F E t) J)) (q : Q), f (r q * h) = Set.indicator Ω (fun _ => (1 : ℝ≥0∞)) (actW (AF F) σ (blockOne (algebraMap F E t) J) h⁻¹ (ratTup (AF F) q.1))`. Introduce `h q`. Simplify using `only [f]`.
+
+Rewrite using `[mul_inv_rev, hmul, hrq']`. Unfold `cntI`. Simplify using `only [← hrew]`. Conclude with `key`.
+-/
 theorem count_lt_top : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → FinVol F E σ M J → ∀ t : F, t ≠ 0 → ∀ (μ : Measure (HA (AF F) σ (blockOne (algebraMap F E t) J))) (𝓕 : Set (HA (AF F) σ (blockOne (algebraMap F E t) J))), IsHaarH F E σ (M + 1) (blockOne (algebraMap F E t) J) μ → IsFDH F E σ (M + 1) (blockOne (algebraMap F E t) J) μ 𝓕 → ∀ Ω : Set (Fin 1 → Fin (M + 1) → AF F ⊗[F] E), IsCompact Ω → cntI σ _ μ 𝓕 {X | gramE σ (blockOne (algebraMap F E t) J) X = fun _ _ => algebraMap F E t} (Set.indicator Ω (fun _ => (1 : ℝ≥0∞))) < ⊤ := by
   intro F E _ _ _ _ _ σ hσ M J hJ hvol t ht μ 𝓕 hμ h𝓕 Ω hΩ
   have hJb : IsHermND σ (blockOne (algebraMap F E t) J) := (GlobalTheory.T.hyperbolic_and_block_one_nondegenerate F E σ hσ M J hJ).2 t ht

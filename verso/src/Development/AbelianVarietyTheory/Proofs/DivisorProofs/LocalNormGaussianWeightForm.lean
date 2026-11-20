@@ -7,6 +7,9 @@ open AlgebraicGeometry CategoryTheory TopologicalSpace ReciprocityTheory.ChartRe
 
 namespace GlobalTheory.ShFam
 
+/- English proof (translation)
+The claim follows from `|F w| ≤ A ∧ ∀ w' ∈ Metric.ball (c.e y) ε, ‖g w - g w'‖ ≤ A * ‖w - w'‖ := by obtain ⟨V, t, f, hV, -, hf, e⟩ := h.2 y have hS := GlobalTheory.ChartGlue.isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) V.1) have hn := hS.mem_nhds (GlobalTheory.ChartGlue.mem_over c.e hy hV) have hg := …`.
+-/
 theorem IsDivNorm.exists_ball_lipschitz {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {d : ℕ}
     {R : AnRead p σ d} {C : TopologicalSpace.Closeds Y} {n : CxPts p σ → ℝ} (h : IsDivNorm R C n)
     (c : AlgChart p σ d) {y : CxPts p σ} (hy : y ∈ c.e.source) :

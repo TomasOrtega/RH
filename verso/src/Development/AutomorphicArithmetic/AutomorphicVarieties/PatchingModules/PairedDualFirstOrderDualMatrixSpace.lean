@@ -127,25 +127,85 @@ instance : Mul (DD X g) := ⟨fun x y => ⟨x.a * y.a, fun j => x.a * y.ep j + x
   fun j => x.a * y.ep' j + x.ep' j * y.a,
   x.a * y.eta + x.eta * y.a + ∑ j, (x.ep j * y.ep' j + x.ep' j * y.ep j)⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem add_a (x y : DD X g) : (x + y).a = x.a + y.a := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem add_ep (x y : DD X g) (j) : (x + y).ep j = x.ep j + y.ep j := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem add_ep' (x y : DD X g) (j) : (x + y).ep' j = x.ep' j + y.ep' j := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem add_eta (x y : DD X g) : (x + y).eta = x.eta + y.eta := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem zero_a : (0 : DD X g).a = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem zero_ep (j) : (0 : DD X g).ep j = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem zero_ep' (j) : (0 : DD X g).ep' j = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem zero_eta : (0 : DD X g).eta = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem neg_a (x : DD X g) : (-x).a = -x.a := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem neg_ep (x : DD X g) (j) : (-x).ep j = -x.ep j := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem neg_ep' (x : DD X g) (j) : (-x).ep' j = -x.ep' j := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem neg_eta (x : DD X g) : (-x).eta = -x.eta := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem one_a : (1 : DD X g).a = 1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem one_ep (j) : (1 : DD X g).ep j = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem one_ep' (j) : (1 : DD X g).ep' j = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem one_eta : (1 : DD X g).eta = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mul_a (x y : DD X g) : (x * y).a = x.a * y.a := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mul_ep (x y : DD X g) (j) : (x * y).ep j = x.a * y.ep j + x.ep j * y.a := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mul_ep' (x y : DD X g) (j) : (x * y).ep' j = x.a * y.ep' j + x.ep' j * y.a := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mul_eta (x y : DD X g) :
     (x * y).eta = x.a * y.eta + x.eta * y.a + ∑ j, (x.ep j * y.ep' j + x.ep' j * y.ep j) := rfl
 
@@ -173,9 +233,21 @@ def C : X →+* DD X g where
   map_add' x y := by ext <;> simp
   map_mul' x y := by ext <;> simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem C_a (x : X) : (C x : DD X g).a = x := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem C_ep (x : X) (j) : (C x : DD X g).ep j = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem C_ep' (x : X) (j) : (C x : DD X g).ep' j = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem C_eta (x : X) : (C x : DD X g).eta = 0 := rfl
 
 instance {A : Type} [CommRing A] [Algebra A X] : Algebra A (DD X g) := (C.comp (algebraMap A X)).toAlgebra

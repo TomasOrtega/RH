@@ -1,6 +1,9 @@
 import Mathlib
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ShiftMap
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.ShiftMap.finite_translates_matrix_coefficient`.
+-/
 theorem UpperTheory.finite_translates_matrix_coefficient :
     ∀ (G H : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
           (p : G →* H), Continuous p → ∀ f : H → ℂ, Continuous f →

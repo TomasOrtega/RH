@@ -15,6 +15,9 @@ noncomputable section
 
 namespace GlobalTheory.KeyValsSec
 
+/- English proof (translation)
+Establish `hp : f y ∈ (L.pull F).U J ⊓ (L.pull F).U J'` using `⟨mem_pull.2 hj, mem_pull.2 hj'⟩`. Use `show gm f y _ (∏ _k : PUnit, (res _ (pullU F _ (L.g (J PUnit.unit) (J' PUnit.unit)))) ^ (1 : ℤ)) = _`. Rewrite using `[Fintype.prod_unique, zpow_one]`. Conclude with `(gm_res f y _ hp _).trans (gm_pull f F y (L.U _ ⊓ L.U _) ⟨hj, hj'⟩ _)`.
+-/
 theorem gm_pull_g {X X' Y : Scheme.{0}} (L : LB X) (F : X' ⟶ X) (f : Y ⟶ X') (y : Y) (J J' : PUnit → L.ι)
     (hj : F (f y) ∈ L.U (J PUnit.unit)) (hj' : F (f y) ∈ L.U (J' PUnit.unit)) :
     gm f y ((L.pull F).U J ⊓ (L.pull F).U J') ((L.pull F).g J J') =
@@ -24,6 +27,15 @@ theorem gm_pull_g {X X' Y : Scheme.{0}} (L : LB X) (F : X' ⟶ X) (f : Y ⟶ X')
   rw [Fintype.prod_unique, zpow_one]
   exact (gm_res f y _ hp _).trans (gm_pull f F y (L.U _ ⊓ L.U _) ⟨hj, hj'⟩ _)
 
+/- English proof (translation)
+Establish `hle : ∀ j : (A.pull F).ι, (A.pull F).U j ≤ F ⁻¹ᵁ (CechPic.tens A B).U (j PUnit.unit, b)` using `fun j y hy => ⟨mem_pull.1 hy, hb y⟩`. Use `⟨⟨fun j => (F.appLE _ _ (hle j)).hom (σ.f (j PUnit.unit, b)), fun j j' => ?_⟩, fun _ _ => rfl⟩` and prove the remaining obligations. Apply `TopCat.Presheaf.section_ext X'.sheaf` to reduce the goal to its premises. Introduce `y hy`. Establish `hy' : (𝟙 X' : X' ⟶ X') y ∈ (A.pull F).U j ⊓ (A.pull F).U j'` using `hy`.
+
+Establish `hj : F y ∈ A.U (j PUnit.unit)` using `mem_pull.1 hy.1`. Establish `hj' : F y ∈ A.U (j' PUnit.unit)` using `mem_pull.1 hy.2`. Establish `hp : (𝟙 X' ≫ F) y ∈ (CechPic.tens A B).U (j PUnit.unit, b)` using `⟨hj, hb y⟩`. Establish `hq : (𝟙 X' ≫ F) y ∈ (CechPic.tens A B).U (j' PUnit.unit, b)` using `⟨hj', hb y⟩`. Establish `e` using `gs_compat σ (𝟙 X' ≫ F) y hp hq`.
+
+Establish `e₁` using `CechPic.gm_tens A B (𝟙 X' ≫ F) y (j PUnit.unit, b) (j' PUnit.unit, b) hp hq`. Rewrite `e₁` using `[gm_self hB (𝟙 X' ≫ F) y hp.2, _root_.mul_one]`. Rewrite `e` using `[e₁]`. Use `(gs_eq (𝟙 X') y _ hy' _).symm.trans (Eq.trans ?_ (gs_eq (𝟙 X') y _ hy' _))` and prove the remaining obligations. Use `(gs_res _ y _ hy' _).trans ((gs_appLE F _ _ _ (𝟙 X') y hy'.1 _).trans (e.trans ?_))` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (gs_mul _ y _ hy' _ _).symm` and prove the remaining obligations. Use `congrArg₂ (· * ·) ?_ ((gs_res _ y _ hy' _).trans (gs_appLE F _ _ _ (𝟙 X') y hy'.2 _)).symm` and prove the remaining obligations. Conclude with `((gs_unit _ y _ hy' _).trans (congrArg Units.val (gm_pull_g A F (𝟙 X') y j j' hj hj'))).symm`.
+-/
 theorem exists_sec_of_chart {X X' : Scheme.{0}} (A B : LB X) (hB : B.IsLB) (σ : (CechPic.tens A B).Sec) (b : B.ι)
     (F : X' ⟶ X) (hb : ∀ y : X', F y ∈ B.U b) :
     ∃ t : (A.pull F).Sec, ∀ (j : (A.pull F).ι)
@@ -49,6 +61,11 @@ theorem exists_sec_of_chart {X X' : Scheme.{0}} (A B : LB X) (hB : B.IsLB) (σ :
   refine congrArg₂ (· * ·) ?_ ((gs_res _ y _ hy' _).trans (gs_appLE F _ _ _ (𝟙 X') y hy'.2 _)).symm
   exact ((gs_unit _ y _ hy' _).trans (congrArg Units.val (gm_pull_g A F (𝟙 X') y j j' hj hj'))).symm
 
+/- English proof (translation)
+Introduce `S G _ _ L δ σ i R _ ξ hδ hξ`. Use `exists_sec_of_chart L.L (δ.pull G.hom) (LB.isLB_pull hδ _) σ (fun _ => i) (pullback.fst G.hom ξ) fun y => ?_` and prove the remaining obligations. Use `mem_pull.2 ?_` and prove the remaining obligations. Establish `h : (pullback.fst G.hom ξ ≫ G.hom) y ∈ δ.U i`. Rewrite using `[pullback.condition]`.
+
+Conclude with `hξ (Set.mem_univ (pullback.snd G.hom ξ y))`. Conclude with `h`.
+-/
 theorem exists_locSec : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : RigLB G) (δ : LB S)
     (σ : (CechPic.tens L.L (δ.pull G.hom)).Sec) (i : δ.ι) (R : Type) [CommRing R] (ξ : Sp R ⟶ S),
     δ.IsLB → ⊤ ≤ ξ ⁻¹ᵁ δ.U i → ∃ t : (KeyVals.bL L ξ).L.Sec, KeyVals.IsLocSec σ i ξ t := by

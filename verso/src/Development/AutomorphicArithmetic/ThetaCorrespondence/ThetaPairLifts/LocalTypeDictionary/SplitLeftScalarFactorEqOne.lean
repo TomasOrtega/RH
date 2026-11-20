@@ -10,6 +10,31 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct Matrix
 noncomputable section
 namespace GlobalTheory.SplitScalarV
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hTr v hsp hT hψ h2 hvac k hk c hc`. Take `⟨d', hd', -, dd, omd, hdc, hws, hres⟩` from `hTr.weil'.2.1`. Take `⟨R, hR0, hR⟩` from `GlobalTheory.RestWitness.exists_rest (Fin a' × Fin (a + a')) v`. Establish `hV` using `hTr.geo.hM'.vac v`. Establish `hSB : G.M'.vac v ∈ SB _` using `hV.1`.
+
+Establish `hne : G.M'.vac v ≠ 0` using `hV.2.1`. Establish `hRv` using `hR _ hSB`. Use `set Ψ := tens (evFin F v) (G.M'.vac v) R with hΨdef`. Establish `hΨ : Ψ ∈ schA F _` using `hRv.2`. Establish `hΨ' : (fun x => star (Ψ x)) ∈ schA F _` using `GlobalTheory.SchAConj.star_mem_schA F _ Ψ hΨ`.
+
+Set `H : Subgroup (GlobalTheory.InertDbl.UD σ G.V')` to `{ carrier := {g | omd g (GlobalTheory.InertDbl.dblFun Ψ) = GlobalTheory.InertDbl.dblFun Ψ} one_mem' := by simp mul_mem' := fun {x y} hx hy => by`. Simplify using `only [Set.mem_setOf_eq, map_mul, Module.End.mul_apply] at *`. Rewrite using `[hy, hx]`. Use the proof step `inv_mem' := fun {x} hx => by`. Simplify using `only [Set.mem_setOf_eq] at *`.
+
+Use `conv_lhs => rw [← hx]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Establish `hgen` using `(GlobalTheory.T.antidiagonalUnipotent_conj_siegel_square_split) F E σ B a a' G X om om' hTr v hsp hψ h2 k hk`. Establish `hle : Subgroup.closure (GlobalTheory.InertDbl.ParD σ G.V' v ∪ GlobalTheory.InertDbl.NabD σ G.V' v) ≤ H`. Rewrite using `[Subgroup.closure_le]`.
+
+Introduce and unpack `g (hg | hg)`. Conclude with `(_root_.GlobalTheory.T.split_parallel_derivative_left_fixed) hP F E σ B a a' G X om om' hTr v hsp hT hψ h2 hvac d' hd' dd omd hdc hws R hR0 hRv g hg`. Conclude with `(_root_.GlobalTheory.T.nabla_fixed_split_subspace) hP F E σ B a a' G X om om' hTr v hsp hT hψ h2 hvac d' hd' dd omd hdc hws R hR0 hRv g hg`. Establish `hfix : omd (GlobalTheory.InertDbl.inlD σ G.V' k) (GlobalTheory.InertDbl.dblFun Ψ) = GlobalTheory.InertDbl.dblFun Ψ` using `hle hgen`. Establish `hact : om' (k, 1) Ψ = c • Ψ`.
+
+Rewrite using `[hΨdef, hc R hRv]`. Use function extensionality and compare the values at `x`. Simplify using `[tens, mul_assoc]`. Establish `hr` using `hres k (GlobalTheory.InertDbl.inlD σ G.V' k) rfl Ψ hΨ (fun x => star (Ψ x)) hΨ'`. Simplify using `only [MonoidHom.comp_apply, MonoidHom.inl_apply] at hr`.
+
+Rewrite `hr` using `[hact]`. Establish `key : c • GlobalTheory.InertDbl.dblFun Ψ = GlobalTheory.InertDbl.dblFun Ψ`. Establish `e1 : omd (GlobalTheory.InertDbl.inlD σ G.V' k) (GlobalTheory.InertDbl.dblFun Ψ) = c • GlobalTheory.InertDbl.dblFun Ψ`. Unfold `GlobalTheory.InertDbl.dblFun`. Rewrite using `[hr]`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [boxFun, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← e1, hfix]`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, G.M'.vac v y ≠ 0 := by`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hne (funext h)`. Set `x : Fin a' × Fin (a + a') → AF F` to `fun i => GlobalTheory.LatVac.liftV v (y i)`. Establish `hRx : R x = R 0`.
+
+Use `hRv.1 0 x (fun u hu => by funext i; exact GlobalTheory.LatVac.at_liftV v _ u hu)` as an intermediate fact. Simplify using `using this`. Establish `hΨx : Ψ x ≠ 0`. Simplify using `only [hΨdef, tens, x, GlobalTheory.LatVac.evFin_liftV, hRx]`. Conclude with `mul_ne_zero hy hR0`.
+
+Establish `h2'` using `congrFun key (Sum.elim x x)`. Simplify using `only [GlobalTheory.InertDbl.dblFun, boxFun, Pi.smul_apply, smul_eq_mul] at h2'`. Establish `hz : Ψ x * star (Ψ x) ≠ 0` using `mul_ne_zero hΨx (star_ne_zero.mpr hΨx)`. Establish `h3 : (Sum.elim x x ∘ Sum.inl : Fin a' × Fin (a + a') → AF F) = x` using `rfl`. Establish `h4 : (Sum.elim x x ∘ Sum.inr : Fin a' × Fin (a + a') → AF F) = x` using `rfl`.
+
+Rewrite `h2'` using `[h3, h4]`. Conclude with `(mul_eq_right₀ hz).mp h2'`.
+-/
 theorem scalar_eq_one_of_split_left : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F), Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v → v ∉ X.T → PsiUnr B.ψ v → (2 : 𝓞 F) ∉ v.asIdeal →
@@ -83,6 +108,9 @@ section
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.KFinLoc
 open scoped TensorProduct Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.SplitScalarV.scalar_eq_one_of_split_left | exact _root_.GlobalTheory.SplitScalarV.scalar_eq_one_of_split_left | (intros; apply _root_.GlobalTheory.SplitScalarV.scalar_eq_one_of_split_left <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.split_left_scalar_factor_eq_one : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E)
     (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B G X om om' →
     ∀ (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F), Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v → v ∉ X.T → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.PsiUnr B.ψ v → (2 : 𝓞 F) ∉ v.asIdeal →

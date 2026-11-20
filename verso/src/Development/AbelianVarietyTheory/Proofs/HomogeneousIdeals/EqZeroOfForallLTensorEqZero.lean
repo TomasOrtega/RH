@@ -5,6 +5,13 @@ open TensorProduct
 
 namespace GlobalTheory.ReducedAlg
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis k C`. Apply `(TensorProduct.equivFinsuppOfBasisLeft b).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use extensionality with `j`. Rewrite using `[Finsupp.coe_zero, Pi.zero_apply]`.
+
+Establish `nat : ∀ (i : ι) (w : C ⊗[k] M), φ i (TensorProduct.equivFinsuppOfBasisLeft b w j) = TensorProduct.equivFinsuppOfBasisLeft b ((φ i).lTensor C w) j`. Introduce `i w`. Rewrite using `[TensorProduct.equivFinsuppOfBasisLeft_apply, TensorProduct.equivFinsuppOfBasisLeft_apply]`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul c m => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Apply `hφ` to reduce the goal to its premises. Introduce `i`. Rewrite using `[nat, hz i, map_zero, Finsupp.coe_zero, Pi.zero_apply]`.
+-/
 theorem eq_zero_of_forall_lTensor_eq_zero {k : Type*} [Field k] {C M : Type*} [AddCommGroup C]
     [Module k C] [AddCommGroup M] [Module k M] {ι : Sort*} {N : ι → Type*}
     [∀ i, AddCommGroup (N i)] [∀ i, Module k (N i)] (φ : ∀ i, M →ₗ[k] N i)
@@ -29,6 +36,15 @@ theorem eq_zero_of_forall_lTensor_eq_zero {k : Type*} [Field k] {C M : Type*} [A
   intro i
   rw [nat, hz i, map_zero, Finsupp.coe_zero, Pi.zero_apply]
 
+/- English proof (translation)
+Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Use `eq_zero_of_forall_lTensor_eq_zero (fun p : {p : Ideal A // p.IsPrime} => (Ideal.Quotient.mkₐ k p.1).toLinearMap) ?_ x ?_` and prove the remaining obligations. Introduce `a ha`. Establish `hmem : a ∈ nilradical A`. Rewrite using `[nilradical_eq_sInf, Submodule.mem_sInf]`.
+
+Introduce `J hJ`. Establish `h1` using `ha ⟨J, hJ⟩`. Simplify `h1` using `[Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `IsReduced.eq_zero a (mem_nilradical.1 hmem)`. Introduce `p`.
+
+Use `p.2` as an intermediate fact. Use `h p.1` as an intermediate fact. Establish `hF : ∀ w : C ⊗[k] A, Algebra.TensorProduct.map (AlgHom.id k C) (Ideal.Quotient.mkₐ k p.1) w = (Ideal.Quotient.mkₐ k p.1).toLinearMap.lTensor C w`. Introduce `w`. Proceed by induction on `w using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul c a => simp`. Consider the case `add u v hu hv => rw [map_add, map_add, hu, hv]`. Rewrite using `[← hF]`. Conclude with `IsReduced.eq_zero _ (hx.map (Algebra.TensorProduct.map (AlgHom.id k C) (Ideal.Quotient.mkₐ k p.1)))`.
+-/
 theorem isReduced_tensor_of_forall_prime {k : Type*} [Field k] (C A : Type*) [CommRing C]
     [Algebra k C] [CommRing A] [Algebra k A] [IsReduced A]
     (h : ∀ (p : Ideal A) [p.IsPrime], IsReduced (C ⊗[k] (A ⧸ p))) : IsReduced (C ⊗[k] A) := by
@@ -58,6 +74,15 @@ theorem isReduced_tensor_of_forall_prime {k : Type*} [Field k] (C A : Type*) [Co
     exact IsReduced.eq_zero _
       (hx.map (Algebra.TensorProduct.map (AlgHom.id k C) (Ideal.Quotient.mkₐ k p.1)))
 
+/- English proof (translation)
+Establish `hfp : Algebra.FinitePresentation k A` using `Algebra.FinitePresentation.of_finiteType.1 inferInstance`. Establish `hgen : (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum A) ∈ Algebra.smoothLocus k A` using `by show Algebra.FormallySmooth k (Localization.AtPrime (⊥ : Ideal A))`. Establish `hS : (⊥ : Ideal A).primeCompl = nonZeroDivisors A`. Use extensionality with `x`. Simplify using `[Ideal.primeCompl, mem_nonZeroDivisors_iff_ne_zero]`.
+
+Establish `hloc : IsLocalization (nonZeroDivisors A) (Localization.AtPrime (⊥ : Ideal A))` using `hS ▸ (inferInstance : IsLocalization (⊥ : Ideal A).primeCompl (Localization.AtPrime (⊥ : Ideal A)))`. Establish `e1 : Algebra.EssFiniteType A (FractionRing A)` using `.of_isLocalization _ (nonZeroDivisors A)`. Establish `e2 : Algebra.EssFiniteType k (FractionRing A)` using `.comp k A _`. Conclude with `(Algebra.FormallySmooth.iff_of_equiv ((IsLocalization.algEquiv (nonZeroDivisors A) (FractionRing A) (Localization.AtPrime (⊥ : Ideal A))).restrictScalars k)).1 inferInstance`. Take `⟨v, ⟨f, rfl⟩, hv, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open hgen Algebra.isOpen_smoothLocus`.
+
+Establish `hf0 : f ≠ 0`. Use `(PrimeSpectrum.mem_basicOpen f _).1 hv` as an intermediate fact. Simplify using `using this`. Establish `hsm : Algebra.Smooth k (Localization.Away f)` using `Algebra.basicOpen_subset_smoothLocus_iff_smooth.1 hsub`. Establish `hred : IsReduced (K ⊗[k] Localization.Away f)` using `GlobalTheory.isReduced_of_smooth_of_isIntegrallyClosed K _`.
+
+Establish `hinj : Function.Injective (algebraMap A (Localization.Away f))` using `IsLocalization.injective (Localization.Away f) (powers_le_nonZeroDivisors_of_noZeroDivisors hf0)`. Conclude with `isReduced_of_injective (Algebra.TensorProduct.map (AlgHom.id k K) (IsScalarTower.toAlgHom k A (Localization.Away f))) (Module.Flat.lTensor_preserves_injective_linearMap _ hinj)`.
+-/
 theorem isReduced_field_tensor_domain {k : Type*} [Field k] [PerfectField k] (K A : Type*)
     [Field K] [Algebra k K] [CommRing A] [Algebra k A] [IsDomain A] [Algebra.FiniteType k A] :
     IsReduced (K ⊗[k] A) := by
@@ -89,6 +114,11 @@ theorem isReduced_field_tensor_domain {k : Type*} [Field k] [PerfectField k] (K 
     (Algebra.TensorProduct.map (AlgHom.id k K) (IsScalarTower.toAlgHom k A (Localization.Away f)))
     (Module.Flat.lTensor_preserves_injective_linearMap _ hinj)
 
+/- English proof (translation)
+Apply `IsReduced.tensorProduct_of_flat_of_forall_fg` to reduce the goal to its premises. Introduce `B hB`. Establish `: IsReduced B` using `isReduced_of_injective B.val Subtype.val_injective`. Establish `: Algebra.FiniteType k B` using `⟨(Subalgebra.fg_top B).2 hB⟩`. Use `isReduced_tensor_of_forall_prime K B (fun p _ => ?_)` and prove the remaining obligations.
+
+Establish `: Algebra.FiniteType k (B ⧸ p)` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ k p) (Ideal.Quotient.mkₐ_surjective k p)`. Conclude with `isReduced_field_tensor_domain K (B ⧸ p)`.
+-/
 theorem isReduced_field_tensor {k : Type*} [Field k] [PerfectField k] (K A : Type*)
     [Field K] [Algebra k K] [CommRing A] [Algebra k A] [IsReduced A] :
     IsReduced (K ⊗[k] A) := by
@@ -102,6 +132,9 @@ theorem isReduced_field_tensor {k : Type*} [Field k] [PerfectField k] (K A : Typ
       (Ideal.Quotient.mkₐ_surjective k p)
   exact isReduced_field_tensor_domain K (B ⧸ p)
 
+/- English proof (translation)
+Use `isReduced_tensor_of_forall_prime A B (fun p _ => ?_)` and prove the remaining obligations. Establish `: IsReduced (FractionRing (B ⧸ p) ⊗[k] A)` using `isReduced_field_tensor (FractionRing (B ⧸ p)) A`. Establish `: IsReduced (A ⊗[k] FractionRing (B ⧸ p))` using `isReduced_of_injective (Algebra.TensorProduct.comm k A (FractionRing (B ⧸ p))) (Algebra.TensorProduct.comm k A (FractionRing (B ⧸ p))).injective`. Conclude with `isReduced_of_injective (Algebra.TensorProduct.map (AlgHom.id k A) (IsScalarTower.toAlgHom k (B ⧸ p) (FractionRing (B ⧸ p)))) (Module.Flat.lTensor_preserves_injective_linearMap _ (IsFractionRing.injective (B ⧸ p) _))`.
+-/
 theorem isReduced_tensor {k : Type*} [Field k] [PerfectField k] (A B : Type*)
     [CommRing A] [Algebra k A] [IsReduced A] [CommRing B] [Algebra k B] [IsReduced B] :
     IsReduced (A ⊗[k] B) := by

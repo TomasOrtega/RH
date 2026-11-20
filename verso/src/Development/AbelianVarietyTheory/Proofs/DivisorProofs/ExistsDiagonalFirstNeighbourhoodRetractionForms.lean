@@ -20,6 +20,29 @@ attribute [local instance] opK isCentral_K isTower_K
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `R _ I κ X t`. Establish `hr : ∀ T : Thick κ t, ∀ x ∈ rel R T.δ, ∀ y, x * y ∈ rel R T.δ` using `fun T ↦ (GlobalTheory.T.divPowerCompatRel_filtration_twoSided_rel_eq_bot_of_base.1 R T.B T.J T.δ).1`. Establish `H` using `fun T : Thick κ t ↦ GlobalTheory.T.exists_formsMap_of_dividedPowerDerivation R T.B T.J T.δ (ER T) (nb T).J (nb T).δ (fstA T) (sndA T) (sndA_mul T) (sndA_algebraMap T) (fun n a ha ↦ sndA_dpow T n a ha)`. Use `choose ρ ha hm h0 h1 hrel hone hdeg using H`. Establish `natK : ∀ (j : ℕ) (T T' : Thick κ t) (φ : T ⟶ T') (x : K R (nb T).δ j), rK (nb T').δ (ha T') (hrel T') (hdeg T') j (km (SemiHom.of_algHom (nbAlg φ)) (nbF.map φ).dp j x) = km (SemiHom.of_algHom φ.φ) φ.dp j (rK (nb T).δ (ha T) (hrel T) (hdeg T) j x)`.
+
+Introduce `j T T' φ x`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hx : (x : DR R (ER T)) ∈ ⋀[ER T]^j Ω[ER T⁄R]` using `x.2`. Establish `hd` using `hdeg T j _ hx`. Set `y` to `hd.choose`.
+
+Establish `hy : y ∈ ⋀[T.B]^j Ω[T.B⁄R]` using `hd.choose_spec.1`. Establish `hρy : ρ T x - y ∈ rel R T.δ` using `hd.choose_spec.2`. Rewrite using `[rK_spec (nb T).δ (ha T) (hrel T) (hdeg T) (y := ⟨y, hy⟩) hρy, km_mk]`. Establish `e` using `add_mem (natAgree hr φ (ρ T) (ρ T') (ha T) (hm T) (h0 T) (h1 T) (ha T') (hm T') (h0 T') (h1 T') x) (mDR_mem_rel (SemiHom.of_algHom φ.φ) φ.dp hρy)`. Rewrite `e` using `[map_sub, sub_add_sub_cancel]`.
+
+Conclude with `rK_spec (nb T').δ (ha T') (hrel T') (hdeg T') (x := (SemiHom.of_algHom (nbAlg φ)).mOm j x) (y := (SemiHom.of_algHom φ.φ).mOm j ⟨y, hy⟩) e`. Establish `uK : ∀ (j : ℕ), j ≠ 0 → ∀ (T : Thick κ t) (x : K R T.δ j), rK (nb T).δ (ha T) (hrel T) (hdeg T) j (km (SemiHom.of_algHom (inlMap T).φ) (inlMap T).dp j x) = 0`. Introduce `j hj T x`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `e` using `uAgree hr T (ρ T) (ha T) (hm T) (h0 T) (h1 T) x`.
+
+Rewrite `e` using `[algebraMapInv_eq_zero hj x.2, map_zero]`. Establish `e' : ρ T ((SemiHom.of_algHom (inlMap T).φ).mDR x) - ((0 : Om R T.B j) : DR R T.B) ∈ rel R T.δ`. Rewrite using `[ZeroMemClass.coe_zero]`. Conclude with `e`. Conclude with `(rK_spec (nb T).δ (ha T) (hrel T) (hdeg T) (x := (SemiHom.of_algHom (inlMap T).φ).mOm j x) e').trans (Submodule.Quotient.mk_zero _)`.
+
+Establish `vK : ∀ (j : ℕ) (T : Thick κ t) (x : K R T.δ j), rK (nb T).δ (ha T) (hrel T) (hdeg T) j (km (SemiHom.of_algHom (difMap T).φ) (difMap T).dp j x) = x`. Introduce `j T x`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `rK_spec (nb T).δ (ha T) (hrel T) (hdeg T) (x := (SemiHom.of_algHom (difMap T).φ).mOm j x) (y := x) (vAgree hr T (ρ T) (ha T) (hm T) (h0 T) (h1 T) x)`. Use `⟨nbF, uN, vN, fun T ↦ r1 (nb T).δ (ha T) (hrel T) (hone T), fun T ↦ rK (nb T).δ (ha T) (hrel T) (hdeg T) 2, fun T ↦ rK (nb T).δ (ha T) (hrel T) (hdeg T) 3, ⟨?_, ?_, ?_⟩, ⟨fun T T' φ x ↦ natK 2 T T' φ x, fun T x ↦ uK 2 (by norm_num) T x, fun T x ↦ vK 2 T x⟩, fun T T' φ x ↦ natK 3 …` and prove the remaining obligations.
+
+Introduce `T T' φ x`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hd` using `hone T x`. Set `ω` to `hd.choose`. Establish `hω : ρ T (ι1 x) - ι1 ω ∈ rel R T.δ` using `hd.choose_spec`.
+
+Establish `e` using `add_mem (natAgree hr φ (ρ T) (ρ T') (ha T) (hm T) (h0 T) (h1 T) (ha T') (hm T') (h0 T') (h1 T') (ι1 x)) (mDR_mem_rel (SemiHom.of_algHom φ.φ) φ.dp hω)`. Rewrite `e` using `[map_sub, sub_add_sub_cancel, SemiHom.mDR_ι, SemiHom.mDR_ι]`. Establish `l` using `divPowerCompatOneForm_retraction_spec (nb T).δ (ha T) (hrel T) (hone T) (x := x) hω`. Conclude with `(divPowerCompatOneForm_retraction_spec (nb T').δ (ha T') (hrel T') (hone T') (x := (SemiHom.of_algHom (nbAlg φ)).m1 x) (ω := (SemiHom.of_algHom φ.φ).m1 ω) e).trans (congrArg (km1 (SemiHom.of_algHom φ.φ) φ.dp) l).symm`. Introduce `T x`.
+
+Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `e` using `uAgree hr T (ρ T) (ha T) (hm T) (h0 T) (h1 T) (ι1 x)`. Establish `z : ExteriorAlgebra.algebraMapInv (ι1 x) = 0` using `by simp [ExteriorAlgebra.algebraMapInv]`. Rewrite `e` using `[z, map_zero, SemiHom.mDR_ι]`. Establish `e' : ρ T (ι1 ((SemiHom.of_algHom (inlMap T).φ).m1 x)) - ι1 (0 : Ω[T.B⁄R]) ∈ rel R T.δ`.
+
+Rewrite using `[map_zero]`. Conclude with `e`. Conclude with `(divPowerCompatOneForm_retraction_spec (nb T).δ (ha T) (hrel T) (hone T) (x := (SemiHom.of_algHom (inlMap T).φ).m1 x) e').trans (Submodule.Quotient.mk_zero _)`. Introduce `T x`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+
+Establish `e` using `vAgree hr T (ρ T) (ha T) (hm T) (h0 T) (h1 T) (ι1 x)`. Rewrite `e` using `[SemiHom.mDR_ι]`. Conclude with `divPowerCompatOneForm_retraction_spec (nb T).δ (ha T) (hrel T) (hone T) (x := (SemiHom.of_algHom (difMap T).φ).m1 x) (ω := x) e`.
+-/
 theorem exists_retraction : ∀ (R : Type) [CommRing R] (I : Ideal R) (κ : DividedPowers I) (X : Scheme.{0})
     (t : X ⟶ Sp R), ∃ (S : Thick κ t ⥤ Thick κ t) (u v : 𝟭 _ ⟶ S)
     (r1 : ∀ T, (KK κ t).M1.obj (S.obj T) →+ (KK κ t).M1.obj T)

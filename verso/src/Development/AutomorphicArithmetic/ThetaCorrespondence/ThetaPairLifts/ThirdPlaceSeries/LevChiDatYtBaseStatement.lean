@@ -15,6 +15,9 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.See
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.BaseChain.initial_tuples_mem_stageY_zero_CC | exact _root_.GlobalTheory.BaseChain.initial_tuples_mem_stageY_zero_CC | (intros; apply _root_.GlobalTheory.BaseChain.initial_tuples_mem_stageY_zero_CC <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.mem_stageY_zero_cc_of_mem_zero_set : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.PackageHypotheses W → ∀ T ∈ _root_.GlobalTheory.MiTop.BaseRowSpace W, T ∈ (_root_.GlobalTheory.BaseChain.stageOfSpaceY W 0).CC (_root_.GlobalTheory.BaseChain.com_z W) := by
   first | exact @_root_.GlobalTheory.BaseChain.initial_tuples_mem_stageY_zero_CC | exact _root_.GlobalTheory.BaseChain.initial_tuples_mem_stageY_zero_CC | (intros; apply _root_.GlobalTheory.BaseChain.initial_tuples_mem_stageY_zero_CC <;> assumption)
 end

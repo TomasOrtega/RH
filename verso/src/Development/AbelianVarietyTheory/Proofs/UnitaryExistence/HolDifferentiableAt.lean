@@ -27,6 +27,9 @@ open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj Alg
 open scoped CategoryTheory.Obj in
 open Filter Topology in
 variable {Y : Scheme.{0}} in
+/- English proof (translation)
+The claim follows from `(hy U 0).1.mem_nhds ⟨hb, hU⟩`.
+-/
 theorem _root_.GlobalTheory.LocalLift.hol_eventually_mem {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     {B : Set V} {y : V → (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ ⟶ Y)}
     (hy : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsHolTo B y) {b : V} (hb : b ∈ B) {U : Y.Opens} (hU : ⊤ ≤ y b ⁻¹ᵁ U) :
@@ -37,12 +40,44 @@ open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj Alg
 open scoped CategoryTheory.Obj in
 open Filter Topology in
 variable {Y : Scheme.{0}} in
+/- English proof (translation)
+The claim follows from `((hy U f).2 b ⟨hb, hU⟩).differentiableAt ((hy U f).1.mem_nhds ⟨hb, hU⟩)`.
+-/
 theorem _root_.GlobalTheory.LocalLift.hol_differentiableAt {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     {B : Set V} {y : V → (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ ⟶ Y)}
     (hy : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsHolTo B y) {b : V} (hb : b ∈ B) {U : Y.Opens} (hU : ⊤ ≤ y b ⁻¹ᵁ U) (f : Γ(Y, U)) :
     DifferentiableAt ℂ (fun z => _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' (y z) U f) b :=
   ((hy U f).2 b ⟨hb, hU⟩).differentiableAt ((hy U f).1.mem_nhds ⟨hb, hU⟩)
 
+/- English proof (translation)
+Take `⟨U₀, -, U, hU, hp, hle, hsm⟩` from `Smooth.exists_isStandardSmooth s (x (default : PrimeSpectrum ℂ))`. Establish `hU₀ : U₀ = ⊤`. Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations. Establish `h1 : s (x (default : PrimeSpectrum ℂ)) ∈ U₀` using `hle hp`. Establish `h2 : y = s (x (default : PrimeSpectrum ℂ))` using `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`.
+
+Rewrite using `[h2]`. Conclude with `h1`. Substitute `hU₀` using the available equality. Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n, RingHom.IsStandardSmoothOfRelativeDimension n (s.appLE ⊤ U hle).hom := by`. Set `_` to `(s.appLE ⊤ U hle).hom.toAlgebra`.
+
+Establish `: Algebra.IsStandardSmooth Γ(Sp ℂ, ⊤) Γ(Y, U)` using `hsm`. Take `⟨_, _, _, _, ⟨P⟩⟩` from `this`. Conclude with `⟨P.dimension, _, _, _, ‹_›, P, rfl⟩`. Set `c : ℂ →+* Γ(Y, U)` to `(s.appLE ⊤ U hle).hom.comp (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom`. Establish `hcc : ∀ a, constFn s U a = c a` using `fun a => rfl`.
+
+Establish `hc : c.IsStandardSmoothOfRelativeDimension n` using `RingHom.isStandardSmoothOfRelativeDimension_respectsIso.2 (s.appLE ⊤ U hle).hom (Scheme.ΓSpecIso (CommRingCat.of ℂ)).symm.commRingCatIsoToRingEquiv hn`. Establish `hpts : ∀ (y : Sp ℂ ⟶ Y) (hy : ⊤ ≤ y ⁻¹ᵁ U), y ≫ s = 𝟙 _ → ∀ a, evalPt y U hy (c a) = a`. Introduce `y hy hys a`. Rewrite using `[← valAt'_eq_evalPt, ← hcc]`. Conclude with `valAt'_constFn y s hys U a hy`.
+
+Establish `hxU : ⊤ ≤ x ⁻¹ᵁ U` using `(top_le_preimage_iff_mem x U).2 hp`. Take `⟨φ, hφc, hφ, hφ0⟩` from `HolChart.exists_etale_coords_vanishing c hc (evalPt x U hxU) (hpts x hxU hx)`. Set `_ : Algebra ℂ Γ(Y, U)` to `c.toAlgebra`. Set `_ : Algebra (MvPolynomial (Fin n) ℂ) Γ(Y, U)` to `φ.toAlgebra`. Establish `_ : IsScalarTower ℂ (MvPolynomial (Fin n) ℂ) Γ(Y, U)` using `IsScalarTower.of_algebraMap_eq' hφc.symm`.
+
+Establish `_ : Algebra.Etale (MvPolynomial (Fin n) ℂ) Γ(Y, U)` using `hφ`. Set `eA : Γ(Y, U) →ₐ[ℂ] ℂ` to `{ evalPt x U hxU with commutes' := hpts x hxU hx }`. Take `⟨W, σ, m, f, ε, hW, hW0, hσ0, hε, hσd, hσt, hσs⟩` from `exists_holomorphic_section_of_etale n Γ(Y, U) eA hφ0`. Use `choose p hpU hpσ using fun w => exists_evalPt_eq hU (σ w).toRingHom`. Establish `hval : ∀ w a, valAt' (p w) U a = σ w a` using `fun w a => by`.
+
+Rewrite using `[valAt'_eq_evalPt _ _ (hpU w), hpσ]`. Both sides reduce to the same expression. Use `⟨n, U, fun i => φ (MvPolynomial.X i), W, p, hU, hxU, hW0, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `ext_evalPt hU (hpU 0) hxU ?_` and prove the remaining obligations. Rewrite using `[hpσ, hσ0]`.
+
+Introduce `V a`. Use `HolChart.hol_of_affine valAt'_rules hU hW p (fun w _ => hpU w) (fun b => ?_) V a` and prove the remaining obligations. Simplify `hσd b` using `only [hval]`. Introduce `w`. Use `(eq_spMap_of_evalPt _ (RingHom.id ℂ) fun a => ?_).trans (Spec.map_id _)` and prove the remaining obligations.
+
+Rewrite using `[← evalPt_constFn s (p w) U (hpU w), hpσ, hcc]`. Conclude with `(σ w).commutes a`. Introduce `w hw i`. Rewrite using `[hval]`. Conclude with `hσt w hw i`.
+
+Introduce `g e hes he he0`. Establish `h0 : ⊤ ≤ e 0 ⁻¹ᵁ U` using `he0 ▸ hxU`. Establish `hk : ∀ᶠ z in 𝓝 (0 : Fin g → ℂ), ∀ k, ‖valAt' (e z) U (f k) - eA (f k)‖ < ε`. Use `eventually_all.2 fun k => ?_` and prove the remaining obligations. Establish `h1` using `(hol_differentiableAt he (Set.mem_univ _) h0 (f k)).continuousAt`.
+
+Establish `h2 : valAt' (e 0) U (f k) = eA (f k)`. Rewrite using `[he0, valAt'_eq_evalPt _ _ hxU]`. Both sides reduce to the same expression. Use `h1.eventually (Metric.ball_mem_nhds _ hε)` as an intermediate fact. Simplify `this` using `only [Metric.mem_ball, dist_eq_norm, h2]`.
+
+Use `filter_upwards [hk, hol_eventually_mem he (Set.mem_univ _) h0] with z hz hzU`. Set `xA : Γ(Y, U) →ₐ[ℂ] ℂ` to `{ evalPt (e z) U hzU.2 with commutes' := hpts _ hzU.2 (hes z) }`. Establish `hxA : ∀ a, xA a = valAt' (e z) U a` using `fun a => (valAt'_eq_evalPt _ _ hzU.2 a).symm`. Take `⟨w, hw, hxw⟩` from `hσs xA (fun k => by rw [hxA]; exact hz k)`. Establish `hwe : (fun i => valAt' (e z) U (φ (MvPolynomial.X i))) = w`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[← hxA, hxw]`. Conclude with `hσt w hw i`. Rewrite using `[hwe]`. Use `ext_evalPt hU hzU.2 (hpU w) ?_` and prove the remaining obligations.
+
+Rewrite using `[hpσ, ← hxw]`.
+-/
 theorem exists_chart (s : Y ⟶ Sp ℂ) [Smooth s] (x : Sp ℂ ⟶ Y) (hx : x ≫ s = 𝟙 _) :
     ∃ (n : ℕ) (U : Y.Opens) (t : Fin n → Γ(Y, U)) (W : Set (Fin n → ℂ)) (p : (Fin n → ℂ) → (Sp ℂ ⟶ Y)),
       IsAffineOpen U ∧ ⊤ ≤ x ⁻¹ᵁ U ∧ 0 ∈ W ∧ p 0 = x ∧ IsHolTo W p ∧ (∀ w, p w ≫ s = 𝟙 _) ∧
@@ -117,6 +152,19 @@ theorem exists_chart (s : Y ⟶ Sp ℂ) [Smooth s] (x : Sp ℂ ⟶ Y) (hx : x �
     refine ext_evalPt hU hzU.2 (hpU w) ?_
     rw [hpσ, ← hxw]
 
+/- English proof (translation)
+Establish `hd` using `hol_differentiableAt hp hW h0`. Establish `hconst : ∀ a, fderiv ℂ (fun z => valAt' (p z) U (constFn s U a)) 0 = 0`. Introduce `a`. Establish `: (fun z => valAt' (p z) U (constFn s U a)) =ᶠ[𝓝 0] fun _ => a` using `by filter_upwards [hol_eventually_mem hp hW h0] with z hz`. Conclude with `valAt'_constFn _ s (hps z) U a hz.2`.
+
+Rewrite using `[this.fderiv_eq]`. Simplify using the standard rewrite rules. Set `J : Γ(Y, U) →+* DualNumber ℂ` to `{ toFun := fun f => TrivSqZeroExt.inl (valAt' (p 0) U f) + TrivSqZeroExt.inr (fderiv ℂ (fun z => valAt' (p z) U f) 0 u) map_one' := by`. Use `hconst 1` as an intermediate fact. Rewrite `this` using `[show constFn s U 1 = 1 by simp [constFn]]`.
+
+Apply the tactic sequence `ext <;> simp [this, valAt'_one _ h0]`. Use the proof step `map_zero' := by`. Apply the tactic sequence `ext <;> simp [valAt'_zero]`. Use the proof step `map_add' := fun f f' => by`. Apply the tactic sequence `ext <;> simp [valAt'_add, fderiv_fun_add (hd f) (hd f')]`.
+
+Use the proof step `map_mul' := fun f f' => by`. Apply the tactic sequence `ext <;> simp [valAt'_mul, fderiv_fun_mul (hd f) (hd f'), mul_comm] }`. Take `⟨v, hv, hve⟩` from `exists_evalPt_eq hU J`. Use `⟨v, hv, ?_, ?_, fun f => ?_⟩` and prove the remaining obligations. Use `eq_spMap_of_evalPt _ _ fun a => ?_` and prove the remaining obligations.
+
+Rewrite using `[← evalPt_constFn s v U hv, hve]`. Apply the tactic sequence `ext <;> simp [J, hconst, valAt'_constFn _ s (hps 0) U a h0, TrivSqZeroExt.algebraMap_eq_inl]`. Use `ext_evalPt hU ((top_le_preimage_iff v U).1 hv) h0 (RingHom.ext fun f => ?_)` and prove the remaining obligations. Use `(evalPt_spMap_comp fstC v U hv _ f).trans ?_` and prove the remaining obligations. Rewrite using `[hve, ← valAt'_eq_evalPt]`.
+
+Simplify using `[J]`. Rewrite using `[hve]`. Simplify using `[J]`.
+-/
 theorem exists_tangent {n : ℕ} (s : Y ⟶ Sp ℂ) {W : Set (Fin n → ℂ)} (hW : 0 ∈ W) {p : (Fin n → ℂ) → (Sp ℂ ⟶ Y)}
     (hp : IsHolTo W p) (hps : ∀ w, p w ≫ s = 𝟙 _) {U : Y.Opens} (hU : IsAffineOpen U) (h0 : ⊤ ≤ p 0 ⁻¹ᵁ U)
     (u : Fin n → ℂ) :
@@ -158,6 +206,15 @@ open scoped CategoryTheory.Obj in
 open Filter Topology in
 variable {Y : Scheme.{0}} in
 
+/- English proof (translation)
+Establish `hcomp : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap ℂ (DualNumber ℂ)) ≫ e 0 = e 0`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ ≫ _ = _`. Rewrite using `[← Spec.map_comp_assoc]`. Establish `hid : CommRingCat.ofHom (algebraMap ℂ (DualNumber ℂ)) ≫ CommRingCat.ofHom (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom = 𝟙 _`. Use extensionality with `a`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hid, Spec.map_id, Category.id_comp]`. Use `⟨hcomp, fun U hv f => ?_⟩` and prove the remaining obligations. Establish `h0 : ⊤ ≤ e 0 ⁻¹ᵁ U`. Establish `hfst` using `(_root_.GlobalTheory.TangentOrigin.top_le_preimage_iff _ U).1 hv`.
+
+Rewrite `hfst` using `[show _root_.GlobalTheory.TangentOrigin.fstC = (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom from rfl, hcomp]`. Then use the resulting hypothesis. Rewrite using `[h U f h0]`. Establish `hval` using `_root_.GlobalTheory.TangentOrigin.evalPt_spMap_comp (algebraMap ℂ (DualNumber ℂ)) (e 0) U h0 hv f`. Express the relevant statement in the definitionally equal form `TrivSqZeroExt.snd (_root_.GlobalTheory.TangentOrigin.evalPt _ U hv f) = 0`. Rewrite using `[hval]`.
+
+Conclude with `TrivSqZeroExt.snd_inl _ _`.
+-/
 theorem _root_.GlobalTheory.LocalLift.isDerivAt0_const {g : ℕ} (e : (Fin g → ℂ) → (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ ⟶ Y))
     (w : Fin g → ℂ)
     (h : ∀ (U : Y.Opens) (f : Γ(Y, U)), ⊤ ≤ e 0 ⁻¹ᵁ U →
@@ -188,6 +245,105 @@ open scoped CategoryTheory.Obj in
 open Filter Topology in
 variable {Y : Scheme.{0}} in
 
+/- English proof (translation)
+Introduce `Y s g g' e e' hs he he' hhe hhe' H h00`. Take `⟨H1, H2⟩` from `H`. Use `set y := e' 0 with hy_def`. Establish `hys : y ≫ s = 𝟙 _` using `he' 0`. Establish `hsub : Subsingleton (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ)` using `inferInstanceAs (Subsingleton (PrimeSpectrum ℂ))`.
+
+Take `⟨U, hU, V, hV, hyV, hVU, hsm⟩` from `Smooth.exists_isStandardSmooth s (y.base default)`. Establish `hUtop : U = ⊤` using `eq_top_iff.2 fun x _ => Subsingleton.elim (s.base (y.base default)) x ▸ hVU hyV`. Substitute `hUtop` using the available equality. Establish `: ∃ n, (Scheme.Hom.appLE s ⊤ V hVU).hom.IsStandardSmoothOfRelativeDimension n` using `by algebraize [(Scheme.Hom.appLE s ⊤ V hVU).hom]`. Take `⟨P, σ, hσ, hP, ⟨Q⟩⟩` from `hsm`.
+
+Conclude with `⟨Q.dimension, ⟨P, σ, hσ, hP, Q, rfl⟩⟩`. Take `⟨n, hn⟩` from `this`. Set `c : ℂ →+* Γ(Y, V)` to `(Scheme.Hom.appLE s ⊤ V hVU).hom.comp (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom`. Establish `hc : c.IsStandardSmoothOfRelativeDimension n` using `(RingHom.isStandardSmoothOfRelativeDimension_respectsIso (n := n)).2 _ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).symm.commRingCatIsoToRingEquiv hn`. Establish `hyV' : ⊤ ≤ y ⁻¹ᵁ V` using `fun q _ => Subsingleton.elim default q ▸ hyV`.
+
+Set `ev : Γ(Y, V) →+* ℂ` to `_root_.GlobalTheory.TangentOrigin.evalPt y V hyV'`. Establish `hconst : ∀ (x : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ ⟶ Y), x ≫ s = 𝟙 _ → ∀ (hx : ⊤ ≤ x ⁻¹ᵁ V) (a : ℂ), _root_.GlobalTheory.TangentOrigin.evalPt x V hx (c a) = a`. Introduce `x hxs hx a`. Establish `h1` using `_root_.GlobalTheory.TangentOrigin.evalPt_constFn s x V hx a`. Establish `hid : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (RingHom.id ℂ) = 𝟙 (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ)`.
+
+Express the relevant statement in the definitionally equal form `Spec.map (𝟙 _) = _`. Conclude with `Spec.map_id _`. Establish `key : ∀ (z : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ) (hz : z = _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (RingHom.id ℂ)) (h : ⊤ ≤ z ⁻¹ᵁ ⊤), _root_.GlobalTheory.TangentOrigin.evalPt z ⊤ h …`. Introduce and unpack `_ rfl h`. Conclude with `_root_.GlobalTheory.TangentOrigin.evalPt_spMap _ a`.
+
+Conclude with `h1.trans (key _ (hxs.trans hid.symm) _)`. Establish `hev : ∀ a, ev (c a) = a` using `hconst y hys hyV'`. Take `⟨φ, hφC, hφet, hφ0⟩` from `_root_.GlobalTheory.HolChart.exists_etale_coords_vanishing c hc ev hev`. Use `letI : Algebra ℂ Γ(Y, V) := c.toAlgebra`. Use `letI : Algebra (MvPolynomial (Fin n) ℂ) Γ(Y, V) := φ.toAlgebra`.
+
+Use `haveI : IsScalarTower ℂ (MvPolynomial (Fin n) ℂ) Γ(Y, V) := IsScalarTower.of_algebraMap_eq fun a => by`. Express the relevant statement in the definitionally equal form `c a = φ (MvPolynomial.C a)`. Rewrite using `[← hφC]`. Both sides reduce to the same expression. Use `haveI : Algebra.Etale (MvPolynomial (Fin n) ℂ) Γ(Y, V) := hφet`.
+
+Set `evA : Γ(Y, V) →ₐ[ℂ] ℂ` to `{ ev with commutes' := fun a => hev a }`. Take `⟨W, σ, m, fs, ε, hWo, hW0, hσ0, hε, hσhol, hσX, hσuniq⟩` from `_root_.GlobalTheory.exists_holomorphic_section_of_etale n Γ(Y, V) evA hφ0`. Establish `hpt : ∀ w, ∃ x : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ ⟶ Y, ∃ h : ⊤ ≤ x ⁻¹ᵁ V, _root_.GlobalTheory.TangentOrigin.evalPt x V h = (σ w : Γ(Y, V) →+* ℂ)` using `fun w => _root_.GlobalTheory.TangentOrigin.exists_evalPt_eq hV _`. Use `choose pt hptV hpt using hpt`. Set `F : (Fin g' → ℂ) → (Fin n → ℂ)` to `fun z i => _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' (e' z) V (φ (MvPolynomial.X i))`.
+
+Set `G : (Fin g → ℂ) → (Fin n → ℂ)` to `fun z i => _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' (e z) V (φ (MvPolynomial.X i))`. Establish `hyVe : ⊤ ≤ e 0 ⁻¹ᵁ V` using `by rw [h00]; exact hyV'`. Establish `hlocal : ∀ (x : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ ⟶ Y), x ≫ s = 𝟙 _ → ∀ (hx : ⊤ ≤ x ⁻¹ᵁ V), (∀ k, ‖_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' x V (fs k) - ev (fs k)‖ < ε) → (fun i => _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' …`. Introduce `x hxs hx hclose`. Set `ψ : Γ(Y, V) →ₐ[ℂ] ℂ` to `{ _root_.GlobalTheory.TangentOrigin.evalPt x V hx with commutes' := fun a => hconst x hxs hx a }`.
+
+Take `⟨w, hw, hψw⟩` from `hσuniq ψ (fun k => by`. Establish `hk` using `hclose k`. Rewrite using `[_root_.GlobalTheory.TangentOrigin.valAt'_eq_evalPt x V hx] at hk)` and apply the resulting hypothesis. Establish `hcoord : (fun i => _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' x V (φ (MvPolynomial.X i))) = w` using `funext fun i => by`. Rewrite using `[_root_.GlobalTheory.TangentOrigin.valAt'_eq_evalPt x V hx]`.
+
+Express the relevant statement in the definitionally equal form `ψ (φ (MvPolynomial.X i)) = w i`. Rewrite using `[hψw]`. Conclude with `hσX w hw i`. Rewrite using `[hcoord]`. Use `⟨hw, _root_.GlobalTheory.TangentOrigin.ext_evalPt hV hx (hptV w) ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hpt w]`. Conclude with `RingHom.ext fun a => DFunLike.congr_fun hψw a`. Establish `hF_diff : ∀ᶠ z in 𝓝 (0 : Fin g' → ℂ), DifferentiableAt ℂ F z` using `by filter_upwards [_root_.GlobalTheory.LocalLift.hol_eventually_mem hhe' (Set.mem_univ 0) hyV'] with z hz`. Conclude with `differentiableAt_pi.2 fun i => _root_.GlobalTheory.LocalLift.hol_differentiableAt hhe' hz.1 hz.2 _`. Establish `hG_diff : ∀ᶠ z in 𝓝 (0 : Fin g → ℂ), DifferentiableAt ℂ G z` using `by filter_upwards [_root_.GlobalTheory.LocalLift.hol_eventually_mem hhe (Set.mem_univ 0) hyVe] with z hz`.
+
+Conclude with `differentiableAt_pi.2 fun i => _root_.GlobalTheory.LocalLift.hol_differentiableAt hhe hz.1 hz.2 _`. Establish `hF0 : F 0 = 0` using `funext fun i => by`. Express the relevant statement in the definitionally equal form `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' y V _ = 0`. Rewrite using `[_root_.GlobalTheory.TangentOrigin.valAt'_eq_evalPt y V hyV']`. Conclude with `hφ0 i`.
+
+Establish `hG0 : G 0 = 0` using `funext fun i => by`. Express the relevant statement in the definitionally equal form `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' (e 0) V _ = 0`. Rewrite using `[h00, _root_.GlobalTheory.TangentOrigin.valAt'_eq_evalPt y V hyV']`. Conclude with `hφ0 i`. Establish `hFe : ∀ᶠ z in 𝓝 (0 : Fin g' → ℂ), F z ∈ W ∧ e' z = pt (F z)`.
+
+Establish `hcl : ∀ k, ∀ᶠ z in 𝓝 (0 : Fin g' → ℂ), ‖_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' (e' z) V (fs k) - ev (fs k)‖ < ε`. Introduce `k`. Establish `hc` using `(_root_.GlobalTheory.LocalLift.hol_differentiableAt hhe' (Set.mem_univ 0) hyV' (fs k)).continuousAt`. Establish `h0v : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' (e' 0) V (fs k) = ev (fs k)` using `_root_.GlobalTheory.TangentOrigin.valAt'_eq_evalPt _ V hyV' _`. Use `filter_upwards [hc.eventually (Metric.ball_mem_nhds _ hε)] with z hz`.
+
+Rewrite `hz` using `[dist_eq_norm, h0v]`. Then use the resulting hypothesis. Use `filter_upwards [Filter.eventually_all.2 hcl, _root_.GlobalTheory.LocalLift.hol_eventually_mem hhe' (Set.mem_univ 0) hyV'] with z hz hzV`. Conclude with `hlocal (e' z) (he' z) hzV.2 hz`. Establish `hGe : ∀ᶠ z in 𝓝 (0 : Fin g → ℂ), G z ∈ W ∧ e z = pt (G z)`. Establish `hcl : ∀ k, ∀ᶠ z in 𝓝 (0 : Fin g → ℂ), ‖_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' (e z) V (fs k) - ev (fs k)‖ < ε`.
+
+Introduce `k`. Establish `hc` using `(_root_.GlobalTheory.LocalLift.hol_differentiableAt hhe (Set.mem_univ 0) hyVe (fs k)).continuousAt`. Establish `h0v : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' (e 0) V (fs k) = ev (fs k)`. Rewrite using `[h00]`. Conclude with `_root_.GlobalTheory.TangentOrigin.valAt'_eq_evalPt _ V hyV' _`.
+
+Use `filter_upwards [hc.eventually (Metric.ball_mem_nhds _ hε)] with z hz`. Rewrite `hz` using `[dist_eq_norm, h0v]`. Then use the resulting hypothesis. Use `filter_upwards [Filter.eventually_all.2 hcl, _root_.GlobalTheory.LocalLift.hol_eventually_mem hhe (Set.mem_univ 0) hyVe] with z hz hzV`. Conclude with `hlocal (e z) (he z) hzV.2 hz`. Establish `hbij : Function.Bijective (fderiv ℂ F 0)`.
+
+Establish `hevcongr : ∀ (x x' : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp (DualNumber ℂ) ⟶ Y) (hxx : x = x') (hx : ⊤ ≤ x ⁻¹ᵁ V) (hx' : ⊤ ≤ x' ⁻¹ᵁ V), _root_.GlobalTheory.TangentOrigin.evalPt x V hx = _root_.GlobalTheory.TangentOrigin.evalPt x' V hx'`. Introduce and unpack `x _ rfl _ _`. Both sides reduce to the same expression. Establish `hevcongrC : ∀ (x x' : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ ⟶ Y) (hxx : x = x') (hx : ⊤ ≤ x ⁻¹ᵁ V) (hx' : ⊤ ≤ x' ⁻¹ᵁ V), _root_.GlobalTheory.TangentOrigin.evalPt x V hx = _root_.GlobalTheory.TangentOrigin.evalPt x' V hx'`. Introduce and unpack `x _ rfl _ _`.
+
+Both sides reduce to the same expression. Establish `hFi : ∀ w i, fderiv ℂ F 0 w i = fderiv ℂ (fun z => _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valAt' (e' z) V (φ (MvPolynomial.X i))) 0 w`. Introduce `w i`. Rewrite using `[fderiv_pi (fun i => _root_.GlobalTheory.LocalLift.hol_differentiableAt hhe' (Set.mem_univ 0) hyV' _)]`. Both sides reduce to the same expression.
+
+Establish `hvV : ∀ v : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp (DualNumber ℂ) ⟶ Y, _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = y → ⊤ ≤ v ⁻¹ᵁ V`. Introduce `v hvy`. Use `(_root_.GlobalTheory.TangentOrigin.top_le_preimage_iff v V).2 ?_` and prove the remaining obligations. Rewrite using `[show _root_.GlobalTheory.TangentOrigin.fstC = (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom from rfl, hvy]`. Conclude with `hyV'`.
+
+Establish `hfst : ∀ (v : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp (DualNumber ℂ) ⟶ Y) (hvy : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = y) (hv : ⊤ ≤ v ⁻¹ᵁ V) (a : Γ(Y, V)), TrivSqZeroExt.fst (_root_.GlobalTheory.Tange …`. Introduce `v hvy hv a`. Establish `h' : ⊤ ≤ (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v) ⁻¹ᵁ V` using `by rw [hvy]; exact hyV'`. Establish `h1` using `_root_.GlobalTheory.TangentOrigin.evalPt_spMap_comp (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom v V hv h' a`. Rewrite `h1` using `[hevcongrC _ _ hvy h' hyV']`.
+
+Conclude with `h1.symm`. Establish `hcst : ∀ (v : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp (DualNumber ℂ) ⟶ Y), v ≫ s = _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap ℂ (DualNumber ℂ)) → ∀ (hv : ⊤ ≤ v ⁻¹ᵁ V) (a : ℂ), _root_.GlobalTheory.TangentOrigin.evalPt v V hv (c a) = algebr …`. Introduce `v hvs hv a`. Establish `h1` using `_root_.GlobalTheory.TangentOrigin.evalPt_constFn s v V hv a`. Establish `key : ∀ (z : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp (DualNumber ℂ) ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ) (hz : z = _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap ℂ (DualNumber ℂ))) (h : ⊤ ≤ z ⁻¹ᵁ ⊤), _root_.GlobalTheory …`.
+
+Introduce and unpack `_ rfl h`. Conclude with `_root_.GlobalTheory.TangentOrigin.evalPt_spMap _ a`. Conclude with `h1.trans (key _ hvs _)`. Set `v0 : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp (DualNumber ℂ) ⟶ Y` to `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap ℂ (DualNumber ℂ)) ≫ y`. Establish `hv0y : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v0 = y`.
+
+Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ ≫ _ = _`. Rewrite using `[← Spec.map_comp_assoc]`. Establish `hid : CommRingCat.ofHom (algebraMap ℂ (DualNumber ℂ)) ≫ CommRingCat.ofHom (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom = 𝟙 _`. Use extensionality with `a`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hid, Spec.map_id, Category.id_comp]`. Establish `hv0s : v0 ≫ s = _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap ℂ (DualNumber ℂ))`. Express the relevant statement in the definitionally equal form `_ ≫ y ≫ s = _`. Rewrite using `[hys, Category.comp_id]`. Prove the components needed by the constructor for the conclusion.
+
+Use `(injective_iff_map_eq_zero (fderiv ℂ F 0)).2 fun w hw => ?_` and prove the remaining obligations. Take `⟨v, ⟨hvs, hvd⟩, -⟩` from `H1 w`. Establish `hvy : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = y` using `hvd.1`. Establish `hv` using `hvV v hvy`. Set `D : Γ(Y, V) →+ ℂ` to `{ toFun := fun a => TrivSqZeroExt.snd (_root_.GlobalTheory.TangentOrigin.evalPt v V hv a) map_zero' := by simp map_add' := fun a b => by simp }`.
+
+Establish `hD : D = 0`. Use `_root_.GlobalTheory.HolChart.derivation_eq_zero φ hφet ev D (fun a => ?_) (fun a b => ?_) (fun i => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `TrivSqZeroExt.snd (_root_.GlobalTheory.TangentOrigin.evalPt v V hv (φ (MvPolynomial.C a))) = 0`. Rewrite using `[← RingHom.comp_apply φ, hφC, hcst v hvs hv a]`. Conclude with `TrivSqZeroExt.snd_inl _ _`.
+
+Express the relevant statement in the definitionally equal form `TrivSqZeroExt.snd (_root_.GlobalTheory.TangentOrigin.evalPt v V hv (a * b)) = ev a * TrivSqZeroExt.snd (_root_.GlobalTheory.TangentOrigin.evalPt v V hv b) + ev b * TrivSqZeroExt.snd (_root_.GlobalTheory.TangentOrigin.evalPt v V hv a)`. Rewrite using `[map_mul, TrivSqZeroExt.snd_mul, hfst v hvy hv a, hfst v hvy hv b]`. Simplify using `[smul_eq_mul, mul_comm]`. Express the relevant statement in the definitionally equal form `TrivSqZeroExt.snd (_root_.GlobalTheory.TangentOrigin.evalPt v V hv (φ (MvPolynomial.X i))) = 0`. Establish `h2` using `hvd.2 V hv (φ (MvPolynomial.X i))`.
+
+Use `h2.trans ?_` and prove the remaining obligations. Rewrite using `[← hFi, hw]`. Both sides reduce to the same expression. Establish `hv0V : ⊤ ≤ v0 ⁻¹ᵁ V` using `hvV v0 hv0y`. Establish `hvv0 : v = v0`.
+
+Use `_root_.GlobalTheory.TangentOrigin.ext_evalPt hV hv hv0V (RingHom.ext fun a => ?_)` and prove the remaining obligations. Establish `h0` using `_root_.GlobalTheory.TangentOrigin.evalPt_spMap_comp (algebraMap ℂ (DualNumber ℂ)) y V hyV' hv0V a`. Rewrite using `[h0]`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[hfst v hvy hv a]`.
+
+Both sides reduce to the same expression. Conclude with `(DFunLike.congr_fun hD a).trans (TrivSqZeroExt.snd_inl _ _).symm`. Establish `h0d : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsDerivAt0 e' 0 v0` using `_root_.GlobalTheory.LocalLift.isDerivAt0_const e' 0 (fun U f _ => map_zero _)`. Conclude with `(H2 v0 hv0s hv0y).unique (hvv0 ▸ hvd) h0d`. Introduce `u`.
+
+Set `S : Γ(Y, V) → (Fin n → ℂ) → ℂ` to `fun a w => σ w a`. Establish `hSd : ∀ a, DifferentiableAt ℂ (S a) 0` using `fun a => (hσhol a 0 hW0).differentiableAt (hWo.mem_nhds hW0)`. Establish `hS0 : ∀ a, S a 0 = ev a` using `fun a => by`. Express the relevant statement in the definitionally equal form `σ 0 a = ev a`. Rewrite using `[hσ0]`.
+
+Both sides reduce to the same expression. Set `χ : Γ(Y, V) →+* DualNumber ℂ` to `{ toFun := fun a => TrivSqZeroExt.inl (ev a) + TrivSqZeroExt.inr (fderiv ℂ (S a) 0 u) map_one' := by`. Establish `h1 : S 1 = fun _ => 1` using `funext fun w => map_one (σ w)`. Rewrite using `[h1]`. Apply the tactic sequence `ext <;> simp`.
+
+Use the proof step `map_mul' := fun a b => by`. Establish `hm : S (a * b) = S a * S b` using `funext fun w => map_mul (σ w) a b`. Establish `hd : fderiv ℂ (S (a * b)) 0 u = S a 0 * fderiv ℂ (S b) 0 u + S b 0 * fderiv ℂ (S a) 0 u`. Rewrite using `[hm, ((hSd a).hasFDerivAt.mul (hSd b).hasFDerivAt).fderiv]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[hd, hS0, hS0]`. Use `ext`. Simplify using the standard rewrite rules. Simplify using `[smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use the proof step `map_zero' := by`. Establish `h0 : S 0 = fun _ => 0` using `funext fun w => map_zero (σ w)`. Rewrite using `[h0]`. Apply the tactic sequence `ext <;> simp`. Use the proof step `map_add' := fun a b => by`.
+
+Establish `ha : S (a + b) = S a + S b` using `funext fun w => map_add (σ w) a b`. Rewrite using `[ha, fderiv_add (hSd a) (hSd b)]`. Apply the tactic sequence `ext <;> simp }`. Establish `hχapp : ∀ a, χ a = TrivSqZeroExt.inl (ev a) + TrivSqZeroExt.inr (fderiv ℂ (S a) 0 u)` using `fun a => rfl`. Take `⟨v, hv, hχ⟩` from `_root_.GlobalTheory.TangentOrigin.exists_evalPt_eq hV χ`.
+
+Establish `hvy : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = y`. Establish `h' : ⊤ ≤ (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v) ⁻¹ᵁ V` using `(_root_.GlobalTheory.TangentOrigin.top_le_preimage_iff v V).1 hv`. Use `_root_.GlobalTheory.TangentOrigin.ext_evalPt hV h' hyV' (RingHom.ext fun a => ?_)` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.TangentOrigin.evalPt_spMap_comp _ v V hv h' a, hχ]`. Express the relevant statement in the definitionally equal form `TrivSqZeroExt.fst (χ a) = ev a`.
+
+Rewrite using `[hχapp]`. Simplify using the standard rewrite rules. Establish `hvs : v ≫ s = _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap ℂ (DualNumber ℂ))`. Use `_root_.GlobalTheory.TangentOrigin.eq_spMap_of_evalPt (v ≫ s) _ fun a => ?_` and prove the remaining obligations. Rewrite using `[← _root_.GlobalTheory.TangentOrigin.evalPt_constFn s v V hv a, hχ]`.
+
+Establish `hc' : S (c a) = fun _ => a` using `funext fun w => (σ w).commutes a`. Express the relevant statement in the definitionally equal form `χ (c a) = _`. Rewrite using `[hχapp]`. Rewrite using `[hc', hev]`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations.
+
+Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Take `⟨w, hw, -⟩` from `H2 v hvs hvy`. Use `⟨w, funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hFi, ← hw.2 V hv (φ (MvPolynomial.X i))]`.
+
+Express the relevant statement in the definitionally equal form `TrivSqZeroExt.snd (_root_.GlobalTheory.TangentOrigin.evalPt v V hv _) = u i`. Rewrite using `[hχ]`. Establish `hXi : S (φ (MvPolynomial.X i)) =ᶠ[𝓝 0] fun w => w i` using `by filter_upwards [hWo.mem_nhds hW0] with w hw`. Conclude with `hσX w hw i`. Rewrite using `[hχapp]`.
+
+Rewrite using `[TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add, hXi.fderiv_eq]`. Rewrite using `[(hasFDerivAt_apply i (0 : Fin n → ℂ)).fderiv]`. Both sides reduce to the same expression. Establish `hFan : AnalyticAt ℂ F 0` using `_root_.GlobalTheory.SCV.analyticAt_iff_eventually_differentiableAt.2 hF_diff`. Establish `hGan : AnalyticAt ℂ G 0` using `_root_.GlobalTheory.SCV.analyticAt_iff_eventually_differentiableAt.2 hG_diff`.
+
+Set `L : (Fin g' → ℂ) ≃L[ℂ] (Fin n → ℂ)` to `ContinuousLinearEquiv.ofBijective (fderiv ℂ F 0) (LinearMap.ker_eq_bot.2 hbij.1) (LinearMap.range_eq_top.2 hbij.2)`. Establish `hL : HasFDerivAt F (L : (Fin g' → ℂ) →L[ℂ] (Fin n → ℂ)) 0`. Rewrite using `[ContinuousLinearEquiv.coe_ofBijective]`. Conclude with `hFan.differentiableAt.hasFDerivAt`. Establish `hFc : ContDiffAt ℂ 1 F 0` using `hFan.contDiffAt`.
+
+Establish `hS : HasStrictFDerivAt F (L : (Fin g' → ℂ) →L[ℂ] (Fin n → ℂ)) 0` using `hFc.hasStrictFDerivAt' hL one_ne_zero`. Set `Finv` to `HasStrictFDerivAt.localInverse F L 0 hS`. Establish `hinvc : ContDiffAt ℂ 1 Finv (F 0)` using `hFc.to_localInverse hL one_ne_zero`. Establish `hinvan : AnalyticAt ℂ Finv (F 0)` using `_root_.GlobalTheory.SCV.analyticAt_iff_eventually_differentiableAt.2 ((hinvc.eventually (by simp)).mono fun p hp => hp.differentiableAt one_ne_zero)`. Establish `hinv0 : Finv (F 0) = 0` using `hS.localInverse_apply_image`.
+
+Use `⟨Finv ∘ G, ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Finv (G 0) = 0`. Rewrite using `[hG0, ← hF0, hinv0]`. Establish `hA : AnalyticAt ℂ Finv (G 0)` using `by rw [hG0, ← hF0]; exact hinvan`. Conclude with `hA.comp hGan`.
+
+Establish `hGt : Tendsto G (𝓝 0) (𝓝 (F 0))`. Rewrite using `[hF0, ← hG0]`. Conclude with `hGan.continuousAt.tendsto`. Establish `hFt : Tendsto Finv (𝓝 (F 0)) (𝓝 0)`. Establish `ht` using `hinvan.continuousAt.tendsto`.
+
+Rewrite `ht` using `[hinv0]`. Then use the resulting hypothesis. Use `filter_upwards [hGt.eventually hS.eventually_right_inverse, (hFt.comp hGt).eventually hFe, hGe] with z h1 h2 h3`. Simplify using `only [Function.comp_apply] at h2 ⊢`. Rewrite using `[h2.2, h1, ← h3.2]`.
+-/
 theorem _root_.GlobalTheory.LocalLift.exists_local_lift : ∀ (Y : Scheme.{0}) (s : Y ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ)
     (g g' : ℕ) (e : (Fin g → ℂ) → (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ ⟶ Y)) (e' : (Fin g' → ℂ) → (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℂ ⟶ Y)),
     Smooth s → (∀ z, e z ≫ s = 𝟙 _) → (∀ z, e' z ≫ s = 𝟙 _) → _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsHolTo Set.univ e →

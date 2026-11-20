@@ -13,10 +13,16 @@ open scoped Classical
 abbrev bU (F : Type) [Field F] [NumberField F] :=
   (NumberField.Units.basisUnitLattice F).ofZLatticeBasis ℝ (NumberField.Units.unitLattice F)
 
+/- English proof (translation)
+The claim follows from `|sg v x| = v x := by simpa [Real.norm_eq_abs] using InfinitePlace.norm_embedding_of_isReal (IsTotallyReal.isReal v) x`.
+-/
 theorem abs_sg {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (v : InfinitePlace F) (x : F) :
     |sg v x| = v x := by
   simpa [Real.norm_eq_abs] using InfinitePlace.norm_embedding_of_isReal (IsTotallyReal.isReal v) x
 
+/- English proof (translation)
+The claim follows from `|a w - InfinitePlace.mult w.1 * Real.log (w.1 (x : F))| ≤ ∑ i, ‖bU F i‖ := by have hmem : (ZSpan.floor (bU F) a : NumberField.Units.dirichletUnitTheorem.logSpace F) ∈ NumberField.Units.unitLattice F := by rw [← Module.Basis.ofZLatticeBasis_span ℝ (NumberField.Units.unitLattice F) …`.
+-/
 theorem near_unit (F : Type) [Field F] [NumberField F] (a : NumberField.Units.dirichletUnitTheorem.logSpace F) :
     ∃ x : (𝓞 F)ˣ, ∀ w : {w : InfinitePlace F // w ≠ NumberField.Units.dirichletUnitTheorem.w₀},
       |a w - InfinitePlace.mult w.1 * Real.log (w.1 (x : F))| ≤ ∑ i, ‖bU F i‖ := by
@@ -41,6 +47,33 @@ end UpperTheory.Esk.NearUnitLemmas
 namespace UpperTheory.Esk
 
 open UpperTheory.Esk.NearUnitLemmas in
+/- English proof (translation)
+Introduce `F _ _ _`. Use `set M : ℝ := ∑ i, ‖bU F i‖ with hM`. Establish `hM0 : 0 ≤ M` using `Finset.sum_nonneg fun i _ => norm_nonneg _`. Use `⟨Real.exp (2 * (Fintype.card (InfinitePlace F) * M)), Real.exp_pos _, fun y hy => ?_⟩` and prove the remaining obligations. Use `set L : InfinitePlace F → ℝ := fun w => Real.log |y w|`.
+
+Use `set m : ℝ := (∑ w, L w) / Fintype.card (InfinitePlace F)`. Take `⟨x, hx⟩` from `near_unit F (fun w => m - L w.1)`. Use `set u : F := (x : F)`. Establish `hmult : ∀ w : InfinitePlace F, InfinitePlace.mult w = 1` using `fun w => (IsTotallyReal.isReal w).mult_eq_one`. Use `set d : InfinitePlace F → ℝ := fun w => Real.log (w u) + L w - m`.
+
+Establish `hn : (Fintype.card (InfinitePlace F) : ℝ) ≠ 0`. Establish `: 0 < Fintype.card (InfinitePlace F)` using `Fintype.card_pos`. Conclude with `this.ne'` after adjusting the coercions. Establish `hsum : ∑ w, d w = 0`. Establish `h0 : ∑ w : InfinitePlace F, Real.log (w u) = 0`.
+
+Simplify `NumberField.Units.sum_mult_mul_log x` using `[hmult]`. Simplify using `only [d, Finset.sum_sub_distrib, Finset.sum_add_distrib, h0, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, m]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hne : ∀ w : {w : InfinitePlace F // w ≠ NumberField.Units.dirichletUnitTheorem.w₀}, |d w| ≤ M`.
+
+Introduce `w`. Use `hx w` as an intermediate fact. Rewrite `this` using `[hmult, Nat.cast_one, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← abs_neg]`.
+
+Use `congr 1`. Simplify using `only [d]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ M := this`. Establish `hall : ∀ w, |d w| ≤ Fintype.card (InfinitePlace F) * M`.
+
+Introduce `w`. Distinguish the cases in `hw : w = NumberField.Units.dirichletUnitTheorem.w₀`. Substitute `hw` using the available equality. Establish `h` using `Fintype.sum_eq_add_sum_subtype_ne d NumberField.Units.dirichletUnitTheorem.w₀`. Rewrite `h` using `[hsum]`.
+
+Establish `h' : d NumberField.Units.dirichletUnitTheorem.w₀ = -∑ w : {w : InfinitePlace F // w ≠ NumberField.Units.dirichletUnitTheorem.w₀}, d w`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[h', abs_neg]`. Combine the equalities or inequalities in the displayed calculation. Simplify using the standard rewrite rules.
+
+Use `_ ≤ Fintype.card (InfinitePlace F) * M := by gcongr`. Conclude with `Fintype.card_subtype_le _` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Establish `: (1 : ℝ) ≤ Fintype.card (InfinitePlace F)` using `by exact_mod_cast Fintype.card_pos`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hu0 : ∀ w : InfinitePlace F, 0 < w u` using `fun w => NumberField.Units.pos_at_place x w`. Establish `hval : ∀ w, |sg w u * y w| = Real.exp (d w + m)`. Introduce `w`. Simplify using `only [d, L]`. Rewrite using `[abs_mul, abs_sg, sub_add_cancel, Real.exp_add, Real.exp_log (hu0 w), Real.exp_log (abs_pos.2 (hy w))]`.
+
+Use `⟨u, ?_, ?_, ?_, fun v v' => ?_⟩` and prove the remaining obligations. Introduce `h`. Use `hu0 NumberField.Units.dirichletUnitTheorem.w₀` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `lt_irrefl _ this`.
+
+Conclude with `NumberField.RingOfIntegers.isIntegral_coe (x : 𝓞 F)`. Establish `: u⁻¹ = ((x⁻¹ : (𝓞 F)ˣ) : F)` using `by simp [u]`. Rewrite using `[this]`. Conclude with `NumberField.RingOfIntegers.isIntegral_coe ((x⁻¹ : (𝓞 F)ˣ) : 𝓞 F)`. Rewrite using `[hval, hval, ← Real.exp_add]`.
+
+Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `h1` using `(abs_le.1 (hall v)).2`. Establish `h2` using `(abs_le.1 (hall v')).1`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem aUnit : UpperTheory.Esk.AUnit := by
   classical
   intro F _ _ _

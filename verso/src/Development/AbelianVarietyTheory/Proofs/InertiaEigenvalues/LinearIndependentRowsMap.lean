@@ -16,6 +16,15 @@ set_option maxHeartbeats 800000
 
 namespace GlobalTheory.SeriesTie
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `(Fintype.linearCombination K a).exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 ha.fintypeLinearCombination_injective)`. Establish `hj : ∀ c j, g (a c) j = if c = j then 1 else 0` using `fun c j => by`. Use `congrFun (LinearMap.congr_fun hg (Pi.single c 1)) j` as an intermediate fact. Simplify `this` using `[Pi.single_apply, eq_comm]`. Establish `hg' : ∀ (x : Fin m → K) j, g x j = ∑ k, x k * g (fun j' => if k = j' then 1 else 0) j` using `fun x j => by conv_lhs => rw [pi_eq_sum_univ x]`.
+
+Rewrite using `[map_sum, Finset.sum_apply]`. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `μ hμ j`. Establish `h0 : ∀ k, ∑ c, μ c * e (a c k) = 0` using `fun k => by`.
+
+Use `congrFun hμ k` as an intermediate fact. Simplify `this` using `[Finset.sum_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by simp [h0]`.
+-/
 theorem linearIndependent_rows_map {K L : Type*} [Field K] [Field L] (e : K →+* L) {n m : ℕ}
     (a : Fin n → Fin m → K) (ha : LinearIndependent K a) :
     LinearIndependent L fun c k => e (a c k) := by
@@ -46,6 +55,25 @@ theorem linearIndependent_rows_map {K L : Type*} [Field K] [Field L] (e : K →+
         ring
     _ = 0 := by simp [h0]
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 I0 T A3 Ks _ _ _ Rl cG S YS v₀ ρ hρ i j b ν hν hU hW hv hK`. Set `L : (Rl.HW j (sg0 D A3.A)).H →ₗ[ℂ] (GA D (Wc D j) → ℂ)` to `{ toFun := fun x => (Rl.HW j (sg0 D A3.A)).e x (v₀ j _) map_add' := fun x y => by rw [map_add]; rfl map_smul' := fun c x => by rw [map_smul]; rfl }`. Establish `hL : LinearMap.ker L = ⊥` using `LinearMap.ker_eq_bot.2 fun x y h => GlobalTheory.LiftScalarCompare.eval_inj hW hv h`. Take `⟨m, bb, -, hKs, hspan, hLL, -⟩` from `hK`. Set `bK : Module.Basis (Fin m) S.Ks ↥(S.A ((j : ℕ) + 1)).WK` to `(Module.Basis.span hKs).map (LinearEquiv.ofEq _ _ hspan)`.
+
+Establish `hbK : ∀ k, ((bK k : ↥(S.A ((j : ℕ) + 1)).WK) : S.WL ((j : ℕ) + 1)) = bb k` using `fun k => by`. Simplify using `[bK, Module.Basis.span_apply]`. Set `φ : Fin m → (GA D (Wc D j) → ℂ)` to `fun k => evW YS v₀ j (bb k)`. Establish `hφ : LinearIndependent ℂ φ`. Establish `h1 : LinearIndependent D.what₂.LL fun k => (YS.fi j).e (bb k)` using `hLL.map' (YS.fi j).e.toLinearMap (YS.fi j).e.ker`.
+
+Conclude with `((hU j (sg0 D A3.A)).1 m _ h1).map' L hL`. Set `B : Module.Basis (Fin m) (NX.KB S i b) (NX.Fm S i ((j : ℕ) + 1) b)` to `Algebra.TensorProduct.basis (NX.KB S i b) bK`. Introduce `n v hvi`. Set `w : Fin n → NX.Fm S i ((j : ℕ) + 1) b` to `fun c => YS.eF i _ b (Nat.le_add_left _ _) j.2 (v c)`. Establish `hw0 : LinearIndependent (FractionRing (D.ntw.O i)) w` using `hvi.map' (YS.eF i _ b (Nat.le_add_left _ _) j.2).toLinearMap (YS.eF i _ b (Nat.le_add_left _ _) j.2).ker`.
+
+Establish `hw1 : LinearIndependent (NX.KB S i b) w` using `hw0`. Establish `hw : LinearIndependent (NX.KB S i b) fun c => B.equivFun (w c)` using `hw1.map' B.equivFun.toLinearMap B.equivFun.ker`. Establish `hr` using `linearIndependent_rows_map (ρ.e i b) (fun c => B.equivFun (w c)) hw`. Set `Ψ : (Fin m → ℂ) →ₗ[ℂ] (GA D (Wc D j) → ℂ)` to `ν⁻¹ • Fintype.linearCombination ℂ φ`. Establish `hΨ : LinearMap.ker Ψ = ⊥`.
+
+Use `LinearMap.ker_eq_bot'.2 fun z hz => ?_` and prove the remaining obligations. Establish `h0 : Fintype.linearCombination ℂ φ z = 0`. Use `hz` as an intermediate fact. Simplify using `only [Ψ, LinearMap.smul_apply, smul_eq_zero, inv_eq_zero, hν, false_or] at this`. Conclude with `this`.
+
+Conclude with `hφ.fintypeLinearCombination_injective (h0.trans (map_zero _).symm)`. It suffices to establish `key : (fun c => realRd YS v₀ hρ i j b ν (v c)) = Ψ ∘ fun c k => ρ.e i b (B.equivFun (w c) k) by`. Rewrite using `[key]`. Conclude with `hr.map' Ψ hΨ`. Use function extensionality and compare the values at `c`.
+
+Express the relevant statement in the definitionally equal form `ν⁻¹ • evK YS v₀ hρ i j b (w c) = ν⁻¹ • Fintype.linearCombination ℂ φ _`. Use `congr 1`. Rewrite using `[Fintype.linearCombination_apply]`. Use `conv_lhs => rw [← B.sum_equivFun (w c)]`. Use `(map_sum (evK YS v₀ hρ i j b) _ _).trans ?_` and prove the remaining obligations.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[show B k = ((1 : NX.KB S i b) ⊗ₜ[S.Ks] bK k : NX.KB S i b ⊗[S.Ks] NX.FmK S ((j : ℕ) + 1)) from Algebra.TensorProduct.basis_apply _ _]`. Express the relevant statement in the definitionally equal form `evK YS v₀ hρ i j b ((B.equivFun (w c) k • (1 : NX.KB S i b)) ⊗ₜ[S.Ks] (bK k : NX.FmK S ((j : ℕ) + 1))) = _`. Rewrite using `[smul_eq_mul, mul_one]`. Use `(evK_tmul YS v₀ hρ i j b _ _).trans ?_` and prove the remaining obligations.
+
+Conclude with `congrArg _ (congrArg (evW YS v₀ j) (hbK k))`.
+-/
 theorem realRd_faithful : ∀ (D : D7) (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (Rl : RealDat3 D A3 Ks) (cG : G0 Rl.Pg D.R.r ≃* G0g D.nd) (S : NX.RatDat D.ntw) (YS : NX.NExpRealS Rl cG S) (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec) (ρ : Setup D.ntw) (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (ν : ℂ), ν ≠ 0 → Rl.toRealDat.LUnif → Rl.toRealDat.models_HW → FWT.IsChosenExtremalVector Rl.toRealDat j (sg0 D A3.A) (v₀ j _) → (S.A ((j : ℕ) + 1)).IsKsForm → Faithful (realRd YS v₀ hρ i j b ν) := by
   intro D Γ _ _ Pl0 I0 T A3 Ks _ _ _ Rl cG S YS v₀ ρ hρ i j b ν hν hU hW hv hK
   classical

@@ -9,6 +9,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hs : (S ∩ Function.mulSupport f).Finite` using `hfin.subset fun w hw => hw.2`. Rewrite using `[finprod_mem_eq_prod f hs]`. Use `Finset.prod_eq_zero (i := w₀) ?_ h0` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`. Use `⟨hw₀, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Function.mem_mulSupport, h0]`. Conclude with `zero_ne_one`.
+-/
 theorem finprod_mem_eq_zero_of_factor {ι : Type} (f : ι → ℂ) (S : Set ι)
     (hfin : {w | f w ≠ 1}.Finite) {w₀ : ι} (hw₀ : w₀ ∈ S) (h0 : f w₀ = 0) :
     ∏ᶠ w ∈ S, f w = 0 := by
@@ -20,6 +25,53 @@ theorem finprod_mem_eq_zero_of_factor {ι : Type} (f : ι → ℂ) (S : Set ι)
   rw [Function.mem_mulSupport, h0]
   exact zero_ne_one
 
+/- English proof (translation)
+Introduce `ι S Cl _ D R _ loc O s good N hA hB hC hD hE`. Use `haveI : ∀ w, Fintype (Cl w) := fun w => Fintype.ofFinite _`. Use `haveI : Fintype D := Fintype.ofFinite D`. Take `⟨T, hTfin, hTA⟩ : ∃ T : Set ι, T.Finite ∧ ∀ w, w ∉ T → ((∃! c, good w c) ∧ ∀ c, (O w c = if good w c then 1 else 0) ∧ (good w c → ∀ d, s d w c = 1))` from `⟨_, Filter.eventually_cofinite.1 hA, fun w hw => not_not.1 hw⟩`. Establish `hO : ∀ w, w ∉ T → ∀ c, O w c = if good w c then 1 else 0` using `fun w hw c => ((hTA w hw).2 c).1`.
+
+Establish `hs1 : ∀ w, w ∉ T → ∀ c, good w c → ∀ d, s d w c = 1` using `fun w hw c => ((hTA w hw).2 c).2`. Establish `huniq : ∀ w, w ∉ T → ∀ c c', good w c → good w c' → c = c'` using `fun w hw c c' hc hc' => (hTA w hw).1.unique hc hc'`. Take `⟨F, hF⟩ : ∃ F : Finset ι, ∀ w, w ∈ F ↔ w ∈ S ∧ w ∈ T` from `⟨hTfin.toFinset.filter (· ∈ S), fun w => by simp [and_comm]⟩`. Choose the witnesses or unpack the hypotheses as in `⟨ext, ext_F, ext_good⟩ : ∃ ext : (∀ w : F, Cl w) → ∀ w, Cl w, (∀ x (w : F), ext x w = x w) ∧ ∀ x w, w ∉ T → good w (ext x w) := by`. Use `⟨fun x w => if h : w ∈ F then x ⟨w, h⟩ else if hw : w ∈ T then (hB w (fun hS => h ((hF w).2 ⟨hS, hw⟩))).some else (hTA w hw).1.exists.choose, fun x w => dif_pos w.2, fun x w hw => ?_⟩` and prove the remaining obligations.
+
+Establish `hwF : w ∉ F` using `fun h => hw ((hF w).1 h).2`. Simplify using `only [dif_neg hwF, dif_neg hw]`. Conclude with `(hTA w hw).1.exists.choose_spec`. Take `⟨ρ, hρdef⟩ : ∃ ρ : R → ∀ w : F, Cl w, ∀ r (w : F), ρ r w = loc r w` from `⟨fun r w => loc r w, fun _ _ => rfl⟩`. Take `⟨G, hG⟩ : ∃ G : Set R, ∀ r, r ∈ G ↔ ∀ w ∈ S, w ∉ T → good w (loc r w)` from `⟨{r | ∀ w ∈ S, w ∉ T → good w (loc r w)}, fun _ => Iff.rfl⟩`.
+
+Establish `prodS : ∀ φ : ι → ℂ, (∀ w ∈ S, w ∉ T → φ w = 1) → ∏ᶠ w ∈ S, φ w = ∏ w : F, φ w`. Introduce `φ hφ`. Establish `h1 : S ∩ Function.mulSupport φ ⊆ (F : Set ι)`. Introduce and unpack `w ⟨hwS, hw1⟩`. Assume the negation of the conclusion as `hwF`.
+
+Conclude with `hw1 (hφ w hwS fun hT => hwF (Finset.mem_coe.2 ((hF w).2 ⟨hwS, hT⟩)))`. Establish `h2 : (F : Set ι) ⊆ S` using `fun w hw => ((hF w).1 (Finset.mem_coe.1 hw)).1`. Rewrite using `[finprod_mem_eq_prod_of_subset φ h1 h2, ← Finset.prod_coe_sort]`. Establish `hR : ∀ d, ∏ᶠ w ∈ S, ∑ᶠ c, s d w c * O w c = ∑ x : (∀ w : F, Cl w), (∏ w : F, s d w (x w)) * ∏ w : F, O w (x w)`. Introduce `d`.
+
+Rewrite using `[prodS]`. Simplify using `only [finsum_eq_sum_of_fintype]`. Rewrite using `[Fintype.prod_sum]`. Conclude with `Finset.sum_congr rfl fun x _ => Finset.prod_mul_distrib`. Introduce `w _ hw`.
+
+Take `⟨c0, hc0⟩` from `(hTA w hw).1.exists`. Rewrite using `[finsum_eq_sum_of_fintype, Finset.sum_eq_single c0]`. Rewrite using `[hO w hw c0, if_pos hc0, hs1 w hw c0 hc0 d, mul_one]`. Introduce `c _ hc`. Rewrite using `[hO w hw c, if_neg (fun hg => hc (huniq w hw c c0 hg hc0)), mul_zero]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ c0) h`. Establish `hs_ext : ∀ d x, ∏ᶠ w ∈ S, s d w (ext x w) = ∏ w : F, s d w (x w)`. Introduce `d x`. Rewrite using `[prodS]`.
+
+Conclude with `Finset.prod_congr rfl fun w _ => by rw [ext_F]`. Introduce `w _ hw`. Conclude with `hs1 w hw _ (ext_good x w hw) d`. Establish `hEx : ∀ x, ∑ d, ∏ w : F, s d w (x w) = if ∃ r, ∀ w ∈ S, loc r w = ext x w then N else 0`. Introduce `x`.
+
+Rewrite using `[← hE (ext x) ?_, finsum_eq_sum_of_fintype]`. Conclude with `Finset.sum_congr rfl fun d _ => (hs_ext d x).symm`. Conclude with `Filter.eventually_cofinite.2 (hTfin.subset fun w hw => by_contra fun hwT => hw (ext_good x w hwT))`. Establish `hρ : ∀ r ∈ G, ∀ w ∈ S, loc r w = ext (ρ r) w`. Introduce `r hr w hwS`.
+
+Distinguish the cases in `hwF : w ∈ F`. Establish `h` using `ext_F (ρ r) ⟨w, hwF⟩`. Rewrite `h` using `[hρdef]`. Conclude with `h.symm`. Establish `hwT : w ∉ T` using `fun hT => hwF ((hF w).2 ⟨hwS, hT⟩)`.
+
+Conclude with `huniq w hwT _ _ ((hG r).1 hr w hwS hwT) (ext_good _ w hwT)`. Establish `hρinj : Set.InjOn ρ G`. Introduce `r hr r' hr' h`. Apply `hD` to reduce the goal to its premises. Introduce `w hwS`.
+
+Rewrite using `[hρ r hr w hwS, hρ r' hr' w hwS, h]`. Establish `hP0 : ∀ r, r ∉ G → ∏ᶠ w ∈ S, O w (loc r w) = 0`. Introduce `r hr`. Rewrite `hr` using `[hG]`. Use `push_neg at hr`.
+
+Take `⟨w, hwS, hwT, hg⟩` from `hr`. Use `finprod_mem_eq_zero_of_factor _ S ?_ hwS ?_` and prove the remaining obligations. Use `(hTfin.union (Filter.eventually_cofinite.1 (hC r))).subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hcon`.
+
+Conclude with `hv (by rw [hO v hcon.1, if_pos hcon.2])`. Rewrite using `[hO w hwT, if_neg hg]`. Establish `hP1 : ∀ r ∈ G, ∏ᶠ w ∈ S, O w (loc r w) = ∏ w : F, O w (ρ r w)`. Introduce `r hr`. Rewrite using `[prodS]`.
+
+Conclude with `Finset.prod_congr rfl fun w _ => by rw [hρdef]`. Introduce `w hwS hwT`. Rewrite using `[hO w hwT, if_pos ((hG r).1 hr w hwS hwT)]`. Establish `hGfin : G.Finite` using `Set.Finite.of_finite_image (Set.toFinite _) hρinj`. Establish `hmem : ∀ x, x ∈ ρ '' G ↔ ∃ r, ∀ w ∈ S, loc r w = ext x w`.
+
+Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, rfl⟩`. Conclude with `⟨r, hρ r hr⟩`. Introduce and unpack `⟨r, hr⟩`.
+
+Use `⟨r, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hG]`. Introduce `w hwS hwT`. Rewrite using `[hr w hwS]`. Conclude with `ext_good x w hwT`.
+
+Use function extensionality and compare the values at `w`. Rewrite using `[hρdef, hr w ((hF w).1 w.2).1, ext_F]`. Establish `hsum : ∑ᶠ r, ∏ᶠ w ∈ S, O w (loc r w) = ∑ x : (∀ w : F, Cl w), if ∃ r, ∀ w ∈ S, loc r w = ext x w then ∏ w : F, O w (x w) else 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[finsum_mem_def]`.
+
+Apply `finsum_congr` to reduce the goal to its premises. Introduce `r`. Distinguish the cases in `hr : r ∈ G`. Simplify using `only [Set.indicator_apply, hr, if_true]`. Conclude with `hP1 r hr`.
+
+Simplify using `only [Set.indicator_apply, hr, if_false]`. Conclude with `hP0 r hr`. Use `_ = ∑ᶠ x ∈ ρ '' G, ∏ w : F, O w (x w) := (finsum_mem_image (f := fun x : (∀ w : F, Cl w) => ∏ w : F, O w (x w)) hρinj).symm`. Use `_ = _ := by`. Rewrite using `[finsum_mem_def, finsum_eq_sum_of_fintype]`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `only [Set.indicator_apply, hmem]`. Use `⟨hGfin.subset fun r hr => by_contra fun hrG => hr (hP0 r hrG), ?_⟩` and prove the remaining obligations. Rewrite using `[hsum, finsum_congr hR, finsum_eq_sum_of_fintype, Finset.sum_comm, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_mul, hEx x]`. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem finsum_finprod_local_sums_expand : ∀ (ι : Type) (S : Set ι) (Cl : ι → Type) [∀ w, Finite (Cl w)] (D R : Type) [Finite D] (loc : R → ∀ w, Cl w) (O : ∀ w, Cl w → ℂ) (s : D → ∀ w, Cl w → ℂ) (good : ∀ w, Cl w → Prop) (N : ℂ), (∀ᶠ w in (cofinite : Filter ι), (∃! c, good w c) ∧ ∀ c, (O w c = if good w c then 1 else 0) ∧ (good w c → ∀ d, s d w c = 1)) → (∀ w, w ∉ S → Nonempty (Cl w)) → (∀ r, ∀ᶠ w in (cofinite : Filter ι), good w (loc r w)) → (∀ r r', (∀ w ∈ S, loc r w = loc r' w) → r = r') → (∀ x : ∀ w, Cl w, (∀ᶠ w in (cofinite : Filter ι), good w (x w)) → ∑ᶠ d : D, ∏ᶠ w ∈ S, s d w (x w) = if ∃ r, ∀ w ∈ S, loc r w = x w then N else 0) → (Function.support fun r : R => ∏ᶠ w ∈ S, O w (loc r w)).Finite ∧ (∑ᶠ r : R, ∏ᶠ w ∈ S, O w (loc r w)) * N = ∑ᶠ d : D, ∏ᶠ w ∈ S, ∑ᶠ c : Cl w, s d w c * O w c := by
   intro ι S Cl _ D R _ loc O s good N hA hB hC hD hE
   classical

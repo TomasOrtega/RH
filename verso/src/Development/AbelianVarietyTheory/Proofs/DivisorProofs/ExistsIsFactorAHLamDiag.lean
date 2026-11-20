@@ -21,11 +21,20 @@ namespace GlobalTheory.TorusRM.DiagFrame
 
 variable {A : Over (Sp ℂ)} [GrpObj A] [IsCommMonObj A]
 
+/- English proof (translation)
+The claim follows from `(Hom.mul_def a b).symm`.
+-/
 theorem padd_eq {T : Over (Sp ℂ)} (a b : T ⟶ A) : padd A a b = a * b := (Hom.mul_def a b).symm
 
+/- English proof (translation)
+Rewrite using `[pzero, Hom.one_def]`.
+-/
 theorem pzero_eq (T : Over (Sp ℂ)) : pzero A T = 1 := by
   rw [pzero, Hom.one_def]
 
+/- English proof (translation)
+Establish `h0 : y ≫ lift (𝟙 A) (𝟙 A) ≫ fst A A = y` using `by simp`. Establish `h1 : y ≫ lift (𝟙 A) (𝟙 A) ≫ snd A A = y` using `by simp`. Establish `hI : I = ∅ ∨ I = {0} ∨ I = {1} ∨ I = {0, 1}` using `by revert I; decide`. Apply the tactic sequence `rcases hI with rfl | rfl | rfl | rfl <;>`. Simplify using `[psum, padd_eq, pzero_eq, x2, List.finRange_succ, comp_mul, comp_one, h0, h1, pow_two]`.
+-/
 theorem pt_diag_psum (y : 𝟙_ (Over (Sp ℂ)) ⟶ A) (I : Finset (Fin 2)) :
     y ≫ (lift (𝟙 A) (𝟙 A) ≫ psum A (x2 A) I) = y ^ I.card := by
   have h0 : y ≫ lift (𝟙 A) (𝟙 A) ≫ fst A A = y := by simp
@@ -34,6 +43,9 @@ theorem pt_diag_psum (y : 𝟙_ (Over (Sp ℂ)) ⟶ A) (I : Finset (Fin 2)) :
   rcases hI with rfl | rfl | rfl | rfl <;>
     simp [psum, padd_eq, pzero_eq, x2, List.finRange_succ, comp_mul, comp_one, h0, h1, pow_two]
 
+/- English proof (translation)
+Establish `hZ : (∑ I : Finset (Fin 2), ((-1 : ℤ) ^ (2 - I.card)) * (I.card : ℤ) ^ 2) = 2` using `by decide`. Establish `hU : (∑ I : ULift.{0} (Finset (Fin 2)), ((-1 : ℤ) ^ (2 - I.down.card)) * (I.down.card : ℤ) ^ 2) = 2` using `(Fintype.sum_equiv Equiv.ulift _ (fun I : Finset (Fin 2) => ((-1 : ℤ) ^ (2 - I.card)) * (I.card : ℤ) ^ 2) (fun _ => rfl)).trans hZ`. Conclude with `hU` after adjusting the coercions.
+-/
 theorem sum_exp_sq :
     (∑ I : ULift.{0} (Finset (Fin 2)), (((-1 : ℤ) ^ (2 - I.down.card) : ℤ) : ℂ) * ((I.down.card : ℕ) : ℂ) ^ 2) = 2 := by
   have hZ : (∑ I : Finset (Fin 2), ((-1 : ℤ) ^ (2 - I.card)) * (I.card : ℤ) ^ 2) = 2 := by decide
@@ -42,6 +54,9 @@ theorem sum_exp_sq :
       (fun _ => rfl)).trans hZ
   exact_mod_cast hU
 
+/- English proof (translation)
+Establish `hs : star ((c : ℂ) • l) = (c : ℂ) • star l`. Rewrite using `[star_smul]`. Simplify using the standard rewrite rules. Rewrite using `[hs, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_smul_nat {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (c : ℕ) (z l : Fin g → ℂ) :
     ((c : ℂ) • z) ⬝ᵥ Hm.mulVec (star ((c : ℂ) • l)) = (c : ℂ) ^ 2 * (z ⬝ᵥ Hm.mulVec (star l)) := by
   have hs : star ((c : ℂ) • l) = (c : ℂ) • star l := by
@@ -58,6 +73,9 @@ variable {A : Over (Sp ℂ)} [GrpObj A] [IsCommMonObj A]
 def diagSum (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A] (I : ULift.{0} (Finset (Fin 2))) : A ⟶ A :=
   lift (𝟙 A) (𝟙 A) ≫ psum A (x2 A) I.down
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.ThetaPoint.top_le_pull_iff]`. Use `show ⊤ ≤ (x ≫ (lift (𝟙 A) (𝟙 A)).left) ⁻¹ᵁ LB.wchart M (fun I : ULift.{0} (Finset (Fin 2)) => (psum A (x2 A) I.down).left) (J PUnit.unit) ↔ _`. Use `(CubeValues.le_preimage_wchart _ M (fun I : ULift.{0} (Finset (Fin 2)) => (psum A (x2 A) I.down).left) (J PUnit.unit : ULift.{0} (Finset (Fin 2)) → M.ι)).trans ?_` and prove the remaining obligations. Simplify using `only [diagSum, Over.comp_left, Category.assoc]`.
+-/
 theorem chart (M : LB A.left) (x : Sp ℂ ⟶ A.left) (J : ((abelian₂ A M).pull (lift (𝟙 A) (𝟙 A)).left).ι) :
     (⊤ : (Sp ℂ).Opens) ≤ x ⁻¹ᵁ ((abelian₂ A M).pull (lift (𝟙 A) (𝟙 A)).left).U J ↔
       ∀ I, ⊤ ≤ (x ≫ (diagSum A I).left) ⁻¹ᵁ M.U (J PUnit.unit I) := by
@@ -68,6 +86,9 @@ theorem chart (M : LB A.left) (x : Sp ℂ ⟶ A.left) (J : ((abelian₂ A M).pul
     (J PUnit.unit : ULift.{0} (Finset (Fin 2)) → M.ι)).trans ?_
   simp only [diagSum, Over.comp_left, Category.assoc]
 
+/- English proof (translation)
+The claim follows from `CubeValues.le_preimage_wchart _ _ _ _`.
+-/
 theorem chart' (M : LB A.left) (x : Sp ℂ ⟶ A.left) (j : ULift.{0} (Finset (Fin 2)) → M.ι) :
     (⊤ : (Sp ℂ).Opens) ≤ x ⁻¹ᵁ LB.wchart M (fun I => (diagSum A I).left) j ↔
       ∀ I, ⊤ ≤ (x ≫ (diagSum A I).left) ⁻¹ᵁ M.U (j I) :=
@@ -81,6 +102,11 @@ variable {A : Over (Sp ℂ)} [GrpObj A] [IsCommMonObj A]
 
 def expo (I : ULift.{0} (Finset (Fin 2))) : ℤ := (-1) ^ (2 - I.down.card)
 
+/- English proof (translation)
+Use `(GlobalTheory.ThetaPoint.valAt'_pull_g _ _ _ _ _ h h').trans ?_` and prove the remaining obligations. Establish `hL` using `(GlobalTheory.ThetaPoint.top_le_pull_iff _ _ _ _).1 h`. Establish `hL'` using `(GlobalTheory.ThetaPoint.top_le_pull_iff _ _ _ _).1 h'`. Establish `hc` using `(chart' M x (J PUnit.unit)).2 ((chart M x J).1 h)`. Establish `hc'` using `(chart' M x (J' PUnit.unit)).2 ((chart M x J').1 h')`.
+
+Use `(CubeValues.val_linComb (x ≫ (lift (𝟙 A) (𝟙 A)).left) valAt'_rules M (fun I : ULift.{0} (Finset (Fin 2)) => (psum A (x2 A) I.down).left) expo (J PUnit.unit : ULift.{0} (Finset (Fin 2)) → M.ι) (J' PUnit.unit : ULift.{0} (Finset (Fin 2)) → M.ι) hL hL').trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (CubeValues.val_linComb x valAt'_rules M (fun I => (diagSum A I).left) expo _ _ hc hc').symm` and prove the remaining obligations. Simplify using `only [diagSum, Over.comp_left, Category.assoc]`.
+-/
 theorem val_g (M : LB A.left) (x : Sp ℂ ⟶ A.left) (J J' : ((abelian₂ A M).pull (lift (𝟙 A) (𝟙 A)).left).ι)
     (h : (⊤ : (Sp ℂ).Opens) ≤ x ⁻¹ᵁ ((abelian₂ A M).pull (lift (𝟙 A) (𝟙 A)).left).U J)
     (h' : (⊤ : (Sp ℂ).Opens) ≤ x ⁻¹ᵁ ((abelian₂ A M).pull (lift (𝟙 A) (𝟙 A)).left).U J') :
@@ -109,14 +135,23 @@ variable {A : Over (Sp ℂ)} [GrpObj A] [IsCommMonObj A] {M : LB A.left} {g : �
 def mulCard (g : ℕ) (I : ULift.{0} (Finset (Fin 2))) : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ) :=
   ((I.down.card : ℕ) : ℂ) • LinearMap.id
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulCard_apply (I : ULift.{0} (Finset (Fin 2))) (z : Fin g → ℂ) :
     mulCard g I z = ((I.down.card : ℕ) : ℂ) • z := rfl
 
+/- English proof (translation)
+Rewrite using `[mulCard_apply, Nat.cast_smul_eq_nsmul, holUnif_ex_nsmul_eq_pow]`. Conclude with `(pt_diag_psum (u.ex z) I.down).symm`.
+-/
 theorem ex_mulCard (u : HolUnif A M g) (I : ULift.{0} (Finset (Fin 2))) (z : Fin g → ℂ) :
     u.ex (mulCard g I z) = u.ex z ≫ diagSum A I := by
   rw [mulCard_apply, Nat.cast_smul_eq_nsmul, holUnif_ex_nsmul_eq_pow]
   exact (pt_diag_psum (u.ex z) I.down).symm
 
+/- English proof (translation)
+Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem l.2 _`.
+-/
 theorem smul_mem_lat (u : HolUnif A M g) (l : u.Λ) (I : ULift.{0} (Finset (Fin 2))) :
     ((I.down.card : ℕ) : ℂ) • (l : Fin g → ℂ) ∈ u.Λ := by
   rw [Nat.cast_smul_eq_nsmul]
@@ -144,9 +179,15 @@ def diagUnif (u : HolUnif A M g) : HolUnif A ((abelian₂ A M).pull (lift (𝟙 
       rw [val_g M _ J J' h1 h2]
       exact u₁.fr_compat _ _ z ((top_le_preimage_inf _ _ _).2 ⟨hc J z h1, hc J' z h2⟩) }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem diagUnif_fr (u : HolUnif A M g) (J : ((abelian₂ A M).pull (lift (𝟙 A) (𝟙 A)).left).ι) (z : Fin g → ℂ) :
     (diagUnif u).fr J z = ∏ I, u.fr (J PUnit.unit I) (((I.down.card : ℕ) : ℂ) • z) ^ expo I := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem diagUnif_ex (u : HolUnif A M g) : (diagUnif u).ex = u.ex := rfl
 
 def diagChar (u : HolUnif A M g) (χ : u.Λ → ℂ) (l : u.Λ) : ℂ :=
@@ -158,6 +199,21 @@ namespace GlobalTheory.TorusRM.DiagFrame
 
 variable {A : Over (Sp ℂ)} [GrpObj A] [IsCommMonObj A] {M : LB A.left} {g : ℕ}
 
+/- English proof (translation)
+Use `⟨?_, fun l => ?_, fun l J z hz => ?_⟩` and prove the remaining obligations. Use `show Matrix.conjTranspose ((2 : ℂ) • Hm) = (2 : ℂ) • Hm`. Rewrite using `[Matrix.conjTranspose_smul, hF.1.eq]`. Simplify using the standard rewrite rules. Use `show ‖∏ I, _‖ = 1`.
+
+Rewrite using `[norm_prod]`. Conclude with `Finset.prod_eq_one fun I _ => by rw [norm_zpow, hF.2.1, one_zpow]`. Establish `hc : ∀ I, (⊤ : (Sp ℂ).Opens) ≤ (u.ex (((I.down.card : ℕ) : ℂ) • z)).left ⁻¹ᵁ M.U (J PUnit.unit I)`. Introduce `I`. Establish `h` using `(chart M _ J).1 hz I`.
+
+Rewrite using `[← mulCard_apply, ex_mulCard, Over.comp_left]`. Conclude with `h`. Use `set E : ℂ := Real.pi * (z ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ))) + Real.pi / 2 * ((l : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ))) with hE`. Establish `key : ∀ I : ULift.{0} (Finset (Fin 2)), u.fr (J PUnit.unit I) (((I.down.card : ℕ) : ℂ) • z) ^ expo I = χ ⟨((I.down.card : ℕ) : ℂ) • (l : Fin g → ℂ), smul_mem_lat u l I⟩ ^ expo I * Complex.exp ((expo I : ℂ) * ((((I.down.card : ℕ) : ℂ)) ^ 2 * E)) * u.fr (J PUnit.unit I) (((I.down.c …`. Introduce `I`.
+
+Rewrite using `[hF.2.2 ⟨((I.down.card : ℕ) : ℂ) • (l : Fin g → ℂ), smul_mem_lat u l I⟩ (J PUnit.unit I) _ (hc I)]`. Simplify using `only []`. Rewrite using `[herm_smul_nat, herm_smul_nat, smul_add, mul_zpow, mul_zpow, Complex.exp_int_mul]`. Use `congr 3`. Rewrite using `[hE]`.
+
+Put the polynomial expressions in normal form. Rewrite using `[diagUnif_fr, diagUnif_fr, Finset.prod_congr rfl fun I _ => key I, Finset.prod_mul_distrib, Finset.prod_mul_distrib, ← Complex.exp_sum]`. Use `congr 2`. Establish `hs` using `sum_exp_sq`. Establish `e1 : (∑ I : ULift.{0} (Finset (Fin 2)), (expo I : ℂ) * ((((I.down.card : ℕ) : ℂ)) ^ 2 * E)) = (∑ I : ULift.{0} (Finset (Fin 2)), (((-1 : ℤ) ^ (2 - I.down.card) : ℤ) : ℂ) * ((I.down.card : ℕ) : ℂ) ^ 2) * E`.
+
+Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Simplify using `only [expo]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, hs, hE, Matrix.smul_mulVec, dotProduct_smul, dotProduct_smul, smul_eq_mul, smul_eq_mul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isFactorAH_diagUnif (u : HolUnif A M g) {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
     (hF : IsFactorAH u Hm χ) : IsFactorAH (diagUnif u) ((2 : ℂ) • Hm) (diagChar u χ) := by
   refine ⟨?_, fun l => ?_, fun l J z hz => ?_⟩
@@ -205,6 +261,9 @@ end GlobalTheory.TorusRM.DiagFrame
 
 open GlobalTheory GlobalTheory.TorusRM.DiagFrame in
 
+/- English proof (translation)
+Introduce `g A _ hA M u Hm χ hM hF`. Use `haveI : IsCommMonObj A := hA.comm`. Conclude with `⟨diagUnif u, diagChar u χ, rfl, isFactorAH_diagUnif u hF⟩`.
+-/
 theorem GlobalTheory.TorusRM.exists_isFactorAH_lam_diag : ∀ (g : ℕ) (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A →
     ∀ (M : LB A.left) (u : HolUnif A M g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ),
     M.IsLB → IsFactorAH u Hm χ →

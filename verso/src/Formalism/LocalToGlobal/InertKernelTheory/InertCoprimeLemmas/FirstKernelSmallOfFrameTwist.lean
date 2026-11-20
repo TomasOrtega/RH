@@ -17,6 +17,17 @@ variable {p : ℕ} [Fact p.Prime]
 
 variable [Fact _root_.Formalism.L2.Th1.CM.CM2] in
 
+/- English proof (translation)
+Set `large₂ : ∀ j, X.Lt j → X.Lt (j + 1) → Submodule (𝓞 D.host.E) (Fin ((X.Pj j).m + 1) → D.host.E)` to `fun j La _ => fd.kerN j La`. Set `Lg' : ∀ j, X.Lt j → X.Lt (j + 1) → Submodule (𝓞 D.host.E) (Fin ((X.Pj (j + 1)).m + 1) → D.host.E)` to `fun j _ La' => fd.kerN (j + 1) La'`. Set `Ξ : ∀ j, X.Lt j → X.Lt (j + 1) → Formalism.L2.Col.HomE D.host.E ((X.Pj j).m + 1) ((X.Pj (j + 1)).m + 1) → ℂ` to `fun j La La' => movD (Ξ₀ j La La') (fd.trG j La) (fd.trG (j + 1) La')`. Set `G : ∀ j, X.Lt j → X.Lt (j + 1) → TaylorLogMetric.VC D ((X.Pj j).m + 1) ((X.Pj (j + 1)).m + 1) → ℂ` to `fun j La La' => kerTh B χ SS cl (large₂ j La La') (Lg' j La La') (Ξ j La La')`. Set `F : ∀ j, X.Lt j → X.Lt (j + 1) → MvPowerSeries (D.what₂.Tau × Fin ((X.Pj (j + 1)).m + 1) × Fin ((X.Pj j).m + 1)) ℂ_[p]` to `fun j La La' => ((p : ℂ_[p]) ^ expG X j La La') • TaylorLogMetric.pSer D g.lam (fun z => scalG fd χ muT j La La' * G j La La' z)`.
+
+Set `Fr : ∀ j, X.Lt j → X.Lt (j + 1) → MvPowerSeries (D.what₂.Tau × Fin ((X.Pj (j + 1)).m + 1) × Fin ((X.Pj j).m + 1)) ℂ_[p]` to `fun j La La' => Formalism.L2.KerInert.Rep.sclY (ltC g hLT) (F j La La')`. Set `S` to `fun j (La : X.Lt j) (La' : X.Lt (j + 1)) => Formalism.L2.KerInert.RepFrame.subGen X E pos fd.frM j La La'`. Establish `hFam : FrecG E.toCEmb pos fd B χ g.lam SS cl Ξ₀ muT (ltC g hLT) = fun j La La' => Formalism.MainNotions.FormalGroupSystem.linSub (S j La La') (Fr j La La')`. Use function extensionality and compare the values at `j La La'`. Establish `hS : S j La La' = subBG E.toCEmb pos fd j La La'`.
+
+Use function extensionality and compare the values at `fun x => funext fun y => (subBG_eq E pos fd j La La' x y).symm`. Rewrite using `[hS]`. Conclude with `linSub_scl _ _ _`. Establish `hB : BeProp p (beLT hLT)` using `Formalism.L2.KerInert.beProp_ofA Formalism.L2.KerInert.inert_facts_first_hold D cc δ p g hLT hAt h5 hIn hM`. Establish `hComb0 : Formalism.L2.KerInert.RepLt.CombAtLt X hfin D large₂ Lg' (fun j La La' => TaylorLogMetric.pSer D g.lam (G j La La')) B.tor (B.eNat χ) g.lam` using `Formalism.L2.KerInert.RepLt.combAtLt_of_dataRec X hfin D B χ SS cl g.lam hcc hδ (Formalism.L2.KerInert.AlgTP.algT_of B hcc hδ hχ) large₂ Lg' Ξ (Formalism.L2.KerInert.RepRec.dataRec_movD X D cl Ξ₀ (fun j La _ => fd.trG j La) (fun j _ La' => fd.trG (j + 1) La') ((Formalism.L2.KerIn …`.
+
+Establish `hComb : Formalism.L2.KerInert.RepLt.CombAtLt X hfin D large₂ Lg' F B.tor (B.eNat χ) g.lam` using `Formalism.L2.KerInert.RepLt.combAtLt_scalar X hfin D large₂ Lg' B.tor (B.eNat χ) g.lam G (fun j La La' => scalG fd χ muT j La La') (fun j La La' => expG X j La La') hComb0 hSc`. Establish `hOnb : Formalism.L2.KerInert.RepLt.OnbExLt X hfin D large₂ Lg'` using `Formalism.L2.KerInert.RepLt.onbExLt_of X hfin D large₂ Lg' (Formalism.L2.KerInert.orthBasisExists_of Formalism.L2.KerInert.global_orthonormal_basis_four Formalism.L2.KerInert.weakApprox_of_approx_and_separation) h5 hIn hAdm`. Establish `hTr : Formalism.L2.KerInert.RepLt.LamTraceLt X hfin D large₂ Lg' g.lam` using `Formalism.L2.KerInert.RepLt.lamTraceLt_of X hfin D large₂ Lg' g.lam (Formalism.L2.KerInert.RepLt.rankTieLt_of X hfin D large₂ Lg' hAdm) (Formalism.L2.KerInert.RepFrame.colTie_of X hfin D large₂ Lg' (Formalism.L2.KerInert.RepFrame.trace_tau_sum D) g.lam)`. Establish `hFH : Formalism.L2.KerInert.RepLt.FrameHypLt X E hfin D pos large₂ Lg' Fr S g.lam 1` using `Formalism.L2.KerInert.RepLt.frameHypLt_of_lat X E hfin D pos large₂ Lg' fd.frM g.lam ρ hOnb hTr hρ (Formalism.L2.KerInert.RepFrob.frobTw_of X E h5) hMI (twInt_all X E) hL Fr`. Rewrite using `[hFam]`.
+
+Conclude with `Formalism.L2.KerInert.RepLt.K1_representatives_LT_of_dictionary Formalism.L2.KerInert.Rep.curve_dictionary Formalism.L2.KerInert.kernels_integral_inert D h5 X E hfin hLT cc δ hAt hIn hM B hcc hδ χ hχ hIn hLam pos large₂ Lg' F Fr (fun j La La' => by simp only [Fr]; rw [ltC_eq]) S …`.
+-/
 theorem first_kernel_small_of_frame (D : D7) (h5 : 5 ≤ p) (X : Sys p) [IsFractionRing X.G.O X.G.Kf] (E : CEmbC X.G)
     (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (g : GL3Theta.G1 p) (hLT : LTIso g)
     (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) (fd : FData X D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ)
@@ -84,6 +95,13 @@ theorem first_kernel_small_of_frame (D : D7) (h5 : 5 ≤ p) (X : Sys p) [IsFract
 
 variable [Fact _root_.Formalism.L2.Th1.CM.CM2] in
 
+/- English proof (translation)
+Set `Ξ₁ : ∀ j, X.Lt j → X.Lt (j + 1) → Formalism.L2.Col.HomE D.host.E ((X.Pj j).m + 1) ((X.Pj (j + 1)).m + 1) → ℂ` to `fun j La La' => if j < X.mm ∧ La ∈ repOf X.Lv hfin j ∧ (X.Pj (j + 1)).IsLatTup La'.2 then Ξ₀ j La La' else fun _ => 0`. Establish `hXi1 : Formalism.L2.KerInert.RepRec.XiAway X D Ξ₁`. Take `⟨S₀, hp, hS⟩` from `hXi`. Use `⟨S₀, hp, fun j La La' y => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : j < X.mm ∧ La ∈ repOf X.Lv hfin j ∧ (X.Pj (j + 1)).IsLatTup La'.2`.
+
+Simplify using `only [Ξ₁, if_pos h]`. Conclude with `hS j h.1 La h.2.1 La' h.2.2 y`. Simplify using `only [Ξ₁, if_neg h]`. Conclude with `IntOff.zero`. Establish `hK` using `first_kernel_small_of_frame D h5 X E hfin g hLT pos fd cc δ B χ SS cl Ξ₁ muT ρ hAt hIn hM hcc hδ hχ hLam hAdm hCl hXi1 hSc hρ hMI hL`.
+
+Introduce `j hj L0 h0 La' hLa' φ`. Establish `hEq : thFOf X pos (FrecG E.toCEmb pos fd B χ g.lam SS cl Ξ₁ muT (ltC g hLT)) j L0 La' = thFOf X pos (FrecG E.toCEmb pos fd B χ g.lam SS cl Ξ₀ muT (ltC g hLT)) j L0 La'`. Simplify using `only [thFOf, FrecG, Ξ₁, if_pos (And.intro hj (And.intro h0 hLa'))]`. Use `hK j hj L0 h0 La' hLa' φ` as an intermediate fact. Rewrite `this` using `[hEq]`. Then use the resulting hypothesis.
+-/
 theorem first_kernel_small_of_frame_twist (D : D7) (h5 : 5 ≤ p) (X : Sys p) [IsFractionRing X.G.O X.G.Kf] (E : CEmbC X.G)
     (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (g : GL3Theta.G1 p) (hLT : LTIso g)
     (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) (fd : FData X D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ)
@@ -121,6 +139,9 @@ theorem first_kernel_small_of_frame_twist (D : D7) (h5 : 5 ≤ p) (X : Sys p) [I
 
 variable [Fact _root_.Formalism.L2.Th1.CM.CM2] in
 
+/- English proof (translation)
+Introduce `D p _ h5 X _ E hfin hst g hLT pos fd cc δ B χ lam SS cl Ξ₀ muT ρ hAt hIn hM hcc hδ hχ hlam hLam hAdm hCl hXi hSc hρ hMI hL`. Substitute `hlam` using the available equality. Establish `hK` using `first_kernel_small_of_frame_twist D h5 X E hfin g hLT pos fd cc δ B χ SS cl Ξ₀ muT ρ hAt hIn hM hcc hδ hχ hLam hAdm hCl hXi hSc hρ hMI hL`. Establish `h2b` using `(Formalism.L2.PairingIndexBounds.PowerSeriesNecessity.adm_two_pendant_iff_representative D X E hfin hst hLT pos _).2 hK`. Conclude with `⟨Formalism.L2.KerInert.admissible_second_of_variant D X E hfin hst hLT pos _ h2b, h2b, Formalism.L2.KerInert.admissible_third_of_second_eleventh D X E hfin hst hLT pos _ h2b (Formalism.L2.KerInert.admissible_eleventh_inert D cc δ p g hLT hAt h5 hIn hM X _ rfl)⟩`.
+-/
 theorem first_kernel_law_global_small : TranslatesOfInertKernelAtPlace := by
   intro D p _ h5 X _ E hfin hst g hLT pos fd cc δ B χ lam SS cl Ξ₀ muT ρ hAt hIn hM hcc hδ hχ hlam hLam hAdm hCl hXi hSc
     hρ hMI hL

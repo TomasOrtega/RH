@@ -11,6 +11,11 @@ noncomputable section
 
 open Polynomial in
 
+/- English proof (translation)
+Use `letI := hk.toField`. Take `⟨p, hp, h0⟩` from `ha`. Take `⟨q, hq, hnd⟩` from `exists_eq_pow_rootMultiplicity_mul_and_not_dvd p hp.ne_zero 0`. Rewrite `hq`, `hnd` using `[map_zero, sub_zero]`. Rewrite `hnd` using `[X_dvd_iff]`.
+
+Use `⟨p.rootMultiplicity 0, φ (q.coeff 0), q.divX.eval₂ φ a, (Ne.isUnit hnd).map φ, ?_⟩` and prove the remaining obligations. Rewrite `h0` using `[hq, ← X_mul_divX_add q, eval₂_mul, eval₂_pow, eval₂_X, eval₂_add, eval₂_mul, eval₂_X, eval₂_C]`. Rewrite using `[add_comm]`. Conclude with `h0`.
+-/
 theorem exists_pow_mul_eq_zero {k R : Type} [CommRing k] [CommRing R] (hk : IsField k)
     (φ : k →+* R) (a : R) (ha : φ.IsIntegralElem a) :
     ∃ (m : ℕ) (c b : R), IsUnit c ∧ a ^ m * (c + a * b) = 0 := by
@@ -25,6 +30,17 @@ theorem exists_pow_mul_eq_zero {k R : Type} [CommRing k] [CommRing R] (hk : IsFi
   rw [add_comm]
   exact h0
 
+/- English proof (translation)
+Establish `hk : IsField Γ(Spec (.of K), ⊤)` using `(Scheme.ΓSpecIso (.of K)).commRingCatIsoToRingEquiv.toMulEquiv.isField (Field.toIsField K)`. Take `⟨m, c, b, hc, e⟩` from `exists_pow_mul_eq_zero hk _ a (isIntegral_appTop_of_universallyClosed p a)`. Establish `: (Y.basicOpen a : Set Y) = (Y.basicOpen (c + a * b) : Set Y)ᶜ`. Use extensionality with `z`. Simplify using `only [Set.mem_compl_iff, SetLike.mem_coe]`.
+
+Rewrite using `[Scheme.mem_basicOpen Y a z trivial, Scheme.mem_basicOpen Y (c + a * b) z trivial]`. Set `G : Γ(Y, ⊤) →+* Y.presheaf.stalk z` to `(Y.presheaf.germ ⊤ z trivial).hom`. Express the relevant statement in the definitionally equal form `IsUnit (G a) ↔ ¬ IsUnit (G (c + a * b))`. Establish `e' : G a ^ m * G (c + a * b) = 0` using `by rw [← map_pow, ← map_mul, e, map_zero]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h1 h2`. Conclude with `((h1.pow m).mul h2).ne_zero e'`. Introduce `h2`. Establish `hc' : IsUnit (G (c + a * b) + (- (G a * G b)))`. Use `hc.map G` as an intermediate fact.
+
+Simplify using `using this`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add hc' with h | h` into its components or cases. Conclude with `absurd h h2`. Conclude with `isUnit_of_mul_isUnit_left ((IsUnit.neg_iff _).1 h)`. Rewrite using `[this]`.
+
+Conclude with `(Y.basicOpen _).isOpen.isClosed_compl`.
+-/
 theorem isClosed_basicOpen {Y : Scheme.{0}} {K : Type} [Field K] (p : Y ⟶ Spec (.of K))
     [UniversallyClosed p] (a : Γ(Y, ⊤)) : IsClosed (Y.basicOpen a : Set Y) := by
   have hk : IsField Γ(Spec (.of K), ⊤) :=
@@ -54,12 +70,20 @@ theorem isClosed_basicOpen {Y : Scheme.{0}} {K : Type} [Field K] (p : Y ⟶ Spec
 open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Opposite in
 open Scheme.IdealSheafData in
 
+/- English proof (translation)
+Establish `h : X.nilradical = vanishingIdeal (⊥ : X.IdealSheafData).support`. Rewrite using `[Scheme.nilradical, vanishingIdeal_support]`. Rewrite using `[h]`. Conclude with `_root_.GlobalTheory.ReducedSubgroup.isReduced_subscheme_vanishingIdeal _`.
+-/
 theorem _root_.GlobalTheory.RedFibreField.isReduced_nilradical_subscheme (X : Scheme.{0}) : IsReduced X.nilradical.subscheme := by
   have h : X.nilradical = vanishingIdeal (⊥ : X.IdealSheafData).support := by
     rw [Scheme.nilradical, vanishingIdeal_support]
   rw [h]
   exact _root_.GlobalTheory.ReducedSubgroup.isReduced_subscheme_vanishingIdeal _
 
+/- English proof (translation)
+Establish `key : ∀ (g : op (⊤ : Y.Opens) ⟶ op (Y.basicOpen a)) (g' : op (Y.basicOpen a) ⟶ op ⊤), (Y.presheaf.map g').hom ((Y.presheaf.map g).hom a) = a`. Introduce `g g'`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp, Subsingleton.elim (g ≫ g') (𝟙 _), CategoryTheory.Functor.map_id, CommRingCat.id_apply]`. Establish `u` using `(Y.toRingedSpace.isUnit_res_basicOpen a).map (Y.presheaf.map (homOfLE (le_of_eq h.symm)).op).hom`. Use `u using 1` and compare the differences between its conclusion and the goal.
+
+Conclude with `(key _ _).symm`.
+-/
 theorem isUnit_of_basicOpen_eq_top {Y : Scheme.{0}} (a : Γ(Y, ⊤)) (h : Y.basicOpen a = ⊤) :
     IsUnit a := by
   have key : ∀ (g : op (⊤ : Y.Opens) ⟶ op (Y.basicOpen a)) (g' : op (Y.basicOpen a) ⟶ op ⊤),
@@ -72,6 +96,11 @@ theorem isUnit_of_basicOpen_eq_top {Y : Scheme.{0}} (a : Γ(Y, ⊤)) (h : Y.basi
   convert u using 1
   exact (key _ _).symm
 
+/- English proof (translation)
+Take `⟨y⟩ : Nonempty Y` from `inferInstance`. Use `⟨⟨0, 1, fun h => ?_⟩, mul_comm, fun {a} ha => ?_⟩` and prove the remaining obligations. Establish `h1 : y ∈ Y.basicOpen (1 : Γ(Y, ⊤))` using `by simp`. Rewrite `h1` using `[← h]`. Simplify using `at h1`.
+
+Establish `hc : IsClopen (Y.basicOpen a : Set Y)` using `⟨isClosed_basicOpen p a, (Y.basicOpen a).isOpen⟩`. Break down `isClopen_iff.1 hc with h | h` into its components or cases. Conclude with `absurd ((AlgebraicGeometry.basicOpen_eq_bot_iff a).1 (SetLike.coe_injective (h.trans rfl))) ha`. Take `⟨u, hu⟩` from `isUnit_of_basicOpen_eq_top a (SetLike.coe_injective (h.trans rfl))`. Conclude with `⟨↑u⁻¹, by rw [← hu]; exact u.mul_inv⟩`.
+-/
 theorem isField_of_connected {Y : Scheme.{0}} {K : Type} [Field K] (p : Y ⟶ Spec (.of K))
     [UniversallyClosed p] [IsReduced Y] [ConnectedSpace Y] : IsField Γ(Y, ⊤) := by
   obtain ⟨y⟩ : Nonempty Y := inferInstance
@@ -91,6 +120,15 @@ end GlobalTheory.RedFibreField
 
 namespace GlobalTheory.RedFibreField
 
+/- English proof (translation)
+Introduce `O _ _ _ Z f hf hc`. Use `haveI := hf`. Set `Y` to `(specialFibre f).nilradical.subscheme`. Set `ι : Y ⟶ specialFibre f` to `(specialFibre f).nilradical.subschemeι`. Set `q` to `pullback.snd f (Spec.map (CommRingCat.ofHom (IsLocalRing.residue O)))`.
+
+Use `haveI : UniversallyClosed q := by dsimp only [q]; infer_instance`. Use `haveI : UniversallyClosed ι := by dsimp only [ι]; infer_instance`. Set `p : Y ⟶ Spec (.of (IsLocalRing.ResidueField O))` to `ι ≫ q`. Establish `hp : UniversallyClosed p` using `MorphismProperty.comp_mem @UniversallyClosed ι q ‹_› ‹_›`. Use `haveI : IsReduced Y := isReduced_nilradical_subscheme _`.
+
+Establish `hs : Function.Surjective ι`. Rewrite using `[← Set.range_eq_univ, Scheme.IdealSheafData.range_subschemeι, Scheme.support_nilradical]`. Both sides reduce to the same expression. Use `haveI : Nonempty Y := ⟨(hs (Nonempty.some (inferInstance : Nonempty (specialFibre f)))).choose⟩`. Use `haveI : ConnectedSpace Y := by`.
+
+Use `connectedSpace_iff_univ.2 ⟨Set.univ_nonempty, ?_⟩` and prove the remaining obligations. Use `(ι.isClosedEmbedding.isInducing.isPreconnected_image).1 ?_` and prove the remaining obligations. Rewrite using `[Set.image_univ, hs.range_eq]`. Conclude with `isPreconnected_univ`. Conclude with `@isField_of_connected Y _ _ p hp _ _`.
+-/
 theorem isField_reducedSpecialFibre : ∀ (O : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] (Z : Scheme.{0}) (f : Z ⟶ Spec (.of O)), IsProper f →
     ConnectedSpace (specialFibre f) → IsField Γ(reducedSpecialFibre f, ⊤) := by

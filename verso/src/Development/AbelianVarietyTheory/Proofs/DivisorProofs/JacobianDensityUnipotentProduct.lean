@@ -19,11 +19,19 @@ noncomputable section
 
 namespace GlobalTheory.TriJacDens
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_product', Finset.univ_product_univ, ← Finset.prod_filter]`. Conclude with `(Finset.prod_subtype _ (by simp) (fun s : Fin m × Fin m => f s.1 s.2)).symm`.
+-/
 theorem prod_low {m : ℕ} (f : Fin m → Fin m → ℝ) :
     ∏ s : Low m, f s.1.1 s.1.2 = ∏ b : Fin m, ∏ c : Fin m, if c < b then f b c else 1 := by
   rw [← Finset.prod_product', Finset.univ_product_univ, ← Finset.prod_filter]
   exact (Finset.prod_subtype _ (by simp) (fun s : Fin m × Fin m => f s.1 s.2)).symm
 
+/- English proof (translation)
+Rewrite using `[prod_low (fun b _ => t b), prod_low (fun _ c => t c), Finset.prod_comm (f := fun b c => if c < b then t c else 1), ← Finset.prod_mul_distrib, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Establish `e : ∀ c : Fin m, ((if c < b then t b else 1) * if b < c then t b else 1) = if c ≠ b then t b else 1`. Introduce `c`.
+
+Break down `lt_trichotomy c b with h | h | h` into its components or cases. Simplify using `[h, h.ne, not_lt_of_gt h]`. Simplify using `[h]`. Simplify using `[h, h.ne', not_lt_of_gt h]`. Rewrite using `[Finset.prod_congr rfl fun c _ => e c, ← Finset.prod_filter, Finset.prod_const, Finset.filter_ne', Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, Fintype.card_fin]`.
+-/
 theorem prod_low_mul {m : ℕ} (t : Fin m → ℝ) :
     (∏ s : Low m, t s.1.1) * ∏ s : Low m, t s.1.2 = (∏ c, t c) ^ (m - 1) := by
   rw [prod_low (fun b _ => t b), prod_low (fun _ c => t c), Finset.prod_comm (f := fun b c => if c < b then t c else 1),
@@ -39,6 +47,9 @@ theorem prod_low_mul {m : ℕ} (t : Fin m → ℝ) :
   rw [Finset.prod_congr rfl fun c _ => e c, ← Finset.prod_filter, Finset.prod_const, Finset.filter_ne',
     Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, Fintype.card_fin]
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_filter]`. Use `Finset.prod_bij (fun a _ => a.castLE hk) (by simp) (fun a _ b _ h => Fin.castLE_injective hk h) ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `c hc`. Conclude with `⟨⟨c, by simpa using hc⟩, Finset.mem_univ _, rfl⟩`.
+-/
 theorem prod_castLE {m k : ℕ} (hk : k ≤ m) (t : Fin m → ℝ) :
     ∏ a : Fin k, t (a.castLE hk) = ∏ c : Fin m, if (c : ℕ) < k then t c else 1 := by
   rw [← Finset.prod_filter]
@@ -46,6 +57,13 @@ theorem prod_castLE {m k : ℕ} (hk : k ≤ m) (t : Fin m → ℝ) :
   intro c hc
   exact ⟨⟨c, by simpa using hc⟩, Finset.mem_univ _, rfl⟩
 
+/- English proof (translation)
+Establish `hU : ∀ a c : Fin m, c < a → Tᴴᵀ a c = 0` using `fun a c hc => by simp [hT a c hc]`. Establish `e` using `ReciprocityTheory.ChartRestriction.G.AR.Inst.CurvPf.lminor_LMU T M Tᴴᵀ hT hU k`. Establish `D : ∀ S : Matrix (Fin m) (Fin m) ℂ, (∀ a c : Fin m, c < a → S a c = 0) → lminor S k = ∏ a : Fin k, S (a.castLE (Nat.le_of_lt_succ k.2)) (a.castLE (Nat.le_of_lt_succ k.2))` using `fun S hS => det_of_upperTriangular fun _ _ h => hS _ _ h`. Express the relevant statement in the definitionally equal form `_ = lminor T k * _ * lminor Tᴴᵀ k at e`. Rewrite `e` using `[show Tᵀ * M * Tᴴᵀ = 1 from h, D T hT, D _ hU]`.
+
+Establish `e1 : lminor (1 : Matrix (Fin m) (Fin m) ℂ) k = 1`. Rewrite using `[lminor, submatrix_one _ (Fin.castLE_injective _), det_one]`. Rewrite using `[← prod_castLE (Nat.le_of_lt_succ k.isLt) (fun c => ‖T c c‖ ^ 2), ← e1, e, mul_right_comm, mul_comm, ← Finset.prod_mul_distrib, Complex.ofReal_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Simplify using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+-/
 theorem lminor_mul_eq_one {m : ℕ} (M T : Matrix (Fin m) (Fin m) ℂ) (hT : ∀ a c : Fin m, c < a → T a c = 0)
     (h : chg T M = 1) (k : Fin (m + 1)) :
     lminor M k * ((∏ c : Fin m, if (c : ℕ) < k then ‖T c c‖ ^ 2 else 1 : ℝ) : ℂ) = 1 := by
@@ -64,6 +82,23 @@ theorem lminor_mul_eq_one {m : ℕ} (M T : Matrix (Fin m) (Fin m) ℂ) (hT : ∀
   refine Finset.prod_congr rfl fun a _ => ?_
   simp [Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+Introduce `m G _ n T hT h`. Use `set M := chg (uni n) G with hM`. Use `set t : Fin m → ℝ := fun c => ‖T c c‖ ^ 2 with ht`. Establish `key` using `lminor_mul_eq_one M T hT h`. Establish `hlast : lminor M (Fin.last m) = G.det`.
+
+Establish `: lminor M (Fin.last m) = M.det`. Rewrite using `[lminor]`. Use `congr 1`. Rewrite using `[this, hM, det_chg, FlagFibre.det_uni]`. Simplify using the standard rewrite rules.
+
+Establish `hdet : G.det * ((∏ c, t c : ℝ) : ℂ) = 1`. Use `key (Fin.last m)` as an intermediate fact. Rewrite `this` using `[hlast]`. Simplify `this` using `[ht]`. Establish `hre : G.det.re * ∏ c, t c = 1`.
+
+Use `congrArg Complex.re hdet` as an intermediate fact. Rewrite `this` using `[Complex.re_mul_ofReal, Complex.one_re]`. Then use the resulting hypothesis. Establish `hP : ∏ c, t c ≠ 0` using `right_ne_zero_of_mul_eq_one hre`. Establish `htne : ∀ c, t c ≠ 0` using `fun c => Finset.prod_ne_zero_iff.1 hP c (Finset.mem_univ _)`. Establish `htr : (uni n)ᴴ * Gᵀ * uni n = Mᵀ`.
+
+Simplify using `only [hM, chg, transpose_mul, transpose_transpose, Matrix.mul_assoc]`. Establish `hdens : dens Gᵀ n = (∏ s : Low m, t s.1.2) ^ 2`. Rewrite using `[dens, prod_low (fun _ c => t c), ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `e : lminor Mᵀ b.castSucc = lminor M b.castSucc`.
+
+Rewrite using `[lminor, lminor, ← transpose_submatrix, det_transpose]`. Establish `e2` using `congrArg norm (key b.castSucc)`. Rewrite `e2` using `[norm_mul, norm_one, Complex.norm_real, Real.norm_eq_abs]`. Rewrite using `[htr, e, eq_inv_of_mul_eq_one_left e2, _root_.inv_zpow', neg_neg, zpow_ofNat, sq_abs]`. Both sides reduce to the same expression.
+
+Establish `hB : ∏ s : Low m, t s.1.1 ≠ 0` using `Finset.prod_ne_zero_iff.2 fun s _ => htne _`. Establish `hA : ∏ s : Low m, t s.1.2 ≠ 0` using `Finset.prod_ne_zero_iff.2 fun s _ => htne _`. Establish `hL : ∏ s : Low m, ‖T s.1.2 s.1.2 / T s.1.1 s.1.1‖ ^ 2 = (∏ s : Low m, t s.1.2) / ∏ s : Low m, t s.1.1`. Rewrite using `[← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_div, div_pow]`. Rewrite using `[hL, jacDens, hdens, eq_inv_of_mul_eq_one_left hre, inv_pow, ← prod_low_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem prod_diag_eq_jacDens : ∀ {m : ℕ} (G : Matrix (Fin m) (Fin m) ℂ), G.PosDef → ∀ (n : Low m → ℂ) (T : Matrix (Fin m) (Fin m) ℂ), (∀ a c : Fin m, c < a → T a c = 0) → chg T (chg (uni n) G) = 1 → ∏ s : Low m, ‖T s.1.2 s.1.2 / T s.1.1 s.1.1‖ ^ 2 = jacDens G n := by
   intro m G _ n T hT h
   set M := chg (uni n) G with hM

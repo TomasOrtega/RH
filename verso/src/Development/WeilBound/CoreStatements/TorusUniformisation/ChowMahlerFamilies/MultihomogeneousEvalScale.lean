@@ -5,6 +5,15 @@ import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.HeckeSecti
 import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.StatementsFlagIndependence
 open MvPolynomial
 
+/- English proof (translation)
+Introduce `K _ _ ι _ s a c z hs`. Rewrite using `[eval_map, eval_map, eval₂_eq', eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hw : Finsupp.weight (GroundTheory.Heights₂.Heights.NumbersDVR.blockWeight ι) m = a` using `hs (mem_support_iff.mp hm)`. Establish `ha : ∀ k, a k = ∑ i : ι k, m ⟨k, i⟩`.
+
+Introduce `k`. Rewrite using `[← hw, Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply, Fintype.sum_sigma, Finset.sum_eq_single k]`. Simplify using `[GroundTheory.Heights₂.Heights.NumbersDVR.blockWeight]`. Introduce `j _ hj`. Simplify using `[GroundTheory.Heights₂.Heights.NumbersDVR.blockWeight, Pi.single_apply, hj, hj.symm]`.
+
+Simplify using the standard rewrite rules. Establish `h1 : ∏ p : (Σ k, ι k), c p.1 ^ m p = ∏ k, c k ^ a k`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[ha k, ← Finset.prod_pow_eq_pow_sum]`.
+
+Simplify using `only [mul_pow]`. Rewrite using `[Finset.prod_mul_distrib, h1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem PositivityTheory.Xgn.multihomogeneous_eval_scale : ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (s : MvPolynomial (Σ k, ι k) ℤ) (a : K → ℕ) (c : K → ℂ) (z : ((Σ k, ι k) → ℂ)), GroundTheory.Heights₂.Heights.NumbersDVR.IsMultiHomog s a → eval (fun p => c p.1 * z p) (MvPolynomial.map (Int.castRingHom ℂ) s) = (∏ k, c k ^ a k) * eval z (MvPolynomial.map (Int.castRingHom ℂ) s) := by
   intro K _ _ ι _ s a c z hs
   rw [eval_map, eval_map, eval₂_eq', eval₂_eq', Finset.mul_sum]

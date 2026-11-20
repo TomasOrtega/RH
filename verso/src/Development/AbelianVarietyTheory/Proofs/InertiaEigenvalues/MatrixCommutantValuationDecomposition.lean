@@ -27,6 +27,11 @@ end GlobalTheory.ValDecomp
 namespace GlobalTheory.ValDecomp
 
 variable {E : Type} [NontriviallyNormedField E] [IsUltrametricDist E] {n : ℕ} in
+/- English proof (translation)
+Use `set B : ℝ := 1 + ∑ i, ∑ j, ‖c i j‖`. Establish `hB : 0 < B` using `by positivity`. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one (inv_pos.2 hB) h1`. Use `⟨k, fun i j => ?_⟩` and prove the remaining obligations. Establish `hij : ‖c i j‖ ≤ B`.
+
+Establish `h` using `(Finset.single_le_sum (f := fun j => ‖c i j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖c i j‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i))`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Matrix.smul_apply, smul_eq_mul, norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem exists_pow_smul_entries_norm_le_one {ϖ : E} (h1 : ‖ϖ‖ < 1)
     (c : Matrix (Fin n) (Fin n) E) : ∃ k : ℕ, ∀ i j, ‖(ϖ ^ k • c) i j‖ ≤ 1 := by
   set B : ℝ := 1 + ∑ i, ∑ j, ‖c i j‖
@@ -43,6 +48,9 @@ private theorem exists_pow_smul_entries_norm_le_one {ϖ : E} (h1 : ‖ϖ‖ < 1)
     _ = 1 := inv_mul_cancel₀ hB.ne'
 
 variable {E : Type} [NontriviallyNormedField E] [IsUltrametricDist E] {n : ℕ} in
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, mul_assoc, Matrix.mul_nonsing_inv x hx, mul_one]`. Use `_ = x⁻¹ * (x * N) * x⁻¹ := by rw [h]`. Use `_ = N * x⁻¹ := by rw [← mul_assoc, Matrix.nonsing_inv_mul x hx, one_mul]`.
+-/
 private theorem inv_mul_comm_of_mul_comm' {x N : Matrix (Fin n) (Fin n) E} (hx : IsUnit x.det)
     (h : x * N = N * x) : x⁻¹ * N = N * x⁻¹ := by
   calc x⁻¹ * N = x⁻¹ * (N * x) * x⁻¹ := by
@@ -51,6 +59,9 @@ private theorem inv_mul_comm_of_mul_comm' {x N : Matrix (Fin n) (Fin n) E} (hx :
     _ = N * x⁻¹ := by rw [← mul_assoc, Matrix.nonsing_inv_mul x hx, one_mul]
 
 variable {E : Type} [NontriviallyNormedField E] [IsUltrametricDist E] {n : ℕ} in
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun σ _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;>`. Apply the tactic sequence `simp only [h, one_smul, Units.neg_smul, norm_neg, norm_prod] <;>`. Conclude with `Finset.prod_le_one (fun _ _ => norm_nonneg _) fun i _ => hx _ _`.
+-/
 private theorem norm_det_le_one_of_entries_norm_le_one' {x : Matrix (Fin n) (Fin n) E}
     (hx : ∀ i j, ‖x i j‖ ≤ 1) : ‖x.det‖ ≤ 1 := by
   rw [Matrix.det_apply]
@@ -60,6 +71,11 @@ private theorem norm_det_le_one_of_entries_norm_le_one' {x : Matrix (Fin n) (Fin
     exact Finset.prod_le_one (fun _ _ => norm_nonneg _) fun i _ => hx _ _
 
 variable {E : Type} [NontriviallyNormedField E] [IsUltrametricDist E] {n : ℕ} in
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, norm_mul, Ring.inverse_eq_inv', norm_inv, hd, inv_one, one_mul, Matrix.adjugate_apply]`. Apply `norm_det_le_one_of_entries_norm_le_one'` to reduce the goal to its premises. Introduce `k l`. Rewrite using `[Matrix.updateRow_apply]`.
+
+Use `split_ifs`. Apply the tactic sequence `rw [Pi.single_apply]; split_ifs <;> simp`. Conclude with `hx _ _`.
+-/
 private theorem inv_entries_norm_le_one_of_norm_det_one {x : Matrix (Fin n) (Fin n) E}
     (hx : ∀ i j, ‖x i j‖ ≤ 1) (hd : ‖x.det‖ = 1) : ∀ i j, ‖x⁻¹ i j‖ ≤ 1 := by
   intro i j
@@ -72,6 +88,49 @@ private theorem inv_entries_norm_le_one_of_norm_det_one {x : Matrix (Fin n) (Fin
   · rw [Pi.single_apply]; split_ifs <;> simp
   · exact hx _ _
 
+/- English proof (translation)
+Introduce `E _ _ n N ϖ h0 h1 hcomm hdec c hc hcN`. Establish `hϖ : ϖ ≠ 0` using `norm_pos_iff.1 h0`. Establish `hpow : ∀ k : ℕ, ‖ϖ ^ k‖ ≤ 1` using `fun k => by`. Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) h1.le`.
+
+Establish `hone : ∀ i j : Fin n, ‖(1 : Matrix (Fin n) (Fin n) E) i j‖ ≤ 1` using `fun i j => _root_.GlobalTheory.UnitDiscAlg.integ_one i j`. Set `S` to `Subalgebra.centralizer E ({N} : Set (Matrix (Fin n) (Fin n) E))`. Establish `memS : ∀ {x : Matrix (Fin n) (Fin n) E}, x * N = N * x → x ∈ S` using `fun hx => by`. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce and unpack `g rfl`.
+
+Conclude with `hx.symm`. Establish `ofS : ∀ {x : Matrix (Fin n) (Fin n) E}, x ∈ S → x * N = N * x` using `fun hx => ((Subalgebra.mem_centralizer_iff E).1 hx N rfl).symm`. Use `letI : CommRing S := { (inferInstance : Ring S) with mul_comm := fun x y => Subtype.ext (hcomm x y (ofS x.2) (ofS y.2)) }`. Establish `toM : ∀ {X Y : S}, X = Y → (X : Matrix (Fin n) (Fin n) E) = Y` using `fun h => congrArg _ h`. Establish `hscal : ∀ r : E, (r • (1 : Matrix (Fin n) (Fin n) E)) * N = N * (r • 1)` using `fun r => by`.
+
+Rewrite using `[smul_one_mul, Matrix.mul_smul, mul_one]`. Set `Pp : S` to `⟨ϖ • 1, memS (hscal ϖ)⟩`. Take `⟨k, hk⟩` from `exists_pow_smul_entries_norm_le_one h1 c`. Proceed by induction on `k generalizing c with`. Consider the case `zero`.
+
+Establish `hc0 : ∀ i j, ‖c i j‖ ≤ 1` using `by simpa using hk`. Take `⟨e, a, heN, haN, hea, hee, hdet, hca⟩` from `hdec c hcN hc0`. Establish `he : ∀ i j, ‖e i j‖ ≤ 1` using `fun i j => (hea i j).1`. Set `C : S` to `⟨c, memS hcN⟩`. Set `Ee : S` to `⟨e, memS heN⟩`.
+
+Set `A : S` to `⟨a, memS haN⟩`. Establish `re : Ee * Ee = Ee` using `Subtype.ext hee`. Establish `rca : C * (1 - Ee) = Pp * A` using `Subtype.ext (show c * (1 - e) = (ϖ • 1) * a by rw [smul_one_mul]; exact hca)`. Use `⟨e, 1 - e, 0, c * e + (1 - e), a, 0, ⟨heN, ofS (1 - Ee).2, by simp, ofS (C * Ee + (1 - Ee)).2, haN, by simp⟩, fun i j => ⟨he i j, _root_.GlobalTheory.UnitDiscAlg.integ_sub hone he i j, by simp, _root_.GlobalTheory.UnitDiscAlg.integ_add (_root_.GlobalTheory.UnitDiscAlg.integ_mul h …` and prove the remaining obligations. Establish `h` using `toM (by linear_combination (1 - Ee) * rca - C * re : C * (1 - Ee) = Pp * (A * (1 - Ee)))`.
+
+Rewrite using `[← smul_one_mul]`. Conclude with `h`. Consider the case `succ k ih`. Establish `hyN : (ϖ ^ (k + 1) • c) * N = N * (ϖ ^ (k + 1) • c)` using `(show Commute c N from hcN).smul_left _`. Take `⟨e, a, heN, haN, hea, hee, hdet, hya⟩` from `hdec _ hyN hk`.
+
+Establish `he : ∀ i j, ‖e i j‖ ≤ 1` using `fun i j => (hea i j).1`. Establish `ha : ∀ i j, ‖a i j‖ ≤ 1` using `fun i j => (hea i j).2`. Establish `hcd : IsUnit c.det` using `(Matrix.isUnit_iff_isUnit_det c).1 hc`. Establish `hciN : c⁻¹ * N = N * c⁻¹` using `inv_mul_comm_of_mul_comm' hcd hcN`. Set `C : S` to `⟨c, memS hcN⟩`.
+
+Set `Ci : S` to `⟨c⁻¹, memS hciN⟩`. Set `Ee : S` to `⟨e, memS heN⟩`. Set `Pk : S` to `⟨ϖ ^ k • 1, memS (hscal _)⟩`. Establish `re : Ee * Ee = Ee` using `Subtype.ext hee`. Establish `r1 : C * Ci = 1` using `Subtype.ext (Matrix.mul_nonsing_inv c hcd)`.
+
+Establish `hsplit : ϖ ^ (k + 1) • c = (ϖ • 1) * (ϖ ^ k • 1) * c`. Rewrite using `[smul_one_mul, smul_mul_assoc, smul_one_mul, smul_smul, ← pow_succ']`. Establish `hzN : (ϖ ^ (k + 1) • c * e + (1 - e)) * N = N * (ϖ ^ (k + 1) • c * e + (1 - e))`. Rewrite using `[hsplit]`. Conclude with `ofS (Pp * Pk * C * Ee + (1 - Ee)).2`.
+
+Establish `hzint : ∀ i j, ‖(ϖ ^ (k + 1) • c * e + (1 - e)) i j‖ ≤ 1` using `_root_.GlobalTheory.UnitDiscAlg.integ_add (_root_.GlobalTheory.UnitDiscAlg.integ_mul hk he) (_root_.GlobalTheory.UnitDiscAlg.integ_sub hone he)`. Establish `hzd : IsUnit (ϖ ^ (k + 1) • c * e + (1 - e)).det` using `isUnit_iff_ne_zero.2 fun h => by rw [h, norm_zero] at hdet; exact zero_ne_one hdet`. Establish `hw` using `inv_entries_norm_le_one_of_norm_det_one hzint hdet`. Establish `hwN` using `inv_mul_comm_of_mul_comm' hzd hzN`. Set `W : S` to `⟨_, memS hwN⟩`.
+
+Establish `rwz : (Pp * Pk * C * Ee + (1 - Ee)) * W = 1` using `Subtype.ext (show ((ϖ • 1) * (ϖ ^ k • 1) * c * e + (1 - e)) * (ϖ ^ (k + 1) • c * e + (1 - e))⁻¹ = 1 by`. Rewrite using `[← hsplit]`. Conclude with `Matrix.mul_nonsing_inv _ hzd)`. Establish `hA : Ci * Ee = Pp * Pk * (Ee * W)`. Take the linear combination `(-(Ci * Ee)) * rwz + (Pp * Pk * W - Ci * W) * re + (Pp * Pk * Ee ^ 2 * W) * r1`.
+
+Establish `ha' : ϖ ^ k • (c * (1 - e)) = a` using `smul_right_injective _ hϖ (show ϖ • (ϖ ^ k • (c * (1 - e))) = ϖ • a by`. Rewrite using `[← hya, smul_smul, ← pow_succ', smul_mul_assoc])`. Establish `hc'int : ∀ i j, ‖(ϖ ^ k • (c * (1 - e) + e)) i j‖ ≤ 1`. Rewrite using `[smul_add, ha']`. Conclude with `_root_.GlobalTheory.UnitDiscAlg.integ_add ha (_root_.GlobalTheory.UnitDiscAlg.integ_smul (hpow k) he)`.
+
+Establish `rcd : (C * (1 - Ee) + Ee) * (Ci * (1 - Ee) + Ee) = 1`. Take the linear combination `(1 - Ee) * r1 + (C * Ci - C - Ci + 1) * re`. Establish `hmat : (c * (1 - e) + e) * (c⁻¹ * (1 - e) + e) = 1` using `toM rcd`. Establish `hunit : IsUnit (c * (1 - e) + e)` using `(Matrix.isUnit_iff_isUnit_det _).2 (Matrix.isUnit_det_of_right_inverse hmat)`. Establish `hinv : (c * (1 - e) + e)⁻¹ = c⁻¹ * (1 - e) + e` using `Matrix.inv_eq_right_inv hmat`.
+
+Take `⟨f₁, f₂, f₃, u, b₂, b₃, ⟨h1N, h2N, h3N, huN, hb2N, hb3N⟩, hint, hu, h11, h22, h33, h12, h13, h23, hsum, hc1, hc2, hc3⟩` from `ih _ hunit (ofS (C * (1 - Ee) + Ee).2) hc'int`. Rewrite `hc3` using `[hinv]`. Establish `hF1 : ∀ i j, ‖f₁ i j‖ ≤ 1` using `fun i j => (hint i j).1`. Establish `hF2 : ∀ i j, ‖f₂ i j‖ ≤ 1` using `fun i j => (hint i j).2.1`. Establish `hF3 : ∀ i j, ‖f₃ i j‖ ≤ 1` using `fun i j => (hint i j).2.2.1`.
+
+Establish `hB3 : ∀ i j, ‖b₃ i j‖ ≤ 1` using `fun i j => (hint i j).2.2.2.2.2`. Set `F1 : S` to `⟨f₁, memS h1N⟩`. Set `F2 : S` to `⟨f₂, memS h2N⟩`. Set `F3 : S` to `⟨f₃, memS h3N⟩`. Set `U : S` to `⟨u, memS huN⟩`.
+
+Set `B2 : S` to `⟨b₂, memS hb2N⟩`. Set `B3 : S` to `⟨b₃, memS hb3N⟩`. Establish `s11 : F1 * F1 = F1` using `Subtype.ext h11`. Establish `s22 : F2 * F2 = F2` using `Subtype.ext h22`. Establish `s33 : F3 * F3 = F3` using `Subtype.ext h33`.
+
+Establish `s12 : F1 * F2 = 0` using `Subtype.ext h12`. Establish `s13 : F1 * F3 = 0` using `Subtype.ext h13`. Establish `s23 : F2 * F3 = 0` using `Subtype.ext h23`. Establish `ssum : F1 + F2 + F3 = 1` using `Subtype.ext hsum`. Establish `sc1 : (C * (1 - Ee) + Ee) * F1 = U * F1` using `Subtype.ext hc1`.
+
+Establish `sc2 : (C * (1 - Ee) + Ee) * F2 = Pp * (B2 * F2)` using `Subtype.ext (show (c * (1 - e) + e) * f₂ = (ϖ • 1) * (b₂ * f₂) by rw [smul_one_mul]; exact hc2)`. Establish `sc3 : (Ci * (1 - Ee) + Ee) * F3 = Pp * (B3 * F3)` using `Subtype.ext (show (c⁻¹ * (1 - e) + e) * f₃ = (ϖ • 1) * (b₃ * f₃) by rw [smul_one_mul]; exact hc3)`. Use `⟨f₁ * (1 - e), f₂ * (1 - e), f₃ * (1 - e) + e, u, b₂, b₃ * (1 - e) + (ϖ ^ k • 1) * (e * (ϖ ^ (k + 1) • c * e + (1 - e))⁻¹), ⟨ofS (F1 * (1 - Ee)).2, ofS (F2 * (1 - Ee)).2, ofS (F3 * (1 - Ee) + Ee).2, huN, hb2N, ofS (B3 * (1 - Ee) + Pk * (Ee * W)).2⟩, fun i j => ⟨_root_.GlobalTheor …` and prove the remaining obligations. Establish `h` using `toM (by linear_combination (1 - Ee) * sc2 - (C * F2 - F2) * re : C * (F2 * (1 - Ee)) = Pp * (B2 * (F2 * (1 - Ee))))`. Rewrite using `[← smul_one_mul]`.
+
+Conclude with `h`. Establish `h` using `toM (by`. Take the linear combination `(1 - Ee) * sc3 + hA + (F3 - Ci * F3 - Pp * B3 * F3 + Pp * B3 + Pp * Pk * W * F3 - Pp * Pk * W) * re :`. Use `Ci * (F3 * (1 - Ee) + Ee) = Pp * ((B3 * (1 - Ee) + Pk * (Ee * W)) * (F3 * (1 - Ee) + Ee)))`. Rewrite using `[← smul_one_mul]`.
+
+Conclude with `h`.
+-/
 theorem _root_.GlobalTheory.ValDecomp.valuation_decomp : ∀ (E : Type) [NontriviallyNormedField E] [IsUltrametricDist E] (n : ℕ) (N : Matrix (Fin n) (Fin n) E) (ϖ : E), 0 < ‖ϖ‖ → ‖ϖ‖ < 1 → (∀ x y : Matrix (Fin n) (Fin n) E, x * N = N * x → y * N = N * y → x * y = y * x) → (∀ y : Matrix (Fin n) (Fin n) E, y * N = N * y → (∀ i j, ‖y i j‖ ≤ 1) → ∃ e a : Matrix (Fin n) (Fin n) E, e * N = N * e ∧ a * N = N * a ∧ (∀ i j, ‖e i j‖ ≤ 1 ∧ ‖a i j‖ ≤ 1) ∧ e * e = e ∧ ‖(y * e + (1 - e)).det‖ = 1 ∧ y * (1 - e) = ϖ • a) → ∀ c : Matrix (Fin n) (Fin n) E, IsUnit c → c * N = N * c → ∃ e₁ e₂ e₃ u a₂ a₃ : Matrix (Fin n) (Fin n) E, (e₁ * N = N * e₁ ∧ e₂ * N = N * e₂ ∧ e₃ * N = N * e₃ ∧ u * N = N * u ∧ a₂ * N = N * a₂ ∧ a₃ * N = N * a₃) ∧ (∀ i j, ‖e₁ i j‖ ≤ 1 ∧ ‖e₂ i j‖ ≤ 1 ∧ ‖e₃ i j‖ ≤ 1 ∧ ‖u i j‖ ≤ 1 ∧ ‖a₂ i j‖ ≤ 1 ∧ ‖a₃ i j‖ ≤ 1) ∧ ‖u.det‖ = 1 ∧ e₁ * e₁ = e₁ ∧ e₂ * e₂ = e₂ ∧ e₃ * e₃ = e₃ ∧ e₁ * e₂ = 0 ∧ e₁ * e₃ = 0 ∧ e₂ * e₃ = 0 ∧ e₁ + e₂ + e₃ = 1 ∧ c * e₁ = u * e₁ ∧ c * e₂ = ϖ • (a₂ * e₂) ∧ c⁻¹ * e₃ = ϖ • (a₃ * e₃) := by
   intro E _ _ n N ϖ h0 h1 hcomm hdec c hc hcN
   have hϖ : ϖ ≠ 0 := norm_pos_iff.1 h0

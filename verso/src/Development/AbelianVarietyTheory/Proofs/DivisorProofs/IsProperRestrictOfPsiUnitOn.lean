@@ -64,6 +64,15 @@ open GlobalTheory.Published GlobalTheory.Published.AbVarRed
 
 end Reduction
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨V, _, _, _, φ, hφ, hc⟩ : ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsDiscreteValuationRing V) (φ : R →+* V), Function.Injective φ ∧ (maximalIdeal V).comap φ = I := by`. Break down `eq_or_ne I ⊥ with rfl | hI` into its components or cases. Set `K` to `FractionRing R`. Set `φ : R →+* PowerSeries K` to `(PowerSeries.C (R := K)).comp (algebraMap R K)`. Establish `hφ : Function.Injective φ` using `PowerSeries.C_injective.comp (IsFractionRing.injective R K)`.
+
+Use `⟨PowerSeries K, inferInstance, inferInstance, inferInstance, φ, hφ, ?_⟩` and prove the remaining obligations. Use `eq_bot_iff.2 fun r hr => ?_` and prove the remaining obligations. Rewrite `hr` using `[Ideal.mem_comap, PowerSeries.maximalIdeal_eq_span_X, Ideal.mem_span_singleton, PowerSeries.X_dvd_iff]`. Establish `: algebraMap R K r = 0` using `by simpa [φ] using hr`. Conclude with `(Ideal.mem_bot).2 (IsFractionRing.injective R K (this.trans (map_zero _).symm))`.
+
+Take `⟨V, _, _, hV, -, φ, h1, h2⟩` from `exists_complete_discreteValuationRing_of_prime_lt ⊥ I (bot_lt_iff_ne_bot.2 hI)`. Conclude with `⟨V, inferInstance, inferInstance, hV, φ, (RingHom.injective_iff_ker_eq_bot φ).2 h1, h2⟩`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Take `⟨V', _, _, _, _, h1, h2, -, h3⟩` from `GlobalTheory.ClosedResidueExt.exists_unramified_ext V hπ`. Use `⟨V', inferInstance, inferInstance, inferInstance, (algebraMap V V').comp φ, h3, h1.comp hφ, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Ideal.comap_comap, ← hc]`. Use `congr 1`. Conclude with `eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (maximalIdeal V'))`.
+-/
 theorem exists_dvr_centre (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (I : Ideal R) [I.IsPrime] :
     ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsDiscreteValuationRing V) (φ : R →+* V),
       IsAlgClosed (ResidueField V) ∧ Function.Injective φ ∧ (maximalIdeal V).comap φ = I := by

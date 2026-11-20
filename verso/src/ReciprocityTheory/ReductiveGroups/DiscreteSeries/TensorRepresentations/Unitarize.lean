@@ -22,12 +22,21 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {ε : Fin 
 
 def hvec (f : Fin n → D) : Fin n → H := fun c => ((f c : D) : H)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c`. Simplify using `[hvec]`.
+-/
 theorem hvec_add (f g : Fin n → D) : hvec (f + g) = hvec f + hvec g := by
   funext c; simp [hvec]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c`. Simplify using `[hvec]`.
+-/
 theorem hvec_smul (a : ℂ) (f : Fin n → D) : hvec (a • f) = a • hvec f := by
   funext c; simp [hvec]
 
+/- English proof (translation)
+Unfold `mx`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (hst a b f hf)`.
+-/
 theorem mx_mem {M : Submodule ℂ D} (dual : Bool) (X : Matrix (Fin n) (Fin n) ℂ)
     (hst : ∀ a b, ∀ f ∈ tensSub M, tensF dual E a b f ∈ tensSub M) {f : Fin n → D} (hf : f ∈ tensSub M) :
     mx (tensF dual E) X f ∈ tensSub M := by
@@ -36,6 +45,9 @@ theorem mx_mem {M : Submodule ℂ D} (dual : Bool) (X : Matrix (Fin n) (Fin n) �
   exact Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b _ =>
     Submodule.smul_mem _ _ (hst a b f hf)
 
+/- English proof (translation)
+Rewrite using `[smul_smul, show Complex.I / 2 * Complex.I = -(1 / 2) by`. Rewrite using `[div_mul_eq_mul_div, Complex.I_mul_I]`. Use the proof step `ring]`. Use `module`.
+-/
 theorem mat_decomp2 (Y Z : Matrix (Fin n) (Fin n) ℂ) :
     (1 / 2 : ℂ) • (Y - Z) + (Complex.I / 2) • (Complex.I • (Y + Z)) = -Z := by
   rw [smul_smul, show Complex.I / 2 * Complex.I = -(1 / 2) by
@@ -44,6 +56,51 @@ theorem mat_decomp2 (Y Z : Matrix (Fin n) (Fin n) ℂ) :
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Use `haveI : (Formalism.REAL.muG ε).IsMulRightInvariant := ⟨fun g => Formalism.REAL.indefinite_unitary_unimodular n ε g⟩`. Use `haveI : FiniteDimensional ℂ V := hV.1`. Set `bV` to `Module.finBasis ℂ V`. Set `ys : Fin (Module.finrank ℂ V) → H` to `fun j => (((bV j : V) : D) : H)`. Establish `hVM : V ≤ genSub E V` using `le_sInf fun T hT => hT.1`.
+
+Establish `hmem : ∀ f : Fin n → D, f ∈ tensSub (genSub E V) → ∀ c, f c ∈ genSub E V` using `fun f hf c => (Submodule.mem_pi.1 hf) c (Set.mem_univ c)`. Establish `hst : ∀ a b : Fin n, ∀ f ∈ tensSub (n` using `n) (genSub E V), tensF dual E a b f ∈ tensSub (genSub E V) := tensSub_stable dual`. Take `⟨C, hC⟩` from `Submodule.exists_isCompl (tensSub (n := n) (genSub E V))`. Set `P : (Fin n → D) →ₗ[ℂ] (Fin n → D)` to `(tensSub (n := n) (genSub E V)).subtype ∘ₗ Submodule.linearProjOfIsCompl _ _ hC`. Establish `hPm : ∀ f : Fin n → D, P f ∈ tensSub (genSub E V)` using `fun f => (Submodule.linearProjOfIsCompl _ _ hC f).2`.
+
+Establish `hPid : ∀ f ∈ tensSub (n` using `n) (genSub E V), P f = f := fun f hf => by`. Conclude with `congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left hC ⟨f, hf⟩)`. Set `u : Fin (Module.finrank ℂ V) → Fin n → (Fin n → D) → Formalism.REAL.UJ ε → ℂ` to `fun j ξ f => cf dual ε σ (ys j) ξ (hvec f)`. Establish `hL : ∀ f ∈ tensSub (n` using `n) (genSub E V), ∀ j ξ, MemLp (u j ξ f) 2 (Formalism.REAL.muG ε) := fun f hf j ξ => memLp_cf hσ dual _ ξ _ fun c => hW (f c) (hmem f hf c) ((bV j : V) : D) (hVM (bV j).2)`. Establish `hLP : ∀ (f : Fin n → D) j ξ, MemLp (u j ξ (P f)) 2 (Formalism.REAL.muG ε)` using `fun f => hL _ (hPm f)`.
+
+Establish `hu_add : ∀ j ξ f g, u j ξ (f + g) = u j ξ f + u j ξ g` using `fun j ξ f g => by`. Simplify using `only [u, hvec_add, cf_add]`. Establish `hu_smul : ∀ j ξ (a : ℂ) f, u j ξ (a • f) = a • u j ξ f` using `fun j ξ a f => by`. Simplify using `only [u, hvec_smul, cf_smul]`. Set `Q0 : (Fin n → D) → (Fin n → D) → ℂ` to `fun f g => ∑ j, ∑ ξ, pr (Formalism.REAL.muG ε) (u j ξ (P f)) (u j ξ (P g))`.
+
+Set `Q : (Fin n → D) →ₗ⋆[ℂ] (Fin n → D) →ₗ[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) Q0 (fun f f' g => by`. Simplify using `only [Q0, map_add, hu_add, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun ξ _ => pr_add_left (hLP f j ξ) (hLP f' j ξ) (hLP g j ξ))`. Use the proof step `(fun a f g => by`. Simplify using `only [Q0, map_smul, hu_smul, pr_smul_left, Finset.mul_sum, smul_eq_mul, starRingEnd_apply])`.
+
+Use the proof step `(fun f g g' => by`. Simplify using `only [Q0, map_add, hu_add, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun ξ _ => pr_add_right (hLP f j ξ) (hLP g j ξ) (hLP g' j ξ))`. Use the proof step `(fun a f g => by`. Simplify using `only [Q0, map_smul, hu_smul, pr_smul_right, Finset.mul_sum, smul_eq_mul, RingHom.id_apply])`.
+
+Establish `hQ : ∀ f ∈ tensSub (n` using `n) (genSub E V), ∀ g ∈ tensSub (genSub E V), Q f g = ∑ j, ∑ ξ, pr (Formalism.REAL.muG ε) (u j ξ f) (u j ξ g) := by`. Introduce `f hf g hg`. Simplify using `only [Q, LinearMap.mk₂'ₛₗ_apply, Q0, hPid f hf, hPid g hg]`. Establish `hskew : ∀ X (hX : inG ε X), ∀ f ∈ tensSub (n` using `n) (genSub E V), ∀ g ∈ tensSub (genSub E V), Q (mx (tensF dual E) X f) g = -Q f (mx (tensF dual E) X g) := by`. Introduce `X hX f hf g hg`.
+
+Establish `hXf` using `mx_mem dual X hst hf`. Establish `hXg` using `mx_mem dual X hst hg`. Rewrite using `[hQ _ hXf g hg, hQ f hf _ hXg, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`.
+
+Use `Finset.sum_congr rfl fun ξ _ => ?_` and prove the remaining obligations. Conclude with `skew (continuous_ex hX) (ex_zero hX) (ex_add hX) (continuous_cf hσ dual _ ξ _) (continuous_cf hσ dual _ ξ _) (continuous_cf hσ dual _ ξ _) (continuous_cf hσ dual _ ξ _) (hL f hf j ξ) (hL _ hXf j ξ) (hL g hg j ξ) (hL _ hXg j ξ) (fun x t => hasDerivAt_cf hσ hD hX dual (ys j) ξ f x …`. Use `⟨Q, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `f _ g _`. Simplify using `only [Q, LinearMap.mk₂'ₛₗ_apply, Q0, star_sum, pr_star]`.
+
+Introduce `f hf hf0`. Rewrite using `[hQ f hf f hf]`. Establish `hre : ∀ j ξ, (pr (Formalism.REAL.muG ε) (u j ξ f) (u j ξ f)).re = ∫ x, ‖u j ξ f x‖ ^ 2 ∂(Formalism.REAL.muG ε)`. Introduce `j ξ`. Rewrite using `[(pr_self_re (hL f hf j ξ)).1, Complex.ofReal_re]`.
+
+Simplify using `only [Complex.re_sum, hre]`. Establish `hnn : ∀ j ξ, 0 ≤ ∫ x, ‖u j ξ f x‖ ^ 2 ∂(Formalism.REAL.muG ε)` using `fun j ξ => integral_nonneg fun x => by positivity`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Establish `h0 : ∑ j, ∑ ξ, ∫ x, ‖u j ξ f x‖ ^ 2 ∂(Formalism.REAL.muG ε) = 0` using `le_antisymm hneg (Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun ξ _ => hnn j ξ)`.
+
+Establish `hz : ∀ j ξ, ∫ x, ‖u j ξ f x‖ ^ 2 ∂(Formalism.REAL.muG ε) = 0`. Introduce `j ξ`. Establish `h1` using `(Finset.sum_eq_zero_iff_of_nonneg fun j _ => Finset.sum_nonneg fun ξ _ => hnn j ξ).1 h0 j (Finset.mem_univ j)`. Conclude with `(Finset.sum_eq_zero_iff_of_nonneg fun ξ _ => hnn j ξ).1 h1 ξ (Finset.mem_univ ξ)`. Establish `hz' : ∀ j ξ x, u j ξ f x = 0`.
+
+Introduce `j ξ`. Establish `hi` using `(pr_self_re (hL f hf j ξ)).2`. Establish `hae` using `(integral_eq_zero_iff_of_nonneg (fun x => by positivity) hi).1 (hz j ξ)`. Establish `hc : Continuous (fun x => ‖u j ξ f x‖ ^ 2)` using `((continuous_cf hσ dual _ ξ _).norm).pow 2`. Establish `h2` using `(hc.ae_eq_iff_eq (Formalism.REAL.muG ε) continuous_zero).1 hae`.
+
+Introduce `x`. Establish `h3` using `congrFun h2 x`. Simplify using `using h3`. Apply `hf0` to reduce the goal to its premises. Use `cf_inj hσ hD dual (hmem f hf) fun y hy ξ x => ?_` and prove the remaining obligations.
+
+Establish `hy' : ((y : D) : H) = ∑ j, (bV.repr ⟨y, hy⟩ j) • ys j`. Establish `h2` using `congrArg (fun w : V => ((w : D) : H)) (bV.sum_repr ⟨y, hy⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h2`. Conclude with `h2.symm`. Establish `e : cf dual ε σ ((y : D) : H) ξ (fun c => ((f c : D) : H)) x = ∑ j, star (bV.repr ⟨y, hy⟩ j) * u j ξ f x`.
+
+Simplify using `only [u, cf, hvec, hy', sum_inner, inner_smul_left, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `Finset.sum_eq_zero fun j _ => by rw [hz' j ξ x, mul_zero]`. Introduce `a b f hf g hg`. Take `⟨Z, hZ⟩ : ∃ Z, Z = Jm ε * (Matrix.single a b (1 : ℂ))ᴴ * Jm ε` from `⟨_, rfl⟩`. Establish `hX1 : inG ε (Matrix.single a b 1 - Z)` using `by rw [hZ]; exact inG_sub _`.
+
+Establish `hX2 : inG ε (Complex.I • (Matrix.single a b 1 + Z))` using `by rw [hZ]; exact inG_add _`. Establish `hTab : tensF dual E a b = (1 / 2 : ℂ) • mx (tensF dual E) (Matrix.single a b 1 - Z) + (-(Complex.I / 2)) • mx (tensF dual E) (Complex.I • (Matrix.single a b 1 + Z))`. Rewrite using `[← mx_smul, ← mx_smul, ← mx_add, ← mat_decomp, mx_single]`. Establish `hTba : (1 / 2 : ℂ) • mx (tensF dual E) (Matrix.single a b 1 - Z) + (Complex.I / 2) • mx (tensF dual E) (Complex.I • (Matrix.single a b 1 + Z)) = -(adjSign ε a b • tensF dual E b a)`. Rewrite using `[← mx_smul, ← mx_smul, ← mx_add, mat_decomp2, hZ, single_conj, ← neg_smul, mx_smul, mx_single, neg_smul]`.
+
+Establish `s1 : star (1 / 2 : ℂ) = 1 / 2` using `by simp`. Establish `s2 : star (-(Complex.I / 2)) = Complex.I / 2` using `by simp [Complex.conj_I, neg_div]`. Establish `e1 : Q (tensF dual E a b f) g = (1 / 2 : ℂ) * Q (mx (tensF dual E) (Matrix.single a b 1 - Z) f) g + (Complex.I / 2) * Q (mx (tensF dual E) (Complex.I • (Matrix.single a b 1 + Z)) f) g`. Rewrite using `[hTab]`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, map_add, map_smulₛₗ, smul_eq_mul, starRingEnd_apply, s1, s2]`.
+
+Establish `e2` using `congrArg (fun A : Module.End ℂ (Fin n → D) => Q f (A g)) hTba`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, LinearMap.neg_apply, map_add, map_smul, map_neg, smul_eq_mul] at e2`. Rewrite using `[e1, hskew _ hX1 f hf g hg, hskew _ hX2 f hf g hg]`. Take the linear combination `(-1 : ℂ) * e2`. Introduce `k hk f hf g hg f' hf' g' hg' hff hgg`.
+
+Establish `hkU : k ∈ UJset ε` using `closure_inUJ_of_mem_Kset hk`. Rewrite using `[hQ f' hf' g' hg', hQ f hf g hg]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun ξ _ => ?_` and prove the remaining obligations. Establish `e : ∀ (h h' : Fin n → D), (fun c => ((h' c : D) : H)) = kDiag dual σ k (fun c => ((h c : D) : H)) → u j ξ h' = fun x => u j ξ h (x * toG k hkU)`. Introduce `h h' hh`.
+
+Use function extensionality and compare the values at `x`. Use `show cf dual ε σ (ys j) ξ (hvec h') x = _`. Rewrite using `[show hvec h' = kDiag dual σ (Formalism.MainNotions.S.umat (toG k hkU)) (hvec h) from hh]`. Conclude with `cf_kDiag hσ dual _ ξ _ (toG k hkU) hk.2 x`. Rewrite using `[e f f' hff, e g g' hgg, pr_rt]`.
+-/
 theorem tens_unitarize (dual : Bool) {lam : Fin n → ℝ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {ε : Fin n → Bool}
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
     (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)

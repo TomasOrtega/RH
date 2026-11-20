@@ -23,6 +23,11 @@ namespace GlobalTheory.TopFlip
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `e : ω.toSgn ε (1, h) = ω (1, h)` using `by simp [GlobalTheory.Grid.WRep.toSgn]`. Establish `h1` using `GlobalTheory.FiniteFock.compAt_mt_of_finite θ (S := GlobalTheory.Grid.sgn ε M) (hk := one_mem _)`. Establish `h2` using `GlobalTheory.FiniteFock.compAt_mt_of_finite θ (hk := hh)`. Use `(GlobalTheory.OrientedHeis.om_pureTensorO D ψ θ _ X χ χ' _ hω hθ (frSgn ε A).cart _ A.onb _ B.cart _ B.onb _ 1 h (fun τ => by rw [h1, Matrix.mul_one, Matrix.one_mul]) (fun τ => by rw [h2, Matrix.mul_one, Matrix.one_mul]) (fun τ => by rw [h1, Matrix.one_mul]) (fun τ => by rw [h2, …` as an intermediate fact. Rewrite `this` using `[e]`.
+
+Conclude with `(GlobalTheory.FiniteFock.pureTensorO_smul _ _ _ _ _ _ _ _ _ _ _).trans (congrArg (c • ·) this.symm)`.
+-/
 theorem om_fockF {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hθ : IsInfFam θ) {ε : Bool} {M X : HSp D} (A : Fr M) (B : Fr X)
     {χ χ' : (AE D)ˣ →* Circle} {ω : GlobalTheory.Grid.WRep M X} (hω : GlobalTheory.Grid.IsWeil ψ ε M X χ χ' ω) {h : GA D X} (hh : h ∈ GfC X)
     {f : WO M X → ℂ} (hf : IsFinF ψ θ ε A B f) (c : ℂ) (P) :
@@ -36,12 +41,18 @@ theorem om_fockF {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hθ : IsInfFa
   rw [e] at this
   exact (GlobalTheory.FiniteFock.pureTensorO_smul _ _ _ _ _ _ _ _ _ _ _).trans (congrArg (c • ·) this.symm)
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.WeilChange.weilData_differ_by_splitFac D ψ S X χ χ' χ₁ χ₁' ω ω₁ hω hω₁ 1 h 1 y (by simp [IsDetRoot]) hy f hf]`. Simplify using `[splitFacO]`.
+-/
 theorem om_compare {ψ : AddChar (AF D.host.F) ℂ} {S X : HSp D} {χ χ' χ₁ χ₁' : (AE D)ˣ →* Circle} {ω ω₁}
     (hω : IsWeilDatumO ψ S X χ χ' ω) (hω₁ : IsWeilDatumO ψ S X χ₁ χ₁' ω₁) {h : GA D X} {y : (AE D)ˣ} (hy : IsDetRoot X h y)
     {f} (hf : IsThetaFunO ψ S X f) : ω₁ (1, h) f = ((χ₁ y : ℂ) * (χ y : ℂ)⁻¹) • ω (1, h) f := by
   rw [GlobalTheory.WeilChange.weilData_differ_by_splitFac D ψ S X χ χ' χ₁ χ₁' ω ω₁ hω hω₁ 1 h 1 y (by simp [IsDetRoot]) hy f hf]
   simp [splitFacO]
 
+/- English proof (translation)
+Use `GlobalTheory.ThetaBaseMove.isThetaAt_move hω (fun f₀ h₀ Tm hTm Ψ hΨ => GlobalTheory.DiagLiftFix.isTheta_placeModel hω.std hS hX ha hc hinf h₀ Tm hTm Ψ hΨ) hb 1 h (inv_ne_zero hc0) hfx hf` as an intermediate fact. Rewrite `this` using `[e, smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem thetaAt_move {ψ : AddChar (AF D.host.F) ℂ} {S X : HSp D} {χ χ' : (AE D)ˣ →* Circle} {ω}
     (hω : IsWeilDatumO ψ S X χ χ' ω) {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛX : Submodule (𝓞 D.host.E) (Fin X.rank → D.host.E)} (hS : Submodule.IsLattice D.host.E ΛS) (hX : Submodule.IsLattice D.host.E ΛX)
@@ -59,6 +70,21 @@ variable {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : Grid
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨h, hh, Λ, hΛ, hfx, hmv, tA, tB⟩` from `GlobalTheory.T.exists_finiteUnitary_selfDual_lattice_grid_doubling (G := G) hL i j`. Take `⟨x1, x2, x3, x4, x5, x6⟩` from `hX`. Establish `x7` using `x6 AV AV₁ hV hV₁`. Establish `sW` using `(node_isV G hL (X := .grid (i + 1) (j + 1)) ⟨i.2, j.2⟩).sd`. Establish `sW₁` using `(node_isV G hL (X := .grid i j) ⟨i.2.le, j.2.le⟩).sd`.
+
+Establish `sX : IsSelfDualC (spX G i j) (latX G i j)` using `by have := hI.rigW.1; rwa [x3] at this`. Establish `vA` using `hI.isVac`. Establish `vB` using `hI.isVac'`. Rewrite `vA` using `[x1, x3, x4, x7]`. Rewrite `vB` using `[x2, x3, x5, x7]`.
+
+Establish `eA : ∀ t, (X.ω t).toSgn true (1, h) = X.ω t (1, h)` using `fun t => by simp [GlobalTheory.Grid.WRep.toSgn]`. Establish `h2` using `GlobalTheory.FiniteFock.compAt_mt_of_finite W.θ (hk := hh)`. Establish `mA` using `GlobalTheory.WeilVacMove.isVacO_om D W.ψ W.θ _ _ _ _ _ (hI.weil μ₀) W.θ_is _ _ _ _ _ _ _ _ 1 h (fun τ => by rw [GlobalTheory.FiniteFock.compAt_mt_of_finite W.θ τ (one_mem _), Matrix.mul_one, Matrix.one_mul]) (fun τ => by rw [h2, Matrix.mul_one, Matrix.one_mul]) (hmv _ _ (isSelfDu …`. Establish `mB` using `GlobalTheory.WeilVacMove.isVacO_om D W.ψ W.θ _ _ _ _ _ (hI.weil' μ₀) W.θ_is _ _ _ _ _ _ _ _ 1 h (fun τ => by rw [GlobalTheory.FiniteFock.compAt_mt_of_finite W.θ τ (one_mem _), Matrix.mul_one, Matrix.one_mul]) (fun τ => by rw [h2, Matrix.mul_one, Matrix.one_mul]) (hmv _ _ sW₁) _ v …`. Take `⟨cA', hcA, kA⟩` from `GlobalTheory.T.unitVacuum_eq_smul_arrowVacua_product hL W ρ i j AV AV₁ hV hV₁ Λ hΛ tA _ mA`.
+
+Take `⟨cB, hcB, kB⟩` from `GlobalTheory.T.unitVacuum_eq_smul_product_arrow_vacua hL W ρ i j AV AV₁ hV hV₁ Λ hΛ tB _ mB`. Take `⟨y, hy⟩` from `GlobalTheory.RecDict.exists_isDetRoot D _ h`. Use `⟨h, hh, cA', cB * (L.xi μ₀ y : ℂ)⁻¹, y, hcA, mul_ne_zero hcB (inv_ne_zero (Circle.coe_ne_zero _)), fun t => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `he` using `hI.idem t`. Establish `f1` using `hI.fst t`.
+
+Rewrite `f1` using `[x1, x3, GlobalTheory.T.standardPairFirstMember_eq_prod_local_gridBases hL B t i j X _ he]`. Establish `k : (X.ω t).toSgn true (1, h) X.vac = cA' • vacA ρ i j`. Rewrite using `[om_compare (hI.weil μ₀) (hI.weil t) hy vA.2.theta, mul_inv_cancel₀ (Circle.coe_ne_zero _), one_smul, kA]`. Use `thetaAt_move (hI.weil t) sW.1 sX.1 (GlobalTheory.PlaceVec.idemSum_mul_self he) he.2 (GlobalTheory.PlaceVec.idemSum_infPart he) vA.2.theta (hfx t (hst t) _ he _) hcA k f1` as an intermediate fact. Rewrite `this` using `[eA]`. Then use the resulting hypothesis.
+
+Establish `he` using `hI.idem t`. Establish `f1` using `hI.snd t`. Rewrite `f1` using `[x2, x3, GlobalTheory.T.standardPairSecondMember_eq_prod_local_gridBases hL B t i j X _ he]`. Establish `k : X.ω' t (1, h) X.vac' = (cB * (L.xi μ₀ y : ℂ)⁻¹ * (L.xi t y : ℂ)) • vacB ρ i j`. Use `(om_compare (hI.weil' μ₀) (hI.weil' t) hy vB.2.theta).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[kB, smul_smul]`. Use `congr 1`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha, LevCh.mu, Lift.tup, MonoidHom.mul_apply, Circle.coe_mul]`. Clear the denominators using the available nonvanishing facts. Conclude with `thetaAt_move (S := spW₁ G i j) (hI.weil' t) sW₁.1 sX.1 (by rw [← map_mul, GlobalTheory.PlaceVec.idemSum_mul_self he]) (by rw [← map_mul, he.2, map_zero]) (GlobalTheory.PlaceVec.infPart_cA (GlobalTheory.PlaceVec.idemSum_infPart he)) vB.2.theta (fun x hx => hfx t (hst t) _ he _ x ( …`.
+-/
 theorem exists_move (hL : L.Is μ₀) (hst : ∀ t, SquareStanding G t) {W : G.Weil} (B : Frames G) (ρ : RealMatch W) {i j : Fin D.R.m}
     {X : TriG G i j} (hX : TopGrid W i j X) {νH}
     (hI : X.Is W.ψ W.θ (fun t => GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha G t i j) (fun _ => GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.beta G i j) νH (locPl G))

@@ -28,6 +28,15 @@ def coprimeEquiv (I J : Ideal R) (u v : R) (hu : u ∈ I) (hv : v ∈ J) (h : u 
     · simp only; linear_combination (q.1 : R) * h
     · simp only; linear_combination (q.2 : R) * h
 
+/- English proof (translation)
+Distinguish the cases in `ht : m = ⊤`. Take `⟨I, hI⟩` from `ClassGroup.mk0_surjective c`. Conclude with `⟨I, by rw [ht, sup_top_eq], hI⟩`. Take `⟨J, hJ⟩` from `ClassGroup.mk0_surjective c⁻¹`. Establish `hJ0 : (J : Ideal R) ≠ 0` using `nonZeroDivisors.coe_ne_zero J`.
+
+Take `⟨a, ha⟩` from `IsDedekindDomain.exists_sup_span_eq (I := (J : Ideal R) * m) (J := J) Ideal.mul_le_left (mul_ne_zero hJ0 hm)`. Take `⟨M, hM⟩ : (J : Ideal R) ∣ Ideal.span {a}` from `Ideal.dvd_iff_le.2 (ha ▸ le_sup_right)`. Establish `h1 : m ⊔ M = ⊤`. Apply `mul_left_cancel₀ hJ0` to reduce the goal to its premises. Rewrite using `[Ideal.mul_sup, ← hM, ha, Ideal.mul_top]`.
+
+Establish `hM0 : M ≠ 0`. Introduce and unpack `rfl`. Conclude with `ht (by simpa using h1)`. Use `⟨⟨M, mem_nonZeroDivisors_of_ne_zero hM0⟩, by rw [sup_comm]; exact h1, ?_⟩` and prove the remaining obligations. Establish `ha0 : a ≠ 0`.
+
+Introduce and unpack `rfl`. Conclude with `mul_ne_zero hJ0 hM0 (by simpa using hM.symm)`. Rewrite using `[← inv_inv c, ← hJ, ClassGroup.mk0_eq_mk0_inv_iff]`. Conclude with `⟨a, ha0, by rw [hM, mul_comm]⟩`.
+-/
 theorem classGroup_exists_integral_ideal_coprime {m : Ideal R} (hm : m ≠ ⊥) (c : ClassGroup R) :
     ∃ I : (Ideal R)⁰, (I : Ideal R) ⊔ m = ⊤ ∧ ClassGroup.mk0 I = c := by
   by_cases ht : m = ⊤
@@ -51,6 +60,11 @@ theorem classGroup_exists_integral_ideal_coprime {m : Ideal R} (hm : m ≠ ⊥) 
   rw [← inv_inv c, ← hJ, ClassGroup.mk0_eq_mk0_inv_iff]
   exact ⟨a, ha0, by rw [hM, mul_comm]⟩
 
+/- English proof (translation)
+Establish `hJ0 : (J : Ideal R) ≠ ⊥` using `by simpa using nonZeroDivisors.coe_ne_zero J`. Take `⟨I', hcop, hcl⟩` from `classGroup_exists_integral_ideal_coprime hJ0 (ClassGroup.mk0 I)`. Establish `h1 : (1 : R) ∈ (I' : Ideal R) ⊔ J` using `by rw [hcop]; exact Submodule.mem_top`. Take `⟨u, hu, v, hv, huv⟩` from `Submodule.mem_sup.1 h1`. Use `⟨I' * J, by rw [map_mul, hcl], ⟨?_⟩⟩` and prove the remaining obligations.
+
+Establish `e1` using `(GlobalTheory.ProjModFinIso.nonempty_equiv_of_mk0_eq hcl.symm).some`. Conclude with `(e1.prodCongr (LinearEquiv.refl R _)) ≪≫ₗ coprimeEquiv _ _ u v hu hv huv ≪≫ₗ (Submodule.topEquiv.prodCongr (LinearEquiv.ofEq _ _ (Submonoid.coe_mul _ _ _).symm))`.
+-/
 theorem exists_prod_equiv (I J : (Ideal R)⁰) :
     ∃ L : (Ideal R)⁰, ClassGroup.mk0 L = ClassGroup.mk0 I * ClassGroup.mk0 J ∧
       Nonempty ((↥(I : Ideal R) × ↥(J : Ideal R)) ≃ₗ[R] (R × ↥(L : Ideal R))) := by
@@ -63,6 +77,11 @@ theorem exists_prod_equiv (I J : (Ideal R)⁰) :
   exact (e1.prodCongr (LinearEquiv.refl R _)) ≪≫ₗ coprimeEquiv _ _ u v hu hv huv ≪≫ₗ
     (Submodule.topEquiv.prodCongr (LinearEquiv.ofEq _ _ (Submonoid.coe_mul _ _ _).symm))
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `I K`. Conclude with `⟨K, by simp, ⟨(LinearEquiv.refl R _).prodCongr (LinearEquiv.ofSubsingleton _ _)⟩⟩`. Consider the case `succ n ih`.
+
+Introduce `I K`. Take `⟨L₁, hL₁, ⟨e₁⟩⟩` from `exists_prod_equiv K (I 0)`. Take `⟨L, hL, ⟨e₂⟩⟩` from `ih (fun i => I i.succ) L₁`. Use `⟨L, by rw [hL, hL₁, Fin.prod_univ_succ, mul_assoc], ⟨?_⟩⟩` and prove the remaining obligations. Conclude with `(LinearEquiv.refl R _).prodCongr (Fin.consLinearEquiv R (fun i => ↥(I i : Ideal R))).symm ≪≫ₗ (LinearEquiv.prodAssoc R _ _ _).symm ≪≫ₗ e₁.prodCongr (LinearEquiv.refl R _) ≪≫ₗ LinearEquiv.prodAssoc R _ _ _ ≪≫ₗ (LinearEquiv.refl R R).prodCongr e₂ ≪≫ₗ (LinearEquiv.prodAssoc R _ _ _) …`.
+-/
 theorem exists_prod_pi_equiv (n : ℕ) : ∀ (I : Fin n → (Ideal R)⁰) (K : (Ideal R)⁰),
     ∃ L : (Ideal R)⁰, ClassGroup.mk0 L = ClassGroup.mk0 K * ∏ i, ClassGroup.mk0 (I i) ∧
       Nonempty ((↥(K : Ideal R) × ((i : Fin n) → ↥(I i : Ideal R))) ≃ₗ[R]
@@ -84,6 +103,11 @@ theorem exists_prod_pi_equiv (n : ℕ) : ∀ (I : Fin n → (Ideal R)⁰) (K : (
       LinearEquiv.prodAssoc R _ _ _ ≪≫ₗ
       (LinearEquiv.refl R _).prodCongr (Fin.consLinearEquiv R (fun _ => R))
 
+/- English proof (translation)
+Set `I' : Fin (n + 1) → (Ideal R)⁰` to `fun j => I (e.symm j)`. Take `⟨L, hL, ⟨f⟩⟩` from `exists_prod_pi_equiv n (fun j => I' j.succ) (I' 0)`. Use `⟨L, ?_, ⟨?_⟩⟩` and prove the remaining obligations. Rewrite using `[hL, ← Fin.prod_univ_succ (f := fun j => ClassGroup.mk0 (I' j))]`. Conclude with `Equiv.prod_comp e.symm (fun i => ClassGroup.mk0 (I i))`.
+
+Conclude with `LinearEquiv.piCongrLeft' R (fun i => ↥(I i : Ideal R)) e ≪≫ₗ (Fin.consLinearEquiv R (fun j => ↥(I' j : Ideal R))).symm ≪≫ₗ f`.
+-/
 theorem exists_pi_equiv {ι : Type} [Fintype ι] {n : ℕ} (e : ι ≃ Fin (n + 1))
     (I : ι → (Ideal R)⁰) :
     ∃ L : (Ideal R)⁰, ClassGroup.mk0 L = ∏ i, ClassGroup.mk0 (I i) ∧
@@ -96,6 +120,11 @@ theorem exists_pi_equiv {ι : Type} [Fintype ι] {n : ℕ} (e : ι ≃ Fin (n + 
   · exact LinearEquiv.piCongrLeft' R (fun i => ↥(I i : Ideal R)) e ≪≫ₗ
       (Fin.consLinearEquiv R (fun j => ↥(I' j : Ideal R))).symm ≪≫ₗ f
 
+/- English proof (translation)
+Introduce `R _ _ ι _ I J h`. Break down `isEmpty_or_nonempty ι with hι | hι` into its components or cases. Conclude with `⟨LinearEquiv.ofSubsingleton _ _⟩`. Take `⟨n, hn⟩` from `Nat.exists_eq_succ_of_ne_zero (Fintype.card_ne_zero (α := ι))`. Set `e : ι ≃ Fin (n + 1)` to `(Fintype.equivFin ι).trans (finCongr hn)`.
+
+Take `⟨L, hL, ⟨f⟩⟩` from `exists_pi_equiv e I`. Take `⟨L', hL', ⟨f'⟩⟩` from `exists_pi_equiv e J`. Take `⟨g⟩` from `GlobalTheory.ProjModFinIso.nonempty_equiv_of_mk0_eq (R := R) (I := L) (J := L') (by rw [hL, hL', h])`. Conclude with `⟨f ≪≫ₗ g.prodCongr (LinearEquiv.refl R _) ≪≫ₗ f'.symm⟩`.
+-/
 theorem steinitz : ∀ (R : Type) [CommRing R] [IsDedekindDomain R] (ι : Type) [Fintype ι]
     (I J : ι → (Ideal R)⁰), ∏ i, ClassGroup.mk0 (I i) = ∏ i, ClassGroup.mk0 (J i) →
     Nonempty (((i : ι) → (I i : Ideal R)) ≃ₗ[R] ((i : ι) → (J i : Ideal R))) := by

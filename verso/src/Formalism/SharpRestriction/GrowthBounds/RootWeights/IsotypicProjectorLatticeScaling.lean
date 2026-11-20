@@ -8,9 +8,17 @@ namespace Formalism.MainNotions.G.GLWeightTheory
 
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 
+/- English proof (translation)
+Conclude with `Finset.single_le_sum (f := fun c => m (l, c)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ a)`.
+-/
 theorem monomial_exponent_le_multidegree {ι : Type*} {n : ℕ} (m : ι × Fin n →₀ ℕ) (l : ι) (a : Fin n) : m (l, a) ≤ multideg m l := by
   exact Finset.single_le_sum (f := fun c => m (l, c)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ a)
 
+/- English proof (translation)
+Unfold `wtS degIn`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `push_cast`. Use `Finset.sum_le_sum fun l _ => ?_` and prove the remaining obligations. Establish `h1` using `monomial_exponent_le_multidegree m l a`.
+
+Establish `h2` using `monomial_exponent_le_multidegree m' l b`. Rewrite `h1` using `[hm l]`. Rewrite `h2` using `[hm' l]`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem polynomial_weight_difference_le {ι : Type*} [Fintype ι] {n : ℕ} (LL : Letters ι) (S : Set ι) (d : ι → ℕ)
     (m m' : ι × Fin n →₀ ℕ) (hm : ∀ i, multideg m i = d i) (hm' : ∀ i, multideg m' i = d i) (a b : Fin n) :
     wtS LL S m a - wtS LL S m' b ≤ (degIn d S : ℤ) := by
@@ -24,10 +32,48 @@ theorem polynomial_weight_difference_le {ι : Type*} [Fintype ι] {n : ℕ} (LL 
   rw [hm' l] at h2
   split_ifs <;> omega
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul (KK O) ((p : O) ^ k) y, map_pow, map_natCast]`.
+-/
 theorem prime_pow_smul_cast {O : Type} [CommRing O] [IsDomain O] {σ : Type} (p k : ℕ) (y : MvPolynomial σ (KK O)) :
     ((p : O) ^ k) • y = ((p : KK O) ^ k) • y := by
   rw [← algebraMap_smul (KK O) ((p : O) ^ k) y, map_pow, map_natCast]
 
+/- English proof (translation)
+Take `⟨hRep, -, -, hStab, hFD, hWt, -⟩` from `hPol (KK O) ι n LL`. Establish `hStabS : ∀ a b, ∀ x ∈ Pol (KK O) n d, glOps (KK O) n LL S a b x ∈ Pol (KK O) n d` using `fun a b x hx => hStab S d a b x hx`. Take `⟨hResRep, hResWt, hResDiv, hResBin, hResProj, hResZero⟩` from `hRes (KK O) (MvPolynomial (ι × Fin n) (KK O)) n (glOps (KK O) n LL S) (hRep S) (Pol (KK O) n d) hStabS`. Take `⟨e', he'P, he'eq⟩` from `hResProj lam e he`. Establish `hPres : ∀ F ∈ Pol (KK O) n d, e F ∈ Pol (KK O) n d`.
+
+Introduce `F hF`. Establish `h` using `(e' ⟨F, hF⟩).2`. Rewrite `h` using `[he'eq ⟨F, hF⟩]`. Then use the resulting hypothesis. Use `⟨hPres, ?_⟩` and prove the remaining obligations. Introduce `L hLst hFG hMQ F hF hFL`.
+
+Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Establish `hid : e F = F`. Distinguish the cases in `h0 : F = 0`. Rewrite using `[h0, map_zero]`.
+
+Apply `he.1` to reduce the goal to its premises. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨1, Submonoid.one_mem _, F, ⟨h0, ?_, fun a => a.elim0⟩, by simp⟩` and prove the remaining obligations. Simplify using `[weightSp]`. Rewrite using `[hid]`.
+
+Simplify `hFL` using `[N0]`. Establish `: NeZero n` using `⟨hn.ne'⟩`. Establish `: FiniteDimensional (KK O) (Pol (KK O) n d)` using `hFD d`. Establish `hwt : ∀ (mu : Fin n → ℤ) (x : Pol (KK O) n d), x ≠ 0 → x ∈ weightSp (restrictStableOperators (glOps (KK O) n LL S) (Pol (KK O) n d) hStabS) mu → ∃ m : ι × Fin n →₀ ℕ, (∀ i, multideg m i = d i) ∧ wtS LL S m = mu`. Introduce `mu x hx0 hx`.
+
+Establish `hxV` using `(hResWt mu x).mp hx`. Establish `hne : (x : MvPolynomial (ι × Fin n) (KK O)) ≠ 0` using `by simpa using hx0`. Take `⟨m, hm⟩ : (x : MvPolynomial (ι × Fin n) (KK O)).support.Nonempty` from `Finset.nonempty_iff_ne_empty.mpr (by rwa [Ne, MvPolynomial.support_eq_empty])`. Use `⟨m, ?_, hWt S mu _ hxV m hm⟩` and prove the remaining obligations. Establish `hx2 : (x : MvPolynomial (ι × Fin n) (KK O)) ∈ MvPolynomial.restrictSupport (KK O) {m : ι × Fin n →₀ ℕ | ∀ i, multideg m i = d i}` using `x.2`.
+
+Conclude with `(show ((x : MvPolynomial (ι × Fin n) (KK O)).support : Set (ι × Fin n →₀ ℕ)) ⊆ {m : ι × Fin n →₀ ℕ | ∀ i, multideg m i = d i} from hx2) hm`. Distinguish the cases in `hhw : ∃ v : Pol (KK O) n d, IsHWV (restrictStableOperators (glOps (KK O) n LL S) (Pol (KK O) n d) hStabS) lam v`. Establish `hdom : Dominant lam`. Take `⟨v, hv⟩` from `hhw`. Conclude with `hDom (KK O) (Pol (KK O) n d) n _ hResRep lam v hv`.
+
+Establish `hWtBound : ellWt lam ≤ degIn d S`. Take `⟨v, hv⟩` from `hhw`. Take `⟨m, hmd, hmw⟩` from `hwt lam v hv.1 hv.2.1`. Establish `h` using `polynomial_weight_difference_le LL S d m m hmd hmd 0 (lastIdx n)`. Rewrite `h` using `[hmw]`.
+
+Unfold `ellWt`. Use linear arithmetic over natural numbers and integers. Establish `hEllBound : ellOf (restrictStableOperators (glOps (KK O) n LL S) (Pol (KK O) n d) hStabS) ⊤ ≤ degIn d S`. Unfold `ellOf`. Apply `csSup_le'` to reduce the goal to its premises.
+
+Introduce and unpack `k ⟨mu, hmu, nu, hnu, a, b, hab, hk⟩`. Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff _).mp (by simpa [wtsOf] using hmu)`. Take `⟨y, hy, hy0⟩` from `(Submodule.ne_bot_iff _).mp (by simpa [wtsOf] using hnu)`. Take `⟨m, hmd, hmw⟩` from `hwt mu x hx0 hx`. Take `⟨m', hmd', hmw'⟩` from `hwt nu y hy0 hy`.
+
+Establish `e1` using `congrFun hk a`. Establish `e2` using `congrFun hk b`. Simplify using `[rootW, hab, Ne.symm hab] at e1 e2`. Establish `d1` using `polynomial_weight_difference_le LL S d m m hmd hmd a b`. Establish `d2` using `polynomial_weight_difference_le LL S d m' m' hmd' hmd' b a`.
+
+Rewrite `d1` using `[hmw]`. Rewrite `d2` using `[hmw']`. Use linear arithmetic over natural numbers and integers. Establish `hLat : UZLattice (O` using `O) (restrictStableOperators (glOps (KK O) n LL S) (Pol (KK O) n d) hStabS) (latticeMultidegreePart L d) := by`. Use `⟨?_, hFG⟩` and prove the remaining obligations.
+
+Introduce `u hu x hx`. Rewrite `hx`, the goal using `[latticeMultidegreePart, Submodule.mem_comap]`. Break down `hu with ⟨a, b, k, hab, rfl⟩ | ⟨a, k, rfl⟩` into its components or cases. Express the relevant statement in the definitionally equal form `((divPowE _ a b k x : Pol (KK O) n d) : MvPolynomial (ι × Fin n) (KK O)) ∈ L`. Rewrite using `[hResDiv a b k x]`.
+
+Conclude with `hLst _ (Or.inl ⟨a, b, k, hab, rfl⟩) _ hx`. Express the relevant statement in the definitionally equal form `((binomE _ a k x : Pol (KK O) n d) : MvPolynomial (ι × Fin n) (KK O)) ∈ L`. Rewrite using `[hResBin a k x]`. Conclude with `hLst _ (Or.inr ⟨a, k, rfl⟩) _ hx`. Establish `key` using `h13 p n' O S0 hG n (Pol (KK O) n d) _ hResRep (latticeMultidegreePart L d) hLat hMQ {lam} (by simpa using hdom) (fun _ => e') (by simpa using he'P) ⟨F, hF⟩ hFL`.
+
+Simplify using `only [Finset.sup_singleton, Finset.sum_singleton, hMQ] at key`. Rewrite `key` using `[latticeMultidegreePart, Submodule.mem_comap]`. Establish `key' : ((p : O) ^ (N0 n * deF p n (ellOf (restrictStableOperators (glOps (KK O) n LL S) (Pol (KK O) n d) hStabS) ⊤ + ellWt lam))) • e F ∈ L`. Simplify `key` using `[he'eq]`. Establish `hle : N0 n * deF p n (ellOf (restrictStableOperators (glOps (KK O) n LL S) (Pol (KK O) n d) hStabS) ⊤ + ellWt lam) ≤ N0 n * Nat.log p (2 * degIn d S + n - 1)`.
+
+Unfold `deF`. Conclude with `Nat.mul_le_mul_left _ (Nat.log_mono_right (by omega))`. Take `⟨j, hj⟩` from `Nat.exists_eq_add_of_le hle`. Rewrite using `[hj, ← prime_pow_smul_cast p _ (e F), pow_add, mul_comm, mul_smul]`. Conclude with `L.smul_mem _ key'`.
+
+Establish `h0 : e F = 0` using `hResZero lam e he hhw F hF`. Rewrite using `[h0, smul_zero]`. Conclude with `L.zero_mem`.
+-/
 theorem isotypic_projector_lattice_scaling (D : Formalism.BasicNotions.D7) (hDom : HighestWeightDominant) (hRes : SubrepRestrictionRep) (hPol : PolynomialGLRepresentation) (h13 : IsotypicProjectorTheoremField D)
     (p n' : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (S0 : UniformizedDVR p O)
     (hG : AdmissibleDVR p n' O) [CharZero (KK O)] (n : ℕ) (ι : Type) [Fintype ι] (LL : Letters ι) (S : Set ι)

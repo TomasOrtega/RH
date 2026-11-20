@@ -12,6 +12,9 @@ open scoped TensorProduct
 
 namespace GlobalTheory.WeilDeligne
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `hX`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.map_pow, hn]`. Conclude with `TensorProduct.ext' fun x y => by simp`.
+-/
 theorem isNilpotent_map_left {K U W : Type} [Field K] [AddCommGroup U] [Module K U]
     [AddCommGroup W] [Module K W] {X : Module.End K U} (Y : Module.End K W) (hX : IsNilpotent X) :
     IsNilpotent (TensorProduct.map X Y) := by
@@ -20,6 +23,9 @@ theorem isNilpotent_map_left {K U W : Type} [Field K] [AddCommGroup U] [Module K
   rw [TensorProduct.map_pow, hn]
   exact TensorProduct.ext' fun x y => by simp
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `hY`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.map_pow, hn]`. Conclude with `TensorProduct.ext' fun x y => by simp`.
+-/
 theorem isNilpotent_map_right {K U W : Type} [Field K] [AddCommGroup U] [Module K U]
     [AddCommGroup W] [Module K W] (X : Module.End K U) {Y : Module.End K W} (hY : IsNilpotent Y) :
     IsNilpotent (TensorProduct.map X Y) := by
@@ -28,6 +34,9 @@ theorem isNilpotent_map_right {K U W : Type} [Field K] [AddCommGroup U] [Module 
   rw [TensorProduct.map_pow, hn]
   exact TensorProduct.ext' fun x y => by simp
 
+/- English proof (translation)
+Use `show TensorProduct.map X Y * TensorProduct.map X' Y' = TensorProduct.map X' Y' * TensorProduct.map X Y`. Rewrite using `[← TensorProduct.map_mul, ← TensorProduct.map_mul, hX.eq, hY.eq]`.
+-/
 theorem commute_map {K U W : Type} [Field K] [AddCommGroup U] [Module K U]
     [AddCommGroup W] [Module K W] {X X' : Module.End K U} {Y Y' : Module.End K W}
     (hX : Commute X X') (hY : Commute Y Y') :
@@ -35,6 +44,11 @@ theorem commute_map {K U W : Type} [Field K] [AddCommGroup U] [Module K U]
   show TensorProduct.map X Y * TensorProduct.map X' Y' = TensorProduct.map X' Y' * TensorProduct.map X Y
   rw [← TensorProduct.map_mul, ← TensorProduct.map_mul, hX.eq, hY.eq]
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h V V' _ _ _ _ _ _ ρ N a ρ' N' b ha hb`. Use `⟨by rw [WDRep.tensor_N, ha.1, hb.1], fun g => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[WDRep.tensor_ρ]`. Conclude with `commute_map (ha.2 g).1 (hb.2 g).1`. Rewrite using `[WDRep.tensor_ρ]`.
+
+Establish `e : TensorProduct.map (ρ g) (ρ' g) - TensorProduct.map (a.ρ g) (b.ρ g) = TensorProduct.map (ρ g - a.ρ g) (ρ' g) + TensorProduct.map (a.ρ g) (ρ' g - b.ρ g)` using `TensorProduct.ext' fun x y => by`. Simplify using `[TensorProduct.sub_tmul, TensorProduct.tmul_sub]`. Rewrite using `[e]`. Use `Commute.isNilpotent_add ?_ (isNilpotent_map_left _ (ha.2 g).2) (isNilpotent_map_right _ (hb.2 g).2)` and prove the remaining obligations. Conclude with `commute_map ((ha.2 g).1.symm.sub_left (Commute.refl _)) ((Commute.refl _).sub_right (hb.2 g).1.symm)`.
+-/
 theorem IsFrobSS.tensor : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w} {V V' : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] [AddCommGroup V'] [Module ℂ V'] [FiniteDimensional ℂ V'] {ρ : ↥(Weil h) → Module.End ℂ V} {N : Module.End ℂ V} {a : WDRep h V} {ρ' : ↥(Weil h) → Module.End ℂ V'} {N' : Module.End ℂ V'} {b : WDRep h V'}, IsFrobSS ρ N a → IsFrobSS ρ' N' b → IsFrobSS (fun g => TensorProduct.map (ρ g) (ρ' g)) (N.rTensor V' + N'.lTensor V) (a.tensor b) := by
   intro E Ω _ _ _ _ _ A w h V V' _ _ _ _ _ _ ρ N a ρ' N' b ha hb
   refine ⟨by rw [WDRep.tensor_N, ha.1, hb.1], fun g => ⟨?_, ?_⟩⟩

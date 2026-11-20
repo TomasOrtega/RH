@@ -22,5 +22,8 @@ open scoped Classical
 set_option autoImplicit false
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlatRat.exists_unit_ratSec_comb_root | exact GlobalTheory.FlatRat.exists_unit_ratSec_comb_root | (intros; apply GlobalTheory.FlatRat.exists_unit_ratSec_comb_root <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.root_combination_rational_section_units : ∀ (D : D7) (O : Setup D), O.Core → ∀ (c : O.s.Comp) (W : O.LatModel ∅ c) (τ : D.what₂.Tau), ∃ r : ((GlobalTheory.ArInt.comb (fun i : Fin O.N => W.root ∅ (τ, i)) (fun _ => 1)).B.pull W.V.j).ι → W.V.G.functionFieldˣ, GlobalTheory.Cartier.IsRatSec ((GlobalTheory.ArInt.comb (fun i : Fin O.N => W.root ∅ (τ, i)) (fun _ => 1)).B.pull W.V.j) r ∧ ∀ i, ∀ x ∈ ((GlobalTheory.ArInt.comb (fun i : Fin O.N => W.root ∅ (τ, i)) (fun _ => 1)).B.pull W.V.j).U i, UnitAt x (r i : W.V.G.functionField) := by
   first | exact @GlobalTheory.FlatRat.exists_unit_ratSec_comb_root | exact GlobalTheory.FlatRat.exists_unit_ratSec_comb_root | (intros; apply GlobalTheory.FlatRat.exists_unit_ratSec_comb_root <;> assumption)

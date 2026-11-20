@@ -3,6 +3,27 @@ import Mathlib
 open scoped RestrictedProduct
 open Filter Set
 
+/- English proof (translation)
+Use `set S : Set (κ → Πʳ i, [R i, A i]) := {z | ∀ i u, u ≠ v → z i u ∈ A u} with hS`. Establish `hSo : IsOpen S`. Rewrite using `[hS, Set.setOf_forall]`. Conclude with `isOpen_iInter_of_finite fun i => (RestrictedProduct.isOpen_forall_imp_mem ho (p := fun u => u ≠ v)).preimage (f := fun z : κ → Πʳ i, [R i, A i] => z i) (continuous_apply i)`. Establish `hSc : IsClosed S`.
+
+Simplify using `only [hS, Set.setOf_forall]`. Conclude with `isClosed_iInter fun i => isClosed_iInter fun u => isClosed_iInter fun _ => (hc u).isClosed.preimage ((RestrictedProduct.continuous_eval u).comp (continuous_apply i))`. Establish `hev : Continuous fun (x : κ → Πʳ i, [R i, A i]) (i : κ) => x i v` using `continuous_pi fun i => (RestrictedProduct.continuous_eval v).comp (continuous_apply i)`. Establish `hK : ∀ K : Set (R v), IsCompact K → IsCompact {y : Πʳ i, [R i, A i] | y v ∈ K ∧ ∀ u, u ≠ v → y u ∈ A u}`. Introduce `K hK`.
+
+Establish `hle : (cofinite : Filter ι) ≤ 𝓟 ({v}ᶜ : Set ι)` using `by simp`. Establish `hQ : IsCompact (Set.univ.pi (Function.update A v K))` using `isCompact_univ_pi fun u => by`. Distinguish the cases in `h : u = v`. Substitute `h` using the available equality. Simplify using `using hK`.
+
+Simplify `hc u` using `[h]`. Establish `hP` using `(RestrictedProduct.isEmbedding_coe_of_principal (R := R) (A := A) (S := ({v}ᶜ : Set ι))).isCompact_preimage_iff (K := Set.univ.pi (Function.update A v K)) (by`. Rewrite using `[RestrictedProduct.range_coe_principal]`. Introduce `x hx u hu`. Establish `h : u ≠ v` using `hu`.
+
+Simplify `hx u trivial) |>.mpr hQ` using `[h]`. Use `hP.image (RestrictedProduct.continuous_inclusion hle) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy1, hy2⟩`.
+
+Use `⟨⟨y.1, hy2⟩, fun u _ => ?_, rfl⟩` and prove the remaining obligations. Distinguish the cases in `h : u = v`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hy1`.
+
+Rewrite using `[Function.update_of_ne h]`. Conclude with `hy2 u h`. Introduce and unpack `⟨z, hz, rfl⟩`. Use `⟨?_, fun u hu => z.2 hu⟩` and prove the remaining obligations. Use `hz v trivial` as an intermediate fact.
+
+Rewrite `this` using `[Function.update_self]`. Conclude with `this`. Prove the components needed by the constructor for the conclusion. Establish `hI : IsLocallyConstant (S.indicator (1 : (κ → Πʳ i, [R i, A i]) → ℂ))` using `(LocallyConstant.indicator (1 : LocallyConstant (κ → Πʳ i, [R i, A i]) ℂ) (U := S) ⟨hSc, hSo⟩).isLocallyConstant`. Rewrite using `[funext hg]`.
+
+Conclude with `(h1.comp_continuous hev).mul hI`. Use `HasCompactSupport.intro (isCompact_univ_pi fun i : κ => hK _ (h2.isCompact.image (continuous_apply i))) fun x hx => ?_` and prove the remaining obligations. Rewrite using `[hg]`. Distinguish the cases in `hxS : x ∈ S`. Assume the negation of the conclusion as `hne`.
+
+Use `hx fun i _ => ⟨⟨fun j => x j v, ?_, rfl⟩, hxS i⟩` and prove the remaining obligations. Conclude with `subset_tsupport _ (left_ne_zero_of_mul hne)`. Rewrite using `[Set.indicator_of_notMem hxS, mul_zero]`.
+-/
 private lemma UpperTheory.factorizable_generation {ι : Type*} {R : ι → Type*} [∀ i, TopologicalSpace (R i)]
     [∀ i, T2Space (R i)] {A : ∀ i, Set (R i)} (ho : ∀ i, IsOpen (A i))
     (hc : ∀ i, IsCompact (A i)) {κ : Type*} [Finite κ] (v : ι) (φ : (κ → R v) → ℂ)
@@ -68,6 +89,9 @@ private lemma UpperTheory.factorizable_generation {ι : Type*} {R : ι → Type*
       exact subset_tsupport _ (left_ne_zero_of_mul hne)
     · rw [Set.indicator_of_notMem hxS, mul_zero]
 
+/- English proof (translation)
+Use `letI := Valued.toNontriviallyNormedField K Γ`. Use `haveI : ProperSpace K := .of_nontriviallyNormedField_of_weaklyLocallyCompactSpace K`. Conclude with `isCompact_iff_compactSpace.mpr (Valued.integer.properSpace_iff_compactSpace_integer.mp this)`.
+-/
 private lemma UpperTheory.valuation_subring_compact {K Γ : Type*} [Field K] [LinearOrderedCommGroupWithZero Γ]
     [Valued K Γ] [(Valued.v : Valuation K Γ).RankOne] [LocallyCompactSpace K] :
     IsCompact ((Valued.v : Valuation K Γ).valuationSubring : Set K) := by
@@ -76,6 +100,9 @@ private lemma UpperTheory.valuation_subring_compact {K Γ : Type*} [Field K] [Li
   exact isCompact_iff_compactSpace.mpr
     (Valued.integer.properSpace_iff_compactSpace_integer.mp this)
 
+/- English proof (translation)
+Introduce `F _ _ hlc κ _ v φ h1 h2 g hg`. Conclude with `UpperTheory.factorizable_generation (R := fun u : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F) => u.adicCompletion F) (A := fun u => (u.adicCompletionIntegers F : Set (u.adicCompletion F))) (fun _ => Valued.isOpen_valuationSubring _) (fun u => haveI := hlc u; …`.
+-/
 theorem UpperTheory.schwartz_function_generation :
     ∀ (F : Type) [Field F] [NumberField F],
         (∀ u : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F), LocallyCompactSpace (u.adicCompletion F)) →

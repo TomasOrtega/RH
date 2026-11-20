@@ -86,12 +86,21 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution.OrderReductionProperties
 
+/- English proof (translation)
+The claim follows from `tunedSheafProperties_of_succ_le_of_mul_le tunedSheaf_succ_le.{u} tunedSheaf_mul_le_add.{u}`.
+-/
 theorem tunedSheafProperties : TunedSheafProperties.{u} :=
   tunedSheafProperties_of_succ_le_of_mul_le tunedSheaf_succ_le.{u} tunedSheaf_mul_le_add.{u}
 
+/- English proof (translation)
+Apply `FunctorialResolution.EmbeddedResolution.exists_etale_equalizing_isMaxContactHypersurface` to reduce the goal to its premises.
+-/
 theorem maxContactHypersurfacesEtaleEquivalent : MaxContactHypersurfacesEtaleEquivalent.{u} := by
   apply FunctorialResolution.EmbeddedResolution.exists_etale_equalizing_isMaxContactHypersurface
 
+/- English proof (translation)
+Rewrite using `[OrderReduction.validPullbackAlongSmooth_iff]`. Introduce `T hV Y q h hsm hqc hq`. Establish `: AlgebraicGeometry.Smooth h` using `hsm`. Establish `: AlgebraicGeometry.QuasiCompact q` using `hqc`. Conclude with `MarkedIdealWithBoundary.isAdmissible_pullbackAlong_of_smooth T hV Y q h hq`.
+-/
 theorem validPullbackAlongSmooth : OrderReduction.ValidPullbackAlongSmooth.{u} := by
   rw [OrderReduction.validPullbackAlongSmooth_iff]
   intro T hV Y q h hsm hqc hq
@@ -99,12 +108,18 @@ theorem validPullbackAlongSmooth : OrderReduction.ValidPullbackAlongSmooth.{u} :
   have : AlgebraicGeometry.QuasiCompact q := hqc
   exact MarkedIdealWithBoundary.isAdmissible_pullbackAlong_of_smooth T hV Y q h hq
 
+/- English proof (translation)
+Unfold `FunctorialResolution.EmbeddedResolution.OrderReductionFieldBaseChange.ValidBaseChange`. Use `intros`. Apply `MarkedIdealWithBoundary.isAdmissible_baseChange` to reduce the goal to its premises. Apply the tactic sequence `all_goals assumption`.
+-/
 theorem validBaseChange : OrderReductionFieldBaseChange.ValidBaseChange.{u} := by
   unfold FunctorialResolution.EmbeddedResolution.OrderReductionFieldBaseChange.ValidBaseChange
   intros
   apply MarkedIdealWithBoundary.isAdmissible_baseChange
   all_goals assumption
 
+/- English proof (translation)
+Introduce `T L _ _ f hV y`. Establish `: CharZero T.base` using `f.charZero`. Consider the cases of `hV`. Establish `: AlgebraicGeometry.Smooth T.structMap` using `by assumption`. Conclude with `FunctorialResolution.EmbeddedResolution.orderAt_comap_fieldBaseChange T.structMap (CommRingCat.ofHom f) T.ideal y`.
+-/
 theorem orderAtBaseChangeEq : OrderReductionFieldBaseChange.OrderAtBaseChangeEq.{u} := by
   intro T L _ _ f hV y
   have : CharZero T.base := f.charZero
@@ -112,6 +127,13 @@ theorem orderAtBaseChangeEq : OrderReductionFieldBaseChange.OrderAtBaseChangeEq.
   have : AlgebraicGeometry.Smooth T.structMap := by assumption
   exact FunctorialResolution.EmbeddedResolution.orderAt_comap_fieldBaseChange T.structMap (CommRingCat.ofHom f) T.ideal y
 
+/- English proof (translation)
+Establish `hspec : specMapOfFieldHom k L f = Spec.map (CommRingCat.ofHom f)` using `rfl`. Rewrite `hq` using `[hspec]`. Take `⟨e, hfst, hsnd⟩ : ∃ e : Y ≅ pullback pX (Spec.map (CommRingCat.ofHom f)), e.hom ≫ pullback.fst pX (Spec.map (CommRingCat.ofHom f)) = q ∧ e.hom ≫ pullback.snd pX (Spec.map (CommRingCat.ofHom f)) = pY` from `⟨hq.isoPullback, hq.isoPullback_hom_fst, hq.isoPullback_hom_snd⟩`. Use `clear hq`. Substitute `hfst` using the available equality.
+
+Substitute `hsnd` using the available equality. Establish `: AlgebraicGeometry.Smooth e.hom` using `inferInstance`. Establish `key` using `derivIdealSheafIterate_comap_fieldBaseChange pX (CommRingCat.ofHom f) r I`. Establish `h2` using `derivIdealSheafIterate_comap L (pullback.snd pX (Spec.map (CommRingCat.ofHom f))) e.hom r (I.comap (pullback.fst pX (Spec.map (CommRingCat.ofHom f))))`. Establish `hc1 : I.comap (e.hom ≫ pullback.fst pX (Spec.map (CommRingCat.ofHom f))) = (I.comap (pullback.fst pX (Spec.map (CommRingCat.ofHom f)))).comap e.hom`.
+
+Simplify using `[AlgebraicGeometry.Scheme.IdealSheafData.comap_comp]`. Establish `hc2 : (derivIdealSheafIterate k pX r I).comap (e.hom ≫ pullback.fst pX (Spec.map (CommRingCat.ofHom f))) = ((derivIdealSheafIterate k pX r I).comap (pullback.fst pX (Spec.map (CommRingCat.ofHom f)))).comap e.hom`. Simplify using `[AlgebraicGeometry.Scheme.IdealSheafData.comap_comp]`. Rewrite using `[hc1, hc2, h2, key]`.
+-/
 private theorem derivIdealSheafIter_comap_of_isPullback
     {k L : Type u} [Field k] [Field L]
     {X Y : Scheme.{u}} (pX : X ⟶ Spec (CommRingCat.of k))
@@ -147,11 +169,21 @@ private theorem derivIdealSheafIter_comap_of_isPullback
     simp [AlgebraicGeometry.Scheme.IdealSheafData.comap_comp]
   rw [hc1, hc2, h2, key]
 
+/- English proof (translation)
+Unfold `DerivIdealSheafIterateCommBaseChange`. Use `intros`. Apply the tactic sequence `apply derivIdealSheafIter_comap_of_isPullback <;> assumption`.
+-/
 theorem derivIdealSheafIterate_comm_baseChange : DerivIdealSheafIterateCommBaseChange.{u} := by
   unfold DerivIdealSheafIterateCommBaseChange
   intros
   apply derivIdealSheafIter_comap_of_isPullback <;> assumption
 
+/- English proof (translation)
+Establish `: CharZero T.base` using `f.charZero`. Establish `hlft : AlgebraicGeometry.LocallyOfFiniteType T.structMap` using `hV.locallyOfFiniteType`. Establish `hsm : AlgebraicGeometry.Smooth T.structMap` using `by clear hB`. Consider the cases of `hV`. Use the matching hypothesis.
+
+Establish `hft' : AlgebraicGeometry.LocallyOfFiniteType (CategoryTheory.Limits.pullback.snd T.structMap (AlgebraicGeometry.Spec.map (CommRingCat.ofHom f)))` using `hft`. Establish `hB' : FunctorialResolution.EmbeddedResolution.IsDerivBalanced T.base T.structMap T.ideal T.mult` using `hB`. Establish `hgoal : FunctorialResolution.EmbeddedResolution.IsDerivBalanced K (CategoryTheory.Limits.pullback.snd T.structMap (AlgebraicGeometry.Spec.map (CommRingCat.ofHom f))) (T.ideal.comap (CategoryTheory.Limits.pullback.fst T.structMap (AlgebraicGeometry.Spec.map (CommRingCat.ofHom f))) …`. Apply `FunctorialResolution.EmbeddedResolution.isDerivBalanced_of_pow_le` to reduce the goal to its premises. Introduce `i hi`.
+
+Rewrite using `[FunctorialResolution.EmbeddedResolution.derivIdealSheafIterate_comap_fieldBaseChange (L := K) T.structMap (CommRingCat.ofHom f) i T.ideal, ← AlgebraicGeometry.Scheme.IdealSheafData.comap_pow, ← AlgebraicGeometry.Scheme.IdealSheafData.comap_pow]`. Apply `AlgebraicGeometry.Scheme.IdealSheafData.comap_mono` to reduce the goal to its premises. Conclude with `FunctorialResolution.EmbeddedResolution.IsDerivBalanced.derivIdealSheafIterate_pow_le T.base T.structMap hB' hi`. Conclude with `hgoal`.
+-/
 theorem isBalanced_baseChange (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     (K : Type u) [Field K] [CharZero K] (f : T.base →+* K)
     (hft : AlgebraicGeometry.LocallyOfFiniteType (T.baseChange K f).structMap)
@@ -182,6 +214,13 @@ theorem isBalanced_baseChange (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmiss
     exact FunctorialResolution.EmbeddedResolution.IsDerivBalanced.derivIdealSheafIterate_pow_le T.base T.structMap hB' hi
   exact hgoal
 
+/- English proof (translation)
+Introduce `T hV`. Establish `key : ∀ L : List T.scheme.IdealSheafData, MarkedIdealWithBoundary.SameNontrivialBoundary T.boundary L → (T.withBoundary L).IsAdmissible`. Introduce `L hL`. Establish `hL'` using `hL.symm`. Apply the tactic sequence `apply MarkedIdealWithBoundary.validOfSameNontrivialBoundary <;> assumption`.
+
+Rewrite using `[MaxContactReduction.dropTrivialBoundary_def]`. Apply `key` to reduce the goal to its premises. Rewrite using `[MarkedIdealWithBoundary.sameNontrivialBoundary_iff]`. Simplify using `[MarkedIdealWithBoundary.nontrivialPart, List.filter_filter]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `D`. Apply the tactic sequence `by_cases hD : D = ⊤ <;> simp [hD]`.
+-/
 theorem forall_isAdmissible_dropTrivialBoundary : MaxContactFunctoriality.DropTrivialBoundaryAdmissible.{u} := by
   intro T hV
   have key : ∀ L : List T.scheme.IdealSheafData,
@@ -197,16 +236,29 @@ theorem forall_isAdmissible_dropTrivialBoundary : MaxContactFunctoriality.DropTr
   funext D
   by_cases hD : D = ⊤ <;> simp [hD]
 
+/- English proof (translation)
+Simplify using `[FunctorialResolution.EmbeddedResolution.filterNeTop]`.
+-/
 private theorem filterNeTop_cons_top {X : Scheme.{u}}
     (L : List X.IdealSheafData) :
     FunctorialResolution.EmbeddedResolution.filterNeTop ((⊤ : X.IdealSheafData) :: L) = FunctorialResolution.EmbeddedResolution.filterNeTop L := by
   simp [FunctorialResolution.EmbeddedResolution.filterNeTop]
 
+/- English proof (translation)
+Simplify using `[FunctorialResolution.EmbeddedResolution.filterNeTop, hD]`.
+-/
 private theorem filterNeTop_cons_of_ne_top {X : Scheme.{u}}
     {D : X.IdealSheafData} (hD : D ≠ ⊤) (L : List X.IdealSheafData) :
     FunctorialResolution.EmbeddedResolution.filterNeTop (D :: L) = D :: FunctorialResolution.EmbeddedResolution.filterNeTop L := by
   simp [FunctorialResolution.EmbeddedResolution.filterNeTop, hD]
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons D L ih`. Distinguish the cases in `hpD : p D = true`. Rewrite using `[List.filter_cons, if_pos hpD, List.map_cons, List.map_cons, List.cons_append, List.cons_append]`.
+
+Distinguish the cases in `hfD : f D = ⊤`. Rewrite using `[hfD, filterNeTop_cons_top, filterNeTop_cons_top]`. Conclude with `ih`. Rewrite using `[filterNeTop_cons_of_ne_top hfD, filterNeTop_cons_of_ne_top hfD, ih]`. Establish `hDtop : D = ⊤` using `hp D (by simpa using hpD)`.
+
+Rewrite using `[List.filter_cons, if_neg hpD, List.map_cons, List.cons_append, hDtop, hf, filterNeTop_cons_top]`. Conclude with `ih`.
+-/
 private theorem filterNeTop_map_filter_append {X Y : Scheme.{u}}
     (f : X.IdealSheafData → Y.IdealSheafData) (hf : f ⊤ = ⊤)
     (p : X.IdealSheafData → Bool)
@@ -229,6 +281,9 @@ private theorem filterNeTop_map_filter_append {X Y : Scheme.{u}}
           filterNeTop_cons_top]
         exact ih
 
+/- English proof (translation)
+Rewrite using `[BlowupSequenceData.boundary_eq_map_iteratedStrictTransform_append d (List.filter p L) i, BlowupSequenceData.boundary_eq_map_iteratedStrictTransform_append d L i]`. Conclude with `filterNeTop_map_filter_append (d.iteratedStrictTransform i) (d.iteratedStrictTransform_top i) p hp (d.boundaryFrom [] i) L`.
+-/
 private theorem filterNeTop_boundary_filter {X : Scheme.{u}}
     (d : BlowupSequenceData X) (p : X.IdealSheafData → Bool)
     (hp : ∀ D : X.IdealSheafData, p D = false → D = ⊤)
@@ -240,6 +295,11 @@ private theorem filterNeTop_boundary_filter {X : Scheme.{u}}
   exact filterNeTop_map_filter_append (d.iteratedStrictTransform i)
     (d.iteratedStrictTransform_top i) p hp (d.boundaryFrom [] i) L
 
+/- English proof (translation)
+Use `⟨h.divisible, h.center_order, h.center_smooth, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Establish `key : FunctorialResolution.EmbeddedResolution.filterNeTop (d.boundaryFrom (MaxContactReduction.dropTrivialBoundary T).boundary i) = FunctorialResolution.EmbeddedResolution.filterNeTop (d.boundaryFrom T.boundary i)`. Rewrite using `[MaxContactReduction.dropTrivialBoundary_boundary]`. Use `filterNeTop_boundary_filter d _ ?_ T.boundary i` and prove the remaining obligations.
+
+Introduce `D hD`. Simplify using `using hD`. Conclude with `hasStrictNormalCrossingsWith_of_filterNeTop_eq _ _ _ _ key (h.center_snc i hi)`.
+-/
 theorem isMarked_of_isMarked_dropTrivialBoundary (T : MarkedIdealWithBoundary.{u}) (_hV : T.IsAdmissible)
     (d : BlowupSequenceData T.scheme) (I : T.scheme.IdealSheafData) (m : ℕ)
     (h : d.IsMarked T.structMap I m (MaxContactReduction.dropTrivialBoundary T).boundary) :
@@ -254,15 +314,24 @@ theorem isMarked_of_isMarked_dropTrivialBoundary (T : MarkedIdealWithBoundary.{u
     simpa using hD
   exact hasStrictNormalCrossingsWith_of_filterNeTop_eq _ _ _ _ key (h.center_snc i hi)
 
+/- English proof (translation)
+Introduce `T hV d h`. Conclude with `isMarked_of_isMarked_dropTrivialBoundary T hV d T.ideal T.mult h`.
+-/
 theorem forall_isMarked_of_isMarked_dropTrivialBoundary : MaxContactFunctoriality.MarkedOfMarkedDropTrivialBoundary.{u} := by
   intro T hV d h
   exact isMarked_of_isMarked_dropTrivialBoundary T hV d T.ideal T.mult h
 
+/- English proof (translation)
+Introduce `k _ W p N μ Mem Z h`. Conclude with `FunctorialResolution.EmbeddedResolution.OrderCertificate.localize (fun z _ => (h z).choose) (fun z _ => (h z).choose_spec.1) (fun z _ => (h z).choose_spec.2)`.
+-/
 theorem orderCertificateLocalToGlobal : OrderCertificateLocalToGlobal.{u} := by
   intro k _ W p N μ Mem Z h
   exact FunctorialResolution.EmbeddedResolution.OrderCertificate.localize (fun z _ => (h z).choose)
     (fun z _ => (h z).choose_spec.1) (fun z _ => (h z).choose_spec.2)
 
+/- English proof (translation)
+Unfold `FunctorialResolution.EmbeddedResolution.IsSmoothDivisorStableUnderSmoothPullback`. Use `intros`. Conclude with `FunctorialResolution.EmbeddedResolution.isSmoothDivisor_comap_of_mem_inStrictNormalCrossingPosition _ _ _ (FunctorialResolution.EmbeddedResolution.inStrictNormalCrossingPosition_singleton_of_isSmoothDivisor _ _ (by assumption)) _ (List.mem_singleton_self _)`.
+-/
 theorem isSmoothDivisorStableUnderSmoothPullback : IsSmoothDivisorStableUnderSmoothPullback.{u} := by
   unfold FunctorialResolution.EmbeddedResolution.IsSmoothDivisorStableUnderSmoothPullback
   intros
@@ -270,9 +339,15 @@ theorem isSmoothDivisorStableUnderSmoothPullback : IsSmoothDivisorStableUnderSmo
       (FunctorialResolution.EmbeddedResolution.inStrictNormalCrossingPosition_singleton_of_isSmoothDivisor _ _ (by assumption)) _
       (List.mem_singleton_self _)
 
+/- English proof (translation)
+The claim follows from `maxContactHypersurfaceSmoothPullback_of_isSmoothDivisorStableUnderSmoothPullback isSmoothDivisorStableUnderSmoothPullback.{u}`.
+-/
 theorem maxContactHypersurfaceSmoothPullback : BoundarySeparationBaseChange.MaxContactHypersurfaceSmoothPullback.{u} :=
   maxContactHypersurfaceSmoothPullback_of_isSmoothDivisorStableUnderSmoothPullback isSmoothDivisorStableUnderSmoothPullback.{u}
 
+/- English proof (translation)
+Apply `FunctorialResolution.EmbeddedResolution.isMaxContactInvariant_of_mul_le` to reduce the goal to its premises. Rewrite using `[FunctorialResolution.EmbeddedResolution.maxContactIdeal_eq_derivIdealSheafIterate, FunctorialResolution.EmbeddedResolution.balancedTunedSheaf_eq]`. Conclude with `htf.derivIdealSheafIter_mul_derivIdealSheaf_le_tunedSheaf k X p I m hm hmax (FunctorialResolution.EmbeddedResolution.tuningExponent m) (FunctorialResolution.EmbeddedResolution.one_le_tuningExponent m)`.
+-/
 private theorem isMaxContactInvariant_balancedTunedSheaf (htf : TunedSheafProperties.{u})
     (k : Type u) [Field k] [CharZero k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -284,6 +359,9 @@ private theorem isMaxContactInvariant_balancedTunedSheaf (htf : TunedSheafProper
   exact htf.derivIdealSheafIter_mul_derivIdealSheaf_le_tunedSheaf k X p I m hm hmax
     (FunctorialResolution.EmbeddedResolution.tuningExponent m) (FunctorialResolution.EmbeddedResolution.one_le_tuningExponent m)
 
+/- English proof (translation)
+Unfold `FunctorialResolution.EmbeddedResolution.BoundarySeparationBaseChange.IsMaxContactInvariantBalancedTuned`. Use `intros`. Apply `isMaxContactInvariant_balancedTunedSheaf htf` to reduce the goal to its premises. Apply the tactic sequence `all_goals assumption`.
+-/
 theorem isMaxContactInvariantBalancedTuned_of_tunedSheafProperties (htf : TunedSheafProperties.{u}) :
     BoundarySeparationBaseChange.IsMaxContactInvariantBalancedTuned.{u} := by
   unfold FunctorialResolution.EmbeddedResolution.BoundarySeparationBaseChange.IsMaxContactInvariantBalancedTuned
@@ -291,6 +369,11 @@ theorem isMaxContactInvariantBalancedTuned_of_tunedSheafProperties (htf : TunedS
   apply isMaxContactInvariant_balancedTunedSheaf htf
   all_goals assumption
 
+/- English proof (translation)
+Establish `hsm : AlgebraicGeometry.Smooth T.structMap`. Consider the cases of `hV`. Use the matching hypothesis. Establish `hcz : CharZero T.base`. Consider the cases of `hV`.
+
+Use the matching hypothesis. Establish `hsnc : FunctorialResolution.EmbeddedResolution.InStrictNormalCrossingPosition T.structMap [Scheme.Hom.ker e]` using `FunctorialResolution.EmbeddedResolution.inStrictNormalCrossingPosition_singleton_of_isSmoothDivisor T.structMap (Scheme.Hom.ker e) hD`. Consider the cases of `hV`. Apply the tactic sequence `constructor <;> assumption`.
+-/
 theorem isAdmissible_withBoundary_ker_of_isSmoothDivisor (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible)
     {Y : Scheme.{u}} (e : Y ⟶ T.scheme) [AlgebraicGeometry.IsClosedImmersion e]
     (hD : IsSmoothDivisor T.structMap (Scheme.Hom.ker e)) :
@@ -306,6 +389,9 @@ theorem isAdmissible_withBoundary_ker_of_isSmoothDivisor (T : MarkedIdealWithBou
   cases hV
   constructor <;> assumption
 
+/- English proof (translation)
+Unfold `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.removeUnitIdeals FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.nontrivialPart`. Use `congr 1`. Use function extensionality and compare the values at `D`. Apply the tactic sequence `by_cases hD : D = ⊤ <;> simp [hD]`.
+-/
 private theorem removeUnitIdeals_eq_nontrivialPart {X : Scheme.{u}} (L : List X.IdealSheafData) :
     FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.removeUnitIdeals L = FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.nontrivialPart L := by
   unfold FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.removeUnitIdeals FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.nontrivialPart
@@ -313,6 +399,9 @@ private theorem removeUnitIdeals_eq_nontrivialPart {X : Scheme.{u}} (L : List X.
   funext D
   by_cases hD : D = ⊤ <;> simp [hD]
 
+/- English proof (translation)
+Unfold `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.smoothPullbackTriple FunctorialResolution.EmbeddedResolution.NontrivialBoundary.pullbackWithNontrivialBoundary`. Rewrite using `[removeUnitIdeals_eq_nontrivialPart]`. Both sides reduce to the same expression.
+-/
 private theorem smoothPullbackTriple_eq_pullbackWithNontrivialBoundary (S : EmbeddedResolution.MarkedIdealWithBoundary.{u})
     {X' : Scheme.{u}} (q : X' ⟶ S.scheme) [AlgebraicGeometry.Smooth q] :
     FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.smoothPullbackTriple S q = FunctorialResolution.EmbeddedResolution.NontrivialBoundary.pullbackWithNontrivialBoundary S q := by
@@ -320,6 +409,15 @@ private theorem smoothPullbackTriple_eq_pullbackWithNontrivialBoundary (S : Embe
   rw [removeUnitIdeals_eq_nontrivialPart]
   rfl
 
+/- English proof (translation)
+Unfold `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.LoopCompatibleWithSmoothPullback`. Introduce `hstar hin hMC hAdm hmono B hspec hshift T T' hPdimT hPdimOther S hV hO hdimS H hH hHsnc hlive X' q hsm hV' hdim' hH' hH'snc`. Establish `: AlgebraicGeometry.Smooth q` using `hsm`. Establish `heq : FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.smoothPullbackTriple S q = FunctorialResolution.EmbeddedResolution.NontrivialBoundary.pullbackWithNontrivialBoundary S q` using `smoothPullbackTriple_eq_pullbackWithNontrivialBoundary S q`. Establish `hV2 : (FunctorialResolution.EmbeddedResolution.NontrivialBoundary.pullbackWithNontrivialBoundary S q).IsAdmissible`.
+
+Rewrite using `[← heq]`. Conclude with `hV'`. Establish `hdim2 : (FunctorialResolution.EmbeddedResolution.NontrivialBoundary.pullbackWithNontrivialBoundary S q).krullDimSucc ≤ T'.krullDimSucc`. Rewrite using `[← heq]`. Conclude with `hdim'`.
+
+Establish `hH2 : ∀ [inst : AlgebraicGeometry.LocallyOfFiniteType (FunctorialResolution.EmbeddedResolution.NontrivialBoundary.pullbackWithNontrivialBoundary S q).structMap], FunctorialResolution.EmbeddedResolution.IsMaxContactHypersurface (FunctorialResolution.EmbeddedResolution.NontrivialBo …`. Introduce `inst`. Establish `hft2 : AlgebraicGeometry.LocallyOfFiniteType (FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.smoothPullbackTriple S q).structMap` using `inst`. Conclude with `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.isMaxContactHypersurface_of_triple_eq heq.symm inst hft2 (H.comap q) (H.comap q) HEq.rfl hH'`. Establish `hH2snc : FunctorialResolution.EmbeddedResolution.InStrictNormalCrossingPosition (FunctorialResolution.EmbeddedResolution.NontrivialBoundary.pullbackWithNontrivialBoundary S q).structMap [H.comap q]` using `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.inStrictNormalCrossingPosition_of_triple_eq heq.symm [H.comap q] [H.comap q] HEq.rfl hH'snc`.
+
+Establish `hmain` using `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.isPullbackBlowupSequence_reduceAlongHypersurface_lowerDimensionalFamily.{u, u} hstar hin hMC hAdm hinv P hmono A B hspec hshift T T' hPdimT hPdimOther S hV hO hdimS hlive H hH hHsnc q hV2 hdim2 hH2 hH2snc`. Establish `hstep : (FunctorialResolution.EmbeddedResolution.MaxContactReduction.reduceAlongHypersurface hinv T' (FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.lowerDimensionalFamily A T') (FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.smoothPullbackTriple …` using `eq_of_heq (FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.reduceAlongHypersurface_toSequenceOfBlowups_heq hinv T' (FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.lowerDimensionalFamily A T') heq (H.comap q) (H.comap q) HEq.rfl)`. Conclude with `Eq.mpr (congrArg (fun z => FunctorialResolution.EmbeddedResolution.IsPullbackBlowupSequence q z (FunctorialResolution.EmbeddedResolution.MaxContactReduction.reduceAlongHypersurface hinv T (FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.lowerDimensionalFamily A T) …`.
+-/
 theorem separateBoundary_pullback_of_smooth (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop)
     (A : ℕ → PrincipalizationAssignment.{u}) :
     MaxContactFunctoriality.LoopCompatibleWithSmoothPullback hinv P A := by
@@ -361,6 +459,15 @@ theorem separateBoundary_pullback_of_smooth (hinv : ComapIsoInvariance.{u}) (P :
     (FunctorialResolution.EmbeddedResolution.MaxContactReduction.reduceAlongHypersurface hinv T (FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.lowerDimensionalFamily A T) S
       H).toMarkedSequenceOfBlowups.toSequenceOfBlowups) hstep) hmain
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `EmbeddedResolution.OrderReductionCorrectness.existsMaxContactControlledTransforms.{u}`. Conclude with `FunctorialResolution.EmbeddedResolution.OrderReductionCorrectness.projectionToBase_mem_orderAtLeastLocus_of_mem_center`. Conclude with `FunctorialResolution.EmbeddedResolution.OrderReductionCorrectness.isBalanced_comap_of_smooth`. Introduce `V W f hf hN hdim`.
+
+Establish `: AlgebraicGeometry.Etale f` using `hf`. Establish `: AlgebraicGeometry.IsLocallyNoetherian W` using `hN`. Conclude with `FunctorialResolution.EmbeddedResolution.krullDimSucc_le_of_etale f hdim`. Conclude with `FunctorialResolution.EmbeddedResolution.OrderReductionCorrectness.isLocallyNoetherian_schemeAt`. Conclude with `EmbeddedResolution.OrderReductionCorrectness.blowupLiftEqOnControlledTransform.{u}`.
+
+Conclude with `FunctorialResolution.EmbeddedResolution.OrderReductionCorrectness.le_of_support_subset_of_smooth`. Conclude with `maxContactHypersurfacesEtaleEquivalent.{u}`. Conclude with `FunctorialResolution.EmbeddedResolution.OrderReductionCorrectness.isStrictPullback_of_isPullback_of_center_nonempty`. Introduce `T hV Y q h hsm hqc hq`. Establish `: AlgebraicGeometry.Smooth h` using `hsm`.
+
+Establish `: AlgebraicGeometry.QuasiCompact q` using `hqc`. Conclude with `MarkedIdealWithBoundary.isAdmissible_pullbackAlong_of_smooth T hV Y q h hq`.
+-/
 theorem orderReductionHypotheses : OrderReduction.OrderReductionHypotheses.{u} := by
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · exact EmbeddedResolution.OrderReductionCorrectness.existsMaxContactControlledTransforms.{u}
@@ -380,10 +487,20 @@ theorem orderReductionHypotheses : OrderReduction.OrderReductionHypotheses.{u} :
     have : AlgebraicGeometry.QuasiCompact q := hqc
     exact MarkedIdealWithBoundary.isAdmissible_pullbackAlong_of_smooth T hV Y q h hq
 
+/- English proof (translation)
+The claim follows from `FunctorialResolution.EmbeddedResolution.OrderReduction.maxContactCoverProperties_of_tunedSheafProperties.{u} tunedSheafProperties.{u} EmbeddedResolution.dimensionNonincreasingAlongBlowups.{u} validPullbackAlongSmooth.{u}`.
+-/
 theorem maxContactCoverProperties : MaxContactCoverProperties.{u} :=
   FunctorialResolution.EmbeddedResolution.OrderReduction.maxContactCoverProperties_of_tunedSheafProperties.{u} tunedSheafProperties.{u} EmbeddedResolution.dimensionNonincreasingAlongBlowups.{u}
     validPullbackAlongSmooth.{u}
 
+/- English proof (translation)
+Unfold `FunctorialResolution.EmbeddedResolution.IsBaseChangeInherited`. Introduce `T L _ _ f hV hP hO hB`. Establish `: CharZero T.base` using `f.charZero`. Use `⟨MarkedIdealWithBoundary.isAdmissible_baseChange T hV L f, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MarkedIdealWithBoundary.dim_baseChange T hV L f]`.
+
+Conclude with `hP`. Introduce `y`. Establish `hsm : AlgebraicGeometry.Smooth T.structMap`. Consider the cases of `hV`. Use the matching hypothesis.
+
+Use `hsm` as an intermediate fact. Establish `key` using `FunctorialResolution.EmbeddedResolution.orderAt_comap_fieldBaseChange (k := T.base) (L := L) T.structMap (CommRingCat.ofHom f) T.ideal y`. Conclude with `key.trans_le (hO _)`. Introduce `hft`. Conclude with `isBalanced_baseChange T hV L f hft (hB _)`.
+-/
 theorem isBaseChangeInherited (P : ℕ → Prop) : IsBaseChangeInherited.{u} P := by
   unfold FunctorialResolution.EmbeddedResolution.IsBaseChangeInherited
   intro T L _ _ f hV hP hO hB
@@ -402,6 +519,15 @@ theorem isBaseChangeInherited (P : ℕ → Prop) : IsBaseChangeInherited.{u} P :
   · intro hft
     exact isBalanced_baseChange T hV L f hft (hB _)
 
+/- English proof (translation)
+Establish `hmono : ∀ a b : ℕ, a ≤ b → b ≤ n → a ≤ n` using `fun _ _ hab hb => le_trans hab hb`. Establish `hstar : MaxContactCoverProperties.{u}` using `maxContactCoverProperties`. Establish `hin : OrderReduction.OrderReductionHypotheses.{u}` using `orderReductionHypotheses`. Establish `hopen : ∀ (k : Type u) [Field k], FunctorialResolution.EmbeddedResolution.OpenImmersionStability k` using `fun k inst => @FunctorialResolution.EmbeddedResolution.openImmersionStability k inst`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `T h i hi`. Conclude with `FunctorialResolution.EmbeddedResolution.BoundarySeparationByMaxContact.center_coverMarkedBlowupData_ne_top hstar hinv (fun d => d ≤ n) hmono A L hdiv T h i hi`. Introduce `T h hmult i hi`. Conclude with `FunctorialResolution.EmbeddedResolution.BoundarySeparationByMaxContact.orderCertificate_coverMarkedBlowupData_of_mult_eq_one hstar hopen hinv (fun d => d ≤ n) hmono A L hdiv T h hmult i hi`. Introduce `T h`.
+
+Conclude with `FunctorialResolution.EmbeddedResolution.MaxContactCoverDescent.exists_isStrictPullback_coverMarkedSequence hstar hin hinv (fun d => d ≤ n) hmono A L hdiv (isMaxContactInvariantBalancedTuned_of_tunedSheafProperties tunedSheafProperties.{u}) maxContactHypersurfaceSmoothPullback.{u} …`. Introduce `T h hbd hmult Y q e hei _hq hD J _hJv hJ`. Establish `: AlgebraicGeometry.IsClosedImmersion e` using `hei`. Conclude with `FunctorialResolution.EmbeddedResolution.MaxContactCoverData.isStrictPullbackBlowupSeq_coverMarkedBlowupData_of_isSmoothDivisor hstar hin hinv (fun d => d ≤ n) hmono A L hdiv T h hbd hmult e hD J hJ (isAdmissible_withBoundary_ker_of_isSmoothDivisor T h.valid e hD)`. Introduce `T h`.
+
+Conclude with `FunctorialResolution.EmbeddedResolution.BoundarySeparationByMaxContact.orderAtLeastLocus_coverMarkedBlowupData_eq_empty hstar hinv (fun d => d ≤ n) hmono A L hdiv T h`.
+-/
 theorem coverSequenceProperties_of_isBoundaryDivisorReduction (hinv : ComapIsoInvariance.{u}) (n : ℕ)
     (A : ℕ → PrincipalizationAssignment.{u}) (L : PrincipalizationAssignment.{u})
     (hdiv : ∀ j : ℕ, IsBoundaryDivisorReduction (fun d => d ≤ n) j (A j) L) :
@@ -431,6 +557,17 @@ theorem coverSequenceProperties_of_isBoundaryDivisorReduction (hinv : ComapIsoIn
     exact FunctorialResolution.EmbeddedResolution.BoundarySeparationByMaxContact.orderAtLeastLocus_coverMarkedBlowupData_eq_empty hstar hinv (fun d => d ≤ n) hmono
       A L hdiv T h
 
+/- English proof (translation)
+Unfold `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.MarkingDescends`. Introduce `T h d hd`. Establish `hv : T.IsAdmissible` using `h.valid`. Establish `hcz : CharZero T.base`. Consider the cases of `hv`.
+
+Use the matching hypothesis. Establish `hsm : AlgebraicGeometry.Smooth T.structMap`. Consider the cases of `hv`. Use the matching hypothesis. Establish `hlft : AlgebraicGeometry.LocallyOfFiniteType T.structMap` using `hv.locallyOfFiniteType`.
+
+Establish `hsurj : AlgebraicGeometry.Surjective (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverMap T hv)` using `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.coverMap_surjective tunedSheafProperties.{u} T h`. Establish `hoi : FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.IsLocalIsomorphism (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverMap T hv)` using `FunctorialResolution.EmbeddedResolution.MaxContactOpenCover.isLocalIsomorphism_coverMap T hv`. Establish `hmult : 1 ≤ FunctorialResolution.EmbeddedResolution.MaxContactCoverData.tunedMult T` using `FunctorialResolution.EmbeddedResolution.one_le_tuningExponent T.mult`. Establish `hstar : MaxContactCoverProperties.{u}` using `maxContactCoverProperties`. Establish `hlev` using `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.isLocallyNoetherian_schemeAt_coverBlowupSequence hinv A hstar T h d hd`.
+
+Establish `hmax : FunctorialResolution.EmbeddedResolution.MaxOrderEq T.ideal T.mult` using `⟨(FunctorialResolution.EmbeddedResolution.orderLE_iff T.ideal T.mult).2 h.orderLE, h.coSupport_nonempty⟩`. Establish `key` using `FunctorialResolution.EmbeddedResolution.isMarked_balancedTunedIdeal_of_isStrictPullbackBlowupSeq hinv P A T h hoi hmult d hd hlev.1 hlev.2 (fun D i hi => FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.isLocalIsomorphism_map_coverBlowupSequence hinv A T h d D i hi …`. Establish `htuned : FunctorialResolution.EmbeddedResolution.MaxContactCoverData.balancedTunedIdeal T hv = FunctorialResolution.EmbeddedResolution.balancedTunedSheaf T.base T.structMap T.ideal T.mult` using `FunctorialResolution.EmbeddedResolution.MaxContactCoverData.balancedTunedIdeal_eq_balancedTunedSheaf T hv`. Establish `htm : FunctorialResolution.EmbeddedResolution.MaxContactCoverData.tunedMult T = FunctorialResolution.EmbeddedResolution.tuningExponent T.mult` using `rfl`. Establish `key2 : d.IsMarked T.structMap (FunctorialResolution.EmbeddedResolution.balancedTunedSheaf T.base T.structMap T.ideal T.mult) (FunctorialResolution.EmbeddedResolution.tuningExponent T.mult) T.boundary`.
+
+Rewrite using `[← htuned, ← htm]`. Conclude with `key`. Conclude with `((tunedSheafProperties.{u}.isMarked_tuned_iff T.base T.scheme T.structMap T.ideal T.mult hv.one_le_mult hmax T.boundary d).1).mpr key2`.
+-/
 theorem markingDescends (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop)
     (A : ℕ → PrincipalizationAssignment.{u}) :
     MaxContactFunctoriality.MarkingDescends hinv P A := by
@@ -468,12 +605,18 @@ theorem markingDescends (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop)
   exact ((tunedSheafProperties.{u}.isMarked_tuned_iff T.base T.scheme T.structMap T.ideal T.mult
     hv.one_le_mult hmax T.boundary d).1).mpr key2
 
+/- English proof (translation)
+Introduce `T h`. Conclude with `⟨MaxContactFunctoriality.coverMap_surjective tunedSheafProperties.{u} T h, MaxContactFunctoriality.coverMap_flat T h⟩`.
+-/
 private theorem coverFaithfullyFlat (P : ℕ → Prop) :
     MaxContactFunctoriality.CoverFaithfullyFlat.{u} P := by
   intro T h
   exact ⟨MaxContactFunctoriality.coverMap_surjective tunedSheafProperties.{u} T h,
     MaxContactFunctoriality.coverMap_flat T h⟩
 
+/- English proof (translation)
+The claim follows from `CategoryTheory.MorphismProperty.of_isPullback (P := P) (CategoryTheory.IsPullback.of_hasPullback f g) hf`.
+-/
 private theorem pullback_snd_of_isStableUnderBaseChange
     {P : CategoryTheory.MorphismProperty Scheme.{u}}
     [CategoryTheory.MorphismProperty.IsStableUnderBaseChange P]
@@ -482,6 +625,9 @@ private theorem pullback_snd_of_isStableUnderBaseChange
   CategoryTheory.MorphismProperty.of_isPullback (P := P)
     (CategoryTheory.IsPullback.of_hasPullback f g) hf
 
+/- English proof (translation)
+The claim follows from `CategoryTheory.MorphismProperty.of_isPullback (P := P) (CategoryTheory.IsPullback.of_hasPullback f g).flip hg`.
+-/
 private theorem pullback_fst_of_isStableUnderBaseChange
     {P : CategoryTheory.MorphismProperty Scheme.{u}}
     [CategoryTheory.MorphismProperty.IsStableUnderBaseChange P]
@@ -490,6 +636,31 @@ private theorem pullback_fst_of_isStableUnderBaseChange
   CategoryTheory.MorphismProperty.of_isPullback (P := P)
     (CategoryTheory.IsPullback.of_hasPullback f g).flip hg
 
+/- English proof (translation)
+Establish `hcz : CharZero T.base` using `f.charZero`. Establish `hsm : AlgebraicGeometry.Smooth T.structMap`. Consider the cases of `hV`. Use the matching hypothesis. Establish `hflat0 : AlgebraicGeometry.Flat (specMapOfFieldHom T.base K f)` using `inferInstance`.
+
+Establish `hflat : AlgebraicGeometry.Flat (pullback.fst T.structMap (specMapOfFieldHom T.base K f))` using `pullback_fst_of_isStableUnderBaseChange (P := @AlgebraicGeometry.Flat.{u}) _ _ hflat0`. Establish `hordS : ∀ x : ↥((T.baseChange K f).withBoundary E').scheme, orderAt ((T.baseChange K f).withBoundary E').ideal x = orderAt T.ideal ((pullback.fst T.structMap (specMapOfFieldHom T.base K f)) x)` using `FunctorialResolution.EmbeddedResolution.orderAt_comap_fieldBaseChange T.structMap (CommRingCat.ofHom f) T.ideal`. Establish `hcsS : orderAtLeastLocus ((T.baseChange K f).withBoundary E').ideal ((T.baseChange K f).withBoundary E').mult = (pullback.fst T.structMap (specMapOfFieldHom T.base K f)) ⁻¹' orderAtLeastLocus T.ideal T.mult` using `FunctorialResolution.EmbeddedResolution.orderAtLeastLocus_comap_fieldBaseChange T.structMap (CommRingCat.ofHom f) T.ideal T.mult`. Establish `hordBound : ∀ x : ↥((T.baseChange K f).withBoundary E').scheme, orderAt ((T.baseChange K f).withBoundary E').ideal x ≤ ((((T.baseChange K f).withBoundary E').mult : ℕ) : ℕ∞)`. Introduce `x`.
+
+Rewrite using `[hordS x]`. Conclude with `hO _`. Distinguish the cases in `hemp : orderAtLeastLocus T.ideal T.mult = ∅`. Establish `hempS : orderAtLeastLocus ((T.baseChange K f).withBoundary E').ideal ((T.baseChange K f).withBoundary E').mult = ∅`. Rewrite using `[hcsS, hemp]`.
+
+Conclude with `Set.preimage_empty`. Use `FunctorialResolution.EmbeddedResolution.IsStrictPullbackBlowupSeq.of_length_zero _ _ _ ?_ ?_` and prove the remaining obligations. Conclude with `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.length_eq_zero_of_orderAtLeastLocus_eq_empty hinv (fun d => d ≤ n) A ((T.baseChange K f).withBoundary E') hV' hP' hordBound hempS`. Conclude with `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.length_eq_zero_of_orderAtLeastLocus_eq_empty hinv (fun d => d ≤ n) A T hV hP hO hemp`. Establish `hne : (orderAtLeastLocus T.ideal T.mult).Nonempty` using `Set.nonempty_iff_ne_empty.mpr hemp`.
+
+Establish `hyp : MaxContactFunctoriality.OrderReductionHypotheses (fun d => d ≤ n) T` using `⟨hP, hO, hne, hV⟩`. Establish `hneS : (orderAtLeastLocus ((T.baseChange K f).withBoundary E').ideal ((T.baseChange K f).withBoundary E').mult).Nonempty`. Rewrite using `[hcsS]`. Conclude with `Set.Nonempty.preimage hne (FunctorialResolution.EmbeddedResolution.OrderReductionFieldBaseChange.surjective_baseChange_fst T K f).1`. Establish `hypS : MaxContactFunctoriality.OrderReductionHypotheses (fun d => d ≤ n) ((T.baseChange K f).withBoundary E')` using `⟨hP', hordBound, hneS, hV'⟩`.
+
+Establish `htrimv : (FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T).IsAdmissible` using `forall_isAdmissible_dropTrivialBoundary.{u} T hV`. Establish `hyptrim : MaxContactFunctoriality.OrderReductionHypotheses (fun d => d ≤ n) (FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T)` using `hyp.of_dropTrivialBoundaryAdmissible forall_isAdmissible_dropTrivialBoundary.{u}`. Establish `htrEq : FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary ((T.baseChange K f).withBoundary E') = (FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T).baseChange K (FunctorialResolution.EmbeddedResolution.OrderReductionF …` using `FunctorialResolution.EmbeddedResolution.OrderReductionFieldBaseChange.dropTrivialBoundary_withBoundary_baseChange T K f E' hE`. Establish `hypA : MaxContactFunctoriality.OrderReductionHypotheses (fun d => d ≤ n) ((FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T).baseChange K (FunctorialResolution.EmbeddedResolution.OrderReductionFieldBaseChange.dropTrivialBoundaryBaseFieldHom T K f) …`. Rewrite using `[← htrEq]`.
+
+Conclude with `hypS.of_dropTrivialBoundaryAdmissible forall_isAdmissible_dropTrivialBoundary.{u}`. Establish `hA'v : ((FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T).baseChange K (FunctorialResolution.EmbeddedResolution.OrderReductionFieldBaseChange.dropTrivialBoundaryBaseFieldHom T K f)).IsAdmissible` using `hypA.valid`. Establish `hDv : (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverTriple ((FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T).baseChange K (FunctorialResolution.EmbeddedResolution.OrderReductionFieldBaseChange.dropTrivialBoundaryBaseFieldHom …` using `FunctorialResolution.EmbeddedResolution.BoundarySeparationByMaxContact.isAdmissible_coverTriple maxContactCoverProperties (fun d => d ≤ n) _ hypA`. Establish `hcoverAdm : (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverTriple (FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T) htrimv).IsAdmissible` using `FunctorialResolution.EmbeddedResolution.BoundarySeparationByMaxContact.isAdmissible_coverTriple maxContactCoverProperties (fun d => d ≤ n) _ hyptrim`. Establish `hCbcv : ((FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverTriple (FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T) htrimv).baseChange K (FunctorialResolution.EmbeddedResolution.OrderReductionFieldBaseChange.coverBaseFieldHom (Fun …` using `MarkedIdealWithBoundary.isAdmissible_baseChange _ hcoverAdm K (FunctorialResolution.EmbeddedResolution.OrderReductionFieldBaseChange.coverBaseFieldHom (FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T) htrimv K (FunctorialResolution.EmbeddedResolu …`.
+
+Establish `hnD : AlgebraicGeometry.IsNoetherian (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverTriple ((FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T).baseChange K (FunctorialResolution.EmbeddedResolution.OrderReductionFieldBaseChange.d …` using `hDv.isNoetherian`. Establish `hnC : AlgebraicGeometry.IsNoetherian ((FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverTriple (FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T) htrimv).baseChange K (FunctorialResolution.EmbeddedResolution.OrderReductionFieldBase …` using `hCbcv.isNoetherian`. Establish `hqcCover : AlgebraicGeometry.QuasiCompact (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverMap ((FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T).baseChange K (FunctorialResolution.EmbeddedResolution.OrderReductionFieldBaseChange …`. Prove the components needed by the constructor for the conclusion. Introduce `U hU hU2`.
+
+Establish `hns : TopologicalSpace.NoetherianSpace ↥(FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverTriple ((FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T).baseChange K (FunctorialResolution.EmbeddedResolution.OrderReductionFieldBaseChang …` using `inferInstance`. Conclude with `@TopologicalSpace.NoetherianSpace.isCompact _ _ hns _`. Establish `hqcCbc : AlgebraicGeometry.QuasiCompact ((FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverTriple (FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T) htrimv).baseChange K (FunctorialResolution.EmbeddedResolution.OrderReductionFieldB …`. Prove the components needed by the constructor for the conclusion. Introduce `U hU hU2`.
+
+Establish `hns : TopologicalSpace.NoetherianSpace ↥((FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverTriple (FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T) htrimv).baseChange K (FunctorialResolution.EmbeddedResolution.OrderReductionFieldB …` using `inferInstance`. Conclude with `@TopologicalSpace.NoetherianSpace.isCompact _ _ hns _`. Establish `hqcSnd : AlgebraicGeometry.QuasiCompact (pullback.snd (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverMap ((FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T).baseChange K (FunctorialResolution.EmbeddedResolution.OrderReductionFie …` using `pullback_snd_of_isStableUnderBaseChange (P := @AlgebraicGeometry.QuasiCompact.{u}) _ _ hqcCover`. Establish `hetSnd : AlgebraicGeometry.Etale (pullback.snd (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverMap ((FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T).baseChange K (FunctorialResolution.EmbeddedResolution.OrderReductionFieldBaseC …` using `pullback_snd_of_isStableUnderBaseChange (P := @AlgebraicGeometry.Etale.{u}) _ _ inferInstance`. Establish `hdimChart : ((FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverTriple (FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T) htrimv).baseChange K (FunctorialResolution.EmbeddedResolution.OrderReductionFieldBaseChange.coverBaseFieldHom …`.
+
+Rewrite using `[MarkedIdealWithBoundary.dim_baseChange _ hcoverAdm, MarkedIdealWithBoundary.dim_baseChange T hV]`. Establish `h1` using `FunctorialResolution.EmbeddedResolution.MaxContactOpenCover.krullDimSucc_coverTriple_scheme_le_dim (FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T) htrimv`. Rewrite `h1` using `[FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary_dim]`. Conclude with `h1`. Establish `hdimQ` using `FunctorialResolution.EmbeddedResolution.krullDimSucc_le_of_etale (pullback.snd (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverMap ((FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T).baseChange K (FunctorialResolution.EmbeddedRes …`.
+
+Conclude with `FunctorialResolution.EmbeddedResolution.OrderReductionFieldBaseChange.isStrictPullbackBlowupSeq_baseChange_withBoundary maxContactCoverProperties orderReductionHypotheses (isMaxContactInvariantBalancedTuned_of_tunedSheafProperties tunedSheafProperties.{u}) maxContactHypersurfaceS …`.
+-/
 theorem isStrictPullbackBlowupSeq_maxContact_baseChange
     (hinv : ComapIsoInvariance.{u}) (n : ℕ) (A : ℕ → PrincipalizationAssignment.{u})
     (L : PrincipalizationAssignment.{u})
@@ -650,6 +821,9 @@ theorem isStrictPullbackBlowupSeq_maxContact_baseChange
       (MorphismProperty.comp_mem (@AlgebraicGeometry.QuasiCompact.{u}) _ _ hqcSnd hqcCbc)
       (le_trans hdimQ hdimChart)
 
+/- English proof (translation)
+Take `⟨d, hpb, heq⟩` from `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.exists_isStrictPullback_cover_dropTrivialBoundary hsf hmd forall_isAdmissible_dropTrivialBoundary.{u} forall_isMarked_of_isMarked_dropTrivialBoundary.{u} S hS`. Rewrite using `[heq]`. Conclude with `hpb.center_ne_top_of_forall_center_ne_top (hsf.center_ne_top _ (hS.of_dropTrivialBoundaryAdmissible forall_isAdmissible_dropTrivialBoundary.{u}))`.
+-/
 private theorem center_maxContact_ne_top
     (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop) (A : ℕ → PrincipalizationAssignment.{u})
     (hsf : MaxContactFunctoriality.CoverSequenceProperties hinv P A)
@@ -664,6 +838,17 @@ private theorem center_maxContact_ne_top
   exact hpb.center_ne_top_of_forall_center_ne_top
     (hsf.center_ne_top _ (hS.of_dropTrivialBoundaryAdmissible forall_isAdmissible_dropTrivialBoundary.{u}))
 
+/- English proof (translation)
+Establish `hstrict` using `isStrictPullbackBlowupSeq_maxContact_baseChange hinv n A L hdiv T hV hP hO K f E' hE hV' hP'`. Establish `hmult : ((T.baseChange K f).withBoundary E').mult = T.mult`. Rewrite using `[MarkedIdealWithBoundary.withBoundary_mult, MarkedIdealWithBoundary.baseChange_mult]`. Establish `hideal : ((T.baseChange K f).withBoundary E').ideal = T.ideal.comap (pullback.fst T.structMap (specMapOfFieldHom T.base K f))`. Rewrite using `[MarkedIdealWithBoundary.withBoundary_ideal, MarkedIdealWithBoundary.baseChange_ideal]`.
+
+Establish `hO2 : ∀ x : ↥((T.baseChange K f).withBoundary E').scheme, orderAt ((T.baseChange K f).withBoundary E').ideal x ≤ ((((T.baseChange K f).withBoundary E').mult : ℕ) : ℕ∞)`. Introduce `x`. Rewrite using `[hmult]`. Conclude with `hO' x`. Distinguish the cases in `hemp : FunctorialResolution.EmbeddedResolution.orderAtLeastLocus ((T.baseChange K f).withBoundary E').ideal ((T.baseChange K f).withBoundary E').mult = ∅`.
+
+Establish `hlen' : (MaxContactFunctoriality.maxContactPrincipalization hinv A ((T.baseChange K f).withBoundary E')).length = 0` using `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.length_eq_zero_of_orderAtLeastLocus_eq_empty hinv (fun d => d ≤ n) A ((T.baseChange K f).withBoundary E') hV' hP' hO2 hemp`. Establish `hemp2 : FunctorialResolution.EmbeddedResolution.orderAtLeastLocus (T.ideal.comap (pullback.fst T.structMap (specMapOfFieldHom T.base K f))) T.mult = ∅`. Rewrite `hemp` using `[hideal, hmult]`. Conclude with `hemp`. Establish `: AlgebraicGeometry.Surjective (pullback.fst T.structMap (specMapOfFieldHom T.base K f))` using `FunctorialResolution.EmbeddedResolution.OrderReductionFieldBaseChange.surjective_baseChange_fst T K f`.
+
+Establish `hempT : FunctorialResolution.EmbeddedResolution.orderAtLeastLocus T.ideal T.mult = ∅` using `FunctorialResolution.EmbeddedResolution.orderAtLeastLocus_eq_empty_of_comap_eq_empty (pullback.fst T.structMap (specMapOfFieldHom T.base K f)) T.ideal T.mult hemp2`. Establish `hlen : (MaxContactFunctoriality.maxContactPrincipalization hinv A T).length = 0` using `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.length_eq_zero_of_orderAtLeastLocus_eq_empty hinv (fun d => d ≤ n) A T hV hP hO hempT`. Conclude with `FunctorialResolution.EmbeddedResolution.isPullback_of_length_eq_zero_of_length_eq_zero _ _ _ hlen' hlen`. Establish `hhyp' : MaxContactFunctoriality.OrderReductionHypotheses (fun d => d ≤ n) ((T.baseChange K f).withBoundary E')` using `⟨hP', hO2, Set.nonempty_iff_ne_empty.mpr hemp, hV'⟩`. Establish `hct` using `center_maxContact_ne_top hinv (fun d => d ≤ n) A (coverSequenceProperties_of_isBoundaryDivisorReduction hinv n A L hdiv) (markingDescends hinv (fun d => d ≤ n) A) ((T.baseChange K f).withBoundary E') hhyp'`.
+
+Conclude with `(hstrict.isPullbackSequenceOfBlowups_withoutIsoBlowups).of_isomorphic (FunctorialResolution.EmbeddedResolution.SequenceOfBlowups.withoutIsoBlowups_isomorphic_self _ hct)`.
+-/
 theorem maxContact_baseChange_isPullbackBlowupSequence
     (hinv : ComapIsoInvariance.{u}) (n : ℕ) (A : ℕ → PrincipalizationAssignment.{u})
     (L : PrincipalizationAssignment.{u})
@@ -722,16 +907,25 @@ theorem maxContact_baseChange_isPullbackBlowupSequence
     exact (hstrict.isPullbackSequenceOfBlowups_withoutIsoBlowups).of_isomorphic
       (FunctorialResolution.EmbeddedResolution.SequenceOfBlowups.withoutIsoBlowups_isomorphic_self _ hct)
 
+/- English proof (translation)
+Simplify using `[FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.nontrivialPart, List.filter_filter]`.
+-/
 private theorem nontrivialPart_idem {X : Scheme.{u}} (L : List X.IdealSheafData) :
     FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.nontrivialPart (FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.nontrivialPart L)
       = FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.nontrivialPart L := by
   simp [FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.nontrivialPart, List.filter_filter]
 
+/- English proof (translation)
+Rewrite using `[FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.sameNontrivialBoundary_iff, removeUnitIdeals_eq_nontrivialPart]`. Conclude with `nontrivialPart_idem L`.
+-/
 private theorem sameNontrivialBoundary_removeUnitIdeals {X : Scheme.{u}} (L : List X.IdealSheafData) :
     FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.SameNontrivialBoundary (FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.removeUnitIdeals L) L := by
   rw [FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.sameNontrivialBoundary_iff, removeUnitIdeals_eq_nontrivialPart]
   exact nontrivialPart_idem L
 
+/- English proof (translation)
+Establish `hEF : FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.SameNontrivialBoundary E F` using `hsame.symm`. Establish `h2 : ((S.withBoundary E).withBoundary F).IsAdmissible`. Apply the tactic sequence `apply FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.validOfSameNontrivialBoundary <;> assumption`. Conclude with `h2`.
+-/
 private theorem isAdmissible_withBoundary_of_sameNontrivialBoundary (S : EmbeddedResolution.MarkedIdealWithBoundary.{u})
     (E F : List S.scheme.IdealSheafData)
     (hV : (S.withBoundary E).IsAdmissible)
@@ -742,6 +936,35 @@ private theorem isAdmissible_withBoundary_of_sameNontrivialBoundary (S : Embedde
     apply FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.validOfSameNontrivialBoundary <;> assumption
   exact h2
 
+/- English proof (translation)
+Establish `hcz : CharZero T.base`. Consider the cases of `hV`. Use the matching hypothesis. Establish `hsm : AlgebraicGeometry.Smooth T.structMap`. Consider the cases of `hV`.
+
+Use the matching hypothesis. Establish `hflat : AlgebraicGeometry.Flat h` using `inferInstance`. Establish `hidS : ((T.pullbackAlong Y q h).withBoundary E').ideal = T.ideal.comap h` using `(FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.withBoundary_ideal (T.pullbackAlong Y q h) E').trans (FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.pullbackAlong_ideal T Y q h)`. Establish `hmultS : ((T.pullbackAlong Y q h).withBoundary E').mult = T.mult` using `(FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.withBoundary_mult (T.pullbackAlong Y q h) E').trans (FunctorialResolution.EmbeddedResolution.MarkedIdealWithBoundary.pullbackAlong_mult T Y q h)`. Establish `hordBound : ∀ x : ↥((T.pullbackAlong Y q h).withBoundary E').scheme, orderAt ((T.pullbackAlong Y q h).withBoundary E').ideal x ≤ ((((T.pullbackAlong Y q h).withBoundary E').mult : ℕ) : ℕ∞)`.
+
+Introduce `x`. Rewrite using `[hmultS]`. Conclude with `hO' x`. Establish `hvan : FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.TrivialOnEmptyOrderLocus hinv (fun d => d ≤ n) A`. Unfold `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.TrivialOnEmptyOrderLocus`.
+
+Use `intros`. Apply `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.isPullback_of_orderAtLeastLocus_comap_eq_empty hinv (fun d => d ≤ n) A` to reduce the goal to its premises. Apply the tactic sequence `all_goals assumption`. Distinguish the cases in `hemp : orderAtLeastLocus T.ideal T.mult = ∅`. Establish `hempS : orderAtLeastLocus ((T.pullbackAlong Y q h).withBoundary E').ideal ((T.pullbackAlong Y q h).withBoundary E').mult = ∅`.
+
+Rewrite using `[hidS, hmultS]`. Conclude with `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.orderAtLeastLocus_comap_eq_empty T hV h hemp`. Use `FunctorialResolution.EmbeddedResolution.isPullback_of_length_eq_zero_of_length_eq_zero h _ _ ?_ ?_` and prove the remaining obligations. Conclude with `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.length_eq_zero_of_orderAtLeastLocus_eq_empty hinv (fun d => d ≤ n) A ((T.pullbackAlong Y q h).withBoundary E') hV' hP' hordBound hempS`. Conclude with `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.length_eq_zero_of_orderAtLeastLocus_eq_empty hinv (fun d => d ≤ n) A T hV hP hO hemp`.
+
+Establish `hne : (orderAtLeastLocus T.ideal T.mult).Nonempty` using `Set.nonempty_iff_ne_empty.mpr hemp`. Establish `hyp : FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.OrderReductionHypotheses (fun d => d ≤ n) T` using `⟨hP, hO, hne, hV⟩`. Distinguish the cases in `hempS : orderAtLeastLocus (T.ideal.comap h) T.mult = ∅`. Establish `hempS' : orderAtLeastLocus ((T.pullbackAlong Y q h).withBoundary E').ideal ((T.pullbackAlong Y q h).withBoundary E').mult = ∅`. Rewrite using `[hidS, hmultS]`.
+
+Conclude with `hempS`. Establish `hz : (MaxContactFunctoriality.maxContactPrincipalization hinv A ((T.pullbackAlong Y q h).withBoundary E')).length = 0` using `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.length_eq_zero_of_orderAtLeastLocus_eq_empty hinv (fun d => d ≤ n) A ((T.pullbackAlong Y q h).withBoundary E') hV' hP' hordBound hempS'`. Conclude with `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.isPullback_of_orderAtLeastLocus_comap_eq_empty hinv (fun d => d ≤ n) A T hyp Y h (MaxContactFunctoriality.maxContactPrincipalization hinv A ((T.pullbackAlong Y q h).withBoundary E')).toSequenceOfBlowups hz hempS`. Establish `hneS : (orderAtLeastLocus ((T.pullbackAlong Y q h).withBoundary E').ideal ((T.pullbackAlong Y q h).withBoundary E').mult).Nonempty`. Rewrite using `[hidS, hmultS]`.
+
+Conclude with `Set.nonempty_iff_ne_empty.mpr hempS`. Establish `_hypS : FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.OrderReductionHypotheses (fun d => d ≤ n) ((T.pullbackAlong Y q h).withBoundary E')` using `⟨hP', hordBound, hneS, hV'⟩`. Establish `htrimv : (FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T).IsAdmissible` using `forall_isAdmissible_dropTrivialBoundary.{u} T hV`. Establish `hpbv : (FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.dropTrivialBoundaryPullback T q h E').IsAdmissible`. Unfold `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.dropTrivialBoundaryPullback`.
+
+Conclude with `isAdmissible_withBoundary_of_sameNontrivialBoundary (T.pullbackAlong Y q h) E' (FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.removeUnitIdeals E') hV' (sameNontrivialBoundary_removeUnitIdeals E')`. Establish `hyppb : FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.OrderReductionHypotheses (fun d => d ≤ n) (FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.dropTrivialBoundaryPullback T q h E')` using `⟨hP', hordBound, hneS, hpbv⟩`. Establish `hyptrim : FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.OrderReductionHypotheses (fun d => d ≤ n) (FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T)` using `hyp.of_dropTrivialBoundaryAdmissible forall_isAdmissible_dropTrivialBoundary.{u}`. Establish `hcoverAdm : (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverTriple (FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T) htrimv).IsAdmissible` using `FunctorialResolution.EmbeddedResolution.BoundarySeparationByMaxContact.isAdmissible_coverTriple maxContactCoverProperties (fun d => d ≤ n) _ hyptrim`. Establish `hPv : (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverTriple (FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.dropTrivialBoundaryPullback T q h E') hpbv).IsAdmissible` using `FunctorialResolution.EmbeddedResolution.BoundarySeparationByMaxContact.isAdmissible_coverTriple maxContactCoverProperties (fun d => d ≤ n) _ hyppb`.
+
+Establish `hnC : AlgebraicGeometry.IsNoetherian (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverTriple (FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T) htrimv).scheme` using `hcoverAdm.isNoetherian`. Establish `hnP : AlgebraicGeometry.IsNoetherian (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverTriple (FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.dropTrivialBoundaryPullback T q h E') hpbv).scheme` using `hPv.isNoetherian`. Establish `hnPt : AlgebraicGeometry.IsNoetherian (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.chosenCoverData (FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.dropTrivialBoundaryPullback T q h E') hpbv).disjointUnion` using `hPv.isNoetherian`. Establish `hlnPt : AlgebraicGeometry.IsLocallyNoetherian (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.chosenCoverData (FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.dropTrivialBoundaryPullback T q h E') hpbv).disjointUnion` using `inferInstance`. Establish `hqcStruct : AlgebraicGeometry.QuasiCompact (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverTriple (FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T) htrimv).structMap`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `U hU hU2`. Establish `hns : TopologicalSpace.NoetherianSpace ↥(FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverTriple (FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T) htrimv).scheme` using `inferInstance`. Conclude with `@TopologicalSpace.NoetherianSpace.isCompact _ _ hns _`. Establish `hqcf : AlgebraicGeometry.QuasiCompact (CategoryTheory.CategoryStruct.comp (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverMap (FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.dropTrivialBoundaryPullback T q h E') hpbv) h)`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `U hU hU2`. Establish `hns : TopologicalSpace.NoetherianSpace ↥(FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverTriple (FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.dropTrivialBoundaryPullback T q h E') hpbv).scheme` using `inferInstance`. Conclude with `@TopologicalSpace.NoetherianSpace.isCompact _ _ hns _`. Establish `hqcSnd : AlgebraicGeometry.QuasiCompact (CategoryTheory.Limits.pullback.snd (CategoryTheory.CategoryStruct.comp (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverMap (FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.dropTrivialBoundaryPullback T q h …` using `pullback_snd_of_isStableUnderBaseChange (P := @AlgebraicGeometry.QuasiCompact.{u}) _ _ hqcf`.
+
+Establish `hetFst : AlgebraicGeometry.Etale (CategoryTheory.Limits.pullback.fst (CategoryTheory.CategoryStruct.comp (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverMap (FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.dropTrivialBoundaryPullback T q h E') hp …` using `pullback_fst_of_isStableUnderBaseChange (P := @AlgebraicGeometry.Etale.{u}) _ _ (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.etale_coverMap_of_isAdmissible (FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T) htrimv)`. Establish `hdimQ` using `FunctorialResolution.EmbeddedResolution.krullDimSucc_le_of_etale (CategoryTheory.Limits.pullback.fst (CategoryTheory.CategoryStruct.comp (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverMap (FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.dropTriv …`. Establish `hdimTrim : (FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.dropTrivialBoundaryPullback T q h E').krullDimSucc = (T.pullbackAlong Y q h).krullDimSucc` using `rfl`. Establish `hdimfp : FunctorialResolution.EmbeddedResolution.krullDimSucc (CategoryTheory.Limits.pullback (CategoryTheory.CategoryStruct.comp (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverMap (FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.dropTrivialBoun …`. Use `le_trans hdimQ ?_` and prove the remaining obligations.
+
+Use `le_trans (FunctorialResolution.EmbeddedResolution.MaxContactOpenCover.krullDimSucc_coverTriple_scheme_le_dim _ hpbv) ?_` and prove the remaining obligations. Conclude with `le_of_eq hdimTrim`. Conclude with `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.maxContactPrincipalization_isPullbackBlowupSequence_of_smooth hinv (fun d => d ≤ n) (fun _ _ hab hb => le_trans hab hb) A L hdiv hshift maxContactCoverProperties orderReductionHypotheses (isMaxContactInvariantBalance …`.
+-/
 theorem maxContact_isPullback_of_smooth_of_orderAt_le_mult
     (hinv : ComapIsoInvariance.{u}) (n : ℕ) (A : ℕ → PrincipalizationAssignment.{u})
     (L : PrincipalizationAssignment.{u})
@@ -913,6 +1136,31 @@ theorem maxContact_isPullback_of_smooth_of_orderAt_le_mult
         (MorphismProperty.comp_mem (@AlgebraicGeometry.QuasiCompact.{u}) _ _ hqcSnd hqcStruct)
         hdimfp
 
+/- English proof (translation)
+Establish `hstar : MaxContactCoverProperties.{u}` using `maxContactCoverProperties`. Establish `hCoverSeq : MaxContactFunctoriality.CoverSequenceProperties hinv (fun d => d ≤ n) A` using `coverSequenceProperties_of_isBoundaryDivisorReduction hinv n A L hdiv`. Establish `hmd : MaxContactFunctoriality.MarkingDescends hinv (fun d => d ≤ n) A` using `markingDescends hinv (fun d => d ≤ n) A`. Use `⟨tunedSheafProperties.{u}.isMarked_tuned_iff, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k hfk W' W p g hg hsurj N μ Mem Z hcert`.
+
+Conclude with `@FunctorialResolution.EmbeddedResolution.orderCertificate_of_comap_of_isLocalIsomorphism (fun K inst => @FunctorialResolution.EmbeddedResolution.openImmersionStability K inst) orderCertificateLocalToGlobal.{u} k hfk W W' p g hg hsurj N μ Mem Z hcert`. Introduce `T hV hP hO K hfK hcK f E' hE hV' hP' hO'`. Conclude with `@maxContact_baseChange_isPullbackBlowupSequence hinv n A L hdiv T hV hP hO K hfK hcK f E' hE hV' hP' hO'`. Introduce `T hV hP hO K hfK hcK f E' hE hV' hP' _hO'`. Conclude with `@isStrictPullbackBlowupSeq_maxContact_baseChange hinv n A L hdiv T hV hP hO K hfK hcK f E' hE hV' hP'`.
+
+Introduce `T h db D i hi`. Conclude with `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.isLocalIsomorphism_map_coverBlowupSequence hinv A T h db D i hi`. Introduce `T h db hd`. Conclude with `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.isLocallyNoetherian_schemeAt_coverBlowupSequence hinv A hstar T h db hd`. Introduce `T h db hd`.
+
+Establish `hv : T.IsAdmissible` using `h.valid`. Establish `hcz : CharZero T.base`. Consider the cases of `hv`. Use the matching hypothesis. Establish `hsm : AlgebraicGeometry.Smooth T.structMap`.
+
+Consider the cases of `hv`. Use the matching hypothesis. Establish `hlft : AlgebraicGeometry.LocallyOfFiniteType T.structMap` using `hv.locallyOfFiniteType`. Establish `hsurj : AlgebraicGeometry.Surjective (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverMap T hv)` using `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.coverMap_surjective tunedSheafProperties.{u} T h`. Establish `hoi : FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.IsLocalIsomorphism (FunctorialResolution.EmbeddedResolution.MaxContactCoverData.coverMap T hv)` using `FunctorialResolution.EmbeddedResolution.MaxContactOpenCover.isLocalIsomorphism_coverMap T hv`.
+
+Establish `hmult : 1 ≤ FunctorialResolution.EmbeddedResolution.MaxContactCoverData.tunedMult T` using `FunctorialResolution.EmbeddedResolution.one_le_tuningExponent T.mult`. Establish `hlev` using `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.isLocallyNoetherian_schemeAt_coverBlowupSequence hinv A hstar T h db hd`. Conclude with `FunctorialResolution.EmbeddedResolution.isMarked_balancedTunedIdeal_of_isStrictPullbackBlowupSeq hinv (fun d => d ≤ n) A T h hoi hmult db hd hlev.1 hlev.2 (fun D i hi => FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.isLocalIsomorphism_map_coverBlowupSequence hin …`. Introduce `T hV db I m hm`. Conclude with `isMarked_of_isMarked_dropTrivialBoundary T hV db I m hm`.
+
+Introduce `T hV hO s i hi x`. Conclude with `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.orderAt_sequenceOfBlowups_ideal_le_mult hstar T hV hO s i hi x`. Introduce `T hV hP hO Y q g hsmg hq E' hE hV' hP' hO'`. Conclude with `@maxContact_isPullback_of_smooth_of_orderAt_le_mult hinv n A L hdiv hshift T hV hP hO Y q g hsmg hq E' hE hV' hP' hO'`. Introduce `T hV hP hO Y q g hsmg hsjg hq E' hE hV' hP' hO'`.
+
+Establish `hpb` using `@maxContact_isPullback_of_smooth_of_orderAt_le_mult hinv n A L hdiv hshift T hV hP hO Y q g hsmg hq E' hE hV' hP' hO'`. Use `@FunctorialResolution.EmbeddedResolution.IsPullbackBlowupSequence.isStrictPullback_of_surjective _ _ _ hsjg _ _ hpb ?_` and prove the remaining obligations. Introduce `i hi`. Distinguish the cases in `hemp : FunctorialResolution.EmbeddedResolution.orderAtLeastLocus T.ideal T.mult = ∅`. It suffices to derive a contradiction.
+
+Establish `hlen : (FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.maxContactPrincipalization hinv A T).toSequenceOfBlowups.length = 0` using `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.length_eq_zero_of_orderAtLeastLocus_eq_empty hinv (fun d => d ≤ n) A T hV hP hO hemp`. Use linear arithmetic over natural numbers and integers. Establish `hne : (FunctorialResolution.EmbeddedResolution.orderAtLeastLocus T.ideal T.mult).Nonempty` using `Set.nonempty_iff_ne_empty.mpr hemp`. Establish `hyp : FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.OrderReductionHypotheses (fun d => d ≤ n) T` using `⟨hP, hO, hne, hV⟩`. Take `⟨dd, hdd, heq⟩` from `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.exists_isStrictPullback_cover_dropTrivialBoundary hCoverSeq hmd forall_isAdmissible_dropTrivialBoundary.{u} forall_isMarked_of_isMarked_dropTrivialBoundary.{u} T hyp`.
+
+Rewrite `hi`, the goal using `[heq]`. Use `hdd.center_ne_top_of_forall_center_ne_top ?_ i hi` and prove the remaining obligations. Introduce `l hl`. Conclude with `hCoverSeq.center_ne_top (FunctorialResolution.EmbeddedResolution.MaxContactReduction.dropTrivialBoundary T) (hyp.of_dropTrivialBoundaryAdmissible forall_isAdmissible_dropTrivialBoundary.{u}) l hl`. Introduce `T h`.
+
+Conclude with `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.coverMap_flat T h`. Introduce `T h`. Conclude with `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.coverMap_surjective tunedSheafProperties.{u} T h`. Introduce `T hV Y q e hei hq J hJ ε hε`. Conclude with `@FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.isAdmissible_and_dim_eq_withSchemeIdealBoundary_ker T hV Y q e hei hq J hJ ε hε`.
+
+Introduce `T hv hm`. Conclude with `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.balancedTunedIdeal_eq_of_mult_eq_one T hv hm`. Conclude with `forall_isAdmissible_dropTrivialBoundary.{u}`. Introduce `T hV _hbd Y q e hei _hq hD`. Conclude with `@isAdmissible_withBoundary_ker_of_isSmoothDivisor T hV Y e hei hD`.
+-/
 theorem descentProperties_of_isBoundaryDivisorReduction (hinv : ComapIsoInvariance.{u}) (n : ℕ)
     (A : ℕ → PrincipalizationAssignment.{u}) (L : PrincipalizationAssignment.{u})
     (hdiv : ∀ j : ℕ, IsBoundaryDivisorReduction (fun d => d ≤ n) j (A j) L)
@@ -998,6 +1246,9 @@ theorem descentProperties_of_isBoundaryDivisorReduction (hinv : ComapIsoInvarian
   · intro T hV _hbd Y q e hei _hq hD
     exact @isAdmissible_withBoundary_ker_of_isSmoothDivisor T hV Y e hei hD
 
+/- English proof (translation)
+The claim follows from `FunctorialResolution.EmbeddedResolution.MaxContactFunctoriality.isOrderReduction_maxContact_dim_le_of_descentHypotheses hinv n A L L' hlow hdiv (coverSequenceProperties_of_isBoundaryDivisorReduction hinv n A L hdiv) (descentProperties_of_isBoundaryDivisorReduction hinv n A L hdiv …`.
+-/
 theorem isOrderReduction_maxContact_of_isBoundaryPositionInvariant (hinv : ComapIsoInvariance.{u}) (n : ℕ)
     (A : ℕ → PrincipalizationAssignment.{u}) (L L' : PrincipalizationAssignment.{u})
     (hlow : IsMaxOrderReduction (fun d => d < n) L L')
@@ -1008,6 +1259,11 @@ theorem isOrderReduction_maxContact_of_isBoundaryPositionInvariant (hinv : Comap
     (coverSequenceProperties_of_isBoundaryDivisorReduction hinv n A L hdiv)
     (descentProperties_of_isBoundaryDivisorReduction hinv n A L hdiv hshift)
 
+/- English proof (translation)
+Introduce `n A L L' hlow hdiv hshift`. Establish `h : IsOrderReduction (fun d => d ≤ n) (MaxContactFunctoriality.maxContactPrincipalization comapIsoInvariance.{u} A) L` using `isOrderReduction_maxContact_of_isBoundaryPositionInvariant comapIsoInvariance.{u} n A L L' hlow hdiv hshift`. Establish `heq : (canonicalAlgorithmRules hres).orderFamily A = MaxContactFunctoriality.maxContactPrincipalization comapIsoInvariance.{u} A`. Use function extensionality and compare the values at `T`. Both sides reduce to the same expression.
+
+Rewrite using `[heq]`. Conclude with `h`.
+-/
 theorem isOrderReduction_orderFamily_of_strictTransformIsBlowup
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) :
     ∀ (n : ℕ) (A : ℕ → PrincipalizationAssignment.{u}) (L L' : PrincipalizationAssignment.{u}),

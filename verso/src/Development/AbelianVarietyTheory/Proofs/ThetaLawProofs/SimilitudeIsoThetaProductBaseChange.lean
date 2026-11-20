@@ -20,6 +20,13 @@ open GlobalTheory.KeyKa
 noncomputable section
 namespace GlobalTheory.KeyRow
 
+/- English proof (translation)
+Set `U : Over.mk (T'.hom ≫ f) ⟶ T` to `Over.homMk ψ hψ`. Establish `e₁ : ∀ c, pushHom h T' (p' c) = preHom U (p c)` using `fun c => Over.OverMorphism.ext (hp c)`. Establish `t : ∀ {B : Scheme.{0}} (V : Over B), (toUnit V).left = V.hom` using `fun V => (Category.comp_id _).symm.trans (Over.w (toUnit V))`. Establish `e₂ : pushHom h T' (toUnit _ ≫ ξ') = preHom U (toUnit _ ≫ ξ)` using `Over.OverMorphism.ext (by show ((toUnit T').left ≫ ξ'.left) ≫ φ = ψ ≫ (toUnit T).left ≫ ξ.left`. Rewrite using `[Category.assoc, hξ, t, t]`.
+
+Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ ξ.left) hψ.symm).trans (Category.assoc _ _ _)))`. Establish `e : pushHom h T' ((List.ofFn fun c => p' c ^ a c).prod * (toUnit _ ≫ ξ')) = preHom U ((List.ofFn fun c => p c ^ a c).prod * (toUnit _ ≫ ξ))`. Rewrite using `[map_mul, map_mul, map_list_prod, map_list_prod, List.map_ofFn, List.map_ofFn, e₂]`. Use `congr 3`. Use function extensionality and compare the values at `c`.
+
+Simplify using `only [Function.comp_apply, map_zpow, e₁]`. Conclude with `congrArg (fun z => z.left) e`.
+-/
 theorem comb_push {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) {T : Over S} {T' : Over S'} (ψ : T'.left ⟶ T.left)
     (hψ : ψ ≫ T.hom = T'.hom ≫ f) {n : ℕ} (p : Fin n → (T ⟶ G)) (p' : Fin n → (T' ⟶ G'))
@@ -43,6 +50,9 @@ theorem comb_push {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [Gr
     simp only [Function.comp_apply, map_zpow, e₁]
   exact congrArg (fun z => z.left) e
 
+/- English proof (translation)
+Simplify using `only [pow_one, zpow_one, zpow_neg, zpow_natCast, Finset.prod_mul_distrib, Finset.prod_inv_distrib, ← Units.coe_prod, mul_left_comm _ (∏ k, t k ^ m).val, ← Finset.mul_sum] at h`. Use `(Units.mul_right_inj (∏ r, s r)).1 (h.trans ?_)` and prove the remaining obligations. Rewrite using `[← _root_.mul_assoc, ← _root_.mul_assoc, ← Units.val_mul, ← Units.val_mul]`. Use `congr 2`. Rewrite using `[mul_comm (∏ k, t k ^ m), mul_right_comm, inv_mul_cancel_right]`.
+-/
 theorem cancel_units {A K κ : Type} [CommRing A] [Fintype K] [Fintype κ] [DecidableEq κ] {N m : ℕ} (s : K → Aˣ)
     (t : κ → Aˣ) (v : Aˣ) (x : K → A) (c : (κ → Fin N) → A) (y : κ → Fin N → A)
     (h : ∏ r, (s r ^ 1).val * x r = (((∏ r, s r ^ (1 : ℤ)) * ∏ k, t k ^ (-(m : ℤ))) * v).val *
@@ -55,6 +65,17 @@ theorem cancel_units {A K κ : Type} [CommRing A] [Fintype K] [Fintype κ] [Deci
   congr 2
   rw [mul_comm (∏ k, t k ^ m), mul_right_comm, inv_mul_cancel_right]
 
+/- English proof (translation)
+Introduce and unpack `R R' _ _ x x' f φ u m N al b b' ξ ξ' w q ⟨he, hg, F, hφ, hu, -, hth, -⟩ hb hξ hw H`. Take `⟨ψ, hψ, hc⟩` from `KeyPow.exists_isGrpPullback_pow hφ (Out.powIsPowGrp x.P.A 4) (Out.powIsPowGrp x'.P.A 4)`. Establish `hc' : ∀ c : Fin 4, (Out.powPr x'.P.A c).left ≫ φ = ψ ≫ (Out.powPr x.P.A c).left` using `hc`. Establish `ha : ∀ r, (alMap x' al r (ξ' r)).left ≫ φ = ψ ≫ (alMap x al r (ξ r)).left` using `fun r => comb_push hφ ψ hψ.1.w _ _ hc' (al r) (ξ r) (ξ' r) (hξ r)`. Take `⟨w', hw', P⟩` from `H1.exists_gen_move x.P.isLB x'.P.isLB u ((isGen_iff u).1 hu) _ (Sum.elim (fun r => (alMap x' al r (ξ' r)).left) (fun c => (Out.powPr x'.P.A c).left)) _ ψ (by rintro (r | c); exacts [ha r, hc' c]) w hw`.
+
+Use `⟨w', hw', fun Z ρ z J' hJ' => ?_⟩` and prove the remaining obligations. Use `choose J hJ using fun χ : Z ⟶ x.P.A.left => exists_chart x.P.isLB (χ z)`. Establish `ha' : ∀ r, (ρ ≫ ψ) ≫ (alMap x al r (ξ r)).left = (ρ ≫ (alMap x' al r (ξ' r)).left) ≫ φ` using `fun r => by`. Rewrite using `[Category.assoc, Category.assoc, ha]`. Establish `hc'' : ∀ c : Fin 4, (ρ ≫ ψ) ≫ (Out.powPr x.P.A c).left = (ρ ≫ (Out.powPr x'.P.A c).left) ≫ φ` using `fun r => by`.
+
+Rewrite using `[Category.assoc, Category.assoc, hc']`. Establish `E` using `H Z (ρ ≫ ψ) z J hJ`. Establish `hv` using `(val_of w (ρ ≫ ψ) z J (fun k => J ((ρ ≫ Sum.elim (fun r => (alMap x' al r (ξ' r)).left) (fun c => (Out.powPr x'.P.A c).left) k) ≫ φ)) (by rintro (r | c); exacts [congrArg J (ha' r), congrArg J (hc'' c)])).trans (P Z ρ z _ (fun k => J' (ρ ≫ Sum.elim (fun r => (alMap x' al r (ξ' r) …`. Rewrite `hv` using `[Fintype.prod_sum_type]`. Establish `hth' : KeyVia.Via u 1 x'.th.f x.th.f` using `fun j i h => (hth j i h).trans (by rw [pow_one])`.
+
+Establish `hq : ∀ a : R, gs (ρ ≫ ψ) z ⊤ (cst (Out.powObj x.P.A 4).hom ⊤ a) = gs ρ z ⊤ (cst (Out.powObj x'.P.A 4).hom ⊤ (f a))` using `fun a => (gs_appLE ψ ⊤ ⊤ le_top ρ z trivial _).symm.trans (congrArg (gs ρ z ⊤) (KeyVia.appLE_cst f _ _ hψ.1.w le_top a))`. Rewrite `E` using `[hv]`. Use `cancel_units (m := m) (fun r => gw u (ρ ≫ (alMap x' al r (ξ' r)).left) z (J ((ρ ≫ (alMap x' al r (ξ' r)).left) ≫ φ)) (J' (ρ ≫ (alMap x' al r (ξ' r)).left))) (fun c => gw u (ρ ≫ (Out.powPr x'.P.A c).left) z (J ((ρ ≫ (Out.powPr x'.P.A c).left) ≫ φ)) (J' (ρ ≫ (Out.powPr x'.P.A c).le …` and prove the remaining obligations. Use `Eq.trans (Finset.prod_congr rfl fun r _ => ?_) (E.trans (congrArg₂ (· * ·) rfl (Finset.sum_congr rfl fun I _ => congrArg₂ (· * ·) (hq _) (Finset.prod_congr rfl fun c _ => ?_))))` and prove the remaining obligations. Rewrite using `[ha']`.
+
+Conclude with `(KeyBasis.via_val hth' _ z (hJ _) (hJ' _)).symm`. Rewrite using `[hc'']`. Conclude with `KeyBasis.via_val (w := u) (hb (I c)) _ z (hJ _) (hJ' _)`.
+-/
 theorem main : ∀ (R R' : Type) [CommRing R] [CommRing R'] (x : KeyIn R) (x' : KeyIn R') (f : R →+* R') φ u (m N : ℕ) (al : Matrix (Fin 4) (Fin 4) ℤ) (b : Fin N → RR x m) (b' : Fin N → RR x' m) (ξ : Fin 4 → Pt x) (ξ' : Fin 4 → Pt x') (w : LB.Gen (LB.LinComb x.P.L (K := Fin 4 ⊕ Fin 4) (Sum.elim (fun r => (alMap x al r (ξ r)).left) (fun c => (Out.powPr x.P.A c).left)) (Sum.elim (fun _ => 1) (fun _ => -(m : ℤ))))) (q : (Fin 4 → Fin N) → R), KeyVia x' x f φ u → (∀ k, SecVia x' x φ u (b' k) (b k)) → (∀ r, (ξ' r).left ≫ φ = spMap f ≫ (ξ r).left) → w.IsGen → (∀ (Z : Scheme.{0}) (ρ : Z ⟶ (Out.powObj x.P.A 4).left) (z : Z) J, Good x.P.L z J → ∏ r, gs (ρ ≫ (alMap x al r (ξ r)).left) z (x.P.L.U (J (ρ ≫ (alMap x al r (ξ r)).left))) (x.th.f (J (ρ ≫ (alMap x al r (ξ r)).left))) = (val w ρ z J).val * ∑ I' : Fin 4 → Fin N, gs ρ z ⊤ (cst (Out.powObj x.P.A 4).hom ⊤ (q I')) * ∏ c, gs (ρ ≫ (Out.powPr x.P.A c).left) z (x.P.L.U (J (ρ ≫ (Out.powPr x.P.A c).left))) ((b (I' c)).f (J (ρ ≫ (Out.powPr x.P.A c).left)))) → ∃ w' : LB.Gen (LB.LinComb x'.P.L (K := Fin 4 ⊕ Fin 4) (Sum.elim (fun r => (alMap x' al r (ξ' r)).left) (fun c => (Out.powPr x'.P.A c).left)) (Sum.elim (fun _ => 1) (fun _ => -(m : ℤ)))), w'.IsGen ∧ ∀ (Z : Scheme.{0}) (ρ : Z ⟶ (Out.powObj x'.P.A 4).left) (z : Z) J, Good x'.P.L z J → ∏ r, gs (ρ ≫ (alMap x' al r (ξ' r)).left) z (x'.P.L.U (J (ρ ≫ (alMap x' al r (ξ' r)).left))) (x'.th.f (J (ρ ≫ (alMap x' al r (ξ' r)).left))) = (val w' ρ z J).val * ∑ I' : Fin 4 → Fin N, gs ρ z ⊤ (cst (Out.powObj x'.P.A 4).hom ⊤ (f (q I'))) * ∏ c, gs (ρ ≫ (Out.powPr x'.P.A c).left) z (x'.P.L.U (J (ρ ≫ (Out.powPr x'.P.A c).left))) ((b' (I' c)).f (J (ρ ≫ (Out.powPr x'.P.A c).left))) := by
   rintro R R' _ _ x x' f φ u m N al b b' ξ ξ' w q ⟨he, hg, F, hφ, hu, -, hth, -⟩ hb hξ hw H
   obtain ⟨ψ, hψ, hc⟩ := KeyPow.exists_isGrpPullback_pow hφ (Out.powIsPowGrp x.P.A 4) (Out.powIsPowGrp x'.P.A 4)

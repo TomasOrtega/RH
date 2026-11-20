@@ -20,6 +20,11 @@ section
 variable {E : Type} [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] {n : ℕ}
 
 omit [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] in
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[sg, GeneralLinearGroup.map_apply, val_diagT, val_diagT]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[sgT]`.
+
+Simplify using `[Matrix.diagonal_apply_ne _ h]`.
+-/
 private theorem sg_diag (σ : E ≃+* E) (u : Fin n → Eˣ) :
     sg σ (diagT E (Fin n) u) = diagT E (Fin n) (sgT σ u) := by
   ext i j
@@ -30,6 +35,9 @@ private theorem sg_diag (σ : E ≃+* E) (u : Fin n → Eˣ) :
   · simp [Matrix.diagonal_apply_ne _ h]
 
 omit [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] in
+/- English proof (translation)
+Introduce `a b h`. Use function extensionality and compare the values at `i`. Apply `Units.ext` to reduce the goal to its premises. Use `congrArg (fun g : GL (Fin n) E => (g : Matrix (Fin n) (Fin n) E) i i) h` as an intermediate fact. Simplify `this` using `[val_diagT]`.
+-/
 private theorem diag_inj : Function.Injective (diagT E (Fin n)) := by
   intro a b h
   funext i
@@ -37,6 +45,9 @@ private theorem diag_inj : Function.Injective (diagT E (Fin n)) := by
   have := congrArg (fun g : GL (Fin n) E => (g : Matrix (Fin n) (Fin n) E) i i) h
   simpa [val_diagT] using this
 
+/- English proof (translation)
+Establish `h1 : valuation E ((s i : E) - 1) < valuation E (1 : E)`. Rewrite using `[map_one]`. Conclude with `lt_of_le_of_lt (hs i) hr`. Establish `h2` using `Valuation.map_add_eq_of_lt_right (valuation E) h1`. Simplify using `using h2`.
+-/
 private theorem near_val {r : ValueGroupWithZero E} (hr : r < 1) {s : Fin n → Eˣ} (hs : Near r s) (i : Fin n) :
     valuation E (s i : E) = 1 := by
   have h1 : valuation E ((s i : E) - 1) < valuation E (1 : E) := by
@@ -45,6 +56,11 @@ private theorem near_val {r : ValueGroupWithZero E} (hr : r < 1) {s : Fin n → 
   have h2 := Valuation.map_add_eq_of_lt_right (valuation E) h1
   simpa using h2
 
+/- English proof (translation)
+Establish `key : ∀ k, valuation E ((t * s) k : E) = valuation E (t k : E)`. Introduce `k`. Rewrite using `[Pi.mul_apply, Units.val_mul, map_mul, near_val hr hs k, mul_one]`. Introduce `i j hij`. Rewrite using `[key, key]`.
+
+Conclude with `ht i j hij`.
+-/
 private theorem strict_near {r : ValueGroupWithZero E} (hr : r < 1) {t s : Fin n → Eˣ} (ht : Strict t)
     (hs : Near r s) : Strict (t * s) := by
   have key : ∀ k, valuation E ((t * s) k : E) = valuation E (t k : E) := by
@@ -54,6 +70,13 @@ private theorem strict_near {r : ValueGroupWithZero E} (hr : r < 1) {t s : Fin n
   rw [key, key]
   exact ht i j hij
 
+/- English proof (translation)
+Simplify using `only [ball, Set.mem_setOf_eq] at ha ⊢`. Introduce `i j`. Establish `h : ((sg σ a : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) i j - (1 : Matrix (Fin n) (Fin n) E) i j = σ ((a : Matrix (Fin n) (Fin n) E) i j - (1 : Matrix (Fin n) (Fin n) E) i j)`. Rewrite using `[sg, GeneralLinearGroup.map_apply, map_sub]`. Use `congr 1`.
+
+Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij]`. Rewrite using `[h, hσ]`.
+
+Conclude with `ha i j`.
+-/
 private theorem ball_sg {r : ValueGroupWithZero E} {σ : E ≃+* E} (hσ : Isom σ) {a : GL (Fin n) E}
     (ha : a ∈ ball n r) : sg σ a ∈ ball n r := by
   simp only [ball, Set.mem_setOf_eq] at ha ⊢
@@ -69,6 +92,11 @@ private theorem ball_sg {r : ValueGroupWithZero E} {σ : E ≃+* E} (hσ : Isom 
   rw [h, hσ]
   exact ha i j
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[val_diagT]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `using hs i`.
+
+Simplify using `[Matrix.diagonal_apply_ne _ h, one_apply_ne h]`.
+-/
 private theorem diag_ball {r : ValueGroupWithZero E} {s : Fin n → Eˣ} (hs : Near r s) :
     diagT E (Fin n) s ∈ ball n r := by
   intro i j
@@ -82,6 +110,35 @@ end
 
 end UpperTheory.Gal.InertialTypesAlt.L
 
+/- English proof (translation)
+Introduce `E _ _ _ _ n σ q hc r hr0 hr1 A hA`. Establish `hσ : Isom σ` using `hc.isom`. Take `⟨K, hK, -, -⟩` from `ballSub E n r hr0 hr1`. Establish `bmul : ∀ a ∈ ball n r, ∀ b ∈ ball n r, a * b ∈ ball n r`. Introduce `a ha b hb`.
+
+Rewrite `ha`, `hb`, the goal using `[← hK]`. Conclude with `K.mul_mem ha hb`. Establish `binv : ∀ a ∈ ball n r, a⁻¹ ∈ ball n r`. Introduce `a ha`. Rewrite `ha`, the goal using `[← hK]`.
+
+Conclude with `K.inv_mem ha`. Establish `step : ∀ δ g : GL (Fin n) E, g⁻¹ * δ * sg σ g ∈ UpperTheory.Gal.InertialTypesAlt.L.elemSet r A → ∃ k ∈ ball n r, ∃ t ∈ A, ∃ s, UpperTheory.Gal.InertialTypesAlt.L.Near r s ∧ g⁻¹ * δ * sg σ g = k⁻¹ * diagT E (Fin n) (t * s) * sg σ k`. Introduce `δ g hg`. Take `⟨a, ha, b, hb, t, ht, he⟩` from `hg`. Take `⟨k, hk, s, hs, hks⟩` from `contractB E n σ hσ t (hA t ht) r hr1 a ha b hb`.
+
+Conclude with `⟨k, hk, t, ht, s, hs, he.trans hks⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `δ g hg`. Take `⟨k, hk, t, ht, s, hs, he⟩` from `step δ g hg`. Use `⟨g * k⁻¹, t, ht, s, hs, UpperTheory.Gal.InertialTypesAlt.L.strict_near hr1 (hA t ht) hs, ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, map_inv]`. Use `group`. Use `_ = diagT E (Fin n) (t * s) := by`. Rewrite using `[he]`.
+
+Use `group`. Introduce `δ y d hd hy g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨k, hk, t, ht, s, hs, he⟩` from `step δ g hg`.
+
+Establish `hts : Strict (t * s)` using `UpperTheory.Gal.InertialTypesAlt.L.strict_near hr1 (hA t ht) hs`. Establish `hx : (y⁻¹ * g * k⁻¹)⁻¹ * diagT E (Fin n) d * sg σ (y⁻¹ * g * k⁻¹) = diagT E (Fin n) (t * s)`. Rewrite using `[← hy]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, map_mul, map_inv, map_inv]`.
+
+Use `group`. Use `_ = diagT E (Fin n) (t * s) := by`. Rewrite using `[he]`. Use `group`. Take `⟨u, hu⟩` from `strictNormal E n σ q hc d (t * s) hd hts _ hx`.
+
+Establish `h2 : u⁻¹ * d * UpperTheory.Gal.InertialTypesAlt.L.sgT σ u = t * s`. Apply `UpperTheory.Gal.InertialTypesAlt.L.diag_inj` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, map_inv, ← UpperTheory.Gal.InertialTypesAlt.L.sg_diag, ← hu]`. Conclude with `hx`. Use `⟨u, ⟨t, ht, ?_⟩, k, hk, ?_⟩` and prove the remaining obligations.
+
+Establish `h3 : d * UpperTheory.Gal.InertialTypesAlt.L.sgT σ u / u / t = s`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[div_eq_mul_inv, mul_comm, mul_assoc, mul_left_comm]`. Use `_ = s := by`. Rewrite using `[h2]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h3]`. Conclude with `hs`. Rewrite using `[← hu] group`. Introduce and unpack `⟨u, ⟨t, ht, hs⟩, κ, hκ, rfl⟩`.
+
+Establish `hid : u⁻¹ * d * UpperTheory.Gal.InertialTypesAlt.L.sgT σ u = t * (d * UpperTheory.Gal.InertialTypesAlt.L.sgT σ u / u / t)`. Rewrite using `[mul_comm t, div_mul_cancel, div_eq_mul_inv, mul_comm (d * _) u⁻¹, mul_assoc]`. Establish `hδ : δ = y * diagT E (Fin n) d * (sg σ y)⁻¹`. Rewrite using `[← hy]`. Use `group`.
+
+Use `⟨κ⁻¹, binv κ hκ, diagT E (Fin n) (d * UpperTheory.Gal.InertialTypesAlt.L.sgT σ u / u / t) * sg σ κ, bmul _ (UpperTheory.Gal.InertialTypesAlt.L.diag_ball hs) _ (UpperTheory.Gal.InertialTypesAlt.L.ball_sg hσ hκ), t, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[hδ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, map_mul]`. Use `group`.
+
+Use `_ = κ⁻¹ * (diagT E (Fin n) t * diagT E (Fin n) (d * UpperTheory.Gal.InertialTypesAlt.L.sgT σ u / u / t)) * sg σ κ := by`. Rewrite using `[UpperTheory.Gal.InertialTypesAlt.L.sg_diag, ← map_inv (diagT E (Fin n)) u, ← map_mul, ← map_mul, ← map_mul, hid]`. Use `_ = κ⁻¹ * diagT E (Fin n) t * (diagT E (Fin n) (d * UpperTheory.Gal.InertialTypesAlt.L.sgT σ u / u / t) * sg σ κ) := by group`.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.L.suppE :
     UpperTheory.Gal.InertialTypesAlt.L.SuppE := by
   intro E _ _ _ _ n σ q hc r hr0 hr1 A hA

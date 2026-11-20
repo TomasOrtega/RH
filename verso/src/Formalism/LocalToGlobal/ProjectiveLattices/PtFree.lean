@@ -37,6 +37,21 @@ def valSet (la : HeightOneSpectrum (𝓞 c.F)) : Set (Rul Xo c → EReal) :=
 
 variable {Xo c cls}
 
+/- English proof (translation)
+Take `⟨⟨g, hg⟩, T, io, e, hO, y0, hcls, eta, hl, heq⟩` from `y`. Unfold `vAtV`. Simplify using `only`. Unfold `profI at heq`. Establish `hg1` using `congrArg Prod.fst heq`.
+
+Simplify using `only at hg1`. Substitute `hg1` using the available equality. Establish `h0 : evI y0 (0 : Rul Xo c) = 0`. Rewrite using `[← zero_smul c.F (0 : Rul Xo c), evI_smul, map_zero, zero_mul]`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show nval T.V e (evI y0 0) = ⊤`. Rewrite using `[h0, nval_zero]`. Introduce `r show nval T.V e (evI y0 r) ≠ ⊥`. Distinguish the cases in `hr : evI y0 r = 0`. Rewrite using `[hr, nval_zero]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[nval_of_ne hr]`. Conclude with `EReal.coe_ne_bot _`. Introduce `r s show min (nval T.V e (evI y0 r)) (nval T.V e (evI y0 s)) ≤ nval T.V e (evI y0 (r + s))`. Rewrite using `[evI_add]`.
+
+Conclude with `nval_add e _ _`. Introduce `a r ha show nval T.V e (evI y0 (a • r)) = (((vLa la a : ℤ) : ℝ) : EReal) + nval T.V e (evI y0 r)`. Establish `hio : nval T.V e (io a) = (((vLa la a : ℤ) : ℝ) : EReal)`. Rewrite using `[nval_of_ne ((map_ne_zero io).2 ha), hO.2 a]`. Use `congr 1`.
+
+Establish `he : (e : ℝ) ≠ 0` using `by exact_mod_cast hO.1.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[evI_smul, nval_mul, hio]`. Introduce `r s show nval T.V e (evI y0 (r * s)) = nval T.V e (evI y0 r) + nval T.V e (evI y0 s)`.
+
+Rewrite using `[evI_mul, nval_mul]`.
+-/
 theorem isVal_vAt {PY : Type} {lies : ∀ (T : CDVR) (ι : c.F →+* T.Fr), IntFr Xo c T ι → PY → Prop}
     {la : HeightOneSpectrum (𝓞 c.F)} (y : PtV Xo c cls PY lies la) : IsVal la (vAtV y) := by
   obtain ⟨⟨g, hg⟩, T, io, e, hO, y0, hcls, eta, hl, heq⟩ := y
@@ -75,6 +90,9 @@ theorem isVal_vAt {PY : Type} {lies : ∀ (T : CDVR) (ι : c.F →+* T.Fr), IntF
     show nval T.V e (evI y0 (r * s)) = nval T.V e (evI y0 r) + nval T.V e (evI y0 s)
     rw [evI_mul, nval_mul]
 
+/- English proof (translation)
+Introduce and unpack `v ⟨y, rfl⟩`. Conclude with `isVal_vAt y`.
+-/
 theorem isVal_valSet (la : HeightOneSpectrum (𝓞 c.F)) : ∀ v ∈ valSet Xo c cls la, IsVal la v := by
   rintro v ⟨y, rfl⟩
   exact isVal_vAt y
@@ -88,6 +106,13 @@ def LiesTotal (PY : HeightOneSpectrum (𝓞 c.F) → Type)
 
 variable {Xo c cls}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `H la y`. Take `⟨⟨g, hg⟩, T, io, e, hO, y0, hcls, eta, hl, heq⟩` from `y`. Establish `hg1` using `congrArg Prod.fst heq`. Simplify using `only at hg1`.
+
+Substitute `hg1` using the available equality. Establish `hv` using `H la (vAtV (⟨profI Xo c Unit e y0 (), T, io, e, hO, y0, hcls, (), trivial, rfl⟩ : PtV Xo c cls Unit (fun _ _ _ _ => True) la)) ⟨_, rfl⟩`. Conclude with `hv`. Introduce and unpack `H la v ⟨y, rfl⟩`. Take `⟨⟨g, hg⟩, T, io, e, hO, y0, hcls, eta, hl, heq⟩` from `y`.
+
+Establish `hg1` using `congrArg Prod.fst heq`. Simplify using `only at hg1`. Substitute `hg1` using the available equality. Take `⟨η, hη⟩` from `h la T io e hO y0 hcls`. Conclude with `H la ⟨profI Xo c (PY la) e y0 η, T, io, e, hO, y0, hcls, η, hη, rfl⟩`.
+-/
 theorem nonneg_iff_of_liesTotal {PY : HeightOneSpectrum (𝓞 c.F) → Type}
     {lies : ∀ la (T : CDVR) (ι : c.F →+* T.Fr), IntFr Xo c T ι → PY la → Prop}
     (h : LiesTotal Xo c cls PY lies) (f : Rul Xo c) :

@@ -13,6 +13,11 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace ReciprocityTheory.ChartRe
 
 namespace GlobalTheory.ProjFin
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Use `letI := (X.evaluation U _ hxU).hom.toAlgebra`. Use `haveI : Nonempty U := ⟨⟨_, hxU⟩⟩`. Use `functionField_isFractionRing_of_isAffineOpen X U hU` as an intermediate fact. Set `φ : X.functionField →+* X.residueField (genericPoint X)` to `(X.residue _).hom`.
+
+Set `e : X.functionField ≃ₐ[Γ(X, U)] X.residueField (genericPoint X)` to `{ RingEquiv.ofBijective φ ⟨φ.injective, X.residue_surjective _⟩ with commutes' := fun _ => rfl }`. Conclude with `IsLocalization.isLocalization_of_algEquiv _ e`.
+-/
 theorem isFractionRing_evaluation (X : Scheme.{0}) [IsIntegral X] {U : X.Opens}
     (hU : IsAffineOpen U) {x : X} (hx : x = genericPoint X) (hxU : x ∈ U) :
     letI := (X.evaluation U x hxU).hom.toAlgebra
@@ -27,6 +32,11 @@ theorem isFractionRing_evaluation (X : Scheme.{0}) [IsIntegral X] {U : X.Opens}
       commutes' := fun _ => rfl }
   exact IsLocalization.isLocalization_of_algEquiv _ e
 
+/- English proof (translation)
+Use `letI := (f.app U).hom.toAlgebra`. Use `letI := (Z.evaluation U _ hxU).hom.toAlgebra`. Use `letI : Algebra Γ(Z', f ⁻¹ᵁ U) (Z'.residueField (genericPoint Z')) := (Z'.evaluation (f ⁻¹ᵁ U) _ hxU).hom.toAlgebra`. Use `letI := (f.residueFieldMap (genericPoint Z')).hom.toAlgebra`. Use `letI : Algebra Γ(Z, U) (Z'.residueField (genericPoint Z')) := (f.app U ≫ Z'.evaluation (f ⁻¹ᵁ U) _ hxU).hom.toAlgebra`.
+
+Use `haveI : IsScalarTower Γ(Z, U) Γ(Z', f ⁻¹ᵁ U) (Z'.residueField (genericPoint Z')) := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : IsScalarTower Γ(Z, U) (Z.residueField (f (genericPoint Z'))) (Z'.residueField (genericPoint Z')) := IsScalarTower.of_algebraMap_eq' congr($(Scheme.evaluation_naturality f _ hxU).hom).symm`. Use `haveI := isFractionRing_evaluation Z hU h hxU`. Use `haveI := isFractionRing_evaluation Z' (hU.preimage f) rfl hxU`. Conclude with `(IsFractionRing.finrank_eq Γ(Z, U) (Z.residueField (f (genericPoint Z'))) Γ(Z', f ⁻¹ᵁ U) (Z'.residueField (genericPoint Z'))).symm`.
+-/
 theorem finrank_app_eq_residueDegree {Z Z' : Scheme.{0}} [IsIntegral Z] [IsIntegral Z']
     (f : Z' ⟶ Z) [IsFinite f] (h : f (genericPoint Z') = genericPoint Z) {U : Z.Opens}
     (hU : IsAffineOpen U) (hxU : f (genericPoint Z') ∈ U) :
@@ -49,6 +59,11 @@ theorem finrank_app_eq_residueDegree {Z Z' : Scheme.{0}} [IsIntegral Z] [IsInteg
   exact (IsFractionRing.finrank_eq Γ(Z, U) (Z.residueField (f (genericPoint Z')))
     Γ(Z', f ⁻¹ᵁ U) (Z'.residueField (genericPoint Z'))).symm
 
+/- English proof (translation)
+Use `haveI : Nonempty U := ⟨⟨_, hx⟩⟩`. Establish `key (y : U) : Module.finrank (X.presheaf.stalk (y : X)) (F.presheaf.stalk (y : X) :) = Module.finrank Γ(X, U) Γ(F, U)`. Use `hU.isLocalization_stalk y` as an intermediate fact. Use `QCoh.isLocalizedModule_germLinear F hU y` as an intermediate fact. Establish `hp` using `(hU.primeIdealOf y).asIdeal.primeCompl_le_nonZeroDivisors`.
+
+Rewrite using `[IsLocalization.finrank_eq _ _ hp, IsLocalizedModule.finrank_eq _ (QCoh.germLinear F y) hp]`. Conclude with `key ⟨_, hx⟩`.
+-/
 theorem genRank_eq_finrank_sections {X : Scheme.{0}} [IsIntegral X] (F : X.Modules)
     [F.IsQuasicoherent] {U : X.Opens} (hU : IsAffineOpen U) (hx : genericPoint X ∈ U) :
     VB.genRank F = Module.finrank Γ(X, U) Γ(F, U) := by
@@ -61,11 +76,19 @@ theorem genRank_eq_finrank_sections {X : Scheme.{0}} [IsIntegral X] (F : X.Modul
     rw [IsLocalization.finrank_eq _ _ hp, IsLocalizedModule.finrank_eq _ (QCoh.germLinear F y) hp]
   exact key ⟨_, hx⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, fun _ hV => QCoh.finite_sections_pushforward f _ hV (hF := QCoh.finite_sections (structureModule Z') (hV.preimage f))⟩`.
+-/
 theorem isFiniteQC_pushforward_structureModule {Z Z' : Scheme.{0}} (f : Z' ⟶ Z) [IsFinite f] :
     QCoh.IsFiniteQC ((Scheme.Modules.pushforward f).obj (structureModule Z')) :=
   ⟨inferInstance, fun _ hV => QCoh.finite_sections_pushforward f _ hV
     (hF := QCoh.finite_sections (structureModule Z') (hV.preimage f))⟩
 
+/- English proof (translation)
+Take `⟨U, hU, hxU⟩` from `QCoh.exists_affine_mem (genericPoint Z)`. Establish `hx' : f (genericPoint Z') ∈ U` using `h ▸ hxU`. Use `haveI : Nonempty U := ⟨⟨_, hxU⟩⟩`. Establish `h1 : VB.genRank ((Scheme.Modules.pushforward f).obj (structureModule Z')) = Module.finrank Γ(Z, U) Γ((Scheme.Modules.pushforward f).obj (structureModule Z'), U)` using `genRank_eq_finrank_sections _ hU hxU`. Use `letI := (f.app U).hom.toAlgebra`.
+
+Set `e : Γ((Scheme.Modules.pushforward f).obj (structureModule Z'), U) ≃ₗ[Γ(Z, U)] Γ(Z', f ⁻¹ᵁ U)` to `{ toFun := fun s => s invFun := fun s => s left_inv := fun _ => rfl right_inv := fun _ => rfl map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Rewrite using `[h1, e.finrank_eq, finrank_app_eq_residueDegree f h hU hx']`.
+-/
 theorem genRank_pushforward {Z Z' : Scheme.{0}} [IsIntegral Z] [IsIntegral Z'] (f : Z' ⟶ Z)
     [IsFinite f] (h : f (genericPoint Z') = genericPoint Z) :
     VB.genRank ((Scheme.Modules.pushforward f).obj (structureModule Z')) =
@@ -87,6 +110,9 @@ theorem genRank_pushforward {Z Z' : Scheme.{0}} [IsIntegral Z] [IsIntegral Z'] (
       map_smul' := fun _ _ => rfl }
   rw [h1, e.finrank_eq, finrank_app_eq_residueDegree f h hU hx']
 
+/- English proof (translation)
+Introduce `κ _ Z Z' _ _ _ f _ hP hd hg N hN`. Use `haveI := isFiniteQC_pushforward_structureModule f`. Rewrite using `[interNumOn_def, GlobalTheory.T.intersectionNumber_eq_genericRank_mul_projCurve κ Z hP hd _ N hN, genRank_pushforward f hg]`.
+-/
 theorem interNumOn_eq_residueDegree_mul : ∀ (κ : Type) [Field κ] (Z Z' : Scheme.{0}) [IsIntegral Z]
     [IsIntegral Z'] [Algebra κ Γ(Z, ⊤)] (f : Z' ⟶ Z) [IsFinite f], IsProjOver (strHom κ Z) →
     topologicalKrullDim Z = 1 → f (genericPoint Z') = genericPoint Z → ∀ N : LB Z, N.IsLB →

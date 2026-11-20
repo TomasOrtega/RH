@@ -27,6 +27,15 @@ namespace GlobalTheory.SplitComps
 
 open GlobalTheory.EmbChart (atPlace tensAt compFin_tensAt tensAt_mul_right)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h v τ m n P₀ P₁`. Use `⟨Matrix.of fun i j => tensAt E v ((splitAlgEquiv h τ).symm (P₀ i j, P₁ i j)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.of_apply, Matrix.zero_apply]`.
+
+Rewrite using `[Algebra.smul_def, mul_comm, tensAt_mul_right]`. Establish `: compFin F E v (algebraMap (AF F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) a) = 0`. Express the relevant statement in the definitionally equal form `evFin F v a ⊗ₜ[F] (1 : E) = 0`. Rewrite using `[ha, TensorProduct.zero_tmul]`. Rewrite using `[this, mul_zero, map_zero]`.
+
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, Matrix.of_apply]`. Express the relevant statement in the definitionally equal form `splitProj τ (compFin F E v (tensAt E v _)) = _`. Rewrite using `[compFin_tensAt, splitProj_symm]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.map_apply, Matrix.of_apply]`. Express the relevant statement in the definitionally equal form `splitProj (τ.comp σ) (compFin F E v (tensAt E v _)) = _`. Rewrite using `[compFin_tensAt, splitProj_comp_symm]`.
+-/
 theorem exists_mat_comps : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ → ∀ (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (τ : E →ₐ[F] Fv F v) {m n : Type} (P₀ P₁ : Matrix m n (Fv F v)), ∃ u : Matrix m n (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) u ∧ u.map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW τ) = P₀ ∧ u.map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW (τ.comp σ)) = P₁ := by
   intro F E _ _ _ _ _ σ h v τ m n P₀ P₁
   refine ⟨Matrix.of fun i j => tensAt E v ((splitAlgEquiv h τ).symm (P₀ i j, P₁ i j)), ?_, ?_, ?_⟩

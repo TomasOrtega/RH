@@ -6,6 +6,19 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC CochainCo
 namespace LateralTheory.E.LeafInj0WPf
 open LateralTheory.E.E4 LateralTheory.E.LeafGhostCut LateralTheory.E.EtaleTopologySheaves LateralTheory.E.LeafDegCut LateralTheory.E.LeafInj0Pf
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `y.mk_surjective`. Choose the witnesses or unpack the hypotheses as in `⟨β, hβ⟩ : ∃ β : Cochain ((chains R).obj E) (res R F) (-1), δ (-1) 0 β = (Cochain.ofHom (mappingCone.inr ((chains R).map f))).comp z.1 (zero_add 0) := by`. Use `hy` as an intermediate fact. Express the relevant statement in the definitionally equal form `CohomologyClass.mk _ = 0 at this`. Rewrite `this` using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (-1) (by omega)]`.
+
+Take `⟨β, hβ⟩` from `this`. Conclude with `⟨β, by rw [hβ]; rfl⟩`. Establish `hdec : z.1 = mappingCone.descCochain ((chains R).map f) ((mappingCone.inl ((chains R).map f)).comp z.1 (show -1 + 0 = -1 by omega)) ((Cochain.ofHom (mappingCone.inr ((chains R).map f))).comp z.1 (zero_add 0)) (show (-1 : ℤ) + 1 = 0 by omega)`. Rewrite using `[mappingCone.ext_cochain_from_iff _ (-1) 0 (by omega)]`. Simplify using `[mappingCone.inl_descCochain]`.
+
+Establish `hz : δ 0 1 z.1 = 0` using `Cocycle.δ_eq_zero z 1`. Rewrite `hz` using `[hdec, mappingCone.δ_descCochain _ _ _ _ _ (by omega)]`. Rewrite `hz` using `[mappingCone.ext_cochain_from_iff _ 0 1 (by omega)]`. Take `⟨hz1, -⟩` from `hz`. Simplify using `only [Cochain.comp_zero, Cochain.comp_add, mappingCone.inl_fst_assoc, mappingCone.inl_snd_assoc, add_zero] at hz1`.
+
+Establish `hw : δ (-1) 0 ((mappingCone.inl ((chains R).map f)).comp z.1 (show -1 + 0 = -1 by omega) - (Cochain.ofHom ((chains R).map f)).comp β (zero_add (-1))) = 0`. Rewrite using `[δ_sub, δ_ofHom_comp, hβ, sub_eq_zero]`. Rewrite `hz1` using `[show Int.negOnePow 1 = -1 by decide]`. Simplify using `only [Units.smul_def, Units.val_neg, Units.val_one, neg_smul, one_smul, ← sub_eq_add_neg, sub_eq_zero] at hz1`. Conclude with `hz1`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨γ, hγ⟩ : ∃ γ : Cochain ((chains R).obj U) (res R F) (-2), δ (-2) (-1) γ = (mappingCone.inl ((chains R).map f)).comp z.1 (show -1 + 0 = -1 by omega) - (Cochain.ofHom ((chains R).map f)).comp β (zero_add (-1)) := by`. Establish `h0 : CohomologyClass.mk (Cocycle.mk _ 0 (by omega) hw) = 0` using `Subsingleton.elim _ _`. Rewrite `h0` using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (-2) (by omega)]`. Take `⟨γ, hγ⟩` from `h0`. Conclude with `⟨γ, by rw [hγ]; rfl⟩`.
+
+Rewrite using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (-1) (by omega)]`. Use `⟨mappingCone.descCochain ((chains R).map f) γ β (show (-2 : ℤ) + 1 = -1 by omega), ?_⟩` and prove the remaining obligations. Rewrite using `[mappingCone.δ_descCochain _ _ _ _ _ (by omega), hγ, hβ, show Int.negOnePow 0 = 1 by decide, one_smul, sub_add_cancel]`. Use `conv_rhs => rw [hdec]`. Both sides reduce to the same expression.
+-/
 theorem fgtInj0 (R : Type) [CommRing R] (F : Shv R) {U E : Spc} (f : U ⟶ E)
     (hU : Subsingleton (H R U F (-1))) (y : Hrel R f F 0) (hy : fgt R f F 0 y = 0) : y = 0 := by
   obtain ⟨z, rfl⟩ := y.mk_surjective
@@ -40,6 +53,11 @@ theorem fgtInj0 (R : Type) [CommRing R] (F : Shv R) {U E : Spc} (f : U ⟶ E)
   conv_rhs => rw [hdec]
   rfl
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `y.mk_surjective`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk _ = 0`. Rewrite using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`. Use `⟨n.negOnePow • (mappingCone.inl ((chains R).map f)).comp y.1 (by omega), ?_⟩` and prove the remaining obligations. Rewrite using `[δ_units_smul]`.
+
+Rewrite using `[δ_comp (mappingCone.inl ((chains R).map f)) y.1 (show -1 + n = n - 1 by omega) 0 (n + 1) n (by omega) (by omega) (by omega)]`. Simplify using `[zcomp, mappingCone.δ_inl, Cochain.ofHom_comp, Cochain.comp_assoc_of_first_is_zero_cochain, smul_smul, Int.units_mul_self]`.
+-/
 theorem fgtPull (R : Type) [CommRing R] (F : Shv R) {U E : Spc} (f : U ⟶ E) (n : ℤ) (y : Hrel R f F n) :
     pull R f F n (fgt R f F n y) = 0 := by
   obtain ⟨y, rfl⟩ := y.mk_surjective
@@ -50,6 +68,11 @@ theorem fgtPull (R : Type) [CommRing R] (F : Shv R) {U E : Spc} (f : U ⟶ E) (n
   rw [δ_comp (mappingCone.inl ((chains R).map f)) y.1 (show -1 + n = n - 1 by omega) 0 (n + 1) n (by omega) (by omega) (by omega)]
   simp [zcomp, mappingCone.δ_inl, Cochain.ofHom_comp, Cochain.comp_assoc_of_first_is_zero_cochain, smul_smul, Int.units_mul_self]
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `y.mk_surjective`. Use `congrArg CohomologyClass.mk (Cocycle.ext ?_)` and prove the remaining obligations. Establish `key : mappingCone.inr ((chains R).map f') ≫ mappingCone.map ((chains R).map f') ((chains R).map f) ((chains R).map u) ((chains R).map e) (by rw [← Functor.map_comp, ← Functor.map_comp, comm]) = (chains R).map e ≫ mappingCone.inr ((chains R).map f)`. Simplify using `[mappingCone.map]`. Simplify using `[zcomp, rmap]`.
+
+Rewrite using `[← Cochain.comp_assoc_of_first_is_zero_cochain, ← Cochain.comp_assoc_of_first_is_zero_cochain, ← Cochain.ofHom_comp, ← Cochain.ofHom_comp, key]`.
+-/
 theorem fgtNat (R : Type) [CommRing R] (F : Shv R) {U E U' E' : Spc} (f : U ⟶ E) (f' : U' ⟶ E') (u : U' ⟶ U)
   (e : E' ⟶ E) (comm : f' ≫ e = u ≫ f) (n : ℤ) (y : Hrel R f F n) :
   fgt R f' F n (rpull R f f' u e comm F n y) = pull R e F n (fgt R f F n y) := by
@@ -60,6 +83,9 @@ theorem fgtNat (R : Type) [CommRing R] (F : Shv R) {U E U' E' : Spc} (f : U ⟶ 
   simp [zcomp, rmap]
   rw [← Cochain.comp_assoc_of_first_is_zero_cochain, ← Cochain.comp_assoc_of_first_is_zero_cochain, ← Cochain.ofHom_comp, ← Cochain.ofHom_comp, key]
 
+/- English proof (translation)
+The claim follows from `fgtNat`.
+-/
 theorem leafRelNat : LeafRelNat := fgtNat
 
 def LeafSecTw : Prop := ∀ (q : ℕ) [NeZero q] (k : Type) [Field k], IsUnit (q : k) → ∀ (i : ℤ)
@@ -72,10 +98,18 @@ def LeafSec0W : Prop := Hyps → ∀ (q : ℕ) [NeZero q] (k : Type) [Field k], 
   pull (ZMod q) (sch.map (prB ι U)) (tw q i) 0 h = 0 → ∀ x : U.left, U.hom x ∈ Set.range ι →
   ∃ (U' : B.Etale) (a : U' ⟶ U) (y : U'.left), a.left y = x ∧ pull (ZMod q) (sch.map a.left) (tw q i) 0 h = 0
 
+/- English proof (translation)
+Unfold `Hyps at hH`. Conclude with `hH.2.2.2.2.2.2.2.1`.
+-/
 theorem etale_standing_hypotheses_imply_restriction_axiom (hH : Hyps) : A9 := by
   unfold Hyps at hH
   exact hH.2.2.2.2.2.2.2.1
 
+/- English proof (translation)
+Introduce `hH q _ k _ hq i B W s ι _ U h h0 x hx`. Take `⟨e, hnat, -⟩` from `((etale_standing_hypotheses_imply_restriction_axiom hH) (ZMod q) (tw q i)).2`. Take `⟨t, rfl⟩` from `(e U.left).surjective h`. Rewrite `h0` using `[hnat]`. Establish `h1 : Sec.res (prB ι U) t = 0` using `(e _).injective (by rw [h0, map_zero])`.
+
+Take `⟨U', a, y, hy, h2⟩` from `hT q k hq i s ι U t h1 x hx`. Conclude with `⟨U', a, y, hy, by rw [hnat, h2, map_zero]⟩`.
+-/
 theorem LeafSec0W_of (hT : LeafSecTw) : LeafSec0W := by
   intro hH q _ k _ hq i B W s ι _ U h h0 x hx
   obtain ⟨e, hnat, -⟩ := ((etale_standing_hypotheses_imply_restriction_axiom hH) (ZMod q) (tw q i)).2
@@ -85,6 +119,11 @@ theorem LeafSec0W_of (hT : LeafSecTw) : LeafSec0W := by
   obtain ⟨U', a, y, hy, h2⟩ := hT q k hq i s ι U t h1 x hx
   exact ⟨U', a, y, hy, by rw [hnat, h2, map_zero]⟩
 
+/- English proof (translation)
+Introduce `hH q _ k _ hq i B W Y0 Y1 Y2 s ι _ V hV p g1 g2 hp1 hp2 hp3 hS U c x hx`. Take `⟨U', a, y, hy, hz⟩` from `LeafSec0W_of hT hH q k hq i s ι U _ (fgtPull (ZMod q) (tw q i) (sch.map (prB ι U)) 0 c) x hx`. Use `⟨U', a, y, hy, Cov.all ?_⟩` and prove the remaining obligations. Introduce `U'' b`. Apply `fgtInj0 (ZMod q) (tw q i) (sch.map (prB ι U''))` to reduce the goal to its premises.
+
+Conclude with `((etale_standing_hypotheses_imply_restriction_axiom hH) (ZMod q) (tw q i)).1 _ (-1) (by norm_num)`. Rewrite using `[fgtNat]`. Establish `e : (b ≫ a).left = b.left ≫ a.left` using `rfl`. Rewrite using `[e, Functor.map_comp, pull_comp, hz, map_zero]`.
+-/
 theorem LeafInj0W_of (hT : LeafSecTw) : LeafInj0W := by
   intro hH q _ k _ hq i B W Y0 Y1 Y2 s ι _ V hV p g1 g2 hp1 hp2 hp3 hS U c x hx
   obtain ⟨U', a, y, hy, hz⟩ := LeafSec0W_of hT hH q k hq i s ι U _ (fgtPull (ZMod q) (tw q i) (sch.map (prB ι U)) 0 c) x hx

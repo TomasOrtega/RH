@@ -18,6 +18,9 @@ namespace Formalism.MainNotions.SelectionLemmas.Pf
 
 open Formalism.MainNotions.G Formalism.MainNotions.SelectionLemmas
 
+/- English proof (translation)
+The claim follows from `second_estimate_of_rank_bound D 1088 1 (by norm_num) (by norm_num) restDeg restSel fun hA => restRank_of 1088 1 h41 (h45 hA) (restCount_of 1088 1 (hLam hA) (restSeg_of 1088 (hMem hA) (hInd hA) restFin (hT1 hA) hMon) hPad hSum)`.
+-/
 theorem second_estimate_of_restrictions (D : Formalism.BasicNotions.D7) (h41 : DiscriminantNonzeroModUniformiser) (h45 : AdmB D → GeneratorModuloUniformiser 1088)
     (hLam : AdmB D → RestLam 1088) (hPad : RestPad 1088) (hSum : RestSum 1088 1)
     (hMem : AdmB D → RestMem 1088) (hInd : AdmB D → RestInd 1088)
@@ -26,10 +29,19 @@ theorem second_estimate_of_restrictions (D : Formalism.BasicNotions.D7) (h41 : D
     restRank_of 1088 1 h41 (h45 hA)
       (restCount_of 1088 1 (hLam hA) (restSeg_of 1088 (hMem hA) (hInd hA) restFin (hT1 hA) hMon) hPad hSum)
 
+/- English proof (translation)
+The claim follows from `restMon_of 1088 beta_ratio_bound tau_degree_on_path_bound residue_class_count`.
+-/
 theorem restMon : RestMon 1088 := restMon_of 1088 beta_ratio_bound tau_degree_on_path_bound residue_class_count
 
+/- English proof (translation)
+The claim follows from `restInd_of 1088 (restKey_of D hAdm 1088)`.
+-/
 theorem restInd (D : Formalism.BasicNotions.D7) (hAdm : AdmB D) : RestInd 1088 := restInd_of 1088 (restKey_of D hAdm 1088)
 
+/- English proof (translation)
+The claim follows from `second_estimate_of_restrictions D discriminant_nonzero_mod_uniformiser (fun hA => generator_modulo_uniformiser_of_adm D hA 1088 (by norm_num)) (fun hA => restLam_of D hA 1088 restLamDeg) restPad restSum (fun hA => restMem_of D hA) (fun hA => restInd D hA) (fun hA => good_path_wei …`.
+-/
 theorem secondPartClosed (D : Formalism.BasicNotions.D7) : SecondPartClosed D :=
   second_estimate_of_restrictions D discriminant_nonzero_mod_uniformiser (fun hA => generator_modulo_uniformiser_of_adm D hA 1088 (by norm_num))
     (fun hA => restLam_of D hA 1088 restLamDeg)

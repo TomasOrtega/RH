@@ -12,9 +12,15 @@ variable {l : ℕ} [Fact l.Prime] {G : Type} [Group G] {K : FinExt l} (e : G ≃
 
 private def tr : Representation ℚ_[l] ↥(GK K) V := (resCoef ℚ_[l] ρ).comp e.symm.toMonoidHom
 
+/- English proof (translation)
+Simplify using `[tr, resCoef]`.
+-/
 private theorem tr_apply (g : G) (v : V) : tr e ρ (e g) v = ρ g v := by
   simp [tr, resCoef]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVB, actC, tr_apply, (PP l).PD_actB]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 private theorem actVB_tr (g : G) (x : V ⊗[ℚ_[l]] Bcr l) :
     actVB ((PP l).PD K) (tr e ρ) (e g) x = actC ((GK K).subtype.comp e.toMonoidHom) ρ g x := by
   induction x using TensorProduct.induction_on with
@@ -22,6 +28,9 @@ private theorem actVB_tr (g : G) (x : V ⊗[ℚ_[l]] Bcr l) :
   | tmul v b => simp [actVB, actC, tr_apply, (PP l).PD_actB]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVdR, actD, tr_apply, (PP l).PD_actdR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 private theorem actVdR_tr (g : G) (x : V ⊗[ℚ_[l]] Bdr l) :
     actVdR ((PP l).PD K) (tr e ρ) (e g) x = actD ((GK K).subtype.comp e.toMonoidHom) ρ g x := by
   induction x using TensorProduct.induction_on with
@@ -29,6 +38,9 @@ private theorem actVdR_tr (g : G) (x : V ⊗[ℚ_[l]] Bdr l) :
   | tmul v b => simp [actVdR, actD, tr_apply, (PP l).PD_actdR]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actD, resCoef]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 private theorem actD_res (φ : G →* GQ l) (g : G) (x : V ⊗[ℚ_[l]] Bdr l) :
     actD φ (resCoef ℚ_[l] ρ) g x = actD φ ρ g x := by
   induction x using TensorProduct.induction_on with
@@ -36,11 +48,17 @@ private theorem actD_res (φ : G →* GQ l) (g : G) (x : V ⊗[ℚ_[l]] Bdr l) :
   | tmul v b => simp [actD, resCoef]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[Ddr, sub_eq_zero, actD_res]`.
+-/
 private theorem Ddr_res (φ : G →* GQ l) :
     Ddr φ (resCoef ℚ_[l] ρ) = (Ddr φ ρ).restrictScalars ℚ_[l] := by
   ext x
   simp [Ddr, sub_eq_zero, actD_res]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [DdR, Ddr, Submodule.restrictScalars_mem, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply]`. Rewrite using `[e.surjective.forall]`. Simplify using `only [actVdR_tr]`.
+-/
 private theorem DdR_tr :
     DdR ((PP l).PD K) (tr e ρ) = (Ddr ((GK K).subtype.comp e.toMonoidHom) ρ).restrictScalars ℚ_[l] := by
   ext x
@@ -49,6 +67,9 @@ private theorem DdR_tr :
   rw [e.surjective.forall]
   simp only [actVdR_tr]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [H0V, Submodule.restrictScalars_mem, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero, H0, Representation.mem_invariants]`. Rewrite using `[e.surjective.forall]`. Simplify using `only [tr_apply]`.
+-/
 private theorem h0V_tr_eq_restrictScalars_h0 : H0V (tr e ρ) = (H0 ρ).restrictScalars ℚ_[l] := by
   ext x
   simp only [H0V, Submodule.restrictScalars_mem, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply,
@@ -57,6 +78,11 @@ private theorem h0V_tr_eq_restrictScalars_h0 : H0V (tr e ρ) = (H0 ρ).restrictS
   simp only [tr_apply]
 
 variable (K E V) in
+/- English proof (translation)
+Establish `hF : (((PP l).PD K).Fil a).restrictScalars ℚ_[l] = (((PP l).PD (botExt l)).Fil a).restrictScalars ℚ_[l]` using `SetLike.coe_injective ((PP l).PD_Fil K (botExt l) a)`. Establish `h : ∀ (N : Submodule ℚ_[l] (Bdr l)) y, AlgebraTensorModule.map (LinearMap.id : V →ₗ[ℚ_[l]] V) N.subtype y = AlgebraTensorModule.map (LinearMap.id : V →ₗ[E] V) N.subtype y`. Introduce `N y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul v b => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Use extensionality with `x`. Rewrite using `[FilV, hF]`. Simplify using `only [FilT, Submodule.restrictScalars_mem, LinearMap.mem_range, h]`.
+-/
 private theorem FilV_eq (a : ℤ) :
     FilV ((PP l).PD K) (LL := ℚ_[l]) (V := V) a = (FilT (l := l) E V a).restrictScalars ℚ_[l] := by
   have hF : (((PP l).PD K).Fil a).restrictScalars ℚ_[l] =
@@ -76,6 +102,11 @@ private theorem FilV_eq (a : ℤ) :
 variable [TopologicalSpace G] [TopologicalSpace V] [IsTopologicalAddGroup V] [ContinuousConstSMul E V]
   [ContinuousConstSMul ℚ_[l] V]
 
+/- English proof (translation)
+Use `show ((Continuous c ∧ ∀ g h, c (g * h) = c g + tr e ρ g (c h)) ∧ ∃ x, ∀ g, c g ⊗ₜ[ℚ_[l]] (1 : Bcr l) = actVB ((PP l).PD K) (tr e ρ) g x - x) ↔ ((Continuous (c ∘ e) ∧ ∀ g h, c (e (g * h)) = c (e g) + ρ g (c (e h))) ∧ ∃ x, ∀ g, c (e g) ⊗ₜ[ℚ_[l]] (1 : Bcr l) = actC ((GK K).subtype.c …`. Use `and_congr (and_congr ⟨fun h => h.comp he, fun h => ?_⟩ ?_) (exists_congr fun x => ?_)` and prove the remaining obligations. Use `h.comp he'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e.surjective.forall₂]`. Simplify using `only [tr_apply, map_mul]`. Rewrite using `[e.surjective.forall]`. Simplify using `only [actVB_tr]`.
+-/
 private theorem mem_Z1f_transport_iff (he : Continuous e) (he' : Continuous e.symm) (c : ↥(GK K) → V) :
     c ∈ Formalism.WeaklyAdmissibleFiltrations.finiteCocycles ((PP l).PD K) (tr e ρ) ↔
       (c ∘ e) ∈ UpperTheory.V.Loc.finiteCocycles ((GK K).subtype.comp e.toMonoidHom) ρ := by
@@ -100,6 +131,11 @@ private def cocycleTransportToH1f (he : Continuous e) (he' : Continuous e.symm) 
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Introduce and unpack `⟨_, c, hc, rfl⟩`. Establish `h : (c.1 ∘ e.symm) ∘ e = c.1`. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules. Use `⟨⟨c.1 ∘ e.symm, (mem_Z1f_transport_iff e ρ he he' _).mpr (by rw [h]; exact hc)⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext h)`.
+-/
 private theorem cocycle_transport_H1f_surjective (he : Continuous e) (he' : Continuous e.symm) :
     Function.Surjective (cocycleTransportToH1f e ρ he he') := by
   rintro ⟨_, c, hc, rfl⟩
@@ -109,6 +145,11 @@ private theorem cocycle_transport_H1f_surjective (he : Continuous e) (he' : Cont
   refine ⟨⟨c.1 ∘ e.symm, (mem_Z1f_transport_iff e ρ he he' _).mpr (by rw [h]; exact hc)⟩, Subtype.ext ?_⟩
   exact congrArg Submodule.Quotient.mk (Subtype.ext h)
 
+/- English proof (translation)
+Use extensionality with `c`. Rewrite using `[LinearMap.mem_ker, Subtype.ext_iff]`. Use `(Submodule.Quotient.mk_eq_zero _).trans ?_` and prove the remaining obligations. Use `(mem_coboundaries1 ρ (c.1 ∘ e)).trans ?_` and prove the remaining obligations. Use `exists_congr fun m => ?_` and prove the remaining obligations.
+
+Use `show (∀ g, c.1 (e g) = ρ g m - m) ↔ (fun g => tr e ρ g m - m) = c.1`. Rewrite using `[funext_iff, e.surjective.forall]`. Simplify using `only [tr_apply]`. Conclude with `forall_congr' fun g => eq_comm`.
+-/
 private theorem ker_cocycle_transport_H1f (he : Continuous e) (he' : Continuous e.symm) :
     LinearMap.ker (cocycleTransportToH1f e ρ he he') =
       (Formalism.WeaklyAdmissibleFiltrations.B1 (tr e ρ)).comap (Formalism.WeaklyAdmissibleFiltrations.finiteCocycles ((PP l).PD K) (tr e ρ)).subtype := by
@@ -130,6 +171,21 @@ private def h1fEquiv (he : Continuous e) (he' : Continuous e.symm) :
 end UpperTheory.V.Loc.BlochKatoDimension
 
 open UpperTheory.V.Loc.BlochKatoDimension in
+/- English proof (translation)
+Introduce `hP l _ G _ _ _ φ hφ E _ _ _ V _ _ _ _ _ _ _ _ _ ρ hc hdR`. Take `⟨K, e, he, he', hφe, -, hind, -⟩` from `openField φ hφ`. Take `⟨T⟩` from `tiedP l`. Rewrite `hdR` using `[IsDr, hind, Ddr_res]`. Rewrite using `[hind]`.
+
+Use `clear hind hφ`. Substitute `hφe` using the available equality. Establish `hD` using `(hP.bk l (PP l) (AIP l) T K).1`. Establish `hcont : ∀ x, Continuous fun g => tr e ρ g x` using `fun x => hc.comp (he'.prodMk continuous_const)`. Establish `hdR' : IsDR ((PP l).PD K) (tr e ρ)`.
+
+Rewrite using `[IsDR, DdR_tr]`. Conclude with `hdR`. Take `⟨hfin, hdim⟩` from `hD V (tr e ρ) hcont hdR'`. Use `haveI : Module.Finite ℚ_[l] ↥(finiteCohomology ((GK K).subtype.comp e.toMonoidHom) ρ) := Module.Finite.equiv (h1fEquiv e ρ he he')`. Use `⟨Module.Finite.of_restrictScalars_finite ℚ_[l] E _, ?_⟩` and prove the remaining obligations.
+
+Establish `hH1 : finrank ℚ_[l] (FiniteCohomology ((PP l).PD K) (tr e ρ)) = finrank ℚ_[l] E * finrank E ↥(finiteCohomology ((GK K).subtype.comp e.toMonoidHom) ρ)`. Rewrite using `[(h1fEquiv e ρ he he').finrank_eq, finrank_mul_finrank]`. Establish `hH0 : finrank ℚ_[l] ↥(H0V (tr e ρ)) = finrank ℚ_[l] E * finrank E ↥(H0 ρ)`. Rewrite using `[h0V_tr_eq_restrictScalars_h0, finrank_mul_finrank]`. Both sides reduce to the same expression.
+
+Establish `hF : finrank ℚ_[l] ↥(DdR ((PP l).PD K) (tr e ρ) ⊓ FilV ((PP l).PD K) (LL` using `ℚ_[l]) (V := V) 0) = finrank ℚ_[l] E * finrank E ↥(FilD ((GK K).subtype.comp e.toMonoidHom) ρ 0) := by`. Rewrite using `[DdR_tr, FilV_eq K E V, ← Submodule.restrictScalars_inf, finrank_mul_finrank]`. Both sides reduce to the same expression. Rewrite `hdR'` using `[IsDR, ← finrank_mul_finrank ℚ_[l] E V]`. Rewrite `hdim` using `[hH1, hH0, hdR', hF]`.
+
+Establish `hd : (finrank ℚ_[l] E : ℤ) ≠ 0`. Conclude with `(Module.finrank_pos (R := ℚ_[l]) (M := E)).ne'` after adjusting the coercions. Move the coercions through the operations in `at hdim`. Establish `: ((finrank E ↥(finiteCohomology ((GK K).subtype.comp e.toMonoidHom) ρ) + finrank E ↥(FilD ((GK K).subtype.comp e.toMonoidHom) ρ 0) : ℕ) : ℤ) = ((finrank E ↥(H0 ρ) + finrank ℚ_[l] ↥K.1 * finrank E V : ℕ) : ℤ)`. Use `push_cast`.
+
+Use `mul_left_cancel₀ hd ?_` and prove the remaining obligations. Take the linear combination `hdim`. Conclude with `this` after adjusting the coercions.
+-/
 theorem UpperTheory.V.Loc.bkDim :
     LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) {E : Type} [Field E] [Algebra ℚ_[l] E] [FiniteDimensional ℚ_[l] E] {V : Type} [AddCommGroup V] [Module E V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] E V] [FiniteDimensional ℚ_[l] V] [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] [IsTopologicalAddGroup V] [ContinuousConstSMul E V] (ρ : Representation E G V), ContAction ρ → IsDr φ ρ → Module.Finite E ↥(finiteCohomology φ ρ) ∧ finrank E ↥(finiteCohomology φ ρ) + finrank E ↥(FilD φ ρ 0) = finrank E ↥(H0 ρ) + φ.range.index * finrank E V := by
   intro hP l _ G _ _ _ φ hφ E _ _ _ V _ _ _ _ _ _ _ _ _ ρ hc hdR

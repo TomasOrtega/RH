@@ -21,6 +21,11 @@ end
 
 end UpperTheory.Kd.C7
 
+/- English proof (translation)
+Apply `sub_eq_zero.mp` to reduce the goal to its premises. Apply `hH.haus` to reduce the goal to its premises. Introduce `n`. Take `⟨w, hw⟩` from `Ideal.mem_span_singleton'.mp (PadicInt.appr_spec n z)`. Establish `hz : z = ((z.appr n : ℕ) : ℤ_[l]) + w * (l : ℤ_[l]) ^ n`.
+
+Rewrite using `[hw]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton, hz]`. Simplify using `only [map_add, map_mul, map_pow, map_natCast]`. Conclude with `⟨f (algebraMap ℤ_[l] R w) - algebraMap ℤ_[l] R w, by ring⟩`.
+-/
 private theorem ringHom_algebraMap_padicInt_eq {l : ℕ} [Fact (Nat.Prime l)] {R : Type} [CommRing R] [Algebra ℤ_[l] R]
     (hH : IsHausdorff (Ideal.span {(l : R)}) R) (f : R →+* R) (z : ℤ_[l]) :
     f (algebraMap ℤ_[l] R z) = algebraMap ℤ_[l] R z := by
@@ -35,6 +40,15 @@ private theorem ringHom_algebraMap_padicInt_eq {l : ℕ} [Fact (Nat.Prime l)] {R
   simp only [map_add, map_mul, map_pow, map_natCast]
   exact ⟨f (algebraMap ℤ_[l] R w) - algebraMap ℤ_[l] R w, by ring⟩
 
+/- English proof (translation)
+Establish `hsum : ∀ (y : S) (k' : Fin d), ∑ k, Algebra.leftMulMatrix e y k k' • e k = y * e k'`. Introduce `y k'`. Simplify using `only [Algebra.leftMulMatrix_eq_repr_mul]`. Conclude with `e.sum_repr _`. Use extensionality with `k' m'`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply]`. Establish `h1 : ∀ m, ∑ k, Algebra.leftMulMatrix e a k k' * e.repr (e k * e m) i = e.repr (a * e k' * e m) i`. Introduce `m`. Rewrite using `[← hsum a k', Finset.sum_mul, map_sum, Finsupp.finset_sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_mul_assoc, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Simplify using `only [h1]`. Establish `h2 : ∑ m, e.repr (a * e k' * e m) i * Algebra.leftMulMatrix e b m m' = e.repr (a * e k' * (b * e m')) i`. Rewrite using `[← hsum b m', Finset.mul_sum, map_sum, Finsupp.finset_sum_apply]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_smul_comm, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, show a * e k' * (b * e m') = (a * b) * (e k' * e m') by ring, hab, one_mul]`.
+-/
 private theorem transpose_leftMulMatrix_mul_structure_mul_eq {l : ℕ} [Fact (Nat.Prime l)] {S : Type} [CommRing S] [Algebra ℤ_[l] S] {d : ℕ}
     (e : Module.Basis (Fin d) ℤ_[l] S) (a b : S) (hab : a * b = 1) (i : Fin d) :
     (Algebra.leftMulMatrix e a)ᵀ * Matrix.of (fun k m => e.repr (e k * e m) i) * Algebra.leftMulMatrix e b =
@@ -58,6 +72,9 @@ private theorem transpose_leftMulMatrix_mul_structure_mul_eq {l : ℕ} [Fact (Na
     ring
   rw [h2, show a * e k' * (b * e m') = (a * b) * (e k' * e m') by ring, hab, one_mul]
 
+/- English proof (translation)
+Simplify using `only [← map_mul, ← map_sum]`. Use `congr 1`. Simplify using `[Bas.val, Algebra.smul_def, mul_comm]`.
+-/
 private theorem sum_algebraMap_basis_mul_eq_algebraMap_sum_smul {l : ℕ} [Fact (Nat.Prime l)] {c : Coef l} (β : Bas c) (z : Fin β.d → ℤ_[l]) :
     ∑ i, algebraMap (PadicAlgCl l) ℂ_[l] (β.val i) *
         algebraMap (PadicAlgCl l) ℂ_[l] (algebraMap ℤ_[l] (PadicAlgCl l) (z i)) =
@@ -66,6 +83,57 @@ private theorem sum_algebraMap_basis_mul_eq_algebraMap_sum_smul {l : ℕ} [Fact 
   congr 1
   simp [Bas.val, Algebra.smul_def, mul_comm]
 
+/- English proof (translation)
+Introduce `l _ _ Ω _ _ _ A _ j Φ c β a ha`. Take `⟨hval, -, -, -⟩` from `(pBasEx l c).2 β`. Establish `hH : IsHausdorff (Ideal.span {(l : Φ.R)}) Φ.R` using `by haveI := Φ.fl.complete`. Conclude with `IsAdicComplete.toIsHausdorff`. Establish `hσs : ∀ z : ℤ_[l], Φ.σ.symm (algebraMap ℤ_[l] Φ.R z) = algebraMap ℤ_[l] Φ.R z` using `fun z => ringHom_algebraMap_padicInt_eq hH Φ.σ.symm.toRingHom z`.
+
+Use `set b : c.O := ↑(ha.unit⁻¹) with hb`. Establish `hab : a * b = 1` using `ha.mul_val_inv`. Establish `hba : b * a = 1` using `ha.val_inv_mul`. Use `set f := algebraMap ℤ_[l] Φ.R with hf`. Use `set Na := (β.mat a).map f with hNa`.
+
+Use `set Nb := (β.mat b).map f with hNb`. Establish `hmat : ∀ x y : c.O, β.mat (x * y) = β.mat x * β.mat y` using `fun x y => map_mul _ x y`. Establish `hmat1 : β.mat 1 = 1` using `map_one (Algebra.leftMulMatrix β.e)`. Establish `hNab : Na * Nb = 1`. Rewrite using `[hNa, hNb, ← Matrix.map_mul, ← hmat, hab, hmat1, Matrix.map_one f (map_zero f) (map_one f)]`.
+
+Establish `hNba : Nb * Na = 1`. Rewrite using `[hNa, hNb, ← Matrix.map_mul, ← hmat, hba, hmat1, Matrix.map_one f (map_zero f) (map_one f)]`. Take `⟨V, hV, hVσ⟩` from `pLangR Φ.R l Φ.σ Φ.fl Φ.unit Φ.closed β.d Na (Matrix.isUnit_det_of_right_inverse hNab)`. Establish `hle : ∀ y, ‖Φ.lam β y‖ ≤ 1`. Introduce `y`.
+
+Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[norm_mul, norm_algebraMap']`. Conclude with `mul_le_one₀ (hval i) (norm_nonneg _) (Φ.jh_le _)`. Use `set e1 : Fin β.d → Φ.R := fun i => f (β.e.repr 1 i) with he1`.
+
+Use `set s := V⁻¹ *ᵥ e1 with hs`. Establish `hVs : V *ᵥ s = e1`. Rewrite using `[hs, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv V hV, Matrix.one_mulVec]`. Establish `h1 : Φ.lam β e1 = 1`. Simplify using `only [Fr.lam, he1, hf, Fr.jh_alg]`.
+
+Rewrite using `[sum_algebraMap_basis_mul_eq_algebraMap_sum_smul, β.e.sum_repr]`. Simplify using the standard rewrite rules. Establish `hsum : (1 : ℂ_[l]) = ∑ m, Φ.jh (s m) * Φ.lam β (fun i => V i m)`. Rewrite using `[← h1, ← hVs]`. Simplify using `only [Fr.lam, Matrix.mulVec, dotProduct, map_sum, map_mul, Finset.mul_sum]`.
+
+Use `conv_lhs => rw [Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun i _ => by ring`. Establish `hne : (Finset.univ : Finset (Fin β.d)).Nonempty`. Assume the negation of the conclusion as `hE`. Rewrite `hE` using `[Finset.not_nonempty_iff_eq_empty]`.
+
+Rewrite `hsum` using `[hE, Finset.sum_empty]`. Conclude with `one_ne_zero hsum`. Take `⟨m0, -, hm0⟩` from `IsUltrametricDist.exists_norm_finset_sum_le_of_nonempty hne (fun m => Φ.jh (s m) * Φ.lam β (fun i => V i m))`. Rewrite `hm0` using `[← hsum, norm_one, norm_mul]`. Use `set η : Fin β.d → Φ.R := fun i => V i m0 with hηdef`.
+
+Use `set μ := Φ.lam β η with hμdef`. Establish `hμ : ‖μ‖ = 1` using `le_antisymm (hle _) (hm0.trans (mul_le_of_le_one_left (norm_nonneg _) (Φ.jh_le _)))`. Establish `hμ0 : μ ≠ 0`. Introduce `h`. Rewrite `hμ` using `[h, norm_zero]`.
+
+Conclude with `zero_ne_one hμ`. Use `⟨μ⁻¹, by rw [norm_inv, hμ, inv_one], ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hη : (fun i => Φ.σ (η i)) = Na *ᵥ η`. Use function extensionality and compare the values at `i`.
+
+Use `congrFun (congrFun hVσ i) m0` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Establish `hmapv : ∀ (M : Matrix (Fin β.d) (Fin β.d) ℤ_[l]) (w : Fin β.d → Φ.R) (i : Fin β.d), Φ.σ.symm ((M.map f *ᵥ w) i) = (M.map f *ᵥ fun k => Φ.σ.symm (w k)) i`. Introduce `M w i`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply, hσs]`.
+
+Establish `hηs' : η = Na *ᵥ fun k => Φ.σ.symm (η k)`. Use function extensionality and compare the values at `i`. Establish `h` using `congrArg Φ.σ.symm (congrFun hη i)`. Simplify using `only [RingEquiv.symm_apply_apply] at h`. Rewrite using `[h, hNa]`.
+
+Conclude with `hmapv _ _ i`. Establish `hηs : (fun k => Φ.σ.symm (η k)) = Nb *ᵥ η` using `by conv_rhs => rw [hηs']`. Rewrite using `[Matrix.mulVec_mulVec, hNba, Matrix.one_mulVec]`. Establish `hxs : (fun k => Φ.σ.symm (x k)) = Na *ᵥ x`. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[hx k]`. Simplify using `[Matrix.mulVec, dotProduct, hNa]`. Use `set Ci : Fin β.d → Matrix (Fin β.d) (Fin β.d) Φ.R := fun i => (Matrix.of fun k m => β.e.repr (β.e k * β.e m) i).map f with hCi`. Establish `hCfix : ∀ i, Na.transpose * Ci i * Nb = Ci i`. Introduce `i`.
+
+Rewrite using `[hNa, hNb, hCi]`. Simplify using `only`. Rewrite using `[← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul]`. Conclude with `congrArg (fun M => M.map f) (transpose_leftMulMatrix_mul_structure_mul_eq β.e a b hab i)`. Use `set P : Fin β.d → Φ.R := fun i => x ⬝ᵥ (Ci i *ᵥ η) with hP`.
+
+Establish `hPs : ∀ i, Φ.σ.symm (P i) = P i`. Introduce `i`. Establish `h2 : Φ.σ.symm (P i) = (fun k => Φ.σ.symm (x k)) ⬝ᵥ (Ci i *ᵥ fun m => Φ.σ.symm (η m))`. Simplify using `only [hP, hCi, dotProduct, Matrix.mulVec, map_sum, map_mul, Matrix.map_apply, hσs]`. Rewrite using `[h2, hxs, hηs]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.vecMul_transpose, Matrix.mulVec_mulVec]`. Use `_ = x ⬝ᵥ ((Na.transpose * Ci i * Nb) *ᵥ η) := by`. Rewrite using `[Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, ← Matrix.dotProduct_mulVec, Matrix.mul_assoc]`. Use `_ = P i := by rw [hCfix]`.
+
+Establish `hPf : ∀ i, Φ.σ (P i) = P i`. Introduce `i`. Use `conv_lhs => rw [← hPs i]`. Conclude with `Φ.σ.apply_symm_apply _`. Use `choose z hz using fun i => Φ.fixed (P i) (hPf i)`.
+
+Establish `key : ∀ k m, ∑ i, algebraMap (PadicAlgCl l) ℂ_[l] (β.val i) * algebraMap (PadicAlgCl l) ℂ_[l] (algebraMap ℤ_[l] (PadicAlgCl l) (β.e.repr (β.e k * β.e m) i)) = algebraMap (PadicAlgCl l) ℂ_[l] (β.val k) * algebraMap (PadicAlgCl l) ℂ_[l] (β.val m)`. Introduce `k m`. Rewrite using `[sum_algebraMap_basis_mul_eq_algebraMap_sum_smul, β.e.sum_repr]`. Simplify using `[Bas.val]`. Establish `hmul : Φ.lam β P = Φ.lam β x * μ`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Fr.lam, hP, hCi, dotProduct, Matrix.mulVec, Matrix.map_apply, Matrix.of_apply, map_sum, map_mul, hf, Fr.jh_alg, Finset.mul_sum]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Conclude with `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun i _ => by ring`. Use `_ = ∑ k, ∑ m, Φ.jh (x k) * Φ.jh (η m) * (algebraMap (PadicAlgCl l) ℂ_[l] (β.val k) * algebraMap (PadicAlgCl l) ℂ_[l] (β.val m)) := by`. Simplify using `only [key]`. Use `_ = Φ.lam β x * μ := by`. Rewrite using `[hμdef]`.
+
+Simplify using `only [Fr.lam]`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Use `clear_value P Ci μ η s e1 Nb Na b f`. Put the polynomial expressions in normal form. Use `done`. Use `⟨∑ i, z i • β.e i, ?_⟩` and prove the remaining obligations. Establish `hPz : P = fun i => f (z i)` using `funext fun i => (hz i).symm`.
+
+Establish `hfin : Φ.lam β x * μ = algebraMap (PadicAlgCl l) ℂ_[l] ((∑ i, z i • β.e i : c.O) : PadicAlgCl l)`. Rewrite using `[← hmul, hPz, ← sum_algebraMap_basis_mul_eq_algebraMap_sum_smul]`. Simplify using `only [Fr.lam, hf, Fr.jh_alg]`. Rewrite using `[eq_inv_mul_iff_mul_eq₀ hμ0, mul_comm, hfin]`.
+-/
 theorem UpperTheory.Kd.C7.pPeriod :
     UpperTheory.Kd.C7.SPeriod := by
   intro l _ _ Ω _ _ _ A _ j Φ c β a ha

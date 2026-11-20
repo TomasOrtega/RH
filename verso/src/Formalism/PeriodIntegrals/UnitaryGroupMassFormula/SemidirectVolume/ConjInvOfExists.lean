@@ -20,6 +20,9 @@ def ModOne : Prop :=
       ∀ f : HA (AF F) σ J → ENNReal, Measurable f →
         ∫⁻ n, f (h * (n : HA (AF F) σ J) * h⁻¹) ∂μ = ∫⁻ n, f (n : HA (AF F) σ J) ∂μ
 
+/- English proof (translation)
+Take `⟨hlc, hsc, ht2, htg⟩` from `hN`. Introduce `μN hμN h hh f hf`. Take `⟨μ0, hμ0, hinv⟩` from `hex h hh`. Rewrite using `[Measure.isMulLeftInvariant_eq_smul μN μ0, lintegral_smul_measure, lintegral_smul_measure, hinv f hf]`.
+-/
 theorem conjInv_of_exists {X : Type} [Group X] [TopologicalSpace X] [MeasurableSpace X]
     [BorelSpace X] (N H : Subgroup X) (hN : LCSC N)
     (hex : ∀ h ∈ H, ∃ μ0 : Measure N, μ0.IsHaarMeasure ∧ ∀ f : X → ENNReal, Measurable f →
@@ -30,6 +33,11 @@ theorem conjInv_of_exists {X : Type} [Group X] [TopologicalSpace X] [MeasurableS
   rw [Measure.isMulLeftInvariant_eq_smul μN μ0, lintegral_smul_measure, lintegral_smul_measure,
     hinv f hf]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ r P T hr hP`. Establish `: BorelSpace (HA (AF F) σ J)` using `⟨rfl⟩`. Establish `hX` using `Lc.locally_compact_adelic_unitary F E σ hCM M J hJ`. Take `⟨-, cN, -⟩` from `closed_subgroup_holds F E σ hCM M J hJ r P T hr hP`. Take `⟨hcnt, hdisc⟩` from `discrete_adelic_unitary F E σ hCM M J hJ`.
+
+Take `⟨lN, -⟩` from `subgroup_locally_compact_holds (HA (AF F) σ J) (HFinIn (AF F) σ J) _ hX cN hcnt hdisc`. Conclude with `conjInv_of_exists _ _ lN (hM F E σ hCM M J hJ r P T hr hP)`.
+-/
 theorem conjStep_of (hM : ModOne) : ConjStep := by
   intro F E _ _ _ _ _ σ hCM M J hJ r P T hr hP
   have : BorelSpace (HA (AF F) σ J) := ⟨rfl⟩

@@ -33,6 +33,9 @@ open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 open Matrix
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LatExpand.finPart_eq_int_comb_of_mem_hatL | exact GlobalTheory.LatExpand.finPart_eq_int_comb_of_mem_hatL | (intros; apply GlobalTheory.LatExpand.finPart_eq_int_comb_of_mem_hatL <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finitePart_eq_integralCombination_of_mem_completedLattice : ∀ {D : D7} {n : ℕ} (B : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (Y : Fin n → Formalism.L2.Theta.AE D),
     (fun i => Formalism.IndefR.Datum.toEAf D (Y i)) ∈ Formalism.L2.Herm.hatL (F := D.host.F) B →
     ∃ (m : ℕ) (β : Fin m → Formalism.L2.Theta.AE D) (b : Fin m → Fin n → D.host.E),

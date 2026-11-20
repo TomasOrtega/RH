@@ -12,6 +12,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R B C _ _ _ _ _ hP z hz`. Take `⟨s, hs⟩` from `(Module.projective_def' (R := C) (P := Ω[C⁄R])).1 hP`. Set `π : (Ω[C⁄R] →₀ C) →ₗ[C] Ω[C⁄R]` to `Finsupp.linearCombination C id`. Establish `hcomp : (LinearMap.lTensor B (π.restrictScalars R)) ∘ₗ (LinearMap.lTensor B (s.restrictScalars R)) = LinearMap.id`. Rewrite using `[← LinearMap.lTensor_comp]`.
+
+Establish `: (π.restrictScalars R) ∘ₗ (s.restrictScalars R) = LinearMap.id`. Conclude with `LinearMap.ext fun x => LinearMap.congr_fun hs x`. Rewrite using `[this, LinearMap.lTensor_id]`. Establish `key : LinearMap.lTensor B (s.restrictScalars R) z = 0`. Apply `(TensorProduct.finsuppRight R R B C Ω[C⁄R]).injective` to reduce the goal to its premises.
+
+Rewrite using `[map_zero]`. Use extensionality with `i`. Set `θ : Ω[C⁄R] →ₗ[R] B ⊗[R] C` to `(Algebra.TensorProduct.includeRight (R := R) (A := B) (B := C)).toLinearMap ∘ₗ ((Finsupp.lapply (R := C) (M := C) i).restrictScalars R ∘ₗ s.restrictScalars R)`. Establish `hθ : ∀ (c : C) (x : Ω[C⁄R]), θ (c • x) = (1 ⊗ₜ c) * θ x`. Introduce `c x`.
+
+Simplify using `[θ, Algebra.TensorProduct.tmul_mul_tmul]`. Establish `h1` using `hz θ hθ`. Establish `heq : ∀ w : B ⊗[R] Ω[C⁄R], (TensorProduct.finsuppRight R R B C Ω[C⁄R] (LinearMap.lTensor B (s.restrictScalars R) w)) i = LinearMap.liftBaseChange B θ w`. Introduce `w`. Proceed by induction on `w using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul b x`. Simplify using `[θ, TensorProduct.finsuppRight_apply_tmul_apply, LinearMap.liftBaseChange_tmul, TensorProduct.smul_tmul']`. Consider the case `add u v hu hv => simp only [map_add, Finsupp.add_apply, hu, hv]`. Rewrite using `[heq, h1]`.
+
+Both sides reduce to the same expression. Use `congrArg (fun f => f z) hcomp` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at this`. Rewrite using `[← this, key, map_zero]`.
+-/
 theorem tensor_kaehler_eq_zero_of_derivations_vanish :
   ∀ (R B C : Type) [CommRing R] [CommRing B] [CommRing C] [Algebra R B] [Algebra R C], Module.Projective C Ω[C⁄R] → ∀ z : B ⊗[R] Ω[C⁄R], (∀ θ : Ω[C⁄R] →ₗ[R] B ⊗[R] C, (∀ (c : C) (x : Ω[C⁄R]), θ (c • x) = (1 ⊗ₜ c) * θ x) → LinearMap.liftBaseChange B θ z = 0) → z = 0 := by
   intro R B C _ _ _ _ _ hP z hz

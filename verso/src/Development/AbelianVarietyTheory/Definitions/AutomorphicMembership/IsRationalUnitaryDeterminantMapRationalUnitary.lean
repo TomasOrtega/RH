@@ -46,14 +46,26 @@ def relDetQ (N : ℕ) (M M' : Submodule (𝓞 H.E) (Fin N → H.E)) : DtQ H SQ �
   QuotientGroup.mk (QuotientGroup.mk (∏ᶠ w : HeightOneSpectrum (𝓞 H.E),
     localIdele H.E w (atFin w (unif w)) ^ (ordSub w (detSub M') - ordSub w (detSub M)).toNat))
 
+/- English proof (translation)
+Introduce `_ h` and use `⟨h.1, h.2.1⟩`.
+-/
 theorem congQ_subset_congG : congQ H SQ ⊆ congG H := fun _ h => ⟨h.1, h.2.1⟩
 
+/- English proof (translation)
+The claim follows from `Subgroup.subset_closure (Or.inl h)`.
+-/
 theorem mem_KDq_of_congQ {a : Ideles H.E} (h : a ∈ congQ H SQ) : a ∈ KDq H SQ :=
   Subgroup.subset_closure (Or.inl h)
 
+/- English proof (translation)
+The claim follows from `Subgroup.subset_closure (Or.inr ⟨v, k, rfl⟩)`.
+-/
 theorem locF_mem_KDq (v : HeightOneSpectrum (𝓞 H.F)) (k : (H.F)ˣ) : locF H.F v k ∈ KDq H SQ :=
   Subgroup.subset_closure (Or.inr ⟨v, k, rfl⟩)
 
+/- English proof (translation)
+Use `⟨fun h => ⟨fun a ha => h (mem_KDq_of_congQ H SQ ha), fun v k => h (locF_mem_KDq H SQ v k)⟩, fun h => ?_⟩` and prove the remaining obligations. Use `(Subgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `a (ha | ⟨v, k, rfl⟩)`. Use `exacts [h.1 a ha, h.2 v k]`.
+-/
 theorem KDq_le_iff {B : Subgroup (Ideles H.E)} :
     KDq H SQ ≤ B ↔ (∀ a ∈ congQ H SQ, a ∈ B) ∧ ∀ v k, locF H.F v k ∈ B := by
   refine ⟨fun h => ⟨fun a ha => h (mem_KDq_of_congQ H SQ ha), fun v k => h (locF_mem_KDq H SQ v k)⟩, fun h => ?_⟩
@@ -61,29 +73,54 @@ theorem KDq_le_iff {B : Subgroup (Ideles H.E)} :
   rintro a (ha | ⟨v, k, rfl⟩)
   exacts [h.1 a ha, h.2 v k]
 
+/- English proof (translation)
+The claim follows from `Subgroup.closure_mono (Set.union_subset_union_left _ (congQ_subset_congG H SQ))`.
+-/
 theorem KDq_le_KD : KDq H SQ ≤ KD H :=
   Subgroup.closure_mono (Set.union_subset_union_left _ (congQ_subset_congG H SQ))
 
+/- English proof (translation)
+The claim follows from `Subgroup.closure_mono (Set.union_subset_union_left _ fun _ ha => ⟨ha.1, ha.2.1, fun v hv => ha.2.2 v (hv.imp (fun h' => h h') fun ⟨w, hw, hc⟩ => ⟨w, h hw, hc⟩)⟩)`.
+-/
 theorem KDq_anti {SQ SQ' : Finset (HeightOneSpectrum (𝓞 H.E))} (h : SQ ⊆ SQ') : KDq H SQ' ≤ KDq H SQ :=
   Subgroup.closure_mono (Set.union_subset_union_left _ fun _ ha => ⟨ha.1, ha.2.1, fun v hv =>
     ha.2.2 v (hv.imp (fun h' => h h') fun ⟨w, hw, hc⟩ => ⟨w, h hw, hc⟩)⟩)
 
+/- English proof (translation)
+The claim follows from `Set.Subset.antisymm (congQ_subset_congG H ∅) fun _ h => ⟨h.1, h.2, fun v hv => by simp [AtQ] at hv⟩`.
+-/
 theorem congQ_empty : congQ H ∅ = congG H :=
   Set.Subset.antisymm (congQ_subset_congG H ∅) fun _ h => ⟨h.1, h.2, fun v hv => by simp [AtQ] at hv⟩
 
+/- English proof (translation)
+Unfold `KDq KD`. Rewrite using `[congQ_empty]`.
+-/
 theorem KDq_empty : KDq H ∅ = KD H := by
   unfold KDq KD
   rw [congQ_empty]
 
+/- English proof (translation)
+Use `(Subgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `a (ha | ⟨v, k, rfl⟩)`. Conclude with `Subgroup.mem_sup_right ha.1`. Conclude with `Subgroup.mem_sup_left (locF_mem_KDq H SQ v k)`.
+-/
 theorem KD_le_sup : KD H ≤ KDq H SQ ⊔ unitIdl H.E := by
   refine (Subgroup.closure_le _).2 ?_
   rintro a (ha | ⟨v, k, rfl⟩)
   · exact Subgroup.mem_sup_right ha.1
   · exact Subgroup.mem_sup_left (locF_mem_KDq H SQ v k)
 
+/- English proof (translation)
+The claim follows from `le_antisymm (sup_le_sup_right (KDq_le_KD H SQ) _) (sup_le (KD_le_sup H SQ) le_sup_right)`.
+-/
 theorem KDq_sup_unitIdl : KDq H SQ ⊔ unitIdl H.E = KD H ⊔ unitIdl H.E :=
   le_antisymm (sup_le_sup_right (KDq_le_KD H SQ) _) (sup_le (KD_le_sup H SQ) le_sup_right)
 
+/- English proof (translation)
+Establish `h1 : ∀ k, {v : HeightOneSpectrum (𝓞 H.E) | OverP H (H.g k) v}.Finite` using `fun k => by`. Establish `h0 : Ideal.span {((H.g k : ℕ) : 𝓞 H.E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `Nat.cast_ne_zero.2 (H.g_prime k).ne_zero`. Use `(Ideal.finite_factors h0).subset fun v hv => ?_` and prove the remaining obligations.
+
+Conclude with `Ideal.dvd_span_singleton.2 hv`. Establish `h2 : ∀ w, {v : HeightOneSpectrum (𝓞 H.E) | IsConjPl H w v}.Finite` using `fun w => Set.Subsingleton.finite fun v hv v' hv' => (existsUnique_conjPl H.conj.toRingEquiv w).unique ((conjPl_iff_mem _ _ _).2 hv) ((conjPl_iff_mem _ _ _).2 hv')`. Use `(((Set.finite_iUnion h1).union SQ.finite_toSet).union (SQ.finite_toSet.biUnion fun w _ => h2 w)).subset ?_` and prove the remaining obligations. Introduce and unpack `v (⟨k, hk⟩ | hv | ⟨w, hw, hc⟩)`. Conclude with `Or.inl (Or.inl (Set.mem_iUnion.2 ⟨k, hk⟩))`.
+
+Conclude with `Or.inl (Or.inr hv)`. Conclude with `Or.inr (Set.mem_biUnion hw hc)`.
+-/
 theorem finite_level : {v : HeightOneSpectrum (𝓞 H.E) | (∃ k, OverP H (H.g k) v) ∨ AtQ H SQ v}.Finite := by
   have h1 : ∀ k, {v : HeightOneSpectrum (𝓞 H.E) | OverP H (H.g k) v}.Finite := fun k => by
     have h0 : Ideal.span {((H.g k : ℕ) : 𝓞 H.E)} ≠ 0 := by
@@ -100,15 +137,28 @@ theorem finite_level : {v : HeightOneSpectrum (𝓞 H.E) | (∃ k, OverP H (H.g 
   · exact Or.inl (Or.inr hv)
   · exact Or.inr (Set.mem_biUnion hw hc)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hu, fun k v hv => by rw [h v (Or.inl ⟨k, hv⟩), sub_self, map_zero]; exact zero_lt_one, fun v hv => by rw [h v (Or.inr hv), sub_self, map_zero]; exact zero_lt_one⟩`.
+-/
 theorem mem_congQ_of_eq_one {a : Ideles H.E} (hu : a ∈ unitIdl H.E)
     (h : ∀ v, (∃ k, OverP H (H.g k) v) ∨ AtQ H SQ v → (a : AdeleRing (𝓞 H.E) H.E).2 v = 1) : a ∈ congQ H SQ :=
   ⟨hu, fun k v hv => by rw [h v (Or.inl ⟨k, hv⟩), sub_self, map_zero]; exact zero_lt_one,
     fun v hv => by rw [h v (Or.inr hv), sub_self, map_zero]; exact zero_lt_one⟩
 
+/- English proof (translation)
+The claim follows from `mem_KDq_of_congQ H SQ (mem_congQ_of_eq_one H SQ (fun v => show Valued.v (1 : v.adicCompletion H.E) = 1 from map_one _) fun _ _ => rfl)`.
+-/
 theorem infIdele_mem_KDq (w : InfinitePlace H.E) (y : (w.Completion)ˣ) : infIdele H.E w y ∈ KDq H SQ :=
   mem_KDq_of_congQ H SQ (mem_congQ_of_eq_one H SQ (fun v => show Valued.v (1 : v.adicCompletion H.E) = 1 from map_one _)
     fun _ _ => rfl)
 
+/- English proof (translation)
+Establish `ho` using `(GlobalTheory.Mem.UnitOpen.unit_open_and_congr_open H.E).2 (finite_level H SQ).toFinset 1`. Establish `hlt : WithZero.exp (-((1 : ℕ) : ℤ)) < (1 : WithZero (Multiplicative ℤ))`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset (ho.mem_nhds ⟨one_mem _, fun v _ => ?_⟩) ?_)` and prove the remaining obligations.
+
+Use `show Valued.v ((1 : v.adicCompletion H.E) - 1) ≤ _`. Rewrite using `[sub_self, map_zero]`. Conclude with `zero_le`. Introduce `a ha`. Use `mem_KDq_of_congQ H SQ ⟨ha.1, fun k v hv => (ha.2 v ?_).trans_lt hlt, fun v hv => (ha.2 v ?_).trans_lt hlt⟩` and prove the remaining obligations.
+
+Conclude with `(Set.Finite.mem_toFinset _).2 (Or.inl ⟨k, hv⟩)`. Conclude with `(Set.Finite.mem_toFinset _).2 (Or.inr hv)`.
+-/
 theorem isOpen_KDq : IsOpen (KDq H SQ : Set (Ideles H.E)) := by
   have ho := (GlobalTheory.Mem.UnitOpen.unit_open_and_congr_open H.E).2 (finite_level H SQ).toFinset 1
   have hlt : WithZero.exp (-((1 : ℕ) : ℤ)) < (1 : WithZero (Multiplicative ℤ)) := by
@@ -131,6 +181,9 @@ def compAt (w : HeightOneSpectrum (𝓞 L)) : Ideles L →* w.adicCompletion L w
   map_one' := rfl
   map_mul' _ _ := rfl
 
+/- English proof (translation)
+Use `Function.update_self (β := fun w : HeightOneSpectrum (𝓞 L) => w.adicCompletion L) v (x : v.adicCompletion L) (fun _ => 1)` as an intermediate fact. Use `this` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+-/
 theorem compAt_localIdele_self (v : HeightOneSpectrum (𝓞 L)) (x : (v.adicCompletion L)ˣ) :
     compAt v (localIdele L v x) = x := by
   classical
@@ -139,6 +192,9 @@ theorem compAt_localIdele_self (v : HeightOneSpectrum (𝓞 L)) (x : (v.adicComp
   convert this
   rfl
 
+/- English proof (translation)
+Use `Function.update_of_ne (β := fun w : HeightOneSpectrum (𝓞 L) => w.adicCompletion L) hw (x : v.adicCompletion L) (fun _ => 1)` as an intermediate fact. Use `this` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+-/
 theorem compAt_localIdele_ne {v w : HeightOneSpectrum (𝓞 L)} (hw : w ≠ v) (x : (v.adicCompletion L)ˣ) :
     compAt w (localIdele L v x) = 1 := by
   classical
@@ -151,6 +207,11 @@ variable (F : Type) [Field F] [NumberField F] [Algebra F L]
 
 open Classical in
 
+/- English proof (translation)
+Unfold `locF`. Rewrite using `[map_prod]`. Use `split_ifs with h`. Rewrite using `[Finset.prod_eq_single_of_mem w (show w ∈ aboveF F v from (finite_aboveF F v).mem_toFinset.2 h) (fun Q _ hQ => compAt_localIdele_ne hQ.symm _), compAt_localIdele_self]`. Both sides reduce to the same expression.
+
+Use `Finset.prod_eq_one fun Q hQ => compAt_localIdele_ne ?_ _` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `h ((finite_aboveF F v).mem_toFinset.1 hQ)`.
+-/
 theorem compAt_locF (w : HeightOneSpectrum (𝓞 L)) (v : HeightOneSpectrum (𝓞 F)) (k : Fˣ) :
     compAt w (locF F v k) = if w.under (𝓞 F) = v then compAt w (diagUnits L (upF F k)) else 1 := by
   unfold locF
@@ -163,6 +224,15 @@ theorem compAt_locF (w : HeightOneSpectrum (𝓞 L)) (v : HeightOneSpectrum (�
     rintro rfl
     exact h ((finite_aboveF F v).mem_toFinset.1 hQ)
 
+/- English proof (translation)
+Use `set d := diagUnits L (upF F k) with hd`. Establish `hfin` using `hT.union (IdlFact.finite_valAt_ne_one d)`. Use `set S := hfin.toFinset.image fun w => w.under (𝓞 F) with hS`. Use `set P := ∏ v ∈ S, locF (L := L) F v k with hP`. Establish `hc : ∀ w, compAt w P = if w.under (𝓞 F) ∈ S then compAt w d else 1` using `fun w => by`.
+
+Rewrite using `[hP, map_prod, Finset.prod_congr rfl fun v _ => compAt_locF F w v k, Finset.prod_ite_eq]`. Establish `h1 : ∀ w, w.under (𝓞 F) ∈ S → compAt w (P⁻¹ * d) = 1` using `fun w hw => by`. Establish `e : compAt w d = compAt w P` using `by rw [hc, if_pos hw]`. Rewrite using `[map_mul, e, ← map_mul, inv_mul_cancel, map_one]`. Establish `hmem : ∀ w, w ∈ T ∪ {v | IdlFact.valAt v d ≠ 1} → w.under (𝓞 F) ∈ S` using `fun w hw => Finset.mem_image_of_mem _ (hfin.mem_toFinset.2 hw)`.
+
+Use `⟨S, P⁻¹ * d, fun w => ?_, fun w hw => h1 w (hmem w (Or.inl hw)), (mul_inv_cancel_left _ _).symm⟩` and prove the remaining obligations. Use `show Valued.v (compAt w (P⁻¹ * d)) = 1`. Distinguish the cases in `hw : w.under (𝓞 F) ∈ S`. Rewrite using `[h1 w hw, map_one]`. Establish `e : compAt w (P⁻¹ * d) = compAt w d`.
+
+Establish `e' : compAt w P = 1` using `by rw [hc, if_neg hw]`. Rewrite using `[← one_mul (compAt w _), ← e', ← map_mul, mul_inv_cancel_left]`. Rewrite using `[e]`. Assume the negation of the conclusion as `hne`. Conclude with `hw (hmem w (Or.inr hne))`.
+-/
 theorem exists_diag_upF_eq (k : Fˣ) {T : Set (HeightOneSpectrum (𝓞 L))} (hT : T.Finite) :
     ∃ (S : Finset (HeightOneSpectrum (𝓞 F))) (u : Ideles L), u ∈ unitIdl L ∧ (∀ w ∈ T, compAt w u = 1) ∧
       diagUnits L (upF F k) = (∏ v ∈ S, locF F v k) * u := by
@@ -191,6 +261,9 @@ theorem exists_diag_upF_eq (k : Fˣ) {T : Set (HeightOneSpectrum (𝓞 L))} (hT 
 
 end Components
 
+/- English proof (translation)
+Take `⟨S, u, hu, h1, e⟩` from `exists_diag_upF_eq (L := H.E) H.F k (finite_level H SQ)`. Rewrite using `[e]`. Conclude with `mul_mem (prod_mem fun v _ => locF_mem_KDq H SQ v k) (mem_KDq_of_congQ H SQ (mem_congQ_of_eq_one H SQ hu h1))`.
+-/
 theorem diag_upF_mem_KDq (k : (H.F)ˣ) : diagUnits H.E (upF H.F k) ∈ KDq H SQ := by
   obtain ⟨S, u, hu, h1, e⟩ := exists_diag_upF_eq (L := H.E) H.F k (finite_level H SQ)
   rw [e]
@@ -199,16 +272,28 @@ theorem diag_upF_mem_KDq (k : (H.F)ˣ) : diagUnits H.E (upF H.F k) ∈ KDq H SQ 
 def toDtT : DtQ H SQ →* DtT H :=
   QuotientGroup.map (KDq H SQ) (KD H) (MonoidHom.id _) (KDq_le_KD H SQ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toDtT_mk (a : Ideles H.E) : toDtT H SQ (QuotientGroup.mk a) = QuotientGroup.mk a := rfl
 
+/- English proof (translation)
+Introduce `x` and use `by obtain ⟨a, rfl⟩ := QuotientGroup.mk_surjective x exact ⟨QuotientGroup.mk a, rfl⟩`.
+-/
 theorem toDtT_surjective : Function.Surjective (toDtT H SQ) := fun x => by
   obtain ⟨a, rfl⟩ := QuotientGroup.mk_surjective x
   exact ⟨QuotientGroup.mk a, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[← QuotientGroup.comap_map_mk']`. Both sides reduce to the same expression.
+-/
 theorem mk_mem_UOQ {a : Ideles H.E} : (QuotientGroup.mk a : DtQ H SQ) ∈ UOQ H SQ ↔ a ∈ KDq H SQ ⊔ unitIdl H.E := by
   rw [← QuotientGroup.comap_map_mk']
   rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective x`. Rewrite using `[mk_mem_UOQ, KDq_sup_unitIdl, ← QuotientGroup.comap_map_mk']`. Both sides reduce to the same expression.
+-/
 theorem comap_UOT : (UOT H).comap (toDtT H SQ) = UOQ H SQ := by
   ext x
   obtain ⟨a, rfl⟩ := QuotientGroup.mk_surjective x
@@ -218,9 +303,17 @@ theorem comap_UOT : (UOT H).comap (toDtT H SQ) = UOQ H SQ := by
 def toDtTMod : DtQ H SQ ⧸ UOQ H SQ →* DtT H ⧸ UOT H :=
   QuotientGroup.map (UOQ H SQ) (UOT H) (toDtT H SQ) (comap_UOT H SQ).ge
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toDtTMod_mk (x : DtQ H SQ) :
     toDtTMod H SQ (QuotientGroup.mk x) = QuotientGroup.mk (toDtT H SQ x) := rfl
 
+/- English proof (translation)
+Use `⟨(injective_iff_map_eq_one _).2 fun x hx => ?_, fun y => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective x`. Rewrite `hx` using `[toDtTMod_mk, QuotientGroup.eq_one_iff, ← Subgroup.mem_comap, comap_UOT]`. Conclude with `(QuotientGroup.eq_one_iff _).2 hx`. Take `⟨b, rfl⟩` from `QuotientGroup.mk_surjective y`.
+
+Take `⟨a, rfl⟩` from `toDtT_surjective H SQ b`. Conclude with `⟨QuotientGroup.mk a, rfl⟩`.
+-/
 theorem toDtTMod_bijective : Function.Bijective (toDtTMod H SQ) := by
   refine ⟨(injective_iff_map_eq_one _).2 fun x hx => ?_, fun y => ?_⟩
   · obtain ⟨a, rfl⟩ := QuotientGroup.mk_surjective x
@@ -232,30 +325,50 @@ theorem toDtTMod_bijective : Function.Bijective (toDtTMod H SQ) := by
 
 def modEquiv : DtQ H SQ ⧸ UOQ H SQ ≃* DtT H ⧸ UOT H := MulEquiv.ofBijective _ (toDtTMod_bijective H SQ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toDtTMod_relDetQ (N : ℕ) (M M' : Submodule (𝓞 H.E) (Fin N → H.E)) :
     toDtTMod H SQ (relDetQ H SQ N M M') = relDetT H N M M' := rfl
 
+/- English proof (translation)
+The claim follows from `(toDtTMod_bijective H SQ).1 (by rw [toDtTMod_relDetQ, relDetT_self, map_one])`.
+-/
 theorem relDetQ_self (N : ℕ) (M : Submodule (𝓞 H.E) (Fin N → H.E)) : relDetQ H SQ N M M = 1 :=
   (toDtTMod_bijective H SQ).1 (by rw [toDtTMod_relDetQ, relDetT_self, map_one])
 
+/- English proof (translation)
+Unfold `tildeQ`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+-/
 theorem tildeQ_mk {χ : HChar H.E} (h : KDq H SQ ≤ (χ.1.comp (finPartI H.E)).ker) (a : Ideles H.E) :
     tildeQ H SQ χ (QuotientGroup.mk a) = χ.1 (finPartI H.E a) := by
   unfold tildeQ
   rw [dif_pos h]
   rfl
 
+/- English proof (translation)
+Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective x`. Rewrite using `[tildeQ_mk H SQ ((KDq_le_KD H SQ).trans h), MonoidHom.comp_apply, toDtT_mk, tildeD_mk H h]`.
+-/
 theorem tildeQ_eq_comp {χ : HChar H.E} (h : KD H ≤ (χ.1.comp (finPartI H.E)).ker) :
     tildeQ H SQ χ = (tildeD H χ).comp (toDtT H SQ) := by
   refine MonoidHom.ext fun x => ?_
   obtain ⟨a, rfl⟩ := QuotientGroup.mk_surjective x
   rw [tildeQ_mk H SQ ((KDq_le_KD H SQ).trans h), MonoidHom.comp_apply, toDtT_mk, tildeD_mk H h]
 
+/- English proof (translation)
+Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective x`. Rewrite using `[tildeQ_mk H SQ (χ := 1) fun _ _ => rfl]`. Both sides reduce to the same expression.
+-/
 @[simp] theorem tildeQ_one : tildeQ H SQ 1 = 1 := by
   refine MonoidHom.ext fun x => ?_
   obtain ⟨a, rfl⟩ := QuotientGroup.mk_surjective x
   rw [tildeQ_mk H SQ (χ := 1) fun _ _ => rfl]
   rfl
 
+/- English proof (translation)
+Establish `h'' : KDq H SQ ≤ ((χ * χ').1.comp (finPartI H.E)).ker` using `fun a ha => by`. Establish `e : χ.1 (finPartI H.E a) = 1` using `h ha`. Establish `e' : χ'.1 (finPartI H.E a) = 1` using `h' ha`. Use `show χ.1 (finPartI H.E a) * χ'.1 (finPartI H.E a) = 1`. Rewrite using `[e, e', one_mul]`.
+
+Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective x`. Rewrite using `[MonoidHom.mul_apply, tildeQ_mk H SQ h'', tildeQ_mk H SQ h, tildeQ_mk H SQ h']`. Both sides reduce to the same expression.
+-/
 theorem tildeQ_mul {χ χ' : HChar H.E} (h : KDq H SQ ≤ (χ.1.comp (finPartI H.E)).ker)
     (h' : KDq H SQ ≤ (χ'.1.comp (finPartI H.E)).ker) : tildeQ H SQ (χ * χ') = tildeQ H SQ χ * tildeQ H SQ χ' := by
   have h'' : KDq H SQ ≤ ((χ * χ').1.comp (finPartI H.E)).ker := fun a ha => by
@@ -268,6 +381,11 @@ theorem tildeQ_mul {χ χ' : HChar H.E} (h : KDq H SQ ≤ (χ.1.comp (finPartI H
   rw [MonoidHom.mul_apply, tildeQ_mk H SQ h'', tildeQ_mk H SQ h, tildeQ_mk H SQ h']
   rfl
 
+/- English proof (translation)
+Distinguish the cases in `h : KDq H SQ ≤ (χ.1.comp (finPartI H.E)).ker`. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective x`. Rewrite using `[tildeQ_mk H SQ h]`. Conclude with `hu _`. Unfold `tildeQ`.
+
+Rewrite using `[dif_neg h]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_tildeQ {χ : HChar H.E} (hu : χ.IsUnitary) (x : DtQ H SQ) : ‖((tildeQ H SQ χ x : ℂˣ) : ℂ)‖ = 1 := by
   by_cases h : KDq H SQ ≤ (χ.1.comp (finPartI H.E)).ker
   · obtain ⟨a, rfl⟩ := QuotientGroup.mk_surjective x
@@ -277,11 +395,25 @@ theorem norm_tildeQ {χ : HChar H.E} (hu : χ.IsUnitary) (x : DtQ H SQ) : ‖((t
     rw [dif_neg h]
     simp
 
+/- English proof (translation)
+Unfold `muTilQ`. Rewrite using `[dif_pos ⟨Nat.le_add_left 1 j.1, j.2⟩]`. Both sides reduce to the same expression.
+-/
 theorem muTilQ_succ (mu : Fin R.m → HChar H.E) (j : Fin R.m) : muTilQ H SQ mu (j.1 + 1) = tildeQ H SQ (mu j) := by
   unfold muTilQ
   rw [dif_pos ⟨Nat.le_add_left 1 j.1, j.2⟩]
   rfl
 
+/- English proof (translation)
+Use `letI := H.cmStar`. Introduce `z`. Establish `hcm : IsCMField H.E` using `H.isCMField_hostE`. Establish `hc : ∀ x, IsCMField.complexConj H.E x = H.conj x` using `fun x => bridge_star_holds R H x`. Establish `hz : (z : H.E) * H.conj (z : H.E) = 1`.
+
+Rewrite using `[← bridge_star_holds R H]`. Conclude with `z.2.2`. Distinguish the cases in `h : 1 + (z : H.E) = 0`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : H.E, H.conj x ≠ x := by`. Assume the negation of the conclusion as `hall`.
+
+Use `IsCMField.complexConj_ne_one H.E (AlgEquiv.ext fun x => ?_)` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `not_not.1 fun h' => hall ⟨x, h'⟩`. Establish `hcc : H.conj (H.conj x) = x`. Rewrite using `[← hc, ← hc]`.
+
+Conclude with `IsCMField.complexConj_apply_apply H.E x`. Use `⟨Units.mk0 (H.conj x - x) (sub_ne_zero.2 hx), ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mk0, map_sub, hcc]`. Take the linear combination `(x - H.conj x) * h`. Use `⟨Units.mk0 _ h, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Units.val_mk0, map_add, map_one]`. Take the linear combination `hz`.
+-/
 theorem exists_eq_div_conj : letI := H.cmStar
     ∀ z : unitary H.E, ∃ k : (H.E)ˣ, (z : H.E) * H.conj (k : H.E) = k := by
   letI := H.cmStar
@@ -307,6 +439,13 @@ theorem exists_eq_div_conj : letI := H.cmStar
     rw [Units.val_mk0, map_add, map_one]
     linear_combination hz
 
+/- English proof (translation)
+Establish `hcm : IsCMField H.E` using `H.isCMField_hostE`. Establish `hc : ∀ x, IsCMField.complexConj H.E x = H.conj x` using `fun x => bridge_star_holds R H x`. Establish `hk : H.conj (k : H.E) ≠ 0` using `(map_ne_zero _).2 k.ne_zero`. Establish `hk0 : (k : H.E) ≠ 0` using `k.ne_zero`. Establish `hfix : IsCMField.complexConj H.E ((k⁻¹ * k' : (H.E)ˣ) : H.E) = ((k⁻¹ * k' : (H.E)ˣ) : H.E)`.
+
+Rewrite using `[hc, Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `H.conj (k : H.E) * h' - H.conj (k' : H.E) * h`. Establish `hF : ((k⁻¹ * k' : (H.E)ˣ) : H.E) ∈ H.F` using `(IsCMField.complexConj_eq_self_iff H.E _).1 hfix`. Establish `h0 : (⟨_, hF⟩ : H.F) ≠ 0` using `fun e => (k⁻¹ * k').ne_zero (congrArg Subtype.val e)`.
+
+Establish `e : upF (L` using `H.E) H.F (Units.mk0 _ h0) = k⁻¹ * k' := Units.ext rfl`. Rewrite using `[QuotientGroup.eq, ← map_inv, ← map_mul, ← e]`. Conclude with `diag_upF_mem_KDq H SQ _`.
+-/
 theorem mk_diag_eq {z : H.E} {k k' : (H.E)ˣ} (h : z * H.conj (k : H.E) = k) (h' : z * H.conj (k' : H.E) = k') :
     (QuotientGroup.mk (diagUnits H.E k) : DtQ H SQ) = QuotientGroup.mk (diagUnits H.E k') := by
   have hcm : IsCMField H.E := H.isCMField_hostE
@@ -323,6 +462,11 @@ theorem mk_diag_eq {z : H.E} {k k' : (H.E)ˣ} (h : z * H.conj (k : H.E) = k) (h'
   rw [QuotientGroup.eq, ← map_inv, ← map_mul, ← e]
   exact diag_upF_mem_KDq H SQ _
 
+/- English proof (translation)
+Use `letI := H.cmStar`. Use `choose κ hκ using exists_eq_div_conj H`. Use `⟨MonoidHom.mk' (fun z => QuotientGroup.mk (diagUnits H.E (κ z))) fun z z' => ?_, fun k z hk => mk_diag_eq H SQ hk (hκ z)⟩` and prove the remaining obligations. Rewrite using `[← QuotientGroup.mk_mul, ← map_mul]`. Use `mk_diag_eq H SQ (hκ (z * z')) ?_` and prove the remaining obligations.
+
+Rewrite using `[Units.val_mul, map_mul, Submonoid.coe_mul]`. Take the linear combination `((z' : H.E) * H.conj (κ z' : H.E)) * hκ z + (κ z : H.E) * hκ z'`.
+-/
 theorem exists_isUnitaryPointsMapFinerDeterminants : ∃ f, IsUnitaryPointsMapFinerDeterminants H SQ f := by
   letI := H.cmStar
   choose κ hκ using exists_eq_div_conj H
@@ -333,32 +477,50 @@ theorem exists_isUnitaryPointsMapFinerDeterminants : ∃ f, IsUnitaryPointsMapFi
   rw [Units.val_mul, map_mul, Submonoid.coe_mul]
   linear_combination ((z' : H.E) * H.conj (κ z' : H.E)) * hκ z + (κ z : H.E) * hκ z'
 
+/- English proof (translation)
+Unfold `e1Q`. Rewrite using `[dif_pos (exists_isUnitaryPointsMapFinerDeterminants H SQ)]`. Conclude with `(exists_isUnitaryPointsMapFinerDeterminants H SQ).choose_spec`.
+-/
 theorem isUnitaryPointsMap_unitaryRationalPointsFiner : IsUnitaryPointsMapFinerDeterminants H SQ (e1Q H SQ) := by
   unfold e1Q
   rw [dif_pos (exists_isUnitaryPointsMapFinerDeterminants H SQ)]
   exact (exists_isUnitaryPointsMapFinerDeterminants H SQ).choose_spec
 
+/- English proof (translation)
+The claim follows from `isRationalUnitaryDeterminantMap_rationalUnitaryToDeterminants H ⟨(toDtT H ∅).comp (e1Q H ∅), fun k z hk => congrArg (toDtT H ∅) (isUnitaryPointsMap_unitaryRationalPointsFiner H ∅ k z hk)⟩`.
+-/
 theorem isRationalUnitaryDeterminantMap_rationalUnitary : IsRationalUnitaryDeterminantMap H (e1T H) :=
   isRationalUnitaryDeterminantMap_rationalUnitaryToDeterminants H ⟨(toDtT H ∅).comp (e1Q H ∅), fun k z hk => congrArg (toDtT H ∅) (isUnitaryPointsMap_unitaryRationalPointsFiner H ∅ k z hk)⟩
 
+/- English proof (translation)
+Introduce `z`. Take `⟨k, hk⟩` from `exists_eq_div_conj H z`. Rewrite using `[← isUnitaryPointsMap_unitaryRationalPointsFiner H SQ k z hk, toDtT_mk, isRationalUnitaryDeterminantMap_rationalUnitary H k z hk]`.
+-/
 theorem toDtT_e1Q : letI := H.cmStar
     ∀ z : unitary H.E, toDtT H SQ (e1Q H SQ z) = e1T H z := by
   intro z
   obtain ⟨k, hk⟩ := exists_eq_div_conj H z
   rw [← isUnitaryPointsMap_unitaryRationalPointsFiner H SQ k z hk, toDtT_mk, isRationalUnitaryDeterminantMap_rationalUnitary H k z hk]
 
+/- English proof (translation)
+Introduce `h` and use `by have h1 : Valued.v (compAt v (localIdele H.E v x) - 1) < 1 := h.2.2 v (Or.inl hv) rw [compAt_localIdele_self, hx] at h1 exact lt_irrefl _ h1`.
+-/
 example (v : HeightOneSpectrum (𝓞 H.E)) (hv : v ∈ SQ) (x : (v.adicCompletion H.E)ˣ)
     (hx : Valued.v ((x : v.adicCompletion H.E) - 1) = 1) : localIdele H.E v x ∉ congQ H SQ := fun h => by
   have h1 : Valued.v (compAt v (localIdele H.E v x) - 1) < 1 := h.2.2 v (Or.inl hv)
   rw [compAt_localIdele_self, hx] at h1
   exact lt_irrefl _ h1
 
+/- English proof (translation)
+Introduce `k z hk`. Rewrite using `[← isUnitaryPointsMap_unitaryRationalPointsFiner H SQ k z hk, tildeQ_mk H SQ h]`.
+-/
 example (χ : HChar H.E) (h : KDq H SQ ≤ (χ.1.comp (finPartI H.E)).ker) : letI := H.cmStar
     ∀ (k : (H.E)ˣ) (z : unitary H.E), (z : H.E) * H.conj (k : H.E) = k →
       tildeQ H SQ χ (e1Q H SQ z) = χ.1 (finPartI H.E (diagUnits H.E k)) := by
   intro k z hk
   rw [← isUnitaryPointsMap_unitaryRationalPointsFiner H SQ k z hk, tildeQ_mk H SQ h]
 
+/- English proof (translation)
+Unfold `muTilQ`. Rewrite using `[dif_neg (by omega)]`.
+-/
 example (mu : Fin R.m → HChar H.E) : muTilQ H SQ mu 0 = 1 := by
   unfold muTilQ
   rw [dif_neg (by omega)]

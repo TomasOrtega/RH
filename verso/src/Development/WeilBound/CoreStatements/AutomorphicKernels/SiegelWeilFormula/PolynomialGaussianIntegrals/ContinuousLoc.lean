@@ -16,6 +16,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 variable {d : SD σ}
 
+/- English proof (translation)
+Establish `h` using `Place.continuous_cw d w (p := Fin d.m) (q := Fin d.n)`. Unfold `RD.loc`. Use `continuous_pi fun a => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, Matrix.mul_apply]`. Conclude with `continuous_star.comp (continuous_finsetSum _ fun i _ => continuous_const.mul ((continuous_apply j).comp ((continuous_apply i).comp h)))`.
+-/
 theorem continuous_loc (R : RD d) (w : InfinitePlace F) : Continuous (fun X : Mx F E d.m d.n => R.loc w X) := by
   have h := Place.continuous_cw d w (p := Fin d.m) (q := Fin d.n)
   unfold RD.loc
@@ -24,6 +27,11 @@ theorem continuous_loc (R : RD d) (w : InfinitePlace F) : Continuous (fun X : Mx
   exact continuous_star.comp (continuous_finsetSum _ fun i _ =>
     continuous_const.mul ((continuous_apply j).comp ((continuous_apply i).comp h)))
 
+/- English proof (translation)
+Unfold `arc`. Use `(EuclideanSpace.equiv (Iw d) ℝ).symm.continuous.comp (continuous_pi fun i => ?_)` and prove the remaining obligations. Establish `h : Continuous fun X : Mx F E d.m d.n => R.loc i.1 X i.2.1 i.2.2.1` using `(continuous_apply _).comp ((continuous_apply _).comp (continuous_loc R i.1))`. Use `split_ifs`. Conclude with `Complex.continuous_re.comp h`.
+
+Conclude with `Complex.continuous_im.comp h`.
+-/
 theorem continuous_arc (R : RD d) : Continuous (arc R) := by
   unfold arc
   refine (EuclideanSpace.equiv (Iw d) ℝ).symm.continuous.comp (continuous_pi fun i => ?_)
@@ -33,16 +41,27 @@ theorem continuous_arc (R : RD d) : Continuous (arc R) := by
   · exact Complex.continuous_re.comp h
   · exact Complex.continuous_im.comp h
 
+/- English proof (translation)
+Unfold `fin`. Conclude with `continuous_pi fun k => continuous_snd.comp ((continuous_apply k).comp (KFock.continuous_crd d))`.
+-/
 theorem continuous_fin : Continuous (fin d) := by
   unfold fin
   exact continuous_pi fun k => continuous_snd.comp ((continuous_apply k).comp (KFock.continuous_crd d))
 
+/- English proof (translation)
+Unfold `RD.loc SD.cw`. Rewrite using `[Matrix.map_add _ (map_add _), Matrix.mul_add, Matrix.map_add _ (fun a b => star_add a b)]`. Both sides reduce to the same expression.
+-/
 theorem loc_add (R : RD d) (w : InfinitePlace F) (X Y : Mx F E d.m d.n) :
     R.loc w (X + Y) = R.loc w X + R.loc w Y := by
   unfold RD.loc SD.cw
   rw [Matrix.map_add _ (map_add _), Matrix.mul_add, Matrix.map_add _ (fun a b => star_add a b)]
   rfl
 
+/- English proof (translation)
+Unfold `arc`. Rewrite using `[← map_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, loc_add]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem arc_add' (R : RD d) (X Y : Mx F E d.m d.n) : arc R (X + Y) = arc R X + arc R Y := by
   unfold arc
   rw [← map_add]
@@ -51,12 +70,20 @@ theorem arc_add' (R : RD d) (X Y : Mx F E d.m d.n) : arc R (X + Y) = arc R X + a
   simp only [Pi.add_apply, loc_add]
   split_ifs <;> simp
 
+/- English proof (translation)
+Apply `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply]`. Conclude with `(GroundTheory.Global.homeomorphMixedSpace F).apply_symm_apply x`.
+-/
 theorem homeo_symm_eq (x : mixedEmbedding.mixedSpace F) :
     (GroundTheory.Global.homeomorphMixedSpace F).symm x = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm x := by
   apply (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective
   rw [RingEquiv.apply_symm_apply]
   exact (GroundTheory.Global.homeomorphMixedSpace F).apply_symm_apply x
 
+/- English proof (translation)
+Use `continuous_pi fun w => continuous_pi fun a => continuous_pi fun j => ?_` and prove the remaining obligations. Establish `: (fun u : Iw d → ℝ => zOf u w a j) = fun u => Complex.equivRealProdCLM.symm (u (w, a, j, true), u (w, a, j, false))`. Use function extensionality and compare the values at `u`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Conclude with `Complex.equivRealProdCLM.symm.continuous.comp ((continuous_apply _).prodMk (continuous_apply _))`.
+-/
 theorem continuous_zOf : Continuous (fun u : Iw d → ℝ => zOf u) := by
   refine continuous_pi fun w => continuous_pi fun a => continuous_pi fun j => ?_
   have : (fun u : Iw d → ℝ => zOf u w a j) =
@@ -66,10 +93,26 @@ theorem continuous_zOf : Continuous (fun u : Iw d → ℝ => zOf u) := by
   rw [this]
   exact Complex.equivRealProdCLM.symm.continuous.comp ((continuous_apply _).prodMk (continuous_apply _))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w a j`. Apply the tactic sequence `apply Complex.ext <;> simp [zOf]`.
+-/
 theorem zOf_add (u v : Iw d → ℝ) : zOf (u + v) = zOf u + zOf v := by
   funext w a j
   apply Complex.ext <;> simp [zOf]
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `KFock.archEquiv d R`. Set `cF : Vw d × Yf d → (Fin d.m × Fin d.n × Fin 2 → AF F)` to `fun p k => (Prod.mk ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (L.symm (zOf (EuclideanSpace.equiv (Iw d) ℝ p.1)) k)) (p.2 k) : AF F)`. Use `⟨cF, ?_, fun p q => ?_, fun p => ?_⟩` and prove the remaining obligations. Use `continuous_pi fun k => ?_` and prove the remaining obligations. Establish `e : (fun p : Vw d × Yf d => cF p k) = fun p => (Prod.mk ((GroundTheory.Global.homeomorphMixedSpace F).symm (L.symm (zOf (EuclideanSpace.equiv (Iw d) ℝ p.1)) k)) (p.2 k) : AF F)`.
+
+Use function extensionality and compare the values at `p`. Simplify using `only [cF]`. Rewrite using `[homeo_symm_eq]`. Rewrite using `[e]`. Conclude with `Continuous.prodMk ((GroundTheory.Global.homeomorphMixedSpace F).symm.continuous.comp ((continuous_apply k).comp (L.symm.continuous.comp (continuous_zOf.comp ((EuclideanSpace.equiv (Iw d) ℝ).continuous.comp continuous_fst))))) ((continuous_apply k).comp continuous_snd)`.
+
+Use function extensionality and compare the values at `k`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (L.symm (zOf (EuclideanSpace.equiv (Iw d) ℝ (p + q).1)) k) = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (L.symm (zOf (EuclideanSpace.equiv (Iw d) ℝ p.1)) k) + (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (L.symm (zOf (E …`. Rewrite using `[← map_add, Prod.fst_add, map_add, zOf_add, map_add]`. Both sides reduce to the same expression.
+
+Both sides reduce to the same expression. Use `(exists_jn R p.1 p.2).unique ⟨arc_jn R p.1 p.2, fin_jn R p.1 p.2⟩ ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[arc_eq_iff]`. Introduce `w`. Rewrite using `[← hL (cF p) w]`.
+
+Establish `: (fun k => InfiniteAdeleRing.ringEquiv_mixedSpace F (cF p k).1) = L.symm (zOf (EuclideanSpace.equiv (Iw d) ℝ p.1))`. Use function extensionality and compare the values at `k`. Conclude with `RingEquiv.apply_symm_apply _ _`. Rewrite using `[this, ContinuousLinearEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `k show (d.crd (d.cmb (cF p)) k).2 = p.2 k`.
+
+Rewrite using `[KFock.crd_cmb']`.
+-/
 theorem jn_eq_cmb (R : RD d) :
     ∃ cF : Vw d × Yf d → (Fin d.m × Fin d.n × Fin 2 → AF F), Continuous cF ∧
       (∀ p q, cF (p + q) = cF p + cF q) ∧ ∀ p, jn R p.1 p.2 = d.cmb (cF p) := by

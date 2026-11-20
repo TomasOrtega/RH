@@ -7,6 +7,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Rewrite using `[IsHausdorff.eq_iff_smodEq (I := maximalIdeal R)]`. Introduce `n`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Consider the cases of `n with`. Consider the case `zero => simp`.
+
+Consider the case `succ N => exact h N`.
+-/
 private theorem eq_of_forall_sub_mem_maxIdeal_pow_of_adicComplete {R : Type} [CommRing R] [IsLocalRing R]
     [IsAdicComplete (maximalIdeal R) R] {x y : R}
     (h : ∀ N : ℕ, x - y ∈ maximalIdeal R ^ (N + 1)) : x = y := by
@@ -17,6 +22,9 @@ private theorem eq_of_forall_sub_mem_maxIdeal_pow_of_adicComplete {R : Type} [Co
   | zero => simp
   | succ N => exact h N
 
+/- English proof (translation)
+Apply `Ideal.Quotient.nontrivial_iff.mpr` to reduce the goal to its premises. Introduce `h`. Apply `(maximalIdeal.isMaximal R).ne_top` to reduce the goal to its premises. Conclude with `top_le_iff.mp (h ▸ Ideal.pow_le_self (Nat.succ_ne_zero N))`.
+-/
 private theorem nontrivial_quotient_maxIdeal_pow_succ {R : Type} [CommRing R] [IsLocalRing R] (N : ℕ) :
     Nontrivial (R ⧸ maximalIdeal R ^ (N + 1)) := by
   apply Ideal.Quotient.nontrivial_iff.mpr
@@ -24,6 +32,11 @@ private theorem nontrivial_quotient_maxIdeal_pow_succ {R : Type} [CommRing R] [I
   apply (maximalIdeal.isMaximal R).ne_top
   exact top_le_iff.mp (h ▸ Ideal.pow_le_self (Nat.succ_ne_zero N))
 
+/- English proof (translation)
+Use `⟨N + 1, ?_⟩` and prove the remaining obligations. Establish `hle : maximalIdeal (R ⧸ maximalIdeal R ^ (N + 1)) ≤ (maximalIdeal R).map (Ideal.Quotient.mk (maximalIdeal R ^ (N + 1)))`. Introduce `x hx`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Apply `Ideal.mem_map_of_mem` to reduce the goal to its premises.
+
+Rewrite `hx`, the goal using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `fun hu => hx (hu.map _)`. Rewrite using `[Ideal.zero_eq_bot, eq_bot_iff]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem isNilpotent_maxIdeal_quotient_maxIdeal_pow_succ {R : Type} [CommRing R] [IsLocalRing R] (N : ℕ)
     [IsLocalRing (R ⧸ maximalIdeal R ^ (N + 1))] :
     IsNilpotent (maximalIdeal (R ⧸ maximalIdeal R ^ (N + 1))) := by
@@ -40,6 +53,29 @@ private theorem isNilpotent_maxIdeal_quotient_maxIdeal_pow_succ {R : Type} [Comm
         Ideal.pow_right_mono hle _
     _ = ⊥ := by rw [← Ideal.map_pow, Ideal.map_quotient_self]
 
+/- English proof (translation)
+Introduce `O Γ _ _ _ Φ Λ _ _ _ _ a R _ _ _ D W hU hG D' hD' R' _ _ _ τ Q hQ`. Establish `hlev : ∀ N : ℕ, ∃ f : W.A →ₐ[Λ] R' ⧸ maximalIdeal R' ^ (N + 1), D'.map (f : W.A →+* _) = Q.map (Ideal.Quotient.mk (maximalIdeal R' ^ (N + 1)))`. Introduce `N`. Use `haveI : Nontrivial (R' ⧸ maximalIdeal R' ^ (N + 1)) := nontrivial_quotient_maxIdeal_pow_succ N`. Use `haveI : IsCO Λ (R' ⧸ maximalIdeal R' ^ (N + 1)) := co_quot Λ R' _ (Ideal.Quotient.mkₐ Λ _) (Ideal.Quotient.mkₐ_surjective Λ _)`.
+
+Conclude with `sxNearArt hU hG D' hD' _ τ _ (isNilpotent_maxIdeal_quotient_maxIdeal_pow_succ N) (sxNearMap (Ideal.Quotient.mkₐ Λ (maximalIdeal R' ^ (N + 1))) hQ)`. Establish `hval : ∀ s : W.σ, ∃ y : R', ∀ (N : ℕ) (f : W.A →ₐ[Λ] R' ⧸ maximalIdeal R' ^ (N + 1)), D'.map (f : W.A →+* _) = Q.map (Ideal.Quotient.mk (maximalIdeal R' ^ (N + 1))) → f (W.zA s) = Ideal.Quotient.mk _ y`. Introduce `s`. Break down `hG.var s with ⟨g, i, j, c, hz, -, -⟩ | ⟨v, i, t, c, hz, -⟩` into its components or cases. Use `⟨Q.r g i j - algebraMap Λ R' c, fun N f hf => ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : D.r g i j = ((D'.r g i j : W.A) : R)` using `by rw [← hD']; rfl`. Establish `hA : W.zA s = D'.r g i j - algebraMap Λ W.A c`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `W.z s = _`. Rewrite using `[hz, e1]`.
+
+Both sides reduce to the same expression. Establish `e2 : f (D'.r g i j) = Ideal.Quotient.mk _ (Q.r g i j)` using `congrArg (fun E => E.r g i j) hf`. Rewrite using `[hA, map_sub, AlgHom.commutes, e2, map_sub, Ideal.Quotient.mk_algebraMap]`. Use `⟨Q.ψ v i t - algebraMap Λ R' c, fun N f hf => ?_⟩` and prove the remaining obligations. Establish `e1 : D.ψ v i t = ((D'.ψ v i t : W.A) : R)` using `by rw [← hD']; rfl`.
+
+Establish `hA : W.zA s = D'.ψ v i t - algebraMap Λ W.A c`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `W.z s = _`. Rewrite using `[hz, e1]`. Both sides reduce to the same expression.
+
+Establish `e2 : f (D'.ψ v i t) = Ideal.Quotient.mk _ (Q.ψ v i t)` using `congrArg (fun E => E.ψ v i t) hf`. Rewrite using `[hA, map_sub, AlgHom.commutes, e2, map_sub, Ideal.Quotient.mk_algebraMap]`. Use `choose y hy using hval`. Use `choose fN hfN using hlev`. Establish `huniq : ∀ (N : ℕ) (f f' : W.A →ₐ[Λ] R' ⧸ maximalIdeal R' ^ (N + 1)), (∀ s, f (W.zA s) = f' (W.zA s)) → f = f'`.
+
+Introduce `N f f' h`. Use `haveI : Nontrivial (R' ⧸ maximalIdeal R' ^ (N + 1)) := nontrivial_quotient_maxIdeal_pow_succ N`. Use `haveI : IsCO Λ (R' ⧸ maximalIdeal R' ^ (N + 1)) := co_quot Λ R' _ (Ideal.Quotient.mkₐ Λ _) (Ideal.Quotient.mkₐ_surjective Λ _)`. Conclude with `sxExtA W hG.max _ f f' h`. Use `haveI : IsAdicComplete (maximalIdeal R') R' := IsCO.complete (O := Λ)`.
+
+Take `⟨F, hF⟩` from `sxLimPt (Λ := Λ) (maximalIdeal R') W.zA y (fun N => ⟨fN N, fun s => hy s N (fN N) (hfN N)⟩) huniq`. Establish `hcomp : ∀ N, (Ideal.Quotient.mkₐ Λ (maximalIdeal R' ^ (N + 1))).comp F = fN N`. Introduce `N`. Apply `huniq` to reduce the goal to its premises. Introduce `s`.
+
+Rewrite using `[AlgHom.comp_apply, hF s, hy s N (fN N) (hfN N)]`. Both sides reduce to the same expression. Establish `hpt : ∀ (x : W.A) (q : R'), (∀ N, fN N x = Ideal.Quotient.mk _ q) → F x = q`. Introduce `x q hx`. Apply `eq_of_forall_sub_mem_maxIdeal_pow_of_adicComplete` to reduce the goal to its premises.
+
+Introduce `N`. Rewrite using `[← Ideal.Quotient.mk_eq_mk_iff_sub_mem, ← hx N, ← hcomp N]`. Both sides reduce to the same expression. Use `⟨F, ?_⟩` and prove the remaining obligations. Apply `RD.ext` to reduce the goal to its premises.
+
+Use extensionality with `g i j`. Conclude with `hpt _ _ (fun N => congrArg (fun E => E.r g i j) (hfN N))`. Use function extensionality and compare the values at `v i`. Use extensionality with `t`. Conclude with `hpt _ _ (fun N => congrArg (fun E => E.ψ v i t) (hfN N))`.
+-/
 theorem UpperTheory.V.Ws.sxNearA :
     ∀ {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] {Φ : Fr O Γ} {Λ : Type} [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [IsAdicComplete (maximalIdeal Λ) Λ] {a : O →+* Λ} {R : Type} [CommRing R] [Algebra Λ R] [IsCO Λ R] {D : RD Φ R} {W : WPres Λ (ℤ × ℤ) R}, Φ.RUniv a D → D.Graded W → ∀ (D' : RD Φ W.A), D'.map (W.A.val : W.A →+* R) = D → ∀ (R' : Type) [CommRing R'] [Algebra Λ R'] [IsCO Λ R'] (τ : ℤ × ℤ →+ ℤ) (Q : RD Φ R'), Φ.Near a τ Q → ∃ f : W.A →ₐ[Λ] R', D'.map (f : W.A →+* R') = Q := by
   intro O Γ _ _ _ Φ Λ _ _ _ _ a R _ _ _ D W hU hG D' hD' R' _ _ _ τ Q hQ

@@ -11,6 +11,21 @@ open ReciprocityTheory.AnForm.M
 
 namespace GlobalTheory.CompanionTheory.ChernMass
 
+/- English proof (translation)
+Introduce `Y L φ ψ hφ hψ`. Use `CxPts.compactSpace (RingHom.id ℂ) Y.isProjOver` as an intermediate fact. Use `CxPts.t2Space_cxPts_of_isProjOver (RingHom.id ℂ) Y.isProjOver` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver (σ := RingHom.id ℂ) Y.isProjOver` as an intermediate fact. Take `⟨R⟩` from `genSmooth_of_smooth Y.str Y.dim (RingHom.id ℂ)`.
+
+Establish `hA` using `R.isAlgAtlas_finAtlas`. Use `set v : CxPts Y.str (RingHom.id ℂ) → ℝ := fun y => (ψ.φ (pick φ.isLB y) y - φ.φ (pick φ.isLB y) y) / 2 with hv`. Establish `hdiff : ∀ i y, y ∈ ptsIn Y.str (RingHom.id ℂ) (L.U i) → (ψ.φ i y - φ.φ i y) / 2 = v y`. Introduce `i y hy`. Establish `hp` using `mem_pick φ.isLB y`.
+
+Simplify using `only [hv]`. Rewrite using `[ψ.trans i _ y hy hp, φ.trans i _ y hy hp]`. Expand and normalize the polynomial expressions, which then agree. Establish `hvC : ∀ y, CInfAt v y`. Introduce `y`.
+
+Establish `hp` using `mem_pick φ.isLB y`. Use `(((hψ _ y hp).add (hφ _ y hp).neg).const_mul (1 / 2)).congr ?_` and prove the remaining obligations. Use `filter_upwards [(isOpen_ptsIn _).mem_nhds hp] with z hz`. Rewrite using `[← hdiff _ z hz]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hvs : (R.finAtlas).Smooth v` using `(hA.smooth_iff R).2 ((cInfAt_iff_smoothOn R isOpen_univ).1 fun y _ => hvC y)`. Establish `sφ` using `(Weight.isCInf_iff_isSmooth R).1 hφ`. Establish `sψ` using `(Weight.isCInf_iff_isSmooth R).1 hψ`. Establish `hQ : IsPotential R.finAtlas (φ.locPot + LocPot.ofFun v)` using `isPotentialAdd _ _ _ (Weight.isPotential_locPot sφ) (isPotential_ofFun _ _ hvs)`. Establish `hS : SameForm R.finAtlas ψ.locPot (φ.locPot + LocPot.ofFun v)` using `ψ.sameForm_of_re (R := R) hA hQ fun x => by`.
+
+Use `⟨pick φ.isLB x, mem_pick φ.isLB x, _, isOpen_ptsIn _, mem_pick φ.isLB x, fun _ => 0, fun _ => differentiableOn_const (0 : ℂ), fun z hz => ?_⟩` and prove the remaining obligations. Use `hdiff _ z hz` as an intermediate fact. Use `show ψ.φ _ z / 2 = (φ.φ _ z / 2 + v z) + _`. Rewrite using `[← this]`. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[(Weight.chernInt_eq_mInt R hφ measurable_const).2 (GlobalTheory.Published.ChernDegreeComplexModel.integrable Y φ hφ), (Weight.chernInt_eq_mInt R hψ measurable_const).2 (GlobalTheory.Published.ChernDegreeComplexModel.integrable Y ψ hψ), SameForm.mInt_eq (fun _ => hS) _]`. Conclude with `(massIndep R.finAtlas (fun _ => φ.locPot) (fun _ => v) (fun _ => Weight.isPotential_locPot sφ) (fun _ => hvs)).symm`.
+-/
 theorem chernInt_eq_of_isCInf : ∀ (Y : Var ℂ) (L : LB Y.X) (φ ψ : Weight Y.str (RingHom.id ℂ) L),
     φ.IsCInf → ψ.IsCInf →
       φ.chernInt Y.dim Set.univ (fun _ => 1) = ψ.chernInt Y.dim Set.univ (fun _ => 1) := by

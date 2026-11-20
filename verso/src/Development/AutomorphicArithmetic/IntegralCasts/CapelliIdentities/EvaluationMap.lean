@@ -25,6 +25,11 @@ private noncomputable def evw {W : Type} [AddCommGroup W] [_root_.Module ℂ W]
 end UpperTheory.Reformulated.B.EvaluationMap.Helpers
 
 open UpperTheory.Reformulated.B.EvaluationMap.Helpers in
+/- English proof (translation)
+Introduce `K W _ _ _ _ ρ`. Establish `hle : UpperTheory.Reformulated.B.EvaluationMap.coeffSpan ρ ≤ LinearMap.range (Φ ρ)`. Unfold `UpperTheory.Reformulated.B.EvaluationMap.coeffSpan`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `f ⟨ℓ, w, rfl⟩`.
+
+Conclude with `⟨evw ℓ w, rfl⟩`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem UpperTheory.Reformulated.B.EvaluationMap.main :
     ∀ {K W : Type} [inst : Group K] [inst_1 : AddCommGroup W] [inst_2 : _root_.Module ℂ W] [FiniteDimensional ℂ W]
       (ρ : Representation ℂ K W), FiniteDimensional ℂ ↥(UpperTheory.Reformulated.B.EvaluationMap.coeffSpan ρ) := by

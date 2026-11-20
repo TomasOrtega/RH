@@ -19,13 +19,22 @@ open GlobalTheory.PlaceModel GlobalTheory.FinWeilO
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+Rewrite using `[mem_half, smul_smul, he]`.
+-/
 theorem smul_mem_half {e : AE D} (he : e * e = e) (x : WO S T) : e • x ∈ half S T e := by
   rw [mem_half, smul_smul, he]
 
+/- English proof (translation)
+Rewrite using `[← (mem_half S T).1 hx, smul_smul, hef, zero_smul]`.
+-/
 theorem smul_eq_zero_of_mem_half {e f : AE D} (hef : e * f = 0) {x : WO S T} (hx : x ∈ half S T f) :
     e • x = 0 := by
   rw [← (mem_half S T).1 hx, smul_smul, hef, zero_smul]
 
+/- English proof (translation)
+Rewrite using `[smul_add, smul_add]`.
+-/
 theorem smul_add_add_WO (e : AE D) (x y z : WO S T) : e • (x + y + z) = e • x + e • y + e • z := by
   rw [smul_add, smul_add]
 
@@ -40,11 +49,19 @@ def proj3 (B : AddSubgroup (WO S T)) {e₁ e₂ e₃ : AE D} (h1 : e₁ * e₁ =
   map_add' x y := Prod.ext (Subtype.ext (smul_add _ _ _))
     (Prod.ext (Subtype.ext (smul_add _ _ _)) (Subtype.ext (smul_add _ _ _)))
 
+/- English proof (translation)
+Rewrite using `[smul_add_add_WO, (mem_half S T).1 hx, smul_eq_zero_of_mem_half hef hy, smul_eq_zero_of_mem_half heg hz, add_zero, add_zero]`.
+-/
 theorem part_eq {e f g : AE D} {x y z : WO S T} (hx : x ∈ half S T e) (hy : y ∈ half S T f) (hz : z ∈ half S T g)
     (hef : e * f = 0) (heg : e * g = 0) : e • (x + y + z) = x := by
   rw [smul_add_add_WO, (mem_half S T).1 hx, smul_eq_zero_of_mem_half hef hy, smul_eq_zero_of_mem_half heg hz,
     add_zero, add_zero]
 
+/- English proof (translation)
+Introduce and unpack `⟨⟨b₁, hb₁⟩, ⟨b₂, hb₂⟩, ⟨b₃, hb₃⟩⟩`. Establish `h21 : e₂ * e₁ = 0` using `by rw [mul_comm, h12]`. Establish `h31 : e₃ * e₁ = 0` using `by rw [mul_comm, h13]`. Establish `h32 : e₃ * e₂ = 0` using `by rw [mul_comm, h23]`. Establish `c2 : e₂ • (b₂ + b₁ + b₃) = b₂` using `part_eq hb₂.2 hb₁.2 hb₃.2 h21 h23`.
+
+Establish `c3 : e₃ • (b₃ + b₁ + b₂) = b₃` using `part_eq hb₃.2 hb₁.2 hb₂.2 h31 h32`. Rewrite `c2` using `[show b₂ + b₁ + b₃ = b₁ + b₂ + b₃ by abel]`. Rewrite `c3` using `[show b₃ + b₁ + b₂ = b₁ + b₂ + b₃ by abel]`. Conclude with `⟨⟨b₁ + b₂ + b₃, add_mem (add_mem hb₁.1 hb₂.1) hb₃.1⟩, Prod.ext (Subtype.ext (part_eq hb₁.2 hb₂.2 hb₃.2 h12 h13)) (Prod.ext (Subtype.ext c2) (Subtype.ext c3))⟩`.
+-/
 theorem projThreeIdempotentHalves_surjective (B : AddSubgroup (WO S T)) {e₁ e₂ e₃ : AE D} (h1 : e₁ * e₁ = e₁) (h2 : e₂ * e₂ = e₂)
     (h3 : e₃ * e₃ = e₃) (h12 : e₁ * e₂ = 0) (h13 : e₁ * e₃ = 0) (h23 : e₂ * e₃ = 0)
     (hB : ∀ b ∈ B, e₁ • b ∈ B ∧ e₂ • b ∈ B ∧ e₃ • b ∈ B) :
@@ -60,12 +77,32 @@ theorem projThreeIdempotentHalves_surjective (B : AddSubgroup (WO S T)) {e₁ e�
   exact ⟨⟨b₁ + b₂ + b₃, add_mem (add_mem hb₁.1 hb₂.1) hb₃.1⟩, Prod.ext (Subtype.ext (part_eq hb₁.2 hb₂.2 hb₃.2 h12 h13))
     (Prod.ext (Subtype.ext c2) (Subtype.ext c3))⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl, rfl⟩`.
+-/
 theorem projThreeIdempotentHalves_apply (B : AddSubgroup (WO S T)) {e₁ e₂ e₃ : AE D} (h1 : e₁ * e₁ = e₁) (h2 : e₂ * e₂ = e₂)
     (h3 : e₃ * e₃ = e₃) (hB : ∀ b ∈ B, e₁ • b ∈ B ∧ e₂ • b ∈ B ∧ e₃ • b ∈ B) (b : B) :
     ((proj3 B h1 h2 h3 hB b).1 : WO S T) = e₁ • (b : WO S T) ∧
       ((proj3 B h1 h2 h3 hB b).2.1 : WO S T) = e₂ • (b : WO S T) ∧
       ((proj3 B h1 h2 h3 hB b).2.2 : WO S T) = e₃ • (b : WO S T) := ⟨rfl, rfl, rfl⟩
 
+/- English proof (translation)
+Establish `hcomap : A.addSubgroupOf B = (((A ⊓ half S T e₁).addSubgroupOf (B ⊓ half S T e₁)).prod (((A ⊓ half S T e₂).addSubgroupOf (B ⊓ half S T e₂)).prod ((A ⊓ half S T e₃).addSubgroupOf (B ⊓ half S T e₃)))).comap (proj3 B h1 h2 h3 hB)`. Use `AddSubgroup.ext fun b => ?_` and prove the remaining obligations. Take `⟨k₁, k₂, k₃⟩` from `projThreeIdempotentHalves_apply B h1 h2 h3 hB b`. Prove the components needed by the constructor for the conclusion. Introduce `hb`.
+
+Establish `hb' : (b : WO S T) ∈ A` using `AddSubgroup.mem_addSubgroupOf.1 hb`. Use `AddSubgroup.mem_comap.2 (AddSubgroup.mem_prod.2 ⟨?_, AddSubgroup.mem_prod.2 ⟨?_, ?_⟩⟩)` and prove the remaining obligations. Use `AddSubgroup.mem_addSubgroupOf.2 (AddSubgroup.mem_inf.2 ⟨?_, ?_⟩)` and prove the remaining obligations. Rewrite using `[k₁]`. Conclude with `(hA _ hb').1`.
+
+Rewrite using `[k₁]`. Conclude with `smul_mem_half h1 _`. Use `AddSubgroup.mem_addSubgroupOf.2 (AddSubgroup.mem_inf.2 ⟨?_, ?_⟩)` and prove the remaining obligations. Rewrite using `[k₂]`. Conclude with `(hA _ hb').2.1`.
+
+Rewrite using `[k₂]`. Conclude with `smul_mem_half h2 _`. Use `AddSubgroup.mem_addSubgroupOf.2 (AddSubgroup.mem_inf.2 ⟨?_, ?_⟩)` and prove the remaining obligations. Rewrite using `[k₃]`. Conclude with `(hA _ hb').2.2`.
+
+Rewrite using `[k₃]`. Conclude with `smul_mem_half h3 _`. Introduce `hb`. Take `⟨p₁, p₂⟩` from `AddSubgroup.mem_prod.1 (AddSubgroup.mem_comap.1 hb)`. Take `⟨p₂, p₃⟩` from `AddSubgroup.mem_prod.1 p₂`.
+
+Establish `a₁` using `(AddSubgroup.mem_inf.1 (AddSubgroup.mem_addSubgroupOf.1 p₁)).1`. Establish `a₂` using `(AddSubgroup.mem_inf.1 (AddSubgroup.mem_addSubgroupOf.1 p₂)).1`. Establish `a₃` using `(AddSubgroup.mem_inf.1 (AddSubgroup.mem_addSubgroupOf.1 p₃)).1`. Rewrite `a₁` using `[k₁]`. Rewrite `a₂` using `[k₂]`.
+
+Rewrite `a₃` using `[k₃]`. Use `AddSubgroup.mem_addSubgroupOf.2 ?_` and prove the remaining obligations. Establish `e : (b : WO S T) = e₁ • (b : WO S T) + e₂ • (b : WO S T) + e₃ • (b : WO S T)`. Rewrite using `[← add_smul, ← add_smul, hs, one_smul]`. Rewrite using `[e]`.
+
+Conclude with `add_mem (add_mem a₁ a₂) a₃`. Rewrite using `[AddSubgroup.relIndex, hcomap, AddSubgroup.index_comap_of_surjective _ (projThreeIdempotentHalves_surjective B h1 h2 h3 h12 h13 h23 hB), AddSubgroup.index_prod, AddSubgroup.index_prod]`. Both sides reduce to the same expression.
+-/
 theorem relIndex_three {A B : AddSubgroup (WO S T)} {e₁ e₂ e₃ : AE D}
     (h1 : e₁ * e₁ = e₁) (h2 : e₂ * e₂ = e₂) (h3 : e₃ * e₃ = e₃)
     (h12 : e₁ * e₂ = 0) (h13 : e₁ * e₃ = 0) (h23 : e₂ * e₃ = 0) (hs : e₁ + e₂ + e₃ = 1)
@@ -110,6 +147,11 @@ theorem relIndex_three {A B : AddSubgroup (WO S T)} {e₁ e₂ e₃ : AE D}
     AddSubgroup.index_prod]
   rfl
 
+/- English proof (translation)
+Use `AddSubgroup.ext fun y => ⟨fun hy => ?_, fun hy => ?_⟩` and prove the remaining obligations. Take `⟨⟨x, hx, rfl⟩, h2⟩` from `AddSubgroup.mem_inf.1 hy`. Use `⟨e • x, AddSubgroup.mem_inf.2 ⟨hΛ x hx, smul_mem_half he x⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ]`. Conclude with `(mem_half S T).1 h2`.
+
+Take `⟨x, hx, rfl⟩` from `hy`. Take `⟨hx1, hx2⟩` from `AddSubgroup.mem_inf.1 hx`. Use `AddSubgroup.mem_inf.2 ⟨⟨x, hx1, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_half, ← hφ, (mem_half S T).1 hx2]`.
+-/
 theorem map_inf_half {Λ : AddSubgroup (WO S T)} {φ : WO S T →+ WO S T} {e : AE D} (he : e * e = e)
     (hΛ : ∀ a ∈ Λ, e • a ∈ Λ) (hφ : ∀ x, φ (e • x) = e • φ x) :
     Λ.map φ ⊓ half S T e = (Λ ⊓ half S T e).map φ := by
@@ -123,12 +165,21 @@ theorem map_inf_half {Λ : AddSubgroup (WO S T)} {φ : WO S T →+ WO S T} {e : 
     refine AddSubgroup.mem_inf.2 ⟨⟨x, hx1, rfl⟩, ?_⟩
     rw [mem_half, ← hφ, (mem_half S T).1 hx2]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem actL_apply (g : GA D T) (x : WO S T) : GlobalTheory.SplitIdx.actL S T g x = actO S T 1 g x := rfl
 
+/- English proof (translation)
+Rewrite using `[actL_apply, actL_apply, actO_smul]`.
+-/
 theorem actL_smul (g : GA D T) (a : AE D) (x : WO S T) :
     GlobalTheory.SplitIdx.actL S T g (a • x) = a • GlobalTheory.SplitIdx.actL S T g x := by
   rw [actL_apply, actL_apply, actO_smul]
 
+/- English proof (translation)
+Rewrite using `[actL_apply, actO, inv_one, mt_one, Matrix.mul_one]`. Establish `h : @HMul.hMul (Matrix (Fin T.rank) (Fin T.rank) (AE D)) (Matrix (Fin T.rank) (Fin S.rank) (AE D)) (Matrix (Fin T.rank) (Fin S.rank) (AE D)) _ (Formalism.L2.Theta.mt T g - 1) x = 0`. Rewrite using `[← (mem_half S T).1 hx, Matrix.mul_smul, ← Matrix.smul_mul, hr, Matrix.zero_mul]`. Rewrite `h` using `[Matrix.sub_mul, Matrix.one_mul, sub_eq_zero]`. Conclude with `h`.
+-/
 theorem actL_of_killed {g : GA D T} {r : AE D}
     (hr : r • (Formalism.L2.Theta.mt T g - 1 : Matrix (Fin T.rank) (Fin T.rank) (AE D)) = 0) {x : WO S T}
     (hx : x ∈ half S T r) : GlobalTheory.SplitIdx.actL S T g x = x := by
@@ -139,6 +190,9 @@ theorem actL_of_killed {g : GA D T} {r : AE D}
   rw [Matrix.sub_mul, Matrix.one_mul, sub_eq_zero] at h
   exact h
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Use `⟨by linear_combination he + hf + 2 * hef, by linear_combination -he - hef, by linear_combination -hf - hef, by ring, by linear_combination -he - hf - 2 * hef⟩` and prove the remaining obligations.
+-/
 theorem rest_idem {R : Type} [CommRing R] {e f r : R} (he : e * e = e) (hf : f * f = f) (hef : e * f = 0)
     (hr : r = 1 - e - f) :
     r * r = r ∧ e * r = 0 ∧ f * r = 0 ∧ e + f + r = 1 ∧ r * (e + f) = 0 := by
@@ -146,12 +200,22 @@ theorem rest_idem {R : Type} [CommRing R] {e f r : R} (he : e * e = e) (hf : f *
   refine ⟨by linear_combination he + hf + 2 * hef, by linear_combination -he - hef,
     by linear_combination -hf - hef, by ring, by linear_combination -he - hf - 2 * hef⟩
 
+/- English proof (translation)
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply, ← hg' i j, ← mul_assoc, hr0, zero_mul]`.
+-/
 theorem kill_of_supp {g : GA D T} {r ε : AE D} (hr0 : r * (ε + cA D ε) = 0)
     (hg' : ∀ i j, (ε + cA D ε) * (Formalism.L2.Theta.mt T g - 1) i j = (Formalism.L2.Theta.mt T g - 1) i j) :
     r • (Formalism.L2.Theta.mt T g - 1 : Matrix (Fin T.rank) (Fin T.rank) (AE D)) = 0 := by
   refine Matrix.ext fun i j => ?_
   rw [Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply, ← hg' i j, ← mul_assoc, hr0, zero_mul]
 
+/- English proof (translation)
+Establish `stφ : ∀ (e : AE D), (∀ a ∈ Λ, e • a ∈ Λ) → ∀ b ∈ Λ.map (GlobalTheory.SplitIdx.actL S T g), e • b ∈ Λ.map (GlobalTheory.SplitIdx.actL S T g)`. Introduce and unpack `e hst _ ⟨a, ha, rfl⟩`. Conclude with `⟨e • a, hst a ha, actL_smul g e a⟩`. Establish `key` using `relIndex_three he h2 h3 hec h13 h23 hsum (fun a ha => ⟨stε a ha, stc a ha, str a ha⟩) (fun b hb => ⟨stφ ε stε b hb, stφ c stc b hb, stφ r str b hb⟩)`. Rewrite `key` using `[map_inf_half he stε (actL_smul g ε), map_inf_half h2 stc (actL_smul g c), map_inf_half h3 str (actL_smul g r)]`.
+
+Establish `hid : (Λ ⊓ half S T r).map (GlobalTheory.SplitIdx.actL S T g) = Λ ⊓ half S T r`. Use `AddSubgroup.ext fun y => ⟨?_, fun hy => ⟨y, hy, actL_of_killed hkill (AddSubgroup.mem_inf.1 hy).2⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨x, hx, rfl⟩`. Rewrite using `[actL_of_killed hkill (AddSubgroup.mem_inf.1 hx).2]` and apply the resulting hypothesis. Rewrite `key` using `[hid, AddSubgroup.relIndex_self, mul_one]`.
+
+Conclude with `key`.
+-/
 theorem split_index {Λ : AddSubgroup (WO S T)} {g : GA D T} {ε c r : AE D}
     (he : ε * ε = ε) (h2 : c * c = c) (h3 : r * r = r) (hec : ε * c = 0) (h13 : ε * r = 0) (h23 : c * r = 0)
     (hsum : ε + c + r = 1) (hkill : r • (Formalism.L2.Theta.mt T g - 1 : Matrix (Fin T.rank) (Fin T.rank) (AE D)) = 0)
@@ -176,6 +240,21 @@ theorem split_index {Λ : AddSubgroup (WO S T)} {g : GA D T} {ε c r : AE D}
 
 open GlobalTheory.SplitScalar GlobalTheory.FinWeil GlobalTheory.WeilParts in
 
+/- English proof (translation)
+Introduce `D S T ε hε g hg`. Establish `hg' : ∀ i j, (ε + cA D ε) * (Formalism.L2.Theta.mt T g - 1) i j = (Formalism.L2.Theta.mt T g - 1) i j` using `hg`. Take `⟨he, hec, v, ε', hv, heq⟩` from `hε`. Establish `h2 : cA D ε * cA D ε = cA D ε` using `by rw [← map_mul, he]`. Establish `hs' : IsSplitIdem D (cA D ε)` using `⟨h2, by rw [cA_cA, mul_comm, hec], v, ε', hv, by rw [cA_cA, add_comm, heq]⟩`.
+
+Establish `hε2 : IsSplitIdem D ε` using `⟨he, hec, v, ε', hv, heq⟩`. Take `⟨r, hr⟩ : ∃ r : AE D, r = 1 - ε - cA D ε` from `⟨_, rfl⟩`. Take `⟨h3, h13, h23, hsum, hr0⟩` from `rest_idem he h2 hec hr`. Establish `hkill : r • (Formalism.L2.Theta.mt T g - 1 : Matrix (Fin T.rank) (Fin T.rank) (AE D)) = 0` using `kill_of_supp hr0 hg'`. Take `⟨Λ, hΛ⟩ : ∃ Λ : AddSubgroup (WO S T), Λ = latO S T (frameLat S : Set (Fin S.rank → D.host.E)) (frameLat T : Set (Fin T.rank → D.host.E)) fun _ => True` from `⟨_, rfl⟩`.
+
+Establish `hh : ∀ e, GlobalTheory.SplitIdx.halfLat S T e = Λ ⊓ half S T e` using `fun e => by rw [hΛ]; rfl`. Establish `stε : ∀ a ∈ Λ, ε • a ∈ Λ`. Rewrite using `[hΛ]`. Conclude with `fun a ha => GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ ε (GlobalTheory.SplitHomLattice.idem_int hε2) a ha`. Establish `stc : ∀ a ∈ Λ, cA D ε • a ∈ Λ`.
+
+Rewrite using `[hΛ]`. Conclude with `fun a ha => GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ (cA D ε) (GlobalTheory.SplitHomLattice.idem_int hs') a ha`. Establish `str : ∀ a ∈ Λ, r • a ∈ Λ` using `fun a ha => by`. Rewrite using `[hr, sub_smul, sub_smul, one_smul]`. Conclude with `sub_mem (sub_mem ha (stε a ha)) (stc a ha)`.
+
+Establish `hL : GlobalTheory.FinWeil.idx (GlobalTheory.FinWeilO.latF S T (frameLat S) (frameLat T)) ((GlobalTheory.FinWeilO.latF S T (frameLat S) (frameLat T)).map (GlobalTheory.FinWeilO.rhoF S T (1, g))) = Λ.relIndex (Λ.map (GlobalTheory.SplitIdx.actL S T g))`. Establish `e1 : (GlobalTheory.FinWeilO.latF S T (frameLat S) (frameLat T)).toAddSubgroup = Λ.comap (XF.incl S T)` using `AddSubgroup.ext fun _ => by rw [hΛ]; exact Iff.rfl`. Establish `e2 : ((GlobalTheory.FinWeilO.latF S T (frameLat S) (frameLat T)).map (GlobalTheory.FinWeilO.rhoF S T (1, g))).toAddSubgroup.map (XF.incl S T) = Λ.map (GlobalTheory.SplitIdx.actL S T g)`. Use `AddSubgroup.ext fun u => ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x, ⟨y, hy, rfl⟩, rfl⟩`.
+
+Use `⟨(y : WO S T), ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[hΛ]`. Conclude with `hy`. Introduce and unpack `⟨w, hw, rfl⟩`. Rewrite `hw` using `[hΛ]`.
+
+Conclude with `⟨GlobalTheory.FinWeilO.rhoF S T (1, g) (XF.mk w (latO_fin hw)), ⟨XF.mk w (latO_fin hw), hw, rfl⟩, rfl⟩`. Rewrite using `[GlobalTheory.FinWeil.idx, e1, AddSubgroup.relIndex_comap, e2]`. Rewrite using `[hh, hh, hL]`. Conclude with `split_index he h2 h3 hec h13 h23 hsum hkill stε stc str`.
+-/
 theorem idx_dec : ∀ (D : D7) (S T : HSp D) (ε : AE D), IsSplitIdem D ε → ∀ g : GA D T, SuppAt ε T g →
     GlobalTheory.FinWeil.idx (GlobalTheory.FinWeilO.latF S T (frameLat S) (frameLat T))
       ((GlobalTheory.FinWeilO.latF S T (frameLat S) (frameLat T)).map (GlobalTheory.FinWeilO.rhoF S T (1, g))) =

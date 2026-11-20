@@ -11,6 +11,13 @@ open GlobalTheory.TInj
 
 namespace GlobalTheory.TInj
 
+/- English proof (translation)
+Introduce `V _ _ D hB F _ _ k hk p p' hy ⟨z, hz, h, hi, ha⟩`. Use `letI := GlobalTheory.TorusExt.gtGroup D F`. Establish `hkz : k • z = 0`. Rewrite `hz` using `[hy]`. Conclude with `left_eq_add.mp hz`.
+
+Establish `z0 : z = 0`. Establish `: ((k : ℤ)) • z = 0` using `by rw [natCast_zsmul]; exact hkz`. Break down `smul_eq_zero.mp this with h0 | h0` into its components or cases. Use linear arithmetic over natural numbers and integers. Conclude with `h0`.
+
+Substitute `z0` using the available equality. Establish `h0 : h = 0`. Rewrite using `[(GlobalTheory.TorusExt.isIota_iff_eq hB 0 h).1 hi, map_zero]`. Rewrite using `[(GlobalTheory.TorusExt.isAdd_iff_eq _ _ _).1 ha, h0, add_zero]`.
+-/
 theorem qkPt_g_eq_of_equiv : ∀ (V : Type) [CommRing V] [IsDomain V] (D : DegPre V), D.TauBimult → ∀ (F : Type) [Field F] [Algebra (FractionRing V) F] (k : ℕ), 1 ≤ k → ∀ p p' : QkPt D F k, p.y = p'.y → QkPt.Equiv D F p p' → p.g = p'.g := by
   intro V _ _ D hB F _ _ k hk p p' hy ⟨z, hz, h, hi, ha⟩
   letI := GlobalTheory.TorusExt.gtGroup D F

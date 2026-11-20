@@ -7,10 +7,16 @@ namespace PI.WGB
 open Formalism.BasicNotions Formalism.GradedWeylDivisibility MvPolynomial
 open Formalism.REAL (fockF)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem transpose_conj_comm {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) :
     M.transpose.conjTranspose = M.conjTranspose.transpose := by
   ext i j; simp
 
+/- English proof (translation)
+Establish `e1 : (iotaC ℂ n k g).transpose * (iotaC ℂ n k g').transpose.conjTranspose = (iotaC ℂ n k (g'.conjTranspose * g)).transpose`. Rewrite using `[iotaC_mul, iotaC_conj, Matrix.transpose_mul, transpose_conj_comm]`. Rewrite using `[fockF_rowAct_right, rowAct_comp_apply, e1]`. Conclude with `mc_hw κ hκ hU hT _`.
+-/
 theorem gram_of {n k : ℕ} {f : MvPolynomial (Fin (n + k) × Fin (n + k)) ℂ} (κ : Fin n → ℕ) (hκ : Antitone κ)
     (hU : ∀ u, IsUU u → rowAct ℂ (iotaC ℂ n k u).transpose f = f)
     (hT : ∀ t : Fin n → ℂˣ, rowAct ℂ (iotaC ℂ n k (Matrix.diagonal fun i => (t i : ℂ))).transpose f =
@@ -24,6 +30,9 @@ theorem gram_of {n k : ℕ} {f : MvPolynomial (Fin (n + k) × Fin (n + k)) ℂ} 
   rw [fockF_rowAct_right, rowAct_comp_apply, e1]
   exact mc_hw κ hκ hU hT _
 
+/- English proof (translation)
+Substitute `hs` using the available equality. Rewrite using `[lpMinor, RingHom.map_det]`. Use `congr 1`. Use extensionality with `p q`. Simplify using the standard rewrite rules.
+-/
 theorem eval_lpMinor_top {n : ℕ} (Z : Matrix (Fin n) (Fin n) ℂ) (s : ℕ) (h1 h2 : s ≤ n) (hs : s = n) :
     eval (fun v : Fin n × Fin n => Z v.1 v.2) (lpMinor ℂ s h1 h2) = Z.det := by
   subst hs
@@ -32,6 +41,13 @@ theorem eval_lpMinor_top {n : ℕ} (Z : Matrix (Fin n) (Fin n) ℂ) (s : ℕ) (h
   ext p q
   simp
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero => simp [hwAt, hw, Matrix.det_isEmpty]`. Consider the case `succ m`. Unfold `hwAt hw`. Simplify using `only [map_prod, map_pow]`.
+
+Rewrite using `[Fin.prod_univ_castSucc, Fin.prod_univ_castSucc]`. Establish `hlast : ∀ ν : Fin (m + 1) → ℕ, nuNext ν (Fin.last m) = 0` using `by intro ν; simp [nuNext]`. Establish `hmid : ∀ i : Fin m, (κ' i.castSucc + d) - nuNext (fun i => κ' i + d) i.castSucc = κ' i.castSucc - nuNext κ' i.castSucc`. Introduce `i`. Use `i.isLt` as an intermediate fact.
+
+Simplify using `only [nuNext, Fin.coe_castSucc]`. Apply the tactic sequence `split_ifs <;> omega`. Simplify using `only [hlast, hmid, Nat.sub_zero]`. Rewrite using `[eval_lpMinor_top Z _ _ _ (by simp)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hwAt_shift {n : ℕ} (κ' : Fin n → ℕ) (d : ℕ) (Z : Matrix (Fin n) (Fin n) ℂ) :
     hwAt (fun i => κ' i + d) Z = Z.det ^ d * hwAt κ' Z := by
   cases n with
@@ -51,21 +67,33 @@ theorem hwAt_shift {n : ℕ} (κ' : Fin n → ℕ) (d : ℕ) (Z : Matrix (Fin n)
     rw [eval_lpMinor_top Z _ _ _ (by simp)]
     ring
 
+/- English proof (translation)
+Simplify using `[detPow, Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply]`.
+-/
 theorem detPow_eq {N : ℕ} (g : GL (Fin N) ℂ) (c : ℤ) :
     detPow ℂ N g c = ((g : Matrix (Fin N) (Fin N) ℂ).det) ^ c := by
   simp [detPow, Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply]
 
+/- English proof (translation)
+Rewrite using `[sqAct, detPow_eq]`.
+-/
 theorem sqAct_eq {N : ℕ} (lam : DomWeight N) (g : GL (Fin N) ℂ) (f : MvPolynomial (Fin N × Fin N) ℂ) :
     sqAct ℂ N lam g f = ((g : Matrix (Fin N) (Fin N) ℂ).det ^ lam.detShift) •
       rowAct ℂ (g : Matrix (Fin N) (Fin N) ℂ).transpose f := by
   rw [sqAct, detPow_eq]
 
+/- English proof (translation)
+Simplify using `only [sqAct_eq, map_smul, smul_smul, Matrix.GeneralLinearGroup.coe_mul, Matrix.transpose_mul, rowAct_comp_apply, Matrix.det_mul]`. Rewrite using `[mul_zpow]`.
+-/
 theorem sqAct_mulC {N : ℕ} (lam : DomWeight N) (g h : GL (Fin N) ℂ) (f : MvPolynomial (Fin N × Fin N) ℂ) :
     sqAct ℂ N lam (g * h) f = sqAct ℂ N lam g (sqAct ℂ N lam h f) := by
   simp only [sqAct_eq, map_smul, smul_smul, Matrix.GeneralLinearGroup.coe_mul, Matrix.transpose_mul,
     rowAct_comp_apply, Matrix.det_mul]
   rw [mul_zpow]
 
+/- English proof (translation)
+Simplify using `[sqAct_eq, rowAct_one_apply]`.
+-/
 theorem sqAct_oneC {N : ℕ} (lam : DomWeight N) (f : MvPolynomial (Fin N × Fin N) ℂ) :
     sqAct ℂ N lam 1 f = f := by
   simp [sqAct_eq, rowAct_one_apply]
@@ -78,14 +106,27 @@ def sqLC (N : ℕ) (lam : DomWeight N) (g : GL (Fin N) ℂ) :
     simp only [sqAct, RingHom.id_apply, map_smul]
     rw [smul_comm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sqLC_apply (N : ℕ) (lam : DomWeight N) (g : GL (Fin N) ℂ) (f : MvPolynomial (Fin N × Fin N) ℂ) :
     sqLC N lam g f = sqAct ℂ N lam g f := rfl
 
+/- English proof (translation)
+Simplify using `[PI.embGL, PI.blkHom, iotaC]`.
+-/
 theorem embGL_coe (n : ℕ) (g : GL (Fin n) ℂ) :
     ((PI.embGL ℂ n (n + 1) rfl g : GL (Fin (n + 1)) ℂ) : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) =
       iotaC ℂ n 1 g := by
   simp [PI.embGL, PI.blkHom, iotaC]
 
+/- English proof (translation)
+Use `⟨fun u hu => ?_, fun t => ?_⟩` and prove the remaining obligations. Establish `hdet : u.det = 1`. Rewrite using `[Matrix.det_of_isUpperTriangular (fun i j h => hu.1 i j h)]`. Simplify using `[hu.2]`. Use `hU0 (Matrix.GeneralLinearGroup.mkOfDetNeZero u (by rw [hdet]; exact one_ne_zero)) (fun i j h => hu.1 i j h) (fun i => hu.2 i)` as an intermediate fact.
+
+Simplify `this` using `[hdet]`. Establish `h0` using `hT0 t`. Establish `hne : (∏ i, (t i : ℂ)) ^ c ≠ 0` using `zpow_ne_zero _ (Finset.prod_ne_zero_iff.mpr fun i _ => (t i).ne_zero)`. Establish `hw : (∏ i, (t i : ℂ) ^ w i) = (∏ i, (t i : ℂ) ^ κ i) * (∏ i, (t i : ℂ)) ^ c`. Rewrite using `[← Finset.prod_zpow, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hwκ i, zpow_add₀ (t i).ne_zero, zpow_natCast]`. Rewrite `h0` using `[hw, mul_comm, ← smul_smul]`. Conclude with `smul_right_injective _ hne h0`.
+-/
 theorem fixed_data {n k : ℕ} (f : MvPolynomial (Fin (n + k) × Fin (n + k)) ℂ) (c : ℤ) (w : Fin n → ℤ)
     (κ : Fin n → ℕ) (hwκ : ∀ i, (κ i : ℤ) + c = w i)
     (hU0 : ∀ g : GL (Fin n) ℂ, (∀ i j, j < i → (g : Matrix (Fin n) (Fin n) ℂ) i j = 0) →

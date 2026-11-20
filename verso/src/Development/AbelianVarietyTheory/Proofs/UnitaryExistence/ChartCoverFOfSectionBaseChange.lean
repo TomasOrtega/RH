@@ -22,12 +22,20 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 variable {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Use `⟨pullback.lift w.x (spMap (algebraMap c.F S)) ?_, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩` and prove the remaining obligations. Rewrite using `[w.x_over, spMap_comp_ring]`. Both sides reduce to the same expression.
+-/
 theorem ChartCover.exists_lift {S : Type} [CommRing S] [Algebra c.F S] (w : FrPt Xo c S) :
     ∃ xF : Sp S ⟶ Xo.XF c, xF ≫ pullback.fst _ _ = w.x ∧ xF ≫ pullback.snd _ _ = spMap (algebraMap c.F S) := by
   refine ⟨pullback.lift w.x (spMap (algebraMap c.F S)) ?_, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩
   rw [w.x_over, spMap_comp_ring]
   rfl
 
+/- English proof (translation)
+Take `⟨g, hg, hT⟩` from `openChart_factor_near_prime E H Dw l Xo c R j y₀ hj S xF h2 p hp`. Use `⟨g, hg, fun T _ _ lam hl => ?_⟩` and prove the remaining obligations. Take `⟨ψ, hψ⟩` from `hT T lam hl`. Take `⟨z, hz⟩` from `GlobalTheory.T.exists_framedPoint_baseChange_algebraMap hS E H Dw l Xo c S T lam w`. Establish `hx : z.x = spMap ψ.toRingHom ≫ y₀.x`.
+
+Rewrite using `[hz.1, ← h1, ← hj.2.1, ← Category.assoc, hψ, Category.assoc]`. Take `⟨a, ⟨_, ha⟩, _⟩` from `GlobalTheory.T.universalFrame_classifies_framedPoints hS E H Dw l Xo c R A y₀ π X s u hu T z ψ hx`. Conclude with `⟨z, a, hz, ha⟩`.
+-/
 theorem ChartCover.near (hS : Out.SecBaseChangeSt) {R A : Type} [CommRing R] [Algebra c.F R] [CommRing A]
     [Algebra c.F A] {j : Sp R ⟶ Xo.XF c} {y₀ : FrPt Xo c R} {π : R →ₐ[c.F] A}
     {X : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) A} {s : Aˣ} {u : FrPt Xo c A}
@@ -45,6 +53,15 @@ theorem ChartCover.near (hS : Out.SecBaseChangeSt) {R A : Type} [CommRing R] [Al
   obtain ⟨a, ⟨_, ha⟩, _⟩ := GlobalTheory.T.universalFrame_classifies_framedPoints hS E H Dw l Xo c R A y₀ π X s u hu T z ψ hx
   exact ⟨z, a, hz, ha⟩
 
+/- English proof (translation)
+Take `⟨g, hg, hT⟩` from `ChartCover.near hS hj hu w xF h1 h2 (⟨m, hm⟩ : PrimeSpectrum S) hp`. Take `⟨z, a, hz, ha⟩` from `hT (Localization.AtPrime m) (locM c.F m) (IsLocalization.map_units (Localization.AtPrime m) (⟨g, hg⟩ : m.primeCompl))`. Use `⟨a, ⟨z, hz, ha⟩, ?_⟩` and prove the remaining obligations. Introduce `p φ y hy`. Take `⟨yF, k1, k2⟩` from `ChartCover.exists_lift y`.
+
+Establish `e : spMap φ.toRingHom ≫ yF = xF`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, k1, h1, hy.1]`. Rewrite using `[Category.assoc, k2, h2, spMap_comp_ring]`. Use `congr 1`.
+
+Conclude with `φ.comp_algebraMap`. Establish `hq : yF (spMap φ.toRingHom (⟨m, hm⟩ : PrimeSpectrum S)) ∈ Set.range j`. Rewrite `hp` using `[← e]`. Conclude with `hp`. Take `⟨g', hg', hT'⟩` from `ChartCover.near hS hj hu y yF k1 k2 _ hq`.
+
+Take `⟨p', lam, hl, hlam⟩` from `GlobalTheory.testRing_localizationAway c.F p g'`. Take `⟨z', a', hz', ha'⟩` from `hT' p'.R lam hl`. Conclude with `⟨g', hg', p', lam, z', a', hlam, hz', ha'⟩`.
+-/
 theorem ChartCover.cls_loc (hS : Out.SecBaseChangeSt) {R : Type} [CommRing R] [Algebra c.F R] {A : TRing c.F}
     {j : Sp R ⟶ Xo.XF c} {y₀ : FrPt Xo c R} {π : R →ₐ[c.F] A.R}
     {X : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) A.R} {s : (A.R)ˣ} {u : FrPt Xo c A.R}
@@ -77,6 +94,11 @@ theorem ChartCover.cls_loc (hS : Out.SecBaseChangeSt) {R : Type} [CommRing R] [A
 
 end
 
+/- English proof (translation)
+Introduce `hS E _ _ _ H Dw l Xo c S _ _ w w' hw m hm`. Take `⟨xF, h1, h2⟩` from `ChartCover.exists_lift w`. Take `⟨p, j, y₀, hj, hp⟩` from `GlobalTheory.T.exists_openChart_framedPoint_testRing hS E H Dw l Xo c (xF (⟨m, hm.isPrime⟩ : PrimeSpectrum S))`. Take `⟨A, π, X, s, u, hu⟩` from `GlobalTheory.T.exists_universalFrame_testRing hS E H Dw l Xo c p y₀`. Take `⟨cw, hc, hl⟩` from `ChartCover.cls_loc hS hj hu w xF h1 h2 m hp`.
+
+Take `⟨cw', hc', hl'⟩` from `ChartCover.cls_loc hS hj hu w' xF (h1.trans hw.symm) h2 m hp`. Conclude with `⟨A, u, cw, cw', GlobalTheory.T.universalFrame_classifies_unique_openChart hS E H Dw l Xo c p.R A.R j y₀ π X s u hj hu, GlobalTheory.T.exists_borelPairs_universalFrame_openChart hS E H Dw l Xo c p A j y₀ π X s u hj hu, hc, hl, hc', hl'⟩`.
+-/
 theorem chartCoverF_of_secBaseChange : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ChartCoverF Xo c := by
   intro hS E _ _ _ H Dw l Xo c S _ _ w w' hw m hm
   obtain ⟨xF, h1, h2⟩ := ChartCover.exists_lift w

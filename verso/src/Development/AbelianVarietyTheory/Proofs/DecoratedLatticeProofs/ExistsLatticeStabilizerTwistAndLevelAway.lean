@@ -15,18 +15,27 @@ namespace GlobalTheory.CellLevels
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `g hg`. Unfold `congGrp at hg ⊢`. Rewrite `hg`, the goal using `[MonoidHom.mem_ker, MonoidHom.comp_apply]`. Rewrite using `[← Ideal.Quotient.factor_comp_mk h, Matrix.GeneralLinearGroup.map_comp, MonoidHom.comp_apply, hg, map_one]`.
+-/
 private theorem congGrp_mono' (V : HSp D) {I J : Ideal (AE D)} (h : I ≤ J) : congGrp V I ≤ congGrp V J := by
   intro g hg
   unfold congGrp at hg ⊢
   rw [MonoidHom.mem_ker, MonoidHom.comp_apply] at hg ⊢
   rw [← Ideal.Quotient.factor_comp_mk h, Matrix.GeneralLinearGroup.map_comp, MonoidHom.comp_apply, hg, map_one]
 
+/- English proof (translation)
+Introduce `x hx`. Unfold `idAt at hx ⊢`. Rewrite `hx`, the goal using `[Ideal.mem_inf, Submodule.mem_iInf]`. Conclude with `⟨hx.1, fun w => hx.2 ⟨w.1, fun hp => w.2 (h _ hp)⟩⟩`.
+-/
 private theorem idAt_mono_decorated_lattice {P P' : Pl D → Prop} (h : ∀ v, P v → P' v) : idAt D P ≤ idAt D P' := by
   intro x hx
   unfold idAt at hx ⊢
   rw [Ideal.mem_inf, Submodule.mem_iInf] at hx ⊢
   exact ⟨hx.1, fun w => hx.2 ⟨w.1, fun hp => w.2 (h _ hp)⟩⟩
 
+/- English proof (translation)
+Unfold `grpAt`. Conclude with `congGrp_mono' V (idAt_mono_decorated_lattice h)`.
+-/
 theorem grpAt_le_of_imp (V : HSp D) {P P' : Pl D → Prop} (h : ∀ v, P v → P' v) : grpAt V P ≤ grpAt V P' := by
   unfold grpAt
   exact congGrp_mono' V (idAt_mono_decorated_lattice h)
@@ -42,6 +51,11 @@ def commProd {G : Type*} [Group G] (A B : Subgroup G) (h : ∀ b ∈ B, ∀ a �
     rintro _ ⟨a, ha, b, hb, rfl⟩
     exact ⟨a⁻¹, A.inv_mem ha, b⁻¹, B.inv_mem hb, by rw [_root_.mul_inv_rev, h _ (B.inv_mem hb) _ (A.inv_mem ha)]⟩
 
+/- English proof (translation)
+Introduce `x hxx`. Establish `hx` using `(Ideal.mem_inf.1 hxx).1`. Establish `hx'` using `(Ideal.mem_inf.1 hxx).2`. Unfold `idAt at hx hx' ⊢`. Rewrite `hx`, `hx'`, the goal using `[Ideal.mem_inf, Submodule.mem_iInf]`.
+
+Use `⟨hx.1, fun w => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hp : P w.1`. Conclude with `hx'.2 ⟨w.1, fun h' => w.2 ⟨hp, h'⟩⟩`. Conclude with `hx.2 ⟨w.1, hp⟩`.
+-/
 private theorem idAt_inf_le_idAt_and (P P' : Pl D → Prop) : idAt D P ⊓ idAt D P' ≤ idAt D (fun p => P p ∧ P' p) := by
   intro x hxx
   have hx := (Ideal.mem_inf.1 hxx).1
@@ -53,6 +67,13 @@ private theorem idAt_inf_le_idAt_and (P P' : Pl D → Prop) : idAt D P ⊓ idAt 
   · exact hx'.2 ⟨w.1, fun h' => w.2 ⟨hp, h'⟩⟩
   · exact hx.2 ⟨w.1, hp⟩
 
+/- English proof (translation)
+Introduce `g hg`. Establish `hI` using `(Subgroup.mem_inf.1 hg).1`. Establish `hJ` using `(Subgroup.mem_inf.1 hg).2`. Unfold `congGrp at hI hJ ⊢`. Rewrite `hI`, `hJ`, the goal using `[MonoidHom.mem_ker, MonoidHom.comp_apply]`.
+
+Use `Matrix.GeneralLinearGroup.ext fun i j => ?_` and prove the remaining obligations. Establish `eI` using `(Matrix.GeneralLinearGroup.ext_iff _ _).1 hI i j`. Establish `eJ` using `(Matrix.GeneralLinearGroup.ext_iff _ _).1 hJ i j`. Simplify using `only [Matrix.GeneralLinearGroup.map_apply, Matrix.GeneralLinearGroup.coe_one, Matrix.one_apply] at eI eJ ⊢`. Use `split_ifs at eI eJ ⊢ with hij`.
+
+Rewrite `eI`, `eJ`, the goal using `[← map_one (Ideal.Quotient.mk _), Ideal.Quotient.eq]`. Conclude with `Ideal.mem_inf.2 ⟨eI, eJ⟩`. Rewrite `eI`, `eJ`, the goal using `[Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_inf.2 ⟨eI, eJ⟩`.
+-/
 private theorem congGrp_inf_le_congGrp_inf (V : HSp D) (I J : Ideal (AE D)) : congGrp V I ⊓ congGrp V J ≤ congGrp V (I ⊓ J) := by
   intro g hg
   have hI := (Subgroup.mem_inf.1 hg).1
@@ -69,19 +90,61 @@ private theorem congGrp_inf_le_congGrp_inf (V : HSp D) (I J : Ideal (AE D)) : co
   · rw [Ideal.Quotient.eq_zero_iff_mem] at eI eJ ⊢
     exact Ideal.mem_inf.2 ⟨eI, eJ⟩
 
+/- English proof (translation)
+Unfold `grpAt at h h' ⊢`. Conclude with `congGrp_mono' V (idAt_inf_le_idAt_and P P') (congGrp_inf_le_congGrp_inf V _ _ ⟨h, h'⟩)`.
+-/
 private theorem mem_grpAt_and_of_mem_grpAt (V : HSp D) {P P' : Pl D → Prop} {g : GA D V} (h : g ∈ grpAt V P) (h' : g ∈ grpAt V P') :
     g ∈ grpAt V (fun p => P p ∧ P' p) := by
   unfold grpAt at h h' ⊢
   exact congGrp_mono' V (idAt_inf_le_idAt_and P P') (congGrp_inf_le_congGrp_inf V _ _ ⟨h, h'⟩)
 
+/- English proof (translation)
+Rewrite using `[show P = P' from funext fun p => propext (h p)]`.
+-/
 private theorem inK_congr_of_iff {V : HSp D} {L : Lat V} {P P' : Pl D → Prop} (h : ∀ p, P p ↔ P' p) (κ : GA D V) :
     InK V L P κ ↔ InK V L P' κ := by
   rw [show P = P' from funext fun p => propext (h p)]
 
+/- English proof (translation)
+Unfold `InK at h`. Conclude with `h.1`.
+-/
 private theorem mem_grpAt_of_inK {V : HSp D} {L : Lat V} {P : Pl D → Prop} {κ : GA D V} (h : InK V L P κ) : κ ∈ grpAt V P := by
   unfold InK at h
   exact h.1
 
+/- English proof (translation)
+Introduce `D V L gP Q JG hL hdisj hJle hJc hJo`. Take `⟨-, -, -, hQcle, -, -, -, -, hKQ, -⟩` from `GlobalTheory.T.unitaryFiniteAdelicGroup_split_finitePlaceSet D V Q`. Take `⟨-, -, -, -, hPcomm, ⟨e, he⟩, -, -, -, -⟩` from `GlobalTheory.T.unitaryFiniteAdelicGroup_split_finitePlaceSet D V gP`. Establish `hQP : ∀ p, p ∈ Q → p ∉ gP` using `fun p hp => Finset.disjoint_left.mp hdisj hp`. Take `⟨⟨K₁, hK₁, hK₁c, hK₁o⟩, -⟩` from `hKQ L hL (· ∈ Q)`.
+
+Take `⟨⟨K₃, hK₃, hK₃c, hK₃o⟩, -⟩` from `hKQ L hL (fun p => p ∉ gP ∧ p ∉ Q)`. Establish `hpq : ∀ p, (p ∉ gP ∧ p ∈ Q) ↔ p ∈ Q` using `fun p => ⟨And.right, fun h => ⟨hQP p h, h⟩⟩`. Establish `hsplit : ∀ κ, InK V L (· ∉ gP) κ ↔ ∃ a b, InK V L (· ∈ Q) a ∧ InK V L (fun p => p ∉ gP ∧ p ∉ Q) b ∧ κ = a * b`. Introduce `κ`. Use `((hKQ L hL (· ∉ gP)).2 κ).trans ⟨?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨a, b, ha, hb, rfl⟩`. Conclude with `⟨a, b, (inK_congr_of_iff (P := fun p => p ∉ gP ∧ p ∈ Q) (P' := (· ∈ Q)) hpq a).1 ha, hb, rfl⟩`. Introduce and unpack `⟨a, b, ha, hb, rfl⟩`. Conclude with `⟨a, b, (inK_congr_of_iff (P := fun p => p ∉ gP ∧ p ∈ Q) (P' := (· ∈ Q)) hpq a).2 ha, hb, rfl⟩`. Establish `hK₁le : K₁ ≤ grpAt V (· ∈ Q)` using `fun g hg => mem_grpAt_of_inK ((hK₁ g).1 hg)`.
+
+Establish `hK₃le : K₃ ≤ grpAt V (fun p => p ∉ gP ∧ p ∉ Q)` using `fun g hg => mem_grpAt_of_inK ((hK₃ g).1 hg)`. Establish `hJQ : grpAt V (· ∈ gP) ≤ grpAt V (· ∉ Q)` using `grpAt_le_of_imp V fun p hp hq => hQP p hq hp`. Establish `hc : ∀ b ∈ JG, ∀ a ∈ K₃, b * a = a * b` using `fun b hb a ha => hPcomm b (hJle hb) a (grpAt_le_of_imp V (fun p hp => hp.1) (hK₃le ha))`. Establish `hmem : ∀ g, g ∈ commProd K₃ JG hc ↔ ∃ a ∈ K₃, ∃ b ∈ JG, g = a * b` using `fun g => Iff.rfl`. Use `⟨K₁, commProd K₃ JG hc, hK₁, hK₁le, ?_, hK₁c, ?_, hK₁o, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `g hg`. Take `⟨a, ha, b, hb, rfl⟩` from `(hmem g).1 hg`. Conclude with `mul_mem (grpAt_le_of_imp V (fun p hp => hp.2) (hK₃le ha)) (hJQ (hJle hb))`. Establish `hset : (commProd K₃ JG hc : Set (GA D V)) = (fun p : GA D V × GA D V => p.1 * p.2) '' ((K₃ : Set (GA D V)) ×ˢ (JG : Set (GA D V)))`. Use extensionality with `g`.
+
+Rewrite using `[SetLike.mem_coe, hmem, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨(a, b), ⟨ha, hb⟩, rfl⟩`. Introduce and unpack `⟨⟨a, b⟩, ⟨ha, hb⟩, rfl⟩`.
+
+Conclude with `⟨a, ha, b, hb, rfl⟩`. Rewrite using `[hset]`. Conclude with `(hK₃c.prod hJc).image continuous_mul`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφc, hφ, hφ1⟩ : ∃ φ : grpAt V (· ∉ Q) → grpAt V (· ∈ gP) × grpAt V (· ∉ gP), Continuous φ ∧ (∀ g : grpAt V (· ∉ Q), (g : GA D V) = ((φ g).1 : GA D V) * (φ g).2) ∧ φ 1 = 1 := by`. Use `⟨fun g => e.symm ⟨g, hQcle g.2⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `e.symm.continuous.comp (continuous_subtype_val.subtype_mk _)`. Introduce `g`. Rewrite using `[← he, Homeomorph.apply_symm_apply]`. Rewrite using `[Homeomorph.symm_apply_eq]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[he]`. Simplify using the standard rewrite rules. Establish `h3 : ∀ g : grpAt V (· ∉ Q), ((φ g).2 : GA D V) ∈ grpAt V (fun p => p ∉ gP ∧ p ∉ Q)`. Introduce `g`. Establish `e2 : ((φ g).2 : GA D V) = ((φ g).1 : GA D V)⁻¹ * g`.
+
+Rewrite using `[hφ g, inv_mul_cancel_left]`. Use `mem_grpAt_and_of_mem_grpAt V (φ g).2.2 ?_` and prove the remaining obligations. Rewrite using `[e2]`. Conclude with `mul_mem (inv_mem (hJQ (φ g).1.2)) g.2`. Take `⟨ψ, hψc, hψ⟩ : ∃ ψ : grpAt V (· ∉ Q) → grpAt V (fun p => p ∉ gP ∧ p ∉ Q), Continuous ψ ∧ ∀ g : grpAt V (· ∉ Q), (ψ g : GA D V) = (φ g).2` from `⟨fun g => ⟨(φ g).2, h3 g⟩, (continuous_subtype_val.comp (continuous_snd.comp hφc)).subtype_mk _, fun _ => rfl⟩`.
+
+Apply `Subgroup.isOpen_of_mem_nhds _ (g := 1)` to reduce the goal to its premises. Establish `hU : ψ ⁻¹' ((K₃.subgroupOf (grpAt V (fun p => p ∉ gP ∧ p ∉ Q)) : Subgroup _) : Set (grpAt V (fun p => p ∉ gP ∧ p ∉ Q))) ∩ (fun g => (φ g).1) ⁻¹' ((JG.subgroupOf (grpAt V (· ∈ gP)) : Subgroup _) : Set (grpAt V (· ∈ gP))) ∈ nhds (1 : grpAt V (· ∉ Q))`. Use `IsOpen.mem_nhds ((hK₃o.preimage hψc).inter (hJo.preimage (continuous_fst.comp hφc))) ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, SetLike.mem_coe, Subgroup.mem_subgroupOf, hψ, hφ1]`. Conclude with `K₃.one_mem`.
+
+Rewrite using `[Set.mem_preimage, SetLike.mem_coe, Subgroup.mem_subgroupOf, hφ1]`. Conclude with `JG.one_mem`. Use `Filter.mem_of_superset hU ?_` and prove the remaining obligations. Introduce and unpack `g ⟨h1, h2⟩`. Rewrite `h1` using `[Set.mem_preimage, SetLike.mem_coe, Subgroup.mem_subgroupOf, hψ]`.
+
+Rewrite `h2` using `[Set.mem_preimage, SetLike.mem_coe, Subgroup.mem_subgroupOf]`. Rewrite using `[SetLike.mem_coe, Subgroup.mem_subgroupOf, hmem]`. Use `⟨(φ g).2, h1, (φ g).1, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ g]`. Conclude with `hPcomm _ (φ g).1.2 _ (φ g).2.2`.
+
+Introduce `g`. Rewrite using `[hmem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨a, (hK₃ a).1 ha, b, hb, rfl⟩`.
+
+Introduce and unpack `⟨κ, hκ, k, hk, rfl⟩`. Conclude with `⟨κ, (hK₃ κ).2 hκ, k, hk, rfl⟩`. Introduce `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`.
+
+Take `⟨κ, hκ, k, hk, rfl⟩` from `(hmem b).1 hb`. Conclude with `⟨a * κ, (hsplit _).2 ⟨a, κ, (hK₁ a).1 ha, (hK₃ κ).1 hκ, rfl⟩, k, hk, (mul_assoc a κ k).symm⟩`. Introduce and unpack `⟨κ, hκ, k, hk, rfl⟩`. Take `⟨a, b, ha, hb, rfl⟩` from `(hsplit κ).1 hκ`. Conclude with `⟨a, (hK₁ a).2 ha, b * k, (hmem _).2 ⟨b, (hK₃ b).2 hb, k, hk, rfl⟩, mul_assoc a b k⟩`.
+-/
 theorem levels : ∀ (D : D7) (V : HSp D) (L : Lat V) (gP Q : Finset (Pl D)) (JG : Subgroup (GA D V)), IsSelfDualC V L → Disjoint Q gP → JG ≤ grpAt V (· ∈ gP) → IsCompact (JG : Set (GA D V)) → IsOpen (((JG.subgroupOf (grpAt V (· ∈ gP))) : Subgroup _) : Set (grpAt V (· ∈ gP))) → ∃ K₁ K₂ : Subgroup (GA D V), (∀ g, g ∈ K₁ ↔ InK V L (· ∈ Q) g) ∧ K₁ ≤ grpAt V (· ∈ Q) ∧ K₂ ≤ grpAt V (· ∉ Q) ∧ IsCompact (K₁ : Set (GA D V)) ∧ IsCompact (K₂ : Set (GA D V)) ∧ IsOpen ((K₁.subgroupOf (grpAt V (· ∈ Q)) : Subgroup _) : Set (grpAt V (· ∈ Q))) ∧ IsOpen ((K₂.subgroupOf (grpAt V (· ∉ Q)) : Subgroup _) : Set (grpAt V (· ∉ Q))) ∧ (∀ g, g ∈ K₂ ↔ ∃ κ, InK V L (fun p => p ∉ gP ∧ p ∉ Q) κ ∧ ∃ k ∈ JG, g = κ * k) ∧ ∀ g, (∃ a ∈ K₁, ∃ b ∈ K₂, g = a * b) ↔ ∃ κ, InK V L (· ∉ gP) κ ∧ ∃ k ∈ JG, g = κ * k := by
   intro D V L gP Q JG hL hdisj hJle hJc hJo
   obtain ⟨-, -, -, hQcle, -, -, -, -, hKQ, -⟩ := GlobalTheory.T.unitaryFiniteAdelicGroup_split_finitePlaceSet D V Q

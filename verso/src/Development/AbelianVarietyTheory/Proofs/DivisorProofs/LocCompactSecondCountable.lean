@@ -13,6 +13,11 @@ namespace GlobalTheory.LineUMod
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨-, hv, -, hϖ, -, hq, hcard⟩` from `h`. Use `haveI : (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).IsNontrivial := ⟨ϖ, by rw [hϖ]; exact WithZero.coe_ne_zero, by rw [hϖ, ← WithZero.coe_one, ne_eq, WithZero.coe_inj]; decide⟩`. Use `letI : (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).RankOne := Valuation.IsRankOneDiscrete.rankOne _ (e := 2) (by norm_num)`. Establish `hp` using `(Valued.integer.properSpace_iff_completeSpace_and_isDiscreteValuationRing_integer_and_finite_residueField (K := L)).2 ⟨inferInstance, (Valued.v : Valuation L _).valuationSubring_isDiscreteValuationRing, Nat.finite_of_card_ne_zero (by`. Use `ne_of_eq_of_ne hcard (pow_ne_zero _ (by omega)))⟩` and prove the remaining obligations.
+
+Prove the components needed by the constructor for the conclusion. Use `open scoped Valued in exact inferInstance`. Use `open scoped Valued in exact inferInstance`.
+-/
 theorem locCompact_secondCountable [CompleteSpace L] {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) :
     LocallyCompactSpace L ∧ SecondCountableTopology L := by
   obtain ⟨-, hv, -, hϖ, -, hq, hcard⟩ := h
@@ -30,6 +35,19 @@ theorem locCompact_secondCountable [CompleteSpace L] {ϖ : L} {σ : L →+* L} {
 
 open UpLatIndex in
 
+/- English proof (translation)
+Establish `hq : q ≠ 0` using `by have := h.2.2.2.2.2.1; omega`. Establish `hq' : (q : ℝ) ≠ 0` using `by exact_mod_cast hq`. Use `haveI := (locCompact_secondCountable h).2`. Use `borelize L`. Set `μ : Measure L` to `Measure.addHaar`.
+
+Establish `key : ∀ k K : ℤ, k ≤ K → μ.real (ordBall L k) = (q : ℝ) ^ (2 * (K - k)) * μ.real (ordBall L K)`. Introduce `k K hk`. Establish `e` using `relIndex_ordBall h hk`. Use `haveI : ((ordBall L K).addSubgroupOf (ordBall L k)).FiniteIndex := ⟨ne_of_eq_of_ne e (pow_ne_zero _ (pow_ne_zero _ hq))⟩`. Use `GlobalTheory.BaseModule.addRelIndex_mul_measure (ordBall L K) (ordBall L k) (ordBall_mono hk) (isOpen_vball h.2.2.2.1 K).measurableSet μ` as an intermediate fact.
+
+Rewrite using `[Measure.real, ← this, e, ENNReal.toReal_mul, ENNReal.toReal_natCast, ← pow_mul, Nat.cast_pow, ← zpow_natCast, Measure.real]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers. Establish `hs : u • (ordBall L 0 : Set L) = ordBall L (ordL (u : L))`. Use extensionality with `x`.
+
+Take `⟨y, rfl⟩` from `MulAction.surjective u x`. Use `beta_reduce`. Rewrite using `[Set.smul_mem_smul_set_iff, SetLike.mem_coe, SetLike.mem_coe, mem_ordBall, mem_ordBall, Units.smul_def, smul_eq_mul, map_mul, v_eq_exp u.ne_zero, neg_zero, WithZero.exp_zero]`. Conclude with `(mul_le_iff_le_one_right WithZero.exp_pos).symm`. Establish `h1` using `congrArg ENNReal.toReal (distribHaarChar_mul μ u (ordBall L 0 : Set L))`.
+
+Rewrite `h1` using `[hs, ENNReal.toReal_mul, ENNReal.coe_toReal, ← Measure.real, ← Measure.real, key 0 |ordL (u : L)| (abs_nonneg _), key (ordL (u : L)) _ (le_abs_self _), ← mul_assoc]`. Establish `hpos : μ.real (ordBall L |ordL (u : L)|) ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨(isOpen_vball h.2.2.2.1 _).measure_ne_zero μ ⟨0, zero_mem (ordBall L _)⟩, (isCompact_vball h _).measure_ne_top⟩`. Establish `h2` using `mul_right_cancel₀ hpos h1`. Rewrite `h2` using `[eq_comm, ← mul_inv_eq_iff_eq_mul₀ (zpow_ne_zero _ hq'), ← _root_.zpow_neg, ← zpow_add₀ hq']`. Rewrite using `[← h2]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem distribHaarChar_eq [CompleteSpace L] [LocallyCompactSpace L] {ϖ : L} {σ : L →+* L} {q : ℕ}
     (h : IsUnramInv ϖ σ q) (u : Lˣ) : (distribHaarChar L u : ℝ) = (q : ℝ) ^ (-2 * ordL (u : L)) := by
   have hq : q ≠ 0 := by have := h.2.2.2.2.2.1; omega
@@ -113,30 +131,66 @@ def nMat (x y : Fin n → L) (z : L) : Matrix (Fin (n + 2)) (Fin (n + 2)) L :=
 
 variable (x y : Fin n → L) (z : L)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem nMat_zero_zero : nMat x y z 0 0 = 1 := rfl
+/- English proof (translation)
+Simplify using `[nMat, midIdx]`.
+-/
 @[simp] theorem nMat_zero_mid (j : Fin n) : nMat x y z 0 (midIdx j) = x j := by simp [nMat, midIdx]
+/- English proof (translation)
+Simplify using `[nMat, ← Fin.succ_last]`.
+-/
 @[simp] theorem nMat_zero_last : nMat x y z 0 (Fin.last (n + 1)) = z := by simp [nMat, ← Fin.succ_last]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem nMat_mid_zero (i : Fin n) : nMat x y z (midIdx i) 0 = 0 := rfl
+/- English proof (translation)
+Simplify using `[nMat, midIdx]`.
+-/
 @[simp] theorem nMat_mid_mid (i j : Fin n) :
     nMat x y z (midIdx i) (midIdx j) = (1 : Matrix (Fin n) (Fin n) L) i j := by simp [nMat, midIdx]
+/- English proof (translation)
+Simplify using `[nMat, midIdx, ← Fin.succ_last]`.
+-/
 @[simp] theorem nMat_mid_last (i : Fin n) : nMat x y z (midIdx i) (Fin.last (n + 1)) = y i := by
   simp [nMat, midIdx, ← Fin.succ_last]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem nMat_last_zero : nMat x y z (Fin.last (n + 1)) 0 = 0 := rfl
+/- English proof (translation)
+Simplify using `[nMat, midIdx, ← Fin.succ_last]`.
+-/
 @[simp] theorem nMat_last_mid (j : Fin n) : nMat x y z (Fin.last (n + 1)) (midIdx j) = 0 := by
   simp [nMat, midIdx, ← Fin.succ_last]
+/- English proof (translation)
+Simplify using `[nMat, ← Fin.succ_last]`.
+-/
 @[simp] theorem nMat_last_last : nMat x y z (Fin.last (n + 1)) (Fin.last (n + 1)) = 1 := by
   simp [nMat, ← Fin.succ_last]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `induction i using lineCases <;> induction j using lineCases <;>`. Apply the tactic sequence `simp [mul_apply, sum_line, Matrix.one_apply, dotProduct] <;> ring`.
+-/
 theorem nMat_mul (x' y' : Fin n → L) (z' : L) :
     nMat x y z * nMat x' y' z' = nMat (x + x') (y + y') (z + x ⬝ᵥ y' + z') := by
   ext i j
   induction i using lineCases <;> induction j using lineCases <;>
     simp [mul_apply, sum_line, Matrix.one_apply, dotProduct] <;> ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `induction i using lineCases <;> induction j using lineCases <;> simp [Matrix.one_apply]`.
+-/
 theorem nMat_zero : nMat (0 : Fin n → L) 0 0 = 1 := by
   ext i j
   induction i using lineCases <;> induction j using lineCases <;> simp [Matrix.one_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `induction i using lineCases <;> induction j using lineCases <;> simp [adjJ, Matrix.one_apply, eq_comm]`.
+-/
 theorem adjJ_nMat (σ : L →+* L) :
     adjJ σ (nMat x y z) = nMat (fun j => σ (y j.rev)) (fun i => σ (x i.rev)) (σ z) := by
   ext i j
@@ -148,6 +202,17 @@ variable {σ : L →+* L} (hσ : ∀ x, σ (σ x) = x) (hc : Continuous σ)
 
 def rowOf (σ : L →+* L) (y : Fin n → L) : Fin n → L := fun j => -σ (y j.rev)
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `(mem_lineParU_U σ hσ hc g.1).1 g.2`. Establish `h4` using `row_eq_zero_of_col σ g.1 0 h1`. Rewrite `h4` using `[Fin.rev_zero]`. Establish `h5 : adjJ σ g.1.1.val * g.1.1.val = 1` using `by rw [← (mem_GU_iff_adjJ σ _).1 g.1.2, Units.inv_mul]`. Generalize the expression as in `g.1.1.val = X at *`.
+
+Establish `h6 : X (Fin.last _) (Fin.last _) = 1`. Use `congrFun (congrFun h5 (Fin.last _)) (Fin.last _)` as an intermediate fact. Simplify `this` using `[mul_apply, sum_line, adjJ, h1, h2]`. Establish `e : X = nMat (fun j => X 0 (midIdx j)) (fun i => X (midIdx i) (Fin.last _)) (X 0 (Fin.last _))`. Use extensionality with `i j`.
+
+Apply the tactic sequence `induction i using lineCases <;> induction j using lineCases <;> simp [h1, h2, h3, h4, h6]`. Rewrite `h5` using `[e, adjJ_nMat, nMat_mul]`. Establish `h7 : (fun j => X 0 (midIdx j)) = rowOf σ fun i => X (midIdx i) (Fin.last _)` using `funext fun j => by`. Use `congrFun (congrFun h5 0) (midIdx j)` as an intermediate fact. Simplify using `only [nMat_zero_mid, Pi.add_apply, Matrix.one_apply_ne (zero_ne_midIdx j)] at this`.
+
+Conclude with `eq_neg_of_add_eq_zero_right this`. Use `⟨h7 ▸ e, ?_⟩` and prove the remaining obligations. Use `congrFun (congrFun h5 0) (Fin.last _)` as an intermediate fact. Simplify using `only [nMat_zero_last, Matrix.one_apply_ne zero_ne_lastIdx] at this`. Simplify using `only [dotProduct, rowOf, neg_mul, Finset.sum_neg_distrib] at this ⊢`.
+
+Take the linear combination `this`.
+-/
 theorem val_eq_nMat (g : (lineParU σ hσ hc n).U) :
     g.1.1.val = nMat (rowOf σ fun i => g.1.1.val (midIdx i) (Fin.last _)) (fun i => g.1.1.val (midIdx i) (Fin.last _))
       (g.1.1.val 0 (Fin.last _)) ∧
@@ -177,6 +242,11 @@ theorem val_eq_nMat (g : (lineParU σ hσ hc n).U) :
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 include hσ in
+/- English proof (translation)
+Rewrite using `[adjJ_nMat, nMat_mul, ← nMat_zero]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[rowOf]`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[rowOf, hσ]`. Simplify using `only [dotProduct, rowOf, neg_mul, Finset.sum_neg_distrib] at hz ⊢`. Take the linear combination `hz`.
+-/
 theorem adjJ_mul_nMat (y : Fin n → L) (z : L) (hz : z + σ z = rowOf σ y ⬝ᵥ y) :
     adjJ σ (nMat (rowOf σ y) y z) * nMat (rowOf σ y) y z = 1 := by
   rw [adjJ_nMat, nMat_mul, ← nMat_zero]
@@ -196,6 +266,9 @@ def nElt (y : Fin n → L) (z : L) (hz : z + σ z = rowOf σ y ⬝ᵥ y) : (line
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 include hσ in
+/- English proof (translation)
+Simplify using `only [dotProduct, rowOf, map_sum, map_mul, map_neg, hσ]`. Rewrite using `[← Equiv.sum_comp Fin.revPerm]`. Simplify using `[mul_comm]`.
+-/
 theorem map_rowOf_dot (y : Fin n → L) : σ (rowOf σ y ⬝ᵥ y) = rowOf σ y ⬝ᵥ y := by
   simp only [dotProduct, rowOf, map_sum, map_mul, map_neg, hσ]
   rw [← Equiv.sum_comp Fin.revPerm]
@@ -205,13 +278,22 @@ variable {θ d : L} (hθ : θ + σ θ = 1) (hd : σ d = -d) (hd0 : d ≠ 0)
 
 def skewPart (z : L) : fixK σ := (basisEquiv hσ hc hθ hd hd0).symm z 1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem skewPart_coe (z : L) : (skewPart hσ hc hθ hd hd0 z : L) = d⁻¹ * (z - θ * (z + σ z)) := rfl
 
+/- English proof (translation)
+The claim follows from `(continuous_apply 1).comp (basisEquiv hσ hc hθ hd hd0).symm.continuous`.
+-/
 theorem continuous_skewPart : Continuous (skewPart hσ hc hθ hd hd0) :=
   (continuous_apply 1).comp (basisEquiv hσ hc hθ hd hd0).symm.continuous
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 include hσ hθ hd in
+/- English proof (translation)
+Establish `h1 : σ c = c` using `c.2`. Rewrite using `[map_add, map_mul, map_mul, map_rowOf_dot hσ, hd, h1]`. Take the linear combination `(rowOf σ y ⬝ᵥ y) * hθ`.
+-/
 theorem trace_corner (y : Fin n → L) (c : fixK σ) :
     θ * (rowOf σ y ⬝ᵥ y) + d * c + σ (θ * (rowOf σ y ⬝ᵥ y) + d * c) = rowOf σ y ⬝ᵥ y := by
   have h1 : σ c = c := c.2

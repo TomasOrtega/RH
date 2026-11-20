@@ -22,10 +22,19 @@ abbrev idxT (τ : Tup B.fields.F B.fields.E B.fields.K I.S) :
 
 variable {I}
 
+/- English proof (translation)
+The claim follows from `(ht.cst_eq a).symm`.
+-/
 theorem cstT_tup (ht : I.IsTw) (a : I.ι) : cstT I (I.tup a) = I.cst a := (ht.cst_eq a).symm
 
+/- English proof (translation)
+The claim follows from `(ht.idx_eq a).symm`.
+-/
 theorem idxT_tup (ht : I.IsTw) (a : I.ι) : idxT I (I.tup a) = I.idx a := (ht.idx_eq a).symm
 
+/- English proof (translation)
+Rewrite using `[← tup_ixOf I t, cstT_tup ht, idxT_tup ht]`. Conclude with `hp _`.
+-/
 theorem of_forall_ix (ht : I.IsTw) {U : Set I.ι}
     (p : ∀ τ : Tup B.fields.F B.fields.E B.fields.K I.S, LocCst B.fields (rowSG (B.primes X) I.sel τ) →
       ChIdx B.fields (B.primes X) B.R (QE I.sel (τ : Chr B.fields.F B.fields.E B.fields.K)) → Prop)
@@ -33,6 +42,9 @@ theorem of_forall_ix (ht : I.IsTw) {U : Set I.ι}
   rw [← tup_ixOf I t, cstT_tup ht, idxT_tup ht]
   exact hp _
 
+/- English proof (translation)
+The claim follows from `of_forall_ix ht (fun τ c L => L.Ok I.Ch I.sel τ c I.glob (B.R.m - 2)) h.idx_ok t`.
+-/
 theorem idxT_ok (h : I.Ok) (ht : I.IsTw) {U : Set I.ι} (t : TupU I U) :
     (idxT I t.1).Ok I.Ch I.sel t.1 (cstT I t.1) I.glob (B.R.m - 2) :=
   of_forall_ix ht (fun τ c L => L.Ok I.Ch I.sel τ c I.glob (B.R.m - 2)) h.idx_ok t
@@ -75,11 +87,17 @@ def colRecC : ColRec3 B.fields (famC I hX U Xg tr) (lev1 I) (chr1 I) where
   ev := evC (X := B.fields) (Pr := B.primes X) B.wts I.Ch I.sel hX (InfinitePlace.mk B.embLL) (tuOf I U) Xg ∅ (xiValOf I) tr
     (rPsymF (R := B.R) I.Ch)
 
+/- English proof (translation)
+The claim follows from `evC_bijective (X := B.fields) (Pr := B.primes X) B.wts I.Ch I.sel hX (InfinitePlace.mk B.embLL) (tuOf I U) Xg ∅ (xiValOf I) tr (rPsymF (R := B.R) I.Ch) Zs t`.
+-/
 theorem colRecC_ev_bijective (Zs : DefSub (famC I hX U Xg tr).fam3.amb3) (t : TupU I U) :
     Function.Bijective ((colRecC h hp l Z ht hJ χ hχ hX U Xg tr).ev Zs t) :=
   evC_bijective (X := B.fields) (Pr := B.primes X) B.wts I.Ch I.sel hX (InfinitePlace.mk B.embLL) (tuOf I U) Xg ∅ (xiValOf I) tr
     (rPsymF (R := B.R) I.Ch) Zs t
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fieldsLL_eq : fieldsLL (I.rec7 l Z) B.fields B.tauLL = B.fields := rfl
 
 end GlobalTheory.Mem.R3.SelC

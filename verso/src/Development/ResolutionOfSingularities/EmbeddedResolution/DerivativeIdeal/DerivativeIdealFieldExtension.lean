@@ -7,6 +7,17 @@ namespace DerivIdealBaseChange
 
 open FunctorialResolution.EmbeddedResolution.EtaleCoordinates
 
+/- English proof (translation)
+Set `N : Submodule S (Derivation k S S)` to `{ carrier := {D : Derivation k S S | ∀ y ∈ X, D y ∈ K} add_mem' := by`. Introduce `a b ha hb`. Use `show ∀ y ∈ X, (a + b) y ∈ K`. Introduce `y hy`. Establish `hab : (a + b) y = a y + b y` using `rfl`.
+
+Rewrite using `[hab]`. Conclude with `Ideal.add_mem K (ha y hy) (hb y hy)`. Use the proof step `zero_mem' := by show ∀ y ∈ X, (0 : Derivation k S S) y ∈ K`. Introduce `y _`. Establish `h0 : (0 : Derivation k S S) y = 0` using `rfl`.
+
+Rewrite using `[h0]`. Conclude with `Ideal.zero_mem K`. Use the proof step `smul_mem' := by`. Introduce `c a ha`. Use `show ∀ y ∈ X, (c • a) y ∈ K`.
+
+Introduce `y hy`. Establish `hc : (c • a) y = c * a y` using `rfl`. Rewrite using `[hc]`. Conclude with `Ideal.mul_mem_left K _ (ha y hy) }`. Establish `hspan : (⊤ : Submodule S (Derivation k S S)) ≤ N`.
+
+Rewrite using `[← span_range_partialDeriv k ι S, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `h i`. Establish `hDN : D ∈ N` using `hspan Submodule.mem_top`. Conclude with `hDN x hx`.
+-/
 private theorem apply_mem_of_forall_partialDeriv_mem {k : Type*} [CommRing k] {ι : Type*} [Finite ι]
     {S : Type*} [CommRing S] [Algebra k S] [Algebra (MvPolynomial ι k) S]
     [IsScalarTower k (MvPolynomial ι k) S] [Algebra.FormallyEtale (MvPolynomial ι k) S]
@@ -53,6 +64,29 @@ variable (k : Type*) [CommRing k] (L : Type*) [CommRing L] [Algebra k L]
   [IsScalarTower L (MvPolynomial ι L) S'] [Algebra.FormallyEtale (MvPolynomial ι L) S']
   [Algebra k S'] [IsScalarTower k L S']
 
+/- English proof (translation)
+Set `_ : Algebra S S'` to `φ.toRingHom.toAlgebra`. Establish `htow : IsScalarTower k S S'` using `IsScalarTower.of_algebraMap_eq fun c => (φ.commutes c).symm`. Establish `hsmul : ∀ (s : S) (x : S'), s • x = φ s * x` using `fun _ _ => rfl`. Establish `hφsmul : ∀ (c : k) (x : S), φ (c • x) = c • φ x`. Introduce `c x`.
+
+Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, φ.commutes]`. Establish `hcomp : ∀ (c : k) (y : S'), c • y = (algebraMap k L c) • y`. Introduce `c y`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, IsScalarTower.algebraMap_apply k L S']`. Establish `hadd1 : ∀ x y : S', partialDeriv L ι S' i (x + y) = partialDeriv L ι S' i x + partialDeriv L ι S' i y` using `fun x y => (partialDeriv L ι S' i).toLinearMap.map_add x y`.
+
+Establish `hadd2 : ∀ x y : S, partialDeriv k ι S i (x + y) = partialDeriv k ι S i x + partialDeriv k ι S i y` using `fun x y => (partialDeriv k ι S i).toLinearMap.map_add x y`. Establish `hsm1 : ∀ (c : L) (y : S'), partialDeriv L ι S' i (c • y) = c • partialDeriv L ι S' i y` using `fun c y => (partialDeriv L ι S' i).toLinearMap.map_smul c y`. Establish `hsm2 : ∀ (c : k) (x : S), partialDeriv k ι S i (c • x) = c • partialDeriv k ι S i x` using `fun c x => (partialDeriv k ι S i).toLinearMap.map_smul c x`. Establish `hpsmul : ∀ (c : k) (y : S'), partialDeriv L ι S' i (c • y) = c • partialDeriv L ι S' i y`. Introduce `c y`.
+
+Rewrite using `[hcomp c y, hsm1, ← hcomp]`. Set `F₁ : S →ₗ[k] S'` to `{ toFun := fun s => partialDeriv L ι S' i (φ s) map_add' := by`. Introduce `x y`. Use `show partialDeriv L ι S' i (φ (x + y)) = partialDeriv L ι S' i (φ x) + partialDeriv L ι S' i (φ y)`. Rewrite using `[map_add, hadd1]`.
+
+Use the proof step `map_smul' := by`. Introduce `c x`. Use `show partialDeriv L ι S' i (φ (c • x)) = c • partialDeriv L ι S' i (φ x)`. Rewrite using `[hφsmul, hpsmul] }`. Set `F₂ : S →ₗ[k] S'` to `{ toFun := fun s => φ (partialDeriv k ι S i s) map_add' := by`.
+
+Introduce `x y`. Use `show φ (partialDeriv k ι S i (x + y)) = φ (partialDeriv k ι S i x) + φ (partialDeriv k ι S i y)`. Rewrite using `[hadd2, map_add]`. Use the proof step `map_smul' := by`. Introduce `c x`.
+
+Use `show φ (partialDeriv k ι S i (c • x)) = c • φ (partialDeriv k ι S i x)`. Rewrite using `[hsm2, hφsmul] }`. Set `D₁ : Derivation k S S'` to `Derivation.mk' F₁ (by`. Introduce `a b`. Use `show partialDeriv L ι S' i (φ (a * b)) = a • partialDeriv L ι S' i (φ b) + b • partialDeriv L ι S' i (φ a)`.
+
+Rewrite using `[map_mul, (partialDeriv L ι S' i).leibniz]`. Simplify using `only [hsmul, smul_eq_mul])`. Set `D₂ : Derivation k S S'` to `Derivation.mk' F₂ (by`. Introduce `a b`. Use `show φ (partialDeriv k ι S i (a * b)) = a • φ (partialDeriv k ι S i b) + b • φ (partialDeriv k ι S i a)`.
+
+Rewrite using `[(partialDeriv k ι S i).leibniz]`. Simplify using `only [hsmul, smul_eq_mul, map_add, map_mul])`. Establish `hcoords : ∀ j : ι, D₁ (coord k ι S j) = D₂ (coord k ι S j)`. Introduce `j`. Use `show partialDeriv L ι S' i (φ (coord k ι S j)) = φ (partialDeriv k ι S i (coord k ι S j))`.
+
+Rewrite using `[hφ j, partialDeriv_coord, partialDeriv_coord]`. Use `split_ifs with hij`. Conclude with `(map_one φ).symm`. Conclude with `(map_zero φ).symm`. Establish `hD : D₁ = D₂` using `derivation_ext_of_coord k ι S S' D₁ D₂ hcoords`.
+
+Conclude with `DFunLike.congr_fun hD f`.
+-/
 theorem partialDeriv_algHom_apply (φ : S →ₐ[k] S')
     (hφ : ∀ i : ι, φ (coord k ι S i) = coord L ι S' i) (i : ι) (f : S) :
     partialDeriv L ι S' i (φ f) = φ (partialDeriv k ι S i f) := by
@@ -123,6 +157,13 @@ theorem partialDeriv_algHom_apply (φ : S →ₐ[k] S')
   have hD : D₁ = D₂ := derivation_ext_of_coord k ι S S' D₁ D₂ hcoords
   exact DFunLike.congr_fun hD f
 
+/- English proof (translation)
+Rewrite using `[Ideal.map_le_iff_le_comap, derivIdeal_le_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `y hy`. Rewrite using `[Ideal.mem_comap]`. Conclude with `le_derivIdeal L (Ideal.map φ J) (Ideal.mem_map_of_mem φ hy)`.
+
+Introduce `D x hx`. Establish `key : ∀ i : ι, ∀ y ∈ (J : Set S), partialDeriv k ι S i y ∈ Ideal.comap φ (derivIdeal L (Ideal.map φ J))`. Introduce `i y hy`. Rewrite using `[Ideal.mem_comap, ← partialDeriv_algHom_apply (k := k) (L := L) (ι := ι) (S := S) (S' := S') φ hφ i y]`. Conclude with `derivation_apply_mem_derivIdeal L (Ideal.map φ J) (partialDeriv L ι S' i) (Ideal.mem_map_of_mem φ (show y ∈ J from hy))`.
+
+Conclude with `apply_mem_of_forall_partialDeriv_mem (ι := ι) (J : Set S) (Ideal.comap φ (derivIdeal L (Ideal.map φ J))) key D (show x ∈ (J : Set S) from hx)`.
+-/
 theorem map_derivIdeal_le [Fintype ι] (φ : S →ₐ[k] S')
     (hφ : ∀ i : ι, φ (coord k ι S i) = coord L ι S' i) (J : Ideal S) :
     Ideal.map φ (derivIdeal k J) ≤ derivIdeal L (Ideal.map φ J) := by
@@ -142,6 +183,13 @@ theorem map_derivIdeal_le [Fintype ι] (φ : S →ₐ[k] S')
     exact apply_mem_of_forall_partialDeriv_mem (ι := ι) (J : Set S)
       (Ideal.comap φ (derivIdeal L (Ideal.map φ J))) key D (show x ∈ (J : Set S) from hx)
 
+/- English proof (translation)
+Establish `hle : Ideal.map φ J ≤ Ideal.span (⇑φ '' (J : Set S))`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `y hy`. Rewrite using `[Ideal.mem_comap]`. Conclude with `Ideal.subset_span ⟨y, hy, rfl⟩`.
+
+Establish `hGT : Ideal.span (⇑φ '' (J : Set S)) ≤ Ideal.map φ (derivIdeal k J)`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `Ideal.mem_map_of_mem φ (le_derivIdeal k J (show y ∈ J from hy))`. Establish `hD : ∀ z ∈ (⇑φ '' (J : Set S)), partialDeriv L ι S' i z ∈ Ideal.map φ (derivIdeal k J)`.
+
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite using `[partialDeriv_algHom_apply (k := k) (L := L) (ι := ι) (S := S) (S' := S') φ hφ i y]`. Conclude with `Ideal.mem_map_of_mem φ (derivation_apply_mem_derivIdeal k J (partialDeriv k ι S i) (show y ∈ J from hy))`. Conclude with `derivation_apply_mem_of_mem_span (partialDeriv L ι S' i) hGT hD (hle hg)`.
+-/
 theorem partialDeriv_mem_map_derivIdeal (φ : S →ₐ[k] S')
     (hφ : ∀ i : ι, φ (coord k ι S i) = coord L ι S' i) (i : ι) (J : Ideal S)
     {g : S'} (hg : g ∈ Ideal.map φ J) :
@@ -163,6 +211,11 @@ theorem partialDeriv_mem_map_derivIdeal (φ : S →ₐ[k] S')
       (derivation_apply_mem_derivIdeal k J (partialDeriv k ι S i) (show y ∈ J from hy))
   exact derivation_apply_mem_of_mem_span (partialDeriv L ι S' i) hGT hD (hle hg)
 
+/- English proof (translation)
+Rewrite using `[derivIdeal_le_iff]`. Use `⟨Ideal.map_mono (le_derivIdeal k J), ?_⟩` and prove the remaining obligations. Introduce `D g hg`. Establish `key : ∀ i : ι, ∀ y ∈ ((Ideal.map φ J : Ideal S') : Set S'), partialDeriv L ι S' i y ∈ Ideal.map φ (derivIdeal k J)`. Introduce `i y hy`.
+
+Conclude with `partialDeriv_mem_map_derivIdeal (k := k) (L := L) (ι := ι) (S := S) (S' := S') φ hφ i J (show y ∈ Ideal.map φ J from hy)`. Conclude with `apply_mem_of_forall_partialDeriv_mem (ι := ι) ((Ideal.map φ J : Ideal S') : Set S') (Ideal.map φ (derivIdeal k J)) key D (show g ∈ ((Ideal.map φ J : Ideal S') : Set S') from hg)`.
+-/
 theorem derivIdeal_map_le [Fintype ι] (φ : S →ₐ[k] S')
     (hφ : ∀ i : ι, φ (coord k ι S i) = coord L ι S' i) (J : Ideal S) :
     derivIdeal L (Ideal.map φ J) ≤ Ideal.map φ (derivIdeal k J) := by
@@ -178,6 +231,9 @@ theorem derivIdeal_map_le [Fintype ι] (φ : S →ₐ[k] S')
     (Ideal.map φ (derivIdeal k J)) key D
     (show g ∈ ((Ideal.map φ J : Ideal S') : Set S') from hg)
 
+/- English proof (translation)
+The claim follows from `le_antisymm (map_derivIdeal_le (k := k) (L := L) (ι := ι) (S := S) (S' := S') φ hφ J) (derivIdeal_map_le (k := k) (L := L) (ι := ι) (S := S) (S' := S') φ hφ J)`.
+-/
 theorem map_derivIdeal [Fintype ι] (φ : S →ₐ[k] S')
     (hφ : ∀ i : ι, φ (coord k ι S i) = coord L ι S' i) (J : Ideal S) :
     Ideal.map φ (derivIdeal k J) = derivIdeal L (Ideal.map φ J) :=

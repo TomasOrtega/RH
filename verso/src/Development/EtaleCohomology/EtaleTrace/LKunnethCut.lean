@@ -7,6 +7,13 @@ open scoped TensorProduct DirectSum
 
 namespace LateralTheory.EtaleTrace
 
+/- English proof (translation)
+Use `TensorProduct.ext' fun u v => ?_` and prove the remaining obligations. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [TensorProduct.add_tmul, map_add, map_add, ha, hb]`. Consider the case `tmul a x`.
+
+Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add c d hc hd => rw [TensorProduct.tmul_add, map_add, map_add, hc, hd]`. Consider the case `tmul b y`. Establish `e1 : (a ⊗ₜ[ℤ_[l]] x : ℚ_[l] ⊗[ℤ_[l]] M) = a • ((1 : ℚ_[l]) ⊗ₜ[ℤ_[l]] x)`.
+
+Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Establish `e2 : (b ⊗ₜ[ℤ_[l]] y : ℚ_[l] ⊗[ℤ_[l]] N) = b • ((1 : ℚ_[l]) ⊗ₜ[ℤ_[l]] y)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[e1, e2, TensorProduct.tmul_smul, ← TensorProduct.smul_tmul', map_smul, map_smul, map_smul, map_smul, h]`.
+-/
 theorem bilin_ext_one_tmul (l : ℕ) [Fact l.Prime] {M N W : Type 1} [AddCommGroup M] [Module ℤ_[l] M] [AddCommGroup N]
     [Module ℤ_[l] N] [AddCommGroup W] [Module ℚ_[l] W]
     (f g : (ℚ_[l] ⊗[ℤ_[l]] M) ⊗[ℚ_[l]] (ℚ_[l] ⊗[ℤ_[l]] N) →ₗ[ℚ_[l]] W)
@@ -26,6 +33,13 @@ theorem bilin_ext_one_tmul (l : ℕ) [Fact l.Prime] {M N W : Type 1} [AddCommGro
         rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one]
       rw [e1, e2, TensorProduct.tmul_smul, ← TensorProduct.smul_tmul', map_smul, map_smul, map_smul, map_smul, h]
 
+/- English proof (translation)
+Take `⟨κ, hκ⟩` from `hk`. Establish `e : kun l p q n = κ.toLinearMap`. Use `DirectSum.linearMap_ext _ fun a => ?_` and prove the remaining obligations. Use `bilin_ext_one_tmul l _ _ fun x y => ?_` and prove the remaining obligations. Take `⟨z, hz, hz'⟩` from `hκ a x y`.
+
+Use `Eq.trans ?_ hz'.symm` and prove the remaining obligations. Establish `h1` using `hc a (n - a) n (by omega) (pullHl l (sch.map (pullback.fst p q)) a 0 x) (pullHl l (sch.map (pullback.snd p q)) (n - a) 0 y) z (fun j => hz j)`. Use `Eq.trans ?_ h1` and prove the remaining obligations. Simplify using `only [kun, LinearMap.comp_apply, DirectSum.toModule_lof, TensorProduct.lift.tmul, LinearMap.compl₁₂_apply]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `κ.bijective`.
+-/
 theorem kun_bijective_of_kunIso (l : ℕ) [Fact l.Prime] {k : Type} [Field k] {X Y : Scheme.{0}} (p : X ⟶ S k) (q : Y ⟶ S k)
     (n : ℤ) (hc : ∀ (a m r : ℤ) (h : a + m = r), IsCup l (pullback p q) h (cupV l (pullback p q) h))
     (hk : LateralTheory.KummerTheory.KunIso l p q n 0) : Function.Bijective (kun l p q n) := by
@@ -43,6 +57,11 @@ theorem kun_bijective_of_kunIso (l : ℕ) [Fact l.Prime] {k : Type} [Field k] {X
   rw [e]
   exact κ.bijective
 
+/- English proof (translation)
+Introduce `hB l _ k _ _ hl d e X Y p q hp hq n`. Establish `hc` using `(hR hB l).1`. Take `⟨⟨-, a2, -, -, -, a6n, a6r, -, -, a7, a8, a9, a10, a11⟩, ⟨b1, b2, b3, -, -⟩, -, ⟨-, e2, e3, e4, -, -⟩⟩` from `hB`. Take `⟨hp1, hp2⟩` from `hp`. Take `⟨hq1, -⟩` from `hq`.
+
+Establish `: Smooth p` using `SmoothOfRelativeDimension.smooth d p`. Conclude with `kun_bijective_of_kunIso l p q n (hc _) (hK a2 a6n a6r a7 a8 a9 a10 a11 b1 b2 b3 e2 e3 e4 l k (isUnit_iff_ne_zero.2 hl) p q n 0)`.
+-/
 theorem LKunneth_of (hR : LRing) (hK : LateralTheory.KummerTheory.GOAL) : LKunneth := by
   intro hB l _ k _ _ hl d e X Y p q hp hq n
   have hc := (hR hB l).1

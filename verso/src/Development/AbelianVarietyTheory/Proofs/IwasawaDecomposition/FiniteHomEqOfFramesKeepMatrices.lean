@@ -16,6 +16,11 @@ set_option maxHeartbeats 1600000
 
 namespace GlobalTheory.FrameFinPart
 
+/- English proof (translation)
+Introduce `D V n hF P P' hP hP' g`. Take `⟨hn, h⟩` from `hP`. Take `⟨hn', h'⟩` from `hP'`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+
+Use extensionality with `a b`. Express the relevant statement in the definitionally equal form `finMat D.sp.cm.sig V.gram (P.ψ g) a b = finMat D.sp.cm.sig V.gram (P'.ψ g) a b`. Rewrite using `[h, h']`.
+-/
 theorem finHom_eq_of_idFrame : ∀ (D : D7) (V : HSp D) (n : ℕ) (hF : D.host.F = maximalRealSubfield D.host.E) (P P' : principalLevelFrame.RowPsi V n), GlobalTheory.MtRead.IdFrame hF P → GlobalTheory.MtRead.IdFrame hF P' → ∀ g, (finHom V).rangeRestrict (P.ψ g) = (finHom V).rangeRestrict (P'.ψ g) := by
   intro D V n hF P P' hP hP' g
   obtain ⟨hn, h⟩ := hP

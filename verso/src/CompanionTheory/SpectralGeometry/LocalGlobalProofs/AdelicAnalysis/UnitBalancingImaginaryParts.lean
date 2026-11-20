@@ -6,6 +6,9 @@ namespace GlobalTheory.CompanionTheory.SW.UnitBalance
 
 open NumberField.Units NumberField.Units.dirichletUnitTheorem in
 
+/- English proof (translation)
+The claim follows from `|t w + Real.log (w (u : E)) - s| ≤ R := by classical let B := (basisUnitLattice E).ofZLatticeBasis ℝ (unitLattice E) obtain ⟨C, hC⟩ := (ZSpan.fundamentalDomain_isBounded B).exists_norm_le refine ⟨Fintype.card (InfinitePlace E) * |C|, fun t => ?_⟩ have hd : (Module.finrank ℚ E : ℝ …`.
+-/
 theorem exists_bound_log_centered (E : Type) [Field E] [NumberField E] :
     ∃ R : ℝ, ∀ t : InfinitePlace E → ℝ, ∃ (u : (𝓞 E)ˣ) (s : ℝ), ∀ w : InfinitePlace E,
       |t w + Real.log (w (u : E)) - s| ≤ R := by
@@ -59,6 +62,15 @@ theorem exists_bound_log_centered (E : Type) [Field E] [NumberField E] :
   rw [h7]
   exact h6
 
+/- English proof (translation)
+Introduce `F _ _ _ ρ hρ`. Take `⟨R, hR⟩` from `exists_bound_log_centered F`. Use `⟨Real.exp (-(4 * R)), Real.exp_pos _, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨u, s, hu⟩` from `hR (fun w => Real.log (y w) / 2)`. Use `⟨u, fun v w => ?_⟩` and prove the remaining obligations.
+
+Establish `hne : ((u : 𝓞 F) : F) ≠ 0` using `NumberField.Units.coe_ne_zero u`. Establish `hexp : ∀ w : InfinitePlace F, ρ w ((u : 𝓞 F) : F) ^ 2 * y w = Real.exp (2 * (Real.log (y w) / 2 + Real.log (w ((u : 𝓞 F) : F))))`. Introduce `w`. Establish `habs : w ((u : 𝓞 F) : F) = |ρ w ((u : 𝓞 F) : F)|`. Rewrite using `[← InfinitePlace.norm_embedding_eq, ← hρ, Complex.norm_real, Real.norm_eq_abs]`.
+
+Establish `hpos : 0 < w ((u : 𝓞 F) : F)` using `w.pos_iff.2 hne`. Establish `e1 : 2 * (Real.log (y w) / 2 + Real.log (w ((u : 𝓞 F) : F))) = Real.log (w ((u : 𝓞 F) : F)) + Real.log (w ((u : 𝓞 F) : F)) + Real.log (y w)` using `by ring`. Rewrite using `[e1, Real.exp_add, Real.exp_add, Real.exp_log hpos, Real.exp_log (hy w), habs, ← sq, sq_abs]`. Rewrite using `[hexp v, hexp w, ← Real.exp_add]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises.
+
+Establish `h1` using `abs_le.1 (hu v)`. Establish `h2` using `abs_le.1 (hu w)`. Combine the linear relations using `[h1.1, h1.2, h2.1, h2.2]`.
+-/
 theorem balance_by_units : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F →
     ∀ ρ : InfinitePlace F → (F →+* ℝ), (∀ w x, ((ρ w x : ℝ) : ℂ) = w.embedding x) →
     ∃ κ : ℝ, 0 < κ ∧ ∀ y : InfinitePlace F → ℝ, (∀ w, 0 < y w) →

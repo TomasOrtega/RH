@@ -12,6 +12,11 @@ namespace CutPieces
 
 variable {F : Type*} [Field F] {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type}
 
+/- English proof (translation)
+Introduce `f hf`. Rewrite `hf`, the goal using `[mem_weightedHomogeneousSubmodule]`. Introduce `d hd`. Rewrite using `[← hf hd, Finsupp.weight_apply, Finsupp.weight_apply, Finsupp.sum, Finsupp.sum]`. Simplify using `only [Finset.sum_apply]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `[blockWeight, Pi.single_apply]`.
+-/
 theorem weightedHomogeneousSubmodule_le_total (m : K → ℕ) :
     weightedHomogeneousSubmodule F (blockWeight ι) m ≤
       weightedHomogeneousSubmodule F (fun _ : (Σ k, ι k) => (1 : ℕ)) (∑ k, m k) := by
@@ -35,6 +40,11 @@ attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
 open Classical in
 
+/- English proof (translation)
+Establish `key : ∀ (p : MRing ι F) (n : K → ℕ), (DirectSum.decompose (weightedHomogeneousSubmodule F (blockWeight ι)) p n : MRing ι F) = weightedHomogeneousComponent (blockWeight ι) n p` using `fun p n => weightedDecomposition.decompose'_apply F _ p n`. Establish `hx' : x ∈ weightedHomogeneousSubmodule F (blockWeight ι) e` using `hx`. Use `split_ifs with h`. Use `DirectSum.coe_decompose_mul_of_left_mem_of_le (𝒜 := weightedHomogeneousSubmodule F (blockWeight ι)) (b := y) hx' h` as an intermediate fact. Rewrite `this` using `[key, key]`. Then use the resulting hypothesis.
+
+Use `DirectSum.coe_decompose_mul_of_left_mem_of_not_le (𝒜 := weightedHomogeneousSubmodule F (blockWeight ι)) (b := y) (n := m) hx' h` as an intermediate fact. Rewrite `this` using `[key]`. Then use the resulting hypothesis.
+-/
 theorem component_mul {x : MRing ι F} {e : K → ℕ} (hx : IsMultiHomog x e) (y : MRing ι F)
     (m : K → ℕ) :
     weightedHomogeneousComponent (blockWeight ι) m (x * y) =
@@ -54,6 +64,31 @@ theorem component_mul {x : MRing ι F} {e : K → ℕ} (hx : IsMultiHomog x e) (
 
 end CutPieces
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ I x e m hI hx hnzd`. Use `set S := weightedHomogeneousSubmodule F (blockWeight ι) with hS`. Distinguish the cases in `hx0 : x = 0`. Establish `hI1 : I = ⊤` using `(Ideal.eq_top_iff_one I).2 (hnzd 1 (by simp [hx0]))`. Substitute `hI1` using the available equality.
+
+Establish `e1 : S m ⊓ ((⊤ : Ideal (MRing ι F)) ⊔ Ideal.span {x}).restrictScalars F = S m`. Rewrite using `[top_sup_eq, Submodule.restrictScalars_top, inf_top_eq]`. Establish `e2 : ∀ n, S n ⊓ (⊤ : Ideal (MRing ι F)).restrictScalars F = S n` using `fun n => by`. Rewrite using `[Submodule.restrictScalars_top, inf_top_eq]`. Rewrite using `[e1, e2, e2]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Use `set μ := LinearMap.mulLeft F x with hμ`. Establish `hμinj : Function.Injective μ` using `fun a b h => mul_left_cancel₀ hx0 h`. Establish `hx' : x ∈ S e` using `hx`. Establish `hsplit : ∀ f ∈ S m, f ∈ I ⊔ Ideal.span {x} → ∃ i ∈ S m ⊓ I.restrictScalars F, ∃ y : MRing ι F, f = i + weightedHomogeneousComponent (blockWeight ι) m (x * y)`.
+
+Introduce `f hf hfI`. Take `⟨i, hi, z, hz, rfl⟩` from `Submodule.mem_sup.mp hfI`. Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton.mp hz`. Use `⟨weightedHomogeneousComponent (blockWeight ι) m i, ⟨weightedHomogeneousComponent_mem _ _ _, hI i hi m⟩, y, ?_⟩` and prove the remaining obligations. Establish `h1` using `weightedHomogeneousComponent_of_mem (m := m) hf`.
+
+Rewrite `h1` using `[if_pos rfl, map_add]`. Conclude with `h1.symm`. Distinguish the cases in `hem : e ≤ m`. Rewrite using `[if_pos hem] set A := S m ⊓ I.restrictScalars F set B := (S (m - e)).map μ`. Establish `hsup : S m ⊓ (I ⊔ Ideal.span {x}).restrictScalars F = A ⊔ B`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `f ⟨hf, hfI⟩`. Take `⟨i, hi, y, rfl⟩` from `hsplit f hf hfI`. Rewrite using `[CutPieces.component_mul hx, if_pos hem]`. Conclude with `Submodule.add_mem_sup hi ⟨_, weightedHomogeneousComponent_mem _ _ _, rfl⟩`.
+
+Use `sup_le (inf_le_inf_left _ (Submodule.restrictScalars_mono F le_sup_left)) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Use `⟨?_, Ideal.mem_sup_right (Ideal.mem_span_singleton.mpr (dvd_mul_right x s))⟩` and prove the remaining obligations. Use `IsWeightedHomogeneous.mul hx' hs` as an intermediate fact. Rewrite `this` using `[add_tsub_cancel_of_le hem]`. Then use the resulting hypothesis.
+
+Establish `hinf : A ⊓ B = (S (m - e) ⊓ I.restrictScalars F).map μ`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨⟨_, hI'⟩, ⟨s, hs, rfl⟩⟩`. Conclude with `⟨s, ⟨hs, hnzd s hI'⟩, rfl⟩`. Introduce and unpack `_ ⟨s, ⟨hs, hsI⟩, rfl⟩`.
+
+Use `⟨⟨?_, I.mul_mem_left x hsI⟩, ⟨s, hs, rfl⟩⟩` and prove the remaining obligations. Use `IsWeightedHomogeneous.mul hx' hs` as an intermediate fact. Rewrite `this` using `[add_tsub_cancel_of_le hem]`. Then use the resulting hypothesis. Establish `hA : FiniteDimensional F A` using `Submodule.finiteDimensional_of_le inf_le_left`. Establish `key` using `Submodule.finrank_sup_add_finrank_inf_eq A B`.
+
+Establish `h1 : Module.finrank F B = Module.finrank F (S (m - e))` using `(Submodule.equivMapOfInjective μ hμinj _).finrank_eq.symm`. Establish `h2 : Module.finrank F ↥((S (m - e) ⊓ I.restrictScalars F).map μ) = Module.finrank F ↥(S (m - e) ⊓ I.restrictScalars F)` using `(Submodule.equivMapOfInjective μ hμinj _).finrank_eq.symm`. Rewrite `key` using `[hinf, h1, h2]`. Rewrite using `[hsup]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[if_neg hem, add_zero]`. Establish `hsup : S m ⊓ (I ⊔ Ideal.span {x}).restrictScalars F = S m ⊓ I.restrictScalars F`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `f ⟨hf, hfI⟩`. Take `⟨i, hi, y, rfl⟩` from `hsplit f hf hfI`.
+
+Rewrite using `[CutPieces.component_mul hx, if_neg hem, add_zero]`. Conclude with `hi`. Conclude with `inf_le_inf_left _ (Submodule.restrictScalars_mono F le_sup_left)`. Rewrite using `[hsup]`.
+-/
 theorem CutPieces.proof : CutPieces.Statement := by
   intro F _ K _ _ ι _ I x e m hI hx hnzd
   set S := weightedHomogeneousSubmodule F (blockWeight ι) with hS

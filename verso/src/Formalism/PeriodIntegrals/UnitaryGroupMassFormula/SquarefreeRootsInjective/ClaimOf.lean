@@ -32,6 +32,9 @@ def Count : Prop :=
       (∀ f ∈ T, IsLab g r f ∧ ∃ ℓ : ℕ, ℓ.Prime ∧ ℓ ∉ BB r g ∧ (CaseA g r ℓ f ∨ CaseB g r ℓ f)) →
       (T.card : ℝ) ≤ 23 * Real.log g * (g : ℝ) ^ (-(1 / 2 : ℝ)) * (g : ℝ) ^ r
 
+/- English proof (translation)
+Introduce `g r _ hr hg T hT`. Conclude with `h2 g r hr hg T fun f hf => ⟨(hT f hf).1, h1 g r f (hT f hf)⟩`.
+-/
 theorem claim_of (h1 : Witness) (h2 : Count) : PI.SqfRootsInj.Claim := by
   intro g r _ hr hg T hT
   exact h2 g r hr hg T fun f hf => ⟨(hT f hf).1, h1 g r f (hT f hf)⟩

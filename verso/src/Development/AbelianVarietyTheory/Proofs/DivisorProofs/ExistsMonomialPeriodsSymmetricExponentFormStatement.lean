@@ -11,6 +11,9 @@ open GlobalTheory.Poinc Formalism.L2.Pj
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MonPeriods.exists_isMonomial_symm | exact GlobalTheory.MonPeriods.exists_isMonomial_symm | (intros; apply GlobalTheory.MonPeriods.exists_isMonomial_symm <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_monomialPeriods_symmetric_exponentForm : ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], GlobalTheory.LN.CDvr W → ∀ ϖ : W, Irreducible ϖ →
     ∀ D : DegData W (maximalIdeal W), ∃ β : LinearMap.BilinForm ℤ D.toPre.X, (∀ a b, β a b = β b a) ∧
       IsMonomial D.toPre ![ϖ] ![β] := by

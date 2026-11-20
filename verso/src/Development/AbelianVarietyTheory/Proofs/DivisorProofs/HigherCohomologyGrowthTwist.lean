@@ -15,6 +15,19 @@ open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Filter Asymptotics
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 
+/- English proof (translation)
+Introduce `k _ _ X _ hp d L hL hE F _ hF M hM hFb i hi`. Use `isNoetherian_of_isProjOver hp` as an intermediate fact. Take `⟨_, _, hAmp⟩` from `isProper_and_exists_isAmpleLB_of_isProjOver hp`. Take `⟨A, B, hA, hB, s, t, hs, ht, hc⟩` from `hAmp.exists_sub_of_mono_cutHom F (cls M hM)`. Take `⟨C₁, h₁⟩` from `GlobalTheory.T.higherCohomology_bound_twist_neg_of_regular_section' k X hp d L hL hE F hF B hB t ht hFb i hi`.
+
+Establish `: Mono (cutHom F hA s)` using `hs`. Establish `hcut : suppDim (cut F hA s) ≤ d` using `suppDim_cut_le F hA s hF`. Use `isFiniteQC_cut F hA s` as an intermediate fact. Use `isFiniteQC_twist (F := cut F hA s) hM` as an intermediate fact. Take `⟨C₂, h₂⟩` from `hE (twist (cut F hA s) M) (by rwa [suppDim_twist hM]) i hi`.
+
+Use `⟨C₁ + C₂, fun m => ?_⟩` and prove the remaining obligations. Establish `hLm` using `isLB_lbPow hL m`. Establish `hN` using `isLB_tens hM hLm`. Establish `hBi` using `isLB_lbZPow hB (-1)`. Establish `hN'` using `isLB_tens hBi hLm`.
+
+Establish `key` using `(GlobalTheory.T.sheafCohomologyDim_twist_cut_inequalities k X hp F A (tens M (lbPow L m)) (tens (lbZPow B (-1)) (lbPow L m)) hA hN hN' s hs (by`. Express the relevant statement in the definitionally equal form `cls M hM + cls _ hLm = (cls _ hBi + cls _ hLm) + cls A hA`. Rewrite using `[hc, cls_lbZPow hB]`. Use the proof step `abel)).1 i`. Take `⟨e₁⟩` from `nonempty_twist_twist_iso_of_cls_eq F hM hLm hN rfl`.
+
+Take `⟨e₂⟩` from `nonempty_twist_twist_iso_of_cls_eq F hBi hLm hN' rfl`. Take `⟨e₃⟩` from `nonempty_twist_twist_iso_of_cls_eq (cut F hA s) hM hLm hN rfl`. Rewrite using `[hdim_congr k i e₁]`. Rewrite `key` using `[← hdim_congr k i e₂, ← hdim_congr k i e₃]`. Establish `h₁m` using `h₁ m`.
+
+Establish `h₂m` using `h₂ m`. Establish `hpow : d * (m + 1) ^ (d - 1) ≤ (d + 1) * (m + 1) ^ d` using `Nat.mul_le_mul (Nat.le_succ d) (Nat.pow_le_pow_right (Nat.succ_pos m) (Nat.sub_le d 1))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem GlobalTheory.NefRR.hdim_twist_twist_bound : ∀ (k : Type) [Field k] [Infinite k] (X : Scheme.{0}) [Algebra k Γ(X, ⊤)], IsProjOver (strHom k X) → ∀ (d : ℕ) (L : LB X), L.IsLB → (∀ (E : X.Modules) [IsFiniteQC E], suppDim E ≤ (d : ℕ) → ∀ j, 0 < j → (∃ C : ℕ, ∀ m : ℕ, hdim k (twist E (lbPow L m)) j ≤ C * (d * (m + 1) ^ (d - 1)))) → ∀ (F : X.Modules) [IsFiniteQC F], suppDim F ≤ (d + 1 : ℕ) → ∀ M : LB X, M.IsLB → (∀ i, 0 < i → (∃ C : ℕ, ∀ m : ℕ, hdim k (twist F (lbPow L m)) i ≤ C * ((d + 1) * (m + 1) ^ d))) → ∀ i, 0 < i → (∃ C : ℕ, ∀ m : ℕ, hdim k (twist (twist F M) (lbPow L m)) i ≤ C * ((d + 1) * (m + 1) ^ d)) := by
   intro k _ _ X _ hp d L hL hE F _ hF M hM hFb i hi
   have := isNoetherian_of_isProjOver hp

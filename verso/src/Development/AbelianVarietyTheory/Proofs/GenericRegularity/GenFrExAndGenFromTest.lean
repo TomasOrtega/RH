@@ -11,6 +11,9 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 
 open NumberField in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c`. Establish `hL` using `_root_.GlobalTheory.abelianSchemeLaws_all`. Use `⟨_root_.Formalism.L2.Pj.genFrEx_of hL.2.secTwist, fun h Z => ?_⟩` and prove the remaining obligations. Conclude with `_root_.GlobalTheory.Frames.allTest_of_secBaseChange hL.1.secBaseChange E H Dw l Xo c _ _`.
+-/
 theorem _root_.GlobalTheory.Reg.genFrEx_and_genFromTest : ∀ (E : Type) [Field E] [NumberField E]
     [IsCMField E] (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l)
     (c : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l), _root_.Formalism.L2.Pj.GenFrEx Xo c ∧ ∀ h : _root_.Formalism.L2.Pj.GenFrEx Xo c, _root_.Formalism.L2.Pj.GenFromTest Xo c h := by

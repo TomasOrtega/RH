@@ -31,12 +31,22 @@ def coeffSub (O : Subring ℂ) (σ : Type) : Subring (MvPolynomial σ ℂ) where
   zero_mem' mo := by rw [coeff_zero]; exact O.zero_mem
   neg_mem' {a} ha mo := by rw [coeff_neg]; exact O.neg_mem (ha mo)
 
+/- English proof (translation)
+Introduce `mo`. Rewrite using `[coeff_C]`. Use `split_ifs`. Conclude with `hc`. Conclude with `O.zero_mem`.
+-/
 theorem C_mem_coeffSub {O : Subring ℂ} {σ : Type} {c : ℂ} (hc : c ∈ O) : (C c : MvPolynomial σ ℂ) ∈ coeffSub O σ := by
   intro mo
   rw [coeff_C]; split_ifs
   · exact hc
   · exact O.zero_mem
 
+/- English proof (translation)
+Rewrite using `[P.as_sum]`. Rewrite using `[map_sum, Finset.mul_sum]`. Use `Subring.sum_mem _ fun mo hmo => ?_` and prove the remaining obligations. Establish `hdeg : ∑ v ∈ mo.support, mo v = d`. Use `hP (mem_support_iff.mp hmo)` as an intermediate fact.
+
+Rewrite using `[← this, Finsupp.weight_apply, Finsupp.sum]`. Simplify using the standard rewrite rules. Rewrite using `[aeval_monomial, ← hdeg, Finsupp.prod, ← Finset.prod_pow_eq_pow_sum, map_prod, mul_left_comm, ← Finset.prod_mul_distrib]`. Repeatedly rewrite using `[map_pow, ← mul_pow]`. Use `Subring.mul_mem _ ?_ (Subring.prod_mem _ fun v _ => Subring.pow_mem _ ?_ _)` and prove the remaining obligations.
+
+Rewrite using `[algebraMap_eq]`. Conclude with `C_mem_coeffSub (hc mo)`. Conclude with `hg v`.
+-/
 theorem C_pow_mul_aeval_mem {σ : Type} (O : Subring ℂ) (z : ℂ) (g : σ → MvPolynomial σ ℂ)
     (hg : ∀ v, C z * g v ∈ coeffSub O σ) (d : ℕ) (P : MvPolynomial σ ℂ) (hP : P.IsHomogeneous d)
     (hc : P ∈ coeffSub O σ) : C (z ^ d) * aeval g P ∈ coeffSub O σ := by
@@ -54,6 +64,13 @@ theorem C_pow_mul_aeval_mem {σ : Type} (O : Subring ℂ) (z : ℂ) (g : σ → 
   · rw [algebraMap_eq]; exact C_mem_coeffSub (hc mo)
   · exact hg v
 
+/- English proof (translation)
+Introduce `D m n p u O z hu d P hP hc mo`. Rewrite using `[GlobalTheory.ExportSeries.fockSubst, ← coeff_C_mul]`. Use `C_pow_mul_aeval_mem O z _ ?_ d P hP hc mo` and prove the remaining obligations. Introduce `v split_ifs all_goals`. Rewrite using `[Finset.mul_sum]`.
+
+Use `Subring.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← map_mul]`. Introduce `mo'`. Rewrite using `[coeff_C_mul, coeff_X']`. Use `split_ifs`.
+
+Rewrite using `[mul_one]`. Apply the tactic sequence `first | exact (hu _ _ _).1 | exact (hu _ _ _).2`. Rewrite using `[mul_zero]`. Conclude with `O.zero_mem`.
+-/
 theorem fockSubst_coeff_mem : ∀ (D : D7) (m n : ℕ) (p : D.what₂.Tau → ℕ) (u : GlobalTheory.ExportSeries.GLR D n) (O : Subring ℂ) (z : ℂ),
     (∀ τ x y, z * (((u τ)⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) x y ∈ O ∧
       z * ((u τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) x y ∈ O) →

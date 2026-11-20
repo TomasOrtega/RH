@@ -16,11 +16,19 @@ open scoped ComplexConjugate
 variable {r : ℕ} (X : Data E r)
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[ReciprocityTheory.ChartRestriction.G.FD.col, Data.emb]`.
+-/
 theorem col_map_eq (P : Matrix (Fin r) (Fin r) E) (τ : E →+* ℂ) (k : Fin r) :
     ReciprocityTheory.ChartRestriction.G.FD.col (P.map τ) k = Data.emb τ (P *ᵥ Pi.single k 1) := by
   funext i
   simp [ReciprocityTheory.ChartRestriction.G.FD.col, Data.emb]
 
+/- English proof (translation)
+Rewrite using `[Data.mulVec_eq_sum_col (P.map τ) u, Data.mulVec_eq_sum_col (P.map τ) w, hermC_sum_left]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hermC_smul_left, hermC_sum_right, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hermC_smul_right, col_map_eq, col_map_eq, hermC_emb]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermC_expand (τ : E →+* ℂ) (P : Matrix (Fin r) (Fin r) E) (u w : Fin r → ℂ) :
     hermC τ X.Gm ((P.map τ) *ᵥ u) ((P.map τ) *ᵥ w) =
       ∑ k, ∑ l, u k * conj (w l) * τ (herm X.Gm (P *ᵥ Pi.single k 1) (P *ᵥ Pi.single l 1)) := by
@@ -31,6 +39,9 @@ theorem hermC_expand (τ : E →+* ℂ) (P : Matrix (Fin r) (Fin r) E) (u w : Fi
   rw [hermC_smul_right, col_map_eq, col_map_eq, hermC_emb]
   ring
 
+/- English proof (translation)
+Establish `h1 : ((1 : Matrix (Fin r) (Fin r) E).map τ) = 1` using `Matrix.map_one τ τ.map_zero τ.map_one`. Use `conv_rhs => rw [← one_mulVec u, ← one_mulVec w, ← h1]`. Rewrite using `[hermC_expand, hermC_expand]`. Simplify using `only [hγ, one_mulVec]`.
+-/
 theorem hermC_stab {γ : Matrix (Fin r) (Fin r) E}
     (hγ : ∀ x y, herm X.Gm (γ *ᵥ x) (γ *ᵥ y) = herm X.Gm x y) (τ : E →+* ℂ) (u w : Fin r → ℂ) :
     hermC τ X.Gm ((γ.map τ) *ᵥ u) ((γ.map τ) *ᵥ w) = hermC τ X.Gm u w := by
@@ -39,6 +50,11 @@ theorem hermC_stab {γ : Matrix (Fin r) (Fin r) E}
   rw [hermC_expand, hermC_expand]
   simp only [hγ, one_mulVec]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.gram, of_apply]`. Establish `hc : ∀ c, ReciprocityTheory.ChartRestriction.G.FD.col (γ.map τ * Y) c = (γ.map τ) *ᵥ ReciprocityTheory.ChartRestriction.G.FD.col Y c`. Introduce `c`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.mul_apply, mulVec, dotProduct]`. Rewrite using `[hc, hc, hermC_stab X hγ]`.
+-/
 theorem gram_stab {γ : Matrix (Fin r) (Fin r) E}
     (hγ : ∀ x y, herm X.Gm (γ *ᵥ x) (γ *ᵥ y) = herm X.Gm x y) (τ : E →+* ℂ)
     (Y : Matrix (Fin r) (Fin r) ℂ) :
@@ -51,6 +67,15 @@ theorem gram_stab {γ : Matrix (Fin r) (Fin r) E}
 
 end copy
 
+/- English proof (translation)
+Use `⟨fun c => b τ (Fin.castLE X.p0_le c) (Fin.castLE X.p0_le a), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Establish `e1 : X.colP (rmul x b) τ a k = ∑ j, x τ k j * b τ j (Fin.castLE X.p0_le a)` using `by show (mat x τ * mat b τ : Matrix (Fin r) (Fin r) ℂ) k (Fin.castLE X.p0_le a) = _`. Rewrite using `[Matrix.mul_apply]`. Both sides reduce to the same expression.
+
+Rewrite using `[e1, Finset.sum_apply]`. Use `symm`. Use `Finset.sum_of_injOn (Fin.castLE X.p0_le) ((Fin.castLE_injective _).injOn) (fun _ _ => Finset.mem_coe.mpr (Finset.mem_univ _)) (fun j _ hj => ?_) (fun c _ => ?_)` and prove the remaining obligations. Establish `hj' : X.p0 ≤ (j : ℕ)`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hj ⟨⟨j, not_le.mp h⟩, by simp, by ext; simp⟩`. Rewrite using `[(hb τ).2 j _ (by show ((Fin.castLE X.p0_le a : Fin r) : ℕ) < j`. Use `a.isLt` as an intermediate fact. Simplify using `only [Fin.val_castLE]`. Use the proof step `omega), mul_zero]`.
+
+Use `show b τ _ _ * x τ k _ = _`. Rewrite using `[mul_comm]`.
+-/
 theorem exists_colP_rmul_eq_sum {r : ℕ} (X : Data E r) (x : Frame X.Ψ r) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r)
     (τ : X.Ψ) (a : Fin X.p0) :
     ∃ L : Fin X.p0 → ℂ, X.colP (rmul x b) τ a = ∑ c, L c • X.colP x τ c := by
@@ -74,6 +99,11 @@ theorem exists_colP_rmul_eq_sum {r : ℕ} (X : Data E r) (x : Frame X.Ψ r) {b :
   · show b τ _ _ * x τ k _ = _
     rw [mul_comm]
 
+/- English proof (translation)
+Establish `h` using `MajorantConjugateTransfer.maj_transfer X hx (OrthogonalFrameDomain.rmul_mem_dom X hx hb) τ 1 1 (by simp) (by simp) (fun c => ?_) (fun a => ?_) v`. Simplify using `using h`. Use `exists_colP_rmul_eq_sum X (rmul x b) (ExtFPf.invF_mem X hb) τ c` as an intermediate fact. Rewrite `this` using `[ExtFPf.rmul_assoc, ExtFPf.rmul_invF X hb, ExtFPf.rmul_oneF]`. Simplify using `using this`.
+
+Simplify using `using exists_colP_rmul_eq_sum X x hb τ a`.
+-/
 theorem maj_rmul {r : ℕ} (X : Data E r) {x b : Frame X.Ψ r} (hx : x ∈ X.dom) (hb : b ∈ Bor X.Ψ r)
     (τ : X.Ψ) (v : Fin r → ℂ) : X.maj (rmul x b) τ v = X.maj x τ v := by
   have h := MajorantConjugateTransfer.maj_transfer X hx (OrthogonalFrameDomain.rmul_mem_dom X hx hb) τ 1 1 (by simp) (by simp)
@@ -84,11 +114,19 @@ theorem maj_rmul {r : ℕ} (X : Data E r) {x b : Frame X.Ψ r} (hx : x ∈ X.dom
     simpa using this
   · simpa using exists_colP_rmul_eq_sum X x hb τ a
 
+/- English proof (translation)
+The claim follows from `gram_stab X hγ.1 τ.1 (mat x τ)`.
+-/
 theorem gram_lact {r : ℕ} (X : Data E r) {γ : GL (Fin r) E} (hγ : IsUStab X.Gm X.Λ γ)
     (x : Frame X.Ψ r) (τ : X.Ψ) :
     gram τ.1 X.Gm (mat (lact γ x) τ) = gram τ.1 X.Gm (mat x τ) :=
   gram_stab X hγ.1 τ.1 (mat x τ)
 
+/- English proof (translation)
+Introduce `τ`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Establish `e1 : mat (lact γ x) τ = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ` using `rfl`. Rewrite using `[e1, Matrix.det_mul, show ((γ : Matrix (Fin r) (Fin r) E).map τ.1).det = τ.1 (γ : Matrix (Fin r) (Fin r) E).det by rw [RingHom.map_det]; rfl]`. Use `mul_ne_zero ?_ (hx τ).1` and prove the remaining obligations.
+
+Establish `hu : IsUnit ((γ : Matrix (Fin r) (Fin r) E).det)` using `(Matrix.isUnit_iff_isUnit_det _).1 γ.isUnit`. Conclude with `(hu.map τ.1).ne_zero`. Use `(hx τ).2 i` as an intermediate fact. Unfold `dmin at this ⊢`. Rewrite using `[gram_lact X hγ]` and apply the resulting hypothesis.
+-/
 theorem lact_mem_dom {r : ℕ} (X : Data E r) {γ : GL (Fin r) E} (hγ : IsUStab X.Gm X.Λ γ)
     {x : Frame X.Ψ r} (hx : x ∈ X.dom) : lact γ x ∈ X.dom := by
   intro τ
@@ -104,6 +142,11 @@ theorem lact_mem_dom {r : ℕ} (X : Data E r) {γ : GL (Fin r) E} (hγ : IsUStab
     unfold dmin at this ⊢
     rwa [gram_lact X hγ]
 
+/- English proof (translation)
+Establish `hc : ∀ c, col (mat (lact γ x) τ) c = ((γ : Matrix (Fin r) (Fin r) E).map τ.1) *ᵥ col (mat x τ) c`. Introduce `c`. Use function extensionality and compare the values at `i`. Use `show ((γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ : Matrix (Fin r) (Fin r) ℂ) i c = _`. Simplify using `[col, Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+
+Unfold `Data.maj Data.posPart Data.gramPos`. Simplify using `only [hc, gram_lact X hγ, hermC_stab X hγ.1]`.
+-/
 theorem maj_lact {r : ℕ} (X : Data E r) {γ : GL (Fin r) E} (hγ : IsUStab X.Gm X.Λ γ)
     (x : Frame X.Ψ r) (τ : X.Ψ) (v : Fin r → ℂ) :
     X.maj (lact γ x) τ (Matrix.mulVec ((γ : Matrix (Fin r) (Fin r) E).map τ.1) v) =
@@ -122,6 +165,9 @@ namespace GlobalTheory
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Introduce `r X γ hγ x hx b hb`. Use `⟨MajInv.lact_mem_dom X hγ (OrthogonalFrameDomain.rmul_mem_dom X hx hb), fun τ v => ?_⟩` and prove the remaining obligations. Rewrite using `[MajInv.maj_lact X hγ, MajInv.maj_rmul X hx hb]`.
+-/
 theorem maj_lact_rmul :
     (∀ (r : ℕ) (X : Data E r) (γ : GL (Fin r) E), IsUStab X.Gm X.Λ γ → ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, lact γ (rmul x b) ∈ X.dom ∧ ∀ (τ : X.Ψ) (v : Fin r → ℂ), X.maj (lact γ (rmul x b)) τ (Matrix.mulVec ((γ : Matrix (Fin r) (Fin r) E).map τ.1) v) = X.maj x τ v) := by
   intro r X γ hγ x hx b hb

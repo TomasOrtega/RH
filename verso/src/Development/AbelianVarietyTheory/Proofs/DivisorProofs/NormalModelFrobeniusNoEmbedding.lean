@@ -13,6 +13,11 @@ namespace GlobalTheory.FrobFilt
 
 open TopologicalSpace
 
+/- English proof (translation)
+Establish `hr : IsIso ((Scheme.Modules.restrictFunctor U.ι).map f)` using `(NatIso.isIso_map_iff (Scheme.Modules.restrictFunctorIsoPullback U.ι) f).2 hf`. Establish `e : U.ι ''ᵁ (U.ι ⁻¹ᵁ D) = D`. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι, inf_eq_right.2 hD]`. Establish `h1 : Function.Bijective (((Scheme.Modules.restrictFunctor U.ι).map f).app (U.ι ⁻¹ᵁ D))` using `ConcreteCategory.bijective_of_isIso _`. Establish `h2 : Function.Bijective (f.app (U.ι ''ᵁ (U.ι ⁻¹ᵁ D)))` using `h1`.
+
+Rewrite `h2` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem bijective_app_of_isIso_pullback_ι {X : Scheme.{0}} {F G : X.Modules} (f : F ⟶ G)
     (U : X.Opens) (hf : IsIso ((Scheme.Modules.pullback U.ι).map f)) {D : X.Opens} (hD : D ≤ U) :
     Function.Bijective (f.app D) := by
@@ -27,6 +32,17 @@ theorem bijective_app_of_isIso_pullback_ι {X : Scheme.{0}} {F G : X.Modules} (f
 
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : GlobalTheory.Vert.Model O}
 
+/- English proof (translation)
+Use `haveI : IsNoetherianRing Γ(B.X, W) := IsLocallyNoetherian.component_noetherian ⟨W, hW⟩`. Establish `key : ∀ r : PrimeSpectrum Γ(B.X, W), hW.fromSpec r ∈ B.gen ↔ a ∉ r.asIdeal` using `fun r => by`. Establish `h1 : hW.fromSpec r ∈ B.X.basicOpen a ↔ a ∉ r.asIdeal`. Express the relevant statement in the definitionally equal form `r ∈ hW.fromSpec ⁻¹ᵁ B.X.basicOpen a ↔ _`. Rewrite using `[hW.fromSpec_preimage_basicOpen]`.
+
+Both sides reduce to the same expression. Establish `h2 : hW.fromSpec r ∈ W`. Establish `: hW.fromSpec r ∈ Set.range hW.fromSpec` using `⟨r, rfl⟩`. Rewrite `this` using `[hW.range_fromSpec]`. Then use the resulting hypothesis. Rewrite using `[← h1, hD]`.
+
+Conclude with `⟨fun h => ⟨h2, h⟩, fun h => h.2⟩`. Use `⟨fun h => (key q).1 h haq, fun y hy hyx => ?_⟩` and prove the remaining obligations. Establish `hx : hW.fromSpec q ∈ W`. Establish `: hW.fromSpec q ∈ Set.range hW.fromSpec` using `⟨q, rfl⟩`. Rewrite `this` using `[hW.range_fromSpec]`. Then use the resulting hypothesis.
+
+Establish `hyW : y ∈ Set.range hW.fromSpec`. Rewrite using `[hW.range_fromSpec]`. Conclude with `hyx.mem_open W.isOpen hx`. Take `⟨r, rfl⟩` from `hyW`. Establish `hle : r.asIdeal ≤ q.asIdeal` using `(PrimeSpectrum.le_iff_specializes r q).2 (hW.fromSpec.isOpenEmbedding.isInducing.specializes_iff.1 hyx)`.
+
+Establish `har : a ∈ r.asIdeal`. Assume the negation of the conclusion as `h`. Conclude with `hy ((key r).2 h)`. Establish `hge` using `(mem_minimalPrimes_span_singleton_of_height_eq_one hq ha haq).2 ⟨r.isPrime, (Ideal.span_singleton_le_iff_mem _).2 har⟩ hle`. Rewrite using `[show r = q from PrimeSpectrum.ext (le_antisymm hle hge)]`.
+-/
 theorem isGenSpecial_fromSpec {W : B.X.Opens} (hW : IsAffineOpen W) [Nonempty W] {a : Γ(B.X, W)}
     (ha : a ≠ 0) (hD : B.X.basicOpen a = W ⊓ B.gen) (q : PrimeSpectrum Γ(B.X, W))
     (hq : q.asIdeal.height = 1) (haq : a ∈ q.asIdeal) : IsGenSpecial B (hW.fromSpec q) := by
@@ -58,6 +74,11 @@ theorem isGenSpecial_fromSpec {W : B.X.Opens} (hW : IsAffineOpen W) [Nonempty W]
     ⟨r.isPrime, (Ideal.span_singleton_le_iff_mem _).2 har⟩ hle
   rw [show r = q from PrimeSpectrum.ext (le_antisymm hle hge)]
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hb : B.X.basicOpen (B.X.presheaf.map (homOfLE (le_top : W ≤ ⊤)).op (B.const ϖ)) = W ⊓ B.gen`. Rewrite using `[B.X.basicOpen_res, B.gen_eq_basicOpen hϖ.ne_zero hϖ.not_isUnit]`. Use `⟨_, fun h => ?_, hb⟩` and prove the remaining obligations. Rewrite `hb` using `[h, Scheme.basicOpen_zero]`.
+
+Take `⟨x⟩` from `‹Nonempty W›`. Establish `: genericPoint B.X ∈ W ⊓ B.gen` using `⟨VB.genericPoint_mem x.2, B.genericPoint_mem_gen⟩`. Rewrite `this` using `[← hb]`. Conclude with `this`.
+-/
 theorem exists_basicOpen_eq_inf_gen (W : B.X.Opens) [Nonempty W] :
     ∃ a : Γ(B.X, W), a ≠ 0 ∧ B.X.basicOpen a = W ⊓ B.gen := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
@@ -71,6 +92,27 @@ theorem exists_basicOpen_eq_inf_gen (W : B.X.Opens) [Nonempty W] :
   rw [← hb] at this
   exact this
 
+/- English proof (translation)
+Use `haveI := P.vb.isQuasicoherent`. Use `haveI := P.vb'.isQuasicoherent`. Use `haveI : P.mod.IsQuasicoherent := QCoh.isQuasicoherent_cokernel P.ψ`. Use `haveI : IsNoetherianRing Γ(B.X, W) := IsLocallyNoetherian.component_noetherian ⟨W, hW⟩`. Use `haveI : IsIntegrallyClosed Γ(B.X, W) := IsNormalScheme.isIntegrallyClosed_of_isAffineOpen hW`.
+
+Take `⟨a, ha, hD⟩` from `exists_basicOpen_eq_inf_gen W`. Establish `hbij : Function.Bijective (P.ψ.app (B.X.basicOpen a))` using `bijective_app_of_isIso_pullback_ι P.ψ B.gen P.iso (hD.le.trans inf_le_right)`. Establish `hinj : Function.Injective (QCoh.appLinear P.ψ W)`. Use `(injective_iff_map_eq_zero _).2 fun v hv => ?_` and prove the remaining obligations. Establish `h0 : P.E'.presheaf.map (homOfLE (B.X.basicOpen_le a)).op v = 0`.
+
+Apply `hbij.1` to reduce the goal to its premises. Rewrite using `[QCoh.app_res, map_zero]`. Express the relevant statement in the definitionally equal form `P.E.presheaf.map _ (QCoh.appLinear P.ψ W v) = 0`. Rewrite using `[hv, map_zero]`. Take `⟨n, hn⟩` from `QCoh.exists_pow_smul_eq_zero P.E' hW a _ rfl v h0`.
+
+Conclude with `(smul_eq_zero_iff_right (pow_ne_zero n ha)).1 hn`. Take `⟨v, rfl⟩` from `QCoh.surjective_cokernel_π_app P.ψ hW s`. Establish `hker` using `QCoh.ker_cokernel_π_app P.ψ hW`. Establish `hpow : ∀ t : Γ(B.X, W), (Scheme.Modules.presheaf P.mod).map (homOfLE (B.X.basicOpen_le t)).op ((cokernel.π P.ψ).app W v) = 0 → ∃ n : ℕ, t ^ n • v ∈ LinearMap.range (QCoh.appLinear P.ψ W)` using `fun t ht => by`. Take `⟨n, hn⟩` from `QCoh.exists_pow_smul_eq_zero P.mod hW t _ rfl _ ht`.
+
+Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[← hker, LinearMap.mem_ker, map_smul]`. Conclude with `hn`. Take `⟨n, hn⟩` from `hpow a (by`. Take `⟨w, hw⟩` from `hbij.2 (P.E.presheaf.map (homOfLE (B.X.basicOpen_le a)).op v)`.
+
+Use `(QCoh.app_res (cokernel.π P.ψ) (B.X.basicOpen_le a) v).symm.trans ?_` and prove the remaining obligations. Rewrite using `[← hw, QCoh.app_app, cokernel.condition]`. Use the proof step `rfl)`. Establish `hv : v ∈ LinearMap.range (QCoh.appLinear P.ψ W)`. Use `mem_range_of_forall_height_eq_one_of_projective _ hinj (pow_ne_zero n ha) hn fun q hqp hq haq => ?_` and prove the remaining obligations.
+
+Establish `hx : hW.fromSpec ⟨q, hqp⟩ ∈ W`. Establish `: hW.fromSpec ⟨q, hqp⟩ ∈ Set.range hW.fromSpec` using `⟨_, rfl⟩`. Rewrite `this` using `[hW.range_fromSpec]`. Then use the resulting hypothesis. Take `⟨V, hVW, hxV, hV⟩` from `hs _ hx (isGenSpecial_fromSpec hW ha hD ⟨q, hqp⟩ hq (hqp.mem_of_pow_mem n haq))`. Take `⟨t, htV, hxt⟩` from `hW.exists_basicOpen_le ⟨_, hxV⟩ hx`.
+
+Establish `htq : t ∉ q`. Establish `: (⟨q, hqp⟩ : PrimeSpectrum Γ(B.X, W)) ∈ hW.fromSpec ⁻¹ᵁ B.X.basicOpen t` using `hxt`. Rewrite `this` using `[hW.fromSpec_preimage_basicOpen]`. Conclude with `this`. Take `⟨m, hm⟩` from `hpow t (by`.
+
+Use `congrArg ((Scheme.Modules.presheaf P.mod).map (homOfLE htV).op) hV` as an intermediate fact. Rewrite `this` using `[map_zero, ← ConcreteCategory.comp_apply, ← Functor.map_comp]`. Conclude with `this)`. Conclude with `⟨t ^ m, fun h => htq (hqp.mem_of_pow_mem m h), hm⟩`. Rewrite `hv` using `[← hker]`.
+
+Conclude with `hv`.
+-/
 theorem eq_zero_of_affine (hB : GlobalTheory.IsNormalScheme B.X) (P : Pres B) {W : B.X.Opens}
     (hW : IsAffineOpen W) [Nonempty W] [Module.Free Γ(B.X, W) Γ(P.E, W)]
     [Module.Free Γ(B.X, W) Γ(P.E', W)] (s : Γ(P.mod, W))
@@ -128,6 +170,15 @@ theorem eq_zero_of_affine (hB : GlobalTheory.IsNormalScheme B.X) (P : Pres B) {W
   rw [← hker] at hv
   exact hv
 
+/- English proof (translation)
+Introduce `U V hVU hV`. Use `(injective_iff_map_eq_zero ((Scheme.Modules.presheaf P.mod).map (homOfLE hVU).op).hom).2 fun s hs => ?_` and prove the remaining obligations. Establish `H : ∀ x : U, ∃ (W : B.X.Opens) (h : W ≤ U), x.1 ∈ W ∧ GlobalTheory.Twist.resM P.mod h s = 0`. Introduce `x`. Take `⟨W₁, e, -, hx₁, h₁, he⟩` from `P.vb.exists_affine x.2`.
+
+Take `⟨W, e', hW, hx, h, he'⟩` from `P.vb'.exists_affine hx₁`. Use `haveI : Nonempty W := ⟨⟨_, hx⟩⟩`. Use `haveI := Module.Free.of_basis (he.basis h)`. Use `haveI := Module.Free.of_basis (he'.basis le_rfl)`. Use `⟨W, h.trans h₁, hx, eq_zero_of_affine hB P hW _ fun y hy hg => ⟨W ⊓ V, inf_le_left, ⟨hy, hV y (h₁ (h hy)) hg⟩, ?_⟩⟩` and prove the remaining obligations.
+
+Use `congrArg ((Scheme.Modules.presheaf P.mod).map (homOfLE (inf_le_right : W ⊓ V ≤ V)).op) hs` as an intermediate fact. Rewrite `this` using `[map_zero]`. Conclude with `(GlobalTheory.Twist.resM_resM _ _ _).trans ((GlobalTheory.Twist.resM_resM _ _ _).symm.trans this)`. Use `choose W h hx h0 using H`. Use `GlobalTheory.Twist.sec_ext_of_cover W h (fun x hxU => Opens.mem_iSup.2 ⟨⟨x, hxU⟩, hx _⟩) fun k => ?_` and prove the remaining obligations.
+
+Rewrite using `[h0, map_zero]`.
+-/
 theorem noEmb_pres (hB : GlobalTheory.IsNormalScheme B.X) (P : Pres B) : NoEmb B P.mod := by
   intro U V hVU hV
   refine (injective_iff_map_eq_zero ((Scheme.Modules.presheaf P.mod).map (homOfLE hVU).op).hom).2
@@ -148,6 +199,9 @@ theorem noEmb_pres (hB : GlobalTheory.IsNormalScheme B.X) (P : Pres B) : NoEmb B
   refine GlobalTheory.Twist.sec_ext_of_cover W h (fun x hxU => Opens.mem_iSup.2 ⟨⟨x, hxU⟩, hx _⟩) fun k => ?_
   rw [h0, map_zero]
 
+/- English proof (translation)
+Introduce `O _ _ _ p _ _ _ B hB g hg R hR hk`. Take `⟨R', hR'⟩` from `GlobalTheory.T.frobenius_presentation_exists O p B g hg R hR hk`. Take `⟨e⟩` from `isFrob_iff.1 hR'`. Conclude with `(noEmb_pres hB R').of_iso e`.
+-/
 theorem noEmb_frob_rankOne : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → ∀ (g : Γ(B.X, ⊤)), IsRootOfP p g p → ∀ R : Pres B, R.r = 1 → Kills g R.mod → NoEmb B ((frob p B).obj R.mod) := by
   intro O _ _ _ p _ _ _ B hB g hg R hR hk
   obtain ⟨R', hR'⟩ := GlobalTheory.T.frobenius_presentation_exists O p B g hg R hR hk

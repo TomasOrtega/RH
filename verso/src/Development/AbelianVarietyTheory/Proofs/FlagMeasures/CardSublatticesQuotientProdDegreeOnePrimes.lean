@@ -15,10 +15,18 @@ variable {O N : Type} [CommRing O] [AddCommGroup N] [Module O N]
 def Ker (I : Ideal O) (N : Type) [AddCommGroup N] [Module O N] : Set (Submodule O N) :=
   {L | ∃ f : N →ₗ[O] O ⧸ I, Function.Surjective f ∧ LinearMap.ker f = L}
 
+/- English proof (translation)
+Rewrite using `[← h.image_eq, h.injOn.encard_image]`.
+-/
 theorem encard_eq_of_bijOn {α β : Type} {s : Set α} {t : Set β} {f : α → β} (h : Set.BijOn f s t) :
     s.encard = t.encard := by
   rw [← h.image_eq, h.injOn.encard_image]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, rfl⟩`. Conclude with `⟨f.quotKerEquivOfSurjective hf⟩`. Introduce and unpack `⟨e⟩`. Use `⟨e.toLinearMap ∘ₗ L.mkQ, e.surjective.comp L.mkQ_surjective, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearEquiv.ker_comp, Submodule.ker_mkQ]`.
+-/
 theorem mem_ker_iff (I : Ideal O) (L : Submodule O N) :
     L ∈ Ker I N ↔ Nonempty ((N ⧸ L) ≃ₗ[O] (O ⧸ I)) := by
   constructor
@@ -28,10 +36,16 @@ theorem mem_ker_iff (I : Ideal O) (L : Submodule O N) :
     refine ⟨e.toLinearMap ∘ₗ L.mkQ, e.surjective.comp L.mkQ_surjective, ?_⟩
     rw [LinearEquiv.ker_comp, Submodule.ker_mkQ]
 
+/- English proof (translation)
+Establish `: algebraMap O (O ⧸ I) c = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 hc`. Rewrite using `[Algebra.smul_def, this, zero_mul]`.
+-/
 theorem smul_quot {I : Ideal O} {c : O} (hc : c ∈ I) (y : O ⧸ I) : c • y = 0 := by
   have : algebraMap O (O ⧸ I) c = 0 := Ideal.Quotient.eq_zero_iff_mem.2 hc
   rw [Algebra.smul_def, this, zero_mul]
 
+/- English proof (translation)
+Take `⟨f, -, rfl⟩` from `h`. Rewrite using `[LinearMap.mem_ker, map_smul, smul_quot hc]`.
+-/
 theorem smul_mem {I : Ideal O} {L : Submodule O N} (h : L ∈ Ker I N) {c : O} (hc : c ∈ I)
     (x : N) : c • x ∈ L := by
   obtain ⟨f, -, rfl⟩ := h
@@ -44,6 +58,21 @@ noncomputable def crt (I J : Ideal O) (h : IsCoprime I J) :
       obtain ⟨x, rfl⟩ := Ideal.Quotient.mk_surjective x
       rfl }
 
+/- English proof (translation)
+Take `⟨a, ha, b, hb, hab⟩` from `Ideal.isCoprime_iff_exists.1 h`. Establish `key : ∀ {I J : Ideal O} {a b : O}, a ∈ I → b ∈ J → a + b = 1 → ∀ {L₁ L₂ L₁' L₂' : Submodule O N}, L₂ ∈ Ker J N → L₁' ∈ Ker I N → L₁ ⊓ L₂ = L₁' ⊓ L₂' → L₁ ≤ L₁'`. Introduce `I J a b ha hb hab L₁ L₂ L₁' L₂' h2 h1' he x hx`. Establish `h3 : b • x ∈ L₁ ⊓ L₂` using `⟨L₁.smul_mem b hx, smul_mem h2 hb x⟩`. Rewrite `h3` using `[he]`.
+
+Use `L₁'.add_mem (smul_mem h1' ha x) h3.1` as an intermediate fact. Rewrite `this` using `[← add_smul, hab, one_smul]`. Then use the resulting hypothesis. Rewrite using `[← Set.encard_prod]`. Use `symm`. Use `encard_eq_of_bijOn (f := fun p => p.1 ⊓ p.2) ⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨_, _⟩ ⟨⟨f, hf, rfl⟩, ⟨g, hg, rfl⟩⟩`. Use `⟨(crt I J h).symm.toLinearMap ∘ₗ f.prod g, (crt I J h).symm.surjective.comp ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x, y⟩`. Take `⟨u, rfl⟩` from `hf x`. Take `⟨v, rfl⟩` from `hg y`.
+
+Use `⟨b • u + a • v, Prod.ext ?_ ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (b • u + a • v) = f u`. Rewrite using `[map_add, map_smul, map_smul, smul_quot ha, ← smul_quot ha (f u), ← add_smul, add_comm, hab, one_smul]`. Express the relevant statement in the definitionally equal form `g (b • u + a • v) = g v`. Rewrite using `[map_add, map_smul, map_smul, smul_quot hb, ← smul_quot hb (g v), ← add_smul, add_comm, hab, one_smul]`.
+
+Rewrite using `[LinearEquiv.ker_comp, LinearMap.ker_prod]`. Introduce and unpack `⟨L₁, L₂⟩ ⟨h1, h2⟩ ⟨L₁', L₂'⟩ ⟨h1', h2'⟩ he`. Establish `he : L₁ ⊓ L₂ = L₁' ⊓ L₂'` using `he`. Establish `he' : L₂ ⊓ L₁ = L₂' ⊓ L₁'` using `by rw [inf_comm, he, inf_comm]`. Establish `hba : b + a = 1` using `by rw [add_comm, hab]`.
+
+Conclude with `Prod.ext (le_antisymm (key ha hb hab h2 h1' he) (key ha hb hab h2' h1 he.symm)) (le_antisymm (key hb ha hba h1 h2' he') (key hb ha hba h1' h2 he'.symm))`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Set `g` to `(crt I J h).toLinearMap ∘ₗ f`. Establish `hg : Function.Surjective g` using `(crt I J h).surjective.comp hf`. Use `⟨(LinearMap.ker (LinearMap.fst O _ _ ∘ₗ g), LinearMap.ker (LinearMap.snd O _ _ ∘ₗ g)), ⟨⟨_, Prod.fst_surjective.comp hg, rfl⟩, ⟨_, Prod.snd_surjective.comp hg, rfl⟩⟩, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `LinearMap.ker _ ⊓ LinearMap.ker _ = _`. Rewrite using `[← LinearMap.ker_prod, ← LinearEquiv.ker_comp (crt I J h) f]`. Both sides reduce to the same expression.
+-/
 theorem encard_mul (I J : Ideal O) (h : IsCoprime I J) :
     (Ker (I * J) N).encard = (Ker I N).encard * (Ker J N).encard := by
   obtain ⟨a, ha, b, hb, hab⟩ := Ideal.isCoprime_iff_exists.1 h
@@ -86,6 +115,11 @@ theorem encard_mul (I J : Ideal O) (h : IsCoprime I J) :
     rw [← LinearMap.ker_prod, ← LinearEquiv.ker_comp (crt I J h) f]
     rfl
 
+/- English proof (translation)
+Rewrite using `[Set.encard_eq_one]`. Use `⟨⊤, Set.eq_singleton_iff_unique_mem.2 ⟨⟨0, fun y => ⟨0, Subsingleton.elim _ _⟩, by simp⟩, ?_⟩⟩` and prove the remaining obligations. Introduce `L hL`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+
+Simplify using `using smul_mem hL (c := 1) trivial x`.
+-/
 theorem encard_top : (Ker (⊤ : Ideal O) N).encard = 1 := by
   rw [Set.encard_eq_one]
   refine ⟨⊤, Set.eq_singleton_iff_unique_mem.2 ⟨⟨0, fun y => ⟨0, Subsingleton.elim _ _⟩, by simp⟩, ?_⟩⟩
@@ -94,6 +128,15 @@ theorem encard_top : (Ker (⊤ : Ideal O) N).encard = 1 := by
   intro x _
   simpa using smul_mem hL (c := 1) trivial x
 
+/- English proof (translation)
+Establish `: Nontrivial (O ⧸ P)` using `Ideal.Quotient.nontrivial_iff.2 hP.ne_top`. Establish `he : Ker P N = {L : Submodule O N | ∃ f : N →ₗ[O] O ⧸ P, f ≠ 0 ∧ LinearMap.ker f = L}`. Use extensionality with `L`. Use `exists_congr fun f => and_congr_left fun _ => ⟨fun hf h0 => ?_, fun hf y => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `hf 1`.
+
+Rewrite `hv` using `[h0]`. Conclude with `zero_ne_one hv`. Take `⟨v, hv⟩` from `GlobalTheory.SW.Hyper.surj_of_ne P f hf`. Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `⟨c • v, by rw [map_smul, hv, Algebra.smul_def, mul_one]; rfl⟩`.
+
+Take `⟨hf, hc⟩` from `GlobalTheory.SW.Hyper.count (M := N) P`. Rewrite using `[he, ← hf.cast_ncard_eq]`. Use `congr 1`. Establish `h1 : 1 < Nat.card (O ⧸ P)` using `Finite.one_lt_card`. Use `Nat.eq_of_mul_eq_mul_right (m := Nat.card (O ⧸ P) - 1) (by omega) ?_` and prove the remaining obligations.
+
+Rewrite using `[hc, geom_sum_mul_of_one_le h1.le]`.
+-/
 theorem encard_max [IsDomain O] [Module.Finite O N] [Module.Projective O N] (P : Ideal O)
     [hP : P.IsMaximal] [Finite (O ⧸ P)] :
     (Ker P N).encard =
@@ -115,6 +158,11 @@ theorem encard_max [IsDomain O] [Module.Finite O N] [Module.Projective O N] (P :
   refine Nat.eq_of_mul_eq_mul_right (m := Nat.card (O ⧸ P) - 1) (by omega) ?_
   rw [hc, geom_sum_mul_of_one_le h1.le]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.prod_empty, Ideal.one_eq_top, encard_top]`. Simplify using the standard rewrite rules. Consider the case `insert P s hP ih`.
+
+Take `⟨hm, hc⟩` from `hs P (Finset.mem_insert_self _ _)`. Establish `: Finite (O ⧸ P)` using `Nat.finite_of_card_ne_zero (hc ▸ hT)`. Establish `hco : IsCoprime P (∏ Q ∈ s, Q)` using `IsCoprime.prod_right fun Q hQ => Ideal.isCoprime_iff_sup_eq.2 (hm.coprime_of_ne (hs Q (Finset.mem_insert_of_mem hQ)).1 fun h => hP (h ▸ hQ))`. Rewrite using `[Finset.prod_insert hP, encard_mul _ _ hco, ih fun Q hQ => hs Q (Finset.mem_insert_of_mem hQ), encard_max, hc, Finset.card_insert_of_notMem hP, pow_succ', Nat.cast_mul]`.
+-/
 theorem encard_prod [IsDomain O] [Module.Finite O N] [Module.Projective O N] (T : ℕ) (hT : T ≠ 0)
     (s : Finset (Ideal O)) (hs : ∀ P ∈ s, P.IsMaximal ∧ Nat.card (O ⧸ P) = T) :
     (Ker (∏ P ∈ s, P) N).encard =
@@ -133,6 +181,13 @@ theorem encard_prod [IsDomain O] [Module.Finite O N] [Module.Projective O N] (T 
 
 end Abstract
 
+/- English proof (translation)
+Establish `hr : Module.rank (𝓞 K) V = Module.rank K V` using `(IsLocalization.rank_eq K (nonZeroDivisors (𝓞 K)) le_rfl).symm`. Establish `: Module.rank (𝓞 K) M = Module.rank K V`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← hr]`. Conclude with `Submodule.rank_le M`.
+
+Take `⟨s, hsM, hspan, hli⟩` from `exists_linearIndependent K (M : Set V)`. Rewrite `hspan` using `[hM.span_eq_top]`. Establish `h1 : Module.rank K V = Cardinal.mk s`. Rewrite using `[← rank_top, ← hspan, rank_span_set hli]`. Establish `h2 : LinearIndependent (𝓞 K) (fun x : s => (⟨x.1, hsM x.2⟩ : M))`.
+
+Apply `LinearIndependent.of_comp M.subtype` to reduce the goal to its premises. Conclude with `(LinearIndependent.iff_fractionRing (𝓞 K) K).mpr hli`. Rewrite using `[h1]`. Conclude with `h2.cardinal_le_rank`. Simplify using `only [Module.finrank, this]`.
+-/
 theorem finrank_lattice {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (M : Submodule (𝓞 K) V)
     (hM : Submodule.IsLattice K M) : Module.finrank (𝓞 K) M = Module.finrank K V := by
@@ -152,6 +207,15 @@ theorem finrank_lattice {K V : Type} [Field K] [NumberField K] [AddCommGroup V] 
       exact h2.cardinal_le_rank
   simp only [Module.finrank, this]
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ M hM T s hT hs`. Establish `: Module.IsTorsionFree (𝓞 K) V` using `Module.IsTorsionFree.trans_faithfulSMul (𝓞 K) K V`. Establish `: Module.FinitePresentation (𝓞 K) M` using `Module.finitePresentation_of_finite _ _`. Establish `: Module.Projective (𝓞 K) M` using `Module.Flat.projective_of_finitePresentation`. Rewrite using `[← finrank_lattice M hM, ← encard_prod (N := M) T hT.ne_zero s fun P hP => ⟨(hs P hP).1, by rw [← (hs P hP).2, Ideal.absNorm_apply, Submodule.cardQuot_apply]⟩]`.
+
+Use `encard_eq_of_bijOn (f := fun L => L.comap M.subtype) ⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `L hL`. Conclude with `(mem_ker_iff _ _).2 hL.2`. Introduce `L hL L' hL' h`. Use `congrArg (Submodule.map M.subtype) h` as an intermediate fact.
+
+Rewrite `this` using `[Submodule.map_comap_subtype, Submodule.map_comap_subtype, inf_eq_right.2 hL.1, inf_eq_right.2 hL'.1]`. Then use the resulting hypothesis. Introduce `L hL`. Establish `h : (L.map M.subtype).comap M.subtype = L` using `Submodule.comap_map_eq_of_injective M.injective_subtype L`. Use `⟨L.map M.subtype, ⟨Submodule.map_subtype_le _ _, ?_⟩, h⟩` and prove the remaining obligations. Rewrite using `[h]`.
+
+Conclude with `(mem_ker_iff _ _).1 hL`.
+-/
 theorem main : ∀ (K V : Type) [Field K] [NumberField K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (M : Submodule (𝓞 K) V), Submodule.IsLattice K M → ∀ (T : ℕ) (s : Finset (Ideal (𝓞 K))), T.Prime → (∀ P ∈ s, P.IsMaximal ∧ Ideal.absNorm P = T) → {L : Submodule (𝓞 K) V | L ≤ M ∧ Nonempty ((↥M ⧸ L.comap M.subtype) ≃ₗ[𝓞 K] (𝓞 K ⧸ ∏ P ∈ s, P))}.encard = (((∑ i ∈ Finset.range (Module.finrank K V), T ^ i) ^ s.card : ℕ) : ℕ∞) := by
   intro K V _ _ _ _ _ _ _ M hM T s hT hs
   have : Module.IsTorsionFree (𝓞 K) V := Module.IsTorsionFree.trans_faithfulSMul (𝓞 K) K V

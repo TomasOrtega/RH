@@ -22,6 +22,9 @@ def detIdl (e : AE D) (V : HSp D) (g : GA D V) : (AE D)ˣ :=
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[detIdl, dif_pos he]`. Both sides reduce to the same expression.
+-/
 theorem detIdl_val {e : AE D} (he : e * e = e) (V : HSp D) (g : GA D V) :
     ((detIdl e V g : (AE D)ˣ) : AE D) = e * (Formalism.L2.Theta.mt V g).det + (1 - e) := by
   rw [detIdl, dif_pos he]; rfl

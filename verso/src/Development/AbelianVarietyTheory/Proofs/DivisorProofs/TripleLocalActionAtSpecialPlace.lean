@@ -11,6 +11,11 @@ namespace GlobalTheory.SoLocW
 
 open scoped Matrix
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' hT h hh φ hφ φ₁ hφ₁ hA`. Take `⟨hφSB, ι, hι, hsupp⟩` from `hφ`. Use `⟨hφ₁, ι, hι, fun Y hY => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : UA σ G.V'.J) ∈ UAt σ G.V' (evFin F B.v₁)`. Introduce `u _`.
+
+Simplify using `[mat]`. Take `⟨c, P, Q, hPQ⟩` from `GlobalTheory.T.linear_bar_local_theta_factor hK.base F E σ B a a' G X om om' hT B.v₁ B.τ₁ ι hι 1 h1 h hh φ hφSB φ₁ hφ₁ hA`. Establish `hr : (P.1 * Y * Q.1).rank = Y.rank`. Rewrite using `[Matrix.rank_mul_eq_left_of_isUnit_det _ _ ((Matrix.isUnit_iff_isUnit_det _).1 Q.isUnit), Matrix.rank_mul_eq_right_of_isUnit_det _ _ ((Matrix.isUnit_iff_isUnit_det _).1 P.isUnit)]`. Rewrite using `[hPQ, hsupp _ (by rw [hr]; exact hY), mul_zero]`.
+-/
 theorem soLoc_stable : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W), IsTriple B G X om om' →

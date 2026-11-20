@@ -9,6 +9,9 @@ noncomputable section
 
 namespace MainStatements.WeightKernel.Dec
 
+/- English proof (translation)
+Introduce `D V r X Y hW j`. Rewrite using `[NA_frameFlag]`. Both sides reduce to the same expression.
+-/
 theorem bridge : Bridge := by
   intro D V r X Y hW j
   rw [NA_frameFlag]

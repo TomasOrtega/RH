@@ -15,6 +15,9 @@ variable {K : Type} [CommRing K] {n M : ℕ}
 def mulTup (D : Matrix (Fin n) (Fin n) K) (X : Fin n → Fin M → K) : Fin n → Fin M → K :=
   fun j i => ∑ k, D k j * X k i
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j i`. Simplify using `only [mulTup, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mulTup_mul (D₁ D₂ : Matrix (Fin n) (Fin n) K) (X : Fin n → Fin M → K) :
     mulTup D₁ (mulTup D₂ X) = mulTup (D₂ * D₁) X := by
   funext j i
@@ -23,20 +26,36 @@ theorem mulTup_mul (D₁ D₂ : Matrix (Fin n) (Fin n) K) (X : Fin n → Fin M �
   refine Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => ?_
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j i`. Simplify using `[mulTup, Matrix.one_apply]`.
+-/
 theorem mulTup_one (X : Fin n → Fin M → K) : mulTup (1 : Matrix (Fin n) (Fin n) K) X = X := by
   funext j i
   simp [mulTup, Matrix.one_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j i`. Simplify using `[mulTup, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem mulTup_add (D : Matrix (Fin n) (Fin n) K) (X Y : Fin n → Fin M → K) :
     mulTup D (X + Y) = mulTup D X + mulTup D Y := by
   funext j i
   simp [mulTup, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[mulTup, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem mulTup_apply_eq_sum (D : Matrix (Fin n) (Fin n) K) (X : Fin n → Fin M → K) (j : Fin n) :
     mulTup D X j = ∑ k, D k j • X k := by
   funext i
   simp [mulTup, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Rewrite `hX`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Establish `key : ∑ j, c j • mulTup (D : Matrix (Fin n) (Fin n) K) X j = ∑ k, Matrix.mulVec (D : Matrix (Fin n) (Fin n) K) c k • X k`. Simplify using `only [mulTup_apply_eq_sum, Finset.smul_sum, smul_smul, Matrix.mulVec, dotProduct, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Establish `h0 : Matrix.mulVec (D : Matrix (Fin n) (Fin n) K) c = 0` using `funext (hX _ (key ▸ hc))`. Establish `hc0 : c = 0`. Establish `h1` using `congrArg (Matrix.mulVec ((D⁻¹ : (Matrix (Fin n) (Fin n) K)ˣ) : Matrix (Fin n) (Fin n) K)) h0`.
+
+Rewrite `h1` using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec, Matrix.mulVec_zero]`. Then use the resulting hypothesis. Introduce `j`. Rewrite using `[hc0]`. Both sides reduce to the same expression.
+-/
 theorem linIndep_mulTup (D : (Matrix (Fin n) (Fin n) K)ˣ) {X : Fin n → Fin M → K}
     (hX : LinearIndependent K X) : LinearIndependent K (mulTup (D : Matrix (Fin n) (Fin n) K) X) := by
   rw [Fintype.linearIndependent_iff] at hX ⊢
@@ -56,6 +75,11 @@ theorem linIndep_mulTup (D : (Matrix (Fin n) (Fin n) K)ˣ) {X : Fin n → Fin M 
   rw [hc0]
   rfl
 
+/- English proof (translation)
+Use extensionality with `X`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `linIndep_mulTup D⁻¹ h`.
+
+Rewrite `h1` using `[mulTup_mul, Units.mul_inv, mulTup_one]`. Then use the resulting hypothesis. Conclude with `linIndep_mulTup D`.
+-/
 theorem preimage_linIndep (D : (Matrix (Fin n) (Fin n) K)ˣ) :
     mulTup (M := M) (D : Matrix (Fin n) (Fin n) K) ⁻¹' {X | LinearIndependent K X} =
       {X | LinearIndependent K X} := by
@@ -77,25 +101,44 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] 
 def conjT (D : Matrix (Fin n) (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E) :=
   (D.map (sigR R σ))ᵀ
 
+/- English proof (translation)
+Unfold `conjT`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`.
+-/
 theorem conjT_mul (A B : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :
     conjT R σ (A * B) = conjT R σ B * conjT R σ A := by
   unfold conjT
   rw [Matrix.map_mul, Matrix.transpose_mul]
 
+/- English proof (translation)
+Simplify using `[conjT]`.
+-/
 theorem conjT_one : conjT R σ (1 : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = 1 := by
   simp [conjT]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [sigR, Algebra.TensorProduct.map_tmul, hσ]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem sigR_sigR (hσ : ∀ x, σ (σ x) = x) (x : R ⊗[F] E) : sigR R σ (sigR R σ x) = x := by
   induction x using TensorProduct.induction_on with
   | zero => simp
   | tmul a b => simp [sigR, Algebra.TensorProduct.map_tmul, hσ]
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[conjT, sigR_sigR R σ hσ]`.
+-/
 theorem conjT_conjT (hσ : ∀ x, σ (σ x) = x) (A : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :
     conjT R σ (conjT R σ A) = A := by
   ext i j
   simp [conjT, sigR_sigR R σ hσ]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : ∀ a b, sigR R σ ((S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) b a) = S a b` using `h`. Use extensionality with `a b`. Conclude with `h' a b`.
+
+Introduce `h`. Establish `h' : ∀ a b, sigR R σ ((S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) b a) = S a b`. Introduce `a b`. Use `congrFun (congrFun h a) b` as an intermediate fact. Simplify `this` using `[conjT]`.
+
+Conclude with `h'`.
+-/
 theorem mem_herm_iff (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :
     S ∈ HermR R σ n ↔ conjT R σ S = S := by
   constructor
@@ -116,15 +159,24 @@ def hermMap (hσ : ∀ x, σ (σ x) = x) (D : Matrix (Fin n) (Fin n) (R ⊗[F] E
     rw [mem_herm_iff, conjT_mul, conjT_mul, conjT_conjT R σ hσ, (mem_herm_iff R σ _).1 S.2,
       Matrix.mul_assoc]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hermMap_coe (hσ : ∀ x, σ (σ x) = x) (D : Matrix (Fin n) (Fin n) (R ⊗[F] E))
     (S : HermR R σ n) :
     (hermMap R σ hσ D S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = conjT R σ D * S * D := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [hermMap_coe, conjT_mul, Matrix.mul_assoc]`.
+-/
 theorem hermMap_mul (hσ : ∀ x, σ (σ x) = x) (D₁ D₂ : Matrix (Fin n) (Fin n) (R ⊗[F] E))
     (S : HermR R σ n) : hermMap R σ hσ D₁ (hermMap R σ hσ D₂ S) = hermMap R σ hσ (D₂ * D₁) S := by
   apply Subtype.ext
   simp only [hermMap_coe, conjT_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hermMap_coe, conjT_one]`.
+-/
 theorem hermMap_one (hσ : ∀ x, σ (σ x) = x) (S : HermR R σ n) : hermMap R σ hσ 1 S = S := by
   apply Subtype.ext
   simp [hermMap_coe, conjT_one]
@@ -145,6 +197,9 @@ def GramMulTup : Prop := ∀ (F E : Type) [Field F] [Field E] [Algebra F E] (R :
   (D : Matrix (Fin n) (Fin n) (R ⊗[F] E)) (X : Fin n → Fin M → R ⊗[F] E),
   gramR R σ J (mulTup D X) = conjT R σ D * gramR R σ J X * D
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hermMap_coe]`. Conclude with `hG F E R σ n M J D X`.
+-/
 theorem gramH_mulTup_of (hG : GramMulTup) {F E : Type} [Field F] [Field E] [Algebra F E]
     (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {n M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (hJ : ∀ i j, σ (J j i) = J i j)

@@ -20,6 +20,23 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 
 open GlobalTheory.FlagTan in
 
+/- English proof (translation)
+Use `choose vp hvp using fun m : FIx Dw → K => (existsUnique_isVert Q m).exists`. Take `⟨y₀, h₀⟩` from `GlobalTheory.FlagTan.exists_frMap (cst c K) Q`. Take `⟨W₀, hW₀⟩` from `GlobalTheory.FlagTan.exists_frMap (TrivSqZeroExt.inlAlgHom c.F K (FIx Dw → K)) Q`. Set `n : FIx Dw → FIx Dw → K` to `fun k => Pi.single k 1`. Take `⟨W, hW, -⟩` from `GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c _ W₀ _ (isUnit_unip₀ (K := K) n).unit (isUnit_det_unip n)`.
+
+Establish `hWm : ∀ m, FrMap (dir c m) W (vp m)` using `fun m => by`. Take `⟨y₁, h₁, hs⟩` from `hvp m`. Take `rfl` from `GlobalTheory.FlagTan.frMap_unique h₁ h₀`. Apply the tactic sequence `refine (GlobalTheory.FlagTan.frMap_iff_frChg hW (GlobalTheory.FlagTan.frMap_of_comp hW₀ h₀ fun a => by ext <;> simp)).2 ?_`. Unfold `IsShift at hs`.
+
+Use `hs using 2 with τ` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext i j <;> simp [unip, n, Pi.single_apply]`. Apply the tactic sequence `ext <;> simp [unip₀, n, Pi.single_apply]`. Establish `hP : ∀ m, spMap (dir c m).toRingHom ≫ X.ptY W = X.ptY (vp m)` using `fun m => X.ptY_frMap (hWm m)`. Take `⟨ZW, hZf, huniq⟩` from `exists_thickLift M z ho hz (GlobalTheory.FlagTan.frMap_comp (hWm 0) (hvp 0).isDef fun a => by simp)`.
+
+Establish `huniq' : ∀ m (x : Sp (DualNumber K) ⟶ M.X), x ≫ toFlag M = X.ptY (vp m) → x = spMap (dir c m).toRingHom ≫ ZW` using `fun m x hx => huniq m x (hx.trans (hP m).symm)`. Establish `ew : zw = spMap (dir c N).toRingHom ≫ ZW` using `huniq' N zw (by rw [hlw, (existsUnique_isVert Q N).unique hw (hvp N)])`. Establish `hZO : ⊤ ≤ ZW ⁻¹ᵁ O` using `le_preimage_of_comp primeSpectrum_trivSqZeroExt_eq (dir c N).toRingHom ((spMap (red c K).toRingHom) (IsLocalRing.closedPoint K)) ZW O (ew ▸ hzw)`. Establish `hflag : ∀ N' : FIx Dw → K, (∀ σ i j, i < j → N' (some ⟨σ, i, j⟩) = 0) → X.ptY (vp N') = X.ptY y₀` using `fun N' hN' => by`. Take `⟨y₁, h₁, hs⟩` from `hvp N'`.
+
+Take `rfl` from `GlobalTheory.FlagTan.frMap_unique h₁ h₀`. Conclude with `(X.ptY_frBor (t := fun k => oneAddEps (Multiplicative.ofAdd (diagOf N' k))) ((GlobalTheory.Frames.frBor_iff_frChg _ _ _).2 ⟨unip K N', fun σ i j hij => by`. Simplify using `[unip, hN' σ i j hij, hij.ne], fun _ _ => by simp [unip, oneAddEps, diagOf], hs⟩)).symm`. Establish `h0 : ∀ j : FIx Dw, j ∉ Set.range VIx.toF → (evalPt ZW O hZO g).snd j = 0` using `fun j hj => by`. Establish `hx : ⊤ ≤ (spMap (dir c (Pi.single j 1)).toRingHom ≫ ZW) ⁻¹ᵁ O` using `fun s _ => hZO (Set.mem_univ _)`.
+
+Establish `e1` using `huniq 0 (spMap (dir c (Pi.single j 1)).toRingHom ≫ ZW) (by`. Rewrite using `[Category.assoc, hZf, hP, hP, hflag _ (fun σ i j' hij => Pi.single_eq_of_ne (by`. Introduce and unpack `rfl`. Conclude with `hj ⟨⟨σ, (i, j'), hij⟩, rfl⟩) _), hflag 0 fun _ _ _ _ => rfl])`. Establish `a1` using `snd_evalPt_dir ZW O hZO (Pi.single j 1) _ hx rfl g`.
+
+Establish `a2` using `snd_evalPt_dir ZW O hZO 0 _ hx e1 g`. Simplify `a1.symm.trans a2` using `[Pi.single_apply]`. Establish `hk : ∀ k : VIx Dw, (evalPt (zv k) O (hzv k) g).snd = (evalPt ZW O hZO g).snd k.toF` using `fun k => by`. Rewrite using `[snd_evalPt_dir ZW O hZO _ _ _ (huniq' _ _ ((hl k).trans (congrArg X.ptY ((existsUnique_isVert Q _).unique (hv k) (hvp _))))) g]`. Simplify using `[Pi.single_apply]`.
+
+Rewrite using `[snd_evalPt_dir ZW O hZO N zw hzw ew g]`. Simplify using `only [hk]`. Establish `hz0 : ∑ k ∈ Finset.univ.filter (fun k => k ∉ Set.range VIx.toF), (evalPt ZW O hZO g).snd k * N k = 0` using `Finset.sum_eq_zero fun k hk => by rw [h0 k (Finset.mem_filter.1 hk).2, zero_mul]`. Rewrite using `[sum_FIx, hz0, add_zero]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+-/
 theorem der_fun_ver (M : Modif (str₀ X Z) (U₀ X Z) (dimFlag Dw)) {K : Type} [Field K] [Algebra c.F K]
     (z : Sp K ⟶ M.X) (ho : ⊤ ≤ z ⁻¹ᵁ M.off)
     {Q : FrPt Xo c K} (hz : z ≫ toFlag M = X.ptY Q)

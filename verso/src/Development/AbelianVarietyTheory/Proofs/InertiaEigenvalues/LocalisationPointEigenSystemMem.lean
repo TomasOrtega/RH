@@ -8,6 +8,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 
 namespace GlobalTheory.PointEigen
 
+/- English proof (translation)
+Establish `hS : v ∈ D.nd.S i ↔ v ∈ placesS D (D.nd.l i)`. Rewrite using `[D.nd.S_def]`. Both sides reduce to the same expression. Unfold `SplitOut GenAt`. Rewrite using `[hS]`.
+
+The claim follows by propositional logic.
+-/
 theorem genAt_iff_splitOut (D : D7) (i : D.nd.Loc) (v : PlE D.host) (k : ℕ) :
     GenAt D (D.nd.l i) (D.nd.Q i) v k ↔ (SplitOut D.nd i v ∧ 1 ≤ k ∧ k ≤ D.R.nV) := by
   have hS : v ∈ D.nd.S i ↔ v ∈ placesS D (D.nd.l i) := by
@@ -16,6 +21,11 @@ theorem genAt_iff_splitOut (D : D7) (i : D.nd.Loc) (v : PlE D.host) (k : ℕ) :
   rw [hS]
   tauto
 
+/- English proof (translation)
+Introduce `D M A i x`. Use `⟨fun v k h => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [ptSys, if_neg h]`. Take `⟨P, hP⟩` from `D.naut.pt_surj i x`. Take `⟨y, hy, hy0⟩` from `(Submodule.ne_bot_iff _).1 (D.naut.typeV_ne i P)`.
+
+Use `⟨y, hy0, fun v k s ϖ hg hc hu => ?_⟩` and prove the remaining obligations. Take `⟨hw, k1, k2⟩` from `(genAt_iff_splitOut D i v k).1 hg`. Simplify using `only [ptSys, if_pos hg]`. Conclude with `(A.ptV i P x).1 hP v k s ϖ hw hc hu k1 k2 y hy`.
+-/
 theorem ptSys_mem_eigSet : ∀ (D : D7) (M : MtFam D), AVTied D M → ∀ (i : D.nd.Loc) (x : D.nd.X i),
     ptSys D i x ∈ EigSet (M.loc i) (D.nd.l i) (D.nd.Q i) := by
   intro D M A i x

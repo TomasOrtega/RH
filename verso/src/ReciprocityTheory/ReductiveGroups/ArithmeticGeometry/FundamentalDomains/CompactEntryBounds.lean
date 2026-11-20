@@ -9,6 +9,13 @@ open scoped ComplexConjugate
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
+/- English proof (translation)
+Establish `hcc : ∀ x : E, τ (cc x) = conj (τ x)` using `fun x => NumberField.IsCMField.complexEmbedding_complexConj E τ x`. Establish `hL : ∀ a b, ((P.map τ) *ᵥ u) a * τ (X.Gm a b) * conj (((P.map τ) *ᵥ w) b) = ∑ k, ∑ l, u k * conj (w l) * (τ (P a k) * τ (X.Gm a b) * conj (τ (P b l)))`. Introduce `a b`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply]`. Rewrite using `[map_sum, Finset.sum_mul, Finset.sum_mul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hR : ∀ k l, u k * conj (w l) * τ (herm X.Gm (P *ᵥ Pi.single k 1) (P *ᵥ Pi.single l 1)) = ∑ a, ∑ b, u k * conj (w l) * (τ (P a k) * τ (X.Gm a b) * conj (τ (P b l)))`. Introduce `k l`.
+
+Simplify using `only [herm, Matrix.mulVec_single_one, Matrix.transpose_apply, map_sum, map_mul, hcc, Finset.mul_sum]`. Both sides reduce to the same expression. Simplify using `only [hermC, hL, hR]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem hermC_expand (τ : E →+* ℂ) (P : Matrix (Fin r) (Fin r) E) (u w : Fin r → ℂ) :
     hermC τ X.Gm ((P.map τ) *ᵥ u) ((P.map τ) *ᵥ w) =
       ∑ k, ∑ l, u k * conj (w l) * τ (herm X.Gm (P *ᵥ Pi.single k 1) (P *ᵥ Pi.single l 1)) := by
@@ -36,6 +43,9 @@ theorem hermC_expand (τ : E →+* ℂ) (P : Matrix (Fin r) (Fin r) E) (u w : Fi
         Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun a _ => Finset.sum_comm
     _ = ∑ k, ∑ l, ∑ a, ∑ b, u k * conj (w l) * (τ (P a k) * τ (X.Gm a b) * conj (τ (P b l))) := Finset.sum_congr rfl fun k _ => Finset.sum_comm
 
+/- English proof (translation)
+Rewrite using `[hermC_expand X τ γ u w]`. Establish `h1` using `hermC_expand X τ 1 u w`. Rewrite `h1` using `[Matrix.map_one _ (map_zero τ) (map_one τ), Matrix.one_mulVec, Matrix.one_mulVec]`. Rewrite using `[h1]`. Simplify using `only [hγ, Matrix.one_mulVec]`.
+-/
 theorem hermC_stab {γ : Matrix (Fin r) (Fin r) E}
     (hγ : ∀ x y, herm X.Gm (γ *ᵥ x) (γ *ᵥ y) = herm X.Gm x y) (τ : E →+* ℂ) (u w : Fin r → ℂ) :
     hermC τ X.Gm ((γ.map τ) *ᵥ u) ((γ.map τ) *ᵥ w) = hermC τ X.Gm u w := by
@@ -45,6 +55,9 @@ theorem hermC_stab {γ : Matrix (Fin r) (Fin r) E}
   rw [h1]
   simp only [hγ, Matrix.one_mulVec]
 
+/- English proof (translation)
+Establish `hc : ∀ a, col (γ.map τ * Y) a = (γ.map τ) *ᵥ col Y a` using `fun a => by`. Use function extensionality and compare the values at `k`. Simplify using `[col, Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Use extensionality with `a b`. Simplify using `only [gram, Matrix.of_apply, hc, hermC_stab X hγ τ]`.
+-/
 theorem gram_stab {γ : Matrix (Fin r) (Fin r) E}
     (hγ : ∀ x y, herm X.Gm (γ *ᵥ x) (γ *ᵥ y) = herm X.Gm x y) (τ : E →+* ℂ)
     (Y : Matrix (Fin r) (Fin r) ℂ) : gram τ X.Gm (γ.map τ * Y) = gram τ X.Gm Y := by
@@ -54,6 +67,11 @@ theorem gram_stab {γ : Matrix (Fin r) (Fin r) E}
   ext a b
   simp only [gram, Matrix.of_apply, hc, hermC_stab X hγ τ]
 
+/- English proof (translation)
+Establish `hinv : ((γ : Matrix (Fin r) (Fin r) E).map τ)⁻¹ = ((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.map_one _ (map_zero τ) (map_one τ)]`. Rewrite using `[Matrix.mul_inv_rev, hinv, ← Matrix.mulVec_mulVec]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Conclude with `(RingHom.map_mulVec τ _ v a).symm`.
+-/
 theorem inv_lact (γ : GL (Fin r) E) (τ : E →+* ℂ) (Y : Matrix (Fin r) (Fin r) ℂ) (v : Fin r → E) :
     ((γ : Matrix (Fin r) (Fin r) E).map τ * Y)⁻¹ *ᵥ Data.emb τ v =
       Y⁻¹ *ᵥ Data.emb τ (((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ v) := by
@@ -67,6 +85,9 @@ theorem inv_lact (γ : GL (Fin r) E) (τ : E →+* ℂ) (Y : Matrix (Fin r) (Fin
   funext a
   exact (RingHom.map_mulVec τ _ v a).symm
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [gram, hermC, col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.conjTranspose_apply, Matrix.map_apply, Finset.sum_mul, Complex.star_def]`. Conclude with `Finset.sum_comm`.
+-/
 private theorem gram_eq_transpose_mul_map_mul_fundamental_domains (τ : E →+* ℂ) (Y : Matrix (Fin r) (Fin r) ℂ) :
     gram τ X.Gm Y = Yᵀ * X.Gm.map τ * (Yᴴ)ᵀ := by
   ext a b
@@ -74,6 +95,21 @@ private theorem gram_eq_transpose_mul_map_mul_fundamental_domains (τ : E →+* 
     Matrix.conjTranspose_apply, Matrix.map_apply, Finset.sum_mul, Complex.star_def]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Use `set d : Fin r → ℂ := fun a => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ) with hd_def`. Establish `hA : (X.Gm.map τ).det ≠ 0`. Establish `h` using `RingHom.map_det τ X.Gm`. Rewrite `h` using `[RingHom.mapMatrix_apply]`. Rewrite using `[← h]`.
+
+Conclude with `(map_ne_zero τ).2 X.Gm_det`. Establish `e1 : Yᵀ * X.Gm.map τ * (Yᴴ)ᵀ = diagonal d`. Rewrite using `[← gram_eq_transpose_mul_map_mul_fundamental_domains, hg]`. Establish `e2` using `congrArg Matrix.transpose e1`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.diagonal_transpose, ← Matrix.mul_assoc] at e2`.
+
+Establish `hYH : IsUnit (Yᴴ).det`. Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `isUnit_iff_ne_zero.2 (star_ne_zero.2 hY)`. Establish `hAT : IsUnit (X.Gm.map τ)ᵀ.det`. Rewrite using `[Matrix.det_transpose]`.
+
+Conclude with `isUnit_iff_ne_zero.2 hA`. Establish `e3 : Y = ((X.Gm.map τ)ᵀ)⁻¹ * (Yᴴ)⁻¹ * diagonal d`. Rewrite using `[← e2]`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_assoc ((X.Gm.map τ)ᵀ)⁻¹ (Yᴴ)⁻¹ Yᴴ, Matrix.nonsing_inv_mul _ hYH, Matrix.mul_one, Matrix.nonsing_inv_mul _ hAT, Matrix.one_mul]`.
+
+Establish `e4 : Y l b = (∑ k, (X.Gm.map τ)⁻¹ k l * star (Y⁻¹ b k)) * d b` using `by conv_lhs => rw [e3]`. Rewrite using `[Matrix.mul_diagonal, Matrix.mul_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.transpose_nonsing_inv, Matrix.transpose_apply, ← Matrix.conjTranspose_nonsing_inv, Matrix.conjTranspose_apply]`.
+
+Establish `hdb : ‖d b‖ = 1`. Rewrite using `[hd_def, Complex.norm_real]`. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> norm_num`. Rewrite using `[e4, norm_mul, hdb, mul_one]`.
+
+Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_star]`.
+-/
 theorem entry_bound {τ : E →+* ℂ} {Y : Matrix (Fin r) (Fin r) ℂ} (hY : Y.det ≠ 0)
     (hg : gram τ X.Gm Y = diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) (l b : Fin r) :
     ‖Y l b‖ ≤ ∑ k, ‖(X.Gm.map τ)⁻¹ k l‖ * ‖Y⁻¹ b k‖ := by
@@ -115,6 +151,9 @@ theorem entry_bound {τ : E →+* ℂ} {Y : Matrix (Fin r) (Fin r) ℂ} (hY : Y.
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [norm_mul, norm_star]
 
+/- English proof (translation)
+Unfold `QuadraticLatticeForms.Qy`. Establish `hc : ∀ τ' : X.Ψ, 0 ≤ X.c τ'` using `fun τ' => by unfold Data.c; positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem comp_le_Qy (y : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (τ : X.Ψ) (p : Fin r → E) (b : Fin r) :
     X.c τ * ‖((y τ)⁻¹ *ᵥ Data.emb τ.1 p) b‖ ^ 2 ≤ QuadraticLatticeForms.Qy X y p := by
   unfold QuadraticLatticeForms.Qy
@@ -128,6 +167,15 @@ theorem comp_le_Qy (y : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (τ : X.Ψ) (p : Fi
           (f := fun τ' => X.c τ' * ∑ a, ‖((y τ')⁻¹ *ᵥ Data.emb τ'.1 p) a‖ ^ 2)
           (fun τ' _ => mul_nonneg (hc τ') (by positivity)) (Finset.mem_univ τ)
 
+/- English proof (translation)
+Establish `hcpos : 0 < X.c τ`. Unfold `Data.c`. Use `(map_ne_zero τ.1).2 X.ξ0_ne` as an intermediate fact. Check the signs of the components of the expression. Establish `hemb : Data.emb τ.1 (∑ i, q i • f i) = ∑ i, (q i : ℂ) • Data.emb τ.1 (f i)`.
+
+Use function extensionality and compare the values at `a`. Simplify using `[Data.emb, map_sum, Finset.sum_apply, Rat.smul_def, map_mul, map_ratCast]`. Establish `hlin : ((y τ)⁻¹ *ᵥ Data.emb τ.1 (∑ i, q i • f i)) b = ∑ i, (q i : ℂ) * ((y τ)⁻¹ *ᵥ Data.emb τ.1 (f i)) b`. Rewrite using `[hemb, Matrix.mulVec_sum, Finset.sum_apply]`. Simplify using `[Matrix.mulVec_smul]`.
+
+Rewrite using `[hlin]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Establish `h1` using `comp_le_Qy X y τ (f i) b`.
+
+Establish `h2 : ‖((y τ)⁻¹ *ᵥ Data.emb τ.1 (f i)) b‖ ^ 2 ≤ QuadraticLatticeForms.Qy X y (f i) / X.c τ`. Rewrite using `[le_div_iff₀ hcpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Use polynomial arithmetic with `[sq_nonneg (‖((y τ)⁻¹ *ᵥ Data.emb τ.1 (f i)) b‖ - 1)]`.
+-/
 theorem comb_bound (y : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (τ : X.Ψ) {ι : Type} [Fintype ι]
     (q : ι → ℚ) (f : ι → Fin r → E) (b : Fin r) :
     ‖((y τ)⁻¹ *ᵥ Data.emb τ.1 (∑ i, q i • f i)) b‖ ≤
@@ -157,12 +205,22 @@ def Kset (R : ℝ) : Set (Frame X.Ψ r) :=
   {w | ∀ τ : X.Ψ, gram τ.1 X.Gm (mat w τ) = diagonal (fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) ∧
     ∀ a c, ‖w τ a c‖ ≤ R}
 
+/- English proof (translation)
+Apply `continuous_matrix` to reduce the goal to its premises. Introduce `a b`. Simplify using `only [gram, hermC, col, mat, Matrix.of_apply]`. Use `fun_prop`.
+-/
 theorem cont_gram' (τ : X.Ψ) : Continuous fun w : Frame X.Ψ r => gram τ.1 X.Gm (mat w τ) := by
   apply continuous_matrix
   intro a b
   simp only [gram, hermC, col, mat, Matrix.of_apply]
   fun_prop
 
+/- English proof (translation)
+Establish `hcl : IsClosed (Kset X R)`. Establish `: Kset X R = ⋂ τ : X.Ψ, ({w : Frame X.Ψ r | gram τ.1 X.Gm (mat w τ) = diagonal (fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ))} ∩ ⋂ a, ⋂ c, {w : Frame X.Ψ r | ‖w τ a c‖ ≤ R})`. Use extensionality with `w`. Simplify using `only [Kset, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_inter_iff]`. Rewrite using `[this]`.
+
+Use `isClosed_iInter fun τ => (isClosed_eq (cont_gram' X τ) continuous_const).inter (isClosed_iInter fun a => isClosed_iInter fun c => isClosed_le (by fun_prop) continuous_const)` and prove the remaining obligations. Use `Metric.isCompact_of_isClosed_isBounded hcl ?_` and prove the remaining obligations. Use `(Metric.isBounded_closedBall (x := (0 : Frame X.Ψ r)) (r := max R 0)).subset ?_` and prove the remaining obligations. Introduce `w hw`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`.
+
+Conclude with `(pi_norm_le_iff_of_nonneg (le_max_right _ _)).2 fun τ => (pi_norm_le_iff_of_nonneg (le_max_right _ _)).2 fun a => (pi_norm_le_iff_of_nonneg (le_max_right _ _)).2 fun c => ((hw τ).2 a c).trans (le_max_left _ _)`.
+-/
 theorem Kset_compact (R : ℝ) : IsCompact (Kset X R) := by
   have hcl : IsClosed (Kset X R) := by
     have : Kset X R = ⋂ τ : X.Ψ, ({w : Frame X.Ψ r | gram τ.1 X.Gm (mat w τ) =
@@ -182,6 +240,11 @@ theorem Kset_compact (R : ℝ) : IsCompact (Kset X R) := by
       (pi_norm_le_iff_of_nonneg (le_max_right _ _)).2 fun c =>
         ((hw τ).2 a c).trans (le_max_left _ _)
 
+/- English proof (translation)
+Introduce `h0`. Establish `h` using `congrArg Matrix.det hg`. Rewrite `h` using `[gram_eq_transpose_mul_map_mul_fundamental_domains, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, h0, zero_mul, zero_mul, Matrix.det_diagonal]`. Use `absurd h.symm (Finset.prod_ne_zero_iff.2 fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[ne_eq, Complex.ofReal_eq_zero]`.
+
+Unfold `sgn`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem det_ne_of_gram {τ : E →+* ℂ} {Y : Matrix (Fin r) (Fin r) ℂ} {p0 : ℕ}
     (hg : gram τ X.Gm Y = diagonal fun a : Fin r => ((sgn p0 (a : ℕ) : ℝ) : ℂ)) : Y.det ≠ 0 := by
   intro h0
@@ -193,6 +256,13 @@ theorem det_ne_of_gram {τ : E →+* ℂ} {Y : Matrix (Fin r) (Fin r) ℂ} {p0 :
   unfold sgn
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Introduce `w hw`. Use `(X.mem_dom_iff w).2 fun τ => ?_` and prove the remaining obligations. Establish `hg` using `(hw τ).1`. Use `⟨det_ne_of_gram X hg, fun i => ?_⟩` and prove the remaining obligations. Establish `hd : dmin X.Gm w τ i = ((psgn X.p0 i : ℝ) : ℂ)`.
+
+Rewrite using `[dmin, hg, lminor, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal, psgn, Complex.ofReal_prod]`. Conclude with `Fin.prod_univ_eq_prod_range (fun a => ((sgn X.p0 a : ℝ) : ℂ)) i`. Rewrite using `[hd, Complex.ofReal_re]`. Establish `hne : psgn X.p0 i ≠ 0`. Unfold `psgn`.
+
+Apply the tactic sequence `exact Finset.prod_ne_zero_iff.2 fun a _ => by unfold sgn; split_ifs <;> norm_num`. Conclude with `mul_self_pos.2 hne`.
+-/
 theorem Kset_sub (R : ℝ) : Kset X R ⊆ X.dom := by
   intro w hw
   refine (X.mem_dom_iff w).2 fun τ => ?_

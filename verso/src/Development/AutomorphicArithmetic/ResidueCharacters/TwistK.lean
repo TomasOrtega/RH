@@ -17,6 +17,21 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR]
     {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL] [CommRing O] [Algebra O LL]
 
+/- English proof (translation)
+Introduce `e Ve h1 hχ`. Take `⟨hDR, hFil⟩` from `GlobalTheory.isDR_and_DdR_le_Fil_zero_of_twist PD Ve.ρ e hχ`. Establish `hpos : 0 < e → HfD PD Ve.L = BD Ve.L ∧ BD Ve.L ≠ ⊥`. Introduce `he`. Take `⟨g, hg1⟩` from `hchi e he`.
+
+Establish `hu : ((algebraMap Qp LL (PD.χ g : Qp))⁻¹) ^ e ≠ 1`. Rewrite using `[inv_pow, Ne, inv_eq_one, ← map_pow, map_eq_one_iff _ (algebraMap Qp LL).injective]`. Conclude with `hg1`. Conclude with `⟨HfD_eq_BD PD Ve (GlobalTheory.HfZero.z1f_le_b1 PD h5 h7 hO (toG Ve) hDR hFil (fixed_points_trivial_of_scalar_action_ne_one Ve _ _ hu (hχ _))), BD_ne_bot hO Ve h1 _ _ hu (hχ _)⟩`. Establish `hzero : e = 0 → HfD PD Ve.L ≠ ⊥ ∧ ∀ c : G → Ve.V ⧸ Ve.L.T, c ∈ HfD PD Ve.L ↔ (c ∈ divisibleCocycles Ve.L ∧ ∃ x, ∀ g ∈ I, c g = actD Ve.L g x - x)`.
+
+Introduce and unpack `rfl`. Simplify using `only [pow_zero, one_smul] at hχ`. Establish `htop : H0V Ve.ρ = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+
+Use `(Submodule.mem_iInf _).2 fun g => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, hχ, LinearMap.id_apply, sub_self]`. Establish `hdim : ((Module.finrank LL (FiniteCohomology PD Ve.ρ) : ℕ) : ℤ) = Module.finrank LL ↥(H0V Ve.ρ) + ((Module.finrank LL ↥(DdR PD Ve.ρ) : ℤ) - Module.finrank LL ↥(DdR PD Ve.ρ ⊓ FilV PD (LL` using `LL) (V := Ve.V) 0)) := hbk _ _ hO (toG Ve) hDR`. Rewrite `hdim` using `[inf_eq_left.2 hFil, sub_self, add_zero, htop, finrank_top, h1]`. Conclude with `GlobalTheory.UnramifiedClasses.HfD_eq_unramified PD hO Ve h1 hχ (by exact_mod_cast hdim) I φ hφ δ hδ hδI hδ0`.
+
+Use `⟨fun n => ?_, fun he => (hpos he).1, fun he => (hzero he).2⟩` and prove the remaining obligations. Establish `hne : HfD PD Ve.L ≠ ⊥`. Break down `Nat.eq_zero_or_pos e with he | he` into its components or cases. Conclude with `(hzero he).1`. Rewrite using `[(hpos he).1]`.
+
+Conclude with `(hpos he).2`. Use `haveI := hfin n`. Use `haveI : IsDomain O := hO.1.1`. Establish `key` using `len_part PD hO Ve h1 PD.p n (Module.finrank Qp K) (pow_ne_zero n hp) (heul n) hne`. Establish `hord : Module.length O (O ⧸ Ideal.span {((PD.p : ℕ) : O) ^ n}) = n • Module.length O (O ⧸ Ideal.span {((PD.p : ℕ) : O)})` using `Ring.ord_pow (mem_nonZeroDivisors_of_ne_zero hp) n`.
+
+Unfold `lenOl`. Rewrite using `[Nat.cast_mul, mul_assoc, ← nsmul_eq_mul n, ← hord]`. Conclude with `key`.
+-/
 theorem tbe_of (PD : PeriodData G Qp K₀ K B BdR) (I : Subgroup G) [TopologicalSpace Qp] [CompactSpace G] [IsTopologicalGroup G]
     [IsTopologicalRing LL] (hO : GoodO (Qp := Qp) LL O)
     (hfin : ∀ n : ℕ, Finite (O ⧸ Ideal.span {((PD.p : ℕ) : O) ^ n}))
@@ -75,6 +90,17 @@ theorem tbe_of (PD : PeriodData G Qp K₀ K B BdR) (I : Subgroup G) [Topological
 
 end
 
+/- English proof (translation)
+Take `⟨-, hA2, -, hA4, hA5, -, hA7, -, -⟩` from `hA`. Take `⟨hO, hfin⟩` from `GlobalTheory.LocalIntegers.good_integers l LL`. Use `haveI := K.2`. Use `haveI hc : CompactSpace ↥(GK K) := isCompact_iff_compactSpace.1 (IntermediateField.fixingSubgroup_isClosed K.1).isCompact`. Take `⟨φ, hφ⟩` from `GlobalTheory.exists_topologicalClosure_zpowers_sup_inertia l K`.
+
+Take `⟨δ, hδ, hδI, hδ0⟩` from `exists_unr D l K LL`. Establish `hp : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Establish `hl0 : ((l : ℕ) : ↥(OL LL)) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Use `haveI : IsTopologicalRing ↥LL.1 := hO.2.2.2.1`. Use `tbe_of _ _ hO ?_ ?_ (hA5 l K) (hA7 l K) (hB l K).2.1 ?_ ?_ φ hφ δ hδ hδI hδ0` and prove the remaining obligations.
+
+Rewrite using `[hp]`. Conclude with `hfin`. Rewrite using `[hp]`. Conclude with `hl0`. Rewrite using `[hp]`.
+
+Conclude with `GlobalTheory.CocycleCount.cocycles_finite_ncard_le hA2 hA4 l K`. Introduce `e he`. Take `⟨g, hg, hg1⟩` from `GlobalTheory.Cyc.exists_mem_GK_chi_pow_ne_one l (D.loc l).χQ (D.loc l).χQ_cyc K e he`. Use `⟨⟨g, hg⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[(D.loc l).PD_χ K ⟨g, hg⟩]`.
+
+Conclude with `hg1`.
+-/
 theorem tbe_all (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (hA : admitted D HW F) (hB : Conclusion5 D)
     (l : ℕ) [Fact l.Prime] (K LL : FinExt l) : TBe ((D.loc l).PD K) ↥LL.1 ↥(OL LL) (IK K) := by
   obtain ⟨-, hA2, -, hA4, hA5, -, hA7, -, -⟩ := hA

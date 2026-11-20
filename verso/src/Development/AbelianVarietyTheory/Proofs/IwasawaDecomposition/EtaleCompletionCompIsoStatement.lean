@@ -7,5 +7,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFam GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.TorRef
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Member.isEtaleCompletion_stalkClosedPointTo_comp_iso | exact GlobalTheory.Member.isEtaleCompletion_stalkClosedPointTo_comp_iso | (intros; apply GlobalTheory.Member.isEtaleCompletion_stalkClosedPointTo_comp_iso <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.etaleCompletion_comp_iso : ∀ {R : Type} [CommRing R] [IsLocalRing R] {X Y : Scheme.{0}} (ξ : Spec (CommRingCat.of R) ⟶ X) (g : X ⟶ Y) [IsIso g], IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom → IsEtaleCompletion (Scheme.stalkClosedPointTo (ξ ≫ g)).hom := by
   first | exact @GlobalTheory.Member.isEtaleCompletion_stalkClosedPointTo_comp_iso | exact GlobalTheory.Member.isEtaleCompletion_stalkClosedPointTo_comp_iso | (intros; apply GlobalTheory.Member.isEtaleCompletion_stalkClosedPointTo_comp_iso <;> assumption)

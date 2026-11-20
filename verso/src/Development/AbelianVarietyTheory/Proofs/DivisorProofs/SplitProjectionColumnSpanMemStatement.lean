@@ -18,6 +18,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open scoped TensorProduct
 open Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ColSpanDown.mem_span_comp | exact GlobalTheory.ColSpanDown.mem_span_comp | (intros; apply GlobalTheory.ColSpanDown.mem_span_comp <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.split_projection_column_span_mem : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     {v : HeightOneSpectrum (𝓞 F)} (τ : E →ₐ[F] Fv F v) {n r : ℕ} (X : Matrix (Fin n) (Fin r) E) (I : Set (Fin r))
     (y : Fin n → AF F ⊗[F] E), y ∈ GlobalTheory.StdPar.colSpan F X I →

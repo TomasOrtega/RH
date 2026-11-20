@@ -10,10 +10,20 @@ namespace GlobalTheory.CompanionTheory.IwasawaShell
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Establish `h : 1 < residueCard F` using `one_lt_residueCard`. Conclude with `(by omega : 0 < residueCard F)` after adjusting the coercions.
+-/
 theorem q_pos : (0 : ℝ) < residueCard F := by
   have h : 1 < residueCard F := one_lt_residueCard
   exact_mod_cast (by omega : 0 < residueCard F)
 
+/- English proof (translation)
+Establish `hq : (residueCard F : ℝ) ≠ 0` using `q_pos.ne'`. Establish `hu : (modulus ((unifUnit F : Fˣ) : F) : ℝ) = (residueCard F : ℝ)⁻¹`. Rewrite using `[modulus, if_neg (unifUnit F).ne_zero, ord_unifUnit]`. Simplify using the standard rewrite rules. Establish `hui : (modulus (((unifUnit F)⁻¹ : Fˣ) : F) : ℝ) = (residueCard F : ℝ)`.
+
+Rewrite using `[Units.val_inv_eq_inv_val, modulus_inv]`. Use `push_cast`. Rewrite using `[hu, inv_inv]`. Proceed by induction on `k using Int.induction_on with`. Consider the case `zero => simp [modulus_one]`.
+
+Consider the case `succ i ih`. Rewrite using `[_root_.zpow_add_one, Units.val_mul, modulus_mul, NNReal.coe_mul, ih, hu, neg_add, zpow_add₀ hq, _root_.zpow_neg_one]`. Consider the case `pred i ih`. Rewrite using `[_root_.zpow_sub_one, Units.val_mul, modulus_mul, NNReal.coe_mul, ih, hui, neg_sub, sub_eq_add_neg, add_comm (1 : ℤ), zpow_add₀ hq, zpow_one]`.
+-/
 theorem modulus_unif_zpow (k : ℤ) :
     (modulus (((unifUnit F) ^ k : Fˣ) : F) : ℝ) = (residueCard F : ℝ) ^ (-k) := by
   have hq : (residueCard F : ℝ) ≠ 0 := q_pos.ne'
@@ -31,6 +41,9 @@ theorem modulus_unif_zpow (k : ℤ) :
   | pred i ih =>
     rw [_root_.zpow_sub_one, Units.val_mul, modulus_mul, NNReal.coe_mul, ih, hui, neg_sub, sub_eq_add_neg, add_comm (1 : ℤ), zpow_add₀ hq, zpow_one]
 
+/- English proof (translation)
+Establish `hq : (residueCard F : ℝ) ≠ 0` using `q_pos.ne'`. Rewrite using `[← modulus_le_one_iff, ← NNReal.coe_le_coe, modulus_mul, NNReal.coe_mul, NNReal.coe_one, modulus_unif_zpow]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mem_integer_of_modulus_le (k : ℤ) {x : F}
     (hx : (modulus x : ℝ) ≤ (residueCard F : ℝ) ^ k) :
     (((unifUnit F) ^ k : Fˣ) : F) * x ∈ 𝒪[F] := by
@@ -42,12 +55,20 @@ theorem mem_integer_of_modulus_le (k : ℤ) {x : F}
         mul_le_mul_of_nonneg_left hx (zpow_nonneg q_pos.le _)
     _ = 1 := by rw [← zpow_add₀ hq]; simp
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Ad3.uni2, Matrix.mul_apply, Fin.sum_univ_two, add_comm]`.
+-/
 theorem uni2_mul_uni2_eq_uni2_add (x y : F) : Ad3.uni2 x * Ad3.uni2 y = Ad3.uni2 (x + y) := by
   apply Units.ext
   ext i j
   fin_cases i <;> fin_cases j <;>
     simp [Ad3.uni2, Matrix.mul_apply, Fin.sum_univ_two, add_comm]
 
+/- English proof (translation)
+Rewrite using `[GLnLocal.mem_integralGL_iff]`. Establish `h0 : (0 : F) ∈ 𝒪[F]` using `zero_mem _`. Establish `h1 : (1 : F) ∈ 𝒪[F]` using `one_mem _`. Establish `hn : -y ∈ 𝒪[F]` using `neg_mem hy`. Establish `hv : ((Ad3.uni2 y : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) = !![1, y; 0, 1]` using `rfl`.
+
+Establish `hi : (((Ad3.uni2 y)⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) = !![1, -y; 0, 1]` using `rfl`. Rewrite using `[hv, hi]`. Apply the tactic sequence `constructor <;> intro i j <;> fin_cases i <;> fin_cases j <;> simpa using by assumption`.
+-/
 theorem unipotent_integral_mem_compact {y : F} (hy : y ∈ 𝒪[F]) : Ad3.uni2 y ∈ GLnLocal.integralGL F 2 := by
   rw [GLnLocal.mem_integralGL_iff]
   have h0 : (0 : F) ∈ 𝒪[F] := zero_mem _
@@ -58,6 +79,11 @@ theorem unipotent_integral_mem_compact {y : F} (hy : y ∈ 𝒪[F]) : Ad3.uni2 y
   rw [hv, hi]
   constructor <;> intro i j <;> fin_cases i <;> fin_cases j <;> simpa using by assumption
 
+/- English proof (translation)
+Establish `hα : (α : F) ≠ 0` using `α.ne_zero`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Ad3.uni2, Ad3.dg2, Matrix.mul_apply, Fin.sum_univ_two]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem unipotent_mul_torus_commute (α β : Fˣ) (x : F) :
     Ad3.uni2 x * Ad3.dg2 α β = Ad3.dg2 α β * Ad3.uni2 ((α : F)⁻¹ * β * x) := by
   have hα : (α : F) ≠ 0 := α.ne_zero
@@ -73,6 +99,9 @@ def Q (j : ℤ) : Set (GL (Fin 2) F) :=
   {g | ∃ y : F, (modulus y : ℝ) ≤ (residueCard F : ℝ) ^ j ∧
     ∃ κ ∈ GLnLocal.integralGL F 2, g = Ad3.uni2 y * κ}
 
+/- English proof (translation)
+Introduce and unpack `g ⟨y, hy, κ, hκ, rfl⟩`. Establish `hy' : y ∈ 𝒪[F]`. Rewrite using `[← modulus_le_one_iff, ← NNReal.coe_le_coe]`. Simplify using `using hy`. Conclude with `mul_mem (unipotent_integral_mem_compact hy') hκ`.
+-/
 theorem Q_zero_subset : Q F 0 ⊆ (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F)) := by
   rintro g ⟨y, hy, κ, hκ, rfl⟩
   have hy' : y ∈ 𝒪[F] := by
@@ -80,6 +109,17 @@ theorem Q_zero_subset : Q F 0 ⊆ (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F))
     simpa using hy
   exact mul_mem (unipotent_integral_mem_compact hy') hκ
 
+/- English proof (translation)
+Establish `hq : (residueCard F : ℝ) ≠ 0` using `q_pos.ne'`. Introduce and unpack `g ⟨y, hy, κ, hκ, rfl⟩`. Use `set k : ℤ := ((j + 1 : ℕ) : ℤ) with hk`. Establish `hX` using `mem_integer_of_modulus_le k hy`. Use `set X : F := (((unifUnit F) ^ k : Fˣ) : F) * y with hXdef`.
+
+Take `⟨b, ⟨hb, hb2⟩, -⟩` from `h.2.2 X hX`. Establish `hϖ : modulus (ϖ : F) = (residueCard F : NNReal)⁻¹`. Rewrite using `[modulus, if_neg ϖ.ne_zero, h.1]`. Simplify using the standard rewrite rules. Establish `h1` using `modulus_le_one_iff.mpr hb2`.
+
+Rewrite `h1` using `[modulus_mul, Units.val_inv_eq_inv_val, modulus_inv, hϖ, inv_inv]`. Establish `h2 : (residueCard F : ℝ) * (modulus (X - b) : ℝ) ≤ 1` using `by exact_mod_cast h1`. Simplify using `only [Set.mem_iUnion, Set.mem_preimage]`. Use `⟨b, hb, y - (((unifUnit F) ^ (-k) : Fˣ) : F) * b, ?_, κ, hκ, ?_⟩` and prove the remaining obligations. Establish `e : y - (((unifUnit F) ^ (-k) : Fˣ) : F) * b = (((unifUnit F) ^ (-k) : Fˣ) : F) * (X - b)`.
+
+Rewrite using `[mul_sub, hXdef, ← mul_assoc, ← Units.val_mul, ← _root_.zpow_add]`. Simplify using the standard rewrite rules. Rewrite using `[e, modulus_mul, NNReal.coe_mul, modulus_unif_zpow, neg_neg, hk]`. Use `push_cast`. Rewrite using `[zpow_add₀ hq, zpow_one, mul_assoc]`.
+
+Establish `hp : (0 : ℝ) ≤ (residueCard F : ℝ) ^ (j : ℤ)` using `zpow_nonneg q_pos.le _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, uni2_mul_uni2_eq_uni2_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Q_succ_subset {ϖ : Fˣ} {B : Finset F} (h : Ad3.R.Reps ϖ B) (j : ℕ) :
     Q F ((j + 1 : ℕ) : ℤ) ⊆ ⋃ b ∈ B,
       (fun g => Ad3.uni2 (-((((unifUnit F) ^ (-((j + 1 : ℕ) : ℤ)) : Fˣ) : F) * b)) * g) ⁻¹' Q F j := by
@@ -111,6 +151,11 @@ theorem Q_succ_subset {ϖ : Fˣ} {B : Finset F} (h : Ad3.R.Reps ϖ B) (j : ℕ) 
     congr 2
     ring
 
+/- English proof (translation)
+Take `⟨ϖ, B, hB⟩` from `GlobalTheory.CompanionTheory.RankinStepC.reps_exists (F := F)`. Proceed by induction on `j with`. Consider the case `zero`. Simplify using `using measure_mono (μ := μ) Q_zero_subset`. Consider the case `succ j ih`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [measure_preimage_mul, Finset.sum_const, nsmul_eq_mul, GlobalTheory.CompanionTheory.RankinStepC.reps_card hB]`. Use `_ ≤ (residueCard F : ℝ≥0∞) * ((residueCard F : ℝ≥0∞) ^ j * μ (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F))) := by gcongr`. Use `_ = (residueCard F : ℝ≥0∞) ^ (j + 1) * μ (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F)) := by`. Rewrite using `[pow_succ', mul_assoc]`.
+-/
 theorem measure_Q_le (μ : Measure (GL (Fin 2) F)) [μ.IsMulLeftInvariant] (j : ℕ) :
     μ (Q F j) ≤ (residueCard F : ℝ≥0∞) ^ j * μ (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F)) := by
   obtain ⟨ϖ, B, hB⟩ := GlobalTheory.CompanionTheory.RankinStepC.reps_exists (F := F)
@@ -134,6 +179,11 @@ theorem measure_Q_le (μ : Measure (GL (Fin 2) F)) [μ.IsMulLeftInvariant] (j : 
       _ = (residueCard F : ℝ≥0∞) ^ (j + 1) * μ (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F)) := by
           rw [pow_succ', mul_assoc]
 
+/- English proof (translation)
+Establish `hq : (residueCard F : ℝ) ≠ 0` using `q_pos.ne'`. Introduce and unpack `g ⟨x, hx, κ, hκ, rfl⟩`. Use `⟨(((unifUnit F ^ m : Fˣ) : F))⁻¹ * ((unifUnit F ^ n : Fˣ) : F) * x, ?_, κ, hκ, ?_⟩` and prove the remaining obligations. Rewrite using `[modulus_mul, modulus_mul, modulus_inv, NNReal.coe_mul, NNReal.coe_mul, NNReal.coe_inv, modulus_unif_zpow, modulus_unif_zpow, ← _root_.zpow_neg, neg_neg, ← zpow_add₀ hq]`. Establish `e : L - n = (m + -n) + (L - m)` using `by ring`.
+
+Rewrite using `[e, zpow_add₀ hq (m + -n)]`. Conclude with `mul_le_mul_of_nonneg_left hx (zpow_nonneg q_pos.le _)`. Rewrite using `[unipotent_mul_torus_commute]`. Simplify using `[mul_assoc]`.
+-/
 theorem shell_subset (m n L : ℤ) :
     {g : GL (Fin 2) F | ∃ x : F, (modulus x : ℝ) ≤ (residueCard F : ℝ) ^ (L - m) ∧
       ∃ κ ∈ GLnLocal.integralGL F 2, g = Ad3.uni2 x * Ad3.dg2 (unifUnit F ^ m) (unifUnit F ^ n) * κ} ⊆
@@ -149,6 +199,15 @@ theorem shell_subset (m n L : ℤ) :
   · rw [unipotent_mul_torus_commute]
     simp [mul_assoc]
 
+/- English proof (translation)
+Introduce `F _ _ _ _ μ _ m n L`. Prove the components needed by the constructor for the conclusion. Establish `e : {g : GL (Fin 2) F | ∃ x : F, (modulus x : ℝ) ≤ (residueCard F : ℝ) ^ (L - m) ∧ ∃ κ ∈ GLnLocal.integralGL F 2, g = Ad3.uni2 x * Ad3.dg2 (unifUnit F ^ m) (unifUnit F ^ n) * κ} = ⋃ x : {x : F // (modulus x : ℝ) ≤ (residueCard F : ℝ) ^ (L - m)}, (Homeomorph.mulLeft (Ad3.uni2 x.1 …`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_image, Homeomorph.coe_mulLeft, Subtype.exists, SetLike.mem_coe, exists_prop]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, κ, hκ, rfl⟩`. Conclude with `⟨x, hx, κ, hκ, rfl⟩`. Introduce and unpack `⟨x, hx, κ, hκ, rfl⟩`. Conclude with `⟨x, hx, κ, hκ, rfl⟩`.
+
+Rewrite using `[e]`. Conclude with `isOpen_iUnion fun x => (Homeomorph.mulLeft _).isOpenMap _ (GLnLocal.isOpen_integralGL F 2)`. Introduce `hnL`. Take `⟨j, hj⟩` from `Int.eq_ofNat_of_zero_le (sub_nonneg.2 hnL)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hj, zpow_natCast, ENNReal.ofReal_pow (Nat.cast_nonneg _), ENNReal.ofReal_natCast]`.
+-/
 theorem shell_open_volume : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (μ : Measure (GL (Fin 2) F)) [μ.IsMulLeftInvariant] (m n L : ℤ), IsOpen {g : GL (Fin 2) F | ∃ x : F, (modulus x : ℝ) ≤ (residueCard F : ℝ) ^ (L - m) ∧ ∃ κ ∈ GLnLocal.integralGL F 2, g = Ad3.uni2 x * Ad3.dg2 (unifUnit F ^ m) (unifUnit F ^ n) * κ} ∧ (n ≤ L → μ {g : GL (Fin 2) F | ∃ x : F, (modulus x : ℝ) ≤ (residueCard F : ℝ) ^ (L - m) ∧ ∃ κ ∈ GLnLocal.integralGL F 2, g = Ad3.uni2 x * Ad3.dg2 (unifUnit F ^ m) (unifUnit F ^ n) * κ} ≤ ENNReal.ofReal ((residueCard F : ℝ) ^ (L - n)) * μ (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F))) := by
   intro F _ _ _ _ μ _ m n L
   constructor

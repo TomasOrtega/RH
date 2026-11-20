@@ -6,6 +6,9 @@ noncomputable section
 
 namespace Formalism.GradedWeylDivisibility
 
+/- English proof (translation)
+Introduce `d hd`. Apply `hf` to reduce the goal to its premises. Rewrite using `[MvPolynomial.coeff_map]`. Introduce `h0`. Conclude with `hd (hφ (h0.trans (map_zero φ).symm))`.
+-/
 private theorem isWeightedHomogeneous_of_map_of_injective {R S : Type*} [CommRing R] [CommRing S]
     {φ : R →+* S} (hφ : Function.Injective φ) {σ M : Type*} [AddCommMonoid M] {w : σ → M}
     {m : M} {f : MvPolynomial σ R} (hf : IsWeightedHomogeneous w (map φ f) m) :
@@ -16,6 +19,13 @@ private theorem isWeightedHomogeneous_of_map_of_injective {R S : Type*} [CommRin
   intro h0
   exact hd (hφ (h0.trans (map_zero φ).symm))
 
+/- English proof (translation)
+Introduce `r n ν f`. Establish `hφ : Function.Injective (Int.castRingHom ℚ)` using `RingHom.injective_int _`. Prove the components needed by the constructor for the conclusion. Conclude with `dualWeylModuleMap ℤ ℚ (Int.castRingHom ℚ) r n ν f`. Introduce `h`.
+
+Rewrite `h`, the goal using `[lsat_mem_dualWeyl]`. Take `⟨hw, hc⟩` from `h`. Use `⟨isWeightedHomogeneous_of_map_of_injective hφ hw, ?_⟩` and prove the remaining obligations. Introduce `l j hlj`. Apply `MvPolynomial.map_injective (f := Int.castRingHom ℚ) hφ` to reduce the goal to its premises.
+
+Rewrite using `[lsat_map_colAddGen, MvPolynomial.map_rename]`. Conclude with `hc l j hlj`.
+-/
 theorem dualWeylModuleIntRat : DualWeylIntRat := by
   intro r n ν f
   have hφ : Function.Injective (Int.castRingHom ℚ) := RingHom.injective_int _

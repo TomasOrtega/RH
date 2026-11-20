@@ -15,6 +15,13 @@ noncomputable section
 
 namespace GlobalTheory.Poinc.Sep.E8Fibration
 
+/- English proof (translation)
+Introduce `S S' f A B _ _ pr hpr P _ i hi`. Take `⟨hmon, huniv⟩` from `hpr`. Use `⟨fun a => ?_, fun T y => ?_⟩` and prove the remaining obligations. Use `haveI := hmon a infer_instance`. Set `adj` to `Over.mapPullbackAdj f`.
+
+Take `⟨x', hx', hu⟩` from `huniv ((Over.map f).obj T) (fun a => (adj.homEquiv T B).symm (y a))`. Use `⟨adj.homEquiv T A x' ≫ i.hom, fun a => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [Category.assoc, Iso.hom_inv_id_assoc]`. Rewrite using `[← Adjunction.homEquiv_naturality_right, hx' a, Equiv.apply_symm_apply]`. Establish `h1 : (adj.homEquiv T A).symm (x ≫ i.inv) = x'`.
+
+Apply `hu` to reduce the goal to its premises. Introduce `a`. Rewrite using `[← Adjunction.homEquiv_naturality_right_symm, Category.assoc, hx a]`. Rewrite using `[← h1, Equiv.apply_symm_apply, Category.assoc, Iso.inv_hom_id, Category.comp_id]`.
+-/
 theorem isProd_pullback_iso : ∀ {S S' : Scheme.{0}} (f : S' ⟶ S) {A B : Over S} [GrpObj A] [GrpObj B] (pr : Fin 8 → (A ⟶ B)), E8Fibration.IsProd pr → ∀ (P : Over S') [GrpObj P] (i : (Over.pullback f).obj A ≅ P), IsMonHom i.hom → E8Fibration.IsProd (fun a => i.inv ≫ (Over.pullback f).map (pr a)) := by
   intro S S' f A B _ _ pr hpr P _ i hi
   obtain ⟨hmon, huniv⟩ := hpr

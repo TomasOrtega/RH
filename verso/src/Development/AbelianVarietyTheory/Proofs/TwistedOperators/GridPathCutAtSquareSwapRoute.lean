@@ -16,18 +16,30 @@ def height : Node → ℤ
   | .grid i j => (i : ℤ) - j
   | _ => 0
 
+/- English proof (translation)
+Apply the tactic sequence `rcases h with ⟨i, j, -, -, rfl⟩ | ⟨i, j, -, -, rfl⟩ <;> simp [height] <;> push_cast <;> ring`.
+-/
 theorem height_tgt {m : ℕ} {t : T} {a : Arrow T} (h : IsGridArrow m t a) : height a.tgt = height a.src + 1 := by
   rcases h with ⟨i, j, -, -, rfl⟩ | ⟨i, j, -, -, rfl⟩ <;> simp [height] <;> push_cast <;> ring
 
+/- English proof (translation)
+The claim follows from `| _, .nil => by simp [Path.comp, Path.arrows] | _, .snoc a q => by simp [Path.comp, Path.arrows, arrows_comp p q]`.
+-/
 theorem arrows_comp {X Y : Node} (p : Path T X Y) :
     ∀ {Z : Node} (q : Path T Y Z), (p.comp q).arrows = p.arrows ++ q.arrows
   | _, .nil => by simp [Path.comp, Path.arrows]
   | _, .snoc a q => by simp [Path.comp, Path.arrows, arrows_comp p q]
 
+/- English proof (translation)
+Simplify using `[OnGrid, Path.arrows, or_imp, forall_and]`.
+-/
 theorem onGrid_snoc {m : ℕ} {t : T} {X : Node} {a : Arrow T} {p : Path T X a.src} :
     OnGrid m t (.snoc a p) ↔ OnGrid m t p ∧ IsGridArrow m t a := by
   simp [OnGrid, Path.arrows, or_imp, forall_and]
 
+/- English proof (translation)
+The claim follows from `| _, .nil, _ => le_rfl | _, .snoc a p, h => by rw [onGrid_snoc] at h have := height_le p h.1 rw [height_tgt h.2]; omega`.
+-/
 theorem height_le {m : ℕ} {t : T} {X : Node} : ∀ {Y : Node} (p : Path T X Y), OnGrid m t p → height X ≤ height Y
   | _, .nil, _ => le_rfl
   | _, .snoc a p, h => by
@@ -35,6 +47,9 @@ theorem height_le {m : ℕ} {t : T} {X : Node} : ∀ {Y : Node} (p : Path T X Y)
     have := height_le p h.1
     rw [height_tgt h.2]; omega
 
+/- English proof (translation)
+The claim follows from `| _, .nil, _, b, hb => by simp [Path.arrows] at hb | _, .snoc a p, h, b, hb => by rw [onGrid_snoc] at h simp only [Path.arrows, List.mem_append, List.mem_cons, List.not_mem_nil, or_false] at hb rcases hb with hb | rfl · have := height_arrows p h.1 b hb have h2 := height_tgt h.2 e …`.
+-/
 theorem height_arrows {m : ℕ} {t : T} {X : Node} : ∀ {Y : Node} (p : Path T X Y), OnGrid m t p →
     ∀ b ∈ p.arrows, height X ≤ height b.src ∧ height b.tgt ≤ height Y
   | _, .nil, _, b, hb => by simp [Path.arrows] at hb
@@ -47,6 +62,9 @@ theorem height_arrows {m : ℕ} {t : T} {X : Node} : ∀ {Y : Node} (p : Path T 
       exact ⟨this.1, by omega⟩
     · exact ⟨height_le p h.1, le_rfl⟩
 
+/- English proof (translation)
+Break down `h with ⟨i', j', -, -, rfl⟩ | ⟨i', j', -, -, rfl⟩` into its components or cases. Simplify using `[edgeOf] at he`. Simplify using `only [edgeOf, GlobalTheory.SplitFlip.Edge.theta.injEq] at he`. Rewrite using `[he.1, he.2]`.
+-/
 theorem eq_down {m : ℕ} {t : T} {a : Arrow T} (h : IsGridArrow m t a) {i j : ℕ}
     (he : edgeOf a = .theta i j) : a = .down t i j := by
   rcases h with ⟨i', j', -, -, rfl⟩ | ⟨i', j', -, -, rfl⟩
@@ -54,6 +72,9 @@ theorem eq_down {m : ℕ} {t : T} {a : Arrow T} (h : IsGridArrow m t a) {i j : �
   · simp only [edgeOf, GlobalTheory.SplitFlip.Edge.theta.injEq] at he
     rw [he.1, he.2]
 
+/- English proof (translation)
+Break down `h with ⟨i', j', -, -, rfl⟩ | ⟨i', j', -, -, rfl⟩` into its components or cases. Simplify using `only [edgeOf, GlobalTheory.SplitFlip.Edge.ex.injEq] at he`. Rewrite using `[he.1, he.2]`. Simplify using `[edgeOf] at he`.
+-/
 theorem eq_right {m : ℕ} {t : T} {a : Arrow T} (h : IsGridArrow m t a) {i j : ℕ}
     (he : edgeOf a = .ex i j) : a = .right i j := by
   rcases h with ⟨i', j', -, -, rfl⟩ | ⟨i', j', -, -, rfl⟩
@@ -61,6 +82,9 @@ theorem eq_right {m : ℕ} {t : T} {a : Arrow T} (h : IsGridArrow m t a) {i j : 
     rw [he.1, he.2]
   · simp [edgeOf] at he
 
+/- English proof (translation)
+Use `⟨fun he => ?_, fun he => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `obtain rfl := eq_down hb he (simp [height] at h) <;> omega`. Apply the tactic sequence `obtain rfl := eq_right hb he (simp [height] at h) <;> omega`.
+-/
 theorem edgeOf_ne {m : ℕ} {t : T} {b : Arrow T} (hb : IsGridArrow m t b) {i j : ℕ}
     (h : height b.tgt < (i : ℤ) - j ∨ (i : ℤ) - j < height b.src) :
     edgeOf b ≠ .theta i j ∧ edgeOf b ≠ .ex i j := by
@@ -70,6 +94,11 @@ theorem edgeOf_ne {m : ℕ} {t : T} {b : Arrow T} (hb : IsGridArrow m t b) {i j 
   · obtain rfl := eq_right hb he
     (simp [height] at h) <;> omega
 
+/- English proof (translation)
+Take `⟨s, u, hsu⟩` from `h`. Break down `List.eq_nil_or_concat u with rfl | ⟨u', w, rfl⟩` into its components or cases. Establish `h1 : (s ++ [x]) ++ [y] = l ++ [z]` using `by simpa using hsu`. Take `⟨h2, h3⟩` from `List.append_inj' h1 rfl`. Conclude with `Or.inr ⟨s, h2.symm, (List.singleton_inj.1 h3).symm⟩`.
+
+Establish `h1 : (s ++ [x, y] ++ u') ++ [w] = l ++ [z]` using `by simpa using hsu`. Take `⟨h2, -⟩` from `List.append_inj' h1 rfl`. Conclude with `Or.inl ⟨s, u', h2⟩`.
+-/
 theorem infix_concat' {α : Type*} {x y z : α} {l : List α} (h : [x, y] <:+: l ++ [z]) :
     [x, y] <:+: l ∨ ∃ l', l = l' ++ [x] ∧ z = y := by
   obtain ⟨s, u, hsu⟩ := h
@@ -81,6 +110,9 @@ theorem infix_concat' {α : Type*} {x y z : α} {l : List α} (h : [x, y] <:+: l
     obtain ⟨h2, -⟩ := List.append_inj' h1 rfl
     exact Or.inl ⟨s, u', h2⟩
 
+/- English proof (translation)
+The claim follows from `| _, .nil, _, l, h => by simp [edges, Path.arrows] at h | _, .snoc a q, hp, l, h => by rw [onGrid_snoc] at hp have h2 : edgeOf a = .theta i j := by have := congrArg List.getLast? h simpa [edges, Path.arrows] using this obtain rfl := eq_down hp.2 h2 exact ⟨q, HEq.rfl⟩`.
+-/
 theorem exists_of_last {m : ℕ} {t : T} {i j : ℕ} {X : Node} : ∀ {Y : Node} (p : Path T X Y), OnGrid m t p →
     ∀ l, edges p = l ++ [.theta i j] → ∃ A : Path T X (.grid i (j + 1)), HEq p (Path.snoc (.down t i j) A)
   | _, .nil, _, l, h => by simp [edges, Path.arrows] at h
@@ -92,6 +124,9 @@ theorem exists_of_last {m : ℕ} {t : T} {i j : ℕ} {X : Node} : ∀ {Y : Node}
     obtain rfl := eq_down hp.2 h2
     exact ⟨q, HEq.rfl⟩
 
+/- English proof (translation)
+The claim follows from `| _, .nil, _, h => by simp [edges, Path.arrows] at h | _, .snoc a q, hp, h => by rw [onGrid_snoc] at hp have he : edges (.snoc a q) = edges q ++ [edgeOf a] := by simp [edges, Path.arrows] rw [he] at h rcases infix_concat' h with h | ⟨l, hl, ha⟩ · obtain ⟨A, Bq, rfl⟩ := exists_cut …`.
+-/
 theorem exists_cut {m : ℕ} {t : T} {i j : ℕ} {X : Node} : ∀ {Y : Node} (p : Path T X Y), OnGrid m t p →
     [GlobalTheory.SplitFlip.Edge.theta i j, GlobalTheory.SplitFlip.Edge.ex i j] <:+: edges p →
     ∃ (A : Path T X (.grid i (j + 1))) (Bp : Path T (.grid (i + 1) j) Y), p = (A.comp (routeSmall t i j)).comp Bp
@@ -112,6 +147,21 @@ end GlobalTheory.PathCut
 
 namespace GlobalTheory.PathCut
 
+/- English proof (translation)
+Introduce `T m t i j hi hj X Y p hp hpass`. Take `⟨A, Bp, rfl⟩` from `exists_cut p hp hpass`. Establish `harr : ((A.comp (routeSmall t i j)).comp Bp).arrows = A.arrows ++ [.down t i j, .right i j] ++ Bp.arrows`. Simplify using `[arrows_comp, Path.arrows, routeSmall, Path.one]`. Establish `harr' : ((A.comp (routeBig t i j)).comp Bp).arrows = A.arrows ++ [.right i (j + 1), .down t (i + 1) j] ++ Bp.arrows`.
+
+Simplify using `[arrows_comp, Path.arrows, routeBig, Path.one]`. Establish `hA : OnGrid m t A` using `fun b hb => hp b (by rw [harr]; simp [hb])`. Establish `hB : OnGrid m t Bp` using `fun b hb => hp b (by rw [harr]; simp [hb])`. Use `⟨A, Bp, rfl, hA, hB, ?_, ?_⟩` and prove the remaining obligations. Introduce `b hb`.
+
+Rewrite `hb` using `[harr']`. Simplify using `only [List.mem_append, List.mem_cons, List.not_mem_nil, or_false] at hb`. Break down `hb with (hb | rfl | rfl) | hb` into its components or cases. Conclude with `hA b hb`. Conclude with `Or.inl ⟨i, j + 1, hi, hj, rfl⟩`.
+
+Conclude with `Or.inr ⟨i + 1, j, hi, hj, rfl⟩`. Conclude with `hB b hb`. Unfold `edges GlobalTheory.SplitFlip.flipPath`. Rewrite using `[harr, harr']`. Simplify using `only [List.map_append, List.map_map, List.map_cons, List.map_nil]`.
+
+Establish `hfA` using `fun b hb => height_arrows A hA b hb`. Establish `hfB` using `fun b hb => height_arrows Bp hB b hb`. Use `congrArg₂ (· ++ ·) (congrArg₂ (· ++ ·) ?_ ?_) ?_` and prove the remaining obligations. Use `List.map_congr_left fun b hb => ?_` and prove the remaining obligations. Establish `h1 : height b.tgt ≤ (i : ℤ) - ((j + 1 : ℕ) : ℤ)` using `(hfA b hb).2`.
+
+Take `⟨n1, n2⟩` from `edgeOf_ne (hA b hb) (i := i) (j := j) (Or.inl (by push_cast at h1; omega))`. Simplify using `only [Function.comp, if_neg n1, if_neg n2]`. Simplify using `[edgeOf]`. Use `List.map_congr_left fun b hb => ?_` and prove the remaining obligations. Establish `h1 : ((i + 1 : ℕ) : ℤ) - (j : ℤ) ≤ height b.src` using `(hfB b hb).1`.
+
+Take `⟨n1, n2⟩` from `edgeOf_ne (hB b hb) (i := i) (j := j) (Or.inr (by push_cast at h1; omega))`. Simplify using `only [Function.comp, if_neg n1, if_neg n2]`.
+-/
 theorem cut_at_square : ∀ {T : Type} (m : ℕ) (t : T) (i j : ℕ), i < m → j < m → ∀ {X Y : Node} (p : Path T X Y),
     GlobalTheory.FlipRun.OnGrid m t p → GlobalTheory.SplitFlip.PassesThrough i j (GlobalTheory.FlipRun.edges p) →
     ∃ (A : Path T X (.grid i (j + 1))) (Bp : Path T (.grid (i + 1) j) Y), p = (A.comp (routeSmall t i j)).comp Bp ∧

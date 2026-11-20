@@ -17,6 +17,9 @@ variable {X Y Z Z' T : Scheme.{0}} {K : Type} [Fintype K]
 def TrivAt (L : LB X) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (r : Z ⟶ Y) : Prop :=
   Triv (LB.LinComb L (fun k => r ≫ φ k) ε)
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `H`. Establish `e : (fun k => (h ≫ r) ≫ φ k) = fun k => h ≫ r ≫ φ k` using `funext fun k => Category.assoc _ _ _`. Unfold `TrivAt`. Rewrite using `[e]`. Conclude with `⟨_, DVR.pullGen_isGen _ _ _ t ht h⟩`.
+-/
 theorem TrivAt.comp {L : LB X} {φ : K → (Y ⟶ X)} {ε : K → ℤ} {r : Z ⟶ Y} (H : TrivAt L φ ε r)
     (h : Z' ⟶ Z) : TrivAt L φ ε (h ≫ r) := by
   obtain ⟨t, ht⟩ := H
@@ -25,6 +28,15 @@ theorem TrivAt.comp {L : LB X} {φ : K → (Y ⟶ X)} {ε : K → ℤ} {r : Z �
   rw [e]
   exact ⟨_, DVR.pullGen_isGen _ _ _ t ht h⟩
 
+/- English proof (translation)
+Establish `mem : ∀ (J : PUnit → K → L.ι) (z : Z), z ∈ ((LB.LinComb L φ ε).pull r).U J ↔ z ∈ LB.wchart L (fun k => r ≫ φ k) (J PUnit.unit)` using `fun J z => mem_pull.trans ⟨fun h => Set.mem_iInter.2 fun k => Set.mem_iInter.1 h k, fun h => Set.mem_iInter.2 fun k => Set.mem_iInter.1 h k⟩`. Establish `g : ∀ (J J' : PUnit → K → L.ι) (z : Z), z ∈ ((LB.LinComb L φ ε).pull r).U J → z ∈ ((LB.LinComb L φ ε).pull r).U J' → gm (𝟙 Z) z (((LB.LinComb L φ ε).pull r).U J ⊓ ((LB.LinComb L φ ε).pull r).U J') (((LB.LinComb L φ ε).pull r).g J J') = gm (𝟙 Z) z (LB.wchart L (fun k => r ≫ φ k) ( …` using `fun J J' z h h' => by`. Use `(gm_pull_g (LB.LinComb L φ ε) r (𝟙 Z) z J J' h h').trans ?_` and prove the remaining obligations. Use `(gm_linComb L φ ε (𝟙 Z ≫ r) z _ _ (mem_pull.1 h) (mem_pull.1 h')).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (gm_linComb L (fun k => r ≫ φ k) ε (𝟙 Z) z _ _ ((mem J z).1 h) ((mem J' z).1 h')).symm` and prove the remaining obligations.
+
+Simplify using `only [Category.assoc]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht⟩`. Use `⟨⟨fun j => res (fun z hz => (mem (fun _ => j) z).2 hz) (t.s fun _ => j)⟩, fun j j' => unit_ext fun z hz => ?_⟩` and prove the remaining obligations. Establish `hm : (𝟙 Z : Z ⟶ Z) z ∈ ((LB.LinComb L φ ε).pull r).U (fun _ => j) ⊓ ((LB.LinComb L φ ε).pull r).U (fun _ => j')` using `⟨(mem _ z).2 hz.1, (mem _ z).2 hz.2⟩`.
+
+Establish `e` using `congrArg (gm (𝟙 Z) z _) (ht (fun _ => j) (fun _ => j'))`. Establish `e'` using `(gm_res _ z _ hm _).symm.trans (e.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (g _ _ z hm.1 hm.2) (gm_res _ z _ hm _))))`. Conclude with `((gm_res _ z _ hz _).trans (gm_res _ z _ hz.1 _)).trans (e'.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) rfl ((gm_res _ z _ hz _).trans (gm_res _ z _ hz.2 _)))).symm)`. Introduce and unpack `⟨t, ht⟩`. Use `⟨⟨fun J => res (fun z hz => (mem J z).1 hz) (t.s (J PUnit.unit))⟩, fun J J' => unit_ext fun z hz => ?_⟩` and prove the remaining obligations.
+
+Establish `hm : (𝟙 Z : Z ⟶ Z) z ∈ LB.wchart L (fun k => r ≫ φ k) (J PUnit.unit) ⊓ LB.wchart L (fun k => r ≫ φ k) (J' PUnit.unit)` using `⟨(mem _ z).1 hz.1, (mem _ z).1 hz.2⟩`. Establish `e` using `congrArg (gm (𝟙 Z) z _) (ht (J PUnit.unit) (J' PUnit.unit))`. Establish `e'` using `(gm_res _ z _ hm _).symm.trans (e.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (g _ _ z hz.1 hz.2).symm (gm_res _ z _ hm _))))`. Conclude with `((gm_res _ z _ hz _).trans (gm_res _ z _ hz.1 _)).trans (e'.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) rfl ((gm_res _ z _ hz _).trans (gm_res _ z _ hz.2 _)))).symm)`.
+-/
 theorem triv_pull_iff (L : LB X) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (r : Z ⟶ Y) :
     Triv ((LB.LinComb L φ ε).pull r) ↔ TrivAt L φ ε r := by
   have mem : ∀ (J : PUnit → K → L.ι) (z : Z), z ∈ ((LB.LinComb L φ ε).pull r).U J ↔
@@ -63,6 +75,9 @@ theorem triv_pull_iff (L : LB X) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (r : Z 
     exact ((gm_res _ z _ hz _).trans (gm_res _ z _ hz.1 _)).trans (e'.trans ((map_mul _ _ _).trans
       (congrArg₂ (· * ·) rfl ((gm_res _ z _ hz _).trans (gm_res _ z _ hz.2 _)))).symm)
 
+/- English proof (translation)
+Take `⟨t, ht, -⟩` from `exists_gen hL (φ' := fun i => r ≫ φ i) (ε' := ε) (fun U _ k => (Fintype.prod_empty _).trans (h U k).symm) (LB.oneGen L (Y := Z)) (fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm)`. Conclude with `⟨t, ht⟩`.
+-/
 theorem trivAt_of_formal {L : LB X} (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} (r : Z ⟶ Y)
     (h : ∀ (U : Type) [CommGroup U] (k : (Z ⟶ X) → U), ∏ i, k (r ≫ φ i) ^ ε i = 1) : TrivAt L φ ε r := by
   obtain ⟨t, ht, -⟩ := exists_gen hL (φ' := fun i => r ≫ φ i) (ε' := ε)
@@ -71,6 +86,27 @@ theorem trivAt_of_formal {L : LB X} (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K
       (_root_.mul_one _)).symm)
   exact ⟨t, ht⟩
 
+/- English proof (translation)
+Establish `loc : ∀ s : T, ∃ U : T.Opens, s ∈ U ∧ ∃ t : LB.Gen (LB.LinComb L (fun i => (p ⁻¹ᵁ U).ι ≫ φ i) ε), t.IsGen ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ (p ⁻¹ᵁ U).toScheme) (b : Z ⟶ T) (z : Z) (J), Good L z J → r ≫ (p ⁻¹ᵁ U).ι = b ≫ e → val t r z J = 1`. Introduce `s`. Take `⟨U, hs, t, ht⟩` from `h s`. Take `⟨n, n₁⟩ : ∃ n : (p ⁻¹ᵁ U).toScheme ⟶ (p ⁻¹ᵁ U).toScheme, n ≫ (p ⁻¹ᵁ U).ι = ((p ⁻¹ᵁ U).ι ≫ p) ≫ e` from `⟨IsOpenImmersion.lift (p ⁻¹ᵁ U).ι (((p ⁻¹ᵁ U).ι ≫ p) ≫ e) (by`. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Rewrite using `[Scheme.Opens.range_ι]`. Establish `e'` using `congrArg (fun q => q (p y.1)) he`. Conclude with `(congrArg (· ∈ U) e').mpr y.2), IsOpenImmersion.lift_fac _ _ _⟩`. Take `⟨t', ht', hv⟩` from `exists_gen hL (φ' := fun i => (p ⁻¹ᵁ U).ι ≫ φ i) (ε' := ε) (fun V _ k => by`. Establish `p'` using `hF _ ((p ⁻¹ᵁ U).ι ≫ p) V k`.
+
+Rewrite `p'` using `[← n₁]`. Simplify using `only [Category.assoc] at p'`. Use `(Fintype.prod_sum_type _).trans ?_` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib, p', inv_one, _root_.mul_one])`. Use the proof step `(LB.mulGen L _ _ _ _ t (LB.invGen L _ _ (LB.pullGen L _ _ t n)))`.
+
+Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ ht (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ ht n)))`. Use `⟨U, hs, t', ht', fun Z r b z J hJ hr => ?_⟩` and prove the remaining obligations. Establish `: r ≫ n = r`. Rewrite using `[← cancel_mono (p ⁻¹ᵁ U).ι, Category.assoc, n₁, ← Category.assoc, ← Category.assoc, hr, Category.assoc b, he, Category.comp_id]`. Rewrite using `[hv Z r z J hJ, val_mul hJ, val_inv, val_pull hJ, this, mul_inv_cancel]`.
+
+Use `choose U hU t ht hn using loc`. Establish `agree : ∀ (s s' : T) (Z : Scheme.{0}) (r : Z ⟶ (p ⁻¹ᵁ U s).toScheme) (r' : Z ⟶ (p ⁻¹ᵁ U s').toScheme) (z : Z) (J), Good L z J → r ≫ (p ⁻¹ᵁ U s).ι = r' ≫ (p ⁻¹ᵁ U s').ι → val (t s) r z J = val (t s') r' z J`. Introduce `s s' Z r r' z J hJ hr`. Take `⟨W, pr, q, hq, sq⟩` from `hs (U s ⊓ U s')`. Establish `mk : ∀ V : T.Opens, U s ⊓ U s' ≤ V → ∃ m : W ⟶ (p ⁻¹ᵁ V).toScheme, m ≫ (p ⁻¹ᵁ V).ι = pr` using `fun V hV => ⟨IsOpenImmersion.lift (p ⁻¹ᵁ V).ι pr (by`.
+
+Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Establish `e'` using `congrArg (fun q => q y) hq.w`. Conclude with `(congrArg (· ∈ V) e').mpr (hV (q y).2)), IsOpenImmersion.lift_fac _ _ _⟩`. Take `⟨m, hm⟩` from `mk (U s) inf_le_left`.
+
+Take `⟨m', hm'⟩` from `mk (U s') inf_le_right`. Set `e₀ : (U s ⊓ U s').toScheme ⟶ W` to `hq.lift ((U s ⊓ U s').ι ≫ e) (𝟙 _) (by rw [Category.assoc, he, Category.comp_id, Category.id_comp])`. Establish `he₀ : e₀ ≫ pr = (U s ⊓ U s').ι ≫ e` using `hq.lift_fst _ _ _`. Set `v : Z ⟶ (U s ⊓ U s').toScheme` to `IsOpenImmersion.lift (U s ⊓ U s').ι ((r ≫ (p ⁻¹ᵁ U s).ι) ≫ p) (by`. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `⟨(r y).2, (congrArg (fun q => p (q y) ∈ U s') hr).mpr (r' y).2⟩)`. Set `ρ : Z ⟶ W` to `hq.lift (r ≫ (p ⁻¹ᵁ U s).ι) v (IsOpenImmersion.lift_fac _ _ _).symm`. Establish `hρ : ρ ≫ pr = r ≫ (p ⁻¹ᵁ U s).ι` using `hq.lift_fst _ _ _`. Establish `r₁ : ρ ≫ m = r` using `by rw [← cancel_mono (p ⁻¹ᵁ U s).ι, Category.assoc, hm, hρ]`.
+
+Establish `r₂ : ρ ≫ m' = r'` using `by rw [← cancel_mono (p ⁻¹ᵁ U s').ι, Category.assoc, hm', hρ, hr]`. Establish `key` using `gen_unique' hL (φ := fun i => m ≫ (p ⁻¹ᵁ U s).ι ≫ φ i) (ε := ε) (φ' := fun i => m' ≫ (p ⁻¹ᵁ U s').ι ≫ φ i) (ε' := ε) (fun W _ k => Finset.prod_congr rfl fun i _ => by show k (m' ≫ _ ≫ _) ^ _ = k (m ≫ _ ≫ _) ^ _`. Rewrite using `[← Category.assoc, ← Category.assoc m, hm, hm'])`. Use `q e₀ (hq.lift_snd _ _ _) sq (DVR.pullGen_isGen _ _ _ _ (ht s) m)`. Use the proof step `(DVR.pullGen_isGen _ _ _ _ (ht s') m') (fun y I hI => by`.
+
+Rewrite using `[val_pull hI, val_pull hI, hn s _ _ (U s ⊓ U s').ι y I hI (by rw [Category.assoc, hm, he₀]), hn s' _ _ (U s ⊓ U s').ι y I hI (by rw [Category.assoc, hm', he₀])]) Z ρ z J hJ`. Rewrite `key` using `[val_pull hJ, val_pull hJ, r₁, r₂]`. Then use the resulting hypothesis. Take `⟨u, hu, -⟩` from `glue_gen hL φ ε (fun s => p ⁻¹ᵁ U s) (fun y => ⟨p y, hU _⟩) t ht agree`. Conclude with `⟨u, hu⟩`.
+-/
 theorem triv_of_local {L : LB X} (hL : L.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (p : Y ⟶ T) (e : T ⟶ Y)
     (he : e ≫ p = 𝟙 T)
     (hF : ∀ (Z : Scheme.{0}) (b : Z ⟶ T) (U : Type) [CommGroup U] (k : (Z ⟶ X) → U),
@@ -148,6 +184,9 @@ section Fibres
 
 variable {X Y T W : Scheme.{0}} {K : Type} [Fintype K] (L : LB X) (φ : K → (Y ⟶ X)) (ε : K → ℤ)
 
+/- English proof (translation)
+Rewrite using `[triv_pull_iff]`. Unfold `TrivAt`. Simplify using `only [Category.assoc]`.
+-/
 theorem triv_pull_comp_iff (q : W ⟶ Y) {Z : Scheme.{0}} (π : Z ⟶ W) :
     Triv ((LB.LinComb L (fun k => q ≫ φ k) ε).pull π) ↔ TrivAt L φ ε (π ≫ q) := by
   rw [triv_pull_iff]
@@ -160,9 +199,17 @@ def fibTriv (p : Y ⟶ T) : Set T :=
 
 def locTriv (p : Y ⟶ T) : Set T := {t | ∃ U : T.Opens, t ∈ U ∧ TrivAt L φ ε (p ⁻¹ᵁ U).ι}
 
+/- English proof (translation)
+The claim follows from `isOpen_iff_forall_mem_open.2 fun _ ⟨U, hU, h⟩ => ⟨U, fun _ hy => ⟨U, hy, h⟩, U.isOpen, hU⟩`.
+-/
 theorem isOpen_locTriv (p : Y ⟶ T) : IsOpen (locTriv L φ ε p) :=
   isOpen_iff_forall_mem_open.2 fun _ ⟨U, hU, h⟩ => ⟨U, fun _ hy => ⟨U, hy, h⟩, U.isOpen, hU⟩
 
+/- English proof (translation)
+Introduce and unpack `t ⟨U, hU, h⟩`. Establish `hr : Set.range (T.fromSpecResidueField t) = {t}` using `Scheme.range_fromSpecResidueField t`. Use `⟨T.residueField t, inferInstance, T.fromSpecResidueField t, _, _, _, hr.ge rfl, IsPullback.of_hasPullback p (T.fromSpecResidueField t), ?_⟩` and prove the remaining obligations. Use `h.comp (IsOpenImmersion.lift (p ⁻¹ᵁ U).ι (pullback.fst p (T.fromSpecResidueField t)) (by` as an intermediate fact. Rewrite using `[Scheme.Pullback.range_fst, hr, Scheme.Opens.range_ι]`.
+
+Introduce `y hy`. Conclude with `(congrArg (· ∈ U) hy).mpr hU))`. Rewrite `this` using `[IsOpenImmersion.lift_fac]`. Then use the resulting hypothesis.
+-/
 theorem locTriv_subset (p : Y ⟶ T) : locTriv L φ ε p ⊆ fibTriv L φ ε p := by
   rintro t ⟨U, hU, h⟩
   have hr : Set.range (T.fromSpecResidueField t) = {t} := Scheme.range_fromSpecResidueField t
@@ -174,6 +221,11 @@ theorem locTriv_subset (p : Y ⟶ T) : locTriv L φ ε p ⊆ fibTriv L φ ε p :
     exact (congrArg (· ∈ U) hy).mpr hU))
   rwa [IsOpenImmersion.lift_fac] at this
 
+/- English proof (translation)
+Establish `key : ∀ y : PrimeSpectrum F, (PrimeSpectrum.comap g y).asIdeal = RingHom.ker g` using `fun y => by`. Rewrite using `[PrimeSpectrum.comap_asIdeal, Ideal.eq_bot_of_prime y.asIdeal]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`.
+
+Conclude with `(key y).symm`. Introduce `h`. Conclude with `⟨(default : PrimeSpectrum F), PrimeSpectrum.ext ((key _).trans h)⟩`.
+-/
 theorem mem_range_spec {R F : Type} [CommRing R] [Field F] (g : R →+* F) (x : PrimeSpectrum R) :
     x ∈ Set.range (Spec.map (CommRingCat.ofHom g)) ↔ RingHom.ker g = x.asIdeal := by
   have key : ∀ y : PrimeSpectrum F, (PrimeSpectrum.comap g y).asIdeal = RingHom.ker g := fun y => by
@@ -184,6 +236,15 @@ theorem mem_range_spec {R F : Type} [CommRing R] [Field F] (g : R →+* F) (x : 
   · intro h
     exact ⟨(default : PrimeSpectrum F), PrimeSpectrum.ext ((key _).trans h)⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F, _, g, Z, π, f', ⟨y, hy⟩, hp, ht⟩`. Establish `hsub : Subsingleton (Spec (CommRingCat.of F))` using `inferInstanceAs (Subsingleton (PrimeSpectrum F))`. Take `⟨g', hg'⟩ : ∃ g' : Spec (CommRingCat.of F) ⟶ Spec (CommRingCat.of R), g' ≫ j = g` from `⟨IsOpenImmersion.lift j g (by`. Introduce and unpack `_ ⟨y', rfl⟩`.
+
+Rewrite using `[Subsingleton.elim y' y, hy]`. Conclude with `⟨x, rfl⟩), IsOpenImmersion.lift_fac _ _ _⟩`. Take `⟨g₀, rfl⟩` from `Spec.map_surjective g'`. Substitute `hg'` using the available equality. Establish `w : π ≫ p = (f' ≫ Spec.map g₀) ≫ j` using `by rw [hp.w, Category.assoc]`.
+
+Establish `e : H.lift π _ w ≫ q = π` using `H.lift_fst _ _ _`. Use `⟨F, inferInstance, g₀.hom, Z, H.lift π _ w, f', ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(mem_range_spec g₀.hom x).1 ⟨y, j.isOpenEmbedding.injective hy⟩`. Conclude with `IsPullback.of_right (by rw [e]; exact hp) (H.lift_snd _ _ _) H`. Rewrite using `[triv_pull_comp_iff, e]`.
+
+Conclude with `ht`. Introduce and unpack `⟨F, _, g, Z, π, f', hk, hp, ht⟩`. Take `⟨y, hy⟩` from `(mem_range_spec g x).2 hk`. Conclude with `⟨F, inferInstance, Spec.map (CommRingCat.ofHom g) ≫ j, Z, π ≫ q, f', ⟨y, congrArg j hy⟩, hp.paste_horiz H, (triv_pull_comp_iff L φ ε q π).1 ht⟩`.
+-/
 theorem mem_fibTriv_iff {p : Y ⟶ T} {R : Type} [CommRing R] {j : Spec (CommRingCat.of R) ⟶ T} [IsOpenImmersion j]
     {q : W ⟶ Y} {f : W ⟶ Spec (CommRingCat.of R)} (H : IsPullback q f p j) (x : PrimeSpectrum R) :
     j x ∈ fibTriv L φ ε p ↔ ∃ (F : Type) (_ : Field F) (g : R →+* F) (Z : Scheme.{0}) (π : Z ⟶ W)
@@ -211,6 +272,19 @@ theorem mem_fibTriv_iff {p : Y ⟶ T} {R : Type} [CommRing R] {j : Spec (CommRin
     exact ⟨F, inferInstance, Spec.map (CommRingCat.ofHom g) ≫ j, Z, π ≫ q, f', ⟨y, congrArg j hy⟩,
       hp.paste_horiz H, (triv_pull_comp_iff L φ ε q π).1 ht⟩
 
+/- English proof (translation)
+Establish `chart : ∀ t : T, ∃ (R : Type) (_ : CommRing R) (j : Spec (CommRingCat.of R) ⟶ T) (_ : IsOpenImmersion j) (x : PrimeSpectrum R), j x = t` using `fun t => by`. Take `⟨_, ⟨U, hU, rfl⟩, ht, -⟩` from `T.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ t) isOpen_univ`. Take `⟨x, hx⟩` from `hU.range_fromSpec.ge ht`. Conclude with `⟨Γ(T, U), inferInstance, hU.fromSpec, hU.isOpenImmersion_fromSpec, x, hx⟩`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `t ht`. Take `⟨R, _, j, _, x, rfl⟩` from `chart t`. Take `⟨W, q, f, H, -, ho⟩` from `h R j`. Take `⟨F, _, g, Z, π, f', hk, hp, ht⟩` from `(mem_fibTriv_iff L φ ε H x).1 ht`. Take `⟨r, hr, hT⟩` from `ho F g Z π f' hp ht`.
+
+Rewrite `hT` using `[triv_pull_comp_iff]`. Establish `: IsOpenImmersion q` using `MorphismProperty.of_isPullback H.flip ‹_›`. Use `⟨j ''ᵁ (PrimeSpectrum.basicOpen r), ⟨x, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show r ∉ x.asIdeal`. Rewrite using `[← hk]`.
+
+Conclude with `hr`. Use `hT.comp (IsOpenImmersion.lift ((f ⁻¹ᵁ (PrimeSpectrum.basicOpen r)).ι ≫ q) (p ⁻¹ᵁ (j ''ᵁ (PrimeSpectrum.basicOpen r))).ι (by` as an intermediate fact. Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨x', hx', e⟩` from `y.2`. Take `⟨w, h₁, h₂⟩` from `Scheme.exists_preimage_of_isPullback H y.1 x' e.symm`.
+
+Conclude with `⟨⟨w, (congrArg (· ∈ PrimeSpectrum.basicOpen r) h₂).mpr hx'⟩, h₁⟩))`. Conclude with `(congrArg (TrivAt L φ ε) (IsOpenImmersion.lift_fac _ _ _)).mp this`. Use `⟨isOpen_iff_forall_mem_open.2 fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨R, _, j, _, x, rfl⟩` from `chart t`. Take `⟨W, q, f, H, hc, -⟩` from `h R j`.
+
+Use `⟨j '' _, ?_, j.isOpenEmbedding.isOpenMap _ hc.isOpen_compl, x, fun hx => ht ((mem_fibTriv_iff L φ ε H x).2 hx), rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩ hy'`. Conclude with `hy ((mem_fibTriv_iff L φ ε H y).1 hy')`.
+-/
 theorem fibTriv_clopen (p : Y ⟶ T)
     (h : ∀ (R : Type) [CommRing R] (j : Spec (CommRingCat.of R) ⟶ T), ∃ (W : Scheme.{0}) (q : W ⟶ Y)
       (f : W ⟶ Spec (CommRingCat.of R)), IsPullback q f p j ∧
@@ -262,6 +336,15 @@ variable {S : Scheme.{0}} (A : Over S) [GrpObj A]
 
 omit [GrpObj A] in
 
+/- English proof (translation)
+Use `set B := (Over.pullback (j ≫ A.hom)).obj A`. Establish `hB : IsPullback (pullback.fst A.hom (j ≫ A.hom)) B.hom A.hom (j ≫ A.hom)` using `IsPullback.of_hasPullback _ _`. Establish `h2 : IsPullback (fst A A).left (snd A A).left A.hom A.hom` using `IsPullback.of_hasPullback _ _`. Establish `h3 : IsPullback (fst A (A ⊗ A)).left (snd A (A ⊗ A)).left A.hom (A ⊗ A).hom` using `IsPullback.of_hasPullback _ _`. Establish `hBB : IsPullback (fst B B).left (snd B B).left B.hom B.hom` using `IsPullback.of_hasPullback _ _`.
+
+Take `⟨m, m₁, m₂⟩ : ∃ m : B.left ⟶ (A ⊗ A).left, m ≫ (fst A A).left = pullback.fst A.hom (j ≫ A.hom) ∧ m ≫ (snd A A).left = B.hom ≫ j` from `⟨h2.lift _ _ (by rw [hB.w, Category.assoc]), h2.lift_fst _ _ _, h2.lift_snd _ _ _⟩`. Establish `hm : IsPullback m B.hom (snd A A).left j` using `IsPullback.of_right (by rw [m₁]; exact hB) m₂ h2`. Establish `mw : m ≫ (A ⊗ A).hom = B.hom ≫ j ≫ A.hom`. Rewrite using `[← Over.w (snd A A), ← Category.assoc, m₂, Category.assoc]`. Establish `ho : IsPullback ((fst B B).left ≫ pullback.fst A.hom (j ≫ A.hom)) (snd B B).left A.hom (m ≫ (A ⊗ A).hom)`.
+
+Rewrite using `[mw]`. Conclude with `hBB.paste_horiz hB`. Take `⟨q, q₁, q₂⟩ : ∃ q : (B ⊗ B).left ⟶ (G3 A).left, q ≫ (fst A (A ⊗ A)).left = (fst B B).left ≫ pullback.fst A.hom (j ≫ A.hom) ∧ q ≫ (snd A (A ⊗ A)).left = (snd B B).left ≫ m` from `⟨h3.lift _ _ (by rw [ho.w, Category.assoc]), h3.lift_fst _ _ _, h3.lift_snd _ _ _⟩`. Establish `hq : IsPullback q (snd B B).left (snd A (A ⊗ A)).left m` using `IsPullback.of_right (by rw [q₁]; exact ho) q₂ h3`. Use `⟨q, ?_, q₁, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Over.w (snd B B)]`. Conclude with `hq.paste_vert hm`. Use `show q ≫ (snd A (A ⊗ A)).left ≫ (fst A A).left = _`. Rewrite using `[← Category.assoc, q₂, Category.assoc, m₁]`.
+-/
 theorem exists_cube_chart {T : Scheme.{0}} (j : T ⟶ A.left) :
     ∃ q : ((Over.pullback (j ≫ A.hom)).obj A ⊗ (Over.pullback (j ≫ A.hom)).obj A).left ⟶ (G3 A).left,
       IsPullback q ((Over.pullback (j ≫ A.hom)).obj A ⊗ (Over.pullback (j ≫ A.hom)).obj A).hom (x3 A 2).left j ∧
@@ -293,6 +376,19 @@ theorem exists_cube_chart {T : Scheme.{0}} (j : T ⟶ A.left) :
 
 variable {A}
 
+/- English proof (translation)
+Set `T : Over S` to `Over.mk (r ≫ (G3 A).hom)`. Set `x : T ⟶ G3 A` to `Over.homMk r rfl`. Establish `hb : b = r ≫ (G3 A).hom`. Use `congrArg (· ≫ A.hom) h` as an intermediate fact. Simplify using `only [Category.assoc, Over.w] at this`.
+
+Conclude with `(this.trans (Category.comp_id _)).symm`. Establish `hi : x ≫ x3 A i = 1`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Hom.one_def]`. Conclude with `h.trans (by rw [hb]; rfl)`.
+
+Apply the tactic sequence `have hx : lift (x ≫ x3 A 0) (lift (x ≫ x3 A 1) (x ≫ x3 A 2)) = x := by ext <;> simp [x3]`. Use `prod_cub (x ≫ x3 A 0) (x ≫ x3 A 1) (x ≫ x3 A 2) (U := U) k` as an intermediate fact. Rewrite `this` using `[hx]`. Use `this.trans ?_` and prove the remaining obligations. Use `fin_cases i`.
+
+Rewrite using `[show x ≫ x3 A 0 = 1 from hi]`. Simplify using `only [_root_.one_mul]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[show x ≫ x3 A 1 = 1 from hi]`. Simplify using `only [_root_.one_mul, _root_.mul_one]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[show x ≫ x3 A 2 = 1 from hi]`. Simplify using `only [_root_.mul_one]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one]`. Normalize the expressions using the abelian group laws.
+-/
 theorem prod_face [IsCommMonObj A] {Z : Scheme.{0}} (r : Z ⟶ (G3 A).left) (i : Fin 3) (b : Z ⟶ S)
     (h : r ≫ (x3 A i).left = b ≫ η[A].left) (U : Type) [CommGroup U] (k : (Z ⟶ A.left) → U) :
     ∏ I, k (r ≫ thφ A (x3 A) I) ^ thε I = 1 := by
@@ -327,10 +423,16 @@ theorem prod_face [IsCommMonObj A] {Z : Scheme.{0}} (r : Z ⟶ (G3 A).left) (i :
     simp only [ofMul_mul, ofMul_inv, ofMul_one]
     abel
 
+/- English proof (translation)
+The claim follows from `congrArg (fun z => z.left) (map_one (pushHom (isGrpPullback_pullback A f) T))`.
+-/
 theorem one_left_fst {S' : Scheme.{0}} (f : S' ⟶ S) (T : Over S') :
     (1 : T ⟶ (Over.pullback f).obj A).left ≫ pullback.fst A.hom f = (T.hom ≫ f) ≫ η[A].left :=
   congrArg (fun z => z.left) (map_one (pushHom (isGrpPullback_pullback A f) T))
 
+/- English proof (translation)
+The claim follows from `{ comm := by have := hA.comm; infer_instance smooth := by have := hA.smooth; show Smooth (pullback.snd _ _); infer_instance proper := by have := hA.proper; show IsProper (pullback.snd _ _); infer_instance geomConnected := by have := hA.geomConnected; show GeometricallyConnected ( …`.
+-/
 theorem isAb_baseChange (hA : IsAbelianScheme A) {S' : Scheme.{0}} (f : S' ⟶ S) :
     IsAbelianScheme ((Over.pullback f).obj A) :=
   { comm := by have := hA.comm; infer_instance
@@ -346,6 +448,31 @@ namespace GlobalTheory.AbLaw
 
 open CubeGen
 
+/- English proof (translation)
+Introduce `hI hG hPerf hProj hSegre hClosed hOpen S P M hM`. Establish `hA` using `P.isAb`. Use `hA.comm` as an intermediate fact. Use `hA.geomConnected` as an intermediate fact. Establish `H` using `fibTriv_clopen M (thφ P.A (x3 P.A)) thε (x3 P.A 2).left (fun R _ j => by`.
+
+Take `⟨q, hq, q₀, q₁⟩` from `exists_cube_chart P.A j`. Establish `hB` using `isAb_baseChange hA (j ≫ P.A.hom)`. Establish `one` using `one_left_fst (A := P.A) (j ≫ P.A.hom)`. Establish `pB : IsProjBy ((Over.pullback (j ≫ P.A.hom)).obj P.A).hom`. Take `⟨N, -, m, s, h₁, h₂⟩` from `hProj S P R (j ≫ P.A.hom) _ _ _ (IsPullback.of_hasPullback _ _)`.
+
+Conclude with `⟨_, h₁, m, s, h₂⟩`. Set `B` to `(Over.pullback (j ≫ P.A.hom)).obj P.A`. Establish `: Smooth B.hom` using `hB.smooth`. Establish `: IsProper B.hom` using `hB.proper`. Establish `: GeometricallyConnected B.hom` using `hB.geomConnected`.
+
+Establish `sm : Smooth (B ⊗ B).hom`. Express the relevant statement in the definitionally equal form `Smooth (pullback.fst B.hom B.hom ≫ B.hom)`. Use `infer_instance`. Establish `pr : IsProper (B ⊗ B).hom`. Express the relevant statement in the definitionally equal form `IsProper (pullback.fst B.hom B.hom ≫ B.hom)`.
+
+Use `infer_instance`. Establish `gc : GeometricallyConnected (B ⊗ B).hom`. Express the relevant statement in the definitionally equal form `GeometricallyConnected (pullback.fst B.hom B.hom ≫ B.hom)`. Conclude with `GeometricallyConnected.comp _ _`. Establish `hN : (LB.LinComb M (fun k => q ≫ thφ P.A (x3 P.A) k) thε).IsLB` using `DVR.linComb_isLB _ hM _ _`.
+
+Establish `pf` using `hPerf R _ _ sm (hSegre R B B pB pB)`. Use `⟨_, q, (B ⊗ B).hom, hq, hClosed R _ _ _ hN (pf _ hN) (pf _ (isLB_pw hN _)) pr (hI _ _ _ sm gc), fun F _ g Z π f' => hOpen R B hB _ hN (pf _ hN) ?_ ?_ F g Z π f'⟩` and prove the remaining obligations. Rewrite using `[triv_pull_comp_iff]`. Use `trivAt_of_formal hM _ (prod_face _ 1 (B.hom ≫ j ≫ P.A.hom) ?_)` and prove the remaining obligations. Rewrite using `[Category.assoc, q₁, ← Category.assoc, ← Over.comp_left, lift_snd]`.
+
+Conclude with `one B`. Rewrite using `[triv_pull_comp_iff]`. Use `trivAt_of_formal hM _ (prod_face _ 0 (B.hom ≫ j ≫ P.A.hom) ?_)` and prove the remaining obligations. Rewrite using `[Category.assoc, q₀, ← Category.assoc, ← Over.comp_left, lift_fst]`. Conclude with `one B)`.
+
+Establish `hclopen : IsClopen (fibTriv M (thφ P.A (x3 P.A)) thε (x3 P.A 2).left)` using `⟨H.2, by rw [H.1.antisymm (locTriv_subset _ _ _ _)]; exact isOpen_locTriv _ _ _ _⟩`. Establish `all : ∀ t, t ∈ fibTriv M (thφ P.A (x3 P.A)) thε (x3 P.A 2).left` using `fun t => by`. Establish `hr : Set.range (S.fromSpecResidueField (P.A.hom t)) = {P.A.hom t}` using `Scheme.range_fromSpecResidueField _`. Take `⟨y, hy⟩` from `hr.ge rfl`. Set `g` to `S.fromSpecResidueField (P.A.hom t) ≫ η[P.A].left`.
+
+Establish `gw : g ≫ P.A.hom = S.fromSpecResidueField (P.A.hom t)`. Rewrite using `[Category.assoc, Over.w]`. Conclude with `Category.comp_id _`. Use `(P.A.hom.isConnected_preimage_singleton (P.A.hom t)).isPreconnected.subset_isClopen hclopen ⟨g y, (congrArg (fun m : Spec (S.residueField (P.A.hom t)) ⟶ S => m y) gw).trans hy, ?_⟩ rfl` and prove the remaining obligations. Conclude with `⟨S.residueField (P.A.hom t), inferInstance, g, _, _, _, ⟨y, rfl⟩, IsPullback.of_hasPullback (x3 P.A 2).left g, trivAt_of_formal hM _ (prod_face _ 2 (pullback.snd _ g ≫ S.fromSpecResidueField (P.A.hom t)) (pullback.condition.trans (Category.assoc _ _ _).symm))⟩`.
+
+Set `e : P.A ⟶ G3 P.A` to `lift 1 (lift 1 (𝟙 _))`. Establish `e₀ : e ≫ x3 P.A 0 = 1` using `by simp [e, x3]`. Establish `e₂ : e ≫ x3 P.A 2 = 𝟙 _` using `by simp [e, x3]`. Use `triv_of_local hM (thφ P.A (x3 P.A)) thε (x3 P.A 2).left e.left (congrArg (fun q => q.left) e₂) (fun Z b => prod_face _ 0 (b ≫ P.A.hom) ?_) (fun V => ?_) (fun s => H.1 (all s))` and prove the remaining obligations. Rewrite using `[Category.assoc, ← Over.comp_left, e₀, Category.assoc]`.
+
+Both sides reduce to the same expression. Take `⟨q, hq, -⟩` from `exists_cube_chart P.A V.ι`. Establish `hB` using `isAb_baseChange hA (V.ι ≫ P.A.hom)`. Use `⟨_, q, _, hq, ?_⟩` and prove the remaining obligations. Rewrite using `[← Over.w (snd _ _)]`.
+
+Conclude with `surj_comp (surj_snd hG hB _) (hG _ _ hB).2`.
+-/
 theorem exists_gen_theta :
     (∀ (X S : Scheme.{0}) (f : X ⟶ S), Smooth f → GeometricallyConnected f → GeometricallyIntegral f) → GlobalFnsSt → (∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of R)), Smooth f → IsProjBy f → ∀ M : LB X, M.IsLB → Nonempty (Perf f M)) → (∀ (S : Scheme.{0}) (P : PolAV S) (R : Type) [CommRing R] (t : Spec (CommRingCat.of R) ⟶ S) (X : Scheme.{0}) (π : X ⟶ P.A.left) (f : X ⟶ Spec (CommRingCat.of R)), IsPullback π f P.A.hom t → ∃ N : ℕ, 1 ≤ N ∧ ∃ (m : ℕ) (s : Fin (m + 1) → LB.Sec (pw (P.L.pull π) N)), (pw (P.L.pull π) N).IsLB ∧ VeryAmpleBy f (pw (P.L.pull π) N) s) → (∀ (R : Type) [CommRing R] (X Y : Over (Spec (CommRingCat.of R))), IsProjBy X.hom → IsProjBy Y.hom → IsProjBy (X ⊗ Y).hom) → (∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of R)) (M : LB X), M.IsLB → Nonempty (Perf f M) → Nonempty (Perf f (pw M (-1))) → IsProper f → GeometricallyIntegral f → IsClosed {p : PrimeSpectrum R | ∃ (K : Type) (_ : Field K) (g : R →+* K) (X' : Scheme.{0}) (π : X' ⟶ X) (f' : X' ⟶ Spec (CommRingCat.of K)), RingHom.ker g = p.asIdeal ∧ IsPullback π f' f (Spec.map (CommRingCat.ofHom g)) ∧ Triv (M.pull π)}) → (∀ (R : Type) [CommRing R] (A : Over (Spec (CommRingCat.of R))) [GrpObj A], IsAbelianScheme A → ∀ M : LB (A ⊗ A).left, M.IsLB → Nonempty (Perf (A ⊗ A).hom M) → Triv (M.pull (lift (𝟙 A) 1).left) → Triv (M.pull (lift 1 (𝟙 A)).left) → ∀ (K : Type) [Field K] (g₀ : R →+* K) (X₀ : Scheme.{0}) (π₀ : X₀ ⟶ (A ⊗ A).left) (f₀ : X₀ ⟶ Spec (CommRingCat.of K)), IsPullback π₀ f₀ (A ⊗ A).hom (Spec.map (CommRingCat.ofHom g₀)) → Triv (M.pull π₀) → ∃ r : R, g₀ r ≠ 0 ∧ Triv (M.pull ((A ⊗ A).hom ⁻¹ᵁ (PrimeSpectrum.basicOpen r)).ι)) → ∀ (S : Scheme.{0}) (P : PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen := by
   intro hI hG hPerf hProj hSegre hClosed hOpen S P M hM

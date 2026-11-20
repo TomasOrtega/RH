@@ -8,6 +8,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaDet
 
 open IsLocalRing UpperTheory.V.AlgebraTools
 
+/- English proof (translation)
+Introduce `P _ _ ι _ _ z m h hι`. Take `⟨c0⟩` from `id hι`. Use `⟨genKer z m c0, (genKer_isPrime P ι z m h c0).1, (genKer_isPrime P ι z m h c0).2, ?_⟩` and prove the remaining obligations. Introduce `Q hQ hle`. Set `f : P →+* FractionRing (P ⧸ Q)` to `(algebraMap (P ⧸ Q) (FractionRing (P ⧸ Q))).comp (Ideal.Quotient.mk Q)`.
+
+Establish `hf : ∀ x, f x = 0 ↔ x ∈ Q`. Introduce `x`. Simplify using `only [f, RingHom.comp_apply]`. Rewrite using `[map_eq_zero_iff _ (IsFractionRing.injective (P ⧸ Q) (FractionRing (P ⧸ Q))), Ideal.Quotient.eq_zero_iff_mem]`. Take `⟨V, hV, hloc⟩` from `IsLocalRing.exists_factor_valuationRing f`.
+
+Establish `h1 : (z.map f).mulVec (fun j => f (m j)) = 0`. Use function extensionality and compare the values at `i`. Establish `hi : z.mulVec m i ∈ Q` using `hle (Ideal.mem_sup_left (Ideal.subset_span ⟨i, rfl⟩))`. Establish `h2` using `(hf _).2 hi`. Simplify `h2` using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+
+Establish `h2 : (z.map f).det = 0`. Establish `hi : z.det ∈ Q` using `hle (Ideal.mem_sup_right (Ideal.subset_span rfl))`. Establish `h3` using `(hf _).2 hi`. Rewrite `h3` using `[RingHom.map_det]`. Conclude with `h3`.
+
+Take `⟨c, l, hc, hl, hz, hm⟩` from `exists_kernel_vector _ V ι (z.map f) (fun j => f (m j)) h1 h2`. Use `haveI : IsLocalRing V.toSubring := inferInstanceAs (IsLocalRing V)`. Establish `hk` using `genKer_le_ker P ι z m h c V.toSubring (f.codRestrict V.toSubring hV) (fun j => ⟨l j, hl j⟩) (Subtype.ext hc) (by`. Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `h4` using `congrFun hz i`. Simplify `h4) (fun j => Subtype.ext (hm j))` using `[Matrix.mulVec, dotProduct]`. Rewrite using `[genKer_eq P ι z m h c0 c]`. Introduce `x hx`. Establish `h5` using `hk hx`.
+
+Rewrite `h5` using `[RingHom.mem_ker]`. Conclude with `(hf x).1 (congrArg Subtype.val h5)`.
+-/
 theorem UpperTheory.V.AlgebraTools.exists_least_prime_detIdeal :
     ∀ (P : Type) [CommRing P] [IsRegularLocalRing P] (ι : Type) [Fintype ι] [DecidableEq ι] (z : Matrix ι ι P) (m : ι → P),
       CotInd P (Sum.elim (fun ij : ι × ι => z ij.1 ij.2) m) → Nonempty ι →

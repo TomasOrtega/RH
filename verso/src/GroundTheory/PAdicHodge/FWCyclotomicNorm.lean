@@ -13,6 +13,15 @@ section Ultra
 
 variable {R : Type*} [NormedField R] [IsUltrametricDist R]
 
+/- English proof (translation)
+Introduce `i hi`. Take `⟨m, hm, hmax⟩` from `s.exists_max_image (fun j => ‖f j‖) ⟨i, hi⟩`. Use `(hmax i hi).trans ?_` and prove the remaining obligations. Break down `eq_or_ne (f m) 0 with h0 | h0` into its components or cases. Rewrite using `[h0, norm_zero]`.
+
+Conclude with `norm_nonneg _`. Rewrite using `[← Finset.add_sum_erase s f hm]`. Establish `hlt : ‖∑ j ∈ s.erase m, f j‖ < ‖f m‖`. Break down `(s.erase m).eq_empty_or_nonempty with he | hne` into its components or cases. Rewrite using `[he, Finset.sum_empty, norm_zero]`.
+
+Conclude with `norm_pos_iff.2 h0`. Take `⟨j, hj, hle⟩` from `IsUltrametricDist.exists_norm_finsetSum_le_of_nonempty hne f`. Use `hle.trans_lt (lt_of_le_of_ne (hmax j (Finset.mem_of_mem_erase hj)) fun heq => ?_)` and prove the remaining obligations. Distinguish the cases in `hj0 : f j = 0`. Rewrite `heq` using `[hj0, norm_zero]`.
+
+Conclude with `h0 (norm_eq_zero.1 heq.symm)`. Conclude with `(Finset.ne_of_mem_erase hj) (hf j (Finset.mem_of_mem_erase hj) m hm hj0 heq)`. Rewrite using `[IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm hlt.ne']`. Conclude with `le_max_left _ _`.
+-/
 theorem norm_le_norm_sum_of_norm_ne {ι : Type*} (s : Finset ι) (f : ι → R)
     (hf : ∀ i ∈ s, ∀ j ∈ s, f i ≠ 0 → ‖f i‖ = ‖f j‖ → i = j) :
     ∀ i ∈ s, ‖f i‖ ≤ ‖∑ j ∈ s, f j‖ := by
@@ -38,6 +47,13 @@ end Ultra
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Establish `hint : IsIntegral ℚ_[p] (ζ - 1)` using `Algebra.IsIntegral.isIntegral _`. Use `set pb := IntermediateField.adjoin.powerBasis hint`. Establish `hdim : pb.dim = Nat.totient (p ^ n)`. Rewrite using `[IntermediateField.adjoin.powerBasis_dim, ← IntermediateField.adjoin.finrank hint, adjoin_sub_one_eq_cycl hζ, finrank_cycl]`. Establish `hx' : x ∈ ℚ_[p]⟮ζ - 1⟯` using `by rw [adjoin_sub_one_eq_cycl hζ]; exact hx`.
+
+Take `⟨f, hfdeg, hf⟩` from `pb.exists_eq_aeval ⟨x, hx'⟩`. Use `⟨fun i => f.coeff i, ?_⟩` and prove the remaining obligations. Establish `h1 : x = aeval (ζ - 1) f`. Use `congrArg (algebraMap (ℚ_[p]⟮ζ - 1⟯) (PadicAlgCl p)) hf` as an intermediate fact. Rewrite `this` using `[IntermediateField.adjoin.powerBasis_gen, ← aeval_algebraMap_apply]`.
+
+Conclude with `this`. Rewrite using `[h1, aeval_eq_sum_range' (hfdeg.trans_eq hdim)]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [Algebra.smul_def]`.
+-/
 theorem exists_eq_sum_sub_one_pow {n : ℕ} {ζ : PadicAlgCl p} (hζ : IsPrimitiveRoot ζ (p ^ n))
     {x : PadicAlgCl p} (hx : x ∈ cycl p n) :
     ∃ a : ℕ → ℚ_[p], x = ∑ i ∈ Finset.range (Nat.totient (p ^ n)),
@@ -62,6 +78,9 @@ section Ortho
 variable {k : ℕ} {ζ : PadicAlgCl p} (hζ : IsPrimitiveRoot ζ (p ^ (k + 1)))
 include hζ
 
+/- English proof (translation)
+Establish `hp0 : (p : ℝ) ≠ 0` using `by exact_mod_cast (Fact.out : p.Prime).ne_zero`. Establish `hrd` using `norm_sub_one_pow_totient hζ`. Rewrite using `[mul_pow, ← pow_mul, mul_comm m, pow_mul, hrd, inv_pow, ← zpow_natCast ((p : ℝ) ^ z), ← zpow_mul, ← zpow_natCast (p : ℝ) m, ← zpow_neg, ← zpow_add₀ hp0]`. Put the polynomial expressions in normal form.
+-/
 theorem norm_zpow_mul_pow_sub_one_pow (z : ℤ) (m : ℕ) :
     ((p : ℝ) ^ z * ‖ζ - 1‖ ^ m) ^ Nat.totient (p ^ (k + 1)) =
       (p : ℝ) ^ (z * Nat.totient (p ^ (k + 1)) - m) := by
@@ -71,6 +90,19 @@ theorem norm_zpow_mul_pow_sub_one_pow (z : ℤ) (m : ℕ) :
     ← zpow_mul, ← zpow_natCast (p : ℝ) m, ← zpow_neg, ← zpow_add₀ hp0]
   ring_nf
 
+/- English proof (translation)
+Use `set d := Nat.totient (p ^ (k + 1))`. Establish `hterm : ∀ i, ‖algebraMap ℚ_[p] (PadicAlgCl p) (a i) * (ζ - 1) ^ i‖ = ‖a i‖ * ‖ζ - 1‖ ^ i` using `fun i => by rw [norm_mul, norm_pow, norm_algebraMap']`. Introduce `i hi`. Rewrite using `[← hterm]`. Use `norm_le_norm_sum_of_norm_ne (R := PadicAlgCl p) (Finset.range d) (fun j => algebraMap ℚ_[p] (PadicAlgCl p) (a j) * (ζ - 1) ^ j) (fun i hi j hj hne heq => ?_) i hi` and prove the remaining obligations.
+
+Rewrite `heq` using `[hterm, hterm]`. Establish `hai : a i ≠ 0` using `fun h => hne (by rw [h, map_zero, zero_mul])`. Establish `hr0 : 0 < ‖ζ - 1‖`. Establish `hrd` using `norm_sub_one_pow_totient hζ`. Assume the negation of the conclusion as `h`.
+
+Establish `h0 : ‖ζ - 1‖ = 0` using `le_antisymm (not_lt.1 h) (norm_nonneg _)`. Establish `hd : d ≠ 0` using `(Nat.totient_pos.2 (pow_pos (Fact.out : p.Prime).pos _)).ne'`. Rewrite `hrd` using `[h0, zero_pow hd]`. Conclude with `(inv_ne_zero (by exact_mod_cast (Fact.out : p.Prime).ne_zero : (p : ℝ) ≠ 0)) hrd.symm`. Establish `haj : a j ≠ 0`.
+
+Introduce `h`. Rewrite `heq` using `[h, norm_zero, zero_mul]`. Conclude with `(mul_pos (norm_pos_iff.2 hai) (pow_pos hr0 i)).ne' heq`. Take `⟨zi, hzi⟩` from `exists_norm_eq_zpow_of_ne_zero (p := p) hai`. Take `⟨zj, hzj⟩` from `exists_norm_eq_zpow_of_ne_zero (p := p) haj`.
+
+Rewrite `heq` using `[hzi, hzj]`. Establish `h2` using `congrArg (· ^ d) heq`. Rewrite `h2` using `[norm_zpow_mul_pow_sub_one_pow hζ, norm_zpow_mul_pow_sub_one_pow hζ]`. Establish `h3` using `zpow_p_injective (p := p) h2`. Establish `hdvd : (d : ℤ) ∣ ((i : ℤ) - j)` using `⟨zi - zj, by linarith⟩`.
+
+Establish `hi'` using `Finset.mem_range.1 hi`. Establish `hj'` using `Finset.mem_range.1 hj`. Apply the tactic sequence `have habs : |(i : ℤ) - j| < d := by rw [abs_lt]; constructor <;> omega`. Use `Int.eq_zero_of_abs_lt_dvd hdvd habs` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem norm_coeff_mul_le_norm_sum (a : ℕ → ℚ_[p]) :
     ∀ i ∈ Finset.range (Nat.totient (p ^ (k + 1))),
       ‖a i‖ * ‖ζ - 1‖ ^ i ≤ ‖∑ j ∈ Finset.range (Nat.totient (p ^ (k + 1))),
@@ -108,6 +140,13 @@ theorem norm_coeff_mul_le_norm_sum (a : ℕ → ℚ_[p]) :
   have := Int.eq_zero_of_abs_lt_dvd hdvd habs
   omega
 
+/- English proof (translation)
+Break down `eq_or_ne c 0 with rfl | hc` into its components or cases. Simplify using the standard rewrite rules. Take `⟨z, hz⟩` from `exists_norm_eq_zpow_of_ne_zero (p := p) hc`. Rewrite `h`, the goal using `[hz]`. Establish `h1 : ((p : ℝ) ^ z * ‖ζ - 1‖ ^ i) ^ Nat.totient (p ^ (k + 1)) ≤ 1` using `pow_le_one₀ (mul_nonneg (zpow_nonneg (by positivity) _) (pow_nonneg (norm_nonneg _) _)) h`.
+
+Rewrite `h1` using `[norm_zpow_mul_pow_sub_one_pow hζ]`. Establish `h2` using `(zpow_le_one_iff_right₀ one_lt_p_real).1 h1`. Establish `hz0 : z ≤ 0`. Assume the negation of the conclusion as `hz0`. Establish `hz1 : 1 ≤ z` using `by omega`.
+
+Establish `: (Nat.totient (p ^ (k + 1)) : ℤ) ≤ z * Nat.totient (p ^ (k + 1))`. Use the polynomial consequences of the given equalities and inequalities. Use linear arithmetic over natural numbers and integers. Conclude with `zpow_le_one_of_nonpos₀ (by exact_mod_cast (Fact.out : p.Prime).one_lt.le) hz0`.
+-/
 theorem norm_coeff_le_one {c : ℚ_[p]} {i : ℕ} (hi : i < Nat.totient (p ^ (k + 1)))
     (h : ‖c‖ * ‖ζ - 1‖ ^ i ≤ 1) : ‖c‖ ≤ 1 := by
   rcases eq_or_ne c 0 with rfl | hc
@@ -128,6 +167,13 @@ theorem norm_coeff_le_one {c : ℚ_[p]} {i : ℕ} (hi : i < Nat.totient (p ^ (k 
 
 end Ortho
 
+/- English proof (translation)
+Use `set b : ℤ_[p] := ⟨c, hc⟩`. Establish `h1 : PadicInt.toZMod (b ^ p - b) = 0` using `by rw [map_sub, map_pow, ZMod.pow_card, sub_self]`. Establish `h2 : b ^ p - b ∈ IsLocalRing.maximalIdeal ℤ_[p]`. Rewrite using `[← PadicInt.ker_toZMod]`. Conclude with `h1`.
+
+Establish `h3 : ‖b ^ p - b‖ < 1` using `PadicInt.mem_nonunits.1 h2`. Take `⟨e, he⟩` from `(PadicInt.norm_lt_one_iff_dvd _).1 h3`. Establish `h4 : ‖c ^ p - c‖ = ‖b ^ p - b‖`. Rewrite using `[PadicInt.norm_def]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Rewrite using `[h4, he, norm_mul, PadicInt.norm_p]`. Conclude with `mul_le_of_le_one_right (by positivity) (PadicInt.norm_le_one e)`.
+-/
 theorem norm_pow_sub_self_le {c : ℚ_[p]} (hc : ‖c‖ ≤ 1) : ‖c ^ p - c‖ ≤ (p : ℝ)⁻¹ := by
   set b : ℤ_[p] := ⟨c, hc⟩
   have h1 : PadicInt.toZMod (b ^ p - b) = 0 := by rw [map_sub, map_pow, ZMod.pow_card, sub_self]
@@ -140,6 +186,13 @@ theorem norm_pow_sub_self_le {c : ℚ_[p]} (hc : ‖c‖ ≤ 1) : ‖c ^ p - c�
   rw [h4, he, norm_mul, PadicInt.norm_p]
   exact mul_le_of_le_one_right (by positivity) (PadicInt.norm_le_one e)
 
+/- English proof (translation)
+Introduce and unpack `⟨u, hu⟩`. Establish `h1 : ‖((u : normInteger (PadicAlgCl p)) : PadicAlgCl p)‖ * ‖((u⁻¹ : (normInteger (PadicAlgCl p))ˣ) : PadicAlgCl p)‖ = 1`. Rewrite using `[← norm_mul, ← Subring.coe_mul, Units.mul_inv, Subring.coe_one, norm_one]`. Establish `hu1` using `mem_normInteger.1 (u : normInteger (PadicAlgCl p)).2`. Establish `hv1` using `mem_normInteger.1 ((u⁻¹ : (normInteger (PadicAlgCl p))ˣ) : normInteger (PadicAlgCl p)).2`.
+
+Establish `hu2 : ‖((u : normInteger (PadicAlgCl p)) : PadicAlgCl p)‖ = 1`. Use polynomial arithmetic with `[norm_nonneg ((u : normInteger (PadicAlgCl p)) : PadicAlgCl p), norm_nonneg (((u⁻¹ : (normInteger (PadicAlgCl p))ˣ) : normInteger (PadicAlgCl p)) : PadicAlgCl p)]`. Rewrite `hu2` using `[hu]`. Establish `: ‖(p : PadicAlgCl p)‖ = 1` using `by simpa using hu2`. Rewrite `this` using `[norm_natCast_prime]`.
+
+Establish `hp1 : (1 : ℝ) < p` using `one_lt_p_real`. Establish `: (p : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ hp1`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem not_isUnit_natCast_normInteger : ¬IsUnit (p : normInteger (PadicAlgCl p)) := by
   rintro ⟨u, hu⟩
   have h1 : ‖((u : normInteger (PadicAlgCl p)) : PadicAlgCl p)‖ *
@@ -157,6 +210,31 @@ theorem not_isUnit_natCast_normInteger : ¬IsUnit (p : normInteger (PadicAlgCl p
   have : (p : ℝ)⁻¹ < 1 := inv_lt_one_of_one_lt₀ hp1
   linarith
 
+/- English proof (translation)
+Establish `hp0 : 0 < p` using `(Fact.out : p.Prime).pos`. Establish `hx' : x ∈ cycl p (n + 1)` using `cycl_mono (Nat.le_succ n) hx`. Take `⟨η, hη⟩` from `exists_isPrimitiveRoot (p := p) (n + 2)`. Establish `hζ : IsPrimitiveRoot (η ^ p) (p ^ (n + 1))` using `hη.pow (pow_pos hp0 _) (by ring)`. Use `set ζ := η ^ p`.
+
+Use `set d := Nat.totient (p ^ (n + 1))`. Take `⟨a, ha⟩` from `exists_eq_sum_sub_one_pow hζ hx'`. Use `set b : ℕ → ℚ_[p] := fun i => if i < d then a i else 0`. Establish `hsum : ∀ u : PadicAlgCl p, ∑ i ∈ Finset.range d, algebraMap ℚ_[p] (PadicAlgCl p) (a i) * u ^ i = ∑ i ∈ Finset.range d, algebraMap ℚ_[p] (PadicAlgCl p) (b i) * u ^ i` using `fun u => Finset.sum_congr rfl fun i hi => by simp only [b, if_pos (Finset.mem_range.1 hi)]`. Establish `hb1 : ∀ i, ‖b i‖ ≤ 1`.
+
+Introduce `i`. Distinguish the cases in `hi : i < d`. Simplify using `only [b, if_pos hi]`. Use `norm_coeff_le_one hζ hi ?_` and prove the remaining obligations. Conclude with `(norm_coeff_mul_le_norm_sum hζ a i (Finset.mem_range.2 hi)).trans (ha ▸ hx1)`.
+
+Simplify using `[b, if_neg hi]`. Rewrite `ha` using `[hsum]`. Establish `hηn : ‖η‖ = 1` using `norm_eq_one_of_pow_eq_one (pow_ne_zero _ hp0.ne') hη.pow_eq_one`. Establish `hη1 : ‖η - 1‖ ≤ 1` using `norm_sub_one_le_one (pow_ne_zero _ hp0.ne') hη.pow_eq_one`. Establish `hζn : ‖ζ‖ ≤ 1` using `by rw [norm_pow, hηn, one_pow]`.
+
+Use `set y := ∑ i ∈ Finset.range d, algebraMap ℚ_[p] (PadicAlgCl p) (b i) * (η - 1) ^ i`. Establish `hy1 : ‖y‖ ≤ 1`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow, norm_algebraMap']`. Conclude with `mul_le_one₀ (hb1 i) (pow_nonneg (norm_nonneg _) _) (pow_le_one₀ (norm_nonneg _) hη1)`.
+
+Establish `hymem : y ∈ cycl p (n + 2)`. Use `sum_mem fun i _ => mul_mem (IntermediateField.algebraMap_mem _ _) (pow_mem (sub_mem ?_ (one_mem _)) _)` and prove the remaining obligations. Conclude with `pow_eq_one_mem_cycl hη.pow_eq_one`. Use `⟨y, hymem, hy1, ?_⟩` and prove the remaining obligations. Use `set O := normInteger (PadicAlgCl p)`.
+
+Establish `: Fact (¬IsUnit (p : O))` using `⟨not_isUnit_natCast_normInteger⟩`. Use `set A : ℕ → O := fun i => ⟨algebraMap ℚ_[p] (PadicAlgCl p) (b i), mem_normInteger.2 (by rw [norm_algebraMap']; exact hb1 i)⟩`. Use `set H : O := ⟨η, mem_normInteger.2 hηn.le⟩`. Use `set Z : O := ⟨ζ, mem_normInteger.2 hζn⟩`. Use `set X : O := ∑ i ∈ Finset.range d, A i * (Z - 1) ^ i`.
+
+Use `set Y : O := ∑ i ∈ Finset.range d, A i * (H - 1) ^ i`. Establish `hX : (X : PadicAlgCl p) = x`. Rewrite using `[ha]`. Simplify using `[X, A, Z, ζ]`. Establish `hY : (Y : PadicAlgCl p) = y` using `by simp [Y, y, A, H]`.
+
+Use `set mk := Ideal.Quotient.mk (Ideal.span {(p : O)})`. Establish `hA : ∀ i, mk (A i) ^ p = mk (A i)`. Introduce `i`. Rewrite using `[← map_pow]`. Use `(mk_eq_mk_iff_norm_sub_le (K := PadicAlgCl p)).2 ?_` and prove the remaining obligations.
+
+Establish `: ((A i ^ p : O) : PadicAlgCl p) - (A i : PadicAlgCl p) = algebraMap ℚ_[p] (PadicAlgCl p) (b i ^ p - b i)` using `by simp [A]`. Rewrite using `[this, norm_algebraMap', norm_natCast_prime]`. Conclude with `norm_pow_sub_self_le (hb1 i)`. Establish `hH : (mk H - 1) ^ p = mk Z - 1`. Rewrite using `[sub_pow_char, one_pow, ← map_pow]`.
+
+Use `congr 2`. Establish `hmk : mk (Y ^ p) = mk X`. Simplify using `only [Y, X, map_pow, map_sum, map_mul, map_sub, map_one]`. Rewrite using `[sum_pow_char]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_pow, hA, ← pow_mul, mul_comm i p, pow_mul, hH]`. Use `(mk_eq_mk_iff_norm_sub_le (K := PadicAlgCl p)).1 hmk.symm` as an intermediate fact. Rewrite `this` using `[hX, Subring.coe_pow, hY]`. Simplify using `using this`.
+-/
 theorem exists_pow_approx_cycl {n : ℕ} {x : PadicAlgCl p} (hx : x ∈ cycl p n) (hx1 : ‖x‖ ≤ 1) :
     ∃ y ∈ cycl p (n + 2), ‖y‖ ≤ 1 ∧ ‖x - y ^ p‖ ≤ ‖(p : PadicAlgCl p)‖ := by
   classical
@@ -225,6 +303,19 @@ theorem exists_pow_approx_cycl {n : ℕ} {x : PadicAlgCl p} (hx : x ∈ cycl p n
   rw [hX, Subring.coe_pow, hY] at this
   simpa using this
 
+/- English proof (translation)
+Establish `hp1 : (1 : ℝ) < p` using `one_lt_p_real`. Establish `hpinv : (0 : ℝ) < (p : ℝ)⁻¹` using `inv_pos.2 (by linarith)`. Establish `hpinv1 : (p : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ hp1`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN⟩ : ∃ N : ℕ, max r 0 ^ N < (p : ℝ)⁻¹ := by`. Establish `ht` using `tendsto_pow_atTop_nhds_zero_of_lt_one (le_max_right r 0) (max_lt hr one_pos)`.
+
+Take `⟨N, hN⟩` from `(ht.eventually (gt_mem_nhds hpinv)).exists_forall_of_atTop`. Conclude with `⟨N, hN N le_rfl⟩`. Take `⟨ζ, hζ⟩` from `exists_isPrimitiveRoot (p := p) (N + 1)`. Use `set d := Nat.totient (p ^ (N + 1))`. Establish `hrd` using `norm_sub_one_pow_totient hζ`.
+
+Establish `hd : N ≤ d`. Establish `h1 : d = p ^ N * (p - 1)` using `Nat.totient_prime_pow_succ (Fact.out : p.Prime) N`. Establish `h2 : N < p ^ N` using `Nat.lt_pow_self (Fact.out : p.Prime).one_lt`. Establish `h3 : 1 ≤ p - 1` using `by have := (Fact.out : p.Prime).two_le; omega`. Rewrite using `[h1]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Use `⟨N + 1, ζ - 1, sub_mem (pow_eq_one_mem_cycl hζ.pow_eq_one) (one_mem _), ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : max r 0 ^ d < ‖ζ - 1‖ ^ d`. Rewrite using `[hrd]`. Conclude with `lt_of_le_of_lt (pow_le_pow_of_le_one (le_max_right _ _) (max_lt hr one_pos).le hd) hN`.
+
+Establish `hd0 : d ≠ 0` using `(Nat.totient_pos.2 (pow_pos (Fact.out : p.Prime).pos _)).ne'`. Conclude with `lt_of_le_of_lt (le_max_left r 0) ((pow_lt_pow_iff_left₀ (le_max_right _ _) (norm_nonneg _) hd0).1 h1)`. Assume the negation of the conclusion as `h`. Establish `h1 : 1 ≤ ‖ζ - 1‖ ^ d` using `one_le_pow₀ (not_lt.1 h)`. Rewrite `h1` using `[hrd]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_mem_cycl_norm_mem_Ioo {r : ℝ} (hr : r < 1) :
     ∃ n, ∃ x ∈ cycl p n, r < ‖x‖ ∧ ‖x‖ < 1 := by
   have hp1 : (1 : ℝ) < p := one_lt_p_real

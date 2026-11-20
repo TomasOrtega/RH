@@ -41,6 +41,9 @@ def liftPure {n d : ℕ} {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensor
 
 end Darboux
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.SmallThetaModules.exists_lift s (GlobalTheory.SmallThetaModules.pureT s) (fun l hl => GlobalTheory.SmallThetaModules.pureT_sep s l hl) s a`.
+-/
 theorem exists_rtensOp {ι : Type} {N : ι → Type} [∀ i, AddCommGroup (N i)] [∀ i, Module ℂ (N i)] (s : ∀ i, N i)
     (a : ∀ i, Module.End ℂ (N i)) :
     ∃ T : Module.End ℂ (GlobalTheory.SmallThetaModules.RTens s), ∀ ξ, Formalism.MainNotions.KudlaSiegelWeil.Restr s ξ →

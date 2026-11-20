@@ -18,6 +18,23 @@ namespace GlobalTheory.EvSymmTame
 open Filter
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M M₁ hM hM₁ e hE hbij T hT g hg`. Establish `hA : ∀ Φ ∈ schA F (Fin n × Fin d), T.symm (e Φ) = Φ` using `fun Φ hΦ => by`. Rewrite using `[← hT Φ hΦ, LinearEquiv.symm_apply_apply]`. Take `⟨m, c, φ, hφ, hstd, rfl⟩` from `GlobalTheory.MixEvAdm.sb_decomp F (Fin n × Fin d) g hg`. Take `⟨ei, ev, -, hev, hloc⟩` from `hE.loc`.
+
+Establish `hbi : Function.Bijective ei` using `⟨GlobalTheory.T.weil_eigen_injective_extends F E σ B n d X W M M₁ hM e hbij.injOn ei ev (fun v => (hev v).1) hloc, GlobalTheory.ArchSurj.surjective_arch F E σ B n d X W M M₁ hM hM₁ e hbij.surjOn ei ev hev hloc⟩`. Take `⟨S, hS⟩` from `GlobalTheory.T.schwartz_bijection_right_inverse _ _ ei hbi`. Establish `hpre : ∀ j v, ∃ ψ ∈ SB (Fin n × Fin d → Fv F v), ev v ψ = φ j v ∧ (φ j v = M₁.vac v → ψ = M.vac v)`. Introduce `j v`. Distinguish the cases in `h : φ j v = M₁.vac v`.
+
+Conclude with `⟨M.vac v, (hM.vac v).1, (hev v).1.trans h.symm, fun _ => rfl⟩`. Establish `h2 : φ j v ∈ (SB (Fin n × Fin d → Fv F v)).map (ev v)` using `(hev v).2.symm ▸ hφ j v`. Take `⟨ψ, hψ, hψe⟩` from `Submodule.mem_map.1 h2`. Conclude with `⟨ψ, hψ, hψe, fun h' => (h h').elim⟩`. Use `choose ψ hψSB hψev hψvac using hpre`.
+
+Establish `hψfam : ∀ j, ∀ᶠ v in cofinite, ψ j v = M.vac v` using `fun j => ((hstd j).and hM₁.std).mono fun v hv => hψvac j v (hv.1.trans hv.2.symm)`. Establish `hψstd : ∀ j, ∀ᶠ v in cofinite, ψ j v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `fun j => ((hψfam j).and hM.std).mono fun v hv => hv.1.trans hv.2`. Establish `hG : ∀ j, (fun y : Fin n × Fin d → Af F => ∏ᶠ v, ψ j v fun i => evalV F v (y i)) ∈ SB (Fin n × Fin d → Af F)` using `fun j => ⟨GlobalTheory.WeilM.isLocallyConstant_finprod_evalV _ (hψSB j) (hψstd j), GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod _ (hψSB j) (hψstd j)⟩`. Use `⟨Fin m, inferInstance, fun j => c j • S, fun j y => ∏ᶠ v, ψ j v fun i => evalV F v (y i), hG, fun f => ?_⟩` and prove the remaining obligations. Establish `hsplit : pureA F (f : (Fin n × Fin d → mixedEmbedding.mixedSpace F) → ℂ) (∑ j, c j • fun y => ∏ᶠ v, φ j v fun i => evalV F v (y i)) = ∑ j, c j • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (φ j)`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [pureA, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Both sides reduce to the same expression.
+
+Establish `hφe : ∀ j, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (φ j) = e (pureA F ((S f : SInf F _) : (Fin n × Fin d → mixedEmbedding.mixedSpace F) → ℂ) (fun y => ∏ᶠ v, ψ j v fun i => evalV F v (y i)))`. Introduce `j`. Establish `h1` using `hloc (S f) (ψ j) (hψSB j) (hψfam j)`. Rewrite `h1` using `[hS]`. Establish `h2 : (fun v => ev v (ψ j v)) = φ j` using `funext fun v => hψev j v`.
+
+Rewrite `h1` using `[h2]`. Conclude with `h1.symm`. Rewrite using `[LinearEquiv.coe_toLinearMap, hsplit, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hφe j, hA _ (Submodule.subset_span ⟨S f, _, hG j, rfl⟩)]`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[pureA, mul_assoc]`.
+-/
 theorem isTame_symm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M M₁ : Model σ X W), M.IsGood B.ψ → M₁.IsGood B.ψ →
     ∀ e : Fn F n d →ₗ[ℂ] Fn F n d, IsEv B M M₁ 1 1 ∅ e →

@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumPermOfNotInjective
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.AbsoluteValueAlt
 
+/- English proof (translation)
+Introduce `K _ _ n U hU F hF x hx`. Conclude with `UpperTheory.Reformulated.B.ContDiffOnLocalExtension.abs hU hF hx`.
+-/
 theorem UpperTheory.Reformulated.B.LocalSmoothExtension.exists_smooth_eq : ∀ {K : Type} [Field K] [NumberField K] {n : ℕ}
     {U : Set (GlobalTheory.CuspRep.Lie K n)}, IsOpen U →
     ∀ {F : GlobalTheory.CuspRep.Lie K n → ℂ}, ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) F U →

@@ -8,6 +8,11 @@ open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolati
 
 namespace UpperTheory.V.Ws
 
+/- English proof (translation)
+Introduce `N`. Establish `hN : I ^ N ≤ (J ^ N).comap f`. Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.mpr h) N`. Use `(hφ N).comp (Ideal.quotientMap (J ^ N) f hN)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using `[Ideal.quotientMap_mk]`.
+-/
 theorem adicCont_map {Γ R R' : Type} [TopologicalSpace Γ] [CommRing R] [CommRing R'] (f : R →+* R') {I : Ideal R}
     {J : Ideal R'} (h : I ≤ J.comap f) {φ : Γ → R} (hφ : AdicCont I φ) : AdicCont J fun g => f (φ g) := by
   intro N

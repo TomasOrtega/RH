@@ -14,6 +14,9 @@ def fibreIdeal {σ : Type*} {n : ℕ} (K : Ideal (MvPolynomial (Fin n) (MvPolyno
     Ideal (MvPolynomial (Fin n) ℂ) :=
   K.map (MvPolynomial.map (eval t))
 
+/- English proof (translation)
+Establish `h : (MvPolynomial.map (eval t)).comp (MvPolynomial.map (C : ℂ →+* MvPolynomial σ ℂ)) = RingHom.id (MvPolynomial (Fin n) ℂ)`. Apply the tactic sequence `ext p <;> simp`. Rewrite using `[fibreIdeal, Ideal.map_map, h, Ideal.map_id]`.
+-/
 theorem fibreIdeal_map_C {σ : Type*} {n : ℕ} (J : Ideal (MvPolynomial (Fin n) ℂ)) (t : σ → ℂ) :
     fibreIdeal (J.map (MvPolynomial.map (C : ℂ →+* MvPolynomial σ ℂ))) t = J := by
   have h : (MvPolynomial.map (eval t)).comp (MvPolynomial.map (C : ℂ →+* MvPolynomial σ ℂ)) =

@@ -41,6 +41,11 @@ def of : A →+* CxExt σ A :=
   letI := σ.toAlgebra
   (Algebra.TensorProduct.includeRight (R := F) (A := ℂ) (B := A)).toRingHom
 
+/- English proof (translation)
+Use `letI := σ.toAlgebra`. Use `first`. Consider the case `exact (Algebra.TensorProduct.includeRight (R := F) (A := ℂ) (B := A)).commutes a`. Consider the case `(show (1 : ℂ) ⊗ₜ[F] algebraMap F A a = σ a ⊗ₜ[F] (1 : A)`. Rewrite using `[Algebra.algebraMap_eq_smul_one, ← TensorProduct.smul_tmul, Algebra.smul_def, mul_one]`.
+
+Use the proof step `rfl)`.
+-/
 theorem of_algebraMap (a : F) : of σ (algebraMap F A a) = algebraMap ℂ (CxExt σ A) (σ a) := by
   letI := σ.toAlgebra
   first
@@ -49,13 +54,24 @@ theorem of_algebraMap (a : F) : of σ (algebraMap F A a) = algebraMap ℂ (CxExt
      rw [Algebra.algebraMap_eq_smul_one, ← TensorProduct.smul_tmul, Algebra.smul_def, mul_one]
      rfl)
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, map_mul, of_algebraMap, ← Algebra.smul_def]`.
+-/
 theorem of_smul (a : F) (x : A) : of σ (a • x) = σ a • of σ x := by
   rw [Algebra.smul_def, map_mul, of_algebraMap, ← Algebra.smul_def]
 
+/- English proof (translation)
+Use `letI := σ.toAlgebra`. Conclude with `Algebra.TensorProduct.includeRight_injective (R := F) (A := ℂ) (B := A) σ.injective`.
+-/
 theorem of_injective : Function.Injective (of σ : A → CxExt σ A) := by
   letI := σ.toAlgebra
   exact Algebra.TensorProduct.includeRight_injective (R := F) (A := ℂ) (B := A) σ.injective
 
+/- English proof (translation)
+Use `letI := σ.toAlgebra`. Use `first`. Consider the case `(show c • ((1 : ℂ) ⊗ₜ[F] a) = c ⊗ₜ[F] a`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one])`. Consider the case `(show c • ((1 : ℂ) ⊗ₜ[F] a) = c ⊗ₜ[F] a`.
+
+Simplify using `[TensorProduct.smul_tmul'])`.
+-/
 private theorem complex_smul_of_eq (c : ℂ) (a : A) :
     c • of σ a = (letI := σ.toAlgebra; (c ⊗ₜ[F] a : ℂ ⊗[F] A) : CxExt σ A) := by
   letI := σ.toAlgebra
@@ -67,6 +83,11 @@ private theorem complex_smul_of_eq (c : ℂ) (a : A) :
 
 variable {σ} in
 
+/- English proof (translation)
+Use `letI := σ.toAlgebra`. Use `TensorProduct.induction_on (R := F) (M := ℂ) (N := A) (motive := P) x ?_ ?_ ?_` and prove the remaining obligations. Establish `h` using `smul 0 0`. Rewrite `h` using `[zero_smul]`. Conclude with `h`.
+
+Introduce `c a`. Conclude with `(complex_smul_of_eq σ c a) ▸ smul c a`. Introduce `x y hx hy`. Conclude with `add x y hx hy`.
+-/
 @[elab_as_elim] theorem induction {P : CxExt σ A → Prop} (x : CxExt σ A)
     (smul : ∀ (c : ℂ) (a : A), P (c • of σ a)) (add : ∀ x y, P x → P y → P (x + y)) : P x := by
   letI := σ.toAlgebra
@@ -91,6 +112,9 @@ def lift {B : Type} [CommRing B] [Algebra ℂ B] (φ : A →+* B)
 
 variable {σ} in
 
+/- English proof (translation)
+Use `first`. Consider the case `(change (Algebra.ofId ℂ B) 1 * φ a = φ a`. Rewrite using `[map_one, one_mul])`. Consider the case `(simp only [lift, of] erw [Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.lift_tmul] simp)`.
+-/
 @[simp] theorem lift_of {B : Type} [CommRing B] [Algebra ℂ B] (φ : A →+* B)
     (h : ∀ a, φ (algebraMap F A a) = algebraMap ℂ B (σ a)) (a : A) : lift φ h (of σ a) = φ a := by
   first
@@ -103,11 +127,21 @@ variable {σ} in
 def map (f : A →ₐ[F] A') : CxExt σ A →ₐ[ℂ] CxExt σ A' :=
   lift ((of σ).comp f.toRingHom) fun a => (congrArg (of σ) (f.commutes a)).trans (of_algebraMap σ a)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact lift_of _ _ a`. Consider the case `simp [map, lift_of]`.
+-/
 @[simp] theorem map_of (f : A →ₐ[F] A') (a : A) : map σ f (of σ a) = of σ (f a) := by
   first
   | exact lift_of _ _ a
   | simp [map, lift_of]
 
+/- English proof (translation)
+Use `letI := σ.toAlgebra`. Establish `hk : ∀ x : CxExt σ A, map σ f x = (LinearMap.lTensor ℂ f.toLinearMap : ℂ ⊗[F] A →ₗ[F] ℂ ⊗[F] A') x`. Introduce `x`. Use `CxExt.induction (P := fun x => map σ f x = (LinearMap.lTensor ℂ f.toLinearMap : ℂ ⊗[F] A →ₗ[F] ℂ ⊗[F] A') x) x (fun c a => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, map_of, complex_smul_of_eq, complex_smul_of_eq, LinearMap.lTensor_tmul]`.
+
+Both sides reduce to the same expression. Rewrite using `[map_add, hx, hy]`. Conclude with `(map_add (LinearMap.lTensor ℂ f.toLinearMap : ℂ ⊗[F] A →ₗ[F] ℂ ⊗[F] A') x y).symm`. Establish `hinj` using `Module.Flat.lTensor_preserves_injective_linearMap (M := ℂ) f.toLinearMap hf`. Introduce `x y hxy`.
+
+Conclude with `hinj (by rw [← hk, ← hk]; exact hxy)`.
+-/
 theorem map_injective {f : A →ₐ[F] A'} (hf : Function.Injective f) :
     Function.Injective (map σ f) := by
   letI := σ.toAlgebra
@@ -125,6 +159,19 @@ theorem map_injective {f : A →ₐ[F] A'} (hf : Function.Injective f) :
   intro x y hxy
   exact hinj (by rw [← hk, ← hk]; exact hxy)
 
+/- English proof (translation)
+Use `letI := σ.toAlgebra`. Take `⟨b⟩ : Nonempty (Module.Basis (Module.Basis.ofVectorSpaceIndex F ℂ) F ℂ)` from `⟨Module.Basis.ofVectorSpace F ℂ⟩`. Use `⟨Module.Basis.ofVectorSpaceIndex F ℂ, (TensorProduct.equivFinsuppOfBasisLeft (N := A) b x).support, fun i => b i, fun i y => TensorProduct.equivFinsuppOfBasisLeft (N := A) b y i, fun i y => TensorProduct.equivFinsuppOfBasisLeft (N := A') b y i, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h2 : ∀ v : Module.Basis.ofVectorSpaceIndex F ℂ →₀ A, (TensorProduct.equivFinsuppOfBasisLeft (N` using `A) b).symm v = v.sum fun i n => b i ⊗ₜ[F] n := by`. Introduce `v`.
+
+Conclude with `TensorProduct.equivFinsuppOfBasisLeft_symm_apply b v`. Establish `h3` using `LinearEquiv.symm_apply_apply (TensorProduct.equivFinsuppOfBasisLeft (N := A) b) x`. Rewrite `h3` using `[h2, Finsupp.sum]`. Simplify using `only [complex_smul_of_eq]`. Conclude with `h3.symm`.
+
+Introduce `i y`. Use `CxExt.induction (P := fun y => TensorProduct.equivFinsuppOfBasisLeft (N := A') b (map σ f y) i = f (TensorProduct.equivFinsuppOfBasisLeft (N := A) b y i)) y (fun c a => ?_) (fun y z hy hz => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, map_of, complex_smul_of_eq, complex_smul_of_eq, TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply, TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply] first`. Consider the case `exact (map_smul f _ _).symm`. Consider the case `simp`.
+
+Establish `e1 : TensorProduct.equivFinsuppOfBasisLeft (N` using `A') b (map σ f (y + z)) = TensorProduct.equivFinsuppOfBasisLeft (N := A') b (map σ f y) + TensorProduct.equivFinsuppOfBasisLeft (N := A') b (map σ f z) := by`. Rewrite using `[map_add]`. Conclude with `map_add _ _ _`. Establish `e2 : TensorProduct.equivFinsuppOfBasisLeft (N` using `A) b (y + z) = TensorProduct.equivFinsuppOfBasisLeft (N := A) b y + TensorProduct.equivFinsuppOfBasisLeft (N := A) b z := map_add _ _ _`. Rewrite using `[e1, e2, Finsupp.add_apply, Finsupp.add_apply, hy, hz, map_add]`.
+
+Introduce `i y a`. Use `CxExt.induction (P := fun y => TensorProduct.equivFinsuppOfBasisLeft (N := A') b (y * of σ a : CxExt σ A') i = TensorProduct.equivFinsuppOfBasisLeft (N := A') b y i * a) y (fun c a' => ?_) (fun y z hy hz => ?_)` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, ← map_mul, complex_smul_of_eq, complex_smul_of_eq, TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply, TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply, smul_mul_assoc]`. Establish `e1 : TensorProduct.equivFinsuppOfBasisLeft (N` using `A') b ((y + z) * of σ a : CxExt σ A') = TensorProduct.equivFinsuppOfBasisLeft (N := A') b (y * of σ a : CxExt σ A') + TensorProduct.equivFinsuppOfBasisLeft (N := A') b (z * of σ a : CxExt σ A') := by`. Rewrite using `[add_mul]`.
+
+Conclude with `map_add _ _ _`. Establish `e2 : TensorProduct.equivFinsuppOfBasisLeft (N` using `A') b (y + z) = TensorProduct.equivFinsuppOfBasisLeft (N := A') b y + TensorProduct.equivFinsuppOfBasisLeft (N := A') b z := map_add _ _ _`. Rewrite using `[e1, e2, Finsupp.add_apply, Finsupp.add_apply, hy, hz, add_mul]`.
+-/
 theorem exists_components (f : A →ₐ[F] A') (x : CxExt σ A) :
     ∃ (ι : Type) (s : Finset ι) (e : ι → ℂ) (π : ι → CxExt σ A → A) (π' : ι → CxExt σ A' → A'),
       x = ∑ i ∈ s, e i • of σ (π i x) ∧ (∀ i y, π' i (map σ f y) = f (π i y)) ∧
@@ -188,9 +235,15 @@ abbrev FnC : Type := CxExt σ Y.Fn
 
 def cx : Y.Fn →+* Y.FnC σ := CxExt.of σ
 
+/- English proof (translation)
+The claim follows from `CxExt.of_smul σ a f`.
+-/
 theorem cx_smul (a : F) (f : Y.Fn) : Y.cx σ (a • f) = σ a • Y.cx σ f :=
   CxExt.of_smul σ a f
 
+/- English proof (translation)
+The claim follows from `CxExt.of_injective σ`.
+-/
 theorem cx_injective : Function.Injective (Y.cx σ) :=
   CxExt.of_injective σ
 
@@ -207,11 +260,19 @@ variable {Y σ}
 
 def base (y : Y.pts σ) : Y.X := y.1 (IsLocalRing.closedPoint ℂ)
 
+/- English proof (translation)
+The claim follows from `CxPts.mem_ptsIn`.
+-/
 theorem mem_ptsIn_iff {y : Y.pts σ} {U : Y.X.Opens} : y ∈ ptsIn Y.str σ U ↔ base y ∈ U :=
   CxPts.mem_ptsIn
 
 def evStalk (y : Y.pts σ) : Y.X.presheaf.stalk (base y) →+* ℂ := (Scheme.stalkClosedPointTo y.1).hom
 
+/- English proof (translation)
+Establish `hy : ⊤ ≤ y.1 ⁻¹ᵁ U` using `(Scheme.preimage_eq_top_of_closedPoint_mem y.1 h).ge`. Establish `e` using `congrArg (fun φ => φ.hom a) (Scheme.germ_stalkClosedPointTo y.1 U h)`. Use `e.trans ?_` and prove the remaining obligations. Use `show _ = valR y.1 U a`. Rewrite using `[valR, dif_pos hy]`.
+
+Both sides reduce to the same expression.
+-/
 theorem evStalk_germ {y : Y.pts σ} {U : Y.X.Opens} (h : base y ∈ U) (a : Γ(Y.X, U)) :
     evStalk y (Y.X.presheaf.germ U _ h a) = ev Y.str σ U a y := by
   have hy : ⊤ ≤ y.1 ⁻¹ᵁ U := (Scheme.preimage_eq_top_of_closedPoint_mem y.1 h).ge
@@ -221,6 +282,9 @@ theorem evStalk_germ {y : Y.pts σ} {U : Y.X.Opens} (h : base y ∈ U) (a : Γ(Y
   rw [valR, dif_pos hy]
   rfl
 
+/- English proof (translation)
+Use `haveI : IsLocalHom (evStalk y) := Scheme.isLocalHom_stalkClosedPointTo y.1`. Rewrite using `[← isUnit_iff_ne_zero]`. Conclude with `isUnit_map_iff (evStalk y) a`.
+-/
 theorem evStalk_ne_zero_iff {y : Y.pts σ} (a : Y.X.presheaf.stalk (base y)) :
     evStalk y a ≠ 0 ↔ IsUnit a := by
   haveI : IsLocalHom (evStalk y) := Scheme.isLocalHom_stalkClosedPointTo y.1
@@ -233,6 +297,9 @@ def germIncl (y : Y.pts σ) : CxExt σ (Y.X.presheaf.stalk (base y)) →ₐ[ℂ]
 def germEv (y : Y.pts σ) : CxExt σ (Y.X.presheaf.stalk (base y)) →ₐ[ℂ] ℂ :=
   CxExt.lift (evStalk y) fun a => (evStalk_germ (U := ⊤) trivial _).trans (ev_algX mem_ptsIn_top a)
 
+/- English proof (translation)
+The claim follows from `CxExt.map_injective σ (IsFractionRing.injective (Y.X.presheaf.stalk (base y)) Y.X.functionField)`.
+-/
 theorem germIncl_injective (y : Y.pts σ) : Function.Injective (germIncl y) :=
   CxExt.map_injective σ (IsFractionRing.injective (Y.X.presheaf.stalk (base y)) Y.X.functionField)
 
@@ -247,6 +314,11 @@ def val (y : Y.pts σ) (f : Y.FnC σ) : ℂ := if h : RegC y f then h.choose els
 
 variable {y : Y.pts σ} {f f' : Y.FnC σ} {c c' : ℂ}
 
+/- English proof (translation)
+Take `⟨a, b, hb, hf, ha⟩` from `h`. Take `⟨a', b', hb', hf', ha'⟩` from `h'`. Establish `key : germIncl y (b * a') = germIncl y (b' * a)`. Simplify using `only [map_mul]`. Take the linear combination `(germIncl y b') * hf - (germIncl y b) * hf'`.
+
+Establish `e` using `congrArg (germEv y) (germIncl_injective y key)`. Simplify using `only [map_mul] at e`. Rewrite `e` using `[ha, ha']`. Apply `mul_left_cancel₀ (mul_ne_zero hb hb')` to reduce the goal to its premises. Take the linear combination `-e`.
+-/
 theorem HasVal.unique (h : HasVal y f c) (h' : HasVal y f c') : c = c' := by
   obtain ⟨a, b, hb, hf, ha⟩ := h
   obtain ⟨a', b', hb', hf', ha'⟩ := h'
@@ -259,29 +331,61 @@ theorem HasVal.unique (h : HasVal y f c) (h' : HasVal y f c') : c = c' := by
   apply mul_left_cancel₀ (mul_ne_zero hb hb')
   linear_combination -e
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨c, h⟩`.
+-/
 theorem HasVal.regC (h : HasVal y f c) : RegC y f := ⟨c, h⟩
 
+/- English proof (translation)
+Rewrite using `[val, dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem RegC.hasVal (h : RegC y f) : HasVal y f (val y f) := by
   rw [val, dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+The claim follows from `h.regC.hasVal.unique h`.
+-/
 theorem HasVal.val_eq (h : HasVal y f c) : val y f = c := h.regC.hasVal.unique h
 
+/- English proof (translation)
+Rewrite using `[val, dif_neg h]`.
+-/
 theorem val_of_not_regC (h : ¬ RegC y f) : val y f = 0 := by
   rw [val, dif_neg h]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h'`. Conclude with `h (val_of_not_regC h')`.
+-/
 theorem regC_of_val_ne_zero (h : val y f ≠ 0) : RegC y f := by
   by_contra h'
   exact h (val_of_not_regC h')
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨a, 1, by simp, by simp, by simp⟩`.
+-/
 theorem hasVal_germIncl (a) : HasVal y (germIncl y a) (germEv y a) := ⟨a, 1, by simp, by simp, by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨algebraMap ℂ _ c, 1, by simp, by simp, by simp⟩`.
+-/
 theorem hasVal_algebraMap (c : ℂ) : HasVal y (algebraMap ℂ _ c) c := ⟨algebraMap ℂ _ c, 1, by simp, by simp, by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, 1, by simp, by simp, by simp⟩`.
+-/
 theorem hasVal_one : HasVal y 1 1 := ⟨1, 1, by simp, by simp, by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, 1, by simp, by simp, by simp⟩`.
+-/
 theorem hasVal_zero : HasVal y 0 0 := ⟨0, 1, by simp, by simp, by simp⟩
 
+/- English proof (translation)
+Take `⟨a, b, hb, hf, ha⟩` from `h`. Take `⟨a', b', hb', hf', ha'⟩` from `h'`. Use `⟨a * b' + a' * b, b * b', by rw [map_mul]; exact mul_ne_zero hb hb', ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_add]`. Take the linear combination `(germIncl y b') * hf + (germIncl y b) * hf'`.
+
+Simplify using `only [map_mul, map_add]`. Take the linear combination `(germEv y b') * ha + (germEv y b) * ha'`.
+-/
 theorem HasVal.add (h : HasVal y f c) (h' : HasVal y f' c') : HasVal y (f + f') (c + c') := by
   obtain ⟨a, b, hb, hf, ha⟩ := h
   obtain ⟨a', b', hb', hf', ha'⟩ := h'
@@ -291,6 +395,11 @@ theorem HasVal.add (h : HasVal y f c) (h' : HasVal y f' c') : HasVal y (f + f') 
   · simp only [map_mul, map_add]
     linear_combination (germEv y b') * ha + (germEv y b) * ha'
 
+/- English proof (translation)
+Take `⟨a, b, hb, hf, ha⟩` from `h`. Take `⟨a', b', hb', hf', ha'⟩` from `h'`. Use `⟨a * a', b * b', by rw [map_mul]; exact mul_ne_zero hb hb', ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul]`. Take the linear combination `(germIncl y b' * f') * hf + (germIncl y a) * hf'`.
+
+Simplify using `only [map_mul]`. Take the linear combination `(germEv y a') * ha + (germEv y b * c) * ha'`.
+-/
 theorem HasVal.mul (h : HasVal y f c) (h' : HasVal y f' c') : HasVal y (f * f') (c * c') := by
   obtain ⟨a, b, hb, hf, ha⟩ := h
   obtain ⟨a', b', hb', hf', ha'⟩ := h'
@@ -300,23 +409,40 @@ theorem HasVal.mul (h : HasVal y f c) (h' : HasVal y f' c') : HasVal y (f * f') 
   · simp only [map_mul]
     linear_combination (germEv y a') * ha + (germEv y b * c) * ha'
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def]`. Conclude with `(hasVal_algebraMap (y := y) a).mul h`.
+-/
 theorem HasVal.smul (a : ℂ) (h : HasVal y f c) : HasVal y (a • f) (a * c) := by
   rw [Algebra.smul_def]
   exact (hasVal_algebraMap (y := y) a).mul h
 
+/- English proof (translation)
+Establish `e` using `h.smul (-1)`. Rewrite `e` using `[neg_one_smul, neg_one_mul]`. Then use the resulting hypothesis.
+-/
 theorem HasVal.neg (h : HasVal y f c) : HasVal y (-f) (-c) := by
   have e := h.smul (-1)
   rwa [neg_one_smul, neg_one_mul] at e
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg, sub_eq_add_neg]`. Conclude with `h.add h'.neg`.
+-/
 theorem HasVal.sub (h : HasVal y f c) (h' : HasVal y f' c') : HasVal y (f - f') (c - c') := by
   rw [sub_eq_add_neg, sub_eq_add_neg]
   exact h.add h'.neg
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero]`. Conclude with `hasVal_one`. Consider the case `succ n ih => rw [pow_succ, pow_succ]`. Conclude with `ih.mul h`.
+-/
 theorem HasVal.pow (h : HasVal y f c) (n : ℕ) : HasVal y (f ^ n) (c ^ n) := by
   induction n with
   | zero => rw [pow_zero, pow_zero]; exact hasVal_one
   | succ n ih => rw [pow_succ, pow_succ]; exact ih.mul h
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty]`. Conclude with `hasVal_zero`. Consider the case `insert i t hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`.
+
+Conclude with `(h i (Finset.mem_insert_self i t)).add (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem HasVal.sum {ι : Type*} {s : Finset ι} {f : ι → Y.FnC σ} {c : ι → ℂ}
     (h : ∀ i ∈ s, HasVal y (f i) (c i)) : HasVal y (∑ i ∈ s, f i) (∑ i ∈ s, c i) := by
   classical
@@ -326,6 +452,11 @@ theorem HasVal.sum {ι : Type*} {s : Finset ι} {f : ι → Y.FnC σ} {c : ι �
     rw [Finset.sum_insert hi, Finset.sum_insert hi]
     exact (h i (Finset.mem_insert_self i t)).add (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
+/- English proof (translation)
+Take `⟨p, q, hq, hu1, hp⟩` from `hu`. Take `⟨a, b, hb, h1, ha⟩` from `h`. Use `⟨a * q, b * p, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hp]`. Conclude with `mul_ne_zero hb (mul_ne_zero hq hd)`.
+
+Simplify using `only [map_mul]`. Take the linear combination `(germIncl y q) * h1 - (germIncl y b * f) * hu1`. Simplify using `only [map_mul]`. Rewrite using `[hp, ha, div_eq_mul_inv]`. Take the linear combination `(germEv y b * germEv y q * c) * (mul_inv_cancel₀ hd).symm`.
+-/
 theorem HasVal.of_mul {u : Y.FnC σ} {d : ℂ} (hu : HasVal y u d) (hd : d ≠ 0)
     (h : HasVal y (u * f) c) : HasVal y f (c / d) := by
   obtain ⟨p, q, hq, hu1, hp⟩ := hu
@@ -339,6 +470,11 @@ theorem HasVal.of_mul {u : Y.FnC σ} {d : ℂ} (hu : HasVal y u d) (hd : d ≠ 0
     rw [hp, ha, div_eq_mul_inv]
     linear_combination (germEv y b * germEv y q * c) * (mul_inv_cancel₀ hd).symm
 
+/- English proof (translation)
+Establish `hU : HasVal y u (val y u)` using `(regC_of_val_ne_zero hu).hasVal`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, h⟩`. Conclude with `⟨c / val y u, hU.of_mul hu h⟩`. Introduce and unpack `⟨c, h⟩`.
+
+Conclude with `⟨val y u * c, hU.mul h⟩`.
+-/
 theorem regC_mul_iff {u : Y.FnC σ} (hu : val y u ≠ 0) : RegC y (u * f) ↔ RegC y f := by
   have hU : HasVal y u (val y u) := (regC_of_val_ne_zero hu).hasVal
   constructor
@@ -347,8 +483,14 @@ theorem regC_mul_iff {u : Y.FnC σ} (hu : val y u ≠ 0) : RegC y (u * f) ↔ Re
   · rintro ⟨c, h⟩
     exact ⟨val y u * c, hU.mul h⟩
 
+/- English proof (translation)
+The claim follows from `(h.hasVal.mul h'.hasVal).val_eq`.
+-/
 theorem val_mul (h : RegC y f) (h' : RegC y f') : val y (f * f') = val y f * val y f' := (h.hasVal.mul h'.hasVal).val_eq
 
+/- English proof (translation)
+Distinguish the cases in `hf : RegC y f`. Conclude with `val_mul (regC_of_val_ne_zero hu) hf`. Rewrite using `[val_of_not_regC hf, mul_zero]`. Conclude with `val_of_not_regC fun h => hf ((regC_mul_iff hu).1 h)`.
+-/
 theorem val_unit_mul {u : Y.FnC σ} (hu : val y u ≠ 0) (f : Y.FnC σ) :
     val y (u * f) = val y u * val y f := by
   by_cases hf : RegC y f
@@ -356,22 +498,44 @@ theorem val_unit_mul {u : Y.FnC σ} (hu : val y u ≠ 0) (f : Y.FnC σ) :
   · rw [val_of_not_regC hf, mul_zero]
     exact val_of_not_regC fun h => hf ((regC_mul_iff hu).1 h)
 
+/- English proof (translation)
+Establish `h` using `hasVal_germIncl (y := y) (CxExt.of σ a)`. Simplify using `only [germIncl, germEv, CxExt.map_of, CxExt.lift_of] at h`. Conclude with `h`.
+-/
 theorem hasVal_cx_stalk (a : Y.X.presheaf.stalk (base y)) :
     HasVal y (Y.cx σ (algebraMap _ Y.X.functionField a)) (evStalk y a) := by
   have h := hasVal_germIncl (y := y) (CxExt.of σ a)
   simp only [germIncl, germEv, CxExt.map_of, CxExt.lift_of] at h
   exact h
 
+/- English proof (translation)
+Establish `h₁` using `hasVal_cx_stalk (y := y) (Y.X.presheaf.germ U _ h a)`. Rewrite `h₁` using `[algebraMap_germ, evStalk_germ h]`. Conclude with `h₁`.
+-/
 theorem hasVal_cx_fnOf {U : Y.X.Opens} (h : base y ∈ U) (h' : genericPoint Y.X ∈ U)
     (a : Γ(Y.X, U)) : HasVal y (Y.cx σ (fnOf U h' a)) (ev Y.str σ U a y) := by
   have h₁ := hasVal_cx_stalk (y := y) (Y.X.presheaf.germ U _ h a)
   rw [algebraMap_germ, evStalk_germ h] at h₁
   exact h₁
 
+/- English proof (translation)
+The claim follows from `(hasVal_cx_fnOf h h' a).val_eq`.
+-/
 theorem val_cx_fnOf {U : Y.X.Opens} (h : base y ∈ U) (h' : genericPoint Y.X ∈ U)
     (a : Γ(Y.X, U)) : val y (Y.cx σ (fnOf U h' a)) = ev Y.str σ U a y :=
   (hasVal_cx_fnOf h h' a).val_eq
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, a, b, hb, hab, -⟩`. Take `⟨ι, s, e, p, p', hx, h₁, h₂⟩` from `CxExt.exists_components σ (Y.stalkIncl (base y)) b`. Establish `e₁ : ∀ t, Y.stalkIncl (base y) t = algebraMap _ Y.Fn t` using `fun _ => rfl`. Establish `key : ∀ i, algebraMap _ Y.Fn (p i b) * g = algebraMap _ Y.Fn (p i a)`.
+
+Introduce `i`. Establish `hi` using `congrArg (p' i) hab`. Simplify using `only [germIncl, Var.cx] at hi`. Rewrite `hi` using `[h₂, h₁, h₁, e₁, e₁]`. Conclude with `hi`.
+
+Assume the negation of the conclusion as `hg`. Apply `hb` to reduce the goal to its premises. Establish `hz : ∀ i, evStalk y (p i b) = 0`. Introduce `i`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨u, hu⟩` from `(evStalk_ne_zero_iff (p i b)).1 hne`. Apply `hg` to reduce the goal to its premises. Use `⟨(↑u⁻¹ : Y.X.presheaf.stalk (base y)) * p i a, ?_⟩` and prove the remaining obligations. Establish `hk` using `key i`. Rewrite `hk` using `[← hu]`.
+
+Rewrite using `[map_mul, ← hk, ← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul]`. Rewrite using `[hx, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Simplify using `only [germEv, CxExt.lift_of]`.
+
+Rewrite using `[hz i, smul_zero]`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `(hasVal_cx_stalk (y := y) a).regC`.
+-/
 theorem regC_cx_iff {g : Y.Fn} : RegC y (Y.cx σ g) ↔ RegAt (base y) g := by
   constructor
   · rintro ⟨c, a, b, hb, hab, -⟩
@@ -402,6 +566,11 @@ theorem regC_cx_iff {g : Y.Fn} : RegC y (Y.cx σ g) ↔ RegAt (base y) g := by
   · rintro ⟨a, rfl⟩
     exact (hasVal_cx_stalk (y := y) a).regC
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨a, rfl⟩` from `(regC_cx_iff (y := y)).1 (regC_of_val_ne_zero h)`. Rewrite `h` using `[(hasVal_cx_stalk (y := y) a).val_eq]`. Conclude with `⟨a, (evStalk_ne_zero_iff a).1 h, rfl⟩`.
+
+Introduce and unpack `⟨a, ha, rfl⟩`. Rewrite using `[(hasVal_cx_stalk (y := y) a).val_eq]`. Conclude with `(evStalk_ne_zero_iff a).2 ha`.
+-/
 theorem val_cx_ne_zero_iff {g : Y.Fn} : val y (Y.cx σ g) ≠ 0 ↔ UnitAt (base y) g := by
   constructor
   · intro h
@@ -412,6 +581,15 @@ theorem val_cx_ne_zero_iff {g : Y.Fn} : val y (Y.cx σ g) ≠ 0 ↔ UnitAt (base
     rw [(hasVal_cx_stalk (y := y) a).val_eq]
     exact (evStalk_ne_zero_iff a).2 ha
 
+/- English proof (translation)
+Use `CxExt.induction a (fun c s => ?_) (fun a₁ a₂ h₁ h₂ => ?_)` and prove the remaining obligations. Take `⟨U, hx, g, rfl⟩` from `Y.X.presheaf.germ_exist s`. Use `⟨U, fun z => c * ev Y.str σ U g z, hx, ?_, fun z hz => ?_⟩` and prove the remaining obligations. Conclude with `(show (Y.an σ).HoloOn (ptsIn Y.str σ U) (fun _ => c) from fun _ => differentiableOn_const c).mul ((Y.an σ).holoOn_ev U g)`. Establish `hz' : base z ∈ U` using `Var.mem_ptsIn_iff.mp hz`.
+
+Establish `e : Y.stalkIncl (base z) (Y.X.presheaf.germ U (base z) hz' g) = Y.stalkIncl x (Y.X.presheaf.germ U x hx g)` using `(algebraMap_germ hz' g).trans (algebraMap_germ hx g).symm`. Use `⟨c • CxExt.of σ (Y.X.presheaf.germ U (base z) hz' g), ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [germIncl, map_smul, CxExt.map_of, e]`. Simplify using `only [germEv, map_smul, CxExt.lift_of, smul_eq_mul, evStalk_germ hz']`. Take `⟨U₁, A₁, hx₁, hA₁, e₁⟩` from `h₁`.
+
+Take `⟨U₂, A₂, hx₂, hA₂, e₂⟩` from `h₂`. Establish `s₁ : ptsIn Y.str σ (U₁ ⊓ U₂) ⊆ ptsIn Y.str σ U₁` using `fun z hz => Var.mem_ptsIn_iff.mpr (Var.mem_ptsIn_iff.mp hz).1`. Establish `s₂ : ptsIn Y.str σ (U₁ ⊓ U₂) ⊆ ptsIn Y.str σ U₂` using `fun z hz => Var.mem_ptsIn_iff.mpr (Var.mem_ptsIn_iff.mp hz).2`. Use `⟨U₁ ⊓ U₂, fun z => A₁ z + A₂ z, ⟨hx₁, hx₂⟩, ?_, fun z hz => ?_⟩` and prove the remaining obligations. Introduce `i`.
+
+Conclude with `((hA₁.mono s₁) i).add ((hA₂.mono s₂) i)`. Take `⟨b₁, f₁, g₁⟩` from `e₁ z (s₁ hz)`. Take `⟨b₂, f₂, g₂⟩` from `e₂ z (s₂ hz)`. Conclude with `⟨b₁ + b₂, by rw [map_add, map_add, f₁, f₂], by rw [map_add, g₁, g₂]⟩`.
+-/
 theorem exists_spread {x : Y.X} (a : CxExt σ (Y.X.presheaf.stalk x)) :
     ∃ (U : Y.X.Opens) (A : Y.pts σ → ℂ), x ∈ U ∧ (Y.an σ).HoloOn (ptsIn Y.str σ U) A ∧
       ∀ z ∈ ptsIn Y.str σ U, ∃ a', germIncl z a' = CxExt.map σ (Y.stalkIncl x) a ∧
@@ -443,6 +621,17 @@ theorem exists_spread {x : Y.X} (a : CxExt σ (Y.X.presheaf.stalk x)) :
 
 def regSet (f : Y.FnC σ) : Set (Y.pts σ) := {y | RegC y f}
 
+/- English proof (translation)
+Take `⟨c, a, b, hb, hab, -⟩` from `h`. Take `⟨U, A, hU, hA, eA⟩` from `exists_spread a`. Take `⟨V, B, hV, hB, eB⟩` from `exists_spread b`. Establish `key : ∀ z, z ∈ ptsIn Y.str σ U → z ∈ ptsIn Y.str σ V → B z ≠ 0 → HasVal z f (A z / B z)`. Introduce `z zU zV hz`.
+
+Take `⟨a', ha', ha''⟩` from `eA z zU`. Take `⟨b', hb', hb''⟩` from `eB z zV`. Use `⟨a', b', by rw [hb'']; exact hz, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ha', hb']`. Conclude with `hab`.
+
+Rewrite using `[ha'', hb'']`. Clear the denominators using the available nonvanishing facts. Establish `yV : y ∈ ptsIn Y.str σ V` using `Var.mem_ptsIn_iff.mpr hV`. Establish `hBy : B y ≠ 0`. Take `⟨b', hb', hb''⟩` from `eB y yV`.
+
+Establish `e : b' = b` using `germIncl_injective y hb'`. Rewrite using `[← hb'', e]`. Conclude with `hb`. Use `⟨ptsIn Y.str σ U ∩ (ptsIn Y.str σ V ∩ B ⁻¹' {0}ᶜ), (isOpen_ptsIn U).inter ((hB.continuousOn (isOpen_ptsIn V)).isOpen_inter_preimage (isOpen_ptsIn V) isOpen_compl_singleton), ⟨Var.mem_ptsIn_iff.mpr hU, yV, hBy⟩, fun z hz => ⟨_, key z hz.1 hz.2.1 hz.2.2⟩, ?_⟩` and prove the remaining obligations. Use `((hA.mono fun z hz => hz.1).mul ((hB.mono fun z hz => hz.2.1).inv fun z hz => hz.2.2)).congr ?_` and prove the remaining obligations.
+
+Introduce `z hz`. Rewrite using `[(key z hz.1 hz.2.1 hz.2.2).val_eq, div_eq_mul_inv]`.
+-/
 theorem RegC.exists_nhds (h : RegC y f) : ∃ N : Set (Y.pts σ), IsOpen N ∧ y ∈ N ∧
     N ⊆ regSet f ∧ (Y.an σ).HoloOn N fun z => val z f := by
   obtain ⟨c, a, b, hb, hab, -⟩ := h
@@ -470,19 +659,35 @@ theorem RegC.exists_nhds (h : RegC y f) : ∃ N : Set (Y.pts σ), IsOpen N ∧ y
   intro z hz
   rw [(key z hz.1 hz.2.1 hz.2.2).val_eq, div_eq_mul_inv]
 
+/- English proof (translation)
+Use `isOpen_iff_forall_mem_open.mpr fun z hz => ?_` and prove the remaining obligations. Take `⟨N, hN, hzN, hNs, -⟩` from `(show RegC z f from hz).exists_nhds`. Conclude with `⟨N, hNs, hN, hzN⟩`.
+-/
 theorem isOpen_regSet (f : Y.FnC σ) : IsOpen (regSet f) := by
   refine isOpen_iff_forall_mem_open.mpr fun z hz => ?_
   obtain ⟨N, hN, hzN, hNs, -⟩ := (show RegC z f from hz).exists_nhds
   exact ⟨N, hNs, hN, hzN⟩
 
+/- English proof (translation)
+Use `choose N hN hyN hNs hNh using fun z : regSet f => (show RegC z.1 f from z.2).exists_nhds`. Conclude with `AnRead.holoOn_of_cover (R := Y.an σ) hN (fun z hz => ⟨⟨z, hz⟩, hyN ⟨z, hz⟩⟩) fun j => (hNh j).mono Set.inter_subset_right`.
+-/
 theorem holoOn_val (f : Y.FnC σ) : (Y.an σ).HoloOn (regSet f) fun z => val z f := by
   choose N hN hyN hNs hNh using fun z : regSet f => (show RegC z.1 f from z.2).exists_nhds
   exact AnRead.holoOn_of_cover (R := Y.an σ) hN (fun z hz => ⟨⟨z, hz⟩, hyN ⟨z, hz⟩⟩)
     fun j => (hNh j).mono Set.inter_subset_right
 
+/- English proof (translation)
+The claim follows from `(holoOn_val f).continuousOn (isOpen_regSet f)`.
+-/
 theorem continuousOn_val (f : Y.FnC σ) : ContinuousOn (fun z => val z f) (regSet f) :=
   (holoOn_val f).continuousOn (isOpen_regSet f)
 
+/- English proof (translation)
+Use `CxExt.induction f (fun c g => ?_) (fun f₁ f₂ h₁ h₂ => ?_)` and prove the remaining obligations. Take `⟨U, hU, a, rfl⟩` from `(regAt_genericPoint g).exists_fnOf`. Use `⟨U, hU, fun z hz => ?_⟩` and prove the remaining obligations. Conclude with `⟨_, (hasVal_cx_fnOf (Var.mem_ptsIn_iff.mp hz) (gen_mem hU) a).smul c⟩`. Take `⟨U₁, hU₁, s₁⟩` from `h₁`.
+
+Take `⟨U₂, hU₂, s₂⟩` from `h₂`. Use `⟨U₁ ⊓ U₂, ⟨hU₁, hU₂⟩, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hz'` using `Var.mem_ptsIn_iff.mp hz`. Take `⟨c₁, e₁⟩` from `s₁ (Var.mem_ptsIn_iff.mpr hz'.1)`. Take `⟨c₂, e₂⟩` from `s₂ (Var.mem_ptsIn_iff.mpr hz'.2)`.
+
+Conclude with `⟨_, e₁.add e₂⟩`.
+-/
 theorem exists_open_regC (f : Y.FnC σ) :
     ∃ U : Y.X.Opens, genericPoint Y.X ∈ U ∧ ptsIn Y.str σ U ⊆ regSet f := by
   refine CxExt.induction f (fun c g => ?_) (fun f₁ f₂ h₁ h₂ => ?_)

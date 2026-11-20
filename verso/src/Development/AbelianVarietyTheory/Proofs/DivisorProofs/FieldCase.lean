@@ -4,6 +4,13 @@ namespace GlobalTheory.FieldCaseReduction
 
 open Polynomial
 
+/- English proof (translation)
+Distinguish the cases in `h2 : ringChar F = 2`. Take `⟨a, ha⟩` from `FiniteField.isSquare_of_char_two h2 f`. Conclude with `⟨a, 0, by rw [ha]; ring⟩`. Use `haveI := Fintype.ofFinite F`. Establish `hodd : Fintype.card F % 2 = 1` using `FiniteField.odd_card_of_char_ne_two h2`.
+
+Establish `htwo : (2 : F) ≠ 0` using `Ring.two_ne_zero h2`. Establish `hp : (X ^ 2 : F[X]).degree = 2` using `by simp`. Establish `hq : (C (-(t ^ 2 - 4 * m)) * X ^ 2 + C 0 * X + C (-(4 * f)) : F[X]).degree = 2` using `degree_quadratic (neg_ne_zero.mpr hD)`. Take `⟨x, b, hxb⟩` from `FiniteField.exists_root_sum_quadratic hp hq hodd`. Simplify using `only [eval_add, eval_mul, eval_C, eval_pow, eval_X] at hxb`.
+
+Use `⟨(x - t * b) / 2, b, ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Take the linear combination `hxb`.
+-/
 theorem field_case (F : Type) [Field F] [Finite F] (t m f : F) (hD : t ^ 2 - 4 * m ≠ 0) :
     ∃ a b : F, a ^ 2 + t * a * b + m * b ^ 2 = f := by
   classical
@@ -22,6 +29,15 @@ theorem field_case (F : Type) [Field F] [Finite F] (t m f : F) (hD : t ^ 2 - 4 *
     field_simp
     linear_combination hxb
 
+/- English proof (translation)
+Use `haveI : IsArtinianRing S := isArtinian_of_finite`. Set `e` to `(IsArtinianRing.equivPi S).toRingEquiv`. Establish `key : ∀ I : MaximalSpectrum S, ∃ a b : S ⧸ I.asIdeal, a ^ 2 + e t I * a * b + e m I * b ^ 2 = e f I`. Introduce `I`. Use `haveI := I.isMaximal`.
+
+Use `letI : Field (S ⧸ I.asIdeal) := Ideal.Quotient.field I.asIdeal`. Use `haveI : Finite (S ⧸ I.asIdeal) := Finite.of_surjective _ Ideal.Quotient.mk_surjective`. Apply `field_case` to reduce the goal to its premises. Establish `h` using `(hD.map ((Pi.evalRingHom (fun J : MaximalSpectrum S => S ⧸ J.asIdeal) I).comp e.toRingHom)).ne_zero`. Simplify using `only [map_sub, map_mul, map_pow, map_ofNat] at h`.
+
+Conclude with `h`. Use `choose a b hab using key`. Use `⟨e.symm a, e.symm b, e.injective ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_pow, RingEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `I`.
+
+Conclude with `hab I`.
+-/
 theorem main (S : Type) [inst : CommRing S] [Finite S] [IsReduced S] (t m f : S)
     (hD : IsUnit (t ^ (2 : ℕ) - (4 : S) * m)) (_hf : IsUnit f) :
     ∃ (a : S) (b : S), a ^ (2 : ℕ) + t * a * b + m * b ^ (2 : ℕ) = f := by

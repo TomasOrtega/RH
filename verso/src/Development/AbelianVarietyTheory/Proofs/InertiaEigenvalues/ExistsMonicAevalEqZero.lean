@@ -6,6 +6,17 @@ namespace GlobalTheory.IntegralTrace
 
 open Polynomial
 
+/- English proof (translation)
+Use `haveI : Module.Finite R L := Module.Finite.iff_fg.mpr hL`. Set `g : Module.End R (Fin n → E)` to `(Matrix.toLin' M).restrictScalars R`. Establish `hg : ∀ x ∈ L, g x ∈ L` using `fun x hx => by simpa [g] using hM x hx`. Take `⟨p, hp, hp0⟩` from `LinearMap.exists_monic_and_aeval_eq_zero R (g.restrict hg)`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations.
+
+Establish `key : ∀ (q : R[X]) (x : L), ((aeval (g.restrict hg) q x : L) : Fin n → E) = (aeval M (q.map (algebraMap R E))).mulVec x`. Introduce `q`. Proceed by induction on `q using Polynomial.induction_on with`. Consider the case `C a`. Introduce `x`.
+
+Simplify using `[Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec]`. Consider the case `add a b ha hb`. Introduce `x`. Simplify using `only [map_add, Polynomial.map_add, LinearMap.add_apply, Submodule.coe_add, ha, hb, Matrix.add_mulVec]`. Consider the case `monomial k a ih`.
+
+Introduce `x`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, Polynomial.map_mul, map_mul (aeval M), Module.End.mul_apply, ih, Polynomial.map_X, aeval_X, aeval_X, ← Matrix.mulVec_mulVec]`. Both sides reduce to the same expression. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+
+Apply `LinearMap.ext_on hspan` to reduce the goal to its premises. Introduce `x hx`. Use `key p ⟨x, hx⟩` as an intermediate fact. Rewrite `this` using `[hp0]`. Simplify using `using this.symm`.
+-/
 theorem exists_monic_aeval_eq_zero {R E : Type*} [CommRing R] [Field E] [Algebra R E] {n : ℕ}
     (L : Submodule R (Fin n → E)) (hL : L.FG)
     (hspan : Submodule.span E (L : Set (Fin n → E)) = ⊤)
@@ -41,6 +52,19 @@ theorem exists_monic_aeval_eq_zero {R E : Type*} [CommRing R] [Field E] [Algebra
   rw [hp0] at this
   simpa using this.symm
 
+/- English proof (translation)
+Take `⟨p, hp, hp0⟩` from `exists_monic_aeval_eq_zero L hL hspan M hM`. Set `K` to `AlgebraicClosure E`. Set `N : Matrix (Fin n) (Fin n) K` to `(algebraMap E K).mapMatrix M`. Establish `hN : aeval N (p.map (algebraMap (NumberField.RingOfIntegers E) K)) = 0`. Establish `h1` using `Polynomial.aeval_algHom_apply ((Algebra.ofId E K).mapMatrix (m := Fin n)) M (p.map (algebraMap (NumberField.RingOfIntegers E) E))`.
+
+Rewrite `h1` using `[hp0, map_zero]`. Rewrite using `[IsScalarTower.algebraMap_eq (NumberField.RingOfIntegers E) E K, ← Polynomial.map_map, aeval_map_algebraMap]`. Conclude with `h1`. Rewrite using `[← isIntegral_algebraMap_iff (algebraMap E K).injective]`. Establish `htr : algebraMap E K M.trace = N.trace`.
+
+Simplify using `[N, Matrix.trace]`. Rewrite using `[htr, Matrix.trace_eq_sum_roots_charpoly]`. Apply `IsIntegral.multiset_sum` to reduce the goal to its premises. Introduce `z hz`. Establish `hz1 : z ∈ spectrum K N`.
+
+Rewrite using `[Matrix.mem_spectrum_iff_isRoot_charpoly]`. Conclude with `(Polynomial.mem_roots N.charpoly_monic.ne_zero).mp hz`. Establish `hz2` using `spectrum.subset_polynomial_aeval N (p.map (algebraMap (NumberField.RingOfIntegers E) K)) ⟨z, hz1, rfl⟩`. Rewrite `hz2` using `[hN]`. Establish `hz3 : eval z (p.map (algebraMap (NumberField.RingOfIntegers E) K)) = 0`.
+
+Assume the negation of the conclusion as `h`. Rewrite `hz2` using `[spectrum.mem_iff]`. Apply `hz2` to reduce the goal to its premises. Rewrite using `[sub_zero]`. Conclude with `(IsUnit.mk0 _ h).map _`.
+
+Establish `hz4 : IsIntegral (NumberField.RingOfIntegers E) z` using `⟨p, hp, by rwa [eval_map] at hz3⟩`. Conclude with `isIntegral_trans z hz4`.
+-/
 theorem isIntegral_trace {E : Type u_1} [inst : Field E] [NumberField E] (_φ : E →+* ℂ) {n : ℕ}
     (L : Submodule (NumberField.RingOfIntegers E) (Fin n → E)) (hL : Submodule.FG L)
     (hspan : Submodule.span E (↑L : Set (Fin n → E)) = ⊤)

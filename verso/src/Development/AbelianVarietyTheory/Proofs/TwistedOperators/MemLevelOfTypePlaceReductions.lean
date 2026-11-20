@@ -14,6 +14,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.MemLevRed
 
+/- English proof (translation)
+Introduce `D T βT LT y hQ hU hS a b ha hb hHa hHb hab`. Establish `hred : ∀ PP : ↥LT.Pg, redFn βT PP.1 y = (b PP)⁻¹ * a PP` using `fun PP => by`. Rewrite using `[← hab PP, inv_mul_cancel_left]`. Use `mem_lev.2 ⟨mem_parLev.2 ⟨hU, hS, fun PP hP => ?_, fun PP hP => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hred ⟨PP, hP⟩]`.
+
+Conclude with `Subgroup.mul_mem _ (Subgroup.inv_mem _ (hb ⟨PP, hP⟩)) (ha ⟨PP, hP⟩)`. Rewrite `hP` using `[hQ]`. Conclude with `absurd hP (Finset.notMem_empty PP)`. Establish `h1 : rTup βT LT y = (fun PP => upperLeftBlock LT.hr (b PP)) ⁻¹ * (fun PP => upperLeftBlock LT.hr (a PP))`. Use function extensionality and compare the values at `PP`.
+
+Establish `hb2` using `blockTri_blkOf_le LT.r LT.t (hb PP)`. Establish `ha2` using `blockTri_blkOf_le LT.r LT.t (ha PP)`. Use `show upperLeftBlock LT.hr (redFn βT PP.1 y) = (upperLeftBlock LT.hr (b PP))⁻¹ * upperLeftBlock LT.hr (a PP)`. Rewrite using `[hred PP]`. Unfold `upperLeftBlock`.
+
+Rewrite using `[extendMatrixByIdentityAlongIndices_mul _ (Subgroup.inv_mem _ hb2) ha2, extendOne_inv _ hb2]`. Rewrite using `[h1]`. Conclude with `Subgroup.mul_mem _ (Subgroup.inv_mem _ hHb) hHa`.
+-/
 theorem mem_lev_of_reductions : ∀ {D : D7} (T : HSp D) (βT : GL (Fin T.rank) (EAf D)) (LT : LevDat D.host.E ℂ T.rank) (y : GL (Fin T.rank) (EAf D)), LT.Q = ∅ → y ∈ UA D.sp.cm T.gram → y ∈ St βT → ∀ (a b : ∀ PP : ↥LT.Pg, GL (Fin T.rank) (kP PP.1)), (∀ PP, a PP ∈ blockTri (blkOf LT.r LT.t)) → (∀ PP, b PP ∈ blockTri (blkOf LT.r LT.t)) → (fun PP => upperLeftBlock LT.hr (a PP)) ∈ LT.P.H → (fun PP => upperLeftBlock LT.hr (b PP)) ∈ LT.P.H → (∀ PP : ↥LT.Pg, b PP * redFn βT PP.1 y = a PP) → y ∈ lev D.sp.cm T.gram βT LT := by
   intro D T βT LT y hQ hU hS a b ha hb hHa hHb hab
   have hred : ∀ PP : ↥LT.Pg, redFn βT PP.1 y = (b PP)⁻¹ * a PP := fun PP => by

@@ -19,6 +19,51 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.GoodPos
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm n J hJ r Xf Yf hW w cw hcw l d h`. Take `⟨τ⟩ : Nonempty (EmbOver E w)` from `inferInstance`. Take `⟨ε, hε⟩` from `hcw`. Establish `hbij` using `infEmb_bijective hcm τ`. Set `φ : w.Completion ⊗[F] E →+* ℂ` to `infEmb τ`.
+
+Set `e : w.Completion ⊗[F] E ≃+* ℂ` to `RingEquiv.ofBijective φ hbij`. Establish `hsymm : ∀ z, φ (e.symm z) = z` using `e.apply_symm_apply`. Establish `hinj : ∀ {a b : ℕ} {P Q : Matrix (Fin a) (Fin b) (w.Completion ⊗[F] E)}, P.map φ = Q.map φ → P = Q` using `fun hPQ => Matrix.map_injective hbij.1 hPQ`. Establish `hincl : ∀ x : E, φ (inclR (F` using `F) w.Completion x) = τ.1 x := by`. Introduce `x`.
+
+Express the relevant statement in the definitionally equal form `infEmb τ ((1 : w.Completion) ⊗ₜ[F] x) = _`. Simplify using the standard rewrite rules. Establish `hinclM : ∀ {a b : ℕ} (Z : Matrix (Fin a) (Fin b) E), (Z.map (inclR (F` using `F) w.Completion)).map φ = Z.map τ.1 := by`. Introduce `a b Z`. Use extensionality with `i j`.
+
+Conclude with `hincl _`. Establish `hcTE : ∀ {a b : ℕ} (Z : Matrix (Fin a) (Fin b) E), (Formalism.UG.cT (σ : E →+* E) Z).map τ.1 = (Z.map τ.1).conjTranspose`. Introduce `a b Z`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, Matrix.conjTranspose_apply, hcm.2.2.2]`.
+
+Establish `hcTR : ∀ {a b : ℕ} (Z : Matrix (Fin a) (Fin b) (w.Completion ⊗[F] E)), (Formalism.UG.cT (sigR w.Completion σ) Z).map φ = (Z.map φ).conjTranspose`. Introduce `a b Z`. Use extensionality with `i j`. Conclude with `(infEmb_sigR hcm τ _).symm`. Establish `hbcb : ∀ {m : ℕ} (a : GL (Fin m) ℂ), Formalism.UG.bc φ (Formalism.UG.bc e.symm.toRingHom a) = a`.
+
+Introduce `m a`. Use extensionality with `i j`. Conclude with `hsymm _`. Establish `hJR : (JR w.Completion J).map φ = J.map τ.1` using `hinclM J`. Establish `hJ' : (J.map τ.1).conjTranspose = J.map τ.1`.
+
+Rewrite using `[← hcTE]`. Use `congr 1`. Use extensionality with `i j`. Conclude with `hJ.1 i j`. Establish `hxx : (Xf.map τ.1).conjTranspose * J.map τ.1 * Xf.map τ.1 = 0`.
+
+Rewrite using `[← hcTE, ← Matrix.map_mul, ← Matrix.map_mul, hW.xx, Matrix.map_zero _ (map_zero _)]`. Establish `hyy : (Yf.map τ.1).conjTranspose * J.map τ.1 * Yf.map τ.1 = 0`. Rewrite using `[← hcTE, ← Matrix.map_mul, ← Matrix.map_mul, hW.yy, Matrix.map_zero _ (map_zero _)]`. Establish `hxy : (Xf.map τ.1).conjTranspose * J.map τ.1 * Yf.map τ.1 = 1`. Rewrite using `[← hcTE, ← Matrix.map_mul, ← Matrix.map_mul, hW.xy, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Establish `hc' : (Formalism.UG.bc φ cw).1.conjTranspose * J.map τ.1 * (Formalism.UG.bc φ cw).1 = Matrix.diagonal (fun i => if ε i then 1 else -1)`. Use `congrArg (fun P => P.map φ) hε` as an intermediate fact. Simplify using `only [Matrix.map_mul, hcTR, hJR, Matrix.diagonal_map (map_zero _)] at this`. Express the relevant statement in the definitionally equal form `(cw.1.map φ).conjTranspose * _ * cw.1.map φ = _`. Apply the tactic sequence `rw [this]; congr 1; funext i; split_ifs <;> simp`.
+
+Take `⟨u, N, hu, huXN, hNX, hNv, y₀, hy⟩` from `GlobalTheory.MajPosCpx.exists_unip_conj_unitary n r (J.map τ.1) hJ' (Xf.map τ.1) (Yf.map τ.1) hxx hyy hxy (Formalism.UG.bc φ cw) ε hc' l d h`. Set `u0 : GL (Fin n) (w.Completion ⊗[F] E)` to `Formalism.UG.bc e.symm.toRingHom u`. Establish `hu0 : u0.1.map φ = u.1` using `congrArg Units.val (hbcb u)`. Establish `hmem : u0 ∈ HR w.Completion σ J`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT (sigR w.Completion σ) u0.1 * JR w.Completion J * u0.1 = JR w.Completion J`.
+
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hcTR, hu0, hJR]`. Conclude with `hu`. Set `uA : GArch σ J w` to `(⟨u0, hmem⟩ : HR w.Completion σ J)`. Establish `huA : (matHom _ σ J uA) = u0` using `rfl`.
+
+Set `N0 : Matrix (Fin r) (Fin r) (w.Completion ⊗[F] E)` to `N.map e.symm`. Establish `hN0 : N0.map φ = N` using `by ext i j; exact hsymm _`. Use `⟨uA, N0, ?_, ?_, ?_, Formalism.UG.bc e.symm.toRingHom y₀, ?_⟩` and prove the remaining obligations. Rewrite using `[huA]`. Apply `hinj` to reduce the goal to its premises.
+
+Rewrite using `[Matrix.map_mul, Matrix.map_add φ (map_add φ), Matrix.map_mul, hN0, hinclM, hu0]`. Conclude with `huXN`. Introduce `i j hne`. Use `hNX i j ?_` and prove the remaining obligations. Introduce `h0`.
+
+Apply `hne` to reduce the goal to its premises. Establish `: φ (N0 i j) = N i j` using `hsymm _`. Rewrite `this` using `[h0]`. Conclude with `hbij.1 (this.trans (map_zero φ).symm)`. Introduce `v hv`.
+
+Establish `hv' : ∀ i : Fin r, i.val < l + d → Matrix.mulVec ((Xf.map τ.1).conjTranspose * J.map τ.1) (φ ∘ v) i = 0`. Introduce `i hi`. Use `congrArg φ (hv i hi)` as an intermediate fact. Rewrite `this` using `[RingHom.map_mulVec, hinclM, Matrix.map_mul, hcTE, map_zero]`. Conclude with `this`.
+
+Take `⟨a', ha', hav⟩` from `hNv (φ ∘ v) hv'`. Use `⟨e.symm ∘ a', fun i hi => ha' i fun h0 => hi ?_, ?_⟩` and prove the remaining obligations. Use `show e.symm (a' i) = 0`. Rewrite using `[h0, map_zero]`. Rewrite using `[huA]`.
+
+Use function extensionality and compare the values at `i`. Apply `hbij.1` to reduce the goal to its premises. Establish `hφa : φ ∘ (e.symm ∘ a') = a'` using `funext fun i => hsymm _`. Rewrite using `[Pi.sub_apply, map_sub, RingHom.map_mulVec, RingHom.map_mulVec, hinclM, hφa]`. Establish `h2` using `congrFun hav i`.
+
+Rewrite `h2` using `[Pi.sub_apply]`. Establish `h3 : (u0.1.map φ) = u.1` using `hu0`. Rewrite using `[h3]`. Conclude with `h2`. Introduce `k hk g hg`.
+
+Establish `hval : ∀ {m : ℕ} (a : GL (Fin m) (w.Completion ⊗[F] E)), a.1.map φ = (Formalism.UG.bc φ a).1` using `fun a => rfl`. Establish `hk' : (Formalism.UG.bc φ k).1.conjTranspose * (Formalism.UG.bc φ k).1 = 1`. Use `congrArg (fun P => P.map φ) hk` as an intermediate fact. Simplify `this` using `only [Matrix.map_mul, hcTR, Matrix.map_one _ (map_zero _) (map_one _), hval]`. Establish `hM` using `hy (Formalism.UG.bc φ k) hk'`.
+
+Establish `hgφ : (matHom _ σ J g).1.map φ = 1 + ((Xf.map τ.1).submatrix id fun j : Fin d => (⟨l + j.val, by omega⟩ : Fin r)) * ((y₀ * Formalism.UG.bc φ k * y₀⁻¹).1 - 1) * (((Yf.map τ.1).submatrix id fun j : Fin d => (⟨l + j.val, by omega⟩ : Fin r)).conjTranspose * J.map τ.1) + ((Yf.map τ.1) …`. Rewrite using `[hg]`. Simplify using `only [Matrix.map_add φ (map_add φ), Matrix.map_sub φ (map_sub φ), Matrix.map_mul, Matrix.map_one φ (map_zero φ) (map_one φ), hinclM, hcTE, hcTR, hval, map_mul, map_inv, hbcb]`. Both sides reduce to the same expression. Establish `hbu : Formalism.UG.bc φ u0 = u` using `hbcb u`.
+
+Establish `hmain : (cw⁻¹ * matHom _ σ J (uA * g * uA⁻¹) * cw).1.map φ = ((Formalism.UG.bc φ cw)⁻¹).1 * u.1 * (matHom _ σ J g).1.map φ * (u⁻¹).1 * (Formalism.UG.bc φ cw).1`. Rewrite using `[hval]`. Simplify using `only [map_mul, map_inv, huA, hbu, Units.val_mul, mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[mem_stabArch]`.
+
+Generalize the expression as in `hx : cw⁻¹ * matHom _ σ J (uA * g * uA⁻¹) * cw = x`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT _ x.1 * 1 * x.1 = 1`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[mul_one, Matrix.map_mul, hcTR, Matrix.map_one _ (map_zero _) (map_one _), ← hx, hmain, hgφ]`. Conclude with `hM`.
+-/
 theorem stab_of_frame : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
     ∀ (r : ℕ) (Xf Yf : Matrix (Fin n) (Fin r) E), IsWittFrame σ J Xf Yf →

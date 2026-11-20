@@ -16,6 +16,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.FinLift
 
+/- English proof (translation)
+Introduce `K _ X Y y q hq hs`. Use `haveI := hq`. Use `haveI := hs`. Establish `: IsAffine (pullback q y)` using `isAffine_of_isAffineHom (pullback.snd q y)`. Set `e` to `(pullback q y).isoSpec`.
+
+Take `⟨φ, hφ⟩` from `Spec.map_surjective (e.inv ≫ pullback.snd q y)`. Establish `hfin : φ.hom.Finite`. Rewrite using `[← IsFinite.SpecMap_iff, hφ]`. Use `infer_instance`. Take `⟨x⟩ : Nonempty (PrimeSpectrum K)` from `inferInstance`.
+
+Take `⟨p, -⟩` from `(pullback.snd q y).surjective x`. Set `pt : PrimeSpectrum Γ(pullback q y, ⊤)` to `e.hom.base p`. Take `⟨m, hm, -⟩` from `Ideal.exists_le_maximal pt.asIdeal pt.isPrime.ne_top`. Set `L` to `Γ(pullback q y, ⊤) ⧸ m`. Use `letI : Field L := Ideal.Quotient.field m`.
+
+Set `ψ : K →+* L` to `(Ideal.Quotient.mk m).comp φ.hom`. Use `letI : Algebra K L := ψ.toAlgebra`. Establish `hψ : ψ.Finite` using `RingHom.Finite.comp (RingHom.Finite.of_surjective _ Ideal.Quotient.mk_surjective) hfin`. Use `haveI : FiniteDimensional K L := hψ`. Use `⟨L, inferInstance, inferInstance, inferInstance, Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk m)) ≫ e.inv ≫ pullback.fst q y, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, Category.assoc, pullback.condition, ← Category.assoc e.inv, ← hφ, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem lift_point_finite_surjective : ∀ (K : Type) [Field K] (X Y : Scheme.{0}) (y : Sp K ⟶ X) (q : Y ⟶ X), IsFinite q → Surjective q → ∃ (L : Type) (_ : Field L) (_ : Algebra K L) (_ : FiniteDimensional K L) (y' : Sp L ⟶ Y), y' ≫ q = spMap (algebraMap K L) ≫ y := by
   intro K _ X Y y q hq hs
   haveI := hq

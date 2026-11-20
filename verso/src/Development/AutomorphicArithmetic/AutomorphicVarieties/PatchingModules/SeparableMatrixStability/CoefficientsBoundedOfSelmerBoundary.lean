@@ -2,6 +2,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.ComapPowLe
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
+/- English proof (translation)
+Establish `hfg : (Submodule.span A (Set.range f)).FG` using `IsNoetherian.noetherian _`. Take `⟨n, v, hv⟩` from `Submodule.fg_iff_exists_fin_generating_family.mp hfg`. Set `Φ : M →ₗ[A] (Fin n → M')` to `LinearMap.pi v`. Take `⟨c, hc⟩` from `UpperTheory.V.AlgebraTools.comap_pow_le I Φ`. Establish `key : ∀ {ι : Type} (g : ι → M →ₗ[A] M') (N : Submodule A M') (x : M), (∀ i, g i x ∈ N) → ∀ u ∈ Submodule.span A (Set.range g), u x ∈ N`.
+
+Introduce `ι g N x hx u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu => obtain ⟨i, rfl⟩ := hu`. Conclude with `hx i`. Consider the case `zero => simp`.
+
+Consider the case `add a b _ _ ha hb => exact N.add_mem ha hb`. Consider the case `smul r a _ ha => exact N.smul_mem r ha`. Use `⟨c, fun m x hx φ hφ => ?_⟩` and prove the remaining obligations. Establish `h0 : x ∈ (I ^ (m + c) • (⊤ : Submodule A (Fin n → M'))).comap Φ`. Establish `h1 : ∀ i, v i x ∈ I ^ (m + c) • (⊤ : Submodule A M')` using `fun i => key f _ x hx _ (hv ▸ Submodule.subset_span ⟨i, rfl⟩)`.
+
+Rewrite using `[Submodule.mem_comap, ← Finset.univ_sum_single (Φ x)]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `h2 : LinearMap.single A (fun _ : Fin n => M') i (v i x) ∈ (I ^ (m + c) • (⊤ : Submodule A M')).map (LinearMap.single A (fun _ : Fin n => M') i)` using `Submodule.mem_map_of_mem (h1 i)`. Rewrite `h2` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top h2`.
+
+Establish `hle : LinearMap.ker Φ ⊔ I ^ m • (⊤ : Submodule A M) ≤ Submodule.comap φ (I ^ m : Ideal A)`. Use `sup_le (fun y hy => ?_) (Submodule.smul_le.2 fun a ha y _ => ?_)` and prove the remaining obligations. Establish `h1 : ∀ i, v i y ∈ (⊥ : Submodule A M')` using `fun i => congrFun (LinearMap.mem_ker.mp hy) i`. Rewrite using `[Submodule.mem_comap, hφ y fun s => key v ⊥ y h1 (f s) (hv ▸ Submodule.subset_span ⟨s, rfl⟩)]`. Conclude with `zero_mem _`.
+
+Rewrite using `[Submodule.mem_comap, map_smul, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ ha`. Conclude with `hle (hc m h0)`.
+-/
 private theorem ar_family {A M M' S : Type} [CommRing A] [IsNoetherianRing A]
     [AddCommGroup M] [Module A M] [Module.Finite A M] [AddCommGroup M'] [Module A M']
     [Module.Finite A M'] (I : Ideal A) (f : S → M →ₗ[A] M') :
@@ -40,8 +53,14 @@ private theorem ar_family {A M M' S : Type} [CommRing A] [IsNoetherianRing A]
       exact Ideal.mul_mem_right _ _ ha
   exact hle (hc m h0)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem dd_smul {A : Type} [CommRing A] {g : ℕ} (c : A) (y : DD A g) : c • y = DD.C c * y := rfl
 
+/- English proof (translation)
+Set `f : DD A g →ₗ[A] A × (Fin g → A) × (Fin g → A) × A` to `{ toFun := DD.equiv map_add' := fun _ _ => rfl map_smul' := fun c y => by`. Apply the tactic sequence `ext <;> simp [dd_smul, DD.equiv] }`. Conclude with `Module.Finite.of_injective f DD.equiv.injective`.
+-/
 private theorem dd_finite (A : Type) [CommRing A] [IsNoetherianRing A] (g : ℕ) : Module.Finite A (DD A g) := by
   let f : DD A g →ₗ[A] A × (Fin g → A) × (Fin g → A) × A :=
     { toFun := DD.equiv
@@ -50,6 +69,11 @@ private theorem dd_finite (A : Type) [CommRing A] [IsNoetherianRing A] (g : ℕ)
         ext <;> simp [dd_smul, DD.equiv] }
   exact Module.Finite.of_injective f DD.equiv.injective
 
+/- English proof (translation)
+Establish `key : ∀ a : A, Ideal.Quotient.mkₐ A (Ideal.span {s}) a = 0 → ∃ b, a = s * b` using `fun a ha => Ideal.mem_span_singleton.1 (Ideal.Quotient.eq_zero_iff_mem.1 ha)`. Take `⟨a, ha⟩` from `key y.a (congrArg DD.a hy)`. Use `choose b hb using fun j => key (y.ep j) (congrFun (congrArg DD.ep hy) j)`. Use `choose b' hb' using fun j => key (y.ep' j) (congrFun (congrArg DD.ep' hy) j)`. Take `⟨d, hd⟩` from `key y.eta (congrArg DD.eta hy)`.
+
+Use `⟨⟨a, b, b', d⟩, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dd_smul, ha, hb, hb', hd]`.
+-/
 private theorem dd_ker {A : Type} [CommRing A] {g : ℕ} (s : A) (y : DD A g)
     (hy : DD.map g (Ideal.Quotient.mkₐ A (Ideal.span {s})) y = 0) : ∃ y' : DD A g, y = s • y' := by
   have key : ∀ a : A, Ideal.Quotient.mkₐ A (Ideal.span {s}) a = 0 → ∃ b, a = s * b := fun a ha =>
@@ -61,6 +85,15 @@ private theorem dd_ker {A : Type} [CommRing A] {g : ℕ} (s : A) (y : DD A g)
   refine ⟨⟨a, b, b', d⟩, ?_⟩
   ext <;> simp [dd_smul, ha, hb, hb', hd]
 
+/- English proof (translation)
+Set `S : DD X g → DD A g` to `fun y => ⟨σ y.a, fun j => σ (y.ep j), fun j => σ (y.ep' j), σ y.eta⟩`. Establish `hS : ∀ (b1 b2 b3 b4 : Bool) y, y ∈ ddPart A X g b1 b2 b3 b4 → S y ∈ ddPart A A g b1 b2 b3 b4`. Introduce and unpack `b1 b2 b3 b4 y ⟨h1, h2, h3, h4⟩`. Use `⟨fun e => ?_, fun e => ?_, fun e => ?_, fun e => ?_⟩` and prove the remaining obligations. Simplify using `[S, h1 e]`.
+
+Use function extensionality and compare the values at `j`. Simplify using `[S, h2 e]`. Use function extensionality and compare the values at `j`. Simplify using `[S, h3 e]`. Simplify using `[S, h4 e]`.
+
+Use `⟨Y.map S, fun i j => ⟨fun e => hS _ _ _ _ _ ((hY i j).1 e), fun e => hS _ _ _ _ _ ((hY i j).2 e)⟩, ?_, ?_⟩` and prove the remaining obligations. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `e : Y j i = -Y i j` using `congrFun (congrFun hT i) j`. Use `show S (Y j i) = -S (Y i j)`. Rewrite using `[e]`.
+
+Apply the tactic sequence `ext <;> simp [S]`. Use `Matrix.ext fun i j => ?_ show DD.map g f (S (Y i j)) = Y i j` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [S, hσ]`.
+-/
 private theorem exists_antisymmetric_lift_of_section {A X : Type} [CommRing A] [CommRing X] [Algebra A X] {g n a : ℕ} (f : A →ₐ[A] X)
     (σ : X →+ A) (hσ : ∀ y, f (σ y) = y) (Y : Matrix (Fin n) (Fin n) (DD X g)) (hY : Y ∈ W1 n A X g a)
     (hT : Yᵀ = -Y) : ∃ Y' ∈ W1 n A A g a, Y'ᵀ = -Y' ∧ Y'.map (DD.map g f) = Y := by
@@ -82,6 +115,9 @@ private theorem exists_antisymmetric_lift_of_section {A X : Type} [CommRing A] [
     show DD.map g f (S (Y i j)) = Y i j
     ext <;> simp [S, hσ]
 
+/- English proof (translation)
+Establish `e1 : (x.ρX (DD x.A k.g) g).map (DD.map k.g f) = x.ρX (DD X k.g) g` using `Matrix.ext fun i j => (DD.map k.g f).commutes _`. Establish `e2 : (DD.epM fun j => (k.κ j g).map (algebraMap x.A x.A)).map (DD.map k.g f) = DD.epM fun j => (k.κ j g).map (algebraMap x.A X)`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `DD.ext (map_zero f) (funext fun r => f.commutes _) (funext fun r => map_zero f) (map_zero f)` and prove the remaining obligations. Rewrite using `[Kap.ρ1, Kap.ρ1, Matrix.map_mul, e1, Matrix.map_add _ (map_add _), e2, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 private theorem map_first_order_lift_eq {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} {x : NP F n} (k : Kap x) {X : Type} [CommRing X]
     [Algebra x.A X] (f : x.A →ₐ[x.A] X) (g : F.G₀) : (k.ρ1 x.A g).map (DD.map k.g f) = k.ρ1 X g := by
   have e1 : (x.ρX (DD x.A k.g) g).map (DD.map k.g f) = x.ρX (DD X k.g) g :=
@@ -92,12 +128,28 @@ private theorem map_first_order_lift_eq {l : ℕ} [Fact l.Prime] {F : GFrame l} 
     refine DD.ext (map_zero f) (funext fun r => f.commutes _) (funext fun r => map_zero f) (map_zero f)
   rw [Kap.ρ1, Kap.ρ1, Matrix.map_mul, e1, Matrix.map_add _ (map_add _), e2, Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `(Ideal.Quotient.mkₐ K I).toLinearMap.exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 Ideal.Quotient.mk_surjective)`. Conclude with `⟨σ.toAddMonoidHom, fun y => LinearMap.congr_fun hσ y⟩`.
+-/
 private theorem exists_section (K : Type) [Field K] (I : Ideal (PowerSeries K)) :
     ∃ σ : (PowerSeries K ⧸ I) →+ PowerSeries K, ∀ y, Ideal.Quotient.mkₐ (PowerSeries K) I (σ y) = y := by
   obtain ⟨σ, hσ⟩ := (Ideal.Quotient.mkₐ K I).toLinearMap.exists_rightInverse_of_surjective
     (LinearMap.range_eq_top.2 Ideal.Quotient.mk_surjective)
   exact ⟨σ.toAddMonoidHom, fun y => LinearMap.congr_fun hσ y⟩
 
+/- English proof (translation)
+Introduce `l _ L G G0 h n x k e z _ _ hind`. Use `haveI := dd_finite x.A k.g`. Set `V : Submodule x.A (Matrix (Fin n) (Fin n) (DD x.A k.g))` to `{ carrier := {Y | Y ∈ W1 n x.A x.A k.g x.a ∧ Yᵀ = -Y} add_mem' := fun ha hb => ⟨add_mem ha.1 hb.1, by rw [transpose_add, ha.2, hb.2, neg_add]⟩ zero_mem' := ⟨zero_mem _, by simp⟩ smul_mem' := fun c Y hY => ⟨Submodule.smul_mem _ c hY.1, by rw [transpose_smul, hY.2, smul_neg]⟩ }`. Set `f : G.G₀ → ((Fin e → x.A) × V) →ₗ[x.A] Matrix (Fin n) (Fin n) (DD x.A k.g)` to `fun g => { toFun := fun p => (∑ i, p.1 i • z i) g - dY G.frame (fun g => k.ρ1 x.A (h.p₀ g)) p.2 g map_add' := fun p q => by`. Simplify using `only [dY, Prod.fst_add, Prod.snd_add, Pi.add_apply, add_smul, Finset.sum_add_distrib, Submodule.coe_add, Matrix.mul_add, Matrix.add_mul]`.
+
+Normalize the expressions using the abelian group laws. Use the proof step `map_smul' := fun c p => by`. Simplify using `only [dY, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, mul_smul, ← Finset.smul_sum, Submodule.coe_smul, Matrix.mul_smul, Matrix.smul_mul, RingHom.id_apply, smul_sub] }`. Use `haveI : Module.Finite x.A (Matrix (Fin n) (Fin n) (DD x.A k.g)) := inferInstanceAs (Module.Finite x.A (Fin n → Fin n → DD x.A k.g))`. Use `haveI : Module.Finite x.A V := Module.Finite.of_injective V.subtype V.subtype_injective`.
+
+Take `⟨C, hC⟩` from `ar_family (Ideal.span {x.t}) f`. Use `⟨C, fun m c hc i => ?_⟩` and prove the remaining obligations. Break down `le_total m C with hm | hm` into its components or cases. Rewrite using `[Nat.sub_eq_zero_of_le hm, pow_zero, Ideal.span_singleton_one]`. Discharge the goal by the elementary cases of `trivial`.
+
+Take `⟨m, rfl⟩ : ∃ r, m = r + C` from `⟨m - C, by omega⟩`. Take `⟨Y, hY, hT, hYe⟩` from `hc`. Take `⟨σ, hσ⟩` from `exists_section x.K (Ideal.span {x.t ^ (m + C)})`. Take `⟨Y', hY', hT', rfl⟩` from `exists_antisymmetric_lift_of_section _ σ hσ Y hY hT`. Rewrite using `[Nat.add_sub_cancel, ← Ideal.span_singleton_pow]`.
+
+Use `hC m (c, ⟨Y', hY', hT'⟩) (fun g => ?_) ((LinearMap.proj i).comp (LinearMap.fst _ _ _)) fun p hp => ?_` and prove the remaining obligations. Establish `h0 : (f g (c, ⟨Y', hY', hT'⟩)).map (x.redD k.g (m + C)) = 0` using `by show ((∑ i, c i • z i) g - dY G.frame (fun g => k.ρ1 x.A (h.p₀ g)) Y' g).map (x.redD k.g (m + C)) = 0`. Rewrite using `[Matrix.map_sub _ (map_sub _), congrFun hYe g, sub_eq_zero, dY, dY, Matrix.map_sub _ (map_sub _), Matrix.map_mul, Matrix.map_mul, map_first_order_lift_eq, map_first_order_lift_eq]`. Use `choose Z hZ using fun a b => dd_ker (x.t ^ (m + C)) _ (congrFun (congrFun h0 a) b)`. Establish `h1 : f g (c, ⟨Y', hY', hT'⟩) = x.t ^ (m + C) • Matrix.of Z` using `Matrix.ext hZ`.
+
+Rewrite using `[h1, Ideal.span_singleton_pow]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) trivial`. Conclude with `congrFun (hind p.1 ⟨p.2, p.2.2.1, p.2.2.2, funext fun g => sub_eq_zero.1 (hp g)⟩) i`.
+-/
 theorem UpperTheory.V.Pa.coefficients_bounded_of_selmer_boundary :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n) (k : Kap x) (e : ℕ) (z : Fin e → G.G₀ → Matrix (Fin n) (Fin n) (DD x.A k.g)), TopFG G.Γ → (∀ i, z i ∈ Sel1 h x.A k) → (∀ c : Fin e → x.A, ∑ i, c i • z i ∈ Bd1 h x.A k → c = 0) → ∃ C : ℕ, ∀ (m : ℕ) (c : Fin e → x.A), (fun g => ((∑ i, c i • z i) g).map (x.redD k.g m)) ∈ Bd1 h (x.Am m) k → ∀ i, c i ∈ Ideal.span {x.t ^ (m - C)} := by
   intro l _ L G G0 h n x k e z _ _ hind

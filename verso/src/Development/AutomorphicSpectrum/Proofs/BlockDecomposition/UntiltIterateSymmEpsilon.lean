@@ -8,6 +8,11 @@ namespace GlobalTheory.CompanionTheory.EpsRootProof
 
 variable {l : ℕ} [hl : Fact l.Prime]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply', ih, AInf.frobeniusEquiv_symm_ofCompatible]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `k`. Conclude with `congrArg y (by omega)`.
+-/
 theorem iterate_symm_ofCompatible (y : ℕ → OC l) (hy : ∀ k, y (k + 1) ^ l = y k) (n : ℕ) :
     ((_root_.frobeniusEquiv (Ob l) l).symm^[n]) (IsPerfectoidField.ofCompatible l y hy) =
       IsPerfectoidField.ofCompatible l (fun k => y (k + n))
@@ -20,6 +25,9 @@ theorem iterate_symm_ofCompatible (y : ℕ → OC l) (hy : ∀ k, y (k + 1) ^ l 
     funext k
     exact congrArg y (by omega)
 
+/- English proof (translation)
+Proceed by induction on `n generalizing x with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply', pow_succ', pow_mul, frobeniusEquiv_symm_pow_p, ih]`.
+-/
 theorem iterate_symm_pow (x : Ob l) (n : ℕ) :
     (((_root_.frobeniusEquiv (Ob l) l).symm^[n]) x) ^ l ^ n = x := by
   induction n generalizing x with
@@ -27,10 +35,16 @@ theorem iterate_symm_pow (x : Ob l) (n : ℕ) :
   | succ n ih =>
     rw [Function.iterate_succ_apply', pow_succ', pow_mul, frobeniusEquiv_symm_pow_p, ih]
 
+/- English proof (translation)
+Rewrite using `[epsilon, iterate_symm_ofCompatible, IsPerfectoidField.untilt_ofCompatible, zero_add]`.
+-/
 theorem untilt_iterate_symm_epsilon (n : ℕ) :
     PreTilt.untilt (((_root_.frobeniusEquiv (Ob l) l).symm^[n]) (epsilon l)) = rootSeqInt l n := by
   rw [epsilon, iterate_symm_ofCompatible, IsPerfectoidField.untilt_ofCompatible, zero_add]
 
+/- English proof (translation)
+Establish `h : WittVector.teichmuller l (A.s x) = A.sW (WittVector.teichmuller l x)` using `(WittVector.map_teichmuller l A.s x).symm`. Express the relevant statement in the definitionally equal form `A.th (WittVector.teichmuller l (A.s x)) = _`. Rewrite using `[h, ← PAlg.oC_theta0]`. Conclude with `congrArg A.oC (WittVector.fontaineTheta_teichmuller _)`.
+-/
 theorem sharp_s_eq_oC_untilt (A : PAlg l) (x : Ob l) : A.sharp (A.s x) = A.oC (PreTilt.untilt x) := by
   have h : WittVector.teichmuller l (A.s x) = A.sW (WittVector.teichmuller l x) :=
     (WittVector.map_teichmuller l A.s x).symm
@@ -38,6 +52,9 @@ theorem sharp_s_eq_oC_untilt (A : PAlg l) (x : Ob l) : A.sharp (A.s x) = A.oC (P
   rw [h, ← PAlg.oC_theta0]
   exact congrArg A.oC (WittVector.fontaineTheta_teichmuller _)
 
+/- English proof (translation)
+Introduce `l _ n`. Conclude with `⟨((_root_.frobeniusEquiv (Ob l) l).symm^[n]) (epsilon l), iterate_symm_pow _ n, fun A => by`. Rewrite using `[sharp_s_eq_oC_untilt, untilt_iterate_symm_epsilon]⟩`.
+-/
 theorem epsRoot : CrystallineSemistableComparison.E.EpsRoot := by
   intro l _ n
   exact ⟨((_root_.frobeniusEquiv (Ob l) l).symm^[n]) (epsilon l), iterate_symm_pow _ n, fun A => by

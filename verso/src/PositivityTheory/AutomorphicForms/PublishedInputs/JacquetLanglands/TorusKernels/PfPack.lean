@@ -11,6 +11,9 @@ namespace KappaPackingLemmas
 
 variable {F I Gf : Type} [Field F] [Group Gf]
 
+/- English proof (translation)
+Proceed by induction on `δ using QuotientGroup.induction_on with`. Consider the case `H g`. Rewrite using `[Dat.mk_smulX, Dat.mk_smulX]`. Conclude with `hb.2.2.2.1 (D.r v g) (a v) (b v)`.
+-/
 theorem kap_smul (hb : B1b) (D : Dat F I Gf) (δ : PG F) (a b : D.Xs) (v : I) :
     kap ((δ • a : D.Xs) v) ((δ • b : D.Xs) v) = kap (a v) (b v) := by
   induction δ using QuotientGroup.induction_on with
@@ -18,6 +21,11 @@ theorem kap_smul (hb : B1b) (D : Dat F I Gf) (δ : PG F) (a b : D.Xs) (v : I) :
     rw [Dat.mk_smulX, Dat.mk_smulX]
     exact hb.2.2.2.1 (D.r v g) (a v) (b v)
 
+/- English proof (translation)
+Introduce `v`. Establish `e : kap (z v) (((γ₁⁻¹ * γ) • z : D.Xs) v) = kap ((γ₁ • z : D.Xs) v) ((γ • z : D.Xs) v)`. Rewrite using `[← kap_smul hb D γ₁ z ((γ₁⁻¹ * γ) • z) v, smul_smul, mul_inv_cancel_left]`. Rewrite using `[e]`. Establish `a1` using `h₁ v`.
+
+Establish `a2` using `h v`. Establish `s` using `(hc.1 ((γ • z : D.Xs) v) (w v)).2.2`. Establish `t` using `hc.2.2.1 ((γ₁ • z : D.Xs) v) (w v) ((γ • z : D.Xs) v)`. Rewrite `t` using `[← s]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem near_sixteenth (hb : B1b) (hc : B1c) (D : Dat F I Gf) (γ₁ γ : PG F) (z w : D.Xs)
     (h₁ : Near (1 / 2) (γ₁ • z : D.Xs) w) (h : Near (1 / 2) (γ • z : D.Xs) w) :
     Near (1 / 16) z ((γ₁⁻¹ * γ) • z : D.Xs) := by
@@ -37,6 +45,31 @@ end KappaPackingLemmas
 end UpperTheory.Esk
 
 open UpperTheory.Esk UpperTheory.Esk.KappaPackingLemmas in
+/- English proof (translation)
+Introduce `hb hc hE F I Gf _ _ _ D hax`. Take `⟨hcnt, -, -, -, -, -, -, hnear⟩` from `hE F I Gf D hax`. Take `⟨c, hc0, hcz⟩` from `hnear (1 / 2) (by norm_num)`. Use `hcnt` as an intermediate fact. Use `⟨c⁻¹, ?_⟩` and prove the remaining obligations.
+
+Introduce `y ω' h A hh hA hfin`. Use `set S0 : Set (PG F) := {γ : PG F | γ • y.1 = y.1 ∧ Near (1 / 16) y.2 (γ • y.2 : D.Xs)} with hS0`. Use `set N : ℝ≥0∞ := (S0.ncard : ℝ≥0∞) with hN`. Set `Sg : {γ : PG F // γ • y.1 = ω'} → Set D.Xs` to `fun γ => {w | Near (1 / 2) (γ.1 • y.2 : D.Xs) w}`. Establish `hSm : ∀ γ, MeasurableSet (Sg γ)` using `fun γ => (hcz (γ.1 • y.2)).1`.
+
+Establish `one : ∀ γ : {γ : PG F // γ • y.1 = ω'}, (c : ℝ≥0∞) * h (γ.1 • y.2) ≤ A * ∫⁻ w, (Sg γ).indicator h w`. Introduce `γ`. Establish `hv : (c : ℝ≥0∞) ≤ volume (Sg γ)` using `(hcz (γ.1 • y.2)).2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm]`.
+
+Use `gcongr`. Use `_ = ∫⁻ _ in Sg γ, h (γ.1 • y.2) := (setLIntegral_const _ _).symm`. Use `_ ≤ ∫⁻ w in Sg γ, (A : ℝ≥0∞) * h w := setLIntegral_mono' (hSm γ) fun w hw => hA _ _ hw`. Use `_ = A * ∫⁻ w in Sg γ, h w := lintegral_const_mul _ hh`. Use `_ = A * ∫⁻ w, (Sg γ).indicator h w := by rw [lintegral_indicator (hSm γ)]`.
+
+Establish `cnt : ∀ w : D.Xs, ∑' γ : {γ : PG F // γ • y.1 = ω'}, (Sg γ).indicator h w ≤ N * h w`. Introduce `w`. Distinguish the cases in `hT : ∃ γ₁ : {γ : PG F // γ • y.1 = ω'}, w ∈ Sg γ₁`. Take `⟨γ₁, hγ₁⟩` from `hT`. Set `f : {γ : PG F // γ • y.1 = ω'} → PG F` to `fun γ => γ₁.1⁻¹ * γ.1`.
+
+Establish `finj : Function.Injective f` using `fun a b hab => Subtype.ext (mul_left_cancel hab)`. Set `g : PG F → ℝ≥0∞` to `S0.indicator fun _ => h w`. Establish `le1 : ∀ γ : {γ : PG F // γ • y.1 = ω'}, (Sg γ).indicator h w ≤ g (f γ)`. Introduce `γ`. Distinguish the cases in `hw : w ∈ Sg γ`.
+
+Rewrite using `[Set.indicator_of_mem hw]`. Establish `hmem : f γ ∈ S0`. Use `⟨?_, near_sixteenth hb hc D γ₁.1 γ.1 y.2 w hγ₁ hw⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(γ₁.1⁻¹ * γ.1) • y.1 = y.1`. Rewrite using `[mul_smul, γ.2, inv_smul_eq_iff]`.
+
+Conclude with `γ₁.2.symm`. Simplify using `[g, Set.indicator_of_mem hmem]`. Rewrite using `[Set.indicator_of_notMem hw]`. Conclude with `bot_le`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `: Fintype S0` using `hfin.fintype`. Rewrite using `[tsum_fintype, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hN, ← Nat.card_coe_set_eq, Nat.card_eq_fintype_card]`. Simplify using `only [not_exists] at hT`. Establish `: ∀ γ : {γ : PG F // γ • y.1 = ω'}, (Sg γ).indicator h w = 0` using `fun γ => Set.indicator_of_notMem (hT γ) _`. Simplify using `[this]`.
+
+Establish `key : (c : ℝ≥0∞) * ∑' γ : {γ : PG F // γ • y.1 = ω'}, h (γ.1 • y.2) ≤ A * (N * ∫⁻ w, h w)`. Rewrite using `[← ENNReal.tsum_mul_left]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_tsum fun γ => (hh.indicator (hSm γ)).aemeasurable]`. Use `_ ≤ A * ∫⁻ w, N * h w := by gcongr with w; exact cnt w`.
+
+Use `_ = A * (N * ∫⁻ w, h w) := by rw [lintegral_const_mul _ hh]`. Establish `hc' : (c : ℝ≥0∞) ≠ 0` using `by exact_mod_cast hc0.ne'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.inv_mul_cancel_left hc' ENNReal.coe_ne_top]`. Use `_ ≤ (c : ℝ≥0∞)⁻¹ * (A * (N * ∫⁻ w, h w)) := by gcongr`.
+
+Use `_ = ((c⁻¹ : ℝ≥0) : ℝ≥0∞) * A * N * ∫⁻ w, h w := by`. Rewrite using `[ENNReal.coe_inv hc0.ne']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.Esk.pf_Pack : UpperTheory.Esk.B1b → UpperTheory.Esk.B1c → UpperTheory.Esk.E0a → UpperTheory.Esk.Pack := by
   intro hb hc hE F I Gf _ _ _ D hax
   obtain ⟨hcnt, -, -, -, -, -, -, hnear⟩ := hE F I Gf D hax

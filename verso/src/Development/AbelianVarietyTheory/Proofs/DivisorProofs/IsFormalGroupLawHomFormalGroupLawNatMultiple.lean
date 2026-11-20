@@ -8,6 +8,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.NMulHom
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.NMulEndo.isHom_nmul`.
+-/
 theorem isHom_nmul : ∀ (R : Type) [CommRing R] (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R),
     IsLaw μ → ∀ n, IsHom μ μ (nmul μ n) :=
   GlobalTheory.NMulEndo.isHom_nmul

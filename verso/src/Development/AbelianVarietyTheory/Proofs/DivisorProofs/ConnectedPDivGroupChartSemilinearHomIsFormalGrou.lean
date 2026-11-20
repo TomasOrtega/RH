@@ -13,6 +13,13 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 
 namespace GlobalTheory.Katz
 
+/- English proof (translation)
+Establish `hL` using `(GlobalTheory.T.connectedPDivGroup_formalLaw_coordinates p k' e G' c').2 ν hν`. Establish `h2` using `GlobalTheory.T.semilinearPDivGroupHom_eval_two_variable_series p k k' σ d e G G' c c' s φ hφ`. Use `⟨fun j => ?_, fun j => ?_⟩` and prove the remaining obligations. Establish `h0` using `(GlobalTheory.Katz.counit_dUnit_evA k' e (G'.A 0) (c'.x 0) (c'.nil 0) (c'.aug 0) (φ j)).1`. Express the relevant statement in the definitionally equal form `Coalgebra.counit (R := k') (c'.ev 0 (φ j)) = _ at h0`.
+
+Rewrite using `[← h0, hφ 0 j, (s.app 0).counit_map, c.aug 0 j, map_zero]`. Set `z : ∀ n, G'.A n ⊗[k'] G'.A n` to `fun n => Coalgebra.comul (R := k') (s.app n (c.x n j))`. Establish `hz : ∀ n, pullbackTwo (G'.res n) (z (n + 1)) = z n` using `fun n => by`. Simplify using `only [z]`. Rewrite using `[pullTwo_comul, s.res_app, c.res]`.
+
+Establish `hl : ∀ n, c'.ev₂ n (subst ν (φ j)) = z n` using `fun n => by`. Rewrite using `[(hL.2 n (φ j)).1, hφ n j]`. Establish `hr : ∀ n, c'.ev₂ n (pull2 φ (MvPowerSeries.map σ (μ j))) = z n` using `fun n => by`. Rewrite using `[h2 n (μ j), hμ n j, SemiBialgHom.two_comul]`. Conclude with `((GlobalTheory.T.chart_square_coordinates_present_levels p k' e G' c').2 z hz).unique hl hr`.
+-/
 theorem isHom_map_of_semiHom_ev (p : ℕ) (k k' : Type) [CommRing k] [CommRing k'] (σ : k →+* k')
     (d e : ℕ) (G : PDivGroup p k) (G' : PDivGroup p k') (c : Chart G d) (c' : Chart G' e)
     (s : SemiHom σ G' G) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k)

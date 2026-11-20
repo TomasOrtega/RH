@@ -14,22 +14,44 @@ open GlobalTheory.UU
 noncomputable section
 namespace GlobalTheory.UU.IntExp
 
+/- English proof (translation)
+Rewrite using `[gs_eq f (r z) U h, gs_eq (r ≫ f) z U h]`. Conclude with `(Scheme.Hom.germ_stalkMap_apply r (f ⁻¹ᵁ U) z h _).symm`.
+-/
 theorem gs_comp {X Y Z : Scheme.{0}} (r : Z ⟶ Y) (f : Y ⟶ X) (z : Z) (U : X.Opens) (h : f (r z) ∈ U) (a : Γ(X, U)) :
     gs (r ≫ f) z U a = (r.stalkMap z).hom (gs f (r z) U a) := by
   rw [gs_eq f (r z) U h, gs_eq (r ≫ f) z U h]
   exact (Scheme.Hom.germ_stalkMap_apply r (f ⁻¹ᵁ U) z h _).symm
 
+/- English proof (translation)
+Rewrite using `[sval_of s (r ≫ h) z J (fun k => J (r ≫ h ≫ φ k)) (fun k => by rw [Category.assoc])]`. Conclude with `gs_comp r h z _ (Set.mem_iInter.2 fun k => hJ (r ≫ h ≫ φ k)) _`.
+-/
 theorem sval_comp {X Y Y' Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (s : LB.Sec (LB.LinComb L φ ε)) (h : Y' ⟶ Y) (r : Z ⟶ Y') (z : Z) (J) (hJ : Good L z J) :
     sval s (r ≫ h) z J = (r.stalkMap z).hom (sval s h (r z) (fun ψ => J (r ≫ ψ))) := by
   rw [sval_of s (r ≫ h) z J (fun k => J (r ≫ h ≫ φ k)) (fun k => by rw [Category.assoc])]
   exact gs_comp r h z _ (Set.mem_iInter.2 fun k => hJ (r ≫ h ≫ φ k)) _
 
+/- English proof (translation)
+Rewrite using `[gs_eq r z ⊤ trivial]`. Simplify using `only [scal, map_one]`.
+-/
 theorem gs_scal_one {F : Type} [CommRing F] {Y Z : Scheme.{0}} (r : Z ⟶ Y) (z : Z) (p : Y ⟶ Spec (CommRingCat.of F)) :
     gs r z ⊤ (scal p (1 : F)) = 1 := by
   rw [gs_eq r z ⊤ trivial]
   simp only [scal, map_one]
 
+/- English proof (translation)
+Introduce `R _ _ I D A G _ _ U F _ _ k σ f t s hE hG hB`. Use `⟨1, fun _ => 1, fun _ => σ, fun _ => f, fun _ => hE, ?_, ?_⟩` and prove the remaining obligations. Introduce `Z rA y rG h₁ h₂ z JA JG hJA hJG`. Rewrite using `[Fin.sum_univ_one]`. Use `(hG Z rA y rG h₁ h₂ ?_ z JA JG hJA hJG).trans ?_` and prove the remaining obligations.
+
+Establish `e₁ : (fst (𝟙_ (Over (Spec (CommRingCat.of R)))) G).left = (snd (𝟙_ _) G).left ≫ G.hom`. Establish `a` using `Over.w (fst (𝟙_ (Over (Spec (CommRingCat.of R)))) G)`. Establish `b` using `Over.w (snd (𝟙_ (Over (Spec (CommRingCat.of R)))) G)`. Conclude with `((Category.comp_id _).symm.trans a).trans b.symm`. Establish `e₂ : (toUnit (TF (R` using `R) F)).left = jFK (R := R) F ≫ jK R := by`.
+
+Establish `a` using `Over.w (toUnit (TF (R := R) F))`. Conclude with `(Category.comp_id _).symm.trans a`. Establish `e₃ : (fst (TFK (R` using `R) F) A.A).left ≫ jFK (R := R) F = (snd (TFK (R := R) F) A.A).left ≫ A.A.hom := (Over.w (fst (TFK (R := R) F) A.A)).trans (Over.w (snd (TFK (R := R) F) A.A)).symm`. Establish `e₄ : U.gen.hom.left ≫ A.A.hom = pullback.snd G.hom (jK R)` using `Over.w U.gen.hom`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `((congrArg (· * _) (gs_scal_one rA z _)).trans (one_mul _)).symm`. Introduce `α Z rF rB h z J hJ`. Rewrite using `[Fin.sum_univ_one]`. Use `Eq.trans ?_ ((congrArg (· * _) (gs_scal_one rF z _)).trans (one_mul _)).symm` and prove the remaining obligations. Establish `e : rB = rF ≫ (toUnit (TF (R` using `R) F) ▷ D.P.A).left := by`.
+
+Establish `w : (toUnit (TF (R` using `R) F) ▷ D.P.A).left ≫ (snd (𝟙_ _) D.P.A).left = (snd _ D.P.A).left := congrArg CommaMorphism.left (whiskerRight_snd (toUnit (TF (R := R) F)) D.P.A)`. Establish `i : IsIso (snd (𝟙_ (Over (Spec (CommRingCat.of R)))) D.P.A).left`. Rewrite using `[← leftUnitor_hom]`. Conclude with `inferInstanceAs (IsIso ((Over.forget _).map (λ_ D.P.A).hom))`. Rewrite using `[← cancel_mono (snd (𝟙_ (Over (Spec (CommRingCat.of R)))) D.P.A).left, Category.assoc, w, h]`.
+
+Rewrite using `[e, sval_comp (f α) _ rF z J hJ, ← hB α (rF z) _ (fun ψ => hJ (rF ≫ ψ)), ← sval_comp (s α) _ rF z J hJ, Category.comp_id]`.
+-/
 theorem expF_of_expT : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegPre R) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : PreU I D A G) (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ) (σ : U.SecGT (𝟙_ _) k) (f : ∀ α, SecBT D (𝟙_ _) k α) (t) (s : Raw D F k), U.ExpT (𝟙_ _) k σ f → U.PullG F (toUnit _) k σ t → PullB D F (toUnit _) k f s → U.ExpF F k t s := by
   intro R _ _ I D A G _ _ U F _ _ k σ f t s hE hG hB
   refine ⟨1, fun _ => 1, fun _ => σ, fun _ => f, fun _ => hE, ?_, ?_⟩

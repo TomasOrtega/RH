@@ -1,5 +1,22 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `k V ι _ _ _ _ _ f hcomm W`. Proceed by induction on `hn : Module.finrank k W using Nat.strong_induction_on generalizing W with`. Consider the case `_ n ih`. Introduce `hW hinv`. Distinguish the cases in `hs : ∀ i, ∃ μ : k, ∀ v ∈ W, f i v = μ • v`.
+
+Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW`. Conclude with `⟨v, hv, hv0, fun i => (hs i).imp fun μ h => h v hv⟩`. Use `push Not at hs`. Take `⟨i, hi⟩` from `hs`. Use `haveI : Nontrivial W := Submodule.nontrivial_iff_ne_bot.mpr hW`.
+
+Take `⟨μ, hμ⟩` from `Module.End.exists_eigenvalue ((f i).restrict (hinv i))`. Take `⟨w, hw⟩` from `hμ.exists_hasEigenvector`. Establish `hw1 : f i (w : V) = μ • (w : V)`. Use `congrArg Subtype.val hw.apply_eq_smul` as an intermediate fact. Simplify using `using this`.
+
+Establish `hw0 : (w : V) ≠ 0` using `fun h => hw.2 (Subtype.ext h)`. Establish `hmem : ∀ v, v ∈ W ⊓ Module.End.eigenspace (f i) μ ↔ v ∈ W ∧ f i v = μ • v`. Introduce `v`. Rewrite using `[Submodule.mem_inf, Module.End.mem_eigenspace_iff]`. Establish `hne : W ⊓ Module.End.eigenspace (f i) μ ≠ ⊥`.
+
+Introduce `h`. Establish `: (w : V) ∈ W ⊓ Module.End.eigenspace (f i) μ` using `(hmem _).2 ⟨w.2, hw1⟩`. Rewrite `this` using `[h]`. Conclude with `hw0 ((Submodule.mem_bot k).1 this)`. Establish `hlt : W ⊓ Module.End.eigenspace (f i) μ < W`.
+
+Use `lt_of_le_of_ne inf_le_left fun h => ?_` and prove the remaining obligations. Take `⟨v, hv, hv'⟩` from `hi μ`. Establish `: v ∈ W ⊓ Module.End.eigenspace (f i) μ` using `by rw [h]; exact hv`. Conclude with `hv' ((hmem v).1 this).2`. Establish `hinv' : ∀ (j : ι), ∀ v ∈ W ⊓ Module.End.eigenspace (f i) μ, (f j : V → V) v ∈ W ⊓ Module.End.eigenspace (f i) μ`.
+
+Introduce `j v hv`. Take `⟨hvW, hvμ⟩` from `(hmem v).1 hv`. Use `(hmem _).2 ⟨hinv j v hvW, ?_⟩` and prove the remaining obligations. Establish `hc : (f i * f j) v = (f j * f i) v` using `by rw [(hcomm i j).eq]`. Simplify using `only [Module.End.mul_apply] at hc`.
+
+Rewrite using `[hc, hvμ, map_smul]`. Take `⟨v, hv, hv0, hv'⟩` from `ih _ (hn ▸ Submodule.finrank_lt_finrank_of_lt hlt) _ rfl hne hinv'`. Conclude with `⟨v, (Submodule.mem_inf.1 hv).1, hv0, hv'⟩`.
+-/
 theorem UpperTheory.Reformulated.B.CommonEigenvectorInInvariantSubmodule.exists_common_eigenvector.{u_1, u_2, u_3} :
     ∀ {k : Type u_1} {V : Type u_2} {ι : Type u_3} [inst : Field k] [IsAlgClosed k] [inst_2 : AddCommGroup V]
     [inst_3 : _root_.Module k V] [FiniteDimensional k V] (f : ι → Module.End k V),

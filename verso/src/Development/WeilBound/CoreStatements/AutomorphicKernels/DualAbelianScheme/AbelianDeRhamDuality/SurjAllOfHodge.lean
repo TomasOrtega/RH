@@ -21,6 +21,13 @@ variable {R : Type} [CommRing R] {X : Scheme.{0}}
 
 @[reducible] def ptOf {s : X ⟶ Sp R} (T : TT s) : Pt s := ⟨T.obj.B, pt T, pt_w T⟩
 
+/- English proof (translation)
+Establish `key : (a.hom.φ : T.obj.B →+* T'.obj.B).comp ((πe T).symm : T.obj.B₀ →+* T.obj.B) = ((πe T').symm : T'.obj.B₀ →+* T'.obj.B).comp a.hom.φ₀`. Use extensionality with `x`. Take `⟨b, rfl⟩` from `(πe T).surjective x`. Apply `(πe T').injective` to reduce the goal to its premises. Simplify using `only [RingHom.comp_apply, RingEquiv.coe_toRingHom, RingEquiv.symm_apply_apply, RingEquiv.apply_symm_apply, AlgHom.coe_toRingHom]`.
+
+Simplify using `only [πe, RingEquiv.ofBijective_apply]`. Conclude with `(a.hom.comm b).symm`. Unfold `pt`. Rewrite using `[← a.hom.pt]`. Simplify using `only [spMap, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+
+Rewrite using `[key]`.
+-/
 theorem pt_comp {s : X ⟶ Sp R} {T T' : TT s} (a : T ⟶ T') :
     spMap (a.hom.φ : T.obj.B →+* T'.obj.B) ≫ pt T = pt T' := by
   have key : (a.hom.φ : T.obj.B →+* T'.obj.B).comp ((πe T).symm : T.obj.B₀ →+* T.obj.B)
@@ -49,10 +56,18 @@ def ofPC (s : X ⟶ Sp R) : CoefMap (RingHom.id R) (FP s) ((IsTriv s).ι ⋙ O (
 def toPO (s : X ⟶ Sp R) : CoefMap (RingHom.id R) ((IsTriv s).ι ⋙ O (dp0 R) s) (FP s) :=
   ptCoef (F := FP s) (fun P ↦ P.x) (fun P ↦ P.w) fun _ _ a ↦ a.pt
 
+/- English proof (translation)
+Take `⟨f, rfl⟩` from `H1.mk_surjective _ c`. Both sides reduce to the same expression.
+-/
 theorem toPO_toH1O (s : X ⟶ Sp R) (c : FirstDeRham s) : (toPO s).pull1 (toH1O s c) = toP s c := by
   obtain ⟨f, rfl⟩ := H1.mk_surjective _ c
   rfl
 
+/- English proof (translation)
+Establish `h1 : (e.symm : A →+* A) = RingHom.id A`. Use extensionality with `z`. Apply `e.injective` to reduce the goal to its premises. Use `show e (e.symm z) = e z`. Rewrite using `[RingEquiv.apply_symm_apply, he]`.
+
+Establish `h2 : ((AlgHom.id R A : A →ₐ[R] A) : A →+* A) = RingHom.id A` using `rfl`. Rewrite using `[h1, h2]`. Simplify using `[spMap]`.
+-/
 private theorem spMap_id_comp_spMap_symm_comp {A : Type} [CommRing A] [Algebra R A] {Y : Scheme} (e : A ≃+* A)
     (he : ∀ z, e z = z) (y : Sp A ⟶ Y) :
     spMap ((AlgHom.id R A : A →ₐ[R] A) : A →+* A) ≫ spMap (e.symm : A →+* A) ≫ y = y := by
@@ -65,6 +80,9 @@ private theorem spMap_id_comp_spMap_symm_comp {A : Type} [CommRing A] [Algebra R
   rw [h1, h2]
   simp [spMap]
 
+/- English proof (translation)
+Rewrite using `[← CoefMap.pullCohomologyOne_comp]`. Set `θ : ((ofPC s).comp (toPO s)).G ⟶ (CoefMap.id (FP s)).G` to `{ app := fun P => ⟨AlgHom.id R P.B, spMap_id_comp_spMap_symm_comp _ (fun _ => rfl) P.x⟩ naturality := fun _ _ _ => CrystallinePoints.Pd.hom_ext fun _ => rfl }`. Conclude with `(CoefMap.pullCohomologyOne_eq_of_natTrans _ (CoefMap.id (FP s)) θ (fun _ _ => rfl) c).trans (CoefMap.pullCohomologyOne_id c)`.
+-/
 theorem toPO_ofPC (s : X ⟶ Sp R) (c : H1OnPoints s) : (toPO s).pull1 ((ofPC s).pull1 c) = c := by
   rw [← CoefMap.pullCohomologyOne_comp]
   let θ : ((ofPC s).comp (toPO s)).G ⟶ (CoefMap.id (FP s)).G :=
@@ -72,11 +90,17 @@ theorem toPO_ofPC (s : X ⟶ Sp R) (c : H1OnPoints s) : (toPO s).pull1 ((ofPC s)
       naturality := fun _ _ _ => CrystallinePoints.Pd.hom_ext fun _ => rfl }
   exact (CoefMap.pullCohomologyOne_eq_of_natTrans _ (CoefMap.id (FP s)) θ (fun _ _ => rfl) c).trans (CoefMap.pullCohomologyOne_id c)
 
+/- English proof (translation)
+Take `⟨f, rfl⟩` from `GlobalTheory.CatCoh.H1.mk_surjective _ c`. Both sides reduce to the same expression.
+-/
 private theorem cmpO_toH1O_eq_toHO1_cmp1 (s : X ⟶ Sp R) (c : FirstDeRham s) :
     GlobalTheory.CechDR.cmpO s (toH1O s c) = toHO1 s (cmp1 s c) := by
   obtain ⟨f, rfl⟩ := GlobalTheory.CatCoh.H1.mk_surjective _ c
   rfl
 
+/- English proof (translation)
+Introduce `t`. Take `⟨c, hc⟩` from `(h₂.comp h₁) (GlobalTheory.CechDR.cmpO s ((ofPC s).pull1 t))`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `e : toH1O s c = (ofPC s).pull1 t` using `GlobalTheory.CechDR.cmpO_injective R X s (by rw [cmpO_toH1O_eq_toHO1_cmp1]; exact hc)`. Rewrite using `[← toPO_toH1O, e, toPO_ofPC]`.
+-/
 theorem toPicard_surjective (s : X ⟶ Sp R) (h₁ : Function.Surjective (cmp1 s)) (h₂ : Function.Surjective (toHO1 s)) :
     Function.Surjective (toP s) := by
   intro t
@@ -86,6 +110,11 @@ theorem toPicard_surjective (s : X ⟶ Sp R) (h₁ : Function.Surjective (cmp1 s
     GlobalTheory.CechDR.cmpO_injective R X s (by rw [cmpO_toH1O_eq_toHO1_cmp1]; exact hc)
   rw [← toPO_toH1O, e, toPO_ofPC]
 
+/- English proof (translation)
+Introduce `R _ A _ g hAb hsm`. Use `haveI := hAb`. Use `haveI : IsProper A.hom := IsAbelianScheme.proper`. Establish `hs : A.hom ≫ 𝟙 (Sp R) = A.hom` using `Category.comp_id _`. Use `toPicard_surjective _ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[hs]`. Conclude with `(hC.bijective_cechDeRhamComparison_degreeOne A.hom IsAbelianScheme.smooth inferInstance inferInstance).2`. Rewrite using `[hs]`. Conclude with `(hH R A g hAb hsm).2.2.2.2.1.2.2`.
+-/
 theorem surjAll_of_hodge (hC : CrystallineSmoothLift) (hH : AbelianHodgeDeRham) : SurjAll := by
   intro R _ A _ g hAb hsm
   haveI := hAb

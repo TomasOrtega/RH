@@ -28,14 +28,23 @@ def IsZariskiDenseMeasure (P : Ideal (MRing ι)) (μ : Measure ((Σ k, ι k) →
   ∀ (d : K → ℕ) (f : MRingOver ℂ ι), IsMultiHomog f d → (∀ᵐ z ∂μ, eval z f = 0) →
     ∀ z ∈ mcPts P, eval z f = 0
 
+/- English proof (translation)
+Introduce `dg dh g h hg hh hd he` and use `hs dg dh g h z hg hh hd he hz`.
+-/
 theorem isBoundedAt_of_isBoundedH {P : Ideal (MRing ι)} {y : (Σ k, ι k) → Ω} {A : HermLine ι} {τ : ℕ} {c : ℝ}
     {s : Ω} (hs : IsBoundedH P y A τ c s) {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts P) : IsBoundedAt y A τ c s z :=
   fun dg dh g h hg hh hd he => hs dg dh g h z hg hh hd he hz
 
+/- English proof (translation)
+The claim follows from `csInf_le ⟨0, fun _ hx => hx.1⟩ ⟨hc, hs⟩`.
+-/
 theorem secNormAt_le {y : (Σ k, ι k) → Ω} {A : HermLine ι} {τ : ℕ} {c : ℝ} {s : Ω} {z : (Σ k, ι k) → ℂ}
     (hc : 0 ≤ c) (hs : IsBoundedAt y A τ c s z) : secNormAt y A τ s z ≤ c :=
   csInf_le ⟨0, fun _ hx => hx.1⟩ ⟨hc, hs⟩
 
+/- English proof (translation)
+Break down `Set.eq_empty_or_nonempty {c : ℝ | 0 ≤ c ∧ IsBoundedAt y A τ c s z} with h | h` into its components or cases. Simplify using `[secNormAt, h]`. Conclude with `le_csInf h fun _ hx => hx.1`.
+-/
 theorem secNormAt_nonneg (y : (Σ k, ι k) → Ω) (A : HermLine ι) (τ : ℕ) (s : Ω) (z : (Σ k, ι k) → ℂ) :
     0 ≤ secNormAt y A τ s z := by
   rcases Set.eq_empty_or_nonempty {c : ℝ | 0 ≤ c ∧ IsBoundedAt y A τ c s z} with h | h
@@ -67,6 +76,11 @@ def natPtsMeasure : Measure ℂ :=
 def gridMeasure (J : Type) [Fintype J] : Measure (J → ℂ) :=
   Measure.pi fun _ => natPtsMeasure
 
+/- English proof (translation)
+Rewrite using `[natPtsMeasure, Measure.sum_apply _ MeasurableSet.univ]`. Simplify using `only [Measure.smul_apply, measure_univ, smul_eq_mul, mul_one]`. Rewrite using `[show (fun j : ℕ => (2 : ENNReal)⁻¹ ^ (j + 1)) = fun j => 2⁻¹ * (2⁻¹) ^ j by`. Use function extensionality and compare the values at `j`. Rewrite using `[pow_succ, mul_comm]]`.
+
+Rewrite using `[ENNReal.tsum_mul_left, ENNReal.tsum_geometric, ENNReal.one_sub_inv_two, inv_inv]`. Conclude with `ENNReal.inv_mul_cancel (by norm_num) (by norm_num)`.
+-/
 theorem natPtsMeasure_univ : natPtsMeasure Set.univ = 1 := by
   rw [natPtsMeasure, Measure.sum_apply _ MeasurableSet.univ]
   simp only [Measure.smul_apply, measure_univ, smul_eq_mul, mul_one]

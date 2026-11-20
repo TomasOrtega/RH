@@ -8,6 +8,13 @@ open scoped TensorProduct Pointwise
 
 namespace GlobalTheory.RingChain
 
+/- English proof (translation)
+Establish `hs : Function.Surjective ((c • (⊤ : Submodule A L)).mkQ ∘ₗ φ)` using `(Submodule.mkQ_surjective _).comp fun l => ⟨σ l, h l⟩`. Establish `hk : LinearMap.range R = LinearMap.ker ((c • (⊤ : Submodule A L)).mkQ ∘ₗ φ)`. Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨φ z, trivial, by rw [hR, map_add, map_sub, map_smul, h, sub_self, zero_add]⟩`. Introduce and unpack `⟨l, -, hl⟩`. Use `⟨x - σ (φ x) + σ l, ?_⟩` and prove the remaining obligations. Rewrite using `[hR, map_add, map_sub, h, h, sub_self, zero_add, ← map_smul, hl]`.
+
+Normalize the expressions using the abelian group laws. Conclude with `⟨(Submodule.quotEquivOfEq _ _ hk).trans (LinearMap.quotKerEquivOfSurjective _ hs), fun _ => rfl⟩`.
+-/
 theorem exists_quot_equiv_of_section {A F L : Type} [CommRing A] [AddCommGroup F] [Module A F] [AddCommGroup L] [Module A L]
     (φ : F →ₗ[A] L) (σ : L →ₗ[A] F) (h : ∀ l, φ (σ l) = l) (c : A) (R : F →ₗ[A] F)
     (hR : ∀ x, R x = x - σ (φ x) + c • σ (φ x)) :
@@ -28,6 +35,25 @@ theorem exists_quot_equiv_of_section {A F L : Type} [CommRing A] [AddCommGroup F
       abel
   exact ⟨(Submodule.quotEquivOfEq _ _ hk).trans (LinearMap.quotKerEquivOfSurjective _ hs), fun _ => rfl⟩
 
+/- English proof (translation)
+Introduce `A _ c Lie _ _ _ _`. Take `⟨m, π, hπ⟩` from `Module.Finite.exists_fin' A Lie`. Take `⟨s, hs⟩` from `Module.projective_lifting_property π LinearMap.id hπ`. Set `y : Fin m → Lie` to `fun i => π (Pi.single i 1)`. Set `E : Matrix (Fin m) (Fin m) A` to `Matrix.of fun i j => s (y j) i`.
+
+Establish `hy : ∀ l, ∑ i, s l i • y i = l` using `fun l => by`. Establish `h1 : π (s l) = l` using `LinearMap.congr_fun hs l`. Use `conv_rhs => rw [← h1, ← Finset.univ_sum_single (s l), map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← map_smul, ← Pi.single_smul, smul_eq_mul, mul_one]`.
+
+Use `⟨m, m, y, 1 - E + c • E, ?_⟩` and prove the remaining obligations. Introduce `A' _ _ Lie' _ _ eL c' R' hc hR`. Set `φ : (Fin m → A') →ₗ[A'] Lie'` to `Fintype.linearCombination A' fun i => eL (1 ⊗ₜ y i)`. Set `s' : Lie →ₗ[A] (Fin m → A')` to `LinearMap.pi fun i => Algebra.linearMap A A' ∘ₗ LinearMap.proj i ∘ₗ s`. Set `σ : Lie' →ₗ[A'] (Fin m → A')` to `s'.liftBaseChange A' ∘ₗ eL.symm.toLinearMap`.
+
+Establish `hσ : ∀ l i, σ (eL (1 ⊗ₜ l)) i = algebraMap A A' (s l i)` using `fun l i => by`. Simplify using `[σ, s']`. Establish `hφ : ∀ x, φ x = ∑ i, x i • eL (1 ⊗ₜ y i)` using `fun x => Fintype.linearCombination_apply _ _ _`. Establish `h1 : ∀ l, φ (σ (eL (1 ⊗ₜ l))) = eL (1 ⊗ₜ l)` using `fun l => by`. Rewrite using `[hφ]`.
+
+Use `conv_rhs => rw [← hy l, TensorProduct.tmul_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hσ, ← map_smul, TensorProduct.tmul_smul, algebraMap_smul]`. Establish `h : ∀ l, φ (σ l) = l` using `fun l => by`. Take `⟨t, rfl⟩` from `eL.surjective l`.
+
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul a l`. Rewrite using `[show a ⊗ₜ[A] l = a • ((1 : A') ⊗ₜ[A] l) by rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one], map_smul, map_smul, map_smul, h1]`.
+
+Establish `hE : ∀ x, σ (φ x) = (E.map (algebraMap A A')).mulVec x` using `fun x => by`. Use function extensionality and compare the values at `i`. Rewrite using `[hφ, map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, hσ, smul_eq_mul, mul_comm]`.
+
+Both sides reduce to the same expression. Establish `hR' : R' = 1 - E.map (algebraMap A A') + c' • E.map (algebraMap A A')`. Substitute `hR hc` using the available equality. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij, Algebra.smul_def (A := A')]`.
+
+Take `⟨e, he⟩` from `exists_quot_equiv_of_section φ σ h c' (Matrix.mulVecLin R') fun x => by`. Rewrite using `[hE, hR', Matrix.mulVecLin_apply, Matrix.add_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec]`. Conclude with `⟨e, fun x => by rw [he, hφ]⟩`.
+-/
 theorem exists_presentation_baseChange : ∀ (A : Type) [CommRing A] (c : A) (Lie : Type) [AddCommGroup Lie] [Module A Lie] [Module.Finite A Lie] [Module.Projective A Lie], ∃ (m₁ r₁ : ℕ) (y : Fin m₁ → Lie) (R : Matrix (Fin m₁) (Fin r₁) A), ∀ (A' : Type) [CommRing A'] [Algebra A A'] (Lie' : Type) [AddCommGroup Lie'] [Module A' Lie'] (eL : A' ⊗[A] Lie ≃ₗ[A'] Lie') (c' : A') (R₁' : Matrix (Fin m₁) (Fin r₁) A'), c' = algebraMap A A' c → R₁' = R.map (algebraMap A A') → ∃ e : ((Fin m₁ → A') ⧸ LinearMap.range (Matrix.mulVecLin R₁')) ≃ₗ[A'] Lie' ⧸ c' • (⊤ : Submodule A' Lie'), ∀ x, e (Submodule.Quotient.mk x) = Submodule.Quotient.mk (∑ i, x i • eL (1 ⊗ₜ y i)) := by
   intro A _ c Lie _ _ _ _
   obtain ⟨m, π, hπ⟩ := Module.Finite.exists_fin' A Lie

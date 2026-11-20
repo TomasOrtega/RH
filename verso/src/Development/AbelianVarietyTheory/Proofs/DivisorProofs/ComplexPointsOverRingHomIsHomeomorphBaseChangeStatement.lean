@@ -13,5 +13,8 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.R
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ChartGlue GlobalTheory.Mix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mix.isHomeomorph_bcPt | exact GlobalTheory.Mix.isHomeomorph_bcPt | (intros; apply GlobalTheory.Mix.isHomeomorph_bcPt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.complexPointsOverRingHom_isHomeomorph_baseChange : ∀ (k K : Type) [CommRing k] [CommRing K] (ρ : k →+* K) (X G : Scheme.{0}) (p : X ⟶ Sp k) (q : G ⟶ Sp K) (j : G ⟶ X) (hp : IsPullback j q p (spMap ρ)) (τ : K →+* ℂ), IsHomeomorph (bcPt hp.w τ) := by
   first | exact @GlobalTheory.Mix.isHomeomorph_bcPt | exact GlobalTheory.Mix.isHomeomorph_bcPt | (intros; apply GlobalTheory.Mix.isHomeomorph_bcPt <;> assumption)

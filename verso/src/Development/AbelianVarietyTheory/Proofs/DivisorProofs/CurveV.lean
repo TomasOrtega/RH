@@ -22,6 +22,9 @@ variable {D : D7} (Y : ShimX D.what₂.Tau)
 def vdmVal (R : ℝ) : ℝ :=
   Y.arMix ∅ R 1 (X (Sum.inr (false, 2)) * tagDR D.what₂.Tau _ (curveV D.what₂.Tau Y.N Y.j))
 
+/- English proof (translation)
+Unfold `vdmCl`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `[Fin.prod_univ_three, Nat.factorial]`.
+-/
 example (ι : Type) [Fintype ι] : vdmCl ι 3 1 = ∏ τ : ι, (C (1 : ℝ) * 1 * (C ((2 : ℝ)⁻¹) * (X (τ, 2) - X (τ, 1)))) := by
   unfold vdmCl
   refine Finset.prod_congr rfl fun τ _ => ?_

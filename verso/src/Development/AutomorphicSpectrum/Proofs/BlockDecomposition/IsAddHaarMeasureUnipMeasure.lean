@@ -11,15 +11,24 @@ open scoped NumberField.AdeleRing
 
 namespace GlobalTheory.CompanionTheory.CuspBridge
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+-/
 theorem unipGL_eq_unip {R : Type} [CommRing R] {a r : ℕ} (X : AutomorphicForm.UPos a r → R) :
     AutomorphicForm.unipGL X = unip X := by
   apply Units.ext
   rfl
 
+/- English proof (translation)
+Use `infer_instance`.
+-/
 theorem isAddHaarMeasure_unipMeasure (E : Type) [Field E] [NumberField E] (a r : ℕ) :
     (AutomorphicForm.unipMeasure E a r).IsAddHaarMeasure := by
   infer_instance
 
+/- English proof (translation)
+Introduce `E _ _ _ a φ h r h0 h1 g`. Establish `h2` using `h.2 r h0 h1 (AutomorphicForm.unipMeasure E a r) (AutomorphicForm.unipFundamentalDomain E a r) (isAddHaarMeasure_unipMeasure E a r) AutomorphicForm.isAddFundamentalDomain_unipFundamentalDomain g`. Simplify `h2` using `only [AutomorphicForm.constantTerm, unipGL_eq_unip]`.
+-/
 theorem isCuspidal_of_isCuspForm : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (φ : Sm E a),
     IsCuspForm φ → AutomorphicForm.IsCuspidal φ.1 := by
   intro E _ _ _ a φ h r h0 h1 g

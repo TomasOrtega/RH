@@ -6,9 +6,15 @@ namespace LateralTheory.CohomologicalPurity.TubeCut
 
 variable {d : ℕ}
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem hmap_congr (H : Hens) {A B : Type} [CommRing A] [CommRing B] {I : Ideal A} {J : Ideal B} {φ ψ : A →+* B}
     (e : φ = ψ) (h : I ≤ J.comap φ) (h' : I ≤ J.comap ψ) : H.map φ h = H.map ψ h' := by subst e; rfl
 
+/- English proof (translation)
+Rewrite using `[← H.map_comp a b ha hb (fun x hx => hb (ha hx)), ← H.map_comp c e hc he (fun x hx => he (hc hx))]`. Conclude with `hmap_congr H e0 _ _`.
+-/
 theorem hmap_sq (H : Hens) {A B C D : Type} [CommRing A] [CommRing B] [CommRing C] [CommRing D]
     {I : Ideal A} {J : Ideal B} {K : Ideal C} {L : Ideal D} (a : A →+* B) (b : B →+* D) (c : A →+* C) (e : C →+* D)
     (ha : I ≤ J.comap a) (hb : J ≤ L.comap b) (hc : I ≤ K.comap c) (he : K ≤ L.comap e) (e0 : b.comp a = e.comp c) :
@@ -16,9 +22,17 @@ theorem hmap_sq (H : Hens) {A B C D : Type} [CommRing A] [CommRing B] [CommRing 
   rw [← H.map_comp a b ha hb (fun x hx => hb (ha hx)), ← H.map_comp c e hc he (fun x hx => he (hc hx))]
   exact hmap_congr H e0 _ _
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem appLE_congr {X Y : Scheme.{0}} {u v : X ⟶ Y} (e : u = v) (U : Y.Opens) (W : X.Opens) (h : W ≤ u ⁻¹ᵁ U) :
     u.appLE U W h = v.appLE U W (e ▸ h) := by subst e; rfl
 
+/- English proof (translation)
+Use `P.cl` as an intermediate fact. Use `P'.cl` as an intermediate fact. Introduce `a ha`. Rewrite `ha` using `[Scheme.Hom.ker_apply, RingHom.mem_ker]`. Rewrite using `[Ideal.mem_comap, Scheme.Hom.ker_apply, RingHom.mem_ker]`.
+
+Rewrite using `[← CommRingCat.comp_apply, P'.ι.app_eq_appLE, Scheme.Hom.appLE_comp_appLE, appLE_congr φ.cart.w, Scheme.Hom.comp_appLE, CommRingCat.comp_apply, ha, map_zero]`.
+-/
 theorem idl {P' P : SP d} (φ : P'.Hom P) (V : P.X.affineOpens) (V' : P'.X.affineOpens) (h : V'.1 ≤ φ.f ⁻¹ᵁ V.1) :
     P.ι.ker.ideal V ≤ (P'.ι.ker.ideal V').comap (φ.f.appLE V.1 V'.1 h).hom := by
   have := P.cl; have := P'.cl
@@ -28,6 +42,9 @@ theorem idl {P' P : SP d} (φ : P'.Hom P) (V : P.X.affineOpens) (V' : P'.X.affin
   rw [← CommRingCat.comp_apply, P'.ι.app_eq_appLE, Scheme.Hom.appLE_comp_appLE, appLE_congr φ.cart.w,
     Scheme.Hom.comp_appLE, CommRingCat.comp_apply, ha, map_zero]
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `hmap_sq H _ _ _ _ _ _ _ _ (by rw [← CommRingCat.hom_comp, ← CommRingCat.hom_comp, Scheme.Hom.appLE_map, Scheme.Hom.map_appLE])`.
+-/
 theorem cotangentAtUnit_tangentBijection_naturality (H : Hens) {P' P : SP d} (φ : P'.Hom P) (V1 V2 : P.X.affineOpens) (V1' V2' : P'.X.affineOpens)
     (h1 : V1'.1 ≤ φ.f ⁻¹ᵁ V1.1) (h2 : V2'.1 ≤ φ.f ⁻¹ᵁ V2.1) (hV : V1 ≤ V2) (hV' : V1' ≤ V2') :
     Spec.map (CommRingCat.ofHom (H.map _ (P'.ι.ker.ideal_le_comap_ideal hV'))) ≫
@@ -39,6 +56,9 @@ theorem cotangentAtUnit_tangentBijection_naturality (H : Hens) {P' P : SP d} (φ
   exact hmap_sq H _ _ _ _ _ _ _ _ (by rw [← CommRingCat.hom_comp, ← CommRingCat.hom_comp, Scheme.Hom.appLE_map,
     Scheme.Hom.map_appLE])
 
+/- English proof (translation)
+Simplify using `only [hensTo, eta]`. Rewrite using `[← Spec.map_comp_assoc, ← CommRingCat.ofHom_comp, H.map_η, CommRingCat.ofHom_comp, Spec.map_comp_assoc]`. Conclude with `(congrArg (_ ≫ ·) (IsAffineOpen.SpecMap_appLE_fromSpec φ.f V.2 V'.2 h)).trans (Category.assoc _ _ _).symm`.
+-/
 theorem henselization_spec_map_commutes_with_smooth_pair_hom (H : Hens) {P' P : SP d} (φ : P'.Hom P) (V : P.X.affineOpens) (V' : P'.X.affineOpens)
     (h : V'.1 ≤ φ.f ⁻¹ᵁ V.1) :
     Spec.map (CommRingCat.ofHom (H.map (φ.f.appLE V.1 V'.1 h).hom (idl φ V V' h))) ≫ hensTo H P V =
@@ -67,6 +87,13 @@ def Sys.ref (hC : LateralTheory.CohomologicalPurity.LeafChart) {P' P : SP d} (φ
     exact ⟨⟨(V', V), g', g, l'.trans inf_le_right⟩, ⟨l'.trans (inf_le_left.trans inf_le_left), l.trans inf_le_left⟩,
       ⟨l'.trans (inf_le_left.trans inf_le_right), l.trans inf_le_right⟩, hV'⟩
 
+/- English proof (translation)
+Introduce `hC H d P' P φ`. Set `S'` to `Sys.ref hC φ`. Set `G1 : S'.J ⥤ (Sys.all hC P').J` to `Monotone.functor (f := fun j => (⟨j.1.1, j.2.1⟩ : {V : P'.X.affineOpens // Good P' V})) (fun _ _ h => (Prod.le_def.1 (Subtype.coe_le_coe.2 h)).1)`. Set `G2 : S'.J ⥤ (Sys.all hC P).J` to `Monotone.functor (f := fun j => (⟨j.1.2, j.2.2.1⟩ : {V : P.X.affineOpens // Good P V})) (fun _ _ h => (Prod.le_def.1 (Subtype.coe_le_coe.2 h)).2)`. Set `α1 : S'.hen H ⋙ yoneda ⟶ G1 ⋙ (Sys.all hC P').hen H ⋙ yoneda` to `{ app := fun j => (𝟙 ((S'.hen H ⋙ yoneda).obj j) : _ ⟶ (G1 ⋙ (Sys.all hC P').hen H ⋙ yoneda).obj j) naturality := fun j k f => (Category.comp_id _).trans (Category.id_comp ((G1 ⋙ (Sys.all hC P').hen H ⋙ yoneda).map f)).symm }`.
+
+Take `⟨a, ha⟩` from `hP _ _ _ _ G1 α1 _ _ (𝟙 (yoneda.obj P'.X)) _ _ (S'.cocHen H) ((Sys.all hC P').cocHen H) (fun j => (Category.id_comp _).trans (Category.comp_id _).symm)`. Establish `ea : a ≫ (Sys.all hC P').π H = S'.π H`. Use `ha` as an intermediate fact. Rewrite `this` using `[disc.map_id, Category.comp_id]`. Conclude with `this`.
+
+Set `α2 : S'.hen H ⋙ yoneda ⟶ G2 ⋙ (Sys.all hC P).hen H ⋙ yoneda` to `{ app := fun j => yoneda.map (Spec.map (CommRingCat.ofHom (H.map (φ.f.appLE (j.1.2).1 (j.1.1).1 j.2.2.2).hom (idl φ j.1.2 j.1.1 j.2.2.2)))) naturality := fun j k f => (yoneda.map_comp _ _).symm.trans ((congrArg yoneda.map (cotangentAtUnit_tangentBijection_naturality H φ j.1.2 k.1 …`. Take `⟨b, hb⟩` from `hP _ _ _ _ G2 α2 _ _ (yoneda.map φ.f) _ _ (S'.cocHen H) ((Sys.all hC P).cocHen H) (fun j => (yoneda.map_comp _ _).symm.trans ((congrArg yoneda.map (henselization_spec_map_commutes_with_smooth_pair_hom H φ j.1.2 j.1.1 j.2.2.2)).trans (yoneda.map_comp _ _)))`. Conclude with `⟨S', a, b, ea, hb⟩`.
+-/
 theorem EtaleRefine_of_push (hP : LeafPush) : LeafRefine := by
   intro hC H d P' P φ
   let S' := Sys.ref hC φ

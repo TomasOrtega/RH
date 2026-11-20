@@ -12,6 +12,73 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.LiftGroupLaw
 
+/- English proof (translation)
+Introduce `R R₀ _ _ π hπ hN A₀ _ hA X i hi hsm e he he1 l hl1 hl2 m hm`. Use `haveI : Smooth X.hom := hsm`. Use `haveI : IsCommMonObj A₀ := hA.comm`. Take `⟨hpX, hgX⟩` from `GlobalTheory.T.isProper_geometricallyConnected_smooth_nilpotent_lift R R₀ π hπ hN X A₀ i hi hsm hA.proper hA.geomConnected`. Use `haveI := hpX`.
+
+Use `haveI := hgX`. Establish `s2 : Smooth (X ⊗ X).hom` using `by rw [Over.tensorObj_hom]; infer_instance`. Establish `p2 : IsProper (X ⊗ X).hom` using `by rw [Over.tensorObj_hom]; infer_instance`. Establish `g2 : GeometricallyConnected (X ⊗ X).hom`. Rewrite using `[Over.tensorObj_hom]`.
+
+Conclude with `GeometricallyConnected.comp _ _`. Use `haveI := s2`. Use `haveI := p2`. Use `haveI := g2`. Establish `s3 : Smooth ((X ⊗ X) ⊗ X).hom` using `by rw [Over.tensorObj_hom]; infer_instance`.
+
+Establish `p3 : IsProper ((X ⊗ X) ⊗ X).hom` using `by rw [Over.tensorObj_hom]; infer_instance`. Establish `g3 : GeometricallyConnected ((X ⊗ X) ⊗ X).hom`. Rewrite using `[Over.tensorObj_hom]`. Conclude with `GeometricallyConnected.comp _ _`. Take `⟨jA, hjl⟩ : ∃ jA : (Over.map (spMap π)).obj A₀ ⟶ X, jA.left = i` from `⟨Over.homMk i hi.w, rfl⟩`.
+
+Take `⟨E, hEl⟩ : ∃ E : 𝟙_ (Over (Sp R)) ⟶ X, E.left = e` from `⟨Over.homMk e he, rfl⟩`. Take `⟨L, hLd⟩ : ∃ L : (Over.map (spMap π)).obj (A₀ ⊗ A₀) ⟶ X ⊗ X, L = lift ((Over.map (spMap π)).map (fst A₀ A₀) ≫ jA) ((Over.map (spMap π)).map (snd A₀ A₀) ≫ jA)` from `⟨_, rfl⟩`. Establish `hL : L.left = l`. Establish `p : IsPullback (fst X X).left (snd X X).left X.hom X.hom` using `IsPullback.of_hasPullback _ _`. Use `p.hom_ext ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[← Over.comp_left, hLd, lift_fst, hl1, Over.comp_left, Over.map_map_left, hjl]`. Rewrite using `[← Over.comp_left, hLd, lift_snd, hl2, Over.comp_left, Over.map_map_left, hjl]`. Establish `pt : ∀ (T : Over (Sp R₀)) (x y : T ⟶ A₀), lift ((Over.map (spMap π)).map x ≫ jA) ((Over.map (spMap π)).map y ≫ jA) = (Over.map (spMap π)).map (lift x y) ≫ L`. Introduce `T x y`. Rewrite using `[hLd, comp_lift, ← CategoryTheory.Functor.map_comp_assoc, ← CategoryTheory.Functor.map_comp_assoc, lift_fst, lift_snd]`.
+
+Establish `hLm : L ≫ m = (Over.map (spMap π)).map μ[A₀] ≫ jA` using `by ext1; rw [Over.comp_left, hL, hm, Over.comp_left, Over.map_map_left, hjl]`. Establish `ptm : ∀ (T : Over (Sp R₀)) (x y : T ⟶ A₀), lift ((Over.map (spMap π)).map x ≫ jA) ((Over.map (spMap π)).map y ≫ jA) ≫ m = (Over.map (spMap π)).map (x * y) ≫ jA`. Introduce `T x y`. Rewrite using `[pt, Category.assoc, hLm, ← CategoryTheory.Functor.map_comp_assoc, Hom.mul_def]`. Establish `hE : ∀ T : Over (Sp R₀), (Over.map (spMap π)).map (1 : T ⟶ A₀) ≫ jA = toUnit _ ≫ E`.
+
+Introduce `T`. Establish `h1 : (1 : T ⟶ A₀) = (Over.homMk T.hom (Category.comp_id T.hom) : T ⟶ Over.mk (𝟙 (Sp R₀))) ≫ 1` using `(comp_one _).symm`. Use `ext1`. Rewrite using `[Over.comp_left, Over.comp_left, Over.map_map_left, h1, Over.comp_left, Category.assoc, hjl, he1, Over.toUnit_left, Over.map_obj_hom, hEl]`. Both sides reduce to the same expression.
+
+Establish `hj : (Over.map (spMap π)).map (𝟙 A₀) ≫ jA = jA` using `by rw [CategoryTheory.Functor.map_id, Category.id_comp]`. Establish `hjE : jA ≫ toUnit X ≫ E = (Over.map (spMap π)).map (1 : A₀ ⟶ A₀) ≫ jA`. Rewrite using `[hE, comp_toUnit_assoc]`. Take `⟨τ, hτd⟩ : ∃ τ : X ⟶ X, τ = lift (toUnit X ≫ E) (𝟙 X) ≫ m` from `⟨_, rfl⟩`. Establish `hτ : jA ≫ τ = jA`.
+
+Rewrite using `[hτd, comp_lift_assoc, Category.comp_id, hjE]`. Establish `h` using `ptm A₀ 1 (𝟙 A₀)`. Rewrite `h` using `[hj, _root_.one_mul, hj]`. Conclude with `h`. Establish `τiso : IsIso τ`.
+
+Use `GlobalTheory.T.isIso_of_flat_pullback_reduction R R₀ π hπ hN X X A₀ A₀ i i hi hi inferInstance τ (𝟙 A₀) ?_ inferInstance` and prove the remaining obligations. Establish `h` using `congrArg (fun g => g.left) hτ`. Simplify using `only [Over.comp_left, hjl] at h`. Rewrite using `[h, Over.id_left, Category.id_comp]`. Take `⟨m₁, hm₁d⟩ : ∃ m₁ : X ⊗ X ⟶ X, m₁ = m ≫ inv τ` from `⟨_, rfl⟩`.
+
+Establish `hjτ : jA ≫ inv τ = jA` using `by conv_lhs => rw [← hτ]`. Rewrite using `[Category.assoc, IsIso.hom_inv_id, Category.comp_id]`. Establish `ptm₁ : ∀ (T : Over (Sp R₀)) (x y : T ⟶ A₀), lift ((Over.map (spMap π)).map x ≫ jA) ((Over.map (spMap π)).map y ≫ jA) ≫ m₁ = (Over.map (spMap π)).map (x * y) ≫ jA`. Introduce `T x y`. Rewrite using `[hm₁d, ← Category.assoc, ptm, Category.assoc, hjτ]`.
+
+Establish `hLm₁ : L ≫ m₁ = (Over.map (spMap π)).map μ[A₀] ≫ jA`. Rewrite using `[hm₁d, ← Category.assoc, hLm, Category.assoc, hjτ]`. Establish `hm₁ : l ≫ m₁.left = (μ[A₀]).left ≫ i`. Establish `h` using `congrArg (fun g => g.left) hLm₁`. Simplify using `only [Over.comp_left, Over.map_map_left, hL, hjl] at h`.
+
+Conclude with `h`. Establish `one_mul₁ : lift (toUnit X ≫ E) (𝟙 X) ≫ m₁ = 𝟙 X`. Rewrite using `[hm₁d, ← Category.assoc, ← hτd, IsIso.hom_inv_id]`. Establish `hEE : lift E E ≫ m₁ = E`. Establish `h` using `congrArg (fun g => E ≫ g) one_mul₁`.
+
+Simplify using `only [comp_lift_assoc, Category.comp_id] at h`. Rewrite `h` using `[← Category.assoc, toUnit_unique (E ≫ toUnit X) (𝟙 _), Category.id_comp]`. Then use the resulting hypothesis. Establish `hμ : μ[A₀] = fst A₀ A₀ * snd A₀ A₀` using `by rw [Hom.mul_def, lift_fst_snd, Category.id_comp]`. Establish `σ₀iso : IsIso (lift (fst A₀ A₀) μ[A₀])`. Use `⟨⟨lift (fst A₀ A₀) ((fst A₀ A₀)⁻¹ * snd A₀ A₀), ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Rewrite using `[Category.assoc, lift_snd, comp_mul, GrpObj.comp_inv, lift_fst, lift_snd, hμ, inv_mul_cancel_left, Category.id_comp]`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+
+Rewrite using `[Category.assoc, lift_snd, hμ, comp_mul, lift_fst, lift_snd, mul_inv_cancel_left, Category.id_comp]`. Establish `hl₂ : IsPullback l (A₀ ⊗ A₀).hom (X ⊗ X).hom (spMap π)` using `GlobalTheory.AbDual.isPullback_prod hi hi hl1 hl2`. Establish `hLfst : L ≫ fst X X = (Over.map (spMap π)).map (fst A₀ A₀) ≫ jA` using `by rw [hLd, lift_fst]`. Establish `hLσ : L ≫ lift (fst X X) m₁ = (Over.map (spMap π)).map (lift (fst A₀ A₀) μ[A₀]) ≫ L`. Rewrite using `[comp_lift, hLm₁, hLfst, ← pt]`.
+
+Establish `σiso : IsIso (lift (fst X X) m₁)`. Use `GlobalTheory.T.isIso_of_flat_pullback_reduction R R₀ π hπ hN (X ⊗ X) (X ⊗ X) (A₀ ⊗ A₀) (A₀ ⊗ A₀) l l hl₂ hl₂ inferInstance _ _ ?_ σ₀iso` and prove the remaining obligations. Establish `h` using `congrArg (fun g => g.left) hLσ`. Simplify using `only [Over.comp_left, Over.map_map_left, hL] at h`. Conclude with `h`.
+
+Establish `toLeft : ∀ {P Q : Over (Sp R)} (a : Q ⟶ P) (f f' : P ⟶ X), a ≫ f = a ≫ f' → a.left ≫ f.left = a.left ≫ f'.left` using `fun a f f' h => by simpa only [Over.comp_left] using congrArg (fun g => g.left) h`. Establish `EXT` using `GlobalTheory.T.eq_of_shear_automorphism_lift_nilpotent R R₀ π hπ hN A₀ X i hi l hl1 hl2 m₁ hm₁ σiso`. Establish `hEu : toUnit (𝟙_ (Over (Sp R))) = 𝟙 _` using `toUnit_unique _ _`. Establish `mul_one₁ : lift (𝟙 X) (toUnit X ≫ E) ≫ m₁ = 𝟙 X`. Use `EXT X A₀ i hi hsm hpX hgX e he _ _ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[← hjl]`. Apply `toLeft` to reduce the goal to its premises. Rewrite using `[comp_lift_assoc, Category.comp_id, hjE]`. Establish `h` using `ptm₁ A₀ (𝟙 A₀) 1`. Rewrite `h` using `[hj, _root_.mul_one, hj]`.
+
+Conclude with `h`. Rewrite using `[← hEl]`. Apply `toLeft` to reduce the goal to its premises. Simplify using `only [comp_lift_assoc, Category.comp_id, comp_toUnit_assoc, hEu, Category.id_comp, hEE]`. Establish `comm₁ : (β_ X X).hom ≫ m₁ = m₁`.
+
+Use `EXT (X ⊗ X) (A₀ ⊗ A₀) l hl₂ s2 p2 g2 (lift E E).left (by simpa using Over.w (lift E E)) _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[← hL]`. Apply `toLeft` to reduce the goal to its premises. Rewrite using `[hLd, lift_braiding_hom_assoc, ptm₁, ptm₁, _root_.mul_comm]`. Apply `toLeft` to reduce the goal to its premises.
+
+Rewrite using `[lift_braiding_hom_assoc]`. Take `⟨L₃, hL₃d⟩ : ∃ L₃ : (Over.map (spMap π)).obj ((A₀ ⊗ A₀) ⊗ A₀) ⟶ (X ⊗ X) ⊗ X, L₃ = lift (lift ((Over.map (spMap π)).map (fst (A₀ ⊗ A₀) A₀ ≫ fst A₀ A₀) ≫ jA) ((Over.map (spMap π)).map (fst (A₀ ⊗ A₀) A₀ ≫ snd A₀ A₀) ≫ jA)) ((Over.map (spMap π)).map (snd (A₀ ⊗ A₀) A₀) ≫ jA)` from `⟨_, rfl⟩`. Establish `hL₃1 : L₃ ≫ fst (X ⊗ X) X = (Over.map (spMap π)).map (fst (A₀ ⊗ A₀) A₀) ≫ L`. Rewrite using `[hL₃d, lift_fst, pt, ← comp_lift, lift_fst_snd, Category.comp_id]`. Establish `hL₃2 : L₃ ≫ snd (X ⊗ X) X = (Over.map (spMap π)).map (snd (A₀ ⊗ A₀) A₀) ≫ jA`.
+
+Rewrite using `[hL₃d, lift_snd]`. Establish `hk3 : IsPullback L₃.left ((A₀ ⊗ A₀) ⊗ A₀).hom ((X ⊗ X) ⊗ X).hom (spMap π)`. Use `GlobalTheory.AbDual.isPullback_prod hl₂ hi (h := L₃.left) ?_ ?_` and prove the remaining obligations. Rewrite using `[← Over.comp_left, hL₃1, Over.comp_left, Over.map_map_left, hL]`. Rewrite using `[← Over.comp_left, hL₃2, Over.comp_left, Over.map_map_left, hjl]`.
+
+Establish `assoc₁ : (m₁ ▷ X) ≫ m₁ = (α_ X X X).hom ≫ (X ◁ m₁) ≫ m₁`. Use `EXT ((X ⊗ X) ⊗ X) ((A₀ ⊗ A₀) ⊗ A₀) L₃.left hk3 s3 p3 g3 (lift (lift E E) E).left (by simpa using Over.w (lift (lift E E) E)) _ _ ?_ ?_` and prove the remaining obligations. Apply `toLeft` to reduce the goal to its premises. Rewrite using `[hL₃d]`. Simplify using `only [lift_whiskerRight_assoc, lift_lift_associator_hom_assoc, lift_whiskerLeft_assoc, ptm₁]`.
+
+Rewrite using `[_root_.mul_assoc]`. Apply `toLeft` to reduce the goal to its premises. Simplify using `only [lift_whiskerRight_assoc, lift_lift_associator_hom_assoc, lift_whiskerLeft_assoc, hEE]`. Take `⟨iX, hiXd⟩ : ∃ iX : X ⟶ X, iX = lift (𝟙 X) (toUnit X ≫ E) ≫ inv (lift (fst X X) m₁) ≫ snd X X` from `⟨_, rfl⟩`. Establish `right_inv₁ : lift (𝟙 X) iX ≫ m₁ = toUnit X ≫ E`.
+
+Establish `hp : (lift (𝟙 X) (toUnit X ≫ E) ≫ inv (lift (fst X X) m₁)) ≫ lift (fst X X) m₁ = lift (𝟙 X) (toUnit X ≫ E)`. Rewrite using `[Category.assoc, IsIso.inv_hom_id, Category.comp_id]`. Establish `h1 : (lift (𝟙 X) (toUnit X ≫ E) ≫ inv (lift (fst X X) m₁)) ≫ fst X X = 𝟙 X`. Establish `h` using `congrArg (· ≫ fst X X) hp`. Simplify using `only [Category.assoc, lift_fst] at h`.
+
+Simplify `h` using `only [Category.assoc]`. Establish `h2 : (lift (𝟙 X) (toUnit X ≫ E) ≫ inv (lift (fst X X) m₁)) ≫ m₁ = toUnit X ≫ E`. Establish `h` using `congrArg (· ≫ snd X X) hp`. Simplify using `only [Category.assoc, lift_snd] at h`. Simplify `h` using `only [Category.assoc]`.
+
+Establish `h3 : lift (𝟙 X) iX = lift (𝟙 X) (toUnit X ≫ E) ≫ inv (lift (fst X X) m₁)`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[lift_fst, h1]`. Rewrite using `[lift_snd, hiXd, Category.assoc]`. Rewrite using `[h3, h2]`.
+
+Establish `left_inv₁ : lift iX (𝟙 X) ≫ m₁ = toUnit X ≫ E`. Rewrite using `[← comm₁, lift_braiding_hom_assoc, right_inv₁]`. Use `letI G : GrpObj X := { one := E mul := m₁ inv := iX one_mul := by`. Rewrite using `[← cancel_epi (λ_ X).inv, Iso.inv_hom_id, ← one_mul₁, ← Category.assoc]`. Use `congr 1`.
+
+Apply the tactic sequence `ext1 <;> simp`. Use `mul_one := by`. Rewrite using `[← cancel_epi (ρ_ X).inv, Iso.inv_hom_id, ← mul_one₁, ← Category.assoc]`. Use `congr 1`. Apply the tactic sequence `ext1 <;> simp`.
+
+Use `mul_assoc := assoc₁`. Use `left_inv := left_inv₁`. Use `right_inv := right_inv₁ }`. Use `⟨G, ⟨hi, fun T x y x₀ y₀ hx hy => ?_⟩, ⟨⟨comm₁⟩, hsm, hpX, hgX⟩⟩` and prove the remaining obligations. Establish `ex : ∀ (z : T ⟶ A₀) (z₀ : Over.mk (T.hom ≫ spMap π) ⟶ X), z₀.left = z.left ≫ i → z₀ = (Over.map (spMap π)).map z ≫ jA` using `fun z z₀ h => by ext1`.
+
+Rewrite using `[h, Over.comp_left, Over.map_map_left, hjl]`. Rewrite using `[ex x x₀ hx, ex y y₀ hy, Hom.mul_def]`. Express the relevant statement in the definitionally equal form `(lift ((Over.map (spMap π)).map x ≫ jA) ((Over.map (spMap π)).map y ≫ jA) ≫ m₁).left = _`. Rewrite using `[ptm₁, Over.comp_left, Over.map_map_left, hjl]`.
+-/
 theorem exists_grpObj_isAbelianScheme : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀), Function.Surjective π → IsNilpotent (RingHom.ker π) →
     ∀ (A₀ : Over (Sp R₀)) [GrpObj A₀], IsAbelianScheme A₀ →
     ∀ (X : Over (Sp R)) (i : A₀.left ⟶ X.left), IsPullback i A₀.hom X.hom (spMap π) → Smooth X.hom →

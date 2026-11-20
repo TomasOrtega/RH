@@ -13,6 +13,19 @@ noncomputable section
 
 namespace GlobalTheory.VolBr
 
+/- English proof (translation)
+Introduce `k _ X _ p D L a h`. Establish `hc : (0 : ℝ) < ((D + 1).factorial : ℝ)` using `by positivity`. Establish `key : ∀ δ : ℝ, 0 < δ → ((a - δ : ℝ) : EReal) ≤ arVol L D`. Introduce `δ hδ`. Use `Filter.le_limsup_of_frequently_le ?_` and prove the remaining obligations.
+
+Establish `hε : 0 < δ / ((D + 1).factorial : ℝ)` using `div_pos hδ hc`. Use `((h _ hε).and_eventually (eventually_gt_atTop 0)).mono ?_` and prove the remaining obligations. Introduce and unpack `N ⟨⟨hfin, hle⟩, hN⟩`. Establish `h0 : 0 < (L.pow N).smallSec.ncard` using `(Set.ncard_pos hfin).2 ⟨_, (L.pow N).zero_mem_smallSec⟩`. Rewrite using `[← hfin.cast_ncard_eq, ENat.toENNReal_coe, ← ENNReal.ofReal_natCast, ENNReal.log_ofReal_of_pos (by exact_mod_cast h0), ← EReal.coe_mul, EReal.coe_le_coe_iff]`.
+
+Establish `hNp : (0 : ℝ) < (N : ℝ) ^ (D + 1)` using `by positivity`. Rewrite using `[mul_div_assoc', le_div_iff₀ hNp]`. Establish `e : (a / ((D + 1).factorial : ℝ) - δ / ((D + 1).factorial : ℝ)) * ((D + 1).factorial : ℝ) = a - δ`. Clear the denominators using the available nonvanishing facts. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← e]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ Real.log ((L.pow N).smallSec.ncard : ℝ) * ((D + 1).factorial : ℝ) := mul_le_mul_of_nonneg_right hle hc.le`. Use `le_of_forall_lt_imp_le_of_dense fun z hz => ?_` and prove the remaining obligations. Proceed by induction on `z using EReal.rec with`.
+
+Consider the case `bot => exact bot_le`. Consider the case `top => exact absurd hz (not_lt.2 le_top)`. Consider the case `coe r`. Establish `hr : r < a` using `EReal.coe_lt_coe_iff.1 hz`. Use `key (a - r) (by linarith)` as an intermediate fact.
+
+Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem le_arVol_of_frequently_le : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ) (L : HermLB p) (a : ℝ), (∀ ε : ℝ, 0 < ε → ∃ᶠ N : ℕ in atTop, (L.pow N).smallSec.Finite ∧ (a / (D + 1).factorial - ε) * (N : ℝ) ^ (D + 1) ≤ Real.log ((L.pow N).smallSec.ncard : ℝ)) → (a : EReal) ≤ arVol L D := by
   intro k _ X _ p D L a h
   have hc : (0 : ℝ) < ((D + 1).factorial : ℝ) := by positivity

@@ -16,6 +16,9 @@ namespace GlobalTheory.SplitChartsField
 
 open GlobalTheory.UU GlobalTheory.AffineThickening GlobalTheory.TorusQuotientLift GlobalTheory.LocalWeightUnits
 
+/- English proof (translation)
+Use `⟨geometrically_iff_of_isClosedUnderIsomorphisms.mpr fun K _ x => ?_⟩` and prove the remaining obligations. Establish `: ConnectedSpace ↥(pullback (p ≫ f) x)` using `GeometricallyConnected.geometrically_connectedSpace _ _ _ (.of_hasPullback _ _)`. Set `q` to `(pullbackRightPullbackFstIso f x p).inv ≫ pullback.snd p (pullback.fst f x)`. Establish `: Surjective q` using `inferInstance`. Conclude with `q.surjective.connectedSpace q.continuous`.
+-/
 theorem geometricallyConnected_of_surjective {X Y Z : Scheme.{0}} (p : X ⟶ Y) (f : Y ⟶ Z)
     [Surjective p] [GeometricallyConnected (p ≫ f)] : GeometricallyConnected f := by
   refine ⟨geometrically_iff_of_isClosedUnderIsomorphisms.mpr fun K _ x => ?_⟩
@@ -33,6 +36,17 @@ include hi hV h₀ hS
 
 include hinj in
 
+/- English proof (translation)
+Establish `hG : Graded i (q ⁻¹ᵁ V)` using `GlobalTheory.functions_graded_by_weights _ G _ i hi _ (hV.preimage q) (preimage_le_of_stable hS)`. Set `s : Set Γ(B, V)` to `{c | P ((q.app V).hom c)}`. Set `α : Γ(B, V) →+* wtZero i (q ⁻¹ᵁ V)` to `(q.app V).hom.codRestrict _ fun c => (h₀ _).2 ⟨c, rfl⟩`. Establish `hα : Function.Bijective α` using `⟨fun a b h => hinj (congrArg Subtype.val h), fun a => by`. Take `⟨c, hc⟩` from `(h₀ a.1).1 a.2`.
+
+Conclude with `⟨c, Subtype.ext hc⟩⟩`. Establish `h1 : Ideal.span ((q.app V).hom '' s) = ⊤`. Rewrite using `[← (hV.preimage q).self_le_iSup_basicOpen_iff]`. Introduce `x hx`. Take `⟨b, hb, hxb, hPb⟩` from `hP x hx`.
+
+Take `⟨c, rfl⟩` from `(h₀ b).1 hb`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨_, c, hPb, rfl⟩, hxb⟩`. Establish `h2 : (1 : wtZero i (q ⁻¹ᵁ V)) ∈ (Ideal.span s).map α` using `hG.mem_map _ α 1 (by`. Rewrite using `[Ideal.map_span]`. Conclude with `h1.ge trivial)`.
+
+Establish `h3 : Ideal.span s = ⊤`. Take `⟨c, hc, e⟩` from `(Ideal.mem_map_iff_of_surjective α hα.2).1 h2`. Rewrite using `[Ideal.eq_top_iff_one, ← hα.1 (e.trans (map_one α).symm)]`. Conclude with `hc`. Take `⟨c, hc⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hV.self_le_iSup_basicOpen_iff.2 h3 hy)`.
+
+Conclude with `⟨c.1, hc, c.2⟩`.
+-/
 theorem exists_mem_basicOpen (P : Γ(G.left, q ⁻¹ᵁ V) → Prop)
     (hP : ∀ x ∈ q ⁻¹ᵁ V, ∃ b, IsWt i _ b 0 ∧ x ∈ G.left.basicOpen b ∧ P b) {y : B} (hy : y ∈ V) :
     ∃ c : Γ(B, V), y ∈ B.basicOpen c ∧ P ((q.app V).hom c) := by
@@ -59,6 +73,19 @@ theorem exists_mem_basicOpen (P : Γ(G.left, q ⁻¹ᵁ V) → Prop)
   obtain ⟨c, hc⟩ := TopologicalSpace.Opens.mem_iSup.1 (hV.self_le_iSup_basicOpen_iff.2 h3 hy)
   exact ⟨c.1, hc, c.2⟩
 
+/- English proof (translation)
+Establish `e : q ⁻¹ᵁ B.basicOpen c = G.left.basicOpen ((q.app V).hom c)` using `Scheme.preimage_basicOpen _ _`. Establish `hle` using `B.basicOpen_le c`. Establish `hG : Graded i (q ⁻¹ᵁ V)` using `GlobalTheory.functions_graded_by_weights _ G _ i hi _ (hV.preimage q) (preimage_le_of_stable hS)`. Establish `hS' : Stable i (q ⁻¹ᵁ B.basicOpen c)` using `e ▸ stable_basicOpen hS (hasWt_iff.2 ((h₀ _).2 ⟨c, rfl⟩))`. Establish `hG' : Graded i (q ⁻¹ᵁ B.basicOpen c)` using `GlobalTheory.functions_graded_by_weights _ G _ i hi _ ((hV.basicOpen c).preimage q) (preimage_le_of_stable hS')`.
+
+Establish `hw : ∀ x, IsWt i _ ((q.app (B.basicOpen c)).hom (rs hle x)) 0` using `fun x => by`. Rewrite using `[app_rs]`. Conclude with `((h₀ _).2 ⟨x, rfl⟩).res _`. Take `⟨v, hv⟩ : IsUnit (rs hle c)` from `B.toRingedSpace.isUnit_res_basicOpen c`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `ha`. Take `⟨n, y, hy⟩` from `exists_eq_pow_mul (hV.preimage q) (q.preimage_mono hle) _ a e`. Rewrite `hy` using `[← app_rs q hle]`. Take `⟨x, hx, hx'⟩` from `hG.exists_lift hG' (rs (q.preimage_mono hle)) (fun _ _ hx => hx.res _) y (χ := 0) (hy ▸ mul_mem (pow_mem (S := wtZero i _) (hw c) n) ha)`. Take `⟨x, rfl⟩` from `(h₀ x).1 hx`.
+
+Use `⟨(v⁻¹).val ^ n * rs hle x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, app_rs, hx', hy, ← hv, ← map_pow _ v.val, ← _root_.mul_assoc, ← map_mul, ← mul_pow, Units.inv_mul, one_pow, map_one, _root_.one_mul]`. Introduce and unpack `⟨c', rfl⟩`. Take `⟨n, y, hy⟩` from `exists_eq_pow_mul hV hle c c' rfl`. Establish `e' : c' = (v⁻¹).val ^ n * rs hle y`.
+
+Rewrite using `[hy, ← hv, ← _root_.mul_assoc, ← mul_pow, Units.inv_mul, one_pow, _root_.one_mul]`. Establish `h1 : IsWt i _ (Units.map (q.app (B.basicOpen c)).hom.toMonoidHom v).val 0`. Use `hw c` as an intermediate fact. Rewrite `this` using `[← hv]`. Then use the resulting hypothesis. Establish `h2` using `h1.inv`.
+
+Rewrite `h2` using `[neg_zero]`. Rewrite using `[e', map_mul, map_pow]`. Conclude with `mul_mem (pow_mem (S := wtZero i _) h2 n) (hw y)`.
+-/
 theorem isWt_basicOpen_iff (c : Γ(B, V)) (a : Γ(G.left, q ⁻¹ᵁ B.basicOpen c)) :
     IsWt i _ a 0 ↔ ∃ c', (q.app (B.basicOpen c)).hom c' = a := by
   have e : q ⁻¹ᵁ B.basicOpen c = G.left.basicOpen ((q.app V).hom c) := Scheme.preimage_basicOpen _ _
@@ -97,6 +124,11 @@ theorem isWt_basicOpen_iff (c : Γ(B, V)) (a : Γ(G.left, q ⁻¹ᵁ B.basicOpen
 omit hi h₀ hS in
 include hinj in
 
+/- English proof (translation)
+Establish `hle` using `B.basicOpen_le c`. Take `⟨v, hv⟩ : IsUnit (rs hle c)` from `B.toRingedSpace.isUnit_res_basicOpen c`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Take `⟨n, y, hy⟩` from `exists_eq_pow_mul hV hle c a rfl`.
+
+Take `⟨m, hm⟩` from `exists_pow_mul_eq_zero (hV.preimage q) (q.preimage_mono hle) ((q.app V).hom c) ((q.app V).hom y) (Scheme.preimage_basicOpen _ _) (by rw [← app_rs q hle, hy, map_mul, ha, mul_zero])`. Rewrite `hm` using `[← map_pow, ← map_mul, map_eq_zero_iff _ hinj]`. Use `congrArg (rs hle) hm` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, map_zero, hy, ← hv, ← Units.val_pow_eq_pow_val, ← Units.val_pow_eq_pow_val, Units.mul_right_eq_zero, Units.mul_right_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem injective_basicOpen (c : Γ(B, V)) : Function.Injective (q.app (B.basicOpen c)).hom := by
   have hle := B.basicOpen_le c
   obtain ⟨v, hv⟩ : IsUnit (rs hle c) := B.toRingedSpace.isUnit_res_basicOpen c
@@ -112,6 +144,15 @@ theorem injective_basicOpen (c : Γ(B, V)) : Function.Injective (q.app (B.basicO
 
 omit hi hV h₀ hS in
 
+/- English proof (translation)
+Introduce `K _ H _ _ _ _ _ C d c i hc hT`. Take `⟨B, q, hp, ha, V, hcov, hV⟩` from `Charts.Torus.exists_proper_quotient K H C d c i hT`. Take `⟨hm, hf, hs, hsm, hfib⟩` from `GlobalTheory.LocTriv.main (Sp K) (Fin d → ℤ) H B i q hT.hom ha fun y => by`. Take `⟨a, hy⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hcov.ge (Set.mem_univ y))`. Take `⟨haff, h, hinj, h₀⟩` from `hV a`.
+
+Establish `hS` using `hT.stable a`. Establish `hl` using `GlobalTheory.LocalWeightUnits.main K H C d c i hT a`. Generalize the expression as in `C.W a = W at h hinj h₀ hS hl`. Substitute `h` using the available equality. Rewrite `hinj`, `h₀` using `[Scheme.Hom.appLE_eq_app]`.
+
+Establish `h₀'` using `fun u => hasWt_iff.symm.trans (h₀ u)`. Take `⟨b, hb, hb₁, u, hu⟩` from `exists_mem_basicOpen hT.hom haff h₀' hinj hS (fun b => Stable i (H.left.basicOpen b) ∧ ∃ u : Multiplicative (Fin d → ℤ) →* Γ(H.left, H.left.basicOpen b)ˣ, ∀ χ, HasWt i _ (u (Multiplicative.ofAdd χ)).val χ) (fun x hx => (hl x hx).imp fun b hb => ⟨hasWt_iff.1 hb.1, hb.2⟩) hy`. Use `⟨B.left.basicOpen b, hb, haff.basicOpen b, isWt_basicOpen_iff hT.hom haff h₀' hS b, injective_basicOpen haff hinj b, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.preimage_basicOpen]`. Conclude with `⟨preimage_le_of_stable hb₁, u, fun χ => hasWt_iff.1 (hu χ)⟩`.
+
+Take `⟨g, hcomm, hq, hker⟩` from `GlobalTheory.grpObj_of_flat_coset_quotient (Sp K) H _ B i q hT.hom hm hf hs inferInstance hfib`. Establish `: GeometricallyConnected (q.left ≫ B.hom)` using `by rwa [Over.w]`. Use `⟨B, g, q, ⟨hcomm, hsm inferInstance, hp, geometricallyConnected_of_surjective q.left B.hom⟩, hq, hf, hs, ha, hker, fun a => ?_⟩` and prove the remaining obligations. Take `⟨haff, h, -, h₀⟩` from `hV a`. Conclude with `⟨V a, h, haff, h₀⟩`.
+-/
 theorem main : ∀ (K : Type) [Field K] (H : Over (Sp K)) [GrpObj H] [IsCommMonObj H] [Smooth H.hom] [IsSeparated H.hom] [QuasiCompact H.hom] (C : Charts H.left) (d : ℕ) (c : Fin d → C.Cl) (i : splitTorus (Sp K) (Fin d → ℤ) ⟶ H), GeometricallyConnected H.hom → C.Torus c i → ∃ (B : Over (Sp K)) (_ : GrpObj B) (q : H ⟶ B), IsAbelianScheme B ∧ IsMonHom q ∧ Flat q.left ∧ Surjective q.left ∧ IsAffineHom q.left ∧ IsPullback i (toUnit _) q (η[B]) ∧ ∀ a, ∃ (V : B.left.Opens) (h : C.W a = q.left ⁻¹ᵁ V), IsAffineOpen V ∧ ∀ u, HasWt i (C.W a) u 0 ↔ u ∈ Set.range (q.left.appLE V (C.W a) h.le).hom := by
   intro K _ H _ _ _ _ _ C d c i hc hT
   obtain ⟨B, q, hp, ha, V, hcov, hV⟩ := Charts.Torus.exists_proper_quotient K H C d c i hT

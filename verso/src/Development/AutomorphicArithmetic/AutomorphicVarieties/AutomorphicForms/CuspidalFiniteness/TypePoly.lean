@@ -11,6 +11,19 @@ noncomputable section
 
 namespace UpperTheory.V.Af.CuspFin
 
+/- English proof (translation)
+Introduce `A _ _ n E hE S h`. Break down `Nat.lt_or_ge n 2 with hn | hn` into its components or cases. Establish `hE : ∀ i j, E i j ∈ S`. Introduce `i j`. Take `rfl : n = 1` from `by have := i.2; omega`.
+
+Use `GlobalTheory.CuspRep.Central.trace_mem E (Subalgebra.toSubmodule S) (one_mem S) h` as an intermediate fact. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`. Simplify using `using this`. Conclude with `sum_mem fun i _ => sum_mem fun j _ => mul_mem (hE _ _) (hE _ _)`. Establish `ht : ∑ i, E i i ∈ S` using `GlobalTheory.CuspRep.Central.trace_mem E (Subalgebra.toSubmodule S) (one_mem S) h`.
+
+Assume the negation of the conclusion as `hc`. Take `⟨φ, hφ, hS⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem (p := Subalgebra.toSubmodule S) hc inferInstance`. Establish `h0 : ∀ x ∈ S, φ x = 0` using `fun x hx => (Submodule.eq_bot_iff _).1 hS _ ⟨x, hx, rfl⟩`. Take `⟨Rm, hR⟩` from `_root_.GlobalTheory.qdet_top_three_orders A n E`. Establish `core` using `GlobalTheory.CapelliCasimir.scalar_core n hn (fun l => -((l : ℕ) : ℂ)) 0 (fun i => φ (E i i)) (fun i j => φ (E i i * E j j - E j i * E i j)) (fun d => φ (Rm d)) (φ 1) 0 (fun Y => by`.
+
+Establish `h2` using `congrArg φ (hR Y).symm`. Rewrite `h2` using `[h0 _ (h Y)]`. Simplify using `only [map_add, map_sum, map_smul, smul_eq_mul, sub_eq_add_neg (a := Y)] at h2`. Simplify using `only [add_zero]`. Rewrite using `[h2, h0 1 (one_mem S), mul_zero])`.
+
+Establish `h2` using `core.2`. Establish `h3` using `congrArg φ (GlobalTheory.CapelliCasimir.sq_sub_cas E hE)`. Establish `h4` using `h0 _ ht`. Rewrite `h3` using `[map_sub, h0 _ (mul_mem ht ht)]`. Simplify using `only [h0 1 (one_mem S), mul_zero, zero_add, Finset.sum_erase_eq_sub (Finset.mem_univ _)] at h2`.
+
+Simplify using `only [map_sub φ, map_sum, map_smul, smul_eq_mul] at h3 h2 h4`. Apply `hφ` to reduce the goal to its premises. Simplify using `only [sub_mul, Finset.sum_sub_distrib, ← Finset.mul_sum, h4, mul_assoc, neg_mul, one_mul, Finset.sum_neg_distrib] at h2 h3`. Take the linear combination `-h3 - h2`.
+-/
 theorem casMem : ∀ (A : Type) [Ring A] [Algebra ℂ A] (n : ℕ) (E : Fin n → Fin n → A), Formalism.REAL.GlRel E → ∀ S : Subalgebra ℂ A, (∀ u, Formalism.REAL.qdet E u ∈ S) → Formalism.REAL.Cas E ∈ S := by
   intro A _ _ n E hE S h
   rcases Nat.lt_or_ge n 2 with hn | hn
@@ -43,6 +56,15 @@ theorem casMem : ∀ (A : Type) [Ring A] [Algebra ℂ A] (n : ℕ) (E : Fin n �
   simp only [sub_mul, Finset.sum_sub_distrib, ← Finset.mul_sum, h4, mul_assoc, neg_mul, one_mul, Finset.sum_neg_distrib] at h2 h3
   linear_combination -h3 - h2
 
+/- English proof (translation)
+Introduce `F _ _ _ a X hX`. Establish `hs : ∀ t : ℝ, t • Matrix.of X ∈ skewAdjoint (Matrix (Fin a) (Fin a) (TR.Rinf F))` using `fun t => by`. Rewrite using `[skewAdjoint.mem_iff]`. Use extensionality with `i j v`. Simplify using `[Matrix.star_apply, hX i j]`.
+
+Establish `hcs : ContinuousStar (Matrix (Fin a) (Fin a) (TR.Rinf F))` using `inferInstance`. Use `letI : NormedRing (Matrix (Fin a) (Fin a) (TR.Rinf F)) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℝ (Matrix (Fin a) (Fin a) (TR.Rinf F)) := Matrix.linftyOpNormedAlgebra`. Use `letI : NormedAlgebra ℚ (Matrix (Fin a) (Fin a) (TR.Rinf F)) := Matrix.linftyOpNormedAlgebra`. Use `⟨fun t => ⟨NormedSpace.exp (t • Matrix.of X), by` and prove the remaining obligations.
+
+Use `@NormedSpace.exp_mem_unitary_of_mem_skewAdjoint (Matrix (Fin a) (Fin a) (TR.Rinf F)) _ _ _ _ hcs` as an intermediate fact. Conclude with `this (hs t)⟩, ?_, ?_⟩`. Conclude with `Subtype.ext (by simp)`. Establish `h` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) (Matrix.of X) 0`. Simplify using `only [zero_smul, NormedSpace.exp_zero, one_mul] at h`.
+
+Conclude with `h`.
+-/
 theorem skewCurve : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (a : ℕ) (X : TR.Lie F a), (∀ i j, X j i = -X i j) → ∃ c : ℝ → TR.Kinf F a, c 0 = 1 ∧ HasDerivAt (fun t => TR.toL (Unitary.toUnits (c t)).val) X 0 := by
   intro F _ _ _ a X hX
   classical
@@ -62,6 +84,15 @@ theorem skewCurve : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (
     simp only [zero_smul, NormedSpace.exp_zero, one_mul] at h
     exact h
 
+/- English proof (translation)
+Introduce `F _ _ _ a X hX`. Take `⟨c, h0, hc⟩` from `skewCurve F a X hX`. Establish `key : ∀ (φ : TR.Sm F a) (g : GA F a) (k : TR.Kinf F a), HasDerivAt (fun t => (TR.cptRep F a (k * c t) φ).1 g) ((TR.cptRep F a k (TR.lie F a X φ)).1 g) 0`. Introduce `φ g k`. Establish `h` using `TR.hasDerivAt_curve φ (g * TR.infGL F a (Unitary.toUnits k)) (fun t => Unitary.toUnits (c t)) X (by rw [h0, map_one]) hc`.
+
+Use `h.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (g * TR.infGL F a (Unitary.toUnits (k * c t))) = _`. Rewrite using `[map_mul, map_mul, ← mul_assoc]`. Prove the components needed by the constructor for the conclusion. Set `U : Submodule ℂ (TR.Kinf F a → ℂ)` to `{ carrier := {f | ∀ k, DifferentiableAt ℝ (fun t => f (k * c t)) 0} add_mem' := fun h1 h2 k => (h1 k).add (h2 k) zero_mem' := fun k => differentiableAt_const _ smul_mem' := fun r f h k => (h k).const_smul r }`.
+
+Set `D0 : U →ₗ[ℂ] (TR.Kinf F a → ℂ)` to `{ toFun := fun f k => deriv (fun t => f.1 (k * c t)) 0 map_add' := fun f f' => funext fun k => deriv_add (f.2 k) (f'.2 k) map_smul' := fun r f => funext fun k => deriv_const_smul r (f.2 k) }`. Take `⟨D, hD⟩` from `LinearMap.exists_extend D0`. Use `⟨D, fun φ g => ?_⟩` and prove the remaining obligations. Establish `hm : (fun k => (TR.cptRep F a k φ).1 g) ∈ U` using `fun k => (key φ g k).differentiableAt`. Use `(LinearMap.congr_fun hD ⟨_, hm⟩).trans (funext fun k => (key φ g k).deriv)` and prove the remaining obligations.
+
+Introduce `V hV hst φ g hφ`. Establish `hcl : IsClosed (V : Set (TR.Kinf F a → ℂ))` using `V.closed_of_finiteDimensional`. Use `hcl.mem_of_tendsto (b := nhdsWithin (0 : ℝ) {0}ᶜ) (f := fun t k => slope (fun t => (TR.cptRep F a (k * c t) φ).1 g) 0 t) (tendsto_pi_nhds.2 fun k => hasDerivAt_iff_tendsto_slope.1 (key φ g k)) (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Conclude with `V.smul_of_tower_mem ((t - 0)⁻¹ : ℝ) (V.sub_mem (hst _ hφ (c t)) (hst _ hφ (c 0)))`.
+-/
 theorem sliceOp : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (a : ℕ) (X : TR.Lie F a), (∀ i j, X j i = -X i j) → (∃ D : Module.End ℂ (TR.Kinf F a → ℂ), ∀ (φ : TR.Sm F a) (g : GA F a), D (fun k => (TR.cptRep F a k φ).1 g) = fun k => (TR.cptRep F a k (TR.lie F a X φ)).1 g) ∧ ∀ (V : Submodule ℂ (TR.Kinf F a → ℂ)), FiniteDimensional ℂ V → (∀ f ∈ V, ∀ k' : TR.Kinf F a, (fun k => f (k * k')) ∈ V) → ∀ (φ : TR.Sm F a) (g : GA F a), (fun k => (TR.cptRep F a k φ).1 g) ∈ V → (fun k => (TR.cptRep F a k (TR.lie F a X φ)).1 g) ∈ V := by
   intro F _ _ _ a X hX
   obtain ⟨c, h0, hc⟩ := skewCurve F a X hX
@@ -94,6 +125,23 @@ theorem sliceOp : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (a 
       (tendsto_pi_nhds.2 fun k => hasDerivAt_iff_tendsto_slope.1 (key φ g k)) (Filter.Eventually.of_forall fun t => ?_)
     exact V.smul_of_tower_mem ((t - 0)⁻¹ : ℝ) (V.sub_mem (hst _ hφ (c t)) (hst _ hφ (c 0)))
 
+/- English proof (translation)
+Introduce `T M ι _ _ _ _ C D s hs V hV N hN hNV`. Set `U : Submodule ℂ M` to `Submodule.span ℂ {y | ∃ i, ∃ x ∈ N, y = s i x}`. Establish `hU : U ≤ V` using `Submodule.span_le.2 (by rintro _ ⟨i, x, hx, rfl⟩; exact hNV i x hx)`. Establish `: FiniteDimensional ℂ U` using `Submodule.finiteDimensional_of_le hU`. Establish `hD : ∀ y ∈ U, D y ∈ U`.
+
+Establish `: U ≤ U.comap D` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨i, x, hx, rfl⟩`. Conclude with `Submodule.subset_span ⟨i, C x, hN x hx, hs i x⟩)`. Conclude with `fun y hy => this hy`. Establish `hpow : ∀ i (n : ℕ) x, s i ((C ^ n) x) = (D ^ n) (s i x)`.
+
+Introduce `i n`. Proceed by induction on `n with`. Consider the case `zero => intro x`. Both sides reduce to the same expression. Consider the case `succ n ih => intro x`.
+
+Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, hs]`. Establish `hev : ∀ i (q : Polynomial ℂ) x, s i (Polynomial.aeval C q x) = Polynomial.aeval D q (s i x)`. Introduce `i q x`. Rewrite using `[Polynomial.aeval_eq_sum_range, Polynomial.aeval_eq_sum_range]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, hpow]`.
+
+Establish `hpow2 : ∀ (n : ℕ) (y : U), (((D.restrict hD ^ n) y : U) : M) = (D ^ n) y`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro x`. Both sides reduce to the same expression.
+
+Consider the case `succ n ih => intro x`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih]`. Both sides reduce to the same expression. Establish `hev2 : ∀ (q : Polynomial ℂ) (y : U), ((Polynomial.aeval (D.restrict hD) q y : U) : M) = Polynomial.aeval D q y`. Introduce `q y`.
+
+Rewrite using `[Polynomial.aeval_eq_sum_range, Polynomial.aeval_eq_sum_range]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul, hpow2]`. Establish `hm` using `LinearMap.charpoly_monic (D.restrict hD)`. Use `⟨Polynomial.X * (D.restrict hD).charpoly, Polynomial.monic_X.mul hm, ?_, fun i x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.monic_X.natDegree_mul hm, Polynomial.natDegree_X]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hev]`. Use `(hev2 _ ⟨s i x, Submodule.subset_span ⟨i, x, hx, rfl⟩⟩).symm.trans ?_` and prove the remaining obligations. Rewrite using `[map_mul, LinearMap.aeval_self_charpoly, mul_zero]`. Both sides reduce to the same expression.
+-/
 theorem polySlices : ∀ (T M ι : Type) [AddCommGroup T] [Module ℂ T] [AddCommGroup M] [Module ℂ M] (C : Module.End ℂ T) (D : Module.End ℂ M) (s : ι → T →ₗ[ℂ] M), (∀ i x, D (s i x) = s i (C x)) → ∀ (V : Submodule ℂ M), FiniteDimensional ℂ V → ∀ N : Submodule ℂ T, (∀ x ∈ N, C x ∈ N) → (∀ i, ∀ x ∈ N, s i x ∈ V) → ∃ q : Polynomial ℂ, q.Monic ∧ 0 < q.natDegree ∧ ∀ i, ∀ x ∈ N, s i (Polynomial.aeval C q x) = 0 := by
   intro T M ι _ _ _ _ C D s hs V hV N hN hNV
   let U : Submodule ℂ M := Submodule.span ℂ {y | ∃ i, ∃ x ∈ N, y = s i x}
@@ -130,6 +178,19 @@ theorem polySlices : ∀ (T M ι : Type) [AddCommGroup T] [Module ℂ T] [AddCom
     rw [map_mul, LinearMap.aeval_self_charpoly, mul_zero]
     rfl
 
+/- English proof (translation)
+Introduce `F _ _ _ a W _ _ _ ρ ι _ X hX r`. Use `choose D hD using fun l => (sliceOp F a (X l) (hX l)).1`. Establish `hV : FiniteDimensional ℂ (GlobalTheory.Published.AutFin.coeffSpan ρ)`. Set `m : Module.Dual ℂ W →ₗ[ℂ] W →ₗ[ℂ] (TR.Kinf F a → ℂ)` to `LinearMap.mk₂ ℂ (fun ℓ w k => ℓ (ρ k w)) (fun _ _ _ => rfl) (fun _ _ _ => rfl) (fun _ _ _ => by funext k; simp) (fun _ _ _ => by funext k; simp)`. Use `Submodule.finiteDimensional_of_le (S₂ := LinearMap.range (TensorProduct.lift m)) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨ℓ, w, rfl⟩`. Conclude with `⟨ℓ ⊗ₜ w, rfl⟩`. Establish `hst : ∀ f ∈ GlobalTheory.Published.AutFin.coeffSpan ρ, ∀ k' : TR.Kinf F a, (fun k => f (k * k')) ∈ GlobalTheory.Published.AutFin.coeffSpan ρ`. Introduce `f hf k'`. Establish `: GlobalTheory.Published.AutFin.coeffSpan ρ ≤ (GlobalTheory.Published.AutFin.coeffSpan ρ).comap (LinearMap.funLeft ℂ ℂ fun k => k * k')` using `Submodule.span_le.2 (by`.
+
+Introduce and unpack `_ ⟨ℓ, w, rfl⟩`. Conclude with `Submodule.subset_span ⟨ℓ, ρ k' w, funext fun k => by simp [LinearMap.funLeft_apply]⟩)`. Conclude with `this hf`. Set `s : GA F a → TR.Sm F a →ₗ[ℂ] (TR.Kinf F a → ℂ)` to `fun g => { toFun := fun φ k => (TR.cptRep F a k φ).1 g map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Establish `hD' : ∀ l g φ, D l (s g φ) = s g (TR.lie F a (X l) φ)` using `fun l g φ => hD l φ g`.
+
+Set `N : Submodule ℂ (TR.Sm F a)` to `⨅ g, (GlobalTheory.Published.AutFin.coeffSpan ρ).comap (s g)`. Establish `hN : ∀ φ, φ ∈ N ↔ ∀ g, s g φ ∈ GlobalTheory.Published.AutFin.coeffSpan ρ` using `fun φ => by`. Simplify using `only [N, Submodule.mem_iInf, Submodule.mem_comap]`. Establish `hNl : ∀ l, ∀ φ ∈ N, TR.lie F a (X l) φ ∈ N` using `fun l φ hφ => (hN _).2 fun g => (sliceOp F a (X l) (hX l)).2 _ hV hst φ g ((hN φ).1 hφ g)`. Take `⟨q, hm, hd, hq⟩` from `polySlices _ _ _ (r • ∑ l, TR.lie F a (X l) * TR.lie F a (X l)) (r • ∑ l, D l * D l) s (fun g φ => by simp only [LinearMap.smul_apply, LinearMap.sum_apply, Module.End.mul_apply, map_smul, map_sum, hD']) _ hV N (fun φ hφ => by`.
+
+Rewrite using `[LinearMap.smul_apply, LinearMap.sum_apply]`. Conclude with `N.smul_mem _ (N.sum_mem fun l _ => hNl l _ (hNl l _ hφ))) (fun g φ hφ => (hN φ).1 hφ g)`. Use `⟨q, hm, hd, fun φ hφ => Subtype.ext (funext fun g => ?_)⟩` and prove the remaining obligations. Establish `h` using `congrFun (hq g φ ((hN φ).2 hφ)) 1`. Express the relevant statement in the definitionally equal form `(TR.cptRep F a 1 _).1 g = 0 at h`.
+
+Rewrite `h` using `[map_one]`. Conclude with `h`.
+-/
 theorem typePoly : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (a : ℕ) (W : Type) [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (ρ : Representation ℂ (TR.Kinf F a) W) (ι : Type) [Fintype ι] (X : ι → TR.Lie F a), (∀ l i j, X l j i = -X l i j) → ∀ r : ℂ, ∃ q : Polynomial ℂ, q.Monic ∧ 0 < q.natDegree ∧ ∀ φ : TR.Sm F a, (∀ g : GA F a, (fun k : TR.Kinf F a => (TR.cptRep F a k φ).1 g) ∈ GlobalTheory.Published.AutFin.coeffSpan ρ) → Polynomial.aeval (r • ∑ l, TR.lie F a (X l) * TR.lie F a (X l)) q φ = 0 := by
   intro F _ _ _ a W _ _ _ ρ ι _ X hX r
   choose D hD using fun l => (sliceOp F a (X l) (hX l)).1

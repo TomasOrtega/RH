@@ -22,6 +22,9 @@ abbrev cj : Ideles E →* Ideles E := Units.map (conjAd E).toMonoidHom
 
 def quo : Ideles E →* Ideles E := (MonoidHom.id (Ideles E)) / cj E
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem quo_apply (z : Ideles E) : quo E z = z / cj E z := rfl
 
 def IsZeta (a : ℕ) (ζ : Ideles E →* UA E a) : Prop :=

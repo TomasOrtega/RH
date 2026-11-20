@@ -12,6 +12,9 @@ section Homog
 
 variable {K : Type} {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Introduce `m hm k`. Take `⟨m₁, h₁, m₂, h₂, rfl⟩` from `Finset.mem_add.mp (MvPolynomial.support_mul f g hm)`. Simplify using `[Finset.sum_add_distrib, hf m₁ h₁ k, hg m₂ h₂ k]`.
+-/
 theorem isMultiHomog_mul_alt {f g : MRing ι} {a b : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g b) :
     IsMultiHomog (f * g) (a + b) := by
   classical
@@ -19,6 +22,9 @@ theorem isMultiHomog_mul_alt {f g : MRing ι} {a b : K → ℕ} (hf : IsMultiHom
   obtain ⟨m₁, h₁, m₂, h₂, rfl⟩ := Finset.mem_add.mp (MvPolynomial.support_mul f g hm)
   simp [Finset.sum_add_distrib, hf m₁ h₁ k, hg m₂ h₂ k]
 
+/- English proof (translation)
+Introduce `m hm k`. Break down `Finset.mem_union.mp (MvPolynomial.support_add hm) with h | h` into its components or cases. Conclude with `hf m h k`. Conclude with `hg m h k`.
+-/
 theorem isMultiHomog_add_alt {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g a) :
     IsMultiHomog (f + g) a := by
   classical
@@ -27,10 +33,16 @@ theorem isMultiHomog_add_alt {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog
   · exact hf m h k
   · exact hg m h k
 
+/- English proof (translation)
+Introduce `m hm`. Simplify using `at hm`.
+-/
 theorem isMultiHomog_zero_alt (a : K → ℕ) : IsMultiHomog (0 : MRing ι) a := by
   intro m hm
   simp at hm
 
+/- English proof (translation)
+Introduce `m hm k`. Establish `: m = 0`. Establish `h` using `MvPolynomial.support_monomial_subset (s := (0 : (Σ k, ι k) →₀ ℕ)) (a := (1 : ℤ)) hm`. Simplify using `using h`. Simplify using `[this]`.
+-/
 theorem isMultiHomog_one_alt : IsMultiHomog (1 : MRing ι) 0 := by
   classical
   intro m hm k
@@ -39,6 +51,15 @@ theorem isMultiHomog_one_alt : IsMultiHomog (1 : MRing ι) 0 := by
     simpa using h
   simp [this]
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (fun q : Σ k, baseIdx ι blk k => (⟨q.1.1, q.2⟩ : Σ k, ι k))`. Introduce and unpack `⟨⟨k, hk⟩, a⟩ ⟨⟨k', hk'⟩, b⟩ h`. Take `⟨rfl, h⟩` from `Sigma.mk.inj_iff.mp h`. Consider the cases of `h`. Both sides reduce to the same expression.
+
+Introduce `m hm k`. Rewrite `hm` using `[support_rename_of_injective hinj, Finset.mem_image]`. Take `⟨m', hm', rfl⟩` from `hm`. Use `beta_reduce`. Distinguish the cases in `h : ∀ p, blk p ≠ some k`.
+
+Rewrite using `[dif_pos h, ← hg m' hm' ⟨k, h⟩]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `Finsupp.mapDomain_apply hinj m' ⟨⟨k, h⟩, i⟩`. Rewrite using `[dif_neg h]`. Use `Finset.sum_eq_zero fun i _ => Finsupp.mapDomain_of_notMem_range _ _ ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨⟨⟨k', hk'⟩, b⟩, e⟩`. Take `⟨rfl, -⟩` from `Sigma.mk.inj_iff.mp e`. Conclude with `h hk'`.
+-/
 theorem isMultiHomog_rename_base {σ : Type} (blk : σ → Option K) {d' : NonPluckerBlocks blk → ℕ}
     {g : MRing (baseIdx ι blk)} (hg : IsMultiHomog g d') :
     open Classical in
@@ -69,9 +90,15 @@ def IsFormQuot {Φ : Type} [Field Φ] (y : (Σ k, ι k) → Φ) (s : Φ) : Prop 
 
 variable {Φ : Type} [Field Φ] {y : (Σ k, ι k) → Φ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, 0, 1, isMultiHomog_zero_alt _, isMultiHomog_one_alt, by simp, by simp⟩`.
+-/
 theorem IsFormQuot.zero : IsFormQuot y 0 :=
   ⟨0, 0, 1, isMultiHomog_zero_alt _, isMultiHomog_one_alt, by simp, by simp⟩
 
+/- English proof (translation)
+Take `⟨d₁, g₁, h₁, hg₁, hh₁, hy₁, e₁⟩` from `hs`. Take `⟨d₂, g₂, h₂, hg₂, hh₂, hy₂, e₂⟩` from `ht`. Use `⟨d₁ + d₂, g₁ * h₂ + g₂ * h₁, h₁ * h₂, isMultiHomog_add_alt (isMultiHomog_mul_alt hg₁ hh₂) (by rw [add_comm d₁]; exact isMultiHomog_mul_alt hg₂ hh₁), isMultiHomog_mul_alt hh₁ hh₂, by rw [map_mul]; exact mul_ne_zero hy₁ hy₂, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, map_mul, map_mul, e₁, e₂]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsFormQuot.add {s t : Φ} (hs : IsFormQuot y s) (ht : IsFormQuot y t) : IsFormQuot y (s + t) := by
   obtain ⟨d₁, g₁, h₁, hg₁, hh₁, hy₁, e₁⟩ := hs
   obtain ⟨d₂, g₂, h₂, hg₂, hh₂, hy₂, e₂⟩ := ht
@@ -81,6 +108,9 @@ theorem IsFormQuot.add {s t : Φ} (hs : IsFormQuot y s) (ht : IsFormQuot y t) : 
   rw [map_add, map_mul, map_mul, map_mul, e₁, e₂]
   ring
 
+/- English proof (translation)
+Take `⟨d₁, g₁, h₁, hg₁, hh₁, hy₁, e₁⟩` from `hs`. Take `⟨d₂, g₂, h₂, hg₂, hh₂, hy₂, e₂⟩` from `ht`. Use `⟨d₁ + d₂, g₁ * g₂, h₁ * h₂, isMultiHomog_mul_alt hg₁ hg₂, isMultiHomog_mul_alt hh₁ hh₂, by rw [map_mul]; exact mul_ne_zero hy₁ hy₂, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, e₁, e₂]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsFormQuot.mul {s t : Φ} (hs : IsFormQuot y s) (ht : IsFormQuot y t) : IsFormQuot y (s * t) := by
   obtain ⟨d₁, g₁, h₁, hg₁, hh₁, hy₁, e₁⟩ := hs
   obtain ⟨d₂, g₂, h₂, hg₂, hh₂, hy₂, e₂⟩ := ht
@@ -89,6 +119,11 @@ theorem IsFormQuot.mul {s t : Φ} (hs : IsFormQuot y s) (ht : IsFormQuot y t) : 
   rw [map_mul, map_mul, e₁, e₂]
   ring
 
+/- English proof (translation)
+Distinguish the cases in `h0 : s = 0`. Rewrite using `[h0, inv_zero]`. Conclude with `IsFormQuot.zero`. Take `⟨d, g, h, hg, hh, hy, e⟩` from `hs`. Use `⟨d, h, g, hh, hg, by rw [e]; exact mul_ne_zero h0 hy, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem IsFormQuot.inv {s : Φ} (hs : IsFormQuot y s) : IsFormQuot y s⁻¹ := by
   by_cases h0 : s = 0
   · rw [h0, inv_zero]
@@ -98,6 +133,9 @@ theorem IsFormQuot.inv {s : Φ} (hs : IsFormQuot y s) : IsFormQuot y s⁻¹ := b
     rw [e]
     field_simp
 
+/- English proof (translation)
+Proceed by induction on `A using Finset.induction_on with`. Consider the case `empty => simpa using IsFormQuot.zero`. Consider the case `insert a A ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `(hf a (Finset.mem_insert_self _ _)).add (ih fun b hb => hf b (Finset.mem_insert_of_mem hb))`.
+-/
 theorem IsFormQuot.sum {α : Type} (A : Finset α) {f : α → Φ} (hf : ∀ a ∈ A, IsFormQuot y (f a)) :
     IsFormQuot y (∑ a ∈ A, f a) := by
   classical
@@ -114,6 +152,9 @@ section Minors
 
 variable {N : ℕ}
 
+/- English proof (translation)
+Substitute `hJ` using the available equality. Unfold `minorIJ`. Rewrite using `[dif_pos hI]`.
+-/
 theorem minorIJ_eq_det_of_card {R : Type} [CommRing R] (h : Matrix (Fin N) (Fin N) R) (I J : Finset (Fin N)) {r : ℕ}
     (hI : I.card = r) (hJ : J.card = r) :
     minorIJ h I J = (h.submatrix (I.orderEmbOfFin hI) (J.orderEmbOfFin hJ)).det := by
@@ -121,6 +162,19 @@ theorem minorIJ_eq_det_of_card {R : Type} [CommRing R] (h : Matrix (Fin N) (Fin 
   unfold minorIJ
   rw [dif_pos hI]
 
+/- English proof (translation)
+Distinguish the cases in `e : I.card = J.card`. Establish `hm : (T * h).submatrix (I.orderEmbOfFin e) (J.orderEmbOfFin rfl) = T.submatrix (I.orderEmbOfFin e) id * h.submatrix id (J.orderEmbOfFin rfl)`. Use extensionality with `a b`. Simplify using `[Matrix.mul_apply]`. Establish `hsum : ∑ I', minorIJ T I I' * minorIJ h I' J = ∑ S : {S : Finset (Fin N) // S.card = J.card}, minorIJ T I S.1 * minorIJ h S.1 J`.
+
+Rewrite using `[← Finset.sum_filter_of_ne (s := Finset.univ) (p := fun S : Finset (Fin N) => S.card = J.card)]`. Conclude with `Finset.sum_subtype _ (by simp) _`. Introduce `S _ hS`. Assume the negation of the conclusion as `hc`. Apply `hS` to reduce the goal to its premises.
+
+Rewrite using `[show minorIJ h S J = 0 by unfold minorIJ; rw [dif_neg hc], mul_zero]`. Rewrite using `[minorIJ_eq_det_of_card _ I J e rfl, hm, ReciprocityTheory.ChartRestriction.DS.cauchyBinet, hsum]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Rewrite using `[minorIJ_eq_det_of_card T I S.1 e S.2, minorIJ_eq_det_of_card h S.1 J S.2 rfl]`. Both sides reduce to the same expression.
+
+Establish `h0 : minorIJ (T * h) I J = 0`. Unfold `minorIJ`. Rewrite using `[dif_neg e]`. Rewrite using `[h0]`. Use `symm`.
+
+Use `Finset.sum_eq_zero fun I' _ => ?_` and prove the remaining obligations. Distinguish the cases in `e' : I.card = I'.card`. Rewrite using `[show minorIJ h I' J = 0 by`. Unfold `minorIJ`. Rewrite using `[dif_neg fun c => e (e'.trans c)], mul_zero]`.
+
+Rewrite using `[show minorIJ T I I' = 0 by unfold minorIJ; rw [dif_neg e'], zero_mul]`.
+-/
 theorem minorIJ_mul_sum {R : Type} [CommRing R] (T h : Matrix (Fin N) (Fin N) R) (I J : Finset (Fin N)) :
     minorIJ (T * h) I J = ∑ I', minorIJ T I I' * minorIJ h I' J := by
   classical
@@ -153,6 +207,17 @@ theorem minorIJ_mul_sum {R : Type} [CommRing R] (T h : Matrix (Fin N) (Fin N) R)
         rw [dif_neg fun c => e (e'.trans c)], mul_zero]
     · rw [show minorIJ T I I' = 0 by unfold minorIJ; rw [dif_neg e'], zero_mul]
 
+/- English proof (translation)
+Establish `hiN` using `i.isLt`. Distinguish the cases in `e : I.card = (stepCols N j i).card`. Establish `hsub : ¬ I ⊆ if (i : ℕ) + 1 ≤ j then wIdx N j else omIdx N j` using `fun hs => hnot ⟨e, hs⟩`. Take `⟨a, haI, haB⟩` from `Finset.not_subset.mp hsub`. Establish `hr : a ∈ Set.range (I.orderEmbOfFin e)`.
+
+Rewrite using `[Finset.range_orderEmbOfFin]`. Conclude with `haI`. Take `⟨r, rfl⟩` from `hr`. Unfold `minorIJ`. Rewrite using `[dif_pos e]`.
+
+Use `Matrix.det_eq_zero_of_row_eq_zero r fun c => ?_` and prove the remaining obligations. Establish `hb` using `Finset.orderEmbOfFin_mem (stepCols N j i) rfl c`. Use `hh _ _ ?_` and prove the remaining obligations. Generalize the expression as in `(stepCols N j i).orderEmbOfFin rfl c = b at hb`. Generalize the expression as in `I.orderEmbOfFin e r = a at haB`.
+
+Distinguish the cases in `hc : (i : ℕ) + 1 ≤ j`. Simplify using `only [stepCols, wIdx, Finset.mem_filter, Finset.mem_univ, true_and, if_pos hc] at hb haB`. Use linear arithmetic over natural numbers and integers. Simplify using `only [stepCols, omIdx, Finset.mem_filter, Finset.mem_univ, true_and, if_neg hc] at hb haB`. Use linear arithmetic over natural numbers and integers.
+
+Unfold `minorIJ`. Rewrite using `[dif_neg e]`.
+-/
 theorem minorIJ_block_zero {R : Type} [CommRing R] {j : ℕ} {i : Fin N} {h : Matrix (Fin N) (Fin N) R}
     (hh : IsBlockDiag j h) {I : Finset (Fin N)} (hnot : ¬ IsStepRows N j i I) :
     minorIJ h I (stepCols N j i) = 0 := by
@@ -182,6 +247,17 @@ theorem minorIJ_block_zero {R : Type} [CommRing R] {j : ℕ} {i : Fin N} {h : Ma
 def genBlock (Ω : Type) [Field Ω] (N j : ℕ) : Matrix (Fin N) (Fin N) (MvPolynomial (Fin N × Fin N) Ω) :=
   fun a b => if ((a : ℕ) < N - j ↔ (b : ℕ) < N - j) then X (a, b) else 0
 
+/- English proof (translation)
+Use `haveI : Invertible T := Matrix.invertibleOfIsUnitDet T (isUnit_iff_ne_zero.mpr hd)`. Establish `h1 : T.BlockTriangular (fun a : Fin N => if (a : ℕ) < N - j then 0 else 1)`. Introduce `a b hab`. Use `hT a b fun hiff => ?_` and prove the remaining obligations. Simplify using `only [hiff] at hab`.
+
+Conclude with `lt_irrefl _ hab`. Establish `h2 : T.BlockTriangular (fun a : Fin N => if (a : ℕ) < N - j then 1 else 0)`. Introduce `a b hab`. Use `hT a b fun hiff => ?_` and prove the remaining obligations. Simplify using `only [hiff] at hab`.
+
+Conclude with `lt_irrefl _ hab`. Establish `i1` using `Matrix.blockTriangular_inv_of_blockTriangular h1`. Establish `i2` using `Matrix.blockTriangular_inv_of_blockTriangular h2`. Introduce `a b hab`. Distinguish the cases in `ha : (a : ℕ) < N - j`.
+
+Establish `hb : ¬ (b : ℕ) < N - j` using `fun hb => hab (iff_of_true ha hb)`. Use `i2 ?_` and prove the remaining obligations. Simplify using `[ha, hb]`. Establish `hb : (b : ℕ) < N - j`. Assume the negation of the conclusion as `hb`.
+
+Conclude with `hab (iff_of_false ha hb)`. Use `i1 ?_` and prove the remaining obligations. Simplify using `[ha, hb]`.
+-/
 theorem isBlockDiag_inv {F : Type} [Field F] {j : ℕ} {T : Matrix (Fin N) (Fin N) F} (hT : IsBlockDiag j T)
     (hd : T.det ≠ 0) : IsBlockDiag j T⁻¹ := by
   classical

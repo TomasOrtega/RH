@@ -26,6 +26,9 @@ def SPair.idHom {l r : ℕ} (P : SPair l r) : P.Hom P where
   sqZ := IsPullback.of_horiz_isIso ⟨by simp⟩
   sqU := by simp
 
+/- English proof (translation)
+Introduce `hB l _ r P c i n hn x`. Break down `lt_or_gt_of_ne hn with h | h` into its components or cases. Use `⟨P, SPair.idHom P, show Surjective (𝟙 P.X) from inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[hL hB l r P c i n h x, map_zero]`. Conclude with `hG l r P c i n x (fun t => hP hB l r P c i n h x t)`.
+-/
 theorem goal_of (hL : LowVan) (hP : PointVan) (hG : Glue) : Gys.LocalVan := by
   intro hB l _ r P c i n hn x
   rcases lt_or_gt_of_ne hn with h | h

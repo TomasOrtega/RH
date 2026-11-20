@@ -30,6 +30,11 @@ noncomputable section
 
 namespace GlobalTheory.ConjHalfHeis
 
+/- English proof (translation)
+Establish `h1` using `(Formalism.L2.Ker.mem_twO M c _ y).1 hy Q`. Establish `h0 : expS SS Q = 0`. Unfold `expS`. Rewrite using `[if_neg (fun h => hQ (Or.inl h)), if_neg (fun h => hQ (Or.inr h))]`. Rewrite `h1` using `[h0, zpow_zero, inv_one, one_smul]`.
+
+Conclude with `h1`.
+-/
 theorem mem_localization_of_mem_halfBO {E : Type} [Field E] [NumberField E] [StarRing E] {a b : ℕ}
     (SS : Finset (HeightOneSpectrum (𝓞 E))) (M : Submodule (𝓞 E) (Formalism.L2.Col.HomE E a b)) (c : ℕ)
     (y : Formalism.L2.Col.HomE E a b) (hy : y ∈ halfBO SS M c) (Q : HeightOneSpectrum (𝓞 E))
@@ -43,6 +48,11 @@ theorem mem_localization_of_mem_halfBO {E : Type} [Field E] [NumberField E] [Sta
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Take `⟨a₁, a₂, ha₁, ha₂, hsum⟩` from `GlobalTheory.OffIdemTwo.off_two D e SS he c hc d hd0 hdP`. Establish `h : (1 - e - cA D e) • Y = a₁ • (incA D (c : D.host.E) • Y) + a₂ • (incA D (d : D.host.E) • Y)`. Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, Matrix.add_apply, smul_eq_mul]`. Rewrite using `[hsum]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Conclude with `add_mem (hstab _ ha₁ _ hcY) (hstab _ ha₂ _ hdY)`.
+-/
 theorem off_part_mem (D : D7) (S T : HSp D) (Λ : AddSubgroup (WO S T))
     (hstab : ∀ w : AE D, finPart D w ∈ intAE D → ∀ u ∈ Λ, w • u ∈ Λ)
     (e : AE D) (SS : Finset (Formalism.L2.DIV.Pl D.host.E)) (he : IsIdemSum e SS) (c : ℕ) (hc : 0 < c) (d : 𝓞 D.host.E) (hd0 : d ≠ 0)
@@ -62,6 +72,71 @@ open GlobalTheory.LatVac in
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D ψ θ S T a b hS hT δ sc hP e SS he N N' c hc hcP h2qd hLa ΛS ΛT hSd hTd hΛS hΛT f₀ hf₀ y' hy'`. Use `set M : Matrix (Fin T.rank) (Fin S.rank) D.host.E := (LinearMap.toMatrix' y').reindex (finCongr hT.symm) (finCongr hS.symm) with hM`. Use `set Y := GlobalTheory.VacUnique.finRat S T M with hY`. Use `set Λ := latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True with hΛ`. Establish `hvac : IsLatVac (heisO ψ S T) Λ f₀`.
+
+Establish `h` using `hf₀.2.lat`. Rewrite using `[hΛ, hΛS, hΛT]`. Conclude with `h`. Establish `hstab : ∀ w : AE D, finPart D w ∈ intAE D → ∀ u ∈ Λ, w • u ∈ Λ` using `fun w hw u hu => GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ w hw u hu`. Establish `hsmM : ∀ (r : D.host.E) (X : Matrix (Fin T.rank) (Fin S.rank) D.host.E), GlobalTheory.VacUnique.finRat S T (r • X) = incA D r • GlobalTheory.VacUnique.finRat S T X`.
+
+Introduce `r X`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(pairA D.host.F 0 1) ⊗ₜ[D.host.F] (r * X i j) = incA D r * ((pairA D.host.F 0 1) ⊗ₜ[D.host.F] X i j)`. Rewrite using `[show incA D r = (1 : AF D.host.F) ⊗ₜ[D.host.F] r from rfl, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Establish `hsm : ∀ (r : D.host.E) (x : Formalism.L2.Col.HomE D.host.E a b), GlobalTheory.VacUnique.finRat S T ((LinearMap.toMatrix' (r • x)).reindex (finCongr hT.symm) (finCongr hS.symm)) = incA D r • GlobalTheory.VacUnique.finRat S T ((LinearMap.toMatrix' x).reindex (finCongr hT.symm) (fin …`.
+
+Introduce `r x`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(pairA D.host.F 0 1) ⊗ₜ[D.host.F] (LinearMap.toMatrix' (r • x) _ _) = incA D r * ((pairA D.host.F 0 1) ⊗ₜ[D.host.F] (LinearMap.toMatrix' x _ _))`. Rewrite using `[LinearMap.toMatrix'_apply, LinearMap.toMatrix'_apply, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, show incA D r = (1 : AF D.host.F) ⊗ₜ[D.host.F] r from rfl, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Establish `hsmY : ∀ r : D.host.E, GlobalTheory.VacUnique.finRat S T ((LinearMap.toMatrix' (r • y')).reindex (finCongr hT.symm) (finCongr hS.symm)) = incA D r • Y` using `fun r => by`.
+
+Rewrite using `[hsm]`. Establish `hrat` using `fun x hx => GlobalTheory.AdForm.RatLatPer.finRat_mem_latO_of_perO D ψ θ S T a b hS hT δ sc hP N N' ΛS ΛT hSd hTd hΛS hΛT x hx`. Establish `hc0 : (c : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 hc.ne'`. Establish `hnat : ∀ (n : ℕ) (u : WO S T), n • u = incA D (n : D.host.E) • u`. Introduce `n u`.
+
+Rewrite using `[map_natCast, Nat.cast_smul_eq_nsmul]`. Establish `ha : c • Y ∈ Λ`. Rewrite using `[hnat, ← hsmY]`. Conclude with `hrat _ (GlobalTheory.HalfBCMul.cmul_mem_perO_of_mem_halfBO D a b N N' SS c hc y' hy')`. Take `⟨t, ht0, htP, htm⟩` from `GlobalTheory.HalfTmul.exists_tmul_mem_perO D a b N N' SS c hc y' hy'`.
+
+Establish `heI : finPart D (e * incA D ((t : D.host.E))⁻¹) ∈ intAE D` using `GlobalTheory.IdemSumInt.finPart_idemSum_mul_inv_mem D e SS he t htP`. Use `set Z := (e * incA D ((t : D.host.E))⁻¹) • GlobalTheory.VacUnique.finRat S T ((LinearMap.toMatrix' (((t : D.host.E) * (c : D.host.E)⁻¹) • y')).reindex (finCongr hT.symm) (finCongr hS.symm)) with hZ`. Establish `hZm : Z ∈ Λ` using `hstab _ heI _ (hrat _ htm)`. Establish `he2 : e * e = e` using `GlobalTheory.PlaceDatum.idemSum_mul_self he`. Establish `ht0' : (t : D.host.E) ≠ 0`.
+
+Introduce `h; exact ht0 (by exact_mod_cast h)`. Establish `hb : e • Y = c • (e • Z)`. Establish `h1 : (c : D.host.E) * ((t : D.host.E)⁻¹ * ((t : D.host.E) * (c : D.host.E)⁻¹)) = 1`. Clear the denominators using the available nonvanishing facts. Establish `h2 : incA D (c : D.host.E) * (e * (e * incA D (t : D.host.E)⁻¹) * incA D ((t : D.host.E) * (c : D.host.E)⁻¹)) = e`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = e := by rw [h1, map_one, mul_one, he2]`. Rewrite using `[hZ, hsmY]`.
+
+Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, nsmul_eq_mul]`. Rewrite using `[← map_natCast (incA D) c]`. Combine the equalities or inequalities in the displayed calculation. Establish `hR0 : (1 - e - cA D e) • Y ∈ Λ`.
+
+Take `⟨d, hd0, hdm, hdP⟩` from `GlobalTheory.OffDen.exists_den_avoid D.host.E a b (perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') (fun Q => Q ∈ SS ∨ Formalism.L2.Col.conjPrime₂ Q ∈ SS) c hc y' (GlobalTheory.HalfBCMul.cmul_mem_perO_of_mem_halfBO D a b N N' SS c hc y' hy') (mem_localization_of_mem_half …`. Establish `hdY : incA D (d : D.host.E) • Y ∈ Λ`. Rewrite using `[← hsmY]`. Conclude with `hrat _ hdm`. Conclude with `off_part_mem D S T Λ hstab e SS he c hc d hd0 hdP Y (hnat c Y ▸ ha) hdY`.
+
+Establish `heint : finPart D e ∈ intAE D`. Establish `h` using `GlobalTheory.IdemSumInt.finPart_idemSum_mul_inv_mem D e SS he 1 (fun Q _ h => Q.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h))`. Simplify using `using h`. Use `set R := (1 - cA D e) • Y with hRdef`. Establish `hR : R ∈ Λ`.
+
+Establish `h : R = c • (e • Z) + (1 - e - cA D e) • Y`. Rewrite using `[hRdef, ← hb, ← add_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`.
+
+Conclude with `add_mem (nsmul_mem (hstab _ heint _ hZm) c) hR0`. Establish `h2 : ∀ Q ∈ SS, (2 : 𝓞 D.host.E) ∉ Q.asIdeal`. Introduce `Q hQ h`. Apply `h2qd Q hQ` to reduce the goal to its premises. Take `⟨t, ht⟩` from `D.host.toHostRaw.two_dvd_condN`.
+
+Establish `e2 : ((D.host.QS * D.host.q * D.host.d : ℕ) : 𝓞 D.host.E) = 2 * ((t : ℕ) : 𝓞 D.host.E)`. Rewrite using `[show D.host.QS * D.host.q * D.host.d = 2 * t from ht]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`.
+
+Conclude with `Q.asIdeal.mul_mem_right _ h`. Establish `hcoc : ψ (symplOH S T (cA D e • Y) R) = 1` using `GlobalTheory.ConjHalfCocycle.char_symplOH_conjHalf_rest D ψ S T ΛS ΛT hP.std hSd hTd e SS he h2 c hc Y Z ha hZm hb`. Establish `hbil : ∀ (x y : WO S T) (k : ℕ), symplOH S T (k • x) (k • y) = (k * k) • symplOH S T x y`. Introduce `x y k`. Establish `h1 : symplO S T (k • x) (k • y) = (k * k) • symplO S T x y`.
+
+Rewrite using `[← symplHom_apply, map_nsmul, map_nsmul, AddMonoidHom.nsmul_apply, symplHom_apply, smul_smul]`. Rewrite using `[symplOH, symplOH, h1]`. Simplify using `only [nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcc : c • c • Y ∈ Λ` using `nsmul_mem ha c`.
+
+Take `⟨k, hk, hsign⟩` from `GlobalTheory.LatVacSign.heisO_finRat_sign ψ S T ΛS ΛT hP.std hSd hTd f₀ hvac (-(((c : D.host.E) ^ 2) • M)) (by`. Rewrite using `[neg_neg, hsmM, ← hY, pow_two, map_mul, mul_smul, ← hnat, ← hnat]`. Conclude with `hcc)`. Rewrite `hsign` using `[neg_neg, hsmM, ← hY, pow_two, map_mul, mul_smul, ← hnat, ← hnat]`. Use `set X1 := cA D e • (c • c • Y) with hX1`.
+
+Establish `hY1 : cA D e • Y + R = Y` using `by rw [hRdef, ← add_smul, add_sub_cancel, one_smul]`. Establish `hdec : c • c • Y = X1 + c • c • R`. Combine the equalities or inequalities in the displayed calculation. Establish `hfixX` using `(GlobalTheory.IdemSumVac.heisO_idemSum_fix D ψ S T Λ f₀ hvac hstab e SS he _ hcc).2`. Establish `hfixXn : heisO ψ S T (-X1) f₀ = f₀`.
+
+Establish `h` using `(GlobalTheory.IdemSumVac.heisO_idemSum_fix D ψ S T Λ f₀ hvac hstab e SS he _ (neg_mem hcc)).2`. Rewrite `h` using `[smul_neg]`. Then use the resulting hypothesis. Establish `hzero : symplOH S T (-X1) X1 = 0`. Establish `h0 : hO S T (-X1) X1 = 0`. Rewrite using `[hX1, ← smul_neg, GlobalTheory.LatVacSign.hO_smul_smul, GlobalTheory.LatVac.cA_cA, mul_comm (cA D e) e, he.2, zero_mul]`.
+
+Rewrite using `[symplOH, symplO, h0, mul_zero, map_zero, mul_zero]`. Establish `hinv : ∀ g, heisO ψ S T (-X1) (heisO ψ S T X1 g) = g`. Introduce `g`. Rewrite using `[GlobalTheory.LatVac.heisO_heisO, hzero, AddChar.map_zero_eq_one, one_smul, neg_add_cancel, GlobalTheory.LatVac.heisO_zero]`. Establish `hcoc4 : ψ (symplOH S T X1 (c • c • R)) = 1`.
+
+Establish `e1 : X1 = c • c • (cA D e • Y)` using `by rw [hX1, smul_comm (cA D e) c, smul_comm (cA D e) c]`. Rewrite using `[e1, hbil, hbil, ← mul_nsmul, AddChar.map_nsmul_eq_pow, hcoc, one_pow]`. Take `⟨m, hm⟩` from `id hcP`. Establish `hR2eq : c • c • R = R + 2 • ((2 * m * m + 2 * m) • R)`. Establish `h1 : R + 2 • ((2 * m * m + 2 * m) • R) = (1 + 2 * (2 * m * m + 2 * m)) • R`.
+
+Rewrite using `[add_smul 1 (2 * (2 * m * m + 2 * m)) R, one_smul, mul_smul]`. Rewrite using `[h1, smul_smul]`. Use `congr 1`. Substitute `hm` using the available equality. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hRR : heisO ψ S T (c • c • R) f₀ = heisO ψ S T R f₀`. Establish `hmR : (2 * m * m + 2 * m) • R ∈ Λ` using `nsmul_mem hR _`. Establish `h1` using `GlobalTheory.LatVac.heisO_heisO ψ R (2 • ((2 * m * m + 2 * m) • R)) f₀`. Establish `hs : symplOH S T R (2 • ((2 * m * m + 2 * m) • R)) = symplO S T R ((2 * m * m + 2 * m) • R)`. Rewrite using `[symplOH, ← symplHom_apply, map_nsmul, symplHom_apply, nsmul_eq_mul, ← mul_assoc]`.
+
+Establish `h12 : algebraMap D.host.F (AF D.host.F) (1 / 2) * ((2 : ℕ) : AF D.host.F) = 1`. Rewrite using `[← map_natCast (algebraMap D.host.F (AF D.host.F)), ← map_mul]`. Evaluate the numerical expressions. Rewrite using `[h12, one_mul]`. Rewrite `h1` using `[hvac.1 _ hmR, hs, GlobalTheory.LatVac.char_sympl_eq_one hP.std hSd hTd hR hmR, one_smul, ← hR2eq]`.
+
+Conclude with `h1.symm`. Establish `hRk : heisO ψ S T R f₀ = ((-1 : ℂ) ^ k) • f₀`. Establish `h1` using `GlobalTheory.LatVac.heisO_heisO ψ X1 (c • c • R) f₀`. Rewrite `h1` using `[hcoc4, one_smul, ← hdec, hsign, hRR]`. Establish `h2'` using `congrArg (heisO ψ S T (-X1)) h1`.
+
+Rewrite `h2'` using `[hinv, GlobalTheory.LatVac.heisO_smul, hfixXn]`. Conclude with `h2'`. Take `⟨k₀, hk₀⟩` from `GlobalTheory.HalfBInt.trace_int D ψ θ S T a b hS hT δ sc hP e SS he N N' c hc hcP h2qd ΛS ΛT hSd hTd hΛS hΛT y' hy'`. Establish `hα` using `GlobalTheory.SemiTrace.alV_embH_eq_neg_one_zpow D ψ θ S T a b hS hT δ sc hP y' k₀ hk₀`. Establish `hkk : k = (c : ℤ) ^ 4 * k₀`.
+
+Establish `e1 : GlobalTheory.LatVac.hRat S T (-(((c : D.host.E) ^ 2) • M)) (-(((c : D.host.E) ^ 2) • M)) = ((c : ℚ) ^ 4 : ℚ) • GlobalTheory.LatVac.hRat S T M M`. Rewrite using `[← neg_smul, GlobalTheory.LatVacSign.hRat_smul_smul, star_neg, star_pow, star_natCast, Algebra.smul_def]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (k : ℚ) = (c : ℚ) ^ 4 * k₀`.
+
+Rewrite using `[hk, e1, mul_smul_comm, map_smul, hk₀, smul_eq_mul]`. Conclude with `e2` after adjusting the coercions. Establish `hodd : Odd ((c : ℤ) ^ 4)`. Take `⟨m', hm'⟩` from `id hcP`. Conclude with `(show Odd (c : ℤ) from ⟨m', by exact_mod_cast hm'⟩).pow`.
+
+Establish `hsgn : ((-1 : ℂ) ^ k) = alV D.host.d sc (embH (tauE D) δ y')`. Rewrite using `[hα, hkk, _root_.zpow_mul, hodd.neg_one_zpow]`. Establish `hα2 : alV D.host.d sc (embH (tauE D) δ y') * alV D.host.d sc (embH (tauE D) δ y') = 1`. Rewrite using `[hα, ← mul_zpow]`. Evaluate the numerical expressions.
+
+Establish `hLHS : M.map (fun r => cA D e * incA D r) = cA D e • Y`. Establish `h0 : infPart D (cA D e) = 0` using `GlobalTheory.PlaceDatum.infPart_cA (GlobalTheory.PlaceDatum.infPart_idemSum he)`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `cA D e * incA D (M i j) = cA D e * ((pairA D.host.F 0 1) ⊗ₜ[D.host.F] M i j)`. Rewrite using `[show (pairA D.host.F 0 1) ⊗ₜ[D.host.F] M i j = ((pairA D.host.F 0 1) ⊗ₜ[D.host.F] (1 : D.host.E)) * incA D (M i j) by`.
+
+Rewrite using `[show incA D (M i j) = (1 : AF D.host.F) ⊗ₜ[D.host.F] M i j from rfl, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul], ← mul_assoc, GlobalTheory.PlaceDatum.mul_pair_one h0]`. Establish `hfin` using `GlobalTheory.LatVac.heisO_heisO ψ (cA D e • Y) R f₀`. Rewrite `hfin` using `[hRk, hsgn, GlobalTheory.LatVac.heisO_smul, hcoc, one_smul, hY1]`. Rewrite using `[hLHS, ← hfin, smul_smul, hα2, one_smul]`.
+-/
 theorem heisO_conjHalf_eq : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (a b : ℕ) (hS : S.rank = a) (hT : T.rank = b) (δ : ℂ) (sc : ℝ), StdPair θ S T δ sc ψ → ∀ (e : AE D) (SS : Finset (Formalism.L2.DIV.Pl D.host.E)), IsIdemSum e SS → ∀ (N : Submodule (𝓞 D.host.E) (Fin a → D.host.E)) (N' : Submodule (𝓞 D.host.E) (Fin b → D.host.E)) (c : ℕ), 0 < c → Odd c → (∀ Q ∈ SS, ((D.host.QS * D.host.q * D.host.d : ℕ) : 𝓞 D.host.E) ∉ Q.asIdeal) → LaFacts (tauE D) δ D.host.d sc (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N' → ∀ (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → (ΛS : Set (Fin S.rank → D.host.E)) = latFr S hS N → (ΛT : Set (Fin T.rank → D.host.E)) = latFr T hT N' → ∀ f₀, IsVacO ψ θ S T (fun _ => 1) (fun _ => 1) (latFr S hS N) (latFr T hT N') f₀ → ∀ y' ∈ halfBO SS (perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') c, heisO ψ S T (((LinearMap.toMatrix' (y')).reindex (finCongr hT.symm) (finCongr hS.symm)).map fun r => cA D e * incA D r) f₀ = alV D.host.d sc (embH (tauE D) δ y') • heisO ψ S T (GlobalTheory.VacUnique.finRat S T ((LinearMap.toMatrix' (y')).reindex (finCongr hT.symm) (finCongr hS.symm))) f₀ := by
   intro D ψ θ S T a b hS hT δ sc hP e SS he N N' c hc hcP h2qd hLa ΛS ΛT hSd hTd hΛS hΛT f₀ hf₀ y' hy'
   set M : Matrix (Fin T.rank) (Fin S.rank) D.host.E :=

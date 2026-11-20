@@ -17,6 +17,13 @@ def splits {α : Type*} : List α → List (List α × List α)
   | [] => [([], [])]
   | x :: w => (splits w).flatMap fun p => [(x :: p.1, p.2), (p.1, x :: p.2)]
 
+/- English proof (translation)
+Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro p hp`. Simplify using `only [splits, List.mem_singleton] at hp`. Substitute `hp` using the available equality.
+
+Simplify using the standard rewrite rules. Consider the case `cons x w ih`. Introduce `p hp`. Rewrite `hp` using `[splits, List.mem_flatMap]`. Take `⟨q, hq, hp⟩` from `hp`.
+
+Break down `List.mem_cons.1 hp with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `⟨(ih q hq).1.cons_cons x, (ih q hq).2.cons x⟩`. Rewrite using `[List.mem_singleton.1 h]`. Conclude with `⟨(ih q hq).1.cons x, (ih q hq).2.cons_cons x⟩`.
+-/
 lemma splits_mem {α : Type*} : ∀ (w : List α), ∀ p ∈ splits w, p.1.Sublist w ∧ p.2.Sublist w := by
   intro w
   induction w with
@@ -29,17 +36,28 @@ lemma splits_mem {α : Type*} : ∀ (w : List α), ∀ p ∈ splits w, p.1.Subli
     · subst h; exact ⟨(ih q hq).1.cons_cons x, (ih q hq).2.cons x⟩
     · rw [List.mem_singleton.1 h]; exact ⟨(ih q hq).1.cons x, (ih q hq).2.cons_cons x⟩
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons a L ih => simp [List.sum_cons, ih, add_mul]`.
+-/
 lemma list_sum_mul_right {α : Type*} (L : List α) (f : α → ℝ) (c : ℝ) :
     (L.map fun a => f a * c).sum = (L.map f).sum * c := by
   induction L with
   | nil => simp
   | cons a L ih => simp [List.sum_cons, ih, add_mul]
 
+/- English proof (translation)
+Introduce `g₀ _`. Conclude with `⟨Set.univ, fun _ => c, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩`.
+-/
 lemma ckOn_const' {F : Type} [NormedAddCommGroup F] [NormedSpace ℂ F] {m : ℕ∞} (c : F) :
     CkOn m (GV k r) (fun _ : Mat k r => c) := by
   intro g₀ _
   exact ⟨Set.univ, fun _ => c, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hc, hff⟩` from `hf g₀ hg₀`. Take `⟨U₂, H', hU₂, hgU₂, hc₂, hff₂⟩` from `hH g₀ hg₀`. Use `⟨U ∩ U₂, fun g => f' g • H' g, hU.inter hU₂, ⟨hgU, hgU₂⟩, (hc.mono Set.inter_subset_left).smul (hc₂.mono Set.inter_subset_right), ?_⟩` and prove the remaining obligations. Introduce `g hg hgG`.
+
+Use `show f g • H g = f' g • H' g`. Rewrite using `[hff g hg.1 hgG, hff₂ g hg.2 hgG]`.
+-/
 lemma ckOn_mulF {f : Mat k r → ℂ} {H : Mat k r → E} {m : ℕ∞} (hf : CkOn m (GV k r) f)
     (hH : CkOn m (GV k r) H) : CkOn m (GV k r) (fun g => f g • H g) := by
   intro g₀ hg₀
@@ -51,6 +69,11 @@ lemma ckOn_mulF {f : Mat k r → ℂ} {H : Mat k r → E} {m : ℕ∞} (hf : CkO
   show f g • H g = f' g • H' g
   rw [hff g hg.1 hgG, hff₂ g hg.2 hgG]
 
+/- English proof (translation)
+Establish `h1` using `(ckOn_diff 0 b hf hX hg).hasDerivAt`. Establish `h2` using `(ckOn_diff 0 b hH hX hg).hasDerivAt`. Establish `h3` using `h1.smul h2`. Simplify using `only [cv_zero] at h3`. Use `show deriv (fun t : ℝ => f (cv b X t g) • H (cv b X t g)) 0 = _`.
+
+Rewrite using `[show (fun t : ℝ => f (cv b X t g) • H (cv b X t g)) = ((fun t => f (cv b X t g)) • fun t => H (cv b X t g)) from rfl, h3.deriv]`. Conclude with `add_comm _ _`.
+-/
 lemma op_smulF {f : Mat k r → ℂ} {H : Mat k r → E} {X g : Mat k r} (b : Bool) (hX : inLie k r X)
     (hf : CkOn ((1 : ℕ) : ℕ∞) (GV k r) f) (hH : CkOn ((1 : ℕ) : ℕ∞) (GV k r) H) (hg : g ∈ GV k r) :
     op b X (fun g => f g • H g) g = op b X f g • H g + f g • op b X H g := by
@@ -63,6 +86,13 @@ lemma op_smulF {f : Mat k r → ℂ} {H : Mat k r → E} {X g : Mat k r} (b : Bo
     ((fun t => f (cv b X t g)) • fun t => H (cv b X t g)) from rfl, h3.deriv]
   exact add_comm _ _
 
+/- English proof (translation)
+Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => intro _`. Simplify using `using (ckOn_const' (k := k) (r := r) (m := m) (0 : E))`. Consider the case `cons a L ih`.
+
+Introduce `hL`. Establish `e : (fun g => ((a :: L).map fun a => φ a g).sum) = φ a + (fun g => (L.map fun a => φ a g).sum)`. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+
+Conclude with `ckOn_add (hL a List.mem_cons_self) (ih fun b hb => hL b (List.mem_cons_of_mem _ hb))`.
+-/
 lemma ckOn_listSumF {α : Type*} (φ : α → Mat k r → E) {m : ℕ∞} :
     ∀ (L : List α), (∀ a ∈ L, CkOn m (GV k r) (φ a)) →
       CkOn m (GV k r) (fun g => (L.map fun a => φ a g).sum) := by
@@ -76,6 +106,13 @@ lemma ckOn_listSumF {α : Type*} (φ : α → Mat k r → E) {m : ℕ∞} :
     rw [e]
     exact ckOn_add (hL a List.mem_cons_self) (ih fun b hb => hL b (List.mem_cons_of_mem _ hb))
 
+/- English proof (translation)
+Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => intro _ g _`. Simplify using `[op]`. Consider the case `cons a L ih`.
+
+Introduce `hL g hg`. Establish `hL' : ∀ c ∈ L, CkOn ((1 : ℕ) : ℕ∞) (GV k r) (φ c)` using `fun c hc => hL c (List.mem_cons_of_mem _ hc)`. Establish `e : (fun g' => ((a :: L).map fun a => φ a g').sum) = φ a + (fun g' => (L.map fun a => φ a g').sum)`. Use function extensionality and compare the values at `g'`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e, op_add b hX (hL a List.mem_cons_self) (ckOn_listSumF φ L hL') hg, ih hL' g hg]`. Simplify using the standard rewrite rules.
+-/
 lemma op_listSumF {α : Type*} {b : Bool} {X : Mat k r} (hX : inLie k r X) (φ : α → Mat k r → E) :
     ∀ (L : List α), (∀ a ∈ L, CkOn ((1 : ℕ) : ℕ∞) (GV k r) (φ a)) →
       ∀ g ∈ GV k r, op b X (fun g' => (L.map fun a => φ a g').sum) g = (L.map fun a => op b X (φ a) g).sum := by
@@ -90,6 +127,15 @@ lemma op_listSumF {α : Type*} {b : Bool} {X : Mat k r} (hX : inLie k r X) (φ :
     rw [e, op_add b hX (hL a List.mem_cons_self) (ckOn_listSumF φ L hL') hg, ih hL' g hg]
     simp
 
+/- English proof (translation)
+Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro _ f H _ _ g _`. Simplify using `[splits, W_nil]`. Consider the case `cons x w ih`.
+
+Introduce `hw f H hf hH g hg`. Establish `hw' : AllLie w` using `fun y hy => hw y (List.mem_cons_of_mem _ hy)`. Establish `hx : inLie k r x.2` using `hw x List.mem_cons_self`. Establish `hf' : CkOn ((w.length : ℕ) : ℕ∞) (GV k r) f` using `ckOn_mono (by simp) hf`. Establish `hH' : CkOn ((w.length : ℕ) : ℕ∞) (GV k r) H` using `ckOn_mono (by simp) hH`.
+
+Rewrite using `[W_cons, op_congr x.1 hx (ih hw' f H hf' hH') g hg]`. Establish `hCf : ∀ l : List (Bool × Mat k r), l.Sublist w → CkOn ((1 : ℕ) : ℕ∞) (GV k r) (W l f)` using `fun l hl => smooth_on_of_word_derivatives l (fun y hy => hw' y (hl.subset hy)) 1 (ckOn_mono (by have := hl.length_le; simp; omega) hf)`. Establish `hCH : ∀ l : List (Bool × Mat k r), l.Sublist w → CkOn ((1 : ℕ) : ℕ∞) (GV k r) (W l H)` using `fun l hl => smooth_on_of_word_derivatives l (fun y hy => hw' y (hl.subset hy)) 1 (ckOn_mono (by have := hl.length_le; simp; omega) hH)`. Rewrite using `[op_listSumF hx (fun p g' => W p.1 f g' • W p.2 H g') (splits w) (fun p hp => ckOn_mulF (hCf p.1 (splits_mem w p hp).1) (hCH p.2 (splits_mem w p hp).2)) g hg]`. Rewrite using `[splits, list_sum_flatMap]`.
+
+Use `congr 1`. Use `List.map_congr_left fun p hp => ?_` and prove the remaining obligations. Rewrite using `[op_smulF x.1 hx (hCf p.1 (splits_mem w p hp).1) (hCH p.2 (splits_mem w p hp).2) hg]`. Simplify using `[W_cons]`.
+-/
 theorem W_smulF : ∀ (w : List (Bool × Mat k r)), AllLie w → ∀ (f : Mat k r → ℂ) (H : Mat k r → E),
     CkOn ((w.length : ℕ) : ℕ∞) (GV k r) f → CkOn ((w.length : ℕ) : ℕ∞) (GV k r) H → ∀ g ∈ GV k r,
       W w (fun g => f g • H g) g = ((splits w).map fun p => W p.1 f g • W p.2 H g).sum := by
@@ -121,12 +167,20 @@ def PolyClass (D : ℕ) (P : Mat k r → ℂ) : Prop :=
   CkOn (⊤ : ℕ∞) (GV k r) P ∧ ∀ a : List (Bool × Mat k r), AllLie a →
     ∃ C : ℝ, 0 ≤ C ∧ ∀ g ∈ GV k r, ‖W a P g‖ ≤ C * gN g ^ D
 
+/- English proof (translation)
+Use `⟨hP.1, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨C, hC0, hC⟩` from `hP.2 a ha`. Conclude with `⟨C, hC0, fun g hg => (hC g hg).trans (mul_le_mul_of_nonneg_left (pow_le_pow_right₀ (one_le_gN hg) h) hC0)⟩`.
+-/
 lemma polyClass_mono {D D' : ℕ} {P : Mat k r → ℂ} (h : D ≤ D') (hP : PolyClass D P) : PolyClass D' P := by
   refine ⟨hP.1, fun a ha => ?_⟩
   obtain ⟨C, hC0, hC⟩ := hP.2 a ha
   exact ⟨C, hC0, fun g hg => (hC g hg).trans
     (mul_le_mul_of_nonneg_left (pow_le_pow_right₀ (one_le_gN hg) h) hC0)⟩
 
+/- English proof (translation)
+Use `⟨ckOn_op_top b hP.1 hX, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨C, hC0, hC⟩` from `hP.2 (a ++ [(b, X)]) (by`. Introduce `y hy`. Break down `List.mem_append.1 hy with h | h` into its components or cases. Conclude with `ha y h`.
+
+Rewrite using `[List.mem_singleton.1 h]`. Conclude with `hX)`. Conclude with `⟨C, hC0, fun g hg => by have := hC g hg; rwa [W_append] at this⟩`.
+-/
 lemma polyClass_op {D : ℕ} {P : Mat k r → ℂ} (hP : PolyClass D P) (b : Bool) {X : Mat k r}
     (hX : inLie k r X) : PolyClass D (op b X P) := by
   refine ⟨ckOn_op_top b hP.1 hX, fun a ha => ?_⟩
@@ -136,6 +190,11 @@ lemma polyClass_op {D : ℕ} {P : Mat k r → ℂ} (hP : PolyClass D P) (b : Boo
     · rw [List.mem_singleton.1 h]; exact hX)
   exact ⟨C, hC0, fun g hg => by have := hC g hg; rwa [W_append] at this⟩
 
+/- English proof (translation)
+Introduce `a`. Proceed by induction on `a with`. Consider the case `nil => exact ⟨c, le_rfl, rfl⟩`. Consider the case `cons x a ih`. Take `⟨c', -, he⟩` from `ih`.
+
+Use `⟨0, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[W_cons, he]`. Use function extensionality and compare the values at `g`. Simplify using `[op]`.
+-/
 lemma W_const (c : ℂ) : ∀ a : List (Bool × Mat k r), ∃ c' : ℂ, ‖c'‖ ≤ ‖c‖ ∧ W a (fun _ => c) = fun _ => c' := by
   intro a
   induction a with
@@ -146,11 +205,19 @@ lemma W_const (c : ℂ) : ∀ a : List (Bool × Mat k r), ∃ c' : ℂ, ‖c'‖
     rw [W_cons, he]
     funext g; simp [op]
 
+/- English proof (translation)
+Use `⟨ckOn_const' c, fun a _ => ?_⟩` and prove the remaining obligations. Take `⟨c', hc', he⟩` from `W_const c a`. Conclude with `⟨‖c‖, norm_nonneg _, fun g _ => by rw [he]; simpa using hc'⟩`.
+-/
 lemma polyClass_const (c : ℂ) : PolyClass 0 (fun _ : Mat k r => c) := by
   refine ⟨ckOn_const' c, fun a _ => ?_⟩
   obtain ⟨c', hc', he⟩ := W_const c a
   exact ⟨‖c‖, norm_nonneg _, fun g _ => by rw [he]; simpa using hc'⟩
 
+/- English proof (translation)
+Use `⟨ckOn_add hP.1 hQ.1, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨C1, h10, h1⟩` from `hP.2 a ha`. Take `⟨C2, h20, h2⟩` from `hQ.2 a ha`. Use `⟨C1 + C2, add_nonneg h10 h20, fun g hg => ?_⟩` and prove the remaining obligations. Establish `e` using `W_add a ha (ckOn_top_nat hP.1 _) (ckOn_top_nat hQ.1 _) g hg`.
+
+Rewrite using `[show (fun g => P g + Q g) = P + Q from rfl, e]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma polyClass_add {D : ℕ} {P Q : Mat k r → ℂ} (hP : PolyClass D P) (hQ : PolyClass D Q) :
     PolyClass D (fun g => P g + Q g) := by
   refine ⟨ckOn_add hP.1 hQ.1, fun a ha => ?_⟩
@@ -163,6 +230,19 @@ lemma polyClass_add {D : ℕ} {P Q : Mat k r → ℂ} (hP : PolyClass D P) (hQ :
     _ ≤ C1 * gN g ^ D + C2 * gN g ^ D := add_le_add (h1 g hg) (h2 g hg)
     _ = (C1 + C2) * gN g ^ D := by ring
 
+/- English proof (translation)
+Establish `hfun : (fun g => P g * Q g) = (fun g => P g • Q g)` using `by funext g; rw [smul_eq_mul]`. Rewrite using `[hfun]`. Use `⟨ckOn_mulF hP.1 hQ.1, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hexP : ∀ l : List (Bool × Mat k r), ∃ C : ℝ, 0 ≤ C ∧ (AllLie l → ∀ g ∈ GV k r, ‖W l P g‖ ≤ C * gN g ^ D1)`. Introduce `l`.
+
+Distinguish the cases in `hl : AllLie l`. Take `⟨C, h0, h⟩` from `hP.2 l hl`. Conclude with `⟨C, h0, fun _ => h⟩`. Conclude with `⟨0, le_rfl, fun h => absurd h hl⟩`. Establish `hexQ : ∀ l : List (Bool × Mat k r), ∃ C : ℝ, 0 ≤ C ∧ (AllLie l → ∀ g ∈ GV k r, ‖W l Q g‖ ≤ C * gN g ^ D2)`.
+
+Introduce `l`. Distinguish the cases in `hl : AllLie l`. Take `⟨C, h0, h⟩` from `hQ.2 l hl`. Conclude with `⟨C, h0, fun _ => h⟩`. Conclude with `⟨0, le_rfl, fun h => absurd h hl⟩`.
+
+Use `choose CP hCP0 hCP using hexP`. Use `choose CQ hCQ0 hCQ using hexQ`. Use `⟨((splits a).map fun p => CP p.1 * CQ p.2).sum, list_sum_nonneg _ _ fun p _ => mul_nonneg (hCP0 _) (hCQ0 _), fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[W_smulF a ha P Q (ckOn_top_nat hP.1 _) (ckOn_top_nat hQ.1 _) g hg]`. Use `(norm_list_sum_le _ _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← list_sum_mul_right]`. Use `list_sum_le _ _ _ fun p hp => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `splits_mem a p hp`. Establish `hl1 : AllLie p.1` using `fun y hy => ha y (h1.subset hy)`. Establish `hl2 : AllLie p.2` using `fun y hy => ha y (h2.subset hy)`.
+
+Rewrite using `[norm_smul, pow_add]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma polyClass_mul {D1 D2 : ℕ} {P Q : Mat k r → ℂ} (hP : PolyClass D1 P) (hQ : PolyClass D2 Q) :
     PolyClass (D1 + D2) (fun g => P g * Q g) := by
   have hfun : (fun g => P g * Q g) = (fun g => P g • Q g) := by funext g; rw [smul_eq_mul]
@@ -195,11 +275,19 @@ lemma polyClass_mul {D1 D2 : ℕ} {P Q : Mat k r → ℂ} (hP : PolyClass D1 P) 
           (mul_nonneg (hCP0 _) (pow_nonneg (gN_pos hg).le _))
     _ = CP p.1 * CQ p.2 * (gN g ^ D1 * gN g ^ D2) := by ring
 
+/- English proof (translation)
+Use `polyClass_mul (polyClass_const c) hP` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis.
+-/
 lemma polyClass_cmul {D : ℕ} {P : Mat k r → ℂ} (c : ℂ) (hP : PolyClass D P) :
     PolyClass D (fun g => c * P g) := by
   have := polyClass_mul (polyClass_const c) hP
   rwa [zero_add] at this
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using polyClass_const (k := k) (r := r) 1`. Consider the case `succ n ih`. Use `polyClass_mul ih hP` as an intermediate fact.
+
+Establish `e : (fun g => P g ^ (n + 1)) = fun g => P g ^ n * P g` using `by funext g; rw [pow_succ]`. Rewrite using `[e, Nat.succ_mul]`. Conclude with `this`.
+-/
 lemma polyClass_pow {D : ℕ} {P : Mat k r → ℂ} (hP : PolyClass D P) :
     ∀ n : ℕ, PolyClass (n * D) (fun g => P g ^ n) := by
   intro n
@@ -211,6 +299,11 @@ lemma polyClass_pow {D : ℕ} {P : Mat k r → ℂ} (hP : PolyClass D P) :
     rw [e, Nat.succ_mul]
     exact this
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using polyClass_const (k := k) (r := r) 1`. Consider the case `insert a s ha ih`. Use `polyClass_mul (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))` as an intermediate fact. Establish `e : (fun g => ∏ i ∈ insert a s, P i g) = fun g => P a g * ∏ i ∈ s, P i g`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[Finset.prod_insert ha]`. Rewrite using `[Finset.sum_insert ha, e]`. Conclude with `this`.
+-/
 lemma polyClass_prod {ι : Type*} (s : Finset ι) (D : ι → ℕ) (P : ι → Mat k r → ℂ)
     (h : ∀ i ∈ s, PolyClass (D i) (P i)) : PolyClass (∑ i ∈ s, D i) (fun g => ∏ i ∈ s, P i g) := by
   classical
@@ -223,6 +316,11 @@ lemma polyClass_prod {ι : Type*} (s : Finset ι) (D : ι → ℕ) (P : ι → M
     rw [Finset.sum_insert ha, e]
     exact this
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using polyClass_mono (Nat.zero_le D) (polyClass_const (k := k) (r := r) 0)`. Consider the case `insert a s ha ih`. Use `polyClass_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))` as an intermediate fact. Establish `e : (fun g => ∑ i ∈ insert a s, P i g) = fun g => P a g + ∑ i ∈ s, P i g`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[Finset.sum_insert ha]`. Rewrite using `[e]`. Conclude with `this`.
+-/
 lemma polyClass_sum {ι : Type*} (s : Finset ι) (D : ℕ) (P : ι → Mat k r → ℂ)
     (h : ∀ i ∈ s, PolyClass D (P i)) : PolyClass D (fun g => ∑ i ∈ s, P i g) := by
   classical
@@ -235,6 +333,11 @@ lemma polyClass_sum {ι : Type*} (s : Finset ι) (D : ℕ) (P : ι → Mat k r �
     rw [e]
     exact this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Establish `hd : HasDerivAt (fun t : ℝ => ℓ (cv b X t g)) (ℓ (vf b X g)) 0`. Establish `h` using `(LinearMap.toContinuousLinearMap ℓ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (cv_hasDerivAt b X g)`. Conclude with `h`. Use `show deriv (fun t : ℝ => ℓ (cv b X t g)) 0 = _`.
+
+Rewrite using `[hd.deriv]`. Both sides reduce to the same expression.
+-/
 lemma op_lin (ℓ : Mat k r →ₗ[ℝ] ℂ) (b : Bool) (X : Mat k r) :
     op b X (fun g => ℓ g) = fun g => (ℓ.comp (vf b X).toLinearMap) g := by
   funext g
@@ -244,6 +347,11 @@ lemma op_lin (ℓ : Mat k r →ₗ[ℝ] ℂ) (b : Bool) (X : Mat k r) :
   show deriv (fun t : ℝ => ℓ (cv b X t g)) 0 = _
   rw [hd.deriv]; rfl
 
+/- English proof (translation)
+Introduce `a`. Proceed by induction on `a with`. Consider the case `nil => exact ⟨ℓ, rfl⟩`. Consider the case `cons x a ih`. Take `⟨ℓ', he⟩` from `ih`.
+
+Conclude with `⟨ℓ'.comp (vf x.1 x.2).toLinearMap, by rw [W_cons, he, op_lin]⟩`.
+-/
 lemma W_lin (ℓ : Mat k r →ₗ[ℝ] ℂ) :
     ∀ a : List (Bool × Mat k r), ∃ ℓ' : Mat k r →ₗ[ℝ] ℂ, W a (fun g => ℓ g) = fun g => ℓ' g := by
   intro a
@@ -253,6 +361,9 @@ lemma W_lin (ℓ : Mat k r →ₗ[ℝ] ℂ) :
     obtain ⟨ℓ', he⟩ := ih
     exact ⟨ℓ'.comp (vf x.1 x.2).toLinearMap, by rw [W_cons, he, op_lin]⟩
 
+/- English proof (translation)
+Establish `h : ‖g i j‖ ^ 2 ≤ ∑ i, ∑ j, Complex.normSq (g i j)`. Rewrite using `[Complex.sq_norm]`. Conclude with `(Finset.single_le_sum (f := fun j => Complex.normSq (g i j)) (fun _ _ => Complex.normSq_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, Complex.normSq (g i j)) (fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _) (Finset.mem_univ i))`. Use `Real.abs_le_sqrt h` as an intermediate fact. Rewrite `this` using `[abs_of_nonneg (norm_nonneg _)]`. Then use the resulting hypothesis.
+-/
 lemma entry_le_gN (g : Mat k r) (i j : Fin (2 * r + k + 1)) : ‖g i j‖ ≤ gN g := by
   have h : ‖g i j‖ ^ 2 ≤ ∑ i, ∑ j, Complex.normSq (g i j) := by
     rw [Complex.sq_norm]
@@ -263,6 +374,17 @@ lemma entry_le_gN (g : Mat k r) (i j : Fin (2 * r + k + 1)) : ‖g i j‖ ≤ gN
   have := Real.abs_le_sqrt h
   rwa [abs_of_nonneg (norm_nonneg _)] at this
 
+/- English proof (translation)
+Use `⟨?_, fun a _ => ?_⟩` and prove the remaining obligations. Introduce `g₀ _`. Use `⟨Set.univ, fun g => ℓ g, isOpen_univ, trivial, ?_, fun _ _ _ => rfl⟩` and prove the remaining obligations. Establish `h` using `((LinearMap.toContinuousLinearMap ℓ).contDiff (n := ((⊤ : ℕ∞) : WithTop ℕ∞))).contDiffOn (s := Set.univ)`. Conclude with `h`.
+
+Take `⟨ℓ', he⟩` from `W_lin ℓ a`. Use `⟨∑ j : J k r, ‖ℓ' (Eb j)‖, Finset.sum_nonneg fun _ _ => norm_nonneg _, fun g _ => ?_⟩` and prove the remaining obligations. Rewrite using `[he, pow_one]`. Establish `eg : ℓ' g = ∑ j : J k r, co g j • ℓ' (Eb j)` using `by conv_lhs => rw [← Mv_co g, Mv_sum]`. Rewrite using `[map_sum]`.
+
+Simplify using `only [map_smul]`. Use `show ‖ℓ' g‖ ≤ _`. Rewrite using `[eg, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_eq_abs, mul_comm]`.
+
+Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Establish `hco : |co g j| ≤ ‖g j.1 j.2.1‖`. Unfold `co`. Use `split_ifs`. Conclude with `Complex.abs_im_le_norm _`.
+
+Conclude with `Complex.abs_re_le_norm _`. Conclude with `hco.trans (entry_le_gN g _ _)`.
+-/
 lemma polyClass_lin (ℓ : Mat k r →ₗ[ℝ] ℂ) : PolyClass 1 (fun g => ℓ g) := by
   refine ⟨?_, fun a _ => ?_⟩
   · intro g₀ _
@@ -300,6 +422,15 @@ def varCj (p : Fin (2 * r + k + 1) × Fin (2 * r + k + 1)) : Mat k r →ₗ[ℝ]
 def varL : (Fin (2 * r + k + 1) × Fin (2 * r + k + 1)) ⊕ (Fin (2 * r + k + 1) × Fin (2 * r + k + 1)) →
     (Mat k r →ₗ[ℝ] ℂ) := Sum.elim varIn varCj
 
+/- English proof (translation)
+Take `⟨q, hq, hPq⟩` from `hP`. Establish `e : P = fun g => ∑ d ∈ q.support, q.coeff d * ∏ v, (varL v g) ^ d v`. Use function extensionality and compare the values at `g`. Rewrite using `[hPq g, MvPolynomial.eval_eq']`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Apply the tactic sequence `cases v <;> rfl`. Rewrite using `[e]`. Use `polyClass_sum _ _ _ fun d hd => ?_` and prove the remaining obligations.
+
+Establish `hdeg : ∑ v, d v * 1 ≤ D`. Establish `h1` using `MvPolynomial.le_totalDegree hd`. Rewrite `h1` using `[Finsupp.sum_fintype _ _ (fun _ => rfl)]`. Simplify using `using h1.trans hq`. Use `polyClass_mono hdeg (polyClass_cmul _ ?_)` and prove the remaining obligations.
+
+Conclude with `polyClass_prod Finset.univ (fun v => d v * 1) (fun v g => (varL v g) ^ d v) fun v _ => polyClass_pow (polyClass_lin (varL v)) (d v)`.
+-/
 theorem polyClass_of_isPolyDeg {D : ℕ} {P : Mat k r → ℂ} (hP : C2.IsPolyDeg D P) : PolyClass D P := by
   obtain ⟨q, hq, hPq⟩ := hP
   have e : P = fun g => ∑ d ∈ q.support, q.coeff d * ∏ v, (varL v g) ^ d v := by

@@ -2,6 +2,15 @@ import Mathlib
 
 namespace GlobalTheory.CompanionTheory.Tempered
 
+/- English proof (translation)
+Introduce `h d e hd he hsum htail`. Establish `hnn : ∀ i, 0 ≤ e i`. Introduce `i`. Assume the negation of the conclusion as `hneg`. Rewrite `hneg` using `[not_le]`.
+
+Establish `hlt : ∑ k ∈ Finset.univ.filter (fun k => i ≤ k), d k * e k < 0`. Apply `Finset.sum_neg` to reduce the goal to its premises. Introduce `k hk`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hk`. Conclude with `mul_neg_of_pos_of_neg (hd k) (lt_of_le_of_lt (he hk) hneg)`.
+
+Conclude with `⟨i, by simp⟩`. Combine the linear relations using `[htail i]`. Establish `hz` using `(Finset.sum_eq_zero_iff_of_nonneg fun k _ => mul_nonneg (hd k).le (hnn k)).1 hsum`. Introduce `i`. Break down `mul_eq_zero.1 (hz i (Finset.mem_univ i)) with h1 | h1` into its components or cases.
+
+Conclude with `absurd h1 (hd i).ne'`. Conclude with `h1`.
+-/
 theorem weighted_antitone_eq_zero_of_tails_nonneg :
     ∀ (h : ℕ) (d e : Fin h → ℝ), (∀ i, 0 < d i) → Antitone e → ∑ i, d i * e i = 0 →
       (∀ j : Fin h, 0 ≤ ∑ i ∈ Finset.univ.filter (fun i => j ≤ i), d i * e i) →

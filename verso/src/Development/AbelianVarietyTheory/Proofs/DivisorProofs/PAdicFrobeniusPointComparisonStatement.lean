@@ -18,6 +18,9 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open GlobalTheory.ShFam.Descent
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DetHT.lieTie_frameOf_of_ptAt | exact GlobalTheory.DetHT.lieTie_frameOf_of_ptAt | (intros; apply GlobalTheory.DetHT.lieTie_frameOf_of_ptAt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.p_adic_frobenius_point_comparison : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F))
     (p : ℕ) [Fact p.Prime] [Algebra c.F ℂ_[p]] (P z : FrPt Xo c ℂ_[p]) (yb : Sp 𝓞_ℂ_[p] ⟶ Z.X),

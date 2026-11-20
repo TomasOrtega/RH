@@ -15,6 +15,13 @@ section Lin
 
 variable {K N : Type} [Field K] [AddCommGroup N] [Module K N]
 
+/- English proof (translation)
+Establish `h : initSpan K (fun i : Fin k => b (.inl i)) k = Submodule.span K (b '' Set.range Sum.inl)`. Rewrite using `[initSpan, ← Set.range_comp]`. Use `congr 1`. Use extensionality with `x`. Conclude with `⟨fun ⟨i, _, hi⟩ => ⟨i, hi⟩, fun ⟨i, hi⟩ => ⟨i, i.2, hi⟩⟩`.
+
+Rewrite using `[h, Module.Basis.mem_span_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h (i | j) hi`. Conclude with `⟨i, rfl⟩`. Conclude with `absurd (h j) (Finsupp.mem_support_iff.1 hi)`.
+
+Introduce `h j`. Assume the negation of the conclusion as `hne`. Take `⟨i, hi⟩` from `h (Finsupp.mem_support_iff.2 hne)`. Conclude with `Sum.inl_ne_inr hi`.
+-/
 theorem repr_inr_eq_zero_iff {k m : ℕ} (b : Module.Basis (Fin k ⊕ Fin m) K N) (v : N) :
     (∀ j, b.repr v (.inr j) = 0) ↔ v ∈ initSpan K (fun i : Fin k => b (.inl i)) k := by
   have h : initSpan K (fun i : Fin k => b (.inl i)) k = Submodule.span K (b '' Set.range Sum.inl) := by
@@ -34,6 +41,11 @@ theorem repr_inr_eq_zero_iff {k m : ℕ} (b : Module.Basis (Fin k ⊕ Fin m) K N
 
 variable {n m k r : ℕ} (q : N →ₗ[K] (Fin m → K)) {u : Fin n → N} (hj : k + r + 1 ≤ n)
 
+/- English proof (translation)
+Set `e : Fin (r + 1) → Fin n` to `fun i => ⟨k + i, by omega⟩`. Establish `he : Function.Injective e` using `fun i i' h => Fin.ext (by have := congrArg Fin.val h; simp only [e] at this; omega)`. Establish `h1 : ∑ i, c i • u (e i) ∈ initSpan K u k` using `hq _ (by simpa only [map_sum, map_smul] using hc)`. Establish `h2 : ∑ i, c i • u (e i) ∈ Submodule.span K (u '' {j : Fin n | k ≤ (j : ℕ)})` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨e i, Nat.le_add_right _ _, rfl⟩)`. Establish `hd : Disjoint {j : Fin n | (j : ℕ) < k} {j : Fin n | k ≤ (j : ℕ)}` using `Set.disjoint_left.2 fun j h h' => (not_lt.2 (show k ≤ (j : ℕ) from h')) (show (j : ℕ) < k from h)`.
+
+Establish `h3` using `Submodule.disjoint_def.1 (hu.disjoint_span_image hd) _ h1 h2`. Conclude with `funext (Fintype.linearIndependent_iff.1 (hu.comp e he) c h3)`.
+-/
 theorem eq_zero_of_sum (hu : LinearIndependent K u) (hq : ∀ v, q v = 0 → v ∈ initSpan K u k) (c : Fin (r + 1) → K)
     (hc : ∑ i, c i • q (u ⟨k + i, by omega⟩) = 0) : c = 0 := by
   let e : Fin (r + 1) → Fin n := fun i => ⟨k + i, by omega⟩
@@ -46,6 +58,13 @@ theorem eq_zero_of_sum (hu : LinearIndependent K u) (hq : ∀ v, q v = 0 → v �
   have h3 := Submodule.disjoint_def.1 (hu.disjoint_span_image hd) _ h1 h2
   exact funext (Fintype.linearIndependent_iff.1 (hu.comp e he) c h3)
 
+/- English proof (translation)
+Rewrite using `[← Submodule.mem_span_range_iff_exists_fun]`. Use `Submodule.mem_comap.1 ((Submodule.span_le (p := Submodule.comap q _)).2 ?_ hv)` and prove the remaining obligations. Introduce and unpack `_ ⟨j, hj', rfl⟩`. Establish `hj'' : (j : ℕ) < k + r + 1` using `hj'`. Use `show q (u j) ∈ Submodule.span K _`.
+
+Distinguish the cases in `h : (j : ℕ) < k`. Rewrite using `[hq _ (Submodule.subset_span ⟨j, h, rfl⟩)]`. Conclude with `Submodule.zero_mem _`. Use `Submodule.subset_span ⟨⟨j - k, by omega⟩, ?_⟩` and prove the remaining obligations. Establish `: (⟨k + (j - k), by omega⟩ : Fin n) = j` using `Fin.ext (by simp only; omega)`.
+
+Simplify using `only [this]`.
+-/
 theorem exists_sum (hq : ∀ v ∈ initSpan K u k, q v = 0) {v : N} (hv : v ∈ initSpan K u (k + r + 1)) :
     ∃ c : Fin (r + 1) → K, ∑ i, c i • q (u ⟨k + i, by omega⟩) = q v := by
   rw [← Submodule.mem_span_range_iff_exists_fun]
@@ -60,6 +79,9 @@ theorem exists_sum (hq : ∀ v ∈ initSpan K u k, q v = 0) {v : N} (hv : v ∈ 
     have : (⟨k + (j - k), by omega⟩ : Fin n) = j := Fin.ext (by simp only; omega)
     simp only [this]
 
+/- English proof (translation)
+Rewrite using `[initSpan]`. Use `congr 1`. Use extensionality with `x`. Conclude with `⟨fun ⟨i, _, hi⟩ => ⟨i, hi⟩, fun ⟨i, hi⟩ => ⟨i, i.2, hi⟩⟩`.
+-/
 theorem initSpan_full (u : Fin n → N) : initSpan K u n = Submodule.span K (Set.range u) := by
   rw [initSpan]
   congr 1
@@ -77,16 +99,41 @@ def crdL {m : ℕ} {U : X.Opens} {hU : IsAffineOpen U}
     (h : ⊤ ≤ z ⁻¹ᵁ U) : TanM (z ≫ π) M.t.G →ₗ[S] (Fin m → S) :=
   LinearMap.pi fun j => (basAt b z h).coord (.inr j)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem crdL_apply {m : ℕ} {U : X.Opens} {hU : IsAffineOpen U}
     (b : Module.Basis (Fin k ⊕ Fin m) Γ(X, U) (TanM (tau hU ≫ π) M.t.G)) {S : Type} [CommRing S] (z : Sp S ⟶ X)
     (h : ⊤ ≤ z ⁻¹ᵁ U) (v : TanM (z ≫ π) M.t.G) : crdL b z h v = crd b z h v := rfl
 
+/- English proof (translation)
+Rewrite using `[D.int α K z h u hu k le_rfl, ← repr_inr_eq_zero_iff]`. Conclude with `funext_iff`.
+-/
 theorem crdL_eq_zero_iff (D : Adapted A σ k) (α : D.C.A) {K : Type} [Field K] (z : Sp K ⟶ X)
     (h : ⊤ ≤ z ⁻¹ᵁ D.C.B α) {u : TVecs Dw M.t (z ≫ π)} (hu : A.FlagAt z (up u)) (v : TanM (z ≫ π) M.t.G) :
     crdL (D.b α) z h v = 0 ↔ v ∈ initSpan K (u σ) k := by
   rw [D.int α K z h u hu k le_rfl, ← repr_inr_eq_zero_iff]
   exact funext_iff
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c V _ M X π ty A σ k r D hj hty α hα`. Use `choose u hu using fun a => exists_up (Dw := Dw) (x := A.ch.χ a ≫ π) fun σ i => ((A.frame a).1 σ i).1`. Set `Mx : ∀ a, Matrix (Fin (D.C.n (α a))) (Fin (r + 1)) (A.ch.R a)` to `fun a j i => crd (D.b (α a)) (A.ch.χ a) (hα a) (u a σ ⟨k + i, by omega⟩) j`. Establish `key : ∀ (a : A.ch.ι) (S : Type) [CommRing S] (φ : A.ch.R a →+* S) (z : Sp S ⟶ X), spMap φ ≫ A.ch.χ a = z → ∀ (h : ⊤ ≤ z ⁻¹ᵁ D.C.B (α a)) (w : TVecs Dw M.t (z ≫ π)), up w = (A.fr a).bc φ → ∀ i : Fin (r + 1), (fun j => φ (Mx a j i)) = crd (D.b (α a)) z h (w σ ⟨k + i, by omega⟩)`. Introduce `a S _ φ z e h w hw i`.
+
+Establish `e' : spMap φ ≫ A.ch.χ a ≫ π = z ≫ π` using `by rw [← Category.assoc, e]`. Establish `hw' : w = fun σ i => tanPull φ e' (u a σ i)` using `up_injective (by rw [hw, up_tanPull, hu])`. Substitute `hw'` using the available equality. Use function extensionality and compare the values at `j`. Conclude with `(basAt_repr (D.b (α a)) φ (A.ch.χ a) (hα a) e h e' _ _).symm`.
+
+Establish `mul : ∀ (a : A.ch.ι) (K : Type) [Field K] (φ : A.ch.R a →+* K) (z : Sp K ⟶ X), spMap φ ≫ A.ch.χ a = z → ∀ (h : ⊤ ≤ z ⁻¹ᵁ D.C.B (α a)) (w : TVecs Dw M.t (z ≫ π)), up w = (A.fr a).bc φ → ∀ cf : Fin (r + 1) → K, ((Mx a).map φ).mulVec cf = ∑ i, cf i • crdL (D.b (α a)) z h (w σ ⟨k + i …`. Introduce `a K _ φ z e h w hw cf`. Use function extensionality and compare the values at `j`. Simplify using `only [crdL_apply, ← key a K φ z e h w hw, Matrix.mulVec, dotProduct, Matrix.map_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, mul_comm]`. Use `⟨⟨α, hα, Mx, fun a K _ φ => ?_, fun a a' K _ φ φ' z e e' h h' => ?_⟩, key⟩` and prove the remaining obligations.
+
+Establish `h : ⊤ ≤ (spMap φ ≫ A.ch.χ a) ⁻¹ᵁ D.C.B (α a)` using `fun x _ => hα a (Set.mem_univ (spMap φ x))`. Take `⟨w, hw⟩` from `A.exists_up_fr (φ := φ) rfl`. Establish `hf` using `A.isFrame_bc (φ := φ) rfl`. Establish `hF` using `A.flagAt_fr (φ := φ) rfl`. Rewrite `hf`, `hF` using `[← hw]`.
+
+Use `(injective_iff_map_eq_zero ((Mx a).map φ).mulVecLin).2 fun cf hc => ?_` and prove the remaining obligations. Use `eq_zero_of_sum (crdL (D.b (α a)) _ h) hj ((isFrame_up_iff _ _).1 hf σ).1 (fun v hv => (crdL_eq_zero_iff D _ _ h hF v).1 hv) cf ?_` and prove the remaining obligations. Rewrite using `[← mul a K φ _ rfl h w hw]`. Conclude with `hc`. Take `⟨w, hw⟩` from `A.exists_up_fr e`.
+
+Take `⟨w', hw'⟩` from `A.exists_up_fr e'`. Establish `hf` using `A.isFrame_bc e`. Establish `hF` using `A.flagAt_fr e`. Establish `hf'` using `A.isFrame_bc e'`. Establish `hF'` using `A.flagAt_fr e'`.
+
+Rewrite `hf`, `hF` using `[← hw]`. Rewrite `hf'`, `hF'` using `[← hw']`. Establish `hs : initSpan K (w' σ) (k + r + 1) = initSpan K (w σ) (k + r + 1)`. Break down `hty with hty | hty` into its components or cases. Conclude with `hF'.initSpan_eq hF σ hty`.
+
+Rewrite `hf'` using `[← A.alg_eq e e']`. Rewrite using `[hty, initSpan_full, initSpan_full, ((isFrame_up_iff _ _).1 hf σ).2, ((isFrame_up_iff _ _).1 hf' σ).2]`. Establish `hm : ∀ i : Fin (r + 1), w' σ ⟨k + i, by omega⟩ ∈ initSpan K (w σ) (k + r + 1)` using `fun i => hs ▸ Submodule.subset_span ⟨_, by show k + (i : ℕ) < k + r + 1; omega, rfl⟩`. Use `choose cf hcf using fun i => exists_sum (crdL (D.b (α a)) z h) hj (fun v hv => (crdL_eq_zero_iff D _ _ h hF v).2 hv) (hm i)`. Use `⟨Matrix.of fun p i => cf i p, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `j i`. Establish `h1` using `D.coord (α a) (α a') K z h h' (w' σ ⟨k + i, by omega⟩)`. Rewrite `h1` using `[← key a' K φ' z e' h' w' hw' i, ← crdL_apply, ← hcf i, ← mul a K φ z e h w hw]`. Conclude with `congrFun h1 j`.
+-/
 theorem exists_isFrSub : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (V : ValuationSubring c.F) [IsDiscreteValuationRing V] (M : Model Xo c V.subtype) (X : Scheme.{0}) (π : X ⟶ M.X) (ty : (E →+* ℂ) → Finset ℕ) (A : Atlas M π ty) (σ : E →+* ℂ) (k r : ℕ) (D : Adapted A σ k) (hj : k + r + 1 ≤ Dw.mult σ), (k + r + 1 ∈ ty σ ∨ k + r + 1 = Dw.mult σ) → ∀ α : A.ch.ι → D.C.A, (∀ a, ⊤ ≤ A.ch.χ a ⁻¹ᵁ D.C.B (α a)) → ∃ Sb : D.C.Sub A.ch r, IsFrSub D Sb hj := by
   intro E _ _ _ H Dw l Xo c V _ M X π ty A σ k r D hj hty α hα
   choose u hu using fun a => exists_up (Dw := Dw) (x := A.ch.χ a ≫ π) fun σ i => ((A.frame a).1 σ i).1

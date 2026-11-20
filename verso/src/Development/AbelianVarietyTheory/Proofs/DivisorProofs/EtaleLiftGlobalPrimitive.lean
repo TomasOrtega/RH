@@ -4,6 +4,17 @@ open GlobalTheory.PrimLift
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `X _ _ _ P hopen hmono hadd hcov hproj`. Establish `x₀ : X` using `Classical.arbitrary X`. Take `⟨s, ⟨-, hs⟩, -⟩` from `hproj.existsUnique_continuousMap_lifts (ContinuousMap.id X) x₀ (Etale.mk P x₀ 0) rfl`. Establish `hsx : ∀ y, Etale.proj P (s y) = y` using `fun y => congrFun hs y`. Use `⟨fun x => (s x).val, fun x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨O, f, hxO, hP⟩` from `hcov x`. Use `set c : ℂ := (s x).val - f x with hc`. Establish `hPc` using `hadd O f c hP`. Establish `hG : IsOpen ((fun y => Etale.mk P y (f y + c)) '' O)` using `Etale.isOpen_graph hPc`. Establish `hW : IsOpen (s ⁻¹' ((fun y => Etale.mk P y (f y + c)) '' O))` using `hG.preimage s.continuous`.
+
+Use `⟨O ∩ s ⁻¹' ((fun y => Etale.mk P y (f y + c)) '' O), fun y => f y + c, ⟨hxO, ?_⟩, hmono _ _ _ hPc ((hopen O f hP).inter hW) Set.inter_subset_left, ?_⟩` and prove the remaining obligations. Use `⟨x, hxO, ?_⟩` and prove the remaining obligations. Establish `e1 : f x + c = (s x).val` using `by rw [hc]; ring`. Use `show Etale.mk P x (f x + c) = s x`. Rewrite using `[e1]`.
+
+Use `conv_rhs => rw [← Etale.mk_proj_val (s x)]`. Rewrite using `[hsx x]`. Introduce and unpack `y ⟨-, z, -, hz⟩`. Establish `hzy : z = y`. Establish `h1` using `congrArg (Etale.proj P) hz`.
+
+Rewrite `h1` using `[Etale.proj_mk, hsx]`. Then use the resulting hypothesis. Substitute `hzy` using the available equality. Establish `h2` using `congrArg Etale.val hz`. Rewrite `h2` using `[Etale.val_mk]`. Conclude with `h2.symm`.
+-/
 theorem exists_global_of_isCoveringMap_etale :
     ∀ {X : Type} [TopologicalSpace X] [SimplyConnectedSpace X] [LocallyPathConnectedSpace X]
     (P : Set X → (X → ℂ) → Prop),

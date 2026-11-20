@@ -23,6 +23,13 @@ private structure Plan (l d : ℕ) [NeZero d] (W : ZMod d → ℕ) where
 private noncomputable def Plan.bound {l d : ℕ} [NeZero d] {W : ZMod d → ℕ} (p : Plan l d W) (n m : ℕ) : ℝ :=
   (∑ a, ∑ i ∈ oddLevels d, blockBd l n m i (p.y a i)) + ∑ a, chBd l n m (p.u a)
 
+/- English proof (translation)
+Establish `h : ∀ a : ZMod d, ∃ s : ZMod (2 * d), Even s.val ∧ ((s.val : ℕ) : ZMod d) = a`. Introduce `a`. Establish `ha` using `ZMod.val_lt a`. Distinguish the cases in `he : Even a.val`. Use `⟨(a.val : ℕ), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ZMod.val_natCast, Nat.mod_eq_of_lt (by omega)]`. Conclude with `⟨he, ZMod.natCast_zmod_val a⟩`. Use `⟨(a.val + d : ℕ), ?_⟩` and prove the remaining obligations. Rewrite using `[ZMod.val_natCast, Nat.mod_eq_of_lt (by omega)]`. Use `⟨(Nat.not_even_iff_odd.1 he).add_odd hd, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Nat.cast_add, ZMod.natCast_self, add_zero, ZMod.natCast_zmod_val]`. Use `choose ev hev using h`. Conclude with `⟨ev, hev⟩`.
+-/
 private theorem exists_ev (d : ℕ) [NeZero d] (hd : Odd d) :
     ∃ ev : ZMod d → ZMod (2 * d), ∀ a, Even (ev a).val ∧ (((ev a).val : ℕ) : ZMod d) = a := by
   have h : ∀ a : ZMod d, ∃ s : ZMod (2 * d), Even s.val ∧ ((s.val : ℕ) : ZMod d) = a := by
@@ -39,6 +46,9 @@ private theorem exists_ev (d : ℕ) [NeZero d] (hd : Odd d) :
   choose ev hev using h
   exact ⟨ev, hev⟩
 
+/- English proof (translation)
+Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (by omega : 1 < l)`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt ((k : ℝ) ^ ((3 : ℝ) / 2)) hl1`. Use `⟨2 * n + 3, ⟨⟨n + 1, by ring⟩, by omega, ?_⟩⟩` and prove the remaining obligations. Conclude with `lt_of_lt_of_le hn (pow_le_pow_right₀ hl1.le (by omega))`.
+-/
 private theorem levels_nonempty (k l : ℕ) (hl : 2 ≤ l) :
     {i : ℕ | Odd i ∧ 3 ≤ i ∧ (k : ℝ) ^ ((3 : ℝ) / 2) < (l : ℝ) ^ i}.Nonempty := by
   have hl1 : (1 : ℝ) < l := by exact_mod_cast (by omega : 1 < l)
@@ -46,6 +56,13 @@ private theorem levels_nonempty (k l : ℕ) (hl : 2 ≤ l) :
   refine ⟨2 * n + 3, ⟨⟨n + 1, by ring⟩, by omega, ?_⟩⟩
   exact lt_of_lt_of_le hn (pow_le_pow_right₀ hl1.le (by omega))
 
+/- English proof (translation)
+Introduce `k l hk hl`. Establish `hne` using `levels_nonempty k l hl`. Establish `hmem : i0 k l ∈ {i : ℕ | Odd i ∧ 3 ≤ i ∧ (k : ℝ) ^ ((3 : ℝ) / 2) < (l : ℝ) ^ i}` using `Nat.sInf_mem hne`. Use `⟨hmem.1, hmem.2.1, hmem.2.2, ?_⟩` and prove the remaining obligations. Establish `hl1 : (1 : ℝ) ≤ l` using `by exact_mod_cast (by omega : 1 ≤ l)`.
+
+Establish `hgr : IsGreatest {t : ℝ | ∃ i, Odd i ∧ 3 ≤ i ∧ (k : ℝ) ^ ((3 : ℝ) / 2) < (l : ℝ) ^ i ∧ t = ((l : ℝ) ^ i)⁻¹} ((l : ℝ) ^ i0 k l)⁻¹`. Use `⟨⟨i0 k l, hmem.1, hmem.2.1, hmem.2.2, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `t ⟨i, hi1, hi2, hi3, rfl⟩`. Establish `hle : i0 k l ≤ i` using `Nat.sInf_le ⟨hi1, hi2, hi3⟩`. Conclude with `inv_anti₀ (pow_pos (by linarith) _) (pow_le_pow_right₀ hl1 hle)`.
+
+Conclude with `hgr.csSup_eq`.
+-/
 private theorem thlEq : ∀ k l : ℕ, 1 ≤ k → 2 ≤ l →
     Odd (i0 k l) ∧ 3 ≤ i0 k l ∧ (k : ℝ) ^ ((3 : ℝ) / 2) < (l : ℝ) ^ i0 k l ∧ thl k l = ((l : ℝ) ^ i0 k l)⁻¹ := by
   intro k l hk hl
@@ -62,6 +79,21 @@ private theorem thlEq : ∀ k l : ℕ, 1 ≤ k → 2 ≤ l →
     exact inv_anti₀ (pow_pos (by linarith) _) (pow_le_pow_right₀ hl1 hle)
   exact hgr.csSup_eq
 
+/- English proof (translation)
+Introduce `k l hk hl`. Take `⟨hodd, h3, _, _⟩` from `thlEq k l hk (by omega)`. Establish `hlogk : 0 ≤ Real.log k` using `Real.log_nonneg (by exact_mod_cast hk)`. Distinguish the cases in `hj : i0 k l = 3`. Rewrite using `[hj]`.
+
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h5 : 5 ≤ i0 k l`. Take `⟨t, ht⟩` from `hodd`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hnot : ¬ (Odd (i0 k l - 2) ∧ 3 ≤ i0 k l - 2 ∧ (k : ℝ) ^ ((3 : ℝ) / 2) < (l : ℝ) ^ (i0 k l - 2))`. Introduce `h`. Establish `: i0 k l ≤ i0 k l - 2` using `Nat.sInf_le h`. Use linear arithmetic over natural numbers and integers. Establish `hodd2 : Odd (i0 k l - 2)` using `Nat.Odd.sub_even (by omega) hodd even_two`.
+
+Establish `hle : (l : ℝ) ^ (i0 k l - 2) ≤ (k : ℝ) ^ ((3 : ℝ) / 2)`. Assume the negation of the conclusion as `hc`. Conclude with `hnot ⟨hodd2, by omega, lt_of_not_ge hc⟩`. Establish `hl0 : (0 : ℝ) < l` using `by exact_mod_cast (by omega : 0 < l)`. Establish `hk0 : (0 : ℝ) < k` using `by exact_mod_cast (by omega : 0 < k)`.
+
+Establish `hlog` using `Real.log_le_log (pow_pos hl0 _) hle`. Rewrite `hlog` using `[Real.log_pow, Real.log_rpow hk0]`. Establish `hlogl : 1 ≤ Real.log l`. Rewrite using `[Real.le_log_iff_exp_le hl0]`. Use `Real.exp_one_lt_d9` as an intermediate fact.
+
+Establish `: (5 : ℝ) ≤ l` using `by exact_mod_cast hl`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcast : ((i0 k l - 2 : ℕ) : ℝ) = (i0 k l : ℝ) - 2`. Rewrite using `[Nat.cast_sub (by omega)]`. Evaluate the numerical expressions.
+
+Rewrite `hlog` using `[hcast]`. Establish `hpos : (0 : ℝ) ≤ (i0 k l : ℝ) - 2`. Establish `: (5 : ℝ) ≤ i0 k l` using `by exact_mod_cast h5`. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
+-/
 private theorem levelBound : ∀ k l : ℕ, 1 ≤ k → 5 ≤ l → ((i0 k l : ℝ) - 1) ≤ 2 + 2 * Real.log k := by
   intro k l hk hl
   obtain ⟨hodd, h3, _, _⟩ := thlEq k l hk (by omega)
@@ -100,6 +132,17 @@ private theorem levelBound : ∀ k l : ℕ, 1 ≤ k → 5 ≤ l → ((i0 k l : �
       linarith
     nlinarith
 
+/- English proof (translation)
+Take `⟨h0, hw⟩` from `h`. Use `set F := (Finset.range (⌊r⌋₊ + 1)).filter (· ∈ G) with hF`. Establish `h0F : 0 ∈ F` using `by simp [F, h0]`. Establish `hFne : F.Nonempty` using `⟨0, h0F⟩`. Use `set y := F.max' hFne`.
+
+Establish `hyF : y ∈ F` using `F.max'_mem hFne`. Establish `hyG : y ∈ G` using `(Finset.mem_filter.mp hyF).2`. Establish `hyr : y ≤ ⌊r⌋₊` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp (Finset.mem_filter.mp hyF).1)`. Establish `hyr' : (y : ℝ) ≤ r` using `le_trans (Nat.cast_le.mpr hyr) (Nat.floor_le hr)`. Take `⟨y', hy'G, hy'1, hy'2⟩` from `hw (y + 1)`.
+
+Use `⟨y, hyG, hyr', ?_⟩` and prove the remaining obligations. Establish `hry' : r < y'`. Assume the negation of the conclusion as `hc`. Establish `hc' : (y' : ℝ) ≤ r` using `le_of_not_gt hc`. Establish `hy'F : y' ∈ F`.
+
+Simplify using `only [F, Finset.mem_filter, Finset.mem_range]`. Conclude with `⟨Nat.lt_succ_of_le (Nat.le_floor hc'), hy'G⟩`. Use `F.le_max' y' hy'F` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `: (y' : ℝ) ≤ y + S` using `by exact_mod_cast (by omega : y' ≤ y + S)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem exists_good {S : ℕ} {G : Set ℕ} (h : Windows S G) {r : ℝ} (hr : 0 ≤ r) :
     ∃ y ∈ G, (y : ℝ) ≤ r ∧ r - y ≤ S := by
   obtain ⟨h0, hw⟩ := h
@@ -124,6 +167,9 @@ private theorem exists_good {S : ℕ} {G : Set ℕ} (h : Windows S G) {r : ℝ} 
   have : (y' : ℝ) ≤ y + S := by exact_mod_cast (by omega : y' ≤ y + S)
   linarith
 
+/- English proof (translation)
+Establish `h1 : (1 : ℝ) < l` using `by exact_mod_cast (by omega : 1 < l)`. Establish `h2 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Use `Real.logb_nonneg h1 h2` as an intermediate fact. Check the signs of the components of the expression.
+-/
 private theorem logTerm_nonneg {l n : ℕ} (hl : 5 ≤ l) (hn : 1 ≤ n) :
     0 ≤ (n : ℝ) * (Real.logb l n + 1) := by
   have h1 : (1 : ℝ) < l := by exact_mod_cast (by omega : 1 < l)
@@ -134,6 +180,17 @@ private theorem logTerm_nonneg {l n : ℕ} (hl : 5 ≤ l) (hn : 1 ≤ n) :
 section
 variable {l d : ℕ} [NeZero d]
 
+/- English proof (translation)
+Take `⟨hx0, hxD⟩` from `hx`. Establish `hsum` using `Finset.sum_le_sum fun s (_ : s ∈ Finset.univ) => hxD s`. Rewrite `hsum` using `[Finset.sum_add_distrib]`. Establish `hshift : ∑ s : ZMod d, ∑ i ∈ oddLevels d, x (s - (i : ZMod d)) i = flowVal d x`. Unfold `flowVal`.
+
+Rewrite using `[Finset.sum_comm, Finset.sum_comm (s := Finset.univ)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `Fintype.sum_equiv (Equiv.subRight (i : ZMod d)) _ _ fun s => rfl`. Establish `hlow : ((l : ℝ)) * flowVal d x ≤ ∑ s : ZMod d, ∑ i ∈ oddLevels d, (l : ℝ) ^ i * x s i`. Unfold `flowVal`.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun i hi => ?_` and prove the remaining obligations. Establish `hodd : Odd i` using `(Finset.mem_filter.mp hi).2`.
+
+Establish `hi1 : 1 ≤ i` using `hodd.pos`. Establish `hl1 : (1 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `: (l : ℝ) ≤ (l : ℝ) ^ i`. Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_le_mul_of_nonneg_right this (hx0 s i)`.
+
+Rewrite `hsum` using `[hshift]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem succ_mul_flowVal_le (hl : 1 ≤ l) {D : ZMod d → ℝ} {x : ZMod d → ℕ → ℝ}
     (hx : IsFlow l d D x) : ((l : ℝ) + 1) * flowVal d x ≤ ∑ a, D a := by
   obtain ⟨hx0, hxD⟩ := hx
@@ -160,6 +217,13 @@ private theorem succ_mul_flowVal_le (hl : 1 ≤ l) {D : ZMod d → ℝ} {x : ZMo
   rw [hshift] at hsum
   linarith
 
+/- English proof (translation)
+Establish `hl2 : (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hden : (0 : ℝ) < (l : ℝ) ^ 2 - 1` using `by nlinarith`. Establish `hsum0 : 0 ≤ ∑ a, D a` using `Finset.sum_nonneg fun a _ => hD a`. Establish `hmf : maxFlow l d D ≤ (∑ a, D a) / ((l : ℝ) + 1)` using `GlobalTheory.FlowScaling.maxFlow_le hD fun x hx => by`. Use `succ_mul_flowVal_le (by omega) hx` as an intermediate fact.
+
+Rewrite using `[le_div_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `Fnum Formalism.IncomingBounds.rho gam`. Establish `hkey : 1 / ((l : ℝ) ^ 2 - 1) * ∑ a, D a + (∑ a, D a) / ((l : ℝ) + 1) = (l : ℝ) / ((l : ℝ) ^ 2 - 1) * ∑ a, D a`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem rho_mul_le_Fnum (hl : 2 ≤ l) {D : ZMod d → ℝ} (hD : ∀ a, 0 ≤ D a) :
     Formalism.IncomingBounds.rho l * ∑ a, D a ≤ Fnum l d D := by
   have hl2 : (2 : ℝ) ≤ l := by exact_mod_cast hl
@@ -177,6 +241,9 @@ private theorem rho_mul_le_Fnum (hl : 2 ≤ l) {D : ZMod d → ℝ} (hD : ∀ a,
     ring
   linarith
 
+/- English proof (translation)
+Unfold `Fnum`. Rewrite using `[GlobalTheory.FlowScaling.maxFlow_mul (by omega) ht hD, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem Fnum_mul (hl : 2 ≤ l) {D : ZMod d → ℝ} (hD : ∀ a, 0 ≤ D a) (t : ℝ) (ht : 0 ≤ t) :
     Fnum l d (fun a => t * D a) = t * Fnum l d D := by
   unfold Fnum
@@ -185,6 +252,21 @@ private theorem Fnum_mul (hl : 2 ≤ l) {D : ZMod d → ℝ} (hD : ∀ a, 0 ≤ 
 
 end
 
+/- English proof (translation)
+Establish `hl1 : (1:ℝ) < l` using `by exact_mod_cast (by omega : 1 < l)`. Establish `hlm : (0:ℝ) < (l:ℝ) - 1` using `by linarith`. Establish `hnR : (1:ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hlog : 0 ≤ Real.logb l n` using `Real.logb_nonneg hl1 hnR`. Establish `hS0 : (0:ℝ) ≤ S` using `Nat.cast_nonneg S`.
+
+Establish `hnl : 0 ≤ (n:ℝ) * (Real.logb l n + 1)` using `mul_nonneg (by linarith) (by linarith)`. Unfold `blockBd bdP`. Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Rewrite using `[if_pos rfl]`.
+
+Move the coercions through the operations in `at h1 h2 ⊢`. Use `split_ifs with hx`. Use the polynomial consequences of the given equalities and inequalities. Use `push_neg at hx`. Substitute `hx` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_neg hy]`. Establish `hy1 : (1:ℝ) ≤ y` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr hy`. Establish `hx : x ≠ 0`. Introduce `h`.
+
+Rewrite `h1` using `[h]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[if_pos hx]`. Establish `hiI : (i:ℝ) + 1 ≤ I` using `by exact_mod_cast Nat.succ_le_of_lt (hi hx)`. Establish `hpow : (1:ℝ) ≤ (l:ℝ) ^ i` using `one_le_pow₀ hl1.le`.
+
+Establish `hm0 : (0:ℝ) ≤ m` using `Nat.cast_nonneg m`. Establish `hy0 : (0:ℝ) ≤ y` using `by linarith`. Establish `k1 : ((i:ℝ) + 1) * ((l:ℝ) ^ i + 1) ≤ I * (2 * (l:ℝ) ^ i)` using `mul_le_mul hiI (by linarith) (by positivity) (by linarith)`. Establish `k2 : ((i:ℝ) + 1) * m * ((l:ℝ) ^ i + 1) * y ≤ 2 * I * m * ((l:ℝ) ^ i * y)`. Use `mul_le_mul_of_nonneg_right k1 (mul_nonneg hm0 hy0)` as an intermediate fact.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `k3 : ((i:ℝ) + 1) * m * ((l:ℝ) ^ i + 1) * y / ((l:ℝ) - 1) ≤ 2 * I * m / ((l:ℝ) - 1) * ((l:ℝ) ^ i * y)`. Rewrite using `[div_mul_eq_mul_div]`. Conclude with `div_le_div_of_nonneg_right k2 hlm.le`. Combine the linear relations using `[k3, h2]`.
+-/
 private theorem blockBd_le {l n m i y I S : ℕ} {x : ℝ} (hl : 5 ≤ l) (hn : 1 ≤ n)
     (hi : x ≠ 0 → i < I) (h1 : (n : ℝ) * y ≤ x) (h2 : x - n * y ≤ n * S) :
     blockBd l n m i y ≤ n * gam l * ((l : ℝ) ^ i * y) + n * gam l * y - x +
@@ -230,6 +312,59 @@ private theorem blockBd_le {l n m i y I S : ℕ} {x : ℝ} (hl : 5 ≤ l) (hn : 
       exact div_le_div_of_nonneg_right k2 hlm.le
     linarith [k3, h2]
 
+/- English proof (translation)
+Introduce `l d _ hl n m k S hn hk W Ws Good hWs hG`. Take `⟨_, hI3, _, hthl⟩` from `thlEq k l hk (by omega)`. Establish `hl1 : (1:ℝ) < l` using `by exact_mod_cast (by omega : 1 < l)`. Establish `hlm : (0:ℝ) < (l:ℝ) - 1` using `by linarith`. Establish `hnR : (1:ℝ) ≤ n` using `by exact_mod_cast hn`.
+
+Establish `hn0 : (0:ℝ) < n` using `by linarith`. Establish `hD0 : 0 ≤ (fun a => (n:ℝ) * Ws a)`. Introduce `a`. Conclude with `mul_nonneg hn0.le (hWs a).1`. Take `⟨ys, hflow, hsupp, hcard, hval⟩` from `GlobalTheory.BasicFlow.dropLevelsBasic l d (by omega) (fun a => (n:ℝ) * Ws a) hD0 (i0 k l)`.
+
+Establish `hys0 : ∀ a i, 0 ≤ ys a i` using `hflow.1`. Establish `hgood : ∀ a i, ∃ y : ℕ, (i ∈ oddLevels d ∧ i < i0 k l → y ∈ Good a i) ∧ (n:ℝ) * y ≤ ys a i ∧ ys a i - n * y ≤ n * S ∧ (¬ (i ∈ oddLevels d ∧ i < i0 k l) → y = 0)`. Introduce `a i`. Distinguish the cases in `h : i ∈ oddLevels d ∧ i < i0 k l`. Take `⟨y, hyG, hy1, hy2⟩` from `exists_good (hG a i h.1 h.2) (div_nonneg (hys0 a i) hn0.le : 0 ≤ ys a i / n)`.
+
+Establish `e : (n:ℝ) * (ys a i / n) = ys a i` using `by field_simp`. Use `⟨y, fun _ => hyG, ?_, ?_, fun h' => absurd h h'⟩` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left hy1 hn0.le` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this`.
+
+Use `mul_le_mul_of_nonneg_left hy2 hn0.le` as an intermediate fact. Rewrite `this` using `[mul_sub, e]`. Conclude with `this`. Establish `hz : ys a i = 0`. Apply `hsupp a i` to reduce the goal to its premises.
+
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `h ⟨hc.2, hc.1⟩`. Use `⟨0, fun h' => absurd h' h, by simp [hz], ?_, fun _ => rfl⟩` and prove the remaining obligations. Simplify using `only [hz, Nat.cast_zero, mul_zero, sub_zero]`.
+
+Check the signs of the components of the expression. Use `choose y hyG hy1 hy2 hy0 using hgood`. Establish `hyodd : ∀ a i, i ∉ oddLevels d → y a i = 0` using `fun a i hi => hy0 a i (fun h => hi h.1)`. Establish `hWsa : ∀ a, (∑ i ∈ oddLevels d, (l:ℝ) ^ i * (y a i : ℝ)) + (∑ i ∈ oddLevels d, (y (a - (i : ZMod d)) i : ℝ)) ≤ Ws a`. Introduce `a`.
+
+Establish `hfa` using `hflow.2 a`. Establish `: (n:ℝ) * ((∑ i ∈ oddLevels d, (l:ℝ) ^ i * (y a i : ℝ)) + ∑ i ∈ oddLevels d, (y (a - (i : ZMod d)) i : ℝ)) ≤ n * Ws a`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_add, Finset.mul_sum, Finset.mul_sum]`. Use `congr 1`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (∑ i ∈ oddLevels d, (l:ℝ) ^ i * ys a i) + ∑ i ∈ oddLevels d, ys (a - (i : ZMod d)) i := add_le_add (Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_left (hy1 a i) (by positivity)) (Finset.sum_le_sum fun i _ => hy1 _ i)`. Use `_ ≤ n * Ws a := hfa`.
+
+Conclude with `le_of_mul_le_mul_left this hn0`. Establish `hsum_le : ∀ a, (∑ i ∈ oddLevels d, l ^ i * y a i) + (∑ i ∈ oddLevels d, y (a - (i : ZMod d)) i) ≤ W a`. Introduce `a`. Establish `h'` using `(hWsa a).trans (hWs a).2`. Conclude with `h'` after adjusting the coercions.
+
+Set `p : Plan l d W` to `{ y := y u := fun a => W a - ((∑ i ∈ oddLevels d, l ^ i * y a i) + (∑ i ∈ oddLevels d, y (a - (i : ZMod d)) i)) supp := hyodd bal := by`. Introduce `a`. Use `hsum_le a` as an intermediate fact. Use `omega }`. Use `⟨p, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `a i hi`. Conclude with `hy0 a i (fun h => absurd h.2 (not_lt.mpr hi))`. Introduce `a i hne`. Distinguish the cases in `h : i ∈ oddLevels d ∧ i < i0 k l`. Conclude with `hyG a i h`.
+
+Conclude with `absurd (hy0 a i h) hne`. Establish `hlog : 0 ≤ Real.logb l n` using `Real.logb_nonneg hl1 hnR`. Establish `hB : 0 ≤ (n:ℝ) * ((S:ℝ) + Real.logb l n + 1)` using `by positivity`. Establish `hblk : ∀ a, ∀ i ∈ oddLevels d, blockBd l n m i (y a i) ≤ n * gam l * ((l : ℝ) ^ i * y a i) + n * gam l * y a i - ys a i + (if ys a i ≠ 0 then (n : ℝ) * ((S : ℝ) + Real.logb l n + 1) else 0) + 2 * (i0 k l : ℝ) * m / ((l : ℝ) - 1) * ((l : ℝ) ^ i * y a i)`. Introduce `a i _`.
+
+Use `blockBd_le hl hn ?_ (hy1 a i) (hy2 a i)` and prove the remaining obligations. Introduce `h`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `h (hsupp a i (Or.inl hc))`.
+
+Establish `hsumblk : (∑ a, ∑ i ∈ oddLevels d, blockBd l n m i (y a i)) ≤ n * gam l * (∑ a, ∑ i ∈ oddLevels d, (l : ℝ) ^ i * y a i) + n * gam l * (∑ a, ∑ i ∈ oddLevels d, (y a i : ℝ)) - (∑ a, ∑ i ∈ oddLevels d, ys a i) + (∑ a, ∑ i ∈ oddLevels d, (if ys a i ≠ 0 then (n : ℝ) * ((S : ℝ) + Real. …`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum]`. Establish `hC : (∑ a, ∑ i ∈ oddLevels d, (if ys a i ≠ 0 then (n : ℝ) * ((S : ℝ) + Real.logb l n + 1) else 0)) ≤ d * (i0 k l : ℝ) * ((n : ℝ) * ((S : ℝ) + Real.logb l n + 1))`. Rewrite using `[← Finset.sum_product (f := fun q : ZMod d × ℕ => if ys q.1 q.2 ≠ 0 then (n : ℝ) * ((S : ℝ) + Real.logb l n + 1) else 0)]`.
+
+Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]`. Establish `hc : (((Finset.univ ×ˢ oddLevels d).filter (fun q : ZMod d × ℕ => ys q.1 q.2 ≠ 0)).card : ℝ) ≤ d`. Conclude with `hcard` after adjusting the coercions. Establish `hdI : (d:ℝ) ≤ d * (i0 k l : ℝ)`. Establish `: (1:ℝ) ≤ (i0 k l : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ i0 k l)`.
+
+Use polynomial arithmetic with `[Nat.cast_nonneg (α := ℝ) d]`. Combine the equalities or inequalities in the displayed calculation. Establish `hch : (∑ a, chBd l n m (p.u a)) = (∑ a, (p.u a : ℝ)) * (n * gam l + m / ((l : ℝ) - 1))`. Unfold `chBd`. Rewrite using `[Finset.sum_mul]`.
+
+Establish `hreidx : (∑ a, ∑ i ∈ oddLevels d, (y (a - (i : ZMod d)) i : ℝ)) = ∑ a, ∑ i ∈ oddLevels d, (y a i : ℝ)`. Rewrite using `[Finset.sum_comm, Finset.sum_comm (s := Finset.univ)]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Conclude with `(Equiv.subRight (i : ZMod d)).sum_comp (fun a => (y a i : ℝ))`.
+
+Establish `hbal : (∑ a, (W a : ℝ)) = (∑ a, ∑ i ∈ oddLevels d, (l : ℝ) ^ i * y a i) + (∑ a, ∑ i ∈ oddLevels d, (y a i : ℝ)) + ∑ a, (p.u a : ℝ)`. Rewrite using `[← hreidx, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`. Use `p.bal a` as an intermediate fact.
+
+Conclude with `this` after adjusting the coercions. Establish `hA : (∑ a, ∑ i ∈ oddLevels d, (l : ℝ) ^ i * y a i) ≤ ∑ a, Ws a`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `a _`. Establish `h2 : 0 ≤ ∑ i ∈ oddLevels d, (y (a - (i : ZMod d)) i : ℝ)` using `by positivity`.
+
+Combine the linear relations using `[hWsa a]`. Establish `hY : 0 ≤ ∑ a, ∑ i ∈ oddLevels d, (y a i : ℝ)` using `by positivity`. Establish `hA0 : 0 ≤ ∑ a, ∑ i ∈ oddLevels d, (l : ℝ) ^ i * y a i` using `by positivity`. Establish `hU : (∑ a, (p.u a : ℝ)) ≤ ∑ a, (W a : ℝ)` using `by linarith`. Establish `hX : maxFlow l d (fun a => (n:ℝ) * Ws a) - thl k l * n * (∑ a, Ws a) ≤ ∑ a, ∑ i ∈ oddLevels d, ys a i`.
+
+Establish `e : (∑ a, (fun a => (n:ℝ) * Ws a) a) / (l:ℝ) ^ (i0 k l) = thl k l * n * (∑ a, Ws a)`. Rewrite using `[hthl, ← Finset.mul_sum, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Use `hval` as an intermediate fact. Rewrite `this` using `[e]`.
+
+Conclude with `this`. Establish `hcoef : 0 ≤ 2 * (i0 k l : ℝ) * m / ((l : ℝ) - 1)` using `by positivity`. Establish `hAm : 2 * (i0 k l : ℝ) * m / ((l : ℝ) - 1) * (∑ a, ∑ i ∈ oddLevels d, (l : ℝ) ^ i * y a i) ≤ 2 * (i0 k l : ℝ) * m / ((l : ℝ) - 1) * (∑ a, Ws a)` using `mul_le_mul_of_nonneg_left hA hcoef`. Establish `hmc : 0 ≤ (m : ℝ) / ((l : ℝ) - 1)` using `by positivity`. Establish `hUm : (m : ℝ) / ((l : ℝ) - 1) * (∑ a, (p.u a : ℝ)) ≤ (m : ℝ) / ((l : ℝ) - 1) * ∑ a, (W a : ℝ)` using `mul_le_mul_of_nonneg_left hU hmc`.
+
+Establish `hF : Fnum l d (fun a => (n : ℝ) * Ws a) = gam l * ((n:ℝ) * ∑ a, Ws a) - maxFlow l d (fun a => (n:ℝ) * Ws a)`. Unfold `Fnum`. Rewrite using `[← Finset.mul_sum]`. Establish `hsub : (∑ a, ((W a : ℝ) - Ws a)) = (∑ a, (W a : ℝ)) - ∑ a, Ws a` using `Finset.sum_sub_distrib ..`. Use `show (∑ a, ∑ i ∈ oddLevels d, blockBd l n m i (y a i)) + ∑ a, chBd l n m (p.u a) ≤ _`.
+
+Rewrite using `[hch, hF, hsub]`. Establish `e1 : 2 * (i0 k l : ℝ) * m * (∑ a, Ws a) / ((l : ℝ) - 1) = 2 * (i0 k l : ℝ) * m / ((l : ℝ) - 1) * (∑ a, Ws a)` using `by ring`. Establish `e2 : (m : ℝ) * (∑ a, (W a : ℝ)) / ((l : ℝ) - 1) = (m : ℝ) / ((l : ℝ) - 1) * ∑ a, (W a : ℝ)` using `by ring`. Rewrite using `[e1, e2]`. Establish `hbal' : (n:ℝ) * gam l * (∑ a, (W a : ℝ)) = n * gam l * (∑ a, ∑ i ∈ oddLevels d, (l : ℝ) ^ i * y a i) + n * gam l * (∑ a, ∑ i ∈ oddLevels d, (y a i : ℝ)) + n * gam l * ∑ a, (p.u a : ℝ)`.
+
+Rewrite using `[hbal]`. Expand and normalize the polynomial expressions, which then agree. Combine the linear relations using `[hsumblk, hC, hX, hAm, hUm, hbal']`.
+-/
 private theorem exists_plan : ∀ (l d : ℕ) [NeZero d], 5 ≤ l → ∀ (n m k S : ℕ), 1 ≤ n → 1 ≤ k → ∀ (W : ZMod d → ℕ) (Ws : ZMod d → ℝ) (Good : ZMod d → ℕ → Set ℕ),
   (∀ a, 0 ≤ Ws a ∧ Ws a ≤ W a) → (∀ a, ∀ i ∈ oddLevels d, i < i0 k l → Windows S (Good a i)) →
   ∃ p : Plan l d W, (∀ a i, i0 k l ≤ i → p.y a i = 0) ∧ (∀ a i, p.y a i ≠ 0 → p.y a i ∈ Good a i) ∧
@@ -408,6 +543,11 @@ private theorem exists_plan : ∀ (l d : ℕ) [NeZero d], 5 ≤ l → ∀ (n m k
       ring
     linarith [hsumblk, hC, hX, hAm, hUm, hbal']
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_product']`. Use `Finset.sum_bij (fun p _ => P.pos p.1 p.2.val) (fun _ _ => Finset.mem_univ _) ?_ ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `p hp q hq hpq`. Simplify using `only [Finset.mem_product] at hp hq`. Take `⟨_, _, huniq⟩` from `hZ (P.pos q.1 q.2.val)`.
+
+Conclude with `(huniq p ⟨hp.1, hpq⟩).trans (huniq q ⟨hq.1, rfl⟩).symm`. Introduce `z _`. Take `⟨p, ⟨hp1, hp2⟩, _⟩` from `hZ z`. Conclude with `⟨p, Finset.mem_product.mpr ⟨hp1, Finset.mem_univ _⟩, hp2⟩`.
+-/
 private theorem sum_reps (P : RF.Par) (Z : Finset P.Pl) (hZ : RF.IsReps P Z) (g : P.Pl → ℝ) :
     ∑ z ∈ Z, ∑ a : ZMod P.d, g (P.pos z a.val) = ∑ z, g z := by
   rw [← Finset.sum_product']
@@ -420,11 +560,19 @@ private theorem sum_reps (P : RF.Par) (Z : Finset P.Pl) (hZ : RF.IsReps P Z) (g 
     obtain ⟨p, ⟨hp1, hp2⟩, _⟩ := hZ z
     exact ⟨p, Finset.mem_product.mpr ⟨hp1, Finset.mem_univ _⟩, hp2⟩
 
+/- English proof (translation)
+Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem one_le_log {x : ℝ} (hx : 3 ≤ x) : 1 ≤ Real.log x := by
   rw [Real.le_log_iff_exp_le (by linarith)]
   have := Real.exp_one_lt_d9
   linarith
 
+/- English proof (translation)
+Establish `h5 : (5 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `h1 : 1 ≤ Real.log l` using `one_le_log (by linarith)`. Establish `h2 : 0 ≤ Real.log x` using `Real.log_nonneg hx`. Establish `h3 : Real.log x ≤ Real.log y` using `Real.log_le_log (by linarith) hxy`. Unfold `Real.logb`.
+
+Conclude with `(div_le_self h2 h1).trans h3`.
+-/
 private theorem logb_le {l : ℕ} (hl : 5 ≤ l) {x y : ℝ} (hx : 1 ≤ x) (hxy : x ≤ y) : Real.logb l x ≤ Real.log y := by
   have h5 : (5 : ℝ) ≤ l := by exact_mod_cast hl
   have h1 : 1 ≤ Real.log l := one_le_log (by linarith)
@@ -433,12 +581,26 @@ private theorem logb_le {l : ℕ} (hl : 5 ≤ l) {x y : ℝ} (hx : 1 ≤ x) (hxy
   unfold Real.logb
   exact (div_le_self h2 h1).trans h3
 
+/- English proof (translation)
+Unfold `S0`. Apply `Nat.ceil_mono` to reduce the goal to its premises. Establish `: (i : ℝ) ≤ j` using `by exact_mod_cast h`. Use `gcongr`.
+-/
 private theorem mono_resι_var (l n : ℕ) {i j : ℕ} (h : i ≤ j) : S0 l i n ≤ S0 l j n := by
   unfold S0
   apply Nat.ceil_mono
   have : (i : ℝ) ≤ j := by exact_mod_cast h
   gcongr
 
+/- English proof (translation)
+Establish `hk1 : 1 ≤ k` using `by omega`. Establish `hcast : ((k - 1 : ℕ) : ℝ) = (k : ℝ) - 1` using `by rw [Nat.cast_sub hk1, Nat.cast_one]`. Establish `hk4 : (4 : ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `hlog1 : 1 ≤ Real.log k` using `one_le_log (by linarith)`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (show 1 < l by omega)`.
+
+Establish `hb1 : Real.logb l (((k - 1 : ℕ) : ℝ) + 1) ≤ Real.log k` using `logb_le hl (by rw [hcast]; linarith) (by rw [hcast]; linarith)`. Establish `hb2 : Real.logb l ((k - 1 : ℕ) : ℝ) ≤ Real.log k` using `logb_le hl (by rw [hcast]; linarith) (by rw [hcast]; linarith)`. Establish `hlogb0 : 0 ≤ Real.logb l (((k - 1 : ℕ) : ℝ) + 1)`. Apply `Real.logb_nonneg hl1` to reduce the goal to its premises. Establish `: (0 : ℝ) ≤ ((k - 1 : ℕ) : ℝ)` using `Nat.cast_nonneg _`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hi0 : (0 : ℝ) ≤ i` using `Nat.cast_nonneg _`. Establish `hS : (S0 l i (k - 1) : ℝ) < 64 * ((k - 1 : ℕ) : ℝ) ^ 2 * ((i : ℝ) + 3 + 3 * Real.logb l (((k - 1 : ℕ) : ℝ) + 1)) + 1`. Unfold `S0`. Apply `Nat.ceil_lt_add_one` to reduce the goal to its premises.
+
+Conclude with `mul_nonneg (by positivity) (by linarith)`. Rewrite `hS`, `hb1`, `hb2`, the goal using `[hcast]`. Establish `hn3 : (3 : ℝ) ≤ (k : ℝ) - 1` using `by linarith`. Establish `hn2 : (9 : ℝ) ≤ ((k : ℝ) - 1) ^ 2` using `by nlinarith`. Establish `e1 : 64 * ((k : ℝ) - 1) ^ 2 * ((i : ℝ) + 3 + 3 * Real.logb l ((k : ℝ) - 1 + 1)) ≤ 64 * ((k : ℝ) - 1) ^ 2 * (11 * Real.log k)` using `mul_le_mul_of_nonneg_left (by linarith) (by positivity)`.
+
+Establish `e2 : 9 * Real.log k ≤ ((k : ℝ) - 1) ^ 2 * Real.log k` using `mul_le_mul_of_nonneg_right hn2 (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem add_le (l k i : ℕ) (hl : 5 ≤ l) (hk : 4 ≤ k) (hi : (i : ℝ) ≤ 5 * Real.log k) :
     (S0 l i (k - 1) : ℝ) + Real.logb l ((k - 1 : ℕ) : ℝ) + 1 ≤ 707 * ((k : ℝ) - 1) ^ 2 * Real.log k := by
   have hk1 : 1 ≤ k := by omega
@@ -470,6 +632,11 @@ private theorem add_le (l k i : ℕ) (hl : 5 ≤ l) (hk : 4 ≤ k) (hi : (i : �
     mul_le_mul_of_nonneg_right hn2 (by linarith)
   linarith
 
+/- English proof (translation)
+Establish `h5 : (5 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `h1 : 0 < (l : ℝ) ^ 2 - 1` using `by nlinarith`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← div_eq_mul_inv, inv_eq_one_div, div_le_div_iff₀ (by linarith) (by linarith)]; linarith`. Unfold `gam`.
+
+Rewrite using `[← div_eq_mul_inv, div_le_div_iff₀ h1 (by linarith)]; nlinarith`. Unfold `gam`. Check the signs of the components of the expression. Unfold `rho`. Check the signs of the components of the expression.
+-/
 private theorem inv_le {l : ℕ} (hl : 5 ≤ l) : ((l : ℝ) - 1)⁻¹ ≤ 2 * (l : ℝ)⁻¹ ∧ gam l ≤ 2 * (l : ℝ)⁻¹ ∧ 0 ≤ gam l ∧ 0 ≤ rho l := by
   have h5 : (5 : ℝ) ≤ l := by exact_mod_cast hl
   have h1 : 0 < (l : ℝ) ^ 2 - 1 := by nlinarith
@@ -482,6 +649,51 @@ private theorem inv_le {l : ℕ} (hl : 5 ≤ l) : ((l : ℝ) - 1)⁻¹ ≤ 2 * (
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `hk1 : 1 ≤ k` using `by omega`. Establish `hl2 : 2 ≤ l` using `by omega`. Establish `hkR : (4 : ℝ) ≤ k` using `by exact_mod_cast (show 4 ≤ k by omega)`. Establish `hcast : ((k - 1 : ℕ) : ℝ) = (k : ℝ) - 1` using `by rw [Nat.cast_sub hk1, Nat.cast_one]`. Establish `hT0 : 0 < T` using `by linarith`.
+
+Use `set Ws : ZMod d → ℝ := fun a => (1 - θ) * w a / T with hWsdef`. Establish `hTWs : ∀ a, T * Ws a = (1 - θ) * w a`. Introduce `a`. Simplify using `only [Ws]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hWs : ∀ a, 0 ≤ Ws a ∧ Ws a ≤ W a`. Introduce `a`. Use `⟨div_nonneg (mul_nonneg (by linarith [hθ.2]) (hw a).le) hT0.le, ?_⟩` and prove the remaining obligations. Rewrite using `[div_le_iff₀ hT0]`. Combine the linear relations using `[hlo a]`.
+
+Take `⟨p, hp1, hp2, hpb⟩` from `exists_plan l d hl (k - 1) m k (S0 l (i0 k l) (k - 1)) (by omega) hk1 W Ws Good hWs hG`. Use `⟨p, hp1, hp2, ?_⟩` and prove the remaining obligations. Rewrite `hθm`, the goal using `[← hcast]`. Use `set nR : ℝ := ((k - 1 : ℕ) : ℝ) with hnR`. Establish `hnR0 : 3 ≤ nR` using `by rw [hcast]; linarith`.
+
+Establish `hnRk : nR ≤ k` using `by rw [hcast]; linarith`. Establish `hL : 1 ≤ Real.log k` using `one_le_log (by linarith)`. Take `⟨hinv, hg2, hg0, hrho⟩` from `inv_le hl`. Establish `hthl : 0 ≤ thl k l` using `by rw [(thlEq k l hk1 hl2).2.2.2]; positivity`. Establish `hi0 : (i0 k l : ℝ) ≤ 5 * Real.log k` using `by have := levelBound k l hk1 hl; linarith`.
+
+Establish `hl5 : (5 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hq0 : 0 ≤ (l : ℝ)⁻¹` using `inv_nonneg.mpr (by linarith)`. Establish `hl1inv0 : 0 ≤ ((l : ℝ) - 1)⁻¹` using `inv_nonneg.mpr (by linarith)`. Establish `hm0 : (0 : ℝ) ≤ m` using `Nat.cast_nonneg _`. Establish `hmk : (m : ℝ) ≤ k` using `by exact_mod_cast (show m ≤ k by omega)`.
+
+Establish `hd0 : (0 : ℝ) ≤ d` using `Nat.cast_nonneg _`. Establish `hdE : 0 ≤ (d : ℝ) * E` using `mul_nonneg hd0 hE`. Establish `hcard : ∑ _a : ZMod d, E = (d : ℝ) * E`. Rewrite using `[Finset.sum_const, Finset.card_univ, ZMod.card, nsmul_eq_mul]`. Establish `A1 : T * ∑ a, Ws a = (1 - θ) * ∑ a, w a`.
+
+Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun a _ => hTWs a)`. Establish `A2 : T * ∑ a, ((W a : ℝ) - Ws a) ≤ θ * ∑ a, w a + d * E`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← hcard, ← Finset.sum_add_distrib]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+
+Introduce `a _`. Rewrite using `[mul_sub, hTWs a]`. Combine the linear relations using `[hhi a]`. Establish `A3 : T * ∑ a, (W a : ℝ) ≤ ∑ a, w a + d * E`. Rewrite using `[Finset.mul_sum, ← hcard, ← Finset.sum_add_distrib]`.
+
+Conclude with `Finset.sum_le_sum (fun a _ => hhi a)`. Establish `hSw0 : 0 ≤ ∑ a, w a` using `Finset.sum_nonneg (fun a _ => (hw a).le)`. Use `set Sw := ∑ a, w a with hSw`. Establish `hDw : ∀ a, 0 ≤ nR * w a` using `fun a => mul_nonneg (by linarith) (hw a).le`. Establish `hDWs : ∀ a, 0 ≤ nR * Ws a` using `fun a => mul_nonneg (by linarith) (hWs a).1`.
+
+Establish `e1` using `Fnum_mul hl2 (D := fun a => nR * Ws a) hDWs T hT0.le`. Establish `e2` using `Fnum_mul hl2 (D := fun a => nR * w a) hDw (1 - θ) (by linarith [hθ.2])`. Establish `hF : T * Fnum l d (fun a => nR * Ws a) = (1 - θ) * Fnum l d (fun a => nR * w a)`. Rewrite using `[← e1, ← e2]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Use `show T * (nR * Ws a) = (1 - θ) * (nR * w a)`. Take the linear combination `nR * hTWs a`. Establish `hFn0 : 0 ≤ Fnum l d (fun a => nR * w a)` using `le_trans (mul_nonneg hrho (Finset.sum_nonneg (fun a _ => hDw a))) (rho_mul_le_Fnum hl2 hDw)`. Establish `t1 : T * Fnum l d (fun a => nR * Ws a) ≤ Fnum l d (fun a => nR * w a)`.
+
+Rewrite using `[hF]`. Use `mul_nonneg hθ.1 hFn0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `t2 : T * (thl k l * nR * ∑ a, Ws a) ≤ k * thl k l * Sw`. Establish `h1 : nR * (1 - θ) ≤ k`.
+
+Use `mul_nonneg (show (0:ℝ) ≤ nR by linarith) hθ.1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show T * (thl k l * nR * ∑ a, Ws a) = thl k l * nR * (T * ∑ a, Ws a) by ring, A1]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ ≤ thl k l * k * Sw := mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left h1 hthl) hSw0`. Use `_ = k * thl k l * Sw := by ring`. Establish `t3 : T * (nR * gam l * ∑ a, ((W a : ℝ) - Ws a)) ≤ 10 * (m * (l : ℝ)⁻¹ * Sw) + 2 * (k * (l : ℝ)⁻¹ * (d * E))`. Establish `hnθ : 0 ≤ nR * θ` using `mul_nonneg (by linarith) hθ.1`. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `add_le_add` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul hg2 hθm hnθ (by positivity)) hSw0`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul hg2 hnRk (by linarith) (by positivity)) hdE`. Use `_ = _ := by ring`. Establish `t4 : T * (m * (∑ a, (W a : ℝ)) / ((l : ℝ) - 1)) ≤ 2 * (m * (l : ℝ)⁻¹ * Sw) + 2 * (k * (l : ℝ)⁻¹ * (d * E))`.
+
+Establish `hmq` using `mul_le_mul_of_nonneg_right hmk (mul_nonneg hq0 hdE)`. Combine the equalities or inequalities in the displayed calculation. Establish `t5 : T * (2 * (i0 k l : ℝ) * m * (∑ a, Ws a) / ((l : ℝ) - 1)) ≤ 20 * (Real.log k * (m * (l : ℝ)⁻¹ * Sw))`. Establish `h1 : (1 - θ) * Sw ≤ Sw`. Use `mul_nonneg hθ.1 hSw0` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hX : 0 ≤ 2 * (i0 k l : ℝ) * m` using `by positivity`. Establish `h2 : 2 * (i0 k l : ℝ) * m * Sw ≤ 2 * (5 * Real.log k) * m * Sw`. Use `mul_le_mul_of_nonneg_right hi0 (mul_nonneg hm0 hSw0)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hadd : (S0 l (i0 k l) (k - 1) : ℝ) + Real.logb l nR + 1 ≤ 707 * nR ^ 2 * Real.log k`. Use `add_le l k (i0 k l) hl (by omega) hi0` as an intermediate fact. Rewrite `this` using `[← hcast]`. Conclude with `this`.
+
+Establish `hZ : 0 ≤ (S0 l (i0 k l) (k - 1) : ℝ) + Real.logb l nR + 1`. Establish `: 0 ≤ Real.logb l nR` using `Real.logb_nonneg (by exact_mod_cast (show 1 < l by omega)) (by linarith)`. Establish `: (0 : ℝ) ≤ (S0 l (i0 k l) (k - 1) : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `t6 : T * ((d : ℝ) * (i0 k l : ℝ) * (nR * ((S0 l (i0 k l) (k - 1) : ℝ) + Real.logb l nR + 1))) ≤ d * (3535 * T * nR ^ 3 * Real.log k ^ 2)`.
+
+Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (d : ℝ) * T * ((5 * Real.log k) * (nR * (707 * nR ^ 2 * Real.log k))) := mul_le_mul_of_nonneg_left (mul_le_mul hi0 (mul_le_mul_of_nonneg_left hadd (by linarith)) (mul_nonneg (by linarith) hZ) (by linarith)) (mul_nonneg hd0 hT0.le)`. Use `_ = _ := by ring`. Establish `hpb'` using `mul_le_mul_of_nonneg_left hpb hT0.le`.
+
+Establish `hmq : m * (l : ℝ)⁻¹ * Sw ≤ Real.log k * (m * (l : ℝ)⁻¹ * Sw)` using `le_mul_of_one_le_left (by positivity) hL`. Simplify using `only [div_eq_mul_inv] at hpb' t4 t5 ⊢`. Combine the linear relations using `only [t1, t2, t3, t4, t5, t6, hpb', hmq]`.
+-/
 private theorem orbit (l d : ℕ) [NeZero d] (hl : 5 ≤ l) (m k : ℕ) (hmk : m + 3 ≤ k) (hm : 1 ≤ m) (W : ZMod d → ℕ) (w : ZMod d → ℝ)
     (T θ E : ℝ) (hT : 1 ≤ T) (hw : ∀ a, 0 < w a) (hlo : ∀ a, (1 - θ) * w a ≤ T * W a) (hhi : ∀ a, T * W a ≤ w a + E)
     (hE : 0 ≤ E) (hθ : 0 ≤ θ ∧ θ ≤ 1) (hθm : ((k : ℝ) - 1) * θ ≤ 5 * m) (Good : ZMod d → ℕ → Set ℕ)
@@ -633,6 +845,41 @@ private theorem orbit (l d : ℕ) [NeZero d] (hl : 5 ≤ l) (m k : ℕ) (hmk : m
 end UpperTheory.G2.RowBd
 
 open UpperTheory.G2.RowBd in
+/- English proof (translation)
+Introduce `hBi hCH hMON C1 hC1`. Use `⟨3567 + 6 * C1, by linarith, ?_⟩` and prove the remaining obligations. Introduce `P l hcard hm hmk hr hSE hlp hl Pk`. Use `haveI := P.nz`. Take `⟨ev, hev⟩` from `exists_ev P.d Pk.odd`.
+
+Establish `hdeg` using `Pk.deg`. Establish `hk1 : 1 ≤ P.k - 1` using `by omega`. Establish `hex : ∀ o : ↥Pk.Z, ∃ p : Plan l P.d (RF.alongOrb P o Pk.W), (∀ a i, RF.i0 P.k l ≤ i → p.y a i = 0) ∧ (∀ a i, p.y a i ≠ 0 → p.y a i ∈ {y : ℕ | RF.GlobalTheory.Attains (Pk.R.X o) (Pk.R.F o) (RF.GlobalTheory.bi 0 (ev a) i y) (RF.blockBd l (P.k - 1) P.m i y)}) ∧ Pk.T * p.bound (P.k - …`. Introduce `o`. Use `orbit l P.d hl P.m P.k hmk hm (RF.alongOrb P o Pk.W) (RF.alongOrb P o P.w) Pk.T Pk.θ0 (C1 * P.SE) hdeg.T_one (fun a => hdeg.w_pos _) (fun a => hdeg.TW_lo _) (fun a => hdeg.TW_hi _) (mul_nonneg hC1 hSE) hdeg.th_rng hdeg.th_m _ ?_` and prove the remaining obligations.
+
+Introduce `a i hi hlt`. Establish `hiodd` using `Finset.mem_filter.mp hi`. Establish `hid : i < P.d` using `Finset.mem_range.mp hiodd.1`. Establish `halt` using `Pk.R.alt o`. Establish `hW` using `hBi Pk.R.C Pk.R.V (2 * P.d) (Pk.R.I o) (Pk.R.J o) (Pk.R.X o) (Pk.R.F o) halt (by rw [Pk.R.hVl]; exact hl) (by rw [(Pk.R.hn o).1]; exact hk1) 0 (ev a) ((halt.2 (ev a)).mpr (hev a).1) i hiodd.2 (by omega)`.
+
+Rewrite `hW` using `[Pk.R.hVl, (Pk.R.hn o).1, (Pk.R.hn o).2]`. Use `⟨hW.1, fun Y0 => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, h1, h2⟩` from `hW.2 Y0`. Establish `hmono` using `mono_resι_var l (P.k - 1) hlt.le`. Conclude with `⟨y, hy, h1, by omega⟩`.
+
+Use `choose pl hpl using hex`. Set `y : P.Pl → ZMod P.d → ℕ → ℕ` to `fun z => if h : z ∈ Pk.Z then (pl ⟨z, h⟩).y else fun _ _ => 0`. Set `u : P.Pl → ZMod P.d → ℕ` to `fun z => if h : z ∈ Pk.Z then (pl ⟨z, h⟩).u else fun _ => 0`. Establish `hν` using `UpperTheory.attains_blockListOfWeights_along_orbits hCH hMON P l C1 hcard hm hmk hr hl Pk y u ev hev (by`. Introduce `z hz a`.
+
+Simplify using `only [y, u, dif_pos hz]`. Conclude with `(pl ⟨z, hz⟩).bal a)`. Use the proof step `(by`. Introduce `z hz a i hi`. Simplify using `only [y, dif_pos hz]`.
+
+Conclude with `(hpl ⟨z, hz⟩).1 a i hi)`. Use the proof step `(by`. Introduce `o a i _ hne`. Simplify using `only [y, dif_pos o.2, Subtype.coe_eta] at hne ⊢`. Conclude with `(hpl o).2.1 a i hne)`.
+
+Establish `hsum : ∑ z ∈ Pk.Z, ((∑ a, ∑ i ∈ oddLevels P.d, RF.blockBd l (P.k - 1) P.m i (y z a i)) + ∑ a, RF.chBd l (P.k - 1) P.m (u z a)) = ∑ o : ↥Pk.Z, (pl o).bound (P.k - 1) P.m`. Rewrite using `[← Finset.sum_coe_sort Pk.Z]`. Use `Finset.sum_congr rfl fun o _ => ?_` and prove the remaining obligations. Simplify using `only [y, u, dif_pos o.2, Subtype.coe_eta, Plan.bound]`. Establish `hT0 : 0 < Pk.T` using `by linarith [hdeg.T_one]`.
+
+Establish `hbound : Pk.T * Pk.ν ≤ ∑ o : ↥Pk.Z, Pk.T * (pl o).bound (P.k - 1) P.m + Pk.T * Pk.rest / ((l : ℝ) - 1)`. Use `mul_le_mul_of_nonneg_left hν hT0.le` as an intermediate fact. Rewrite `this` using `[hsum, mul_add, Finset.mul_sum]`. Rewrite using `[mul_div_assoc]`. Conclude with `this`.
+
+Establish `hle` using `Finset.sum_le_sum (fun o (_ : o ∈ (Finset.univ : Finset ↥Pk.Z)) => (hpl o).2.2)`. Use `set A : ℝ := 32 * Real.log P.k * P.m / l + P.k * thl P.k l with hA`. Use `set X : ℝ := 4 * P.k * (C1 * P.SE) / l + 3535 * Pk.T * ((P.k : ℝ) - 1) ^ 3 * Real.log P.k ^ 2 with hX`. Establish `hreps` using `sum_reps P Pk.Z Pk.hZ P.w`. Establish `hcnt` using `sum_reps P Pk.Z Pk.hZ (fun _ => (1 : ℝ))`.
+
+Simplify using `only [Finset.sum_const, Finset.card_univ, ZMod.card, nsmul_eq_mul, mul_one] at hcnt`. Establish `hZd : ∑ o : ↥Pk.Z, ((P.d : ℝ) * X) = P.f * X`. Rewrite using `[Finset.sum_coe_sort Pk.Z (fun _ => (P.d : ℝ) * X), ← Finset.sum_mul]`. Use `congr 1`. Rewrite using `[← hcard]`.
+
+Simplify using `using hcnt`. Establish `hRsum : ∑ o : ↥Pk.Z, (Fnum l P.d (fun a => ((P.k : ℝ) - 1) * RF.alongOrb P o P.w a) + A * (∑ a, RF.alongOrb P o P.w a) + P.d * X) = (∑ z ∈ Pk.Z, Fnum l P.d (fun s => ((P.k : ℝ) - 1) * RF.alongOrb P z P.w s)) + A * (∑ z, P.w z) + P.f * X`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_add_distrib, hZd, ← Finset.mul_sum, Finset.sum_coe_sort Pk.Z (fun z => Fnum l P.d (fun s => ((P.k : ℝ) - 1) * RF.alongOrb P z P.w s)), Finset.sum_coe_sort Pk.Z (fun z => ∑ a, RF.alongOrb P z P.w a)]`. Simplify using `only [RF.alongOrb] at hreps ⊢`. Rewrite using `[hreps]`.
+
+Rewrite `hle` using `[hRsum]`. Establish `hl0 : (0 : ℝ) < (l : ℝ) - 1`. Establish `: (5 : ℝ) ≤ l` using `by exact_mod_cast hl`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hrest : Pk.T * Pk.rest / ((l : ℝ) - 1) ≤ C1 * (P.f * P.k * P.SE) * (2 * (l : ℝ)⁻¹)`.
+
+Rewrite using `[div_eq_mul_inv]`. Establish `hinv` using `(inv_le hl).1`. Establish `hCn : 0 ≤ C1 * (P.f * P.k * P.SE)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `hk4 : (1 : ℝ) ≤ P.k` using `by exact_mod_cast (show 1 ≤ P.k by omega)`.
+
+Establish `hlog : 0 ≤ Real.log P.k` using `Real.log_nonneg hk4`. Establish `hw : 0 ≤ ∑ z, P.w z` using `Finset.sum_nonneg fun z _ => (hdeg.w_pos z).le`. Establish `hthl : 0 ≤ thl P.k l`. Rewrite using `[(thlEq P.k l (by omega) (by omega)).2.2.2]`. Check the signs of the components of the expression.
+
+Establish `ha : 0 ≤ Real.log P.k * P.m * (∑ z, P.w z) / l` using `by positivity`. Establish `hb : 0 ≤ (P.f : ℝ) * P.k * P.SE / l` using `by positivity`. Establish `hc : 0 ≤ (P.k : ℝ) * thl P.k l * (∑ z, P.w z)` using `by positivity`. Establish `hk1r : (0 : ℝ) ≤ (P.k : ℝ) - 1` using `by linarith`. Establish `he : 0 ≤ Pk.T * P.f * ((P.k : ℝ) - 1) ^ 3 * Real.log P.k ^ 2` using `by positivity`.
+
+Establish `hid : A * (∑ z, P.w z) + P.f * X + C1 * (P.f * P.k * P.SE) * (2 * (l : ℝ)⁻¹) = 32 * (Real.log P.k * P.m * (∑ z, P.w z) / l) + 6 * C1 * ((P.f : ℝ) * P.k * P.SE / l) + (P.k : ℝ) * thl P.k l * (∑ z, P.w z) + 3535 * (Pk.T * P.f * ((P.k : ℝ) - 1) ^ 3 * Real.log P.k ^ 2)`. Rewrite using `[hA, hX]`. Expand and normalize the polynomial expressions, which then agree. Use polynomial arithmetic with `[mul_nonneg hC1 ha, mul_nonneg hC1 hc, mul_nonneg hC1 he, mul_nonneg hC1 hb]`.
+-/
 theorem UpperTheory.rowBound_le_Fnum_sum_add_error :
     RF.BiSupply → RF.CHSupply → RF.MONSupply → ∀ C1 : ℝ, 0 ≤ C1 → ∃ Cc : ℝ, 0 < Cc ∧ ∀ (P : RF.Par) (l : ℕ),
     Fintype.card P.Pl = P.f → 1 ≤ P.m → P.m + 3 ≤ P.k → P.r = P.k - 1 + P.m → 0 ≤ P.SE → l.Prime → 5 ≤ l → ∀ Pk : PkgCs P l C1,

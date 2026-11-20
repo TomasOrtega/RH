@@ -6,6 +6,9 @@ open UpperTheory.ConvolutionTheory.R2
 open scoped Classical
 open UpperTheory.ConvolutionTheory.R2.C
 
+/- English proof (translation)
+Establish `hxe : x = finiteAdeleInr x.2` using `Prod.ext (by simpa using hx) (by simp)`. Establish `h` using `finiteAdelicChar_eq_one_of_mem hU`. Rewrite `h` using `[finiteAdelicChar_apply, ← hxe]`. Simplify using `[ψ, h]`.
+-/
 private theorem psi_eq_one {F : Type} [Field F] [NumberField F] (x : A F) (hx : x.1 = 0)
     (hU : x.2 ∈ finiteInvDifferent F) : ψ x = 1 := by
   have hxe : x = finiteAdeleInr x.2 := Prod.ext (by simpa using hx) (by simp)
@@ -13,6 +16,17 @@ private theorem psi_eq_one {F : Type} [Field F] [NumberField F] (x : A F) (hx : 
   rw [finiteAdelicChar_apply, ← hxe] at h
   simp [ψ, h]
 
+/- English proof (translation)
+Establish `hc : IsCompact (tsupport g)` using `((mem_finiteSchwartzBruhatPi F).1 hg).2`. Set `qf : (Fin 4 → FiniteAdeleRing (𝓞 F) F) → FiniteAdeleRing (𝓞 F) F` to `fun w => w 2 ^ 2 - algebraMap F (FiniteAdeleRing (𝓞 F) F) δ * w 3 ^ 2 - w 1 * w 0`. Establish `hqf : Continuous qf`. Establish `h (i : Fin 4) : Continuous fun w : Fin 4 → FiniteAdeleRing (𝓞 F) F => w i` using `continuous_apply i`. Conclude with `(((h 2).pow 2).sub (continuous_const.mul ((h 3).pow 2))).sub ((h 1).mul (h 0))`.
+
+Establish `hU` using `isOpen_finiteInvDifferent F`. Establish `h0 : ∀ᶠ a in 𝓝 (0 : FiniteAdeleRing (𝓞 F) F), ∀ y ∈ qf '' tsupport g, a * y ∈ (finiteInvDifferent F : Set (FiniteAdeleRing (𝓞 F) F))`. Use `(hc.image hqf).eventually_forall_of_forall_eventually (fun y _ => ?_)` and prove the remaining obligations. Establish `hcont : Continuous fun z : FiniteAdeleRing (𝓞 F) F × FiniteAdeleRing (𝓞 F) F => z.1 * z.2` using `continuous_mul`. Conclude with `hcont.continuousAt.eventually (hU.mem_nhds (by simpa using zero_mem (finiteInvDifferent F)))`.
+
+Establish `h1 : ∀ᶠ b in 𝓝 (0 : A F), ∀ y ∈ qf '' tsupport g, b.2 * y ∈ (finiteInvDifferent F : Set (FiniteAdeleRing (𝓞 F) F))` using `(continuous_snd.tendsto (0 : A F)).eventually h0`. Use `filter_upwards [h1] with b hb hb1 v`. Distinguish the cases in `hv : g (finPartPi v) = 0`. Simplify using `[schwartzBruhatTensorPi, hv]`. Establish `hmem : finPartPi v ∈ tsupport g` using `subset_tsupport g hv`.
+
+Establish `hq : (b * q4 δ v).2 = b.2 * qf (finPartPi v)`. Establish `hp (x : A F) : (x ^ 2).2 = x.2 ^ 2` using `rfl`. Simplify using `[q4, qf, finPartPi, hp]`. Establish `hone : ψ (b * q4 δ v) = 1`. Use `psi_eq_one _ (by simp [hb1]) ?_` and prove the remaining obligations.
+
+Rewrite using `[hq]`. Conclude with `hb _ ⟨_, hmem, rfl⟩`. Rewrite using `[hone, one_mul]`.
+-/
 private theorem tensor_case {F : Type} [Field F] [NumberField F] (δ : F)
     (f : SchwartzMap (Fin 4 → mixedEmbedding.mixedSpace F) ℂ) {g : (Fin 4 → FiniteAdeleRing (𝓞 F) F) → ℂ}
     (hg : g ∈ finiteSchwartzBruhatPi F) :
@@ -47,6 +61,11 @@ private theorem tensor_case {F : Type} [Field F] [NumberField F] (δ : F)
       exact hb _ ⟨_, hmem, rfl⟩
     rw [hone, one_mul]
 
+/- English proof (translation)
+Use `Submodule.span_induction (p := fun f _ => ∀ᶠ b in 𝓝 (0 : A F), b.1 = 0 → ∀ v, ψ (b * q4 δ v) * f v = f v) ?_ ?_ ?_ ?_ hf` and prove the remaining obligations. Introduce and unpack `_ ⟨p, g, hg, rfl⟩`. Conclude with `tensor_case δ p hg`. Conclude with `Eventually.of_forall fun b _ v => by simp`. Introduce `x y _ _ hx hy filter_upwards [hx, hy] with b h1 h2 hb v`.
+
+Rewrite using `[Pi.add_apply, mul_add, h1 hb v, h2 hb v]`. Introduce `c x _ hx filter_upwards [hx] with b h1 hb v`. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_left_comm, h1 hb v]`.
+-/
 private theorem span_case {F : Type} [Field F] [NumberField F] (δ : F) {f : V4 F → ℂ}
     (hf : f ∈ schwartzBruhatPi F (Fin 4)) :
     ∀ᶠ b in 𝓝 (0 : A F), b.1 = 0 → ∀ v, ψ (b * q4 δ v) * f v = f v := by
@@ -62,6 +81,9 @@ private theorem span_case {F : Type} [Field F] [NumberField F] (δ : F) {f : V4 
     filter_upwards [hx] with b h1 hb v
     rw [Pi.smul_apply, smul_eq_mul, mul_left_comm, h1 hb v]
 
+/- English proof (translation)
+Introduce `F _ _ δ φ`. Conclude with `span_case δ φ.2`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.C.nLevel :
     ∀ (F : Type) [Field F] [NumberField F] (δ : F) (φ : S4 F), ∀ᶠ b in 𝓝 (0 : A F), b.1 = 0 → ∀ v, ψ (b * q4 δ v) * φ.1 v = φ.1 v := by
   intro F _ _ δ φ

@@ -19,6 +19,9 @@ def holSub0 {Comp : Type} (X : Comp → Data E r) (la : ∀ k, ReciprocityTheory
   holSub X la ⊓ offZero X
 
 variable {Xo c} in
+/- English proof (translation)
+Introduce `_ _ hx` and use `dif_neg hx`.
+-/
 theorem rdU_mem_offZero {σ : c.F →+* ℂ} (V : Unf Xo c σ r) (f : Rul Xo c) : rdU V f ∈ offZero V.X :=
   fun _ _ hx => dif_neg hx
 

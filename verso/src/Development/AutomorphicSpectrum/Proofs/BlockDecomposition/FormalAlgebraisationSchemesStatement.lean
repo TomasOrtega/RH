@@ -4,5 +4,8 @@ import Development.WeilBound.CoreStatements.TemperedRepresentationTheory.FormalA
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.FormalAlgebraisation
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Out PositivityTheory.FormalThickening
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FormalAlg.schemes_of_closedProj | exact GlobalTheory.CompanionTheory.FormalAlg.schemes_of_closedProj | (intros; apply GlobalTheory.CompanionTheory.FormalAlg.schemes_of_closedProj <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.formal_algebraisation_schemes : GEClosedProj → GlobalTheory.Published.FormalAlgebraisation.Schemes := by
   first | exact @GlobalTheory.CompanionTheory.FormalAlg.schemes_of_closedProj | exact GlobalTheory.CompanionTheory.FormalAlg.schemes_of_closedProj | (intros; apply GlobalTheory.CompanionTheory.FormalAlg.schemes_of_closedProj <;> assumption)

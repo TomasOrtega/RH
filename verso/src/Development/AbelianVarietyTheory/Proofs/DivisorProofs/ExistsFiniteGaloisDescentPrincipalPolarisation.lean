@@ -24,11 +24,61 @@ noncomputable section
 
 namespace GlobalTheory.MumDescent
 
+/- English proof (translation)
+Establish `e : (A ⊗ A).hom = pullback.fst A.hom A.hom ≫ A.hom` using `rfl`. Rewrite using `[e]`. Conclude with `⟨inferInstance, inferInstance⟩`.
+-/
 theorem qc_qs_tensor {S : Scheme.{0}} (A : Over S) [IsProper A.hom] :
     QuasiCompact (A ⊗ A).hom ∧ QuasiSeparated (A ⊗ A).hom := by
   have e : (A ⊗ A).hom = pullback.fst A.hom A.hom ≫ A.hom := rfl
   rw [e]; exact ⟨inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Introduce `K _ _ A _ _ hA PP hPP Ω _ _ _ _ κ hκ L hL hS hΛ hAmp hKT`. Use `haveI := hA.proper`. Use `haveI := hA.smooth`. Set `σΩ : K →+* Ω` to `algebraMap K Ω`. Set `AΩ` to `(Over.pullback (spMap σΩ)).obj A`.
+
+Establish `hAΩ : IsAbelianScheme AΩ` using `isAbelianScheme_pullback_obj _ A hA`. Establish `hpΩ : IsGrpPullback AΩ A (spMap σΩ) (pullback.fst A.hom (spMap σΩ))` using `isGrpPullback_pullback A _`. Take `⟨F, hF, H⟩` from `GlobalTheory.LBDescent.exists_finite_subextension_cls K Ω A.left AΩ.left A.hom AΩ.hom (pullback.fst A.hom (spMap σΩ)) hpΩ.1 L hL`. Set `f : Sp F ⟶ Sp K` to `spMap (algebraMap K F)`. Set `AF` to `(Over.pullback f).obj A`.
+
+Establish `hAF : IsAbelianScheme AF` using `isAbelianScheme_pullback_obj f A hA`. Establish `hpF : IsGrpPullback AF A f (pullback.fst A.hom f)` using `isGrpPullback_pullback A f`. Establish `hcomp : spMap (algebraMap F Ω) ≫ f = spMap σΩ`. Simplify using `only [f, σΩ, spMap]`. Rewrite using `[← Spec.map_comp]`.
+
+Use `congr 1`. Establish `w : pullback.fst A.hom (spMap σΩ) ≫ A.hom = (AΩ.hom ≫ spMap (algebraMap F Ω)) ≫ f`. Rewrite using `[Category.assoc, hcomp]`. Conclude with `hpΩ.1.w`. Set `jm : AΩ.left ⟶ AF.left` to `pullback.lift (pullback.fst A.hom (spMap σΩ)) (AΩ.hom ≫ spMap (algebraMap F Ω)) w`.
+
+Establish `hjf : jm ≫ pullback.fst A.hom f = pullback.fst A.hom (spMap σΩ)` using `pullback.lift_fst _ _ _`. Establish `hjs : jm ≫ AF.hom = AΩ.hom ≫ spMap (algebraMap F Ω)` using `pullback.lift_snd _ _ _`. Establish `hj : IsGrpPullback AΩ AF (spMap (algebraMap F Ω)) jm` using `IsGrpPullback.cancel hpF (hpΩ.congr hcomp.symm hjf.symm) hjs`. Take `⟨x, hx⟩` from `H AF.left AF.hom (pullback.fst A.hom f) (IsPullback.of_hasPullback _ _) jm hjf hjs`. Take `⟨L₁, hL₁, rfl⟩` from `CechPic.cls_surj x`.
+
+Establish `hw : LBIso L (L₁.pull jm)`. Rewrite using `[← CechPic.cls_eq_iff hL (pull_isLB hL₁ jm), CechPic.cls_pull hL₁ jm (pull_isLB hL₁ jm)]`. Conclude with `hx.symm`. Establish `hPPlb : PP.IsLB` using `hPP`. Take `⟨κF, hκF⟩ : ∃ κF : (G2 AF).left ⟶ (G2 A).left, IsSquare (pullback.fst A.hom f) κF` from `⟨_, GlobalTheory.LamPull.exists_isSquare hpF.1.w⟩`.
+
+Take `⟨jm₂, hjm₂⟩ : ∃ jm₂ : (G2 AΩ).left ⟶ (G2 AF).left, IsSquare jm jm₂` from `⟨_, GlobalTheory.LamPull.exists_isSquare hj.1.w⟩`. Establish `hΛF : (abelian₂ AF L₁).IsLB` using `DVR.linComb_isLB _ hL₁ _ _`. Establish `hΛΩ : (abelian₂ AΩ L).IsLB` using `DVR.linComb_isLB _ hL _ _`. Establish `hNF : (PP.pull κF).IsLB` using `pull_isLB hPPlb κF`. Establish `eΩ : κ = jm₂ ≫ κF`.
+
+Establish `h` using `GlobalTheory.ZM.SiegPull.isSquare_comp hjm₂ hκF`. Rewrite `h` using `[hjf]`. Conclude with `GlobalTheory.LamPull.isSquare_unique hκ h`. Establish `isoΩ : LBIso ((abelian₂ AF L₁).pull jm₂) ((PP.pull κF).pull jm₂)` using `LBIso.trans (pull_isLB hΛF _) hΛΩ (pull_isLB hNF _) (GlobalTheory.LamPull.lbIso_lam_pull hj hL₁ hL hw hjm₂).symm (LBIso.trans hΛΩ (pull_isLB hPPlb _) (pull_isLB hNF _) hΛ (GlobalTheory.ArcDataDescent.lbIso_pull_pull hPPlb κF jm₂ eΩ).symm)`. Use `haveI := hAF.proper`.
+
+Use `haveI := hAF.smooth`. Establish `hqq` using `qc_qs_tensor AF`. Take `⟨s, hs⟩` from `GlobalTheory.lbIso_descends_to_subfield_containing_finset F Ω (algebraMap F Ω) (G2 AF) (G2 AΩ) jm₂ (abelian₂ AF L₁) (PP.pull κF) (GlobalTheory.SiegelDescent.isPullback_square hj.1 jm₂ hjm₂) hqq.1 hqq.2 hΛF hNF isoΩ`. Use `haveI : IsAlgClosure K Ω := ⟨inferInstance, inferInstance⟩`. Set `F' : IntermediateField K Ω` to `F ⊔ IntermediateField.adjoin K (s : Set Ω)`.
+
+Use `haveI : FiniteDimensional K (IntermediateField.adjoin K (s : Set Ω)) := IntermediateField.finiteDimensional_adjoin fun y _ => (Algebra.IsAlgebraic.isAlgebraic y).isIntegral`. Use `haveI : FiniteDimensional K F' := IntermediateField.finiteDimensional_sup _ _`. Set `E : IntermediateField K Ω` to `IntermediateField.normalClosure K F' Ω`. Use `haveI hEf : FiniteDimensional K E := normalClosure.is_finiteDimensional K F' Ω`. Use `haveI hEg : IsGalois K E := by haveI : Normal K E := inferInstance`.
+
+Conclude with `IsGalois.mk`. Establish `hFE : F ≤ E` using `le_sup_left.trans F'.le_normalClosure`. Establish `hsE : (s : Set Ω) ⊆ E` using `fun y hy => F'.le_normalClosure (le_sup_right (a := F) (IntermediateField.subset_adjoin K _ hy))`. Set `α : F →+* E` to `(IntermediateField.inclusion hFE).toRingHom`. Set `e : Sp E ⟶ Sp K` to `spMap (algebraMap K E)`.
+
+Set `AE` to `(Over.pullback e).obj A`. Establish `hAE : IsAbelianScheme AE` using `isAbelianScheme_pullback_obj e A hA`. Establish `hpE : IsGrpPullback AE A e (pullback.fst A.hom e)` using `isGrpPullback_pullback A e`. Establish `hcα : spMap α ≫ f = e`. Simplify using `only [f, e, α, spMap]`.
+
+Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Establish `wE : pullback.fst A.hom e ≫ A.hom = (AE.hom ≫ spMap α) ≫ f`. Rewrite using `[Category.assoc, hcα]`. Conclude with `hpE.1.w`.
+
+Set `χ : AE.left ⟶ AF.left` to `pullback.lift (pullback.fst A.hom e) (AE.hom ≫ spMap α) wE`. Establish `hχf : χ ≫ pullback.fst A.hom f = pullback.fst A.hom e` using `pullback.lift_fst _ _ _`. Establish `hχs : χ ≫ AF.hom = AE.hom ≫ spMap α` using `pullback.lift_snd _ _ _`. Establish `hχ : IsGrpPullback AE AF (spMap α) χ` using `IsGrpPullback.cancel hpF (hpE.congr hcα.symm hχf.symm) hχs`. Take `⟨χ₂, hχ₂⟩ : ∃ χ₂ : (G2 AE).left ⟶ (G2 AF).left, IsSquare χ χ₂` from `⟨_, GlobalTheory.LamPull.exists_isSquare hχ.1.w⟩`.
+
+Establish `isoE : LBIso ((abelian₂ AF L₁).pull χ₂) ((PP.pull κF).pull χ₂)` using `hs E α (algebraMap E Ω) (RingHom.ext fun _ => rfl) (fun y hy => ⟨⟨y, hsE hy⟩, rfl⟩) (G2 AE) χ₂ (GlobalTheory.SiegelDescent.isPullback_square hχ.1 χ₂ hχ₂)`. Set `LE : LB AE.left` to `L₁.pull χ`. Establish `hLE : LE.IsLB` using `pull_isLB hL₁ χ`. Establish `hcE : spMap (algebraMap E Ω) ≫ e = spMap σΩ`. Simplify using `only [e, σΩ, spMap]`.
+
+Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Establish `wΩ : pullback.fst A.hom (spMap σΩ) ≫ A.hom = (AΩ.hom ≫ spMap (algebraMap E Ω)) ≫ e`. Rewrite using `[Category.assoc, hcE]`. Conclude with `hpΩ.1.w`.
+
+Set `jE : AΩ.left ⟶ AE.left` to `pullback.lift (pullback.fst A.hom (spMap σΩ)) (AΩ.hom ≫ spMap (algebraMap E Ω)) wΩ`. Establish `hjEf : jE ≫ pullback.fst A.hom e = pullback.fst A.hom (spMap σΩ)` using `pullback.lift_fst _ _ _`. Establish `hjEs : jE ≫ AE.hom = AΩ.hom ≫ spMap (algebraMap E Ω)` using `pullback.lift_snd _ _ _`. Establish `hjE : IsGrpPullback AΩ AE (spMap (algebraMap E Ω)) jE` using `IsGrpPullback.cancel hpE (hpΩ.congr hcE.symm hjEf.symm) hjEs`. Establish `hαΩ : spMap (algebraMap E Ω) ≫ spMap α = spMap (algebraMap F Ω)`.
+
+Simplify using `only [α, spMap]`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Establish `ejm : jm = jE ≫ χ`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[hjf, Category.assoc, hχf, hjEf]`. Use `show jm ≫ AF.hom = (jE ≫ χ) ≫ AF.hom`. Rewrite using `[hjs, Category.assoc, hχs, ← Category.assoc, hjEs, Category.assoc, hαΩ]`. Establish `hwE : LBIso L (LE.pull jE)` using `LBIso.trans hL (pull_isLB hL₁ jm) (pull_isLB hLE jE) hw (GlobalTheory.ArcDataDescent.lbIso_pull_pull hL₁ χ jE ejm).symm`. Establish `hd` using `GlobalTheory.PolDescent.rigidified_sym_kTriv_descend E Ω (algebraMap E Ω) AE AΩ jE LE L hAE hjE hLE hL hwE`.
+
+Use `haveI := hAE.proper`. Use `haveI := hAE.smooth`. Establish `ha` using `GlobalTheory.AmpleDescent.proper_relAmple_kTriv_of_fieldExtension E Ω (algebraMap E Ω) AE AΩ jE hjE LE L hLE hL hwE hAΩ.proper hAmp hKT`. Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim E AE hAE`. Establish `hrig : Out.Rigidified AE LE`.
+
+Establish `: Subsingleton (𝟙_ (Over (Sp E))).left` using `inferInstanceAs (Subsingleton (PrimeSpectrum E))`. Conclude with `GlobalTheory.PolDescent.exists_gen_of_unique (default : PrimeSpectrum E) (pull_isLB hLE _)`. Set `A₁ : Out.PolAV (Sp E)` to `{ A := AE, isAb := hAE, g := g, smoothDim := hg, L := LE, isLB := hLE, rigid := hrig, sym := hd.2.1 hS, ample := ha.2.1, ktriv := ha.2.2 }`. Use `⟨E, inferInstance, inferInstance, hEf, hEg, A₁, Iso.refl _, ?_, fun κ' hκ' => ?_⟩` and prove the remaining obligations. Use `show IsMonHom (𝟙 AE)`.
+
+Use `infer_instance`. Establish `e' : κ' = χ₂ ≫ κF`. Establish `h` using `GlobalTheory.ZM.SiegPull.isSquare_comp hχ₂ hκF`. Rewrite `h` using `[hχf]`. Conclude with `GlobalTheory.LamPull.isSquare_unique hκ' h`.
+
+Establish `hLE' : (LE.pull (𝟙 AE.left)).IsLB` using `pull_isLB hLE _`. Establish `k₁ : LBIso (abelian₂ AE (LE.pull (𝟙 AE.left))) ((abelian₂ AF L₁).pull χ₂)` using `GlobalTheory.LamPull.lbIso_lam_pull hχ hL₁ hLE' (GlobalTheory.ArcDataDescent.lbIso_pull_pull hL₁ χ (𝟙 _) (Category.id_comp χ).symm) hχ₂`. Establish `k₂ : LBIso ((PP.pull κF).pull χ₂) (PP.pull κ')` using `GlobalTheory.ArcDataDescent.lbIso_pull_pull hPPlb κF χ₂ e'`. Conclude with `LBIso.trans (DVR.linComb_isLB _ hLE' _ _) (pull_isLB hΛF _) (pull_isLB hPPlb _) k₁ (LBIso.trans (pull_isLB hΛF _) (pull_isLB hNF _) (pull_isLB hPPlb _) isoE k₂)`.
+-/
 theorem exists_galois_polAV : ∀ (K : Type) [Field K] [CharZero K] (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ PP : LB (G2 A).left, PP.IsLB → ∀ (Ω : Type) [Field Ω] [Algebra K Ω] [IsAlgClosed Ω] [Algebra.IsAlgebraic K Ω] (κ : (G2 ((Over.pullback (spMap (algebraMap K Ω))).obj A)).left ⟶ (G2 A).left), Geo.Tor.IsSquare (pullback.fst A.hom (spMap (algebraMap K Ω))) κ → ∀ L : LB ((Over.pullback (spMap (algebraMap K Ω))).obj A).left, L.IsLB → Out.Sym ((Over.pullback (spMap (algebraMap K Ω))).obj A) L → LBIso (abelian₂ ((Over.pullback (spMap (algebraMap K Ω))).obj A) L) (PP.pull κ) → Out.RelAmple ((Over.pullback (spMap (algebraMap K Ω))).obj A) L → Out.KTriv ((Over.pullback (spMap (algebraMap K Ω))).obj A) L → ∃ (E : Type) (_ : Field E) (_ : Algebra K E), FiniteDimensional K E ∧ IsGalois K E ∧ ∃ (A₁ : PolAV (Sp E)) (gen : (Over.pullback (spMap (algebraMap K E))).obj A ≅ A₁.A), IsMonHom gen.hom ∧ ∀ κ : (G2 ((Over.pullback (spMap (algebraMap K E))).obj A)).left ⟶ (G2 A).left, Geo.Tor.IsSquare (pullback.fst A.hom (spMap (algebraMap K E))) κ → LBIso (abelian₂ ((Over.pullback (spMap (algebraMap K E))).obj A) (A₁.L.pull gen.hom.left)) (PP.pull κ) := by
   intro K _ _ A _ _ hA PP hPP Ω _ _ _ _ κ hκ L hL hS hΛ hAmp hKT
   haveI := hA.proper

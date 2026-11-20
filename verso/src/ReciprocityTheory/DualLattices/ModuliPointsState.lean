@@ -20,11 +20,17 @@ namespace DualPair
 
 variable {R : LAlg R₀} (Dp : DualPair R)
 
+/- English proof (translation)
+Use `show Dp.η ∈ RingHom.ker Dp.π.1`. Rewrite using `[Dp.ker_eq]`. Conclude with `Ideal.subset_span (Set.mem_singleton _)`.
+-/
 lemma η_mem : Dp.η ∈ Dp.π.ker := by
   show Dp.η ∈ RingHom.ker Dp.π.1
   rw [Dp.ker_eq]
   exact Ideal.subset_span (Set.mem_singleton _)
 
+/- English proof (translation)
+Use `⟨fun r => ⟨Dp.σ.1 r, Dp.sect r⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Dp.ker_eq, Ideal.span_singleton_pow, pow_two, Dp.η_sq, Ideal.span_singleton_eq_bot]`.
+-/
 lemma sqZero : Dp.π.SqZero := by
   refine ⟨fun r => ⟨Dp.σ.1 r, Dp.sect r⟩, ?_⟩
   rw [Dp.ker_eq, Ideal.span_singleton_pow, pow_two, Dp.η_sq, Ideal.span_singleton_eq_bot]

@@ -6,6 +6,11 @@ noncomputable section
 
 namespace GlobalTheory.TypeSum.CasBasis.KOrth
 
+/- English proof (translation)
+Simplify using `only [unitE]`. Distinguish the cases in `h : b = c`. Substitute `h` using the available equality. Rewrite using `[Matrix.single_mul_single_same]`. Distinguish the cases in `h2 : a = d`.
+
+Substitute `h2` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h2, Matrix.trace_single_eq_of_ne _ _ _ h2]`. Rewrite using `[Matrix.single_mul_single_of_ne _ _ _ _ h]`. Simplify using `[h]`.
+-/
 theorem trE {n : ℕ} (a b c d : Fin n) : trace (unitE a b * unitE c d) = if b = c ∧ a = d then 1 else 0 := by
   simp only [unitE]
   by_cases h : b = c
@@ -15,25 +20,43 @@ theorem trE {n : ℕ} (a b c d : Fin n) : trace (unitE a b * unitE c d) = if b =
     · simp [h2, Matrix.trace_single_eq_of_ne _ _ _ h2]
   · rw [Matrix.single_mul_single_of_ne _ _ _ _ h]; simp [h]
 
+/- English proof (translation)
+Rewrite using `[← mul_inv, ← Complex.ofReal_mul, Real.mul_self_sqrt (by norm_num)]; norm_num`.
+-/
 theorem s2 : invSqrtTwo * invSqrtTwo = 1/2 := by
   rw [← mul_inv, ← Complex.ofReal_mul, Real.mul_self_sqrt (by norm_num)]; norm_num
 
+/- English proof (translation)
+Simplify using `only [pairs, List.mem_filter, Bool.and_eq_true, decide_eq_true_eq] at h`. Conclude with `h.2.1`.
+-/
 theorem mem_pairs_lt {n : ℕ} {ε : Fin n → Bool} {s : Bool} {p : Fin n × Fin n} (h : p ∈ pairs ε s) : p.1 < p.2 := by
   simp only [pairs, List.mem_filter, Bool.and_eq_true, decide_eq_true_eq] at h
   exact h.2.1
 
+/- English proof (translation)
+The claim follows from `((List.nodup_finRange n).product (List.nodup_finRange n)).filter _`.
+-/
 theorem nodup_pairs {n : ℕ} (ε : Fin n → Bool) (s : Bool) : (pairs ε s).Nodup :=
   ((List.nodup_finRange n).product (List.nodup_finRange n)).filter _
 
 section
 variable {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.trace_smul, trE]`. Simplify using the standard rewrite rules.
+-/
 theorem d_self (a : Fin n) : trace ((Complex.I • unitE a a) * (Complex.I • unitE a a)) = -1 := by
   simp only [Matrix.smul_mul, Matrix.mul_smul, Matrix.trace_smul, trE]; simp
 
+/- English proof (translation)
+Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.trace_smul, trE]`. Simplify using `[h]`.
+-/
 theorem d_ne {a b : Fin n} (h : a ≠ b) : trace ((Complex.I • unitE a a) * (Complex.I • unitE b b)) = 0 := by
   simp only [Matrix.smul_mul, Matrix.mul_smul, Matrix.trace_smul, trE]; simp [h]
 
+/- English proof (translation)
+Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.trace_smul, Matrix.mul_sub, Matrix.sub_mul, Matrix.trace_sub, trE]`. Simplify using `only [h.ne, h.ne', and_self, and_false, false_and, if_true, if_false, smul_eq_mul]`. Take the linear combination `(-2 : ℂ) * s2`.
+-/
 theorem trace_casimirAntisymPair_mul_self {a b : Fin n} (h : a < b) :
     trace ((invSqrtTwo • (unitE a b - unitE b a)) * (invSqrtTwo • (unitE a b - unitE b a))) = -1 := by
   simp only [Matrix.smul_mul, Matrix.mul_smul, Matrix.trace_smul, Matrix.mul_sub, Matrix.sub_mul,
@@ -41,6 +64,9 @@ theorem trace_casimirAntisymPair_mul_self {a b : Fin n} (h : a < b) :
   simp only [h.ne, h.ne', and_self, and_false, false_and, if_true, if_false, smul_eq_mul]
   linear_combination (-2 : ℂ) * s2
 
+/- English proof (translation)
+Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.trace_smul, Matrix.mul_add, Matrix.add_mul, Matrix.trace_add, trE]`. Simplify using `only [h.ne, h.ne', and_self, and_false, false_and, if_true, if_false, smul_eq_mul]`. Take the linear combination `(2 * invSqrtTwo * invSqrtTwo) * Complex.I_mul_I - (2 : ℂ) * s2`.
+-/
 theorem trace_casimirSymPairI_mul_self {a b : Fin n} (h : a < b) :
     trace (((invSqrtTwo * Complex.I) • (unitE a b + unitE b a)) * ((invSqrtTwo * Complex.I) • (unitE a b + unitE b a))) = -1 := by
   simp only [Matrix.smul_mul, Matrix.mul_smul, Matrix.trace_smul, Matrix.mul_add, Matrix.add_mul,
@@ -48,6 +74,9 @@ theorem trace_casimirSymPairI_mul_self {a b : Fin n} (h : a < b) :
   simp only [h.ne, h.ne', and_self, and_false, false_and, if_true, if_false, smul_eq_mul]
   linear_combination (2 * invSqrtTwo * invSqrtTwo) * Complex.I_mul_I - (2 : ℂ) * s2
 
+/- English proof (translation)
+Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.trace_smul, Matrix.mul_add, Matrix.sub_mul, Matrix.trace_add, Matrix.trace_sub, trE]`. Simplify using `only [h.ne, h.ne', and_self, and_false, false_and, if_true, if_false, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem p12 {a b : Fin n} (h : a < b) :
     trace ((invSqrtTwo • (unitE a b - unitE b a)) * ((invSqrtTwo * Complex.I) • (unitE a b + unitE b a))) = 0 := by
   simp only [Matrix.smul_mul, Matrix.mul_smul, Matrix.trace_smul, Matrix.mul_add, Matrix.sub_mul,
@@ -55,6 +84,9 @@ theorem p12 {a b : Fin n} (h : a < b) :
   simp only [h.ne, h.ne', and_self, and_false, false_and, if_true, if_false, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.trace_smul, Matrix.mul_sub, Matrix.trace_sub, trE]`. Establish `h1 : ¬ (a = b ∧ a = c)` using `fun ⟨h1, h2⟩ => h.ne (h1 ▸ h2)`. Establish `h2 : ¬ (a = c ∧ a = b)` using `fun ⟨h1, h2⟩ => h.ne (h2 ▸ h1)`. Simplify using `[h1, h2]`.
+-/
 theorem dp1 (a : Fin n) {b c : Fin n} (h : b < c) :
     trace ((Complex.I • unitE a a) * (invSqrtTwo • (unitE b c - unitE c b))) = 0 := by
   simp only [Matrix.smul_mul, Matrix.mul_smul, Matrix.trace_smul, Matrix.mul_sub, Matrix.trace_sub, trE]
@@ -62,6 +94,9 @@ theorem dp1 (a : Fin n) {b c : Fin n} (h : b < c) :
   have h2 : ¬ (a = c ∧ a = b) := fun ⟨h1, h2⟩ => h.ne (h2 ▸ h1)
   simp [h1, h2]
 
+/- English proof (translation)
+Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.trace_smul, Matrix.mul_add, Matrix.trace_add, trE]`. Establish `h1 : ¬ (a = b ∧ a = c)` using `fun ⟨h1, h2⟩ => h.ne (h1 ▸ h2)`. Establish `h2 : ¬ (a = c ∧ a = b)` using `fun ⟨h1, h2⟩ => h.ne (h2 ▸ h1)`. Simplify using `[h1, h2]`.
+-/
 theorem dp2 (a : Fin n) {b c : Fin n} (h : b < c) :
     trace ((Complex.I • unitE a a) * ((invSqrtTwo * Complex.I) • (unitE b c + unitE c b))) = 0 := by
   simp only [Matrix.smul_mul, Matrix.mul_smul, Matrix.trace_smul, Matrix.mul_add, Matrix.trace_add, trE]
@@ -69,6 +104,9 @@ theorem dp2 (a : Fin n) {b c : Fin n} (h : b < c) :
   have h2 : ¬ (a = c ∧ a = b) := fun ⟨h1, h2⟩ => h.ne (h2 ▸ h1)
   simp [h1, h2]
 
+/- English proof (translation)
+Use `⟨fun ⟨h1, h2⟩ => ?_, fun ⟨h1, h2⟩ => hpq (Prod.ext h2 h1), fun ⟨h1, h2⟩ => hpq (Prod.ext h1 h2), fun ⟨h1, h2⟩ => ?_⟩` and prove the remaining obligations. Use `hp.trans_eq h1` as an intermediate fact. Use `hq.trans_eq h2.symm` as an intermediate fact. Conclude with `absurd (hp.trans (h1 ▸ h2 ▸ hq)) (lt_irrefl _)`. Conclude with `absurd (hp.trans (h2 ▸ h1 ▸ hq)) (lt_irrefl _)`.
+-/
 theorem pq_facts {p q : Fin n × Fin n} (hp : p.1 < p.2) (hq : q.1 < q.2) (hpq : p ≠ q) :
     ¬ (p.2 = q.1 ∧ p.1 = q.2) ∧ ¬ (p.2 = q.2 ∧ p.1 = q.1) ∧ ¬ (p.1 = q.1 ∧ p.2 = q.2) ∧
       ¬ (p.1 = q.2 ∧ p.2 = q.1) := by
@@ -83,6 +121,11 @@ end GlobalTheory.TypeSum.CasBasis.KOrth
 namespace GlobalTheory.TypeSum.CasBasis.KOrth
 variable {n : ℕ}
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `pq_facts hp hq hpq`. Establish `e1 : trace (unitE p.1 p.2 * unitE q.1 q.2) = 0` using `by rw [trE, if_neg h1]`. Establish `e2 : trace (unitE p.1 p.2 * unitE q.2 q.1) = 0` using `by rw [trE, if_neg h2]`. Establish `e3 : trace (unitE p.2 p.1 * unitE q.1 q.2) = 0` using `by rw [trE, if_neg h3]`. Establish `e4 : trace (unitE p.2 p.1 * unitE q.2 q.1) = 0` using `by rw [trE, if_neg h4]`.
+
+Introduce `X hX Y hY`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hX hY`. Apply the tactic sequence `rcases hX with rfl | rfl <;> rcases hY with rfl | rfl <;>`. Apply the tactic sequence `simp only [Matrix.smul_mul, Matrix.mul_smul, Matrix.trace_smul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.trace_add, Matrix.trace_sub, e1, e2, e3, e4] <;> simp`.
+-/
 theorem pq_zero {p q : Fin n × Fin n} (hp : p.1 < p.2) (hq : q.1 < q.2) (hpq : p ≠ q) :
     ∀ X ∈ [invSqrtTwo • (unitE p.1 p.2 - unitE p.2 p.1), (invSqrtTwo * Complex.I) • (unitE p.1 p.2 + unitE p.2 p.1)],
     ∀ Y ∈ [invSqrtTwo • (unitE q.1 q.2 - unitE q.2 q.1), (invSqrtTwo * Complex.I) • (unitE q.1 q.2 + unitE q.2 q.1)],
@@ -98,6 +141,11 @@ theorem pq_zero {p q : Fin n × Fin n} (hp : p.1 < p.2) (hq : q.1 < q.2) (hpq : 
     simp only [Matrix.smul_mul, Matrix.mul_smul, Matrix.trace_smul, Matrix.mul_add, Matrix.add_mul,
       Matrix.mul_sub, Matrix.sub_mul, Matrix.trace_add, Matrix.trace_sub, e1, e2, e3, e4] <;> simp
 
+/- English proof (translation)
+Introduce `X hX`. Simplify using `only [kList, List.mem_append, List.mem_map, List.mem_flatMap, List.mem_cons, List.not_mem_nil, or_false] at hX`. Break down `hX with ⟨a, -, rfl⟩ | ⟨p, hp, rfl | rfl⟩` into its components or cases. Conclude with `d_self a`. Conclude with `trace_casimirAntisymPair_mul_self (mem_pairs_lt hp)`.
+
+Conclude with `trace_casimirSymPairI_mul_self (mem_pairs_lt hp)`.
+-/
 theorem kList_self (ε : Fin n → Bool) : ∀ X ∈ kList ε, trace (X * X) = -1 := by
   intro X hX
   simp only [kList, List.mem_append, List.mem_map, List.mem_flatMap, List.mem_cons, List.not_mem_nil,
@@ -107,6 +155,13 @@ theorem kList_self (ε : Fin n → Bool) : ∀ X ∈ kList ε, trace (X * X) = -
   · exact trace_casimirAntisymPair_mul_self (mem_pairs_lt hp)
   · exact trace_casimirSymPairI_mul_self (mem_pairs_lt hp)
 
+/- English proof (translation)
+Rewrite using `[kList, List.pairwise_append, List.pairwise_map, List.pairwise_flatMap]`. Use `⟨(List.nodup_finRange n).imp fun h => d_ne h, ⟨fun p hp => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [List.pairwise_cons, List.mem_cons, List.not_mem_nil, or_false, forall_eq, List.Pairwise.nil, and_true, List.forall_mem_nil]`. Conclude with `⟨p12 (mem_pairs_lt hp), fun _ h => h.elim⟩`. Conclude with `(nodup_pairs ε true).imp_of_mem fun hp hq hpq => pq_zero (mem_pairs_lt hp) (mem_pairs_lt hq) hpq`.
+
+Introduce `X hX Y hY`. Simplify using `only [List.mem_map, List.mem_flatMap, List.mem_cons, List.not_mem_nil, or_false] at hX hY`. Take `⟨a, -, rfl⟩` from `hX`. Take `⟨p, hp, rfl | rfl⟩` from `hY`. Conclude with `dp1 a (mem_pairs_lt hp)`.
+
+Conclude with `dp2 a (mem_pairs_lt hp)`.
+-/
 theorem kList_pairwise (ε : Fin n → Bool) : (kList ε).Pairwise (fun X Y => trace (X * Y) = 0) := by
   rw [kList, List.pairwise_append, List.pairwise_map, List.pairwise_flatMap]
   refine ⟨(List.nodup_finRange n).imp fun h => d_ne h, ⟨fun p hp => ?_, ?_⟩, ?_⟩
@@ -125,6 +180,13 @@ end GlobalTheory.TypeSum.CasBasis.KOrth
 
 namespace GlobalTheory.TypeSum.CasBasis
 
+/- English proof (translation)
+Introduce `n ε i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[if_pos rfl, kB, KOrth.kList_self ε _ (List.get_mem _ _)]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_neg hij]`. Establish `hP` using `List.pairwise_iff_get.mp (KOrth.kList_pairwise ε)`. Break down `lt_or_gt_of_ne hij with h | h` into its components or cases. Rewrite using `[kB, hP i j h]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[kB, Matrix.trace_mul_comm, hP j i h]`. Simplify using the standard rewrite rules.
+-/
 theorem kB_trace_orthonormal : ∀ (n : ℕ) (ε : Fin n → Bool) (i j : Fin (kList ε).length),
     (trace (kB ε i * kB ε j)).re = if i = j then -1 else 0 := by
   intro n ε i j

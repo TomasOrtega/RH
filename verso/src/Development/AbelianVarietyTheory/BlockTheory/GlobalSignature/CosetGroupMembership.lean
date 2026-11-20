@@ -71,6 +71,9 @@ def ClassDictionary : Prop :=
           (bc (inclE (F := F) (Af F)) γ ∈ (cosetGrp (UFin hc S) (stabHat hc S N) y).map (UAf hc S).subtype ↔
             γ ∈ stabGL (crdLat S L)))
 
+/- English proof (translation)
+Simplify using `only [cosetGrp, Subgroup.mem_inf, Subgroup.mem_map, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Use `and_congr_right fun _ => ⟨?_, fun h => ⟨_, h, by group⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨k, hk, rfl⟩`. Establish `: y⁻¹ * (y * k * y⁻¹) * y = k` using `by group`. Rewrite using `[this]` and apply the resulting hypothesis.
+-/
 theorem mem_cosetGrp {G : Type} [Group G] (Γ K : Subgroup G) (y x : G) :
     x ∈ cosetGrp Γ K y ↔ x ∈ Γ ∧ y⁻¹ * x * y ∈ K := by
   simp only [cosetGrp, Subgroup.mem_inf, Subgroup.mem_map, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]
@@ -79,12 +82,22 @@ theorem mem_cosetGrp {G : Type} [Group G] (Γ K : Subgroup G) (y x : G) :
   have : y⁻¹ * (y * k * y⁻¹) * y = k := by group
   rwa [this]
 
+/- English proof (translation)
+Use extensionality with `x`. Conclude with `⟨fun h => ⟨x.2, h⟩, fun h => h.2⟩`.
+-/
 theorem stabHat_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E]
     [Algebra F E] (hc : CMData F E) (S : HSpace E) (N : Submodule (𝓞 E) S.V) :
     stabHat hc S N = (levelAfL hc.sig S.gram (crdLat S N)).subgroupOf (UAf hc S) := by
   ext x
   exact ⟨fun h => ⟨x.2, h⟩, fun h => h.2⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Use `letI : Fintype (ClassSet Γ K) := Fintype.ofFinite _`. Use `haveI : Nonempty (ClassSet Γ K) := ⟨DoubleCoset.mk Γ K 1⟩`. Establish `hb : Function.Bijective (fun c : ClassSet Γ K => (DoubleCoset.mk Γ K (Quotient.out c) : ClassSet Γ K))`. Establish `: (fun c : ClassSet Γ K => (DoubleCoset.mk Γ K (Quotient.out c) : ClassSet Γ K)) = id`.
+
+Use function extensionality and compare the values at `c`. Conclude with `Quotient.out_eq' c`. Rewrite using `[this]`. Conclude with `Function.bijective_id`. Rewrite using `[← h3 _ _ hb]`.
+
+Use `Finset.sum_pos (fun c _ => ?_) Finset.univ_nonempty` and prove the remaining obligations. Use `haveI := h2 (Quotient.out c)`. Conclude with `inv_pos.2 (Nat.cast_pos.2 Nat.card_pos)`.
+-/
 theorem CosetSum.pos {G : Type} [Group G] {Γ K : Subgroup G} {m : ℝ} (h : CosetSum Γ K m) : 0 < m := by
   obtain ⟨h1, h2, h3⟩ := h
   letI : Fintype (ClassSet Γ K) := Fintype.ofFinite _

@@ -16,6 +16,21 @@ noncomputable section
 
 namespace GlobalTheory.CoverConst
 
+/- English proof (translation)
+Introduce `V _ _ ι U hU hc P₂ P g hP₂ hP hg1 hg`. Distinguish the cases in `h : ∃ i, ∃ x ∈ U, P i x ≠ 0`. Use `swap`. Use `push_neg at h`. Use `⟨1, by simp, fun i x hx => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hg i x hx, h i x hx]`. Simplify using the standard rewrite rules. Take `⟨i₀, x₀, hx₀, hne⟩` from `h`. Establish `hcont : ContinuousAt (P i₀) x₀` using `(hP i₀).continuousOn.continuousAt (hU.mem_nhds hx₀)`. Establish `hnb : ∀ᶠ y in nhds x₀, y ∈ U ∧ P i₀ y ≠ 0` using `(hU.eventually_mem hx₀).and (hcont.eventually_ne hne)`.
+
+Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.1 hnb`. Establish `hx₀b : x₀ ∈ Metric.ball x₀ ε` using `Metric.mem_ball_self hε`. Set `q : V → ℂ` to `fun y => P₂ i₀ y * (P i₀ y)⁻¹`. Establish `hqd : DifferentiableOn ℂ q (Metric.ball x₀ ε)` using `((hP₂ i₀).mono (fun y hy => (hball y hy).1)).mul (((hP i₀).mono (fun y hy => (hball y hy).1)).inv (fun y hy => (hball y hy).2))`. Establish `hqg : ∀ y ∈ Metric.ball x₀ ε, q y = g y` using `fun y hy => by`.
+
+Simplify using `only [q]`. Rewrite using `[hg i₀ y (hball y hy).1, mul_assoc, mul_inv_cancel₀ (hball y hy).2, mul_one]`. Establish `hmax : IsMaxOn (norm ∘ q) (Metric.ball x₀ ε) x₀` using `fun y hy => by`. Simplify using `only [Set.mem_setOf_eq, Function.comp_apply]`. Rewrite using `[hqg y hy, hqg x₀ hx₀b, hg1 _ (hball y hy).1, hg1 _ (hball x₀ hx₀b).1]`.
+
+Establish `heq` using `Complex.eqOn_of_isPreconnected_of_isMaxOn_norm (convex_ball x₀ ε).isPreconnected Metric.isOpen_ball hqd hx₀b hmax`. Use `⟨g x₀, hg1 x₀ hx₀, fun i => ?_⟩` and prove the remaining obligations. Establish `hzero : ∀ y ∈ U, (fun y => P₂ i y - g x₀ * P i y) y = 0`. Use `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.eq_zero_of_eventually hU hc ((hP₂ i).sub ((hP i).const_mul (g x₀))) hx₀ ?_` and prove the remaining obligations. Use `filter_upwards [Metric.ball_mem_nhds x₀ hε] with y hy`.
+
+Establish `e : g y = g x₀`. Rewrite using `[← hqg y hy, ← hqg x₀ hx₀b]`. Conclude with `heq hy`. Simplify using `only [Pi.zero_apply]`. Rewrite using `[hg i y (hball y hy).1, e]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `x hx`. Use `hzero x hx` as an intermediate fact. Simplify using `only at this`. Conclude with `sub_eq_zero.1 this`.
+-/
 theorem eq_const_mul_of_norm_one : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {ι : Type*} (U : Set V), IsOpen U → IsPreconnected U → ∀ (P₂ P : ι → V → ℂ) (g : V → ℂ), (∀ i, DifferentiableOn ℂ (P₂ i) U) → (∀ i, DifferentiableOn ℂ (P i) U) → (∀ x ∈ U, ‖g x‖ = 1) → (∀ i, ∀ x ∈ U, P₂ i x = g x * P i x) → ∃ u : ℂ, ‖u‖ = 1 ∧ ∀ i, ∀ x ∈ U, P₂ i x = u * P i x := by
   intro V _ _ ι U hU hc P₂ P g hP₂ hP hg1 hg
   by_cases h : ∃ i, ∃ x ∈ U, P i x ≠ 0
@@ -56,6 +71,13 @@ theorem eq_const_mul_of_norm_one : ∀ {V : Type} [NormedAddCommGroup V] [Normed
   simp only at this
   exact sub_eq_zero.1 this
 
+/- English proof (translation)
+Introduce `D T hL j hj σ hσ C hC k₂ k`. Establish `hU₂ : IsUnf C.U₂` using `hC.2.2.2.1`. Establish `hU₁ : IsUnf (T.U j σ)` using `hL.unf j hj σ hσ`. Establish `hrel : relab C.d.c₂ C.σ₂ = relab T.Q.c σ`. Use function extensionality and compare the values at `τ`.
+
+Use extensionality with `x`. Establish `e` using `congrArg (fun φ : T.Q.c.F →+* ℂ => φ (embF T.Q.c τ x)) hC.2.2.1`. Simplify using `only [RingHom.comp_apply] at e`. Use `show C.σ₂ (embF C.d.c₂ τ x) = σ (embF T.Q.c τ x)`. Rewrite using `[← e]`.
+
+Use `congr 1`. Use `⟨fun τ => by rw [(hU₂.2.1 k₂).2 τ, (hU₁.2.1 k).2 τ], fun a n τ h₂ h₁ i => ?_⟩` and prove the remaining obligations. Unfold `laU`. Rewrite using `[(hU₂.2.1 k₂).1, (hU₁.2.1 k).1, hrel]`.
+-/
 theorem psi_and_weight_eq : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Formalism.L2.Pj.InR D j → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → ∀ C : Cover T j σ, C.IsUnif → ∀ (k₂ : C.U₂.Comp) (k : (T.U j σ).Comp), (∀ τ : D.host.E →+* ℂ, τ ∈ (C.U₂.X k₂).Ψ ↔ τ ∈ ((T.U j σ).X k).Ψ) ∧ ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (τ : D.host.E →+* ℂ) (h₂ : τ ∈ (C.U₂.X k₂).Ψ) (h₁ : τ ∈ ((T.U j σ).X k).Ψ) (i : Fin D.R.r), laU C.U₂ a n k₂ ⟨τ, h₂⟩ i = laU (T.U j σ) a n k ⟨τ, h₁⟩ i := by
   intro D T hL j hj σ hσ C hC k₂ k
   have hU₂ : IsUnf C.U₂ := hC.2.2.2.1
@@ -72,6 +94,35 @@ theorem psi_and_weight_eq : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Forma
   unfold laU
   rw [(hU₂.2.1 k₂).1, (hU₁.2.1 k).1, hrel]
 
+/- English proof (translation)
+Introduce `D T hL j hj σ hσ C hC n k₂`. Take `⟨k, γ, hΛ, hh, hd, hx⟩` from `GlobalTheory.T.levelCover_component_readings_unit_modulus_scalar D T hL j hj σ hσ C hC k₂`. Take `⟨hΨ, hla⟩` from `psi_and_weight_eq D T hL j hj σ hσ C hC k₂ k`. Use `⟨k, γ, hΛ, hh, hd, ?_⟩` and prove the remaining obligations. Establish `hU₂ : IsUnf C.U₂` using `hC.2.2.2.1`.
+
+Establish `hU₁ : IsUnf (T.U j σ)` using `hL.unf j hj σ hσ`. Set `G : Frame (C.U₂.X k₂).Ψ D.R.r → Frame ((T.U j σ).X k).Ψ D.R.r` to `fun x τ => ((γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).map τ.1 * mat x ⟨τ.1, (hΨ τ.1).2 τ.2⟩ : Matrix (Fin D.R.r) (Fin D.R.r) ℂ)`. Establish `hGrel : ∀ x (τ : D.host.E →+* ℂ) (h₂ : τ ∈ (C.U₂.X k₂).Ψ) (h₁ : τ ∈ ((T.U j σ).X k).Ψ), mat (G x) ⟨τ, h₁⟩ = (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).map τ * mat x ⟨τ, h₂⟩`. Introduce `x τ h₂ h₁`. Both sides reduce to the same expression.
+
+Establish `hGdom : ∀ x ∈ (C.U₂.X k₂).dom, G x ∈ ((T.U j σ).X k).dom` using `fun x hx' => (hx x (G x) hx' (hGrel x)).1`. Establish `hGdiff : Differentiable ℂ G`. Use `differentiable_pi.2 fun τ => differentiable_pi.2 fun a => differentiable_pi.2 fun b => ?_` and prove the remaining obligations. Simplify using `only [G, mat, Matrix.mul_apply, Matrix.of_apply, Matrix.map_apply]`. Use `fun_prop`.
+
+Set `ι` to `{p : ((D.host.E →+* ℂ) × ℕ → ℕ) × Rul (T.Q.Xo j) T.Q.c × Rul C.d.Xo₂ C.d.c₂ // Dom p.1 n ∧ p.2.1 ∈ sec (T.Q.Xo j) T.Q.c p.1 n ∧ p.2.2 ∈ sec C.d.Xo₂ C.d.c₂ p.1 n ∧ C.IsPull p.2.1 p.2.2}`. Set `P₂ : ι → Frame (C.U₂.X k₂).Ψ D.R.r → ℂ` to `fun i => rdU C.U₂ i.1.2.2 k₂`. Set `P : ι → Frame (C.U₂.X k₂).Ψ D.R.r → ℂ` to `fun i x => rdU (T.U j σ) i.1.2.1 k (G x)`. Establish `hP₂d : ∀ i, DifferentiableOn ℂ (P₂ i) (C.U₂.X k₂).dom` using `fun i => (hU₂.2.2.2.2.1 i.1.1 n i.2.1 i.1.2.2 i.2.2.2.1 k₂).1`. Establish `hPd : ∀ i, DifferentiableOn ℂ (P i) (C.U₂.X k₂).dom` using `fun i => (hU₁.2.2.2.2.1 i.1.1 n i.2.1 i.1.2.1 i.2.2.1 k).1.comp hGdiff.differentiableOn hGdom`.
+
+Establish `hg : ∀ x ∈ (C.U₂.X k₂).dom, ∃ c : ℂ, ‖c‖ = 1 ∧ ∀ i : ι, P₂ i x = c * P i x`. Introduce `x hxd`. Take `⟨b, hb, hyd, hyo⟩` from `ReciprocityTheory.ChartRestriction.G.PullbackSections.exists_borel_orthonormal_move (C.U₂.X k₂) hxd`. Take `⟨-, t, -, hmod, hrel⟩` from `hx (rmul x b) (G (rmul x b)) hyd (hGrel _)`. Establish `ht1 : ‖t‖ = 1` using `hmod (fun τ i => ReciprocityTheory.ChartRestriction.G.PullbackSections.norm_diagonal_minor_one _ hyo τ i)`.
+
+Use `⟨t ^ n, by rw [norm_pow, ht1, one_pow], ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨a, f, f₂⟩, hDom, hf, hf₂, hP⟩`. Set `b₁ : Frame ((T.U j σ).X k).Ψ D.R.r` to `fun τ => b ⟨τ.1, (hΨ τ.1).2 τ.2⟩`. Establish `hb₁ : b₁ ∈ Bor ((T.U j σ).X k).Ψ D.R.r` using `fun τ => hb ⟨τ.1, (hΨ τ.1).2 τ.2⟩`. Establish `e1` using `hrel n a hDom f hf f₂ hf₂ hP`.
+
+Establish `e2 : rdU C.U₂ f₂ k₂ (rmul x b) = bchar (laU C.U₂ a n k₂) b * rdU C.U₂ f₂ k₂ x` using `(hU₂.2.2.2.2.1 a n hDom f₂ hf₂ k₂).2.1 x hxd b hb`. Establish `e3 : G (rmul x b) = rmul (G x) b₁`. Use function extensionality and compare the values at `τ`. Simplify using `only [G, rmul, b₁, mat]`. Conclude with `(Matrix.mul_assoc ((γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).map τ.1) (mat x ⟨τ.1, (hΨ τ.1).2 τ.2⟩) (mat b ⟨τ.1, (hΨ τ.1).2 τ.2⟩)).symm`.
+
+Establish `e4 : rdU (T.U j σ) f k (rmul (G x) b₁) = bchar (laU (T.U j σ) a n k) b₁ * rdU (T.U j σ) f k (G x)` using `(hU₁.2.2.2.2.1 a n hDom f hf k).2.1 (G x) (hGdom x hxd) b₁ hb₁`. Establish `e5 : bchar (laU C.U₂ a n k₂) b = bchar (laU (T.U j σ) a n k) b₁`. Unfold `bchar`. Use `Fintype.prod_equiv (Equiv.subtypeEquivRight (fun τ => hΨ τ)) _ _ (fun τ => ?_)` and prove the remaining obligations. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[hla a n τ.1 τ.2 ((hΨ τ.1).1 τ.2) i]`. Both sides reduce to the same expression. Establish `e6 : bchar (laU C.U₂ a n k₂) b ≠ 0`. Unfold `bchar`. Use `Finset.prod_ne_zero_iff.2 fun τ _ => Finset.prod_ne_zero_iff.2 fun i _ => zpow_ne_zero _ ?_` and prove the remaining obligations.
+
+Establish `hdet : (mat b τ).det ≠ 0` using `(hb τ).1`. Rewrite `hdet` using `[Matrix.det_of_upperTriangular (M := mat b τ) (fun a c h => (hb τ).2 a c h)]`. Simplify `Finset.prod_ne_zero_iff.1 hdet i (Finset.mem_univ _)` using `[mat]`. Use `show rdU C.U₂ f₂ k₂ x = t ^ n * rdU (T.U j σ) f k (G x)`. Apply `mul_left_cancel₀ e6` to reduce the goal to its premises.
+
+Rewrite using `[← e2, e1, e3, e4, ← e5]`. Expand and normalize the polynomial expressions, which then agree. Set `g : Frame (C.U₂.X k₂).Ψ D.R.r → ℂ` to `fun x => if h : x ∈ (C.U₂.X k₂).dom then (hg x h).choose else 1`. Establish `hg1 : ∀ x ∈ (C.U₂.X k₂).dom, ‖g x‖ = 1` using `fun x h => by`. Simplify using `only [g, dif_pos h]`.
+
+Conclude with `(hg x h).choose_spec.1`. Establish `hgr : ∀ i, ∀ x ∈ (C.U₂.X k₂).dom, P₂ i x = g x * P i x` using `fun i x h => by`. Simplify using `only [g, dif_pos h]`. Conclude with `(hg x h).choose_spec.2 i`. Take `⟨u, hu1, hu⟩` from `eq_const_mul_of_norm_one (C.U₂.X k₂).dom (ReciprocityTheory.ChartRestriction.G.FD.FourierCoefficientDomain.isOpen_dom _) (ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.flag_domain_frames_connected D.R.r (C.U₂.X k₂)).isPreconnected P₂ P g hP₂d hPd hg1 hgr`.
+
+Use `⟨u, hu1, fun x x' hxd hrel' => ⟨(hx x x' hxd hrel').1, ?_⟩⟩` and prove the remaining obligations. Establish `hx' : x' = G x`. Use function extensionality and compare the values at `τ`. Conclude with `hrel' τ.1 ((hΨ τ.1).2 τ.2) τ.2`. Introduce `a hDom f hf f₂ hf₂ hP`.
+
+Rewrite using `[hx']`. Conclude with `hu ⟨(a, f, f₂), hDom, hf, hf₂, hP⟩ x hxd`.
+-/
 theorem cover_scalar_const : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Formalism.L2.Pj.InR D j → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → ∀ C : Cover T j σ, C.IsUnif → ∀ n : ℕ, ∀ k₂ : C.U₂.Comp, ∃ (k : (T.U j σ).Comp) (γ : GL (Fin D.R.r) D.host.E), (((T.U j σ).X k).Λ : Set (Fin D.R.r → D.host.E)) = (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).mulVec '' ((C.U₂.X k₂).Λ : Set _) ∧ (∀ v w, herm ((T.U j σ).X k).Gm ((γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).mulVec v) ((γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).mulVec w) = herm (C.U₂.X k₂).Gm v w) ∧ (∀ h, (C.dict₂ h).1 = k₂ → (T.dict j σ h).1 = k) ∧ ∃ u : ℂ, ‖u‖ = 1 ∧ ∀ (x : Frame (C.U₂.X k₂).Ψ D.R.r) (x' : Frame ((T.U j σ).X k).Ψ D.R.r), x ∈ (C.U₂.X k₂).dom → (∀ (τ : D.host.E →+* ℂ) (h₂ : τ ∈ (C.U₂.X k₂).Ψ) (h₁ : τ ∈ ((T.U j σ).X k).Ψ), mat x' ⟨τ, h₁⟩ = (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).map τ * mat x ⟨τ, h₂⟩) → x' ∈ ((T.U j σ).X k).dom ∧ ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ), Dom a n → ∀ f ∈ sec (T.Q.Xo j) T.Q.c a n, ∀ f₂ ∈ sec C.d.Xo₂ C.d.c₂ a n, C.IsPull f f₂ → rdU C.U₂ f₂ k₂ x = u * rdU (T.U j σ) f k x' := by
   intro D T hL j hj σ hσ C hC n k₂
   obtain ⟨k, γ, hΛ, hh, hd, hx⟩ := GlobalTheory.T.levelCover_component_readings_unit_modulus_scalar D T hL j hj σ hσ C hC k₂

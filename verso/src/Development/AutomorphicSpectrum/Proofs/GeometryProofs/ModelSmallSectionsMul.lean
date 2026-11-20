@@ -22,6 +22,9 @@ section Forms
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Introduce `m hm k`. Take `⟨m1, hm1, m2, hm2, rfl⟩` from `Finset.mem_add.mp (MvPolynomial.support_mul f g hm)`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply]`. Rewrite using `[hf m1 hm1 k, hg m2 hm2 k]`.
+-/
 theorem homog_mul {f g : MRing ι} {a b : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g b) :
     IsMultiHomog (f * g) (a + b) := by
   classical
@@ -30,6 +33,11 @@ theorem homog_mul {f g : MRing ι} {a b : K → ℕ} (hf : IsMultiHomog f a) (hg
   simp only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply]
   rw [hf m1 hm1 k, hg m2 hm2 k]
 
+/- English proof (translation)
+Introduce `m hm k`. Rewrite `hm` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_one]`. Use `split_ifs at hm with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Conclude with `absurd rfl hm`.
+-/
 theorem homog_one : IsMultiHomog (1 : MRing ι) (0 : K → ℕ) := by
   classical
   intro m hm k
@@ -39,6 +47,11 @@ theorem homog_one : IsMultiHomog (1 : MRing ι) (0 : K → ℕ) := by
     simp
   · exact absurd rfl hm
 
+/- English proof (translation)
+Introduce `m hm k`. Establish `hm' : m = Finsupp.single ⟨k₀, i₀⟩ 1`. Rewrite `hm` using `[MvPolynomial.X, MvPolynomial.support_monomial, if_neg one_ne_zero]`. Conclude with `Finset.mem_singleton.mp hm`. Substitute `hm'` using the available equality.
+
+Simplify using `only [Finsupp.single_apply, Sigma.mk.inj_iff, Pi.single_apply]`. Distinguish the cases in `hk : k = k₀`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Ne.symm hk, hk]`.
+-/
 theorem homog_X [DecidableEq K] (k₀ : K) (i₀ : ι k₀) :
     IsMultiHomog (MvPolynomial.X ⟨k₀, i₀⟩ : MRing ι) (Pi.single k₀ 1) := by
   classical
@@ -55,6 +68,13 @@ theorem homog_X [DecidableEq K] (k₀ : K) (i₀ : ι k₀) :
 
 def mon (c : ∀ k, ι k) (m : K → ℕ) : MRing ι := ∏ k, MvPolynomial.X ⟨k, c k⟩ ^ m k
 
+/- English proof (translation)
+Proceed by induction on `e with`. Consider the case `zero`. Establish `h0 : ((0 : ℕ) • a : K → ℕ) = 0`. Use extensionality with `k`. Simplify using the standard rewrite rules.
+
+Rewrite using `[pow_zero, h0]`. Conclude with `homog_one`. Consider the case `succ n ih`. Establish `h1 : ((n + 1) • a : K → ℕ) = n • a + a`. Use extensionality with `k`.
+
+Simplify using `[add_mul]`. Rewrite using `[pow_succ, h1]`. Conclude with `homog_mul ih hf`.
+-/
 theorem homog_pow {f : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (e : ℕ) :
     IsMultiHomog (f ^ e) (e • a) := by
   induction e with
@@ -71,6 +91,13 @@ theorem homog_pow {f : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (e : �
     rw [pow_succ, h1]
     exact homog_mul ih hf
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset K, IsMultiHomog (∏ k ∈ s, (MvPolynomial.X ⟨k, c k⟩ : MRing ι) ^ m k) (∑ k ∈ s, m k • Pi.single k 1)`. Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_empty, Finset.sum_empty]`. Conclude with `homog_one`.
+
+Introduce `j s hj ih`. Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj]`. Conclude with `homog_mul (homog_pow (homog_X j (c j)) (m j)) ih`. Establish `hsum : (∑ k, m k • Pi.single k 1 : K → ℕ) = m`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `h` using `key Finset.univ`. Rewrite `h` using `[hsum]`. Conclude with `h`.
+-/
 theorem homog_mon (c : ∀ k, ι k) (m : K → ℕ) : IsMultiHomog (mon c m) m := by
   classical
   have key : ∀ s : Finset K, IsMultiHomog (∏ k ∈ s, (MvPolynomial.X ⟨k, c k⟩ : MRing ι) ^ m k)
@@ -89,6 +116,11 @@ theorem homog_mon (c : ∀ k, ι k) (m : K → ℕ) : IsMultiHomog (mon c m) m :
   rw [hsum] at h
   exact h
 
+/- English proof (translation)
+Establish `hX : (∏ p : Σ k, ι k, (MvPolynomial.X p.1 : MvPolynomial K Ω) ^ m p) = ∏ k, (MvPolynomial.X k : MvPolynomial K Ω) ^ (∑ i, m ⟨k, i⟩)`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Simplify using `only`. Conclude with `Finset.prod_pow_eq_pow_sum _ _ _`.
+
+Rewrite using `[← hX, mConeMap, MvPolynomial.aeval_monomial, MvPolynomial.aeval_monomial, Finsupp.prod_fintype, Finsupp.prod_fintype]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, map_mul, map_prod, map_pow, MvPolynomial.algebraMap_apply]`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `all_goals simp`.
+-/
 private theorem mConeMap_monomial' (y : (Σ k, ι k) → Ω) (m : (Σ k, ι k) →₀ ℕ) (r : ℤ) :
     mConeMap y (MvPolynomial.monomial m r) =
       MvPolynomial.C (aeval y (MvPolynomial.monomial m r : MRing ι)) *
@@ -106,6 +138,11 @@ private theorem mConeMap_monomial' (y : (Σ k, ι k) → Ω) (m : (Σ k, ι k) �
     ring
   all_goals simp
 
+/- English proof (translation)
+Establish `key : ∀ m ∈ MvPolynomial.support h, mConeMap y (MvPolynomial.monomial m (MvPolynomial.coeff m h)) = MvPolynomial.C (aeval y (MvPolynomial.monomial m (MvPolynomial.coeff m h) : MRing ι)) * ∏ k, (MvPolynomial.X k : MvPolynomial K Ω) ^ d k`. Introduce `m hm`. Rewrite using `[mConeMap_monomial']`. Simplify using `only [hh m hm]`. Use `conv_lhs => rw [MvPolynomial.as_sum h]`.
+
+Use `conv_rhs => rw [MvPolynomial.as_sum h]`. Simplify using `only [map_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl key`.
+-/
 theorem cone_form (y : (Σ k, ι k) → Ω) {h : MRing ι} {d : K → ℕ} (hh : IsMultiHomog h d) :
     mConeMap y h = MvPolynomial.C (aeval y h) * ∏ k, (MvPolynomial.X k : MvPolynomial K Ω) ^ d k := by
   classical
@@ -120,10 +157,16 @@ theorem cone_form (y : (Σ k, ι k) → Ω) {h : MRing ι} {d : K → ℕ} (hh :
   simp only [map_sum, Finset.sum_mul]
   exact Finset.sum_congr rfl key
 
+/- English proof (translation)
+Rewrite using `[mCoordIdeal, RingHom.mem_ker, map_sub, cone_form y hf, cone_form y hg, e, sub_self]`.
+-/
 theorem sub_mem_coord (y : (Σ k, ι k) → Ω) {f g : MRing ι} {d : K → ℕ} (hf : IsMultiHomog f d)
     (hg : IsMultiHomog g d) (e : aeval y f = aeval y g) : f - g ∈ mCoordIdeal y := by
   rw [mCoordIdeal, RingHom.mem_ker, map_sub, cone_form y hf, cone_form y hg, e, sub_self]
 
+/- English proof (translation)
+Rewrite `hm` using `[mCoordIdeal, RingHom.mem_ker, cone_form y hf]`. Establish `hM : (∏ k, (MvPolynomial.X k : MvPolynomial K Ω) ^ d k) ≠ 0` using `Finset.prod_ne_zero_iff.mpr (fun k _ => pow_ne_zero _ (MvPolynomial.X_ne_zero k))`. Conclude with `MvPolynomial.C_eq_zero.mp ((mul_eq_zero.mp hm).resolve_right hM)`.
+-/
 theorem aeval_eq_zero (y : (Σ k, ι k) → Ω) {f : MRing ι} {d : K → ℕ} (hf : IsMultiHomog f d)
     (hm : f ∈ mCoordIdeal y) : aeval y f = 0 := by
   rw [mCoordIdeal, RingHom.mem_ker, cone_form y hf] at hm
@@ -131,10 +174,22 @@ theorem aeval_eq_zero (y : (Σ k, ι k) → Ω) {f : MRing ι} {d : K → ℕ} (
     Finset.prod_ne_zero_iff.mpr (fun k _ => pow_ne_zero _ (MvPolynomial.X_ne_zero k))
   exact MvPolynomial.C_eq_zero.mp ((mul_eq_zero.mp hm).resolve_right hM)
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.eval_map, MvPolynomial.aeval_def, algebraMap_int_eq]`.
+-/
 theorem aeval_eq_eval (z : (Σ k, ι k) → ℂ) (f : MRing ι) :
     aeval z f = MvPolynomial.eval z (MvPolynomial.map (Int.castRingHom ℂ) f) := by
   rw [MvPolynomial.eval_map, MvPolynomial.aeval_def, algebraMap_int_eq]
 
+/- English proof (translation)
+Take `⟨dg, dh, g, h, hg, hh, hd, hy, hz0, hzg⟩` from `h1`. Take `⟨dg', dh', g', h', hg', hh', hd', hy', hz0', hzg'⟩` from `h2`. Establish `hdeg : dg + dh' = dg' + dh`. Use function extensionality and compare the values at `k`. Establish `e1` using `hd k`.
+
+Establish `e2` using `hd' k`. Simplify using `only [Pi.add_apply]`. Use linear arithmetic over natural numbers and integers. Establish `hmem : g * h' - g' * h ∈ mCoordIdeal y`. Use `sub_mem_coord y (homog_mul hg hh') ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[hdeg]`. Conclude with `homog_mul hg' hh`. Rewrite using `[map_mul, map_mul, hy, hy']`. Expand and normalize the polynomial expressions, which then agree. Establish `h0` using `hz.2 _ hmem`.
+
+Rewrite `h0` using `[← aeval_eq_eval, map_sub, map_mul, map_mul, hzg, hzg']`. Establish `hne : aeval z h * aeval z h' ≠ 0` using `mul_ne_zero hz0 hz0'`. Apply `mul_right_cancel₀ hne` to reduce the goal to its premises. Take the linear combination `h0`.
+-/
 theorem val_unique {y : (Σ k, ι k) → Ω} {a : K → ℤ} {s : Ω} {z : (Σ k, ι k) → ℂ}
     (hz : z ∈ mcPts (mCoordIdeal y)) {w w' : ℂ} (h1 : HasVal y a s z w) (h2 : HasVal y a s z w') :
     w = w' := by
@@ -158,6 +213,13 @@ theorem val_unique {y : (Σ k, ι k) → Ω} {a : K → ℤ} {s : Ω} {z : (Σ k
   apply mul_right_cancel₀ hne
   linear_combination h0
 
+/- English proof (translation)
+Take `⟨dg, dh, g, h, hg, hh, hd, hy, hz0, hzg⟩` from `h1`. Take `⟨dg', dh', g', h', hg', hh', hd', hy', hz0', hzg'⟩` from `h2`. Use `⟨dg + dg', dh + dh', g * g', h * h', homog_mul hg hg', homog_mul hh hh', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k`. Simplify using `only [Pi.add_apply, Nat.cast_add]`.
+
+Combine the linear relations using `[hd k, hd' k]`. Rewrite using `[map_mul, map_mul, hy, hy']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul]`. Conclude with `mul_ne_zero hz0 hz0'`.
+
+Rewrite using `[map_mul, map_mul, hzg, hzg']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem val_mul {y : (Σ k, ι k) → Ω} {a b : K → ℤ} {s t : Ω} {z : (Σ k, ι k) → ℂ} {v w : ℂ}
     (h1 : HasVal y a s z v) (h2 : HasVal y b t z w) : HasVal y (a + b) (s * t) z (v * w) := by
   obtain ⟨dg, dh, g, h, hg, hh, hd, hy, hz0, hzg⟩ := h1
@@ -173,6 +235,17 @@ theorem val_mul {y : (Σ k, ι k) → Ω} {a b : K → ℤ} {s t : Ω} {z : (Σ 
   · rw [map_mul, map_mul, hzg, hzg']
     ring
 
+/- English proof (translation)
+Establish `hc : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0`. Introduce `k`. Take `⟨i, hi⟩` from `hr k`. Use `⟨i, fun h0 => hi ?_⟩` and prove the remaining obligations. Simplify using `only [mCoordIdeal, RingHom.mem_ker, mConeMap, MvPolynomial.aeval_X, h0, map_zero, zero_mul]`.
+
+Use `choose c hc using hc`. Establish `hmon : ∀ m : K → ℕ, aeval y (mon c m) ≠ 0`. Introduce `m`. Simplify using `only [mon, map_prod, map_pow, MvPolynomial.aeval_X]`. Conclude with `Finset.prod_ne_zero_iff.mpr (fun k _ => pow_ne_zero _ (hc k))`.
+
+Take `⟨d, g, h, hg, hh, hh0, hgh⟩` from `hb (s * aeval y (mon c (fun k => (-a k).toNat)) / aeval y (mon c (fun k => (a k).toNat)))`. Use `⟨d + fun k => (a k).toNat, d + fun k => (-a k).toNat, g * mon c (fun k => (a k).toNat), h * mon c (fun k => (-a k).toNat), homog_mul hg (homog_mon c _), homog_mul hh (homog_mon c _), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k`. Establish `e1` using `Int.toNat_sub_toNat_neg (a k)`. Simplify using `only [Pi.add_apply, Nat.cast_add]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `hmon (fun k => (a k).toNat)`. Rewrite using `[map_mul, map_mul, hgh, div_mul_eq_mul_div, div_mul_eq_mul_div, div_eq_iff h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul]`.
+
+Conclude with `mul_ne_zero hh0 (hmon _)`.
+-/
 theorem exists_rep (y : (Σ k, ι k) → Ω) (hb : Birational y) (hr : IsRelevant (mCoordIdeal y)) (a : K → ℤ)
     (s : Ω) : ∃ (dg dh : K → ℕ) (g h : MRing ι), IsMultiHomog g dg ∧ IsMultiHomog h dh ∧
       (∀ k, (dg k : ℤ) = dh k + a k) ∧ aeval y g = s * aeval y h ∧ aeval y h ≠ 0 := by
@@ -201,6 +274,11 @@ theorem exists_rep (y : (Σ k, ι k) → Ω) (hb : Birational y) (hr : IsRelevan
   · rw [map_mul]
     exact mul_ne_zero hh0 (hmon _)
 
+/- English proof (translation)
+Introduce `c hc`. Establish `key` using `mul_mem (hs c hc) (ht c hc)`. Use `key using 1` and compare the differences between its conclusion and the goal. Rewrite using `[mul_mul_mul_comm, ← Finset.prod_mul_distrib]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[← zpow_add₀ (hc k)]`. Use `congr 1`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lat_mul {y : (Σ k, ι k) → Ω} {a b : K → ℤ} {s t : Ω} (hs : s ∈ chartLatNm y a 1)
     (ht : t ∈ chartLatNm y b 1) : s * t ∈ chartLatNm y (a + b) 1 := by
   intro c hc
@@ -214,6 +292,17 @@ theorem lat_mul {y : (Σ k, ι k) → Ω} {a b : K → ℤ} {s t : Ω} (hs : s �
   simp only [Pi.add_apply]
   ring
 
+/- English proof (translation)
+Take `⟨dg1, dh1, g1, h1, hg1, hh1, hd1, hy1, hy1'⟩` from `exists_rep y hb hr a s`. Take `⟨dg2, dh2, g2, h2, hg2, hh2, hd2, hy2, hy2'⟩` from `exists_rep y hb hr b t`. Take `⟨⟨dw, hdw⟩, hwP⟩` from `hw`. Take `⟨⟨dw', hdw'⟩, hwP'⟩` from `hw'`. Establish `hh1P : h1 ∉ mCoordIdeal y` using `fun hm => hy1' (aeval_eq_zero y hh1 hm)`.
+
+Establish `hh2P : h2 ∉ mCoordIdeal y` using `fun hm => hy2' (aeval_eq_zero y hh2 hm)`. Use `⟨w * w' * h1 * h2, ⟨⟨dw + dw' + dh1 + dh2, homog_mul (homog_mul (homog_mul hdw hdw') hh1) hh2⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `hm`. Break down `hp.mem_or_mem hm with hm | hm` into its components or cases. Break down `hp.mem_or_mem hm with hm | hm` into its components or cases.
+
+Break down `hp.mem_or_mem hm with hm | hm` into its components or cases. Conclude with `hwP hm`. Conclude with `hwP' hm`. Conclude with `hh1P hm`. Conclude with `hh2P hm`.
+
+Introduce `z hz hW v hv`. Simplify using `only [map_mul] at hW`. Take `⟨hW1, hz2⟩` from `mul_ne_zero_iff.mp hW`. Take `⟨hW2, hz1⟩` from `mul_ne_zero_iff.mp hW1`. Take `⟨hzw, hzw'⟩` from `mul_ne_zero_iff.mp hW2`.
+
+Establish `hv1 : HasVal y a s z (aeval z g1 / aeval z h1)` using `⟨dg1, dh1, g1, h1, hg1, hh1, hd1, hy1, hz1, (div_mul_cancel₀ _ hz1).symm⟩`. Establish `hv2 : HasVal y b t z (aeval z g2 / aeval z h2)` using `⟨dg2, dh2, g2, h2, hg2, hh2, hd2, hy2, hz2, (div_mul_cancel₀ _ hz2).symm⟩`. Establish `hvv` using `val_unique hz hv (val_mul hv1 hv2)`. Rewrite using `[hvv, norm_mul]`. Conclude with `mul_le_mul (hs z hz hzw _ hv1) (ht z hz hzw' _ hv2) (norm_nonneg _) (hA z hz)`.
+-/
 theorem valLe_mul (y : (Σ k, ι k) → Ω) (hb : Birational y) (hr : IsRelevant (mCoordIdeal y))
     (hp : (mCoordIdeal y).IsPrime) (a b : K → ℤ) (s t : Ω) {A B : ((Σ k, ι k) → ℂ) → ℝ} {w w' : MRing ι}
     (hw : IsFormOff (mCoordIdeal y) w) (hw' : IsFormOff (mCoordIdeal y) w')
@@ -257,6 +346,9 @@ section Root
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Consider the cases of `j with`. Consider the case `none => simp [nOf]`. Consider the case `some r`. Simplify using `only [nOf]`. Conclude with `neg_add (u r.1 r.2) (v r.1 r.2)`.
+-/
 theorem nOf_add (u v : GlobalTheory.AllWt.Weight Dw) (j : Option (RootIx Dw)) : nOf (u + v) j = nOf u j + nOf v j := by
   cases j with
   | none => simp [nOf]
@@ -264,6 +356,9 @@ theorem nOf_add (u v : GlobalTheory.AllWt.Weight Dw) (j : Option (RootIx Dw)) : 
     simp only [nOf]
     exact neg_add (u r.1 r.2) (v r.1 r.2)
 
+/- English proof (translation)
+Unfold `degOf Top.combLine`. Simplify using `only [nOf_add, add_smul, Finset.sum_add_distrib]`.
+-/
 theorem degOf_add (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (u v : GlobalTheory.AllWt.Weight Dw) :
     degOf RM (u + v) = degOf RM u + degOf RM v := by
   unfold degOf Top.combLine
@@ -273,6 +368,15 @@ variable {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {S : Fin
   {RM : Top.RootModel (CMType H) (Dw.p + Dw.q)}
   {Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))} {Fx : FixedData Y Sys}
 
+/- English proof (translation)
+Take `⟨hs1, w, hw, hsw⟩` from `hs`. Take `⟨hs1', w', hw', hsw'⟩` from `hs'`. Establish `hprime : (mCoordIdeal RM.y).IsPrime` using `RM.arith.2.1.1`. Establish `hrel : IsRelevant (mCoordIdeal RM.y)` using `RM.arith.2.1.2.2`. Establish `hpos : ∀ r, ∀ z ∈ mcPts (mCoordIdeal RM.y), 0 < (Or.sing r).h z` using `fun r z hz => (Or.sing r).pos z hz.1`.
+
+Establish `hA : ∀ z ∈ mcPts (mCoordIdeal RM.y), 0 ≤ R * ∏ r, (Or.sing r).h z ^ nOf u (some r)` using `fun z hz => mul_nonneg hR (Finset.prod_nonneg fun r _ => (zpow_pos (hpos r z hz) _).le)`. Take `⟨W, hW, hWz⟩` from `valLe_mul RM.y RM.birational hrel hprime (degOf RM u) (degOf RM v) s s' hw hw' hA hsw hsw'`. Use `⟨?_, W, hW, fun z hz hz0 => ?_⟩` and prove the remaining obligations. Rewrite using `[degOf_add]`. Conclude with `lat_mul hs1 hs1'`.
+
+Establish `e : ∀ r, (Or.sing r).h z ^ nOf (u + v) (some r) = (Or.sing r).h z ^ nOf u (some r) * (Or.sing r).h z ^ nOf v (some r)`. Introduce `r`. Rewrite using `[nOf_add, zpow_add₀ (hpos r z hz).ne']`. Establish `key : R * R' * ∏ r, (Or.sing r).h z ^ nOf (u + v) (some r) = (R * ∏ r, (Or.sing r).h z ^ nOf u (some r)) * (R' * ∏ r, (Or.sing r).h z ^ nOf v (some r))`. Simplify using `only [e, Finset.prod_mul_distrib]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, degOf_add]`. Conclude with `hWz z hz hz0`.
+-/
 theorem modelSmall_mul (Or : RootOrigin Y S RM Fx) (u v : GlobalTheory.AllWt.Weight Dw) {R R' : ℝ} (hR : 0 ≤ R)
     {s s' : RM.Ω} (hs : s ∈ modelSmall Or u R) (hs' : s' ∈ modelSmall Or v R') :
     s * s' ∈ modelSmall Or (u + v) (R * R') := by
@@ -306,6 +410,9 @@ end GlobalTheory.CompanionTheory.Ar.Plug.SmallProd
 
 namespace GlobalTheory.CompanionTheory.Ar.Plug
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y _ T o B b u v R R' hR _ s hs s' hs'`. Conclude with `SmallProd.modelSmall_mul _ u v hR hs hs'`.
+-/
 theorem modelSmall_mul_mem : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) [DecidableEq (CMType H)] (T : Top.RootTower (CMType H) (Dw.p + Dw.q)) (o : Top.GoodOrigin Y T) (B : ℕ) (b : T.Comp) (u v : GlobalTheory.AllWt.Weight Dw) (R R' : ℝ), 0 ≤ R → 0 ≤ R' → ∀ s ∈ modelSmall (o.toTowerOrigin.Or B b) u R, ∀ s' ∈ modelSmall (o.toTowerOrigin.Or B b) v R', s * s' ∈ modelSmall (o.toTowerOrigin.Or B b) (u + v) (R * R') :=
   by
   intro E _ _ _ H Dw l Xo c Y _ T o B b u v R R' hR _ s hs s' hs'

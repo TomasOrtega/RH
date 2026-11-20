@@ -10,6 +10,19 @@ namespace ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Introduce `g hg v v'`. Establish `hC` using `rigid_orth_closure hgap hσ hD hV hc hVK j' hj horth v'`. Apply `hC` to reduce the goal to its premises. Take `⟨k, hk, Y, hY, rfl⟩` from `polar_UJ hg`. Establish `hVf : FiniteDimensional ℂ V` using `hV.1`.
+
+Establish `hVK' : IsKStableSub ε E V` using `hV.2.1`. Establish `hv : (v : D) ∈ genSub E V`. Unfold `genSub`. Conclude with `Submodule.mem_sInf.mpr fun T hT => hT.1 v.2`. Establish `hkJ : kᴴ * Jm ε * k = Jm ε`.
+
+Take `⟨hku, hkJ⟩` from `hk`. Establish `hu : kᴴ * k = 1` using `(Matrix.mem_unitaryGroup_iff').mp hku`. Rewrite using `[Matrix.mul_assoc, ← hkJ, ← Matrix.mul_assoc, hu, Matrix.one_mul]`. Establish `hkU : k ∈ UJset ε` using `hkJ`. Establish `heU : NormedSpace.exp Y ∈ UJset ε`.
+
+Establish `hg' : (k * NormedSpace.exp Y)ᴴ * Jm ε * (k * NormedSpace.exp Y) = Jm ε` using `hg`. Rewrite `hg'` using `[Matrix.conjTranspose_mul]`. Use `show (NormedSpace.exp Y)ᴴ * Jm ε * NormedSpace.exp Y = Jm ε`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = Jm ε := hg'`. Rewrite using `[hσ.1.2 k hkU _ heU, ContinuousLinearMap.comp_apply]`. Establish `h1` using `exp_apply_mem_topologicalClosure hσ hD hVf hVK' hc hY hv`. Take `⟨Z, hZ, hZk⟩` from `exists_exp_eq_of_mem_Kset hk`. Use `closure_mapsTo_of_genSub (σ k) (fun w hw => ?_) h1` and prove the remaining obligations.
+
+Rewrite using `[← hZk]`. Conclude with `exp_inK_apply_mem_closure hσ hD hVf hVK' hZ hw`.
+-/
 theorem rigid_orth {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {ε : Fin n → Bool} {lam : Fin n → ℝ} (hgap : StdGap ε lam)
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hσ : IsURepOn (UJset ε) σ)

@@ -12,15 +12,26 @@ open Formalism.UG Formalism.UG.CS Formalism.BasicNotions Formalism.MainNotions F
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+The claim follows from `eq_glob_of_hat ((K0 D).isLat_lat (D.clsLat_lat u 0 c)) _ (fun v => by exact (Lv u).y_lat c v)`.
+-/
 theorem class_lattice_eq_global {D : D7} (Lv : LevelData D) (u : D.what₂.Word) (c : (D.mem u).C.cls 0) :
     (K0 D).lat (D.clsLat u 0 c) = globLat ((Lv u).y c).1 (Lv u).Lb :=
   eq_glob_of_hat ((K0 D).isLat_lat (D.clsLat_lat u 0 c)) _ (fun v => by exact (Lv u).y_lat c v)
 
+/- English proof (translation)
+Introduce `x hx`. Conclude with `Submodule.subset_span ((Lv u).Lb_int x hx)`.
+-/
 theorem Lb_le_dl_lv {D : D7} (Lv : LevelData D) (u : D.what₂.Word) :
     (Lv u).Lb ≤ dl D.sp.cm.sig (K0 D).J (Lv u).Lb := by
   intro x hx
   exact Submodule.subset_span ((Lv u).Lb_int x hx)
 
+/- English proof (translation)
+Establish `h1 : (K0 D).lat (D.clsLat u 0 c) ≤ (K0 D).lat (Formalism.HermitianLatticesTheory.dual (D.sp.X 0).hT (D.clsLat u 0 c))`. Rewrite using `[(K0 D).lat_dual, class_lattice_eq_global Lv u c]`. Conclude with `le_trans (glob_mono _ (Lb_le_dl_lv Lv u)) (glob_dl_le _ _ _ _ (by exact ((Lv u).y c).2))`. Introduce `x hx`. Establish `h2` using `h1 ⟨x, hx, rfl⟩`.
+
+Rewrite `h2` using `[(K0 D).mem_lat]`. Simplify using `using h2`.
+-/
 theorem class_lattice_integral {D : D7} (Lv : LevelData D) (u : D.what₂.Word) (c : (D.mem u).C.cls 0) :
     D.clsLat u 0 c ≤ Formalism.HermitianLatticesTheory.dual (D.sp.X 0).hT (D.clsLat u 0 c) := by
   have h1 : (K0 D).lat (D.clsLat u 0 c) ≤ (K0 D).lat (Formalism.HermitianLatticesTheory.dual (D.sp.X 0).hT (D.clsLat u 0 c)) := by
@@ -31,6 +42,11 @@ theorem class_lattice_integral {D : D7} (Lv : LevelData D) (u : D.what₂.Word) 
   rw [(K0 D).mem_lat] at h2
   simpa using h2
 
+/- English proof (translation)
+Use `⟨fun x hx => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[dualSub_eq]`. Conclude with `class_lattice_integral F.herm.base.lev0 u c hx`. Take `⟨e⟩` from `(F.herm.atT u).disc 0 (Nat.zero_le _) c`. Rewrite using `[dualSub_eq, AddSubgroup.relIndex, ← card_ringOfIntegers_quot_natCast_eq_pow D (flipTwoThree.Tu D u)]`.
+
+Use `Nat.card_congr e.toEquiv` as an intermediate fact. Establish `hT : flipTwoThree.Tu D u = (D.mem u).A.T` using `rfl`. Rewrite using `[hT, ← this]`. Both sides reduce to the same expression.
+-/
 theorem latT_of_sym {D : D7} (F : Formalism.L2.Forms.ColsTiedSym D) (u : D.what₂.Word) (c : (D.mem u).C.cls 0) :
     flipTwoThree.LatT (D.sp.X 0) (flipTwoThree.Tu D u ^ (2 * D.R.f)) (D.clsLat u 0 c) := by
   refine ⟨fun x hx => ?_, ?_⟩
@@ -43,6 +59,9 @@ theorem latT_of_sym {D : D7} (F : Formalism.L2.Forms.ColsTiedSym D) (u : D.what�
     rw [hT, ← this]
     rfl
 
+/- English proof (translation)
+Take `⟨c, -⟩` from `(F.herm.base.lev0 u).y_bij.2 (Quotient.mk'' 1)`. Conclude with `⟨c⟩`.
+-/
 theorem classes_level_zero_nonempty {D : D7} (F : Formalism.L2.Forms.ColsTiedSym D) (u : D.what₂.Word) :
     Nonempty ((D.mem u).C.cls 0) := by
   obtain ⟨c, -⟩ := (F.herm.base.lev0 u).y_bij.2 (Quotient.mk'' 1)
@@ -65,6 +84,9 @@ def ColRest {D : D7} {u : D.what₂.Word} (B : Formalism.MainNotions.GlobalTheor
           (flipTwoThree.actAll ((D.fm u).lam 0) (fun τ => Matrix.reindex (B.eQ c τ) (B.eQ c τ) ((B.Q c τ).X v)⁻¹)
             (MvPolynomial.map v.embedding (co x c)))).re
 
+/- English proof (translation)
+The claim follows from `column_value_of_tie_local_bases fun D F h3 u => by obtain ⟨B, co, h1, h2, h3', h4⟩ := h D F h3 u exact ⟨B, classes_level_zero_nonempty F u, latT_of_sym F u, co, h1, h2, h3', h4⟩`.
+-/
 theorem colValOfTiedS_of_rest
     (h : ∀ D : D7, Formalism.L2.Forms.ColsTiedSym D → flipTwoThree.adm3 D →
       ∀ u : D.what₂.Word, ∃ B : Formalism.MainNotions.GlobalTheoryTheory.Inhab.ColBase D u, ColRest B) :

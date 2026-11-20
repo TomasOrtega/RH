@@ -9,11 +9,19 @@ namespace CrossDiaZero
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.product_first_zeroth_parts Formalism.L2.Forms Formalism.L2.GlobalTheoryTheory Formalism.L2.GlobalTheoryTheory.LocalLatticeBases Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.S0 Formalism.UG
 open NumberField IsDedekindDomain Matrix
 
+/- English proof (translation)
+Unfold `mulLat`. Conclude with `Submodule.map_smul'' _ _ _`.
+-/
 theorem mulLat_ideal_smul {E : Type} [Field E] [NumberField E] {n : ℕ} (g : Matrix (Fin n) (Fin n) E)
     (I : Ideal (𝓞 E)) (L : Submodule (𝓞 E) (Fin n → E)) : mulLat g (I • L) = I • mulLat g L := by
   unfold mulLat
   exact Submodule.map_smul'' _ _ _
 
+/- English proof (translation)
+Take `⟨l, hl, m, hm, rfl⟩` from `Submodule.mem_sup.1 hy`. Take `⟨r, rfl⟩` from `Submodule.mem_span_singleton.1 hm`. Rewrite using `[smul_add]`. Use `L.add_mem (L.smul_mem _ hl) ?_` and prove the remaining obligations. Establish `e : ((t : ℕ) : 𝓞 E) • ((t : E)⁻¹ • z) = z`.
+
+Rewrite using `[Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul E, smul_smul, mul_inv_cancel₀ ht, one_smul]`. Rewrite using `[smul_comm, e]`. Conclude with `L.smul_mem r hz`.
+-/
 theorem natSmul_mem_of_sup {E : Type} [Field E] [NumberField E] {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E))
     (t : ℕ) (ht : (t : E) ≠ 0) (z : Fin n → E) (hz : z ∈ L) (y : Fin n → E)
     (hy : y ∈ L ⊔ Submodule.span (𝓞 E) {(t : E)⁻¹ • z}) : ((t : ℕ) : 𝓞 E) • y ∈ L := by
@@ -26,6 +34,11 @@ theorem natSmul_mem_of_sup {E : Type} [Field E] [NumberField E] {n : ℕ} (L : S
   rw [smul_comm, e]
   exact L.smul_mem r hz
 
+/- English proof (translation)
+Distinguish the cases in `hsQ : s ∈ Q`. Distinguish the cases in `htP : t ∈ P`. Use `⟨s + t, fun h => hs ?_, fun h => ht ?_, ?_⟩` and prove the remaining obligations. Simplify using `using P.sub_mem h htP`. Simplify using `using Q.sub_mem h hsQ`.
+
+Rewrite using `[add_smul]`. Conclude with `M.add_mem hsx htx`. Conclude with `⟨t, htP, ht, htx⟩`. Conclude with `⟨s, hs, hsQ, hsx⟩`.
+-/
 theorem avoid_two {R W : Type} [CommRing R] [AddCommGroup W] [Module R W] (P Q : Ideal R)
     (M : Submodule R W) (x : W) (s t : R) (hs : s ∉ P) (ht : t ∉ Q) (hsx : s • x ∈ M) (htx : t • x ∈ M) :
     ∃ a : R, a ∉ P ∧ a ∉ Q ∧ a • x ∈ M := by
@@ -38,6 +51,9 @@ theorem avoid_two {R W : Type} [CommRing R] [AddCommGroup W] [Module R W] (P Q :
     · exact ⟨t, htP, ht, htx⟩
   · exact ⟨s, hs, hsQ, hsx⟩
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `rlv_locP_mulLat_le P ((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) h.ge` as an intermediate fact. Rewrite `this` using `[rlv_mulLat_inv]`. Then use the resulting hypothesis. Use `rlv_locP_mulLat_le P ((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) h.le` as an intermediate fact. Rewrite `this` using `[rlv_mulLat_inv]`. Then use the resulting hypothesis.
+-/
 theorem use₄ {E : Type} [Field E] [NumberField E] {n : ℕ} (P : Ideal (𝓞 E)) [P.IsPrime]
     (g : GL (Fin n) E) {M N : Submodule (𝓞 E) (Fin n → E)}
     (h : Formalism.HermitianLatticesTheory.localization₂ P (mulLat (g : Matrix (Fin n) (Fin n) E) M) = Formalism.HermitianLatticesTheory.localization₂ P N) :
@@ -52,6 +68,9 @@ variable {D : D7} {u : D.what₂.Word}
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `h1 : clsCrd D u 0 (Nat.zero_le _) c = Formalism.UG.CS.globLat (T.cls0.y c).1 T.cls0.lev.Lb` using `Formalism.L2.GlobalTheoryTheory.Comp.eq_glob_of_hat (tld_isLat (D := D) (u := u) 0 (Nat.zero_le _) c) _ (fun x => T.cls0.y_lat c x)`. Rewrite using `[h1, dual_class_lattice_eq_global T.cls0 c]`. Introduce `x hx`. Establish `hLb : T.cls0.lev.Lb ≤ Formalism.L2.GlobalTheoryTheory.Comp.dl (sigD D) (gramN D 0 (Nat.zero_le _)) T.cls0.lev.Lb` using `fun y hy => Submodule.subset_span (T.cls0.lev.Lb_int y hy)`. Conclude with `Submodule.span_mono (Set.image_mono hLb) hx`.
+-/
 theorem cls_le_ld (T : Forms0 D u) (c : (D.mem u).C.cls 0) :
     clsCrd D u 0 (Nat.zero_le _) c ≤ Ld D u 0 (Nat.zero_le _) c := by
   have h1 : clsCrd D u 0 (Nat.zero_le _) c = Formalism.UG.CS.globLat (T.cls0.y c).1 T.cls0.lev.Lb :=
@@ -63,10 +82,18 @@ theorem cls_le_ld (T : Forms0 D u) (c : (D.mem u).C.cls 0) :
     fun y hy => Submodule.subset_span (T.cls0.lev.Lb_int y hy)
   exact Submodule.span_mono (Set.image_mono hLb) hx
 
+/- English proof (translation)
+The claim follows from `congrArg _ (Subtype.ext h)`.
+-/
 theorem pr_congr (T : Forms0 D u) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0)
     (z z' : ↥(Ld D u 0 (Nat.zero_le _) c)) (h : z.1 = z'.1) : T.lv0.pr v c z = T.lv0.pr v c z' :=
   congrArg _ (Subtype.ext h)
 
+/- English proof (translation)
+Establish `h0 : T.lv0.pr v c (z - z') = 0` using `by rw [map_sub, hzz, sub_self]`. Rewrite `h0` using `[T.lv0.pr_ker]`. Establish `h1 : g *ᵥ (z - z').1 ∈ T.atT.Pv v • Ld D u 0 (Nat.zero_le _) c'`. Rewrite using `[← hg, ← mulLat_ideal_smul]`. Conclude with `⟨_, h0, rfl⟩`.
+
+Rewrite using `[← sub_eq_zero, ← map_sub, T.lv0.pr_ker]`. Simplify `h1` using `[Matrix.mulVec_sub]`.
+-/
 theorem pr_tr (T : Forms0 D u) (v : (D.mem u).A.vT) (c c' : (D.mem u).C.cls 0)
     (g : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E)
     (hg : mulLat g (Ld D u 0 (Nat.zero_le _) c) = Ld D u 0 (Nat.zero_le _) c')

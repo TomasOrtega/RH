@@ -10,10 +10,20 @@ noncomputable section
 namespace GlobalTheory.TwBridge.LevOrb
 open GlobalTheory.TwBridge.Lev
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Simplify using `[Loc.inX, show l.1 < n from l.2]`.
+-/
 theorem inX_zero {E : Type} [Field E] (n : ℕ) (x : Fin n → E) : Loc.inX E n 0 x = x := by
   funext l
   simp [Loc.inX, show l.1 < n from l.2]
 
+/- English proof (translation)
+Establish `hR : ∀ γ : (Fin (n + 0) → E) ≃ₗ[E] (Fin (n + 0) → E), Loc.R1cond E n 0 γ` using `fun γ => by`. Rewrite using `[r1cond_iff]`. Introduce `l l' h`. Use `l.2` as an intermediate fact. Use `l'.2` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, hx⟩`. Establish `h2 : r ∈ J` using `by simpa [MulAut.conj_apply] using hr.2`. Establish `: r = κ` using `LinearEquiv.ext fun x => by simpa only [inX_zero] using hx x`.
+
+Conclude with `this ▸ h2`. Introduce `h`. Use `⟨κ, ⟨⟨hR _, hR _⟩, ?_⟩, fun x => by rw [inX_zero, inX_zero]⟩` and prove the remaining obligations. Simplify `h` using `[MulAut.conj_apply]`.
+-/
 theorem mem_prX_zero {E : Type} [Field E] {n : ℕ} (J : Subgroup ((Fin (n + 0) → E) ≃ₗ[E] (Fin (n + 0) → E)))
     (κ : (Fin n → E) ≃ₗ[E] (Fin n → E)) : κ ∈ Loc.prX (Loc.Cbe J 1) ↔ (show (Fin (n + 0) → E) ≃ₗ[E] (Fin (n + 0) → E) from κ) ∈ J := by
   have hR : ∀ γ : (Fin (n + 0) → E) ≃ₗ[E] (Fin (n + 0) → E), Loc.R1cond E n 0 γ := fun γ => by
@@ -36,6 +46,11 @@ variable {E k : Type} [Field E] [NumberField E] [Field k] [ValuativeRel k] [Topo
   {P : HeightOneSpectrum (𝓞 E)} {q : ℕ} {ι : E →+* k} {ϖ : kˣ} {A : Type} [Fintype A] [DecidableEq A] {n : ℕ}
 
 omit [Fintype A] [DecidableEq A] in
+/- English proof (translation)
+Rewrite using `[stdAt, StabRef.mem_locStd, mem_box]`. Establish `key : ∀ a : E, valuation k (ι a) ≤ valuation k ((ϖ ^ M : kˣ) : k) ↔ IntAt P (((q : E) ^ M)⁻¹ * a)` using `fun a => by`. Rewrite using `[← hc.int, map_mul, map_inv₀, map_pow, ← hc.unif, Valuation.mem_integer_iff, map_mul, map_inv₀, Units.val_pow_eq_pow_val, inv_mul_le_iff₀ (zero_lt_iff.2 (by simp)), mul_one]`. Use `⟨fun h l => ?_, fun h r => (key _).2 (h (e r))⟩` and prove the remaining obligations. Take `⟨r, rfl⟩` from `e.surjective l`.
+
+Conclude with `(key _).1 (h r)`.
+-/
 theorem mem_box_iff (hc : IsCompl P q ι ϖ) (e : A ≃ Fin n) (M : ℕ) (v : Sp E n) :
     (fun r => ι (v (e r))) ∈ box A (ϖ ^ M) ↔ ((q : E) ^ M)⁻¹ • v ∈ stdAt E n P := by
   rw [stdAt, StabRef.mem_locStd, mem_box]
@@ -47,18 +62,41 @@ theorem mem_box_iff (hc : IsCompl P q ι ϖ) (e : A ≃ Fin n) (M : ℕ) (v : Sp
   exact (key _).1 (h r)
 
 omit [NumberField E] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Use function extensionality and compare the values at `r`. Rewrite using `[apply_sum γ z, map_sum, ← e.sum_comp]`. Simplify using `[mulVec, dotProduct, toBlocks₁₁, phi_val, toLoc, he]`.
+-/
 theorem phi_mulVec (e : A ≃ Fin n) (e' : A ⊕ Fin 0 ≃ Fin n) (he : ∀ a, e' (.inl a) = e a) (γ : (Fin n → E) ≃ₗ[E] (Fin n → E))
     (z : Fin n → E) : (phi ι e' γ).val.toBlocks₁₁ *ᵥ (fun r => ι (z (e r))) = fun r => ι (γ z (e r)) := by
   funext r
   rw [apply_sum γ z, map_sum, ← e.sum_comp]
   simp [mulVec, dotProduct, toBlocks₁₁, phi_val, toLoc, he]
 
+/- English proof (translation)
+Introduce `i` and use `by refine Valuation.map_sum_le _ fun j _ => ?_ rw [map_mul] exact mul_le_of_le_one_of_le ((mem_KO.1 hg).1 (Sum.inl i) (Sum.inl j)) (hy j)`.
+-/
 theorem mulVec_mem_box {g : GL (A ⊕ Fin 0) k} (hg : g ∈ KO k _) (a : kˣ) {y : A → k} (hy : y ∈ box A a) :
     g.val.toBlocks₁₁ *ᵥ y ∈ box A a := fun i => by
   refine Valuation.map_sum_le _ fun j _ => ?_
   rw [map_mul]
   exact mul_le_of_le_one_of_le ((mem_KO.1 hg).1 (Sum.inl i) (Sum.inl j)) (hy j)
 
+/- English proof (translation)
+Establish `hsub : ∀ γ : Sp E n ≃ₗ[E] Sp E n, (phi ι e' γ).val.toBlocks₁₁ *ᵥ (fun r => ι (z (e r))) - (fun r => ι (z' (e r))) = fun r => ι ((γ z - z') (e r))` using `fun γ => by`. Rewrite using `[phi_mulVec e e' he]`. Use function extensionality and compare the values at `r`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨g, hg, y, hy, hy'⟩`. Rewrite `hy`, `hy'` using `[Submodule.Quotient.eq]`. Establish `h0 : g.val.toBlocks₁₁ *ᵥ (fun r => ι (z (e r))) - (fun r => ι (z' (e r))) ∈ box A (ϖ ^ M)`. Use `sub_mem hy' (mulVec_mem_box (h2 hg) _ hy)` as an intermediate fact. Rewrite `this` using `[mulVec_sub]`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Establish `hU1 : IsOpen {N : Matrix (A ⊕ Fin 0) (A ⊕ Fin 0) k | MaxM ((g⁻¹).val * N - 1)}`. Simplify using `only [MaxM, Set.setOf_forall]`. Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_` and prove the remaining obligations.
+
+Conclude with `IsOpen.preimage (f := fun N : Matrix (A ⊕ Fin 0) (A ⊕ Fin 0) k => ((g⁻¹).val * N - 1) i j) (t := {z | valuation k z < 1}) (by fun_prop) (by simpa using (valuation k).isOpen_ball 1)`. Establish `ho : IsOpen ((box A (ϖ ^ M) : Submodule 𝒪[k] (A → k)) : Set (A → k))`. Use `(isOpen_set_pi Set.finite_univ fun (_ : A) _ => isOpen_cball (ϖ ^ M)) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Simplify using `[mem_box, cball]`.
+
+Establish `hU2 : IsOpen {N : Matrix (A ⊕ Fin 0) (A ⊕ Fin 0) k | N.toBlocks₁₁ *ᵥ (fun r => ι (z (e r))) - (fun r => ι (z' (e r))) ∈ box A (ϖ ^ M)}`. Use `ho.preimage (f := fun N : Matrix (A ⊕ Fin 0) (A ⊕ Fin 0) k => N.toBlocks₁₁ *ᵥ (fun r => ι (z (e r))) - (fun r => ι (z' (e r)))) ?_` and prove the remaining obligations. Establish `hb : Continuous fun N : Matrix (A ⊕ Fin 0) (A ⊕ Fin 0) k => N.toBlocks₁₁` using `continuous_pi fun i => continuous_pi fun j => continuous_apply_apply (Sum.inl i) (Sum.inl j)`. Conclude with `(hb.matrix_mulVec continuous_const).sub continuous_const`. Take `⟨M₀, ⟨a1, a2⟩, -⟩` from `exists_approx ι hc.dense g.val (hU1.inter hU2) ⟨by`.
+
+Express the relevant statement in the definitionally equal form `MaxM _`. Rewrite using `[Units.inv_mul, sub_self]`. Conclude with `maxM_zero, h0⟩`. Take `⟨u, hu, eu⟩` from `exists_mem_KOne a1`. Establish `ev : (g * u).val = M₀.map ι`.
+
+Rewrite using `[Units.val_mul, eu, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Take `⟨γ, hγ⟩` from `exists_phi ι e' M₀ _ ev`. Use `⟨γ, hγ ▸ mul_mem hg (h1 hu), (mem_box_iff hc e M _).1 ?_⟩` and prove the remaining obligations. Rewrite using `[← hsub, hγ, ev]`. Conclude with `a2`.
+
+Introduce and unpack `⟨γ, hγ, h⟩`. Use `⟨_, hγ, _, rfl, (Submodule.Quotient.eq _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[hsub]`. Conclude with `(mem_box_iff hc e M _).2 h`.
+-/
 theorem sameOrb_iff (hc : IsCompl P q ι ϖ) (e : A ≃ Fin n) (e' : A ⊕ Fin 0 ≃ Fin n) (he : ∀ a, e' (.inl a) = e a)
     (J : Subgroup (GL (A ⊕ Fin 0) k)) (h1 : KOne k _ ≤ J) (h2 : J ≤ KO k _) (M : ℕ) (z z' : Sp E n) :
     GlobalTheory.QPl.SameOrb J (box _ (ϖ ^ M)) (Submodule.Quotient.mk fun r => ι (z (e r))) (Submodule.Quotient.mk fun r => ι (z' (e r))) ↔
@@ -109,12 +147,28 @@ theorem sameOrb_iff (hc : IsCompl P q ι ϖ) (e : A ≃ Fin n) (e' : A ⊕ Fin 0
 
 end Orb
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Conclude with `mem_prX_zero _ κ`.
+-/
 theorem mem_prX_JQ {E : Type} [Field E] [NumberField E] [StarRing E] (P : HeightOneSpectrum (𝓞 E)) (q kj n c : ℕ) (hc : c = 0)
     (κ : Sp E n ≃ₗ[E] Sp E n) : κ ∈ Loc.prX (Loc.Cbe (LocE.JQ P q kj n c) 1) ↔
       (show Sp E (n + 0) ≃ₗ[E] Sp E (n + 0) from κ) ∈ LocE.JQ P q kj n 0 := by
   subst hc
   exact mem_prX_zero _ κ
 
+/- English proof (translation)
+Introduce `X Pr R Ch sel S₀ mu cst σ₀ P k _ _ _ _ ι s W hA L G hL b hQ e he z z'`. Establish `hc : cOf R (s + 1) = 0` using `by have := hA.steps; unfold cOf; omega`. Establish `hn : R.N (s + 1) = R.k + (s + 1) * (R.t + 1)` using `rfl`. Set `e' : XIx (Fin R.k) (Fin R.t) (s + 1) ⊕ Fin 0 ≃ Fin (R.N (s + 1) + 0)` to `(Equiv.sumEmpty _ _).trans e`. Establish `he' : IsOrd (yPos xPos (R.N (s + 1))) e'`.
+
+Introduce and unpack `(a | a)`. Conclude with `he a`. Conclude with `a.elim0`. Use `set o := stdOrd (Fin R.k) (Fin R.t) (s + 1) 0 (rfl : s + 1 + 0 = s + 1) with ho`. Establish `hconj : ∀ g : GL _ k, (plainFrame (k` using `k) o).conj.symm g = (reGL o).symm g := fun g => by`.
+
+Rewrite using `[MulEquiv.symm_apply_eq, LatFrame.conj_apply, show (plainFrame (k := k) o).bas = 1 from rfl, show (plainFrame (k := k) o).ord = o from rfl, MulEquiv.apply_symm_apply]`. Simplify using the standard rewrite rules. Establish `hJ : ∀ g, g ∈ ((W.T s R).lev (s + 1) 0 rfl).J ↔ (reGL o).symm g ∈ (parahoric _ (Fin (s + 1) × Fin R.t) W.δ W.tame).J` using `fun g => by rw [← hconj]; rfl`. Establish `hmem : ∀ γ : Sp X.E (R.N (s + 1)) ≃ₗ[X.E] Sp X.E (R.N (s + 1)), phi ι e' γ ∈ ((W.T s R).lev (s + 1) 0 rfl).J ↔ γ ∈ prCat (Pr` using `Pr) cst.sharp (s + 1) P.1 (L.h (s + 1) b P) := fun γ => by`. Rewrite using `[hJ, hL.last_h, prCat, Jat, if_neg hA.nmem, mem_prX_JQ _ _ _ _ _ hc]`.
+
+Conclude with `mem_par_iff (c := 0) (s := s) hA.compl W.unif rfl hn he' W.tame γ`. Establish `hle : ((W.T s R).lev (s + 1) 0 rfl).J ≤ KO k _` using `fun g hg => by`. Establish `h` using `(mem_parahoric.1 ((hJ g).1 hg)).1`. Rewrite `h`, the goal using `[mem_KO]`. Rewrite `h` using `[← map_inv]`.
+
+Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Simplify `h.1 (o.symm i) (o.symm j)` using `[reGL_symm_val]`. Simplify `h.2 (o.symm i) (o.symm j)` using `[reGL_symm_val]`. Rewrite using `[sameOrb_iff hA.compl e e' (fun _ => rfl) _ (fun u hu => (hJ u).2 (((parahoric _ (Fin (s + 1) × Fin R.t) W.δ W.tame).reindex o).KOne_le hu)) hle, hL.grpQ]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨γ, h1, h2⟩`. Establish `h3` using `(hmem γ).1 h1`. Conclude with `⟨⟨γ, hL.int _ b P h3⟩, h3, h2⟩`. Introduce and unpack `⟨κ, h1, h2⟩`. Conclude with `⟨κ.1, (hmem _).2 h1, h2⟩`.
+-/
 theorem sameOrb_iff_level : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S₀ : Set ℕ) (mu : Tup X.F X.E X.K S₀) (cst : LocCst X (rowSG Pr sel mu)) (σ₀ : X.K →+* ℂ) (P : rowSG Pr sel mu) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : X.E →+* k) (s : ℕ) (W : TwData k), AtTwist (R := R) sel mu cst σ₀ P ι s W → ∀ (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (G : ChGlob X R.m), L.Ok Ch sel mu cst G s → ∀ (b : L.β (s + 1)) (hQ : P.1 ∈ QE sel (mu : Chr X.F X.E X.K)) (e : XIx (Fin R.k) (Fin R.t) (s + 1) ≃ Fin (R.N (s + 1))), GlobalTheory.SymBridge.IsOrd GlobalTheory.SymBridge.xPos e → ∀ z z' : Sp X.E (R.N (s + 1)), (GlobalTheory.QPl.SameOrb ((W.T s R).lev (s + 1) 0 rfl).J (box _ (W.ϖ ^ cst.M)) (Submodule.Quotient.mk fun r => ι (z (e r))) (Submodule.Quotient.mk fun r => ι (z' (e r))) ↔ ∃ κ ∈ (L.levQ (s + 1) b ⟨P.1, hQ⟩).H, ((qOf P.1 : X.E) ^ cst.M)⁻¹ • (κ.1 z - z') ∈ stdAt X.E (R.N (s + 1)) P.1) := by
   intro X Pr R Ch sel S₀ mu cst σ₀ P k _ _ _ _ ι s W hA L G hL b hQ e he z z'
   have hc : cOf R (s + 1) = 0 := by have := hA.steps; unfold cOf; omega

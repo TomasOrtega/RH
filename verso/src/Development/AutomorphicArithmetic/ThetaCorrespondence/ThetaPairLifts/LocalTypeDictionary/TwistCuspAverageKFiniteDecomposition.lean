@@ -12,6 +12,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open GlobalTheory.Grow GlobalTheory.Size
 noncomputable section
 namespace GlobalTheory.CuspKFinDecomp
+/- English proof (translation)
+Introduce `D θ hθ hP N φ hφ U hU hlev e he l hl`. Establish `key : ∀ l' : List D.what₂.Tau, GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.IsCuspOfType θ N (GlobalTheory.CuspApproxAll.avgList θ N e l' φ) ∧ (∀ k ∈ U, k ∈ GfC N.V → ∀ g, GlobalTheory.CuspApproxAll.avgList θ N e l' φ (g * k) = GlobalTheory.CuspApproxAll.avgList θ …`. Introduce `l'`. Proceed by induction on `l' with`. Consider the case `nil => exact ⟨hφ, hlev, fun τ h => absurd h List.not_mem_nil⟩`.
+
+Consider the case `cons τ l' ih`. Rewrite using `[GlobalTheory.CuspApproxAll.avgList_cons]`. Use `⟨_root_.GlobalTheory.T.averaging_preserves_cusp_type D θ hθ hP N _ ih.1 τ (e τ) (he τ), avg_lev D θ hθ N _ U ih.2.1 τ (e τ), fun τ' hτ' => ?_⟩` and prove the remaining obligations. Break down `List.mem_cons.1 hτ' with rfl | h` into its components or cases. Conclude with `GlobalTheory.T.averaged_automorphic_function_K_finite D θ hθ N _ ih.1.1 τ' (e τ') (he τ')`.
+
+Conclude with `GlobalTheory.T.average_preserves_K_finiteness D θ hθ N _ ih.1.1 τ' τ (e τ) (he τ) (ih.2.2 τ' h)`. Take `⟨hc, hlv, hk⟩` from `key l`. Take `⟨-, 𝓕, h𝓕⟩` from `GlobalTheory.Mem.AdelicGroupFund.rightInvariant_and_exists_fundamentalDomain D N.V (Measure.haar : Measure (GA D N.V)) inferInstance`. Take `⟨n, T₀, u, hT₀, hsum⟩` from `_root_.GlobalTheory.T.cuspForm_decomposes_into_kFinite_components D θ hθ hP N _ hc U hU hlv (fun τ => hk τ (hl τ)) (Measure.haar : Measure (GA D N.V)) 𝓕 inferInstance h𝓕`. Establish `hext` using `fun j => (GlobalTheory.GKExt.extExists hP.harishChandraModules hP.casselmanWallach D θ hθ N.V N.S N.M {k | k ∈ U ∧ k ∈ GfC N.V} 1 (Measure.haar : Measure (GA D N.V)) 𝓕 inferInstance h𝓕 (T₀ j) (hT₀ j)).exists`.
+
+Use `choose T hT using hext`. Establish `hsm : ∀ τ (w : N.M.H τ), w ∈ GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin N.M τ → w ∈ N.M.sm τ` using `fun τ w hw => (GlobalTheory.T.mem_smoothVectors_discreteSeriesModel_iff N.M τ w).2 ((GlobalTheory.TypeSum.std_of_isDS hP.harishChandraModules (N.M.ds τ)).2.2.1 w hw)`. Use `⟨n, fun j => PiTensorProduct.lift (T j), fun j => PiTensorProduct.tprod ℂ (fun τ => (⟨(u j τ : N.M.H τ), hsm τ _ (u j τ).2⟩ : N.M.sm τ)), fun j => ?_, fun j k hk hkf g => ?_, ?_⟩` and prove the remaining obligations. Conclude with `N.multT_le_cusp θ {k | k ∈ U ∧ k ∈ GfC N.V} 1 (Submodule.mem_map_of_mem (Submodule.subset_span (hT j).1))`. Rewrite using `[PiTensorProduct.lift.tprod]`.
+
+Use `(hT j).1.lev (fun τ => (⟨(u j τ : N.M.H τ), hsm τ _ (u j τ).2⟩ : N.M.sm τ)) k ⟨hk, hkf⟩ g` as an intermediate fact. Simplify using `using this`. Rewrite using `[hsum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[PiTensorProduct.lift.tprod]`.
+
+Conclude with `((hT j).2 _ (u j) fun τ => rfl).symm`.
+-/
 theorem cusp_average_k_finite_decomposition : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (N : GlobalTheory.Grid.Node D) (φ : GA D N.V → ℂ), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.IsCuspOfType θ N φ → ∀ (U : Subgroup (GA D N.V)), IsOpen (U : Set (GA D N.V)) → (∀ k ∈ U, k ∈ GfC N.V → ∀ g, φ (g * k) = φ g) → ∀ (e : ∀ τ, Formalism.REAL.KG (N.M.ε τ) → ℂ), (∀ τ, GlobalTheory.TypeSum.KFinFun (N.M.ε τ) (e τ)) → ∀ (l : List D.what₂.Tau), (∀ τ, τ ∈ l) → ∃ (n : ℕ) (F : Fin n → N.Maps) (v : Fin n → SmT N.M), (∀ j, F j ∈ N.Cusp θ) ∧ (∀ j, ∀ k ∈ U, k ∈ GfC N.V → ∀ g, F j (v j) (g * k) = F j (v j) g) ∧ GlobalTheory.CuspApproxAll.avgList θ N e l φ = ∑ j, F j (v j) := by
   intro D θ hθ hP N φ hφ U hU hlev e he l hl
   have key : ∀ l' : List D.what₂.Tau, GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.IsCuspOfType θ N (GlobalTheory.CuspApproxAll.avgList θ N e l' φ) ∧
@@ -58,6 +71,9 @@ open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheor
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 open GlobalTheory.Grow GlobalTheory.Size
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CuspKFinDecomp.cusp_average_k_finite_decomposition | exact _root_.GlobalTheory.CuspKFinDecomp.cusp_average_k_finite_decomposition | (intros; apply _root_.GlobalTheory.CuspKFinDecomp.cusp_average_k_finite_decomposition <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twist_cusp_average_k_finite_decomposition : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (N : GlobalTheory.Grid.Node D) (φ : GA D N.V → ℂ), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.IsCuspOfType θ N φ → ∀ (U : Subgroup (GA D N.V)), IsOpen (U : Set (GA D N.V)) → (∀ k ∈ U, k ∈ GfC N.V → ∀ g, φ (g * k) = φ g) → ∀ (e : ∀ τ, Formalism.REAL.KG (N.M.ε τ) → ℂ), (∀ τ, GlobalTheory.TypeSum.KFinFun (N.M.ε τ) (e τ)) → ∀ (l : List D.what₂.Tau), (∀ τ, τ ∈ l) → ∃ (n : ℕ) (F : Fin n → N.Maps) (v : Fin n → SmT N.M), (∀ j, F j ∈ N.Cusp θ) ∧ (∀ j, ∀ k ∈ U, k ∈ GfC N.V → ∀ g, F j (v j) (g * k) = F j (v j) g) ∧ GlobalTheory.CuspApproxAll.avgList θ N e l φ = ∑ j, F j (v j) := by
   first | exact @_root_.GlobalTheory.CuspKFinDecomp.cusp_average_k_finite_decomposition | exact _root_.GlobalTheory.CuspKFinDecomp.cusp_average_k_finite_decomposition | (intros; apply _root_.GlobalTheory.CuspKFinDecomp.cusp_average_k_finite_decomposition <;> assumption)
 end

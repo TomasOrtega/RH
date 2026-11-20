@@ -14,12 +14,26 @@ namespace Formalism.L2.SG.RealObj.EnergyIntQ
 
 variable {D : D7} {X : HidaSetting D} {θ : ℝ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Unfold `PI.BesselMapUniq.psiGen PI.BesselMapUniq.ellA Formalism.QuantumDeterminants.psi Formalism.QuantumDeterminants.ell`. Rewrite using `[Finset.mul_sum]`.
+-/
 theorem psiGen_const' {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) :
     PI.BesselMapUniq.psiGen k r z (fun _ => c) = Formalism.QuantumDeterminants.psi k r z c := by
   funext g
   unfold PI.BesselMapUniq.psiGen PI.BesselMapUniq.ellA Formalism.QuantumDeterminants.psi Formalism.QuantumDeterminants.ell
   rw [Finset.mul_sum]
 
+/- English proof (translation)
+Take `⟨h1, h2, hg, -⟩` from `C.isT τ`. Establish `hy` using `C.y_mem τ`. Take `⟨hyiU, hyi⟩` from `Formalism.MainNotions.S.Inh.unitary_group_inv_mem (C.y τ) hy`. Use `set yi := Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * (C.y τ)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS`. Establish `hxU : C.Qi τ * uMat γ * C.Q τ * yi ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)` using `Formalism.MainNotions.S.Inh.mul_mem_UH_Hpk_nonempty_parameter_models _ _ (conjUH C τ γ) hyiU`.
+
+Establish `e : sigB X (C.Q τ) (C.Qi τ) τ (C.Qi τ * uMat γ * C.Q τ * yi) (v0Of C τ) = X.B.σ (vOf X τ) (uMat γ) (X.B.w (vOf X τ))`. Take `⟨⟨hone, hmul⟩, -, -⟩` from `(X.ds (vOf X τ)).2.2.1`. Establish `hin1 : Formalism.REAL.inUJ (X.B.I.ε (vOf X τ)) (C.Q τ * (C.Qi τ * uMat γ * C.Q τ * yi) * C.Qi τ)`. Unfold `Formalism.REAL.inUJ`. Establish `hxU' : (C.Qi τ * uMat γ * C.Q τ * yi)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * (C.Qi τ * uMat γ * C.Q τ * yi) = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS` using `hxU`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hin2 : Formalism.REAL.inUJ (X.B.I.ε (vOf X τ)) (C.Q τ * C.y τ * C.Qi τ)`. Unfold `Formalism.REAL.inUJ`. Establish `hyU' : (C.y τ)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * C.y τ = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS` using `hy`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) := by rw [hg, hyU', qiHqi _ h2 hg]`. Use `show X.B.σ (vOf X τ) (C.Q τ * (C.Qi τ * uMat γ * C.Q τ * yi) * C.Qi τ) (X.B.σ (vOf X τ) (C.Q τ * C.y τ * C.Qi τ) (X.B.w (vOf X τ))) = X.B.σ (vOf X τ) (uMat γ) (X.B.w (vOf X τ))`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hmul _ hin1 _ hin2]`. Use `congr 2`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = uMat γ := by rw [h1, h2, Matrix.one_mul, Matrix.one_mul, hyi, Matrix.mul_one, h2, Matrix.mul_one]`. Rewrite using `[← e]`. Conclude with `Submodule.subset_span ⟨_, hxU, rfl⟩`.
+-/
 theorem mem_DD (C : Choice X θ) (τ : D.what₂.Tau) (γ : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) :
     X.B.σ (vOf X τ) (uMat γ) (X.B.w (vOf X τ)) ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp (sigB X (C.Q τ) (C.Qi τ) τ) (v0Of C τ) := by
   obtain ⟨h1, h2, hg, -⟩ := C.isT τ
@@ -60,6 +74,19 @@ theorem mem_DD (C : Choice X θ) (τ : D.what₂.Tau) (γ : Formalism.REAL.UJ (X
 
 variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] in
 
+/- English proof (translation)
+Take `⟨h, hHC, hDS', hgap, hok, hz, hT, hc, hty, hlow, hμG, hμW, hμN, hq, hWc, hWe, hWr, hne, hfin⟩` from `sideQ hRT hL2 hGp hG hLF (fun u τ => Formalism.L2.SG.Pf.colsTypeTr C u τ) u τ`. Establish `hSide : Formalism.FourierDecayAlt.ThreeDimData.Side D.R.k D.R.rS (epsSH D.R) (lamD D τ) h (sigB X (C.Q τ) (C.Qi τ) τ) (v0Of C τ) (zB X (C.Qi τ) u τ) (cS D) (fun i => ((D.hcW u τ).u i : ℝ)) (piB X (C.Q τ) (C.Qi τ) u τ) (C.muW u τ) (muNB D θ) (muGB X (C.Q τ) (C.Qi τ) τ) (C.nuS u τ)` using `⟨hHC, hDS', hgap, hok, hlow, hz, hT, hc, hty, hμW, hμN, hμG, hq⟩`. Take `⟨x0, hx0, y0, hy0, hbe⟩` from `Formalism.FourierDecayAlt.P.bessel_nonzero_l2 hI Formalism.FourierDecayAlt.P.schur_hermitian D.R.k D.R.rS (epsSH D.R) (lamD D τ) h _ _ (v0Of C τ) _ _ (cS D) _ _ _ _ _ _ hSide _ hWc hWe hWr (pos_iff_ne_zero.mpr hne) hfin`. Take `⟨l, hl, ⟨x1, hx1, hlx1⟩, hbel⟩` from `Formalism.FourierDecayAlt.P.shape_true hI D.R.k D.R.rS (epsSH D.R) (lamD D τ) h _ _ (v0Of C τ) _ _ (cS D) _ _ _ _ _ _ hSide ⟨x0, hx0, y0, hy0, hbe⟩`. Establish `hWB : WuBessel C` using `wuBesselOfLoc hRT hL2 hGp C hG (Formalism.MainNotions.BridgeCS3dBOW.besselOfW_of_local_decomposition hI.2.1 hI.2.2.2) hLF (fun τ => Formalism.L2.SG.Pf.dsTr C τ) (fun τ => Formalism.L2.SG.Pf.haarTr C τ) (fun u τ => Formalism.L2.SG.Pf.colsTypeTr C u τ)`.
+
+Take `⟨B, hB, hWB'⟩` from `hWB u τ`. Establish `hDDs` using `Formalism.FourierDecayAlt.P.DDSmoothness.DD_smooth hI.2.2.1 hHC hDS' hlow`. Establish `hB' : PI.BesselMapUniq.IsBesselMapSm (k` using `D.R.k) (r := D.R.rS) (zB X (C.Qi τ) u τ) (PI.BesselMapUniq.psiGen D.R.k D.R.rS (zB X (C.Qi τ) u τ) (fun _ => cS D)) (sigB X (C.Q τ) (C.Qi τ) τ) (piB X (C.Q τ) (C.Qi τ) u τ) B := by`. Rewrite using `[psiGen_const']`. Conclude with `(Formalism.MainNotions.BridgeCS3d.isBesselMapSm_iff _ _ _ _ B).1 hB`.
+
+Establish `hl' : PI.BesselMapUniq.IsBesselMapSm (k` using `D.R.k) (r := D.R.rS) (zB X (C.Qi τ) u τ) (PI.BesselMapUniq.psiGen D.R.k D.R.rS (zB X (C.Qi τ) u τ) (fun _ => cS D)) (sigB X (C.Q τ) (C.Qi τ) τ) (piB X (C.Q τ) (C.Qi τ) u τ) l := by`. Rewrite using `[psiGen_const']`. Conclude with `hl`. Take `⟨a, b, hab, hlin⟩` from `hI.2.2.2 D.R.k D.R.rS (epsSH D.R) (lamD D τ) _ (sigB X (C.Q τ) (C.Qi τ) τ) (zB X (C.Qi τ) u τ) (fun _ => cS D) (fun i => ((D.hcW u τ).u i : ℝ)) _ (piB X (C.Q τ) (C.Qi τ) u τ) hHC hDS' hz hT (fun _ => hc) hty B l hB' hl'`. Establish `ha : a ≠ 0`.
+
+Introduce `ha0`. Establish `hb : b ≠ 0` using `hab.resolve_left (fun h => h ha0)`. Apply `hlx1` to reduce the goal to its premises. Use `hlin x1 (hDDs x1 hx1)` as an intermediate fact. Rewrite `this` using `[ha0, zero_smul, zero_add]`.
+
+Conclude with `(smul_eq_zero.mp this).resolve_left hb`. Use `⟨l, -(b / a), fun x hx y hy => hbel x (hDDs x hx) y hy, fun γ => ?_⟩` and prove the remaining obligations. Rewrite using `[hWB' γ]`. Establish `hsm` using `hDDs _ (mem_DD C τ γ)`. Establish `h0` using `hlin _ hsm`.
+
+Establish `e : B (X.B.σ (vOf X τ) (uMat γ) (X.B.w (vOf X τ))) = a⁻¹ • (a • B (X.B.σ (vOf X τ) (uMat γ) (X.B.w (vOf X τ))))`. Rewrite using `[smul_smul, inv_mul_cancel₀ ha, one_smul]`. Rewrite using `[e, eq_neg_of_add_eq_zero_left h0, smul_neg, smul_smul, neg_smul, div_eq_inv_mul]`.
+-/
 theorem locDDQ (hI : Formalism.FourierDecayAlt.ThreeDimData.Inputs) (hRT : ReproTr) (hL2 : L2RightTranslation) (hGp : GapOfHyp)
     (hG : Formalism.L2.SG.ConcreteSettingExists.GapHyp D) (C : Choice X θ) (hLF : LocFactor C) (u : D.what₂.Word)
     (τ : D.what₂.Tau) :

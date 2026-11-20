@@ -7,6 +7,25 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.CompanionTheory.DiagRigid
 
+/- English proof (translation)
+Introduce `L _ _ n y hy d d' hd hd' h hh`. Establish `key : GlobalTheory.SmGL.diagT L (Fin n) d * h = h * GlobalTheory.SmGL.diagT L (Fin n) d'`. Rewrite using `[← hh]`. Simplify using `only [mul_assoc, mul_inv_cancel_left]`. Establish `key' : (Matrix.diagonal fun i => (d i : L)) * (h : Matrix (Fin n) (Fin n) L) = (h : Matrix (Fin n) (Fin n) L) * Matrix.diagonal fun i => (d' i : L)`.
+
+Use `congrArg (fun g : GL (Fin n) L => (g : Matrix (Fin n) (Fin n) L)) key` as an intermediate fact. Simplify `this` using `only [Units.val_mul, GlobalTheory.SmGL.val_diagT]`. Establish `ent : ∀ i j, (d i : L) * (h : Matrix (Fin n) (Fin n) L) i j = (h : Matrix (Fin n) (Fin n) L) i j * (d' j : L)`. Introduce `i j`. Use `congrFun (congrFun key' i) j` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.diagonal_mul, Matrix.mul_diagonal]`. Then use the resulting hypothesis. Establish `off : ∀ i j, i ≠ j → (h : Matrix (Fin n) (Fin n) L) i j = 0`. Introduce `i j hij`. Assume the negation of the conclusion as `hne`. Establish `e : (d i : L) = (d' j : L)`.
+
+Use `ent i j` as an intermediate fact. Rewrite `this` using `[mul_comm]`. Conclude with `mul_left_cancel₀ hne this`. Apply `hij` to reduce the goal to its premises. Apply `hy` to reduce the goal to its premises.
+
+Rewrite using `[← hd i, ← hd' j, e]`. Establish `hdiag : (h : Matrix (Fin n) (Fin n) L) = Matrix.diagonal fun i => (h : Matrix (Fin n) (Fin n) L) i i`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[Matrix.diagonal_apply_ne _ hij]`. Conclude with `off i j hij`. Establish `hdet : ∏ i, (h : Matrix (Fin n) (Fin n) L) i i ≠ 0`. Establish `h1 : IsUnit (h : Matrix (Fin n) (Fin n) L).det` using `(Matrix.isUnit_iff_isUnit_det _).1 h.isUnit`.
+
+Rewrite `h1` using `[hdiag, Matrix.det_diagonal]`. Simplify `h1.ne_zero` using `[Matrix.diagonal_apply_eq]`. Establish `hii : ∀ i, (h : Matrix (Fin n) (Fin n) L) i i ≠ 0` using `fun i => (Finset.prod_ne_zero_iff.1 hdet) i (Finset.mem_univ i)`. Use `⟨?_, fun i => Units.mk0 _ (hii i), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Apply `Units.ext` to reduce the goal to its premises. Use `ent i i` as an intermediate fact. Rewrite `this` using `[mul_comm]`. Conclude with `mul_left_cancel₀ (hii i) this`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[GlobalTheory.SmGL.val_diagT]`. Simplify using `using hdiag`.
+-/
 theorem diag_rigid : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (n : ℕ) (y : Fin n → ℤ), Function.Injective y → ∀ (d d' : Fin n → Lˣ), (∀ i, ordL (d i : L) = y i) → (∀ i, ordL (d' i : L) = y i) → ∀ h : GL (Fin n) L, h⁻¹ * GlobalTheory.SmGL.diagT L (Fin n) d * h = GlobalTheory.SmGL.diagT L (Fin n) d' → d = d' ∧ ∃ s : Fin n → Lˣ, h = GlobalTheory.SmGL.diagT L (Fin n) s := by
   intro L _ _ n y hy d d' hd hd' h hh
   have key : GlobalTheory.SmGL.diagT L (Fin n) d * h = h * GlobalTheory.SmGL.diagT L (Fin n) d' := by

@@ -66,20 +66,36 @@ def TraceKernelUncond : Prop :=
   ∀ (D : D7) (θ : InfF D), IsInfFam θ → ∀ (V : HSp D) (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant],
     TraceKernelAt θ V μ
 
+/- English proof (translation)
+Introduce `D θ hθ V μ _ _` and use `h D θ hθ V μ (hc D θ hθ V μ)`.
+-/
 theorem TraceKernel.uncond (h : TraceKernel)
     (hc : ∀ (D : D7) (θ : InfF D), IsInfFam θ → ∀ (V : HSp D) (μ : Measure (GA D V)) [μ.IsHaarMeasure]
       [μ.IsMulRightInvariant], CuspTraceClass θ V μ) : TraceKernelUncond :=
   fun D θ hθ V μ _ _ => h D θ hθ V μ (hc D θ hθ V μ)
 
+/- English proof (translation)
+The claim follows from `kernelQ_mk f x x`.
+-/
 example (V : HSp D) (f : GA D V → ℂ) (x : GA D V) :
     kernelQ (GQ V) f (mk _ x) (mk _ x) = ∑' γ : GQ V, f (x⁻¹ * γ * x) := kernelQ_mk f x x
 
+/- English proof (translation)
+Unfold `oneP atTau`. Use `split_ifs with h`. Use `exacts [h.choose_spec.1, one_mem _]`.
+-/
 theorem oneP_mem_GinfC (θ : InfF D) (V : HSp D) (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) (t : ℝ) :
     oneP θ V τ X t ∈ GinfC V := by
   unfold oneP atTau
   split_ifs with h
   exacts [h.choose_spec.1, one_mem _]
 
+/- English proof (translation)
+Establish `hinv : ∀ k ∈ K, ∀ g, (K : Set (GA D V)).indicator (fun _ => (1 : ℂ)) (g * k) = (K : Set (GA D V)).indicator (fun _ => (1 : ℂ)) g` using `fun k hk g => by`. Distinguish the cases in `hg : g ∈ K`. Rewrite using `[Set.indicator_of_mem (K.mul_mem hg hk), Set.indicator_of_mem hg]`. Rewrite using `[Set.indicator_of_notMem hg, Set.indicator_of_notMem fun h => hg ((K.mul_mem_cancel_right hk).1 h)]`. Establish `hcl : IsClopen (K : Set (GA D V))` using `⟨K.isClosed_of_isOpen ho, ho⟩`.
+
+Use `⟨hcl.continuous_indicator continuous_const, HasCompactSupport.intro' hc hcl.1 fun x hx => Set.indicator_of_notMem hx _, ⟨K, ho, fun k hk _ => hinv k hk⟩, fun k τs Xs _ g => ?_⟩` and prove the remaining obligations. Establish `: ∀ t : Fin k → ℝ, (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod ∈ K` using `fun t => K.list_prod_mem fun x hx => by`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `hK (oneP_mem_GinfC θ V _ _ _)`. Simplify using `only [hinv _ (this _)]`.
+
+Conclude with `contDiff_const`.
+-/
 theorem isCcInf_indicator (θ : InfF D) (V : HSp D) {K : Subgroup (GA D V)} (ho : IsOpen (K : Set (GA D V)))
     (hc : IsCompact (K : Set (GA D V))) (hK : GinfC V ≤ K) :
     IsCcInf θ V ((K : Set (GA D V)).indicator fun _ => 1) := by
@@ -98,6 +114,11 @@ theorem isCcInf_indicator (θ : InfF D) (V : HSp D) {K : Subgroup (GA D V)} (ho 
   simp only [hinv _ (this _)]
   exact contDiff_const
 
+/- English proof (translation)
+Take `⟨K, hK, ho, -, hc⟩` from `(GlobalTheory.Ker.CongTop.adelicUnitary_top_cong D V).2.2.2.2.2.2 (Submodule.span _ (Set.range (Pi.basisFun D.host.E (Fin V.rank)))) 1 ⟨Submodule.fg_span (Set.finite_range _), by`. Rewrite using `[Submodule.span_span_of_tower, (Pi.basisFun D.host.E (Fin V.rank)).span_eq]⟩ one_pos`. Use `⟨_, isCcInf_indicator θ V ho (hc hV) fun k hk => (hK k).2 ?_, Set.indicator_of_mem K.one_mem _⟩` and prove the remaining obligations. Establish `h1` using `(hK 1).1 K.one_mem`. Establish `e : (finHom V k).1 = (finHom V 1).1` using `by rw [map_one, show finHom V k = 1 from hk]`.
+
+Unfold `GlobalTheory.Ker.CongK at h1 ⊢`. Rewrite `h1`, the goal using `[GlobalTheory.Ker.CongTop.fmt_eq]`. Rewrite using `[e]` and apply the resulting hypothesis.
+-/
 theorem exists_isCcInf (θ : InfF D) (V : HSp D) (hV : V.gram = 1) : ∃ f, IsCcInf θ V f ∧ f 1 = 1 := by
   obtain ⟨K, hK, ho, -, hc⟩ := (GlobalTheory.Ker.CongTop.adelicUnitary_top_cong D V).2.2.2.2.2.2
     (Submodule.span _ (Set.range (Pi.basisFun D.host.E (Fin V.rank)))) 1

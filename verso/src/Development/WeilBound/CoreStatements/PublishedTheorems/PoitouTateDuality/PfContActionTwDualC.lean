@@ -7,6 +7,21 @@ open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual Rec
 
 namespace PositivityTheory.Lit1.PTN
 
+/- English proof (translation)
+Establish `hμc : Continuous μ`. Establish `hq : Topology.IsQuotientMap (toGS Ω (S : Set (HeightOneSpectrum (𝓞 F))))` using `QuotientGroup.isQuotientMap_mk _`. Rewrite using `[hq.continuous_iff]`. Establish `h2 : (⇑μ ∘ ⇑(toGS Ω (S : Set (HeightOneSpectrum (𝓞 F))))) = ⇑(cycMod F Ω l r)`. Rewrite using `[← hμ]`.
+
+Both sides reduce to the same expression. Rewrite using `[h2]`. Conclude with `GlobalTheory.Published.PoitouTate.continuous_cycMod`. Establish `hρ' : Continuous fun p : GS Ω (S : Set (HeightOneSpectrum (𝓞 F))) × M => ρ p.1 p.2` using `hρ`. Use `haveI : Fintype M := Fintype.ofFinite M`.
+
+Use `show Continuous fun p : GS Ω (S : Set (HeightOneSpectrum (𝓞 F))) × TDual (ZMod (l ^ r)) M => twDual μ ρ p.1 p.2`. Rewrite using `[continuous_prod_of_discrete_right]`. Introduce `φ`. Use `continuous_discrete_rng.mpr ?_` and prove the remaining obligations. Introduce `ψ`.
+
+Establish `hset : (fun g => (twDual μ ρ g) φ) ⁻¹' {ψ} = ⋂ m : M, (fun g : GS Ω (S : Set (HeightOneSpectrum (𝓞 F))) => ((μ g : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) * φ (ρ g⁻¹ m)) ⁻¹' {ψ m}`. Use extensionality with `g`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_iInter]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h m`.
+
+Rewrite using `[← h, twDual_apply]`. Introduce `h`. Apply `TDual.ext` to reduce the goal to its premises. Introduce `m`. Rewrite using `[twDual_apply]`.
+
+Conclude with `h m`. Rewrite using `[hset]`. Use `isOpen_iInter_of_finite fun m => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun g : GS Ω (S : Set (HeightOneSpectrum (𝓞 F))) => ((μ g : (ZMod (l ^ r))ˣ) : ZMod (l ^ r))` using `Units.continuous_val.comp hμc`. Establish `h2 : Continuous fun g : GS Ω (S : Set (HeightOneSpectrum (𝓞 F))) => ρ g⁻¹ m` using `hρ'.comp (continuous_inv.prodMk continuous_const)`.
+
+Establish `h3 : Continuous fun g : GS Ω (S : Set (HeightOneSpectrum (𝓞 F))) => φ (ρ g⁻¹ m)` using `continuous_of_discreteTopology.comp h2`. Conclude with `(isOpen_discrete _).preimage (h1.mul h3)`.
+-/
 theorem contAction_twDual_C {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {r : ℕ} (S : Finset (HeightOneSpectrum (𝓞 F)))
     (μ : GS Ω (S : Set (HeightOneSpectrum (𝓞 F))) →* (ZMod (l ^ r))ˣ)

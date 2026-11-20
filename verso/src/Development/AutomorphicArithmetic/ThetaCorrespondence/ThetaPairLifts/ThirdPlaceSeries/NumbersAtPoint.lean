@@ -15,6 +15,17 @@ namespace GlobalTheory.RefSum.NumPt
 section Cols
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 end Cols
+/- English proof (translation)
+Introduce `hS`. Use `Closed.imp (Closed.and (_root_.GlobalTheory.T.quotient_weight_gap_bounds' hS) (_root_.GlobalTheory.T.lenT_zBase_unitE_nCol_bounds hS)) ?_` and prove the remaining obligations. Introduce and unpack `eps Fm CH - ⟨⟨_, _, hA⟩, ⟨_, _, hB⟩⟩`. Take `⟨x0, h⟩` from `_root_.GlobalTheory.CovTop.EventuallyAtAllPoints.and hA hB`. Use `⟨max 0 (2 + 2 * Fm.CYL), le_max_left _ _, x0, fun x hx hle ι p hp i hi u1 hu => ?_⟩` and prove the remaining obligations.
+
+Take `⟨hA, hB⟩` from `h x hx hle ι p hp`. Take `⟨a1, -, a3, a4, a5, a6, -⟩` from `hA i hi u1 hu`. Take `⟨b1, b2, -, -, b5, b6⟩` from `hB i`. Use `⟨jetNum_of_sizes (Fm.sizes x hx ι) ?_, a3 ▸ two_mul_rank_le_nCol _, ?_⟩` and prove the remaining obligations. Establish `hev : Even (nCol (dat p i))` using `even_iff_two_dvd.2 (Dvd.dvd.trans (by norm_num) eight_dvd_nCol)`.
+
+Use `(GlobalTheory.T.thetaExponents_dominant_lastEntry_one_degree _ _ (dat p i) u1 (nCol (dat p i)) _ a1 hev a4 a5 a6).2.2.2.2` as an intermediate fact. Rewrite `this` using `[finrank_host, a3, Nat.mul_div_cancel_left _ two_pos]`. Conclude with `this`. Establish `hg` using `log_g_le (Fm.params x hx ι) b2 b5 b6`. Rewrite `hg` using `[Fm.params_CYL x hx ι]`.
+
+Establish `hZ : 0 ≤ zBase (Fm.L x ι) ^ 12` using `by positivity`. Establish `hT : (0 : ℝ) ≤ lenT p i (Fm.parT x hx ι).PP` using `Nat.cast_nonneg _`. Establish `hg'` using `hg.trans (mul_le_mul_of_nonneg_right (le_max_right 0 _) hZ)`. Establish `h1` using `mul_le_mul_of_nonneg_left hg' hT`. Establish `h2` using `mul_le_mul_of_nonneg_left b1 (le_max_left 0 (2 + 2 * Fm.CYL))`.
+
+Combine the linear relations using `[mul_left_comm (lenT p i (Fm.parT x hx ι).PP : ℝ) (max 0 (2 + 2 * Fm.CYL)) (zBase (Fm.L x ι) ^ 12)]`.
+-/
 theorem _root_.GlobalTheory.RefSum.NumPtAlt.numbers_at_point : _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.LiftsCondition fun Fm x _ ι p i PP C => (i : ℕ) + 1 < (Fm.D x ι).R.m → ∀ u1, Quo p i PP u1 → JetNum (Fm.D x ι) (DF (dat p i) (aOf p i u1)) (1 / 2500) ∧ 2 * (Fm.D x ι).R.r ≤ nCol (dat p i) ∧ (lenT p i PP : ℝ) * (Real.log ((Fm.D x ι).host.g 0) + Real.log ((Fm.D x ι).host.g 1)) ≤ C * unitE p := by
   intro hS
   refine Closed.imp (Closed.and (_root_.GlobalTheory.T.quotient_weight_gap_bounds' hS) (_root_.GlobalTheory.T.lenT_zBase_unitE_nCol_bounds hS)) ?_

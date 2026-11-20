@@ -15,12 +15,21 @@ namespace GlobalTheory.MomOne.TransNorm
 
 variable {q : ℕ} [Fact q.Prime]
 
+/- English proof (translation)
+Simplify using `using ((sup_norm_laws q).1 f g B B hf hg).1`.
+-/
 lemma bd_add {f g : ℂ_[q]⟦X⟧} {B : ℝ} (hf : Bd B f) (hg : Bd B g) : Bd B (f + g) := by
   simpa using ((sup_norm_laws q).1 f g B B hf hg).1
 
+/- English proof (translation)
+Simplify using `using ((sup_norm_laws q).1 f g B 1 hf hg).2`.
+-/
 lemma bd_mul_one {f g : ℂ_[q]⟦X⟧} {B : ℝ} (hf : Bd B f) (hg : Bd 1 g) : Bd B (f * g) := by
   simpa using ((sup_norm_laws q).1 f g B 1 hf hg).2
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[coeff_C]`. Use `split_ifs`. Conclude with `ha`. Simplify using `using (norm_nonneg a).trans ha`.
+-/
 lemma bd_C {a : ℂ_[q]} {B : ℝ} (ha : ‖a‖ ≤ B) : Bd B (C a : ℂ_[q]⟦X⟧) := by
   intro n
   rw [coeff_C]
@@ -28,33 +37,56 @@ lemma bd_C {a : ℂ_[q]} {B : ℝ} (ha : ‖a‖ ≤ B) : Bd B (C a : ℂ_[q]⟦
   · exact ha
   · simpa using (norm_nonneg a).trans ha
 
+/- English proof (translation)
+Simplify using `using (bd_C (a := (1 : ℂ_[q])) (B := 1) (by simp))`.
+-/
 lemma bd_one : Bd 1 (1 : ℂ_[q]⟦X⟧) := by
   simpa using (bd_C (a := (1 : ℂ_[q])) (B := 1) (by simp))
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 lemma bd_X : Bd 1 (X : ℂ_[q]⟦X⟧) := by
   intro n
   rw [coeff_X]
   split_ifs <;> simp
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using bd_one`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `bd_mul_one ih hf`.
+-/
 lemma bd_pow {f : ℂ_[q]⟦X⟧} (hf : Bd 1 f) (n : ℕ) : Bd 1 (f ^ n) := by
   induction n with
   | zero => simpa using bd_one
   | succ n ih => rw [pow_succ]; exact bd_mul_one ih hf
 
+/- English proof (translation)
+Use `Finset.sum_induction f (Bd B) (fun _ _ => bd_add) ?_ hf` and prove the remaining obligations. Introduce `n`. Simplify using `using hB`.
+-/
 lemma bd_sum {α : Type} (s : Finset α) (f : α → ℂ_[q]⟦X⟧) {B : ℝ} (hB : 0 ≤ B)
     (hf : ∀ i ∈ s, Bd B (f i)) : Bd B (∑ i ∈ s, f i) := by
   refine Finset.sum_induction f (Bd B) (fun _ _ => bd_add) ?_ hf
   intro n
   simpa using hB
 
+/- English proof (translation)
+The claim follows from `Finset.prod_induction f (Bd 1) (fun _ _ => bd_mul_one) bd_one hf`.
+-/
 lemma bd_prod {α : Type} (s : Finset α) (f : α → ℂ_[q]⟦X⟧)
     (hf : ∀ i ∈ s, Bd 1 (f i)) : Bd 1 (∏ i ∈ s, f i) :=
   Finset.prod_induction f (Bd 1) (fun _ _ => bd_mul_one) bd_one hf
 
+/- English proof (translation)
+Use `bd_add hf (bd_C (a := -a) (by simpa using ha))` as an intermediate fact. Simplify `this` using `[sub_eq_add_neg]`.
+-/
 lemma bd_sub_C {f : ℂ_[q]⟦X⟧} {a : ℂ_[q]} (hf : Bd 1 f) (ha : ‖a‖ ≤ 1) : Bd 1 (f - C a) := by
   have := bd_add hf (bd_C (a := -a) (by simpa using ha))
   simpa [sub_eq_add_neg] using this
 
+/- English proof (translation)
+Introduce `i`. Establish `key` using `(sup_norm_laws q).2.2.2.1 f g B hf ⟨1, hg⟩ h i`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `hB : 0 ≤ B` using `(norm_nonneg _).trans (h 0)`.
+
+Establish `hpos : 0 < ‖coeff i f‖` using `hB.trans_lt hlt`. Take `⟨n, hn⟩` from `hg' (B / ‖coeff i f‖) ((div_lt_one hpos).2 hlt)`. Use `key n` as an intermediate fact. Rewrite `hn` using `[div_lt_iff₀ hpos]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 lemma bd_cancel {f g : ℂ_[q]⟦X⟧} {B : ℝ} (hf : Bdd f) (hg : Bd 1 g)
     (hg' : ∀ r : ℝ, r < 1 → ∃ n, r < ‖coeff n g‖) (h : Bd B (f * g)) : Bd B f := by
   intro i
@@ -68,6 +100,11 @@ lemma bd_cancel {f g : ℂ_[q]⟦X⟧} {B : ℝ} (hf : Bdd f) (hg : Bd 1 g)
   rw [div_lt_iff₀ hpos] at hn
   nlinarith
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using h`. Consider the case `insert a s ha ih`. Apply `ih` to reduce the goal to its premises. Rewrite `h` using `[Finset.prod_insert ha, mul_comm (g a), ← mul_assoc]`.
+
+Take `⟨C, hC⟩` from `hf`. Conclude with `bd_cancel ⟨C, bd_mul_one hC (bd_prod s g fun i _ => hg i)⟩ (hg a) (hg' a) h`.
+-/
 lemma bd_cancel_prod {α : Type} (s : Finset α) (g : α → ℂ_[q]⟦X⟧) {B : ℝ}
     (hg : ∀ i, Bd 1 (g i)) (hg' : ∀ i, ∀ r : ℝ, r < 1 → ∃ n, r < ‖coeff n (g i)‖)
     {f : ℂ_[q]⟦X⟧} (hf : Bdd f) (h : Bd B (f * ∏ i ∈ s, g i)) : Bd B f := by
@@ -80,11 +117,19 @@ lemma bd_cancel_prod {α : Type} (s : Finset α) (g : α → ℂ_[q]⟦X⟧) {B 
     obtain ⟨C, hC⟩ := hf
     exact bd_cancel ⟨C, bd_mul_one hC (bd_prod s g fun i _ => hg i)⟩ (hg a) (hg' a) h
 
+/- English proof (translation)
+Simplify using `only [Polynomial.eval_eq_sum_range]`. Conclude with `Finset.analyticAt_fun_sum _ fun i _ => analyticAt_const.mul (hF.pow i)`.
+-/
 lemma analyticAt_eval (p : Polynomial ℂ) {F : ℂ → ℂ} {z : ℂ} (hF : AnalyticAt ℂ F z) :
     AnalyticAt ℂ (fun z => p.eval (F z)) z := by
   simp only [Polynomial.eval_eq_sum_range]
   exact Finset.analyticAt_fun_sum _ fun i _ => analyticAt_const.mul (hF.pow i)
 
+/- English proof (translation)
+Take `⟨h1, h2, -⟩` from `TaylorRead.hat_laws q ι ℓ hℓ`. Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C a => simpa using h2 a`. Consider the case `add p r hp hr`. Simplify using `only [Polynomial.eval_add, Polynomial.eval₂_add]`.
+
+Rewrite using `[(h1 _ _ (analyticAt_eval p hF) (analyticAt_eval r hF)).1, hp, hr]`. Consider the case `monomial n a ih`. Rewrite using `[pow_succ, ← mul_assoc]`. Simplify using `only [Polynomial.eval_mul (q := Polynomial.X), Polynomial.eval_X, Polynomial.eval₂_mul_X]`. Rewrite using `[(h1 _ _ (analyticAt_eval _ hF) hF).2.1, ih]`.
+-/
 lemma hat_eval (ι : ℂ ≃+* ℂ_[q]) (ℓ : ℂ_[q]⟦X⟧) (hℓ : constantCoeff ℓ = 0) (p : Polynomial ℂ)
     {F : ℂ → ℂ} (hF : AnalyticAt ℂ F 0) :
     hat ι ℓ (fun z => p.eval (F z)) =
@@ -100,6 +145,9 @@ lemma hat_eval (ι : ℂ ≃+* ℂ_[q]) (ℓ : ℂ_[q]⟦X⟧) (hℓ : constantC
     simp only [Polynomial.eval_mul (q := Polynomial.X), Polynomial.eval_X, Polynomial.eval₂_mul_X]
     rw [(h1 _ _ (analyticAt_eval _ hF) hF).2.1, ih]
 
+/- English proof (translation)
+Rewrite using `[Polynomial.eval₂_eq_sum_range]`. Use `bd_sum _ _ hB fun i hi => bd_mul_one (bd_C ?_) (bd_pow hf i)` and prove the remaining obligations. Conclude with `hp i (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi))`.
+-/
 lemma bd_eval₂ (ι : ℂ ≃+* ℂ_[q]) (p : Polynomial ℂ) {B : ℝ} (hB : 0 ≤ B)
     (hp : ∀ i ≤ p.natDegree, ‖ι (p.coeff i)‖ ≤ B) {f : ℂ_[q]⟦X⟧} (hf : Bd 1 f) :
     Bd B (p.eval₂ ((C : ℂ_[q] →+* ℂ_[q]⟦X⟧).comp (ι : ℂ →+* ℂ_[q])) f) := by
@@ -107,6 +155,11 @@ lemma bd_eval₂ (ι : ℂ ≃+* ℂ_[q]) (p : Polynomial ℂ) {B : ℝ} (hB : 0
   refine bd_sum _ _ hB fun i hi => bd_mul_one (bd_C ?_) (bd_pow hf i)
   exact hp i (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi))
 
+/- English proof (translation)
+Establish `h : Bd 1 (∏ i, (X - C (ι (a i)) : ℂ_[q]⟦X⟧))` using `bd_prod _ _ fun i _ => bd_sub_C bd_X (ha i)`. Establish `e : (∏ i, (X - C (ι (a i)) : ℂ_[q]⟦X⟧)) = Polynomial.coeToPowerSeries.ringHom ((∏ i, (Polynomial.X - Polynomial.C (a i))).map (ι : ℂ →+* ℂ_[q]))`. Simplify using `[Polynomial.map_prod, map_prod]`. Use `h n` as an intermediate fact. Rewrite `this` using `[e]`.
+
+Simplify `this` using `only [Polynomial.coeToPowerSeries.ringHom_apply, Polynomial.coeff_coe, Polynomial.coeff_map, RingHom.coe_coe]`.
+-/
 lemma norm_coeff_prod (ι : ℂ ≃+* ℂ_[q]) {m : ℕ} (a : Fin m → ℂ) (ha : ∀ i, ‖ι (a i)‖ ≤ 1) (n : ℕ) :
     ‖ι ((∏ i, (Polynomial.X - Polynomial.C (a i))).coeff n)‖ ≤ 1 := by
   have h : Bd 1 (∏ i, (X - C (ι (a i)) : ℂ_[q]⟦X⟧)) :=
@@ -119,21 +172,51 @@ lemma norm_coeff_prod (ι : ℂ ≃+* ℂ_[q]) {m : ℕ} (a : Fin m → ℂ) (ha
   rw [e] at this
   simpa only [Polynomial.coeToPowerSeries.ringHom_apply, Polynomial.coeff_coe, Polynomial.coeff_map, RingHom.coe_coe] using this
 
+/- English proof (translation)
+Use `M.L.analyticOnNhd_weierstrassP t ht` as an intermediate fact. Unfold `Mdl.x`. Use `fun_prop`.
+-/
 lemma analyticAt_x_of_not_mem_lattice (M : Mdl q) {t : ℂ} (ht : t ∉ M.L.lattice) : AnalyticAt ℂ M.x t := by
   have := M.L.analyticOnNhd_weierstrassP t ht
   unfold Mdl.x
   fun_prop
 
+/- English proof (translation)
+Use `M.L.analyticOnNhd_derivWeierstrassP t ht` as an intermediate fact. Use `analyticAt_x_of_not_mem_lattice M ht` as an intermediate fact. Unfold `Mdl.y`. Use `fun_prop`.
+-/
 lemma analyticAt_y (M : Mdl q) {t : ℂ} (ht : t ∉ M.L.lattice) : AnalyticAt ℂ M.y t := by
   have := M.L.analyticOnNhd_derivWeierstrassP t ht
   have := analyticAt_x_of_not_mem_lattice M ht
   unfold Mdl.y
   fun_prop
 
+/- English proof (translation)
+The claim follows from `AnalyticAt.comp_of_eq (g := F) (f := fun z => z + t) hF (by fun_prop) (by simp)`.
+-/
 lemma analyticAt_shift {F : ℂ → ℂ} {t : ℂ} (hF : AnalyticAt ℂ F t) :
     AnalyticAt ℂ (fun z => F (z + t)) 0 :=
   AnalyticAt.comp_of_eq (g := F) (f := fun z => z + t) hF (by fun_prop) (by simp)
 
+/- English proof (translation)
+Introduce `q _ M ℓ φ t B hc hE h0 ht hpole hts hbdd hB`. Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hB 0)`. Establish `hℓ` using `hc.2.1`. Take `⟨hl1, hl2, -⟩` from `TaylorRead.hat_laws q M.ι ℓ hℓ`. Take `⟨m, P, A, B', hP, hid⟩` from `GlobalTheory.T.exists_ellipticFunction_mul_prod_eq_xy q M φ hc.1 hE`.
+
+Establish `hPx : ∀ i, ‖M.ι (M.x (P i))‖ ≤ 1` using `fun i => not_lt.1 fun h => hpole _ (hP i).2 (Or.inr h)`. Take `⟨-, v, xs, ys, -, hxs, hys, -, hxs0, hys0, -, -, -, hread⟩` from `GlobalTheory.T.integral_weierstrass_chart_xy_unit_series q M ℓ hc`. Use `set D : Polynomial ℂ := ∏ i, (Polynomial.X - Polynomial.C (M.x (P i))) with hD`. Use `set k := max A.natDegree B'.natDegree with hk`. Establish `e0` using `hread φ A B' k h0 (le_max_left _ _) (le_max_right _ _) (fun _ => 1) analyticAt_const D D.natDegree le_rfl (by simpa only [one_mul] using hid 0)`.
+
+Establish `hS : Bd B (∑ i ∈ Finset.range (k + 1), (C (M.ι (A.coeff i)) * X ^ (2 * (k - i) + 3) * xs ^ i + C (M.ι (B'.coeff i)) * X ^ (2 * (k - i)) * xs ^ i * ys))`. Use `(sup_norm_laws q).2.2.2.2.2 _ 1 (2 * D.natDegree) B bd_one (by simp) ?_` and prove the remaining obligations. Rewrite `e0` using `[hl2, map_one, map_one, one_mul]`. Rewrite using `[mul_one, ← e0]`. Use `bd_mul_one (bd_mul_one hB (bd_pow bd_X _)) (bd_sum _ _ zero_le_one fun i _ => ?_)` and prove the remaining obligations.
+
+Conclude with `bd_mul_one (bd_mul_one (bd_C (norm_coeff_prod M.ι _ hPx i)) (bd_pow bd_X _)) (bd_pow hxs _)`. Establish `hco` using `Triang.coeff_norm_le q xs ys k (fun i => M.ι (A.coeff i)) (fun i => M.ι (B'.coeff i)) B hxs hys hxs0 hys0 hS`. Take `⟨hxt, hyt, hbig⟩` from `GlobalTheory.T.chart_hat_coeff_bounds q M ℓ t hc hts`. Establish `htl : t ∉ M.L.lattice` using `fun h => hts (Or.inl h)`. Establish `ax` using `analyticAt_shift (analyticAt_x_of_not_mem_lattice M htl)`.
+
+Establish `ay` using `analyticAt_shift (analyticAt_y M htl)`. Establish `aφ` using `analyticAt_shift ht`. Establish `hev : ∀ᶠ z in 𝓝[≠] (0 : ℂ), φ (z + t) * D.eval (M.x (z + t)) = A.eval (M.x (z + t)) + B'.eval (M.x (z + t)) * M.y (z + t)`. Establish `tt : Filter.Tendsto (fun z : ℂ => z + t) (𝓝[≠] 0) (𝓝[≠] t)`. Use `tendsto_nhdsWithin_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations.
+
+Establish `: Filter.Tendsto (fun z : ℂ => z + t) (𝓝 0) (𝓝 (0 + t))` using `(continuous_id.add continuous_const).tendsto 0`. Rewrite `this` using `[zero_add]`. Conclude with `this.mono_left nhdsWithin_le_nhds`. Use `filter_upwards [self_mem_nhdsWithin] with z hz`. Simplify using `using hz`.
+
+Conclude with `tt.eventually (hid t)`. Establish `e1` using `(hl1 _ _ (aφ.mul (analyticAt_eval D ax)) ((analyticAt_eval A ax).add ((analyticAt_eval B' ax).mul ay))).2.2.1 hev`. Establish `e2` using `(hl1 _ _ aφ (analyticAt_eval D ax)).2.1`. Establish `e3` using `(hl1 _ _ (analyticAt_eval A ax) ((analyticAt_eval B' ax).mul ay)).1`. Establish `e4` using `(hl1 _ _ (analyticAt_eval B' ax) ay).2.1`.
+
+Establish `e5 : hat M.ι ℓ (fun z => φ (z + t)) * hat M.ι ℓ (fun z => D.eval (M.x (z + t))) = hat M.ι ℓ (fun z => A.eval (M.x (z + t))) + hat M.ι ℓ (fun z => B'.eval (M.x (z + t))) * hat M.ι ℓ (fun z => M.y (z + t))`. Rewrite using `[← e2, ← e4]`. Conclude with `e1.trans e3`. Rewrite `e5` using `[hat_eval _ _ hℓ D ax, hat_eval _ _ hℓ A ax, hat_eval _ _ hℓ B' ax]`. Establish `e6 : D.eval₂ ((C : ℂ_[q] →+* ℂ_[q]⟦X⟧).comp (M.ι : ℂ →+* ℂ_[q])) (hat M.ι ℓ (fun z => M.x (z + t))) = ∏ i, (hat M.ι ℓ (fun z => M.x (z + t)) - C (M.ι (M.x (P i))))`.
+
+Rewrite using `[hD, Polynomial.eval₂_finsetProd]`. Simplify using the standard rewrite rules. Rewrite `e5` using `[e6]`. Use `bd_cancel_prod Finset.univ _ (fun i => bd_sub_C hxt (hPx i)) (fun i r hr => ?_) hbdd ?_` and prove the remaining obligations. Take `⟨n, hn, hn'⟩` from `hbig r hr`.
+
+Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, coeff_C, if_neg hn.ne', sub_zero]` and apply the resulting hypothesis. Rewrite using `[e5]`. Conclude with `bd_add (bd_eval₂ _ _ hB0 (fun i hi => (hco i (hi.trans (le_max_left _ _))).1) hxt) (bd_mul_one (bd_eval₂ _ _ hB0 (fun i hi => (hco i (hi.trans (le_max_right _ _))).2) hxt) hyt)`.
+-/
 theorem translate_norm_le : ∀ (q : ℕ) [Fact q.Prime] (M : Mdl q) (ℓ : ℂ_[q]⟦X⟧) (φ : ℂ → ℂ) (t : ℂ) (B : ℝ), M.Chart ℓ → Ell M.L φ → AnalyticAt ℂ φ 0 → AnalyticAt ℂ φ t → (∀ p, meromorphicOrderAt φ p < 0 → ¬ M.Small p) → ¬ M.Small t → Bdd (hat M.ι ℓ (fun z => φ (z + t))) → Bd B (hat M.ι ℓ φ) → Bd B (hat M.ι ℓ (fun z => φ (z + t))) := by
   intro q _ M ℓ φ t B hc hE h0 ht hpole hts hbdd hB
   have hB0 : 0 ≤ B := (norm_nonneg _).trans (hB 0)

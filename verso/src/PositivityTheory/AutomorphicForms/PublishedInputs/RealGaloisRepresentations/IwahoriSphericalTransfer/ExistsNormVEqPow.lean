@@ -11,6 +11,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.AttUniq
 
+/- English proof (translation)
+Use `haveI := w.isMaximal`. Use `⟨w.asIdeal.inertiaDeg (𝓞 F), ?_⟩` and prove the remaining obligations. Establish `h` using `Ideal.absNorm_eq_pow_inertiaDeg'_of_liesOver w.asIdeal (w.under (𝓞 F)).asIdeal (w.under (𝓞 F)).isPrime (w.under (𝓞 F)).ne_bot`. Rewrite `h` using `[Ideal.inertiaDeg'_eq_inertiaDeg]`. Simplify `h` using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+-/
 theorem exists_normV_eq_pow (F L : Type) [Field F] [NumberField F] [Field L] [NumberField L] [Algebra F L]
     (w : HeightOneSpectrum (𝓞 L)) : ∃ f : ℕ, normV w = normV (w.under (𝓞 F)) ^ f := by
   haveI := w.isMaximal
@@ -20,6 +23,11 @@ theorem exists_normV_eq_pow (F L : Type) [Field F] [NumberField F] [Field L] [Nu
   rw [Ideal.inertiaDeg'_eq_inertiaDeg] at h
   simpa [normV, Ideal.absNorm_apply, Submodule.cardQuot_apply] using h
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ _ K _ _ _ _ _ _ l _ ι a π r r' hc hc' hs hs' h h'`. Use `hI K Ω l ι a r r' hc hc' hs hs' ?_` and prove the remaining obligations. Use `filter_upwards [h, h'] with w hw hw'`. Take `⟨f, hf⟩` from `exists_normV_eq_pow F K w`. Take `⟨B, hB, hr⟩` from `hw f hf`.
+
+Take `⟨B', hB', hr'⟩` from `hw' f hf`. Take `rfl` from `hB.unique hB'`. Conclude with `⟨_, hr, hr'⟩`.
+-/
 theorem main_of_isoOfFrob (hI : IsoOfFrob) : ∀ (F Ω : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (π : TR.CuspSub F a) (r r' : G K Ω →* GL (Fin a) (Qbar l)), Continuous r → Continuous r' → IsSSRep r → IsSSRep r' → AttRes π ι K r → AttRes π ι K r' → RepIso r r' := by
   intro F Ω _ _ _ _ _ _ K _ _ _ _ _ _ l _ ι a π r r' hc hc' hs hs' h h'
   refine hI K Ω l ι a r r' hc hc' hs hs' ?_
@@ -32,5 +40,8 @@ theorem main_of_isoOfFrob (hI : IsoOfFrob) : ∀ (F Ω : Type) [Field F] [Number
 
 end GlobalTheory.AttUniq
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.AttUniq.main_of_isoOfFrob GlobalTheory.T.isomorphism_of_frobenius_traces`.
+-/
 theorem GlobalTheory.AttUniq.attRes_repIso : ∀ (F Ω : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (π : TR.CuspSub F a) (r r' : G K Ω →* GL (Fin a) (Qbar l)), Continuous r → Continuous r' → IsSSRep r → IsSSRep r' → AttRes π ι K r → AttRes π ι K r' → RepIso r r' :=
   GlobalTheory.AttUniq.main_of_isoOfFrob GlobalTheory.T.isomorphism_of_frobenius_traces

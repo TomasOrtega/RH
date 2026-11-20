@@ -28,6 +28,19 @@ noncomputable section
 
 namespace GlobalTheory.TargetCoef
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT om hw m X hm F hF g y a b ha hb hab`. Establish `hψ` using `hw.std`. Establish `hG : IsThetaFunO ψ S T (om (1, g) F)` using `hw.om_pres _ F hF`. Establish `hact : actO S T 1 g (actO S T 1 g⁻¹ y) = y`. Use `GlobalTheory.AdelicLatMove.actO_actO_inv S T 1 g y` as an intermediate fact.
+
+Rewrite `this` using `[inv_one]`. Then use the resulting hypothesis. Establish `hy : heisO ψ S T y (om (1, g) F) = ψ b • om (1, g) F`. Establish `e` using `hw.om_heis 1 g (actO S T 1 g⁻¹ y) F hF`. Rewrite `e` using `[hb, map_smul, hact]`. Conclude with `e.symm`.
+
+Establish `hU` using `((GlobalTheory.ThetaPairingLaws.ipO_laws D ψ S T m X hψ hm _ _ hG hF).2.2.2.2.2.2.1 y).1`. Rewrite `hU` using `[hy, ha]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.ipO at hU`. Establish `hI : (∫ w in X, (ψ b • om (1, g) F) w * conj ((ψ a • F) w) ∂m) = (ψ b * conj (ψ a)) * ∫ w in X, om (1, g) F w * conj (F w) ∂m`. Rewrite using `[← integral_const_mul]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hU` using `[hI]`. Establish `hn : conj (ψ a) * ψ a = 1`.
+
+Rewrite using `[Complex.conj_mul', hψ.1.2.1 a]`. Simplify using the standard rewrite rules. Assume the negation of the conclusion as `hne`. Establish `hc : ψ b * conj (ψ a) = 1`. Use `congrArg (· / ∫ w in X, om (1, g) F w * conj (F w) ∂m) hU` as an intermediate fact.
+
+Simplify `this` using `[mul_div_assoc, div_self hne]`. Apply `hab` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem coef_zero_of_target_eigen : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle)
     (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om →
     ∀ (m : Measure (WO S T)) (X : Set (WO S T)), IsCovolOne (ratL T S) m X → ∀ F : WO S T → ℂ, IsThetaFunO ψ S T F →

@@ -15,6 +15,11 @@ def qmat {n : ℕ} (b : Module.Basis (Fin n) F (Fin n → F)) (A : Matrix (Fin n
     Matrix (Fin n) (Fin n) F :=
   Matrix.of (fun k i => b k i) * A
 
+/- English proof (translation)
+Rewrite using `[qmat, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec (b.equivFun u)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `h` using `congrFun (b.sum_equivFun u) i`. Rewrite `h` using `[Finset.sum_apply]`.
+
+Simplify using `only [Matrix.vecMul, dotProduct, Matrix.of_apply, Pi.smul_apply, smul_eq_mul] at h ⊢`. Conclude with `h.symm`.
+-/
 theorem pair_basis {n : ℕ} (b : Module.Basis (Fin n) F (Fin n → F)) (A : Matrix (Fin n) (Fin n) F)
     (u w : Fin n → F) : u ⬝ᵥ (A *ᵥ w) = b.equivFun u ⬝ᵥ (qmat b A *ᵥ w) := by
   rw [qmat, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec (b.equivFun u)]
@@ -36,21 +41,35 @@ def amat {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : Loc.H
     (e : E ≃ₐ[F] F × F) {n : ℕ} (β : Module.Basis (Fin n) E V) : Matrix (Fin n) (Fin n) F :=
   fun k l => (e (H.h (β k) (β l))).1
 
+/- English proof (translation)
+The claim follows from `map_sum (AddMonoidHom.mk' (fun x => H.h x y) (fun x x' => H.h_add_left x x' y)) f s`.
+-/
 private theorem hermSp_h_sum_left {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V]
     (H : Loc.HermSp M V) {ι : Type} (s : Finset ι) (f : ι → V) (y : V) :
     H.h (∑ i ∈ s, f i) y = ∑ i ∈ s, H.h (f i) y :=
   map_sum (AddMonoidHom.mk' (fun x => H.h x y) (fun x x' => H.h_add_left x x' y)) f s
 
+/- English proof (translation)
+Rewrite using `[H.h_herm, hermSp_h_sum_left, map_sum]`. Conclude with `Finset.sum_congr rfl (fun i _ => (H.h_herm (f i) x).symm)`.
+-/
 private theorem hermSp_h_sum_right' {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V]
     (H : Loc.HermSp M V) {ι : Type} (s : Finset ι) (f : ι → V) (x : V) :
     H.h x (∑ i ∈ s, f i) = ∑ i ∈ s, H.h x (f i) := by
   rw [H.h_herm, hermSp_h_sum_left, map_sum]
   exact Finset.sum_congr rfl (fun i _ => (H.h_herm (f i) x).symm)
 
+/- English proof (translation)
+Rewrite using `[H.h_herm, H.h_smul_left, map_mul, ← H.h_herm]`.
+-/
 private theorem hermSp_h_smul_right {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V]
     (H : Loc.HermSp M V) (a : E) (x y : V) : H.h x (a • y) = M.L.cj a * H.h x y := by
   rw [H.h_herm, H.h_smul_left, map_mul, ← H.h_herm]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← β.sum_repr x, ← β.sum_repr y]`. Simplify using `only [hermSp_h_sum_left, hermSp_h_sum_right', H.h_smul_left, hermSp_h_smul_right, map_sum, map_mul, Prod.fst_sum, Prod.fst_mul, he, Prod.fst_swap]`. Simplify using `only [amat, sig, dotProduct, Matrix.mulVec, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun k _ => Finset.sum_congr rfl (fun l _ => ?_))` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_fst {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : Loc.HermSp M V)
     (e : E ≃ₐ[F] F × F) (he : ∀ x, e (M.L.cj x) = (e x).swap) {n : ℕ} (β : Module.Basis (Fin n) E V)
     (x y : V) : (e (H.h x y)).1 = (sig e β x).1 ⬝ᵥ (amat H e β *ᵥ (sig e β y).2) := by
@@ -62,6 +81,11 @@ theorem form_fst {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] (H
   refine Finset.sum_congr rfl (fun k _ => Finset.sum_congr rfl (fun l _ => ?_))
   ring
 
+/- English proof (translation)
+Establish `hs : ∀ k l, (e (H.h (β k) (β l))).2 = (e (H.h (β l) (β k))).1` using `fun k l => by`. Rewrite using `[H.h_herm (β l) (β k), he]`. Both sides reduce to the same expression. Use `conv_lhs => rw [← β.sum_repr x, ← β.sum_repr y]`. Simplify using `only [hermSp_h_sum_left, hermSp_h_sum_right', H.h_smul_left, hermSp_h_smul_right, map_sum, map_mul, Prod.snd_sum, Prod.snd_mul, he, Prod.snd_swap, hs]`.
+
+Simplify using `only [amat, sig, dotProduct, Matrix.mulVec, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun k _ => Finset.sum_congr rfl (fun l _ => ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_snd {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : Loc.HermSp M V)
     (e : E ≃ₐ[F] F × F) (he : ∀ x, e (M.L.cj x) = (e x).swap) {n : ℕ} (β : Module.Basis (Fin n) E V)
     (x y : V) : (e (H.h x y)).2 = (sig e β y).1 ⬝ᵥ (amat H e β *ᵥ (sig e β x).2) := by
@@ -74,16 +98,89 @@ theorem form_snd {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] (H
   refine Finset.sum_congr rfl (fun k _ => Finset.sum_congr rfl (fun l _ => ?_))
   ring
 
+/- English proof (translation)
+Simplify using `only [tau, Prod.fst_zero, Prod.snd_zero, Pi.zero_apply, Prod.mk_zero_zero, map_zero, zero_smul, Finset.sum_const_zero]`.
+-/
 theorem tau_zero (e : E ≃ₐ[F] F × F) {V : Type} [AddCommGroup V] [Module E V] {n : ℕ}
     (β : Module.Basis (Fin n) E V) : tau e β 0 = 0 := by
   simp only [tau, Prod.fst_zero, Prod.snd_zero, Pi.zero_apply, Prod.mk_zero_zero, map_zero, zero_smul,
     Finset.sum_const_zero]
 
+/- English proof (translation)
+Simplify using `only [Matrix.one_apply, apply_ite (fun z : 𝒪[F] => (z : F)), OneMemClass.coe_one, ZeroMemClass.coe_zero, mul_ite, ite_mul, mul_one, mul_zero, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, dotProduct]`.
+-/
 theorem one_sum {n : ℕ} (u w : Fin n → F) :
     ∑ k, ∑ l, u k * (((1 : Matrix (Fin n) (Fin n) 𝒪[F]) k l : 𝒪[F]) : F) * w l = u ⬝ᵥ w := by
   simp only [Matrix.one_apply, apply_ite (fun z : 𝒪[F] => (z : F)), OneMemClass.coe_one, ZeroMemClass.coe_zero,
     mul_ite, ite_mul, mul_one, mul_zero, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, dotProduct]
 
+/- English proof (translation)
+Establish `hO : ∀ x : E, x ∈ M.L.O ↔ (e x).1 ∈ 𝒪[F] ∧ (e x).2 ∈ 𝒪[F]` using `fun x => integral_split_count F E M.L hl e x`. Use `set A := amat H e β with hA`. Use `set ε₁ : E := e.symm (1, 0) with hε₁`. Use `set ε₂ : E := e.symm (0, 1) with hε₂`. Establish `he₁ : e ε₁ = (1, 0)` using `by simp [ε₁]`.
+
+Establish `he₂ : e ε₂ = (0, 1)` using `by simp [ε₂]`. Establish `hε₁O : ε₁ ∈ M.L.O` using `(hO _).2 (by rw [he₁]; exact ⟨one_mem _, zero_mem _⟩)`. Establish `hε₂O : ε₂ ∈ M.L.O` using `(hO _).2 (by rw [he₂]; exact ⟨zero_mem _, one_mem _⟩)`. Establish `h1 : ∀ x, tau e β ((sig e β x).1, 0) = ε₁ • x`. Introduce `x`.
+
+Use `tau_smul e β ε₁ (sig e β x)` as an intermediate fact. Rewrite `this` using `[he₁, tau_sig]`. Simplify using `using this`. Establish `h2 : ∀ x, tau e β (0, (sig e β x).2) = ε₂ • x`. Introduce `x`.
+
+Use `tau_smul e β ε₂ (sig e β x)` as an intermediate fact. Rewrite `this` using `[he₂, tau_sig]`. Simplify using `using this`. Establish `memΛ : ∀ x, x ∈ Λ ↔ tau e β ((sig e β x).1, 0) ∈ Λ ∧ tau e β (0, (sig e β x).2) ∈ Λ`. Introduce `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Rewrite using `[h1, h2]`. Conclude with `⟨Λ.smul_mem (⟨ε₁, hε₁O⟩ : M.L.O) hx, Λ.smul_mem (⟨ε₂, hε₂O⟩ : M.L.O) hx⟩`. Introduce and unpack `⟨ha, hb⟩`.
+
+Establish `: x = tau e β ((sig e β x).1, 0) + tau e β (0, (sig e β x).2)`. Rewrite using `[← tau_add, Prod.mk_add_mk, add_zero, zero_add]`. Conclude with `(tau_sig e β x).symm`. Rewrite using `[this]`. Conclude with `Λ.add_mem ha hb`.
+
+Set `S₁ : Submodule 𝒪[F] (Fin n → F)` to `{ carrier := {u | tau e β (u, 0) ∈ Λ} add_mem' := by`. Introduce `u v hu hv`. Simplify using `only [Set.mem_ofPred_eq] at hu hv ⊢`. Establish `: ((u + v, 0) : (Fin n → F) × (Fin n → F)) = (u, 0) + (v, 0)` using `by simp`. Rewrite using `[this, tau_add]`.
+
+Conclude with `Λ.add_mem hu hv`. Use the proof step `zero_mem' := by`. Simplify using `only [Set.mem_ofPred_eq]`. Establish `: ((0, 0) : (Fin n → F) × (Fin n → F)) = 0` using `rfl`. Rewrite using `[this, tau_zero]`.
+
+Conclude with `Λ.zero_mem`. Use the proof step `smul_mem' := by`. Introduce `c u hu`. Simplify using `only [Set.mem_ofPred_eq] at hu ⊢`. Use `set a : E := algebraMap F E (c : F) with ha`.
+
+Establish `hea : e a = ((c : F), (c : F))` using `by simp [a]`. Establish `haO : a ∈ M.L.O` using `(hO a).2 (by rw [hea]; exact ⟨c.2, c.2⟩)`. Use `tau_smul e β a (u, 0)` as an intermediate fact. Rewrite `this` using `[hea]`. Establish `hcu : ((c • u, 0) : (Fin n → F) × (Fin n → F)) = ((c : F) • u, (c : F) • (0 : Fin n → F))`.
+
+Rewrite using `[smul_zero]`. Both sides reduce to the same expression. Rewrite using `[hcu, this]`. Conclude with `Λ.smul_mem (⟨a, haO⟩ : M.L.O) hu }`. Establish `hS₁ : ∀ u, u ∈ S₁ ↔ tau e β (u, 0) ∈ Λ` using `fun u => Iff.rfl`.
+
+Establish `hsigS : ∀ y ∈ Λ, (sig e β y).1 ∈ S₁`. Introduce `y hy`. Rewrite using `[hS₁, h1]`. Conclude with `Λ.smul_mem (⟨ε₁, hε₁O⟩ : M.L.O) hy`. Establish `hfg : S₁.FG`.
+
+Take `⟨s, hs⟩` from `hΛ.1`. Use `⟨s.image (fun g => (sig e β g).1), le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_le, Finset.coe_image]`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `hsigS g (hs ▸ Submodule.subset_span hg)`.
+
+Introduce `u hu`. Rewrite using `[Finset.coe_image]`. Establish `hu' : tau e β (u, 0) ∈ Submodule.span M.L.O (s : Set V)` using `by rw [hs]; exact hu`. Establish `key : ∀ y ∈ Submodule.span M.L.O (s : Set V), (sig e β y).1 ∈ Submodule.span 𝒪[F] ((fun g => (sig e β g).1) '' (s : Set V))`. Introduce `y hy`.
+
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem g hg => exact Submodule.subset_span ⟨g, hg, rfl⟩`. Consider the case `zero => rw [sig_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [sig_add]`.
+
+Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`. Establish `hs' : (sig e β (a • x)).1 = (e (a : E)).1 • (sig e β x).1`. Rewrite using `[show a • x = (a : E) • x from rfl, sig_smul]`. Rewrite using `[hs']`.
+
+Conclude with `Submodule.smul_mem _ (⟨(e (a : E)).1, ((hO a).1 a.2).1⟩ : 𝒪[F]) hx`. Use `key _ hu'` as an intermediate fact. Rewrite `this` using `[sig_tau]`. Then use the resulting hypothesis. Establish `hsp : Submodule.span F (S₁ : Set (Fin n → F)) = ⊤`. Rewrite using `[eq_top_iff]`.
+
+Introduce `u _`. Establish `key : ∀ y ∈ Submodule.span E (Λ : Set V), (sig e β y).1 ∈ Submodule.span F (S₁ : Set (Fin n → F))`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem g hg => exact Submodule.subset_span (hsigS g hg)`.
+
+Consider the case `zero => rw [sig_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [sig_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`.
+
+Rewrite using `[sig_smul]`. Conclude with `Submodule.smul_mem _ _ hx`. Use `key (tau e β (u, 0)) (by rw [hΛ.2.1]; trivial)` as an intermediate fact. Rewrite `this` using `[sig_tau]`. Then use the resulting hypothesis. Take `⟨bF, hbS, hbmem⟩` from `latBasis_exists F n S₁ hfg hsp`.
+
+Use `set Qm := qmat bF A with hQm`. Establish `hpair : ∀ (x : V) (w : Fin n → F), e (H.h x (tau e β (0, w))) = (bF.equivFun (sig e β x).1 ⬝ᵥ (Qm *ᵥ w), 0)`. Introduce `x w`. Use `ext`. Rewrite using `[form_fst H e he, sig_tau, pair_basis bF]`.
+
+Rewrite using `[form_snd H e he, sig_tau]`. Simplify using the standard rewrite rules. Establish `hpair' : ∀ (y : V) (w : Fin n → F), e (H.h (tau e β (0, w)) y) = (0, bF.equivFun (sig e β y).1 ⬝ᵥ (Qm *ᵥ w))`. Introduce `y w`. Rewrite using `[H.h_herm y (tau e β (0, w)), he, hpair]`.
+
+Both sides reduce to the same expression. Establish `hinj : Function.Injective (Matrix.mulVecLin Qm)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `w hw`. Rewrite `hw` using `[Matrix.mulVecLin_apply]`.
+
+Establish `hz : ∀ x, H.h x (tau e β (0, w)) = 0`. Introduce `x`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[hpair, hw, dotProduct_zero, map_zero]`. Both sides reduce to the same expression.
+
+Establish `hy : tau e β (0, w) = 0`. Apply `H.nondeg` to reduce the goal to its premises. Introduce `z`. Rewrite using `[H.h_herm z, hz, map_zero]`. Use `congrArg (fun v => (sig e β v).2) hy` as an intermediate fact.
+
+Simplify `this` using `[sig_tau, sig_zero]`. Set `Qe : (Fin n → F) ≃ₗ[F] (Fin n → F)` to `LinearEquiv.ofInjectiveEndo (Matrix.mulVecLin Qm) hinj`. Set `σ : V ≃+ (Fin n → F) × (Fin n → F)` to `{ toFun := sig e β invFun := tau e β left_inv := tau_sig e β right_inv := sig_tau e β map_add' := sig_add e β }`. Set `π : V ≃+ (Fin n → F) × (Fin n → F)` to `σ.trans (AddEquiv.prodCongr bF.equivFun.toAddEquiv Qe.toAddEquiv)`. Establish `hπ : ∀ x, π x = (bF.equivFun (sig e β x).1, Qm *ᵥ (sig e β x).2)` using `fun x => rfl`.
+
+Establish `hdual : ∀ w, tau e β (0, w) ∈ Λ ↔ ∀ k, (Qm *ᵥ w) k ∈ 𝒪[F]`. Introduce `w`. Rewrite using `[hΛ.2.2]`. Prove the components needed by the constructor for the conclusion. Introduce `hall k`.
+
+Establish `hy : tau e β (bF k, 0) ∈ Λ` using `hbS k`. Use `((hO _).1 (hall _ hy)).2` as an intermediate fact. Rewrite `this` using `[hpair', sig_tau]`. Establish `hsingle : bF.equivFun (bF k) = Pi.single k 1`. Use extensionality with `j`.
+
+Rewrite using `[Module.Basis.equivFun_self]`. Simplify using `[Pi.single_apply, eq_comm]`. Simplify `this` using `[hsingle, single_dotProduct]`. Introduce `hq y hy`. Rewrite using `[hO, hpair']`.
+
+Use `⟨zero_mem _, ?_⟩` and prove the remaining obligations. Establish `hc` using `(hbmem _).1 (hsigS y hy)`. Simplify using `only [dotProduct, Module.Basis.equivFun_apply]`. Conclude with `Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hc k) (hq k)`. Use `⟨π, 1, ?_, ?_, by simp, ?_⟩` and prove the remaining obligations.
+
+Introduce `a x`. Rewrite using `[hπ, hπ, sig_smul]`. Simplify using `only [map_smul, Matrix.mulVec_smul]`. Introduce `x`. Rewrite using `[memΛ, ← hS₁, hbmem, hdual, hπ]`.
+
+Simplify using `only [Module.Basis.equivFun_apply]`. Introduce `x y`. Rewrite using `[hπ, hπ, one_sum, one_sum]`. Use `ext`. Rewrite using `[form_fst H e he, pair_basis bF]`.
+
+Rewrite using `[form_snd H e he, pair_basis bF]`.
+-/
 theorem coord_of_basis (M : Loc.Model F E) (hl : IsNonarchimedeanLocalField F)
     (e : E ≃ₐ[F] F × F) (he : ∀ x, e (M.L.cj x) = (e x).swap)
     (V : Type) [AddCommGroup V] [Module E V] (H : Loc.HermSp M V) (Λ : Submodule M.L.O V)
@@ -263,6 +360,9 @@ theorem coord_of_basis (M : Loc.Model F E) (hl : IsNonarchimedeanLocalField F)
     · rw [form_fst H e he, pair_basis bF]
     · rw [form_snd H e he, pair_basis bF]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ M hl _ e he V _ _ H Λ hΛ`. Use `haveI := H.free`. Use `haveI := H.fin`. Use `haveI : Nontrivial E := e.toEquiv.nontrivial`. Conclude with `coord_of_basis M hl e he V H Λ hΛ (Module.finBasis E V)`.
+-/
 theorem adapted_coords_self_dual : CoordData := by
   intro F E _ _ _ _ _ _ _ M hl _ e he V _ _ H Λ hΛ
   haveI := H.free

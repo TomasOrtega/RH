@@ -18,6 +18,13 @@ namespace GlobalTheory.EigenDer
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Set `J : Ideal A` to `Ideal.span (Set.range fun p => T (X p))`. Establish `hfg : J.FG` using `Submodule.fg_span (Set.finite_range _)`. Establish `hn : IsNilpotent J` using `(Ideal.FG.isNilpotent_iff_le_nilradical hfg).2 (by`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨p, rfl⟩`.
+
+Conclude with `hT p)`. Take `⟨n, hn⟩` from `hn`. Establish `hJ : J ^ (n + 1 + 1) = ⊥`. Rewrite using `[add_assoc, pow_add, hn, zero_mul, Ideal.zero_eq_bot]`. Establish `hm : ∀ p, T (X p) ∈ J` using `fun p => Ideal.subset_span ⟨p, rfl⟩`.
+
+Use `⟨n, jetLift R J hJ (fun p => T (X p)) hm, fun g => ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.algHom_sub_aeval_truncTotal_mem T hm (n + 1 + 1) g`. Rewrite `h` using `[hJ, Ideal.mem_bot, sub_eq_zero]`. Conclude with `h.symm`.
+-/
 theorem exists_jet_factor {κ A : Type} [Finite κ] [CommRing A] [Algebra R A] (T : MvPowerSeries κ R →ₐ[R] A)
     (hT : ∀ p, IsNilpotent (T (X p))) :
     ∃ (n : ℕ) (Θ : JetR R κ (n + 1) →ₐ[R] A), ∀ g, Θ (toJet (n + 1) g) = T g := by
@@ -36,6 +43,13 @@ theorem exists_jet_factor {κ A : Type} [Finite κ] [CommRing A] [Algebra R A] (
   rw [hJ, Ideal.mem_bot, sub_eq_zero] at h
   exact h.symm
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Use `⟨AlgHom.id R _, fun _ => rfl, ?_⟩` and prove the remaining obligations. Establish `: spMap (R₀` using `R) (AlgHom.id R (JetR R κ 1)) = 𝟙 _ := by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Rewrite using `[spMap_left]`. Conclude with `Spec.map_id _`. Rewrite using `[this, Category.id_comp]`. Consider the case `succ n ih`. Take `⟨t, h1, h2⟩` from `ih`.
+
+Use `⟨t.comp (jetTruncR R κ (n + 1)), fun j => h1 j, ?_⟩` and prove the remaining obligations. Rewrite using `[← spMap_comp, Category.assoc, hx, h2]`.
+-/
 theorem exists_trunc_one {G : Over (Spec (CommRingCat.of R))} {κ : Type} (x : Fam G κ)
     (hx : ∀ m, spMap (jetTruncR R κ m) ≫ x (m + 1) = x m) (n : ℕ) :
     ∃ t : JetR R κ (n + 1) →ₐ[R] JetR R κ 1, (∀ j, t (zR (n + 1) j) = zR 1 j) ∧ spMap t ≫ x (n + 1) = x 1 := by
@@ -52,6 +66,9 @@ theorem exists_trunc_one {G : Over (Spec (CommRingCat.of R))} {κ : Type} (x : F
     refine ⟨t.comp (jetTruncR R κ (n + 1)), fun j => h1 j, ?_⟩
     rw [← spMap_comp, Category.assoc, hx, h2]
 
+/- English proof (translation)
+Rewrite using `[map_algebraMap_eq_subst_X, subst_comp_subst_apply HasSubst.X ha]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Conclude with `subst_X ha s`.
+-/
 theorem subst_map_algebraMap {σ τ S : Type} [Finite σ] [CommRing S] [Algebra R S] {a : σ → MvPowerSeries τ S}
     (ha : HasSubst a) (f : MvPowerSeries σ R) :
     subst a (MvPowerSeries.map (algebraMap R S) f) = subst a f := by
@@ -64,9 +81,15 @@ def tanPair (d : ℕ) (v : Fin d → R) : Fin 2 × Fin d → PS (DualNumber R) 1
   (![pt (DualNumber R) d 0, fun i => C (TrivSqZeroExt.inr (v i) : DualNumber R)] :
     Fin 2 → Pt (DualNumber R) 1 d) p.1 p.2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨2, by rw [pow_two, TrivSqZeroExt.inr_mul_inr]⟩`.
+-/
 theorem inr_nilpotent (r : R) : IsNilpotent (TrivSqZeroExt.inr r : DualNumber R) :=
   ⟨2, by rw [pow_two, TrivSqZeroExt.inr_mul_inr]⟩
 
+/- English proof (translation)
+Apply `hasSubst_of_constantCoeff_nilpotent` to reduce the goal to its premises. Introduce and unpack `⟨j, i⟩`. Use `fin_cases j`. Simplify using `[tanPair, ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt]`. Simplify `inr_nilpotent (v i)` using `[tanPair]`.
+-/
 theorem hasSubst_tanPair (d : ℕ) (v : Fin d → R) : HasSubst (tanPair d v) := by
   apply hasSubst_of_constantCoeff_nilpotent
   rintro ⟨j, i⟩
@@ -74,6 +97,11 @@ theorem hasSubst_tanPair (d : ℕ) (v : Fin d → R) : HasSubst (tanPair d v) :=
   · simp [tanPair, ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt]
   · simpa [tanPair] using inr_nilpotent (v i)
 
+/- English proof (translation)
+Establish `: (fun p : Fin 2 × Fin d => (![pt R d 0, pt R d 1] : Fin 2 → Pt R 2 d) p.1 p.2) = X`. Use function extensionality and compare the values at `p`. Take `⟨j, i⟩` from `p`. Apply the tactic sequence `fin_cases j <;> rfl`. Unfold `ev`.
+
+Rewrite using `[this, subst_self, id]`.
+-/
 theorem ev_pt_pt {d : ℕ} (g : PS R 2 d) : ev (n := 2) ![pt R d 0, pt R d 1] g = g := by
   have : (fun p : Fin 2 × Fin d => (![pt R d 0, pt R d 1] : Fin 2 → Pt R 2 d) p.1 p.2) = X := by
     funext p
@@ -82,6 +110,13 @@ theorem ev_pt_pt {d : ℕ} (g : PS R 2 d) : ev (n := 2) ![pt R d 0, pt R d 1] g 
   unfold ev
   rw [this, subst_self, id]
 
+/- English proof (translation)
+Establish `ha : HasSubst (fun p : Fin 1 × Fin d => (![pt R d 0] : Fin 1 → Pt R 2 d) p.1 p.2)` using `hasSubst_of_constantCoeff_zero (by`. Introduce and unpack `⟨j, i⟩`. Use `fin_cases j`. Simplify using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt])`. Unfold `ev`.
+
+Rewrite using `[subst_comp_subst_apply ha (hasSubst_tanPair d v), map_algebraMap_eq_subst_X]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Take `⟨j, i⟩` from `p`. Use `fin_cases j`.
+
+Conclude with `subst_X (hasSubst_tanPair d v) ((0 : Fin 2), i)`.
+-/
 theorem subst_tanPair_fst {d : ℕ} (v : Fin d → R) (f : PS R 1 d) :
     subst (tanPair d v) (ev (n := 2) ![pt R d 0] f) = MvPowerSeries.map (algebraMap R (DualNumber R)) f := by
   have ha : HasSubst (fun p : Fin 1 × Fin d => (![pt R d 0] : Fin 1 → Pt R 2 d) p.1 p.2) :=
@@ -97,6 +132,13 @@ theorem subst_tanPair_fst {d : ℕ} (v : Fin d → R) (f : PS R 1 d) :
   fin_cases j
   exact subst_X (hasSubst_tanPair d v) ((0 : Fin 2), i)
 
+/- English proof (translation)
+Establish `hF : addOf (n` using `2) Gl.F (pt R d 0) (pt R d 1) = Gl.F := funext fun i => ev_pt_pt _`. Establish `ha : HasSubst (fun p : Fin 1 × Fin d => (![Gl.F] : Fin 1 → Pt R 2 d) p.1 p.2)` using `hasSubst_of_constantCoeff_zero (by`. Introduce and unpack `⟨j, i⟩`. Use `fin_cases j`. Conclude with `Gl.const i)`.
+
+Establish `e : (fun p : Fin 1 × Fin d => subst (tanPair d v) ((![Gl.F] : Fin 1 → Pt R 2 d) p.1 p.2)) = fun p : Fin 1 × Fin d => (![addOf (Gl.mapF (algebraMap R (DualNumber R))) (pt (DualNumber R) d 0) (fun i => C (TrivSqZeroExt.inr (v i) : DualNumber R))] : Fin 1 → Pt (DualNumber R) 1 d) p. …`. Use function extensionality and compare the values at `p`. Take `⟨j, i⟩` from `p`. Use `fin_cases j`. Conclude with `(subst_map_algebraMap (hasSubst_tanPair d v) (Gl.F i)).symm`.
+
+Establish `hc` using `ha.comp (hasSubst_tanPair d v)`. Simplify using `only [substAlgHom_apply] at hc`. Rewrite using `[← GlobalTheory.Jets.ev_addOf_eps, hF]`. Unfold `ev`. Rewrite using `[subst_comp_subst_apply ha (hasSubst_tanPair d v), ← e, subst_map_algebraMap hc]`.
+-/
 theorem subst_tanPair_add {d : ℕ} (Gl : FGLaw R d) (v : Fin d → R) (f : PS R 1 d) :
     subst (tanPair d v) (ev (n := 2) ![addOf Gl.F (pt R d 0) (pt R d 1)] f) =
       MvPowerSeries.map (algebraMap R (DualNumber R)) f +
@@ -121,6 +163,29 @@ theorem subst_tanPair_add {d : ℕ} (Gl : FGLaw R d) (v : Fin d → R) (f : PS R
   unfold ev
   rw [subst_comp_subst_apply ha (hasSubst_tanPair d v), ← e, subst_map_algebraMap hc]
 
+/- English proof (translation)
+Introduce `_ hRep _ R _ G _ d x hx Gl hl U _ s f hf v y φ hφ H`. Establish `hb` using `hasSubst_tanPair d v`. Establish `hpt : ∀ (k : Fin 2) (j : Fin d), constantCoeff (pt R (n` using `2) d k j) = 0 := fun k j => by`. Simplify using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt]`. Take `⟨y₁, hy₁, -⟩` from `(hRep R G d x hx (Fin 2 × Fin d)).1 (pt R d 0) (hpt 0)`.
+
+Take `⟨y₂, hy₂, -⟩` from `(hRep R G d x hx (Fin 2 × Fin d)).1 (pt R d 1) (hpt 1)`. Establish `s₁` using `hf 2 _ _ hy₁`. Establish `s₁₂` using `hf 2 _ _ (hl.2 2 _ _ _ _ hy₁ hy₂)`. Establish `key : subst (tanPair d v) (ev (n` using `2) ![addOf Gl.F (pt R d 0) (pt R d 1)] f) = C (1 + TrivSqZeroExt.inr y : DualNumber R) * subst (tanPair d v) (ev (n := 2) ![pt R d 0] f) := by`. Use `eq_of_toJet_eq fun m => ?_` and prove the remaining obligations.
+
+Set `T : PS R 2 d →ₐ[R] JetR (DualNumber R) (Fin 1 × Fin d) m` to `((toJetHom (DualNumber R) (Fin 1 × Fin d) m).restrictScalars R).comp (substAlgHom hb)`. Establish `hT : ∀ g, T g = toJet m (subst (tanPair d v) g)` using `fun g => by`. Rewrite using `[← substAlgHom_apply hb]`. Both sides reduce to the same expression. Set `c : DualNumber R →ₐ[R] JetR (DualNumber R) (Fin 1 × Fin d) m` to `IsScalarTower.toAlgHom R _ _`.
+
+Establish `hc : ∀ a, toJet m (C a : PS (DualNumber R) 1 d) = c a` using `fun a => (toJetHom (DualNumber R) (Fin 1 × Fin d) m).commutes a`. Establish `hT1 : ∀ i, T (X ((1 : Fin 2), i)) = c (TrivSqZeroExt.inr (v i))` using `fun i => by`. Rewrite using `[hT, subst_X hb, ← hc]`. Both sides reduce to the same expression. Establish `hT0 : ∀ i, T (X ((0 : Fin 2), i)) = zR m ((0 : Fin 1), i)` using `fun i => by`.
+
+Rewrite using `[hT, subst_X hb, ← toJet_X]`. Both sides reduce to the same expression. Take `⟨n, Θ, hΘ⟩` from `exists_jet_factor T (by`. Introduce and unpack `⟨j, i⟩`. Use `fin_cases j`.
+
+Use `hT0 i ▸ ⟨m + 1, ?_⟩` and prove the remaining obligations. Use `Ideal.pow_mem_pow (zR_mem_ker (R := DualNumber R) m ((0 : Fin 1), i)) (m + 1)` as an intermediate fact. Rewrite `this` using `[ker_jetAug_pow, Ideal.mem_bot]`. Then use the resulting hypothesis. Conclude with `hT1 i ▸ (inr_nilpotent (v i)).map c)`. Take `⟨t, ht, htx⟩` from `exists_trunc_one x hx.1 n`.
+
+Take `⟨ψ, hψ, hψy⟩` from `hy₂.2 (n + 1)`. Establish `e₂ : spMap c ≫ spMap φ ≫ x 1 = spMap Θ ≫ y₂ (n + 1)`. Establish `: c.comp (φ.comp t) = Θ.comp ψ` using `jet_ext fun j => by`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, AlgHom.comp_apply, ht, hφ, hψ, hΘ]`. Conclude with `(hT1 j).symm`.
+
+Rewrite using `[hψy, ← htx, ← Category.assoc (spMap φ), spMap_comp, ← Category.assoc, spMap_comp, this, ← Category.assoc, spMap_comp]`. Establish `e : (spMap Θ ≫ y₁ (n + 1)) * (spMap c ≫ spMap φ ≫ x 1) = spMap Θ ≫ (y₁ (n + 1) * y₂ (n + 1))`. Rewrite using `[e₂, MonObj.comp_mul]`. Establish `h` using `H _ c (spMap Θ ≫ y₁ (n + 1)) (top_le_preimage_comp _ _ U (s₁ (n + 1)).1) (by rw [e]; exact top_le_preimage_comp _ _ U (s₁₂ (n + 1)).1)`. Establish `v₁` using `fnVal_specMap Θ.toRingHom _ U (s₁ (n + 1)).1 s`.
+
+Establish `v₁₂` using `fnVal_specMap Θ.toRingHom _ U (s₁₂ (n + 1)).1 s`. Rewrite `v₁` using `[(s₁ (n + 1)).2]`. Rewrite `v₁₂` using `[(s₁₂ (n + 1)).2]`. Rewrite `h` using `[e]`. Establish `h'` using `v₁₂.symm.trans (h.trans (congrArg (c (1 + TrivSqZeroExt.inr y) * ·) v₁))`.
+
+Rewrite using `[← toJetHom_apply m (C _ * _), map_mul, toJetHom_apply, toJetHom_apply, hc, ← hT, ← hT, ← hΘ, ← hΘ]`. Conclude with `h'`. Rewrite `key` using `[subst_tanPair_add, subst_tanPair_fst]`. Use extensionality with `e`. Use `congrArg (fun g => TrivSqZeroExt.snd (coeff e g)) key` as an intermediate fact.
+
+Simplify using `only [map_add (coeff e), coeff_C_mul, coeff_map] at this`. Simplify `this` using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem dof_eq_of_eigen : JetAlgSt → RepSt → SerSt → ∀ (R : Type) [CommRing R] (G : Over (Spec (CommRingCat.of R))) [GrpObj G] (d : ℕ) (x : Fam G (Fin d)), IsUnivChart G d x → ∀ Gl : FGLaw R d, IsLawOf x Gl.F → ∀ (U : G.left.Opens), ⊤ ≤ η[G].left ⁻¹ᵁ U → ∀ (s : Γ(G.left, U)) (f : PS R 1 d), IsSer1 x U s f → ∀ (v : Fin d → R) (y : R) (φ : JetR R (Fin d) 1 →ₐ[R] DualNumber R), (∀ i, φ (zR 1 i) = TrivSqZeroExt.inr (v i)) → (∀ (A : Type) [CommRing A] [Algebra R A] (c : DualNumber R →ₐ[R] A) (r : sp (R₀ := R) A ⟶ G), ⊤ ≤ r.left ⁻¹ᵁ U → ⊤ ≤ (r * (spMap c ≫ spMap φ ≫ x 1)).left ⁻¹ᵁ U → fnVal (r * (spMap c ≫ spMap φ ≫ x 1)).left U s = c (1 + TrivSqZeroExt.inr y) * fnVal r.left U s) → Dof Gl.F v f = C y * f := by
   intro _ hRep _ R _ G _ d x hx Gl hl U _ s f hf v y φ hφ H
   have hb := hasSubst_tanPair d v

@@ -25,6 +25,13 @@ open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob UpperT
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Establish `h` using `Algebra.norm_eq_prod_embeddings ℚ ℂ z`. Rewrite `h` using `[eq_ratCast]`. Rewrite using `[h]`. Establish `hr : ∀ (τ : L →+* ℂ) (x : Lp L), (InfinitePlace.mk τ).embedding (algebraMap (Lp L) L x) = τ (algebraMap (Lp L) L x)`. Introduce `τ x`.
+
+Apply the tactic sequence `rcases InfinitePlace.embedding_mk_eq τ with e | e <;> rw [e]`. Conclude with `x.2 τ`. Use `Finset.prod_bij (fun w _ => (w.embedding.comp (algebraMap (Lp L) L)).toRatAlgHom) (fun _ _ => Finset.mem_univ _) (fun w _ w' _ e => ?_) (fun σ _ => ⟨InfinitePlace.mk (ComplexEmbedding.lift L σ.toRingHom), Finset.mem_univ _, ?_⟩) fun _ _ => rfl` and prove the remaining obligations. Establish `e' : w.embedding.comp (algebraMap (Lp L) L) = w'.embedding.comp (algebraMap (Lp L) L)` using `RingHom.ext fun x => AlgHom.congr_fun e x`. Apply `(IsCMField.equivInfinitePlace L).injective` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `w.comap (algebraMap (Lp L) L) = w'.comap (algebraMap (Lp L) L)`. Rewrite using `[← InfinitePlace.mk_embedding w, ← InfinitePlace.mk_embedding w', InfinitePlace.comap_mk, InfinitePlace.comap_mk, e']`. Use extensionality with `x`. Conclude with `(hr _ _).trans (ComplexEmbedding.lift_algebraMap_apply L _ x)`.
+-/
 private theorem norm_prd (L : Type) [Field L] [NumberField L] [IsCMField L] (z : Lp L) :
     ∏ w : InfinitePlace L, w.embedding (algebraMap (Lp L) L z) = ((Algebra.norm ℚ z : ℚ) : ℂ) := by
   have h := Algebra.norm_eq_prod_embeddings ℚ ℂ z
@@ -43,6 +50,9 @@ private theorem norm_prd (L : Type) [Field L] [NumberField L] [IsCMField L] (z :
   · ext x
     exact (hr _ _).trans (ComplexEmbedding.lift_algebraMap_apply L _ x)
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [lev, Subgroup.mem_inf, Subgroup.mem_iInf, Subgroup.mem_comap]`. Conclude with `⟨fun h => ⟨h.1.1, fun w hw => ((hS w).1 hw).elim (fun a => h0 w a ▸ h.1.2 w a) fun a => h1 w a ▸ h.2 w a⟩, fun h => ⟨⟨h.1, fun w a => h0 w a ▸ h.2 w ((hS w).2 (.inl a))⟩, fun w a => h1 w a ▸ h.2 w ((hS w).2 (.inr a))⟩⟩`.
+-/
 private theorem lev_union {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} (U : Subgroup (UA L n)) (S₀ S₁ S : Finset (Plc L))
     (V₀ V₁ V : ∀ w : Plc L, Lev (Kw w)) (hS : ∀ w, w ∈ S ↔ w ∈ S₀ ∨ w ∈ S₁) (h0 : ∀ w ∈ S₀, V w = V₀ w) (h1 : ∀ w ∈ S₁, V w = V₁ w) :
     lev (lev U S₀ V₀) S₁ V₁ = lev U S V := by
@@ -51,6 +61,9 @@ private theorem lev_union {L : Type} [Field L] [NumberField L] [IsCMField L] {n 
   exact ⟨fun h => ⟨h.1.1, fun w hw => ((hS w).1 hw).elim (fun a => h0 w a ▸ h.1.2 w a) fun a => h1 w a ▸ h.2 w a⟩,
     fun h => ⟨⟨h.1, fun w a => h0 w a ▸ h.2 w ((hS w).2 (.inl a))⟩, fun w a => h1 w a ▸ h.2 w ((hS w).2 (.inr a))⟩⟩
 
+/- English proof (translation)
+The claim follows from `MonoidHom.ext fun γ => Subtype.ext (funext fun v => Subtype.ext (Units.ext ((h γ v).trans (h' γ v).symm)))`.
+-/
 private theorem iota_eq {F : Type} [Field F] [NumberField F] {Δ : F} {ι ι' : DX Δ →* DA Δ} (h : IsIotaD ι) (h' : IsIotaD ι') : ι = ι' :=
   MonoidHom.ext fun γ => Subtype.ext (funext fun v => Subtype.ext (Units.ext ((h γ v).trans (h' γ v).symm)))
 
@@ -58,19 +71,31 @@ section
 
 variable {F : Type} [Field F] [NumberField F] {Δ : F} (D : Dat Δ) {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+The claim follows from `baseG F Δ D hD V W Θ ch h1 h2`.
+-/
 private theorem bG (hD : D.Ok) (W : Representation ℂ (U3 Δ) V) (Θ : V →ₗ[ℂ] V) (ch : F → ℂ) (h1 : ∀ γ v, Θ (W γ v) = W (theta Δ γ) (Θ v))
     (h2 : ∀ δ τ, HasTau δ τ → LinearMap.trace ℂ V (W δ ∘ₗ Θ) = ch τ) :
     ∃ (B : Base (U3 Δ) (GA Δ) V) (s : B.Tw), D.IsBG ch B s ∧ B.W = W ∧ s.Θ = Θ := baseG F Δ D hD V W Θ ch h1 h2
 
+/- English proof (translation)
+The claim follows from `baseS F Δ D hD V W ch h x`.
+-/
 private theorem bS (hD : D.Ok) (W : Representation ℂ (SU Δ) V) (ch : F → ℂ)
     (h : ∀ (γ : SU Δ) τ, HasTr (γ : DX Δ) τ → LinearMap.trace ℂ V (W γ) = ch τ) (x : DA Δ) :
     ∃ B : Base (SU Δ) (SA Δ) V, D.IsBS ch x B ∧ B.W = W := baseS F Δ D hD V W ch h x
 
+/- English proof (translation)
+The claim follows from `baseK F Δ D hD V W ch h1 h2`.
+-/
 private theorem bK (hD : D.Ok) (W : Representation ℂ (DX Δ) V) (ch : F → ℂ)
     (h1 : ∀ z s, IsScal z s → ∀ v, W s v = ((Algebra.norm ℚ (z : F) : ℚ) : ℂ)⁻¹ • v)
     (h2 : ∀ (g : DX Δ) τ, (mt g).trace = algebraMap F _ (2 + τ) → (mt g).det = algebraMap F _ (2 + τ) → LinearMap.trace ℂ V (W g) = ch τ) :
     ∃ B : Base (DX Δ) (DA Δ) V, D.IsBK ch B ∧ B.W = W := baseK F Δ D hD V W ch h1 h2
 
+/- English proof (translation)
+The claim follows from `h.ι`.
+-/
 private theorem iK {ch : F → ℂ} {B : Base (DX Δ) (DA Δ) V} (h : D.IsBK ch B) : IsIotaD B.ι := h.ι
 
 end
@@ -82,6 +107,9 @@ section
 
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] (B : Bridge L)
 
+/- English proof (translation)
+The claim follows from `bK A.dat (datOk _ _ A hA).1 (Wt.cK (em B) j) (Wt.ch (em B) j) (fun z s h v => by rw [Wt.cK_scal _ hj z s h v, ← norm_prd L] congr 2 exact Finset.prod_congr rfl fun w _ => congrArg w.embedding (B.e_alg _)) (Wt.cK_tr _ hj)`.
+-/
 private theorem baseK' (A : SD B.Δ) (hA : A.Ok) {j : ℕ} (hj : 1 ≤ j) :
     ∃ C : Base (DX B.Δ) (DA B.Δ) (Wt.VD (InfinitePlace L) (2 * j + 1)), A.dat.IsBK (Wt.ch (em B) j) C ∧ C.W = Wt.cK (em B) j :=
   bK A.dat (datOk _ _ A hA).1 (Wt.cK (em B) j) (Wt.ch (em B) j) (fun z s h v => by
@@ -89,12 +117,20 @@ private theorem baseK' (A : SD B.Δ) (hA : A.Ok) {j : ℕ} (hj : 1 ≤ j) :
     congr 2
     exact Finset.prod_congr rfl fun w _ => congrArg w.embedding (B.e_alg _)) (Wt.cK_tr _ hj)
 
+/- English proof (translation)
+Introduce `w hw h` and use `by rw [Pi.pow_apply, hb w hw h] ext z simp`.
+-/
 private theorem fitSq (T : Spl B) (S : Finset (Plc L)) (a : ∀ w : Plc L, (Kw w)ˣ →* ℂˣ) (b : Chs (Lp L)) (hb : FitCh T S a b) :
     FitCh T S (fun w => a w ^ 2) (b ^ 2) := fun w hw h => by
   rw [Pi.pow_apply, hb w hw h]
   ext z
   simp
 
+/- English proof (translation)
+Use `haveI : ∀ (K : Type) [Fintype K] (d : ℕ) (n : K → ℕ), FiniteDimensional ℂ (Wt.MH d n) := Wt.finMH`. Establish `hD` using `(datOk _ _ A hA).1`. Use `(inS L B hB T S V A hA f j e a b hb φ h0 hφ E).elim fun y Hy => ?_` and prove the remaining obligations. Use `(bG A.dat hD (Wt.cG (em B) j) (Wt.thG _ j) (Wt.ch (em B) j) (Wt.cG_int _ hj) (Wt.cG_tr _ hj)).elim fun BG h => h.elim fun s hG => ?_` and prove the remaining obligations. Use `(bS A.dat hD (Wt.cS (em B) j) (Wt.ch (em B) j) (Wt.cS_tr _ hj) y).elim fun BS hS => ?_` and prove the remaining obligations.
+
+Use `(Hy.2 _ BS hS.1 hS.2).elim fun ψ p => ?_` and prove the remaining obligations. Use `(specF _ _ A hA _ _ _ _ BG s y BS BK hG.1 Hy.1 hS.1 hK b ψ p.1 p.2.1 p.2.2).imp_left fun q => q.elim fun φ' q => ?_` and prove the remaining obligations. Conclude with `outG L B hB T S V A hA f j a b hb _ BG s hG.1 hG.2.1 φ' q.1 q.2.1 q.2.2`.
+-/
 private theorem core (hB : B.Ok) (T : Spl B) (S : Finset (Plc L)) (V : ∀ w : Plc L, Lev (Kw w)) (A : SD B.Δ) (hA : A.Ok) (f : Fit T S V A)
     {j : ℕ} (hj : 1 ≤ j) (e : InfinitePlace L → ℤ) (a : ∀ w : Plc L, (Kw w)ˣ →* ℂˣ) (b : Chs (Lp L)) (hb : FitCh T S a b)
     (φ : UA L 2 → Wt.VD (InfinitePlace L) j) (h0 : φ ≠ 0) (hφ : IsAF (repE j e) (lev (Kall L 2) S V) φ) (E : ∀ w ∈ S, EigS φ w (V w) (a w))
@@ -112,6 +148,11 @@ private theorem core (hB : B.Ok) (T : Spl B) (S : Finset (Plc L)) (V : ∀ w : P
   refine (specF _ _ A hA _ _ _ _ BG s y BS BK hG.1 Hy.1 hS.1 hK b ψ p.1 p.2.1 p.2.2).imp_left fun q => q.elim fun φ' q => ?_
   exact outG L B hB T S V A hA f j a b hb _ BG s hG.1 hG.2.1 φ' q.1 q.2.1 q.2.2
 
+/- English proof (translation)
+Use `(kNon _ _ A hA A₀ hA₀ hx _ _ BK hK Y hY hoff φ' q1 q2).elim fun x h => h.2.elim fun t ht => ?_` and prove the remaining obligations. Establish `sf` using `kRes _ _ A hA _ _ BK hK x (hoff x h.1) φ' q1 _ q3`. Rewrite `sf` using `[k1]`. Establish `hl` using `levExt L B hB T S V A hA f A₀ hA₀ hx S₁ hS (fun w hw => ⟨hs1 hw, v1 w hw⟩) U x (hoff x h.1) (m2 x h.1)`. Establish `hn : (fun g : SA B.Δ => φ' (g * x)) ≠ 0` using `fun h => ht (congrFun h t)`.
+
+Establish `ho` using `outS L B hB T S V A hA f S₁ hs1 v1 m U hm u1 hf (2 * j + 1) (-((j : ℤ) + 1)) a b hb _ (iK _ hK) x (hoff x h.1) hl _ hn`. Conclude with `ho sf`.
+-/
 private theorem second (hB : B.Ok) (T : Spl B) (S S₁ : Finset (Plc L)) (V : ∀ w : Plc L, Lev (Kw w)) (A A₀ : SD B.Δ) (hA : A.Ok) (hA₀ : A₀.Ok)
     (f : Fit T S V A) (hx : A.Ext A₀) (hS : ∀ w ∈ S, w ∈ S₁ ∨ un w ∈ A₀.Sg) (hs1 : S₁ ⊆ S) (v1 : ∀ w ∈ S₁, V w = iw w)
     (m : ℕ) (U : Subgroup (UA L 2)) (hm : 3 ≤ m) (u1 : IsCong m U) (hf : Full U S₁) {j : ℕ}
@@ -129,6 +170,9 @@ private theorem second (hB : B.Ok) (T : Spl B) (S S₁ : Finset (Plc L)) (V : �
   have ho := outS L B hB T S V A hA f S₁ hs1 v1 m U hm u1 hf (2 * j + 1) (-((j : ℤ) + 1)) a b hb _ (iK _ hK) x (hoff x h.1) hl _ hn
   exact ho sf
 
+/- English proof (translation)
+Introduce `v hv` and use `((f.sg v).1 hv).elim fun w hw => hw.2 ▸ ((hS w).1 hw.1).elim (fun h => h0 _ ((f₀.sg _).2 ⟨w, h, rfl⟩)) (h1 w)`.
+-/
 private theorem offAll (T : Spl B) (S S₀ S₁ : Finset (Plc L)) (V V₀ : ∀ w : Plc L, Lev (Kw w)) (A A₀ : SD B.Δ) (f : Fit T S V A) (f₀ : Fit T S₀ V₀ A₀)
     (hS : ∀ w, w ∈ S ↔ w ∈ S₀ ∨ w ∈ S₁) (y : DA B.Δ) (h0 : A₀.dat.Off y) (h1 : ∀ w ∈ S₁, y.1 (un w) = 1) : A.dat.Off y := fun v hv =>
   ((f.sg v).1 hv).elim fun w hw => hw.2 ▸ ((hS w).1 hw.1).elim (fun h => h0 _ ((f₀.sg _).2 ⟨w, h, rfl⟩)) (h1 w)
@@ -147,6 +191,19 @@ def UpperTheory.V.Z.Sym.W.SpecOutS : Prop :=
       ∃ φ' : UA L 2 → Wt.VD (InfinitePlace L) (2 * j + 1), φ' ≠ 0 ∧ IsAF (repE (2 * j + 1) 0) (lev U₂ S₁ iw) φ' ∧
         ∀ w ∈ S₁, EigS φ' w (iw w) (a w ^ 2)
 
+/- English proof (translation)
+Introduce `L _ _ _ hU S₀ hP hT j hj`. Use `(bridgeEx L hU).elim fun B hB => ?_` and prove the remaining obligations. Establish `T : Spl B` using `fun w h => (hB.split w h).some`. Use `⟨0, fun c _ => ?_⟩` and prove the remaining obligations. Use `(fitEx L B hB T S₀ (deep c) hP hT).1.elim fun A₀ h₀ => ?_` and prove the remaining obligations.
+
+Use `(iotaEx (Lp L) B.Δ).2.1.elim fun ι hι => ?_` and prove the remaining obligations. Use `(repsEx _ _ A₀ h₀.1 classRep ι hι).elim fun Y hY => ?_` and prove the remaining obligations. Use `(congLev L B hB T S₀ (deep c) A₀ h₀.1 h₀.2 Y fun y hy => (hY.1 y hy).2).elim fun m hm => ?_` and prove the remaining obligations. Use `(congEx L 2 m (by have := hm.1; omega)).elim fun U u => ?_` and prove the remaining obligations. Use `⟨U, u.2.1, fun S₁ hd hP' hf a e φ h0 hφ E0 E1 => ?_⟩` and prove the remaining obligations.
+
+Establish `hS : ∀ w, w ∈ S₀ ∪ S₁ ↔ w ∈ S₀ ∨ w ∈ S₁` using `fun _ => Finset.mem_union`. Establish `hPS : Places ((S₀ ∪ S₁ : Finset (Plc L)) : Set (Plc L))` using `by rwa [Finset.coe_union]`. Generalize the expression as in `S₀ ∪ S₁ = S at hS hPS`. Establish `hV : ∃ V : ∀ w : Plc L, Lev (Kw w), (∀ w ∈ S₀, V w = deep c w) ∧ ∀ w ∈ S₁, V w = iw w` using `⟨fun w => if w ∈ S₁ then iw w else deep c w, fun w hw => if_neg (Finset.disjoint_left.1 hd hw), fun w hw => if_pos hw⟩`. Use `hV.elim fun V v => ?_` and prove the remaining obligations.
+
+Establish `hF` using `fitEx L B hB T S V hPS fun w hw => (hT w hw).imp fun w' h => ⟨(hS w').2 (.inl h.1), h.2⟩`. Use `hF.1.elim fun A hA => (hF.2 a).elim fun b hb => ?_` and prove the remaining obligations. Establish `hs0 : S₀ ⊆ S` using `fun w hw => (hS w).2 (.inl hw)`. Establish `hs1 : S₁ ⊆ S` using `fun w hw => (hS w).2 (.inr hw)`. Establish `hx : A.Ext A₀` using `fitExt L B T S₀ S (deep c) V A₀ A h₀.2 hA.2 hs0 v.1 fun w hw h => v.2 w (((hS w).1 hw).resolve_left h)`.
+
+Rewrite `hφ` using `[lev_union _ S₀ S₁ S _ _ V hS v.1 v.2]`. Rewrite using `[lev_union _ S₀ S₁ S _ _ V hS v.1 v.2]`. Use `(baseK' B A hA.1 hj).elim fun BK hK => ?_` and prove the remaining obligations. Establish `eι : ι = BK.ι` using `iota_eq hι (iK _ hK.1)`. Use `(core B hB T S V A hA.1 hA.2 hj e a b hb φ h0 hφ (fun w hw => ((hS w).1 hw).elim (fun h => v.1 w h ▸ E0 w h) fun h => v.2 w h ▸ E1 w h) BK hK.1).imp (fun r => r.imp fun r h => ⟨h.1, h.2.1, fun w hw => v.1 w hw ▸ h.2.2 w (hs0 hw), fun w hw => v.2 w hw ▸ h.2.2 w (hs1 hw)⟩) fun q => …` and prove the remaining obligations.
+
+Conclude with `second B hB T S S₁ V A A₀ hA.1 h₀.1 hA.2 hx (fun w hw => ((hS w).1 hw).elim (fun h => .inr ((h₀.2.sg _).2 ⟨w, h, rfl⟩)) .inl) hs1 v.2 m U hm.1 u.1 ⟨u.2.1.1, hf⟩ _ _ (fitSq B T S a b hb) BK hK.1 hK.2 Y (eι ▸ hY) (fun y hy => offAll B T S S₀ S₁ V _ A A₀ hA.2 h₀.2 hS y (hY.1 y hy).1 …`.
+-/
 theorem UpperTheory.V.Z.Sym.W.specOutS : UpperTheory.V.Z.Sym.W.SpecOutS := by
   classical
   intro L _ _ _ hU S₀ hP hT j hj

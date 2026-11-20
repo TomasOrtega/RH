@@ -5,6 +5,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.Published
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h₁, h₂.nefBigIff, h₂⟩`.
+-/
 theorem nefNumerics_of_product_of_riemannRoch
     (h₁ : NefProductNonneg) (h₂ : NefRiemannRoch) : NefNumerics :=
   ⟨h₁, h₂.nefBigIff, h₂⟩

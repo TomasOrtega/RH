@@ -17,6 +17,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Hua
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hCM.2.2.2 τ, hCM.2.2.2 τ]`. Simplify using the standard rewrite rules.
+-/
 theorem sig_sig_of_isCM {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -24,6 +27,9 @@ theorem sig_sig_of_isCM {F E : Type} [Field F] [NumberField F] [Field E] [Number
   rw [hCM.2.2.2 τ, hCM.2.2.2 τ]
   simp
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [sigR, hσ]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem sigR_sigR {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R]
     [Algebra F R] (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (t : R ⊗[F] E) :
     sigR R σ (sigR R σ t) = t := by
@@ -32,19 +38,35 @@ theorem sigR_sigR {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [Com
   | tmul r e => simp [sigR, hσ]
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+The claim follows from `map_smul (Algebra.TensorProduct.map (AlgHom.id F R) σ) h t`.
+-/
 theorem sigR_smul {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R]
     [Algebra F R] (σ : E →ₐ[F] E) (h : F) (t : R ⊗[F] E) :
     sigR R σ (h • t) = h • sigR R σ t :=
   map_smul (Algebra.TensorProduct.map (AlgHom.id F R) σ) h t
 
+/- English proof (translation)
+The claim follows from `map_smul (Algebra.TensorProduct.includeRight : E →ₐ[F] R ⊗[F] E) h e`.
+-/
 theorem inclR_smul {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R]
     [Algebra F R] (h : F) (e : E) : inclR (F := F) R (h • e) = h • inclR (F := F) R e :=
   map_smul (Algebra.TensorProduct.includeRight : E →ₐ[F] R ⊗[F] E) h e
 
+/- English proof (translation)
+Simplify using `[sigR, inclR]`.
+-/
 theorem sigR_inclR {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R]
     [Algebra F R] (σ : E →ₐ[F] E) (e : E) : sigR R σ (inclR R e) = inclR R (σ e) := by
   simp [sigR, inclR]
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Set `b` to `Module.finBasis F E`. Establish `hφ` using `(GlobalTheory.T.tensor_locally_compact_ring F E σ hCM R).2.2.2.2.2.2.1 _ b`. Set `φ` to `hφ.homeomorph`. Establish `hpi : DenseRange (Pi.map fun _ : Fin (Module.finrank F E) => (algebraMap F R))` using `DenseRange.piMap fun _ => hd`.
+
+Establish `hc : DenseRange (φ.symm ∘ Pi.map fun _ : Fin (Module.finrank F E) => (algebraMap F R))` using `φ.symm.surjective.denseRange.comp hpi φ.symm.continuous`. Use `hc.mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Use `⟨b.equivFun.symm a, ?_⟩` and prove the remaining obligations. Apply `φ.injective` to reduce the goal to its premises.
+
+Rewrite using `[Function.comp_apply, Homeomorph.apply_symm_apply]`. Use function extensionality and compare the values at `k`. Use `show (Algebra.TensorProduct.basis R b).repr ((1 : R) ⊗ₜ[F] (b.equivFun.symm a)) k = _`. Simplify using `[Algebra.TensorProduct.basis_repr_tmul, Finsupp.single_apply, apply_ite]`.
+-/
 theorem denseRange_inclR (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (R : Type) [CommRing R] [Algebra F R]
     [TopologicalSpace R] [IsTopologicalRing R] [LocallyCompactSpace R]
@@ -68,6 +90,25 @@ theorem denseRange_inclR (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
   show (Algebra.TensorProduct.basis R b).repr ((1 : R) ⊗ₜ[F] (b.equivFun.symm a)) k = _
   simp [Algebra.TensorProduct.basis_repr_tmul, Finsupp.single_apply, apply_ite]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM n U hU g`. Take `⟨hlc, hsc, ht2, -, -, hden, -⟩` from `GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F`. Take `⟨hTR, -, -, -, hsig, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (Af F)`. Establish `hincl` using `denseRange_inclR F E σ hCM (Af F) hden`. Establish `hσ` using `sig_sig_of_isCM σ hCM`.
+
+Establish `hmat : DenseRange (fun c : Matrix (Fin n) (Fin n) E => c.map (inclR (Af F)))` using `DenseRange.piMap (fun _ => DenseRange.piMap (fun _ => hincl))`. Set `h : F` to `1 / 2`. Set `Pm : Matrix (Fin n) (Fin n) (Af F ⊗[F] E) → Matrix (Fin n) (Fin n) (Af F ⊗[F] E)` to `fun m a b => h • (m a b + sigR (Af F) σ (m b a))`. Establish `hPm : ∀ m, Pm m ∈ HermR (Af F) σ n`. Introduce `m a b`.
+
+Use `show sigR (Af F) σ (h • (m b a + sigR (Af F) σ (m a b))) = h • (m a b + sigR (Af F) σ (m b a))`. Rewrite using `[sigR_smul, map_add, sigR_sigR _ _ hσ, add_comm]`. Establish `hsmul : Continuous fun x : Af F ⊗[F] E => h • x`. Repeatedly rewrite using `[Algebra.smul_def]`. Conclude with `continuous_const.mul continuous_id`.
+
+Establish `hPc : Continuous Pm`. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Conclude with `hsmul.comp ((continuous_id.matrix_elem a b).add (hsig.comp (continuous_id.matrix_elem b a)))`. Set `P : Matrix (Fin n) (Fin n) (Af F ⊗[F] E) → HermR (Af F) σ n` to `fun m => ⟨Pm m, hPm m⟩`. Establish `hP : Continuous P` using `hPc.subtype_mk hPm`.
+
+Establish `hW : IsOpen {m | g - P m ∈ U}` using `hU.preimage (continuous_const.sub hP)`. Establish `hg : P g.1 = g`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `a b`. Use `show h • (g.1 a b + sigR (Af F) σ (g.1 b a)) = g.1 a b`.
+
+Rewrite using `[g.2 a b, ← two_smul F, smul_smul]`. Evaluate the numerical expressions using `[h]`. Establish `hne : ({m | g - P m ∈ U} : Set _).Nonempty` using `⟨g.1, by simp [hg, U.zero_mem]⟩`. Take `⟨c₀, hc₀⟩` from `hmat.exists_mem_open hW hne`. Set `c : Matrix (Fin n) (Fin n) E` to `fun a b => h • (c₀ a b + σ (c₀ b a))`.
+
+Establish `hc : c ∈ hermE σ n`. Introduce `a b`. Use `show σ (h • (c₀ b a + σ (c₀ a b))) = h • (c₀ a b + σ (c₀ b a))`. Rewrite using `[Algebra.smul_def, map_mul, AlgHom.commutes, ← Algebra.smul_def, map_add, hσ, add_comm]`. Use `⟨⟨c, hc⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `hcP : hermIn (Af F) σ n ⟨c, hc⟩ = P (c₀.map (inclR (Af F)))`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `a b`. Use `show inclR (Af F) (h • (c₀ a b + σ (c₀ b a))) = h • (inclR (Af F) (c₀ a b) + sigR (Af F) σ (inclR (Af F) (c₀ b a)))`. Rewrite using `[inclR_smul, map_add, sigR_inclR]`.
+
+Rewrite using `[hcP]`. Conclude with `hc₀`.
+-/
 theorem hermE_dense_finite : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (n : ℕ) (U : AddSubgroup (HermR (Af F) σ n)), IsOpen (U : Set (HermR (Af F) σ n)) →
     ∀ g : HermR (Af F) σ n, ∃ c : hermE σ n, g - hermIn (Af F) σ n c ∈ U := by

@@ -13,18 +13,35 @@ variable {K : Type} [Field K] [NumberField K]
 
 local notation "𝔞" => algebraMap K 𝔸[K]
 
+/- English proof (translation)
+Rewrite using `[AddChar.map_add_eq_mul, Circle.coe_mul]`.
+-/
 theorem psi_add (a b : 𝔸[K]) :
     (adelicChar K (a + b) : ℂ) = (adelicChar K a : ℂ) * (adelicChar K b : ℂ) := by
   rw [AddChar.map_add_eq_mul, Circle.coe_mul]
 
+/- English proof (translation)
+Rewrite using `[adelicChar_algebraMap, Circle.coe_one]`.
+-/
 theorem psi_rat (q : K) : (adelicChar K (𝔞 q) : ℂ) = 1 := by
   rw [adelicChar_algebraMap, Circle.coe_one]
 
+/- English proof (translation)
+Rewrite using `[AddChar.map_zero_eq_one, Circle.coe_one]`.
+-/
 theorem psi_zero : (adelicChar K 0 : ℂ) = 1 := by
   rw [AddChar.map_zero_eq_one, Circle.coe_one]
 
+/- English proof (translation)
+The claim follows from `Circle.norm_coe _`.
+-/
 theorem norm_psi (a : 𝔸[K]) : ‖(adelicChar K a : ℂ)‖ = 1 := Circle.norm_coe _
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `adelicChar_ne_one (K := K) (DFunLike.ext _ _ fun b => ?_)` and prove the remaining obligations. Rewrite using `[AddChar.one_apply]`. Use `ext`.
+
+Simplify using `using h b`.
+-/
 theorem exists_psi_ne_one : ∃ b : 𝔸[K], (adelicChar K b : ℂ) ≠ 1 := by
   by_contra h
   push Not at h
@@ -33,6 +50,9 @@ theorem exists_psi_ne_one : ∃ b : 𝔸[K], (adelicChar K b : ℂ) ≠ 1 := by
   ext
   simpa using h b
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[psi_add]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = w * (adelicChar K (C + D) : ℂ) := by rw [e]`. Use `_ = _ := by rw [psi_add]; ring`.
+-/
 theorem psi_comb {A B C D : 𝔸[K]} (e : A + B = C + D) (w : ℂ) :
     (adelicChar K A : ℂ) * w * (adelicChar K B : ℂ) =
       (adelicChar K C : ℂ) * (w * (adelicChar K D : ℂ)) := by
@@ -53,6 +73,19 @@ def splitAt {ι : Type*} [DecidableEq ι] (i : ι) : ι ≃ {j // j ≠ i} ⊕ U
     · simp [hj]
     · simp
 
+/- English proof (translation)
+Rewrite using `[FourierWhittaker.setIntegral_vecDomain_sum (splitAt i) hc]`. Use `integral_eq_zero_of_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Set `G : (Unit → 𝔸[K]) → ℂ` to `fun y => F fun j => Sum.elim x y (splitAt i j)`. Use `show ∫ y in vecDomain K Unit, G y ∂vecMeasure K Unit = 0`. Establish `hvec : ∀ (y a : Unit → 𝔸[K]), (fun j => Sum.elim x (y + a) (splitAt i j)) = (fun j => Sum.elim x y (splitAt i j)) + Pi.single i (a ())`.
+
+Introduce `y a`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[splitAt]`.
+
+Simplify using `[splitAt, h]`. Establish `hG : ∀ y a, G (y + a) = (adelicChar K (𝔞 r * a ()) : ℂ) * G y`. Introduce `y a`. Simplify using `only [G, hvec, hF]`. Establish `hper : ∀ ξ ∈ FourierWhittaker.vecLattice K Unit, ∀ y, G (ξ + y) = G y`.
+
+Introduce `ξ hξ y`. Take `⟨η, rfl⟩` from `FourierWhittaker.mem_vecLattice.1 hξ`. Rewrite using `[add_comm, hG]`. Use `show (adelicChar K (𝔞 r * 𝔞 (η ())) : ℂ) * G y = G y`. Rewrite using `[← map_mul, psi_rat, one_mul]`.
+
+Take `⟨b, hb⟩` from `exists_psi_ne_one (K := K)`. Establish `h1` using `FourierWhittaker.setIntegral_comp_add (fun _ => 𝔞 r⁻¹ * b) hper`. Establish `hrb : 𝔞 r * (𝔞 r⁻¹ * b) = b`. Rewrite using `[← mul_assoc, ← map_mul, mul_inv_cancel₀ hr, map_one, one_mul]`. Simplify using `only [hG, hrb] at h1`.
+
+Rewrite `h1` using `[integral_const_mul]`. Establish `h2 : ((adelicChar K b : ℂ) - 1) * ∫ y in vecDomain K Unit, G y ∂vecMeasure K Unit = 0`. Rewrite using `[sub_mul, one_mul, h1, sub_self]`. Conclude with `(mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 hb)`.
+-/
 theorem setIntegral_eq_zero_of_shift {ι : Type*} [Fintype ι] [DecidableEq ι]
     {F : (ι → 𝔸[K]) → ℂ} (hc : Continuous F) (i : ι) {r : K} (hr : r ≠ 0)
     (hF : ∀ y s, F (y + Pi.single i s) = (adelicChar K (𝔞 r * s) : ℂ) * F y) :
@@ -87,6 +120,11 @@ theorem setIntegral_eq_zero_of_shift {ι : Type*} [Fintype ι] [DecidableEq ι]
     rw [sub_mul, one_mul, h1, sub_self]
   exact (mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 hb)
 
+/- English proof (translation)
+Establish `key : ∀ y, F y = F 0`. Introduce `y`. Establish `: ∀ S : Finset ι, F (∑ i ∈ S, Pi.single i (y i)) = F 0`. Introduce `S`. Use `Finset.induction_on S (by simp) ?_` and prove the remaining obligations.
+
+Introduce `a S ha ih`. Rewrite using `[Finset.sum_insert ha, add_comm, hF, ih]`. Rewrite using `[← this Finset.univ, Finset.univ_sum_single]`. Rewrite using `[setIntegral_congr_fun FourierWhittaker.measurableSet_vecDomain (fun y _ => key y), setIntegral_const, measureReal_def, FourierWhittaker.vecMeasure_vecDomain, ENNReal.toReal_one, one_smul]`.
+-/
 theorem setIntegral_eq_of_shift {ι : Type*} [Fintype ι] [DecidableEq ι] {F : (ι → 𝔸[K]) → ℂ}
     (hF : ∀ y i s, F (y + Pi.single i s) = F y) :
     ∫ y in vecDomain K ι, F y ∂vecMeasure K ι = F 0 := by
@@ -102,6 +140,11 @@ theorem setIntegral_eq_of_shift {ι : Type*} [Fintype ι] [DecidableEq ι] {F : 
     setIntegral_const, measureReal_def, FourierWhittaker.vecMeasure_vecDomain, ENNReal.toReal_one,
     one_smul]
 
+/- English proof (translation)
+Establish `: IsFiniteMeasure ((vecMeasure K ι).restrict (vecDomain K ι))` using `⟨by`. Rewrite using `[Measure.restrict_apply_univ, FourierWhittaker.vecMeasure_vecDomain]`. Conclude with `ENNReal.one_lt_top⟩`. Establish `hint : ∀ q, Integrable (F q) ((vecMeasure K ι).restrict (vecDomain K ι))` using `fun q => Integrable.mono' (integrable_const (b q)) (hc q).aestronglyMeasurable ((ae_restrict_iff' FourierWhittaker.measurableSet_vecDomain).2 (ae_of_all _ (hle q)))`. Establish `hnorm : ∀ q, ∫ y in vecDomain K ι, ‖F q y‖ ∂vecMeasure K ι ≤ b q`.
+
+Introduce `q`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[setIntegral_const, measureReal_def, FourierWhittaker.vecMeasure_vecDomain, ENNReal.toReal_one, one_smul]`. Conclude with `(integral_tsum_of_summable_integral_norm hint (Summable.of_nonneg_of_le (fun q => integral_nonneg fun _ => norm_nonneg _) hnorm hb)).symm`.
+-/
 theorem setIntegral_tsum_of_le {ι : Type*} [Fintype ι] {α : Type*} [Countable α]
     (F : α → (ι → 𝔸[K]) → ℂ) (hc : ∀ q, Continuous (F q)) (b : α → ℝ) (hb : Summable b)
     (hle : ∀ q, ∀ y ∈ vecDomain K ι, ‖F q y‖ ≤ b q) :
@@ -133,6 +176,11 @@ instance countable_GL2 : Countable (GL (Fin 2) K) := by
 
 instance countable_NQ : Countable (NQ K) := Quotient.countable
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `show Continuous fun x => (!![1, a x, b x; 0, 1, c x; 0, 0, 1] : Matrix (Fin 3) (Fin 3) 𝔸[K])`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> fun_prop`. Use `show Continuous fun x => (!![1, -a x, a x * c x - b x; 0, 1, -c x; 0, 0, 1] : Matrix (Fin 3) (Fin 3) 𝔸[K])`.
+
+Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> fun_prop`.
+-/
 theorem continuous_uni {X : Type*} [TopologicalSpace X] {a b c : X → 𝔸[K]} (ha : Continuous a)
     (hb : Continuous b) (hc : Continuous c) : Continuous fun x => (uni (a x) (b x) (c x) : G3K K) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
@@ -144,6 +192,11 @@ theorem continuous_uni {X : Type*} [TopologicalSpace X] {a b c : X → 𝔸[K]} 
     refine continuous_matrix fun i j => ?_
     fin_cases i <;> fin_cases j <;> simp <;> fun_prop
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `show Continuous fun x => (!![1, 0, 0; a x, 1, 0; 0, 0, 1] : Matrix (Fin 3) (Fin 3) 𝔸[K])`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> fun_prop`. Use `show Continuous fun x => (!![1, 0, 0; -a x, 1, 0; 0, 0, 1] : Matrix (Fin 3) (Fin 3) 𝔸[K])`.
+
+Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> fun_prop`.
+-/
 theorem continuous_lowM {X : Type*} [TopologicalSpace X] {a : X → 𝔸[K]} (ha : Continuous a) :
     Continuous fun x => lowM (a x) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
@@ -154,36 +207,57 @@ theorem continuous_lowM {X : Type*} [TopologicalSpace X] {a : X → 𝔸[K]} (ha
     refine continuous_matrix fun i j => ?_
     fin_cases i <;> fin_cases j <;> simp <;> fun_prop
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_uni (x y z : 𝔸[K]) :
     ((uni x y z : G3K K) : Matrix (Fin 3) (Fin 3) 𝔸[K]) = !![1, x, y; 0, 1, z; 0, 0, 1] := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_lowM (c : 𝔸[K]) :
     ((lowM c : G3K K) : Matrix (Fin 3) (Fin 3) 𝔸[K]) = !![1, 0, 0; c, 1, 0; 0, 0, 1] := rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [e1, b1M]`.
+-/
 theorem diagonal_embed_GL2_matrix (γ : GL (Fin 2) K) :
     ((diaK (e1 K γ) : G3K K) : Matrix (Fin 3) (Fin 3) 𝔸[K]) =
       !![𝔞 (γ.val 0 0), 𝔞 (γ.val 0 1), 0; 𝔞 (γ.val 1 0), 𝔞 (γ.val 1 1), 0; 0, 0, 1] := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [e1, b1M]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [e2, b2M, sw, Matrix.mul_apply, Fin.sum_univ_three]`.
+-/
 theorem val_dia_e2sw (γ : GL (Fin 2) K) :
     ((diaK (e2 K γ * sw K) : G3K K) : Matrix (Fin 3) (Fin 3) 𝔸[K]) =
       !![0, 1, 0; 𝔞 (γ.val 0 0), 0, 𝔞 (γ.val 0 1); 𝔞 (γ.val 1 0), 0, 𝔞 (γ.val 1 1)] := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [e2, b2M, sw, Matrix.mul_apply, Fin.sum_univ_three]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[val_lowM]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+-/
 theorem lowM_zero : lowM (0 : 𝔸[K]) = 1 := by
   apply Units.ext
   rw [val_lowM]
   ext i j
   fin_cases i <;> fin_cases j <;> simp
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[val_uni]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+-/
 theorem uni_zero : (uni 0 0 0 : G3K K) = 1 := by
   apply Units.ext
   rw [val_uni]
   ext i j
   fin_cases i <;> fin_cases j <;> simp
 
+/- English proof (translation)
+Use `congrArg (fun X : Matrix (Fin 2) (Fin 2) K => 𝔞 (X i j)) (Units.inv_mul γ)` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, map_add, map_mul, Matrix.one_apply] at this`. Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem inv_rel (γ : GL (Fin 2) K) (i j : Fin 2) :
     𝔞 ((γ⁻¹).val i 0) * 𝔞 (γ.val 0 j) + 𝔞 ((γ⁻¹).val i 1) * 𝔞 (γ.val 1 j) =
       if i = j then 1 else 0 := by
@@ -192,6 +266,9 @@ theorem inv_rel (γ : GL (Fin 2) K) (i j : Fin 2) :
   rw [this]
   split_ifs <;> simp
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, val_lowM, val_uni]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three] <;> ring`.
+-/
 theorem heisenberg_lower_commute_corner (c x t s : 𝔸[K]) :
     lowM c * uni 0 x (t + s) = uni 0 0 s * (lowM c * uni 0 x t) := by
   apply Units.ext
@@ -199,6 +276,9 @@ theorem heisenberg_lower_commute_corner (c x t s : 𝔸[K]) :
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three] <;> ring
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, val_lowM, val_uni]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three] <;> ring`.
+-/
 theorem heisenberg_lower_commute_middle (c x t s : 𝔸[K]) :
     lowM c * uni 0 (x + s) t = uni 0 s (c * s) * (lowM c * uni 0 x t) := by
   apply Units.ext
@@ -206,6 +286,9 @@ theorem heisenberg_lower_commute_middle (c x t s : 𝔸[K]) :
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three] <;> ring
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, val_lowM, val_uni]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three] <;> ring`.
+-/
 theorem hH_c (c x t s : 𝔸[K]) :
     lowM (c + s) * uni 0 x t = lowM s * (lowM c * uni 0 x t) := by
   apply Units.ext
@@ -213,18 +296,27 @@ theorem hH_c (c x t s : 𝔸[K]) :
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three] <;> ring
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, val_uni]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three] <;> ring`.
+-/
 theorem hY_a (a b s : 𝔸[K]) : uni 0 (a + s) b = uni 0 s 0 * uni 0 a b := by
   apply Units.ext
   simp only [Units.val_mul, val_uni]
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three] <;> ring
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, val_uni]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three] <;> ring`.
+-/
 theorem hY_b (a b s : 𝔸[K]) : uni 0 a (b + s) = uni 0 0 s * uni 0 a b := by
   apply Units.ext
   simp only [Units.val_mul, val_uni]
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three] <;> ring
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, diagonal_embed_GL2_matrix, val_uni]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three] <;> ring`.
+-/
 theorem GL2_embed_commute_corner (γ : GL (Fin 2) K) (s : 𝔸[K]) :
     diaK (e1 K γ) * uni 0 0 s = uni 0 (𝔞 (γ.val 0 1) * s) (𝔞 (γ.val 1 1) * s) * diaK (e1 K γ) := by
   apply Units.ext
@@ -232,6 +324,9 @@ theorem GL2_embed_commute_corner (γ : GL (Fin 2) K) (s : 𝔸[K]) :
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three] <;> ring
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, diagonal_embed_GL2_matrix, val_uni]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three] <;> ring`.
+-/
 theorem GL2_embed_commute_middle (γ : GL (Fin 2) K) (s w : 𝔸[K]) :
     diaK (e1 K γ) * uni 0 s w = uni 0 (𝔞 (γ.val 0 0) * s + 𝔞 (γ.val 0 1) * w)
       (𝔞 (γ.val 1 0) * s + 𝔞 (γ.val 1 1) * w) * diaK (e1 K γ) := by
@@ -240,6 +335,9 @@ theorem GL2_embed_commute_middle (γ : GL (Fin 2) K) (s w : 𝔸[K]) :
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three] <;> ring
 
+/- English proof (translation)
+Establish `h` using `congrArg Matrix.det (Units.mul_inv γ)`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_one, Matrix.det_fin_two]`. Introduce `h0`. Rewrite `h` using `[h0, zero_mul]`. Conclude with `zero_ne_one h`.
+-/
 theorem det_ne_zero2 (γ : GL (Fin 2) K) : γ.val 0 0 * γ.val 1 1 - γ.val 0 1 * γ.val 1 0 ≠ 0 := by
   have h := congrArg Matrix.det (Units.mul_inv γ)
   rw [Matrix.det_mul, Matrix.det_one, Matrix.det_fin_two] at h
@@ -247,6 +345,13 @@ theorem det_ne_zero2 (γ : GL (Fin 2) K) : γ.val 0 0 * γ.val 1 1 - γ.val 0 1 
   rw [h0, zero_mul] at h
   exact zero_ne_one h
 
+/- English proof (translation)
+Establish `h10 : γ.val 1 0 ≠ 0`. Introduce `h`. Use `det_ne_zero2 γ` as an intermediate fact. Rewrite `this` using `[h, h11]`. Simplify using `at this`.
+
+Establish `hq : 𝔞 (γ.val 0 1 / γ.val 1 0) * 𝔞 (γ.val 1 0) = 𝔞 (γ.val 0 1)`. Rewrite using `[← map_mul, div_mul_cancel₀ _ h10]`. Generalize the expression as in `𝔞 (γ.val 0 1 / γ.val 1 0) = A at hq ⊢`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, diagonal_embed_GL2_matrix, val_uni, val_lowM]`.
+
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three, h11] <;> first | linear_combination s * hq | linear_combination -s * hq | ring1`.
+-/
 theorem dU_c (γ : GL (Fin 2) K) (h11 : γ.val 1 1 = 0) (s : 𝔸[K]) :
     diaK (e1 K γ) * lowM s = uni (𝔞 (γ.val 0 1 / γ.val 1 0) * s) 0 0 * diaK (e1 K γ) := by
   have h10 : γ.val 1 0 ≠ 0 := by
@@ -260,6 +365,11 @@ theorem dU_c (γ : GL (Fin 2) K) (h11 : γ.val 1 1 = 0) (s : 𝔸[K]) :
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three, h11] <;>
     first | linear_combination s * hq | linear_combination -s * hq | ring1
 
+/- English proof (translation)
+Establish `r0` using `inv_rel γ 1 0`. Establish `r1` using `inv_rel γ 1 1`. Simplify using `only [Fin.isValue, one_ne_zero, if_false, if_true] at r0 r1`. Generalize the expression as in `((γ⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) = N at r0 r1 ⊢`. Apply `Units.ext` to reduce the goal to its premises.
+
+Simplify using `only [Units.val_mul, val_dia_e2sw, val_uni]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three] <;> first | linear_combination s * r0 | linear_combination -s * r0 |`. Take the linear combination `s * r1 | linear_combination -s * r1 | ring1`.
+-/
 theorem GL2_swap_embed_commute_corner (γ : GL (Fin 2) K) (s : 𝔸[K]) :
     diaK (e2 K γ * sw K) * uni 0 0 s =
       uni (𝔞 ((γ⁻¹).val 1 0) * s) (𝔞 ((γ⁻¹).val 1 1) * s) 0 * diaK (e2 K γ * sw K) := by
@@ -274,6 +384,11 @@ theorem GL2_swap_embed_commute_corner (γ : GL (Fin 2) K) (s : 𝔸[K]) :
     first | linear_combination s * r0 | linear_combination -s * r0 |
       linear_combination s * r1 | linear_combination -s * r1 | ring1
 
+/- English proof (translation)
+Establish `r0` using `inv_rel γ 0 0`. Establish `r1` using `inv_rel γ 0 1`. Simplify using `only [Fin.isValue, zero_ne_one, if_false, if_true] at r0 r1`. Generalize the expression as in `((γ⁻¹ : GL (Fin 2) K) : Matrix (Fin 2) (Fin 2) K) = N at r0 r1 ⊢`. Apply `Units.ext` to reduce the goal to its premises.
+
+Simplify using `only [Units.val_mul, val_dia_e2sw, val_uni, val_lowM]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three] <;> first | linear_combination s * r0 | linear_combination -s * r0 |`. Take the linear combination `s * r1 | linear_combination -s * r1 | ring1`.
+-/
 theorem dV_c (γ : GL (Fin 2) K) (s : 𝔸[K]) :
     diaK (e2 K γ * sw K) * lowM s =
       uni (𝔞 ((γ⁻¹).val 0 0) * s) (𝔞 ((γ⁻¹).val 0 1) * s) 0 * diaK (e2 K γ * sw K) := by
@@ -288,6 +403,15 @@ theorem dV_c (γ : GL (Fin 2) K) (s : 𝔸[K]) :
     first | linear_combination s * r0 | linear_combination -s * r0 |
       linear_combination s * r1 | linear_combination -s * r1 | ring1
 
+/- English proof (translation)
+Establish `h11 : γ.val 1 1 ≠ 0`. Introduce `h`. Use `det_ne_zero2 γ` as an intermediate fact. Rewrite `this` using `[h, h10]`. Simplify using `at this`.
+
+Establish `q1 : 𝔞 (γ.val 1 1)⁻¹ * 𝔞 (γ.val 1 1) = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ h11, map_one]`. Establish `q2 : 𝔞 (γ.val 0 0 / γ.val 1 1) * 𝔞 (γ.val 1 1) = 𝔞 (γ.val 0 0)`. Rewrite using `[← map_mul, div_mul_cancel₀ _ h11]`. Generalize the expression as in `𝔞 (γ.val 1 1)⁻¹ = A1 at q1 ⊢`.
+
+Generalize the expression as in `𝔞 (γ.val 0 0 / γ.val 1 1) = A2 at q2 ⊢`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, val_dia_e2sw, val_uni]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three, h10] <;> first | linear_combination w * q1 | linear_combination -w * q1 |`.
+
+Take the linear combination `s * q2 | linear_combination -s * q2 | ring1`.
+-/
 theorem GL2_swap_embed_commute_middle (γ : GL (Fin 2) K) (h10 : γ.val 1 0 = 0) (s w : 𝔸[K]) :
     diaK (e2 K γ * sw K) * uni 0 s w =
       uni 0 (𝔞 (γ.val 1 1)⁻¹ * w) (𝔞 (γ.val 0 0 / γ.val 1 1) * s) * diaK (e2 K γ * sw K) := by

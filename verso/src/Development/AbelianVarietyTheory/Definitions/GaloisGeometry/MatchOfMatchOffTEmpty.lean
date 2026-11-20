@@ -79,14 +79,23 @@ def LimitExOffT : Prop :=
     ∃ (T : Finset (HeightOneSpectrum (𝓞 E))) (Kw : Levels E a) (r : G E Ω →* GL (Fin a) (Qbar l)), NonSplitSet T ∧
       Adapted w₀ Kw π ∧ SplitAtt π ι r ∧ LinApprox r {ρ | GaloisRepUnramifiedOutside ι T w₀ Kw π ρ}
 
+/- English proof (translation)
+Introduce `w hw`. Simplify using `at hw`.
+-/
 theorem nonSplitSet_empty : NonSplitSet (∅ : Finset (HeightOneSpectrum (𝓞 E))) := by
   intro w hw
   simp at hw
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.aut, fun w hw _ => h.unram w hw, h.split, h.inf⟩`.
+-/
 theorem matchOffT_of_match {U : Submodule ℂ (UA E a → ℂ)} {π : CuspSub E a} (h : Match U π)
     (T : Finset (HeightOneSpectrum (𝓞 E))) : MatchOffT U π T :=
   ⟨h.aut, fun w hw _ => h.unram w hw, h.split, h.inf⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ l a hl ha π hπ Z`. Take `⟨U, hU⟩` from `h E l a hl ha π hπ`. Conclude with `⟨∅, nonSplitSet_empty, Finset.disjoint_empty_left Z, U, matchOffT_of_match hU ∅⟩`.
+-/
 theorem descOffT_of_desc (h : Desc) : DescOffT := by
   intro E _ _ _ l a hl ha π hπ Z
   obtain ⟨U, hU⟩ := h E l a hl ha π hπ

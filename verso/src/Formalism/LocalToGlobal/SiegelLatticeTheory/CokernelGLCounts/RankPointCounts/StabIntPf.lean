@@ -4,6 +4,9 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 
 namespace Formalism.L2.SG.Pf.StabIntSh
 
+/- English proof (translation)
+The claim follows from `stabIntShape_of locShapeL locShapeG locGlob shapeNZ`.
+-/
 theorem stabIntShape (D : Formalism.BasicNotions.D7) : StabIntShapeC D :=
   stabIntShape_of locShapeL locShapeG locGlob shapeNZ
 

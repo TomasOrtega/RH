@@ -7,6 +7,15 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.LeibPhi
 
+/- English proof (translation)
+Set `f : Fin m ⊕ Fin (j + 1) → Fin (m + j + 1)` to `Sum.elim (fun a => GlobalTheory.BZMir.Leib.eGP m j ⟨false, a⟩) (fun b => GlobalTheory.BZMir.Leib.eGP m j ⟨true, b⟩)`. Establish `hinj : Function.Injective f`. Apply the tactic sequence `rintro (a | a) (b | b) hab <;>`. Apply the tactic sequence `have hs := (GlobalTheory.BZMir.Leib.eGP m j).injective hab <;>`. Simplify using `[Sigma.mk.inj_iff]`.
+
+Establish `hf : Function.Bijective f` using `(Fintype.bijective_iff_injective_and_card f).mpr ⟨hinj, by simp only [Fintype.card_sum, Fintype.card_fin]; omega⟩`. Establish `hA : ∀ a b : Fin m, (((GlobalTheory.BZMir.Leib.gpProj k m j h).1 : GL (Fin m) k) : Matrix (Fin m) (Fin m) k) a b = (((h : GlobalTheory.BZMir.Mir k (m + j)) : GL (Fin (m + j + 1)) k) : Matrix (Fin (m + j + 1)) (Fin (m + j + 1)) k) (GlobalTheory.BZMir.Leib.eGP m j ⟨false, a⟩) (Glob …` using `fun a b => GlobalTheory.SmGL.leviProj_apply k (GlobalTheory.BZMir.Leib.eGP m j) (GlobalTheory.BZMir.Leib.hgpIncl k m j h) false a b`. Establish `hD : ∀ a b : Fin (j + 1), (((GlobalTheory.BZMir.Leib.gpProj k m j h).2 : GL (Fin (j + 1)) k) : Matrix (Fin (j + 1)) (Fin (j + 1)) k) a b = (((h : GlobalTheory.BZMir.Mir k (m + j)) : GL (Fin (m + j + 1)) k) : Matrix (Fin (m + j + 1)) (Fin (m + j + 1)) k) (GlobalTheory.BZMir.Leib.e …` using `fun a b => GlobalTheory.SmGL.leviProj_apply k (GlobalTheory.BZMir.Leib.eGP m j) (GlobalTheory.BZMir.Leib.hgpIncl k m j h) true a b`. Establish `hzero` using `(GlobalTheory.CompanionTheory.LeibPhi.mem_mirabolicParabolic_iff k m j (h : GlobalTheory.BZMir.Mir k (m + j))).mp h.2`. Establish `hsub : (((h : GlobalTheory.BZMir.Mir k (m + j)) : GL (Fin (m + j + 1)) k) : Matrix (Fin (m + j + 1)) (Fin (m + j + 1)) k).submatrix (Equiv.ofBijective f hf) (Equiv.ofBijective f hf) = Matrix.fromBlocks (((GlobalTheory.BZMir.Leib.gpProj k m j h).1 : GL (Fin m) k) : Matrix (Fin m) …`.
+
+Use extensionality with `(a | a) (b | b)`. Conclude with `(hA a b).symm`. Both sides reduce to the same expression. Conclude with `hzero a b`. Conclude with `(hD a b).symm`.
+
+Establish `key : Matrix.det (((h : GlobalTheory.BZMir.Mir k (m + j)) : GL (Fin (m + j + 1)) k) : Matrix (Fin (m + j + 1)) (Fin (m + j + 1)) k) = Matrix.det (((GlobalTheory.BZMir.Leib.gpProj k m j h).1 : GL (Fin m) k) : Matrix (Fin m) (Fin m) k) * Matrix.det (((GlobalTheory.BZMir.Leib.gpProj …`. Rewrite using `[← Matrix.det_submatrix_equiv_self (Equiv.ofBijective f hf), hsub, Matrix.det_fromBlocks_zero₂₁]`. Use `ext`. Simplify using `only [Units.val_mul, Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `key`.
+-/
 theorem det_hgp (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (m j : ℕ) (h : MirabolicParabolic k m j) :
     GeneralLinearGroup.det ((h : Mir k (m + j)) : GL (Fin (m + j + 1)) k) =
@@ -58,6 +67,9 @@ theorem det_hgp (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNo
   simp only [Units.val_mul, Matrix.GeneralLinearGroup.val_det_apply]
   exact key
 
+/- English proof (translation)
+Introduce `k _ _ _ _ m j s h`. Establish `h1 : GlobalTheory.RgGu.Leib.dpowM (m + j) s (h : GlobalTheory.BZMir.Mir k (m + j)) = GlobalTheory.BZMir.Leib.dpow (m + j + 1) s ((h : GlobalTheory.BZMir.Mir k (m + j)) : GL (Fin (m + j + 1)) k)` using `rfl`. Establish `h2 : GlobalTheory.RgGu.Leib.dpowM j s (GlobalTheory.BZMir.Leib.gpProj k m j h).2 = GlobalTheory.BZMir.Leib.dpow (j + 1) s ((GlobalTheory.BZMir.Leib.gpProj k m j h).2 : GL (Fin (j + 1)) k)` using `rfl`. Establish `h3 : ∀ (n : ℕ) (g : GL (Fin n) k), GlobalTheory.BZMir.Leib.dpow n s g = GlobalTheory.SmGL.absPow k (s : ℂ) (GeneralLinearGroup.det g)` using `fun _ _ => rfl`. Rewrite using `[h1, h2, h3, h3, h3, GlobalTheory.CompanionTheory.LeibPhi.det_hgp, map_mul]`.
+-/
 theorem dpowM_hgp : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (m j : ℕ) (s : ℝ) (h : MirabolicParabolic k m j),
     dpowM (m + j) s (h : Mir k (m + j)) = dpow m s (gpProj k m j h).1 * dpowM j s (gpProj k m j h).2 := by
   intro k _ _ _ _ m j s h

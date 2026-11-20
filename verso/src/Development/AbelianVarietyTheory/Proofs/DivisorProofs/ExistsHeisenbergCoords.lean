@@ -22,8 +22,14 @@ variable {n : ℕ} (J : Matrix (Fin n) (Fin n) ℂ)
 
 def hf (a b : Fin n → ℂ) : ℂ := star a ⬝ᵥ J *ᵥ b
 
+/- English proof (translation)
+Simplify using `[hf, mulVec_add]`.
+-/
 theorem hf_add_right (a b c : Fin n → ℂ) : hf J a (b + c) = hf J a b + hf J a c := by
   simp [hf, mulVec_add]
+/- English proof (translation)
+Simplify using `[hf, mulVec_smul]`.
+-/
 theorem hf_smul_right (a b : Fin n → ℂ) (s : ℂ) : hf J a (s • b) = s * hf J a b := by
   simp [hf, mulVec_smul]
 
@@ -33,6 +39,9 @@ def hfL (a : Fin n → ℂ) : (Fin n → ℂ) →ₗ[ℝ] ℂ where
   map_smul' s b := by
     rw [RingHom.id_apply, ← Complex.coe_smul, hf_smul_right, Complex.real_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem hfL_apply (a b : Fin n → ℂ) : hfL J a b = hf J a b := rfl
 
 def Heisenberg₂ (x w : Fin n → ℂ) (z : ℂ) : Matrix (Fin n) (Fin n) ℂ :=
@@ -56,6 +65,9 @@ open GlobalTheory.Orb (archMat)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
   {J : Matrix (Fin n) (Fin n) E} {ν : InfinitePlace F}
 
+/- English proof (translation)
+The claim follows from `(archEquiv J hcm τ g).2`.
+-/
 theorem archMat_unitary (hcm : IsCMExt F E σ) (τ : EmbOver E ν) (g : HA ν.Completion σ J) :
     (archMat σ J τ g)ᴴ * J.map τ.1 * archMat σ J τ g = J.map τ.1 := (archEquiv J hcm τ g).2
 

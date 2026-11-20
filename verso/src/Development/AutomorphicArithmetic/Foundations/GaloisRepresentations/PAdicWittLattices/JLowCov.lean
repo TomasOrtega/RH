@@ -5,6 +5,11 @@ open NumberField IsDedekindDomain UpperTheory.Gal.Int.Geo PositivityTheory.Autom
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 universe u v
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify `h2` using `only [Category.assoc]`. Simplify using `only [Category.assoc, pullback.condition]`. Rewrite using `[reassoc_of% h1]`.
+
+Conclude with `h1`.
+-/
 private theorem ext2 {X B k K T : Scheme.{0}} {p : X ⟶ B} {g₁ : k ⟶ B} {g₂ : K ⟶ k}
     (a b : T ⟶ pullback (pullback.snd p g₁) g₂)
     (h1 : a ≫ pullback.snd _ _ = b ≫ pullback.snd _ _)
@@ -16,6 +21,9 @@ private theorem ext2 {X B k K T : Scheme.{0}} {p : X ⟶ B} {g₁ : k ⟶ B} {g�
       rw [reassoc_of% h1]
   · exact h1
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, bcMap_fst]`. Rewrite using `[← Category.assoc (bcMap g f₁ h₁), bcMap_fst, Category.assoc]`. Simplify using `only [Category.assoc, bcMap_snd]`.
+-/
 private theorem bcComp {B B' X Y Z : Scheme.{0}} (g : B ⟶ B') {p : X ⟶ B'} {q : Y ⟶ B'} {r : Z ⟶ B'}
     (f₁ : Z ⟶ Y) (f₂ : Y ⟶ X) (h₁ : f₁ ≫ q = r) (h₂ : f₂ ≫ p = q) (h : (f₁ ≫ f₂) ≫ p = r) :
     bcMap g (f₁ ≫ f₂) h = bcMap g f₁ h₁ ≫ bcMap g f₂ h₂ := by
@@ -24,10 +32,16 @@ private theorem bcComp {B B' X Y Z : Scheme.{0}} (g : B ⟶ B') {p : X ⟶ B'} {
     rw [← Category.assoc (bcMap g f₁ h₁), bcMap_fst, Category.assoc]
   · simp only [Category.assoc, bcMap_snd]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem bcCongr {B B' X Y : Scheme.{0}} (g : B ⟶ B') {p : X ⟶ B'} {q : Y ⟶ B'} {f f' : Y ⟶ X}
     (e : f = f') (h : f ≫ p = q) (h' : f' ≫ p = q) : bcMap g f h = bcMap g f' h' := by
   subst e; rfl
 
+/- English proof (translation)
+Apply `ext2` to reduce the goal to its premises. Simplify using `only [Category.assoc, hX1, hY1, bcMap_snd]`. Simplify using `only [Category.assoc, hX2, reassoc_of% hY2, bcMap_fst, reassoc_of% bcMap_fst]`.
+-/
 private theorem square {B B' k K X Y : Scheme.{0}} (gφ : B' ⟶ B) (g₁ : k ⟶ B) (g₂ : K ⟶ k) (gO : K ⟶ B')
     {p : X ⟶ B} {q : Y ⟶ B} (u : Y ⟶ X) (h : u ≫ p = q)
     (eX : pullback (pullback.snd p gφ) gO ⟶ pullback (pullback.snd p g₁) g₂)
@@ -41,6 +55,9 @@ private theorem square {B B' k K X Y : Scheme.{0}} (gφ : B' ⟶ B) (g₁ : k �
   · simp only [Category.assoc, hX1, hY1, bcMap_snd]
   · simp only [Category.assoc, hX2, reassoc_of% hY2, bcMap_fst, reassoc_of% bcMap_fst]
 
+/- English proof (translation)
+Establish `h : (⟨_, pullback.snd (𝟙 Y ≫ p) (Spec.map (CommRingCat.ofHom φ))⟩ : CrystallineSemistableComparison.Model l K.1).Sm ∧ SmoothOfRelativeDimension d (pullback.snd (𝟙 Y ≫ p) (Spec.map (CommRingCat.ofHom φ)))` using `hM l K φ p d hs hp (𝟙 Y)`. Rewrite `h` using `[Category.id_comp]`. Conclude with `h`.
+-/
 private theorem modP (hM : ModBc) (l : ℕ) [Fact l.Prime] (K : FinExt l) {O : Type} [CommRing O] [IsNoetherianRing O]
     (φ : O →+* ↥(CrystallineSemistableComparison.OK l K.1)) {Y : Scheme.{0}} (p : Y ⟶ sp O) (d : ℕ)
     (hs : SmoothOfRelativeDimension d p) (hp : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsProjOver p) :
@@ -52,6 +69,11 @@ private theorem modP (hM : ModBc) (l : ℕ) [Fact l.Prime] (K : FinExt l) {O : T
   rw [Category.id_comp] at h
   exact h
 
+/- English proof (translation)
+Establish `hac` using `hG.2.2.2.2.2.1`. Establish `hsc` using `hS.1`. Establish `ha : ∀ x, a₀ x ≫ c₀ ≫ p = c₀ ≫ p` using `fun x => by rw [← Category.assoc, hac x]`. Establish `hσ : ∀ j, σ₀ j ≫ s ≫ p = c₀ ≫ p` using `fun j => by rw [← Category.assoc, hsc j]`. Establish `hσ₁ : ∀ j, bcMap g₁ (σ₀ j) (hσ j) ≫ bcMap g₁ s rfl ≫ pullback.snd p g₁ = pullback.snd (c₀ ≫ p) g₁` using `fun j => by simp only [bcMap_snd]`.
+
+Use `⟨ha, hσ, hσ₁, ?_, ?_⟩` and prove the remaining obligations. Establish `hG1` using `hGal g₁ p (c₀ ≫ p) c₀ rfl G a₀ ha hG`. Conclude with `hGal g₂ (pullback.snd p g₁) (pullback.snd (c₀ ≫ p) g₁) (bcMap g₁ c₀ rfl) (bcMap_snd _ _ _) G _ (fun x => bcMap_snd _ _ _) hG1`. Take `⟨hF, hE, hsp⟩` from `hSp g₁ p (s ≫ p) (c₀ ≫ p) s rfl c₀ rfl (Fin n) σ₀ hσ haveI := hF haveI := hE`. Conclude with `(hSp g₂ (pullback.snd p g₁) _ (pullback.snd (c₀ ≫ p) g₁) (bcMap g₁ s rfl) rfl (bcMap g₁ c₀ rfl) (bcMap_snd _ _ _) (Fin n) _ hσ₁).2.2 (hsp hS)`.
+-/
 private theorem galPart (hSp : BcSplits) (hGal : BcGal) {B k K Y T W₀ : Scheme.{0}} (p : Y ⟶ B) (g₁ : k ⟶ B) (g₂ : K ⟶ k)
     (s : T ⟶ Y) [IsFinite s] [Etale s] (c₀ : W₀ ⟶ Y) (G : Type) [Group G] [Finite G] (a₀ : G → (W₀ ⟶ W₀)) (n : ℕ)
     (σ₀ : Fin n → (W₀ ⟶ T)) (hG : IsGalois c₀ G a₀) (hS : Splits s c₀ σ₀) :
@@ -77,6 +99,9 @@ private theorem galPart (hSp : BcSplits) (hGal : BcGal) {B k K Y T W₀ : Scheme
     exact (hSp g₂ (pullback.snd p g₁) _ (pullback.snd (c₀ ≫ p) g₁) (bcMap g₁ s rfl) rfl (bcMap g₁ c₀ rfl)
       (bcMap_snd _ _ _) (Fin n) _ hσ₁).2.2 (hsp hS)
 
+/- English proof (translation)
+Establish `h' : (bcMap g₁ σ hσ ≫ bcMap g₁ t ht) ≫ pullback.snd p g₁ = pullback.snd (c₀ ≫ p) g₁`. Simplify using `only [Category.assoc, ht', hσ₁]`. Conclude with `(bcCongr g₂ (bcComp g₁ σ t hσ ht hu) _ h').trans (bcComp g₂ _ _ hσ₁ ht' h')`.
+-/
 private theorem compPart {B k K Y T W₀ : Scheme.{0}} (p : Y ⟶ B) (g₁ : k ⟶ B) (g₂ : K ⟶ k) (s t : T ⟶ Y)
     (ht : t ≫ p = s ≫ p) (c₀ : W₀ ⟶ Y) (σ : W₀ ⟶ T) (hσ : σ ≫ s ≫ p = c₀ ≫ p) (hu : (σ ≫ t) ≫ p = c₀ ≫ p)
     (hσ₁ : bcMap g₁ σ hσ ≫ bcMap g₁ s rfl ≫ pullback.snd p g₁ = pullback.snd (c₀ ≫ p) g₁)
@@ -87,6 +112,19 @@ private theorem compPart {B k K Y T W₀ : Scheme.{0}} (p : Y ⟶ B) (g₁ : k �
   exact (bcCongr g₂ (bcComp g₁ σ t hσ ht hu) _ h').trans (bcComp g₂ _ _ hσ₁ ht' h')
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `hGC hSp hGal hGI hM E _ _ l _ H θ w C D K τK hτ`. Set `φ : Ow w →+* CrystallineSemistableComparison.OK l K.1` to `RingHom.codRestrict (τK.comp (HeightOneSpectrum.valuation E w).valuationSubring.subtype) _ (fun x => GroundTheory.PAdicHodge.mem_normInteger.mpr (hτ x))`. Establish `hφ : ∀ x : Ow w, algebraMap (CrystallineSemistableComparison.OK l K.1) K.1 (φ x) = τK (algebraMap (Ow w) E x)` using `fun x => rfl`. Take `⟨d₀, hd₀⟩` from `C.dim`. Take `⟨eZ, hZ1, hZ2⟩` from `hGI φ τK hφ C.p`.
+
+Establish `hMZ` using `modP hM l K φ C.p d₀ hd₀ C.proj`. Use `⟨⟨_, pullback.snd C.p (Spec.map (CommRingCat.ofHom φ))⟩, eZ, ⟨hMZ.1, ⟨d₀, hMZ.2⟩, eZ, hZ1⟩, hZ1, fun g => ?_⟩` and prove the remaining obligations. Establish `hfet` using `D.fet g`. Use `haveI := hfet.1`. Use `haveI := hfet.2.1`.
+
+Take `⟨W₀, c₀, G, _, _, a₀, σ₀, hG, hS⟩` from `hGC (D.s g) (D.d g) (D.fet g)`. Take `⟨ha, hσ, hσ₁, hGal', hSpl⟩` from `galPart hSp hGal C.p (gen (Ow w) E) (Spec.map (CommRingCat.ofHom τK)) (D.s g) c₀ G a₀ (D.d g) σ₀ hG hS`. Use `haveI := hG.1`. Use `haveI := hG.2.1`. Establish `hMW` using `hM l K φ C.p d₀ hd₀ C.proj c₀`.
+
+Take `⟨eW, hW1, hW2⟩` from `hGI φ τK hφ (c₀ ≫ C.p)`. Establish `hu : ∀ i, (σ₀ i ≫ D.t g) ≫ C.p = c₀ ≫ C.p` using `fun i => by`. Rewrite using `[Category.assoc, D.comm g, ← Category.assoc, hS.1 i]`. Establish `ht' : bcMap (gen (Ow w) E) (D.t g) (D.comm g) ≫ pullback.snd C.p (gen (Ow w) E) = bcMap (gen (Ow w) E) (D.s g) rfl ≫ pullback.snd C.p (gen (Ow w) E)`. Simplify using `only [bcMap_snd]`.
+
+Use `⟨_, bcMap (Spec.map (CommRingCat.ofHom τK)) (bcMap (gen (Ow w) E) c₀ rfl) (bcMap_snd _ _ _), G, inferInstance, inferInstance, _, Fin (D.d g), inferInstance, fun i => bcMap (Spec.map (CommRingCat.ofHom τK)) (bcMap (gen (Ow w) E) (σ₀ i) (hσ i)) (hσ₁ i), hGal', ?_, ⟨_, pullback.snd …` and prove the remaining obligations. Conclude with `hSpl`. Conclude with `(congrArg (eW.hom ≫ ·) (bcMap_snd _ _ _)).trans hW1`. Conclude with `square (Spec.map (CommRingCat.ofHom φ)) (gen (Ow w) E) (Spec.map (CommRingCat.ofHom τK)) (gen (CrystallineSemistableComparison.OK l K.1) K.1) c₀ rfl eZ.hom eW.hom hZ1 hZ2 hW1 hW2`. Establish `hcp` using `compPart C.p (gen (Ow w) E) (Spec.map (CommRingCat.ofHom τK)) (D.s g) (D.t g) (D.comm g) c₀ (σ₀ i) (hσ i) (hu i) (hσ₁ i) ht'`.
+
+Establish `hsq` using `square (Spec.map (CommRingCat.ofHom φ)) (gen (Ow w) E) (Spec.map (CommRingCat.ofHom τK)) (gen (CrystallineSemistableComparison.OK l K.1) K.1) (σ₀ i ≫ D.t g) (hu i) eZ.hom eW.hom hZ1 hZ2 hW1 hW2`. Conclude with `hsq.trans (congrArg (eW.hom ≫ ·) hcp)`.
+-/
 theorem UpperTheory.Gal.G3.jLowCov :
     GalClosD → BcSplits → BcGal → GenIso → ModBc → LowCov := by
   intro hGC hSp hGal hGI hM E _ _ l _ H θ w C D K τK hτ

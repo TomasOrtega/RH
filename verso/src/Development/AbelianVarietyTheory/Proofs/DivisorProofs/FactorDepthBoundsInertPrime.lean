@@ -14,6 +14,19 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FactorDepthInertBounds (boundAll bo
 
 namespace GlobalTheory.RefSum
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c p _ la hdisc hinert f k hpsi`. Use `letI := H.starRing`. Take `⟨κ, hκ⟩` from `GlobalTheory.T.dividedPowerContent_detPow_depends_on_p_i_k p Fact.out (rk f) k`. Establish `hFGT` using `GlobalTheory.T.formalGroup_rootsOfUnity_typed_lieRanks E H Dw l Xo c (fun _ => rfl) p hdisc`. Establish `hch : ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io), Nonempty (IntegralChartA3 Xo c T io y)` using `fun T io y => by`.
+
+Take `⟨C, -⟩` from `(@GlobalTheory.IntChartExists.intChart_exists E _ _ _ H Dw l Xo c H.starRing).2.2 (fun _ => rfl) T io y`. Conclude with `⟨C⟩`. Establish `hbd : boundInert p Dw.q (rk f) k = 2 * ((rk f : ℕ) : ℝ) * (k : ℝ) / ((p : ℝ) * ((p : ℝ) - 1)) + 2 * ((Dw.q : ℕ) : ℝ) * (k : ℝ) / ((p : ℝ) - 1)` using `rfl`. Use `⟨κ - boundInert p Dw.q (rk f) k, κ, fun T io e ho y => ⟨le_nuFac fun Ch X => ?_, fun _ => ?_⟩, by linarith⟩` and prove the remaining obligations. Take `⟨hfrob, htyp⟩` from `hFGT T io X`.
+
+Take `⟨h, hh, -, lab, hlab, d', G', ty, I, P, -, ⟨mu⟩, -, hcard, hfr⟩` from `htyp y Ch f.1`. Establish `hf0 : f.1 = lab 0` using `hlab.1.symm`. Take `⟨hsat, hsupp, hnu⟩` from `hfr 0 f hf0`. Establish `hiff` using `(hfrob (lab 0) (lab (0 + 1)) (hlab.2.1 0)).2 hinert`. Establish `hnot : ¬ InPsi H (lab (0 + 1))` using `fun h1 => ReciprocityTheory.ChartRestriction.G.PullbackSections.CVA.not_inPsi_both H f.1 ⟨hpsi, by rw [hf0]; exact hiff.1 h1⟩`.
+
+Establish `hc1 : (Finset.univ.filter fun a => ty a = (0 : ZMod h) + 1).card ≤ Dw.q`. Use `hcard (0 + 1)` as an intermediate fact. Rewrite `this` using `[if_neg hnot, Fintype.card_subtype]`. Conclude with `this.le`. Establish `hd2` using `GlobalTheory.FGDepth.InertBound.content_le_detDepth_add X.C (vX_vp X) p Fact.out (vX_vp_p X) d' h hh ty G' mu 0 Dw.q (rk f) k hc1 _ hsat hsupp`.
+
+Rewrite `hd2` using `[hκ X.C (vX_vp X) (vX_vp_p X), ← hbd]`. Rewrite using `[hnu k, EReal.coe_sub]`. Conclude with `EReal.sub_le_of_le_add hd2`. Take `⟨Ch⟩` from `hch T io y`. Take `⟨X⟩` from `nonempty_valExt_of_overLa la ho`.
+
+Establish `h1` using `GlobalTheory.T.formalGroupDeterminantPowDepth_bounds X.C (vX_vp X) p Fact.out (vX_vp_p X) (rk f) _ k (fgl Ch X) (frame Ch X f) (isSatFrame_frame Ch X f)`. Use `(nuFac_le Ch X f k).trans ?_` and prove the remaining obligations. Rewrite using `[← hκ X.C (vX_vp X) (vX_vp_p X)]`. Conclude with `h1.2.1`.
+-/
 theorem facBetween_inert : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (p : ℕ) [Fact p.Prime] (la : PointsOfFlagModel.abelian₂ p c), ¬ (p : ℤ) ∣ discr E → InertInK H p → ∀ (f : Lt1 Dw) (k : ℕ), InPsi H f.1 → ∃ A B : ℝ, FacBetween Xo la f k A B ∧ B - A ≤ boundInert p Dw.q (rk f) k := by
   intro E _ _ _ H Dw l Xo c p _ la hdisc hinert f k hpsi
   letI := H.starRing

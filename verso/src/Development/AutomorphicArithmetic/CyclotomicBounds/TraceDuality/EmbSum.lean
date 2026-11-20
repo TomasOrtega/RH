@@ -3,6 +3,19 @@ open NumberField
 open scoped TensorProduct NNReal
 open Classical
 
+/- English proof (translation)
+Introduce `E _ _ d hd0 n a b h C _ _ _ φ ψ`. Establish `hd : (d : E) ≠ 0` using `RingOfIntegers.coe_ne_zero_iff.2 hd0`. Establish `htr : ∀ y : E, ((Algebra.trace ℚ E y : ℚ) : C) = ∑ χ : E →+* C, χ y`. Introduce `y`. Establish `h1` using `trace_eq_sum_embeddings (K := ℚ) (L := E) (E := C) (x := y)`.
+
+Rewrite `h1` using `[eq_ratCast]`. Rewrite using `[h1]`. Conclude with `(Fintype.sum_equiv (RingHom.equivRatAlgHom E C) _ _ (fun χ => rfl)).symm`. Establish `hli : LinearIndependent C (fun χ : E →+* C => (χ : E → C))` using `(linearIndependent_monoidHom E C).comp (fun χ : E →+* C => (χ : E →* C)) (fun χ χ' hh => RingHom.ext fun x => DFunLike.congr_fun hh x)`. Establish `key : ∑ χ : E →+* C, ((∑ j, φ (a j : E) * χ (b j : E)) / χ (d : E) - if χ = φ then 1 else 0) • (χ : E → C) = 0`.
+
+Use function extensionality and compare the values at `x`. Establish `h2` using `congrArg φ (h x)`. Rewrite `h2` using `[map_sum]`. Simplify using `only [Rat.smul_def, map_mul, map_ratCast] at h2`. Simplify using `only [htr, map_mul, map_div₀] at h2`.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, sub_mul, Finset.sum_sub_distrib, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, Pi.zero_apply]`. Rewrite using `[← h2, sub_eq_zero]`. Simplify using `only [Finset.sum_mul, Finset.sum_div]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun χ _ => by ring` and prove the remaining obligations.
+
+Establish `h3` using `Fintype.linearIndependent_iff.1 hli _ key ψ`. Establish `hψ : ψ (d : E) ≠ 0` using `(map_ne_zero ψ).2 hd`. Rewrite `h3` using `[sub_eq_zero, div_eq_iff hψ]`. Rewrite using `[h3]`. Use `split_ifs with hh`.
+
+Rewrite using `[hh, one_mul]`. Rewrite using `[zero_mul]`.
+-/
 theorem UpperTheory.WildB.embSum :
     ∀ (E : Type) [Field E] [NumberField E] (d : 𝓞 E), d ≠ 0 → ∀ (n : ℕ) (a b : Fin n → 𝓞 E), (∀ x : E, ∑ j, Algebra.trace ℚ E (x * (b j : E) / (d : E)) • (a j : E) = x) → ∀ (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (φ ψ : E →+* C), ∑ j, φ (a j : E) * ψ (b j : E) = if ψ = φ then φ (d : E) else 0 := by
   intro E _ _ d hd0 n a b h C _ _ _ φ ψ

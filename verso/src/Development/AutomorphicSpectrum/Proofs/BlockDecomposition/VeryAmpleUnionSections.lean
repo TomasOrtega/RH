@@ -18,6 +18,13 @@ def ChartBy (f : X ⟶ Spec (CommRingCat.of R)) (H : LB X) (a : LB.Sec H) {m : �
           rs X (inf_le_right : nonzeroLocus a ⊓ H.U k ≤ H.U k) (a.f k)) ∧
       Function.Surjective (MvPolynomial.eval₂Hom (cst f (nonzeroLocus a)) r)
 
+/- English proof (translation)
+Take `⟨ha, r, hr, hs⟩` from `h`. Use `⟨ha, fun j => secRatio a (z j), fun j k => secRatio_spec a (z j) k, fun g => ?_⟩` and prove the remaining obligations. Take `⟨p, rfl⟩` from `hs g`. Use `⟨MvPolynomial.rename ι p, ?_⟩` and prove the remaining obligations. Establish `hrr : (fun j => secRatio a (z j)) ∘ ι = r`.
+
+Use function extensionality and compare the values at `l`. Use `(eq_secRatio a (z (ι l)) ?_).symm` and prove the remaining obligations. Introduce `k`. Rewrite using `[hι l]`. Conclude with `hr l k`.
+
+Simplify using `only [MvPolynomial.coe_eval₂Hom]`. Rewrite using `[MvPolynomial.eval₂_rename, hrr]`.
+-/
 theorem ChartBy.of_sub {f : X ⟶ Spec (CommRingCat.of R)} {H : LB X} {a : LB.Sec H} {m n : ℕ}
     {w : Fin (n + 1) → LB.Sec H} {z : Fin (m + 1) → LB.Sec H} (ι : Fin (n + 1) → Fin (m + 1))
     (hι : ∀ l, z (ι l) = w l) (h : ChartBy f H a w) : ChartBy f H a z := by
@@ -34,6 +41,15 @@ theorem ChartBy.of_sub {f : X ⟶ Spec (CommRingCat.of R)} {H : LB X} {a : LB.Se
   simp only [MvPolynomial.coe_eval₂Hom]
   rw [MvPolynomial.eval₂_rename, hrr]
 
+/- English proof (translation)
+Introduce `R _ X f H _ m₁ m₂ m x y e hx hy`. Establish `key : ∀ (z : Fin (m + 1) → LB.Sec H), (∀ j, z j = Sum.elim x y (e j)) → (⨆ j, nonzeroLocus (z j) = ⊤) ∧ ∀ j, ChartBy f H (z j) z`. Introduce `z hz`. Establish `hl : ∀ i, z (e.symm (Sum.inl i)) = x i` using `fun i => by simp [hz]`. Establish `hr : ∀ i, z (e.symm (Sum.inr i)) = y i` using `fun i => by simp [hz]`.
+
+Use `⟨eq_top_iff.2 ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← hx.1]`. Conclude with `iSup_le fun i => le_iSup_of_le (e.symm (Sum.inl i)) (by rw [hl])`. Break down `he : e j with i | i` into its components or cases. Establish `hj : z j = x i` using `by rw [hz, he]; rfl`.
+
+Rewrite using `[hj]`. Conclude with `ChartBy.of_sub (fun l => e.symm (Sum.inl l)) hl (hx.2 i)`. Establish `hj : z j = y i` using `by rw [hz, he]; rfl`. Rewrite using `[hj]`. Conclude with `ChartBy.of_sub (fun l => e.symm (Sum.inr l)) hr (hy.2 i)`.
+
+Conclude with `key _ fun _ => rfl`.
+-/
 theorem veryAmpleBy_union : ∀ (R : Type) [CommRing R] {X : Scheme.{0}} (f : X ⟶ Spec (CommRingCat.of R)) (H : LB X), H.IsLB → ∀ (m₁ m₂ m : ℕ) (x : Fin (m₁ + 1) → LB.Sec H) (y : Fin (m₂ + 1) → LB.Sec H) (e : Fin (m + 1) ≃ Fin (m₁ + 1) ⊕ Fin (m₂ + 1)), VeryAmpleBy f H x → VeryAmpleBy f H y → VeryAmpleBy f H (fun j => Sum.elim x y (e j)) := by
   intro R _ X f H _ m₁ m₂ m x y e hx hy
   have key : ∀ (z : Fin (m + 1) → LB.Sec H), (∀ j, z j = Sum.elim x y (e j)) →

@@ -4,6 +4,15 @@ open UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 namespace UpperTheory.V.Cu.TorusWeightSpan
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem a ha`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem b hb`. Take `⟨g, rfl⟩` from `ha`.
+
+Take `⟨h, rfl⟩` from `hb`. Conclude with `Submodule.subset_span ⟨g * h, map_mul r g h⟩`. Consider the case `zero => simp`. Consider the case `add b c _ _ hb hc => rw [mul_add]`. Conclude with `add_mem hb hc`.
+
+Consider the case `smul c b _ hb => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ _ hb`. Consider the case `zero => simp`. Consider the case `add b c _ _ hb hc => rw [add_mul]`. Conclude with `add_mem hb hc`.
+
+Consider the case `smul c b _ hb => rw [smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ _ hb`.
+-/
 theorem span_mul {Γ K : Type} [Group Γ] [Field K] (r : Γ →* M4 K) (E : Subfield K) {x y : M4 K}
     (hx : x ∈ Submodule.span E (Set.range r)) (hy : y ∈ Submodule.span E (Set.range r)) :
     x * y ∈ Submodule.span E (Set.range r) := by
@@ -21,6 +30,11 @@ theorem span_mul {Γ K : Type} [Group Γ] [Field K] (r : Γ →* M4 K) (E : Subf
   | add b c _ _ hb hc => rw [add_mul]; exact add_mem hb hc
   | smul c b _ hb => rw [smul_mul_assoc]; exact Submodule.smul_mem _ _ hb
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem a ha => obtain ⟨g, rfl⟩ := ha`. Conclude with `ht g`. Consider the case `zero => simp`. Consider the case `add b c _ _ hb hc => rw [Matrix.trace_add]`.
+
+Conclude with `add_mem hb hc`. Consider the case `smul c b _ hb => rw [Matrix.trace_smul]`. Conclude with `mul_mem c.2 hb`.
+-/
 theorem span_trace {Γ K : Type} [Group Γ] [Field K] (r : Γ →* M4 K) (E : Subfield K)
     (ht : ∀ g, (r g).trace ∈ E) {x : M4 K} (hx : x ∈ Submodule.span E (Set.range r)) : x.trace ∈ E := by
   induction hx using Submodule.span_induction with
@@ -29,6 +43,21 @@ theorem span_trace {Γ K : Type} [Group Γ] [Field K] (r : Γ →* M4 K) (E : Su
   | add b c _ _ hb hc => rw [Matrix.trace_add]; exact add_mem hb hc
   | smul c b _ hb => rw [Matrix.trace_smul]; exact mul_mem c.2 hb
 
+/- English proof (translation)
+Establish `h1 : (1 : M4 K) ∈ Submodule.span E (Set.range r)` using `Submodule.subset_span ⟨1, map_one r⟩`. Establish `h0 : r g0 ∈ Submodule.span E (Set.range r)` using `Submodule.subset_span ⟨g0, rfl⟩`. Establish `key : Matrix.diagonal (∏ j ∈ Finset.univ.erase i, (fun k => (r g0 i i - r g0 j j)⁻¹ * (r g0 k k - r g0 j j) : Fin 4 → K)) ∈ Submodule.span E (Set.range r)`. Use `Finset.prod_induction _ (fun v : Fin 4 → K => Matrix.diagonal v ∈ Submodule.span E (Set.range r)) ?_ ?_ ?_` and prove the remaining obligations. Introduce `a b ha hb`.
+
+Use `span_mul r E ha hb` as an intermediate fact. Rewrite `this` using `[Matrix.diagonal_mul_diagonal]`. Then use the resulting hypothesis. Conclude with `h1`. Introduce `j _`. Use `Submodule.smul_mem _ (⟨(r g0 i i - r g0 j j)⁻¹, inv_mem (sub_mem (hE i) (hE j))⟩ : E) (sub_mem h0 (Submodule.smul_mem _ (⟨r g0 j j, hE j⟩ : E) h1))` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[Subfield.smul_def]`.
+
+Simplify using `[Subfield.smul_def, hab, hd hab]`. Use `key using 1` and compare the differences between its conclusion and the goal. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+
+Rewrite using `[Matrix.diagonal_apply_eq, Finset.prod_apply]`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Rewrite using `[Matrix.single_apply_same]`. Use `symm`.
+
+Use `Finset.prod_eq_one fun j hj => ?_` and prove the remaining obligations. Conclude with `inv_mul_cancel₀ (sub_ne_zero.2 (hne _ _ (Finset.ne_of_mem_erase hj).symm))`. Rewrite using `[Matrix.single_apply_of_row_ne hi]`. Use `symm`. Conclude with `Finset.prod_eq_zero (i := a) (Finset.mem_erase.2 ⟨Ne.symm hi, Finset.mem_univ _⟩) (by simp)`.
+
+Rewrite using `[Matrix.diagonal_apply_ne _ hab, Matrix.single_apply_of_ne]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hab rfl`.
+-/
 theorem eii {Γ K : Type} [Group Γ] [Field K] (r : Γ →* M4 K) (E : Subfield K) (g0 : Γ)
     (hd : (r g0).IsDiag) (hne : ∀ i j, i ≠ j → r g0 i i ≠ r g0 j j) (hE : ∀ i, r g0 i i ∈ E) (i : Fin 4) :
     Matrix.single i i (1 : K) ∈ Submodule.span E (Set.range r) := by
@@ -68,14 +97,29 @@ theorem eii {Γ K : Type} [Group Γ] [Field K] (r : Γ →* M4 K) (E : Subfield 
     rintro ⟨rfl, rfl⟩
     exact hab rfl
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem wt_be : ∀ i j : Fin 4, wt i j = wBe → i = 1 ∧ j = 2 := by decide
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem wt_mbe : ∀ i j : Fin 4, wt i j = -wBe → i = 2 ∧ j = 1 := by decide
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem wt_th : ∀ i j : Fin 4, wt i j = wTh → i = 0 ∧ j = 3 := by decide
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem wt_mth : ∀ i j : Fin 4, wt i j = -wTh → i = 3 ∧ j = 0 := by decide
 
+/- English proof (translation)
+Unfold `UpperTheory.V.Cu.yY`. Evaluate the decidable proposition.
+-/
 theorem wt_off : ∀ i j : Fin 4, i ≠ j → wt i j ∈ UpperTheory.V.Cu.yY →
     (i = 1 ∧ j = 2) ∨ (i = 2 ∧ j = 1) ∨ (i = 0 ∧ j = 3) ∨ (i = 3 ∧ j = 0) := by
   unfold UpperTheory.V.Cu.yY
@@ -84,6 +128,23 @@ theorem wt_off : ∀ i j : Fin 4, i ≠ j → wt i j ∈ UpperTheory.V.Cu.yY →
 end UpperTheory.V.Cu.TorusWeightSpan
 
 open UpperTheory.V.Cu.TorusWeightSpan in
+/- English proof (translation)
+Introduce `Γ K _ _ r g0 hd hne hS hb hmb ht hmt`. Establish `ent : ∀ (w : ℤ × ℤ) (a b : Fin 4), (∀ i j : Fin 4, wt i j = w → i = a ∧ j = b) → Ent r w → ∃ g, r g a b ≠ 0`. Introduce and unpack `w a b hw ⟨g, i, j, hij, hg⟩`. Take `⟨rfl, rfl⟩` from `hw i j hij`. Conclude with `⟨g, hg⟩`.
+
+Take `⟨gs, hs⟩` from `ent _ 0 3 wt_th ht`. Take `⟨gt, hgt⟩` from `ent _ 1 2 wt_be hb`. Take `⟨g30, h30⟩` from `ent _ 3 0 wt_mth hmt`. Take `⟨g21, h21⟩` from `ent _ 2 1 wt_mbe hmb`. Use `⟨r gs 0 3, r gt 1 2, fun E hsE htE htr hE => ?_⟩` and prove the remaining obligations.
+
+Establish `he` using `eii r E g0 hd hne hE`. Establish `hent : ∀ g i j, Matrix.single i j (r g i j) ∈ Submodule.span E (Set.range r)`. Introduce `g i j`. Establish `h1` using `span_mul r E (span_mul r E (he i) (Submodule.subset_span ⟨g, rfl⟩)) (he j)`. Rewrite `h1` using `[Matrix.single_mul_mul_single]`.
+
+Simplify using `using h1`. Establish `hQE : ∀ (i j : Fin 4) (c : K), c ≠ 0 → c ∈ E → Matrix.single i j c ∈ Submodule.span E (Set.range r) → ∀ g, r g j i ∈ E`. Introduce `i j c hc0 hcE hc g`. Establish `h1` using `span_trace r E htr (span_mul r E hc (hent g j i))`. Rewrite `h1` using `[Matrix.single_mul_single_same, Matrix.trace_single_eq_same]`.
+
+Establish `h2` using `mul_mem (inv_mem hcE) h1`. Rewrite `h2` using `[inv_mul_cancel_left₀ hc0]`. Then use the resulting hypothesis. Establish `e30` using `hQE 0 3 _ hs hsE (hent gs 0 3)`. Establish `e21` using `hQE 1 2 _ hgt htE (hent gt 1 2)`. Establish `e03` using `hQE 3 0 _ h30 (e30 g30) (hent g30 3 0)`.
+
+Establish `e12` using `hQE 2 1 _ h21 (e21 g21) (hent g21 2 1)`. Establish `ed : ∀ i g, r g i i ∈ E` using `fun i => hQE i i 1 one_ne_zero (one_mem E) (he i)`. Introduce `g i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Conclude with `ed i g`. Distinguish the cases in `hy : wt i j ∈ yY`. Break down `wt_off i j hij hy with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Conclude with `e12 g`. Conclude with `e21 g`.
+
+Conclude with `e03 g`. Conclude with `e30 g`. Rewrite using `[hS g i j hij hy]`. Conclude with `zero_mem E`.
+-/
 theorem UpperTheory.V.Cu.torusY : UpperTheory.V.Cu.TorusY := by
   intro Γ K _ _ r g0 hd hne hS hb hmb ht hmt
   have ent : ∀ (w : ℤ × ℤ) (a b : Fin 4), (∀ i j : Fin 4, wt i j = w → i = a ∧ j = b) → Ent r w →

@@ -29,6 +29,11 @@ section Alg
 
 variable {O V K : Type} [CommRing O] [CommRing V] [Field K]
 
+/- English proof (translation)
+Establish `h₁ : IsIntegral k₀ z`. Take `⟨P, hP, hPz⟩` from `hz`. Use `⟨P.map (θ.codRestrict k₀ hθ), hP.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Conclude with `hPz`.
+
+Take `⟨w, hw⟩` from `minpoly.mem_range_of_degree_eq_one k₀ z (IsAlgClosed.degree_eq_one_of_irreducible k₀ (minpoly.irreducible h₁))`. Conclude with `hw ▸ w.2`.
+-/
 theorem mem_of_isIntegralElem {k₀ : Subfield K} (hk : IsAlgClosed k₀) (θ : O →+* K) (hθ : ∀ a, θ a ∈ k₀) {z : K}
     (hz : θ.IsIntegralElem z) : z ∈ k₀ := by
   have h₁ : IsIntegral k₀ z := by
@@ -40,6 +45,13 @@ theorem mem_of_isIntegralElem {k₀ : Subfield K} (hk : IsAlgClosed k₀) (θ : 
     (IsAlgClosed.degree_eq_one_of_irreducible k₀ (minpoly.irreducible h₁))
   exact hw ▸ w.2
 
+/- English proof (translation)
+Set `: Algebra (ResidueField O) K` to `(Ideal.Quotient.lift (maximalIdeal O) θ hθ).toAlgebra`. Establish `e : ∀ a, algebraMap (ResidueField O) K (residue O a) = θ a` using `fun _ => rfl`. Use `⟨(algebraicClosure (ResidueField O) K).toSubfield, (algebraicClosure.isAlgClosure (ResidueField O) K).isAlgClosed, fun a => e a ▸ (algebraicClosure (ResidueField O) K).algebraMap_mem _, fun z hz => ⟨?_, fun A hA hzA => ?_⟩⟩` and prove the remaining obligations. Establish `h : IsIntegral (ResidueField O) z` using `(mem_algebraicClosure_iff'.1 hz)`. Take `⟨P, hP, hPz⟩` from `h`.
+
+Take `⟨P₀, h₀, -, h₂⟩` from `Polynomial.lifts_and_degree_eq_and_monic (Polynomial.mem_lifts_of_surjective (residue_surjective (R := O)) P) hP`. Use `⟨P₀, h₂, ?_⟩` and prove the remaining obligations. Rewrite `hPz` using `[← h₀, Polynomial.eval₂_map]`. Conclude with `hPz`. Set `B : Subalgebra (ResidueField O) K` to `{ A with algebraMap_mem' := fun r => by obtain ⟨a, rfl⟩ := residue_surjective r; exact hA a }`.
+
+Conclude with `B.inv_mem_of_algebraic (x := ⟨z, hzA⟩) (mem_algebraicClosure_iff.1 hz)`.
+-/
 theorem exists_algClosure [IsLocalRing O] [IsAlgClosed K] (θ : O →+* K) (hθ : ∀ a ∈ maximalIdeal O, θ a = 0) :
     ∃ k₀ : Subfield K, IsAlgClosed k₀ ∧ (∀ a, θ a ∈ k₀) ∧
       ∀ z ∈ k₀, θ.IsIntegralElem z ∧ ∀ A : Subring K, (∀ a, θ a ∈ A) → z ∈ A → z⁻¹ ∈ A := by
@@ -58,6 +70,11 @@ theorem exists_algClosure [IsLocalRing O] [IsAlgClosed K] (θ : O →+* K) (hθ 
       { A with algebraMap_mem' := fun r => by obtain ⟨a, rfl⟩ := residue_surjective r; exact hA a }
     exact B.inv_mem_of_algebraic (x := ⟨z, hzA⟩) (mem_algebraicClosure_iff.1 hz)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h0`. Take `⟨r', hr'⟩` from `h`. Establish `h₁ : 1 - r * r' ∈ RingHom.ker ev`. Rewrite using `[RingHom.mem_ker, map_sub, map_mul, map_one, hr', mul_inv_cancel₀ h0, sub_self]`. Establish `h₂` using `le_maximalIdeal (RingHom.ker_ne_top ev) h₁`.
+
+Establish `h₃` using `add_mem h₂ (Ideal.mul_mem_right r' _ hr)`. Rewrite `h₃` using `[sub_add_cancel]`. Conclude with `(maximalIdeal.isMaximal V).ne_top ((Ideal.eq_top_iff_one _).2 h₃)`.
+-/
 theorem eq_zero_of_inv_mem [IsLocalRing V] (ev : V →+* K) {r : V} (hr : r ∈ maximalIdeal V) (h : (ev r)⁻¹ ∈ ev.range) :
     ev r = 0 := by
   by_contra h0
@@ -69,6 +86,15 @@ theorem eq_zero_of_inv_mem [IsLocalRing V] (ev : V →+* K) {r : V} (hr : r ∈ 
   rw [sub_add_cancel] at h₃
   exact (maximalIdeal.isMaximal V).ne_top ((Ideal.eq_top_iff_one _).2 h₃)
 
+/- English proof (translation)
+Set `v : cycAway n` to `⟨(n : ℂ)⁻¹, Subring.subset_closure (Or.inr rfl)⟩`. Establish `hv : (n : cycAway n) * v = 1` using `Subtype.ext (by simp [v, hn])`. Establish `hz : θ (zetaAway n) ^ n = 1`. Rewrite using `[← cycBase_ζ hn]`. Conclude with `((cycBase hn).prim K θ).pow_eq_one`.
+
+Take `⟨x, hx⟩` from `a`. Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with rfl | rfl` into its components or cases. Use `mem_of_isIntegralElem hk (Int.castRingHom K) (fun a => intCast_mem k₀ a) (z := θ (zetaAway n)) ⟨Polynomial.X ^ n - Polynomial.C 1, Polynomial.monic_X_pow_sub_C _ hn, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[hz]`. Establish `h : θ v = (n : K)⁻¹` using `eq_inv_of_mul_eq_one_right (by rw [← map_natCast θ, ← map_mul, hv, map_one])`. Conclude with `(h ▸ inv_mem (natCast_mem k₀ n) : θ v ∈ k₀)`. Consider the case `zero => exact (map_zero θ ▸ zero_mem _ : θ 0 ∈ k₀)`. Consider the case `one => exact (map_one θ ▸ one_mem _ : θ 1 ∈ k₀)`.
+
+Consider the case `add x y hx' hy' hx hy => exact (map_add θ _ _ ▸ add_mem hx hy : θ (⟨x, hx'⟩ + ⟨y, hy'⟩) ∈ k₀)`. Consider the case `neg x hx' hx => exact (map_neg θ _ ▸ neg_mem hx : θ (-⟨x, hx'⟩) ∈ k₀)`. Consider the case `mul x y hx' hy' hx hy => exact (map_mul θ _ _ ▸ mul_mem hx hy : θ (⟨x, hx'⟩ * ⟨y, hy'⟩) ∈ k₀)`.
+-/
 theorem cycAway_mem {n : ℕ} (hn : n ≠ 0) {k₀ : Subfield K} (hk : IsAlgClosed k₀) (θ : cycAway n →+* K) (a : cycAway n) :
     θ a ∈ k₀ := by
   let v : cycAway n := ⟨(n : ℂ)⁻¹, Subring.subset_closure (Or.inr rfl)⟩
@@ -97,13 +123,26 @@ section Points
 
 variable {K : Type} [Field K] {k₀ : Subfield K} {X Y : Scheme.{0}}
 
+/- English proof (translation)
+Take `⟨P₀, rfl⟩` from `h`. Conclude with `⟨P₀ ≫ f, (Category.assoc _ _ _).symm⟩`.
+-/
 theorem defOver_comp {P : Sp K ⟶ X} (h : DefOver k₀ P) (f : X ⟶ Y) : DefOver k₀ (P ≫ f) := by
   obtain ⟨P₀, rfl⟩ := h
   exact ⟨P₀ ≫ f, (Category.assoc _ _ _).symm⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨spMap (θ.codRestrict k₀ h), by rw [← spMap_comp]; rfl⟩`.
+-/
 theorem defOver_spMap {O : Type} [CommRing O] {θ : O →+* K} (h : ∀ a, θ a ∈ k₀) : DefOver k₀ (spMap θ) :=
   ⟨spMap (θ.codRestrict k₀ h), by rw [← spMap_comp]; rfl⟩
 
+/- English proof (translation)
+Take `⟨P₀, hP⟩` from `h`. Establish `hs : P₀ (closedPoint k₀) ⤳ y`. Establish `h₁ : (spMap k₀.subtype ≫ P₀) (closedPoint K) ∈ Set.range (Y.fromSpecStalk y)`. Rewrite using `[hP]`. Conclude with `⟨_, (Scheme.Hom.comp_apply _ _ _).symm⟩`.
+
+Rewrite `h₁` using `[Scheme.range_fromSpecStalk]`. Establish `h₃ : (spMap k₀.subtype ≫ P₀) (closedPoint K) = P₀ (closedPoint k₀)` using `(Scheme.Hom.comp_apply _ _ _).trans (congrArg P₀ (Subsingleton.elim _ _))`. Conclude with `h₃ ▸ h₁`. Establish `h₂ : Spec.map (Y.presheaf.stalkSpecializes hs ≫ Scheme.stalkClosedPointTo (R` using `.of k₀) P₀ ≫ CommRingCat.ofHom k₀.subtype) ≫ Y.fromSpecStalk y = spMap θ ≫ Y.fromSpecStalk y := by`. Rewrite using `[Spec.map_comp, Spec.map_comp, Category.assoc, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk, Scheme.Spec_stalkClosedPointTo_fromSpecStalk, hP]`.
+
+Rewrite `h₂` using `[cancel_mono]`. Establish `h₃` using `congrArg (fun f => f.hom a) (Spec.map_injective h₂)`. Conclude with `(h₃ ▸ (Scheme.stalkClosedPointTo (R := .of k₀) P₀ (Y.presheaf.stalkSpecializes hs a)).2 : θ a ∈ k₀)`.
+-/
 theorem mem_of_defOver {y : Y} (θ : Y.presheaf.stalk y →+* K) (h : DefOver k₀ (spMap θ ≫ Y.fromSpecStalk y)) (a) :
     θ a ∈ k₀ := by
   obtain ⟨P₀, hP⟩ := h
@@ -122,6 +161,13 @@ theorem mem_of_defOver {y : Y} (θ : Y.presheaf.stalk y →+* K) (h : DefOver k�
   have h₃ := congrArg (fun f => f.hom a) (Spec.map_injective h₂)
   exact (h₃ ▸ (Scheme.stalkClosedPointTo (R := .of k₀) P₀ (Y.presheaf.stalkSpecializes hs a)).2 : θ a ∈ k₀)
 
+/- English proof (translation)
+Set `x : X` to `P (closedPoint K)`. Set `θ : X.presheaf.stalk x →+* K` to `(Scheme.stalkClosedPointTo (R := .of K) P).hom`. Establish `hl : IsLocalHom θ` using `Scheme.isLocalHom_stalkClosedPointTo' (R := K) P`. Establish `e : spMap θ ≫ X.fromSpecStalk x = P` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := .of K) P`. Establish `h₁ : ∀ a, θ.comp (f.stalkMap x).hom a ∈ k₀` using `mem_of_defOver _ (by`.
+
+Establish `e₁ : spMap (f.stalkMap x).hom ≫ Y.fromSpecStalk (f x) = X.fromSpecStalk x ≫ f` using `Scheme.SpecMap_stalkMap_fromSpecStalk f`. Rewrite using `[spMap_comp, Category.assoc, e₁, ← Category.assoc, e]`. Conclude with `h)`. Rewrite using `[← e]`. Use `defOver_comp (defOver_spMap fun a => mem_of_isIntegralElem hk _ h₁ ?_) _` and prove the remaining obligations.
+
+Establish `hf` using `(GlobalTheory.residueField_map_finite_of_quasiFinite (f.stalkMap x).hom (f.quasiFiniteAt x)).to_isIntegral`. Establish `hi` using `(RingHom.isIntegral_of_surjective _ (residue_surjective (R := Y.presheaf.stalk (f x)))).trans _ _ hf (residue _ a)`. Conclude with `hi.map (ResidueField.lift θ)`.
+-/
 theorem defOver_of_comp (hk : IsAlgClosed k₀) {P : Sp K ⟶ X} (f : X ⟶ Y) [LocallyQuasiFinite f]
     (h : DefOver k₀ (P ≫ f)) : DefOver k₀ P := by
   let x : X := P (closedPoint K)
@@ -145,6 +191,15 @@ section Pow
 
 variable {K : Type} [Field K] {k₀ : Subfield K} {o : Type} [CommRing o] {ζ : o} {h n : ℕ} {F : SFam h n ζ} {r : ℕ}
 
+/- English proof (translation)
+Use `F.univ.ab.comm` as an intermediate fact. Use `F.univ.ab.smooth` as an intermediate fact. Use `F.univ.ab.proper` as an intermediate fact. Establish `hu' : IsUnit (k : Γ(F.X, ⊤))`. Use `hu.map ((Scheme.ΓSpecIso (.of o)).inv ≫ F.s.appTop).hom` as an intermediate fact.
+
+Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Use `GrpTangent.isFinite_id_pow F.univ.A hu'` as an intermediate fact. Establish `: Epi (spMap k₀.subtype)`. Establish `: Flat (spMap k₀.subtype)`. Rewrite using `[spMap, Flat.SpecMap_iff]`.
+
+Conclude with `RingHom.Flat.of_isField (Field.toIsField k₀) _`. Establish `: Surjective (spMap k₀.subtype)` using `⟨Function.surjective_to_subsingleton _⟩`. Conclude with `Flat.epi_of_flat_of_surjective _`. Take `⟨u, hu⟩` from `h₀`. Use `choose p hp using fun i => defOver_of_comp hk (P := P ≫ (LowChart.coord F i).left) (𝟙 F.univ.A ^ k).left (by rw [Category.assoc]; exact h₁ i)`.
+
+Establish `hpu : ∀ i, p i ≫ F.univ.A.hom = u` using `fun i => by`. Rewrite using `[← cancel_epi (spMap k₀.subtype), hu, ← Category.assoc, hp, Category.assoc, Over.w]`. Use `⟨LowChart.lift u p hpu, LowChart.hom_ext _ _ ?_ fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, LowChart.lift_hom, hu]`. Rewrite using `[Category.assoc, LowChart.lift_coord, hp]`.
+-/
 theorem defOver_pow (hk : IsAlgClosed k₀) {k : ℕ} (hu : IsUnit (k : o)) (P : Sp K ⟶ (LowChart.powA F r).left)
     (h₀ : DefOver k₀ (P ≫ (LowChart.powA F r).hom))
     (h₁ : ∀ i, DefOver k₀ (P ≫ (LowChart.coord F i).left ≫ (𝟙 F.univ.A ^ k).left)) : DefOver k₀ P := by
@@ -170,12 +225,20 @@ theorem defOver_pow (hk : IsAlgClosed k₀) {k : ℕ} (hu : IsUnit (k : o)) (P :
   · rw [Category.assoc, LowChart.lift_hom, hu]
   · rw [Category.assoc, LowChart.lift_coord, hp]
 
+/- English proof (translation)
+Establish `e0 : ∀ p : PrimeSpectrum o, (StructureSheaf.toStalk o p).hom.EssFiniteType` using `fun p => Algebra.EssFiniteType.of_isLocalization (R := o) ((Spec.structureSheaf o).presheaf.stalk p) p.asIdeal.primeCompl`. Conclude with `⟨_, RingHom.EssFiniteType.comp (e0 (LowChart.toO F r y)) (LocallyOfFiniteType.stalkMap (LowChart.toO F r) y)⟩`.
+-/
 theorem exists_essFiniteType_stalk (y : (LowChart.powA F r).left) :
     ∃ b : o →+* (LowChart.powA F r).left.presheaf.stalk y, b.EssFiniteType := by
   have e0 : ∀ p : PrimeSpectrum o, (StructureSheaf.toStalk o p).hom.EssFiniteType := fun p =>
     Algebra.EssFiniteType.of_isLocalization (R := o) ((Spec.structureSheaf o).presheaf.stalk p) p.asIdeal.primeCompl
   exact ⟨_, RingHom.EssFiniteType.comp (e0 (LowChart.toO F r y)) (LocallyOfFiniteType.stalkMap (LowChart.toO F r) y)⟩
 
+/- English proof (translation)
+Establish `e : LowChart.c₀ F y ((k : ℤ) • Pi.single i 1) = LowChart.pt F y i ^ k` using `by show ∏ j, LowChart.pt F y j ^ (((k : ℤ) • Pi.single i 1 : Fin r → ℤ) j) = _`. Rewrite using `[Finset.prod_eq_single i (fun j _ hj => by simp [Pi.single_eq_of_ne hj]) (by simp)]`. Simplify using the standard rewrite rules. Establish `pb` using `Pdiv.PullbackComparison.isGrpPullback (LowChart.toPow F y ≫ (LowChart.powA F r).hom) F.univ.A`. Establish `e₁` using `map_pow (pushHom pb (𝟙_ _)) (LowChart.pt F y i) k`.
+
+Establish `e₂ : pushHom pb (𝟙_ _) (LowChart.pt F y i) ^ k = pushHom pb (𝟙_ _) (LowChart.pt F y i) ≫ (𝟙 F.univ.A ^ k)`. Rewrite using `[MonObj.comp_pow, Category.comp_id]`. Rewrite using `[e, ← Category.assoc, ← LowChart.pt_left]`. Conclude with `congrArg (fun q => q.left) (e₁.trans e₂)`.
+-/
 theorem c₀_smul_single [IsNoetherianRing o] (y : (LowChart.powA F r).left) (k : ℕ) (i : Fin r) :
     (LowChart.c₀ F y ((k : ℤ) • Pi.single i 1)).left ≫ Pdiv.PullbackComparison.pφ (LowChart.toPow F y ≫ (LowChart.powA F r).hom) F.univ.A =
       LowChart.toPow F y ≫ (LowChart.coord F i).left ≫ (𝟙 F.univ.A ^ k).left := by
@@ -199,6 +262,13 @@ variable {O W V : Type} [CommRing O] [CommRing W] [CommRing V] [IsLocalRing O] [
 
 omit [IsLocalRing W] in
 
+/- English proof (translation)
+Set `` to `((residue V).comp ib).toAlgebra`. Use `Fintype.ofFinite σ` as an intermediate fact. Use `(Algebra.essFiniteType_iff _ _).2 ⟨Finset.univ.image fun i => residue V (s i), fun z => ?_⟩` and prove the remaining obligations. Establish `key : ∀ a ∈ Subring.closure (Set.range ib ∪ Set.range s), residue V a ∈ Algebra.adjoin W (↑(Finset.univ.image fun i => residue V (s i)) : Set (ResidueField V))` using `fun a ha => by`. Use `(Subring.closure_le (t := (Algebra.adjoin W (↑(Finset.univ.image fun i => residue V (s i)) : Set (ResidueField V))).toSubring.comap (residue V))).2 ?_ ha` and prove the remaining obligations.
+
+Introduce and unpack `_ (⟨w, rfl⟩ | ⟨i, rfl⟩)`. Conclude with `(Algebra.adjoin W (↑(Finset.univ.image fun i => residue V (s i)) : Set (ResidueField V))).algebraMap_mem w`. Conclude with `Algebra.subset_adjoin (by simp)`. Take `⟨x, rfl⟩` from `residue_surjective z`. Take `⟨a, ha, b, hb, hu, hx⟩` from `h x`.
+
+Use `⟨residue V b, key b hb, hu.map _, ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[← residue_eq_zero_iff, map_sub, map_mul, sub_eq_zero]`. Conclude with `hx ▸ key a ha`.
+-/
 theorem essFiniteType_residue (ib : W →+* V) {σ : Type} [Finite σ] (s : σ → V)
     (h : ∀ x : V, ∃ a ∈ Subring.closure (Set.range ib ∪ Set.range s), ∃ b ∈ Subring.closure (Set.range ib ∪ Set.range s),
       IsUnit b ∧ x * b - a ∈ maximalIdeal V) : ((residue V).comp ib).EssFiniteType := by
@@ -225,6 +295,9 @@ section General
 
 variable {o : Type} [CommRing o] {ζ : o} {g n : ℕ}
 
+/- English proof (translation)
+Use `⟨h.isCN, fun R' _ _ _ ρ hR hρ hf D ε hD => ?_⟩` and prove the remaining obligations. Take `⟨G', _, _, π, A, U, hπ, κ, πK, α, α₂, hκ, -, hA, hsq, hL, -⟩` from `h.unif R' ρ hR hρ hf D ε hD`. Take `⟨E, hE, -⟩` from `grpPullback_iso hπ (isGrpPullback_pullback G₁ (spMap ρ))`. Conclude with `⟨G', inferInstance, inferInstance, A, U, κ ≫ y, α, α₂, isSemiAbelian_of_grpIso E (IsSemiAbelian.pullback _ G₁ hG), by rw [Category.assoc, hy, ← Category.assoc, hκ, Category.assoc], hA, hsq, hL⟩`.
+-/
 theorem unifOver_of_isMumfordFam {F : SFam g n ζ} {S : Scheme.{0}} {j : F.X ⟶ S} {V : Type} [CommRing V] [IsDomain V]
     [IsLocalRing V] {ξ : Sp V ⟶ S} {Q : Data V} {G₁ : Over (Sp V)} [GrpObj G₁] {y : Sp (FractionRing V) ⟶ F.X}
     {α₁ : pullback G₁.hom (jK V) ⟶ F.univ.A.left} (hG : IsSemiAbelian G₁) (hy : y ≫ j = jK V ≫ ξ)
@@ -236,6 +309,39 @@ theorem unifOver_of_isMumfordFam {F : SFam g n ζ} {S : Scheme.{0}} {j : F.X ⟶
     isSemiAbelian_of_grpIso E (IsSemiAbelian.pullback _ G₁ hG),
     by rw [Category.assoc, hy, ← Category.assoc, hκ, Category.assoc], hA, hsq, hL⟩
 
+/- English proof (translation)
+Set `O : Type` to `S.presheaf.stalk (ξ (closedPoint V))`. Set `φ : O →+* V` to `(Scheme.stalkClosedPointTo (R := .of V) ξ).hom`. Establish `hl : IsLocalHom φ` using `Scheme.isLocalHom_stalkClosedPointTo' (R := V) ξ`. Establish `eφ : spMap φ ≫ S.fromSpecStalk _ = ξ` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := .of V) ξ`. Establish `key : ∀ (K : Type) [Field K] [IsAlgClosed K] (ev : V →+* K), (∀ a ∈ maximalIdeal O, ev.comp φ a = 0) → ∀ a ∈ Subring.closure (Set.range ib ∪ Set.range s), (ev.comp φ).IsIntegralElem (ev a) ∧ (a ∈ maximalIdeal V → ev a = 0)`.
+
+Introduce `K _ _ ev hev`. Take `⟨k₀, hk₀, hφ, hint⟩` from `exists_algClosure (ev.comp φ) hev`. Establish `hz : ∀ a ∈ maximalIdeal V, ev a ∈ k₀ → ev a = 0` using `fun a ha h₀ => eq_zero_of_inv_mem ev ha ((hint _ h₀).2 ev.range (fun b => ⟨φ b, rfl⟩) ⟨a, rfl⟩)`. Establish `e₁ : spMap ev ≫ ξ = spMap (ev.comp φ) ≫ S.fromSpecStalk _` using `by rw [spMap_comp, Category.assoc, eφ]`. Take `⟨-, hA, hB⟩` from `hsep K ev k₀ hk₀ (fun p => by`.
+
+Establish `h₁ : spMap (ev.comp φ) p = closedPoint O`. Use `PrimeSpectrum.ext (((maximalIdeal.isMaximal O).eq_of_le (spMap (ev.comp φ) p).isPrime.ne_top ?_).symm)` and prove the remaining obligations. Introduce `a ha`. Use `show ev.comp φ a ∈ p.asIdeal`. Rewrite using `[hev a ha]`.
+
+Conclude with `zero_mem _`. Rewrite using `[e₁]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans ((congrArg (S.fromSpecStalk _) h₁).trans Scheme.fromSpecStalk_closedPoint))`. Use the proof step `(e₁ ▸ defOver_comp (defOver_spMap hφ) _)`. Establish `hA'` using `hA _ _ _ _ F' _ β β₂ (Nat.one_le_iff_ne_zero.2 hn) (by`.
+
+Take `⟨θ, hθ⟩` from `Spec.map_surjective (spMap ev ≫ (spMap (ib.comp ga) ≫ (LowChart.powA F' r).left.fromSpecStalk y ≫ (LowChart.powA F' r).hom) ≫ F'.s)`. Rewrite using `[← hθ]`. Conclude with `defOver_spMap (θ := θ.hom) (cycAway_mem hn hk₀ _)) hβ hβ₂ hL`. Establish `hP : DefOver k₀ (spMap (ev.comp (ib.comp ga)) ≫ (LowChart.powA F' r).left.fromSpecStalk y)`. Use `defOver_pow hk₀ hk _ ?_ fun i => ?_` and prove the remaining obligations.
+
+Establish `h₁` using `defOver_comp (hA' 0) F'.univ.A.hom`. Establish `h₂ : (Q.c 0).left ≫ Q.B.hom = 𝟙 _` using `Over.w (Q.c 0)`. Rewrite `h₁` using `[Category.assoc, Category.assoc, hβ.1.w, ← Category.assoc (Q.c 0).left, h₂]`. Rewrite using `[spMap_comp, Category.assoc, Category.assoc]`. Conclude with `(Category.id_comp (spMap (ib.comp ga) ≫ (LowChart.powA F' r).left.fromSpecStalk y ≫ (LowChart.powA F' r).hom)) ▸ h₁`.
+
+Take `⟨a, ha⟩` from `hc i`. Establish `h₁` using `hA' a`. Rewrite `h₁` using `[ha]`. Rewrite using `[spMap_comp, Category.assoc, Category.assoc]`. Conclude with `h₁`.
+
+Establish `hy` using `mem_of_defOver _ hP`. Establish `hW : ∀ w ∈ maximalIdeal W, ev.comp ib w = 0`. Establish `h₁` using `hga₁ (RingHom.ker (ev.comp ib)) (RingHom.ker_isPrime _) (Ideal.map_le_iff_le_comap.2 fun a ha => hz _ (map_nonunit (ib.comp ga) a ha) (hy a))`. Introduce `w hw`. Rewrite `hw` using `[← h₁]`.
+
+Conclude with `hw`. Establish `hW' : ∀ w, ev (ib w) ∈ k₀` using `fun w => mem_of_isIntegralElem hk₀ _ hy ((hga₂.to_isIntegral (residue W w)).map (Ideal.Quotient.lift (maximalIdeal W) (ev.comp ib) hW))`. Establish `hs` using `hB W ib hb hW'`. Introduce `a ha`. Establish `h₀ : ev a ∈ k₀`.
+
+Use `(Subring.closure_le (t := k₀.toSubring.comap ev)).2 ?_ ha` and prove the remaining obligations. Introduce and unpack `_ (⟨w, rfl⟩ | ⟨i, rfl⟩)`. Conclude with `hW' w`. Conclude with `hs i`. Conclude with `⟨(hint _ h₀).1, fun hm => hz a hm h₀⟩`.
+
+Use `⟨fun p hp hle => ?_, ?_⟩` and prove the remaining obligations. Set `K` to `AlgebraicClosure p.ResidueField`. Set `ev : V →+* K` to `(algebraMap p.ResidueField K).comp (algebraMap V p.ResidueField)`. Establish `hker : ∀ a, ev a = 0 ↔ a ∈ p` using `fun a => (map_eq_zero_iff _ (algebraMap p.ResidueField K).injective).trans Ideal.algebraMap_residueField_eq_zero`. Conclude with `hV₁ p hp fun a ha hm => (hker a).1 ((key K ev (fun b hb => (hker _).2 (hle (Ideal.mem_map_of_mem _ hb))) a ha).2 hm)`.
+
+Set `K` to `AlgebraicClosure (ResidueField V)`. Set `ev : V →+* K` to `(algebraMap (ResidueField V) K).comp (residue V)`. Establish `key'` using `key K ev fun b hb => (map_eq_zero_iff _ (algebraMap (ResidueField V) K).injective).2 ((residue_eq_zero_iff _).2 (map_nonunit φ b hb))`. Set `` to `(ResidueField.map φ).toAlgebra`. Establish `hint : ∀ a ∈ Subring.closure (Set.range ib ∪ Set.range s), IsAlgebraic (ResidueField O) (residue V a)` using `fun a ha => by`.
+
+Take `⟨P, hP, hPa⟩` from `(key' a ha).1`. Use `IsIntegral.isAlgebraic ⟨P.map (residue O), hP.map _, (algebraMap (ResidueField V) K).injective ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map, Polynomial.hom_eval₂, map_zero]`. Conclude with `hPa`. Establish `: Algebra.IsAlgebraic (ResidueField O) (ResidueField V)` using `⟨fun z => by`.
+
+Take `⟨x, rfl⟩` from `residue_surjective z`. Take `⟨a, ha, b, hb, hu, hx⟩` from `hV₂ x`. Rewrite `hx` using `[← residue_eq_zero_iff, map_sub, map_mul, sub_eq_zero]`. Rewrite using `[(eq_mul_inv_iff_mul_eq₀ (hu.map (residue V)).ne_zero).2 hx]`. Conclude with `(hint a ha).mul (hint b hb).inv⟩`.
+
+Take `⟨b, hb₀⟩` from `exists_essFiniteType_stalk y`. Establish `f₀ : (algebraMap ℤ (cycAway n')).EssFiniteType` using `(RingHom.finiteType_algebraMap.2 (finiteType_cycAway n')).essFiniteType`. Establish `f₁` using `(f₀.comp hb₀).comp hga₂.to_finiteType.essFiniteType`. Establish `f₂ : (ResidueField.map ib).EssFiniteType` using `RingHom.EssFiniteType.of_comp (residue W) (essFiniteType_residue ib s hV₂)`. Establish `f₃` using `f₁.comp f₂`.
+
+Rewrite `f₃` using `[Subsingleton.elim (RingHom.comp _ _) ((ResidueField.map φ).comp (Int.castRingHom _))]`. Establish `: Algebra.EssFiniteType (ResidueField O) (ResidueField V)` using `RingHom.EssFiniteType.of_comp _ f₃`. Establish `f₄ : (ResidueField.map φ).Finite` using `Algebra.finite_of_essFiniteType_of_isAlgebraic`. Conclude with `f₄.comp (RingHom.Finite.of_surjective _ (residue_surjective (R := O)))`.
+-/
 theorem quasiFinite_of_sepAt {S : Scheme.{0}} {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] (ξ : Sp V ⟶ S) (Q : Data V)
     (τ₀ : Gens Q) {m N : ℕ} (s : Fin m ⊕ Fin N → V)
     (hsep : ∀ (K : Type) [Field K] [IsAlgClosed K] (ev : V →+* K) (k₀ : Subfield K), IsAlgClosed k₀ →
@@ -357,6 +463,11 @@ open GlobalTheory.SiegJoin GlobalTheory.Poinc GlobalTheory.TChart
 
 variable {o : Type} [CommRing o] {ζ : o} {g n : ℕ} {φ : InvFun ℤ}
 
+/- English proof (translation)
+Introduce `h0`. Set `` to `C.ψ.toAlgebra`. Establish `: Module.Flat (MvPolynomial (Fin C.m ⊕ Fin C.N) C.W) C.R` using `C.compl.2.2.1`. Establish `hreg` using `Module.Flat.isSMulRegular_of_isRegular (M := C.R) (MvPolynomial.isRegular_X (R := C.W) (n := k))`. Apply `one_ne_zero (α := C.R)` to reduce the goal to its premises.
+
+Apply `hreg` to reduce the goal to its premises. Use `show MvPolynomial.X k • (1 : C.R) = MvPolynomial.X k • (0 : C.R)`. Rewrite using `[smul_zero, Algebra.smul_def, _root_.mul_one]`. Conclude with `h0`.
+-/
 theorem coord_ne_zero (C : TChart.Taut ζ g n φ) (k : Fin C.m ⊕ Fin C.N) : C.s k ≠ 0 := by
   intro h0
   let := C.ψ.toAlgebra
@@ -368,6 +479,11 @@ theorem coord_ne_zero (C : TChart.Taut ζ g n φ) (k : Fin C.m ⊕ Fin C.N) : C.
   rw [smul_zero, Algebra.smul_def, _root_.mul_one]
   exact h0
 
+/- English proof (translation)
+Proceed by induction on `a using MvPolynomial.induction_on with`. Consider the case `C w => exact Subring.subset_closure (Or.inl ⟨w, rfl⟩)`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p k hp => rw [map_mul]`.
+
+Conclude with `mul_mem hp (Subring.subset_closure (Or.inr ⟨k, rfl⟩))`.
+-/
 theorem psi_mem_closure (C : TChart.Taut ζ g n φ) (a : MvPolynomial (Fin C.m ⊕ Fin C.N) C.W) :
     C.ψ a ∈ Subring.closure (Set.range C.iw ∪ Set.range C.s) := by
   induction a using MvPolynomial.induction_on with
@@ -375,6 +491,11 @@ theorem psi_mem_closure (C : TChart.Taut ζ g n φ) (a : MvPolynomial (Fin C.m �
   | add p q hp hq => rw [map_add]; exact add_mem hp hq
   | mul_X p k hp => rw [map_mul]; exact mul_mem hp (Subring.subset_closure (Or.inr ⟨k, rfl⟩))
 
+/- English proof (translation)
+Establish `e : B.T.c₀ ((k : ℤ) • Pi.single i 1) = B.T.c₀ (Pi.single i 1) ^ k`. Proceed by induction on `k with`. Consider the case `zero => rw [Nat.cast_zero, zero_smul, B.T.c₀_zero, pow_zero]`. Consider the case `succ k ih => rw [Nat.cast_succ, add_smul, one_smul, B.T.c₀_add, ih, pow_succ]`. Establish `e₁` using `map_pow (pushHom B.cart (𝟙_ _)) (B.T.c₀ (Pi.single i 1)) k`.
+
+Establish `e₂ : pushHom B.cart (𝟙_ _) (B.T.c₀ (Pi.single i 1)) ^ k = pushHom B.cart (𝟙_ _) (B.T.c₀ (Pi.single i 1)) ≫ (𝟙 B.F.univ.A ^ k)`. Rewrite using `[MonObj.comp_pow, Category.comp_id]`. Rewrite using `[e, ← Category.assoc, ← B.coord]`. Conclude with `congrArg (fun q => q.left) (e₁.trans e₂)`.
+-/
 theorem lowBase_smul_single (B : LowBase ζ n) (k : ℕ) (i : Fin B.T.r) :
     (B.T.c₀ ((k : ℤ) • Pi.single i 1)).left ≫ B.β = B.u ≫ (LowChart.coord B.F i).left ≫ (𝟙 B.F.univ.A ^ k).left := by
   have e : B.T.c₀ ((k : ℤ) • Pi.single i 1) = B.T.c₀ (Pi.single i 1) ^ k := by
@@ -388,6 +509,17 @@ theorem lowBase_smul_single (B : LowBase ζ n) (k : ℕ) (i : Fin B.T.r) :
   rw [e, ← Category.assoc, ← B.coord]
   exact congrArg (fun q => q.left) (e₁.trans e₂)
 
+/- English proof (translation)
+Introduce `hS g hg φ hφ hsi n hn ho F Z z i OZ d S π j _ BD hM hB C G₁ _ _ y α₁ ξ hF hy`. Take `⟨J, hd, hJ, hval, hbl, -, -, hj, -⟩` from `hB`. Take `⟨τ₀, hτ, hb⟩` from `exists_gens_of_dataFrom C.T C.iw C.s C.form n C.Q C.e finSumFinEquiv C.data`. Establish `hrk : Module.finrank ℤ C.Q.X ≤ g`. Rewrite using `[C.e.toIntLinearEquiv.finrank_eq, Module.finrank_fin_fun]`.
+
+Use `C.genus` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hsep` using `hS g hg n hn ho F Z z i hM.isThetaCompact.1 φ hφ hsi d J S π j hd hJ hval hbl hj _ C.Q ξ (unifOver_of_isMumfordFam hF.1 hy hF.2.2.2.1) C.m C.N C.s (C.ε.map (pullBalEquiv id C.e.toIntLinearEquiv)) τ₀ hrk (C.cone.pull_equiv C.e.toIntLinearEquiv) (fun x hx => C.defin (C.e x) (by sim …`. Take `⟨β, β₂, w, hβ, hsq, hw, hc, -⟩` from `C.data`. Establish `hl : IsLocalHom (Scheme.stalkClosedPointTo (R` using `.of C.W) C.u).hom := Scheme.isLocalHom_stalkClosedPointTo' (R := C.W) C.u`.
+
+Establish `hl' : IsLocalHom C.iw` using `C.ψ_loc`. Establish `eu : spMap (Scheme.stalkClosedPointTo (R` using `.of C.W) C.u).hom ≫ Scheme.fromSpecStalk _ _ = C.u := Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := .of C.W) C.u`. Establish `eq₁ : spMap (C.iw.comp (Scheme.stalkClosedPointTo (R` using `.of C.W) C.u).hom) ≫ Scheme.fromSpecStalk _ _ = spMap C.iw ≫ C.u := by`. Rewrite using `[spMap_comp, Category.assoc, eu]`. Establish `hLT : (abelian₂ C.T.B C.T.M.L).IsLB` using `LB.isLB_linComb C.T.M.isLB _ _`.
+
+Establish `hLQ : (abelian₂ C.Q.B C.Q.M.L).IsLB` using `LB.isLB_linComb C.Q.M.isLB _ _`. Conclude with `quasiFinite_of_sepAt ξ C.Q τ₀ C.s hsep (by omega) C.F _ (isUnit_natCast (show n ≠ 0 by omega)) (Scheme.stalkClosedPointTo (R := .of C.W) C.u).hom (fun q hq hle => ((maximalIdeal.isMaximal _).eq_of_le hq.ne_top (C.u_et.2.1.symm.trans_le hle)).symm) C.u_et.2.2 C.iw hb (β ≫ C.β) (β₂ …`. Rewrite using `[← Category.assoc (C.Q.c _).left, hc, C.e.apply_symm_apply, Category.assoc, lowBase_smul_single C.toLowBase, reassoc_of% eq₁]`. Use the proof step `rfl⟩)`. Use the proof step `(fun q hq hle => le_antisymm (le_maximalIdeal hq.ne_top) (C.compl.2.2.2.1.symm.trans_le (Ideal.map_le_iff_le_comap.2 fun a ha => hle _ (psi_mem_closure C a) ha)))`.
+
+Use the proof step `(fun x => by`. Take `⟨a, b, hb, hx⟩` from `C.compl.2.2.2.2 x`. Conclude with `⟨_, psi_mem_closure C a, _, psi_mem_closure C b, hb, hx⟩)`.
+-/
 theorem quasiFinite_tautChart : GlobalTheory.Poinc.Sep.SepSt → ∀ g : ℕ, 1 ≤ g → ∀ φ : InvFun ℤ, IsPolFan id g φ → NoSelfInt id g φ → ∀ n : ℕ, 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (Z : Scheme.{0}) (z : Z ⟶ Sp (cycAway n)) (i : F.X ⟶ Z) (OZ : LB Z) (d : ℕ) (S : Scheme.{0}) (π : S ⟶ Z) (j : F.X ⟶ S) [IsOpenImmersion j] (BD : GlobalTheory.EffCartierData S), MinAt5 F z i OZ → BlowAt F z i φ d π j BD → ∀ (C : Taut (zetaAway n) g n φ) (G₁ : Over (Sp C.R)) [GrpObj G₁] [IsCommMonObj G₁] (y : Sp (FractionRing C.R) ⟶ F.X) (α₁ : pullback G₁.hom (jK C.R) ⟶ F.univ.A.left) (ξ : Sp C.R ⟶ S), C.IsFam F G₁ y α₁ → y ≫ j = jK C.R ≫ ξ → (∀ p : Ideal C.R, p.IsPrime → (maximalIdeal (S.presheaf.stalk (ξ (closedPoint C.R)))).map (Scheme.stalkClosedPointTo ξ).hom ≤ p → p = maximalIdeal C.R) ∧ ((residue C.R).comp (Scheme.stalkClosedPointTo ξ).hom).Finite := by
   intro hS g hg φ hφ hsi n hn ho F Z z i OZ d S π j _ BD hM hB C G₁ _ _ y α₁ ξ hF hy
   classical

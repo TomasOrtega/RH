@@ -15,6 +15,9 @@ namespace GlobalTheory.ChartIntegral
 
 open GlobalTheory.Reg.NormalCharts GlobalTheory.PlaceCompletion
 
+/- English proof (translation)
+Establish `hid : Function.Injective (algebraMap O O)` using `fun _ _ h => h`. Establish `: IsLocalHom (algebraMap O O)` using `⟨fun _ h => h⟩`. Take `⟨s, hs, hint⟩` from `GlobalTheory.isIntegral_mul_of_bounded_at_points O O hid (GlobalTheory.exists_integral_point_of_complete_case (fun O B _ _ _ _ _ _ _ _ _ _ M hM hsp e he => GlobalTheory.exists_integral_point_through O B M hM hsp e he) O O hid) A (FractionRing A) hOA e he f (fun V _ _ _ _ _ φ hφ = …`. Take `⟨x, hx⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral hint`. Conclude with `⟨x, s, hs, by rw [hx, _root_.mul_comm]⟩`.
+-/
 theorem exists_quotient_of_bounded (O A : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O] [CharZero O] [CommRing A] [IsDomain A]
     [Algebra O A] [Algebra.FiniteType O A] [IsIntegrallyClosed A]
@@ -34,6 +37,39 @@ theorem exists_quotient_of_bounded (O A : Type) [CommRing O] [IsDomain O] [IsDis
   obtain ⟨x, hx⟩ := IsIntegrallyClosed.algebraMap_eq_of_integral hint
   exact ⟨x, s, hs, by rw [hx, _root_.mul_comm]⟩
 
+/- English proof (translation)
+Introduce `K Ω _ _ _ _ la gens e hgen he hemem hsm r hr T io n ho ψ hψK hψg`. Take `⟨T₀, io₀, hov, hfin, hinit⟩` from `exists_initial_completion K la`. Establish `hβ : ∀ a : (la.valuation K).valuationSubring, io₀ ((la.valuation K).valuationSubring.subtype a) ∈ Set.range (algebraMap T₀.V T₀.Fr)` using `fun a => exists_algebraMap_eq_of_valV_le_one (by`. Rewrite using `[valV_eq_pow_of_overLa hov]`. Conclude with `pow_le_one₀ zero_le a.2)`.
+
+Take `⟨J, finJ, A, acr, adom, alg, α, hA, hK, hg, hcov⟩` from `GlobalTheory.exists_normal_charts_over_dvr K Ω T₀.V io₀ gens {e} hgen (fun e' he' => by`. Take `rfl` from `Finset.mem_singleton.1 he'`. Use `⟨he, Subring.closure_mono ?_ hemem⟩` and prove the remaining obligations. Use `Set.union_subset_union_left _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`.
+
+Conclude with `⟨_, hβ a, rfl⟩)`. Use the proof step `(fun e' he' => by`. Take `rfl` from `Finset.mem_singleton.1 he'`. Conclude with `hsm)`. Take `⟨g, χ, hloc, hχio, hχg, -⟩` from `hinit T io n ho`.
+
+Establish `hχg' : ∀ a, χ (algebraMap T₀.V T₀.Fr a) = algebraMap T.V T.Fr (g a)` using `fun a => RingHom.congr_fun hχg a`. Take `⟨j, φ, hφW, hφO, hφψ⟩` from `hcov e (Finset.mem_singleton_self e) T.Fr (imageVal T.V T.Fr) χ ψ (fun k => (hψK k).trans (RingHom.congr_fun hχio k).symm) (fun a => (mem_imageVal _).2 ⟨g a, (hχg' a).symm⟩) (fun x hx => (mem_imageVal _).2 (hψg x hx))`. Take `⟨φ', hφ'⟩` from `exists_corestrict (V := T.V) φ fun x => (mem_imageVal _).1 (hφW x)`. Establish `hc : ∀ a, φ' (algebraMap T₀.V (A j) a) = g a` using `fun a => IsFractionRing.injective T.V T.Fr (by rw [hφ', hφO, hχg'])`. Take `⟨hft, -, hic⟩` from `hA j`.
+
+Establish `hOA : Function.Injective (algebraMap T₀.V (A j))`. Introduce `a b hab`. Apply `IsFractionRing.injective T₀.V T₀.Fr` to reduce the goal to its premises. Apply `χ.injective` to reduce the goal to its premises. Conclude with `(hφO a).symm.trans ((congrArg φ hab).trans (hφO b))`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨eb, heb⟩ : α j e ∈ Set.range (algebraMap (A j) (FractionRing (A j))) := by`. Use `(Subring.closure_le (t := (algebraMap (A j) (FractionRing (A j))).range.comap (α j))).2 ?_ hemem` and prove the remaining obligations. Introduce and unpack `x (⟨a, rfl⟩ | hx)`. Take `⟨x, hx⟩` from `hβ a`. Use `hK j ((la.valuation K).valuationSubring.subtype a) x 1 (by rw [map_one, _root_.mul_one, hx])` as an intermediate fact.
+
+Rewrite `this` using `[map_one, map_one, _root_.mul_one]`. Conclude with `⟨_, this.symm⟩`. Conclude with `hg j x hx`. Establish `heb0 : eb ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `heb` using `[map_zero, eq_comm, map_eq_zero]`. Conclude with `he heb`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible T₀.V`. Take `⟨x, s, hs, hxs⟩` from `exists_quotient_of_bounded T₀.V (A j) hOA eb heb0 (α j r) (by`. Introduce `V _ _ _ _ _ ρ hρ h0 a b hab hb`.
+
+Take `⟨hinj, hlocV, hcpl, hch, hfin'⟩` from `GlobalTheory.dvr_finite_over_complete_dvr T₀.V V`. Take `⟨χ', m, hm, hχ', hv⟩` from `exists_ramification (K' := FractionRing V) (F := T₀.Fr) (algebraMap T₀.V V) hinj hlocV`. Take `⟨ψ', hψ'⟩` from `(GlobalTheory.Reg.openChart_regular_away K Ω T₀.V (A j) io₀ gens e (α j) eb ϖ hϖ he heb (hK j) (hg j)).2 (FractionRing V) ((algebraMap V (FractionRing V)).comp ρ) (by`. Express the relevant statement in the definitionally equal form `algebraMap V (FractionRing V) (ρ _) ≠ 0`. Rewrite using `[map_mul, hρ]`.
+
+Simplify using `using mul_ne_zero ((map_ne_zero_iff _ hinj).2 hϖ.ne_zero) h0)`. Use `replace hψ' : ∀ (r : Algebra.adjoin K (insert e⁻¹ (gens : Set Ω))) (x s : A j), α j r * algebraMap (A j) _ s = algebraMap (A j) _ x → ψ' r * algebraMap V _ (ρ s) = algebraMap V _ (ρ x) := hψ'`. Set `T' : CDVR` to `{ V := V }`. Establish `hψK' : ∀ k : K, ψ' (algebraMap K _ k) = (χ'.comp io₀) k`. Introduce `k`.
+
+Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (A := T₀.V) (io₀ k)`. Establish `hb0 : algebraMap T₀.V T₀.Fr b ≠ 0` using `by simpa using nonZeroDivisors.ne_zero hb`. Establish `h1 : io₀ k * algebraMap T₀.V _ b = algebraMap T₀.V _ a`. Rewrite using `[← hab, div_mul_cancel₀ _ hb0]`. Establish `h2` using `hψ' (algebraMap K _ k) _ _ (hK j k a b h1)`.
+
+Rewrite `h2` using `[hρ, hρ, ← hχ', ← hχ', ← h1, map_mul]`. Conclude with `mul_right_cancel₀ ((map_ne_zero χ').2 hb0) h2`. Take `⟨v, hv'⟩ : ψ' r ∈ Set.range (algebraMap V (FractionRing V))` from `hr T' (χ'.comp io₀) (m * 1) (hov.bc χ' hm hv) (hfin' hfin) ψ' hψK' (fun y hy => by`. Take `⟨x, hx⟩` from `hg j y hy`. Use `hψ' y x 1 (by rw [map_one, _root_.mul_one, hx])` as an intermediate fact.
+
+Rewrite `this` using `[map_one, map_one, _root_.mul_one]`. Conclude with `⟨ρ x, this.symm⟩)`. Use `⟨v, IsFractionRing.injective V (FractionRing V) ?_⟩` and prove the remaining obligations. Rewrite using `[← hψ' r a b hab, ← hv', map_mul, _root_.mul_comm])`. Establish `hm : φ' (s - 1) ∈ IsLocalRing.maximalIdeal T.V`.
+
+Use `(Ideal.map_le_iff_le_comap (K := (IsLocalRing.maximalIdeal T.V).comap φ')).2 ?_ hs` and prove the remaining obligations. Introduce `a ha`. Express the relevant statement in the definitionally equal form `φ' (algebraMap T₀.V (A j) a) ∈ IsLocalRing.maximalIdeal T.V`. Rewrite using `[hc]`. Conclude with `fun hu => ha (hloc.map_nonunit a hu)`.
+
+Establish `hu : IsUnit (φ' s)`. Assume the negation of the conclusion as `hnu`. Establish `h1 : φ' s - φ' (s - 1) ∈ IsLocalRing.maximalIdeal T.V` using `sub_mem hnu hm`. Rewrite `h1` using `[← map_sub, sub_sub_cancel, map_one]`. Conclude with `h1 isUnit_one`.
+
+Take `⟨w, hw⟩` from `hu.exists_right_inv`. Establish `h2` using `hφψ r x s hxs`. Use `⟨φ' x * w, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hφ', ← h2, ← hφ', _root_.mul_assoc, ← map_mul, hw, map_one, _root_.mul_one]`.
+-/
 theorem integral_of_integral_at_algebraic_points :
     ∀ (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] (la : HeightOneSpectrum (𝓞 K)) (gens : Finset Ω) (e : Ω), Subfield.closure (Set.range (algebraMap K Ω) ∪ (gens : Set Ω)) = ⊤ → e ≠ 0 → e ∈ Subring.closure (Set.range ((algebraMap K Ω).comp (la.valuation K).valuationSubring.subtype) ∪ (gens : Set Ω)) → Algebra.Smooth K (Algebra.adjoin K (insert e⁻¹ (gens : Set Ω))) → ∀ r : Algebra.adjoin K (insert e⁻¹ (gens : Set Ω)), (∀ (T : CDVR) (io : K →+* T.Fr) (n : ℕ), OverLa la T.V io n → T.FinRes → ∀ ψ : Algebra.adjoin K (insert e⁻¹ (gens : Set Ω)) →+* T.Fr, (∀ k : K, ψ (algebraMap K _ k) = io k) → (∀ g : Algebra.adjoin K (insert e⁻¹ (gens : Set Ω)), (g : Ω) ∈ gens → InV T (ψ g)) → InV T (ψ r)) → ∀ (T : CDVR) (io : K →+* T.Fr) (n : ℕ), OverLa la T.V io n → ∀ ψ : Algebra.adjoin K (insert e⁻¹ (gens : Set Ω)) →+* T.Fr, (∀ k : K, ψ (algebraMap K _ k) = io k) → (∀ g : Algebra.adjoin K (insert e⁻¹ (gens : Set Ω)), (g : Ω) ∈ gens → InV T (ψ g)) → InV T (ψ r) := by
   intro K Ω _ _ _ _ la gens e hgen he hemem hsm r hr T io n ho ψ hψK hψg

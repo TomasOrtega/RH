@@ -10,6 +10,9 @@ noncomputable section
 
 namespace GlobalTheory.TraitGeneric
 
+/- English proof (translation)
+Take `⟨o, ho, hne, hs⟩` from `NoetherianSpace.exists_isOpen_nonempty_subset_irreducibleComponent _ (irreducibleComponent_mem_irreducibleComponents x)`. Take `⟨y, hyo, hyU⟩` from `hd.inter_open_nonempty o ho hne`. Take `⟨ξ, hξ⟩` from `QuasiSober.sober (isIrreducible_irreducibleComponent (x := x)) isClosed_irreducibleComponent`. Establish `e` using `hx ξ (hξ.specializes mem_irreducibleComponent)`. Conclude with `(e.trans (hξ.specializes (hs hyo))).mem_open hU hyU`.
+-/
 theorem mem_of_dense_of_maximal {X : Type} [TopologicalSpace X] [NoetherianSpace X] [QuasiSober X] {x : X}
     (hx : ∀ y, y ⤳ x → x ⤳ y) {U : Set X} (hU : IsOpen U) (hd : Dense U) : x ∈ U := by
   obtain ⟨o, ho, hne, hs⟩ := NoetherianSpace.exists_isOpen_nonempty_subset_irreducibleComponent _
@@ -19,12 +22,24 @@ theorem mem_of_dense_of_maximal {X : Type} [TopologicalSpace X] [NoetherianSpace
   have e := hx ξ (hξ.specializes mem_irreducibleComponent)
   exact (e.trans (hξ.specializes (hs hyo))).mem_open hU hyU
 
+/- English proof (translation)
+Introduce `y hy`. Take `⟨z, h₁, rfl⟩` from `Flat.generalizingMap f hy`. Conclude with `(hx z h₁).map f.continuous`.
+-/
 theorem maximal_of_flat {V Y : Scheme.{0}} (f : V ⟶ Y) [Flat f] {x : V} (hx : ∀ y, y ⤳ x → x ⤳ y) :
     ∀ y, y ⤳ f x → f x ⤳ y := by
   intro y hy
   obtain ⟨z, h₁, rfl⟩ := Flat.generalizingMap f hy
   exact (hx z h₁).map f.continuous
 
+/- English proof (translation)
+Introduce `y hy`. Establish `hq : (jK W ≫ spMap g ≫ V.fromSpecStalk v) p = V.fromSpecStalk v ((jK W ≫ spMap g) p)` using `rfl`. Rewrite `hy`, the goal using `[hq]`. Establish `h1 : V.fromSpecStalk v ((jK W ≫ spMap g) p) ⤳ v`. Establish `: V.fromSpecStalk v ((jK W ≫ spMap g) p) ∈ Set.range (V.fromSpecStalk v)` using `⟨_, rfl⟩`.
+
+Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨q, rfl⟩ : y ∈ Set.range (V.fromSpecStalk v) := by`. Rewrite using `[Scheme.range_fromSpecStalk]`. Conclude with `hy.trans h1`. Use `Specializes.map ?_ (V.fromSpecStalk v).continuous` and prove the remaining obligations.
+
+Use `(PrimeSpectrum.le_iff_specializes _ _).1 fun a ha => ?_` and prove the remaining obligations. Establish `h2 : algebraMap W (FractionRing W) (g a) ∈ p.asIdeal` using `ha`. Establish `h3 : p.asIdeal = ⊥`. Break down `Ideal.eq_bot_or_top p.asIdeal with h | h` into its components or cases. Conclude with `h`.
+
+Conclude with `absurd h p.isPrime.ne_top`. Rewrite `h2` using `[h3, Ideal.mem_bot, FaithfulSMul.algebraMap_eq_zero_iff, map_eq_zero_iff g hg]`. Substitute `h2` using the available equality. Conclude with `zero_mem _`.
+-/
 theorem maximal_of_injective {V : Scheme.{0}} (v : V) [IsDomain (V.presheaf.stalk v)] {W : Type} [CommRing W]
     [IsDomain W] (g : V.presheaf.stalk v →+* W) (hg : Function.Injective g) (p : Sp (FractionRing W)) :
     ∀ y, y ⤳ (jK W ≫ spMap g ≫ V.fromSpecStalk v) p → (jK W ≫ spMap g ≫ V.fromSpecStalk v) p ⤳ y := by
@@ -47,6 +62,9 @@ theorem maximal_of_injective {V : Scheme.{0}} (v : V) [IsDomain (V.presheaf.stal
   subst h2
   exact zero_mem _
 
+/- English proof (translation)
+Establish `h1 : Flat (Spec.map (Scheme.stalkClosedPointTo ξ))` using `Flat.SpecMap_iff.2 h`. Establish `h2` using `GlobalTheory.GenericExt.flat_fromSpecStalk X (ξ (closedPoint R))`. Establish `h3 : Flat (Spec.map (Scheme.stalkClosedPointTo ξ) ≫ X.fromSpecStalk (ξ (closedPoint R)))` using `MorphismProperty.comp_mem _ _ _ h1 h2`. Conclude with `Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := CommRingCat.of R) ξ ▸ h3`.
+-/
 theorem flat_of_stalkClosedPointTo {X : Scheme.{0}} {R : Type} [CommRing R] [IsLocalRing R] (ξ : Sp R ⟶ X)
     (h : (Scheme.stalkClosedPointTo ξ).hom.Flat) : Flat ξ := by
   have h1 : Flat (Spec.map (Scheme.stalkClosedPointTo ξ)) := Flat.SpecMap_iff.2 h
@@ -55,6 +73,13 @@ theorem flat_of_stalkClosedPointTo {X : Scheme.{0}} {R : Type} [CommRing R] [IsL
     MorphismProperty.comp_mem _ _ _ h1 h2
   exact Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := CommRingCat.of R) ξ ▸ h3
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c X Z Y π e R _ _ _ ξ hξ v hv W _ _ g hg`. Establish `hfl : Flat ξ` using `flat_of_stalkClosedPointTo ξ hξ.1`. Establish `hfl' : Flat (pullback.snd ξ (e.hom ≫ genι Z ≫ π))` using `inferInstance`. Use `GlobalTheory.ThetaDescent.isProper_of_isProjOver Y.proj` as an intermediate fact. Use `Y.jQ_open` as an intermediate fact.
+
+Establish `: IsLocallyNoetherian (gen Y)` using `LocallyOfFiniteType.isLocallyNoetherian (genStr Y)`. Establish `: CompactSpace (gen Y)` using `QuasiCompact.compactSpace_of_compactSpace (genStr Y)`. Establish `: IsNoetherian (gen Y)` using `{}`. Introduce and unpack `_ ⟨p, rfl⟩`. Take `⟨a, ha⟩` from `mem_of_dense_of_maximal (maximal_of_flat (pullback.snd ξ (e.hom ≫ genι Z ≫ π)) (maximal_of_injective v g hg p)) Y.jQ.isOpenEmbedding.isOpen_range Y.jQ_dense`.
+
+Conclude with `⟨a, congrArg (genι Y) ha⟩`.
+-/
 theorem range_generic_subset_range_j : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (X Z : GMod Xo c) (Y : Model Xo c (RingHom.id c.F)) (π : Z.X ⟶ X.X) (e : gen Y ≅ gen Z) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (ξ : Sp R ⟶ X.X), IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom → ∀ v : ↥(pullback ξ (e.hom ≫ genι Z ≫ π) : Scheme.{0}), IsDomain ((pullback ξ (e.hom ≫ genι Z ≫ π)).presheaf.stalk v) → ∀ (W : Type) [CommRing W] [IsDomain W] (g : (pullback ξ (e.hom ≫ genι Z ≫ π)).presheaf.stalk v →+* W), Function.Injective g → Set.range (jK W ≫ spMap g ≫ (pullback ξ (e.hom ≫ genι Z ≫ π)).fromSpecStalk v ≫ pullback.snd ξ (e.hom ≫ genι Z ≫ π) ≫ genι Y) ⊆ Set.range Y.j := by
   intro E _ _ _ H D l Xo c X Z Y π e R _ _ _ ξ hξ v hv W _ _ g hg
   have hfl : Flat ξ := flat_of_stalkClosedPointTo ξ hξ.1

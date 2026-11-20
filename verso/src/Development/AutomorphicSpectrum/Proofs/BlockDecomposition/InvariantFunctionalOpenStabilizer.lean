@@ -23,6 +23,9 @@ def linearFormStabiliser {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     rw [LinearMap.comp_assoc, ← Module.End.mul_eq_comp, ← map_mul, mul_inv_cancel, map_one]
     rfl
 
+/- English proof (translation)
+The claim follows from `Subgroup.isOpen_mono (H₁ := K) (H₂ := linearFormStabiliser ρ l) (fun x hx => hl x hx) hK`.
+-/
 theorem isOpen_linearForm_stabiliser {G V : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)
     (K : Subgroup G) (hK : IsOpen (K : Set G)) (l : Module.Dual ℂ V)

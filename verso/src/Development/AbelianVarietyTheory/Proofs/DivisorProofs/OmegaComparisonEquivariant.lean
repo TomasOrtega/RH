@@ -12,6 +12,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.GroupBplus.Aff
 
+/- English proof (translation)
+Introduce `p _ R _ _ _ A _ _ GG θ c hc f g hf hfg w w' hw`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `n`. Take `⟨hsurj, hker, htan⟩` from `hc n`. Establish `hp : ((p : R) ^ n) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`.
+
+Take `⟨b, hb⟩` from `AugCot.d_surjective (Bialgebra.counitAlgHom R (GG.A n)) ((c w).1 n)`. Take `⟨u, hu⟩` from `hsurj (cotMap (g.app n) ((c w).1 n))`. Establish `key : ∀ x : Pdiv.LieG A, ∃ q : R, w'.1 x - u.1 x = (p : R) ^ n * q`. Introduce `x`. Set `x' : Pdiv.LieG A` to `⟨x.1 ≫ f, by rw [← Category.assoc, x.2, Category.assoc, IsMonHom.one_hom]⟩`.
+
+Establish `h1` using `htan x' w b hb`. Establish `h2` using `htan x u (g.app n b) (by rw [hu, ← hb]; exact (cotMap_d (g.app n) b).symm)`. Establish `h3` using `hfg n _ (tanTors p n x) (tanTors p n x') (Category.assoc _ _ _).symm`. Establish `h4 : θ.pt n _ (tanTors p n x') b = θ.pt n _ (tanTors p n x) (g.app n b)`. Rewrite using `[h3]`.
+
+Both sides reduce to the same expression. Rewrite `h1` using `[h4, h2, ← hw x x' rfl]`. Establish `h5` using `Ideal.mem_span_singleton.1 (Ideal.Quotient.eq.1 h1.symm)`. Take `⟨q, hq⟩` from `h5`. Conclude with `⟨q, hq⟩`.
+
+Use `choose q hq using key`. Establish `hqm : q ∈ Pdiv.omega A`. Use `⟨fun x y h => mul_left_cancel₀ hp ?_, fun a x h => mul_left_cancel₀ hp ?_⟩` and prove the remaining obligations. Take the linear combination `-(hq ⟨_, h⟩) + hq x + hq y + w'.2.1 x y h - u.2.1 x y h`. Take the linear combination `-(hq ⟨_, h⟩) + a * hq x + w'.2.2 a x h - u.2.2 a x h`.
+
+Establish `hdiff : w' - u = ((p : R) ^ n) • (⟨q, hqm⟩ : Pdiv.omega A)` using `Subtype.ext (funext fun x => (hq x).trans rfl)`. Establish `h0` using `(hker (w' - u)).2 ⟨_, hdiff⟩`. Rewrite `h0` using `[map_sub, hu, sub_eq_zero]`. Conclude with `h0`.
+-/
 theorem omega_pullback_intertwines : ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] [IsDomain R] [CharZero R] (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A] (GG : PDivGroup p R) (θ : TorsionMap A GG) (c : Pdiv.omega A →ₗ[R] GG.omega), θ.IsOmega c → ∀ (f : A ⟶ A) (g : GG ⟶ GG), IsMonHom f → θ.Intertwines f g → ∀ w w' : Pdiv.omega A, (∀ x x' : Pdiv.LieG A, x'.1 = x.1 ≫ f → w'.1 x = w.1 x') → c w' = omegaMap GG GG g (c w) := by
   intro p _ R _ _ _ A _ _ GG θ c hc f g hf hfg w w' hw
   apply Subtype.ext

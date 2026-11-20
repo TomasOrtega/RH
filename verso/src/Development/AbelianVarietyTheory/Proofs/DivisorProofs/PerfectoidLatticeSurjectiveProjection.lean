@@ -13,6 +13,19 @@ namespace GlobalTheory.PerfdLat.OmegaProj
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Establish `hc : ∀ (n : ℕ) (a : Ainf p S.R), ((phiInv p S.R)^[n] a).coeff 0 = (_root_.frobeniusEquiv (PreTilt S.R p) p).symm^[n] (a.coeff 0)` using `fun n a => by`. Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ← ih]`. Both sides reduce to the same expression.
+
+Establish `hp : ∀ (n : ℕ) (a : Ainf p S.R), (phiInv p S.R)^[n] (a * p) = (phiInv p S.R)^[n] a * p` using `fun n a => by`. Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ih, map_mul, map_natCast]`. Establish `key : ∀ (k : ℕ) (a : Ainf p S.R), (∀ n, fontaineTheta S.R p ((phiInv p S.R)^[n + 1] a) = 0) → a ∈ Ideal.span {(p : Ainf p S.R) ^ k}` using `fun k => by`.
+
+Proceed by induction on `k with`. Consider the case `zero => intro a _`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `a h`.
+
+Establish `h0 : (_root_.frobeniusEquiv (PreTilt S.R p) p).symm (a.coeff 0) = 0` using `Perfection.ext fun n => by`. Establish `h1` using `mk_fontaineTheta ((phiInv p S.R)^[n + 1] a)`. Rewrite `h1` using `[h, map_zero, hc, PreTilt.coeff_iterate_frobeniusEquiv_symm, zero_add, ← PreTilt.coeff_frobeniusEquiv_symm]`. Conclude with `h1.symm.trans (map_zero _).symm`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 ((mem_span_p_iff_coeff_zero_eq_zero a).2 ((map_eq_zero_iff _ (RingEquiv.injective _)).1 h0))`.
+
+Rewrite using `[pow_succ, ← Ideal.span_singleton_mul_span_singleton]`. Use `Ideal.mul_mem_mul (ih b fun n => S.reg ?_) (Ideal.mem_span_singleton_self _)` and prove the remaining obligations. Establish `h1` using `h n`. Rewrite `h1` using `[hp, map_mul, map_natCast]`. Simplify `h1` using `[mul_comm]`.
+
+Use extensionality with `m`. Simplify using `using (mem_span_p_pow_iff_le_coeff_eq_zero a (m + 1)).1 (key _ a h) m m.lt_succ_self`.
+-/
 theorem eq_zero_of_theta_phiInv_all (S : CycPerfd p) (a : Ainf p S.R)
     (h : ∀ n, fontaineTheta S.R p ((phiInv p S.R)^[n + 1] a) = 0) : a = 0 := by
   have hc : ∀ (n : ℕ) (a : Ainf p S.R), ((phiInv p S.R)^[n] a).coeff 0 =
@@ -45,6 +58,9 @@ theorem eq_zero_of_theta_phiInv_all (S : CycPerfd p) (a : Ainf p S.R)
   ext m
   simpa using (mem_span_p_pow_iff_le_coeff_eq_zero a (m + 1)).1 (key _ a h) m m.lt_succ_self
 
+/- English proof (translation)
+The claim follows from `IsSMulRegular.of_right_eq_zero_of_smul fun a ha => eq_zero_of_theta_phiInv_all S a fun n => by have h : ∀ n, muN S n * (phiInv p S.R)^[n] a = 0 := fun n => by induction n with | zero => exact ha | succ n ih => rw [Function.iterate_succ_apply', ← phiInv_muN, ← map_mul, ih, map_zer …`.
+-/
 theorem mu_regular (S : CycPerfd p) : IsSMulRegular (Ainf p S.R) (Sandwich.mu S.ε) :=
   IsSMulRegular.of_right_eq_zero_of_smul fun a ha => eq_zero_of_theta_phiInv_all S a fun n => by
     have h : ∀ n, muN S n * (phiInv p S.R)^[n] a = 0 := fun n => by
@@ -55,8 +71,14 @@ theorem mu_regular (S : CycPerfd p) : IsSMulRegular (Ainf p S.R) (Sandwich.mu S.
     rw [map_mul, theta_muN, map_zero] at h1
     exact (isSMulRegular_zeta_sub_one S n).right_eq_zero_of_smul h1
 
+/- English proof (translation)
+The claim follows from `xiN_mul_muN S 0`.
+-/
 theorem xi_mul_muN_one (S : CycPerfd p) : xi S.ε * muN S 1 = Sandwich.mu S.ε := xiN_mul_muN S 0
 
+/- English proof (translation)
+Establish `h` using `congrArg frobenius (xiN_mul_muN S 0)`. Rewrite `h` using `[map_mul, frobenius_muN]`. Express the relevant statement in the definitionally equal form `frobenius (muN S 0) = muN S 0 * frobenius (xiN S 0)`. Rewrite using `[← h, mul_comm]`.
+-/
 theorem frobenius_mu (S : CycPerfd p) :
     frobenius (Sandwich.mu S.ε) = Sandwich.mu S.ε * frobenius (xi S.ε) := by
   have h := congrArg frobenius (xiN_mul_muN S 0)
@@ -64,9 +86,17 @@ theorem frobenius_mu (S : CycPerfd p) :
   change frobenius (muN S 0) = muN S 0 * frobenius (xiN S 0)
   rw [← h, mul_comm]
 
+/- English proof (translation)
+The claim follows from `IsSMulRegular.of_mul (a := muN S 1) (by rw [mul_comm, xi_mul_muN_one]; exact mu_regular S)`.
+-/
 theorem xi_regular (S : CycPerfd p) : IsSMulRegular (Ainf p S.R) (xi S.ε) :=
   IsSMulRegular.of_mul (a := muN S 1) (by rw [mul_comm, xi_mul_muN_one]; exact mu_regular S)
 
+/- English proof (translation)
+Establish `h : IsSMulRegular (Ainf p S.R) (frobenius (Sandwich.mu S.ε))` using `fun a b hab => by`. Establish `h1` using `congrArg (phiInv p S.R) hab`. Simplify using `only [smul_eq_mul, map_mul, Dieudonne.phiInv_frobenius] at h1`. Establish `h2` using `mu_regular S h1`. Simplify `congrArg frobenius h2` using `[Dieudonne.frobenius_phiInv]`.
+
+Rewrite `h` using `[frobenius_mu]`. Conclude with `IsSMulRegular.of_mul h`.
+-/
 theorem frobenius_xi_regular (S : CycPerfd p) : IsSMulRegular (Ainf p S.R) (frobenius (xi S.ε)) := by
   have h : IsSMulRegular (Ainf p S.R) (frobenius (Sandwich.mu S.ε)) := fun a b hab => by
     have h1 := congrArg (phiInv p S.R) hab
@@ -76,13 +106,24 @@ theorem frobenius_xi_regular (S : CycPerfd p) : IsSMulRegular (Ainf p S.R) (frob
   rw [frobenius_mu] at h
   exact IsSMulRegular.of_mul h
 
+/- English proof (translation)
+Establish `h` using `theta_muN S 0`. Rewrite `h` using `[S.zeta_zero, sub_self]`. Conclude with `h`.
+-/
 theorem theta_mu (S : CycPerfd p) : fontaineTheta S.R p (Sandwich.mu S.ε) = 0 := by
   have h := theta_muN S 0
   rw [S.zeta_zero, sub_self] at h
   exact h
 
+/- English proof (translation)
+The claim follows from `theta_muN S 1`.
+-/
 theorem theta_muN_one (S : CycPerfd p) : fontaineTheta S.R p (muN S 1) = zeta S.ε 1 - 1 := theta_muN S 1
 
+/- English proof (translation)
+Use `choose g hg using hf`. Use `⟨{ toFun := g, map_add' := fun x y => ha ?_, map_smul' := fun r x => ha ?_ }, hg⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a * g (x + y) = a * (g x + g y)`. Rewrite using `[hg, mul_add, hg, hg, map_add]`. Express the relevant statement in the definitionally equal form `a * g (r • x) = a * (r * g x)`.
+
+Rewrite using `[hg, map_smul, ← hg, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_smul_dual {B Y : Type} [CommRing B] [AddCommGroup Y] [Module B Y] {a : B} (ha : IsSMulRegular B a)
     (f : Module.Dual B Y) (hf : ∀ y, ∃ r, a * r = f y) : ∃ g : Module.Dual B Y, ∀ y, a * g y = f y := by
   choose g hg using hf
@@ -93,6 +134,13 @@ theorem exists_smul_dual {B Y : Type} [CommRing B] [AddCommGroup Y] [Module B Y]
     rw [hg, map_smul, ← hg, smul_eq_mul]
     ring
 
+/- English proof (translation)
+Use `choose g hg using hF`. Use `⟨LinearMap.mk₂ B g (fun x₁ x₂ y => ha ?_) (fun r x y => ha ?_) (fun x y₁ y₂ => ha ?_) (fun r x y => ha ?_), hg⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a * g (x₁ + x₂) y = a * (g x₁ y + g x₂ y)`. Rewrite using `[hg, mul_add, hg, hg, map_add, LinearMap.add_apply]`. Express the relevant statement in the definitionally equal form `a * g (r • x) y = a * (r * g x y)`.
+
+Rewrite using `[hg, map_smul, LinearMap.smul_apply, ← hg, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `a * g x (y₁ + y₂) = a * (g x y₁ + g x y₂)`. Rewrite using `[hg, mul_add, hg, hg, map_add]`. Express the relevant statement in the definitionally equal form `a * g x (r • y) = a * (r * g x y)`.
+
+Rewrite using `[hg, map_smul, ← hg, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_smul_dual₂ {B X Y : Type} [CommRing B] [AddCommGroup X] [Module B X] [AddCommGroup Y] [Module B Y]
     {a : B} (ha : IsSMulRegular B a) (F : X →ₗ[B] Module.Dual B Y) (hF : ∀ x y, ∃ r, a * r = F x y) :
     ∃ Ψ : X →ₗ[B] Module.Dual B Y, ∀ x y, a * Ψ x y = F x y := by
@@ -112,12 +160,18 @@ theorem exists_smul_dual₂ {B X Y : Type} [CommRing B] [AddCommGroup X] [Module
 
 variable (D : PrismData p) {S : CycPerfd p} {G : PDivGroup p S.R} (c : ConstTate (eps S) G)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Module.evalEquiv (Ainf p S.R) (D.Cov G)).symm (l ∘ₗ (D.du S G.dual).symm.toLinearMap), fun y => by have h := LinearMap.congr_fun ((Module.evalEquiv (Ainf p S.R) (D.Cov G)).apply_symm_apply (l ∘ₗ (D.du S G.dual).symm.toLinearMap)) (D.du S G.dual y) simpa using h⟩`.
+-/
 theorem exists_du_eq (l : Module.Dual (Ainf p S.R) (D.Cov G.dual)) : ∃ f : D.Cov G, ∀ y, D.du S G.dual y f = l y :=
   ⟨(Module.evalEquiv (Ainf p S.R) (D.Cov G)).symm (l ∘ₗ (D.du S G.dual).symm.toLinearMap), fun y => by
     have h := LinearMap.congr_fun ((Module.evalEquiv (Ainf p S.R) (D.Cov G)).apply_symm_apply
       (l ∘ₗ (D.du S G.dual).symm.toLinearMap)) (D.du S G.dual y)
     simpa using h⟩
 
+/- English proof (translation)
+Apply `(Module.evalEquiv (Ainf p S.R) (D.Cov G)).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use `LinearMap.ext fun l => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `(D.du S G.dual).surjective l`. Simplify using `using h y`.
+-/
 theorem eq_zero_of_du (f : D.Cov G) (h : ∀ y, D.du S G.dual y f = 0) : f = 0 := by
   apply (Module.evalEquiv (Ainf p S.R) (D.Cov G)).injective
   rw [map_zero]
@@ -125,15 +179,26 @@ theorem eq_zero_of_du (f : D.Cov G) (h : ∀ y, D.du S G.dual y f = 0) : f = 0 :
   obtain ⟨y, rfl⟩ := (D.du S G.dual).surjective l
   simpa using h y
 
+/- English proof (translation)
+Use `injective_of_comp_eq_smul (funext fun q => ?_) (inj D c) (coord D c) (mu_regular S) (coord_inj D c)` and prove the remaining obligations. Use `haveI := q.nontrivial`. Rewrite using `[D.rank_eq S G.dual q, Module.rankAtStalk_eq_finrank_of_free]`. Simplify using the standard rewrite rules.
+-/
 theorem coord_injective : Function.Injective (coord D c) := by
   refine injective_of_comp_eq_smul (funext fun q => ?_) (inj D c) (coord D c) (mu_regular S) (coord_inj D c)
   haveI := q.nontrivial
   rw [D.rank_eq S G.dual q, Module.rankAtStalk_eq_finrank_of_free]
   simp
 
+/- English proof (translation)
+The claim follows from `coord_injective D c (by rw [coord_inj, map_smul])`.
+-/
 theorem inj_coord (m : D.Cov G) : inj D c (coord D c m) = Sandwich.mu S.ε • m :=
   coord_injective D c (by rw [coord_inj, map_smul])
 
+/- English proof (translation)
+Rewrite using `[← D.du_map]`. Establish `h : dualHom G.dual (PDivGroup.mu p S.R) (dualChar G (c.t i)) = constHom G.dual.dual (c.dual.t' i)` using `dualHom_charHom G.dual _`. Rewrite using `[h, coord_apply]`. Use `set y : D.M S (const p S.R) := D.map S (const p S.R) G.dual.dual (constHom G.dual.dual (c.dual.t' i)) m'`. Express the relevant statement in the definitionally equal form `D.du S (PDivGroup.mu p S.R) y (D.l S) = D.eCoord S y`.
+
+Use `conv_lhs => rw [← D.eCoord_smul y]`. Rewrite using `[map_smul, LinearMap.smul_apply, D.du_e_l, smul_eq_mul, mul_one]`.
+-/
 theorem du_inj_single (m' : D.Cov G.dual) (i : Fin G.height) :
     D.du S G.dual m' (D.map S G.dual (PDivGroup.mu p S.R) (dualChar G (c.t i)) (D.l S)) = coord D c.dual m' i := by
   rw [← D.du_map]
@@ -145,6 +210,9 @@ theorem du_inj_single (m' : D.Cov G.dual) (i : Fin G.height) :
   conv_lhs => rw [← D.eCoord_smul y]
   rw [map_smul, LinearMap.smul_apply, D.du_e_l, smul_eq_mul, mul_one]
 
+/- English proof (translation)
+Establish `h` using `congrArg (D.du S G.dual m') (inj_coord D c m)`. Rewrite `h` using `[map_smul, smul_eq_mul, inj_apply, map_sum]`. Simplify using `only [map_smul, smul_eq_mul, du_inj_single D c] at h`. Conclude with `h`.
+-/
 theorem sum_coord_mul (m : D.Cov G) (m' : D.Cov G.dual) :
     ∑ j, coord D c m j * coord D c.dual m' j = Sandwich.mu S.ε * D.du S G.dual m' m := by
   have h := congrArg (D.du S G.dual m') (inj_coord D c m)
@@ -152,6 +220,11 @@ theorem sum_coord_mul (m : D.Cov G) (m' : D.Cov G.dual) :
   simp only [map_smul, smul_eq_mul, du_inj_single D c] at h
   exact h
 
+/- English proof (translation)
+Apply `mu_regular S` to reduce the goal to its premises. Simplify using `only [smul_eq_mul]`. Rewrite using `[← sum_coord_mul D c, coord_φ, coord_φ D c.dual]`. Simplify using `only [piMap_apply, ← map_mul, ← map_sum]`. Rewrite using `[sum_coord_mul D c, map_mul, frobenius_mu]`.
+
+Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem du_φ (c : ConstTate (eps S) G) (m : D.Cov G) (x : D.Cov G.dual) :
     D.du S G.dual (D.φ S G.dual.dual x) (D.φ S G.dual m) = frobenius (xi S.ε) * frobenius (D.du S G.dual x m) := by
   apply mu_regular S
@@ -168,6 +241,9 @@ namespace GlobalTheory.PerfdLat.OmegaProj
 
 variable {p : ℕ} [Fact p.Prime] (D : PrismData p) {S : CycPerfd p} {G : PDivGroup p S.R} (c : ConstTate (eps S) G)
 
+/- English proof (translation)
+Apply `Dieudonne.frobenius_injective` to reduce the goal to its premises. Rewrite using `[map_sum, map_mul, frobenius_muN S 0, Dieudonne.frobenius_phiInv]`. Establish `h : ∀ j, frobenius (k j * coord D c.dual m' j) = coord D c m j * coord D c.dual (D.φ S G.dual.dual m') j` using `fun j => by rw [map_mul, ← piMap_apply frobenius _ k j, hk, coord_φ, piMap_apply]`. Simplify using `only [h]`. Conclude with `sum_coord_mul D c m _`.
+-/
 theorem sum_mul_coord_dual (k : Fin G.height → Ainf p S.R) (m : D.Cov G) (hk : piMap frobenius _ k = coord D c m)
     (m' : D.Cov G.dual) : ∑ j, k j * coord D c.dual m' j =
       muN S 1 * phiInv p S.R (D.du S G.dual (D.φ S G.dual.dual m') m) := by
@@ -178,10 +254,18 @@ theorem sum_mul_coord_dual (k : Fin G.height → Ainf p S.R) (m : D.Cov G) (hk :
   simp only [h]
   exact sum_coord_mul D c m _
 
+/- English proof (translation)
+Rewrite using `[c.al_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [map_smul, smul_eq_mul]; rfl`.
+-/
 theorem apply_al (v : G.dual.Lie) (x : Fin G.height → S.R) : v (c.al x) = ∑ j, x j * c.dual.alDual v j := by
   rw [c.al_apply, map_sum]
   exact Finset.sum_congr rfl fun j _ => by rw [map_smul, smul_eq_mul]; rfl
 
+/- English proof (translation)
+Rewrite using `[apply_al, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h` using `congrFun (hb m') j`. Rewrite `h` using `[b_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[h]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem unit_mul_apply_al (u : (S.R)ˣ) (hb : ∀ m', b D c.dual m' = (u : S.R) • c.dual.alDual (D.toLie G.dual m'))
     (m' : D.Cov G.dual) (x : Fin G.height → S.R) :
     (u : S.R) * (D.toLie G.dual m') (c.al x) = ∑ j, x j * fontaineTheta S.R p (coord D c.dual m' j) := by
@@ -196,6 +280,61 @@ end GlobalTheory.PerfdLat.OmegaProj
 
 open GlobalTheory.PerfdLat.OmegaProj in
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `GlobalTheory.PerfdLat.b_eq_unit_smul_alDual p D S`. Establish `hb` using `(hu G c).1`. Establish `hb'` using `(hu G.dual c.dual).1`. Establish `hπ : IsSMulRegular S.R (zeta S.ε 1 - 1)` using `by simpa using isSMulRegular_zeta_sub_one S 0`. Set `F : H D c 0 →ₗ[S.R] Module.Dual S.R G.dual.Lie` to `(Module.Dual.eval S.R G.dual.omega) ∘ₗ c.al ∘ₗ (H D c 0).subtype`.
+
+Establish `hF : ∀ x y, F x y = y (c.al (x : Fin G.height → S.R))` using `fun _ _ => rfl`. Establish `hH : ∀ x : H D c 0, ∃ (k : Fin G.height → Ainf p S.R) (m : D.Cov G), piMap frobenius _ k = coord D c m ∧ (x : Fin G.height → S.R) = piMap (fontaineTheta S.R p) _ k`. Introduce `x`. Establish `hx : (x : Fin G.height → S.R) ∈ thetaK D c 1` using `by rw [← H_zero]; exact x.2`. Take `⟨k, hk, hx⟩` from `hx`.
+
+Take `⟨m, hm⟩` from `(mem_K_succ D c 0 k).1 hk`. Conclude with `⟨k, m, hm.symm, hx.symm⟩`. Establish `hval : ∀ (k : Fin G.height → Ainf p S.R) (m : D.Cov G), piMap frobenius _ k = coord D c m → ∀ m' : D.Cov G.dual, (u : S.R) * (D.toLie G.dual m') (c.al (piMap (fontaineTheta S.R p) _ k)) = (zeta S.ε 1 - 1) * fontaineTheta S.R p (phiInv p S.R (D.du S G.dual (D.φ S G.dual.dual m') m …`. Introduce `k m hk m'`. Rewrite using `[unit_mul_apply_al D c u hb', ← theta_muN_one, ← map_mul, ← sum_mul_coord_dual D c k m hk, map_sum]`.
+
+Simplify using `only [piMap_apply, map_mul]`. Establish `hdiv : ∀ x y, ∃ r, (zeta S.ε 1 - 1) * r = F x y`. Introduce `x y`. Take `⟨k, m, hk, hx⟩` from `hH x`. Take `⟨m', rfl⟩` from `D.toLie_surjective G.dual y`.
+
+Use `⟨(↑u⁻¹ : S.R) * fontaineTheta S.R p (phiInv p S.R (D.du S G.dual (D.φ S G.dual.dual m') m)), ?_⟩` and prove the remaining obligations. Rewrite using `[hF, hx, mul_left_comm, ← hval k m hk m', ← mul_assoc, Units.inv_mul, one_mul]`. Take `⟨Ψ, hΨ⟩` from `exists_smul_dual₂ hπ F hdiv`. Set `e` to `Module.evalEquiv S.R G.dual.omega`. Establish `he : ∀ w y, e w y = y w` using `fun _ _ => rfl`.
+
+Establish `hΨ0 : ∀ x, Ψ x = 0 ↔ ∀ y : G.dual.Lie, y (c.al (x : Fin G.height → S.R)) = 0` using `fun x => ⟨fun h y => by rw [← hF, ← hΨ, h, LinearMap.zero_apply, mul_zero], fun h => LinearMap.ext fun y => hπ.right_eq_zero_of_smul (by rw [smul_eq_mul, hΨ, hF, h])⟩`. Use `⟨e.symm.toLinearMap ∘ₗ Ψ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w`. Set `γ : D.Cov G.dual →ₛₗ[fontaineTheta S.R p] S.R` to `(u : S.R) • ((e w).comp (D.toLie G.dual))`. Establish `hγ : ∀ m', γ m' = (u : S.R) * e w (D.toLie G.dual m')` using `fun _ => rfl`.
+
+Take `⟨s, hs⟩` from `Module.projective_def'.1 (D.projective S G.dual.dual)`. Use `choose a ha using fun q : D.Cov G.dual => S.surj (γ q)`. Set `l : Module.Dual (Ainf p S.R) (D.Cov G.dual)` to `Finsupp.linearCombination (Ainf p S.R) a ∘ₗ s`. Establish `hl : ∀ m', fontaineTheta S.R p (l m') = γ m'`. Introduce `m'`.
+
+Establish `h1 : Finsupp.linearCombination (Ainf p S.R) id (s m') = m'` using `LinearMap.congr_fun hs m'`. Use `conv_rhs => rw [← h1]`. Simplify using `only [l, LinearMap.comp_apply, Finsupp.linearCombination_apply, Finsupp.sum, map_sum, map_smul, map_smulₛₗ, smul_eq_mul, map_mul, ha, id]`. Take `⟨f, hf⟩` from `exists_du_eq D l`. Establish `hdivf : ∀ y, ∃ r, frobenius (xi S.ε) * r = (D.du S G.dual).toLinearMap.flip (D.φ S G.dual f) y`.
+
+Introduce `y`. Take `⟨x', hx'⟩` from `D.exists_φ_eq S G.dual.dual y`. Establish `hfil : D.toLie G.dual x' = 0` using `(D.mem_Fil G.dual x').2 ⟨y, hx'⟩`. Establish `h1 : l x' ∈ Ideal.span {xi S.ε}`. Rewrite using `[← S.ker_eq, RingHom.mem_ker, hl, hγ, hfil, map_zero, mul_zero]`.
+
+Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 h1`. Use `⟨frobenius r, frobenius_xi_regular S ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `frobenius (xi S.ε) • (frobenius (xi S.ε) * frobenius r) = frobenius (xi S.ε) • D.du S G.dual y (D.φ S G.dual f)`. Rewrite using `[← LinearMap.smul_apply, ← map_smul, ← hx', du_φ D c, hf, ← hr, map_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨g2, hg2⟩` from `exists_smul_dual (frobenius_xi_regular S) _ hdivf`. Take `⟨m, hm⟩` from `exists_du_eq D g2`. Establish `hφf : D.φ S G.dual f = frobenius (xi S.ε) • m`. Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_du D _ fun y => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sub, map_smul, hm, smul_eq_mul, hg2]`. Conclude with `sub_self _`. Set `k : Fin G.height → Ainf p S.R` to `piMap (phiInv p S.R) _ (coord D c m)`. Establish `hk : piMap frobenius _ k = coord D c m` using `funext fun j => Dieudonne.frobenius_phiInv _`. Set `x : H D c 0` to `⟨piMap (fontaineTheta S.R p) _ k, by`.
+
+Rewrite using `[H_zero]`. Conclude with `⟨k, (mem_K_succ D c 0 k).2 ⟨m, hk.symm⟩, rfl⟩⟩`. Establish `hΨx : Ψ x = e w`. Use `LinearMap.ext fun y => hπ ?_` and prove the remaining obligations. Take `⟨m', rfl⟩` from `D.toLie_surjective G.dual y`.
+
+Simplify using `only [smul_eq_mul]`. Rewrite using `[hΨ, hF]`. Apply `u.isUnit.mul_left_cancel` to reduce the goal to its premises. Establish `h5 : D.du S G.dual (D.φ S G.dual.dual m') m = frobenius (D.du S G.dual m' f)`. Use `frobenius_xi_regular S ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `frobenius (xi S.ε) * D.du S G.dual (D.φ S G.dual.dual m') m = frobenius (xi S.ε) * frobenius (D.du S G.dual m' f)`. Rewrite using `[← smul_eq_mul _ (D.du S G.dual _ m), ← map_smul, ← hφf, du_φ D c]`. Establish `h6` using `hval k m hk m'`. Express the relevant statement in the definitionally equal form `(u : S.R) * (D.toLie G.dual m') (c.al (piMap (fontaineTheta S.R p) _ k)) = _`. Rewrite using `[h6, h5, Dieudonne.phiInv_frobenius, hf, hl, hγ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, hΨx]`. Conclude with `e.symm_apply_apply w`. Introduce `x`.
+
+Apply `e.injective` to reduce the goal to its premises. Rewrite using `[LinearMap.comp_apply, LinearEquiv.coe_coe, map_smul, e.apply_symm_apply]`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, smul_eq_mul, hΨ, hF, he]`. Introduce `x`.
+
+Rewrite using `[LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.map_eq_zero_iff, hΨ0]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Take `⟨k, m, hk, hx⟩` from `hH x`. Establish `hθ : ∀ m' : D.Cov G.dual, fontaineTheta S.R p (phiInv p S.R (D.du S G.dual (D.φ S G.dual.dual m') m)) = 0`.
+
+Introduce `m'`. Establish `h1` using `hval k m hk m'`. Rewrite `h1` using `[← hx, h0, mul_zero]`. Conclude with `hπ.right_eq_zero_of_smul h1.symm`. Set `l1 : Module.Dual (Ainf p S.R) (D.Cov G.dual)` to `{ toFun := fun m' => phiInv p S.R (D.du S G.dual (D.φ S G.dual.dual m') m) map_add' := fun a b => by simp only [map_add, LinearMap.add_apply] map_smul' := fun a b => by`.
+
+Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, map_mul, Dieudonne.phiInv_frobenius, RingHom.id_apply] }`. Take `⟨l2, hl2⟩` from `exists_smul_dual (xi_regular S) l1 fun m' => by`. Establish `h1 : phiInv p S.R (D.du S G.dual (D.φ S G.dual.dual m') m) ∈ Ideal.span {xi S.ε}`. Rewrite using `[← S.ker_eq]`. Conclude with `hθ m'`.
+
+Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 h1`. Conclude with `⟨r, by rw [mul_comm]; exact hr⟩`. Take `⟨n, hn⟩` from `exists_du_eq D l2`. Establish `hm : m = D.φ S G.dual n`. Rewrite using `[← sub_eq_zero]`.
+
+Use `eq_zero_of_du D _ fun y => (frobenius_xi_regular S).right_eq_zero_of_smul ?_` and prove the remaining obligations. Take `⟨x', hx'⟩` from `D.exists_φ_eq S G.dual.dual y`. Rewrite using `[← LinearMap.smul_apply, ← map_smul, ← hx', map_sub, du_φ D c, hn]`. Establish `h2 : D.du S G.dual (D.φ S G.dual.dual x') m = frobenius (xi S.ε * l2 x')`. Rewrite using `[hl2]`.
+
+Conclude with `(Dieudonne.frobenius_phiInv _).symm`. Rewrite using `[h2, map_mul, sub_self]`. Establish `hk' : k = coord D c n`. Use function extensionality and compare the values at `j`. Apply `Dieudonne.frobenius_injective` to reduce the goal to its premises.
+
+Establish `h3` using `congrFun hk j`. Rewrite `h3` using `[hm, coord_φ]`. Simplify using `using h3`. Use `⟨(u : S.R) • D.toLie G n, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, ← hb, hx, hk']`.
+
+Both sides reduce to the same expression. Introduce and unpack `⟨w, hw⟩ y`. Take `⟨n, rfl⟩` from `D.toLie_surjective G w`. Take `⟨m', rfl⟩` from `D.toLie_surjective G.dual y`. Establish `h1` using `unit_mul_apply_al D c u hb' m' (x : Fin G.height → S.R)`.
+
+Establish `h3 : ∀ j, (u : S.R) * (x : Fin G.height → S.R) j = fontaineTheta S.R p (coord D c n j)` using `fun j => by`. Rewrite using `[← b_apply, hb, Pi.smul_apply, smul_eq_mul, hw]`. Establish `h2 : (u : S.R) * ∑ j, (x : Fin G.height → S.R) j * fontaineTheta S.R p (coord D c.dual m' j) = 0`. Rewrite using `[Finset.mul_sum]`. Simplify using `only [← mul_assoc, h3, ← map_mul]`.
+
+Rewrite using `[← map_sum, sum_coord_mul D c, map_mul, theta_mu, zero_mul]`. Rewrite `h2` using `[← h1]`. Conclude with `u.isUnit.mul_right_eq_zero.1 (u.isUnit.mul_right_eq_zero.1 h2)`.
+-/
 theorem GlobalTheory.PerfdLat.OmegaProj.exists_projection (p : ℕ) [Fact p.Prime] (D : PrismData p) (S : CycPerfd p) (G : PDivGroup p S.R)
     (c : ConstTate (eps S) G) (hω : Module.IsReflexive S.R G.dual.omega) :
     ∃ pr : H D c 0 →ₗ[S.R] G.dual.omega, Function.Surjective pr ∧

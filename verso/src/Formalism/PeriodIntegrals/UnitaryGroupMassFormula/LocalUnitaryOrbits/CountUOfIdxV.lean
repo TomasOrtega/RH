@@ -33,6 +33,9 @@ def redT (a : ℕ) (ϖ : Fv F v) :
     rw [Pi.add_apply, ← QuotientAddGroup.mk_add]
     rfl
 
+/- English proof (translation)
+Introduce `c`. Use `⟨⟨fun i => ((c i).out : Fin n → Fv F v ⊗[F] E), fun i => (c i).out.2⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `show QuotientAddGroup.mk ⟨((c i).out : Fin n → Fv F v ⊗[F] E), (c i).out.2⟩ = c i`. Conclude with `QuotientAddGroup.out_eq' (c i)`.
+-/
 theorem redT_surj (a : ℕ) (ϖ : Fv F v) : Function.Surjective (redT v Λ a ϖ) := by
   intro c
   refine ⟨⟨fun i => ((c i).out : Fin n → Fv F v ⊗[F] E), fun i => (c i).out.2⟩, ?_⟩
@@ -40,6 +43,15 @@ theorem redT_surj (a : ℕ) (ϖ : Fv F v) : Function.Surjective (redT v Λ a ϖ)
   show QuotientAddGroup.mk ⟨((c i).out : Fin n → Fv F v ⊗[F] E), (c i).out.2⟩ = c i
   exact QuotientAddGroup.out_eq' (c i)
 
+/- English proof (translation)
+Use extensionality with `X`. Rewrite using `[AddMonoidHom.mem_ker, AddSubgroup.mem_addSubgroupOf]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hi : ∀ i, ∃ z ∈ latLoc (E` using `E) v Λ, sc (E := E) v ϖ • z = (X : TupV (E := E) v n a) i := by`.
+
+Introduce `i`. Establish `h1` using `congrFun h i`. Express the relevant statement in the definitionally equal form `(QuotientAddGroup.mk _ : latA v Λ ⧸ _) = 0 at h1`. Rewrite `h1` using `[QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`. Take `⟨z, hz, hze⟩` from `h1`.
+
+Conclude with `⟨z, hz, hze⟩`. Use `choose Z hZ hZe using hi`. Conclude with `⟨Z, hZ, funext hZe⟩`. Introduce and unpack `⟨Z, hZ, hZe⟩`. Use function extensionality and compare the values at `i`.
+
+Express the relevant statement in the definitionally equal form `(QuotientAddGroup.mk _ : latA v Λ ⧸ _) = 0`. Rewrite using `[QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`. Conclude with `⟨Z i, hZ i, congrFun hZe i⟩`.
+-/
 theorem redT_ker (a : ℕ) (ϖ : Fv F v) :
     (redT v Λ a ϖ).ker = (lamP v Λ a ϖ).addSubgroupOf (lamA v Λ a) := by
   ext X
@@ -61,6 +73,11 @@ theorem redT_ker (a : ℕ) (ϖ : Fv F v) :
     rw [QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]
     exact ⟨Z i, hZ i, congrFun hZe i⟩
 
+/- English proof (translation)
+Introduce `hG ϖ hϖ`. Establish `hV` using `h hG ϖ hϖ`. Rewrite using `[AddSubgroup.relIndex, ← redT_ker, AddSubgroup.index_ker, AddMonoidHom.range_eq_top.2 (redT_surj v Λ a ϖ), AddSubgroup.card_top, Nat.card_fun, Nat.card_eq_fintype_card (α := Fin a), Fintype.card_fin]`. Establish `hq : Nat.card (latA v Λ ⧸ (lattice₂ v Λ ϖ).addSubgroupOf (latA v Λ)) = (Ideal.absNorm v.asIdeal) ^ (2 * n)`. Rewrite using `[← hV, AddSubgroup.relIndex, AddSubgroup.index]`.
+
+Rewrite using `[hq, ← pow_mul]`.
+-/
 theorem idxU_of (a : ℕ) (Y : TupV (E := E) v n a) (h : IdxV σ J ψ v Λ a Y) : IdxU σ J ψ v Λ a Y := by
   intro hG ϖ hϖ
   have hV := h hG ϖ hϖ
@@ -72,6 +89,9 @@ theorem idxU_of (a : ℕ) (Y : TupV (E := E) v n a) (h : IdxV σ J ψ v Λ a Y) 
     rw [← hV, AddSubgroup.relIndex, AddSubgroup.index]
   rw [hq, ← pow_mul]
 
+/- English proof (translation)
+The claim follows from `countU_of_open σ J ψ v Λ a Y hO (idxU_of σ J ψ v Λ a Y hI) hR`.
+-/
 theorem countU_of_idxV (a : ℕ) (Y : TupV (E := E) v n a) (hO : LamOpen v Λ a)
     (hI : IdxV σ J ψ v Λ a Y) (hR : RedU σ J ψ v Λ a Y) : CountU σ J ψ v Λ a Y :=
   countU_of_open σ J ψ v Λ a Y hO (idxU_of σ J ψ v Λ a Y hI) hR

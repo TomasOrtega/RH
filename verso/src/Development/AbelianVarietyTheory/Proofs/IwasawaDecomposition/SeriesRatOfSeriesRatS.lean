@@ -7,6 +7,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 
 namespace GlobalTheory.SerStdFit
 
+/- English proof (translation)
+Introduce `h` and use `h`.
+-/
 theorem seriesRat_of_seriesRatS : GlobalTheory.SerStd.SeriesRatS → GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.SeriesRat := fun h => h
 
 end GlobalTheory.SerStdFit

@@ -76,6 +76,9 @@ def GeoAct : Prop :=
     R.toLevCh.Is A.μ0 → R.grp_chiW → ChiR T R →
     ∀ (i : Fin D.R.m) (w : WeightFamilies.Wt D ((i : ℕ) + 1)), IsKappa i w → ConstEquiv T R i w → GeoActAt T R i w
 
+/- English proof (translation)
+Take `⟨lev, hl, -⟩` from `h`. Take `⟨κ, hκ, -⟩` from `hl g`. Conclude with `⟨κ, hκ⟩`.
+-/
 theorem IsGeo.exists_lift {ρ : G →* Module.End T.Q.c.F (Cusp T i w)} (h : IsGeo T R i w ρ) (g : G) :
     ∃ κ, IsLift T R i g κ := by
   obtain ⟨lev, hl, -⟩ := h

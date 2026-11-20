@@ -27,6 +27,21 @@ open scoped Classical
 
 namespace GlobalTheory.RestComplement
 
+/- English proof (translation)
+Introduce `F _ _ v κ _ φ hφ`. Take `⟨f, hf⟩` from `GlobalTheory.TensUniq.exists_sInf_ne_zero F κ`. Set `φs : ∀ w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F w) → ℂ` to `fun w => Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1`. Establish `hstd : ∀ᶠ w in Filter.cofinite, φs w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1` using `Filter.Eventually.of_forall fun _ => rfl`. Take `⟨r, hr, hrt⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φs hstd`.
+
+Establish `hRest : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (evFin F v) φ r`. Use `⟨hr, ?_⟩` and prove the remaining obligations. Rewrite using `[hrt φ]`. Use `GlobalTheory.TensUniq.pure_mem_schA f _ (fun w => ?_) (GlobalTheory.PureFactor.update_eventually φs v φ hstd)` and prove the remaining obligations. Distinguish the cases in `hw : w = v`.
+
+Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hφ`. Rewrite using `[Function.update_of_ne hw]`. Conclude with `GlobalTheory.StdVacuum.indicator_mem_SB w`.
+
+Use `⟨r, hRest, 0, ?_⟩` and prove the remaining obligations. Establish `e` using `congrFun (hrt (fun _ => 1)) 0`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, one_mul] at e`. Rewrite using `[e]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure`.
+
+Establish `hI : (fun i : κ => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F ((0 : κ → AF F) i)) = 0`. Use function extensionality and compare the values at `i`. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F) (0 : AF F).1 = 0`. Conclude with `map_zero _`. Establish `hP : (∏ᶠ w, Function.update φs v (fun _ => 1) w fun i => evFin F w ((0 : κ → AF F) i)) = 1`.
+
+Use `finprod_eq_one_of_forall_eq_one fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`. Rewrite using `[Function.update_of_ne hw]`.
+
+Simplify using `only [φs, Pi.zero_apply, map_zero]`. Rewrite using `[Set.indicator_of_mem (by intro i; exact zero_mem _)]`. Both sides reduce to the same expression. Rewrite using `[hI, hP, mul_one]`. Conclude with `hf`.
+-/
 theorem exists_rest_ne_zero : ∀ {F : Type} [Field F] [NumberField F] (v : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) {κ : Type} [Fintype κ]
     (f : (κ → Fv F v) → ℂ), f ∈ GlobalTheory.WeilM.SB (κ → Fv F v) →
     ∃ r : (κ → AF F) → ℂ, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (evFin F v) f r ∧ ∃ x₀, r x₀ ≠ 0 := by

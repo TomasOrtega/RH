@@ -12,6 +12,31 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.LocOver.TermSame
 
+/- English proof (translation)
+Introduce `D X Y u u' t t' hG hr`. Establish `hl : t.lam = t'.lam` using `congrArg (fun r => (r.1 : {Λ // Λ ∈ Y.what₂ u}).1) hr`. Establish `hl' : t.lam' = t'.lam'` using `congrArg (fun r => (r.2.1 : {Λ // Λ ∈ Y.what₂ u'}).1) hr`. Establish `hi : iotaOf Y.TR (Y.cs u) (Y.cs u') t = iotaOf Y.TR (Y.cs u) (Y.cs u') t'` using `congrArg (fun r => r.2.2) hr`. Use `⟨by simp only [Formalism.L2.SG.TermOp.wt, hl, hl'], fun hnml p P hP d hO => ?_⟩` and prove the remaining obligations.
+
+Establish `hΛ : IsRowLat D (X.Fu u) t.lam` using `(Y.rowsOK u).1 t.lam t.mem`. Establish `hΛ' : IsRowLat D (X.Fu u) t'.lam` using `(Y.rowsOK u).1 t'.lam t'.mem`. Establish `one_nrat : ∀ {T : D.host.E} (F : LFlag (VS D) D.R.rS T), (1 : (VS D).V ≃ₗ[D.host.E] (VS D).V) ∈ NRat F`. Introduce `T F`. Establish `h` using `one_mem_NLam (⊤ : Submodule (𝓞 D.host.E) (VS D).V) F`.
+
+Conclude with `⟨h.1.1, h.2.1, h.2.2⟩`. Establish `hmem : t'.lin ∈ nmlOf Y u u' t`. Rewrite using `[hnml]`. Conclude with `⟨1, one_nrat _, 1, one_nrat _, by simp⟩`. Take `⟨n, hn, n', hn', hlin⟩` from `hmem`.
+
+Establish `h0 : t.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t.rep.2.2.1`. Establish `h1 : t'.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t'.rep.2.2.1`. Establish `hmN : t.lin * n' * t.lin⁻¹ ∈ NRat t.frame`. Establish `h` using `GlobalTheory.HL.CosetConst.conj_nlam_top (G := lf D (X.Fu u')) h0 hn'`. Conclude with `⟨h.1.1, h.2.1, h.2.2⟩`.
+
+Establish `hβ : n * (t.lin * n' * t.lin⁻¹) = t'.lin * t.lin⁻¹`. Rewrite using `[hlin]`. Simplify using `only [mul_assoc]`. Establish `hgm : Formalism.HermitianLatticesTheory.gmap (n * (t.lin * n' * t.lin⁻¹)) t.lam = t.lam`. Establish `hg0 : Formalism.HermitianLatticesTheory.gmap t.lin t.lam' = t.lam` using `t.rep.2.2.2.1`.
+
+Establish `hg1 : Formalism.HermitianLatticesTheory.gmap t'.lin t'.lam' = t'.lam` using `t'.rep.2.2.2.1`. Rewrite using `[hβ, Formalism.L2.SG.Pf.MainEqClass.gmap_mul', Formalism.L2.SG.Pf.MainEqClass.gmap_inv_of' hg0, hl', hg1, hl]`. Establish `hfr : ∀ a, frame t'.frame a = (n * (t.lin * n' * t.lin⁻¹)) (frame t.frame a)`. Introduce `a`. Rewrite using `[hβ]`.
+
+Use `show frame (mapLF t'.lin (lf D (X.Fu u'))) a = (t'.lin * t.lin⁻¹) (frame (mapLF t.lin (lf D (X.Fu u'))) a)`. Rewrite using `[GlobalTheory.HL.CosetConst.frame_mapLF h1, GlobalTheory.HL.CosetConst.frame_mapLF h0]`. Use `show _ = t'.lin (t.lin.symm (t.lin _))`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Establish `hI` using `Formalism.L2.SG.Pf.iotaDict_fwd Y t t' hl hl' hi`.
+
+Rewrite `hI` using `[← hβ]`. Establish `hEq` using `Formalism.L2.SG.Closed.TermEqIff_holds D u u' (X.Fu u) t.lam hΛ`. Establish `hGF` using `(Formalism.L2.SG.Closed.TermFun_holds D u u' (X.Fu u) t.lam hΛ).1`. Establish `hrel : DCRel t.lam (lf D (X.Fu u)) (Quot.out t.toTerm.cls).1 t.frame` using `(hEq (Quot.out t.toTerm.cls) ⟨t.frame, t.rep.2.2.2.2⟩).1 (Quot.out_eq _)`. Establish `hR0 : Gval (lf D (X.Fu u)) (Quot.out t.toTerm.cls).1 ≠ 0` using `hG`.
+
+Establish `hGt : Gval (lf D (X.Fu u)) t.frame ≠ 0`. Establish `e : Gval (lf D (X.Fu u)) (Quot.out t.toTerm.cls).1 = Gval (lf D (X.Fu u)) t.frame` using `hGF (Quot.out t.toTerm.cls) ⟨t.frame, t.rep.2.2.2.2⟩ hrel`. Rewrite using `[← e]`. Conclude with `hR0`. Establish `hGt' : Gval (lf D (X.Fu u)) t'.frame ≠ 0`.
+
+Establish `hh : t'.lin = n⁻¹⁻¹ * t.lin * n'` using `by rw [inv_inv]; exact hlin`. Rewrite using `[← GlobalTheory.HL.CosetConst.G_eq_frames t t' (Formalism.L2.SG.NGCut.NormalVectorPairings.NRat_inv _ hn) hn' hh]`. Conclude with `hGt`. Establish `s1` using `(GlobalTheory.T.localData_globalTerm_independent_of_representative D (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) u u' (X.Fu u) t.lam hΛ (Quot.out t.toTerm.cls).1 t.frame (Quot.out t.toTerm.cls).2 t.rep.2.2.2.2 hR0 hrel p P hP d).1 hO`. Establish `hpd' : PD D t.lam (lf D (X.Fu u)) u' t'.frame` using `by rw [hl]; exact t'.rep.2.2.2.2`.
+
+Establish `s2` using `GlobalTheory.T.global_terms_same_doubleCoset_same_local_data D (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) u u' (X.Fu u) t.lam hΛ t.frame t'.frame t.rep.2.2.2.2 hpd' hGt n hn _ hmN hgm hfr hI p P hP d s1`. Establish `s3 : Over P d (locU (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p t'.lam (lf D (X.Fu u)) t'.frame (Tu D u) (Tu D u'))`. Rewrite using `[← hl]`. Conclude with `s2`. Establish `hEq'` using `Formalism.L2.SG.Closed.TermEqIff_holds D u u' (X.Fu u) t'.lam hΛ'`.
+
+Establish `hrel' : DCRel t'.lam (lf D (X.Fu u)) t'.frame (Quot.out t'.toTerm.cls).1` using `(hEq' ⟨t'.frame, t'.rep.2.2.2.2⟩ (Quot.out t'.toTerm.cls)).1 (Quot.out_eq _).symm`. Conclude with `(GlobalTheory.T.localData_globalTerm_independent_of_representative D (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) u u' (X.Fu u) t'.lam hΛ' t'.frame (Quot.out t'.toTerm.cls).1 t'.rep.2.2.2.2 (Quot.out t'.toTerm.cls).2 hGt' hrel' p P hP d).1 s3`.
+-/
 theorem same : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ t t' : TauC Y u u', t.G ≠ 0 → (Y.tO u u').rowOf t = (Y.tO u u').rowOf t' → Formalism.L2.SG.TermOp.wt t = Formalism.L2.SG.TermOp.wt t' ∧ (nmlOf Y u u' t = nmlOf Y u u' t' → ∀ (p : PlF D) (P : LocNG.FPair (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) D.R.rS), P.RelG (LocNG.theta (Y.M p)) → ∀ d, Over P d (locU (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p t.toTerm.lam (lf D (X.Fu u)) (Quot.out t.toTerm.cls).1 (Tu D u) (Tu D u')) → Over P d (locU (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p t'.toTerm.lam (lf D (X.Fu u)) (Quot.out t'.toTerm.cls).1 (Tu D u) (Tu D u'))) := by
   intro D X Y u u' t t' hG hr
   have hl : t.lam = t'.lam := congrArg (fun r => (r.1 : {Λ // Λ ∈ Y.what₂ u}).1) hr

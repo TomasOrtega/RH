@@ -12,6 +12,11 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000
 
 open GlobalTheory.BKGal.HatVal in
+/- English proof (translation)
+Take `⟨C⟩` from `GlobalTheory.MemLoc.nonempty_core l`. Establish `hd : P.xi d ∈ P.MMl` using `((GlobalTheory.BK.xi_trivialises_invL_S O K l e a ι P).2 (cst d)).2 (GlobalTheory.GalStep.cst_mem_Mext P d)`. Establish `h1` using `UpperTheory.KN.phiMod_crystalline_comparison_of_isCrisCmp l a e O K t ϖ ι P T I jB jD C ε hε hCmp hjD α hα ⟨P.xi d, hd⟩`. Establish `h2` using `UpperTheory.KN.latticeTensor_deRham_crys_relation_galois_stable l O K T C g _ _ (GlobalTheory.GalStep.ED K t ϖ ^ α) (h1.trans (by rw [map_pow]))`. Establish `h3 : TWact (galOB O (sQ l g)) T g (jB (toBcris t ϖ P ⟨P.xi d, hd⟩)) = jB (toBcris t ϖ P ⟨P.xi d, hd⟩)` using `hHor g hg d hd`.
+
+Rewrite `h2` using `[h3, map_pow, hv, mul_pow, mul_comm, map_mul, mul_smul, map_pow (dRO l O) (GlobalTheory.GalStep.ED K t ϖ), ← h1, ← BasisCoord.tWincl_smul']`. Establish `h4` using `UpperTheory.KN.latticeTensorIncl_deRham_injective l O K T h2`. Rewrite `h4` using `[← jD.map_smul]`. Conclude with `(congrArg jD.symm h4).trans (jD.symm_apply_apply _)`.
+-/
 private theorem gen {l : ℕ} [Fact l.Prime] {a e : ℕ} [NeZero a] [NeZero e] {O K : Type} [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] [TameDescentExponentData K l e a] [CompleteSpace K] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) {ι : Type} [Fintype ι] [DecidableEq ι] (P : PhiMod O K l e a ι) (T : LocLat (Gl l) ℚ_[l] K O)
     (I : Ident t ϖ P T) (jB : (ι → OB l O) ≃ₗ[OB l O] TW (OB l O) T) (jD : (ι → OD l O) ≃ₗ[OD l O] TW (OD l O) T)
     (ε : OCb l) (hε : IsEps ε) (hCmp : IsCrisCmp I jB) (hHor : IsHoriz t ϖ (sQ l) P jB)
@@ -34,6 +39,9 @@ private theorem gen {l : ℕ} [Fact l.Prime] {a e : ℕ} [NeZero a] [NeZero e] {
   rw [← jD.map_smul] at h4
   exact (congrArg jD.symm h4).trans (jD.symm_apply_apply _)
 
+/- English proof (translation)
+Introduce `_ l _ a e _ _ ϖ LL _ _ hl2 ι _ _ P T I jB Pl AI _ hCmp hHor jD hjD α hα g hg v hv d`. Take `⟨-, ε, -, hε, -⟩` from `GlobalTheory.T.exists_galois_element_moving_tilted_uniformizer l a e ϖ hl2`. Conclude with `gen (thetaW a LL) ϖ P T I jB jD ε hε hCmp hHor hjD α hα g hg v hv d`.
+-/
 theorem _root_.GlobalTheory.T.breuilKisin_galois_scales_deRhamPeriods_by_unit_pow : GlobalTheory.Published.FontaineBcris → ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a], l ≠ 2 → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod ↥(OL LL) ↥LL.1 l e a ι) (T : QLat LL) (I : Ident (thetaW a LL) ϖ P T) (jB : (ι → OB l ↥(OL LL)) ≃ₗ[OB l ↥(OL LL)] TW (OB l ↥(OL LL)) T) (Pl : LocPrime l) (AI : LocAinf l Pl), IsStd Pl AI → IsCrisCmp I jB → IsHoriz (thetaW a LL) ϖ (sQ l) P jB → ∀ (jD : (ι → OD l ↥(OL LL)) ≃ₗ[OD l ↥(OL LL)] TW (OD l ↥(OL LL)) T), (∀ (c : ι → OA l ↥(OL LL)) (z : TW (OA l ↥(OL LL)) T), I.j (inclV l ↥(OL LL) ι c) = TWincl (inclO l ↥(OL LL)) T z → jD (fun i => toOD l ↥(OL LL) (c i)) = TWincl (toOD l ↥(OL LL)) T z) → ∀ α : ℕ, (∀ v ∈ P.L, E ↥LL.1 l e ^ α • v ∈ P.M) → ∀ g : Gl l, sQ l g ∈ GK (ϖ.field a) → ∀ v : OD l ↥(OL LL), GlobalTheory.GalStep.galOD ↥(OL LL) (sQ l g) (GlobalTheory.GalStep.ED ↥LL.1 (thetaW a LL) ϖ) = GlobalTheory.GalStep.ED ↥LL.1 (thetaW a LL) ϖ * v → ∀ d : P.D, GlobalTheory.GalStep.rhoD T jD g (GlobalTheory.GalStep.YD (thetaW a LL) ϖ (E ↥LL.1 l e ^ α • P.xi d)) = v ^ α • GlobalTheory.GalStep.YD (thetaW a LL) ϖ (E ↥LL.1 l e ^ α • P.xi d) := by
   intro _ l _ a e _ _ ϖ LL _ _ hl2 ι _ _ P T I jB Pl AI _ hCmp hHor jD hjD α hα g hg v hv d
   obtain ⟨-, ε, -, hε, -⟩ := GlobalTheory.T.exists_galois_element_moving_tilted_uniformizer l a e ϖ hl2

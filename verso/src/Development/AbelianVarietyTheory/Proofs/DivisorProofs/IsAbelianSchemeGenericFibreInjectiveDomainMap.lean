@@ -10,6 +10,11 @@ open GlobalTheory.Desc
 
 namespace GlobalTheory.Desc
 
+/- English proof (translation)
+Set `ρK : FractionRing R →+* FractionRing R'` to `IsFractionRing.map (A := R) (B := R') (j := ρ) hρ`. Establish `hc : jK R' ≫ spMap ρ = spMap ρK ≫ jK R`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `x`.
+
+Simplify using `[ρK, IsFractionRing.map, IsLocalization.map_eq]`. Establish `h2 : IsAbelianScheme ((Over.pullback (spMap ρK)).obj ((Over.pullback (jK R)).obj G))` using `GlobalTheory.isAbelianScheme_pullback_obj _ _ h`. Establish `h3 : IsAbelianScheme ((Over.pullback (spMap ρK ≫ jK R)).obj G)` using `GlobalTheory.Compare.AbelianSchemeTorusCompare.isAbelianScheme_of_iso (pullCompIso (spMap ρK) (jK R) G) inferInstance h2`. Rewrite `h3` using `[← hc]`. Conclude with `GlobalTheory.Compare.AbelianSchemeTorusCompare.isAbelianScheme_of_iso (pullCompIso (jK R') (spMap ρ) G).symm (inferInstanceAs (IsMonHom (pullCompIso (jK R') (spMap ρ) G).inv)) h3`.
+-/
 theorem isAbelianScheme_generic_of_injective (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R']
     (ρ : R →+* R') (hρ : Function.Injective ρ) (G : Over (Sp R)) [GrpObj G]
     (h : IsAbelianScheme ((Over.pullback (jK R)).obj G)) :

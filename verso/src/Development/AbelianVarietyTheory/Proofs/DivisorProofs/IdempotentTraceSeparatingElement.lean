@@ -8,6 +8,15 @@ namespace GlobalTheory.InvDifferentArith
 
 variable {E : Type} [Field E] [NumberField E] [IsGalois ℚ E] {C : Type} [Field C] [CharZero C]
 
+/- English proof (translation)
+Set `K` to `AlgebraicClosure C`. Set `ι` to `algebraMap C K`. Set `F : (E ≃ₐ[ℚ] E) → (E →ₐ[ℚ] K)` to `fun g => ((ι.comp φ₀).comp g.toRingHom).toRatAlgHom`. Establish `hF : Function.Injective F`. Introduce `g h hgh`.
+
+Use extensionality with `x`. Use `congrArg (fun f : E →ₐ[ℚ] K => f x) hgh` as an intermediate fact. Simplify using `only [F, RingHom.toRatAlgHom_apply, RingHom.comp_apply] at this`. Conclude with `φ₀.injective (ι.injective this)`. Establish `hbij : Function.Bijective F`.
+
+Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Use `⟨hF, ?_⟩` and prove the remaining obligations. Rewrite using `[AlgHom.card, ← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank]`. Take `⟨g, hg⟩` from `hbij.2 ((ι.comp φ).toRatAlgHom)`. Use `⟨g, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `x`. Use `congrArg (fun f : E →ₐ[ℚ] K => f x) hg` as an intermediate fact. Simplify using `only [F, RingHom.toRatAlgHom_apply, RingHom.comp_apply] at this`. Conclude with `(ι.injective this).symm`.
+-/
 theorem exists_aut (φ₀ φ : E →+* C) : ∃ g : E ≃ₐ[ℚ] E, φ = φ₀.comp g.toRingHom := by
   let K := AlgebraicClosure C
   let ι := algebraMap C K
@@ -29,6 +38,9 @@ theorem exists_aut (φ₀ φ : E →+* C) : ∃ g : E ≃ₐ[ℚ] E, φ = φ₀.
   simp only [F, RingHom.toRatAlgHom_apply, RingHom.comp_apply] at this
   exact (ι.injective this).symm
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.ColengthDifferent.sum_eq_trace (fun g : E ≃ₐ[ℚ] E => φ₀.comp g.toRingHom) ?_ (by rw [← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank]) x`. Simplify using `using h`. Introduce `g h hgh`. Use extensionality with `y`. Conclude with `φ₀.injective (RingHom.congr_fun hgh y)`.
+-/
 theorem sum_aut_eq_trace (φ₀ : E →+* C) (x : E) :
     ∑ g : E ≃ₐ[ℚ] E, φ₀ (g x) = algebraMap ℚ C (Algebra.trace ℚ E x) := by
   have h := GlobalTheory.ColengthDifferent.sum_eq_trace (fun g : E ≃ₐ[ℚ] E => φ₀.comp g.toRingHom) ?_
@@ -38,6 +50,11 @@ theorem sum_aut_eq_trace (φ₀ : E →+* C) (x : E) :
     ext y
     exact φ₀.injective (RingHom.congr_fun hgh y)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hh`. Use extensionality with `x`. Conclude with `φ₀.injective (RingHom.congr_fun hh x)`. Introduce and unpack `rfl`.
+
+Use extensionality with `x`. Both sides reduce to the same expression.
+-/
 theorem comp_eq_iff (φ₀ : E →+* C) (h : E ≃ₐ[ℚ] E) : φ₀.comp h.toRingHom = φ₀ ↔ h = 1 := by
   constructor
   · intro hh
@@ -53,6 +70,11 @@ namespace GlobalTheory.InvDifferentArith
 
 variable {E : Type} [Field E] [NumberField E] [IsGalois ℚ E] {C : Type} [Field C] [CharZero C]
 
+/- English proof (translation)
+Use `set b := integralBasis E`. Use `conv_rhs => rw [← b.traceDual.sum_repr x]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Module.Basis.traceDual_repr_apply, Algebra.traceForm_apply, Algebra.smul_def, map_mul φ₀, mul_comm x (b k), mul_comm (φ₀ (b.traceDual k))]`.
+
+Use `congr 1`. Conclude with `RingHom.congr_fun (Subsingleton.elim (algebraMap ℚ C) (φ₀.comp (algebraMap ℚ E))) _`.
+-/
 theorem map_expand (φ₀ : E →+* C) (x : E) :
     ∑ k, φ₀ ((integralBasis E).traceDual k) * algebraMap ℚ C (Algebra.trace ℚ E (integralBasis E k * x)) = φ₀ x := by
   set b := integralBasis E
@@ -64,6 +86,19 @@ theorem map_expand (φ₀ : E →+* C) (x : E) :
   congr 1
   exact RingHom.congr_fun (Subsingleton.elim (algebraMap ℚ C) (φ₀.comp (algebraMap ℚ E))) _
 
+/- English proof (translation)
+Use `set b := integralBasis E`. Set `f : (E ≃ₐ[ℚ] E) → (E →* C)` to `fun g => (φ₀.comp g.toRingHom).toMonoidHom`. Establish `hf : Function.Injective f`. Introduce `g g' hgg`. Use extensionality with `y`.
+
+Conclude with `φ₀.injective (DFunLike.congr_fun hgg y)`. Establish `li` using `(linearIndependent_monoidHom E C).comp f hf`. Set `c : (E ≃ₐ[ℚ] E) → C` to `fun g => (∑ k, φ₀ (b.traceDual k) * φ₀ (g (b k))) - if g = 1 then 1 else 0`. Establish `hc : ∑ g, c g • ((fun f : E →* C => (f : E → C)) ∘ f) g = 0`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, Function.comp_apply, smul_eq_mul, Pi.zero_apply, f, MonoidHom.coe_coe, RingHom.coe_comp, RingHom.toMonoidHom_eq_coe]`. Establish `e1 : ∀ g : E ≃ₐ[ℚ] E, c g * φ₀ (g x) = (∑ k, φ₀ (b.traceDual k) * φ₀ (g (b k * x))) - (if g = 1 then φ₀ x else 0)`. Introduce `g`. Simplify using `only [c, sub_mul, Finset.sum_mul, map_mul, mul_assoc]`. Use `split_ifs with hg`.
+
+Substitute `hg` using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use `show ∑ g, c g * φ₀ (g x) = 0`. Rewrite using `[Finset.sum_congr rfl fun g _ => e1 g, Finset.sum_sub_distrib, Finset.sum_comm]`.
+
+Repeatedly rewrite using `[← Finset.mul_sum]`. Repeatedly rewrite using `[sum_aut_eq_trace φ₀]`. Rewrite using `[map_expand φ₀ x]`. Simplify using the standard rewrite rules. Use `Fintype.linearIndependent_iff.mp li c hc h` as an intermediate fact.
+
+Simplify using `only [c, sub_eq_zero] at this`. Conclude with `this`.
+-/
 theorem orth_aut (φ₀ : E →+* C) (h : E ≃ₐ[ℚ] E) :
     ∑ k, φ₀ ((integralBasis E).traceDual k) * φ₀ (h (integralBasis E k)) = if h = 1 then 1 else 0 := by
   set b := integralBasis E
@@ -96,6 +131,9 @@ theorem orth_aut (φ₀ : E →+* C) (h : E ≃ₐ[ℚ] E) :
   simp only [c, sub_eq_zero] at this
   exact this
 
+/- English proof (translation)
+Take `⟨h, rfl⟩` from `exists_aut φ₀ σ`. Use `orth_aut φ₀ h` as an intermediate fact. Rewrite using `[comp_eq_iff]`. Conclude with `this`.
+-/
 theorem orth (φ₀ σ : E →+* C) :
     ∑ k, φ₀ ((integralBasis E).traceDual k) * σ (integralBasis E k) = if σ = φ₀ then 1 else 0 := by
   obtain ⟨h, rfl⟩ := exists_aut φ₀ σ
@@ -109,6 +147,9 @@ namespace GlobalTheory.InvDifferentArith
 
 variable {E : Type} [Field E] [NumberField E] [IsGalois ℚ E] {C : Type} [Field C] [CharZero C]
 
+/- English proof (translation)
+Establish `h` using `((integralBasis E).traceDual).traceDual_repr_apply (algebraMap (𝓞 E) E a) k`. Rewrite `h` using `[Module.Basis.traceDual_traceDual, integralBasis_repr_apply, Algebra.traceForm_apply]`. Rewrite using `[← eq_intCast (algebraMap ℤ ℚ), h]`.
+-/
 theorem trace_mul_traceDual (a : 𝓞 E) (k : Module.Free.ChooseBasisIndex ℤ (𝓞 E)) :
     Algebra.trace ℚ E ((a : E) * (integralBasis E).traceDual k) =
       (((RingOfIntegers.basis E).repr a k : ℤ) : ℚ) := by
@@ -116,6 +157,27 @@ theorem trace_mul_traceDual (a : 𝓞 E) (k : Module.Free.ChooseBasisIndex ℤ (
   rw [Module.Basis.traceDual_traceDual, integralBasis_repr_apply, Algebra.traceForm_apply] at h
   rw [← eq_intCast (algebraMap ℤ ℚ), h]
 
+/- English proof (translation)
+Use `haveI : Nonempty (Module.Free.ChooseBasisIndex ℤ (𝓞 E)) := (integralBasis E).index_nonempty`. Take `⟨k₀, -, hk₀⟩` from `Finset.exists_max_image Finset.univ (fun k => v (φ₀ ((integralBasis E).traceDual k))) Finset.univ_nonempty`. Establish `hy : φ₀ ((integralBasis E).traceDual k₀) ≠ 0` using `(map_ne_zero φ₀).2 ((integralBasis E).traceDual.ne_zero k₀)`. Establish `hvy : v (φ₀ ((integralBasis E).traceDual k₀)) ≠ 0` using `(Valuation.ne_zero_iff v).2 hy`. Use `⟨(φ₀ ((integralBasis E).traceDual k₀))⁻¹, inv_ne_zero hy, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hr : ∀ k, ∃ o : O, algebraMap O C o = (φ₀ ((integralBasis E).traceDual k₀))⁻¹ * φ₀ ((integralBasis E).traceDual k)`. Introduce `k`. Apply `hv.exists_of_le_one` to reduce the goal to its premises. Rewrite using `[map_mul, map_inv₀, inv_mul_le_iff₀ (pos_iff_ne_zero.2 hvy), mul_one]`. Conclude with `hk₀ k (Finset.mem_univ _)`.
+
+Use `choose r hr using hr`. Set `e` to `Fintype.equivFin (Module.Free.ChooseBasisIndex ℤ (𝓞 E))`. Use `⟨Fintype.card _, fun i => r (e.symm i), fun i => RingOfIntegers.basis E (e.symm i), fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[Equiv.sum_comp e.symm (fun k => algebraMap O C (r k) * σ (RingOfIntegers.basis E k))]`. Establish `h2 : ∀ k, σ (RingOfIntegers.basis E k : E) = σ (integralBasis E k)`.
+
+Introduce `k`. Rewrite using `[integralBasis_apply]`. Repeatedly rewrite using `[hr, h2, mul_assoc, ← Finset.mul_sum]`. Rewrite using `[orth φ₀ σ]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Introduce `n r a s hs`. Establish `h1 : ∀ g : E ≃ₐ[ℚ] E, ∑ k, algebraMap O C (r k) * φ₀ (g ((a k : E) * (integralBasis E).traceDual k₀)) = if g = 1 then s * φ₀ ((integralBasis E).traceDual k₀) else 0`. Introduce `g`. Use `hs (φ₀.comp g.toRingHom)` as an intermediate fact. Rewrite `this` using `[comp_eq_iff]`.
+
+Establish `e3 : ∀ k, algebraMap O C (r k) * φ₀ (g ((a k : E) * (integralBasis E).traceDual k₀)) = (algebraMap O C (r k) * φ₀ (g (a k))) * φ₀ (g ((integralBasis E).traceDual k₀))`. Introduce `k`. Rewrite using `[map_mul, map_mul, mul_assoc]`. Rewrite using `[Finset.sum_congr rfl fun k _ => e3 k, ← Finset.sum_mul]`. Use `erw [this]`.
+
+Use `split_ifs with hg`. Substitute `hg` using the available equality. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish `h2` using `Finset.sum_congr rfl fun g (_ : g ∈ (Finset.univ : Finset (E ≃ₐ[ℚ] E))) => h1 g`.
+
+Rewrite `h2` using `[Finset.sum_comm]`. Rewrite `h2` using `[← Finset.mul_sum, sum_aut_eq_trace φ₀, trace_mul_traceDual]`. Simplify using `only [Finset.sum_ite_eq', Finset.mem_univ, if_true] at h2`. Establish `hle : v (s * φ₀ ((integralBasis E).traceDual k₀)) ≤ 1`. Rewrite using `[← h2]`.
+
+Establish `: ∑ k, algebraMap O C (r k) * algebraMap ℚ C (((RingOfIntegers.basis E).repr (a k) k₀ : ℤ) : ℚ) = algebraMap O C (∑ k, r k * (((RingOfIntegers.basis E).repr (a k) k₀ : ℤ) : O))`. Simplify using `[map_sum, map_mul, map_intCast]`. Rewrite using `[this]`. Conclude with `hv.map_le_one _`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← map_mul, mul_assoc, mul_inv_cancel₀ hy, mul_one]`. Use `_ ≤ 1 * v (φ₀ ((integralBasis E).traceDual k₀))⁻¹ := by gcongr`. Use `_ = v (φ₀ ((integralBasis E).traceDual k₀))⁻¹ := one_mul _`.
+-/
 theorem base {O : Type} [CommRing O] [Algebra O C] {v : Valuation C ℝ≥0} (hv : v.Integers O)
     (φ₀ : E →+* C) :
     ∃ δ : C, δ ≠ 0 ∧ (∃ (n : ℕ) (r : Fin n → O) (a : Fin n → 𝓞 E), ∀ σ : E →+* C,
@@ -181,6 +243,23 @@ end GlobalTheory.InvDifferentArith
 
 namespace GlobalTheory.InvDifferentArith
 
+/- English proof (translation)
+Introduce `E _ _ _ C _ _ v O _ _ hv`. Distinguish the cases in `hne : Nonempty (E →+* C)`. Use `swap`. Conclude with `⟨1, one_ne_zero, fun φ => (hne ⟨φ⟩).elim⟩`. Take `⟨φ₀⟩` from `hne`.
+
+Take `⟨δ, hδ0, ha, hb⟩` from `base hv φ₀`. Use `⟨δ, hδ0, fun φ => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `exists_aut φ₀ φ`. Prove the components needed by the constructor for the conclusion. Take `⟨n, r, a, h⟩` from `ha`.
+
+Use `⟨n, r, fun k => RingOfIntegers.mapRingHom g.symm.toRingHom (a k), fun σ => ?_⟩` and prove the remaining obligations. Establish `hσ` using `h (σ.comp g.symm.toRingHom)`. Establish `e1 : σ.comp g.symm.toRingHom = φ₀ ↔ σ = φ₀.comp g.toRingHom`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`.
+
+Use extensionality with `x`. Simplify using the standard rewrite rules. Introduce and unpack `rfl`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+
+Rewrite `hσ` using `[if_congr e1 rfl rfl]`. Rewrite using `[← hσ]`. Both sides reduce to the same expression. Introduce `n r a s hs`. Apply `hb n r (fun k => RingOfIntegers.mapRingHom g.toRingHom (a k)) s` to reduce the goal to its premises.
+
+Introduce `τ`. Establish `hτ` using `hs (τ.comp g.toRingHom)`. Establish `e1 : τ.comp g.toRingHom = φ₀.comp g.toRingHom ↔ τ = φ₀`. Prove the components needed by the constructor for the conclusion. Introduce `hh`.
+
+Use extensionality with `x`. Use `RingHom.congr_fun hh (g.symm x)` as an intermediate fact. Simplify using `using this`. Introduce and unpack `rfl`. Both sides reduce to the same expression.
+
+Rewrite `hτ` using `[if_congr e1 rfl rfl]`. Rewrite using `[← hτ]`. Both sides reduce to the same expression.
+-/
 theorem indicator_inverseDifferent : ∀ (E : Type) [Field E] [NumberField E] [IsGalois ℚ E] (C : Type) [Field C] [CharZero C] (v : Valuation C ℝ≥0) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∃ δ : C, δ ≠ 0 ∧ ∀ φ : E →+* C, (∃ (n : ℕ) (r : Fin n → O) (a : Fin n → 𝓞 E), ∀ σ : E →+* C, ∑ k, algebraMap O C (r k) * σ (a k) = if σ = φ then δ else 0) ∧ ∀ (n : ℕ) (r : Fin n → O) (a : Fin n → 𝓞 E) (s : C), (∀ σ : E →+* C, ∑ k, algebraMap O C (r k) * σ (a k) = if σ = φ then s else 0) → v s ≤ v δ := by
   intro E _ _ _ C _ _ v O _ _ hv
   by_cases hne : Nonempty (E →+* C)

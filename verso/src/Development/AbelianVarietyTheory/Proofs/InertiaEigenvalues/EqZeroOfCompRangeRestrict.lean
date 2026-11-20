@@ -37,6 +37,9 @@ section Generic
 variable {G : Type} [Group G] {K : Subgroup G} {U V : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup V]
   [Module ℂ V] {σ : Representation ℂ K U} {ρ : Representation ℂ G V} {e : Module.End ℂ U}
 
+/- English proof (translation)
+Introduce and unpack `κ _ ⟨x, rfl⟩`. Use `⟨σ κ x, ?_⟩` and prove the remaining obligations. Use `congrArg (fun L : Module.End ℂ U => L x) (hc κ)` as an intermediate fact. Simplify `this.symm` using `[Module.End.mul_apply]`.
+-/
 theorem range_stable (hc : ∀ κ : K, σ κ * e = e * σ κ) :
     ∀ κ : K, ∀ f ∈ LinearMap.range e, σ κ f ∈ LinearMap.range e := by
   rintro κ _ ⟨x, rfl⟩
@@ -44,6 +47,11 @@ theorem range_stable (hc : ∀ κ : K, σ κ * e = e * σ κ) :
   have := congrArg (fun L : Module.End ℂ U => L x) (hc κ)
   simpa [Module.End.mul_apply] using this.symm
 
+/- English proof (translation)
+Introduce `κ`. Use extensionality with `x`. Use `congrArg (fun L => L (e.rangeRestrict x)) (hf κ)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply] at this ⊢`. Rewrite using `[← this]`.
+
+Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg (fun L : Module.End ℂ U => L x) (hc κ)` as an intermediate fact. Simplify `this.symm` using `[sub, Module.End.mul_apply]`.
+-/
 theorem isKMap_comp_rangeRestrict (hc : ∀ κ : K, σ κ * e = e * σ κ) {f : LinearMap.range e →ₗ[ℂ] V}
     (hf : IsKMap K (sub σ (LinearMap.range e) (range_stable hc)) ρ f) : IsKMap K σ ρ (f ∘ₗ e.rangeRestrict) := by
   intro κ
@@ -56,6 +64,9 @@ theorem isKMap_comp_rangeRestrict (hc : ∀ κ : K, σ κ * e = e * σ κ) {f : 
   have := congrArg (fun L : Module.End ℂ U => L x) (hc κ)
   simpa [sub, Module.End.mul_apply] using this.symm
 
+/- English proof (translation)
+Introduce `κ`. Use extensionality with `⟨y, hy⟩`. Use `congrArg (fun L => L y) (hF κ)` as an intermediate fact. Simplify `this` using `[sub]`.
+-/
 theorem isKMap_comp_subtype (hc : ∀ κ : K, σ κ * e = e * σ κ) {F : U →ₗ[ℂ] V} (hF : IsKMap K σ ρ F) :
     IsKMap K (sub σ (LinearMap.range e) (range_stable hc)) ρ (F ∘ₗ (LinearMap.range e).subtype) := by
   intro κ
@@ -63,6 +74,9 @@ theorem isKMap_comp_subtype (hc : ∀ κ : K, σ κ * e = e * σ κ) {F : U →�
   have := congrArg (fun L => L y) (hF κ)
   simpa [sub] using this
 
+/- English proof (translation)
+Use extensionality with `⟨_, x, rfl⟩`. Use `congrArg (fun L => L x) h0` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.zero_apply] at this`. Conclude with `this`.
+-/
 theorem eq_zero_of_comp_rangeRestrict (he : e * e = e) {f : LinearMap.range e →ₗ[ℂ] V}
     (h0 : f ∘ₗ e.rangeRestrict = 0) : f = 0 := by
   ext ⟨_, x, rfl⟩
@@ -70,6 +84,11 @@ theorem eq_zero_of_comp_rangeRestrict (he : e * e = e) {f : LinearMap.range e �
   simp only [LinearMap.comp_apply, LinearMap.zero_apply] at this
   exact this
 
+/- English proof (translation)
+Introduce `h0`. Apply `hF` to reduce the goal to its premises. Rewrite using `[← hfix]`. Use extensionality with `x`. Use `congrArg (fun L => L ⟨e x, x, rfl⟩) h0` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem comp_subtype_ne_zero {F : U →ₗ[ℂ] V} (hF : F ≠ 0) (hfix : F ∘ₗ e = F) :
     F ∘ₗ (LinearMap.range e).subtype ≠ 0 := by
   intro h0
@@ -79,6 +98,11 @@ theorem comp_subtype_ne_zero {F : U →ₗ[ℂ] V} (hF : F ≠ 0) (hfix : F ∘�
   have := congrArg (fun L => L ⟨e x, x, rfl⟩) h0
   simpa using this
 
+/- English proof (translation)
+Use extensionality with `x`. Establish `h2` using `congrArg (fun L : Module.End ℂ U => L x) heT`. Simplify using `only [Module.End.mul_apply, LinearMap.smul_apply] at h2`. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply]`. Rewrite using `[← map_smul]`.
+
+Use `congr 1`. Conclude with `Subtype.ext (by simpa using h2)`.
+-/
 theorem comp_rangeRestrict_comp {f : LinearMap.range e →ₗ[ℂ] V} {T : Module.End ℂ U} {c : ℂ}
     (heT : e * T = c • e) : (f ∘ₗ e.rangeRestrict) ∘ₗ T = c • (f ∘ₗ e.rangeRestrict) := by
   ext x
@@ -97,6 +121,11 @@ namespace GlobalTheory.KTypeDatum
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Take `⟨-, hfd, h1, h3, -, -, -, -, h4, hN, F5, hF5, hK5, hT5⟩` from `h`. Use `⟨h1, ?_, h3, ?_, ?_⟩` and prove the remaining obligations. Use `haveI := hfd`. Use `infer_instance`. Introduce `r y hd hs hin hn f hf`.
+
+Conclude with `eq_zero_of_comp_rangeRestrict he (h4 r y hd hs hin hn _ (isKMap_comp_rangeRestrict hc hf) fun i hi => comp_rangeRestrict_comp (heT i hi))`. Conclude with `⟨hN, _, comp_subtype_ne_zero hF5 (hfix _ F5 hT5), isKMap_comp_subtype hc hK5⟩`.
+-/
 theorem isKTypeDatum_range {π₀ : IrrGL k} {t N : ℕ} {J : Subgroup (KO k (Fin N))} {W : Type} [AddCommGroup W]
     [Module ℂ W] {τ : Representation ℂ J W} {q : ℕ} {T : ℕ → Module.End ℂ (indSpace J τ)}
     (h : IsHeckeTypeDatum π₀ t J τ q T) (e : Module.End ℂ (indSpace J τ)) (he : e * e = e)

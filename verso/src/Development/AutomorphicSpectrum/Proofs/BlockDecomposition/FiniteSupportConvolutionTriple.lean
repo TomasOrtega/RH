@@ -8,6 +8,9 @@ section Single
 
 variable {G M V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul K g`. Rewrite using `[hh]`. Conclude with `hF g h h.2`.
+-/
 theorem out_invariant (K : Subgroup G) (F : G → M) (hF : ∀ g, ∀ k ∈ K, F (g * k) = F g) (g : G) :
     F ((g : G ⧸ K).out) = F g := by
   obtain ⟨h, hh⟩ := QuotientGroup.mk_out_eq_mul K g
@@ -18,6 +21,9 @@ noncomputable def heckeSum (π : Representation ℂ G V) (K : Subgroup G) (f : G
 
 variable (π : Representation ℂ G V) (K : Subgroup G) {f : G → ℂ}
 
+/- English proof (translation)
+Introduce `q hq`. Simplify using `only [Set.Finite.coe_toFinset, Function.mem_support]`. Introduce `h0`. Conclude with `hq (by simp [h0])`.
+-/
 theorem term_support_subset (hf : (Function.support fun q : G ⧸ K => f q.out).Finite) (u : V) :
     (Function.support fun q : G ⧸ K => f q.out • π q.out u) ⊆ hf.toFinset := by
   intro q hq
@@ -25,10 +31,16 @@ theorem term_support_subset (hf : (Function.support fun q : G ⧸ K => f q.out).
   intro h0
   exact hq (by simp [h0])
 
+/- English proof (translation)
+The claim follows from `finsum_eq_sum_of_support_subset _ (term_support_subset π K hf u)`.
+-/
 theorem heckeSum_eq_sum (hf : (Function.support fun q : G ⧸ K => f q.out).Finite) (u : V) :
     heckeSum π K f u = ∑ q ∈ hf.toFinset, f q.out • π q.out u :=
   finsum_eq_sum_of_support_subset _ (term_support_subset π K hf u)
 
+/- English proof (translation)
+Rewrite using `[heckeSum_eq_sum π K hf, heckeSum_eq_sum π K hf, map_sum]`. Conclude with `Finset.sum_congr rfl fun q _ => by rw [map_smul, hT]`.
+-/
 theorem map_heckeSum (hf : (Function.support fun q : G ⧸ K => f q.out).Finite)
     (T : V →ₗ[ℂ] V) (hT : ∀ g u, T (π g u) = π g (T u)) (u : V) :
     T (heckeSum π K f u) = heckeSum π K f (T u) := by
@@ -38,11 +50,23 @@ theorem map_heckeSum (hf : (Function.support fun q : G ⧸ K => f q.out).Finite)
 noncomputable def heckeLin (hf : (Function.support fun q : G ⧸ K => f q.out).Finite) : V →ₗ[ℂ] V :=
   ∑ q ∈ hf.toFinset, f q.out • π q.out
 
+/- English proof (translation)
+Rewrite using `[heckeSum_eq_sum π K hf, heckeLin, LinearMap.sum_apply]`. Both sides reduce to the same expression.
+-/
 theorem heckeLin_apply (hf : (Function.support fun q : G ⧸ K => f q.out).Finite) (u : V) :
     heckeLin π K hf u = heckeSum π K f u := by
   rw [heckeSum_eq_sum π K hf, heckeLin, LinearMap.sum_apply]
   rfl
 
+/- English proof (translation)
+Establish `hF : ∀ g, ∀ c ∈ K, (fun g => f g • π g u) (g * c) = (fun g => f g • π g u) g`. Introduce `g c hc`. Simplify using `only [map_mul, Module.End.mul_apply, hu c hc, hr c hc]`. Establish `key : ∀ q : G ⧸ K, π k (f q.out • π q.out u) = (fun q : G ⧸ K => f q.out • π q.out u) ((MulAction.toPerm k : Equiv.Perm (G ⧸ K)) q)`. Introduce `q`.
+
+Establish `hq : (MulAction.toPerm k : Equiv.Perm (G ⧸ K)) q = ((k * q.out : G) : G ⧸ K)` using `by conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Establish `h1` using `out_invariant K (fun g => f g • π g u) hF (k * q.out)`. Simplify using `only [hq]`. Rewrite using `[h1, map_smul, hl k hk, map_mul, Module.End.mul_apply]`.
+
+Establish `h2 : π k (heckeSum π K f u) = ∑ᶠ q : G ⧸ K, π k (f q.out • π q.out u)`. Rewrite using `[heckeSum_eq_sum π K hf, map_sum]`. Use `(finsum_eq_sum_of_support_subset _ ?_).symm` and prove the remaining obligations. Introduce `q hq`. Use `term_support_subset π K hf u ?_` and prove the remaining obligations.
+
+Introduce `h0`. Conclude with `hq (by simp only [h0, map_zero])`. Rewrite using `[h2, finsum_congr key]`. Conclude with `finsum_comp_equiv (f := fun q : G ⧸ K => f q.out • π q.out u) (MulAction.toPerm k : Equiv.Perm (G ⧸ K))`.
+-/
 theorem heckeSum_fixed (hf : (Function.support fun q : G ⧸ K => f q.out).Finite)
     (hl : ∀ k ∈ K, ∀ g, f (k * g) = f g) (hr : ∀ k ∈ K, ∀ g, f (g * k) = f g)
     (u : V) (hu : ∀ k ∈ K, π k u = u) (k : G) (hk : k ∈ K) :
@@ -106,6 +130,11 @@ noncomputable abbrev left : Representation ℂ G₁ V := ρ.comp (MonoidHom.inl 
 
 noncomputable abbrev right : Representation ℂ G₂ V := ρ.comp (MonoidHom.inr G₁ G₂)
 
+/- English proof (translation)
+Establish `e1 : left ρ g (right ρ h u) = ρ ((g, 1) * (1, h)) u`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Establish `e2 : right ρ h (left ρ g u) = ρ ((1, h) * (g, 1)) u`. Rewrite using `[map_mul]`.
+
+Both sides reduce to the same expression. Rewrite using `[e1, e2]`. Simplify using the standard rewrite rules.
+-/
 theorem left_right_comm (g : G₁) (h : G₂) (u : V) :
     left ρ g (right ρ h u) = right ρ h (left ρ g u) := by
   have e1 : left ρ g (right ρ h u) = ρ ((g, 1) * (1, h)) u := by
@@ -114,6 +143,9 @@ theorem left_right_comm (g : G₁) (h : G₂) (u : V) :
     rw [map_mul]; rfl
   rw [e1, e2]; simp
 
+/- English proof (translation)
+Establish `: ((g, h) : G₁ × G₂) = (g, 1) * (1, h)` using `by simp`. Rewrite using `[this, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem left_right_mul (g : G₁) (h : G₂) (u : V) :
     ρ (g, h) u = left ρ g (right ρ h u) := by
   have : ((g, h) : G₁ × G₂) = (g, 1) * (1, h) := by simp
@@ -121,6 +153,9 @@ theorem left_right_mul (g : G₁) (h : G₂) (u : V) :
 
 variable {f : G₁ → ℂ} {f' : G₂ → ℂ}
 
+/- English proof (translation)
+Rewrite using `[← heckeLin_apply (left ρ) K₁ hf, ← heckeLin_apply (left ρ) K₁ hf]`. Use `map_heckeSum (right ρ) K₂ hf' _ (fun h w => ?_) u` and prove the remaining obligations. Rewrite using `[heckeLin_apply (left ρ) K₁ hf, heckeLin_apply (left ρ) K₁ hf]`. Conclude with `map_heckeSum (left ρ) K₁ hf (right ρ h) (fun g w => (left_right_comm ρ g h w).symm) w |>.symm`.
+-/
 theorem sum_left_right_comm (hf : (Function.support fun q : G₁ ⧸ K₁ => f q.out).Finite)
     (hf' : (Function.support fun q : G₂ ⧸ K₂ => f' q.out).Finite) (u : V) :
     heckeSum (left ρ) K₁ f (heckeSum (right ρ) K₂ f' u)
@@ -130,6 +165,15 @@ theorem sum_left_right_comm (hf : (Function.support fun q : G₁ ⧸ K₁ => f q
   rw [heckeLin_apply (left ρ) K₁ hf, heckeLin_apply (left ρ) K₁ hf]
   exact map_heckeSum (left ρ) K₁ hf (right ρ h) (fun g w => (left_right_comm ρ g h w).symm) w |>.symm
 
+/- English proof (translation)
+Establish `hF : ∀ g, ∀ c ∈ K₁.prod K₂, (fun g : G₁ × G₂ => (f g.1 * f' g.2) • ρ g u) (g * c) = (fun g : G₁ × G₂ => (f g.1 * f' g.2) • ρ g u) g`. Introduce `g c hc`. Establish `hc'` using `Subgroup.mem_prod.1 hc`. Simplify using `only [map_mul, Module.End.mul_apply, hu c hc, Prod.fst_mul, Prod.snd_mul, hr c.1 hc'.1, hr' c.2 hc'.2]`. Rewrite using `[← finsum_comp_equiv (cosetPairEquiv K₁ K₂)]`.
+
+Establish `h1 : ∀ p : (G₁ ⧸ K₁) × (G₂ ⧸ K₂), (f ((cosetPairEquiv K₁ K₂ p).out.1) * f' ((cosetPairEquiv K₁ K₂ p).out.2)) • ρ (cosetPairEquiv K₁ K₂ p).out u = (f p.1.out * f' p.2.out) • ρ (p.1.out, p.2.out) u` using `fun p => out_invariant (K₁.prod K₂) (fun g : G₁ × G₂ => (f g.1 * f' g.2) • ρ g u) hF (p.1.out, p.2.out)`. Rewrite using `[finsum_congr h1, finsum_eq_sum_of_support_subset (s := hf.toFinset ×ˢ hf'.toFinset) _ ?_, Finset.sum_product, heckeSum_eq_sum _ K₁ hf]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[heckeSum_eq_sum _ K₂ hf', map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[left_right_mul, map_smul, smul_smul]`. Introduce and unpack `⟨a, b⟩ hp`. Simplify using `only [Finset.coe_product, Set.Finite.coe_toFinset, Set.mem_prod, Function.mem_support]`. Prove the components needed by the constructor for the conclusion. Introduce `h0; exact hp (by simp [h0])`.
+
+Introduce `h0; exact hp (by simp [h0])`.
+-/
 theorem product_sum (hf : (Function.support fun q : G₁ ⧸ K₁ => f q.out).Finite)
     (hf' : (Function.support fun q : G₂ ⧸ K₂ => f' q.out).Finite)
     (hr : ∀ k ∈ K₁, ∀ g, f (g * k) = f g) (hr' : ∀ k ∈ K₂, ∀ g, f' (g * k) = f' g)
@@ -160,6 +204,11 @@ theorem product_sum (hf : (Function.support fun q : G₁ ⧸ K₁ => f q.out).Fi
     · intro h0; exact hp (by simp [h0])
     · intro h0; exact hp (by simp [h0])
 
+/- English proof (translation)
+Introduce and unpack `⟨c₁, c₂⟩ hc`. Establish `hc'` using `Subgroup.mem_prod.1 hc`. Establish `hu₁ : ∀ k ∈ K₁, left ρ k u = u` using `fun k hk => hu (k, 1) (Subgroup.mem_prod.2 ⟨hk, K₂.one_mem⟩)`. Establish `hu₂ : right ρ c₂ u = u` using `hu (1, c₂) (Subgroup.mem_prod.2 ⟨K₁.one_mem, hc'.2⟩)`. Rewrite using `[left_right_mul, map_heckeSum (left ρ) K₁ hf (right ρ c₂) (fun g w => (left_right_comm ρ g c₂ w).symm), hu₂]`.
+
+Conclude with `heckeSum_fixed (left ρ) K₁ hf hl hr u hu₁ c₁ hc'.1`.
+-/
 theorem fixed_left (hf : (Function.support fun q : G₁ ⧸ K₁ => f q.out).Finite)
     (hl : ∀ k ∈ K₁, ∀ g, f (k * g) = f g) (hr : ∀ k ∈ K₁, ∀ g, f (g * k) = f g)
     (u : V) (hu : ∀ k ∈ K₁.prod K₂, ρ k u = u) :
@@ -173,6 +222,9 @@ theorem fixed_left (hf : (Function.support fun q : G₁ ⧸ K₁ => f q.out).Fin
     (fun g w => (left_right_comm ρ g c₂ w).symm), hu₂]
   exact heckeSum_fixed (left ρ) K₁ hf hl hr u hu₁ c₁ hc'.1
 
+/- English proof (translation)
+Introduce and unpack `⟨c₁, c₂⟩ hc`. Establish `hc'` using `Subgroup.mem_prod.1 hc`. Establish `hu₁ : left ρ c₁ u = u` using `hu (c₁, 1) (Subgroup.mem_prod.2 ⟨hc'.1, K₂.one_mem⟩)`. Establish `hu₂ : ∀ k ∈ K₂, right ρ k u = u` using `fun k hk => hu (1, k) (Subgroup.mem_prod.2 ⟨K₁.one_mem, hk⟩)`. Rewrite using `[left_right_mul, heckeSum_fixed (right ρ) K₂ hf' hl hr u hu₂ c₂ hc'.2, map_heckeSum (right ρ) K₂ hf' (left ρ c₁) (fun h w => left_right_comm ρ c₁ h w), hu₁]`.
+-/
 theorem fixed_right (hf' : (Function.support fun q : G₂ ⧸ K₂ => f' q.out).Finite)
     (hl : ∀ k ∈ K₂, ∀ g, f' (k * g) = f' g) (hr : ∀ k ∈ K₂, ∀ g, f' (g * k) = f' g)
     (u : V) (hu : ∀ k ∈ K₁.prod K₂, ρ k u = u) :
@@ -187,6 +239,13 @@ theorem fixed_right (hf' : (Function.support fun q : G₂ ⧸ K₂ => f' q.out).
 
 end Product
 
+/- English proof (translation)
+Introduce `G₁ G₂ V _ _ _ _ ρ K₁ K₂ f₁ f₁' f₁'' f₂ f₂' f₂'' h1 h2 hA hB v hv`. Take `⟨a, ai⟩` from `h1 f₁ (by simp)`. Take `⟨a', ai'⟩` from `h1 f₁' (by simp)`. Take `⟨a'', ai''⟩` from `h1 f₁'' (by simp)`. Take `⟨b, bi⟩` from `h2 f₂ (by simp)`.
+
+Take `⟨b', bi'⟩` from `h2 f₂' (by simp)`. Take `⟨b'', bi''⟩` from `h2 f₂'' (by simp)`. Establish `hA' : ∀ w : V, (∀ k ∈ K₁, left ρ k w = w) → heckeSum (left ρ) K₁ f₁'' w = heckeSum (left ρ) K₁ f₁ (heckeSum (left ρ) K₁ f₁' w)` using `hA`. Establish `hB' : ∀ w : V, (∀ k ∈ K₂, right ρ k w = w) → heckeSum (right ρ) K₂ f₂'' w = heckeSum (right ρ) K₂ f₂ (heckeSum (right ρ) K₂ f₂' w)` using `hB`. Establish `hv₂ : ∀ k ∈ K₂, right ρ k v = v` using `fun k hk => hv (1, k) (Subgroup.mem_prod.2 ⟨K₁.one_mem, hk⟩)`.
+
+Establish `hy` using `fixed_right ρ K₁ K₂ b' (fun k hk g => (bi' k hk g).1) (fun k hk g => (bi' k hk g).2) v hv`. Establish `hx` using `fixed_right ρ K₁ K₂ b (fun k hk g => (bi k hk g).1) (fun k hk g => (bi k hk g).2) _ hy`. Establish `hw` using `fixed_left ρ K₁ K₂ a' (fun k hk g => (ai' k hk g).1) (fun k hk g => (ai' k hk g).2) _ hy`. Establish `hx₁ : ∀ k ∈ K₁, left ρ k (heckeSum (right ρ) K₂ f₂ (heckeSum (right ρ) K₂ f₂' v)) = heckeSum (right ρ) K₂ f₂ (heckeSum (right ρ) K₂ f₂' v)` using `fun k hk => hx (k, 1) (Subgroup.mem_prod.2 ⟨hk, K₂.one_mem⟩)`. Rewrite using `[product_sum ρ K₁ K₂ a'' b'' (fun k hk g => (ai'' k hk g).2) (fun k hk g => (bi'' k hk g).2) v hv, product_sum ρ K₁ K₂ a' b' (fun k hk g => (ai' k hk g).2) (fun k hk g => (bi' k hk g).2) v hv, product_sum ρ K₁ K₂ a b (fun k hk g => (ai k hk g).2) (fun k hk g => (bi k hk g).2) _ h …`.
+-/
 theorem product_operators_mul : ∀ (G₁ G₂ V : Type) [Group G₁] [Group G₂] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (G₁ × G₂) V) (K₁ : Subgroup G₁) (K₂ : Subgroup G₂) (f₁ f₁' f₁'' : G₁ → ℂ) (f₂ f₂' f₂'' : G₂ → ℂ), (∀ f ∈ ({f₁, f₁', f₁''} : Set (G₁ → ℂ)), (Function.support fun q : G₁ ⧸ K₁ => f q.out).Finite ∧ ∀ k ∈ K₁, ∀ g, f (k * g) = f g ∧ f (g * k) = f g) → (∀ f ∈ ({f₂, f₂', f₂''} : Set (G₂ → ℂ)), (Function.support fun q : G₂ ⧸ K₂ => f q.out).Finite ∧ ∀ k ∈ K₂, ∀ g, f (k * g) = f g ∧ f (g * k) = f g) → (∀ v : V, (∀ k ∈ K₁, ρ (k, 1) v = v) → ∑ᶠ q : G₁ ⧸ K₁, f₁'' q.out • ρ (q.out, 1) v = ∑ᶠ q : G₁ ⧸ K₁, f₁ q.out • ρ (q.out, 1) (∑ᶠ q' : G₁ ⧸ K₁, f₁' q'.out • ρ (q'.out, 1) v)) → (∀ v : V, (∀ k ∈ K₂, ρ (1, k) v = v) → ∑ᶠ q : G₂ ⧸ K₂, f₂'' q.out • ρ (1, q.out) v = ∑ᶠ q : G₂ ⧸ K₂, f₂ q.out • ρ (1, q.out) (∑ᶠ q' : G₂ ⧸ K₂, f₂' q'.out • ρ (1, q'.out) v)) → ∀ v : V, (∀ k ∈ K₁.prod K₂, ρ k v = v) → ∑ᶠ q : (G₁ × G₂) ⧸ K₁.prod K₂, (f₁'' q.out.1 * f₂'' q.out.2) • ρ q.out v = ∑ᶠ q : (G₁ × G₂) ⧸ K₁.prod K₂, (f₁ q.out.1 * f₂ q.out.2) • ρ q.out (∑ᶠ q' : (G₁ × G₂) ⧸ K₁.prod K₂, (f₁' q'.out.1 * f₂' q'.out.2) • ρ q'.out v) := by
   intro G₁ G₂ V _ _ _ _ ρ K₁ K₂ f₁ f₁' f₁'' f₂ f₂' f₂'' h1 h2 hA hB v hv
   obtain ⟨a, ai⟩ := h1 f₁ (by simp)

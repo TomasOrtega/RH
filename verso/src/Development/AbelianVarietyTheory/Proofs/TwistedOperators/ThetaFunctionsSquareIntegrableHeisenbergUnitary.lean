@@ -6,6 +6,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.ThetaSquare
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.ThetaSquare.theta_square_integrable`.
+-/
 theorem thetaFunctions_squareIntegrable_heisenbergUnitary : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.ThetaSquareIntegrable D :=
   GlobalTheory.ThetaSquare.theta_square_integrable
 

@@ -55,6 +55,13 @@ def toSnd : snd G G' ⋙ G' ⟶ opn G G' where
   app d := (homOfLE (show d.W ≤ (G'.obj d.t').unop from d.le')).op
   naturality _ _ _ := Quiver.Hom.unop_inj (Subsingleton.elim _ _)
 
+/- English proof (translation)
+Use `⟨fun x U hx => ?_, fun d₁ d₂ x U hx h₁ h₂ => ?_⟩` and prove the remaining obligations. Take `⟨t, hxt, htU⟩` from `hG.1 x U hx`. Take `⟨t', hxt', ht'⟩` from `hG'.1 x (opOf G t ⊓ U) ⟨hxt, hx⟩`. Conclude with `⟨⟨t, t', (G'.obj t').unop, ht'.trans inf_le_left, le_rfl⟩, hxt', ht'.trans inf_le_right⟩`. Establish `hx₃ : x ∈ U ⊓ d₁.W.1 ⊓ d₂.W.1` using `⟨⟨hx, h₁⟩, h₂⟩`.
+
+Take `⟨t, a₁, a₂, hxt, htU⟩` from `hG.2 d₁.t d₂.t x _ hx₃ (d₁.le h₁) (d₂.le h₂)`. Take `⟨t', b₁, b₂, hxt', ht'⟩` from `hG'.2 d₁.t' d₂.t' x (opOf G t) hxt (d₁.le' h₁) (d₂.le' h₂)`. Use `⟨⟨t, t', (G'.obj t').unop, ht', le_rfl⟩, ⟨(a₁.some, b₁.some, ⟨?_⟩)⟩, ⟨(a₂.some, b₂.some, ⟨?_⟩)⟩, hxt', ?_⟩` and prove the remaining obligations. Conclude with `ht'.trans (htU.trans (inf_le_left.trans inf_le_right))`. Conclude with `ht'.trans (htU.trans inf_le_right)`.
+
+Conclude with `ht'.trans (htU.trans (inf_le_left.trans inf_le_left))`.
+-/
 theorem isBas (hG : IsBas (opOf G)) (hG' : IsBas (opOf G')) : IsBas (opOf (opn G G')) := by
   refine ⟨fun x U hx => ?_, fun d₁ d₂ x U hx h₁ h₂ => ?_⟩
   · obtain ⟨t, hxt, htU⟩ := hG.1 x U hx
@@ -70,6 +77,9 @@ theorem isBas (hG : IsBas (opOf G)) (hG' : IsBas (opOf G')) : IsBas (opOf (opn G
 
 end CommonRef
 
+/- English proof (translation)
+Introduce `X C C' _ _ _ _ G G' hG hG'` and use `⟨CommonRef G G', inferInstance, inferInstance, CommonRef.opn G G', CommonRef.fst G G', CommonRef.snd G G', ⟨CommonRef.toFst G G'⟩, ⟨CommonRef.toSnd G G'⟩, CommonRef.isBas G G' hG hG'⟩`.
+-/
 theorem common_refinement : ∀ (X : Scheme.{0}) (C C' : Type) [Category.{0} C] [Category.{0} C'] [Quiver.IsThin C] [Quiver.IsThin C'] (G : C ⥤ AffOp X) (G' : C' ⥤ AffOp X), IsBas (opOf G) → IsBas (opOf G') → ∃ (D : Type) (_ : Category.{0} D) (_ : Quiver.IsThin D) (K : D ⥤ AffOp X) (H : D ⥤ C) (H' : D ⥤ C'), Nonempty (H ⋙ G ⟶ K) ∧ Nonempty (H' ⋙ G' ⟶ K) ∧ IsBas (opOf K) :=
   fun X C C' _ _ _ _ G G' hG hG' =>
     ⟨CommonRef G G', inferInstance, inferInstance, CommonRef.opn G G', CommonRef.fst G G', CommonRef.snd G G',

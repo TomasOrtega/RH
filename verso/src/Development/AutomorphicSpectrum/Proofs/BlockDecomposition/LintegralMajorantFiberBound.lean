@@ -7,6 +7,25 @@ open MeasureTheory Matrix GlobalTheory.CompanionTheory.MajC Ad3.K.LC Ad3.K.LC.B
 
 namespace GlobalTheory.CompanionTheory.MajC.TB
 
+/- English proof (translation)
+Establish `hAD : 0 < A * D` using `mul_pos hA hD`. Take `⟨T₀, hT₀⟩ : ∃ T₀, T₀ = √(A * D)` from `⟨_, rfl⟩`. Rewrite using `[← hT₀]`. Establish `hT₀p : 0 < T₀` using `hT₀ ▸ Real.sqrt_pos.mpr hAD`. Establish `hsq : T₀ ^ 2 = A * D` using `by rw [hT₀]; exact Real.sq_sqrt hAD.le`.
+
+Establish `hTE : 0 < T * E` using `mul_pos hT hE`. Establish `hs : (0 : ℝ) ≤ 2 * ε` using `by positivity`. Establish `hc : 0 < D * E ^ 2 / A` using `by positivity`. Take `⟨x, hx⟩ : ∃ x, x = T * E / (A + T * E)` from `⟨_, rfl⟩`. Establish `hx0 : 0 < x` using `by rw [hx]; positivity`.
+
+Establish `hx1 : x ≤ 1`. Rewrite using `[hx, div_le_one (by positivity)]; linarith`. Establish `hxA : x ≤ T * E / A`. Rewrite using `[hx]; exact div_le_div_of_nonneg_left hTE.le hA (by linarith)`. Establish `e1 : (T * E / A) ^ (2 * ε) = (D * E ^ 2 / A) ^ ε * (T / T₀) ^ (2 * ε)`.
+
+Rewrite using `[Real.rpow_mul (by positivity), Real.rpow_mul (by positivity), Real.rpow_two, Real.rpow_two, ← Real.mul_rpow hc.le (by positivity)]`. Use `congr 1`. Rewrite using `[div_pow, div_pow, hsq]`. Clear the denominators using the available nonvanishing facts. Establish `hxN : x ^ N ≤ (D * E ^ 2 / A) ^ ε * (T / T₀) ^ (2 * ε)`.
+
+Rewrite using `[← e1, ← Real.rpow_natCast]`. Conclude with `(Real.rpow_le_rpow_of_exponent_ge hx0 hx1 hN).trans (Real.rpow_le_rpow hx0.le hxA hs)`. Establish `hxN1 : x ^ N ≤ 1` using `pow_le_one₀ hx0.le hx1`. Take `⟨w, hw⟩ : ∃ w, w = T / (D * E)` from `⟨_, rfl⟩`. Establish `hw0 : 0 < w` using `by rw [hw]; positivity`.
+
+Establish `e2 : (w⁻¹) ^ (2 * ε) = (D * E ^ 2 / A) ^ ε * (T₀ / T) ^ (2 * ε)`. Rewrite using `[Real.rpow_mul (by positivity), Real.rpow_mul (by positivity), Real.rpow_two, Real.rpow_two, ← Real.mul_rpow hc.le (by positivity)]`. Use `congr 1`. Rewrite using `[hw, div_pow, hsq, inv_pow, div_pow, mul_pow]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hwN : ((1 + w) ^ N)⁻¹ ≤ (D * E ^ 2 / A) ^ ε * (T₀ / T) ^ (2 * ε)`. Rewrite using `[← e2, Real.inv_rpow hw0.le]`. Apply `inv_anti₀ (Real.rpow_pos_of_pos hw0 _)` to reduce the goal to its premises. Rewrite using `[← Real.rpow_natCast]`. Conclude with `(Real.rpow_le_rpow hw0.le (by linarith) hs).trans (Real.rpow_le_rpow_of_exponent_le (by linarith) hN)`.
+
+Establish `hwN1 : ((1 + w) ^ N)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (one_le_pow₀ (by linarith))`. Establish `hwN0 : 0 ≤ ((1 + w) ^ N)⁻¹` using `by positivity`. Rewrite using `[← hx, ← hw, mul_min_of_nonneg _ _ (Real.rpow_nonneg hc.le _)]`. Apply `le_min` to reduce the goal to its premises. Conclude with `(mul_le_of_le_one_right (by positivity) hwN1).trans hxN`.
+
+Conclude with `(mul_le_of_le_one_left hwN0 hxN1).trans hwN`.
+-/
 theorem gain_le {ε A D E T : ℝ} {N : ℕ} (hε : 0 < ε) (hN : 2 * ε ≤ N) (hA : 0 < A) (hD : 0 < D)
     (hE : 0 < E) (hT : 0 < T) :
     (T * E / (A + T * E)) ^ N * ((1 + T / (D * E)) ^ N)⁻¹ ≤
@@ -60,6 +79,9 @@ theorem gain_le {ε A D E T : ℝ} {N : ℕ} (hε : 0 < ε) (hN : 2 * ε ≤ N) 
   · exact (mul_le_of_le_one_right (by positivity) hwN1).trans hxN
   · exact (mul_le_of_le_one_left hwN0 hxN1).trans hwN
 
+/- English proof (translation)
+Rewrite using `[Real.rpow_add hD, Real.rpow_add hE, Real.rpow_neg hA.le, Real.rpow_neg hD.le, Real.rpow_neg hE.le, Real.rpow_two, Real.rpow_two, Real.div_rpow (by positivity) hA.le, Real.mul_rpow hD.le (by positivity), Real.rpow_mul hE.le, Real.rpow_two]`. Use `(Real.rpow_pos_of_pos hA ε).ne'` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+-/
 theorem const_eq {ε A D E : ℝ} (hA : 0 < A) (hD : 0 < D) (hE : 0 < E) :
     (D ^ 2 * E ^ 2)⁻¹ * (D * E ^ 2 / A) ^ ε = A ^ (-ε) * D ^ (-2 + ε) * E ^ (-2 + 2 * ε) := by
   rw [Real.rpow_add hD, Real.rpow_add hE, Real.rpow_neg hA.le, Real.rpow_neg hD.le,
@@ -68,6 +90,13 @@ theorem const_eq {ε A D E : ℝ} (hA : 0 < A) (hD : 0 < D) (hE : 0 < E) :
   have := (Real.rpow_pos_of_pos hA ε).ne'
   field_simp
 
+/- English proof (translation)
+Establish `hA : 0 < ‖a‖` using `norm_pos_iff.mpr ha`. Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Simplify using `[jm, kern]`. Establish `hT : 0 < ‖t‖` using `norm_pos_iff.mpr ht`.
+
+Establish `key` using `gain_le (T := ‖t‖) hε hN hA hD hE hT`. Establish `hP : 0 ≤ ((1 + ‖h‖) ^ N)⁻¹` using `by positivity`. Establish `hQ : 0 ≤ ((1 + ‖b‖ * ‖eta h‖) ^ N)⁻¹` using `by positivity`. Establish `hI : 0 ≤ (dt h ^ 2 * ‖eta h‖ ^ 2)⁻¹ * (‖t‖ ^ 2)⁻¹ * ((1 + ‖h‖) ^ N)⁻¹ * ((1 + ‖b‖ * ‖eta h‖) ^ N)⁻¹` using `by positivity`. Use `mul_le_mul_of_nonneg_left key hI` as an intermediate fact.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [jm, dt, mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := this`. Use `_ = _ := by simp only [kern]; ring`.
+-/
 theorem jm_le_kern {ε : ℝ} (hε : 0 < ε) {N : ℕ} (hN : 2 * ε ≤ N) (h : M22) (a b t : ℂ) (ha : a ≠ 0)
     (hD : 0 < dt h) (hE : 0 < ‖eta h‖) :
     jm N h t a b ≤ (dt h ^ 2 * ‖eta h‖ ^ 2)⁻¹ * (dt h * ‖eta h‖ ^ 2 / ‖a‖) ^ ε *
@@ -90,6 +119,15 @@ theorem jm_le_kern {ε : ℝ} (hε : 0 < ε) {N : ℕ} (hN : 2 * ε ≤ N) (h : 
     _ ≤ _ := this
     _ = _ := by simp only [kern]; ring
 
+/- English proof (translation)
+Introduce `ε K hε hK hker N hN h a b ha hD hE`. Establish `hA : 0 < ‖a‖` using `norm_pos_iff.mpr ha`. Take `⟨C, hC⟩ : ∃ C, C = (dt h ^ 2 * ‖eta h‖ ^ 2)⁻¹ * (dt h * ‖eta h‖ ^ 2 / ‖a‖) ^ ε * ((1 + ‖h‖) ^ N)⁻¹ * ((1 + ‖b‖ * ‖eta h‖) ^ N)⁻¹` from `⟨_, rfl⟩`. Establish `hC0 : 0 ≤ C`. Rewrite using `[hC]`.
+
+Establish `: 0 ≤ (dt h * ‖eta h‖ ^ 2 / ‖a‖) ^ ε` using `Real.rpow_nonneg (by positivity) _`. Check the signs of the components of the expression. Establish `hT₀ : 0 < √(‖a‖ * dt h)` using `Real.sqrt_pos.mpr (mul_pos hA hD)`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun t => ?_` and prove the remaining obligations.
+
+Rewrite using `[← ENNReal.ofReal_mul hC0, hC]`. Conclude with `ENNReal.ofReal_le_ofReal (jm_le_kern hε hN h a b t ha hD hE)`. Use `_ = ENNReal.ofReal C * ∫⁻ t : ℂ, ENNReal.ofReal (kern (2 * ε) (√(‖a‖ * dt h)) t) := lintegral_const_mul' _ _ ENNReal.ofReal_ne_top`. Use `_ ≤ ENNReal.ofReal C * ENNReal.ofReal K := by gcongr; exact hker _ hT₀`. Use `_ = ENNReal.ofReal (C * K) := (ENNReal.ofReal_mul hC0).symm`.
+
+Use `_ = _ := by`. Use `congr 1`. Rewrite using `[hC, const_eq hA hD hE]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lintegral_jm_le : ∀ (ε K : ℝ), 0 < ε → 0 ≤ K →
     (∀ T₀ : ℝ, 0 < T₀ → ∫⁻ z : ℂ, ENNReal.ofReal (kern (2 * ε) T₀ z) ≤ ENNReal.ofReal K) →
     ∀ N : ℕ, 2 * ε ≤ N → ∀ (h : M22) (a b : ℂ), a ≠ 0 → 0 < dt h → 0 < ‖eta h‖ →

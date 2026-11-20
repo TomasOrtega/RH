@@ -12,6 +12,21 @@ open FourierTransform MeasureTheory Filter Topology
 
 namespace GlobalTheory.SchwartzGaussDense
 
+/- English proof (translation)
+Introduce `E _ _ _ _ _ N G hG hGN hD hL`. Take `⟨W, hWN, hGW, hLW, hFW⟩` from `GlobalTheory.T.exists_fourier_stable_submodule_containing_gaussian E N G hG hGN hD hL`. Take `⟨hLM, hFM⟩` from `GlobalTheory.T.topologicalClosure_stable_linearForm_mul_and_fourier E W hLW hFW`. Use `set M := W.topologicalClosure with hMdef`. Establish `hcl : IsClosed (M : Set (SchwartzMap E ℂ))` using `W.isClosed_topologicalClosure`.
+
+Establish `hGM : G ∈ M` using `W.le_topologicalClosure hGW`. Establish `hgauss` using `GlobalTheory.T.mem_all_gaussianWidths_of_fourierStable_schwartz E M hcl hLM hFM G hG hGM`. Establish `key : ∀ (h f : SchwartzMap E ℂ), (∃ b : ℝ, 0 < b ∧ ∀ y, f y = Complex.exp (-((b * ‖y‖ ^ 2 : ℝ) : ℂ)) * h y) → f ∈ M`. Introduce and unpack `h f ⟨b, hb, hf⟩`. Establish `hsub : {u : SchwartzMap E ℂ | ∃ (c : ℝ) (s : ℂ), 0 < c ∧ ∀ y, u y = s * ∫ a, f a * Complex.exp (-((c * ‖y - a‖ ^ 2 : ℝ) : ℂ))} ⊆ (M : Set (SchwartzMap E ℂ))`.
+
+Introduce and unpack `u ⟨c, s, hc, hu⟩`. Distinguish the cases in `hs : s = 0`. Establish `: u = 0` using `by ext y; simp [hu y, hs]`. Rewrite using `[this]`. Conclude with `M.zero_mem`.
+
+Establish `hu' : ∀ y, (s⁻¹ • u) y = ∫ a, Complex.exp (-((b * ‖a‖ ^ 2 : ℝ) : ℂ)) * h a * Complex.exp (-((c * ‖y - a‖ ^ 2 : ℝ) : ℂ))`. Introduce `y`. Rewrite using `[SchwartzMap.smul_apply, hu y, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hs, one_mul]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+
+Rewrite using `[hf a]`. Establish `hmem` using `GlobalTheory.T.mem_of_closedSubmodule_gaussian_convolution E M hcl hLM b c hb hc (hgauss c hc) h (s⁻¹ • u) hu'`. Establish `: u = s • (s⁻¹ • u)` using `by rw [smul_smul, mul_inv_cancel₀ hs, one_smul]`. Rewrite using `[this]`. Conclude with `M.smul_mem s hmem`.
+
+Conclude with `closure_minimal hsub hcl (GlobalTheory.T.mem_closure_gaussian_convolutions E f)`. Establish `hall : ∀ h : SchwartzMap E ℂ, h ∈ M`. Introduce `h`. Conclude with `closure_minimal (fun f hf => key h f hf) hcl (GlobalTheory.T.mem_closure_wideGaussian_mul_schwartz E h)`. Establish `htop : N.topologicalClosure = ⊤`.
+
+Rewrite using `[eq_top_iff]`. Introduce `h _`. Conclude with `Submodule.topologicalClosure_mono hWN (hall h)`. Conclude with `(Submodule.dense_iff_topologicalClosure_eq_top).2 htop`.
+-/
 theorem dense_of_stdGaussian_mem : ∀ (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
     (N : Submodule ℂ (SchwartzMap E ℂ)) (G : SchwartzMap E ℂ),
     (∀ y, G y = Complex.exp (-((Real.pi * ‖y‖ ^ 2 : ℝ) : ℂ))) → G ∈ N →
@@ -52,6 +67,13 @@ theorem dense_of_stdGaussian_mem : ∀ (E : Type) [NormedAddCommGroup E] [InnerP
     exact Submodule.topologicalClosure_mono hWN (hall h)
   exact (Submodule.dense_iff_topologicalClosure_eq_top).2 htop
 
+/- English proof (translation)
+Introduce `V _ _ _ N g Q c hc hQ hg hgN hD hL`. Take `⟨A, hA⟩` from `GlobalTheory.T.exists_euclidean_equiv_pi_mul_norm_sq_eq_re V Q c hc hQ`. Take `⟨N₂, hD₂, hL₂, hG₂, hdense⟩` from `GlobalTheory.T.schwartz_density_transport_linearEquiv_chirp V _ A Q N hA hD hL`. Apply `hdense` to reduce the goal to its premises. Set `G` to `GroundTheory.Global.gaussianSchwartz (EuclideanSpace ℝ (Fin (Module.finrank ℝ V)))`.
+
+Establish `hG : ∀ y, G y = Complex.exp (-((Real.pi * ‖y‖ ^ 2 : ℝ) : ℂ))`. Introduce `y`. Simplify using `only [G, GroundTheory.Global.gaussianSchwartz_apply, Complex.ofReal_exp]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `dense_of_stdGaussian_mem _ N₂ G hG (hG₂ g G hg hgN hG) hD₂ hL₂`.
+-/
 theorem dense_of_gaussian_mem : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (N : Submodule ℂ (SchwartzMap V ℂ))
     (g : SchwartzMap V ℂ) (Q : V →L[ℝ] V →L[ℝ] ℂ) (c : ℝ), 0 < c → (∀ x, c * ‖x‖ ^ 2 ≤ (Q x x).re) →
     (∀ x, g x = Complex.exp (-(Q x x))) → g ∈ N →

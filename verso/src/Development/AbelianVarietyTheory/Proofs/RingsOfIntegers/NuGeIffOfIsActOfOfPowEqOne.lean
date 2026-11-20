@@ -20,12 +20,28 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A]
 
+/- English proof (translation)
+Rewrite using `[h, Units.val_mul, Units.val_mul]`. Establish `hb : ((b⁻¹ : Rˣ) : R) * b = 1` using `Units.inv_mul b`. Take the linear combination `(-((a : R) * c * y)) * hb`.
+-/
 private theorem units_mul_eq_mul_of_eq_mul {R : Type*} [CommRing R] (a b c : Rˣ) (x y : R) (h : x = y * c) :
     (a : R) * x = ((a * b⁻¹ * c : Rˣ) : R) * ((b : R) * y) := by
   rw [h, Units.val_mul, Units.val_mul]
   have hb : ((b⁻¹ : Rˣ) : R) * b = 1 := Units.inv_mul b
   linear_combination (-((a : R) * c * y)) * hb
 
+/- English proof (translation)
+Establish `hcomp : (translT A θ.pt).left ≫ (snd T A).left = (translPt A θ.pt).left`. Rewrite using `[← Over.comp_left]`. Unfold `translT`. Simplify using the standard rewrite rules. Introduce `j`.
+
+Use `fn_ext fun x hx => ?_` and prove the remaining obligations. Take `⟨J, hJ, -⟩` from `exists_good L hL x (K := Empty) (fun e => e.elim) (fun e => e.elim) (fun e => e.elim) (fun e => e.elim)`. Establish `hx0 : x ∈ L.wchart (fun _ : Fin 1 => (snd T A).left) (fun _ => j 0)` using `Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hx 0`. Establish `hx1 : (𝟙 _ ≫ (translT A θ.pt).left) x ∈ L.wchart (fun _ : Fin 1 => (snd T A).left) (fun _ => j 1)`. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations.
+
+Establish `h1` using `Set.mem_iInter.1 hx 1`. Simplify `h1` using `[← hcomp]`. Establish `e1` using `sec_trans s' (𝟙 _) x hx0 (hJ.mem _ (𝟙 _))`. Establish `e2` using `sec_trans s (𝟙 _ ≫ (translT A θ.pt).left) x hx1 (hJ.mem _ _)`. Establish `e3` using `gen_trans θ.isGen (𝟙 _) x hx (hJ.mem _ (𝟙 _))`.
+
+Establish `key` using `h x J hJ`. Unfold `sval val at key`. Use `(gs_res (𝟙 _) x _ hx _).trans (e1.trans ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (gs_mul (𝟙 _) x _ hx _ _).symm` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg₂ (· * ·) (gs_unit (𝟙 _) x _ hx _) ((gs_res (𝟙 _) x _ hx _).trans (gs_pull _ _ x _ hx1 _))).symm` and prove the remaining obligations.
+
+Rewrite using `[e2, e3]`. Establish `htr : trF ![(snd T A).left, (translPt A θ.pt).left] ![k, -k] (𝟙 _) x j (fun i => J (𝟙 _ ≫ ![(snd T A).left, (translPt A θ.pt).left] i)) = trF (fun _ : Fin 1 => (snd T A).left) (fun _ => k) (𝟙 _) x (fun _ => j 0) (fun _ => J (𝟙 _ ≫ (snd T A).left)) * (trF (fun _ : Fin 1 => (snd T …`. Simplify using `only [trF, Fin.prod_univ_two, Fin.prod_univ_one, Matrix.cons_val_zero, Matrix.cons_val_one, zpow_neg, Category.assoc, hcomp]`. Rewrite using `[show J ((𝟙 _ ≫ (translT A θ.pt).left) ≫ (snd T A).left) = J (𝟙 _ ≫ (translPt A θ.pt).left) by`. Rewrite using `[Category.assoc, hcomp]]`.
+
+Both sides reduce to the same expression. Rewrite using `[htr]`. Conclude with `units_mul_eq_mul_of_eq_mul _ _ _ _ _ key`.
+-/
 theorem isActOf_of_sval {L : LB A.left} (hL : L.IsLB) {k : ℤ} {T : Over S} {θ : ThetaGrp A L k T}
     {s s' : LB.Sec (LPow A L k T)}
     (h : ∀ y J, Good L y J → sval (L := L) s' (𝟙 _) y J =
@@ -68,6 +84,13 @@ theorem isActOf_of_sval {L : LB A.left} (hL : L.IsLB) {k : ℤ} {T : Over S} {θ
   rw [htr]
   exact units_mul_eq_mul_of_eq_mul _ _ _ _ _ key
 
+/- English proof (translation)
+Establish `hcomp : (translT A θ.pt).left ≫ (snd T A).left = (translPt A θ.pt).left`. Rewrite using `[← Over.comp_left]`. Unfold `translT`. Simplify using the standard rewrite rules. Establish `hform : FormEq (Sum.elim (fun _ : Fin 1 => (translT A θ.pt).left ≫ (snd T A).left) ![(snd T A).left, (translPt A θ.pt).left]) (Sum.elim (fun _ => k) ![k, -k]) (fun _ : Fin 1 => (snd T A).left) (fun _ => k)`.
+
+Introduce `U _ h`. Simplify using `only [Fintype.prod_sum_type, Finset.univ_unique, Finset.prod_singleton, Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, zpow_neg, hcomp]`. Rewrite using `[mul_left_comm, mul_inv_cancel, _root_.mul_one]`. Take `⟨s₁, hs₁⟩` from `exists_sec hL hform (pullMulSec s (translT A θ.pt).left θ.φ θ.isGen)`. Use `⟨s₁, isActOf_of_sval hL fun y J hJ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hs₁ _ _ y J hJ]`. Conclude with `sval_pullMulSec _ _ _ _ _ _ hJ`.
+-/
 theorem exists_isActOf {L : LB A.left} (hL : L.IsLB) {k : ℤ} {T : Over S} (θ : ThetaGrp A L k T)
     (s : LB.Sec (LPow A L k T)) : ∃ s', IsActOf A L k θ s s' := by
   have hcomp : (translT A θ.pt).left ≫ (snd T A).left = (translPt A θ.pt).left := by
@@ -92,6 +115,27 @@ namespace GlobalTheory
 
 open ThetaNu in
 
+/- English proof (translation)
+Introduce `hLaws hTW V _ _ _ ϖ hϖ E _ _ _ H t₀ P hTI hEB Q hQ F _ _ _ v hv k hk w hw θ n hn hθk hθn hc t t' s s' hs hs' hact r`. Take `⟨f, hf, hsurj, -⟩` from `hTI F k hk`. Take `⟨p, hp⟩` from `hsurj θ.pt hθk`. Establish `hpt` using `(hf p θ.pt).2 hp.symm`. Unfold `Geo.Tor.PELUnif.ToA QkToAkU QkToAk at hpt`.
+
+Take `⟨w₁, hw₁, hΦ⟩` from `(hpt w hw).2 θ rfl`. Take `⟨c, hTWc⟩` from `hTW V ϖ hϖ P.D Q hQ F v hv k hk p w₁ hw₁ 1 one_ne_zero`. Establish `step : ∀ (u u' : LB.Sec (LPow P.A.A P.A.L (k : ℤ) (TFK (R` using `V) F))) (e e' : Fam P.D.toPre F k), P.U.ExpandsF F k w u e → P.U.ExpandsF F k w u' e' → IsActOf P.A.A P.A.L (k : ℤ) θ u u' → ∀ q : ℚ, NuGe P.D Q F v k e q ↔ NuGe P.D Q F v k e' (q + c) := fun u u' e e' he he' ha q => hTWc e e' e' (hΦ u u' e e' he he' ha) ((ReciprocityTheory.Chart …`. Establish `hL : P.A.L.IsLB` using `P.A.isLB`. Use `choose g hg using fun u => exists_isActOf hL θ u`.
+
+Establish `horb : ∀ m : ℕ, IsActOf P.A.A P.A.L (k : ℤ) θ (g^[m] t) (g^[m + 1] t)` using `fun m => by`. Rewrite using `[Function.iterate_succ_apply']`. Conclude with `hg _`. Establish `hexp` using `hEB F k hk w hw`. Use `choose e he using fun m : ℕ => (hexp.1 (g^[m] t)).exists`.
+
+Establish `hshift : ∀ (m : ℕ) (q : ℚ), NuGe P.D Q F v k (e 0) q ↔ NuGe P.D Q F v k (e m) (q + m * c)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro q`. Simplify using the standard rewrite rules.
+
+Consider the case `succ m ih`. Introduce `q`. Rewrite using `[ih q, step _ _ _ _ (he m) (he (m + 1)) (horb m)]`. Use `push_cast`. Put the polynomial expressions in normal form.
+
+Establish `hback : g^[n] t = t`. Establish `hf` using `thetaGrp_act_iterate_eq_of_pow_eq_one _ P.A.A P.A.L hL (k : ℤ) (TFK (R := V) F) θ n hθn hc (fun i => g^[i] t) (fun i => by simpa using horb i)`. Generalize the expression as in `hu : g^[n] t = u at hf`. Simplify using `only [Fin.val_last, Fin.val_zero, hu, Function.iterate_zero, id] at hf`. Take `⟨uf, uc⟩` from `u`.
+
+Take `⟨tf, tc⟩` from `t`. Take `rfl : uf = tf` from `funext hf`. Both sides reduce to the same expression. Establish `he0 : e 0 = s` using `(hexp.1 t).unique (he 0) hs`. Establish `hen : e n = s` using `(hexp.1 t).unique (by rw [← hback]; exact he n) hs`.
+
+Establish `hper : ∀ q : ℚ, NuGe P.D Q F v k s q ↔ NuGe P.D Q F v k s (q + n * c)`. Introduce `q`. Rewrite using `[← he0, hshift n q, he0, hen]`. Establish `hmono : ∀ q q' : ℚ, q' ≤ q → NuGe P.D Q F v k s q → NuGe P.D Q F v k s q'`. Introduce `q q' hqq h χ`.
+
+Take `⟨m, a, σ, σF, h1, h2, h3⟩` from `h χ`. Conclude with `⟨m, a, σ, σF, h1, fun i => le_trans (WithTop.coe_le_coe.2 (by linarith)) (h2 i), h3⟩`. Establish `hs's : NuGe P.D Q F v k s (r - c) ↔ NuGe P.D Q F v k s' r`. Simplify using `using step t t' s s' hs hs' hact (r - c)`. Rewrite using `[← hs's]`.
+
+Distinguish the cases in `hc0 : c = 0`. Simplify using `[hc0]`. Establish `hd : (n : ℚ) * c ≠ 0` using `mul_ne_zero (by exact_mod_cast (show n ≠ 0 by omega)) hc0`. Conclude with `⟨fun h => PeriodicValuation.all_of_periodic hmono hd hper r _ h, fun h => PeriodicValuation.all_of_periodic hmono hd hper _ r h⟩`.
+-/
 theorem nuGe_iff_of_isActOf_of_pow_eq_one : Laws → TWStatement → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ → ∀ (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] (H : Geo.Tor.Host E) (t₀ : Geo.Tor.SAB H (Spec (CommRingCat.of V))) (P : Geo.Tor.PELUnif (maximalIdeal V) t₀), P.TorsionIso → Geo.Tor.ExpBijF P.U.toUnifPre → ∀ (Q : P.D.toPre.X → ℤ), QForm.IsQ P.D.toPre ϖ Q → ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing V) F] (v : AddValuation F (WithTop ℚ)), ValOver ϖ F v → ∀ (k : ℕ), 1 ≤ k → ∀ (w : LB.Iso (P.A.L.pull P.U.gen.hom.left) (P.U.LG.L.pull (pullback.fst t₀.G.hom (jK V)))), w.IsGen → ∀ (θ : ThetaGrp P.A.A P.A.L (k : ℤ) (TFK (R := V) F)) (n : ℕ), 1 ≤ n → θ.pt ^ k = 1 → θ.pt ^ n = 1 → LB.Gen.Corr P.A.L _ _ _ _ (Out.powGen P.A.A P.A.L (k : ℤ) θ n) (LB.oneGen P.A.L) → ∀ (t t' : LB.Sec (LPow P.A.A P.A.L (k : ℤ) (TFK (R := V) F))) (s s' : Fam P.D.toPre F k), P.U.ExpandsF F k w t s → P.U.ExpandsF F k w t' s' → IsActOf P.A.A P.A.L (k : ℤ) θ t t' → ∀ r : ℚ, NuGe P.D Q F v k s r ↔ NuGe P.D Q F v k s' r := by
   intro hLaws hTW V _ _ _ ϖ hϖ E _ _ _ H t₀ P hTI hEB Q hQ F _ _ _ v hv k hk w hw θ n hn hθk hθn hc t t' s s' hs hs'
     hact r

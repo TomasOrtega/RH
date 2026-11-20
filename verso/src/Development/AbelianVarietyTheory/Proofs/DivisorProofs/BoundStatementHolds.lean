@@ -23,11 +23,21 @@ variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero
   [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C]
   {Λ : Type} [CommRing Λ] [StarRing Λ] (P : Point p v O Λ)
 
+/- English proof (translation)
+The claim follows from `(P.mem_latT_iff _).2 fun t => by obtain ⟨c, hc⟩ := (P.mem_latT_iff y).1 hy (P.actT (star a) t) exact ⟨c, by rw [hc, P.pairV_act]; rfl⟩`.
+-/
 theorem actV_mem_latT (a : Λ) {y : P.V} (hy : y ∈ P.latT) : P.actV a y ∈ P.latT :=
   (P.mem_latT_iff _).2 fun t => by
     obtain ⟨c, hc⟩ := (P.mem_latT_iff y).1 hy (P.actT (star a) t)
     exact ⟨c, by rw [hc, P.pairV_act]; rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add y z hy hz`. Take `⟨a, ha⟩` from `hy`. Take `⟨b, hb⟩` from `hz`.
+
+Conclude with `⟨a + b, by rw [map_add, map_add, map_add, ha, hb]⟩`. Consider the case `tmul c t`. Take `⟨b, hb⟩` from `(P.mem_latT_iff u).1 hu t`. Use `⟨c * b, ?_⟩` and prove the remaining obligations. Establish `e : (algebraMap O C c ⊗ₜ[ℤ_[p]] t : P.V) = algebraMap O C c • ((1 : C) ⊗ₜ[ℤ_[p]] t)`.
+
+Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Rewrite using `[P.inclT_tmul, e, map_smul, smul_eq_mul, map_mul, hb]`.
+-/
 theorem pairV_inclT_mem {u : P.V} (hu : u ∈ P.latT) (y : O ⊗[ℤ_[p]] P.T) :
     P.pairV u (P.inclT y) ∈ (algebraMap O C).range := by
   induction y using TensorProduct.induction_on with
@@ -53,12 +63,40 @@ variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero
   [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C]
   {Λ : Type} [CommRing Λ] [StarRing Λ] (P : Point p v O Λ)
 
+/- English proof (translation)
+Rewrite using `[pairV_bLie_eq_evLie, P.alC_inclT, Point.inclOm, TensorProduct.mk_apply, evLie, LinearMap.liftBaseChange_tmul, one_smul]`. Both sides reduce to the same expression.
+-/
 theorem pairV_bLie_inclT (x : LieG P.Gt) (y : O ⊗[ℤ_[p]] P.T) :
     P.pairV (P.bLie x) (P.inclT y) = algebraMap O C ((P.al y).1 x) := by
   rw [pairV_bLie_eq_evLie, P.alC_inclT, Point.inclOm, TensorProduct.mk_apply, evLie,
     LinearMap.liftBaseChange_tmul, one_smul]
   rfl
 
+/- English proof (translation)
+Use `haveI := P.isLocalRing`. Use `haveI : IsDomain O := P.integers.hom_inj.isDomain (algebraMap O C)`. Take `⟨e, h₁, h₂⟩` from `exists_param P.G (smoothDim_model P)`. Take `⟨e', h₃, h₄⟩` from `exists_lieEquiv P`. Set `F` to `e.trans e'`.
+
+Establish `hFadd : ∀ c d, F (c + d) = lieAdd (F c) (F d)` using `fun c d => Subtype.ext (h₃ _ _ _ (h₁ c d))`. Establish `hFsmul : ∀ (a : O) c, F (a • c) = AvDefs.lieScale P.Gt a (F c)` using `fun a c => Subtype.ext (h₄ a _ _ (h₂ a c))`. Set `B : (Fin P.A.g → O) →ₗ[O] P.V` to `{ toFun := fun c => P.bLie (F c) map_add' := fun c d => by rw [hFadd, P.bLie_add] map_smul' := fun a c => by rw [hFsmul, P.bLie_scale]; rfl }`. Establish `hB : ∀ c, B c = P.bLie (F c)` using `fun _ => rfl`. Set `f : Fin P.A.g → omega P.Gt` to `fun j => ⟨fun x => F.symm x j, fun x y h => by`.
+
+Establish `: (⟨x.1 * y.1, h⟩ : LieG P.Gt) = F (F.symm x + F.symm y)`. Rewrite using `[hFadd, F.apply_symm_apply, F.apply_symm_apply]`. Both sides reduce to the same expression. Rewrite using `[this]; simp only [F.symm_apply_apply, Pi.add_apply], fun a x h => by`. Establish `: (⟨ptMap (dualScale a) ≫ x.1, h⟩ : LieG P.Gt) = F (a • F.symm x)`.
+
+Rewrite using `[hFsmul, F.apply_symm_apply]`. Both sides reduce to the same expression. Rewrite using `[this]`. Simplify using `only [F.symm_apply_apply, Pi.smul_apply, smul_eq_mul]⟩`. Establish `hf : ∀ j c, (f j).1 (F c) = c j` using `fun j c => by`.
+
+Express the relevant statement in the definitionally equal form `F.symm (F c) j = c j`. Rewrite using `[F.symm_apply_apply]`. Use `choose y hy using fun j => hcok (f j)`. Establish `hyF : ∀ j c, P.pairV (B c) (P.inclT (y j)) = algebraMap O C ((p : O) ^ 2 * c j)` using `fun j c => by`. Rewrite using `[hB, pairV_bLie_inclT, hy j, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, hf]`.
+
+Establish `hp0 : ((p : O) ^ 2) ≠ 0` using `pow_ne_zero _ fun h0 => (Nat.cast_ne_zero (R := C)).2 (Fact.out : p.Prime).ne_zero (by rw [← map_natCast (algebraMap O C), h0, map_zero])`. Establish `hBinj : ∀ c c', B c = B c' → c = c'` using `fun c c' hcc => funext fun j => mul_left_cancel₀ hp0 (P.integers.hom_inj (by rw [← hyF, ← hyF, hcc]))`. Establish `hinj : ∀ x x' : LieG P.Gt, P.bLie x = P.bLie x' → x = x'` using `fun x x' hxx => by`. Rewrite `hxx`, the goal using `[← F.apply_symm_apply x, ← F.apply_symm_apply x']`. Conclude with `congrArg F (hBinj _ _ hxx)`.
+
+Set `s : Fin P.A.g → P.V` to `fun i => B fun j => if i = j then 1 else 0`. Establish `hBs : ∀ c, B c = ∑ i, c i • s i` using `fun c => B.pi_apply_eq_sum_univ c`. Establish `hspan' : u ∈ Submodule.span C (Set.range s)`. Use `Submodule.span_le.2 ?_ hspan` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Rewrite using `[← F.apply_symm_apply x, ← hB, hBs]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul C]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun C).1 hspan'`.
+
+Establish `hint : ∀ j, ((p : C) ^ 2 * a j) ∈ (algebraMap O C).range` using `fun j => by`. Establish `h` using `pairV_inclT_mem P hu (y j)`. Rewrite `h` using `[← ha]`. Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[Finset.sum_eq_single j]`. Rewrite using `[hyF]`. Simplify using `[map_pow, map_natCast, mul_comm]`. Introduce `i _ hij`. Rewrite using `[hyF]`.
+
+Simplify using `[hij, Ne.symm hij]`. Simplify using the standard rewrite rules. Use `choose b hb using hint`. Establish `hx : P.bLie (F b) = ((p : C) ^ 2) • u`. Rewrite using `[← hB, hBs, ← ha, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul C (b i), hb, smul_smul]`. Use `⟨F b, fun c => hinj _ _ ?_, hx⟩` and prove the remaining obligations. Rewrite using `[P.bLie_act, P.bLie_scale, hx, map_smul, mem_eigenSub.1 heig c, RingHom.comp_apply, ← algebraMap_smul C (χ c) ((p : C) ^ 2 • u), smul_smul, smul_smul, mul_comm]`.
+-/
 theorem exists_bLie_eq_sq_smul (hcok : ∀ f : omega P.Gt, (p : O) ^ 2 • f ∈ LinearMap.range P.al)
     (χ : Λ →+* O) {u : P.V} (hu : u ∈ P.latT) (hspan : u ∈ Submodule.span C (Set.range P.bLie))
     (heig : u ∈ P.eigV χ) :
@@ -136,6 +174,21 @@ variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero
   [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C]
   {E : Type} [Field E] [NumberField E] [StarRing (𝓞 E)] (P : Point p v O (𝓞 E))
 
+/- English proof (translation)
+Establish `hc : Fintype.card (E →+* C) = Module.finrank ℚ E` using `NumberField.Embeddings.card E C`. Take `⟨b⟩` from `nonempty_basis (E := E) hc`. Set `M : Matrix (E →+* C) (E →+* C) O` to `Matrix.of fun k j => embO P.integers k (b j)`. Establish `hM : M.map (algebraMap O C) = Matrix.of fun k j => k (b j)`. Use extensionality with `k j`.
+
+Simplify using `[M, algebraMap_embO]`. Establish `hd : algebraMap O C M.det ^ 2 = ((discr E : ℤ) : C)`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hM]`. Conclude with `det_sq_eq_discr_of_field (φ := fun φ : E →+* C => φ) (fun _ _ h => h) b`. Set `o : (E →+* C) → O` to `fun j => M.det * M.adjugate j i`.
+
+Set `t : C ⊗[ℤ] 𝓞 E` to `∑ j, algebraMap O C (o j) ⊗ₜ b j`. Establish `ht : t = ((discr E : ℤ) : C) • idem (isSplitting_embO (E` using `E) P.integers) i := by`. Apply `(isSplitting_embO (E := E) P.integers).1` to reduce the goal to its premises. Rewrite using `[map_smul, splitMap_idem]`. Use extensionality with `k`.
+
+Simplify using `only [t, map_sum, Finset.sum_apply, splitMap_tmul, RingHom.comp_apply, Pi.smul_apply, smul_eq_mul]`. Establish `e1 : ∑ j, algebraMap O C (o j) * algebraMap O C (embO P.integers k (b j)) = algebraMap O C (M.det * (M * M.adjugate) k i)`. Rewrite using `[Matrix.mul_apply, Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [o, M, Matrix.of_apply, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, Matrix.mul_adjugate, Matrix.smul_apply, Matrix.one_apply, ← hd]`. Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality. Simplify using `[sq]`.
+
+Simplify using `[hki]`. Establish `e2 : ((discr E : ℤ) : C) • proj (isSplitting_embO (E` using `E) P.integers) P.actV i y = tensorAction P.actV t y := by`. Rewrite using `[ht, map_smul, proj, LinearMap.smul_apply]`. Rewrite using `[e2]`. Simplify using `only [t, map_sum, LinearMap.sum_apply, tensorAction_tmul]`.
+
+Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (actV_mem_latT P _ hy)`.
+-/
 theorem discr_smul_proj_mem {_ : DecidableEq (E →+* C)} (i : E →+* C) {y : P.V} (hy : y ∈ P.latT) :
     ((discr E : ℤ) : C) • proj (isSplitting_embO (E := E) P.integers) P.actV i y ∈ P.latT := by
   classical
@@ -176,6 +229,11 @@ theorem discr_smul_proj_mem {_ : DecidableEq (E →+* C)} (i : E →+* C) {y : P
 
 end Discr
 
+/- English proof (translation)
+Unfold `htLat at hw`. Use `split_ifs at hw with h`. Take `⟨y, hy, rfl⟩` from `hw`. Conclude with `discr_smul_proj_mem P _ hy`. Rewrite using `[Int.cast_smul_eq_zsmul]`.
+
+Conclude with `zsmul_mem hw.1 _`.
+-/
 theorem discr_smul_mem_latT {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {l : Level H} (c : Coeff l) {p : ℕ} [Fact p.Prime] [Algebra c.F ℂ_[p]] [StarRing (𝓞 E)] (P : PtP E p)
     (σ : E →+* ℂ) {w : P.V} (hw : w ∈ htLat c P σ) : ((discr E : ℤ) : ℂ_[p]) • w ∈ P.latT := by
@@ -190,6 +248,9 @@ end GlobalTheory.FlatModel.BoundProof
 
 namespace GlobalTheory.FlatModel
 
+/- English proof (translation)
+Introduce `E _ _ _ H l c p _ _ _ P hcok σ w hw hspan heig`. Take `⟨x, hx, hbx⟩` from `BoundProof.exists_bLie_eq_sq_smul P hcok (embInt c P.integers σ) (BoundProof.discr_smul_mem_latT c P σ hw) (Submodule.smul_mem _ _ hspan) (Submodule.smul_mem _ _ heig)`. Conclude with `⟨x, hx, by rw [hbx, smul_smul, mul_comm]⟩`.
+-/
 theorem boundSt : BoundSt := by
   intro E _ _ _ H l c p _ _ _ P hcok σ w hw hspan heig
   obtain ⟨x, hx, hbx⟩ := BoundProof.exists_bLie_eq_sq_smul P hcok (embInt c P.integers σ)

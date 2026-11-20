@@ -18,6 +18,11 @@ variable {C : Type} [Field C] {V : VF C} {d : ℕ} [NeZero d] {m : ZMod d → �
 
 def idxS (hd : ZMod d) (g : Fin 2) (t : ZMod d) : ZMod d := if g = 0 then t else t - hd
 
+/- English proof (translation)
+Unfold `RowData.rkF`. Use `Finset.card_eq_of_equiv_fin ((Equiv.subtypeEquivRight fun c => ?_).trans (Equiv.sigmaSubtype (idxS hd g t)))` and prove the remaining obligations. Rewrite using `[Finset.mem_filter, hty]`. Simplify using `only [Finset.mem_univ, true_and]`. Unfold `idxS`.
+
+Distinguish the cases in `hg : g = 0`. Simplify using `only [if_pos hg]`. Simplify using `only [if_neg hg]`. Conclude with `eq_sub_iff_add_eq.symm`.
+-/
 theorem rkF_sigmaS (hd : ZMod d) (X : RowData C V d (fun _ => Σ a : ZMod d, Fin (m a)) J)
     (hty : ∀ (g : Fin 2) (x : Σ a : ZMod d, Fin (m a)), (X.G g).ty (Sum.inl x) = if g = 0 then x.1 else x.1 + hd)
     (g : Fin 2) (t : ZMod d) : X.rkF g t = m (idxS hd g t) := by
@@ -53,6 +58,9 @@ variable {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)]
 variable {C : Type} [Field C] [CharZero C] {V : VF C}
 variable {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} {Orb : Type} [Fintype Orb]
 
+/- English proof (translation)
+Take `⟨X, hX, hV⟩` from `rowTieSelf_main G hstar hι hd hY ha hr`. Use `⟨X, fun o => stdFlagS lab.hd (X o) (hX o).2.2.2.2, fun o => ⟨(hX o).1, (hX o).2.1, (hX o).2.2.1, (hX o).2.2.2.1, fun g t => rkF_sigmaS lab.hd (X o) (hX o).2.2.2.2 g t⟩, ?_⟩` and prove the remaining obligations. Introduce `a n ν hν N pl nW hn gaC hA hj supp tie`. Conclude with `hV a n ν hν N pl _ nW hn gaC (fun _ _ _ _ => rfl) hA hj supp tie`.
+-/
 theorem rowTieSelf_std (G : GeoInS Xo c) (hstar : ∀ a : 𝓞 E, star a = H.bar a)
     {C3 : IntChart T io y} {ι : T.Fr →+* C} (hι : EmbOK T V ι)
     (hd : ¬ ((V.l : ℤ) ∣ Algebra.discr ℤ (Module.Free.chooseBasis ℤ (𝓞 E)))) {k : ℕ}

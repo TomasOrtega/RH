@@ -15,6 +15,9 @@ namespace BoundedSectionTransfer
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Introduce `m hm k`. Break down `Finset.mem_union.mp (MvPolynomial.support_add hm) with h | h` into its components or cases. Conclude with `hf m h k`. Conclude with `hg m h k`.
+-/
 theorem isMultiHomog_add {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g a) :
     IsMultiHomog (f + g) a := by
   classical
@@ -23,12 +26,20 @@ theorem isMultiHomog_add {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a
   · exact hf m h k
   · exact hg m h k
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Use `isMultiHomog_add hf fun m hm k ↦ hg m ?_ k` and prove the remaining obligations. Rewrite `hm` using `[MvPolynomial.support_neg]`. Then use the resulting hypothesis.
+-/
 theorem isMultiHomog_sub {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g a) :
     IsMultiHomog (f - g) a := by
   rw [sub_eq_add_neg]
   refine isMultiHomog_add hf fun m hm k ↦ hg m ?_ k
   rwa [MvPolynomial.support_neg] at hm
 
+/- English proof (translation)
+Introduce `m hm k`. Rewrite `hm` using `[mem_support_iff, coeff_C]`. Use `split_ifs at hm with h0`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules.
+
+Conclude with `absurd rfl hm`.
+-/
 theorem isMultiHomog_C (r : ℤ) : IsMultiHomog (C r : MRing ι) 0 := by
   classical
   intro m hm k
@@ -37,17 +48,28 @@ theorem isMultiHomog_C (r : ℤ) : IsMultiHomog (C r : MRing ι) 0 := by
   · subst h0; simp
   · exact absurd rfl hm
 
+/- English proof (translation)
+Rewrite using `[mCoordIdeal, RingHom.mem_ker, ConeTrdeg.mConeMap_of_isMultiHomog y hg]`. Use `⟨fun h ↦ C_eq_zero.mp ((mul_eq_zero.mp h).resolve_right (Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (X_ne_zero k))), fun h ↦ by rw [h, C_0, zero_mul]⟩` and prove the remaining obligations.
+-/
 theorem mem_mCoordIdeal_iff {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) {g : MRing ι} {d : K → ℕ}
     (hg : IsMultiHomog g d) : g ∈ mCoordIdeal y ↔ aeval y g = 0 := by
   rw [mCoordIdeal, RingHom.mem_ker, ConeTrdeg.mConeMap_of_isMultiHomog y hg]
   refine ⟨fun h ↦ C_eq_zero.mp ((mul_eq_zero.mp h).resolve_right
     (Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (X_ne_zero k))), fun h ↦ by rw [h, C_0, zero_mul]⟩
 
+/- English proof (translation)
+Rewrite using `[← mem_mCoordIdeal_iff y hg, ← mem_mCoordIdeal_iff y' hg, hP]`.
+-/
 theorem aeval_eq_zero_iff {Ω Ω' : Type} [Field Ω] [Field Ω'] {y : (Σ k, ι k) → Ω} {y' : (Σ k, ι k) → Ω'}
     (hP : mCoordIdeal y' = mCoordIdeal y) {g : MRing ι} {d : K → ℕ} (hg : IsMultiHomog g d) :
     aeval y g = 0 ↔ aeval y' g = 0 := by
   rw [← mem_mCoordIdeal_iff y hg, ← mem_mCoordIdeal_iff y' hg, hP]
 
+/- English proof (translation)
+Establish `e : ∀ {Ω : Type} [Field Ω] (x : (Σ k, ι k) → Ω) (r : Ω), aeval x D ≠ 0 → aeval x N = r * aeval x D → (aeval x g = r * aeval x h ↔ aeval x (g * D - N * h) = 0)`. Introduce `Ω _ x r hx hr`. Rewrite using `[map_sub, map_mul, map_mul, hr, sub_eq_zero]`. Conclude with `⟨fun h1 ↦ by rw [h1]; ring, fun h1 ↦ mul_right_cancel₀ hx (by rw [h1]; ring)⟩`. Establish `hgD : IsMultiHomog (g * D - N * h) (dg + dD)` using `isMultiHomog_sub (ArakelovGeometry.isMultiHomog_mul hg hD) (by rw [hdeg]; exact ArakelovGeometry.isMultiHomog_mul hN hh)`.
+
+Rewrite using `[e y s hD0 hs, e y' s' hD0' hs', aeval_eq_zero_iff hP hgD]`.
+-/
 theorem rel_iff {Ω Ω' : Type} [Field Ω] [Field Ω'] {y : (Σ k, ι k) → Ω} {y' : (Σ k, ι k) → Ω'}
     (hP : mCoordIdeal y' = mCoordIdeal y) {N D g h : MRing ι} {dN dD dg dh : K → ℕ}
     (hN : IsMultiHomog N dN) (hD : IsMultiHomog D dD) (hg : IsMultiHomog g dg) (hh : IsMultiHomog h dh)
@@ -64,10 +86,26 @@ theorem rel_iff {Ω Ω' : Type} [Field Ω] [Field Ω'] {y : (Σ k, ι k) → Ω}
     isMultiHomog_sub (ArakelovGeometry.isMultiHomog_mul hg hD) (by rw [hdeg]; exact ArakelovGeometry.isMultiHomog_mul hN hh)
   rw [e y s hD0 hs, e y' s' hD0' hs', aeval_eq_zero_iff hP hgD]
 
+/- English proof (translation)
+Simplify using `[ArakelovGeometry.xpow, map_prod]`.
+-/
 theorem aeval_xpow [DecidableEq K] {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (e : K → ℕ) :
     aeval y (ArakelovGeometry.xpow c e) = ∏ k, y ⟨k, c k⟩ ^ e k := by
   simp [ArakelovGeometry.xpow, map_prod]
 
+/- English proof (translation)
+Establish `hpow : ∀ δ₁ δ₂ : K → ℕ, ∏ k, y ⟨k, c k⟩ ^ (δ₁ + δ₂) k = (∏ k, y ⟨k, c k⟩ ^ δ₁ k) * ∏ k, y ⟨k, c k⟩ ^ δ₂ k` using `fun δ₁ δ₂ ↦ by`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ ↦ by rw [Pi.add_apply, pow_add]`. Rewrite `hx` using `[chartRingZ]`. Proceed by induction on `hx using Algebra.adjoin_induction with`.
+
+Consider the case `mem x hx`. Take `⟨⟨k, i⟩, rfl⟩` from `hx`. Use `⟨Pi.single k 1, X ⟨k, i⟩, ArakelovGeometry.isMultiHomog_X' k i, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_X, Finset.prod_eq_single k (fun k' _ hk' ↦ by simp [hk']) (by simp)]`. Simplify using `[div_mul_cancel₀ _ (hc k)]`.
+
+Consider the case `algebraMap r`. Conclude with `⟨0, C r, isMultiHomog_C r, by simp⟩`. Consider the case `add x z _ _ hx hz`. Take `⟨δ₁, e₁, h₁, v₁⟩` from `hx`. Take `⟨δ₂, e₂, h₂, v₂⟩` from `hz`.
+
+Use `⟨δ₁ + δ₂, e₁ * ArakelovGeometry.xpow c δ₂ + e₂ * ArakelovGeometry.xpow c δ₁, isMultiHomog_add (ArakelovGeometry.isMultiHomog_mul h₁ (ArakelovGeometry.isMultiHomog_xpow c δ₂)) ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[add_comm δ₁]`. Conclude with `ArakelovGeometry.isMultiHomog_mul h₂ (ArakelovGeometry.isMultiHomog_xpow c δ₁)`. Rewrite using `[map_add, map_mul, map_mul, v₁, v₂, aeval_xpow, aeval_xpow, hpow]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `mul x z _ _ hx hz`. Take `⟨δ₁, e₁, h₁, v₁⟩` from `hx`. Take `⟨δ₂, e₂, h₂, v₂⟩` from `hz`. Use `⟨δ₁ + δ₂, e₁ * e₂, ArakelovGeometry.isMultiHomog_mul h₁ h₂, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, v₁, v₂, hpow]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_form {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {x : Ω}
     (hx : x ∈ chartRingZ y c) :
     ∃ (δ : K → ℕ) (G : MRing ι), IsMultiHomog G δ ∧ aeval y G = x * ∏ k, y ⟨k, c k⟩ ^ δ k := by
@@ -101,6 +139,15 @@ theorem exists_form {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (c : ∀ k,
     rw [map_mul, v₁, v₂, hpow]
     ring
 
+/- English proof (translation)
+Establish `key : ∀ f : MRing ι, MvPolynomial.eval (fun k ↦ (y ⟨k, c k⟩)⁻¹) (mConeMap y f) = aeval (fun p : Σ k, ι k ↦ y p / y ⟨p.1, c p.1⟩) f`. Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C r => simp [mConeMap]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+
+Consider the case `mul_X p q hp`. Simplify using `only [map_mul]`. Rewrite using `[hp]`. Simplify using `[mConeMap, div_eq_mul_inv]`. Establish `h` using `key G`.
+
+Rewrite `h` using `[ConeTrdeg.mConeMap_of_isMultiHomog y hG]`. Rewrite using `[chartRingZ, Algebra.adjoin_range_eq_range_aeval]`. Use `⟨G, ?_⟩` and prove the remaining obligations. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Rewrite using `[← h, map_mul, eval_C, map_prod]`.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_pow, eval_X, zpow_neg, zpow_natCast, inv_pow]`.
+-/
 theorem mem_chartRingZ {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) {G : MRing ι} {δ : K → ℕ}
     (hG : IsMultiHomog G δ) : aeval y G * ∏ k, y ⟨k, c k⟩ ^ (-(δ k : ℤ)) ∈ chartRingZ y c := by
   have key : ∀ f : MRing ι, MvPolynomial.eval (fun k ↦ (y ⟨k, c k⟩)⁻¹) (mConeMap y f) =
@@ -123,6 +170,13 @@ theorem mem_chartRingZ {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (c : ∀
   refine Finset.prod_congr rfl fun k _ ↦ ?_
   rw [map_pow, eval_X, zpow_neg, zpow_natCast, inv_pow]
 
+/- English proof (translation)
+Establish `hu : (∏ k, y ⟨k, c k⟩ ^ (t k).toNat) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hc k)`. Establish `hzu : (∏ k, y ⟨k, c k⟩ ^ (-t k)) * ∏ k, y ⟨k, c k⟩ ^ (t k).toNat = ∏ k, y ⟨k, c k⟩ ^ (-t k).toNat`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ (hc k)]`.
+
+Use `congr 1`. Combine the linear relations using `[Int.toNat_sub_toNat_neg (t k)]`. Establish `hsplit : ∏ k, y ⟨k, c k⟩ ^ (δ + fun k ↦ (-t k).toNat) k = (∏ k, y ⟨k, c k⟩ ^ δ k) * ∏ k, y ⟨k, c k⟩ ^ (-t k).toNat`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ ↦ by rw [Pi.add_apply, pow_add]`.
+
+Rewrite using `[map_mul, aeval_xpow, aeval_xpow, hsplit, ← hzu]`. Conclude with `⟨fun h ↦ by rw [h]; ring, fun h ↦ mul_right_cancel₀ hu (by rw [h]; ring)⟩`.
+-/
 theorem chart_iff [DecidableEq K] {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k)
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (t : K → ℤ) (s : Ω) (G : MRing ι) (δ : K → ℕ) :
     aeval y G = s * (∏ k, y ⟨k, c k⟩ ^ (-t k)) * ∏ k, y ⟨k, c k⟩ ^ δ k ↔
@@ -144,6 +198,9 @@ theorem chart_iff [DecidableEq K] {Ω : Type} [Field Ω] (y : (Σ k, ι k) → �
   rw [map_mul, aeval_xpow, aeval_xpow, hsplit, ← hzu]
   exact ⟨fun h ↦ by rw [h]; ring, fun h ↦ mul_right_cancel₀ hu (by rw [h]; ring)⟩
 
+/- English proof (translation)
+Use `aeval_eq_zero_iff hP (ArakelovGeometry.isMultiHomog_X' (ι := ι) k i)` as an intermediate fact. Simplify using `only [aeval_X] at this`. Conclude with `this.not`.
+-/
 theorem coord_ne_zero_iff {Ω Ω' : Type} [Field Ω] [Field Ω'] {y : (Σ k, ι k) → Ω} {y' : (Σ k, ι k) → Ω'}
     (hP : mCoordIdeal y' = mCoordIdeal y) (k : K) (i : ι k) : y ⟨k, i⟩ ≠ 0 ↔ y' ⟨k, i⟩ ≠ 0 := by
   classical
@@ -153,6 +210,25 @@ theorem coord_ne_zero_iff {Ω Ω' : Type} [Field Ω] [Field Ω'] {y : (Σ k, ι 
 
 end BoundedSectionTransfer
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω Ω' _ _ y y' d A τ c s' hvar hP hs' hs0 hb`. Use `open BoundedSectionTransfer in`. Establish `hchart : ∀ c : ∀ k, ι k, (∀ k, y ⟨k, c k⟩ ≠ 0) → ∀ k, y' ⟨k, c k⟩ ≠ 0` using `fun c hc k ↦ (coord_ne_zero_iff hP k (c k)).1 (hc k)`. Establish `huv : ∀ k, ((((τ : ℤ) * A.a k).toNat : ℕ) : ℤ) = (((-((τ : ℤ) * A.a k)).toNat : ℕ) : ℤ) + τ * A.a k` using `fun k ↦ by linarith [Int.toNat_sub_toNat_neg ((τ : ℤ) * A.a k)]`. Choose the witnesses or unpack the hypotheses as in `⟨c0, hc0⟩ : ∃ c0 : ∀ k, ι k, ∀ k, y ⟨k, c0 k⟩ ≠ 0 := by`.
+
+Establish `hrel` using `hvar.2.1.2.2`. Use `⟨fun k ↦ (hrel k).choose, fun k h ↦ (hrel k).choose_spec ?_⟩` and prove the remaining obligations. Rewrite using `[BoundedSectionTransfer.mem_mCoordIdeal_iff y (ArakelovGeometry.isMultiHomog_X' k _), aeval_X]`. Conclude with `h`. Take `⟨δ, G, hG, hGv⟩` from `BoundedSectionTransfer.exists_form y' c0 (hchart c0 hc0) (hs' c0 (hchart c0 hc0))`.
+
+Establish `hN'` using `(BoundedSectionTransfer.chart_iff y' c0 (hchart c0 hc0) (fun k ↦ (τ : ℤ) * A.a k) s' G δ).1 hGv`. Establish `hNh` using `ArakelovGeometry.isMultiHomog_mul hG (ArakelovGeometry.isMultiHomog_xpow c0 fun k ↦ ((τ : ℤ) * A.a k).toNat)`. Establish `hDh` using `ArakelovGeometry.isMultiHomog_xpow c0 (δ + fun k ↦ (-((τ : ℤ) * A.a k)).toNat)`. Establish `hD0 : ∀ {Ω : Type} [Field Ω] (x : (Σ k, ι k) → Ω), (∀ k, x ⟨k, c0 k⟩ ≠ 0) → aeval x (ArakelovGeometry.xpow c0 (δ + fun k ↦ (-((τ : ℤ) * A.a k)).toNat)) ≠ 0` using `fun x hx ↦ by`. Rewrite using `[BoundedSectionTransfer.aeval_xpow]`.
+
+Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hx k)`. Use `set s : Ω := aeval y (G * ArakelovGeometry.xpow c0 fun k ↦ ((τ : ℤ) * A.a k).toNat) / aeval y (ArakelovGeometry.xpow c0 (δ + fun k ↦ (-((τ : ℤ) * A.a k)).toNat)) with hs_def`. Establish `hNs : aeval y (G * ArakelovGeometry.xpow c0 fun k ↦ ((τ : ℤ) * A.a k).toNat) = s * aeval y (ArakelovGeometry.xpow c0 (δ + fun k ↦ (-((τ : ℤ) * A.a k)).toNat))`. Rewrite using `[hs_def, div_mul_cancel₀ _ (hD0 y hc0)]`. Establish `key : ∀ (dg dh : K → ℕ) (g h : MRing ι), IsMultiHomog g dg → IsMultiHomog h dh → (∀ k, (dg k : ℤ) = dh k + τ * A.a k) → (aeval y g = s * aeval y h ↔ aeval y' g = s' * aeval y' h)`.
+
+Introduce `dg dh g h hg hh hdeg`. Use `BoundedSectionTransfer.rel_iff hP hNh hDh hg hh ?_ (hD0 y hc0) (hD0 y' (hchart c0 hc0)) hNs hN'` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Establish `h1` using `hdeg k`. Establish `h2` using `huv k`.
+
+Simplify using `only [Pi.add_apply]`. Generalize the expression as in `((τ : ℤ) * A.a k).toNat = a at h2 ⊢`. Generalize the expression as in `(-((τ : ℤ) * A.a k)).toNat = b at h2 ⊢`. Generalize the expression as in `(τ : ℤ) * A.a k = w at h1 h2`. Use linear arithmetic over natural numbers and integers.
+
+Use `⟨s, fun c hc ↦ ?_, fun h0 ↦ ?_, ?_⟩` and prove the remaining obligations. Take `⟨δc, Gc, hGc, hGcv⟩` from `BoundedSectionTransfer.exists_form y' c (hchart c hc) (hs' c (hchart c hc))`. Establish `h1` using `(BoundedSectionTransfer.chart_iff y' c (hchart c hc) (fun k ↦ (τ : ℤ) * A.a k) s' Gc δc).1 hGcv`. Establish `h2` using `(key _ _ _ _ (ArakelovGeometry.isMultiHomog_mul hGc (ArakelovGeometry.isMultiHomog_xpow c fun k ↦ ((τ : ℤ) * A.a k).toNat)) (ArakelovGeometry.isMultiHomog_xpow c (δc + fun k ↦ (-((τ : ℤ) * A.a k)).toNat)) (fun k ↦ by simp only [Pi.add_apply, Nat.cast_add]; linarith [huv k])).2 h1`. Establish `h3` using `(BoundedSectionTransfer.chart_iff y c hc (fun k ↦ (τ : ℤ) * A.a k) s Gc δc).2 h2`.
+
+Establish `h4` using `BoundedSectionTransfer.mem_chartRingZ y c hGc`. Establish `hone : ∏ k, (y ⟨k, c k⟩ ^ δc k * y ⟨k, c k⟩ ^ (-(δc k : ℤ))) = 1` using `Finset.prod_eq_one fun k _ ↦ by rw [zpow_neg, zpow_natCast, mul_inv_cancel₀ (pow_ne_zero _ (hc k))]`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[h3, mul_assoc (s * _), ← Finset.prod_mul_distrib, hone, mul_one]`. Establish `h1 : aeval y (G * ArakelovGeometry.xpow c0 fun k ↦ ((τ : ℤ) * A.a k).toNat) = 0` using `by rw [hNs, h0, zero_mul]`.
+
+Rewrite `h1` using `[BoundedSectionTransfer.aeval_eq_zero_iff hP hNh, hN']`. Conclude with `mul_ne_zero hs0 (hD0 y' (hchart c0 hc0)) h1`. Introduce `dg dh g h z hg hh hdeg hrel hz`. Rewrite `hb` using `[hP]`. Conclude with `hb dg dh g h z hg hh hdeg ((key dg dh g h hg hh hdeg).1 hrel) hz`.
+-/
 theorem BoundedSectionTransfer.proof : BoundedSectionTransfer.Statement := by
   intro K _ ι _ Ω Ω' _ _ y y' d A τ c s' hvar hP hs' hs0 hb
   classical

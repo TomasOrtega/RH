@@ -15,6 +15,17 @@ section supp
 
 variable {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Establish `htop : ∀ (v : ℂ) (p q : Fin (2 * r + k + 1)), QuantumDeterminants.Top (Q.EH k r) v p q (fun _ : Q.Mx k r => (0 : E)) = fun _ => 0`. Introduce `v p q`. Use function extensionality and compare the values at `x`. Simplify using `only [QuantumDeterminants.Top, smul_zero, ite_self, zero_add]`. Conclude with `eabH_zero p q x`.
+
+Establish `hfold : ∀ L : List ((Q.Mx k r → E) → Q.Mx k r → E), (∀ T ∈ L, T (fun _ => 0) = fun _ => 0) → L.foldr (fun T h => T h) (fun _ : Q.Mx k r => (0 : E)) = fun _ => 0`. Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => intro _`. Both sides reduce to the same expression.
+
+Consider the case `cons T L ih`. Introduce `hT`. Simplify using `only [List.foldr_cons]`. Rewrite using `[ih (fun T' h' => hT T' (by simp [h']))]`. Conclude with `hT T (by simp)`.
+
+Use function extensionality and compare the values at `x`. Unfold `qminorOp`. Simplify using `only [Finset.sum_apply, Pi.smul_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `σ _`.
+
+Rewrite using `[hfold _ (fun T hT => by`. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hT`. Conclude with `htop _ _ _)]`. Simplify using the standard rewrite rules.
+-/
 theorem qminorOp_zero {t : ℕ} (a b : Fin t → Fin (2 * r + k + 1)) (u : ℂ) :
     qminorOp (Q.EH k r) a b u (fun _ : Q.Mx k r => (0 : E)) = fun _ => 0 := by
   have htop : ∀ (v : ℂ) (p q : Fin (2 * r + k + 1)),
@@ -43,6 +54,11 @@ theorem qminorOp_zero {t : ℕ} (a b : Fin t → Fin (2 * r + k + 1)) (u : ℂ) 
     exact htop _ _ _)]
   simp
 
+/- English proof (translation)
+Unfold `C3.AAop`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c _`. Use `split_ifs`. Rewrite using `[qminorOp_zero]`.
+
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 theorem AAop_zero' (m : ℕ) (hm : m ≤ r) (u : ℂ) (g : Q.Mx k r) :
     C3.AAop k r m hm u (fun _ : Q.Mx k r => (0 : E)) g = 0 := by
   unfold C3.AAop
@@ -52,6 +68,11 @@ theorem AAop_zero' (m : ℕ) (hm : m ≤ r) (u : ℂ) (g : Q.Mx k r) :
   · rw [qminorOp_zero]; simp
   · rfl
 
+/- English proof (translation)
+Unfold `C3.AAvop`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c _`. Use `split_ifs`. Rewrite using `[qminorOp_zero]`.
+
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 theorem AAvop_zero' (m : ℕ) (hm : m ≤ r) (ell : ℂ) (g : Q.Mx k r) :
     C3.AAvop k r m hm ell (fun _ : Q.Mx k r => (0 : E)) g = 0 := by
   unfold C3.AAvop
@@ -61,6 +82,11 @@ theorem AAvop_zero' (m : ℕ) (hm : m ≤ r) (ell : ℂ) (g : Q.Mx k r) :
   · rw [qminorOp_zero]; simp
   · rfl
 
+/- English proof (translation)
+Establish `hgl : g ∈ Q.Glev k r 0 ∩ V` using `⟨Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 hgG, hg⟩`. Establish `hloc : ∀ x ∈ Q.Glev k r 0 ∩ V, f x = (fun _ : Q.Mx k r => (0 : E)) x` using `fun x hx => hf x hx.2 hx.1.1`. Unfold `D.vLet`. Use `split_ifs`. Both sides reduce to the same expression.
+
+Rewrite using `[AAop_loc hV _ _ _ f _ hloc g hgl, AAop_zero', smul_zero]`. Rewrite using `[AAvop_loc hV _ _ _ f _ hloc g hgl, AAvop_zero', smul_zero]`.
+-/
 theorem vLet_zero_near (z z' : Fin (2 * r + k + 1) → ℂ) (j : ℕ) (hj : j ≤ r) (l : C.Letter) (e : Fin 2)
     (f : B.Mat k r → E) {V : Set (Q.Mx k r)} (hV : IsOpen V) (hf : ∀ x ∈ V, x ∈ B.GV k r → f x = 0)
     (g : B.Mat k r) (hg : g ∈ V) (hgG : g ∈ B.GV k r) : D.vLet k r z z' j hj l e f g = 0 := by
@@ -72,6 +98,9 @@ theorem vLet_zero_near (z z' : Fin (2 * r + k + 1) → ℂ) (j : ℕ) (hj : j �
   · rw [AAop_loc hV _ _ _ f _ hloc g hgl, AAop_zero', smul_zero]
   · rw [AAvop_loc hV _ _ _ f _ hloc g hgl, AAvop_zero', smul_zero]
 
+/- English proof (translation)
+The claim follows from `| [], _, g, hg, hne => hR g hg hne | l :: w, e, g, hg, hne => by by_contra hgt push Not at hgt apply hne show D.vLet k r z z' j hj l (e 0) (D.uwG k r z z' F j hj w fun a => e a.succ) g = 0 refine vLet_zero_near z z' j hj l (e 0) _ (V := {x | R < B.gN x}) (isOpen_lt continuous_con …`.
+-/
 theorem uwG_supp (z z' : Fin (2 * r + k + 1) → ℂ) (F : B.Mat k r → E) (R : ℝ)
     (hR : ∀ g ∈ B.GV k r, F g ≠ 0 → B.gN g ≤ R) (j : ℕ) (hj : j ≤ r) :
     ∀ (w : List C.Letter) (e : Wd.Ix (Fin w.length)), ∀ g ∈ B.GV k r,
@@ -87,6 +116,11 @@ theorem uwG_supp (z z' : Fin (2 * r + k + 1) → ℂ) (F : B.Mat k r → E) (R :
     by_contra h0
     exact absurd (uwG_supp z z' F R hR j hj w _ x hxG h0) (not_le.2 hx)
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨U, f', hU, hxU, hf', he⟩` from `h x hx.2 hx.1`. Establish `hc : ContinuousWithinAt f' {x | x ∈ B.GV k r ∧ x ∈ S} x` using `((hf'.continuousOn).continuousAt (hU.mem_nhds hxU)).continuousWithinAt`. Use `hc.congr_of_eventuallyEq ?_ (he x hxU hx.1)` and prove the remaining obligations. Use `filter_upwards [nhdsWithin_le_nhds (hU.mem_nhds hxU), self_mem_nhdsWithin] with y hyU hyS`.
+
+Conclude with `he y hyU hyS.1`.
+-/
 theorem contOn_of_loc {f : B.Mat k r → E} {S : Set (B.Mat k r)}
     (h : ∀ x ∈ S, x ∈ B.GV k r → CapelliWordSumExpansion.Loc (⊤ : ℕ∞) f x) : ContinuousOn f {x | x ∈ B.GV k r ∧ x ∈ S} := by
   intro x hx

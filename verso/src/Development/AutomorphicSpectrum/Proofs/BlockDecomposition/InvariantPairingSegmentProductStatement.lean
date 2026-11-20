@@ -4,6 +4,9 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousMulVec
 open Matrix MeasureTheory GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir GlobalTheory.BZMir.Leib GlobalTheory.RgGu.Leib GlobalTheory.CompanionTheory.LeibOrd GlobalTheory.SplitWeil GlobalTheory.JHMult GlobalTheory.CompanionTheory.BZShell GlobalTheory.CompanionTheory.MirPair
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BZShell.SwapPair.exists_invariant_pairing | exact GlobalTheory.CompanionTheory.BZShell.SwapPair.exists_invariant_pairing | (intros; apply GlobalTheory.CompanionTheory.BZShell.SwapPair.exists_invariant_pairing <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.invariant_pairing_segment_product : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (m : ℕ) (σ : IrrRep (GL (Fin (m + 1)) k)) (hc : IsCuspidal σ.ρ)
     (hirr : (multiProd (GlobalTheory.Published.consecBlocks 2 (m + 1)) (segTerm σ.ρ 2)).IsIrreducible),

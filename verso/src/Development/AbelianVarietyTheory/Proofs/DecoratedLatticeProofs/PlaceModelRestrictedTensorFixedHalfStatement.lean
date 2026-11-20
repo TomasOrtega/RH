@@ -7,5 +7,8 @@ open GlobalTheory.Unf GlobalTheory.Grow GlobalTheory.FinPl ValuativeRel IsLocalR
 open scoped TensorProduct Pointwise
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FinPl.PutIn.Factor.isPlaceModel_tensR | exact GlobalTheory.FinPl.PutIn.Factor.isPlaceModel_tensR | (intros; apply GlobalTheory.FinPl.PutIn.Factor.isPlaceModel_tensR <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.place_model_restricted_tensor_fixed_half : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (a b : AE D) (Λ Λ' : AddSubgroup (WO S T)) (Φ f₀ : WO S T → ℂ) (Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)), a * b = 0 → b * b = b → (∀ u ∈ Λ, b • u ∈ Λ) → (∀ t, IsHalf b t → (t ∈ Λ' ↔ t ∈ Λ)) → IsSBHalf a Λ Φ → IsPlaceModel ψ (symplO S T) (heisO ψ S T) (a + b) Λ 1 f₀ Tm → IsPlaceModel ψ (symplO S T) (heisO ψ S T) b Λ' 1 (Tm (GlobalTheory.FinPl.PutIn.tens b Φ (halfInd b Λ))) (Tm ∘ₗ GlobalTheory.FinPl.PutIn.tensR b Φ) := by
   first | exact @GlobalTheory.FinPl.PutIn.Factor.isPlaceModel_tensR | exact GlobalTheory.FinPl.PutIn.Factor.isPlaceModel_tensR | (intros; apply GlobalTheory.FinPl.PutIn.Factor.isPlaceModel_tensR <;> assumption)

@@ -15,6 +15,17 @@ open GroundTheory.Automorphic.Iwasawa (blockUpper mem_blockUpper)
 open GroundTheory.Automorphic.Measures (adLie parabolicCoord ParabolicIndex coe_adLie coe_parabolicCoord_symm_single
   mul_single_mul_apply modularCharacter_blockUpper)
 
+/- English proof (translation)
+Establish `h1 : ∀ a c : α, (if a ≤ c then f a ^ n c * (f c)⁻¹ ^ n a else 1) = (if a < c then f a ^ n c else 1) * (if a < c then (f c)⁻¹ ^ n a else 1)`. Introduce `a c`. Break down `lt_trichotomy a c with h | rfl | h` into its components or cases. Simplify using `[h.le, h]`. Simplify using the standard rewrite rules.
+
+Simplify using `[not_le.mpr h, not_lt.mpr h.le]`. Establish `hA : ∀ a : α, ∏ c, (if a < c then f a ^ n c else 1) = f a ^ (∑ b with a < b, n b)`. Introduce `a`. Rewrite using `[← Finset.prod_filter, Finset.prod_pow_eq_pow_sum]`. Establish `hB : ∀ c : α, ∏ a, (if a < c then (f c)⁻¹ ^ n a else 1) = (f c ^ (∑ b with b < c, n b))⁻¹`.
+
+Introduce `c`. Rewrite using `[← Finset.prod_filter, Finset.prod_pow_eq_pow_sum, inv_pow]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.prod_mul_distrib]`. Use `_ = (∏ a, ∏ c, (if a < c then f a ^ n c else 1)) * ∏ c, ∏ a, (if a < c then (f c)⁻¹ ^ n a else 1) := by`.
+
+Use `congr 1`. Conclude with `Finset.prod_comm`. Use `_ = (∏ a, f a ^ (∑ b with a < b, n b)) * ∏ a, (f a ^ (∑ b with b < a, n b))⁻¹ := by`. Rewrite using `[Finset.prod_congr rfl fun a _ => hA a, Finset.prod_congr rfl fun c _ => hB c]`. Use `_ = ∏ a, f a ^ (∑ b with a < b, n b) * (f a ^ (∑ b with b < a, n b))⁻¹ := by`.
+
+Rewrite using `[Finset.prod_mul_distrib]`. Use `_ = ∏ a, f a ^ ((∑ b with a < b, (n b : ℤ)) - ∑ b with b < a, (n b : ℤ)) := by`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[_root_.zpow_sub, ← Nat.cast_sum, ← Nat.cast_sum, zpow_natCast, zpow_natCast]`.
+-/
 theorem prod_le_pairs {α G : Type} [Fintype α] [LinearOrder α] [CommGroup G] (f : α → G) (n : α → ℕ) :
     ∏ a, ∏ c, (if a ≤ c then f a ^ n c * (f c)⁻¹ ^ n a else 1) =
       ∏ a, f a ^ ((∑ b with a < b, (n b : ℤ)) - ∑ b with b < a, (n b : ℤ)) := by
@@ -54,6 +65,15 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {β' : Type} [Fintype β'] [LinearOrder β'] {m' : β' → Type} [∀ j, Fintype (m' j)]
   [∀ j, DecidableEq (m' j)] {N : ℕ}
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `a1 : ¬ blk e' x < blk e' y` using `fun hl => by`. Use `(hγ x y).mpr hl` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `lt_irrefl _ this`.
+
+Establish `a2 : ¬ blk e' y < blk e' x` using `fun hl => by`. Use `(hγ y x).mpr hl` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `lt_irrefl _ this`. Conclude with `le_antisymm (not_lt.mp a2) (not_lt.mp a1)`.
+
+Establish `a1 : ¬ γ x < γ y` using `fun hl => by`. Use `(hγ x y).mp hl` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `lt_irrefl _ this`. Establish `a2 : ¬ γ y < γ x` using `fun hl => by`.
+
+Use `(hγ y x).mp hl` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `lt_irrefl _ this`. Conclude with `le_antisymm (not_lt.mp a2) (not_lt.mp a1)`.
+-/
 theorem label_eq_iff {e' : (Σ j, m' j) ≃ Fin N} {γ : Fin N → ℕ}
     (hγ : ∀ x y, γ x < γ y ↔ blk e' x < blk e' y) (x y : Fin N) :
     γ x = γ y ↔ blk e' x = blk e' y := by
@@ -77,6 +97,15 @@ theorem label_eq_iff {e' : (Σ j, m' j) ≃ Fin N} {γ : Fin N → ℕ}
       exact lt_irrefl _ this
     exact le_antisymm (not_lt.mp a2) (not_lt.mp a1)
 
+/- English proof (translation)
+Use extensionality with `g`. Rewrite using `[GlobalTheory.SmGL.mem_unipRad, GlobalTheory.SmGL.mem_parab, mem_unipotentRadical, mem_blockUpper]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun i j hij => h1 i j ((hγ j i).mp hij), fun i j hij => ?_⟩` and prove the remaining obligations.
+
+Establish `hb` using `(label_eq_iff hγ i j).mp hij`. Take `⟨⟨a, u⟩, rfl⟩` from `e'.surjective i`. Take `⟨⟨b, v⟩, rfl⟩` from `e'.surjective j`. Rewrite `hb` using `[blk_apply, blk_apply]`. Substitute `hb` using the available equality.
+
+Rewrite using `[h2 a u v]`. Simplify using `[Matrix.one_apply]`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun i j hij => h1 ((hγ j i).mpr hij), fun a u v => ?_⟩` and prove the remaining obligations. Rewrite using `[h2 _ _ ((label_eq_iff hγ _ _).mpr (by rw [blk_apply, blk_apply]))]`.
+
+Simplify using `[Matrix.one_apply]`.
+-/
 theorem unipRad_eq {e' : (Σ j, m' j) ≃ Fin N} {γ : Fin N → ℕ}
     (hγ : ∀ x y, γ x < γ y ↔ blk e' x < blk e' y) :
     unipRad k e' = unipotentRadical k N γ := by
@@ -102,11 +131,17 @@ def adCoord {γ : Fin N → ℕ} (p : blockUpper k N γ) :
   (((parabolicCoord k N γ).symm.trans ((adLie k N γ p).trans (parabolicCoord k N γ))) :
     (ParabolicIndex N γ → k) →ₗ[k] (ParabolicIndex N γ → k))
 
+/- English proof (translation)
+Rewrite using `[LinearMap.det_toMatrix', adCoord, ← LinearEquiv.coe_det]`. Conclude with `congrArg Units.val (LinearEquiv.det_conj (adLie k N γ p) (parabolicCoord k N γ)).symm`.
+-/
 theorem det_adLie_eq {γ : Fin N → ℕ} (p : blockUpper k N γ) :
     (LinearEquiv.det (adLie k N γ p) : k) = (LinearMap.toMatrix' (adCoord p)).det := by
   rw [LinearMap.det_toMatrix', adCoord, ← LinearEquiv.coe_det]
   exact congrArg Units.val (LinearEquiv.det_conj (adLie k N γ p) (parabolicCoord k N γ)).symm
 
+/- English proof (translation)
+Rewrite using `[LinearMap.toMatrix'_apply]`. Use `show ((adLie k N γ p ((parabolicCoord k N γ).symm (Pi.single t 1)) : Matrix (Fin N) (Fin N) k)) s.1.1 s.1.2 = _`. Rewrite using `[coe_adLie, coe_parabolicCoord_symm_single, mul_single_mul_apply]`.
+-/
 theorem adCoord_apply {γ : Fin N → ℕ} (p : blockUpper k N γ) (s t : ParabolicIndex N γ) :
     LinearMap.toMatrix' (adCoord p) s t =
       ((p : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) s.1.1 t.1.1 *
@@ -115,6 +150,9 @@ theorem adCoord_apply {γ : Fin N → ℕ} (p : blockUpper k N γ) (s t : Parabo
   show ((adLie k N γ p ((parabolicCoord k N γ).symm (Pi.single t 1)) : Matrix (Fin N) (Fin N) k)) s.1.1 s.1.2 = _
   rw [coe_adLie, coe_parabolicCoord_symm_single, mul_single_mul_apply]
 
+/- English proof (translation)
+Simplify using `only [leviEmb, MonoidHom.coe_toHomUnits, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.blockDiagonal'_apply]`. Conclude with `dif_neg h`.
+-/
 theorem leviEmb_apply_ne' (e' : (Σ j, m' j) ≃ Fin N) (g : Levi k m') {x y : Fin N}
     (h : blk e' x ≠ blk e' y) : (leviEmb k e' g : Matrix (Fin N) (Fin N) k) x y = 0 := by
   simp only [leviEmb, MonoidHom.coe_toHomUnits, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.reindex_apply,
@@ -131,6 +169,9 @@ variable {e' : (Σ j, m' j) ≃ Fin N} {γ : Fin N → ℕ}
   (hp : (p : GL (Fin N) k) = leviEmb k e' g)
 
 include hp in
+/- English proof (translation)
+Rewrite using `[adCoord_apply, hp, ← map_inv]`.
+-/
 theorem adCoord_apply_levi (s t : ParabolicIndex N γ) :
     LinearMap.toMatrix' (adCoord p) s t =
       (leviEmb k e' g : Matrix (Fin N) (Fin N) k) s.1.1 t.1.1 *
@@ -138,6 +179,11 @@ theorem adCoord_apply_levi (s t : ParabolicIndex N γ) :
   rw [adCoord_apply, hp, ← map_inv]
 
 include hp in
+/- English proof (translation)
+Introduce `s t hst`. Rewrite using `[adCoord_apply_levi g p hp s t]`. Distinguish the cases in `h1 : blk e' s.1.1 = blk e' t.1.1`. Distinguish the cases in `h2 : blk e' t.1.2 = blk e' s.1.2`. Establish `heq : parabolicBlockPair e' γ t = parabolicBlockPair e' γ s`.
+
+Simplify using `only [parabolicBlockPair, h1, h2]`. Rewrite `hst` using `[heq]`. Conclude with `absurd hst (lt_irrefl _)`. Rewrite using `[leviEmb_apply_ne' e' g⁻¹ h2, mul_zero]`. Rewrite using `[leviEmb_apply_ne' e' g h1, zero_mul]`.
+-/
 theorem adCoord_blockTriangular :
     (LinearMap.toMatrix' (adCoord p)).BlockTriangular (parabolicBlockPair e' γ) := by
   intro s t hst
@@ -152,6 +198,21 @@ theorem adCoord_blockTriangular :
   · rw [leviEmb_apply_ne' e' g h1, zero_mul]
 
 include hγ hp in
+/- English proof (translation)
+Establish `hmem : ∀ (u : m' a) (v : m' c), ¬ γ (e' ⟨c, v⟩) < γ (e' ⟨a, u⟩)`. Introduce `u v h`. Establish `h'` using `(hγ _ _).mp h`. Simplify using `only [blk, Equiv.symm_apply_apply] at h'`. Conclude with `absurd hac (not_le.mpr h')`.
+
+Set `F : m' a × m' c → {s : ParabolicIndex N γ // parabolicBlockPair e' γ s = toLex (a, c)}` to `fun uv => ⟨⟨(e' ⟨a, uv.1⟩, e' ⟨c, uv.2⟩), hmem uv.1 uv.2⟩, by simp [parabolicBlockPair, blk]⟩`. Establish `hF : Function.Bijective F`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, v⟩ ⟨u', v'⟩ h`. Establish `h1 : e' ⟨a, u⟩ = e' ⟨a, u'⟩` using `congrArg (fun s => s.1.1.1) h`.
+
+Establish `h2 : e' ⟨c, v⟩ = e' ⟨c, v'⟩` using `congrArg (fun s => s.1.1.2) h`. Simplify using `only [EmbeddingLike.apply_eq_iff_eq, Sigma.mk.inj_iff, heq_eq_eq, true_and] at h1 h2`. Rewrite using `[h1, h2]`. Introduce and unpack `⟨⟨⟨i, j⟩, hij⟩, hs⟩`. Simplify using `only [parabolicBlockPair, toLex_inj, Prod.mk.injEq] at hs`.
+
+Take `⟨hi, hj⟩` from `hs`. Take `⟨⟨ai, u⟩, rfl⟩` from `e'.surjective i`. Take `⟨⟨cj, v⟩, rfl⟩` from `e'.surjective j`. Simplify using `only [blk, Equiv.symm_apply_apply] at hi hj`. Substitute `hi hj` using the available equality.
+
+Conclude with `⟨(u, v), rfl⟩`. Establish `hL : ∀ (g' : Levi k m') (b : β') (x y : m' b), (leviEmb k e' g' : Matrix (Fin N) (Fin N) k) (e' ⟨b, x⟩) (e' ⟨b, y⟩) = (g' b : Matrix (m' b) (m' b) k) x y`. Introduce `g' b x y`. Simplify using `only [leviEmb, MonoidHom.coe_toHomUnits, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.blockDiagonal'_apply_eq]`. Set `E` to `Equiv.ofBijective F hF`.
+
+Establish `hM : ((LinearMap.toMatrix' (adCoord p)).toSquareBlock (parabolicBlockPair e' γ) (toLex (a, c))).submatrix E E = (g a : Matrix (m' a) (m' a) k) ⊗ₖ (((g c)⁻¹ : GL (m' c) k) : Matrix (m' c) (m' c) k)ᵀ`. Use extensionality with `⟨u, v⟩ ⟨u', v'⟩`. Use `show LinearMap.toMatrix' (adCoord p) (F (u, v)).1 (F (u', v')).1 = (g a : Matrix (m' a) (m' a) k) u u' * (((g c)⁻¹ : GL (m' c) k) : Matrix (m' c) (m' c) k) v' v`. Rewrite using `[adCoord_apply_levi g p hp]`. Use `show (leviEmb k e' g : Matrix (Fin N) (Fin N) k) (e' ⟨a, u⟩) (e' ⟨a, u'⟩) * (leviEmb k e' g⁻¹ : Matrix (Fin N) (Fin N) k) (e' ⟨c, v'⟩) (e' ⟨c, v⟩) = _`.
+
+Rewrite using `[hL g a u u', hL g⁻¹ c v' v]`. Both sides reduce to the same expression. Rewrite using `[← Matrix.det_submatrix_equiv_self E, hM, Matrix.det_kronecker, Matrix.det_transpose]`.
+-/
 theorem block_det_of_le {a c : β'} (hac : a ≤ c) :
     ((LinearMap.toMatrix' (adCoord p)).toSquareBlock (parabolicBlockPair e' γ) (toLex (a, c))).det =
       (g a : Matrix (m' a) (m' a) k).det ^ Fintype.card (m' c) *
@@ -198,6 +259,11 @@ theorem block_det_of_le {a c : β'} (hac : a ≤ c) :
   rw [← Matrix.det_submatrix_equiv_self E, hM, Matrix.det_kronecker, Matrix.det_transpose]
 
 include hγ in
+/- English proof (translation)
+Use `haveI : IsEmpty {s : ParabolicIndex N γ // parabolicBlockPair e' γ s = toLex (a, c)} := ⟨fun s => by`. Establish `hs` using `s.2`. Simplify using `only [parabolicBlockPair, toLex_inj, Prod.mk.injEq] at hs`. Apply `s.1.2` to reduce the goal to its premises. Rewrite using `[hγ, hs.1, hs.2]`.
+
+Conclude with `not_le.mp hac⟩`. Conclude with `Matrix.det_isEmpty`.
+-/
 theorem block_det_of_not_le {a c : β'} (hac : ¬ a ≤ c) :
     ((LinearMap.toMatrix' (adCoord p)).toSquareBlock (parabolicBlockPair e' γ) (toLex (a, c))).det = 1 := by
   haveI : IsEmpty {s : ParabolicIndex N γ // parabolicBlockPair e' γ s = toLex (a, c)} := ⟨fun s => by
@@ -210,6 +276,13 @@ theorem block_det_of_not_le {a c : β'} (hac : ¬ a ≤ c) :
 
 include hγ hp in
 
+/- English proof (translation)
+Establish `key` using `prod_le_pairs (fun a => GeneralLinearGroup.det (g a)) (fun a => Fintype.card (m' a))`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[det_adLie_eq, (adCoord_blockTriangular g p hp).det, Finset.prod_subset (Finset.subset_univ _) (fun x _ hx => ?hz)]`. Use `case hz => haveI : IsEmpty {s : ParabolicIndex N γ // parabolicBlockPair e' γ s = x} := ⟨fun s => hx (Finset.mem_image.mpr ⟨s.1, Finset.mem_univ _, s.2⟩)⟩`. Conclude with `Matrix.det_isEmpty`.
+
+Rewrite using `[← Equiv.prod_comp toLex, Fintype.prod_prod_type]`. Express the relevant statement in the definitionally equal form `_ = ((∏ a, GeneralLinearGroup.det (g a) ^ ((∑ b with a < b, (Fintype.card (m' b) : ℤ)) - ∑ b with b < a, (Fintype.card (m' b) : ℤ)) : kˣ) : k)`. Rewrite using `[← key, Units.coe_prod]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Units.coe_prod]`.
+
+Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hac : a ≤ c`. Rewrite using `[if_pos hac, block_det_of_le hγ g p hp hac, ← Matrix.GeneralLinearGroup.val_det_apply, ← Matrix.GeneralLinearGroup.val_det_apply, map_inv, Units.val_mul, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val]`. Rewrite using `[if_neg hac, block_det_of_not_le hγ p hac, Units.val_one]`.
+-/
 theorem det_adLie_levi :
     (LinearEquiv.det (adLie k N γ p) : kˣ) =
       ∏ a, GeneralLinearGroup.det (g a) ^ modExp m' a := by
@@ -238,6 +311,9 @@ end DetAd
 
 section Main
 
+/- English proof (translation)
+Rewrite using `[modularCharacter_blockUpper, det_adLie_levi hγ g p hp, map_prod, NNReal.coe_prod, modulus]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow, NNReal.coe_zpow]`. Both sides reduce to the same expression.
+-/
 theorem modularCharacter_levi {e' : (Σ j, m' j) ≃ Fin N} {γ : Fin N → ℕ}
     (hγ : ∀ x y, γ x < γ y ↔ blk e' x < blk e' y) (g : Levi k m') (p : blockUpper k N γ)
     (hp : (p : GL (Fin N) k) = leviEmb k e' g) :
@@ -247,6 +323,13 @@ theorem modularCharacter_levi {e' : (Σ j, m' j) ≃ Fin N} {γ : Fin N → ℕ}
   rw [map_zpow, NNReal.coe_zpow]
   rfl
 
+/- English proof (translation)
+Establish `hpos : ∀ a, 0 ≤ GlobalTheory.SplitWeil.nabs k (GeneralLinearGroup.det (g a))` using `fun a => NNReal.coe_nonneg _`. Establish `h1 : ((NNReal.sqrt (MeasureTheory.Measure.modularCharacter p) : NNReal) : ℝ) = ∏ a, GlobalTheory.SplitWeil.nabs k (GeneralLinearGroup.det (g a)) ^ ((modExp m' a : ℝ) / 2)`. Rewrite using `[Real.coe_sqrt, modularCharacter_levi hγ g p hp, modulus, Real.sqrt_eq_rpow, ← Real.finsetProd_rpow _ _ (fun a _ => zpow_nonneg (hpos a) _)]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Real.rpow_intCast, ← Real.rpow_mul (hpos a)]`.
+
+Put the polynomial expressions in normal form. Simplify using `only [invSqrtModular, sqrtModular, MonoidHom.coe_mk, OneHom.coe_mk]`. Rewrite using `[h1, Units.val_inv_eq_inv_val]`. Use `congr 1`. Rewrite using `[deltaHalf, MonoidHom.finsetProd_apply, Units.coe_prod, Complex.ofReal_prod]`.
+
+Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_cpow (hpos a)]`. Simplify using `only [MonoidHom.comp_apply, Pi.evalMonoidHom_apply, detChar, absPow, MonoidHom.coe_toHomUnits, MonoidHom.coe_mk, OneHom.coe_mk]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem invSqrtModular_levi {e' : (Σ j, m' j) ≃ Fin N} {γ : Fin N → ℕ}
     (hγ : ∀ x y, γ x < γ y ↔ blk e' x < blk e' y) (g : Levi k m') (p : blockUpper k N γ)
     (hp : (p : GL (Fin N) k) = leviEmb k e' g) :
@@ -270,6 +353,11 @@ theorem invSqrtModular_levi {e' : (Σ j, m' j) ≃ Fin N} {γ : Fin N → ℕ}
   push_cast
   rfl
 
+/- English proof (translation)
+Rewrite using `[unipRad_eq hγ]`. Unfold `GlobalTheory.PRep.twKer Representation.Coinvariants.ker`. Use `congr 1`. Use extensionality with `w`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_range, MonoidHom.one_apply, Units.val_one, one_smul, Prod.exists, MonoidHom.coe_comp, Subgroup.coe_subtype, Function.comp_apply]`.
+
+Apply the tactic sequence `constructor <;> rintro ⟨n, v, h⟩ <;> exact ⟨n, v, h.symm⟩`.
+-/
 theorem twKer_eq_ker {e' : (Σ j, m' j) ≃ Fin N} {γ : Fin N → ℕ}
     (hγ : ∀ x y, γ x < γ y ↔ blk e' x < blk e' y) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin N) k) V) :
@@ -283,6 +371,11 @@ theorem twKer_eq_ker {e' : (Σ j, m' j) ≃ Fin N} {γ : Fin N → ℕ}
     MonoidHom.coe_comp, Subgroup.coe_subtype, Function.comp_apply]
   constructor <;> rintro ⟨n, v, h⟩ <;> exact ⟨n, v, h.symm⟩
 
+/- English proof (translation)
+Set `L : GlobalTheory.PRep.Jacquet π (unipRad k e') ≃ₗ[ℂ] JacquetModule k N γ π` to `Submodule.quotEquivOfEq _ _ (twKer_eq_ker hγ π)`. Establish `hL : ∀ v : V, L (Submodule.Quotient.mk v) = Representation.Coinvariants.mk (π.comp (unipotentRadical k N γ).subtype) v` using `fun v => rfl`. Establish `hI : ∀ (g : Levi k m') (x : GlobalTheory.PRep.Jacquet π (unipRad k e')), L (jac e' π g x) = ((jacquetRep k N γ π).comp φ'.toMonoidHom) g (L x)`. Introduce `g x`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective (GlobalTheory.PRep.twKer π (unipRad k e') 1) x`.
+
+Establish `hp : ((leviIncl (φ' g) : blockUpper k N γ) : GL (Fin N) k) = leviEmb k e' g` using `hφ g`. Establish `h1 : jac e' π g (Submodule.Quotient.mk v) = (((deltaHalf k m' g)⁻¹ : ℂˣ) : ℂ) • (Submodule.Quotient.mk (π (leviEmb k e' g) v) : GlobalTheory.PRep.Jacquet π (unipRad k e'))` using `rfl`. Rewrite using `[h1, map_smul, hL, hL, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, jacquetRep_mk, invSqrtModular_levi hγ g _ hp, hφ g]`. Conclude with `⟨Representation.Equiv.mk' ⟨L.toLinearMap, fun g => LinearMap.ext fun x => hI g x⟩ L.symm L.left_inv L.right_inv⟩`.
+-/
 theorem jac_equiv_jacquetRep (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {β' : Type} [Fintype β'] [LinearOrder β'] {m' : β' → Type}
     [∀ j, Fintype (m' j)] [∀ j, DecidableEq (m' j)] {N : ℕ} (e' : (Σ j, m' j) ≃ Fin N) (γ : Fin N → ℕ)

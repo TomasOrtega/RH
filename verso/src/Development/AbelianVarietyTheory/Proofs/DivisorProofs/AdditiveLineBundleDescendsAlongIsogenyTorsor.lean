@@ -16,6 +16,19 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.PoincareDescent
 
+/- English proof (translation)
+Introduce `K _ _ A A' B N _ _ _ _ P i q hA hA' hB hP hadd hzero hi hq hfin hflat hsurj hsq hN`. Use `haveI : IsFinite q.left := hfin`. Use `haveI : Flat q.left := hflat`. Use `haveI : Surjective q.left := hsurj`. Establish `hpb` using `GlobalTheory.AbLaw.SecBC.isPullback_whisker (A := B) q`.
+
+Use `haveI : IsFinite (q ▷ B).left := MorphismProperty.of_isPullback hpb.flip hfin`. Use `haveI : Flat (q ▷ B).left := MorphismProperty.of_isPullback hpb.flip hflat`. Use `haveI : Surjective (q ▷ B).left := MorphismProperty.of_isPullback hpb.flip hsurj`. Use `haveI : IsLocallyNoetherian (A' ⊗ B).left := by haveI := hA'.smooth haveI := hB.smooth haveI : LocallyOfFiniteType (A' ⊗ B).hom := by show LocallyOfFiniteType (pullback.fst A'.hom B.hom ≫ A'.hom) infer_instance`. Conclude with `LocallyOfFiniteType.isLocallyNoetherian (A' ⊗ B).hom`.
+
+Establish `hker : ∀ (T : Over (Sp K)) (x : T ⟶ A), x ≫ q = 1 → Triv (ev P (fst T B ≫ x) (snd T B))`. Introduce `T x hx`. Establish `e : (1 : T ⟶ A) ≫ q = x ≫ q` using `by rw [hx, MonObj.one_comp]`. Establish `hx' : x = (hsq.lift 1 x e ≫ snd A N) ≫ i`. Establish `h2` using `hsq.lift_snd 1 x e`.
+
+Rewrite `h2` using `[MonObj.comp_mul, hsq.lift_fst, _root_.one_mul, ← Category.assoc]`. Conclude with `h2.symm`. Take `⟨n, rfl⟩ : ∃ n : T ⟶ N, x = n ≫ i` from `⟨_, hx'⟩`. Rewrite using `[triv_ev_iff hP]`. Establish `z` using `congrArg (CechPic.pull (lift (fst T B ≫ n) (snd T B)).left) ((triv_ev_iff hP _ _).1 hN)`.
+
+Rewrite `z` using `[pull_evc, map_zero, lift_fst_assoc, lift_snd, Category.assoc]`. Conclude with `z`. Take `⟨φ, hc, hco⟩` from `GlobalTheory.T.exists_descentDatum_additive_lineBundle_isogeny K A A' B q P hA hA' hB hq hfin hflat hsurj hP hadd hzero hker`. Take `⟨P₀, hP₀, hiso⟩` from `GlobalTheory.T.exists_lineBundle_descent_finiteFlat _ _ (q ▷ B).left P hP φ hc hco`. Use `⟨P₀, hP₀, (cls_eq_iff (pull_isLB hP₀ _) hP).1 ?_⟩` and prove the remaining obligations.
+
+Use `Eq.trans ?_ ((cls_eq_iff hP (pull_isLB hP₀ _)).2 hiso).symm` and prove the remaining obligations. Rewrite using `[cls_ev hP₀, evc, cls_pull hP₀, ← lift_whiskerRight, lift_fst_snd, Category.id_comp]`.
+-/
 theorem descend_torsor : ∀ (K : Type) [Field K] [IsAlgClosed K] (A A' B N : Over (Sp K)) [GrpObj A] [GrpObj A'] [GrpObj B] [GrpObj N] (P : LB (A ⊗ B).left) (i : N ⟶ A) (q : A ⟶ A'), IsAbelianScheme A → IsAbelianScheme A' → IsAbelianScheme B → P.IsLB → IsAdditive P → Triv (ev P (𝟙 A) (1 : A ⟶ B)) → IsMonHom i → IsMonHom q → IsFinite q.left → Flat q.left → Surjective q.left → IsPullback (fst A N) (fst A N * (snd A N ≫ i)) q q → Triv (ev P (fst N B ≫ i) (snd N B)) → ∃ P₀ : LB (A' ⊗ B).left, P₀.IsLB ∧ LBIso (ev P₀ (fst A B ≫ q) (snd A B)) P := by
   intro K _ _ A A' B N _ _ _ _ P i q hA hA' hB hP hadd hzero hi hq hfin hflat hsurj hsq hN
   haveI : IsFinite q.left := hfin

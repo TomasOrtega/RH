@@ -13,6 +13,11 @@ private noncomputable def lin {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (F :
   map_add' X Y := by simp [add_smul, Finset.sum_add_distrib]
   map_smul' c X := by simp [Finset.smul_sum, mul_smul]
 
+/- English proof (translation)
+Take `⟨i, j⟩` from `a`. Use `show ∑ b : Fin n × Fin n, (E (i, j)) b.1 b.2 • F b.1 b.2 = F i j`. Rewrite using `[Finset.sum_eq_single (i, j)]`. Simplify using `[E]`. Introduce and unpack `⟨k, l⟩ _ hb`.
+
+Establish `: ¬ (i = k ∧ j = l)` using `fun h => hb (by rw [h.1, h.2])`. Simplify using `[E, Matrix.single_apply, this]`. Simplify using the standard rewrite rules.
+-/
 private theorem lin_E {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (F : Fin n → Fin n → A) (a : Fin n × Fin n) :
     lin F (E a) = F a.1 a.2 := by
   obtain ⟨i, j⟩ := a
@@ -24,6 +29,11 @@ private theorem lin_E {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (F : Fin n �
     simp [E, Matrix.single_apply, this]
   · simp
 
+/- English proof (translation)
+Establish `hE : ∀ a b : Fin n × Fin n, lin F ⁅E a, E b⁆ = ⁅lin F (E a), lin F (E b)⁆`. Introduce `a b`. Rewrite using `[LieRing.of_associative_ring_bracket, LieRing.of_associative_ring_bracket, E_mul_sub_mul, lin_E, lin_E, hF, map_sub]`. Apply the tactic sequence `congr 1 <;> split_ifs <;> simp_all [lin_E]`. Rewrite using `[eq_sum_E X, eq_sum_E Y]`.
+
+Simplify using `only [sum_lie, lie_sum, smul_lie, lie_smul, map_sum, map_smul, hE]`.
+-/
 private theorem lin_lie {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (F : Fin n → Fin n → A)
     (hF : Formalism.REAL.GlRel F) (X Y : gl n) : lin F ⁅X, Y⁆ = ⁅lin F X, lin F Y⁆ := by
   have hE : ∀ a b : Fin n × Fin n, lin F ⁅E a, E b⁆ = ⁅lin F (E a), lin F (E b)⁆ := by
@@ -41,6 +51,15 @@ private noncomputable def lie {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (F :
 end UpperTheory.V.Af.CuspFin.One
 
 open UpperTheory.V.Af.CuspFin UpperTheory.V.Af.CuspFin.One in
+/- English proof (translation)
+Introduce `n`. Use `⟨U n, inferInstance, inferInstance, fun _ i j => e (i, j), ⟨fun _ => ?_, fun v v' h => (h rfl).elim⟩, ?_, fun A _ _ E' hE => ?_, ?_⟩` and prove the remaining obligations. Introduce `i j k l`. Rewrite using `[e_mul_sub_mul]`. Use `eq_top_iff.2 fun u hu => ?_ clear hu` and prove the remaining obligations.
+
+Proceed by induction on `u using U.induction with`. Consider the case `halg r => exact Subalgebra.algebraMap_mem _ r`. Consider the case `hι X`. Rewrite using `[ι_eq_sum_e]`. Use `Subalgebra.sum_mem _ fun a _ => Subalgebra.smul_mem _ (Algebra.subset_adjoin ?_) _` and prove the remaining obligations.
+
+Conclude with `⟨(), a.1, a.2, rfl⟩`. Consider the case `hmul a b ha hb => exact Subalgebra.mul_mem _ ha hb`. Consider the case `hadd a b ha hb => exact Subalgebra.add_mem _ ha hb`. Use `⟨UniversalEnvelopingAlgebra.lift ℂ (lie (E' ()) (hE.1 ())), fun v i j => ?_⟩` and prove the remaining obligations. Rewrite using `[e, UniversalEnvelopingAlgebra.lift_ι_apply]`.
+
+Conclude with `lin_E (E' ()) (i, j)`. Use `(UpperTheory.center_envelopingGL_le_adjoin_quantumDet n).trans (Algebra.adjoin_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨u, rfl⟩`. Conclude with `⟨(), u, rfl⟩`.
+-/
 theorem UpperTheory.glRelations_hasUniversalProperty :
     ∀ n : ℕ, UpperTheory.V.Af.CuspFin.HasUniv Unit n := by
   intro n

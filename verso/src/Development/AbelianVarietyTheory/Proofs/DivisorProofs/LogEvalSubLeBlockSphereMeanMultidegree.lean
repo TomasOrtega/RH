@@ -13,6 +13,21 @@ open GlobalTheory GlobalTheory.ChowHt GlobalTheory.Adelic GlobalTheory.HermTools
 
 namespace GlobalTheory.LelongBlocksMulti
 
+/- English proof (translation)
+Introduce `B N a A h hA hh p hp hne`. Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Break down `Nat.eq_zero_or_pos B with rfl | hB` into its components or cases. Establish `hev : ∀ z : BlockSphere 0 0, eval (blockPoint z) (linSubst A h) = eval p h`. Introduce `z`.
+
+Rewrite using `[GlobalTheory.SphereMeanFrame.eval_linSubst]`. Use `congrArg (fun v => eval v h) (funext fun x => ?_)` and prove the remaining obligations. Conclude with `x.2.elim0`. Establish `hc : (fun z : BlockSphere 0 0 => Real.log ‖eval (blockPoint z) (linSubst A h)‖) = fun _ => Real.log ‖eval p h‖` using `funext fun z => by rw [hev z]`. Unfold `blockSphereMean blockSphereProb`.
+
+Rewrite using `[hc, MeasureTheory.Measure.pi_of_empty _ (fun i => i.elim0)]`. Simplify using the standard rewrite rules. Use `hp ⟨0, hB⟩` as an intermediate fact. Simplify using `[frameNorm] at this`. Set `q : Fin B → Fin N → ℂ` to `fun i => A⁻¹.mulVec (fun j => p (i, j))`.
+
+Establish `hq : ∀ i, ‖(WithLp.toLp 2 (q i) : EuclideanSpace ℂ (Fin N))‖ = 1`. Introduce `i`. Rewrite using `[EuclideanSpace.norm_eq]`. Conclude with `hp i`. Set `u : BlockSphere B N` to `fun i => ⟨WithLp.toLp 2 (q i), mem_sphere_zero_iff_norm.mpr (hq i)⟩`.
+
+Establish `hev : eval (blockPoint u) (linSubst A h) = eval p h`. Rewrite using `[GlobalTheory.SphereMeanFrame.eval_linSubst]`. Use `congrArg (fun v => eval v h) (funext fun x => ?_)` and prove the remaining obligations. Take `⟨b, j⟩` from `x`. Establish `h1 : A.mulVec (q b) = fun j => p (b, j)`.
+
+Simplify using `only [q]`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hA.isUnit, Matrix.one_mulVec]`. Conclude with `congrFun h1 j`. Establish `key` using `blockSphere_logMean_bound ReciprocityTheory.MultiplicativeHeights.Closed.sj ReciprocityTheory.MultiplicativeHeights.Closed.sphereLogIntegrable hN B a (linSubst A h) u (GlobalTheory.HeightUnique.linSubst_homog A hh) (by rw [hev]; exact hne)`. Rewrite `key` using `[hev]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem log_eval_sub_le_blockSphereMean : ∀ (B N : ℕ) (a : Fin B → ℕ) (A : Matrix (Fin N) (Fin N) ℂ) (h : MvPolynomial (Fin B × Fin N) ℂ), A.det ≠ 0 → IsMultiHomogeneous a h → ∀ p : Fin B × Fin N → ℂ, (∀ i, frameNorm A (fun j => p (i, j)) = 1) → eval p h ≠ 0 → Real.log ‖eval p h‖ - (∑ i, (a i : ℝ)) * (harmonic (N - 1) : ℝ) / 2 ≤ blockSphereMean B N (linSubst A h) := by
   intro B N a A h hA hh p hp hne
   rcases Nat.eq_zero_or_pos N with rfl | hN

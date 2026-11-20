@@ -29,6 +29,9 @@ instance instCharZeroOO : CharZero (OO p n) := charZero_of_injective_algebraMap 
 instance instCharZeroKO : CharZero (KO p n) :=
   charZero_of_injective_algebraMap (IsFractionRing.injective (OO p n) (KO p n))
 
+/- English proof (translation)
+The claim follows from `GatR.isAdicComplete (WittVector.irreducible p) inferInstance`.
+-/
 theorem completeOO : IsAdicComplete (maximalIdeal (OO p n)) (OO p n) :=
   GatR.isAdicComplete (WittVector.irreducible p) inferInstance
 
@@ -49,6 +52,9 @@ def extOf : ExtOf (OO p n) (KO p n) (OL p n L) L where
   frac := IntCl.frac (OO p n) (KO p n) L
   complete := IntCl.complete (OO p n) (KO p n) L (completeOO p n)
 
+/- English proof (translation)
+The claim follows from `setting_ext (settingStd p n h5 h2 he) (extOf p n L)`.
+-/
 theorem settingOL (h5 : 5 ≤ p) (h2 : 2 ≤ n) (he : Even n) :
     HidaSetting p n (WQ p n) (QQ p n) (OL p n L) L ((extOf p n L).φK.comp (iota p n)) (sig p n)
       ((extOf p n L).φ.comp (jO p n)) ((extOf p n L).φ (wU p n)) :=
@@ -64,6 +70,11 @@ variable {p n} {LL : Type} [Field LL] [NumberField LL] (τ : LL →+* Om p n)
 
 def Lt : IntermediateField (KO p n) (Om p n) := adjoin (KO p n) (Set.range τ)
 
+/- English proof (translation)
+Set `T : Subfield LL` to `((KO p n)⟮τ θ⟯).toSubfield.comap τ`. Establish `hQ : ∀ q : ℚ, algebraMap ℚ LL q ∈ T` using `fun q => by`. Simplify using `[T, Subfield.mem_comap, eq_ratCast, map_ratCast, SubfieldClass.ratCast_mem]`. Establish `key : ℚ⟮θ⟯ ≤ T.toIntermediateField hQ`. Rewrite using `[IntermediateField.adjoin_simple_le_iff]`.
+
+Conclude with `IntermediateField.mem_adjoin_simple_self _ _`. Establish `hx : x ∈ ℚ⟮θ⟯` using `by rw [hθ]; exact IntermediateField.mem_top`. Conclude with `key hx`.
+-/
 theorem range_le_simple (θ : LL) (hθ : ℚ⟮θ⟯ = ⊤) (x : LL) : τ x ∈ (KO p n)⟮τ θ⟯ := by
 
   let T : Subfield LL := ((KO p n)⟮τ θ⟯).toSubfield.comap τ
@@ -88,6 +99,9 @@ instance instFinLt : FiniteDimensional (KO p n) (Lt τ) := by
 
 def embL : LL →+* Lt τ := τ.codRestrict (Lt τ) (fun x => subset_adjoin _ _ ⟨x, rfl⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem embL_val (x : LL) : ((embL τ x : Lt τ) : Om p n) = τ x := rfl
 
 abbrev Ot : Type := OL p n (Lt τ)
@@ -102,6 +116,9 @@ open NumberField IsDedekindDomain
 
 variable {p n} {LL : Type} [Field LL] [NumberField LL] (τ : LL →+* Om p n)
 
+/- English proof (translation)
+Rewrite using `[mem_integralClosure_iff]`. Establish `h : IsIntegral ℤ (algebraMap (𝓞 LL) LL x)` using `RingOfIntegers.isIntegral_coe x`. Conclude with `(h.map (((embL τ).comp (RingHom.id LL)).toIntAlgHom)).tower_top`.
+-/
 theorem embL_integral (x : 𝓞 LL) :
     ((embL τ).comp (algebraMap (𝓞 LL) LL)) x ∈ integralClosure (OO p n) (Lt τ) := by
   rw [mem_integralClosure_iff]
@@ -111,12 +128,22 @@ theorem embL_integral (x : 𝓞 LL) :
 def embO : 𝓞 LL →+* Ot τ :=
   ((embL τ).comp (algebraMap (𝓞 LL) LL)).codRestrict (integralClosure (OO p n) (Lt τ)) (embL_integral τ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem embO_val (x : 𝓞 LL) : ((embO τ x : Ot τ) : Lt τ) = embL τ (x : LL) := rfl
 
 def placeIdeal : Ideal (𝓞 LL) := (maximalIdeal (Ot τ)).comap (embO τ)
 
 instance : (placeIdeal τ).IsPrime := Ideal.comap_isPrime _ _
 
+/- English proof (translation)
+Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Establish `h0 : IsUnit (Quad.toRes (p : W2 p n) (wU p n))` using `hu.map _`. Rewrite `h0` using `[Quad.toRes_apply]`. Establish `hre : (wU p n).re = 0` using `rfl`.
+
+Rewrite `h0` using `[hre, map_zero, isUnit_zero_iff]`. Establish `h1 : (1 : W2 p n) ∈ Ideal.span {(p : W2 p n)}`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_one]`. Conclude with `h0.symm`. Rewrite `h1` using `[Ideal.mem_span_singleton]`.
+
+Establish `hpu : IsUnit (p : W2 p n)` using `isUnit_of_dvd_one h1`. Establish `h2 : IsUnit ((p : W2 p n).coeff 0)` using `hpu.map (WittVector.constantCoeff (p := p) (R := F2 p n))`. Rewrite `h2` using `[WittVector.coeff_p_zero]`. Conclude with `not_isUnit_zero h2`.
+-/
 theorem wU_mem_max : wU p n ∈ maximalIdeal (OO p n) := by
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]
   intro hu
@@ -134,11 +161,17 @@ theorem wU_mem_max : wU p n ∈ maximalIdeal (OO p n) := by
   rw [WittVector.coeff_p_zero] at h2
   exact not_isUnit_zero h2
 
+/- English proof (translation)
+The claim follows from `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (maximalIdeal _))`.
+-/
 theorem under_max (L : Type) [Field L] [Algebra (KO p n) L] [FiniteDimensional (KO p n) L] [Algebra (OO p n) L]
     [IsScalarTower (OO p n) (KO p n) L] :
     (maximalIdeal (OL p n L)).comap (algebraMap (OO p n) (OL p n L)) = maximalIdeal (OO p n) :=
   IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (maximalIdeal _))
 
+/- English proof (translation)
+Establish `hw2 : wU p n * wU p n = (p : OO p n)`. Apply the tactic sequence `ext <;> simp [wU]`. Establish `h1 : (p : OO p n) ∈ maximalIdeal (OO p n)` using `hw2 ▸ Ideal.mul_mem_left _ _ wU_mem_max`. Rewrite `h1` using `[← under_max L, Ideal.mem_comap, map_natCast]`. Conclude with `h1`.
+-/
 theorem p_mem_max (L : Type) [Field L] [Algebra (KO p n) L] [FiniteDimensional (KO p n) L] [Algebra (OO p n) L]
     [IsScalarTower (OO p n) (KO p n) L] : (p : OL p n L) ∈ maximalIdeal (OL p n L) := by
   have hw2 : wU p n * wU p n = (p : OO p n) := by
@@ -147,6 +180,9 @@ theorem p_mem_max (L : Type) [Field L] [Algebra (KO p n) L] [FiniteDimensional (
   rw [← under_max L, Ideal.mem_comap, map_natCast] at h1
   exact h1
 
+/- English proof (translation)
+Use `show embO τ (p : 𝓞 LL) ∈ maximalIdeal (Ot τ)`. Rewrite using `[map_natCast]`. Conclude with `p_mem_max (Lt τ)`.
+-/
 theorem p_mem_placeIdeal : (p : 𝓞 LL) ∈ placeIdeal τ := by
   show embO τ (p : 𝓞 LL) ∈ maximalIdeal (Ot τ)
   rw [map_natCast]
@@ -161,10 +197,30 @@ def placeOf : HeightOneSpectrum (𝓞 LL) where
     rw [h, Ideal.mem_bot] at this
     exact hp.out.ne_zero (by exact_mod_cast this)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Conclude with `hd ((IsLocalRing.mem_maximalIdeal _).mpr h)`.
+-/
 theorem isUnit_embO {d : 𝓞 LL} (hd : d ∉ placeIdeal τ) : IsUnit (embO τ d) := by
   by_contra h
   exact hd ((IsLocalRing.mem_maximalIdeal _).mpr h)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hv`. Take `⟨c, d, h⟩` from `(placeOf τ).exists_primeCompl_mul_eq_of_integer x hv`. Take `⟨u, hu⟩` from `isUnit_embO τ (d := d) d.2`. Use `⟨embO τ c * (u⁻¹ : (Ot τ)ˣ), ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : embL τ x * embL τ ((d : 𝓞 LL) : LL) = embL τ (c : LL)` using `by rw [← map_mul]; exact congrArg _ h`. Establish `h2 : (embL τ ((d : 𝓞 LL) : LL)) * (((u⁻¹ : (Ot τ)ˣ) : Ot τ) : Lt τ) = 1`. Rewrite using `[← embO_val, ← hu]`. Establish `: ((u : Ot τ) * ((u⁻¹ : (Ot τ)ˣ) : Ot τ)) = 1` using `u.mul_inv`. Conclude with `congrArg Subtype.val this`.
+
+Use `show ((embO τ c : Ot τ) : Lt τ) * (((u⁻¹ : (Ot τ)ˣ) : Ot τ) : Lt τ) = embL τ x`. Rewrite using `[embO_val, ← h1, mul_assoc, h2, mul_one]`. Introduce and unpack `⟨y, hy⟩`. Assume the negation of the conclusion as `hv`. Rewrite `hv` using `[not_le]`.
+
+Establish `hx : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hv`. Establish `hv' : (placeOf τ).valuation LL x⁻¹ < 1`. Rewrite using `[map_inv₀]`.
+
+Conclude with `inv_lt_one_of_one_lt₀ hv`. Take `⟨c, d, h⟩` from `(placeOf τ).exists_primeCompl_mul_eq_of_integer x⁻¹ hv'.le`. Establish `hc : c ∈ placeIdeal τ`. Establish `: (placeOf τ).valuation LL (algebraMap (𝓞 LL) LL c) < 1`. Rewrite using `[← h, map_mul]`.
+
+Conclude with `mul_lt_one_of_lt_of_le hv' ((placeOf τ).valuation_le_one _)`. Conclude with `((placeOf τ).valuation_lt_one_iff_mem c).1 this`. Establish `h3 : y * embO τ c = embO τ d`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (y : Lt τ) * ((embO τ c : Ot τ) : Lt τ) = ((embO τ d : Ot τ) : Lt τ)`.
+
+Establish `hy' : (y : Lt τ) = embL τ x` using `hy`. Rewrite using `[hy', embO_val, embO_val, ← map_mul]`. Use `congr 1`. Use `show x * algebraMap (𝓞 LL) LL c = _`. Rewrite using `[← h, ← mul_assoc, mul_inv_cancel₀ hx, one_mul]`.
+
+Establish `: embO τ d ∈ maximalIdeal (Ot τ)` using `h3 ▸ Ideal.mul_mem_left _ _ hc`. Conclude with `d.2 this`.
+-/
 theorem induces (x : LL) :
     (placeOf τ).valuation LL x ≤ 1 ↔ embL τ x ∈ Set.range (algebraMap (Ot τ) (Lt τ)) := by
   constructor

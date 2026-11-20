@@ -30,6 +30,9 @@ namespace PositivityTheory.Rg.BcB.FinalAllB
 
 open PositivityTheory.Rg.BcB.F
 
+/- English proof (translation)
+The claim follows from `frameRead_of BC.block_candidates_holds candTOut_holds2`.
+-/
 theorem frameRead_holdsB : FrameRead := frameRead_of BC.block_candidates_holds candTOut_holds2
 
 end PositivityTheory.Rg.BcB.FinalAllB

@@ -11,6 +11,75 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ResidueFixed
 
+/- English proof (translation)
+Introduce `R K Ω _ _ _ _ _ _ _ _ _ _ V hV x hx hfix`. Use `letI : Algebra R Ω := ((algebraMap K Ω).comp (algebraMap R K)).toAlgebra`. Use `haveI : IsScalarTower R K Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hRV : ∀ r : R, algebraMap R Ω r ∈ V`. Introduce `r`.
+
+Establish `h : algebraMap R K r ∈ V.toSubring.comap (algebraMap K Ω)` using `by rw [hV]; exact ⟨r, rfl⟩`. Conclude with `h`. Set `φ : R →+* V` to `(algebraMap R Ω).codRestrict V.toSubring hRV`. Establish `hmR : ∀ r ∈ maximalIdeal R, V.valuation (algebraMap R Ω r) < 1`. Introduce `r hr`.
+
+Assume the negation of the conclusion as `hlt`. Establish `h1 : V.valuation (algebraMap R Ω r) = 1` using `le_antisymm (V.valuation_le_one (φ r)) (not_lt.1 hlt)`. Establish `hu : IsUnit (φ r)` using `(V.valuation_eq_one_iff (φ r)).2 h1`. Establish `hne : algebraMap R K r ≠ 0`. Introduce `h0`.
+
+Rewrite `h1` using `[show algebraMap R Ω r = algebraMap K Ω (algebraMap R K r) from rfl, h0, map_zero, map_zero]`. Conclude with `zero_ne_one h1`. Establish `hinv : (algebraMap R K r)⁻¹ ∈ V.toSubring.comap (algebraMap K Ω)`. Express the relevant statement in the definitionally equal form `algebraMap K Ω (algebraMap R K r)⁻¹ ∈ V`. Take `⟨u, hu'⟩` from `hu`.
+
+Establish `: ((u⁻¹ : Vˣ) : V) * φ r = 1` using `by rw [← hu']; exact u.inv_mul`. Establish `h2 : ((((u⁻¹ : Vˣ) : V)) : Ω) = algebraMap K Ω (algebraMap R K r)⁻¹`. Rewrite using `[map_inv₀]`. Use `(eq_inv_of_mul_eq_one_left ?_)` and prove the remaining obligations. Conclude with `congrArg Subtype.val this`.
+
+Rewrite using `[← h2]`. Conclude with `SetLike.coe_mem _`. Rewrite `hinv` using `[hV]`. Take `⟨r', hr'⟩` from `hinv`. Apply `(mem_maximalIdeal r).1 hr` to reduce the goal to its premises.
+
+Use `isUnit_iff_exists_inv.2 ⟨r', IsFractionRing.injective R K ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hr', map_one, mul_inv_cancel₀ hne]`. Set `B` to `integralClosure R Ω`. Establish `hBV : ∀ b : B, (b : Ω) ∈ V`. Introduce `b`.
+
+Take `⟨p, hpm, hp⟩` from `b.2`. Establish `hint : IsIntegral V (b : Ω)`. Use `⟨p.map φ, hpm.map φ, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Conclude with `hp`.
+
+Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`. Rewrite using `[← hy]`. Conclude with `y.2`. Set `ψ : B →+* V` to `(B.val : B →+* Ω).codRestrict V.toSubring hBV`. Set `Q : Ideal B` to `(maximalIdeal V).comap ψ`.
+
+Establish `hQ : ∀ b : B, b ∈ Q ↔ V.valuation (b : Ω) < 1` using `fun b => V.valuation_lt_one_iff (ψ b)`. Set `G` to `Ω ≃ₐ[K] Ω`. Establish `hc : SMulCommClass G R Ω` using `⟨fun g v x => by`. Rewrite using `[← IsScalarTower.algebraMap_smul K v x, ← IsScalarTower.algebraMap_smul K v (g • x)]`. Conclude with `map_smul g _ _⟩`.
+
+Set `: TopologicalSpace B` to `⊥`. Establish `: DiscreteTopology B` using `⟨rfl⟩`. Establish `: ContinuousSMul G B`. Rewrite using `[continuousSMul_iff_stabilizer_isOpen]`. Introduce `x`.
+
+Use `stabilizer_isOpen_of_isIntegral (K := K) (x : Ω)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, MulAction.mem_stabilizer_iff]`. Conclude with `Subtype.ext_iff`.
+
+Establish `: Algebra.IsInvariant R B G`. Prove the components needed by the constructor for the conclusion. Introduce `b hb`. Take `⟨k, hk⟩` from `(InfiniteGalois.mem_range_algebraMap_iff_fixed (k := K) (b : Ω)).2 fun g => congrArg Subtype.val (hb g)`. Establish `hint : IsIntegral R k`.
+
+Establish `h2 : IsIntegral R (algebraMap K Ω k)` using `hk ▸ b.2`. Conclude with `(isIntegral_algebraMap_iff (algebraMap K Ω).injective).1 h2`. Take `⟨v, hv⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`. Use `⟨v, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← hk, ← hv, ← IsScalarTower.algebraMap_apply]`.
+
+Both sides reduce to the same expression. Establish `hQP : Q.LiesOver (maximalIdeal R)`. Prove the components needed by the constructor for the conclusion. Use `le_antisymm (fun r hr => ?_) (IsLocalRing.le_maximalIdeal ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap R B r ∈ Q`.
+
+Rewrite using `[hQ]`. Conclude with `hmR r hr`. Introduce `h1`. Establish `h : (1 : R) ∈ Q.comap (algebraMap R B)`. Express the relevant statement in the definitionally equal form `(1 : R) ∈ Q.under R`.
+
+Rewrite using `[h1]`. Conclude with `Submodule.mem_top`. Rewrite `h` using `[Ideal.mem_comap, map_one, hQ]`. Simplify using `at h`. Establish `hQmax : Q.IsMaximal` using `Ideal.IsMaximal.of_liesOver_isMaximal Q (maximalIdeal R)`.
+
+Use `letI := Ideal.Quotient.field (maximalIdeal R)`. Use `letI := Ideal.Quotient.field Q`. Use `haveI hN : Normal (R ⧸ maximalIdeal R) (B ⧸ Q) := GlobalTheory.T.residue_normal_of_profinite_invariants G (maximalIdeal R) Q`. Use `haveI : PerfectField (R ⧸ maximalIdeal R) := ‹PerfectField (ResidueField R)›`. Use `haveI : IsGalois (R ⧸ maximalIdeal R) (B ⧸ Q) := {}`.
+
+Establish `hBle : ∀ b : B, V.valuation (b : Ω) ≤ 1` using `fun b => V.valuation_le_one (ψ b)`. Establish `hsub : ∀ g ∈ MulAction.stabilizer G Q, ∀ y ∈ V, g y ∈ V`. Introduce `g hg y hy`. Take `⟨a, s, ha, hs, hsv, hys⟩` from `GlobalTheory.T.exists_integral_quotient_of_valuationSubring_above_dvr R K Ω V hV y hy`. Set `a' : B` to `⟨a, ha⟩`.
+
+Set `s' : B` to `⟨s, hs⟩`. Establish `hs'Q : s' ∉ Q` using `by rw [hQ]; exact fun h => (ne_of_lt h) hsv`. Establish `hgs : g • s' ∉ Q`. Introduce `h`. Apply `hs'Q` to reduce the goal to its premises.
+
+Establish `h' : g • s' ∈ g • Q` using `by rw [MulAction.mem_stabilizer_iff.1 hg]; exact h`. Rewrite `h'` using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem, inv_smul_smul]`. Conclude with `h'`. Establish `hgsv : V.valuation (g s) = 1`. Rewrite `hgs` using `[hQ]`.
+
+Conclude with `le_antisymm (hBle (g • s')) (not_lt.1 hgs)`. Establish `hga : V.valuation (g a) ≤ 1` using `hBle (g • a')`. Apply `V.mem_of_valuation_le_one` to reduce the goal to its premises. Establish `: g y * g s = g a` using `by rw [← map_mul, hys]`. Rewrite `hga` using `[← this, map_mul, hgsv, _root_.mul_one]`.
+
+Conclude with `hga`. Establish `hstabV : ∀ g ∈ MulAction.stabilizer G Q, g • V = V`. Introduce `g hg`. Use extensionality with `z`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hz`. Use `hsub g hg _ hz` as an intermediate fact. Establish `e : g (g⁻¹ • z) = z` using `smul_inv_smul g z`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+
+Introduce `hz`. Conclude with `hsub g⁻¹ (inv_mem hg) z hz`. Take `⟨a, s, ha, hs, hsv, hxs⟩` from `GlobalTheory.T.exists_integral_quotient_of_valuationSubring_above_dvr R K Ω V hV x hx`. Set `a' : B` to `⟨a, ha⟩`. Set `s' : B` to `⟨s, hs⟩`.
+
+Establish `hs'Q : s' ∉ Q` using `by rw [hQ]; exact fun h => (ne_of_lt h) hsv`. Establish `hsne : Ideal.Quotient.mk Q s' ≠ 0` using `by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem]`. Set `ξ : B ⧸ Q` to `Ideal.Quotient.mk Q a' / Ideal.Quotient.mk Q s'`. Establish `hξ : ∀ τ : (B ⧸ Q) ≃ₐ[R ⧸ maximalIdeal R] (B ⧸ Q), τ ξ = ξ`. Introduce `τ`.
+
+Take `⟨⟨σ, hσQ⟩, hστ⟩` from `Ideal.Quotient.stabilizerHom_surjective_of_profinite (G := G) (maximalIdeal R) Q τ`. Establish `hlt` using `hfix σ (hstabV σ hσQ)`. Establish `hσs : σ • s' ∉ Q`. Introduce `h`. Apply `hs'Q` to reduce the goal to its premises.
+
+Establish `h' : σ • s' ∈ σ • Q` using `by rw [MulAction.mem_stabilizer_iff.1 hσQ]; exact h`. Rewrite `h'` using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem, inv_smul_smul]`. Conclude with `h'`. Establish `hσsv : V.valuation (σ s) = 1`. Establish `h` using `hσs`.
+
+Rewrite `h` using `[hQ]`. Conclude with `le_antisymm (hBle (σ • s')) (not_lt.1 h)`. Establish `hσs0 : Ideal.Quotient.mk Q (σ • s') ≠ 0` using `by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[← hστ]`. Simplify using `only [ξ, map_div₀, Ideal.Quotient.stabilizerHom_apply]`.
+
+Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk Q (σ • a') / Ideal.Quotient.mk Q (σ • s') = _`. Rewrite using `[div_eq_div_iff hσs0 hsne, ← map_mul, ← map_mul, Ideal.Quotient.eq, hQ]`. Establish `e : ((σ • a' * s' - a' * σ • s' : B) : Ω) = (σ x - x) * s * σ s`. Express the relevant statement in the definitionally equal form `σ a * s - a * σ s = _`. Rewrite using `[← hxs, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_mul, map_mul, hsv, hσsv, _root_.mul_one, _root_.mul_one]`. Conclude with `hlt`. Take `⟨c, hc⟩` from `(InfiniteGalois.mem_range_algebraMap_iff_fixed (k := R ⧸ maximalIdeal R) ξ).2 hξ`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective c`.
+
+Use `⟨r, ?_⟩` and prove the remaining obligations. Establish `h1 : Ideal.Quotient.mk Q (algebraMap R B r) = ξ` using `hc`. Establish `h2 : Ideal.Quotient.mk Q (algebraMap R B r * s') = Ideal.Quotient.mk Q a'`. Rewrite using `[map_mul, h1, div_mul_cancel₀ _ hsne]`. Rewrite `h2` using `[Ideal.Quotient.eq, hQ]`.
+
+Establish `e : ((algebraMap R B r * s' - a' : B) : Ω) = (algebraMap K Ω (algebraMap R K r) - x) * s`. Express the relevant statement in the definitionally equal form `algebraMap K Ω (algebraMap R K r) * s - a = _`. Rewrite using `[← hxs]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[e, map_mul, hsv, _root_.mul_one, Valuation.map_sub_swap]`.
+
+Conclude with `h2`.
+-/
 theorem residue_fixed_mem : ∀ (R K Ω : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [PerfectField (ResidueField R)] [Field K] [Algebra R K] [IsFractionRing R K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω] (V : ValuationSubring Ω), IsAbove R K V.toSubring → ∀ x ∈ V, (∀ σ : Ω ≃ₐ[K] Ω, σ • V = V → V.valuation (σ x - x) < 1) → ∃ r : R, V.valuation (x - algebraMap K Ω (algebraMap R K r)) < 1 := by
   intro R K Ω _ _ _ _ _ _ _ _ _ _ V hV x hx hfix
   classical

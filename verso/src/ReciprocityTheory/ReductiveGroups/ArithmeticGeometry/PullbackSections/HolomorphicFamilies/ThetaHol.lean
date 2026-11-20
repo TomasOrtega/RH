@@ -14,6 +14,11 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 
 namespace ThetaHol
 
+/- English proof (translation)
+Introduce `Uo f`. Distinguish the cases in `h : ⊤ ≤ y ⁻¹ᵁ Uo`. Simplify using `only [Set.mem_univ, true_and, h, Set.ofPred_true]`. Conclude with `⟨isOpen_univ, differentiableOn_const _⟩`. Simplify using `only [Set.mem_univ, true_and, h, Set.ofPred_false]`.
+
+Conclude with `⟨isOpen_empty, differentiableOn_empty⟩`.
+-/
 theorem isHolTo_const {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {Y : Scheme.{0}} (y : Sp ℂ ⟶ Y) :
     IsHolTo (Set.univ : Set V) (fun _ => y) := by
   intro Uo f
@@ -23,6 +28,9 @@ theorem isHolTo_const {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {Y :
   · simp only [Set.mem_univ, true_and, h, Set.ofPred_false]
     exact ⟨isOpen_empty, differentiableOn_empty⟩
 
+/- English proof (translation)
+Introduce `Uo f`. Take `⟨h1, h2⟩` from `h Uo f`. Simplify using `only [Set.mem_univ, true_and]`. Conclude with `⟨h1, h2⟩`.
+-/
 theorem isHolTo_of_fam {n : ℕ} {Y : Scheme.{0}} {y : (Fin n → ℂ) → (Sp ℂ ⟶ Y)} (h : IsHolFam y) :
     IsHolTo Set.univ y := by
   intro Uo f
@@ -37,6 +45,9 @@ section Main
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
+/- English proof (translation)
+Conclude with `(Category.id_comp _).trans (W.pt.trans (Over.w (W.F.ex (W.ik k) W.Pm z)).symm)`.
+-/
 theorem thPt_w {U : Unf Xo c σ r} {k : U.Comp} {x : (U.X k).dom} (W : UnfAt U k x) (z : Fin W.g → ℂ) :
     𝟙 (Sp ℂ) ≫ (U.un k x).x = (W.F.ex (W.ik k) W.Pm z).left ≫ Xo.univ.t.G.hom := by
   exact (Category.id_comp _).trans (W.pt.trans (Over.w (W.F.ex (W.ik k) W.Pm z)).symm)
@@ -46,14 +57,31 @@ def thPt {U : Unf Xo c σ r} {k : U.Comp} {x : (U.X k).dom} (W : UnfAt U k x) (z
   (pullback.lift (𝟙 (Sp ℂ)) (W.F.ex (W.ik k) W.Pm z).left (thPt_w W z) :
     Sp ℂ ⟶ pullback (U.un k x).x Xo.univ.t.G.hom)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem thPt_fst {U : Unf Xo c σ r} {k : U.Comp} {x : (U.X k).dom} (W : UnfAt U k x) (z : Fin W.g → ℂ) :
     thPt W z ≫ gxFst (U.un k x).x = (W.F.ex (W.ik k) W.Pm z).left :=
   pullback.lift_snd _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem thPt_snd {U : Unf Xo c σ r} {k : U.Comp} {x : (U.X k).dom} (W : UnfAt U k x) (z : Fin W.g → ℂ) :
     thPt W z ≫ gxSnd (U.un k x).x = 𝟙 (Sp ℂ) :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+Introduce `z0`. Establish `hE : IsHolTo Set.univ (fun z => (W.F.ex (W.ik k) W.Pm z).left)` using `ThetaHol.isHolTo_of_fam (anHol W.F (W.ik k) W.Pm W.per)`. Establish `hP : IsHolTo Set.univ (thPt W)` using `hHP Xo.X (Sp ℂ) Xo.univ.t.G.left (U.un k x).x Xo.univ.t.G.hom W.g Set.univ (fun _ => 𝟙 (Sp ℂ)) (fun z => (W.F.ex (W.ik k) W.Pm z).left) (fun z => thPt_w W z) isOpen_univ (ThetaHol.isHolTo_const _) hE`. Take `⟨q⟩ : Nonempty (Sp ℂ)` from `inferInstanceAs (Nonempty (PrimeSpectrum ℂ))`. Take `⟨j, hj⟩` from `exists_chart Xo.univ.t.PP.isLB ((W.F.ex (W.ik k) W.Pm z0).left q)`.
+
+Establish `hz0 : ⊤ ≤ (W.F.ex (W.ik k) W.Pm z0).left ⁻¹ᵁ Xo.univ.t.PP.L.U j` using `(top_le_iff_mem _ _ q).2 hj`. Establish `hOo : IsOpen {z | ⊤ ≤ (W.F.ex (W.ik k) W.Pm z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j}`. Use `(hE (Xo.univ.t.PP.L.U j) 0).1` as an intermediate fact. Simplify `this` using `only [Set.mem_univ, true_and]`. Establish `hsub : ∀ z ∈ {z | ⊤ ≤ (W.F.ex (W.ik k) W.Pm z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j}, ⊤ ≤ thPt W z ⁻¹ᵁ (PPx (U.un k x).x).U (fun _ => j)`.
+
+Introduce `z hz`. Rewrite using `[top_le_iff_mem _ _ q]`. Establish `h1 : (thPt W z ≫ gxFst (U.un k x).x) q ∈ Xo.univ.t.PP.L.U j`. Rewrite using `[thPt_fst]`. Conclude with `(top_le_iff_mem _ _ q).1 hz`.
+
+Conclude with `Set.mem_iInter.2 fun _ => h1`. Establish `hN : DifferentiableOn ℂ (fun z => valAt' (thPt W z) ((PPx (U.un k x).x).U (fun _ => j)) ((U.un k x).s.f (fun _ => j))) {z | ⊤ ≤ (W.F.ex (W.ik k) W.Pm z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j}` using `(hP ((PPx (U.un k x).x).U (fun _ => j)) ((U.un k x).s.f (fun _ => j))).2.mono fun z hz => ⟨trivial, hsub z hz⟩`. Establish `hF0 : ∀ z ∈ {z | ⊤ ≤ (W.F.ex (W.ik k) W.Pm z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j}, Wu.fr j z ≠ 0` using `fun z hz => Wu.c3 j z hz`. Establish `heq : ∀ z ∈ {z | ⊤ ≤ (W.F.ex (W.ik k) W.Pm z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j}, Wu.θ z = valAt' (thPt W z) ((PPx (U.un k x).x).U (fun _ => j)) ((U.un k x).s.f (fun _ => j)) * (Wu.fr j)⁻¹ z`. Introduce `z hz`.
+
+Rewrite using `[Wu.c7 j z (thPt W z) (thPt_fst W z) (thPt_snd W z) hz, Pi.inv_apply, mul_assoc, mul_inv_cancel₀ (hF0 z hz), mul_one]`. Establish `hd` using `(hN.mul ((Wu.c2 j).inv hF0)).differentiableAt (hOo.mem_nhds hz0)`. Conclude with `hd.congr_of_eventuallyEq (Filter.eventually_of_mem (hOo.mem_nhds hz0) heq)`.
+-/
 theorem theta_hol_of_pair {U : Unf Xo c σ r} {k : U.Comp} {x : (U.X k).dom} (W : UnfAt U k x) (Wu : UnitAt W)
     (hHP : ∀ (X Y₁ Y₂ : Scheme.{0}) (p₁ : Y₁ ⟶ X) (p₂ : Y₂ ⟶ X) (n : ℕ) (B : Set (Fin n → ℂ))
       (e₁ : (Fin n → ℂ) → (Sp ℂ ⟶ Y₁)) (e₂ : (Fin n → ℂ) → (Sp ℂ ⟶ Y₂)) (he : ∀ b, e₁ b ≫ p₁ = e₂ b ≫ p₂),

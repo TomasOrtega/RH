@@ -19,6 +19,11 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Establish `hJ : (J : Ideal (𝓞 F)) ≠ ⊥` using `nonZeroDivisors.coe_ne_zero J`. Establish `h1` using `coeff_inv_mul_coeff F (classHecke ψ) (standardOpenSubgroup_le_ker ψ) J hJ`. Rewrite `h1` using `[coeff_classHecke ψ J hJ]`. Establish `h2 : ψ (Additive.ofMul (ClassGroup.mk0 J)⁻¹) * ψ (Additive.ofMul (ClassGroup.mk0 J)) = 1`. Rewrite using `[← AddChar.map_add_eq_mul, ← ofMul_mul, inv_mul_cancel, ofMul_one, AddChar.map_zero_eq_one]`.
+
+Conclude with `mul_right_cancel₀ (right_ne_zero_of_mul_eq_one h2) (h1.trans h2.symm)`.
+-/
 theorem coeff_inv_classHecke (ψ : AddChar (Additive (ClassGroup (𝓞 F))) ℂ) (J : (Ideal (𝓞 F))⁰) :
     ((classHecke ψ)⁻¹).coeff (J : Ideal (𝓞 F)) = ψ (Additive.ofMul (ClassGroup.mk0 J)⁻¹) := by
   have hJ : (J : Ideal (𝓞 F)) ≠ ⊥ := nonZeroDivisors.coe_ne_zero J
@@ -36,6 +41,17 @@ def zetaOfClassInv (C : ClassGroup (𝓞 F)) (s : ℂ) : ℂ :=
   ∑ ψ : AddChar (Additive (ClassGroup (𝓞 F))) ℂ,
     ((Fintype.card (ClassGroup (𝓞 F)) : ℂ)⁻¹ * ψ (Additive.ofMul C)) * ((classHecke ψ)⁻¹).continuedLFunction s
 
+/- English proof (translation)
+Use `⟨?_, fun s hs => ?_⟩` and prove the remaining obligations. Conclude with `DifferentiableOn.fun_sum fun i _ => (differentiableOn_continuedLFunction F (χ i) (hU i)).const_mul (c i)`. Establish `h1 : HasSum (fun I : Ideal (𝓞 F) => ∑ i, c i * ((χ i).coeff I * (Ideal.absNorm I : ℂ) ^ (-s))) (∑ i, c i * (χ i).continuedLFunction s)`. Use `hasSum_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[(χ i).continuedLFunction_eq hs]`.
+
+Conclude with `((χ i).hasSum_LFunction hs).mul_left (c i)`. Establish `hfac : ∀ I : Ideal (𝓞 F), ∑ i, c i * ((χ i).coeff I * (Ideal.absNorm I : ℂ) ^ (-s)) = (∑ i, c i * (χ i).coeff I) * (Ideal.absNorm I : ℂ) ^ (-s)` using `fun I => by`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => (mul_assoc _ _ _).symm`. Set `g : {J : (Ideal (𝓞 F))⁰ // ClassGroup.mk0 J = C} → Ideal (𝓞 F)` to `fun J => (J.1 : Ideal (𝓞 F))`.
+
+Establish `hg : Function.Injective g` using `fun a b hab => Subtype.ext (Subtype.ext hab)`. Establish `hsupp : ∀ I ∉ Set.range g, ∑ i, c i * ((χ i).coeff I * (Ideal.absNorm I : ℂ) ^ (-s)) = 0`. Introduce `I hI`. Distinguish the cases in `hbot : I = ⊥`. Substitute `hbot` using the available equality.
+
+Simplify using the standard rewrite rules. Set `J : (Ideal (𝓞 F))⁰` to `⟨I, mem_nonZeroDivisors_of_ne_zero hbot⟩`. Establish `hJ : ClassGroup.mk0 J ≠ C` using `fun h => hI ⟨⟨J, h⟩, rfl⟩`. Rewrite using `[hfac, show I = (J : Ideal (𝓞 F)) from rfl, (horth J).2 hJ, zero_mul]`. Establish `h2` using `(hg.hasSum_iff hsupp).2 h1`.
+
+Establish `h3 : (fun I : Ideal (𝓞 F) => ∑ i, c i * ((χ i).coeff I * (Ideal.absNorm I : ℂ) ^ (-s))) ∘ g = fun J : {J : (Ideal (𝓞 F))⁰ // ClassGroup.mk0 J = C} => ((Ideal.absNorm (J.1 : Ideal (𝓞 F)) : ℕ) : ℂ) ^ (-s)` using `funext fun J => by`. Simplify using `only [Function.comp_apply]`. Rewrite using `[hfac, show g J = (J.1 : Ideal (𝓞 F)) from rfl, (horth J.1).1 J.2, one_mul]`. Rewrite `h2` using `[h3]`. Conclude with `h2`.
+-/
 theorem isPartialZeta_of_indicator {ι : Type} [Fintype ι] (χ : ι → HeckeCharacter F) (c : ι → ℂ)
     (C : ClassGroup (𝓞 F)) (hU : ∀ i, standardOpenSubgroup F ≤ (χ i).toIdele.ker)
     (horth : ∀ J : (Ideal (𝓞 F))⁰,
@@ -79,9 +95,19 @@ theorem isPartialZeta_of_indicator {ι : Type} [Fintype ι] (χ : ι → HeckeCh
     rw [h3] at h2
     exact h2
 
+/- English proof (translation)
+The claim follows from `Nat.cast_ne_zero.2 Fintype.card_ne_zero`.
+-/
 theorem card_classGroup_ne_zero : (Fintype.card (ClassGroup (𝓞 F)) : ℂ) ≠ 0 :=
   Nat.cast_ne_zero.2 Fintype.card_ne_zero
 
+/- English proof (translation)
+Use `isPartialZeta_of_indicator (fun ψ => classHecke ψ) _ C (fun ψ => standardOpenSubgroup_le_ker ψ) fun J => ?_` and prove the remaining obligations. Establish `hJ : (J : Ideal (𝓞 F)) ≠ ⊥` using `nonZeroDivisors.coe_ne_zero J`. Establish `e : ∑ ψ : AddChar (Additive (ClassGroup (𝓞 F))) ℂ, ((Fintype.card (ClassGroup (𝓞 F)) : ℂ)⁻¹ * ψ (Additive.ofMul C⁻¹)) * (classHecke ψ).coeff (J : Ideal (𝓞 F)) = (Fintype.card (ClassGroup (𝓞 F)) : ℂ)⁻¹ * (if ClassGroup.mk0 J = C then (Fintype.card (ClassGroup (𝓞 F)) : ℂ) else 0)`. Rewrite using `[← sum_addChar_ofMul_mul_ofMul_inv, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun ψ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[coeff_classHecke ψ J hJ]`. Put the polynomial expressions in normal form. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Rewrite using `[if_pos h, inv_mul_cancel₀ card_classGroup_ne_zero]`. Introduce `h`. Rewrite using `[if_neg h, mul_zero]`.
+-/
 theorem isPartialZeta_zetaOfClass (C : ClassGroup (𝓞 F)) :
     GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.IsPartialZeta C (zetaOfClass C) := by
   classical
@@ -101,6 +127,13 @@ theorem isPartialZeta_zetaOfClass (C : ClassGroup (𝓞 F)) :
   · intro h
     rw [if_neg h, mul_zero]
 
+/- English proof (translation)
+Use `isPartialZeta_of_indicator (fun ψ => (classHecke ψ)⁻¹) _ C (fun ψ => standardOpenSubgroup_le_ker_inv F _ (standardOpenSubgroup_le_ker ψ)) fun J => ?_` and prove the remaining obligations. Establish `e : ∑ ψ : AddChar (Additive (ClassGroup (𝓞 F))) ℂ, ((Fintype.card (ClassGroup (𝓞 F)) : ℂ)⁻¹ * ψ (Additive.ofMul C)) * ((classHecke ψ)⁻¹).coeff (J : Ideal (𝓞 F)) = (Fintype.card (ClassGroup (𝓞 F)) : ℂ)⁻¹ * (if C = ClassGroup.mk0 J then (Fintype.card (ClassGroup (𝓞 F)) : ℂ) else 0)`. Rewrite using `[← sum_addChar_ofMul_mul_ofMul_inv, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun ψ _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_inv_classHecke ψ J, mul_assoc]`.
+
+Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[if_pos h.symm, inv_mul_cancel₀ card_classGroup_ne_zero]`. Introduce `h`.
+
+Rewrite using `[if_neg (Ne.symm h), mul_zero]`.
+-/
 theorem isPartialZeta_zetaOfClassInv (C : ClassGroup (𝓞 F)) :
     GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.IsPartialZeta C (zetaOfClassInv C) := by
   classical
@@ -119,6 +152,9 @@ theorem isPartialZeta_zetaOfClassInv (C : ClassGroup (𝓞 F)) :
   · intro h
     rw [if_neg (Ne.symm h), mul_zero]
 
+/- English proof (translation)
+Establish `hU` using `standardOpenSubgroup_le_ker ψ`. Establish `h` using `fe_of_parts F (classHecke ψ) (discrNormConductor_eq_dF_of_unramified F _ hU) (gammaFactor_eq_of_unramified F _ hU) (gammaFactor_eq_of_unramified F _ (standardOpenSubgroup_le_ker_inv F _ hU)) (rootNumber_eq_coeff_different F _ hU) s h1 h2`. Rewrite `h` using `[← hD, coeff_classHecke ψ _ (nonZeroDivisors.coe_ne_zero D)]`. Conclude with `h`.
+-/
 theorem functionalEquation_classHecke [IsTotallyReal F] (ψ : AddChar (Additive (ClassGroup (𝓞 F))) ℂ)
     (D : (Ideal (𝓞 F))⁰) (hD : (D : Ideal (𝓞 F)) = differentIdeal ℤ (𝓞 F))
     (s : ℂ) (h1 : ∀ n : ℕ, s ≠ -2 * n) (h2 : ∀ n : ℕ, 1 - s ≠ -2 * n) :
@@ -135,6 +171,11 @@ theorem functionalEquation_classHecke [IsTotallyReal F] (ψ : AddChar (Additive 
 
 end GlobalTheory.CompanionTheory.Hypotheses₂
 
+/- English proof (translation)
+Introduce `F _ _ _ C C' D hD hC`. Use `⟨GlobalTheory.CompanionTheory.Hypotheses₂.zetaOfClass C, GlobalTheory.CompanionTheory.Hypotheses₂.zetaOfClassInv C', GlobalTheory.CompanionTheory.Hypotheses₂.isPartialZeta_zetaOfClass C, GlobalTheory.CompanionTheory.Hypotheses₂.isPartialZeta_zetaOfClassInv C', fun s h1 h2 => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.Hypotheses₂.zetaOfClass, GlobalTheory.CompanionTheory.Hypotheses₂.zetaOfClassInv, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun ψ _ => ?_` and prove the remaining obligations. Establish `h` using `GlobalTheory.CompanionTheory.Hypotheses₂.functionalEquation_classHecke ψ D hD s h1 h2`.
+
+Establish `e : ψ (Additive.ofMul C⁻¹) * ψ (Additive.ofMul (ClassGroup.mk0 D)) = ψ (Additive.ofMul C')`. Rewrite using `[← AddChar.map_add_eq_mul, ← ofMul_mul, ← hC, inv_mul_cancel_left]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h, ← e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.CompanionTheory.Hypotheses₂.partialZetaFunctionalEquation : GlobalTheory.Published.PartialZetaFunctionalEquation := by
   intro F _ _ _ C C' D hD hC
   refine ⟨GlobalTheory.CompanionTheory.Hypotheses₂.zetaOfClass C, GlobalTheory.CompanionTheory.Hypotheses₂.zetaOfClassInv C',

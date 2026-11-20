@@ -10,6 +10,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.FrobeniusOrbi
 
 namespace GlobalTheory.Mem.FrameVal
 
+/- English proof (translation)
+Establish `hn : IsNormalClosure ℚ M (IntermediateField.normalClosure ℚ M ℂ)` using `Algebra.IsAlgebraic.isNormalClosure_normalClosure (fun x => IsAlgClosed.splits _)`. Establish `: Normal ℚ (IntermediateField.normalClosure ℚ M ℂ)` using `hn.normal`. Conclude with `⟨IntermediateField.normalClosure ℚ M ℂ, inferInstance, {}, IntermediateField.le_normalClosure M⟩`.
+-/
 theorem exists_galois_ge (M : IntermediateField ℚ ℂ) [FiniteDimensional ℚ M] :
     ∃ N : IntermediateField ℚ ℂ, FiniteDimensional ℚ N ∧ IsGalois ℚ N ∧ M ≤ N := by
   have hn : IsNormalClosure ℚ M (IntermediateField.normalClosure ℚ M ℂ) :=
@@ -17,6 +20,11 @@ theorem exists_galois_ge (M : IntermediateField ℚ ℂ) [FiniteDimensional ℚ 
   have : Normal ℚ (IntermediateField.normalClosure ℚ M ℂ) := hn.normal
   exact ⟨IntermediateField.normalClosure ℚ M ℂ, inferInstance, {}, IntermediateField.le_normalClosure M⟩
 
+/- English proof (translation)
+Establish `hfin : {x : ℂ | x ^ n = 1}.Finite`. Use `(Polynomial.nthRoots n (1 : ℂ)).toFinset.finite_toSet.subset fun x hx => ?_` and prove the remaining obligations. Simplify `hx` using `[Polynomial.mem_nthRoots hn]`. Use `hfin.to_subtype` as an intermediate fact. Use `⟨IntermediateField.adjoin ℚ {x : ℂ | x ^ n = 1}, IntermediateField.finiteDimensional_adjoin fun x hx => ?_, fun x hx => IntermediateField.subset_adjoin _ _ hx⟩` and prove the remaining obligations.
+
+Conclude with `IsIntegral.of_pow hn (by rw [show x ^ n = 1 from hx]; exact isIntegral_one)`.
+-/
 theorem exists_roots (n : ℕ) (hn : 0 < n) :
     ∃ N : IntermediateField ℚ ℂ, FiniteDimensional ℚ N ∧ ∀ x : ℂ, x ^ n = 1 → x ∈ N := by
   have hfin : {x : ℂ | x ^ n = 1}.Finite := by
@@ -27,11 +35,19 @@ theorem exists_roots (n : ℕ) (hn : 0 < n) :
     fun x hx => IntermediateField.subset_adjoin _ _ hx⟩
   exact IsIntegral.of_pow hn (by rw [show x ^ n = 1 from hx]; exact isIntegral_one)
 
+/- English proof (translation)
+Introduce `v hv` and use `by obtain ⟨y, hy⟩ := h v hv exact ⟨⟨y, hMN y.2⟩, hy⟩`.
+-/
 theorem valuesIn_mono {L : Type} [Field L] [NumberField L] {χ : HChar L} {s : ℝ} {M N : IntermediateField ℚ ℂ}
     (h : χ.ValuesIn s M.val.toRingHom) (hMN : M ≤ N) : χ.ValuesIn s N.val.toRingHom := fun v hv => by
   obtain ⟨y, hy⟩ := h v hv
   exact ⟨⟨y, hMN y.2⟩, hy⟩
 
+/- English proof (translation)
+Take `⟨n, hn, ho⟩` from `h`. Take `⟨N, hN, hr⟩` from `exists_roots n hn`. Use `⟨N, hN, fun v _ => ⟨⟨(χ.val v : ℂ), hr _ ?_⟩, by simp [HChar.valTw]⟩⟩` and prove the remaining obligations. Establish `h1 : ∀ x, (χ.1 x) ^ n = 1` using `fun x => congrArg (fun ξ : HChar L => ξ.1 x) ho`. Establish `h2 : χ.val v ^ n = 1` using `h1 _`.
+
+Rewrite using `[← Units.val_pow_eq_pow_val, h2, Units.val_one]`.
+-/
 theorem exists_of_order {L : Type} [Field L] [NumberField L] {χ : HChar L} (h : ∃ n : ℕ, 0 < n ∧ χ.OrderDvd n) :
     ∃ M : IntermediateField ℚ ℂ, FiniteDimensional ℚ M ∧ χ.ValuesIn 0 M.val.toRingHom := by
   obtain ⟨n, hn, ho⟩ := h
@@ -41,12 +57,28 @@ theorem exists_of_order {L : Type} [Field L] [NumberField L] {χ : HChar L} (h :
   have h2 : χ.val v ^ n = 1 := h1 _
   rw [← Units.val_pow_eq_pow_val, h2, Units.val_one]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨φ.toRatAlgHom.fieldRange, (AlgEquiv.ofInjectiveField φ.toRatAlgHom).toLinearEquiv.finiteDimensional, fun x => ⟨x, rfl⟩⟩`.
+-/
 theorem exists_of_emb {L : Type} [Field L] [NumberField L] (φ : L →+* ℂ) :
     ∃ M : IntermediateField ℚ ℂ, FiniteDimensional ℚ M ∧ ∀ x, φ x ∈ M :=
   ⟨φ.toRatAlgHom.fieldRange, (AlgEquiv.ofInjectiveField φ.toRatAlgHom).toLinearEquiv.finiteDimensional, fun x => ⟨x, rfl⟩⟩
 
 open Classical in
 
+/- English proof (translation)
+Introduce `R H e C he`. Take `⟨c, -, hcm, -⟩` from `GlobalTheory.Mem.HostCM.host_cm R H`. Establish `alg` using `GlobalTheory.T.algebraicHeckeChar_values_in_numberField H.F H.E c (R.Psi) (embPsi H) hcm`. Use `choose Me hMe hMe' using fun φ : H.E →+* ℂ => exists_of_emb φ`. Establish `hmu : ∀ j, ∃ M : IntermediateField ℚ ℂ, FiniteDimensional ℚ M ∧ (C.mu0 j).ValuesIn 0 M.val.toRingHom`.
+
+Introduce `j`. Take `⟨n, hn, hi⟩` from `(C.isMu0 j).inf`. Use `alg (C.mu0 j) n 0 hi fun i => by` as an intermediate fact. Take `⟨z, hz⟩` from `he j i`. Establish `h1 : (n i : ℚ) = 2 * -e j i` using `hn i`.
+
+Rewrite `h1` using `[hz]`. Establish `h2 : n i = 2 * -z` using `by exact_mod_cast h1`. Conclude with `⟨-z, by rw [h2]; ring⟩`. Simplify using `using this`. Use `choose Mm hMm hMm' using hmu`.
+
+Take `⟨M1, hM1, hM1'⟩` from `alg C.eta (fun _ => 1) 1 C.isEta.inf fun _ => by simp`. Take `⟨M2, hM2, hM2'⟩` from `alg C.chiPsi (fun _ => 2) 0 C.isChi.inf fun _ => by simp`. Rewrite `hM1'` using `[Int.cast_one]`. Rewrite `hM2'` using `[Int.cast_zero, zero_div]`. Take `⟨M3, hM3, hM3'⟩` from `exists_of_order C.isDel.fin`.
+
+Take `⟨M4, hM4, hM4'⟩` from `exists_of_order C.isDel'.fin`. Use `choose Mo hMo hMo' using fun k : Fin 2 => exists_roots (Nat.card (ZMod (H.g k))ˣ) Nat.card_pos`. Take `⟨N, hN, hG, hle⟩` from `exists_galois_ge ((⨆ φ, Me φ) ⊔ (⨆ j, Mm j) ⊔ (⨆ k, Mo k) ⊔ M1 ⊔ M2 ⊔ M3 ⊔ M4)`. Simplify using `only [sup_le_iff, iSup_le_iff] at hle`. Take `⟨⟨⟨⟨⟨⟨h1, h2⟩, h3⟩, h4⟩, h5⟩, h6⟩, h7⟩` from `hle`.
+
+Use `⟨N, hN, hG, fun g x => h1 _ (hMe' _ x), fun j => valuesIn_mono (hMm' j) (h2 j), valuesIn_mono hM1' h4, valuesIn_mono hM2' h5, valuesIn_mono hM3' h6, valuesIn_mono hM4' h7, fun k a => h3 k (hMo' k _ ?_)⟩` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one', map_one, Units.val_one]`.
+-/
 theorem frame_values : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (e : Fin R.m → R.Psi → ℚ) (C : HFrame H e), (∀ j τ, ∃ z : ℤ, e j τ = z) → ∃ M : IntermediateField ℚ ℂ, FiniteDimensional ℚ M ∧ IsGalois ℚ M ∧ (∀ g x, H.emb g x ∈ M) ∧ (∀ j, (C.mu0 j).ValuesIn 0 M.val.toRingHom) ∧ C.eta.ValuesIn (1 / 2) M.val.toRingHom ∧ C.chiPsi.ValuesIn 0 M.val.toRingHom ∧ C.del.ValuesIn 0 M.val.toRingHom ∧ C.del'.ValuesIn 0 M.val.toRingHom ∧ ∀ k a, ((C.W.om k a : ℂˣ) : ℂ) ∈ M := by
   intro R H e C he
   obtain ⟨c, -, hcm, -⟩ := GlobalTheory.Mem.HostCM.host_cm R H

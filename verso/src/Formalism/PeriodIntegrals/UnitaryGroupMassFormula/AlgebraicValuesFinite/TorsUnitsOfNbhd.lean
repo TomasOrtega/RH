@@ -30,6 +30,11 @@ def ufinSub (L : Type) [Field L] [NumberField L] : Subgroup (Ideles L) where
 
 variable {L : Type} [Field L] [NumberField L]
 
+/- English proof (translation)
+Use `choose N hNpos hN using fun v : HeightOneSpectrum (𝓞 L) => exists_pow_close v n`. Use `⟨∏ v ∈ S, N v, Finset.prod_pos fun v _ => hNpos v, fun y hy v hv => ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩ : N v ∣ ∏ w ∈ S, N w` from `Finset.dvd_prod_of_mem N hv`. Establish `hcomp : ((y ^ (∏ w ∈ S, N w) : Ideles L) : AdeleRing (𝓞 L) L).2 v = ((y : AdeleRing (𝓞 L) L).2 v) ^ (∏ w ∈ S, N w)`. Rewrite using `[← evF_val, ← evF_val, map_pow, Units.val_pow_eq_pow_val]`.
+
+Rewrite using `[hcomp, hr, pow_mul]`. Establish `hy1 : Valued.v ((y : AdeleRing (𝓞 L) L).2 v) = 1` using `hy.2 v`. Establish `hx1 : Valued.v (((y : AdeleRing (𝓞 L) L).2 v) ^ N v) ≤ 1`. Rewrite using `[map_pow, hy1, one_pow]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem pow_close (S : Finset (HeightOneSpectrum (𝓞 L))) (n : ℕ) :
     ∃ M : ℕ, 0 < M ∧ ∀ y ∈ UFin L, ∀ v ∈ S,
       Valued.v (((y ^ M : Ideles L) : AdeleRing (𝓞 L) L).2 v - 1) ≤ WithZero.exp (-(n : ℤ)) := by
@@ -49,6 +54,17 @@ theorem pow_close (S : Finset (HeightOneSpectrum (𝓞 L))) (n : ℕ) :
         val_pow_sub_le v hx1 (by rw [map_one]) r
     _ ≤ WithZero.exp (-(n : ℤ)) := hN v _ hy1
 
+/- English proof (translation)
+Introduce `χ`. Use `set W : Set (Ideles L) := χ.1 ⁻¹' {u : ℂˣ | ‖(u : ℂ) - 1‖ < 1} with hW`. Establish `hWo : IsOpen W`. Use `IsOpen.preimage χ.2.1 ?_` and prove the remaining obligations. Conclude with `isOpen_lt (continuous_norm.comp (Units.continuous_val.sub continuous_const)) continuous_const`.
+
+Establish `hW1 : (1 : Ideles L) ∈ W`. Simplify using `[hW]`. Take `⟨S, n, hSn⟩` from `hnb W hWo hW1`. Take `⟨M, hM, hclose⟩` from `pow_close (L := L) S n`. Use `⟨M, hM, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Establish `hmem : ∀ k : ℤ, (x ^ k) ^ M ∈ W`. Introduce `k`. Establish `hk : x ^ k ∈ UFin L` using `(ufinSub L).zpow_mem hx k`. Establish `hkM : (x ^ k) ^ M ∈ UFin L` using `(ufinSub L).pow_mem hk M`. Conclude with `hSn _ hkM (fun v hv => hclose _ hk v hv)`.
+
+Establish `hz : ((χ.1 (x ^ M) : ℂˣ) : ℂ) = 1`. Apply `eq_one_of_forall_zpow` to reduce the goal to its premises. Introduce `k`. Establish `e : ((χ.1 (x ^ M) : ℂˣ) : ℂ) ^ k = ((χ.1 ((x ^ k) ^ M) : ℂˣ) : ℂ)`. Rewrite using `[← Units.val_zpow_eq_zpow_val, ← map_zpow, ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, mul_comm]`.
+
+Rewrite using `[e]`. Conclude with `hmem k`. Rewrite using `[← map_pow]`. Conclude with `Units.ext hz`.
+-/
 theorem torsUnits_of_nbhd (L : Type) [Field L] [NumberField L]
     (hnb : ∀ W : Set (Ideles L), IsOpen W → (1 : Ideles L) ∈ W →
       ∃ (S : Finset (HeightOneSpectrum (𝓞 L))) (n : ℕ), ∀ x ∈ UFin L,

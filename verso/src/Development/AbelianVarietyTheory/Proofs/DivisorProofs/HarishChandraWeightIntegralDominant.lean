@@ -13,6 +13,17 @@ namespace GlobalTheory.PsCo.PcEF.HarishChandraWeightIntegral
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `h : (univ.filter fun b => ε b = ε a) = ((univ.filter fun b => a < b ∧ ε b = ε a) ∪ (univ.filter fun b => b < a ∧ ε b = ε a)) ∪ {a}`. Use extensionality with `b`. Simplify using `only [mem_filter, mem_univ, true_and, mem_union, mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Break down `lt_trichotomy a b with h1 | h1 | h1` into its components or cases. Conclude with `Or.inl (Or.inl ⟨h1, h⟩)`. Conclude with `Or.inr h1.symm`. Conclude with `Or.inl (Or.inr ⟨h1, h⟩)`. Introduce and unpack `((⟨_, h⟩ | ⟨_, h⟩) | rfl)`.
+
+Conclude with `h`. Conclude with `h`. Both sides reduce to the same expression. Establish `d1 : Disjoint (univ.filter fun b => a < b ∧ ε b = ε a) (univ.filter fun b => b < a ∧ ε b = ε a)`. Rewrite using `[disjoint_filter]`.
+
+Introduce `x _ h1 h2`. Conclude with `lt_asymm h1.1 h2.1`. Establish `d2 : Disjoint ((univ.filter fun b => a < b ∧ ε b = ε a) ∪ (univ.filter fun b => b < a ∧ ε b = ε a)) {a}`. Rewrite using `[disjoint_singleton_right]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h, card_union_of_disjoint d2, card_union_of_disjoint d1, card_singleton]`.
+-/
 theorem card_split (ε : Fin n → Bool) (a : Fin n) :
     (univ.filter fun b => a < b ∧ ε b = ε a).card + (univ.filter fun b => b < a ∧ ε b = ε a).card + 1 =
       (univ.filter fun b => ε b = ε a).card := by
@@ -40,11 +51,21 @@ theorem card_split (ε : Fin n → Bool) (a : Fin n) :
     simp
   rw [h, card_union_of_disjoint d2, card_union_of_disjoint d1, card_singleton]
 
+/- English proof (translation)
+Unfold `pOf qOf`. Use `card_filter_add_card_filter_not (s := (univ : Finset (Fin n))) (fun a => ε a = true)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem p_add_q (ε : Fin n → Bool) : pOf ε + qOf ε = n := by
   unfold pOf qOf
   have := card_filter_add_card_filter_not (s := (univ : Finset (Fin n))) (fun a => ε a = true)
   simpa using this
 
+/- English proof (translation)
+Establish `hcR : ((univ.filter fun b => a < b ∧ ε b = ε a).card : ℝ) + ((univ.filter fun b => b < a ∧ ε b = ε a).card : ℝ) + 1 = ((univ.filter fun b => ε b = ε a).card : ℝ)` using `by exact_mod_cast card_split ε a`. Establish `hpqR : (pOf ε : ℝ) + qOf ε = n` using `by exact_mod_cast p_add_q ε`. Establish `hma` using `hm a`. Simplify using `only [gaW, Pi.add_apply, Pi.sub_apply, rhoC, rhoHol, ReciprocityTheory.ChartRestriction.TR.Weyl.rhoK]`. Distinguish the cases in `h : ε a = true`.
+
+Establish `hs : ((univ.filter fun b => ε b = ε a).card : ℝ) = pOf ε` using `by simp [pOf, h]`. Rewrite using `[if_pos h, if_pos h]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs : ((univ.filter fun b => ε b = ε a).card : ℝ) = qOf ε`.
+
+Simplify using `only [Bool.not_eq_true] at h`. Simplify using `[qOf, h]`. Rewrite using `[if_neg h, if_neg h]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem gaW_eq (ε : Fin n → Bool) (lam : Fin n → ℝ) (m : Fin n → ℤ)
     (hm : ∀ a, lam a + ((n : ℝ) - 1) / 2 = m a) (a : Fin n) :
     gaW ε lam a = ((m a - (if ε a then 0 else (pOf ε : ℤ)) - ReciprocityTheory.ChartRestriction.TR.Weyl.rhoK ε a : ℤ) : ℝ) := by
@@ -70,6 +91,21 @@ end GlobalTheory.PsCo.PcEF.HarishChandraWeightIntegral
 
 namespace GlobalTheory.PsCo.PcEF
 
+/- English proof (translation)
+Introduce `n ε lam hlam`. Take `⟨hanti, hz⟩` from `hlam`. Use `choose z hz using hz`. Set `m : Fin n → ℤ` to `fun a => z a + ((n : ℤ) - 1)`. Establish `hm : ∀ a, lam a + ((n : ℝ) - 1) / 2 = m a`.
+
+Introduce `a`. Use `hz a` as an intermediate fact. Simplify using `only [m]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Set `Λ : Fin n → ℤ` to `fun a => m a - (if ε a then 0 else (pOf ε : ℤ)) - ReciprocityTheory.ChartRestriction.TR.Weyl.rhoK ε a`. Establish `hg : gaW ε lam = fun a => (Λ a : ℝ)` using `funext fun a => HarishChandraWeightIntegral.gaW_eq ε lam m hm a`. Use `⟨Λ, m, hg, ?_, hm, ?_⟩` and prove the remaining obligations. Introduce `a b hab he`. Establish `hBA : BlockAnti ε lam`.
+
+Introduce `a b hab _`. Establish `h1` using `hanti hab`. Establish `h2 : (m b : ℝ) < m a` using `by linarith [hm a, hm b]`. Establish `h3 : m b < m a` using `by exact_mod_cast h2`. Establish `h4 : ((m b : ℤ) : ℝ) + 1 ≤ m a` using `by exact_mod_cast h3`.
+
+Combine the linear relations using `[hm a, hm b]`. Establish `h` using `lf_dom_block hBA a b hab he`. Establish `e : lowK ε lam + (rhoHol ε - rhoN ε) = gaW ε lam`. Use function extensionality and compare the values at `x`. Simplify using `only [lowK, gaW, Pi.add_apply, Pi.sub_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e, hg]`. Establish `h' : (Λ b : ℝ) ≤ Λ a` using `h`. Conclude with `h'` after adjusting the coercions. Introduce `a`.
+
+Simplify using `only [Λ, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem harishChandraWeight_integral_dominant : GaInt := by
   intro n ε lam hlam
   obtain ⟨hanti, hz⟩ := hlam

@@ -14,6 +14,9 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory.PolArcExtend
 
+/- English proof (translation)
+Break down `h with ⟨hF, -⟩ | ⟨hD, -, -⟩` into its components or cases. Use `letI := hF.toField`. Conclude with `⟨inferInstance, inferInstance, GlobalTheory.PowerSeriesNormal.isIntegrallyClosed_powerSeries O'⟩`. Conclude with `⟨inferInstance, inferInstance, GlobalTheory.PowerSeriesNormal.isIntegrallyClosed_powerSeries O'⟩`.
+-/
 theorem powerSeries_props (O' : Type) [CommRing O'] [IsDomain O'] (ϖ : O') (h : IsArcBase O' ϖ) :
     ∃ (_ : IsLocalRing (PowerSeries O')), IsNoetherianRing (PowerSeries O') ∧ IsIntegrallyClosed (PowerSeries O') := by
   rcases h with ⟨hF, -⟩ | ⟨hD, -, -⟩
@@ -21,6 +24,9 @@ theorem powerSeries_props (O' : Type) [CommRing O'] [IsDomain O'] (ϖ : O') (h :
     exact ⟨inferInstance, inferInstance, GlobalTheory.PowerSeriesNormal.isIntegrallyClosed_powerSeries O'⟩
   · exact ⟨inferInstance, inferInstance, GlobalTheory.PowerSeriesNormal.isIntegrallyClosed_powerSeries O'⟩
 
+/- English proof (translation)
+Use `show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Conclude with `CommRingCat.hom_ext (RingHom.ext h)`.
+-/
 theorem spMap_jK' {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {g : R →+* R'}
     {gam : FractionRing R →+* FractionRing R'} (h : ∀ r, gam (algebraMap R _ r) = algebraMap R' _ (g r)) :
     spMap gam ≫ Out.jK R = Out.jK R' ≫ spMap g := by
@@ -29,6 +35,17 @@ theorem spMap_jK' {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomai
   congr 1
   exact CommRingCat.hom_ext (RingHom.ext h)
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c p W hp hpW Z Y bV hbV f t m₁ m₂ hfs hgen huniv φ m BD hhom hpol O' _ _ _ b' ϖ a χ₀ hO hχ₀ x₀ hx₀`. Take `⟨_, _, _⟩` from `powerSeries_props O' ϖ hO`. Establish `: CharZero (PowerSeries O')` using `charZero_of_injective_ringHom (PowerSeries.C_injective (R := O'))`. Use `isProper_toroidalModel_structureMap Z` as an intermediate fact. Establish `: CompactSpace Z.X` using `hpol.2.compactSpace`.
+
+Establish `: QuasiSeparatedSpace Z.X` using `quasiSeparatedSpace_of_quasiSeparated Z.s`. Establish `eF : spMap (algebraMap (𝓞 c.F) c.F) = spMap (c.V W).subtype ≫ spMap bV`. Rewrite using `[← spMap_comp]`. Use `congr 1`. Use extensionality with `x`.
+
+Conclude with `congrArg (fun y : c.F => (y : ℂ)) (hbV x).symm`. Establish `hZs : x₀ ≫ Z.j ≫ Z.s = Out.jK (PowerSeries O') ≫ spMap (PowerSeries.C (R` using `O')) ≫ spMap b' ≫ spMap bV := by`. Establish `hY : x₀ ≫ Y.j ≫ Y.s = Out.jK (PowerSeries O') ≫ spMap (PowerSeries.C (R` using `O')) ≫ spMap b' := by`. Rewrite using `[← Category.assoc, ← hx₀, Category.assoc, hχ₀.1]`. Rewrite `hY`, the goal using `[Model.j_s]`.
+
+Rewrite using `[eF]`. Simplify using `only [← Category.assoc] at hY ⊢`. Rewrite using `[hY]`. Take `⟨n, hn⟩` from `GlobalTheory.T.pullback_model_arc_period E H D l Xo c p W hp hpW Z Y bV hbV f t m₁ m₂ hfs hgen huniv φ m BD hhom hpol O' b' ϖ a χ₀ hO hχ₀ x₀ hx₀`. Take `⟨e, he, htr⟩` from `GlobalTheory.T.pullback_model_arc_limit E H D l Xo c p W hp hpW Z Y bV hbV f t m₁ m₂ hfs hgen huniv φ m BD hhom hpol O' b' ϖ a χ₀ hO hχ₀ x₀ hx₀ n hn`.
+
+Use `GlobalTheory.T.generic_section_extends_normal Z.X (polOf Z m BD) hpol.2.isLB (fun z => GlobalTheory.PolFin.exists_H0_of_isAmpleLB hpol.2 z) (PowerSeries O') (x₀ ≫ Z.j) e he fun V _ _ _ hV ψ gam hg => ?_` and prove the remaining obligations. Use `hV.1` as an intermediate fact. Take `⟨χ, hχ, -⟩` from `val_exists Z.s (spMap gam ≫ x₀ ≫ Z.j) (spMap ψ ≫ spMap (PowerSeries.C (R := O')) ≫ spMap b' ≫ spMap bV) (by`. Rewrite using `[Category.assoc, Category.assoc, hZs, ← Category.assoc (spMap gam), spMap_jK' hg, Category.assoc])`. Conclude with `⟨χ, hχ.symm, htr V hV ψ gam hg χ hχ.symm⟩`.
+-/
 theorem extend : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits →
     ∀ (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) (Y : Model Xo c (c.V W).subtype) (bV : 𝓞 c.F →+* c.V W)

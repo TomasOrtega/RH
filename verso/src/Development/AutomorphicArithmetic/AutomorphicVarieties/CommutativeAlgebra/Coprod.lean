@@ -7,6 +7,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
+/- English proof (translation)
+Introduce `n hn` and use `by rw [coeff_rename] refine Finset.sum_eq_zero fun d hd => hg d fun hj => hn ?_ have hd' : Finsupp.mapDomain u d = n := by simpa using hd rw [← hd', ← hj, Finsupp.weight_apply, Finsupp.weight_apply, Finsupp.sum_mapDomain_index (fun _ => by simp) (fun _ _ _ => by rw [add_smul])] s …`.
+-/
 private theorem coprod_rename_mem {O : Type} [CommRing O] {X : Type} [AddCommGroup X] {σ τ : Type} [Finite σ]
     (u : σ → τ) (wt : τ → X) (ws : σ → X) (h : ∀ s, wt (u s) = ws s) {j : X} {g : MvPowerSeries σ O}
     (hg : g ∈ wtPart O ws j) : rename u g ∈ wtPart O wt j := fun n hn => by
@@ -17,12 +20,18 @@ private theorem coprod_rename_mem {O : Type} [CommRing O] {X : Type} [AddCommGro
     Finsupp.sum_mapDomain_index (fun _ => by simp) (fun _ _ _ => by rw [add_smul])]
   simp [h]
 
+/- English proof (translation)
+Establish `hp : ∀ i, g i ∈ (WPres.free O wt).part (c i)` using `fun i => ⟨g i, hg i, rfl⟩`. Conclude with `(homog_span O _ X (WPres.free O wt) κ (fun i => ⟨g i, (WPres.free O wt).part_le_A (hp i)⟩) c hp).1`.
+-/
 private theorem coprod_homog {O : Type} [CommRing O] {X : Type} [AddCommGroup X] {σ : Type} [Fintype σ]
     (wt : σ → X) {κ : Type} [Finite κ] (g : κ → MvPowerSeries σ O) (c : κ → X)
     (hg : ∀ i, g i ∈ wtPart O wt (c i)) : IsHomog O wt (Ideal.span (Set.range g)) := by
   have hp : ∀ i, g i ∈ (WPres.free O wt).part (c i) := fun i => ⟨g i, hg i, rfl⟩
   exact (homog_span O _ X (WPres.free O wt) κ (fun i => ⟨g i, (WPres.free O wt).part_le_A (hp i)⟩) c hp).1
 
+/- English proof (translation)
+The claim follows from `(co_ev O O R' σ (Algebra.ofId O R') _ hF).unique ⟨fun x => G.commutes x, h⟩ ⟨fun x => F.commutes x, fun _ => rfl⟩`.
+-/
 private theorem coprod_ext {O : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O]
     [IsAdicComplete (maximalIdeal O) O] {R' : Type} [CommRing R'] [Algebra O R'] [IsCO O R'] {σ : Type} [Finite σ]
     (F G : MvPowerSeries σ O →ₐ[O] R') (hF : ∀ s, F (X s) ∈ maximalIdeal R') (h : ∀ s, G (X s) = F (X s)) :
@@ -30,6 +39,33 @@ private theorem coprod_ext {O : Type} [CommRing O] [IsLocalRing O] [IsNoetherian
   (co_ev O O R' σ (Algebra.ofId O R') _ hF).unique ⟨fun x => G.commutes x, h⟩
     ⟨fun x => F.commutes x, fun _ => rfl⟩
 
+/- English proof (translation)
+Introduce `O _ _ _ _ X _ T _ B _ _ _ WB hz`. Set `σ : Type` to `Σ v, (WB v).σ`. Set `wt : σ → X` to `fun p => (WB p.1).wt p.2`. Set `r : ∀ v, MvPowerSeries (WB v).σ O →ₐ[O] MvPowerSeries σ O` to `fun v => rename fun s => (⟨v, s⟩ : σ)`. Establish `hr : ∀ v j g, g ∈ wtPart O (WB v).wt j → r v g ∈ wtPart O wt j` using `fun v j g hg => coprod_rename_mem _ wt _ (fun _ => rfl) hg`.
+
+Establish `hrX : ∀ v s, r v (MvPowerSeries.X s) = MvPowerSeries.X ⟨v, s⟩` using `fun v s => rename_X _ s`. Set `J : Ideal (MvPowerSeries σ O)` to `⨆ v, (RingHom.ker (WB v).π).map (r v)`. Establish `hJ : ∀ v g, (WB v).π g = 0 → r v g ∈ J` using `fun v g hg => le_iSup (fun v => (RingHom.ker (WB v).π).map (r v)) v (Ideal.mem_map_of_mem _ hg)`. Establish `hJm : J ≤ maximalIdeal _` using `iSup_le fun v => Ideal.map_le_iff_le_comap.2 fun g hg hu => by`. Establish `h1 : IsUnit g`.
+
+Establish `h2` using `isUnit_constantCoeff _ hu`. Rewrite using `[isUnit_iff_constantCoeff]`. Rewrite `h2` using `[show constantCoeff (r v g) = constantCoeff g from constantCoeff_rename _ g]`. Then use the resulting hypothesis. Establish `h3` using `h1.map (WB v).π`. Rewrite `h3` using `[show (WB v).π g = 0 from hg]`.
+
+Conclude with `not_isUnit_zero h3`. Establish `hJh : IsHomog O wt J` using `by choose n g c hg hs using fun v => ker_gen O X (WB v).σ (WB v).wt _ (WB v).homog`. Establish `: J = Ideal.span (Set.range fun p : Σ v, Fin (n v) => r p.1 (g p.1 p.2))`. Rewrite using `[Set.range_sigma_eq_iUnion_range, Ideal.span_iUnion]`. Use `iSup_congr fun v => ?_` and prove the remaining obligations.
+
+Rewrite using `[hs v, Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `coprod_homog wt _ (fun p => c p.1 p.2) fun p => hr _ _ _ (hg p.1 p.2)`. Use `haveI : IsCO O (MvPowerSeries σ O) := co_mvps O O σ`.
+
+Use `haveI : Nontrivial (MvPowerSeries σ O ⧸ J) := Ideal.Quotient.nontrivial_iff.2 (ne_top_of_le_ne_top (maximalIdeal.isMaximal _).ne_top hJm)`. Set `π` to `Ideal.Quotient.mkₐ O J`. Establish `hπ : Function.Surjective π` using `Ideal.Quotient.mkₐ_surjective O J`. Establish `hk : RingHom.ker π = J` using `Ideal.Quotient.mkₐ_ker O J`. Use `haveI hR : IsCO O (MvPowerSeries σ O ⧸ J) := co_quot O (MvPowerSeries σ O) _ π hπ`.
+
+Set `i : ∀ v, B v →ₐ[O] MvPowerSeries σ O ⧸ J` to `fun v => (Ideal.Quotient.liftₐ (RingHom.ker (WB v).π) (π.comp (r v)) fun g hg => Ideal.Quotient.eq_zero_iff_mem.2 (hJ v g hg)).comp (Ideal.quotientKerAlgEquivOfSurjective (WB v).surj).symm.toAlgHom`. Establish `hi : ∀ v g, i v ((WB v).π g) = π (r v g)` using `fun v g => by`. Establish `: (Ideal.quotientKerAlgEquivOfSurjective (WB v).surj).symm ((WB v).π g) = Ideal.Quotient.mk _ g`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Both sides reduce to the same expression.
+
+Simplify using `only [i, AlgHom.comp_apply, AlgEquiv.coe_algHom]`. Use `erw [this]`. Both sides reduce to the same expression. Use `⟨_, inferInstance, inferInstance, hR, i, ⟨σ, wt, π, hπ, by rw [hk]; exact hJh⟩, Equiv.refl _, ?_, fun v s => ⟨rfl, ?_⟩, ?_, hk⟩` and prove the remaining obligations. Introduce `R' _ _ _ f`.
+
+Establish `ha : ∀ v s, f v ((WB v).z s) ∈ maximalIdeal R'` using `fun v s => by`. Rewrite using `[← res_eq_zero_iff O, res_map, res_eq_zero_iff]`. Conclude with `hz v s`. Take `⟨F, ⟨-, hF⟩, -⟩` from `co_ev O O R' σ (Algebra.ofId O R') (fun p => f p.1 ((WB p.1).z p.2)) fun p => ha p.1 p.2`. Establish `hFr : ∀ v, F.comp (r v) = (f v).comp (WB v).π` using `fun v => coprod_ext _ _ (ha v) fun s => by rw [AlgHom.comp_apply, hrX, hF]; rfl`.
+
+Establish `hFJ : ∀ g ∈ J, F g = 0`. Establish `: J ≤ RingHom.ker F` using `iSup_le fun v => Ideal.map_le_iff_le_comap.2 fun g hg => by show F.comp (r v) g = 0`. Rewrite using `[hFr, AlgHom.comp_apply, show (WB v).π g = 0 from hg, map_zero]`. Conclude with `this`. Use `⟨Ideal.Quotient.liftₐ J F hFJ, fun v => ?_, fun G hG => ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `x`. Take `⟨g, rfl⟩` from `(WB v).surj x`. Rewrite using `[AlgHom.comp_apply, hi]`. Conclude with `DFunLike.congr_fun (hFr v) g`. Establish `: G.comp π = F` using `coprod_ext _ _ (fun p => by rw [hF]; exact ha _ _) fun p => by`.
+
+Rewrite using `[hF, ← hG, AlgHom.comp_apply, AlgHom.comp_apply, WPres.z, hi, hrX]`. Use extensionality with `x`. Take `⟨g, rfl⟩` from `hπ x`. Conclude with `DFunLike.congr_fun this g`. Use `show π _ = i v ((WB v).π _)`.
+
+Rewrite using `[hi, hrX]`. Both sides reduce to the same expression. Introduce and unpack `v j _ ⟨g, hg, rfl⟩`. Conclude with `⟨r v g, hr v j g hg, (hi v g).symm⟩`.
+-/
 theorem UpperTheory.V.Alg.coprod :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] (X : Type) [AddCommGroup X] (T : Type) [Fintype T] (B : T → Type) [∀ v, CommRing (B v)] [∀ v, Algebra O (B v)] [∀ v, IsCO O (B v)] (WB : ∀ v, WPres O X (B v)), (∀ v s, (WB v).z s ∈ maximalIdeal (B v)) →
       ∃ (R : Type) (_ : CommRing R) (_ : Algebra O R) (_ : IsCO O R) (i : ∀ v, B v →ₐ[O] R) (W : WPres O X R) (e : (Σ v, (WB v).σ) ≃ W.σ),

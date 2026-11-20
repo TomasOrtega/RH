@@ -3,6 +3,25 @@ open scoped NNReal TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R Ω _ _ _ _ _ _ _ hinj S x hx`. Use `set A := Algebra.adjoin R S with hA`. Use `set F : Subfield Ω := Subfield.closure (A : Set Ω) with hF`. Establish `hAF : ∀ y ∈ A, y ∈ F` using `fun y hy => Subfield.subset_closure hy`. Set `φ : R →+* F` to `(algebraMap R Ω).codRestrict F (fun r => hAF _ (A.algebraMap_mem r))`.
+
+Establish `hφ : ∀ r, algebraMap F Ω (φ r) = algebraMap R Ω r` using `fun r => rfl`. Use `haveI : Algebra.IsAlgebraic F Ω := by`. Prove the components needed by the constructor for the conclusion. Introduce `y`. Take `⟨p, hp0, hp⟩` from `Algebra.IsAlgebraic.isAlgebraic (R := R) y`.
+
+Use `⟨p.map φ, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hp0` to reduce the goal to its premises. Establish `hφi : Function.Injective φ`. Introduce `a b hab`.
+
+Apply `hinj` to reduce the goal to its premises. Use `congrArg (algebraMap F Ω) hab` as an intermediate fact. Simplify `this` using `[hφ]`. Conclude with `(Polynomial.map_eq_zero_iff hφi).mp h`. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_map]`.
+
+Rewrite `hp` using `[Polynomial.aeval_def]`. Use `hp using 2` and compare the differences between its conclusion and the goal. Conclude with `RingHom.ext hφ`. Use `haveI : IsAlgClosure F Ω := ⟨inferInstance, inferInstance⟩`. Use `haveI : CharZero F := RingHom.charZero (algebraMap F Ω)`.
+
+Use `haveI : IsGalois F Ω := IsAlgClosure.isGalois F Ω`. Establish `hfix : ∀ f : Ω ≃ₐ[F] Ω, f x = x`. Introduce `f`. Establish `hfF : ∀ y ∈ F, f y = y` using `fun y hy => f.commutes ⟨y, hy⟩`. Set `g : Ω ≃ₐ[R] Ω` to `AlgEquiv.ofRingEquiv (f := f.toRingEquiv) (fun r => hfF _ (hAF _ (A.algebraMap_mem r)))`.
+
+Conclude with `hx g (fun s hs => hfF _ (hAF _ (Algebra.subset_adjoin hs)))`. Establish `hxF : x ∈ F`. Take `⟨y, hy⟩` from `(InfiniteGalois.mem_range_algebraMap_iff_fixed (k := F) x).mpr hfix`. Rewrite using `[← hy]`. Conclude with `y.2`.
+
+Take `⟨b, hb, c, hc, hbc⟩` from `Subfield.mem_closure_iff.mp hxF`. Establish `hcl : ∀ y ∈ Subring.closure (A : Set Ω), y ∈ A` using `fun y hy => (Subring.closure_le (t := A.toSubring)).mpr (fun z hz => hz) hy`. Distinguish the cases in `hc0 : c = 0`. Use `⟨0, A.zero_mem, 1, A.one_mem, one_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[← hbc, hc0]`.
+
+Simplify using the standard rewrite rules. Conclude with `⟨b, hcl _ hb, c, hcl _ hc, hc0, hbc.symm⟩`.
+-/
 theorem mem_adjoin_div_of_fixed : ∀ (R Ω : Type) [CommRing R] [Nontrivial R] [Field Ω] [CharZero Ω] [IsAlgClosed Ω] [Algebra R Ω] [Algebra.IsAlgebraic R Ω], Function.Injective (algebraMap R Ω) → ∀ (S : Set Ω) (x : Ω), (∀ g : Ω ≃ₐ[R] Ω, (∀ s ∈ S, g s = s) → g x = x) → ∃ b ∈ Algebra.adjoin R S, ∃ c ∈ Algebra.adjoin R S, c ≠ 0 ∧ x = b / c := by
   intro R Ω _ _ _ _ _ _ _ hinj S x hx
   set A := Algebra.adjoin R S with hA

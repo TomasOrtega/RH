@@ -9,6 +9,9 @@ open Ad3.R (G2 Jd md KA LInv IsLoc2 pt pri dia2)
 open scoped NumberField.AdeleRing ValuativeRel
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.StdSphVal.val_std | exact GlobalTheory.CompanionTheory.StdSphVal.val_std | (intros; apply GlobalTheory.CompanionTheory.StdSphVal.val_std <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unramified_theta_value_indicator : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (c : HeckeCharacter K) (v : Pl) (L : LM c v),
   L.ok → L.std → Unr c v → ∀ k ∈ integralGL (Qv v) 2, ∀ ξ : K,
     ((∀ w : PlK K, w.asIdeal.LiesOver v.asIdeal → algebraMap K (Kv K w) ξ ∈ 𝒪[Kv K w]) → L.val k ξ = 1) ∧

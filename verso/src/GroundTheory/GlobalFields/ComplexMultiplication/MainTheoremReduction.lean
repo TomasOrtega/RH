@@ -18,6 +18,9 @@ variable {𝒪 : Type*} [CommRing 𝒪] [IsDomain 𝒪] [IsDiscreteValuationRing
 
 omit [IsDomain 𝒪] [IsDiscreteValuationRing 𝒪] [IsFractionRing 𝒪 K] [W.IsElliptic] [DecidableEq K] in
 
+/- English proof (translation)
+Introduce and unpack `⟨a, ha⟩`. Apply `hX` to reduce the goal to its premises. Use `⟨vcX' C a, ?_⟩` and prove the remaining obligations. Rewrite using `[map_vcX', ha]`. Conclude with `vcX'_vcX _ X`.
+-/
 theorem vcX_notMem_range {X : K} (hX : X ∉ Set.range (algebraMap 𝒪 K)) :
     vcX (C.map (algebraMap 𝒪 K)) X ∉ Set.range (algebraMap 𝒪 K) := by
   rintro ⟨a, ha⟩
@@ -26,6 +29,15 @@ theorem vcX_notMem_range {X : K} (hX : X ∉ Set.range (algebraMap 𝒪 K)) :
   rw [map_vcX', ha]
   exact vcX'_vcX _ X
 
+/- English proof (translation)
+Break down `point_cases K W P with rfl | ⟨X, Y, h, rfl, hX⟩ | ⟨x, y, h, rfl⟩` into its components or cases. Rewrite using `[vcEquivK_zero, reducePoint_zero, reducePoint_zero]`. Both sides reduce to the same expression. Rewrite using `[vcEquivK_some K W C h (nonsingular_K_vc K W C h), reducePoint_some_notMem K (C • W) _ (vcX_notMem_range K C hX), reducePoint_some_notMem K W h hX]`. Both sides reduce to the same expression.
+
+Establish `n₁` using `nonsingular_residue_of_isElliptic K W h.1`. Establish `hx : vcX (C.map (algebraMap 𝒪 K)) (algebraMap 𝒪 K x) = algebraMap 𝒪 K (vcX C x)` using `(map_vcX C (algebraMap 𝒪 K) x).symm`. Establish `hy : vcY (C.map (algebraMap 𝒪 K)) (algebraMap 𝒪 K x) (algebraMap 𝒪 K y) = algebraMap 𝒪 K (vcY C x y)` using `(map_vcY C (algebraMap 𝒪 K) x y).symm`. Establish `h₂ : (curveK K (C • W)).Nonsingular (algebraMap 𝒪 K (vcX C x)) (algebraMap 𝒪 K (vcY C x y))`. Use `nonsingular_K_vc K W C h` as an intermediate fact.
+
+Rewrite `this` using `[hx, hy]`. Then use the resulting hypothesis. Establish `n₂` using `nonsingular_residue_of_isElliptic K (C • W) h₂.1`. Establish `e : vcEquivK K W C (.some _ _ h) = .some _ _ h₂`. Rewrite using `[vcEquivK_some K W C h (nonsingular_K_vc K W C h), Affine.Point.some.injEq]`. Conclude with `⟨hx, hy⟩`.
+
+Rewrite using `[e, reducePoint_some_integral K (C • W) h₂ n₂, reducePoint_some_integral K W h n₁, vcPoint_some, Affine.Point.some.injEq]`. Conclude with `⟨map_vcX C (residue 𝒪) x, map_vcY C (residue 𝒪) x y⟩`.
+-/
 theorem reducePoint_vcEquivK (P : (curveK K W).Point) :
     reducePoint K (C • W) (vcEquivK K W C P) =
       vcPoint (C.map (residue 𝒪)) (map_vc_eq_residue W C) (reducePoint K W P) := by
@@ -53,6 +65,9 @@ theorem reducePoint_vcEquivK (P : (curveK K W).Point) :
       Affine.Point.some.injEq]
     exact ⟨map_vcX C (residue 𝒪) x, map_vcY C (residue 𝒪) x y⟩
 
+/- English proof (translation)
+Substitute `hC` using the available equality. Conclude with `reducePoint_vcEquivK K W C P`.
+-/
 theorem reducePoint_vcPoint {W' : WeierstrassCurve 𝒪} (hC : C • W = W') (P : (curveK K W).Point) :
     reducePoint K W' (vcPoint (C.map (algebraMap 𝒪 K)) (by rw [map_vc_eq, hC]) P) =
       vcPoint (C.map (residue 𝒪)) (by rw [map_vc_eq_residue, hC]) (reducePoint K W P) := by
@@ -69,12 +84,18 @@ variable {𝒪 : Type*} [CommRing 𝒪] [IsDomain 𝒪] [IsDiscreteValuationRing
 
 variable [IsLocalHom g]
 
+/- English proof (translation)
+Use extensionality with `y`. Take `⟨x, rfl⟩` from `residue_surjective y`. Rewrite using `[ResidueField.map_residue, hg, frobenius_def]`.
+-/
 theorem residueField_map_eq_frobenius (hg : ∀ x, residue 𝒪 (g x) = residue 𝒪 x ^ p) :
     ResidueField.map g = frobenius (ResidueField 𝒪) p := by
   ext y
   obtain ⟨x, rfl⟩ := residue_surjective y
   rw [ResidueField.map_residue, hg, frobenius_def]
 
+/- English proof (translation)
+Rewrite using `[← residueField_map_eq_frobenius p hg]`. Conclude with `map_curveRed_eq W`.
+-/
 theorem map_residue_eq_frobeniusTwist (hg : ∀ x, residue 𝒪 (g x) = residue 𝒪 x ^ p) :
     (W.map (residue 𝒪)).map (frobenius (ResidueField 𝒪) p) = (W.map g).map (residue 𝒪) := by
   rw [← residueField_map_eq_frobenius p hg]
@@ -85,6 +106,9 @@ variable [W.IsElliptic] [DecidableEq K] [DecidableEq (ResidueField 𝒪)] {G : K
 
 include hG in
 
+/- English proof (translation)
+Rewrite using `[reducePoint_pointMapRing K K hG W P, pointMapRing_congr (residueField_map_eq_frobenius p hg), pointCongr_pointCongr]`.
+-/
 theorem reducePoint_pointMapRing_frobenius (hg : ∀ x, residue 𝒪 (g x) = residue 𝒪 x ^ p)
     (P : (curveK K W).Point) :
     reducePoint K (W.map g) (pointCongr (map_curveK_eq K K hG W)
@@ -104,6 +128,9 @@ variable {K : Type*} [Field K] {L : Type*} [Field L] [NumberField L] [Algebra K 
   (𝔓 : HeightOneSpectrum (𝓞 L)) {τ : L ≃ₐ[K] L} (hτ : IsArithFrobAt (𝓞 K) τ 𝔓.asIdeal)
 
 include hτ in
+/- English proof (translation)
+The claim follows from `(Elliptic.residue_apply_of_isArithFrobAt 𝔓 hτ hx).1`.
+-/
 theorem mem_localizationAt_of_isArithFrobAt {x : L} (hx : x ∈ localizationAt L 𝔓) :
     τ x ∈ localizationAt L 𝔓 :=
   (Elliptic.residue_apply_of_isArithFrobAt 𝔓 hτ hx).1
@@ -112,17 +139,26 @@ def localizationAtRingHom : localizationAt L 𝔓 →+* localizationAt L 𝔓 :=
   ((τ : L →+* L).comp (localizationAt L 𝔓).val.toRingHom).codRestrict (localizationAt L 𝔓).toSubsemiring
     fun x ↦ mem_localizationAt_of_isArithFrobAt 𝔓 hτ x.2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comp_algebraMap_localizationAtRingHom :
     (τ : L →+* L).comp (algebraMap (localizationAt L 𝔓) L) =
       (algebraMap (localizationAt L 𝔓) L).comp (localizationAtRingHom 𝔓 hτ) :=
   rfl
 
+/- English proof (translation)
+Take `⟨h, e⟩` from `Elliptic.residue_apply_of_isArithFrobAt 𝔓 hτ x.2`. Conclude with `e`.
+-/
 theorem residue_localizationAtRingHom (x : localizationAt L 𝔓) :
     residue (localizationAt L 𝔓) (localizationAtRingHom 𝔓 hτ x) =
       residue (localizationAt L 𝔓) x ^ Nat.card (𝓞 K ⧸ 𝔓.asIdeal.under (𝓞 K)) := by
   obtain ⟨h, e⟩ := Elliptic.residue_apply_of_isArithFrobAt 𝔓 hτ x.2
   exact e
 
+/- English proof (translation)
+Rewrite using `[residue_localizationAtRingHom]`. Use `congr 1`. Rewrite using `[← Ideal.LiesOver.over (P := 𝔓.asIdeal) (p := 𝔭.asIdeal), Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+-/
 theorem residue_localizationAtRingHom_of_absNorm [NumberField K] (𝔭 : HeightOneSpectrum (𝓞 K))
     [𝔓.asIdeal.LiesOver 𝔭.asIdeal] (x : localizationAt L 𝔓) :
     residue (localizationAt L 𝔓) (localizationAtRingHom 𝔓 hτ x) =
@@ -138,6 +174,9 @@ instance : IsLocalHom (localizationAtRingHom 𝔓 hτ) := by
   rw [residue_localizationAtRingHom] at hx
   exact fun h ↦ hx (by rw [h, zero_pow hτ.card_pos.ne'])
 
+/- English proof (translation)
+The claim follows from `reducePoint_pointMapRing_frobenius L W p (comp_algebraMap_localizationAtRingHom 𝔓 hτ) (fun x ↦ by rw [residue_localizationAtRingHom_of_absNorm 𝔓 hτ 𝔭 x, hp]) P`.
+-/
 theorem reducePoint_pointMapRing_localizationAtRingHom [NumberField K] (𝔭 : HeightOneSpectrum (𝓞 K))
     [𝔓.asIdeal.LiesOver 𝔭.asIdeal] (p : ℕ) [Fact p.Prime] (hp : Ideal.absNorm 𝔭.asIdeal = p)
     [CharP (ResidueField (localizationAt L 𝔓)) p] (W : WeierstrassCurve (localizationAt L 𝔓))

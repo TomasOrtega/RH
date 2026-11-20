@@ -23,6 +23,11 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Type}
   (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec)
   {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.EvaluationSum.evK_eq_sum`. Consider the case `exact _root_.GlobalTheory.EvaluationSum.evK_eq_sum`. Consider the case `(apply _root_.GlobalTheory.EvaluationSum.evK_eq_sum <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.EvaluationSum.evK_eq_sum <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.EvaluationSum.evK_eq_sum <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.EvaluationSum.evK_eq_sum ..)`.
+-/
 theorem evK_eq_sum (t : NX.KB S i b ⊗[S.Ks] NX.FmK S ((j : ℕ) + 1)) :
     ∃ (n : ℕ) (a : Fin n → NX.KB S i b) (x : Fin n → NX.FmK S ((j : ℕ) + 1)),
       evK YS v₀ hρ i j b t = ∑ k, ρ.e i b (a k) • evW YS v₀ j (Subtype.val (x k)) := by
@@ -34,6 +39,13 @@ theorem evK_eq_sum (t : NX.KB S i b ⊗[S.Ks] NX.FmK S ((j : ℕ) + 1)) :
   | (intros; apply @_root_.GlobalTheory.EvaluationSum.evK_eq_sum <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.EvaluationSum.evK_eq_sum ..)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, rfl⟩`. Take `⟨n, a, x, e⟩` from `evK_eq_sum YS v₀ hρ i j b (YS.eF i _ b (Nat.le_add_left _ _) j.2 f)`. Use `⟨n, a, x, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ν • (ν⁻¹ • evK YS v₀ hρ i j b (YS.eF i _ b (Nat.le_add_left _ _) j.2 f)) = _`.
+
+Rewrite using `[smul_inv_smul₀ hν, e]`. Introduce and unpack `⟨n, a, x, e⟩`. Use `⟨∑ k, (YS.eF i _ b (Nat.le_add_left _ _) j.2).symm (a k ⊗ₜ[S.Ks] x k), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Simplify using `only [realRd_tmul, mul_smul]`.
+
+Rewrite using `[← Finset.smul_sum, ← e, inv_smul_smul₀ hν]`.
+-/
 theorem mem_range_realRd_iff {ν : ℂ} (hν : ν ≠ 0) (g : GA D (Wc D j) → ℂ) :
     g ∈ Set.range (realRd YS v₀ hρ i j b ν) ↔
       ∃ (n : ℕ) (a : Fin n → NX.KB S i b) (x : Fin n → NX.FmK S ((j : ℕ) + 1)),

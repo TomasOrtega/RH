@@ -33,6 +33,11 @@ def ColumnStabilisersTrivial : Prop :=
     GBig D → (∀ i : Fin 2, SplitsF D (D.host.g i)) →
       ∀ y ∈ GAf D, stabGroup D Lv u y = ⊥
 
+/- English proof (translation)
+Unfold `stabGroup`. Rewrite using `[Subgroup.mem_inf, Subgroup.mem_map]`. Use `and_congr_right fun _ => ⟨?_, fun h => ⟨_, h, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨x, hx, rfl⟩`. Simplify `hx` using `[mul_assoc]`.
+
+Simplify using `[mul_assoc]`.
+-/
 theorem mem_stabGroup (D : D7) (Lv : LevelData D) (u : D.what₂.Word)
     (y γ : GL (Fin D.R.k) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)) :
     γ ∈ stabGroup D Lv u y ↔ γ ∈ GRat D ∧ y⁻¹ * γ * y ∈ colU D Lv u := by

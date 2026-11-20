@@ -15,6 +15,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 namespace GlobalTheory.CompanionTheory.WaveMult
 
+/- English proof (translation)
+Introduce `n c`. Establish `h` using `GlobalTheory.Dec.GelfSepProof.gen (fun a => c a + ((n : ℂ) - 1) / 2)`. Establish `e : gser c = PowerSeries.mk (fun k => ∑ a, ∑ b, (Formalism.REAL.Amat (fun a => c a + ((n : ℂ) - 1) / 2) ^ k) a b)` using `rfl`. Rewrite using `[e]`. Simplify `h` using `only [map_add, map_one]`.
+-/
 theorem gser_mul_prod : ∀ (n : ℕ) (c : Fin n → ℂ),
     (1 - PowerSeries.X * gser c) * ∏ a, (1 - PowerSeries.C (c a + ((n : ℂ) - 1) / 2) * PowerSeries.X) =
       ∏ a, (1 - PowerSeries.C (c a + ((n : ℂ) - 1) / 2 + 1) * PowerSeries.X) := by

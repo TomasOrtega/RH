@@ -13,10 +13,16 @@ namespace DualTopStackedExistence
 
 variable {K : Type} [Field K] [NumberField K] {i : ℕ}
 
+/- English proof (translation)
+Introduce `_ hφ x hx` and use `hφ x (h hx)`.
+-/
 theorem dualLattice_mono {F F' : HermLattice K i} (h : F'.lattice ≤ F.lattice) :
     dualLattice F ≤ dualLattice F' :=
   fun _ hφ x hx => hφ x (h hx)
 
+/- English proof (translation)
+Establish `h` using `(LinearEquiv.ofBijective (Matrix.mulVecLin (dualEmbMatrix b)) hb).finrank_eq`. Rewrite `h` using `[Module.finrank_fintype_fun_eq_card, Module.finrank_fintype_fun_eq_card]`. Conclude with `h.symm`.
+-/
 theorem card_eq_of_bijective {F : HermLattice K i} {T : Type} [Fintype T] [DecidableEq T]
     (b : Module.Basis T ℤ (dualLattice F))
     (hb : Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b))) :
@@ -25,6 +31,11 @@ theorem card_eq_of_bijective {F : HermLattice K i} {T : Type} [Fintype T] [Decid
   rw [Module.finrank_fintype_fun_eq_card, Module.finrank_fintype_fun_eq_card] at h
   exact h.symm
 
+/- English proof (translation)
+Set `eN` to `Submodule.comapSubtypeEquivOfLe (dualLattice_mono h)`. Establish `hrank : Module.finrank ℤ ((dualLattice F).comap (dualLattice F').subtype) = Module.finrank ℤ (dualLattice F')`. Rewrite using `[eN.finrank_eq, Module.finrank_eq_card_basis b, Module.finrank_eq_card_basis b', hcard]`. Take `⟨b₁', a, ab, hab⟩` from `Submodule.exists_smith_normal_form_of_rank_eq b' hrank`. Use `⟨ab.map eN, b₁', a, fun t => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `congrArg (fun x : dualLattice F' => (x : Fin i → K)) (hab t)`. Simplify using `only [Module.Basis.map_apply]`. Rewrite using `[Submodule.comapSubtypeEquivOfLe_apply_coe]`. Simplify using `using h1`.
+-/
 theorem exists_stacked {F F' : HermLattice K i} (h : F'.lattice ≤ F.lattice) {T T' : Type} [Fintype T]
     [DecidableEq T] [Fintype T'] [DecidableEq T'] (b : Module.Basis T ℤ (dualLattice F))
     (b' : Module.Basis T' ℤ (dualLattice F')) (hcard : Fintype.card T = Fintype.card T') :
@@ -56,6 +67,9 @@ def DualTopStacked.Statement : Prop :=
         (∑ t, Real.log |(a t : ℝ)|) *
           geomDeg (grassIdeal 1 1 (i - 1)) (fsMulti (plBlocks 1 1 (i - 1))) (1 * 1 * (i - 1))
 
+/- English proof (translation)
+Take `⟨T', hT', hdT', ⟨b'⟩⟩` from `DualLatticeBasisExists.proof ℚ 1 HermLattice.twiceStandardExample`. Establish `hcard : Fintype.card Unit = Fintype.card T'`. Rewrite using `[DualTopStackedExistence.card_eq_of_bijective dualBasisStandard dualEmbMatrix_standard_bijective, DualTopStackedExistence.card_eq_of_bijective b' (DualEmbBijective.proof ℚ 1 _ T' b')]`. Take `⟨b₁, b₁', a, hab⟩` from `DualTopStackedExistence.exists_stacked twiceStandardExample_le dualBasisStandard b' hcard`. Conclude with `⟨T', hT', hdT', b₁, b₁', a, DualEmbBijective.proof ℚ 1 _ T' b₁, DualEmbBijective.proof ℚ 1 _ T' b₁', twiceStandardExample_le, hab, le_rfl⟩`.
+-/
 example : ∃ (T : Type) (_ : Fintype T) (_ : DecidableEq T)
     (b : Module.Basis T ℤ (dualLattice (HermLattice.standard ℚ 1)))
     (b' : Module.Basis T ℤ (dualLattice HermLattice.twiceStandardExample)) (a : T → ℤ),

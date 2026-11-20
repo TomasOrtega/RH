@@ -22,6 +22,9 @@ section General
 
 variable {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k} {σ : k →+* ℂ}
 
+/- English proof (translation)
+Establish `hs : ContDiff ℝ (⊤ : ℕ∞) fun v : Unit → ℂ => ‖v ()‖ ^ 2` using `(contDiff_apply ℝ ℂ ()).norm_sq ℂ`. Conclude with `⟨⊤, Unit, inferInstance, fun _ => a, fun v => Real.log (‖v ()‖ ^ 2), {v | ‖v ()‖ ^ 2 ≠ 0}, mem_ptsIn_top, isOpen_ne_fun hs.continuous continuous_const, pow_ne_zero _ (norm_ne_zero_iff.2 h), hs.contDiffOn.log fun _ h => h, Filter.EventuallyEq.rfl⟩`.
+-/
 theorem cInfAt_log_normSq (a : Γ(Y, ⊤)) {z : CxPts q σ} (h : CxPts.ev q σ ⊤ a z ≠ 0) :
     CInfAt (fun w => Real.log (‖CxPts.ev q σ ⊤ a w‖ ^ 2)) z := by
   have hs : ContDiff ℝ (⊤ : ℕ∞) fun v : Unit → ℂ => ‖v ()‖ ^ 2 := (contDiff_apply ℝ ℂ ()).norm_sq ℂ
@@ -32,11 +35,19 @@ theorem cInfAt_log_normSq (a : Γ(Y, ⊤)) {z : CxPts q σ} (h : CxPts.ev q σ �
 def cj (y : CxPts p σ) : CxPts p ((starRingEnd ℂ).comp σ) :=
   ⟨spMap (starRingEnd ℂ) ≫ y.1, by rw [Category.assoc, y.2, ← Spec.map_comp]; rfl⟩
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[mem_ptsIn]`. Express the relevant statement in the definitionally equal form `y.1 (spMap (starRingEnd ℂ) (IsLocalRing.closedPoint ℂ)) ∈ U`. Rewrite using `[Subsingleton.elim (spMap (starRingEnd ℂ) (IsLocalRing.closedPoint ℂ)) (IsLocalRing.closedPoint ℂ)]` and apply the resulting hypothesis.
+-/
 theorem cj_mem {y : CxPts p σ} {U : X.Opens} (h : y ∈ ptsIn p σ U) : cj y ∈ ptsIn p _ U := by
   rw [mem_ptsIn] at h ⊢
   change y.1 (spMap (starRingEnd ℂ) (IsLocalRing.closedPoint ℂ)) ∈ U
   rwa [Subsingleton.elim (spMap (starRingEnd ℂ) (IsLocalRing.closedPoint ℂ)) (IsLocalRing.closedPoint ℂ)]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Establish `h` using `gen_mem (show under y ∈ (⊤ : X.Opens) from trivial)`. Establish `e : (1 : X.functionField) = fnOf ⊤ h (1 : Γ(X, ⊤)ˣ).val` using `(map_one _).symm`. Rewrite using `[pow_zero, pow_zero, e]`.
+
+Conclude with `⟨unitAt_fnOf (U := ⊤) trivial _ _, by rw [ratVal_fnOf mem_ptsIn_top, Units.val_one, ev_one mem_ptsIn_top]⟩`. Consider the case `succ m ih => exact ⟨by rw [pow_succ]; exact ih.1.mul hf, by`. Rewrite using `[pow_succ, ratVal_mul ih.1.regAt hf.regAt, ih.2, pow_succ]⟩`.
+-/
 theorem ratVal_pow [IsIntegral X] {y : CxPts p σ} {f : X.functionField} (hf : UnitAt (under y) f) (m : ℕ) :
     UnitAt (under y) (f ^ m) ∧ ratVal (f ^ m) y = ratVal f y ^ m := by
   induction m with
@@ -48,17 +59,48 @@ theorem ratVal_pow [IsIntegral X] {y : CxPts p σ} {f : X.functionField} (hf : U
   | succ m ih => exact ⟨by rw [pow_succ]; exact ih.1.mul hf, by
       rw [pow_succ, ratVal_mul ih.1.regAt hf.regAt, ih.2, pow_succ]⟩
 
+/- English proof (translation)
+The claim follows from `Units.ext (IsFractionRing.injective (X.presheaf.stalk x) X.functionField (congrArg Units.val h))`.
+-/
 theorem gm_ext [IsIntegral X] {x : X} {s t : (X.presheaf.stalk x)ˣ}
     (h : Units.map (algebraMap (X.presheaf.stalk x) X.functionField).toMonoidHom s =
       Units.map (algebraMap (X.presheaf.stalk x) X.functionField).toMonoidHom t) : s = t :=
   Units.ext (IsFractionRing.injective (X.presheaf.stalk x) X.functionField (congrArg Units.val h))
 
+/- English proof (translation)
+The claim follows from `(congrArg (algebraMap (X.presheaf.stalk x) X.functionField) (gm_val (𝟙 X) x U hx u)).trans (algebraMap_germ hx u.val)`.
+-/
 theorem val_map_gm [IsIntegral X] {x : X} {U : X.Opens} (hx : x ∈ U) (u : Γ(X, U)ˣ) :
     (Units.map (algebraMap (X.presheaf.stalk x) X.functionField).toMonoidHom (gm (𝟙 X) x U u)).val =
       fnOf U (gen_mem hx) u.val :=
   (congrArg (algebraMap (X.presheaf.stalk x) X.functionField) (gm_val (𝟙 X) x U hx u)).trans
     (algebraMap_germ hx u.val)
 
+/- English proof (translation)
+Use `choose c hc using hc`. Establish `hu : ∀ i, ∀ x ∈ L.B.U i, UnitAt x ((g : X.functionField) / (r i ^ m : X.functionFieldˣ))` using `fun i x hx => by`. Establish `h₁` using `((presents_divOfRatSec L.isLB hr).isEqn i x hx).nsmul m`. Use `h₁.iff_unitAt.1 ?_` and prove the remaining obligations. Use `erw [hd]`.
+
+Conclude with `CartierDiv.isEqn_principal _ _`. Use `choose u hu' using fun i => exists_unit_fnOf_eq (hu i)`. Set `A : ∀ σ, CxPts q σ → ℝ` to `fun σ z => Real.log (‖CxPts.ev q σ ⊤ a z‖ ^ 2) + -Real.log (‖CxPts.ev q σ ⊤ b z‖ ^ 2)`. Establish `hA : ∀ σ σ' (z : CxPts q σ) (z' : CxPts q σ'), z'.1 = spMap (starRingEnd ℂ) ≫ z.1 → A σ' z' = A σ z` using `fun σ σ' z z' h => by`. Simplify using `only [A, ev_conj h mem_ptsIn_top, RCLike.norm_conj]`.
+
+Establish `key : ∀ σ i (y : CxPts p σ), y ∈ ptsIn p σ (L.B.U i) → A σ (PtsOver.map ρ hρ _ y) - 2 * m * c σ = m * (L.φ σ).φ i y + logSq y _ (u i)` using `fun σ i y hy => by`. Establish `hyt : y ∈ ptsIn p σ (ρ ⁻¹ᵁ ⊤)` using `mem_ptsIn.2 trivial`. Establish `hgt` using `gen_mem (mem_ptsIn.1 hyt)`. Establish `hru` using `hr.unitAt L.isLB (hoff σ y) hy`. Establish `hp` using `ratVal_pow hru m`.
+
+Establish `e₁ : fnOf _ (gen_mem (mem_ptsIn.1 hy)) (u i).val * (r i : X.functionField) ^ m * fnOf (ρ ⁻¹ᵁ ⊤) hgt (ρ.app ⊤ b) = fnOf (ρ ⁻¹ᵁ ⊤) hgt (ρ.app ⊤ a)`. Rewrite using `[hu', Units.val_pow_eq_pow_val, div_mul_cancel₀ _ (pow_ne_zero _ (r i).ne_zero), hg]`. Establish `hreg` using `regAt_fnOf (mem_ptsIn.1 hy) (gen_mem (mem_ptsIn.1 hy)) (u i).val`. Establish `e₂` using `congrArg (ratVal · y) e₁`. Use `beta_reduce at e₂`.
+
+Rewrite `e₂` using `[ratVal_mul (hreg.mul hp.1.regAt) (regAt_fnOf (mem_ptsIn.1 hyt) _ _), ratVal_mul hreg hp.1.regAt, hp.2, ratVal_fnOf hy, ratVal_fnOf hyt, ratVal_fnOf hyt, ev_app ρ hρ, ev_app ρ hρ]`. Establish `e₃` using `logNorm_eq (L.φ σ) hr (hoff σ y) hy`. Rewrite `e₃` using `[hc]`. Establish `n₁` using `norm_ne_zero_iff.2 (ev_ne_zero hy (u i).isUnit)`. Establish `n₂` using `norm_ne_zero_iff.2 (ratVal_ne_zero hru)`.
+
+Establish `n₃` using `norm_ne_zero_iff.2 (hb σ (PtsOver.map ρ hρ _ y))`. Simplify using `only [A, logSq, ← e₂, norm_mul, norm_pow, Real.log_pow, Real.log_mul (mul_ne_zero n₁ (pow_ne_zero m n₂)) n₃, Real.log_mul n₁ (pow_ne_zero m n₂), e₃]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hcj : ∀ σ (y : CxPts p σ), m * c ((starRingEnd ℂ).comp σ) = m * c σ` using `fun σ y => by`.
+
+Establish `hy` using `mem_pick L.isLB y`. Establish `e₁` using `key σ _ y hy`. Establish `e₂` using `key _ _ (cj y) (cj_mem hy)`. Rewrite `e₂` using `[hA σ _ (PtsOver.map ρ hρ _ y) _ (Category.assoc _ _ _), L.conj σ _ _ y (cj y) rfl hy, logSq, ev_conj (y := y) rfl hy, RCLike.norm_conj]`. Rewrite `e₁` using `[logSq]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcc : ∀ σ : k →+* ℂ, (starRingEnd ℂ).comp ((starRingEnd ℂ).comp σ) = σ` using `fun σ => RingHom.ext fun x => Complex.conj_conj _`. Use `⟨fnB (fun σ z => A σ z + -(m * c σ + m * c ((starRingEnd ℂ).comp σ))) (fun σ z => ((cInfAt_log_normSq a (ha σ z)).add (cInfAt_log_normSq b (hb σ z)).neg).add (cInfAt_const _ _)) fun σ σ' _ z z' h _ => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `A σ' z' + _ = A σ z + _`. Rewrite using `[hA σ σ' z z' h, eq_conj_of_conj h, hcc, add_comm (m * c σ)]`.
+
+Use `isometric_of_local L.B.U (exists_chart L.isLB) (fun _ _ => PUnit.unit) (fun i _ => i) (fun _ _ _ => mem_pull.2 trivial) (fun _ _ h => Set.mem_iInter.2 fun _ => h) u (fun x i j hi hj => ?_) fun σ i y hy => ?_` and prove the remaining obligations. Establish `e₁` using `(gm_pull_g (LB.triv Y) ρ (𝟙 X) x (fun _ => PUnit.unit) (fun _ => PUnit.unit) (mem_pull.2 trivial) (mem_pull.2 trivial)).trans (map_one _)`. Establish `e₂` using `(gm_linComb L.B (fun _ : PUnit => 𝟙 X) (fun _ => (m : ℤ)) (𝟙 X) x (fun _ => i) (fun _ => j) (Set.mem_iInter.2 fun _ => hi) (Set.mem_iInter.2 fun _ => hj)).trans ((Fintype.prod_unique _).trans (zpow_natCast _ _))`. Use `Eq.trans ?_ (congrArg (· * _) (congrArg₂ (fun s t => s * t⁻¹) e₁ e₂)).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = 1 * (gm (𝟙 X) x _ (L.B.g i j) ^ m)⁻¹ * _`.
+
+Rewrite using `[one_mul, eq_inv_mul_iff_mul_eq]`. Use `gm_ext (Units.ext ?_)` and prove the remaining obligations. Establish `hij : x ∈ L.B.U i ⊓ L.B.U j` using `⟨hi, hj⟩`. Rewrite using `[map_mul, map_pow, Units.val_mul, Units.val_pow_eq_pow_val, val_map_gm hij, val_map_gm hi, val_map_gm hj, hu', hu', Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, hr i j (gen_mem hij)]`. Establish `h0 : fnOf _ (gen_mem hij) (L.B.g i j).val ≠ 0` using `((L.B.g i j).isUnit.map _).ne_zero`.
+
+Rewrite using `[mul_pow, mul_div_assoc', mul_div_mul_left _ _ (pow_ne_zero m h0)]`. Use `(Weight.pull_φ _ ρ hρ _ y).trans (Eq.trans ?_ (congrArg (· + _) ((L.φ σ).zpow_φ m _ y)).symm)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `A σ _ + _ = _`. Establish `e₁` using `key σ i y hy`. Rewrite using `[hcj σ y]`.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_isometric_pull [IsIntegral X] (ρ : X ⟶ Y) (hρ : ρ ≫ q = p) (L : HermLB p)
     (r : L.B.ι → X.functionFieldˣ) (hr : IsRatSec L.B r)
     (hoff : ∀ (σ : k →+* ℂ) (y : CxPts p σ), y ∈ offSupp p σ (L.div hr))
@@ -144,6 +186,17 @@ theorem exists_isometric_pull [IsIntegral X] (ρ : X ⟶ Y) (hρ : ρ ≫ q = p)
 
 end General
 
+/- English proof (translation)
+Introduce `F _ _ X _ _ p e _ hq L r hr hoff hc m g a b hb hg hd hρ`. Establish `inj : Function.Injective (algebraMap Γ(X, ⊤) X.functionField)` using `X.germToFunctionField_injective ⊤`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `hg` using `[map_zero]`.
+
+Conclude with `mul_ne_zero g.ne_zero ((map_ne_zero_iff _ inj).2 hb) hg`. Establish `hne : ∀ (s : Γ(X, ⊤)), s ≠ 0 → ∀ σ (z : CxPts (spMap (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p ⊤)) σ), CxPts.ev _ σ ⊤ ((Scheme.ΓSpecIso Γ(X, ⊤)).inv s) z ≠ 0` using `fun s hs σ z => by`. Use `(mem_ptsIn_basicOpen mem_ptsIn_top _).1 (mem_ptsIn.2 ?_)` and prove the remaining obligations. Establish `h₁` using `hq.under_eq_genericPoint z`. Express the relevant statement in the definitionally equal form `under z ∈ _`.
+
+Rewrite using `[h₁]`. Use `gen_mem (x := (⊥ : PrimeSpectrum Γ(X, ⊤))) ?_` and prove the remaining obligations. Use `erw [basicOpen_eq_of_affine]`. Conclude with `hs`. Establish `hpull : ∀ s : Γ(X, ⊤), (X.toSpecΓ.app ⊤) ((Scheme.ΓSpecIso Γ(X, ⊤)).inv s) = s` using `fun s => by`.
+
+Establish `e` using `Scheme.toSpecΓ_appTop X`. Express the relevant statement in the definitionally equal form `X.toSpecΓ.appTop _ = s`. Rewrite using `[e]`. Conclude with `(Scheme.ΓSpecIso Γ(X, ⊤)).inv_hom_id_apply s`. Use `exists_isometric_pull _ hρ L r hr hoff hc m g _ _ (hne a ha) (hne b hb) (fun h => ?_) hd` and prove the remaining obligations.
+
+Use `erw [hpull, hpull]`. Conclude with `hg`.
+-/
 theorem exists_isometric_pull_toSpec : ∀ (F : Type) [Field F] [NumberField F] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp (𝓞 F)) (e : ℕ),
     IsArithVar p e → IsArithVar (spMap (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p ⊤)) 0 →
     ∀ (L : HermLB p) (r : L.B.ι → X.functionFieldˣ) (hr : GlobalTheory.Cartier.IsRatSec L.B r),

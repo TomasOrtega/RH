@@ -15,6 +15,17 @@ open GroundTheory.Automorphic.Spherical
 
 namespace GlobalTheory.CompanionTheory.HeckeSub
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n α X V _ _ _ _ ρ hρ ι hι π hπ _ _ μ _ h v hv`. Take `⟨S, f, hf⟩` from `hπ`. Establish `hS : IsSmooth S.toRepresentation` using `IsSubquotient.isSmooth (ρ := ρ) ⟨S, .id _, Function.surjective_id⟩ hρ`. Take `⟨u, rfl⟩` from `hf v`. Establish `hfix : ∀ g ∈ GroundTheory.Automorphic.GLnLocal.integralGL k n, π g (f u) = f u` using `fun g hg => GroundTheory.Automorphic.mem_fixedVectors.1 hv g hg`.
+
+Take `⟨w, hw, hfw⟩` from `IwahoriOnto.exists_fixed_map_eq hS (GroundTheory.Automorphic.GLnLocal.isCompact_integralGL k n) f.toLinearMap u fun g hg => by show f (S.toRepresentation g u) = f u`. Rewrite using `[f.isIntertwining]`. Conclude with `hfix g hg`. Establish `hfw' : f w = f u` using `hfw`. Establish `hw' : w ∈ GroundTheory.Automorphic.fixedVectors S.toRepresentation (GroundTheory.Automorphic.GLnLocal.integralGL k n)`.
+
+Simplify `hw` using `[fixed, eig, GroundTheory.Automorphic.fixedVectors]`. Set `T : S.toRepresentation.IntertwiningMap (principalSeries k n (paramChar k α))` to `⟨ι.toLinearMap ∘ₗ S.toSubmodule.subtype, fun g => by`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Conclude with `ι.isIntertwining _ _ g x⟩`. Establish `hT : Function.Injective T` using `fun a b e => Subtype.ext (hι e)`.
+
+Establish `hTw : T w ∈ GroundTheory.Automorphic.fixedVectors (principalSeries k n (paramChar k α)) (GroundTheory.Automorphic.GLnLocal.integralGL k n)` using `GroundTheory.Automorphic.mem_fixedVectors.2 fun g hg => by`. Rewrite using `[← T.isIntertwining, GroundTheory.Automorphic.mem_fixedVectors.1 hw' g hg]`. Establish `hmem` using `(h : GroundTheory.Automorphic.HeckeAlgebra μ).mem`. Use `set c := GroundTheory.Automorphic.Spherical.evalAt α (satakeTransform μ h) with hc`. Establish `hPS` using `isSatakeParameter_principalSeries (F := k) (μ := μ) α h (T w) hTw`.
+
+Establish `hact : GroundTheory.Automorphic.heckeAct μ S.toRepresentation (h : GroundTheory.Automorphic.HeckeAlgebra μ) w = c • w`. Apply `hT` to reduce the goal to its premises. Rewrite using `[GroundTheory.Automorphic.map_heckeAct T hmem (hS w), hPS, map_smul]`. Rewrite using `[← hfw', ← GroundTheory.Automorphic.map_heckeAct f hmem (hS w), hact, map_smul]`.
+-/
 theorem isSatakeParameter_subquotient : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (α : Fin n → ℂˣ) (X V : Type) [AddCommGroup X] [Module ℂ X] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin n) k) X), IsSmooth ρ → ∀ (ι : ρ.IntertwiningMap (principalSeries k n (paramChar k α))), Function.Injective ι → ∀ (π : Representation ℂ (GL (Fin n) k) V), IsSubquotient π ρ → ∀ [MeasurableSpace (GL (Fin n) k)] [BorelSpace (GL (Fin n) k)] (μ : MeasureTheory.Measure (GL (Fin n) k)) [μ.IsHaarMeasure], IsSatakeParameter π μ α := by
   intro k _ _ _ _ n α X V _ _ _ _ ρ hρ ι hι π hπ _ _ μ _ h v hv
   obtain ⟨S, f, hf⟩ := hπ

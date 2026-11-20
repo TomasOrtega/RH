@@ -48,10 +48,16 @@ def pairing (B : X → X → ℝ) {n : ℕ} (x x' : Fin n → X) : ℝ := (∑ i
 def phiC (B : X → X → ℝ) : EReal :=
   sInf {t : EReal | ∃ (n : ℕ) (x x' : Fin n → X), IsPosHerm E (outer E x x') ∧ t = (pairing B x x' : ℝ)}
 
+/- English proof (translation)
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Simplify using `[bar]`.
+-/
 private theorem bar_bar_jet_gauges (a : 𝓞 E) : bar E (bar E a) = a := by
   apply RingOfIntegers.ext
   simp [bar]
 
+/- English proof (translation)
+Establish `h : (s x).sum (fun m a => a • m) = x`. Use `LinearMap.congr_fun hs x` as an intermediate fact. Simplify `this` using `[Finsupp.linearCombination_apply]`. Rewrite `h` using `[Finsupp.sum_of_support_subset (s x) hx (fun m a => a • m) (fun _ _ => zero_smul _ _)]`. Conclude with `h.symm`.
+-/
 private theorem eq_sum_of_support_subset (s : X →ₗ[𝓞 E] X →₀ 𝓞 E)
     (hs : Finsupp.linearCombination (𝓞 E) id ∘ₗ s = LinearMap.id) (S : Finset X) (x : X)
     (hx : (s x).support ⊆ S) : x = ∑ m ∈ S, s x m • m := by
@@ -61,6 +67,13 @@ private theorem eq_sum_of_support_subset (s : X →ₗ[𝓞 E] X →₀ 𝓞 E)
   rw [Finsupp.sum_of_support_subset (s x) hx (fun m a => a • m) (fun _ _ => zero_smul _ _)] at h
   exact h.symm
 
+/- English proof (translation)
+Establish `hB' : ∀ (a : 𝓞 E) (y y' : X), B (a • y) y' = B y (bar E a • y')` using `hB`. Establish `h1 : ∀ i, B (x i) (x' i) = ∑ m ∈ S, ∑ p ∈ S, B m ((bar E (s (x i) m) * s (x' i) p) • p)`. Introduce `i`. Establish `e1` using `eq_sum_of_support_subset E s hs S (x i) (hx i)`. Establish `e2` using `eq_sum_of_support_subset E s hs S (x' i) (hx' i)`.
+
+Use `conv_lhs => rw [e1, e2]`. Simplify using `only [map_sum, LinearMap.sum_apply, hB', smul_smul]`. Conclude with `Finset.sum_comm`. Rewrite using `[Finset.sum_congr rfl fun i _ => h1 i, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[← map_sum, ← Finset.sum_smul]`. Use `congrArg (fun a => B m (a • p)) ?_` and prove the remaining obligations. Simplify using `only [outer, map_sum, map_mul, bar_bar_jet_gauges, LinearMap.comp_apply, Finsupp.lapply_apply]`.
+-/
 private theorem sum_B_eq_sum_bar_outer (B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ) (hB : IsBalanced E (fun a c => B a c))
     (s : X →ₗ[𝓞 E] X →₀ 𝓞 E) (hs : Finsupp.linearCombination (𝓞 E) id ∘ₗ s = LinearMap.id)
     (S : Finset X) {n : ℕ} (x x' : Fin n → X)
@@ -83,6 +96,15 @@ private theorem sum_B_eq_sum_bar_outer (B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ) (hB
   refine congrArg (fun a => B m (a • p)) ?_
   simp only [outer, map_sum, map_mul, bar_bar_jet_gauges, LinearMap.comp_apply, Finsupp.lapply_apply]
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `Module.projective_def'.mp (inferInstance : Module.Projective (𝓞 E) X)`. Set `S : Finset X` to `Finset.univ.biUnion (fun i => (s (x i)).support ∪ (s (x' i)).support) ∪ Finset.univ.biUnion (fun j => (s (u j)).support ∪ (s (u' j)).support)`. Establish `hx : ∀ i, (s (x i)).support ⊆ S` using `fun i a ha => by`. Simplify using `only [S, Finset.mem_union, Finset.mem_biUnion, Finset.mem_univ, true_and]`. Conclude with `Or.inl ⟨i, Or.inl ha⟩`.
+
+Establish `hx' : ∀ i, (s (x' i)).support ⊆ S` using `fun i a ha => by`. Simplify using `only [S, Finset.mem_union, Finset.mem_biUnion, Finset.mem_univ, true_and]`. Conclude with `Or.inl ⟨i, Or.inr ha⟩`. Establish `hu : ∀ j, (s (u j)).support ⊆ S` using `fun j a ha => by`. Simplify using `only [S, Finset.mem_union, Finset.mem_biUnion, Finset.mem_univ, true_and]`.
+
+Conclude with `Or.inr ⟨j, Or.inl ha⟩`. Establish `hu' : ∀ j, (s (u' j)).support ⊆ S` using `fun j a ha => by`. Simplify using `only [S, Finset.mem_union, Finset.mem_biUnion, Finset.mem_univ, true_and]`. Conclude with `Or.inr ⟨j, Or.inr ha⟩`. Unfold `pairing`.
+
+Rewrite using `[sum_B_eq_sum_bar_outer E B hB s hs S x x' hx hx', sum_B_eq_sum_bar_outer E B hB s hs S u u' hu hu', h]`.
+-/
 theorem pairing_eq_of_outer_eq [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X]
     (B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ) (hB : IsBalanced E (fun a c => B a c)) {n m : ℕ}
     (x x' : Fin n → X) (u u' : Fin m → X) (h : outer E x x' = outer E u u') :
@@ -107,6 +129,13 @@ theorem pairing_eq_of_outer_eq [Module.Finite (𝓞 E) X] [Module.Projective (�
   rw [sum_B_eq_sum_bar_outer E B hB s hs S x x' hx hx',
     sum_B_eq_sum_bar_outer E B hB s hs S u u' hu hu', h]
 
+/- English proof (translation)
+Establish `hp : ∀ {n : ℕ} (x x' : Fin n → X), pairing B x x' = 0`. Introduce `n x x'`. Simplify using `[pairing, fun i => Subsingleton.elim (x i) 0, fun i => Subsingleton.elim (x' i) 0, hB]`. Establish `: {t : EReal | ∃ (n : ℕ) (x x' : Fin n → X), IsPosHerm E (outer E x x') ∧ t = (pairing B x x' : ℝ)} = {0}`. Use extensionality with `t`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, x, x', -, rfl⟩`. Simplify using `[hp]`. Introduce and unpack `rfl`. Use `⟨0, Fin.elim0, Fin.elim0, ⟨fun _ _ => by simp [outer], fun η hη => ?_⟩, by simp [hp]⟩` and prove the remaining obligations.
+
+Conclude with `absurd (LinearMap.ext fun a => by simp [Subsingleton.elim a 0]) hη`. Rewrite using `[phiC, this, sInf_singleton]`.
+-/
 example [Subsingleton X] (B : X → X → ℝ) (hB : B 0 0 = 0) : phiC E B = 0 := by
   have hp : ∀ {n : ℕ} (x x' : Fin n → X), pairing B x x' = 0 := by
     intro n x x'

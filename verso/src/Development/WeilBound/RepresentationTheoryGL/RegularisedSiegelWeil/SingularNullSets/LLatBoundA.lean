@@ -18,6 +18,15 @@ namespace PositivityTheory.Rg.Rsw.L.LLatBound
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.CompanionTheory.Ipf.Bdd.nonempty_tau D`. Take `⟨e, he⟩ : ∃ e : (D.what₂.Tau → Fin n → Fin a → ℂ) ≃ₗ[ℝ] (D.what₂.Tau → Fin a → Fin n → ℂ), ∀ x τ i j, e x τ i j = x τ j i` from `⟨{ toFun := fun x τ i j => x τ j i invFun := fun y τ j i => y τ i j map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl left_inv := fun _ => rfl right_inv := fun _ => rfl }, fun _ _ _ _ => rfl⟩`. Take `⟨C, hC⟩` from `GlobalTheory.CompanionTheory.Twist.FullRank.tsum_schwartz_fullRank_le D.host.E (GlobalTheory.CompanionTheory.Ipf.Bdd.intR D) D.what₂.Tau (tauE D) (fun z hz h0 => GlobalTheory.CompanionTheory.Ipf.Bdd.one_le_prod_tauE z hz h0) a n n₀ hn₀ (SchwartzMap.compCLMOfContinuousLinearEquiv …`. Use `⟨C, fun B hB => ?_⟩` and prove the remaining obligations. Establish `hBt : ∀ τ, ‖(B τ)ᵀ.det‖ = 1` using `fun τ => by`.
+
+Rewrite using `[Matrix.det_transpose]`. Conclude with `hB τ`. Take `⟨T, hT⟩ : ∃ T : {γ : Matrix (Fin n) (Fin a) D.host.E // γ.rank = a ∧ ∀ i j, (n₀ : D.host.E) * γ i j ∈ GlobalTheory.CompanionTheory.Ipf.Bdd.intR D} ≃ {ξ : Matrix (Fin a) (Fin n) D.host.E // ξ.rank = a ∧ ∀ i j, (n₀ : D.host.E) * ξ i j ∈ GlobalTheory.CompanionTheory.Ipf.Bdd.intR D}, …` from `⟨{ toFun := fun γ => ⟨γ.1ᵀ, by rw [Matrix.rank_transpose]; exact γ.2.1, fun i j => γ.2.2 j i⟩ invFun := fun ξ => ⟨ξ.1ᵀ, by rw [Matrix.rank_transpose]; exact ξ.2.1, fun i j => ξ.2.2 j i⟩ left_inv := fun γ => Subtype.ext (Matrix.transpose_transpose _) right_inv := fun ξ => Subtype. …`. Rewrite using `[← T.tsum_eq]`. Use `le_trans (le_of_eq (tsum_congr fun γ => ?_)) (hC (fun τ => (B τ)ᵀ) hBt)` and prove the remaining obligations.
+
+Simplify using `only [SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply]`. Use `congr 2`. Use function extensionality and compare the values at `τ i j`. Rewrite using `[LinearEquiv.coe_toContinuousLinearEquiv']`. Use `Eq.trans ?_ (he _ τ i j).symm` and prove the remaining obligations.
+
+Rewrite using `[hT]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, mul_comm]`.
+-/
 theorem fullRank_col (D : D7) (a n n₀ : ℕ) (hn₀ : 0 < n₀) (f : SchwartzMap (D.what₂.Tau → Fin a → Fin n → ℂ) ℂ) :
     ∃ C : ℝ, ∀ B : D.what₂.Tau → Matrix (Fin a) (Fin a) ℂ, (∀ τ, ‖(B τ).det‖ = 1) →
       ∑' ξ : {ξ : Matrix (Fin a) (Fin n) D.host.E // ξ.rank = a ∧ ∀ i j, (n₀ : D.host.E) * ξ i j ∈ GlobalTheory.CompanionTheory.Ipf.Bdd.intR D},

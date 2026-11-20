@@ -13,6 +13,9 @@ def liftL {Z E X : Type} [AddCommGroup Z] [Module ℝ Z] [AddCommGroup E] [Modul
   (LinearEquiv.ofInjective L hL).symm.toLinearMap ∘ₗ
     Ξ.codRestrict (LinearMap.range L) (fun z => by obtain ⟨x, hx⟩ := h z; exact ⟨x, hx⟩)
 
+/- English proof (translation)
+Establish `key` using `(LinearEquiv.ofInjective L hL).apply_symm_apply (Ξ.codRestrict (LinearMap.range L) (fun z => by obtain ⟨x, hx⟩ := h z; exact ⟨x, hx⟩) z)`. Conclude with `congrArg Subtype.val key`.
+-/
 theorem liftL_spec {Z E X : Type} [AddCommGroup Z] [Module ℝ Z] [AddCommGroup E] [Module ℝ E] [AddCommGroup X]
     [Module ℝ X] (L : E →ₗ[ℝ] X) (hL : Function.Injective L) (Ξ : Z →ₗ[ℝ] X) (h : ∀ z, ∃ x, L x = Ξ z) (z : Z) :
     L (liftL L hL Ξ h z) = Ξ z := by
@@ -20,6 +23,11 @@ theorem liftL_spec {Z E X : Type} [AddCommGroup Z] [Module ℝ Z] [AddCommGroup 
     (Ξ.codRestrict (LinearMap.range L) (fun z => by obtain ⟨x, hx⟩ := h z; exact ⟨x, hx⟩) z)
   exact congrArg Subtype.val key
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero L).mpr ?_` and prove the remaining obligations. Introduce `t ht`. Establish `h` using `hn t`. Rewrite `h` using `[ht]`. Simplify using `only [Matrix.zero_apply, norm_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, Finset.sum_const_zero] at h`.
+
+Establish `h2 : ‖t‖ ^ 2 = 0` using `h.symm`. Conclude with `norm_eq_zero.mp ((pow_eq_zero_iff two_ne_zero).mp h2)`.
+-/
 theorem inj_of_frob {ι p q : Type} [Fintype ι] [Fintype p] [Fintype q]
     (L : EuclideanSpace ℝ ι →ₗ[ℝ] Matrix p q ℂ) (hn : ∀ t, ∑ i, ∑ j, ‖L t i j‖ ^ 2 = ‖t‖ ^ 2) :
     Function.Injective L := by
@@ -37,6 +45,9 @@ def congL {m : ℕ} (B : Matrix (Fin m) (Fin m) ℂ) : Matrix (Fin m) (Fin m) �
   map_add' _ _ := by rw [Matrix.mul_add, Matrix.add_mul]
   map_smul' c M := by simp
 
+/- English proof (translation)
+Use `show (Bᴴ * M * B)ᴴ = Bᴴ * M * B`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hM, Matrix.mul_assoc]`.
+-/
 theorem congL_herm {m : ℕ} (B M : Matrix (Fin m) (Fin m) ℂ) (hM : Mᴴ = M) : (congL B M)ᴴ = congL B M := by
   show (Bᴴ * M * B)ᴴ = Bᴴ * M * B
   rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hM,
@@ -48,6 +59,9 @@ def congH {m : ℕ} {η : Type} [Fintype η] (H : EuclideanSpace ℝ η →ₗ[�
     EuclideanSpace ℝ η →ₗ[ℝ] EuclideanSpace ℝ η :=
   liftL H (inj_of_frob H hn) (congL B ∘ₗ H) (fun s => hs _ (congL_herm B _ (hH s)))
 
+/- English proof (translation)
+Unfold `congH`. Conclude with `liftL_spec _ _ _ _ s`.
+-/
 theorem congH_spec {m : ℕ} {η : Type} [Fintype η] (H : EuclideanSpace ℝ η →ₗ[ℝ] Matrix (Fin m) (Fin m) ℂ)
     (hH : ∀ t, (H t)ᴴ = H t) (hn : ∀ t, ∑ i, ∑ j, ‖H t i j‖ ^ 2 = ‖t‖ ^ 2)
     (hs : ∀ M : Matrix (Fin m) (Fin m) ℂ, Mᴴ = M → ∃ t, H t = M) (B : Matrix (Fin m) (Fin m) ℂ) (s) :
@@ -55,6 +69,33 @@ theorem congH_spec {m : ℕ} {η : Type} [Fintype η] (H : EuclideanSpace ℝ η
   unfold congH
   exact liftL_spec _ _ _ _ s
 
+/- English proof (translation)
+Use `set C := congH H hH hn hs B with hCdef`. Establish `hspec : ∀ s, H (C s) = Bᴴ * H s * B` using `congH_spec H hH hn hs B`. Establish `hBu : IsUnit B.det` using `isUnit_iff_ne_zero.2 hB`. Establish `hBh : IsUnit Bᴴ.det`. Rewrite using `[Matrix.det_conjTranspose]`.
+
+Conclude with `isUnit_iff_ne_zero.2 (star_ne_zero.2 hB)`. Establish `canc : ∀ X : Matrix (Fin m) (Fin m) ℂ, (Bᴴ)⁻¹ * (Bᴴ * X * B) * B⁻¹ = X`. Introduce `X`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hBu, Matrix.mul_one, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hBh, Matrix.one_mul]`. Establish `hinjC : Function.Injective C`.
+
+Introduce `a b hab`. Apply `inj_of_frob H hn` to reduce the goal to its premises. Establish `h1` using `congrArg H hab`. Rewrite `h1` using `[hspec, hspec]`. Rewrite using `[← canc (H a), h1, canc]`.
+
+Establish `hdet : LinearMap.det C ≠ 0` using `fun h => (LinearMap.det_eq_zero_iff_ker_ne_bot.1 h) (LinearMap.ker_eq_bot.2 hinjC)`. Establish `hC` using `MeasureTheory.Measure.map_linearMap_addHaar_eq_smul_addHaar (μ := (volume : Measure (EuclideanSpace ℝ η))) hdet`. Use `set c := ENNReal.ofReal |(LinearMap.det C)⁻¹| with hc`. Use `set mR : EuclideanSpace ℝ (Fin m × Fin m × Bool) →ₗ[ℝ] EuclideanSpace ℝ (Fin m × Fin m × Bool) := (reimE (r := m) (m := m)).toLinearMap ∘ₗ ((mulRC (r := m) B).restrictScalars ℝ) ∘ₗ (reimE (r := m) (m := m)).symm.toLinearMap with hmR`. Use `set mL : EuclideanSpace ℝ (Fin m × Fin m × Bool) →ₗ[ℝ] EuclideanSpace ℝ (Fin m × Fin m × Bool) := (reimE (r := m) (m := m)).toLinearMap ∘ₗ ((mulLC (c := m) Bᴴ).restrictScalars ℝ) ∘ₗ (reimE (r := m) (m := m)).symm.toLinearMap with hmL`.
+
+Establish `hmRf : (mR : _ → _) = fun y => reim (Matrix.of ((reimE (r` using `m) (m := m)).symm y) * B) := by`. Use function extensionality and compare the values at `y`. Simplify using `only [hmR, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, LinearMap.coe_restrictScalars]`. Rewrite using `[mulRC_apply]`. Both sides reduce to the same expression.
+
+Establish `hmLf : (mL : _ → _) = fun y => reim (Bᴴ * Matrix.of ((reimE (r` using `m) (m := m)).symm y)) := by`. Use function extensionality and compare the values at `y`. Simplify using `only [hmL, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, LinearMap.coe_restrictScalars]`. Rewrite using `[mulLC_apply]`. Both sides reduce to the same expression.
+
+Establish `hR : (volume : Measure (EuclideanSpace ℝ (Fin m × Fin m × Bool))).map mR = ENNReal.ofReal (Complex.normSq B.det ^ m)⁻¹ • volume`. Rewrite using `[hmRf]`. Conclude with `map_mulR B hB`. Establish `hL : (volume : Measure (EuclideanSpace ℝ (Fin m × Fin m × Bool))).map mL = ENNReal.ofReal (Complex.normSq B.det ^ m)⁻¹ • volume`. Rewrite using `[hmLf, map_mulL Bᴴ (by rw [Matrix.det_conjTranspose]; exact star_ne_zero.2 hB), Matrix.det_conjTranspose, Complex.star_def, Complex.normSq_conj]`.
+
+Establish `key : ∀ z : EuclideanSpace ℝ η × EuclideanSpace ℝ η, psiLp H (Prod.map C C z) = mL (mR (psiLp H z))`. Introduce `z`. Rewrite using `[hmLf, hmRf]`. Simplify using `only [psiLp_apply, Prod.map_fst, Prod.map_snd, hspec]`. Establish `e1 : ∀ M : Matrix (Fin m) (Fin m) ℂ, (reimE (r` using `m) (m := m)).symm (reim M) = M := fun M => (reimE (r := m) (m := m)).symm_apply_apply M`.
+
+Rewrite using `[e1, e1]`. Use `congr 1`. Use `show _ = Bᴴ * ((Complex.I • H z.1 + H z.2) * B)`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_assoc]`. Establish `hmC : Measurable C` using `C.continuous_of_finiteDimensional.measurable`.
+
+Establish `hmP` using `psi_mp H hH hn hs`. Establish `hmRm : Measurable mR` using `mR.continuous_of_finiteDimensional.measurable`. Establish `hmLm : Measurable mL` using `mL.continuous_of_finiteDimensional.measurable`. Establish `lhs : (volume : Measure (EuclideanSpace ℝ η × EuclideanSpace ℝ η)).map (psiLp H ∘ Prod.map C C) = (c * c) • volume`. Rewrite using `[← Measure.map_map hmP.measurable (hmC.prodMap hmC), Measure.volume_eq_prod, ← Measure.map_prod_map _ _ hmC hmC, hC, Measure.prod_smul_left, Measure.prod_smul_right, smul_smul, Measure.map_smul, ← Measure.volume_eq_prod, hmP.map_eq]`.
+
+Establish `rhs : (volume : Measure (EuclideanSpace ℝ η × EuclideanSpace ℝ η)).map (psiLp H ∘ Prod.map C C) = (ENNReal.ofReal (Complex.normSq B.det ^ m)⁻¹ * ENNReal.ofReal (Complex.normSq B.det ^ m)⁻¹) • volume`. Establish `: (psiLp H ∘ Prod.map C C) = mL ∘ mR ∘ psiLp H` using `funext key`. Rewrite using `[this, ← Measure.map_map hmLm (hmRm.comp hmP.measurable), ← Measure.map_map hmRm hmP.measurable, hmP.map_eq, hR, Measure.map_smul, hL, smul_smul]`. Establish `hball` using `lhs.symm.trans rhs`. Establish `hv` using `congrArg (fun μ : Measure (EuclideanSpace ℝ (Fin m × Fin m × Bool)) => μ (Metric.ball 0 1)) hball`.
+
+Simplify using `only [Measure.smul_apply, smul_eq_mul] at hv`. Establish `hpos : (volume : Measure (EuclideanSpace ℝ (Fin m × Fin m × Bool))) (Metric.ball 0 1) ≠ 0` using `(Metric.measure_ball_pos _ _ one_pos).ne'`. Establish `hfin : (volume : Measure (EuclideanSpace ℝ (Fin m × Fin m × Bool))) (Metric.ball 0 1) ≠ ⊤` using `measure_ball_lt_top.ne`. Establish `hcc` using `(ENNReal.mul_left_inj hpos hfin).1 hv`. Establish `q0 : 0 ≤ (Complex.normSq B.det ^ m)⁻¹` using `inv_nonneg.2 (pow_nonneg (Complex.normSq_nonneg _) _)`.
+
+Rewrite `hcc` using `[hc, ← ENNReal.ofReal_mul (abs_nonneg _), ← ENNReal.ofReal_mul q0, ENNReal.ofReal_eq_ofReal_iff (mul_nonneg (abs_nonneg _) (abs_nonneg _)) (mul_nonneg q0 q0), mul_self_inj (abs_nonneg _) q0]`. Rewrite using `[hC, hc, hcc]`.
+-/
 theorem cong_factor {m : ℕ} {η : Type} [Fintype η] (H : EuclideanSpace ℝ η →ₗ[ℝ] Matrix (Fin m) (Fin m) ℂ)
     (hH : ∀ t, (H t)ᴴ = H t) (hn : ∀ t, ∑ i, ∑ j, ‖H t i j‖ ^ 2 = ‖t‖ ^ 2)
     (hs : ∀ M : Matrix (Fin m) (Fin m) ℂ, Mᴴ = M → ∃ t, H t = M) (B : Matrix (Fin m) (Fin m) ℂ)

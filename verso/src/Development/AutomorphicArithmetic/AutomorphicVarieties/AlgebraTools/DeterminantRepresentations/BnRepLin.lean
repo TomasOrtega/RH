@@ -10,6 +10,11 @@ private noncomputable def UpperTheory.V.AlgebraTools.Det.bnRep_lin {n : ℕ} {K 
   map_one' := by rw [map_one, Matrix.toLin'_one]; rfl
   map_mul' g h := by rw [map_mul, Matrix.toLin'_mul]; rfl
 
+/- English proof (translation)
+Rewrite using `[← Representation.isSemisimpleRepresentation_iff_isSemisimpleModule_asModule]`. Use `⟨fun W => ?_⟩` and prove the remaining obligations. Take `⟨W', hW', hc⟩` from `h W.toSubmodule (fun g v hv => W.apply_mem_toSubmodule g hv)`. Use `⟨⟨W', fun g v hv => hW' g v hv⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[disjoint_iff]`.
+
+Conclude with `Subrepresentation.toSubmodule_injective hc.inf_eq_bot`. Rewrite using `[codisjoint_iff]`. Conclude with `Subrepresentation.toSubmodule_injective hc.sup_eq_top`.
+-/
 private theorem UpperTheory.V.AlgebraTools.Det.bnRep_ss {n : ℕ} {K G : Type} [Field K] [Group G]
     (ρ : G →* Matrix (Fin n) (Fin n) K)
     (h : ∀ W : Submodule K (Fin n → K), (∀ g, ∀ v ∈ W, ρ g *ᵥ v ∈ W) →
@@ -24,6 +29,13 @@ private theorem UpperTheory.V.AlgebraTools.Det.bnRep_ss {n : ℕ} {K G : Type} [
   · rw [codisjoint_iff]
     exact Subrepresentation.toSubmodule_injective hc.sup_eq_top
 
+/- English proof (translation)
+Introduce `n K G _ _ ρ ρ' h h' hc`. Take `⟨e, he⟩` from `Formalism.IrreducibleCountingLemmas.Z.brauer_nesbitt K G (Fin n → K) (Fin n → K) (UpperTheory.V.AlgebraTools.Det.bnRep_lin ρ') (UpperTheory.V.AlgebraTools.Det.bnRep_lin ρ) (UpperTheory.V.AlgebraTools.Det.bnRep_ss ρ' h') (UpperTheory.V.AlgebraTools.Det.bnRep_ss ρ h) (fun g => by s …`. Rewrite using `[Matrix.charpoly_toLin', Matrix.charpoly_toLin']`. Conclude with `(hc g).symm)`. Establish `h1 : LinearMap.toMatrix' (e.symm : (Fin n → K) →ₗ[K] (Fin n → K)) * LinearMap.toMatrix' (e : (Fin n → K) →ₗ[K] (Fin n → K)) = 1`.
+
+Rewrite using `[← LinearMap.toMatrix'_comp]`. Simplify using the standard rewrite rules. Establish `h2 : LinearMap.toMatrix' (e : (Fin n → K) →ₗ[K] (Fin n → K)) * LinearMap.toMatrix' (e.symm : (Fin n → K) →ₗ[K] (Fin n → K)) = 1`. Rewrite using `[← LinearMap.toMatrix'_comp]`. Simplify using the standard rewrite rules.
+
+Use `⟨⟨_, _, h2, h1⟩, fun g => ?_⟩` and prove the remaining obligations. Use `show LinearMap.toMatrix' (e : (Fin n → K) →ₗ[K] (Fin n → K)) * ρ' g = ρ g * LinearMap.toMatrix' (e : (Fin n → K) →ₗ[K] (Fin n → K))`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_mul, Matrix.toLin'_mul, Matrix.toLin'_toMatrix']`. Conclude with `he g`.
+-/
 theorem UpperTheory.V.AlgebraTools.Det.bnRep :
     ∀ {n : ℕ} {K G : Type} [Field K] [Group G] (ρ ρ' : G →* Matrix (Fin n) (Fin n) K),
     (∀ W : Submodule K (Fin n → K), (∀ g, ∀ v ∈ W, ρ g *ᵥ v ∈ W) → ∃ W', (∀ g, ∀ v ∈ W', ρ g *ᵥ v ∈ W') ∧ IsCompl W W') →

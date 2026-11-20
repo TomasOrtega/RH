@@ -7,6 +7,9 @@ namespace GlobalTheory.ReesHomogeneous
 
 variable {σ : Type} {R : Type} [CommRing R]
 
+/- English proof (translation)
+Use `letI := MvPolynomial.gradedAlgebra (σ := σ) (R := S)`. Establish `h` using `DirectSum.coe_decompose_mul_of_left_mem (homogeneousSubmodule σ S) (a := P) (b := Q) n ((mem_homogeneousSubmodule k P).2 hP)`. Establish `e : ∀ (m : ℕ) (T : MvPolynomial σ S), ((DirectSum.decompose (homogeneousSubmodule σ S) T m : homogeneousSubmodule σ S m) : MvPolynomial σ S) = homogeneousComponent m T` using `fun m T => MvPolynomial.decomposition.decompose'_apply T m`. Rewrite `h` using `[e, e]`. Conclude with `h`.
+-/
 theorem homogeneousComponent_mul_of_homogeneous_left {S : Type} [CommRing S] {k : ℕ} (n : ℕ)
     {P : MvPolynomial σ S} (hP : P.IsHomogeneous k) (Q : MvPolynomial σ S) :
     homogeneousComponent n (P * Q) = if k ≤ n then P * homogeneousComponent (n - k) Q else 0 := by
@@ -27,6 +30,9 @@ noncomputable def piece (I : Ideal R) (e : ℕ) (F : MvPolynomial σ (reesAlgebr
 
 variable {I : Ideal R}
 
+/- English proof (translation)
+Simplify using `only [piece, coeff_sum, coeff_monomial, Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[notMem_support_iff.mp h]`. Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_piece (e : ℕ) (F : MvPolynomial σ (reesAlgebra I)) (m : σ →₀ ℕ) :
     coeff m (piece I e F) = (coeff m F).1.coeff e := by
   classical
@@ -35,13 +41,22 @@ variable {I : Ideal R}
   · rfl
   · rw [notMem_support_iff.mp h]; rfl
 
+/- English proof (translation)
+Use extensionality with `m`. Simplify using the standard rewrite rules.
+-/
 @[simp] theorem piece_zero (e : ℕ) : piece I e (0 : MvPolynomial σ (reesAlgebra I)) = 0 := by
   ext m; simp
 
+/- English proof (translation)
+Use extensionality with `m`. Simplify using the standard rewrite rules.
+-/
 @[simp] theorem piece_add (e : ℕ) (F G : MvPolynomial σ (reesAlgebra I)) :
     piece I e (F + G) = piece I e F + piece I e G := by
   ext m; simp
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[coeff_piece, coeff_X_mul', coeff_X_mul']`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem piece_X_mul (e : ℕ) (i : σ) (F : MvPolynomial σ (reesAlgebra I)) :
     piece I e (X i * F) = X i * piece I e F := by
   classical
@@ -49,12 +64,20 @@ theorem piece_X_mul (e : ℕ) (i : σ) (F : MvPolynomial σ (reesAlgebra I)) :
   rw [coeff_piece, coeff_X_mul', coeff_X_mul']
   split_ifs <;> simp
 
+/- English proof (translation)
+Use extensionality with `m`. Simplify using `[coeff_sum, coeff_C_mul, Polynomial.coeff_mul]`.
+-/
 theorem piece_C_mul (e : ℕ) (r : reesAlgebra I) (F : MvPolynomial σ (reesAlgebra I)) :
     piece I e (C r * F) =
       ∑ p ∈ Finset.HasAntidiagonal.antidiagonal e, C ((r : Polynomial R).coeff p.1) * piece I p.2 F := by
   ext m
   simp [coeff_sum, coeff_C_mul, Polynomial.coeff_mul]
 
+/- English proof (translation)
+Introduce `m hm`. Apply `hF` to reduce the goal to its premises. Introduce `h`. Apply `hm` to reduce the goal to its premises. Rewrite using `[coeff_piece, h]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem piece_isHomogeneous (e : ℕ) {d : ℕ} {F : MvPolynomial σ (reesAlgebra I)}
     (hF : F.IsHomogeneous d) : (piece I e F).IsHomogeneous d := by
   intro m hm
@@ -64,6 +87,9 @@ theorem piece_isHomogeneous (e : ℕ) {d : ℕ} {F : MvPolynomial σ (reesAlgebr
   rw [coeff_piece, h]
   simp
 
+/- English proof (translation)
+Rewrite using `[coeff_piece]`. Conclude with `(mem_reesAlgebra_iff I _).1 (coeff m F).2 e`.
+-/
 theorem coeff_piece_mem (e : ℕ) (F : MvPolynomial σ (reesAlgebra I)) (m : σ →₀ ℕ) :
     coeff m (piece I e F) ∈ I ^ e := by
   rw [coeff_piece]
@@ -75,6 +101,17 @@ namespace GlobalTheory.ReesHomogeneous
 
 variable {σ : Type} {R : Type} [CommRing R] {I : Ideal R}
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `b _ l t P _ _ hP`. Simplify using `using (J l).mul_mem_left (C b) hP`.
+
+Consider the case `succ k ih`. Introduce `b hb l t P hPh hPc hP`. Rewrite `hb` using `[pow_succ]`. Use `Submodule.mul_induction_on hb ?_ ?_` and prove the remaining obligations. Introduce `x hx y hy`.
+
+Establish `h1` using `ih x hx l t P hPh hPc hP`. Establish `h2 : ∀ m, coeff m (C x * P) ∈ I ^ (l + k)`. Introduce `m`. Rewrite using `[coeff_C_mul, pow_add, mul_comm (I ^ l)]`. Conclude with `Ideal.mul_mem_mul hx (hPc m)`.
+
+Establish `h3` using `H (l + k) t y (C x * P) hy (hPh.C_mul x) h2 h1`. Rewrite using `[show C (x * y) * P = C y * (C x * P) by rw [C_mul]; ring]`. Simplify `h3` using `[add_assoc]`. Introduce `x y hx hy`. Rewrite using `[C_add, add_mul]`.
+
+Conclude with `add_mem hx hy`.
+-/
 theorem C_mul_mem_of_pow (J : ℕ → Ideal (MvPolynomial σ R))
     (H : ∀ (e t : ℕ) (a : R) (F : MvPolynomial σ R), a ∈ I → F.IsHomogeneous t →
       (∀ m, coeff m F ∈ I ^ e) → F ∈ J e → C a * F ∈ J (e + 1)) :
@@ -145,6 +182,17 @@ end GlobalTheory.ReesHomogeneous
 
 namespace GlobalTheory.ReesHomogeneous
 
+/- English proof (translation)
+Introduce `R _ I n J H`. Use `⟨reesIdeal I J H, ?_, ?_⟩` and prove the remaining obligations. Introduce `F hF d d' e show piece I e (homogeneousComponent d' (homogeneousComponent d F)) ∈ J e`. Rewrite using `[homogeneousComponent_of_mem (homogeneousComponent_mem d F)]`. Use `split_ifs`.
+
+Conclude with `hF d e`. Simplify using the standard rewrite rules. Introduce `t F hFt`. Establish `hG : ∀ (e : ℕ) (G : MvPolynomial (Fin (n + 1)) R), (∀ m, coeff m G = (coeff m F).1.coeff e) → G = piece I e F`. Introduce `e G hG`.
+
+Use extensionality with `m`. Rewrite using `[hG, coeff_piece]`. Prove the components needed by the constructor for the conclusion. Introduce `hF e G hGc`. Rewrite using `[hG e G hGc]`.
+
+Use `hF t e` as an intermediate fact. Rewrite `this` using `[homogeneousComponent_eq_self hFt]`. Then use the resulting hypothesis. Introduce `h d e show piece I e (homogeneousComponent d F) ∈ J e`. Rewrite using `[homogeneousComponent_of_mem ((mem_homogeneousSubmodule t F).2 hFt)]`. Use `split_ifs`.
+
+Conclude with `h e _ fun m => coeff_piece e F m`. Simplify using the standard rewrite rules.
+-/
 theorem exists_homogeneous_ideal : ∀ (R : Type) [CommRing R] (I : Ideal R) (n : ℕ) (J : ℕ → Ideal (MvPolynomial (Fin (n + 1)) R)), (∀ (e t : ℕ) (a : R) (F : MvPolynomial (Fin (n + 1)) R), a ∈ I → F.IsHomogeneous t → (∀ m, coeff m F ∈ I ^ e) → F ∈ J e → C a * F ∈ J (e + 1)) → ∃ 𝔞 : Ideal (MvPolynomial (Fin (n + 1)) (reesAlgebra I)), (∀ F ∈ 𝔞, ∀ d, homogeneousComponent d F ∈ 𝔞) ∧ ∀ (t : ℕ) (F : MvPolynomial (Fin (n + 1)) (reesAlgebra I)), F.IsHomogeneous t → (F ∈ 𝔞 ↔ ∀ (e : ℕ) (G : MvPolynomial (Fin (n + 1)) R), (∀ m, coeff m G = (coeff m F).1.coeff e) → G ∈ J e) := by
   intro R _ I n J H
   refine ⟨reesIdeal I J H, ?_, ?_⟩

@@ -21,6 +21,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.BK
 
 open GlobalTheory.CompanionTheory.LocDual.Q in
+/- English proof (translation)
+The claim follows from `act_lc A LA ϖ r hI (latTop l Lp K LL O hG A LA ϖ hϖ).2.1 m`.
+-/
 theorem actLoc (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l)
     (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O]
     [Algebra O LL] (hG : GoodO (Qp := ℚ_[l]) LL O)
@@ -33,6 +36,17 @@ theorem actLoc (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l)
 open GlobalTheory.CompanionTheory.LocDual.Q in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hT l _ Lp K hTop LL _ _ _ O _ _ hG L1 hL1 A A' LA LA' P hdual ϖ hϖ r hI hI'`. Establish `hG0 : ∃ hO : IsDomain O, @IsDiscreteValuationRing O _ hO ∧ IsFractionRing O LL` using `hG.1`. Use `haveI hDom : IsDomain O := hG0.choose`. Use `haveI hDVR : IsDiscreteValuationRing O := hG0.choose_spec.1`. Use `haveI hFrac : IsFractionRing O LL := hG0.choose_spec.2`.
+
+Establish `h50` using `GlobalTheory.CompanionTheory.GoodCoeff.goodO_structure l LL O hG ϖ hϖ`. Establish `hFin` using `h50.2.1`. Establish `hle : (l : O) ∈ Ideal.span {ϖ}` using `h50.2.2.2.1.choose_spec.1`. Establish `hInt` using `h50.2.2.2.2.2`. Establish `hdual'` using `(latTop l Lp K LL O hG A LA ϖ hϖ).2.2.2.2 A' LA' P hdual`.
+
+Establish `hF1` using `finite_quot O A.V LA.T ϖ r hFin LA.fg`. Establish `hF2` using `finite_quot O A'.V LA'.T ϖ r hFin LA'.fg`. Establish `hlp : l.Prime` using `Fact.out`. Establish `hn : 0 < r + 1` using `Nat.succ_pos r`. Establish `hlO : ((l ^ (r + 1) : ℕ) : O) ∈ Ideal.span {ϖ ^ r}`.
+
+Use `(Ideal.mem_span_singleton.1 hle).elim fun b hb => Ideal.mem_span_singleton.2 ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_pow, hb, mul_pow, pow_succ ϖ r]`. Conclude with `⟨ϖ * b ^ (r + 1), by ring⟩`. Set `w : ↥(GK K) →* ℤ_[l]` to `GlobalTheory.IndefiniteRowSideFullHecke.TateLocalDualityDegreeTwo.chiInt Lp K`. Set `χ : ↥(GK K) →* (ZMod (l ^ (r + 1)))ˣ` to `((PadicInt.toZModPow (r + 1)).toMonoidHom.comp w).toHomUnits`.
+
+Establish `hcomp : ∀ g, ∃ u : ℤ_[l], (u : ℚ_[l]) = (((Lp.PD K).χ g : ℚ_[l]ˣ) : ℚ_[l]) ∧ PadicInt.toZModPow (r + 1) u = (χ g : ZMod (l ^ (r + 1)))` using `fun g => ⟨w g, rfl, rfl⟩`. Establish `hu0 : ∀ g, ∃ o : O, algebraMap O LL o = algebraMap ℚ_[l] LL (w g : ℚ_[l])` using `fun g => hInt (w g)`. Use `(GlobalTheory.CompanionTheory.LocDual.GenChar.exists_generating_character O ϖ hϖ r (l ^ (r + 1)) (pow_pos hlp.pos _) hF1.1 hlO).elim fun ψ₀ hψ => ?_` and prove the remaining obligations. Conclude with `dual_core (Lp.PD K) hTop hG L1 hL1 A A' LA LA' P hdual (fun x => hdual'.2 x) ϖ hϖ r hI hI' hF1.1 hF1.2 hF2.2 (l ^ (r + 1)) hlO χ ψ₀ hψ.1 hψ.2 (fun g => (hu0 g).choose) (fun g => (hu0 g).choose_spec) (fun g => exists_nat_rep (IsFractionRing.injective O LL) hInt _ (r + 1) hlO (w g) …`.
+-/
 theorem dualQ : Formalism.GaloisCohomology.LocalTateDualityK → ∀ (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l),
     TopInj (Lp.PD K) → DualQ (Lp.PD K) := by
   intro hT l _ Lp K hTop LL _ _ _ O _ _ hG L1 hL1 A A' LA LA' P hdual ϖ hϖ r hI hI'
@@ -70,6 +84,19 @@ theorem dualQ : Formalism.GaloisCohomology.LocalTateDualityK → ∀ (l : ℕ) [
 open GlobalTheory.CompanionTheory.TdDualD in
 open GlobalTheory.CompanionTheory.LocDual in
 
+/- English proof (translation)
+Introduce `l _ Lp K hF hQ LL _ _ _ O _ _ hG L1 hL1 A A' LA LA' P hP S hBS hSZ c hc H`. Take `⟨⟨hdom, hdvr, hfrac⟩, -⟩` from `id hG`. Use `haveI := hdom`. Use `haveI := hdvr`. Use `haveI := hfrac`.
+
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hne : algebraMap O LL ϖ ≠ 0` using `fun h => hϖ.ne_zero ((IsFractionRing.injective O LL) (by rw [h, map_zero]))`. Take `⟨hO, -⟩` from `GlobalTheory.T.goodO_adic_complete_compact_basis l LL O hG ϖ hϖ`. Take `⟨-, hb, -, -, -⟩` from `latTop l Lp K LL O hG A LA ϖ hϖ`. Take `⟨-, -, -, hbd', -⟩` from `latTop l Lp K LL O hG A' LA' ϖ hϖ`.
+
+Use `haveI : CompactSpace ↥(GK K) := haveI := K.2 isCompact_iff_compactSpace.1 (InfiniteGalois.fixingSubgroup_isClosed K.1).isCompact`. Use `haveI : Module.Free O ↥LA.T := LA.free`. Use `haveI : Module.Finite O ↥LA.T := Module.Finite.iff_fg.2 LA.fg`. Use `core (Cob := CobO (Lp.PD K) L1) ?_ (fun x hx y hy => (hP.2 y).1 hy x hx) hne (GlobalTheory.CNorm.isAdicComplete_of_free_finite _ hO) hb ?_ (fun r => hF LL O hG A LA ϖ hϖ r (Ip_stable LA ϖ r)) (fun r => (hQ LL O hG L1 hL1 A A' LA LA' P hP ϖ hϖ r (Ip_stable LA ϖ r) (Ip_stable LA' ϖ …` and prove the remaining obligations. Introduce `z z' h`.
+
+Establish `: (fun x => (Submodule.Quotient.mk (z x) : LL ⧸ L1.T)) = fun x => (Submodule.Quotient.mk (z' x) : LL ⧸ L1.T)`. Use function extensionality and compare the values at `x`. Take `⟨a, ha⟩` from `h x`. Use `(Submodule.Quotient.eq _).2 ?_` and prove the remaining obligations. Rewrite using `[ha, hL1]`.
+
+Conclude with `⟨a, rfl⟩`. Unfold `CobO`. Rewrite using `[this]`. Introduce `v`. Take `⟨n, hn⟩` from `hbd' (fun _ => v) continuous_const`.
+
+Conclude with `⟨n, hn 1⟩`.
+-/
 theorem dualDL : ∀ (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l), FinZQ (Lp.PD K) →
     DualQ (Lp.PD K) → DualD (Lp.PD K) := by
   intro l _ Lp K hF hQ LL _ _ _ O _ _ hG L1 hL1 A A' LA LA' P hP S hBS hSZ c hc H
@@ -109,6 +136,17 @@ theorem dualDL : ∀ (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l), 
 
 open GlobalTheory.CompanionTheory.LocDual.CobDetect in
 
+/- English proof (translation)
+Introduce `l _ Lp K hfin htop LL _ _ _ O _ _ hO L1 hL1 z hz`. Establish `hO'` using `hO`. Take `⟨⟨hdom, hdvr, hfr⟩, hfd, hmt, htr, hop⟩` from `hO'`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨hc, -, -, -, hb, -⟩` from `GlobalTheory.T.goodO_adic_complete_compact_basis l LL O hO ϖ hϖ`.
+
+Use `haveI : CompactSpace ↥(GK K) := GlobalTheory.BlochKatoIntegralScalars.compactSpace_GK K`. Use `haveI : ContinuousSMul ℚ_[l] LL := IsModuleTopology.toContinuousSMul ℚ_[l] LL`. Establish `hAlg : Continuous (algebraMap ℚ_[l] LL)` using `continuous_algebraMap ℚ_[l] LL`. Establish `hχ : Continuous fun g : ↥(GK K) => ((cycLL (Lp.PD K) LL g : LLˣ) : LL)`. Establish `h1 : (fun g : ↥(GK K) => ((cycLL (Lp.PD K) LL g : LLˣ) : LL)) = fun g : ↥(GK K) => algebraMap ℚ_[l] LL (Lp.χQ (g : GQ l) : ℚ_[l])`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[← Lp.PD_χ K g]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Conclude with `hAlg.comp ((GlobalTheory.Cyc.IsCyc.continuous Lp.χQ_cyc).comp continuous_subtype_val)`.
+
+Set `A : GRep ↥(GK K) ℚ_[l] LL O` to `{ V := LL ρ := charRep (cycLL (Lp.PD K) LL) cont := fun x => by`. Simplify using `only [charRep_apply]`. Conclude with `hχ.mul continuous_const }`. Establish `hopT : IsOpen (L1.T : Set LL)`. Establish `h1 : (L1.T : Set LL) = Set.range (algebraMap O LL)`.
+
+Use extensionality with `y`. Conclude with `mem_T L1 hL1`. Rewrite using `[h1]`. Conclude with `hop`. Conclude with `⟨fun h a => cobO_of_cobL L1 hopT h a, fun h => cobL_of_all L1 hL1 hϖ hop hc hb (fun n => hfin LL O hO A L1 ϖ hϖ n (stable_pw L1 ϖ n)) (fun r z hr hz' => htop LL O hO L1 hL1 ϖ hϖ r z hr hz') hz h⟩`.
+-/
 theorem cobLO : ∀ (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l), FinZQ (Lp.PD K) → TopInj (Lp.PD K) → CobLO (Lp.PD K) := by
   intro l _ Lp K hfin htop LL _ _ _ O _ _ hO L1 hL1 z hz
   have hO' := hO
@@ -144,6 +182,21 @@ theorem cobLO : ∀ (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l), F
 
 open GlobalTheory.TateTop Formalism.MainNotions.LocalSituation GlobalTheory.Cyc GlobalTheory.Cyc.TwistLift Filter Topology in
 
+/- English proof (translation)
+Introduce `LL _ _ _ O _ _ hO L1 hL1`. Take `⟨hΦ1, hΦ2⟩` from `continuous_fixingSubgroupEquiv K.1`. Use `set Φ := K.1.fixingSubgroupEquiv with hΦ`. Establish `hcyc : IsCyc Lp.χQ` using `Lp.χQ_cyc`. Set `χZ : Formalism.GaloisCohomology.GK l K.1 →* ℤ_[l]ˣ` to `(cyclotomicCharacter (PadicAlgCl l) l).comp (MulSemiringAction.toRingAut (Formalism.GaloisCohomology.GK l K.1) (PadicAlgCl l))`.
+
+Establish `hχZ : ∀ g, ((χZ g : ℤ_[l]) : ℚ_[l]) = (Lp.χQ (Φ.symm g : GQ l) : ℚ_[l])` using `fun g => by`. Rewrite using `[isCyc_unique hcyc (isCyc_cycChar l)]`. Both sides reduce to the same expression. Establish `hχc : Continuous fun g => (χZ g : ℤ_[l])`. Rewrite using `[continuous_iff_coe]`.
+
+Simplify using `only [hχZ]`. Conclude with `hcyc.continuous.comp (continuous_subtype_val.comp hΦ1)`. Take `⟨c, hc⟩` from `exists_gen_all hχc fun r => by`. Establish `: NeZero (l ^ (r + 1))` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Conclude with `exists_gen hχc (hT l K.1 K.2 (r + 1) (ZMod (l ^ (r + 1))) (ReciprocityTheory.Gal.charRep (redChar χZ (r + 1))) (Nat.succ_pos _) (contAction_charRep _ ((continuous_toZModPow _).comp hχc))).1 fun M _ _ _ _ _ rho hrho => (hT l K.1 K.2 (r + 1) M rho (Nat.succ_pos _) hrho).2.2.2.2`.
+
+Establish `hcpt : CompactSpace (GK K)` using `Φ.symm.surjective.compactSpace hΦ1`. Take `⟨ι, hι⟩` from `exists_ringHom hO`. Set `: Module ℤ_[l] (LL ⧸ L1.T)` to `Module.compHom _ ι`. Establish `: SMulCommClass ℤ_[l] O (LL ⧸ L1.T)` using `⟨fun a o x => smul_comm (ι a) o x⟩`. Establish `hs : ∀ (a : ℤ_[l]) (x : LL), a • (Submodule.Quotient.mk x : LL ⧸ L1.T) = Submodule.Quotient.mk (algebraMap ℚ_[l] LL a * x)` using `fun a x => by`.
+
+Rewrite using `[← hι, ← Algebra.smul_def]`. Both sides reduce to the same expression. Use `@h2_equiv_of_torsion_character l _ (GK K) _ _ _ _ _ _ hcpt _ (fun r => (hc r).transport Φ hΦ2 hΦ1) (fun x => ?_) O _ _ _ _ fun g x => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨n, hn⟩` from `exists_pow_smul_mem hO x`.
+
+Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[hs, Submodule.Quotient.mk_eq_zero, hL1]`. Simplify using `using hn 1`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[hs]`.
+
+Establish `h1` using `hχZ (Φ g)`. Rewrite `h1` using `[show Φ.symm (Φ g) = g from Φ.symm_apply_apply g, ← Lp.PD_χ K g]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (algebraMap ℚ_[l] LL ((Lp.PD K).χ g : ℚ_[l]) * x) = _`. Rewrite using `[← h1]`. Both sides reduce to the same expression.
+-/
 theorem tate_duality_H2_finite_coefficients (hT : Formalism.GaloisCohomology.LocalTateDualityK) (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l) :
     LocalTateTopDegree (Lp.PD K) := by
   intro LL _ _ _ O _ _ hO L1 hL1
@@ -189,6 +242,15 @@ theorem tate_duality_H2_finite_coefficients (hT : Formalism.GaloisCohomology.Loc
 
 open GlobalTheory.CompanionTheory.LocDual.Top in
 
+/- English proof (translation)
+Introduce `l _ Lp K hT hC LL _ _ _ O _ _ hO z z' hz hz' hd hd' hn`. Take `⟨L1, hL1⟩` from `(dualLat l Lp K).1 LL O hO`. Take `⟨⟨hD, hDVR, hFrac⟩, -, -, htr, hopen⟩` from `id hO`. Use `haveI := hD`. Use `haveI := hDVR`.
+
+Use `haveI := hFrac`. Use `haveI := htr`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hc` using `(GlobalTheory.T.goodO_adic_complete_compact_basis l LL O hO ϖ hϖ).1`. Establish `hop : IsOpen (L1.T : Set LL)`.
+
+Establish `: (L1.T : Set LL) = Set.range (algebraMap O LL)`. Rewrite using `[hL1]`. Use extensionality with `x`. Simplify using `[LinearMap.mem_range]`. Rewrite using `[this]`.
+
+Conclude with `hopen`. Take `⟨φ⟩` from `hT LL O hO L1 hL1`. Conclude with `topLine_at L1 hL1 hop hϖ hc φ (hC LL O hO L1 hL1) hz hz' hd hd' hn`.
+-/
 theorem topLine : ∀ (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l),
     LocalTateTopDegree (Lp.PD K) → CobLO (Lp.PD K) → TopLine (Lp.PD K) := by
   intro l _ Lp K hT hC LL _ _ _ O _ _ hO z z' hz hz' hd hd' hn
@@ -212,6 +274,45 @@ theorem topLine : ∀ (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l),
 
 open GlobalTheory.CompanionTheory.LocDual.Kernels in
 
+/- English proof (translation)
+Take `⟨⟨hDom, hDVR, hFrac⟩, -⟩` from `id hO`. Use `haveI := hDom`. Use `haveI := hDVR`. Use `haveI := hFrac`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`.
+
+Take `⟨hCyc, hLat⟩` from `dualLat l Lp K`. Take `⟨L1, hL1⟩` from `hCyc LL O hO`. Take `⟨LA, LA', hLA, -⟩` from `hLat LL O hO A A' P hP`. Establish `hflip` using `cupFlip l Lp K LL O hO A A' P hP`. Establish `hopen : IsOpen (LA'.T : Set A'.V)` using `(latTop l Lp K LL O hO A' LA' ϖ hϖ).1`.
+
+Establish `hint : ∀ x ∈ LA.T, ∀ y ∈ LA'.T, P x y ∈ L1.T`. Introduce `x hx y hy`. Take `⟨a, ha⟩` from `(hLA.2 y).mp hy x hx`. Rewrite using `[hL1, ha]`. Conclude with `⟨a, rfl⟩`.
+
+Establish `hlc : ∀ f : ↥(GK K) → A'.V, Continuous f → IsLocallyConstant (fun g => (Submodule.Quotient.mk (f g) : A'.V ⧸ LA'.T))`. Introduce `f hf`. Use `(IsLocallyConstant.iff_exists_open _).2 fun x => ?_` and prove the remaining obligations. Use `⟨(fun g => f g + -f x) ⁻¹' (LA'.T : Set A'.V), hopen.preimage (hf.add continuous_const), ?_, fun g hg => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Use `(Submodule.Quotient.eq _).mpr ?_` and prove the remaining obligations. Rewrite using `[sub_eq_add_neg]`. Conclude with `hg`. Establish `hact : ∀ (g : ↥(GK K)) (v : A'.V), actD LA' g (Submodule.Quotient.mk v) = Submodule.Quotient.mk (A'.ρ g v)` using `fun _ _ => rfl`. Establish `hBZ : BD LA' ≤ divisibleCocycles LA'`.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Use `⟨?_, fun g h => ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun g => A'.ρ g v - v`. Simplify using `only [sub_eq_add_neg]`.
+
+Conclude with `(A'.cont v).add continuous_const`. Establish `he : (LinearMap.pi fun g => actD LA' g - LinearMap.id) (Submodule.Quotient.mk v : A'.V ⧸ LA'.T) = fun g => (Submodule.Quotient.mk (A'.ρ g v - v) : A'.V ⧸ LA'.T)`. Use function extensionality and compare the values at `g`. Both sides reduce to the same expression. Rewrite using `[he]`.
+
+Conclude with `hlc _ hc`. Simplify using `only [LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.id_apply, hact, map_mul, Module.End.mul_apply, map_sub]`. Normalize the expressions using the abelian group laws. Establish `key : ∀ n : ℕ, ∃ y : A'.V, ∀ g, ∃ t ∈ LA'.T, b g = cob A'.ρ y g + ϖ ^ n • t`. Introduce `n`.
+
+Establish `hϖ0 : algebraMap O LL ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O LL)).mpr hϖ.ne_zero`. Take `⟨u, hu⟩ : ∃ u : LL, algebraMap O LL (ϖ ^ n) * u = 1` from `⟨(algebraMap O LL ϖ)⁻¹ ^ n, by rw [map_pow, ← mul_pow, mul_inv_cancel₀ hϖ0, one_pow]⟩`. Establish `huv : ∀ x : A'.V, ϖ ^ n • (u • x) = x`. Introduce `x`. Rewrite using `[← algebraMap_smul LL (ϖ ^ n) (u • x), smul_smul, hu, one_smul]`.
+
+Set `c : ↥(GK K) → A'.V ⧸ LA'.T` to `fun g => Submodule.Quotient.mk (u • b g)`. Establish `hc : c ∈ divisibleCocycles LA'`. Use `⟨hlc _ (hb.1.const_smul u), fun g h => ?_⟩` and prove the remaining obligations. Use `show Submodule.Quotient.mk (u • b (g * h)) = Submodule.Quotient.mk (u • b g) + actD LA' g (Submodule.Quotient.mk (u • b h))`. Rewrite using `[hb.2 g h, hact, map_smul, smul_add]`.
+
+Both sides reduce to the same expression. Establish `horth : ∀ d ∈ latticeCocycles LA, CobO (Lp.PD K) L1 (cupLD LA' P d c)`. Introduce `d hd`. Establish `hdc : d ∈ continuousCocycles A.ρ` using `hd.1`. Establish `hdT : ∀ g, d g ∈ LA.T` using `fun g => hd.2 g (Set.mem_univ g)`.
+
+Establish `h1` using `(hC LL O hO L1 hL1 _ (hflip.2 d hdc b hb).1).mp (hab d hdc) u`. Establish `he : (fun x => (Submodule.Quotient.mk (cupLD LA' P d c x) : LL ⧸ L1.T)) = fun x => Submodule.Quotient.mk ((u • cupL A'.ρ P d b) x)`. Use function extensionality and compare the values at `x`. Use `(Submodule.Quotient.eq _).mpr ?_` and prove the remaining obligations. Establish `hl : liftD LA' (c x.2) - u • b x.2 ∈ LA'.T` using `(Submodule.Quotient.eq _).mp (Submodule.Quotient.mk_surjective LA'.T (c x.2)).choose_spec`.
+
+Establish `h2` using `hint _ (hdT x.1) _ (LA'.stable x.1 _ hl)`. Simplify `h2` using `[cupLD, cupL, map_sub, map_smul, smul_eq_mul]`. Unfold `CobO`. Rewrite using `[he]`. Conclude with `h1`.
+
+Take `⟨xb, hxb⟩` from `hD LL O hO L1 hL1 A A' LA LA' P hLA (BD LA') le_rfl hBZ c hc (fun d hd _ => horth d hd)`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ xb`. Use `⟨ϖ ^ n • x, fun g => ?_⟩` and prove the remaining obligations. Establish `hg : (Submodule.Quotient.mk (u • b g) : A'.V ⧸ LA'.T) = Submodule.Quotient.mk (A'.ρ g x - x)` using `(congrFun hxb g).symm`. Use `⟨_, (Submodule.Quotient.eq _).mp hg, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_sub, huv, smul_sub]`. Establish `hρ : A'.ρ g (ϖ ^ n • x) = ϖ ^ n • A'.ρ g x` using `LinearMap.map_smul_of_tower _ _ _`. Simplify using `only [cob, LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.id_apply, hρ]`. Normalize the expressions using the abelian group laws. Take `⟨F, hF⟩` from `exists_finset_sep (k := LL) ((cob A'.ρ).coprod (LinearMap.toSpanSingleton LL (↥(GK K) → A'.V) b))`.
+
+Set `res : (↥(GK K) → A'.V) →ₗ[O] (↥F → A'.V)` to `LinearMap.funLeft O A'.V Subtype.val`. Use `haveI : Module.Finite O ↥LA'.T := Module.Finite.iff_fg.mpr LA'.fg`. Establish `hΛ : (LinearMap.range (LinearMap.compLeft LA'.T.subtype ↥F)).FG` using `Module.Finite.iff_fg.mp (Module.Finite.range _)`. Establish `hw : res b ∈ ((B1 A'.ρ).restrictScalars O).map res`. Use `mem_of_forall_pow _ _ hΛ ϖ hϖ.not_isUnit _ fun n => ?_` and prove the remaining obligations.
+
+Take `⟨y, hy⟩` from `key n`. Use `choose t ht hbt using hy`. Use `⟨res (cob A'.ρ y), Submodule.mem_map_of_mem ⟨y, rfl⟩, (LinearMap.compLeft LA'.T.subtype ↥F) (fun i => ⟨t i, ht i⟩), ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Conclude with `hbt i`.
+
+Take `⟨_, ⟨y, rfl⟩, hres⟩` from `hw`. Establish `hz` using `hF (y, -1) (fun g hg => by`. Establish `h1 : cob A'.ρ y g = b g` using `congrFun hres ⟨g, hg⟩`. Simplify using `[h1])`. Use `⟨y, ?_⟩` and prove the remaining obligations.
+
+Establish `hz' : cob A'.ρ y + (-1 : LL) • b = 0` using `by simpa using hz`. Rewrite `hz'` using `[neg_one_smul, ← sub_eq_add_neg]`. Conclude with `sub_eq_zero.mp hz'`.
+-/
 theorem rightKernel (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l)
     (hD : DualD (Lp.PD K)) (hC : CobLO (Lp.PD K))
     (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O]
@@ -332,6 +433,9 @@ theorem rightKernel (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l)
 
 open GlobalTheory.CompanionTheory.LocDual.Kernels in
 
+/- English proof (translation)
+Introduce `l _ Lp K hD hC LL _ _ _ O _ _ hO A A' P hP`. Establish `hf` using `cupFlip l Lp K LL O hO A A' P hP`. Use `⟨fun a ha h => ?_, fun b hb h => rightKernel l Lp K hD hC LL O hO A A' P hP b hb h⟩` and prove the remaining obligations. Conclude with `rightKernel l Lp K hD hC LL O hO A' A P.flip hf.1 a ha (fun b hb => ((hf.2 a ha b hb).2.2.1).mp (h b hb))`.
+-/
 theorem nondegLL : ∀ (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l), DualD (Lp.PD K) →
     CobLO (Lp.PD K) → NondegL (Lp.PD K) := by
   intro l _ Lp K hD hC LL _ _ _ O _ _ hO A A' P hP
@@ -342,6 +446,19 @@ theorem nondegLL : ∀ (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l)
 
 open GlobalTheory.CompanionTheory.LocDual.FinT in
 
+/- English proof (translation)
+Introduce `l _ Lp K hZ`. Establish `key : ∀ (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp` using `ℚ_[l]) LL O → ∀ (A : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ), Module.Finite O (LatticeCohomology LA) := by`. Introduce `LL _ _ _ O _ _ hO A LA`. Take `⟨⟨hD, hV, hF⟩, -, -, hTR, -⟩` from `id hO`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`.
+
+Take `⟨-, -, hK, -⟩` from `GlobalTheory.T.goodO_adic_complete_compact_basis l LL O hO ϖ hϖ`. Take `⟨-, hB, -⟩` from `latTop l Lp K LL O hO A LA ϖ hϖ`. Use `haveI : IsTopologicalAddGroup A.V := IsModuleTopology.topologicalAddGroup LL A.V`. Use `haveI : ContinuousSMul LL A.V := IsModuleTopology.toContinuousSMul LL A.V`. Use `haveI : T2Space A.V := t2Space_of_lattice_nhds_basis LA hϖ.not_isUnit hB`.
+
+Establish `h0 : algebraMap O LL ϖ ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero hϖ.ne_zero)`. Establish `hI : StableSub LA (Ideal.span {ϖ ^ 1} • ⊤ : Submodule O ↥LA.T)`. Introduce `g x hx`. Take `⟨y, rfl⟩` from `(mem_smulTop LA ϖ x).1 hx`. Conclude with `(mem_smulTop LA ϖ _).2 ⟨actT LA g y, (map_smul _ _ _).symm⟩`.
+
+Establish `hfg` using `fg_Z1T LA h0 hB hK hI (hZ LL O hO A LA ϖ hϖ 1 hI)`. Use `haveI : Module.Finite O ↥(latticeCocycles LA) := Module.Finite.iff_fg.2 hfg`. Use `infer_instance`. Use `⟨key, ?_⟩` and prove the remaining obligations. Introduce `LL _ _ _ O _ _ hO A LA`.
+
+Use `haveI := key LL O hO A LA`. Take `⟨⟨hD, hV, hF⟩, -, -, hTR, -⟩` from `id hO`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨-, -, -, hInt, -⟩` from `latTop l Lp K LL O hO A LA ϖ hϖ`. Use `haveI := isLocalized_toV LA hϖ.ne_zero hInt`.
+
+Use `⟨Module.Finite.of_isLocalizedModule (nonZeroDivisors O) (Rₚ := LL) (toV LA), ?_⟩` and prove the remaining obligations. Establish `h1 : Module.rank LL (H1V A.ρ) = Module.rank O (H1V A.ρ)` using `IsLocalization.rank_eq LL (nonZeroDivisors O) le_rfl`. Establish `h2 : Module.rank O (H1V A.ρ) = Module.rank O (LatticeCohomology LA)` using `IsLocalizedModule.rank_eq (nonZeroDivisors O) le_rfl (toV LA)`. Rewrite using `[finrank, finrank, h1, h2]`.
+-/
 theorem finrank_H1_rational_eq_lattice : ∀ (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l), FinZQ (Lp.PD K) → TateFiniteness (Lp.PD K) ∧ ∀ (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ), Module.Finite LL (H1V A.ρ) ∧ finrank LL (H1V A.ρ) = finrank O (LatticeCohomology LA) := by
   intro l _ Lp K hZ
   have key : ∀ (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O]
@@ -380,6 +497,11 @@ theorem finrank_H1_rational_eq_lattice : ∀ (l : ℕ) [Fact l.Prime] (Lp : LocP
 
 open GlobalTheory.CompanionTheory.GrowthOfInvariants in
 
+/- English proof (translation)
+Introduce `l _ Lp K hcore LL _ _ _ O _ _ hG A LA ϖ hϖ`. Take `⟨⟨hO, hD, hF⟩, -⟩` from `id hG`. Use `haveI := hO`. Use `haveI := hD`. Use `haveI := hF`.
+
+Conclude with `growth A LA (hcore LL O hG A LA) hϖ (GlobalTheory.T.goodO_adic_complete_compact_basis l LL O hG ϖ hϖ).2.1`.
+-/
 theorem H0_torsion_growth_bound : ∀ (l : ℕ) [Fact l.Prime] (Lp : LocPrime l) (K : FinExt l), TateFiniteness (Lp.PD K) → ∀ (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (ϖ : O), Irreducible ϖ → ∃ C : ℕ, ∀ (r : ℕ) (hI : StableSub LA (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T)), Nat.card (O ⧸ Ideal.span {ϖ}) ^ (r * finrank LL ↥(H0V A.ρ)) ≤ Nat.card {x : ↥LA.T ⧸ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T) // ∀ g, actQ LA _ hI g x = x} ∧ Nat.card {x : ↥LA.T ⧸ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T) // ∀ g, actQ LA _ hI g x = x} ≤ C * Nat.card (O ⧸ Ideal.span {ϖ}) ^ (r * finrank LL ↥(H0V A.ρ)) := by
   intro l _ Lp K hcore LL _ _ _ O _ _ hG A LA ϖ hϖ
   obtain ⟨⟨hO, hD, hF⟩, -⟩ := id hG

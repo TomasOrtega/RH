@@ -7,6 +7,9 @@ open scoped TensorProduct
 noncomputable section
 namespace GlobalTheory.CompanionTheory.BZPhiPG.OntoO
 
+/- English proof (translation)
+Introduce `k _ _ _ _ t E C hE hn hC hEC`. Unfold `muD`. Rewrite using `[ENNReal.toReal_ne_zero]`. Conclude with `⟨(hE.measure_pos _ hn).ne', ((MeasureTheory.measure_mono hEC).trans_lt hC.measure_lt_top).ne⟩`.
+-/
 theorem muD_toReal_ne_zero : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (t : ℕ) (E C : Set (Fin t → k)) (hE : IsOpen E) (hn : E.Nonempty) (hC : IsCompact C) (hEC : E ⊆ C),
     ((muD k t) E).toReal ≠ 0 := by
   intro k _ _ _ _ t E C hE hn hC hEC

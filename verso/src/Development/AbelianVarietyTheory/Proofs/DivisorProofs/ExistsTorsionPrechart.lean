@@ -17,6 +17,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.GroupBplus.Aff
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ _ _ _ G _ _ hG N hN q`. Use `haveI := henselianLocalRing_atPrime R K q.asIdeal`. Take `⟨h1, h2, h3, h4, h5, h6⟩` from `GlobalTheory.T.torsion_kernel_finite_presentation R G hG N hN`. Use `set π := pullback.fst ((𝟙 G) ^ N : G ⟶ G).left η[G].left ≫ G.hom with hπ`. Take `⟨C', _, _, _, _, U', e', he', hcl⟩` from `GlobalTheory.T.exists_finite_free_neighbourhood (Localization.AtPrime q.asIdeal) (pullback π (spMap (algebraMap R (Localization.AtPrime q.asIdeal)))) (pullback.snd π (spMap (algebraMap R (Localization.AtPrime q.asIdeal))))`.
+
+Take `⟨r, hr, C, _, _, _, _, _, _, U, e, he, hq⟩` from `GlobalTheory.T.finite_free_local_chart R q _ π C' U' e' he' hcl`. Use `haveI : IsSeparated G.hom := hG.separated`. Conclude with `GlobalTheory.T.finite_free_affine_open R G N q r hr C U e (by simpa [hπ] using he) hq`.
+-/
 theorem nonempty_preChart : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (N : ℕ), N ≠ 0 → ∀ q : PrimeSpectrum R, Nonempty (PreChart G N q) := by
   intro R K _ _ _ _ _ _ _ _ G _ _ hG N hN q
   haveI := henselianLocalRing_atPrime R K q.asIdeal

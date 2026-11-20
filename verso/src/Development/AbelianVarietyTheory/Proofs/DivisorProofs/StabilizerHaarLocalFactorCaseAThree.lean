@@ -23,6 +23,13 @@ open GroundTheory.Global GroundTheory.Global.IdeleGroup
 
 attribute [local instance] Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.topTens
 
+/- English proof (translation)
+Establish `hs : (1 : ℝ) < (z : ℝ)` using `by exact_mod_cast hz`. Take `⟨N, k, L, C, hk, hb⟩` from `GlobalTheory.TateConv.bound F E hs hU`. Use `haveI : BorelSpace (AE F E)ˣ := ⟨rfl⟩`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`.
+
+Use `haveI : (μ.map (GlobalTheory.TateConv.idl F E)).IsHaarMeasure := ContinuousMulEquiv.isHaarMeasure_map μ (GlobalTheory.TateConv.idl F E)`. Establish `h1` using `((integrable_zetaBound hs hk L).const_mul C).smul_measure_nnreal (c := Measure.haarScalarFactor (μ.map (GlobalTheory.TateConv.idl F E)) (ideleMeasure E))`. Rewrite `h1` using `[← Measure.isMulLeftInvariant_eq_smul]`. Establish `h2` using `(integrable_map_equiv (GlobalTheory.TateConv.idl F E).toHomeomorph.toMeasurableEquiv _).mp h1`. Use `⟨N, _, h2.abs, fun l => abs_nonneg _, fun l hl => ?_⟩` and prove the remaining obligations.
+
+Establish `h3` using `hb l`. Rewrite `h3` using `[GlobalTheory.XTermMaj.maj, Set.indicator_of_mem hl, ← ENNReal.ofReal_mul (by positivity), Real.rpow_natCast]`. Conclude with `(ENNReal.ofReal_le_ofReal_iff (abs_nonneg _)).mp (h3.trans (ENNReal.ofReal_le_ofReal (le_abs_self _)))`.
+-/
 private theorem exists_integrable_majorant (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (μ : Measure (AE F E)ˣ) [μ.IsHaarMeasure] {z : ℕ} (hz : 1 < z) {U : Set (Fin (Module.finrank F E) → Af F)} (hU : IsCompact U) :
     ∃ (N : ℕ) (T : (AE F E)ˣ → ℝ), Integrable T μ ∧ (∀ l, 0 ≤ T l) ∧ ∀ l : (AE F E)ˣ,
@@ -55,6 +62,25 @@ section Decay
 
 open GlobalTheory.HeisSchA GlobalTheory.Published.Metaplectic GlobalTheory.DiffDecay GlobalTheory.XTermDecay
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hC K hK e he X om om' hT Φ hΦA h U hU c N s`. Establish `hKeq : K = GlobalTheory.StabHaar.stabK (σ` using `σ) B G.V := Subgroup.ext fun g => (hK g).trans (GlobalTheory.StabHaar.isStab_stabK (σ := σ) B G.V g).symm`. Establish `hKc : IsCompact (K : Set (UA σ G.V.J))`. Establish `hX` using `hT.geo.hV`. Take `⟨C, hCc, hsub⟩` from `GlobalTheory.T.relatively_compact_stabilizer F E σ B (b + 2) G.V _ _ hT.base hX`.
+
+Rewrite using `[hKeq]`. Conclude with `hCc.of_isClosed_subset (GlobalTheory.StabHaar.isClosed_stabK B G.V (GlobalTheory.T.isClosed_adelic_lattice_closure F E (b + 2) G.V hX.lat)) hsub`. Establish `hw : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V.J) (incM F G.W.J) G.M.co X.β (X.β / X.α) om` using `hT.weil`. Take `⟨m, g, f, hg, hdec, hf⟩` from `exists_decomp (fun k : K => om (k.1, h) Φ) (fun k => hw.isUSplitting.pres (k.1, h) Φ hΦA) fun l hl => by`. Establish `hc` using `(hw.2.2 l hl Φ hΦA).comp (continuous_id.prodMk continuous_const : Continuous fun g : UA σ G.V.J => (g, h))`.
+
+Take `⟨C, hC⟩` from `hKc.exists_bound_of_continuousOn hc.continuousOn`. Conclude with `⟨C, fun k => hC k.1 k.2⟩`. Take `⟨t, ht⟩` from `GlobalTheory.T.symplectic_trace_basis_exists F E σ _ _ G.V.J G.W.J H.x H.y H'.x H'.y hC.hH.xy (by`. Rewrite using `[form_swap hT.base.cm hT.geo.hW.skew, hC.hH'.xy, map_one])`. Set `S` to `fun j => G.M.co.e (inclR (F := F) (AF F) (Module.finBasis F E j) • Matrix.vecMulVec (incV F H.x) (incV F H'.y))`.
+
+Set `U'` to `fun i => G.M.co.e (Matrix.vecMulVec (inclR (F := F) (AF F) (t i) • incV F H.y) (incV F H'.x))`. Establish `hp : Continuous ⇑(Finset.sup s (schwartzSeminormFamily ℂ (Fin b × Fin (b + a') → mixedEmbedding.mixedSpace F) ℂ))` using `Seminorm.continuous_finsetSup fun i _ => (schwartz_withSeminorms ℂ _ ℂ).continuous_seminorm i`. Use `choose C hCb using fun j => slice_decay B.ψ hT.base.std S U' (fun i j => by rw [← G.M.co.form]; convert ht i j) (sliceL c ∘ₗ e) (exists_slice_clm hT.geo.hM he c) (fun i a Ψ hΨ => by`. Use `he.inv (Matrix.vecMulVec (a • inclR (F := F) (AF F) (t i) • incV F H.y) (incV F H'.x)) (Or.inl ⟨_, rfl⟩) Ψ hΨ` as an intermediate fact. Rewrite `this` using `[Matrix.smul_vecMulVec, Darboux.rho, map_smul]`.
+
+Conclude with `congrArg (sliceL c) this) (hg j) (f j) (hf j) hU _ hp N`. Use `⟨∑ j, C j, fun k hk l hl => ?_⟩` and prove the remaining obligations. Use `choose f₁ hf₁ hb₁ using fun j => hCb j ⟨k, hk⟩ (GlobalTheory.XTermMaj.crd F E (l : AE F E)) hl`. Establish `hS : G.M.co.e (shiftA H H' l) = ∑ i, GlobalTheory.XTermMaj.crd F E (l : AE F E) i • S i`. Simplify using `only [S, ← map_smul, ← map_sum, ← smul_assoc, ← Finset.sum_smul]`.
+
+Use `congr 2`. Rewrite using `[shiftA]`. Use `congr 1`. Use `((Algebra.TensorProduct.basis (AF F) (Module.finBasis F E)).sum_equivFun (l : AE F E)).symm.trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Algebra.TensorProduct.basis_apply]`. Both sides reduce to the same expression. Use `⟨∑ j, f₁ j, fun y => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hdec ⟨k, hk⟩`. Simplify using `only at h1`.
+
+Rewrite using `[h1, Darboux.rho, hS]`. Express the relevant statement in the definitionally equal form `coeL (∑ j, f₁ j) y = (sliceL c ∘ₗ e) (schrL B.ψ _ _) y`. Rewrite using `[map_sum, map_sum, map_sum]`. Conclude with `congrFun (Finset.sum_congr rfl fun j _ => hf₁ j) y`. Rewrite using `[Finset.sum_mul]`.
+
+Conclude with `(Finset.le_sum_of_subadditive _ (map_zero _).le (map_add_le_add _) _ _).trans (Finset.sum_le_sum fun j _ => hb₁ j)`.
+-/
 private theorem arch_decay_schA : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
     ∀ (K : Subgroup (UA σ G.V.J)), IsStab B K →
@@ -116,6 +142,15 @@ section Support
 
 open GlobalTheory.XTermSupp
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hC K hK e he X om om' hT Φ hΦ' h`. Establish `hstd` using `hT.base.std`. Take `⟨C, hCc, hsub⟩` from `GlobalTheory.T.relatively_compact_stabilizer F E σ B (b + 2) G.V _ _ hT.base hT.geo.hV`. Use `choose c hc using trace_mul_dual (F := F) (E := E)`. Establish `hO` using `fun i => rho_om_fixed G.M B.ψ hstd.1 hT.weil hCc h Φ hΦ' (inclR (F := F) (AF F) (σ (c i)) • Matrix.vecMulVec (incV F H.y) (incV F H'.x))`.
+
+Take `⟨U, hU, hUm⟩` from `GlobalTheory.ScalarAnnih.exists_compact_annihilator_finiteAdeles_traceChar F B.ψ hstd.1 (GlobalTheory.PsiNontriv.isStd_fin_rat hstd) _ (Filter.eventually_all.2 hO)`. Use `⟨Set.pi Set.univ fun _ => U, isCompact_univ_pi fun _ => hU, fun k hk l hl => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Use `hl fun i _ => hUm _ fun a ha => ?_` and prove the remaining obligations. Establish `hfix` using `ha i k (hsub ((hK k).1 hk))`.
+
+Establish `hΨ : om (k, h) Φ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a'))` using `(IsUWeilPair.isUSplitting hT.weil).pres _ _ hΦ'`. Establish `h1` using `congrArg e (rho_comm G.M.co B.ψ (shiftA H H' l) (pairA F 0 a • inclR (F := F) (AF F) (σ (c i)) • Matrix.vecMulVec (incV F H.y) (incV F H'.x)) (om (k, h) Φ))`. Rewrite using `[hfix, map_smul, he.inv _ (Or.inl ⟨pairA F 0 a • inclR (F := F) (AF F) (σ (c i)) • incV F H.y, by`. Rewrite using `[Matrix.smul_vecMulVec, Matrix.smul_vecMulVec]⟩) _ (GlobalTheory.HeisSchA.rho_mem_schA G.M B.ψ hstd _ _ hΨ),`. Use `symp_shiftA hT.base.cm hT.geo.hW.skew H H' hC.hH.xy hC.hH'.xy, hc] at h1`.
+
+Establish `h2 : pairA F 0 a * GlobalTheory.XTermMaj.crd F E (l : AE F E) i = pairA F 0 (a * (GlobalTheory.XTermMaj.crd F E (l : AE F E) i).2)` using `Prod.ext (zero_mul _) rfl`. Rewrite `h1` using `[h2]`. Conclude with `(smul_left_injective ℂ hne (h1.symm.trans (one_smul ℂ _).symm))`.
+-/
 private theorem finsupp_schA : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
     ∀ (K : Subgroup (UA σ G.V.J)), IsStab B K →
@@ -147,6 +182,11 @@ private theorem finsupp_schA : ∀ (F E : Type) [Field F] [NumberField F] [Field
 
 end Support
 
+/- English proof (translation)
+Establish `h1 : (fun s => f (s + a) * c) = fun s => (c • (f : V → ℂ)) (s + a)`. Use function extensionality and compare the values at `s`. Simplify using `[mul_comm]`. Rewrite using `[h1, iteratedFDeriv_comp_add_right, iteratedFDeriv_const_smul_apply (f.smooth m).contDiffAt, norm_smul]`. Establish `h2` using `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℂ) (m := (n, m)) (k := n) (n := m) le_rfl le_rfl f (t + a)`.
+
+Establish `h3 : ‖t‖ ≤ (1 + ‖a‖) * (1 + ‖t + a‖)`. Establish `: ‖t‖ ≤ ‖t + a‖ + ‖a‖` using `by simpa using norm_sub_le (t + a) a`. Use polynomial arithmetic with `[norm_nonneg a, norm_nonneg (t + a), mul_nonneg (norm_nonneg a) (norm_nonneg (t + a))]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem translate_le {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (f : SchwartzMap V ℂ) (a : V) (c : ℂ) (n m : ℕ) (t : V) :
     ‖t‖ ^ n * ‖iteratedFDeriv ℝ m (fun s => f (s + a) * c) t‖ ≤
       (1 + ‖a‖) ^ n * 2 ^ n * ((Finset.Iic (n, m)).sup (schwartzSeminormFamily ℂ V ℂ)) f * ‖c‖ := by
@@ -165,6 +205,21 @@ private theorem translate_le {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ 
         mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left h2 (by positivity)) (norm_nonneg c)
     _ = _ := by ring
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC e he K μK μ hK hμK hμ X om om' om₁ om₁' hT _ Ψ hΨ x n m`. Establish `hz : 1 < (b + 2 - a') / 2`. Establish `h1` using `hT.geo.eBig`. Use linear arithmetic over natural numbers and integers. Take `⟨K', -, -, hK', hKc, -, -⟩` from `GlobalTheory.StabHaar.stabEx hKP.base F E σ B (b + 2) G.V _ _ hT.base hT.geo.hV`.
+
+Take `rfl : K' = K` from `Subgroup.ext fun g => (hK' g).trans (hK g).symm`. Use `haveI : CompactSpace K' := isCompact_iff_compactSpace.mp hKc`. Take `⟨U, hU, hU0⟩` from `finsupp_schA F E σ B b a' G G₁ H H' hC K' hK e he X om om' hT Ψ hΨ 1`. Take `⟨N, T, hTi, hT0, hTb⟩` from `exists_integrable_majorant F E μ hz hU`. Take `⟨C, hCb⟩` from `arch_decay_schA F E σ B b a' G G₁ H H' hC K' hK e he X om om' hT Ψ hΨ 1 U hU (fun q => (x q).2) N (Finset.Iic (n, m))`.
+
+Set `a : Fin b × Fin (b + a') → mixedEmbedding.mixedSpace F` to `fun q => InfiniteAdeleRing.ringEquiv_mixedSpace F (x q).1`. Use `⟨fun _ l => (1 + ‖a‖) ^ n * 2 ^ n * |C| * T l, fun _ => hTi.const_mul _, integrable_const _, fun k l t => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hl : (fun i => (GlobalTheory.XTermMaj.crd F E (l : AE F E) i).2) ∈ U`. Take `⟨f, hf, hfb⟩` from `hCb k.1 k.2 l hl`. Establish `h1 : (fun s => (e (G.M.co.rho B.ψ (shiftA H H' l) (om (k.1, 1) Ψ)) (x + GlobalTheory.ThetaTransform.embR s) * (X.ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ ((b + 2 - a') / 2))) = fun s => f (s + a) * ((X.ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ ((b + 2 - a') / 2))`.
+
+Use function extensionality and compare the values at `s`. Rewrite using `[hf, mul_assoc]`. Use `congrArg (· * _) (congrArg _ (funext fun q => ?_))` and prove the remaining obligations. Use `Prod.ext ?_ (add_zero _)` and prove the remaining obligations. Use `show (x q).1 + (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (s q) = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (s q + InfiniteAdeleRing.ringEquiv_mixedSpace F (x q).1)`.
+
+Rewrite using `[map_add, RingEquiv.symm_apply_apply, add_comm]`. Rewrite using `[h1]`. Use `(translate_le f a _ n m t).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Circle.norm_coe, one_mul, norm_pow, Complex.norm_real, Real.norm_of_nonneg (NNReal.coe_nonneg _)]`. Establish `h2` using `hTb l hl`.
+
+Establish `h0 : 0 ≤ (1 + ∑ i, ∑ v : InfinitePlace F, ‖(GlobalTheory.XTermMaj.crd F E (l : AE F E) i).1 v‖) ^ (-(N : ℝ))` using `Real.rpow_nonneg (by positivity) _`. Establish `h3` using `hfb.trans (mul_le_mul_of_nonneg_right (le_abs_self C) h0)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hU0 k.1 k.2 l hl]`. Simplify using `only [Pi.zero_apply, zero_mul, iteratedFDeriv_fun_zero, norm_zero, mul_zero]`.
+
+Conclude with `mul_nonneg (by positivity) (hT0 l)`.
+-/
 private theorem slice_dominated : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
     ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ (K : Subgroup (UA σ G.V.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ), IsStab B K → μK.IsHaarMeasure → μ.IsHaarMeasure →
@@ -222,6 +277,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 open scoped Classical
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.ConeSliceDecay.slice_dominated`.
+-/
 theorem _root_.GlobalTheory.T.stabilizer_haar_local_factor_case_a_three : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
     ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ (K : Subgroup (UA σ G.V.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ), IsStab B K → μK.IsHaarMeasure → μ.IsHaarMeasure →

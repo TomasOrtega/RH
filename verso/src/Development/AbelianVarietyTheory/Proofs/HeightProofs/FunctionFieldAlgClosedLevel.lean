@@ -13,6 +13,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FinalJoin.FieldAlg
 
+/- English proof (translation)
+Rewrite using `[FO, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨y, rfl⟩`. Establish `e` using `h (Q.eO.symm y)`. Rewrite `e` using `[RingEquiv.apply_symm_apply]`. Establish `e' : D.what₂.phiO y = ((Q.eO.symm y : Q.c.F) : ℂ)` using `e`.
+
+Rewrite using `[e']`. Conclude with `SetLike.coe_mem _`.
+-/
 theorem recordField_le_of_pinField {D : D7} (Q : Par D) (h : Q.PinField) : FO D ≤ Q.c.F := by
   rw [FO, IntermediateField.adjoin_le_iff]
   rintro _ ⟨y, rfl⟩
@@ -22,6 +27,13 @@ theorem recordField_le_of_pinField {D : D7} (Q : Par D) (h : Q.PinField) : FO D 
   rw [e']
   exact SetLike.coe_mem _
 
+/- English proof (translation)
+Introduce `D Q hP hC n hn hcurve j hj l₂ Xo₂ c₂ hA hM hF`. Take `⟨⟨ι, hι⟩, hr, -, -⟩` from `GlobalTheory.Member.exists_iotaOK D Q hP j hj`. Establish `h6 : 6 ≤ D.R.r`. Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_add_three_le_k`.
+
+Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `h1` using `GlobalTheory.RankOneDatum.exists_datum_rank_one D Q.H (Q.Dw j) (D.sp.W j) ι hι (by omega)`. Establish `hle` using `recordField_le_of_pinField Q hP.2.2.1`. Establish `hc : CurveOver Q.H (FO D) l₂.M`.
+
+Establish `h0 : CurveOver Q.H (FO D) n` using `by rw [hC.1]; exact hcurve`. Conclude with `(GlobalTheory.T.cmCurveTorsion_definedOver_of_weberValues _ Q.H (FO D) n hn).2 _ hM h0`. Use `GlobalTheory.T.coeffField_algClosed_functionField_of_torsionDefined _ Q.H (Q.Dw j) l₂ Xo₂ c₂ (by omega) hA (Or.inr (Or.inr ⟨by omega, h1⟩)) ?_` and prove the remaining obligations. Introduce `τ hτ`. Conclude with `hc τ fun x hx => hτ x (by rw [hF]; exact hle hx)`.
+-/
 theorem fnAlgClosed_of_pins : ∀ (D : D7) (Q : Par D), Q.Pins → Q.Canon → ∀ n : ℕ, 0 < n → CurveOver (hostOfRecord D) (FO D) n → ∀ j, InR D j → ∀ (l₂ : Level Q.H) (Xo₂ : Moduli (Q.Dw j) l₂) (c₂ : Coeff l₂), l₂.A = 1 → l₂.M ∣ n → c₂.F = Q.c.F → FnAlgClosed Xo₂ c₂ := by
   intro D Q hP hC n hn hcurve j hj l₂ Xo₂ c₂ hA hM hF
   obtain ⟨⟨ι, hι⟩, hr, -, -⟩ := GlobalTheory.Member.exists_iotaOK D Q hP j hj

@@ -9,6 +9,11 @@ open scoped ComplexOrder
 
 namespace HermitianFormComparison
 
+/- English proof (translation)
+Establish `h1 : star (star U *ᵥ x) ⬝ᵥ (star U *ᵥ x) = star x ⬝ᵥ x`. Rewrite using `[star_mulVec, dotProduct_mulVec, vecMul_vecMul, star_eq_conjTranspose, conjTranspose_conjTranspose, ← star_eq_conjTranspose, hU, vecMul_one]`. Rewrite using `[← h1]`. Simplify using `only [dotProduct, Pi.star_apply, Complex.re_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Complex.star_def, Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re]`.
+-/
 theorem sum_norm_sq_unitary {n : ℕ} (U : Matrix (Fin n) (Fin n) ℂ) (hU : U * star U = 1)
     (x : Fin n → ℂ) : ∑ k, ‖(star U *ᵥ x) k‖ ^ 2 = (star x ⬝ᵥ x).re := by
   have h1 : star (star U *ᵥ x) ⬝ᵥ (star U *ᵥ x) = star x ⬝ᵥ x := by
@@ -19,6 +24,13 @@ theorem sum_norm_sq_unitary {n : ℕ} (U : Matrix (Fin n) (Fin n) ℂ) (hU : U *
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [Complex.star_def, Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re]
 
+/- English proof (translation)
+Use `set U : Matrix (Fin n) (Fin n) ℂ := (↑hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) with hUdef`. Establish `hspec : A = U * diagonal (fun k => (hA.eigenvalues k : ℂ)) * star U`. Establish `h` using `hA.spectral_theorem`. Simplify using `only [Unitary.conjStarAlgAut_apply] at h`. Conclude with `h`.
+
+Use `set y : Fin n → ℂ := star U *ᵥ x with hy`. Establish `hq : star x ⬝ᵥ (A *ᵥ x) = star y ⬝ᵥ (diagonal (fun k => (hA.eigenvalues k : ℂ)) *ᵥ y)` using `by conv_lhs => rw [hspec]`. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec, hy, star_mulVec, star_eq_conjTranspose U, conjTranspose_conjTranspose]`. Rewrite using `[hq]`. Simplify using `only [dotProduct, mulVec_diagonal, Pi.star_apply, Complex.re_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, Complex.star_def, Complex.conj_mul', ← Complex.ofReal_pow, ← Complex.ofReal_mul, Complex.ofReal_re]`.
+-/
 theorem re_quad_eq {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian) (x : Fin n → ℂ) :
     (star x ⬝ᵥ (A *ᵥ x)).re = ∑ k, hA.eigenvalues k *
       ‖(star (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) *ᵥ x) k‖ ^ 2 := by
@@ -38,11 +50,17 @@ theorem re_quad_eq {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitia
   rw [mul_left_comm, Complex.star_def, Complex.conj_mul', ← Complex.ofReal_pow, ← Complex.ofReal_mul,
     Complex.ofReal_re]
 
+/- English proof (translation)
+The claim follows from `Unitary.mul_star_self_of_mem hA.eigenvectorUnitary.2`.
+-/
 theorem eigenvectorUnitary_mul_star {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian) :
     (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) *
       star (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) = 1 :=
   Unitary.mul_star_self_of_mem hA.eigenvectorUnitary.2
 
+/- English proof (translation)
+Rewrite using `[re_quad_eq hM.1, ← sum_norm_sq_unitary _ (eigenvectorUnitary_mul_star hM.1), Finset.mul_sum]`. Use `Finset.sum_le_sum fun k _ => mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Establish `hle : hM.1.eigenvalues k ≤ ∑ j, hM.1.eigenvalues j` using `Finset.single_le_sum (f := hM.1.eigenvalues) (fun j _ => hM.eigenvalues_nonneg j) (Finset.mem_univ k)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem re_quad_le {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (hM : M.PosSemidef) (x : Fin n → ℂ) :
     (star x ⬝ᵥ (M *ᵥ x)).re ≤ (1 + ∑ k, hM.1.eigenvalues k) * (star x ⬝ᵥ x).re := by
   rw [re_quad_eq hM.1, ← sum_norm_sq_unitary _ (eigenvectorUnitary_mul_star hM.1), Finset.mul_sum]
@@ -51,6 +69,11 @@ theorem re_quad_le {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (hM : M.PosSemidef
     Finset.single_le_sum (f := hM.1.eigenvalues) (fun j _ => hM.eigenvalues_nonneg j) (Finset.mem_univ k)
   linarith
 
+/- English proof (translation)
+Rewrite using `[re_quad_eq hN.1, ← sum_norm_sq_unitary _ (eigenvectorUnitary_mul_star hN.1), Finset.mul_sum]`. Use `Finset.sum_le_sum fun k _ => mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Establish `hpos` using `hN.eigenvalues_pos k`. Establish `hle : (hN.1.eigenvalues k)⁻¹ ≤ ∑ j, (hN.1.eigenvalues j)⁻¹` using `Finset.single_le_sum (f := fun j => (hN.1.eigenvalues j)⁻¹) (fun j _ => (inv_pos.mpr (hN.eigenvalues_pos j)).le) (Finset.mem_univ k)`. Rewrite using `[inv_le_comm₀ (by linarith [inv_pos.mpr hpos]) hpos]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem re_quad_ge {n : ℕ} {N : Matrix (Fin n) (Fin n) ℂ} (hN : N.PosDef) (x : Fin n → ℂ) :
     (1 + ∑ k, (hN.1.eigenvalues k)⁻¹)⁻¹ * (star x ⬝ᵥ x).re ≤ (star x ⬝ᵥ (N *ᵥ x)).re := by
   rw [re_quad_eq hN.1, ← sum_norm_sq_unitary _ (eigenvectorUnitary_mul_star hN.1), Finset.mul_sum]
@@ -66,6 +89,13 @@ end HermitianFormComparison
 
 open HermitianFormComparison in
 
+/- English proof (translation)
+Introduce `n M N hM hN`. Use `set L : ℝ := 1 + ∑ k, hM.1.eigenvalues k with hL`. Use `set m : ℝ := (1 + ∑ k, (hN.1.eigenvalues k)⁻¹)⁻¹ with hm`. Establish `hL0 : 0 < L`. Establish `: 0 ≤ ∑ k, hM.1.eigenvalues k` using `Finset.sum_nonneg fun k _ => (hM.eigenvalues_pos k).le`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hm0 : 0 < m`. Establish `: 0 ≤ ∑ k, (hN.1.eigenvalues k)⁻¹` using `Finset.sum_nonneg fun k _ => (inv_pos.mpr (hN.eigenvalues_pos k)).le`. Conclude with `inv_pos.mpr (by linarith)`. Use `⟨L / m, div_pos hL0 hm0, fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `hup` using `re_quad_le hM.posSemidef x`. Establish `hlo` using `re_quad_ge hN x`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem HermFormCompare.proof : HermFormCompare.Statement := by
   intro n M N hM hN
   set L : ℝ := 1 + ∑ k, hM.1.eigenvalues k with hL

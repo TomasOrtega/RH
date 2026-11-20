@@ -14,6 +14,9 @@ open GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheor
 
 namespace GlobalTheory.Mean4O
 
+/- English proof (translation)
+The claim follows from `have h₁ : z ∈ Var.eqnSet σ Δ (eqn Δ (under z)) := Base.isEqn_eqn _ _ ((Var.Met.mem_posSet_iff h₁).1 (h ▸ Set.mem_univ z)).trans_eq (Var.pn_frame h₁).symm`.
+-/
 theorem posAt_of_posSet {F : Type} [Field F] [NumberField F] {Y : Var F} {σ : F →+* ℂ} {Δ : Y.Dv} {m : Var.Met Y σ Δ}
     (h : m.posSet = Set.univ) (z : Pts Y σ) : PosAt (C := cxSt F) m z :=
   have h₁ : z ∈ Var.eqnSet σ Δ (eqn Δ (under z)) := Base.isEqn_eqn _ _
@@ -33,6 +36,13 @@ def metTrue (x : ToroidalCompactificationData s) (Φ : s.Flag) (P : PolOf x Φ) 
   dir := P.dir
   reg := P.reg
 
+/- English proof (translation)
+Establish `h0 : f ≠ 0` using `have ⟨_, _, hu⟩ := hf`. Use `left_ne_zero_of_mul hu.ne_zero`. Set `a : (Φ.C k).Y.Fnˣ` to `Units.mk0 f h0`. Establish `h₁ : (divOf (Φ.C k) n).IsEqn (under z) a⁻¹` using `CartierDiv.isEqn_iff_generatesAt_inv.2 (by simpa [a] using hf)`. Establish `h₂ : (divOf (Φ.C k) (-n)).IsEqn (under z) a`.
+
+Establish `e : divOf (Φ.C k) (-n) = (-1 : ℤ) • divOf (Φ.C k) n` using `by simp [divOf]`. Simplify `h₁.zsmul (-1)` using `[e]`. Establish `e₁` using `Var.pn_frame (m := (Φ.C k).met G n) (y := z) h₁`. Establish `e₂` using `Var.pn_frame (m := (Φ.C k).met G (-n)) (y := z) h₂`. Rewrite `e₁` using `[inv_inv]`.
+
+Rewrite `e₂` using `[Units.val_inv_eq_inv_val]`. Use `(congrArg₂ (· * ·) e₁ e₂).trans ((FlagCpt.met_add_h G n (-n) h₁ h₂).symm.trans ?_)` and prove the remaining obligations. Establish `e₃ : Var.val z (1 : (Φ.C k).Y.FnC σ) = 1` using `by simpa using (Var.val_cx (y := z) 1).trans (Base.ratVal_one _)`. Simplify using `[FlagCpt.met, FlagCpt.genSq, prodPow, Var.tv, e₃]`.
+-/
 theorem pn_met_mul_neg {Φ : s.Flag} {k : s.Comp} {σ : D.what₂.LL →+* ℂ} (G : EigMet s.T.Z (embOf κ.e σ))
     (n : Letter S.Dw → ℤ) {z : Pts (Φ.C k).Y σ} {f : (Φ.C k).Y.Fn} (hf : (divOf (Φ.C k) n).GeneratesAt (under z) f) :
     (cxSt _).pn _ σ _ ((Φ.C k).met G n) ((cxSt _).cx _ σ f) z *
@@ -68,9 +78,15 @@ def Core : Prop := ∃ (x : ToroidalCompactificationData O.s) (P : PolOf x O.Φ)
 def withCore (x : ToroidalCompactificationData O.s) (P : PolOf x O.Φ) (h : ∃ B, IsBdOf x O.L B) : Setup D :=
   { O with met := metTrue x O.Φ P, Mb := mbarOf P, B := bdOf x O.L h, fl := flBetti O.s O.Φ O.L }
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl, isBdOf_bdOf x O.L h, rfl⟩`.
+-/
 theorem coreWith_withCore (x : ToroidalCompactificationData O.s) (P : PolOf x O.Φ) (h : ∃ B, IsBdOf x O.L B) :
     (O.withCore x P h).CoreWith x P := ⟨rfl, rfl, isBdOf_bdOf x O.L h, rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, hM, hB, hf⟩`.
+-/
 theorem coreWith_ofKit {A : Amb D} {N j : ℕ} (h : 1 ≤ j ∧ j < N) {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} {L : CmList A}
     {jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ)} {ng : NgPkg} (k : Kit s L (cxSt D.what₂.LL) jC ng)
     (adm : AdmSt D N j jC) {x : ToroidalCompactificationData s} {P : PolOf x k.Φ} (hB : IsBdOf x L k.B) (hf : k.fl = flBetti s k.Φ L)
@@ -81,23 +97,47 @@ namespace CoreWith
 variable {O} {x : ToroidalCompactificationData O.s} {P : PolOf x O.Φ} (h : O.CoreWith x P)
 include h
 
+/- English proof (translation)
+The claim follows from `congrArg MetIn.hm h.met`.
+-/
 theorem hm_eq : O.met.hm = metsOf x O.Φ := congrArg MetIn.hm h.met
 
+/- English proof (translation)
+The claim follows from `congrArg MetIn.h0 h.met`.
+-/
 theorem h0_eq : O.met.h0 = refMet x O.Φ := congrArg MetIn.h0 h.met
 
+/- English proof (translation)
+The claim follows from `congrArg MetIn.r h.met`.
+-/
 theorem r_eq : O.met.r = rFlag x O.Φ := congrArg MetIn.r h.met
 
+/- English proof (translation)
+The claim follows from `congrArg MetIn.ab h.met`.
+-/
 theorem ab_eq : O.met.ab = P.ab := congrArg MetIn.ab h.met
 
+/- English proof (translation)
+The claim follows from `congrArg MetIn.dir h.met`.
+-/
 theorem dir_eq : O.met.dir = P.dir := congrArg MetIn.dir h.met
 
+/- English proof (translation)
+The claim follows from `congrArg MetIn.reg h.met`.
+-/
 theorem reg_eq : O.met.reg = P.reg := congrArg MetIn.reg h.met
 
+/- English proof (translation)
+Rewrite using `[← h.hm_eq, ← h.h0_eq]`. Both sides reduce to the same expression.
+-/
 theorem two_mul_chg (c : O.s.Comp) (u : D.what₂.Tau → Fin O.N → ℝ) (σ : D.what₂.LL →+* ℂ) (z : Pts (O.var c) σ) :
     2 * O.chg c none u σ z = phW (metsOf x O.Φ) (refMet x O.Φ) c σ u z := by
   rw [← h.hm_eq, ← h.h0_eq]
   rfl
 
+/- English proof (translation)
+Take `⟨A, N, j, hi, S, κ, s, L, Φ, hd, B, fl, Mb, jC, ng, loc, glob, adm, met⟩` from `O`. Take `⟨h₁, h₂, -, -⟩` from `h`. Simplify using `only at x P h₁`. Substitute `h₁` using the available equality. Conclude with `mbIs_of_eq _ P rfl rfl rfl h₂`.
+-/
 theorem mbIs : O.MbIs := by
   obtain ⟨A, N, j, hi, S, κ, s, L, Φ, hd, B, fl, Mb, jC, ng, loc, glob, adm, met⟩ := O
   obtain ⟨h₁, h₂, -, -⟩ := h
@@ -112,23 +152,38 @@ namespace Core
 variable {O} (h : O.Core) (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ)
 include h
 
+/- English proof (translation)
+The claim follows from `have ⟨_, _, h⟩ := h; h.mbIs`.
+-/
 theorem mbIs : O.MbIs := have ⟨_, _, h⟩ := h; h.mbIs
 
+/- English proof (translation)
+Take `⟨_, P, h⟩` from `h`. Rewrite using `[h.dir_eq]`. Conclude with `P.strictAnti_dir τ`.
+-/
 theorem strictAnti_dir (τ : D.what₂.Tau) : StrictAnti (O.met.dir τ) := by
   obtain ⟨_, P, h⟩ := h
   rw [h.dir_eq]
   exact P.strictAnti_dir τ
 
+/- English proof (translation)
+Take `⟨_, P, h⟩` from `h`. Rewrite using `[h.ab_eq]`. Conclude with `P.ab_ample c`.
+-/
 theorem ample_ab : (O.var c).ample (O.met.ab c).D := by
   obtain ⟨_, P, h⟩ := h
   rw [h.ab_eq]
   exact P.ab_ample c
 
+/- English proof (translation)
+Take `⟨_, P, h⟩` from `h`. Rewrite using `[h.r_eq]`. Conclude with `exp_le_rFlag`.
+-/
 theorem exp_le_r (z : Pts (O.var c) σ) : Real.exp 1 ≤ O.met.r c σ z := by
   obtain ⟨_, P, h⟩ := h
   rw [h.r_eq]
   exact exp_le_rFlag
 
+/- English proof (translation)
+Take `⟨_, P, h⟩` from `h`. Rewrite using `[h.h0_eq]`. Conclude with `pn_met_mul_neg _ n hf`.
+-/
 theorem referenceMetric_mul_dual_eq_one (n : Letter O.S.Dw → ℤ) {z : Pts (O.var c) σ} {f : (O.var c).Fn}
     (hf : (divOf (O.Φ.C c) n).GeneratesAt (under z) f) :
     (cxSt _).pn _ σ _ (O.met.h0 c σ n) ((cxSt _).cx _ σ f) z *
@@ -137,16 +192,25 @@ theorem referenceMetric_mul_dual_eq_one (n : Letter O.S.Dw → ℤ) {z : Pts (O.
   rw [h.h0_eq]
   exact pn_met_mul_neg _ n hf
 
+/- English proof (translation)
+Take `⟨x, P, h⟩` from `h`. Rewrite using `[h.h0_eq]`. Conclude with `posAt_of_posSet (posSet_refMet x O.Φ c σ n) z`.
+-/
 theorem referenceMetric_posAt (n : Letter O.S.Dw → ℤ) (z : Pts (O.var c) σ) : PosAt (O.met.h0 c σ n) z := by
   obtain ⟨x, P, h⟩ := h
   rw [h.h0_eq]
   exact posAt_of_posSet (posSet_refMet x O.Φ c σ n) z
 
+/- English proof (translation)
+Take `⟨x, P, h⟩` from `h`. Rewrite using `[h.hm_eq]`. Conclude with `posAt_of_posSet (posSet_metsOf x O.Φ c R σ n) z`.
+-/
 theorem posAt_hm (R : Option ℝ) (n : Letter O.S.Dw → ℤ) (z : Pts (O.var c) σ) : PosAt (O.met.hm c R σ n) z := by
   obtain ⟨x, P, h⟩ := h
   rw [h.hm_eq]
   exact posAt_of_posSet (posSet_metsOf x O.Φ c R σ n) z
 
+/- English proof (translation)
+Take `⟨x, P, h⟩` from `h`. Rewrite `hz` using `[h.r_eq]`. Use `Finset.sum_eq_zero fun y _ => mul_eq_zero_of_right _ (sub_eq_zero.2 (congrArg (Real.log · / 2) ?_))` and prove the remaining obligations. Rewrite using `[h.hm_eq, h.h0_eq]`. Conclude with `congrArg (_ * ·) (metsOf_some_eq hR hz _)`.
+-/
 theorem chg_some_eq_zero {R : ℝ} (hR : 2 ≤ R) (u : D.what₂.Tau → Fin O.N → ℝ) {z : Pts (O.var c) σ}
     (hz : (O.Φ.C c).π (under z) ∈ genBd O.s.T.Z ∨ R ^ 3 ≤ O.met.r c σ z) : O.chg c (some R) u σ z = 0 := by
   obtain ⟨x, P, h⟩ := h
@@ -161,18 +225,30 @@ end Setup
 
 def ObjCore {D : D7} (Y : DV.ShimX D.what₂.Tau) (A : SlopeTestRemainingChoices Y) (T : Real0 Y) (H : Ht Y) : Prop := ObjOf Setup.Core Y A T H
 
+/- English proof (translation)
+The claim follows from `ObjOf.withPs o Ps`.
+-/
 theorem ObjCore.withPs {D : D7} {Y : DV.ShimX D.what₂.Tau} {A : SlopeTestRemainingChoices Y} {T : Real0 Y} {H : Ht Y} (o : ObjCore Y A T H)
     (Ps : ℝ → Y.Comp → MvPolynomial (Option (D.what₂.Tau × Fin Y.N)) ℝ) : ObjCore Y { A with Ps := Ps } T H :=
   ObjOf.withPs o Ps
 
+/- English proof (translation)
+Introduce `hc` and use `by have := O.indef have h1 := hc.strictAnti_dir τ (a := ⟨0, by omega⟩) (b := ⟨1, by omega⟩) (by simp) simp [h] at h1`.
+-/
 example {D : D7} (O : Setup D) (τ : D.what₂.Tau) (h : O.met.dir = 0) : ¬ O.Core := fun hc => by
   have := O.indef
   have h1 := hc.strictAnti_dir τ (a := ⟨0, by omega⟩) (b := ⟨1, by omega⟩) (by simp)
   simp [h] at h1
 
+/- English proof (translation)
+Introduce `⟨_, _, hc⟩` and use `hc.bd.m_ne_zero c hb h`.
+-/
 example {D : D7} (O : Setup D) (hb : (genBd O.s.T.Z : Set (gen O.s.T.Z : Scheme.{0})).Nonempty) (c : O.s.Comp)
     (h : (O.B c).m = 0) : ¬ O.Core := fun ⟨_, _, hc⟩ => hc.bd.m_ne_zero c hb h
 
+/- English proof (translation)
+The claim follows from `have ⟨x, P, h⟩ := h; ⟨x, P, h.1, h.2, h.3, h.4⟩`.
+-/
 example {D : D7} (O : Setup D) (adm : AdmSt D O.N O.j O.jC) (h : O.Core) : Setup.Core { O with adm := adm } :=
   have ⟨x, P, h⟩ := h; ⟨x, P, h.1, h.2, h.3, h.4⟩
 

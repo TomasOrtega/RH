@@ -15,6 +15,13 @@ namespace GlobalTheory
 
 namespace PsiInPull
 
+/- English proof (translation)
+Rewrite `h` using `[gs_eq f z U hU, gs_eq f z U hU, ← sub_eq_zero, ← map_sub, ← map_sub]`. Assume the negation of the conclusion as `hne`. Establish `h1 : f z ∈ Y.basicOpen (a - b)` using `hz _ (by`. Rewrite using `[Ne, basicOpen_eq_bot_iff]`. Conclude with `sub_ne_zero.2 hne)`.
+
+Establish `h2 : z ∈ Z.basicOpen ((f.app U).hom (a - b))`. Rewrite using `[← Scheme.preimage_basicOpen]`. Conclude with `h1`. Establish `h3` using `(Z.mem_basicOpen _ z hU).1 h2`. Rewrite `h3` using `[h]`.
+
+Conclude with `not_isUnit_zero h3`.
+-/
 theorem gs_injective {Y Z : Scheme.{0}} [IsReduced Y] (f : Z ⟶ Y) (z : Z)
     (hz : ∀ U : Y.Opens, U ≠ ⊥ → f z ∈ U) (U : Y.Opens) (hU : f z ∈ U) {a b : Γ(Y, U)}
     (h : gs f z U a = gs f z U b) : a = b := by
@@ -28,6 +35,13 @@ theorem gs_injective {Y Z : Scheme.{0}} [IsReduced Y] (f : Z ⟶ Y) (z : Z)
   rw [h] at h3
   exact not_isUnit_zero h3
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, v ∈ U := by`. Assume the negation of the conclusion as `hc`. Conclude with `hU (eq_bot_iff.2 fun v hv => hc ⟨v, hv⟩)`. Establish `hs : jK R z ⤳ v`. Use `(PrimeSpectrum.le_iff_specializes (jK R z) v).1 ?_` and prove the remaining obligations.
+
+Introduce `a ha`. Establish `ha' : algebraMap R (FractionRing R) a ∈ (PrimeSpectrum.asIdeal z)` using `ha`. Establish `hb : PrimeSpectrum.asIdeal z = ⊥` using `Ideal.eq_bot_of_prime _ (h := z.isPrime)`. Rewrite `ha'` using `[hb, Ideal.mem_bot, IsFractionRing.to_map_eq_zero_iff]`. Rewrite using `[ha']`.
+
+Conclude with `Ideal.zero_mem _`. Conclude with `hs.mem_open U.isOpen hv`.
+-/
 theorem jK_mem {R : Type} [CommRing R] [IsDomain R] (z : Spec (CommRingCat.of (FractionRing R)))
     (U : (Spec (CommRingCat.of R)).Opens) (hU : U ≠ ⊥) : jK R z ∈ U := by
   obtain ⟨v, hv⟩ : ∃ v, v ∈ U := by
@@ -42,12 +56,20 @@ theorem jK_mem {R : Type} [CommRing R] [IsDomain R] (z : Spec (CommRingCat.of (F
     rw [ha']; exact Ideal.zero_mem _
   exact hs.mem_open U.isOpen hv
 
+/- English proof (translation)
+Simplify using `only [DegPre.toOpen, RingHom.comp_apply]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem res_toOpen {R : Type} [CommRing R] {U V : (Spec (CommRingCat.of R)).Opens} (h : U ≤ V) (a : R) :
     ((Spec (CommRingCat.of R)).presheaf.map (homOfLE h).op).hom (DegPre.toOpen V a) = DegPre.toOpen U a := by
   simp only [DegPre.toOpen, RingHom.comp_apply]
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Establish `nat` using `congrArg (fun g => g.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at nat`. Establish `e` using `congrArg (fun q => q.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)) ((specOf φ).naturality (homOfLE (le_top : V ≤ ⊤)).op)`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e`. Simplify using `only [DegPre.toOpen, RingHom.comp_apply]`.
+
+Rewrite using `[e, nat]`. Both sides reduce to the same expression.
+-/
 theorem app_toOpen {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R')
     (V : (Spec (CommRingCat.of R)).Opens) (a : R) :
     ((specOf φ).app V).hom (DegPre.toOpen V a) = DegPre.toOpen (specOf φ ⁻¹ᵁ V) (φ a) := by
@@ -60,6 +82,21 @@ theorem app_toOpen {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R')
   rw [e, nat]
   rfl
 
+/- English proof (translation)
+Set `θ : Γ(Spec (CommRingCat.of R), V) →+* (Spec (CommRingCat.of (FractionRing R))).presheaf.stalk z` to `((Spec (CommRingCat.of (FractionRing R))).presheaf.germ (jK R ⁻¹ᵁ V) z hz).hom.comp ((jK R).app V).hom`. Establish `hθ : ∀ a, gs (jK R) z V a = θ a` using `fun a => gs_eq _ _ _ hz a`. Set `Q : Ideal Γ(Spec (CommRingCat.of R), V)` to `{ carrier := {a | ∃ b ∈ J.map (DegPre.toOpen V), θ b = θ a * t} zero_mem' := ⟨0, Ideal.zero_mem _, by simp⟩ add_mem' := by`. Introduce and unpack `a a' ⟨b, hb, e⟩ ⟨b', hb', e'⟩`. Conclude with `⟨b + b', Ideal.add_mem _ hb hb', by rw [map_add, map_add, e, e', add_mul]⟩`.
+
+Use the proof step `smul_mem' := by`. Introduce and unpack `c a ⟨b, hb, e⟩`. Conclude with `⟨c * b, Ideal.mul_mem_left _ _ hb, by rw [smul_eq_mul, map_mul, map_mul, e, _root_.mul_assoc]⟩ }`. Establish `key : ∀ v ∈ V, ∃ f ∈ Q, v ∈ (Spec (CommRingCat.of R)).basicOpen f`. Introduce `v hv`.
+
+Take `⟨U, hUV, hvU, s, hs, e⟩` from `H v hv`. Take `⟨f, hfU, hvf⟩` from `hV.exists_basicOpen_le (V := U) ⟨v, hvU⟩ hv`. Establish `hzf : jK R z ∈ (Spec (CommRingCat.of R)).basicOpen f` using `jK_mem z _ (fun h0 => by rw [h0] at hvf; exact hvf)`. Use `hV.isLocalization_basicOpen f` as an intermediate fact. Establish `hs' : ((Spec (CommRingCat.of R)).presheaf.map (homOfLE hfU).op).hom s ∈ (J.map (DegPre.toOpen V)).map (algebraMap Γ(Spec (CommRingCat.of R), V) Γ(Spec (CommRingCat.of R), (Spec (CommRingCat.of R)).basicOpen f))`.
+
+Establish `h1` using `Ideal.mem_map_of_mem ((Spec (CommRingCat.of R)).presheaf.map (homOfLE hfU).op).hom hs`. Rewrite `h1`, the goal using `[Ideal.map_map]`. Use `h1 using 2` and compare the differences between its conclusion and the goal. Use extensionality with `a`. Conclude with `(res_toOpen ((Spec (CommRingCat.of R)).basicOpen_le f) a).trans (res_toOpen hfU a).symm`.
+
+Take `⟨⟨⟨b, hb⟩, ⟨_, n, rfl⟩⟩, e2⟩` from `(IsLocalization.mem_map_algebraMap_iff (Submonoid.powers f) _).1 hs'`. Establish `e3` using `congrArg (gs (jK R) z ((Spec (CommRingCat.of R)).basicOpen f)) e2`. Rewrite `e3` using `[gs_mul _ _ _ hzf, gs_res _ _ hfU hzf, e]`. Establish `e4 : ∀ a, gs (jK R) z ((Spec (CommRingCat.of R)).basicOpen f) (algebraMap Γ(Spec (CommRingCat.of R), V) _ a) = θ a` using `fun a => (gs_res _ _ ((Spec (CommRingCat.of R)).basicOpen_le f) hzf a).trans (hθ a)`. Rewrite `e3` using `[e4, e4]`.
+
+Use `⟨f ^ n * f, Ideal.mul_mem_right _ _ ⟨b, hb, e3.symm.trans (_root_.mul_comm _ _)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_succ, Scheme.basicOpen_pow _ _ (Nat.succ_pos n)]`. Conclude with `hvf`. Establish `hQ : Ideal.span (Q : Set Γ(Spec (CommRingCat.of R), V)) = ⊤`. Use `(hV.self_le_iSup_basicOpen_iff).1 fun v hv => ?_` and prove the remaining obligations.
+
+Take `⟨f, hf, hvf⟩` from `key v hv`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨f, hf⟩, hvf⟩`. Rewrite `hQ` using `[Ideal.span_eq]`. Take `⟨b, hb, e⟩ : (1 : Γ(Spec (CommRingCat.of R), V)) ∈ Q` from `hQ ▸ Submodule.mem_top`. Conclude with `⟨b, hb, by rw [hθ, e, map_one, _root_.one_mul]⟩`.
+-/
 theorem exists_of_locally {R : Type} [CommRing R] [IsDomain R] (J : Ideal R)
     (z : Spec (CommRingCat.of (FractionRing R))) (t : (Spec (CommRingCat.of (FractionRing R))).presheaf.stalk z)
     (V : (Spec (CommRingCat.of R)).Opens) (hV : IsAffineOpen V) (hz : jK R z ∈ V)
@@ -111,9 +148,27 @@ theorem exists_of_locally {R : Type} [CommRing R] [IsDomain R] (J : Ideal R)
   obtain ⟨b, hb, e⟩ : (1 : Γ(Spec (CommRingCat.of R), V)) ∈ Q := hQ ▸ Submodule.mem_top
   exact ⟨b, hb, by rw [hθ, e, map_one, _root_.one_mul]⟩
 
+/- English proof (translation)
+The claim follows from `Set.mem_iInter.2 fun _ => h`.
+-/
 theorem mem_wchart {Y B : Scheme.{0}} (M : LB B) (φ : Y ⟶ B) (y : Y) (j : M.ι) (h : φ y ∈ M.U j) :
     y ∈ LB.wchart M (fun _ : PUnit => φ) (fun _ => j) := Set.mem_iInter.2 fun _ => h
 
+/- English proof (translation)
+Establish `hc : (toUnit (TW W) ≫ D.c χ).left = W.ι ≫ (D.c χ).left` using `rfl`. Establish `hle : W.ι ⁻¹ᵁ V ≤ LB.wchart D.P.L (fun _ : PUnit => (toUnit (TW W) ≫ D.c χ).left) (fun _ => p)` using `fun y hy => mem_wchart _ _ _ _ (hVp hy)`. Take `⟨z₀⟩ : Nonempty (Spec (CommRingCat.of (FractionRing R)))` from `inferInstanceAs (Nonempty (PrimeSpectrum (FractionRing R)))`. Establish `hW : jK R z₀ ∈ W` using `jK_mem z₀ W (fun h0 => by`. Establish `: (g z).1 ∈ W` using `(g z).2`.
+
+Conclude with `(h0.le this : (g z).1 ∈ (⊥ : (Spec (CommRingCat.of R)).Opens)))`. Establish `hV : jK R z₀ ∈ V` using `jK_mem z₀ V (fun h0 => by rw [h0] at hz; exact hz)`. Set `z₁ : (jK R ⁻¹ᵁ W).toScheme` to `⟨z₀, hW⟩`. Establish `hι : (jK R ∣_ W) ≫ W.ι = (jK R ⁻¹ᵁ W).ι ≫ jK R` using `morphismRestrict_ι _ _`. Establish `hpt : W.ι ((jK R ∣_ W) z₁) = jK R z₀` using `congrArg (fun q => q z₁) hι`.
+
+Establish `hm : (jK R ∣_ W) z₁ ∈ W.ι ⁻¹ᵁ V` using `by show W.ι ((jK R ∣_ W) z₁) ∈ V`. Rewrite using `[hpt]`. Conclude with `hV`. Establish `hdense : ∀ U : W.toScheme.Opens, U ≠ ⊥ → (jK R ∣_ W) z₁ ∈ U`. Introduce `U hU`.
+
+Establish `h1 : jK R z₀ ∈ W.ι ''ᵁ U` using `jK_mem z₀ _ (fun h0 => hU (by`. Rewrite using `[← W.ι.preimage_image_eq U, h0]`. Use the proof step `rfl))`. Rewrite `h1` using `[← hpt]`. Rewrite using `[← W.ι.preimage_image_eq U]`.
+
+Conclude with `h1`. Establish `n₂ : (jK R ⁻¹ᵁ W).ι z₁ ∈ jK R ⁻¹ᵁ V` using `hV`. Establish `e₃` using `(gm_pullGen D.P.L _ _ (ψ.psi χ) (jK R ∣_ W) (𝟙 _) z₁ (fun _ => p) (mem_wchart _ _ _ _ (hVp hm))).symm.trans ((gm_corr D.P.L (ψ.psi_eq χ) (𝟙 _) z₁ p (mem_wchart _ _ _ _ (hVp hm)) (mem_wchart _ _ _ _ (hVp hV))).trans (gm_pullGen D.P.L _ _ (D.psi χ) (jK R ⁻¹ᵁ W).ι (𝟙 _) z₁ (fun _ => …`. Rewrite `e₃` using `[Category.id_comp, Category.id_comp]`. Establish `e : (W.toScheme.presheaf.map (homOfLE hle).op).hom ((ψ.psi χ).s (fun _ => p)).val = (W.ι.app V).hom r`.
+
+Use `gs_injective (jK R ∣_ W) z₁ hdense (W.ι ⁻¹ᵁ V) hm ?_` and prove the remaining obligations. Use `((gs_res _ _ hle hm _).trans ((gs_unit _ _ _ (hle hm) _).trans (congrArg Units.val e₃))).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (gs_pull (jK R ∣_ W) W.ι z₁ V hm r).symm` and prove the remaining obligations. Rewrite using `[hι]`. Use `Eq.trans ?_ (gs_pull (jK R ⁻¹ᵁ W).ι (jK R) z₁ V n₂ r)` and prove the remaining obligations.
+
+Rewrite using `[hr]`. Conclude with `((gs_res _ _ h n₂ _).trans (gs_unit _ _ _ (h n₂) _)).symm`. Conclude with `(gs_unit g z _ (hle hz) _).symm.trans ((gs_res g z hle hz _).symm.trans ((congrArg (gs g z (W.ι ⁻¹ᵁ V)) e).trans (gs_pull g W.ι z V hz r)))`.
+-/
 theorem psiOn_val {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {W : (Spec (CommRingCat.of R)).Opens}
     (ψ : PsiOn D W) (χ : D.X) (p : D.P.L.ι) (V : (Spec (CommRingCat.of R)).Opens)
     (hVp : V ≤ (D.c χ).left ⁻¹ᵁ D.P.L.U p)
@@ -164,6 +219,27 @@ end PsiInPull
 
 open PsiInPull in
 
+/- English proof (translation)
+Introduce `j' V' hV' hle' h'`. Take `⟨q, rfl⟩ : ∃ q, j' = fun _ => q` from `⟨j' PUnit.unit, rfl⟩`. Establish `hss : Subsingleton (Spec (CommRingCat.of (FractionRing R')))` using `inferInstanceAs (Subsingleton (PrimeSpectrum (FractionRing R')))`. Distinguish the cases in `hne : ∃ z, jK R' z ∈ V'`. Use `swap`.
+
+Conclude with `⟨0, Ideal.zero_mem _, fn_ext fun z hz => (hne ⟨z, hz⟩).elim⟩`. Take `⟨z, hz⟩` from `hne`. Take `⟨b, hb, hcorr⟩` from `hD.psi_pr x`. Use `set Φ := hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ) with hΦ`. Establish `hcp : (D'.c x).left ≫ Φ = specOf φ ≫ (D.c (hD.xe x)).left` using `hD.c_pr x`.
+
+Establish `hxK : D'.xK x = jK R' ≫ (D'.c x).left` using `rfl`. Establish `cW : hD.g ≫ (toUnit (TW hD.W) ≫ D.c (hD.xe x)).left = D'.xK x ≫ Φ`. Rewrite using `[hxK, Category.assoc, hcp, ← Category.assoc (jK R'), ← hD.g_comm, Category.assoc]`. Both sides reduce to the same expression. Take `⟨r', hr', e'⟩` from `exists_of_locally J' z (gm (𝟙 _) z (LB.wchart D'.P.L (fun _ : PUnit => D'.xK x) (fun _ => q)) ((D'.psi x).s (fun _ => q))).val V' hV' hz (by`.
+
+Introduce `v hv`. Take `⟨p, hp⟩` from `exists_chart D.P.isLB ((D.c (hD.xe x)).left (specOf φ v))`. Take `⟨_, ⟨V, hV, rfl⟩, hvV, hVp⟩` from `(Spec (CommRingCat.of R)).isBasis_affineOpens.exists_subset_of_mem_open (show specOf φ v ∈ ((D.c (hD.xe x)).left ⁻¹ᵁ D.P.L.U p : (Spec (CommRingCat.of R)).Opens) from hp) ((D.c (hD.xe x)).left ⁻¹ᵁ D.P.L.U p).isOpen`. Establish `h : jK R ⁻¹ᵁ V ≤ (LB.LinComb D.P.L (K` using `PUnit) (fun _ => D.xK (hD.xe x)) (fun _ => -1)).U (fun _ => p) := fun y hy => mem_wchart _ _ _ _ (hVp hy)`. Take `⟨r, hrJ, hr⟩` from `H (fun _ => p) V hV hVp h`.
+
+Establish `hzU : jK R' z ∈ V' ⊓ specOf φ ⁻¹ᵁ V` using `jK_mem z _ (fun h0 => (h0.le (show v ∈ V' ⊓ specOf φ ⁻¹ᵁ V from ⟨hv, hvV⟩) : v ∈ (⊥ : (Spec (CommRingCat.of R')).Opens)))`. Establish `hU : V' ⊓ specOf φ ⁻¹ᵁ V ≤ (D'.c x).left ⁻¹ᵁ ((D.P.L.pull Φ).U (fun _ => p) ⊓ D'.P.L.U q)` using `fun y hy => ⟨mem_pull.2 ((congrArg (fun m => m y ∈ D.P.L.U p) hcp).mpr (hVp hy.2)), hle' hy.1⟩`. Establish `m₁ : (𝟙 (TK R').left : (TK R').left ⟶ (TK R').left) z ∈ D'.xK x ⁻¹ᵁ ((D.P.L.pull Φ).U (fun _ => p) ⊓ D'.P.L.U q)` using `hU hzU`. Establish `mp : Φ (D'.xK x z) ∈ D.P.L.U p` using `mem_pull.1 m₁.1`. Establish `mW : (toUnit (TW hD.W) ≫ D.c (hD.xe x)).left (hD.g z) ∈ D.P.L.U p` using `(congrArg (fun m => m z ∈ D.P.L.U p) cW).mpr mp`.
+
+Establish `e₁` using `congrArg (gm (𝟙 (TK R').left) z (D'.xK x ⁻¹ᵁ ((D.P.L.pull Φ).U (fun _ => p) ⊓ D'.P.L.U q))) (hb (fun _ => p) q)`. Establish `e₁'` using `(gm_res _ z _ m₁ _).symm.trans (e₁.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_zpow _ _ _).trans (congrArg (· ^ (-1 : ℤ)) (gm_pull _ (D'.xK x) z ((D.P.L.pull Φ).U (fun _ => p) ⊓ D'.P.L.U q) m₁ _))) (gm_res _ z _ m₁ _))))`. Establish `e₂` using `(gm_corr D.P.L hcorr (𝟙 (TK R').left) z p (mem_wchart _ _ _ _ mp) (mem_wchart _ _ _ _ mW)).trans (gm_pullGen D.P.L _ _ _ hD.g (𝟙 (TK R').left) z _ (mem_wchart _ _ _ _ mW))`. Establish `hgz : hD.W.ι (hD.g z) ∈ V` using `(congrArg (fun m => m z ∈ V) hD.g_comm).mpr hzU.2`. Establish `e₃` using `psiOn_val hD.psiW (hD.xe x) p V hVp h r hr hD.g z hgz`.
+
+Establish `e₄` using `e₂.symm.trans e₁'`. Rewrite `e₄` using `[Category.id_comp, zpow_neg_one, eq_inv_mul_iff_mul_eq]`. Use `erw [Category.id_comp] at e₄`. Use `⟨V' ⊓ specOf φ ⁻¹ᵁ V, inf_le_left, ⟨hv, hvV⟩, ((Spec (CommRingCat.of R')).presheaf.map (homOfLE hU).op).hom (((D'.c x).left.app _).hom (hD.w.s (fun _ => p, q)).val) * ((Spec (CommRingCat.of R')).presheaf.map (homOfLE (inf_le_right : V' ⊓ specOf φ ⁻¹ᵁ V ≤ _)).op).hom (((specOf φ). …` and prove the remaining obligations. Establish `h1` using `Ideal.mem_map_of_mem (((Spec (CommRingCat.of R')).presheaf.map (homOfLE (inf_le_right : V' ⊓ specOf φ ⁻¹ᵁ V ≤ _)).op).hom.comp ((specOf φ).app V).hom) hrJ`.
+
+Rewrite `h1` using `[Ideal.map_map]`. Use `Ideal.map_mono (f := DegPre.toOpen (V' ⊓ specOf φ ⁻¹ᵁ V)) hJ ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_map]`. Establish `e5 : (DegPre.toOpen (V' ⊓ specOf φ ⁻¹ᵁ V)).comp φ = (((Spec (CommRingCat.of R')).presheaf.map (homOfLE (inf_le_right : V' ⊓ specOf φ ⁻¹ᵁ V ≤ _)).op).hom.comp ((specOf φ).app V).hom).comp (DegPre.toOpen V)` using `RingHom.ext fun a => ((congrArg _ (app_toOpen φ V a)).trans (res_toOpen inf_le_right _)).symm`. Rewrite using `[e5]`.
+
+Conclude with `h1`. Use `Eq.trans ?_ (congrArg Units.val e₄)` and prove the remaining obligations. Use `(gs_mul _ _ _ hzU _ _).trans (congrArg₂ (· * ·) ?_ ?_)` and prove the remaining obligations. Conclude with `(gs_res _ _ hU hzU _).trans ((gs_pull (jK R') (D'.c x).left z _ m₁ _).trans (gs_unit (D'.xK x) z ((D.P.L.pull Φ).U (fun _ => p) ⊓ D'.P.L.U q) m₁ _))`. Use `(gs_res _ _ _ hzU _).trans ((gs_pull (jK R') (specOf φ) z V hzU.2 r).trans ?_)` and prove the remaining obligations.
+
+Conclude with `(congrArg (fun m => gs m z V r) hD.g_comm).symm.trans e₃.symm)`. Use `⟨r', hr', fn_ext fun y hy => ?_⟩` and prove the remaining obligations. Take `rfl : y = z` from `Subsingleton.elim (α := Spec (CommRingCat.of (FractionRing R'))) y z`. Conclude with `(gs_pull (𝟙 _) (jK R') y V' hz r').trans (e'.trans ((gs_res (𝟙 _) y h' hy _).trans (gs_unit _ _ _ (h' hy) _)).symm)`.
+-/
 theorem psiIn_of_isPullDeg (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] (φ : R →+* R')
     (D : DegPre R) (D' : DegPre R') (hD : IsPullDeg φ D D') (x : D'.X) (J : Ideal R) (J' : Ideal R')
     (hJ : J.map φ ≤ J') (H : D.PsiIn (hD.xe x) J) : D'.PsiIn x J' := by

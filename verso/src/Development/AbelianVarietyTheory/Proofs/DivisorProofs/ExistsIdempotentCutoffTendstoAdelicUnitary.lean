@@ -15,6 +15,9 @@ variable {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 def mix (e : R) (A : Matrix ι ι R) : Matrix ι ι R := e • A + (1 - e) • (1 : Matrix ι ι R)
 
+/- English proof (translation)
+Establish `h1 : e * (1 - e) = 0` using `by rw [mul_sub, mul_one, he, sub_self]`. Establish `h2 : (1 - e) * e = 0` using `by rw [mul_comm, h1]`. Establish `h3 : (1 - e) * (1 - e) = 1 - e` using `by rw [sub_mul, one_mul, h1, sub_zero]`. Simplify using `only [mix, add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.one_mul, Matrix.mul_one, he, h1, h2, h3, zero_smul, add_zero, zero_add]`.
+-/
 theorem mix_mul_mul {e : R} (he : e * e = e) (A C B : Matrix ι ι R) :
     mix e A * C * mix e B = e • (A * C * B) + (1 - e) • C := by
   have h1 : e * (1 - e) = 0 := by rw [mul_sub, mul_one, he, sub_self]
@@ -23,14 +26,23 @@ theorem mix_mul_mul {e : R} (he : e * e = e) (A C B : Matrix ι ι R) :
   simp only [mix, add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.one_mul, Matrix.mul_one,
     he, h1, h2, h3, zero_smul, add_zero, zero_add]
 
+/- English proof (translation)
+Use `mix_mul_mul he A 1 B` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one, Matrix.mul_one]`. Then use the resulting hypothesis.
+-/
 theorem mix_mul {e : R} (he : e * e = e) (A B : Matrix ι ι R) :
     mix e A * mix e B = e • (A * B) + (1 - e) • (1 : Matrix ι ι R) := by
   have := mix_mul_mul he A 1 B
   rwa [Matrix.mul_one, Matrix.mul_one] at this
 
+/- English proof (translation)
+Simplify using `[mix, Matrix.transpose_add, Matrix.transpose_smul, Matrix.transpose_one]`.
+-/
 theorem mix_transpose (e : R) (A : Matrix ι ι R) : (mix e A)ᵀ = mix e Aᵀ := by
   simp [mix, Matrix.transpose_add, Matrix.transpose_smul, Matrix.transpose_one]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [mix, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp [hc]`.
+-/
 theorem mix_map {S : Type} [CommRing S] [Algebra S R] (c : R →ₐ[S] R) {e : R} (hc : c e = e) (A : Matrix ι ι R) :
     (mix e A).map c = mix e (A.map c) := by
   ext i j
@@ -43,6 +55,11 @@ section Adele
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (AF F ⊗[F] E) := IsModuleTopology.toContinuousAdd (AF F) _`. Use `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => ?_` and prove the remaining obligations. Establish `h` using `(GlobalTheory.LocalGlobalChar.tendsto_eps_tens ((M - 1) i j)).add_const ((1 : Matrix ι ι (AE F E)) i j)`. Rewrite `h` using `[Matrix.sub_apply, sub_add_cancel]`.
+
+Use `h.congr fun S => ?_` and prove the remaining obligations. Simplify using `only [mix, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tendsto_mix_fin {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matrix ι ι (AE F E)) :
     Tendsto (fun S : Finset (HeightOneSpectrum (𝓞 F)) =>
       mix (algebraMap (AF F) (AE F E) (GlobalTheory.LocalGlobalChar.eps S)) M) atTop (𝓝 M) := by
@@ -57,6 +74,15 @@ theorem tendsto_mix_fin {ι : Type} [Fintype ι] [DecidableEq ι] (M : Matrix ι
 
 end Adele
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ ι _ _ J₀ g`. Set `e : Finset (HeightOneSpectrum (𝓞 F)) → AE F E` to `fun S => algebraMap (AF F) (AE F E) (GlobalTheory.LocalGlobalChar.eps S)`. Establish `he : ∀ S, e S * e S = e S` using `fun S => by`. Simplify using `only [e]`. Rewrite using `[← map_mul, GlobalTheory.LocalGlobalChar.eps_mul_self]`.
+
+Establish `hc : ∀ S, cA σ (e S) = e S` using `fun S => (cA σ).commutes _`. Establish `hg : (g.1.1)ᵀ * J₀ * (g.1.1).map (cA σ) = J₀` using `g.2`. Establish `hs : ∀ S, e S • (1 : Matrix ι ι (AE F E)) + (1 - e S) • 1 = 1` using `fun S => by`. Rewrite using `[← add_smul, add_sub_cancel, one_smul]`. Set `u : Finset (HeightOneSpectrum (𝓞 F)) → GL ι (AE F E)` to `fun S => ⟨mix (e S) g.1.1, mix (e S) g.1.inv, by rw [mix_mul (he S), g.1.val_inv, hs], by rw [mix_mul (he S), g.1.inv_val, hs]⟩`.
+
+Establish `hu : ∀ S, u S ∈ UG (cA σ) J₀` using `fun S => by show (mix (e S) g.1.1)ᵀ * J₀ * (mix (e S) g.1.1).map (cA σ) = J₀`. Rewrite using `[mix_transpose, mix_map (cA σ) (hc S), mix_mul_mul (he S), hg, ← add_smul, add_sub_cancel, one_smul]`. Use `⟨fun S => ⟨u S, hu S⟩, fun S => rfl, ?_⟩` and prove the remaining obligations. Use `(Topology.IsEmbedding.subtypeVal.tendsto_nhds_iff).2 ?_` and prove the remaining obligations. Use `(Units.isEmbedding_embedProduct.tendsto_nhds_iff).2 ?_` and prove the remaining obligations.
+
+Use `Tendsto.prodMk_nhds (tendsto_mix_fin g.1.1) ?_` and prove the remaining obligations. Conclude with `(MulOpposite.continuous_op.tendsto _).comp (tendsto_mix_fin g.1.inv)`.
+-/
 theorem exists_approx : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {ι : Type} [Fintype ι] [DecidableEq ι] (J₀ : Matrix ι ι (AE F E)) (g : UG (cA σ) J₀), ∃ q : Finset (HeightOneSpectrum (𝓞 F)) → UG (cA σ) J₀, (∀ S, ((q S).1.1 : Matrix ι ι (AE F E)) = algebraMap (AF F) (AE F E) (GlobalTheory.LocalGlobalChar.eps S) • (g.1.1 : Matrix ι ι (AE F E)) + (1 - algebraMap (AF F) (AE F E) (GlobalTheory.LocalGlobalChar.eps S)) • (1 : Matrix ι ι (AE F E))) ∧ Tendsto q atTop (𝓝 g) := by
   intro F E _ _ _ _ _ σ ι _ _ J₀ g
   let e : Finset (HeightOneSpectrum (𝓞 F)) → AE F E := fun S => algebraMap (AF F) (AE F E) (GlobalTheory.LocalGlobalChar.eps S)

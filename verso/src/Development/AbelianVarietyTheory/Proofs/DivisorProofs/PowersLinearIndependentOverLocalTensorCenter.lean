@@ -9,6 +9,21 @@ noncomputable section
 
 namespace GlobalTheory.OrbFinAf
 
+/- English proof (translation)
+Introduce `p _ G γ hn v c hc`. Set `ψ : (Fin G.n → G.F) →ₗ[ℚ] G.C` to `{ toFun := fun f => ∑ i, f i • γ ^ (i : ℕ) map_add' := fun f g => by simp only [Pi.add_apply, add_smul, Finset.sum_add_distrib] map_smul' := fun q f => by`. Simplify using `only [Pi.smul_apply, RingHom.id_apply, Finset.smul_sum, smul_assoc] }`. Establish `li : LinearIndependent G.F (fun i : Fin G.n => γ ^ (i : ℕ))`. Use `linearIndependent_pow (K := G.F) γ` as an intermediate fact.
+
+Rewrite `this` using `[hn]`. Conclude with `this`. Establish `hψ : Function.Injective ψ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `f hf`.
+
+Conclude with `funext ((Fintype.linearIndependent_iff.mp li) f hf)`. Establish `hinj : Function.Injective (ψ.lTensor (Qv v))` using `Module.Flat.lTensor_preserves_injective_linearMap ψ hψ`. Set `e` to `TensorProduct.piRight ℚ ℚ (Qv v) (fun _ : Fin G.n => G.F)`. Establish `key : ∀ t : Qv v ⊗[ℚ] (Fin G.n → G.F), ∑ i, iotaF G v (e t i) * (1 : Qv v) ⊗ₜ[ℚ] γ ^ (i : ℕ) = ψ.lTensor (Qv v) t`. Introduce `t`.
+
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, ← hx, ← hy, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Pi.add_apply, map_add, add_mul]`. Consider the case `tmul q f`. Rewrite using `[LinearMap.lTensor_tmul]`. Establish `: ∀ i, e (q ⊗ₜ[ℚ] f) i = q ⊗ₜ[ℚ] f i` using `fun i => rfl`. Simplify using `only [this, iotaF_tmul, Algebra.TensorProduct.tmul_pow, one_pow, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`.
+
+Simplify using `only [ψ, LinearMap.coe_mk, AddHom.coe_mk, TensorProduct.tmul_sum, Algebra.smul_def]`. Establish `h0 : ψ.lTensor (Qv v) (e.symm c) = 0`. Rewrite using `[← key, LinearEquiv.apply_symm_apply]`. Conclude with `hc`. Establish `: e.symm c = 0` using `hinj (by rw [h0, map_zero])`.
+
+Rewrite using `[← e.apply_symm_apply c, this, map_zero]`.
+-/
 theorem pow_indep_tensor : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (γ : G.C), (minpoly G.F γ).natDegree = G.n →
     ∀ (v : AwayP p) (c : Fin G.n → Qv v ⊗[ℚ] G.F),
       ∑ i, iotaF G v (c i) * (1 : Qv v) ⊗ₜ[ℚ] γ ^ (i : ℕ) = 0 → c = 0 := by

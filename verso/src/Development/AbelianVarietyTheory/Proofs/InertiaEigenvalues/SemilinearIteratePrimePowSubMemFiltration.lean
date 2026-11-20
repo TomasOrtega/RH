@@ -3,6 +3,15 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.OneAddXPowPrim
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `Submodule.smul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `a ha y _`. Establish `e : Y (a • y) - a • y = γ a • (Y y - y) + (γ a - a) • y`. Rewrite using `[hY, smul_sub, sub_smul]`. Normalize the expressions using the abelian group laws.
+
+Establish `hga : γ a ∈ n ^ k`. Establish `h2 : γ a - a ∈ n ^ k` using `Ideal.pow_le_pow_right (Nat.le_succ k) (hγ k a ha)`. Simplify using `using (n ^ k).add_mem h2 ha`. Rewrite using `[e]`. Use `Submodule.add_mem _ ?_ (Submodule.smul_mem_smul (hγ k a ha) trivial)` and prove the remaining obligations.
+
+Rewrite using `[pow_succ, Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul hga (h1 y)`. Introduce `y z hy hz`. Establish `e : Y (y + z) - (y + z) = (Y y - y) + (Y z - z)`. Rewrite using `[map_add]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ hy hz`.
+-/
 theorem semilinear_sub_mem_pow_succ_smul {A N : Type} [CommRing A] [AddCommGroup N] [Module A N]
     (n : Ideal A) (γ : A →+* A) (Y : N →+ N) (hY : ∀ a x, Y (a • x) = γ a • Y x)
     (hγ : ∀ (k : ℕ), ∀ a ∈ n ^ k, γ a - a ∈ n ^ (k + 1))
@@ -26,6 +35,9 @@ theorem semilinear_sub_mem_pow_succ_smul {A N : Type} [CommRing A] [AddCommGroup
     rw [e]
     exact Submodule.add_mem _ hy hz
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ' (Y.toIntLinearMap - 1 : Module.End ℤ N), Module.End.mul_apply]`. Conclude with `semilinear_sub_mem_pow_succ_smul n γ Y hY hγ h1 k _ ih`.
+-/
 theorem semilinear_sub_one_pow_mem {A N : Type} [CommRing A] [AddCommGroup N] [Module A N]
     (n : Ideal A) (γ : A →+* A) (Y : N →+ N) (hY : ∀ a x, Y (a • x) = γ a • Y x)
     (hγ : ∀ (k : ℕ), ∀ a ∈ n ^ k, γ a - a ∈ n ^ (k + 1))
@@ -37,6 +49,17 @@ theorem semilinear_sub_one_pow_mem {A N : Type} [CommRing A] [AddCommGroup N] [M
     rw [pow_succ' (Y.toIntLinearMap - 1 : Module.End ℤ N), Module.End.mul_apply]
     exact semilinear_sub_mem_pow_succ_smul n γ Y hY hγ h1 k _ ih
 
+/- English proof (translation)
+Introduce `l _ A N _ _ _ n γ Y hY hγ h1 b hb x`. Take `⟨u, v, huv⟩` from `Ideal.mem_span_pair.1 (GlobalTheory.one_add_X_pow_prime_pow_sub_one_mem_span l b hb)`. Use `set D : Module.End ℤ N := Y.toIntLinearMap - 1 with hD`. Establish `h` using `congrArg (Polynomial.aeval D) huv`. Rewrite `h` using `[mul_comm u, mul_comm v]`.
+
+Simplify using `only [map_add, map_mul, map_pow, map_sub, map_one, map_natCast, Polynomial.aeval_X] at h`. Establish `hYD : (1 + D) = Y.toIntLinearMap` using `by rw [hD]; abel`. Rewrite `h` using `[hYD]`. Establish `h'` using `congrArg (fun f : Module.End ℤ N => f x) h`. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, LinearMap.sub_apply, Module.End.one_apply] at h'`.
+
+Establish `e : (Y.toIntLinearMap ^ (l ^ b)) x = Y^[l ^ b] x`. Rewrite using `[Module.End.pow_apply]`. Both sides reduce to the same expression. Rewrite `h'` using `[e]`. Rewrite using `[← h']`.
+
+Use `Submodule.add_mem _ ?_ ?_` and prove the remaining obligations. Establish `e2 : ∀ y : N, (((l : Module.End ℤ N)) ^ 2) y = ((l : A) ^ 2) • y`. Introduce `y`. Rewrite using `[← Nat.cast_pow, ← Nat.cast_pow, Module.End.natCast_apply, Nat.cast_smul_eq_nsmul]`. Rewrite using `[e2]`.
+
+Conclude with `Submodule.smul_mem_smul (Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)) trivial`. Conclude with `Submodule.smul_mono_left le_sup_right (semilinear_sub_one_pow_mem n γ Y hY hγ h1 _ _)`.
+-/
 theorem semilinear_iterate_prime_pow_sub_mem :
     ∀ (l : ℕ) [Fact l.Prime] (A N : Type) [CommRing A] [AddCommGroup N] [Module A N] (n : Ideal A) (γ : A →+* A) (Y : N →+ N), (∀ a x, Y (a • x) = γ a • Y x) → (∀ (k : ℕ), ∀ a ∈ n ^ k, γ a - a ∈ n ^ (k + 1)) → (∀ x, Y x - x ∈ n • (⊤ : Submodule A N)) → ∀ b : ℕ, 1 ≤ b → ∀ x, Y^[l ^ b] x - x ∈ (Ideal.span {((l : A)) ^ 2} ⊔ n ^ (l ^ (b - 1))) • (⊤ : Submodule A N) := by
   intro l _ A N _ _ _ n γ Y hY hγ h1 b hb x

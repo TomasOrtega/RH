@@ -31,6 +31,13 @@ namespace GlobalTheory.CuspDecay
 
 open GlobalTheory.SmoothForms
 
+/- English proof (translation)
+Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hB 0 ⟨le_rfl, hh⟩)`. Establish `a1 : ∀ t ∈ Set.Icc 0 h, ‖f₁ t - f₁ 0‖ ≤ B * h` using `fun t ht => by`. Use `norm_image_sub_le_of_norm_deriv_le_segment' (f := f₁) (f' := f₂) (a := 0) (b := h) (C := B) (fun s _ => (h₂ s).hasDerivWithinAt) (fun s hs => hB s ⟨hs.1, hs.2.le⟩) t ht` as an intermediate fact. Conclude with `this.trans (mul_le_mul_of_nonneg_left (by linarith [ht.2]) hB0)`. Establish `a2` using `norm_image_sub_le_of_norm_deriv_le_segment' (f := fun t : ℝ => f t - t • f₁ 0) (f' := fun t => f₁ t - f₁ 0) (a := 0) (b := h) (C := B * h) (fun s _ => by`.
+
+Use `((h₁ s).sub ((hasDerivAt_id s).smul_const (f₁ 0))).hasDerivWithinAt (s := Set.Icc 0 h)` as an intermediate fact. Rewrite using `[one_smul] at this)` and apply the resulting hypothesis. Use the proof step `(fun s hs => a1 s ⟨hs.1, hs.2.le⟩) h ⟨hh, le_rfl⟩`. Establish `e : h • f₁ 0 = f h - f 0 - (f h - h • f₁ 0 - (f 0 - (0 : ℝ) • f₁ 0))` using `by rw [zero_smul]; ring`. Establish `a3 : ‖h • f₁ 0‖ ≤ ‖f h‖ + ‖f 0‖ + B * h * (h - 0)`.
+
+Rewrite using `[e]`. Conclude with `(norm_sub_le _ _).trans (add_le_add (norm_sub_le _ _) a2)`. Rewrite `a3` using `[norm_smul, Real.norm_of_nonneg hh, sub_zero]`. Then use the resulting hypothesis.
+-/
 theorem mul_norm_deriv_le {f f₁ f₂ : ℝ → ℂ} (h₁ : ∀ t, HasDerivAt f (f₁ t) t) (h₂ : ∀ t, HasDerivAt f₁ (f₂ t) t)
     {h B : ℝ} (hh : 0 ≤ h) (hB : ∀ t ∈ Set.Icc 0 h, ‖f₂ t‖ ≤ B) :
     h * ‖f₁ 0‖ ≤ ‖f h‖ + ‖f 0‖ + B * h * h := by
@@ -51,6 +58,17 @@ theorem mul_norm_deriv_le {f f₁ f₂ : ℝ → ℂ} (h₁ : ∀ t, HasDerivAt 
     exact (norm_sub_le _ _).trans (add_le_add (norm_sub_le _ _) a2)
   rwa [norm_smul, Real.norm_of_nonneg hh, sub_zero] at a3
 
+/- English proof (translation)
+Establish `shift : ∀ {χ χ₁ : G → ℂ}, (∀ g, HasDerivAt (fun t => χ (g * a t)) (χ₁ g) 0) → ∀ g s, HasDerivAt (fun t => χ (g * a t)) (χ₁ (g * a s)) s` using `fun {χ χ₁} h g s => by`. Establish `h1 : HasDerivAt (fun t => χ (g * a s * a t)) (χ₁ (g * a s)) (s - s)` using `by rw [sub_self]; exact h _`. Establish `h2` using `h1.comp_sub_const s s`. Simplify `h2` using `only [mul_assoc, ← ha, add_sub_cancel]`. Take `⟨C, hC⟩` from `hψ (N + M + M)`.
+
+Use `⟨|c| ^ (N + M + M) * C + C + |B| * |c| ^ N, fun g => ?_⟩` and prove the remaining obligations. Establish `q0 : 0 < q g` using `zero_lt_one.trans_le (hq g)`. Establish `p1 : 1 ≤ q g ^ (N + M)` using `one_le_pow₀ (hq g)`. Use `set h := (q g ^ (N + M))⁻¹ with hh`. Establish `h0 : 0 < h` using `by positivity`.
+
+Establish `h1 : h ≤ 1` using `inv_le_one_of_one_le₀ p1`. Establish `key` using `mul_norm_deriv_le (shift h₁ g) (shift h₂ g) h0.le (B := |B| * (|c| * q g) ^ N) fun t ht => (hB _).trans (mul_le_mul (le_abs_self _) (pow_le_pow_left₀ (zero_le_one.trans (hq _)) ((hc g t ⟨by linarith [ht.1], ht.2.trans h1⟩).trans (mul_le_mul_of_nonneg_right (le_abs_self _) q0.le)) …`. Simplify using `only [a0, mul_one] at key`. Establish `b1 : q g ≤ |c| * q (g * a h)`. Use `hc (g * a h) (-h) ⟨by linarith, by linarith⟩` as an intermediate fact.
+
+Rewrite `this` using `[mul_assoc, ← ha, add_neg_cancel, a0, mul_one]`. Conclude with `this.trans (mul_le_mul_of_nonneg_right (le_abs_self _) (zero_le_one.trans (hq _)))`. Establish `b2 : ‖ψ (g * a h)‖ * q g ^ (N + M + M) ≤ |c| ^ (N + M + M) * C`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hh]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := add_le_add (add_le_add b2 (hC g)) le_rfl`.
+-/
 theorem decay_of_decay_of_growth {G : Type} [Group G] {q : G → ℝ} (hq : ∀ g, 1 ≤ q g) {a : ℝ → G} (a0 : a 0 = 1)
     (ha : ∀ s t, a (s + t) = a s * a t) {c : ℝ} (hc : ∀ g, ∀ t ∈ Set.Icc (-1 : ℝ) 1, q (g * a t) ≤ c * q g)
     {ψ ψ₁ ψ₂ : G → ℂ} (h₁ : ∀ g, HasDerivAt (fun t => ψ (g * a t)) (ψ₁ g) 0)
@@ -92,6 +110,9 @@ theorem decay_of_decay_of_growth {G : Type} [Group G] {q : G → ℝ} (hq : ∀ 
 
 variable {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {V : HSp D}
 
+/- English proof (translation)
+Establish `he` using `isExpFam_expInf R`. Use `R.2.2.1 _ (he _).1 _ (mul_mem (he _).1 (he _).1) fun τ => ?_` and prove the remaining obligations. Rewrite using `[R.2.2.2.1, (he _).2, (he _).2, (he _).2]`. Express the relevant statement in the definitionally equal form `NormedSpace.exp ((s + t) • (X τ).1) = NormedSpace.exp (s • (X τ).1) * NormedSpace.exp (t • (X τ).1)`. Rewrite using `[add_smul, Matrix.exp_add_of_commute _ _ (((Commute.refl _).smul_left s).smul_right t)]`.
+-/
 theorem expInf_add_smul (R : RealPoints θ V) (X : LieInf V) (s t : ℝ) :
     expInf θ V ((s + t) • X : LieInf V) = expInf θ V (s • X : LieInf V) * expInf θ V (t • X : LieInf V) := by
   have he := isExpFam_expInf R
@@ -100,11 +121,19 @@ theorem expInf_add_smul (R : RealPoints θ V) (X : LieInf V) (s t : ℝ) :
   change NormedSpace.exp ((s + t) • (X τ).1) = NormedSpace.exp (s • (X τ).1) * NormedSpace.exp (t • (X τ).1)
   rw [add_smul, Matrix.exp_add_of_commute _ _ (((Commute.refl _).smul_left s).smul_right t)]
 
+/- English proof (translation)
+Use `expInf_add_smul R X 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`.
+-/
 theorem expInf_zero_smul (R : RealPoints θ V) (X : LieInf V) : expInf θ V ((0 : ℝ) • X : LieInf V) = 1 := by
   have := expInf_add_smul R X 0 0
   rw [add_zero] at this
   exact left_eq_mul.1 this
 
+/- English proof (translation)
+Establish `h1 : Continuous fun t : ℝ => NormedSpace.exp (t • (X τ).1)`. Establish `: CompleteSpace (AlgInf V)` using `FiniteDimensional.complete ℝ _`. Use `letI : NormedAlgebra ℚ (AlgInf V) := NormedAlgebra.restrictScalars ℚ ℝ _`. Establish `h0 : Continuous fun t : ℝ => (NormedSpace.exp (t • jInf V X) : AlgInf V)` using `NormedSpace.exp_continuous.comp (continuous_id.smul continuous_const)`. Establish `h3 : Continuous fun u : AlgInf V => u τ` using `continuous_apply τ`.
+
+Conclude with `(h3.comp h0).congr fun t => exp_algInf V _ τ`. Establish `h2 : Continuous (Matrix.toEuclideanCLM (n` using `Fin V.rank) (𝕜 := ℂ)) := LinearMap.continuous_of_finiteDimensional (Matrix.toEuclideanCLM (n := Fin V.rank) (𝕜 := ℂ)).toAlgEquiv.toLinearMap`. Use `(h2.comp h1).nnnorm.congr fun t => ?_` and prove the remaining obligations. Rewrite using `[infNorm, (isExpFam_expInf R _).2]`. Both sides reduce to the same expression.
+-/
 theorem continuous_infNorm_expInf (R : RealPoints θ V) (X : LieInf V) (τ : D.what₂.Tau) :
     Continuous fun t : ℝ => infNorm θ V τ (expInf θ V (t • X : LieInf V)) := by
   have h1 : Continuous fun t : ℝ => NormedSpace.exp (t • (X τ).1) := by
@@ -121,6 +150,13 @@ theorem continuous_infNorm_expInf (R : RealPoints θ V) (X : LieInf V) (τ : D.w
   rw [infNorm, (isExpFam_expInf R _).2]
   rfl
 
+/- English proof (translation)
+Establish `hinv : ∀ t : ℝ, (expInf θ V (t • X : LieInf V))⁻¹ = expInf θ V ((-t) • X : LieInf V)` using `fun t => inv_eq_of_mul_eq_one_right (by rw [← expInf_add_smul R, add_neg_cancel, expInf_zero_smul R])`. Establish `hcont : Continuous fun t : ℝ => ((∏ τ, infHt θ V τ (expInf θ V (t • X : LieInf V)) : NNReal) : ℝ)`. Use `NNReal.continuous_coe.comp (continuous_finset_prod _ fun τ _ => ?_)` and prove the remaining obligations. Simplify using `only [infHt, hinv]`. Conclude with `continuous_const.max ((continuous_infNorm_expInf R X τ).max ((continuous_infNorm_expInf R X τ).comp continuous_neg))`.
+
+Take `⟨c, hc⟩` from `(isCompact_Icc (a := (-1 : ℝ)) (b := 1)).bddAbove_image hcont.continuousOn`. Use `⟨2 * c, fun g t ht => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hle⟩` from `exists_height_le (θ := θ) g`. Establish `h1` using `(quotHeight_le (θ := θ) (g * expInf θ V (t • X : LieInf V)) hγ).trans ((congrArg _ (mul_assoc _ _ _).symm).trans_le (HeightCoset.height_mul_le θ V (γ * g) _ (isExpFam_expInf R (t • X)).1))`. Establish `h2` using `NNReal.coe_le_coe.2 (h1.trans (mul_le_mul_left hle _))`.
+
+Rewrite `h2` using `[NNReal.coe_mul, NNReal.coe_mul]`. Use `h2.trans ((mul_le_mul_of_nonneg_left (hc ⟨t, ht, rfl⟩) (by positivity)).trans_eq ?_)` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_quotHeight_mul_expInf_le (R : RealPoints θ V) (X : LieInf V) : ∃ c : ℝ, ∀ g, ∀ t ∈ Set.Icc (-1 : ℝ) 1,
     (quotHeight θ V (g * expInf θ V (t • X : LieInf V)) : ℝ) ≤ c * quotHeight θ V g := by
   have hinv : ∀ t : ℝ, (expInf θ V (t • X : LieInf V))⁻¹ = expInf θ V ((-t) • X : LieInf V) := fun t =>
@@ -142,6 +178,13 @@ theorem exists_quotHeight_mul_expInf_le (R : RealPoints θ V) (X : LieInf V) : �
   push_cast
   ring
 
+/- English proof (translation)
+Establish `sm : ∀ l : List (LieInf V), Sm (expInf θ V) (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.wordDer V (expInf θ V) l φ)` using `fun l => by`. Rewrite using `[show φ = (⟨φ, hs⟩ : SmF θ V).1 from rfl, wordDer_eq R]`. Conclude with `Subtype.prop _`. Proceed by induction on `l with`. Consider the case `nil => exact h`.
+
+Consider the case `cons X l ih`. Take `⟨N, hN⟩` from `hg`. Take `⟨B, hB⟩` from `hN (X :: X :: l)`. Take `⟨c, hc⟩` from `exists_quotHeight_mul_expInf_le R X`. Use `decay_of_decay_of_growth (q := fun g => (quotHeight θ V g : ℝ)) (fun g => by exact_mod_cast one_le_quotHeight g) (a := fun t => expInf θ V (t • X : LieInf V)) (expInf_zero_smul R X) (expInf_add_smul R X) hc (ψ₂ := GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamil …` and prove the remaining obligations.
+
+Take `⟨γ, hγ, hle⟩` from `exists_height_le (θ := θ) g`. Establish `h1 : (height θ V (γ * g) : ℝ) ≤ 2 * (quotHeight θ V g : ℝ)` using `by exact_mod_cast hle`. Rewrite using `[← wordDer_left (expInf θ V) (hl γ hγ) _ g, mul_assoc, ← mul_pow]`. Conclude with `(hB _).trans (mul_le_mul (le_abs_self _) (pow_le_pow_left₀ (NNReal.coe_nonneg _) h1 N) (pow_nonneg (NNReal.coe_nonneg _) N) (abs_nonneg _))`.
+-/
 theorem IsRapidDecay.wordDer (R : RealPoints θ V) {φ : GA D V → ℂ} (h : IsRapidDecay θ V φ)
     (hl : ∀ γ ∈ GQ V, ∀ g, φ (γ * g) = φ g) (hs : IsSmoothInf V (expInf θ V) φ)
     (hg : IsUnifModerate θ V (expInf θ V) φ) (l : List (LieInf V)) :
@@ -167,6 +210,11 @@ theorem IsRapidDecay.wordDer (R : RealPoints θ V) {φ : GA D V → ℂ} (h : Is
     exact (hB _).trans (mul_le_mul (le_abs_self _) (pow_le_pow_left₀ (NNReal.coe_nonneg _) h1 N)
       (pow_nonneg (NNReal.coe_nonneg _) N) (abs_nonneg _))
 
+/- English proof (translation)
+Establish `R` using `(RealPts.realPoints D).2 θ hθ V`. Establish `hs'` using `(smooth_iff R φ).1 hs`. Establish `hg'` using `(growth_iff hθ R ha hs').1 hg`. Take `⟨l', rfl⟩` from `exists_sigma_list l hl`. Rewrite using `[foldr_Rder_eq R]`.
+
+Conclude with `(hP D θ hθ V _ (isExpFam_expInf R) φ ha hs' hg' hc).wordDer R ha.left hs' hg' _`.
+-/
 theorem isRapidDecay_foldr_Rder (hP : GlobalTheory.Published.CuspRapidDecay) (hθ : IsInfFam θ) {φ : GA D V → ℂ} (ha : IsAutFun V φ)
     (hs : ∀ (k : ℕ) (τs : Fin k → D.what₂.Tau) (Xs : Fin k → Matrix (Fin V.rank) (Fin V.rank) ℂ),
       (∀ i, Xs i ∈ lieAt V (τs i)) → ∀ g,
@@ -183,9 +231,15 @@ theorem isRapidDecay_foldr_Rder (hP : GlobalTheory.Published.CuspRapidDecay) (h�
   rw [foldr_Rder_eq R]
   exact (hP D θ hθ V _ (isExpFam_expInf R) φ ha hs' hg' hc).wordDer R ha.left hs' hg' _
 
+/- English proof (translation)
+Introduce `_ _ hθ _ _ ha hs hg hc l hl` and use `(isRapidDecay_foldr_Rder hP hθ ha hs hg hc l hl).bounded`.
+-/
 theorem cuspBounded_of_cuspRapidDecay (hP : GlobalTheory.Published.CuspRapidDecay) : GlobalTheory.Published.CuspBounded :=
   fun _ _ hθ _ _ ha hs hg hc l hl => (isRapidDecay_foldr_Rder hP hθ ha hs hg hc l hl).bounded
 
+/- English proof (translation)
+Establish `: BorelSpace (GA D V)` using `⟨rfl⟩`. Establish `: IsFiniteMeasure (μ.restrict 𝓕)` using `isFiniteMeasure_restrict.2 (measure_lt_top GlobalTheory.Mem.VolFin.finVol V μ 𝓕 hμ h𝓕).ne`. Take `⟨C, hC⟩` from `hb`. Conclude with `MemLp.of_bound hφ.measurable.aestronglyMeasurable C (.of_forall hC)`.
+-/
 theorem memLp_of_bounded {φ : GA D V → ℂ} (hφ : Continuous φ) (hb : ∃ C : ℝ, ∀ g, ‖φ g‖ ≤ C) (μ : Measure (GA D V))
     (𝓕 : Set (GA D V)) (hμ : μ.IsHaarMeasure) (h𝓕 : IsFundamentalDomain (GQ V) 𝓕 μ) (p : ENNReal) :
     MemLp φ p (μ.restrict 𝓕) := by
@@ -195,6 +249,9 @@ theorem memLp_of_bounded {φ : GA D V → ℂ} (hφ : Continuous φ) (hb : ∃ C
   obtain ⟨C, hC⟩ := hb
   exact MemLp.of_bound hφ.measurable.aestronglyMeasurable C (.of_forall hC)
 
+/- English proof (translation)
+The claim follows from `memLp_of_bounded ha.cont (hP D θ hθ V φ ha hs hg hc [] fun _ h => absurd h List.not_mem_nil) μ 𝓕 hμ h𝓕 2`.
+-/
 theorem memLp_two_of_cuspBounded (hP : GlobalTheory.Published.CuspBounded) (hθ : IsInfFam θ) {φ : GA D V → ℂ} (ha : IsAutFun V φ)
     (hs : ∀ (k : ℕ) (τs : Fin k → D.what₂.Tau) (Xs : Fin k → Matrix (Fin V.rank) (Fin V.rank) ℂ),
       (∀ i, Xs i ∈ lieAt V (τs i)) → ∀ g,

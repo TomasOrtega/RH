@@ -10,6 +10,13 @@ noncomputable section
 
 universe u
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ n Q hQ hQh hcase bs`. It suffices to establish `hdeg : DegLT (hilbFn Q) n by`. Conclude with `(h4 K (mixedDiff bs (hilbFn Q)) 0 0).1 (hdeg bs)`. Break down `hcase with hirr | hdim` into its components or cases. Establish `hblock : ∃ k, ∀ i : ι k, (X ⟨k, i⟩ : MRing ι F) ∈ Q`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hirr fun k => by_contra fun h => hne ⟨k, fun i => by_contra fun hi => h ⟨i, hi⟩⟩`. Take `⟨k, hk⟩` from `hblock`. Establish `hzero : (0 : (K → ℤ) → ℤ) =ᶠ[Filter.atTop] hilbFn Q` using `by filter_upwards [Filter.eventually_ge_atTop (fun _ : K => (1 : ℤ))] with m hm`. Conclude with `(h2 F K ι Q k hk m (hm k)).symm`.
+
+Conclude with `(h3 K n 0 (hilbFn Q) 0 0).2.2.2.2 hzero (degLT_zero n)`. Conclude with `h1 F K ι n Q hQ hQh hdim`.
+-/
 theorem IntNumVanish.proof (h1 : HilbDegBound.Statement.{u})
     (h2 : HilbFnVanishBlock.Statement.{u}) (h3 : DegLTClosure.Statement)
     (h4 : EventualValueFacts.Statement) : IntNumVanish.Statement.{u} := by

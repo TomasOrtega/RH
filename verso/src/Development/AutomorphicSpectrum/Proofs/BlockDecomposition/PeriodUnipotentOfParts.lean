@@ -27,26 +27,55 @@ def rtEquiv (g : GL (Fin 3) ℝ) : M23 ≃L[ℝ] M23 :=
       right_inv := fun X => by
         simp [Matrix.mul_assoc] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rtEquiv_apply (g : GL (Fin 3) ℝ) (X : M23) :
     rtEquiv g X = Matrix.of.symm (Matrix.of X * (g : Matrix (Fin 3) (Fin 3) ℝ)) := rfl
 
 def rtS (g : GL (Fin 3) ℝ) (Φ : Sw) : Sw :=
   SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (rtEquiv g) Φ
 
+/- English proof (translation)
+Use function extensionality and compare the values at `X`. Simplify using `[rtS, B.rt, rtEquiv_apply]`.
+-/
 theorem rtS_coe (g : GL (Fin 3) ℝ) (Φ : Sw) : (rtS g Φ : M23 → ℂ) = B.rt g Φ := by
   funext X
   simp [rtS, B.rt, rtEquiv_apply]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨2 ^ n * (Finset.Iic (n, n)).sup (fun m => SchwartzMap.seminorm ℂ m.1 m.2) f, fun m hm X => SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℂ) (m := (n, n)) le_rfl hm f X⟩`.
+-/
 theorem schwartz_bounds (f : Sw) (n : ℕ) :
     ∃ C : ℝ, ∀ m ≤ n, ∀ X : M23, (1 + ‖X‖) ^ n * ‖iteratedFDeriv ℝ m f X‖ ≤ C :=
   ⟨2 ^ n * (Finset.Iic (n, n)).sup (fun m => SchwartzMap.seminorm ℂ m.1 m.2) f, fun m hm X =>
     SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℂ) (m := (n, n)) le_rfl hm f X⟩
 
+/- English proof (translation)
+Rewrite using `[ae_iff]`. Establish `h : volume {h : M22 | (Matrix.of h).det = 0} = 0` using `GlobalTheory.CompanionTheory.GodementNull.dNull`. Simplify using `using h`.
+-/
 theorem ae_det_ne_zero : ∀ᵐ h : M22, (Matrix.of h).det ≠ 0 := by
   rw [ae_iff]
   have h : volume {h : M22 | (Matrix.of h).det = 0} = 0 := GlobalTheory.CompanionTheory.GodementNull.dNull
   simpa using h
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 k hk Φ δ s hs0 hs1 u`. Take `⟨C, M, hb⟩` from `h4 k hk Φ δ s hs0 hs1`. Establish `hI` using `(hb u).1`. Use `⟨hI, ?_⟩` and prove the remaining obligations. Set `G : M22 → ℂ` to `fun h => Wm k (Matrix.of h)⁻¹ * sg (Matrix.of h).det * ((|(Matrix.of h).det| ^ (-(1 : ℝ) / 2) : ℝ) : ℂ)`.
+
+Set `Ψ : M23 → ℂ` to `B.rt (cyc u) Φ`. Set `F : ℝˣ → M22 → ℂ` to `fun t h => chR δ s t * sg t * (((|(t : ℝ)|)⁻¹ : ℝ) : ℂ) * (G h * B.innB Ψ h (t : ℝ)⁻¹)`. Establish `hsm : ContDiff ℝ (⊤ : ℕ∞) Ψ`. Use `(rtS (cyc u) Φ).smooth ⊤` as an intermediate fact. Rewrite `this` using `[rtS_coe]`.
+
+Conclude with `this`. Establish `hbd : ∀ n : ℕ, ∃ C : ℝ, ∀ m ≤ n, ∀ X : M23, (1 + ‖X‖) ^ n * ‖iteratedFDeriv ℝ m Ψ X‖ ≤ C`. Introduce `n`. Use `schwartz_bounds (rtS (cyc u) Φ) n` as an intermediate fact. Rewrite `this` using `[rtS_coe]`.
+
+Conclude with `this`. Establish `e1 : ∀ t : ℝˣ, sec k Φ (mm t u) * chR δ s t = ∫ h, F t h`. Introduce `t`. Simplify using `only [F]`. Rewrite using `[h1 k hk Φ t u, integral_const_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∫ t, (∫ h, F t h) ∂mulR = ∫ h, (∫ t, F t h ∂mulR)` using `integral_integral_swap (h2 k hk Φ δ s hs0 hs1 u)`. Establish `e3 : ∀ᵐ h : M22, ∫ t, F t h ∂mulR = cr (!δ) 0 (-1) * gT (!δ) s * ∫ x, pI k Φ δ s u (h, x)` using `by filter_upwards [ae_det_ne_zero] with h hdet`. Establish `hF : ∀ t : ℝˣ, F t h = G h * (chR δ s t * sg t * (((|(t : ℝ)|)⁻¹ : ℝ) : ℂ) * B.innB Ψ h (t : ℝ)⁻¹)` using `fun t => by`. Simplify using `only [F]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hF]`. Rewrite using `[integral_const_mul, h3 Ψ δ s hs0 hs1 hsm hbd h hdet]`. Establish `hp : ∀ x : Fin 2 → ℝ, pI k Φ δ s u (h, x) = G h * (cr (!δ) (s - 1) (x 1) * Ψ (Matrix.of.symm (Matrix.of h * blk x)))` using `fun x => by`. Simplify using `only [pI, G, Ψ, B.rt, Equiv.apply_symm_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hp]`. Rewrite using `[integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[integral_const_mul, Pu, Measure.volume_eq_prod, integral_prod _ hI]`.
+-/
 theorem perU : UnipotentSubstitution → UnipotentJointIntegrability → UnipotentTateFunctionalEquation → PuBound → PerU := by
   intro h1 h2 h3 h4 k hk Φ δ s hs0 hs1 u
   obtain ⟨C, M, hb⟩ := h4 k hk Φ δ s hs0 hs1

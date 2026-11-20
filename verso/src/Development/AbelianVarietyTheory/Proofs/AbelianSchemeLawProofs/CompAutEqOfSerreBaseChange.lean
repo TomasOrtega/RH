@@ -11,6 +11,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨P', g, hg, -, pm, hw⟩` from `hB S S' f P`. Establish `inj : ∀ {T : Over S'} {x y : T ⟶ P'.A}, toBase hg.w x = toBase hg.w y → x = y` using `fun {T x y} h => Over.OverMorphism.ext (hg.hom_ext (congrArg (fun q => q.left) h) (by rw [Over.w, Over.w]))`. Set `act : (P.A ⟶ P.A) → (P'.A ⟶ P'.A)` to `fun a => Over.homMk (hg.lift (g ≫ a.left) P'.A.hom (by rw [Category.assoc, Over.w, hg.w])) (hg.lift_snd _ _ _)`. Establish `ha : ∀ a, (act a).left ≫ g = g ≫ a.left` using `fun a => hg.lift_fst _ _ _`. Establish `pa : ∀ {T : Over S'} (x : T ⟶ P'.A) a, toBase hg.w (x ≫ act a) = toBase hg.w x ≫ a` using `fun x a => Over.OverMorphism.ext (by show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _`.
+
+Rewrite using `[Category.assoc, ha, Category.assoc])`. Establish `cancel : ∀ a b : P.A ⟶ P.A, a ≫ b = 𝟙 _ → act a ≫ act b = 𝟙 _` using `fun a b e => inj (by`. Rewrite using `[pa, ← Category.id_comp (act a), pa, Category.assoc, e, Category.comp_id])`. Set `σ' : P'.A ≅ P'.A` to `⟨act σ.hom, act σ.inv, cancel _ _ σ.hom_inv_id, cancel _ _ σ.inv_hom_id⟩`. Take `⟨w, gw'⟩` from `LBIso.symm (A := P.L.pull g) (B := P'.L) hw`.
+
+Establish `key : σ'.hom = 𝟙 P'.A`. Use `hS' P' σ' (isMonHom_of_mul _ fun T x y => inj ?_) ?_ fun T x hx => inj ?_` and prove the remaining obligations. Rewrite using `[pm] show toBase hg.w ((x * y) ≫ act σ.hom) = toBase hg.w (x ≫ act σ.hom) * toBase hg.w (y ≫ act σ.hom)`. Rewrite using `[pa, pa, pa, pm, MonObj.mul_comp]`. Take `⟨n, hn⟩ : ∃ n : P'.A.left ⟶ (P.A.hom ⁻¹ᵁ V).toScheme, n ≫ (P.A.hom ⁻¹ᵁ V).ι = g` from `⟨IsOpenImmersion.lift _ g (by`.
+
+Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `(congrArg (fun q => q y ∈ V) hg.w).mpr (hV _)), IsOpenImmersion.lift_fac _ _ _⟩`. Take `⟨c₁, h₁⟩` from `gen_chartPull (chartPullIn P.L _ _ _) c hc`. Take `⟨a, h₂, -⟩` from `H1.exists_gen_move P.isLB P'.isLB w ((isGen_iff w).1 gw') (K := Fin 2) _ ![σ'.hom.left, 𝟙 P'.A.left] _ n (fun k => by`.
+
+Rewrite using `[← Category.assoc, hn]`. Use `fin_cases k`. Conclude with `ha σ.hom`. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm) c₁ h₁`. Conclude with `⟨a, h₂⟩`.
+
+Set `ρ : (T ⟶ P'.A) →* (Over.mk (T.hom ≫ f) ⟶ P.A)` to `MonoidHom.mk' (toBase hg.w) (pm T)`. Establish `h₁ : toBase hg.w x ^ M = 1` using `(map_pow ρ x M).symm.trans (by rw [hx, map_one])`. Conclude with `(pa x σ.hom).trans (hfix _ _ h₁)`. Use `⟨_, g, _, hg, (ha σ.hom).symm.trans ?_⟩` and prove the remaining obligations. Use `show σ'.hom.left ≫ g = g`.
+
+Rewrite using `[key, Over.id_left, Category.id_comp]`.
+-/
 theorem comp_aut_eq_of_serre_baseChange (hB : PolBaseChangeSt) {S S' : Scheme.{0}} (f : S' ⟶ S)
     (P : PolAV S) (M : ℕ)
     (hS' : ∀ (P : PolAV S') (σ : P.A ≅ P.A), IsMonHom σ.hom →
@@ -63,6 +78,17 @@ theorem comp_aut_eq_of_serre_baseChange (hB : PolBaseChangeSt) {S S' : Scheme.{0
   show σ'.hom.left ≫ g = g
   rw [key, Over.id_left, Category.id_comp]
 
+/- English proof (translation)
+Introduce `hB hG hR hK S _ P M hM σ hσ hloc hfix`. Use `P.isAb.proper` as an intermediate fact. Set `u : P.A ⟶ P.A` to `σ.hom * (𝟙 P.A)⁻¹`. Establish `hu : ∀ {T : Over S} (x : T ⟶ P.A), x ≫ σ.hom = x → x ≫ u = 1` using `fun x hx => by`. Simplify using `only [u, MonObj.comp_mul, GrpObj.comp_inv, hx, Category.comp_id, mul_inv_cancel]`.
+
+Establish `hη : (η[P.A] : 𝟙_ (Over S) ⟶ P.A).left ≫ P.A.hom = 𝟙 S` using `Over.w η[P.A]`. Establish `hfib : ∀ (t : S) (x : P.A.left), P.A.hom x = t → u.left x = (η[P.A] : 𝟙_ (Over S) ⟶ P.A).left t`. Introduce `t x hx`. Set `K : Type` to `AlgebraicClosure (S.residueField t)`. Set `f : Spec (CommRingCat.of K) ⟶ S` to `Spec.map (CommRingCat.ofHom (algebraMap (S.residueField t) K)) ≫ S.fromSpecResidueField t`.
+
+Establish `hf : ∀ y, f y = t` using `fun y => (Scheme.Hom.comp_apply _ _ y).trans (Scheme.fromSpecResidueField_apply t _)`. Take `⟨V, hV, c, hc⟩` from `hloc t`. Take `⟨X, g, q, hg, e⟩` from `comp_aut_eq_of_serre_baseChange hB f P M (fun P' => hK K P' M hM) σ hσ V (fun y => by rw [hf]; exact hV) c hc hfix`. Take `⟨z, rfl, -⟩` from `Scheme.exists_preimage_of_isPullback hg x (default : PrimeSpectrum K) (hx.trans (hf _).symm)`. Set `x₀ : Over.mk (g ≫ P.A.hom) ⟶ P.A` to `Over.homMk g rfl`.
+
+Establish `h₀ : g ≫ u.left = (g ≫ P.A.hom) ≫ (η[P.A] : 𝟙_ (Over S) ⟶ P.A).left` using `congrArg (fun q => q.left) (hu x₀ (Over.OverMorphism.ext e))`. Rewrite using `[← Scheme.Hom.comp_apply, h₀, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, hx]`. Establish `key : u.left = P.A.hom ≫ (η[P.A] : 𝟙_ (Over S) ⟶ P.A).left ≫ u.left`. Use `Scheme.hom_ext_of_forall _ _ fun x => ?_` and prove the remaining obligations. Take `⟨V, hV, e⟩` from `hR _ _ _ P.A.hom _ u.left hη inferInstance (surjective_app_of_isAbelianScheme hG P.A P.isAb) (P.A.hom x) _ (hfib _)`.
+
+Conclude with `⟨P.A.hom ⁻¹ᵁ V, hV, e⟩`. Establish `h₁ : u = toUnit P.A ≫ η[P.A] ≫ u` using `Over.OverMorphism.ext key`. Rewrite `h₁` using `[hu η[P.A] (IsMonHom.one_hom σ.hom), MonObj.comp_one]`. Conclude with `mul_inv_eq_one.1 h₁`.
+-/
 theorem serre_of_algClosed : PolBaseChangeSt → GlobalFnsSt → (∀ (X T Y : Scheme.{0}) (p : X ⟶ T) (ε : T ⟶ X) (g : X ⟶ Y), ε ≫ p = 𝟙 T → UniversallyClosed p → (∀ V : T.Opens, Function.Surjective (p.app V).hom) → ∀ (t : T) (y : Y), (∀ x : X, p x = t → g x = y) → ∃ V : T.Opens, t ∈ V ∧ (p ⁻¹ᵁ V).ι ≫ g = (p ⁻¹ᵁ V).ι ≫ p ≫ ε ≫ g) → (∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))) (M : ℕ), 3 ≤ M → ∀ σ : P.A ≅ P.A, IsMonHom σ.hom → (∃ c : LB.Gen (LB.LinComb P.L (K := Fin 2) ![σ.hom.left, 𝟙 P.A.left] ![1, -1]), c.IsGen) → (∀ (T : Over (Spec (CommRingCat.of K))) (x : T ⟶ P.A), x ^ M = 1 → x ≫ σ.hom = x) → σ.hom = 𝟙 P.A) → SerreSt := by
   intro hB hG hR hK S _ P M hM σ hσ hloc hfix
   have := P.isAb.proper

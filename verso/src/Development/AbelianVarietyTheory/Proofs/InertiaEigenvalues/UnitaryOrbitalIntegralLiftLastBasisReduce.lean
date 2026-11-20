@@ -10,15 +10,33 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IsClosedEmbedd
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
 namespace GlobalTheory.JR.Step.OrbULift
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.unitaryActHermitianBlock_diagOne_liftLastBasis`.
+-/
 theorem actU_uEmb_liftH : ∀ {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] {r : ℕ} (s : Matrix.unitaryGroup (Fin r) E) (X : Hn r F E) (ν : E) (l : F), actU (GlobalTheory.JR.Step.uEmb r E s) (GlobalTheory.JR.Step.liftH X ν l) = GlobalTheory.JR.Step.liftH (actU s X) ν l := GlobalTheory.T.unitaryActHermitianBlock_diagOne_liftLastBasis
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.unitIndicatorHermitianBlock_liftLastBasis_of_norm_le_one`.
+-/
 theorem unitU_liftH : ∀ {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] {r : ℕ} (X : Hn r F E) (ν : E) (l : F), ‖ν‖ ≤ 1 → unitU (r + 1) F E (GlobalTheory.JR.Step.liftH X ν l) = (if ‖l‖ ≤ 1 then 1 else 0) * unitU r F E X := GlobalTheory.T.unitIndicatorHermitianBlock_liftLastBasis_of_norm_le_one
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.unitaryAct_liftHermitianBlock_mem_integralUnitary_mul_embedding`.
+-/
 theorem support_sub : ∀ {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] {r : ℕ} (X : Hn r F E) (ν : E) (l : F), ‖ν‖ = 1 → ∀ g : Matrix.unitaryGroup (Fin (r + 1)) E, unitU (r + 1) F E (actU g (GlobalTheory.JR.Step.liftH X ν l)) ≠ 0 → ∃ k ∈ uO (r + 1) E, ∃ s, g = k * GlobalTheory.JR.Step.uEmb r E s := GlobalTheory.T.unitaryAct_liftHermitianBlock_mem_integralUnitary_mul_embedding
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_compact_unitaries_integral_orbit_of_hankelDet_ne_zero`.
+-/
 theorem support_bounded : ∀ {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] {n : ℕ} (Y : Hn n F E), Delta (inv Y.toGl) ≠ 0 → ∃ K : Set (Matrix.unitaryGroup (Fin n) E), IsCompact K ∧ ∀ g, unitU n F E (actU g Y) ≠ 0 → g ∈ K := GlobalTheory.T.exists_compact_unitaries_integral_orbit_of_hankelDet_ne_zero
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.isClosedEmbedding_diagOneUnitaryGroupEmbedding`.
+-/
 theorem uEmb_isClosedEmbedding : ∀ (r : ℕ) (E : Type) [NormedField E] [StarRing E] [ContinuousStar E], Topology.IsClosedEmbedding (GlobalTheory.JR.Step.uEmb r E) := GlobalTheory.T.isClosedEmbedding_diagOneUnitaryGroupEmbedding
 
 section Reformulated
 variable {E : Type} [NormedField E]
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hP i k) (norm_nonneg _) (hQ k j)`.
+-/
 theorem entries_mul_le {n : ℕ} [IsUltrametricDist E] {P Q : Matrix (Fin n) (Fin n) E}
     (hP : ∀ i j, ‖P i j‖ ≤ 1) (hQ : ∀ i j, ‖Q i j‖ ≤ 1) : ∀ i j, ‖(P * Q) i j‖ ≤ 1 := by
   intro i j
@@ -27,6 +45,9 @@ theorem entries_mul_le {n : ℕ} [IsUltrametricDist E] {P Q : Matrix (Fin n) (Fi
   rw [norm_mul]
   exact mul_le_one₀ (hP i k) (norm_nonneg _) (hQ k j)
 
+/- English proof (translation)
+Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hP i k) (norm_nonneg _) (hv k)`.
+-/
 theorem entries_mulVec_le {n : ℕ} [IsUltrametricDist E] {P : Matrix (Fin n) (Fin n) E} {v : Fin n → E}
     (hP : ∀ i j, ‖P i j‖ ≤ 1) (hv : ∀ i, ‖v i‖ ≤ 1) : ∀ i, ‖(P *ᵥ v) i‖ ≤ 1 := by
   intro i
@@ -37,26 +58,43 @@ theorem entries_mulVec_le {n : ℕ} [IsUltrametricDist E] {P : Matrix (Fin n) (F
 
 variable [StarRing E]
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.star_apply, norm_star]`. Conclude with `hP j i`.
+-/
 theorem entries_star_le {n : ℕ} [NormedStarGroup E] {P : Matrix (Fin n) (Fin n) E}
     (hP : ∀ i j, ‖P i j‖ ≤ 1) : ∀ i j, ‖(star P) i j‖ ≤ 1 := by
   intro i j
   rw [Matrix.star_apply, norm_star]
   exact hP j i
 
+/- English proof (translation)
+The claim follows from `entries_mul_le (P := a.1) (Q := b.1) ha hb`.
+-/
 theorem uO_mul {n : ℕ} [IsUltrametricDist E]
     {a b : Matrix.unitaryGroup (Fin n) E} (ha : a ∈ uO n E) (hb : b ∈ uO n E) : a * b ∈ uO n E :=
   entries_mul_le (P := a.1) (Q := b.1) ha hb
 
+/- English proof (translation)
+Introduce `i j`. Use `show ‖(1 : Matrix (Fin n) (Fin n) E) i j‖ ≤ 1`. Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem uO_one {n : ℕ} : (1 : Matrix.unitaryGroup (Fin n) E) ∈ uO n E := by
   intro i j
   show ‖(1 : Matrix (Fin n) (Fin n) E) i j‖ ≤ 1
   rw [Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+The claim follows from `entries_star_le (P := a.1) ha`.
+-/
 theorem uO_inv {n : ℕ} [NormedStarGroup E]
     {a : Matrix.unitaryGroup (Fin n) E} (ha : a ∈ uO n E) : a⁻¹ ∈ uO n E :=
   entries_star_le (P := a.1) ha
 
+/- English proof (translation)
+Establish `e : uO n E = ⋂ i, ⋂ j, (fun g : Matrix.unitaryGroup (Fin n) E => g.1 i j) ⁻¹' Metric.closedBall 0 1`. Use extensionality with `g`. Simplify using `[uO]`. Rewrite using `[e]`. Establish `hc : ∀ i j, Continuous (fun g : Matrix.unitaryGroup (Fin n) E => g.1 i j)` using `fun i j => (continuous_subtype_val (p := fun M => M ∈ Matrix.unitaryGroup (Fin n) E)).matrix_elem i j`.
+
+Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (IsUltrametricDist.isOpen_closedBall (0 : E) one_ne_zero).preimage (hc i j)`.
+-/
 theorem uO_isOpen {n : ℕ} [IsUltrametricDist E] : IsOpen (uO n E) := by
   have e : uO n E = ⋂ i, ⋂ j, (fun g : Matrix.unitaryGroup (Fin n) E => g.1 i j) ⁻¹' Metric.closedBall 0 1 := by
     ext g; simp [uO]
@@ -66,6 +104,9 @@ theorem uO_isOpen {n : ℕ} [IsUltrametricDist E] : IsOpen (uO n E) := by
   exact isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j =>
     (IsUltrametricDist.isOpen_closedBall (0 : E) one_ne_zero).preimage (hc i j)
 
+/- English proof (translation)
+Establish `e : (Matrix.unitaryGroup (Fin n) E : Set (Matrix (Fin n) (Fin n) E)) = {M | star M * M = 1}`. Use extensionality with `M`. Conclude with `Matrix.mem_unitaryGroup_iff'`. Rewrite using `[e]`. Conclude with `isClosed_eq (continuous_star.matrix_mul continuous_id) continuous_const`.
+-/
 theorem isClosed_unitaryGroup' {n : ℕ} [ContinuousStar E] :
     IsClosed (Matrix.unitaryGroup (Fin n) E : Set (Matrix (Fin n) (Fin n) E)) := by
   have e : (Matrix.unitaryGroup (Fin n) E : Set (Matrix (Fin n) (Fin n) E)) = {M | star M * M = 1} := by
@@ -73,6 +114,11 @@ theorem isClosed_unitaryGroup' {n : ℕ} [ContinuousStar E] :
   rw [e]
   exact isClosed_eq (continuous_star.matrix_mul continuous_id) continuous_const
 
+/- English proof (translation)
+Set `B : Set (Matrix (Fin n) (Fin n) E)` to `Set.univ.pi fun _ => Set.univ.pi fun _ => Metric.closedBall (0 : E) 1`. Establish `hB : IsCompact B` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall 0 1`. Establish `e : uO n E = Subtype.val ⁻¹' B`. Use extensionality with `g`. Use `show (∀ i j, ‖g.1 i j‖ ≤ 1) ↔ (∀ i ∈ (Set.univ : Set (Fin n)), ∀ j ∈ (Set.univ : Set (Fin n)), g.1 i j ∈ Metric.closedBall (0 : E) 1)`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `(isClosed_unitaryGroup' (n := n)).isClosedEmbedding_subtypeVal.isCompact_preimage hB`.
+-/
 theorem uO_isCompact {n : ℕ} [ProperSpace E] [ContinuousStar E] : IsCompact (uO n E) := by
   let B : Set (Matrix (Fin n) (Fin n) E) :=
     Set.univ.pi fun _ => Set.univ.pi fun _ => Metric.closedBall (0 : E) 1
@@ -85,6 +131,13 @@ theorem uO_isCompact {n : ℕ} [ProperSpace E] [ContinuousStar E] : IsCompact (u
   rw [e]
   exact (isClosed_unitaryGroup' (n := n)).isClosedEmbedding_subtypeVal.isCompact_preimage hB
 
+/- English proof (translation)
+Use extensionality with `s`. Simplify using `only [Set.mem_preimage, uO, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Use `h (Fin.castSucc i) (Fin.castSucc j)` as an intermediate fact.
+
+Simplify `this` using `[uEmb, embHom, Matrix.reindex_apply]`. Introduce `h i j show ‖(embHom r E s.1) i j‖ ≤ 1`. Simplify using `only [embHom, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.reindex_apply, Matrix.submatrix_apply]`. Generalize the expression as in `finSumFinEquiv.symm i = a`. Generalize the expression as in `finSumFinEquiv.symm j = b`.
+
+Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Simplify using `using h a b`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the tactic sequence `rw [Matrix.fromBlocks_apply₂₂, Matrix.one_apply]; split_ifs <;> simp`.
+-/
 theorem preimage_uO (r : ℕ) : uEmb r E ⁻¹' uO (r + 1) E = uO r E := by
   ext s
   simp only [Set.mem_preimage, uO, Set.mem_setOf_eq]
@@ -103,6 +156,11 @@ theorem preimage_uO (r : ℕ) : uEmb r E ⁻¹' uO (r + 1) E = uO r E := by
     · simp
     · rw [Matrix.fromBlocks_apply₂₂, Matrix.one_apply]; split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `actU`. Use `Prod.ext (Subtype.ext ?_) (Prod.ext ?_ rfl)` and prove the remaining obligations. Use `show (k.1 * g.1) * Y.1.1 * star (k.1 * g.1) = k.1 * (g.1 * Y.1.1 * star g.1) * star k.1`. Rewrite using `[star_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `show (k.1 * g.1) *ᵥ Y.2.1 = k.1 *ᵥ (g.1 *ᵥ Y.2.1)`. Rewrite using `[Matrix.mulVec_mulVec]`.
+-/
 theorem actU_mul {F : Type} [CommRing F] [Algebra F E] {n : ℕ} (k g : Matrix.unitaryGroup (Fin n) E)
     (Y : Hn n F E) : actU (k * g) Y = actU k (actU g Y) := by
   unfold actU
@@ -112,6 +170,11 @@ theorem actU_mul {F : Type} [CommRing F] [Algebra F E] {n : ℕ} (k g : Matrix.u
   · show (k.1 * g.1) *ᵥ Y.2.1 = k.1 *ᵥ (g.1 *ᵥ Y.2.1)
     rw [Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Unfold `actU`. Use `Prod.ext (Subtype.ext ?_) (Prod.ext ?_ rfl)` and prove the remaining obligations. Use `show (1 : Matrix (Fin n) (Fin n) E) * Y.1.1 * star (1 : Matrix (Fin n) (Fin n) E) = Y.1.1`. Simplify using the standard rewrite rules. Use `show (1 : Matrix (Fin n) (Fin n) E) *ᵥ Y.2.1 = Y.2.1`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem actU_one {F : Type} [CommRing F] [Algebra F E] {n : ℕ} (Y : Hn n F E) :
     actU (1 : Matrix.unitaryGroup (Fin n) E) Y = Y := by
   unfold actU
@@ -121,6 +184,9 @@ theorem actU_one {F : Type} [CommRing F] [Algebra F E] {n : ℕ} (Y : Hn n F E) 
   · show (1 : Matrix (Fin n) (Fin n) E) *ᵥ Y.2.1 = Y.2.1
     simp
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `hY`. Use `⟨?_, ?_, h3⟩` and prove the remaining obligations. Conclude with `entries_mul_le (entries_mul_le hk h1) (entries_star_le hk)`. Conclude with `entries_mulVec_le hk h2`.
+-/
 theorem integral_actU {F : Type} [NormedField F] [Algebra F E] [IsUltrametricDist E] [NormedStarGroup E] {n : ℕ}
     (k : Matrix.unitaryGroup (Fin n) E) (hk : k ∈ uO n E) (Y : Hn n F E)
     (hY : Y ∈ {X : Hn n F E | (∀ i j, ‖X.1.1 i j‖ ≤ 1) ∧ (∀ i, ‖X.2.1 i‖ ≤ 1) ∧ ‖X.2.2‖ ≤ 1}) :
@@ -132,6 +198,11 @@ theorem integral_actU {F : Type} [NormedField F] [Algebra F E] [IsUltrametricDis
 
 end Reformulated
 
+/- English proof (translation)
+Rewrite using `[actU_mul]`. Establish `hiff : ∀ Z : Hn n F E, actU k Z ∈ {X : Hn n F E | (∀ i j, ‖X.1.1 i j‖ ≤ 1) ∧ (∀ i, ‖X.2.1 i‖ ≤ 1) ∧ ‖X.2.2‖ ≤ 1} ↔ Z ∈ {X : Hn n F E | (∀ i j, ‖X.1.1 i j‖ ≤ 1) ∧ (∀ i, ‖X.2.1 i‖ ≤ 1) ∧ ‖X.2.2‖ ≤ 1}` using `fun Z => ⟨fun h => by`. Use `integral_actU k⁻¹ (uO_inv hk) _ h` as an intermediate fact. Rewrite using `[← actU_mul, inv_mul_cancel, actU_one] at this, fun h => integral_actU k hk Z h⟩` and apply the resulting hypothesis. Unfold `unitU`.
+
+Distinguish the cases in `h : actU g Y ∈ {X : Hn n F E | (∀ i j, ‖X.1.1 i j‖ ≤ 1) ∧ (∀ i, ‖X.2.1 i‖ ≤ 1) ∧ ‖X.2.2‖ ≤ 1}`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem ((hiff _).2 h)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (fun h' => h ((hiff _).1 h'))]`.
+-/
 theorem unitU_actU_mul {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
     [IsUltrametricDist E] [NormedStarGroup E] {n : ℕ} (k g : Matrix.unitaryGroup (Fin n) E) (hk : k ∈ uO n E)
     (Y : Hn n F E) : unitU n F E (actU (k * g) Y) = unitU n F E (actU g Y) := by
@@ -146,6 +217,11 @@ theorem unitU_actU_mul {F E : Type} [NontriviallyNormedField F] [NontriviallyNor
   · rw [Set.indicator_of_mem h, Set.indicator_of_mem ((hiff _).2 h)]; rfl
   · rw [Set.indicator_of_notMem h, Set.indicator_of_notMem (fun h' => h ((hiff _).1 h'))]
 
+/- English proof (translation)
+Use `haveI : NormedStarGroup E := ⟨fun x => (Unram.norm_star (F := F) x).le⟩`. Take `⟨K, hK, hsub⟩` from `support_bounded (liftH X ν l) hΔ`. Use `HasCompactSupport.intro ((uEmb_isClosedEmbedding r E).isCompact_preimage hK) ?_` and prove the remaining obligations. Introduce `s hs`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hs (hsub _ h)`.
+-/
 theorem compact_support {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] {r : ℕ} (X : Hn r F E) (ν : E) (l : F)
     (hΔ : Delta (inv (liftH X ν l).toGl) ≠ 0) :
@@ -157,6 +233,17 @@ theorem compact_support {F E : Type} [NontriviallyNormedField F] [NontriviallyNo
   by_contra h
   exact hs (hsub _ h)
 
+/- English proof (translation)
+Use `haveI : IsUltrametricDist E := Unram.ultraE (F := F)`. Use `haveI : NormedStarGroup E := ⟨fun x => (Unram.norm_star (F := F) x).le⟩`. Use `haveI : LocallyCompactSpace E := Unram.lcE (F := F)`. Use `haveI : ProperSpace E := ProperSpace.of_locallyCompactSpace E`. Use `haveI : SecondCountableTopology (Matrix (Fin (r+1)) (Fin (r+1)) E) := inferInstanceAs (SecondCountableTopology (Fin (r+1) → Fin (r+1) → E))`.
+
+Use `haveI : SecondCountableTopology (Matrix.unitaryGroup (Fin (r+1)) E) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : LocallyCompactSpace (Matrix.unitaryGroup (Fin (r+1)) E) := by`. Conclude with `IsCompact.locallyCompactSpace_of_mem_nhds_of_group (uO_isCompact (n := r + 1)) (uO_isOpen.mem_nhds uO_one)`. Set `R₀ : Subgroup (Matrix.unitaryGroup (Fin (r+1)) E)` to `{ carrier := uO (r+1) E, mul_mem' := uO_mul, one_mem' := uO_one, inv_mem' := uO_inv }`. Unfold `orbU`.
+
+Use `letI := M.mU`. Use `haveI := M.bU`. Use `letI := M'.mU`. Use `haveI := M'.bU`. Use `haveI := M.haarU`.
+
+Use `haveI := M'.haarU`. Use `haveI := (GlobalTheory.T.unitaryGroup_positiveCharacter_trivial_and_unimodular F E (r+1)).2 M`. Use `haveI := (GlobalTheory.T.unitaryGroup_positiveCharacter_trivial_and_unimodular F E r).2 M'`. Rewrite using `[GlobalTheory.CosetIntegral.integral_eq_of_coset_support _ _ (uEmb r E) (uEmb_isClosedEmbedding r E) M.μU M'.μU R₀ uO_isOpen uO_isCompact M.volU (by show M'.μU (uEmb r E ⁻¹' uO (r + 1) E) = 1`. Rewrite using `[preimage_uO]`.
+
+Conclude with `M'.volU)`. Use `_ (fun k hk g => unitU_actU_mul k g hk _) (support_sub X ν l hν) (compact_support X ν l hΔ)]`. Repeatedly rewrite using `[actU_uEmb_liftH, unitU_liftH _ ν l hν.le]`. Rewrite using `[integral_const_mul]`.
+-/
 theorem orbU_liftH (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (r : ℕ) (M : Meas (r + 1) F E) (M' : Meas r F E) (X : Hn r F E) (ν : E) (l : F) (hν : ‖ν‖ = 1) (hΔ : Delta (inv (GlobalTheory.JR.Step.liftH X ν l).toGl) ≠ 0) :
   orbU M (unitU (r + 1) F E) (GlobalTheory.JR.Step.liftH X ν l) = (if ‖l‖ ≤ 1 then 1 else 0) * orbU M' (unitU r F E) X := by
   haveI : IsUltrametricDist E := Unram.ultraE (F := F)

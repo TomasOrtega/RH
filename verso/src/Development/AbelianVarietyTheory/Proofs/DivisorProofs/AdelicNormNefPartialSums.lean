@@ -30,6 +30,17 @@ namespace GlobalTheory.HtGen
 
 open GlobalTheory.LineNorm GlobalTheory.Cartier
 
+/- English proof (translation)
+Introduce `Z i _ _ κ _ _ _ _ hd`. Establish `: Module.Finite ℤ k` using `hX.finite`. Establish `: IsProper p` using `(isProper_and_exists_isAmpleLB_of_isProjOver hX.isProjOver).1`. Establish `hproj : IsProjOver (strHom κ Z)`. Establish `: IsFinite (spMap (Int.castRingHom k))`.
+
+Rewrite using `[spMap, IsFinite.SpecMap_iff]`. Conclude with `(RingHom.finite_algebraMap (A := ℤ) (B := k)).2 inferInstance`. Establish `e : strHom κ Z ≫ spMap (Int.castRingHom κ) = i ≫ p ≫ spMap (Int.castRingHom k)` using `specZIsTerminal.hom_ext _ _`. Establish `: IsProper (strHom κ Z ≫ spMap (Int.castRingHom κ))`. Rewrite using `[e]`.
+
+Use `infer_instance`. Establish `: IsProper (strHom κ Z)` using `IsProper.of_comp _ (spMap (Int.castRingHom κ))`. Conclude with `ProperCurve.isProjOver_of_isProper _ hd`. Set `F₀ : HermLB.IsomClass p → ℤ` to `Quotient.lift (s := HermLB.isometrySetoid p) (fun L => topSelfIntersection κ (L.B.pull i) 1) fun L L' e => by`. Establish `⟨w, hw, _⟩` using `HermLB.Isometric.pull e i rfl`.
+
+Conclude with `interNum_congr_lbIso κ _ (fun _ => (L.restr i).isLB) (fun _ => (L'.restr i).isLB) fun _ => ⟨w, hw⟩`. Set `G : HermLB.IsomClass p →+ ℤ` to `AddMonoidHom.mk' F₀ (by`. Introduce and unpack `⟨L⟩ ⟨L'⟩`. Conclude with `HtTensCurve.topSelf_one_pull_tens hproj hd i L.isLB L'.isLB)`. Establish `e` using `congrArg G h`.
+
+Rewrite `e` using `[map_nsmul, map_add, nsmul_eq_mul]`. Establish `h₁ : 0 ≤ G A.icls` using `hA Z i κ hd`. Establish `h₂ : 0 ≤ G B.icls` using `hB Z i κ hd`. Express the relevant statement in the definitionally equal form `0 ≤ G L.icls`. Conclude with `(mul_nonneg_iff_of_pos_left (by exact_mod_cast hm : (0 : ℤ) < m)).1 (e ▸ add_nonneg h₁ h₂)`.
+-/
 theorem nefOver_of_icls {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {d : ℕ} (hX : IsArithVar p d)
     {L A B : HermLB p} {m : ℕ} (hm : 0 < m) (h : m • L.icls = A.icls + B.icls) {l : ℕ} (hA : NefOver A l)
     (hB : NefOver B l) : NefOver L l := by
@@ -60,10 +71,16 @@ theorem nefOver_of_icls {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k
   change 0 ≤ G L.icls
   exact (mul_nonneg_iff_of_pos_left (by exact_mod_cast hm : (0 : ℤ) < m)).1 (e ▸ add_nonneg h₁ h₂)
 
+/- English proof (translation)
+The claim follows from `nefOver_of_icls hX (m := m + m) (by omega) (by rw [HermLB.icls_pow, add_nsmul]) h h`.
+-/
 theorem nefOver_of_pow {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {d : ℕ} (hX : IsArithVar p d)
     {L : HermLB p} {m : ℕ} (hm : 0 < m) {l : ℕ} (h : NefOver (L.pow m) l) : NefOver L l :=
   nefOver_of_icls hX (m := m + m) (by omega) (by rw [HermLB.icls_pow, add_nsmul]) h h
 
+/- English proof (translation)
+Take `⟨hp, -⟩` from `ioOf_spec F v e`. Use `(Nat.prime_dvd_prime_iff_eq hp hl).1 (ringChar.dvd ?_)` and prove the remaining obligations. Rewrite using `[← map_natCast (Ideal.Quotient.mk v.asIdeal)]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 h`.
+-/
 theorem residueCharacteristic_eq {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)} (e : TrueGeo.Ext v) {l : ℕ}
     (hl : l.Prime) (h : (l : 𝓞 F) ∈ v.asIdeal) : resP v = l := by
   obtain ⟨hp, -⟩ := ioOf_spec F v e
@@ -77,6 +94,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {lv : Level H} {Xo : Moduli Dw lv} {c : Coeff lv} {O : Type} [CommRing O] {β : O →+* c.F}
   {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {F : Type} [Field F] [NumberField F] {ε : F ≃+* c.F} (C : GlobalTheory.ShFam.FlagCpt Z ε)
 
+/- English proof (translation)
+Take `rfl` from `residueCharacteristic_eq e hl h`. Rewrite using `[mixLog_eq (b := b) (by simp [hb])]`. Establish `hl' : Real.log (resP v) ≠ 0` using `(Real.log_pos (by exact_mod_cast hl.one_lt)).ne'`. Simplify using `only [symLog, mixLog, lnStep, dif_pos hl, dif_pos i.2, hb, true_and]`. Use `split_ifs`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+-/
 theorem symLog_eq {b : ℕ → Bool} {l : ℕ} (hl : l.Prime) (hb : b l = true) (σ : E →+* ℂ) (i : Fin (Dw.mult σ))
     (v : HeightOneSpectrum (𝓞 F)) (e : TrueGeo.Ext v) (y : AlgPt C.Y) (h : (l : 𝓞 F) ∈ v.asIdeal) :
     symLog C b (.inl (σ, i)) v e y = stepLog Z.t (C.π ≫ GlobalTheory.Toroidal.genι Z) (fun y => (fr C y).v σ) l i v e y +
@@ -90,6 +112,13 @@ theorem symLog_eq {b : ℕ → Bool} {l : ℕ} (hl : l.Prime) (hb : b l = true) 
     ring
   · simp
 
+/- English proof (translation)
+Establish `h₁` using `GlobalTheory.T.torsion_char_tangent_family E H Z.X Z.t hX F C.Y V ρ' _ hρ l hc _ _ _ _ (isFlagFrame_eig C σ) k hk`. Establish `hm : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Establish `h₂` using `norms_pow F C.Y V _ _ _ _ (Module.finrank ℚ E) h`. Use `nefOver_of_pow V.ar hm (GlobalTheory.T.nef_over_of_generated F C.Y V _ _ _ _ l h₂ (GlobalTheory.T.generic_over_power F C.Y V _ _ _ l _ (-(k * if σ (H.rt : E) = H.rt0 then padicValNat l (discr E).natAbs else 0 : ℕ)) hl.out.ne_zero hm (fun v e y hv => ?_) h₁))` and prove the remaining obligations. Simplify using `only [symLog_eq C hl.out hb σ _ v e y hv, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`.
+
+Establish `: ((Module.finrank ℚ E : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast hm.ne'`. Use `split_ifs`. Establish `h₃ : vDiff E l * Module.finrank ℚ E = padicValNat l (discr E).natAbs` using `div_mul_cancel₀ _ this`. Rewrite using `[Int.cast_neg, Int.cast_natCast, Nat.cast_mul]`. Take the linear combination `(-(k : ℝ) * Real.log (e.w l)) * h₃`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem nefOver_step [IsLocallyNoetherian Z.X] (hX : Z.X.IsSeparated) (V : Cover C.Y) (ρ' : V.X ⟶ Z.X)
     (hρ : V.j ≫ ρ' = V.π ≫ C.π ≫ GlobalTheory.Toroidal.genι Z) {l : ℕ} [hl : Fact l.Prime] (hc : CharFam Z.t ρ' l 2)
     {b : ℕ → Bool} (hb : b l = true) (σ : E →+* ℂ) {k : ℕ} (hk : k ≤ Dw.mult σ) {L : HermLB V.p}
@@ -111,6 +140,13 @@ theorem nefOver_step [IsLocallyNoetherian Z.X] (hX : Z.X.IsSeparated) (V : Cover
     linear_combination (-(k : ℝ) * Real.log (e.w l)) * h₃
   · simp
 
+/- English proof (translation)
+Establish `hP (y : C.Y.X) : ∏ x : Letter Dw, dg C y x.1 x.2 ^ expo Dw w x = dg C y σ ⟨k, hk⟩ ^ n`. Rewrite using `[Finset.prod_eq_single ⟨σ, ⟨k, hk⟩⟩ (fun x _ hx => by`. Rewrite using `[hw, expo_single, if_neg (by simpa [letterOf, hk] using hx.symm), zpow_zero]) (by simp), hw, expo_single,`. Use `if_pos (by simp [letterOf, hk])]`. Establish `hu (y : C.Y.X) : UnitAt y (((dg C y σ ⟨k, hk⟩ ^ n) * (eqn (divOf C (expo Dw w)) y)⁻¹ : C.Y.Fnˣ) : C.Y.Fn)`.
+
+Establish `h₁ : (divOf C (expo Dw w)).IsEqn y (∏ x : Letter Dw, dg C y x.1 x.2 ^ expo Dw w x)` using `isEqn_sum _ y fun x => ((fr_spec C y).2 x.1 x.2).zsmul _`. Rewrite `h₁` using `[hP]`. Simplify `(Base.isEqn_eqn _ y).iff_unitAt.1 h₁` using `[div_eq_mul_inv]`. Use `⟨_, (norms_mul_unit F C.Y V L _ _ _ _ (fun y => (hu y).inv) h).congr (fun y => ?_) (fun _ _ => rfl) fun v e y => ?_⟩` and prove the remaining obligations. Rewrite using `[← Units.val_inv_eq_inv_val, genAt, ← Units.val_mul]`.
+
+Use `congr 1`. Rewrite using `[mul_inv, inv_inv, mul_inv_cancel_right, zpow_neg]`. Rewrite using `[lgOf_eq_lgCopy, lgCopy_eq, hP, GlobalTheory.LineNorm.Neg.valAt_inv (hu _), map_inv₀, Real.log_inv, neg_add_cancel_left, hw]`. Conclude with `Finsupp.sum_single_index (h := fun (a : Sym E) (n : ℤ) => (n : ℝ) * symLog C a.1 a.2.2 v e y) (by simp)`.
+-/
 theorem norms_single {V : Cover C.Y} {L : HermLB V.p} {a : ∀ s : F →+* ℂ, Pts C.Y s → ℝ} (b : ℕ → Bool) (σ : E →+* ℂ)
     {k : ℕ} (hk : k < Dw.mult σ) (n : ℤ) {w : Sym E →₀ ℤ} (hw : w = Finsupp.single (b, none, .inl (σ, k)) n)
     (h : Norms V L (fun y => genAt (divOf C (expo Dw w)) y) a fun v e y => lgOf C w v e y) :
@@ -135,6 +171,9 @@ theorem norms_single {V : Cover C.Y} {L : HermLB V.p} {a : ∀ s : F →+* ℂ, 
 
 end Flags
 
+/- English proof (translation)
+The claim follows from `(Fintype.prod_of_injective e he _ _ (fun x hx => by rw [h₀ x hx, zpow_zero]) fun i => by rw [h₁]).symm`.
+-/
 theorem prod_zpow_of_injective {α G : Type} [Fintype α] [CommGroup G] {k : ℕ} (e : Fin k → α) (he : Function.Injective e)
     (f : α → G) (n : α → ℤ) (s : ℤ) (h₀ : ∀ x, x ∉ Set.range e → n x = 0) (h₁ : ∀ i, n (e i) = s) :
     ∏ x, f x ^ n x = ∏ i, f (e i) ^ s :=
@@ -144,6 +183,37 @@ end GlobalTheory.HtGen
 
 open GlobalTheory.HtGen GlobalTheory.LineNorm in
 
+/- English proof (translation)
+Introduce `h2 hH D O hO hf A T H h c Q l hlQ hl`. Use `Fact.mk hl` as an intermediate fact. Take `⟨hX, hN, M₀, ρ', -, hρ⟩` from `GlobalTheory.T.exists_normal_model_over_projective D.what₂.LL (O.Φ.C c).Y (𝓞 O.κ.c.F) (RingOfIntegers.mapRingEquiv O.κ.e) O.s.T.Z.X O.s.T.Z.s ((O.Φ.C c).π ≫ GlobalTheory.Toroidal.genι O.s.T.Z) O.s.T.Z.proj (by`. Rewrite using `[← (O.Φ.C c).π_str]`. Simplify using `only [Category.assoc]`.
+
+Rewrite using `[Limits.pullback.condition_assoc, ← Spec.map_comp, ← Spec.map_comp]`. Use the proof step `rfl)`. Set `W` to `h.mdl Q c`. Take `⟨V, a, g, ρ'', ha, e₁, e₂, e₃, e₄, hz, hζ, hs⟩` from `GlobalTheory.T.cover_refinement_exists _ _ _ O.s.T.Z.t _ _ M₀ ρ' W.V (l ^ 2) (pow_ne_zero _ hl.ne_zero)`. Rewrite `e₄` using `[hρ]`.
+
+Establish `hc` using `GlobalTheory.T.torsion_split_normal_base _ _ _ O.s.T.Z.t V.X ρ'' l 2 V.normal hz hζ hs`. Take `⟨M, hM⟩ : ∃ M : DV.Rt D.what₂.Tau O.N → HermLB V.p, ∀ x, Norms V (M x) (fun z => genAt (O.root0 c Q x).D z) (fun σ y => lnAdl (O.root0 c Q x) σ y) (fun v e y => (O.root0 c Q x).lg v e y)` from `⟨_, fun x => (norms_pull _ _ W.V V a ha g e₁ e₂ e₃ _ _ _ _ (norms_of_induces (Setup.induces_root0 D O hO.dualRef _ c W _ subset_rfl x))).congr (fun _ => pow_one _) (fun _ _ => by simp) fun _ _ _ => by simp⟩`. Use `⟨V, M, hM, fun τ i hi => ?_⟩` and prove the remaining obligations. Establish `hb : GlobalTheory.ShFam.Pad.ArIn.ind Q l = true` using `decide_eq_true hlQ`. Establish `hp : O.S.Dw.p = O.j` using `O.S.p_eq`.
+
+Establish `hpq : O.S.Dw.p + O.S.Dw.q = O.N` using `O.S.rank_eq`. Establish `hτ (τ : D.what₂.Tau) : O.S.Dw.mult (DV.tauEmb D τ) = O.j` using `GlobalTheory.LocM.Check.mult_tau (S := O.S) τ`. Establish `hcj (τ : D.what₂.Tau) : O.S.Dw.mult (conjEmb (DV.tauEmb D τ)) + O.j = O.N` using `GlobalTheory.LocM.Check.mult_conj (S := O.S) τ`. Establish `hj` using `O.indef.2`. Establish `hR (x : DV.Rt D.what₂.Tau O.N) : ∃ (σ : D.host.E →+* ℂ) (k : ℕ) (hk : k < O.S.Dw.mult σ) (n : ℤ) (a' : _), Norms V (M x) (fun y => ((dg (O.Φ.C c) y σ ⟨k, hk⟩ ^ (-n) : (O.var c).Fnˣ) : (O.var c).Fn)) a' (fun v e y => n * symLog (O.Φ.C c) (GlobalTheory.ShFam.Pad.ArIn.ind Q) (.inl ( …`.
+
+Establish `hx` using `x.2.2`. Distinguish the cases in `hxj : x.2.val < O.j`. Take `⟨a', h'⟩` from `norms_single (O.Φ.C c) (GlobalTheory.ShFam.Pad.ArIn.ind Q) (DV.tauEmb D x.1) (k := x.2) (by rw [hτ]; exact hxj) 1 (if_pos (by omega)) (hM x)`. Conclude with `⟨_, _, _, _, a', h', fun _ => ⟨rfl, rfl, rfl⟩, fun h => by omega⟩`. Use `hcj x.1` as an intermediate fact.
+
+Take `⟨a', h'⟩` from `norms_single (O.Φ.C c) (GlobalTheory.ShFam.Pad.ArIn.ind Q) (conjEmb (DV.tauEmb D x.1)) (k := O.N - 1 - x.2) (by omega) (-1) ((if_neg (by omega)).trans (by rw [hpq])) (hM x)`. Conclude with `⟨_, _, _, _, a', h', fun h => absurd h hxj, fun _ => ⟨rfl, rfl, rfl⟩⟩`. Use `choose σ k hk n a' hR h₁ h₂ using hR`. Establish `step (s : D.host.E →+* ℂ) (m : ℕ) (hm : m ≤ O.S.Dw.mult s) (e : Fin m → DV.Rt D.what₂.Tau O.N) (he : Function.Injective e) (w : DV.Rt D.what₂.Tau O.N → ℤ) (u : ℤ) (hu : u * u = 1) (w₀ : ∀ x, x ∉ Set.range e → w x = 0) (w₁ : ∀ r, w (e r) = u) (hs : ∀ r, σ (e r) = s ∧ k (e r) = r ∧ …`. Use `nefOver_step (O.Φ.C c) hX V ρ'' e₄ hc hb s hm ((norms_comb hR w).congr (fun y => ?_) (fun _ _ => rfl) fun v ε y => ?_)` and prove the remaining obligations.
+
+Simplify using `only [← Units.val_zpow_eq_zpow_val, ← Units.coe_prod]`. Rewrite using `[prod_zpow_of_injective e he _ w u w₀ w₁]`. Use `congrArg _ (Finset.prod_congr rfl fun r _ => ?_)` and prove the remaining obligations. Take `⟨q₁, q₂, q₃⟩` from `hs r`. Use `hk (e r)` as an intermediate fact.
+
+Rewrite using `[q₃, neg_neg, ← zpow_mul, hu, zpow_one]`. Use `revert this`. Generalize the expression as in `hk (e r) = q₄`. Use `revert q₄`. Rewrite using `[q₁, q₂]`.
+
+Introduce `_ _`. Both sides reduce to the same expression. Rewrite using `[← Finset.sum_neg_distrib]`. Use `(Fintype.sum_of_injective e he _ _ (fun x hx => by rw [w₀ x hx]; simp) fun r => ?_).symm` and prove the remaining obligations. Take `⟨q₁, q₂, q₃⟩` from `hs r`.
+
+Establish `hu' : (u : ℝ) * u = 1` using `by exact_mod_cast hu`. Rewrite using `[w₁, q₁, q₂, q₃, Fin.val_castLE]`. Use `push_cast`. Take the linear combination `(symLog (O.Φ.C c) (GlobalTheory.ShFam.Pad.ArIn.ind Q) (.inl (s, r)) v ε y) * hu'`. Distinguish the cases in `hij : i ≤ O.j`.
+
+Establish `h₃` using `step (DV.tauEmb D τ) i (by rw [hτ]; exact hij) (fun r => (τ, ⟨r, by omega⟩)) (fun r r' e => Fin.ext (congrArg (fun x : DV.Rt D.what₂.Tau O.N => x.2.val) e)) (fun x => if x.1 = τ ∧ x.2.val < i then -1 else 0) (-1) (by norm_num) (fun x hx => if_neg fun ⟨q₁, q₂⟩ => hx ⟨⟨x.2, q₂⟩, by …`. Conclude with `h₃`. Establish `hτ'` using `hcj τ`. Establish `h₃` using `step (conjEmb (DV.tauEmb D τ)) (O.N - i) (by omega) (fun r => (τ, ⟨O.N - 1 - r, by omega⟩)) (fun r r' e => Fin.ext (by`. Establish `: O.N - 1 - r = O.N - 1 - r'` using `congrArg (fun x : DV.Rt D.what₂.Tau O.N => x.2.val) e`.
+
+Use the proof step `omega))`. Use the proof step `(fun x => if x.1 = τ ∧ i ≤ x.2.val then 1 else 0) 1 (by norm_num)`. Use the proof step `(fun x hx => if_neg fun ⟨q₁, q₂⟩ => hx ⟨⟨O.N - 1 - x.2, by omega⟩, Prod.ext q₁.symm (Fin.ext (by`. Use `x.2.2` as an intermediate fact. Use `show O.N - 1 - (O.N - 1 - x.2) = x.2`.
+
+Use the proof step `omega))⟩)`. Use the proof step `(fun r => if_pos ⟨rfl, by show i ≤ O.N - 1 - r; omega⟩)`. Use `fun r => by`. Take `⟨q₁, q₂, q₃⟩` from `h₂ (τ, ⟨O.N - 1 - r, by omega⟩) (by show O.j ≤ O.N - 1 - r; omega)`. Conclude with `⟨q₁, q₂.trans (by show O.N - 1 - (O.N - 1 - r) = r; omega), q₃⟩`.
+
+Use `nefOver_of_icls V.ar one_pos ?_ (GlobalTheory.T.adelic_norm_nef_indicators h2 hH D O hO hf A T H h c Q l hlQ hl V M hM τ).2 h₃` and prove the remaining obligations. Rewrite using `[one_nsmul, icls_comb, icls_comb, icls_comb, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[← add_smul]`. Use `congr 1`.
+
+Apply the tactic sequence `by_cases q₁ : x.1 = τ <;> by_cases q₂ : x.2.val < i <;> simp [q₁, q₂]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem GlobalTheory.HtGen.exists_cover_nefOver_steps : Hypotheses2 → HypothesesH → OnObj fun D O _ _ _ _ => ∀ (c : O.s.Comp) (Q : Finset ℕ) (l : ℕ), l ∈ Q → l.Prime → ∃ (V : Cover (O.var c)) (M : DV.Rt D.what₂.Tau O.N → HermLB V.p), (∀ x, Norms V (M x) (fun z => genAt (O.root0 c Q x).D z) (fun σ y => lnAdl (O.root0 c Q x) σ y) (fun v e y => (O.root0 c Q x).lg v e y)) ∧ ∀ (τ : D.what₂.Tau) (i : ℕ), i < O.N → NefOver (ArInt.comb M fun x => if x.1 = τ ∧ x.2.val < i then -1 else 0) l := by
   intro h2 hH D O hO hf A T H h c Q l hlQ hl
   have := Fact.mk hl

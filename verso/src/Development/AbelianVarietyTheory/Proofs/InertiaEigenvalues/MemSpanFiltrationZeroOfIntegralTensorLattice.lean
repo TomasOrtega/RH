@@ -19,6 +19,9 @@ section IntegralSpan
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `h0 : (1 : Per.BdRp l) ∈ Per.FilP l 0`. Rewrite using `[GlobalTheory.RingIface.mem_filtration_iff_mem_kerTheta_pow, ← map_one (algebraMap (Per.AinfP l) (Per.BdRp l)), GlobalTheory.RingIface.ev_alg, Ideal.Quotient.eq_zero_iff_mem]`. Simplify using the standard rewrite rules. Establish `h1` using `GlobalTheory.RingIface.alg_mem_FilD_nat l h0`. Rewrite `h1` using `[map_one, Nat.cast_zero]`. Then use the resulting hypothesis.
+-/
 theorem one_mem_filD_zero : (1 : Per.BdR l) ∈ Per.FilD l 0 := by
   have h0 : (1 : Per.BdRp l) ∈ Per.FilP l 0 := by
     rw [GlobalTheory.RingIface.mem_filtration_iff_mem_kerTheta_pow, ← map_one (algebraMap (Per.AinfP l) (Per.BdRp l)),
@@ -27,11 +30,17 @@ theorem one_mem_filD_zero : (1 : Per.BdR l) ∈ Per.FilD l 0 := by
   have h1 := GlobalTheory.RingIface.alg_mem_FilD_nat l h0
   rwa [map_one, Nat.cast_zero] at h1
 
+/- English proof (translation)
+Rewrite using `[← mul_one (algebraMap (Per.BdRp l) (Per.BdR l) u), ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ u one_mem_filD_zero`.
+-/
 theorem algebraMap_mem_filD_zero (u : Per.BdRp l) :
     algebraMap (Per.BdRp l) (Per.BdR l) u ∈ Per.FilD l 0 := by
   rw [← mul_one (algebraMap (Per.BdRp l) (Per.BdR l) u), ← Algebra.smul_def]
   exact Submodule.smul_mem _ u one_mem_filD_zero
 
+/- English proof (translation)
+Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul o β => simp [TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply]`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+-/
 theorem equivFinsuppOfBasisLeft_map_id {O B B' ι : Type} [CommRing O] [Algebra ℤ_[l] O]
     [CommRing B] [CommRing B'] [Algebra ℤ_[l] B] [Algebra ℤ_[l] B']
     [DecidableEq ι] (b : Module.Basis ι ℤ_[l] O) (g : B →ₐ[ℤ_[l]] B') (r : O ⊗[ℤ_[l]] B) (k : ι) :
@@ -42,6 +51,9 @@ theorem equivFinsuppOfBasisLeft_map_id {O B B' ι : Type} [CommRing O] [Algebra 
   | tmul o β => simp [TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply]
   | add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r x => simp [TensorProduct.equivFinsuppOfBasisRight_apply_tmul_apply]`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+-/
 theorem equivFinsuppOfBasisRight_map_id {O R R' M κ : Type} [CommRing O] [CommRing R] [CommRing R']
     [Algebra O R] [Algebra O R'] [AddCommGroup M] [Module O M]
     [DecidableEq κ] (b : Module.Basis κ O M) (f : R →ₐ[O] R') (w : R ⊗[O] M) (j : κ) :
@@ -52,6 +64,15 @@ theorem equivFinsuppOfBasisRight_map_id {O R R' M κ : Type} [CommRing O] [CommR
   | tmul r x => simp [TensorProduct.equivFinsuppOfBasisRight_apply_tmul_apply]
   | add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis ℤ_[l] O`. Establish `hr : r = (TensorProduct.equivFinsuppOfBasisLeft b r).sum fun k β => b k ⊗ₜ[ℤ_[l]] β`. Rewrite using `[← TensorProduct.equivFinsuppOfBasisLeft_symm_apply, LinearEquiv.symm_apply_apply]`. Rewrite using `[hr, Finsupp.sum]`. Use `Submodule.sum_mem _ (fun k _ => ?_)` and prove the remaining obligations.
+
+Establish `hk : C.ι (TensorProduct.equivFinsuppOfBasisLeft b r k) ∈ Per.FilD l 0`. Establish `h1` using `equivFinsuppOfBasisLeft_map_id b (iotaZ C) r k`. Establish `h2` using `equivFinsuppOfBasisLeft_map_id b (bdRpToBdR l) s k`. Establish `h3 : Algebra.TensorProduct.map (AlgHom.id O O) (iotaZ C) r = Algebra.TensorProduct.map (AlgHom.id O O) (bdRpToBdR l) s` using `h`. Rewrite `h1` using `[h3, h2]`.
+
+Establish `h4 : C.ι (TensorProduct.equivFinsuppOfBasisLeft b r k) = algebraMap (Per.BdRp l) (Per.BdR l) (TensorProduct.equivFinsuppOfBasisLeft b s k)` using `h1.symm`. Rewrite using `[h4]`. Conclude with `algebraMap_mem_filD_zero _`. Establish `h5 : b k ⊗ₜ[ℤ_[l]] (TensorProduct.equivFinsuppOfBasisLeft b r k) = b k • ((1 : O) ⊗ₜ[ℤ_[l]] (TensorProduct.equivFinsuppOfBasisLeft b r k))`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+
+Rewrite using `[h5]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hk, rfl⟩)`.
+-/
 theorem mem_span_filD_zero_of_iotaO_eq {O : Type} [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O]
     (C : GlobalTheory.MemLoc.Core l) (r : OB l O) (s : OD l O) (h : iotaO O C r = dRO l O s) :
     r ∈ Submodule.span O
@@ -80,6 +101,15 @@ theorem mem_span_filD_zero_of_iotaO_eq {O : Type} [CommRing O] [Algebra ℤ_[l] 
 
 end IntegralSpan
 
+/- English proof (translation)
+Introduce `l _ O K _ _ _ _ _ _ _ T C w hw`. Take `⟨z, hz⟩` from `hw`. Use `haveI := T.L.free`. Set `bT` to `Module.Free.chooseBasis O ↥T.L.T`. Establish `hw' : w = (TensorProduct.equivFinsuppOfBasisRight bT w).sum fun j r => r ⊗ₜ[O] bT j`.
+
+Rewrite using `[← TensorProduct.equivFinsuppOfBasisRight_symm_apply, LinearEquiv.symm_apply_apply]`. Rewrite using `[hw', Finsupp.sum]`. Use `Submodule.sum_mem _ (fun j _ => ?_)` and prove the remaining obligations. Establish `hj : iotaO O C (TensorProduct.equivFinsuppOfBasisRight bT w j) = dRO l O (TensorProduct.equivFinsuppOfBasisRight bT z j)`. Rewrite using `[← equivFinsuppOfBasisRight_map_id, ← equivFinsuppOfBasisRight_map_id]`.
+
+Conclude with `(congrArg (fun y => TensorProduct.equivFinsuppOfBasisRight bT y j) hz).symm`. Establish `hr` using `mem_span_filD_zero_of_iotaO_eq C _ _ hj`. Establish `hm` using `Submodule.mem_map_of_mem (f := (TensorProduct.mk O (OB l O) ↥T.L.T).flip (bT j)) hr`. Rewrite `hm` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ hm` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨u, ⟨β, hβ, rfl⟩, rfl⟩`. Conclude with `⟨β, bT j, hβ, rfl⟩`.
+-/
 theorem mem_span_filD_zero_of_integral : ∀ (l : ℕ) [Fact l.Prime] (O K : Type) [CommRing O] [Algebra ℤ_[l] O]
     [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [NormedAlgebra ℚ_[l] K] [Algebra O K]
     (T : LocLat (Gl l) ℚ_[l] K O) (C : GlobalTheory.MemLoc.Core l) (w : TW (OB l O) T),

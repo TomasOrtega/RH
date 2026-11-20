@@ -4,6 +4,11 @@ import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.SqSubLe
 open NumberField IsDedekindDomain GlobalTheory.QNorm
 open scoped WithZero
 
+/- English proof (translation)
+Introduce `K L _ _ _ _ _ w`. Establish `: w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal` using `⟨rfl⟩`. Establish `hc` using `(HeightOneSpectrum.uniformContinuous_algebraMap_liesOver K L (w.under (𝓞 K)) w).continuous`. Use `⟨((HeightOneSpectrum.adicCompletion.equiv L w).symm.toRingHom.comp (UniformSpace.Completion.mapRingHom (algebraMap (WithVal ((w.under (𝓞 K)).valuation K)) (WithVal (w.valuation L))) hc)).comp (HeightOneSpectrum.adicCompletion.equiv K (w.under (𝓞 K))).toRingHom, fun x => ?_⟩` and prove the remaining obligations. Apply `HeightOneSpectrum.adicCompletion.ext` to reduce the goal to its premises.
+
+Conclude with `UniformSpace.Completion.mapRingHom_coe hc (WithVal.toVal _ x)`.
+-/
 theorem GlobalTheory.QNorm.exists_ringHom_adicCompletion_under :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
       (w : HeightOneSpectrum (𝓞 E)),

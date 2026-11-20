@@ -34,6 +34,11 @@ def GamOnto (S : StepLevel F E σ J T f bad) (A : LocAt F E n G) (i : G.comp) : 
 def StabAt (S : StepLevel F E σ J T f bad) (x : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Type :=
   {δ : GL (Fin n) E // δ ∈ UJ (σ : E →+* E) J ∧ x⁻¹ * bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) δ * x ∈ S.U}
 
+/- English proof (translation)
+Establish `h1` using `hh (Fin.cast A.rk a) (Fin.cast A.rk b)`. Establish `h2 : (bc ((A.eQ v : G.P.Qq v →+* (A.pl v).1.adicCompletion F)) (castGL A.rk (G.P.Qq v) h) : Matrix (Fin n) (Fin n) _) (Fin.cast A.rk a) (Fin.cast A.rk b) = A.eQ v ((h : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v)) a b)` using `by show A.eQ v ((castGL A.rk (G.P.Qq v) h : Matrix (Fin n) (Fin n) _) (Fin.cast A.rk a) (Fin.cast A.rk b)) = _`. Rewrite using `[castGL_apply]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[h2]`.
+
+Conclude with `(hW v _).2 h1`.
+-/
 theorem int_of_eQ {A : LocAt F E n G} (hW : LocInt A) (v : Fin G.P.nV) (h : GL (Fin (G.P.m + 1)) (G.P.Qq v))
     (hh : ∀ a b, (bc ((A.eQ v : G.P.Qq v →+* (A.pl v).1.adicCompletion F)) (castGL A.rk (G.P.Qq v) h) : Matrix (Fin n) (Fin n) _) a b ∈
       (A.pl v).1.adicCompletionIntegers F) (a b : Fin (G.P.m + 1)) :
@@ -49,6 +54,9 @@ theorem int_of_eQ {A : LocAt F E n G} (hW : LocInt A) (v : Fin G.P.nV) (h : GL (
 
 variable {A : LocAt F E n G} (S : StepLevel F E σ J T f bad)
 
+/- English proof (translation)
+Rewrite using `[map_mul, map_mul, map_inv, map_inv, hx.2 v, hx'.2 v, map_mul, map_mul, map_inv, map_inv]`. Use `group`.
+-/
 theorem ff_quot (i : G.comp) (g g' : ∀ v, GL (Fin (G.P.m + 1)) (G.P.Qq v)) (x x' : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
     (hx : A.IsPt i g x) (hx' : A.IsPt i g' x') (v : Fin G.P.nV) :
     (bc (A.phE v) A.B)⁻¹ * bc (A.ph v) (bc (prV (E := E) (A.pl v).1) (x⁻¹ * x')) * bc (A.phE v) A.B =
@@ -58,10 +66,16 @@ theorem ff_quot (i : G.comp) (g g' : ∀ v, GL (Fin (G.P.m + 1)) (G.P.Qq v)) (x 
 
 variable {S}
 
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.rational_points_le_holds F E (Fin n) σ J (FiniteAdeleRing (𝓞 F) F) ⟨γ, hγ, rfl⟩`.
+-/
 theorem bc_mem {γ : GL (Fin n) E} (hγ : γ ∈ UJ (σ : E →+* E) J) :
     bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F) :=
   Formalism.UG.P.rational_points_le_holds F E (Fin n) σ J (FiniteAdeleRing (𝓞 F) F) ⟨γ, hγ, rfl⟩
 
+/- English proof (translation)
+The claim follows from `((S.U_eq y).1 hy).1`.
+-/
 theorem U_le {y : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)} (hy : y ∈ S.U) : y ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F) :=
   ((S.U_eq y).1 hy).1
 
@@ -75,6 +89,9 @@ variable (H : LocGood σ J A) (hW : LocInt A) (hH : LocHyp S A) (hHc : LocHypC S
         ((A.yG i)⁻¹ * bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) (A.gamI i γ) * A.yG i) ∈ S.Uloc w)
   (hU : ∀ i (γ : (G.lev i).Γ), A.gamI i γ ∈ UJ (σ : E →+* E) J)
 
+/- English proof (translation)
+Use `show (L v).map _ = _`. Rewrite using `[hL v, colSpan_map]`. Both sides reduce to the same expression.
+-/
 theorem smul_colSpan (i : G.comp) (γ : (G.lev i).Γ) (L : G.P.Tup) (g : ∀ v, GL (Fin (G.P.m + 1)) (G.P.Qq v))
     (hL : ∀ v, L v = colSpan (G.P.W v) (g v : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v))) (v : Fin G.P.nV) :
     (G.lev i).smul γ L v = colSpan (G.P.W v)
@@ -85,6 +102,13 @@ theorem smul_colSpan (i : G.comp) (γ : (G.lev i).Γ) (L : G.P.Tup) (g : ∀ v, 
 
 include H hW hH hbad hA hΓ hU in
 
+/- English proof (translation)
+Take `⟨κ, hκ⟩` from `awayEx_of H S hΓ i γ`. Establish `hx'` using `A.isPt_smul hA i g x.1 κ.1 hx γ hκ`. Establish `hL' : ∀ v, L v = colSpan (G.P.W v) (((G.lev i).act v γ * g v : GL (Fin (G.P.m + 1)) (G.P.Qq v)) : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v))`. Introduce `v`. Rewrite using `[← smul_colSpan i γ L g hL v, hfix]`.
+
+Establish `hm : bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) (A.gamI i γ) * x.1 * κ.1⁻¹ ∈ UPts σ J (FiniteAdeleRing (𝓞 F) F) := Subgroup.mul_mem _ (Subgroup.mul_mem _ (bc_mem (hU i γ)) x.2) (Subgroup.inv_mem _ (U_le κ.2))`. Take `⟨κ', e, -⟩` from `ptOne_of S hW hH hbad i L g _ x ⟨_, hm⟩ hL hL' hx hx'`. Establish `e2 : x.1⁻¹ * bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) (A.gamI i γ) * x.1 = κ'.1 * κ.1 := by`. Establish `e' : bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) (A.gamI i γ) * x.1 * κ.1⁻¹ = x.1 * κ'.1 := e`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[e2]`. Conclude with `S.U.mul_mem κ'.2 κ.2`.
+-/
 theorem fix_mem (i : G.comp) (L : G.P.Tup) (g : ∀ v, GL (Fin (G.P.m + 1)) (G.P.Qq v))
     (hL : ∀ v, L v = colSpan (G.P.W v) (g v : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v)))
     (x : UPts σ J (FiniteAdeleRing (𝓞 F) F)) (hx : A.IsPt i g x.1) (γ : (G.lev i).Γ) (hfix : (G.lev i).smul γ L = L) :
@@ -108,6 +132,13 @@ theorem fix_mem (i : G.comp) (L : G.P.Tup) (g : ∀ v, GL (Fin (G.P.m + 1)) (G.P
 
 include H hW hHc hA hΓ in
 
+/- English proof (translation)
+Take `⟨κ, hκ⟩` from `awayEx_of H S hΓ i γ`. Establish `hx'` using `A.isPt_smul hA i g x.1 κ.1 hx γ hκ`. Establish `hmU : x.1⁻¹ * (bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) (A.gamI i γ) * x.1 * κ.1⁻¹) ∈ S.U := by`. Establish `: x.1⁻¹ * (bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) (A.gamI i γ) * x.1 * κ.1⁻¹) = (x.1⁻¹ * bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) (A.gamI i γ) * x.1) * κ.1⁻¹ := by group`. Rewrite using `[this]`.
+
+Conclude with `S.U.mul_mem hm (S.U.inv_mem κ.2)`. Use function extensionality and compare the values at `v`. Establish `hloc` using `((S.U_eq _).1 hmU).2 (A.pl v).1`. Take `⟨h1, h2⟩` from `hHc v _ hloc`. Rewrite `h1`, `h2` using `[ff_quot i g _ x.1 _ hx hx' v]`.
+
+Rewrite `h2` using `[← map_inv, ← map_inv]`. Establish `hst : (g v)⁻¹ * ((G.lev i).act v γ * g v) ∈ stabStd (k` using `G.P.m + 1) (Qq := G.P.Qq v) (G.P.W v) := (stabStd_iff _ _).2 ⟨int_of_eQ hW v _ h1, int_of_eQ hW v _ h2⟩`. Rewrite using `[smul_colSpan i γ L g hL v, hL v, colSpan_eq, colSpan_eq]`. Conclude with `(gMap_std_eq_iff _ _ _).2 hst`.
+-/
 theorem fix_of_mem (i : G.comp) (L : G.P.Tup) (g : ∀ v, GL (Fin (G.P.m + 1)) (G.P.Qq v))
     (hL : ∀ v, L v = colSpan (G.P.W v) (g v : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v)))
     (x : UPts σ J (FiniteAdeleRing (𝓞 F) F)) (hx : A.IsPt i g x.1) (γ : (G.lev i).Γ)
@@ -131,6 +162,11 @@ theorem fix_of_mem (i : G.comp) (L : G.P.Tup) (g : ∀ v, GL (Fin (G.P.m + 1)) (
 
 include H hW hH hHc hbad hA hΓ hU in
 
+/- English proof (translation)
+Use `⟨fun a b hab => Subtype.ext (hinj (congrArg Subtype.val hab)), fun δ => ?_⟩` and prove the remaining obligations. Take `⟨δ, hδ, hδx⟩` from `δ`. Establish `hoff : ∀ w : HeightOneSpectrum (𝓞 F), ((p : ℕ) : 𝓞 F) ∉ w.asIdeal → bc (prV (E` using `E) w) ((A.yG i)⁻¹ * bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) δ * A.yG i) ∈ S.Uloc w := by`. Introduce `w hw`. Establish `h1` using `((S.U_eq _).1 hδx).2 w`.
+
+Rewrite `h1` using `[map_mul, map_mul, map_inv, hx.1 w hw]`. Rewrite using `[map_mul, map_mul, map_inv]`. Conclude with `h1`. Take `⟨γ, rfl⟩` from `hon δ hδ hoff`. Conclude with `⟨⟨γ, fix_of_mem H hW hHc hA hΓ i L g hL x hx γ hδx⟩, rfl⟩`.
+-/
 theorem stab_bij (i : G.comp) (hinj : Function.Injective (A.gamI i)) (hon : GamOnto S A i) (L : G.P.Tup)
     (g : ∀ v, GL (Fin (G.P.m + 1)) (G.P.Qq v))
     (hL : ∀ v, L v = colSpan (G.P.W v) (g v : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v)))
@@ -149,6 +185,11 @@ theorem stab_bij (i : G.comp) (hinj : Function.Injective (A.gamI i)) (hon : GamO
   obtain ⟨γ, rfl⟩ := hon δ hδ hoff
   exact ⟨⟨γ, fix_of_mem H hW hHc hA hΓ i L g hL x hx γ hδx⟩, rfl⟩
 
+/- English proof (translation)
+Substitute `e` using the available equality. Establish `: y⁻¹ * bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) (γ₀⁻¹ * d * γ₀) * y = κ₀.1 * ((bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ₀ * y * κ₀.1)⁻¹ * bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) d * (bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ₀ * y * κ₀.1)) * κ₀.1⁻¹ := by`. Rewrite using `[map_mul, map_mul, map_inv]`. Use `group`. Rewrite using `[this]`.
+
+Conclude with `S.U.mul_mem (S.U.mul_mem κ₀.2 hd) (S.U.inv_mem κ₀.2)`.
+-/
 theorem conj_mem (x y : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (γ₀ d : GL (Fin n) E) (κ₀ : S.U)
     (e : x = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ₀ * y * κ₀.1)
     (hd : x⁻¹ * bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) d * x ∈ S.U) :
@@ -161,6 +202,11 @@ theorem conj_mem (x y : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (γ₀
   rw [this]
   exact S.U.mul_mem (S.U.mul_mem κ₀.2 hd) (S.U.inv_mem κ₀.2)
 
+/- English proof (translation)
+Substitute `e` using the available equality. Establish `: (bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) γ₀ * y * κ₀.1)⁻¹ * bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) (γ₀ * d * γ₀⁻¹) * (bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ₀ * y * κ₀.1) = κ₀.1⁻¹ * (y⁻¹ * bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) d * y) * κ₀.1 := by`. Rewrite using `[map_mul, map_mul, map_inv]`. Use `group`. Rewrite using `[this]`.
+
+Conclude with `S.U.mul_mem (S.U.mul_mem (S.U.inv_mem κ₀.2) hd) κ₀.2`.
+-/
 theorem conj_mem' (x y : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (γ₀ d : GL (Fin n) E) (κ₀ : S.U)
     (e : x = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ₀ * y * κ₀.1)
     (hd : y⁻¹ * bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) d * y ∈ S.U) :
@@ -177,6 +223,13 @@ theorem conj_mem' (x y : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (γ�
 set_option maxHeartbeats 2000000 in
 include H hW hH hbad in
 
+/- English proof (translation)
+Take `⟨κ, e, -⟩` from `ptOne_of S hW hH hbad i L g g' ⟨_, Subgroup.mul_mem _ (Subgroup.mul_mem _ (bc_mem hγ₁) (y c).2) (U_le κ₁.2)⟩ ⟨_, Subgroup.mul_mem _ (Subgroup.mul_mem _ (bc_mem hγ₂) (y c').2) (U_le κ₂.2)⟩ hL hL' h1 h2`. Establish `e' : bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) γ₂ * (y c').1 * κ₂.1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ₁ * (y c).1 * κ₁.1 * κ.1 := e`. Establish `hγ : γ₂⁻¹ * γ₁ ∈ UJ (σ : E →+* E) J` using `Subgroup.mul_mem _ (Subgroup.inv_mem _ hγ₂) hγ₁`. Establish `hκ : κ₁.1 * κ.1 * κ₂.1⁻¹ ∈ S.U` using `S.U.mul_mem (S.U.mul_mem κ₁.2 κ.2) (S.U.inv_mem κ₂.2)`. Apply `hy` to reduce the goal to its premises.
+
+Use `show (Quotient.mk'' (y c) : Cls S) = Quotient.mk'' (y c')`. Use `(DoubleCoset.eq _ _ _ _).2 ⟨⟨_, bc_mem hγ⟩, Subgroup.mem_subgroupOf.2 ⟨γ₂⁻¹ * γ₁, hγ, rfl⟩, ⟨_, U_le hκ⟩, Subgroup.mem_subgroupOf.2 hκ, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show (y c').1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) (γ₂⁻¹ * γ₁) * (y c).1 * (κ₁.1 * κ.1 * κ₂.1⁻¹)`. Establish `: (y c').1 = (bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) γ₂)⁻¹ * (bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ₂ * (y c').1 * κ₂.1) * κ₂.1⁻¹ := by group`. Rewrite using `[this, e', map_mul, map_inv]`.
+
+Use `group`.
+-/
 theorem cls_unique {cl : Type} (y : cl → UPts σ J (FiniteAdeleRing (𝓞 F) F))
     (hy : Function.Injective (fun c => (Quotient.mk'' (y c) : Cls S))) (i : G.comp) (L : G.P.Tup)
     (g g' : ∀ v, GL (Fin (G.P.m + 1)) (G.P.Qq v))
@@ -224,6 +277,11 @@ def stabCls {cl : Type} {stab : cl → Type} [∀ c, Group (stab c)] (y : cl →
 
 include H hW hH hHc hbad hA hΓ hU in
 
+/- English proof (translation)
+Set `x : UPts σ J (FiniteAdeleRing (𝓞 F) F)` to `⟨_, Subgroup.mul_mem _ (Subgroup.mul_mem _ (bc_mem hγ₀) (y c).2) (U_le κ₀.2)⟩`. Establish `e1` using `Nat.card_congr (Equiv.ofBijective _ (stab_bij H hW hH hHc hbad hA hΓ hU i hinj hon L g hL x hx))`. Establish `e2` using `Nat.card_congr (stabConj x.1 (y c).1 γ₀ hγ₀ κ₀ rfl)`. Establish `e3` using `Nat.card_congr (stabCls y stabI hsinj hrange c)`. Rewrite using `[e3, ← e2]`.
+
+Conclude with `e1.symm`.
+-/
 theorem card_eq (i : G.comp) (hinj : Function.Injective (A.gamI i)) (hon : GamOnto S A i) (L : G.P.Tup)
     (g : ∀ v, GL (Fin (G.P.m + 1)) (G.P.Qq v))
     (hL : ∀ v, L v = colSpan (G.P.W v) (g v : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v)))
@@ -250,6 +308,11 @@ section LocJ
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `e1 : J' = J` using `by ext x y; exact hJ x y`. Substitute `e1` using the available equality. Establish `e2 : (reGL (rfl : a = a) R).symm g = g` using `by rw [MulEquiv.symm_apply_eq, reGL_rfl]`. Rewrite using `[e2]`.
+
+Conclude with `hg`.
+-/
 theorem reGL_symm_mem_UJ {a b : ℕ} (h : a = b) {R : Type} [CommRing R] (σ : R →+* R) (J : Matrix (Fin a) (Fin a) R)
     (J' : Matrix (Fin b) (Fin b) R) (hJ : ∀ x y, J' x y = J (Fin.cast h.symm x) (Fin.cast h.symm y)) (g : GL (Fin b) R)
     (hg : g ∈ UJ σ J') : (reGL h R).symm g ∈ UJ σ J := by
@@ -273,6 +336,9 @@ variable {D : D7} {X : Formalism.L2.Herm.Herm0 D} {u : D.what₂.Word} {w : D.wh
   {T : ℕ} {bad : Set (HeightOneSpectrum (𝓞 D.host.F))}
   (S : StepLevel D.host.F D.host.E (sigD D) (gramN D (i + 1) hi) T D.R.f bad)
 
+/- English proof (translation)
+Introduce `a b hab`. Apply `t.gamI_inj c` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(reGL (rankN D (i + 1) hi) D.host.E).injective hab`.
+-/
 theorem gamI_inj_locJ (c : cmp) : Function.Injective ((locJ hi t B).gamI c) := by
   intro a b hab
   apply t.gamI_inj c
@@ -281,6 +347,15 @@ theorem gamI_inj_locJ (c : cmp) : Function.Injective ((locJ hi t B).gamI c) := b
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `δ hδ hoff`. Establish `hδ0 : (reGL (rankN D (i + 1) hi) D.host.E).symm δ ∈ UJ (D.sp.cm.sig : D.host.E →+* D.host.E) (D.sp.X (i + 1)).gram` using `reGL_symm_mem_UJ (rankN D (i + 1) hi) _ _ _ (gramN_apply D (i + 1) hi) δ hδ`. Establish `eδ : δ = reGL (rankN D (i + 1) hi) D.host.E ((reGL (rankN D (i + 1) hi) D.host.E).symm δ)` using `(MulEquiv.apply_symm_apply _ _).symm`. Use `set δ0 := (reGL (rankN D (i + 1) hi) D.host.E).symm δ with hδ0def`. Establish `hz : ((t.yG c).1)⁻¹ * bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) δ0 * (t.yG c).1 ∈ awayG D.sp.cm.sig (D.sp.X (i + 1)).gram Uloc (D.what₂.places.resChar w) := by`.
+
+Rewrite using `[mem_awayG]`. Use `⟨Subgroup.mul_mem _ (Subgroup.mul_mem _ (Subgroup.inv_mem _ (t.yG c).2) (bc_mem hδ0)) (t.yG c).2, fun w' hw' => ?_⟩` and prove the remaining obligations. Establish `h1` using `hoff w' hw'`. Establish `e1 : ((locJ hi t B).yG c)⁻¹ * bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) δ * (locJ hi t B).yG c = reGL (rankN D (i + 1) hi) _ (((t.yG c).1)⁻¹ * bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) δ0 * (t.yG c).1) := by`. Rewrite using `[eδ, map_mul, map_mul, map_inv, ← bc_reGL]`.
+
+Both sides reduce to the same expression. Rewrite `h1` using `[e1, bc_reGL, hU w']`. Conclude with `(Subgroup.mem_map_iff_mem (f := (reGL (rankN D (i + 1) hi) _).toMonoidHom) (reGL (rankN D (i + 1) hi) _).injective).1 h1`. Take `⟨γ, hγ⟩` from `(t.gamI_range c ⟨δ0, hδ0⟩).2 ((mem_map_conj _ _ _).2 hz)`. Use `⟨γ, ?_⟩` and prove the remaining obligations.
+
+Use `show reGL (rankN D (i + 1) hi) D.host.E (t.gamI c γ).1 = δ`. Rewrite using `[hγ]`. Conclude with `eδ.symm`.
+-/
 theorem gamOnto_locJ (hU : SameUlocJ hi S Uloc) (c : cmp) : GamOnto S (locJ hi t B) c := by
   intro δ hδ hoff
   have hδ0 : (reGL (rankN D (i + 1) hi) D.host.E).symm δ ∈ UJ (D.sp.cm.sig : D.host.E →+* D.host.E) (D.sp.X (i + 1)).gram :=
@@ -307,6 +382,13 @@ theorem gamOnto_locJ (hU : SameUlocJ hi S Uloc) (c : cmp) : GamOnto S (locJ hi t
   rw [hγ]
   exact eδ.symm
 
+/- English proof (translation)
+Substitute `hk` using the available equality. Establish `hre : ∀ (R : Type) [CommRing R] (g : GL (Fin k) R), reGL (rfl : k = k) R g = g`. Introduce `R _ g`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `x y`.
+
+Both sides reduce to the same expression. Rewrite `hB` using `[hre]`. Introduce `v x hx`. Rewrite `hx` using `[hU]`. Take `⟨x0, hx0, e⟩` from `Subgroup.mem_map.1 hx`.
+
+Establish `e' : x = x0` using `by rw [← e]; exact hre _ x0`. Substitute `e'` using the available equality. Rewrite using `[hB]`. Conclude with `h0 v x hx0`.
+-/
 theorem locHypC_of {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))} {p : ℕ} {G : GAtP p}
     {k : ℕ} (hk : k = n) (A : LocAt F E n G) (S : StepLevel F E σ J T f bad) (B0 : GL (Fin k) E) (hB : A.B = reGL hk E B0)
@@ -341,6 +423,11 @@ def HypTJC : Prop :=
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Use `locHypC_of (rankN D (i + 1) hi) (locJ hi t B) S B rfl Uloc hU ?_` and prove the remaining obligations. Introduce `v x0 hx0`. Establish `hfr` using `hB _ ((X.g u w hg).pl v).2`. Take `⟨h1, h2⟩` from `hTc _ ((X.g u w hg).pl v).2 x0 hx0`. Rewrite `h1`, `h2` using `[hfr]`.
+
+Conclude with `⟨h1, h2⟩`.
+-/
 theorem locHypC_locJ (hU : SameUlocJ hi S Uloc) (hB : FrRatJ t B) (hTc : HypTJC t) : LocHypC S (locJ hi t B) := by
   refine locHypC_of (rankN D (i + 1) hi) (locJ hi t B) S B rfl Uloc hU ?_
   intro v x0 hx0

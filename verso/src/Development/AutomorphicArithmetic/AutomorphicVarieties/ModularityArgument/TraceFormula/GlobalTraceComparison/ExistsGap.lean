@@ -12,6 +12,11 @@ variable {X : Type} [TopologicalSpace X] [CompactSpace X] {B : Type} [CommRing B
 private def Nn (c : A) : Prop :=
   p c = 0 ∧ ∀ χ, (Φ (c : B) χ).im = 0 ∧ 0 ≤ (Φ (c : B) χ).re
 
+/- English proof (translation)
+Use `⟨by simp [hc.1, hd.1], fun χ => ?_⟩` and prove the remaining obligations. Establish `h₁` using `hc.2 χ`. Establish `h₂` using `hd.2 χ`. Establish `e : Φ ((c + d : A) : B) χ = Φ (c : B) χ + Φ (d : B) χ` using `by simp`. Rewrite using `[e, Complex.add_im, Complex.add_re]`.
+
+Conclude with `⟨by rw [h₁.1, h₂.1, add_zero], add_nonneg h₁.2 h₂.2⟩`.
+-/
 private lemma nn_add {c d : A} (hc : Nn Φ A p c) (hd : Nn Φ A p d) : Nn Φ A p (c + d) := by
   refine ⟨by simp [hc.1, hd.1], fun χ => ?_⟩
   have h₁ := hc.2 χ
@@ -20,6 +25,9 @@ private lemma nn_add {c d : A} (hc : Nn Φ A p c) (hd : Nn Φ A p d) : Nn Φ A p
   rw [e, Complex.add_im, Complex.add_re]
   exact ⟨by rw [h₁.1, h₂.1, add_zero], add_nonneg h₁.2 h₂.2⟩
 
+/- English proof (translation)
+Establish `e : Φ ((star b * b : A) : B) χ = star (Φ (b : B) χ) * Φ (b : B) χ`. Simplify using `[map_mul, map_star]`. Rewrite using `[e]`. Simplify using `using Complex.conj_mul' (Φ (b : B) χ)`.
+-/
 private lemma sq_apply (b : A) (χ : X) :
     Φ ((star b * b : A) : B) χ = ((‖Φ (b : B) χ‖ ^ 2 : ℝ) : ℂ) := by
   have e : Φ ((star b * b : A) : B) χ = star (Φ (b : B) χ) * Φ (b : B) χ := by
@@ -27,11 +35,31 @@ private lemma sq_apply (b : A) (χ : X) :
   rw [e]
   simpa using Complex.conj_mul' (Φ (b : B) χ)
 
+/- English proof (translation)
+Use `⟨by simp [map_mul, map_star, hb], fun χ => ?_⟩` and prove the remaining obligations. Rewrite using `[sq_apply]`. Conclude with `⟨Complex.ofReal_im _, by rw [Complex.ofReal_re]; positivity⟩`.
+-/
 private lemma nn_sq {b : A} (hb : p b = 0) : Nn Φ A p (star b * b) := by
   refine ⟨by simp [map_mul, map_star, hb], fun χ => ?_⟩
   rw [sq_apply]
   exact ⟨Complex.ofReal_im _, by rw [Complex.ofReal_re]; positivity⟩
 
+/- English proof (translation)
+Use `hK.induction_on (p := fun S => ∃ c : A, Nn Φ A p c ∧ ∃ δ : ℝ, 0 < δ ∧ ∀ χ ∈ S, δ ≤ (Φ (c : B) χ).re) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `⟨0, ⟨by simp, fun χ => by simp⟩, 1, one_pos, by simp⟩`. Introduce and unpack `S T hST ⟨c, hc, δ, hδ, h⟩`. Conclude with `⟨c, hc, δ, hδ, fun χ hχ => h χ (hST hχ)⟩`. Introduce and unpack `S T ⟨c, hc, δ, hδ, h⟩ ⟨d, hd', ε, hε, h'⟩`.
+
+Use `⟨c + d, nn_add Φ A p hc hd', min δ ε, lt_min hδ hε, ?_⟩` and prove the remaining obligations. Introduce and unpack `χ (hχ | hχ)`. Establish `e : Φ ((c + d : A) : B) χ = Φ (c : B) χ + Φ (d : B) χ` using `by simp`. Rewrite using `[e, Complex.add_re]`. Use `(hd'.2 χ).2` as an intermediate fact.
+
+Use `h χ hχ` as an intermediate fact. Use `min_le_left δ ε` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : Φ ((c + d : A) : B) χ = Φ (c : B) χ + Φ (d : B) χ` using `by simp`. Rewrite using `[e, Complex.add_re]`.
+
+Use `(hc.2 χ).2` as an intermediate fact. Use `h' χ hχ` as an intermediate fact. Use `min_le_right δ ε` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `χ hχ`.
+
+Take `⟨a, ha⟩` from `hd χ hχ`. Use `set b : A := a - algebraMap ℂ A (p a) with hbdef`. Establish `hb : p b = 0`. Rewrite using `[hbdef, map_sub, AlgHomClass.commutes]`. Simplify using the standard rewrite rules.
+
+Establish `hbχ : Φ (b : B) χ ≠ 0`. Establish `e : Φ (b : B) χ = Φ (a : B) χ - p a`. Simplify using `[hbdef, AlgHomClass.commutes, Algebra.algebraMap_eq_smul_one]`. Rewrite using `[e]`. Conclude with `sub_ne_zero.2 ha`.
+
+Establish `hpos : 0 < ‖Φ (b : B) χ‖ ^ 2 / 2`. Use `norm_pos_iff.2 hbχ` as an intermediate fact. Check the signs of the components of the expression. Establish `hopen : IsOpen {y : X | ‖Φ (b : B) χ‖ ^ 2 / 2 < (Φ ((star b * b : A) : B) y).re}` using `isOpen_lt continuous_const (Complex.continuous_re.comp (map_continuous _))`. Establish `hmem : χ ∈ {y : X | ‖Φ (b : B) χ‖ ^ 2 / 2 < (Φ ((star b * b : A) : B) y).re}`.
+
+Rewrite using `[Set.mem_setOf_eq, sq_apply, Complex.ofReal_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `⟨_, mem_nhdsWithin_of_mem_nhds (hopen.mem_nhds hmem), star b * b, nn_sq Φ A p hb, _, hpos, fun y hy => le_of_lt hy⟩`.
+-/
 private lemma exists_sep {K : Set X} (hK : IsCompact K)
     (hd : ∀ χ ∈ K, ∃ a : A, Φ (a : B) χ ≠ p a) :
     ∃ c : A, Nn Φ A p c ∧ ∃ δ : ℝ, 0 < δ ∧ ∀ χ ∈ K, δ ≤ (Φ (c : B) χ).re := by
@@ -78,6 +106,13 @@ private lemma exists_sep {K : Set X} (hK : IsCompact K)
     exact ⟨_, mem_nhdsWithin_of_mem_nhds (hopen.mem_nhds hmem), star b * b, nn_sq Φ A p hb,
       _, hpos, fun y hy => le_of_lt hy⟩
 
+/- English proof (translation)
+Establish `hcl : IsClosed {χ : X | ∀ a : A, Φ (a : B) χ = p a}`. Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun a => isClosed_eq (map_continuous _) continuous_const`. Break down `Set.eq_empty_or_nonempty {χ : X | ∀ a : A, Φ (a : B) χ = p a} with he | hne` into its components or cases. Use `⟨ρ / 2, by positivity, by linarith, fun χ hχ => ?_⟩` and prove the remaining obligations.
+
+Establish `: χ ∈ {χ : X | ∀ a : A, Φ (a : B) χ = p a}` using `hχ`. Rewrite `this` using `[he]`. Conclude with `this.elim`. Take `⟨χ₀, h₀, hmax⟩` from `hcl.isCompact.exists_isMaxOn hne (f := fun χ => ‖Φ x χ‖) (continuous_norm.comp (map_continuous _)).continuousOn`. Establish `h₁` using `h χ₀ h₀`.
+
+Establish `h₂` using `norm_nonneg (Φ x χ₀)`. Use `⟨(‖Φ x χ₀‖ + ρ) / 2, by linarith, by linarith, fun χ hχ => ?_⟩` and prove the remaining obligations. Establish `: ‖Φ x χ‖ ≤ ‖Φ x χ₀‖` using `hmax hχ`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma exists_gap (x : B) {ρ : ℝ} (hρ : 0 < ρ)
     (h : ∀ χ, (∀ a : A, Φ (a : B) χ = p a) → ‖Φ x χ‖ < ρ) :
     ∃ ρ' : ℝ, 0 < ρ' ∧ ρ' < ρ ∧ ∀ χ, (∀ a : A, Φ (a : B) χ = p a) → ‖Φ x χ‖ < ρ' := by
@@ -101,6 +136,15 @@ end Core
 
 section Rep
 
+/- English proof (translation)
+Set `S : StarSubalgebra ℂ (H →L[ℂ] H)` to `R.range`. Establish `hcomm : ∀ u v : S, u * v = v * u`. Introduce and unpack `⟨_, y, rfl⟩ ⟨_, z, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show R y * R z = R z * R y`.
+
+Rewrite using `[← map_mul, ← map_mul, mul_comm]`. Set `C` to `S.topologicalClosure`. Establish `hmc : ∀ u v : C, u * v = v * u` using `(S.commRingTopologicalClosure hcomm).mul_comm`. Use `haveI hcl : IsClosed (C : Set (H →L[ℂ] H)) := S.isClosed_topologicalClosure`. Use `letI : CStarAlgebra C := inferInstance`.
+
+Use `letI : CommCStarAlgebra C := { mul_comm := hmc }`. Set `G : C →⋆ₐ[ℂ] C(WeakDual.characterSpace ℂ C, ℂ)` to `(gelfandStarTransform C : _)`. Establish `hmem : ∀ y, R y ∈ C` using `fun y => S.le_topologicalClosure ⟨y, rfl⟩`. Set `ι : B →⋆ₐ[ℂ] C` to `R.codRestrict C hmem`. Use `⟨_, inferInstance, inferInstance, G.comp ι, fun y => ?_⟩` and prove the remaining obligations.
+
+Apply the tactic sequence `exact (gelfandTransform_isometry C).norm_map_of_map_zero (map_zero _) (ι y)`.
+-/
 private theorem exists_rep {B : Type} [CommRing B] [StarRing B] [Algebra ℂ B] [StarModule ℂ B]
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (R : B →⋆ₐ[ℂ] (H →L[ℂ] H)) :
@@ -131,6 +175,49 @@ variable {X : Type} [TopologicalSpace X] [CompactSpace X] {B : Type} [CommRing B
   [Algebra ℂ B] [StarModule ℂ B] (Φ : B →⋆ₐ[ℂ] C(X, ℂ)) (A : StarSubalgebra ℂ B)
   (p : A →⋆ₐ[ℂ] ℂ)
 
+/- English proof (translation)
+Take `⟨ρ', h0, h1, hg⟩` from `exists_gap Φ A p x hρ h`. Establish `hKc : IsCompact {χ : X | ρ' ≤ ‖Φ x χ‖}` using `(isClosed_le continuous_const (continuous_norm.comp (map_continuous _))).isCompact`. Take `⟨c, hc, δ, hδ, hcK⟩` from `exists_sep Φ A p hKc (fun χ hχ => by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+
+Conclude with `absurd (hg χ hne) (not_lt.2 hχ))`. Take `⟨b, hbdef⟩ : ∃ b : A, b = a₀ - 1` from `⟨_, rfl⟩`. Establish `hb : p b = 0` using `by rw [hbdef, map_sub, map_one, ha, sub_self]`. Establish `hbχ : ∀ χ, Φ (b : B) χ = Φ (a₀ : B) χ - 1` using `fun χ => by simp [hbdef]`. Take `⟨d, hddef⟩ : ∃ d : A, d = c + star b * b` from `⟨_, rfl⟩`.
+
+Establish `hd : Nn Φ A p d` using `hddef ▸ nn_add Φ A p hc (nn_sq Φ A p hb)`. Establish `hdχ : ∀ χ, (Φ (d : B) χ).re = (Φ (c : B) χ).re + ‖Φ (b : B) χ‖ ^ 2` using `fun χ => by`. Establish `e : Φ (d : B) χ = Φ (c : B) χ + Φ ((star b * b : A) : B) χ`. Establish `e₀ : ((c + star b * b : A) : B) = (c : B) + ((star b * b : A) : B)` using `rfl`. Rewrite using `[hddef, e₀, map_add, ContinuousMap.add_apply]`.
+
+Rewrite using `[e, Complex.add_re, sq_apply, Complex.ofReal_re]`. Take `⟨ε, hεdef⟩ : ∃ ε : ℝ, ε = (ρ - ρ') / ρ'` from `⟨_, rfl⟩`. Establish `hε : 0 < ε` using `by rw [hεdef]; exact div_pos (sub_pos.2 h1) h0`. Establish `hρε : ρ' * (1 + ε) = ρ` using `by rw [hεdef]; field_simp; ring`. Take `⟨η, hηdef⟩ : ∃ η : ℝ, η = min δ (ε ^ 2)` from `⟨_, rfl⟩`.
+
+Establish `hη : 0 < η` using `by rw [hηdef]; exact lt_min hδ (by positivity)`. Establish `hηδ : η ≤ δ` using `by rw [hηdef]; exact min_le_left _ _`. Establish `hηε : η ≤ ε ^ 2` using `by rw [hηdef]; exact min_le_right _ _`. Take `⟨M, hMdef⟩ : ∃ M : ℝ, M = ‖Φ (d : B)‖ + η + 1` from `⟨_, rfl⟩`. Establish `hdn` using `norm_nonneg (Φ (d : B))`.
+
+Establish `hM : 0 < M` using `by rw [hMdef]; linarith`. Establish `hηM : η < M` using `by rw [hMdef]; linarith`. Establish `ht : ∀ χ, Φ (d : B) χ = (((Φ (d : B) χ).re : ℝ) : ℂ)` using `fun χ => Complex.ext (by simp) (by simp [(hd.2 χ).1])`. Establish `ht0 : ∀ χ, 0 ≤ (Φ (d : B) χ).re` using `fun χ => (hd.2 χ).2`. Establish `htM : ∀ χ, (Φ (d : B) χ).re ≤ M` using `fun χ => by`.
+
+Establish `h₁` using `Complex.re_le_norm (Φ (d : B) χ)`. Establish `h₂` using `ContinuousMap.norm_coe_le_norm (Φ (d : B)) χ`. Rewrite using `[hMdef]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨θ, hθdef⟩ : ∃ θ : ℝ, θ = 1 - η / M` from `⟨_, rfl⟩`.
+
+Establish `hθ1 : θ < 1` using `by rw [hθdef]; have := div_pos hη hM; linarith`. Establish `hθ0 : 0 < θ`. Rewrite using `[hθdef, sub_pos, div_lt_one hM]`. Conclude with `hηM`. Take `⟨L, hLdef⟩ : ∃ L : ℝ, L = ‖Φ x‖ * ‖Φ (a₀ : B)‖ + 1` from `⟨_, rfl⟩`.
+
+Establish `hL : 0 < L` using `by rw [hLdef]; positivity`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one (div_pos hρ hL) hθ1`. Establish `hn' : L * θ ^ n < ρ` using `by rwa [lt_div_iff₀' hL] at hn`. Take `⟨g, hgdef⟩ : ∃ g : A, g = (1 - algebraMap ℂ A ((M : ℂ)⁻¹) * d) ^ n` from `⟨_, rfl⟩`. Use `⟨g, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hgdef, map_pow, map_sub, map_one, map_mul, hd.1, mul_zero, sub_zero, one_pow]`. Establish `hgχ : ∀ χ, Φ (g : B) χ = (((1 - (Φ (d : B) χ).re / M) ^ n : ℝ) : ℂ)` using `fun χ => by`. Establish `e : Φ (g : B) χ = (1 - (M : ℂ)⁻¹ * Φ (d : B) χ) ^ n`. Simplify using `[hgdef, AlgHomClass.commutes, Algebra.algebraMap_eq_smul_one]`. Rewrite using `[e, ht χ]`.
+
+Use `push_cast`. Simplify using `[div_eq_inv_mul]`. Rewrite using `[ContinuousMap.norm_lt_iff _ hρ]`. Introduce `χ`. Establish `e : Φ (x * (g * a₀ : A)) χ = Φ x χ * (Φ (g : B) χ * Φ (a₀ : B) χ)` using `by simp`.
+
+Rewrite using `[e, norm_mul, norm_mul]`. Establish `h1t : 0 ≤ 1 - (Φ (d : B) χ).re / M`. Rewrite using `[sub_nonneg, div_le_one hM]`. Conclude with `htM χ`. Establish `h2t : 1 - (Φ (d : B) χ).re / M ≤ 1`.
+
+Use `div_nonneg (ht0 χ) hM.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hgn : ‖Φ (g : B) χ‖ = (1 - (Φ (d : B) χ).re / M) ^ n`. Rewrite using `[hgχ, Complex.norm_real, Real.norm_of_nonneg (pow_nonneg h1t n)]`. Distinguish the cases in `hcase : η ≤ (Φ (d : B) χ).re`.
+
+Establish `hgθ : ‖Φ (g : B) χ‖ ≤ θ ^ n`. Rewrite using `[hgn]`. Use `pow_le_pow_left₀ h1t ?_ n` and prove the remaining obligations. Rewrite using `[hθdef]`. Use `div_le_div_of_nonneg_right hcase hM.le` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx` using `ContinuousMap.norm_coe_le_norm (Φ x) χ`. Establish `ha'` using `ContinuousMap.norm_coe_le_norm (Φ (a₀ : B)) χ`. Combine the equalities or inequalities in the displayed calculation. Establish `: 0 ≤ θ ^ n` using `pow_nonneg hθ0.le n`.
+
+Rewrite using `[hLdef]`. Use the polynomial consequences of the given equalities and inequalities. Use `_ < ρ := hn'`. Use `push_neg at hcase`. Establish `hc0` using `(hc.2 χ).2`.
+
+Establish `hdt` using `hdχ χ`. Establish `hxl : ‖Φ x χ‖ < ρ'`. Assume the negation of the conclusion as `hx`. Use `push_neg at hx`. Use `hcK χ hx` as an intermediate fact.
+
+Use `sq_nonneg ‖Φ (b : B) χ‖` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbl : ‖Φ (b : B) χ‖ ≤ ε`. Assume the negation of the conclusion as `hbe`. Use `push_neg at hbe`.
+
+Establish `: ε ^ 2 < ‖Φ (b : B) χ‖ ^ 2`. Use `hε.le` as an intermediate fact. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hal : ‖Φ (a₀ : B) χ‖ ≤ 1 + ε`.
+
+Establish `e' : Φ (a₀ : B) χ = Φ (b : B) χ + 1` using `by rw [hbχ]; ring`. Rewrite using `[e']`. Use `norm_add_le (Φ (b : B) χ) (1 : ℂ)` as an intermediate fact. Rewrite `this` using `[norm_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hg1 : ‖Φ (g : B) χ‖ ≤ 1`. Rewrite using `[hgn]`. Conclude with `pow_le_one₀ h1t h2t`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem core (a₀ : A) (x : B) {ρ : ℝ} (ha : p a₀ = 1) (hρ : 0 < ρ)
     (h : ∀ χ, (∀ a : A, Φ (a : B) χ = p a) → ‖Φ x χ‖ < ρ) :
     ∃ g : A, p g = 1 ∧ ‖Φ (x * (g * a₀ : A))‖ < ρ := by
@@ -251,6 +338,11 @@ end Peak
 
 end UpperTheory.V.Z.Tf.GlobalTraceComparison
 
+/- English proof (translation)
+Introduce `B _ _ _ _ H _ _ _ R A p a₀ x ρ ha hρ h`. Take `⟨X, _, _, Φ, hΦ⟩` from `UpperTheory.V.Z.Tf.GlobalTraceComparison.exists_rep R`. Take `⟨g, hg, hn⟩` from `UpperTheory.V.Z.Tf.GlobalTraceComparison.core Φ A p a₀ x ha hρ (fun χ hχ => by`. Set `s : B →⋆ₐ[ℂ] ℂ` to `(ContinuousMap.evalStarAlgHom ℂ ℂ χ).comp Φ`. Use `h s (fun y => ?_) hχ` and prove the remaining obligations.
+
+Rewrite using `[← hΦ y]`. Conclude with `ContinuousMap.norm_coe_le_norm (Φ y) χ)`. Conclude with `⟨g, hg, by rw [← hΦ]; exact hn⟩`.
+-/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.peak :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Peak := by
   intro B _ _ _ _ H _ _ _ R A p a₀ x ρ ha hρ h

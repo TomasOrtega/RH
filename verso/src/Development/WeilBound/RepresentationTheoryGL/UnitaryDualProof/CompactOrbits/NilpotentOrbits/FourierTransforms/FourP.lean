@@ -9,9 +9,15 @@ open PositivityTheory.RgUd.T.Nil
 
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.RgUd.T.Nil.Four.fourP_of PositivityTheory.RgUd.T.Nil.Four.Phi2.phiP PositivityTheory.RgUd.T.Nil.Four.Alg.compP`.
+-/
 theorem fourP [CharZero k] : FourP (k := k) :=
   PositivityTheory.RgUd.T.Nil.Four.fourP_of PositivityTheory.RgUd.T.Nil.Four.Phi2.phiP PositivityTheory.RgUd.T.Nil.Four.Alg.compP
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.RgUd.T.Nil.Four.locQ_pf`.
+-/
 theorem locQ : LocQ (k := k) := PositivityTheory.RgUd.T.Nil.Four.locQ_pf
 
 end PositivityTheory.RgUd.T.Nil.Four.Final

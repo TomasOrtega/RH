@@ -18,6 +18,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.BigOn.Exp.SerBase
 
+/- English proof (translation)
+Use `AtTw.of_forall fun Fm x hx i p hR hM w hw j => ?_` and prove the remaining obligations. Introduce `ρ hρ hpin hlev h P`. Establish `hL` using `GlobalTheory.BigOn.links2_of_rows _ _ _ _ _ _ _ _ _ _ p hR hM.1`. Establish `hC : GlobalTheory.Hk3.Core (R2 p) (F2 p)` using `⟨hL.1.lev, hL.1.grp, hL.1.fam, hL.1.models, hL.1.chain, hL.1.thP⟩`. Establish `hBo : BaseOf (R2 p) j (ρ.B ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w))`.
+
+Establish `h0` using `baseOf_of_realPin_at (cG := p.cG) hC.lev hρ hpin ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w)`. Conclude with `{ h0 with }`. Establish `key` using `GlobalTheory.T.thetaTraceLevelCompatible_proof _ _ _ _ _ _ (R2 p) (F2 p) hC j _ (hρ.base _ j _) hBo (F2 p).P0 (F2 p).ψ0⁻¹ ((p.R.eG.trans p.cG).trans (ρ.eG ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w))) ?_ ?_ ?_ _ (hρ.weil_base _ j _) h P`. Conclude with `key.symm`. Introduce `g Q hQ hQ' a c`.
+
+Establish `e` using `hpin.grp ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) ((p.R.eG.trans p.cG) g) Q hQ hQ' a c`. Rewrite `e` using `[MulEquiv.trans_apply, MulEquiv.symm_apply_apply]`. Conclude with `e`. Introduce `g`. Conclude with `mem_level_iff hM.2.2 hlev _ j _ g`.
+
+Introduce `u hu`. Use `(level_chi hM.2.2 hρ hlev _ j _ u hu).1.trans ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val, map_inv₀]`. Both sides reduce to the same expression.
+-/
 theorem traceOfAt : TraceOfAt := by
   refine AtTw.of_forall fun Fm x hx i p hR hM w hw j => ?_
   intro ρ hρ hpin hlev h P

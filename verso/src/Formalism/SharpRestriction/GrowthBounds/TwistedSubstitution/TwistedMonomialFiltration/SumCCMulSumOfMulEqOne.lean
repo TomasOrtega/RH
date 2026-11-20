@@ -15,6 +15,33 @@ def flt_g (R : Type*) [CommRing R] {σ : Type*} (m be : σ →₀ ℕ) : MvPolyn
   monomial (m - be) (((be.prod fun k j => (m k).choose j : ℕ)) : R)
 
 open Classical in
+/- English proof (translation)
+Unfold `flt_g`. Rewrite using `[X, monomial_mul, mul_one]`. Distinguish the cases in `ha : a ∈ be.support`. Rewrite using `[if_pos ha]`. Establish `hba : be a ≠ 0` using `Finsupp.mem_support_iff.1 ha`.
+
+Establish `hsub : (be - Finsupp.single a 1).support ⊆ be.support`. Introduce `k hk`. Rewrite `hk`, the goal using `[Finsupp.mem_support_iff]`. Rewrite `hk` using `[Finsupp.tsub_apply]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[Finsupp.prod_of_support_subset _ hsub _ (fun k _ => Nat.choose_zero_right _)]`. Simplify using `only [Finsupp.prod]`. Rewrite using `[← Finset.mul_prod_erase _ _ ha, ← Finset.mul_prod_erase _ _ ha, ← Finset.mul_prod_erase _ _ ha]`. Establish `hrest1 : ∏ k ∈ be.support.erase a, ((m + Finsupp.single a 1 : σ →₀ ℕ) k).choose (be k) = ∏ k ∈ be.support.erase a, (m k).choose (be k)` using `Finset.prod_congr rfl fun k hk => by`. Rewrite using `[Finsupp.add_apply, Finsupp.single_apply, if_neg (Finset.ne_of_mem_erase hk).symm, add_zero]`.
+
+Establish `hrest2 : ∏ k ∈ be.support.erase a, (m k).choose ((be - Finsupp.single a 1 : σ →₀ ℕ) k) = ∏ k ∈ be.support.erase a, (m k).choose (be k)` using `Finset.prod_congr rfl fun k hk => by`. Rewrite using `[Finsupp.tsub_apply, Finsupp.single_apply, if_neg (Finset.ne_of_mem_erase hk).symm, tsub_zero]`. Rewrite using `[hrest1, hrest2]`. Take `⟨b, hb⟩ : ∃ b, be a = b + 1` from `⟨be a - 1, by omega⟩`. Establish `hA : (m + Finsupp.single a 1 : σ →₀ ℕ) a = m a + 1` using `by simp`.
+
+Establish `hB : (be - Finsupp.single a 1 : σ →₀ ℕ) a = b` using `by rw [Finsupp.tsub_apply, hb]; simp`. Rewrite using `[hA, hB, hb, Nat.choose_succ_succ]`. Break down `Nat.lt_or_ge (m a) b with hlt | hge` into its components or cases. Rewrite using `[Nat.choose_eq_zero_of_lt hlt, Nat.choose_eq_zero_of_lt (by omega : m a < b + 1)]`. Simplify using the standard rewrite rules.
+
+Establish `e3 : m - (be - Finsupp.single a 1) = m + Finsupp.single a 1 - be`. Use extensionality with `k`. Distinguish the cases in `hk : k = a`. Substitute `hk` using the available equality. Simplify using `only [Finsupp.tsub_apply, Finsupp.add_apply, Finsupp.single_eq_same, hb]`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `only [Finsupp.tsub_apply, Finsupp.add_apply, Finsupp.single_apply, if_neg (Ne.symm hk)]`. Use linear arithmetic over natural numbers and integers. Break down `Nat.lt_or_ge (m a) (b + 1) with hlt2 | hge2` into its components or cases. Rewrite using `[Nat.choose_eq_zero_of_lt hlt2, e3]`.
+
+Simplify using the standard rewrite rules. Establish `e2 : m - be + Finsupp.single a 1 = m + Finsupp.single a 1 - be`. Use extensionality with `k`. Distinguish the cases in `hk : k = a`. Substitute `hk` using the available equality.
+
+Simplify using `only [Finsupp.tsub_apply, Finsupp.add_apply, Finsupp.single_eq_same, hb]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Finsupp.tsub_apply, Finsupp.add_apply, Finsupp.single_apply, if_neg (Ne.symm hk)]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e2, e3, ← map_add]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg ha, add_zero]`. Establish `hba : be a = 0` using `by simpa [Finsupp.mem_support_iff] using ha`.
+
+Establish `e2 : m - be + Finsupp.single a 1 = m + Finsupp.single a 1 - be`. Use extensionality with `k`. Distinguish the cases in `hk : k = a`. Substitute `hk` using the available equality. Simplify using `only [Finsupp.tsub_apply, Finsupp.add_apply, Finsupp.single_eq_same, hba]`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `only [Finsupp.tsub_apply, Finsupp.add_apply, Finsupp.single_apply, if_neg (Ne.symm hk)]`. Use linear arithmetic over natural numbers and integers. Establish `hc : (be.prod fun k j => ((m + Finsupp.single a 1 : σ →₀ ℕ) k).choose j) = be.prod fun k j => (m k).choose j`. Simplify using `only [Finsupp.prod]`.
+
+Use `Finset.prod_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hka : a ≠ k` using `fun h => ha (h ▸ hk)`. Rewrite using `[Finsupp.add_apply, Finsupp.single_apply, if_neg hka, add_zero]`. Rewrite using `[e2, hc]`.
+-/
 theorem flt_g_pascal (R : Type*) [CommRing R] {σ : Type*} (m be : σ →₀ ℕ) (a : σ) :
     flt_g R (m + Finsupp.single a 1) be =
       flt_g R m be * X a + (if a ∈ be.support then flt_g R m (be - Finsupp.single a 1) else 0) := by
@@ -87,6 +114,19 @@ theorem flt_g_pascal (R : Type*) [CommRing R] {σ : Type*} (m be : σ →₀ ℕ
       rw [Finsupp.add_apply, Finsupp.single_apply, if_neg hka, add_zero]
     rw [e2, hc]
 
+/- English proof (translation)
+Establish `htx : ∀ a, flt_tay R σ (X a) = C (X a) + X a` using `fun a => by simp [flt_tay]`. Establish `step : ∀ m : σ →₀ ℕ, (∀ be, coeff be (flt_tay R σ (monomial m 1)) = flt_g R m be) → ∀ a be, coeff be (flt_tay R σ (monomial (m + Finsupp.single a 1) 1)) = flt_g R (m + Finsupp.single a 1) be`. Introduce `m hm a be`. Rewrite using `[flt_g_pascal, monomial_add_single, pow_one, map_mul, htx, mul_add, coeff_add, mul_comm _ (C (X a)), coeff_C_mul, coeff_mul_X', hm, mul_comm (X a)]`. Distinguish the cases in `ha : a ∈ be.support`.
+
+Simplify using `[ha, hm]`. Simplify using `[ha]`. Proceed by induction on `m using Finsupp.induction with`. Consider the case `zero`. Introduce `be`.
+
+Distinguish the cases in `hbe : be = 0`. Substitute `hbe` using the available equality. Simplify using `[flt_g]`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, be k ≠ 0 := by`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Conclude with `hbe (Finsupp.ext hc)`. Establish `hz : (be.prod fun k j => ((Nat.choose 0 j : ℕ) : R)) = 0`. Rewrite using `[Finsupp.prod]`. Conclude with `Finset.prod_eq_zero (Finsupp.mem_support_iff.2 hk) (by rw [Nat.choose_eq_zero_of_lt (by omega)]; simp)`.
+
+Simplify using `[flt_g, hz, coeff_one, Ne.symm hbe]`. Consider the case `single_add a b f _ hb ih => clear hb`. Proceed by induction on `b with`. Consider the case `zero => simpa using ih`. Consider the case `succ b ihb`.
+
+Establish `e : Finsupp.single a (b + 1) + f = (Finsupp.single a b + f) + Finsupp.single a 1`. Rewrite using `[Finsupp.single_add, add_right_comm]`. Rewrite using `[e]`. Conclude with `step _ ihb a`.
+-/
 theorem flt_tay_monomial (R : Type*) [CommRing R] {σ : Type*} (m : σ →₀ ℕ) :
     ∀ be, coeff be (flt_tay R σ (monomial m 1)) = flt_g R m be := by
   classical
@@ -125,6 +165,15 @@ theorem flt_tay_monomial (R : Type*) [CommRing R] {σ : Type*} (m : σ →₀ �
       rw [e]
       exact step _ ihb a
 
+/- English proof (translation)
+Use `conv_lhs => rw [F.as_sum]`. Rewrite using `[map_sum, coeff_sum, divDer]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[show monomial m (coeff m F) = C (coeff m F) * monomial m 1 by rw [C_mul_monomial, mul_one], map_mul]`. Establish `hC : flt_tay R σ (C (coeff m F)) = C (C (coeff m F))` using `by simp [flt_tay]`.
+
+Rewrite using `[hC, coeff_C_mul, flt_tay_monomial, flt_g, C_mul_monomial]`. Use `split_ifs with hle`. Both sides reduce to the same expression. Establish `hz : (be.prod fun k j => (m k).choose j) = 0`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, m k < be k := by`.
+
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hle fun k => hcon k`. Rewrite using `[Finsupp.prod]`. Conclude with `Finset.prod_eq_zero (Finsupp.mem_support_iff.2 (by omega)) (Nat.choose_eq_zero_of_lt hk)`.
+
+Rewrite using `[hz, Nat.cast_zero, mul_zero, monomial_zero]`.
+-/
 theorem flt_tay_coeff (R : Type*) [CommRing R] {σ : Type*} (F : MvPolynomial σ R) (be : σ →₀ ℕ) :
     coeff be (flt_tay R σ F) = divDer be F := by
   conv_lhs => rw [F.as_sum]
@@ -155,6 +204,11 @@ def flt_Th {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Letters ι) (S 
        else ∑ c : Fin n, C (C (twistMat R n j 1 w.2 c)) * X (w.1, c))
      else X w)
 
+/- English proof (translation)
+Repeatedly rewrite using `[Finset.mul_sum, ← mul_assoc, ← map_mul]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_mul, ← map_sum]`. Establish `hcd : ∀ c, ∑ b, P b d * Q c b = (1 : Matrix (Fin n) (Fin n) B) c d` using `fun c => by`. Rewrite using `[← h, Matrix.mul_apply]`.
+
+Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`. Repeatedly rewrite using `[hcd, Matrix.one_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_C_C_mul_sum_of_mul_eq_one {B : Type*} [CommRing B] {σ' σ'' : Type*} {n : ℕ} (P Q : Matrix (Fin n) (Fin n) B)
     (h : Q * P = 1) (Y : Fin n → MvPolynomial σ' (MvPolynomial σ'' B)) (d : Fin n) :
     ∑ b, C (C (P b d)) * ∑ c, C (C (Q c b)) * Y c = Y d := by
@@ -167,6 +221,13 @@ theorem sum_C_C_mul_sum_of_mul_eq_one {B : Type*} [CommRing B] {σ' σ'' : Type*
   simp_rw [hcd, Matrix.one_apply]
   simp
 
+/- English proof (translation)
+Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[flt_tay, flt_Th, twistSub]`. Introduce `v`. Establish `hY1` using `sum_C_C_mul_sum_of_mul_eq_one (σ' := ι × Fin n) (σ'' := ι × Fin n) (twistMat R n j 1) (twistMat R n j (-1)) (by simpa using flt_twistMat_mul R n j (-1)) (fun c => X (v.1, c)) v.2`.
+
+Establish `hM : twistMat R n j (-1) * twistMat R n j 1 = 1` using `by simpa using flt_twistMat_mul R n j (-1)`. Establish `hY2` using `sum_C_C_mul_sum_of_mul_eq_one (σ' := ι × Fin n) (σ'' := ι × Fin n) (Matrix.transpose (twistMat R n j (-1))) (Matrix.transpose (twistMat R n j 1)) (by rw [← Matrix.transpose_mul, hM, Matrix.transpose_one]) (fun c => X (v.1, c)) v.2`. Simplify using `only [Matrix.transpose_apply] at hY2`. Distinguish the cases in `hS : v.1 ∈ S`. Distinguish the cases in `hv : LL.vec v.1 = true`.
+
+Simplify using `[flt_tay, flt_Th, twistSub, hS, hv, mul_add, Finset.sum_add_distrib, hY1]`. Simplify using `[flt_tay, flt_Th, twistSub, hS, hv, mul_add, Finset.sum_add_distrib, hY2]`. Simplify using `[flt_tay, flt_Th, twistSub, hS]`.
+-/
 theorem flt_Th_twist {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n) :
     (MvPolynomial.map (twistSub (R := R) LL S j)).comp (flt_tay R (ι × Fin n)) =
       (flt_Th LL S j).comp (twistSub (R := R) LL S j) := by
@@ -187,6 +248,23 @@ theorem flt_Th_twist {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Lette
       · simp [flt_tay, flt_Th, twistSub, hS, hv, mul_add, Finset.sum_add_distrib, hY2]
     · simp [flt_tay, flt_Th, twistSub, hS]
 
+/- English proof (translation)
+Establish `hone : ∀ s : ℤ, s = 0 → (1 : GLLaurent R n) ∈ (flt_L (GLCoord R n) e).F s`. Introduce and unpack `s rfl`. Conclude with `(flt_L (GLCoord R n) e).one_mem`. Establish `hX : ∀ w, flt_Th LL S j (X w) ∈ (flt_lift (laurentCoeffFiltration R n (ι × Fin n) e) (flt_cost LL S (!bm))).F ((0 : (ι × Fin n →₀ ℕ) →+ ℤ) (Finsupp.single w 1))`. Introduce `w`.
+
+Rewrite using `[AddMonoidHom.zero_apply]`. Establish `hXw : (X w : MvPolynomial (ι × Fin n) (GLLaurent R n)) ∈ (laurentCoeffFiltration R n (ι × Fin n) e).F 0` using `flt_monomial_mem (hone _ (by simp))`. Simplify using `only [flt_Th, eval₂Hom_X']`. Use `AddSubgroup.add_mem _ (flt_C_mem hXw) ?_` and prove the remaining obligations. Use `split_ifs with hS hv`.
+
+Use `AddSubgroup.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Rewrite using `[show (C (C (twistMat R n j (-1) c w.2)) * X (w.1, c) : MvPolynomial (ι × Fin n) (MvPolynomial (ι × Fin n) (GLLaurent R n))) = monomial (Finsupp.single (w.1, c) 1) (C (twistMat R n j (-1) c w.2)) by`. Rewrite using `[X, C_mul_monomial, mul_one]]`. Apply the tactic sequence `refine flt_monomial_mem (flt_C_mem (flt_twistMat_mem R n j _ _ _ ?_ ?_ _ _)) <;>`. Apply the tactic sequence `rcases h with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> simp [flt_cost, hS, hv]`.
+
+Use `AddSubgroup.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Rewrite using `[show (C (C (twistMat R n j 1 w.2 c)) * X (w.1, c) : MvPolynomial (ι × Fin n) (MvPolynomial (ι × Fin n) (GLLaurent R n))) = monomial (Finsupp.single (w.1, c) 1) (C (twistMat R n j 1 w.2 c)) by`. Rewrite using `[X, C_mul_monomial, mul_one]]`. Apply the tactic sequence `refine flt_monomial_mem (flt_C_mem (flt_twistMat_mem R n j _ _ _ ?_ ?_ _ _)) <;>`. Apply the tactic sequence `rcases h with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> simp [flt_cost, hS, hv]`.
+
+Establish `h1 : (1 : MvPolynomial (ι × Fin n) (GLLaurent R n)) ∈ (laurentCoeffFiltration R n (ι × Fin n) e).F (0 - flt_cost LL S (!bm) (Finsupp.single w 1))`. Establish `h0 : flt_cost LL S (!bm) (Finsupp.single w 1) = 0` using `by simp [flt_cost, hS]`. Rewrite using `[h0, sub_zero]`. Conclude with `(laurentCoeffFiltration R n (ι × Fin n) e).one_mem`. Conclude with `flt_monomial_mem h1`.
+
+Rewrite using `[P.as_sum, map_sum]`. Use `AddSubgroup.sum_mem _ fun m _ => ?_` and prove the remaining obligations. Rewrite using `[show monomial m (coeff m P) = C (coeff m P) * monomial m 1 by rw [C_mul_monomial, mul_one], map_mul]`. Establish `hc : coeff m P ∈ (flt_L (GLCoord R n) e).F t`. Establish `h3` using `(flt_lift_mem.1 hP) m`.
+
+Simplify using `using h3`. Establish `h1 : flt_Th LL S j (C (coeff m P)) ∈ (flt_lift (laurentCoeffFiltration R n (ι × Fin n) e) (flt_cost LL S (!bm))).F t`. Simplify using `only [flt_Th, eval₂Hom_C, RingHom.comp_apply]`. Conclude with `flt_C_mem (flt_C_mem hc)`. Establish `h2` using `flt_hom_monomial _ (flt_Th LL S j) 0 hX m`.
+
+Rewrite `h2` using `[AddMonoidHom.zero_apply]`. Establish `h4` using `(flt_lift (laurentCoeffFiltration R n (ι × Fin n) e) (flt_cost LL S (!bm))).mul_mem h1 h2`. Rewrite `h4` using `[add_zero]`. Then use the resulting hypothesis.
+-/
 theorem flt_Th_mem {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n)
     {e : ℤ} {bm : Bool} (h : flt_compat e bm) {t : ℤ} {P : MvPolynomial (ι × Fin n) (GLLaurent R n)}
     (hP : P ∈ (laurentCoeffFiltration R n (ι × Fin n) e).F t) :
@@ -238,6 +316,11 @@ theorem flt_Th_mem {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Letters
   have h4 := (flt_lift (laurentCoeffFiltration R n (ι × Fin n) e) (flt_cost LL S (!bm))).mul_mem h1 h2
   rwa [add_zero] at h4
 
+/- English proof (translation)
+Establish `h1` using `flt_lift_mem.1 (flt_Th_mem LL S j h hF) be`. Establish `e1 : twistSub LL S j (divDer be F) = coeff be (flt_Th LL S j (twistSub LL S j F))`. Establish `h2` using `congrArg (fun φ => coeff be (φ F)) (flt_Th_twist (R := R) LL S j)`. Simplify using `only [RingHom.comp_apply, coeff_map] at h2`. Rewrite using `[← h2, flt_tay_coeff]`.
+
+Rewrite using `[e1]`. Conclude with `h1`.
+-/
 theorem flt_divDer_mem {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n)
     {e : ℤ} {bm : Bool} (h : flt_compat e bm) {t : ℤ} {F : MvPolynomial (ι × Fin n) R}
     (hF : twistSub LL S j F ∈ (laurentCoeffFiltration R n (ι × Fin n) e).F t) (be : ι × Fin n →₀ ℕ) :
@@ -250,6 +333,9 @@ theorem flt_divDer_mem {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Let
   rw [e1]
   exact h1
 
+/- English proof (translation)
+Rewrite using `[map_mul]`. Establish `h1` using `flt_twist_monomial_mem (R := R) LL S j h al`. Establish `h2` using `flt_divDer_mem LL S j h hF be`. Establish `h3` using `(laurentCoeffFiltration R n (ι × Fin n) e).mul_mem h1 h2`. Rewrite `h3` using `[show -flt_cost LL S bm al + (t - flt_cost LL S (!bm) be) = t - (flt_cost LL S bm al + flt_cost LL S (!bm) be) by ring]`. Then use the resulting hypothesis.
+-/
 theorem flt_op_mem {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Letters ι) (S : Set ι) (j : Fin n)
     {e : ℤ} {bm : Bool} (h : flt_compat e bm) {t : ℤ} {F : MvPolynomial (ι × Fin n) R}
     (hF : twistSub LL S j F ∈ (laurentCoeffFiltration R n (ι × Fin n) e).F t) (al be : ι × Fin n →₀ ℕ) :
@@ -262,6 +348,9 @@ theorem flt_op_mem {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} (LL : Letters
   rwa [show -flt_cost LL S bm al + (t - flt_cost LL S (!bm) be) =
     t - (flt_cost LL S bm al + flt_cost LL S (!bm) be) by ring] at h3
 
+/- English proof (translation)
+Simplify using `only [flt_cost, Finsupp.liftAddHom_apply, covDeg, Finsupp.sum]`. Use `push_cast`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem flt_cost_false_eq_covDeg {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (al : ι × Fin n →₀ ℕ) :
     flt_cost LL S false al = (covDeg LL S al : ℤ) := by
   simp only [flt_cost, Finsupp.liftAddHom_apply, covDeg, Finsupp.sum]
@@ -269,6 +358,9 @@ private theorem flt_cost_false_eq_covDeg {ι : Type} {n : ℕ} (LL : Letters ι)
   refine Finset.sum_congr rfl fun v _ => ?_
   split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `only [flt_cost, Finsupp.liftAddHom_apply, vecDeg, Finsupp.sum]`. Use `push_cast`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem flt_cost_true_eq_vecDeg {ι : Type} {n : ℕ} (LL : Letters ι) (S : Set ι) (al : ι × Fin n →₀ ℕ) :
     flt_cost LL S true al = (vecDeg LL S al : ℤ) := by
   simp only [flt_cost, Finsupp.liftAddHom_apply, vecDeg, Finsupp.sum]
@@ -276,6 +368,11 @@ private theorem flt_cost_true_eq_vecDeg {ι : Type} {n : ℕ} (LL : Letters ι) 
   refine Finset.sum_congr rfl fun v _ => ?_
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hF` using `(flt_le_valS LL S F t).1 ht`. Establish `hm` using `flt_op_mem LL S (lastIdx n) (Or.inl ⟨rfl, rfl⟩ : flt_compat 1 false) hF al be`. Use `(laurentCoeffFiltration R n (ι × Fin n) 1).anti ?_ hm` and prove the remaining obligations. Simplify using `only [Bool.not_false, flt_cost_false_eq_covDeg, flt_cost_true_eq_vecDeg]`. Establish `hN' : ((covDeg LL S al + vecDeg LL S be : ℕ) : ℤ) ≤ N` using `by exact_mod_cast hN`.
+
+Move the coercions through the operations in `at hN'`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem flt_op_mem_val {R : Type*} [CommRing R] {ι : Type} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     {F : MvPolynomial (ι × Fin n) R} {t : ℤ} (ht : (t : WithTop ℤ) ≤ valS LL S F) (al be : ι × Fin n →₀ ℕ)
     (N : ℕ) (hN : covDeg LL S al + vecDeg LL S be ≤ N) :
@@ -288,6 +385,11 @@ theorem flt_op_mem_val {R : Type*} [CommRing R] {ι : Type} {n : ℕ} [NeZero n]
   push_cast at hN'
   linarith
 
+/- English proof (translation)
+Establish `hF` using `(flt_lam1S_le LL S F M).1 hM`. Establish `hm` using `flt_op_mem LL S (0 : Fin n) (Or.inr ⟨rfl, rfl⟩ : flt_compat (-1) true) hF al be`. Use `(laurentCoeffFiltration R n (ι × Fin n) (-1)).anti ?_ hm` and prove the remaining obligations. Simplify using `only [Bool.not_true, flt_cost_false_eq_covDeg, flt_cost_true_eq_vecDeg]`. Establish `hN' : ((vecDeg LL S al + covDeg LL S be : ℕ) : ℤ) ≤ N` using `by exact_mod_cast hN`.
+
+Move the coercions through the operations in `at hN'`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem flt_op_mem_lam {R : Type*} [CommRing R] {ι : Type} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     {F : MvPolynomial (ι × Fin n) R} {M : ℤ} (hM : lam1S LL S F ≤ (M : WithBot ℤ)) (al be : ι × Fin n →₀ ℕ)
     (N : ℕ) (hN : vecDeg LL S al + covDeg LL S be ≤ N) :
@@ -300,6 +402,15 @@ theorem flt_op_mem_lam {R : Type*} [CommRing R] {ι : Type} {n : ℕ} [NeZero n]
   push_cast at hN'
   linarith
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Consider the cases of `hv : valS LL S (monomial al 1 * divDer be F) with`. Consider the case `top`. Rewrite `hcon` using `[hv]`.
+
+Simplify using `at hcon`. Consider the case `coe w`. Rewrite `hcon` using `[hv]`. Establish `ht : ((w + N + 1 : ℤ) : WithTop ℤ) ≤ valS LL S F`. Consider the cases of `hF : valS LL S F with`.
+
+Consider the case `top => exact le_top`. Consider the case `coe x`. Rewrite `hcon` using `[hF]`. Apply the tactic sequence `norm_cast at hcon ⊢ <;> omega`. Establish `hm` using `flt_op_mem_val LL S ht al be N hN`.
+
+Rewrite `hm` using `[← flt_le_valS, hv]`. Apply the tactic sequence `norm_cast at hm <;> omega`.
+-/
 theorem flt_op_valS {R : Type*} [CommRing R] {ι : Type} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     (F : MvPolynomial (ι × Fin n) R) (al be : ι × Fin n →₀ ℕ) (N : ℕ)
     (hN : covDeg LL S al + vecDeg LL S be ≤ N) :
@@ -322,6 +433,15 @@ theorem flt_op_valS {R : Type*} [CommRing R] {ι : Type} {n : ℕ} [NeZero n] (L
     rw [← flt_le_valS, hv] at hm
     norm_cast at hm <;> omega
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Consider the cases of `hv : lam1S LL S (monomial al 1 * divDer be F) with`. Consider the case `bot`. Rewrite `hcon` using `[hv]`.
+
+Simplify using `at hcon`. Consider the case `coe w`. Rewrite `hcon` using `[hv]`. Establish `hM : lam1S LL S F ≤ ((w - N - 1 : ℤ) : WithBot ℤ)`. Consider the cases of `hF : lam1S LL S F with`.
+
+Consider the case `bot => exact bot_le`. Consider the case `coe x`. Rewrite `hcon` using `[hF]`. Apply the tactic sequence `norm_cast at hcon ⊢ <;> omega`. Establish `hm` using `flt_op_mem_lam LL S hM al be N hN`.
+
+Rewrite `hm` using `[← flt_lam1S_le, hv]`. Apply the tactic sequence `norm_cast at hm <;> omega`.
+-/
 theorem flt_op_lam1S {R : Type*} [CommRing R] {ι : Type} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     (F : MvPolynomial (ι × Fin n) R) (al be : ι × Fin n →₀ ℕ) (N : ℕ)
     (hN : vecDeg LL S al + covDeg LL S be ≤ N) :

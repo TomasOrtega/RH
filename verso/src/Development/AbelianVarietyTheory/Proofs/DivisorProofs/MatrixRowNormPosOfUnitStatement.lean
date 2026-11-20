@@ -8,5 +8,8 @@ open GlobalTheory GlobalTheory.VB GlobalTheory.Vert GlobalTheory.TriFrame Global
 open GlobalTheory.Twist (resM)
 open Formalism.MainNotions.DIV.Cons (intO SCF)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TriFrame.matNorm_pos_of_isUnit | exact GlobalTheory.TriFrame.matNorm_pos_of_isUnit | (intros; apply GlobalTheory.TriFrame.matNorm_pos_of_isUnit <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.matrix_row_norm_pos_of_unit : ∀ (C : Type) [NontriviallyNormedField C] (r : ℕ) (M : Matrix (Fin r) (Fin r) C), IsUnit M → ∀ i, 0 < matNorm M i := by
   first | exact @GlobalTheory.TriFrame.matNorm_pos_of_isUnit | exact GlobalTheory.TriFrame.matNorm_pos_of_isUnit | (intros; apply GlobalTheory.TriFrame.matNorm_pos_of_isUnit <;> assumption)

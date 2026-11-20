@@ -11,12 +11,22 @@ open Matrix Polynomial IsLocalRing UpperTheory.V.U3 UpperTheory.V.Alg
 
 namespace UpperTheory.V.Pr
 
+/- English proof (translation)
+Take `⟨H, hH⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hO h1`. Conclude with `⟨H.toSubgroup, H.isOpen', hH⟩`.
+-/
 private lemma open_basis {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
     [TotallyDisconnectedSpace G] (O : Set G) (hO : IsOpen O) (h1 : (1 : G) ∈ O) :
     ∃ V : Subgroup G, IsOpen (V : Set G) ∧ (V : Set G) ⊆ O := by
   obtain ⟨H, hH⟩ := ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hO h1
   exact ⟨H.toSubgroup, H.isOpen', hH⟩
 
+/- English proof (translation)
+Use `strongIrrOfOpen _ κ m _ (fun f => (hc f).preimage continuous_subtype_val) ?_` and prove the remaining obligations. Introduce `U hU W hW`. Take `⟨O, hO, hOU⟩` from `isOpen_induced_iff.1 hU`. Establish `h1 : (1 : G) ∈ O`. Establish `: (1 : ↥(V ⊓ G')) ∈ (U : Set ↥(V ⊓ G'))` using `U.one_mem`.
+
+Rewrite `this` using `[← hOU]`. Conclude with `this`. Take `⟨V', hV', hsub⟩` from `open_basis (O ∩ V) (hO.inter hV) ⟨h1, V.one_mem⟩`. Use `hirr V' hV' W fun g hg => ?_` and prove the remaining obligations. Establish `h2` using `hsub hg.1`.
+
+Establish `h3 : (⟨g, h2.2, hg.2⟩ : ↥(V ⊓ G')) ∈ (U : Set ↥(V ⊓ G'))`. Rewrite using `[← hOU]`. Conclude with `h2.1`. Conclude with `hW _ h3`.
+-/
 private lemma strong_of {G κ : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
     [TotallyDisconnectedSpace G] [Field κ] {m : ℕ} (G' V : Subgroup G) (hV : IsOpen (V : Set G))
     (r : G →* GL (Fin m) κ) (hc : LinClosed (gm r))
@@ -36,6 +46,9 @@ private lemma strong_of {G κ : Type} [Group G] [TopologicalSpace G] [IsTopologi
     rw [← hOU]; exact h2.1
   exact hW _ h3
 
+/- English proof (translation)
+Take `⟨V, hV, hsub⟩` from `open_basis ((fun h => s * h) ⁻¹' U) (hU.preimage (continuous_const.mul continuous_id)) (by simpa using hs)`. Conclude with `⟨V, hV, fun h hh => hsub hh⟩`.
+-/
 private lemma coset_in {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
     [TotallyDisconnectedSpace G] (U : Set G) (hU : IsOpen U) (s : G) (hs : s ∈ U) :
     ∃ V : Subgroup G, IsOpen (V : Set G) ∧ ∀ h ∈ V, s * h ∈ U := by
@@ -43,6 +56,11 @@ private lemma coset_in {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalG
     (by simpa using hs)
   exact ⟨V, hV, fun h hh => hsub hh⟩
 
+/- English proof (translation)
+Take `⟨s, hs, hs'⟩` from `hne`. Take `⟨V, hV, hsV⟩` from `coset_in U hU s hs`. Take `⟨u, hu, α, hα, hch⟩` from `hsep V hV`. Take `⟨h, hh⟩` from `regCoset _ κ n hn _ (strong_of G' V hV r hc hirr) ⟨u, hu⟩ α hα hch (r s)`. Use `⟨s * h, ⟨hsV _ h.2.1, G'.mul_mem hs' h.2.2⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [gm, map_mul, Units.val_mul]`. Conclude with `hh`.
+-/
 private lemma cosetI {G κ : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
     [TotallyDisconnectedSpace G] [Field κ] {n : ℕ} (hn : n ≤ 3) (G' : Subgroup G)
     (r : G →* GL (Fin n) κ) (hc : LinClosed (gm r))
@@ -59,6 +77,9 @@ private lemma cosetI {G κ : Type} [Group G] [TopologicalSpace G] [IsTopological
   simp only [gm, map_mul, Units.val_mul]
   exact hh
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> rfl`.
+-/
 private lemma sub_eq {κ : Type} (M : Matrix (Fin 3) (Fin 3) κ) :
     M.submatrix ![0, 2] ![0, 2] = !![M 0 0, M 0 2; M 2 0, M 2 2] := by
   ext i j
@@ -89,6 +110,9 @@ private def midHom {G κ : Type} [Group G] [Field κ] (r : G →* GL (Fin 3) κ)
     simp only [gm] at a1 a2 a3 a4
     simp [gm, Matrix.mul_apply, Fin.sum_univ_three, *]
 
+/- English proof (translation)
+Take `⟨a1, a2, a3, a4⟩` from `hb`. Rewrite using `[sub_eq]`. Simplify using `only [Matrix.charpoly, det_fin_three, det_fin_two]`. Simplify using `[charmatrix_apply, *]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma charpoly_block {κ : Type} [Field κ] (M : Matrix (Fin 3) (Fin 3) κ)
     (hb : M 0 1 = 0 ∧ M 1 0 = 0 ∧ M 1 2 = 0 ∧ M 2 1 = 0) :
     M.charpoly = (M.submatrix ![0, 2] ![0, 2]).charpoly * (X - C (M 1 1)) := by
@@ -98,6 +122,21 @@ private lemma charpoly_block {κ : Type} [Field κ] (M : Matrix (Fin 3) (Fin 3) 
   simp [charmatrix_apply, *]
   ring
 
+/- English proof (translation)
+Take `⟨s, hs, hs'⟩` from `hne`. Take `⟨V, hV, hsV⟩` from `coset_in U hU s hs`. Take `⟨u, hu, α, hα, hch⟩` from `hsep V hV`. Set `σ : G →* GL (Fin 2) κ` to `(cornerHom r hb).toHomUnits`. Set `ψ : G →* κˣ` to `(midHom r hb).toHomUnits`.
+
+Establish `hσ : ∀ g, gm σ g = (gm r g).submatrix ![0, 2] ![0, 2]` using `fun g => rfl`. Establish `hψ : ∀ g, ((ψ g : κˣ) : κ) = gm r g 1 1` using `fun g => rfl`. Establish `hcp : ∀ g, (gm r g).charpoly = (gm σ g).charpoly * (X - C ((ψ g : κˣ) : κ))` using `fun g => charpoly_block _ (hb g)`. Establish `hcσ : LinClosed (gm σ)` using `fun f => hc (f ∘ₗ { toFun := fun M : Matrix (Fin 3) (Fin 3) κ => M.submatrix ![0, 2] ![0, 2] map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl })`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, α k = ψ u := by`.
+
+Establish `h1` using `congrArg (Polynomial.eval ((ψ u : κˣ) : κ)) ((hcp u).symm.trans hch)`. Rewrite `h1` using `[eval_mul, eval_sub, eval_X, eval_C, sub_self, mul_zero, eval_prod, eq_comm, Finset.prod_eq_zero_iff]`. Take `⟨k, -, hk⟩` from `h1`. Rewrite `hk` using `[eval_sub, eval_X, eval_C, sub_eq_zero]`. Conclude with `⟨k, Units.ext hk.symm⟩`.
+
+Establish `hch2 : (gm σ u).charpoly = ∏ i : Fin 2, (X - C ((α (k.succAbove i) : κˣ) : κ))`. Establish `h1` using `(hcp u).symm.trans hch`. Rewrite `h1` using `[Fin.prod_univ_succAbove _ k, hk, mul_comm]`. Conclude with `mul_left_cancel₀ (X_sub_C_ne_zero _) h1`. Establish `hfree : FreeRatios ![α (k.succAbove 0), α (k.succAbove 1), ψ u]`.
+
+Establish `e : ![α (k.succAbove 0), α (k.succAbove 1), ψ u] = α ∘ ![k.succAbove 0, k.succAbove 1, k]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [hk]`. Establish `inj : Function.Injective (![k.succAbove 0, k.succAbove 1, k] : Fin 3 → Fin 3)` using `by clear hk hch2 e revert k`. Evaluate the decidable proposition.
+
+Rewrite using `[e]`. Conclude with `fun i j hij => hα _ _ (inj.ne hij)`. Take `⟨h, hh⟩` from `regCosetE _ κ _ (ψ.comp (V ⊓ G').subtype) (strong_of G' V hV σ hcσ hirr) ⟨u, hu⟩ (fun i => α (k.succAbove i)) hfree hch2 (σ s) (ψ s)`. Use `⟨s * h, ⟨hsV _ h.2.1, G'.mul_mem hs' h.2.2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hcp]`.
+
+Simplify using `only [gm, map_mul σ, map_mul ψ, Units.val_mul (σ s)]`. Conclude with `hh`.
+-/
 private lemma cosetE {G κ : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
     [TotallyDisconnectedSpace G] [Field κ] (G' : Subgroup G)
     (r : G →* GL (Fin 3) κ) (hc : LinClosed (gm r))
@@ -148,6 +187,11 @@ private lemma cosetE {G κ : Type} [Group G] [TopologicalSpace G] [IsTopological
   simp only [gm, map_mul σ, map_mul ψ, Units.val_mul (σ s)]
   exact hh
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `h`. Take `⟨h1, h2⟩` from `hg s`. Establish `h3` using `Matrix.charpoly_of_upperTriangular ((g * r s * g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) (fun i j hij => h1 i j hij)`. Simplify using `only [h2] at h3`. Rewrite using `[← h3, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`.
+
+Both sides reduce to the same expression.
+-/
 private lemma charpoly_flag {H k : Type} [Group H] [CommRing k] {n : ℕ} (r : H →* GL (Fin n) k)
     (κ : Fin n → H →* kˣ) (h : W.HasFlag r κ) (s : H) :
     (W.mat r s).charpoly = ∏ i, (X - C ((κ i s : kˣ) : k)) := by
@@ -161,6 +205,23 @@ private lemma charpoly_flag {H k : Type} [Group H] [CommRing k] {n : ℕ} (r : H
 
 end UpperTheory.V.Pr
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ _ F n T x L y j hj hnice hρ hψ U hU hne`. Use `haveI : CompactSpace T.G.G₀ := isCompact_iff_compactSpace.1 (Subgroup.isClosed_of_isOpen _ T.G.η_open).isCompact`. Set `r : T.G.G₀ →* GL (Fin n) y.Fb` to `W.pushRep (algebraMap y.Fr y.Fb) y.ρF`. Establish `hr : ∀ g, gm r g = (W.mat y.ρF g).map (algebraMap y.Fr y.Fb)` using `fun g => rfl`. Establish `hc : LinClosed (gm r)` using `linClosedOfAdic T.G.G₀ y.A y.Fb ((algebraMap y.Fr y.Fb).comp (algebraMap y.A y.Fr)) ((algebraMap y.Fr y.Fb).injective.comp (IsFractionRing.injective y.A y.Fr)) n (fun g => W.mat y.ρ g) y.cont`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨v⟩ : Nonempty T.G.Vl := by`. Rewrite using `[T.K.e.nonempty_congr]`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nonempty_iff]`. Use `T.big.1` as an intermediate fact.
+
+Simplify using `[Fr.Frame.d] at this`. Establish `hsep : ∀ V : Subgroup T.G.G₀, IsOpen (V : Set T.G.G₀) → ∃ u ∈ V ⊓ T.G.G', ∃ α : Fin n → y.Fbˣ, FreeRatios α ∧ (gm r u).charpoly = ∏ i, (X - C ((α i : y.Fbˣ) : y.Fb))`. Introduce `V hV`. Take `⟨g, hg, hfree⟩` from `niceSep l O F n T x L y j hj hnice hρ hψ V hV v`. Use `⟨_, hg, fun i => Units.map (algebraMap y.Fr y.Fb).toMonoidHom (Units.map (algebraMap y.A y.Fr).toMonoidHom (y.ψ v i g)), fun a b hab m hm h => hfree a b hab m hm ?_, ?_⟩` and prove the remaining obligations.
+
+Use `Units.map_injective (f := (algebraMap y.Fr y.Fb).toMonoidHom) (algebraMap y.Fr y.Fb).injective ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_pow]`. Conclude with `h`. Establish `h1 : (W.mat y.ρF (T.G.φ v g)).charpoly = _` using `charpoly_flag _ _ (y.flag v) g`. Rewrite using `[hr, Matrix.charpoly_map, h1, Polynomial.map_prod]`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.map_sub, map_X, map_C]`. Both sides reduce to the same expression. It suffices to establish `h : ∃ σ ∈ U ∩ (T.G.G' : Set T.G.G₀), (gm r σ).charpoly.Separable by`. Take `⟨σ, h1, h2⟩` from `h`.
+
+Rewrite `h2` using `[hr, Matrix.charpoly_map, Polynomial.separable_map]`. Conclude with `⟨σ, h1, h2⟩`. Distinguish the cases in `hE : n = 3 ∧ L.ρ.ee ≤ RingHom.ker j`. Take `⟨rfl, hE⟩` from `hE`. Establish `hz : ∀ g a b, Odd (Fr.w 3 a - Fr.w 3 b) → gm r g a b = 0`.
+
+Introduce `g a b hab`. Establish `h1 : j (L.ρ.r (T.K.π g) a b) = 0` using `hE (Ideal.subset_span ⟨_, a, b, hab, rfl⟩)`. Establish `h2 : W.mat y.ρ g a b = 0`. Rewrite using `[hρ]`. Use `show _ * j (L.ρ.r (T.K.π g) a b) = 0`.
+
+Rewrite using `[h1, mul_zero]`. Use `show algebraMap y.Fr y.Fb (algebraMap y.A y.Fr (W.mat y.ρ g a b)) = 0`. Rewrite using `[h2, map_zero, map_zero]`. Conclude with `cosetE T.G.G' r hc (fun g => ⟨hz g 0 1 (by decide), hz g 1 0 (by decide), hz g 1 2 (by decide), hz g 2 1 (by decide)⟩) (niceIrrE l O F T x L y j hj hnice hρ hψ ⟨hnice.off, rfl, hE⟩) hsep U hU hne`. Apply the tactic sequence `exact cosetI (by rcases T.n23 with h | h <;> omega) T.G.G' r hc (niceIrr l O F n T x L y j hj hnice hρ hψ ⟨hnice.off, fun h3 h => hE ⟨h3, h⟩⟩) hsep U hU hne`.
+-/
 theorem UpperTheory.V.Pr.nice_specialization_twist_satisfies_third_condition :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [UpperTheory.V.Fr.IsCoef l O] [Algebra ℤ_[l] O] (F : UpperTheory.V.Fr.Frame l (IsLocalRing.ResidueField O)) (n : ℕ) (T : UpperTheory.V.Pr.Setup F n) (x : Ideal T.S.A) (L : T.S.Loc x) (y : UpperTheory.V.W.Point T.r) (j : L.R →ₐ[O] y.A), IsLocalHom j → UpperTheory.V.Pr.Nice L.ρ (RingHom.ker j) → UpperTheory.V.W.mat y.ρ = T.K.tw (L.ρ.map (j : L.R →+* y.A)) → y.ψ = T.K.twψ (L.ρ.map (j : L.R →+* y.A)) → y.N3 := by
   intro l _ O _ _ _ _ _ F n T x L y j hj hnice hρ hψ U hU hne

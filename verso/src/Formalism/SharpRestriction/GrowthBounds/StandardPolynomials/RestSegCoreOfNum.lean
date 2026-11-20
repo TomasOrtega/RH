@@ -8,16 +8,27 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 
 open Formalism.MainNotions.G MvPolynomial Formalism.MainNotions.G.Joints.StandardMonomialSpace
 
+/- English proof (translation)
+Unfold `jE`. Use `split_ifs`. Conclude with `h _`. Conclude with `le_rfl`.
+-/
 theorem jE_mono {s : ℕ} (S : SegData s) {f g : Fin S.t → ℕ} (h : ∀ l, f l ≤ g l) (i : ℕ) : jE S f i ≤ jE S g i := by
   unfold jE
   split_ifs
   · exact h _
   · exact le_rfl
 
+/- English proof (translation)
+Unfold `jE`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem jE_add {s : ℕ} (S : SegData s) (f g : Fin S.t → ℕ) (i : ℕ) : jE S (fun l => f l + g l) i = jE S f i + jE S g i := by
   unfold jE
   split_ifs <;> rfl
 
+/- English proof (translation)
+Unfold `jE`. Rewrite using `[dif_pos ⟨h, i.2⟩]`. Establish `e : uTop S ⟨i.val - S.sigma, by unfold SegData.t; have` using `i.2; omega⟩ = i := by`. Apply `Fin.ext` to reduce the goal to its premises. Use `show S.sigma + (i.val - S.sigma) = i.val`.
+
+Use linear arithmetic over natural numbers and integers. Use `show g (uTop S ⟨i.val - S.sigma, _⟩) = g i`. Rewrite using `[e]`.
+-/
 theorem jE_uTop {s : ℕ} (S : SegData s) (g : Fin s → ℕ) (i : Fin s) (h : S.sigma ≤ i.val) :
     jE S (fun l => g (uTop S l)) i.val = g i := by
   unfold jE
@@ -29,6 +40,11 @@ theorem jE_uTop {s : ℕ} (S : SegData s) (g : Fin s → ℕ) (i : Fin s) (h : S
   show g (uTop S ⟨i.val - S.sigma, _⟩) = g i
   rw [e]
 
+/- English proof (translation)
+Establish `ha` using `a.2`. Distinguish the cases in `h : a.val = 2 * s`. Conclude with `Or.inl (Fin.ext h)`. Distinguish the cases in `h2 : a.val % 2 = 0`. Conclude with `Or.inr (Or.inl ⟨⟨a.val / 2, by omega⟩, Fin.ext (by show a.val = 2 * (a.val / 2); omega)⟩)`.
+
+Conclude with `Or.inr (Or.inr ⟨⟨a.val / 2, by omega⟩, Fin.ext (by show a.val = 2 * (a.val / 2) + 1; omega)⟩)`.
+-/
 theorem ch_cases {s : ℕ} (a : Fin (2 * s + 1)) : a = chU s ∨ (∃ i : Fin s, a = chW i) ∨ ∃ i : Fin s, a = chE i := by
   have ha := a.2
   by_cases h : a.val = 2 * s
@@ -38,6 +54,77 @@ theorem ch_cases {s : ℕ} (a : Fin (2 * s + 1)) : a = chU s ∨ (∃ i : Fin s,
     · exact Or.inr (Or.inr ⟨⟨a.val / 2, by omega⟩, Fin.ext (by show a.val = 2 * (a.val / 2) + 1; omega)⟩)
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Introduce `X _ _ O _ _ _ _ S hSq hD hH hc mm hmm n hn1 hnc β hβ L e he1 hen j`. Introduce `(ju : Fin (X.seg C0 CE1 CE2 j).t → ℕ)`. Introduce `hju Gu du hGI hGP hdu hGY A hcz hcw hcy hcx hy0 hγ dz dy dx`. Establish `hp : 0 < X.p` using `hD.1.pos`. Establish `hKz : CharZero (KK O)` using `Formalism.MainNotions.G.GLWeightTheory.dvr_fraction_field_charZero_prime S hD.1`.
+
+Establish `hsN : segS X.TT j ≤ X.N1` using `(hH.1.2.2.2.2.1 j).2`. Establish `hQ1 : 1 ≤ X.p ^ X.G' * e` using `Nat.mul_pos (pow_pos hp _) he1`. Take `⟨hroom, hnum⟩` from `hN X hD hH hc mm hmm n hn1 hnc e he1 hen j (β j) (hβ j)`. Take `⟨hdig, hU, hSt, hoP, -⟩` from `hβ j`. Establish `hA'` using `nb_coarseA C0 CE1 CE2 X j ju (L.jp j) du A hp dz`.
+
+Establish `hC'` using `nb_coarseC C0 CE1 CE2 X j ju (L.jp j) du A hp dy`. Establish `hdig'` using `nb_digits C0 CE1 CE2 X j ju (L.jp j) du A hp dz dy`. Establish `hez : ∀ i, ∑ c, ezA C0 CE1 CE2 X j A i c ≤ X.p ^ X.G' * e` using `fun i => nb_ez_le C0 CE1 CE2 X j A hp (β j) hdig _ i (hcw i)`. Establish `hlb` using `level_bounds X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) (mm + (n : ℝ) * ka1 X) (β j) (L.lv j) (L.jp j) (L.ok j)`. Establish `hjE : ∀ i : ℕ, jE (X.seg C0 CE1 CE2 j) ju i ≤ jE (X.seg C0 CE1 CE2 j) (L.lv j) i` using `fun i => jE_mono _ hju i`.
+
+Establish `hduW : ∀ i : Fin (segS X.TT j), du (chW i) ≤ (if i.val < (X.seg C0 CE1 CE2 j).sigma then (β j).w i else (β j).o i) - jE (X.seg C0 CE1 CE2 j) (L.lv j) i.val`. Introduce `i`. Establish `h1` using `hdu (chW i)`. Establish `h2` using `lev_deg X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) (mm + (n : ℝ) * ka1 X) (β j) (L.lv j) (L.jp j) (chW i)`. Establish `h3` using `segment_chain_degree_even X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (β j) (chW i) i rfl`.
+
+Establish `q : (chW i).val / 2 = i.val` using `by show 2 * i.val / 2 = _; omega`. Rewrite `h2` using `[h3, q]`. Establish `h1' : du (chW i) ≤ ((blockData X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) (mm + (n : ℝ) * ka1 X) (β j)).lettersAt (L.lv j) (L.jp j)).deg (chW i)` using `h1`. Use linear arithmetic over natural numbers and integers. Establish `hduU : du (chU _) ≤ (β j).oPlus - L.jp j`.
+
+Establish `h1` using `hdu (chU _)`. Establish `h2` using `lev_deg X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) (mm + (n : ℝ) * ka1 X) (β j) (L.lv j) (L.jp j) (chU _)`. Establish `h3` using `chain_deg_U X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (β j) (chU _) rfl`. Rewrite `h2` using `[h3, if_pos (show (chU (segS X.TT j)).val = 2 * segS X.TT j from rfl)]`. Establish `h1' : du (chU _) ≤ ((blockData X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) (mm + (n : ℝ) * ka1 X) (β j)).lettersAt (L.lv j) (L.jp j)).deg (chU _)` using `h1`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hy0U : ∀ i : Fin (segS X.TT j), (X.seg C0 CE1 CE2 j).sigma ≤ i.val → y0A C0 CE1 CE2 X j A i ≤ X.p ^ X.G' * e`. Introduce `i hi`. Establish `h` using `hcy i`. Rewrite `h` using `[if_neg (by omega)]`.
+
+Use `block_y_zero_le_of_bound C0 CE1 CE2 X j A hp (β j) hdig _ hQ1 i 0 h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hy0S : ∀ i : Fin (segS X.TT j), i.val < (X.seg C0 CE1 CE2 j).sigma → y0A C0 CE1 CE2 X j A i ≤ (β j).sg i + X.p ^ X.G' * e`. Introduce `i hi`. Establish `h` using `hcy i`.
+
+Rewrite `h` using `[if_pos hi]`. Conclude with `block_y_zero_le_of_bound C0 CE1 CE2 X j A hp (β j) hdig _ hQ1 i _ h`. Establish `hyz : ∀ i : Fin (segS X.TT j), (X.seg C0 CE1 CE2 j).sigma ≤ i.val → y0A C0 CE1 CE2 X j A i ≤ z0A C0 CE1 CE2 X j A i`. Introduce `i hi`. Establish `h1` using `hcz i`.
+
+Rewrite `h1` using `[if_neg (by omega)]`. Establish `h2` using `hcy i`. Rewrite `h2` using `[if_neg (by omega), mul_zero, add_zero]`. Establish `h3` using `hroom i hi`. Conclude with `block_y_zero_le_z_zero C0 CE1 CE2 X j A hp (β j) hdig _ hQ1 i _ (by omega) h1 h2`.
+
+Establish `oU : ∀ i : Fin (segS X.TT j), (X.seg C0 CE1 CE2 j).sigma ≤ i.val → (segmentBlockOfMonomial C0 CE1 CE2 X j ju (L.jp j) du A).o i = jE (X.seg C0 CE1 CE2 j) ju i.val + du (chW i) + y0A C0 CE1 CE2 X j A i + ∑ c, ezA C0 CE1 CE2 X j A i c`. Introduce `i hi`. Use `show (if (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma then 0 else _) = _`. Rewrite using `[if_neg (by omega)]`. Establish `wS : ∀ i : Fin (segS X.TT j), i.val < (X.seg C0 CE1 CE2 j).sigma → (segmentBlockOfMonomial C0 CE1 CE2 X j ju (L.jp j) du A).w i = du (chW i) + ∑ c, ezA C0 CE1 CE2 X j A i c`.
+
+Introduce `i hi`. Use `show (if (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma then _ else 0) = _`. Rewrite using `[if_pos hi]`. Establish `sgS : ∀ i : Fin (segS X.TT j), i.val < (X.seg C0 CE1 CE2 j).sigma → (segmentBlockOfMonomial C0 CE1 CE2 X j ju (L.jp j) du A).sg i = y0A C0 CE1 CE2 X j A i`. Introduce `i hi`.
+
+Use `show (if (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma then _ else 0) = _`. Rewrite using `[if_pos hi]`. Establish `oP : (segmentBlockOfMonomial C0 CE1 CE2 X j ju (L.jp j) du A).oPlus = L.jp j + du (chU _) + ∑ c, axA X j A c` using `rfl`. Establish `dx' : L.jp j + du (chU _) + (A ((topEnd X j, true), 0) + ∑ c, axA X j A c) = (segAPlus X.TT X.aT j)`. Rewrite using `[← dx, Fin.sum_univ_succ]`.
+
+Both sides reduce to the same expression. Establish `hcx' : ∑ c, axA X j A c ≤ X.p ^ X.G' * e` using `hcx`. Take `⟨hBL', hthr⟩` from `hnum (segmentBlockOfMonomial C0 CE1 CE2 X j ju (L.jp j) du A) hdig' (fun i => nb_coarseA_ge C0 CE1 CE2 X j ju (L.jp j) du A hp (β j) i) (by`. Introduce `i hi`. Establish `a1` using `hA' i`.
+
+Establish `a2` using `oU i hi`. Establish `a3` using `hyz i hi`. Establish `a4` using `hy0U i hi`. Establish `a5` using `hez i`. Establish `a6` using `hduW i`.
+
+Rewrite `a6` using `[if_neg (by omega)]`. Establish `a7` using `hjE i.val`. Establish `a8` using `(hlb.1 i hi).1`. Use `⟨by omega, by omega, ?_, ?_⟩` and prove the remaining obligations. Use `show (if (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma then _ else 0) = 0`.
+
+Rewrite using `[if_neg (by omega)]`. Use `show (if (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma then _ else 0) = 0`. Rewrite using `[if_neg (by omega)])`. Use the proof step `(by`. Introduce `i hi`.
+
+Establish `a1` using `hA' i`. Establish `a2` using `wS i hi`. Establish `a3` using `sgS i hi`. Establish `a4` using `hy0S i hi`. Establish `a5` using `hez i`.
+
+Establish `a6` using `hduW i`. Rewrite `a6` using `[if_pos hi]`. Establish `a7` using `hC' i`. Use `⟨?_, by omega, by omega, by omega, by omega⟩` and prove the remaining obligations. Use `show (if (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma then 0 else _) = 0`.
+
+Rewrite using `[if_pos hi])`. Use the proof step `(by omega) (by have := hlb.2; omega)`. Use `⟨(segmentBlockOfMonomial C0 CE1 CE2 X j ju (L.jp j) du A), hBL', nb_ord C0 CE1 CE2 X j ju (L.jp j) du A, uTot O X.m (X.seg C0 CE1 CE2 j) ju (L.jp j) (Gu * (mEps (KK O) (ezA C0 CE1 CE2 X j A) (eyA C0 CE1 CE2 X j A) (axA X j A))) (fun l => z0A C0 CE1 CE2 X j A (uTop (X.seg C0 CE1 C …` and prove the remaining obligations. Use `uTot_mem (fun l => hyz _ (Nat.le_add_right _ _)) ?_ (by omega) (du + (dEps (ezA C0 CE1 CE2 X j A) (eyA C0 CE1 CE2 X j A) (axA X j A))) (intPol_mul' hGI (mEps_int _ _ _)) (hom_Pol_mul (KK O) hGP (mEps_pol (KK O) _ _ _)) ?_ ?_ ?_` and prove the remaining obligations. Introduce `l`.
+
+Establish `hi : (X.seg C0 CE1 CE2 j).sigma ≤ (uTop (X.seg C0 CE1 CE2 j) l).val` using `Nat.le_add_right _ _`. Establish `a1` using `hA' (uTop (X.seg C0 CE1 CE2 j) l)`. Establish `a2` using `oU _ hi`. Establish `a3` using `hyz _ hi`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `a`. Rewrite using `[jE_add]`. Simplify using `only [Pi.add_apply]`. Break down `ch_cases a with rfl | ⟨i, rfl⟩ | ⟨i, rfl⟩` into its components or cases. Rewrite using `[chain_deg_U X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) _ (chU _) rfl, dEps_U, if_pos (show (chU (segS X.TT j)).val = 2 * segS X.TT j from rfl)]`.
+
+Establish `q : (chU (segS X.TT j)).val / 2 = segS X.TT j` using `by show 2 * segS X.TT j / 2 = _; omega`. Rewrite using `[q, jE_top, jE_top, oP]`. Use linear arithmetic over natural numbers and integers. Establish `q : (chW i).val / 2 = i.val` using `by show 2 * i.val / 2 = _; omega`. Establish `hne : ¬ (chW i).val = 2 * segS X.TT j` using `by have := i.2; show ¬ 2 * i.val = _; omega`.
+
+Rewrite using `[segment_chain_degree_even X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) _ (chW i) i rfl, dEps_chW_eq_sum, q, if_neg hne]`. Distinguish the cases in `hi : i.val < (X.seg C0 CE1 CE2 j).sigma`. Rewrite using `[if_pos hi, wS i hi, jE_S _ _ hi, jE_S _ _ hi]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hi, oU i (by omega), jE_uTop (X.seg C0 CE1 CE2 j) (y0A C0 CE1 CE2 X j A) i (by omega)]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `q : (chE i).val / 2 = i.val` using `by show (2 * i.val + 1) / 2 = _; omega`. Establish `hne : ¬ (chE i).val = 2 * segS X.TT j` using `by show ¬ 2 * i.val + 1 = _; omega`. Rewrite using `[chain_deg_E X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) _ (chE i) i rfl, dEps_E, q, if_neg hne, hC' i]`. Distinguish the cases in `hi : i.val < (X.seg C0 CE1 CE2 j).sigma`.
+
+Rewrite using `[if_pos hi, sgS i hi, jE_S _ _ hi, jE_S _ _ hi]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hi, jE_uTop (X.seg C0 CE1 CE2 j) (y0A C0 CE1 CE2 X j A) i (by omega)]`. Use linear arithmetic over natural numbers and integers. Establish `h1` using `L.hγ j`.
+
+Establish `h2 : L.jp j ≤ (X.seg C0 CE1 CE2 j).bPlus` using `le_trans (L.ok j).2 (min_le_right _ _)`. Establish `h1' : ∑ c, L.γ j c = (X.seg C0 CE1 CE2 j).bPlus - L.jp j` using `h1`. Use linear arithmetic over natural numbers and integers. Introduce `m hm k`. Establish `hW : ∀ i : Fin (segS X.TT j), (L.LL j).vec (chW i) = true`.
+
+Introduce `i`. Use `show decide ((2 * i.val) % 2 = 0) = true`. Simplify using the standard rewrite rules. Establish `hE : ∀ i : Fin (segS X.TT j), (L.LL j).vec (chE i) = false`. Introduce `i`.
+
+Use `show decide ((2 * i.val + 1) % 2 = 0) = false`. Simplify using the standard rewrite rules. Establish `g0` using `hGY k`. Establish `g1` using `ycond_mEps (K := KK O) (L.LL j) ((blockData X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) (mm + (n : ℝ) * ka1 X) (β j)).T.J k) hE (ezA C0 CE1 CE2 X j A) (eyA C0 CE1 CE2 X j A) (axA X j A)`. Establish `g2` using `ycond_pairs (K := KK O) (r := X.m) (X.seg C0 CE1 CE2 j) (L.LL j) ((blockData X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) (mm + (n : ℝ) * ka1 X) (β j)).T.J k) hW hE (fun l => y0A C0 CE1 CE2 X j A (uTop (X.seg C0 CE1 CE2 j) l) - m l)`.
+
+Establish `g3` using `ycond_mul (L.LL j) _ _ _ (ycond_mul (L.LL j) _ _ _ g0 g1) g2`. Establish `hinc` using `rowInc_le (r := X.m) (X.seg C0 CE1 CE2 j) (L.LL j) ((blockData X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) (mm + (n : ℝ) * ka1 X) (β j)).T.J k) (ezA C0 CE1 CE2 X j A) (axA X j A) (fun l => y0A C0 CE1 CE2 X j A (uTop (X.seg C0 CE1 CE2 j) l) - m l) (X.p ^ …`. Establish `hcong` using `ycond_congr (K := KK O) (r := X.m) (LL := (blockData X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) (mm + ((n - e : ℕ) : ℝ) * ka1 X) (segmentBlockOfMonomial C0 CE1 CE2 X j ju (L.jp j) du A)).lettersAt (fun l => ju l + m l) (L.jp j)) (LL' := L.LL j) rfl ((bl …`. Rewrite using `[hcong]`. Use `ycond_mono (L.LL j) _ ?_ g3` and prove the remaining obligations.
+
+Establish `t1` using `thr_eq X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) (mm + (n : ℝ) * ka1 X) (β j) k`. Establish `t2` using `thr_eq X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) (mm + ((n - e : ℕ) : ℝ) * ka1 X) (segmentBlockOfMonomial C0 CE1 CE2 X j ju (L.jp j) du A) k`. Establish `hV : ((∑ i, ((∑ c, ezA C0 CE1 CE2 X j A i c : ℕ) : ℤ) * (vWt (L.LL j) ((blockData X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) (mm + (n : ℝ) * ka1 X) (β j)).T.J k) (chW i) : ℤ)) + ((∑ c, axA X j A c : ℕ) : ℤ) * (vWt (L.LL j) ((blockData X.p (X.seg C0 CE1 …`. Use `le_trans hinc ?_` and prove the remaining obligations. Establish `b1 : ((segS X.TT j : ℕ) : ℤ) ≤ X.N1` using `by exact_mod_cast hsN`.
+
+Establish `b2 : (0 : ℤ) ≤ ((X.p ^ X.G' * e : ℕ) : ℤ)` using `Int.natCast_nonneg _`. Establish `b3 : ((X.p ^ X.G' * e : ℕ) : ℤ) = (X.p : ℤ) ^ X.G' * e` using `by push_cast; ring`. Establish `b4 : (0 : ℤ) ≤ (X.m : ℤ)` using `Int.natCast_nonneg _`. Establish `b5 : (0 : ℤ) ≤ (X.N1 : ℤ)` using `Int.natCast_nonneg _`. Rewrite using `[← b3]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hfin` using `hthr (capIdx (X.seg C0 CE1 CE2 j) k) _ hV`. Establish `t1' : (BDk C0 CE1 CE2 (mm + (n : ℝ) * ka1 X) X β j).T.thr k = _` using `t1`. Rewrite using `[t1', t2, ← WithTop.coe_add, ← WithTop.coe_add, ← WithTop.coe_add, WithTop.coe_le_coe]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hhead : L.head O j ju Gu = ioA (KK O) X.p C0 CE1 CE2 X j ((∏ l, EhS O X.m (X.seg C0 CE1 CE2 j) l ^ ju l) * EpS O X.m (X.seg C0 CE1 CE2 j) ^ L.jp j * rename (chainEmb (2 * segS X.TT j + 1) X.m (X.seg C0 CE1 CE2 j).t) Gu)` using `rfl`. Rewrite using `[hhead, segMon_eq O C0 CE1 CE2 X j ju (L.jp j) du A (L.γ j) ?_ hy0 hγ, ioBlock_eq]`. Unfold `uTot`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `i hi`. Establish `a1` using `hA' i`. Establish `a2` using `wS i hi`. Rewrite `a1` using `[jE_S _ _ hi]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem segCoreAt_of_num {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (hN : NumCoreAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc) :
     SegCoreAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by
   intro X _ _ O _ _ _ _ S hSq hD hH hc mm hmm n hn1 hnc β hβ L e he1 hen j
@@ -242,6 +329,9 @@ theorem segCoreAt_of_num {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (hN : NumCoreAt 
       rw [jE_S _ _ hi] at a1
       omega
 
+/- English proof (translation)
+The claim follows from `TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => segCoreAt_of_num h) h`.
+-/
 theorem restSegCore_of_num (h : RestNumCore) : RestSegCore :=
   TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => segCoreAt_of_num h) h
 

@@ -11,6 +11,11 @@ noncomputable section
 
 namespace GlobalTheory.Mem.R3.LiftBrg.LamQInv
 
+/- English proof (translation)
+Unfold `Formalism.L2.DIV.blk2`. Use `split_ifs with hi`. Conclude with `Formalism.L2.Col.coarse_of_lt hi`. Rewrite using `[Formalism.L2.Col.coarse_of_le (Nat.not_lt.mp hi)]`. Establish `hi2` using `i.2`.
+
+Establish `: i.val - r < b` using `by omega`. Simplify using `[Formalism.L2.Col.blkIdx, this]`.
+-/
 theorem coarseBlockIndex_single_eq_twoBlock {a r b : ℕ} (hn : a = r + b) (i : Fin a) :
     Formalism.L2.Col.coarse r [b] i.val = Formalism.L2.DIV.blk2 r i := by
   unfold Formalism.L2.DIV.blk2
@@ -21,6 +26,15 @@ theorem coarseBlockIndex_single_eq_twoBlock {a r b : ℕ} (hn : a = r + b) (i : 
     have : i.val - r < b := by omega
     simp [Formalism.L2.Col.blkIdx, this]
 
+/- English proof (translation)
+Introduce `κ K _ _ a n r b h hn y hy χ hz`. Substitute `h` using the available equality. Establish `hc : LiftBrg.castGL (rfl : a = a) y = y` using `by ext; simp [LiftBrg.castGL]`. Establish `hy' : y ∈ Formalism.L2.Col.blockUT a κ r [b]`. Introduce `i j hij`.
+
+Apply `hy` to reduce the goal to its premises. Use `show Formalism.L2.DIV.blk2 r j < Formalism.L2.DIV.blk2 r i`. Rewrite using `[← coarseBlockIndex_single_eq_twoBlock hn, ← coarseBlockIndex_single_eq_twoBlock hn]`. Conclude with `hij`. Establish `he : (⟨_, hz⟩ : ↥(Formalism.L2.Col.HQ κ a r b)) = (⟨y, hy'⟩ : ↥(Formalism.L2.Col.HQ κ a r b))⁻¹` using `by ext1`.
+
+Simplify using `[hc]`. Rewrite using `[he, map_inv, Formalism.L2.Col.lamQ_apply]`. Use `congr 2`. Use `ext`. Rewrite using `[Formalism.L2.Col.blkDet_val, Formalism.L2.DIV.diag_block_det_val 1 hy]`.
+
+Rewrite using `[Matrix.toSquareBlock_def]`. Set `e : {i : Fin a // Formalism.L2.Col.coarse r [b] i.val = 1} ≃ {i : Fin a // Formalism.L2.DIV.blk2 r i = 1}` to `Equiv.subtypeEquivRight (fun i => by rw [coarseBlockIndex_single_eq_twoBlock hn])`. Conclude with `Matrix.det_submatrix_equiv_self e (((y : GL (Fin a) κ) : Matrix (Fin a) (Fin a) κ).submatrix (Subtype.val : {i : Fin a // Formalism.L2.DIV.blk2 r i = 1} → Fin a) Subtype.val)`.
+-/
 theorem lamQ_castGL_inv : ∀ {κ K : Type} [CommRing κ] [Field K] {a n r b : ℕ} (h : a = n) (hn : n = r + b) (y : GL (Fin a) κ)
     (hy : y ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 r)) (χ : κˣ →* Kˣ)
     (hz : (LiftBrg.castGL h y)⁻¹ * 1 ∈ Formalism.L2.Col.HQ κ n r b),

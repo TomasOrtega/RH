@@ -5,6 +5,21 @@ open scoped ENNReal NNReal MatrixGroups
 
 namespace GlobalTheory.CompanionTheory.SW.Span
 
+/- English proof (translation)
+Introduce `V _ _ _ χ μ h φ hφ L' hL' hinv`. Use `haveI : IsTopologicalAddGroup V := h.1`. Take `⟨t, ht⟩` from `hφ.2.isCompact.elim_finite_subcover (fun a : V => {y | y - a ∈ L'}) (fun a => hL'.preimage (continuous_id.sub continuous_const)) (fun x _ => Set.mem_iUnion.2 ⟨x, by simp [L'.zero_mem]⟩)`. Set `T : Finset (V ⧸ L')` to `t.image (QuotientAddGroup.mk : V → V ⧸ L')`. Use `⟨T.image Quotient.out, fun x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_image (fun a _ b _ hab => Quotient.out_injective hab)]`. Establish `key : ∀ q : V ⧸ L', x - q.out ∈ L' ↔ q = (x : V ⧸ L')`. Introduce `q`. Use `conv_rhs => rw [← QuotientAddGroup.out_eq' q]`. Rewrite using `[QuotientAddGroup.eq, neg_add_eq_sub]`.
+
+Establish `hval : φ ((x : V ⧸ L').out) = φ x`. Establish `hm : x - ((x : V ⧸ L')).out ∈ L'` using `(key _).2 rfl`. Use `hinv ((x : V ⧸ L')).out _ hm` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`.
+
+Normalize the expressions using the abelian group laws. Establish `hterm : ∀ q : V ⧸ L', φ q.out * Set.indicator {y | y - q.out ∈ L'} (fun _ => (1 : ℂ)) x = if q = (x : V ⧸ L') then φ x else 0`. Introduce `q`. Distinguish the cases in `hq : q = (x : V ⧸ L')`. Substitute `hq` using the available equality.
+
+Rewrite using `[if_pos rfl, Set.indicator_of_mem (show x ∈ {y | y - ((x : V ⧸ L')).out ∈ L'} from (key _).2 rfl), hval, mul_one]`. Rewrite using `[if_neg hq, Set.indicator_of_notMem (show x ∉ {y | y - q.out ∈ L'} from fun hx => hq ((key _).1 hx)), mul_zero]`. Simplify using `only [hterm, Finset.sum_ite_eq']`. Use `split_ifs with hx`. Both sides reduce to the same expression.
+
+Assume the negation of the conclusion as `hne`. Establish `hmem : x ∈ tsupport φ` using `subset_tsupport φ hne`. Take `⟨a, ha, hxa⟩` from `Set.mem_iUnion₂.1 (ht hmem)`. Apply `hx` to reduce the goal to its premises. Use `Finset.mem_image.2 ⟨a, ha, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[QuotientAddGroup.eq, neg_add_eq_sub]`. Conclude with `hxa`.
+-/
 theorem sb_eq_sum_coset_indicators :
     ∀ (V : Type) [AddCommGroup V] [TopologicalSpace V] [MeasurableSpace V] (χ : V → V → ℂ)
       (μ : Measure V), NADual V χ μ → ∀ φ : V → ℂ, SB φ → ∀ L' : AddSubgroup V,

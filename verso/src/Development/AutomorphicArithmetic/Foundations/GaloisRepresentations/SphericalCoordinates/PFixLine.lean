@@ -7,6 +7,9 @@ open GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKGe
 open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
+/- English proof (translation)
+Establish `hM : (↑(LKCx.toV G v β y) : Matrix (Fin G.n) (Fin G.n) ℂ) = G.psi v ↑(↑y : G.Cˣ × ℚˣ).1` using `rfl`. Establish `hs` using `GlobalTheory.ArchBound.herm_sim G β y v`. Establish `hpos : (0 : ℝ) < ((↑(↑y : G.Cˣ × ℚˣ).2 : ℚ) : ℝ)` using `by exact_mod_cast y.2.2`. Rewrite using `[hM, Matrix.star_mulVec, Matrix.mulVec_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hs, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, Complex.re_ofReal_mul]`. Conclude with `mul_pos hpos hz`.
+-/
 private theorem herm_pos_toV_mulVec_of_pos {p : ℕ} [Fact p.Prime] (G : HTGroup p) (v : InfinitePlace G.F) (β : G.Cˣ)
     (y : LKCx.grp G β) (z : Fin G.n → ℂ) (hz : 0 < (star z ⬝ᵥ LKCx.herm G v β *ᵥ z).re) :
     0 < (star (↑(LKCx.toV G v β y) *ᵥ z) ⬝ᵥ LKCx.herm G v β *ᵥ (↑(LKCx.toV G v β y) *ᵥ z)).re := by
@@ -17,6 +20,9 @@ private theorem herm_pos_toV_mulVec_of_pos {p : ℕ} [Fact p.Prime] (G : HTGroup
     ← Matrix.mul_assoc, hs, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, Complex.re_ofReal_mul]
   exact mul_pos hpos hz
 
+/- English proof (translation)
+Use `show L.rep _ (L.rep _ w) = w`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Establish `h1 : ((↑(↑a : G.Cˣ × ℚˣ).1 : G.C) * ↑(↑a⁻¹ : G.Cˣ × ℚˣ).1) = 1`. Rewrite using `[← Units.val_mul, ← Prod.fst_mul, ← Subgroup.coe_mul, mul_inv_cancel, Subgroup.coe_one, Prod.fst_one, Units.val_one]`. Rewrite using `[h1, map_one, Module.End.one_apply]`.
+-/
 private theorem actY_actY_inv {p : ℕ} [Fact p.Prime] {D : UPel.HT.Datum p} {G : HTGroup p} (L : Link D G)
     {β : G.Cˣ} (a : LKCx.grp G β) (w : VQ D) : actY L a (actY L a⁻¹ w) = w := by
   show L.rep _ (L.rep _ w) = w
@@ -26,6 +32,27 @@ private theorem actY_actY_inv {p : ℕ} [Fact p.Prime] {D : UPel.HT.Datum p} {G 
       Units.val_one]
   rw [h1, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Introduce `hA p _ D G L v t₀ ρ β RD Q z hQ hrel y`. Establish `hz0 : z.1 ≠ 0`. Introduce `h0`. Establish `h1` using `z.2`. Rewrite `h1` using `[h0]`.
+
+Simplify using `at h1`. Establish `hinvmul : ∀ (y' : LKCx.grp G β) (x : Fin G.n → ℂ), (LKCx.toV G v β y'⁻¹).val *ᵥ ((LKCx.toV G v β y').val *ᵥ x) = x`. Introduce `y' x`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mulVec]`. Establish `hne : ∀ (y' : LKCx.grp G β) (c : ℂ), (LKCx.toV G v β y').val *ᵥ z.1 = c • z.1 → c ≠ 0`.
+
+Introduce and unpack `y' c hc rfl`. Rewrite `hc` using `[zero_smul]`. Apply `hz0` to reduce the goal to its premises. Rewrite using `[← hinvmul y' z.1, hc, Matrix.mulVec_zero]`. Establish `inv : ∀ y' : LKCx.grp G β, LKCx.FixL G v β y' z.1 → LKCx.FixL G v β y'⁻¹ z.1`.
+
+Introduce and unpack `y' ⟨c, hc⟩`. Establish `hc0` using `hne y' c hc`. Establish `h1 : z.1 = c • ((LKCx.toV G v β y'⁻¹).val *ᵥ z.1)`. Rewrite using `[← Matrix.mulVec_smul, ← hc, hinvmul]`. Use `⟨c⁻¹, ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Set `zi : LKCx.PosV G v β` to `⟨(LKCx.toV G v β y⁻¹).val *ᵥ z.1, herm_pos_toV_mulVec_of_pos G v β y⁻¹ z.1 z.2⟩`. Set `Q₂ : VQ D →+ Fin D.g → ℂ` to `Q.comp (actY L y).toAddMonoidHom`. Establish `hQ₂ : ∀ w, Q₂ w = Q (actY L y w)` using `fun w => rfl`. Establish `hback : ∀ w, Q₂ (actY L y⁻¹ w) = Q w`.
+
+Introduce `w`. Rewrite using `[hQ₂, actY_actY_inv]`. Establish `hper : IsPerQ L β ρ Q₂` using `(hA p D G L β y⁻¹).2.2.1 ρ Q Q₂ hQ hback`. Establish `hrel₂ : RD.rel Q₂ zi.1` using `RD.equiv y⁻¹ Q Q₂ z.1 hback hrel`. Establish `key` using `RD.uniq Q Q₂ z zi hQ hper hrel hrel₂`.
+
+Use `⟨⟨fun hF => ?_, fun ⟨H, hH⟩ => ?_⟩, inv y⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `inv y hF`. Take `⟨h, hh⟩` from `key.mpr ⟨c, hne _ c hc, hc⟩`. Use `⟨LinearMap.toMatrix' (h : (Fin D.g → ℂ) →ₗ[ℂ] Fin D.g → ℂ), fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.toMatrix'_mulVec, ← hQ₂, hh w]`.
+
+Both sides reduce to the same expression. Establish `hsurj : Function.Surjective (Matrix.toLin' H)`. Rewrite using `[← LinearMap.range_eq_top]`. Establish `hle : Submodule.span ℝ (Set.range ⇑Q) ≤ (LinearMap.range (Matrix.toLin' H)).restrictScalars ℝ`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨w, rfl⟩`. Use `⟨Q (actY L y⁻¹ w), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, ← hH, actY_actY_inv]`. Rewrite `hle` using `[hQ.2.1]`. Conclude with `eq_top_iff.mpr (fun x _ => hle (Submodule.mem_top : x ∈ (⊤ : Submodule ℝ (Fin D.g → ℂ))))`.
+
+Establish `hinj` using `LinearMap.injective_iff_surjective.mpr hsurj`. Take `⟨c, hc0, hc⟩` from `key.mp ⟨LinearEquiv.ofBijective (Matrix.toLin' H) ⟨hinj, hsurj⟩, fun w => by show Q₂ w = Matrix.toLin' H (Q w)`. Rewrite using `[Matrix.toLin'_apply, hQ₂, hH]⟩`. Establish `h2` using `inv y⁻¹ ⟨c, hc⟩`. Rewrite `h2` using `[inv_inv]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.Gal.W2.fixLine_of :
     UpperTheory.Gal.W2.ActY → UpperTheory.Gal.W2.FixLine := by
   intro hA p _ D G L v t₀ ρ β RD Q z hQ hrel y

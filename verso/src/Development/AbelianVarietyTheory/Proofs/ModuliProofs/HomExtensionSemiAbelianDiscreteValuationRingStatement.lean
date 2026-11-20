@@ -18,5 +18,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj TensorProduct Pointwise
 open GlobalTheory.Models GlobalTheory.ZM
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.homExtension_semiAbelian_dvr | exact GlobalTheory.homExtension_semiAbelian_dvr | (intros; apply GlobalTheory.homExtension_semiAbelian_dvr <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.homExtension_semiAbelian_discreteValuationRing : GlobalTheory.LN.HomExtSt := by
   first | exact @GlobalTheory.homExtension_semiAbelian_dvr | exact GlobalTheory.homExtension_semiAbelian_dvr | (intros; apply GlobalTheory.homExtension_semiAbelian_dvr <;> assumption)

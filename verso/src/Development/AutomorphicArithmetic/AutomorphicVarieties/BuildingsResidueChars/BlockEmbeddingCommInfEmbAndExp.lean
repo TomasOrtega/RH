@@ -4,6 +4,19 @@ open NumberField NumberField.mixedEmbedding Matrix MeasureTheory GroundTheory.Au
 open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
+/- English proof (translation)
+Establish `hsm : ∀ (c : ℝ) (Z : Matrix (Fin a) (Fin a) (mixedSpace K)), ext0 e (c • Z) = c • ext0 e Z`. Introduce `c Z`. Simplify using `only [ext0, Matrix.mul_smul, Matrix.smul_mul]`. Set `g : ArchMatrix K a →ₗ[ℝ] ArchMatrix K n` to `{ toFun := fun X => ext0 (R := mixedSpace K) e X map_add' := fun X Z => matrixExtendByZero_add e X Z map_smul' := fun c X => hsm c X }`. Establish `hg : Continuous g` using `LinearMap.continuous_of_finiteDimensional g`.
+
+Establish `hpow : ∀ k : ℕ, (g Y) ^ (k + 1) = g (Y ^ (k + 1))`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+
+Rewrite using `[pow_succ, ih, pow_succ Y (k + 1)]`. Conclude with `matrixExtendByZero_mul e _ _`. Establish `h1` using `(NormedSpace.exp_series_hasSum_exp' (𝕂 := ℝ) Y).map g hg`. Establish `h2` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℝ) (g Y)`. Establish `h3 : HasSum (fun k : ℕ => if k = 0 then (1 - g 1 : ArchMatrix K n) else 0) (1 - g 1)` using `hasSum_ite_eq 0 _`.
+
+Establish `h4` using `h1.add h3`. Establish `heq : (fun k : ℕ => ((k.factorial : ℝ)⁻¹) • (g Y) ^ k) = fun k : ℕ => g (((k.factorial : ℝ)⁻¹) • Y ^ k) + if k = 0 then (1 - g 1) else 0`. Use function extensionality and compare the values at `k`. Consider the cases of `k with`. Consider the case `zero => simp`.
+
+Consider the case `succ k => rw [if_neg (Nat.succ_ne_zero k), add_zero, map_smul, hpow]`. Rewrite `h2` using `[heq]`. Establish `h5` using `h2.unique h4`. Establish `hsub : g (NormedSpace.exp Y - 1) = g (NormedSpace.exp Y) - g 1` using `map_sub g _ _`. Express the relevant statement in the definitionally equal form `(1 : ArchMatrix K n) + g (NormedSpace.exp Y - 1) = NormedSpace.exp (g Y)`.
+
+Rewrite using `[hsub, h5]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem exp_block_extension (K : Type) [Field K] [NumberField K] {a n : ℕ} (e : Fin a ↪ Fin n) (Y : ArchMatrix K a) :
     (1 : ArchMatrix K n) + (show ArchMatrix K n from ext0 (R := mixedSpace K) e (NormedSpace.exp Y - 1 : ArchMatrix K a)) =
       NormedSpace.exp (show ArchMatrix K n from ext0 (R := mixedSpace K) e Y) := by
@@ -40,6 +53,9 @@ private theorem exp_block_extension (K : Type) [Field K] [NumberField K] {a n : 
   rw [hsub, h5]
   abel
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j <;> rfl`.
+-/
 private theorem UpperTheory.prodEquiv_apply_eq_map_fst_snd (K : Type) [Field K] [NumberField K] (m : ℕ)
     (g : AdelicGLn.AdelicGL K m) :
     AdelicGLn.prodEquiv K m g =
@@ -47,6 +63,9 @@ private theorem UpperTheory.prodEquiv_apply_eq_map_fst_snd (K : Type) [Field K] 
         GeneralLinearGroup.map (RingHom.snd (InfiniteAdeleRing K) (IsDedekindDomain.FiniteAdeleRing (𝓞 K) K)) g) := by
   ext i j <;> rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 private theorem UpperTheory.archEquiv_symm_apply_eq_map_mixedSpace (K : Type) [Field K] [NumberField K] (m : ℕ) (x : archGroup K m) :
     (archEquiv K m).symm x =
       GeneralLinearGroup.map (InfiniteAdeleRing.ringEquiv_mixedSpace K).symm.toRingHom
@@ -54,6 +73,13 @@ private theorem UpperTheory.archEquiv_symm_apply_eq_map_mixedSpace (K : Type) [F
   ext i j
   rfl
 
+/- English proof (translation)
+Introduce `K _ _ a n e`. Use `⟨fun x => ?_, fun Y => ?_⟩` and prove the remaining obligations. Apply `(AdelicGLn.prodEquiv K n).injective` to reduce the goal to its premises. Establish `hx` using `prodEquiv_infEmb (K := K) (n := a) x`. Rewrite `hx` using `[UpperTheory.prodEquiv_apply_eq_map_fst_snd]`.
+
+Rewrite `hx` using `[Prod.mk.injEq]`. Rewrite using `[UpperTheory.prodEquiv_apply_eq_map_fst_snd, prodEquiv_infEmb]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `(emb_map e (RingHom.fst (InfiniteAdeleRing K) (IsDedekindDomain.FiniteAdeleRing (𝓞 K) K)) (infEmb K a x)).trans ((congrArg (emb e) hx.1).trans ?_)` and prove the remaining obligations. Rewrite using `[UpperTheory.archEquiv_symm_apply_eq_map_mixedSpace, UpperTheory.archEquiv_symm_apply_eq_map_mixedSpace]`.
+
+Conclude with `(emb_map e _ _).symm`. Conclude with `(emb_map e (RingHom.snd (InfiniteAdeleRing K) (IsDedekindDomain.FiniteAdeleRing (𝓞 K) K)) (infEmb K a x)).trans ((congrArg (emb e) hx.2).trans (map_one _))`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `exp_block_extension K e Y`.
+-/
 theorem UpperTheory.blockEmbedding_comm_infEmb_and_exp :
     ∀ (K : Type) [Field K] [NumberField K] (a n : ℕ) (e : Fin a ↪ Fin n), (∀ x, emb e (infEmb K a x) = infEmb K n (embArch e x)) ∧ ∀ Y : Matrix (Fin a) (Fin a) (mixedSpace K), embArch e ((isExpLieAlgebra K a).expG ((isExpLieAlgebra K a).ofLie (toLie K a Y))) = (isExpLieAlgebra K n).expG ((isExpLieAlgebra K n).ofLie (toLie K n (ext0 e Y))) := by
   intro K _ _ a n e

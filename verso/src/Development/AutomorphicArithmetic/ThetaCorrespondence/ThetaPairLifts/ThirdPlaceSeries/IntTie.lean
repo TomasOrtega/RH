@@ -14,6 +14,27 @@ open Formalism.L2.Indef.Tree Formalism.L2.Indef.Tree.ArchimedeanLeafBounds.Cuts
 namespace GlobalTheory.BigTop.Fun.IntTie
 end GlobalTheory.BigTop.Fun.IntTie
 open GlobalTheory.BigTop.Fun.IntTie in
+/- English proof (translation)
+Establish `hQ` using `_root_.GlobalTheory.T.forallLeaves_fitted_of_gBig _ hS hd (gBig_dep (gBig_and hB hN))`. Use `_root_.GlobalTheory.BigTop.Fun.LeafConditions.mono hQ ?_` and prove the remaining obligations. Introduce `D L hT Gi Gl Kc Y cX ex Csz p CF d C CH _ hd`. Use `⟨hd, fun hq => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, ⟨-, -, hsmall⟩, hne⟩` from `hq`.
+
+Express the relevant statement in the definitionally equal form `1 ≤ CF at h1`. Express the relevant statement in the definitionally equal form `CF ≤ C at h2`. Take `⟨a, ha⟩` from `hd.2`. Establish `hsq` using `ha.sq`. Take `⟨S, del, -, -, hNI, hdl⟩` from `hsq.int`.
+
+Take `⟨δ, t0, hP⟩` from `hsq.norms`. Use `choose P P' hb hz hz' using hP`. Establish `hI` using `hNI δ t0 D.what₂.LL D.what₂.embLL (Sq D) P P' d.zA d.zA' (fun ij => hsmall δ t0 _ (P ij) (P' ij) _ ij.1 ij.2 _ (hb ij)) (fun ij => hne δ t0 _ (P ij) (P' ij) ij.1 ij.2 (hb ij)) (fun ij => ⟨hz ij, hz' ij⟩)`. Rewrite `hI` using `[← hdl]`. Use `show NonArchimedeanDefectBound d.dl d.zA d.zA' (d.O.bDel C p.Z.b)`.
+
+Use `integralNormBound_mono hI ?_` and prove the remaining obligations. Use `clear hQ hne hsmall hb hz hz' hNI`. Establish `eN : (d.O.N : ℝ) = (GlobalTheory.ChiGrid.bigN D : ℝ)`. Use `D.R.m_add_three_le_k` as an intermediate fact. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`.
+
+Use `norm_cast`. Use `show D.R.k + D.R.m * (D.R.t + (D.R.k + D.R.m + 5) + 1) = D.R.k + D.R.m * (D.R.t + (GlobalTheory.ChiGrid.sLen D) + 1)`. Unfold `GlobalTheory.ChiGrid.sLen`. Rewrite using `[hr]`. Use `congr 3`.
+
+Use linear arithmetic over natural numbers and integers. Establish `eB : d.O.Bw = (GlobalTheory.FunObj.SqNum.maxWt D 1 : ℝ)` using `hsq.weight`. Establish `eS : d.O.cS = Real.log (GlobalTheory.FunObj.SqNum.levQ d.G.pl)`. Rewrite using `[GlobalTheory.FunObj.SqNum.log_levQ]`. Both sides reduce to the same expression.
+
+Establish `ef : (d.O.f : ℝ) = D.R.f` using `rfl`. Take `⟨X, hX⟩ : ∃ X : ℝ, X = D.R.f * (2 * (GlobalTheory.ChiGrid.bigN D : ℝ)) * Real.log ((D.R.f : ℝ) * (2 * (GlobalTheory.ChiGrid.bigN D : ℝ))) + D.R.f * (2 * (GlobalTheory.ChiGrid.bigN D : ℝ)) * (GlobalTheory.FunObj.SqNum.maxWt D 1 : ℝ) * Real.log p.Z.b + D.R.f * (2 * (GlobalTheory.Ch …` from `⟨_, rfl⟩`. Establish `e1 : d.O.bDel C p.Z.b = C * X`. Unfold `FunData.bDel`. Rewrite using `[eN, eB, eS, ef, hX]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e2 : GlobalTheory.NormSum.intBound CF D.R.f (GlobalTheory.ChiGrid.bigN D) (GlobalTheory.FunObj.SqNum.maxWt D 1 : ℝ) (Real.log p.Z.b) (GlobalTheory.FunObj.SqNum.levQ d.G.pl) = CF * X`. Unfold `GlobalTheory.NormSum.intBound`. Rewrite using `[hX]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h0` using `hI.2.1 ∅`. Rewrite `h0` using `[Finset.sum_empty]`. Express the relevant statement in the definitionally equal form `0 ≤ GlobalTheory.NormSum.intBound CF D.R.f (GlobalTheory.ChiGrid.bigN D) (GlobalTheory.FunObj.SqNum.maxWt D 1 : ℝ) (Real.log p.Z.b) (GlobalTheory.FunObj.SqNum.levQ d.G.pl) at h0`. Express the relevant statement in the definitionally equal form `GlobalTheory.NormSum.intBound CF D.R.f (GlobalTheory.ChiGrid.bigN D) (GlobalTheory.FunObj.SqNum.maxWt D 1 : ℝ) (Real.log p.Z.b) (GlobalTheory.FunObj.SqNum.levQ d.G.pl) ≤ _`. Rewrite using `[e1, e2]`.
+
+Rewrite `h0` using `[e2]`. Establish `hX0 : 0 ≤ X` using `(mul_nonneg_iff_of_pos_left (by linarith)).1 h0`. Conclude with `mul_le_mul_of_nonneg_right h2 hX0`.
+-/
 theorem GlobalTheory.BigTop.Fun.int_tie_alt (hS : _root_.GlobalTheory.BigTop.Fun.SettingAtPoint)
     (hd : Closed FamHyp fun Fm _ => _root_.GlobalTheory.BigTop.EventuallyAtPoints Fm fun x _ i _ => |(Fm.L x i).logDerivativeAtOne| ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps)
     (hB : BotSmall) (hN : BotNe) : _root_.GlobalTheory.BigTop.Fun.LeafIntegrality @Comparison₂ := by

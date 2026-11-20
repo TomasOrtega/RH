@@ -6,6 +6,13 @@ open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.
 
 namespace GlobalTheory.GraphClosure
 
+/- English proof (translation)
+Introduce `O _ _ _ P U s Ω j hs _ hn hfl`. Establish `: IsProper s` using `((isProjOver_iff_isProper_and_exists_isAmpleLB s).mp hs).1`. Use `GlobalTheory.IsNormalScheme.of_pred hn` as an intermediate fact. Establish `: IsLocallyNoetherian P` using `LocallyOfFiniteType.isLocallyNoetherian s`. Establish `: IsLocallyNoetherian U` using `LocallyOfFiniteType.isLocallyNoetherian (j ≫ Ω.ι)`.
+
+Take `⟨h, eh⟩ : ∃ h : U ⟶ P, h = j ≫ Ω.ι` from `⟨_, rfl⟩`. Establish `: QuasiCompact h` using `eh ▸ inferInstance`. Establish `: IsSeparated h` using `eh ▸ inferInstance`. Establish `: LocallyOfFiniteType h` using `eh ▸ inferInstance`. Establish `: Flat (h ≫ s)` using `by rw [eh, Category.assoc]; exact hfl`.
+
+Establish `: IsFinite h.fromNormalization` using `isFinite_fromNormalization_of_locallyOfFiniteType (o := CommRingCat.of O) h s fun x hx => charZero_residueField_of_flat (h ≫ s) hx`. Establish `: Flat (h.toNormalization ≫ h.fromNormalization ≫ s)`. Rewrite using `[Scheme.Hom.toNormalization_fromNormalization_assoc]`. Use `infer_instance`. Conclude with `⟨h.normalization, h.fromNormalization, h.toNormalization, inferInstance, IsNormalScheme.pred _, isProjOver_comp_of_isFinite _ hs, flat_normalization h _, isPullback_toNormalization_of_mono j Ω.ι h eh, h.toNormalization.denseRange⟩`.
+-/
 theorem exists_normalisation_of_locallyClosed : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] (P U : Scheme.{0}) (s : P ⟶ Sp O) (Ω : P.Opens) (j : U ⟶ Ω.toScheme), IsProjOver s → IsClosedImmersion j → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme U → Flat (j ≫ Ω.ι ≫ s) → ∃ (Z' : Scheme.{0}) (ν : Z' ⟶ P) (e : U ⟶ Z'), IsFinite ν ∧ ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Z' ∧ IsProjOver (ν ≫ s) ∧ Flat (ν ≫ s) ∧ IsPullback e j ν Ω.ι ∧ Dense (Set.range e) := by
   intro O _ _ _ P U s Ω j hs _ hn hfl
   have : IsProper s := ((isProjOver_iff_isProper_and_exists_isAmpleLB s).mp hs).1

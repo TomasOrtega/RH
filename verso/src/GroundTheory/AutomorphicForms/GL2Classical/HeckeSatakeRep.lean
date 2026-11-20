@@ -19,6 +19,9 @@ variable (p : ℕ) [hp : Fact p.Prime]
 def translateSpan (φ : AdelicGL ℚ 2 → ℂ) : Submodule ℂ (AdelicGL ℚ 2 → ℂ) :=
   Submodule.span ℂ (Set.range fun g : FiniteAdelicGL ℚ 2 => finRightRep g φ)
 
+/- English proof (translation)
+Rewrite using `[translateSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨h, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, ← Module.End.mul_apply, ← map_mul]`. Conclude with `Submodule.subset_span ⟨g * h, rfl⟩`.
+-/
 theorem translateSpan_le_comap (φ : AdelicGL ℚ 2 → ℂ) (g : FiniteAdelicGL ℚ 2) :
     translateSpan φ ≤ (translateSpan φ).comap (finRightRep g) := by
   rw [translateSpan, Submodule.span_le]

@@ -2,16 +2,33 @@ import Mathlib
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.TranscendenceTraces.IsolateSpec
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
+/- English proof (translation)
+Unfold `pullHQ`. Rewrite using `[pullHl_id, LinearMap.baseChange_id]`.
+-/
 private theorem pullHQ_id' (l : ℕ) [Fact l.Prime] (E : Spc) (n i : ℤ) :
     pullHQ l (𝟙 E) n i = LinearMap.id := by
   unfold pullHQ
   rw [pullHl_id, LinearMap.baseChange_id]
 
+/- English proof (translation)
+Unfold `pullHQ`. Rewrite using `[pullHl_comp, LinearMap.baseChange_comp]`.
+-/
 private theorem pullHQ_comp' (l : ℕ) [Fact l.Prime] {E E' E'' : Spc} (f : E ⟶ E') (g : E' ⟶ E'') (n i : ℤ) :
     pullHQ l (f ≫ g) n i = (pullHQ l f n i) ∘ₗ (pullHQ l g n i) := by
   unfold pullHQ
   rw [pullHl_comp, LinearMap.baseChange_comp]
 
+/- English proof (translation)
+Establish `hι : ∀ j, Sigma.ι (fun _ : Fin m => U) j ≫ Sigma.desc s' = s' j` using `fun j => Sigma.ι_desc _ _`. Set `t : gp Ω ⟶ ∐ (fun _ : Fin m => U)` to `y ≫ inv (Sigma.desc s')`. Take `⟨⟨j, u⟩, hu⟩` from `(sigmaMk (fun _ : Fin m => U)).surjective (pt t)`. Rewrite `hu` using `[sigmaMk_mk]`. Establish `hr : Set.range t ⊆ Set.range (Sigma.ι (fun _ : Fin m => U) j)`.
+
+Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨u, by rw [hu, pt_eq]⟩`. Set `t'` to `IsOpenImmersion.lift (Sigma.ι (fun _ : Fin m => U) j) t hr`. Establish `ht' : t' ≫ Sigma.ι (fun _ : Fin m => U) j = t` using `IsOpenImmersion.lift_fac _ _ _`. Establish `h1 : t' ≫ s' j = y`.
+
+Rewrite using `[← hι j, ← Category.assoc, ht']`. Simplify using `[t]`. Establish `h2 : t' = x0`. Rewrite using `[← hy, ← h1, Category.assoc, hs j, Category.comp_id]`. Use `⟨j, by rw [← h2]; exact h1, fun k hk => ?_⟩` and prove the remaining obligations.
+
+Establish `h3 : (x0 ≫ Sigma.ι (fun _ : Fin m => U) k) ≫ Sigma.desc s' = (x0 ≫ Sigma.ι (fun _ : Fin m => U) j) ≫ Sigma.desc s'`. Rewrite using `[Category.assoc, Category.assoc, hι, hι, hk, ← h2, h1]`. Establish `h4` using `(cancel_mono (Sigma.desc s')).1 h3`. Establish `h5 : Sigma.ι (fun _ : Fin m => U) k (pt x0) = Sigma.ι (fun _ : Fin m => U) j (pt x0)`. Rewrite using `[← pt_comp, ← pt_comp, h4]`.
+
+Conclude with `congrArg Sigma.fst ((sigmaι_eq_iff _ k j _ _).1 h5)`.
+-/
 private theorem existsUnique_sec {U P : Scheme.{0}} (p' : P ⟶ U) {m : ℕ} (s' : Fin m → (U ⟶ P))
     (hs : ∀ j, s' j ≫ p' = 𝟙 U) (hiso : IsIso (Sigma.desc s' : ∐ (fun _ : Fin m => U) ⟶ P))
     {Ω : Type} [Field Ω] (x0 : gp Ω ⟶ U) (y : gp Ω ⟶ P) (hy : y ≫ p' = x0) :
@@ -39,16 +56,49 @@ private theorem existsUnique_sec {U P : Scheme.{0}} (p' : P ⟶ U) {m : ℕ} (s'
     rw [← pt_comp, ← pt_comp, h4]
   exact congrArg Sigma.fst ((sigmaι_eq_iff _ k j _ _).1 h5)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+-/
 private theorem finsum_one_singleton {T : Type*} (A : Set T) (a : T) (h : A = {a}) :
     ∑ᶠ z ∈ A, (1 : ℤ) = 1 := by
   subst h
   simp
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+-/
 private theorem finsum_one_empty {T : Type*} (A : Set T) (h : A = ∅) :
     ∑ᶠ z ∈ A, (1 : ℤ) = 0 := by
   subst h
   simp
 
+/- English proof (translation)
+Set `c : Option (Fin m) → Corr U P` to `fun o => match o with`. Consider the case `none => ⟨P, p', 𝟙 P, Wt.const P 1, inferInstance, wt⟩`. Consider the case `some j => ⟨U, 𝟙 U, s' j, Wt.const U 1, inferInstance, wt1⟩`. Set `mm : Option (Fin m) → ℤ` to `fun o => match o with`. Consider the case `none => 1`.
+
+Consider the case `some _ => -1`. Establish `hcn : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (x0 : gp Ω ⟶ U) (y : gp Ω ⟶ P), (c none).cyc Ω x0 y = if y ≫ p' = x0 then 1 else 0`. Introduce `Ω _ _ x0 y`. Use `split_ifs with h`. Use `finsum_one_singleton _ y ?_` and prove the remaining obligations.
+
+Use extensionality with `z`. Simplify using `only [c, Set.mem_setOf_eq, Set.mem_singleton_iff, Category.comp_id]`. Conclude with `⟨fun hz => hz.2, fun hz => ⟨hz ▸ h, hz⟩⟩`. Use `finsum_one_empty _ ?_` and prove the remaining obligations. Use extensionality with `z`.
+
+Simplify using `only [c, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, Category.comp_id]`. Introduce and unpack `⟨h1, rfl⟩`. Conclude with `h h1`. Establish `hcs : ∀ (j : Fin m) (Ω : Type) [Field Ω] [IsAlgClosed Ω] (x0 : gp Ω ⟶ U) (y : gp Ω ⟶ P), (c (some j)).cyc Ω x0 y = if x0 ≫ s' j = y then 1 else 0`. Introduce `j Ω _ _ x0 y`.
+
+Use `split_ifs with h`. Use `finsum_one_singleton _ x0 ?_` and prove the remaining obligations. Use extensionality with `z`. Simplify using `only [c, Set.mem_setOf_eq, Set.mem_singleton_iff, Category.comp_id]`. Conclude with `⟨fun hz => hz.1, fun hz => ⟨hz, hz ▸ h⟩⟩`.
+
+Use `finsum_one_empty _ ?_` and prove the remaining obligations. Use extensionality with `z`. Simplify using `only [c, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, Category.comp_id]`. Introduce and unpack `⟨rfl, h1⟩`. Conclude with `h h1`.
+
+Establish `key` using `hCorr l n i (𝟙 U) p' (Option (Fin m)) c mm (fun a => by cases a with`. Consider the case `none => simp [c]`. Consider the case `some j => simp [c, hs j]) hl Set.univ dense_univ`. Use the proof step `(fun Ω _ _ x0 y _ => by`. Rewrite using `[Fintype.sum_option]`.
+
+Simplify using `only [hcn, hcs, mm]`. Distinguish the cases in `hy : y ≫ p' = x0`. Take `⟨j, hj, hu⟩` from `existsUnique_sec p' s' hs hiso x0 y hy`. Rewrite using `[if_pos hy, Finset.sum_eq_single j]`. Simplify using `[hj]`.
+
+Introduce `k _ hk`. Rewrite using `[if_neg (fun e => hk (hu k e))]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite using `[if_neg hy]`.
+
+Simplify using `only [mul_zero, zero_add]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Simplify using the standard rewrite rules. Introduce `e`.
+
+Apply `hy` to reduce the goal to its premises. Rewrite using `[← e, Category.assoc, hs j, Category.comp_id])`. Rewrite `key` using `[Fintype.sum_option]`. Establish `e0 : (c none).opQ l n i = trHQ l p' (Wt.const P 1) n i`. Express the relevant statement in the definitionally equal form `trHQ l p' (Wt.const P 1) n i ∘ₗ pullHQ l (sch.map (𝟙 P)) n i = _`.
+
+Rewrite using `[CategoryTheory.Functor.map_id, pullHQ_id', LinearMap.comp_id]`. Establish `e1 : ∀ j, (c (some j)).opQ l n i = pullHQ l (sch.map (s' j)) n i`. Introduce `j`. Express the relevant statement in the definitionally equal form `trHQ l (𝟙 U) (Wt.const U 1) n i ∘ₗ pullHQ l (sch.map (s' j)) n i = _`. Rewrite using `[hId l n i U 1 hl]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [mm, e0, e1] at key`. Simplify using `only [Int.cast_one, one_smul, Int.cast_neg, neg_smul, Finset.sum_neg_distrib] at key`. Conclude with `add_neg_eq_zero.1 key`.
+-/
 private theorem tr_split (hCorr : CorrEqQ) (hId : TrIdQ) (l : ℕ) [Fact l.Prime] (n i : ℤ) {U P : Scheme.{0}}
     (p' : P ⟶ U) [IsFinite p'] (wt : IsWt p' (Wt.const P 1)) (wt1 : IsWt (𝟙 U) (Wt.const U 1))
     (hl : IsUnit (l : Γ(U, ⊤))) {m : ℕ} (s' : Fin m → (U ⟶ P)) (hs : ∀ j, s' j ≫ p' = 𝟙 U)
@@ -123,6 +173,15 @@ private theorem tr_split (hCorr : CorrEqQ) (hId : TrIdQ) (l : ℕ) [Fact l.Prime
   simp only [Int.cast_one, one_smul, Int.cast_neg, neg_smul, Finset.sum_neg_distrib] at key
   exact add_neg_eq_zero.1 key
 
+/- English proof (translation)
+Introduce `hBC hCorr hId hLin hFlat hMult l _ n i Z S p _ _ hl U x m s hs hiso`. Establish `wtp : IsWt p (Wt.const Z 1)`. Rewrite using `[← hMult.2.2 p]`. Conclude with `hFlat p`. Establish `wtp' : IsWt (pullback.snd p x) (Wt.const (pullback p x) 1)`.
+
+Rewrite using `[← hMult.2.2 (pullback.snd p x)]`. Conclude with `hFlat _`. Establish `hlU : IsUnit (l : Γ(U, ⊤))`. Simplify using `using hl.map x.appTop.hom`. Establish `h1` using `hBC l n i (pullback.fst p x) (pullback.snd p x) p x (Wt.const Z 1) (IsPullback.of_hasPullback p x) wtp hl`.
+
+Establish `h2` using `tr_split hCorr hId l n i (pullback.snd p x) wtp' (hLin.2.2 (𝟙 U) 1) hlU (fun j => pullback.lift (s j) (𝟙 U) (by rw [hs j, Category.id_comp])) (fun j => pullback.lift_snd _ _ _) hiso`. Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `trHQ l (pullback.snd p x) (Wt.const _ 1) n i ∘ₗ _ = _`. Rewrite using `[h2]`. Use `LinearMap.ext fun a => ?_` and prove the remaining obligations.
+
+Simplify using `only [LinearMap.comp_apply, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← LinearMap.comp_apply, ← pullHQ_comp', ← CategoryTheory.Functor.map_comp, pullback.lift_fst]`.
+-/
 theorem UpperTheory.Gal.TranscendenceTraces.trSplitQ_of :
     TrBCQ → CorrEqQ → TrIdQ → WtLin → WtFlat → MultBasic → TrSplitQ := by
   intro hBC hCorr hId hLin hFlat hMult l _ n i Z S p _ _ hl U x m s hs hiso

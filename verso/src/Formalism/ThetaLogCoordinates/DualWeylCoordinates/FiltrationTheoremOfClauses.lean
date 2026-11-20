@@ -41,6 +41,9 @@ def HighestVectorsRationalSpan : Prop :=
     ∀ x : M.ι → ℚ, IsHighest M ℚ mu x →
       x ∈ Submodule.span ℚ {y | ∃ j, CF.mu j = mu ∧ y = fun i => (CF.vec j (canT (CF.mu j)) i : ℚ)}
 
+/- English proof (translation)
+Introduce `n _ M CF pi hpi` and use `⟨h1 n M CF pi hpi, h2 n M CF pi hpi, h3 n M CF pi hpi, h4 n M CF pi hpi, fun mu hmu hmax => ⟨h5 n M CF pi hpi mu hmu hmax, h6 n M CF mu (hpi.1 mu hmu)⟩⟩`.
+-/
 theorem filtration_theorem_of_clauses (h1 : FiltrationStandardSpan) (h2 : FiltrationTypeIntersection) (h3 : FiltrationCoactionStable) (h4 : FiltrationDirectSummand) (h5 : FiltrationMaximalQuotient) (h6 : HighestVectorsEqLattice) : ColumnFamilyFiltrationProperties :=
   fun n _ M CF pi hpi => ⟨h1 n M CF pi hpi, h2 n M CF pi hpi, h3 n M CF pi hpi, h4 n M CF pi hpi,
     fun mu hmu hmax => ⟨h5 n M CF pi hpi mu hmu hmax, h6 n M CF mu (hpi.1 mu hmu)⟩⟩

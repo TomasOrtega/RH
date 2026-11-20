@@ -31,6 +31,29 @@ namespace GlobalTheory.AmpTKGapOne
 
 open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions.S BranchingSupport GlobalTheory.CellAmp GlobalTheory.AmpTK
 
+/- English proof (translation)
+Introduce `H`. Take `⟨Cgf, hCgf⟩` from `GlobalTheory.T.exists_besselCell_gap_constant`. Use `⟨Cgf, fun D => ?_⟩` and prove the remaining obligations. Introduce `L f κ₀ κ τ hκ₀ hκ hτ hc hκN hκNt hε hgap hf`. Take `⟨h, hg, hok, hgc⟩` from `hCgf D L.ε L.lam hgap`.
+
+Establish `hc0 : L.c ≠ 0`. Rewrite using `[hc]`. Unfold `cOfDpsi`. Conclude with `mul_ne_zero (mul_ne_zero (by norm_num) Complex.I_ne_zero) (by exact_mod_cast hκ₀.ne')`. Take `⟨μG, hμG⟩` from `GlobalTheory.SnMass.Inhab.exists_isHaarOn D.R.k D.R.rS`.
+
+Take `⟨l, l', hBe, hl, hl'⟩` from `GlobalTheory.T.exists_besselMaps_largeGap_periodIdentities H _ _ L h hg hok hc0 hκN hκNt`. Establish `hBig : ∀ (c : Fin D.R.rS → ℂ) (μ : Matrix (Fin (D.R.k + 1)) (Fin (D.R.k + 1)) ℂ), (∀ a, c a ≠ 0) → μᴴ * Hb D.R.k * μ = Hb D.R.k → OneAt L l l' (bigCell D.R.k D.R.rS c μ) (pairMeas L)`. Introduce `c μ hc' hμ`. Take `⟨h1, h2, h3, h4, h5⟩` from `GlobalTheory.T.bigCell_trivialStabiliser_and_measures _ _ L μG hok.1 hκNt hκN hc0 hμG c μ hc' hμ`. Take `⟨b, hb0, hb, hint⟩` from `GlobalTheory.T.pair_space_majorant_integrable_big_cell _ _ L h hok hgc hκNt hκN hc0 c μ hc' hμ`.
+
+Conclude with `GlobalTheory.T.besselAmplitude_identity_translates_kFinite_largeGap H _ _ L h μG l l' hg hok hc0 hμG hBe _ _ _ _ h1 h2 h3 h4 h5 b hb0 hb hint`. Establish `hCell : ∀ (γ : Point ℂ (D.R.rS + 1)) (g : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ) (μR : Measure (Mt D.R.k D.R.rS)) (ν : Measure (PairSp D.R.k D.R.rS)), Formalism.MainNotions.S.ThB.Gpt (Tz D.R.k D.R.rS L.z) (Tz D.R.k D.R.rS L.z') γ ≠ 0 → IsPtRep L γ …`. Introduce `γ g μR ν h0 h1 h2 h3 h4`. Take `⟨hR, ⟨νR, hQ⟩, b, hb0, hb, hint⟩` from `GlobalTheory.T.smallCell_relevant_points_haar_quotient_majorant _ _ L h μG hok hgc hκNt hκN hc0 hμG γ g μR ν h0 h1 h2 h3 h4`. Conclude with `GlobalTheory.T.besselAmplitude_identity_translates_kFinite_largeGap H _ _ L h μG l l' hg hok hc0 hμG hBe g μR νR ν h1.1 h2 hR h4 hQ b hb0 hb hint`.
+
+Take `⟨⟨s, hs⟩, -⟩` from `GlobalTheory.T.kFiniteCoef_and_torusTranslate_isBesselCoef_largeGap H _ _ L l l' κ τ hκ hτ f hf`. Distinguish the cases in `hs0 : s = 0`. Substitute `hs0` using the available equality. Use `⟨fun _ => 0, 1, one_ne_zero, ⟨0, 0, fun _ => by simpa using GlobalTheory.AmpTK.kfin_zero L.σ, fun _ => by simpa using GlobalTheory.AmpTK.kfin_zero L.σ, fun _ => by simp⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `c μ hc' hμ`.
+
+Take `⟨A, hA⟩` from `hBig c μ hc' hμ`. Rewrite using `[J_eq_orbInt, J_eq_orbInt, hA _ 0 (GlobalTheory.AmpTK.isCoef_zero L l l'), hA f 0 hs]`. Simplify using the standard rewrite rules. Introduce `γ g μR ν h0 h1 h2 h3 h4`. Take `⟨A, hA⟩` from `hCell γ g μR ν h0 h1 h2 h3 h4`.
+
+Rewrite using `[hA _ 0 (GlobalTheory.AmpTK.isCoef_zero L l l'), hA f 0 hs]`. Simplify using the standard rewrite rules. Establish `hs'` using `hs`. Take `⟨m, x, y, X, hxy, -, hsdef⟩` from `hs'`. Establish `hx : ∃ x ∈ (rep L).TK, l x ≠ 0`.
+
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Apply `hs0` to reduce the goal to its premises. Rewrite using `[hsdef]`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [hne _ (hxy i).1, inner_zero_left]`.
+
+Establish `hy : ∃ y ∈ (rep L).TK, l' y ≠ 0`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Apply `hs0` to reduce the goal to its premises. Rewrite using `[hsdef]`.
+
+Conclude with `Finset.sum_eq_zero fun i _ => by rw [hne _ (hxy i).2, map_zero, inner_zero_right]`. Take `⟨f₁, s₁, hf₁, hc₁, hs₁⟩` from `GlobalTheory.GapAmpTK.exists_kFinCoef_torus_ne H _ _ L l l' κ τ hκ hτ hl hl' hx hy`. Use `⟨f₁, s₁ / s, div_ne_zero hs₁ hs0, hf₁, ?_, ?_⟩` and prove the remaining obligations. Introduce `c μ hc' hμ`. Take `⟨A, hA⟩` from `hBig c μ hc' hμ`.
+
+Rewrite using `[J_eq_orbInt, J_eq_orbInt, hA _ _ hc₁, hA f s hs, smul_smul, div_mul_cancel₀ _ hs0]`. Introduce `γ g μR ν h0 h1 h2 h3 h4`. Take `⟨A, hA⟩` from `hCell γ g μR ν h0 h1 h2 h3 h4`. Rewrite using `[hA _ _ hc₁, hA f s hs, smul_smul, div_mul_cancel₀ _ hs0]`.
+-/
 theorem oneBesselTor_of_gapHyp : GlobalTheory.GapIn.Hyp → ∃ Cgf : ℝ, ∀ D : D7, Formalism.MainNotions.FrameBoundFromBesselTorus.OneBesselTor D Cgf := by
   intro H
   obtain ⟨Cgf, hCgf⟩ := GlobalTheory.T.exists_besselCell_gap_constant

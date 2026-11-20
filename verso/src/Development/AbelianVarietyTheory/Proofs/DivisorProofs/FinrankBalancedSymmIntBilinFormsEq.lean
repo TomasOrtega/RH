@@ -11,6 +11,11 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.UC
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `E _ _ _ H X _ _ _ _`. Take `⟨f, m, hm, hf, hmf⟩` from `GlobalTheory.T.exists_free_submodule_finite_index_numberField (E := E) X`. Establish `h1` using `GlobalTheory.T.two_mul_finrank_balancedSymmIntBilinForms H X`. Establish `h2` using `GlobalTheory.T.finrank_balancedIntBilinForms_eq_of_finite_index H.bar X _ f m hm hf hmf`. Establish `h3` using `GlobalTheory.T.finrank_balancedIntBilinForms_pi H (Fin (Module.finrank (𝓞 E) X))`.
+
+Rewrite `h3` using `[Fintype.card_fin]`. Take `⟨k, hk⟩ : 2 ∣ Module.finrank ℚ E` from `⟨_, IsTotallyComplex.finrank E⟩`. Rewrite using `[hk, Nat.mul_div_cancel_left _ two_pos]`. Rewrite `h1` using `[← h2, h3, hk]`. Use polynomial arithmetic with `[h1]`.
+-/
 theorem GlobalTheory.BalRank.finrank_balForms : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Free ℤ X] [Module.Finite ℤ X], Module.finrank ℤ (balForms H.bar X) = Module.finrank ℚ E / 2 * Module.finrank (𝓞 E) X * Module.finrank (𝓞 E) X := by
   intro E _ _ _ H X _ _ _ _
   obtain ⟨f, m, hm, hf, hmf⟩ := GlobalTheory.T.exists_free_submodule_finite_index_numberField (E := E) X

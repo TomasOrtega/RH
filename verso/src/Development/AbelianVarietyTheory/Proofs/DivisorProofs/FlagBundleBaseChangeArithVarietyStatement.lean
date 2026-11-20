@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.RegularAlt
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.BcFlag
 open CategoryTheory AlgebraicGeometry Limits ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.CovTest GlobalTheory.Published
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LineBundleBaseChange.main | exact GlobalTheory.LineBundleBaseChange.main | (intros; apply GlobalTheory.LineBundleBaseChange.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flag_bundle_base_change_arith_variety : ∀ (k : Type) [CommRing k] (B Y B' : Scheme.{0}) [IsIntegral B] [IsIntegral Y] [IsIntegral B']
     (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ), IsArithVar q d → IsArithVar p (d + 1) → ∀ (π : Y ⟶ B) (_ : π ≫ q = p)
     (E : B.Modules), GlobalTheory.VB.IsVB E 2 → ∀ (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) 2),

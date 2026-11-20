@@ -8,6 +8,15 @@ open Formalism.MainNotions.DIV.Cons (intO SCF)
 
 namespace GlobalTheory.Vert.VertDiv
 
+/- English proof (translation)
+Introduce `O _ _ _ B P P' H`. Take `⟨⟨⟨g, hg⟩, s⟩, h⟩` from `P.exists_extends'`. Take `⟨⟨⟨g', hg'⟩, s'⟩, h'⟩` from `P'.exists_extends'`. Establish `h₁` using `h.smul g'`. Establish `h₂` using `mul_comm g g' ▸ h'.smul g`.
+
+Establish `h0` using `mul_ne_zero hg' hg`. Rewrite using `[h₁.cls_eq h0, h₂.cls_eq h0, sub_left_inj]`. Use `congrArg Model.ofEff (Subtype.ext ?_)` and prove the remaining obligations. Simplify using `only [Extends.eff, Model.effMk]`. Use `idealSheaf_eq_of_germ _ _ fun x i j hi hj => ?_` and prove the remaining obligations.
+
+Take `⟨V, i0, j0, hi0, hj0, u, hx, hu⟩` from `H x`. Establish `key : resG B.X hj0 ((B.const g • s').f j0) = u.val * resG B.X hi0 ((B.const g' • s).f i0)`. Use `B.resG_injective inf_le_right le_rfl ?_` and prove the remaining obligations. Simplify using `only [map_mul, resG_resG]`. Rewrite using `[h₂.resG_f j0 (inf_le_inf_left _ hj0), h₁.resG_f i0 (inf_le_inf_left _ hi0), hu]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e` using `congrArg (B.X.presheaf.germ _ x hx).hom key`. Simplify using `only [map_mul, GlobalTheory.Cartier.germ_resG] at e`. Use `((EffCartierData.ofSec P.isLB _ (h₁.isRegularSec h0)).associated_germ i i0 x hi (hi0 hx)).trans (((associated_unit_mul_left _ _ (u.isUnit.map _)).symm.trans (Associated.of_eq e.symm)).trans ((EffCartierData.ofSec P'.isLB _ (h₂.isRegularSec h0)).associated_germ j0 j x (hj0 hx) hj) …` and prove the remaining obligations.
+-/
 theorem cls_eq_of_local_units : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (B : Vert.Model O) (P P' : VertDiv B), (∀ x : B.X, ∃ (V : B.X.Opens) (i : P.M.ι) (j : P'.M.ι) (hi : V ≤ P.M.U i) (hj : V ≤ P'.M.U j) (u : Γ(B.X, V)ˣ), x ∈ V ∧ P'.eqn j (inf_le_inf_left B.gen hj) = resG B.X inf_le_right u.val * P.eqn i (inf_le_inf_left B.gen hi)) → P.cls = P'.cls := by
   intro O _ _ _ B P P' H
   obtain ⟨⟨⟨g, hg⟩, s⟩, h⟩ := P.exists_extends'

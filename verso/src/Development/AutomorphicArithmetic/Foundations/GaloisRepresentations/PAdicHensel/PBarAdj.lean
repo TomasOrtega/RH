@@ -2,6 +2,15 @@ import Mathlib
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdicHensel.DatExOf
 open NumberField IsDedekindDomain UpperTheory.Gal.W2.Seed UpperTheory.Gal.G1 UpperTheory.Gal.Int.Geo GlobalTheory.CongL GlobalTheory.UnitaryBC
 
+/- English proof (translation)
+Introduce `h E _ _ _ A y hy`. Take `⟨a, b, hab⟩` from `h E A y hy`. Establish `hD : (((A.tr ^ 2 - 4 * A.nm : ℤ)) : E) ≠ 0`. Conclude with `ne_of_lt A.disc_neg` after adjusting the coercions. Establish `hb : A.bar A.ω = (A.tr : 𝓞 E) - A.ω`.
+
+Rewrite using `[← A.tr_eq]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `congrArg A.bar hab`. Simplify using `only [map_mul, map_add, map_intCast] at h1`. Rewrite `h1` using `[hb]`.
+
+Establish `h2 : (((A.tr ^ 2 - 4 * A.nm : ℤ)) : E) * ((A.bar y : 𝓞 E) : E) = (a : E) + (b : E) * ((A.tr : E) - (A.ω : E))`. Establish `h3` using `congrArg (algebraMap (𝓞 E) E) h1`. Simplify `h3` using `only [map_mul, map_add, map_sub, map_intCast]`. Establish `e : ((A.bar y : 𝓞 E) : E) = ((a : E) + (b : E) * ((A.tr : E) - (A.ω : E))) / (((A.tr ^ 2 - 4 * A.nm : ℤ)) : E)`. Rewrite using `[← h2, mul_div_cancel_left₀ _ hD]`.
+
+Rewrite using `[e]`. Conclude with `div_mem (add_mem (intCast_mem _ _) (mul_mem (intCast_mem _ _) (sub_mem (intCast_mem _ _) (IntermediateField.mem_adjoin_simple_self ℚ _)))) (intCast_mem _ _)`.
+-/
 theorem UpperTheory.Gal.G1.pBarAdj :
     DiscInt → BarAdj := by
   intro h E _ _ _ A y hy

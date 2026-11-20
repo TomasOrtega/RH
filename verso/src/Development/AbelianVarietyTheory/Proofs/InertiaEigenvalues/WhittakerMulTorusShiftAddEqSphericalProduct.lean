@@ -15,6 +15,27 @@ open scoped Classical
 
 namespace GlobalTheory.RamShift
 
+/- English proof (translation)
+Proceed by induction on `L using Finsupp.induction with`. Consider the case `zero => intro _ _`. Simplify using the standard rewrite rules. Consider the case `single_add a b f ha hb ih`. Introduce `hT hlast`.
+
+Establish `hfa : f a = 0` using `Finsupp.notMem_support_iff.1 ha`. Establish `haT : a ∉ T` using `fun h => hb (by simpa [hfa] using hT a h)`. Establish `hfT : ∀ w ∈ T, f w = 0` using `fun w hw => by`. Establish `hne : a ≠ w` using `fun e => haT (e ▸ hw)`. Simplify `hT w hw` using `[Finsupp.single_apply, hne]`.
+
+Establish `hflast : ∀ w, 0 ≤ f w (Fin.last m)` using `fun w => by`. Distinguish the cases in `hw : a = w`. Substitute `hw` using the available equality. Simplify using `[hfa]`. Simplify `hlast w` using `[Finsupp.single_apply, hw]`.
+
+Establish `hblast : 0 ≤ b (Fin.last m)` using `by simpa [hfa] using hlast a`. Use `set l₀ := (shift m T ϖ).1 with hl₀`. Establish `hsplit : l₀ + (Finsupp.single a b + f) = (l₀ - Finsupp.single a (l₀ a) + f) + Finsupp.single a (l₀ a + b)`. Use extensionality with `w i`. Distinguish the cases in `hw : a = w`.
+
+Substitute `hw` using the available equality. Simplify using `[hfa]`. Simplify using `[Finsupp.single_apply, hw]`. Establish `hjoin : (l₀ - Finsupp.single a (l₀ a) + f) + Finsupp.single a (l₀ a) = l₀ + f`. Use extensionality with `w i`.
+
+Distinguish the cases in `hw : a = w`. Substitute `hw` using the available equality. Simplify using `[hfa]`. Simplify using `[Finsupp.single_apply, hw]`. Use `set g := x * GlobalTheory.CellDec.tl (m + 1) ϖ (l₀ - Finsupp.single a (l₀ a) + f) with hg`.
+
+Establish `hga : GeneralLinearGroup.map ((pLoc E a).comp (pFin E)) g = 1`. Express the relevant statement in the definitionally equal form `GlobalTheory.CellDec.compV E (m + 1) a g = 1`. Rewrite using `[hg, map_mul, GlobalTheory.CellDec.compV_tl]`. Establish `h0 : (l₀ - Finsupp.single a (l₀ a) + f) a = 0` using `by simp [hfa]`. Establish `hxa : GlobalTheory.CellDec.compV E (m + 1) a x = 1` using `hx a haT`.
+
+Rewrite using `[h0, hxa, GlobalTheory.IwaCell.tD_zero, one_mul]`. Establish `hl₀a : l₀ a = fun i : Fin (m + 1) => condExp ϖ a * ((m : ℤ) - ((i : ℕ) : ℤ))` using `shift_apply_of_notMem m ϖ haT`. Establish `key` using `GlobalTheory.T.sphericalWhittaker_diagonalShift_ramifiedCharacter E m π a (α ⟨a, haT⟩) (hα ⟨a, haT⟩) φ hφV (hφ a haT) (ϖ a) (hϖ a) (condExp ϖ a) (GlobalTheory.T.scaledLocalCharacter_unitConductor_conductorExponent E ϖ a (hϖ a)) g hga b hblast`. Establish `h1 : l₀ a + b = fun i : Fin (m + 1) => condExp ϖ a * ((m : ℤ) - ((i : ℕ) : ℤ)) + b i`. Rewrite using `[hl₀a]`.
+
+Both sides reduce to the same expression. Rewrite using `[hsplit, GlobalTheory.CellDec.tl_add, GlobalTheory.CellDec.tl_single, ← mul_assoc, ← hg, h1, key, ← hl₀a, ← GlobalTheory.CellDec.tl_single, hg, mul_assoc, ← GlobalTheory.CellDec.tl_add, hjoin, ih hfT hflast, Finsupp.support_single_add ha hb, Finset.prod_cons, dif_neg haT]`. Establish `hval : (Finsupp.single a b + f) a = b` using `by simp [hfa]`. Establish `hrest : ∏ w ∈ f.support, (if h : w ∈ T then 1 else GlobalTheory.RSCell.sphZ (Ideal.absNorm w.asIdeal) (fun i => ((α ⟨w, h⟩ i : ℂˣ) : ℂ)) ((Finsupp.single a b + f) w)) = ∏ w ∈ f.support, (if h : w ∈ T then 1 else GlobalTheory.RSCell.sphZ (Ideal.absNorm w.asIdeal) (fun i => ((α ⟨w, …`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations.
+
+Establish `hne : a ≠ w` using `fun e => ha (e ▸ hw)`. Simplify using `[Finsupp.single_apply, hne]`. Rewrite using `[hval, hrest]`. Express the relevant statement in the definitionally equal form `GlobalTheory.RSCell.sphZ (Ideal.absNorm a.asIdeal) _ b * _ = _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem whittaker_torusShift_add_factorisation_induction (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ)
     (T : Finset (HeightOneSpectrum (𝓞 E))) (π : CuspSub E (m + 1))
     (α : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} → Fin (m + 1) → ℂˣ)
@@ -81,6 +102,9 @@ theorem whittaker_torusShift_add_factorisation_induction (E : Type) [Field E] [N
     change GlobalTheory.RSCell.sphZ (Ideal.absNorm a.asIdeal) _ b * _ = _
     ring
 
+/- English proof (translation)
+Introduce `E _ _ _ m T π α hα φ hφV hφ ϖ hϖ x hx l hl`. Conclude with `whittaker_torusShift_add_factorisation_induction E m T π α hα φ hφV hφ ϖ hϖ x hx l.1 l.2 hl`.
+-/
 theorem whit_mul_tl_shift_add : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (T : Finset (HeightOneSpectrum (𝓞 E)))
     (π : CuspSub E (m + 1)) (α : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} → Fin (m + 1) → ℂˣ),
     (∀ w, HasSatGL w.1 (π.locRep w.1) (Finset.univ.val.map (α w))) →

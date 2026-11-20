@@ -14,6 +14,15 @@ open scoped CategoryTheory.Obj TensorProduct
 
 namespace GlobalTheory.DetSpread
 
+/- English proof (translation)
+Establish `hsub : Set.range x ⊆ Set.range j`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `⟨q, by rw [← hy, Subsingleton.elim z y]⟩`. Establish `hx : IsOpenImmersion.lift j x hsub ≫ j = x` using `IsOpenImmersion.lift_fac _ _ _`. Take `⟨g, hg⟩` from `Spec.map_surjective (IsOpenImmersion.lift j x hsub)`.
+
+Rewrite `hx` using `[← hg]`. Establish `hq : Spec.map g y = q`. Apply `j.isOpenEmbedding.injective` to reduce the goal to its premises. Rewrite using `[← Scheme.Hom.comp_apply, hx, hy]`. Use `⟨g.hom, hx, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hq]`. Establish `hy0 : PrimeSpectrum.asIdeal y = ⊥`. Break down `Ideal.eq_bot_or_top (PrimeSpectrum.asIdeal (R := K) y) with e | e` into its components or cases. Conclude with `e`. Conclude with `absurd e (PrimeSpectrum.isPrime y).ne_top`.
+
+Express the relevant statement in the definitionally equal form `_ = Ideal.comap g.hom (PrimeSpectrum.asIdeal y)`. Rewrite using `[hy0]`. Both sides reduce to the same expression.
+-/
 theorem exists_factor {S : Scheme.{0}} {R K : Type} [CommRing R] [Field K] (j : Sp R ⟶ S) [IsOpenImmersion j]
     (x : Sp K ⟶ S) (q : PrimeSpectrum R) (y : Sp K) (hy : x y = j q) :
     ∃ f : R →+* K, spMap f ≫ j = x ∧ RingHom.ker f = q.asIdeal := by
@@ -36,6 +45,9 @@ theorem exists_factor {S : Scheme.{0}} {R K : Type} [CommRing R] [Field K] (j : 
   rw [hy0]
   rfl
 
+/- English proof (translation)
+Rewrite `h` using `[Category.assoc, hδ]`. Establish `h' : CommRingCat.ofHom δ ≫ CommRingCat.ofHom f = CommRingCat.ofHom β` using `Spec.map_injective ((Spec.map_comp _ _).trans h)`. Conclude with `(congrArg (fun z => z.hom a) h').symm`.
+-/
 theorem eq_comp_of_spMap {S : Scheme.{0}} {o R K : Type} [CommRing o] [CommRing R] [CommRing K]
     {j : Sp R ⟶ S} {s : S ⟶ Sp o} {δ : o →+* R} (hδ : j ≫ s = spMap δ) {f : R →+* K} {β : o →+* K}
     (h : (spMap f ≫ j) ≫ s = spMap β) (a : o) : β a = f (δ a) := by
@@ -44,6 +56,15 @@ theorem eq_comp_of_spMap {S : Scheme.{0}} {o R K : Type} [CommRing o] [CommRing 
     Spec.map_injective ((Spec.map_comp _ _).trans h)
   exact (congrArg (fun z => z.hom a) h').symm
 
+/- English proof (translation)
+Take `⟨δ₀, hδ₀⟩` from `Spec.map_surjective (j ≫ s)`. Establish `hδ : j ≫ s = spMap δ₀.hom` using `hδ₀.symm`. Take `⟨M, hM⟩` from `GlobalTheory.exists_lie_coordinates_lieMult_iff (𝓞 E) R G' act' n v hs hv`. Take `⟨M', hM', e⟩` from `hM K f`. Establish `hr : (δ₀.hom ρ) ^ 2 = -(H.d : R)`.
+
+Use `congrArg δ₀.hom hρ` as an intermediate fact. Rewrite `this` using `[map_pow, map_neg, map_natCast]`. Conclude with `this`. Establish `main` using `GlobalTheory.T.cmType_eigenMultiplicity_of_dense_primes E H D.p D.q n R M (δ₀.hom ρ) hr (by`. Use `(hd.preimage j.isOpenEmbedding.isOpenMap).mono ?_` and prove the remaining obligations.
+
+Introduce and unpack `q ⟨L, _, _, _, x, β', ⟨y, hy⟩, hx, hdet⟩`. Take `⟨g, rfl, hg⟩` from `exists_factor j x q y hy`. Take `⟨N', hN', e'⟩` from `hM L g`. Use `⟨L, inferInstance, inferInstance, inferInstance, g, N', hg, hN', fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[← e', ← e', h, h, ← eq_comp_of_spMap hδ hx]`.
+
+Conclude with `hdet τ) K f M' hM'`. Introduce `τ`. Rewrite using `[← h, ← h, e, e, eq_comp_of_spMap hδ hβ]`. Conclude with `main τ`.
+-/
 theorem detCond_of_basis {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H)
     {S : Scheme.{0}} {G : Over S} [GrpObj G] (act : OAct (𝓞 E) G) {o : Type} [CommRing o] (s : S ⟶ Sp o) (ρ : o)
     (hρ : ρ ^ 2 = -(H.d : o))
@@ -76,6 +97,17 @@ theorem detCond_of_basis {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
   rw [← h, ← h, e, e, eq_comp_of_spMap hδ hβ]
   exact main τ
 
+/- English proof (translation)
+Introduce `E _ _ _ H D S _ G _ _ g act o _ s ρ hg hρ hd K _ _ _ x β hβ`. Set `y : Sp K` to `(default : PrimeSpectrum K)`. Take `⟨U, hU, hs, -⟩` from `exists_isAffineOpen_mem_and_subset (X := S) (U := ⊤) (x := x y) trivial`. Set `j : Sp Γ(S, U) ⟶ S` to `hU.fromSpec`. Establish `: IsOpenImmersion j` using `hU.isOpenImmersion_fromSpec`.
+
+Take `⟨q, hq⟩ : x y ∈ Set.range j` from `hU.range_fromSpec.ge hs`. Establish `hg₁ : SmoothOfRelativeDimension g ((Over.pullback j).obj G).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback _ _) hg`. Take `⟨r, hr, v, hv⟩` from `GlobalTheory.LieLoc.lie_locally_free Γ(S, U) ((Over.pullback j).obj G) g hg₁ q`. Set `a : Sp (Localization.Away r) ⟶ Sp Γ(S, U)` to `spMap (algebraMap Γ(S, U) (Localization.Away r))`. Establish `: IsOpenImmersion a` using `IsOpenImmersion.of_isLocalization r`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨q', hq'⟩ : q ∈ Set.range (PrimeSpectrum.comap (algebraMap Γ(S, U) (Localization.Away r))) := by`. Rewrite using `[PrimeSpectrum.localization_away_comap_range (Localization.Away r) r]`. Conclude with `hr`. Take `⟨f, rfl, -⟩` from `exists_factor (a ≫ j) x q' y (by`. Rewrite using `[← hq, ← hq']`.
+
+Use the proof step `rfl)`. Take `⟨a₁, h₁⟩` from `GlobalTheory.DetExtend.exists_oAct_pullback j act`. Take `⟨a₂, h₂⟩` from `GlobalTheory.DetExtend.exists_oAct_pullback a a₁`. Establish `hg₂ : SmoothOfRelativeDimension g ((Over.pullback a).obj ((Over.pullback j).obj G)).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback _ _) hg₁`. Use `detCond_of_basis D act s ρ hρ hd (a ≫ j) a₂ (SmoothOfRelativeDimension.smooth g _) v hv (fun L _ z τ N => ?_) K f β hβ` and prove the remaining obligations.
+
+Rewrite using `[LiePull.lieMult_pull _ _ _ _ _ a _ a₁ a₂ (isGrpPullback_pullback _ a) (fun c => by rw [h₂]; exact pullback.lift_fst _ _ _) L z τ N, LiePull.lieMult_pull _ _ _ _ _ j _ act a₁ (isGrpPullback_pullback _ j) (fun c => by rw [h₁]; exact pullback.lift_fst _ _ _) L (z ≫ a) τ N, Category …`.
+-/
 theorem detCond_of_dense : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (S : Scheme.{0}) [IsReduced S] (G : Over S) [GrpObj G] [IsCommMonObj G] (g : ℕ) (act : OAct (𝓞 E) G) (o : Type) [CommRing o] (s : S ⟶ Sp o) (ρ : o), SmoothOfRelativeDimension g G.hom → ρ ^ 2 = -(H.d : o) → Dense {p : S | ∃ (K : Type) (_ : Field K) (_ : IsAlgClosed K) (_ : CharZero K) (x : Sp K ⟶ S) (β : o →+* K), p ∈ Set.range x ∧ x ≫ s = spMap β ∧ DetCond D act x (β ρ)} → ∀ (K : Type) [Field K] [IsAlgClosed K] [CharZero K] (x : Sp K ⟶ S) (β : o →+* K), x ≫ s = spMap β → DetCond D act x (β ρ) := by
   intro E _ _ _ H D S _ G _ _ g act o _ s ρ hg hρ hd K _ _ _ x β hβ
   let y : Sp K := (default : PrimeSpectrum K)

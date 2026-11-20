@@ -15,6 +15,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `key : ∀ i ∈ I, LowerSemicontinuousOn (fun x => e i * α i x) s`. Introduce `i hi x hx y hy`. Establish `h1 : y / e i < α i x`. Rewrite using `[div_lt_iff₀ (he i)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `filter_upwards [hα i hi x hx (y / e i) h1] with z hz`. Rewrite `hz` using `[gt_iff_lt, div_lt_iff₀ (he i)]`. Use `show y < e i * α i z`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `lowerSemicontinuousOn_sum key`.
+-/
 theorem lowerSemicontinuousOn_sum_pos_mul {Y : Type*} [TopologicalSpace Y] {s : Set Y}
     (I : Finset ℕ) (e : ℕ → ℝ) (he : ∀ i, 0 < e i) (α : ℕ → Y → ℝ)
     (hα : ∀ i ∈ I, LowerSemicontinuousOn (α i) s) :
@@ -30,6 +35,23 @@ theorem lowerSemicontinuousOn_sum_pos_mul {Y : Type*} [TopologicalSpace Y] {s : 
     linarith
   exact lowerSemicontinuousOn_sum key
 
+/- English proof (translation)
+Introduce `r X hp0 hp0r τ0 S hS hirr hU`. Take `⟨d, hd⟩` from `GlobalTheory.T.exists_subspaceHeight_gramDeterminant r X`. Take `⟨δ, hδ, hdrift⟩` from `GlobalTheory.T.weighted_height_sup_drift_orthonormal_frames r X d hd τ0 S hS hirr hU`. Take `⟨α, hlub, hlsc⟩` from `exists_isLUB_height_rpow_lowerSemicontinuousOn r X d hd δ hδ`. Take `⟨e, c, b, he, hc0, hc1, hb, hdr⟩` from `hdrift α hlub`.
+
+Establish `hdet : ∀ x, IsOrth X x → ∀ τ : X.Ψ, (mat x τ).det ≠ 0` using `fun x hx => (GlobalTheory.T.majorant_eq_sum_norm_sq_orthonormalFrame r X x hx).1`. Establish `hr : 0 < r` using `lt_trans hp0 hp0r`. Establish `hlow : ∀ x, IsOrth X x → ∀ i ≤ r, ∀ W : Submodule E (Fin r → E), Module.finrank E W = i → 0 < d x W ∧ d x W ^ (-δ) ≤ α i x`. Introduce `x hx i hi W hW`. Take `⟨m, hm, hmW⟩` from `GlobalTheory.T.exists_pos_le_latticeHeight_at_frame r X d hd x (hdet x hx)`.
+
+Conclude with `⟨lt_of_lt_of_le hm (hmW W), (hlub i hi x (hdet x hx)).1 ⟨W, hW, rfl⟩⟩`. Establish `hαnn : ∀ x, IsOrth X x → ∀ i ≤ r, 0 ≤ α i x`. Introduce `x hx i hi`. Take `⟨W, hW⟩` from `exists_submodule_finrank_eq_of_le (K := E) hi`. Take `⟨hpos, hle⟩` from `hlow x hx i hi W hW`.
+
+Conclude with `le_trans (Real.rpow_nonneg hpos.le _) hle`. Establish `hterm_nn : ∀ x, IsOrth X x → ∀ i ∈ Finset.Ioo 0 r, 0 ≤ e i * α i x` using `fun x hx i hi => mul_nonneg (he i).le (hαnn x hx i (Finset.mem_Ioo.1 hi).2.le)`. Use `⟨fun x => ∑ i ∈ Finset.Ioo 0 r, e i * α i x, c, b, hc0, hc1, hb, ?_, ?_, ?_, hdr, ?_⟩` and prove the remaining obligations. Conclude with `lowerSemicontinuousOn_sum_pos_mul _ e he α fun i hi => (hlsc i (Finset.mem_Ioo.1 hi).2.le).mono fun x hx => hdet x hx`. Introduce `x hx`.
+
+Conclude with `Finset.sum_nonneg (hterm_nn x hx)`. Introduce `γ hγ x hx`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.heightSup_invariant_under_hermitianLattice_aut r X d hd δ α hlub γ hγ x (hdet x hx) i (Finset.mem_Ioo.1 hi).2.le]`. Introduce `M`.
+
+Establish `h1 : (1 : ℕ) ∈ Finset.Ioo 0 r` using `Finset.mem_Ioo.2 ⟨Nat.one_pos, lt_of_le_of_lt hp0 hp0r⟩`. Use `set K : ℝ := max (M / e 1) 1 with hK`. Establish `hKpos : 0 < K` using `lt_of_lt_of_le one_pos (le_max_right _ _)`. Take `⟨ε, hε, hεla⟩` from `GlobalTheory.T.firstMinimum_lower_of_lineHeights r X d hd hr (K ^ (-1 / δ)) (Real.rpow_pos_of_pos hKpos _)`. Use `⟨ε, hε, fun x hx hfM => hεla x hx fun W hW => ?_⟩` and prove the remaining obligations.
+
+Take `⟨hpos, hle⟩` from `hlow x hx 1 (Finset.mem_Ioo.1 h1).2.le W hW`. Establish `hsingle : e 1 * α 1 x ≤ M` using `le_trans (Finset.single_le_sum (hterm_nn x hx) h1) hfM`. Establish `hdK : d x W ^ (-δ) ≤ K`. Use `le_trans hle (le_trans ?_ (le_max_left _ _))` and prove the remaining obligations. Rewrite using `[le_div_iff₀ (he 1)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpow : K ^ (-1 / δ) ≤ (d x W ^ (-δ)) ^ (-1 / δ)` using `Real.rpow_le_rpow_of_nonpos (Real.rpow_pos_of_pos hpos _) hdK (div_nonpos_of_nonpos_of_nonneg (by norm_num) hδ.le)`. Rewrite `hpow` using `[← Real.rpow_mul hpos.le, show -δ * (-1 / δ) = 1 by field_simp, Real.rpow_one]`. Then use the resulting hypothesis.
+-/
 theorem exists_drift_function_orthFrames : (∀ (r : ℕ) (X : Data E r), 0 < X.p0 → X.p0 < r → ∀ (τ0 : X.Ψ) (S : Finset (Matrix (Fin r) (Fin r) ℂ)), (∀ a ∈ S, a.IsHermitian ∧ a.det ≠ 0 ∧ a⁻¹ ∈ S) → (∀ W : Submodule ℂ (Fin r → ℂ), (∀ a ∈ S, ∀ v ∈ W, (a * a).mulVec v ∈ W) → W = ⊥ ∨ W = ⊤) → (∀ a ∈ S, (a)ᵀ * (Matrix.diagonal fun k : Fin r => if (k : ℕ) < X.p0 then (1 : ℂ) else -1) * (a).map (starRingEnd ℂ) = (Matrix.diagonal fun k : Fin r => if (k : ℕ) < X.p0 then (1 : ℂ) else -1)) → ∃ (f : Frame X.Ψ r → ℝ) (c b : ℝ), 0 ≤ c ∧ c < 1 ∧ 0 ≤ b ∧ LowerSemicontinuousOn f {x | IsOrth X x} ∧ (∀ x, IsOrth X x → 0 ≤ f x) ∧ (∀ γ : GL (Fin r) E, IsUStab X.Gm X.Λ γ → ∀ x, IsOrth X x → f (lact γ x) = f x) ∧ (∀ x, IsOrth X x → ∑ a ∈ S, f (@Function.update X.Ψ (fun _ => Fin r → Fin r → ℂ) (Classical.decEq _) x τ0 (mat x τ0 * a⁻¹ : Matrix (Fin r) (Fin r) ℂ)) ≤ S.card * (c * f x + b)) ∧ ∀ M : ℝ, ∃ ε : ℝ, 0 < ε ∧ ∀ x, IsOrth X x → f x ≤ M → ε ≤ X.la1 x) := by
   intro r X hp0 hp0r τ0 S hS hirr hU
   obtain ⟨d, hd⟩ := GlobalTheory.T.exists_subspaceHeight_gramDeterminant r X

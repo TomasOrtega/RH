@@ -4,6 +4,17 @@ open GlobalTheory.BCT
 
 namespace GlobalTheory.ConjRegroup
 
+/- English proof (translation)
+Establish `h1 : ∀ c : C, ∑ᶠ x, Set.indicator {x | p x = c} a x = ∑ x ∈ ha.toFinset, if c = p x then a x else 0`. Introduce `c`. Rewrite using `[finsum_eq_sum_of_support_subset (s := ha.toFinset)]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `[Set.indicator_apply, eq_comm]`.
+
+Introduce `x hx`. Establish `: a x ≠ 0` using `fun h => hx (by simp [Set.indicator_apply, h])`. Simplify using `using this`. Repeatedly rewrite using `[h1]`. Rewrite using `[finsum_sum_comm]`.
+
+Rewrite using `[finsum_eq_sum a ha]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[finsum_eq_single _ (p x)]`. Simplify using the standard rewrite rules. Introduce `c hc`.
+
+Simplify using `[hc]`. Introduce `x _`. Use `(Set.finite_singleton (p x)).subset ?_` and prove the remaining obligations. Introduce `c hc`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hc (if_neg h)`.
+-/
 theorem finsum_fibres {H C : Type} (p : H → C) (a : H → ℂ) (ha : (Function.support a).Finite) :
     ∑ᶠ γ, a γ = ∑ᶠ c : C, ∑ᶠ x, Set.indicator {x | p x = c} a x := by
   classical
@@ -30,6 +41,11 @@ theorem finsum_fibres {H C : Type} (p : H → C) (a : H → ℂ) (ha : (Function
     by_contra h
     exact hc (if_neg h)
 
+/- English proof (translation)
+Establish `he : Equivalence fun x y : H => ∃ g, y = g⁻¹ * x * (MonoidHom.id H) g`. Use `⟨fun x => ⟨1, by simp⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `x y ⟨g, rfl⟩`. Conclude with `⟨g⁻¹, by simp [mul_assoc]⟩`. Introduce and unpack `x y z ⟨g, rfl⟩ ⟨h, rfl⟩`.
+
+Conclude with `⟨g * h, by simp [mul_assoc]⟩`. Conclude with `Quot.eq.trans he.eqvGen_iff`.
+-/
 theorem mk_eq_iff {H : Type} [Group H] (x y : H) :
     (Quot.mk _ x : TwCl (MonoidHom.id H)) = Quot.mk _ y ↔ ∃ g, y = g⁻¹ * x * g := by
   have he : Equivalence fun x y : H => ∃ g, y = g⁻¹ * x * (MonoidHom.id H) g := by
@@ -40,6 +56,9 @@ theorem mk_eq_iff {H : Type} [Group H] (x y : H) :
       exact ⟨g * h, by simp [mul_assoc]⟩
   exact Quot.eq.trans he.eqvGen_iff
 
+/- English proof (translation)
+Introduce `δ ε h`. Rewrite using `[← QuotientGroup.out_eq' δ, ← QuotientGroup.out_eq' ε, QuotientGroup.eq]`. Express the relevant statement in the definitionally equal form `(Quotient.out δ)⁻¹ * Quotient.out ε * r = r * ((Quotient.out δ)⁻¹ * Quotient.out ε)`. Simplify using `only at h`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem conj_injective {H : Type} [Group H] (r : H) :
     Function.Injective fun δ : H ⧸ twCent (MonoidHom.id H) r =>
       Quotient.out δ * r * (Quotient.out δ)⁻¹ := by
@@ -51,6 +70,13 @@ theorem conj_injective {H : Type} [Group H] (r : H) :
       = (Quotient.out δ)⁻¹ * (Quotient.out ε * r * (Quotient.out ε)⁻¹) * Quotient.out ε := by group
     _ = r * ((Quotient.out δ)⁻¹ * Quotient.out ε) := by rw [← h]; group
 
+/- English proof (translation)
+Establish `hc : (Quot.mk _ c.rep : TwCl (MonoidHom.id H)) = c` using `Quot.out_eq c`. Use extensionality with `x`. Simplify using `only [Set.mem_range, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨δ, rfl⟩`.
+
+Use `Eq.trans ?_ hc` and prove the remaining obligations. Rewrite using `[mk_eq_iff]`. Conclude with `⟨Quotient.out δ, by group⟩`. Introduce `h`. Take `⟨g, hg⟩` from `(mk_eq_iff x c.rep).1 (h.trans hc.symm)`.
+
+Use `⟨QuotientGroup.mk g, ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (twCent (MonoidHom.id H) c.rep) g`. Establish `hk2 : (k : H) * c.rep = c.rep * k` using `k.2`. Rewrite using `[hk]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem range_conj {H : Type} [Group H] (c : TwCl (MonoidHom.id H)) :
     Set.range (fun δ : H ⧸ twCent (MonoidHom.id H) c.rep =>
       Quotient.out δ * c.rep * (Quotient.out δ)⁻¹)
@@ -73,6 +99,9 @@ theorem range_conj {H : Type} [Group H] (c : TwCl (MonoidHom.id H)) :
       _ = g * c.rep * g⁻¹ := by rw [hk2]; group
       _ = x := by rw [hg]; group
 
+/- English proof (translation)
+Rewrite using `[finsum_fibres (fun x => (Quot.mk _ x : TwCl (MonoidHom.id H))) a ha]`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[← finsum_mem_def, ← range_conj c, finsum_mem_range (conj_injective (TwCl.rep c))]`.
+-/
 theorem finsum_eq_finsum_classes {H : Type} [Group H] (a : H → ℂ) (ha : (Function.support a).Finite) :
     ∑ᶠ γ, a γ = ∑ᶠ c : TwCl (MonoidHom.id H), ∑ᶠ δ : H ⧸ twCent (MonoidHom.id H) c.rep,
       a (Quotient.out δ * c.rep * (Quotient.out δ)⁻¹) := by

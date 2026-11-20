@@ -11,6 +11,9 @@ namespace GlobalTheory.RealWeil
 
 variable {l : Type} [Fintype l]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.Published.Metaplectic.eChar_apply, phase]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phase_eq_eChar (w : l ⊕ l → ℝ) (x : EuclideanSpace ℝ l) :
     phase w x = GlobalTheory.Published.Metaplectic.eChar (⟪qPart w, x⟫ + ⟪pPart w, qPart w⟫ / 2) := by
   rw [GlobalTheory.Published.Metaplectic.eChar_apply, phase]
@@ -18,6 +21,11 @@ theorem phase_eq_eChar (w : l ⊕ l → ℝ) (x : EuclideanSpace ℝ l) :
   push_cast
   ring
 
+/- English proof (translation)
+Establish `h1 : Function.HasTemperateGrowth fun x : EuclideanSpace ℝ l => ⟪qPart w, x⟫` using `(innerSL ℝ (qPart w)).hasTemperateGrowth`. Establish `h` using `GlobalTheory.Published.Metaplectic.hasTemperateGrowth_eChar.comp (h1.add (Function.HasTemperateGrowth.const (⟪pPart w, qPart w⟫ / 2)))`. Establish `e : phase w = (GlobalTheory.Published.Metaplectic.eChar : ℝ → ℂ) ∘ ((fun x : EuclideanSpace ℝ l => ⟪qPart w, x⟫) + fun _ => ⟪pPart w, qPart w⟫ / 2)`. Use function extensionality and compare the values at `x`. Simplify using `[phase_eq_eChar]`.
+
+Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem hasTemperateGrowth_phase' (w : l ⊕ l → ℝ) : Function.HasTemperateGrowth (phase w) := by
   have h1 : Function.HasTemperateGrowth fun x : EuclideanSpace ℝ l => ⟪qPart w, x⟫ :=
     (innerSL ℝ (qPart w)).hasTemperateGrowth
@@ -33,11 +41,17 @@ theorem hasTemperateGrowth_phase' (w : l ⊕ l → ℝ) : Function.HasTemperateG
 def rhoSch (w : l ⊕ l → ℝ) : Sch l →L[ℂ] Sch l :=
   SchwartzMap.smulLeftCLM ℂ (phase w) ∘L SchwartzMap.compSubConstCLM ℂ (-pPart w)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Rewrite using `[rhoSch, ContinuousLinearMap.comp_apply, SchwartzMap.smulLeftCLM_apply_apply (hasTemperateGrowth_phase' w), SchwartzMap.compSubConstCLM_apply, sub_neg_eq_add, smul_eq_mul, rhoFun]`.
+-/
 theorem coe_rhoSch (w : l ⊕ l → ℝ) (f : Sch l) : ⇑(rhoSch w f) = rhoFun w ⇑f := by
   funext x
   rw [rhoSch, ContinuousLinearMap.comp_apply, SchwartzMap.smulLeftCLM_apply_apply (hasTemperateGrowth_phase' w),
     SchwartzMap.compSubConstCLM_apply, sub_neg_eq_add, smul_eq_mul, rhoFun]
 
+/- English proof (translation)
+Introduce `_ _ w f` and use `⟨rhoSch w f, coe_rhoSch w f⟩`.
+-/
 theorem exists_schwartz_rhoFun : ∀ (l : Type) [Fintype l] (w : l ⊕ l → ℝ) (f : Sch l), ∃ f₁ : Sch l, ⇑f₁ = rhoFun w ⇑f :=
   fun _ _ w f => ⟨rhoSch w f, coe_rhoSch w f⟩
 

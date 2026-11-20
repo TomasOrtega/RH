@@ -21,6 +21,11 @@ variable {a b : ℕ} (hab : a ≤ b)
 def subGen : MvPolynomial (Fin a × Fin a) ℤ →ₐ[ℤ] MvPolynomial (Fin b × Fin a) (MvPolynomial (Fin b × Fin b) ℤ) :=
   aeval fun v => ∑ β : Fin b, C (X (β, Fin.castLE hab v.2)) * X (β, v.1)
 
+/- English proof (translation)
+Establish `h` using `eval₂_eq (aeval (R := ℤ) y).toRingHom d (subGen hab f)`. Use `Eq.trans ?_ h` and prove the remaining obligations. Establish `: (aeval (R` using `ℤ) (fun v : Fin a × Fin a => ∑ β : Fin b, y (β, Fin.castLE hab v.2) * d (β, v.1))).toRingHom = (eval₂Hom (aeval (R := ℤ) y).toRingHom d).comp (subGen hab).toRingHom := by`. Use `MvPolynomial.ringHom_ext' (RingHom.ext_int _ _) fun v => ?_` and prove the remaining obligations. Simplify using `[subGen]`.
+
+Conclude with `RingHom.congr_fun this f`.
+-/
 theorem aeval_subGen {A : Type} [CommRing A] (d : Fin b × Fin a → A) (y : Fin b × Fin b → A)
     (f : MvPolynomial (Fin a × Fin a) ℤ) :
     aeval (fun v : Fin a × Fin a => ∑ β : Fin b, y (β, Fin.castLE hab v.2) * d (β, v.1)) f =
@@ -33,6 +38,11 @@ theorem aeval_subGen {A : Type} [CommRing A] (d : Fin b × Fin a → A) (y : Fin
     simp [subGen]
   exact RingHom.congr_fun this f
 
+/- English proof (translation)
+Establish `h : IsWeightedHomogeneous (colW a a) f ν` using `(weylLeDual ℤ a a le_rfl ν hν hf).1`. Introduce `m hm`. Rewrite using `[← h hm]`. Simplify using `only [Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply, colW]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `[Pi.single_apply]`.
+-/
 theorem isHomogeneous_of_mem_weyl {ν : Fin a → ℕ} (hν : Antitone ν) {f : MvPolynomial (Fin a × Fin a) ℤ}
     (hf : f ∈ weyl ℤ a a le_rfl ν) : f.IsHomogeneous (∑ r, ν r) := by
   have h : IsWeightedHomogeneous (colW a a) f ν := (weylLeDual ℤ a a le_rfl ν hν hf).1
@@ -43,6 +53,9 @@ theorem isHomogeneous_of_mem_weyl {ν : Fin a → ℕ} (hν : Antitone ν) {f : 
   refine Finset.sum_congr rfl fun v _ => ?_
   simp [Pi.single_apply]
 
+/- English proof (translation)
+Use `hf.aeval (fun v : Fin a × Fin a => ∑ β : Fin b, (C (X (β, Fin.castLE hab v.2)) * X (β, v.1) : MvPolynomial (Fin b × Fin a) (MvPolynomial (Fin b × Fin b) ℤ))) (n := 1) (fun v => IsHomogeneous.sum _ _ _ fun β _ => isHomogeneous_C_mul_X _ _)` as an intermediate fact. Rewrite `this` using `[one_mul]`. Conclude with `this`.
+-/
 theorem subGen_isHomogeneous {n : ℕ} {f : MvPolynomial (Fin a × Fin a) ℤ} (hf : f.IsHomogeneous n) :
     (subGen hab f).IsHomogeneous n := by
   have := hf.aeval (fun v : Fin a × Fin a => ∑ β : Fin b,
@@ -51,6 +64,27 @@ theorem subGen_isHomogeneous {n : ℕ} {f : MvPolynomial (Fin a × Fin a) ℤ} (
   rw [one_mul] at this
   exact this
 
+/- English proof (translation)
+Set `S` to `MvPolynomial (Fin b × Fin a) ℤ`. Set `M : Matrix (Fin b) (Fin b) S` to `fun i β => if h : (i : ℕ) < a then X (β, ⟨i, h⟩) else 0`. Establish `h1` using `GlobalTheory.T.rename_upperLeftCorner_mem_weylLattice ℤ a b hab ν ν' h f hf`. Establish `hmap : ∀ g ∈ weyl ℤ b b le_rfl ν', map (algebraMap ℤ S) g ∈ weyl S b b le_rfl ν'`. Introduce `g hg`.
+
+Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨w, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨w, by beta_reduce`. Rewrite using `[← lclosedeq_hw_map (algebraMap ℤ S), lclosedeq_applyWord_map]⟩`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_zsmul]`.
+
+Conclude with `zsmul_mem hx c`. Establish `h2` using `GlobalTheory.T.weylRowAction_mem_weylLattice_square S b ν' hν M _ (hmap _ h1)`. Set `ψ : MvPolynomial (Fin b × Fin b) S →+* MvPolynomial (Fin b × Fin a) (MvPolynomial (Fin b × Fin b) ℤ)` to `eval₂Hom (map (algebraMap ℤ _)) fun v => C (X v)`. Establish `hψ : ∀ g : MvPolynomial (Fin b × Fin b) ℤ, ψ (map (algebraMap ℤ S) g) = C g` using `fun g => by`. Establish `: ψ.comp (map (algebraMap ℤ S)) = C` using `MvPolynomial.ringHom_ext' (RingHom.ext_int _ _) fun v => by simp [ψ]`.
+
+Conclude with `RingHom.congr_fun this g`. Establish `e : subGen hab f = ψ (rowAct S M (map (algebraMap ℤ S) (rename (fun v : Fin a × Fin a => ((Fin.castLE hab v.1, Fin.castLE hab v.2) : Fin b × Fin b)) f)))`. Establish `: (subGen hab).toRingHom = ψ.comp ((rowAct S M).toRingHom.comp ((map (algebraMap ℤ S)).comp (rename (fun v : Fin a × Fin a => ((Fin.castLE hab v.1, Fin.castLE hab v.2) : Fin b × Fin b))).toRingHom))`. Use `MvPolynomial.ringHom_ext' (RingHom.ext_int _ _) fun v => ?_` and prove the remaining obligations. Simplify using `[subGen, rowAct, ψ, M, mul_comm]`.
+
+Conclude with `Finset.sum_congr rfl fun x _ => congrArg (· * _) (map_X _ _).symm`. Conclude with `RingHom.congr_fun this f`. Rewrite using `[e]`. Generalize the expression as in `rowAct S M _ = F at h2`. Proceed by induction on `h2 using Submodule.span_induction generalizing α with`.
+
+Consider the case `mem x hx`. Take `⟨w, rfl⟩` from `hx`. Establish `: applyWord S w (hw S le_rfl ν') = map (algebraMap ℤ S) (applyWord ℤ w (hw ℤ le_rfl ν'))`. Rewrite using `[← lclosedeq_hw_map (algebraMap ℤ S), lclosedeq_applyWord_map]`. Simplify using `only [this, hψ, coeff_C]`.
+
+Use `split_ifs`. Conclude with `Submodule.subset_span ⟨w, rfl⟩`. Conclude with `zero_mem _`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, coeff_add]`.
+
+Conclude with `add_mem (hx α) (hy α)`. Consider the case `smul c x _ hx => classical`. Rewrite using `[smul_eq_C_mul, map_mul, coeff_mul]`. Use `Submodule.sum_mem _ fun p _ => ?_` and prove the remaining obligations. Establish `: ψ (C c) = map (algebraMap ℤ _) c` using `by simp [ψ]`.
+
+Rewrite using `[this, coeff_map, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ (hx _)`.
+-/
 theorem coeff_subGen_mem {ν : Fin a → ℕ} {ν' : Fin b → ℕ} (hν : Antitone ν')
     (h : ∀ j : Fin b, ν' j = if h : (j : ℕ) < a then ν ⟨j, h⟩ else 0) {f : MvPolynomial (Fin a × Fin a) ℤ}
     (hf : f ∈ weyl ℤ a a le_rfl ν) (α : Fin b × Fin a →₀ ℕ) : (subGen hab f).coeff α ∈ weyl ℤ b b le_rfl ν' := by
@@ -134,6 +168,9 @@ section Lift
 
 variable {D : D7} {Tw : TwForms D} {u : D.what₂.Word} {μ : D.what₂.Tup}
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Int.toNat_le_toNat (sub_le_sub_right (l.anti h) _)`.
+-/
 theorem natW_anti {n : ℕ} (l : DomWeight n) : Antitone l.natW := fun _ _ h =>
   Int.toNat_le_toNat (sub_le_sub_right (l.anti h) _)
 

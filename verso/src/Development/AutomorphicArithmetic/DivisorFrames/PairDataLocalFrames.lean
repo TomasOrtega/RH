@@ -18,20 +18,32 @@ namespace UpperTheory.AdelicLocalFrames
 section Val
 variable {K : Type} [Field K] {Z : Scheme.{0}} [AlgebraicGeometry.IsIntegral Z]
 
+/- English proof (translation)
+Use `choose S hS using h`. Conclude with `⟨Matrix.of S, Matrix.ext fun i k => hS i k⟩`.
+-/
 private theorem liftM {m n : Type} {x : Z} (M : Matrix m n Z.functionField) (h : ∀ k i, RegAt x (M k i)) :
     ∃ S : Matrix m n (Z.presheaf.stalk x), S.map (algebraMap _ Z.functionField) = M := by
   choose S hS using h
   exact ⟨Matrix.of S, Matrix.ext fun i k => hS i k⟩
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun i k => Res.valAt_algebraMap y (S i k)`.
+-/
 private theorem map_val {m n : Type} (y : Sp K ⟶ Z) (S : Matrix m n (Z.presheaf.stalk (below y))) :
     (S.map (algebraMap _ Z.functionField)).map (TrueGeo.valAt y) = S.map (Scheme.stalkClosedPointTo y).hom :=
   Matrix.ext fun i k => Res.valAt_algebraMap y (S i k)
 
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `liftM M h`. Conclude with `⟨S.det, RingHom.map_det _ S⟩`.
+-/
 private theorem reg_det {n : ℕ} {x : Z} (M : Matrix (Fin n) (Fin n) Z.functionField) (h : ∀ k i, RegAt x (M k i)) :
     RegAt x M.det := by
   obtain ⟨S, rfl⟩ := liftM M h
   exact ⟨S.det, RingHom.map_det _ S⟩
 
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `liftM M h`. Rewrite using `[map_val]`. Use `Eq.trans ?_ (RingHom.map_det (Scheme.stalkClosedPointTo y).hom S)` and prove the remaining obligations. Rewrite using `[← Res.valAt_algebraMap]`. Conclude with `congrArg _ (RingHom.map_det _ S).symm`.
+-/
 private theorem val_det {n : ℕ} (y : Sp K ⟶ Z) (M : Matrix (Fin n) (Fin n) Z.functionField)
     (h : ∀ k i, RegAt (below y) (M k i)) : TrueGeo.valAt y M.det = (M.map (TrueGeo.valAt y)).det := by
   obtain ⟨S, rfl⟩ := liftM M h
@@ -40,6 +52,11 @@ private theorem val_det {n : ℕ} (y : Sp K ⟶ Z) (M : Matrix (Fin n) (Fin n) Z
   rw [← Res.valAt_algebraMap]
   exact congrArg _ (RingHom.map_det _ S).symm
 
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `liftM M h`. Take `⟨S', rfl⟩` from `liftM L h'`. Establish `e' : Sᵀ * S' = 1`. Apply `Matrix.map_injective (IsFractionRing.injective (Z.presheaf.stalk (below y)) Z.functionField)` to reduce the goal to its premises. Use `show (Sᵀ * S').map _ = (1 : Matrix _ _ _).map _`.
+
+Rewrite using `[Matrix.map_mul, Matrix.transpose_map, e, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[map_val, map_val, ← Matrix.transpose_map, ← Matrix.map_mul, e', Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 private theorem val_one {n s : ℕ} (y : Sp K ⟶ Z) (M L : Matrix (Fin n) (Fin s) Z.functionField)
     (h : ∀ k i, RegAt (below y) (M k i)) (h' : ∀ k i, RegAt (below y) (L k i)) (e : Mᵀ * L = 1) :
     (M.map (TrueGeo.valAt y))ᵀ * L.map (TrueGeo.valAt y) = 1 := by
@@ -51,12 +68,22 @@ private theorem val_one {n s : ℕ} (y : Sp K ⟶ Z) (M L : Matrix (Fin n) (Fin 
     rw [Matrix.map_mul, Matrix.transpose_map, e, Matrix.map_one _ (map_zero _) (map_one _)]
   rw [map_val, map_val, ← Matrix.transpose_map, ← Matrix.map_mul, e', Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Establish `h1` using `Res.valAt_mul h.regAt h.inv.regAt`. Rewrite `h1` using `[mul_inv_cancel₀ h.ne_zero, Res.valAt_one]`. Conclude with `⟨left_ne_zero_of_mul_eq_one h1.symm, eq_inv_of_mul_eq_one_right h1.symm⟩`.
+-/
 private theorem val_inv (y : Sp K ⟶ Z) {f : Z.functionField} (h : UnitAt (below y) f) :
     TrueGeo.valAt y f ≠ 0 ∧ TrueGeo.valAt y f⁻¹ = (TrueGeo.valAt y f)⁻¹ := by
   have h1 := Res.valAt_mul h.regAt h.inv.regAt
   rw [mul_inv_cancel₀ h.ne_zero, Res.valAt_one] at h1
   exact ⟨left_ne_zero_of_mul_eq_one h1.symm, eq_inv_of_mul_eq_one_right h1.symm⟩
 
+/- English proof (translation)
+Use `⟨(1 : Matrix (Fin n) (Fin n) Z.functionField).submatrix id σ * (M.submatrix σ id)ᵀ.adjugate, ?_, fun x hx k i => ?_⟩` and prove the remaining obligations. Establish `: Mᵀ * (1 : Matrix (Fin n) (Fin n) Z.functionField).submatrix id σ = (M.submatrix σ id)ᵀ`. Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, Matrix.one_apply]`. Rewrite using `[← Matrix.mul_assoc, this, Matrix.mul_adjugate, Matrix.det_transpose, hd, one_smul]`.
+
+Take `⟨S, rfl⟩` from `liftM M hx`. Use `⟨((1 : Matrix (Fin n) (Fin n) (Z.presheaf.stalk x)).submatrix id σ * (S.submatrix σ id)ᵀ.adjugate) k i, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.map_apply (f := algebraMap (Z.presheaf.stalk x) Z.functionField), Matrix.map_mul, ← Matrix.submatrix_map, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `RingHom.map_adjugate (algebraMap (Z.presheaf.stalk x) Z.functionField) (S.submatrix σ id)ᵀ` as an intermediate fact. Rewrite `this` using `[RingHom.mapMatrix_apply]`.
+
+Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 private theorem exL {n s : ℕ} (M : Matrix (Fin n) (Fin s) Z.functionField) (σ : Fin s → Fin n)
     (hd : (M.submatrix σ id).det = 1) : ∃ L : Matrix (Fin n) (Fin s) Z.functionField, Mᵀ * L = 1 ∧
       ∀ x : Z, (∀ k i, RegAt x (M k i)) → ∀ k i, RegAt x (L k i) := by
@@ -76,6 +103,9 @@ private theorem exL {n s : ℕ} (M : Matrix (Fin n) (Fin s) Z.functionField) (σ
 
 end Val
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [RootFrame.joinM, Matrix.map_apply, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 private theorem joinM_map {A B : Type} {r s N : ℕ} (h : r + s = N) (f : A → B)
     (M₁ : Matrix (Fin N) (Fin r) A) (L : Matrix (Fin N) (Fin s) A) :
     (joinM h M₁ L).map f = joinM h (M₁.map f) (L.map f) := by
@@ -83,6 +113,9 @@ private theorem joinM_map {A B : Type} {r s N : ℕ} (h : r + s = N) (f : A → 
   simp only [RootFrame.joinM, Matrix.map_apply, Matrix.of_apply]
   split_ifs <;> rfl
 
+/- English proof (translation)
+Introduce `a b`. Simplify using `only [RootFrame.joinM, Matrix.of_apply]`. Use `split_ifs`. Conclude with `h1 _ _`. Conclude with `h2 _ _`.
+-/
 private theorem joinM_all {A : Type} {r s N : ℕ} (h : r + s = N) (P : A → Prop)
     (M₁ : Matrix (Fin N) (Fin r) A) (L : Matrix (Fin N) (Fin s) A) (h1 : ∀ k i, P (M₁ k i)) (h2 : ∀ k i, P (L k i)) :
     ∀ k i, P (joinM h M₁ L k i) := by
@@ -92,6 +125,11 @@ private theorem joinM_all {A : Type} {r s N : ℕ} (h : r + s = N) (P : A → Pr
   · exact h1 _ _
   · exact h2 _ _
 
+/- English proof (translation)
+Use `⟨fun i => if hi : (i : ℕ) < r then c₁ ⟨i, hi⟩ else c₂ ⟨N - 1 - i, by omega⟩, fun i => ?_, fun j => ?_⟩` and prove the remaining obligations. Conclude with `dif_pos (c := ((lo h i : Fin N) : ℕ) < r) i.2`. Establish `hj` using `j.2`. Establish `h1 : ¬ ((hi h j : Fin N) : ℕ) < r` using `by simp only [hi]; omega`. Use `(dif_neg h1).trans ?_` and prove the remaining obligations.
+
+Use `congr 1`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [hi]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem exC {A : Type} {r s N : ℕ} (h : r + s = N) (c₁ : Fin r → A) (c₂ : Fin s → A) :
     ∃ c : Fin N → A, (∀ i, c (lo h i) = c₁ i) ∧ ∀ j, c (hi h j) = c₂ j := by
   refine ⟨fun i => if hi : (i : ℕ) < r then c₁ ⟨i, hi⟩ else c₂ ⟨N - 1 - i, by omega⟩, fun i => ?_, fun j => ?_⟩
@@ -103,6 +141,17 @@ private theorem exC {A : Type} {r s N : ℕ} (h : r + s = N) (c₁ : Fin r → A
     apply Fin.ext
     simp only [hi]; omega
 
+/- English proof (translation)
+Establish `hne : ∀ i, β₀ i i ≠ 0` using `fun i h0 => hδ i (by rw [← e₀, h0, zero_mul])`. Establish `hu : IsUnit β₀.det`. Rewrite using `[Matrix.det_of_upperTriangular t₀]`. Conclude with `(Finset.prod_ne_zero_iff.2 fun i _ => hne i).isUnit`. Establish `hinv : β₀⁻¹.BlockTriangular id`.
+
+Use `letI := β₀.invertibleOfIsUnitDet hu`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular t₀`. Establish `ht : (β₀⁻¹ * β).BlockTriangular id` using `hinv.mul t₁`. Establish `hm : β₀ * (β₀⁻¹ * β) = β` using `Matrix.mul_nonsing_inv_cancel_left _ _ hu`. Use `⟨β₀⁻¹ * β, ht, fun i => ?_, fun k i => ?_⟩` and prove the remaining obligations.
+
+Use `congrFun (congrFun hm i) i` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Apply `mul_left_cancel₀ (hne i)` to reduce the goal to its premises. Rewrite using `[← _root_.mul_assoc, this, e₁, e₀]`. Introduce `b _ hb`.
+
+Break down `lt_or_gt_of_ne hb with hb | hb` into its components or cases. Rewrite using `[t₀ (i := i) (j := b) hb, zero_mul]`. Rewrite using `[ht (i := b) (j := i) hb, mul_zero]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.mul_assoc, hm, AbsoluteValue.map_sub]`.
+
+Conclude with `hc (fun j => β j i) (fun k => hb k i) k`.
+-/
 private theorem side {K : Type} [Field K] (w : AbsoluteValue K ℝ) {n r : ℕ} (X₀ X : Matrix (Fin n) (Fin r) K)
     (β₀ β : Matrix (Fin r) (Fin r) K) (g₀ g δ : Fin r → K) (hδ : ∀ i, δ i ≠ 0)
     (t₀ : β₀.BlockTriangular id) (t₁ : β.BlockTriangular id) (e₀ : ∀ i, β₀ i i * g₀ i = δ i) (e₁ : ∀ i, β i i * g i = δ i)
@@ -135,6 +184,15 @@ private theorem side {K : Type} [Field K] (w : AbsoluteValue K ℝ) {n r : ℕ} 
 section Geo
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
+/- English proof (translation)
+Establish `key : ∀ a b : AlgebraicClosure F, e.w a ≤ e.w b → e.w (a + b) ≤ e.w b`. Introduce `a b hab`. Distinguish the cases in `h0 : b = 0`. Substitute `h0` using the available equality. Simplify using `using hab`.
+
+Establish `hb0 : 0 < e.w b` using `e.w.pos h0`. Establish `h1 : a / b ∈ e.O` using `(e.mem_O _).2 (by rw [map_div₀]; exact (div_le_one hb0).2 hab)`. Establish `h2 : a / b + 1 ∈ e.O` using `add_mem h1 e.O.one_mem`. Establish `h3 : a + b = (a / b + 1) * b` using `by field_simp`. Rewrite using `[h3, map_mul]`.
+
+Conclude with `(mul_le_mul_of_nonneg_right ((e.mem_O _).1 h2) (e.w.nonneg _)).trans_eq (_root_.one_mul _)`. Introduce `a b`. Break down `le_total (e.w a) (e.w b) with h | h` into its components or cases. Conclude with `(key a b h).trans (le_max_right _ _)`. Rewrite using `[add_comm]`.
+
+Conclude with `(key b a h).trans (le_max_left _ _)`.
+-/
 private theorem nonarch {v : HeightOneSpectrum (𝓞 F)} (e : TrueGeo.Ext v) : IsNonarchimedean e.w := by
   have key : ∀ a b : AlgebraicClosure F, e.w a ≤ e.w b → e.w (a + b) ≤ e.w b := by
     intro a b hab
@@ -153,6 +211,17 @@ private theorem nonarch {v : HeightOneSpectrum (𝓞 F)} (e : TrueGeo.Ext v) : I
   · rw [add_comm]
     exact (key b a h).trans (le_max_left _ _)
 
+/- English proof (translation)
+Establish `hpv : ((p : 𝓞 F)) ∈ v.asIdeal`. Establish `h0 : ((p : ℕ) : 𝓞 F ⧸ v.asIdeal) = 0` using `(ringChar.spec _ p).2 (by rw [← hv]; rfl)`. Rewrite `h0` using `[← map_natCast (Ideal.Quotient.mk v.asIdeal)]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h0`. Establish `hwp : e.w (p : AlgebraicClosure F) < 1`.
+
+Establish `h` using `e.w_alg (p : F)`. Rewrite `h` using `[map_natCast]`. Rewrite using `[h, ← map_natCast (algebraMap (𝓞 F) F) p, ← FinitePlace.norm_embedding]`. Conclude with `(FinitePlace.norm_lt_one_iff_mem F v _).2 hpv`. Establish `hpO : ¬ IsUnit ((p : ℕ) : e.O)`.
+
+Introduce `hu`. Take `⟨q, hq⟩` from `hu.exists_right_inv`. Establish `hq' : ((p : AlgebraicClosure F)) * (q : AlgebraicClosure F) = 1`. Use `congrArg (fun x : e.O => (x : AlgebraicClosure F)) hq` as an intermediate fact. Simplify using `using this`.
+
+Establish `hwq : e.w (q : AlgebraicClosure F) ≤ 1` using `(e.mem_O _).1 q.2`. Establish `hw1` using `congrArg e.w hq'`. Rewrite `hw1` using `[map_mul, map_one]`. Use polynomial arithmetic with `[e.w.nonneg (q : AlgebraicClosure F), e.w.nonneg (p : AlgebraicClosure F)]`. Introduce `h`.
+
+Apply `hpO` to reduce the goal to its premises. Use `h.map (Scheme.stalkClosedPointTo yt).hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+-/
 private theorem notUnit {X : Scheme.{0}} {p : ℕ} {v : HeightOneSpectrum (𝓞 F)} (e : TrueGeo.Ext v) (hv : resP v = p)
     (yt : Sp e.O ⟶ X) : ¬ IsUnit ((p : ℕ) : X.presheaf.stalk (yt (IsLocalRing.closedPoint e.O))) := by
   have hpv : ((p : 𝓞 F)) ∈ v.asIdeal := by
@@ -181,21 +250,37 @@ private theorem notUnit {X : Scheme.{0}} {p : ℕ} {v : HeightOneSpectrum (𝓞 
 
 variable {V : Cover Y} {W : Y.X.Opens} {p : ℕ}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(z ≫ V.j) _ ∈ U`. Rewrite using `[← h.2.2.2]`. Conclude with `hU (x := spMap e.O.subtype _) trivial`.
+-/
 private theorem tst_mem {v e y z yt} (h : Tst V W p v e y z yt) {U : V.X.Opens} (hU : ⊤ ≤ yt ⁻¹ᵁ U) :
     V.j (below z) ∈ U := by
   change (z ≫ V.j) _ ∈ U
   rw [← h.2.2.2]
   exact hU (x := spMap e.O.subtype _) trivial
 
+/- English proof (translation)
+Rewrite using `[← h.2.2.1]`. Both sides reduce to the same expression.
+-/
 private theorem tst_pi {v e y z yt} (h : Tst V W p v e y z yt) : V.π (below z) = below y.1 := by
   rw [← h.2.2.1]; rfl
 
+/- English proof (translation)
+The claim follows from `UpperTheory.valuation_regular_function_at_point F Y V v e z yt h.2.2.2 g (hg _ (hU trivial) (notUnit e h.1 yt))`.
+-/
 private theorem tst_reg {v e y z yt} (h : Tst V W p v e y z yt) {U : V.X.Opens} (hU : ⊤ ≤ yt ⁻¹ᵁ U)
     {g : V.X.functionField} (hg : ∀ x ∈ U, ¬ IsUnit (p : V.X.presheaf.stalk x) → RegAt x g) :
     RegAt (below (z ≫ V.j)) g ∧ e.w (TrueGeo.valAt (z ≫ V.j) g) ≤ 1 ∧
       (e.w (TrueGeo.valAt (z ≫ V.j) g) = 1 ↔ UnitAt (yt (IsLocalRing.closedPoint e.O)) g) :=
   UpperTheory.valuation_regular_function_at_point F Y V v e z yt h.2.2.2 g (hg _ (hU trivial) (notUnit e h.1 yt))
 
+/- English proof (translation)
+Take `⟨m, hm, h⟩` from `h`. Use `⟨m, hm, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨U, r, hxU, h1, h2⟩` from `h x hx`. Establish `key : ∀ a : Y.Fn, V.φ a⁻¹ ^ m * r⁻¹ = (V.φ a ^ m * r)⁻¹` using `fun a => by`. Rewrite using `[map_inv₀, inv_pow, mul_inv]`.
+
+Use `⟨U, r⁻¹, hxU, fun z hz => ?_, fun v e y z yt ht hU => ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Conclude with `(h1 z hz).inv`. Establish `u` using `h1 _ (tst_mem ht hU)`. Rewrite `u` using `[tst_pi ht]`.
+
+Rewrite using `[key, (val_inv z u).2, map_inv₀, Real.log_inv, ← h2 v e y z yt ht hU, mul_neg]`.
+-/
 private theorem powInv {f : Y.X → Y.Fn} {l : PtFn Y} (h : PowRead V p f l) :
     PowRead V p (fun x => (f x)⁻¹) (fun v e y => -l v e y) := by
   obtain ⟨m, hm, h⟩ := h
@@ -210,11 +295,19 @@ private theorem powInv {f : Y.X → Y.Fn} {l : PtFn Y} (h : PowRead V p f l) :
     rw [tst_pi ht] at u
     rw [key, (val_inv z u).2, map_inv₀, Real.log_inv, ← h2 v e y z yt ht hU, mul_neg]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun z hz => h.1 z (hU hz), fun v e y z yt ht hy => h.2 v e y z yt ht fun _ hq => hU (hy hq)⟩`.
+-/
 private theorem goodOn_mono {U U' : V.X.Opens} (hU : U' ≤ U) {n r : ℕ}
     {X : Matrix (Fin n) (Fin r) V.G.functionField} {T : Y.X → Matrix (Fin r) (Fin r) Y.Fn} {σ : Fin r → Fin n}
     (h : GoodOn V W p U X T σ) : GoodOn V W p U' X T σ :=
   ⟨fun z hz => h.1 z (hU hz), fun v e y z yt ht hy => h.2 v e y z yt ht fun _ hq => hU (hy hq)⟩
 
+/- English proof (translation)
+Take `⟨l₀, β₀, t₀, m₀, e₀⟩` from `F₀.2.2.2 v e y z yt h y₀`. Take `⟨l₁, β₁, t₁, m₁, e₁⟩` from `F₁.2.2.2 v e y z yt h y₁`. Take `⟨t, ht, hd, hc⟩` from `side e.w _ _ β₀ β₁ _ _ _ (fun i => (val_inv y.1 ((hS.1 (below y.1)).2 i)).1) t₀ t₁ e₀ e₁ (fun k i => by rw [← m₁]; exact (tst_reg h y₁ fun x hx hp => F₁.1 x hx hp k i).2.1) ((hS.2.2 v e y z yt h a fun _ hq => h₁ (y₁ hq)).2 a₀ fun _ hq => h₀ (y₀ hq))`. Use `⟨t, ht, hd, fun i => ?_, by rw [m₀, m₁]; exact hc⟩` and prove the remaining obligations. Establish `u₀` using `F₀.2.2.1 i _ (tst_mem h y₀)`.
+
+Establish `u₁` using `F₁.2.2.1 i _ (tst_mem h y₁)`. Rewrite `u₀`, `u₁` using `[tst_pi h]`. Conclude with `Real.log_injOn_pos (Set.mem_Ioi.2 (e.w.pos (val_inv z u₁).1)) (Set.mem_Ioi.2 (e.w.pos (val_inv z u₀).1)) ((l₁ i).symm.trans (l₀ i))`.
+-/
 private theorem sideT {J : Type} {U : J → V.X.Opens} {n r : ℕ}
     {X : J → Matrix (Fin n) (Fin r) V.G.functionField} {T : Y.X → Matrix (Fin r) (Fin r) Y.Fn}
     {f : Fin r → Y.X → Y.Fn} {l : Fin r → PtFn Y} (hS : SideData V W p U X T f l) {a₀ a : J} {U₀ U₁ : V.X.Opens}
@@ -239,6 +332,19 @@ private theorem sideT {J : Type} {U : J → V.X.Opens} {n r : ℕ}
   exact Real.log_injOn_pos (Set.mem_Ioi.2 (e.w.pos (val_inv z u₁).1)) (Set.mem_Ioi.2 (e.w.pos (val_inv z u₀).1))
     ((l₁ i).symm.trans (l₀ i))
 
+/- English proof (translation)
+Establish `r1` using `fun k i => tst_reg h y₀ fun x hx hp => F₁.1 x hx hp k i`. Establish `r2` using `fun k i => tst_reg h y₀ fun x hx hp => F₂.1 x hx hp k i`. Establish `r3` using `fun k i => tst_reg h y₀ fun x hx hp => rL x (F₂.1 x hx hp) k i`. Establish `d1 : ((M₁.map (TrueGeo.valAt (z ≫ V.j))).submatrix σ₁ id).det = 1`. Use `val_det (z ≫ V.j) (M₁.submatrix σ₁ id) fun k i => (r1 _ _).1` as an intermediate fact.
+
+Rewrite `this` using `[F₁.2.1, Res.valAt_one]`. Conclude with `this.symm`. Establish `d2 : ((M₂.map (TrueGeo.valAt (z ≫ V.j))).submatrix σ₂ id).det = 1`. Use `val_det (z ≫ V.j) (M₂.submatrix σ₂ id) fun k i => (r2 _ _).1` as an intermediate fact. Rewrite `this` using `[F₂.2.1, Res.valAt_one]`.
+
+Conclude with `this.symm`. Establish `d3` using `val_one (z ≫ V.j) M₂ L (fun k i => (r2 k i).1) (fun k i => (r3 k i).1) hL`. Establish `d4 : ∀ i j, e.w (((M₁.map (TrueGeo.valAt (z ≫ V.j)))ᵀ * M₂.map (TrueGeo.valAt (z ≫ V.j))) i j) < 1`. Introduce `i j`. Take `⟨-, β₁, -, m₁, -⟩` from `F₁.2.2.2 v e y z yt h y₀`.
+
+Take `⟨-, β₂, -, m₂, -⟩` from `F₂.2.2.2 v e y z yt h y₀`. Establish `b1 : ∀ k, e.w (M₁.map (TrueGeo.valAt (z ≫ V.j)) k i) ≤ 1` using `fun k => (r1 k i).2.1`. Establish `b2 : ∀ k, e.w (M₂.map (TrueGeo.valAt (z ≫ V.j)) k j) ≤ 1` using `fun k => (r2 k j).2.1`. Rewrite `b1` using `[m₁]`. Rewrite `b2` using `[m₂]`.
+
+Rewrite using `[m₁, m₂]`. Conclude with `hO v e y z yt h a (fun _ hq => h₀ (y₀ hq)) (fun k => β₁ k i) (fun k => β₂ k j) b1 b2`. Establish `d5` using `UpperTheory.joined_matrix_det_valuation_one _ e.w (nonarch e) r s N hN _ _ _ σ₁ (fun k i => (r1 k i).2.1) (fun k i => (r2 k i).2.1) (fun k i => (r3 k i).2.1) d1 d3 d4`. Use `⟨fun k i => (r1 k i).2.1, fun k i => (r2 k i).2.1, fun k i => (r3 k i).2.1, d1, d2, d3, d4, d5, ?_⟩` and prove the remaining obligations. Use `(tst_reg h y₀ fun x hx hp => reg_det _ (joinM_all hN _ _ _ (F₁.1 x hx hp) (rL x (F₂.1 x hx hp)))).2.2.1 ?_` and prove the remaining obligations.
+
+Rewrite using `[val_det _ _ (joinM_all hN _ _ _ (fun k i => (r1 k i).1) fun k i => (r3 k i).1), joinM_map]`. Conclude with `d5`.
+-/
 private theorem atTest {J : Type} {U : J → V.X.Opens} {N r s : ℕ} (hN : r + s = N)
     {X : J → Matrix (Fin N) (Fin r) V.G.functionField} {T : Y.X → Matrix (Fin r) (Fin r) Y.Fn}
     {X' : J → Matrix (Fin N) (Fin s) V.G.functionField} {T' : Y.X → Matrix (Fin s) (Fin s) Y.Fn}
@@ -289,6 +395,41 @@ end Geo
 end UpperTheory.AdelicLocalFrames
 
 open UpperTheory.AdelicLocalFrames in
+/- English proof (translation)
+Introduce `F _ _ Y C N A p hp ⟨V, W, J, U, r, s, hN, X, T, X', T', hW, hcov, hpow, hS, hS', hO⟩`. Establish `charts : ∀ x : {x : V.X // ¬ IsUnit (p : V.X.presheaf.stalk x)}, ∃ (a : J) (U₀ : V.X.Opens) (M₁ : Matrix (Fin N) (Fin r) V.X.functionField) (c₁ : Fin r → V.G.functionFieldˣ) (σ₁ : Fin r → Fin N) (M₂ : Matrix (Fin N) (Fin s) V.X.functionField) (c₂ : Fin s → V.G.functionFieldˣ) (σ₂ …`. Introduce and unpack `⟨x, hx⟩`. Take `⟨a, ha⟩` from `hcov x hx`. Take `⟨U₁, σ₁, x₁, l₁, g₁⟩` from `UpperTheory.side_data_nonunit_on_chart F Y V W p J U N r X T _ _ hp hW hS (fun i => hpow _) a x ha hx`.
+
+Take `⟨U₂, σ₂, x₂, l₂, g₂⟩` from `UpperTheory.side_data_nonunit_on_chart F Y V W p J U N s X' T' _ _ hp hW hS' (fun i => powInv (hpow _)) a x ha hx`. Establish `hl : U₁ ⊓ U₂ ≤ U a` using `inf_le_left.trans l₁`. Take `⟨M₁, c₁, F₁⟩` from `UpperTheory.side_data_good_on_open F Y V W p J U N r X T _ _ hp hW hS a (U₁ ⊓ U₂) σ₁ x ⟨x₁, x₂⟩ hl (goodOn_mono inf_le_left g₁)`. Take `⟨M₂, c₂, F₂⟩` from `UpperTheory.side_data_good_on_open F Y V W p J U N s X' T' _ _ hp hW hS' a (U₁ ⊓ U₂) σ₂ x ⟨x₁, x₂⟩ hl (goodOn_mono inf_le_right g₂)`. Take `⟨L, hL, rL⟩` from `exL M₂ σ₂ F₂.2.1`.
+
+Take `⟨c, hc₁, hc₂⟩` from `exC hN c₁ fun j => (c₂ j)⁻¹`. Conclude with `⟨a, U₁ ⊓ U₂, M₁, c₁, σ₁, M₂, c₂, σ₂, L, c, ⟨x₁, x₂⟩, hl, F₁, F₂, hL, rL, hc₁, hc₂⟩`. Use `choose a U₀ M₁ c₁ σ₁ M₂ c₂ σ₂ L c hx hle F₁ F₂ hL rL hc₁ hc₂ using charts`. Establish `key : ∀ b j (g : Y.Fn), V.φ g * (c b (hi hN j) : V.G.functionField) = (V.φ g⁻¹ * c₂ b j)⁻¹` using `fun b j g => by`. Rewrite using `[hc₂, map_inv₀, mul_inv, inv_inv, Units.val_inv_eq_inv_val]`.
+
+Establish `hunit : ∀ b i (z : V.G), V.j z ∈ U₀ b → UnitAt z (V.φ (genAt (A i).D (V.π z)) * c b i)`. Introduce `b i z hz`. Break down `lo_or_hi hN i with ⟨i, rfl⟩ | ⟨j, rfl⟩` into its components or cases. Rewrite using `[hc₁]`. Conclude with `(F₁ b).2.2.1 i z hz`.
+
+Rewrite using `[key]`. Conclude with `((F₂ b).2.2.1 j z hz).inv`. Use `⟨V, W, _, U₀, fun b => joinM hN (M₁ b) (L b), c, hW, fun x h => ⟨⟨x, h⟩, hx _⟩, fun b x hb h => ⟨?_, ?_⟩, hunit, fun v hv e y hy z yt hz hyt => ?_⟩` and prove the remaining obligations. Conclude with `joinM_all hN _ _ _ ((F₁ b).1 x hb h) (rL b x ((F₂ b).1 x hb h))`. Take `⟨v, e, y, z, yt, hv, hy, hz, hyt, hU, hsp⟩` from `GlobalTheory.T.exists_algebraic_point_specializing F Y V p hp W hW (U₀ b) x hb h`.
+
+Take `⟨U', m, hU'⟩` from `(atTest hN hO (hle b) (F₁ b) (F₂ b) (hL b) (rL b) ⟨hv, hy, hz, hyt⟩ hU).2.2.2.2.2.2.2.2.exists_nhds`. Conclude with `hU' x (hsp.mem_open U'.isOpen m)`. Establish `h : Tst V W p v e y z yt` using `⟨hv, hy, hz, hyt⟩`. Establish `hval : ∀ b, ⊤ ≤ yt ⁻¹ᵁ U₀ b → ∀ j, TrueGeo.valAt z (V.φ (genAt (A (hi hN j)).D (below y.1)) * (c b (hi hN j) : V.G.functionField)) = (TrueGeo.valAt z (V.φ (genAt (A (hi hN j)).D (below y.1))⁻¹ * (c₂ b j : V.G.functionField)))⁻¹`. Introduce `b hb j`.
+
+Establish `u` using `(F₂ b).2.2.1 j _ (tst_mem h hb)`. Rewrite `u` using `[tst_pi h]`. Rewrite using `[key, (val_inv z u).2]`. Establish `hne : ∀ b, ⊤ ≤ yt ⁻¹ᵁ U₀ b → ∀ i, TrueGeo.valAt z (V.φ (genAt (A i).D (below y.1)) * (c b i : V.G.functionField)) ≠ 0`. Introduce `b hb i`.
+
+Establish `u` using `hunit b i _ (tst_mem h hb)`. Rewrite `u` using `[tst_pi h]`. Conclude with `(val_inv z u).1`. Distinguish the cases in `hex : ∃ b₀, ⊤ ≤ yt ⁻¹ᵁ U₀ b₀`. Use `swap`.
+
+Conclude with `⟨0, 0, fun b hb => (hex ⟨b, hb⟩).elim⟩`. Take `⟨b₀, hb₀⟩` from `hex`. Use `⟨joinM hN ((M₁ b₀).map (TrueGeo.valAt (z ≫ V.j))) ((L b₀).map (TrueGeo.valAt (z ≫ V.j))), fun i => TrueGeo.valAt z (V.φ (genAt (A i).D (below y.1)) * (c b₀ i : V.G.functionField)), fun b hb => ⟨fun i => ?_, ?_⟩⟩` and prove the remaining obligations. Break down `lo_or_hi hN i with ⟨i, rfl⟩ | ⟨j, rfl⟩` into its components or cases. Rewrite using `[hc₁]`.
+
+Conclude with `((F₁ b).2.2.2 v e y z yt h hb).1 i`. Rewrite using `[hval b hb, map_inv₀, Real.log_inv, ← ((F₂ b).2.2.2 v e y z yt h hb).1 j, neg_neg]`. Take `⟨p1, p2, p3, p4, p5, p6, p7, p8, -⟩` from `atTest hN hO (hle b₀) (F₁ b₀) (F₂ b₀) (hL b₀) (rL b₀) h hb₀`. Take `⟨q1, q2, q3, -, -, q6, -, q8, -⟩` from `atTest hN hO (hle b) (F₁ b) (F₂ b) (hL b) (rL b) h hb`. Take `⟨t, t1, t2, t3, t4⟩` from `sideT hS (hle b₀) (hle b) (F₁ b₀) (F₁ b) h hb₀ hb`.
+
+Take `⟨t', s1, s2, s3, s4⟩` from `sideT hS' (hle b₀) (hle b) (F₂ b₀) (F₂ b) h hb₀ hb`. Establish `n0 : ∀ j, TrueGeo.valAt z (V.φ (genAt (A (hi hN j)).D (below y.1))⁻¹ * (c₂ b₀ j : V.G.functionField)) ≠ 0` using `fun j => fun h0 => hne b₀ hb₀ _ (by rw [hval b₀ hb₀ j, h0, inv_zero])`. Establish `s5 : ∀ j, e.w (t' j j) = 1` using `fun j => by`. Use `congrArg e.w (s2 j)` as an intermediate fact. Rewrite `this` using `[map_mul, s3 j]`.
+
+Conclude with `(mul_eq_right₀ (e.w.ne_zero (n0 j))).1 this`. Take `⟨B, B1, B2, B3, B4, B5, B6⟩` from `UpperTheory.joined_matrices_valuation_compare _ e.w (nonarch e) r s N hN _ _ _ _ _ _ _ _ t t' p1 p2 p3 q1 q2 q3 p4 p5 p6 q6 p7 p8 q8 t1 s1 s5 t4 s4`. Use `⟨B, B1, fun i => ?_, B2, B3, fun i k => ?_⟩` and prove the remaining obligations. Establish `pos` using `e.w.pos (hne b₀ hb₀ i)`. Break down `lo_or_hi hN i with ⟨i, rfl⟩ | ⟨j, rfl⟩` into its components or cases.
+
+Simplify using `only [hc₁] at pos ⊢`. Establish `e1` using `t2 i`. Establish `e2` using `t3 i`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hval b₀ hb₀, hval b hb] at pos ⊢`.
+
+Establish `e1` using `s2 j`. Establish `e0` using `n0 j`. Establish `n1 : TrueGeo.valAt z (V.φ (genAt (A (hi hN j)).D (below y.1))⁻¹ * (c₂ b j : V.G.functionField)) ≠ 0` using `fun h0 => hne b hb _ (by rw [hval b hb j, h0, inv_zero])`. Use `beta_reduce at e1`. Generalize the expression as in `TrueGeo.valAt z (V.φ (genAt (A (hi hN j)).D (below y.1))⁻¹ * (c₂ b j : V.G.functionField)) = g at *`.
+
+Generalize the expression as in `TrueGeo.valAt z (V.φ (genAt (A (hi hN j)).D (below y.1))⁻¹ * (c₂ b₀ j : V.G.functionField)) = g₀ at *`. Establish `e3 : g⁻¹ = t' j j * g₀⁻¹`. Clear the denominators using the available nonvanishing facts. Conclude with `e1.symm.trans (_root_.mul_comm _ _)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← map_mul, e3]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ < _ := mul_lt_of_lt_one_left pos (B6 j)`. Use `B4 i k` as an intermediate fact.
+
+Rewrite `this` using `[← joinM_map hN _ (M₁ b)]`. Conclude with `this`.
+-/
 theorem UpperTheory.pair_data_local_frames :
     ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (C : CxSt F) (N : ℕ) (A : Fin N → Adl C Y) (p : ℕ), p.Prime → PairData A p → LocFrames A p := by
   intro F _ _ Y C N A p hp ⟨V, W, J, U, r, s, hN, X, T, X', T', hW, hcov, hpow, hS, hS', hO⟩

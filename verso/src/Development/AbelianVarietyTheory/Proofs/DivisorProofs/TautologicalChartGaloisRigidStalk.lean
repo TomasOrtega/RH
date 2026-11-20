@@ -14,6 +14,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.TChart.Inj
 
+/- English proof (translation)
+Rewrite using `[← Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 2`. Use extensionality with `a`. Conclude with `congrArg (fun f => f a) h`.
+-/
 theorem spMap_comp_eq {S : Scheme.{0}} {R R' : Type} [CommRing R] [IsLocalRing R] [CommRing R'] (ξ : Sp R ⟶ S)
     (ρ₁ ρ₂ : R →+* R') (h : ρ₁.comp (Scheme.stalkClosedPointTo ξ).hom = ρ₂.comp (Scheme.stalkClosedPointTo ξ).hom) :
     spMap ρ₁ ≫ ξ = spMap ρ₂ ≫ ξ := by
@@ -23,6 +26,9 @@ theorem spMap_comp_eq {S : Scheme.{0}} {R R' : Type} [CommRing R] [IsLocalRing R
   ext a
   exact congrArg (fun f => f a) h
 
+/- English proof (translation)
+Rewrite using `[← cancel_mono j, Category.assoc, Category.assoc, hy, ← Category.assoc, ← Category.assoc, h₁, h₂, Category.assoc, Category.assoc, spMap_comp_eq ξ ρ₁ ρ₂ h]`.
+-/
 theorem genPt_eq {X S : Scheme.{0}} (j : X ⟶ S) [Mono j] {R R' : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
     [CommRing R'] [IsDomain R'] (ξ : Sp R ⟶ S) (y : Sp (FractionRing R) ⟶ X) (hy : y ≫ j = jK R ≫ ξ)
     (ρ₁ ρ₂ : R →+* R') (h : ρ₁.comp (Scheme.stalkClosedPointTo ξ).hom = ρ₂.comp (Scheme.stalkClosedPointTo ξ).hom)
@@ -31,6 +37,13 @@ theorem genPt_eq {X S : Scheme.{0}} (j : X ⟶ S) [Mono j] {R R' : Type} [CommRi
   rw [← cancel_mono j, Category.assoc, Category.assoc, hy, ← Category.assoc, ← Category.assoc, h₁, h₂,
     Category.assoc, Category.assoc, spMap_comp_eq ξ ρ₁ ρ₂ h]
 
+/- English proof (translation)
+Establish `l : ∀ (g : W →+* V) [IsLocalHom g], IsLocalHom (Scheme.stalkClosedPointTo u ≫ CommRingCat.ofHom g).hom`. Introduce `g _`. Rewrite using `[CommRingCat.hom_comp, CommRingCat.hom_ofHom]`. Use `infer_instance`. Establish `e : ∀ (g : W →+* V) [IsLocalHom g], spMap g ≫ u = (SpecToEquivOfLocalRing X (.of V)).symm ⟨u (closedPoint W), Scheme.stalkClosedPointTo u ≫ CommRingCat.ofHom g, l g⟩`.
+
+Introduce `g _`. Rewrite using `[SpecToEquivOfLocalRing_symm_apply, Spec.map_comp_assoc, Scheme.Spec_stalkClosedPointTo_fromSpecStalk]`. Establish `hinj` using `(SpecToEquivOfLocalRing X (.of V)).symm.injective ((e g₁).symm.trans (hu.trans (e g₂)))`. Take `⟨h₁, h₂⟩` from `SpecToEquivOfLocalRing_eq_iff.mp hinj`. Simplify using `only [TopCat.Presheaf.stalkCongr_hom, TopCat.Presheaf.stalkSpecializes_refl, Category.id_comp] at h₂`.
+
+Use extensionality with `a`. Use `congrArg (fun q => q.hom a) h₂` as an intermediate fact. Simplify using `using this`.
+-/
 theorem stalk_comp_eq {X : Scheme.{0}} {W V : Type} [CommRing W] [IsLocalRing W] [CommRing V] [IsLocalRing V]
     (u : Sp W ⟶ X) (g₁ g₂ : W →+* V) [IsLocalHom g₁] [IsLocalHom g₂] (hu : spMap g₁ ≫ u = spMap g₂ ≫ u) :
     g₁.comp (Scheme.stalkClosedPointTo u).hom = g₂.comp (Scheme.stalkClosedPointTo u).hom := by
@@ -48,6 +61,9 @@ theorem stalk_comp_eq {X : Scheme.{0}} {W V : Type} [CommRing W] [IsLocalRing W]
   have := congrArg (fun q => q.hom a) h₂
   simpa using this
 
+/- English proof (translation)
+Use `haveI : IsLocalHom C.iw := C.ψ_loc`. Use `haveI : IsNoetherianRing C.W := C.noeth`. Establish `hO` using `stalk_comp_eq C.u (θ₁.comp C.iw) (θ₂.comp C.iw) hu`. Conclude with `GlobalTheory.EtUniq.localHom_ext _ _ _ _ C.complete C.u_et C.u_sep _ _ inferInstance inferInstance hO (fun w => hm _)`.
+-/
 theorem base_eq {o : Type} [CommRing o] {ζ : o} {g n : ℕ} {φ : InvFun ℤ} (C : Taut ζ g n φ) {V : Type}
     [CommRing V] [IsLocalRing V] [IsNoetherianRing V] (θ₁ θ₂ : C.R →+* V) [IsLocalHom θ₁] [IsLocalHom θ₂]
     (hu : spMap (θ₁.comp C.iw) ≫ C.u = spMap (θ₂.comp C.iw) ≫ C.u) (hm : ∀ r, θ₁ r - θ₂ r ∈ maximalIdeal V) :
@@ -57,6 +73,11 @@ theorem base_eq {o : Type} [CommRing o] {ζ : o} {g n : ℕ} {φ : InvFun ℤ} (
   have hO := stalk_comp_eq C.u (θ₁.comp C.iw) (θ₂.comp C.iw) hu
   exact GlobalTheory.EtUniq.localHom_ext _ _ _ _ C.complete C.u_et C.u_sep _ _ inferInstance inferInstance hO (fun w => hm _)
 
+/- English proof (translation)
+Use `GlobalTheory.TChart.cuniq _ _ _ C.ψ C.compl θ₁ θ₂ inferInstance inferInstance ?_` and prove the remaining obligations. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `w`. Conclude with `congrArg (fun f => f w) hW`. Introduce `k`.
+
+Conclude with `hs k`.
+-/
 theorem eq_of_base_coord {o : Type} [CommRing o] {ζ : o} {g n : ℕ} {φ : InvFun ℤ} (C : Taut ζ g n φ) {V : Type}
     [CommRing V] [IsLocalRing V] [IsNoetherianRing V] (θ₁ θ₂ : C.R →+* V) [IsLocalHom θ₁] [IsLocalHom θ₂]
     (hW : θ₁.comp C.iw = θ₂.comp C.iw) (hs : ∀ k, θ₁ (C.s k) = θ₂ (C.s k)) : θ₁ = θ₂ := by
@@ -71,6 +92,15 @@ end GlobalTheory.TChart.Inj
 
 open GlobalTheory.TChart.Inj in
 
+/- English proof (translation)
+Introduce `g n φ hn F S j _ C G₁ _ _ y α₁ ξ hF hy R' _ _ _ θ σ hR' hθ hfin hσ hfix hres`. Use `haveI : IsNoetherianRing R' := hR'.1`. Use `haveI : IsLocalHom θ := RingHom.IsIntegral.isLocalHom hfin.to_isIntegral hθ`. Use `haveI : IsLocalHom ((σ : R' →+* R').comp θ) := by haveI : IsLocalHom (σ : R' →+* R') := inferInstance infer_instance`. Take `⟨κ₁, hκ₁⟩` from `GlobalTheory.PolDeg.exists_genericMap hθ`.
+
+Take `⟨κ₂, hκ₂⟩` from `GlobalTheory.PolDeg.exists_genericMap (ρ := (σ : R' →+* R').comp θ) (σ.injective.comp hθ)`. Establish `hf : θ.comp (Scheme.stalkClosedPointTo ξ).hom = ((σ : R' →+* R').comp θ).comp (Scheme.stalkClosedPointTo ξ).hom` using `RingHom.ext fun a => (hfix a).symm`. Establish `hyy` using `genPt_eq j ξ y hy _ _ hf κ₁ κ₂ hκ₁ hκ₂`. Establish `hm : ∀ r, θ r - ((σ : R' →+* R').comp θ) r ∈ maximalIdeal R'` using `fun r => by`. Rewrite using `[← neg_sub]`.
+
+Conclude with `neg_mem (hres r)`. Take `⟨hu, hs'⟩` from `GlobalTheory.T.tautologicalChart_eq_of_same_genericPoint hn F C G₁ y α₁ hF R' θ ((σ : R' →+* R').comp θ) hR' hθ (σ.injective.comp hθ) inferInstance inferInstance κ₁ κ₂ hκ₁ hκ₂ hyy`. Establish `hW` using `base_eq C θ ((σ : R' →+* R').comp θ) hu hm`. Establish `e` using `eq_of_base_coord C θ ((σ : R' →+* R').comp θ) hW (hs' hW)`. Introduce `r`.
+
+Conclude with `(congrArg (fun f => f r) e).symm`.
+-/
 theorem GlobalTheory.TChart.galRigid_stalk_of_isFam : ∀ {g n : ℕ} {φ : InvFun ℤ}, 3 ≤ n → ∀ (F : SFam g n (zetaAway n)) (S : Scheme.{0}) (j : F.X ⟶ S) [IsOpenImmersion j], ∀ (C : Taut (zetaAway n) g n φ) (G₁ : Over (Sp C.R)) [GrpObj G₁] [IsCommMonObj G₁] (y : Sp (FractionRing C.R) ⟶ F.X) (α₁ : pullback G₁.hom (jK C.R) ⟶ F.univ.A.left) (ξ : Sp C.R ⟶ S), C.IsFam F G₁ y α₁ → y ≫ j = jK C.R ≫ ξ → GalRigid (Scheme.stalkClosedPointTo ξ).hom := by
   intro g n φ hn F S j _ C G₁ _ _ y α₁ ξ hF hy R' _ _ _ θ σ hR' hθ hfin hσ hfix hres
   haveI : IsNoetherianRing R' := hR'.1

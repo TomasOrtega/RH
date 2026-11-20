@@ -21,12 +21,20 @@ section Num
 
 variable {p n' r K : ℕ} [NeZero n'] [NeZero r] [NeZero K] {X : Dat n' r}
 
+/- English proof (translation)
+Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro _`. Conclude with `le_rfl`. Consider the case `succ i ih => intro h; exact (ih (by omega)).trans (hV.2.2.1 j i h).le`.
+-/
 theorem frame_zero_le {F : Frames n' r} {L₁ N₁ : ℕ} (hV : F.Valid L₁ N₁) (j : ℤ) : ∀ i, i < r → F.fr j 0 ≤ F.fr j i := by
   intro i
   induction i with
   | zero => intro _; exact le_rfl
   | succ i ih => intro h; exact (ih (by omega)).trans (hV.2.2.1 j i h).le
 
+/- English proof (translation)
+Establish `hr : 0 < r` using `Nat.pos_of_ne_zero (NeZero.ne r)`. Establish `h1` using `frame_zero_le hV (j - 1) (r - 1) (by omega)`. Establish `h2` using `hV.2.2.2.1 (j - 1)`. Rewrite `h2` using `[sub_add_cancel]`. Establish `h3` using `frame_zero_le hV j (r - 1) (by omega)`.
+
+Simplify using `only [Frames.letters, Finset.mem_filter, Finset.mem_Icc]`. Conclude with `⟨⟨le_rfl, by omega⟩, (hV.2.2.2.2.1 (j - 1) 0 hr).1⟩`.
+-/
 theorem reflection_mem_Glev_castSucc {F : Frames n' r} {L₁ N₁ : ℕ} (hV : F.Valid L₁ N₁) (j : ℤ) : F.fr (j - 1) 0 ∈ F.letters j := by
   have hr : 0 < r := Nat.pos_of_ne_zero (NeZero.ne r)
   have h1 := frame_zero_le hV (j - 1) (r - 1) (by omega)
@@ -36,6 +44,9 @@ theorem reflection_mem_Glev_castSucc {F : Frames n' r} {L₁ N₁ : ℕ} (hV : F
   simp only [Frames.letters, Finset.mem_filter, Finset.mem_Icc]
   exact ⟨⟨le_rfl, by omega⟩, (hV.2.2.2.2.1 (j - 1) 0 hr).1⟩
 
+/- English proof (translation)
+Simplify using `only [Frames.letters, Finset.mem_filter, Finset.mem_Icc] at hx`. Conclude with `⟨hx.1.1, hx.1.2, hx.2⟩`.
+-/
 theorem mem_letters_bounds {F : Frames n' r} {j x : ℤ} (hx : x ∈ F.letters j) :
     F.fr (j - 1) 0 ≤ x ∧ x ≤ F.fr j (r - 1) ∧ posOf n' x ∈ F.TT := by
   simp only [Frames.letters, Finset.mem_filter, Finset.mem_Icc] at hx
@@ -49,6 +60,13 @@ structure Basics (X : Dat n' r) (p K : ℕ) : Prop where
   Q1 : (1 : ℝ) ≤ X.Q
   Y1 : (1 : ℝ) ≤ X.Y
 
+/- English proof (translation)
+Establish `hV` using `hX.valid`. Establish `hw` using `reflection_mem_Glev_castSucc hV 0`. Establish `hp : (13 : ℝ) ≤ p` using `by exact_mod_cast hX.p13`. Establish `hc : 1 ≤ (X.F.letters 0).card` using `Finset.card_pos.mpr ⟨_, hw⟩`. Establish `hNs : 1 ≤ X.Ns` using `hc.trans (hX.card 0)`.
+
+Establish `hK` using `hX.NsK`. Establish `hr` using `hX.r2`. Establish `hQ` using `hX.twist 0 _ hw`. Use `⟨by linarith, by exact_mod_cast hNs, ?_, ?_, ?_, hX.Y1⟩` and prove the remaining obligations. Unfold `Dat.k`.
+
+Conclude with `(by omega : 5 ≤ r + K)` after adjusting the coercions. Unfold `Dat.k`. Conclude with `(by omega : r ≤ r + K)` after adjusting the coercions. Conclude with `le_trans (one_le_pow₀ (by linarith : (1 : ℝ) ≤ p)) hQ`.
+-/
 theorem basics (hX : X.Hyp p K) : Basics X p K := by
   have hV := hX.valid
   have hw := reflection_mem_Glev_castSucc hV 0
@@ -68,6 +86,11 @@ theorem basics (hX : X.Hyp p K) : Basics X p K := by
 def Tj (X : Dat n' r) (p K : ℕ) (j : ℤ) : ℝ :=
   X.a / (8 * X.Y * Dat.k (r := r) K ^ 2 * (X.Ns : ℝ) * (p : ℝ) ^ X.F.dist j (X.F.fr (j - 1) 0))
 
+/- English proof (translation)
+Establish `B` using `basics hX`. Establish `h1 : (0 : ℝ) < p` using `by linarith [B.p1]`. Establish `h2 : (0 : ℝ) < X.Y` using `by linarith [B.Y1]`. Establish `h3 : (0 : ℝ) < Dat.k (r` using `r) K := by linarith [B.k5]`. Establish `h4 : (0 : ℝ) < X.Ns` using `by linarith [B.Ns1]`.
+
+Check the signs of the components of the expression.
+-/
 theorem den_pos (hX : X.Hyp p K) (j : ℤ) :
     0 < 8 * X.Y * Dat.k (r := r) K ^ 2 * (X.Ns : ℝ) * (p : ℝ) ^ X.F.dist j (X.F.fr (j - 1) 0) := by
   have B := basics hX
@@ -77,6 +100,13 @@ theorem den_pos (hX : X.Hyp p K) (j : ℤ) :
   have h4 : (0 : ℝ) < X.Ns := by linarith [B.Ns1]
   positivity
 
+/- English proof (translation)
+Establish `b` using `basics hX`. Establish `hd` using `den_pos hX j`. Establish `hw` using `reflection_mem_Glev_castSucc hX.valid j`. Establish `hQ` using `hX.twist j _ hw`. Establish `P3` using `hX.P3`.
+
+Establish `hY : 0 ≤ X.Y` using `by linarith [b.Y1]`. Establish `hp0 : (0 : ℝ) ≤ p` using `by linarith [b.p1]`. Establish `hdQ : (p : ℝ) ^ X.F.dist j (X.F.fr (j - 1) 0) ≤ X.Q ^ 2` using `hQ.trans (by nlinarith [b.Q1])`. Establish `hk : Dat.k (r` using `r) K = ((r + K : ℕ) : ℝ) := rfl`. Establish `hc : 0 ≤ (p : ℝ) * X.Y * ((r + K : ℕ) : ℝ) ^ 2 * (X.Ns : ℝ) * ((X.E₀ : ℝ) + X.mStar + 1)` using `mul_nonneg (mul_nonneg (mul_nonneg (mul_nonneg hp0 hY) (sq_nonneg _)) (Nat.cast_nonneg _)) (by positivity)`.
+
+Establish `hm` using `mul_le_mul_of_nonneg_left hdQ hc`. Unfold `Tj`. Rewrite using `[le_div_iff₀ hd, hk]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem Tj_ge (hX : X.Hyp p K) (j : ℤ) : 4 * (p : ℝ) * ((X.E₀ : ℝ) + X.mStar + 1) ≤ Tj X p K j := by
   have b := basics hX
   have hd := den_pos hX j
@@ -99,6 +129,13 @@ theorem Tj_ge (hX : X.Hyp p K) (j : ℤ) : 4 * (p : ℝ) * ((X.E₀ : ℝ) + X.m
     _ = 32 * (p : ℝ) * X.Y * ((r + K : ℕ) : ℝ) ^ 2 * (X.Ns : ℝ) * X.Q ^ 2 * ((X.E₀ : ℝ) + X.mStar + 1) := by ring
     _ ≤ X.a := P3
 
+/- English proof (translation)
+Establish `B` using `basics hX`. Establish `hT` using `Tj_ge hX j`. Establish `hT1 : (1 : ℝ) ≤ Tj X p K j`. Establish `h0 : (0 : ℝ) ≤ (X.E₀ : ℝ) + X.mStar` using `by positivity`. Use polynomial arithmetic with `[B.p1]`.
+
+Establish `hfl : ⌊Tj X p K j⌋₊ ≠ 0`. Establish `: 1 ≤ ⌊Tj X p K j⌋₊` using `Nat.le_floor (by simpa using hT1)`. Use linear arithmetic over natural numbers and integers. Establish `h1 : p ^ X.Rj p K j ≤ ⌊Tj X p K j⌋₊` using `Nat.pow_log_le_self p hfl`. Establish `h2 : ((⌊Tj X p K j⌋₊ : ℕ) : ℝ) ≤ Tj X p K j` using `Nat.floor_le (by linarith)`.
+
+Establish `h3 : ((p ^ X.Rj p K j : ℕ) : ℝ) ≤ ((⌊Tj X p K j⌋₊ : ℕ) : ℝ)` using `by exact_mod_cast h1`. Move the coercions through the operations in `at h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem pow_Rj_le (hX : X.Hyp p K) (j : ℤ) : ((p : ℝ) ^ X.Rj p K j) ≤ Tj X p K j := by
   have B := basics hX
   have hT := Tj_ge hX j
@@ -114,6 +151,9 @@ theorem pow_Rj_le (hX : X.Hyp p K) (j : ℤ) : ((p : ℝ) ^ X.Rj p K j) ≤ Tj X
   push_cast at h3
   linarith
 
+/- English proof (translation)
+Establish `h1 : ⌊Tj X p K j⌋₊ < p ^ (X.Rj p K j + 1)` using `Nat.lt_pow_succ_log_self hX.prime.one_lt _`. Establish `h2 : Tj X p K j < (⌊Tj X p K j⌋₊ : ℝ) + 1` using `Nat.lt_floor_add_one _`. Establish `h3 : ((⌊Tj X p K j⌋₊ : ℕ) : ℝ) + 1 ≤ ((p ^ (X.Rj p K j + 1) : ℕ) : ℝ)` using `by exact_mod_cast h1`. Move the coercions through the operations in `at h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lt_pow_Rj (hX : X.Hyp p K) (j : ℤ) : Tj X p K j < (p : ℝ) ^ (X.Rj p K j + 1) := by
   have h1 : ⌊Tj X p K j⌋₊ < p ^ (X.Rj p K j + 1) := Nat.lt_pow_succ_log_self hX.prime.one_lt _
   have h2 : Tj X p K j < (⌊Tj X p K j⌋₊ : ℝ) + 1 := Nat.lt_floor_add_one _
@@ -121,6 +161,13 @@ theorem lt_pow_Rj (hX : X.Hyp p K) (j : ℤ) : Tj X p K j < (p : ℝ) ^ (X.Rj p 
   push_cast at h3
   linarith
 
+/- English proof (translation)
+Introduce `p n' r K _ _ _ X hX _ _ j`. Establish `B` using `basics hX`. Establish `h1` using `Tj_ge hX j`. Establish `h2` using `lt_pow_Rj hX j`. Rewrite `h2` using `[pow_succ]`.
+
+Establish `hp : (0 : ℝ) < p` using `by linarith [B.p1]`. Establish `hE : (0 : ℝ) ≤ X.E₀` using `Nat.cast_nonneg _`. Establish `hm : (0 : ℝ) ≤ X.mStar` using `Nat.cast_nonneg _`. Establish `h3 : 4 * ((X.E₀ : ℝ) + X.mStar + 1) < (p : ℝ) ^ X.Rj p K j`. Assume the negation of the conclusion as `hcon`.
+
+Use `push_neg at hcon`. Use `mul_le_mul_of_nonneg_right hcon hp.le` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `h4 : (X.mStar : ℝ) < ((p ^ X.Rj p K j : ℕ) : ℝ)` using `by push_cast; linarith`. Conclude with `h4` after adjusting the coercions.
+-/
 theorem power_exceeds_max_multiplicity (C₀ : ℝ) : PowerExceedsMaxMultiplicity C₀ := by
   intro p n' r K _ _ _ X hX _ _ j
   have B := basics hX
@@ -138,6 +185,15 @@ theorem power_exceeds_max_multiplicity (C₀ : ℝ) : PowerExceedsMaxMultiplicit
   have h4 : (X.mStar : ℝ) < ((p ^ X.Rj p K j : ℕ) : ℝ) := by push_cast; linarith
   exact_mod_cast h4
 
+/- English proof (translation)
+Establish `b` using `basics hX`. Establish `hd` using `den_pos hX j`. Establish `hy'` using `mem_letters_bounds hy`. Establish `hdist : X.F.dist j y ≤ X.F.dist j (X.F.fr (j - 1) 0)`. Unfold `Frames.dist`.
+
+Conclude with `Int.toNat_le_toNat (by linarith [hy'.1])`. Establish `hp1 : (1 : ℝ) ≤ p` using `b.p1.le`. Establish `hpow : (p : ℝ) ^ X.F.dist j y ≤ (p : ℝ) ^ X.F.dist j (X.F.fr (j - 1) 0)` using `pow_le_pow_right₀ hp1 hdist`. Establish `hR` using `pow_Rj_le hX j`. Establish `hY : 0 ≤ X.Y` using `by linarith [b.Y1]`.
+
+Establish `hTa : 8 * X.Y * Dat.k (r` using `r) K ^ 2 * (X.Ns : ℝ) * (p : ℝ) ^ X.F.dist j (X.F.fr (j - 1) 0) * Tj X p K j = X.a := by`. Unfold `Tj`. Conclude with `mul_div_cancel₀ _ hd.ne'`. Establish `hc0 : 0 ≤ 8 * X.Y * Dat.k (r` using `r) K ^ 2 * (X.Ns : ℝ) := mul_nonneg (mul_nonneg (mul_nonneg (by norm_num) hY) (sq_nonneg _)) (Nat.cast_nonneg _)`. Establish `hm` using `mul_le_mul_of_nonneg_left (mul_le_mul hpow hR (pow_nonneg (by linarith) _) (pow_nonneg (by linarith) _)) hc0`.
+
+Rewrite using `[pow_add]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem l42b (hX : X.Hyp p K) (j y : ℤ) (hy : y ∈ X.F.letters j) :
     8 * X.Y * Dat.k (r := r) K ^ 2 * (X.Ns : ℝ) * (p : ℝ) ^ (X.F.dist j y + X.Rj p K j) ≤ X.a := by
   have b := basics hX

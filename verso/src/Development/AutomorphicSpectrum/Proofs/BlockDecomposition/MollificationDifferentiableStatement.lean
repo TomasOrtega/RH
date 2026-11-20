@@ -8,5 +8,8 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Fc GlobalTheory.CompanionTheo
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 noncomputable section
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PresSobA.mol_differentiableAt | exact GlobalTheory.CompanionTheory.PresSobA.mol_differentiableAt | (intros; apply GlobalTheory.CompanionTheory.PresSobA.mol_differentiableAt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.mollification_differentiable : ∀ (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V], Unimod → ∀ φ : Mat n → ℝ, IsTest φ → ∀ x : Lp V 2 μ, ∀ z ∈ GLs n, DifferentiableAt ℝ (Mol μ φ (⇑x)) z := by
   first | exact @GlobalTheory.CompanionTheory.PresSobA.mol_differentiableAt | exact GlobalTheory.CompanionTheory.PresSobA.mol_differentiableAt | (intros; apply GlobalTheory.CompanionTheory.PresSobA.mol_differentiableAt <;> assumption)

@@ -16,25 +16,42 @@ variable {G : Type} [Group G] {K : Subgroup G}
 
 def cosetsIn (K : Subgroup G) (g : G) : Set (G ⧸ K) := {x | ∃ a b : K, x.out = (a : G) * g * b}
 
+/- English proof (translation)
+Rewrite using `[DoubleCoset.mem_doubleCoset]`. Conclude with `⟨fun ⟨a, b, e⟩ => ⟨a, a.2, b, b.2, e⟩, fun ⟨a, ha, b, hb, e⟩ => ⟨⟨a, ha⟩, ⟨b, hb⟩, e⟩⟩`.
+-/
 theorem mem_cosetsIn_iff (x : G ⧸ K) (t : G) :
     x ∈ cosetsIn K t ↔ x.out ∈ DoubleCoset.doubleCoset t (K : Set G) K := by
   rw [DoubleCoset.mem_doubleCoset]
   exact ⟨fun ⟨a, b, e⟩ => ⟨a, a.2, b, b.2, e⟩, fun ⟨a, ha, b, hb, e⟩ => ⟨⟨a, ha⟩, ⟨b, hb⟩, e⟩⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_cosetsIn_iff, mem_cosetsIn_iff, DoubleCoset.doubleCoset_eq_of_mem h]`.
+-/
 theorem cosetsIn_eq {g g' : G} (h : g' ∈ DoubleCoset.doubleCoset g (K : Set G) K) :
     cosetsIn K g' = cosetsIn K g := by
   ext x
   rw [mem_cosetsIn_iff, mem_cosetsIn_iff, DoubleCoset.doubleCoset_eq_of_mem h]
 
+/- English proof (translation)
+Rewrite using `[dosetInd, dosetInd, DoubleCoset.doubleCoset_eq_of_mem h]`.
+-/
 theorem dosetInd_eq {g g' : G} (h : g' ∈ DoubleCoset.doubleCoset g (K : Set G) K) :
     dosetInd ℂ K g' = dosetInd ℂ K g := by
   rw [dosetInd, dosetInd, DoubleCoset.doubleCoset_eq_of_mem h]
 
+/- English proof (translation)
+Use `((Set.ncard_pos (P.finite_cosets_in_doset hK g)).2 ⟨(g : G ⧸ K), ?_⟩).ne'` and prove the remaining obligations. Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul K g`. Conclude with `⟨1, u, by simpa using hu⟩`.
+-/
 theorem cosetsIn_ncard_ne_zero (hK : IsCommensurated K) (g : G) : (cosetsIn K g).ncard ≠ 0 := by
   refine ((Set.ncard_pos (P.finite_cosets_in_doset hK g)).2 ⟨(g : G ⧸ K), ?_⟩).ne'
   obtain ⟨u, hu⟩ := QuotientGroup.mk_out_eq_mul K g
   exact ⟨1, u, by simpa using hu⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b, e⟩`. Rewrite using `[← QuotientGroup.out_eq' x, e]`.
+
+Conclude with `QuotientGroup.eq.2 (by simpa using K.inv_mem (K.mul_mem a.2 b.2))`. Introduce and unpack `rfl`. Use `⟨⟨((1 : G) : G ⧸ K).out, ?_⟩, 1, by simp⟩` and prove the remaining obligations. Use `QuotientGroup.eq.1 (QuotientGroup.out_eq' ((1 : G) : G ⧸ K))` as an intermediate fact. Simplify using `using K.inv_mem this`.
+-/
 theorem cosetsIn_one : cosetsIn K 1 = {((1 : G) : G ⧸ K)} := by
   ext x
   rw [Set.mem_singleton_iff]
@@ -49,6 +66,21 @@ theorem cosetsIn_one : cosetsIn K 1 = {((1 : G) : G ⧸ K)} := by
 
 end Generic
 
+/- English proof (translation)
+Introduce `L _ _ _ ϖ σ q n hU α`. Establish `hK` using `P.isCommensurated_integral_unitary_of_unramified hU n`. Establish `law` using `GlobalTheory.LFun.SatCompare.satU_laws (n := n) hU α`. Establish `hN : ∀ g : GU σ n, ((cosetsIn (KU σ n) g).ncard : ℂ) ≠ 0` using `fun g => Nat.cast_ne_zero.2 (cosetsIn_ncard_ne_zero hK g)`. Set `w : GU σ n → ℂ` to `fun g => SatU ϖ q (dosetInd ℂ (KU σ n) g) (fun i => (α i : ℂ)) / ((cosetsIn (KU σ n) g).ncard : ℂ)`.
+
+Establish `hw : ∀ g g' : GU σ n, g' ∈ DoubleCoset.doubleCoset g (KU σ n : Set (GU σ n)) (KU σ n) → w g' = w g` using `fun g g' h => by simp only [w, dosetInd_eq h, cosetsIn_eq h]`. Use `⟨w, fun a b g => hw _ _ (DoubleCoset.mem_doubleCoset.2 ⟨a, a.2, b, b.2, rfl⟩), ?_, fun h hh => ?_⟩` and prove the remaining obligations. Simplify using `only [w, law.2.2, cosetsIn_one, Set.ncard_singleton, Nat.cast_one, div_one]`. Use `GlobalTheory.LFun.hecke_induction (K := KU σ n) (p := fun f => hAct (KU σ n) f w 1 = SatU ϖ q f fun i => (α i : ℂ)) ?_ ?_ ?_ hh` and prove the remaining obligations. Simplify `(law.2.1 0 0 (zero_mem _)).symm` using `[hAct]`.
+
+Introduce `f hf f' hf' e e'`. Establish `fin : ∀ f ∈ Hecke ℂ (KU σ n), (Function.support fun x : GU σ n ⧸ KU σ n => f x.out • w (1 * x.out)).Finite` using `fun f hf => (P.finite_support_cosets hK hf.2).subset fun x hx h0 => hx (by simp [h0])`. Rewrite using `[law.1 _ hf _ hf', ← e, ← e', hAct, hAct, hAct]`. Simplify using `only [Pi.add_apply, add_smul]`. Conclude with `finsum_add_distrib (fin f hf) (fin f' hf')`.
+
+Introduce `r g`. Establish `hfin` using `P.finite_cosets_in_doset hK g`. Establish `hterm : ∀ x ∈ hfin.toFinset, (r • dosetInd ℂ (KU σ n) g) x.out • w (1 * x.out) = r * w g` using `fun x hx => by`. Establish `hm` using `(mem_cosetsIn_iff x g).1 ((Set.Finite.mem_toFinset _).1 hx)`. Rewrite using `[Pi.smul_apply, dosetInd, Set.indicator_of_mem hm, one_mul, hw g _ hm]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[law.2.1 r _ (Final.DosetIndMem _ _ ℂ g), hAct, finsum_eq_sum_of_support_subset (s := hfin.toFinset), Finset.sum_congr rfl hterm, Finset.sum_const, ← Set.ncard_eq_toFinset_card _ hfin, nsmul_eq_mul]`. Use `hN g` as an intermediate fact. Simplify using `only [w]`. Rewrite using `[← cosetsIn]`.
+
+Clear the denominators using the available nonvanishing facts. Introduce `x hx`. Rewrite using `[Set.Finite.coe_toFinset]`. Assume the negation of the conclusion as `h`. Use `hx ?_` and prove the remaining obligations.
+
+Use `show (r • dosetInd ℂ (KU σ n) g) x.out • w (1 * x.out) = 0`. Rewrite using `[Pi.smul_apply, dosetInd, Set.indicator_of_notMem (fun h' => h ((mem_cosetsIn_iff x g).2 h'))]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_isZonal : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L)
     (σ : L →+* L) (q n : ℕ), IsUnramInv ϖ σ q → ∀ α : Fin (n / 2) → ℂˣ, ∃ w : GU σ n → ℂ,
       GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.IsZonal ϖ q α w := by

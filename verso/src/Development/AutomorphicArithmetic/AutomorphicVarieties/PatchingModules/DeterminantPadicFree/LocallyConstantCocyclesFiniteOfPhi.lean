@@ -2,12 +2,40 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
+/- English proof (translation)
+Rewrite using `[← Module.forall_dual_apply_eq_zero_iff (ZMod l)]`. Introduce `f`. Conclude with `hv (LinearMap.toAddMonoidHom f)`.
+-/
 private theorem eq_zero_of_forall_hom_zmod_eq_zero_of_module_zmod {l : ℕ} [Fact l.Prime] {M : Type} [AddCommGroup M] [Module (ZMod l) M] (v : M)
     (hv : ∀ f : M →+ ZMod l, f v = 0) : v = 0 := by
   rw [← Module.forall_dual_apply_eq_zero_iff (ZMod l)]
   intro f
   exact hv (LinearMap.toAddMonoidHom f)
 
+/- English proof (translation)
+Introduce `l _ G M _ _ _ _ _ _ _ ρ hΦ hl hc`. Use `haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩`. Use `set S := {z : G → M | IsLocallyConstant z ∧ ∀ g h, z (g * h) = z g + ρ g (z h)} with hS`. Establish `hker : IsOpen (ρ.ker : Set G)`. Establish `he : (ρ.ker : Set G) = ⋂ m, {g | ρ g m = m}`.
+
+Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_iInter, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h m`. Rewrite using `[h]`.
+
+Both sides reduce to the same expression. Introduce `h`. Use extensionality with `m`. Conclude with `h m`. Rewrite using `[he]`.
+
+Conclude with `isOpen_iInter_of_finite fun m => (hc m).isOpen_fiber m`. Use `haveI : Finite (G ⧸ ρ.ker) := Subgroup.quotient_finite_of_isOpen _ hker`. Use `haveI := hΦ ρ.ker hker`. Use `haveI : Finite (M →+ ZMod l) := Finite.of_injective (fun f : M →+ ZMod l => (⇑f : M → ZMod l)) (fun a b hab => AddMonoidHom.ext (congrFun hab))`. Establish `h1 : ∀ z ∈ S, z 1 = 0`.
+
+Introduce `z hz`. Establish `h11 : z 1 = z 1 + z 1`. Use `hz.2 1 1` as an intermediate fact. Rewrite `this` using `[one_mul, map_one]`. Conclude with `this`.
+
+Conclude with `add_left_cancel (h11.symm.trans (add_zero _).symm)`. Establish `hH : ∀ z ∈ S, ∀ a b : G, a ∈ ρ.ker → z (a * b) = z a + z b`. Introduce `z hz a b ha`. Rewrite using `[hz.2, MonoidHom.mem_ker.mp ha]`. Both sides reduce to the same expression.
+
+Set `φ : ∀ z ∈ S, (M →+ ZMod l) → {φ : ρ.ker →* Multiplicative (ZMod l) // IsOpen (φ.ker : Set ρ.ker)}` to `fun z hz f => ⟨{ toFun := fun h => Multiplicative.ofAdd (f (z h)) map_one' := by simp [h1 z hz] map_mul' := fun a b => by simp [hH z hz a b a.2, ofAdd_add] }, by`. Establish `hlc : IsLocallyConstant (fun h : ρ.ker => Multiplicative.ofAdd (f (z h)))` using `(hz.1.comp_continuous continuous_subtype_val).comp _`. Conclude with `hlc.isOpen_fiber 1⟩`. Set `F : S → ((G ⧸ ρ.ker) → M) × ((M →+ ZMod l) → {φ : ρ.ker →* Multiplicative (ZMod l) // IsOpen (φ.ker : Set ρ.ker)})` to `fun z => (fun q => z.1 (Quotient.out q), φ z.1 z.2)`. Establish `hinj : Function.Injective F`.
+
+Introduce and unpack `⟨z, hz⟩ ⟨z', hz'⟩ hzz`. Establish `hq : (fun q : G ⧸ ρ.ker => z (Quotient.out q)) = fun q => z' (Quotient.out q)` using `congrArg Prod.fst hzz`. Establish `hf : φ z hz = φ z' hz'` using `congrArg Prod.snd hzz`. Establish `hHeq : ∀ h ∈ ρ.ker, z h = z' h`. Introduce `h hh`.
+
+Rewrite using `[← sub_eq_zero]`. Apply `@eq_zero_of_forall_hom_zmod_eq_zero_of_module_zmod l _ M _ (AddCommGroup.zmodModule hl)` to reduce the goal to its premises. Introduce `f`. Establish `hx` using `congrArg (fun p => (p.1 ⟨h, hh⟩ : Multiplicative (ZMod l))) (congrFun hf f)`. Express the relevant statement in the definitionally equal form `Multiplicative.ofAdd (f (z h)) = Multiplicative.ofAdd (f (z' h)) at hx`.
+
+Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `Multiplicative.ofAdd.injective hx`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `show z g = z' g`.
+
+Take `⟨h0, hh0⟩` from `QuotientGroup.mk_out_eq_mul ρ.ker g`. Establish `hg : g = Quotient.out (g : G ⧸ ρ.ker) * (h0 : G)⁻¹`. Rewrite using `[hh0, mul_inv_cancel_right]`. Establish `hr` using `congrFun hq (g : G ⧸ ρ.ker)`. Rewrite using `[hg, hz.2, hz'.2, hr, hHeq _ (inv_mem h0.2)]`.
+
+Conclude with `Set.finite_coe_iff.mp (Finite.of_injective F hinj)`.
+-/
 theorem UpperTheory.V.Pa.Det.locallyConstant_cocycles_finite_of_phi :
     ∀ (l : ℕ) [Fact l.Prime] {G M : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G] [AddCommGroup M] [Finite M] (ρ : G →* AddMonoid.End M), PhiCond G l → (∀ m : M, l • m = 0) → (∀ m, IsLocallyConstant fun g => ρ g m) → {z : G → M | IsLocallyConstant z ∧ ∀ g h, z (g * h) = z g + ρ g (z h)}.Finite := by
   intro l _ G M _ _ _ _ _ _ _ ρ hΦ hl hc

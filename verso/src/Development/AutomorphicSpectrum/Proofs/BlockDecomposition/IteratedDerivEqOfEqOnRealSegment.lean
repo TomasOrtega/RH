@@ -4,6 +4,15 @@ open Filter Topology
 
 namespace GlobalTheory.CompanionTheory.ComplexAnalysis
 
+/- English proof (translation)
+Establish `hU : IsOpen (Metric.ball (0 : ℂ) ρ)` using `Metric.isOpen_ball`. Establish `h0 : (0 : ℂ) ∈ Metric.ball (0 : ℂ) ρ` using `Metric.mem_ball_self hρ`. Establish `hreal : ∀ᶠ s : ℝ in 𝓝[≠] 0, f s = g s`. Establish `hs : {s : ℝ | |s| < ρ} ∈ 𝓝 (0 : ℝ)` using `(isOpen_lt continuous_abs continuous_const).mem_nhds (by simpa using hρ)`. Conclude with `Filter.mem_of_superset (nhdsWithin_le_nhds hs) fun s hs' => h s hs'`.
+
+Establish `htend : Tendsto (fun s : ℝ => (s : ℂ)) (𝓝[≠] 0) (𝓝[≠] 0)`. Rewrite using `[tendsto_nhdsWithin_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hc` using `Complex.continuous_ofReal.tendsto (0 : ℝ)`. Simplify using `using hc.mono_left nhdsWithin_le_nhds`.
+
+Use `filter_upwards [self_mem_nhdsWithin] with s hs`. Simplify using `using hs`. Establish `hfreq : ∃ᶠ z in 𝓝[≠] (0 : ℂ), f z = g z` using `htend.frequently hreal.frequently`. Establish `heq : Set.EqOn f g (Metric.ball 0 ρ)` using `(hf.analyticOnNhd hU).eqOn_of_preconnected_of_frequently_eq (hg.analyticOnNhd hU) (convex_ball (0 : ℂ) ρ).isPreconnected h0 hfreq`. Establish `hev : f =ᶠ[𝓝 0] g` using `Filter.mem_of_superset (hU.mem_nhds h0) heq`.
+
+Conclude with `hev.iteratedDeriv_eq r`.
+-/
 theorem iteratedDeriv_zero_eq_of_eq_on_real_points (f g : ℂ → ℂ) (ρ : ℝ) (hρ : 0 < ρ)
     (hf : DifferentiableOn ℂ f (Metric.ball 0 ρ)) (hg : DifferentiableOn ℂ g (Metric.ball 0 ρ))
     (h : ∀ s : ℝ, |s| < ρ → f s = g s) (r : ℕ) :

@@ -37,9 +37,19 @@ def sm [MeasurableSpace (archGroup K n)] (ν : Measure (archGroup K n)) (β : ar
     (f : AdelicGLn.AdelicGL K n → ℂ) (x : AdelicGLn.AdelicGL K n) : ℂ :=
   ∫ y, (β y : ℂ) * f (x * infEmb K n y) ∂ν
 
+/- English proof (translation)
+The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+-/
 theorem continuous_mat : Continuous (mat : archGroup K n → ArchMatrix K n) :=
   Units.continuous_val.comp continuous_subtype_val
 
+/- English proof (translation)
+Establish `hemb : IsEmbedding (fun y : archGroup K n => mat y)` using `Units.isOpenEmbedding_val.isEmbedding.comp (Topology.IsEmbedding.subtypeVal)`. Establish `hsub : Metric.closedBall (1 : ArchMatrix K n) ρ ⊆ Set.range (fun y : archGroup K n => mat y)`. Introduce `a ha`. Establish `h1 : ‖1 - a‖ < 1`. Rewrite using `[norm_sub_rev]`.
+
+Conclude with `lt_of_le_of_lt (by simpa [dist_eq_norm] using ha) hρ`. Use `⟨⟨Units.oneSub (1 - a) h1, Subgroup.mem_top _⟩, ?_⟩` and prove the remaining obligations. Simplify using `[mat]`. Use `(hemb.isInducing.isCompact_preimage_iff hsub).2 (isCompact_closedBall (1 : ArchMatrix K n) ρ)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `y`. Simplify using `[dist_eq_norm]`.
+-/
 theorem isCompact_ball {ρ : ℝ} (hρ : ρ < 1) :
     IsCompact {y : archGroup K n | ‖mat y - 1‖ ≤ ρ} := by
   have hemb : IsEmbedding (fun y : archGroup K n => mat y) :=
@@ -56,6 +66,9 @@ theorem isCompact_ball {ρ : ℝ} (hρ : ρ < 1) :
   ext y
   simp [dist_eq_norm]
 
+/- English proof (translation)
+The claim follows from `|max 0 (1 - ‖a - e‖ / ρ) - max 0 (1 - ‖b - e‖ / ρ)| ≤ ρ⁻¹ * ‖a - b‖ := by have h1 : |max 0 (1 - ‖a - e‖ / ρ) - max 0 (1 - ‖b - e‖ / ρ)| ≤ |(1 - ‖a - e‖ / ρ) - (1 - ‖b - e‖ / ρ)| := by simp only [max_comm (0 : ℝ)] exact abs_max_sub_max_le_abs _ _ _ have h2 : (1 - ‖a - e‖ / ρ) - (1 …`.
+-/
 theorem tent_lip {A : Type*} [SeminormedAddCommGroup A] {ρ : ℝ} (hρ0 : 0 < ρ) (a b e : A) :
     |max 0 (1 - ‖a - e‖ / ρ) - max 0 (1 - ‖b - e‖ / ρ)| ≤ ρ⁻¹ * ‖a - b‖ := by
   have h1 : |max 0 (1 - ‖a - e‖ / ρ) - max 0 (1 - ‖b - e‖ / ρ)| ≤ |(1 - ‖a - e‖ / ρ) - (1 - ‖b - e‖ / ρ)| := by
@@ -71,6 +84,25 @@ theorem tent_lip {A : Type*} [SeminormedAddCommGroup A] {ρ : ℝ} (hρ0 : 0 < �
   rw [norm_sub_rev a b]
   exact h3
 
+/- English proof (translation)
+Establish `hc : ContinuousAt (fun y : archGroup K n => mat y) 1` using `continuous_mat.continuousAt`. Establish `hb : ∃ ρ : ℝ, 0 < ρ ∧ ρ < 1 ∧ {y : archGroup K n | ‖mat y - 1‖ ≤ ρ} ⊆ U`. Establish `hemb : IsInducing (fun y : archGroup K n => mat y)` using `(Units.isOpenEmbedding_val.isEmbedding.comp (Topology.IsEmbedding.subtypeVal)).isInducing`. Rewrite `hU` using `[hemb.nhds_eq_comap, mem_comap]`. Take `⟨t, ht, hsub⟩` from `hU`.
+
+Establish `h1 : mat (1 : archGroup K n) = 1` using `rfl`. Rewrite `ht` using `[h1]`. Take `⟨e, he, hball⟩` from `Metric.nhds_basis_closedBall.mem_iff.1 ht`. Use `⟨min e (1 / 2), by positivity, by` and prove the remaining obligations. Conclude with `lt_of_le_of_lt (min_le_right _ _) (by norm_num), fun y hy => hsub ?_⟩`.
+
+Apply `hball` to reduce the goal to its premises. Simplify using `only [Metric.mem_closedBall, dist_eq_norm]`. Conclude with `le_trans hy (min_le_left _ _)`. Take `⟨ρ, hρ0, hρ1, hρU⟩` from `hb`. Use `set β₀ : archGroup K n → ℝ := fun y => max 0 (1 - ‖mat y - 1‖ / ρ) with hβ₀`.
+
+Establish `hβc : Continuous β₀` using `continuous_const.max (continuous_const.sub ((continuous_mat.sub continuous_const).norm.div_const _))`. Establish `hsupp : Function.support β₀ ⊆ {y : archGroup K n | ‖mat y - 1‖ ≤ ρ}`. Introduce `y hy`. Assume the negation of the conclusion as `h`. Apply `hy` to reduce the goal to its premises.
+
+Establish `h' : ρ < ‖mat y - 1‖` using `not_le.1 h`. Establish `: 1 < ‖mat y - 1‖ / ρ` using `(one_lt_div hρ0).2 h'`. Conclude with `max_eq_left (by linarith)`. Establish `hclosed : IsClosed {y : archGroup K n | ‖mat y - 1‖ ≤ ρ}` using `isClosed_le (continuous_mat.sub continuous_const).norm continuous_const`. Establish `hts : tsupport β₀ ⊆ {y : archGroup K n | ‖mat y - 1‖ ≤ ρ}` using `closure_minimal hsupp hclosed`.
+
+Establish `hcs : HasCompactSupport β₀` using `(isCompact_ball hρ1).of_isClosed_subset (isClosed_tsupport _) hts`. Establish `hnn : ∀ y, 0 ≤ β₀ y` using `fun y => le_max_left _ _`. Establish `hpos : 0 < ∫ y, β₀ y ∂ν`. Use `hβc.integral_pos_of_hasCompactSupport_nonneg_nonzero hcs hnn (x := 1) ?_` and prove the remaining obligations. Establish `: β₀ 1 = 1` using `by simp [hβ₀, mat]`.
+
+Rewrite using `[this]`. Conclude with `one_ne_zero`. Use `set c := ∫ y, β₀ y ∂ν with hcdef`. Establish `hcpos : 0 ≤ c⁻¹` using `inv_nonneg.2 hpos.le`. Establish `hk : Ker ν (fun y => c⁻¹ * β₀ y)`.
+
+Use `{ cont := continuous_const.mul hβc cpt := hcs.mul_left nonneg := fun y => mul_nonneg hcpos (hnn y) mass := ?_ lip := ⟨c⁻¹ * ρ⁻¹, mul_nonneg hcpos (inv_nonneg.2 hρ0.le), fun y y' => ?_⟩ }` and prove the remaining obligations. Rewrite using `[integral_const_mul, ← hcdef, inv_mul_cancel₀ hpos.ne']`. Rewrite using `[← mul_sub, abs_mul, abs_of_nonneg hcpos, mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ hcpos` and prove the remaining obligations. Conclude with `tent_lip hρ0 _ _ _`.
+
+Conclude with `⟨_, hk, (tsupport_mul_subset_right (f := fun _ => c⁻¹) (g := β₀)).trans (hts.trans hρU)⟩`.
+-/
 theorem exists_ker [MeasurableSpace (archGroup K n)] [BorelSpace (archGroup K n)] (ν : Measure (archGroup K n))
     [ν.IsHaarMeasure] {U : Set (archGroup K n)} (hU : U ∈ 𝓝 1) :
     ∃ β, Ker ν β ∧ tsupport β ⊆ U := by

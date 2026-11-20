@@ -18,6 +18,9 @@ open GlobalTheory.ThK.SquareIntegrability GlobalTheory.SiegelSet
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨f i, (h i).1, φ i, (h i).2.1, ?_, rfl⟩` and prove the remaining obligations. Use `Filter.eventually_cofinite.2 (T.finite_toSet.subset fun v hv => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hT`. Conclude with `hv ((h i).2.2 v hT)`.
+-/
 theorem sum_mem_polData {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (T : Finset (Pl F))
     {m : ℕ} (f : Fin m → SInf F (Fin n × Fin d)) (φ : Fin m → ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ)
     (h : ∀ i, f i ∈ M.Pol B.ψ B.emb ∧ (∀ v, φ i v ∈ SB _) ∧ ∀ v ∉ T, φ i v = M.vac v) :
@@ -27,6 +30,13 @@ theorem sum_mem_polData {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E 
   by_contra hT
   exact hv ((h i).2.2 v hT)
 
+/- English proof (translation)
+Take `⟨w, τ, Z, hZ, hy⟩` from `hγ`. Use `⟨w, τ, Z, ?_, fun t => ?_⟩` and prove the remaining obligations. Establish `e : ∀ b : E, (b • J.map σ).map τ.1 = τ.1 b • (J.map σ).map τ.1` using `fun b => Matrix.ext fun i j => map_mul τ.1 b _`. Establish `h0 : τ.1 c ≠ 0` using `(map_ne_zero τ.1).2 hc`. Rewrite `hZ`, the goal using `[e, Matrix.mul_smul, Matrix.smul_mul, ← smul_add]`.
+
+Rewrite using `[(smul_eq_zero.1 hZ).resolve_left h0, smul_zero]`. Take `⟨y, e1, e2⟩` from `hy t`. Establish `e3 : projArch σ _ w (γ t) = y` using `by rw [e1, projArch_embArch_self]`. Establish `e4 : embArch σ _ w (projArch σ _ w (γ t)) = γ t` using `by rw [e3, e1]`. Use `⟨projArch σ _ w (toGAd hσ J hc' ((toGAd hσ J hc).symm (γ t))), ?_, ?_⟩` and prove the remaining obligations.
+
+Use `Subtype.ext ((congrArg Subtype.val e4).symm.trans ?_)` and prove the remaining obligations. Conclude with `Units.ext rfl`. Rewrite using `[← e2, ← e3]`. Both sides reduce to the same expression.
+-/
 theorem isRealLine_rescale (hσ : ∀ x, σ (σ x) = x) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) {c c' : E} (hc : c ≠ 0)
     (hc' : c' ≠ 0) {γ : ℝ → GAd σ (c • J.map σ)} (hγ : IsRealLine σ (c • J.map σ) γ) :
     IsRealLine σ (c' • J.map σ) fun t => toGAd hσ J hc' ((toGAd hσ J hc).symm (γ t)) := by
@@ -46,6 +56,15 @@ theorem isRealLine_rescale (hσ : ∀ x, σ (σ x) = x) {n : ℕ} (J : Matrix (F
     · rw [← e2, ← e3]
       rfl
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM _ _ c Φ Φ' hSo hPM c₀ hc₀ φ' hφ' k γ hγ g`. Establish `hT` using `hM.triple`. Establish `hσ : ∀ x, σ (σ x) = x` using `GlobalTheory.SiegelSet.sigma_sigma hT.base.cm`. Take `⟨x, hx⟩` from `GlobalTheory.SkewToHerm.exists_sigma_ne σ hT.base.cm`. Establish `hc₁ : x - σ x ≠ 0` using `sub_ne_zero.2 (Ne.symm hx)`.
+
+Establish `hcc : σ (x - σ x) = -(x - σ x)` using `by rw [map_sub, hσ, neg_sub]`. Take `⟨T, -, m, m', f, φ, f₁, φ₁, hf, hf₁, e, e', -⟩` from `hPM`. Establish `hP : Φ ∈ PolData B G.M` using `e ▸ sum_mem_polData G.M T f φ hf`. Establish `hP' : Φ' ∈ PolData B G.M'` using `e' ▸ sum_mem_polData G.M' T f₁ φ₁ hf₁`. Set `e₀` to `toGAd hσ G.W.J hc₀`.
+
+Set `e₁` to `toGAd hσ G.W.J hc₁`. Establish `hγ' : ∀ i, IsRealLine σ ((x - σ x) • G.W.J.map σ) fun t => e₁ (e₀.symm (γ i t))` using `fun i => isRealLine_rescale hσ G.W.J hc₀ hc₁ (hγ i)`. Establish `h1` using `GlobalTheory.T.theta_lift_real_line_derivative F E σ hσ B a a' G X om om' hKP hT _ hc₁ hcc Φ hP k _ hγ' (e₁ (e₀.symm g))`. Establish `h2` using `GlobalTheory.T.polynomial_theta_kernel_smooth F E σ hσ B a a' G X om om' hKP hT _ hc₁ hcc Φ' ⟨hP', hSo⟩ k _ hγ' (e₁ (e₀.symm g))`. Establish `key : ∀ t : Fin k → ℝ, e₁.symm (e₁ (e₀.symm g) * (List.ofFn fun i => e₁ (e₀.symm (γ i (t i)))).prod) = e₀.symm (g * (List.ofFn fun i => γ i (t i)).prod)` using `fun t => by`.
+
+Simplify using `only [map_mul, map_list_prod, List.map_ofFn, MulEquiv.symm_apply_apply, Function.comp_def]`. Establish `e2 : (fun t : Fin k → ℝ => φ' (g * (List.ofFn fun i => γ i (t i)).prod)) = fun t => G.M.I om Φ (e₁.symm (e₁ (e₀.symm g) * (List.ofFn fun i => e₁ (e₀.symm (γ i (t i)))).prod)) - c * G.M'.I om' Φ' (e₁.symm (e₁ (e₀.symm g) * (List.ofFn fun i => e₁ (e₀.symm (γ i (t i)))).prod))`. Use function extensionality and compare the values at `fun t => by rw [key]; exact hφ' _ _ rfl`. Rewrite using `[e2]`. Conclude with `h1.sub (contDiff_const.mul h2)`.
+-/
 theorem contDiff_diff : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf → G.q = 0 → 1 ≤ G.p →
     ∀ c : ℂ, ∀ Φ, ∀ Φ' ∈ G.M'.So B.ψ B.τ₁, PolMatch B G X R Rf Φ Φ' →

@@ -21,6 +21,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.UMin.OmDvr
 
+/- English proof (translation)
+Take `⟨hc₁, j₀, hj₀, hj₀'⟩` from `hc`. Take `⟨hb₁, j₁, hj₁, hj₁'⟩` from `hb`. Establish `I1 : IsIntegral V b`. Use `IsIntegral.mul (show IsIntegral V (b * c j₀) from hb₁ j₀) (show IsIntegral V (c j₀)⁻¹ from hj₀')` as an intermediate fact. Rewrite `this` using `[_root_.mul_assoc, mul_inv_cancel₀ hj₀, _root_.mul_one]`. Then use the resulting hypothesis.
+
+Establish `hcne : c j₁ ≠ 0` using `right_ne_zero_of_mul hj₁`. Establish `I2 : IsIntegral V b⁻¹`. Use `IsIntegral.mul (show IsIntegral V (c j₁) from hc₁ j₁) (show IsIntegral V (b * c j₁)⁻¹ from hj₁')` as an intermediate fact. Rewrite `this` using `[mul_inv, mul_left_comm, mul_inv_cancel₀ hcne, _root_.mul_one]`. Then use the resulting hypothesis. Take `⟨v, hv⟩` from `IsIntegrallyClosed.isIntegral_iff.1 I1`.
+
+Take `⟨w, hw⟩` from `IsIntegrallyClosed.isIntegral_iff.1 I2`. Establish `hb0 : b ≠ 0` using `left_ne_zero_of_mul hj₁`. Establish `hvw : v * w = 1` using `IsFractionRing.injective V (FractionRing V) (by`. Rewrite using `[map_mul, hv, hw, mul_inv_cancel₀ hb0, map_one])`. Conclude with `⟨⟨v, w, hvw, by rw [mul_comm, hvw]⟩, hv⟩`.
+-/
 theorem exists_unit_of_prim {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {J : Type}
     {c : J → FractionRing V} (b : FractionRing V) (hc : Prim (algebraMap V (FractionRing V)) c)
     (hb : Prim (algebraMap V (FractionRing V)) (fun j => b * c j)) :
@@ -41,6 +48,9 @@ theorem exists_unit_of_prim {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValu
     rw [map_mul, hv, hw, mul_inv_cancel₀ hb0, map_one])
   exact ⟨⟨v, w, hvw, by rw [mul_comm, hvw]⟩, hv⟩
 
+/- English proof (translation)
+Take `⟨P, α, -, hp, hw⟩` from `h`. Establish `hN` using `LB.isLB_pull t.PP.isLB (pullback.fst t.G.hom x)`. Take `⟨φ, hφ, e, -⟩` from `GlobalTheory.Ex.UnifModel.exists_cancel (g := 𝟙 _) (f := x) ((isGrpPullback_pullback t.G x).congr (Category.id_comp _).symm rfl) hp t.PP.isLB P.isLB hN ⟨Out.CubePf.idIsoL _, Out.CubePf.idIsoL_isGen hN⟩ hw`. Conclude with `⟨MorphismProperty.of_isPullback (P := @IsProper) hφ.1 P.isAb.proper, amplePt _ _ _ _ _ _ hφ _ _ P.isLB hN e P.ample P.ktriv⟩`.
+-/
 theorem polAt_of_polFib {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S : Scheme.{0}} (t : SAB H S)
     {g : ℕ} {K : Type} [Field K] {x : Sp K ⟶ S} (h : PolFib t.G t.PP.L g x) : GlobalTheory.LN.PolAt t x := by
   obtain ⟨P, α, -, hp, hw⟩ := h
@@ -56,6 +66,27 @@ end GlobalTheory.UMin.OmDvr
 set_option maxHeartbeats 1000000 in
 open GlobalTheory.UMin.OmDvr in
 
+/- English proof (translation)
+Introduce `E _ _ _ H S t g m N V _ _ _ hV χ θ pt c hm h3 hu hP hT hc`. Establish `hL` using `t.PP.isLB`. Establish `: IsDiscreteValuationRing V` using `hV.1`. Use `t.semi.comm` as an intermediate fact. Establish `hpa` using `GlobalTheory.UMin.OmDvr.polAt_of_polFib t hP`.
+
+Take `⟨PP', cub, sym, adj, prim, m₁, -⟩` from `sabPull Out.CubePf.cubePull χ t`. Establish `hp'` using `GlobalTheory.SplitPoint.polAt_pullback m₁ hpa (jK V) (𝟙 _) (Category.id_comp _).symm`. Take `⟨σ₀, hσ₀⟩` from `exists_nz_of_polAt abelianSchemeLaws_all.1 abelianSchemeLaws_all.2 E H S t V χ _ m₁ hp'`. Establish `h0V : spMap (RingHom.id V) ≫ χ = χ` using `(congrArg (· ≫ χ) (Spec.map_id _)).trans (Category.id_comp _)`. Establish `hNZ` using `hσ₀ V (RingHom.id V) χ h0V`.
+
+Take `⟨P, α, hg, hp, hw⟩` from `hP`. Establish `hx0 : spMap (RingHom.id (FractionRing V)) ≫ (spMap (algebraMap V (FractionRing V)) ≫ χ) = spMap (algebraMap V (FractionRing V)) ≫ χ` using `(congrArg (· ≫ _) (Spec.map_id _)).trans (Category.id_comp _)`. Take `⟨e, he⟩` from `exists_univBasis_of_fibre abelianSchemeLaws_all.2 S (Sp (FractionRing V)) t.G t.PP.L hL P _ α hp hw (FractionRing V) (𝟙 _) _ (Category.id_comp _)`. Take `⟨a, ha⟩` from `he.ex (RingHom.id _) hx0 (SecM.ofSec t.G θ)`. Generalize the expression as in `VVRank.pullS t.G _ (Over.homMk (spMap (RingHom.id V)) h0V : Over.mk χ ⟶ Over.mk χ) σ₀ = σ₁ at hNZ`.
+
+Take `⟨s, hs⟩` from `he.ex (RingHom.id _) hx0 (pl (algebraMap V (FractionRing V)) rfl (SecM.ofSec t.G σ₁))`. Establish `hmK : ((m : ℕ) : FractionRing V) ≠ 0`. Use `(hu.map (algebraMap V (FractionRing V))).ne_zero` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨j₀, hj₀, -⟩` from `hc.2`.
+
+Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Establish `h00 : SecM.ofSec t.G θ = @id Γ((Over.mk (spMap (algebraMap V (FractionRing V)) ≫ χ)).left, ⊤) (GlobalTheory.ZH.fn (0 : FractionRing V)) • SecM.ofSec t.G θ`. Express the relevant statement in the definitionally equal form `_ = fnR (spMap (algebraMap V (FractionRing V)) ≫ χ) 0 • _`. Rewrite using `[map_zero, zero_smul, ha, map_zero, zero_smul]`.
+
+Establish `q` using `(GlobalTheory.UMin.thG_smul_iff S t.G t.PP.L t.PP.rig hL t.PP.rigGen g m (FractionRing V) _ θ θ (pt j₀) 0 (c j₀) (c j₀) hm hmK ⟨P, α, hg, hp, hw⟩ h00 (hT.2.1 j₀)).1 (hT.2.1 j₀)`. Conclude with `hj₀ (by simpa using q)`. Establish `hrel : pl (algebraMap V (FractionRing V)) rfl (SecM.ofSec t.G σ₁) = fnR (spMap (algebraMap V (FractionRing V)) ≫ χ) (s * a⁻¹) • SecM.ofSec t.G θ`. Establish `key : s = (s * a⁻¹) * a` using `by rw [_root_.mul_assoc, inv_mul_cancel₀ ha0, _root_.mul_one]`. Rewrite using `[hs, ha, smul_smul, ← map_mul, ← key]`.
+
+Establish `hT' : ThList t.G t.PP.L t.PP.rig m (spMap (algebraMap V (FractionRing V)) ≫ χ) (SecAt.pull t.G t.PP.L σ₁ (algebraMap V (FractionRing V))) pt (fun j => (s * a⁻¹) * c j)`. Use `⟨hT.1, fun j => ?_, hT.2.2⟩` and prove the remaining obligations. Use `show ThG t.G t.PP.L t.PP.rig m _ (pt j) (fnR (spMap (algebraMap V (FractionRing V)) ≫ χ) ((s * a⁻¹) * c j))`. Rewrite using `[map_mul]`. Conclude with `ThG.smul hL hrel (hT.2.1 j)`.
+
+Establish `hprim` using `GlobalTheory.UMin.prim_of_polFib E H S t g V hV χ ⟨P, α, hg, hp, hw⟩ _ hNZ m N hm h3 hu (FractionRing V) (algebraMap V (FractionRing V)) pt _ (IsFractionRing.injective V (FractionRing V)) hT'`. Take `⟨u, hu'⟩` from `exists_unit_of_prim (s * a⁻¹) hc hprim`. Establish `hpull : pl (algebraMap V (FractionRing V)) rfl (fnR χ (u⁻¹ : Vˣ).val • SecM.ofSec t.G σ₁) = SecM.ofSec t.G θ`. Rewrite using `[pl_smul, hrel, smul_smul, ← map_mul, ← hu', ← map_mul, Units.inv_mul, map_one, map_one, one_smul]`. Use `⟨SecM.toSec t.G (fnR χ (u⁻¹ : Vˣ).val • SecM.ofSec t.G σ₁), hpull, ?_⟩` and prove the remaining obligations.
+
+Take `⟨g₀, h₁, h₂⟩` from `hNZ`. Use `⟨g₀, h₁, ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 h₂`. Use `TopologicalSpace.Opens.mem_iSup.2 ⟨k, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g₀ ∈ Scheme.basicOpen _ (liftHom t.G _ (fnR χ (u⁻¹ : Vˣ).val) * σ₁.f k)`.
+
+Rewrite using `[Scheme.basicOpen_mul, Scheme.basicOpen_of_isUnit _ (((u⁻¹).isUnit.map (fnR χ)).map (liftHom t.G _))]`. Conclude with `⟨Scheme.basicOpen_le _ _ hk, hk⟩`.
+-/
 theorem GlobalTheory.UMin.exists_sec_nz_of_prim : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S : Scheme.{0}) (t : SAB H S) (g m N : ℕ) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.LN.CDvr V → ∀ (χ : Sp V ⟶ S) (θ : SecAt t.G t.PP.L (spMap (algebraMap V (FractionRing V)) ≫ χ)) (pt : Fin N → (Over.mk (spMap (algebraMap V (FractionRing V)) ≫ χ) ⟶ t.G)) (c : Fin N → FractionRing V), Odd m → 3 ≤ m → IsUnit (m : V) → PolFib t.G t.PP.L g (spMap (algebraMap V (FractionRing V)) ≫ χ) → ThList t.G t.PP.L t.PP.rig m _ θ pt c → Prim (algebraMap V (FractionRing V)) c → ∃ σ : SecAt t.G t.PP.L χ, SecM.ofSec t.G (SecAt.pull t.G t.PP.L σ (algebraMap V (FractionRing V))) = SecM.ofSec t.G θ ∧ NZ t.G t.PP.L χ σ := by
   intro E _ _ _ H S t g m N V _ _ _ hV χ θ pt c hm h3 hu hP hT hc
   have hL := t.PP.isLB

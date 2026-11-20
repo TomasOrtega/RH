@@ -8,6 +8,19 @@ open Matrix
 
 variable {k Γ : Type} [Field k] [Group Γ] {a : ℕ}
 
+/- English proof (translation)
+Set `φ : (Fin (Module.finrank k W) → k) ≃ₗ[k] W` to `(Module.finBasis k W).equivFun.symm`. Set `r : Γ → (W →ₗ[k] W)` to `fun g => (Matrix.toLin' (ρ g : Matrix (Fin a) (Fin a) k)).restrict (p := W) (q := W) (fun v hv => hW g v hv)`. Establish `hr : ∀ g v, (r g v : Fin a → k) = (ρ g : Matrix _ _ k) *ᵥ (v : Fin a → k)` using `fun g v => rfl`. Set `m : Γ →* Matrix (Fin (Module.finrank k W)) (Fin (Module.finrank k W)) k` to `{ toFun := fun g => LinearMap.toMatrix' (φ.symm.toLinearMap ∘ₗ r g ∘ₗ φ.toLinearMap) map_one' := by`. Rewrite using `[← LinearMap.toMatrix'_id]`.
+
+Use `congr 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Establish `: r 1 (φ x) = φ x`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[hr]`. Simplify using the standard rewrite rules. Simplify using `[this]`. Use the proof step `map_mul' := fun g h => by`. Rewrite using `[← LinearMap.toMatrix'_comp]`.
+
+Use `congr 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Establish `: r (g * h) (φ x) = r g (r h (φ x))`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[hr, hr, hr]`. Simplify using the standard rewrite rules. Simplify using `[this] }`. Use `⟨m.toHomUnits, φ, fun g x => ?_⟩` and prove the remaining obligations. Establish `: ((m.toHomUnits g : Matrix _ _ k)) *ᵥ x = φ.symm (r g (φ x))`.
+
+Express the relevant statement in the definitionally equal form `LinearMap.toMatrix' (φ.symm.toLinearMap ∘ₗ r g ∘ₗ φ.toLinearMap) *ᵥ x = _`. Rewrite using `[LinearMap.toMatrix'_mulVec]`. Both sides reduce to the same expression. Rewrite using `[this, LinearEquiv.apply_symm_apply, hr]`.
+-/
 theorem exists_emb (ρ : Γ →* GL (Fin a) k) (W : Submodule k (Fin a → k)) (hW : IsInv ρ W) :
     ∃ (σ : Γ →* GL (Fin (Module.finrank k W)) k) (φ : (Fin (Module.finrank k W) → k) ≃ₗ[k] W),
       ∀ g x, (φ ((σ g : Matrix _ _ k) *ᵥ x) : Fin a → k) = (ρ g : Matrix _ _ k) *ᵥ (φ x : Fin a → k) := by
@@ -43,6 +56,13 @@ theorem exists_emb (ρ : Γ →* GL (Fin a) k) (W : Submodule k (Fin a → k)) (
     rfl
   rw [this, LinearEquiv.apply_symm_apply, hr]
 
+/- English proof (translation)
+Set `s : (Fin (d + u) → k) ≃ₗ[k] (Fin d → k) × (Fin u → k)` to `(LinearEquiv.funCongrLeft k k finSumFinEquiv).trans (LinearEquiv.sumArrowLequivProdArrow _ _ k k)`. Establish `hs : ∀ x, s x = (fun i => x (finSumFinEquiv (Sum.inl i)), fun i => x (finSumFinEquiv (Sum.inr i)))` using `fun x => rfl`. Use `⟨(f₁.coprod f₂) ∘ₗ s.toLinearMap, ?_, ?_, fun g x => ?_⟩` and prove the remaining obligations. Establish `: Function.Injective (f₁.coprod f₂)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_coprod_of_disjoint_range _ _ hd, LinearMap.ker_eq_bot.2 i₁, LinearMap.ker_eq_bot.2 i₂, Submodule.prod_bot]`.
+
+Conclude with `this.comp s.injective`. Rewrite using `[LinearMap.range_comp, LinearEquiv.range, Submodule.map_top, LinearMap.range_coprod]`. Establish `key : s ((SumRepresentations.At.sumRep σ τ g : Matrix _ _ k) *ᵥ x) = ((σ g : Matrix _ _ k) *ᵥ (s x).1, (τ g : Matrix _ _ k) *ᵥ (s x).2)`. Establish `hM : (SumRepresentations.At.sumRep σ τ g).val = Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks (σ g).val 0 0 (τ g).val)` using `rfl`. Rewrite using `[hM, Matrix.reindex_apply, Matrix.submatrix_mulVec_equiv, Matrix.fromBlocks_mulVec, hs, hs]`.
+
+Apply the tactic sequence `ext i <;> simp [Function.comp_def]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, key, LinearMap.coprod_apply, h₁, h₂, Matrix.mulVec_add]`.
+-/
 theorem exists_emb_sum (ρ : Γ →* GL (Fin a) k) {d u : ℕ} (σ : Γ →* GL (Fin d) k)
     (τ : Γ →* GL (Fin u) k) (f₁ : (Fin d → k) →ₗ[k] (Fin a → k))
     (f₂ : (Fin u → k) →ₗ[k] (Fin a → k)) (i₁ : Function.Injective f₁) (i₂ : Function.Injective f₂)
@@ -71,6 +91,13 @@ theorem exists_emb_sum (ρ : Γ →* GL (Fin a) k) {d u : ℕ} (σ : Γ →* GL 
     simp only [LinearMap.comp_apply, LinearEquiv.coe_coe, key, LinearMap.coprod_apply, h₁, h₂,
       Matrix.mulVec_add]
 
+/- English proof (translation)
+Set `e` to `LinearEquiv.ofBijective f ⟨hi, LinearMap.range_eq_top.1 hs⟩`. Establish `hn : n = a` using `by simpa using e.finrank_eq`. Substitute `hn` using the available equality. Set `Pm : GL (Fin n) k` to `⟨LinearMap.toMatrix' e.toLinearMap, LinearMap.toMatrix' e.symm.toLinearMap, by rw [← LinearMap.toMatrix'_comp]; simp, by rw [← LinearMap.toMatrix'_comp]; simp⟩`. Establish `hP : ∀ x, (Pm : Matrix _ _ k) *ᵥ x = f x` using `fun x => LinearMap.toMatrix'_mulVec _ _`.
+
+Use `⟨rfl, Pm, fun g => ?_⟩` and prove the remaining obligations. Establish `: ρ g * Pm = Pm * τ g`. Apply `Units.ext` to reduce the goal to its premises. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `x`. Simplify using `only [Units.val_mul, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, hP, h]`. Rewrite using `[mul_assoc, this, inv_mul_cancel_left]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_conj (ρ : Γ →* GL (Fin a) k) {n : ℕ} (τ : Γ →* GL (Fin n) k)
     (f : (Fin n → k) →ₗ[k] (Fin a → k)) (hi : Function.Injective f) (hs : LinearMap.range f = ⊤)
     (h : ∀ g x, f ((τ g : Matrix _ _ k) *ᵥ x) = (ρ g : Matrix _ _ k) *ᵥ f x) :
@@ -94,6 +121,19 @@ theorem exists_conj (ρ : Γ →* GL (Fin a) k) {n : ℕ} (τ : Γ →* GL (Fin 
   rw [mul_assoc, this, inv_mul_cancel_left]
   simp
 
+/- English proof (translation)
+Introduce `k Γ _ _ a ρ W₁ W₂ hss h₁ h₂ hne hdis ⟨e, he⟩`. Establish `h12 : IsInv ρ (W₁ ⊔ W₂)`. Introduce `g v hv`. Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.1 hv`. Rewrite using `[Matrix.mulVec_add]`.
+
+Conclude with `Submodule.add_mem_sup (h₁ g x hx) (h₂ g y hy)`. Take `⟨U, hU, hc⟩` from `hss _ h12`. Take `⟨σ, φ, hφ⟩` from `exists_emb ρ W₁ h₁`. Take `⟨υ, ψ, hψ⟩` from `exists_emb ρ U hU`. Establish `r₁ : LinearMap.range (W₁.subtype ∘ₗ φ.toLinearMap) = W₁`.
+
+Rewrite using `[LinearMap.range_comp, LinearEquiv.range, Submodule.map_top, Submodule.range_subtype]`. Establish `r₂ : LinearMap.range (W₂.subtype ∘ₗ (φ.trans e).toLinearMap) = W₂`. Rewrite using `[LinearMap.range_comp, LinearEquiv.range, Submodule.map_top, Submodule.range_subtype]`. Establish `r₃ : LinearMap.range (U.subtype ∘ₗ ψ.toLinearMap) = U`. Rewrite using `[LinearMap.range_comp, LinearEquiv.range, Submodule.map_top, Submodule.range_subtype]`.
+
+Take `⟨f, fi, fr, hf⟩` from `exists_emb_sum ρ σ σ (W₁.subtype ∘ₗ φ.toLinearMap) (W₂.subtype ∘ₗ (φ.trans e).toLinearMap) (W₁.injective_subtype.comp φ.injective) (W₂.injective_subtype.comp (φ.trans e).injective) (fun g x => hφ g x) (fun g x => by`. Use `he g (φ x) (h₁ g _ (φ x).2)` as an intermediate fact. Establish `h' : φ ((σ g : Matrix _ _ k) *ᵥ x) = ⟨_, h₁ g _ (φ x).2⟩` using `Subtype.ext (hφ g x)`. Express the relevant statement in the definitionally equal form `(e (φ ((σ g : Matrix _ _ k) *ᵥ x)) : Fin a → k) = _`. Rewrite using `[h', this]`.
+
+Use the proof step `rfl)`. Use the proof step `(by rw [r₁, r₂]; exact disjoint_iff.2 hdis)`. Rewrite `fr` using `[r₁, r₂]`. Take `⟨F, Fi, Fr, hF⟩` from `exists_emb_sum ρ (SumRepresentations.At.sumRep σ σ) υ f (U.subtype ∘ₗ ψ.toLinearMap) fi (U.injective_subtype.comp ψ.injective) hf (fun g x => hψ g x) (by rw [fr, r₃]; exact hc.disjoint)`. Rewrite `Fr` using `[fr, r₃, hc.sup_eq_top]`.
+
+Take `⟨hn, Pm, hP⟩` from `exists_conj ρ _ F Fi Fr hF`. Conclude with `⟨_, _, σ, υ, hn, Pm, Nat.pos_of_ne_zero (fun h0 => hne (Submodule.finrank_eq_zero.1 h0)), hP⟩`.
+-/
 theorem exists_conj_double : ∀ {k Γ : Type} [Field k] [Group Γ] {a : ℕ} (ρ : Γ →* GL (Fin a) k) (W₁ W₂ : Submodule k (Fin a → k)), IsSSRep ρ → IsInv ρ W₁ → IsInv ρ W₂ → W₁ ≠ ⊥ → W₁ ⊓ W₂ = ⊥ → IsoSub ρ W₁ W₂ → ∃ (d u : ℕ) (σ : Γ →* GL (Fin d) k) (υ : Γ →* GL (Fin u) k) (h : d + d + u = a) (Pm : GL (Fin a) k), 0 < d ∧ ∀ g, ((Pm⁻¹ * ρ g * Pm : GL (Fin a) k) : Matrix (Fin a) (Fin a) k) = Matrix.reindex (finCongr h) (finCongr h) ((SumRepresentations.At.sumRep (SumRepresentations.At.sumRep σ σ) υ g : GL (Fin (d + d + u)) k) : Matrix (Fin (d + d + u)) (Fin (d + d + u)) k) := by
   intro k Γ _ _ a ρ W₁ W₂ hss h₁ h₂ hne hdis ⟨e, he⟩
   have h12 : IsInv ρ (W₁ ⊔ W₂) := by

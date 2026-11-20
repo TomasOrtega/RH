@@ -13,6 +13,13 @@ section Q2
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
+/- English proof (translation)
+Establish `key : ∀ x y : Qt F', starRingEnd E (hQ F' c x y) = hQ F' c y x`. Introduce `x y`. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H a`. Proceed by induction on `y using Submodule.Quotient.induction_on with`.
+
+Consider the case `H b`. Rewrite using `[hQ_mk, hQ_mk, hV_apply, hV_apply, map_add, map_mul, map_mul, S.herm.eq, S.herm.eq, S.herm.eq, starRingEnd_apply c, hc]`. Expand and normalize the polynomial expressions, which then agree. Use `first`. Consider the case `exact key`.
+
+Consider the case `exact ⟨key⟩`.
+-/
 theorem hQ_symm {T' : E} (F' : LFlag S r T') (c : E) (hc : star c = c) : (hQ F' c).IsSymm := by
   have key : ∀ x y : Qt F', starRingEnd E (hQ F' c x y) = hQ F' c y x := by
     intro x y
@@ -27,6 +34,27 @@ theorem hQ_symm {T' : E} (F' : LFlag S r T') (c : E) (hc : star c = c) : (hQ F' 
     | exact key
     | exact ⟨key⟩
 
+/- English proof (translation)
+Establish `ht : (T' : E) ≠ 0` using `by exact_mod_cast hT.ne'`. Establish `hst : star (T' : E) = T'` using `star_natCast T'`. Establish `hzz : S.hT F'.fl.z F'.fl.z = -(T' : E)` using `F'.fl.z_norm`. Use `set h := S.hT F'.fl.z a with hh`. Use `set w := a + (h / T') • F'.fl.z with hw`.
+
+Establish `hzw : S.hT F'.fl.z w = 0`. Rewrite using `[hw, map_add, map_smul, smul_eq_mul, hzz, ← hh]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hww : S.hT w w = S.hT a a + h * star h / T'`.
+
+Rewrite using `[hw]`. Simplify using `only [map_add, LinearMap.map_smulₛₗ, LinearMap.add_apply, LinearMap.smul_apply, map_smul, smul_eq_mul, starRingEnd_apply, hzz]`. Rewrite using `[herm' F'.fl.z a, ← hh, star_div₀, hst]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hid : hV F' (2 / (T' : E)) a a = S.hT w w + star (h / T') * (h / T') * T'`. Rewrite using `[hV_apply, hww, herm' F'.fl.z a, ← hh, star_div₀, hst]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hterm : (τ (star (h / T') * (h / T') * T')).re = Complex.normSq (τ (h / T')) * T'`.
+
+Rewrite using `[map_mul, map_mul, hτ, ← Complex.normSq_eq_conj_mul_self, map_natCast, ← Complex.ofReal_natCast, ← Complex.ofReal_mul, Complex.ofReal_re]`. Establish `hXo : F'.fl.z ∈ orth S (Xsp F')` using `mem_orth'.mpr (hXz F')`. Establish `hwo : w ∈ orth S (Xsp F')`. Rewrite using `[hw]`. Conclude with `add_mem ha (Submodule.smul_mem _ _ hXo)`.
+
+Use `clear_value w h`. Rewrite using `[hid, map_add, Complex.add_re, hterm]`. Distinguish the cases in `hwX : w ∈ Xsp F'`. Establish `h0 : S.hT w w = 0` using `mem_orth'.mp hwo w hwX`. Establish `hν : h / (T' : E) ≠ 0`.
+
+Introduce `h0'`. Apply `haX` to reduce the goal to its premises. Rewrite `hw` using `[h0', zero_smul, add_zero]`. Conclude with `hw ▸ hwX`. Rewrite using `[h0, map_zero, Complex.zero_re, zero_add]`.
+
+Establish `hn : 0 < Complex.normSq (τ (h / T'))` using `Complex.normSq_pos.mpr ((map_ne_zero τ).mpr hν)`. Conclude with `mul_pos hn (by exact_mod_cast hT)`. Establish `hwp : w ∈ orth S (Xplus F')`. Rewrite using `[mem_orth']`. Introduce `x hx`.
+
+Take `⟨x1, hx1, x2, hx2, rfl⟩` from `Submodule.mem_sup.mp hx`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hx2`. Rewrite using `[map_add, LinearMap.add_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, hzw, smul_zero, add_zero]`. Conclude with `mem_orth'.mp hwo x1 hx1`. Establish `h1` using `hpos τ w hwp hwX`.
+
+Establish `h2 : 0 ≤ Complex.normSq (τ (h / T')) * T'` using `mul_nonneg (Complex.normSq_nonneg _) (Nat.cast_nonneg _)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem hV_pos {T' : ℕ} (F' : LFlag S r ((T' : ℕ) : E)) (hT : 0 < T')
     (hτ : ∀ (τ : E →+* ℂ) (a : E), τ (star a) = starRingEnd ℂ (τ a))
     (hpos : ∀ τ : E →+* ℂ, ∀ w ∈ orth S (Xplus F'), w ∉ Xsp F' → 0 < (τ (S.hT w w)).re)
@@ -84,6 +112,13 @@ theorem hV_pos {T' : ℕ} (F' : LFlag S r ((T' : ℕ) : E)) (hT : 0 < T')
       mul_nonneg (Complex.normSq_nonneg _) (Nat.cast_nonneg _)
     linarith
 
+/- English proof (translation)
+Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Establish `hb : (b : S.V) ∉ Xsp F'`. Introduce `hbX`. Apply `hq` to reduce the goal to its premises. Rewrite using `[Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `hbX`. Rewrite using `[hQ_mk]`. Establish `hp : ∀ σ : E →ₐ[ℚ] ℂ, 0 < (σ (hV F' (2 / ((T' : ℕ) : E)) b b)).re` using `fun σ => hV_pos F' hT hτ hpos b b.2 hb σ.toRingHom`. Establish `_ : Nonempty (E →ₐ[ℚ] ℂ)` using `⟨IsAlgClosed.lift⟩`. Establish `hre` using `congrArg Complex.re (trace_eq_sum_embeddings (K := ℚ) (L := E) (E := ℂ) (x := hV F' (2 / ((T' : ℕ) : E)) b b))`.
+
+Rewrite `hre` using `[Complex.re_sum]`. Establish `hsum` using `Finset.sum_pos (fun σ _ => hp σ) (Finset.univ_nonempty (α := E →ₐ[ℚ] ℂ))`. Rewrite `hsum` using `[← hre, eq_ratCast, Complex.ratCast_re, Rat.cast_pos]`. Conclude with `hsum`.
+-/
 theorem hQ_trace_pos {T' : ℕ} (F' : LFlag S r ((T' : ℕ) : E)) (hT : 0 < T')
     (hτ : ∀ (τ : E →+* ℂ) (a : E), τ (star a) = starRingEnd ℂ (τ a))
     (hpos : ∀ τ : E →+* ℂ, ∀ w ∈ orth S (Xplus F'), w ∉ Xsp F' → 0 < (τ (S.hT w w)).re)

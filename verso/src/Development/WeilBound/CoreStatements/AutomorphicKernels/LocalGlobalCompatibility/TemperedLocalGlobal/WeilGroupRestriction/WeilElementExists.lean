@@ -15,6 +15,17 @@ namespace WeilElementExistence
 
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
 
+/- English proof (translation)
+Take `⟨t, ht, hts⟩` from `isOpen_induced_iff.mp hS`. Establish `hdt : (d : G F Ω) ∈ t`. Rewrite `hd` using `[← hts]`. Conclude with `hd`. Establish `hnhds : {x : G F Ω | (d : G F Ω) * x ∈ t} ∈ nhds (1 : G F Ω)`.
+
+Apply `(continuous_const_mul (d : G F Ω)).continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Simplify using `using ht.mem_nhds hdt`. Take `⟨L, hL, hLs⟩` from `(krullTopology_mem_nhds_one_iff F Ω _).mp hnhds`. Set `pb` to `Field.powerBasisOfFiniteOfSeparable F L`. Take `⟨τ, hτW, hτ⟩` from `GlobalTheory.T.weilGroupAtPlace_dense_in_decompositionGroup F Ω A w h (d : G F Ω) d.2 (pb.gen : Ω)`.
+
+Establish `hfix : (d : G F Ω)⁻¹ * τ ∈ L.fixingSubgroup`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Establish `e : (((d : G F Ω)⁻¹ * τ : G F Ω) : Ω →ₐ[F] Ω).comp L.val = L.val` using `pb.algHom_ext (by show ((d : G F Ω)⁻¹ * τ) (pb.gen : Ω) = pb.gen`. Rewrite using `[AlgEquiv.mul_apply, hτ]`.
+
+Use `show ((d : G F Ω)⁻¹ * (d : G F Ω)) (pb.gen : Ω) = pb.gen`. Use the proof step `simp)`. Conclude with `congrArg (fun φ : L →ₐ[F] Ω => φ ⟨x, hx⟩) e`. Establish `hτt : τ ∈ t`. Use `hLs hfix` as an intermediate fact.
+
+Simplify using `using this`. Use `⟨⟨τ, hτW⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hts]`. Conclude with `hτt`.
+-/
 theorem exists_weil_mem {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 F)} (h : IsPlaceOver A w)
     (S : Set (Dec (F := F) A)) (hS : IsOpen S) (d : Dec (F := F) A) (hd : d ∈ S) :
     ∃ τ : Weil h, (⟨τ.1, Weil_le_Dec h τ.2⟩ : Dec (F := F) A) ∈ S := by
@@ -47,6 +58,43 @@ theorem exists_weil_mem {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 F
 end WeilElementExistence
 
 open WeilElementExistence in
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ S _ v A hinj hA χ hχ`. Take `⟨art, hart⟩` from `GlobalTheory.globalArtinReciprocity_holds F Ω`. Establish `hLA : ∀ s, ∃ a : Weil (hA s) →* ((v s).adicCompletion F)ˣ, IsLocalArtin (hA s) a` using `fun s => GlobalTheory.localArtinExists_holds F Ω (A s) (v s) (hA s)`. Use `choose a ha using hLA`. Establish `hfin : ∀ s, ∃ N : ℕ, 0 < N ∧ ∀ g, χ s g ^ N = 1` using `fun s => by`.
+
+Establish `: CompactSpace (Dec (F` using `F) (A s)) := isCompact_iff_compactSpace.1 (isClosed_Dec (A s)).isCompact`. Establish `: Finite (Dec (F` using `F) (A s) ⧸ (χ s).ker) := Subgroup.quotient_finite_of_isOpen _ (hχ s)`. Use `⟨(χ s).ker.index, Nat.pos_of_ne_zero Subgroup.index_ne_zero_of_finite, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow]`. Conclude with `MonoidHom.mem_ker.1 ((χ s).ker.pow_index_mem g)`.
+
+Establish `hθ : ∀ s, ∃ θ : ((v s).adicCompletion F)ˣ →* ℂˣ, IsSmoothChar θ ∧ (∃ N : ℕ, 0 < N ∧ θ ^ N = 1) ∧ ∀ σ : Weil (hA s), θ (a s σ) = χ s ⟨σ.1, Weil_le_Dec (hA s) σ.2⟩` using `fun s => by`. Set `ξ : Weil (hA s) →* ℂˣ` to `(χ s).comp (Subgroup.inclusion (Weil_le_Dec (hA s)))`. Establish `hξ : GlobalTheory.WeilDeligne.IsSmooth ξ`. Establish `hc : Continuous (fun σ : Ine (F` using `F) (A s) => (⟨σ.1, Ine_le_Dec (A s) σ.2⟩ : Dec (F := F) (A s))) := continuous_subtype_val.subtype_mk _`. Conclude with `(hχ s).preimage hc`.
+
+Take `⟨θ, hθs, e⟩` from `(ha s).factor ξ hξ`. Take `⟨N, hN, hN1⟩` from `hfin s`. Use `⟨θ, hθs, ⟨N, hN, MonoidHom.ext fun x => ?_⟩, fun σ => (DFunLike.congr_fun e σ).symm⟩` and prove the remaining obligations. Take `⟨σ, rfl⟩` from `(ha s).surj x`. Establish `e' : θ (a s σ) = ξ σ` using `(DFunLike.congr_fun e σ).symm`.
+
+Use `show θ (a s σ) ^ N = 1`. Rewrite using `[e']`. Conclude with `hN1 (Subgroup.inclusion (Weil_le_Dec (hA s)) σ)`. Use `choose θs hθs using hθ`. Establish `hex : ∀ w : HeightOneSpectrum (𝓞 F), ∃ θ : (w.adicCompletion F)ˣ →* ℂˣ, IsSmoothChar θ ∧ (∃ N : ℕ, 0 < N ∧ θ ^ N = 1) ∧ ∀ t (e : v t = w), θ = e ▸ θs t` using `fun w => by`.
+
+Distinguish the cases in `hw : ∃ t, v t = w`. Take `⟨t, rfl⟩` from `hw`. Use `⟨θs t, (hθs t).1, (hθs t).2.1, fun t' e => ?_⟩` and prove the remaining obligations. Take `rfl` from `hinj e`. Both sides reduce to the same expression.
+
+Conclude with `⟨1, by unfold IsSmoothChar; simp, ⟨1, one_pos, one_pow 1⟩, fun t e => absurd ⟨t, e⟩ hw⟩`. Use `choose θ' hθ'1 hθ'2 hθ'3 using hex`. Establish `hθ'v : ∀ s, θ' (v s) = θs s` using `fun s => hθ'3 (v s) s rfl`. Take `⟨η, ⟨n, hn, hηn⟩, hinf, hloc⟩` from `GlobalTheory.DelEps.Twist.exists_hchar_prescribed F (Set.finite_range v).toFinset θ' (fun w _ => hθ'1 w) (fun w _ => hθ'2 w)`. Establish `hηloc : ∀ s, η.loc (v s) = θs s` using `fun s => by`.
+
+Rewrite using `[hloc (v s) (by simp), hθ'v s]`. Establish `h1 : ∀ x, η.1 x ^ n = 1` using `fun x => congrArg (fun ξ : HChar F => ξ.1 x) hηn`. Establish `hko : IsOpen (η.1.ker : Set (Ideles F))` using `GlobalTheory.HeckeGal.isOpen_ker_of_pow η.1 η.2.1 hn h1`. Establish `hkc : IsClosed (η.1.ker : Set (Ideles F))` using `Subgroup.isClosed_of_isOpen _ hko`. Establish `hle : art.ker ≤ η.1.ker`.
+
+Rewrite using `[hart.ker]`. Use `Subgroup.topologicalClosure_minimal _ (sup_le ?_ ?_) hkc` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `η.2.2 k`. Rewrite using `[GlobalTheory.HeckeGal.infConn, Subgroup.map_le_iff_le_comap]`.
+
+Introduce `y hy`. Establish `hinl : Continuous (Units.map (MonoidHom.inl (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)))` using `Continuous.units_map _ (continuous_id.prodMk continuous_const)`. Establish `hcl : IsClopen ((Subgroup.comap (Units.map (MonoidHom.inl (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F))) η.1.ker : Subgroup _) : Set (InfiniteAdeleRing F)ˣ)` using `⟨hkc.preimage hinl, hko.preimage hinl⟩`. Conclude with `hcl.connectedComponent_subset (Subgroup.one_mem _) hy`. Set `e` to `QuotientGroup.quotientKerEquivOfSurjective art hart.quot.surjective`.
+
+Set `cη : Gab F Ω →* ℂˣ` to `(QuotientGroup.lift art.ker η.1 hle).comp e.symm.toMonoidHom`. Establish `hc : ∀ x, cη (art x) = η.1 x` using `fun x => by show QuotientGroup.lift art.ker η.1 hle (e.symm (art x)) = η.1 x`. Establish `: e.symm (art x) = QuotientGroup.mk x` using `e.symm_apply_eq.mpr rfl`. Rewrite using `[this]`. Both sides reduce to the same expression.
+
+Establish `hcc : Continuous cη`. Rewrite using `[hart.quot.isQuotientMap.continuous_iff]`. Establish `: (cη ∘ art) = η.1` using `funext hc`. Rewrite using `[this]`. Conclude with `η.2.1`.
+
+Set `ψ : G F Ω →* ℂˣ` to `cη.comp (GlobalTheory.HeckeGal.toAb F Ω)`. Establish `hψc : Continuous ψ` using `hcc.comp continuous_quot_mk`. Establish `hψn : ∀ g, ψ g ^ n = 1` using `fun g => by`. Take `⟨x, hx⟩` from `hart.quot.surjective (GlobalTheory.HeckeGal.toAb F Ω g)`. Use `show cη _ ^ n = 1`.
+
+Rewrite using `[← hx, hc, h1]`. Establish `hψo : IsOpen (ψ.ker : Set (G F Ω))` using `GlobalTheory.HeckeGal.isOpen_ker_of_pow ψ hψc hn hψn`. Establish `hW : ∀ s (σ : Weil (hA s)), ψ σ = χ s ⟨σ.1, Weil_le_Dec (hA s) σ.2⟩` using `fun s σ => by show cη (GlobalTheory.HeckeGal.toAb F Ω σ) = _`. Rewrite using `[← (ha s).glob art hart σ, hc, ← (hθs s).2.2 σ, ← hηloc s]`. Both sides reduce to the same expression.
+
+Establish `hD : ∀ s (g : Dec (F` using `F) (A s)), ψ g = χ s g := fun s g => by`. Set `K : Subgroup (Dec (F` to `F) (A s)) := (χ s).ker ⊓ (ψ.comp (Dec (F := F) (A s)).subtype).ker`. Establish `hK : IsOpen (K : Set (Dec (F` using `F) (A s))) := (hχ s).inter (hψo.preimage continuous_subtype_val)`. Take `⟨τ, hτ⟩` from `exists_weil_mem (hA s) ((fun x => g⁻¹ * x) ⁻¹' (K : Set (Dec (F := F) (A s)))) (hK.preimage (continuous_const.mul continuous_id)) g (by show g⁻¹ * g ∈ K`. Rewrite using `[inv_mul_cancel]`.
+
+Conclude with `K.one_mem)`. Establish `hτ' : g⁻¹ * (⟨τ.1, Weil_le_Dec (hA s) τ.2⟩ : Dec (F` using `F) (A s)) ∈ K := hτ`. Take `⟨k1, k2⟩` from `Subgroup.mem_inf.1 hτ'`. Establish `e1 : χ s g = χ s ⟨τ.1, Weil_le_Dec (hA s) τ.2⟩` using `inv_mul_eq_one.1 (by rw [← map_inv, ← map_mul]; exact MonoidHom.mem_ker.1 k1)`. Establish `e2 : (ψ.comp (Dec (F` using `F) (A s)).subtype) g = (ψ.comp (Dec (F := F) (A s)).subtype) ⟨τ.1, Weil_le_Dec (hA s) τ.2⟩ := inv_mul_eq_one.1 (by rw [← map_inv, ← map_mul]; exact MonoidHom.mem_ker.1 k2)`.
+
+Establish `e3 : ψ g = ψ τ` using `e2`. Rewrite using `[e3, hW s τ, e1]`. Use `⟨ψ, hψo, hD, fun u _ c hcu => ?_⟩` and prove the remaining obligations. Take `⟨j, hj, hju⟩` from `hcu`. Establish `e1` using `GlobalTheory.HilbertFromArtin.art_sign_eq hart j c hj`.
+
+Rewrite `e1` using `[hju]`. Use `show cη (GlobalTheory.HeckeGal.toAb F Ω c) = 1`. Rewrite using `[← e1, hc]`. Conclude with `DFunLike.congr_fun (hinf u) (-1)`.
+-/
 theorem weil_element_exists : K1 := by
   intro F Ω _ _ _ _ _ S _ v A hinj hA χ hχ
   classical

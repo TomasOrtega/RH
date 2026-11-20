@@ -13,6 +13,11 @@ open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB
 
 namespace GlobalTheory.RatFibreDeg
 
+/- English proof (translation)
+Set `` to `(f.residueFieldMap x).hom.toAlgebra`. Establish `hs : Function.Surjective (f.residueFieldMap x)`. Introduce `a`. Take `⟨b, rfl⟩` from `X.residue_surjective x a`. Take `⟨c, rfl⟩` from `f.stalkMap_surjective x b`.
+
+Conclude with `⟨Y.residue _ c, congr($(Scheme.residue_residueFieldMap f x).hom c)⟩`. Conclude with `Module.finrank_of_bijective_algebraMap ⟨(f.residueFieldMap x).hom.injective, hs⟩`.
+-/
 theorem residueDegree_of_surjectiveOnStalks {X Y : Scheme.{0}} (f : X ⟶ Y) [SurjectiveOnStalks f]
     (x : X) : f.residueDegree x = 1 := by
   let := (f.residueFieldMap x).hom.toAlgebra
@@ -23,6 +28,9 @@ theorem residueDegree_of_surjectiveOnStalks {X Y : Scheme.{0}} (f : X ⟶ Y) [Su
     exact ⟨Y.residue _ c, congr($(Scheme.residue_residueFieldMap f x).hom c)⟩
   exact Module.finrank_of_bijective_algebraMap ⟨(f.residueFieldMap x).hom.injective, hs⟩
 
+/- English proof (translation)
+Take `⟨z, hz, e⟩` from `Flat.generalizingMap f (genericPoint_specializes (f (genericPoint X)))`. Rewrite using `[← e, (hz.antisymm (genericPoint_specializes z)).eq]`.
+-/
 theorem apply_genericPoint_of_flat {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] (f : X ⟶ Y)
     [Flat f] : f (genericPoint X) = genericPoint Y := by
   obtain ⟨z, hz, e⟩ := Flat.generalizingMap f (genericPoint_specializes (f (genericPoint X)))
@@ -30,18 +38,37 @@ theorem apply_genericPoint_of_flat {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} (p : X ⟶ Sp k)
 
+/- English proof (translation)
+Establish `: Flat (spMap (Int.castRingHom ℚ))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `RingHom.flat_algebraMap_iff.2 (IsLocalization.flat ℚ (nonZeroDivisors ℤ))`. Conclude with `MorphismProperty.of_isPullback (P := @Flat) (ratFibre.isPullback p).flip inferInstance`.
+-/
 theorem flat_fst : Flat (ratFibre.fst p) := by
   have : Flat (spMap (Int.castRingHom ℚ)) := by
     rw [HasRingHomProperty.Spec_iff (P := @Flat)]
     exact RingHom.flat_algebraMap_iff.2 (IsLocalization.flat ℚ (nonZeroDivisors ℤ))
   exact MorphismProperty.of_isPullback (P := @Flat) (ratFibre.isPullback p).flip inferInstance
 
+/- English proof (translation)
+Establish `: IsPreimmersion (spMap (Int.castRingHom ℚ))` using `IsPreimmersion.of_isLocalization (R := ℤ) (S := ℚ) (nonZeroDivisors ℤ)`. Conclude with `MorphismProperty.of_isPullback (P := @IsPreimmersion) (ratFibre.isPullback p).flip inferInstance`.
+-/
 theorem isPreimmersion_fst : IsPreimmersion (ratFibre.fst p) := by
   have : IsPreimmersion (spMap (Int.castRingHom ℚ)) :=
     IsPreimmersion.of_isLocalization (R := ℤ) (S := ℚ) (nonZeroDivisors ℤ)
   exact MorphismProperty.of_isPullback (P := @IsPreimmersion) (ratFibre.isPullback p).flip
     inferInstance
 
+/- English proof (translation)
+Introduce `k _ X p Y _ _ ν _ hX hY hν L hL`. Use `hX.isIntegral` as an intermediate fact. Use `hY.isIntegral` as an intermediate fact. Use `flat_fst p` as an intermediate fact. Use `flat_fst (ν ≫ p)` as an intermediate fact.
+
+Use `isPreimmersion_fst p` as an intermediate fact. Use `isPreimmersion_fst (ν ≫ p)` as an intermediate fact. Establish `: IsFinite (ratFibre.map p ν)` using `MorphismProperty.of_isPullback (P := @IsFinite) (ratFibre.isPullback_map p ν) inferInstance`. Establish `e` using `ratFibre.map_fst p ν`. Establish `gX` using `apply_genericPoint_of_flat (ratFibre.fst p)`.
+
+Establish `gY` using `apply_genericPoint_of_flat (ratFibre.fst (ν ≫ p))`. Establish `hg : ratFibre.map p ν (genericPoint _) = genericPoint _`. Use `(ratFibre.fst p).isEmbedding.injective ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, e, Scheme.Hom.comp_apply, gY, hν, gX]`. Establish `hr : (ratFibre.map p ν).residueDegree (genericPoint _) = ν.residueDegree (genericPoint Y)`.
+
+Establish `h₁` using `CurveDegreesCompare.residueDegree_comp (ratFibre.map p ν) (ratFibre.fst p) (genericPoint _)`. Rewrite `h₁` using `[e, CurveDegreesCompare.residueDegree_comp, gY]`. Simplify `h₁.symm` using `only [residueDegree_of_surjectiveOnStalks, mul_one, one_mul]`. Establish `hf (r : ℚ) : (ratFibre.map p ν).appTop (algebraMap ℚ Γ(ratFibre p, ⊤) r) = algebraMap ℚ Γ(ratFibre (ν ≫ p), ⊤) r` using `RingHom.congr_fun (RingHom.ext_rat ((ratFibre.map p ν).appTop.hom.comp (algebraMap ℚ _)) (algebraMap ℚ _)) r`. Establish `hN` using `Semi.LB.isLB_pull hL (ratFibre.fst p)`.
+
+Establish `hM` using `Semi.LB.isLB_pull hL ν`. Establish `h₁` using `ProjFin.interNumOn_eq_residueDegree_mul ℚ _ _ (ratFibre.map p ν) hX.isProjOver hX.dim_eq hg _ hN`. Establish `h₂` using `interNumOn_eq_interNum_pull (k := ℚ) (L := ![L.pull (ratFibre.fst p)]) hf (fun i => by fin_cases i; exact hN)`. Establish `hM'` using `Semi.LB.isLB_pull hM (ratFibre.fst (ν ≫ p))`. Rewrite using `[ratDeg_eq_degLB hM, ratDeg_eq_degLB hL, hX.degLB_eq_interNum hN, hY.degLB_eq_interNum hM', ← hr, ← h₁, h₂]`.
+
+Use `interNum_congr_cls _ _ (fun i => by fin_cases i; exact hM') (fun i => by fin_cases i; exact Semi.LB.isLB_pull hN _) fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Use `(CechPic.cls_pull hM _ _).trans (Eq.trans ?_ (CechPic.cls_pull hN _ _).symm)` and prove the remaining obligations. Rewrite using `[CechPic.cls_pull hL ν hM, CechPic.cls_pull hL _ hN, ← CechPic.pull_comp, ← CechPic.pull_comp, e]`.
+-/
 theorem ratDeg_pull : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (Y : Scheme.{0})
     [IsIntegral X] [IsIntegral Y] (ν : Y ⟶ X) [IsFinite ν], IsProjCurve ℚ (ratFibre p) →
     IsProjCurve ℚ (ratFibre (ν ≫ p)) → ν (genericPoint Y) = genericPoint X →

@@ -28,6 +28,9 @@ def UniqGap : Prop :=
       PI.BesselMapUniq.IsBesselMapSm (k := k) (r := r) z (PI.BesselMapUniq.psiGen k r z c) σ π B₂ →
       ∃ a b : ℂ, (a ≠ 0 ∨ b ≠ 0) ∧ ∀ v ∈ PI.UpqRep.smoothVecs (k := k) (r := r) σ, a • B₁ v + b • B₂ v = 0
 
+/- English proof (translation)
+Introduce `k r ε lam _ H _ _ σ z c u Wp _ _ π _ _ _` and use `h k r ε lam H σ z c u Wp π`.
+-/
 theorem uniqGap_of_uniq (h : PI.BesselMapUniq.BesselMapUniq) : UniqGap :=
   fun k r ε lam _ H _ _ σ z c u Wp _ _ π _ _ _ => h k r ε lam H σ z c u Wp π
 
@@ -45,6 +48,9 @@ def AmpKF0 : Prop :=
       (⟪l v, ξ⟫_ℂ * ⟪ξ', l' v'⟫_ℂ) • ampJ νR 1 (fun g => l (L.σ g w0)) (fun g => l' (L.σ g w0)) γ =
         ((PI.BesselPeriodGGP.fdegH μG L.σ w0 : ℂ)⁻¹) • OrbInt L (coefF L v v' ξ ξ') γ ν
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem ampKF_iff : AmpKF ↔ (Formalism.FourierDecayAlt.ThreeDimData.Inputs → AmpKF0) := Iff.rfl
 
 end GlobalTheory.GapIn

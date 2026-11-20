@@ -12,6 +12,17 @@ noncomputable section
 
 namespace GlobalTheory.LvT
 
+/- English proof (translation)
+Use `letI : Module ℚ V := Module.compHom V (algebraMap ℚ ℂ)`. Establish `hfin' : ∀ p : P, Finite (MulAction.stabilizer G p)`. Introduce `p`. Take `⟨c, g, rfl⟩` from `hsurj p`. Use `haveI := hfin c`.
+
+Conclude with `Finite.of_equiv _ (MulAction.stabilizerEquivStabilizer (a := rep c) (g := g) rfl).toEquiv`. Establish `hR : ∀ a : P, ∃! r, r ∈ Finset.univ.image rep ∧ r ∈ MulAction.orbit G a`. Introduce `a`. Take `⟨c, g, rfl⟩` from `hsurj a`. Use `⟨rep c, ⟨Finset.mem_image_of_mem _ (Finset.mem_univ _), g⁻¹, inv_smul_smul g _⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `r ⟨hr, γ, hγ⟩`. Take `⟨c', -, rfl⟩` from `Finset.mem_image.mp hr`. Establish `: c = c'` using `hinj c c' (γ * g) (by rw [mul_smul]; exact hγ)`. Rewrite using `[this]`. Establish `hrinj : Function.Injective rep` using `fun c c' h => hinj c c' 1 (by rw [one_smul, h])`.
+
+Establish `key` using `Formalism.HermitianLattices.RamifiedLatticeOperators.count_of_orbits G P P V (fun a => (hup a).toFinset) (fun b => (hdn b).toFinset) F (Finset.univ.image rep) (Finset.univ.image rep) (by intro a b; simp) (by intro γ a b h; simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq] at …`. Rewrite `key` using `[Finset.sum_image (fun a _ b _ h => hrinj h), Finset.sum_image (fun a _ b _ h => hrinj h)]`. Establish `hq : ∀ (n : ℕ) (x : V), ((n : ℚ))⁻¹ • x = ((n : ℂ))⁻¹ • x`. Introduce `n x`. Express the relevant statement in the definitionally equal form `(algebraMap ℚ ℂ ((n : ℚ))⁻¹) • x = _`.
+
+Simplify using the standard rewrite rules. Simplify using `only [hq] at key`. Simplify using `only [finsum_mem_eq_finite_toFinset_sum _ (hup _), finsum_mem_eq_finite_toFinset_sum _ (hdn _)]`. Conclude with `key`.
+-/
 theorem count_incidence {G P C V : Type} [Group G] [MulAction G P] [Fintype C] [AddCommGroup V] [Module ℂ V]
     (rep : C → P) (hsurj : ∀ p, ∃ (c : C) (g : G), g • rep c = p)
     (hinj : ∀ (c c' : C) (g : G), g • rep c = rep c' → c = c')
@@ -49,6 +60,23 @@ theorem count_incidence {G P C V : Type} [Group G] [MulAction G P] [Fintype C] [
   simp only [finsum_mem_eq_finite_toFinset_sum _ (hup _), finsum_mem_eq_finite_toFinset_sum _ (hdn _)]
   exact key
 
+/- English proof (translation)
+Introduce `D u X Lv Kt htgt huk i hi v φ hφ`. Use `set M := Lv i hi.le with hM`. Use `set M' := Lv (i + 1) hi with hM'`. Set `K : KerPt M M'` to `Kt i hi`. Establish `hT : K.TgtEq` using `htgt i hi`.
+
+Establish `hU : K.UKLaw` using `huk i hi`. Take `⟨Φ, hΦ⟩` from `(GlobalTheory.T.mem_forms_iff_exists_equivariant_extension D u X i M φ).1 hφ`. Take `⟨hfinI, hstab, -⟩` from `GlobalTheory.T.levelPrime_incidence_finite_fibres_stable D u X i M v`. Take `⟨hfinI', -, -⟩` from `GlobalTheory.T.levelPrime_incidence_finite_fibres_stable D u X (i + 1) M' v`. Establish `h1` using `GlobalTheory.T.isExt_Uop_finsum_inc_of_isExt D u X (i + 1) M' v _ _ (GlobalTheory.T.levelChainTransition_isExt_kernel_sum D u X i M M' K φ Φ hT hΦ)`.
+
+Establish `h2` using `GlobalTheory.T.levelChainTransition_isExt_kernel_sum D u X i M M' K _ _ hT (GlobalTheory.T.isExt_Uop_finsum_inc_of_isExt D u X i M v φ Φ hΦ)`. Establish `hpow : ((((X.A.T : ℝ) ^ (((D.R.t : ℝ) + 1) / 2) : ℝ)) : ℂ) = (X.A.T : ℂ) ^ ((D.R.t + 1) / 2)`. Take `⟨k, hk⟩` from `D.R.t_odd`. Establish `e1 : (D.R.t + 1) / 2 = k + 1` using `by omega`. Establish `e2 : ((D.R.t : ℝ) + 1) / 2 = ((k + 1 : ℕ) : ℝ)` using `by rw [hk]; push_cast; ring`.
+
+Rewrite using `[e1, e2, Real.rpow_natCast]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hwt : ∀ c, X.C.wt i c = ((Nat.card (MulAction.stabilizer M.G (M.rep c)) : ℂ))⁻¹`. Introduce `c`.
+
+Rewrite using `[← M.card_stab]`. Both sides reduce to the same expression. Establish `hfs : ∀ c, Finite (MulAction.stabilizer M.G (M.rep c))`. Introduce `c`. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises.
+
+Rewrite using `[← M.card_stab]`. Use `haveI := X.C.stabFin i c`. Use `letI := X.C.stabGrp i c`. Conclude with `Nat.card_pos.ne'`. Use function extensionality and compare the values at `c'`.
+
+Rewrite using `[hpow, Pi.smul_apply, h1.1 c', h2.1 c', ← Submodule.coe_smul]`. Use `congr 1`. Establish `key` using `count_incidence M.rep M.rep_surj M.rep_inj hfs (M.Inc v) (fun p => (hfinI p).1) (fun p => (hfinI p).2) (fun g p q h => (hstab g p q).1 h) (fun p q => K.k p (M'.rep c') (Φ q)) (fun g p q => by rw [hΦ.2, K.src])`. Establish `hL : ∀ c, K.k (M.rep c) (M'.rep c') (∑ᶠ p₁ ∈ {p₁ | M.Inc v (M.rep c) p₁}, Φ p₁) = ∑ᶠ p₁ ∈ {p₁ | M.Inc v (M.rep c) p₁}, K.k (M.rep c) (M'.rep c') (Φ p₁)`. Introduce `c`.
+
+Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (hfinI _).1, finsum_mem_eq_finite_toFinset_sum _ (hfinI _).1, map_sum]`. Simplify using `only [hL, hwt]`. Rewrite using `[key, finsum_mem_eq_finite_toFinset_sum _ (hfinI' _).1, Finset.sum_comm, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.smul_sum, smul_comm, ← hU v, finsum_mem_eq_finite_toFinset_sum _ (hfinI' _).1]`.
+-/
 theorem levelChainUOperatorCommutation_of_pointPairLaw : ∀ (D : D7) (u : D.what₂.Word) (X : Ch D u) (Lv : LevTie X) (Kt : KerTie Lv),
     (∀ i h, (Kt i h).TgtEq) → (∀ i h, (Kt i h).UKLaw) → LevelChainUOperatorCommutation X := by
   intro D u X Lv Kt htgt huk i hi v φ hφ

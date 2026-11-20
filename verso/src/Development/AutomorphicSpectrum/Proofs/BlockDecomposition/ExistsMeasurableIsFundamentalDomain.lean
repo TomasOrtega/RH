@@ -10,6 +10,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.LatticeFD
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GlobalTheory.AutomorphicL2Unitary.stdDom (latticeGL E N), GlobalTheory.AutomorphicL2Unitary.measurableSet_stdDom _, fun μ => GlobalTheory.AutomorphicL2Unitary.isFundamentalDomain_stdDom _ μ⟩`.
+-/
 theorem exists_measurable_isFundamentalDomain (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N : ℕ)
     [MeasurableSpace (GA E N)] [BorelSpace (GA E N)] :
     ∃ 𝓕 : Set (GA E N), MeasurableSet 𝓕 ∧ ∀ μ : Measure (GA E N), IsFundamentalDomain (latticeGL E N) 𝓕 μ :=

@@ -16,21 +16,38 @@ open GlobalTheory.SplitHecke
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+The claim follows from `map_add (actAdd S T g h) x y`.
+-/
 theorem act_add (g : GA D S) (h : GA D T) (x y : WO S T) :
     actO S T g h (x + y) = actO S T g h x + actO S T g h y := map_add (actAdd S T g h) x y
 
+/- English proof (translation)
+The claim follows from `map_nsmul (actAdd S T g h) k x`.
+-/
 theorem act_nsmul (g : GA D S) (h : GA D T) (k : ℕ) (x : WO S T) :
     actO S T g h (k • x) = k • actO S T g h x := map_nsmul (actAdd S T g h) k x
 
+/- English proof (translation)
+Use `actO_inv_actO g⁻¹ h⁻¹ u` as an intermediate fact. Rewrite `this` using `[inv_inv, inv_inv]`. Then use the resulting hypothesis.
+-/
 theorem act_act_inv (g : GA D S) (h : GA D T) (u : WO S T) : actO S T g h (actO S T g⁻¹ h⁻¹ u) = u := by
   have := actO_inv_actO g⁻¹ h⁻¹ u
   rwa [inv_inv, inv_inv] at this
 
+/- English proof (translation)
+Use `isHalf_actO g⁻¹ h⁻¹ hu` as an intermediate fact. Rewrite `this` using `[actO_inv_actO]`. Then use the resulting hypothesis.
+-/
 theorem isHalf_of_act {e : AE D} (g : GA D S) (h : GA D T) {u : WO S T} (hu : IsHalf e (actO S T g h u)) :
     IsHalf e u := by
   have := isHalf_actO g⁻¹ h⁻¹ hu
   rwa [actO_inv_actO] at this
 
+/- English proof (translation)
+Take `⟨h1, k, hk, h2, h3⟩` from `hΨ`. Use `⟨fun t ht => isHalf_of_act g h (h1 _ ht), k, hk, fun u hu hu' t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Use `show Ψ _ = Ψ _`. Rewrite using `[act_add, act_nsmul]`. Conclude with `h2 _ ((hΛ u).1 hu) (isHalf_actO g h hu') _`.
+
+Rewrite using `[hΛ, act_nsmul]`. Conclude with `h3 _ ht`.
+-/
 theorem isSBHalf_comp {e : AE D} {Λ : AddSubgroup (WO S T)} (g : GA D S) (h : GA D T)
     (hΛ : ∀ u, u ∈ Λ ↔ actO S T g h u ∈ Λ) {Ψ : WO S T → ℂ} (hΨ : IsSBHalf e Λ Ψ) :
     IsSBHalf e Λ fun t => Ψ (actO S T g h t) := by
@@ -42,6 +59,9 @@ theorem isSBHalf_comp {e : AE D} {Λ : AddSubgroup (WO S T)} (g : GA D S) (h : G
   · rw [hΛ, act_nsmul]
     exact h3 _ ht
 
+/- English proof (translation)
+Unfold `halfInd`. Establish `: (actO S T g h t ∈ Λ ∧ IsHalf e (actO S T g h t)) ↔ (t ∈ Λ ∧ IsHalf e t)` using `and_congr (hΛ t).symm ⟨isHalf_of_act g h, isHalf_actO g h⟩`. Distinguish the cases in `ht : t ∈ Λ ∧ IsHalf e t`. Rewrite using `[if_pos ht, if_pos (this.2 ht)]`. Rewrite using `[if_neg ht, if_neg (fun hh => ht (this.1 hh))]`.
+-/
 theorem halfInd_act {e : AE D} {Λ : AddSubgroup (WO S T)} (g : GA D S) (h : GA D T)
     (hΛ : ∀ u, u ∈ Λ ↔ actO S T g h u ∈ Λ) (t : WO S T) :
     halfInd e Λ (actO S T g h t) = halfInd e Λ t := by
@@ -52,12 +72,30 @@ theorem halfInd_act {e : AE D} {Λ : AddSubgroup (WO S T)} (g : GA D S) (h : GA 
   · rw [if_pos ht, if_pos (this.2 ht)]
   · rw [if_neg ht, if_neg (fun hh => ht (this.1 hh))]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heisO_smul' (ψ : AddChar (AF D.host.F) ℂ) (w : WO S T) (c : ℂ) (f : WO S T → ℂ) :
     heisO ψ S T w (c • f) = c • heisO ψ S T w f := by
   funext t
   simp only [heisO, Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT om hom e Λ f₀ Φ f hth hΘ g h hΛ c c' hc hf₀ hΦ`. Take `⟨⟨Tm, hTm⟩, hall⟩` from `hΘ`. Set `Tm' : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)` to `c⁻¹ • (om (g, h) ∘ₗ Tm ∘ₗ LinearMap.funLeft ℂ ℂ (actO S T g h))`. Establish `hT' : ∀ Ψ, Tm' Ψ = c⁻¹ • om (g, h) (Tm fun t => Ψ (actO S T g h t))` using `fun Ψ => rfl`. Establish `hP : IsPlaceModel ψ (symplO S T) (heisO ψ S T) e Λ 1 f₀ Tm'`.
+
+Use `⟨fun Ψ hΨ x hx => ?_, fun Ψ hΨ y hy => ?_, ?_⟩` and prove the remaining obligations. Establish `hΨ'` using `isSBHalf_comp g h hΛ hΨ`. Establish `h1` using `hTm.trans _ hΨ' _ (isHalf_actO g⁻¹ h⁻¹ hx)`. Simplify using `only [act_add, act_act_inv] at h1`. Rewrite using `[hT', hT', h1, hom.om_heis _ _ _ _ (hth Tm hTm _ hΨ'), act_act_inv, heisO_smul']`.
+
+Establish `hΨ'` using `isSBHalf_comp g h hΛ hΨ`. Establish `h1` using `hTm.modul _ hΨ' _ (isHalf_actO g⁻¹ h⁻¹ hy)`. Establish `h2 : ∀ t, symplO S T t (actO S T g⁻¹ h⁻¹ y) = symplO S T (actO S T g h t) y` using `fun t => by`. Rewrite using `[← symplO_actO S T g h, act_act_inv]`. Simplify using `only [h2] at h1`.
+
+Rewrite using `[hT', hT', h1, hom.om_heis _ _ _ _ (hth Tm hTm _ hΨ'), act_act_inv, heisO_smul']`. Establish `h1` using `hTm.vac`. Rewrite `h1`, the goal using `[one_smul]`. Establish `h2 : (fun t => halfInd e Λ (actO S T g h t)) = halfInd e Λ` using `funext (halfInd_act g h hΛ)`. Rewrite using `[hT', h2, h1, hf₀, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+
+Establish `e1 : f = Tm Φ` using `hall Tm hTm`. Establish `e2 : f = Tm' Φ` using `hall Tm' hP`. Establish `e3 : Φ = c' • fun t => Φ (actO S T g h t)`. Use function extensionality and compare the values at `t`. Use `hΦ (actO S T g h t)` as an intermediate fact.
+
+Rewrite `this` using `[actO_inv_actO]`. Conclude with `this`. Rewrite `e2` using `[hT']`. Establish `e4 : om (g, h) (Tm fun t => Φ (actO S T g h t)) = c • f`. Rewrite using `[e2, smul_smul, mul_inv_cancel₀ hc, one_smul]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem om_theta_eq_smul : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → ∀ (e : AE D) (Λ : AddSubgroup (WO S T)) (f₀ Φ f : WO S T → ℂ), (∀ Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ), IsPlaceModel ψ (symplO S T) (heisO ψ S T) e Λ 1 f₀ Tm → ∀ Ψ, IsSBHalf e Λ Ψ → IsThetaFunO ψ S T (Tm Ψ)) → IsThetaAt ψ (symplO S T) (heisO ψ S T) e Λ 1 f₀ Φ f → ∀ (g : GA D S) (h : GA D T), (∀ u, u ∈ Λ ↔ actO S T g h u ∈ Λ) → ∀ c c' : ℂ, c ≠ 0 → om (g, h) f₀ = c • f₀ → (∀ x, Φ (actO S T g⁻¹ h⁻¹ x) = c' * Φ x) → om (g, h) f = (c * c') • f := by
   intro D ψ S T χS χT om hom e Λ f₀ Φ f hth hΘ g h hΛ c c' hc hf₀ hΦ
   obtain ⟨⟨Tm, hTm⟩, hall⟩ := hΘ

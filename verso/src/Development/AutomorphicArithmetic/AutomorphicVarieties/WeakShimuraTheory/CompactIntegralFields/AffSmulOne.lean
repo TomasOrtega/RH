@@ -10,15 +10,29 @@ variable {R : Type} [CommRing R]
 
 private noncomputable def aff (x y : M4 R) : M4 R[X] := Matrix.of fun i j => (1 - X) * C (x i j) + X * C (y i j)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem aff_apply (x y : M4 R) (i j : Fin 4) : aff x y i j = (1 - X) * C (x i j) + X * C (y i j) := rfl
 
+/- English proof (translation)
+Rewrite using `[aff_apply, hx, hy]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem aff_eq {x y : M4 R} {i j : Fin 4} {c : R} (hx : x i j = c) (hy : y i j = c) : aff x y i j = C c := by
   rw [aff_apply, hx, hy]; ring
 
+/- English proof (translation)
+Rewrite using `[aff_apply, hx, hy]`. Simplify using the standard rewrite rules.
+-/
 private theorem aff_zero {x y : M4 R} {i j : Fin 4} (hx : x i j = 0) (hy : y i j = 0) : aff x y i j = 0 := by
   rw [aff_apply, hx, hy]
   simp
 
+/- English proof (translation)
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[aff_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `[h]`.
+-/
 private theorem aff_smul_one (c : R) : aff (c • (1 : M4 R)) (c • 1) = (C c : R[X]) • (1 : M4 R[X]) := by
   refine Matrix.ext fun i j => ?_
   rw [aff_apply]
@@ -28,11 +42,17 @@ private theorem aff_smul_one (c : R) : aff (c • (1 : M4 R)) (c • 1) = (C c :
     ring
   · simp [h]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[aff_apply]`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, Matrix.one_apply]`.
+-/
 private theorem aff_one : aff (1 : M4 R) 1 = 1 := by
   ext i j
   rw [aff_apply]
   by_cases h : i = j <;> simp [h, Matrix.one_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[adj_apply, aff_apply, aff_apply, adj_apply, adj_apply, map_zsmul, map_zsmul, smul_add, mul_smul_comm, mul_smul_comm]`.
+-/
 private theorem adj_aff (x y : M4 R) : adj (aff x y) = aff (adj x) (adj y) := by
   ext i j
   rw [adj_apply, aff_apply, aff_apply, adj_apply, adj_apply, map_zsmul, map_zsmul, smul_add,
@@ -56,6 +76,9 @@ private structure Cong (x y : M4 R) : Prop where
   e31 : x 3 1 = y 3 1
   e33 : x 3 3 = y 3 3
 
+/- English proof (translation)
+Establish `r0 : (0 : Fin 4).rev = 3` using `rfl`. Establish `r1 : (1 : Fin 4).rev = 2` using `rfl`. Establish `r2 : (2 : Fin 4).rev = 1` using `rfl`. Establish `r3 : (3 : Fin 4).rev = 0` using `rfl`. Apply the tactic sequence `constructor <;> simp only [adj_apply, r0, r1, r2, r3, h.x01, h.x03, h.x21, h.x23, h.y01, h.y03, h.y21, h.y23, h.e00, h.e02, h.e20, h.e22, h.e11, h.e13, h.e31, h.e33, smul_zero]`.
+-/
 private theorem Cong.adj {x y : M4 R} (h : Cong x y) : Cong (adj x) (adj y) := by
   have r0 : (0 : Fin 4).rev = 3 := rfl
   have r1 : (1 : Fin 4).rev = 2 := rfl
@@ -64,12 +87,18 @@ private theorem Cong.adj {x y : M4 R} (h : Cong x y) : Cong (adj x) (adj y) := b
   constructor <;> simp only [adj_apply, r0, r1, r2, r3, h.x01, h.x03, h.x21, h.x23, h.y01, h.y03,
     h.y21, h.y23, h.e00, h.e02, h.e20, h.e22, h.e11, h.e13, h.e31, h.e33, smul_zero]
 
+/- English proof (translation)
+Apply the tactic sequence `constructor <;> simp only [Matrix.mul_apply, Fin.sum_univ_four, h.x01, h.x03, h.x21, h.x23, h.y01, h.y03, h.y21, h.y23, h.e00, h.e02, h.e20, h.e22, h.e11, h.e13, h.e31, h.e33, h'.x01, h'.x03, h'.x21, h'.x23, h'.y01, h'.y03, h'.y21, h'.y23, h'.e00, h'.e02, h'.e20, h'.e22, h'.e11, …`.
+-/
 private theorem Cong.mul {x y z w : M4 R} (h : Cong x y) (h' : Cong z w) : Cong (x * z) (y * w) := by
   constructor <;> simp only [Matrix.mul_apply, Fin.sum_univ_four, h.x01, h.x03, h.x21, h.x23, h.y01,
     h.y03, h.y21, h.y23, h.e00, h.e02, h.e20, h.e22, h.e11, h.e13, h.e31, h.e33, h'.x01, h'.x03,
     h'.x21, h'.x23, h'.y01, h'.y03, h'.y21, h'.y23, h'.e00, h'.e02, h'.e20, h'.e22, h'.e11, h'.e13,
     h'.e31, h'.e33, mul_zero, zero_mul, add_zero, zero_add]
 
+/- English proof (translation)
+Take `⟨a1, a2, a3, a4, a5, a6, a7, a8, b1, b2, b3, b4, b5, b6, b7, b8⟩` from `h`. Take `⟨c1, c2, c3, c4, c5, c6, c7, c8, d1, d2, d3, d4, d5, d6, d7, d8⟩` from `h'`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [aff_apply, Matrix.mul_apply, Fin.sum_univ_four, map_add, map_mul]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp only [Fin.zero_eta, Fin.mk_one, Fin.reduceFinMk, map_zero, *] <;> ring`.
+-/
 private theorem Cong.aff_mul {x y z w : M4 R} (h : Cong x y) (h' : Cong z w) :
     aff x y * aff z w = aff (x * z) (y * w) := by
   obtain ⟨a1, a2, a3, a4, a5, a6, a7, a8, b1, b2, b3, b4, b5, b6, b7, b8⟩ := h
@@ -78,6 +107,15 @@ private theorem Cong.aff_mul {x y z w : M4 R} (h : Cong x y) (h' : Cong z w) :
   simp only [aff_apply, Matrix.mul_apply, Fin.sum_univ_four, map_add, map_mul]
   fin_cases i <;> fin_cases j <;> simp only [Fin.zero_eta, Fin.mk_one, Fin.reduceFinMk, map_zero, *] <;> ring
 
+/- English proof (translation)
+Establish `r0 : (0 : Fin 4).rev = 3` using `rfl`. Establish `r1 : (1 : Fin 4).rev = 2` using `rfl`. Establish `r2 : (2 : Fin 4).rev = 1` using `rfl`. Establish `r3 : (3 : Fin 4).rev = 0` using `rfl`. Establish `s0 : sgn 0 = 1` using `rfl`.
+
+Establish `s1 : sgn 1 = 1` using `rfl`. Establish `s2 : sgn 2 = -1` using `rfl`. Establish `s3 : sgn 3 = -1` using `rfl`. Establish `a01 : x 0 1 = 0` using `hx 0 1 (by decide) (by decide)`. Establish `a02 : x 0 2 = 0` using `hx 0 2 (by decide) (by decide)`.
+
+Establish `a03 : x 0 3 = 0` using `hx 0 3 (by decide) (by decide)`. Establish `a13 : x 1 3 = 0` using `hx 1 3 (by decide) (by decide)`. Establish `a21 : x 2 1 = 0` using `hx 2 1 (by decide) (by decide)`. Establish `a23 : x 2 3 = 0` using `hx 2 3 (by decide) (by decide)`. Establish `ex` using `congrArg (fun m : M4 R => m 2 0) gx`.
+
+Simplify using `[IsGSp, Matrix.mul_apply, Fin.sum_univ_four, adj_apply, r0, r1, r2, r3, s0, s1, s2, s3, a01, a02, a03, a13, a21, a23] at ex`. Use `⟨a01, a02, a03, a13, a21, a23, ?_⟩` and prove the remaining obligations. Take the linear combination `-ex`.
+-/
 private theorem entries_zero_and_relation_of_suppM_of_isGSp {x : M4 R} {ν : R} (hx : SuppM nP x) (gx : IsGSp ν x) :
     x 0 1 = 0 ∧ x 0 2 = 0 ∧ x 0 3 = 0 ∧ x 1 3 = 0 ∧ x 2 1 = 0 ∧ x 2 3 = 0 ∧
       x 0 0 * x 3 1 = x 1 1 * x 2 0 := by
@@ -101,6 +139,9 @@ private theorem entries_zero_and_relation_of_suppM_of_isGSp {x : M4 R} {ν : R} 
   refine ⟨a01, a02, a03, a13, a21, a23, ?_⟩
   linear_combination -ex
 
+/- English proof (translation)
+Take `⟨a01, a02, a03, a13, a21, a23, ax⟩` from `entries_zero_and_relation_of_suppM_of_isGSp hx gx`. Take `⟨b01, b02, b03, b13, b21, b23, bx⟩` from `entries_zero_and_relation_of_suppM_of_isGSp hy gy`. Use `⟨a01, a03, a21, a23, b01, b03, b21, b23, hd 0, a02.trans b02.symm, h20, hd 2, hd 1, a13.trans b13.symm, ?_, hd 3⟩` and prove the remaining obligations. Use `hu.mul_left_cancel ?_` and prove the remaining obligations. Rewrite using `[ax, hd 0, bx, hd 1, h20]`.
+-/
 private theorem cong_of {x y : M4 R} {ν ν' : R} (hx : SuppM nP x) (hy : SuppM nP y) (gx : IsGSp ν x) (gy : IsGSp ν' y)
     (hd : ∀ i, x i i = y i i) (hu : IsUnit (x 0 0)) (h20 : x 2 0 = y 2 0) : Cong x y := by
   obtain ⟨a01, a02, a03, a13, a21, a23, ax⟩ := entries_zero_and_relation_of_suppM_of_isGSp hx gx
@@ -110,12 +151,18 @@ private theorem cong_of {x y : M4 R} {ν ν' : R} (hx : SuppM nP x) (hy : SuppM 
   refine hu.mul_left_cancel ?_
   rw [ax, hd 0, bx, hd 1, h20]
 
+/- English proof (translation)
+Introduce `i j hij hw`. Use `h i j hij fun hq => hw ?_` and prove the remaining obligations. Simplify using `only [qQ, nP, Finset.mem_insert, Finset.mem_singleton] at hq ⊢`. The claim follows by propositional logic.
+-/
 private theorem supp_nP {x : M4 R} (h : SuppM qQ x) : SuppM nP x := by
   intro i j hij hw
   refine h i j hij fun hq => hw ?_
   simp only [qQ, nP, Finset.mem_insert, Finset.mem_singleton] at hq ⊢
   tauto
 
+/- English proof (translation)
+Use `IsLocallyConstant.desc f (Ideal.Quotient.mk ((⊥ : Ideal R) ^ 1)) (h 1) ?_` and prove the remaining obligations. Rewrite using `[RingHom.injective_iff_ker_eq_bot, Ideal.mk_ker, pow_one]`.
+-/
 private theorem lc_of_cont {Γ : Type} [TopologicalSpace Γ] {f : Γ → R} (h : AdicCont ⊥ f) : IsLocallyConstant f := by
   refine IsLocallyConstant.desc f (Ideal.Quotient.mk ((⊥ : Ideal R) ^ 1)) (h 1) ?_
   rw [RingHom.injective_iff_ker_eq_bot, Ideal.mk_ker, pow_one]
@@ -124,6 +171,35 @@ end
 
 end UpperTheory.V.Ws
 
+/- English proof (translation)
+Introduce `O Γ _ _ _ _ _ _ Φ k _ a hΦ c c' hc hc' hin hin' hs`. Establish `cong : ∀ g, Cong (c.r g) (c'.r g)` using `fun g => cong_of (hin.1 g) (hin'.1 g) (hc.pair.mult g) (hc'.pair.mult g) (fun i => (hc.res.diag g i).trans (hc'.res.diag g i).symm) (by rw [hc.res.diag g 0]; exact (Φ.χ 0 g).isUnit.map a) (hs.1 g)`. Establish `congN : ∀ v, Cong (c.n v) (c'.n v)` using `fun v => cong_of (supp_nP (hin.2 v)) (supp_nP (hin'.2 v)) (hc.pair.low v).1 (hc'.pair.low v).1 (fun i => ((hc.pair.low v).2.1 i).trans ((hc'.pair.low v).2.1 i).symm) (by rw [(hc.pair.low v).2.1 0]; exact isUnit_one) (hs.2 v)`. Establish `gsp : ∀ {x y : M4 k} {ν : k}, Cong x y → IsGSp ν x → IsGSp ν y → IsGSp (C ν) (aff x y)`. Introduce `x y ν h gx gy`.
+
+Unfold `IsGSp at *`. Rewrite using `[adj_aff, h.adj.aff_mul h, gx, gy, aff_smul_one]`. Take `⟨ρ, hr⟩ : ∃ ρ : Γ →* M4 k[X], ∀ g, ρ g = aff (c.r g) (c'.r g)` from `⟨{ toFun := fun g => aff (c.r g) (c'.r g) map_one' := by show aff (c.r 1) (c'.r 1) = 1`. Rewrite using `[map_one, map_one, aff_one]`. Use the proof step `map_mul' := fun g h => by show aff (c.r (g * h)) (c'.r (g * h)) = aff (c.r g) (c'.r g) * aff (c.r h) (c'.r h)`.
+
+Rewrite using `[map_mul, map_mul, (cong g).aff_mul (cong h)] }, fun _ => rfl⟩`. Establish `conj : ∀ v s, adj (aff (c.n v) (c'.n v)) * ρ s * aff (c.n v) (c'.n v) = aff (adj (c.n v) * c.r s * c.n v) (adj (c'.n v) * c'.r s * c'.n v)`. Introduce `v s`. Rewrite using `[hr, adj_aff, (congN v).adj.aff_mul (cong s), ((congN v).adj.mul (cong s)).aff_mul (congN v)]`. Use `⟨⟨ρ, fun v => aff (c.n v) (c'.n v)⟩, ⟨⟨?_, ?_, ?_, ?_, ?_, ?_⟩, ⟨?_, ?_, ?_⟩, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `g dsimp only`. Rewrite using `[hr]`. Conclude with `gsp (cong g) (hc.pair.mult g) (hc'.pair.mult g)`. Introduce `g hg dsimp only`. Rewrite using `[hr, hc.pair.kill g hg, hc'.pair.kill g hg, aff_one]`.
+
+Introduce `i j hij dsimp only`. Rewrite using `[hr]`. Conclude with `aff_zero (hc.pair.nrm hij) (hc'.pair.nrm hij)`. Introduce `v`. Use `⟨?_, fun i => ?_, fun i j hij => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `gsp (congN v) (hc.pair.low v).1 (hc'.pair.low v).1`. Rewrite `h1` using `[map_one]`. Then use the resulting hypothesis. Conclude with `(aff_eq ((hc.pair.low v).2.1 i) ((hc'.pair.low v).2.1 i)).trans (map_one C)`. Conclude with `aff_zero ((hc.pair.low v).2.2 i j hij) ((hc'.pair.low v).2.2 i j hij)`. Introduce `v s hs' i j hij dsimp only`.
+
+Rewrite using `[conj]`. Conclude with `aff_zero (hc.pair.flag v s hs' i j hij) (hc'.pair.flag v s hs' i j hij)`. Introduce `v s hs' i`. Unfold `PD.ψ`. Simplify using `only`.
+
+Rewrite using `[conj]`. Conclude with `(aff_eq (hc.pair.mu v s hs' i) (hc'.pair.mu v s hs' i)).trans (map_one C)`. Introduce `g i dsimp only`. Rewrite using `[hr]`. Conclude with `aff_eq (hc.res.diag g i) (hc'.res.diag g i)`.
+
+Introduce `v s hs' i`. Unfold `PD.ψ`. Simplify using `only`. Rewrite using `[conj]`. Conclude with `aff_eq (hc.res.char v s hs' i) (hc'.res.char v s hs' i)`.
+
+Use `left`. Use `⟨fun g i j hij hw => ?_, fun v i j hij hw => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hr]`. Conclude with `aff_zero (hin.1 g i j hij hw) (hin'.1 g i j hij hw)`.
+
+Conclude with `aff_zero (hin.2 v i j hij hw) (hin'.2 v i j hij hw)`. Introduce `i j N`. Establish `l1` using `lc_of_cont (hc.cont i j)`. Establish `l2` using `lc_of_cont (hc'.cont i j)`. Establish `l3` using `IsLocallyConstant.comp₂ l1 l2 (fun u w => Ideal.Quotient.mk ((⊥ : Ideal k[X]) ^ N) ((1 - X) * C u + X * C w))`.
+
+Simplify using `only`. Simplify using `only [hr, aff_apply]`. Conclude with `l3`. Use `PD.ext ?_ ?_` and prove the remaining obligations. Use extensionality with `g i j`.
+
+Simplify using `[PD.map, mapRep, hr, aff_apply]`. Use function extensionality and compare the values at `v`. Use extensionality with `i j`. Simplify using `[PD.map, aff_apply]`. Use `PD.ext ?_ ?_` and prove the remaining obligations.
+
+Use extensionality with `g i j`. Simplify using `[PD.map, mapRep, hr, aff_apply]`. Use function extensionality and compare the values at `v`. Use extensionality with `i j`. Simplify using `[PD.map, aff_apply]`.
+-/
 theorem UpperTheory.V.Ws.lineP :
     ∀ {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [TotallyDisconnectedSpace Γ] (Φ : Fr O Γ) {k : Type} [Field k] (a : O →+* k), Φ.Ok a → ∀ c c' : PD Φ.ι Γ k, Φ.IsRes a c → Φ.IsRes a c' → c.In nP → c'.In nP → c.SamePs c' → Φ.Linked a c c' := by
   intro O Γ _ _ _ _ _ _ Φ k _ a hΦ c c' hc hc' hin hin' hs

@@ -2,6 +2,43 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hW1 : ∀ w : W, ‖κ' (algebraMap W (FractionRing W) w)‖ ≤ 1`. Introduce `w`. Set `vP : Valuation (PadicAlgCl p) NNReal` to `Valued.v`. Establish `hmem : ∀ a : V, κ (algebraMap V (FractionRing V) a) ∈ vP.integer`. Introduce `a`.
+
+Rewrite using `[Valuation.mem_integer_iff]`. Use `show ‖κ (algebraMap V (FractionRing V) a)‖₊ ≤ 1`. Conclude with `NNReal.coe_le_coe.1 (by simpa using (hV _).2 ⟨a, rfl⟩)`. Set `ψ : V →+* vP.integer` to `(κ.comp (algebraMap V (FractionRing V))).codRestrict vP.integer hmem`. Take `⟨q, hqm, hq⟩` from `Algebra.IsIntegral.isIntegral (R := V) w`.
+
+Establish `hint : IsIntegral vP.integer (κ' (algebraMap W (FractionRing W) w))`. Use `⟨q.map ψ, hqm.map ψ, ?_⟩` and prove the remaining obligations. Establish `hcomp : (algebraMap vP.integer (PadicAlgCl p)).comp ψ = (κ'.comp (algebraMap W (FractionRing W))).comp (algebraMap V W)` using `RingHom.ext fun a => (hc a).symm`. Rewrite using `[Polynomial.eval₂_map, hcomp]`. Establish `h0 : (κ'.comp (algebraMap W (FractionRing W))) (q.eval₂ (algebraMap V W) w) = 0`.
+
+Rewrite using `[hq, map_zero]`. Conclude with `(Polynomial.hom_eval₂ q (algebraMap V W) _ w).symm.trans h0`. Establish `h1` using `(Valuation.integer.integers vP).mem_of_integral hint`. Rewrite `h1` using `[Valuation.mem_integer_iff]`. Establish `h2 : ‖κ' (algebraMap W (FractionRing W) w)‖₊ ≤ 1` using `h1`.
+
+Establish `h3 : ((‖κ' (algebraMap W (FractionRing W) w)‖₊ : NNReal) : ℝ) ≤ 1` using `by exact_mod_cast h2`. Simplify using `using h3`. Establish `hunit : ∀ u : Wˣ, ‖κ' (algebraMap W (FractionRing W) u)‖ = 1`. Introduce `u`. Establish `hm : ‖κ' (algebraMap W (FractionRing W) u)‖ * ‖κ' (algebraMap W (FractionRing W) ↑u⁻¹)‖ = 1`.
+
+Rewrite using `[← norm_mul, ← map_mul, ← map_mul, Units.mul_inv, map_one, map_one, norm_one]`. Establish `ha` using `hW1 u`. Establish `hb` using `hW1 ↑u⁻¹`. Use `le_antisymm ha ?_` and prove the remaining obligations. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hb (norm_nonneg (κ' (algebraMap W (FractionRing W) u)))]`.
+
+Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Establish `hπK0 : algebraMap V (FractionRing V) π ≠ 0`. Introduce `h`. Apply `hπ.ne_zero` to reduce the goal to its premises. Conclude with `IsFractionRing.injective V (FractionRing V) (h.trans (map_zero _).symm)`.
+
+Establish `hπ1 : ‖κ (algebraMap V (FractionRing V) π)‖ < 1`. Use `lt_of_le_of_ne ((hV _).2 ⟨π, rfl⟩) fun h => hπ.not_isUnit ?_` and prove the remaining obligations. Establish `hinv : ‖κ (algebraMap V (FractionRing V) π)⁻¹‖ ≤ 1`. Rewrite using `[map_inv₀, norm_inv, h, inv_one]`. Take `⟨a, ha⟩` from `(hV _).1 hinv`.
+
+Use `isUnit_iff_exists_inv.2 ⟨a, IsFractionRing.injective V (FractionRing V) ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ha, mul_inv_cancel₀ hπK0, map_one]`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible W`. Establish `hϖ1 : ‖κ' (algebraMap W (FractionRing W) ϖ)‖ < 1`. Establish `hπW0 : algebraMap V W π ≠ 0` using `fun h => hπ.ne_zero (hinj (h.trans (map_zero _).symm))`.
+
+Take `⟨e, u, he⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hπW0 hϖ`. Establish `he0 : e ≠ 0`. Introduce and unpack `rfl`. Rewrite `he` using `[pow_zero, mul_one]`. Conclude with `hπ.not_isUnit (isUnit_of_map_unit (algebraMap V W) π (he ▸ u.isUnit))`.
+
+Establish `hnorm : ‖κ' (algebraMap W (FractionRing W) ϖ)‖ ^ e < 1`. Establish `h` using `congrArg norm (hc π)`. Rewrite `h` using `[he, map_mul, map_mul, norm_mul, map_pow, map_pow, norm_pow, hunit, one_mul]`. Rewrite `hπ1` using `[← h]`. Conclude with `hπ1`.
+
+Assume the negation of the conclusion as `hge`. Conclude with `absurd hnorm (not_lt.2 (one_le_pow₀ (not_lt.1 hge)))`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Assume the negation of the conclusion as `hxW`. Break down `ValuationRing.isInteger_or_isInteger W x with ⟨a, ha⟩ | ⟨a, ha⟩` into its components or cases. Conclude with `hxW ⟨a, ha⟩`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hxW ⟨0, map_zero _⟩`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `ha` using `[map_zero]`. Conclude with `hx0 (inv_eq_zero.1 ha.symm)`.
+
+Take `⟨n, u, hn⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha0 hϖ`. Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`. Rewrite `hn` using `[pow_zero, mul_one]`. Apply `hxW` to reduce the goal to its premises.
+
+Use `⟨↑u⁻¹, ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap W (FractionRing W) ↑u * algebraMap W (FractionRing W) ↑u⁻¹ = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Rewrite using `[eq_inv_of_mul_eq_one_right h1, ← hn, ha, inv_inv]`. Establish `hsmall : ‖κ' x⁻¹‖ < 1`.
+
+Rewrite using `[← ha, hn, map_mul, map_mul, norm_mul, map_pow, map_pow, norm_pow, hunit, one_mul]`. Conclude with `pow_lt_one₀ (norm_nonneg _) hϖ1 hn0`. Establish `hprod : ‖κ' x‖ * ‖κ' x⁻¹‖ = 1`. Rewrite using `[← norm_mul, ← map_mul, mul_inv_cancel₀ hx0, map_one, norm_one]`. Establish `h0` using `norm_nonneg (κ' x⁻¹)`.
+
+Use the polynomial consequences of the given equalities and inequalities. Introduce and unpack `⟨w, rfl⟩`. Conclude with `hW1 w`.
+-/
 theorem unitBall_eq_of_integral_dvr (p : ℕ) [Fact p.Prime] (V W : Type) [CommRing V] [IsDomain V]
     [IsDiscreteValuationRing V] [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Algebra V W]
     [Algebra.IsIntegral V W] [IsLocalHom (algebraMap V W)]

@@ -21,6 +21,13 @@ section Abs
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/- English proof (translation)
+Establish `hs : IsSelfAdjoint A` using `IsSelfAdjoint.of_nonneg hA`. Establish `hg : Continuous fun x : ℝ => (max x (η / 2))⁻¹` using `(continuous_id.max continuous_const).inv₀ fun x => (lt_of_lt_of_le (half_pos hη) (le_max_right _ _)).ne'`. Use `⟨cfc (fun x : ℝ => (max x (η / 2))⁻¹) A, ?_, fun T hT => ⟨(hT.symm.cfc_real _).symm, (hT.symm.cfc_real _).symm⟩⟩` and prove the remaining obligations. Establish `e : χ = fun x => x * (max x (η / 2))⁻¹ * χ x`. Use function extensionality and compare the values at `x`.
+
+Break down `le_or_gt x (η / 2) with h | h` into its components or cases. Simplify using `[h0 x h]`. Rewrite using `[max_eq_left h.le, mul_inv_cancel₀ ((half_pos hη).trans h).ne', one_mul]`. Unfold `fcalc`. Use `conv_rhs => rw [e]`.
+
+Rewrite using `[cfc_mul (fun x : ℝ => x * (max x (η / 2))⁻¹) χ A (continuous_id.mul hg).continuousOn hχ.continuousOn, cfc_mul (fun x : ℝ => x) (fun x : ℝ => (max x (η / 2))⁻¹) A continuous_id.continuousOn hg.continuousOn, cfc_id' ℝ A]`.
+-/
 private theorem inv_ex (A : H →L[ℂ] H) (hA : 0 ≤ A)
     (η : ℝ) (hη : 0 < η) (χ : ℝ → ℝ) (hχ : Continuous χ) (h0 : ∀ x ≤ η / 2, χ x = 0) :
     ∃ B : H →L[ℂ] H, A * B * fcalc χ A = fcalc χ A ∧ (∀ T, Commute T A → Commute T B ∧ Commute T (fcalc χ A)) := by
@@ -38,6 +45,31 @@ private theorem inv_ex (A : H →L[ℂ] H) (hA : 0 ≤ A)
   rw [cfc_mul (fun x : ℝ => x * (max x (η / 2))⁻¹) χ A (continuous_id.mul hg).continuousOn hχ.continuousOn,
     cfc_mul (fun x : ℝ => x) (fun x : ℝ => (max x (η / 2))⁻¹) A continuous_id.continuousOn hg.continuousOn, cfc_id' ℝ A]
 
+/- English proof (translation)
+Establish `h1 : ∀ (V : H →L[ℂ] H), am ev * B * V = V → ∀ x, L ((B * zm ev (Finsupp.single x 1) * V) u) = z (X x) (L (V u))`. Introduce `V hV x`. Use `hz _ _ _ ?_` and prove the remaining obligations. Use `fix_mul hB hV (T := zm ev (Finsupp.single x 1)) (ev_comm ev _ _) (hB _).symm` as an intermediate fact. Rewrite using `[← zm_single, ← ContinuousLinearMap.mul_apply, ← ContinuousLinearMap.mul_apply, mul_assoc B, ← mul_assoc, this]`.
+
+Establish `h2 : ∀ (α : Ix K n →₀ ℕ) (V : H →L[ℂ] H), am ev * B * V = V → L ((B ^ α.degree * zm ev α * V) u) = z (monomial α 1) (L (V u))`. Establish `fx : ∀ (α : Ix K n →₀ ℕ) (V : H →L[ℂ] H), am ev * B * V = V → am ev * B * (B ^ α.degree * zm ev α * V) = B ^ α.degree * zm ev α * V` using `fun α V hV => fix_mul hB hV (((hB _).pow_left _).mul_left (ev_comm ev _ _)) (((Commute.refl B).pow_left _).mul_left (hB _).symm)`. Establish `ad : ∀ a b : Ix K n →₀ ℕ, (∀ (V : H →L[ℂ] H), am ev * B * V = V → L ((B ^ a.degree * zm ev a * V) u) = z (monomial a 1) (L (V u))) → (∀ (V : H →L[ℂ] H), am ev * B * V = V → L ((B ^ b.degree * zm ev b * V) u) = z (monomial b 1) (L (V u))) → ∀ (V : H →L[ℂ] H), am ev * B * V = V → L …`. Introduce `a b ha hb V hV`. Establish `e : B ^ (a + b).degree * zm ev (a + b) * V = B ^ a.degree * zm ev a * (B ^ b.degree * zm ev b * V)`.
+
+Establish `hc : Commute (B ^ b.degree) (zm ev a)` using `(hB _).pow_left _`. Rewrite using `[map_add, pow_add, zm_add, mul_assoc (B ^ a.degree), ← mul_assoc (B ^ b.degree), hc.eq]`. Simplify using `only [mul_assoc]`. Establish `e2 : (monomial (a + b) 1 : MvPolynomial (Ix K n) ℂ) = monomial a 1 * monomial b 1` using `by rw [monomial_mul, one_mul]`. Rewrite using `[e, ha _ (fx b V hV), hb V hV, e2, map_mul, Module.End.mul_apply]`.
+
+Establish `z0 : ∀ (V : H →L[ℂ] H), am ev * B * V = V → L ((B ^ (0 : Ix K n →₀ ℕ).degree * zm ev 0 * V) u) = z (monomial 0 1) (L (V u))`. Introduce `V _`. Simplify using `[zm_zero]`. Introduce `α`. Proceed by induction on `α using Finsupp.induction_linear with`.
+
+Consider the case `zero => exact z0`. Consider the case `add a b ha hb => exact ad a b ha hb`. Consider the case `single i e`. Proceed by induction on `e with`. Consider the case `zero => rw [Finsupp.single_zero]`.
+
+Conclude with `z0`. Consider the case `succ e ih`. Rewrite using `[Finsupp.single_add]`. Use `ad _ _ ih fun V hV => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.degree_single, pow_one]`.
+
+Conclude with `h1 V hV i`. Establish `h3 : ∀ (p : MvPolynomial (Ix K n) ℂ) (V : H →L[ℂ] H), am ev * B * V = V → L ((tp ev B p * V) u) = z p (L (V u))`. Introduce `p V hV`. Establish `e : z p = ∑ α ∈ p.support, p.coeff α • z (monomial α 1)` using `by conv_lhs => rw [p.as_sum]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[← map_smul, smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e, tp_eq, Finset.sum_mul, ContinuousLinearMap.sum_apply, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, ContinuousLinearMap.smul_apply, map_smul, h2 α V hV, LinearMap.smul_apply]`.
+
+Establish `h5 : ∀ p : UpperTheory.ConvolutionTheory.Pl K × Fin n, p.1 ∉ S → ∀ (e : ℕ) v, L (ev (X p ^ e) v) = (h p ^ e) (L v)`. Introduce `p hp e`. Proceed by induction on `e with`. Consider the case `zero => simp`. Consider the case `succ e ih => intro v`.
+
+Rewrite using `[pow_succ, pow_succ, map_mul, ContinuousLinearMap.mul_apply, ih, h4 p hp, Module.End.mul_apply]`. Establish `h6 : ∀ (β : (UpperTheory.ConvolutionTheory.Pl K × Fin n) →₀ ℕ) (l : List (UpperTheory.ConvolutionTheory.Pl K × Fin n)), (∀ p ∈ l, p.1 ∉ S) → ∀ v, L (ev (l.map fun p => X p ^ β p).prod v) = (l.map fun p => h p ^ β p).prod (L v)`. Introduce `β l`. Proceed by induction on `l with`. Consider the case `nil => simp`.
+
+Consider the case `cons p l ih`. Introduce `hl v`. Rewrite using `[List.map_cons, List.map_cons, List.prod_cons, List.prod_cons, map_mul, ContinuousLinearMap.mul_apply, h5 p (hl p List.mem_cons_self), ih fun q hq => hl q (List.mem_cons_of_mem _ hq), Module.End.mul_apply]`. Rewrite using `[yk, ContinuousLinearMap.sum_apply, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun β hβ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc, h3 _ _ (fix_mul hB hW (ev_comm ev _ _) (hB _).symm), Module.End.mul_apply, ContinuousLinearMap.mul_apply, ← h6 β _ fun p hp => hg β hβ p (Finset.mem_toList.1 hp), Finset.prod_map_toList, monomial_eq, C_1, one_mul]`. Both sides reduce to the same expression.
+-/
 private theorem app_abs {M : Type} [AddCommGroup M] [Module ℂ M] (S : Set (UpperTheory.ConvolutionTheory.Pl K)) (ev : PR K n →+* (H →L[ℂ] H))
     (L : H →ₗ[ℂ] M) (z : MvPolynomial (Ix K n) ℂ →ₐ[ℂ] Module.End ℂ M) (h : UpperTheory.ConvolutionTheory.Pl K × Fin n → Module.End ℂ M)
     (hz : ∀ x v v', am ev v' = ev (C (X (some x))) v → L v' = z (X x) (L v))
@@ -114,6 +146,23 @@ private theorem app_abs {M : Type} [AddCommGroup M] [Module ℂ M] (S : Set (Upp
     ← h6 β _ fun p hp => hg β hβ p (Finset.mem_toList.1 hp), Finset.prod_map_toList, monomial_eq, C_1, one_mul]
   rfl
 
+/- English proof (translation)
+Take `⟨B, hBX, hcm⟩` from `inv_ex A hA0 η hη χ hχ hχ0`. Use `set X₀ := fcalc χ A with hX₀`. Establish `hB : ∀ R, Commute B (ev R)` using `fun R => (hcm _ (hA ▸ ev_comm ev R _)).1.symm`. Establish `hW : am ev * B * X₀ = X₀` using `hA ▸ hBX`. Establish `hW' : am ev * B * (B * X₀) = B * X₀` using `fix_mul hB hW (hB _) (Commute.refl B)`.
+
+Establish `hoff : ∀ k, ∀ β ∈ (G k).support, ∀ p ∈ β.support, p.1 ∉ S` using `fun k β hβ => hsS β (hs k hβ)`. Take `⟨c, x, hc0, hx, hyk⟩` from `yk_norm ev B (B * X₀) G s K₀ hs hG`. Take `⟨hsum, C', hC'⟩` from `tail _ c x hc0 hx hyk ‖Q‖ (norm_nonneg _)`. Use `set Y := ∑' k, yk ev B (B * X₀) (G k) with hY`. Establish `hcY : ∀ T : H →L[ℂ] H, (∀ R : PR K n, (∀ y ∈ R.vars, y.1 ∉ S) → Commute T (ev R)) → Commute T A ∧ Commute T Y`.
+
+Introduce `T hT`. Establish `h1 : ∀ p, Commute T (ev (C p))` using `fun p => hT _ (by simp)`. Establish `h2 : Commute T A` using `hA ▸ h1 _`. Use `⟨h2, Commute.tsum_right _ fun k => comm_yk ev B (hcm T h2).1 ((hcm T h2).1.mul_right (hcm T h2).2) h1 fun β hβ => hT _ ?_⟩` and prove the remaining obligations. Rewrite using `[vars_monomial one_ne_zero]`.
+
+Conclude with `hoff k β hβ`. Establish `hzero : A * Y * Q = 0` using `by ext1 u`. Establish `hq1 : Pc (Q u) = 0` using `congrArg (fun T : H →L[ℂ] H => T u) hcQ`. Establish `hq2 : P (Q u) = 0` using `congrArg (fun T : H →L[ℂ] H => T u) hPQ`. Establish `c1` using `hcY Pc hPc`.
+
+Establish `c2` using `hcY P hP`. Establish `hp : Pc (A (Y (Q u))) = A (Y (Q u))`. Use `hcusp (Q u) ((B * X₀) (Q u)) _ (fun e => (Y - ∑ k ∈ Finset.range e, yk ev B (B * X₀) (G k)) (Q u)) ?_ ?_ ?_ fun e => ?_` and prove the remaining obligations. Rewrite using `[← ContinuousLinearMap.mul_apply, ← mul_assoc, hBX]`. Rewrite using `[← ContinuousLinearMap.mul_apply, c2.2.eq, ContinuousLinearMap.mul_apply, hq2, map_zero]`.
+
+Establish `t1 : Tendsto (fun e : ℕ => ‖(Y - ∑ k ∈ Finset.range e, yk ev B (B * X₀) (G k)) (Q u)‖) atTop (𝓝 (‖(Y - Y) (Q u)‖))` using `(((ContinuousLinearMap.apply ℂ H (Q u)).continuous.tendsto _).comp (tendsto_const_nhds.sub hsum.hasSum.tendsto_sum_nat)).norm`. Simplify `t1` using `only [sub_self, ContinuousLinearMap.zero_apply, norm_zero]`. Rewrite using `[ContinuousLinearMap.sub_apply, map_sub, ContinuousLinearMap.sum_apply, map_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun k _ => app_abs S ev L z h hz h4 B hB _ hW' _ (hoff k) _`.
+
+Use `show A (Y (Q u)) = 0`. Rewrite using `[← hp, ← ContinuousLinearMap.mul_apply A, ← ContinuousLinearMap.mul_apply, (c1.1.mul_right c1.2).eq, ContinuousLinearMap.mul_apply, hq1, map_zero]`. Use `⟨C', fun d => le_trans ?_ (hC' d)⟩` and prove the remaining obligations. Establish `e : ev (trunc d G) ∘L X₀ ∘L Q = A ^ (d + 1) * ((∑ k ∈ Finset.range (d + 1), yk ev B (B * X₀) (G k) - Y) * Q)` using `by show ev (trunc d G) * (X₀ * Q) = _`. Rewrite using `[← mul_assoc, trunc_mul hc hB hW G (fun k β => (hG k β).1) d, hA, pow_succ, sub_mul, mul_sub, mul_assoc _ A (Y * Q), ← mul_assoc A Y, hzero]`.
+
+Simplify using `only [mul_assoc, mul_zero, sub_zero]`. Rewrite using `[e]`. Use `(norm_mul_le _ _).trans ((mul_le_of_le_one_left (norm_nonneg _) ?_).trans (norm_mul_le _ _))` and prove the remaining obligations. Conclude with `(norm_pow_le' _ (Nat.succ_pos d)).trans (pow_le_one₀ (norm_nonneg _) hA1)`.
+-/
 private theorem core_abs {M : Type} [AddCommGroup M] [Module ℂ M] (S : Set (UpperTheory.ConvolutionTheory.Pl K)) (ev : PR K n →+* (H →L[ℂ] H))
     (A : H →L[ℂ] H) (hA : am ev = A) (hc : ∀ c : ℂ, ev (C (C c)) = c • 1) (hA0 : 0 ≤ A) (hA1 : ‖A‖ ≤ 1)
     (L : H →ₗ[ℂ] M) (z : MvPolynomial (Ix K n) ℂ →ₐ[ℂ] Module.End ℂ M) (h : UpperTheory.ConvolutionTheory.Pl K × Fin n → Module.End ℂ M)
@@ -179,6 +228,21 @@ end Abs
 
 variable {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {n : ℕ} {μ : Measure (normOneGL K n)} [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Take `⟨-, -, -, e0, he0, hi⟩` from `UpperTheory.ConvolutionTheory.evEx K n hn μ 𝔞`. Establish `hp : prj (cuspidalL2 μ) = Pc μ`. Establish `hc : (cuspidalL2 μ).topologicalClosure = cuspidalL2 μ` using `(isClosed_cuspidalL2 μ).submodule_topologicalClosure_eq`. Unfold `prj Pc`. Use `congr 1`.
+
+Establish `h0 : ∀ R, Commute (Pc μ) (e0 R)` using `fun R => by`. Use `hi R _ (isClosed_cuspidalL2 μ) (isInvariant_cuspidalL2 μ)` as an intermediate fact. Rewrite `this` using `[hp]`. Conclude with `Commute.symm this`. Establish `hC : ∀ p, ev (C p) = e0 (C p)`.
+
+Introduce `p`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => rw [hev.const, he0.const]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p i hp`.
+
+Simplify using `only [map_mul, hp]`. Break down `i with _ | x` into its components or cases. Rewrite using `[hev.amp, he0.amp]`. Rewrite using `[hev.cen, he0.cen]`. Establish `: R ∈ supported (MvPolynomial (Option (Ix K n)) ℂ) {y : UpperTheory.ConvolutionTheory.Pl K × Fin n | y.1 ∉ 𝔞.S}` using `mem_supported.2 fun y hy => hR y hy`.
+
+Rewrite `this` using `[supported]`. Use `clear hR`. Proceed by induction on `this using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨⟨w, i⟩, hy, rfl⟩` from `hx`.
+
+Rewrite using `[hev.hecke w hy, ← he0.hecke w hy]`. Conclude with `h0 _`. Consider the case `algebraMap r => rw [algebraMap_eq, hC]`. Conclude with `h0 _`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+
+Conclude with `hx.add_right hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `hx.mul_right hy`.
+-/
 private theorem pc_comm (hn : 0 < n) (𝔞 : Amp μ) (ev : PR K n →+* (LL μ →L[ℂ] LL μ)) (hev : 𝔞.IsEv ev) (R : PR K n)
     (hR : ∀ y ∈ R.vars, y.1 ∉ 𝔞.S) : Commute (Pc μ) (ev R) := by
   obtain ⟨-, -, -, e0, he0, hi⟩ := UpperTheory.ConvolutionTheory.evEx K n hn μ 𝔞
@@ -212,6 +276,21 @@ private theorem pc_comm (hn : 0 < n) (𝔞 : Amp μ) (ev : PR K n →+* (LL μ �
   | add x y _ _ hx hy => rw [map_add]; exact hx.add_right hy
   | mul x y _ _ hx hy => rw [map_mul]; exact hx.mul_right hy
 
+/- English proof (translation)
+Take `⟨ρ, N, L, hL, hbd, hZ⟩` from `ampRep K n μ 𝔞 hn`. Take `⟨Cb, hCb, hband⟩` from `bandRep K n μ 𝔞 η hn hη`. Take `⟨hA0, hA1, -⟩` from `UpperTheory.ConvolutionTheory.evEx K n hn μ 𝔞`. Use `⟨ρ, Cb, hCb, fun ev hev P Q hP hcQ hPQ χ hχ hχ0 F G hF hG hcusp => ?_⟩` and prove the remaining obligations. Take `⟨K₀, G₀, hG₀⟩` from `UpperTheory.ConvolutionTheory.FX.gen_piecesK (K →+* ℂ) (UpperTheory.ConvolutionTheory.Pl K × Fin n) n F (by`.
+
+Introduce `w`. Use `hF.1 w)` and compare the differences between its conclusion and the goal. Choose the witnesses or unpack the hypotheses as in `rfl : G = G₀ := by`. Use function extensionality and compare the values at `k`. Use `map_injective _ (UpperTheory.ConvolutionTheory.FX.blockE_inj (K →+* ℂ) n) ?_` and prove the remaining obligations.
+
+Conclude with `(hG k).trans (hG₀ k).1.symm`. Establish `hA : am ev = 𝔞.A` using `hev.amp`. Establish `uniq : ∀ v φ, Rep μ (𝔞.A v) φ → L v = φ` using `fun v φ h => (repOps K n μ hn _ _ (hL v).1).1 φ h`. Use `core_abs 𝔞.S ev 𝔞.A hA hev.const hA0 hA1 L (((UpperTheory.V.Cm.uC K n).comp (Subalgebra.val _)).comp (evZ K n)) (fun p => hk n p.1 (p.2 + 1)) (fun x v v' h => ?_) ?_ η hη χ hχ hχ0 G F.support K₀ (fun k => (hG₀ k).2.1) (fun β hβ p hp => hF.2 p ((mem_vars_iff_mem_support p).2 ⟨β, h …` and prove the remaining obligations. Use `uniq _ _ ?_` and prove the remaining obligations.
+
+Rewrite `h` using `[hA, hev.cen]`. Rewrite using `[h]`. Conclude with `hZ x _`. Introduce and unpack `⟨w, i⟩ hw v`. Use `uniq _ _ ?_` and prove the remaining obligations.
+
+Establish `e : 𝔞.A (ev (X (w, i)) v) = Tsph μ w i (𝔞.A v)`. Rewrite using `[← hev.hecke w hw, ← hev.amp]`. Conclude with `congrArg (fun T : LL μ →L[ℂ] LL μ => T v) (ev_comm ev _ _).eq`. Rewrite using `[e]`. Conclude with `(repOps K n μ hn _ _ (hL v).1).2.2.2 w i ((hL v).2.2 w hw)`.
+
+Use `Submodule.starProjection_eq_self_iff.2 ((repOps K n μ hn _ _ (hL _).1).2.2.1 ?_)` and prove the remaining obligations. Use `hcusp y (L v) _ hy (hL _).1 (hband χ hχ hχ0 u _ (hv ▸ (hL v).1)) (hL _).2.2 (hL _).2.1 (hL _).2.2 ⟨N, fun ε hε => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `hbd 1`. Establish `t1` using `hr.const_mul b`. Rewrite `t1` using `[mul_zero]`.
+
+Use `filter_upwards [t1.eventually (ge_mem_nhds hε)] with e he' g`. Use `hb (r e) g` as an intermediate fact. Rewrite `this` using `[map_one, Module.End.one_apply, he e]`. Conclude with `this.trans (mul_le_mul_of_nonneg_right he' (pow_nonneg (AutomorphicForm.height_pos g).le _))`.
+-/
 theorem killCore (hn : 0 < n) (𝔞 : Amp μ) (η : ℝ) (hη : 0 < η) :
     ∃ (ρ : Typ K n) (Cb : ℝ), 0 ≤ Cb ∧ ∀ ev, 𝔞.IsEv ev → ∀ P Q : LL μ →L[ℂ] LL μ,
       (∀ R : PR K n, (∀ y ∈ R.vars, y.1 ∉ 𝔞.S) → ev R ∘L P = P ∘L ev R) → Pc μ ∘L Q = 0 → P ∘L Q = 0 →

@@ -14,15 +14,26 @@ variable {K : Type} [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [Compa
   [MeasurableSpace K] [BorelSpace K]
 
 omit [Group K] [IsTopologicalGroup K] [SecondCountableTopology K] in
+/- English proof (translation)
+The claim follows from `hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)`.
+-/
 theorem intK (κ : Measure K) [IsFiniteMeasure κ] {f : K → ℂ} (hf : Continuous f) : Integrable f κ :=
   hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)
 
 omit [Group K] [IsTopologicalGroup K] in
+/- English proof (translation)
+The claim follows from `integral_integral_swap (hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _))`.
+-/
 theorem swapK {A : Type} [TopologicalSpace A] [CompactSpace A] [MeasurableSpace A] [BorelSpace A] (α : Measure A) [IsFiniteMeasure α]
     (κ : Measure K) [IsFiniteMeasure κ] {f : A → K → ℂ} (hf : Continuous (Function.uncurry f)) :
     ∫ x, ∫ y, f x y ∂κ ∂α = ∫ y, ∫ x, f x y ∂α ∂κ :=
   integral_integral_swap (hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _))
 
+/- English proof (translation)
+Establish `h` using `swapK κ κ (f := fun x y => f (x⁻¹ * y)) (by unfold Function.uncurry; fun_prop)`. Establish `h1 : ∀ x, ∫ y, f (x⁻¹ * y) ∂κ = ∫ y, f y ∂κ` using `fun x => integral_mul_left_eq_self f x⁻¹`. Establish `h2 : ∀ y, ∫ x, f (x⁻¹ * y) ∂κ = ∫ x, f x⁻¹ ∂κ` using `fun y => by`. Rewrite using `[← integral_mul_left_eq_self _ y]`. Simplify using the standard rewrite rules.
+
+Simplify using `only [h1, h2, integral_const, probReal_univ, one_smul] at h`. Conclude with `h.symm`.
+-/
 theorem int_inv (κ : Measure K) [IsProbabilityMeasure κ] [κ.IsMulLeftInvariant] {f : K → ℂ} (hf : Continuous f) :
     ∫ k, f k⁻¹ ∂κ = ∫ k, f k ∂κ := by
   have h := swapK κ κ (f := fun x y => f (x⁻¹ * y)) (by unfold Function.uncurry; fun_prop)
@@ -33,6 +44,11 @@ theorem int_inv (κ : Measure K) [IsProbabilityMeasure κ] [κ.IsMulLeftInvarian
   simp only [h1, h2, integral_const, probReal_univ, one_smul] at h
   exact h.symm
 
+/- English proof (translation)
+Establish `h` using `swapK α κ (f := fun x y => f (s x * y)) (by unfold Function.uncurry; fun_prop)`. Establish `h1 : ∀ x, ∫ y, f (s x * y) ∂κ = ∫ y, f y ∂κ` using `fun x => integral_mul_left_eq_self f (s x)`. Establish `h2 : ∀ y, ∫ x, f (s x * y) ∂α = ∫ x, f (s x) ∂α` using `fun y => by`. Take `⟨z, rfl⟩` from `ho y`. Simplify using `only [← hm]`.
+
+Conclude with `integral_mul_right_eq_self (fun x => f (s x)) z`. Simplify `h` using `only [h1, h2, integral_const, probReal_univ, one_smul]`.
+-/
 theorem int_surj {A : Type} [Group A] [TopologicalSpace A] [IsTopologicalGroup A] [CompactSpace A] [MeasurableSpace A] [BorelSpace A]
     (α : Measure A) [IsProbabilityMeasure α] [α.IsMulRightInvariant] (κ : Measure K) [IsProbabilityMeasure κ] [κ.IsMulLeftInvariant]
     (s : A → K) (hs : Continuous s) (hm : ∀ x y, s (x * y) = s x * s y) (ho : Function.Surjective s) {f : K → ℂ} (hf : Continuous f) :
@@ -45,6 +61,21 @@ theorem int_surj {A : Type} [Group A] [TopologicalSpace A] [IsTopologicalGroup A
     exact integral_mul_right_eq_self (fun x => f (s x)) z
   simpa only [h1, h2, integral_const, probReal_univ, one_smul] using h
 
+/- English proof (translation)
+Set `V : Submodule ℂ C(K, ℂ)` to `{ carrier := {f | ∀ k, ∫ t, f t * e (t⁻¹ * k) ∂κ = f k} add_mem' := fun {f g} hf hg k => by`. Simplify using `only [ContinuousMap.add_apply, add_mul]`. Rewrite using `[integral_add (intK κ (by fun_prop)) (intK κ (by fun_prop)), hf k, hg k]`. Use the proof step `zero_mem' := fun k => by simp`. Use the proof step `smul_mem' := fun c f hf k => by`.
+
+Simplify using `only [ContinuousMap.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]`. Rewrite using `[hf k] }`. Use `⟨V, ?_, fun h => ⟨⟨fun k => e (h * k), by fun_prop⟩, fun k => ?_, fun _ => rfl⟩⟩` and prove the remaining obligations. Set `c : C(K, C(K, ℂ))` to `ContinuousMap.curry ⟨fun p : K × K => e (p.2⁻¹ * p.1), by fun_prop⟩`. Take `⟨s, hs⟩` from `isCompact_univ.elim_finite_subcover (fun k : K => c ⁻¹' Metric.ball (c k) (1 / 2)) (fun k => Metric.isOpen_ball.preimage c.continuous) (fun k _ => Set.mem_iUnion.2 ⟨k, by simp⟩)`.
+
+Set `ev : V →ₗ[ℂ] (s → ℂ)` to `{ toFun := fun f i => f.1 i.1 map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Use `FiniteDimensional.of_injective ev ((injective_iff_map_eq_zero ev).2 fun f hf => ?_)` and prove the remaining obligations. Establish `hb : ‖f.1‖ ≤ ‖f.1‖ * (1 / 2)`. Use `(ContinuousMap.norm_le _ (by positivity)).2 fun k => ?_` and prove the remaining obligations. Take `⟨i, hi', hk⟩` from `Set.mem_iUnion₂.1 (hs (Set.mem_univ k))`.
+
+Establish `h0 : f.1 i = 0` using `congrFun hf ⟨i, hi'⟩`. Establish `hk' : ‖c k - c i‖ ≤ 1 / 2`. Establish `: dist (c k) (c i) < 1 / 2` using `hk`. Rewrite `this` using `[dist_eq_norm]`. Conclude with `this.le`.
+
+Establish `h1 : f.1 k = ∫ t, f.1 t * (c k - c i) t ∂κ`. Establish `e1 : ∀ t, f.1 t * (c k - c i) t = f.1 t * e (t⁻¹ * k) - f.1 t * e (t⁻¹ * i)` using `fun t => by`. Rewrite using `[← mul_sub]`. Both sides reduce to the same expression. Simplify using `only [e1]`.
+
+Rewrite using `[integral_sub (intK κ (by fun_prop)) (intK κ (by fun_prop)), f.2 k, f.2 i, h0, sub_zero]`. Rewrite using `[h1]`. Use `(norm_integral_le_of_norm_le_const (C := ‖f.1‖ * (1 / 2)) (Eventually.of_forall fun t => ?_)).trans (by simp)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (f.1.norm_coe_le_norm t) (((c k - c i).norm_coe_le_norm t).trans hk') (norm_nonneg _) (norm_nonneg _)`.
+
+Establish `: ‖f.1‖ = 0` using `by linarith [norm_nonneg f.1]`. Conclude with `Subtype.ext (norm_eq_zero.1 this)`. Express the relevant statement in the definitionally equal form `∫ t, e (h * t) * e (t⁻¹ * k) ∂κ = e (h * k)`. Rewrite using `[← hi (h * k), ← integral_mul_left_eq_self (fun t => e t * e (t⁻¹ * (h * k))) h]`. Simplify using `[mul_assoc]`.
+-/
 theorem idem_fin (κ : Measure K) [IsProbabilityMeasure κ] [κ.IsMulLeftInvariant] {e : K → ℂ} (he : Continuous e)
     (hi : ∀ k, ∫ h, e h * e (h⁻¹ * k) ∂κ = e k) :
     ∃ V : Submodule ℂ C(K, ℂ), FiniteDimensional ℂ V ∧ ∀ h : K, ∃ f ∈ V, ∀ k, f k = e (h * k) := by
@@ -102,15 +133,26 @@ def ec (κ : Measure K) (e : K → ℂ) (β : G → ℂ) (g : G) : ℂ := ∫ k,
 
 variable (κ : Measure K) [IsProbabilityMeasure κ] (ν : Measure G) [ν.IsHaarMeasure]
 
+/- English proof (translation)
+The claim follows from `integral_integral_swap (hf.integrable_of_hasCompactSupport (HasCompactSupport.intro (isCompact_univ.prod hC) fun p hp => h0 p.1 p.2 fun h => hp ⟨trivial, h⟩))`.
+-/
 theorem swapKG {f : K → G → ℂ} (hf : Continuous (Function.uncurry f)) {C : Set G} (hC : IsCompact C)
     (h0 : ∀ k g, g ∉ C → f k g = 0) : ∫ k, ∫ g, f k g ∂ν ∂κ = ∫ g, ∫ k, f k g ∂κ ∂ν :=
   integral_integral_swap (hf.integrable_of_hasCompactSupport
     (HasCompactSupport.intro (isCompact_univ.prod hC) fun p hp => h0 p.1 p.2 fun h => hp ⟨trivial, h⟩))
 
+/- English proof (translation)
+Simplify `continuous_parametric_integral_of_continuous (μ := κ) hf isCompact_univ` using `only [Measure.restrict_univ]`.
+-/
 theorem contK {X : Type} [TopologicalSpace X] [FirstCountableTopology X] [LocallyCompactSpace X] {f : X → K → ℂ}
     (hf : Continuous (Function.uncurry f)) : Continuous fun x => ∫ k, f x k ∂κ := by
   simpa only [Measure.restrict_univ] using continuous_parametric_integral_of_continuous (μ := κ) hf isCompact_univ
 
+/- English proof (translation)
+Establish `h : (fun x => ∫ g, β g * f x g ∂ν) = fun x => ∫ g in tsupport β, β g * f x g ∂ν`. Use function extensionality and compare the values at `x`. Use `(setIntegral_eq_integral_of_forall_compl_eq_zero fun y hy => ?_).symm` and prove the remaining obligations. Rewrite using `[image_eq_zero_of_notMem_tsupport hy, zero_mul]`. Rewrite using `[h]`.
+
+Conclude with `continuous_parametric_integral_of_continuous (f := fun x g => β g * f x g) ((hβ.comp continuous_snd).mul hf) hc`.
+-/
 theorem contG {β : G → ℂ} (hβ : Continuous β) (hc : HasCompactSupport β) {f : G → G → ℂ}
     (hf : Continuous (Function.uncurry f)) : Continuous fun x => ∫ g, β g * f x g ∂ν := by
   have h : (fun x => ∫ g, β g * f x g ∂ν) = fun x => ∫ g in tsupport β, β g * f x g ∂ν := by
@@ -120,20 +162,39 @@ theorem contG {β : G → ℂ} (hβ : Continuous β) (hc : HasCompactSupport β)
   rw [h]
   exact continuous_parametric_integral_of_continuous (f := fun x g => β g * f x g) ((hβ.comp continuous_snd).mul hf) hc
 
+/- English proof (translation)
+The claim follows from `contK κ (f := fun g (k : K) => e k * β ((k : G)⁻¹ * g)) (by unfold Function.uncurry; fun_prop)`.
+-/
 theorem ec_cont {e : K → ℂ} (he : Continuous e) {β : G → ℂ} (hβ : Continuous β) : Continuous (ec κ e β) :=
   contK κ (f := fun g (k : K) => e k * β ((k : G)⁻¹ * g)) (by unfold Function.uncurry; fun_prop)
 
+/- English proof (translation)
+The claim follows from `(isCompact_iff_compactSpace.2 ‹CompactSpace K›).mul hc`.
+-/
 theorem cptKC {β : G → ℂ} (hc : HasCompactSupport β) : IsCompact ((K : Set G) * tsupport β) :=
   (isCompact_iff_compactSpace.2 ‹CompactSpace K›).mul hc
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `Set.mul_mem_mul (s := (K : Set G)) k.2 (subset_tsupport β h)` as an intermediate fact. Conclude with `hg (by simpa using this)`.
+-/
 theorem zeroKC {β : G → ℂ} (k : K) {g : G} (hg : g ∉ (K : Set G) * tsupport β) : β ((k : G)⁻¹ * g) = 0 := by
   by_contra h
   have := Set.mul_mem_mul (s := (K : Set G)) k.2 (subset_tsupport β h)
   exact hg (by simpa using this)
 
+/- English proof (translation)
+The claim follows from `HasCompactSupport.intro (cptKC (K := K) hc) fun g hg => by simp [ec, zeroKC _ hg]`.
+-/
 theorem ec_cs (e : K → ℂ) {β : G → ℂ} (hc : HasCompactSupport β) : HasCompactSupport (ec κ e β) :=
   HasCompactSupport.intro (cptKC (K := K) hc) fun g hg => by simp [ec, zeroKC _ hg]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [ec, integral_mul_const]`. Use `_ = ∫ k : K, ∫ y, e k * β ((k : G)⁻¹ * y) * T y ∂ν ∂κ := (swapKG κ ν (by unfold Function.uncurry; fun_prop) (cptKC (K := K) hc) fun k g hg => by simp [zeroKC k hg]).symm`. Use `_ = ∫ k : K, ∫ y, β y * (e k * T (k * y)) ∂ν ∂κ := by`. Use `congr 1`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[← integral_mul_left_eq_self _ (k : G)]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[inv_mul_cancel_left]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = ∫ y, ∫ k : K, β y * (e k * T (k * y)) ∂κ ∂ν := swapKG κ ν (by unfold Function.uncurry; fun_prop) hc fun k g hg => by simp [image_eq_zero_of_notMem_tsupport hg]`. Use `_ = _ := by simp only [integral_const_mul]`.
+-/
 theorem ec_adj {e : K → ℂ} (he : Continuous e) {β : G → ℂ} (hβ : Continuous β) (hc : HasCompactSupport β) {T : G → ℂ}
     (hT : Continuous T) : ∫ y, ec κ e β y * T y ∂ν = ∫ y, β y * ∫ k, e k * T (k * y) ∂κ ∂ν := by
   calc ∫ y, ec κ e β y * T y ∂ν = ∫ y, ∫ k : K, e k * β ((k : G)⁻¹ * y) * T y ∂κ ∂ν := by
@@ -149,6 +210,13 @@ theorem ec_adj {e : K → ℂ} (he : Continuous e) {β : G → ℂ} (hβ : Conti
         swapKG κ ν (by unfold Function.uncurry; fun_prop) hc fun k g hg => by simp [image_eq_zero_of_notMem_tsupport hg]
     _ = _ := by simp only [integral_const_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Combine the equalities or inequalities in the displayed calculation. Unfold `ec`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[← integral_const_mul, ← integral_mul_left_eq_self _ k⁻¹]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Simplify using `[mul_assoc]`. Use `_ = ∫ h : K, ∫ k : K, e k * e (k⁻¹ * h) * β ((h : G)⁻¹ * g) ∂κ ∂κ := swapK κ κ (by unfold Function.uncurry; fun_prop)`.
+
+Use `_ = _ := by simp only [integral_mul_const, hi, ec]`.
+-/
 theorem ec_idem [κ.IsMulLeftInvariant] {e : K → ℂ} (he : Continuous e) (hi : ∀ k, ∫ h, e h * e (h⁻¹ * k) ∂κ = e k)
     {β : G → ℂ} (hβ : Continuous β) : ec κ e (ec κ e β) = ec κ e β := by
   funext g
@@ -161,6 +229,13 @@ theorem ec_idem [κ.IsMulLeftInvariant] {e : K → ℂ} (he : Continuous e) (hi 
     _ = ∫ h : K, ∫ k : K, e k * e (k⁻¹ * h) * β ((h : G)⁻¹ * g) ∂κ ∂κ := swapK κ κ (by unfold Function.uncurry; fun_prop)
     _ = _ := by simp only [integral_mul_const, hi, ec]
 
+/- English proof (translation)
+Establish `hint : Integrable (Function.uncurry fun g y : G => b y * c (y⁻¹ * g) * ψ g) (ν.prod ν)`. Use `Continuous.integrable_of_hasCompactSupport (by unfold Function.uncurry; fun_prop) ?_` and prove the remaining obligations. Use `HasCompactSupport.intro (K := (tsupport b * tsupport c) ×ˢ tsupport b) ((IsCompact.mul hb' hc').prod hb') fun p hp => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Establish `h1` using `left_ne_zero_of_mul h`.
+
+Establish `h2 : b p.2 ≠ 0` using `left_ne_zero_of_mul h1`. Use `Set.mul_mem_mul (subset_tsupport _ h2) (subset_tsupport c (right_ne_zero_of_mul h1))` as an intermediate fact. Conclude with `hp ⟨by simpa using this, subset_tsupport _ h2⟩`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[← integral_const_mul, ← integral_mul_left_eq_self _ y]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Rewrite using `[inv_mul_cancel_left, mul_assoc]`.
+-/
 theorem cv_adj {b c ψ : G → ℂ} (hb : Continuous b) (hb' : HasCompactSupport b) (hc : Continuous c) (hc' : HasCompactSupport c)
     (hψ : Continuous ψ) : ∫ g, cv ν b c g * ψ g ∂ν = ∫ y, b y * ∫ z, c z * ψ (y * z) ∂ν ∂ν := by
   have hint : Integrable (Function.uncurry fun g y : G => b y * c (y⁻¹ * g) * ψ g) (ν.prod ν) := by
@@ -179,6 +254,17 @@ theorem cv_adj {b c ψ : G → ℂ} (hb : Continuous b) (hb' : HasCompactSupport
         congr 1; funext z
         rw [inv_mul_cancel_left, mul_assoc]
 
+/- English proof (translation)
+Establish `hz : ∀ y, y ∉ tsupport b → b y = 0` using `fun y => image_eq_zero_of_notMem_tsupport`. Prove the components needed by the constructor for the conclusion. Establish `h` using `ec_adj κ ν he hb hc (T := fun y => conj (b (y⁻¹ * g)⁻¹)) (by fun_prop)`. Rewrite `h` using `[hf]`. Use `Eq.trans ?_ h.symm` and prove the remaining obligations.
+
+Simplify using `only [cv, ← integral_const_mul]`. Rewrite using `[swapKG κ ν (by unfold Function.uncurry; fun_prop) hc fun k y hy => by simp [hz y hy]]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Use `congr 1`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[mul_left_comm]`. Simplify using `[mul_assoc]`. Simplify using `only [cv, ← integral_mul_const]`. Rewrite using `[swapKG κ ν (by unfold Function.uncurry; fun_prop) hc fun k y hy => by simp [hz y hy]]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using `only [mul_assoc, integral_const_mul]`. Use `congr 1`. Rewrite using `[← congrFun hf (y⁻¹ * g)⁻¹, ec, ← integral_conj, ← int_inv κ (by fun_prop)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[hs, mul_assoc, mul_comm]`.
+-/
 theorem bi_sq [κ.IsMulLeftInvariant] {e : K → ℂ} (he : Continuous e) (hs : ∀ k, e k⁻¹ = conj (e k)) {b : G → ℂ} (hb : Continuous b)
     (hc : HasCompactSupport b) (hf : ec κ e b = b) (g : G) :
     ∫ k : K, e k * cv ν b (fun x => conj (b x⁻¹)) ((k : G)⁻¹ * g) ∂κ = cv ν b (fun x => conj (b x⁻¹)) g ∧
@@ -202,6 +288,11 @@ theorem bi_sq [κ.IsMulLeftInvariant] {e : K → ℂ} (he : Continuous e) (hs : 
     congr 1; funext k
     simp [hs, mul_assoc, mul_comm]
 
+/- English proof (translation)
+Establish `hc' : HasCompactSupport fun y => (β y : ℂ)` using `hc.comp_left Complex.ofReal_zero`. Establish `i1 : Integrable (fun y => (β y : ℂ) * T y) ν` using `Continuous.integrable_of_hasCompactSupport (by fun_prop) hc'.mul_right`. Establish `i2 : Integrable (fun y => (β y : ℂ) * c) ν` using `Continuous.integrable_of_hasCompactSupport (by fun_prop) hc'.mul_right`. Rewrite using `[← integral_complex_ofReal, ← integral_mul_const, ← integral_sub i1 i2, ← integral_mul_const]`. Use `norm_integral_le_of_norm_le ((hβ.integrable_of_hasCompactSupport hc).mul_const r) (Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+
+Rewrite using `[← mul_sub, norm_mul, Complex.norm_real, Real.norm_of_nonneg (h0 y)]`. Distinguish the cases in `hy : β y = 0`. Simplify using `[hy]`. Conclude with `mul_le_mul_of_nonneg_left (h y hy) (h0 y)`.
+-/
 theorem avg_near {β : G → ℝ} (hβ : Continuous β) (hc : HasCompactSupport β) (h0 : ∀ x, 0 ≤ β x) {T : G → ℂ} (hT : Continuous T)
     {c : ℂ} {r : ℝ} (h : ∀ y, β y ≠ 0 → ‖T y - c‖ ≤ r) :
     ‖∫ y, (β y : ℂ) * T y ∂ν - (∫ y, β y ∂ν : ℝ) * c‖ ≤ (∫ y, β y ∂ν) * r := by
@@ -215,6 +306,25 @@ theorem avg_near {β : G → ℝ} (hβ : Continuous β) (hc : HasCompactSupport 
   · simp [hy]
   · exact mul_le_mul_of_nonneg_left (h y hy) (h0 y)
 
+/- English proof (translation)
+Set `Ψ : G → ℂ` to `fun u => ∫ k : K, e k * ψ (k * u) ∂κ`. Establish `hΨ : Continuous Ψ` using `contK κ (f := fun u (k : K) => e k * ψ (k * u)) (by unfold Function.uncurry; fun_prop)`. Establish `hΨ1 : Ψ 1 = ψ 1` using `by simpa [Ψ] using hf 1`. Establish `hr : 0 < ‖ψ 1‖ / 2` using `half_pos (norm_pos_iff.2 h1)`. Establish `hn : ∀ᶠ p : G × G in 𝓝 (1, 1), ‖Ψ (p.1 * p.2⁻¹) - ψ 1‖ < ‖ψ 1‖ / 2`.
+
+Establish `hcc : Continuous fun p : G × G => ‖Ψ (p.1 * p.2⁻¹) - ψ 1‖` using `by fun_prop`. Conclude with `hcc.continuousAt.eventually_lt continuousAt_const (by simpa [hΨ1] using norm_pos_iff.2 h1)`. Rewrite `hn` using `[nhds_prod_eq]`. Take `⟨O₁, h₁, O₂, h₂, hO⟩` from `Filter.mem_prod_iff.1 hn`. Use `⟨O₁ ∩ O₂, inter_mem h₁ h₂, fun β hβ hc h0 hx hsup => ?_⟩` and prove the remaining obligations.
+
+Establish `hc' : HasCompactSupport fun y => (β y : ℂ)` using `hc.comp_left Complex.ofReal_zero`. Establish `hβ' : Continuous fun y => (β y : ℂ)` using `by fun_prop`. Establish `hb` using `ec_cont κ he hβ'`. Establish `hb'` using `ec_cs κ e hc'`. Establish `hbs : HasCompactSupport fun x => conj (ec κ e (fun x => β x) x⁻¹)` using `(hb'.comp_homeomorph (Homeomorph.inv G)).comp_left (g := conj) (map_zero _)`.
+
+Establish `hC : ∀ y, ∫ z, conj (ec κ e (fun x => β x) z⁻¹) * ψ (y * z) ∂ν = ∫ z, (β z : ℂ) * ψ (y * z⁻¹) ∂ν` using `fun y => by`. Establish `e1 : ∀ z, conj (ec κ e (fun x => β x) z) = ec κ (fun k => e k⁻¹) (fun x => β x) z` using `fun z => by`. Simplify using `only [ec, ← integral_conj, map_mul, Complex.conj_ofReal, hs]`. Rewrite using `[← integral_inv_eq_self]`. Simplify using `only [inv_inv, e1]`.
+
+Rewrite using `[ec_adj κ ν (by fun_prop) hβ' hc' (by fun_prop)]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Rewrite using `[← hf (y * z⁻¹), ← int_inv κ (f := fun k : K => e k * ψ (y * z⁻¹ * k)) (by fun_prop)]`. Simplify using `[mul_assoc]`.
+
+Establish `hT : Continuous fun y => ∫ z, (β z : ℂ) * ψ (y * z⁻¹) ∂ν` using `contG ν hβ' hc' (f := fun y z => ψ (y * z⁻¹)) (by unfold Function.uncurry; fun_prop)`. Establish `hH : Continuous fun y => ∫ z, (β z : ℂ) * Ψ (y * z⁻¹) ∂ν` using `contG ν hβ' hc' (f := fun y z => Ψ (y * z⁻¹)) (by unfold Function.uncurry; fun_prop)`. Establish `hD : ∀ y, ∫ k : K, e k * ∫ z, (β z : ℂ) * ψ (k * y * z⁻¹) ∂ν ∂κ = ∫ z, (β z : ℂ) * Ψ (y * z⁻¹) ∂ν` using `fun y => by`. Simplify using `only [Ψ, ← integral_const_mul]`. Rewrite using `[swapKG κ ν (by unfold Function.uncurry; fun_prop) hc fun k z hz => by simp [image_eq_zero_of_notMem_tsupport hz]]`.
+
+Simplify using `only [mul_left_comm (e _), mul_assoc]`. Rewrite using `[cv_adj ν hb hb' (by fun_prop) hbs hψ]`. Simplify using `only [hC]`. Rewrite using `[ec_adj κ ν he hβ' hc' hT]`. Simplify using `only [hD]`.
+
+Take `⟨x, hx⟩` from `hx`. Establish `hm : 0 < ∫ y, β y ∂ν` using `hβ.integral_pos_of_hasCompactSupport_nonneg_nonzero hc h0 hx`. Establish `key` using `avg_near ν hβ hc h0 hH (c := (∫ y, β y ∂ν : ℝ) * ψ 1) (r := (∫ y, β y ∂ν) * (‖ψ 1‖ / 2)) fun y hy => avg_near ν hβ hc h0 (T := fun z => Ψ (y * z⁻¹)) (by fun_prop) fun z hz => le_of_lt (hO (Set.mk_mem_prod (hsup y hy).1 (hsup z hz).2))`. Introduce `hz`. Rewrite `key` using `[hz, zero_sub, norm_neg, norm_mul, norm_mul, Complex.norm_real, Real.norm_of_nonneg hm.le]`.
+
+Use `mul_pos hm (mul_pos hm hr)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sq_ne [κ.IsMulLeftInvariant] [ν.IsInvInvariant] {e : K → ℂ} (he : Continuous e) (hs : ∀ k, e k⁻¹ = conj (e k))
     {ψ : G → ℂ} (hψ : Continuous ψ) (hf : ∀ w, ∫ k : K, e k * ψ (w * k) ∂κ = ψ w) (h1 : ψ 1 ≠ 0) :
     ∃ O ∈ 𝓝 (1 : G), ∀ β : G → ℝ, Continuous β → HasCompactSupport β → (∀ x, 0 ≤ β x) → (∃ x, β x ≠ 0) → (∀ x, β x ≠ 0 → x ∈ O) →
@@ -266,6 +376,15 @@ theorem sq_ne [κ.IsMulLeftInvariant] [ν.IsInvInvariant] {e : K → ℂ} (he : 
   have := mul_pos hm (mul_pos hm hr)
   linarith
 
+/- English proof (translation)
+Take `⟨V, hV, hh⟩` from `idem_fin κ he hi`. Set `Φ : C(K, ℂ) →ₗ[ℂ] (G → ℂ)` to `{ toFun := fun f => ec κ f β map_add' := fun f f' => by`. Use function extensionality and compare the values at `g`. Simplify using `only [ec, ContinuousMap.add_apply, add_mul, Pi.add_apply]`. Conclude with `integral_add (intK κ (by fun_prop)) (intK κ (by fun_prop))`.
+
+Use the proof step `map_smul' := fun c f => by`. Use function extensionality and compare the values at `g`. Simplify using `only [ec, ContinuousMap.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul, Pi.smul_apply, RingHom.id_apply] }`. Use `Submodule.finiteDimensional_of_le (S₂ := V.map Φ) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨h, rfl⟩`.
+
+Take `⟨f, hf, hfe⟩` from `hh h`. Use `⟨f, hf, funext fun g => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ec κ f β g = ec κ e β (h * g)`. Unfold `ec`. Rewrite using `[← integral_mul_left_eq_self (fun k : K => e k * β ((k : G)⁻¹ * (h * g))) h]`.
+
+Simplify using `[hfe, mul_assoc]`.
+-/
 theorem ec_fin [κ.IsMulLeftInvariant] {e : K → ℂ} (he : Continuous e) (hi : ∀ k, ∫ h, e h * e (h⁻¹ * k) ∂κ = e k)
     {β : G → ℂ} (hβ : Continuous β) :
     FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k : K => fun g : G => ec κ e β ((k : G) * g))) := by

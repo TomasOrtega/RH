@@ -10,6 +10,9 @@ def tupleCoface (a b : X) {n : ℕ} (i : Fin (n + 2)) (x : Fin n → X) : Fin (n
   fun j => (Fin.cons a (Fin.snoc x b) : Fin (n + 2) → X)
     (if i ≤ j.castSucc then j.castSucc else j.succ)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `only [tupleCoface, Fin.zero_le, if_true]`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => simp`. Consider the case `succ j => simp [← Fin.succ_castSucc]`.
+-/
 @[simp] theorem tupleCoface_zero (a b : X) {n : ℕ} (x : Fin n → X) :
     tupleCoface a b 0 x = Fin.cons a x := by
   funext j
@@ -18,6 +21,9 @@ def tupleCoface (a b : X) {n : ℕ} (i : Fin (n + 2)) (x : Fin n → X) : Fin (n
   | zero => simp
   | succ j => simp [← Fin.succ_castSucc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[tupleCoface, (Fin.castSucc_lt_last j).not_ge]`.
+-/
 @[simp] theorem tupleCoface_last (a b : X) {n : ℕ} (x : Fin n → X) :
     tupleCoface a b (Fin.last (n + 1)) x = Fin.snoc x b := by
   funext j
@@ -35,6 +41,9 @@ noncomputable def tupleContraction (a : X) (n : ℕ) :
 
 variable {R N}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem tupleContraction_apply (a : X) (n : ℕ) (f : (Fin (n + 1) → X) →₀ N)
     (x : Fin n → X) : tupleContraction R N a n f x = f (Fin.cons a x) := rfl
 

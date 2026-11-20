@@ -24,6 +24,9 @@ open GlobalTheory.ExportSeries
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
+/- English proof (translation)
+Proceed by induction on `n, hn using Nat.le_induction with`. Consider the case `base => simpa using h`. Consider the case `succ n _ ih => rw [pow_succ, pow_succ]`. Conclude with `GlobalTheory.TowerCharRead.chrEq_mul ih h`.
+-/
 theorem chrEq_pow {c : (AE D)ˣ →* Circle} {χ : Formalism.L2.Host.HChar D.host.E} (h : ChrEq c χ) (n : ℕ) (hn : 0 < n) :
     ChrEq (c ^ n) (χ ^ n) := by
   induction n, hn using Nat.le_induction with

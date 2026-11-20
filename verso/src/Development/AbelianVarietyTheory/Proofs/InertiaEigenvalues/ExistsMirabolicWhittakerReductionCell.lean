@@ -17,10 +17,16 @@ namespace GlobalTheory.WhitRed
 
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `Units.ext (Matrix.ext fun _ _ => rfl)`.
+-/
 theorem compV_eq (w : HeightOneSpectrum (𝓞 E)) (x : GA E n) :
     GlobalTheory.CellDec.compV E n w x = GeneralLinearGroup.map (pLoc E w) (GeneralLinearGroup.map (pFin E) x) :=
   Units.ext (Matrix.ext fun _ _ => rfl)
 
+/- English proof (translation)
+The claim follows from `| [], _ => by simp | w :: L, h => by rw [List.mem_cons, not_or] at h rw [List.map_cons, List.prod_cons, map_mul, map_pLoc_prod_of_notMem f v L h.2, pLoc_locGL_of_ne h.1, one_mul]`.
+-/
 theorem map_pLoc_prod_of_notMem (f : ∀ w : HeightOneSpectrum (𝓞 E), GL (Fin n) (w.adicCompletion E))
     (v : HeightOneSpectrum (𝓞 E)) : ∀ L : List (HeightOneSpectrum (𝓞 E)), v ∉ L →
     GeneralLinearGroup.map (pLoc E v) (L.map fun w => locGL E n w (f w)).prod = 1
@@ -29,6 +35,9 @@ theorem map_pLoc_prod_of_notMem (f : ∀ w : HeightOneSpectrum (𝓞 E), GL (Fin
     rw [List.mem_cons, not_or] at h
     rw [List.map_cons, List.prod_cons, map_mul, map_pLoc_prod_of_notMem f v L h.2, pLoc_locGL_of_ne h.1, one_mul]
 
+/- English proof (translation)
+The claim follows from `| [], _, h => absurd h List.not_mem_nil | w :: L, hL, h => by rw [List.nodup_cons] at hL rw [List.map_cons, List.prod_cons, map_mul] by_cases hv : v = w · subst hv rw [pLoc_locGL, map_pLoc_prod_of_notMem f v L hL.1, mul_one] · rw [pLoc_locGL_of_ne hv, one_mul] exact map_pLoc_prod …`.
+-/
 theorem map_pLoc_prod_of_mem (f : ∀ w : HeightOneSpectrum (𝓞 E), GL (Fin n) (w.adicCompletion E))
     (v : HeightOneSpectrum (𝓞 E)) : ∀ L : List (HeightOneSpectrum (𝓞 E)), L.Nodup → v ∈ L →
     GeneralLinearGroup.map (pLoc E v) (L.map fun w => locGL E n w (f w)).prod = f v
@@ -42,6 +51,9 @@ theorem map_pLoc_prod_of_mem (f : ∀ w : HeightOneSpectrum (𝓞 E), GL (Fin n)
     · rw [pLoc_locGL_of_ne hv, one_mul]
       exact map_pLoc_prod_of_mem f v L hL.2 ((List.mem_cons.1 h).resolve_left hv)
 
+/- English proof (translation)
+Establish `e : (A * B⁻¹).val i j = (B * B⁻¹).val i j`. Simplify using `only [Units.val_mul, Matrix.mul_apply, h]`. Rewrite using `[e, mul_inv_cancel, Units.val_one]`.
+-/
 theorem row_mul_inv {R : Type} [CommRing R] {a : ℕ} (A B : GL (Fin a) R) (i : Fin a)
     (h : ∀ j, A.val i j = B.val i j) (j : Fin a) : (A * B⁻¹).val i j = (1 : Matrix (Fin a) (Fin a) R) i j := by
   have e : (A * B⁻¹).val i j = (B * B⁻¹).val i j := by
@@ -50,10 +62,16 @@ theorem row_mul_inv {R : Type} [CommRing R] {a : ℕ} (A B : GL (Fin a) R) (i : 
 
 variable [IsTotallyComplex E]
 
+/- English proof (translation)
+Rewrite using `[compV_eq, pFin_infGL, map_one]`.
+-/
 theorem compV_infGL (w : HeightOneSpectrum (𝓞 E)) (y : GL (Fin n) (Cinf E)) :
     GlobalTheory.CellDec.compV E n w (infGL E n y) = 1 := by
   rw [compV_eq, pFin_infGL, map_one]
 
+/- English proof (translation)
+Use `ga_ext (by rw [map_mul, map_mul, hinf, one_mul, mul_one]) (GlobalTheory.CellDec.GL_ext_pLoc fun w => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_mul, map_mul, ← compV_eq, ← compV_eq]`. Apply the tactic sequence `rcases hw w with h | h <;> rw [h] <;> simp`.
+-/
 theorem comm_of_supp {x y : GA E n} (hinf : GeneralLinearGroup.map (pInf E) x = 1)
     (hw : ∀ w, GlobalTheory.CellDec.compV E n w x = 1 ∨ GlobalTheory.CellDec.compV E n w y = 1) : x * y = y * x := by
   refine ga_ext (by rw [map_mul, map_mul, hinf, one_mul, mul_one]) (GlobalTheory.CellDec.GL_ext_pLoc fun w => ?_)
@@ -64,6 +82,47 @@ end GlobalTheory.WhitRed
 
 open GlobalTheory.WhitRed in
 
+/- English proof (translation)
+Introduce `E _ _ _ m T ϖ F U J hU hK hN hκ g hg hu hy`. Take `⟨u₁, hu₁, k, hk, he⟩` from `hg`. Establish `hrow : ∀ j, g.val (Fin.last m) j = k.val (Fin.last m) j`. Introduce `j`. Take `⟨h1, h2⟩` from `(GlobalTheory.SmGL.mem_unipB (Ad E)).1 hu₁`.
+
+Rewrite using `[he, Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single (Fin.last m)]`. Rewrite using `[h2, one_mul]`. Introduce `i _ hi`. Rewrite using `[h1 _ _ (lt_of_le_of_ne (Fin.le_last i) hi), zero_mul]`. Simplify using the standard rewrite rules.
+
+Establish `hσrow : ∀ j, (GlobalTheory.RSTheta.rowGL (Fin.last m) (fun i => pInf E (g.val (Fin.last m) i))).val (Fin.last m) j = pInf E (g.val (Fin.last m) j)`. Introduce `j`. Use `congrFun (GlobalTheory.RSTheta.single_vecMul_rowGL (ℓ := Fin.last m) (y := fun i => pInf E (g.val (Fin.last m) i)) hu) j` as an intermediate fact. Rewrite `this` using `[Matrix.single_one_vecMul]`. Then use the resulting hypothesis. Generalize the expression as in `GlobalTheory.RSTheta.rowGL (Fin.last m) (fun i => pInf E (g.val (Fin.last m) i)) = σ at hσrow ⊢`.
+
+Take `⟨κ, hκU, hκoff, hκT⟩` from `hκ _ hy`. Take `⟨hf, hhf⟩ : ∃ hf : GL (Fin (m + 1)) (Af E), hf = (T.toList.map fun w => locGL E (m + 1) w (GlobalTheory.CellDec.compV E (m + 1) w k)).prod` from `⟨_, rfl⟩`. Take `⟨h, hh⟩ : ∃ h : GA E (m + 1), h = infGL E (m + 1) (GeneralLinearGroup.map (pInf E) k) * finGL E (m + 1) hf` from `⟨_, rfl⟩`. Establish `hhinf : GeneralLinearGroup.map (pInf E) h = GeneralLinearGroup.map (pInf E) k`. Rewrite using `[hh, map_mul, pInf_infGL, pInf_finGL, mul_one]`.
+
+Establish `hhon : ∀ w ∈ T, GlobalTheory.CellDec.compV E (m + 1) w h = GlobalTheory.CellDec.compV E (m + 1) w k`. Introduce `w hw`. Rewrite using `[hh, map_mul, compV_infGL, one_mul, GlobalTheory.CellDec.compV_finGL, hhf, map_pLoc_prod_of_mem _ w _ T.nodup_toList (Finset.mem_toList.2 hw)]`. Establish `hhoff : ∀ w ∉ T, GlobalTheory.CellDec.compV E (m + 1) w h = 1`. Introduce `w hw`.
+
+Rewrite using `[hh, map_mul, compV_infGL, one_mul, GlobalTheory.CellDec.compV_finGL, hhf, map_pLoc_prod_of_notMem _ w _ (fun h' => hw (Finset.mem_toList.1 h'))]`. Establish `hkT : h⁻¹ * k ∈ GlobalTheory.CellDec.US E (m + 1) T`. Rewrite `hk`, the goal using `[GlobalTheory.CellDec.mem_US]`. Introduce `v hv`. Rewrite using `[map_mul, map_inv, hhoff v hv, inv_one, one_mul]`.
+
+Conclude with `hk v hv`. Establish `hkTinf : GeneralLinearGroup.map (pInf E) (h⁻¹ * k) = 1`. Rewrite using `[map_mul, map_inv, hhinf, inv_mul_cancel]`. Establish `hkTT : ∀ w ∈ T, GlobalTheory.CellDec.compV E (m + 1) w (h⁻¹ * k) = 1`. Introduce `w hw`.
+
+Rewrite using `[map_mul, map_inv, hhon w hw, inv_mul_cancel]`. Take `⟨p, hp⟩ : ∃ p : GA E (m + 1), p = h * (infGL E (m + 1) σ)⁻¹ * (finGL E (m + 1) κ)⁻¹` from `⟨_, rfl⟩`. Establish `hpoff : ∀ w ∉ T, GlobalTheory.CellDec.compV E (m + 1) w p = 1`. Introduce `w hw`. Rewrite using `[hp, map_mul, map_mul, map_inv, map_inv, hhoff w hw, compV_infGL, GlobalTheory.CellDec.compV_finGL, hκoff w hw]`.
+
+Simplify using the standard rewrite rules. Use `⟨p, ⟨fun w hw => hpoff w hw, fun j => ?_⟩, fun l => ?_⟩` and prove the remaining obligations. Apply `ad_ext` to reduce the goal to its premises. Establish `e1 : pInf E (p.val (Fin.last m) j) = (GeneralLinearGroup.map (pInf E) p).val (Fin.last m) j` using `rfl`. Establish `e2 : GeneralLinearGroup.map (pInf E) p = GeneralLinearGroup.map (pInf E) k * σ⁻¹`.
+
+Rewrite using `[hp, map_mul, map_mul, map_inv, map_inv, hhinf, pInf_infGL, pInf_finGL, inv_one, mul_one]`. Establish `hkr : ∀ j, (GeneralLinearGroup.map (pInf E) k).val (Fin.last m) j = σ.val (Fin.last m) j`. Introduce `j`. Rewrite using `[hσrow, hrow]`. Both sides reduce to the same expression.
+
+Rewrite using `[e1, e2, row_mul_inv _ _ _ hkr]`. Distinguish the cases in `hj : j = Fin.last m`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hj, map_zero, Matrix.one_apply_ne (Ne.symm hj)]`.
+
+Use `IsDedekindDomain.FiniteAdeleRing.ext _ fun w => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(GlobalTheory.CellDec.compV E (m + 1) w p).val (Fin.last m) j = pLoc E w (pFin E (if j = Fin.last m then (1 : Ad E) else 0))`. Establish `eR : pLoc E w (pFin E (if j = Fin.last m then (1 : Ad E) else 0)) = (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) (w.adicCompletion E)) (Fin.last m) j`. Distinguish the cases in `hj : j = Fin.last m`. Substitute `hj` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_neg hj, map_zero, map_zero, Matrix.one_apply_ne (Ne.symm hj)]`. Rewrite using `[eR]`. Distinguish the cases in `hw : w ∈ T`. Establish `e2 : GlobalTheory.CellDec.compV E (m + 1) w p = GlobalTheory.CellDec.compV E (m + 1) w k * (GeneralLinearGroup.map (pLoc E w) κ)⁻¹`.
+
+Rewrite using `[hp, map_mul, map_mul, map_inv, map_inv, hhon w hw, compV_infGL, GlobalTheory.CellDec.compV_finGL, inv_one, mul_one]`. Rewrite using `[e2]`. Use `row_mul_inv _ _ _ (fun j => ?_) j` and prove the remaining obligations. Rewrite using `[hκT w hw j]`. Use `show pLoc E w (pFin E (k.val _ _)) = _`.
+
+Rewrite using `[← hrow]`. Rewrite using `[hpoff w hw]`. Both sides reduce to the same expression. Take `⟨t, ht⟩ : ∃ t : GA E (m + 1), t = GlobalTheory.CellDec.tl (m + 1) ϖ l.1` from `⟨_, rfl⟩`. Rewrite using `[← ht]`.
+
+Establish `htinf : GeneralLinearGroup.map (pInf E) t = 1`. Rewrite using `[ht, GlobalTheory.CellDec.tl]`. Conclude with `pInf_finGL _`. Establish `htT : ∀ w ∈ T, GlobalTheory.CellDec.compV E (m + 1) w t = 1`. Introduce `w hw`.
+
+Rewrite using `[ht, GlobalTheory.CellDec.compV_tl, l.2 w hw, GlobalTheory.IwaCell.tD_zero]`. Establish `hc1 : (h⁻¹ * k) * (infGL E (m + 1) σ)⁻¹ = (infGL E (m + 1) σ)⁻¹ * (h⁻¹ * k)` using `comm_of_supp hkTinf fun w => Or.inr (by rw [map_inv, compV_infGL, inv_one])`. Establish `hc2 : t * p = p * t` using `comm_of_supp htinf fun w => by`. Distinguish the cases in `hw : w ∈ T`. Conclude with `Or.inl (htT w hw)`.
+
+Conclude with `Or.inr (hpoff w hw)`. Establish `hp' : h * (infGL E (m + 1) σ)⁻¹ = p * finGL E (m + 1) κ`. Rewrite using `[hp, inv_mul_cancel_right]`. Establish `key : t * g * (infGL E (m + 1) σ)⁻¹ = (t * u₁ * t⁻¹) * ((p * t * finGL E (m + 1) κ) * (h⁻¹ * k))`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[he]`. Use `group`. Use `_ = t * u₁ * ((h * (infGL E (m + 1) σ)⁻¹) * (h⁻¹ * k)) := by rw [hc1]; group`. Use `_ = t * u₁ * t⁻¹ * ((t * p) * finGL E (m + 1) κ * (h⁻¹ * k)) := by rw [hp']; group`. Use `_ = _ := by rw [hc2]`.
+
+Establish `hu₁' : t * u₁ * t⁻¹ ∈ GlobalTheory.CellDec.NA E (m + 1)`. Rewrite using `[ht]`. Conclude with `GlobalTheory.CellDec.tl_conj_mem ϖ l.1 hu₁`. Rewrite using `[key, hN _ hu₁', hK _ hkT hkTinf hkTT, hU κ hκU]`.
+-/
 theorem GlobalTheory.WhitRed.exists_mirabolic : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (T : Finset (HeightOneSpectrum (𝓞 E)))
     (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ) (F : GA E (m + 1) → ℂ)
     (U : Subgroup (GL (Fin (m + 1)) (Af E))) (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ),

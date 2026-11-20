@@ -11,6 +11,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.InvGlue.invertible_of_locally_singly_generated | exact GlobalTheory.InvGlue.invertible_of_locally_singly_generated | (intros; apply GlobalTheory.InvGlue.invertible_of_locally_singly_generated <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.locally_free_of_maximal_ideal_generator : ∀ (R O : Type) [CommRing R] [CommRing O] (J : Type) [Fintype J] (b : Module.Basis J ℤ O)
     (M : Type) [AddCommGroup M] [Module R M] [Module O M] [SMulCommClass R O M],
     (∀ p : Ideal R, p.IsMaximal → ∃ g : R, g ∉ p ∧ ∃ m : M,

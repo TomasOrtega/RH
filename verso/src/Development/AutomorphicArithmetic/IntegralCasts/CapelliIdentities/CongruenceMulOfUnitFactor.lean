@@ -9,6 +9,13 @@ noncomputable def UpperTheory.Reformulated.B.Yza4.Cg :
     fun {l : ℕ} [Fact (Nat.Prime l)] (n : ℕ) (a b : UpperTheory.Reformulated.B.Yza4.Qbar l) ↦
       ‖a - b‖ ≤ ‖(↑l : UpperTheory.Reformulated.B.Yza4.Qbar l) ^ n‖
 
+/- English proof (translation)
+Introduce `l _ n P h un D h1 h2 hu hh`. Unfold `UpperTheory.Reformulated.B.Yza4.Cg at *`. Rewrite `h1`, the goal using `[sub_zero]`. Use `set c : ℝ := ‖(↑l : PadicAlgCl l) ^ n‖ with hc`. Establish `hc0 : 0 ≤ c` using `norm_nonneg _`.
+
+Establish `hmul : ∀ a b : PadicAlgCl l, ‖a * b‖ = ‖a‖ * ‖b‖` using `fun a b => norm_mul a b`. Establish `key : un * (D * h) = P * h + (un * D - P) * h` using `by ring`. Establish `h3 : ‖(un * D - P) * h‖ ≤ c`. Rewrite using `[hmul, norm_sub_rev]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h4 : ‖un * (D * h)‖ ≤ c`. Rewrite using `[key]`. Conclude with `(PadicAlgCl.isNonarchimedean l _ _).trans (max_le h1 h3)`. Rewrite `h4` using `[hmul, hu, one_mul]`. Conclude with `h4`.
+-/
 theorem UpperTheory.Reformulated.B.Yza4.congruence_mul_of_unit_factor :
     ∀ {l : ℕ} [inst : Fact (Nat.Prime l)] {n : ℕ} {P h un D : UpperTheory.Reformulated.B.Yza4.Qbar l},
       UpperTheory.Reformulated.B.Yza4.Cg n (P * h) (0 : UpperTheory.Reformulated.B.Yza4.Qbar l) →

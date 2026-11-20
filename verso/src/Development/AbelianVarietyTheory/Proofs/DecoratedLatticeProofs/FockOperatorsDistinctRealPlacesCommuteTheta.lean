@@ -22,6 +22,9 @@ section Generic
 
 variable {ι X : Type} {A : ι → (X → ℂ) → (X → ℂ)} {P : (X → ℂ) → Prop}
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons i l ih`. Simplify using `only [List.foldr_cons]`. Rewrite using `[hBA _ _ (GlobalTheory.FockIndep.foldr_mem hA hf l), ih]`.
+-/
 theorem foldr_comm {B : (X → ℂ) → (X → ℂ)} (hA : ∀ i f, P f → P (A i f))
     (hBA : ∀ i f, P f → B (A i f) = A i (B f)) {f : X → ℂ} (hf : P f) (l : List ι) :
     B (l.foldr (fun i g => A i g) f) = l.foldr (fun i g => A i g) (B f) := by
@@ -31,6 +34,11 @@ theorem foldr_comm {B : (X → ℂ) → (X → ℂ)} (hA : ∀ i f, P f → P (A
     simp only [List.foldr_cons]
     rw [hBA _ _ (GlobalTheory.FockIndep.foldr_mem hA hf l), ih]
 
+/- English proof (translation)
+Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial k c`. Rewrite using `[GlobalTheory.FockIndep.pure_monomial, GlobalTheory.FockIndep.pure_monomial]`. Unfold `opPow`. Rewrite using `[Bsm _ _ (GlobalTheory.FockIndep.foldr_mem hA hf _), foldr_comm hA hBA hf]`.
+
+Consider the case `add p q hp hq`. Rewrite using `[map_add, map_add, Badd _ _ (GlobalTheory.FockIndep.pure_mem hadd hsm hA hf _) (GlobalTheory.FockIndep.pure_mem hadd hsm hA hf _), hp, hq]`.
+-/
 theorem pure_comm {B : (X → ℂ) → (X → ℂ)} (hadd : ∀ f f', P f → P f' → P (f + f'))
     (hsm : ∀ (a : ℂ) f, P f → P (a • f)) (hA : ∀ i f, P f → P (A i f))
     (Badd : ∀ f f', P f → P f' → B (f + f') = B f + B f') (Bsm : ∀ (a : ℂ) f, P f → B (a • f) = a • B f)
@@ -45,6 +53,13 @@ theorem pure_comm {B : (X → ℂ) → (X → ℂ)} (hadd : ∀ f f', P f → P 
     rw [map_add, map_add, Badd _ _ (GlobalTheory.FockIndep.pure_mem hadd hsm hA hf _) (GlobalTheory.FockIndep.pure_mem hadd hsm hA hf _),
       hp, hq]
 
+/- English proof (translation)
+Establish `hl : ∀ l : List ι, l.foldr (fun i g => A i g) (f + f') = l.foldr (fun i g => A i g) f + l.foldr (fun i g => A i g) f'` using `fun l => by`. Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons i l ih`. Simplify using `only [List.foldr_cons]`.
+
+Rewrite using `[ih, Aadd _ _ _ (GlobalTheory.FockIndep.foldr_mem hA hf l) (GlobalTheory.FockIndep.foldr_mem hA hf' l)]`. Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial k c`. Rewrite using `[GlobalTheory.FockIndep.pure_monomial, GlobalTheory.FockIndep.pure_monomial, GlobalTheory.FockIndep.pure_monomial]`. Unfold `opPow`.
+
+Rewrite using `[hl, smul_add]`. Consider the case `add p q hp hq`. Rewrite using `[map_add, map_add, map_add, hp, hq]`. Normalize the expressions using the abelian group laws.
+-/
 theorem pure_fun_add (hA : ∀ i f, P f → P (A i f)) (hadd : ∀ f f', P f → P f' → P (f + f'))
     (hsm : ∀ (a : ℂ) f, P f → P (a • f))
     (Aadd : ∀ i f f', P f → P f' → A i (f + f') = A i f + A i f') {f f' : X → ℂ} (hf : P f) (hf' : P f')
@@ -65,6 +80,13 @@ theorem pure_fun_add (hA : ∀ i f, P f → P (A i f)) (hadd : ∀ f f', P f →
     rw [map_add, map_add, map_add, hp, hq]
     abel
 
+/- English proof (translation)
+Establish `hl : ∀ l : List ι, l.foldr (fun i g => A i g) (a • f) = a • l.foldr (fun i g => A i g) f` using `fun l => by`. Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons i l ih`. Simplify using `only [List.foldr_cons]`.
+
+Rewrite using `[ih, Asm _ _ _ (GlobalTheory.FockIndep.foldr_mem hA hf l)]`. Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial k c`. Rewrite using `[GlobalTheory.FockIndep.pure_monomial, GlobalTheory.FockIndep.pure_monomial]`. Unfold `opPow`.
+
+Rewrite using `[hl, smul_comm]`. Consider the case `add p q hp hq`. Rewrite using `[map_add, map_add, hp, hq, smul_add]`.
+-/
 theorem pure_fun_smul (hA : ∀ i f, P f → P (A i f))
     (Asm : ∀ i (a : ℂ) f, P f → A i (a • f) = a • A i f) (a : ℂ) {f : X → ℂ} (hf : P f)
     (Q : MvPolynomial ι ℂ) : pureTensorL A (a • f) Q = a • pureTensorL A f Q := by
@@ -90,12 +112,18 @@ variable {D : D7} {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
   (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {τ τ' : D.what₂.Tau} (hne : τ ≠ τ')
 include hψ hθ hne
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.FockIndep.dRho_comm hψ hθ τ z τ' z' hf]`. Simplify using `[GlobalTheory.FockIndep.omDir, hne]`.
+-/
 theorem dRho_comm_ne (z z' : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     Datum.dRho (heisO ψ S T) θ τ z (Datum.dRho (heisO ψ S T) θ τ' z' f) =
       Datum.dRho (heisO ψ S T) θ τ' z' (Datum.dRho (heisO ψ S T) θ τ z f) := by
   rw [GlobalTheory.FockIndep.dRho_comm hψ hθ τ z τ' z' hf]
   simp [GlobalTheory.FockIndep.omDir, hne]
 
+/- English proof (translation)
+Establish `ht` using `fun ρ y => theta_dRho hθ hψ ρ y hf`. Rewrite using `[GlobalTheory.FockIndep.aPlus_eq, GlobalTheory.FockIndep.aPlus_eq, GlobalTheory.FockIndep.dRho_smul hψ hθ _ _ _ (theta_add (ht _ _) (theta_smul _ (ht _ _))), GlobalTheory.FockIndep.dRho_add hψ hθ _ _ (ht _ _) (theta_smul _ (ht _ _)), GlobalTheory.FockIndep.dRho_smul hψ hθ _ _ _ ( …`.
+-/
 theorem dRho_aPlus_ne (z : Matrix (Fin T.rank) (Fin S.rank) ℂ)
     (J : Matrix (Fin T.rank) (Fin S.rank) ℂ → Matrix (Fin T.rank) (Fin S.rank) ℂ) (u : Matrix (Fin T.rank) (Fin S.rank) ℂ)
     {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
@@ -107,6 +135,9 @@ theorem dRho_aPlus_ne (z : Matrix (Fin T.rank) (Fin S.rank) ℂ)
     GlobalTheory.FockIndep.dRho_add hψ hθ _ _ (ht _ _) (theta_smul _ (ht _ _)), GlobalTheory.FockIndep.dRho_smul hψ hθ _ _ _ (ht _ _),
     dRho_comm_ne hψ hθ hne _ _ hf, dRho_comm_ne hψ hθ hne _ _ hf]
 
+/- English proof (translation)
+Establish `ht` using `fun ρ y => theta_dRho hθ hψ ρ y hf`. Rewrite using `[GlobalTheory.FockIndep.aPlus_eq τ J z (aPlus (heisO ψ S T) θ τ' J' u f), dRho_aPlus_ne hψ hθ hne _ _ _ hf, dRho_aPlus_ne hψ hθ hne _ _ _ hf, ← GlobalTheory.FockIndep.aPlus_smul hψ hθ _ _ _ _ (ht _ _), ← GlobalTheory.FockIndep.aPlus_add hψ hθ _ _ _ (ht _ _) (theta_smul _ (ht _ _) …`.
+-/
 theorem aPlus_comm_ne (J J' : Matrix (Fin T.rank) (Fin S.rank) ℂ → Matrix (Fin T.rank) (Fin S.rank) ℂ)
     (z u : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     aPlus (heisO ψ S T) θ τ J z (aPlus (heisO ψ S T) θ τ' J' u f) =
@@ -117,6 +148,9 @@ theorem aPlus_comm_ne (J J' : Matrix (Fin T.rank) (Fin S.rank) ℂ → Matrix (F
     ← GlobalTheory.FockIndep.aPlus_add hψ hθ _ _ _ (ht _ _) (theta_smul _ (ht _ _)),
     ← GlobalTheory.FockIndep.aPlus_smul hψ hθ _ _ _ _ (theta_add (ht _ _) (theta_smul _ (ht _ _))), ← GlobalTheory.FockIndep.aPlus_eq]
 
+/- English proof (translation)
+Establish `ht` using `fun ρ y => theta_dRho hθ hψ ρ y hf`. Rewrite using `[annih, annih, dRho_aPlus_ne hψ hθ hne _ _ _ hf, dRho_aPlus_ne hψ hθ hne _ _ _ hf, ← GlobalTheory.FockIndep.aPlus_smul hψ hθ _ _ _ _ (ht _ _), ← GlobalTheory.FockIndep.aPlus_add hψ hθ _ _ _ (ht _ _) (theta_smul _ (ht _ _))]`.
+-/
 theorem annih_aPlus_ne (J J' : Matrix (Fin T.rank) (Fin S.rank) ℂ → Matrix (Fin T.rank) (Fin S.rank) ℂ)
     (z u : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
     annih (heisO ψ S T) θ τ J z (aPlus (heisO ψ S T) θ τ' J' u f) =
@@ -135,6 +169,11 @@ variable {D : D7} {V W : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
   {τ τ' : D.what₂.Tau} (hne : τ ≠ τ') {g : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ'))
 include hW hθ hne hg
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.OrientedHeis.om_dRho hW hθ _ _ τ z hf]`. Establish `h1 : compAt θ τ (Formalism.L2.Theta.mt W 1) = 1`. Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_one, Units.val_one]`. Conclude with `Matrix.map_one _ (((θ τ).comp (infPart D)).map_zero) (((θ τ).comp (infPart D)).map_one)`.
+
+Establish `h2 : compAt θ τ (Formalism.L2.Theta.mt V (atTau θ V τ' g)) = 1` using `(GlobalTheory.PointAtPlaceHom.atTau_spec hθ V τ' hg).2.2 τ hne`. Establish `h3` using `GlobalTheory.OrientedHeis.compAt_mt_mul_inv (θ := θ) τ (atTau θ V τ' g)`. Rewrite `h3` using `[h2, Matrix.one_mul]`. Rewrite using `[h1, h3, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem om_dRho_fix (z : Matrix (Fin W.rank) (Fin V.rank) ℂ) {f : WO V W → ℂ} (hf : IsThetaFunO ψ V W f) :
     ω (atTau θ V τ' g, 1) (Datum.dRho (heisO ψ V W) θ τ z f) =
       Datum.dRho (heisO ψ V W) θ τ z (ω (atTau θ V τ' g, 1) f) := by
@@ -149,12 +188,18 @@ theorem om_dRho_fix (z : Matrix (Fin W.rank) (Fin V.rank) ℂ) {f : WO V W → �
   rw [h2, Matrix.one_mul] at h3
   rw [h1, h3, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.FockIndep.aPlus_eq, GlobalTheory.FockIndep.aPlus_eq, map_smul, map_add, map_smul, om_dRho_fix hW hθ hne hg _ hf, om_dRho_fix hW hθ hne hg _ hf]`.
+-/
 theorem om_aPlus_fix (J : Matrix (Fin W.rank) (Fin V.rank) ℂ → Matrix (Fin W.rank) (Fin V.rank) ℂ)
     (u : Matrix (Fin W.rank) (Fin V.rank) ℂ) {f : WO V W → ℂ} (hf : IsThetaFunO ψ V W f) :
     ω (atTau θ V τ' g, 1) (aPlus (heisO ψ V W) θ τ J u f) = aPlus (heisO ψ V W) θ τ J u (ω (atTau θ V τ' g, 1) f) := by
   rw [GlobalTheory.FockIndep.aPlus_eq, GlobalTheory.FockIndep.aPlus_eq, map_smul, map_add, map_smul, om_dRho_fix hW hθ hne hg _ hf,
     om_dRho_fix hW hθ hne hg _ hf]
 
+/- English proof (translation)
+Rewrite using `[annih, annih, map_add, map_smul, om_dRho_fix hW hθ hne hg _ hf, om_dRho_fix hW hθ hne hg _ hf]`.
+-/
 theorem om_annih_fix (J : Matrix (Fin W.rank) (Fin V.rank) ℂ → Matrix (Fin W.rank) (Fin V.rank) ℂ)
     (u : Matrix (Fin W.rank) (Fin V.rank) ℂ) {f : WO V W → ℂ} (hf : IsThetaFunO ψ V W f) :
     ω (atTau θ V τ' g, 1) (annih (heisO ψ V W) θ τ J u f) = annih (heisO ψ V W) θ τ J u (ω (atTau θ V τ' g, 1) f) := by
@@ -162,6 +207,15 @@ theorem om_annih_fix (J : Matrix (Fin W.rank) (Fin V.rank) ℂ → Matrix (Fin W
 
 end Weil
 
+/- English proof (translation)
+Introduce `D V W S S' M M' θ ψ χS χT ω hθ hW τ τ' hne F hF`. Simplify using `only`. Establish `hψ` using `hW.std`. Establish `hadd : ∀ f f', IsThetaFunO ψ V W f → IsThetaFunO ψ V W f' → IsThetaFunO ψ V W (f + f')` using `fun _ _ => theta_add`. Establish `hsm : ∀ (a : ℂ) f, IsThetaFunO ψ V W f → IsThetaFunO ψ V W (a • f)` using `fun a _ => theta_smul a`.
+
+Establish `hA : ∀ ρ (k : Fin W.rank × Fin V.rank) g, IsThetaFunO ψ V W g → IsThetaFunO ψ V W (aPlus (heisO ψ V W) θ ρ (cplxO (cart M ρ) (cart M' ρ)) (unitMap (onb M ρ) (onb M' ρ) k.1 k.2) g)` using `fun ρ _ _ h => GlobalTheory.FockIndep.aPlus_theta hψ hθ ρ _ _ h`. Establish `Aadd : ∀ ρ (k : Fin W.rank × Fin V.rank) g g', IsThetaFunO ψ V W g → IsThetaFunO ψ V W g' → aPlus (heisO ψ V W) θ ρ (cplxO (cart M ρ) (cart M' ρ)) (unitMap (onb M ρ) (onb M' ρ) k.1 k.2) (g + g') = aPlus (heisO ψ V W) θ ρ (cplxO (cart M ρ) (cart M' ρ)) (unitMap (onb M ρ) (onb M' ρ …` using `fun ρ _ _ _ h h' => GlobalTheory.FockIndep.aPlus_add hψ hθ ρ _ _ h h'`. Establish `Asm : ∀ ρ (k : Fin W.rank × Fin V.rank) (a : ℂ) g, IsThetaFunO ψ V W g → aPlus (heisO ψ V W) θ ρ (cplxO (cart M ρ) (cart M' ρ)) (unitMap (onb M ρ) (onb M' ρ) k.1 k.2) (a • g) = a • aPlus (heisO ψ V W) θ ρ (cplxO (cart M ρ) (cart M' ρ)) (unitMap (onb M ρ) (onb M' ρ) k.1 k.2) g` using `fun ρ _ a _ h => GlobalTheory.FockIndep.aPlus_smul hψ hθ ρ _ _ a h`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ptAt`. Use `⟨fun P => GlobalTheory.FockIndep.pure_mem hadd hsm (hA τ') hF P, fun P hv z => ?_, fun P Q => ?_, fun g hg => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[pure_comm hadd hsm (hA τ') (fun _ _ h h' => GlobalTheory.FockIndep.annih_add hψ hθ τ _ z h h') (fun a _ h => GlobalTheory.FockIndep.annih_smul hψ hθ τ _ z a h) (fun k g hg => annih_aPlus_ne hψ hθ hne _ _ _ _ hg) hF P, hv z]`. Establish `h0` using `pure_fun_smul (hA τ') (Asm τ') 0 hF P`. Rewrite `h0` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis. Use `symm`. Use `pure_comm (B := fun g => pureTensorL (fun k : Fin W.rank × Fin V.rank => aPlus (heisO ψ V W) θ τ' (cplxO (cart M τ') (cart M' τ')) (unitMap (onb M τ') (onb M' τ') k.1 k.2)) g Q) hadd hsm (hA τ) (fun _ _ h h' => pure_fun_add (hA τ') hadd hsm (Aadd τ') h h' Q) (fun a _ h => pure_fu …` and prove the remaining obligations.
+
+Conclude with `(pure_comm hadd hsm (hA τ') (Aadd τ k) (Asm τ k) (fun j h hh => aPlus_comm_ne hψ hθ hne _ _ _ _ hh) hg Q).symm`. Introduce `hv z`. Rewrite using `[← om_annih_fix hW hθ hne hg _ _ hF, hv z, map_zero]`. Introduce `P`. Conclude with `pure_comm hadd hsm (hA τ) (fun f f' _ _ => map_add _ f f') (fun a f _ => map_smul _ a f) (fun k h hh => om_aPlus_fix hW hθ hne hg _ _ hh) hF P`.
+-/
 theorem twoPlace_comm : ∀ (D : D7) (V W : HSp D) (S S' : D.what₂.Tau → SPar) (M : DSModel V S) (M' : DSModel W S') (θ : InfFam D) (ψ : AddChar (AF D.host.F) ℂ) (χS χT : (AE D)ˣ →* Circle) (ω : (GA D V × GA D W →* Module.End ℂ (WO V W → ℂ))), IsInfFam θ → IsWeilDatumO ψ V W χS χT ω → ∀ (τ τ' : D.what₂.Tau), τ ≠ τ' → ∀ F, IsThetaFunO ψ V W F → let pt := fun ρ => GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ptAt ψ θ V W ρ (cart M ρ) (cart M' ρ) (onb M ρ) (onb M' ρ); let vac := IsFockVacAt (heisO ψ V W) θ τ (cplxO (cart M τ) (cart M' τ)); (∀ P, IsThetaFunO ψ V W (pt τ' F P)) ∧ (∀ P, vac F → vac (pt τ' F P)) ∧ (∀ P Q, pt τ (pt τ' F Q) P = pt τ' (pt τ F P) Q) ∧ ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ'), (vac F → vac (ω (atTau θ V τ' g, 1) F)) ∧ ∀ P, ω (atTau θ V τ' g, 1) (pt τ F P) = pt τ (ω (atTau θ V τ' g, 1) F) P := by
   intro D V W S S' M M' θ ψ χS χT ω hθ hW τ τ' hne F hF
   dsimp only

@@ -8,6 +8,9 @@ open scoped ContDiff FourierTransform ENNReal
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hd : Differentiable ℝ b` using `hb.differentiable (by simp)`. Use `Convex.norm_image_sub_le_of_norm_fderiv_le (fun x _ => hd x) (fun x _ => hL x) convex_univ (Set.mem_univ x0) (Set.mem_univ (x0 + r • y))` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_left, norm_smul, Real.norm_of_nonneg hr.le]`. Then use the resulting hypothesis.
+-/
 lemma gr_zero {d : ℕ} (b : E d → ℂ) (hb : ContDiff ℝ ∞ b) (L : ℝ) (hL : ∀ x, ‖fderiv ℝ b x‖ ≤ L)
     (x0 y : E d) (r : ℝ) (hr : 0 < r) : ‖b (x0 + r • y) - b x0‖ ≤ L * (r * ‖y‖) := by
   have hd : Differentiable ℝ b := hb.differentiable (by simp)
@@ -15,6 +18,15 @@ lemma gr_zero {d : ℕ} (b : E d → ℂ) (hb : ContDiff ℝ ∞ b) (L : ℝ) (h
     convex_univ (Set.mem_univ x0) (Set.mem_univ (x0 + r • y))
   rwa [add_sub_cancel_left, norm_smul, Real.norm_of_nonneg hr.le] at this
 
+/- English proof (translation)
+Establish `hk : k ≠ 0` using `hk0.ne'`. Establish `hkle : (k : ℕ∞ω) ≤ ((⊤ : ℕ∞) : ℕ∞ω)` using `by exact_mod_cast (ENat.natCast_lt_top k).le`. Take `⟨g, hg⟩ : ∃ g : E d →L[ℝ] E d, g = r • ContinuousLinearMap.id ℝ (E d)` from `⟨_, rfl⟩`. Establish `hshift : ContDiff ℝ ∞ (fun z => b (x0 + z))` using `hb.comp (contDiff_const.add contDiff_id)`. Establish `hfun : (fun y => b (x0 + r • y) - b x0) = ((fun z => b (x0 + z)) ∘ g) - fun _ => b x0`.
+
+Use function extensionality and compare the values at `y`. Simplify using `[hg]`. Rewrite using `[hfun, iteratedFDeriv_sub_apply (((hshift.comp g.contDiff).of_le hkle).contDiffAt) contDiffAt_const, iteratedFDeriv_const_of_ne hk, Pi.zero_apply, sub_zero, g.iteratedFDeriv_comp_right hshift y hkle, iteratedFDeriv_comp_add_left]`. Establish `hgn : ‖g‖ ≤ r`. Rewrite using `[hg]`.
+
+Use `(norm_smul_le r _).trans ?_` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg hr.le]`. Conclude with `mul_le_of_le_one_right hr.le ContinuousLinearMap.norm_id_le`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+
+Conclude with `mul_le_mul (hM _) (pow_le_pow_left₀ (norm_nonneg _) hgn k) (by positivity) ((norm_nonneg _).trans (hM 0))`.
+-/
 lemma gr_pos {d : ℕ} (b : E d → ℂ) (hb : ContDiff ℝ ∞ b) (k : ℕ) (hk0 : 0 < k) (M : ℝ)
     (hM : ∀ x, ‖iteratedFDeriv ℝ k b x‖ ≤ M) (x0 y : E d) (r : ℝ) (hr : 0 < r) :
     ‖iteratedFDeriv ℝ k (fun y => b (x0 + r • y) - b x0) y‖ ≤ M * r ^ k := by

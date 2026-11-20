@@ -12,8 +12,16 @@ attribute [local instance] UpperTheory.V.QbarInst.charZero UpperTheory.V.QbarIns
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial UpperTheory.V.Af UpperTheory.V.Af.Nf UpperTheory.V.Sd
 noncomputable section
 namespace UpperTheory.V.Br.CharacterEquality
+/- English proof (translation)
+Introduce `v w h` and use `HeightOneSpectrum.ext (by rw [(places v).2.1, (places w).2.1, show normV v = normV w from h])`.
+-/
 private theorem normV_inj : Function.Injective fun w : Pl ℚ => normV w := fun v w h =>
   HeightOneSpectrum.ext (by rw [(places v).2.1, (places w).2.1, show normV v = normV w from h])
+/- English proof (translation)
+Establish `h0 : Prime ((p : ℕ) : 𝓞 ℚ)`. Establish `h : Prime ((p : ℕ) : ℤ)` using `Nat.prime_iff_prime_int.mp hp`. Establish `e : ((p : ℕ) : 𝓞 ℚ) = Rat.ringOfIntegersEquiv.symm ((p : ℕ) : ℤ)` using `by simp`. Rewrite using `[e]`. Conclude with `(MulEquiv.prime_iff Rat.ringOfIntegersEquiv.symm.toMulEquiv).mpr h`.
+
+Set `w : Pl ℚ` to `⟨Ideal.span {((p : ℕ) : 𝓞 ℚ)}, (Ideal.span_singleton_prime h0.ne_zero).mpr h0, by rw [Ne, Ideal.span_singleton_eq_bot]; exact h0.ne_zero⟩`. Use `⟨w, (places w).2.2.1.symm.trans ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.absNorm (Ideal.span {((p : ℕ) : 𝓞 ℚ)}) = p`. Rewrite using `[Ideal.absNorm_span_natCast, RingOfIntegers.rank]`. Simplify using the standard rewrite rules.
+-/
 private theorem normV_surj {p : ℕ} (hp : p.Prime) : ∃ w : Pl ℚ, normV w = p := by
   have h0 : Prime ((p : ℕ) : 𝓞 ℚ) := by
     have h : Prime ((p : ℕ) : ℤ) := Nat.prime_iff_prime_int.mp hp
@@ -26,6 +34,9 @@ private theorem normV_surj {p : ℕ} (hp : p.Prime) : ∃ w : Pl ℚ, normV w = 
   change Ideal.absNorm (Ideal.span {((p : ℕ) : 𝓞 ℚ)}) = p
   rw [Ideal.absNorm_span_natCast, RingOfIntegers.rank]
   simp
+/- English proof (translation)
+Rewrite `h` using `[Matrix.charpoly_fin_two]`. Establish `h0` using `congrArg (Polynomial.coeff · 0) h`. Establish `h1` using `congrArg (Polynomial.coeff · 1) h`. Simplify using `at h0 h1`. Conclude with `⟨h1, h0⟩`.
+-/
 private theorem tr_det {K : Type} [Field K] (ι : K ≃+* ℂ) {A : Matrix (Fin 2) (Fin 2) K} {a d : ℂ}
     (h : A.charpoly.map ι.toRingHom = X ^ 2 - C a * X + C d) : ι A.trace = a ∧ ι A.det = d := by
   rw [Matrix.charpoly_fin_two] at h
@@ -33,10 +44,18 @@ private theorem tr_det {K : Type} [Field K] (ι : K ≃+* ℂ) {A : Matrix (Fin 
   have h1 := congrArg (Polynomial.coeff · 1) h
   simp at h0 h1
   exact ⟨h1, h0⟩
+/- English proof (translation)
+Simplify using `[Matrix.det_fin_two, Matrix.trace_fin_two, Matrix.mul_apply, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem two_det {K : Type} [CommRing K] (A : Matrix (Fin 2) (Fin 2) K) :
     2 * A.det = A.trace ^ 2 - (A * A).trace := by
   simp [Matrix.det_fin_two, Matrix.trace_fin_two, Matrix.mul_apply, Fin.sum_univ_two]
   ring
+/- English proof (translation)
+Take `⟨ω, φ, hω, hval, hφ, hcu⟩` from `adelise k N hk χ g`. Take `⟨π, hreg, ⟨χ', hpol⟩, -, -, hsat⟩` from `_root_.UpperTheory.V.Sd.holRep_alt P ℚ k hk _ ω hω φ _ hφ hcu`. Take `⟨r, wt, HT, hG, hatt, -⟩` from `_root_.UpperTheory.Gal.SV.exRS_alt P.toClassicalTheorems ℚ (AlgebraicClosure ℚ) 2 ι 2 one_le_two π χ' hreg hpol`. Use `⟨r, hG.cont, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hatt.2, normV_inj.tendsto_cofinite.eventually (Set.finite_le_nat N).eventually_cofinite_notMem] with w ⟨B₁, hB₁, hF⟩ hw A hA σ hσ`.
+
+Establish `hq : ¬ normV w ∣ N` using `fun h => hw (Nat.le_of_dvd (NeZero.pos N) h)`. Take `⟨B₂, hB₂, e⟩` from `hsat w (Nat.factorization_eq_zero_of_not_dvd hq)`. Take `rfl` from `hB₁.unique hB₂`. Rewrite using `[← (hval w hq).2]`. Conclude with `tr_det ι (((hF A hA).2 σ hσ).trans e)`.
+-/
 private theorem exists_rep (P : _root_.UpperTheory.V.Af.HypothesesH') (ι : Qbar 2 ≃+* ℂ) {k N : ℕ} [NeZero N] (hk : 2 ≤ k) {χ : DirichletCharacter ℂ N}
     (g : Eigenform k N χ) : ∃ r : G ℚ (AlgebraicClosure ℚ) →* GL (Fin 2) (Qbar 2), Continuous r ∧
       ∀ᶠ w : Pl ℚ in Filter.cofinite, ∀ A : ValuationSubring (AlgebraicClosure ℚ), IsPlaceOver A w →
@@ -56,6 +75,17 @@ private theorem exists_rep (P : _root_.UpperTheory.V.Af.HypothesesH') (ι : Qbar
   exact tr_det ι (((hF A hA).2 σ hσ).trans e)
 end UpperTheory.V.Br.CharacterEquality
 open UpperTheory.V.Br.CharacterEquality in
+/- English proof (translation)
+Introduce `P k N M _ _ hk χ ψ g h he`. Take `⟨ι⟩ : Nonempty (Qbar 2 ≃+* ℂ)` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex 2`. Take `⟨r, hr, hF⟩` from `exists_rep P ι hk g`. Take `⟨r', hr', hF'⟩` from `exists_rep P ι hk h`. Establish `htr : (fun s => (r s⁻¹ : Matrix (Fin 2) (Fin 2) (Qbar 2)).trace) = fun s => (r' s⁻¹ : Matrix (Fin 2) (Fin 2) (Qbar 2)).trace`.
+
+Use `GlobalTheory.Published.ChebotarevDegreeOne.eq_of_frob GlobalTheory.Published.chebotarevDegreeOne' (Filter.eventually_cofinite.1 ((hF.and hF').and (normV_inj.tendsto_cofinite.eventually he))) (Units.continuous_val.comp (hr.comp continuous_inv)).matrix_trace (Units.continuous_val.c …` and prove the remaining obligations. Introduce `v hv _ B hB σ hσ`. Take `⟨⟨h1, h2⟩, h3⟩` from `not_not.1 hv`. Conclude with `ι.injective (by rw [(h1 B hB σ hσ).1, (h2 B hB σ hσ).1, h3 (places v).1])`. Use `Filter.eventually_cofinite.2 (((Filter.eventually_cofinite.1 (hF.and hF')).image fun w => normV w).subset fun p hp => ?_)` and prove the remaining obligations.
+
+Take `⟨hp, hne⟩` from `Classical.not_imp.1 hp`. Take `⟨w, rfl⟩` from `normV_surj hp`. Use `⟨w, fun ⟨h1, h2⟩ => hne ?_, rfl⟩` and prove the remaining obligations. Take `⟨A, hA⟩` from `exists_isPlaceOver (AlgebraicClosure ℚ) w`. Take `⟨σ, hσ⟩` from `exists_isFrob hA`.
+
+Establish `e1` using `(h1 A hA σ hσ).2`. Establish `e2` using `(h2 A hA σ hσ).2`. Establish `t1` using `congrFun htr σ`. Establish `t2` using `congrFun htr (σ * σ)`. Simplify using `only [mul_inv_rev, map_mul, Units.val_mul] at t1 t2`.
+
+Establish `hd : (r σ⁻¹ : Matrix (Fin 2) (Fin 2) (Qbar 2)).det = (r' σ⁻¹ : Matrix (Fin 2) (Fin 2) (Qbar 2)).det` using `mul_left_cancel₀ two_ne_zero (by rw [two_det, two_det, t1, t2])`. Rewrite `e1` using `[hd, e2]`. Conclude with `(mul_right_cancel₀ (pow_ne_zero _ (Nat.cast_ne_zero.2 hp.ne_zero)) e1).symm`.
+-/
 theorem UpperTheory.V.Br.charEq_sv_alt :
     _root_.UpperTheory.V.Af.HypothesesH' → UpperTheory.V.Br.CharEq := by
   intro P k N M _ _ hk χ ψ g h he

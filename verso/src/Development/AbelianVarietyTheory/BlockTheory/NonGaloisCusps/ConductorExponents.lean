@@ -87,6 +87,9 @@ def LiftingSteps : Prop :=
     Hyp F G N Sig U → ∀ y₂' ∈ D₂.Y', ∀ m₂ ∈ D₂.Minv, D₂.Mon (y₂' + D₂.phi m₂) = 0 →
       Steps F G N (maxPeriod l Sig) y₂' m₂
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : kExp 2 1 1 = 10 := rfl
 
 end GlobalTheory.IndefiniteRowSideFullHecke.ConductorExponents

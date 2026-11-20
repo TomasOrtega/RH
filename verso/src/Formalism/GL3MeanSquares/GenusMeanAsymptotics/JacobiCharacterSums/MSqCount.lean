@@ -10,6 +10,15 @@ namespace Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds
 
 open Formalism.HermitianLattices.ZeroFreeRegionGL2
 
+/- English proof (translation)
+Establish `hs : (0:ℝ) ≤ X ^ (1 / 2 : ℝ)` using `Real.rpow_nonneg (by linarith) _`. Establish `key : piAP X m₀ a₀ ≤ (PPset m₀ a₀ X).card + ⌊X ^ (1 / 2 : ℝ)⌋₊`. Unfold `piAP`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises.
+
+Introduce `q hq`. Simplify using `only [PPset, Finset.mem_union, Finset.mem_filter, Finset.mem_Icc] at hq ⊢`. Distinguish the cases in `h : X ^ (1 / 2 : ℝ) < (q : ℝ)`. Conclude with `Or.inl ⟨hq.1, hq.2.1, hq.2.2, h⟩`. Conclude with `Or.inr ⟨hq.1.1, Nat.le_floor (not_lt.mp h)⟩`.
+
+Use `_ ≤ (PPset m₀ a₀ X).card + (Icc 1 ⌊X ^ (1 / 2 : ℝ)⌋₊).card := Finset.card_union_le _ _`. Use `_ = (PPset m₀ a₀ X).card + ⌊X ^ (1 / 2 : ℝ)⌋₊ := by simp`. Establish `h3 : ((⌊X ^ (1 / 2 : ℝ)⌋₊ : ℕ) : ℝ) ≤ X ^ (1 / 2 : ℝ)` using `Nat.floor_le hs`. Establish `key' : (piAP X m₀ a₀ : ℝ) ≤ ((PPset m₀ a₀ X).card : ℝ) + (⌊X ^ (1 / 2 : ℝ)⌋₊ : ℝ)`. Conclude with `key` after adjusting the coercions.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem piAP_le_card_PPset_add (X : ℝ) (m₀ a₀ : ℕ) (hX : 1 ≤ X) :
     (piAP X m₀ a₀ : ℝ) ≤ ((PPset m₀ a₀ X).card : ℝ) + X ^ (1 / 2 : ℝ) := by
   have hs : (0:ℝ) ≤ X ^ (1 / 2 : ℝ) := Real.rpow_nonneg (by linarith) _
@@ -29,6 +38,13 @@ theorem piAP_le_card_PPset_add (X : ℝ) (m₀ a₀ : ℕ) (hX : 1 ≤ X) :
     exact_mod_cast key
   linarith
 
+/- English proof (translation)
+Establish `hmem : ∀ t ∈ Set.uIcc a b, 2 ≤ t`. Introduce `t ht`. Break down `Set.mem_uIcc.mp ht with h | h` into its components or cases. Combine the linear relations using `[h.1]`. Combine the linear relations using `[h.1]`.
+
+Apply `ContinuousOn.intervalIntegrable` to reduce the goal to its premises. Use `ContinuousOn.div continuousOn_const (Real.continuousOn_log.mono ?_) ?_` and prove the remaining obligations. Introduce `t ht`. Establish `h2` using `hmem t ht`. Conclude with `ne_of_gt (by linarith)`.
+
+Introduce `t ht`. Establish `h2` using `hmem t ht`. Conclude with `(Real.log_pos (by linarith)).ne'`.
+-/
 theorem intervalIntegrable_inv_log {a b : ℝ} (ha : 2 ≤ a) (hb : 2 ≤ b) :
     IntervalIntegrable (fun t => 1 / Real.log t) MeasureTheory.volume a b := by
   have hmem : ∀ t ∈ Set.uIcc a b, 2 ≤ t := by
@@ -45,6 +61,13 @@ theorem intervalIntegrable_inv_log {a b : ℝ} (ha : 2 ≤ a) (hb : 2 ≤ b) :
     have h2 := hmem t ht
     exact (Real.log_pos (by linarith)).ne'
 
+/- English proof (translation)
+Establish `hb : 2 ≤ b` using `le_trans ha hab`. Establish `hsub : liX b - liX a = ∫ t in a..b, 1 / Real.log t`. Unfold `liX`. Conclude with `intervalIntegral.integral_interval_sub_left (intervalIntegrable_inv_log le_rfl hb) (intervalIntegrable_inv_log le_rfl ha)`. Rewrite using `[hsub]`.
+
+Establish `hconst : ∫ _t in a..b, (1 / Real.log b) = (b - a) / Real.log b`. Rewrite using `[intervalIntegral.integral_const, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hconst]`. Apply `intervalIntegral.integral_mono_on hab intervalIntegrable_const (intervalIntegrable_inv_log ha hb)` to reduce the goal to its premises.
+
+Introduce `t ht`. Establish `h2t : 2 ≤ t` using `le_trans ha ht.1`. Establish `hlogt : 0 < Real.log t` using `Real.log_pos (by linarith)`. Conclude with `one_div_le_one_div_of_le hlogt (Real.log_le_log (by linarith) ht.2)`.
+-/
 theorem liX_sub_ge {a b : ℝ} (ha : 2 ≤ a) (hab : a ≤ b) :
     (b - a) / Real.log b ≤ liX b - liX a := by
   have hb : 2 ≤ b := le_trans ha hab
@@ -63,15 +86,26 @@ theorem liX_sub_ge {a b : ℝ} (ha : 2 ≤ a) (hab : a ≤ b) :
   have hlogt : 0 < Real.log t := Real.log_pos (by linarith)
   exact one_div_le_one_div_of_le hlogt (Real.log_le_log (by linarith) ht.2)
 
+/- English proof (translation)
+Unfold `liX`. Simplify using the standard rewrite rules.
+-/
 theorem liX_two : liX 2 = 0 := by
   unfold liX
   simp
 
+/- English proof (translation)
+Establish `h` using `liX_sub_ge (le_refl (2:ℝ)) ha`. Rewrite `h` using `[liX_two, sub_zero]`. Conclude with `le_trans (div_nonneg (by linarith) (Real.log_nonneg (by linarith))) h`.
+-/
 theorem liX_nonneg {a : ℝ} (ha : 2 ≤ a) : 0 ≤ liX a := by
   have h := liX_sub_ge (le_refl (2:ℝ)) ha
   rw [liX_two, sub_zero] at h
   exact le_trans (div_nonneg (by linarith) (Real.log_nonneg (by linarith))) h
 
+/- English proof (translation)
+Establish `he1 : Real.exp (-1) ≤ 1 / 2`. Establish `h2 : (2:ℝ) ≤ Real.exp 1` using `by linarith [Real.add_one_le_exp (1:ℝ)]`. Establish `hm : Real.exp (-1) * Real.exp 1 = 1` using `by rw [← Real.exp_add]; norm_num`. Use polynomial arithmetic with `[Real.exp_pos (-1)]`. Establish `hx : (1 - w) • (0:ℝ) + w • (-1:ℝ) = -w` using `by simp [smul_eq_mul]`.
+
+Establish `hconv` using `convexOn_exp.2 (Set.mem_univ (0:ℝ)) (Set.mem_univ (-1:ℝ)) (by linarith : (0:ℝ) ≤ 1 - w) h0 (by ring : (1 - w) + w = 1)`. Rewrite `hconv` using `[hx, smul_eq_mul, smul_eq_mul, Real.exp_zero]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left he1 h0]`.
+-/
 theorem exp_neg_le_one_sub_half {w : ℝ} (h0 : 0 ≤ w) (h1 : w ≤ 1) : Real.exp (-w) ≤ 1 - w / 2 := by
   have he1 : Real.exp (-1) ≤ 1 / 2 := by
     have h2 : (2:ℝ) ≤ Real.exp 1 := by linarith [Real.add_one_le_exp (1:ℝ)]
@@ -83,6 +117,37 @@ theorem exp_neg_le_one_sub_half {w : ℝ} (h0 : 0 ≤ w) (h1 : w ≤ 1) : Real.e
   rw [hx, smul_eq_mul, smul_eq_mul, Real.exp_zero] at hconv
   nlinarith [mul_le_mul_of_nonneg_left he1 h0]
 
+/- English proof (translation)
+Establish `hM8 : (8:ℝ) ≤ M` using `by exact_mod_cast Nat.le_of_dvd (Nat.pos_of_ne_zero (NeZero.ne M)) h8`. Establish `hMpos : (0:ℝ) < M` using `by linarith`. Establish `hlogX : 0 < Real.log X` using `by linarith`. Establish `hX5 : 5 ≤ X`. Establish `h` using `Real.add_one_le_exp (Real.log X)`.
+
+Rewrite `h` using `[Real.exp_log hX]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hX2 : (2:ℝ) ≤ X` using `by linarith`. Establish `hlogM : 1 ≤ Real.log M`. Establish `h1 : Real.log 8 ≤ Real.log M` using `Real.log_le_log (by norm_num) hM8`.
+
+Establish `h2 : (1:ℝ) ≤ Real.log 8`. Rewrite using `[Real.le_log_iff_exp_le (by norm_num)]`. Combine the linear relations using `[Real.exp_one_lt_d9]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcM0 : 0 ≤ c / M` using `div_nonneg hc0.le hMpos.le`.
+
+Establish `hcM1 : c / M ≤ 1`. Rewrite using `[div_le_iff₀ hMpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfin : ∀ N : ℝ, c * X / (2 * Real.log X * M) ≤ N → c * X / (2 * Real.log X * (M:ℝ) ^ 2) ≤ N / (M.totient : ℝ)`. Introduce `N hN`.
+
+Establish `hT0 : 0 ≤ c * X / (2 * Real.log X * M)` using `div_nonneg (mul_nonneg hc0.le hX.le) (mul_pos (mul_pos two_pos hlogX) hMpos).le`. Establish `hN0 : 0 ≤ N` using `le_trans hT0 hN`. Establish `hφpos : (0:ℝ) < M.totient`. Conclude with `Nat.totient_pos.mpr (Nat.pos_of_ne_zero (NeZero.ne M))` after adjusting the coercions. Establish `hφle : (M.totient : ℝ) ≤ M` using `by exact_mod_cast Nat.totient_le M`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hT : c * X / (2 * Real.log X * M) = (c * X / (2 * M)) / Real.log X` using `by ring`. Consider the cases of `e with`. Consider the case `none => show c * X / (2 * Real.log X * (M:ℝ) ^ 2) ≤ liX X / (M.totient : ℝ)`. Apply `hfin` to reduce the goal to its premises.
+
+Establish `h` using `liX_sub_ge (le_refl (2:ℝ)) hX2`. Rewrite `h` using `[liX_two, sub_zero]`. Establish `hXM : c * X / (2 * M) ≤ X - 2`. Rewrite using `[div_le_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Rewrite using `[hT]`. Conclude with `le_trans (div_le_div_of_nonneg_right hXM hlogX.le) h`. Consider the case `some p`. Take `⟨χ₁, β₁⟩` from `p`. Take `⟨hsq, hne1, hL0, hβlow, hβ1⟩` from `he (χ₁, β₁) rfl`.
+
+Establish `hβc` using `hc χ₁ β₁ hsq hne1 hL0`. Rewrite `hβc` using `[Real.rpow_neg_one, ← div_eq_mul_inv]`. Establish `hβ78 : 7 / 8 ≤ β₁`. Establish `h1 : 1 / (8 * Real.log M) ≤ 1 / 8` using `one_div_le_one_div_of_le (by norm_num) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hXβ_eq : X ^ β₁ = Real.exp (Real.log X * β₁)` using `Real.rpow_def_of_pos hX β₁`. Establish `hXβ2 : 2 ≤ X ^ β₁`. Rewrite using `[hXβ_eq]`. Use `Real.add_one_le_exp (Real.log X * β₁)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hXβX : X ^ β₁ ≤ X`. Use `Real.rpow_le_rpow_of_exponent_le (by linarith : (1:ℝ) ≤ X) hβ1.le` as an intermediate fact. Rewrite `this` using `[Real.rpow_one]`. Then use the resulting hypothesis. Establish `hXβup : X ^ β₁ ≤ X * Real.exp (-(c / M))`. Establish `hle : Real.log X * β₁ ≤ Real.log X + -(c / M)`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hβc hlogX.le, le_mul_of_one_le_left hcM0 hlogM]`. Combine the equalities or inequalities in the displayed calculation. Establish `hexp` using `exp_neg_le_one_sub_half hcM0 hcM1`. Establish `hgap : c * X / (2 * M) ≤ X - X ^ β₁`. Establish `h1 : X * Real.exp (-(c / M)) ≤ X * (1 - c / M / 2)` using `mul_le_mul_of_nonneg_left hexp hX.le`.
+
+Establish `e2 : c * X / (2 * M) = X * (c / M / 2)` using `by ring`. Rewrite using `[e2]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hθ : (χ₁ (b : ZMod M)).re ≤ 1` using `le_trans (Complex.re_le_norm _) (DirichletCharacter.norm_le_one χ₁ _)`. Establish `hL0' : 0 ≤ liX (X ^ β₁)` using `liX_nonneg hXβ2`.
+
+Establish `hsub` using `liX_sub_ge hXβ2 hXβX`. Use `show c * X / (2 * Real.log X * (M:ℝ) ^ 2) ≤ (liX X - (χ₁ (b : ZMod M)).re * liX (X ^ β₁)) / (M.totient : ℝ)`. Apply `hfin` to reduce the goal to its premises. Rewrite using `[hT]`. Establish `h3 : (c * X / (2 * M)) / Real.log X ≤ (X - X ^ β₁) / Real.log X` using `div_le_div_of_nonneg_right hgap hlogX.le`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hθ hL0']`.
+-/
 theorem mainAP_lower {M : ℕ} [NeZero M] (h8 : 8 ∣ M) (e : Option (DirichletCharacter ℂ M × ℝ))
     (he : ∀ p : DirichletCharacter ℂ M × ℝ, e = some p → IsExcPair p.1 p.2)
     (c : ℝ) (hc0 : 0 < c) (hc1 : c ≤ 1)
@@ -172,6 +237,17 @@ theorem mainAP_lower {M : ℕ} [NeZero M] (h8 : 8 ∣ M) (e : Option (DirichletC
       div_le_div_of_nonneg_right hgap hlogX.le
     nlinarith [mul_le_mul_of_nonneg_right hθ hL0']
 
+/- English proof (translation)
+Establish `hApos : 0 < Real.exp (Y / 40)` using `Real.exp_pos _`. Establish `hDpos : 0 < Real.exp (Y * (9 / 10))` using `Real.exp_pos _`. Establish `hLpos : 0 < Real.exp Λ ^ 2` using `pow_pos (Real.exp_pos _) 2`. Establish `hY1 : Y ≤ 40 * Real.exp (Y / 40)`. Use `Real.add_one_le_exp (Y / 40)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcB : 320 ≤ c * Real.exp (Y / 20)`. Establish `h` using `Real.exp_le_exp.mpr hlog`. Rewrite `h` using `[Real.exp_log (div_pos (by norm_num) hc0), div_le_iff₀ hc0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hL : Real.exp Λ ^ 2 ≤ Real.exp (Y / 40)`. Rewrite using `[← Real.exp_nat_mul]`. Conclude with `Real.exp_le_exp.mpr (by push_cast; linarith)`. Establish `hexpY : Real.exp Y = Real.exp (Y * (9 / 10)) * Real.exp (Y / 20) * Real.exp (Y / 40) * Real.exp (Y / 40)`. Rewrite using `[← Real.exp_add, ← Real.exp_add, ← Real.exp_add]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : Y * Real.exp Λ ^ 2 ≤ 40 * Real.exp (Y / 40) * Real.exp (Y / 40)` using `mul_le_mul hY1 hL hLpos.le (by linarith)`. Establish `h2 : 8 * (Y * Real.exp Λ ^ 2) ≤ c * Real.exp (Y / 20) * (Real.exp (Y / 40) * Real.exp (Y / 40))`. Establish `h3 : 320 * (Real.exp (Y / 40) * Real.exp (Y / 40)) ≤ c * Real.exp (Y / 20) * (Real.exp (Y / 40) * Real.exp (Y / 40))` using `mul_le_mul_of_nonneg_right hcB (by positivity)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[le_div_iff₀ (mul_pos (mul_pos two_pos hY0) hLpos), hexpY]`. Establish `h4` using `mul_le_mul_of_nonneg_left h2 hDpos.le`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem size_ineq {c Y Λ : ℝ} (hc0 : 0 < c) (hY0 : 0 < Y) (h80 : 80 * Λ ≤ Y)
     (hlog : Real.log (320 / c) ≤ Y / 20) :
     4 * Real.exp (Y * (9 / 10)) ≤ c * Real.exp Y / (2 * Y * Real.exp Λ ^ 2) := by
@@ -202,6 +278,9 @@ theorem size_ineq {c Y Λ : ℝ} (hc0 : 0 < c) (hY0 : 0 < Y) (h80 : 80 * Λ ≤ 
   have h4 := mul_le_mul_of_nonneg_left h2 hDpos.le
   nlinarith
 
+/- English proof (translation)
+The claim follows from `|A| * (Real.exp (-(c₃ * Y / Λ)) + Real.exp (-Real.sqrt (c₃ * Y))) ≤ 1 / 2 := by set K := Real.log (4 * (|A| + 1)) with hK have hA1 : 0 < 4 * (|A| + 1) := by positivity have hK0 : 0 ≤ K := Real.log_nonneg (by linarith [abs_nonneg A]) have hexpK : Real.exp (-K) = 1 / (4 * (|A| + 1) …`.
+-/
 theorem err_le_half {A c₃ Y Λ l : ℝ} (hc₃ : 0 < c₃) (hΛ : 0 < Λ) (hYΛ : l ^ 2 / 4 * Λ ≤ Y)
     (hYl : l ^ 2 / 4 ≤ Y)
     (hK1 : Real.log (4 * (|A| + 1)) ≤ c₃ * (l ^ 2 / 4))
@@ -236,6 +315,19 @@ theorem err_le_half {A c₃ Y Λ l : ℝ} (hc₃ : 0 < c₃) (hΛ : 0 < Λ) (hY�
       rw [mul_div_assoc', div_le_iff₀ hA1]
       nlinarith [abs_nonneg A]
 
+/- English proof (translation)
+Use `set L := Real.log x with hLdef`. Establish `hL0 : 0 < L` using `by linarith`. Establish `hxpos : 0 < x` using `by linarith`. Establish `hxr : 0 < x ^ (ε / 5)` using `Real.rpow_pos_of_pos hxpos _`. Establish `hxe1 : 1 ≤ x ^ (ε / 5)` using `Real.one_le_rpow hx (by linarith)`.
+
+Establish `hΛle : Λ ≤ 4 * x ^ (ε / 5)`. Establish `h13 : (1 / 4) * L ^ 2 * Λ ≤ x ^ (ε / 5) * L ^ 2` using `le_trans h1 h3`. Establish `hL2 : 0 < L ^ 2` using `pow_pos hL0 2`. Use the polynomial consequences of the given equalities and inequalities. Establish `hlogΛ : Real.log (Λ + 2) ≤ Real.log 6 + ε / 5 * L`.
+
+Establish `h6 : Λ + 2 ≤ 6 * x ^ (ε / 5)` using `by linarith`. Establish `h` using `Real.log_le_log (by linarith) h6`. Rewrite `h` using `[Real.log_mul (by norm_num) hxr.ne', Real.log_rpow hxpos]`. Conclude with `h`. Establish `hlog6 : Real.log 6 ≤ 5`.
+
+Use `Real.log_le_sub_one_of_pos (by norm_num : (0:ℝ) < 6)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlogpos : 0 ≤ Real.log (Λ + 2)` using `Real.log_nonneg (by linarith)`. Establish `hkey : |C₀| * Real.log (Λ + 2) ≤ L ^ 2 / 4`. Establish `hA0` using `abs_nonneg C₀`.
+
+Establish `hb : Real.log (Λ + 2) ≤ L * (5 + ε / 5)` using `by nlinarith`. Establish `h1' : |C₀| * Real.log (Λ + 2) ≤ |C₀| * (L * (5 + ε / 5))` using `mul_le_mul_of_nonneg_left hb hA0`. Establish `h2' : (4 * |C₀| * (5 + ε / 5)) * L ≤ L * L` using `mul_le_mul_of_nonneg_right hl hL0.le`. Use the polynomial consequences of the given equalities and inequalities. Establish `hΛlog : 0 ≤ Λ * Real.log (Λ + 2)` using `mul_nonneg (by linarith) hlogpos`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem range_ok {C₀ ε x Λ Y : ℝ} (hε : 0 < ε) (hx : 1 ≤ x) (hΛ : 1 ≤ Λ) (hl1 : 1 ≤ Real.log x)
     (hl : 4 * |C₀| * (5 + ε / 5) ≤ Real.log x)
     (h1 : (1 / 4) * Real.log x ^ 2 * Λ ≤ Y) (h3 : Y ≤ x ^ (ε / 5) * Real.log x ^ 2) :
@@ -272,6 +364,27 @@ theorem range_ok {C₀ ε x Λ Y : ℝ} (hε : 0 < ε) (hx : 1 ≤ x) (hΛ : 1 �
     _ = (1 / 4) * L ^ 2 * Λ := by ring
     _ ≤ Y := h1
 
+/- English proof (translation)
+Establish `hm8 : (8:ℝ) ≤ m₀` using `by exact_mod_cast Nat.le_of_dvd (Nat.pos_of_ne_zero (NeZero.ne m₀)) h8`. Establish `hmpos : (0:ℝ) < m₀` using `by linarith`. Establish `hΛ1 : 1 ≤ Real.log m₀`. Establish `h1' : Real.log 8 ≤ Real.log m₀` using `Real.log_le_log (by norm_num) hm8`. Establish `h2' : (1:ℝ) ≤ Real.log 8`.
+
+Rewrite using `[Real.le_log_iff_exp_le (by norm_num)]`. Combine the linear relations using `[Real.exp_one_lt_d9]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl1 : 1 ≤ Real.log x` using `by linarith`. Establish `hl2 : 320 * Real.log x ≤ Real.log x ^ 2` using `by nlinarith`.
+
+Establish `hYl : Real.log x ^ 2 / 4 ≤ Real.log X` using `by nlinarith`. Establish `hY80 : 80 * Real.log m₀ ≤ Real.log X`. Use polynomial arithmetic with `[mul_nonneg (by linarith : (0:ℝ) ≤ Real.log m₀) (by nlinarith : (0:ℝ) ≤ Real.log x ^ 2 / 4 - 80)]`. Establish `hY4 : 4 ≤ Real.log X` using `by linarith`. Establish `hY0 : 0 < Real.log X` using `by linarith`.
+
+Establish `hX2 : 2 ≤ X`. Establish `h` using `Real.add_one_le_exp (Real.log X)`. Rewrite `h` using `[Real.exp_log hpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hX1 : 1 ≤ X` using `by linarith`.
+
+Establish `hrange : C₀ * Real.log m₀ * Real.log (Real.log m₀ + 2) ≤ Real.log X` using `range_ok hε hx1 hΛ1 hl1 hlC h1 h3`. Establish `hmain` using `he3 X a₀ hX2 hrange hcop`. Establish `hll : Real.log x ≤ Real.log x ^ 2` using `by nlinarith`. Establish `hK1 : Real.log (4 * (|A₀| + 1)) ≤ c₃ * (Real.log x ^ 2 / 4)`. Rewrite `hlK1` using `[div_le_iff₀ hc₃]`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hll hc₃.le]`. Establish `hK2 : Real.log (4 * (|A₀| + 1)) ^ 2 ≤ c₃ * (Real.log x ^ 2 / 4)`. Rewrite `hlK2` using `[div_le_iff₀ hc₃]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hll hc₃.le]`. Establish `herr` using `err_le_half (A := A₀) hc₃ (by linarith : 0 < Real.log m₀) (by linarith : Real.log x ^ 2 / 4 * Real.log m₀ ≤ Real.log X) hYl hK1 hK2`.
+
+Establish `hlow` using `mainAP_lower h8 e he1 c hcpos hc1 hcb a₀ X hpos hY4`. Establish `hlogc : Real.log (320 / c) ≤ Real.log X / 20`. Use `le_abs_self (Real.log (320 / c))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsize` using `size_ineq hcpos hY0 hY80 hlogc`.
+
+Rewrite `hsize` using `[Real.exp_log hpos, Real.exp_log hmpos]`. Establish `hXpow : X ^ (9 / 10 : ℝ) = Real.exp (Real.log X * (9 / 10))` using `Real.rpow_def_of_pos hpos _`. Establish `hhalf : X ^ (1 / 2 : ℝ) ≤ X ^ (9 / 10 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le hX1 (by norm_num)`. Establish `hpp` using `piAP_le_card_PPset_add X m₀ a₀ hX1`. Use `set Mn := mainAP e a₀ X with hMn`.
+
+Use `set E := Real.exp (-(c₃ * Real.log X / Real.log m₀)) + Real.exp (-Real.sqrt (c₃ * Real.log X)) with hE`. Establish `hE0 : 0 ≤ E` using `by positivity`. Establish `h4 : 0 ≤ 4 * Real.exp (Real.log X * (9 / 10))` using `by positivity`. Establish `hMn0 : 0 ≤ Mn` using `le_trans (le_trans h4 hsize) hlow`. Establish `hAE : A₀ * E * Mn ≤ |A₀| * E * Mn` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_abs_self A₀) hE0) hMn0`.
+
+Establish `herr2 : |A₀| * E * Mn ≤ 1 / 2 * Mn` using `mul_le_mul_of_nonneg_right herr hMn0`. Establish `habs` using `neg_abs_le ((piAP X m₀ a₀ : ℝ) - Mn)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem count_pos {c₃ A₀ C₀ c ε : ℝ} (hc₃ : 0 < c₃) (hcpos : 0 < c) (hc1 : c ≤ 1) (hε : 0 < ε)
     {m₀ : ℕ} [NeZero m₀] (h8 : 8 ∣ m₀) (a₀ : ℕ) (hcop : a₀.Coprime m₀)
     (e : Option (DirichletCharacter ℂ m₀ × ℝ))
@@ -343,6 +456,25 @@ theorem count_pos {c₃ A₀ C₀ c ε : ℝ} (hc₃ : 0 < c₃) (hcpos : 0 < c)
   have habs := neg_abs_le ((piAP X m₀ a₀ : ℝ) - Mn)
   linarith
 
+/- English proof (translation)
+Take `⟨c₃, A₀, C₀, hc₃, hPM⟩` from `hP`. Take `⟨c0, hc0, hcb0⟩` from `hE 1 one_pos`. Establish `hcpos : 0 < min c0 1` using `lt_min hc0 one_pos`. Establish `hc1 : min c0 1 ≤ 1` using `min_le_right _ _`. Use `⟨Real.exp (320 + 4 * |C₀| * (5 + ε / 5) + |4 * Real.log (4 * (|A₀| + 1)) / c₃| + |4 * Real.log (4 * (|A₀| + 1)) ^ 2 / c₃| + |Real.log (320 / min c0 1)|), ?_⟩` and prove the remaining obligations.
+
+Introduce `x X m₀ a₀ hx hm0 h8 hcop h1 h6 h3`. Use `haveI : NeZero m₀ := ⟨hm0.ne'⟩`. Establish `hxpos : 0 < x` using `lt_of_lt_of_le (Real.exp_pos _) hx`. Establish `hlx : 320 + 4 * |C₀| * (5 + ε / 5) + |4 * Real.log (4 * (|A₀| + 1)) / c₃| + |4 * Real.log (4 * (|A₀| + 1)) ^ 2 / c₃| + |Real.log (320 / min c0 1)| ≤ Real.log x`. Rewrite using `[← Real.exp_le_exp, Real.exp_log hxpos]`.
+
+Conclude with `hx`. Establish `hC0 : 0 ≤ 4 * |C₀| * (5 + ε / 5)` using `mul_nonneg (by positivity) (by linarith)`. Establish `a1` using `abs_nonneg (4 * Real.log (4 * (|A₀| + 1)) / c₃)`. Establish `a2` using `abs_nonneg (4 * Real.log (4 * (|A₀| + 1)) ^ 2 / c₃)`. Establish `a3` using `abs_nonneg (Real.log (320 / min c0 1))`.
+
+Establish `hl320 : 320 ≤ Real.log x` using `by linarith`. Establish `hx1 : 1 ≤ x`. Establish `h` using `Real.add_one_le_exp (Real.log x)`. Rewrite `h` using `[Real.exp_log hxpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hlC : 4 * |C₀| * (5 + ε / 5) ≤ Real.log x` using `by linarith`. Establish `hlK1 : 4 * Real.log (4 * (|A₀| + 1)) / c₃ ≤ Real.log x`. Combine the linear relations using `[le_abs_self (4 * Real.log (4 * (|A₀| + 1)) / c₃)]`. Establish `hlK2 : 4 * Real.log (4 * (|A₀| + 1)) ^ 2 / c₃ ≤ Real.log x`. Combine the linear relations using `[le_abs_self (4 * Real.log (4 * (|A₀| + 1)) ^ 2 / c₃)]`.
+
+Establish `hlc : |Real.log (320 / min c0 1)| ≤ Real.log x` using `by linarith`. Take `⟨e, he1, -, he3⟩` from `hPM m₀ h8`. Establish `hcb : ∀ (χ : DirichletCharacter ℂ m₀) (β : ℝ), χ ^ 2 = 1 → χ ≠ 1 → DirichletCharacter.LFunction χ (β : ℂ) = 0 → β ≤ 1 - min c0 1 * (m₀ : ℝ) ^ (-1 : ℝ)`. Introduce `χ β h1' h2' h3'`. Establish `h` using `hcb0 m₀ χ β h1' h2' h3'`.
+
+Establish `hpow : 0 ≤ (m₀ : ℝ) ^ (-1 : ℝ)` using `Real.rpow_nonneg (Nat.cast_nonneg _) _`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right (min_le_left c0 1) hpow]`. Distinguish the cases in `hpos : 0 < X`. Conclude with `count_pos hc₃ hcpos hc1 hε h8 a₀ hcop e he1 he3 hcb x X hx1 hl320 hlC hlK1 hlK2 hlc h1 h3 hpos`. Establish `hXle : X ≤ 0` using `not_lt.mp hpos`.
+
+Break down `hXle.lt_or_eq with hneg | hzero` into its components or cases. Establish `hcard : (0:ℝ) ≤ ((PPset m₀ a₀ X).card : ℝ)` using `Nat.cast_nonneg _`. Rewrite using `[Real.rpow_def_of_neg hneg]`. Establish `hcos : Real.cos (9 / 10 * Real.pi) ≤ 0` using `Real.cos_nonpos_of_pi_div_two_le_of_le (by linarith [Real.pi_pos]) (by linarith [Real.pi_pos])`. Use polynomial arithmetic with `[Real.exp_pos (Real.log X * (9 / 10))]`.
+
+Substitute `hzero` using the available equality. Rewrite using `[Real.zero_rpow (by norm_num)]`. Conclude with `Nat.cast_nonneg _`.
+-/
 theorem count_a (hP : PNTAPRelW) (hE : Formalism.ZeroFreeDirichlet.ExcBound) (ε : ℝ) (hε : 0 < ε) : ∃ x₀ : ℝ, ∀ (x X : ℝ) (m₀ a₀ : ℕ),
     x₀ ≤ x → 0 < m₀ → 8 ∣ m₀ → a₀.Coprime m₀ →
     (1 / 4) * Real.log x ^ 2 * Real.log m₀ ≤ Real.log X → x ^ (ε / 6) ≤ Real.log X →

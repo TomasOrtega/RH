@@ -3,6 +3,23 @@ open scoped PowerSeries Pointwise
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `l H N η r hN hη hηH hr hl`. Establish `hN2 : 4 ≤ N ^ 2` using `by nlinarith`. Establish `hH : 2 ≤ H` using `by omega`. Establish `hHN : 4 * H ≤ H * N ^ 2` using `by nlinarith`. Establish `hN3 : 8 ≤ N ^ 3`.
+
+Establish `: N ^ 3 = N * N ^ 2` using `by ring`. Use the polynomial consequences of the given equalities and inequalities. Establish `hNr : 4 * (N * r) ≤ N ^ 3`. Establish `: N ^ 3 = N * N ^ 2` using `by ring`. Rewrite using `[this]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hsub : (N - 1) * r ≤ N * r` using `Nat.mul_le_mul_right _ (Nat.sub_le _ _)`. Establish `hηr : 4 * (η * r) ≤ H * N ^ 2`. Establish `: η * r ≤ H * r` using `Nat.mul_le_mul_right _ hηH.le`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hNη : (N + 2) * η ≤ H * N ^ 2`. Establish `h1 : (N + 2) * η ≤ (N + 2) * H` using `Nat.mul_le_mul_left _ hηH.le`. Establish `h2 : N + 2 ≤ N ^ 2` using `by nlinarith`. Establish `h3 : (N + 2) * H ≤ N ^ 2 * H` using `Nat.mul_le_mul_right _ h2`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hrη : r * η ≤ H * N ^ 2`. Establish `: r * η ≤ r * H` using `Nat.mul_le_mul_left _ hηH.le`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: 2 * (N - 1) * r = 2 * ((N - 1) * r)` using `by ring`.
+
+Rewrite using `[this]`. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `: 4 * η * r = 4 * (η * r)` using `by ring`. Rewrite using `[this]`. Use the polynomial consequences of the given equalities and inequalities. Establish `: (r + 2) * η = r * η + 2 * η` using `by ring`. Rewrite using `[this]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem numerical_bounds_of_forty_mul_lt : ∀ (l H N η r : ℕ), 2 ≤ N → 1 ≤ η → η < H → 4 * r ≤ N ^ 2 →
     40 * (H * N ^ 2 + N ^ 3) < l →
     2 * (H + η + 2 * (N - 1) * r + 1) + 2 < l ∧ 10 * H + 2 ≤ l ∧ 14 * H + (N + 2) * η < l ∧

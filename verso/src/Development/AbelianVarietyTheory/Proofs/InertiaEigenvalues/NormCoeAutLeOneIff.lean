@@ -10,6 +10,19 @@ open scoped TensorProduct
 
 namespace GlobalTheory.EigenCoord
 
+/- English proof (translation)
+Use `haveI : Module.Finite O T := Module.Finite.iff_fg.mpr hfg`. Set `c` to `Module.finBasis O T`. Establish `hli : LinearIndependent O (fun i => (c i : V))` using `c.linearIndependent.map' T.subtype (Submodule.ker_subtype T)`. Establish `hli' : LinearIndependent L (fun i => (c i : V))` using `(LinearIndependent.iff_fractionRing O L).mp hli`. Establish `hsum : ∀ x : T, (x : V) = ∑ i, algebraMap O L (c.repr x i) • (c i : V)`.
+
+Introduce `x`. Establish `h` using `congrArg T.subtype (c.sum_repr x)`. Rewrite `h` using `[map_sum]`. Simplify using `only [map_smul, Submodule.subtype_apply] at h`. Simplify using `only [algebraMap_smul]`.
+
+Conclude with `h.symm`. Establish `hsp : ⊤ ≤ Submodule.span L (Set.range fun i => (c i : V))`. Rewrite using `[← hspan, Submodule.span_le]`. Introduce `x hx`. Rewrite using `[SetLike.mem_coe, show x = ((⟨x, hx⟩ : T) : V) from rfl, hsum]`.
+
+Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Set `t` to `Module.Basis.mk hli' hsp`. Establish `ht : ∀ i, t i = (c i : V)` using `fun i => Module.Basis.mk_apply hli' hsp i`. Use `⟨_, t, fun v => ⟨fun hv i => ⟨c.repr ⟨v, hv⟩ i, ?_⟩, fun h => ?_⟩⟩` and prove the remaining obligations. Establish `h1 : v = ∑ j, algebraMap O L (c.repr ⟨v, hv⟩ j) • t j`.
+
+Simplify using `only [ht]`. Conclude with `hsum ⟨v, hv⟩`. Establish `h2` using `congrFun (t.repr_sum_self (fun j => algebraMap O L (c.repr ⟨v, hv⟩ j))) i`. Rewrite `h2` using `[← h1]`. Conclude with `h2.symm`.
+
+Use `choose o ho using h`. Rewrite using `[← t.sum_repr v]`. Use `T.sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← ho, algebraMap_smul, ht]`. Conclude with `T.smul_mem _ (c i).2`.
+-/
 theorem exists_basis_mem_iff {O L V : Type} [CommRing O] [IsDomain O] [Field L] [Algebra O L]
     [IsFractionRing O L] [AddCommGroup V] [Module L V] [Module O V] [IsScalarTower O L V]
     (T : Submodule O V) (hfg : T.FG) (hfree : Module.Free O T)
@@ -50,12 +63,24 @@ theorem exists_basis_mem_iff {O L V : Type} [CommRing O] [IsDomain O] [Field L] 
     rw [← ho, algebraMap_smul, ht]
     exact T.smul_mem _ (c i).2
 
+/- English proof (translation)
+Rewrite using `[PadicComplex.norm_extends, ← isIntegral_padicInt_iff_norm_le_one, ← isIntegral_padicInt_iff_norm_le_one]`. Conclude with `isIntegral_algHom_iff (ι.toAlgHom.restrictScalars ℤ_[l]) ι.injective`.
+-/
 theorem norm_coe_aut_le_one_iff {l : ℕ} [Fact l.Prime] (ι : GQ l) (x : Om l) :
     ‖((ι x : Om l) : PadicComplex l)‖ ≤ 1 ↔ ‖x‖ ≤ 1 := by
   rw [PadicComplex.norm_extends, ← isIntegral_padicInt_iff_norm_le_one,
     ← isIntegral_padicInt_iff_norm_le_one]
   exact isIntegral_algHom_iff (ι.toAlgHom.restrictScalars ℤ_[l]) ι.injective
 
+/- English proof (translation)
+Establish `key : ∀ (y : Fin d → F) (i : Fin ρ), ∑ j, φ (t.repr (b j) i) * algebraMap F C (y j) = φ (t.repr (∑ j, y j • b j) i)`. Introduce `y i`. Rewrite using `[map_sum, Finsupp.finset_sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul L (y j), map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, AlgHom.commutes, mul_comm]`.
+
+Use `⟨Matrix.of fun i j => φ (t.repr (b j) i), fun i j => ?_, fun a => ?_, fun y hy a => ?_⟩` and prove the remaining obligations. Use `(hmem _).mp ((hb _).mpr fun k => ?_) i` and prove the remaining obligations. Rewrite using `[b.repr_self, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use extensionality with `i k`.
+
+Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.of_apply, Matrix.smul_apply]`. Rewrite using `[key, b.sum_repr, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, smul_eq_mul]`. Establish `hv : (∑ j, y j • b j) ∈ S`. Use `(hmem _).mpr fun i => ?_` and prove the remaining obligations.
+
+Rewrite using `[← key]`. Conclude with `hy i`. Use `(hb _).mp hv a` as an intermediate fact. Rewrite `this` using `[congrFun (b.repr_sum_self y) a]`. Then use the resulting hypothesis.
+-/
 theorem exists_matrix_of_basis {F L C V : Type} [NormedField F] [Field L] [NormedField C]
     [Algebra F L] [Algebra F C] [AddCommGroup V] [Module L V] [Module F V] [IsScalarTower F L V]
     (S : Set V) {d ρ : ℕ} (b : Module.Basis (Fin d) F V) (t : Module.Basis (Fin ρ) L V)
@@ -88,6 +113,13 @@ theorem exists_matrix_of_basis {F L C V : Type} [NormedField F] [Field L] [Norme
     have := (hb _).mp hv a
     rwa [congrFun (b.repr_sum_self y) a] at this
 
+/- English proof (translation)
+Introduce `l _ K LL T d b hb ι`. Use `haveI := LL.2`. Use `haveI : IsFractionRing (OL LL) LL.1 := isFractionRing_integralClosure_padicInt l LL.1`. Take `⟨ρ, t, ht⟩` from `exists_basis_mem_iff (L := LL.1) T.L.T T.L.fg T.L.free T.L.span`. Set `φ : LL.1 →ₐ[ℚ_[l]] PadicComplex l` to `(IsScalarTower.toAlgHom ℚ_[l] (Om l) (PadicComplex l)).comp (ι.toAlgHom.comp LL.1.val)`.
+
+Establish `hφ : ∀ x : LL.1, φ x = ((ι (x : Om l) : Om l) : PadicComplex l)` using `fun _ => rfl`. Establish `hmem : ∀ v, v ∈ T.L.T ↔ ∀ i, ‖φ (t.repr v i)‖ ≤ 1`. Introduce `v`. Rewrite using `[ht]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations.
+
+Rewrite using `[hφ, norm_coe_aut_le_one_iff, ← mem_integralClosure_padicInt_iff]`. Conclude with `⟨fun ⟨o, ho⟩ => ho ▸ o.2, fun h => ⟨⟨_, h⟩, rfl⟩⟩`. Conclude with `⟨ρ, exists_matrix_of_basis (T.L.T : Set T.V) b t φ hb hmem⟩`.
+-/
 theorem exists_matrix : ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (d : ℕ) (b : Module.Basis (Fin d) ℚ_[l] T.V), (∀ v : T.V, v ∈ T.L.T ↔ ∀ i, ‖b.repr v i‖ ≤ 1) → ∀ ι : GQ l, ∃ (ρ : ℕ) (Pr : Matrix (Fin ρ) (Fin d) (PadicComplex l)), (∀ i j, ‖Pr i j‖ ≤ 1) ∧ (∀ a : ↥LL.1, Pr * Matrix.of (fun i k : Fin d => algebraMap ℚ_[l] (PadicComplex l) (b.repr (a • b k) i)) = ((ι (a : Om l) : Om l) : PadicComplex l) • Pr) ∧ ∀ y : Fin d → ℚ_[l], (∀ i, ‖Pr.mulVec (fun a => algebraMap ℚ_[l] (PadicComplex l) (y a)) i‖ ≤ 1) → ∀ a, ‖y a‖ ≤ 1 := by
   intro l _ K LL T d b hb ι
   haveI := LL.2

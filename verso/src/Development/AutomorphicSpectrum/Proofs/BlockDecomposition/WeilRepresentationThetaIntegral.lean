@@ -12,6 +12,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.WzFib
 
+/- English proof (translation)
+Use `set e : Fin n ≃ Fin r ⊕ Fin t := (finSumFinEquiv.trans (finCongr hn)).symm with he`. Establish `hX : jn hn x (0 : Mx D V.rank t) = (Matrix.fromCols x (0 : Mx D V.rank t)).submatrix id e` using `rfl`. Establish `hadj : adj (jn hn x (0 : Mx D V.rank t)) = (Matrix.fromRows (adj x) (0 : Matrix (Fin t) (Fin V.rank) (AE D))).submatrix e id`. Use extensionality with `i k`. Rewrite using `[hX]`.
+
+Simplify using `only [adj, Matrix.transpose_apply, Matrix.map_apply, Matrix.submatrix_apply, id]`. Break down `e i with a | b` into its components or cases. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish `hG : (HMul.hMul (gA V) (jn hn x (0 : Mx D V.rank t)) : Mx D V.rank n) = (Matrix.fromCols (HMul.hMul (gA V) x : Mx D V.rank r) (0 : Mx D V.rank t)).submatrix id e`.
+
+Use extensionality with `i j`. Rewrite using `[hX]`. Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply, id]`. Break down `e j with a | b` into its components or cases. Simplify using `[Matrix.mul_apply]`.
+
+Simplify using the standard rewrite rules. Unfold `GlobalTheory.StdUnn.inner`. Rewrite using `[hG, hadj, ← Matrix.submatrix_mul _ _ e id e Function.bijective_id, Matrix.fromRows_mul_fromCols]`. Simplify using `[bl, he]`.
+-/
 theorem inner_jn {D : D7} {n r t : ℕ} (hn : r + t = n) (V : HSp D) (x : Mx D V.rank r) :
     GlobalTheory.StdUnn.inner V (jn hn x (0 : Mx D V.rank t)) (jn hn x (0 : Mx D V.rank t)) =
       bl hn (GlobalTheory.StdUnn.inner V x x) 0 0 0 := by
@@ -37,6 +46,9 @@ theorem inner_jn {D : D7} {n r t : ℕ} (hn : r + t = n) (V : HSp D) (x : Mx D V
   rw [hG, hadj, ← Matrix.submatrix_mul _ _ e id e Function.bijective_id, Matrix.fromRows_mul_fromCols]
   simp [bl, he]
 
+/- English proof (translation)
+Unfold `bl`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.submatrix_apply]`. Rewrite using `[Equiv.sum_comp (finSumFinEquiv.trans (finCongr hn)).symm (fun i => Matrix.fromBlocks a b c d i i), Fintype.sum_sum_type]`. Simplify using the standard rewrite rules.
+-/
 theorem trace_bl {R : Type} [CommRing R] {n r t : ℕ} (hn : r + t = n) (a : Matrix (Fin r) (Fin r) R)
     (b : Matrix (Fin r) (Fin t) R) (c : Matrix (Fin t) (Fin r) R) (d : Matrix (Fin t) (Fin t) R) :
     Matrix.trace (bl hn a b c d) = Matrix.trace a + Matrix.trace d := by
@@ -46,6 +58,11 @@ theorem trace_bl {R : Type} [CommRing R] {n r t : ℕ} (hn : r + t = n) (a : Mat
     Fintype.sum_sum_type]
   simp
 
+/- English proof (translation)
+Establish `h0 : adj (0 : Mx D r t) = 0`. Use extensionality with `i j`. Simplify using `[adj]`. Rewrite using `[inner_jn, h0]`. Establish `hm : (HMul.hMul (bl hn z 0 0 0 : Mx D n n) (bl hn (GlobalTheory.StdUnn.inner V x x) 0 0 0) : Mx D n n) = bl hn (HMul.hMul z (GlobalTheory.StdUnn.inner V x x) : Mx D r r) 0 0 0`.
+
+Unfold `bl`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules. Rewrite using `[hm, trace_bl]`. Simplify using the standard rewrite rules.
+-/
 theorem trace_nzx {D : D7} {n r t : ℕ} (hn : r + t = n) (V : HSp D) (z : Mx D r r) (x : Mx D V.rank r) :
     Matrix.trace (HMul.hMul (bl hn z 0 (adj (0 : Mx D r t)) 0 : Mx D n n)
         (GlobalTheory.StdUnn.inner V (jn hn x (0 : Mx D V.rank t)) (jn hn x (0 : Mx D V.rank t))) : Mx D n n) =
@@ -62,10 +79,22 @@ theorem trace_nzx {D : D7} {n r t : ℕ} (hn : r + t = n) (V : HSp D) (z : Mx D 
   rw [hm, trace_bl]
   simp
 
+/- English proof (translation)
+Rewrite using `[AddChar.map_neg_eq_inv, Complex.inv_eq_conj (hψ.2.1 u)]`.
+-/
 theorem conj_char {F : Type} [Field F] [NumberField F] {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) (u : AF F) :
     conj (ψ u) = ψ (-u) := by
   rw [AddChar.map_neg_eq_inv, Complex.inv_eq_conj (hψ.2.1 u)]
 
+/- English proof (translation)
+Introduce `D n r t hP hn M m V ψ hψ χ hχ hη θ hθ μ hμ ω hω μr hμr μt hμt b₀ fib hfib Φ g`. Establish `hPF` using `hP D n r t hn M V ψ hψ χ hχ hη θ hθ μ hμ ω hω μr μt hμr hμt`. Rewrite using `[← (hfib.int _ (hPF (ω g Φ)).2.1).2]`. Unfold `Wz W`. Use `integral_congr_ae (Eventually.of_forall fun z => ?_)` and prove the remaining obligations.
+
+Use `show (ω (M.w * M.nzx z 0 * g) Φ).1 0 * conj (chz ψ b₀ z) = Jt ψ V μr _ z * ψ (-halfTr _)`. Establish `e1 : ω (M.w * M.nzx z 0 * g) Φ = ω M.w (ω (M.nzx z 0) (ω g Φ))`. Simplify using `only [map_mul, Module.End.mul_apply]`. Rewrite using `[e1, (hPF (ω (M.nzx z 0) (ω g Φ))).1]`. Unfold `chz`.
+
+Rewrite using `[conj_char hψ]`. Use `congr 1`. Unfold `Jt`. Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `show (ω (M.nzx z 0) (ω g Φ)).1 (jn hn x 0) = (ω g Φ).1 (jn hn x 0) * ψ (halfTr _)`.
+
+Rewrite using `[hω.unip _ _ (M.nzx_mat z 0), trace_nzx, mul_comm]`.
+-/
 theorem wz_eq_fib : ∀ {D : D7} {n r t : ℕ} (hP : PartFT) {hn : r + t = n} (M : Maps D hn) (m : Meas D r t) (V : HSp D) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) {χ : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) (hη : ResEta D χ V.rank) {θ : InfFam D} (hθ : IsInfFam θ) {μ : Measure (Mx D V.rank n)} (hμ : ∃ 𝓕, IsCovolOne (ratMx D V.rank n) μ 𝓕) {ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)} (hω : IsWeilSch ψ χ θ V μ ω) {μr : Measure (Mx D V.rank r)} (hμr : ∃ 𝓕, IsCovolOne (ratMx D V.rank r) μr 𝓕) {μt : Measure (Mx D V.rank t)} (hμt : ∃ 𝓕, IsCovolOne (ratMx D V.rank t) μt 𝓕) (b₀ : HermE D r) {fib : Measure (Mx D V.rank r)} (hfib : IsFib ψ θ V b₀ μr m.lz fib) (Φ : schwartzA θ V.rank n) (g : G D n), Wz M m ψ b₀ (fun g => (ω g Φ).1 0) g = ∫ x, (ω g Φ).1 (jn hn x 0) ∂fib := by
   intro D n r t hP hn M m V ψ hψ χ hχ hη θ hθ μ hμ ω hω μr hμr μt hμt b₀ fib hfib Φ g
   have hPF := hP D n r t hn M V ψ hψ χ hχ hη θ hθ μ hμ ω hω μr μt hμr hμt

@@ -32,6 +32,17 @@ open GlobalTheory.LamT (CMPt)
 
 namespace GlobalTheory.CovDetect
 
+/- English proof (translation)
+Introduce `hP D T j Y e o hG hdeg la hgap _ hstar F hF hF0`. Establish `hσ : GoodEmb Y.d.c₂ Y.d.c₂.F.val.toRingHom` using `rfl`. Establish `hU` using `hG.unf _ hσ`. Establish `hFm` using `GlobalTheory.AllWt.mem_cuspW.1 hF`. Take `⟨k, x₁, hx₁, hne₁⟩` from `GlobalTheory.T.exists_uniformisationFrame_reading_ne_zero _ _ _ _ _ _ _ _ _ hU _ F hFm.1 hF0`.
+
+Take `⟨Xx, 𝔄, hX, h𝔄, hΛ⟩` from `GlobalTheory.T.goodCover_component_extends_to_rankOne_cusp_data D T j Y e o hG _ hσ k`. Establish `hbdd` using `(Formalism.L2.Pj.abelian₂.holSub_SS ReciprocityTheory.ChartRestriction.G.FD.siegelSpaceAlgebra_holds _ _ (hFm.2 _ hσ) k).1`. Establish `hr : 0 < D.R.r`. Establish `hn : 0 < D.R.ord` using `D.R.ord_pos`. Establish `hk` using `D.R.f_le_k`.
+
+Establish `ht` using `D.R.rank_add_five_le`. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Take `⟨La, x, lam, hx, hB, hne⟩` from `GlobalTheory.CMDetect.exists_cm_frame Xx _ hX hr _ _ hbdd hx₁ hne₁`. Take `⟨z, σ₁, hz, hzx⟩` from `GlobalTheory.LamT.exists_good_cmPt_at_frame _ _ _ _ _ _ hstar _ _ hU hr k ⟨x, hx⟩ Xx hX 𝔄 h𝔄 hΛ La lam hB`.
+
+Establish `hev : evR Y.d.Xo₂ Y.d.c₂ F ((Y.U _).un k ⟨x, hx⟩) ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(if h : x ∈ ((Y.U _).X k).dom then toC (evR Y.d.Xo₂ Y.d.c₂ F ((Y.U _).un k ⟨x, h⟩)) else 0) = 0`. Rewrite using `[dif_pos hx]`.
+
+Conclude with `h0`. Take `⟨y, hy, hyne⟩` from `GlobalTheory.T.exists_numberFieldFrame_value_ne_zero_of_complex _ _ _ _ _ _ z.K z.y _ F hFm.1 _ σ₁ _ hzx hev`. Conclude with `⟨z, La, y, hz, hy.trans hz.2.2.2.1, hyne⟩`.
+-/
 theorem exists_good_cmPt_frame_ne_zero : GlobalTheory.CovTop.Hypotheses2 → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o →
     2 < Module.finrank ℚ D.host.E / 2 → ∀ la : GlobalTheory.AllWt.Weight (T.Q.Dw j), GapGe 1 la →
     ∀ [StarRing (𝓞 D.host.E)], (∀ a : 𝓞 D.host.E, star a = T.Q.H.bar a) →

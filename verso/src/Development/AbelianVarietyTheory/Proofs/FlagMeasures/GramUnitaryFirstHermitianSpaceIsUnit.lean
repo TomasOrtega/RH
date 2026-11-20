@@ -9,6 +9,19 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D X u wt hW y₀ hy`. Take `⟨Q, Qi, G', hQQi, hQiQ, -, -, -, -, -, hM⟩` from `GlobalTheory.St.qFrame_basis_gram D X u wt hW`. Use `set G := (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)).map X.ιE.symm with hG`. Establish `hJ` using `X.B.I.J_det`. Establish `hJJ : X.B.I.J * X.B.I.J⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hJ)`.
+
+Establish `h1 : (Q.map (starRingEnd X.B.I.E))ᵀ * (Qi.map (starRingEnd X.B.I.E))ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, ← Matrix.map_mul, hQiQ]`. Simplify using the standard rewrite rules. Establish `hdetM : IsUnit (Matrix.fromBlocks G 0 0 G').det`. Rewrite using `[← hM]`.
+
+Apply `Matrix.isUnit_det_of_right_inverse (B := Qi * X.B.I.J⁻¹ * (Qi.map (starRingEnd X.B.I.E))ᵀ)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (Q.map (starRingEnd X.B.I.E))ᵀ * (X.B.I.J * X.B.I.J⁻¹) * (Qi.map (starRingEnd X.B.I.E))ᵀ := by`. Rewrite using `[hQQi]`.
+
+Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = 1 := by rw [hJJ, Matrix.mul_one, h1]`. Rewrite `hdetM` using `[Matrix.det_fromBlocks_zero₂₁]`. Establish `hGdet : G.det ≠ 0` using `(isUnit_of_mul_isUnit_left hdetM).ne_zero`. Establish `hy0 : y₀.det ≠ 0`.
+
+Introduce `h0`. Use `congrArg Matrix.det hy` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, h0, mul_zero]`. Conclude with `hGdet this.symm`. Establish `hd : (y₀.map X.ιE).det = X.ιE y₀.det`.
+
+Simplify using `using (RingHom.map_det X.ιE.toRingHom y₀).symm`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero (y₀.map X.ιE) ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[hd]`. Conclude with `(map_ne_zero X.ιE).mpr hy0`.
+-/
 theorem GlobalTheory.St.gramN_unitary_isUnit : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V), WittX X u wt → ∀ y₀ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) X.B.I.E, (y₀.map (starRingEnd X.B.I.E))ᵀ * (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)).map X.ιE.symm * y₀ = (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)).map X.ιE.symm → ∃ g : GL (Fin (D.R.N 0)) D.host.E, (g : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) = y₀.map X.ιE := by
   intro D X u wt hW y₀ hy
   obtain ⟨Q, Qi, G', hQQi, hQiQ, -, -, -, -, -, hM⟩ := GlobalTheory.St.qFrame_basis_gram D X u wt hW

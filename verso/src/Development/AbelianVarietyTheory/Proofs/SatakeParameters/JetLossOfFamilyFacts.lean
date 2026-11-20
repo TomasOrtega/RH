@@ -35,6 +35,11 @@ variable {X : Fields} {a b : ℕ}
 
 end Idx
 
+/- English proof (translation)
+Use `GlobalTheory.MomT.finite_quot_divLat_mulLat_homAt X.E a b S N N' cA c hN.1 hN'.1 hcA0 hc0` as an intermediate fact. Use `Fintype.ofFinite (↥(divLat cA (homAt S N N')) ⧸ (mulLat c (homAt S N N')).comap (divLat cA (homAt S N N')).subtype)` as an intermediate fact. Rewrite using `[jetSum, latSum, latSum, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Generalize the expression as in `Function.surjInv (Submodule.Quotient.mk_surjective _) z = x`.
+
+Distinguish the cases in `h0 : Ξ x = 0`. Simplify using `[h0]`. Establish `h` using `he x x.2 h0`. Rewrite using `[map_mul, Amb.jetK, desc, dif_pos h, h.choose_spec]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem map_jetSum {X : Fields} (A : Amb X) {a b : ℕ} (S : Finset (HeightOneSpectrum (𝓞 X.E))) {cA c : ℕ}
     {N : Submodule (𝓞 X.E) (Sp X.E a)} {N' : Submodule (𝓞 X.E) (Sp X.E b)} (hN : IsSdLat N) (hN' : IsSdLat N')
     (hcA0 : 0 < cA) (hc0 : 0 < c) (Ξ : HomE X.E a b → X.K) {e : DVar X.Tau a b →₀ ℕ} (he : e ∈ RatIdx A S cA c N N' Ξ) :

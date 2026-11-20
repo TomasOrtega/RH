@@ -11,6 +11,13 @@ namespace GlobalTheory.JR.EtInv
 section Gen
 variable {F K : Type} [Field F] [CommRing K] [Algebra F K] [Module.Finite F K]
 
+/- English proof (translation)
+Set `b` to `Module.finBasis F K`. Establish `hn : IsNilpotent (Algebra.leftMulMatrix b a)`. Apply `ReciprocityTheory.L2DbarEstimates.Y.isNilpotent_of_trace_pow` to reduce the goal to its premises. Introduce `k hk _`. Rewrite using `[← map_pow, ← Algebra.trace_eq_matrix_trace]`.
+
+Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Rewrite using `[pow_succ]`. Conclude with `h _`. Take `⟨m, hm⟩` from `hn`. Rewrite `hm` using `[← map_pow, ← map_zero (Algebra.leftMulMatrix b)]`.
+
+Conclude with `(IsNilpotent.eq_zero ⟨m, Algebra.leftMulMatrix_injective b hm⟩)`.
+-/
 theorem eq_zero_of_trace_mul [CharZero F] [IsReduced K] (a : K)
     (h : ∀ x : K, Algebra.trace F K (x * a) = 0) : a = 0 := by
   classical
@@ -28,6 +35,9 @@ theorem eq_zero_of_trace_mul [CharZero F] [IsReduced K] (a : K)
 
 variable {r : ℕ} {τ : K}
 
+/- English proof (translation)
+Use `conv_lhs => rw [← bb.sum_repr x]`. Simplify using `[Finset.sum_mul, smul_mul_assoc, map_sum, hb]`.
+-/
 theorem trace_mul_eq_sum (bb : Module.Basis (Fin r) F K) (hb : ∀ i, bb i = τ ^ (i : ℕ)) (x a : K) :
     Algebra.trace F K (x * a) = ∑ j, bb.repr x j * Algebra.trace F K (τ ^ (j : ℕ) * a) := by
   conv_lhs => rw [← bb.sum_repr x]
@@ -38,6 +48,13 @@ end Gen
 section Comp
 variable {F K : Type} [Field F] [CommRing K] [Algebra F K] {r : ℕ} {τ : K} {p : Fin r → F}
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul, hb, ← pow_succ']`. Simplify using `only [companion, Matrix.of_apply]`. Distinguish the cases in `hj : (j : ℕ) + 1 = r`. Rewrite using `[if_pos hj, hj, eq_neg_of_add_eq_zero_left hr]`.
+
+Establish `: ∑ k, p k • τ ^ (k : ℕ) = ∑ k, p k • bb k` using `by simp [hb]`. Rewrite using `[this, map_neg, Finsupp.neg_apply, bb.repr_sum_self]`. Rewrite using `[if_neg hj]`. Establish `hlt : (j : ℕ) + 1 < r` using `by omega`. Establish `: τ ^ ((j : ℕ) + 1) = bb ⟨(j : ℕ) + 1, hlt⟩` using `by rw [hb]`.
+
+Rewrite using `[this, bb.repr_self, Finsupp.single_apply]`. Distinguish the cases in `hi : (i : ℕ) = (j : ℕ) + 1`. Rewrite using `[if_pos (Fin.ext hi.symm), if_pos hi]`. Rewrite using `[if_neg (fun h => hi (by rw [← h])), if_neg hi]`.
+-/
 theorem leftMulMatrix_eq_companion (bb : Module.Basis (Fin r) F K) (hb : ∀ i, bb i = τ ^ (i : ℕ))
     (hr : τ ^ r + ∑ i, p i • τ ^ (i : ℕ) = 0) : Algebra.leftMulMatrix bb τ = companion p := by
   classical
@@ -56,6 +73,13 @@ theorem leftMulMatrix_eq_companion (bb : Module.Basis (Fin r) F K) (hb : ∀ i, 
     · rw [if_pos (Fin.ext hi.symm), if_pos hi]
     · rw [if_neg (fun h => hi (by rw [← h])), if_neg hi]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero, Matrix.one_mulVec, pow_zero]`. Use function extensionality and compare the values at `i`. Establish `hr0 : 0 < r` using `lt_of_le_of_lt (Nat.zero_le _) i.2`.
+
+Establish `h1 : (1 : K) = bb ⟨0, hr0⟩` using `by rw [hb]; simp`. Rewrite using `[h1, bb.repr_self, Finsupp.single_apply]`. Distinguish the cases in `hi : (i : ℕ) = 0`. Rewrite using `[if_pos hi, if_pos (Fin.ext hi.symm)]`. Rewrite using `[if_neg hi, if_neg (fun h => hi (by rw [← h]))]`.
+
+Consider the case `succ n ih`. Rewrite using `[pow_succ', ← Matrix.mulVec_mulVec, ih, ← leftMulMatrix_eq_companion bb hb hr, Algebra.leftMulMatrix_apply, LinearMap.toMatrix_mulVec_repr, pow_succ']`. Both sides reduce to the same expression.
+-/
 theorem companion_pow_mulVec (bb : Module.Basis (Fin r) F K) (hb : ∀ i, bb i = τ ^ (i : ℕ))
     (hr : τ ^ r + ∑ i, p i • τ ^ (i : ℕ) = 0) (n : ℕ) :
     (companion p ^ n) *ᵥ (fun i : Fin r => if (i : ℕ) = 0 then (1 : F) else 0) = ⇑(bb.repr (τ ^ n)) := by
@@ -77,6 +101,27 @@ theorem companion_pow_mulVec (bb : Module.Basis (Fin r) F K) (hb : ∀ i, bb i =
 
 end Comp
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ hU A r τ p lam hg`. Use `haveI : CharZero F := hU.charZero`. Take `⟨hli, hfr, hr⟩` from `hg`. Set `bb : Module.Basis (Fin r) F A.K` to `basisOfLinearIndependentOfCardEqFinrank' _ hli (by rw [hfr, Fintype.card_fin])`. Establish `hb : ∀ i, bb i = τ ^ (i : ℕ)` using `fun i => by`.
+
+Simplify using `[bb]`. Set `Ψ : A.K →ₗ[F] (Fin r → F)` to `{ toFun := fun a i => Algebra.trace F A.K (τ ^ (i : ℕ) * a) map_add' := fun a a' => by funext i; simp [mul_add] map_smul' := fun c a => by funext i; simp [mul_smul_comm] }`. Establish `hΨ : ∀ a, Ψ a = fun i : Fin r => Algebra.trace F A.K (τ ^ (i : ℕ) * a)` using `fun _ => rfl`. Establish `hinj : Function.Injective Ψ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+
+Introduce `a ha`. Apply `eq_zero_of_trace_mul (F := F) a` to reduce the goal to its premises. Introduce `x`. Rewrite using `[trace_mul_eq_sum bb hb x a]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+
+Use `congrFun ha j` as an intermediate fact. Simplify using `only [hΨ, Pi.zero_apply] at this`. Rewrite using `[this, mul_zero]`. Establish `hbij : Function.Bijective Ψ`. Use `⟨hinj, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp [hfr])).1 hinj`. Establish `hmom : ∀ a : A.K, ∀ i : ℕ, mom (sec (A.invK τ p lam a)) i = Algebra.trace F A.K (τ ^ i * a)`. Introduce `a i`. Simplify using `only [mom, sec, Et.invK]`. Rewrite using `[companion_pow_mulVec bb hb hr i, trace_mul_eq_sum bb hb (τ ^ i) a, dotProduct]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Use `⟨hbij, fun a => ⟨hmom a, ?_⟩⟩` and prove the remaining obligations. Establish `hH : ∀ v : Fin r → F, hankel (A.invK τ p lam a) *ᵥ v = Ψ (a * bb.equivFun.symm v)`. Introduce `v`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [hankel, Matrix.mulVec, dotProduct, Matrix.of_apply, hmom, hΨ, Module.Basis.equivFun_symm_apply, hb, Finset.mul_sum, map_sum, mul_smul_comm, map_smul, smul_eq_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[pow_add]`. Put the polynomial expressions in normal form. Establish `hcomp : Function.Injective (hankel (A.invK τ p lam a)).mulVec ↔ Function.Injective (fun y : A.K => a * y)`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h y y' hyy`. Use `h (a₁ := bb.equivFun y) (a₂ := bb.equivFun y') (by rw [hH, hH]; simp [hyy])` as an intermediate fact. Conclude with `bb.equivFun.injective this`. Introduce `h v v' hvv`.
+
+Rewrite `hvv` using `[hH, hH]`. Conclude with `bb.equivFun.symm.injective (h (hinj hvv))`. Rewrite using `[Delta, ← isUnit_iff_ne_zero, ← Matrix.isUnit_iff_isUnit_det, ← Matrix.mulVec_injective_iff_isUnit, hcomp]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `hs : Function.Surjective (Algebra.lmul F A.K a)` using `LinearMap.injective_iff_surjective.1 h`. Take `⟨y, hy⟩` from `hs 1`. Conclude with `⟨⟨a, y, hy, by rw [mul_comm]; exact hy⟩, rfl⟩`. Introduce `h`. Conclude with `h.mul_right_injective`.
+-/
 theorem invK_regular_iff_isUnit :
     ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
       [Unram F E] (A : Et F E) (r : ℕ) (τ : A.K) (p : Fin r → F) (lam : F), A.IsGen τ p →

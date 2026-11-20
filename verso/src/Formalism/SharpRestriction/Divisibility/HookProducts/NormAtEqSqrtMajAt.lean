@@ -11,6 +11,11 @@ namespace Formalism.MainNotions.DIV.HookProducts.FunSharp
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _)]`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type, Formalism.HermitianLatticesTheory.majAt, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Fin.sum_univ_two]`. Simplify using `[Formalism.HermitianLatticesTheory.realize, Formalism.HermitianLatticesTheory.realizeRaw, Complex.mul_re]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem norm_realize_sq_eq_sum_majAt_re {ι V : Type} [Fintype ι] [DecidableEq ι] [AddCommGroup V] [Module K V]
     (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (x : V) :
     ‖Formalism.HermitianLatticesTheory.realize b X x‖ ^ 2 = ∑ v, (Formalism.HermitianLatticesTheory.majAt b X v x x).re := by
@@ -23,6 +28,19 @@ private theorem norm_realize_sq_eq_sum_majAt_re {ι V : Type} [Fintype ι] [Deci
   simp [Formalism.HermitianLatticesTheory.realize, Formalism.HermitianLatticesTheory.realizeRaw, Complex.mul_re]
   ring
 
+/- English proof (translation)
+Establish `hz : ∀ g, β g = 0 ↔ α g = 0` using `fun g => by rw [← norm_eq_zero, hn g, norm_eq_zero]`. Establish `key : ∀ {E₁ E₂ : Type} [NormedAddCommGroup E₁] [NormedAddCommGroup E₂] (α₁ : G →+ E₁) (α₂ : G →+ E₂), (∀ g, ‖α₂ g‖ = ‖α₁ g‖) → DiscreteTopology (H.map α₁).toIntSubmodule → DiscreteTopology (H.map α₂).toIntSubmodule`. Introduce `E₁ E₂ _ _ α₁ α₂ hn' hd`. Rewrite `hd`, the goal using `[discreteTopology_iff_isOpen_singleton_zero, Metric.isOpen_singleton_iff]`. Take `⟨ε, hε, h⟩` from `hd`.
+
+Use `⟨ε, hε, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `y`. Establish `hw' : w ∈ H.map α₂` using `hw`. Take `⟨g, hg, rfl⟩` from `AddSubgroup.mem_map.1 hw'`. Establish `hmem : α₁ g ∈ (H.map α₁).toIntSubmodule` using `AddSubgroup.mem_map_of_mem α₁ hg`.
+
+Establish `h1` using `h ⟨α₁ g, hmem⟩ (by`. Establish `hy'` using `hy`. Simplify using `only [Subtype.dist_eq, ZeroMemClass.coe_zero, dist_zero_right] at hy' ⊢`. Express the relevant statement in the definitionally equal form `‖α₂ g‖ < ε at hy'`. Express the relevant statement in the definitionally equal form `‖α₁ g‖ < ε`.
+
+Rewrite using `[← hn']`. Conclude with `hy')`. Establish `h2 : α₁ g = 0` using `congrArg Subtype.val h1`. Establish `h3 : α₂ g = 0` using `by rw [← norm_eq_zero, hn', h2, norm_zero]`. Conclude with `Subtype.ext h3`.
+
+Establish `hd : DiscreteTopology (H.map β).toIntSubmodule ↔ DiscreteTopology (H.map α).toIntSubmodule` using `⟨key β α (fun g => (hn g).symm), key α β hn⟩`. Distinguish the cases in `hα : DiscreteTopology (H.map α).toIntSubmodule`. Take `⟨hc, hr⟩` from `Formalism.HN.Rerealization.covol_rk_eq α β hn H hα (hd.2 hα)`. Unfold `Formalism.F.slope Formalism.F.deg`. Rewrite using `[hc, hr]`.
+
+Establish `hβ : ¬ DiscreteTopology (H.map β).toIntSubmodule` using `fun h => hα (hd.1 h)`. Unfold `Formalism.F.slope Formalism.F.deg Formalism.F.covol`. Rewrite using `[dif_neg hα, dif_neg hβ]`. Simplify using the standard rewrite rules.
+-/
 private theorem slope_map_eq_of_norm_eq {G E F : Type} [AddCommGroup G]
     [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup F] [InnerProductSpace ℝ F] [FiniteDimensional ℝ F]
@@ -61,6 +79,29 @@ private theorem slope_map_eq_of_norm_eq {G E F : Type} [AddCommGroup G]
     rw [dif_neg hα, dif_neg hβ]
     simp
 
+/- English proof (translation)
+Use `set f : (Fin n → K) →ₗ[𝓞 K] A.V := (e : (Fin n → K) →ₗ[K] A.V).restrictScalars (𝓞 K) with hf`. Use `set g : A.V →ₗ[𝓞 K] (Fin n → K) := (e.symm : A.V →ₗ[K] (Fin n → K)).restrictScalars (𝓞 K) with hg`. Establish `hgf : ∀ N : Submodule (𝓞 K) (Fin n → K), (N.map f).map g = N`. Introduce `N`. Rewrite using `[← Submodule.map_comp]`.
+
+Establish `: g.comp f = LinearMap.id`. Use extensionality with `x`. Simplify using `[hf, hg]`. Rewrite using `[this, Submodule.map_id]`. Establish `hfg : ∀ N : Submodule (𝓞 K) A.V, (N.map g).map f = N`.
+
+Introduce `N`. Rewrite using `[← Submodule.map_comp]`. Establish `: f.comp g = LinearMap.id`. Use extensionality with `x`. Simplify using `[hf, hg]`.
+
+Rewrite using `[this, Submodule.map_id]`. Establish `hn : ∀ x, ‖(Formalism.HermitianLatticesTheory.realize A.b A.X).comp f.toAddMonoidHom x‖ = ‖Formalism.HermitianLatticesTheory.realize (Pi.basisFun K (Fin n)) XE x‖`. Introduce `x`. Establish `h1` using `norm_realize_sq_eq_sum_majAt_re A.b A.X (e x)`. Establish `h2` using `norm_realize_sq_eq_sum_majAt_re (Pi.basisFun K (Fin n)) XE x`.
+
+Rewrite `h1` using `[hmet]`. Use `show ‖Formalism.HermitianLatticesTheory.realize A.b A.X (e x)‖ = _`. Rewrite using `[← Real.sqrt_sq (norm_nonneg (Formalism.HermitianLatticesTheory.realize A.b A.X (e x))), ← Real.sqrt_sq (norm_nonneg (Formalism.HermitianLatticesTheory.realize (Pi.basisFun K (Fin n)) XE x)), h1, h2]`. Establish `hslope : ∀ N : Submodule (𝓞 K) (Fin n → K), Formalism.HN.slope (Formalism.HermitianLatticesTheory.realize A.b A.X) (N.map f) = Formalism.HN.slope (Formalism.HermitianLatticesTheory.realize (Pi.basisFun K (Fin n)) XE) N`. Introduce `N`.
+
+Unfold `Formalism.HN.slope Formalism.HN.zl`. Rewrite using `[Submodule.map_toAddSubgroup, AddSubgroup.map_map]`. Conclude with `slope_map_eq_of_norm_eq _ _ hn N.toAddSubgroup`. Establish `hne : ∀ N : Submodule (𝓞 K) (Fin n → K), N ≠ ⊥ → N.map f ≠ ⊥`. Introduce `N hN h`.
+
+Apply `hN` to reduce the goal to its premises. Rewrite using `[← hgf N, h, Submodule.map_bot]`. Establish `hne' : ∀ N : Submodule (𝓞 K) A.V, N ≠ ⊥ → N.map g ≠ ⊥`. Introduce `N hN h`. Apply `hN` to reduce the goal to its premises.
+
+Rewrite using `[← hfg N, h, Submodule.map_bot]`. Establish `hmu : Formalism.HN.muMax (Formalism.HermitianLatticesTheory.realize (Pi.basisFun K (Fin n)) XE) L = Formalism.HN.muMax (Formalism.HermitianLatticesTheory.realize A.b A.X) A.L`. Unfold `Formalism.HN.muMax`. Use `congr 1`. Use extensionality with `t`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨N, hNL, hN0, hs⟩`. Use `⟨N.map f, ?_, hne N hN0, (hslope N).trans hs⟩` and prove the remaining obligations. Rewrite using `[hlat]`. Conclude with `Submodule.map_mono hNL`.
+
+Introduce and unpack `⟨N, hNL, hN0, hs⟩`. Use `⟨N.map g, ?_, hne' N hN0, ?_⟩` and prove the remaining obligations. Rewrite using `[← hgf L]`. Apply `Submodule.map_mono` to reduce the goal to its premises. Rewrite using `[← hlat]`.
+
+Conclude with `hNL`. Rewrite using `[← hslope, hfg]`. Conclude with `hs`. Unfold `Formalism.BasicNotions.HLat.muMax Formalism.HN.muMaxDef`. Rewrite using `[hmu]`.
+-/
 theorem muMax_tie (A : Formalism.BasicNotions.HLat K) {n : ℕ} (L : Submodule (𝓞 K) (Fin n → K))
     (XE : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (e : (Fin n → K) ≃ₗ[K] A.V)
     (hlat : A.L = L.map ((e : (Fin n → K) →ₗ[K] A.V).restrictScalars (𝓞 K)))

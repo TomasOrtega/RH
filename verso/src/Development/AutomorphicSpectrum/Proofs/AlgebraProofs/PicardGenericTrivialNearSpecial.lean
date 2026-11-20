@@ -24,6 +24,29 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂.Zarhin.NearZero
 
 open GlobalTheory.PrimSec in
 
+/- English proof (translation)
+Use `haveI : IsIntegral XK := GeometricallyIntegral.geometrically_isIntegral _ _ _ H`. Take `⟨V, hV, hxV, -, n, φ, hφ, hφ'⟩` from `exists_etale_chart f (U := ⊤) (x := x) trivial`. Establish `hp` using `isPrime_map f hV hxV hfx`. Establish `hinj` using `app_injective H V`. Use `haveI : Nonempty V := ⟨⟨x, hxV⟩⟩`.
+
+Establish `hne : Nonempty (j ⁻¹ᵁ V)` using `nonempty_of_ne_zero (a := 1) fun h => one_ne_zero (hinj ((map_one _).trans (h.trans (map_zero _).symm)))`. Use `haveI : IsDomain Γ(X, V) := hinj.isDomain _`. Take `⟨⟨p, hpV⟩⟩` from `id hne`. Take `⟨W, hpW, hW⟩` from `exists_pull_eq_zero l p`. Establish `hjV : IsAffineOpen (j ⁻¹ᵁ V)` using `by haveI : IsAffineHom j := MorphismProperty.of_isPullback (P := @IsAffineHom) H.flip inferInstance`.
+
+Conclude with `hV.preimage j`. Take `⟨σ, hσW, hpσ⟩` from `hjV.exists_basicOpen_le (V := W) ⟨p, hpW⟩ hpV`. Take `⟨π, b, hπ, hb⟩` from `exists_numerator H hV σ`. Establish `hπ' : algebraMap O K π ≠ 0` using `fun h => hπ (IsFractionRing.injective O K (h.trans (map_zero _).symm))`. Establish `hc : ∀ c : K, c ≠ 0 → ∀ z ∈ j ⁻¹ᵁ V, z ∈ XK.basicOpen (AbLaw.cst fK (j ⁻¹ᵁ V) c)` using `fun c hc z hz => (mem_basicOpen_cst fK _ c hz).2 fun h => hc (by haveI := (fK z).isPrime`.
+
+Establish `e : (fK z).asIdeal = ⊥` using `Ideal.eq_bot_of_prime _`. Rewrite `h` using `[e]`. Conclude with `h)`. Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hb` using `[map_zero]`. Establish `h0 : p ∈ XK.basicOpen (0 : Γ(XK, j ⁻¹ᵁ V))`. Rewrite using `[hb, Scheme.basicOpen_mul]`. Conclude with `⟨hc _ hπ' p hpV, hpσ⟩`. Rewrite `h0` using `[Scheme.basicOpen_zero]`.
+
+Conclude with `h0`. Use `letI := (AbLaw.cst f V).toAlgebra`. Use `letI := φ.toAlgebra`. Use `haveI : IsScalarTower O (MvPolynomial (Fin n) O) Γ(X, V) := .of_algebraMap_eq' hφ.symm`. Use `haveI : Algebra.Etale (MvPolynomial (Fin n) O) Γ(X, V) := hφ'`.
+
+Take `⟨ρ, b', e, hb'⟩` from `GlobalTheory.etale_mvPolynomial_exists_content O K n Γ(X, V) hp b hb0`. Take `⟨y, hy⟩` from `hV.isoSpec.hom.surjective (⟨(IsLocalRing.maximalIdeal O).map (AbLaw.cst f V), hp⟩ : PrimeSpectrum Γ(X, V))`. Establish `hy' : (hV.primeIdealOf y).asIdeal = (IsLocalRing.maximalIdeal O).map (AbLaw.cst f V)` using `congrArg PrimeSpectrum.asIdeal hy`. Use `⟨X.basicOpen b', ⟨y.1, (mem_basicOpen_iff hV y b').2 (hy' ▸ hb'), ?_⟩, pull_eq_zero_of_mem W _ (fun z => ?_) hW⟩` and prove the remaining obligations. Use `PrimeSpectrum.ext (((IsLocalRing.maximalIdeal.isMaximal O).eq_of_le (f y.1).isPrime.ne_top fun a ha => ?_).symm)` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h`. Conclude with `(mem_basicOpen_iff hV y _).1 ((mem_basicOpen_cst f V a y.2).2 h) (hy' ▸ Ideal.mem_map_of_mem _ ha)`. Establish `hz : j z.1 ∈ X.basicOpen b'` using `z.2`. Establish `hzV : z.1 ∈ j ⁻¹ᵁ V` using `X.basicOpen_le b' hz`. Establish `hz' : z.1 ∈ XK.basicOpen ((j.app V).hom b')`.
+
+Rewrite using `[← Scheme.preimage_basicOpen]`. Conclude with `hz`. Establish `hρ : algebraMap O K ρ ≠ 0` using `fun h => hb0 (by`. Rewrite using `[e, IsFractionRing.injective O K (h.trans (map_zero _).symm), map_zero, zero_mul])`. Establish `e' : (j.app V).hom b = AbLaw.cst fK (j ⁻¹ᵁ V) (algebraMap O K ρ) * (j.app V).hom b'`.
+
+Rewrite using `[e, map_mul]`. Express the relevant statement in the definitionally equal form `(j.app V).hom (AbLaw.cst f V ρ) * _ = _`. Rewrite using `[app_cst H.w]`. Establish `h1 : z.1 ∈ XK.basicOpen ((j.app V).hom b)`. Rewrite using `[e', Scheme.basicOpen_mul]`.
+
+Conclude with `⟨hc _ hρ _ hzV, hz'⟩`. Rewrite `h1` using `[hb, Scheme.basicOpen_mul]`. Conclude with `hσW h1.2`.
+-/
 theorem exists_open_pull_eq_zero {O K : Type} [CommRing O] [IsDomain O] [ValuationRing O] [Ring.DimensionLEOne O]
     [Field K] [IsAlgClosed K] [Algebra O K] [IsFractionRing O K] {X XK : Scheme.{0}} {f : X ⟶ Sp O} {j : XK ⟶ X}
     {fK : XK ⟶ Sp K} (H : IsPullback j fK f (spMap (algebraMap O K))) [Smooth f] [GeometricallyIntegral f]
@@ -91,6 +114,11 @@ theorem exists_open_pull_eq_zero {O K : Type} [CommRing O] [IsDomain O] [Valuati
     rw [hb, Scheme.basicOpen_mul] at h1
     exact hσW h1.2
 
+/- English proof (translation)
+Introduce `C _ _ R _ _ _ _ _ _ A _ hA l`. Use `hA.smooth` as an intermediate fact. Use `hA.geomConnected` as an intermediate fact. Use `GlobalTheory.grpObj_geometricallyIntegral_of_smooth _ A` as an intermediate fact. Take `⟨x, hx⟩` from `A.hom.surjective (IsLocalRing.closedPoint R)`.
+
+Conclude with `exists_open_pull_eq_zero (IsPullback.of_hasPullback A.hom (spMap (algebraMap R C))) hx l`.
+-/
 theorem near_zero : ∀ (C : Type) [Field C] [IsAlgClosed C] (R : Type) [CommRing R] [IsDomain R] [ValuationRing R] [Ring.DimensionLEOne R]
     [Algebra R C] [IsFractionRing R C] (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A →
     ∀ l : Pic (pullback A.hom (spMap (algebraMap R C))),

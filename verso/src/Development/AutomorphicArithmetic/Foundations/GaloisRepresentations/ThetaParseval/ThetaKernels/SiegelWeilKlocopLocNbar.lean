@@ -24,6 +24,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 namespace RD
 variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) {w : InfinitePlace F}
   {L : GR d.n → ((Fin d.m → Fin d.n → ℂ) → ℂ) → (Fin d.m → Fin d.n → ℂ) → ℂ}
+/- English proof (translation)
+Take `⟨Ψ, hΨ⟩` from `hG F E σ d R w`. Establish `h0 : IsSw (0 : d.LF)` using `⟨0, by ext; simp⟩`. Take `⟨Φ, hΦ, hT'⟩` from `R.exists_adm hT hΨ h0`. Establish `hΦ0 : Φ = 0` using `d.T_inj hT Φ hΦ (by rw [hT']; funext X; simp [_root_.PositivityTheory.SiegelWeilFormula.RD_k.tens])`. Establish `e` using `(hL y 0 h0).2 Ψ hΨ.1 Φ hΦ hT'`.
+
+Rewrite `e` using `[hΦ0, map_zero, d.T_zero]`. Apply `R.tens_cancel hΨ.1 hΨ.2.1` to reduce the goal to its premises. Rewrite using `[← e]`. Use function extensionality and compare the values at `X`. Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.RD_k.tens]`.
+-/
 theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.locOp_zero (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) (hG : _root_.PositivityTheory.SiegelWeilFormula.GoodAwayEx_k) (hL : R.IsLocOp w L) (y : GR d.n) : L y 0 = 0 := by
   obtain ⟨Ψ, hΨ⟩ := hG F E σ d R w
   have h0 : IsSw (0 : d.LF) := ⟨0, by ext; simp⟩
@@ -35,6 +40,51 @@ theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.locOp_zero (hT : _root_.P
   rw [← e]
   funext X
   simp [_root_.PositivityTheory.SiegelWeilFormula.RD_k.tens]
+/- English proof (translation)
+Take `⟨-, ⟨ε, w₀, hw₀, -⟩, -⟩` from `hA F E σ d`. Take `⟨C, B, -, hW⟩` from `R.stepW_exp w hT hA ε w₀ hw₀`. Use `set s : ℂ := -2 * ((ε : ℤ) : ℂ) * ((R.sg w : ℤ) : ℂ) / R.ζ with hs_def`. Establish `hW' : R.StepOK w w₀ (locFT C s) B` using `hW`. Establish `hζn : ‖R.ζ‖ = 1`.
+
+Apply the tactic sequence `rcases R.hζ with ⟨-, hz⟩ | ⟨-, hz⟩ <;> rw [hz] <;> simp`. Establish `hunit : ∀ u : ℤˣ, ‖((u : ℤ) : ℂ)‖ = 1` using `fun u => by`. Apply the tactic sequence `rcases Int.units_eq_one_or u with h | h <;> rw [h] <;> simp`. Establish `hsn : ‖s‖ = 2`. Rewrite using `[hs_def, norm_div, norm_mul, norm_mul, hunit, hunit, hζn]`.
+
+Evaluate the numerical expressions. Establish `hs : s ≠ 0`. Introduce `h0`. Rewrite `hsn` using `[h0, norm_zero]`. Evaluate the numerical expressions using `at hsn`.
+
+Establish `hη : ((ε : ℤ) : ℂ) * R.ζ⁻¹ * R.ζ⁻¹ = -1`. Rewrite using `[R.isW_eps w hw₀]`. Break down `R.hζ with ⟨he, hz⟩ | ⟨he, hz⟩` into its components or cases. Rewrite using `[he, hz]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[he, hz]`. Simplify using `[Complex.inv_I]`. Establish `hsch` using `d.om_sch`. Establish `h4` using `R.step_comp w hsch (R.step_comp w hsch (R.step_comp w hsch hW' hW') hW') hW'`. Rewrite `h4` using `[_root_.PositivityTheory.SiegelWeilFormula.RD_k.w_four hw₀]`.
+
+Take `⟨Ψ, hΨ⟩` from `hG F E σ d R w`. Choose the witnesses or unpack the hypotheses as in `⟨X₀, hX₀⟩ : ∃ X₀, Ψ X₀ ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hΨ.2.1 (funext hc)`.
+
+Establish `hB4 : d.IsAwayW w (B (B (B (B Ψ))))` using `(h4.2 Ψ hΨ.1).1`. Establish `key : ∀ f : d.LF, IsSw f → ∀ X, f (R.loc w X) * Ψ X = locFT C s (locFT C s (locFT C s (locFT C s f))) (R.loc w X) * B (B (B (B Ψ))) X`. Introduce `f hf X`. Take `⟨Φ, hΦ, hT'⟩` from `R.exists_adm hT hΨ hf`. Establish `e` using `(h4.2 Ψ hΨ.1).2 f hf Φ hΦ hT'`.
+
+Rewrite `e` using `[map_one, Module.End.one_apply, hT']`. Conclude with `congrFun e X`. Establish `key0 : ∀ f : d.LF, IsSw f → ∀ u, f u * Ψ X₀ = locFT C s (locFT C s (locFT C s (locFT C s f))) u * B (B (B (B Ψ))) X₀`. Introduce `f hf u`. Take `⟨Z, hZ1, hZ2, hZ3⟩` from `R.loc_surj w X₀ u`.
+
+Use `key f hf (X₀ + Z)` as an intermediate fact. Rewrite `this` using `[hZ3, hΨ.1 X₀ Z hZ1 hZ2, hB4 X₀ Z hZ1 hZ2]`. Then use the resulting hypothesis. Distinguish the cases in `hb : B (B (B (B Ψ))) X₀ = 0`. Establish `hz : ∀ f : d.LF, IsSw f → f = 0`. Introduce `f hf`.
+
+Use function extensionality and compare the values at `u`. Use `key0 f hf u` as an intermediate fact. Rewrite `this` using `[hb, mul_zero]`. Conclude with `(mul_eq_zero.mp this).resolve_right hX₀`. Use `⟨C, s, 1, ε, hs, one_ne_zero, fun f hf => ?_, fun y c hc hy f hf => ?_, fun y c hc hy f hf => ?_, hsn, hη⟩` and prove the remaining obligations.
+
+Rewrite using `[hz f hf]`. Simplify using `[locFT_zero]`. Rewrite using `[hz f hf, R.locOp_zero hT hG hL y]`. Simplify using `[locFT_zero, chirp_zero]`. Rewrite using `[hz f hf, R.locOp_zero hT hG hL y]`.
+
+Simplify using `[locFT_zero, chirp_zero]`. Use `set κ := Ψ X₀ / B (B (B (B Ψ))) X₀ with hκ`. Establish `hκ0 : κ ≠ 0` using `div_ne_zero hX₀ hb`. Establish `h4f : ∀ f : d.LF, IsSw f → locFT C s (locFT C s (locFT C s (locFT C s f))) = κ • f`. Introduce `f hf`.
+
+Use function extensionality and compare the values at `u`. Use `key0 f hf u` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul, hκ]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-this`.
+
+Establish `hmain : ∀ (y : GR d.n) (c : Matrix (Fin d.n) (Fin d.n) ℂ), cᴴ = c → mR y = nbLoc c → ∀ f, IsSw f → IsSw (chirp ((R.sg w : ℤ) : ℂ) ((((ε : ℤ) : ℂ) * R.ζ⁻¹ * R.ζ⁻¹) • c) (locFT C s f)) ∧ L y f = κ⁻¹ • locFT C s (locFT C s (locFT C s (chirp ((R.sg w : ℤ) : ℂ) ((((ε : ℤ) : ℂ) * R.ζ⁻¹ …`. Introduce `y c hc hy f hf`. Take `⟨y', hy', hrel⟩` from `R.oppositeUnipotent_weylConj w hw₀ y c hc hy`. Establish `hx : ((((ε : ℤ) : ℂ) * R.ζ⁻¹ * R.ζ⁻¹) • c)ᴴ = (((ε : ℤ) : ℂ) * R.ζ⁻¹ * R.ζ⁻¹) • c`. Establish `hs : star (((ε : ℤ) : ℂ) * R.ζ⁻¹ * R.ζ⁻¹) = ((ε : ℤ) : ℂ) * R.ζ⁻¹ * R.ζ⁻¹`.
+
+Break down `R.hζ with ⟨-, hz⟩ | ⟨-, hz⟩` into its components or cases. Rewrite using `[hz]`. Simplify using the standard rewrite rules. Rewrite using `[hz]`. Simplify using `[Complex.inv_I]`.
+
+Rewrite using `[Matrix.conjTranspose_smul, hc, hs]`. Establish `hN : R.StepOK w (R.ι w y') (chirp ((R.sg w : ℤ) : ℂ) ((((ε : ℤ) : ℂ) * R.ζ⁻¹ * R.ζ⁻¹) • c)) id` using `R.stepN w hT y' _ hx hy'`. Use `⟨hN.1 _ (hW'.1 f hf), ?_⟩` and prove the remaining obligations. Distinguish the cases in `hf0 : ∀ u, f u = 0`. Establish `: f = 0` using `funext hf0`.
+
+Rewrite using `[this, R.locOp_zero hT hG hL y]`. Simplify using `[locFT_zero, chirp_zero]`. Use `push Not at hf0`. Take `⟨u₀, hu₀⟩` from `hf0`. Establish `hBΨ : ∀ X, B (B (B (B Ψ))) X = κ⁻¹ * Ψ X`.
+
+Introduce `X`. Take `⟨Z, hZ1, hZ2, hZ3⟩` from `R.loc_surj w X u₀`. Use `key f hf (X + Z)` as an intermediate fact. Rewrite `this` using `[hZ3, hΨ.1 X Z hZ1 hZ2, hB4 X Z hZ1 hZ2, h4f f hf]`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at this`.
+
+Rewrite using `[eq_inv_mul_iff_mul_eq₀ hκ0]`. Apply `mul_left_cancel₀ hu₀` to reduce the goal to its premises. Take the linear combination `-this`. Establish `hc3` using `R.step_comp w hsch (R.step_comp w hsch (R.step_comp w hsch (R.step_comp w hsch hW' hW') hW') hN) hW'`. Take `⟨Φ, hΦ, hT'⟩` from `R.exists_adm hT hΨ hf`.
+
+Establish `e` using `(hc3.2 Ψ hΨ.1).2 f hf Φ hΦ hT'`. Establish `e1` using `(hL y f hf).2 Ψ hΨ.1 Φ hΦ hT'`. Rewrite `e1` using `[hrel]`. Apply `R.tens_cancel hΨ.1 hΨ.2.1` to reduce the goal to its premises. Rewrite using `[← e1, e]`.
+
+Use function extensionality and compare the values at `X`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.RD_k.tens, Function.comp_apply, id, Pi.smul_apply, smul_eq_mul, hBΨ]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨C, s, κ, ε, hs, hκ0, h4f, fun y c hc hy f hf => (hmain y c hc hy f hf).2, fun y c hc hy f hf => ?_, hsn, hη⟩` and prove the remaining obligations. Take `⟨hsw, heq⟩` from `hmain y c hc hy f hf`.
+
+Rewrite using `[heq, locFT_smul, h4f _ hsw, smul_smul, inv_mul_cancel₀ hκ0, one_smul]`.
+-/
 theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.locOp_nbar (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) (hA : _root_.PositivityTheory.SiegelWeilFormula.SiegelWeilDatumProperties) (hG : _root_.PositivityTheory.SiegelWeilFormula.GoodAwayEx_k) (hL : R.IsLocOp w L) :
     ∃ (C s κ : ℂ) (ε : ℤˣ), s ≠ 0 ∧ κ ≠ 0 ∧
       (∀ f : d.LF, IsSw f → locFT C s (locFT C s (locFT C s (locFT C s f))) = κ • f) ∧

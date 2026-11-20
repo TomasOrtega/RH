@@ -4,6 +4,9 @@ import CompanionTheory.AutomorphicTheory.PadicUnitaryWeights.DixmierMalliavin.Di
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `CompanionTheory.DM.dixmierMalliavinFactorisation_holds`.
+-/
 theorem dixmierMalliavinFactorisation_fromLibrary : GlobalTheory.Published.DixmierMalliavinFactorisation :=
   CompanionTheory.DM.dixmierMalliavinFactorisation_holds
 

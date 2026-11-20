@@ -11,6 +11,19 @@ namespace GlobalTheory.FlatCM
 
 open AlgebraicGeometry CategoryTheory NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory GlobalTheory.CM GlobalTheory.FlatCM Polynomial
 
+/- English proof (translation)
+Take `⟨P, hP, hf⟩` from `LinearMap.exists_monic_and_aeval_eq_zero R f`. Establish `hpow : ∀ (i : ℕ) (x : M), a ^ i • (f ^ i) x = b ^ i • x` using `fun i => by`. Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`.
+
+Introduce `x`. Rewrite using `[pow_succ f, Module.End.mul_apply, pow_succ' a, mul_smul, ih, smul_comm, h, pow_succ, mul_smul]`. Establish `h0 : (P.scaleRoots a).eval b = 0`. Establish `h1 : (P.scaleRoots a).eval b • x₀ = a ^ P.natDegree • (aeval f P) x₀`. Rewrite using `[eval_eq_sum_range, aeval_eq_sum_range, natDegree_scaleRoots, Finset.sum_smul, LinearMap.sum_apply, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ≤ P.natDegree` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`. Rewrite using `[coeff_scaleRoots, mul_smul, ← hpow, LinearMap.smul_apply, smul_smul, smul_smul, mul_assoc, pow_sub_mul_pow a hi', mul_comm]`. Rewrite `h1` using `[hf, LinearMap.zero_apply, smul_zero, smul_eq_zero]`. Conclude with `h1.resolve_right hx₀`.
+
+Set `K` to `FractionRing R`. Establish `ha' : algebraMap R K a ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective R K)]` and apply the resulting hypothesis. Establish `hc : algebraMap R K a * (algebraMap R K b / algebraMap R K a) = algebraMap R K b` using `mul_div_cancel₀ _ ha'`. Establish `hint : _root_.IsIntegral R (algebraMap R K b / algebraMap R K a)`.
+
+Use `⟨P, hP, ?_⟩` and prove the remaining obligations. Establish `h2` using `scaleRoots_eval₂_mul (p := P) (algebraMap R K) (algebraMap R K b / algebraMap R K a) a`. Rewrite `h2` using `[hc, eval₂_at_apply, h0, map_zero]`. Conclude with `(mul_eq_zero.1 h2.symm).resolve_left (pow_ne_zero _ ha')`. Take `⟨g, hg⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`.
+
+Use `⟨g, IsFractionRing.injective R K ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hg, hc]`.
+-/
 theorem dvd_of_smul_end_eq_smul {R M : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [AddCommGroup M] [Module R M]
     [Module.Finite R M] [Module.IsTorsionFree R M] (f : Module.End R M) {a b : R} (ha : a ≠ 0)
     (h : ∀ x, a • f x = b • x) {x₀ : M} (hx₀ : x₀ ≠ 0) : a ∣ b := by
@@ -45,6 +58,15 @@ theorem dvd_of_smul_end_eq_smul {R M : Type} [CommRing R] [IsDomain R] [IsIntegr
   refine ⟨g, IsFractionRing.injective R K ?_⟩
   rw [map_mul, hg, hc]
 
+/- English proof (translation)
+Use `D.fin` as an intermediate fact. Use `D.proj` as an intermediate fact. Establish `hr : Module.finrank (𝓞 E) D.La = 1` using `D.rank.trans h`. Establish `: Nontrivial D.La` using `Module.nontrivial_of_finrank_pos (R := 𝓞 E) (by rw [hr]; exact one_pos)`. Take `⟨x₀, hx₀⟩` from `exists_ne (0 : D.La)`.
+
+Take `⟨a, b, ha, hab⟩` from `CMLat.exists_smul_eq_smul hr hx₀ (γ x₀)`. Establish `key : ∀ x, a • γ x = b • x` using `fun x => by`. Take `⟨r, s, hr0, e⟩` from `CMLat.exists_smul_eq_smul hr hx₀ x`. Establish `h1 : r • (a • γ x - b • x) = 0`. Rewrite using `[smul_sub, smul_comm r a, ← hγ, e, hγ, smul_comm a s, hab, smul_comm r b, e, smul_comm s b, sub_self]`.
+
+Conclude with `sub_eq_zero.1 ((smul_eq_zero.1 h1).resolve_left hr0)`. Set `f : Module.End (𝓞 E) D.La` to `{ toFun := γ, map_add' := γ.map_add, map_smul' := hγ }`. Take `⟨g, rfl⟩` from `dvd_of_smul_end_eq_smul f ha key hx₀`. Use `⟨g, fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : a • (γ x - g • x) = 0` using `by rw [smul_sub, key, mul_smul, sub_self]`.
+
+Conclude with `sub_eq_zero.1 ((smul_eq_zero.1 h1).resolve_left ha)`.
+-/
 theorem exists_smul_of_rank_one (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (h : D.p + D.q = 1) (γ : D.La →+ D.La) (hγ : ∀ (s : 𝓞 E) (x : D.La), γ (s • x) = s • γ x) :
     ∃ g : 𝓞 E, ∀ x, γ x = g • x := by

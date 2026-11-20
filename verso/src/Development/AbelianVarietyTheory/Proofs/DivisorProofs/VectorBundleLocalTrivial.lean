@@ -9,6 +9,11 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open scoped Classical
 open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalTheory.FlagAr GlobalTheory.ShFam.Pad GlobalTheory.VB
 
+/- English proof (translation)
+Introduce `B ι _ E r hE x`. Use `choose U e hx he using fun a => hE a x`. Set `V : B.Opens` to `Finset.univ.inf U`. Establish `hxV : x ∈ V` using `by show x ∈ ((Finset.univ.inf U : B.Opens) : Set B)`. Rewrite using `[TopologicalSpace.Opens.coe_finset_inf]`.
+
+Simplify using `using hx`. Establish `hV (a : ι) : V ≤ U a` using `Finset.inf_le (Finset.mem_univ a)`. Use `⟨V, hxV, fun a => ⟨?_⟩⟩` and prove the remaining obligations. Establish `hle : V.ι ''ᵁ ⊤ ≤ U a` using `(V.ι_image_le ⊤).trans (hV a)`. Conclude with `((Scheme.Modules.restrictFunctorIsoPullback V.ι).app (E a)).symm ≪≫ ((GlobalTheory.VB.isFrame_freeFrame _ _).iso ((GlobalTheory.VB.isFrame_restrict_iff V.ι _).2 ((he a).res hle))).symm`.
+-/
 theorem GlobalTheory.VB.exists_common_trivialization : ∀ (B : Scheme.{0}) (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ), (∀ a, GlobalTheory.VB.IsVB (E a) (r a)) → ∀ x : B, ∃ U : B.Opens, x ∈ U ∧ ∀ a, Nonempty ((Scheme.Modules.pullback U.ι).obj (E a) ≅ GlobalTheory.QCoh.freeModule (X := U.toScheme) (Fin (r a))) := by
   intro B ι _ E r hE x
   choose U e hx he using fun a => hE a x

@@ -12,6 +12,9 @@ def AllW {F Ω : Type} [Field F] [NumberField F] [IsTotallyComplex F] [Field Ω]
     (ι : Qbar l ≃+* ℂ) (r : G F Ω →* GL (Fin n) (Qbar l)) : Prop :=
   ∀ π : CuspSub F n, (CG.mk π).IsRegAlg → AttC ι r π → ImaginaryQuadraticEtaCharacter.AllWin π
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun v hv _ => hp v hv, fun π h1 h2 => (h π h1 h2).imp fun _ ht v _ => ht v⟩`.
+-/
 theorem AllW.witA {F Ω : Type} [Field F] [NumberField F] [IsCMField F] [Field Ω] [Algebra F Ω] {l : ℕ} [Fact l.Prime] {n : ℕ}
     {ι : Qbar l ≃+* ℂ} {r : G F Ω →* GL (Fin n) (Qbar l)} (h : AllW ι r)
     (hp : ∀ v : HeightOneSpectrum (𝓞 F), ((l : ℕ) : 𝓞 F) ∈ v.asIdeal → PotUnl r v) : WitA ι r :=

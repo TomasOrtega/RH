@@ -11,6 +11,11 @@ section Flat
 variable {R : Type u} [CommRing R] {A B C D : Type*} [AddCommGroup A] [AddCommGroup B]
   [AddCommGroup C] [AddCommGroup D] [Module R A] [Module R B] [Module R C] [Module R D]
 
+/- English proof (translation)
+Rewrite using `[Module.Flat.iff_rTensor_injective']`. Introduce `I`. Establish `h1` using `LinearMap.lTensor_injective_of_exact_of_flat g hg f hf h I`. Establish `h2` using `Module.Flat.rTensor_preserves_injective_linearMap (M := B) I.subtype I.subtype_injective`. Establish `h3 : (f.lTensor R) ∘ₗ (I.subtype.rTensor A) = (I.subtype.rTensor B) ∘ₗ (f.lTensor I)`.
+
+Simplify using the standard rewrite rules. Establish `h4 : Function.Injective ((f.lTensor R) ∘ₗ (I.subtype.rTensor A))`. Rewrite using `[h3]`. Conclude with `h2.comp h1`. Conclude with `Function.Injective.of_comp (f := f.lTensor R) h4`.
+-/
 theorem flat_of_shortExact_of_flat_of_flat (f : A →ₗ[R] B) (g : B →ₗ[R] C)
     (hf : Function.Injective f) (hg : Function.Surjective g) (h : Function.Exact f g)
     [Module.Flat R B] [Module.Flat R C] : Module.Flat R A := by
@@ -25,6 +30,13 @@ theorem flat_of_shortExact_of_flat_of_flat (f : A →ₗ[R] B) (g : B →ₗ[R] 
     rw [h3]; exact h2.comp h1
   exact Function.Injective.of_comp (f := f.lTensor R) h4
 
+/- English proof (translation)
+Rewrite using `[Module.Flat.iff_rTensor_injective']`. Introduce `I`. Establish `h1` using `Module.Flat.rTensor_preserves_injective_linearMap (M := A) I.subtype I.subtype_injective`. Establish `h2` using `Module.Flat.rTensor_preserves_injective_linearMap (M := B) I.subtype I.subtype_injective`. Establish `e : ∀ x, TensorProduct.prodRight R R R A B (I.subtype.rTensor (A × B) x) = Prod.map (I.subtype.rTensor A) (I.subtype.rTensor B) (TensorProduct.prodRight R R I A B x)`.
+
+Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]; ext <;> simp`. Consider the case `tmul m y => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]; ext <;> simp`.
+
+Introduce `x y hxy`. Apply `(TensorProduct.prodRight R R I A B).injective` to reduce the goal to its premises. Apply `h1.prodMap h2` to reduce the goal to its premises. Rewrite using `[← e, ← e, hxy]`.
+-/
 theorem flat_prod [Module.Flat R A] [Module.Flat R B] : Module.Flat R (A × B) := by
   rw [Module.Flat.iff_rTensor_injective']
   intro I
@@ -45,16 +57,27 @@ theorem flat_prod [Module.Flat R A] [Module.Flat R B] : Module.Flat R (A × B) :
   apply h1.prodMap h2
   rw [← e, ← e, hxy]
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[LinearMap.exact_iff]`. Rewrite using `[LinearMap.ker_rangeRestrict, h, Submodule.range_subtype]`.
+-/
 theorem exact_range_subtype_rangeRestrict {f : A →ₗ[R] B} {g : B →ₗ[R] C}
     (h : Function.Exact f g) : Function.Exact (LinearMap.range f).subtype g.rangeRestrict := by
   rw [LinearMap.exact_iff] at h ⊢
   rw [LinearMap.ker_rangeRestrict, h, Submodule.range_subtype]
 
+/- English proof (translation)
+The claim follows from `flat_of_shortExact_of_flat_of_flat _ _ (LinearMap.range f).subtype_injective g.surjective_rangeRestrict (exact_range_subtype_rangeRestrict h)`.
+-/
 theorem flat_range_of_exact {f : A →ₗ[R] B} {g : B →ₗ[R] C} (h : Function.Exact f g)
     [Module.Flat R B] [Module.Flat R (LinearMap.range g)] : Module.Flat R (LinearMap.range f) :=
   flat_of_shortExact_of_flat_of_flat _ _ (LinearMap.range f).subtype_injective
     g.surjective_rangeRestrict (exact_range_subtype_rangeRestrict h)
 
+/- English proof (translation)
+Establish `h1` using `LinearMap.lTensor_injective_of_exact_of_flat k.rangeRestrict k.surjective_rangeRestrict _ (LinearMap.range g).subtype_injective (exact_range_subtype_rangeRestrict h') M`. Establish `h2 : Function.Exact f g.rangeRestrict`. Rewrite `h`, the goal using `[LinearMap.exact_iff]`. Rewrite using `[LinearMap.ker_rangeRestrict, h]`. Establish `h3` using `lTensor_exact M h2 g.surjective_rangeRestrict`.
+
+Establish `h4 : g.lTensor M = ((LinearMap.range g).subtype.lTensor M) ∘ₗ (g.rangeRestrict.lTensor M)`. Rewrite using `[← LinearMap.lTensor_comp]`. Both sides reduce to the same expression. Rewrite `h3`, the goal using `[LinearMap.exact_iff]`. Rewrite using `[h4, LinearMap.ker_comp_of_ker_eq_bot _ (LinearMap.ker_eq_bot.2 h1), h3]`.
+-/
 theorem lTensor_exact_of_flat_range {f : A →ₗ[R] B} {g : B →ₗ[R] C} {k : C →ₗ[R] D}
     (h : Function.Exact f g) (h' : Function.Exact g k) [Module.Flat R (LinearMap.range k)]
     (M : Type*) [AddCommGroup M] [Module R M] :
@@ -71,6 +94,13 @@ theorem lTensor_exact_of_flat_range {f : A →ₗ[R] B} {g : B →ₗ[R] C} {k :
   rw [LinearMap.exact_iff] at h3 ⊢
   rw [h4, LinearMap.ker_comp_of_ker_eq_bot _ (LinearMap.ker_eq_bot.2 h1), h3]
 
+/- English proof (translation)
+Establish `key : ∀ m p, n < p + 1 + m → Module.Flat R (LinearMap.range (D p))`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `p hp`.
+
+Use `hn (p + 1) hp` as an intermediate fact. Use `infer_instance`. Consider the case `succ m ih`. Introduce `p hp`. Use `ih (p + 1) (by omega)` as an intermediate fact.
+
+Conclude with `flat_range_of_exact (hD p)`. Conclude with `key n p (by omega)`.
+-/
 theorem flat_range_of_exact_of_bounded {E : ℕ → Type*} [∀ p, AddCommGroup (E p)]
     [∀ p, Module R (E p)] [∀ p, Module.Flat R (E p)] (D : ∀ p, E p →ₗ[R] E (p + 1))
     (hD : ∀ p, Function.Exact (D p) (D (p + 1))) (n : ℕ) (hn : ∀ p, n < p → Subsingleton (E p))
@@ -99,6 +129,9 @@ structure ConeExact {K : ℕ → Type v} {C : ℕ → Type w} [∀ p, AddCommGro
     dK (p + 2) k = 0 → ∃ (c' : C p) (k' : K (p + 1)),
       dC p c' + φ (p + 1) k' = c ∧ dK (p + 1) k' = k
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ h _ => h, fun c _ h _ => ⟨c, rfl, h⟩, fun p c _ h _ => ⟨0, c, by simp, h⟩⟩`.
+-/
 theorem coneExact_id {K : ℕ → Type v} [∀ p, AddCommGroup (K p)] (d : ∀ p, K p →+ K (p + 1)) :
     ConeExact (fun p => d p) (fun p => d p) (fun _ x => x) :=
   ⟨fun _ h _ => h, fun c _ h _ => ⟨c, rfl, h⟩, fun p c _ h _ => ⟨0, c, by simp, h⟩⟩
@@ -113,6 +146,9 @@ def coneD (dK : ∀ p, K p →ₗ[R] K (p + 1)) (dC : ∀ p, C p →ₗ[R] C (p 
   ((dC p).coprod (-φ (p + 1))).prod (-(dK (p + 1)) ∘ₗ LinearMap.snd R _ _)
 
 @[simp]
+/- English proof (translation)
+Simplify using `[coneD, sub_eq_add_neg]`.
+-/
 theorem coneD_apply (dK : ∀ p, K p →ₗ[R] K (p + 1)) (dC : ∀ p, C p →ₗ[R] C (p + 1))
     (φ : ∀ p, K p →ₗ[R] C p) (p : ℕ) (x : C p × K (p + 1)) :
     coneD dK dC φ p x = (dC p x.1 - φ (p + 1) x.2, - dK (p + 1) x.2) := by
@@ -121,6 +157,21 @@ theorem coneD_apply (dK : ∀ p, K p →ₗ[R] K (p + 1)) (dC : ∀ p, C p →�
 variable {dK : ∀ p, K p →ₗ[R] K (p + 1)} {dC : ∀ p, C p →ₗ[R] C (p + 1)}
     {φ : ∀ p, K p →ₗ[R] C p}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, h1, h2⟩`. Use `⟨?_, ?_, fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+
+Conclude with `h0 x (congrArg Prod.fst hx) (congrArg Prod.snd hx)`. Introduce and unpack `⟨c, k⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `only [coneD_apply, Prod.mk_eq_zero, sub_eq_zero, neg_eq_zero] at h`.
+
+Take `⟨x, hx1, hx2⟩` from `h1 c k h.1 h.2`. Conclude with `⟨x, Prod.ext hx1 hx2⟩`. Introduce and unpack `⟨x, hx⟩`. Rewrite using `[← hx]`. Simplify using `[hφ, hK]`.
+
+Introduce and unpack `⟨c, k⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `only [coneD_apply, Prod.mk_eq_zero, sub_eq_zero, neg_eq_zero] at h`. Take `⟨c', k', hx1, hx2⟩` from `h2 p c k h.1 h.2`.
+
+Use `⟨(c', -k'), ?_⟩` and prove the remaining obligations. Simplify using `[hx1, hx2]`. Introduce and unpack `⟨x, hx⟩`. Rewrite using `[← hx]`. Simplify using `[hφ, hK, hC]`.
+
+Introduce and unpack `⟨h0, h1, h2⟩`. Use `⟨fun x hx hx' => ?_, fun c k h h' => ?_, fun p c k h h' => ?_⟩` and prove the remaining obligations. Conclude with `(injective_iff_map_eq_zero _).1 h0 x (Prod.ext hx hx')`. Take `⟨x, hx⟩` from `(h1 (c, k)).1 (by simp [h, h'])`. Conclude with `⟨x, congrArg Prod.fst hx, congrArg Prod.snd hx⟩`.
+
+Take `⟨⟨c', k'⟩, hx⟩` from `(h2 p (c, k)).1 (by simp [h, h'])`. Simplify using `only [coneD_apply, Prod.mk.injEq] at hx`. Conclude with `⟨c', -k', by simp [← hx.1, sub_eq_add_neg], by simp [← hx.2]⟩`.
+-/
 theorem coneExact_iff (hK : ∀ p x, dK (p + 1) (dK p x) = 0) (hC : ∀ p x, dC (p + 1) (dC p x) = 0)
     (hφ : ∀ p x, dC p (φ p x) = φ (p + 1) (dK p x)) :
     ConeExact (fun p => dK p) (fun p => dC p) (fun p => φ p) ↔
@@ -161,6 +212,9 @@ theorem coneExact_iff (hK : ∀ p x, dK (p + 1) (dK p x) = 0) (hC : ∀ p x, dC 
       simp only [coneD_apply, Prod.mk.injEq] at hx
       exact ⟨c', -k', by simp [← hx.1, sub_eq_add_neg], by simp [← hx.2]⟩
 
+/- English proof (translation)
+Establish `: ∀ p, Module.Flat R (C p × K (p + 1))` using `fun p => flat_prod`. Use `flat_range_of_exact_of_bounded (E := fun p => C p × K (p + 1)) _ h n (fun p hp => ?_) p` and prove the remaining obligations. Use `hnK (p + 1) (by omega)` as an intermediate fact. Use `hnC p hp` as an intermediate fact. Use `infer_instance`.
+-/
 theorem flat_range_coneD [∀ p, Module.Flat R (K (p + 1))] [∀ p, Module.Flat R (C p)]
     (h : ∀ p, Function.Exact (coneD dK dC φ p) (coneD dK dC φ (p + 1))) (n : ℕ)
     (hnK : ∀ p, n < p → Subsingleton (K p)) (hnC : ∀ p, n < p → Subsingleton (C p)) (p : ℕ) :
@@ -171,6 +225,9 @@ theorem flat_range_coneD [∀ p, Module.Flat R (K (p + 1))] [∀ p, Module.Flat 
   have := hnC p hp
   infer_instance
 
+/- English proof (translation)
+Take `⟨h0, h1, h2⟩` from `(coneExact_iff hK hC hφ).1 h`. Use `flat_range_coneD h2 n hnK hnC 0` as an intermediate fact. Establish `: Module.Flat R (C 0 × K (0 + 1))` using `flat_prod`. Use `flat_range_of_exact h1` as an intermediate fact. Conclude with `Module.Flat.of_linearEquiv (LinearEquiv.ofInjective _ h0)`.
+-/
 theorem ConeExact.flat_zero [∀ p, Module.Flat R (K (p + 1))] [∀ p, Module.Flat R (C p)]
     (h : ConeExact (fun p => dK p) (fun p => dC p) (fun p => φ p))
     (hK : ∀ p x, dK (p + 1) (dK p x) = 0) (hC : ∀ p x, dC (p + 1) (dC p x) = 0)
@@ -183,6 +240,27 @@ theorem ConeExact.flat_zero [∀ p, Module.Flat R (K (p + 1))] [∀ p, Module.Fl
   have := flat_range_of_exact h1
   exact Module.Flat.of_linearEquiv (LinearEquiv.ofInjective _ h0)
 
+/- English proof (translation)
+Take `⟨h0, h1, h2⟩` from `(coneExact_iff hK hC hφ).1 h`. Establish `hfl` using `flat_range_coneD h2 n hnK hnC`. Establish `e0 : ∀ x, ((φ 0).lTensor M).prod ((dK 0).lTensor M) x = TensorProduct.prodRight R R M _ _ (((φ 0).prod (dK 0)).lTensor M x)`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp only [map_zero]`. Consider the case `tmul m y => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `e1 : ∀ p x, coneD (fun p => (dK p).lTensor M) (fun p => (dC p).lTensor M) (fun p => (φ p).lTensor M) p (TensorProduct.prodRight R R M _ _ x) = TensorProduct.prodRight R R M _ _ ((coneD dK dC φ p).lTensor M x)`. Introduce `p x`.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul m y => simp [tmul_sub, tmul_neg]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Use `(coneExact_iff (fun p x => ?_) (fun p x => ?_) (fun p x => ?_)).2 ⟨?_, ?_, fun p => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← LinearMap.comp_apply, ← LinearMap.lTensor_comp, show dK (p + 1) ∘ₗ dK p = 0 from LinearMap.ext (hK p)]`. Simplify using the standard rewrite rules. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.lTensor_comp, show dC (p + 1) ∘ₗ dC p = 0 from LinearMap.ext (hC p)]`. Simplify using the standard rewrite rules. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.lTensor_comp, show dC p ∘ₗ φ p = φ (p + 1) ∘ₗ dK p from LinearMap.ext (hφ p), LinearMap.lTensor_comp, LinearMap.comp_apply]`.
+
+Use `hfl 0` as an intermediate fact. Establish `h3 : Function.Exact ((φ 0).prod (dK 0)) (coneD dK dC φ 0).rangeRestrict`. Rewrite `h1`, the goal using `[LinearMap.exact_iff]`. Rewrite using `[LinearMap.ker_rangeRestrict, h1]`. Establish `h4` using `LinearMap.lTensor_injective_of_exact_of_flat _ (coneD dK dC φ 0).surjective_rangeRestrict _ h0 h3 M`.
+
+Introduce `x y hxy`. Rewrite `hxy` using `[e0, e0]`. Conclude with `h4 ((TensorProduct.prodRight R R M _ _).injective hxy)`. Use `hfl 1` as an intermediate fact. Establish `h3` using `lTensor_exact_of_flat_range h1 (h2 0) M`.
+
+Introduce `y`. Take `⟨y, rfl⟩` from `(TensorProduct.prodRight R R M _ _).surjective y`. Rewrite using `[e1, LinearEquiv.map_eq_zero_iff, h3 y]`. Simplify using `only [Set.mem_range, e0, EmbeddingLike.apply_eq_iff_eq]`. Use `hfl (p + 2)` as an intermediate fact.
+
+Establish `h3` using `lTensor_exact_of_flat_range (h2 p) (h2 (p + 1)) M`. Introduce `y`. Take `⟨y, rfl⟩` from `(TensorProduct.prodRight R R M _ _).surjective y`. Rewrite using `[e1, LinearEquiv.map_eq_zero_iff, h3 y]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨_, e1 p x⟩`. Introduce and unpack `⟨x, hx⟩`. Take `⟨x, rfl⟩` from `(TensorProduct.prodRight R R M _ _).surjective x`. Rewrite `hx` using `[e1]`.
+
+Conclude with `⟨x, (TensorProduct.prodRight R R M _ _).injective hx⟩`.
+-/
 theorem ConeExact.lTensor [∀ p, Module.Flat R (K (p + 1))] [∀ p, Module.Flat R (C p)]
     (h : ConeExact (fun p => dK p) (fun p => dC p) (fun p => φ p))
     (hK : ∀ p x, dK (p + 1) (dK p x) = 0) (hC : ∀ p x, dC (p + 1) (dC p x) = 0)
@@ -252,6 +330,19 @@ section Construction
 
 variable {R : Type u} [CommRing R] [IsNoetherianRing R]
 
+/- English proof (translation)
+Set `N : Submodule R (C₀ × K₁)` to `LinearMap.ker (d.coprod (-φ)) ⊓ LinearMap.ker (δ ∘ₗ LinearMap.snd R _ _)`. Establish `hN : ∀ x, x ∈ N ↔ d x.1 = φ x.2 ∧ δ x.2 = 0`. Introduce `x`. Simplify using `[N, add_neg_eq_zero]`. Set `s : N →ₗ[R] K₁` to `LinearMap.snd R _ _ ∘ₗ N.subtype`.
+
+Take `⟨a, π₁, hπ₁⟩` from `Module.Finite.exists_fin' R (LinearMap.range s)`. Take `⟨g₁, hg₁⟩` from `Module.projective_lifting_property s.rangeRestrict π₁ s.surjective_rangeRestrict`. Take `⟨b, π₂, hπ₂⟩` from `Module.Finite.exists_fin' R (LinearMap.ker d ⧸ B.comap (LinearMap.ker d).subtype)`. Take `⟨g₂, hg₂⟩` from `Module.projective_lifting_property (B.comap (LinearMap.ker d).subtype).mkQ π₂ (Submodule.mkQ_surjective _)`. Set `e : (Fin (a + b) → R) ≃ₗ[R] (Fin a → R) × (Fin b → R)` to `(LinearEquiv.funCongrLeft R R finSumFinEquiv).trans (LinearEquiv.sumArrowLequivProdArrow _ _ R R)`.
+
+Use `⟨a + b, ((LinearMap.fst R _ _ ∘ₗ N.subtype ∘ₗ g₁).coprod ((LinearMap.ker d).subtype ∘ₗ g₂)) ∘ₗ e.toLinearMap, (s ∘ₗ g₁ ∘ₗ LinearMap.fst R _ _) ∘ₗ e.toLinearMap, fun x => ?_, fun x => ?_, fun c k h h' => ?_⟩` and prove the remaining obligations. Establish `h1` using `((hN _).1 (g₁ (e x).1).2).1`. Establish `h2 : d (g₂ (e x).2) = 0` using `(g₂ (e x).2).2`. Simplify using `[s, h1, h2]`. Conclude with `((hN _).1 (g₁ (e x).1).2).2`.
+
+Take `⟨x, hx⟩` from `hπ₁ (s.rangeRestrict ⟨(c, k), (hN _).2 ⟨h, h'⟩⟩)`. Establish `hx' : ((g₁ x : N) : C₀ × K₁).2 = k`. Rewrite `hx` using `[← hg₁]`. Conclude with `congrArg Subtype.val hx`. Establish `h1` using `((hN _).1 (g₁ x).2).1`.
+
+Establish `h3 : c - ((g₁ x : N) : C₀ × K₁).1 ∈ LinearMap.ker d`. Simplify using `[h, h1, hx']`. Take `⟨y, hy⟩` from `hπ₂ ((B.comap (LinearMap.ker d).subtype).mkQ ⟨_, h3⟩)`. Rewrite `hy` using `[← hg₂]`. Establish `h4` using `(Submodule.Quotient.eq _).1 hy.symm`.
+
+Use `⟨e.symm (x, y), ?_, ?_⟩` and prove the remaining obligations. Simplify `h4` using `[sub_sub]`. Simplify `hx'` using `[s]`.
+-/
 theorem exists_free_step {C₀ C₁ K₁ K₂ : Type*} [AddCommGroup C₀] [AddCommGroup C₁]
     [AddCommGroup K₁] [AddCommGroup K₂] [Module R C₀] [Module R C₁] [Module R K₁] [Module R K₂]
     [Module.Finite R K₁] (d : C₀ →ₗ[R] C₁) (φ : K₁ →ₗ[R] C₁) (δ : K₁ →ₗ[R] K₂) (B : Submodule R C₀)
@@ -296,6 +387,19 @@ theorem exists_free_step {C₀ C₁ K₁ K₂ : Type*} [AddCommGroup C₀] [AddC
     · simpa [sub_sub] using h4
     · simpa [s] using hx'
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `C d B hC _ _`. Establish `hC' : ∀ p, Subsingleton (C p)` using `fun p => hC p p.zero_le`. Use `⟨fun _ => 0, fun _ => 0, fun _ => 0, fun _ _ => rfl, fun _ _ => rfl, fun _ _ => Subsingleton.elim _ _, fun c k _ _ => ⟨0, ?_, Subsingleton.elim _ _⟩, fun p c k _ _ => ⟨0, 0, Subsingleton.elim _ _, Subsingleton.elim _ _⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[Subsingleton.elim (c - _) 0]`. Conclude with `B.zero_mem`. Consider the case `succ n ih`. Introduce `C d B hC hB hH`. Take `⟨m, δ, φ, hm, hδ, hφ, h0, h1⟩` from `ih (fun p => C (p + 1)) (fun p => d (p + 1)) (LinearMap.range (d 0)) (fun p hp => hC _ (by omega)) (hH 0) (fun p => hH (p + 1))`.
+
+Take `⟨a, φ₀, δ₀, e1, e2, e3⟩` from `exists_free_step (d 0) (φ 0) (δ 0) B`. Use `⟨fun p => Nat.casesOn p a m, fun p => match p with | 0 => δ₀ | p + 1 => δ p, fun p => match p with | 0 => φ₀ | p + 1 => φ p, ?_, ?_, ?_, e3, ?_⟩` and prove the remaining obligations. Introduce and unpack `(_ | p) hp`. Use linear arithmetic over natural numbers and integers. Conclude with `hm p (by omega)`.
+
+Introduce and unpack `(_ | p)`. Conclude with `e2`. Conclude with `hδ p`. Introduce and unpack `(_ | p)`. Conclude with `e1`.
+
+Conclude with `hφ p`. Introduce and unpack `(_ | p)`. Introduce `c k h h'`. Take `⟨x, ⟨c', hc'⟩, hx⟩` from `h0 c k h h'`. Conclude with `⟨c', x, eq_sub_iff_add_eq.1 hc', hx⟩`.
+
+Conclude with `h1 p`.
+-/
 theorem exists_free_complex (n : ℕ) : ∀ (C : ℕ → ModuleCat.{v} R)
     (d : ∀ p, C p →ₗ[R] C (p + 1)) (B : Submodule R (C 0))
     (_ : ∀ p, n ≤ p → Subsingleton (C p))
@@ -347,6 +451,23 @@ section QuasiIso
 
 variable {R : Type u} [Ring R]
 
+/- English proof (translation)
+Set `γ` to `ShortComplex.leftHomologyMapData φ S.moduleCatLeftHomologyData T.moduleCatLeftHomologyData`. Set `φK : LinearMap.ker S.g.hom →ₗ[R] LinearMap.ker T.g.hom` to `γ.φK.hom`. Set `φH : (LinearMap.ker S.g.hom ⧸ LinearMap.range S.moduleCatToCycles) →ₗ[R] (LinearMap.ker T.g.hom ⧸ LinearMap.range T.moduleCatToCycles)` to `γ.φH.hom`. Establish `hi : ∀ x, (φK x : T.X₂) = φ.τ₂ x` using `fun x => congr($(γ.commi).hom x)`. Establish `hπ : ∀ x, φH (Submodule.Quotient.mk x) = Submodule.Quotient.mk (φK x)` using `fun x => congr($(γ.commπ).hom x)`.
+
+Rewrite using `[γ.quasiIso_iff, ConcreteCategory.isIso_iff_bijective]`. Express the relevant statement in the definitionally equal form `Function.Bijective φH ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun y hy => ?_, fun x z hx hz => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x, hx⟩` from `h2 (Submodule.Quotient.mk ⟨y, hy⟩)`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite `hx` using `[hπ]`. Take `⟨z, hz⟩` from `(Submodule.Quotient.eq _).1 hx.symm`. Use `⟨x, z, x.2, ?_⟩` and prove the remaining obligations.
+
+Establish `: T.f z = y - φK x` using `congrArg Subtype.val hz`. Rewrite using `[this, hi, sub_add_cancel]`. Establish `: φH (Submodule.Quotient.mk ⟨x, hx⟩) = 0`. Rewrite using `[hπ, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨z, Subtype.ext (hz.trans (hi ⟨x, hx⟩).symm)⟩`.
+
+Take `⟨w, hw⟩` from `(Submodule.Quotient.mk_eq_zero _).1 ((injective_iff_map_eq_zero _).1 h1 _ this)`. Conclude with `⟨w, congrArg Subtype.val hw⟩`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, fun y => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+
+Rewrite `hx` using `[hπ, Submodule.Quotient.mk_eq_zero]`. Take `⟨z, hz⟩` from `hx`. Take `⟨w, hw⟩` from `h2 x z x.2 ((congrArg Subtype.val hz).trans (hi x))`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ⟨w, Subtype.ext hw⟩`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+
+Take `⟨x, z, hx, hz⟩` from `h1 y y.2`. Use `⟨Submodule.Quotient.mk ⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hπ]`. Use `symm`. Use `(Submodule.Quotient.eq _).2 ⟨z, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `T.f z = y - φK ⟨x, hx⟩`. Rewrite using `[hi, ← hz, add_sub_cancel_right]`.
+-/
 theorem shortComplex_quasiIso_iff {S T : ShortComplex (ModuleCat.{v} R)} (φ : S ⟶ T) :
     ShortComplex.QuasiIso φ ↔
       (∀ y : T.X₂, T.g y = 0 → ∃ (x : S.X₂) (z : T.X₁), S.g x = 0 ∧ T.f z + φ.τ₂ x = y) ∧
@@ -393,13 +514,24 @@ theorem shortComplex_quasiIso_iff {S T : ShortComplex (ModuleCat.{v} R)} (φ : S
       change T.f z = y - φK ⟨x, hx⟩
       rw [hi, ← hz, add_sub_cancel_right]
 
+/- English proof (translation)
+The claim follows from `congr($(K.d_comp_d i j k).hom x)`.
+-/
 theorem cochain_d_d_apply (K : CochainComplex (ModuleCat.{v} R) ℕ) (i j k : ℕ) (x : K.X i) :
     (K.d j k).hom ((K.d i j).hom x) = 0 := congr($(K.d_comp_d i j k).hom x)
 
+/- English proof (translation)
+The claim follows from `congr($(φ.comm i j).hom x)`.
+-/
 theorem cochain_comm_apply {K C : CochainComplex (ModuleCat.{v} R) ℕ} (φ : K ⟶ C) (i j : ℕ)
     (x : K.X i) : (C.d i j).hom ((φ.f i).hom x) = (φ.f j).hom ((K.d i j).hom x) :=
   congr($(φ.comm i j).hom x)
 
+/- English proof (translation)
+Rewrite using `[quasiIsoAt_iff' φ 0 0 1 (by simp) (by simp), shortComplex_quasiIso_iff]`. Establish `hK : ∀ x, (K.d 0 0).hom x = 0` using `fun x => by rw [K.shape 0 0 (by simp)]; rfl`. Establish `hC : ∀ x, (C.d 0 0).hom x = 0` using `fun x => by rw [C.shape 0 0 (by simp)]; rfl`. Express the relevant statement in the definitionally equal form `(∀ y : C.X 0, (C.d 0 1).hom y = 0 → ∃ (x : K.X 0) (z : C.X 0), (K.d 0 1).hom x = 0 ∧ (C.d 0 0).hom z + (φ.f 0).hom x = y) ∧ (∀ (x : K.X 0) (z : C.X 0), (K.d 0 1).hom x = 0 → (C.d 0 0).hom z = (φ.f 0).hom x → ∃ w : K.X 0, (K.d 0 0).hom w = x) ↔ _`. Simplify using `only [hK, hC, zero_add]`.
+
+Use `and_congr (forall₂_congr fun y _ => ?_) ⟨fun h x h1 h2 => ?_, fun h x _ h1 h2 => ?_⟩` and prove the remaining obligations. Conclude with `⟨fun ⟨x, _, h⟩ => ⟨x, h⟩, fun ⟨x, h⟩ => ⟨x, 0, h⟩⟩`. Take `⟨_, hw⟩` from `h x 0 h1 h2.symm`. Conclude with `hw.symm`. Conclude with `⟨0, (h x h1 h2.symm).symm⟩`.
+-/
 theorem quasiIsoAt_zero_iff {K C : CochainComplex (ModuleCat.{v} R) ℕ} (φ : K ⟶ C) :
     QuasiIsoAt φ 0 ↔
       (∀ y : C.X 0, (C.d 0 1).hom y = 0 → ∃ x : K.X 0, (K.d 0 1).hom x = 0 ∧ (φ.f 0).hom x = y) ∧
@@ -417,6 +549,9 @@ theorem quasiIsoAt_zero_iff {K C : CochainComplex (ModuleCat.{v} R) ℕ} (φ : K
     exact hw.symm
   · exact ⟨0, (h x h1 h2.symm).symm⟩
 
+/- English proof (translation)
+Rewrite using `[quasiIsoAt_iff' φ p (p + 1) (p + 2) (by simp) (by simp), shortComplex_quasiIso_iff]`. Both sides reduce to the same expression.
+-/
 theorem quasiIsoAt_succ_iff {K C : CochainComplex (ModuleCat.{v} R) ℕ} (φ : K ⟶ C) (p : ℕ) :
     QuasiIsoAt φ (p + 1) ↔
       (∀ y : C.X (p + 1), (C.d (p + 1) (p + 2)).hom y = 0 →
@@ -427,6 +562,19 @@ theorem quasiIsoAt_succ_iff {K C : CochainComplex (ModuleCat.{v} R) ℕ} (φ : K
   rw [quasiIsoAt_iff' φ p (p + 1) (p + 2) (by simp) (by simp), shortComplex_quasiIso_iff]
   rfl
 
+/- English proof (translation)
+Rewrite using `[quasiIso_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h0` using `(quasiIsoAt_zero_iff φ).1 (h 0)`. Establish `h1` using `fun p => (quasiIsoAt_succ_iff φ p).1 (h (p + 1))`.
+
+Use `⟨fun x hx hx' => h0.2 x hx' hx, fun c k hc hk => ?_, fun p c k hc hk => ?_⟩` and prove the remaining obligations. Take `⟨w, rfl⟩` from `(h1 0).2 k c hk hc`. Take `⟨x, hx, hx'⟩` from `h0.1 (c - (φ.f 0).hom w) (by rw [map_sub, cochain_comm_apply, sub_eq_zero]; exact hc)`. Conclude with `⟨x + w, by rw [map_add, hx', sub_add_cancel], by rw [map_add, hx]; exact zero_add _⟩`. Take `⟨w, rfl⟩` from `(h1 (p + 1)).2 k c hk hc`.
+
+Take `⟨x, z, hx, hx'⟩` from `(h1 p).1 (c - (φ.f (p + 1)).hom w) (by rw [map_sub, cochain_comm_apply, sub_eq_zero]; exact hc)`. Conclude with `⟨z, x + w, by rw [map_add, ← add_assoc, hx', sub_add_cancel], by rw [map_add, hx, zero_add]⟩`. Introduce and unpack `⟨h0, h1, h2⟩ (_ | p)`. Use `(quasiIsoAt_zero_iff φ).2 ⟨fun y hy => ?_, fun x hx hx' => h0 x hx' hx⟩` and prove the remaining obligations. Take `⟨x, hx, hx'⟩` from `h1 y 0 (by rw [map_zero]; exact hy) (map_zero _)`.
+
+Conclude with `⟨x, hx', hx⟩`. Use `(quasiIsoAt_succ_iff φ p).2 ⟨fun y hy => ?_, fun x z hx hz => ?_⟩` and prove the remaining obligations. Take `⟨z, x, hx, hx'⟩` from `h2 p y 0 (by rw [map_zero]; exact hy) (map_zero _)`. Conclude with `⟨x, z, hx', hx⟩`. Consider the cases of `p with`.
+
+Consider the case `zero`. Take `⟨w, -, hw⟩` from `h1 z x hz hx`. Conclude with `⟨w, hw⟩`. Consider the case `succ p`. Take `⟨-, w, -, hw⟩` from `h2 p z x hz hx`.
+
+Conclude with `⟨w, hw⟩`.
+-/
 theorem quasiIso_iff_coneExact {K C : CochainComplex (ModuleCat.{v} R) ℕ} (φ : K ⟶ C) :
     QuasiIso φ ↔ ConeExact (K := fun p => K.X p) (C := fun p => C.X p)
       (fun p => (K.d p (p + 1)).hom) (fun p => (C.d p (p + 1)).hom) (fun p => (φ.f p).hom) := by
@@ -468,6 +616,9 @@ open Limits
 
 variable {R : Type u} [CommRing R]
 
+/- English proof (translation)
+The claim follows from `ConeExact.lTensor (K := fun p => K.X p) (C := fun p => C.X p) (dK := fun p => (K.d p (p + 1)).hom) (dC := fun p => (C.d p (p + 1)).hom) (φ := fun p => (φ.f p).hom) ((quasiIso_iff_coneExact φ).1 hφ) (fun _ => cochain_d_d_apply K _ _ _) (fun _ => cochain_d_d_apply C _ _ _) (fun _ = …`.
+-/
 theorem coneExact_lTensor_of_quasiIso {K C : CochainComplex (ModuleCat.{v} R) ℕ} (φ : K ⟶ C)
     [hφ : QuasiIso φ] (hK : ∀ p, Module.Flat R (K.X p)) (hC : ∀ p, Module.Flat R (C.X p)) (n : ℕ)
     (hnK : ∀ p, n < p → IsZero (K.X p)) (hnC : ∀ p, n < p → IsZero (C.X p))
@@ -483,6 +634,9 @@ theorem coneExact_lTensor_of_quasiIso {K C : CochainComplex (ModuleCat.{v} R) �
     (fun p hp => ModuleCat.isZero_iff_subsingleton.1 (hnK p hp))
     (fun p hp => ModuleCat.isZero_iff_subsingleton.1 (hnC p hp)) M
 
+/- English proof (translation)
+The claim follows from `(quasiIso_iff_coneExact _).2 (coneExact_lTensor_of_quasiIso φ hK hC n hnK hnC M)`.
+-/
 theorem quasiIso_tensorLeft_of_flat {K C : CochainComplex (ModuleCat.{u} R) ℕ} (φ : K ⟶ C)
     [QuasiIso φ] (hK : ∀ p, Module.Flat R (K.X p)) (hC : ∀ p, Module.Flat R (C.X p)) (n : ℕ)
     (hnK : ∀ p, n < p → IsZero (K.X p)) (hnC : ∀ p, n < p → IsZero (C.X p))
@@ -497,6 +651,9 @@ instance extendScalars_additive {S : Type w} [CommRing S] (f : R →+* S) :
     ext m
     exact tmul_add (R := R) (1 : S) (g.hom m) (h.hom m)
 
+/- English proof (translation)
+The claim follows from `(quasiIso_iff_coneExact _).2 (coneExact_lTensor_of_quasiIso φ hK hC n hnK hnC ((ModuleCat.restrictScalars f).obj (ModuleCat.of S S)))`.
+-/
 theorem quasiIso_extendScalars_of_flat {K C : CochainComplex (ModuleCat.{v} R) ℕ} (φ : K ⟶ C)
     [QuasiIso φ] (hK : ∀ p, Module.Flat R (K.X p)) (hC : ∀ p, Module.Flat R (C.X p)) (n : ℕ)
     (hnK : ∀ p, n < p → IsZero (K.X p)) (hnC : ∀ p, n < p → IsZero (C.X p))
@@ -505,6 +662,9 @@ theorem quasiIso_extendScalars_of_flat {K C : CochainComplex (ModuleCat.{v} R) �
   (quasiIso_iff_coneExact _).2 (coneExact_lTensor_of_quasiIso φ hK hC n hnK hnC
     ((ModuleCat.restrictScalars f).obj (ModuleCat.of S S)))
 
+/- English proof (translation)
+Establish `e` using `(C.homologyIsoSc' i j k hi hk ≪≫ (C.sc' i j k).moduleCatHomologyIso).toLinearEquiv`. Establish `h : Module.Finite R (LinearMap.ker (C.d j k).hom ⧸ LinearMap.range (C.sc' i j k).moduleCatToCycles)` using `Module.Finite.equiv e`. Use `Module.Finite.equiv (Submodule.quotEquivOfEq (LinearMap.range (C.sc' i j k).moduleCatToCycles) _ ?_)` and prove the remaining obligations. Use extensionality with `x`. Conclude with `⟨fun ⟨y, hy⟩ => ⟨y, congrArg Subtype.val hy⟩, fun ⟨y, hy⟩ => ⟨y, Subtype.ext hy⟩⟩`.
+-/
 theorem finite_ker_quotient_of_finite_homology (C : CochainComplex (ModuleCat.{v} R) ℕ)
     (i j k : ℕ) (hi : (ComplexShape.up ℕ).prev j = i) (hk : (ComplexShape.up ℕ).next j = k)
     [Module.Finite R (C.homology j)] :
@@ -518,6 +678,27 @@ theorem finite_ker_quotient_of_finite_homology (C : CochainComplex (ModuleCat.{v
   ext x
   exact ⟨fun ⟨y, hy⟩ => ⟨y, congrArg Subtype.val hy⟩, fun ⟨y, hy⟩ => ⟨y, Subtype.ext hy⟩⟩
 
+/- English proof (translation)
+Take `⟨m, δ, ψ, hm, hδ, hψ, h0, h1⟩` from `exists_free_complex (n + 1) C.X (fun p => (C.d p (p + 1)).hom) (LinearMap.range (C.d 0 0).hom) (fun p hp => ModuleCat.isZero_iff_subsingleton.1 (hn p hp)) (finite_ker_quotient_of_finite_homology C 0 0 1 (by simp) (by simp)) (fun p => finite_ker_quotient_of_finite_homology C p (p …`. Establish `hC : ∀ x, (C.d 0 0).hom x = 0` using `fun x => by rw [C.shape 0 0 (by simp)]; rfl`. Set `N` to `LinearMap.range ((ψ 0).prod (δ 0))`. Set `X : ℕ → ModuleCat.{u} R` to `fun p => match p with`. Consider the case `0 => ModuleCat.of R N`.
+
+Consider the case `p + 1 => ModuleCat.of R (Fin (m (p + 1)) → R)`. Set `d : ∀ p, X p ⟶ X (p + 1)` to `fun p => match p with`. Consider the case `0 => ModuleCat.ofHom (LinearMap.snd R _ _ ∘ₗ N.subtype)`. Consider the case `p + 1 => ModuleCat.ofHom (δ (p + 1))`. Set `f : ∀ p, X p ⟶ C.X p` to `fun p => match p with`.
+
+Consider the case `0 => ModuleCat.ofHom (LinearMap.fst R _ _ ∘ₗ N.subtype)`. Consider the case `p + 1 => ModuleCat.ofHom (ψ (p + 1))`. Establish `hd : ∀ p, d p ≫ d (p + 1) = 0`. Introduce and unpack `(_ | p)`. Use `ModuleCat.hom_ext (LinearMap.ext ?_)` and prove the remaining obligations.
+
+Introduce and unpack `⟨_, x, rfl⟩`. Conclude with `hδ 0 x`. Conclude with `ModuleCat.hom_ext (LinearMap.ext (hδ (p + 1)))`. Establish `hf : ∀ p, f p ≫ C.d p (p + 1) = d p ≫ f (p + 1)`. Introduce and unpack `(_ | p)`.
+
+Use `ModuleCat.hom_ext (LinearMap.ext ?_)` and prove the remaining obligations. Introduce and unpack `⟨_, x, rfl⟩`. Conclude with `hψ 0 x`. Conclude with `ModuleCat.hom_ext (LinearMap.ext (hψ (p + 1)))`. Set `K : CochainComplex (ModuleCat.{u} R) ℕ` to `CochainComplex.of X d hd`.
+
+Establish `hKd : ∀ p, K.d p (p + 1) = d p` using `fun p => by simp [K, CochainComplex.of_d]`. Set `φ : K ⟶ C` to `{ f := f comm' := by`. Introduce and unpack `i _ rfl`. Rewrite using `[hKd]`. Conclude with `hf i }`.
+
+Use `⟨K, φ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(_ | p) hp`. Use linear arithmetic over natural numbers and integers. Use `ModuleCat.isZero_iff_subsingleton.2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Subsingleton (Fin (m (p + 1)) → R)`.
+
+Rewrite using `[hm _ hp]`. Use `infer_instance`. Introduce and unpack `(_ | p)`. Conclude with `inferInstanceAs (Module.Finite R N)`. Conclude with `inferInstanceAs (Module.Finite R (Fin (m (p + 1)) → R))`.
+
+Introduce and unpack `(_ | p) hp`. Use linear arithmetic over natural numbers and integers. Conclude with `inferInstanceAs (Module.Free R (Fin (m (p + 1)) → R))`. Rewrite using `[quasiIso_iff_coneExact]`. Simplify using `only [hKd]`.
+
+Use `⟨fun x hx hx' => Subtype.ext (Prod.ext hx hx'), fun c k h h' => ?_, h1⟩` and prove the remaining obligations. Take `⟨x, ⟨y, hy⟩, hx⟩` from `h0 c k h h'`. Rewrite `hy` using `[hC]`. Conclude with `⟨⟨_, x, rfl⟩, (sub_eq_zero.1 hy.symm).symm, hx⟩`.
+-/
 theorem exists_finite_complex_quasiIso [IsNoetherianRing R]
     (C : CochainComplex (ModuleCat.{u} R) ℕ) (n : ℕ) (hn : ∀ p, n < p → IsZero (C.X p))
     (hfin : ∀ p, Module.Finite R (C.homology p)) :
@@ -580,6 +761,9 @@ theorem exists_finite_complex_quasiIso [IsNoetherianRing R]
     rw [hC] at hy
     exact ⟨⟨_, x, rfl⟩, (sub_eq_zero.1 hy.symm).symm, hx⟩
 
+/- English proof (translation)
+The claim follows from `haveI : ∀ p, Module.Flat R (K.X (p + 1)) := fun p => hK _ (Nat.le_add_left 1 p) ConeExact.flat_zero (K := fun p => K.X p) (C := fun p => C.X p) (dK := fun p => (K.d p (p + 1)).hom) (dC := fun p => (C.d p (p + 1)).hom) (φ := fun p => (φ.f p).hom) ((quasiIso_iff_coneExact φ).1 hφ) …`.
+-/
 theorem flat_zero_of_quasiIso {K C : CochainComplex (ModuleCat.{v} R) ℕ} (φ : K ⟶ C)
     [hφ : QuasiIso φ] (hK : ∀ p, 1 ≤ p → Module.Flat R (K.X p))
     (hC : ∀ p, Module.Flat R (C.X p)) (n : ℕ)
@@ -594,6 +778,13 @@ theorem flat_zero_of_quasiIso {K C : CochainComplex (ModuleCat.{v} R) ℕ} (φ :
     (fun p hp => ModuleCat.isZero_iff_subsingleton.1 (hnK p hp))
     (fun p hp => ModuleCat.isZero_iff_subsingleton.1 (hnC p hp))
 
+/- English proof (translation)
+Take `⟨K, φ, h1, h2, h3, h4⟩` from `exists_finite_complex_quasiIso C n hn hfin`. Establish `h5 : ∀ p, 1 ≤ p → Module.Flat R (K.X p)` using `fun p hp => by`. Use `h3 p hp` as an intermediate fact. Use `infer_instance`. Establish `h6 : ∀ p, Module.Flat R (K.X p)`.
+
+Introduce and unpack `(_ | p)`. Conclude with `flat_zero_of_quasiIso φ h5 hflat n h1 hn`. Conclude with `h5 _ (Nat.le_add_left 1 p)`. Use `⟨K, φ, h1, h2, h3, fun p => ?_, h4, quasiIso_tensorLeft_of_flat φ h6 hflat n h1 hn, fun S _ _ => quasiIso_extendScalars_of_flat φ h6 hflat n h1 hn _⟩` and prove the remaining obligations. Use `Module.finitePresentation_of_finite R (K.X p)` as an intermediate fact.
+
+Conclude with `Module.Flat.projective_of_finitePresentation`.
+-/
 theorem exists_finite_projective_complex_quasiIso [IsNoetherianRing R]
     (C : CochainComplex (ModuleCat.{u} R) ℕ) (n : ℕ) (hn : ∀ p, n < p → IsZero (C.X p))
     (hflat : ∀ p, Module.Flat R (C.X p)) (hfin : ∀ p, Module.Finite R (C.homology p)) :

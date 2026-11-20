@@ -17,6 +17,13 @@ open GlobalTheory.TateTop ReciprocityTheory.Gal
 
 variable {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G]
 
+/- English proof (translation)
+Establish `: NeZero (l ^ r)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Set `: Module ℤ_[l] (ZMod (l ^ r))` to `Module.compHom _ (PadicInt.toZModPow r)`. Establish `hs : ∀ (a : ℤ_[l]) (m : ZMod (l ^ r)), a • m = PadicInt.toZModPow r a * m` using `fun _ _ => rfl`. Establish `h0 : PadicInt.toZModPow r ((l : ℤ_[l]) ^ r) = 0` using `(dvd_iff_toZModPow _).1 dvd_rfl`. Establish `hM : ∀ m : ZMod (l ^ r), (l : ℤ_[l]) ^ r • m = 0` using `fun m => by rw [hs, h0, zero_mul]`.
+
+Take `⟨h1, h2, h3⟩` from `h _ hM`. Use `⟨?_, fun z hz hz' => ?_, fun x b hb hx => h3 x b hb fun p => ?_⟩` and prove the remaining obligations. Take `⟨a1, a2⟩` from `h1 1`. Simplify using `only [hs, mul_one] at a1 a2`. Conclude with `⟨a1, a2⟩`.
+
+Take `⟨x, b, hb, e⟩` from `h2 z ⟨hz, fun g k m => by simpa only [hs] using hz' g k m⟩`. Conclude with `⟨x, b, hb, fun p => by simpa only [GlobalTheory.TateTop.cob, hs] using e p⟩`. Simplify `hx p` using `only [GlobalTheory.TateTop.cob, hs]`.
+-/
 theorem gen_zmod {χ : G →* ℤ_[l]ˣ} {r : ℕ} {c : G × G → ℤ_[l]} (h : Gen χ r c) :
     (IsLocallyConstant (fun p => PadicInt.toZModPow r (c p)) ∧
       ∀ g k m, PadicInt.toZModPow r (χ g : ℤ_[l]) * PadicInt.toZModPow r (c (k, m))
@@ -47,6 +54,41 @@ theorem gen_zmod {χ : G →* ℤ_[l]ˣ} {r : ℕ} {c : G × G → ℤ_[l]} (h :
 
 open GlobalTheory.PadicH2Separated in
 
+/- English proof (translation)
+Introduce `l _ G _ _ _ _ χ c hχ hgen hfin`. Establish `hl : l.Prime` using `Fact.out`. Establish `hG` using `fun r => gen_zmod (hgen r)`. Establish `hcc : Continuous c` using `continuous_of_reductions c fun s => (hG (s + 1)).1.1.continuous`. Establish `hcoc : ∀ g h k, (χ g : ℤ_[l]) * c (h, k) - c (g * h, k) + c (g, h * k) - c (g, h) = 0`.
+
+Introduce `g h k`. Rewrite using `[← PadicInt.ext_of_toZModPow]`. Introduce `n`. Simplify `(hG n).1.2 g h k` using `only [map_sub, map_add, map_mul, map_zero]`. Use `⟨⟨continuous_subtype_val.comp hcc, fun g h k => ?_⟩, fun z hz hzc => ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `congrArg (fun a : ℤ_[l] => (a : ℚ_[l])) (hcoc g h k)`. Move the coercions through the operations in `at e`. Conclude with `e`. Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn hz.continuousOn`. Take `⟨m, hm⟩` from `pow_unbounded_of_one_lt C (by exact_mod_cast hl.one_lt : (1 : ℝ) < l)`.
+
+Establish `hnorm : ∀ p, ‖(l : ℚ_[l]) ^ m * z p‖ ≤ 1` using `fun p => by`. Rewrite using `[norm_mul, Padic.norm_p_pow, zpow_neg, zpow_natCast]`. Establish `hp : (0 : ℝ) < (l : ℝ) ^ m` using `by have := hl.pos; positivity`. Rewrite using `[inv_mul_le_iff₀ hp, mul_one]`. Conclude with `(hC p trivial).trans hm.le`.
+
+Set `w : G × G → ℤ_[l]` to `fun p => ⟨(l : ℚ_[l]) ^ m * z p, hnorm p⟩`. Establish `hw : ∀ p, (w p : ℚ_[l]) = (l : ℚ_[l]) ^ m * z p` using `fun _ => rfl`. Establish `hwc : Continuous w` using `(continuous_const.mul hz).subtype_mk _`. Establish `hwcoc : ∀ g h k, (χ g : ℤ_[l]) * w (h, k) - w (g * h, k) + w (g, h * k) - w (g, h) = 0`. Introduce `g h k`.
+
+Establish `e : (((χ g : ℤ_[l]) * w (h, k) - w (g * h, k) + w (g, h * k) - w (g, h) : ℤ_[l]) : ℚ_[l]) = 0`. Move the coercions through the operations in `[hw]`. Take the linear combination `(l : ℚ_[l]) ^ m * hzc g h k`. Conclude with `PadicInt.coe_eq_zero.1 e`. Establish `hlev : ∀ r, ∃ (x : ZMod (l ^ r)) (b : G → ZMod (l ^ r)), IsLocallyConstant b ∧ ∀ p, PadicInt.toZModPow r (w p) = PadicInt.toZModPow r (c p) * x + (PadicInt.toZModPow r (χ p.1 : ℤ_[l]) * b p.2 - b (p.1 * p.2) + b p.1)` using `fun r => (hG r).2.1 _ ((IsLocallyConstant.iff_continuous _).2 ((continuous_reduction r).comp hwc)) fun g k m => by`.
+
+Simplify `congrArg (PadicInt.toZModPow r) (hwcoc g k m)` using `only [map_sub, map_add, map_mul, map_zero]`. Use `choose X B hB hXB using hlev`. Establish `hred : ∀ r, PadicInt.toZModPow r (((X r).val : ℕ) : ℤ_[l]) = X r` using `fun r => by`. Establish `: NeZero (l ^ r)` using `⟨pow_ne_zero _ hl.ne_zero⟩`. Rewrite using `[map_natCast, ZMod.natCast_zmod_val]`.
+
+Establish `hcomp : ∀ r, ZMod.castHom (pow_dvd_pow l (Nat.le_succ r)) (ZMod (l ^ r)) (X (r + 1)) = X r`. Introduce `r`. Use `set ψ := ZMod.castHom (pow_dvd_pow l (Nat.le_succ r)) (ZMod (l ^ r))`. Establish `hψ : ∀ a : ℤ_[l], ψ (PadicInt.toZModPow (r + 1) a) = PadicInt.toZModPow r a` using `fun a => by`. Rewrite using `[ZMod.castHom_apply]`.
+
+Conclude with `PadicInt.cast_toZModPow r (r + 1) (Nat.le_succ r) a`. Rewrite using `[← sub_eq_zero]`. Use `(hG r).2.2 _ (fun g => B r g - ψ (B (r + 1) g)) ((hB r).sub ((hB (r + 1)).comp ψ)) fun p => ?_` and prove the remaining obligations. Establish `e1 : PadicInt.toZModPow r (w p) = PadicInt.toZModPow r (c p) * ψ (X (r + 1)) + (PadicInt.toZModPow r (χ p.1 : ℤ_[l]) * ψ (B (r + 1) p.2) - ψ (B (r + 1) (p.1 * p.2)) + ψ (B (r + 1) p.1))`. Use `congrArg ψ (hXB (r + 1) p)` as an intermediate fact.
+
+Simplify `this` using `only [map_add, map_sub, map_mul, hψ]`. Establish `e2` using `hXB r p`. Use `show PadicInt.toZModPow r (c p) * (ψ (X (r + 1)) - X r) = PadicInt.toZModPow r (χ p.1 : ℤ_[l]) * (B r p.2 - ψ (B (r + 1) p.2)) - (B r (p.1 * p.2) - ψ (B (r + 1) (p.1 * p.2))) + (B r p.1 - ψ (B (r + 1) p.1))`. Take the linear combination `e2 - e1`. Take `⟨x, hx⟩` from `exists_lim (fun r => (((X r).val : ℕ) : ℤ_[l])) fun r => by`.
+
+Rewrite using `[dvd_iff_toZModPow, map_sub, hred, ← PadicInt.cast_toZModPow r (r + 1) (Nat.le_succ r), hred]`. Conclude with `sub_eq_zero.2 (hcomp r)`. Establish `hxr : ∀ r, PadicInt.toZModPow r x = X r` using `fun r => by`. Use `(dvd_iff_toZModPow _).1 (hx r)` as an intermediate fact. Rewrite `this` using `[map_sub, hred, sub_eq_zero]`. Then use the resulting hypothesis.
+
+Establish `hcont : ContAction (charRep χ)` using `by show Continuous fun p : G × ℤ_[l] => charRep χ p.1 p.2`. Simplify using `only [charRep_apply]`. Conclude with `(hχ.comp continuous_fst).mul continuous_snd`. Establish `hcompat : ∀ (r : ℕ) (g : G) (a : ℤ_[l]), PadicInt.toZModPow r (charRep χ g a) = charRep ((Units.map (PadicInt.toZModPow r : ℤ_[l] →+* ZMod (l ^ r)).toMonoidHom).comp χ) g (PadicInt.toZModPow r a)` using `fun r g a => by`. Simplify using `[charRep_apply]`.
+
+Establish `hyZ : (fun p => w p - x * c p) ∈ Z2 (charRep χ)`. Use `(mem_cocycles2 _ _).2 ⟨hwc.sub (continuous_const.mul hcc), fun g h k => ?_⟩` and prove the remaining obligations. Simplify using `only [charRep_apply]`. Take the linear combination `hwcoc g h k - x * hcoc g h k`. Establish `hyB : ∀ r, (fun p => PadicInt.toZModPow r (w p - x * c p)) ∈ B2 (charRep ((Units.map (PadicInt.toZModPow r : ℤ_[l] →+* ZMod (l ^ r)).toMonoidHom).comp χ))`.
+
+Introduce `r`. Use `(separated_dvr_second_cohomology_mem _ _).2 ⟨B r, (hB r).continuous, funext fun p => ?_⟩` and prove the remaining obligations. Take `⟨g, h⟩` from `p`. Simplify using `only [d1_apply, charRep_apply, MonoidHom.comp_apply, Units.coe_map, map_sub, map_mul, hxr]`. Establish `e` using `hXB r (g, h)`.
+
+Simplify using `only at e`. Simplify using `only [RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]`. Take the linear combination `-e`. Establish `hker : ∀ r : ℕ, ∃ w' ∈ Z2 (charRep χ), (fun p => w p - x * c p) - (l : ℤ_[l]) ^ r • w' ∈ B2 (charRep χ)` using `fun r => GlobalTheory.padicInt_two_cocycle_eq_pow_smul_of_reduction_coboundary l G (charRep χ) hcont r _ (hcompat r) _ hyZ (hyB r)`. Take `⟨f, hf, hfd⟩` from `(separated_dvr_second_cohomology_mem _ _).1 (mem_coboundaries_of_forall_pow l G (charRep χ) _ hcompat hfin _ hyZ hker)`.
+
+Establish `hl0 : (l : ℚ_[l]) ^ m ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 hl.ne_zero)`. Use `⟨(x : ℚ_[l]) / (l : ℚ_[l]) ^ m, fun g => (f g : ℚ_[l]) / (l : ℚ_[l]) ^ m, (continuous_subtype_val.comp hf).div_const _, fun g h => ?_⟩` and prove the remaining obligations. Establish `e` using `congrFun hfd (g, h)`. Simplify using `only [d1_apply, charRep_apply] at e`. Establish `e'` using `congrArg (fun a : ℤ_[l] => (a : ℚ_[l])) e`.
+
+Move the coercions through the operations in `[hw] at e'`. Clear the denominators using the available nonvanishing facts. Take the linear combination `e'`.
+-/
 theorem span : ∀ (l : ℕ) [Fact l.Prime] (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] (χ : G →* ℤ_[l]ˣ) (c : G × G → ℤ_[l]), Continuous (fun g => (χ g : ℤ_[l])) → (∀ r, GlobalTheory.TateTop.Gen χ r c) → (∀ r : ℕ, 0 < r → Finite (ReciprocityTheory.Gal.H1 (ReciprocityTheory.Gal.charRep ((Units.map (PadicInt.toZModPow r : ℤ_[l] →+* ZMod (l ^ r)).toMonoidHom).comp χ)))) → (Continuous (fun p => (c p : ℚ_[l])) ∧ ∀ g h k, ((χ g : ℤ_[l]) : ℚ_[l]) * (c (h, k) : ℚ_[l]) - (c (g * h, k) : ℚ_[l]) + (c (g, h * k) : ℚ_[l]) - (c (g, h) : ℚ_[l]) = 0) ∧ ∀ z : G × G → ℚ_[l], Continuous z → (∀ g h k, ((χ g : ℤ_[l]) : ℚ_[l]) * z (h, k) - z (g * h, k) + z (g, h * k) - z (g, h) = 0) → ∃ (x : ℚ_[l]) (f : G → ℚ_[l]), Continuous f ∧ ∀ g h, ((χ g : ℤ_[l]) : ℚ_[l]) * f h - f (g * h) + f g = z (g, h) - x * (c (g, h) : ℚ_[l]) := by
   intro l _ G _ _ _ _ χ c hχ hgen hfin
   have hl : l.Prime := Fact.out

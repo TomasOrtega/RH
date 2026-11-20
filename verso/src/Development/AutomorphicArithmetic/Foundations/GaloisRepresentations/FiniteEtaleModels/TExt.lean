@@ -9,6 +9,25 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen GlobalTheory.UPel.HT.EtLev GlobalTheory.LKTrip GlobalTheory.LKGeo
 open UpperTheory.Gal.Int.Geo
 
+/- English proof (translation)
+Introduce `G R _ _ gb N Ω _ _ σ o I k _ _ x`. Take `⟨f, rfl⟩ : ∃ f : Ω →+* k, x = spMap f` from `⟨(Spec.preimage x).hom, by simp [spMap]⟩`. Take `⟨g, rfl⟩ : ∃ g : R →+* Ω, σ = spMap g` from `⟨(Spec.preimage σ).hom, by simp [spMap]⟩`. Establish `hcomp : spMap f ≫ spMap g = spMap (f.comp g)`. Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Take `⟨J, -⟩` from `o.geom k (spMap f) (f.comp g) hcomp`. Use `haveI := G.finLa`. Set `h : Over.mk (spMap f) ⟶ Over.mk (𝟙 (Sp Ω))` to `Over.homMk (spMap f) (by simp)`. Use `haveI : Epi h := by haveI : Epi h.left := (GlobalTheory.UPel.GeometricLevelExistence.epi_spMap_field f : _)`.
+
+Conclude with `Over.epi_of_epi_left h`. Establish `hadd : ∀ n a b, h ≫ I.ev n (a + b) = (h ≫ I.ev n a) * (h ≫ I.ev n b)`. Introduce `n a b`. Rewrite using `[I.add, MonObj.comp_mul]`. Establish `hker : ∀ n, 0 < n → ∀ a, h ≫ I.ev n a = 1 ↔ ∃ b, a = n • b`.
+
+Introduce `n hn a`. Rewrite using `[← I.ker n hn a]`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Apply `(cancel_epi h).1` to reduce the goal to its premises.
+
+Rewrite using `[e, MonObj.comp_one]`. Introduce `e`. Rewrite using `[e, MonObj.comp_one]`. Establish `htors : ∀ n, 0 < n → ∀ a, (h ≫ I.ev n a) ^ n = 1`. Introduce `n hn a`.
+
+Rewrite using `[← MonObj.comp_pow, (I.onto n hn _).2 ⟨a, rfl⟩, MonObj.comp_one]`. Use `⟨{ ζ := fun n => Units.map (f : Ω →* k) (I.ζ n) ζ_prim := fun n hn => (I.ζ_prim n hn).map_of_injective (Units.map_injective f.injective) ζ_pow := fun n m hn hm => by rw [← map_pow, I.ζ_pow n m hn hm] ev := fun n y => h ≫ I.ev n y add := hadd lin := fun n b a => by show h ≫ I.ev n …` and prove the remaining obligations. Rewrite using `[I.lin, Category.assoc]`. Use `ker := hker`. Use `onto := fun n hn q => by`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hq`. Take `⟨c, rfl⟩` from `(J.onto n hn q).1 hq`. Take `⟨a, ha⟩` from `GlobalTheory.UPel.GeometricLevelExistence.exists_eq_of_count n hn (fun a => h ≫ I.ev n a) (J.ev n) (hadd n) (J.add n) (hker n hn) (J.ker n hn) (fun a => (J.onto n hn _).1 (htors n hn a) |>.imp fun c hc => hc.symm) c`. Conclude with `⟨a, ha⟩`.
+
+Introduce and unpack `⟨a, rfl⟩`. Conclude with `htors n hn a`. Use `tower := fun n m hn hm a => by show (h ≫ I.ev (n * m) a) ^ m = h ≫ I.ev n a`. Rewrite using `[← MonObj.comp_pow, I.tower n m hn hm]`. Use `isom := fun n hn a b => by`.
+
+Establish `hw` using `GlobalTheory.CommPairing.weilIs_pull GlobalTheory.globalFns_holds o.ab (pull_isLB o.isLB _) h (I.isom n hn a b)`. Use `hw using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← map_zpow]`. Conclude with `(GlobalTheory.UPel.GeometricLevelExistence.unitOn_pull_spMap f _).symm }, fun n hn y => rfl⟩`.
+-/
 theorem UpperTheory.Gal.FiniteEtaleModels.O.tExt :
     UpperTheory.Gal.FiniteEtaleModels.O.TExt := by
   intro G R _ _ gb N Ω _ _ σ o I k _ _ x

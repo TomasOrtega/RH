@@ -16,6 +16,11 @@ def ext (σ : K →+* ℂ) (e : V →ₛₗ[σ] M) (b : Module.Basis ι K V) :
   letI := σ.toAlgebra
   (Algebra.TensorProduct.basis ℂ b).constr ℂ (fun a => e (b a))
 
+/- English proof (translation)
+Use `letI := σ.toAlgebra`. Use `conv_lhs => rw [← b.sum_repr x]`. Use `conv_rhs => rw [← b.sum_repr x]`. Rewrite using `[TensorProduct.tmul_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.map_smulₛₗ, TensorProduct.tmul_smul, ← algebraMap_smul ℂ, map_smul]`. Use `congr 1`. Rewrite using `[← Algebra.TensorProduct.basis_apply, ext, Module.Basis.constr_basis]`.
+-/
 theorem ext_one_tmul [Fintype ι] (σ : K →+* ℂ) (e : V →ₛₗ[σ] M) (b : Module.Basis ι K V) (x : V) :
     letI := σ.toAlgebra; ext σ e b ((1 : ℂ) ⊗ₜ[K] x) = e x := by
   letI := σ.toAlgebra
@@ -27,11 +32,19 @@ theorem ext_one_tmul [Fintype ι] (σ : K →+* ℂ) (e : V →ₛₗ[σ] M) (b 
   congr 1
   rw [← Algebra.TensorProduct.basis_apply, ext, Module.Basis.constr_basis]
 
+/- English proof (translation)
+Use `letI := σ.toAlgebra`. Conclude with `Module.Basis.injective_constr_of_linearIndependent _ h`.
+-/
 theorem ext_inj (σ : K →+* ℂ) (e : V →ₛₗ[σ] M) (b : Module.Basis ι K V)
     (h : LinearIndependent ℂ (fun a => e (b a))) : Function.Injective (ext σ e b) := by
   letI := σ.toAlgebra
   exact Module.Basis.injective_constr_of_linearIndependent _ h
 
+/- English proof (translation)
+Use `letI := σ.toAlgebra`. Establish `h1 : Function.Injective (ψ.baseChange ℂ)` using `Module.Flat.lTensor_preserves_injective_linearMap ψ hψ`. Establish `h2` using `(Algebra.TensorProduct.basis ℂ b').linearIndependent.map' (ext σ e b ∘ₗ ψ.baseChange ℂ) (LinearMap.ker_eq_bot.2 ((ext_inj σ e b h).comp h1))`. Use `(congrArg (fun f => LinearIndependent ℂ f) (funext fun a => ?_)).mpr h2` and prove the remaining obligations. Simplify using `only [Function.comp, LinearMap.comp_apply, Algebra.TensorProduct.basis_apply, LinearMap.baseChange_tmul]`.
+
+Rewrite using `[ext_one_tmul]`.
+-/
 theorem li_comp [Fintype ι] {V' ι' : Type} [AddCommGroup V'] [Module K V'] (σ : K →+* ℂ) (e : V →ₛₗ[σ] M)
     (b : Module.Basis ι K V) (h : LinearIndependent ℂ (fun a => e (b a))) (ψ : V' →ₗ[K] V)
     (hψ : Function.Injective ψ) (b' : Module.Basis ι' K V') :
@@ -44,6 +57,29 @@ theorem li_comp [Fintype ι] {V' ι' : Type} [AddCommGroup V'] [Module K V'] (σ
   simp only [Function.comp, LinearMap.comp_apply, Algebra.TensorProduct.basis_apply, LinearMap.baseChange_tmul]
   rw [ext_one_tmul]
 
+/- English proof (translation)
+Use `letI := σ.toAlgebra`. Choose the witnesses or unpack the hypotheses as in `⟨t, rfl⟩ : φ ∈ LinearMap.range (ext σ e b) := by`. Rewrite using `[ext, Module.Basis.constr_range]`. Conclude with `hφ`. Establish `hc : ∀ j t, ext σ e b ((n j).baseChange ℂ t) = N j (ext σ e b t)`.
+
+Introduce `j t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul c x`.
+
+Establish `: ∀ y : V, c ⊗ₜ[K] y = c • ((1 : ℂ) ⊗ₜ[K] y)` using `fun y => by`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[LinearMap.baseChange_tmul, this, this, map_smul, map_smul, map_smul, ext_one_tmul, ext_one_tmul, hn]`. Establish `ht : ∀ j, (n j).baseChange ℂ t = 0` using `fun j => ext_inj σ e b h (by rw [hc, h0, map_zero])`. Use `set P : V →ₗ[K] (J → V) := LinearMap.pi n with hP`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g : (J → V) →ₗ[K] V, P ∘ₗ g ∘ₗ P = P := by`. Take `⟨s, hs⟩` from `P.rangeRestrict.exists_rightInverse_of_surjective P.range_rangeRestrict`. Take `⟨g, hg⟩` from `LinearMap.exists_extend s`. Use `⟨g, LinearMap.ext fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : g (P x) = s (P.rangeRestrict x)` using `by rw [← hg]; rfl`.
+
+Establish `h2` using `LinearMap.congr_fun hs (P.rangeRestrict x)`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at h2 ⊢`. Rewrite using `[h1]`. Conclude with `congrArg Subtype.val h2`. Establish `hsum : g ∘ₗ P = ∑ j, (g ∘ₗ LinearMap.single K (fun _ => V) j) ∘ₗ n j`.
+
+Use extensionality with `x`. Simplify using `only [LinearMap.comp_apply, LinearMap.sum_apply, ← map_sum]`. Use `congr 1`. Use extensionality with `j`. Simplify using `[hP, Finset.sum_apply, Pi.single_apply]`.
+
+Establish `hz : (g ∘ₗ P).baseChange ℂ t = 0`. Rewrite using `[hsum, ← LinearMap.baseChangeHom_apply, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.baseChangeHom_apply, LinearMap.baseChange_comp, LinearMap.comp_apply, ht, map_zero]`. Establish `ht' : t = (LinearMap.id - g ∘ₗ P).baseChange ℂ t`.
+
+Rewrite using `[LinearMap.baseChange_sub, LinearMap.sub_apply, hz]`. Simplify using the standard rewrite rules. Rewrite using `[ht']`. Generalize the expression as in `t = s`. Proceed by induction on `s using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `tmul c x`. Establish `: ∀ y : V, c ⊗ₜ[K] y = c • ((1 : ℂ) ⊗ₜ[K] y)` using `fun y => by`.
+
+Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[LinearMap.baseChange_tmul, this, map_smul, ext_one_tmul]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, fun j => ?_, rfl⟩)` and prove the remaining obligations. Establish `h3` using `congrFun (LinearMap.congr_fun hg x) j`. Simplify using `only [LinearMap.comp_apply, hP, LinearMap.pi_apply] at h3`.
+
+Simplify using `only [LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, map_sub, hP, h3, sub_self]`.
+-/
 theorem ker_rational [Fintype ι] {J : Type} [Fintype J] (σ : K →+* ℂ) (e : V →ₛₗ[σ] M)
     (b : Module.Basis ι K V) (h : LinearIndependent ℂ (fun a => e (b a))) (N : J → M →ₗ[ℂ] M)
     (n : J → V →ₗ[K] V) (hn : ∀ j x, e (n j x) = N j (e x)) (φ : M)
@@ -100,6 +136,9 @@ theorem ker_rational [Fintype ι] {J : Type} [Fintype J] (σ : K →+* ℂ) (e :
     simp only [LinearMap.comp_apply, hP, LinearMap.pi_apply] at h3
     simp only [LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, map_sub, hP, h3, sub_self]
 
+/- English proof (translation)
+Rewrite using `[← b.sum_repr x, map_sum]`. Use `Submodule.sum_mem _ (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem span_image_le [Fintype ι] (σ : K →+* ℂ) (e : V →ₛₗ[σ] M) (b : Module.Basis ι K V) (x : V) :
     e x ∈ Submodule.span ℂ (Set.range (fun a => e (b a))) := by
   rw [← b.sum_repr x, map_sum]
@@ -113,6 +152,15 @@ section Frames
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {V : Type} [AddCommGroup V] [Module K V]
 
+/- English proof (translation)
+Set `L : (Fin n → ℂ) →ₗ[ℂ] E` to `Fintype.linearCombination ℂ (fun a => e (b a))`. Establish `hL : Function.Injective L` using `h.fintypeLinearCombination_injective`. Establish `hr : Module.finrank ℂ (LinearMap.range L) = n`. Rewrite using `[LinearMap.finrank_range_of_inj hL]`. Simplify using the standard rewrite rules.
+
+Set `c : OrthonormalBasis (Fin n) ℂ (LinearMap.range L)` to `(stdOrthonormalBasis ℂ (LinearMap.range L)).reindex (finCongr hr)`. Set `T : (Fin n → ℂ) ≃ₗ[ℂ] (Fin n → ℂ)` to `((LinearEquiv.ofInjective L hL).trans c.repr.toLinearEquiv).trans (WithLp.linearEquiv 2 ℂ (Fin n → ℂ))`. Establish `hT : IsUnit (LinearMap.toMatrix' T.toLinearMap).det`. Rewrite using `[LinearMap.det_toMatrix']`. Conclude with `T.isUnit_det'`.
+
+Use `⟨(LinearMap.toMatrix' T.toLinearMap)⁻¹, Matrix.isUnit_nonsing_inv_det _ hT, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ hT, LinearMap.toMatrix'_mulVec]`. Establish `h1 : e x = L (Formalism.HermitianLatticesTheory.vecAt b v x)` using `by conv_lhs => rw [← b.sum_repr x, map_sum]`. Simplify using `only [L, Fintype.linearCombination_apply, LinearMap.map_smulₛₗ, Formalism.HermitianLatticesTheory.vecAt]`. Establish `h2 : ‖L (Formalism.HermitianLatticesTheory.vecAt b v x)‖ = ‖c.repr (LinearEquiv.ofInjective L hL (Formalism.HermitianLatticesTheory.vecAt b v x))‖`.
+
+Rewrite using `[LinearIsometryEquiv.norm_map]`. Both sides reduce to the same expression. Rewrite using `[h1, h2, EuclideanSpace.norm_eq]`. Both sides reduce to the same expression.
+-/
 theorem exists_frame {n : ℕ} (v : InfinitePlace K) (b : Module.Basis (Fin n) K V) {E : Type}
     [NormedAddCommGroup E] [InnerProductSpace ℂ E] (e : V →ₛₗ[v.embedding] E)
     (h : LinearIndependent ℂ (fun a => e (b a))) :
@@ -147,6 +195,13 @@ def fco {ι : Type} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι K V) (X :
       funext i; simp [Formalism.HermitianLatticesTheory.vecAt]
     simp only [Formalism.HermitianLatticesTheory.fcoord, this, Matrix.mulVec_smul]; rfl
 
+/- English proof (translation)
+Establish `h1 : Function.Injective (Matrix.mulVecLin (X v)⁻¹)` using `Matrix.mulVec_injective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det _).2 (Matrix.isUnit_nonsing_inv_det _ hX))`. Establish `h2` using `(Pi.basisFun ℂ ι).linearIndependent.map' ((WithLp.linearEquiv 2 ℂ (ι → ℂ)).symm.toLinearMap ∘ₗ Matrix.mulVecLin (X v)⁻¹) (LinearMap.ker_eq_bot.2 ((WithLp.linearEquiv 2 ℂ (ι → ℂ)).symm.injective.comp h1))`. Use `(congrArg (fun f => LinearIndependent ℂ f) (funext fun a => ?_)).mpr h2` and prove the remaining obligations. Establish `: Formalism.HermitianLatticesTheory.vecAt b v (b a) = Pi.basisFun ℂ ι a`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Formalism.HermitianLatticesTheory.vecAt, Module.Basis.repr_self, Pi.basisFun_apply, Finsupp.single_apply, Pi.single_apply]`. Distinguish the cases in `h : a = i`. Simplify using `[h]`. Simplify using `[h, Ne.symm h]`. Use `show WithLp.toLp 2 (Matrix.mulVec (X v)⁻¹ (Formalism.HermitianLatticesTheory.vecAt b v (b a))) = _`.
+
+Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem fco_li {ι : Type} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (v : InfinitePlace K) (hX : IsUnit (X v).det) : LinearIndependent ℂ (fun a => fco b X v (b a)) := by
   have h1 : Function.Injective (Matrix.mulVecLin (X v)⁻¹) :=
@@ -164,6 +219,9 @@ theorem fco_li {ι : Type} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι K 
   show WithLp.toLp 2 (Matrix.mulVec (X v)⁻¹ (Formalism.HermitianLatticesTheory.vecAt b v (b a))) = _
   rw [this]; rfl
 
+/- English proof (translation)
+Use `fun v => exists_frame v b ((fco A.b A.X v).comp ψ) (li_comp v.embedding (fco A.b A.X v) A.b (fco_li A.b A.X v (hA v)) ψ hψ b)` as an intermediate fact. Use `choose X hX hn using this`. Use `⟨X, hX, fun v x => (hn v x).trans ?_⟩` and prove the remaining obligations. Rewrite using `[EuclideanSpace.norm_eq]`. Both sides reduce to the same expression.
+-/
 theorem exists_frames {n : ℕ} (A : HLat K) (hA : ∀ v, IsUnit (A.X v).det) (b : Module.Basis (Fin n) K V)
     (ψ : V →ₗ[K] A.V) (hψ : Function.Injective ψ) :
     ∃ X : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ, (∀ v, IsUnit (X v).det) ∧
@@ -187,10 +245,18 @@ def coord (e : K →+* ℂ) {W : Type} [AddCommGroup W] [Module ℂ W] {n : ℕ}
   map_smul' a x := by simp [Finset.smul_sum, mul_smul]
 
 set_option linter.unusedSectionVars false in
+/- English proof (translation)
+Simplify using `[coord, Pi.single_apply, apply_ite e, ite_smul]`.
+-/
 theorem coord_basisFun (e : K →+* ℂ) {W : Type} [AddCommGroup W] [Module ℂ W] {n : ℕ} (c : Fin n → W)
     (i : Fin n) : coord e c (Pi.basisFun K (Fin n) i) = c i := by
   simp [coord, Pi.single_apply, apply_ite e, ite_smul]
 
+/- English proof (translation)
+Establish `h1 : coord e c x = c.repr.symm (WithLp.toLp 2 (fun i => e (x i)))`. Rewrite using `[← c.sum_repr_symm]`. Both sides reduce to the same expression. Rewrite using `[h1, LinearIsometryEquiv.norm_map, EuclideanSpace.norm_eq]`. Unfold `Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.cnorm Formalism.HermitianLatticesTheory.fcoord Formalism.HermitianLatticesTheory.vecAt`.
+
+Simplify using `[InfinitePlace.norm_embedding_eq, InfinitePlace.apply]`.
+-/
 theorem normAt_id (e : K →+* ℂ) {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] {n : ℕ}
     (c : OrthonormalBasis (Fin n) ℂ W) (x : Fin n → K) :
     Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin n)) (fun _ => 1) (InfinitePlace.mk e) x = ‖coord e c x‖ := by
@@ -209,6 +275,9 @@ def stdLat (n : ℕ) : HLat K where
   X := fun _ => 1
   L := Submodule.span (𝓞 K) (Set.range (Pi.basisFun K (Fin n)))
 
+/- English proof (translation)
+Use `⟨fun v => ?_, Submodule.fg_span (Set.finite_range _), ?_⟩` and prove the remaining obligations. Use `show IsUnit (1 : Matrix (Fin n) (Fin n) ℂ).det`. Simplify using the standard rewrite rules. Conclude with `top_le_iff.1 ((Pi.basisFun K (Fin n)).span_eq.symm.le.trans (Submodule.span_mono Submodule.subset_span))`.
+-/
 theorem stdLat_good (n : ℕ) : (stdLat K n).Good := by
   refine ⟨fun v => ?_, Submodule.fg_span (Set.finite_range _), ?_⟩
   · show IsUnit (1 : Matrix (Fin n) (Fin n) ℂ).det
@@ -224,6 +293,19 @@ def subLat (A : HLat K) (S : Submodule K A.V)
     X := X
     L := A.L.comap (S.subtype.restrictScalars (𝓞 K)) }
 
+/- English proof (translation)
+Establish `hx : x ∈ Submodule.span K (L : Set V)` using `hL ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add y z _ _ hy hz`.
+
+Take `⟨a, ha, hya⟩` from `hy`. Take `⟨b, hb, hzb⟩` from `hz`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `L.add_mem ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm, mul_smul]`. Conclude with `L.smul_mem b hya`. Rewrite using `[mul_smul]`. Conclude with `L.smul_mem a hzb`. Consider the case `smul k y _ hy`.
+
+Take `⟨c, hc, hyc⟩` from `hy`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) k`. Establish `hb0 : algebraMap (𝓞 K) K b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Use `⟨b * c, mul_ne_zero (nonZeroDivisors.ne_zero hb) hc, ?_⟩` and prove the remaining obligations. Establish `e1 : (b * c) • ((algebraMap (𝓞 K) K a / algebraMap (𝓞 K) K b) • y) = (algebraMap (𝓞 K) K (b * c) * (algebraMap (𝓞 K) K a / algebraMap (𝓞 K) K b)) • y`.
+
+Simplify using `only [map_mul, mul_smul, algebraMap_smul]`. Establish `e2 : a • (c • y) = (algebraMap (𝓞 K) K a * algebraMap (𝓞 K) K c) • y`. Simplify using `only [mul_smul, algebraMap_smul]`. Establish `e3 : algebraMap (𝓞 K) K (b * c) * (algebraMap (𝓞 K) K a / algebraMap (𝓞 K) K b) = algebraMap (𝓞 K) K a * algebraMap (𝓞 K) K c`. Rewrite using `[map_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[e1, e3, ← e2]`. Conclude with `L.smul_mem a hyc`.
+-/
 theorem exists_smul_mem {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (L : Submodule (𝓞 K) V)
     (hL : Submodule.span K (L : Set V) = ⊤) (x : V) : ∃ c : 𝓞 K, c ≠ 0 ∧ c • x ∈ L := by
@@ -255,6 +337,15 @@ theorem exists_smul_mem {K : Type} [Field K] [NumberField K] {V : Type} [AddComm
     rw [e1, e3, ← e2]
     exact L.smul_mem a hyc
 
+/- English proof (translation)
+Use `⟨hX, ?_, ?_⟩` and prove the remaining obligations. Use `show (A.L.comap (S.subtype.restrictScalars (𝓞 K))).FG`. Establish `hN : IsNoetherian (𝓞 K) A.L` using `isNoetherian_of_fg_of_noetherian _ hA.2.1`. Apply `Submodule.fg_of_fg_map_injective (S.subtype.restrictScalars (𝓞 K)) Subtype.val_injective` to reduce the goal to its premises. Conclude with `isNoetherian_submodule.mp hN _ (Submodule.map_comap_le _ _)`.
+
+Use `show Submodule.span K ((A.L.comap (S.subtype.restrictScalars (𝓞 K)) : Set S)) = ⊤`. Rewrite using `[Submodule.eq_top_iff']`. Introduce `x`. Take `⟨c, hc, hcx⟩` from `exists_smul_mem A.L hA.2.2 (x : A.V)`. Establish `hmem : c • x ∈ A.L.comap (S.subtype.restrictScalars (𝓞 K))` using `by show ((c • x : S) : A.V) ∈ A.L`.
+
+Simplify using `using hcx`. Establish `hc0 : algebraMap (𝓞 K) K c ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero hc)`. Establish `hx : x = (algebraMap (𝓞 K) K c)⁻¹ • (c • x)`. Rewrite using `[← algebraMap_smul K c x, smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Rewrite using `[hx]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`.
+-/
 theorem subLat_good (A : HLat K) (hA : A.Good) (S : Submodule K A.V) (X) (hX : ∀ v, IsUnit (X v).det) :
     (subLat A S X).Good := by
   refine ⟨hX, ?_, ?_⟩
@@ -285,6 +376,13 @@ variable {R : Ranks} {LL : Type} [Field LL] [NumberField LL] [StarRing LL] {embL
   {C : ColumnChain R Tau hc} {A : ColumnsAtT R C} {P : PeriodMap R C}
   (M : MemberForms LL embLL Pl Tau hc C A P)
 
+/- English proof (translation)
+Establish `key : ∀ a, ∀ x ∈ Submodule.span LL ((M.lat 0).L : Set (M.lat 0).V), ∃ y, M.emb 0 y = A.rhoT v a (M.emb 0 x)`. Introduce `a x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨y, -, hy⟩ := M.rhoT_lat v a x hx`. Conclude with `⟨y, hy⟩`.
+
+Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨x', hx⟩` from `hx`. Take `⟨y', hy⟩` from `hy`. Conclude with `⟨x' + y', by simp only [map_add, hx, hy]⟩`.
+
+Consider the case `smul k x _ hx`. Take `⟨x', hx⟩` from `hx`. Conclude with `⟨k • x', by rw [LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, map_smul, hx]⟩`. Use `choose y hy using fun a => key a x ((M.lat_good 0).2.2 ▸ Submodule.mem_top)`. Conclude with `⟨∑ a, y a, by simp only [map_sum, hy, ColumnsAtT.Nm, LinearMap.sum_apply]⟩`.
+-/
 theorem nm_rat (v : A.vT) (x : (M.lat 0).V) : ∃ y, M.emb 0 y = A.Nm v (M.emb 0 x) := by
   have key : ∀ a, ∀ x ∈ Submodule.span LL ((M.lat 0).L : Set (M.lat 0).V), ∃ y, M.emb 0 y = A.rhoT v a (M.emb 0 x) := by
     intro a x hx
@@ -301,6 +399,11 @@ theorem nm_rat (v : A.vT) (x : (M.lat 0).V) : ∃ y, M.emb 0 y = A.Nm v (M.emb 0
   choose y hy using fun a => key a x ((M.lat_good 0).2.2 ▸ Submodule.mem_top)
   exact ⟨∑ a, y a, by simp only [map_sum, hy, ColumnsAtT.Nm, LinearMap.sum_apply]⟩
 
+/- English proof (translation)
+Introduce `φ hφ`. Establish `hsp : Submodule.span ℂ (Set.range (fun a => M.emb 0 ((M.lat 0).b a))) = A.Mu0` using `(M.emb_basis 0).2.trans M.Fi_zero`. Establish `h` using `ker_rational embLL (M.emb 0) (M.lat 0).b (M.emb_basis 0).1 A.Nm (fun v => descend (M.emb 0) (M.emb 0) (M.emb_inj 0) (A.Nm v) (nm_rat M v)) (fun v x => descend_spec _ _ _ _ _ x) φ (hsp ▸ hφ.1) (fun v => (Submodule.mem_iInf _).1 hφ.2 v)`. Use `Submodule.span_mono (Set.image_mono fun x hx => ?_) h` and prove the remaining obligations. Use `⟨hsp ▸ span_image_le embLL (M.emb 0) (M.lat 0).b x, (Submodule.mem_iInf _).2 fun v => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.mem_ker, ← descend_spec (M.emb 0) (M.emb 0) (M.emb_inj 0) (A.Nm v) (nm_rat M v), hx v, map_zero]`.
+-/
 theorem mram_le_span : A.Mram ≤ Submodule.span ℂ (M.emb 0 '' (M.ramSub : Set (M.lat 0).V)) := by
   intro φ hφ
   have hsp : Submodule.span ℂ (Set.range (fun a => M.emb 0 ((M.lat 0).b a))) = A.Mu0 :=
@@ -315,6 +418,11 @@ theorem mram_le_span : A.Mram ≤ Submodule.span ℂ (M.emb 0 '' (M.ramSub : Set
 def ramEmb : M.ramSub →ₛₗ[embLL] A.Mram :=
   LinearMap.codRestrict A.Mram ((M.emb 0).comp M.ramSub.subtype) (fun x => x.2)
 
+/- English proof (translation)
+Use `⟨LinearIndependent.of_comp A.Mram.subtype (li_comp embLL (M.emb 0) (M.lat 0).b (M.emb_basis 0).1 M.ramSub.subtype Subtype.val_injective b), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `φ -`. Establish `h1 : Submodule.span ℂ (M.emb 0 '' (M.ramSub : Set (M.lat 0).V)) ≤ (Submodule.span ℂ (Set.range (fun a => ramEmb M (b a)))).map A.Mram.subtype`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨ramEmb M ⟨x, hx⟩, span_image_le embLL (ramEmb M) b _, rfl⟩`. Take `⟨y, hy, hy'⟩` from `h1 (mram_le_span M φ.2)`. Rewrite using `[← Subtype.ext hy']` and apply the resulting hypothesis.
+-/
 theorem ramEmb_basis {ι : Type} [Fintype ι] (b : Module.Basis ι LL M.ramSub) :
     LinearIndependent ℂ (fun a => ramEmb M (b a)) ∧ Submodule.span ℂ (Set.range (fun a => ramEmb M (b a))) = ⊤ := by
   refine ⟨LinearIndependent.of_comp A.Mram.subtype
@@ -331,6 +439,17 @@ theorem ramEmb_basis {ι : Type} [Fintype ι] (b : Module.Basis ι LL M.ramSub) 
 
 end Forms
 
+/- English proof (translation)
+Establish `hX` using `fun u => haveI : Module.Finite B.LL ((C.fm u).lat 0).V := Module.Finite.of_basis ((C.fm u).lat 0).b exists_frames ((C.fm u).lat 0) ((C.fm u).lat_good 0).1 (Module.finBasis B.LL (C.fm u).ramSub) (C.fm u).ramSub.subtype Subtype.val_injective`. Use `choose X hX hn using hX`. Set `Nu : B.Word → HLat B.LL` to `fun u => subLat ((C.fm u).lat 0) (C.fm u).ramSub (X u)`. Establish `hc : (fun i => coord B.embLL W.onb (Pi.basisFun B.LL (Fin W.Drows) i)) = W.onb.toBasis`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[coord_basisFun]`. Simplify using the standard rewrite rules. Use `⟨{ div := { RR := stdLat B.LL W.Drows Nu := Nu Bk := fun _ => 0 h := fun _ => 0 HH := sFrame Nu (fun _ => 0) + (stdLat B.LL W.Drows).muMax HH_ge := le_rfl etaF := 0 Dall := W.Dall delP := W.delp delP_le_one := W.delp_le_one } div_good := ⟨(stdLat_good _).1, hX⟩ jEE := coord B.emb …` and prove the remaining obligations. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show LinearIndependent ℂ (fun i => coord B.embLL W.onb (Pi.basisFun B.LL (Fin W.Drows) i))`.
+
+Rewrite using `[hc]`. Conclude with `W.onb.toBasis.linearIndependent`. Use `show Submodule.span ℂ (Set.range (fun i => coord B.embLL W.onb (Pi.basisFun B.LL (Fin W.Drows) i))) = ⊤`. Rewrite using `[hc]`. Conclude with `W.onb.toBasis.span_eq`.
+
+Take `⟨h1, h2⟩` from `ramEmb_basis (C.fm u) (Nu u).b`. Use `⟨h1.map' (W.eMu u).symm.toLinearMap (W.eMu u).symm.ker, ?_⟩` and prove the remaining obligations. Establish `h3` using `congrArg (Submodule.map (W.eMu u).symm.toLinearMap) h2`. Rewrite `h3` using `[Submodule.map_span, ← Set.range_comp, Submodule.map_top, LinearEquiv.range]`. Conclude with `h3`.
+
+Use `show ((W.eMu u ((W.eMu u).symm (ramEmb (C.fm u) x)) : (C.mem u).A.Mram) : (C.mem u).C.cls 0 → (C.mem u).C.Y 0 → ℂ) = _`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+-/
 theorem exists_divStage (B : Base) (C : Cols B) (W : RowsRest B C) :
     ∃ V : DivStage B C W, V.div.AllGood ∧
       ∀ u, (V.div.Nu u).L = ((C.fm u).lat 0).L.comap ((V.nuIn u).restrictScalars (𝓞 B.LL)) := by
@@ -380,6 +499,9 @@ theorem exists_divStage (B : Base) (C : Cols B) (W : RowsRest B C) :
       (C.mem u).C.cls 0 → (C.mem u).C.Y 0 → ℂ) = _
     rw [LinearEquiv.apply_symm_apply]; rfl
 
+/- English proof (translation)
+Establish `h1` using `Module.finrank_eq_card_basis V.div.RR.b`. Establish `h2` using `Module.finrank_eq_card_basis (Module.Basis.mk V.jEE_basis.1 (le_of_eq V.jEE_basis.2.symm))`. Establish `h3 : Module.finrank ℂ W.EE = W.Drows` using `by simpa using Module.finrank_eq_card_basis W.onb.toBasis`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem RR_finrank {B : Base} {C : Cols B} {W : RowsRest B C} (V : DivStage B C W) :
     Module.finrank B.LL V.div.RR.V = W.Drows := by
   have h1 := Module.finrank_eq_card_basis V.div.RR.b
@@ -387,6 +509,9 @@ theorem RR_finrank {B : Base} {C : Cols B} {W : RowsRest B C} (V : DivStage B C 
   have h3 : Module.finrank ℂ W.EE = W.Drows := by simpa using Module.finrank_eq_card_basis W.onb.toBasis
   omega
 
+/- English proof (translation)
+Establish `h1` using `Module.finrank_eq_card_basis (V.div.Nu u).b`. Establish `h2` using `Module.finrank_eq_card_basis (Module.Basis.mk (V.jN_basis u).1 (le_of_eq (V.jN_basis u).2.symm))`. Establish `h3 : Module.finrank ℂ (W.Mu u) = (C.mem u).A.du` using `(W.eMu u).finrank_eq`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem Nu_finrank {B : Base} {C : Cols B} {W : RowsRest B C} (V : DivStage B C W) (u : B.Word) :
     Module.finrank B.LL (V.div.Nu u).V = (C.mem u).A.du := by
   have h1 := Module.finrank_eq_card_basis (V.div.Nu u).b

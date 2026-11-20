@@ -7,6 +7,17 @@ open PositivityTheory.Rg.BcB.G8
 open UpperTheory.V.Af.Bc (cPl)
 open UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm UpperTheory.V.Z.Tf.GaloisFromTraceFormula
 
+/- English proof (translation)
+Introduce `hEn hP hG E _ _ _ hunr a b hab S hS l₁ l₂ Z hZ φ hφ hreg`. Take `⟨J, _, D₁, D₂, B₁, B₂, hSat, hInf, hGr⟩` from `hG E hunr a b hab S hS l₁ l₂ Z hZ φ hφ hreg`. Establish `hoff : ∀ w : Pl E, ¬ IsSplitAt w → Off Z w` using `fun w hw => by`. Establish `hc : cPl w = w`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hw (((hP E).2.1 w).2.2 h)`. Establish `hz : w ∉ Z` using `fun h => hw (hZ w h).2`. Conclude with `⟨hz, by rw [hc]; exact hz⟩`. Set `St : J → Prop` to `fun j => ∀ w : Pl E, ¬ IsSplitAt w → inv (B₁ j w) = B₁ j w ∧ inv (B₂ j w) = B₂ j w`. Establish `hu : ∀ i : {j // ¬ St j}, ∃ w : Pl E, ¬ IsSplitAt w ∧ ¬ (inv (B₁ i.1 w) = B₁ i.1 w ∧ inv (B₂ i.1 w) = B₂ i.1 w)` using `fun i => by`.
+
+Assume the negation of the conclusion as `h`. Conclude with `i.2 fun w hw => by_contra fun h' => h ⟨w, hw, h'⟩`. Use `choose u hu₁ hu₂ using hu`. Use `⟨{j // St j}, inferInstance, fun j => D₁ j.1, fun j => D₂ j.1, fun j => B₁ j.1, fun j => B₂ j.1, fun j w h => hSat j.1 w h, fun j => hInf j.1, fun j w h => j.2 w h, ?_⟩` and prove the remaining obligations. Introduce `T hT hTZ e₁ e₂ ρ hρ hlt`.
+
+Take `⟨T', e₁', e₂', hT'S, hT'Z, hone, hzero, hval, hgeom⟩` from `hEn E hunr a b S hS Z T hZ hT hTZ e₁ e₂ {j // ¬ St j} u (fun i => B₁ i.1) (fun i => B₂ i.1) fun i => ⟨hu₁ i, sat_card (hSat i.1 (u i) (hoff _ (hu₁ i))).1, sat_card (hSat i.1 (u i) (hoff _ (hu₁ i))).2, hu₂ i⟩`. Establish `hsm` using `hGr T' hT'S hT'Z e₁' e₂' ρ hone hρ fun j => by`. Distinguish the cases in `hj : St j`. Rewrite using `[hval (B₁ j) (B₂ j) fun i => ⟨sat_card (hSat j (u i) (hoff _ (hu₁ i))).1, sat_card (hSat j (u i) (hoff _ (hu₁ i))).2, (hj (u i) (hu₁ i)).1, (hj (u i) (hu₁ i)).2⟩]`. Conclude with `hlt ⟨j, hj⟩`.
+
+Establish `h0` using `hzero ⟨j, hj⟩`. Simplify using `only at h0`. Rewrite using `[h0, norm_zero]`. Conclude with `hρ`. Simplify `hsm` using `only [hgeom]`.
+-/
 theorem UpperTheory.V.Z.Tf.GaloisFromTraceFormula.endoS :
     Enlarge → Places → EndoBlockG → EndoBlockS := by
   intro hEn hP hG E _ _ _ hunr a b hab S hS l₁ l₂ Z hZ φ hφ hreg

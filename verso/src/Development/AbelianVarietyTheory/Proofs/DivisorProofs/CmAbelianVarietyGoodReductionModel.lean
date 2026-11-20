@@ -29,6 +29,9 @@ def diagL {g : ℕ} (d : Fin g → ℂ) : (Fin g → ℂ) →ₗ[ℂ] (Fin g →
   map_add' w w' := by funext j; simp [mul_add]
   map_smul' r w := by funext j; simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]; ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem diagL_apply {g : ℕ} (d w : Fin g → ℂ) (j : Fin g) : diagL d w j = d j * w j := rfl
 
 section Rep
@@ -43,6 +46,9 @@ def Good (h : HdR A) (W : Fin g → ℂ) : Prop := ∃ v, IsLieImage h v ∧ u.I
 
 variable {u}
 
+/- English proof (translation)
+Use `choose v hv using H`. Conclude with `⟨FlagTan.lieComb cf v, FlagTan.isLieImage_lieComb cf fun k ↦ (hv k).1, isDiff_sum_smul_of_isLieComb A hA L g n u v W cf _ (fun k ↦ (hv k).1.1) (fun k ↦ (hv k).2) (FlagTan.isLieComb_lieComb cf v)⟩`.
+-/
 theorem good_comb (hA : IsAbelianScheme A) {n : ℕ} (cf : Fin n → ℂ) {h : Fin n → HdR A}
     {W : Fin n → Fin g → ℂ} (H : ∀ k, Good u (h k) (W k)) :
     Good u (∑ k, cf k • h k) (∑ k, cf k • W k) := by
@@ -51,9 +57,15 @@ theorem good_comb (hA : IsAbelianScheme A) {n : ℕ} (cf : Fin n → ℂ) {h : F
     isDiff_sum_smul_of_isLieComb A hA L g n u v W cf _ (fun k ↦ (hv k).1.1) (fun k ↦ (hv k).2)
       (FlagTan.isLieComb_lieComb cf v)⟩
 
+/- English proof (translation)
+Simplify using `using good_comb (u := u) hA (n := 0) Fin.elim0 (h := Fin.elim0) (W := Fin.elim0) fun k ↦ k.elim0`.
+-/
 theorem good_zero (hA : IsAbelianScheme A) : Good u 0 0 := by
   simpa using good_comb (u := u) hA (n := 0) Fin.elim0 (h := Fin.elim0) (W := Fin.elim0) fun k ↦ k.elim0
 
+/- English proof (translation)
+Use `good_comb (u := u) hA ![1, 1] (h := ![h, h']) (W := ![W, W']) fun k ↦ by fin_cases k` as an intermediate fact. Conclude with `H`. Conclude with `H'`. Simplify `this` using `[Fin.sum_univ_two]`.
+-/
 theorem good_add (hA : IsAbelianScheme A) {h h' : HdR A} {W W' : Fin g → ℂ} (H : Good u h W)
     (H' : Good u h' W') : Good u (h + h') (W + W') := by
   have := good_comb (u := u) hA ![1, 1] (h := ![h, h']) (W := ![W, W']) fun k ↦ by
@@ -62,6 +74,9 @@ theorem good_add (hA : IsAbelianScheme A) {h h' : HdR A} {W W' : Fin g → ℂ} 
     · exact H'
   simpa [Fin.sum_univ_two] using this
 
+/- English proof (translation)
+Use `good_comb (u := u) hA ![r] (h := ![h]) (W := ![W]) fun k ↦ by fin_cases k` as an intermediate fact. Conclude with `H`. Simplify using `using this`.
+-/
 theorem good_smul (hA : IsAbelianScheme A) {h : HdR A} {W : Fin g → ℂ} (H : Good u h W) (r : ℂ) :
     Good u (r • h) (r • W) := by
   have := good_comb (u := u) hA ![r] (h := ![h]) (W := ![W]) fun k ↦ by
@@ -71,6 +86,9 @@ theorem good_smul (hA : IsAbelianScheme A) {h : HdR A} {W : Fin g → ℂ} (H : 
 
 variable (u)
 
+/- English proof (translation)
+Use `Finsupp.induction_linear f ?_ (fun f f' hf hf' ↦ ?_) (fun x r ↦ ?_)` and prove the remaining obligations. Simplify using `using good_zero (u := u) hA`. Simplify `good_add hA hf hf'` using `[map_add]`. Simplify `good_smul hA (hP x) r` using `[lcH, lcW]`.
+-/
 theorem rep_good (hA : IsAbelianScheme A) (P : u.Λ →+ HdR A)
     (hP : ∀ x : u.Λ, ∃ v, IsLieImage (P x) v ∧ u.IsDiff x v) (f : u.Λ →₀ ℂ) :
     Good u (lcH u P f) (lcW u f) := by
@@ -79,6 +97,11 @@ theorem rep_good (hA : IsAbelianScheme A) (P : u.Λ →+ HdR A)
   · simpa [map_add] using good_add hA hf hf'
   · simpa [lcH, lcW] using good_smul hA (hP x) r
 
+/- English proof (translation)
+Establish `hΛ : ∀ x : u.Λ, M x ∈ u.Λ` using `fun x ↦ (u.ker _).1 (by rw [hM, (u.ker _).2 x.2, one_comp])`. Set `mu : u.Λ → u.Λ` to `fun x ↦ ⟨M x, hΛ x⟩`. Use `⟨Finsupp.mapDomain mu f, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [lcH, Finsupp.linearCombination_mapDomain, Finsupp.apply_linearCombination]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `x`. Conclude with `(hpush x (mu x) rfl).symm`. Simplify using `only [lcW, Finsupp.linearCombination_mapDomain, Finsupp.apply_linearCombination]`. Both sides reduce to the same expression.
+-/
 theorem rep_push (P : u.Λ →+ HdR A) (α : A ⟶ A) [IsMonHom α] (M : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ))
     (hM : ∀ w, u.ex (M w) = u.ex w ≫ α)
     (hpush : ∀ x x' : u.Λ, (x' : Fin g → ℂ) = M x → push (dp0 ℂ) (𝟙 _) α (P x) = P x')
@@ -95,6 +118,9 @@ theorem rep_push (P : u.Λ →+ HdR A) (α : A ⟶ A) [IsMonHom α] (M : (Fin g 
 
 end Rep
 
+/- English proof (translation)
+Rewrite using `[LinearMap.pi_apply_eq_sum_univ ℓ v, LinearMap.pi_apply_eq_sum_univ ℓ w]`. Simplify using `only [smul_eq_mul, AddSubmonoidClass.coe_finset_sum, Subring.coe_mul, h, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ ↦ mul_assoc _ _ _`.
+-/
 theorem coe_functional {R : Subring ℂ} {n : ℕ} (ℓ : (Fin n → R) →ₗ[R] R) (z : ℂ) (v w : Fin n → R)
     (h : ∀ k, ((v k : R) : ℂ) = z * (w k : ℂ)) : ((ℓ v : R) : ℂ) = z * (ℓ w : ℂ) := by
   classical
@@ -108,6 +134,55 @@ namespace GlobalTheory.CMVecBC
 
 open GlobalTheory.CMVecBC in
 
+/- English proof (translation)
+Introduce `hdR hPC E _ _ _ I _ φ c y 𝔠 R _ X₀ X U p cm hc hpull hcmF hcmC j hj φK hφK e a hPG hL n eH m hm i g hg`. Use `set g0 := Module.finrank ℚ (FR E) with hg0`. Take `⟨ε, hPC⟩` from `hPC`. Take `⟨P, hspan, -, hlie, hpush, -⟩` from `hPC X.A g0 X.ab X.dim (X.diag U.c) (LB.isLB_pull (X.isLB U.c) _) U.u`. Take `⟨yv, hyv⟩` from `hm.exists (eH.symm g)`.
+
+Use `set ρ := eH.conjRingEquiv.toRingHom.comp (act (dp0 R) (𝟙 _) cm) with hρ`. Establish `hcoord : ∀ (b : orderC c) k, (((ρ b g) k : R) : ℂ) = φ i b * (g k : ℂ)`. Introduce `b k`. Establish `hg' : GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.inK (FractionRing R) (Fin n → R) g ∈ GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.eigK ρ (φK i)` using `Submodule.mem_comap.1 hg`. Establish `h1` using `Module.End.mem_eigenspace_iff.1 ((Submodule.mem_iInf _).1 hg' b)`.
+
+Establish `h2` using `congrArg (LinearMap.liftBaseChange (FractionRing R) ((Algebra.linearMap R (FractionRing R)) ∘ₗ LinearMap.proj k)) h1`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.inK, TensorProduct.mk_apply, LinearMap.baseChange_tmul, LinearMap.map_smul, LinearMap.liftBaseChange_tmul, one_smul, smul_eq_mul, LinearMap.comp_apply, Algebra.linearMap_apply, LinearMap.proj_apply] at h2`. Establish `h3` using `congrArg j h2`. Establish `h4 : j (φK i b) = φ i b` using `by rw [← RingHom.comp_apply, hφK]`. Simplify using `only [map_mul, map_one, one_mul, hj, h4] at h3`.
+
+Simplify using `using h3`. Establish `hmodel : ∀ (b : orderC c) (α : X.A ⟶ X.A) [IsMonHom α], α.left ≫ p = p ≫ (cm.act b).left → push (dp0 ℂ) (𝟙 _) α yv = φ i b • yv`. Introduce `b α _ hα`. Use `haveI := cm.hom b`. Establish `h1 : m.Corr (push (dp0 R) (𝟙 _) (cm.act b) (eH.symm g)) (push (dp0 ℂ) (𝟙 _) α yv)` using `GrpMor.Corr.push m (cm.act b) α hα.symm hyv`.
+
+Use `(hm.unique h1 fun c' ↦ ?_)` and prove the remaining obligations. Establish `he : push (dp0 R) (𝟙 _) (cm.act b) (eH.symm g) = eH.symm (ρ b g)`. Rewrite using `[← act_apply]`. Simplify using `[ρ, LinearEquiv.conjRingEquiv, LinearEquiv.conj_apply]`. Rewrite using `[LinearMap.smul_apply, hyv c', smul_eq_mul, he]`.
+
+Conclude with `(coe_functional ((LinearMap.applyₗ c') ∘ₗ eH.symm.toLinearMap) _ _ _ (hcoord b)).symm`. Establish `hΛ : ∀ (b : E) (α : X.A ⟶ X.A) [IsMonHom α], (∀ w', U.u.ex (fun j ↦ φ (U.e j) b * w' j) = U.u.ex w' ≫ α) → ∀ x : U.u.Λ, (fun j ↦ φ (U.e j) b * (x : Fin g0 → ℂ) j) ∈ U.u.Λ` using `fun b α _ hα x ↦ (U.u.ker _).1 (by rw [hα, (U.u.ker _).2 x.2, one_comp])`. Establish `hCM1 : ∀ (b : E) (α : X.A ⟶ X.A) [IsMonHom α], (∀ w', U.u.ex (fun j ↦ φ (U.e j) b * w' j) = U.u.ex w' ≫ α) → push (dp0 ℂ) (𝟙 _) α yv = φ i b • yv`. Introduce `b α _ hα`. Take `⟨N, hN, hNb⟩` from `GlobalTheory.CMExtend.exists_natMul_mem_orderC hc b`.
+
+Take `⟨α', _, hα'p, hα'⟩` from `hcmC ⟨_, hNb⟩`. Establish `e1` using `hmodel ⟨_, hNb⟩ α' hα'p`. Establish `e2 : push (dp0 ℂ) (𝟙 _) α' = (N : ℂ) • push (dp0 ℂ) (𝟙 _) α`. Use `LinearMap.ext_on_range hspan fun x ↦ ?_` and prove the remaining obligations. Rewrite using `[hpush α' (diagL fun j ↦ φ (U.e j) ((N : E) * b)) hα' x (N • ⟨_, hΛ b α hα x⟩) ?_, LinearMap.smul_apply, hpush α (diagL fun j ↦ φ (U.e j) b) hα x ⟨_, hΛ b α hα x⟩ rfl, map_nsmul, Nat.cast_smul_eq_nsmul]`.
+
+Use function extensionality and compare the values at `k`. Establish `hvec : φ (U.e k) ((N : E) * b) * (x : Fin g0 → ℂ) k = (N : ℂ) * (φ (U.e k) b * (x : Fin g0 → ℂ) k)`. Simplify using `only [map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[diagL_apply, hvec]`.
+
+Use `clear * - hvec`. Simplify using the standard rewrite rules. Rewrite `e1` using `[e2, LinearMap.smul_apply]`. Establish `e3 : φ i ((N : E) * b) = (N : ℂ) * φ i b` using `by simp`. Use `smul_right_injective _ (Nat.cast_ne_zero.2 hN : (N : ℂ) ≠ 0) ?_` and prove the remaining obligations.
+
+Simplify using `only`. Rewrite using `[e1]`. Express the relevant statement in the definitionally equal form `φ i ((N : E) * b) • yv = _`. Rewrite using `[e3, mul_smul]`. Establish `hinj : Function.Injective φ`.
+
+Introduce `i1 i2 h12`. Assume the negation of the conclusion as `hne`. Establish `hk : U.e.symm i1 ≠ U.e.symm i2` using `fun h ↦ hne (U.e.symm.injective h)`. Set `S : Submodule ℝ (Fin g0 → ℂ)` to `LinearMap.ker (((LinearMap.proj (R := ℂ) (φ := fun _ : Fin g0 ↦ ℂ) (U.e.symm i1)) - LinearMap.proj (R := ℂ) (φ := fun _ : Fin g0 ↦ ℂ) (U.e.symm i2)).restrictScalars ℝ)`. Establish `hΛS : (U.u.Λ : Set (Fin g0 → ℂ)) ⊆ S`.
+
+Introduce `w hw`. Take `⟨x, -, rfl⟩` from `(U.lat w).1 hw`. Simplify using `[S, GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.defCoord, h12]`. Establish `hle : Submodule.span ℝ (U.u.Λ : Set (Fin g0 → ℂ)) ≤ S` using `Submodule.span_le.2 hΛS`. Rewrite `hle` using `[U.u.full]`.
+
+Establish `h1` using `hle (Submodule.mem_top (x := Pi.single (U.e.symm i1) 1))`. Simplify using `[S, Pi.single_apply, hk.symm] at h1`. Establish `hsep : ∀ k : Fin g0, k ≠ U.e.symm i → ∃ b : orderC c, φ (U.e k) b ≠ φ i b`. Introduce `k hk`. Establish `hne : φ (U.e k) ≠ φ i` using `fun h ↦ hk (U.e.eq_symm_apply.2 (hinj h))`.
+
+Take `⟨x, hx⟩` from `DFunLike.ne_iff.1 hne`. Take `⟨N, hN, hNx⟩` from `GlobalTheory.CMExtend.exists_natMul_mem_orderC hc x`. Use `⟨⟨_, hNx⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_natCast]`. Conclude with `fun h ↦ hx (mul_left_cancel₀ (Nat.cast_ne_zero.2 hN) h)`.
+
+Establish `hrep0 : ∃ f, lcH U.u P f = yv`. Establish `h0 : yv ∈ Submodule.span ℂ (Set.range fun x ↦ P x)`. Rewrite using `[show (fun x ↦ P x) = ⇑P from rfl, hspan]`. Conclude with `Submodule.mem_top`. Rewrite `h0` using `[← Finsupp.range_linearCombination]`.
+
+Conclude with `h0`. Establish `hstep : ∀ s : Finset (Fin g0), ∃ f, lcH U.u P f = yv ∧ ∀ k ∈ s, k ≠ U.e.symm i → lcW U.u f k = 0`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+
+Take `⟨f, hf⟩` from `hrep0`. Conclude with `⟨f, hf, by simp⟩`. Consider the case `insert k s hks ih`. Take `⟨f, hf, hz⟩` from `ih`. Distinguish the cases in `hk : k = U.e.symm i`.
+
+Use `⟨f, hf, fun k' hk' hne ↦ ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hk' with rfl | h` into its components or cases. Conclude with `absurd hk hne`. Conclude with `hz k' h hne`. Take `⟨b, hb⟩` from `hsep k hk`.
+
+Take `⟨α, _, hαp, hα⟩` from `hcmC b`. Take `⟨f', hf'1, hf'2⟩` from `rep_push U.u P α (diagL fun j ↦ φ (U.e j) b) hα (hpush α _ hα) f`. Establish `hne : φ i b - φ (U.e k) b ≠ 0` using `sub_ne_zero.2 (Ne.symm hb)`. Use `⟨(φ i b - φ (U.e k) b)⁻¹ • (f' - φ (U.e k) b • f), ?_, fun k' hk' hne' ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, map_sub, map_smul, hf'1, hf, hmodel b α hαp, ← sub_smul, smul_smul, inv_mul_cancel₀ hne, one_smul]`.
+
+Rewrite using `[map_smul, map_sub, map_smul, hf'2]`. Simplify using `only [Pi.smul_apply, Pi.sub_apply, diagL_apply, smul_eq_mul]`. Break down `Finset.mem_insert.1 hk' with rfl | h` into its components or cases. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hz k' h hne']`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨f, hf, hz⟩` from `hstep Finset.univ`. Take `⟨v, hv, hdv⟩` from `rep_good U.u X.ab P hlie f`. Establish `hW : lcW U.u f = Pi.single (U.e.symm i) (lcW U.u f (U.e.symm i))`. Use function extensionality and compare the values at `k`.
+
+Distinguish the cases in `hk : k = U.e.symm i`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[hz k (Finset.mem_univ _) hk]`. Simplify using `[Pi.single_apply, hk]`.
+
+Rewrite `hv` using `[hf]`. Rewrite `hdv` using `[hW]`. Use `⟨yv, lcW U.u f (U.e.symm i), ⟨fun b α _ hα ↦ hCM1 b α hα, v, hv, hdv⟩, hyv, ?_⟩` and prove the remaining obligations. Establish `hcorr` using `GlobalTheory.RealMult.Obj.lieCorr_of_isLieImage hdR R.subtype hpull m hyv ((hL.toLie_eq_iff X₀.rm).1 rfl) (v' := GlobalTheory.Serre.Lie.mk X.rm v hv.1) hv`. Use `hPG i _ _ _ hcorr hdv` as an intermediate fact.
+
+Rewrite using `[this, Pi.single_eq_same]`.
+-/
 theorem isCMVec_of_mem_eigLat : GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.PeriodComparison → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ) (c : Ideal (OF E))
     (y : (Af E)ˣ) (𝔠 : FracId (FR E)) (R : Subring ℂ) [IsDiscreteValuationRing R]
     (X₀ : Obj (FR E) 𝔠 (Sp R)) (X : Obj (FR E) 𝔠 (Sp ℂ)) (U : Unif φ (lattice c y) 0 X)

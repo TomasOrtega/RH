@@ -18,11 +18,19 @@ def tlift {B P Q Z : Type} [CommRing B] [CommRing P] [CommRing Q] [CommRing Z] [
     (⟨u, fun r => congrArg (fun w : B →+* Z => w r) h⟩ : P →ₐ[B] Z)
     (⟨v, fun _ => rfl⟩ : Q →ₐ[B] Z)).toRingHom
 
+/- English proof (translation)
+Simplify using `[tlift, Algebra.TensorProduct.productMap_apply_tmul]`.
+-/
 theorem tlift_tmul {B P Q Z : Type} [CommRing B] [CommRing P] [CommRing Q] [CommRing Z] [Algebra B P]
     [Algebra B Q] (u : P →+* Z) (v : Q →+* Z) (h : u.comp (algebraMap B P) = v.comp (algebraMap B Q))
     (p : P) (q : Q) : tlift u v h (p ⊗ₜ[B] q) = u p * v q := by
   simp [tlift, Algebra.TensorProduct.productMap_apply_tmul]
 
+/- English proof (translation)
+Use `letI := (baseHom A R DA).toAlgebra`. Use `haveI : IsScalarTower R (GenFib A R) DA := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Take `⟨⟨m, hm⟩, hmi⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization (Algebra.algebraMapSubmonoid R (nonZeroDivisors A)) (Rₘ := GenFib A R) d (Algebra.IsIntegral.isIntegral d)`. Take `⟨a, ha, rfl⟩` from `hm`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hmi` using `[Submonoid.smul_def, Algebra.smul_def]`. Conclude with `hmi`.
+-/
 theorem exists_mul_mem_closure (A R DA : Type) [CommRing A] [CommRing R] [Algebra A R] [CommRing DA]
     [Algebra (GenFib A R) DA] [Algebra.IsIntegral (GenFib A R) DA] (d : DA) :
     ∃ a ∈ nonZeroDivisors A, baseHom A R DA (algebraMap A R a) * d ∈ closure A R DA := by
@@ -40,6 +48,11 @@ def denC (A R DA : Type) [CommRing A] [CommRing R] [Algebra A R] [CommRing DA]
     [Algebra (GenFib A R) DA] : Submonoid (closure A R DA) :=
   (nonZeroDivisors A).map ((algebraMap R (closure A R DA)).comp (algebraMap A R))
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, a, ha, rfl⟩ show IsUnit (algebraMap (GenFib A R) DA (algebraMap R (GenFib A R) (algebraMap A R a)))`. Conclude with `(IsLocalization.map_units (GenFib A R) (⟨algebraMap A R a, a, ha, rfl⟩ : Algebra.algebraMapSubmonoid R (nonZeroDivisors A))).map _`. Introduce `d`. Take `⟨a, ha, hd⟩` from `exists_mul_mem_closure A R DA d`.
+
+Use `⟨(⟨_, hd⟩, ⟨_, a, ha, rfl⟩), ?_⟩` and prove the remaining obligations. Use `show d * baseHom A R DA (algebraMap A R a) = baseHom A R DA (algebraMap A R a) * d`. Expand and normalize the polynomial expressions, which then agree. Introduce `x y h`. Conclude with `⟨1, by simp only [OneMemClass.coe_one, one_mul]; exact Subtype.ext h⟩`.
+-/
 theorem isLocalization_closure (A R DA : Type) [CommRing A] [CommRing R] [Algebra A R] [CommRing DA]
     [Algebra (GenFib A R) DA] [Algebra.IsIntegral (GenFib A R) DA] :
     IsLocalization (denC A R DA) DA := by
@@ -79,12 +92,20 @@ variable (A R A₁ R₁ DA S) in
 abbrev EM : Type :=
   Localization (Algebra.algebraMapSubmonoid (S ⊗[R] closure A R DA) (den A₁ R₁ S))
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply S (S ⊗[R] closure A R DA)]`. Conclude with `IsLocalization.map_units (EM A R A₁ R₁ DA S) (⟨algebraMap S (S ⊗[R] closure A R DA) m, m, hm, rfl⟩ : Algebra.algebraMapSubmonoid (S ⊗[R] closure A R DA) (den A₁ R₁ S))`.
+-/
 theorem isUnit_EM {m : S} (hm : m ∈ den A₁ R₁ S) : IsUnit (algebraMap S (EM A R A₁ R₁ DA S) m) := by
   rw [IsScalarTower.algebraMap_apply S (S ⊗[R] closure A R DA)]
   exact IsLocalization.map_units (EM A R A₁ R₁ DA S)
     (⟨algebraMap S (S ⊗[R] closure A R DA) m, m, hm, rfl⟩ :
       Algebra.algebraMapSubmonoid (S ⊗[R] closure A R DA) (den A₁ R₁ S))
 
+/- English proof (translation)
+Establish `h1 : inclD β DA (baseHom A R DA r) = algebraMap R₁ (BC β DA) (κ r)`. Rewrite using `[hD]`. Use `show ((inclD β DA).comp (algebraMap (GenFib A R) DA)) (algebraMap R (GenFib A R) r) = _`. Rewrite using `[inclD_algebraMap, RingHom.comp_apply, ← RingHom.comp_apply β, hβ]`. Both sides reduce to the same expression.
+
+Rewrite using `[h1, AlgHom.commutes, hRS, RingHom.comp_apply, ← IsScalarTower.algebraMap_apply]`.
+-/
 theorem incl_base (hRS : algebraMap R S = (algebraMap R₁ S).comp κ)
     (hβ : β.comp (algebraMap R (GenFib A R)) = (algebraMap R₁ (GenFib A₁ R₁)).comp κ)
     (hD : algebraMap R₁ (BC β DA) = baseHom A₁ R₁ (BC β DA)) (r : R) :
@@ -97,6 +118,9 @@ theorem incl_base (hRS : algebraMap R S = (algebraMap R₁ S).comp κ)
     rfl
   rw [h1, AlgHom.commutes, hRS, RingHom.comp_apply, ← IsScalarTower.algebraMap_apply]
 
+/- English proof (translation)
+Rewrite using `[AlgHom.commutes, IsScalarTower.algebraMap_apply R S (S ⊗[R] closure A R DA), ← IsScalarTower.algebraMap_apply, hRS, RingHom.comp_apply]`.
+-/
 theorem inclC_base (hRS : algebraMap R S = (algebraMap R₁ S).comp κ) (r : R) :
     algebraMap (S ⊗[R] closure A R DA) (EM A R A₁ R₁ DA S)
         ((Algebra.TensorProduct.includeRight : closure A R DA →ₐ[R] S ⊗[R] closure A R DA)
@@ -121,6 +145,9 @@ variable {A R A₁ R₁ : Type} [CommRing A] [IsDomain A] [CommRing R] [Algebra 
   {DA : Type} [CommRing DA] [Algebra (GenFib A R) DA]
   {S : Type} [CommRing S] [Algebra R₁ S] [Algebra R S] [Algebra R₁ (BC β DA)]
 
+/- English proof (translation)
+Apply `RingHom.ext` to reduce the goal to its premises. Introduce `r`. Simplify using `only [RingHom.comp_apply]`. Conclude with `(incl_base hRS hβ hD r).symm`.
+-/
 theorem phi_compat (hRS : algebraMap R S = (algebraMap R₁ S).comp κ)
     (hβ : β.comp (algebraMap R (GenFib A R)) = (algebraMap R₁ (GenFib A₁ R₁)).comp κ)
     (hD : algebraMap R₁ (BC β DA) = baseHom A₁ R₁ (BC β DA)) :
@@ -144,6 +171,9 @@ def phi (hRS : algebraMap R S = (algebraMap R₁ S).comp κ)
     rw [Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, tlift_tmul]
     simp
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `tlift _ _ (phi_compat hRS hβ hD) (s ⊗ₜ[R] c) = _`. Rewrite using `[tlift_tmul]`. Simplify using `[Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul]`.
+-/
 theorem phi_tmul (hRS : algebraMap R S = (algebraMap R₁ S).comp κ)
     (hβ : β.comp (algebraMap R (GenFib A R)) = (algebraMap R₁ (GenFib A₁ R₁)).comp κ)
     (hD : algebraMap R₁ (BC β DA) = baseHom A₁ R₁ (BC β DA)) (s : S) (c : closure A R DA) :
@@ -176,6 +206,9 @@ variable {A R A₁ R₁ : Type} [CommRing A] [IsDomain A] [CommRing R] [Algebra 
   {DA : Type} [CommRing DA] [Algebra (GenFib A R) DA] [Algebra.IsIntegral (GenFib A R) DA]
   {S : Type} [CommRing S] [Algebra R₁ S] [Algebra R S] [Algebra R₁ (BC β DA)]
 
+/- English proof (translation)
+The claim follows from `mem_nonZeroDivisors_of_ne_zero (fun h => nonZeroDivisors.ne_zero ha (hf (by rw [h, map_zero])))`.
+-/
 theorem fa_mem (hf : Function.Injective f) {a : A} (ha : a ∈ nonZeroDivisors A) :
     f a ∈ nonZeroDivisors A₁ :=
   mem_nonZeroDivisors_of_ne_zero (fun h => nonZeroDivisors.ne_zero ha (hf (by rw [h, map_zero])))
@@ -195,6 +228,9 @@ def vOne (hf : Function.Injective f) (hκ : κ.comp (algebraMap A R) = (algebraM
     rw [inclC_base hRS, ← RingHom.comp_apply κ, hκ, RingHom.comp_apply]
     exact isUnit_EM ⟨f a, fa_mem hf ha, rfl⟩)
 
+/- English proof (translation)
+Use `haveI := isLocalization_closure A R DA`. Conclude with `IsLocalization.lift_eq (M := denC A R DA) (S := DA) _ c`.
+-/
 theorem vOne_coe (hf : Function.Injective f) (hκ : κ.comp (algebraMap A R) = (algebraMap A₁ R₁).comp f)
     (hRS : algebraMap R S = (algebraMap R₁ S).comp κ) (c : closure A R DA) :
     vOne S hf hκ hRS (c : DA) =
@@ -202,6 +238,11 @@ theorem vOne_coe (hf : Function.Injective f) (hκ : κ.comp (algebraMap A R) = (
   haveI := isLocalization_closure A R DA
   exact IsLocalization.lift_eq (M := denC A R DA) (S := DA) _ c
 
+/- English proof (translation)
+Apply `IsLocalization.ringHom_ext (Algebra.algebraMapSubmonoid R (nonZeroDivisors A))` to reduce the goal to its premises. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `r`. Use `show uOne A R DA S (β (algebraMap R (GenFib A R) r)) = vOne S hf hκ hRS (((algebraMap R (closure A R DA) r : closure A R DA) : DA))`. Rewrite using `[← RingHom.comp_apply β, hβ, RingHom.comp_apply, vOne_coe]`.
+
+Establish `h3` using `inclC_base (A := A) (A₁ := A₁) (DA := DA) hRS r`. Simplify using `only [Algebra.TensorProduct.includeRight_apply] at h3`. Rewrite using `[h3]`. Conclude with `IsLocalization.lift_eq _ _`.
+-/
 theorem vD_compat (hf : Function.Injective f) (hκ : κ.comp (algebraMap A R) = (algebraMap A₁ R₁).comp f)
     (hRS : algebraMap R S = (algebraMap R₁ S).comp κ)
     (hβ : β.comp (algebraMap R (GenFib A R)) = (algebraMap R₁ (GenFib A₁ R₁)).comp κ) :
@@ -243,6 +284,9 @@ def vD (hf : Function.Injective f) (hκ : κ.comp (algebraMap A R) = (algebraMap
   tlift ((uOne A R DA S : GenFib A₁ R₁ →+* EM A R A₁ R₁ DA S) : Over β →+* EM A R A₁ R₁ DA S)
     (vOne S hf hκ hRS) (vD_compat hf hκ hRS hβ)
 
+/- English proof (translation)
+The claim follows from `tlift_tmul _ _ _ g d`.
+-/
 theorem vD_tmul (hf : Function.Injective f) (hκ : κ.comp (algebraMap A R) = (algebraMap A₁ R₁).comp f)
     (hRS : algebraMap R S = (algebraMap R₁ S).comp κ)
     (hβ : β.comp (algebraMap R (GenFib A R)) = (algebraMap R₁ (GenFib A₁ R₁)).comp κ)
@@ -251,6 +295,11 @@ theorem vD_tmul (hf : Function.Injective f) (hκ : κ.comp (algebraMap A R) = (a
       (uOne A R DA S : GenFib A₁ R₁ →+* EM A R A₁ R₁ DA S) g * vOne S hf hκ hRS d :=
   tlift_tmul _ _ _ g d
 
+/- English proof (translation)
+Apply `RingHom.ext` to reduce the goal to its premises. Introduce `r`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, hD]`. Use `show _ = vD S hf hκ hRS hβ ((show Over β from algebraMap R₁ (GenFib A₁ R₁) r) ⊗ₜ[GenFib A R] (1 : DA))`. Rewrite using `[vD_tmul, map_one, mul_one]`.
+
+Use `show _ = uOne A R DA S (algebraMap R₁ (GenFib A₁ R₁) r)`. Unfold `uOne`. Rewrite using `[IsLocalization.lift_eq]`. Both sides reduce to the same expression.
+-/
 theorem psi_compat (hf : Function.Injective f) (hκ : κ.comp (algebraMap A R) = (algebraMap A₁ R₁).comp f)
     (hRS : algebraMap R S = (algebraMap R₁ S).comp κ)
     (hβ : β.comp (algebraMap R (GenFib A R)) = (algebraMap R₁ (GenFib A₁ R₁)).comp κ)
@@ -280,6 +329,9 @@ def psi (hf : Function.Injective f) (hκ : κ.comp (algebraMap A R) = (algebraMa
     rw [Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, tlift_tmul]
     simp
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `tlift _ _ (psi_compat hf hκ hRS hβ hD) (s ⊗ₜ[R₁] x) = _`. Rewrite using `[tlift_tmul]`.
+-/
 theorem psi_tmul (hf : Function.Injective f) (hκ : κ.comp (algebraMap A R) = (algebraMap A₁ R₁).comp f)
     (hRS : algebraMap R S = (algebraMap R₁ S).comp κ)
     (hβ : β.comp (algebraMap R (GenFib A R)) = (algebraMap R₁ (GenFib A₁ R₁)).comp κ)
@@ -288,10 +340,18 @@ theorem psi_tmul (hf : Function.Injective f) (hκ : κ.comp (algebraMap A R) = (
   change tlift _ _ (psi_compat hf hκ hRS hβ hD) (s ⊗ₜ[R₁] x) = _
   rw [tlift_tmul]
 
+/- English proof (translation)
+The claim follows from `map_one _`.
+-/
 theorem uOne_one :
     ((uOne A R DA S : GenFib A₁ R₁ →+* EM A R A₁ R₁ DA S) : Over β →+* EM A R A₁ R₁ DA S) (1 : Over β) = 1 :=
   map_one _
 
+/- English proof (translation)
+Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `s c`. Rewrite using `[AlgHom.comp_apply, phi_tmul, psi_tmul, IsScalarTower.coe_toAlgHom', inclD]`. Use `show _ * vD S hf hκ hRS hβ ((1 : Over β) ⊗ₜ[GenFib A R] (c : DA)) = _`. Rewrite using `[vD_tmul, uOne_one, one_mul, vOne_coe, IsScalarTower.algebraMap_apply S (S ⊗[R] closure A R DA) (EM A R A₁ R₁ DA S), ← map_mul, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem psi_comp_phi (hf : Function.Injective f) (hκ : κ.comp (algebraMap A R) = (algebraMap A₁ R₁).comp f)
     (hRS : algebraMap R S = (algebraMap R₁ S).comp κ)
     (hβ : β.comp (algebraMap R (GenFib A R)) = (algebraMap R₁ (GenFib A₁ R₁)).comp κ)
@@ -320,6 +380,9 @@ variable {A R A₁ R₁ : Type} [CommRing A] [IsDomain A] [CommRing R] [Algebra 
   {DA : Type} [CommRing DA] [Algebra (GenFib A R) DA] [Algebra.IsIntegral (GenFib A R) DA]
   {S : Type} [CommRing S] [Algebra R₁ S] [Algebra R S] [Algebra R₁ (BC β DA)]
 
+/- English proof (translation)
+Take `⟨a, ha, rfl⟩` from `hm`. Rewrite using `[RingHom.comp_apply, ← IsScalarTower.algebraMap_apply R₁ S (S ⊗[R₁] BC β DA), ← (Algebra.TensorProduct.includeRight : BC β DA →ₐ[R₁] S ⊗[R₁] BC β DA).commutes, hD]`. Conclude with `((IsLocalization.map_units (GenFib A₁ R₁) (⟨algebraMap A₁ R₁ a, a, ha, rfl⟩ : Algebra.algebraMapSubmonoid R₁ (nonZeroDivisors A₁))).map (algebraMap (GenFib A₁ R₁) (BC β DA))).map _`.
+-/
 theorem isUnit_L (hD : algebraMap R₁ (BC β DA) = baseHom A₁ R₁ (BC β DA)) {m : S}
     (hm : m ∈ den A₁ R₁ S) : IsUnit (algebraMap S (S ⊗[R₁] BC β DA) m) := by
   obtain ⟨a, ha, rfl⟩ := hm
@@ -329,6 +392,9 @@ theorem isUnit_L (hD : algebraMap R₁ (BC β DA) = baseHom A₁ R₁ (BC β DA)
     Algebra.algebraMapSubmonoid R₁ (nonZeroDivisors A₁))).map
       (algebraMap (GenFib A₁ R₁) (BC β DA))).map _
 
+/- English proof (translation)
+Rewrite using `[← IsScalarTower.algebraMap_apply, ← (Algebra.TensorProduct.includeRight : BC β DA →ₐ[R₁] S ⊗[R₁] BC β DA).commutes, hD]`. Both sides reduce to the same expression.
+-/
 theorem algebraMap_L (hD : algebraMap R₁ (BC β DA) = baseHom A₁ R₁ (BC β DA)) (y : R₁) :
     algebraMap S (S ⊗[R₁] BC β DA) (algebraMap R₁ S y) =
       (1 : S) ⊗ₜ[R₁] ((show Over β from algebraMap R₁ (GenFib A₁ R₁) y) ⊗ₜ[GenFib A R] (1 : DA)) := by
@@ -336,6 +402,11 @@ theorem algebraMap_L (hD : algebraMap R₁ (BC β DA) = baseHom A₁ R₁ (BC β
     ← (Algebra.TensorProduct.includeRight : BC β DA →ₐ[R₁] S ⊗[R₁] BC β DA).commutes, hD]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Establish `h1 : (show GenFib A₁ R₁ from g) * algebraMap R₁ (GenFib A₁ R₁) (algebraMap A₁ R₁ (a₁ * f a)) = algebraMap R₁ (GenFib A₁ R₁) r₁ * β (algebraMap R (GenFib A R) (algebraMap A R a))`. Rewrite using `[map_mul, map_mul, ← mul_assoc, hg, ← RingHom.comp_apply β, hβ, RingHom.comp_apply, ← RingHom.comp_apply κ, hκ, RingHom.comp_apply]`. Establish `h2 : (show GenFib A₁ R₁ from g) * algebraMap R₁ (GenFib A₁ R₁) (algebraMap A₁ R₁ (a₁ * f a)) = (algebraMap R (GenFib A R) (algebraMap A R a)) • (show Over β from algebraMap R₁ (GenFib A₁ R₁) r₁)`. Rewrite using `[h1, Algebra.smul_def, mul_comm]`.
+
+Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(show Over β from (show GenFib A₁ R₁ from g) * algebraMap R₁ (GenFib A₁ R₁) (algebraMap A₁ R₁ (a₁ * f a))) ⊗ₜ[GenFib A R] d = _`. Rewrite using `[h2, TensorProduct.smul_tmul, Algebra.smul_def]`. Use `congr 1`. Conclude with `(mul_one (M := GenFib A₁ R₁) _).symm`.
+-/
 theorem bc_key (hκ : κ.comp (algebraMap A R) = (algebraMap A₁ R₁).comp f)
     (hβ : β.comp (algebraMap R (GenFib A R)) = (algebraMap R₁ (GenFib A₁ R₁)).comp κ)
     (g : Over β) (d : DA) (r₁ : R₁) (a₁ : A₁) (a : A)
@@ -375,6 +446,25 @@ variable {A R A₁ R₁ : Type} [CommRing A] [IsDomain A] [CommRing R] [Algebra 
   {DA : Type} [CommRing DA] [Algebra (GenFib A R) DA] [Algebra.IsIntegral (GenFib A R) DA]
   {S : Type} [CommRing S] [Algebra R₁ S] [Algebra R S] [Algebra R₁ (BC β DA)]
 
+/- English proof (translation)
+Establish `hrange : ∀ s : S, algebraMap S (S ⊗[R₁] BC β DA) s ∈ (phi hRS hβ hD).range` using `fun s => (phi hRS hβ hD).range.algebraMap_mem s`. Establish `hadd : ∀ x y : S ⊗[R₁] BC β DA, (∃ m ∈ den A₁ R₁ S, x * algebraMap S (S ⊗[R₁] BC β DA) m ∈ (phi hRS hβ hD).range) → (∃ m ∈ den A₁ R₁ S, y * algebraMap S (S ⊗[R₁] BC β DA) m ∈ (phi hRS hβ hD).range) → (∃ m ∈ den A₁ R₁ S, (x + y) * algebraMap S (S ⊗[R₁] BC β DA) m ∈ (phi hRS hβ hD) …`. Introduce and unpack `x y ⟨m, hm, hx⟩ ⟨n, hn, hy⟩`. Use `⟨m * n, mul_mem hm hn, ?_⟩` and prove the remaining obligations. Establish `e : (x + y) * algebraMap S (S ⊗[R₁] BC β DA) (m * n) = (x * algebraMap S _ m) * algebraMap S _ n + (y * algebraMap S _ n) * algebraMap S _ m`.
+
+Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `add_mem (mul_mem hx (hrange n)) (mul_mem hy (hrange m))`. Establish `hzero : ∃ m ∈ den A₁ R₁ S, (0 : S ⊗[R₁] BC β DA) * algebraMap S _ m ∈ (phi hRS hβ hD).range` using `⟨1, one_mem _, by rw [zero_mul]; exact zero_mem _⟩`.
+
+Establish `hkey : ∀ (g : Over β) (d : DA), ∃ m ∈ den A₁ R₁ S, (1 : S) ⊗ₜ[R₁] (g ⊗ₜ[GenFib A R] d) * algebraMap S (S ⊗[R₁] BC β DA) m ∈ (phi hRS hβ hD).range`. Introduce `g d`. Take `⟨⟨r₁, _, a₁, ha₁, rfl⟩, hg⟩` from `IsLocalization.surj (Algebra.algebraMapSubmonoid R₁ (nonZeroDivisors A₁)) (show GenFib A₁ R₁ from g)`. Take `⟨a, ha, hd⟩` from `exists_mul_mem_closure A R DA d`. Use `⟨algebraMap R₁ S (algebraMap A₁ R₁ (a₁ * f a)), ⟨a₁ * f a, mul_mem ha₁ (fa_mem hf ha), rfl⟩, ⟨algebraMap R₁ S r₁ ⊗ₜ[R] (⟨_, hd⟩ : closure A R DA), ?_⟩⟩` and prove the remaining obligations.
+
+Use `show phi hRS hβ hD _ = _`. Rewrite using `[phi_tmul]`. Establish `hl : algebraMap R₁ S r₁ ⊗ₜ[R₁] inclD β DA (baseHom A R DA (algebraMap A R a) * d) = algebraMap S (S ⊗[R₁] BC β DA) (algebraMap R₁ S r₁) * ((1 : S) ⊗ₜ[R₁] ((1 : Over β) ⊗ₜ[GenFib A R] (baseHom A R DA (algebraMap A R a) * d)))`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Both sides reduce to the same expression.
+
+Establish `e2 : (1 : S) ⊗ₜ[R₁] (g ⊗ₜ[GenFib A R] d) * algebraMap S (S ⊗[R₁] BC β DA) (algebraMap R₁ S (algebraMap A₁ R₁ (a₁ * f a))) = (1 : S) ⊗ₜ[R₁] ((g ⊗ₜ[GenFib A R] d) * ((show Over β from algebraMap R₁ (GenFib A₁ R₁) (algebraMap A₁ R₁ (a₁ * f a))) ⊗ₜ[GenFib A R] (1 : DA)))`. Rewrite using `[algebraMap_L hD, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Establish `e3 : algebraMap S (S ⊗[R₁] BC β DA) (algebraMap R₁ S r₁) * ((1 : S) ⊗ₜ[R₁] ((1 : Over β) ⊗ₜ[GenFib A R] (baseHom A R DA (algebraMap A R a) * d))) = (1 : S) ⊗ₜ[R₁] (((show Over β from algebraMap R₁ (GenFib A₁ R₁) r₁) ⊗ₜ[GenFib A R] (1 : DA)) * ((1 : Over β) ⊗ₜ[GenFib A R] (baseHom …`. Rewrite using `[algebraMap_L hD, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Rewrite using `[hl, e3, e2, bc_key hκ hβ g d r₁ a₁ a hg]`.
+
+Establish `hD1 : ∀ y : BC β DA, ∃ m ∈ den A₁ R₁ S, (1 : S) ⊗ₜ[R₁] y * algebraMap S (S ⊗[R₁] BC β DA) m ∈ (phi hRS hβ hD).range`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simpa only [TensorProduct.tmul_zero] using hzero`. Consider the case `tmul g d => exact hkey g d`.
+
+Consider the case `add y z hy hz => rw [TensorProduct.tmul_add]`. Conclude with `hadd _ _ hy hz`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact hzero`. Consider the case `tmul s y`.
+
+Take `⟨m, hm, h⟩` from `hD1 y`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Establish `e : s ⊗ₜ[R₁] y * algebraMap S (S ⊗[R₁] BC β DA) m = algebraMap S _ s * ((1 : S) ⊗ₜ[R₁] y * algebraMap S _ m)`. Simplify using `only [Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[e]`.
+
+Conclude with `mul_mem (hrange s) h`. Consider the case `add x y hx hy => exact hadd _ _ hx hy`.
+-/
 theorem exists_mul_mem_range (hf : Function.Injective f)
     (hκ : κ.comp (algebraMap A R) = (algebraMap A₁ R₁).comp f)
     (hRS : algebraMap R S = (algebraMap R₁ S).comp κ)
@@ -448,6 +538,9 @@ theorem exists_mul_mem_range (hf : Function.Injective f)
 
 end Maps6
 
+/- English proof (translation)
+Introduce `A R A₁ R₁ _ _ _ _ _ _ _ _ f hf κ hκ β hβ DA _ _ _ S _ _`. Use `letI : Algebra R S := ((algebraMap R₁ S).comp κ).toAlgebra`. Use `letI : Algebra R₁ (BC β DA) := (baseHom A₁ R₁ (BC β DA)).toAlgebra`. Conclude with `⟨phi rfl hβ rfl, psi S hf hκ rfl hβ rfl, psi_comp_phi hf hκ rfl hβ rfl, fun m hm => isUnit_L rfl hm, exists_mul_mem_range hf hκ rfl hβ rfl⟩`.
+-/
 theorem exists_bc_closure_maps : ∀ (A R A₁ R₁ : Type) [CommRing A] [IsDomain A] [CommRing R] [Algebra A R]
     [CommRing A₁] [IsDomain A₁] [CommRing R₁] [Algebra A₁ R₁] (f : A →+* A₁), Function.Injective f →
     ∀ (κ : R →+* R₁), κ.comp (algebraMap A R) = (algebraMap A₁ R₁).comp f →

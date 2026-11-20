@@ -8,6 +8,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.TraceFormula.GlobalTraceComparison.TraceAsymptotics.DetDiagJ
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.TraceFormula.GlobalTraceComparison.TraceAsymptotics.HintSph
 
+/- English proof (translation)
+The claim follows from `UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.rCtEx UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.exAct UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.ctLin UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.ctUnit UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.ctT UpperTheory.V.Z.Tf.GlobalT …`.
+-/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.ctEx :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.CtEx :=
   UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.rCtEx UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.exAct UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.ctLin

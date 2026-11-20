@@ -4,6 +4,39 @@ open Formalism.MainNotions Formalism.MainNotions.N GlobalTheory.SplitField
 
 namespace GlobalTheory.SplitField
 
+/- English proof (translation)
+Introduce `φ`. Use `set UE := Submodule.span E ((fun v => f ∘ v) '' (U : Set (Fin a → L))) with hUE`. Establish `hmap : ∀ (M : Matrix (Fin a) (Fin a) L) (v : Fin a → L), (M.map f).mulVec (f ∘ v) = f ∘ (M.mulVec v)`. Introduce `M v`. Use function extensionality and compare the values at `i`.
+
+Conclude with `(RingHom.map_mulVec f M v i).symm`. Take `⟨p, hp⟩` from `LinearMap.exists_leftInverse_of_injective U.subtype (Submodule.ker_subtype U)`. Use `set Y : Matrix (Fin a) (Fin a) L := LinearMap.toMatrix' (U.subtype ∘ₗ φ ∘ₗ p) with hY`. Establish `hYv : ∀ v : Fin a → L, Y.mulVec v = (φ (p v) : Fin a → L)`. Introduce `v`.
+
+Rewrite using `[hY, LinearMap.toMatrix'_mulVec]`. Both sides reduce to the same expression. Establish `hYU : ∀ w : U, Y.mulVec (w : Fin a → L) = (φ w : Fin a → L)`. Introduce `w`. Rewrite using `[hYv]`.
+
+Establish `: p (w : Fin a → L) = w`. Use `LinearMap.congr_fun hp w` as an intermediate fact. Simplify using `using this`. Rewrite using `[this]`. Establish `hYE : ∀ x ∈ UE, (Y.map f).mulVec x ∈ UE`.
+
+Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨v, hv, rfl⟩` from `hx`. Rewrite using `[hmap, hYv]`.
+
+Conclude with `Submodule.subset_span ⟨_, (φ (p v)).2, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`. Conclude with `UE.add_mem hx hy`. Consider the case `smul c x _ hx => rw [Matrix.mulVec_smul]`.
+
+Conclude with `UE.smul_mem c hx`. Set `ψ : UE →ₗ[E] UE` to `(Matrix.mulVecLin (Y.map f)).restrict hYE`. Take `⟨XE, hXE, hXEw⟩` from `h ψ`. Set `d` to `Module.finrank L U`. Set `b` to `Module.finBasis L U`.
+
+Set `Φ : Matrix (Fin a) (Fin a) L →ₗ[L] (Fin a × Fin d → L)` to `{ toFun := fun M ik => (M.mulVec (b ik.2 : Fin a → L)) ik.1 map_add' := by intro M N; funext ik; simp [Matrix.add_mulVec] map_smul' := by intro c M; funext ik; simp [Matrix.smul_mulVec] }`. Set `ΦE : Matrix (Fin a) (Fin a) E →ₗ[E] (Fin a × Fin d → E)` to `{ toFun := fun M ik => (M.mulVec (f ∘ (b ik.2 : Fin a → L))) ik.1 map_add' := by intro M N; funext ik; simp [Matrix.add_mulVec] map_smul' := by intro c M; funext ik; simp [Matrix.smul_mulVec] }`. Use `set R := Set.range fun g => ((τ g : GL (Fin a) L) : Matrix (Fin a) (Fin a) L) with hR`. Use `set RE := Set.range fun g => ((mapRep f τ g : GL (Fin a) E) : Matrix (Fin a) (Fin a) E) with hRE`. Establish `hrep : ∀ g, ((mapRep f τ g : GL (Fin a) E) : Matrix (Fin a) (Fin a) E) = ((τ g : GL (Fin a) L) : Matrix (Fin a) (Fin a) L).map f` using `fun g => rfl`.
+
+Establish `hΦE : ∀ M : Matrix (Fin a) (Fin a) L, ΦE (M.map f) = f ∘ Φ M`. Introduce `M`. Use function extensionality and compare the values at `ik`. Use `show ((M.map f).mulVec (f ∘ (b ik.2 : Fin a → L))) ik.1 = f ((M.mulVec (b ik.2 : Fin a → L)) ik.1)`. Rewrite using `[hmap]`.
+
+Both sides reduce to the same expression. Use `set t : Fin a × Fin d → L := fun ik => (φ (b ik.2) : Fin a → L) ik.1 with ht`. Establish `hXt : ΦE XE = f ∘ t`. Use function extensionality and compare the values at `ik`. Establish `hmem : f ∘ (b ik.2 : Fin a → L) ∈ UE` using `Submodule.subset_span ⟨_, (b ik.2).2, rfl⟩`.
+
+Use `hXEw ⟨_, hmem⟩` as an intermediate fact. Use `show (XE.mulVec (f ∘ (b ik.2 : Fin a → L))) ik.1 = f ((φ (b ik.2) : Fin a → L) ik.1)`. Rewrite using `[this]`. Use `show ((Y.map f).mulVec (f ∘ (b ik.2 : Fin a → L))) ik.1 = _`. Rewrite using `[hmap, hYU]`.
+
+Both sides reduce to the same expression. Establish `hEspan : f ∘ t ∈ Submodule.span E ((fun v => f ∘ v) '' (Φ '' R))`. Rewrite using `[← hXt]`. Establish `h1 : ΦE XE ∈ Submodule.map ΦE (Submodule.span E RE)` using `Submodule.mem_map_of_mem hXE`. Rewrite `h1` using `[Submodule.map_span]`.
+
+Use `h1 using 2` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨_, ⟨g, rfl⟩, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨g, rfl⟩, hΦE _⟩`.
+
+Introduce and unpack `⟨_, ⟨g, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨_, ⟨g, rfl⟩, rfl⟩, (hΦE _).symm⟩`. Establish `hLspan` using `mem_span_of_map_mem_span f (Φ '' R) t hEspan`. Rewrite `hLspan` using `[← Submodule.map_span]`. Take `⟨X, hX, hXt'⟩` from `hLspan`.
+
+Use `⟨X, hX, fun w => ?_⟩` and prove the remaining obligations. Establish `hb : ∀ k, X.mulVec (b k : Fin a → L) = (φ (b k) : Fin a → L)`. Introduce `k`. Use function extensionality and compare the values at `i`. Conclude with `congrFun hXt' (i, k)`.
+
+Establish `hext : (Matrix.mulVecLin X) ∘ₗ U.subtype = U.subtype ∘ₗ φ` using `b.ext fun k => by`. Simplify using `only [LinearMap.comp_apply, Matrix.mulVecLin_apply, Submodule.subtype_apply]`. Conclude with `hb k`. Conclude with `LinearMap.congr_fun hext w`.
+-/
 theorem endSpanned_of_endSpanned_map {Γ L E : Type} [Group Γ] [Field L] [Field E] (f : L →+* E) {a : ℕ}
     (τ : Γ →* GL (Fin a) L) (U : Submodule L (Fin a → L))
     (h : EndSpanned (mapRep f τ) (Submodule.span E ((fun v => f ∘ v) '' (U : Set (Fin a → L))))) :

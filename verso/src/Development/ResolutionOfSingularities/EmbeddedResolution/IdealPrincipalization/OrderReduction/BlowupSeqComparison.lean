@@ -17,6 +17,11 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨e.hom.base x, rfl⟩`. Introduce and unpack `_ ⟨y, rfl⟩`. Use `⟨e.inv.base y, ?_⟩` and prove the remaining obligations.
+
+Use `show g.base (e.hom.base (e.inv.base y)) = g.base y`. Rewrite using `[Scheme.inv_hom_apply]`.
+-/
 private theorem range_iso_hom_comp {X Y Z : Scheme.{u}} (e : X ≅ Y) (g : Y ⟶ Z) :
     Set.range (e.hom ≫ g).base = Set.range g.base := by
   apply Set.Subset.antisymm
@@ -27,14 +32,23 @@ private theorem range_iso_hom_comp {X Y Z : Scheme.{u}} (e : X ≅ Y) (g : Y ⟶
     show g.base (e.hom.base (e.inv.base y)) = g.base y
     rw [Scheme.inv_hom_apply]
 
+/- English proof (translation)
+Rewrite using `[← Scheme.IdealSheafData.comap_comp, e.inv_hom_id, Scheme.IdealSheafData.comap_id]`.
+-/
 private theorem comap_hom_comap_inv {X Y : Scheme.{u}} (e : X ≅ Y) (I : Y.IdealSheafData) :
     (I.comap e.hom).comap e.inv = I := by
   rw [← Scheme.IdealSheafData.comap_comp, e.inv_hom_id, Scheme.IdealSheafData.comap_id]
 
+/- English proof (translation)
+The claim follows from `Scheme.IdealSheafData.support_antitone h hx`.
+-/
 private theorem mem_support_of_le {X : Scheme.{u}} {I J : X.IdealSheafData} (h : I ≤ J) (x : ↥X)
     (hx : x ∈ J.support) : x ∈ I.support :=
   Scheme.IdealSheafData.support_antitone h hx
 
+/- English proof (translation)
+Establish `hmem : x ∈ Set.range ⇑I.subschemeι`. Rewrite using `[Scheme.IdealSheafData.range_subschemeι I]`. Conclude with `hx`. Take `⟨z, hz⟩` from `hmem`. Conclude with `⟨z, hz⟩`.
+-/
 private theorem exists_subschemeι_base_eq {X : Scheme.{u}} (I : X.IdealSheafData) (x : ↥X)
     (hx : x ∈ I.support) : ∃ z, I.subschemeι.base z = x := by
   have hmem : x ∈ Set.range ⇑I.subschemeι := by
@@ -43,12 +57,20 @@ private theorem exists_subschemeι_base_eq {X : Scheme.{u}} (I : X.IdealSheafDat
   obtain ⟨z, hz⟩ := hmem
   exact ⟨z, hz⟩
 
+/- English proof (translation)
+Establish `h` using `Scheme.Pullback.range_fst f g`. Rewrite `h` using `[Set.ext_iff]`. Conclude with `(h x).mpr hx`.
+-/
 private theorem exists_pullbackFst_base_eq {X Y S : Scheme.{u}} (f : X ⟶ S) (g : Y ⟶ S) (x : ↥X)
     (hx : f.base x ∈ Set.range g.base) : ∃ z, (Limits.pullback.fst f g).base z = x := by
   have h := Scheme.Pullback.range_fst f g
   rw [Set.ext_iff] at h
   exact (h x).mpr hx
 
+/- English proof (translation)
+Establish `h1 : Set.range p.base = Set.range (Limits.pullback.fst s g).base`. Rewrite using `[← h.isoPullback_hom_fst]`. Conclude with `range_iso_hom_comp h.isoPullback _`. Take `⟨z, hz⟩` from `exists_pullbackFst_base_eq s g x hx`. Establish `hmem : x ∈ Set.range p.base`.
+
+Rewrite using `[h1]`. Conclude with `⟨z, hz⟩`. Conclude with `hmem`.
+-/
 private theorem exists_preimage_of_isPullback {X' X S : Scheme.{u}} {g : X' ⟶ X} {s : S ⟶ X}
     {Q : Scheme.{u}} {p : Q ⟶ S} {q : Q ⟶ X'} (h : IsPullback p q s g) (x : ↥S)
     (hx : s.base x ∈ Set.range g.base) : ∃ y : ↥Q, p.base y = x := by
@@ -116,6 +138,9 @@ variable {f g : V ⟶ P} {C : SequenceOfBlowups V} {B₁ B₂ : SequenceOfBlowup
   {σ₂ : ∀ i : ℕ, i ≤ L → (C.schemeAt i ⟶ B₂.schemeAt i)}
   {a : ∀ i : ℕ, (C.schemeAt i).IdealSheafData}
 
+/- English proof (translation)
+Establish `hsq : IsPullback (σ₁ i hi.le) (C.projectionToBase i) (B₁.projectionToBase i) f` using `isPullback_projectionToBase_of_isPullback_blowupMorphism f C B₁ L σ₁ hd.zero₁ hd.pullback₁ i hi.le`. Conclude with `exists_preimage_of_isPullback hsq x (hd.cover₁ i hi x hx)`.
+-/
 theorem BlowupSeqComparison.exists_preimage_of_mem_center_support_left (hd : BlowupSeqComparison f g C B₁ B₂ L σ₁ σ₂ a)
     (i : ℕ) (hi : i < L) (x : ↥(B₁.schemeAt i)) (hx : x ∈ (B₁.center i).support) :
     ∃ y : ↥(C.schemeAt i), (σ₁ i hi.le).base y = x := by
@@ -123,6 +148,9 @@ theorem BlowupSeqComparison.exists_preimage_of_mem_center_support_left (hd : Blo
     isPullback_projectionToBase_of_isPullback_blowupMorphism f C B₁ L σ₁ hd.zero₁ hd.pullback₁ i hi.le
   exact exists_preimage_of_isPullback hsq x (hd.cover₁ i hi x hx)
 
+/- English proof (translation)
+Establish `hsq : IsPullback (σ₂ i hi.le) (C.projectionToBase i) (B₂.projectionToBase i) g` using `isPullback_projectionToBase_of_isPullback_blowupMorphism g C B₂ L σ₂ hd.zero₂ hd.pullback₂ i hi.le`. Conclude with `exists_preimage_of_isPullback hsq x (hd.cover₂ i hi x hx)`.
+-/
 theorem BlowupSeqComparison.exists_preimage_of_mem_center_support_right (hd : BlowupSeqComparison f g C B₁ B₂ L σ₁ σ₂ a)
     (i : ℕ) (hi : i < L) (x : ↥(B₂.schemeAt i)) (hx : x ∈ (B₂.center i).support) :
     ∃ y : ↥(C.schemeAt i), (σ₂ i hi.le).base y = x := by
@@ -130,6 +158,11 @@ theorem BlowupSeqComparison.exists_preimage_of_mem_center_support_right (hd : Bl
     isPullback_projectionToBase_of_isPullback_blowupMorphism g C B₂ L σ₂ hd.zero₂ hd.pullback₂ i hi.le
   exact exists_preimage_of_isPullback hsq x (hd.cover₂ i hi x hx)
 
+/- English proof (translation)
+Introduce `hi`. Establish `h1 : σ₁ 0 hi ≫ B₁.isoZero.hom = C.isoZero.hom ≫ f` using `hd.zero₁`. Establish `h2 : σ₂ 0 hi ≫ B₂.isoZero.hom = C.isoZero.hom ≫ g` using `hd.zero₂`. Rewrite using `[← cancel_mono B₁.isoZero.hom]`. Simplify using `only [Category.assoc, Iso.trans_inv, Iso.symm_inv, Iso.inv_hom_id, Category.comp_id]`.
+
+Rewrite using `[h1, h2]`. Conclude with `hd.zero_ideal`.
+-/
 theorem subschemeι_comp_zero_eq_comp_isoObjZero_inv (hd : BlowupSeqComparison f g C B₁ B₂ L σ₁ σ₂ a) :
     ∀ hi : (0 : ℕ) ≤ L,
       (a 0).subschemeι ≫ σ₁ 0 hi =
@@ -147,11 +180,33 @@ def blowupSeqLevelIsoZero (hd : BlowupSeqComparison f g C B₁ B₂ L σ₁ σ�
   iso := B₁.isoZero ≪≫ B₂.isoZero.symm
   compat := subschemeι_comp_zero_eq_comp_isoObjZero_inv hd
 
+/- English proof (translation)
+Use `show (B₁.isoZero ≪≫ B₂.isoZero.symm).hom ≫ B₂.isoZero.hom = B₁.isoZero.hom`. Simplify using the standard rewrite rules.
+-/
 theorem blowupSeqLevelIsoZero_iso_hom_comp_isoObjZero (hd : BlowupSeqComparison f g C B₁ B₂ L σ₁ σ₂ a) :
     (blowupSeqLevelIsoZero hd).iso.hom ≫ B₂.isoZero.hom = B₁.isoZero.hom := by
   show (B₁.isoZero ≪≫ B₂.isoZero.symm).hom ≫ B₂.isoZero.hom = B₁.isoZero.hom
   simp
 
+/- English proof (translation)
+Establish `hkey : ∀ y : ↥(C.schemeAt i), y ∈ (C.center i).support → (σ₁ i hi.le).base y = st.iso.inv.base ((σ₂ i hi.le).base y)`. Introduce `y hy`. Establish `hy2 : y ∈ (a i).support` using `mem_support_of_le (hd.ideal_le_center i hi) y hy`. Take `⟨z, hz⟩` from `exists_subschemeι_base_eq (a i) y hy2`. Establish `e1 : ((a i).subschemeι ≫ σ₁ i hi.le).base z = ((a i).subschemeι ≫ σ₂ i hi.le ≫ st.iso.inv).base z`.
+
+Rewrite using `[st.compat hi.le]`. Establish `e2 : (σ₁ i hi.le).base ((a i).subschemeι.base z) = st.iso.inv.base ((σ₂ i hi.le).base ((a i).subschemeι.base z))` using `e1`. Rewrite `e2` using `[hz]`. Conclude with `e2`. Establish `h1 : (B₁.center i).support ≤ ((B₂.center i).comap st.iso.hom).support`.
+
+Introduce `x hx`. Take `⟨y, hy⟩` from `hd.exists_preimage_of_mem_center_support_left i hi x hx`. Establish `hyc : y ∈ (C.center i).support`. Rewrite using `[hd.center_C₁ i hi, Scheme.IdealSheafData.mem_support_comap, hy]`. Conclude with `hx`.
+
+Establish `hy2 : (σ₂ i hi.le).base y ∈ (B₂.center i).support`. Use `hyc` as an intermediate fact. Rewrite `this` using `[hd.center_C₂ i hi, Scheme.IdealSheafData.mem_support_comap]`. Conclude with `this`. Rewrite using `[Scheme.IdealSheafData.mem_support_comap]`.
+
+Establish `hx' : x = st.iso.inv.base ((σ₂ i hi.le).base y)`. Rewrite using `[← hy]`. Conclude with `hkey y hyc`. Rewrite using `[hx', Scheme.inv_hom_apply]`. Conclude with `hy2`.
+
+Establish `h2 : (B₂.center i).support ≤ ((B₁.center i).comap st.iso.inv).support`. Introduce `x hx`. Take `⟨y, hy⟩` from `hd.exists_preimage_of_mem_center_support_right i hi x hx`. Establish `hyc : y ∈ (C.center i).support`. Rewrite using `[hd.center_C₂ i hi, Scheme.IdealSheafData.mem_support_comap, hy]`.
+
+Conclude with `hx`. Establish `hy1 : (σ₁ i hi.le).base y ∈ (B₁.center i).support`. Use `hyc` as an intermediate fact. Rewrite `this` using `[hd.center_C₁ i hi, Scheme.IdealSheafData.mem_support_comap]`. Conclude with `this`.
+
+Rewrite using `[Scheme.IdealSheafData.mem_support_comap, ← hy, ← hkey y hyc]`. Conclude with `hy1`. Establish `hle1 : (B₂.center i).comap st.iso.hom ≤ B₁.center i` using `hd.determined₁ i hi _ h1`. Establish `hle2 : (B₁.center i).comap st.iso.inv ≤ B₂.center i` using `hd.determined₂ i hi _ h2`. Establish `hle3 : B₁.center i ≤ (B₂.center i).comap st.iso.hom`.
+
+Establish `hmono : ((B₁.center i).comap st.iso.inv).comap st.iso.hom ≤ (B₂.center i).comap st.iso.hom` using `Scheme.IdealSheafData.comap_mono st.iso.hom hle2`. Rewrite `hmono` using `[← Scheme.IdealSheafData.comap_comp, st.iso.hom_inv_id, Scheme.IdealSheafData.comap_id]`. Then use the resulting hypothesis. Conclude with `le_antisymm hle1 hle3`.
+-/
 theorem BlowupSeqLevelIso.center_comap_iso_hom_eq (hd : BlowupSeqComparison f g C B₁ B₂ L σ₁ σ₂ a)
     {i : ℕ} (hi : i < L) (st : BlowupSeqLevelIso C B₁ B₂ L σ₁ σ₂ a i) :
     (B₂.center i).comap st.iso.hom = B₁.center i := by
@@ -207,6 +262,9 @@ theorem BlowupSeqLevelIso.center_comap_iso_hom_eq (hd : BlowupSeqComparison f g 
       Scheme.IdealSheafData.comap_id] at hmono
   exact le_antisymm hle1 hle3
 
+/- English proof (translation)
+Establish `h2 : Blowup.IsBlowupAlongIdealSheaf (B₂.transitionMapSucc i ≫ st.iso.symm.hom) ((B₂.center i).comap st.iso.symm.inv)` using `(hd.isBlowup_B₂ i hi).comp_iso_hom st.iso.symm`. Rewrite `h2` using `[Iso.symm_hom, Iso.symm_inv, BlowupSeqLevelIso.center_comap_iso_hom_eq hd hi st]`. Conclude with `(hd.isBlowup_B₁ i hi).exists_iso h2`.
+-/
 theorem BlowupSeqLevelIso.exists_iso_succ_comp_blowupMorphism (hd : BlowupSeqComparison f g C B₁ B₂ L σ₁ σ₂ a)
     {i : ℕ} (hi : i < L) (st : BlowupSeqLevelIso C B₁ B₂ L σ₁ σ₂ a i) :
     ∃ e : B₁.schemeAt (i + 1) ≅ B₂.schemeAt (i + 1),
@@ -217,6 +275,9 @@ theorem BlowupSeqLevelIso.exists_iso_succ_comp_blowupMorphism (hd : BlowupSeqCom
   rw [Iso.symm_hom, Iso.symm_inv, BlowupSeqLevelIso.center_comap_iso_hom_eq hd hi st] at h2
   exact (hd.isBlowup_B₁ i hi).exists_iso h2
 
+/- English proof (translation)
+Rewrite using `[← he]`. Simplify using the standard rewrite rules.
+-/
 theorem BlowupSeqLevelIso.hom_comp_blowupMorphism_eq_comp_iso_hom {i : ℕ} (st : BlowupSeqLevelIso C B₁ B₂ L σ₁ σ₂ a i)
     (e : B₁.schemeAt (i + 1) ≅ B₂.schemeAt (i + 1))
     (he : e.hom ≫ B₂.transitionMapSucc i ≫ st.iso.inv = B₁.transitionMapSucc i) :
@@ -229,11 +290,27 @@ def BlowupSeqLevelIso.isoSucc (hd : BlowupSeqComparison f g C B₁ B₂ L σ₁ 
     B₁.schemeAt (i + 1) ≅ B₂.schemeAt (i + 1) :=
   (BlowupSeqLevelIso.exists_iso_succ_comp_blowupMorphism hd hi st).choose
 
+/- English proof (translation)
+The claim follows from `(BlowupSeqLevelIso.exists_iso_succ_comp_blowupMorphism hd hi st).choose_spec`.
+-/
 theorem BlowupSeqLevelIso.isoSucc_hom_comp_blowupMorphism (hd : BlowupSeqComparison f g C B₁ B₂ L σ₁ σ₂ a)
     {i : ℕ} (hi : i < L) (st : BlowupSeqLevelIso C B₁ B₂ L σ₁ σ₂ a i) :
     (BlowupSeqLevelIso.isoSucc hd hi st).hom ≫ B₂.transitionMapSucc i ≫ st.iso.inv = B₁.transitionMapSucc i :=
   (BlowupSeqLevelIso.exists_iso_succ_comp_blowupMorphism hd hi st).choose_spec
 
+/- English proof (translation)
+Introduce `hj`. Establish `hcen1 : C.center i = (B₁.center i).comap (σ₁ i hi.le)` using `hd.center_C₁ i hi`. Establish `hinv : (B₁.center i).comap st.iso.inv = B₂.center i`. Rewrite using `[← BlowupSeqLevelIso.center_comap_iso_hom_eq hd hi st, comap_hom_comap_inv]`. Establish `hcen2 : (B₁.center i).comap (σ₂ i hi.le ≫ st.iso.inv) = C.center i`.
+
+Rewrite using `[Scheme.IdealSheafData.comap_comp, hinv, ← hd.center_C₂ i hi]`. Establish `hZeq : (B₁.center i).comap (σ₁ i hi.le) = (B₁.center i).comap (σ₂ i hi.le ≫ st.iso.inv)`. Rewrite using `[← hcen1, hcen2]`. Establish `hρ : Blowup.IsBlowupAlongIdealSheaf (C.transitionMapSucc i) ((B₁.center i).comap (σ₁ i hi.le))`. Rewrite using `[← hcen1]`.
+
+Conclude with `hd.isBlowup_C i hi`. Establish `hf' : σ₁ (i + 1) hj ≫ B₁.transitionMapSucc i = C.transitionMapSucc i ≫ σ₁ i hi.le` using `(hd.pullback₁ i hi).w`. Establish `hspec` using `BlowupSeqLevelIso.isoSucc_hom_comp_blowupMorphism hd hi st`. Establish `hw2 : σ₂ (i + 1) hj ≫ B₂.transitionMapSucc i = C.transitionMapSucc i ≫ σ₂ i hi.le` using `(hd.pullback₂ i hi).w`. Establish `hg' : (σ₂ (i + 1) hj ≫ (BlowupSeqLevelIso.isoSucc hd hi st).inv) ≫ B₁.transitionMapSucc i = C.transitionMapSucc i ≫ σ₂ i hi.le ≫ st.iso.inv`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Category.assoc]`. Use `_ = σ₂ (i + 1) hj ≫ B₂.transitionMapSucc i ≫ st.iso.inv := by`. Rewrite using `[← hspec]`. Simplify using the standard rewrite rules.
+
+Use `_ = (σ₂ (i + 1) hj ≫ B₂.transitionMapSucc i) ≫ st.iso.inv := by rw [Category.assoc]`. Use `_ = C.transitionMapSucc i ≫ σ₂ i hi.le ≫ st.iso.inv := by rw [hw2, Category.assoc]`. Establish `hc : Blowup.exceptionalIdeal (C.transitionMapSucc i) ((B₁.center i).comap (σ₁ i hi.le)) * a (i + 1) = (a i).comap (C.transitionMapSucc i)`. Rewrite using `[← hcen1]`. Conclude with `hd.ideal_succ i hi`.
+
+Conclude with `hd.lifting (B₁.schemeAt i) (B₁.schemeAt (i + 1)) (C.schemeAt i) (C.schemeAt (i + 1)) (B₁.transitionMapSucc i) (B₁.center i) (hd.isBlowup_B₁ i hi) (σ₁ i hi.le) (σ₂ i hi.le ≫ st.iso.inv) hZeq (C.transitionMapSucc i) hρ (σ₁ (i + 1) hj) (σ₂ (i + 1) hj ≫ (BlowupSeqLevelIso.isoSucc hd …`.
+-/
 theorem BlowupSeqLevelIso.subschemeι_comp_eq_comp_isoSucc_inv (hd : BlowupSeqComparison f g C B₁ B₂ L σ₁ σ₂ a)
     {i : ℕ} (hi : i < L) (st : BlowupSeqLevelIso C B₁ B₂ L σ₁ σ₂ a i) :
     ∀ hj : i + 1 ≤ L,
@@ -288,6 +365,13 @@ private def blowupSeqLevelIsoOfLE (hd : BlowupSeqComparison f g C B₁ B₂ L σ
   | (i + 1), h =>
       BlowupSeqLevelIso.succ hd (Nat.lt_of_succ_le h) (blowupSeqLevelIsoOfLE hd i (Nat.le_of_succ_le h))
 
+/- English proof (translation)
+Unfold `IsStrictPullbackBlowupSeq at h₁ h₂`. Take `⟨hlen1, s₁, hz1, hpb1, hc1⟩` from `h₁`. Take `⟨hlen2, s₂, hz2, hpb2, hc2⟩` from `h₂`. Establish `hd : BlowupSeqComparison φ ψ D B B' D.length s₁ s₂ b` using `{ zero_ideal := hzero isBlowup_B₁ := fun i hi => B.isBlowupAlongIdealSheaf_blowupMorphism i (by rw [← hlen1]; exact hi) isBlowup_B₂ := fun i hi => B'.isBlowupAlongIdealSheaf_blowupMorphism i (by rw [← hlen2]; exact hi) isBlowup_C := fun i hi => D.isBlowupAlongIdealSheaf_blowupMor …`. Unfold `SequenceOfBlowups.Isomorphic`.
+
+Use `⟨hlen1.symm.trans hlen2, fun i hi => (blowupSeqLevelIsoOfLE hd i (le_of_le_of_eq hi hlen1.symm)).iso, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `blowupSeqLevelIsoZero_iso_hom_comp_isoObjZero hd`. Introduce `i hi`. Establish `hiD : i < D.length` using `by rw [hlen1]; exact hi`. Conclude with `BlowupSeqLevelIso.hom_comp_blowupMorphism_eq_comp_iso_hom (blowupSeqLevelIsoOfLE hd i hiD.le) (BlowupSeqLevelIso.isoSucc hd hiD (blowupSeqLevelIsoOfLE hd i hiD.le)) (BlowupSeqLevelIso.isoSucc_hom_comp_blowupMorphism hd hiD (blowupSeqLevelIsoOfLE hd i hiD.le))`.
+
+Introduce `i hi`. Establish `hiD : i < D.length` using `by rw [hlen1]; exact hi`. Conclude with `BlowupSeqLevelIso.center_comap_iso_hom_eq hd hiD (blowupSeqLevelIsoOfLE hd i hiD.le)`.
+-/
 theorem SequenceOfBlowups.isomorphic_of_isStrictPullback_same_source (B B' : SequenceOfBlowups P)
     {φ ψ : V ⟶ P} {D : SequenceOfBlowups V}
     (hlift : BlowupLiftEqOnControlledTransform.{u})

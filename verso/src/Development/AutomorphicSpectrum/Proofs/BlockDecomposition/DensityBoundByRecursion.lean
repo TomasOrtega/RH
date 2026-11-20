@@ -6,6 +6,23 @@ open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.WhitFree G
 
 namespace GlobalTheory.CompanionTheory.DensityIter
 
+/- English proof (translation)
+Use `set ρ : ℝ≥0 := ∑ i ∈ I, α i * β i with hρdef`. Use `set r : ℝ≥0 := ∑ i ∈ I, α i with hrdef`. Use `set K : ℝ≥0 := C₀ / (1 - ρ) with hK`. Establish `hKeq : C₀ + K * ρ = K`. Establish `h1 : K * (1 - ρ) = C₀` using `div_mul_cancel₀ C₀ (tsub_pos_of_lt hρ).ne'`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hKeq' : (C₀ : ℝ≥0∞) + K * ρ = K` using `by exact_mod_cast hKeq`. Establish `hρc : (ρ : ℝ≥0∞) = ∑ i ∈ I, (α i : ℝ≥0∞) * β i`. Simplify using `only [hρdef, ENNReal.coe_finset_sum, ENNReal.coe_mul]`. Establish `hrc : (r : ℝ≥0∞) = ∑ i ∈ I, (α i : ℝ≥0∞)`.
+
+Simplify using `only [hrdef, ENNReal.coe_finset_sum]`. Establish `key : ∀ n : ℕ, ∀ Y, MeasurableSet Y → D Y ≤ K * ν Y + (r : ℝ≥0∞) ^ n * Dtot`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+
+Introduce `Y hY`. Rewrite using `[pow_zero, one_mul]`. Conclude with `le_add_left (hD Y hY)`. Consider the case `succ n ih`. Introduce `Y hY`.
+
+Take `⟨Z, hZ, hDY⟩` from `hit Y hY`. Establish `e1 : ∑ i ∈ I, (α i : ℝ≥0∞) * (K * ((β i : ℝ≥0∞) * ν Y)) = K * ρ * ν Y`. Rewrite using `[hρc, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `e2 : ∑ i ∈ I, (α i : ℝ≥0∞) * ((r : ℝ≥0∞) ^ n * Dtot) = (r : ℝ≥0∞) ^ (n + 1) * Dtot`.
+
+Rewrite using `[← Finset.sum_mul, ← hrc]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← (hZ i hi).2]`. Conclude with `ih _ (hZ i hi).1`.
+
+Use `_ = C₀ * ν Y + (K * ρ * ν Y + (r : ℝ≥0∞) ^ (n + 1) * Dtot) := by`. Simplify using `only [mul_add, Finset.sum_add_distrib, e1, e2]`. Use `_ = K * ν Y + (r : ℝ≥0∞) ^ (n + 1) * Dtot := by`. Rewrite using `[← add_assoc, ← add_mul, hKeq']`. Use `⟨K, fun Y hY => ?_⟩` and prove the remaining obligations.
+
+Establish `hr1 : (r : ℝ≥0∞) < 1` using `by exact_mod_cast hr`. Establish `ht : Filter.Tendsto (fun n : ℕ => (K : ℝ≥0∞) * ν Y + (r : ℝ≥0∞) ^ n * Dtot) Filter.atTop (nhds ((K : ℝ≥0∞) * ν Y + 0 * Dtot))` using `tendsto_const_nhds.add (ENNReal.Tendsto.mul_const (ENNReal.tendsto_pow_atTop_nhds_zero_of_lt_one hr1) (Or.inr hDtot))`. Rewrite `ht` using `[zero_mul, add_zero]`. Conclude with `ge_of_tendsto' ht fun n => key n Y hY`.
+-/
 theorem bounded_density_of_iterated
     (H ι : Type) [MeasurableSpace H] (ν : Measure H) (D : Set H → ℝ≥0∞) (Dtot : ℝ≥0∞)
     (hDtot : Dtot ≠ ⊤) (hD : ∀ Y, MeasurableSet Y → D Y ≤ Dtot)

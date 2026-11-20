@@ -11,6 +11,11 @@ variable {n : ℕ}
 
 abbrev thC (n : ℕ) : Monoid.End (GL (Fin n) ℂ) := thetaR (starRingEnd ℂ) n
 
+/- English proof (translation)
+Establish `h : ∀ y, (X * X * X) *ᵥ y = 0` using `fun y => by`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Conclude with `hX.2.2 _ (hX.2.1 _ (hX.1 y))`. Use extensionality with `i j`. Use `congrFun (h (Pi.single j 1)) i` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem nil_sq_mul {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} {X : Matrix (Fin n) (Fin n) ℂ}
     (hX : X ∈ nilrad W₁ W₂) : X * X * X = 0 := by
   have h : ∀ y, (X * X * X) *ᵥ y = 0 := fun y => by
@@ -32,9 +37,15 @@ def uOf {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} (X : nilrad W₁ W₂) : GL 
     noncomm_ring
     rw [← mul_assoc, h]; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem uOf_val {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} (X : nilrad W₁ W₂) :
     (uOf X).val = 1 + X.1 := rfl
 
+/- English proof (translation)
+Establish `h : Continuous fun X : nilrad W₁ W₂ => X.1` using `continuous_subtype_val`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_const.add h`. Establish `: Continuous fun X : nilrad W₁ W₂ => (1 - X.1 + X.1 * X.1 : Matrix (Fin n) (Fin n) ℂ)` using `(continuous_const.sub h).add (h.matrix_mul h)`. Conclude with `this`.
+-/
 theorem continuous_uOf {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} :
     Continuous (uOf : nilrad W₁ W₂ → GL (Fin n) ℂ) := by
   have h : Continuous fun X : nilrad W₁ W₂ => X.1 := continuous_subtype_val
@@ -63,6 +74,13 @@ def QuotVanish : Prop := ∀ (n : ℕ) [MeasurableSpace (GL (Fin n) ℂ)] [Borel
       [ν.IsAddHaarMeasure] (q : GL (Fin n) ℂ), ∫ X, F (uOf X * q) ∂ν = 0) →
     quotIntegral μ (twCent (thC n) d) μd F = 0
 
+/- English proof (translation)
+Establish `e1 : ∀ z : Fin n → ℂ, (g⁻¹ : GL (Fin n) ℂ).val *ᵥ (g.val *ᵥ z) = z` using `fun z => by`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul]`. Simplify using the standard rewrite rules. Establish `e2 : ∀ z : Fin n → ℂ, g.val *ᵥ ((g⁻¹ : GL (Fin n) ℂ).val *ᵥ z) = z` using `fun z => by`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul]`.
+
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Rewrite using `[Matrix.toLin'_apply, e1]`. Conclude with `hx`.
+
+Introduce `h`. Conclude with `⟨_, h, by rw [Matrix.toLin'_apply, e2]⟩`.
+-/
 theorem mem_img' (g : GL (Fin n) ℂ) (W : Submodule ℂ (Fin n → ℂ)) (y : Fin n → ℂ) :
     y ∈ img g W ↔ (g⁻¹ : GL (Fin n) ℂ).val *ᵥ y ∈ W := by
   have e1 : ∀ z : Fin n → ℂ, (g⁻¹ : GL (Fin n) ℂ).val *ᵥ (g.val *ᵥ z) = z := fun z => by
@@ -75,21 +93,40 @@ theorem mem_img' (g : GL (Fin n) ℂ) (W : Submodule ℂ (Fin n → ℂ)) (y : F
   · intro h
     exact ⟨_, h, by rw [Matrix.toLin'_apply, e2]⟩
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [mem_img', _root_.mul_inv_rev, Units.val_mul, Matrix.mulVec_mulVec]`.
+-/
 theorem img_mul (a b : GL (Fin n) ℂ) (W : Submodule ℂ (Fin n → ℂ)) :
     img (a * b) W = img a (img b W) := by
   ext y
   simp only [mem_img', _root_.mul_inv_rev, Units.val_mul, Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `[mem_img']`.
+-/
 theorem img_one (W : Submodule ℂ (Fin n → ℂ)) : img (1 : GL (Fin n) ℂ) W = W := by
   ext y
   simp [mem_img']
 
+/- English proof (translation)
+Rewrite using `[thC, thetaR_val]`. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply]`.
+-/
 theorem thC_val (q : GL (Fin n) ℂ) : (thC n q).val = (q⁻¹ : GL (Fin n) ℂ).valᴴ := by
   rw [thC, thetaR_val]; ext i j; simp [Matrix.conjTranspose_apply]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_perp' (W : Submodule ℂ (Fin n → ℂ)) (y : Fin n → ℂ) :
     y ∈ perp (starRingEnd ℂ) W ↔ ∀ x ∈ W, star x ⬝ᵥ y = 0 := Iff.rfl
 
+/- English proof (translation)
+Establish `hi : ((thC n q)⁻¹ : GL (Fin n) ℂ).val = q.valᴴ`. Rewrite using `[← map_inv, thC_val, inv_inv]`. Use extensionality with `y`. Rewrite using `[mem_img', mem_perp', mem_perp', hi]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h x hx`. Use `h (q.val *ᵥ x) ⟨x, hx, by rw [Matrix.toLin'_apply]⟩` as an intermediate fact. Rewrite `this` using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec]`. Conclude with `this`. Introduce and unpack `h _ ⟨x, hx, rfl⟩`.
+
+Rewrite using `[Matrix.toLin'_apply, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec]`. Conclude with `h x hx`.
+-/
 theorem perp_img (q : GL (Fin n) ℂ) (W : Submodule ℂ (Fin n → ℂ)) :
     perp (starRingEnd ℂ) (img q W) = img (thC n q) (perp (starRingEnd ℂ) W) := by
   have hi : ((thC n q)⁻¹ : GL (Fin n) ℂ).val = q.valᴴ := by
@@ -105,6 +142,9 @@ theorem perp_img (q : GL (Fin n) ℂ) (W : Submodule ℂ (Fin n → ℂ)) :
     rw [Matrix.toLin'_apply, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec]
     exact h x hx
 
+/- English proof (translation)
+Rewrite using `[perpD, perpD, perp_img, ← img_mul, twConj, map_inv]`. Simplify using `only [mul_assoc, mul_inv_cancel, mul_one]`. Rewrite using `[img_mul]`.
+-/
 theorem perpD_twConj (d q : GL (Fin n) ℂ) (W : Submodule ℂ (Fin n → ℂ)) :
     perpD (starRingEnd ℂ) (twConj (thC n) q d) (img q⁻¹ W) =
       img q⁻¹ (perpD (starRingEnd ℂ) d W) := by
@@ -112,9 +152,15 @@ theorem perpD_twConj (d q : GL (Fin n) ℂ) (W : Submodule ℂ (Fin n → ℂ)) 
   simp only [mul_assoc, mul_inv_cancel, mul_one]
   rw [img_mul]
 
+/- English proof (translation)
+The claim follows from `Submodule.map_mono h`.
+-/
 theorem img_le_img (g : GL (Fin n) ℂ) {W W' : Submodule ℂ (Fin n → ℂ)} (h : W ≤ W') :
     img g W ≤ img g W' := Submodule.map_mono h
 
+/- English proof (translation)
+Introduce `h0`. Apply `h` to reduce the goal to its premises. Establish `: img g⁻¹ (img g W) = W` using `by rw [← img_mul, inv_mul_cancel, img_one]`. Rewrite using `[← this, h0]`. Conclude with `Submodule.map_bot _`.
+-/
 theorem img_ne_bot (g : GL (Fin n) ℂ) {W : Submodule ℂ (Fin n → ℂ)} (h : W ≠ ⊥) : img g W ≠ ⊥ := by
   intro h0
   apply h
@@ -122,6 +168,13 @@ theorem img_ne_bot (g : GL (Fin n) ℂ) {W : Submodule ℂ (Fin n → ℂ)} (h :
   rw [← this, h0]
   exact Submodule.map_bot _
 
+/- English proof (translation)
+Establish `hpp : ∀ y : Fin n → ℂ, (p⁻¹ : GL (Fin n) ℂ).val *ᵥ (p.val *ᵥ y) = y` using `fun z => by`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul]`. Simplify using the standard rewrite rules. Establish `e : ∀ y : Fin n → ℂ, (p.val * X * (p⁻¹ : GL (Fin n) ℂ).val) *ᵥ y = p.val *ᵥ (X *ᵥ ((p⁻¹ : GL (Fin n) ℂ).val *ᵥ y))` using `fun y => by`. Simplify using `only [Matrix.mulVec_mulVec, mul_assoc]`.
+
+Use `⟨fun y => ?_, fun y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[e, mem_img', hpp]`. Conclude with `hX.1 _`. Rewrite `hy` using `[mem_img']`. Rewrite using `[e, mem_img', hpp]`.
+
+Conclude with `hX.2.1 _ hy`. Rewrite `hy` using `[mem_img']`. Rewrite using `[e, hX.2.2 _ hy, Matrix.mulVec_zero]`.
+-/
 theorem conj_mem (p : GL (Fin n) ℂ) {W₁ W₂ : Submodule ℂ (Fin n → ℂ)}
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ nilrad W₁ W₂) :
     p.val * X * (p⁻¹ : GL (Fin n) ℂ).val ∈ nilrad (img p W₁) (img p W₂) := by
@@ -139,6 +192,9 @@ theorem conj_mem (p : GL (Fin n) ℂ) {W₁ W₂ : Submodule ℂ (Fin n → ℂ)
   · rw [mem_img'] at hy
     rw [e, hX.2.2 _ hy, Matrix.mulVec_zero]
 
+/- English proof (translation)
+Rewrite using `[← img_mul, mul_inv_cancel, img_one]`.
+-/
 theorem img_inv_img (q : GL (Fin n) ℂ) (W : Submodule ℂ (Fin n → ℂ)) : img q (img q⁻¹ W) = W := by
   rw [← img_mul, mul_inv_cancel, img_one]
 
@@ -152,24 +208,39 @@ def cnB (q : GL (Fin n) ℂ) (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) (Z : ni
     have := conj_mem q Z.2
     rwa [img_inv_img, img_inv_img] at this⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cnF_val (q : GL (Fin n) ℂ) (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) (X : nilrad W₁ W₂) :
     (cnF q W₁ W₂ X).1 = (q⁻¹ : GL (Fin n) ℂ).val * X.1 * q.val := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cnB_val (q : GL (Fin n) ℂ) (W₁ W₂ : Submodule ℂ (Fin n → ℂ))
     (Z : nilrad (img q⁻¹ W₁) (img q⁻¹ W₂)) :
     (cnB q W₁ W₂ Z).1 = q.val * Z.1 * (q⁻¹ : GL (Fin n) ℂ).val := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp only [Submodule.coe_add, cnF_val, mul_add, add_mul])`.
+-/
 theorem cnF_add (q : GL (Fin n) ℂ) (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) (X Y : nilrad W₁ W₂) :
     cnF q W₁ W₂ (X + Y) = cnF q W₁ W₂ X + cnF q W₁ W₂ Y :=
   Subtype.ext (by
     simp only [Submodule.coe_add, cnF_val, mul_add, add_mul])
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp only [Submodule.coe_add, cnB_val, mul_add, add_mul])`.
+-/
 theorem cnB_add (q : GL (Fin n) ℂ) (W₁ W₂ : Submodule ℂ (Fin n → ℂ))
     (X Y : nilrad (img q⁻¹ W₁) (img q⁻¹ W₂)) :
     cnB q W₁ W₂ (X + Y) = cnB q W₁ W₂ X + cnB q W₁ W₂ Y :=
   Subtype.ext (by
     simp only [Submodule.coe_add, cnB_val, mul_add, add_mul])
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by have h1 : q.val * (q⁻¹ : GL (Fin n) ℂ).val = 1 := by rw [← Units.val_mul]; simp rw [cnB_val, cnF_val] calc _ = (q.val * (q⁻¹ : GL (Fin n) ℂ).val) * X.1 * (q.val * (q⁻¹ : GL (Fin n) ℂ).val) := by simp only [mul_assoc] _ = X.1 := by rw [h1]; simp)`.
+-/
 theorem cnB_cnF (q : GL (Fin n) ℂ) (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) (X : nilrad W₁ W₂) :
     cnB q W₁ W₂ (cnF q W₁ W₂ X) = X :=
   Subtype.ext (by
@@ -179,6 +250,9 @@ theorem cnB_cnF (q : GL (Fin n) ℂ) (W₁ W₂ : Submodule ℂ (Fin n → ℂ))
           simp only [mul_assoc]
       _ = X.1 := by rw [h1]; simp)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by have h1 : (q⁻¹ : GL (Fin n) ℂ).val * q.val = 1 := by rw [← Units.val_mul]; simp rw [cnF_val, cnB_val] calc _ = ((q⁻¹ : GL (Fin n) ℂ).val * q.val) * Z.1 * ((q⁻¹ : GL (Fin n) ℂ).val * q.val) := by simp only [mul_assoc] _ = Z.1 := by rw [h1]; simp)`.
+-/
 theorem cnF_cnB (q : GL (Fin n) ℂ) (W₁ W₂ : Submodule ℂ (Fin n → ℂ))
     (Z : nilrad (img q⁻¹ W₁) (img q⁻¹ W₂)) : cnF q W₁ W₂ (cnB q W₁ W₂ Z) = Z :=
   Subtype.ext (by
@@ -193,23 +267,40 @@ def conjNil (q : GL (Fin n) ℂ) (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) :
   AddMonoidHom.toAddEquiv (AddMonoidHom.mk' (cnF q W₁ W₂) (cnF_add q W₁ W₂))
     (AddMonoidHom.mk' (cnB q W₁ W₂) (cnB_add q W₁ W₂))
     (AddMonoidHom.ext fun X => cnB_cnF q W₁ W₂ X) (AddMonoidHom.ext fun Z => cnF_cnB q W₁ W₂ Z)
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjNil_val (q : GL (Fin n) ℂ) (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) (X : nilrad W₁ W₂) :
     (conjNil q W₁ W₂ X).1 = (q⁻¹ : GL (Fin n) ℂ).val * X.1 * q.val := rfl
 
+/- English proof (translation)
+The claim follows from `Continuous.subtype_mk ((continuous_const.matrix_mul continuous_subtype_val).matrix_mul continuous_const) _`.
+-/
 theorem continuous_conjNil (q : GL (Fin n) ℂ) (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) :
     Continuous (conjNil q W₁ W₂) :=
   Continuous.subtype_mk ((continuous_const.matrix_mul continuous_subtype_val).matrix_mul continuous_const) _
 
+/- English proof (translation)
+The claim follows from `Continuous.subtype_mk ((continuous_const.matrix_mul continuous_subtype_val).matrix_mul continuous_const) _`.
+-/
 theorem continuous_conjNil_symm (q : GL (Fin n) ℂ) (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) :
     Continuous (conjNil q W₁ W₂).symm :=
   Continuous.subtype_mk ((continuous_const.matrix_mul continuous_subtype_val).matrix_mul continuous_const) _
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Establish `h1 : (q⁻¹ : GL (Fin n) ℂ).val * q.val = 1` using `by rw [← Units.val_mul]; simp`. Simplify using `only [uOf_val, conjNil_val, Units.val_mul, mul_add, add_mul, mul_one, h1]`.
+-/
 theorem uOf_conjNil (q : GL (Fin n) ℂ) (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) (X : nilrad W₁ W₂) :
     uOf (conjNil q W₁ W₂ X) = q⁻¹ * uOf X * q := by
   apply Units.ext
   have h1 : (q⁻¹ : GL (Fin n) ℂ).val * q.val = 1 := by rw [← Units.val_mul]; simp
   simp only [uOf_val, conjNil_val, Units.val_mul, mul_add, add_mul, mul_one, h1]
 
+/- English proof (translation)
+Establish `hv : ∀ h : Continuous fun g : GL (Fin n) ℂ => (g : Matrix (Fin n) (Fin n) ℂ), Continuous fun g : GL (Fin n) ℂ => (g : Matrix (Fin n) (Fin n) ℂ)` using `id`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `: Continuous fun g : GL (Fin n) ℂ => (g⁻¹ : GL (Fin n) ℂ).valᴴ` using `(Units.continuous_val.comp continuous_inv).matrix_conjTranspose`. Conclude with `this.congr fun g => (thC_val g).symm`. Establish `: Continuous fun g : GL (Fin n) ℂ => (g : GL (Fin n) ℂ).valᴴ` using `Units.continuous_val.matrix_conjTranspose`.
+
+Use `this.congr fun g => ?_` and prove the remaining obligations. Establish `: (((thC n g)⁻¹ : GL (Fin n) ℂ)).val = g.valᴴ`. Rewrite using `[← map_inv, thC_val, inv_inv]`. Conclude with `this.symm`.
+-/
 theorem continuous_thC : Continuous (thC n) := by
   have hv : ∀ h : Continuous fun g : GL (Fin n) ℂ => (g : Matrix (Fin n) (Fin n) ℂ),
       Continuous fun g : GL (Fin n) ℂ => (g : Matrix (Fin n) (Fin n) ℂ) := id

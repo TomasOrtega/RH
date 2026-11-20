@@ -47,10 +47,19 @@ variable (W : LocWach PD LL O v n)
   (hqc : ∀ (i : ZMod n) (o : O) (g : LetA O n), g ∈ W.AΔ → (letE i : LetA O n) * g = g →
     algebraMap O (LetA O n) o * letE i = Formalism.MainNotions.LiftingTheory.qp W * g → o = 0)
 
+/- English proof (translation)
+The claim follows from `Formalism.MainNotions.UnusedSlot80.SatPW.letE_mem_AΔ W i`.
+-/
 theorem letE_mem_AΔ (i : ZMod n) : (letE i : LetA O n) ∈ W.AΔ := Formalism.MainNotions.UnusedSlot80.SatPW.letE_mem_AΔ W i
 
+/- English proof (translation)
+The claim follows from `Formalism.MainNotions.LiftingTheory.frame_letE_idem i`.
+-/
 theorem letE_idem (i : ZMod n) : (letE i : LetA O n) * letE i = letE i := Formalism.MainNotions.LiftingTheory.frame_letE_idem i
 
+/- English proof (translation)
+The claim follows from `W.AΔ.mul_mem (letE_mem_AΔ W i) hg`.
+-/
 theorem letE_mul_mem {i : ZMod n} {g : LetA O n} (hg : g ∈ W.AΔ) : (letE i : LetA O n) * g ∈ W.AΔ := W.AΔ.mul_mem (letE_mem_AΔ W i) hg
 
 include hAq in
@@ -62,6 +71,9 @@ def resq (i : ZMod n) (g : LetA O n) : O :=
   else 0
 
 include hAq in
+/- English proof (translation)
+Take `⟨g', hg', he⟩` from `Classical.choose_spec (hAq i ((letE i : LetA O n) * g) (letE_mul_mem W hg) (by rw [← mul_assoc, letE_idem]))`. Use `⟨g', hg', ?_⟩` and prove the remaining obligations. Unfold `resq`. Rewrite using `[dif_pos hg]`. Conclude with `he`.
+-/
 theorem resq_spec (i : ZMod n) {g : LetA O n} (hg : g ∈ W.AΔ) :
     ∃ g' ∈ W.AΔ, (letE i : LetA O n) * g =
       algebraMap O (LetA O n) (resq W hAq i g) * letE i + Formalism.MainNotions.LiftingTheory.qp W * g' := by
@@ -73,6 +85,13 @@ theorem resq_spec (i : ZMod n) {g : LetA O n} (hg : g ∈ W.AΔ) :
   exact he
 
 include hAq hqc in
+/- English proof (translation)
+Take `⟨g₁, hg₁, he₁⟩` from `resq_spec W hAq i hg`. Use `set e : LetA O n := letE i with he_def`. Use `set r := resq W hAq i g with hr_def`. Establish `hE : e * e = e` using `letE_idem i`. Establish `key : algebraMap O (LetA O n) (r - o) * e = Formalism.MainNotions.LiftingTheory.qp W * (g' - g₁)`.
+
+Rewrite using `[map_sub]`. Take the linear combination `he₁.symm.trans he`. Establish `hmem : e * (g' - g₁) ∈ W.AΔ` using `letE_mul_mem W (W.AΔ.sub_mem hg' hg₁)`. Establish `hfix : e * (e * (g' - g₁)) = e * (g' - g₁)` using `by rw [← mul_assoc, hE]`. Establish `heq : algebraMap O (LetA O n) (r - o) * e = Formalism.MainNotions.LiftingTheory.qp W * (e * (g' - g₁))`.
+
+Take the linear combination `e * key - algebraMap O (LetA O n) (r - o) * hE`. Conclude with `sub_eq_zero.mp (hqc i (r - o) _ hmem hfix heq)`.
+-/
 theorem resq_eq (i : ZMod n) {g : LetA O n} (hg : g ∈ W.AΔ) {o : O} {g' : LetA O n} (hg' : g' ∈ W.AΔ)
     (he : (letE i : LetA O n) * g = algebraMap O (LetA O n) o * letE i + Formalism.MainNotions.LiftingTheory.qp W * g') :
     resq W hAq i g = o := by
@@ -89,17 +108,26 @@ theorem resq_eq (i : ZMod n) {g : LetA O n} (hg : g ∈ W.AΔ) {o : O} {g' : Let
     linear_combination e * key - algebraMap O (LetA O n) (r - o) * hE
   exact sub_eq_zero.mp (hqc i (r - o) _ hmem hfix heq)
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.LiftingTheory.qp`. Conclude with `W.AΔ.add_mem (Formalism.MainNotions.UnusedSlot80.UnivC.uniformizer_mem_delta_invariants W) (W.AΔ.natCast_mem _)`.
+-/
 theorem qp_mem_AΔ' (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) : Formalism.MainNotions.LiftingTheory.qp W ∈ W.AΔ := by
   unfold Formalism.MainNotions.LiftingTheory.qp
   exact W.AΔ.add_mem (Formalism.MainNotions.UnusedSlot80.UnivC.uniformizer_mem_delta_invariants W) (W.AΔ.natCast_mem _)
 
 include hqc in
+/- English proof (translation)
+Use `resq_eq W hAq hqc i (W.AΔ.algebraMap_mem o) (W.AΔ.zero_mem) ?_` and prove the remaining obligations. Rewrite using `[mul_zero, add_zero, mul_comm]`.
+-/
 theorem resq_alg (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (i : ZMod n) (o : O) :
     resq W hAq i (algebraMap O (LetA O n) o) = o := by
   refine resq_eq W hAq hqc i (W.AΔ.algebraMap_mem o) (W.AΔ.zero_mem) ?_
   rw [mul_zero, add_zero, mul_comm]
 
 include hqc in
+/- English proof (translation)
+Take `⟨g₁, hg₁, e₁⟩` from `resq_spec W hAq i hg`. Take `⟨h₁, hh₁, e₂⟩` from `resq_spec W hAq i hh`. Use `resq_eq W hAq hqc i (W.AΔ.add_mem hg hh) (W.AΔ.add_mem hg₁ hh₁) ?_` and prove the remaining obligations. Rewrite using `[mul_add, e₁, e₂, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem resq_add (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (i : ZMod n) {g h : LetA O n} (hg : g ∈ W.AΔ)
     (hh : h ∈ W.AΔ) : resq W hAq i (g + h) = resq W hAq i g + resq W hAq i h := by
   obtain ⟨g₁, hg₁, e₁⟩ := resq_spec W hAq i hg
@@ -109,6 +137,13 @@ theorem resq_add (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (i : Z
   ring
 
 include hqc in
+/- English proof (translation)
+Take `⟨g₁, hg₁, e₁⟩` from `resq_spec W hAq i hg`. Take `⟨h₁, hh₁, e₂⟩` from `resq_spec W hAq i hh`. Establish `hE : (letE i : LetA O n) * letE i = letE i` using `letE_idem i`. Establish `hq` using `qp_mem_AΔ' W hR`. Establish `he` using `letE_mem_AΔ W i`.
+
+Establish `ha` using `W.AΔ.algebraMap_mem (resq W hAq i g)`. Establish `hb` using `W.AΔ.algebraMap_mem (resq W hAq i h)`. Use `resq_eq W hAq hqc i (W.AΔ.mul_mem hg hh) (g' := algebraMap O (LetA O n) (resq W hAq i g) * letE i * h₁ + g₁ * (algebraMap O (LetA O n) (resq W hAq i h) * letE i) + Formalism.MainNotions.LiftingTheory.qp W * g₁ * h₁) (W.AΔ.add_mem (W.AΔ.add_mem (W.AΔ.mul_mem (W.AΔ.mul_mem ha he) h …` and prove the remaining obligations. Establish `h2 : (letE i : LetA O n) * (g * h) = ((letE i : LetA O n) * g) * ((letE i : LetA O n) * h)`. Take the linear combination `(-(g * h)) * hE`.
+
+Rewrite using `[h2, e₁, e₂, map_mul]`. Take the linear combination `(algebraMap O (LetA O n) (resq W hAq i g) * algebraMap O (LetA O n) (resq W hAq i h)) * hE`.
+-/
 theorem resq_mul (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (i : ZMod n) {g h : LetA O n} (hg : g ∈ W.AΔ)
     (hh : h ∈ W.AΔ) : resq W hAq i (g * h) = resq W hAq i g * resq W hAq i h := by
   obtain ⟨g₁, hg₁, e₁⟩ := resq_spec W hAq i hg
@@ -130,6 +165,9 @@ theorem resq_mul (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (i : Z
     algebraMap O (LetA O n) (resq W hAq i h)) * hE
 
 include hqc in
+/- English proof (translation)
+Use `resq_eq W hAq hqc i (W.AΔ.mul_mem (qp_mem_AΔ' W hR) hg) (letE_mul_mem W (i := i) hg) ?_` and prove the remaining obligations. Rewrite using `[map_zero, zero_mul, zero_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem resq_qp_mul (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (i : ZMod n) {g : LetA O n} (hg : g ∈ W.AΔ) :
     resq W hAq i (Formalism.MainNotions.LiftingTheory.qp W * g) = 0 := by
   refine resq_eq W hAq hqc i (W.AΔ.mul_mem (qp_mem_AΔ' W hR) hg) (letE_mul_mem W (i := i) hg) ?_
@@ -137,6 +175,9 @@ theorem resq_qp_mul (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (i 
   ring
 
 include hqc in
+/- English proof (translation)
+Use `resq_eq W hAq hqc i (Formalism.MainNotions.UnusedSlot80.UnivC.uniformizer_mem_delta_invariants W) (letE_mem_AΔ W i) ?_` and prove the remaining obligations. Rewrite using `[map_neg, map_natCast]`. Unfold `Formalism.MainNotions.LiftingTheory.qp`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem residue_pi0_eq_neg_prime (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (i : ZMod n) :
     resq W hAq i W.π₀ = -((PD.p : ℕ) : O) := by
   refine resq_eq W hAq hqc i (Formalism.MainNotions.UnusedSlot80.UnivC.uniformizer_mem_delta_invariants W) (letE_mem_AΔ W i) ?_
@@ -145,6 +186,9 @@ theorem residue_pi0_eq_neg_prime (hR : Formalism.MainNotions.UnusedSlot80.ToolsR
   ring
 
 include hAq in
+/- English proof (translation)
+Take `⟨g', hg', he⟩` from `resq_spec W hAq i hg`. Use `⟨g', hg', ?_⟩` and prove the remaining obligations. Rewrite using `[he, h0, map_zero, zero_mul, zero_add]`.
+-/
 theorem mem_of_resq_zero (i : ZMod n) {g : LetA O n} (hg : g ∈ W.AΔ) (h0 : resq W hAq i g = 0) :
     ∃ g' ∈ W.AΔ, (letE i : LetA O n) * g = Formalism.MainNotions.LiftingTheory.qp W * g' := by
   obtain ⟨g', hg', he⟩ := resq_spec W hAq i hg
@@ -157,6 +201,9 @@ section StringRepresentationDecomposition
 
 variable (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Establish `hγ : W.γ T (r • y) = W.γA W.gam r • W.γ T y` using `Formalism.MainNotions.UnusedSlot80.SatW.γD_smulA' W T W.gam r y`. Apply `(hπU.smul_left_cancel).mp` to reduce the goal to its premises. Rewrite using `[algebraMap_smul, algebraMap_smul, hdop, smul_add, smul_smul W.π₀ (W.γA W.gam r), mul_comm, ← smul_smul, hdop, smul_smul W.π₀ r', ← hr, hγ, smul_sub, sub_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem dop_smulA (T : LocLat G Qp LL O) (hπU : IsUnit (algebraMap (LetA O n) W.EE W.π₀))
     (dop : W.DD T →ₗ[O] W.DD T) (hdop : ∀ z, W.π₀ • dop z = W.γ T z - z) {r r' : LetA O n}
     (hr : W.γA W.gam r - r = W.π₀ * r') (y : W.DD T) :
@@ -167,6 +214,11 @@ theorem dop_smulA (T : LocLat G Qp LL O) (hπU : IsUnit (algebraMap (LetA O n) W
     ← smul_smul, hdop, smul_smul W.π₀ r', ← hr, hγ, smul_sub, sub_smul]
   abel
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact ⟨0, W.AΔ.zero_mem, by rw [pow_zero, mul_zero, add_zero]⟩`. Consider the case `succ k ih`. Take `⟨T, hT, hk⟩` from `ih`. Use `⟨T + t + W.π₀ * T * t, W.AΔ.add_mem (W.AΔ.add_mem hT ht) (W.AΔ.mul_mem (W.AΔ.mul_mem (Formalism.MainNotions.UnusedSlot80.UnivC.uniformizer_mem_delta_invariants W) hT) ht), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[pow_succ, hk]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem one_add_pi0_mul_pow {t : LetA O n} (ht : t ∈ W.AΔ) (k : ℕ) :
     ∃ T ∈ W.AΔ, (1 + W.π₀ * t) ^ k = 1 + W.π₀ * T := by
   induction k with
@@ -184,6 +236,11 @@ section G56Main
 
 variable (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[pow_zero, pow_zero, ← map_one (algebraMap O (LetA O n))]`. Conclude with `resq_alg W hAq hqc hR i 1`. Consider the case `succ k ih`.
+
+Rewrite using `[pow_succ, pow_succ, resq_mul W hAq hqc hR i (W.AΔ.pow_mem hg k) hg, ih]`.
+-/
 theorem resq_pow (hAq : ∀ (i : ZMod n) (g : LetA O n), g ∈ W.AΔ → (letE i : LetA O n) * g = g →
       ∃ (o : O) (g' : LetA O n), g' ∈ W.AΔ ∧
         g = algebraMap O (LetA O n) o * letE i + Formalism.MainNotions.LiftingTheory.qp W * g')
@@ -198,6 +255,99 @@ theorem resq_pow (hAq : ∀ (i : ZMod n) (g : LetA O n), g ∈ W.AΔ → (letE i
   | succ k ih =>
     rw [pow_succ, pow_succ, resq_mul W hAq hqc hR i (W.AΔ.pow_mem hg k) hg, ih]
 
+/- English proof (translation)
+Introduce `d T₁ T₂ F b S η m hset i hi dop hdop cc hcc x la hP`. Take `⟨hxN, hxD, hrel, z, hzN, hzD, hzrel⟩` from `hP`. Establish `hset'` using `hset`. Take `⟨hCA, hl, hn, -, -, hSur, -, -, -, -⟩` from `hset'`. Take `⟨hbij, hs, hp2⟩` from `hCA`.
+
+Establish `hK1 : Module.finrank K₀ K = 1` using `Formalism.MainNotions.UnusedSlot80.SatW.finrank_one_of_bij' hbij`. Take `⟨-, -, h9₂⟩` from `h9 T₂ hSur.2.1 hs hp2`. Take `⟨hR, hmod₂⟩` from `h9₂ hK1`. Use `set qp := Formalism.MainNotions.LiftingTheory.qp W with hqpdef`. Use `set a : ℕ := ⌈aR PD.p (hpar n b S + η)⌉₊ with ha`.
+
+Use `set bb : ℕ := b i with hbb`. Use `set hh : ℕ := b (i - 1) + S with hhh`. Establish `hq : qp ∈ W.AΔ` using `qp_mem_AΔ' W hR`. Establish `hπ : W.π₀ ∈ W.AΔ` using `Formalism.MainNotions.UnusedSlot80.UnivC.uniformizer_mem_delta_invariants W`. Establish `hp0 : ((PD.p : ℕ) : O) ≠ 0` using `p_ne_zero_O W`.
+
+Establish `hqcan : ∀ u v : LetA O n, qp * u = qp * v → u = v` using `fun u v h => by`. Apply `W.EE_inj` to reduce the goal to its premises. Apply `hqU.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[← map_mul, ← map_mul, h]`. Establish `hresq_sub : ∀ {g h : LetA O n}, g ∈ W.AΔ → h ∈ W.AΔ → resq W hAq i (g - h) = resq W hAq i g - resq W hAq i h`.
+
+Introduce `g h hg hh'`. Use `resq_add W hAq hqc hR i (W.AΔ.sub_mem hg hh') hh'` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Rewrite using `[this, add_sub_cancel_right]`. Take `⟨rq, hrqΔ, hVq⟩` from `hγq`.
+
+Take `⟨rp, hrpΔ, hVp⟩` from `hγp`. Use `set χO : O := (W.χΓ W.gam : O) with hχO`. Use `set Vq : LetA O n := algebraMap O (LetA O n) χO + qp * rq with hVqdef`. Establish `hVqΔ : Vq ∈ W.AΔ` using `W.AΔ.add_mem (W.AΔ.algebraMap_mem _) (W.AΔ.mul_mem hq hrqΔ)`. Take `⟨gq', hgq'Δ, hgq'⟩` from `hγg qp hq`.
+
+Establish `hVq1 : Vq = 1 + W.π₀ * gq'`. Apply `hqcan` to reduce the goal to its premises. Establish `e1 : W.γA W.gam qp = Vq * qp` using `hVq`. Establish `e2 : W.γA W.gam qp = qp + W.π₀ * qp * gq'` using `by rw [← hgq']; ring`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hVqU : IsUnit Vq`. Rewrite using `[hVq1, Pi.isUnit_iff]`. Introduce `j`. Rewrite using `[PowerSeries.isUnit_iff_constantCoeff]`. Simplify using `only [Pi.add_apply, Pi.mul_apply, Pi.one_apply, map_add, map_mul, map_one]`.
+
+Rewrite using `[show W.π₀ j = W.π₀₁ from rfl, Formalism.MainNotions.UnusedSlot80.ToolsR.π₀₁_cc hR, zero_mul, add_zero]`. Conclude with `isUnit_one`. Take `⟨VqU, hVqU'⟩` from `hVqU`. Use `set Vqi : LetA O n := ((VqU⁻¹ : (LetA O n)ˣ) : LetA O n) with hVqi`. Establish `hVqiVq : Vqi * Vq = 1` using `by rw [hVqi, ← hVqU', Units.inv_mul]`.
+
+Establish `hVqiΔ : Vqi ∈ W.AΔ`. Introduce `δ hδ`. Establish `h1 : W.γA δ Vqi * Vq = 1`. Rewrite using `[← hVqΔ δ hδ, ← map_mul, hVqiVq, map_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `set Vp : LetA O n := 1 + W.π₀ * qp * rp with hVpdef`. Establish `hVpΔ : Vp ∈ W.AΔ` using `W.AΔ.add_mem W.AΔ.one_mem (W.AΔ.mul_mem (W.AΔ.mul_mem hπ hq) hrpΔ)`. Establish `e3 : Formalism.MainNotions.LiftingTheory.pk W 1 ^ hh • W.γ T₂ la = qp ^ bb • (x + (W.π₀ * qp ^ a) • z)`. Establish `: Formalism.MainNotions.LiftingTheory.pk W 1 ^ hh • W.γ T₂ la = Formalism.MainNotions.LiftingTheory.pk W 1 ^ hh • la + Formalism.MainNotions.LiftingTheory.pk W 1 ^ hh • (W.γ T₂ la - la)` using `by rw [← smul_add]; congr 1; abel`. Rewrite using `[this, ← hrel, hzrel, smul_add, smul_smul, pow_add]`.
+
+Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hE1 : Vq ^ bb • W.γ T₂ x = Vp ^ hh • (x + (W.π₀ * qp ^ a) • z)`. Establish `h1` using `congrArg (W.γ T₂) hrel`. Establish `eL : W.γ T₂ (qp ^ bb • x) = qp ^ bb • (Vq ^ bb • W.γ T₂ x)` using `by show W.γD T₂ W.gam (qp ^ bb • x) = _`.
+
+Rewrite using `[Formalism.MainNotions.UnusedSlot80.SatW.γD_smulA', map_pow, hVq, mul_pow, mul_comm, mul_smul]`. Both sides reduce to the same expression. Establish `eR : W.γ T₂ (Formalism.MainNotions.LiftingTheory.pk W 1 ^ hh • la) = qp ^ bb • (Vp ^ hh • (x + (W.π₀ * qp ^ a) • z))` using `by show W.γD T₂ W.gam (Formalism.MainNotions.LiftingTheory.pk W 1 ^ hh • la) = _`. Rewrite using `[Formalism.MainNotions.UnusedSlot80.SatW.γD_smulA', map_pow, hVp, mul_pow, mul_smul]`. Use `show Vp ^ hh • (Formalism.MainNotions.LiftingTheory.pk W 1 ^ hh • W.γ T₂ la) = _`.
+
+Rewrite using `[e3, smul_comm]`. Rewrite `h1` using `[eL, eR]`. Establish `hU' : IsUnit (algebraMap (LetA O n) W.EE (qp ^ bb))` using `by rw [map_pow]; exact hqU.pow bb`. Conclude with `Formalism.MainNotions.UnusedSlot80.SatW.smul_cancel W T₂ hU' h1`. Establish `hγx : W.γ T₂ x = x + W.π₀ • dop x` using `by rw [hdop]; abel`.
+
+Take `⟨A1, hA1Δ, orbitMap_conj_smul_one⟩` from `one_add_pi0_mul_pow W (W.AΔ.mul_mem hq hrpΔ) hh`. Take `⟨A2, hA2Δ, orbitMap_conj_smul_two⟩` from `one_add_pi0_mul_pow W hgq'Δ bb`. Establish `hVp_pow : Vp ^ hh = 1 + W.π₀ * A1`. Rewrite using `[← orbitMap_conj_smul_one, hVpdef]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hVq_pow : Vq ^ bb = 1 + W.π₀ * A2` using `by rw [hVq1, orbitMap_conj_smul_two]`. Use `set D : LetA O n := A1 - A2 with hD`. Establish `hπD : W.π₀ * D = Vp ^ hh - Vq ^ bb` using `by rw [hVp_pow, hVq_pow, hD]; ring`. Establish `hdx0 : W.π₀ • (Vq ^ bb • dop x) = W.π₀ • (D • x + (Vp ^ hh * qp ^ a) • z)`. Establish `h` using `hE1`.
+
+Rewrite `h` using `[hγx, smul_add, smul_comm (Vq ^ bb) W.π₀]`. Establish `h2 : W.π₀ • (Vq ^ bb • dop x) = Vp ^ hh • (x + (W.π₀ * qp ^ a) • z) - Vq ^ bb • x`. Rewrite using `[← h]`. Normalize the expressions using the abelian group laws. Establish `hs : Vp ^ hh * (W.π₀ * qp ^ a) = W.π₀ * (Vp ^ hh * qp ^ a)` using `by ring`.
+
+Rewrite using `[h2]`. Simplify using `only [smul_add, smul_smul, hs, hπD, sub_smul]`. Normalize the expressions using the abelian group laws. Establish `hdx1 : Vq ^ bb • dop x = D • x + (Vp ^ hh * qp ^ a) • z` using `Formalism.MainNotions.UnusedSlot80.SatW.smul_cancel W T₂ hπU hdx0`. Establish `hdx : dop x = (Vqi ^ bb * D) • x + (Vqi ^ bb * Vp ^ hh * qp ^ a) • z`.
+
+Establish `h` using `congrArg (fun y => Vqi ^ bb • y) hdx1`. Rewrite `h` using `[smul_smul, ← mul_pow, hVqiVq, one_pow, one_smul]`. Rewrite using `[h, smul_add, smul_smul, smul_smul, mul_assoc]`. Use `set e₁ : LetA O n := Vqi ^ bb * D with he₁`. Establish `he₁Δ : e₁ ∈ W.AΔ` using `W.AΔ.mul_mem (W.AΔ.pow_mem hVqiΔ _) (W.AΔ.sub_mem hA1Δ hA2Δ)`.
+
+Establish `hresVq : resq W hAq i Vq = χO` using `resq_eq W hAq hqc i hVqΔ (letE_mul_mem W hrqΔ) (by rw [hVqdef]; ring)`. Establish `hresVqi : resq W hAq i Vqi * χO = 1`. Rewrite using `[← hresVq, ← resq_mul W hAq hqc hR i hVqiΔ hVqΔ, hVqiVq, ← map_one (algebraMap O (LetA O n)), resq_alg W hAq hqc hR i]`. Establish `hresVp : resq W hAq i Vp = 1` using `resq_eq W hAq hqc i hVpΔ (letE_mul_mem W (W.AΔ.mul_mem hπ hrpΔ)) (by rw [map_one, hVpdef]; ring)`. Establish `hresD : -((PD.p : ℕ) : O) * resq W hAq i D = 1 - χO ^ bb`.
+
+Use `congrArg (resq W hAq i) hπD` as an intermediate fact. Rewrite `this` using `[resq_mul W hAq hqc hR i hπ (W.AΔ.sub_mem hA1Δ hA2Δ), residue_pi0_eq_neg_prime W hAq hqc hR i, hresq_sub (W.AΔ.pow_mem hVpΔ _) (W.AΔ.pow_mem hVqΔ _), resq_pow W hAq hqc hR i hVpΔ, resq_pow W hAq hqc hR i hVqΔ, hresVp, hresVq, one_pow]`. Conclude with `this`. Establish `hVqi_val : resq W hAq i Vqi = (((W.χΓ W.gam)⁻¹ : Oˣ) : O)`. Establish `h1 : (((W.χΓ W.gam)⁻¹ : Oˣ) : O) * χO = 1` using `by rw [hχO, Units.inv_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm χO, h1, mul_one]`. Use `_ = _ := by rw [← mul_assoc, hresVqi, one_mul]`. Establish `hrese₁ : resq W hAq i e₁ = cc bb`. Establish `h1 : -((PD.p : ℕ) : O) * resq W hAq i e₁ = -((PD.p : ℕ) : O) * cc bb`.
+
+Rewrite using `[he₁, resq_mul W hAq hqc hR i (W.AΔ.pow_mem hVqiΔ _) (W.AΔ.sub_mem hA1Δ hA2Δ), resq_pow W hAq hqc hR i hVqiΔ, mul_left_comm, hresD, hcc, hVqi_val]`. Rewrite using `[zpow_neg, zpow_natCast, ← inv_pow, Units.val_pow_eq_pow_val, mul_sub, mul_one, ← mul_pow]`. Rewrite using `[show (((W.χΓ W.gam)⁻¹ : Oˣ) : O) * χO = 1 by rw [hχO, Units.inv_mul], one_pow]`. Conclude with `mul_left_cancel₀ (neg_ne_zero.2 hp0) h1`. Establish `hxi : Formalism.MainNotions.LiftingTheory.InNΔi W T₂ i x` using `⟨⟨hxN, hxD.2⟩, mem_Nl W T₂ hxN hxD.1⟩`.
+
+Establish `hzi : Formalism.MainNotions.LiftingTheory.InNΔi W T₂ i z` using `⟨⟨hzN, hzD.2⟩, mem_Nl W T₂ hzN hzD.1⟩`. Establish `hi_add : ∀ {y y'}, Formalism.MainNotions.LiftingTheory.InNΔi W T₂ i y → Formalism.MainNotions.LiftingTheory.InNΔi W T₂ i y' → Formalism.MainNotions.LiftingTheory.InNΔi W T₂ i (y + y')` using `fun hy hy' => ⟨(W.NΔ T₂).add_mem hy.1 hy'.1, (W.Nl T₂ i).add_mem hy.2 hy'.2⟩`. Establish `hi_smulA : ∀ {g : LetA O n} {y}, g ∈ W.AΔ → Formalism.MainNotions.LiftingTheory.InNΔi W T₂ i y → Formalism.MainNotions.LiftingTheory.InNΔi W T₂ i (g • y)` using `fun hg hy => ⟨Formalism.MainNotions.UnusedSlot80.SatW.smul_mem_NΔ W T₂ hg hy.1, (W.Nl T₂ i).smul_mem _ hy.2⟩`. Establish `hi_smulO : ∀ (o : O) {y}, Formalism.MainNotions.LiftingTheory.InNΔi W T₂ i y → Formalism.MainNotions.LiftingTheory.InNΔi W T₂ i (o • y)` using `fun o y hy => by`. Rewrite using `[← algebraMap_smul (LetA O n)]`.
+
+Conclude with `hi_smulA (W.AΔ.algebraMap_mem o) hy`. Establish `hi_sub : ∀ {y y'}, Formalism.MainNotions.LiftingTheory.InNΔi W T₂ i y → Formalism.MainNotions.LiftingTheory.InNΔi W T₂ i y' → Formalism.MainNotions.LiftingTheory.InNΔi W T₂ i (y - y')`. Introduce `y y' hy hy'`. Use `hi_add hy (hi_smulO (-1) hy')` as an intermediate fact. Rewrite `this` using `[neg_one_smul, ← sub_eq_add_neg]`. Then use the resulting hypothesis.
+
+Establish `hdopi : ∀ {y}, Formalism.MainNotions.LiftingTheory.InNΔi W T₂ i y → Formalism.MainNotions.LiftingTheory.InNΔi W T₂ i (dop y)`. Introduce `y hy`. Take `⟨y', hy'Δ, hy'e⟩` from `hmod₂.2 y hy.1`. Establish `hdy : dop y = y'` using `Formalism.MainNotions.UnusedSlot80.SatW.smul_cancel W T₂ hπU (by rw [hdop]; exact hy'e)`. Rewrite using `[hdy]`.
+
+Use `⟨hy'Δ, mem_Nl W T₂ hy'Δ.1 ?_⟩` and prove the remaining obligations. Apply `Formalism.MainNotions.UnusedSlot80.SatW.smul_cancel W T₂ hπU` to reduce the goal to its premises. Establish `hyl : (letE i : LetA O n) • y = y` using `Formalism.MainNotions.UnusedSlot80.ArcF.letter_of_Nl W T₂ i hy.2`. Rewrite using `[smul_comm, ← hy'e, smul_sub, hyl]`. Use `congr 1`.
+
+Use `show (letE i : LetA O n) • W.γD T₂ W.gam y = W.γD T₂ W.gam y`. Use `conv_rhs => rw [← hyl]`. Rewrite using `[Formalism.MainNotions.UnusedSlot80.SatW.γD_smulA', Formalism.MainNotions.UnusedSlot80.KL.γA_letE W]`. Take `⟨Ta, hTaΔ, eTa⟩` from `one_add_pi0_mul_pow W hgq'Δ a`. Establish `hγqa : W.γA W.gam (qp ^ a) - qp ^ a = W.π₀ * (qp ^ a * Ta)`.
+
+Establish `hVqa : Vq ^ a = 1 + W.π₀ * Ta` using `by rw [hVq1, eTa]`. Rewrite using `[map_pow, hVq, mul_pow, hVqa]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdopq : ∀ {nn}, Formalism.MainNotions.LiftingTheory.InNΔi W T₂ i nn → ∃ nn', Formalism.MainNotions.LiftingTheory.InNΔi W T₂ i nn' ∧ dop (qp ^ a • nn) = qp ^ a • nn'`. Introduce `nn hnn`.
+
+Use `⟨(Vq ^ a) • dop nn + Ta • nn, hi_add (hi_smulA (W.AΔ.pow_mem hVqΔ _) (hdopi hnn)) (hi_smulA hTaΔ hnn), ?_⟩` and prove the remaining obligations. Rewrite using `[dop_smulA W T₂ hπU dop hdop hγqa, map_pow, hVq, mul_pow, smul_add, smul_smul, smul_smul, mul_comm (Vq ^ a)]`. Set `V : ℕ → W.DD T₂ → Prop` to `fun k y => ∃ g ∈ W.AΔ, ∃ nn, Formalism.MainNotions.LiftingTheory.InNΔi W T₂ i nn ∧ y = (qp ^ k * g) • x + qp ^ a • nn`. Establish `hstep : ∀ (k : ℕ) (y : W.DD T₂), V k y → V (k + 1) (dop y - cc ((bb : ℤ) - k) • y)`. Introduce `k y ⟨g, hg, nn, hnn, hy⟩`.
+
+Substitute `hy` using the available equality. Take `⟨gg', hgg'Δ, hgg'⟩` from `hγg g hg`. Take `⟨Tk, hTkΔ, eTk⟩` from `one_add_pi0_mul_pow W hgq'Δ k`. Establish `hVqk : Vq ^ k = 1 + W.π₀ * Tk` using `by rw [hVq1, eTk]`. Use `set r' : LetA O n := qp ^ k * (Tk * W.γA W.gam g + qp * gg') with hr'`.
+
+Establish `hγr : W.γA W.gam (qp ^ k * g) - qp ^ k * g = W.π₀ * r'`. Establish `e1 : W.γA W.gam g = g + W.π₀ * qp * gg'` using `by linear_combination hgg'`. Rewrite using `[map_mul, map_pow, hVq, mul_pow, hVqk, hr', e1]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨nn', hnn', hdn⟩` from `hdopq hnn`.
+
+Use `set c : O := cc ((bb : ℤ) - k) with hc`. Use `set Y : LetA O n := Vq ^ k * W.γA W.gam g * e₁ + Tk * W.γA W.gam g + qp * gg' - algebraMap O (LetA O n) c * g with hY`. Establish `hγgΔ : W.γA W.gam g ∈ W.AΔ` using `fun δ hδ => by`. Rewrite using `[Formalism.MainNotions.UnusedSlot80.KL.γA_comm W, hg δ hδ]`. Establish `hYΔ : Y ∈ W.AΔ` using `W.AΔ.sub_mem (W.AΔ.add_mem (W.AΔ.add_mem (W.AΔ.mul_mem (W.AΔ.mul_mem (W.AΔ.pow_mem hVqΔ _) hγgΔ) he₁Δ) (W.AΔ.mul_mem hTkΔ hγgΔ)) (W.AΔ.mul_mem hq hgg'Δ)) (W.AΔ.mul_mem (W.AΔ.algebraMap_mem _) hg)`.
+
+Establish `hresγg : resq W hAq i (W.γA W.gam g) = resq W hAq i g`. Establish `e1 : W.γA W.gam g = g + qp * (W.π₀ * gg')` using `by linear_combination hgg'`. Rewrite using `[e1, resq_add W hAq hqc hR i hg (W.AΔ.mul_mem hq (W.AΔ.mul_mem hπ hgg'Δ)), resq_qp_mul W hAq hqc hR i (W.AΔ.mul_mem hπ hgg'Δ), add_zero]`. Establish `hresTk : -((PD.p : ℕ) : O) * resq W hAq i Tk = χO ^ k - 1`. Establish `e1 : W.π₀ * Tk = Vq ^ k - 1` using `by rw [hVqk]; ring`.
+
+Use `congrArg (resq W hAq i) e1` as an intermediate fact. Rewrite `this` using `[resq_mul W hAq hqc hR i hπ hTkΔ, residue_pi0_eq_neg_prime W hAq hqc hR i, hresq_sub (W.AΔ.pow_mem hVqΔ _) W.AΔ.one_mem, resq_pow W hAq hqc hR i hVqΔ, hresVq, ← map_one (algebraMap O (LetA O n)), resq_alg W hAq hqc hR i]`. Conclude with `this`. Establish `hresY : resq W hAq i Y = 0`. Establish `h1 : -((PD.p : ℕ) : O) * resq W hAq i Y = 0`.
+
+Rewrite using `[hY, hresq_sub (W.AΔ.add_mem (W.AΔ.add_mem (W.AΔ.mul_mem (W.AΔ.mul_mem (W.AΔ.pow_mem hVqΔ _) hγgΔ) he₁Δ) (W.AΔ.mul_mem hTkΔ hγgΔ)) (W.AΔ.mul_mem hq hgg'Δ)) (W.AΔ.mul_mem (W.AΔ.algebraMap_mem _) hg), resq_add W hAq hqc hR i (W.AΔ.add_mem (W.AΔ.mul_mem (W.AΔ.mul_mem (W.AΔ.pow_mem h …`. Establish `hc'` using `hcc ((bb : ℤ) - k)`. Establish `hb'` using `hcc (bb : ℤ)`. Rewrite `hc'` using `[← hc]`. Establish `hχk : χO ^ k * (((W.χΓ W.gam) ^ (-(bb : ℤ)) : Oˣ) : O) = (((W.χΓ W.gam) ^ (-((bb : ℤ) - k)) : Oˣ) : O)`.
+
+Rewrite using `[hχO, ← Units.val_pow_eq_pow_val, ← Units.val_mul, ← zpow_natCast, ← zpow_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(resq W hAq i g) * (χO ^ k * hb' + hresTk - hc' + hχk)`. Conclude with `(mul_eq_zero.1 h1).resolve_left (neg_ne_zero.2 hp0)`.
+
+Take `⟨Y', hY'Δ, hY'⟩` from `mem_of_resq_zero W hAq i hYΔ hresY`. Establish `hrΔ : qp ^ k * g ∈ W.AΔ` using `W.AΔ.mul_mem (W.AΔ.pow_mem hq _) hg`. Establish `hγrΔ : W.γA W.gam (qp ^ k * g) ∈ W.AΔ` using `fun δ hδ => by`. Rewrite using `[Formalism.MainNotions.UnusedSlot80.KL.γA_comm W, hrΔ δ hδ]`. Use `⟨Y', hY'Δ, (W.γA W.gam (qp ^ k * g) * (Vqi ^ bb * Vp ^ hh)) • z + nn' - c • nn, hi_sub (hi_add (hi_smulA (W.AΔ.mul_mem hγrΔ (W.AΔ.mul_mem (W.AΔ.pow_mem hVqiΔ _) (W.AΔ.pow_mem hVpΔ _))) hzi) hnn') (hi_smulO c hnn), ?_⟩` and prove the remaining obligations.
+
+Establish `hxc0 : W.γA W.gam (qp ^ k * g) * e₁ + r' - algebraMap O (LetA O n) c * (qp ^ k * g) = qp ^ k * Y`. Rewrite using `[hY, hr', map_mul, map_pow, hVq, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hxc : (W.γA W.gam (qp ^ k * g) * e₁ + r' - algebraMap O (LetA O n) c * (qp ^ k * g)) • x = (qp ^ (k + 1) * Y') • x`. Rewrite using `[hxc0]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_add, dop_smulA W T₂ hπU dop hdop hγr, hdx, hdn]`. Simplify using `only [← algebraMap_smul (LetA O n) c]`. Establish `e1 : W.γA W.gam (qp ^ k * g) * (Vqi ^ bb * Vp ^ hh * qp ^ a) = qp ^ a * (W.γA W.gam (qp ^ k * g) * (Vqi ^ bb * Vp ^ hh))` using `by ring`. Establish `e2 : algebraMap O (LetA O n) c * qp ^ a = qp ^ a * algebraMap O (LetA O n) c` using `by ring`.
+
+Rewrite using `[← hxc]`. Simplify using `only [smul_add, smul_sub, add_smul, sub_smul, smul_smul, e1, e2]`. Normalize the expressions using the abelian group laws. Establish `hprod : ∀ k : ℕ, V k (aeval dop (∏ j ∈ (Finset.range k).image (fun t : ℕ => (bb : ℤ) - t), (X - C (cc j))) x)`. Introduce `k`.
+
+Proceed by induction on `k with`. Consider the case `zero => exact ⟨1, W.AΔ.one_mem, 0, ⟨(W.NΔ T₂).zero_mem, (W.Nl T₂ i).zero_mem⟩, by simp⟩`. Consider the case `succ k ih`. Rewrite using `[Finset.range_add_one, Finset.image_insert, Finset.prod_insert (by`. Simplify using `only [Finset.mem_image, Finset.mem_range, not_exists, not_and]`.
+
+Introduce `t ht h`. Use the proof step `omega), map_mul]`. Establish `e : (aeval dop (X - C (cc ((bb : ℤ) - k))) * aeval dop (∏ j ∈ (Finset.range k).image (fun t : ℕ => (bb : ℤ) - t), (X - C (cc j)))) x = dop (aeval dop (∏ j ∈ (Finset.range k).image (fun t : ℕ => (bb : ℤ) - t), (X - C (cc j))) x) - cc ((bb : ℤ) - k) • aeval dop (∏ j ∈ (Finset.range …`. Simplify using `[Module.End.mul_apply, Module.algebraMap_end_apply]`. Rewrite using `[e]`.
+
+Conclude with `hstep k _ ih`. Establish `hIcc : Finset.Icc ((bb : ℤ) - a + 1) (bb : ℤ) = (Finset.range a).image (fun t : ℕ => (bb : ℤ) - t)`. Use extensionality with `j`. Simplify using `only [Finset.mem_Icc, Finset.mem_image, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨(bb - j).toNat, by omega, by omega⟩`. Introduce and unpack `⟨t, ht, rfl⟩`. Use linear arithmetic over natural numbers and integers. Take `⟨g, hg, nn, hnn, he⟩` from `hprod a`.
+
+Use `⟨g • x + nn, hi_add (hi_smulA hg hxi) hnn, ?_⟩` and prove the remaining obligations. Rewrite using `[hIcc, he, smul_add, smul_smul]`.
+-/
 theorem gamma_structure_of [NeZero n] [IsDomain O] (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W)
     (hπU : IsUnit (algebraMap (LetA O n) W.EE W.π₀))
     (hqU : IsUnit (algebraMap (LetA O n) W.EE (Formalism.MainNotions.LiftingTheory.qp W)))

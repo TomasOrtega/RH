@@ -12,22 +12,34 @@ open GlobalTheory.UPel.Sm GlobalTheory.Cris GlobalTheory.DeRham
 
 namespace GlobalTheory.UPel.HT.MapComp
 
+/- English proof (translation)
+The claim follows from `LBIso.chartPull (Geo.Tor.chartPullPull M j j rfl) (Geo.Tor.chartPullSame L _ (fun _ => a) _ j fun _ => e) h`.
+-/
 theorem lbIso_pull_comp {X Y Z : Scheme.{0}} {L : LB X} {M : LB Y} {a : Y ⟶ X} (h : LBIso M (L.pull a)) (j : Z ⟶ Y)
     {a' : Z ⟶ X} (e : a' = j ≫ a) : LBIso (M.pull j) (L.pull a') :=
   LBIso.chartPull (Geo.Tor.chartPullPull M j j rfl) (Geo.Tor.chartPullSame L _ (fun _ => a) _ j fun _ => e) h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rw [Category.assoc, h.1, ← Category.assoc, h'.1, Category.assoc], by rw [Category.assoc, h.2, ← Category.assoc, h'.2, Category.assoc]⟩`.
+-/
 theorem isSquare_comp {S S' S'' : Scheme.{0}} {G : Over S} {G' : Over S'} {G'' : Over S''} {φ : G'.left ⟶ G.left}
     {φ₂ : (G' ⊗ G').left ⟶ (G ⊗ G).left} {ψ : G''.left ⟶ G'.left} {ψ₂ : (G'' ⊗ G'').left ⟶ (G' ⊗ G').left}
     (h' : IsSquare ψ ψ₂) (h : IsSquare φ φ₂) : IsSquare (ψ ≫ φ) (ψ₂ ≫ φ₂) :=
   ⟨by rw [Category.assoc, h.1, ← Category.assoc, h'.1, Category.assoc],
     by rw [Category.assoc, h.2, ← Category.assoc, h'.2, Category.assoc]⟩
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `ha.1.trans hb.1.symm`. Conclude with `ha.2.trans hb.2.symm`.
+-/
 theorem isSquare_unique {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} {φ : G'.left ⟶ G.left}
     {a b : (G' ⊗ G').left ⟶ (G ⊗ G).left} (ha : IsSquare φ a) (hb : IsSquare φ b) : a = b := by
   apply pullback.hom_ext
   · exact ha.1.trans hb.1.symm
   · exact ha.2.trans hb.2.symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, congrArg (fun z => z.left) (lift_fst (pushPt w (fst G' G')) (pushPt w (snd G' G'))), congrArg (fun z => z.left) (lift_snd (pushPt w (fst G' G')) (pushPt w (snd G' G')))⟩`.
+-/
 theorem exists_isSquare {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} {f : S' ⟶ S} {φ : G'.left ⟶ G.left}
     (w : φ ≫ G.hom = G'.hom ≫ f) : ∃ φ₂ : (G' ⊗ G').left ⟶ (G ⊗ G).left, IsSquare φ φ₂ :=
   ⟨_, congrArg (fun z => z.left) (lift_fst (pushPt w (fst G' G')) (pushPt w (snd G' G'))),
@@ -52,6 +64,15 @@ def MapComp.comp {S₁ S₂ S₃ : Scheme.{0}} {s₁ : S₁ ⟶ Sp R} {s₂ : S�
   pol := LBIso.trans o₁.isLB (pull_isLB o₂.isLB _) (pull_isLB o₃.isLB _) m₁.pol (lbIso_pull_comp m₂.pol m₁.φ₂ rfl)
   eta y := by rw [← Category.assoc, m₁.eta, Category.assoc, m₂.eta, Category.assoc]
 
+/- English proof (translation)
+Establish `w : m.φ ≫ o₃.A.hom = (o₁.A.hom ≫ f) ≫ g` using `by rw [m.cart.1.w, Category.assoc]`. Use `set φ := m₂.cart.1.lift m.φ (o₁.A.hom ≫ f) w`. Establish `hφ : φ ≫ m₂.φ = m.φ` using `m₂.cart.1.lift_fst _ _ _`. Establish `hφ' : φ ≫ o₂.A.hom = o₁.A.hom ≫ f` using `m₂.cart.1.lift_snd _ _ _`. Establish `n : IsGrpPullback o₁.A o₃.A (f ≫ g) (φ ≫ m₂.φ)` using `by rw [hφ]; exact m.cart`.
+
+Take `⟨φ₂, sq⟩` from `exists_isSquare hφ'`. Establish `e : m.φ₂ = φ₂ ≫ m₂.φ₂` using `isSquare_unique m.sq (hφ ▸ isSquare_comp sq m₂.sq)`. Establish `hact : ∀ c, (o₁.act.act c).left ≫ φ = φ ≫ (o₂.act.act c).left`. Introduce `c`. Apply `m₂.cart.1.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hφ, m.act, Category.assoc, m₂.act, ← Category.assoc, hφ]`. Rewrite using `[Category.assoc, hφ', ← Category.assoc, Over.w, Category.assoc, Over.w, hφ']`. Establish `heta : ∀ y, (o₁.eta y).left ≫ φ = f ≫ (o₂.eta y).left`. Introduce `y`. Apply `m₂.cart.1.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hφ, m.eta, Category.assoc, Category.assoc, m₂.eta]`. Rewrite using `[Category.assoc, hφ', ← Category.assoc, Over.w, Category.assoc, Over.w] show 𝟙 _ ≫ f = f ≫ 𝟙 _`. Rewrite using `[Category.id_comp, Category.comp_id]`. Conclude with `⟨{ φ := φ φ₂ := φ₂ cart := m₂.cart.cancel n hφ' sq := sq act := hact pol := LBIso.trans o₁.isLB (pull_isLB o₃.isLB _) (pull_isLB o₂.isLB _) m.pol (LBIso.symm (lbIso_pull_comp m₂.pol φ₂ e)) eta := heta }⟩`.
+-/
 theorem MapComp.cancel {S₁ S₂ S₃ : Scheme.{0}} {s₁ : S₁ ⟶ Sp R} {s₂ : S₂ ⟶ Sp R} {s₃ : S₃ ⟶ Sp R}
     {o₁ : Obj b N s₁} {o₂ : Obj b N s₂} {o₃ : Obj b N s₃} {f : S₁ ⟶ S₂} {g : S₂ ⟶ S₃}
     (m : ObjMap o₁ o₃ (f ≫ g)) (m₂ : ObjMap o₂ o₃ g) : Nonempty (ObjMap o₁ o₂ f) := by
@@ -83,6 +104,9 @@ theorem MapComp.cancel {S₁ S₂ S₃ : Scheme.{0}} {s₁ : S₁ ⟶ Sp R} {s�
              (LBIso.symm (lbIso_pull_comp m₂.pol φ₂ e))
            eta := heta }⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨m₁⟩ ⟨m₂⟩ => ⟨MapComp.comp m₁ m₂⟩, fun ⟨m⟩ ⟨m₂⟩ => MapComp.cancel m m₂⟩`.
+-/
 theorem objMap_comp_cancel (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ)
     (S₁ S₂ S₃ : Scheme.{0}) (s₁ : S₁ ⟶ Sp R) (s₂ : S₂ ⟶ Sp R) (s₃ : S₃ ⟶ Sp R) (o₁ : Obj b N s₁) (o₂ : Obj b N s₂)
     (o₃ : Obj b N s₃) (f : S₁ ⟶ S₂) (g : S₂ ⟶ S₃) :

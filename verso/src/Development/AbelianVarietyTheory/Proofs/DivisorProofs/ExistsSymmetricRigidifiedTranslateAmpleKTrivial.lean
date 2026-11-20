@@ -18,6 +18,17 @@ namespace GlobalTheory.SymTranslate
 
 open GlobalTheory.CechPic (cls)
 
+/- English proof (translation)
+Introduce `A _ _ _ B _ _ M b hB hM hamp hK hT hiso`. Use `hB.proper` as an intermediate fact. Take `⟨c, hc⟩` from `hT`. Establish `hL' : (GlobalTheory.RigidTranslate.rigTransl M b).IsLB` using `LB.isLB_linComb hM _ _`. Use `⟨GlobalTheory.RigidTranslate.rigTransl M b, hL', GlobalTheory.RigidTranslate.rigidified_rigTransl hM, ?_, GlobalTheory.RigidTranslate.relAmple_rigTransl_of_section b hM hamp, GlobalTheory.RigidTranslate.kTriv_rigTransl_any _ B M hM b hK, ?_⟩` and prove the remaining obligations.
+
+Establish `h2 : CechPic.pull (GrpObj.inv : B ⟶ B).left (cls M hM) = CechPic.pull ((toUnit B ≫ b ^ 2) * 𝟙 B).left (cls M hM)` using `(CechPic.cls_eq_iff (pull_isLB hM _) (pull_isLB hM _)).2 hiso`. Establish `h3` using `congrArg (CechPic.pull (𝟙 B * (toUnit B ≫ b)⁻¹).left) h2`. Rewrite `h3` using `[← CechPic.pull_comp, ← CechPic.pull_comp, ← Over.comp_left, ← Over.comp_left]`. Establish `e1 : (𝟙 B * (toUnit B ≫ b)⁻¹) ≫ (GrpObj.inv : B ⟶ B) = (GrpObj.inv : B ⟶ B) ≫ (𝟙 B * (toUnit B ≫ b))`. Rewrite using `[← Hom.inv_def, MonObj.comp_mul, ← Category.assoc, comp_toUnit, Category.comp_id, mul_inv, inv_inv, Hom.inv_def, Category.id_comp]`.
+
+Establish `e2 : (𝟙 B * (toUnit B ≫ b)⁻¹) ≫ ((toUnit B ≫ b ^ 2) * 𝟙 B) = 𝟙 B * (toUnit B ≫ b)`. Rewrite using `[MonObj.comp_mul, ← Category.assoc, comp_toUnit, Category.comp_id, MonObj.comp_pow, sq, _root_.mul_comm (𝟙 B), _root_.mul_comm (𝟙 B), _root_.mul_assoc, mul_inv_cancel_left]`. Rewrite `h3` using `[e1, e2, Over.comp_left, CechPic.pull_comp]`. Establish `e3 : (GrpObj.inv : B ⟶ B).left ≫ (toUnit B ≫ b).left = (toUnit B ≫ b).left`. Rewrite using `[← Over.comp_left, ← Category.assoc, comp_toUnit]`.
+
+Establish `h4 : cls _ hL' = CechPic.pull (𝟙 B * (toUnit B ≫ b)).left (cls M hM) - CechPic.pull (toUnit B ≫ b).left (cls M hM)`. Rewrite using `[CechPic.cls_linComb hM, Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, one_smul, neg_smul, ← sub_eq_add_neg]`. Both sides reduce to the same expression. Use `GlobalTheory.RigSymSubring.sym_of_cls hL' ?_` and prove the remaining obligations.
+
+Rewrite using `[h4, map_sub, h3, ← CechPic.pull_comp, e3]`. Establish `hΛ : (abelian₂ B M).IsLB` using `LB.isLB_linComb hM _ _`. Use `(CechPic.cls_eq_iff (LB.isLB_linComb hL' _ _) hΛ).1 (((CechPic.cls_eq_iff (LB.isLB_linComb hL' _ _) (pull_isLB hΛ _)).2 (GlobalTheory.RigidTranslate.lam_rigTransl hM c hc)).trans ?_)` and prove the remaining obligations. Rewrite using `[CechPic.cls_pull hΛ]`. Conclude with `CechPic.pull_id _`.
+-/
 theorem exists_sym_translate : ∀ (A : Type) [CommRing A] [IsLocalRing A] [IsNoetherianRing A] (B : Over (Sp A)) [GrpObj B] [IsCommMonObj B] (M : LB B.left) (b : 𝟙_ _ ⟶ B), IsAbelianScheme B → M.IsLB → RelAmple B M → KTriv B M → (∃ t : LB.Gen (Theta B M), t.IsGen) → LBIso (M.pull (ι[B]).left) (M.pull ((toUnit B ≫ b ^ 2) * 𝟙 B).left) → ∃ L : LB B.left, L.IsLB ∧ Rigidified B L ∧ Out.Sym B L ∧ RelAmple B L ∧ KTriv B L ∧ LBIso (abelian₂ B L) (abelian₂ B M) := by
   intro A _ _ _ B _ _ M b hB hM hamp hK hT hiso
   have := hB.proper

@@ -9,5 +9,8 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mum.exists_oLinear_of_oAct | exact GlobalTheory.Mum.exists_oLinear_of_oAct | (intros; apply GlobalTheory.Mum.exists_oLinear_of_oAct <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_ringAction_extension_to_uniformised_semiAbelian : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ (O : Type) [Ring O] [StarRing O] [Module O D.toPre.X] (o : D.toPre.OAct O), ∃ (oA : A.OAct O) (oG : RingAct G O), U.toUnifPre.OLinear O o oA oG := by
   first | exact @GlobalTheory.Mum.exists_oLinear_of_oAct | exact GlobalTheory.Mum.exists_oLinear_of_oAct | (intros; apply GlobalTheory.Mum.exists_oLinear_of_oAct <;> assumption)

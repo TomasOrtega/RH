@@ -13,6 +13,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.LowDat
 
+/- English proof (translation)
+Introduce `E _ _ _ H D R _ _ _ hR t P F _ _ _ I`. Use `letI := H.starRing`. Establish `hA : AdmBase R (maximalIdeal R)` using `hR.1`. Establish `h0 : CharZero R` using `hR.2`. Establish `hT` using `GlobalTheory.FlatTors.torsionIso_holds E H R _ hA t P`.
+
+Use `choose f f₁ f₂ f₃ f₄ f₅ f₆ using hT F`. Take `⟨ev, ev0, evp⟩ : ∃ ev : ℕ → D.La → (TFK (R` from `R) F ⟶ P.A.A), (∀ a, ev 0 a = 1) ∧ ∀ n (hn : 0 < n) a, ev n a = f n hn (I.ev n a) := ⟨fun n a => if hn : 0 < n then f n hn (I.ev n a) else 1, fun a => dif_neg (lt_irrefl 0), fun n hn a => dif_pos hn⟩`. Establish `add : ∀ n a b, ev n (a + b) = ev n a * ev n b` using `fun n a b => by`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Rewrite using `[ev0, ev0, ev0, _root_.one_mul]`.
+
+Rewrite using `[evp n hn, evp n hn, evp n hn, f₄ n hn _ _ _ (I.add n hn a b)]`. Establish `zero : ∀ n, ev n 0 = 1` using `fun n => by`. Use `add n 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`.
+
+Establish `tors : ∀ n (hn : 0 < n) p, f n hn p ^ n = 1` using `fun n hn p => by`. Take `⟨w, hw⟩` from `P.U.ext`. Conclude with `((f₁ n hn p _).2 rfl w hw).1`. Use `⟨{ ζ := I.ζ, ζ_prim := I.ζ_prim, ζ_pow := I.ζ_pow, ev := ev, add := add lin := fun n c a => ?_, ker := fun n hn a => ?_, onto := fun n hn x => ⟨fun hx => ?_, ?_⟩ tower := fun n m hn hm a => ?_, isom := fun n hn a b => ?_ }, fun _ => rfl, fun j hj x => (f₁ j hj _ _).2 (evp j hj x) …` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases.
+
+Rewrite using `[ev0, ev0]`. Use `P.oA.hom c` as an intermediate fact. Conclude with `(MonObj.one_comp _).symm`. Rewrite using `[evp n hn, evp n hn, f₅ n hn _ _ _ (I.lin n hn c a)]`. Rewrite using `[← zero n, evp n hn, evp n hn, f₃, I.ker n hn]`.
+
+Simplify using `only [zero_add]`. Take `⟨p, hp⟩` from `f₂ n hn x hx`. Take `⟨a, ha⟩` from `I.onto n hn p`. Conclude with `⟨a, by rw [evp n hn, (f₃ n hn _ _).2 ha, hp]⟩`. Introduce and unpack `⟨a, rfl⟩`.
+
+Rewrite using `[evp n hn, tors]`. Take `⟨q, q₁, q₂, q₃⟩` from `I.tower n m hn hm a`. Establish `hN` using `Nat.mul_pos hn hm`. Establish `h` using `(GlobalTheory.LevelCompat.qkToAkU_level GlobalTheory.firstFiveLaws R _ hA P.D P.A t.G t.semi P.U F n m _ hn hm rfl q (I.ev (n * m) a) _).2 q₁ q₂ ((f₁ _ hN _ _).2 rfl)`. Rewrite using `[evp _ hN, evp n hn, (f₁ n hn _ _).1 h, (f₃ n hn _ _).2 q₃]`.
+
+Establish `h` using `(f₆ n hn _ _ _).1 (I.isom n hn a b)`. Rewrite `h` using `[← evp, ← evp]`. Conclude with `h`.
+-/
 theorem exists_tateIso_toA : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R →
   ∀ (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F]
   (I : (letI := H.starRing; TateIsoQ D P.D.toPre P.oD F)),

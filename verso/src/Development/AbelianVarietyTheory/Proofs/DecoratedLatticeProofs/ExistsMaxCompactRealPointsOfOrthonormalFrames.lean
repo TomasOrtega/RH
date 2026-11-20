@@ -25,10 +25,16 @@ variable {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E 
 def comps (fr : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (k : ∀ τ, Formalism.REAL.KG (ε τ)) : AlgInf V :=
   fun τ => (fr τ)⁻¹ * Formalism.REAL.toMK (k τ) * fr τ
 
+/- English proof (translation)
+The claim follows from `(unit_iff R _).2 fun τ => conj_mem_UH (h τ).1 (h τ).2 (k τ)`.
+-/
 theorem comps_unit (R : RealPoints θ V) (h : IsFrameFam V ε fr) (k : ∀ τ, Formalism.REAL.KG (ε τ)) :
     sigInf V (comps fr k) * comps fr k = 1 :=
   (unit_iff R _).2 fun τ => conj_mem_UH (h τ).1 (h τ).2 (k τ)
 
+/- English proof (translation)
+Establish `key : Continuous fun (k : ∀ τ, Formalism.REAL.KG (ε τ)) (τ : D.what₂.Tau) => (fr τ)⁻¹ * Formalism.REAL.toMK (k τ) * fr τ`. Use `continuous_pi fun τ => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun k : Formalism.REAL.KG (ε τ) => Formalism.REAL.toMK k` using `(Formalism.REAL.isClosedEmbeddingMatrix _ (ε τ)).1.continuous.comp continuous_subtype_val`. Conclude with `(continuous_const.matrix_mul (h1.comp (continuous_apply τ))).matrix_mul continuous_const`. Conclude with `key`.
+-/
 theorem continuous_comps : Continuous (comps (ε := ε) fr) := by
   have key : Continuous fun (k : ∀ τ, Formalism.REAL.KG (ε τ)) (τ : D.what₂.Tau) =>
       (fr τ)⁻¹ * Formalism.REAL.toMK (k τ) * fr τ := by
@@ -51,11 +57,19 @@ def frameHom (R : RealPoints θ V) (h : IsFrameFam V ε fr) : (∀ τ, Formalism
     simp only [Matrix.mul_assoc]
     rw [mul_nonsing_inv_cancel_left _ _ hd]
 
+/- English proof (translation)
+The claim follows from `secInf_spec R (comps_unit R h k)`.
+-/
 theorem frameHom_spec (R : RealPoints θ V) (h : IsFrameFam V ε fr) (k : ∀ τ, Formalism.REAL.KG (ε τ)) :
     frameHom R h k ∈ GinfC V ∧ ∀ τ, infMat D.sp.cm.sig V.gram (θ τ) (frameHom R h k) =
       (fr τ)⁻¹ * Formalism.REAL.toMK (k τ) * fr τ :=
   secInf_spec R (comps_unit R h k)
 
+/- English proof (translation)
+Establish `a` using `frameHom_spec R h (Pi.mulSingle τ k)`. Establish `b` using `isAtTau_kAt θ V hθ τ (h τ).1 (h τ).2 k`. Use `R.2.2.1 _ a.1 _ b.1 fun τ' => ?_` and prove the remaining obligations. Rewrite using `[a.2]`. Distinguish the cases in `c : τ' = τ`.
+
+Substitute `c` using the available equality. Rewrite using `[b.2.1, Pi.mulSingle_eq_same]`. Rewrite using `[b.2.2 _ c, Pi.mulSingle_eq_of_ne c]`. Express the relevant statement in the definitionally equal form `(fr τ')⁻¹ * 1 * fr τ' = 1`. Rewrite using `[Matrix.mul_one, nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 (h τ').1)]`.
+-/
 theorem frameHom_single (hθ : IsInfFam θ) (R : RealPoints θ V) (h : IsFrameFam V ε fr) (τ : D.what₂.Tau)
     (k : Formalism.REAL.KG (ε τ)) : frameHom R h (Pi.mulSingle τ k) = kAt θ V τ (ε τ) (fr τ) k := by
   have a := frameHom_spec R h (Pi.mulSingle τ k)
@@ -69,6 +83,9 @@ theorem frameHom_single (hθ : IsInfFam θ) (R : RealPoints θ V) (h : IsFrameFa
     change (fr τ')⁻¹ * 1 * fr τ' = 1
     rw [Matrix.mul_one, nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 (h τ').1)]
 
+/- English proof (translation)
+Establish `hc : Continuous (frameHom R h)` using `(GlobalTheory.Mem.DerClosed.continuousOn_secInf hθ V).comp_continuous continuous_comps (comps_unit R h)`. Rewrite using `[MonoidHom.coe_range]`. Conclude with `_root_.isCompact_range hc`.
+-/
 theorem isCompact_frameRange (hθ : IsInfFam θ) (R : RealPoints θ V) (h : IsFrameFam V ε fr) :
     IsCompact ((frameHom R h).range : Set (GA D V)) := by
   have hc : Continuous (frameHom R h) :=
@@ -76,6 +93,23 @@ theorem isCompact_frameRange (hθ : IsInfFam θ) (R : RealPoints θ V) (h : IsFr
   rw [MonoidHom.coe_range]
   exact _root_.isCompact_range hc
 
+/- English proof (translation)
+Establish `hd : IsUnit (fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (h τ).1`. Set `f : GA D V → Matrix (Fin V.rank) (Fin V.rank) ℂ` to `fun g => fr τ * infMat D.sp.cm.sig V.gram (θ τ) g * (fr τ)⁻¹`. Establish `fc : Continuous f` using `(continuous_const.matrix_mul (GlobalTheory.Mem.VolExists.continuous_infMat V.gram (hθ τ))).matrix_mul continuous_const`. Establish `fm : ∀ a b, f (a * b) = f a * f b` using `fun a b => by`. Simplify using `only [f, R.2.2.2.1, Matrix.mul_assoc]`.
+
+Rewrite using `[nonsing_inv_mul_cancel_left _ _ hd]`. Establish `fk : ∀ k, f (frameHom R h k) = Formalism.REAL.toMK (k τ)` using `fun k => by`. Simplify using `only [f, (frameHom_spec R h k).2, Matrix.mul_assoc]`. Rewrite using `[mul_nonsing_inv_cancel_left _ _ hd, mul_nonsing_inv _ hd, Matrix.mul_one]`. Establish `f1 : f 1 = 1`.
+
+Rewrite using `[← map_one (frameHom R h), fk]`. Both sides reduce to the same expression. Establish `key` using `GlobalTheory.T.bounded_subgroup_of_indefinite_unitary_eq_maximalCompact V.rank (ε τ) (f '' K') ?_ ?_ ?_ ?_ ?_`. Rewrite using `[← key]`. Conclude with `⟨g, hg, rfl⟩`.
+
+Introduce and unpack `_ ⟨a, -, rfl⟩`. Establish `hu : (infMat D.sp.cm.sig V.gram (θ τ) a)ᴴ * gramAt D V τ * infMat D.sp.cm.sig V.gram (θ τ) a = gramAt D V τ` using `GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V a τ`. Establish `h1 : ((fr τ)⁻¹)ᴴ * (fr τ)ᴴ = 1` using `by rw [← conjTranspose_mul, mul_nonsing_inv _ hd, conjTranspose_one]`. Express the relevant statement in the definitionally equal form `(f a)ᴴ * Formalism.REAL.Jm (ε τ) * f a = Formalism.REAL.Jm (ε τ)`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [f, conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (((fr τ)⁻¹)ᴴ * (fr τ)ᴴ) * Formalism.REAL.Jm (ε τ) * (fr τ * (fr τ)⁻¹) := by`. Rewrite using `[(h τ).2, hu, ← (h τ).2]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [h1, mul_nonsing_inv _ hd, Matrix.one_mul, Matrix.mul_one]`.
+
+Rewrite using `[← Formalism.REAL.range_toMK]`. Introduce and unpack `_ ⟨k, rfl⟩`. Use `⟨frameHom R h (Pi.mulSingle τ k), hle ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[fk, Pi.mulSingle_eq_same]`. Introduce and unpack `_ ⟨a, ha, rfl⟩ _ ⟨b, hb, rfl⟩`.
+
+Conclude with `⟨a * b, mul_mem ha hb, fm a b⟩`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Use `⟨a⁻¹, inv_mem ha, (inv_eq_left_inv ?_).symm⟩` and prove the remaining obligations. Rewrite using `[← fm, inv_mul_cancel, f1]`. Establish `: ∀ i j, ∃ C : ℝ, ∀ a ∈ K', ‖f a i j‖ ≤ C` using `fun i j => hc.exists_bound_of_continuousOn (fc.matrix_elem i j).continuousOn choose C hC using this`.
+
+Take `⟨B, hB⟩` from `(Set.finite_range fun p : Fin V.rank × Fin V.rank => C p.1 p.2).bddAbove`. Use `⟨B, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩ i j`. Conclude with `(hC i j a ha).trans (hB ⟨(i, j), rfl⟩)`.
+-/
 theorem conj_mem_Kset (hθ : IsInfFam θ) (R : RealPoints θ V) (h : IsFrameFam V ε fr) (K' : Subgroup (GA D V))
     (hc : IsCompact (K' : Set (GA D V))) (hle : (frameHom R h).range ≤ K') (τ : D.what₂.Tau) {g : GA D V}
     (hg : g ∈ K') : fr τ * infMat D.sp.cm.sig V.gram (θ τ) g * (fr τ)⁻¹ ∈ Formalism.REAL.Kset (ε τ) := by
@@ -126,6 +160,13 @@ theorem conj_mem_Kset (hθ : IsInfFam θ) (R : RealPoints θ V) (h : IsFrameFam 
     rintro _ ⟨a, ha, rfl⟩ i j
     exact (hC i j a ha).trans (hB ⟨(i, j), rfl⟩)
 
+/- English proof (translation)
+Use `⟨?_, isCompact_frameRange hθ R h, fun K' hi hc hle => le_antisymm (fun g hg => ?_) hle⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `(frameHom_spec R h k).1`. Establish `: ∀ τ, ∃ k : Formalism.REAL.KG (ε τ), Formalism.REAL.toMK k = fr τ * infMat D.sp.cm.sig V.gram (θ τ) g * (fr τ)⁻¹` using `fun τ => by`. Use `conj_mem_Kset hθ R h K' hc hle τ hg` as an intermediate fact.
+
+Rewrite `this` using `[← Formalism.REAL.range_toMK]`. Conclude with `this`. Use `choose k hk using this`. Use `⟨k, R.2.2.1 _ (frameHom_spec R h k).1 _ (hi g hg) fun τ => ?_⟩` and prove the remaining obligations. Establish `hd : IsUnit (fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (h τ).1`.
+
+Rewrite using `[(frameHom_spec R h k).2, hk]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[nonsing_inv_mul_cancel_left _ _ hd, nonsing_inv_mul _ hd, Matrix.mul_one]`.
+-/
 theorem isMaxCompactInf_range (hθ : IsInfFam θ) (R : RealPoints θ V) (h : IsFrameFam V ε fr) :
     IsMaxCompactInf V (frameHom R h).range := by
   refine ⟨?_, isCompact_frameRange hθ R h, fun K' hi hc hle => le_antisymm (fun g hg => ?_) hle⟩
@@ -143,6 +184,9 @@ theorem isMaxCompactInf_range (hθ : IsInfFam θ) (R : RealPoints θ V) (h : IsF
     simp only [Matrix.mul_assoc]
     rw [nonsing_inv_mul_cancel_left _ _ hd, nonsing_inv_mul _ hd, Matrix.mul_one]
 
+/- English proof (translation)
+Introduce `D θ hθ V ε fr h`. Establish `R` using `(GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V`. Conclude with `⟨(frameHom R h).range, isMaxCompactInf_range hθ R h, (frameHom R h).rangeRestrict, (frameHom R h).rangeRestrict_surjective, fun τ k => frameHom_single hθ R h τ k⟩`.
+-/
 theorem exists_maxCompact_of_frames : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ → ∀ (V : HSp D), ∀ (ε : D.what₂.Tau → Fin V.rank → Bool) (fr : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ), IsFrameFam V ε fr → ∃ K : Subgroup (GA D V), IsMaxCompactInf V K ∧ (∃ j : (∀ τ, Formalism.REAL.KG (ε τ)) →* K, Function.Surjective j ∧ ∀ τ k, (j (Pi.mulSingle τ k) : GA D V) = kAt θ V τ (ε τ) (fr τ) k) := by
   intro D θ hθ V ε fr h
   have R := (GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V

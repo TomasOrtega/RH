@@ -36,6 +36,13 @@ namespace GlobalTheory.AvgCoeff
 
 open MeasureTheory
 
+/- English proof (translation)
+Set `f : Finset K → Submodule ℂ S` to `fun T => ⨅ t ∈ T, LinearMap.ker ((LinearMap.proj (R := ℂ) (φ := fun _ : K => ℂ) t).comp S.subtype)`. Take `⟨T, -, hT⟩` from `(measure fun T => Module.finrank ℂ (f T)).wf.has_min Set.univ ⟨∅, trivial⟩`. Use `⟨T, fun s hs h0 => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨t, ht⟩` from `Function.ne_iff.1 hne`.
+
+Establish `hmem : ∀ T' : Finset K, ∀ u : S, u ∈ f T' ↔ ∀ t ∈ T', (u : K → ℂ) t = 0` using `fun T' u => by`. Simplify using `[f, Submodule.mem_iInf]`. Establish `hle : f (insert t T) ≤ f T` using `fun u hu => (hmem T u).2 fun t' ht' => (hmem _ u).1 hu t' (Finset.mem_insert_of_mem ht')`. Establish `hlt : f (insert t T) < f T`. Use `lt_of_le_of_ne hle fun heq => ?_` and prove the remaining obligations.
+
+Establish `h1 : (⟨s, hs⟩ : S) ∈ f T` using `(hmem T _).2 h0`. Rewrite `h1` using `[← heq]`. Conclude with `ht ((hmem _ _).1 h1 t (Finset.mem_insert_self t T))`. Conclude with `hT (insert t T) trivial (Submodule.finrank_lt_finrank_of_lt hlt)`.
+-/
 theorem exists_finset_sep {K : Type} (S : Submodule ℂ (K → ℂ)) [FiniteDimensional ℂ S] :
     ∃ T : Finset K, ∀ s ∈ S, (∀ t ∈ T, s t = 0) → s = 0 := by
   classical
@@ -56,6 +63,19 @@ theorem exists_finset_sep {K : Type} (S : Submodule ℂ (K → ℂ)) [FiniteDime
     exact ht ((hmem _ _).1 h1 t (Finset.mem_insert_self t T))
   exact hT (insert t T) trivial (Submodule.finrank_lt_finrank_of_lt hlt)
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `exists_finset_sep S`. Set `R : S →ₗ[ℂ] (T → ℂ)` to `LinearMap.pi fun t : T => (LinearMap.proj (R := ℂ) (φ := fun _ : K => ℂ) (t : K)).comp S.subtype`. Establish `hker : LinearMap.ker R = ⊥`. Use `LinearMap.ker_eq_bot'.2 fun u hu => Subtype.ext ?_` and prove the remaining obligations. Use `hT u u.2 fun t ht => ?_` and prove the remaining obligations.
+
+Use `congrFun hu ⟨t, ht⟩` as an intermediate fact. Simplify `this` using `[R]`. Take `⟨L, hL⟩` from `LinearMap.exists_leftInverse_of_injective R hker`. Set `b` to `Pi.basisFun ℂ T`. Establish `hexp : ∀ s ∈ S, s = ∑ t : T, s t • ((L (b t) : S) : K → ℂ)`.
+
+Introduce `s hs`. Establish `h1 : (⟨s, hs⟩ : S) = L (R ⟨s, hs⟩)` using `by rw [← LinearMap.comp_apply, hL, LinearMap.id_apply]`. Establish `h2 : R ⟨s, hs⟩ = ∑ t : T, s t • b t` using `by conv_lhs => rw [← b.sum_repr (R ⟨s, hs⟩)]`. Simplify using `[R, b]`. Rewrite `h1` using `[h2, map_sum]`.
+
+Establish `h3` using `congrArg (fun u : S => (u : K → ℂ)) h1`. Simplify `h3` using `[Submodule.coe_sum, map_smul]`. Establish `: (fun k => ∫ k', F k' k ∂μ) = ∑ t : T, (∫ k', F k' t ∂μ) • ((L (b t) : S) : K → ℂ)`. Use function extensionality and compare the values at `k`. Establish `hk : ∀ k', F k' k = ∑ t : T, F k' t * ((L (b t) : S) : K → ℂ) k` using `fun k' => by conv_lhs => rw [hexp (F k') (hF k')]`.
+
+Simplify using `[Finset.sum_apply]`. Repeatedly rewrite using `[hk]`. Rewrite using `[integral_finset_sum (f := fun (t : T) k' => F k' t * ((L (b t) : S) : K → ℂ) k) Finset.univ fun t _ => (hi t).mul_const _]`. Simplify using `[Finset.sum_apply, integral_mul_const]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.sum_mem _ fun t _ => Submodule.smul_mem _ _ (L (b t)).2`.
+-/
 theorem integral_mem {K K' : Type} [MeasurableSpace K'] (μ : Measure K') (S : Submodule ℂ (K → ℂ))
     [FiniteDimensional ℂ S] (F : K' → K → ℂ) (hF : ∀ k', F k' ∈ S)
     (hi : ∀ k, Integrable (fun k' => F k' k) μ) : (fun k => ∫ k', F k' k ∂μ) ∈ S := by
@@ -89,6 +109,11 @@ theorem integral_mem {K K' : Type} [MeasurableSpace K'] (μ : Measure K') (S : S
   rw [this]
   exact Submodule.sum_mem _ fun t _ => Submodule.smul_mem _ _ (L (b t)).2
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.CoefficientSpanFiniteDimensional.finiteDimensional_coeffSpan`. Consider the case `exact _root_.GlobalTheory.CoefficientSpanFiniteDimensional.finiteDimensional_coeffSpan`. Consider the case `(apply _root_.GlobalTheory.CoefficientSpanFiniteDimensional.finiteDimensional_coeffSpan <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.CoefficientSpanFiniteDimensional.finiteDimensional_coeffSpan <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.CoefficientSpanFiniteDimensional.finiteDimensional_coeffSpan <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.CoefficientSpanFiniteDimensional.finiteDimensional_coeffSpan ..)`.
+-/
 theorem coeffSpan_finiteDimensional {K W : Type} [Group K] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (ρ : Representation ℂ K W) : FiniteDimensional ℂ (GlobalTheory.Published.AutFin.coeffSpan ρ) := by
   first
@@ -99,6 +124,9 @@ theorem coeffSpan_finiteDimensional {K W : Type} [Group K] [AddCommGroup W] [Mod
   | (intros; apply @_root_.GlobalTheory.CoefficientSpanFiniteDimensional.finiteDimensional_coeffSpan <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.CoefficientSpanFiniteDimensional.finiteDimensional_coeffSpan ..)
 
+/- English proof (translation)
+Establish `: GlobalTheory.Published.AutFin.coeffSpan ρ ≤ (GlobalTheory.Published.AutFin.coeffSpan ρ).comap (LinearMap.funLeft ℂ ℂ (· * k'))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨ℓ, w, rfl⟩`. Conclude with `Submodule.subset_span ⟨ℓ, ρ k' w, funext fun k => by simp [LinearMap.funLeft, map_mul]⟩`. Conclude with `this hf`.
+-/
 theorem coeffSpan_mulRight {K W : Type} [Group K] [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ K W) (k' : K)
     {f : K → ℂ} (hf : f ∈ GlobalTheory.Published.AutFin.coeffSpan ρ) : (fun k => f (k * k')) ∈ GlobalTheory.Published.AutFin.coeffSpan ρ := by
   have : GlobalTheory.Published.AutFin.coeffSpan ρ ≤ (GlobalTheory.Published.AutFin.coeffSpan ρ).comap (LinearMap.funLeft ℂ ℂ (· * k')) := by
@@ -113,6 +141,19 @@ namespace GlobalTheory.CuspKFin
 
 open Formalism.REAL GlobalTheory.Published.AutFin GlobalTheory.AvgCoeff
 
+/- English proof (translation)
+Introduce `D θ hθ N ψ hψ τ τ' e he hK`. Take `⟨W, i1, i2, i3, ρ, hρc, hρ⟩` from `hK`. Use `⟨W, i1, i2, i3, ρ, hρc, fun x => ?_⟩` and prove the remaining obligations. Use `haveI : IsTopologicalGroup (GA D N.V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `haveI := coeffSpan_finiteDimensional ρ`.
+
+Establish `hec : Continuous e`. Take `⟨F, -, heF, hc, -⟩` from `he`. Conclude with `hc e heF`. Establish `hAc : Continuous fun k' : Formalism.REAL.KG (N.M.ε τ') => atTau θ N.V τ' ((N.M.fr τ')⁻¹ * Formalism.REAL.toMK k' * N.M.fr τ')` using `(GlobalTheory.PointAtPlaceHom.continuousOn_atTau hθ N.V τ').comp_continuous GlobalTheory.SeriesToClosure.continuous_conjK fun k => conj_mem_UH (N.M.fr_unit τ') (N.M.fr_gram τ') k`. Establish `hmem : ∀ k' : Formalism.REAL.KG (N.M.ε τ'), (fun k => ψ (x * kAt θ N.V τ (N.M.ε τ) (N.M.fr τ) k * atTau θ N.V τ' ((N.M.fr τ')⁻¹ * Formalism.REAL.toMK k' * N.M.fr τ'))) ∈ GlobalTheory.Published.AutFin.coeffSpan ρ`.
+
+Introduce `k'`. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Establish `h2` using `coeffSpan_mulRight ρ k' (hρ x)`. Use `h2 using 2 with k` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[mul_assoc]`. Use `congr 2`. Simplify using `only [kAt]`. Rewrite using `[← GlobalTheory.SeriesToClosure.at_mul hθ (N.M.fr_unit τ') (N.M.fr_gram τ') (GlobalTheory.TypeSum.K_le_UJ (GlobalTheory.TypeSum.toMK_mem_K k)) (GlobalTheory.TypeSum.K_le_UJ (GlobalTheory.TypeSum.toMK_mem_K k'))]`. Both sides reduce to the same expression.
+
+Establish `hc : ∀ k, kAt θ N.V τ (N.M.ε τ) (N.M.fr τ) k * atTau θ N.V τ' ((N.M.fr τ')⁻¹ * Formalism.REAL.toMK k' * N.M.fr τ') = atTau θ N.V τ' ((N.M.fr τ')⁻¹ * Formalism.REAL.toMK k' * N.M.fr τ') * kAt θ N.V τ (N.M.ε τ) (N.M.fr τ) k` using `fun k => GlobalTheory.PointAtPlaceComm.atTau_comm D θ hθ N.V τ τ' (Ne.symm h) _ (conj_mem_UH (N.M.fr_unit τ) (N.M.fr_gram τ) k) _ (conj_mem_UH (N.M.fr_unit τ') (N.M.fr_gram τ') k')`. Establish `h2` using `hρ (x * atTau θ N.V τ' ((N.M.fr τ')⁻¹ * Formalism.REAL.toMK k' * N.M.fr τ'))`. Use `h2 using 2 with k` and compare the differences between its conclusion and the goal. Rewrite using `[mul_assoc, hc, ← mul_assoc]`. Establish `hcont : ∀ k, Continuous fun k' : Formalism.REAL.KG (N.M.ε τ') => e k' * ψ (x * kAt θ N.V τ (N.M.ε τ) (N.M.fr τ) k * atTau θ N.V τ' ((N.M.fr τ')⁻¹ * Formalism.REAL.toMK k' * N.M.fr τ'))` using `fun k => hec.mul (hψ.cont.comp (continuous_const.mul hAc))`.
+
+Establish `key` using `GlobalTheory.AvgCoeff.integral_mem (muK (N.M.ε τ')) (GlobalTheory.Published.AutFin.coeffSpan ρ) (fun k' k => e k' * ψ (x * kAt θ N.V τ (N.M.ε τ) (N.M.fr τ) k * atTau θ N.V τ' ((N.M.fr τ')⁻¹ * Formalism.REAL.toMK k' * N.M.fr τ'))) (fun k' => Submodule.smul_mem _ (e k') (hmem k')) …`. Conclude with `key`.
+-/
 theorem kFinAt_avg_of_kFinAt : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (N : GlobalTheory.Grid.Node D) (ψ : GA D N.V → ℂ),
     IsAutFunSm θ N.V ψ → ∀ (τ τ' : D.what₂.Tau) (e : Formalism.REAL.KG (N.M.ε τ') → ℂ),
     GlobalTheory.TypeSum.KFinFun (N.M.ε τ') e → GlobalTheory.CuspKFin.KFinAt θ N τ ψ →

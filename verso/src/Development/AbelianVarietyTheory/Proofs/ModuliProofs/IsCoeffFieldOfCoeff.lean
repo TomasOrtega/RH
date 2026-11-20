@@ -11,6 +11,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Tor.Host E}
 
+/- English proof (translation)
+Establish `h2 : Module.finrank (maximalRealSubfield E) E = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two _ _`. Establish `h` using `Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E`. Rewrite `h` using `[h2]`. Unfold `Tor.Datum.dim IndefiniteRowSideFullHecke.CoefficientFieldBaseChange.dimD`. Rewrite using `[← h, Nat.mul_div_cancel _ two_pos]`.
+-/
 theorem dim_eq (D : Tor.Datum H) : D.dim = IndefiniteRowSideFullHecke.CoefficientFieldBaseChange.dimD D := by
   have h2 : Module.finrank (maximalRealSubfield E) E = 2 := Algebra.IsQuadraticExtension.finrank_eq_two _ _
   have h := Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E
@@ -20,6 +23,9 @@ theorem dim_eq (D : Tor.Datum H) : D.dim = IndefiniteRowSideFullHecke.Coefficien
 
 variable {D : Tor.Datum H} {l : Tor.Level H}
 
+/- English proof (translation)
+The claim follows from `dim_eq D ▸ Xo.smooth qproj := Xo.qproj repr S hS s o := Xo.rep S s hS o rigid := Xo.unram`.
+-/
 theorem isModuli_of_moduli (Xo : Tor.Moduli D l) : IndefiniteRowSideFullHecke.CoefficientFieldBaseChange.IsModuli D l Xo.s Xo.univ where
   smooth := dim_eq D ▸ Xo.smooth
   qproj := Xo.qproj
@@ -45,6 +51,9 @@ def moduliEquiv (D : Tor.Datum H) (l : Tor.Level H) :
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+The claim follows from `c.fin conj := c.conj root := c.zeta_mem`.
+-/
 theorem isCoeffField_of_coeff (c : Tor.Coeff l) : IndefiniteRowSideFullHecke.CoefficientFieldBaseChange.IsCoeffField l c.F where
   fin := c.fin
   conj := c.conj

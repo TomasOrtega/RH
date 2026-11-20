@@ -12,6 +12,19 @@ open IsLocalRing
 
 namespace GlobalTheory.ArcAvoid
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨ev, hev⟩` from `exists_algHom_powerSeries_apply_X_of_isAdicComplete (maximalIdeal O) (π := π) (by rw [hπ.maximalIdeal_eq]; exact Ideal.mem_span_singleton_self π)`. Set `ψ : PowerSeries k →+* O` to `(ev : PowerSeries O →+* O).comp (PowerSeries.map ι)`. Establish `hX : ψ PowerSeries.X = π` using `by simp [ψ, hev]`. Establish `hC : ∀ a, ψ (PowerSeries.C a) = ι a` using `fun a => by`.
+
+Simplify `ev.commutes (ι a)` using `[ψ]`. Establish `hmap : (Ideal.span {(PowerSeries.X : PowerSeries k)}).map ψ = maximalIdeal O`. Rewrite using `[Ideal.map_span, Set.image_singleton, hX, hπ.maximalIdeal_eq]`. Establish `hH : IsHausdorff ((Ideal.span {(PowerSeries.X : PowerSeries k)}).map ψ) O`. Rewrite using `[hmap]`.
+
+Use `infer_instance`. Establish `hs : Function.Surjective ψ`. Use `surjective_of_mk_map_comp_surjective (I := Ideal.span {PowerSeries.X}) ψ ?_` and prove the remaining obligations. Introduce `y`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`.
+
+Take `⟨a, ha⟩` from `hι (residue O y)`. Use `⟨PowerSeries.C a, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hC, Ideal.Quotient.eq, hmap]`. Conclude with `Ideal.Quotient.eq.mp ha`. Establish `hi : Function.Injective ψ`.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Assume the negation of the conclusion as `h0`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible h0 (PowerSeries.X_irreducible (R := k))`. Rewrite `ha` using `[map_mul, map_pow, (u.isUnit.map _).mul_right_eq_zero, hX]`.
+
+Conclude with `hπ.ne_zero (eq_zero_of_pow_eq_zero ha)`. Conclude with `⟨RingEquiv.ofBijective ψ ⟨hi, hs⟩, hC⟩`.
+-/
 theorem exists_ringEquiv_powerSeries_of_complete {k O : Type*} [Field k] [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] (ι : k →+* O)
     (hι : Function.Surjective ((residue O).comp ι)) :
@@ -45,6 +58,11 @@ theorem exists_ringEquiv_powerSeries_of_complete {k O : Type*} [Field k] [CommRi
     exact hπ.ne_zero (eq_zero_of_pow_eq_zero ha)
   exact ⟨RingEquiv.ofBijective ψ ⟨hi, hs⟩, hC⟩
 
+/- English proof (translation)
+Set `O` to `AdicCompletion (maximalIdeal V) V`. Take `⟨e, he⟩` from `exists_ringEquiv_powerSeries_of_complete ((algebraMap V O).comp ι) (by`. Introduce `y`. Take `⟨z, rfl⟩` from `(AdicCompletion.residueField_map_bijective V).2 y`. Take `⟨a, rfl⟩` from `hι z`.
+
+Conclude with `⟨a, rfl⟩)`. Use `⟨(e.symm : O →+* PowerSeries k).comp (algebraMap V O), e.symm.injective.comp (algebraMap_adicCompletion_injective_of_dvr V), fun a => ?_, fun v => ?_⟩` and prove the remaining obligations. Conclude with `e.symm_apply_eq.mpr (he a).symm`. Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, ← isUnit_map_iff (algebraMap V O), ← isUnit_map_iff e.symm, PowerSeries.isUnit_iff_constantCoeff, isUnit_iff_ne_zero, not_not]`. Both sides reduce to the same expression.
+-/
 theorem exists_ringHom_powerSeries_of_dvr {k V : Type*} [Field k] [CommRing V] [IsDomain V]
     [IsDiscreteValuationRing V] (ι : k →+* V) (hι : Function.Surjective ((residue V).comp ι)) :
     ∃ φ : V →+* PowerSeries k, Function.Injective φ ∧ (∀ a, φ (ι a) = PowerSeries.C a) ∧
@@ -64,6 +82,15 @@ theorem exists_ringHom_powerSeries_of_dvr {k V : Type*} [Field k] [CommRing V] [
 
 open Polynomial in
 
+/- English proof (translation)
+Use `letI : Algebra k (ResidueField V) := ((residue V).comp ((algebraMap k[X] V).comp C)).toAlgebra`. Establish `hc : (algebraMap k (ResidueField V)).comp (constantCoeff : k[X] →+* k) = (residue V).comp (algebraMap k[X] V)`. Use `Polynomial.ringHom_ext (fun a => ?_) ?_` and prove the remaining obligations. Simplify using `[RingHom.algebraMap_toAlgebra]`. Simplify using `using ((residue_eq_zero_iff _).mpr hX).symm`.
+
+Establish `: Algebra.IsAlgebraic k (ResidueField V)` using `⟨fun y => by`. Take `⟨x, rfl⟩` from `residue_surjective y`. Take `⟨p, hp0, hp⟩` from `Algebra.IsAlgebraic.isAlgebraic (R := k[X]) x`. Establish `h1` using `aeval_primPart_eq_zero hp0 hp`. Use `⟨p.primPart.map constantCoeff, fun h => ?_, ?_⟩` and prove the remaining obligations.
+
+Use `Polynomial.not_isUnit_X (R := k) (p.isPrimitive_primPart X ?_)` and prove the remaining obligations. Rewrite using `[C_dvd_iff_dvd_coeff]`. Introduce `i`. Use `congrArg (fun q => q.coeff i) h` as an intermediate fact. Simplify `this` using `[X_dvd_iff]`.
+
+Rewrite using `[aeval_def, eval₂_map, hc, ← hom_eval₂, ← aeval_def, h1, map_zero]⟩`. Conclude with `(IsAlgClosed.algebraMap_bijective_of_isIntegral (k := k) (K := ResidueField V)).2`.
+-/
 theorem surjective_residue_of_isAlgebraic {k V : Type*} [Field k] [IsAlgClosed k] [CommRing V]
     [IsDomain V] [IsLocalRing V] [Algebra k[X] V] [Algebra.IsAlgebraic k[X] V]
     [FaithfulSMul k[X] V] (hX : algebraMap k[X] V X ∈ maximalIdeal V) :
@@ -90,6 +117,25 @@ theorem surjective_residue_of_isAlgebraic {k V : Type*} [Field k] [IsAlgClosed k
 
 open Polynomial in
 
+/- English proof (translation)
+Break down `eq_or_ne m ⊥ with rfl | hne` into its components or cases. Use `letI : Field B := (Ring.isField_iff_maximal_bot.mpr hm).toField`. Establish `: Module.Finite k B` using `finite_of_finite_type_of_isJacobsonRing k B`. Set `e : k ≃ₐ[k] B` to `.ofBijective (Algebra.ofId k B) IsAlgClosed.algebraMap_bijective_of_isIntegral`. Use `⟨(Algebra.ofId k (PowerSeries k)).comp e.symm, RingHom.injective _, fun b => ?_⟩` and prove the remaining obligations.
+
+Simplify using `[Algebra.ofId_apply]`. Take `⟨t, htm, ht0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Use `letI : Algebra k[X] B := (aeval t : k[X] →ₐ[k] B).toRingHom.toAlgebra`. Establish `hal : ∀ p : k[X], algebraMap k[X] B p = aeval t p` using `fun _ => rfl`. Establish `: IsScalarTower k k[X] B` using `.of_algebraMap_eq fun a => by simp [hal]`.
+
+Establish `: Algebra.FiniteType k[X] B` using `.of_restrictScalars_finiteType k k[X] B`. Establish `hinj : Function.Injective (algebraMap k[X] B)`. Use `transcendental_iff_injective.mp fun halg => hm.ne_top ?_` and prove the remaining obligations. Conclude with `m.eq_top_of_isUnit_mem htm (halg.isIntegral.isUnit ht0)`. Take `⟨K', _, _, _, V, φ, hφ, hφi, hφm⟩` from `exists_valuationSubring_of_height_le_one (O := k[X]) (K := FractionRing k[X]) hinj m h1 X X_ne_zero (by simpa [hal] using htm)`.
+
+Use `letI : Algebra k[X] V := (φ.comp (algebraMap k[X] B)).toAlgebra`. Use `letI : Algebra k[X] K' := ((algebraMap (FractionRing k[X]) K').comp (algebraMap k[X] (FractionRing k[X]))).toAlgebra`. Establish `: IsScalarTower k[X] (FractionRing k[X]) K'` using `.of_algebraMap_eq fun _ => rfl`. Establish `: IsScalarTower k[X] V K'` using `.of_algebraMap_eq fun a => (hφ a).symm`. Establish `: FaithfulSMul k[X] V` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr (hφi.comp hinj)`.
+
+Establish `halg : Algebra.IsAlgebraic k[X] K'` using `(IsFractionRing.comap_isAlgebraic_iff (A := k[X]) (K := FractionRing k[X]) (C := K')).mpr inferInstance`. Establish `: Algebra.IsAlgebraic k[X] V` using `.of_injective (IsScalarTower.toAlgHom k[X] V K') Subtype.val_injective`. Establish `hXV : algebraMap k[X] V X ∈ maximalIdeal V`. Express the relevant statement in the definitionally equal form `algebraMap k[X] B X ∈ (maximalIdeal V).comap φ`. Simplify `htm` using `[hal, hφm]`.
+
+Set `W : Subalgebra k[X] K'` to `{ V.toSubring with algebraMap_mem' := fun r => (hφ r) ▸ (φ (algebraMap k[X] B r)).2 }`. Establish `hVn : IsNoetherianRing V` using `(krullAkizuki (FractionRing k[X]) W).1`. Establish `hnf : ¬ IsField V`. Rewrite using `[isField_iff_maximalIdeal_eq]`. Introduce `h`.
+
+Rewrite `hXV` using `[h]`. Conclude with `X_ne_zero ((FaithfulSMul.algebraMap_eq_zero_iff k[X] V).mp hXV)`. Establish `hval : ValuationRing V` using `inferInstance`. Establish `: IsDiscreteValuationRing V` using `((IsDiscreteValuationRing.TFAE V hnf).out 1 0).mp hval`. Take `⟨ψ, hψi, hψC, hψm⟩` from `exists_ringHom_powerSeries_of_dvr _ (surjective_residue_of_isAlgebraic hXV)`.
+
+Use `⟨{ ψ.comp φ with commutes' := fun a => ?_ }, hψi.comp hφi, fun b => ?_⟩` and prove the remaining obligations. Use `hψC a` as an intermediate fact. Rewrite using `[IsScalarTower.algebraMap_apply k k[X] B]`. Conclude with `this`. Rewrite using `[← hφm]`.
+
+Conclude with `hψm (φ b)`.
+-/
 theorem exists_injective_of_height_le_one {k B : Type*} [Field k] [IsAlgClosed k] [CommRing B]
     [IsDomain B] [Algebra k B] [Algebra.FiniteType k B] (m : Ideal B) [hm : m.IsMaximal]
     (h1 : m.height ≤ 1) :
@@ -145,6 +191,13 @@ theorem exists_injective_of_height_le_one {k B : Type*} [Field k] [IsAlgClosed k
   · rw [← hφm]
     exact hψm (φ b)
 
+/- English proof (translation)
+Introduce `k _ _ B _ _ _ _ m hm f hf`. Establish `: IsNoetherianRing B` using `Algebra.FiniteType.isNoetherianRing k B`. Take `⟨q, hqf, hqm, hht⟩` from `exists_mem_height_map_le_one m (PrimeSpectrum.basicOpen f).isOpen ⟨⊥, hf, bot_le⟩`. Establish `hsurj` using `Ideal.Quotient.mk_surjective (I := q.asIdeal)`. Establish `hcomap : (m.map (Ideal.Quotient.mk q.asIdeal)).comap (Ideal.Quotient.mk q.asIdeal) = m`.
+
+Rewrite using `[Ideal.comap_map_of_surjective _ hsurj, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker]`. Conclude with `sup_eq_left.mpr hqm`. Establish `: (m.map (Ideal.Quotient.mk q.asIdeal)).IsMaximal` using `(Ideal.map_eq_top_or_isMaximal_of_surjective _ hsurj hm).resolve_left fun e => by`. Rewrite `hcomap` using `[e, Ideal.comap_top]`. Conclude with `hm.ne_top hcomap.symm`.
+
+Take `⟨φ, hφi, hφm⟩` from `exists_injective_of_height_le_one (k := k) _ hht`. Use `⟨φ.comp (Ideal.Quotient.mkₐ k q.asIdeal), fun h => hqf ?_, fun b => ?_⟩` and prove the remaining obligations. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp (hφi (h.trans (map_zero φ).symm))`. Use `conv_lhs => rw [← hcomap]`. Conclude with `hφm _`.
+-/
 theorem exists_algHom_powerSeries_ne_zero :
     ∀ (k : Type) [Field k] [IsAlgClosed k] (B : Type) [CommRing B] [IsDomain B] [Algebra k B]
       [Algebra.FiniteType k B] (m : Ideal B), m.IsMaximal → ∀ f : B, f ≠ 0 →

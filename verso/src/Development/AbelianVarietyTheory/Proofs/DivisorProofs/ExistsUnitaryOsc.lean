@@ -28,6 +28,11 @@ def smSub (ρ : V → H →L[ℂ] H) : Submodule ℂ H where
 
 end Abstract
 
+/- English proof (translation)
+Establish `: (1 / 2 : ℂ) • ((1 + (fromBlocks 1 0 0 (-1) : Matrix (m ⊕ n) (m ⊕ n) ℂ)) * g) + (1 / 2 : ℂ) • (1 - (fromBlocks 1 0 0 (-1) : Matrix (m ⊕ n) (m ⊕ n) ℂ)) = fromBlocks g.toBlocks₁₁ g.toBlocks₁₂ 0 1` using `by conv_lhs => rw [← fromBlocks_toBlocks g, ← fromBlocks_one, sub_eq_add_neg, fromBlocks_neg, fromBlocks_add, fromBlocks_add, fromBlocks_multiply, fromBlocks_smul, fromBlocks_smul, fromBlocks_add]`. Use `congr 1`. Rewrite using `[add_zero, Matrix.zero_mul, add_zero, add_mul, one_mul]`. Use `module`. Rewrite using `[add_zero, Matrix.zero_mul, add_zero, Matrix.add_mul, Matrix.one_mul]`.
+
+Use `module`. Simplify using the standard rewrite rules. Simplify using `only [add_zero, Matrix.zero_mul, add_neg_cancel, neg_neg, smul_zero, zero_add]`. Use `module`. Rewrite using `[dP, this, det_fromBlocks_zero₂₁, det_one, mul_one]`.
+-/
 theorem detPlus_eq_det_toBlocks₁₁ {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n] (g : Matrix (m ⊕ n) (m ⊕ n) ℂ) :
     dP (fromBlocks 1 0 0 (-1)) g = g.toBlocks₁₁.det := by
   have : (1 / 2 : ℂ) • ((1 + (fromBlocks 1 0 0 (-1) : Matrix (m ⊕ n) (m ⊕ n) ℂ)) * g) +
@@ -44,6 +49,23 @@ theorem detPlus_eq_det_toBlocks₁₁ {m n : Type} [Fintype m] [DecidableEq m] [
 
 open Matrix MeasureTheory Complex in
 open scoped InnerProductSpace in
+/- English proof (translation)
+Establish `hdr : DenseRange (D.subtypeL : D → H)`. Simplify `hD` using `[DenseRange, Submodule.coe_subtypeL', Subtype.range_coe_subtype]`. Establish `hui : IsUniformInducing (D.subtypeL : D → H)` using `isUniformInducing_val _`. Set `L : G → D →L[ℂ] H` to `fun g => LinearMap.mkContinuous { toFun := fun f => T g f map_add' := fun f f' => hadd g f f.2 f' f'.2 map_smul' := fun a f => hsmul g a f f.2 } 1 (fun f => by simp [hnorm g f f.2])`. Set `E : G → H →L[ℂ] H` to `fun g => (L g).extend D.subtypeL`.
+
+Establish `hE : ∀ g, ∀ f ∈ D, E g f = T g f` using `fun g f hf => ContinuousLinearMap.extend_eq (L g) hdr hui ⟨f, hf⟩`. Establish `hEnorm : ∀ g x, ‖E g x‖ = ‖x‖`. Introduce `g x`. Use `hdr.induction_on (p := fun x => ‖E g x‖ = ‖x‖) x (isClosed_eq ((E g).continuous.norm) continuous_norm) ?_` and prove the remaining obligations. Introduce `f`.
+
+Simplify using `only [Submodule.coe_subtypeL', Submodule.coe_subtype]`. Rewrite using `[hE g f f.2, hnorm g f f.2]`. Establish `heq : ∀ A B : H →L[ℂ] H, (∀ f ∈ D, A f = B f) → A = B`. Introduce `A B h`. Use extensionality with `x`.
+
+Use `hdr.induction_on (p := fun x => A x = B x) x (isClosed_eq A.continuous B.continuous) ?_` and prove the remaining obligations. Introduce `f`. Conclude with `h f f.2`. Establish `hEmul : ∀ g g', E (g * g') = (E g).comp (E g')` using `fun g g' => heq _ _ fun f hf => by`. Rewrite using `[ContinuousLinearMap.comp_apply, hE _ f hf, hE _ f hf, hE _ _ (hmem g' f hf), hmul g g' f hf]`.
+
+Establish `hEone : E 1 = ContinuousLinearMap.id ℂ H` using `heq _ _ fun f hf => by`. Rewrite using `[hE _ f hf, hone f hf]`. Both sides reduce to the same expression. Establish `hinv : ∀ g x, E g (E g⁻¹ x) = x` using `fun g x => by`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hEmul, mul_inv_cancel, hEone]`.
+
+Both sides reduce to the same expression. Establish `hinv' : ∀ g x, E g⁻¹ (E g x) = x` using `fun g x => by`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hEmul, inv_mul_cancel, hEone]`. Both sides reduce to the same expression. Set `U : G → H ≃ₗᵢ[ℂ] H` to `fun g => { toLinearEquiv := LinearEquiv.ofLinear (E g).toLinearMap (E g⁻¹).toLinearMap (LinearMap.ext fun x => hinv g x) (LinearMap.ext fun x => hinv' g x) norm_map' := hEnorm g }`.
+
+Use `⟨{ toFun := U, map_one' := ?_, map_mul' := ?_ }, fun g f hf => hE g f hf⟩` and prove the remaining obligations. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `E 1 x = x`. Rewrite using `[hEone]`. Both sides reduce to the same expression.
+
+Introduce `g g'`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `E (g * g') x = E g (E g' x)`. Rewrite using `[hEmul]`. Both sides reduce to the same expression.
+-/
 private theorem exists_unitary_hom_extending_of_dense_isometric {G : Type} [Group G] {H : Type}
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (D : Submodule ℂ H) (hD : Dense (D : Set H)) (T : G → H → H)
@@ -100,6 +122,11 @@ private theorem exists_unitary_hom_extending_of_dense_isometric {G : Type} [Grou
 
 open Matrix MeasureTheory Complex in
 open scoped InnerProductSpace in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.RealWeil.dP`. Establish `h1b : (1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) = fromBlocks 1 0 0 1` using `fromBlocks_one.symm`. Establish `: (1 / 2 : ℂ) • ((1 + fromBlocks (1 : Matrix (Fin p) (Fin p) ℂ) 0 0 (-1 : Matrix (Fin q) (Fin q) ℂ)) * fromBlocks A 0 0 D) + (1 / 2 : ℂ) • (1 - fromBlocks (1 : Matrix (Fin p) (Fin p) ℂ) 0 0 (-1 : Matrix (Fin q) (Fin q) ℂ)) = fromBlocks A 0 0 1`. Rewrite using `[h1b]`. Simplify using `only [sub_eq_add_neg, fromBlocks_neg, fromBlocks_add, fromBlocks_multiply, fromBlocks_smul]`.
+
+Apply the tactic sequence `congr 1 <;> ext i j <;> simp [Matrix.one_apply, Matrix.add_mul] <;> (try split_ifs) <;> ring`. Rewrite using `[this, det_fromBlocks_zero₂₁, det_one, mul_one]`.
+-/
 private theorem dP_sign_fromBlocks_diagonal_eq_det (p q : ℕ) (A : Matrix (Fin p) (Fin p) ℂ)
     (D : Matrix (Fin q) (Fin q) ℂ) :
     _root_.GlobalTheory.RealWeil.dP (fromBlocks (1 : Matrix (Fin p) (Fin p) ℂ) 0 0 (-1 : Matrix (Fin q) (Fin q) ℂ))
@@ -117,6 +144,61 @@ private theorem dP_sign_fromBlocks_diagonal_eq_det (p q : ℕ) (A : Matrix (Fin 
 open Matrix MeasureTheory Complex in
 open scoped InnerProductSpace in
 
+/- English proof (translation)
+Introduce `p q H _ _ _ ρ hρc hρm`. Set `S : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ` to `Matrix.fromBlocks (1 : Matrix (Fin p) (Fin p) ℂ) 0 0 (-1 : Matrix (Fin q) (Fin q) ℂ)`. Establish `hS1 : S.conjTranspose = S` using `by simp [S, Matrix.fromBlocks_conjTranspose]`. Establish `hS2 : S * S = 1` using `by simp [S, Matrix.fromBlocks_multiply, Matrix.fromBlocks_one]`. Establish `hSreal : S.map (starRingEnd ℂ) = S`.
+
+Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [S, Matrix.one_apply, apply_ite (starRingEnd ℂ)]`. Set `G` to `_root_.GlobalTheory.WeilM.UG (Complex.conjAe : ℂ →ₐ[ℝ] ℂ) S`. Set `m : ↥G →* Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ` to `(Units.coeHom _).comp G.subtype`. Establish `hm_apply : ∀ g : ↥G, m g = (g.1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)` using `fun g => rfl`.
+
+Establish `hminv : ∀ g : ↥G, m g⁻¹ = (m g)⁻¹` using `fun g => by`. Simplify using `[m, Matrix.coe_units_inv]`. Establish `hunit : ∀ g : ↥G, (m g)ᴴ * S * m g = S`. Introduce `g`. Establish `h : ((g.1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ))ᵀ * S * (g.1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).map (Complex.conjAe : ℂ →ₐ[ℝ] ℂ) = S` using `g.2`.
+
+Establish `h2` using `congrArg (fun M : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ => M.map (starRingEnd ℂ)) h`. Establish `hg : ((g.1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).map (Complex.conjAe : ℂ →ₐ[ℝ] ℂ)).map (starRingEnd ℂ) = g.1`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Simplify using `only [Matrix.map_mul, hSreal, hg] at h2`.
+
+Conclude with `h2`. Establish `hJ : ∀ x, _root_.GlobalTheory.RealWeil.UnitaryOsc.cplx S hS1 hS2 (_root_.GlobalTheory.RealWeil.UnitaryOsc.cplx S hS1 hS2 x) = -x` using `_root_.GlobalTheory.RealWeil.UnitaryOsc.cplx_cplx S hS1 hS2`. Establish `hform : ∀ z w : Fin p ⊕ Fin q → ℂ, (star w ⬝ᵥ S *ᵥ z).im = ((∑ i, z (Sum.inl i) * star (w (Sum.inl i))) - ∑ j, z (Sum.inr j) * star (w (Sum.inr j))).im`. Introduce `z w`. Use `congr 1`.
+
+Simplify using `[S, dotProduct, Fintype.sum_sum_type, fromBlocks_mulVec, mul_comm, sub_eq_add_neg, neg_mulVec, Finset.sum_neg_distrib]`. Establish `h0 : ∀ v, ρ 0 v = v`. Introduce `v`. Use `hρm 0 0 ((ρ 0).symm v)` as an intermediate fact. Simplify using `at this`.
+
+Simplify using `using this`. Set `ρE : EuclideanSpace ℂ (Fin p ⊕ Fin q) → H →L[ℂ] H` to `fun x => (ρ (_root_.GlobalTheory.RealWeil.UnitaryOsc.crd (Fin p ⊕ Fin q) x)).toLinearIsometry.toContinuousLinearMap`. Establish `hρE_apply : ∀ x f, ρE x f = ρ (_root_.GlobalTheory.RealWeil.UnitaryOsc.crd (Fin p ⊕ Fin q) x) f` using `fun x f => rfl`. Establish `hρE : _root_.GlobalTheory.RealWeil.IsHeis (_root_.GlobalTheory.RealWeil.omJ (_root_.GlobalTheory.RealWeil.UnitaryOsc.cplx S hS1 hS2)) ρE`. Use `⟨fun f => ?_, fun u v f => ?_, fun u f => (ρ _).norm_map f, fun f => (hρc f).comp (_root_.GlobalTheory.RealWeil.UnitaryOsc.crd (Fin p ⊕ Fin q)).continuous⟩` and prove the remaining obligations.
+
+Rewrite using `[hρE_apply, map_zero]`. Conclude with `h0 f`. Rewrite using `[hρE_apply, hρE_apply, hρE_apply, _root_.GlobalTheory.RealWeil.UnitaryOsc.omJ_cplx, hform, map_add]`. Conclude with `hρm _ _ f`. Set `k : ↥G →* (EuclideanSpace ℂ (Fin p ⊕ Fin q) →L[ℝ] EuclideanSpace ℂ (Fin p ⊕ Fin q))` to `{ toFun := fun g => _root_.GlobalTheory.RealWeil.UnitaryOsc.kL (m g) map_one' := by simp [_root_.GlobalTheory.RealWeil.UnitaryOsc.kL_one] map_mul' := fun g g' => by simp [_root_.GlobalTheory.RealWeil.UnitaryOsc.kL_mul] }`.
+
+Establish `hke : ∀ (g : ↥G) v, _root_.GlobalTheory.RealWeil.UnitaryOsc.crd (Fin p ⊕ Fin q) (k g v) = (g.1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) *ᵥ _root_.GlobalTheory.RealWeil.UnitaryOsc.crd (Fin p ⊕ Fin q) v` using `fun g v => _root_.GlobalTheory.RealWeil.UnitaryOsc.crd_kL (m g) v`. Establish `hk : ∀ (g : ↥G) x y, _root_.GlobalTheory.RealWeil.omJ (_root_.GlobalTheory.RealWeil.UnitaryOsc.cplx S hS1 hS2) (k g x) (k g y) = _root_.GlobalTheory.RealWeil.omJ (_root_.GlobalTheory.RealWeil.UnitaryOsc.cplx S hS1 hS2) x y`. Introduce `g x y`. Rewrite using `[_root_.GlobalTheory.RealWeil.UnitaryOsc.omJ_cplx, _root_.GlobalTheory.RealWeil.UnitaryOsc.omJ_cplx, hke, hke, _root_.GlobalTheory.RealWeil.UnitaryOsc.form_mulVec, ← hm_apply, hunit]`. Take `⟨hpair2, hpair3⟩` from `_root_.GlobalTheory.RealWeil.GaussPairing.lam_mu_eq (EuclideanSpace ℂ (Fin p ⊕ Fin q)) (Fin p ⊕ Fin q) (_root_.GlobalTheory.RealWeil.UnitaryOsc.crd (Fin p ⊕ Fin q)) _root_.GlobalTheory.RealWeil.UnitaryOsc.norm_sq_crd S hS1 hS2 (_root_.GlobalTheory.RealWeil.UnitaryOsc.cplx S hS1 h …`.
+
+Establish `hd : ∀ g : ↥G, _root_.GlobalTheory.RealWeil.dP S (m g) ≠ 0 ∧ _root_.GlobalTheory.RealWeil.dP S (m g⁻¹) = star (_root_.GlobalTheory.RealWeil.dP S (m g)) ∧ _root_.GlobalTheory.RealWeil.lam (k g) = (_root_.GlobalTheory.RealWeil.dP S (m g) * _root_.GlobalTheory.RealWeil.dP S (m g⁻¹)) …`. Introduce `g`. Rewrite using `[hminv]`. Conclude with `hpair2 (m g) (k g) (hunit g) (hke g)`. Establish `hc2 : ∀ g : ↥G, star (_root_.GlobalTheory.RealWeil.dP S (m g)) * _root_.GlobalTheory.RealWeil.dP S (m g) * _root_.GlobalTheory.RealWeil.lam (k g) = 1`.
+
+Introduce `g`. Take `⟨h1, h2, h3⟩` from `hd g`. Establish `h4 : star (_root_.GlobalTheory.RealWeil.dP S (m g)) ≠ 0` using `star_ne_zero.2 h1`. Rewrite using `[h3, h2, mul_inv_eq_one₀ (mul_ne_zero h1 h4), mul_comm]`. Establish `hc3 : ∀ g g' : ↥G, _root_.GlobalTheory.RealWeil.dP S (m g) * _root_.GlobalTheory.RealWeil.dP S (m g') * _root_.GlobalTheory.RealWeil.mu (_root_.GlobalTheory.RealWeil.UnitaryOsc.cplx S hS1 hS2) (k (g * g')) (k g) = _root_.GlobalTheory.RealWeil.dP S (m (g * g')) * _root_.GlobalTheo …`.
+
+Introduce `g g'`. Establish `h` using `hpair3 (m (g * g')) (m g) (k (g * g')) (k g) (hunit _) (hunit _) (hke _) (hke _)`. Simplify using `only [← hminv, ← map_mul, inv_mul_cancel_left] at h`. Establish `n1` using `(hd g).1`. Establish `n2` using `(hd g').1`.
+
+Establish `n3` using `(hd (g * g')).1`. Establish `n4` using `(hd (g * g')⁻¹).1`. Rewrite using `[h, (hd (g * g')).2.2]`. Clear the denominators using the available nonvanishing facts. Take `⟨Ω, hosc, hcont, hvac⟩` from `_root_.GlobalTheory.RealWeil.Osc.exists_isOsc (EuclideanSpace ℂ (Fin p ⊕ Fin q)) H (_root_.GlobalTheory.RealWeil.UnitaryOsc.cplx S hS1 hS2) ρE hJ hρE ↥G k (fun g => _root_.GlobalTheory.RealWeil.dP S (m g)) hk (by simp [_root_.GlobalTheory.RealWeil.UnitaryOsc.detPlus_one₂]) hc2 hc …`.
+
+Take `⟨hadd, hsmul, hsm, hone, hmul, hint, hcomm, hnormΦ⟩` from `hosc`. Set `D` to `_root_.GlobalTheory.FockRep.smSub ρE`. Establish `hmemD : ∀ f, f ∈ D ↔ _root_.GlobalTheory.RealWeil.Sm ρE f` using `fun f => Iff.rfl`. Establish `hD : Dense (D : Set H)`. Rewrite using `[Submodule.dense_iff_topologicalClosure_eq_top, Submodule.topologicalClosure_eq_top_iff, Submodule.eq_bot_iff]`.
+
+Introduce `x hx`. Use `_root_.GlobalTheory.RealWeil.eq_zero_of_orthogonal_translates_proj hJ hρE fun y a => ?_` and prove the remaining obligations. Conclude with `Submodule.inner_right_of_mem_orthogonal ((hmemD _).2 (_root_.GlobalTheory.RealWeil.Osc.sm_heis hρE a (_root_.GlobalTheory.RealWeil.Good.sm hJ (_root_.GlobalTheory.RealWeil.Osc.good_proj hJ hρE y)))) hx`. Take `⟨ω, hω⟩` from `exists_unitary_hom_extending_of_dense_isometric D hD Ω (fun g f hf f' hf' => hadd g f f' hf hf') (fun g a f hf => hsmul g a f hf) (fun g f hf => hsm g f hf) (fun g f hf => by`. Simplify using `using hnormΦ H (ContinuousLinearMap.id ℂ H) (fun v f => by simp [hρE_apply]) g f hf)`.
+
+Use the proof step `(fun f hf => hone f hf) (fun g g' f hf => hmul g g' f hf)`. Establish `hmc : Continuous fun g : ↥G => m g` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hcontD : ∀ f ∈ D, Continuous fun g : ↥G => ω g f`. Introduce `f hf`. Establish `h` using `hcont ↥G id (_root_.GlobalTheory.RealWeil.UnitaryOsc.continuous_kL.comp hmc) ((_root_.GlobalTheory.RealWeil.UnitaryOsc.continuous_dP S).comp hmc) f hf`.
+
+Establish `e1 : (fun g : ↥G => ω g f) = fun g => Ω (id g) f` using `funext fun g => hω g f hf`. Rewrite using `[e1]`. Conclude with `h`. Use `⟨ω, fun v => ?_, fun g z v => ?_, fun A hA g v => ?_, fun g h12 h21 v hv => ?_⟩` and prove the remaining obligations. Use `continuous_of_uniform_approx_of_continuous fun u hu => ?_` and prove the remaining obligations.
+
+Take `⟨ε, hε, hεu⟩` from `Metric.mem_uniformity_dist.1 hu`. Take `⟨f, hf, hvf⟩` from `hD.exists_dist_lt v hε`. Use `⟨fun g => ω g f, hcontD f hf, fun g => hεu ?_⟩` and prove the remaining obligations. Rewrite using `[LinearIsometryEquiv.dist_map]`. Conclude with `hvf`.
+
+Take `⟨x, rfl⟩` from `(_root_.GlobalTheory.RealWeil.UnitaryOsc.crd (Fin p ⊕ Fin q)).surjective z`. Rewrite using `[← hke g x]`. Express the relevant statement in the definitionally equal form `ω g (ρE x v) = ρE (k g x) (ω g v)`. Use `hD.induction (P := fun v => ω g (ρE x v) = ρE (k g x) (ω g v)) (fun f hf => ?_) (isClosed_eq ((ω g).continuous.comp (ρE x).continuous) ((ρE (k g x)).continuous.comp (ω g).continuous)) v` and prove the remaining obligations. Rewrite using `[hω g _ ((hmemD _).2 (_root_.GlobalTheory.RealWeil.Osc.sm_heis hρE x hf)), hint g x f hf, hω g f hf]`.
+
+Use `hD.induction (P := fun v => A (ω g v) = ω g (A v)) (fun f hf => ?_) (isClosed_eq (A.continuous.comp (ω g).continuous) ((ω g).continuous.comp A.continuous)) v` and prove the remaining obligations. Establish `hf' : _root_.GlobalTheory.RealWeil.Sm ρE f` using `hf`. Establish `hAf : _root_.GlobalTheory.RealWeil.Sm ρE (A f)`. Establish `h1 : (fun x => ρE x (A f)) = fun x => (A.restrictScalars ℝ) (ρE x f)`. Use function extensionality and compare the values at `fun x => (hA _ f).symm`.
+
+Unfold `_root_.GlobalTheory.RealWeil.Sm at hf' ⊢`. Rewrite using `[h1]`. Conclude with `(A.restrictScalars ℝ).contDiff.comp hf'`. Rewrite using `[hω g f hf, hω g _ hAf, hcomm g A (fun x f => hA _ f) f hf']`. Establish `hPv : _root_.GlobalTheory.RealWeil.proj hρE v = v` using `_root_.GlobalTheory.RealWeil.proj_eq_self_of_vacuum hJ hρE (fun a => by`.
+
+Rewrite using `[_root_.GlobalTheory.RealWeil.gau_toLp]`. Conclude with `hv _)`. Establish `hsm_v : _root_.GlobalTheory.RealWeil.Sm ρE v`. Rewrite using `[← hPv]`. Conclude with `_root_.GlobalTheory.RealWeil.Good.sm hJ (_root_.GlobalTheory.RealWeil.Osc.good_proj hJ hρE v)`.
+
+Establish `hM : (g.1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) = fromBlocks (g.1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).toBlocks₁₁ 0 0 (g.1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).toBlocks₂₂` using `by conv_lhs => rw [← Matrix.fromBlocks_toBlocks (g.1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)]`. Rewrite using `[h12, h21]`. Establish `hu` using `hunit g`. Rewrite `hu` using `[hm_apply, hM]`. Simplify using `only [S, fromBlocks_conjTranspose, fromBlocks_multiply, conjTranspose_zero, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_one, Matrix.mul_neg, fromBlocks_inj] at hu`.
+
+Take `⟨h1, -, -, h2⟩` from `hu`. Establish `h2' : ((g.1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).toBlocks₂₂)ᴴ * (g.1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).toBlocks₂₂ = 1`. Simplify using `using congrArg Neg.neg h2`. Establish `hgu : (m g)ᴴ * m g = 1`. Rewrite using `[hm_apply, hM]`.
+
+Simplify using `only [fromBlocks_conjTranspose, fromBlocks_multiply, conjTranspose_zero, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, h1, h2', fromBlocks_one]`. Establish `hiso : ∀ x, ‖k g x‖ = ‖x‖` using `_root_.GlobalTheory.RealWeil.UnitaryOsc.norm_kL hgu`. Establish `hP1 : ∫ u, _root_.GlobalTheory.RealWeil.gau u • ρE (k 1 u) v = v`. Simplify using `only [map_one, ContinuousLinearMap.one_apply]`. Rewrite using `[← _root_.GlobalTheory.RealWeil.proj_apply hρE]`.
+
+Conclude with `hPv`. Establish `h3` using `hvac 1 g hiso v hsm_v hP1`. Simplify using `only [one_mul, inv_one, mul_one] at h3`. Rewrite using `[hω g v hsm_v, h3]`. Use `show _root_.GlobalTheory.RealWeil.dP S (m g) • v = _`.
+
+Rewrite using `[hm_apply]`. Use `conv_lhs => rw [hM]`. Rewrite using `[dP_sign_fromBlocks_diagonal_eq_det]`.
+-/
 theorem _root_.GlobalTheory.FockRep.exists_unitary_osc : ∀ (p q : ℕ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (ρ : (Fin p ⊕ Fin q → ℂ) → (H ≃ₗᵢ[ℂ] H)), (∀ v, Continuous fun z => ρ z v) → (∀ z w v, ρ z (ρ w v) = Complex.exp (Real.pi * Complex.I * ((∑ i, z (Sum.inl i) * star (w (Sum.inl i))) - ∑ j, z (Sum.inr j) * star (w (Sum.inr j))).im) • ρ (z + w) v) → ∃ ω : _root_.GlobalTheory.WeilM.UG (Complex.conjAe : ℂ →ₐ[ℝ] ℂ) (Matrix.fromBlocks (1 : Matrix (Fin p) (Fin p) ℂ) 0 0 (-1 : Matrix (Fin q) (Fin q) ℂ)) →* (H ≃ₗᵢ[ℂ] H), (∀ v, Continuous fun g => ω g v) ∧ (∀ g z v, ω g (ρ z v) = ρ ((g.1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) *ᵥ z) (ω g v)) ∧ (∀ A : H →L[ℂ] H, (∀ z v, A (ρ z v) = ρ z (A v)) → ∀ g v, A (ω g v) = ω g (A v)) ∧ ∀ g, (g.1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).toBlocks₁₂ = 0 → (g.1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).toBlocks₂₁ = 0 → ∀ v, (∀ z, ⟪v, ρ z v⟫_ℂ = Complex.exp (-(Real.pi / 2) * ∑ a, ((‖z a‖ ^ 2 : ℝ) : ℂ)) * ⟪v, v⟫_ℂ) → ω g v = (g.1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ).toBlocks₁₁.det • v := by
   intro p q H _ _ _ ρ hρc hρm
   let S : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ :=

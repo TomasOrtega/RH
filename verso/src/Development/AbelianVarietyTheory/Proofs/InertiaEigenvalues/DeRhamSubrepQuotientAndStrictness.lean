@@ -11,6 +11,27 @@ namespace GlobalTheory.DRSubQuot
 
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N TensorProduct GlobalTheory.DRFil
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `s hn b hb hy`. Distinguish the cases in `hli : LinearIndepOn K e s`. Use `haveI := hF.isDomain haveI : Module.IsTorsionFree B M := ⟨fun r hr x y hxy => by`.
+
+Take `⟨u, hu⟩` from `hF.mul_inv_cancel hr.ne_zero`. Use `congrArg (u • ·) hxy` as an intermediate fact. Simplify `this⟩` using `only [smul_smul, mul_comm u r, hu, one_smul]`. Establish `hB` using `linearIndepOn_finset_iff.1 (GlobalTheory.Per.FontaineBound.linearIndepOn_of_invariant σ ρ hρ hreg e hei s hli)`. Use `(E a).sum_mem fun i hi => ?_` and prove the remaining obligations.
+
+Take `⟨c, hc⟩` from `hinv (b i) fun g => sub_eq_zero.1 (hB (fun j => σ g (b j) - b j) (by`. Use `hy g` as an intermediate fact. Simplify using `only [map_sum, hρ, hei] at this`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, this, sub_self]) i hi)`. Distinguish the cases in `hc0 : c = 0`.
+
+Rewrite using `[← hc, hc0, map_zero, zero_smul]`. Conclude with `(E a).zero_mem`. Rewrite using `[← hc, algebraMap_smul]`. Use `hEK _ _ _ (hEa ?_ (he i))` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`.
+
+Apply `h1` to reduce the goal to its premises. Establish `h2` using `(F _).smul_mem c⁻¹ (hb i hi)`. Rewrite `h2` using `[← hc, Algebra.smul_def, ← map_mul, inv_mul_cancel₀ hc0, map_one]`. Conclude with `hFa (by omega) h2`. Rewrite `hli` using `[linearIndepOn_finset_iff] at hli push Not`.
+
+Take `⟨κ, hκ, i₀, hi₀, hκ₀⟩` from `hli`. Take `⟨i, hi, hmin⟩` from `(s.filter fun j => κ j ≠ 0).exists_min_image k ⟨i₀, Finset.mem_filter.2 ⟨hi₀, hκ₀⟩⟩`. Take `⟨his, hκi⟩` from `Finset.mem_filter.1 hi`. Establish `hrel : e i = - ∑ j ∈ s.erase i, ((κ i)⁻¹ * κ j) • e j`. Rewrite `hκ` using `[← Finset.add_sum_erase s _ his]`.
+
+Use `congrArg ((κ i)⁻¹ • ·) hκ` as an intermediate fact. Simplify using `only [smul_add, smul_smul, inv_mul_cancel₀ hκi, one_smul, Finset.smul_sum, smul_zero] at this`. Conclude with `eq_neg_of_add_eq_zero_left this`. Establish `heq : ∑ j ∈ s, b j • e j = ∑ j ∈ s.erase i, (b j - ((κ i)⁻¹ * κ j) • b i) • e j`. Rewrite using `[← Finset.add_sum_erase s _ his]`.
+
+Use `conv_lhs => rw [hrel]`. Simplify using `only [smul_neg, Finset.smul_sum, sub_smul, Finset.sum_sub_distrib, smul_assoc, smul_comm (b i)]`. Normalize the expressions using the abelian group laws. Rewrite `hy`, the goal using `[heq]`. Use `ih _ (hn ▸ Finset.card_erase_lt_of_mem his) _ rfl _ (fun j hj => ?_) hy` and prove the remaining obligations.
+
+Establish `hjs` using `Finset.mem_of_mem_erase hj`. Use `(F _).sub_mem (hb j hjs) ?_` and prove the remaining obligations. Distinguish the cases in `hj0 : κ j = 0`. Simplify using `[hj0]`. Use `hmin j (Finset.mem_filter.2 ⟨hjs, hj0⟩)` as an intermediate fact.
+
+Conclude with `(F _).smul_mem _ (hFa (by omega) (hb i his))`.
+-/
 theorem mem_of_invariant {G K B M ι : Type} [Field K] [CommRing B] [Algebra K B] (hF : IsField B)
     [AddCommGroup M] [Module B M] [Module K M] [IsScalarTower K B M]
     (σ : G → B → B) (ρ : G → M →+ M) (hρ : ∀ g b w, ρ g (b • w) = σ g b • ρ g w)
@@ -89,9 +110,17 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     (hf : ∀ g x, f (ρ g x) = ρ' g (f x))
 include hf
 
+/- English proof (translation)
+The claim follows from `(mem_DdR PD _ _).2 fun g => by rw [act_ext PD ρ ρ' f hf, (mem_DdR PD _ _).1 hx]`.
+-/
 theorem ext_mem_DdR {x : V ⊗[Qp] F} (hx : x ∈ DdR PD ρ) : ext Qp F f x ∈ DdR PD ρ' :=
   (mem_DdR PD _ _).2 fun g => by rw [act_ext PD ρ ρ' f hf, (mem_DdR PD _ _).1 hx]
 
+/- English proof (translation)
+Introduce `y`. Take `⟨a, ha⟩` from `exists_mem_FilV PD (LL := LL) y`. Take `⟨x, -, rfl⟩` from `exists_ext_mem_FilV PD f hs ha`. Take `⟨m, b, d, hd, rfl⟩` from `h x`. Conclude with `⟨m, b, fun i => ext Qp F f (d i), fun i => ext_mem_DdR PD ρ ρ' f hf (hd i), by`.
+
+Simplify using `only [map_sum, ext_mulR]⟩`.
+-/
 theorem spans_of_surjective (hs : Function.Surjective f) (h : Spans PD ρ) : Spans PD ρ' := by
   intro y
   obtain ⟨a, ha⟩ := exists_mem_FilV PD (LL := LL) y
@@ -100,6 +129,9 @@ theorem spans_of_surjective (hs : Function.Surjective f) (h : Spans PD ρ) : Spa
   exact ⟨m, b, fun i => ext Qp F f (d i), fun i => ext_mem_DdR PD ρ ρ' f hf (hd i), by
     simp only [map_sum, ext_mulR]⟩
 
+/- English proof (translation)
+Establish `h1 : Spans PD ρ'.dual` using `spans_dual_of_spans PD ρ' ρ'.dual (Module.Dual.eval LL V') hF (fun g x y => by simp [Module.Dual.transpose_apply]) Function.bijective_id h`. Establish `h2 : Spans PD ρ.dual` using `spans_of_surjective PD ρ'.dual ρ.dual f.dualMap (fun g x => by ext v; simp [Module.Dual.transpose_apply, hf]) (LinearMap.dualMap_surjective_of_injective hi) h1`. Conclude with `spans_dual_of_spans PD ρ.dual ρ LinearMap.id hF (fun g x y => by simp [Module.Dual.transpose_apply]) (Module.bijective_dual_eval LL V) h2`.
+-/
 theorem spans_of_injective [FiniteDimensional Qp LL] [FiniteDimensional Qp K] [CharZero Qp]
     [FiniteDimensional LL V] [FiniteDimensional LL V'] (hF : IsField F)
     (hi : Function.Injective f) (h : Spans PD ρ') : Spans PD ρ := by
@@ -110,6 +142,19 @@ theorem spans_of_injective [FiniteDimensional Qp LL] [FiniteDimensional Qp K] [C
   exact spans_dual_of_spans PD ρ.dual ρ LinearMap.id hF
     (fun g x y => by simp [Module.Dual.transpose_apply]) (Module.bijective_dual_eval LL V) h2
 
+/- English proof (translation)
+Set `φ : F →+* Module.End LL (V' ⊗[Qp] F)` to `{ toFun := fun b => mulR Qp F LL V' b map_one' := by ext; simp map_mul' := fun x y => by ext; simp [mul_assoc] map_zero' := by ext; simp map_add' := fun x y => by ext; simp [add_mul, tmul_add] }`. Use `letI : Module F (V' ⊗[Qp] F) := Module.compHom _ φ`. Use `letI : Module K (V' ⊗[Qp] F) := Module.compHom _ (algebraMap K F)`. Use `haveI : IsScalarTower K F (V' ⊗[Qp] F) := IsScalarTower.of_algebraMap_smul fun _ _ => rfl`. Establish `hsm : ∀ (b : F) (x : V' ⊗[Qp] F), b • x = mulR Qp F LL V' b x` using `fun _ _ => rfl`.
+
+Take `⟨x, hx, rfl⟩` from `exists_ext_mem_FilV PD f hs hy.2`. Take `⟨m, k, b, d, hd, rfl⟩` from `h a x hx`. Establish `hsum : ext Qp F f (∑ i, mulR Qp F LL V (b i) (d i)) = ∑ i, b i • ext Qp F f (d i)`. Simplify using `only [map_sum, ext_mulR, hsm]`. Establish `hinv` using `(mem_DdR PD _ _).1 hy.1`.
+
+Rewrite `hinv`, the goal using `[hsum]`. Conclude with `mem_of_invariant (K := K) hF (fun g b => PD.actdR g b) (fun g => (actVdR PD ρ' g).toAddMonoidHom) (fun g b w => by`. Express the relevant statement in the definitionally equal form `actVdR PD ρ' g (mulR Qp F LL V' b w) = mulR Qp F LL V' _ (actVdR PD ρ' g w)`. Rewrite using `[← sm_one_tmul, act_sm, ← sm_one_tmul]`. Use the proof step `simp)`.
+
+Use the proof step `(GlobalTheory.Per.FontaineBound.frac_dR PD hF) PD.invdR PD.Fil (fil_antitone PD) (one_notMem_fil_one PD)`. Use the proof step `(fun c => ((DdR PD ρ ⊓ FilV PD (LL := LL) (V := V) c).map (ext Qp F f)).toAddSubgroup)`. Use the proof step `(fun c c' hc => Submodule.map_mono (inf_le_inf_left _ (FilV_antitone PD hc)))`. Use the proof step `(by`. Introduce and unpack `c κ _ ⟨z, hz, rfl⟩`.
+
+Use `⟨mulR Qp F LL V (algebraMap K F κ) z, ⟨mulR_mem_DdR PD ρ κ hz.1, ?_⟩, ext_mulR f _ z⟩` and prove the remaining obligations. Establish `h0 : algebraMap K F κ ∈ PD.Fil 0`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `Submodule.smul_mem _ _ PD.one_mem`. Use `mulR_mem_FilV PD (LL := LL) h0 hz.2` as an intermediate fact.
+
+Rewrite using `[zero_add] at this)` and apply the resulting hypothesis. Use `k (fun i => ext Qp F f (d i)) (fun i => ⟨d i, ⟨(hd i).1, (hd i).2.1⟩, rfl⟩)`. Use the proof step `(fun g i => (mem_DdR PD _ _).1 (ext_mem_DdR PD ρ ρ' f hf (hd i).1) g) a _ Finset.univ rfl b`. Use the proof step `(fun i _ => (hd i).2.2) hinv`.
+-/
 theorem strict_of_surjective (hF : IsField F) (hs : Function.Surjective f) (h : FilSpans PD ρ) (a : ℤ)
     (y : V' ⊗[Qp] F) (hy : y ∈ DdR PD ρ' ⊓ FilV PD (LL := LL) (V := V') a) :
     ∃ x ∈ DdR PD ρ ⊓ FilV PD (LL := LL) (V := V) a, ext Qp F f x = y := by
@@ -151,6 +196,9 @@ theorem strict_of_surjective (hF : IsField F) (hs : Function.Surjective f) (h : 
 
 end Generic
 
+/- English proof (translation)
+Introduce `l _ P AI T K LL V _ _ _ _ _ ρ V' _ _ _ _ _ ρ' f hf`. Use `K.2` as an intermediate fact. Use `LL.2` as an intermediate fact. Use `⟨fun hi h => isDR_of_spans T K LL ρ (spans_of_injective (P.PD K) ρ ρ' f hf (isField_dR T) hi ((filSpans T K LL ρ' h).spans _)), fun hs h => ⟨isDR_of_spans T K LL ρ' (spans_of_surjective (P.PD K) ρ ρ' f hf hs ((filSpans T K LL ρ h).spans _)), fun a y hy => ?_⟩⟩` and prove the remaining obligations. Conclude with `strict_of_surjective (P.PD K) ρ ρ' f hf (isField_dR T) hs (filSpans T K LL ρ h) a y hy`.
+-/
 theorem deRham_sub_quot : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K LL : FinExt l) (V : Type) [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V] [FiniteDimensional ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V) (V' : Type) [AddCommGroup V'] [Module ↥LL.1 V'] [Module ℚ_[l] V'] [IsScalarTower ℚ_[l] ↥LL.1 V'] [FiniteDimensional ↥LL.1 V'] (ρ' : Representation ↥LL.1 ↥(GK K) V') (f : V →ₗ[↥LL.1] V'), (∀ g x, f (ρ g x) = ρ' g (f x)) → (Function.Injective f → IsDR (P.PD K) ρ' → IsDR (P.PD K) ρ) ∧ (Function.Surjective f → IsDR (P.PD K) ρ → IsDR (P.PD K) ρ' ∧ ∀ (a : ℤ), ∀ y ∈ DdR (P.PD K) ρ' ⊓ FilV (P.PD K) (LL := ↥LL.1) (V := V') a, ∃ x ∈ DdR (P.PD K) ρ ⊓ FilV (P.PD K) (LL := ↥LL.1) (V := V) a, AlgebraTensorModule.map f (LinearMap.id : P.R.BdR →ₗ[ℚ_[l]] P.R.BdR) x = y) := by
   intro l _ P AI T K LL V _ _ _ _ _ ρ V' _ _ _ _ _ ρ' f hf
   have := K.2

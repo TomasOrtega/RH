@@ -9,6 +9,23 @@ open GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.SplitFlip
 
 namespace DiscreteGroups.sglob.LConv
 
+/- English proof (translation)
+Use `borelize (G ⧸ H)`. Take `⟨⟨μ, hμ⟩, -⟩` from `GlobalTheory.Proof.quotientInvariantMeasure_exists_unique_unimodular.invariantMeasureClause G H hH uG uH`. Use `hμ.finiteOnCompacts` as an intermediate fact. Use `hμ.invariant` as an intermediate fact. Use `hμ.regular` as an intermediate fact.
+
+Establish `: μ.IsOpenPosMeasure` using `⟨fun U hU hne => (measure_isOpen_pos_of_smulInvariant_of_ne_zero G hμ.ne_zero hU hne).ne'⟩`. Set `S : Submodule ℂ (G → ℂ)` to `{ carrier := {f | Integrable (descend H f) μ} zero_mem' := by simp add_mem' := fun {f g} hf hg => by`. Simplify using `only [Set.mem_ofPred_eq, map_add] at *`. Conclude with `hf.add hg`. Use the proof step `smul_mem' := fun c f hf => by`.
+
+Simplify using `only [Set.mem_ofPred_eq, map_smul] at *`. Conclude with `hf.smul c }`. Set `J : S →ₗ[ℂ] ℂ` to `{ toFun := fun f => ∫ q, descend H f q ∂μ map_add' := fun f g => integral_add f.2 g.2 map_smul' := fun c f => integral_smul c (descend H f) }`. Take `⟨I, hI⟩` from `J.exists_extend`. Establish `hIJ : ∀ f, Integrable (descend H f) μ → I f = ∫ q, descend H f q ∂μ` using `fun f hf => LinearMap.congr_fun hI ⟨f, hf⟩`.
+
+Use `⟨I, fun f hf hc ⟨C, hC, hs⟩ => ?_⟩` and prove the remaining obligations. Establish `hcd` using `continuous_descend hf hc`. Establish `h1 : Integrable (descend H f) μ` using `hcd.integrable_of_hasCompactSupport (hasCompactSupport_descend hf hC hs)`. Use `⟨fun x => ?_, ?_, fun hpos => ?_⟩` and prove the remaining obligations. Establish `h2 : Integrable (descend H fun g => f (g * x)) μ`.
+
+Rewrite using `[descend_mul_right hf]`. Conclude with `(measurePreserving_smul x⁻¹ μ).integrable_comp_of_integrable h1`. Rewrite using `[hIJ _ h1, hIJ _ h2, descend_mul_right hf]`. Conclude with `integral_smul_eq_self (descend H f)`. Establish `h2 : Integrable (descend H fun g => (starRingEnd ℂ) (f g)) μ` using `Complex.conjCLE.toContinuousLinearMap.integrable_comp h1`.
+
+Rewrite using `[hIJ _ h1, hIJ _ h2, ← integral_conj]`. Both sides reduce to the same expression. Establish `hre : (I f).re = ∫ q, (descend H f q).re ∂μ`. Rewrite using `[hIJ _ h1]`. Conclude with `(integral_re h1).symm`.
+
+Establish `hnn : 0 ≤ fun q => (descend H f q).re` using `fun q => hpos _`. Use `⟨hre ▸ integral_nonneg hnn, fun h0 g => ?_⟩` and prove the remaining obligations. Rewrite `h0` using `[hre]`. Establish `hae` using `(integral_eq_zero_iff_of_nonneg hnn h1.re).1 h0`. Establish `hz` using `(Continuous.ae_eq_iff_eq μ (Complex.continuous_re.comp hcd) continuous_zero).1 hae`.
+
+Use `congrFun hz ((g⁻¹ : G) : G ⧸ H)` as an intermediate fact. Simplify `this` using `[descend_mk hf]`.
+-/
 theorem exists_pos_invariant_form {G : Type} [Group G] {H : Subgroup G} [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G]
     [MeasurableSpace G] [BorelSpace G] (hH : IsClosed (H : Set G))
@@ -67,6 +84,9 @@ theorem exists_pos_invariant_form {G : Type} [Group G] {H : Subgroup G} [Topolog
     have := congrFun hz ((g⁻¹ : G) : G ⧸ H)
     simpa [descend_mk hf] using this
 
+/- English proof (translation)
+Use `borelize k`. Take `⟨I, h⟩` from `exists_pos_invariant_form (H := unipB k (Fin m)) isClosed_unipB (fun μ _ => inferInstance) (fun μ hμ => @UnipHaar.haar_isMulRightInvariant k _ _ _ _ (Fin m) (Fin m) (fun _ => Unit) _ _ _ _ _ _ (points (Fin m)) (inferInstance : MeasurableSpace (unipB k (Fin m))) (inferInstance : B …`. Conclude with `⟨I, fun f hf => (h f hf.1 hf.2.1.continuous hf.2.2).1, fun f hf => (h f hf.1 hf.2.1.continuous hf.2.2).2.1, fun f hf => (h f hf.1 hf.2.1.continuous hf.2.2).2.2⟩`.
+-/
 theorem exists_pos_isInvIntegral (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (m : ℕ) :
     ∃ I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ, IsInvIntegral I ∧

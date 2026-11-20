@@ -14,15 +14,34 @@ namespace Elliptic
 
 variable {L : PeriodPair}
 
+/- English proof (translation)
+Establish `hd : DifferentiableAt ℂ ℘[L] z` using `(L.analyticOnNhd_weierstrassP z hz).differentiableAt`. Use `hd.hasDerivAt` as an intermediate fact. Rewrite `this` using `[L.deriv_weierstrassP]`. Then use the resulting hypothesis.
+-/
 lemma hasDerivAt_weierstrassP {z : ℂ} (hz : z ∉ L.lattice) : HasDerivAt ℘[L] (℘'[L] z) z := by
   have hd : DifferentiableAt ℂ ℘[L] z := (L.analyticOnNhd_weierstrassP z hz).differentiableAt
   have := hd.hasDerivAt
   rwa [L.deriv_weierstrassP] at this
 
+/- English proof (translation)
+The claim follows from `(L.analyticOnNhd_derivWeierstrassP z hz).differentiableAt.hasDerivAt`.
+-/
 lemma hasDerivAt_derivWeierstrassP {z : ℂ} (hz : z ∉ L.lattice) :
     HasDerivAt ℘'[L] (deriv ℘'[L] z) z :=
   (L.analyticOnNhd_derivWeierstrassP z hz).differentiableAt.hasDerivAt
 
+/- English proof (translation)
+Establish `hopen : IsOpen (L.lattice : Set ℂ)ᶜ` using `L.isClosed_lattice.isOpen_compl`. Establish `key : ∀ u ∉ L.lattice, ℘'[L] u * (2 * deriv ℘'[L] u - (12 * ℘[L] u ^ 2 - L.g₂)) = 0`. Introduce `u hu`. Establish `h1 : HasDerivAt (℘'[L] ^ 2) (2 * ℘'[L] u * deriv ℘'[L] u) u` using `((hasDerivAt_derivWeierstrassP hu).pow 2).congr_deriv (by norm_num)`. Establish `h2 : HasDerivAt (fun v ↦ 4 * ℘[L] v ^ 3 - L.g₂ * ℘[L] v - L.g₃) ((12 * ℘[L] u ^ 2 - L.g₂) * ℘'[L] u) u`.
+
+Establish `hp` using `hasDerivAt_weierstrassP hu`. Conclude with `((((hp.pow 3).const_mul 4).sub (hp.const_mul L.g₂)).sub_const L.g₃).congr_deriv (by norm_num; ring)`. Establish `heq : (℘'[L] ^ 2) =ᶠ[𝓝 u] (fun v ↦ 4 * ℘[L] v ^ 3 - L.g₂ * ℘[L] v - L.g₃)` using `by filter_upwards [hopen.mem_nhds hu] with v hv`. Conclude with `L.derivWeierstrassP_sq v hv`. Use `h1.unique (h2.congr_of_eventuallyEq heq)` as an intermediate fact.
+
+Take the linear combination `this`. Distinguish the cases in `h0 : ℘'[L] z = 0`. Use `set D : ℂ → ℂ := fun u ↦ deriv ℘'[L] u - (6 * ℘[L] u ^ 2 - L.g₂ / 2) with hD`. Establish `hDc : ContinuousAt D z`. Establish `h1` using `(L.analyticOnNhd_derivWeierstrassP z hz).deriv.continuousAt`.
+
+Establish `h2` using `(L.analyticOnNhd_weierstrassP z hz).continuousAt`. Conclude with `h1.sub (((h2.pow 2).const_mul 6).sub continuousAt_const)`. Establish `hev : ∀ᶠ u in 𝓝[≠] z, D u = 0` using `by filter_upwards [eventually_nhdsNE_of_eventually_codiscrete (eventually_codiscrete_derivWeierstrassP_ne_zero (L := L)) z, nhdsWithin_le_nhds (hopen.mem_nhds hz)] with u hu1 hu2`. Break down `mul_eq_zero.1 (key u hu2) with h | h` into its components or cases. Conclude with `absurd h hu1`.
+
+Simplify using `only [hD]`. Take the linear combination `h / 2`. Establish `hlim` using `tendsto_nhds_unique (hDc.tendsto.mono_left nhdsWithin_le_nhds) (tendsto_const_nhds.congr' (hev.mono fun u hu ↦ hu.symm))`. Simplify using `only [hD] at hlim`. Take the linear combination `hlim`.
+
+Break down `mul_eq_zero.1 (key z hz) with h | h` into its components or cases. Conclude with `absurd h h0`. Take the linear combination `h / 2`.
+-/
 theorem deriv_derivWeierstrassP {z : ℂ} (hz : z ∉ L.lattice) :
     deriv ℘'[L] z = 6 * ℘[L] z ^ 2 - L.g₂ / 2 := by
   have hopen : IsOpen (L.lattice : Set ℂ)ᶜ := L.isClosed_lattice.isOpen_compl
@@ -64,6 +83,15 @@ theorem deriv_derivWeierstrassP {z : ℂ} (hz : z ∉ L.lattice) :
     · exact absurd h h0
     · linear_combination h / 2
 
+/- English proof (translation)
+Establish `hdeg : degree L f ≤ 1`. Rewrite using `[degree, finsum_eq_single _ (Torus.mk L p) (fun x hx ↦ ?_)]`. Rewrite using `[torusOrder_mk hf]`. Generalize the expression as in `meromorphicOrderAt f p = o at hp`. Proceed by induction on `o with`.
+
+Consider the case `top => simp`. Consider the case `coe n`. Simplify using `only [WithTop.untopD_coe]`. Establish `: (-1 : ℤ) ≤ n` using `by exact_mod_cast hp`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨y, rfl⟩` from `Torus.mk_surjective L x`. Rewrite using `[torusOrder_mk hf]`. Conclude with `toNat_neg_untopD_eq_zero_of_nonneg (ho y fun h ↦ hx ((Torus.mk_eq_mk_iff L).2 h))`. Establish `h0 : degree L f = 0`. Use `degree_ne_one hf` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hall` using `eq_zero_of_finsum_eq_zero_nat (finite_support_toNat_neg_torusOrder hf) h0 (Torus.mk L z)`. Rewrite `hall` using `[torusOrder_mk hf]`. Conclude with `nonneg_of_toNat_neg_untopD_eq_zero hall`.
+-/
 theorem meromorphicOrderAt_nonneg_of_simple_pole {f : ℂ → ℂ} (hf : IsEllipticFunction L f)
     {p : ℂ} (hp : ((-1 : ℤ) : WithTop ℤ) ≤ meromorphicOrderAt f p)
     (ho : ∀ z, z - p ∉ L.lattice → 0 ≤ meromorphicOrderAt f z) (z : ℂ) :
@@ -90,6 +118,9 @@ theorem meromorphicOrderAt_nonneg_of_simple_pole {f : ℂ → ℂ} (hf : IsEllip
   rw [torusOrder_mk hf] at hall
   exact nonneg_of_toNat_neg_untopD_eq_zero hall
 
+/- English proof (translation)
+The claim follows from `tendsto_nhds_unique (hf.tendsto.mono_left nhdsWithin_le_nhds) ((hg.tendsto.mono_left nhdsWithin_le_nhds).congr' h.symm)`.
+-/
 lemma eq_of_eventuallyEq_nhdsNE {f g : ℂ → ℂ} {x : ℂ} (hf : ContinuousAt f x)
     (hg : ContinuousAt g x) (h : f =ᶠ[𝓝[≠] x] g) : f x = g x :=
   tendsto_nhds_unique (hf.tendsto.mono_left nhdsWithin_le_nhds)
@@ -99,6 +130,9 @@ variable (L) in
 
 def chordSlope (z w : ℂ) : ℂ := (℘'[L] z - ℘'[L] w) / (℘[L] z - ℘[L] w)
 
+/- English proof (translation)
+Rewrite using `[chordSlope, chordSlope, ← neg_div_neg_eq, neg_sub, neg_sub]`.
+-/
 lemma chordSlope_comm (z w : ℂ) : chordSlope L z w = chordSlope L w z := by
   rw [chordSlope, chordSlope, ← neg_div_neg_eq, neg_sub, neg_sub]
 
@@ -107,6 +141,9 @@ variable (L) in
 def addDefect (w z : ℂ) : ℂ :=
   ℘[L] (z + w) + ℘[L] z + ℘[L] w - chordSlope L z w ^ 2 / 4
 
+/- English proof (translation)
+Use `L.weierstrassPExcept_def ⟨0, L.lattice.zero_mem⟩ z` as an intermediate fact. Express the relevant statement in the definitionally equal form `℘[L - (0 : ℂ)] z = ℘[L] z + (1 / (0 : ℂ) ^ 2 - 1 / (z - 0) ^ 2) at this`. Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, div_zero, zero_sub, sub_zero] at this`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma weierstrassP_eq_except_zero (z : ℂ) : ℘[L] z = ℘[L - (0 : ℂ)] z + 1 / z ^ 2 := by
   have := L.weierstrassPExcept_def ⟨0, L.lattice.zero_mem⟩ z
   change ℘[L - (0 : ℂ)] z = ℘[L] z + (1 / (0 : ℂ) ^ 2 - 1 / (z - 0) ^ 2) at this
@@ -115,6 +152,9 @@ lemma weierstrassP_eq_except_zero (z : ℂ) : ℘[L] z = ℘[L - (0 : ℂ)] z + 
   rw [this]
   ring
 
+/- English proof (translation)
+Use `L.derivWeierstrassPExcept_def ⟨0, L.lattice.zero_mem⟩ z` as an intermediate fact. Express the relevant statement in the definitionally equal form `℘'[L - (0 : ℂ)] z = ℘'[L] z + 2 / (z - 0) ^ 3 at this`. Simplify using `only [sub_zero] at this`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma derivWeierstrassP_eq_except_zero (z : ℂ) :
     ℘'[L] z = ℘'[L - (0 : ℂ)] z - 2 / z ^ 3 := by
   have := L.derivWeierstrassPExcept_def ⟨0, L.lattice.zero_mem⟩ z
@@ -123,13 +163,24 @@ lemma derivWeierstrassP_eq_except_zero (z : ℂ) :
   rw [this]
   ring
 
+/- English proof (translation)
+The claim follows from `fun x ↦ (L.meromorphic_weierstrassP (x + w)).comp_analyticAt (g := fun z ↦ z + w) (by fun_prop)`.
+-/
 lemma meromorphic_weierstrassP_comp_add (w : ℂ) : Meromorphic fun z ↦ ℘[L] (z + w) := fun x ↦
   (L.meromorphic_weierstrassP (x + w)).comp_analyticAt (g := fun z ↦ z + w) (by fun_prop)
 
+/- English proof (translation)
+The claim follows from `(L.analyticOnNhd_weierstrassP (x + w) h).comp (g := ℘[L]) (f := fun z ↦ z + w) (by fun_prop)`.
+-/
 lemma analyticAt_weierstrassP_comp_add {x w : ℂ} (h : x + w ∉ L.lattice) :
     AnalyticAt ℂ (fun z ↦ ℘[L] (z + w)) x :=
   (L.analyticOnNhd_weierstrassP (x + w) h).comp (g := ℘[L]) (f := fun z ↦ z + w) (by fun_prop)
 
+/- English proof (translation)
+Use `⟨fun x ↦ ?_, fun z l hl ↦ ?_⟩` and prove the remaining obligations. Establish `h1` using `meromorphic_weierstrassP_comp_add (L := L) w x`. Establish `h2` using `L.meromorphic_weierstrassP x`. Establish `h3` using `L.meromorphic_derivWeierstrassP x`. Unfold `addDefect chordSlope`.
+
+Use `fun_prop`. Simplify using `only [addDefect, chordSlope, add_right_comm z l w, isPeriodic_weierstrassP _ l hl, isPeriodic_derivWeierstrassP z l hl]`.
+-/
 lemma isEllipticFunction_addDefect (w : ℂ) : IsEllipticFunction L (addDefect L w) := by
   refine ⟨fun x ↦ ?_, fun z l hl ↦ ?_⟩
   · have h1 := meromorphic_weierstrassP_comp_add (L := L) w x
@@ -140,6 +191,13 @@ lemma isEllipticFunction_addDefect (w : ℂ) : IsEllipticFunction L (addDefect L
   · simp only [addDefect, chordSlope, add_right_comm z l w, isPeriodic_weierstrassP _ l hl,
       isPeriodic_derivWeierstrassP z l hl]
 
+/- English proof (translation)
+Establish `hne : ℘[L] z - ℘[L] w ≠ 0` using `fun h ↦ by`. Break down `sub_mem_or_add_mem_of_weierstrassP_eq hz hw (sub_eq_zero.1 h) with h' | h'` into its components or cases. Conclude with `hzw h'`. Conclude with `hzw' h'`. Establish `h1` using `analyticAt_weierstrassP_comp_add hzw'`.
+
+Establish `h2` using `L.analyticOnNhd_weierstrassP z hz`. Establish `h3` using `L.analyticOnNhd_derivWeierstrassP z hz`. Unfold `addDefect chordSlope`. Apply `AnalyticAt.sub (by fun_prop)` to reduce the goal to its premises. Apply `AnalyticAt.div _ analyticAt_const (by norm_num)` to reduce the goal to its premises.
+
+Apply `AnalyticAt.pow` to reduce the goal to its premises. Conclude with `AnalyticAt.div (by fun_prop) (by fun_prop) hne`.
+-/
 lemma analyticAt_addDefect {w z : ℂ} (hw : w ∉ L.lattice) (hz : z ∉ L.lattice)
     (hzw : z - w ∉ L.lattice) (hzw' : z + w ∉ L.lattice) : AnalyticAt ℂ (addDefect L w) z := by
   have hne : ℘[L] z - ℘[L] w ≠ 0 := fun h ↦ by
@@ -155,6 +213,9 @@ lemma analyticAt_addDefect {w z : ℂ} (hw : w ∉ L.lattice) (hz : z ∉ L.latt
   apply AnalyticAt.pow
   exact AnalyticAt.div (by fun_prop) (by fun_prop) hne
 
+/- English proof (translation)
+Establish `h1 : p + 1 / z ^ 2 - x = (z ^ 2 * (p - x) + 1) / z ^ 2` using `by field_simp; ring`. Establish `h2 : q - 2 / z ^ 3 - y = (z ^ 3 * (q - y) - 2) / z ^ 3` using `by field_simp; ring`. Rewrite using `[h1, h2]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma addDefect_algebra_zero (u p q x y z : ℂ) (hz : z ≠ 0) (hB : z ^ 2 * (p - x) + 1 ≠ 0) :
     u + (p + 1 / z ^ 2) + x - ((q - 2 / z ^ 3 - y) / (p + 1 / z ^ 2 - x)) ^ 2 / 4 =
       u + x + p + (8 * (p - x) + 4 * z ^ 2 * (p - x) ^ 2 - z ^ 4 * (q - y) ^ 2 + 4 * z * (q - y)) /
@@ -165,6 +226,9 @@ lemma addDefect_algebra_zero (u p q x y z : ℂ) (hz : z ≠ 0) (hB : z ^ 2 * (p
   field_simp
   ring
 
+/- English proof (translation)
+Rewrite `ht`, the goal using `[sub_neg_eq_add]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma addDefect_algebra_neg (a b c n u z w : ℂ) (ht : z - -w ≠ 0) (hu : u ≠ 0) :
     (z - -w) * (a + 1 / (z + w) ^ 2 + b + c - (n / ((z - -w) * u)) ^ 2 / 4) =
       (z - -w) * a + (z - -w) * (b + c) + (4 * u ^ 2 - n ^ 2) / (z - -w) / (4 * u ^ 2) := by
@@ -172,11 +236,23 @@ lemma addDefect_algebra_neg (a b c n u z w : ℂ) (ht : z - -w ≠ 0) (hu : u �
   field_simp
   ring
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `hf`. Conclude with `hp.has_fpower_series_dslope_fslope.analyticAt`.
+-/
 lemma analyticAt_dslope {f : ℂ → ℂ} {a : ℂ} (hf : AnalyticAt ℂ f a) :
     AnalyticAt ℂ (dslope f a) a := by
   obtain ⟨p, hp⟩ := hf
   exact hp.has_fpower_series_dslope_fslope.analyticAt
 
+/- English proof (translation)
+Establish `hP : AnalyticAt ℂ ℘[L - (0 : ℂ)] 0` using `L.analyticAt_weierstrassPExcept 0`. Establish `hP' : AnalyticAt ℂ ℘'[L - (0 : ℂ)] 0` using `L.analyticAt_derivWeierstrassPExcept 0`. Establish `hW : AnalyticAt ℂ (fun z ↦ ℘[L] (z + w)) 0` using `analyticAt_weierstrassP_comp_add (by simpa using hw)`. Establish `hBf : AnalyticAt ℂ (fun z ↦ z ^ 2 * (℘[L - (0 : ℂ)] z - ℘[L] w) + 1) 0` using `by fun_prop`. Establish `hBf0 : (fun z ↦ z ^ 2 * (℘[L - (0 : ℂ)] z - ℘[L] w) + 1) 0 ≠ 0` using `by simp`.
+
+Use `⟨fun z ↦ ℘[L] (z + w) + ℘[L] w + ℘[L - (0 : ℂ)] z + (8 * (℘[L - (0 : ℂ)] z - ℘[L] w) + 4 * z ^ 2 * (℘[L - (0 : ℂ)] z - ℘[L] w) ^ 2 - z ^ 4 * (℘'[L - (0 : ℂ)] z - ℘'[L] w) ^ 2 + 4 * z * (℘'[L - (0 : ℂ)] z - ℘'[L] w)) / (4 * (z ^ 2 * (℘[L - (0 : ℂ)] z - ℘[L] w) + 1) ^ 2), ?_, ?_, ? …` and prove the remaining obligations. Use `AnalyticAt.add (by fun_prop) (AnalyticAt.div (by fun_prop) (by fun_prop) ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+
+Use `filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (hBf.continuousAt.eventually_ne hBf0)] with z hz hBz`. Establish `hz : z ≠ 0` using `hz`. Establish `e1` using `weierstrassP_eq_except_zero (L := L) z`. Establish `e2` using `derivWeierstrassP_eq_except_zero (L := L) z`. Simplify using `only [addDefect, chordSlope]`.
+
+Rewrite using `[e2, e1]`. Conclude with `addDefect_algebra_zero _ _ _ _ _ _ hz hBz`.
+-/
 lemma exists_analyticAt_addDefect_zero {w : ℂ} (hw : w ∉ L.lattice) :
     ∃ H : ℂ → ℂ, AnalyticAt ℂ H 0 ∧ H 0 = 0 ∧ addDefect L w =ᶠ[𝓝[≠] 0] H := by
   have hP : AnalyticAt ℂ ℘[L - (0 : ℂ)] 0 := L.analyticAt_weierstrassPExcept 0
@@ -202,6 +278,13 @@ lemma exists_analyticAt_addDefect_zero {w : ℂ} (hw : w ∉ L.lattice) :
     rw [e2, e1]
     exact addDefect_algebra_zero _ _ _ _ _ _ hz hBz
 
+/- English proof (translation)
+Establish `hpw : AnalyticAt ℂ ℘[L] w` using `L.analyticOnNhd_weierstrassP w hw`. Establish `hdw : AnalyticAt ℂ ℘'[L] w` using `L.analyticOnNhd_derivWeierstrassP w hw`. Establish `h1` using `analyticAt_dslope hpw`. Establish `h2` using `analyticAt_dslope hdw`. Establish `hne : dslope ℘[L] w w ≠ 0`.
+
+Rewrite using `[dslope_same, L.deriv_weierstrassP]`. Conclude with `fun h ↦ h2w ((two_mul_mem_lattice_iff_derivWeierstrassP_eq_zero hw).2 h)`. Establish `hW` using `analyticAt_weierstrassP_comp_add (L := L) (x := w) (w := w) (by rwa [← two_mul])`. Use `⟨fun z ↦ ℘[L] (z + w) + ℘[L] z + ℘[L] w - (dslope ℘'[L] w z / dslope ℘[L] w z) ^ 2 / 4, ?_, ?_⟩` and prove the remaining obligations. Apply `AnalyticAt.sub (by fun_prop)` to reduce the goal to its premises.
+
+Conclude with `((h2.div h1 hne).pow 2).div analyticAt_const (by norm_num)`. Use `filter_upwards [self_mem_nhdsWithin] with z hz`. Simplify using `only [addDefect, chordSlope]`. Rewrite using `[dslope_of_ne _ hz, dslope_of_ne _ hz, slope_def_field, slope_def_field, div_div_div_cancel_right₀ (sub_ne_zero.2 hz)]`.
+-/
 lemma exists_analyticAt_addDefect_self {w : ℂ} (hw : w ∉ L.lattice) (h2w : 2 * w ∉ L.lattice) :
     ∃ H : ℂ → ℂ, AnalyticAt ℂ H w ∧ addDefect L w =ᶠ[𝓝[≠] w] H := by
   have hpw : AnalyticAt ℂ ℘[L] w := L.analyticOnNhd_weierstrassP w hw
@@ -221,6 +304,27 @@ lemma exists_analyticAt_addDefect_self {w : ℂ} (hw : w ∉ L.lattice) (h2w : 2
     rw [dslope_of_ne _ hz, dslope_of_ne _ hz, slope_def_field, slope_def_field,
       div_div_div_cancel_right₀ (sub_ne_zero.2 hz)]
 
+/- English proof (translation)
+Establish `hw' : -w ∉ L.lattice` using `fun h ↦ hw (by simpa using neg_mem h)`. Establish `hpw : AnalyticAt ℂ ℘[L] (-w)` using `L.analyticOnNhd_weierstrassP _ hw'`. Establish `hdw : AnalyticAt ℂ ℘'[L] (-w)` using `L.analyticOnNhd_derivWeierstrassP _ hw'`. Establish `hd0 : ℘'[L] w ≠ 0` using `fun h ↦ h2w ((two_mul_mem_lattice_iff_derivWeierstrassP_eq_zero hw).2 h)`. Use `set U := dslope ℘[L] (-w) with hU`.
+
+Establish `hUa : AnalyticAt ℂ U (-w)` using `analyticAt_dslope hpw`. Establish `hU0 : U (-w) = -℘'[L] w`. Rewrite using `[hU, dslope_same, L.deriv_weierstrassP, L.derivWeierstrassP_neg]`. Establish `hU0' : U (-w) ≠ 0` using `by rw [hU0]; exact neg_ne_zero.2 hd0`. Use `set M : ℂ → ℂ := fun z ↦ 4 * U z ^ 2 - (℘'[L] z - ℘'[L] w) ^ 2 with hM`.
+
+Establish `hMa : AnalyticAt ℂ M (-w)` using `by simp only [hM]; fun_prop`. Establish `hM0 : M (-w) = 0` using `by simp only [hM, hU0, L.derivWeierstrassP_neg]; ring`. Use `set M₁ := dslope M (-w) with hM₁`. Establish `hM₁a : AnalyticAt ℂ M₁ (-w)` using `analyticAt_dslope hMa`. Establish `hP0 : AnalyticAt ℂ (fun z ↦ ℘[L - (0 : ℂ)] (z + w)) (-w)`.
+
+Establish `h : AnalyticAt ℂ ℘[L - (0 : ℂ)] (-w + w)`. Rewrite using `[neg_add_cancel]`. Conclude with `L.analyticAt_weierstrassPExcept 0`. Conclude with `h.comp (g := ℘[L - (0 : ℂ)]) (f := fun z ↦ z + w) (by fun_prop)`. Use `set H : ℂ → ℂ := fun z ↦ (z - -w) * ℘[L - (0 : ℂ)] (z + w) + (z - -w) * (℘[L] z + ℘[L] w) + M₁ z / (4 * U z ^ 2) with hH`.
+
+Establish `hHa : AnalyticAt ℂ H (-w)`. Simplify using `only [hH]`. Use `AnalyticAt.add (by fun_prop) (AnalyticAt.div hM₁a (by fun_prop) ?_)` and prove the remaining obligations. Conclude with `mul_ne_zero (by norm_num) (pow_ne_zero _ hU0')`. Establish `hev : (fun z ↦ (z - -w) * addDefect L w z) =ᶠ[𝓝[≠] (-w)] H` using `by filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (hUa.continuousAt.eventually_ne hU0')] with z hz hUz`.
+
+Establish `ht : z - -w ≠ 0` using `sub_ne_zero.2 hz`. Establish `ht' : z + w ≠ 0` using `by rwa [sub_neg_eq_add] at ht`. Establish `eD : ℘[L] z - ℘[L] w = (z - -w) * U z`. Use `sub_smul_dslope ℘[L] (-w) z` as an intermediate fact. Rewrite `this` using `[smul_eq_mul, L.weierstrassP_neg]`.
+
+Rewrite using `[hU]`. Conclude with `this.symm`. Establish `eM : M₁ z = (4 * U z ^ 2 - (℘'[L] z - ℘'[L] w) ^ 2) / (z - -w)`. Use `sub_smul_dslope M (-w) z` as an intermediate fact. Rewrite `this` using `[smul_eq_mul, hM0, sub_zero]`.
+
+Rewrite using `[eq_div_iff ht, mul_comm, hM₁, this]`. Establish `e1` using `weierstrassP_eq_except_zero (L := L) (z + w)`. Simplify using `only [addDefect, chordSlope, hH]`. Rewrite using `[eD, eM, e1]`. Conclude with `addDefect_algebra_neg _ _ _ _ _ _ _ ht hUz`.
+
+Establish `hord : 0 ≤ meromorphicOrderAt (fun z ↦ (z - -w) * addDefect L w z) (-w)`. Rewrite using `[meromorphicOrderAt_congr hev]`. Conclude with `hHa.meromorphicOrderAt_nonneg`. Rewrite `hord` using `[fun_meromorphicOrderAt_mul (by fun_prop) ((isEllipticFunction_addDefect w).1 _), meromorphicOrderAt_id_sub_const]`. Generalize the expression as in `meromorphicOrderAt (addDefect L w) (-w) = o at hord ⊢`.
+
+Proceed by induction on `o with`. Consider the case `top => exact le_top`. Consider the case `coe n`. Establish `: (0 : ℤ) ≤ 1 + n` using `by exact_mod_cast hord`. Conclude with `(by omega : (-1 : ℤ) ≤ n)` after adjusting the coercions.
+-/
 lemma neg_one_le_meromorphicOrderAt_addDefect_neg {w : ℂ} (hw : w ∉ L.lattice)
     (h2w : 2 * w ∉ L.lattice) :
     ((-1 : ℤ) : WithTop ℤ) ≤ meromorphicOrderAt (addDefect L w) (-w) := by
@@ -280,6 +384,21 @@ lemma neg_one_le_meromorphicOrderAt_addDefect_neg {w : ℂ} (hw : w ∉ L.lattic
     have : (0 : ℤ) ≤ 1 + n := by exact_mod_cast hord
     exact_mod_cast (by omega : (-1 : ℤ) ≤ n)
 
+/- English proof (translation)
+Establish `hE` using `isEllipticFunction_addDefect (L := L) w`. Establish `hw' : -w ∉ L.lattice` using `fun h ↦ hw (by simpa using neg_mem h)`. Establish `ho : ∀ u, 0 ≤ meromorphicOrderAt (addDefect L w) u`. Apply `meromorphicOrderAt_nonneg_of_simple_pole hE (neg_one_le_meromorphicOrderAt_addDefect_neg hw h2w)` to reduce the goal to its premises. Introduce `u hu`.
+
+Distinguish the cases in `hu0 : u ∈ L.lattice`. Use `hE.2.meromorphicOrderAt_add hu0 0` as an intermediate fact. Rewrite `this` using `[zero_add]`. Rewrite using `[this]`. Take `⟨H, hH, -, hev⟩` from `exists_analyticAt_addDefect_zero hw`.
+
+Rewrite using `[meromorphicOrderAt_congr hev]`. Conclude with `hH.meromorphicOrderAt_nonneg`. Distinguish the cases in `hu1 : u - w ∈ L.lattice`. Use `hE.2.meromorphicOrderAt_add hu1 w` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`.
+
+Rewrite using `[this]`. Take `⟨H, hH, hev⟩` from `exists_analyticAt_addDefect_self hw h2w`. Rewrite using `[meromorphicOrderAt_congr hev]`. Conclude with `hH.meromorphicOrderAt_nonneg`. Conclude with `(analyticAt_addDefect hw hu0 hu1 (by rwa [sub_neg_eq_add] at hu)).meromorphicOrderAt_nonneg`.
+
+Take `⟨c, hc⟩` from `exists_const_of_meromorphicOrderAt_nonneg L hE.1 hE.2 ho`. Take `⟨H, hH, hH0, hev⟩` from `exists_analyticAt_addDefect_zero (L := L) hw`. Establish `hc0 : c = 0`. Establish `hgen : ∀ᶠ u in 𝓝[≠] (0 : ℂ), addDefect L w u = c` using `by filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (L.compl_lattice_sdiff_singleton_mem_nhds 0), nhdsWithin_le_nhds ((L.isClosed_lattice.isOpen_compl.preimage (continuous_sub_right w)).mem_nhds (by simpa using hw')), nhdsWithin_le_nhds ((L.isClosed_lattice.isOpen_compl.pr …`. Conclude with `hc u (analyticAt_addDefect hw (fun h ↦ hu1 ⟨h, hu0⟩) hu2 hu3)`.
+
+Use `eq_of_eventuallyEq_nhdsNE hH.continuousAt continuousAt_const (hev.symm.trans hgen)` as an intermediate fact. Rewrite using `[← this, hH0]`. Use `hc z (analyticAt_addDefect hw hz hzw hzw')` as an intermediate fact. Rewrite `this` using `[hc0]`. Simplify using `only [addDefect] at this`.
+
+Take the linear combination `this`.
+-/
 theorem weierstrassP_add_of_two_mul_notMem {z w : ℂ} (hw : w ∉ L.lattice)
     (h2w : 2 * w ∉ L.lattice) (hz : z ∉ L.lattice) (hzw : z - w ∉ L.lattice)
     (hzw' : z + w ∉ L.lattice) :
@@ -324,6 +443,9 @@ theorem weierstrassP_add_of_two_mul_notMem {z w : ℂ} (hw : w ∉ L.lattice)
   simp only [addDefect] at this
   linear_combination this
 
+/- English proof (translation)
+Establish `s12 : 4 * (x₁ ^ 2 + x₁ * x₂ + x₂ ^ 2) = g₂` using `mul_left_cancel₀ (sub_ne_zero.2 h12) (by linear_combination f1 - f2)`. Establish `s13 : 4 * (x₁ ^ 2 + x₁ * x₃ + x₃ ^ 2) = g₂` using `mul_left_cancel₀ (sub_ne_zero.2 h13) (by linear_combination f1 - f3)`. Conclude with `mul_left_cancel₀ (sub_ne_zero.2 h23) (by linear_combination (s12 - s13) / 4)`.
+-/
 lemma add_add_eq_zero_of_roots {g₂ g₃ x₁ x₂ x₃ : ℂ} (h12 : x₁ ≠ x₂) (h13 : x₁ ≠ x₃)
     (h23 : x₂ ≠ x₃) (f1 : 4 * x₁ ^ 3 - g₂ * x₁ - g₃ = 0) (f2 : 4 * x₂ ^ 3 - g₂ * x₂ - g₃ = 0)
     (f3 : 4 * x₃ ^ 3 - g₂ * x₃ - g₃ = 0) : x₁ + x₂ + x₃ = 0 := by
@@ -333,6 +455,19 @@ lemma add_add_eq_zero_of_roots {g₂ g₃ x₁ x₂ x₃ : ℂ} (h12 : x₁ ≠ 
     mul_left_cancel₀ (sub_ne_zero.2 h13) (by linear_combination f1 - f3)
   exact mul_left_cancel₀ (sub_ne_zero.2 h23) (by linear_combination (s12 - s13) / 4)
 
+/- English proof (translation)
+Distinguish the cases in `h2w : 2 * w ∈ L.lattice`. Distinguish the cases in `h2z : 2 * z ∈ L.lattice`. Establish `d1` using `derivWeierstrassP_eq_zero_of_two_mul_mem h2z`. Establish `d2` using `derivWeierstrassP_eq_zero_of_two_mul_mem h2w`. Establish `root : ∀ u ∉ L.lattice, 2 * u ∈ L.lattice → 4 * ℘[L] u ^ 3 - L.g₂ * ℘[L] u - L.g₃ = 0` using `fun u hu h2 ↦ by`.
+
+Rewrite using `[← L.derivWeierstrassP_sq u hu, derivWeierstrassP_eq_zero_of_two_mul_mem h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hne : ∀ {a b : ℂ}, a ∉ L.lattice → b ∉ L.lattice → a - b ∉ L.lattice → a + b ∉ L.lattice → ℘[L] a ≠ ℘[L] b` using `fun ha hb h1 h2 h ↦ (sub_mem_or_add_mem_of_weierstrassP_eq ha hb h).elim h1 h2`. Establish `nz : -z ∉ L.lattice` using `fun h ↦ hz (by simpa using neg_mem h)`. Establish `nw : -w ∉ L.lattice` using `fun h ↦ hw (by simpa using neg_mem h)`.
+
+Establish `a1 : z - (z + w) ∉ L.lattice` using `by rwa [show z - (z + w) = -w by ring]`. Establish `a2 : z + (z + w) ∉ L.lattice` using `fun h ↦ hw (by`. Use `sub_mem h h2z` as an intermediate fact. Rewrite using `[show z + (z + w) - 2 * z = w by ring] at this)` and apply the resulting hypothesis. Establish `a3 : w - (z + w) ∉ L.lattice` using `by rwa [show w - (z + w) = -z by ring]`.
+
+Establish `a4 : w + (z + w) ∉ L.lattice` using `fun h ↦ hz (by`. Use `sub_mem h h2w` as an intermediate fact. Rewrite using `[show w + (z + w) - 2 * w = z by ring] at this)` and apply the resulting hypothesis. Establish `hs` using `add_add_eq_zero_of_roots (hne hz hw hzw hzw') (hne hz hzw' a1 a2) (hne hw hzw' a3 a4) (root z hz h2z) (root w hw h2w) (root _ hzw' (by rw [mul_add]; exact add_mem h2z h2w))`. Rewrite using `[chordSlope, d1, d2, sub_self, zero_div]`.
+
+Take the linear combination `hs`. Establish `hwz : w - z ∉ L.lattice` using `fun h ↦ hzw (by simpa using neg_mem h)`. Use `weierstrassP_add_of_two_mul_notMem hz h2z hw hwz (by rwa [add_comm])` as an intermediate fact. Rewrite `this` using `[add_comm, chordSlope_comm]`. Take the linear combination `this`.
+
+Conclude with `weierstrassP_add_of_two_mul_notMem hw h2w hz hzw hzw'`.
+-/
 theorem weierstrassP_add {z w : ℂ} (hz : z ∉ L.lattice) (hw : w ∉ L.lattice)
     (hzw : z - w ∉ L.lattice) (hzw' : z + w ∉ L.lattice) :
     ℘[L] (z + w) = chordSlope L z w ^ 2 / 4 - ℘[L] z - ℘[L] w := by
@@ -368,6 +503,11 @@ theorem weierstrassP_add {z w : ℂ} (hz : z ∉ L.lattice) (hw : w ∉ L.lattic
       linear_combination this
   · exact weierstrassP_add_of_two_mul_notMem hw h2w hz hzw hzw'
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Establish `key : 2 * ((y₁ - y₂) / (x₁ - x₂)) * (((6 * x₁ ^ 2 - g₂ / 2) * (x₁ - x₂) - (y₁ - y₂) * y₁) / (x₁ - x₂) ^ 2) / 4 - y₁ - -((y₁ - y₂) / (x₁ - x₂) * (((y₁ - y₂) / (x₁ - x₂)) ^ 2 / 4 - x₁ - x₂ - x₁) + y₁) = (y₁ - y₂) / (4 * (x₁ - x₂) ^ 3) * ((y₂ ^ 2 - (4 * x₂ ^ 3 - g₂ * x₂ - g₃)) - (y₁ …`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, E₁, E₂]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma derivAdd_algebra (x₁ x₂ y₁ y₂ g₂ g₃ : ℂ) (hD : x₁ - x₂ ≠ 0)
     (E₁ : y₁ ^ 2 = 4 * x₁ ^ 3 - g₂ * x₁ - g₃) (E₂ : y₂ ^ 2 = 4 * x₂ ^ 3 - g₂ * x₂ - g₃) :
     2 * ((y₁ - y₂) / (x₁ - x₂)) *
@@ -384,6 +524,15 @@ lemma derivAdd_algebra (x₁ x₂ y₁ y₂ g₂ g₃ : ℂ) (hD : x₁ - x₂ �
   rw [key, E₁, E₂]
   ring
 
+/- English proof (translation)
+Establish `hopen : IsOpen {u : ℂ | u ∉ L.lattice ∧ u - w ∉ L.lattice ∧ u + w ∉ L.lattice}`. Establish `h` using `L.isClosed_lattice.isOpen_compl`. Conclude with `h.inter ((h.preimage (continuous_sub_right w)).inter (h.preimage (continuous_add_right w)))`. Establish `hne : ℘[L] z - ℘[L] w ≠ 0` using `fun h ↦ (sub_mem_or_add_mem_of_weierstrassP_eq hz hw (sub_eq_zero.1 h)).elim hzw hzw'`. Establish `hL : HasDerivAt (fun u ↦ ℘[L] (u + w)) (℘'[L] (z + w)) z` using `(hasDerivAt_weierstrassP hzw').comp_add_const z w`.
+
+Establish `hp` using `hasDerivAt_weierstrassP hz`. Establish `hd : HasDerivAt ℘'[L] (6 * ℘[L] z ^ 2 - L.g₂ / 2) z`. Rewrite using `[← deriv_derivWeierstrassP hz]`. Conclude with `hasDerivAt_derivWeierstrassP hz`. Establish `hm : HasDerivAt (fun u ↦ chordSlope L u w) (((6 * ℘[L] z ^ 2 - L.g₂ / 2) * (℘[L] z - ℘[L] w) - (℘'[L] z - ℘'[L] w) * ℘'[L] z) / (℘[L] z - ℘[L] w) ^ 2) z` using `(hd.sub_const (℘'[L] w)).div (hp.sub_const (℘[L] w)) hne`.
+
+Establish `hR : HasDerivAt (fun u ↦ chordSlope L u w ^ 2 / 4 - ℘[L] u - ℘[L] w) (2 * chordSlope L z w * (((6 * ℘[L] z ^ 2 - L.g₂ / 2) * (℘[L] z - ℘[L] w) - (℘'[L] z - ℘'[L] w) * ℘'[L] z) / (℘[L] z - ℘[L] w) ^ 2) / 4 - ℘'[L] z) z` using `((((hm.pow 2).div_const 4).sub hp).sub_const (℘[L] w)).congr_deriv (by norm_num)`. Establish `heq : (fun u ↦ ℘[L] (u + w)) =ᶠ[𝓝 z] (fun u ↦ chordSlope L u w ^ 2 / 4 - ℘[L] u - ℘[L] w)` using `by filter_upwards [hopen.mem_nhds ⟨hz, hzw, hzw'⟩] with u hu`. Conclude with `weierstrassP_add hu.1 hw hu.2.1 hu.2.2`. Rewrite using `[hL.unique (hR.congr_of_eventuallyEq heq), weierstrassP_add hz hw hzw hzw']`. Simplify using `only [chordSlope]`.
+
+Conclude with `derivAdd_algebra _ _ _ _ _ _ hne (L.derivWeierstrassP_sq z hz) (L.derivWeierstrassP_sq w hw)`.
+-/
 theorem derivWeierstrassP_add {z w : ℂ} (hz : z ∉ L.lattice) (hw : w ∉ L.lattice)
     (hzw : z - w ∉ L.lattice) (hzw' : z + w ∉ L.lattice) :
     ℘'[L] (z + w) = -(chordSlope L z w * (℘[L] (z + w) - ℘[L] z) + ℘'[L] z) := by
@@ -419,6 +568,13 @@ variable (L) in
 
 def tangentSlope (w : ℂ) : ℂ := (6 * ℘[L] w ^ 2 - L.g₂ / 2) / ℘'[L] w
 
+/- English proof (translation)
+Establish `hpw : AnalyticAt ℂ ℘[L] w` using `L.analyticOnNhd_weierstrassP w hw`. Establish `hdw : AnalyticAt ℂ ℘'[L] w` using `L.analyticOnNhd_derivWeierstrassP w hw`. Establish `hne : dslope ℘[L] w w ≠ 0`. Rewrite using `[dslope_same, L.deriv_weierstrassP]`. Conclude with `fun h ↦ h2w ((two_mul_mem_lattice_iff_derivWeierstrassP_eq_zero hw).2 h)`.
+
+Use `⟨fun z ↦ dslope ℘'[L] w z / dslope ℘[L] w z, ((analyticAt_dslope hdw).div (analyticAt_dslope hpw) hne).continuousAt, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [dslope_same, L.deriv_weierstrassP, deriv_derivWeierstrassP hw, tangentSlope]`. Establish `h0 : (↑L.lattice \ {(0 : ℂ)})ᶜ ∈ 𝓝 (w - w)`. Rewrite using `[sub_self]`. Conclude with `L.compl_lattice_sdiff_singleton_mem_nhds 0`.
+
+Use `filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (L.isClosed_lattice.isOpen_compl.mem_nhds hw), nhdsWithin_le_nhds ((continuous_sub_right w).continuousAt.preimage_mem_nhds h0), nhdsWithin_le_nhds ((L.isClosed_lattice.isOpen_compl.preimage (continuous_add_right w)).mem_nhds …`. Establish `hz' : z - w ≠ 0` using `sub_ne_zero.2 hz`. Use `⟨h1, fun h ↦ h2 ⟨h, hz'⟩, h3, ?_⟩` and prove the remaining obligations. Simplify using `only [chordSlope]`. Rewrite using `[dslope_of_ne _ hz, dslope_of_ne _ hz, slope_def_field, slope_def_field, div_div_div_cancel_right₀ hz']`.
+-/
 lemma exists_continuousAt_chordSlope {w : ℂ} (hw : w ∉ L.lattice) (h2w : 2 * w ∉ L.lattice) :
     ∃ s : ℂ → ℂ, ContinuousAt s w ∧ s w = tangentSlope L w ∧
       ∀ᶠ z in 𝓝[≠] w, z ∉ L.lattice ∧ z - w ∉ L.lattice ∧ z + w ∉ L.lattice ∧
@@ -446,6 +602,11 @@ lemma exists_continuousAt_chordSlope {w : ℂ} (hw : w ∉ L.lattice) (h2w : 2 *
     rw [dslope_of_ne _ hz, dslope_of_ne _ hz, slope_def_field, slope_def_field,
       div_div_div_cancel_right₀ hz']
 
+/- English proof (translation)
+Take `⟨s, hs, hsw, hev⟩` from `exists_continuousAt_chordSlope hw h2w`. Establish `hc : ContinuousAt (fun z ↦ ℘[L] (z + w)) w` using `(analyticAt_weierstrassP_comp_add (show w + w ∉ L.lattice by rwa [← two_mul])).continuousAt`. Establish `hg : ContinuousAt (fun z ↦ s z ^ 2 / 4 - ℘[L] z - ℘[L] w) w` using `(((hs.pow 2).div_const 4).sub (L.analyticOnNhd_weierstrassP w hw).continuousAt).sub continuousAt_const`. Use `eq_of_eventuallyEq_nhdsNE hc hg (hev.mono fun z ⟨h1, h2, h3, h4⟩ ↦ by` as an intermediate fact. Simplify using `only`.
+
+Rewrite using `[weierstrassP_add h1 hw h2 h3, h4])`. Simplify using `only [hsw] at this`. Rewrite using `[two_mul, this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem weierstrassP_two_mul {w : ℂ} (hw : w ∉ L.lattice) (h2w : 2 * w ∉ L.lattice) :
     ℘[L] (2 * w) = tangentSlope L w ^ 2 / 4 - 2 * ℘[L] w := by
   obtain ⟨s, hs, hsw, hev⟩ := exists_continuousAt_chordSlope hw h2w
@@ -461,6 +622,11 @@ theorem weierstrassP_two_mul {w : ℂ} (hw : w ∉ L.lattice) (h2w : 2 * w ∉ L
   rw [two_mul, this]
   ring
 
+/- English proof (translation)
+Take `⟨s, hs, hsw, hev⟩` from `exists_continuousAt_chordSlope hw h2w`. Establish `hww : w + w ∉ L.lattice` using `by rwa [← two_mul]`. Establish `hc : ContinuousAt (fun z ↦ ℘'[L] (z + w)) w` using `((L.analyticOnNhd_derivWeierstrassP (w + w) hww).comp (g := ℘'[L]) (f := fun z ↦ z + w) (by fun_prop)).continuousAt`. Establish `hc' : ContinuousAt (fun z ↦ ℘[L] (z + w)) w` using `(analyticAt_weierstrassP_comp_add hww).continuousAt`. Establish `hg : ContinuousAt (fun z ↦ -(s z * (℘[L] (z + w) - ℘[L] z) + ℘'[L] z)) w` using `((hs.mul (hc'.sub (L.analyticOnNhd_weierstrassP w hw).continuousAt)).add (L.analyticOnNhd_derivWeierstrassP w hw).continuousAt).neg`.
+
+Use `eq_of_eventuallyEq_nhdsNE hc hg (hev.mono fun z ⟨h1, h2, h3, h4⟩ ↦ by` as an intermediate fact. Simplify using `only`. Rewrite using `[derivWeierstrassP_add h1 hw h2 h3, h4])`. Simplify using `only [hsw] at this`. Rewrite using `[two_mul, this]`.
+-/
 theorem derivWeierstrassP_two_mul {w : ℂ} (hw : w ∉ L.lattice) (h2w : 2 * w ∉ L.lattice) :
     ℘'[L] (2 * w) = -(tangentSlope L w * (℘[L] (2 * w) - ℘[L] w) + ℘'[L] w) := by
   obtain ⟨s, hs, hsw, hev⟩ := exists_continuousAt_chordSlope hw h2w

@@ -17,11 +17,17 @@ section Ring
 variable {R : Type*} [Ring R] {A B C : Type*} [AddCommGroup A] [AddCommGroup B] [AddCommGroup C]
   [Module R A] [Module R B] [Module R C] {f : A →ₗ[R] B} {g : B →ₗ[R] C}
 
+/- English proof (translation)
+The claim follows from `Module.Finite.of_exact (f := f) (g := g.rangeRestrict) (fun x ↦ by rw [← h x, Subtype.ext_iff]; rfl) g.surjective_rangeRestrict`.
+-/
 theorem finite_of_isNoetherian (h : Function.Exact f g) [Module.Finite R A] [IsNoetherian R C] :
     Module.Finite R B :=
   Module.Finite.of_exact (f := f) (g := g.rangeRestrict)
     (fun x ↦ by rw [← h x, Subtype.ext_iff]; rfl) g.surjective_rangeRestrict
 
+/- English proof (translation)
+The claim follows from `finite_of_isNoetherian h`.
+-/
 theorem finite [IsNoetherianRing R] (h : Function.Exact f g) [Module.Finite R A]
     [Module.Finite R C] : Module.Finite R B :=
   finite_of_isNoetherian h
@@ -32,12 +38,18 @@ section Field
 
 variable {k : Type*} [DivisionRing k]
 
+/- English proof (translation)
+Rewrite using `[← g.finrank_range_add_finrank_ker, h.linearMap_ker_eq, add_comm]`.
+-/
 theorem finrank_eq_range_add_range {A B C : Type*} [AddCommGroup A] [AddCommGroup B]
     [AddCommGroup C] [Module k A] [Module k B] [Module k C] {f : A →ₗ[k] B} {g : B →ₗ[k] C}
     (h : Function.Exact f g) [Module.Finite k B] :
     finrank k B = finrank k (LinearMap.range f) + finrank k (LinearMap.range g) := by
   rw [← g.finrank_range_add_finrank_ker, h.linearMap_ker_eq, add_comm]
 
+/- English proof (translation)
+Establish `: Module.Finite k B` using `finite h`. Rewrite using `[finrank_eq_range_add_range h]`. Conclude with `add_le_add f.finrank_range_le (Submodule.finrank_le _)`.
+-/
 theorem finrank_le {A B C : Type*} [AddCommGroup A] [AddCommGroup B]
     [AddCommGroup C] [Module k A] [Module k B] [Module k C] {f : A →ₗ[k] B} {g : B →ₗ[k] C}
     (h : Function.Exact f g) [Module.Finite k A] [Module.Finite k C] :
@@ -46,6 +58,11 @@ theorem finrank_le {A B C : Type*} [AddCommGroup A] [AddCommGroup B]
   rw [finrank_eq_range_add_range h]
   exact add_le_add f.finrank_range_le (Submodule.finrank_le _)
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih`. Use `hV N N.lt_succ_self` as an intermediate fact. Rewrite using `[Finset.sum_range_succ, ih (fun i hi ↦ hV i (by omega)) (fun i hi ↦ h i (by omega)), ← (f N).finrank_range_add_finrank_ker, (h N N.lt_succ_self).linearMap_ker_eq]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_neg_one_pow_finrank {V : ℕ → Type*} [∀ i, AddCommGroup (V i)] [∀ i, Module k (V i)]
     (f : ∀ i, V i →ₗ[k] V (i + 1)) (N : ℕ) (hV : ∀ i < N, Module.Finite k (V i))
     (h : ∀ i < N, Function.Exact (f i) (f (i + 1))) :
@@ -60,6 +77,9 @@ theorem sum_neg_one_pow_finrank {V : ℕ → Type*} [∀ i, AddCommGroup (V i)] 
     push_cast
     ring
 
+/- English proof (translation)
+Rewrite using `[sum_neg_one_pow_finrank f N hV h, LinearMap.ker_eq_bot.2 h₀, finrank_bot, finrank_zero_of_subsingleton (M := LinearMap.ker (f N))]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_neg_one_pow_finrank_eq_zero {V : ℕ → Type*} [∀ i, AddCommGroup (V i)]
     [∀ i, Module k (V i)] (f : ∀ i, V i →ₗ[k] V (i + 1)) (N : ℕ)
     (hV : ∀ i < N, Module.Finite k (V i)) (h₀ : Function.Injective (f 0))
@@ -73,6 +93,11 @@ variable {A B C : ℕ → Type*} [∀ i, AddCommGroup (A i)] [∀ i, AddCommGrou
   [∀ i, AddCommGroup (C i)] [∀ i, Module k (A i)] [∀ i, Module k (B i)] [∀ i, Module k (C i)]
   (f : ∀ i, A i →ₗ[k] B i) (g : ∀ i, B i →ₗ[k] C i) (δ : ∀ i, C i →ₗ[k] A (i + 1))
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih`. Establish `hN` using `N.lt_succ_self`. Use `hA N hN` as an intermediate fact.
+
+Use `hB N hN` as an intermediate fact. Use `hC N hN` as an intermediate fact. Rewrite using `[Finset.sum_range_succ, ih (fun i hi ↦ hA i (by omega)) (fun i hi ↦ hB i (by omega)) (fun i hi ↦ hC i (by omega)) (fun i hi ↦ h₂ i (by omega)) (fun i hi ↦ h₃ i (by omega)) (fun i hi ↦ h₁ i (by omega)), ← (f N).finrank_range_add_finrank_ker, finrank_eq_range_add_range (h₂ N hN), f …`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_neg_one_pow_finrank₃ (N : ℕ) (hA : ∀ i < N, Module.Finite k (A i))
     (hB : ∀ i < N, Module.Finite k (B i)) (hC : ∀ i < N, Module.Finite k (C i))
     (h₂ : ∀ i < N, Function.Exact (f i) (g i)) (h₃ : ∀ i < N, Function.Exact (g i) (δ i))
@@ -94,6 +119,9 @@ theorem sum_neg_one_pow_finrank₃ (N : ℕ) (hA : ∀ i < N, Module.Finite k (A
     push_cast
     ring
 
+/- English proof (translation)
+Use `sum_neg_one_pow_finrank₃ f g δ N hA hB hC h₂ h₃ h₁` as an intermediate fact. Rewrite `this` using `[LinearMap.ker_eq_bot.2 h₀, LinearMap.ker_eq_bot.2 hN, finrank_bot, finrank_bot]`. Simplify using `only [mul_add, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib, Nat.cast_zero, mul_zero, sub_zero] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sum_neg_one_pow_finrank_eq_add (N : ℕ) (hA : ∀ i < N, Module.Finite k (A i))
     (hB : ∀ i < N, Module.Finite k (B i)) (hC : ∀ i < N, Module.Finite k (C i))
     (h₀ : Function.Injective (f 0))
@@ -114,6 +142,9 @@ end ExactSeq
 
 variable {X : Scheme.{u}}
 
+/- English proof (translation)
+The claim follows from `SheafLES.shortExact_map_toSheaf X.ringCatSheaf hS`.
+-/
 theorem shortExact_toAbSheaf {S : ShortComplex X.Modules} (hS : S.ShortExact) :
     (S.map (toAbSheaf X)).ShortExact :=
   SheafLES.shortExact_map_toSheaf X.ringCatSheaf hS
@@ -139,39 +170,69 @@ def δ (U : X.Opens) (n : ℕ) : cohOn S.X₃ U n →ₗ[R] cohOn S.X₁ U (n + 
 
 variable (U : X.Opens) (n : ℕ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma toH'_δ (x : cohOn S.X₃ U n) :
     toH' S.X₁ U (n + 1) (δ R hS U n x) =
       SheafLES.δ.{u} (shortExact_toAbSheaf hS) n U (toH' S.X₃ U n x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma δ_eq_δ (R' : Type t) [CommRing R'] [Algebra R' Γ(X, ⊤)] (x : cohOn S.X₃ U n) :
     δ R hS U n x = δ R' hS U n x := rfl
 
 include hS in
 
+/- English proof (translation)
+The claim follows from `SheafLES.exact₂.{u} (shortExact_toAbSheaf hS) n U`.
+-/
 theorem exact₂ : Function.Exact (map R S.f U n) (map R S.g U n) :=
   SheafLES.exact₂.{u} (shortExact_toAbSheaf hS) n U
 
+/- English proof (translation)
+The claim follows from `SheafLES.exact₃.{u} (shortExact_toAbSheaf hS) n U`.
+-/
 theorem exact₃ : Function.Exact (map R S.g U n) (δ R hS U n) :=
   SheafLES.exact₃.{u} (shortExact_toAbSheaf hS) n U
 
+/- English proof (translation)
+The claim follows from `SheafLES.exact₁.{u} (shortExact_toAbSheaf hS) n U`.
+-/
 theorem exact₁ : Function.Exact (δ R hS U n) (map R S.f U (n + 1)) :=
   SheafLES.exact₁.{u} (shortExact_toAbSheaf hS) n U
 
+/- English proof (translation)
+The claim follows from `SheafLES.map_zero_injective_of_mono.{u} ((toAbSheaf X).map φ) U`.
+-/
 theorem map_zero_injective_of_mono {F G : X.Modules} (φ : F ⟶ G) [Mono φ] :
     Function.Injective (map R φ U 0) :=
   SheafLES.map_zero_injective_of_mono.{u} ((toAbSheaf X).map φ) U
 
 include hS in
 
+/- English proof (translation)
+The claim follows from `SheafLES.injective_zero.{u} (shortExact_toAbSheaf hS) U`.
+-/
 theorem injective_zero : Function.Injective (map R S.f U 0) :=
   SheafLES.injective_zero.{u} (shortExact_toAbSheaf hS) U
 
+/- English proof (translation)
+The claim follows from `(exact₃ R hS U n).apply_apply_eq_zero x`.
+-/
 @[simp] lemma δ_map (x : cohOn S.X₂ U n) : δ R hS U n (map R S.g U n x) = 0 :=
   (exact₃ R hS U n).apply_apply_eq_zero x
 
+/- English proof (translation)
+The claim follows from `(exact₁ R hS U n).apply_apply_eq_zero x`.
+-/
 @[simp] lemma map_δ (x : cohOn S.X₃ U n) : map R S.f U (n + 1) (δ R hS U n x) = 0 :=
   (exact₁ R hS U n).apply_apply_eq_zero x
 
+/- English proof (translation)
+The claim follows from `SheafLES.δ_naturality.{u} (shortExact_toAbSheaf hS) (shortExact_toAbSheaf hS') ((toAbSheaf X).mapShortComplex.map φ) n U x`.
+-/
 theorem δ_naturality {S' : ShortComplex X.Modules} (hS' : S'.ShortExact) (φ : S ⟶ S')
     (x : cohOn S.X₃ U n) :
     map R φ.τ₁ U (n + 1) (δ R hS U n x) = δ R hS' U n (map R φ.τ₃ U n x) :=
@@ -180,16 +241,25 @@ theorem δ_naturality {S' : ShortComplex X.Modules} (hS' : S'.ShortExact) (φ : 
 
 variable {U} in
 
+/- English proof (translation)
+The claim follows from `SheafLES.δ_res.{u} (shortExact_toAbSheaf hS) n (homOfLE h) x`.
+-/
 theorem res_δ {V : X.Opens} (h : V ≤ U) (x : cohOn S.X₃ U n) :
     res R S.X₁ h (n + 1) (δ R hS U n x) = δ R hS V n (res R S.X₃ h n x) :=
   SheafLES.δ_res.{u} (shortExact_toAbSheaf hS) n (homOfLE h) x
 
 include hS
 
+/- English proof (translation)
+The claim follows from `fun x ↦ (exact₃ R hS U n x).1 (Subsingleton.elim _ _)`.
+-/
 theorem map_g_surjective (h : Subsingleton (cohOn S.X₁ U (n + 1))) :
     Function.Surjective (map R S.g U n) :=
   fun x ↦ (exact₃ R hS U n x).1 (Subsingleton.elim _ _)
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨y, rfl⟩` from `(exact₁ R hS U n x).1 hx`. Rewrite using `[Subsingleton.elim y 0, map_zero]`.
+-/
 theorem map_f_injective (h : Subsingleton (cohOn S.X₃ U n)) :
     Function.Injective (map R S.f U (n + 1)) := by
   rw [injective_iff_map_eq_zero]
@@ -197,21 +267,36 @@ theorem map_f_injective (h : Subsingleton (cohOn S.X₃ U n)) :
   obtain ⟨y, rfl⟩ := (exact₁ R hS U n x).1 hx
   rw [Subsingleton.elim y 0, map_zero]
 
+/- English proof (translation)
+The claim follows from `SheafLES.sections_surjective_of_subsingleton.{u} (shortExact_toAbSheaf hS) U h`.
+-/
 theorem app_surjective (h : Subsingleton (cohOn S.X₁ U 1)) : Function.Surjective (S.g.app U) :=
   SheafLES.sections_surjective_of_subsingleton.{u} (shortExact_toAbSheaf hS) U h
 
+/- English proof (translation)
+The claim follows from `SheafLES.subsingleton₂.{u} (shortExact_toAbSheaf hS) n U h₁ h₃`.
+-/
 theorem subsingleton₂ (h₁ : Subsingleton (cohOn S.X₁ U n)) (h₃ : Subsingleton (cohOn S.X₃ U n)) :
     Subsingleton (cohOn S.X₂ U n) :=
   SheafLES.subsingleton₂.{u} (shortExact_toAbSheaf hS) n U h₁ h₃
 
+/- English proof (translation)
+The claim follows from `SheafLES.subsingleton₃.{u} (shortExact_toAbSheaf hS) n U h₂ h₁`.
+-/
 theorem subsingleton₃ (h₂ : Subsingleton (cohOn S.X₂ U n))
     (h₁ : Subsingleton (cohOn S.X₁ U (n + 1))) : Subsingleton (cohOn S.X₃ U n) :=
   SheafLES.subsingleton₃.{u} (shortExact_toAbSheaf hS) n U h₂ h₁
 
+/- English proof (translation)
+The claim follows from `SheafLES.subsingleton₁.{u} (shortExact_toAbSheaf hS) n U h₃ h₂`.
+-/
 theorem subsingleton₁ (h₃ : Subsingleton (cohOn S.X₃ U n))
     (h₂ : Subsingleton (cohOn S.X₂ U (n + 1))) : Subsingleton (cohOn S.X₁ U (n + 1)) :=
   SheafLES.subsingleton₁.{u} (shortExact_toAbSheaf hS) n U h₃ h₂
 
+/- English proof (translation)
+The claim follows from `(injective_zero ℤ hS U).subsingleton`.
+-/
 theorem subsingleton₁_zero (h₂ : Subsingleton (cohOn S.X₂ U 0)) : Subsingleton (cohOn S.X₁ U 0) :=
   (injective_zero ℤ hS U).subsingleton
 
@@ -219,30 +304,51 @@ section Finite
 
 variable [IsNoetherianRing R]
 
+/- English proof (translation)
+The claim follows from `ExactSeq.finite (exact₂ R hS U n)`.
+-/
 theorem finite₂ (h₁ : Module.Finite R (cohOn S.X₁ U n)) (h₃ : Module.Finite R (cohOn S.X₃ U n)) :
     Module.Finite R (cohOn S.X₂ U n) :=
   ExactSeq.finite (exact₂ R hS U n)
 
+/- English proof (translation)
+The claim follows from `ExactSeq.finite (exact₃ R hS U n)`.
+-/
 theorem finite₃ (h₂ : Module.Finite R (cohOn S.X₂ U n))
     (h₁ : Module.Finite R (cohOn S.X₁ U (n + 1))) : Module.Finite R (cohOn S.X₃ U n) :=
   ExactSeq.finite (exact₃ R hS U n)
 
+/- English proof (translation)
+The claim follows from `ExactSeq.finite (exact₁ R hS U n)`.
+-/
 theorem finite₁ (h₃ : Module.Finite R (cohOn S.X₃ U n))
     (h₂ : Module.Finite R (cohOn S.X₂ U (n + 1))) : Module.Finite R (cohOn S.X₁ U (n + 1)) :=
   ExactSeq.finite (exact₁ R hS U n)
 
+/- English proof (translation)
+The claim follows from `Module.Finite.of_injective _ (injective_zero R hS U)`.
+-/
 theorem finite₁_zero (h₂ : Module.Finite R (cohOn S.X₂ U 0)) : Module.Finite R (cohOn S.X₁ U 0) :=
   Module.Finite.of_injective _ (injective_zero R hS U)
 
+/- English proof (translation)
+The claim follows from `| 0 => finite₁_zero R hS U (h₂ 0) | n + 1 => finite₁ R hS U n (h₃ n) (h₂ (n + 1))`.
+-/
 theorem forall_finite₁ (h₂ : ∀ n, Module.Finite R (cohOn S.X₂ U n))
     (h₃ : ∀ n, Module.Finite R (cohOn S.X₃ U n)) : ∀ n, Module.Finite R (cohOn S.X₁ U n)
   | 0 => finite₁_zero R hS U (h₂ 0)
   | n + 1 => finite₁ R hS U n (h₃ n) (h₂ (n + 1))
 
+/- English proof (translation)
+The claim follows from `fun n ↦ finite₂ R hS U n (h₁ n) (h₃ n)`.
+-/
 theorem forall_finite₂ (h₁ : ∀ n, Module.Finite R (cohOn S.X₁ U n))
     (h₃ : ∀ n, Module.Finite R (cohOn S.X₃ U n)) : ∀ n, Module.Finite R (cohOn S.X₂ U n) :=
   fun n ↦ finite₂ R hS U n (h₁ n) (h₃ n)
 
+/- English proof (translation)
+The claim follows from `fun n ↦ finite₃ R hS U n (h₂ n) (h₁ (n + 1))`.
+-/
 theorem forall_finite₃ (h₁ : ∀ n, Module.Finite R (cohOn S.X₁ U n))
     (h₂ : ∀ n, Module.Finite R (cohOn S.X₂ U n)) : ∀ n, Module.Finite R (cohOn S.X₃ U n) :=
   fun n ↦ finite₃ R hS U n (h₂ n) (h₁ (n + 1))
@@ -253,26 +359,41 @@ section Field
 
 variable (k : Type v) [Field k] [Algebra k Γ(X, ⊤)]
 
+/- English proof (translation)
+The claim follows from `ExactSeq.finrank_le (exact₂ k hS U n)`.
+-/
 theorem finrank₂_le (h₁ : Module.Finite k (cohOn S.X₁ U n))
     (h₃ : Module.Finite k (cohOn S.X₃ U n)) :
     finrank k (cohOn S.X₂ U n) ≤ finrank k (cohOn S.X₁ U n) + finrank k (cohOn S.X₃ U n) :=
   ExactSeq.finrank_le (exact₂ k hS U n)
 
+/- English proof (translation)
+The claim follows from `ExactSeq.finrank_le (exact₃ k hS U n)`.
+-/
 theorem finrank₃_le (h₂ : Module.Finite k (cohOn S.X₂ U n))
     (h₁ : Module.Finite k (cohOn S.X₁ U (n + 1))) :
     finrank k (cohOn S.X₃ U n) ≤ finrank k (cohOn S.X₂ U n) + finrank k (cohOn S.X₁ U (n + 1)) :=
   ExactSeq.finrank_le (exact₃ k hS U n)
 
+/- English proof (translation)
+The claim follows from `ExactSeq.finrank_le (exact₁ k hS U n)`.
+-/
 theorem finrank₁_le (h₃ : Module.Finite k (cohOn S.X₃ U n))
     (h₂ : Module.Finite k (cohOn S.X₂ U (n + 1))) :
     finrank k (cohOn S.X₁ U (n + 1)) ≤
       finrank k (cohOn S.X₃ U n) + finrank k (cohOn S.X₂ U (n + 1)) :=
   ExactSeq.finrank_le (exact₁ k hS U n)
 
+/- English proof (translation)
+The claim follows from `LinearMap.finrank_le_finrank_of_injective (injective_zero k hS U)`.
+-/
 theorem finrank₁_zero_le (h₂ : Module.Finite k (cohOn S.X₂ U 0)) :
     finrank k (cohOn S.X₁ U 0) ≤ finrank k (cohOn S.X₂ U 0) :=
   LinearMap.finrank_le_finrank_of_injective (injective_zero k hS U)
 
+/- English proof (translation)
+Rewrite using `[ExactSeq.sum_neg_one_pow_finrank₃ (fun i ↦ map k S.f U i) (fun i ↦ map k S.g U i) (fun i ↦ δ k hS U i) N h₁ h₂ h₃ (fun i _ ↦ exact₂ k hS U i) (fun i _ ↦ exact₃ k hS U i) (fun i _ ↦ exact₁ k hS U i), LinearMap.ker_eq_bot.2 (injective_zero k hS U), finrank_bot]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_neg_one_pow_finrank (N : ℕ) (h₁ : ∀ i < N, Module.Finite k (cohOn S.X₁ U i))
     (h₂ : ∀ i < N, Module.Finite k (cohOn S.X₂ U i))
     (h₃ : ∀ i < N, Module.Finite k (cohOn S.X₃ U i)) :
@@ -284,6 +405,9 @@ theorem sum_neg_one_pow_finrank (N : ℕ) (h₁ : ∀ i < N, Module.Finite k (co
     (fun i _ ↦ exact₁ k hS U i), LinearMap.ker_eq_bot.2 (injective_zero k hS U), finrank_bot]
   simp
 
+/- English proof (translation)
+The claim follows from `ExactSeq.sum_neg_one_pow_finrank_eq_add (fun i ↦ map k S.f U i) (fun i ↦ map k S.g U i) (fun i ↦ δ k hS U i) N h₁ (fun i hi ↦ finite₂ k hS U i (h₁ i hi) (h₃ i hi)) h₃ (injective_zero k hS U) (fun i _ ↦ exact₂ k hS U i) (fun i _ ↦ exact₃ k hS U i) (fun i _ ↦ exact₁ k hS U i) hN`.
+-/
 theorem sum_neg_one_pow_finrank_eq_add (N : ℕ)
     (h₁ : ∀ i < N, Module.Finite k (cohOn S.X₁ U i))
     (h₃ : ∀ i < N, Module.Finite k (cohOn S.X₃ U i)) (hN : Function.Injective (map k S.f U N)) :
@@ -306,23 +430,38 @@ variable (k : Type v) [Field k] [Algebra k Γ(X, ⊤)]
 
 include hS
 
+/- English proof (translation)
+The claim follows from `cohOn.finrank₂_le hS ⊤ n k h₁ h₃`.
+-/
 theorem hdim₂_le (n : ℕ) (h₁ : Module.Finite k (coh S.X₁ n)) (h₃ : Module.Finite k (coh S.X₃ n)) :
     hdim k S.X₂ n ≤ hdim k S.X₁ n + hdim k S.X₃ n :=
   cohOn.finrank₂_le hS ⊤ n k h₁ h₃
 
+/- English proof (translation)
+The claim follows from `cohOn.finrank₃_le hS ⊤ n k h₂ h₁`.
+-/
 theorem hdim₃_le (n : ℕ) (h₂ : Module.Finite k (coh S.X₂ n))
     (h₁ : Module.Finite k (coh S.X₁ (n + 1))) :
     hdim k S.X₃ n ≤ hdim k S.X₂ n + hdim k S.X₁ (n + 1) :=
   cohOn.finrank₃_le hS ⊤ n k h₂ h₁
 
+/- English proof (translation)
+The claim follows from `cohOn.finrank₁_le hS ⊤ n k h₃ h₂`.
+-/
 theorem hdim₁_le (n : ℕ) (h₃ : Module.Finite k (coh S.X₃ n))
     (h₂ : Module.Finite k (coh S.X₂ (n + 1))) :
     hdim k S.X₁ (n + 1) ≤ hdim k S.X₃ n + hdim k S.X₂ (n + 1) :=
   cohOn.finrank₁_le hS ⊤ n k h₃ h₂
 
+/- English proof (translation)
+The claim follows from `cohOn.finrank₁_zero_le hS ⊤ k h₂`.
+-/
 theorem hdim₁_zero_le (h₂ : Module.Finite k (coh S.X₂ 0)) : hdim k S.X₁ 0 ≤ hdim k S.X₂ 0 :=
   cohOn.finrank₁_zero_le hS ⊤ k h₂
 
+/- English proof (translation)
+The claim follows from `cohOn.sum_neg_one_pow_finrank_eq_add hS ⊤ k N h₁ h₃ (Function.injective_of_subsingleton _)`.
+-/
 theorem sum_neg_one_pow_hdim_eq_add (N : ℕ) (h₁ : ∀ i < N, Module.Finite k (coh S.X₁ i))
     (h₃ : ∀ i < N, Module.Finite k (coh S.X₃ i)) (hN : Subsingleton (coh S.X₁ N)) :
     ∑ i ∈ Finset.range N, (-1 : ℤ) ^ i * hdim k S.X₂ i =
@@ -332,6 +471,9 @@ theorem sum_neg_one_pow_hdim_eq_add (N : ℕ) (h₁ : ∀ i < N, Module.Finite k
 
 omit hS in
 
+/- English proof (translation)
+Use `finsum_eq_sum_of_support_subset _ fun i hi ↦ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Use `hN i (by simpa using h)` as an intermediate fact. Conclude with `hi (by simp [hdim_eq_zero_of_subsingleton])`.
+-/
 theorem finsum_neg_one_pow_hdim_eq_sum (F : X.Modules) (N : ℕ)
     (hN : ∀ i, N ≤ i → Subsingleton (coh F i)) :
     ∑ᶠ i, (-1 : ℤ) ^ i * hdim k F i = ∑ i ∈ Finset.range N, (-1 : ℤ) ^ i * hdim k F i := by
@@ -340,6 +482,11 @@ theorem finsum_neg_one_pow_hdim_eq_sum (F : X.Modules) (N : ℕ)
   have := hN i (by simpa using h)
   exact hi (by simp [hdim_eq_zero_of_subsingleton])
 
+/- English proof (translation)
+Take `⟨N₁, hv₁⟩` from `hv₁`. Take `⟨N₃, hv₃⟩` from `hv₃`. Establish `e₁ : ∀ i, max N₁ N₃ ≤ i → Subsingleton (coh S.X₁ i)` using `fun i hi ↦ hv₁ i (by omega)`. Establish `e₃ : ∀ i, max N₁ N₃ ≤ i → Subsingleton (coh S.X₃ i)` using `fun i hi ↦ hv₃ i (by omega)`. Rewrite using `[finsum_neg_one_pow_hdim_eq_sum k _ _ e₁, finsum_neg_one_pow_hdim_eq_sum k _ _ e₃, finsum_neg_one_pow_hdim_eq_sum k S.X₂ (max N₁ N₃) fun i hi ↦ cohOn.subsingleton₂ hS ⊤ i (e₁ i hi) (e₃ i hi)]`.
+
+Conclude with `sum_neg_one_pow_hdim_eq_add k hS _ (fun i _ ↦ h₁ i) (fun i _ ↦ h₃ i) (e₁ _ le_rfl)`.
+-/
 theorem finsum_neg_one_pow_hdim_eq_add (h₁ : ∀ i, Module.Finite k (coh S.X₁ i))
     (h₃ : ∀ i, Module.Finite k (coh S.X₃ i))
     (hv₁ : ∃ N, ∀ i, N ≤ i → Subsingleton (coh S.X₁ i))
@@ -357,6 +504,9 @@ theorem finsum_neg_one_pow_hdim_eq_add (h₁ : ∀ i, Module.Finite k (coh S.X�
 
 end hdim
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun R _ _ U ↦ ⟨⟨cohOn.δ R hS U, cohOn.toH'_δ R hS U, cohOn.injective_zero R hS U, fun n ↦ ⟨cohOn.exact₂ R hS U n, cohOn.exact₃ R hS U n, cohOn.exact₁ R hS U n⟩⟩, fun _ ↦ ⟨cohOn.finite₁_zero R hS U, fun n ↦ ⟨cohOn.finite₂ R hS U n, cohOn.finite₃ R hS U n, cohOn.finite₁ R hS U n⟩⟩ …`.
+-/
 theorem linear_longExact {S : ShortComplex X.Modules} (hS : S.ShortExact) :
     (∀ (R : Type v) [CommRing R] [Algebra R Γ(X, ⊤)] (U : X.Opens),
       (∃ d : ∀ n, cohOn S.X₃ U n →ₗ[R] cohOn S.X₁ U (n + 1),

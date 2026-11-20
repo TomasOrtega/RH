@@ -31,6 +31,11 @@ def stab {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V
     conv_lhs => rw [← ha]
     rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hv h hh`. Use `hv ⟨h, hh⟩` as an intermediate fact. Simplify using `using this`. Introduce `hv h`.
+
+Simplify using `using hv h h.2`.
+-/
 theorem mem_fixed_iff (σ : Representation ℂ G W) (H : Subgroup G) (v : W) :
     v ∈ GlobalTheory.PRep.fixed σ H ↔ ∀ h ∈ H, σ h v = v := by
   constructor
@@ -40,6 +45,29 @@ theorem mem_fixed_iff (σ : Representation ℂ G W) (H : Subgroup G) (v : W) :
   · intro hv h
     simpa using hv h h.2
 
+/- English proof (translation)
+Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK`. Establish `hSo : IsOpen ((stab σ x : Subgroup G) : Set G)` using `hs x`. Use `haveI : Finite (K ⧸ (stab σ x).subgroupOf K) := Subgroup.quotient_finite_of_isOpen _ (hSo.preimage continuous_subtype_val)`. Set `f : K ⧸ (stab σ x).subgroupOf K → W` to `fun q => Quotient.liftOn' q (fun k : K => σ k x) (by`. Introduce `a b hab`.
+
+Rewrite `hab` using `[QuotientGroup.leftRel_apply, Subgroup.mem_subgroupOf]`. Express the relevant statement in the definitionally equal form `σ ((a : G)⁻¹ * b) x = x at hab`. Use `show σ a x = σ b x`. Combine the equalities or inequalities in the displayed calculation. Establish `hrange : Set.range f = Set.range (fun k : K => σ k x)`.
+
+Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, rfl⟩`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H k => exact ⟨k, rfl⟩`.
+
+Introduce and unpack `⟨k, rfl⟩`. Conclude with `⟨QuotientGroup.mk k, rfl⟩`. Establish `hfin : (Set.range (fun k : K => σ k x)).Finite` using `hrange ▸ Set.finite_range f`. Use `set O := hfin.toFinset with hO`. Establish `hxO : x ∈ O`.
+
+Rewrite using `[hO, Set.Finite.mem_toFinset]`. Conclude with `⟨1, by simp⟩`. Establish `hperm : ∀ k ∈ K, ∑ v ∈ O, σ k v = ∑ v ∈ O, v`. Introduce `k hk`. Use `Finset.sum_nbij' (fun v => σ k v) (fun v => σ k⁻¹ v) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `v hv`. Rewrite `hv`, the goal using `[hO, Set.Finite.mem_toFinset]`. Take `⟨j, rfl⟩` from `hv`. Conclude with `⟨⟨k, hk⟩ * j, by simp [Module.End.mul_apply]⟩`. Introduce `v hv`.
+
+Rewrite `hv`, the goal using `[hO, Set.Finite.mem_toFinset]`. Take `⟨j, rfl⟩` from `hv`. Conclude with `⟨⟨k, hk⟩⁻¹ * j, by simp [Module.End.mul_apply]⟩`. Introduce `v _`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+
+Introduce `v _`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Introduce `v _`. Both sides reduce to the same expression. Use `⟨((O.card : ℂ))⁻¹ • ∑ v ∈ O, v, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mem_fixed_iff]`. Introduce `k hk`. Rewrite using `[map_smul, map_sum, hperm k hk]`. Introduce `ℓ hℓ`. Establish `hconst : ∀ v ∈ O, ℓ v = ℓ x`.
+
+Introduce `v hv`. Rewrite `hv` using `[hO, Set.Finite.mem_toFinset]`. Take `⟨j, rfl⟩` from `hv`. Conclude with `hℓ j j.2 x`. Establish `hcard : (O.card : ℂ) ≠ 0`.
+
+Establish `: 0 < O.card` using `Finset.card_pos.mpr ⟨x, hxO⟩`. Conclude with `this.ne'` after adjusting the coercions. Rewrite using `[map_smul, map_sum, Finset.sum_congr rfl hconst, Finset.sum_const, smul_eq_mul, nsmul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hcard, one_mul]`.
+-/
 theorem exists_fixed_avg (σ : Representation ℂ G W) (hs : GlobalTheory.PRep.IsSmooth σ) (K : Subgroup G)
     (hK : IsCompact (K : Set G)) (x : W) :
     ∃ x₀ ∈ GlobalTheory.PRep.fixed σ K, ∀ ℓ : W →ₗ[ℂ] ℂ, (∀ k ∈ K, ∀ v, ℓ (σ k v) = ℓ v) → ℓ x = ℓ x₀ := by
@@ -100,6 +128,17 @@ theorem exists_fixed_avg (σ : Representation ℂ G W) (hs : GlobalTheory.PRep.I
     rw [map_smul, map_sum, Finset.sum_congr rfl hconst, Finset.sum_const, smul_eq_mul, nsmul_eq_mul,
       ← mul_assoc, inv_mul_cancel₀ hcard, one_mul]
 
+/- English proof (translation)
+Set `T : U →ₗ[ℝ] Module.Dual ℂ U` to `{ toFun := fun z => (B.flip (z : W)).comp U.subtype map_add' := by intro a b; ext x; simp map_smul' := by`. Introduce `r z`. Use extensionality with `x`. Simplify using `only [RingHom.id_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.flip_apply, Submodule.coe_smul]`. Rewrite using `[RCLike.real_smul_eq_coe_smul (K := ℂ) r z, Submodule.coe_smul, LinearMap.map_smulₛₗ, Complex.real_smul, RCLike.conj_ofReal, smul_eq_mul]`.
+
+Use `rfl }`. Establish `hinj : Function.Injective T`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `z hz`. Assume the negation of the conclusion as `hne`.
+
+Establish `h1 : B z z = 0`. Use `LinearMap.congr_fun hz z` as an intermediate fact. Simplify `this` using `[T]`. Use `hB z (fun h => hne (Subtype.ext h))` as an intermediate fact. Rewrite `this` using `[h1]`.
+
+Simplify using `at this`. Establish `hrank : Module.finrank ℝ U = Module.finrank ℝ (Module.Dual ℂ U)`. Rewrite using `[← Module.finrank_mul_finrank ℝ ℂ U, ← Module.finrank_mul_finrank ℝ ℂ (Module.Dual ℂ U), Subspace.dual_finrank_eq]`. Establish `hsurj` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hrank).mp hinj`. Take `⟨z, hz⟩` from `hsurj f`.
+
+Conclude with `⟨z, fun x => by rw [← hz]; rfl⟩`.
+-/
 theorem exists_rep (U : Submodule ℂ W) [FiniteDimensional ℂ U]
     (B : W →ₗ[ℂ] W →ₛₗ[starRingEnd ℂ] ℂ) (hB : ∀ x, x ≠ 0 → 0 < (B x x).re) (f : U →ₗ[ℂ] ℂ) :
     ∃ z : U, ∀ x : U, f x = B x z := by
@@ -135,6 +174,29 @@ end GlobalTheory.InvPairing
 
 namespace GlobalTheory.InvPairing
 
+/- English proof (translation)
+Introduce `G _ _ _ K hKo hKc W W' _ _ _ _ σ σ' hσ hσ' B C hB hBinv hCinv`. Establish `huniq : ∀ z z' : W, (∀ x, B x z = B x z') → z = z'`. Introduce `z z' h`. Assume the negation of the conclusion as `hne`. Establish `hne' : z - z' ≠ 0` using `sub_ne_zero.mpr hne`.
+
+Establish `hpos` using `hB _ hne'`. Establish `h0 : B (z - z') (z - z') = 0` using `by rw [map_sub (B (z - z')), h (z - z'), sub_self]`. Rewrite `hpos` using `[h0]`. Simplify using `at hpos`. Establish `hex : ∀ y, ∃ z, ∀ x, C x y = B x z`.
+
+Introduce `y`. Use `set K' := K ⊓ stab σ' y with hK'`. Establish `hSo : IsOpen ((stab σ' y : Subgroup G) : Set G)` using `hσ' y`. Establish `hKo' : IsOpen (K' : Set G)` using `hKo.inter hSo`. Establish `hKc' : IsCompact (K' : Set G)` using `hKc.inter_right (Subgroup.isClosed_of_isOpen _ hSo)`.
+
+Use `haveI := hσ.2 K' hKo' hKc'`. Take `⟨z, hz⟩` from `exists_rep (GlobalTheory.PRep.fixed σ K') B hB ((C.flip y).comp (GlobalTheory.PRep.fixed σ K').subtype)`. Use `⟨z, fun x => ?_⟩` and prove the remaining obligations. Take `⟨x₀, hx₀, hℓ⟩` from `exists_fixed_avg σ hσ.1 K' hKc' x`. Establish `e1` using `hℓ (C.flip y) (fun k hk v => by`.
+
+Establish `hy : σ' k y = y` using `(Subgroup.mem_inf.mp hk).2`. Simplify using `only [LinearMap.flip_apply]`. Use `conv_lhs => rw [← hy]`. Conclude with `hCinv k v y)`. Establish `e2` using `hℓ (B.flip z) (fun k hk v => by`.
+
+Establish `hz' : σ k z = z` using `(mem_fixed_iff σ K' z).mp z.2 k hk`. Simplify using `only [LinearMap.flip_apply]`. Use `conv_lhs => rw [← hz']`. Conclude with `hBinv k v z)`. Simplify using `only [LinearMap.flip_apply] at e1 e2`.
+
+Rewrite using `[e1, e2]`. Conclude with `hz ⟨x₀, hx₀⟩`. Use `choose φ₀ hφ₀ using hex`. Use `⟨{ toFun := φ₀, map_add' := ?_, map_smul' := ?_ }, ?_, fun x y => hφ₀ y x⟩` and prove the remaining obligations. Introduce `a b`.
+
+Apply `huniq` to reduce the goal to its premises. Introduce `x`. Rewrite using `[map_add (B x), ← hφ₀, ← hφ₀, ← hφ₀, map_add]`. Introduce `c a`. Apply `huniq` to reduce the goal to its premises.
+
+Introduce `x`. Rewrite using `[RingHom.id_apply, LinearMap.map_smulₛₗ (B x), ← hφ₀, ← hφ₀, LinearMap.map_smulₛₗ]`. Introduce `g y`. Apply `huniq` to reduce the goal to its premises. Introduce `x`.
+
+Simplify using `only [LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[← hφ₀]`. Establish `hx : x = σ g (σ g⁻¹ x)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Rewrite using `[hx, hCinv, hBinv]`.
+
+Conclude with `hφ₀ y _`.
+-/
 theorem exists_intertwiner : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (K : Subgroup G), IsOpen (K : Set G) → IsCompact (K : Set G) → ∀ (W W' : Type) [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W'] (σ : Representation ℂ G W) (σ' : Representation ℂ G W'), IsAdmissible σ → GlobalTheory.PRep.IsSmooth σ' → ∀ (B : W →ₗ[ℂ] W →ₛₗ[starRingEnd ℂ] ℂ) (C : W →ₗ[ℂ] W' →ₛₗ[starRingEnd ℂ] ℂ), (∀ x, x ≠ 0 → 0 < (B x x).re) → (∀ g x y, B (σ g x) (σ g y) = B x y) → (∀ g x y, C (σ g x) (σ' g y) = C x y) → ∃ φ : W' →ₗ[ℂ] W, (∀ g y, φ (σ' g y) = σ g (φ y)) ∧ ∀ x y, C x y = B x (φ y) := by
   intro G _ _ _ K hKo hKc W W' _ _ _ _ σ σ' hσ hσ' B C hB hBinv hCinv
   have huniq : ∀ z z' : W, (∀ x, B x z = B x z') → z = z' := by

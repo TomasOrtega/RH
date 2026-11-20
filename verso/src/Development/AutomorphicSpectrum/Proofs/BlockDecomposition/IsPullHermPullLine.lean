@@ -31,6 +31,9 @@ def mchart (c : ∀ k, Bk n k) : (MP ℤ m n).Opens :=
   ⟨⋂ k, (blockChart n k (c k) : Set (MP ℤ m n)),
     isOpen_iInter_of_finite fun k => (blockChart n k (c k)).isOpen⟩
 
+/- English proof (translation)
+Introduce `_ hx` and use `Set.mem_iInter.1 hx k`.
+-/
 theorem mchart_le (c : ∀ k, Bk n k) (k : Fin (m + 1)) : mchart c ≤ blockChart n k (c k) :=
   fun _ hx => Set.mem_iInter.1 hx k
 
@@ -41,6 +44,9 @@ def blockUnit {k : Fin (m + 1)} (i j : Bk n k) {W : (MP ℤ m n).Opens}
 def ptChart (x : MP ℤ m n) (k : Fin (m + 1)) : Bk n k :=
   (exists_mem_chart ℤ (n k) (prB n k x)).choose
 
+/- English proof (translation)
+The claim follows from `(exists_mem_chart ℤ (n k) (prB n k x)).choose_spec`.
+-/
 theorem mem_ptChart (x : MP ℤ m n) (k : Fin (m + 1)) : x ∈ blockChart n k (ptChart x k) :=
   (exists_mem_chart ℤ (n k) (prB n k x)).choose_spec
 
@@ -82,6 +88,11 @@ abbrev consN (n' : ℕ) (n : Fin (m + 1) → ℕ) : Fin (m + 2) → ℕ := Fin.c
 def sv (n' : ℕ) (n : Fin (m + 1) → ℕ) : (Σ k, Bk n k) → Σ k', Bk (consN n' n) k' :=
   fun p => ⟨p.1.succ, p.2⟩
 
+/- English proof (translation)
+Use `⟨Fin.succ_injective _, ?_, fun _ => rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨k, i⟩ ⟨k', j⟩ h`. Establish `hk : k.succ = k'.succ` using `congrArg Sigma.fst h`. Take `rfl : k = k'` from `Fin.succ_injective _ hk`. Establish `h' : (⟨k.succ, i⟩ : Σ k', Bk (consN n' n) k') = ⟨k.succ, j⟩` using `h`.
+
+Establish `hij : i = j` using `sigma_mk_injective (β := Bk (consN n' n)) (i := k.succ) h'`. Rewrite using `[hij]`. Introduce and unpack `⟨k', j⟩ ⟨k, rfl⟩`. Conclude with `⟨⟨k, j⟩, rfl⟩`.
+-/
 theorem isBlockMap_sv (n' : ℕ) (n : Fin (m + 1) → ℕ) :
     IsBlockMap (ι := Bk n) (ι' := Bk (consN n' n)) Fin.succ (sv n' n) := by
   refine ⟨Fin.succ_injective _, ?_, fun _ => rfl, ?_⟩
@@ -112,6 +123,9 @@ def pullLine (n' : ℕ) (A : Geo.HermLine (Bk n)) : Geo.HermLine (Bk (consN n' n
     rw [Fin.prod_univ_succ (fun k' => ‖c k'‖ ^ pullDeg Fin.succ A.a k'), h0, zpow_zero, one_mul]
     simp only [hs]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, fun _ => rfl⟩`.
+-/
 theorem isPullHerm_pullLine (n' : ℕ) (A : Geo.HermLine (Bk n)) :
     IsPullHerm Fin.succ (sv n' n) A (pullLine n' A) :=
   ⟨rfl, fun _ => rfl⟩

@@ -84,11 +84,21 @@ def Data.lineModFour : Data :=
   Data.sqLine (R := ZMod 4) (I := Ideal.span {2}) (by
     rw [Ideal.span_singleton_pow, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]; decide)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Ideal.span {(2 : ZMod 4)} ≠ ⊥ ∧ Ideal.span {(2 : ZMod 4)} ≠ ⊤`. Rewrite using `[Ne, Ne, Ideal.span_singleton_eq_bot, Ideal.span_singleton_eq_top]`. Evaluate the decidable proposition.
+-/
 theorem Data.lineModFour_ideal : Data.lineModFour.I ≠ ⊥ ∧ Data.lineModFour.I ≠ ⊤ := by
   change Ideal.span {(2 : ZMod 4)} ≠ ⊥ ∧ Ideal.span {(2 : ZMod 4)} ≠ ⊤
   rw [Ne, Ne, Ideal.span_singleton_eq_bot, Ideal.span_singleton_eq_top]
   decide
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Nontrivial (HH1 (lineStr (ZMod 4)))`. Use `⟨⟨lineEquiv _ (Submodule.Quotient.mk ((Polynomial.X : Polynomial (ZMod 4)) • KaehlerDifferential.D (ZMod 4) (Polynomial (ZMod 4)) Polynomial.X)), 0, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Ne, LinearEquiv.map_eq_zero_iff, Submodule.Quotient.mk_eq_zero]`. Introduce and unpack `⟨p, hp⟩`. Establish `f3` using `congrArg (KaehlerDifferential.polynomialEquiv (ZMod 4)) hp`.
+
+Simplify using `only [Derivation.coeFn_coe, map_smul, KaehlerDifferential.polynomialEquiv_D, Polynomial.derivative_X, smul_eq_mul, mul_one] at f3`. Use `congrArg (Polynomial.coeff · 1) f3` as an intermediate fact. Simplify using `only [Polynomial.coeff_derivative, Polynomial.coeff_X_one] at this`. Use `revert this`. Generalize the expression as in `p.coeff (1 + 1) = a`.
+
+Use `revert a`. Evaluate the decidable proposition.
+-/
 theorem Data.lineModFour_nontrivial : Nontrivial (HH1 Data.lineModFour.s) := by
   change Nontrivial (HH1 (lineStr (ZMod 4)))
   refine ⟨⟨lineEquiv _ (Submodule.Quotient.mk ((Polynomial.X : Polynomial (ZMod 4)) •
@@ -116,6 +126,9 @@ def affDiagCoef {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) :
   naturality _ _ := rfl
   smul _ _ _ := rfl
 
+/- English proof (translation)
+Use `Function.LeftInverse.injective (g := pullHyp2 (affDiagCoef s)) fun c ↦ ?_` and prove the remaining obligations. Conclude with `(pullHyp2_comp _ _ c).symm.trans (pullHyp2_id c)`.
+-/
 theorem pairRes2_id_injective {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) :
     Function.Injective (pullHyp2 (pairRes (𝟙 X) s)) := by
   refine Function.LeftInverse.injective (g := pullHyp2 (affDiagCoef s)) fun c ↦ ?_
@@ -135,6 +148,9 @@ def CrystallineSmoothLift : Prop :=
       (m : IsMor D.κ D.t D'.κ D'.t σ φ₀), φ₀ ≫ D.i = D'.i ≫ φ →
       (∀ c, IsPull1 h (e₁ D c) (e₁ D' (m.pull1 c))) ∧ ∀ c, IsPull2 h (e₂ D c) (e₂ D' (m.pull2 c))
 
+/- English proof (translation)
+Take `⟨e₁, -, -, h, -⟩` from `H`. Establish `k : ∀ c, e₁ (Data.self s hs hs' hs'') c = cmp1 s c` using `fun c ↦ (congrArg _ ((IsMor.id (dp0 R) s).pullCohomologyOne_id c)).symm.trans (h (Data.self s hs hs' hs'') (IsMor.id _ s) c)`. Conclude with `(funext k : _ = ⇑(cmp1 s)) ▸ (e₁ (Data.self s hs hs' hs'')).bijective`.
+-/
 theorem CrystallineSmoothLift.bijective_cechDeRhamComparison_degreeOne (H : CrystallineSmoothLift) {R : Type} [CommRing R] {X : Scheme.{0}}
     (s : X ⟶ Sp R) (hs : Smooth s) (hs' : IsSeparated s) (hs'' : QuasiCompact s) : Function.Bijective (cmp1 s) := by
   obtain ⟨e₁, -, -, h, -⟩ := H
@@ -142,6 +158,13 @@ theorem CrystallineSmoothLift.bijective_cechDeRhamComparison_degreeOne (H : Crys
     (congrArg _ ((IsMor.id (dp0 R) s).pullCohomologyOne_id c)).symm.trans (h (Data.self s hs hs' hs'') (IsMor.id _ s) c)
   exact (funext k : _ = ⇑(cmp1 s)) ▸ (e₁ (Data.self s hs hs' hs'')).bijective
 
+/- English proof (translation)
+Introduce `R _ I κ hκ R₀ _ π hπ hI X X₀ s s₀ i hs hs' hs'' hp m`. Establish `b` using `H.bijective_cechDeRhamComparison_degreeOne s hs hs' hs''`. Take `⟨e₁, e₂, -, h, n⟩` from `H`. Set `D` to `Data.ofQuot κ hκ π hπ hI s s₀ i hs hs' hs'' hp _ rfl`. Set `D₀` to `Data.self s hs hs' hs''`.
+
+Establish `w : 𝟙 X ≫ s = s ≫ spMap (RingHom.id R)` using `by rw [Cris.spMap_id]; simp`. Prove the components needed by the constructor for the conclusion. Establish `: ⇑(e₁ D) ∘ ⇑m.pull1 = ⇑(cmp1 s)` using `funext (h D m)`. Conclude with `(Function.Bijective.of_comp_iff' (e₁ D).bijective _).1 (this ▸ b)`. Establish `k` using `(n D₀ D (RingHom.id R) (𝟙 X) i w m rfl).2`.
+
+Establish `: ⇑(e₂ D) ∘ ⇑m.pull2 = ⇑(e₂ D₀)` using `funext fun c ↦ pairRes2_id_injective s ((k c).symm.trans (isPull2_id w _))`. Conclude with `(Function.Bijective.of_comp_iff' (e₂ D).bijective _).1 (this ▸ (e₂ D₀).bijective)`.
+-/
 theorem CrystallineSmoothLift.toCrystallineDeRham (H : CrystallineSmoothLift) : CrystallineDeRham := by
   intro R _ I κ hκ R₀ _ π hπ hI X X₀ s s₀ i hs hs' hs'' hp m
   have b := H.bijective_cechDeRhamComparison_degreeOne s hs hs' hs''

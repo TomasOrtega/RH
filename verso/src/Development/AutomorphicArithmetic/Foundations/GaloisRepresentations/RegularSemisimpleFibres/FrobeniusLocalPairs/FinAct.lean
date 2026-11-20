@@ -15,12 +15,20 @@ section Gen
 
 variable {G H Γ V : Type} [Group G] [Group H] [Group Γ] [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Use `show (∀ h : U, ρ h v = ((1 : U →* ℂˣ) h : ℂ) • v) ↔ _`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul]`. Conclude with `⟨fun h u hu => h ⟨u, hu⟩, fun h u => h u u.2⟩`.
+-/
 private theorem mem_fx (ρ : Representation ℂ G V) (U : Subgroup G) (v : V) :
     v ∈ fixed ρ U ↔ ∀ u ∈ U, ρ u v = v := by
   show (∀ h : U, ρ h v = ((1 : U →* ℂˣ) h : ℂ) • v) ↔ _
   simp only [MonoidHom.one_apply, Units.val_one, one_smul]
   exact ⟨fun h u hu => h ⟨u, hu⟩, fun h u => h u u.2⟩
 
+/- English proof (translation)
+Rewrite `hv`, the goal using `[mem_fx]`. Introduce and unpack `u ⟨k, hk, rfl⟩`. Establish `hk0 : p k = 1` using `hk`. Establish `hk' : y⁻¹ * k * y ∈ p.ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_mul, hk0, mul_one, map_inv, inv_mul_cancel]`.
+
+Establish `hfix` using `hv _ ⟨_, hk', rfl⟩`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem fx_stable (ρ : Representation ℂ G V) (ι : H →* G) (p : H →* Γ) (y : H) {v : V}
     (hv : v ∈ fixed ρ (p.ker.map ι)) : ρ (ι y) v ∈ fixed ρ (p.ker.map ι) := by
   rw [mem_fx] at hv ⊢
@@ -34,6 +42,9 @@ private theorem fx_stable (ρ : Representation ℂ G V) (ι : H →* G) (p : H �
     _ = ρ (ι y) (ρ (ι (y⁻¹ * k * y)) v) := by rw [map_mul ι y, map_mul ρ, Module.End.mul_apply]
     _ = ρ (ι y) v := by rw [hfix]
 
+/- English proof (translation)
+Rewrite `hv` using `[mem_fx]`. Establish `hk : y'⁻¹ * y ∈ p.ker` using `by rw [MonoidHom.mem_ker, map_mul, map_inv, h, inv_mul_cancel]`. Establish `hfix` using `hv _ ⟨_, hk, rfl⟩`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem fx_eq (ρ : Representation ℂ G V) (ι : H →* G) (p : H →* Γ) {y y' : H} (h : p y = p y')
     {v : V} (hv : v ∈ fixed ρ (p.ker.map ι)) : ρ (ι y) v = ρ (ι y') v := by
   rw [mem_fx] at hv
@@ -56,17 +67,30 @@ private def rp (ρ : Representation ℂ G V) (ι : H →* G) (p : H →* Γ) (hp
       simp [Function.surjInv_eq]
     simpa using fx_eq ρ ι p h hv
 
+/- English proof (translation)
+Use `show ρ (ι (Function.surjInv hp (p y))) x = _`. Conclude with `fx_eq ρ ι p (Function.surjInv_eq hp (p y)) x.2`.
+-/
 private theorem rp_spec (ρ : Representation ℂ G V) (ι : H →* G) (p : H →* Γ) (hp : Function.Surjective p)
     (y : H) (x : fixed ρ (p.ker.map ι)) : (rp ρ ι p hp (p y) x : V) = ρ (ι y) x := by
   show ρ (ι (Function.surjInv hp (p y))) x = _
   exact fx_eq ρ ι p (Function.surjInv_eq hp (p y)) x.2
 
+/- English proof (translation)
+Rewrite using `[MonoidHom.range_eq_map, Subgroup.relIndex_map_map_of_injective _ _ hι, Subgroup.relIndex_top_right, Subgroup.index_ker, MonoidHom.range_eq_top.mpr hp]`. Conclude with `Subgroup.card_top`.
+-/
 private theorem rel_eq (ι : H →* G) (hι : Function.Injective ι) (p : H →* Γ) (hp : Function.Surjective p) :
     (p.ker.map ι).relIndex ι.range = Nat.card Γ := by
   rw [MonoidHom.range_eq_map, Subgroup.relIndex_map_map_of_injective _ _ hι, Subgroup.relIndex_top_right,
     Subgroup.index_ker, MonoidHom.range_eq_top.mpr hp]
   exact Subgroup.card_top
 
+/- English proof (translation)
+Rewrite using `[QuotientGroup.eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, hke⟩`. Establish `hk0 : p k = 1` using `hk`. Establish `hkb : k = a⁻¹ * b` using `hι (by rw [hke, map_mul, map_inv])`.
+
+Rewrite `hk0` using `[hkb, map_mul, map_inv, inv_mul_eq_one]`. Conclude with `hk0`. Introduce `h`. Use `⟨a⁻¹ * b, ?_, by rw [map_mul, map_inv]⟩` and prove the remaining obligations. Use `show p (a⁻¹ * b) = 1`.
+
+Rewrite using `[map_mul, map_inv, h, inv_mul_cancel]`.
+-/
 private theorem lev_eq_lemma (ι : H →* G) (hι : Function.Injective ι) (p : H →* Γ) (a b : H) :
     ((ι a : G) : G ⧸ p.ker.map ι) = ((ι b : G) : G ⧸ p.ker.map ι) ↔ p a = p b := by
   rw [QuotientGroup.eq]
@@ -81,12 +105,30 @@ private theorem lev_eq_lemma (ι : H →* G) (hι : Function.Injective ι) (p : 
     show p (a⁻¹ * b) = 1
     rw [map_mul, map_inv, h, inv_mul_cancel]
 
+/- English proof (translation)
+Take `⟨⟨u, k, hk, rfl⟩, hu⟩` from `QuotientGroup.mk_out_eq_mul (p.ker.map ι) (ι y)`. Establish `hk0 : p k = 1` using `hk`. Conclude with `⟨y * k, by simp [hu], by rw [map_mul, hk0, mul_one]⟩`.
+-/
 private theorem exists_quotient_out_eq_and_eq_of_map_ker (ι : H →* G) (p : H →* Γ) (y : H) :
     ∃ z, Quotient.out ((ι y : G) : G ⧸ p.ker.map ι) = ι z ∧ p z = p y := by
   obtain ⟨⟨u, k, hk, rfl⟩, hu⟩ := QuotientGroup.mk_out_eq_mul (p.ker.map ι) (ι y)
   have hk0 : p k = 1 := hk
   exact ⟨y * k, by simp [hu], by rw [map_mul, hk0, mul_one]⟩
 
+/- English proof (translation)
+Set `φ : Γ → G ⧸ p.ker.map ι` to `fun g => ((ι (Function.surjInv hp g) : G) : G ⧸ p.ker.map ι)`. Establish `hφ : Function.Injective φ`. Introduce `g g' h`. Establish `h2` using `(lev_eq_lemma ι hι p _ _).1 h`. Rewrite `h2` using `[Function.surjInv_eq hp, Function.surjInv_eq hp]`. Then use the resulting hypothesis.
+
+Establish `hsupp : Function.support (fun q : G ⧸ p.ker.map ι => f (Quotient.out q) • ρ (Quotient.out q) ∘ₗ A) ⊆ (Finset.univ.image φ : Set (G ⧸ p.ker.map ι))`. Introduce `q hq`. Assume the negation of the conclusion as `hn`. Apply `hq` to reduce the goal to its premises. Establish `hf : f (Quotient.out q) = 0`.
+
+Apply `hf0` to reduce the goal to its premises. Introduce `hr`. Take `⟨y, hy⟩` from `MonoidHom.mem_range.1 hr`. Apply `hn` to reduce the goal to its premises. Use `Finset.mem_coe.2 (Finset.mem_image.2 ⟨p y, Finset.mem_univ _, ?_⟩)` and prove the remaining obligations.
+
+Rewrite using `[← QuotientGroup.out_eq' q, ← hy]`. Conclude with `(lev_eq_lemma ι hι p _ _).2 (Function.surjInv_eq hp _)`. Simplify using `[hf]`. Establish `hterm : ∀ g, f (Quotient.out (φ g)) • ρ (Quotient.out (φ g)) (A x) = fb g • ρ (ι (Function.surjInv hp g)) (A x)`. Introduce `g`.
+
+Take `⟨z, hz, hpz⟩` from `exists_quotient_out_eq_and_eq_of_map_ker ι p (Function.surjInv hp g)`. Use `show f (Quotient.out ((ι (Function.surjInv hp g) : G) : G ⧸ p.ker.map ι)) • ρ (Quotient.out ((ι (Function.surjInv hp g) : G) : G ⧸ p.ker.map ι)) (A x) = _`. Rewrite using `[hz, hf1, hpz, Function.surjInv_eq hp]`. Use `congr 1`. Conclude with `fx_eq ρ ι p hpz hx`.
+
+Unfold `GlobalTheory.BCT.levOp`. Rewrite using `[rel_eq ι hι p hp, LinearMap.smul_apply, finsum_eq_sum_of_support_subset _ hsupp, LinearMap.sum_apply, Finset.sum_image (fun a _ b _ h => hφ h)]`. Use `congr 1`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, LinearMap.comp_apply]`.
+
+Conclude with `hterm g`.
+-/
 private theorem lev_eq [Fintype Γ] (ρ : Representation ℂ G V) (ι : H →* G) (hι : Function.Injective ι)
     (p : H →* Γ) (hp : Function.Surjective p) (f : G → ℂ) (fb : Γ → ℂ) (hf1 : ∀ y, f (ι y) = fb (p y))
     (hf0 : ∀ x, x ∉ ι.range → f x = 0) (A : V →ₗ[ℂ] V) {x : V} (hx : A x ∈ fixed ρ (p.ker.map ι)) :
@@ -129,6 +171,13 @@ private theorem lev_eq [Fintype Γ] (ρ : Representation ℂ G V) (ι : H →* G
   rw [LinearMap.smul_apply, LinearMap.comp_apply]
   exact hterm g
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite Γ`. Establish `hL : ∀ v ∈ fixed ρ (p.ker.map ι), GlobalTheory.BCT.levOp ρ ι.range (p.ker.map ι) f A v ∈ fixed ρ (p.ker.map ι)`. Introduce `v hv`. Rewrite using `[lev_eq ρ ι hι p hp f fb hf1 hf0 A (hA v hv)]`. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun g _ => Submodule.smul_mem _ _ ?_)` and prove the remaining obligations.
+
+Conclude with `fx_stable ρ ι p _ (hA v hv)`. Unfold `GlobalTheory.BCT.twTr`. Rewrite using `[dif_pos hL, finsum_eq_sum_of_fintype, ← smul_eq_mul, ← map_smul]`. Use `congr 1`. Use extensionality with `⟨v, hv⟩`.
+
+Simplify using `only [LinearMap.restrict_apply, LinearMap.smul_apply, LinearMap.sum_apply, LinearMap.comp_apply, Submodule.coe_smul, Submodule.coe_sum]`. Rewrite using `[lev_eq ρ ι hι p hp f fb hf1 hf0 A (hA v hv)]`. Both sides reduce to the same expression.
+-/
 private theorem tr_eq [Finite Γ] (ρ : Representation ℂ G V) (ι : H →* G) (hι : Function.Injective ι)
     (p : H →* Γ) (hp : Function.Surjective p) (f : G → ℂ) (fb : Γ → ℂ) (hf1 : ∀ y, f (ι y) = fb (p y))
     (hf0 : ∀ x, x ∉ ι.range → f x = 0) (A : V →ₗ[ℂ] V)
@@ -158,6 +207,9 @@ section Loc
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {F₀ : Type} [Field F₀]
 
+/- English proof (translation)
+Introduce `a b h`. Use extensionality with `i j`. Establish `h2` using `congrArg (fun g : GL (Fin n) k => (g : Matrix (Fin n) (Fin n) k) i j) h`. Simplify using `using h2`.
+-/
 private theorem iota_inj (n : ℕ) :
     Function.Injective (GeneralLinearGroup.map (n := Fin n) (algebraMap 𝒪[k] k)) := by
   intro a b h
@@ -165,6 +217,11 @@ private theorem iota_inj (n : ℕ) :
   have h2 := congrArg (fun g : GL (Fin n) k => (g : Matrix (Fin n) (Fin n) k) i j) h
   simpa using h2
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hu`. Apply `hx` to reduce the goal to its premises. Establish `hmax` using `RingHom.ker_isMaximal_of_surjective rd hrd`. Establish `hm : x ∈ IsLocalRing.maximalIdeal 𝒪[k]` using `(IsLocalRing.mem_maximalIdeal x).2 hu`. Rewrite `hm` using `[← IsLocalRing.eq_maximalIdeal hmax]`.
+
+Conclude with `(RingHom.mem_ker).1 hm`.
+-/
 private theorem unit_of_ne (rd : 𝒪[k] →+* F₀) (hrd : Function.Surjective rd) {x : 𝒪[k]} (hx : rd x ≠ 0) :
     IsUnit x := by
   by_contra hu
@@ -174,6 +231,13 @@ private theorem unit_of_ne (rd : 𝒪[k] →+* F₀) (hrd : Function.Surjective 
   rw [← IsLocalRing.eq_maximalIdeal hmax] at hm
   exact (RingHom.mem_ker).1 hm
 
+/- English proof (translation)
+Introduce `g`. Set `M : Matrix (Fin n) (Fin n) 𝒪[k]` to `fun i j => Function.surjInv hrd ((g : Matrix (Fin n) (Fin n) F₀) i j)`. Establish `hM : M.map rd = (g : Matrix (Fin n) (Fin n) F₀)`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply]`.
+
+Conclude with `Function.surjInv_eq hrd _`. Establish `hdet : IsUnit M.det`. Apply `unit_of_ne rd hrd` to reduce the goal to its premises. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hM]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 g.isUnit).ne_zero`.
+
+Use `⟨Matrix.nonsingInvUnit M hdet, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `show rd (M i j) = _`. Conclude with `Function.surjInv_eq hrd _`.
+-/
 private theorem gl_onto (rd : 𝒪[k] →+* F₀) (hrd : Function.Surjective rd) (n : ℕ) :
     Function.Surjective (GeneralLinearGroup.map (n := Fin n) rd) := by
   intro g
@@ -191,6 +255,9 @@ private theorem gl_onto (rd : 𝒪[k] →+* F₀) (hrd : Function.Surjective rd)
   show rd (M i j) = _
   exact Function.surjInv_eq hrd _
 
+/- English proof (translation)
+Establish `h : ∃ y', GeneralLinearGroup.map (algebraMap 𝒪[k] k) y' = GeneralLinearGroup.map (algebraMap 𝒪[k] k) y` using `⟨y, rfl⟩`. Unfold `infl`. Rewrite using `[dif_pos h, iota_inj (k := k) n h.choose_spec]`.
+-/
 private theorem infl_on (rd : 𝒪[k] →+* F₀) {n : ℕ} (fb : GL (Fin n) F₀ → ℂ) (y : GL (Fin n) 𝒪[k]) :
     infl rd fb (GeneralLinearGroup.map (algebraMap 𝒪[k] k) y) = fb (GeneralLinearGroup.map rd y) := by
   have h : ∃ y', GeneralLinearGroup.map (algebraMap 𝒪[k] k) y' = GeneralLinearGroup.map (algebraMap 𝒪[k] k) y :=
@@ -198,6 +265,9 @@ private theorem infl_on (rd : 𝒪[k] →+* F₀) {n : ℕ} (fb : GL (Fin n) F�
   unfold infl
   rw [dif_pos h, iota_inj (k := k) n h.choose_spec]
 
+/- English proof (translation)
+Unfold `infl`. Rewrite using `[dif_neg (fun h => hx (MonoidHom.mem_range.2 h))]`.
+-/
 private theorem infl_off (rd : 𝒪[k] →+* F₀) {n : ℕ} (fb : GL (Fin n) F₀ → ℂ) (x : GL (Fin n) k)
     (hx : x ∉ (GeneralLinearGroup.map (n := Fin n) (algebraMap 𝒪[k] k)).range) : infl rd fb x = 0 := by
   unfold infl
@@ -208,6 +278,9 @@ end Loc
 end UpperTheory.Gal.InertialTypesAlt.L.FiniteActions
 
 open UpperTheory.Gal.InertialTypesAlt.L.FiniteActions in
+/- English proof (translation)
+Introduce `k _ _ _ _ F₀ _ _ rd hrd n V _ _ ρ`. Establish `hp` using `gl_onto rd hrd n`. Use `⟨fun g => hp g, rp ρ _ _ hp, fun y x => rp_spec ρ _ _ hp y x, fun fb A hA => ?_⟩` and prove the remaining obligations. Conclude with `tr_eq ρ _ (iota_inj n) _ hp (infl rd fb) fb (infl_on rd fb) (infl_off rd fb) A hA`.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.L.finAct :
     UpperTheory.Gal.InertialTypesAlt.L.FinAct := by
   intro k _ _ _ _ F₀ _ _ rd hrd n V _ _ ρ

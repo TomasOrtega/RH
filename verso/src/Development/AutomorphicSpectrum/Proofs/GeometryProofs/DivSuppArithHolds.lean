@@ -7,6 +7,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.CompanionTheory.Ar.Link
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.ChartRestriction.G.Geo.divSuppArith`.
+-/
 theorem divSuppArith_holds : ReciprocityTheory.ChartRestriction.G.Geo.DivSuppArithStatement :=
   ReciprocityTheory.ChartRestriction.G.Geo.divSuppArith
 

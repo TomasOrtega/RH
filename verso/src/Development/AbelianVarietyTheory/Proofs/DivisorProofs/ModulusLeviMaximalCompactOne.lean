@@ -8,6 +8,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.DeltaOneKGL
 
+/- English proof (translation)
+Introduce `E _ _ _ a b w m h1 h2`. Use `haveI : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `he` using `ValuativeRel.isEquiv (ValuativeRel.valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))`. Establish `hn : ∀ {n : ℕ} (k : GLw n w), k ∈ GlobalTheory.LFun.KGL w n → GlobalTheory.SplitWeil.nabs (w.adicCompletion E) (Matrix.GeneralLinearGroup.det k) = 1`. Introduce `n k hk`.
+
+Apply `GlobalTheory.SmGL.nabs_eq_one` to reduce the goal to its premises. Rewrite using `[he.eq_one_iff_eq_one]`. Conclude with `GlobalTheory.BCT.AbsHalfInv.v_det_KGL hk`. Rewrite using `[GlobalTheory.SmGL.deltaHalf_two]`. Use `ext`.
+
+Simplify using `[GlobalTheory.SmGL.val_absPow, hn _ h1, hn _ h2]`.
+-/
 theorem deltaHalf_KGL_eq_one : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (w : Pl E) (m : GLw a w × GLw b w), m.1 ∈ GlobalTheory.LFun.KGL w a → m.2 ∈ GlobalTheory.LFun.KGL w b → GlobalTheory.SmGL.deltaHalf (w.adicCompletion E) (GlobalTheory.SmGL.Two (Fin a) (Fin b)) (GlobalTheory.SmGL.leviTwo (w.adicCompletion E) (Fin a) (Fin b) m) = 1 := by
   intro E _ _ _ a b w m h1 h2
   haveI : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible :=

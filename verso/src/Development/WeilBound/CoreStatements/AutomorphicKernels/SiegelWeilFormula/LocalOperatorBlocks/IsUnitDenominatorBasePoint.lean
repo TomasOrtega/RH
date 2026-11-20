@@ -11,6 +11,11 @@ variable {m n : ℕ}
 
 open Complex
 
+/- English proof (translation)
+Establish `hA : b.IsHermitian` using `hb`. Use `⟨(hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ), hA.eigenvalues, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `Unitary.coe_star_mul_self _`. Rewrite using `[← Matrix.star_eq_conjTranspose]`.
+
+Conclude with `Unitary.coe_mul_star_self _`. Use `hA.conjStarAlgAut_star_eigenvectorUnitary` as an intermediate fact. Rewrite `this` using `[Unitary.conjStarAlgAut_star_apply]`. Rewrite using `[← Matrix.star_eq_conjTranspose, this]`. Both sides reduce to the same expression.
+-/
 theorem herm_diag {b : Matrix (Fin n) (Fin n) ℂ} (hb : bᴴ = b) :
     ∃ (U : Matrix (Fin n) (Fin n) ℂ) (l : Fin n → ℝ), Uᴴ * U = 1 ∧ U * Uᴴ = 1 ∧
       Uᴴ * b * U = Matrix.diagonal fun j => (l j : ℂ) := by
@@ -23,6 +28,15 @@ theorem herm_diag {b : Matrix (Fin n) (Fin n) ℂ} (hb : bᴴ = b) :
     rw [← Matrix.star_eq_conjTranspose, this]
     rfl
 
+/- English proof (translation)
+Rewrite using `[isUnit_iff_ne_zero]`. Introduce `hdet`. Take `⟨x, hx0, hx⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Establish `hG : InG (mR g)` using `g.2`. Establish `key` using `inG_dot hG ((Z0 sg *ᵥ x) ⊕ᵥ x)`.
+
+Establish `hMv : mR g *ᵥ ((Z0 sg *ᵥ x) ⊕ᵥ x) = ((mR g).toBlocks₁₁ *ᵥ (Z0 sg *ᵥ x) + (mR g).toBlocks₁₂ *ᵥ x) ⊕ᵥ 0` using `by conv_lhs => rw [← Matrix.fromBlocks_toBlocks (mR g)]`. Rewrite using `[← hx]`. Simplify using `only [Matrix.fromBlocks_mulVec, Sum.elim_comp_inl, Sum.elim_comp_inr, Matrix.add_mulVec, Matrix.mulVec_mulVec]`. Establish `hZx : Z0 sg *ᵥ x = (I * ((sg : ℤ) : ℂ)) • x`. Rewrite using `[Z0, Matrix.smul_mulVec, Matrix.one_mulVec]`.
+
+Rewrite `key` using `[hMv, dot_JJ, dot_JJ, hZx]`. Simplify using `at key`. Establish `hs : star x ⬝ᵥ x ≠ 0` using `by open scoped ComplexOrder in`. Conclude with `fun h0 => hx0 (dotProduct_star_self_eq_zero.mp h0)`. Establish `hc : I * ((sg : ℤ) : ℂ) ≠ 0` using `mul_ne_zero I_ne_zero (Int.cast_ne_zero.mpr (Units.ne_zero sg))`.
+
+Establish `hcs : I * ((sg : ℤ) : ℂ) * (star x ⬝ᵥ x) = 0`. Take the linear combination `key / 2`. Conclude with `mul_ne_zero hc hs hcs`.
+-/
 theorem isUnit_denominator_base_point (sg : ℤˣ) (g : GR n) : IsUnit ((mR g).toBlocks₂₁ * Z0 sg + (mR g).toBlocks₂₂).det := by
   rw [isUnit_iff_ne_zero]
   intro hdet
@@ -48,9 +62,35 @@ theorem isUnit_denominator_base_point (sg : ℤˣ) (g : GR n) : IsUnit ((mR g).t
     linear_combination key / 2
   exact mul_ne_zero hc hs hcs
 
+/- English proof (translation)
+Rewrite using `[mR_mul]`. Conclude with `mob_mul _ _ _ (isUnit_denominator_base_point sg h)`.
+-/
 theorem mobius_mul_base_point (sg : ℤˣ) (g h : GR n) : mob (mR (g * h)) (Z0 sg) = mob (mR g) (mob (mR h) (Z0 sg)) := by
   rw [mR_mul]; exact mob_mul _ _ _ (isUnit_denominator_base_point sg h)
 
+/- English proof (translation)
+Take `⟨a, b, b', t, ha, hb, hb', hk'⟩` from `all_eq k`. Establish `hsw` using `isSw_fP P`. Establish `h0 : IsPG sg P.totalDegree (Z0 sg) (fP P)` using `⟨P, le_rfl, fP_eq_gZ sg P⟩`. Establish `hT : ((t : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ))ᴴ = (t : ℂ) • 1`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_one, Complex.star_def, Complex.conj_ofReal]`.
+
+Establish `hm1 : IsUnit (-1 : Matrix (Fin n) (Fin n) ℂ).det` using `isUnit_neg_one_det`. Establish `hsq : ((sg : ℤ) : ℝ) * ((sg : ℤ) : ℝ) = 1`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]`. Simplify using the standard rewrite rules. Use `set w : ℂ := I * ((sg : ℤ) : ℂ) + t with hw`.
+
+Establish `hwim : 0 < ((sg : ℤ) : ℝ) * w.im`. Simplify using `[hw, hsq]`. Establish `hw0 : w ≠ 0`. Introduce `h0`. Rewrite `hwim` using `[h0, Complex.zero_im, mul_zero]`.
+
+Conclude with `lt_irrefl _ hwim`. Use `set ω : ℂ := (-w)⁻¹ with hω`. Establish `hωim : 0 < ((sg : ℤ) : ℝ) * ω.im`. Use `im_neg_inv hwim` as an intermediate fact. Rewrite `this` using `[neg_inv]`. Then use the resulting hypothesis.
+
+Establish `h1` using `pg_nG h hT hsw h0`. Establish `h2` using `pg_mG h hm1 (h.sw _ _ hsw) h1`. Establish `e2 : mob (mR (mG (-1 : Matrix (Fin n) (Fin n) ℂ))) (mob (mR (nG ((t : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)))) (Z0 sg)) = Matrix.diagonal fun _ : Fin n => w`. Rewrite using `[mR_mG hm1, mR_nG hT, mob_nU, mob_mLc _ _ hm1]`. Simplify using `only [Matrix.conjTranspose_neg, Matrix.conjTranspose_one, neg_mul, one_mul, mul_neg, mul_one, neg_neg, Z0, hw, ← Matrix.smul_one_eq_diagonal, add_smul]`.
+
+Rewrite `h2` using `[e2]`. Establish `h3` using `pg_jG_diag h (fun _ => hwim) (h.sw _ _ (h.sw _ _ hsw)) h2`. Rewrite `h3` using `[← e2]`. Establish `e3 : mob (mR (jG n)) (mob (mR (mG (-1 : Matrix (Fin n) (Fin n) ℂ))) (mob (mR (nG ((t : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)))) (Z0 sg))) = Matrix.diagonal fun _ : Fin n => ω`. Rewrite using `[e2, mR_jG, mob_JJ_diag _ (fun _ => hw0)]`.
+
+Establish `h4` using `pg_nG h hb' (h.sw _ _ (h.sw _ _ (h.sw _ _ hsw))) h3`. Take `⟨U, l, hU1, hU2, hUb⟩` from `herm_diag hb'`. Establish `eU : Uᴴ * mob (mR (nG b')) (mob (mR (jG n)) (mob (mR (mG (-1 : Matrix (Fin n) (Fin n) ℂ))) (mob (mR (nG ((t : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)))) (Z0 sg)))) * U = Matrix.diagonal fun j => ω + l j`. Rewrite using `[mR_nG hb', mob_nU, e3, Matrix.mul_add, Matrix.add_mul, hUb, ← Matrix.smul_one_eq_diagonal, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, hU1, Matrix.smul_one_eq_diagonal, Matrix.diagonal_add]`. Establish `hz5 : ∀ j, 0 < ((sg : ℤ) : ℝ) * (ω + l j).im`.
+
+Introduce `j`. Simplify using `using hωim`. Establish `h5` using `pg_jG h hU1 hU2 eU hz5 (h.sw _ _ (h.sw _ _ (h.sw _ _ (h.sw _ _ hsw)))) h4`. Establish `h6` using `pg_nG h hb (h.sw _ _ (h.sw _ _ (h.sw _ _ (h.sw _ _ (h.sw _ _ hsw))))) h5`. Establish `h7` using `pg_mG h ha (h.sw _ _ (h.sw _ _ (h.sw _ _ (h.sw _ _ (h.sw _ _ (h.sw _ _ hsw)))))) h6`.
+
+Establish `hL : L k (fP P) = L (mG a) (L (nG b) (L (jG n) (L (nG b') (L (jG n) (L (mG (-1)) (L (nG ((t : ℂ) • 1)) (fP P)))))))`. Rewrite using `[hk']`. Simplify using `only [mul_assoc]`. Rewrite using `[h.mul _ _ _ hsw, h.mul _ _ _ hsw, h.mul _ _ _ hsw, h.mul _ _ _ hsw, h.mul _ _ _ hsw, h.mul _ _ _ hsw]`. Establish `hZ : mob (mR k) (Z0 sg) = mob (mR (mG a)) (mob (mR (nG b)) (mob (mR (jG n)) (mob (mR (nG b')) (mob (mR (jG n)) (mob (mR (mG (-1))) (mob (mR (nG ((t : ℂ) • 1))) (Z0 sg)))))))`.
+
+Rewrite using `[hk']`. Simplify using `only [mul_assoc]`. Rewrite using `[mobius_mul_base_point, mobius_mul_base_point, mobius_mul_base_point, mobius_mul_base_point, mobius_mul_base_point, mobius_mul_base_point]`. Establish `hK` using `mob_K sg (mR k) hk (isUnit_denominator_base_point sg k)`. Rewrite `hK` using `[hZ]`.
+
+Rewrite `h7` using `[hK, ← hL]`. Take `⟨Q, hQ, hfeq⟩` from `h7`. Conclude with `⟨Q, hQ, by rw [hfeq, fP_eq_gZ sg Q]⟩`.
+-/
 theorem k_poly {sg : ℤˣ} {L : LOp m n} (h : LocHyp sg L) (k : GR n) (hk : InK (mR k)) (P : PX m n) :
     ∃ Q : PX m n, Q.totalDegree ≤ P.totalDegree ∧ L k (fP P) = fP Q := by
   obtain ⟨a, b, b', t, ha, hb, hb', hk'⟩ := all_eq k

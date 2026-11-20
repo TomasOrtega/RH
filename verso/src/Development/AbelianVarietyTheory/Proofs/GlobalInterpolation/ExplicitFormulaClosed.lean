@@ -13,6 +13,15 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory.ExplicitFormulaClosed
 
+/- English proof (translation)
+Establish `h1 : ∀ᶠ T' in 𝓝[>] T, ∀ ρ ∈ {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im - 0| ≤ T + 1 ∧ f ρ = 0}, T < |ρ.im| → T' < |ρ.im|`. Rewrite using `[Filter.eventually_all_finite hfin]`. Introduce `ρ _`. Distinguish the cases in `h : T < |ρ.im|`. Conclude with `((eventually_lt_nhds h).filter_mono nhdsWithin_le_nhds).mono fun _ h' _ => h'`.
+
+Conclude with `Filter.Eventually.of_forall fun _ h' => absurd h' h`. Establish `h2 : ∀ᶠ T' in 𝓝[>] T, T' < T + 1` using `(eventually_lt_nhds (by linarith)).filter_mono nhdsWithin_le_nhds`. Establish `h3 : ∀ᶠ T' in 𝓝[>] T, T < T'` using `self_mem_nhdsWithin`. Take `⟨T', a1, a2, a3⟩` from `(h1.and (h2.and h3)).exists`. Use `⟨T', a3.le, a2.le, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `ρ`. Simplify using `only [Set.mem_setOf_eq, sub_zero] at a1 ⊢`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b0, b1, b2, b3⟩`. Conclude with `⟨b0, b1, by linarith, b3⟩`.
+
+Introduce and unpack `⟨b0, b1, b2, b3⟩`. Use `⟨b0, b1, ?_, b3⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Use `a1 ρ ⟨b0, b1, by linarith, b3⟩ (not_le.1 h)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_open_eq_closed (f : ℂ → ℂ) (T : ℝ)
     (hfin : {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im - 0| ≤ T + 1 ∧ f ρ = 0}.Finite) :
     ∃ T' : ℝ, T ≤ T' ∧ T' ≤ T + 1 ∧
@@ -41,6 +50,23 @@ theorem exists_open_eq_closed (f : ℂ → ℂ) (T : ℝ)
     have := a1 ρ ⟨b0, b1, by linarith, b3⟩ (not_le.1 h)
     linarith
 
+/- English proof (translation)
+Take `⟨C₁, hC₁, h₁⟩` from `GlobalTheory.ExplicitFormula.truncated_explicit_formula`. Take `⟨C₂, hC₂, h₂⟩` from `GlobalTheory.ZeroBand.zeros_band`. Use `⟨C₁ + C₂, fun q _ χ hχ u T hT hu => ?_⟩` and prove the remaining obligations. Take `⟨T', hT1, hT2, hset⟩` from `exists_open_eq_closed (DirichletCharacter.LFunction χ) T (GlobalTheory.Mem.An.ZeroWindow.finite_and_one_le_zmult q χ 0 (T + 1)).1`. Establish `e1` using `(h₁ q χ hχ u T hT hu).2`.
+
+Establish `e2` using `(h₂ q χ hχ u T T' hT hu hT1 hT2).2`. Establish `hz : zsum χ 0 T (fun ρ => (u : ℂ) ^ ρ / ρ) = ∑ᶠ ρ ∈ {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im| < T' ∧ DirichletCharacter.LFunction χ ρ = 0}, ((analyticOrderNatAt (DirichletCharacter.LFunction χ) ρ : ℕ) : ℂ) * ((u : ℂ) ^ ρ / ρ)`. Rewrite using `[← hset]`. Both sides reduce to the same expression. Establish `hF` using `(GlobalTheory.Mem.An.ZeroWindow.finite_and_one_le_zmult q χ 0 1).1`.
+
+Establish `hsub : {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im| < 1 ∧ DirichletCharacter.LFunction χ ρ = 0} ⊆ zerosIn χ 0 1`. Introduce and unpack `ρ ⟨b0, b1, b2, b3⟩`. Conclude with `⟨b0, b1, by rw [sub_zero]; exact b2.le, b3⟩`. Establish `hZ : ∑ᶠ ρ ∈ {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im| < 1 ∧ DirichletCharacter.LFunction χ ρ = 0}, ((analyticOrderNatAt (DirichletCharacter.LFunction χ) ρ : ℕ) : ℝ) / ‖ρ‖ ≤ zsumR χ 0 1 (fun ρ => 1 / ‖ρ‖)`. Unfold `zsumR`.
+
+Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hF, finsum_mem_eq_finite_toFinset_sum _ (hF.subset hsub)]`. Use `le_trans (le_of_eq (Finset.sum_congr rfl fun ρ _ => ?_)) (Finset.sum_le_sum_of_subset_of_nonneg (Set.Finite.toFinset_subset_toFinset.2 hsub) fun ρ _ _ => by positivity)` and prove the remaining obligations. Rewrite using `[mul_one_div]`. Both sides reduce to the same expression. Establish `hZ0 : 0 ≤ zsumR χ 0 1 (fun ρ => 1 / ‖ρ‖)` using `finsum_nonneg fun ρ => finsum_nonneg fun _ => by positivity`.
+
+Establish `hq : (1 : ℝ) ≤ q` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)`. Establish `hB : 0 ≤ Real.log (q * u)` using `Real.log_nonneg (by nlinarith)`. Establish `key : ∀ P Z Z' : ℂ, ‖P + Z'‖ ≤ ‖P + Z‖ + ‖Z' - Z‖`. Introduce `P Z Z'`. Establish `: P + Z' = (P + Z) + (Z' - Z)` using `by ring`.
+
+Rewrite using `[this]`. Conclude with `norm_add_le _ _`. Rewrite using `[hz]`. Use `(key _ _ _).trans ((add_le_add e1 e2).trans ?_)` and prove the remaining obligations. Generalize the expression as in `(∑ᶠ ρ ∈ {ρ : ℂ | 0 < ρ.re ∧ ρ.re < 1 ∧ |ρ.im| < 1 ∧ DirichletCharacter.LFunction χ ρ = 0}, ((analyticOrderNatAt (DirichletCharacter.LFunction χ) ρ : ℕ) : ℝ) / ‖ρ‖) = Z at hZ ⊢`.
+
+Generalize the expression as in `zsumR χ 0 1 (fun ρ => 1 / ‖ρ‖) = Z' at hZ hZ0 ⊢`. Generalize the expression as in `u * Real.log (q * u * T) ^ 2 / T = A`. Generalize the expression as in `Real.log (q * u) = B at hB ⊢`. Establish `a1 : C₁ * (A + B + Z) ≤ C₁ * (A + B + Z')` using `mul_le_mul_of_nonneg_left (by linarith) hC₁.le`. Establish `a2 : C₂ * A ≤ C₂ * (A + B + Z')` using `mul_le_mul_of_nonneg_left (by linarith) hC₂.le`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem explicit_formula_closed : ∃ C : ℝ, ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q), χ.IsPrimitive → ∀ u T : ℝ, 2 ≤ T → T ≤ u → ‖GlobalTheoryTheory.psi0 χ u + zsum χ 0 T (fun ρ => (u : ℂ) ^ ρ / ρ)‖ ≤ C * (u * Real.log (q * u * T) ^ 2 / T + Real.log (q * u) + zsumR χ 0 1 (fun ρ => 1 / ‖ρ‖)) := by
   obtain ⟨C₁, hC₁, h₁⟩ := GlobalTheory.ExplicitFormula.truncated_explicit_formula
   obtain ⟨C₂, hC₂, h₂⟩ := GlobalTheory.ZeroBand.zeros_band

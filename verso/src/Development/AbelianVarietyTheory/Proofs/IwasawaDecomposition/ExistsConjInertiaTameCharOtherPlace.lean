@@ -10,6 +10,9 @@ namespace GlobalTheory.TameMove
 
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
 
+/- English proof (translation)
+Establish `h1 : ∀ z : Ω, g z ∈ g • A ↔ z ∈ A`. Introduce `z`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, ← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]`. Rewrite using `[ReciprocityTheory.Gal.valuation_lt_one_iff', ReciprocityTheory.Gal.valuation_lt_one_iff', h1, ← map_inv₀, h1, map_eq_zero_iff _ g.injective]`.
+-/
 theorem val_smul_lt_one_iff (A : ValuationSubring Ω) (g : Formalism.ConjugateSelfDual.G E Ω) (y : Ω) :
     (g • A).valuation (g y) < 1 ↔ A.valuation y < 1 := by
   have h1 : ∀ z : Ω, g z ∈ g • A ↔ z ∈ A := by
@@ -19,12 +22,22 @@ theorem val_smul_lt_one_iff (A : ValuationSubring Ω) (g : Formalism.ConjugateSe
   rw [ReciprocityTheory.Gal.valuation_lt_one_iff', ReciprocityTheory.Gal.valuation_lt_one_iff', h1, ← map_inv₀, h1,
     map_eq_zero_iff _ g.injective]
 
+/- English proof (translation)
+Rewrite using `[ValuationSubring.valuation_le_one_iff, ValuationSubring.valuation_le_one_iff, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, ← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]`.
+-/
 theorem val_smul_le_one_iff (A : ValuationSubring Ω) (g : Formalism.ConjugateSelfDual.G E Ω) (y : Ω) :
     (g • A).valuation (g y) ≤ 1 ↔ A.valuation y ≤ 1 := by
   rw [ValuationSubring.valuation_le_one_iff, ValuationSubring.valuation_le_one_iff,
     ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def,
     ← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]
 
+/- English proof (translation)
+Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `show (g * σ * g⁻¹) • (g • A) = g • A`. Establish `h : σ • A = A` using `hσ.1`. Rewrite using `[← mul_smul, inv_mul_cancel_right, mul_smul, h]`. Establish `hy : A.valuation (g⁻¹ x) ≤ 1`.
+
+Rewrite using `[← val_smul_le_one_iff A g, ReciprocityTheory.Gal.mul_inv_apply]`. Conclude with `hx`. Establish `e : (g * σ * g⁻¹) x - x = g (σ (g⁻¹ x) - g⁻¹ x)`. Rewrite using `[map_sub, ReciprocityTheory.Gal.mul_inv_apply]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, val_smul_lt_one_iff]`. Conclude with `hσ.2 _ hy`.
+-/
 theorem conj_mem_Ine_smul {A : ValuationSubring Ω} {g σ : Formalism.ConjugateSelfDual.G E Ω}
     (hσ : σ ∈ ReciprocityTheory.Gal.Ine (F := E) A) : g * σ * g⁻¹ ∈ ReciprocityTheory.Gal.Ine (F := E) (g • A) := by
   refine ⟨?_, fun x hx => ?_⟩
@@ -38,6 +51,13 @@ theorem conj_mem_Ine_smul {A : ValuationSubring Ω} {g σ : Formalism.ConjugateS
     rw [e, val_smul_lt_one_iff]
     exact hσ.2 _ hy
 
+/- English proof (translation)
+Establish `hle : Ideal.span {ϖ} ≤ P.asIdeal` using `(Ideal.span_singleton_le_iff_mem _).mpr h`. Take `⟨I, hI⟩` from `Ideal.dvd_iff_le.mpr hle`. Establish `hIP : ¬ I ≤ P.asIdeal`. Introduce `hIP`. Apply `h2` to reduce the goal to its premises.
+
+Establish `: Ideal.span {ϖ} ≤ P.asIdeal ^ 2`. Rewrite using `[hI, pow_two]`. Conclude with `Ideal.mul_mono_right hIP`. Conclude with `this (Ideal.mem_span_singleton_self ϖ)`. Take `⟨s, hsI, hsP⟩` from `Set.not_subset.mp hIP`.
+
+Establish `hm : s * ϖ₀ ∈ Ideal.span {ϖ}`. Rewrite using `[hI, mul_comm s]`. Conclude with `Ideal.mul_mem_mul h₀ hsI`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.mp hm`. Conclude with `⟨s, t, hsP, ht.symm⟩`.
+-/
 theorem exists_mul_eq_of_not_mem_sq (P : HeightOneSpectrum (𝓞 E)) {ϖ ϖ₀ : 𝓞 E}
     (h₀ : ϖ₀ ∈ P.asIdeal) (h : ϖ ∈ P.asIdeal) (h2 : ϖ ∉ P.asIdeal ^ 2) :
     ∃ s t : 𝓞 E, s ∉ P.asIdeal ∧ s * ϖ₀ = t * ϖ := by
@@ -55,11 +75,21 @@ theorem exists_mul_eq_of_not_mem_sq (P : HeightOneSpectrum (𝓞 E)) {ϖ ϖ₀ :
   obtain ⟨t, ht⟩ := Ideal.mem_span_singleton'.mp hm
   exact ⟨s, t, hsP, ht.symm⟩
 
+/- English proof (translation)
+Rewrite using `[A.valuation_le_one_iff]`. Apply `ReciprocityTheory.Gal.mem_of_isIntegral_int` to reduce the goal to its premises. Conclude with `(NumberField.RingOfIntegers.isIntegral_coe t).map (algebraMap E Ω).toIntAlgHom`.
+-/
 theorem val_le_one (A : ValuationSubring Ω) (t : 𝓞 E) : A.valuation (algebraMap E Ω (t : E)) ≤ 1 := by
   rw [A.valuation_le_one_iff]
   apply ReciprocityTheory.Gal.mem_of_isIntegral_int
   exact (NumberField.RingOfIntegers.isIntegral_coe t).map (algebraMap E Ω).toIntAlgHom
 
+/- English proof (translation)
+Establish `key : ∀ a b : 𝓞 E, a ∈ P.asIdeal → b ∈ P.asIdeal → b ∉ P.asIdeal ^ 2 → A.valuation (algebraMap E Ω (a : E)) ≤ A.valuation (algebraMap E Ω (b : E))`. Introduce `a b ha hb hb2`. Take `⟨s, t, hs, hst⟩` from `exists_mul_eq_of_not_mem_sq P ha hb hb2`. Establish `hvs : A.valuation (algebraMap E Ω (s : E)) = 1` using `le_antisymm (val_le_one A s) (not_lt.mp fun hlt => hs ((hA s).mp hlt))`. Establish `e : algebraMap E Ω (s : E) * algebraMap E Ω (a : E) = algebraMap E Ω (t : E) * algebraMap E Ω (b : E)`.
+
+Use `congrArg (fun z : 𝓞 E => algebraMap E Ω (z : E)) hst` as an intermediate fact. Simplify using `using this`. Establish `e2` using `congrArg A.valuation e`. Rewrite `e2` using `[Valuation.map_mul, Valuation.map_mul, hvs, one_mul]`. Rewrite using `[e2]`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `le_antisymm (key _ _ h h₀ h02) (key _ _ h₀ h h2)`.
+-/
 theorem val_eq_of_not_mem_sq (A : ValuationSubring Ω) (P : HeightOneSpectrum (𝓞 E))
     (hA : Formalism.ConjugateSelfDual.IsPlaceOver A P) {ϖ ϖ₀ : 𝓞 E} (h : ϖ ∈ P.asIdeal) (h2 : ϖ ∉ P.asIdeal ^ 2)
     (h₀ : ϖ₀ ∈ P.asIdeal) (h02 : ϖ₀ ∉ P.asIdeal ^ 2) :
@@ -88,6 +118,39 @@ open Pointwise
 
 namespace GlobalTheory.TameMove
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ P e σ u A₀ ϖ₀ π₀ hA₀ h₀ h02 hπ₀ hT`. Take `⟨A, hA, hσ, ϖ, π, h, h2, hπ, hv⟩` from `hT`. Take `⟨g, rfl⟩` from `ReciprocityTheory.Gal.exists_smul_eq_of_isPlaceOver hA hA₀`. Establish `hσ'I : g * σ * g⁻¹ ∈ ReciprocityTheory.Gal.Ine (F` using `E) (g • A) := conj_mem_Ine_smul hσ`. Use `⟨g, hσ'I, ?_⟩` and prove the remaining obligations.
+
+Use `set B := g • A with hB`. Use `set σ' := g * σ * g⁻¹ with hσ'`. Use `set N := Formalism.ConjugateSelfDual.normV P - 1 with hN`. Use `set U := (algebraMap E Ω (u : E)) ^ e with hU`. Establish `hne : ∀ b : 𝓞 E, b ∉ P.asIdeal ^ 2 → algebraMap E Ω (b : E) ≠ 0`.
+
+Introduce `b hb hz`. Apply `hb` to reduce the goal to its premises. Establish `hb0 : b = 0`. Establish `: (b : E) = 0` using `(map_eq_zero_iff _ (algebraMap E Ω).injective).mp hz`. Conclude with `this` after adjusting the coercions.
+
+Rewrite using `[hb0]`. Conclude with `Ideal.zero_mem _`. Establish `hw : algebraMap E Ω (ϖ : E) ≠ 0` using `hne ϖ h2`. Establish `hw₀ : algebraMap E Ω (ϖ₀ : E) ≠ 0` using `hne ϖ₀ h02`. Establish `hN0 : N ≠ 0`.
+
+Introduce `hz`. Rewrite `hπ₀` using `[hz, pow_zero]`. Use `(hA₀ ϖ₀).mpr h₀` as an intermediate fact. Rewrite `this` using `[← hπ₀, map_one]`. Conclude with `lt_irrefl _ this`.
+
+Establish `hπ₀0 : π₀ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hπ₀` using `[zero_pow hN0]`. Conclude with `hw₀ hπ₀.symm`. Establish `hπ' : (g π) ^ N = algebraMap E Ω (ϖ : E)`.
+
+Rewrite using `[← map_pow, hπ]`. Conclude with `AlgEquiv.commutes g _`. Establish `hπ'0 : g π ≠ 0`. Introduce `hz`. Rewrite `hπ'` using `[hz, zero_pow hN0]`.
+
+Conclude with `hw hπ'.symm`. Establish `hgg : g⁻¹ (g π) = π`. Rewrite using `[← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]`. Establish `ha : B.valuation (σ' (g π) / g π - U) < 1`. Establish `e1 : σ' (g π) / g π - U = g (σ π / π - U)`.
+
+Establish `e2 : σ' (g π) = g (σ π)` using `by show g (σ (g⁻¹ (g π))) = g (σ π)`. Rewrite using `[hgg]`. Establish `e3 : g U = U`. Rewrite using `[hU, map_zpow₀]`. Use `congr 1`.
+
+Conclude with `AlgEquiv.commutes g _`. Rewrite using `[map_sub, map_div₀, e2, e3]`. Rewrite using `[e1, hB, val_smul_lt_one_iff]`. Conclude with `hv`. Use `set x := g π / π₀ with hx`.
+
+Establish `hxπ : g π = x * π₀` using `by rw [hx, div_mul_cancel₀ _ hπ₀0]`. Establish `hx0 : x ≠ 0` using `div_ne_zero hπ'0 hπ₀0`. Establish `hvx : B.valuation x = 1`. Establish `hxN : x ^ N = algebraMap E Ω (ϖ : E) / algebraMap E Ω (ϖ₀ : E)`. Rewrite using `[hx, div_pow, hπ', hπ₀]`.
+
+Establish `hvN : B.valuation x ^ N = 1`. Rewrite using `[← Valuation.map_pow, hxN, map_div₀, val_eq_of_not_mem_sq B P hA₀ h h2 h₀ h02, div_self ((Valuation.ne_zero_iff _).mpr hw₀)]`. Break down `lt_trichotomy (B.valuation x) 1 with h1 | h1 | h1` into its components or cases. Conclude with `absurd hvN (pow_lt_one₀ zero_le h1 hN0).ne`. Conclude with `h1`.
+
+Conclude with `absurd hvN (one_lt_pow₀ h1 hN0).ne'`. Establish `hc : B.valuation (σ' x / x - 1) < 1`. Establish `e : σ' x / x - 1 = (σ' x - x) / x` using `by field_simp`. Rewrite using `[e, map_div₀, hvx, div_one]`. Conclude with `hσ'I.2 x hvx.le`.
+
+Establish `hb : (σ' π₀ / π₀) ^ N = 1`. Rewrite using `[div_pow, ← map_pow, hπ₀, AlgEquiv.commutes, div_self hw₀]`. Establish `hvb : B.valuation (σ' π₀ / π₀) = 1` using `ReciprocityTheory.Gal.valuation_eq_one_of_pow_eq_one B hN0 hb`. Establish `hprod : σ' (g π) / g π = (σ' x / x) * (σ' π₀ / π₀)`. Rewrite using `[hxπ, map_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `e4 : σ' π₀ / π₀ - U = (σ' (g π) / g π - U) + -((σ' x / x - 1) * (σ' π₀ / π₀))`. Rewrite using `[hprod]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e4]`.
+
+Use `Valuation.map_add_lt _ ha ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_neg, Valuation.map_mul, hvb, mul_one]`. Conclude with `hc`.
+-/
 theorem tameRep_move : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (P : HeightOneSpectrum (𝓞 E)) (e : ℤ) (σ : Formalism.ConjugateSelfDual.G E Ω) (u : 𝓞 E) (A₀ : ValuationSubring Ω) (ϖ₀ : 𝓞 E) (π₀ : Ω),
     Formalism.ConjugateSelfDual.IsPlaceOver A₀ P → ϖ₀ ∈ P.asIdeal → ϖ₀ ∉ P.asIdeal ^ 2 →

@@ -46,9 +46,17 @@ def archUnit (c : ℝ) : (AF F ⊗[F] E)ˣ := Units.map (algebraMap (AF F) (AF F
 def torTrans (S : Finset (Fin r)) (φ : GAd σ J → ℂ) : Set (GAd σ J → ℂ) :=
   {f | ∃ l a, (∀ k ∉ S, l k = 1) ∧ IsIdTorusElt σ J X Y l a ∧ f = fun g => φ (a * g)}
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨?_, ?_, fun z _ => ?_⟩ <;> simp`.
+-/
 theorem isIdTorusElt_one : IsIdTorusElt σ J X Y 1 1 := by
   refine ⟨?_, ?_, fun z _ => ?_⟩ <;> simp
 
+/- English proof (translation)
+Establish `: archUnitF F 0 = 1` using `Units.ext (Prod.ext (by`. Express the relevant statement in the definitionally equal form `(InfiniteAdeleRing.ringEquiv_mixedSpace F).symm _ = 1`. Rewrite using `[← (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm.map_one]`. Use `congr 1`. Apply the tactic sequence `refine Prod.ext (funext fun _ => ?_) (funext fun _ => ?_) <;> simp) rfl)`.
+
+Rewrite using `[archUnit, this, map_one]`.
+-/
 @[simp] theorem archUnit_zero : archUnit F E 0 = 1 := by
   have : archUnitF F 0 = 1 := Units.ext (Prod.ext (by
     change (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm _ = 1

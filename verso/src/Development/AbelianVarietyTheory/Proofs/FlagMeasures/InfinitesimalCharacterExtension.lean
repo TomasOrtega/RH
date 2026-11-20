@@ -10,6 +10,11 @@ namespace GlobalTheory.InfCharExt
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨hu, hc⟩` from `hg`. Use `show gᴴ * Jm ε * g = Jm ε`. Establish `h1 : star g * g = 1` using `Matrix.mem_unitaryGroup_iff'.mp hu`. Rewrite using `[Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc]`.
+
+Rewrite using `[show gᴴ = star g from rfl, h1, Matrix.one_mul]`.
+-/
 theorem kset_sub_ujset (ε : Fin n → Bool) : ∀ g ∈ Kset ε, g ∈ UJset ε := by
   intro g hg
   obtain ⟨hu, hc⟩ := hg
@@ -20,12 +25,20 @@ theorem kset_sub_ujset (ε : Fin n → Bool) : ∀ g ∈ Kset ε, g ∈ UJset ε
 
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Introduce `g hg`. Use `hE 1 (by simp) g hg` as an intermediate fact. Simplify using `using this`.
+-/
 theorem ext_eq_on_su {ε : Fin n → Bool} {m : ℤ} {π' π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hE : Ext ε m π' π) : ∀ g ∈ SUset ε, π g = π' g := by
   intro g hg
   have := hE 1 (by simp) g hg
   simpa using this
 
+/- English proof (translation)
+Take `⟨S, hS, hvS, hst⟩` from `hv`. Use `⟨S, hS, hvS, ?_⟩` and prove the remaining obligations. Introduce `g hg x hx`. Establish `hgS : g ∈ SUset ε` using `⟨kset_sub_ujset ε g hg.1, hg.2⟩`. Rewrite using `[← ext_eq_on_su hE g hgS]`.
+
+Conclude with `hst g hg.1 x hx`.
+-/
 theorem kfin_to_kfinS {ε : Fin n → Bool} {m : ℤ} {π' π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hE : Ext ε m π' π) {v : H} (hv : IsKFin ε π v) : IsKFinS ε π' v := by
   obtain ⟨S, hS, hvS, hst⟩ := hv
@@ -35,6 +48,9 @@ theorem kfin_to_kfinS {ε : Fin n → Bool} {m : ℤ} {π' π : Matrix (Fin n) (
   rw [← ext_eq_on_su hE g hgS]
   exact hst g hg.1 x hx
 
+/- English proof (translation)
+Introduce `z hz g hg`. Simplify using `only`. Rewrite using `[hE z hz g hg, ContinuousLinearMap.smul_apply, inner_smul_right]`.
+-/
 theorem coeff_shift {ε : Fin n → Bool} {m : ℤ} {π' π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hE : Ext ε m π' π) (v w : H) :
     ∀ z : ℂ, ‖z‖ = 1 → ∀ g ∈ SUset ε, (fun g => ⟪w, π g v⟫_ℂ) (z • g) = z ^ m * (fun g => ⟪w, π' g v⟫_ℂ) g := by
@@ -44,6 +60,15 @@ theorem coeff_shift {ε : Fin n → Bool} {m : ℤ} {π' π : Matrix (Fin n) (Fi
 
 end GlobalTheory.InfCharExt
 
+/- English proof (translation)
+Introduce `n hn ε H _ _ m π' π hE χ hχ v w hv hw`. Establish `hv'` using `GlobalTheory.InfCharExt.kfin_to_kfinS hE hv`. Establish `hw'` using `GlobalTheory.InfCharExt.kfin_to_kfinS hE hw`. Take `⟨hsm, heig⟩` from `hχ v w hv' hw'`. Take `⟨hG1, hG2⟩` from `GlobalTheory.T.gelfand_operator_extension n hn ε m (fun g => ⟪w, π g v⟫_ℂ) (fun g => ⟪w, π' g v⟫_ℂ) (GlobalTheory.InfCharExt.coeff_shift hE v w) hsm`.
+
+Use `⟨hG1, ?_⟩` and prove the remaining obligations. Introduce `k g hg`. Take `⟨hsplit, -, -⟩` from `GlobalTheory.T.unitary_to_special_unitary_local n hn ε`. Take `⟨z, hz, g₀, hg₀, rfl, -⟩` from `hsplit g hg`. Take `⟨hval, hval0, -⟩` from `GlobalTheory.T.gelfand_values_shift n χ`.
+
+Rewrite using `[hG2 k z hz g₀ hg₀, GlobalTheory.InfCharExt.coeff_shift hE v w z hz g₀ hg₀, hval]`. Use `conv_rhs => rw [Finset.sum_range_succ', hval0]`. Establish `hS : ∀ j ∈ range (k + 1), ((k + 1).choose (j + 1) : ℂ) * ((m : ℂ) / n) ^ (k - j) * gelfS ε j (fun g => ⟪w, π' g v⟫_ℂ) g₀ = ((k + 1).choose (j + 1) : ℂ) * ((m : ℂ) / n) ^ (k + 1 - (j + 1)) * gelfVal χ (j + 1) * ⟪w, π' g₀ v⟫_ℂ`. Introduce `j _`. Rewrite using `[heig j g₀ hg₀, Nat.add_sub_add_right]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl hS, ← Finset.sum_mul]`. Simplify using `only [Nat.choose_zero_right, Nat.cast_one, Nat.sub_zero]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.infChar_of_ext : ∀ (n : ℕ), 1 ≤ n → ∀ (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (m : ℤ) (π' π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), Ext ε m π' π →
     ∀ χ : Fin n → ℂ, HasInfCharS ε χ π' → HasInfChar ε (fun a => χ a + (m : ℂ) / n) π := by

@@ -29,11 +29,31 @@ def nOfLay {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} 
     self_good := L.self_good, ntwbr := L.ntwbr, ntwbr_ind := L.ntwbr_ind, loc_tie := L.loc_tie, bc_tie := L.bc_tie,
     rbar_tie := L.rbar_tie, mtpar_tie := L.mtpar_tie, Z_tie := hZ.1, Zgood_tie := hZ.2, etaJ_tie := hE }
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨I.sel, fun v => hI.sel_ok v, rfl⟩`.
+-/
 theorem exists_pq_sel (B : Base) {px : PreX B.toPre} (I : ColIn B px) (hI : I.Ok) :
     ∃ Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield B.host.E)) → PlE B.host,
       (∀ v, NG.OverPl (Pq v) v) ∧ Set.range Pq = Set.range I.sel :=
   ⟨I.sel, fun v => hI.sel_ok v, rfl⟩
 
+/- English proof (translation)
+Introduce `hP hC hL`. Establish `hE` using `GlobalTheory.T.ray_prime_host_integral hP`. Establish `hR` using `GlobalTheory.T.row_depth_of_primitive hP`. Establish `hA` using `GlobalTheory.T.types_true_of_ray_class hL hP.what₂.fin hP.what₂.berger hP.greenC hP.what₂.art hP.ray hP.what₂.cheb`. Unfold `SA AllSt`.
+
+Use `StepW.trans (StepW.and hE hR) (StepW.of_all ?_)` and prove the remaining obligations. Introduce `K B f T w _ _ hq P x hLoc`. Take `⟨hEl, hRw⟩` from `hq`. Take `⟨hElem, -, -, h, jE, hfr, hray⟩` from `hEl P x`. Establish `e1 : (cfOf x).P = f.P` using `by show w.I.C.P = f.P`.
+
+Rewrite using `[w.C_eq]`. Establish `e2 : (cfOf x).W = f.W` using `by show w.I.C.W = f.W`. Rewrite using `[w.C_eq]`. Establish `hTy : TypesTrue (Dof x).ntypes (cfOf x).P (cfOf x).W`. Rewrite using `[e1, e2]`.
+
+Conclude with `x.fits.grp`. Take `⟨L, hZ, hη, A, hcg, hau, hrow, hTT, hPlG, hplGw, hcA, hcM, hζ, hloc, hO1, hO2, hO3, hO4, hlab⟩` from `hA (Dof x) hLoc (cfOf x) jE (repOf x.r.Y) hElem.int hTy (hRw P x) hray`. Establish `hG : GrpTrue (nOfLay x L hZ hη) f` using `by show TypesTrue L.ntypes f.P f.W`. Rewrite using `[← e1, ← e2]`. Conclude with `hTT`.
+
+Take `⟨hGA, hCen⟩` from `GlobalTheory.T.heckeGaloisStage_fits_of_same_centre_actions x (nOfLay x L hZ hη) hG hPlG hplGw hcA hcM`. Take `⟨x', hx', hrep⟩` from `GlobalTheory.T.exists_transported_state_heckeGaloisStage x (nOfLay x L hZ hη) hG hGA hCen`. Take `⟨Pq, hPq1, hPq2⟩` from `exists_pq_sel B w.I w.ok`. Establish `hEl'` using `hEl P x'`. Establish `hRw'` using `hRw P x'`.
+
+Take `⟨o', fits', G_eq', etaF', bk', m', copy', coh', s', r', pin'⟩` from `x'`. Simplify using `only at hx'`. Substitute `hx'` using the available equality. Take `⟨fr, hfrj⟩` from `omFrame_exists_with_jE (setK (Dof x) L hZ hη) jE`. Take `⟨Wd, hWd⟩` from `PhtExt.exists_phtOn_all hC (setK (Dof x) L hZ hη) fr A.wdT A.wd`.
+
+Set `A' : SideA (setK (Dof x) L hZ hη) (cfK L hZ hη (cfOf x)) jE` to `{ A with wd := Wd }`. Establish `e` using `eq_of_heq hrep`. Take `⟨cg⟩` from `hcg`. Use `⟨⟨⟨x.o.η, x.o.hη, x.o.V, x.o.S, nOfLay x L hZ hη, x.o.G⟩, fits', G_eq', etaF', bk', m', copy', coh', s', r', pin'⟩, ⟨⟨⟨⟨h.fr, h.jLL, h.embLL⟩, jE, hfr, A', cg, hau, ?_, fr, hfrj, hWd, hRw', hEl'.1, hEl'.2.1, hlab, hζ, hEl'.2.2.1⟩, Pq, hPq1, hPq2⟩⟩, ⟨rfl, HEq.rfl, hloc.symm, hO1.s …` and prove the remaining obligations. Rewrite using `[e]`.
+
+Conclude with `hrow`.
+-/
 theorem sa_of_prN : PrN → PhtCmp → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, SA hL := by
   intro hP hC hL
   have hE := GlobalTheory.T.ray_prime_host_integral hP

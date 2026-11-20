@@ -22,6 +22,15 @@ namespace GlobalTheory.Mix
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
 
+/- English proof (translation)
+Establish `hr : c.e (c.finChart.symm z) = toV D z` using `c.e.right_inv hz`. Establish `hH (i) : hessC (fun y => (L i).φ.locPot.φ (c.finChart.symm z) (c.finChart.symm y)) z = ((2⁻¹ : ℝ) : ℂ) • c.hess (L i).φ (pick (L i).φ.isLB (c.finChart.symm z)) (c.finChart.symm z)`. Establish `hd` using `(L i).cInf.contDiffAt c (c.finChart.map_target hz) (mem_pick (L i).φ.isLB (c.finChart.symm z))`. Rewrite `hd` using `[hr]`. Establish `e : (fun y => (L i).φ.locPot.φ (c.finChart.symm z) (c.finChart.symm y)) = fun y => 2⁻¹ * ((fun v => (L i).φ.φ (pick (L i).φ.isLB (c.finChart.symm z)) (c.e.symm v)) ∘ toV D) y`.
+
+Use function extensionality and compare the values at `fun _ => div_eq_inv_mul _ _`. Rewrite using `[e, hessC_const_mul', AlgChart.hess, hr, cHess_eq_hessC hd]`. Establish `hτ (τ : Equiv.Perm (Fin D)) : (Matrix.of fun j l => (((2⁻¹ : ℝ) : ℂ) • c.hess (L (τ l)).φ (pick (L (τ l)).φ.isLB (c.finChart.symm z)) (c.finChart.symm z)) j l).det = (((2⁻¹ : ℝ) ^ D : ℝ) : ℂ) * (Matrix.of fun j l => c.hess (L (τ l)).φ (pick (L (τ l)).φ.isLB (c.finChart.symm z)) ( …`. Use `(Matrix.det_smul (Matrix.of fun j l => c.hess (L (τ l)).φ (pick (L (τ l)).φ.isLB (c.finChart.symm z)) (c.finChart.symm z) j l) ((2⁻¹ : ℝ) : ℂ)).trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.card_fin, Complex.ofReal_pow]`.
+
+Establish `hf : (1 / (D.factorial : ℂ)) = ((1 / (D.factorial : ℝ) : ℝ) : ℂ)` using `by push_cast; rfl`. Establish `h0 : (D.factorial : ℝ) ≠ 0` using `by exact_mod_cast D.factorial_ne_zero`. Establish `h2 : (2 / Real.pi) ^ D * (2⁻¹ : ℝ) ^ D = (Real.pi ^ D)⁻¹`. Rewrite using `[← mul_pow, ← inv_pow]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [maDens, hH, ReciprocityTheory.AnForm.A.mdisc_eq_sum_perm, hτ, dens]`. Rewrite using `[← Finset.mul_sum, hf, Complex.re_ofReal_mul, Complex.re_ofReal_mul, ← h2]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem maDens_locPot_eq_dens (L : Fin D → MLine p σ) (c : AlgChart p σ D) {z : Fin D → ℂ}
     (hz : z ∈ c.finChart.target) :
     maDens (fun i y => (L i).φ.locPot.φ (c.finChart.symm z) (c.finChart.symm y)) z =
@@ -55,6 +64,9 @@ theorem maDens_locPot_eq_dens (L : Fin D → MLine p σ) (c : AlgChart p σ D) {
 
 variable {A : FinHolAtlas D (CxPts p σ)}
 
+/- English proof (translation)
+Unfold `locDens`. Rewrite `hz`, the goal using `[hA.chart_eq j]`. Conclude with `maDens_locPot_eq_dens L _ hz`.
+-/
 theorem locDens_locPot_eq_dens (L : Fin D → MLine p σ) (hA : IsAlgAtlas A) (j : Fin A.n)
     {z : Fin D → ℂ} (hz : z ∈ (A.chart j).target) : locDens A (fun i => (L i).φ.locPot) j z =
       dens L (hA.anRead.chart j) ((A.chart j).symm z) := by
@@ -62,6 +74,13 @@ theorem locDens_locPot_eq_dens (L : Fin D → MLine p σ) (hA : IsAlgAtlas A) (j
   rw [hA.chart_eq j] at hz ⊢
   exact maDens_locPot_eq_dens L _ hz
 
+/- English proof (translation)
+Establish `hl (y)` using `locDens_locPot_eq_dens L hA j (z := y)`. Generalize the expression as in `locDens A (fun i => (L i).φ.locPot) j = d at hl ⊢`. Rewrite `hs`, `hl`, the goal using `[hA.chart_eq j]`. Use `set c := hA.anRead.chart j`. Establish `hm` using `measurableSet_image c.e hS hs`.
+
+Rewrite using `[GlobalTheory.T.mixedChernFormSignedPartMeasure_chart_apply k X p σ D L ε c S hS hs, ← measurePreserving_toV.setLIntegral_comp_preimage_emb (toV D).toHomeomorph.measurableEmbedding]`. Establish `e : c.e '' S = c.e.target ∩ c.e.symm ⁻¹' S`. Rewrite using `[← c.e.image_source_inter_eq', inter_eq_right.2 (show S ⊆ c.e.source from hs)]`. Rewrite `hm`, the goal using `[e]`. Use `setLIntegral_congr_fun (hm.preimage (toV D).continuous.measurable) fun y hy => ?_` and prove the remaining obligations.
+
+Simplify using `only [ENNReal.ofReal_max, ENNReal.ofReal_zero, zero_le, max_eq_left, hl y hy.1]`. Both sides reduce to the same expression.
+-/
 theorem part_eq_lintegral_locDens [SecondCountableTopology (CxPts p σ)] (L : Fin D → MLine p σ)
     (hA : IsAlgAtlas A) (ε : ℤˣ) (j : Fin A.n) (S : Set (CxPts p σ)) (hS : MeasurableSet S)
     (hs : S ⊆ (A.chart j).source) : part L ε S =
@@ -81,6 +100,21 @@ theorem part_eq_lintegral_locDens [SecondCountableTopology (CxPts p σ)] (L : Fi
   simp only [ENNReal.ofReal_max, ENNReal.ofReal_zero, zero_le, max_eq_left, hl y hy.1]
   rfl
 
+/- English proof (translation)
+Establish `hne : Nonempty (ChartPartition A)` using `existsPartition A`. Use `set P := hne.some`. Use `set d := locDens A fun i => (L i).φ.locPot with hd`. Establish `hdc (j) : ContinuousOn (d j) (A.chart j).target` using `locDensCont A _ (fun i => ((Weight.isCInf_iff_isSmooth hA.anRead).1 (L i).cInf).isPotential hA) j`. Set `w (ε : ℤˣ) (j) (y) : ℝ` to `max ((ε : ℤ) * d j y) 0`.
+
+Establish `hw (ε j) : ContinuousOn (w ε j) (A.chart j).target` using `(continuous_id.max continuous_const).comp_continuousOn (continuousOn_const.mul (hdc j))`. Establish `hw0 (ε j) : ∀ y ∈ (A.chart j).target, 0 ≤ w ε j y` using `fun _ _ => le_max_right _ _`. Establish `hsub (j y) : w 1 j y - w (-1) j y = d j y`. Simplify `max_zero_sub_max_neg_zero_eq_self (d j y)` using `[w]`. Establish `habs (ε j y) : |w ε j y| ≤ |d j y|`.
+
+Rewrite using `[abs_of_nonneg (le_max_right _ _)]`. Use `max_le ((le_abs_self _).trans_eq ?_) (abs_nonneg _)` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or ε with rfl | rfl <;> simp`. Establish `back (hm : MIntegrable A (fun i => (L i).φ.locPot) g) (ε j) : IntegrableOn (fun y => P.χ j ((A.chart j).symm y) * g ((A.chart j).symm y) * w ε j y) (A.chart j).target`. Take `⟨hKc, hKs⟩` from `image_closed_compact (A.chart j) (isClosed_tsupport (P.χ j)) (P.tsupport_subset j)`.
+
+Use `integrableOn_target_of_closed (A.chart j) (Z := tsupport (P.χ j)) (fun y _ hy => by simp [image_eq_zero_of_notMem_tsupport hy]) ?_` and prove the remaining obligations. Establish `hcc` using `(chi_comp_continuousOn P j).mono hKs`. Use `Integrable.mono ((hm j _ hKs hKc).continuousOn_mul hcc hKc) ?_ (.of_forall fun y => ?_)` and prove the remaining obligations. Conclude with `(((hcc.aemeasurable hKc.measurableSet).mul (hg.comp_aemeasurable (((A.chart j).continuousOn_symm.mono hKs).aemeasurable hKc.measurableSet))).mul (((hw ε j).mono hKs).aemeasurable hKc.measurableSet)).aestronglyMeasurable`. Simplify using `only [Real.norm_eq_abs, abs_mul, ← mul_assoc]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (habs ε j y) (by positivity)`. Establish `pieces (hm : MIntegrable A (fun i => (L i).φ.locPot) g) (ε)` using `integrable_of_pieces A P (hw ε) (hw0 ε) (part_eq_lintegral_locDens L hA ε) hg (back hm ε)`. Establish `fwd (hi : Intg L g) : MIntegrable A (fun i => (L i).φ.locPot) g` using `fun j K hK _ => by`. Establish `key (ε)` using `(integrableOn_source_iff_of_density (A.chart j) (hw ε j) (hw0 ε j) (part_eq_lintegral_locDens L hA ε j) hg).1.1`. Use `IntegrableOn.mono_set ?_ hK` and prove the remaining obligations.
+
+Use `(Integrable.sub (key 1 hi.1.integrableOn) (key (-1) hi.2.integrableOn)).congr (.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, ← mul_sub, hsub, hd]`. Use `⟨⟨fwd, fun hm => ⟨(pieces hm 1).1, (pieces hm (-1)).1⟩⟩, fun hi => ?_⟩` and prove the remaining obligations. Establish `hm` using `fwd hi`. Rewrite using `[Mix.int, (pieces hm 1).2, (pieces hm (-1)).2, mInt_eq_integralWith A _ hne, integralWith, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_sub (back hm 1 j) (back hm (-1) j)]`. Simplify using `only [← mul_sub, hsub, hd, P]`.
+-/
 theorem int_eq_mInt (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ)
     [CompactSpace (CxPts p σ)] [T2Space (CxPts p σ)] [SecondCountableTopology (CxPts p σ)] (D : ℕ)
     (A : FinHolAtlas D (CxPts p σ)) (hA : IsAlgAtlas A) (L : Fin D → MLine p σ)

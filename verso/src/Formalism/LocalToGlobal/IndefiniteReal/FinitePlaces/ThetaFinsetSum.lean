@@ -13,6 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `ψ θ hψ hθ S T τ z f hf`. Conclude with `(Formalism.IndefR.Fock.DRho.thetaDRho D ψ θ hψ hθ (Formalism.IndefR.Eqv.lineAtExists_holds D) S T τ z f hf).1`.
+-/
 theorem dRhoStable (D : D7) : DRhoStable D := by
   intro ψ θ hψ hθ S T τ z f hf
   exact (Formalism.IndefR.Fock.DRho.thetaDRho D ψ θ hψ hθ (Formalism.IndefR.Eqv.lineAtExists_holds D) S T τ z f hf).1
@@ -21,11 +24,17 @@ section Pt
 
 variable {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
+/- English proof (translation)
+Use `Formalism.IndefR.Fock.CCR.theta_add_smul hf hg (-1)` as an intermediate fact. Simplify `this` using `[sub_eq_add_neg]`.
+-/
 lemma theta_sub {f g : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (hg : IsThetaFunO ψ S T g) :
     IsThetaFunO ψ S T (f - g) := by
   have := Formalism.IndefR.Fock.CCR.theta_add_smul hf hg (-1)
   simpa [sub_eq_add_neg] using this
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using Formalism.IndefR.Fock.CCR.theta_zero ψ S T`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `Formalism.IndefR.Fock.CCR.theta_add (hg a (Finset.mem_insert_self a s)) (ih fun i hi => hg i (Finset.mem_insert_of_mem hi))`.
+-/
 lemma theta_finsetSum {ι : Type*} (s : Finset ι) (g : ι → WO S T → ℂ) (hg : ∀ i ∈ s, IsThetaFunO ψ S T (g i)) :
     IsThetaFunO ψ S T (∑ i ∈ s, g i) := by
   classical
@@ -36,6 +45,9 @@ lemma theta_finsetSum {ι : Type*} (s : Finset ι) (g : ι → WO S T → ℂ) (
     exact Formalism.IndefR.Fock.CCR.theta_add (hg a (Finset.mem_insert_self a s))
       (ih fun i hi => hg i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Unfold `opPow`. Proceed by induction on `(Multiset.toList (Finsupp.toMultiset k)) with`. Consider the case `nil => exact hf`. Consider the case `cons i l ih => exact hA i _ ih`.
+-/
 lemma theta_opPow {ι : Type} (A : ι → (WO S T → ℂ) → (WO S T → ℂ))
     (hA : ∀ i g, IsThetaFunO ψ S T g → IsThetaFunO ψ S T (A i g)) (k : ι →₀ ℕ) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) : IsThetaFunO ψ S T (opPow A k f) := by
@@ -44,6 +56,11 @@ lemma theta_opPow {ι : Type} (A : ι → (WO S T → ℂ) → (WO S T → ℂ))
   | nil => exact hf
   | cons i l ih => exact hA i _ ih
 
+/- English proof (translation)
+Introduce `ψ θ hψ hθ S T sS sT BS BT f P hf`. Establish `hA : ∀ (i : FVar D T.rank S.rank) (g : WO S T → ℂ), IsThetaFunO ψ S T g → IsThetaFunO ψ S T (aPlusAll (heisO ψ S T) θ (fun τ => cplxO (sS τ) (sT τ)) BS BT i g)`. Introduce `i g hg`. Unfold `aPlusAll aPlus crea`. Conclude with `Formalism.IndefR.Fock.CCR.theta_smul (theta_sub (dRhoStable D ψ θ hψ hθ S T i.1 _ g hg) (Formalism.IndefR.Fock.CCR.theta_smul (dRhoStable D ψ θ hψ hθ S T i.1 _ g hg) _)) _`.
+
+Unfold `pureTensorO pureTensorL`. Rewrite using `[Module.Basis.constr_apply, Finsupp.sum]`. Conclude with `theta_finsetSum _ _ fun k _ => Formalism.IndefR.Fock.CCR.theta_smul (theta_opPow _ hA k hf) _`.
+-/
 theorem ptStable (D : D7) : PtStable D := by
   intro ψ θ hψ hθ S T sS sT BS BT f P hf
   have hA : ∀ (i : FVar D T.rank S.rank) (g : WO S T → ℂ), IsThetaFunO ψ S T g →

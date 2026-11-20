@@ -30,18 +30,30 @@ variable {D : D7}
 def kapME {V V' : HSp D} (I : IsoMat V V') : GA D V ≃ᵐ GA D V' :=
   (Homeomorph.mk I.kap.toEquiv I.continuous_kap I.continuous_kap_symm).toMeasurableEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kapME_apply {V V' : HSp D} (I : IsoMat V V') (g : GA D V) : kapME I g = I.kap g := rfl
 
+/- English proof (translation)
+Use extensionality with `g`. Simplify using `only [Set.mem_preimage, kapME_apply, MulEquiv.symm_apply_apply]`.
+-/
 theorem preimage_kapME {V V' : HSp D} (I : IsoMat V V') (s : Set (GA D V)) : kapME I ⁻¹' (I.kap.symm ⁻¹' s) = s := by
   ext g
   simp only [Set.mem_preimage, kapME_apply, MulEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Use `show F ((homMap IS IT).symm (homMap IS IT w)) = F w`. Rewrite using `[AddEquiv.symm_apply_apply]`.
+-/
 theorem trH_symm_trH {S S' T T' : HSp D} (IS : IsoMat S S') (IT : IsoMat T T') (F : WO S T → ℂ) :
     trH IS.symm IT.symm (trH IS IT F) = F := by
   funext w
   show F ((homMap IS IT).symm (homMap IS IT w)) = F w
   rw [AddEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Unfold `thetaKO`. Rewrite using `[omH_apply, MulEquiv.symm_apply_apply, MulEquiv.symm_apply_apply, trH_symm_trH]`. Use `show (om (g, h) F) ((homMap IS IT).symm 0) = _`. Rewrite using `[map_zero]`.
+-/
 theorem thetaKO_omH {S S' T T' : HSp D} (IS : IsoMat S S') (IT : IsoMat T T')
     (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (g : GA D S) (h : GA D T) (F : WO S T → ℂ) :
     thetaKO (omH IS IT om) (IS.kap g) (IT.kap h) (trH IS IT F) = thetaKO om g h F := by
@@ -52,6 +64,9 @@ theorem thetaKO_omH {S S' T T' : HSp D} (IS : IsoMat S S') (IT : IsoMat T T')
 
 variable {T₀ : Type} {A A' WW B B' WW₁ : HSp D}
 
+/- English proof (translation)
+Establish `hF` using `GlobalTheory.T.fockPureTensor_isometry_moved_orthonormal ψ θ hθ true IA IW Y.rA.s Y.rA.B Y.rW.s Y.rW.B (Y.f t) P`. Establish `hs : ∀ {k : ℕ} (s : Matrix (Fin k) (Fin k) ℂ), GlobalTheory.Grid.sgnM true s = -s` using `fun _ => rfl`. Simplify using `only [hs] at hF`. Conclude with `(congrArg (thetaKO (omH IA IW (Y.ω t)) (IA.kap g) (IW.kap h)) hF).trans (thetaKO_omH IA IW (Y.ω t) g h _)`.
+-/
 theorem ker_move (IA : IsoMat B A) (IA' : IsoMat B' A') (IW : IsoMat WW₁ WW) (Y : Tri T₀ B B' WW₁)
     (ψ : AddChar (AF D.host.F) ℂ) (θ : Formalism.IndefR.Datum.InfFam D) (hθ : IsInfFam θ) (t : T₀) (P : PolF D WW₁.rank B.rank)
     (h : GA D WW₁) (g : GA D B) :
@@ -61,6 +76,9 @@ theorem ker_move (IA : IsoMat B A) (IA' : IsoMat B' A') (IW : IsoMat WW₁ WW) (
   simp only [hs] at hF
   exact (congrArg (thetaKO (omH IA IW (Y.ω t)) (IA.kap g) (IW.kap h)) hF).trans (thetaKO_omH IA IW (Y.ω t) g h _)
 
+/- English proof (translation)
+Establish `hF` using `GlobalTheory.T.fockPureTensor_isometry_moved_orthonormal ψ θ hθ false IA' IW Y.rA'.s Y.rA'.B Y.rW.s Y.rW.B (Y.f' t) P`. Use `show thetaKO (omH IA' IW (Y.ω' t)) (IA'.kap g) (IW.kap h) (pureTensorO ψ θ (GlobalTheory.Grid.sgn false A') WW (fun τ => GlobalTheory.Grid.sgnM false (cartMove IA' τ (Y.rA'.s τ))) (fun τ => cartMove IW τ (Y.rW.s τ)) (fun τ => basMove IA' τ (Y.rA'.B τ)) (fun τ => basMove IW τ (Y.r …`. Rewrite using `[hF, thetaKO_omH]`.
+-/
 theorem ker'_move (IA : IsoMat B A) (IA' : IsoMat B' A') (IW : IsoMat WW₁ WW) (Y : Tri T₀ B B' WW₁)
     (ψ : AddChar (AF D.host.F) ℂ) (θ : Formalism.IndefR.Datum.InfFam D) (hθ : IsInfFam θ) (t : T₀) (P : PolF D WW₁.rank B'.rank)
     (h : GA D WW₁) (g : GA D B') :
@@ -74,6 +92,9 @@ theorem ker'_move (IA : IsoMat B A) (IA' : IsoMat B' A') (IW : IsoMat WW₁ WW) 
       Y.rW.B (Y.f' t) P)
   rw [hF, thetaKO_omH]
 
+/- English proof (translation)
+Use `show ∫ g in IA.kap.symm ⁻¹' Y.fd, (triMove IA IA' IW Y).ker ψ θ t (polMove IW.rank_eq IA.rank_eq P) (IW.kap h) g ∂(Y.m.map (kapME IA)) = _`. Rewrite using `[setIntegral_map_equiv (kapME IA), preimage_kapME]`. Conclude with `congrArg (fun F => ∫ g in Y.fd, F g ∂Y.m) (funext fun g => ker_move IA IA' IW Y ψ θ hθ t P h g)`.
+-/
 theorem I_move (IA : IsoMat B A) (IA' : IsoMat B' A') (IW : IsoMat WW₁ WW) (Y : Tri T₀ B B' WW₁)
     (ψ : AddChar (AF D.host.F) ℂ) (θ : Formalism.IndefR.Datum.InfFam D) (hθ : IsInfFam θ) (t : T₀) (P : PolF D WW₁.rank B.rank)
     (h : GA D WW₁) :
@@ -83,6 +104,9 @@ theorem I_move (IA : IsoMat B A) (IA' : IsoMat B' A') (IW : IsoMat WW₁ WW) (Y 
   rw [setIntegral_map_equiv (kapME IA), preimage_kapME]
   exact congrArg (fun F => ∫ g in Y.fd, F g ∂Y.m) (funext fun g => ker_move IA IA' IW Y ψ θ hθ t P h g)
 
+/- English proof (translation)
+Use `show ∫ g in IA'.kap.symm ⁻¹' Y.fd', (triMove IA IA' IW Y).ker' ψ θ t (polMove IW.rank_eq IA'.rank_eq P) (IW.kap h) g ∂(Y.m'.map (kapME IA')) = _`. Rewrite using `[setIntegral_map_equiv (kapME IA'), preimage_kapME]`. Conclude with `congrArg (fun F => ∫ g in Y.fd', F g ∂Y.m') (funext fun g => ker'_move IA IA' IW Y ψ θ hθ t P h g)`.
+-/
 theorem I'_move (IA : IsoMat B A) (IA' : IsoMat B' A') (IW : IsoMat WW₁ WW) (Y : Tri T₀ B B' WW₁)
     (ψ : AddChar (AF D.host.F) ℂ) (θ : Formalism.IndefR.Datum.InfFam D) (hθ : IsInfFam θ) (t : T₀) (P : PolF D WW₁.rank B'.rank)
     (h : GA D WW₁) :
@@ -92,6 +116,11 @@ theorem I'_move (IA : IsoMat B A) (IA' : IsoMat B' A') (IW : IsoMat WW₁ WW) (Y
   rw [setIntegral_map_equiv (kapME IA'), preimage_kapME]
   exact congrArg (fun F => ∫ g in Y.fd', F g ∂Y.m') (funext fun g => ker'_move IA IA' IW Y ψ θ hθ t P h g)
 
+/- English proof (translation)
+Use `show IntegrableOn ((triMove IA IA' IW Y).ker ψ θ t (polMove IW.rank_eq IA.rank_eq P) (IW.kap h)) (IA.kap.symm ⁻¹' Y.fd) (Y.m.map (kapME IA)) ↔ _`. Rewrite using `[IntegrableOn, (kapME IA).restrict_map, integrable_map_equiv, preimage_kapME]`. Establish `e : (triMove IA IA' IW Y).ker ψ θ t (polMove IW.rank_eq IA.rank_eq P) (IW.kap h) ∘ kapME IA = Y.ker ψ θ t P h`. Use function extensionality and compare the values at `fun g => ker_move IA IA' IW Y ψ θ hθ t P h g`. Rewrite using `[e]`.
+
+Both sides reduce to the same expression.
+-/
 theorem integrableOn_move (IA : IsoMat B A) (IA' : IsoMat B' A') (IW : IsoMat WW₁ WW) (Y : Tri T₀ B B' WW₁)
     (ψ : AddChar (AF D.host.F) ℂ) (θ : Formalism.IndefR.Datum.InfFam D) (hθ : IsInfFam θ) (t : T₀) (P : PolF D WW₁.rank B.rank)
     (h : GA D WW₁) :
@@ -105,6 +134,11 @@ theorem integrableOn_move (IA : IsoMat B A) (IA' : IsoMat B' A') (IW : IsoMat WW
   rw [e]
   rfl
 
+/- English proof (translation)
+Use `show IntegrableOn ((triMove IA IA' IW Y).ker' ψ θ t (polMove IW.rank_eq IA'.rank_eq P) (IW.kap h)) (IA'.kap.symm ⁻¹' Y.fd') (Y.m'.map (kapME IA')) ↔ _`. Rewrite using `[IntegrableOn, (kapME IA').restrict_map, integrable_map_equiv, preimage_kapME]`. Establish `e : (triMove IA IA' IW Y).ker' ψ θ t (polMove IW.rank_eq IA'.rank_eq P) (IW.kap h) ∘ kapME IA' = Y.ker' ψ θ t P h`. Use function extensionality and compare the values at `fun g => ker'_move IA IA' IW Y ψ θ hθ t P h g`. Rewrite using `[e]`.
+
+Both sides reduce to the same expression.
+-/
 theorem integrableOn'_move (IA : IsoMat B A) (IA' : IsoMat B' A') (IW : IsoMat WW₁ WW) (Y : Tri T₀ B B' WW₁)
     (ψ : AddChar (AF D.host.F) ℂ) (θ : Formalism.IndefR.Datum.InfFam D) (hθ : IsInfFam θ) (t : T₀) (P : PolF D WW₁.rank B'.rank)
     (h : GA D WW₁) :
@@ -118,6 +152,13 @@ theorem integrableOn'_move (IA : IsoMat B A) (IA' : IsoMat B' A') (IW : IsoMat W
   rw [e]
   rfl
 
+/- English proof (translation)
+Introduce `D T₀ A A' WW B B' WW₁ IA IA' IW Y ψ θ hθ c hY`. Take `⟨hc, P, P', H⟩` from `hY`. Use `⟨hc, polMove IW.rank_eq IA.rank_eq P, polMove IW.rank_eq IA'.rank_eq P', fun t => ?_⟩` and prove the remaining obligations. Take `⟨hint, ⟨h0, hne⟩, heq⟩` from `H t`. Use `⟨fun h' => ?_, ⟨IW.kap h0, ?_⟩, fun h' => ?_⟩` and prove the remaining obligations.
+
+Take `⟨h, rfl⟩` from `IW.kap.surjective h'`. Conclude with `⟨(integrableOn_move IA IA' IW Y ψ θ hθ t P h).2 (hint h).1, (integrableOn'_move IA IA' IW Y ψ θ hθ t P' h).2 (hint h).2⟩`. Rewrite using `[I'_move IA IA' IW Y ψ θ hθ t P' h0]`. Conclude with `hne`. Take `⟨h, rfl⟩` from `IW.kap.surjective h'`.
+
+Rewrite using `[I_move IA IA' IW Y ψ θ hθ t P h, I'_move IA IA' IW Y ψ θ hθ t P' h]`. Conclude with `heq h`.
+-/
 theorem isConst_triMove : ∀ {D : D7} {T₀ : Type} {A A' WW B B' WW₁ : HSp D} (IA : GlobalTheory.Mem.Isom.IsoMat B A) (IA' : GlobalTheory.Mem.Isom.IsoMat B' A') (IW : GlobalTheory.Mem.Isom.IsoMat WW₁ WW) (Y : Tri T₀ B B' WW₁) (ψ : AddChar (AF D.host.F) ℂ) (θ : Formalism.IndefR.Datum.InfFam D), IsInfFam θ →
   ∀ c : T₀ → ℂ, Y.IsConst ψ θ c → (GlobalTheory.TriMove.triMove IA IA' IW Y).IsConst ψ θ c := by
   intro D T₀ A A' WW B B' WW₁ IA IA' IW Y ψ θ hθ c hY

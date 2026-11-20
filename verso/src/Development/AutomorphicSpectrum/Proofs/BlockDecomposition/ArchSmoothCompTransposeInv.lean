@@ -20,22 +20,40 @@ variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 def tr (A : ArchMatrix K n) : ArchMatrix K n :=
   Matrix.transpose (show Matrix (Fin n) (Fin n) (mixedEmbedding.mixedSpace K) from A)
 
+/- English proof (translation)
+The claim follows from `Matrix.transpose_mul (show Matrix (Fin n) (Fin n) (mixedEmbedding.mixedSpace K) from A) (show Matrix (Fin n) (Fin n) (mixedEmbedding.mixedSpace K) from B)`.
+-/
 theorem tr_mul (A B : ArchMatrix K n) : tr (A * B) = tr B * tr A :=
   Matrix.transpose_mul (show Matrix (Fin n) (Fin n) (mixedEmbedding.mixedSpace K) from A)
     (show Matrix (Fin n) (Fin n) (mixedEmbedding.mixedSpace K) from B)
 
+/- English proof (translation)
+The claim follows from `Matrix.transpose_one`.
+-/
 theorem tr_one : tr (1 : ArchMatrix K n) = 1 :=
   Matrix.transpose_one
 
+/- English proof (translation)
+The claim follows from `Matrix.transpose_neg _`.
+-/
 theorem tr_neg (A : ArchMatrix K n) : tr (-A) = -tr A :=
   Matrix.transpose_neg _
 
+/- English proof (translation)
+The claim follows from `Matrix.transpose_add _ _`.
+-/
 theorem tr_add (A B : ArchMatrix K n) : tr (A + B) = tr A + tr B :=
   Matrix.transpose_add _ _
 
+/- English proof (translation)
+The claim follows from `Matrix.transpose_smul _ _`.
+-/
 theorem tr_smul (r : ℝ) (A : ArchMatrix K n) : tr (r • A) = r • tr A :=
   Matrix.transpose_smul _ _
 
+/- English proof (translation)
+The claim follows from `Matrix.exp_transpose _`.
+-/
 theorem tr_exp (Y : ArchMatrix K n) : NormedSpace.exp (tr Y) = tr (NormedSpace.exp Y) :=
   Matrix.exp_transpose _
 
@@ -45,10 +63,16 @@ def tiA (x : archGroup K n) : archGroup K n :=
     by rw [← tr_mul, Units.mul_inv, tr_one],
     by rw [← tr_mul, Units.inv_mul, tr_one]⟩, trivial⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_tiA (x : archGroup K n) :
     (((tiA x : archGroup K n) : (ArchMatrix K n)ˣ) : ArchMatrix K n) =
       tr (((x : (ArchMatrix K n)ˣ)⁻¹ : (ArchMatrix K n)ˣ) : ArchMatrix K n) := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul, Units.val_mul, coe_tiA, _root_.mul_inv_rev, tr_mul]`.
+-/
 theorem tiA_mul (x y : archGroup K n) : tiA (x * y) = tiA x * tiA y := by
   apply Subtype.ext
   apply Units.ext
@@ -65,6 +89,11 @@ def dtiA : archLie K n →ₗ[ℝ] archLie K n where
     show -tr (r • (Y : ArchMatrix K n)) = r • -tr (Y : ArchMatrix K n)
     rw [tr_smul, smul_neg]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Establish `h : ((((isExpLieAlgebra K n).expG Y : archGroup K n) : (ArchMatrix K n)ˣ)⁻¹ : (ArchMatrix K n)ˣ) = (((isExpLieAlgebra K n).expG (-Y) : archGroup K n) : (ArchMatrix K n)ˣ)`. Rewrite using `[IsExpLieAlgebra.expG_neg]`. Both sides reduce to the same expression.
+
+Rewrite using `[coe_tiA, h]`. Use `show tr (NormedSpace.exp (-(Y : ArchMatrix K n))) = NormedSpace.exp (-tr (Y : ArchMatrix K n))`. Rewrite using `[← tr_exp, tr_neg]`.
+-/
 theorem tiA_expG (Y : archLie K n) :
     tiA ((isExpLieAlgebra K n).expG Y) = (isExpLieAlgebra K n).expG (dtiA Y) := by
   apply Subtype.ext
@@ -76,6 +105,11 @@ theorem tiA_expG (Y : archLie K n) :
   show tr (NormedSpace.exp (-(Y : ArchMatrix K n))) = NormedSpace.exp (-tr (Y : ArchMatrix K n))
   rw [← tr_exp, tr_neg]
 
+/- English proof (translation)
+Rewrite `hf`, the goal using `[IsExpLieAlgebra.isSmoothFun_iff]`. Introduce `g`. Use `haveI : FiniteDimensional ℝ (archLie K n) := FiniteDimensional.finiteDimensional_submodule _`. Establish `hL : ContDiff ℝ (∞) (dtiA (K` using `K) (n := n)) := (LinearMap.toContinuousLinearMap (dtiA (K := K) (n := n))).contDiff`. Establish `e : (fun Y : archLie K n => f (tiA (g * (isExpLieAlgebra K n).expG Y))) = (fun Y : archLie K n => f (tiA g * (isExpLieAlgebra K n).expG Y)) ∘ dtiA`.
+
+Use function extensionality and compare the values at `Y`. Rewrite using `[Function.comp_apply, tiA_mul, tiA_expG]`. Rewrite using `[e]`. Conclude with `(hf (tiA g)).comp hL`.
+-/
 theorem isSmoothFun_comp_tiA {f : archGroup K n → ℂ} (hf : (isExpLieAlgebra K n).IsSmoothFun f) :
     (isExpLieAlgebra K n).IsSmoothFun (fun x => f (tiA x)) := by
   rw [IsExpLieAlgebra.isSmoothFun_iff] at hf ⊢
@@ -90,6 +124,11 @@ theorem isSmoothFun_comp_tiA {f : archGroup K n → ℂ} (hf : (isExpLieAlgebra 
   rw [e]
   exact (hf (tiA g)).comp hL
 
+/- English proof (translation)
+Establish `h1 : ((infEmb K n y) a b).1 = ((archEquiv K n).symm y) a b`. Use `congrArg (fun p => (p.1 : Matrix (Fin n) (Fin n) (InfiniteAdeleRing K)) a b) (prodEquiv_infEmb y)` as an intermediate fact. Conclude with `this`. Rewrite using `[h1]`. Take `⟨z, rfl⟩` from `(archEquiv K n).surjective y`.
+
+Rewrite using `[ContinuousMulEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+-/
 theorem infEmb_fst (y : archGroup K n) (a b : Fin n) :
     InfiniteAdeleRing.ringEquiv_mixedSpace K ((infEmb K n y) a b).1 =
       (show Matrix (Fin n) (Fin n) (mixedEmbedding.mixedSpace K) from ((y : (ArchMatrix K n)ˣ) : ArchMatrix K n)) a b := by
@@ -101,10 +140,18 @@ theorem infEmb_fst (y : archGroup K n) (a b : Fin n) :
   rw [ContinuousMulEquiv.symm_apply_apply]
   rfl
 
+/- English proof (translation)
+The claim follows from `congrArg (fun p => (p.2 : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 K) K)) a b) (prodEquiv_infEmb y)`.
+-/
 theorem infEmb_snd (y : archGroup K n) (a b : Fin n) :
     ((infEmb K n y) a b).2 = (1 : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 K) K)) a b :=
   congrArg (fun p => (p.2 : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 K) K)) a b) (prodEquiv_infEmb y)
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Express the relevant statement in the definitionally equal form `(infEmb K n x)⁻¹.val b a = (infEmb K n (tiA x)) a b`. Rewrite using `[← map_inv]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Apply `(InfiniteAdeleRing.ringEquiv_mixedSpace K).injective` to reduce the goal to its premises. Rewrite using `[infEmb_fst, infEmb_fst]`. Both sides reduce to the same expression. Rewrite using `[infEmb_snd, infEmb_snd]`. Conclude with `congrFun (congrFun (Matrix.transpose_one (n := Fin n) (α := FiniteAdeleRing (𝓞 K) K)) a) b`.
+-/
 theorem ti_infEmb (x : archGroup K n) : ti (infEmb K n x) = infEmb K n (tiA x) := by
   apply Units.ext
   ext a b
@@ -117,12 +164,20 @@ theorem ti_infEmb (x : archGroup K n) : ti (infEmb K n x) = infEmb K n (tiA x) :
   · rw [infEmb_snd, infEmb_snd]
     exact congrFun (congrFun (Matrix.transpose_one (n := Fin n) (α := FiniteAdeleRing (𝓞 K) K)) a) b
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(b.inv * a.inv).transpose = a.inv.transpose * b.inv.transpose`. Rewrite using `[Matrix.transpose_mul]`.
+-/
 theorem ti_mul' {R : Type*} [CommRing R] {m : Type*} [Fintype m] [DecidableEq m] (a b : GL m R) :
     ti (a * b) = ti a * ti b := by
   apply Units.ext
   change (b.inv * a.inv).transpose = a.inv.transpose * b.inv.transpose
   rw [Matrix.transpose_mul]
 
+/- English proof (translation)
+Introduce `F hF c g`. Establish `e : archSlice (fun g : G3 => F (c * ti g)) g = fun x => archSlice F (c * ti g) (tiA x)`. Use function extensionality and compare the values at `x`. Simplify using `only [archSlice_apply, ti_mul', ti_infEmb, mul_assoc]`. Rewrite using `[e]`.
+
+Conclude with `isSmoothFun_comp_tiA (hF _)`.
+-/
 theorem isArchSmooth_comp_ti :
     ∀ (F : G3 → ℂ), IsArchSmooth F → ∀ c : G3, IsArchSmooth (fun g : G3 => F (c * ti g)) := by
   intro F hF c g

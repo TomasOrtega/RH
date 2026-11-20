@@ -13,6 +13,9 @@ open GroundTheory.Arith.SchemeCoh GroundTheory.Arith.SchemeCoh.ProjSpace
 
 namespace GlobalTheory.Amb
 
+/- English proof (translation)
+Establish `hs : IsSeparated (pr k m n 0 ≫ toSpecBase k (n 0))`. Rewrite using `[pr_toSpecBase]`. Use `infer_instance`. Conclude with `IsSeparated.of_comp _ (toSpecBase k (n 0))`.
+-/
 theorem isSeparated_pr_zero (k : Type) [CommRing k] (m : ℕ) (n : Fin (m + 1) → ℕ) :
     IsSeparated (pr k m n 0) := by
   have hs : IsSeparated (pr k m n 0 ≫ toSpecBase k (n 0)) := by
@@ -20,6 +23,13 @@ theorem isSeparated_pr_zero (k : Type) [CommRing k] (m : ℕ) (n : Fin (m + 1) �
     infer_instance
   exact IsSeparated.of_comp _ (toSpecBase k (n 0))
 
+/- English proof (translation)
+Establish `hA` using `LB.isLB_pull (O1_isLB k a) π₁`. Establish `hB` using `LB.isLB_pull (O1_isLB k b) π₀`. Establish `hT` using `isLB_tw hA hB (-(t : ℤ))`. Establish `hTi` using `LB.isLB_pull hT i`. Rewrite using `[← cls_eq_iff hTi hM, cls_pull hT i hTi]`.
+
+Establish `hct : cls (tw ((O1 k a).pull π₁) ((O1 k b).pull π₀) (-(t : ℤ))) hT = cls ((O1 k a).pull π₁) hA - (-(-(t : ℤ))) • cls ((O1 k b).pull π₀) hB` using `by show cls (((O1 k a).pull π₁).div (AbLaw.pw ((O1 k b).pull π₀) (-(-(t : ℤ))))) hT = _`. Rewrite using `[cls_div hA (isLB_pw hB _) hT, EffBound.cls_pw hB]`. Rewrite using `[hct, map_sub, map_zsmul, cls_pull (O1_isLB k a) π₁ hA, cls_pull (O1_isLB k b) π₀ hB, ← pull_comp, ← pull_comp, hg, he]`. Rewrite `h` using `[cls_pull (O1_isLB k a) g, cls_pull (O1_isLB k b) e]`. Rewrite using `[h, neg_neg]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem lbIso_pull_tw {k : Type} [CommRing k] {X P : Scheme.{0}} (i : X ⟶ P) {a b : ℕ} (π₁ : P ⟶ PSpace k a)
     (π₀ : P ⟶ PSpace k b) (g : X ⟶ PSpace k a) (e : X ⟶ PSpace k b) (hg : i ≫ π₁ = g) (he : i ≫ π₀ = e) (t : ℕ)
     (M : LB X) (hM : M.IsLB)

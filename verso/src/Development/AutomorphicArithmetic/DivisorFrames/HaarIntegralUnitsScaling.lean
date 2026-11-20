@@ -7,6 +7,11 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.ConeBumpB
 open scoped GlobalTheory.VacAny
 
+/- English proof (translation)
+Establish `h1` using `integral_domSMul (μ := m) (DomMulAct.mk g⁻¹) f`. Establish `h2 : (DomMulAct.mk g⁻¹ • m : Measure A) = (distribHaarChar A g⁻¹) • m`. Rewrite using `[← addHaarScalarFactor_smul_eq_distribHaarChar m]`. Conclude with `Measure.isAddLeftInvariant_eq_smul _ _`. Rewrite `h1` using `[h2, integral_smul_nnreal_measure, map_inv]`.
+
+Simplify using `only [Equiv.symm_apply_apply, inv_inv] at h1`. Rewrite using `[← h1, NNReal.smul_def, Complex.real_smul]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 private theorem integral_smul_distribHaarChar {G A : Type*} [Group G] [AddCommGroup A] [DistribMulAction G A]
     [TopologicalSpace A] [IsTopologicalAddGroup A] [LocallyCompactSpace A] [SecondCountableTopology A]
     [ContinuousConstSMul G A] [MeasurableSpace A] [BorelSpace A] (m : Measure A) [m.IsAddHaarMeasure]
@@ -22,6 +27,11 @@ private theorem integral_smul_distribHaarChar {G A : Type*} [Group G] [AddCommGr
   push_cast
   rfl
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ v _ _ m _ u f`. Use `haveI := GlobalTheory.LocTateInt.isTopologicalRing_Ev (F := F) (E := E) v`. Use `haveI := GlobalTheory.LocTateInt.locallyCompactSpace_Ev (F := F) (E := E) v`. Use `haveI := GlobalTheory.LocTateInt.secondCountable_Ev (F := F) (E := E) v`. Establish `h` using `integral_smul_distribHaarChar m u f`.
+
+Rewrite `h` using `[GlobalTheory.LocTateInt.distribHaarChar_Ev]`. Rewrite using `[GlobalTheory.Doubling.absEv_apply]`. Conclude with `h`.
+-/
 theorem UpperTheory.haar_integral_units_scaling :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : Pl F), ∀ [MeasurableSpace (Fv F v ⊗[F] E)] [BorelSpace (Fv F v ⊗[F] E)] (m : Measure (Fv F v ⊗[F] E)) [m.IsAddHaarMeasure],
         ∀ (u : (Fv F v ⊗[F] E)ˣ) (f : Fv F v ⊗[F] E → ℂ),

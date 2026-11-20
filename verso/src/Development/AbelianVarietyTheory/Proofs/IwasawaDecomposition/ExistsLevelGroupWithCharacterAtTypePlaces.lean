@@ -13,6 +13,13 @@ namespace GlobalTheory.LevGChar
 section Reformulated
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
+/- English proof (translation)
+Establish `key : ALint L ≤ ((s.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring).comap s.proj`. Rewrite using `[ALint, Subring.closure_le]`. Introduce and unpack `y (⟨o, rfl⟩ | ⟨a, ha, rfl⟩)`. Use `show s.proj _ ∈ (s.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring`. Establish `e : s.proj ((o : L) ⊗ₜ[maximalRealSubfield L] (1 : AFplus L)) = s.i (o : L)`.
+
+Simplify using `[SplitPlace.proj]`. Rewrite using `[e]`. Conclude with `s.split_le_one o`. Use `show s.proj _ ∈ (s.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring`. Establish `e : s.proj ((1 : L) ⊗ₜ[maximalRealSubfield L] a) = a s.v`.
+
+Simplify using `only [SplitPlace.proj, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.lift_tmul, map_one, one_mul]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `ha s.v`. Conclude with `key hz`.
+-/
 theorem proj_int (s : SplitPlace L) {z : AL L} (hz : z ∈ ALint L) :
     s.proj z ∈ s.v.adicCompletionIntegers (maximalRealSubfield L) := by
   have key : ALint L ≤ ((s.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring).comap s.proj := by
@@ -32,15 +39,27 @@ theorem proj_int (s : SplitPlace L) {z : AL L} (hz : z ∈ ALint L) :
       exact ha s.v
   exact key hz
 
+/- English proof (translation)
+The claim follows from `proj_int s (h a b)`.
+-/
 theorem locM_int (s : SplitPlace L) {κ : GAf L n} (h : κ ∈ Umax L n) (a b : Fin n) :
     NX.locM s κ a b ∈ s.v.adicCompletionIntegers (maximalRealSubfield L) := proj_int s (h a b)
 
+/- English proof (translation)
+Simplify using `only [NX.locM, map_mul, Units.val_mul]`.
+-/
 theorem locM_mul (s : SplitPlace L) (κ κ' : GAf L n) : NX.locM s (κ * κ') = NX.locM s κ * NX.locM s κ' := by
   simp only [NX.locM, map_mul, Units.val_mul]
 
+/- English proof (translation)
+Simplify using `only [NX.locM, map_one, Units.val_one]`.
+-/
 theorem locM_one (s : SplitPlace L) : NX.locM s (1 : GAf L n) = 1 := by
   simp only [NX.locM, map_one, Units.val_one]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => rfl`. Consider the case `add a b ha hb => rw [map_add, map_add, map_add, ha, hb]`.
+-/
 theorem proj_eq_lift (s : SplitPlace L) (x : AL L) :
     s.proj x = (Algebra.TensorProduct.lift s.i (AlgHom.id _ _) (fun _ _ => Commute.all _ _)) (compAt L s.v x) := by
   induction x using TensorProduct.induction_on with
@@ -48,6 +67,11 @@ theorem proj_eq_lift (s : SplitPlace L) (x : AL L) :
   | tmul a b => rfl
   | add a b ha hb => rw [map_add, map_add, map_add, ha, hb]
 
+/- English proof (translation)
+Establish `hc` using `h s.v (fun h' => h' hv)`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Establish `e` using `congrFun (congrFun hc a) b`. Simplify using `only [Matrix.map_apply] at e`. Express the relevant statement in the definitionally equal form `s.proj ((κ.1 : Matrix (Fin n) (Fin n) (AL L)) a b) = _`.
+
+Rewrite using `[proj_eq_lift, e]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hab]`.
+-/
 theorem locM_triv (s : SplitPlace L) {B : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield L)))} {κ : GAf L n}
     (h : TrivOutside Bᶜ κ) (hv : s.v ∈ B) : NX.locM s κ = 1 := by
   have hc := h s.v (fun h' => h' hv)
@@ -60,6 +84,9 @@ theorem locM_triv (s : SplitPlace L) {B : Set (HeightOneSpectrum (𝓞 (maximalR
   · subst hab; simp
   · simp [Matrix.one_apply_ne hab]
 
+/- English proof (translation)
+Establish `e : ((N : ℕ) : v.adicCompletion (maximalRealSubfield L)) = ((algebraMap (𝓞 (maximalRealSubfield L)) (v.adicCompletionIntegers (maximalRealSubfield L)) (N : 𝓞 (maximalRealSubfield L)) : v.adicCompletionIntegers (maximalRealSubfield L)) : v.adicCompletion (maximalRealSubfield L))`. Rewrite using `[map_natCast]`. Simplify using the standard rewrite rules. Rewrite using `[e, HeightOneSpectrum.algebraMap_adicCompletionIntegers_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `(v.valuation_lt_one_iff_mem (K := maximalRealSubfield L) _).2 hN`.
+-/
 theorem natCast_lt {v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))} {N : ℕ}
     (hN : (N : 𝓞 (maximalRealSubfield L)) ∈ v.asIdeal) : Valued.v ((N : v.adicCompletion (maximalRealSubfield L))) < 1 := by
   have e : ((N : ℕ) : v.adicCompletion (maximalRealSubfield L)) =
@@ -69,6 +96,11 @@ theorem natCast_lt {v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))} {N : �
   rw [e, HeightOneSpectrum.algebraMap_adicCompletionIntegers_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']
   exact (v.valuation_lt_one_iff_mem (K := maximalRealSubfield L) _).2 hN
 
+/- English proof (translation)
+Take `⟨y, hy, e⟩` from `hκ.2 a b`. Establish `h1 : NX.locM s κ a b - (1 : Matrix (Fin n) (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) a b = s.proj ((κ.1 : Matrix (Fin n) (Fin n) (AL L)) a b - (1 : Matrix (Fin n) (Fin n) (AL L)) a b)`. Rewrite using `[map_sub]`. Use `congr 1`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[h1, e, map_mul, map_natCast, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (proj_int s hy))) (natCast_lt hN)`.
+-/
 theorem locM_cong (s : SplitPlace L) {N : ℕ} (hN : (N : 𝓞 (maximalRealSubfield L)) ∈ s.v.asIdeal) (κ : GAf L n)
     (hκ : NG.Cong L n N κ) (a b : Fin n) :
     Valued.v (NX.locM s κ a b - (1 : Matrix (Fin n) (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) a b) < 1 := by
@@ -85,6 +117,9 @@ theorem locM_cong (s : SplitPlace L) {N : ℕ} (hN : (N : 𝓞 (maximalRealSubfi
 
 variable {v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))}
 
+/- English proof (translation)
+Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Establish `e : z = (z - c) + c` using `by ring`. Rewrite using `[e]`. Conclude with `(Valuation.map_add _ _ _).trans (max_le h.le hc)`.
+-/
 theorem int_of_cong {z c : v.adicCompletion (maximalRealSubfield L)} (hc : Valued.v c ≤ 1) (h : Valued.v (z - c) < 1) :
     z ∈ v.adicCompletionIntegers (maximalRealSubfield L) := by
   rw [HeightOneSpectrum.mem_adicCompletionIntegers]
@@ -92,6 +127,9 @@ theorem int_of_cong {z c : v.adicCompletion (maximalRealSubfield L)} (hc : Value
   rw [e]
   exact (Valuation.map_add _ _ _).trans (max_le h.le hc)
 
+/- English proof (translation)
+Establish `hz : z ∈ v.adicCompletionIntegers (maximalRealSubfield L)` using `int_of_cong ((HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 c.2) h`. Rewrite using `[NX.intLift, dif_pos hz]`. Establish `h0 : red (⟨z, hz⟩ - c) = 0` using `hred _ (by simpa using h)`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem red_intLift {R : Type} [CommRing R] (red : v.adicCompletionIntegers (maximalRealSubfield L) →+* R)
     (hred : ∀ z : v.adicCompletionIntegers (maximalRealSubfield L), Valued.v (z : v.adicCompletion (maximalRealSubfield L)) < 1 → red z = 0) {z : v.adicCompletion (maximalRealSubfield L)} (c : v.adicCompletionIntegers (maximalRealSubfield L))
     (h : Valued.v (z - (c : v.adicCompletion (maximalRealSubfield L))) < 1) : red (NX.intLift v z) = red c := by
@@ -100,6 +138,13 @@ theorem red_intLift {R : Type} [CommRing R] (red : v.adicCompletionIntegers (max
   have h0 : red (⟨z, hz⟩ - c) = 0 := hred _ (by simpa using h)
   rwa [map_sub, sub_eq_zero] at h0
 
+/- English proof (translation)
+Establish `hoff : ∀ a b, a ≠ b → Valued.v (x a b) < 1` using `fun a b hab => by simpa [Matrix.one_apply_ne hab] using h a b`. Use `⟨⟨fun a b => int_of_cong (c := (1 : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))) a b) ?_ (h a b), fun a b ha hb => hoff a b ?_⟩, fun a b _ _ => ⟨fun hba => hoff a b ?_, fun hab => ?_⟩⟩` and prove the remaining obligations. Apply the tactic sequence `by_cases hab : a = b <;> simp [Matrix.one_apply, hab]`. Introduce `e`. Substitute `e` using the available equality.
+
+Use linear arithmetic over natural numbers and integers. Introduce `e`. Substitute `e` using the available equality. Conclude with `lt_irrefl _ hba`. Substitute `hab` using the available equality.
+
+Simplify using `using h a a`.
+-/
 theorem levG_of_cong (r : ℕ) (x : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))) (h : ∀ a b, Valued.v (x a b - (1 : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))) a b) < 1) : NX.InLevG v r x := by
   have hoff : ∀ a b, a ≠ b → Valued.v (x a b) < 1 := fun a b hab => by simpa [Matrix.one_apply_ne hab] using h a b
   refine ⟨⟨fun a b => int_of_cong (c := (1 : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))) a b) ?_ (h a b), fun a b ha hb => hoff a b ?_⟩,
@@ -109,20 +154,34 @@ theorem levG_of_cong (r : ℕ) (x : Matrix (Fin n) (Fin n) (v.adicCompletion (ma
   · intro e; subst e; exact lt_irrefl _ hba
   · subst hab; simpa using h a a
 
+/- English proof (translation)
+Establish `h0 : z ≠ 0` using `by intro h; rw [h, map_zero] at hz; exact zero_ne_one hz`. Establish `hi' : z⁻¹ ∈ v.adicCompletionIntegers (maximalRealSubfield L)` using `by rw [HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hz, inv_one]`. Conclude with `⟨⟨⟨z, hi⟩, ⟨z⁻¹, hi'⟩, Subtype.ext (mul_inv_cancel₀ h0), Subtype.ext (inv_mul_cancel₀ h0)⟩, rfl⟩`.
+-/
 theorem isUnit_int {z : v.adicCompletion (maximalRealSubfield L)} (hz : Valued.v z = 1) (hi : z ∈ v.adicCompletionIntegers (maximalRealSubfield L)) : IsUnit (⟨z, hi⟩ : v.adicCompletionIntegers (maximalRealSubfield L)) := by
   have h0 : z ≠ 0 := by intro h; rw [h, map_zero] at hz; exact zero_ne_one hz
   have hi' : z⁻¹ ∈ v.adicCompletionIntegers (maximalRealSubfield L) := by rw [HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hz, inv_one]
   exact ⟨⟨⟨z, hi⟩, ⟨z⁻¹, hi'⟩, Subtype.ext (mul_inv_cancel₀ h0), Subtype.ext (inv_mul_cancel₀ h0)⟩, rfl⟩
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, NX.glOf_val _ (by rw [Matrix.det_mul]; exact hM.mul hN), NX.glOf_val _ hM, NX.glOf_val _ hN]`.
+-/
 theorem glOf_mul {ι R : Type} [Fintype ι] [DecidableEq ι] [CommRing R] (M N : Matrix ι ι R) (hM : IsUnit M.det)
     (hN : IsUnit N.det) : NX.glOf (M * N) = NX.glOf M * NX.glOf N := by
   apply Units.ext
   rw [Units.val_mul, NX.glOf_val _ (by rw [Matrix.det_mul]; exact hM.mul hN), NX.glOf_val _ hM, NX.glOf_val _ hN]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_upperTriangular h.1]`. Simplify using `[h.2]`.
+-/
 theorem det_uniTri {r : ℕ} {R : Type} [CommRing R] {M : Matrix (Fin r) (Fin r) R} (h : NX.IsUniTri r M) : M.det = 1 := by
   rw [Matrix.det_of_upperTriangular h.1]
   simp [h.2]
 
+/- English proof (translation)
+Use `⟨fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations. Use `show red (NX.intLift v (x (Fin.castLE hr a) (Fin.castLE hr b))) = 0`. Establish `hlt : Fin.castLE hr b < Fin.castLE hr a` using `by rw [Fin.lt_def] at hab ⊢; exact hab`. Rewrite using `[red_intLift red hred 0 (by simpa using (hx.2 (Fin.castLE hr a) (Fin.castLE hr b) a.2 b.2).1 hlt), map_zero]`. Use `show red (NX.intLift v (x (Fin.castLE hr a) (Fin.castLE hr a))) = 1`.
+
+Rewrite using `[red_intLift red hred 1 (by simpa using (hx.2 (Fin.castLE hr a) (Fin.castLE hr a) a.2 a.2).2 rfl), map_one]`.
+-/
 theorem uniTri_red {R : Type} [CommRing R] {r : ℕ} (hr : r ≤ n) (red : v.adicCompletionIntegers (maximalRealSubfield L) →+* R)
     (hred : ∀ z : v.adicCompletionIntegers (maximalRealSubfield L), Valued.v (z : v.adicCompletion (maximalRealSubfield L)) < 1 → red z = 0) (x : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))) (hx : NX.InLevG v r x) :
     NX.IsUniTri r (NX.redMat v red (NX.topR hr x)) := by
@@ -133,6 +192,11 @@ theorem uniTri_red {R : Type} [CommRing R] {r : ℕ} (hr : r ≤ n) (red : v.adi
   · show red (NX.intLift v (x (Fin.castLE hr a) (Fin.castLE hr a))) = 1
     rw [red_intLift red hred 1 (by simpa using (hx.2 (Fin.castLE hr a) (Fin.castLE hr a) a.2 a.2).2 rfl), map_one]
 
+/- English proof (translation)
+Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Use `show red (NX.intLift v (x (Fin.castLE hr a) (Fin.castLE hr b))) = (1 : Matrix (Fin r) (Fin r) R) a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[Matrix.one_apply_eq, red_intLift red hred 1 (by simpa using hx (Fin.castLE hr a) (Fin.castLE hr a)), map_one]`.
+
+Establish `hab' : Fin.castLE hr a ≠ Fin.castLE hr b` using `fun e => hab (Fin.castLE_injective hr e)`. Rewrite using `[Matrix.one_apply_ne hab, red_intLift red hred 0 (by simpa [Matrix.one_apply_ne hab'] using hx (Fin.castLE hr a) (Fin.castLE hr b)), map_zero]`.
+-/
 theorem redMat_one {R : Type} [CommRing R] {r : ℕ} (hr : r ≤ n) (red : v.adicCompletionIntegers (maximalRealSubfield L) →+* R)
     (hred : ∀ z : v.adicCompletionIntegers (maximalRealSubfield L), Valued.v (z : v.adicCompletion (maximalRealSubfield L)) < 1 → red z = 0) (x : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L)))
     (hx : ∀ a b, Valued.v (x a b - (1 : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))) a b) < 1) : NX.redMat v red (NX.topR hr x) = 1 := by
@@ -152,24 +216,39 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {v : Heigh
 
 def intM (x : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))) (hx : ∀ a b, x a b ∈ v.adicCompletionIntegers (maximalRealSubfield L)) : Matrix (Fin n) (Fin n) ↥(v.adicCompletionIntegers (maximalRealSubfield L)) := fun a b => ⟨x a b, hx a b⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem intM_map (x : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))) (hx : ∀ a b, x a b ∈ v.adicCompletionIntegers (maximalRealSubfield L)) : (intM x hx).map (v.adicCompletionIntegers (maximalRealSubfield L)).subtype = x := rfl
 
+/- English proof (translation)
+Introduce `a b` and use `by have e : x * y = (intM x hx * intM y hy).map (v.adicCompletionIntegers (maximalRealSubfield L)).subtype := by rw [Matrix.map_mul, intM_map, intM_map] rw [e] exact ((intM x hx * intM y hy) a b).2`.
+-/
 theorem int_mul {x y : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))} (hx : ∀ a b, x a b ∈ v.adicCompletionIntegers (maximalRealSubfield L)) (hy : ∀ a b, y a b ∈ v.adicCompletionIntegers (maximalRealSubfield L)) :
     ∀ a b, (x * y) a b ∈ v.adicCompletionIntegers (maximalRealSubfield L) := fun a b => by
   have e : x * y = (intM x hx * intM y hy).map (v.adicCompletionIntegers (maximalRealSubfield L)).subtype := by rw [Matrix.map_mul, intM_map, intM_map]
   rw [e]
   exact ((intM x hx * intM y hy) a b).2
 
+/- English proof (translation)
+Use `Matrix.map_injective (f := (v.adicCompletionIntegers (maximalRealSubfield L)).subtype) Subtype.val_injective ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[Matrix.map_mul, intM_map, intM_map, intM_map]`.
+-/
 theorem intM_mul {x y : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))} (hx : ∀ a b, x a b ∈ v.adicCompletionIntegers (maximalRealSubfield L)) (hy : ∀ a b, y a b ∈ v.adicCompletionIntegers (maximalRealSubfield L)) :
     intM (x * y) (int_mul hx hy) = intM x hx * intM y hy := by
   refine Matrix.map_injective (f := (v.adicCompletionIntegers (maximalRealSubfield L)).subtype) Subtype.val_injective ?_
   beta_reduce
   rw [Matrix.map_mul, intM_map, intM_map, intM_map]
 
+/- English proof (translation)
+Rewrite using `[IsLocalRing.residue_eq_zero_iff]`. Conclude with `Valuation.mem_maximalIdeal_iff (v := (Valued.v : Valuation (v.adicCompletion (maximalRealSubfield L)) (WithZero (Multiplicative ℤ))))`.
+-/
 theorem res_zero (z : ↥(v.adicCompletionIntegers (maximalRealSubfield L))) : IsLocalRing.residue ↥(v.adicCompletionIntegers (maximalRealSubfield L)) z = 0 ↔ Valued.v (z : v.adicCompletion (maximalRealSubfield L)) < 1 := by
   rw [IsLocalRing.residue_eq_zero_iff]
   exact Valuation.mem_maximalIdeal_iff (v := (Valued.v : Valuation (v.adicCompletion (maximalRealSubfield L)) (WithZero (Multiplicative ℤ))))
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← map_one (IsLocalRing.residue ↥(v.adicCompletionIntegers (maximalRealSubfield L))), ← map_sub, res_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem res_one (z : ↥(v.adicCompletionIntegers (maximalRealSubfield L))) : IsLocalRing.residue ↥(v.adicCompletionIntegers (maximalRealSubfield L)) z = 1 ↔ Valued.v ((z : v.adicCompletion (maximalRealSubfield L)) - 1) < 1 := by
   rw [← sub_eq_zero, ← map_one (IsLocalRing.residue ↥(v.adicCompletionIntegers (maximalRealSubfield L))), ← map_sub, res_zero]
   simp
@@ -177,13 +256,22 @@ theorem res_one (z : ↥(v.adicCompletionIntegers (maximalRealSubfield L))) : Is
 def resM (x : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))) (hx : ∀ a b, x a b ∈ v.adicCompletionIntegers (maximalRealSubfield L)) :
     Matrix (Fin n) (Fin n) (IsLocalRing.ResidueField ↥(v.adicCompletionIntegers (maximalRealSubfield L))) := (intM x hx).map (IsLocalRing.residue ↥(v.adicCompletionIntegers (maximalRealSubfield L)))
 
+/- English proof (translation)
+Rewrite using `[resM, intM_mul, Matrix.map_mul]`. Both sides reduce to the same expression.
+-/
 theorem resM_mul {x y : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))} (hx : ∀ a b, x a b ∈ v.adicCompletionIntegers (maximalRealSubfield L)) (hy : ∀ a b, y a b ∈ v.adicCompletionIntegers (maximalRealSubfield L)) :
     resM (x * y) (int_mul hx hy) = resM x hx * resM y hy := by
   rw [resM, intM_mul, Matrix.map_mul]; rfl
 
+/- English proof (translation)
+The claim follows from `res_zero _`.
+-/
 theorem resM_zero {x : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))} (hx : ∀ a b, x a b ∈ v.adicCompletionIntegers (maximalRealSubfield L)) (a b : Fin n) :
     resM x hx a b = 0 ↔ Valued.v (x a b) < 1 := res_zero _
 
+/- English proof (translation)
+The claim follows from `res_one _`.
+-/
 theorem resM_one {x : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))} (hx : ∀ a b, x a b ∈ v.adicCompletionIntegers (maximalRealSubfield L)) (a b : Fin n) :
     resM x hx a b = 1 ↔ Valued.v (x a b - 1) < 1 := res_one _
 
@@ -191,15 +279,26 @@ def bP (r : ℕ) (a : Fin n) : ℕ := if r ≤ (a : ℕ) then 1 else 0
 
 def bG (r : ℕ) (a : Fin n) : ℕ := if (a : ℕ) < r then (a : ℕ) else r
 
+/- English proof (translation)
+Introduce `a b hab`. Apply the tactic sequence `by_cases ha : r ≤ (a : ℕ) <;> by_cases hb : r ≤ (b : ℕ) <;> simp [bP, ha, hb] at hab`. Conclude with `(resM_zero hx.1 a b).2 (hx.2 a b ha (by omega))`.
+-/
 theorem bt_parah {r : ℕ} {x : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))} (hx : NX.InParah v r x) : (resM x hx.1).BlockTriangular (bP r) := by
   intro a b hab
   by_cases ha : r ≤ (a : ℕ) <;> by_cases hb : r ≤ (b : ℕ) <;> simp [bP, ha, hb] at hab
   exact (resM_zero hx.1 a b).2 (hx.2 a b ha (by omega))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hx, fun a b ha hb => (resM_zero hx a b).1 (h (by simp only [bP]; rw [if_pos ha, if_neg (by omega)]; omega))⟩`.
+-/
 theorem parah_of_bt {r : ℕ} {x : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))} (hx : ∀ a b, x a b ∈ v.adicCompletionIntegers (maximalRealSubfield L)) (h : (resM x hx).BlockTriangular (bP r)) :
     NX.InParah v r x :=
   ⟨hx, fun a b ha hb => (resM_zero hx a b).1 (h (by simp only [bP]; rw [if_pos ha, if_neg (by omega)]; omega))⟩
 
+/- English proof (translation)
+Introduce `a b hab`. Use `(resM_zero hx.1.1 a b).2 ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases ha : (a : ℕ) < r <;> by_cases hb : (b : ℕ) < r <;> simp only [bG, ha, hb, if_true, if_false] at hab`. Conclude with `(hx.2 a b ha hb).1 (by rw [Fin.lt_def]; exact hab)`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `hx.1.2 a b (by omega) hb`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem bt_levG {r : ℕ} {x : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))} (hx : NX.InLevG v r x) : (resM x hx.1.1).BlockTriangular (bG r) := by
   intro a b hab
   refine (resM_zero hx.1.1 a b).2 ?_
@@ -209,12 +308,20 @@ theorem bt_levG {r : ℕ} {x : Matrix (Fin n) (Fin n) (v.adicCompletion (maximal
   · exact hx.1.2 a b (by omega) hb
   · omega
 
+/- English proof (translation)
+Introduce `a b ha hb` and use `⟨fun hba => (resM_zero hx a b).1 (h (by simp only [bG]; rw [if_pos ha, if_pos hb]; exact hba)), fun hab => by subst hab; exact (resM_one hx a a).1 (hd a ha)⟩`.
+-/
 theorem levG_top_of_bt {r : ℕ} {x : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))} (hx : ∀ a b, x a b ∈ v.adicCompletionIntegers (maximalRealSubfield L)) (h : (resM x hx).BlockTriangular (bG r))
     (hd : ∀ a : Fin n, (a : ℕ) < r → resM x hx a a = 1) :
     ∀ a b : Fin n, (a : ℕ) < r → (b : ℕ) < r → (b < a → Valued.v (x a b) < 1) ∧ (a = b → Valued.v (x a b - 1) < 1) :=
   fun a b ha hb => ⟨fun hba => (resM_zero hx a b).1 (h (by simp only [bG]; rw [if_pos ha, if_pos hb]; exact hba)),
     fun hab => by subst hab; exact (resM_one hx a a).1 (hd a ha)⟩
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single a (fun c _ hc => ?_) (by simp)` and prove the remaining obligations. Break down `lt_trichotomy (bG r c) (bG r a) with h | h | h` into its components or cases. Rewrite using `[hM h, zero_mul]`. It suffices to derive a contradiction.
+
+Simplify using `only [bG] at h`. Apply the tactic sequence `split_ifs at h with h1 h2 <;> first | omega | exact hc (Fin.ext h)`. Rewrite using `[hN h, mul_zero]`.
+-/
 theorem diag_mul {r : ℕ} {K : Type} [CommRing K] {M N : Matrix (Fin n) (Fin n) K} (hM : M.BlockTriangular (bG r))
     (hN : N.BlockTriangular (bG r)) (a : Fin n) (ha : (a : ℕ) < r) : (M * N) a a = M a a * N a a := by
   rw [Matrix.mul_apply]
@@ -231,6 +338,11 @@ end Res
 section ResProofs
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[Matrix.one_apply_eq]`.
+
+Conclude with `(resM_one hx a a).2 (by simp)`. Rewrite using `[Matrix.one_apply_ne hab]`. Conclude with `(resM_zero hx a b).2 (by simp [Matrix.one_apply_ne hab])`.
+-/
 theorem resM_one_of {v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))} {x : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))} (hx : ∀ a b, x a b ∈ v.adicCompletionIntegers (maximalRealSubfield L))
     (h : x = 1) : resM x hx = 1 := by
   subst h
@@ -242,6 +354,11 @@ theorem resM_one_of {v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))} {x : 
   · rw [Matrix.one_apply_ne hab]
     exact (resM_zero hx a b).2 (by simp [Matrix.one_apply_ne hab])
 
+/- English proof (translation)
+Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Rewrite using `[← Fintype.sum_subtype_add_sum_subtype (fun c : Fin n => r ≤ (c : ℕ))]`. Establish `hz : ∑ c : {c : Fin n // ¬ r ≤ (c : ℕ)}, M a.1 c.1 * N c.1 b.1 = 0` using `Finset.sum_eq_zero fun c _ => by`. Rewrite using `[hM (by simp only [bP]; rw [if_pos a.2, if_neg c.2]; omega), zero_mul]`.
+
+Rewrite using `[hz, add_zero]`.
+-/
 theorem lr_mul {K : Type} [CommRing K] {r : ℕ} {M N : Matrix (Fin n) (Fin n) K} (hM : M.BlockTriangular (bP r)) :
     (M * N).submatrix (fun a : {i : Fin n // r ≤ (i : ℕ)} => a.1) (fun a : {i : Fin n // r ≤ (i : ℕ)} => a.1) =
       M.submatrix (fun a : {i : Fin n // r ≤ (i : ℕ)} => a.1) (fun a : {i : Fin n // r ≤ (i : ℕ)} => a.1) *
@@ -253,25 +370,40 @@ theorem lr_mul {K : Type} [CommRing K] {r : ℕ} {M N : Matrix (Fin n) (Fin n) K
     rw [hM (by simp only [bP]; rw [if_pos a.2, if_neg c.2]; omega), zero_mul]
   rw [hz, add_zero]
 
+/- English proof (translation)
+Unfold `NX.detT`. Rewrite using `[lr_mul hM, Matrix.det_mul]`.
+-/
 theorem detT_mul_of {K : Type} [CommRing K] {r : ℕ} {M N : Matrix (Fin n) (Fin n) K} (hM : M.BlockTriangular (bP r)) :
     NX.detT r (M * N) = NX.detT r M * NX.detT r N := by
   unfold NX.detT
   rw [lr_mul hM, Matrix.det_mul]
 
+/- English proof (translation)
+Unfold `NX.detT`. Rewrite using `[Matrix.submatrix_one _ Subtype.val_injective, Matrix.det_one]`.
+-/
 theorem detT_one' {K : Type} [CommRing K] (r : ℕ) : NX.detT r (1 : Matrix (Fin n) (Fin n) K) = 1 := by
   unfold NX.detT
   rw [Matrix.submatrix_one _ Subtype.val_injective, Matrix.det_one]
 
 variable {v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))}
 
+/- English proof (translation)
+The claim follows from `RingHom.map_det (v.adicCompletionIntegers (maximalRealSubfield L)).subtype _`.
+-/
 theorem detT_coe (r : ℕ) (x : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))) (hx : ∀ a b, x a b ∈ v.adicCompletionIntegers (maximalRealSubfield L)) :
     ((NX.detT r (intM x hx) : ↥(v.adicCompletionIntegers (maximalRealSubfield L))) : v.adicCompletion (maximalRealSubfield L)) = NX.detT r x :=
   RingHom.map_det (v.adicCompletionIntegers (maximalRealSubfield L)).subtype _
 
+/- English proof (translation)
+The claim follows from `RingHom.map_det _ _`.
+-/
 theorem detT_res (r : ℕ) (x : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))) (hx : ∀ a b, x a b ∈ v.adicCompletionIntegers (maximalRealSubfield L)) :
     IsLocalRing.residue ↥(v.adicCompletionIntegers (maximalRealSubfield L)) (NX.detT r (intM x hx)) = NX.detT r (resM x hx) :=
   RingHom.map_det _ _
 
+/- English proof (translation)
+Introduce `hx hy`. Use `parah_of_bt (int_mul hx.1 hy.1) ?_` and prove the remaining obligations. Rewrite using `[resM_mul hx.1 hy.1]`. Conclude with `(bt_parah hx).mul (bt_parah hy)`.
+-/
 theorem i_parah_mul (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (r : ℕ) (x y : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))) :
     NX.InParah v r x → NX.InParah v r y → NX.InParah v r (x * y) := by
   intro hx hy
@@ -279,6 +411,11 @@ theorem i_parah_mul (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (r : 
   rw [resM_mul hx.1 hy.1]
   exact (bt_parah hx).mul (bt_parah hy)
 
+/- English proof (translation)
+Introduce `hx hy`. Use `levG_top_of_bt (int_mul hx.1.1 hy.1.1) ?_ ?_` and prove the remaining obligations. Rewrite using `[resM_mul hx.1.1 hy.1.1]`. Conclude with `(bt_levG hx).mul (bt_levG hy)`. Introduce `a ha`.
+
+Rewrite using `[resM_mul hx.1.1 hy.1.1, diag_mul (bt_levG hx) (bt_levG hy) a ha, (resM_one _ a a).2 ((hx.2 a a ha ha).2 rfl), (resM_one _ a a).2 ((hy.2 a a ha ha).2 rfl), one_mul]`.
+-/
 theorem i_levG_mul (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (r : ℕ) (x y : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))) :
     NX.InLevG v r x → NX.InLevG v r y → ∀ a b : Fin n, (a : ℕ) < r → (b : ℕ) < r →
       (b < a → Valued.v ((x * y) a b) < 1) ∧ (a = b → Valued.v ((x * y) a b - 1) < 1) := by
@@ -289,6 +426,11 @@ theorem i_levG_mul (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (r : �
     rw [resM_mul hx.1.1 hy.1.1, diag_mul (bt_levG hx) (bt_levG hy) a ha, (resM_one _ a a).2 ((hx.2 a a ha ha).2 rfl),
       (resM_one _ a a).2 ((hy.2 a a ha ha).2 rfl), one_mul]
 
+/- English proof (translation)
+Introduce `hxy hy hx`. Use `parah_of_bt hy ?_` and prove the remaining obligations. Establish `h1 : resM x hx.1 * resM y hy = 1` using `by rw [← resM_mul]; exact resM_one_of _ hxy`. Use `haveI : Invertible (resM x hx.1) := Matrix.invertibleOfIsUnitDet _ (Units.mkOfMulEqOne (resM x hx.1).det (resM y hy).det (by rw [← Matrix.det_mul, h1, Matrix.det_one])).isUnit`. Rewrite using `[(Matrix.inv_eq_right_inv h1).symm]`.
+
+Conclude with `Matrix.blockTriangular_inv_of_blockTriangular (bt_parah hx)`.
+-/
 theorem i_parah_inv (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (r : ℕ) (x y : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))) :
     x * y = 1 → (∀ a b, y a b ∈ v.adicCompletionIntegers (maximalRealSubfield L)) → NX.InParah v r x → NX.InParah v r y := by
   intro hxy hy hx
@@ -298,6 +440,11 @@ theorem i_parah_inv (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (r : 
   rw [(Matrix.inv_eq_right_inv h1).symm]
   exact Matrix.blockTriangular_inv_of_blockTriangular (bt_parah hx)
 
+/- English proof (translation)
+Introduce `hxy hy hx`. Establish `h1 : resM x hx.1.1 * resM y hy = 1` using `by rw [← resM_mul]; exact resM_one_of _ hxy`. Use `haveI : Invertible (resM x hx.1.1) := Matrix.invertibleOfIsUnitDet _ (Units.mkOfMulEqOne (resM x hx.1.1).det (resM y hy).det (by rw [← Matrix.det_mul, h1, Matrix.det_one])).isUnit`. Establish `hbt : (resM y hy).BlockTriangular (bG r)`. Rewrite using `[(Matrix.inv_eq_right_inv h1).symm]`.
+
+Conclude with `Matrix.blockTriangular_inv_of_blockTriangular (bt_levG hx)`. Use `levG_top_of_bt hy hbt fun a ha => ?_` and prove the remaining obligations. Establish `e` using `congrFun (congrFun h1 a) a`. Rewrite `e` using `[diag_mul (bt_levG hx) hbt a ha, (resM_one _ a a).2 ((hx.2 a a ha ha).2 rfl), one_mul, Matrix.one_apply_eq]`. Conclude with `e`.
+-/
 theorem i_levG_inv (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (r : ℕ) (x y : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))) :
     x * y = 1 → (∀ a b, y a b ∈ v.adicCompletionIntegers (maximalRealSubfield L)) → NX.InLevG v r x → ∀ a b : Fin n, (a : ℕ) < r → (b : ℕ) < r →
       (b < a → Valued.v (y a b) < 1) ∧ (a = b → Valued.v (y a b - 1) < 1) := by
@@ -312,6 +459,13 @@ theorem i_levG_inv (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (r : �
   rw [diag_mul (bt_levG hx) hbt a ha, (resM_one _ a a).2 ((hx.2 a a ha ha).2 rfl), one_mul, Matrix.one_apply_eq] at e
   exact e
 
+/- English proof (translation)
+Introduce `hxy hy hx`. Establish `h1 : resM x hx.1 * resM y hy = 1` using `by rw [← resM_mul]; exact resM_one_of _ hxy`. Use `haveI : Invertible (resM x hx.1) := Matrix.invertibleOfIsUnitDet _ (Units.mkOfMulEqOne (resM x hx.1).det (resM y hy).det (by rw [← Matrix.det_mul, h1, Matrix.det_one])).isUnit`. Establish `h2 : NX.detT r (resM x hx.1) * NX.detT r (resM y hy) = 1`. Rewrite using `[← detT_mul_of (bt_parah hx), h1, detT_one']`.
+
+Establish `hne : IsLocalRing.residue ↥(v.adicCompletionIntegers (maximalRealSubfield L)) (NX.detT r (intM x hx.1)) ≠ 0`. Rewrite using `[detT_res]`. Conclude with `left_ne_zero_of_mul_eq_one h2`. Rewrite using `[← detT_coe r x hx.1]`. Establish `hle : Valued.v ((NX.detT r (intM x hx.1) : ↥(v.adicCompletionIntegers (maximalRealSubfield L))) : v.adicCompletion (maximalRealSubfield L)) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (NX.detT r (intM x hx.1)).2`.
+
+Conclude with `le_antisymm hle (not_lt.1 fun h => hne ((res_zero _).2 h))`.
+-/
 theorem i_detT_one (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (r : ℕ) (x y : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))) :
     x * y = 1 → (∀ a b, y a b ∈ v.adicCompletionIntegers (maximalRealSubfield L)) → NX.InParah v r x → Valued.v (NX.detT r x) = 1 := by
   intro hxy hy hx
@@ -326,6 +480,9 @@ theorem i_detT_one (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (r : �
     (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (NX.detT r (intM x hx.1)).2
   exact le_antisymm hle (not_lt.1 fun h => hne ((res_zero _).2 h))
 
+/- English proof (translation)
+Introduce `hx hy`. Rewrite using `[← detT_coe r (x * y) (int_mul hx.1 hy.1), ← detT_coe r x hx.1, ← detT_coe r y hy.1]`. Establish `e : ((NX.detT r (intM (x * y) (int_mul hx.1 hy.1)) : ↥(v.adicCompletionIntegers (maximalRealSubfield L))) : v.adicCompletion (maximalRealSubfield L)) - ((NX.detT r (intM x hx.1) : ↥(v.adicCompletionIntegers (maximalRealSubfield L))) : v.adicCompletion (maximalRealSubfield L)) * ( …` using `by push_cast; rfl`. Rewrite using `[e, ← res_zero, map_sub, map_mul, detT_res, detT_res, detT_res, resM_mul hx.1 hy.1, detT_mul_of (bt_parah hx), sub_self]`.
+-/
 theorem i_detT_mul (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (r : ℕ) (x y : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))) :
     NX.InParah v r x → NX.InParah v r y → Valued.v (NX.detT r (x * y) - NX.detT r x * NX.detT r y) < 1 := by
   intro hx hy
@@ -336,6 +493,13 @@ theorem i_detT_mul (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (r : �
     push_cast; rfl
   rw [e, ← res_zero, map_sub, map_mul, detT_res, detT_res, detT_res, resM_mul hx.1 hy.1, detT_mul_of (bt_parah hx), sub_self]
 
+/- English proof (translation)
+Introduce `hx1`. Apply the tactic sequence `have hx : ∀ a b, x a b ∈ v.adicCompletionIntegers (maximalRealSubfield L) := fun a b => int_of_cong (c := (1 : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))) a b) (by by_cases hab : a = b <;> simp [Matrix.one_apply, hab]) (hx1 a b)`. Establish `hres : resM x hx = 1`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Distinguish the cases in `hab : a = b`.
+
+Substitute `hab` using the available equality. Rewrite using `[Matrix.one_apply_eq]`. Conclude with `(resM_one hx a a).2 (by simpa using hx1 a a)`. Rewrite using `[Matrix.one_apply_ne hab]`. Conclude with `(resM_zero hx a b).2 (by simpa [Matrix.one_apply_ne hab] using hx1 a b)`.
+
+Rewrite using `[← detT_coe r x hx]`. Establish `e : ((NX.detT r (intM x hx) : ↥(v.adicCompletionIntegers (maximalRealSubfield L))) : v.adicCompletion (maximalRealSubfield L)) - 1 = ((NX.detT r (intM x hx) - 1 : ↥(v.adicCompletionIntegers (maximalRealSubfield L))) : v.adicCompletion (maximalRealSubfield L))` using `by push_cast; rfl`. Rewrite using `[e, ← res_zero, map_sub, map_one, detT_res, hres, detT_one', sub_self]`.
+-/
 theorem i_detT_cong (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (r : ℕ) (x : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))) :
     (∀ a b, Valued.v (x a b - (1 : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))) a b) < 1) → Valued.v (NX.detT r x - 1) < 1 := by
   intro hx1
@@ -359,6 +523,13 @@ end ResProofs
 section ResProofs2
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
+/- English proof (translation)
+Introduce `hz`. Assume the negation of the conclusion as `hne`. Take `⟨c, hc⟩ : ∃ c : ZMod p, red z * c = 1` from `⟨(red z)⁻¹, mul_inv_cancel₀ hne⟩`. Establish `h1 : Valued.v ((((c.val : ↥(v.adicCompletionIntegers (maximalRealSubfield L))) * z : ↥(v.adicCompletionIntegers (maximalRealSubfield L)))) : v.adicCompletion (maximalRealSubfield L)) < 1`. Establish `hle : Valued.v (((c.val : ↥(v.adicCompletionIntegers (maximalRealSubfield L))) : ↥(v.adicCompletionIntegers (maximalRealSubfield L))) : v.adicCompletion (maximalRealSubfield L)) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (c.val : ↥(v.adicCompletionIntegers (maximalRealSubfield L))).2`.
+
+Rewrite using `[show ((((c.val : ↥(v.adicCompletionIntegers (maximalRealSubfield L))) * z : ↥(v.adicCompletionIntegers (maximalRealSubfield L)))) : v.adicCompletion (maximalRealSubfield L)) = ((c.val : ↥(v.adicCompletionIntegers (maximalRealSubfield L))) : v.adicCompletion (maximalRealSubfield …`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' hle) hz`. Establish `hw : Valued.v (((1 - (c.val : ↥(v.adicCompletionIntegers (maximalRealSubfield L))) * z : ↥(v.adicCompletionIntegers (maximalRealSubfield L)))) : v.adicCompletion (maximalRealSubfield L)) = 1`. Rewrite using `[show (((1 - (c.val : ↥(v.adicCompletionIntegers (maximalRealSubfield L))) * z : ↥(v.adicCompletionIntegers (maximalRealSubfield L)))) : v.adicCompletion (maximalRealSubfield L)) = 1 + -((((c.val : ↥(v.adicCompletionIntegers (maximalRealSubfield L))) * z : ↥(v.adicCompletionInteg …`. Rewrite using `[Valuation.map_add_eq_of_lt_left _ (by rw [Valuation.map_neg, map_one]; exact h1), map_one]`.
+
+Establish `hu : IsUnit (1 - (c.val : ↥(v.adicCompletionIntegers (maximalRealSubfield L))) * z)` using `isUnit_int hw (1 - (c.val : ↥(v.adicCompletionIntegers (maximalRealSubfield L))) * z).2`. Establish `h0 : red (1 - (c.val : ↥(v.adicCompletionIntegers (maximalRealSubfield L))) * z) = 0`. Rewrite using `[map_sub, map_one, map_mul, map_natCast, ZMod.natCast_zmod_val, mul_comm, hc, sub_self]`. Conclude with `not_isUnit_zero (h0 ▸ hu.map red)`.
+-/
 theorem i_red_zero {p : ℕ} [Fact p.Prime] (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L)))
     (red : ↥(v.adicCompletionIntegers (maximalRealSubfield L)) →+* ZMod p) (z : ↥(v.adicCompletionIntegers (maximalRealSubfield L))) : Valued.v (z : v.adicCompletion (maximalRealSubfield L)) < 1 → red z = 0 := by
   intro hz
@@ -378,6 +549,17 @@ theorem i_red_zero {p : ℕ} [Fact p.Prime] (v : HeightOneSpectrum (𝓞 (maxima
     rw [map_sub, map_one, map_mul, map_natCast, ZMod.natCast_zmod_val, mul_comm, hc, sub_self]
   exact not_isUnit_zero (h0 ▸ hu.map red)
 
+/- English proof (translation)
+Introduce `hx hy`. Establish `hl : ∀ (z : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))) (hz : ∀ a b, z a b ∈ v.adicCompletionIntegers (maximalRealSubfield L)), NX.redMat v red (NX.topR h z) = ((intM z hz).map red).submatrix (Fin.castLE h) (Fin.castLE h)`. Introduce `z hz`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Use `show red (NX.intLift v (z (Fin.castLE h a) (Fin.castLE h b))) = red ⟨z (Fin.castLE h a) (Fin.castLE h b), _⟩`.
+
+Rewrite using `[NX.intLift, dif_pos (hz _ _)]`. Rewrite using `[hl _ (int_mul hx.1 hy.1), hl _ hx.1, hl _ hy.1, intM_mul hx.1 hy.1, Matrix.map_mul]`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Use `set A := (intM x hx.1).map red with hA`. Use `set B := (intM y hy.1).map red with hB`.
+
+Establish `hB0 : ∀ c : Fin n, r ≤ (c : ℕ) → B c (Fin.castLE h b) = 0` using `fun c hc => by`. Rewrite using `[hB, Matrix.map_apply]`. Conclude with `hred _ (hy.2 c (Fin.castLE h b) hc b.2)`. Rewrite using `[Matrix.submatrix_apply, Matrix.mul_apply, Matrix.mul_apply]`. Use `symm`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_subset (Finset.subset_univ _) fun c _ hc => ?_` and prove the remaining obligations. Establish `hrc : r ≤ (c : ℕ)`. Assume the negation of the conclusion as `hlt`. Conclude with `hc (Finset.mem_map.2 ⟨⟨c, by omega⟩, Finset.mem_univ _, Fin.ext rfl⟩)`.
+
+Rewrite using `[hB0 c hrc, mul_zero]`.
+-/
 theorem i_redMat_mul {R : Type} [CommRing R] {r : ℕ} (h : r ≤ n) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L)))
     (red : ↥(v.adicCompletionIntegers (maximalRealSubfield L)) →+* R) (hred : ∀ z : ↥(v.adicCompletionIntegers (maximalRealSubfield L)), Valued.v (z : v.adicCompletion (maximalRealSubfield L)) < 1 → red z = 0) (x y : Matrix (Fin n) (Fin n) (v.adicCompletion (maximalRealSubfield L))) :
     NX.InParah v r x → NX.InParah v r y →
@@ -414,6 +596,15 @@ end ResProofs2
 section ResRepProof
 variable {L : Type} [Field L] [NumberField L] [IsCMField L]
 
+/- English proof (translation)
+Introduce `hz`. Take `⟨a, ha⟩` from `ReciprocityTheory.Aut.adic_exists_approx s.v z (le_of_eq hz)`. Establish `e : s.i ((algebraMap (𝓞 (maximalRealSubfield L)) (𝓞 L) a : 𝓞 L) : L) = algebraMap (𝓞 (maximalRealSubfield L)) (s.v.adicCompletion (maximalRealSubfield L)) a`. Rewrite using `[ReciprocityTheory.Aut.split_coe_algebraMap, AlgHom.commutes]`. Both sides reduce to the same expression.
+
+Establish `h1 : Valued.v (s.i ((algebraMap (𝓞 (maximalRealSubfield L)) (𝓞 L) a : 𝓞 L) : L) - z) < 1`. Rewrite using `[e, ← Valuation.map_neg, neg_sub]`. Conclude with `ha`. Establish `hex : ∃ u : 𝓞 L, u ∉ s.w.asIdeal ∧ Valued.v (s.i (u : L) - z) < 1`. Use `⟨_, fun hm => ?_, h1⟩` and prove the remaining obligations.
+
+Establish `hlt : Valued.v (s.i ((algebraMap (𝓞 (maximalRealSubfield L)) (𝓞 L) a : 𝓞 L) : L)) < 1` using `hm`. Establish `h2 : Valued.v (s.i ((algebraMap (𝓞 (maximalRealSubfield L)) (𝓞 L) a : 𝓞 L) : L)) = 1`. Establish `e2 : s.i ((algebraMap (𝓞 (maximalRealSubfield L)) (𝓞 L) a : 𝓞 L) : L) = z + (s.i ((algebraMap (𝓞 (maximalRealSubfield L)) (𝓞 L) a : 𝓞 L) : L) - z)` using `by ring`. Rewrite using `[e2, Valuation.map_add_eq_of_lt_left _ (by rw [hz]; exact h1), hz]`. Rewrite `hlt` using `[h2]`.
+
+Conclude with `lt_irrefl _ hlt`. Unfold `NX.resRep`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec.2`.
+-/
 theorem i_resRep (s : SplitPlace L) (z : s.v.adicCompletion (maximalRealSubfield L)) :
     Valued.v z = 1 → Valued.v (s.i ((NX.resRep s s.w z : 𝓞 L) : L) - z) < 1 := by
   intro hz
@@ -441,6 +632,9 @@ end ResRepProof
 section Tame
 variable {L : Type} [Field L] [NumberField L] [IsCMField L]
 
+/- English proof (translation)
+Unfold `NX.resRep`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`. Conclude with `fun h1 => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`.
+-/
 theorem resRep_not_mem (s : SplitPlace L) (P : HeightOneSpectrum (𝓞 L))
     (x : s.v.adicCompletion (maximalRealSubfield L)) : NX.resRep s P x ∉ P.asIdeal := by
   unfold NX.resRep
@@ -448,6 +642,15 @@ theorem resRep_not_mem (s : SplitPlace L) (P : HeightOneSpectrum (𝓞 L))
   · exact h.choose_spec.1
   · exact fun h1 => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)
 
+/- English proof (translation)
+Substitute `hP` using the available equality. Establish `hzz : Valued.v (z * z') = 1` using `by rw [map_mul, hz, hz', one_mul]`. Establish `hz'' : Valued.v z'' = 1`. Establish `e : z'' = z * z' + (z'' - z * z')` using `by ring`. Rewrite using `[e, Valuation.map_add_eq_of_lt_left _ (by rw [hzz]; exact h), hzz]`.
+
+Establish `hu` using `i_resRep s z hz`. Establish `hu'` using `i_resRep s z' hz'`. Establish `hw` using `i_resRep s z'' hz''`. Establish `hle : Valued.v (s.i (NX.resRep s s.w z' : L)) ≤ 1` using `s.split_le_one _`. Establish `key : NX.resRep s s.w z'' - NX.resRep s s.w z * NX.resRep s s.w z' ∈ s.w.asIdeal` using `by show Valued.v (s.i (((NX.resRep s s.w z'' - NX.resRep s s.w z * NX.resRep s s.w z' : 𝓞 L)) : L)) < 1`.
+
+Establish `e : s.i (((NX.resRep s s.w z'' - NX.resRep s s.w z * NX.resRep s s.w z' : 𝓞 L)) : L) = (s.i (NX.resRep s s.w z'' : L) - z'') + (z'' - z * z') - ((s.i (NX.resRep s s.w z : L) - z) * s.i (NX.resRep s s.w z' : L) + z * (s.i (NX.resRep s s.w z' : L) - z'))` using `by push_cast; rw [map_sub, map_mul]; ring`. Rewrite using `[e]`. Use `lt_of_le_of_lt (Valuation.map_sub _ _ _) (max_lt (lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt hw h)) ?_)` and prove the remaining obligations. Use `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt ?_ ?_)` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' hle) hu`. Rewrite using `[map_mul, hz, one_mul]`. Conclude with `hu'`. Rewrite using `[hc _ _ (resRep_not_mem s s.w z'') key, hm _ _ (resRep_not_mem s s.w z) (resRep_not_mem s s.w z')]`.
+-/
 theorem tame_mul {M : Type} [Group M] (s : SplitPlace L) (P : HeightOneSpectrum (𝓞 L)) (hP : s.w = P) (t : 𝓞 L → M)
     (hm : ∀ u u' : 𝓞 L, u ∉ P.asIdeal → u' ∉ P.asIdeal → t (u * u') = t u * t u')
     (hc : ∀ u u' : 𝓞 L, u ∉ P.asIdeal → u - u' ∈ P.asIdeal → t u = t u')
@@ -476,6 +679,13 @@ theorem tame_mul {M : Type} [Group M] (s : SplitPlace L) (P : HeightOneSpectrum 
     · rw [map_mul, hz, one_mul]; exact hu'
   rw [hc _ _ (resRep_not_mem s s.w z'') key, hm _ _ (resRep_not_mem s s.w z) (resRep_not_mem s s.w z')]
 
+/- English proof (translation)
+Substitute `hP` using the available equality. Establish `hz : Valued.v z = 1`. Establish `e : z = 1 + (z - 1)` using `by ring`. Rewrite using `[e, Valuation.map_add_eq_of_lt_left _ (by rw [map_one]; exact h), map_one]`. Establish `hu` using `i_resRep s z hz`.
+
+Establish `h1 : (1 : 𝓞 L) ∉ s.w.asIdeal` using `fun h1 => s.w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Establish `key : NX.resRep s s.w z - 1 ∈ s.w.asIdeal` using `by show Valued.v (s.i (((NX.resRep s s.w z - 1 : 𝓞 L)) : L)) < 1`. Establish `e : s.i (((NX.resRep s s.w z - 1 : 𝓞 L)) : L) = (s.i (NX.resRep s s.w z : L) - z) + (z - 1)` using `by push_cast; rw [map_sub, map_one]; ring`. Rewrite using `[e]`. Conclude with `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt hu h)`.
+
+Rewrite using `[hc _ 1 (resRep_not_mem s s.w z) key]`. Establish `e1` using `hm 1 1 h1 h1`. Rewrite `e1` using `[mul_one]`. Establish `e2 : t 1 * t 1 = t 1 * 1` using `by rw [mul_one]; exact e1.symm`. Conclude with `mul_left_cancel e2`.
+-/
 theorem tame_one {M : Type} [Group M] (s : SplitPlace L) (P : HeightOneSpectrum (𝓞 L)) (hP : s.w = P) (t : 𝓞 L → M)
     (hm : ∀ u u' : 𝓞 L, u ∉ P.asIdeal → u' ∉ P.asIdeal → t (u * u') = t u * t u')
     (hc : ∀ u u' : 𝓞 L, u ∉ P.asIdeal → u - u' ∈ P.asIdeal → t u = t u')
@@ -511,11 +721,17 @@ def psiUnitT (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥
 
 variable (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL0)ˣ)
 
+/- English proof (translation)
+Unfold `psiUnitT psiUTotT`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem psiUnitT_val (i : T.Tw) (b : Bool) (u : G0g D.nd) :
     ((psiUnitT D T θ i b u : (FractionRing (T.O i))ˣ) : FractionRing (T.O i)) = psiUTotT D T θ i b u := by
   unfold psiUnitT psiUTotT
   split_ifs <;> rfl
 
+/- English proof (translation)
+Unfold `psiUnitT`. Rewrite using `[dif_pos (mul_mem hu hu'), dif_pos hu, dif_pos hu', ← map_mul]`. Both sides reduce to the same expression.
+-/
 theorem psiUnitT_mul (i : T.Tw) (b : Bool) {u u' : G0g D.nd} (hu : u ∈ Formalism.IndefR.NX.U D.nd)
     (hu' : u' ∈ Formalism.IndefR.NX.U D.nd) :
     psiUnitT D T θ i b (u * u') = psiUnitT D T θ i b u * psiUnitT D T θ i b u' := by
@@ -523,12 +739,20 @@ theorem psiUnitT_mul (i : T.Tw) (b : Bool) {u u' : G0g D.nd} (hu : u ∈ Formali
   rw [dif_pos (mul_mem hu hu'), dif_pos hu, dif_pos hu', ← map_mul]
   rfl
 
+/- English proof (translation)
+Unfold `psiUnitT`. Rewrite using `[dif_pos (one_mem _)]`. Conclude with `map_one _`.
+-/
 theorem psiUnitT_one (i : T.Tw) (b : Bool) : psiUnitT D T θ i b 1 = 1 := by
   unfold psiUnitT
   rw [dif_pos (one_mem _)]
   exact map_one _
 
 open Classical in
+/- English proof (translation)
+Rewrite using `[Formalism.IndefR.NX.U_eq_Uup, NX.mem_Uup]`. Introduce `kv'`. Distinguish the cases in `h : kv' = kv`. Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same, NX.glOf_val _ (by rw [det_uniTri hM]; exact isUnit_one)]`.
+
+Conclude with `hM`. Rewrite using `[Pi.mulSingle_eq_of_ne h]`. Conclude with `⟨Matrix.blockTriangular_one, fun a => by simp⟩`.
+-/
 theorem mulSingle_mem_U (kv : Σ kk : Fin 2, D.nd.PlG kk) (M : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1)))
     (hM : NX.IsUniTri D.R.r M) : (Pi.mulSingle kv (NX.glOf M) : G0g D.nd) ∈ Formalism.IndefR.NX.U D.nd := by
   rw [Formalism.IndefR.NX.U_eq_Uup, NX.mem_Uup]
@@ -555,6 +779,9 @@ variable (i : T.Tw) (k : ℕ) (b : Bool) (kv : Σ kk : Fin 2, D.nd.PlG kk) (s : 
     (red : s.v.adicCompletionIntegers (maximalRealSubfield D.host.E) →+* ZMod (D.host.g kv.1))
     (τ : (ZMod (D.host.g kv.1))ˣ →* (FractionRing (T.O i))ˣ)
 
+/- English proof (translation)
+Unfold `gU gValT`. Apply the tactic sequence `split_ifs <;> simp [psiUnitT_val]`.
+-/
 theorem gU_val (x : Matrix (Fin D.R.nV) (Fin D.R.nV) (s.v.adicCompletion (maximalRealSubfield D.host.E))) :
     ((gU D T θ i k b kv s red τ x : (FractionRing (T.Ok i k))ˣ) : FractionRing (T.Ok i k)) =
       gValT D T θ i k b kv s red τ x := by
@@ -562,6 +789,11 @@ theorem gU_val (x : Matrix (Fin D.R.nV) (Fin D.R.nV) (s.v.adicCompletion (maxima
   split_ifs <;> simp [psiUnitT_val]
 
 open Classical in
+/- English proof (translation)
+Establish `hM` using `redMat_one (Nat.le_add_right D.R.r D.R.t : D.R.r ≤ D.R.nV) red hred x hx`. Establish `hd : red (NX.intLift s.v (NX.detT D.R.r x)) = 1`. Rewrite using `[red_intLift red hred 1 (by simpa using i_detT_cong s.v D.R.r x hx), map_one]`. Establish `hu : IsUnit (red (NX.intLift s.v (NX.detT D.R.r x)))` using `by rw [hd]; exact isUnit_one`. Establish `hg : NX.glOf (1 : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1))) = 1` using `Units.ext (by rw [NX.glOf_val _ (by simp)]; rfl)`.
+
+Establish `hun : hu.unit = 1` using `Units.ext (by rw [IsUnit.unit_spec, hd]; rfl)`. Unfold `gU`. Rewrite using `[hM, hg, Pi.mulSingle_one, psiUnitT_one, map_one, one_mul, dif_pos hu, hun, map_one, map_one]`.
+-/
 theorem gU_one
     (hred : ∀ z : s.v.adicCompletionIntegers (maximalRealSubfield D.host.E),
       Valued.v (z : s.v.adicCompletion (maximalRealSubfield D.host.E)) < 1 → red z = 0)
@@ -579,6 +811,9 @@ theorem gU_one
   rw [hM, hg, Pi.mulSingle_one, psiUnitT_one, map_one, one_mul, dif_pos hu, hun, map_one, map_one]
 
 open Classical in
+/- English proof (translation)
+Unfold `gU`. Rewrite using `[dif_pos hu]`.
+-/
 theorem gU_eq (x : Matrix (Fin D.R.nV) (Fin D.R.nV) (s.v.adicCompletion (maximalRealSubfield D.host.E)))
     (hu : IsUnit (red (NX.intLift s.v (NX.detT D.R.r x)))) :
     gU D T θ i k b kv s red τ x = Units.map (toKkT D T i k).toMonoidHom (psiUnitT D T θ i b (Pi.mulSingle kv
@@ -588,6 +823,17 @@ theorem gU_eq (x : Matrix (Fin D.R.nV) (Fin D.R.nV) (s.v.adicCompletion (maximal
   rw [dif_pos hu]
 
 open Classical in
+/- English proof (translation)
+Establish `hMxy : NX.redMat s.v red (NX.topR (Nat.le_add_right D.R.r D.R.t : D.R.r ≤ D.R.nV) (x * y)) = NX.redMat s.v red (NX.topR (Nat.le_add_right D.R.r D.R.t : D.R.r ≤ D.R.nV) x) * NX.redMat s.v red (NX.topR (Nat.le_add_right D.R.r D.R.t : D.R.r ≤ D.R.nV) y)` using `i_redMat_mul _ s.v red hred x y hx.1 hy.1`. Establish `tx` using `uniTri_red (Nat.le_add_right D.R.r D.R.t : D.R.r ≤ D.R.nV) red hred x hx`. Establish `ty` using `uniTri_red (Nat.le_add_right D.R.r D.R.t : D.R.r ≤ D.R.nV) red hred y hy`. Establish `hg` using `glOf_mul _ _ (by rw [det_uniTri tx]; exact isUnit_one) (by rw [det_uniTri ty]; exact isUnit_one)`. Establish `hix : NX.detT D.R.r x ∈ s.v.adicCompletionIntegers (maximalRealSubfield D.host.E)`.
+
+Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, hdx]`. Establish `hiy : NX.detT D.R.r y ∈ s.v.adicCompletionIntegers (maximalRealSubfield D.host.E)`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, hdy]`. Establish `ex : NX.intLift s.v (NX.detT D.R.r x) = ⟨_, hix⟩` using `by rw [NX.intLift, dif_pos hix]`. Establish `ey : NX.intLift s.v (NX.detT D.R.r y) = ⟨_, hiy⟩` using `by rw [NX.intLift, dif_pos hiy]`.
+
+Establish `hxy : red (NX.intLift s.v (NX.detT D.R.r (x * y))) = red (NX.intLift s.v (NX.detT D.R.r x)) * red (NX.intLift s.v (NX.detT D.R.r y))`. Rewrite using `[ex, ey, ← map_mul]`. Conclude with `red_intLift red hred _ (by simpa using i_detT_mul s.v D.R.r x y hx.1 hy.1)`. Establish `hux : IsUnit (red (NX.intLift s.v (NX.detT D.R.r x)))` using `by rw [ex]; exact (isUnit_int hdx hix).map red`. Establish `huy : IsUnit (red (NX.intLift s.v (NX.detT D.R.r y)))` using `by rw [ey]; exact (isUnit_int hdy hiy).map red`.
+
+Establish `huxy : IsUnit (red (NX.intLift s.v (NX.detT D.R.r (x * y))))` using `by rw [hxy]; exact hux.mul huy`. Establish `e : huxy.unit = hux.unit * huy.unit` using `Units.ext (by simp [hxy])`. Establish `hp` using `psiUnitT_mul D T θ i b (mulSingle_mem_U D kv _ tx) (mulSingle_mem_U D kv _ ty)`. Rewrite using `[gU_eq D T θ i k b kv s red τ _ huxy, gU_eq D T θ i k b kv s red τ _ hux, gU_eq D T θ i k b kv s red τ _ huy, hMxy, hg, Pi.mulSingle_mul]`. Use `erw [hp]`.
+
+Rewrite using `[e, map_mul τ, MonoidHom.map_mul, MonoidHom.map_mul]`. Conclude with `mul_mul_mul_comm _ _ _ _`.
+-/
 theorem gU_mul
     (hred : ∀ z : s.v.adicCompletionIntegers (maximalRealSubfield D.host.E),
       Valued.v (z : s.v.adicCompletion (maximalRealSubfield D.host.E)) < 1 → red z = 0)
@@ -668,6 +914,37 @@ def chiU (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL
 
 end Lev
 
+/- English proof (translation)
+Introduce `D T θ i j b k Q ψ QP DP sp redG hsw hinj hQD hG hGinj hQP hDP hψ hδ`. Establish `hred : ∀ kv : (Σ kk : Fin 2, D.nd.PlG kk), ∀ z : (sp (NX.pG D kv)).v.adicCompletionIntegers (maximalRealSubfield D.host.E), Valued.v (z : (sp (NX.pG D kv)).v.adicCompletion (maximalRealSubfield D.host.E)) < 1 → redG kv z = 0`. Introduce `kv z hz`. Use `haveI : Fact (D.host.g kv.1).Prime := ⟨D.host.g_prime kv.1⟩`. Conclude with `i_red_zero _ (redG kv) z hz`.
+
+Establish `hdet : ∀ (s : SplitPlace D.host.E) (κ : GAf D.host.E D.R.nV), κ ∈ Umax D.host.E D.R.nV → NX.InParah s.v D.R.r (NX.locM s κ) → Valued.v (NX.detT D.R.r (NX.locM s κ)) = 1` using `fun s κ hU hp => i_detT_one _ _ _ (NX.locM s κ⁻¹) (by rw [← locM_mul, mul_inv_cancel, locM_one]) (locM_int s (inv_mem hU)) hp`. Establish `hmul : ∀ κ κ' : levJ D sp QP DP, chiU D T θ i j b k ψ QP DP sp redG ((κ * κ' : levJ D sp QP DP) : GAf D.host.E D.R.nV) = chiU D T θ i j b k ψ QP DP sp redG κ * chiU D T θ i j b k ψ QP DP sp redG κ'`. Introduce and unpack `⟨κ, h1, h2, h3, h4⟩ ⟨κ', h1', h2', h3', h4'⟩`. Establish `hA : (∏ kv : (Σ kk : Fin 2, D.nd.PlG kk), gU D T θ i k b kv (sp (NX.pG D kv)) (redG kv) (tauT D T i j b kv) (NX.locM (sp (NX.pG D kv)) (κ * κ'))) = (∏ kv : (Σ kk : Fin 2, D.nd.PlG kk), gU D T θ i k b kv (sp (NX.pG D kv)) (redG kv) (tauT D T i j b kv) (NX.locM (sp (NX.pG D kv)) κ) …`. Rewrite using `[← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun kv _ => ?_` and prove the remaining obligations. Rewrite using `[locM_mul]`. Conclude with `gU_mul D T θ i k b kv _ _ _ (hred kv) _ _ (h2 kv) (h2' kv) (hdet _ _ h1 (h2 kv).1) (hdet _ _ h1' (h2' kv).1)`. Establish `hB : (∏ P ∈ QP, Units.map (algebraMap (T.Ok i k) (FractionRing (T.Ok i k))).toMonoidHom (NX.tameVal ψ P 1 (NX.resRep (sp P) P (NX.detT D.R.r (NX.locM (sp P) (κ * κ')))))) = (∏ P ∈ QP, Units.map (algebraMap (T.Ok i k) (FractionRing (T.Ok i k))).toMonoidHom (NX.tameVal ψ P 1 (NX.re …`. Rewrite using `[← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun P hP => ?_` and prove the remaining obligations. Rewrite using `[← MonoidHom.map_mul, locM_mul]`. Use `congr 1`. Conclude with `tame_mul (sp P) P (hsw P (Or.inl hP)) (fun u => NX.tameVal ψ P 1 u) (hψ P hP).1 (hψ P hP).2 (hdet _ _ h1 (h3 P hP)) (hdet _ _ h1' (h3' P hP)) (i_detT_mul _ _ _ _ (h3 P hP) (h3' P hP))`. Establish `hC : (∏ P ∈ DP, Units.map (baseCoeffToExtFractionRing D T i k).toMonoidHom (NX.tameVal (T.delta i) P (if b then 1 else -1) (NX.resRep (sp P) P (NX.detT D.R.r (NX.locM (sp P) (κ * κ')))))) = (∏ P ∈ DP, Units.map (baseCoeffToExtFractionRing D T i k).toMonoidHom (NX.tameVal (T.delta …`.
+
+Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun P hP => ?_` and prove the remaining obligations. Rewrite using `[← MonoidHom.map_mul, locM_mul]`. Use `congr 1`. Conclude with `tame_mul (sp P) P (hsw P (Or.inr (Or.inl hP))) (fun u => NX.tameVal (T.delta i) P (if b then 1 else -1) u) (hδ P hP).1 (hδ P hP).2 (hdet _ _ h1 (h4 P hP)) (hdet _ _ h1' (h4' P hP)) (i_detT_mul _ _ _ _ (h4 P hP) (h4' P hP))`.
+
+Use `show chiU D T θ i j b k ψ QP DP sp redG (κ * κ') = chiU D T θ i j b k ψ QP DP sp redG κ * chiU D T θ i j b k ψ QP DP sp redG κ'`. Unfold `chiU`. Rewrite using `[hA, hB, hC]`. The two sides agree by associativity and commutativity. Establish `hone : ∀ κ : GAf D.host.E D.R.nV, (∀ kv a b, Valued.v (NX.locM (sp (NX.pG D kv)) κ a b - (1 : Matrix (Fin D.R.nV) (Fin D.R.nV) ((sp (NX.pG D kv)).v.adicCompletion (maximalRealSubfield D.host.E))) a b) < 1) → (∀ P ∈ QP, ∀ a b, Valued.v (NX.locM (sp P) κ a b - (1 : Matrix (Fin D.R. …`.
+
+Introduce `κ hg hq hd`. Unfold `chiU`. Rewrite using `[Finset.prod_eq_one (fun kv _ => gU_one D T θ i k b kv _ _ _ (hred kv) _ (hg kv)), Finset.prod_eq_one (fun P hP => ?_), Finset.prod_eq_one (fun P hP => ?_), one_mul, one_mul]`. Establish `e` using `tame_one (sp P) P (hsw P (Or.inr (Or.inl hP))) (fun u => NX.tameVal (T.delta i) P (if b then 1 else -1) u) (hδ P hP).1 (hδ P hP).2 (i_detT_cong _ D.R.r _ (hd P hP)) beta_reduce at e`. Rewrite using `[e, map_one]`.
+
+Establish `e` using `tame_one (sp P) P (hsw P (Or.inl hP)) (fun u => NX.tameVal ψ P 1 u) (hψ P hP).1 (hψ P hP).2 (i_detT_cong _ D.R.r _ (hq P hP)) beta_reduce at e`. Rewrite using `[e, map_one]`. Use `⟨levJ D sp QP DP, MonoidHom.mk' (fun κ => chiU D T θ i j b k ψ QP DP sp redG κ) hmul, ?_, ?_, fun κ => Iff.rfl, ?_⟩` and prove the remaining obligations. Establish `hpos : ∀ v : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)), 0 < Ideal.absNorm v.asIdeal` using `fun v => Nat.pos_of_ne_zero fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)`. Establish `hmem : ∀ (v : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))) (N : ℕ), Ideal.absNorm v.asIdeal ∣ N → (N : 𝓞 (maximalRealSubfield D.host.E)) ∈ v.asIdeal` using `fun v N h => Ideal.mem_of_dvd _ (Nat.cast_dvd_cast h) (Ideal.absNorm_mem _)`.
+
+Use `⟨(∏ kv : (Σ kk : Fin 2, D.nd.PlG kk), Ideal.absNorm (sp (NX.pG D kv)).v.asIdeal) * ((∏ P ∈ QP, Ideal.absNorm (sp P).v.asIdeal) * (∏ P ∈ DP, Ideal.absNorm (sp P).v.asIdeal)), Nat.mul_pos (Finset.prod_pos fun _ _ => hpos _) (Nat.mul_pos (Finset.prod_pos fun _ _ => hpos _) (Finset.p …` and prove the remaining obligations. Establish `cg : ∀ kv, ∀ a b, Valued.v (NX.locM (sp (NX.pG D kv)) κ a b - (1 : Matrix (Fin D.R.nV) (Fin D.R.nV) ((sp (NX.pG D kv)).v.adicCompletion (maximalRealSubfield D.host.E))) a b) < 1` using `fun kv => locM_cong _ (hmem _ _ (Dvd.dvd.mul_right (Finset.dvd_prod_of_mem _ (Finset.mem_univ kv)) _)) κ hκ`. Establish `cq : ∀ P ∈ QP, ∀ a b, Valued.v (NX.locM (sp P) κ a b - (1 : Matrix (Fin D.R.nV) (Fin D.R.nV) ((sp P).v.adicCompletion (maximalRealSubfield D.host.E))) a b) < 1` using `fun P hP => locM_cong _ (hmem _ _ (Dvd.dvd.mul_left (Dvd.dvd.mul_right (Finset.dvd_prod_of_mem _ hP) _) _)) κ hκ`. Establish `cd : ∀ P ∈ DP, ∀ a b, Valued.v (NX.locM (sp P) κ a b - (1 : Matrix (Fin D.R.nV) (Fin D.R.nV) ((sp P).v.adicCompletion (maximalRealSubfield D.host.E))) a b) < 1` using `fun P hP => locM_cong _ (hmem _ _ (Dvd.dvd.mul_left (Dvd.dvd.mul_left (Finset.dvd_prod_of_mem _ hP) _) _)) κ hκ`. Establish `hJ : κ ∈ levJ D sp QP DP` using `⟨hκ.1, fun kv => levG_of_cong _ _ (cg kv), fun P hP => (levG_of_cong _ _ (cq P hP)).1, fun P hP => (levG_of_cong _ _ (cd P hP)).1⟩`.
+
+Conclude with `⟨hJ, hone κ cg cq cd⟩`. Introduce `κ hκ`. Establish `hover : ∀ P, (P ∈ QP ∨ P ∈ DP ∨ ∃ kv, P = NX.pG D kv) → (sp P).v ∈ badVT D T i Q`. Introduce `P hP`. Establish `hw` using `(sp P).w_under`.
+
+Rewrite `hw` using `[hsw P hP]`. Use `⟨P, hw, ?_⟩` and prove the remaining obligations. Break down `hP with hP | hP | ⟨kv, rfl⟩` into its components or cases. Conclude with `Or.inl (hQP hP)`. Conclude with `Or.inr (Or.inr (hDP hP))`.
+
+Conclude with `Or.inr (Or.inl ⟨kv.1, D.naut.plGw_over kv.1 kv.2⟩)`. Establish `hl : ∀ P, (P ∈ QP ∨ P ∈ DP ∨ ∃ kv, P = NX.pG D kv) → NX.locM (sp P) κ = 1` using `fun P hP => locM_triv (sp P) hκ (hover P hP)`. Establish `h1 : ∀ (s : SplitPlace D.host.E) (x : Matrix (Fin D.R.nV) (Fin D.R.nV) (s.v.adicCompletion (maximalRealSubfield D.host.E))), x = 1 → ∀ a b, Valued.v (x a b - (1 : Matrix (Fin D.R.nV) (Fin D.R.nV) (s.v.adicCompletion (maximalRealSubfield D.host.E))) a b) < 1`. Introduce and unpack `s x rfl a b`. Simplify using the standard rewrite rules.
+
+Use `⟨⟨fun h => h.1, fun hU => ⟨hU, fun kv => ?_, fun P hP => ?_, fun P hP => ?_⟩⟩, fun hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hl _ (Or.inr (Or.inr ⟨kv, rfl⟩))]`. Conclude with `NX.inLevG_one _ _`. Rewrite using `[hl _ (Or.inl hP)]`. Conclude with `NX.inParah_one _ _`.
+
+Rewrite using `[hl _ (Or.inr (Or.inl hP))]`. Conclude with `NX.inParah_one _ _`. Conclude with `hone κ (fun kv => h1 _ _ (hl _ (Or.inr (Or.inr ⟨kv, rfl⟩)))) (fun P hP => h1 _ _ (hl _ (Or.inl hP))) (fun P hP => h1 _ _ (hl _ (Or.inr (Or.inl hP))))`. Introduce `κ h show ((chiU D T θ i j b k ψ QP DP sp redG κ : (FractionRing (T.Ok i k))ˣ) : FractionRing (T.Ok i k)) = _`. Unfold `chiU`.
+
+Simplify using `only [Units.val_mul, Units.coe_prod, gU_val, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]`.
+-/
 theorem levGroup_exists : ∀ (D : D7) (T : TwR D.LL0 D.nd) (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL0)ˣ)
     (i : T.Tw) (j : ℕ) (b : Bool) (k : ℕ) (Q : Finset (PlE D.host)) (ψ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* (T.Ok i k)ˣ)
     (QP DP : Finset (PlE D.host)) (sp : PlE D.host → SplitPlace D.host.E)

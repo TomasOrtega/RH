@@ -35,6 +35,11 @@ def rallisF (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (μ : Measure (WO (Vc D
   thetaIP μ 𝓕 (R.ωP i t (1, g) f) f *
     ∫ z in R.fdW i, star (val R i v x z) * val R i v y (z * g) ∂(R.νW i)
 
+/- English proof (translation)
+Establish `h1` using `i.2`. Rewrite using `[D.sp.W_rank _ (by omega) (by omega), D.sp.V_rank _ (by omega) (by omega)]`. Use `(D.R.rank_add_five_le : D.R.r + 5 ≤ D.R.t)` as an intermediate fact. Unfold `Ranks.nV`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem two_mul_rank_W_lt (D : D7) (i : Fin D.R.m) : 2 * (Wc D i).rank < (Vc D i).rank := by
   have h1 := i.2
   rw [D.sp.W_rank _ (by omega) (by omega), D.sp.V_rank _ (by omega) (by omega)]

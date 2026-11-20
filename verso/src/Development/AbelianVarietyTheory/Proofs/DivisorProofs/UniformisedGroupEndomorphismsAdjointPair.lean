@@ -12,6 +12,11 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `R _ _ _ hR D A G _ _ hG U a a' h h' hE g g' hg hg'`. Take `⟨g₁, hg₁, hiso⟩` from `GlobalTheory.T.exists_adjoint_endomorphism_uniformised_group R hR D A G hG U g hg.1`. Establish `h₁ : LinEnd U.toUnifPre a' h g₁` using `GlobalTheory.T.adjoint_uniformisationEndomorphism_lies_over_adjoint R hR D A G hG U a a' h h' hE g g₁ hg hg₁ hiso`. Establish `hu` using `GlobalTheory.T.semiAbelian_endomorphism_unique_over_degenerationData R hR.1 D A G hG U a' h`. Establish `heq : g₁ = g'` using `hu.2 g₁ g' fun e => congrFun (hu.1 _ _ h₁.2 hg'.2) e`.
+
+Substitute `heq` using the available equality. Conclude with `hiso`.
+-/
 theorem linEnd_adjoint_lbIso : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ (a a' : D.toPre.P.A ⟶ D.toPre.P.A) (h h' : D.toPre.X →+ D.toPre.X), EndData D.toPre a a' h h' → ∀ g g' : G ⟶ G, LinEnd U.toUnifPre a h' g → LinEnd U.toUnifPre a' h g' → LBIso (cubeLB G ![fst G G ≫ g, snd G G] U.LG.L) (cubeLB G ![fst G G, snd G G ≫ g'] U.LG.L) := by
   intro R _ _ _ hR D A G _ _ hG U a a' h h' hE g g' hg hg'
   obtain ⟨g₁, hg₁, hiso⟩ := GlobalTheory.T.exists_adjoint_endomorphism_uniformised_group R hR D A G hG U g hg.1

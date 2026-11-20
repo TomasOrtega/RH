@@ -25,6 +25,13 @@ open scoped GlobalTheory.MixModel
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨e, rfl⟩` from `GlobalTheory.BesselCompare.eMat_surj W I`. Establish `he : LinearIndependent D.host.E e` using `LinearIndependent.of_comp W.frame.equivFun.toLinearMap hI.2.1`. Establish `hiso : ∀ a b, W.hT (e a) (e b) = 0` using `fun a b => by`. Rewrite using `[← GlobalTheory.BesselCompare.cT_mul, hI.2.2]`. Both sides reduce to the same expression.
+
+Take `⟨W', ι, h1, h2, h3⟩` from `GlobalTheory.WittLow.exists_lower Examples₂.star_isIntegral W e he hiso`. Use `⟨W', ι, ⟨hI, ?_, ?_, by omega⟩⟩` and prove the remaining obligations. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj`. Rewrite using `[GlobalTheory.BesselCompare.frameMat_eq, GlobalTheory.BesselCompare.cT_mul]`.
+
+Conclude with `h2 _ _`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj`. Rewrite using `[GlobalTheory.BesselCompare.frameMat_eq, GlobalTheory.BesselCompare.cT_mul, ← W.herm.eq, h3]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_split (W : HSp D) {s : ℕ} (I : Matrix (Fin W.rank) (Fin s) D.host.E) (hI : IsIsoFrame W I) :
     ∃ (W' : HSp D) (ι : W'.V →ₗ[D.host.E] W.V), GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.IsIsoSplit W W' I (frameMat W W' ι) := by
   obtain ⟨e, rfl⟩ := GlobalTheory.BesselCompare.eMat_surj W I
@@ -43,6 +50,13 @@ theorem exists_split (W : HSp D) {s : ℕ} (I : Matrix (Fin W.rank) (Fin s) D.ho
     rw [GlobalTheory.BesselCompare.frameMat_eq, GlobalTheory.BesselCompare.cT_mul, ← W.herm.eq, h3]
     simp
 
+/- English proof (translation)
+Take `⟨d, hde, hdi, -⟩` from `GlobalTheory.WittSect.exists_hypDec_mem_NI D W W' s I B hsp`. Establish `h` using `d.sum_eq_one_rat`. Simplify using `only [GlobalTheory.MixModel.HypDec.qX, GlobalTheory.MixModel.HypDec.qY, GlobalTheory.MixModel.HypDec.q0, hde, hdi] at h`. Establish `h1 : rat (1 : Matrix (Fin W.rank) (Fin W.rank) D.host.E) ⬝ x = x`. Rewrite using `[GlobalTheory.MixModel.rat_one, Matrix.one_mul]`.
+
+Rewrite `h1` using `[← h, GlobalTheory.MixModel.rat_add, GlobalTheory.MixModel.rat_add, Matrix.add_mul, Matrix.add_mul]`. Establish `h2 : rat (d.e' * (Iᴴ * W.gram)) ⬝ x = 0`. Rewrite using `[GlobalTheory.MixModel.rat_mul, Matrix.mul_assoc, hx, Matrix.mul_zero]`. Rewrite `h1` using `[h2, add_zero]`. Rewrite `h1` using `[GlobalTheory.MixModel.rat_mul I, GlobalTheory.MixModel.rat_mul B, Matrix.mul_assoc (rat I), Matrix.mul_assoc (rat B)]`.
+
+Conclude with `⟨_, _, h1.symm⟩`.
+-/
 theorem decomp {W W' : HSp D} {s k : ℕ} {I : Matrix (Fin W.rank) (Fin s) D.host.E}
     {B : Matrix (Fin W.rank) (Fin W'.rank) D.host.E} (hsp : GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.IsIsoSplit W W' I B) (x : Mx D W.rank k)
     (hx : rat (Iᴴ * W.gram) ⬝ x = 0) : ∃ (z : Mx D s k) (w : Mx D W'.rank k), x = rat I ⬝ z + rat B ⬝ w := by
@@ -58,6 +72,11 @@ theorem decomp {W W' : HSp D} {s k : ℕ} {I : Matrix (Fin W.rank) (Fin s) D.hos
   rw [GlobalTheory.MixModel.rat_mul I, GlobalTheory.MixModel.rat_mul B, Matrix.mul_assoc (rat I), Matrix.mul_assoc (rat B)] at h1
   exact ⟨_, _, h1.symm⟩
 
+/- English proof (translation)
+Establish `e1 : rat I ⬝ rat γ = ratW W V (I * γ)` using `by rw [GlobalTheory.MixModel.ratW_eq, GlobalTheory.MixModel.rat_mul]`. Establish `e2 : GlobalTheory.MixModel.adj p ⬝ rat (W.gram * I) = 0`. Use `congrArg GlobalTheory.MixModel.adj hp` as an intermediate fact. Rewrite `this` using `[GlobalTheory.MixModel.adj_mul, GlobalTheory.MixModel.adj_zero, ← GlobalTheory.MixModel.rat_conjTranspose, conjTranspose_mul, GlobalTheory.MixModel.gram_conjTranspose, conjTranspose_conjTranspose]`. Then use the resulting hypothesis. Establish `e3 : GlobalTheory.MixModel.adj p ⬝ (GlobalTheory.MixModel.gA W ⬝ ratW W V (I * γ)) = 0`.
+
+Establish `e2' : GlobalTheory.MixModel.adj p ⬝ (rat W.gram ⬝ rat I) = 0` using `by rw [← GlobalTheory.MixModel.rat_mul]; exact e2`. Rewrite using `[GlobalTheory.MixModel.ratW_eq, GlobalTheory.MixModel.gA, GlobalTheory.MixModel.rat_mul I γ, ← Matrix.mul_assoc (rat W.gram) (rat I) (rat γ), ← Matrix.mul_assoc, e2', Matrix.zero_mul]`. Rewrite using `[e1, hg.quasi, GlobalTheory.MixModel.symplOH_eq, GlobalTheory.MixModel.hO_eq_trace, e3, Matrix.mul_zero, Matrix.trace_zero, map_zero, neg_zero, AddChar.map_zero_eq_one, one_mul]`.
+-/
 theorem periodic {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D} {g : WO V W → ℂ} (hg : IsThetaFunO ψ V W g) {s : ℕ}
     (I : Matrix (Fin W.rank) (Fin s) D.host.E) (p : WO V W) (hp : rat (Iᴴ * W.gram) ⬝ p = 0)
     (γ : Matrix (Fin s) (Fin V.rank) D.host.E) : g (rat I ⬝ rat γ + p) = g p := by
@@ -80,6 +99,21 @@ namespace GlobalTheory.TargetUnipMean
 open GlobalTheory.MixModel (rat)
 open scoped GlobalTheory.MixModel
 
+/- English proof (translation)
+Introduce `D ψ V W χV χW om hom s I hI ν 𝓨 hν n hn f hf x hx`. Take `⟨W', ι, hsp⟩` from `exists_split W I hI`. Take `⟨omt, hmt, hsw⟩` from `GlobalTheory.T.exists_conj_weilDatum_exchangedPair D ψ V W χV χW om hom`. Take `⟨μ', 𝓖', hμ', he⟩` from `(GlobalTheory.T.weilConstantTerm_source_target_conjAdjoint_corr D V W W' s ι I).1 ν 𝓨 hν`. Establish `hlaw` using `GlobalTheory.T.hermitianAdjoint_laws_standardCharacter D ψ hom.std V W'`.
+
+Establish `hlawW` using `GlobalTheory.T.hermitianAdjoint_laws_standardCharacter D ψ hom.std V W`. Establish `hr : GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.resT V W W' ι I ν 𝓨 (om (1, n) f) = GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.resT V W W' ι I ν 𝓨 f`. Establish `h1` using `GlobalTheory.UnipRes.res_unip D W W' V s I (frameMat W W' ι) hsp ψ χW χV omt hmt μ' 𝓖' hμ' ⟨n, hn⟩ (GlobalTheory.PairLift.dag V W f) (hlawW.theta f hf)`. Establish `h2 : GlobalTheory.PairLift.dag V W' (GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.resT V W W' ι I ν 𝓨 (om (1, n) f)) = GlobalTheory.PairLift.dag V W' (GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.resT V W W' ι I ν 𝓨 f)`. Rewrite using `[← he, ← he, ← hsw]`.
+
+Conclude with `h1`. Use function extensionality and compare the values at `w`. Establish `h3` using `congrFun h2 (GlobalTheory.PairLift.adjO W' V w)`. Simplify using `only [GlobalTheory.PairLift.dag, hlaw.invol] at h3`. Conclude with `(starRingEnd ℂ).injective h3`.
+
+Establish `hII : Iᴴ * W.gram * I = 0` using `hI.2.2`. Establish `hIB : Iᴴ * W.gram * frameMat W W' ι = 0` using `hsp.orth`. Take `⟨z, w, hz⟩` from `decomp hsp x hx`. Establish `hred : ∀ g, IsThetaFunO ψ V W g → ∫ y in 𝓨, g (HMul.hMul (I.map (incA D)) y + x) ∂ν = GlobalTheory.IndefiniteRowSideFullHecke.WittDecompositions.resT V W W' ι I ν 𝓨 g w`. Introduce `g hg`.
+
+Establish `hper : ∀ γ ∈ GlobalTheory.MixModel.ratMx D s V.rank, ∀ a : Mx D s V.rank, g (rat I ⬝ (γ + a) + rat (frameMat W W' ι) ⬝ w) = g (rat I ⬝ a + rat (frameMat W W' ι) ⬝ w)`. Introduce `γ hγ a`. Take `⟨γ0, rfl⟩` from `GlobalTheory.MixModel.mem_ratMx.1 hγ`. Rewrite using `[Matrix.mul_add, add_assoc]`. Use `periodic hg I _ ?_ γ0` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← GlobalTheory.MixModel.rat_mul, ← GlobalTheory.MixModel.rat_mul, hII, hIB, GlobalTheory.MixModel.rat_zero, GlobalTheory.MixModel.rat_zero, Matrix.zero_mul, Matrix.zero_mul, add_zero]`. Use `GlobalTheory.MixModel.covolOne_integral_add hν (fun a => g (rat I ⬝ a + rat (frameMat W W' ι) ⬝ w)) hper z` as an intermediate fact. Rewrite using `[hz]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+
+Use function extensionality and compare the values at `y`. Use `show g (rat I ⬝ y + _) = _`. Rewrite using `[Matrix.mul_add, add_assoc]`. Use `_ = _ := this`. Rewrite using `[hred (om (1, n) f) (hom.om_pres (1, n) f hf), hred f hf, hr]`.
+-/
 theorem mean_unip : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)), IsWeilDatumO ψ V W χV χW om → ∀ (s : ℕ) (I : Matrix (Fin W.rank) (Fin s) D.host.E), IsIsoFrame W I → ∀ (ν : Measure (Mx D s V.rank)) (𝓨 : Set (Mx D s V.rank)), IsCovolOne (GlobalTheory.MixModel.ratMx D s V.rank) ν 𝓨 → ∀ n ∈ NI W I, ∀ f : WO V W → ℂ, IsThetaFunO ψ V W f → ∀ x : WO V W, HMul.hMul ((Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) I * W.gram).map (incA D)) x = (0 : Mx D s V.rank) → ∫ y in 𝓨, om (1, n) f (HMul.hMul (I.map (incA D)) y + x) ∂ν = ∫ y in 𝓨, f (HMul.hMul (I.map (incA D)) y + x) ∂ν := by
   intro D ψ V W χV χW om hom s I hI ν 𝓨 hν n hn f hf x hx
   obtain ⟨W', ι, hsp⟩ := exists_split W I hI

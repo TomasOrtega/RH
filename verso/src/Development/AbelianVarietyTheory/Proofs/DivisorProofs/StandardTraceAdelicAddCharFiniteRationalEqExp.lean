@@ -6,6 +6,9 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 
 namespace GlobalTheory.StdFinRat
 
+/- English proof (translation)
+Introduce `_ _ _ _ hψ x` and use `GlobalTheory.PsiNontriv.isStd_fin_rat hψ x`.
+-/
 theorem std_fin_rat : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ x : F,
     ψ (pairA F 0 (algebraMap F (Af F) x)) = Complex.exp (2 * Real.pi * Complex.I * ((Algebra.trace ℚ F x : ℚ) : ℂ)) :=
   fun _ _ _ _ hψ x => GlobalTheory.PsiNontriv.isStd_fin_rat hψ x

@@ -13,17 +13,29 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [
   [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] {M : Model F E} {V : Type}
   [AddCommGroup V] [Module E V] (H : HermSp M V)
 
+/- English proof (translation)
+Set `φ : V →+ E` to `AddMonoidHom.mk' (fun x => H.h x y) (fun x x' => H.h_add_left x x' y)`. Conclude with `map_sum φ v s`.
+-/
 theorem h_sum_left {ι : Type} (s : Finset ι) (v : ι → V) (y : V) :
     H.h (∑ i ∈ s, v i) y = ∑ i ∈ s, H.h (v i) y := by
   let φ : V →+ E := AddMonoidHom.mk' (fun x => H.h x y) (fun x x' => H.h_add_left x x' y)
   exact map_sum φ v s
 
+/- English proof (translation)
+Rewrite using `[H.h_herm (y + y') x, H.h_add_left, map_add, ← H.h_herm y x, ← H.h_herm y' x]`.
+-/
 theorem h_add_right (x y y' : V) : H.h x (y + y') = H.h x y + H.h x y' := by
   rw [H.h_herm (y + y') x, H.h_add_left, map_add, ← H.h_herm y x, ← H.h_herm y' x]
 
+/- English proof (translation)
+Rewrite using `[H.h_herm (a • y) x, H.h_smul_left, map_mul, ← H.h_herm y x]`.
+-/
 theorem h_smul_right (a : E) (x y : V) : H.h x (a • y) = M.L.cj a * H.h x y := by
   rw [H.h_herm (a • y) x, H.h_smul_left, map_mul, ← H.h_herm y x]
 
+/- English proof (translation)
+Rewrite using `[H.h_herm (∑ i ∈ s, v i) x, h_sum_left, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (H.h_herm (v i) x).symm`.
+-/
 theorem h_sum_right {ι : Type} (s : Finset ι) (x : V) (v : ι → V) :
     H.h x (∑ i ∈ s, v i) = ∑ i ∈ s, H.h x (v i) := by
   rw [H.h_herm (∑ i ∈ s, v i) x, h_sum_left, map_sum]
@@ -31,6 +43,25 @@ theorem h_sum_right {ι : Type} (s : Finset ι) (x : V) (v : ι → V) :
 
 end Herm
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M hM V _ _ H r Fr Λ hSD hFr y hy hyf`. Use `letI := hM.loc`. Use `haveI := hM.char0`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[F]`. Take `⟨htr, -, -, -, hmem, -⟩` from `GlobalTheory.UnramOrder.order_facts M.L ϖ hϖ`.
+
+Establish `hint : ∀ a b, H.h (y a) (y b) ∈ M.L.O` using `fun a b => (hSD.2.2 (y a)).1 (hy a) (y b) (hy b)`. Establish `hdiag : ∀ a, ∃ x ∈ M.L.O, x + M.L.cj x = -H.h (y a) (y a)`. Introduce `a`. Take `⟨c, hc⟩` from `(M.L.cj_fix (H.h (y a) (y a))).1 (H.h_herm (y a) (y a)).symm`. Establish `hc' : c ∈ 𝒪[F]` using `(hmem c).1 (hc ▸ hint a a)`.
+
+Take `⟨x, hx, hxe⟩` from `htr (-⟨c, hc'⟩)`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[hxe, ← hc]`. Simplify using the standard rewrite rules. Use `choose x hxO hxe using hdiag`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨m, hmO, hm⟩ : ∃ m : Fin r → Fin r → E, (∀ a k, m a k ∈ M.L.O) ∧ ∀ a b, m a b + M.L.cj (m b a) = -H.h (y a) (y b) := by`. Use `⟨fun a k => if a < k then -H.h (y a) (y k) else if a = k then x a else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `a k dsimp only split_ifs`. Conclude with `M.L.O.neg_mem (hint a k)`. Conclude with `hxO a`.
+
+Conclude with `M.L.O.zero_mem`. Introduce `a b dsimp only`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Rewrite using `[if_pos h, if_neg (not_lt.2 h.le), if_neg h.ne', map_zero, add_zero]`. Rewrite using `[if_neg (lt_irrefl a), if_pos rfl]`.
+
+Conclude with `hxe a`. Rewrite using `[if_neg (not_lt.2 h.le), if_neg h.ne', if_pos h, map_neg, ← H.h_herm (y b) (y a), zero_add]`. Establish `he : ∀ k : Fin r, Fr.f k.castSucc ∈ Λ` using `fun k => hFr.1.1 k.castSucc`. Establish `hEf : ∀ (k : Fin r) b, H.h (Fr.f k.castSucc) (Fr.f b) = 0` using `fun k b => hFr.2.1 _ _ (Or.inl (Fin.castSucc_lt_last k).ne)`. Establish `hyE : ∀ a k : Fin r, H.h (y a) (Fr.f k.castSucc) = if k = a then 1 else 0`.
+
+Introduce `a k`. Rewrite using `[hyf a k.castSucc]`. Simplify using `only [Fin.castSucc_inj]`. Establish `hEy : ∀ k b : Fin r, H.h (Fr.f k.castSucc) (y b) = if k = b then 1 else 0`. Introduce `k b`.
+
+Rewrite using `[H.h_herm (y b) (Fr.f k.castSucc), hyE]`. Apply the tactic sequence `split_ifs <;> simp`. Use `⟨fun a => y a + ∑ k, m a k • Fr.f k.castSucc, fun a => ?_, fun a b => ?_, fun a b => ?_⟩` and prove the remaining obligations. Use `Λ.add_mem (hy a) (Λ.sum_mem fun k _ => ?_)` and prove the remaining obligations. Conclude with `Λ.smul_mem ⟨m a k, hmO a k⟩ (he k)`.
+
+Simplify using `only [H.h_add_left, h_sum_left, H.h_smul_left, hEf, mul_zero, Finset.sum_const_zero, add_zero, hyf]`. Simplify using `only [H.h_add_left, h_add_right, h_sum_left, h_sum_right, H.h_smul_left, h_smul_right, hyE, hEy, hEf, mul_zero, mul_ite, mul_one, Finset.sum_const_zero, add_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Take the linear combination `hm a b`.
+-/
 theorem isotropic_dual : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E), M.OK → ∀ {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) (r : ℕ) (Fr : FrameD H r) (Λ : Submodule M.L.O V), H.IsSelfDual Λ → H.IsFrame Λ r Fr.f Fr.T → ∀ y : Fin r → V, (∀ a, y a ∈ Λ) → (∀ a b, H.h (y a) (Fr.f b) = if b = a.castSucc then 1 else 0) → ∃ y' : Fin r → V, (∀ a, y' a ∈ Λ) ∧ (∀ a b, H.h (y' a) (Fr.f b) = if b = a.castSucc then 1 else 0) ∧ ∀ a b, H.h (y' a) (y' b) = 0 := by
   intro F _ _ _ E _ _ _ _ M hM V _ _ H r Fr Λ hSD hFr y hy hyf
   letI := hM.loc

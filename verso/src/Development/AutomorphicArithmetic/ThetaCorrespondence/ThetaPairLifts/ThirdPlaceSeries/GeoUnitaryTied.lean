@@ -10,6 +10,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 noncomputable section
 namespace GlobalTheory.CovTop
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y0 cX ex Csz p hp _ i σ g x y`. Establish `hm` using `p.charW.base.models`. Conclude with `GlobalTheory.UnitaryActionTest.geometric_unitary p.R.toRealDat hp.prim.unif hm.HW hm.gW (GlobalTheory.UnitaryActionTest.actsUnitarily_of_clauses p.R.toRealDat hm.HE hm.gE hm.ν0 hm.HW hm.gW hm.νW p.charW.base.fam.tie hm.cX hm.cV) i _ g x y`.
+-/
 theorem geoUnitary_tied_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
     {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz), p.PointConditions' → GlobalTheory.CovTop.RecTied D L →
     ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (g : p.P.Gp) x y,

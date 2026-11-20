@@ -54,6 +54,9 @@ structure UW {σ : c.F →+* ℂ} (U : Unf Xo c σ r) where
             (∫ z in Fd, ‖θ z‖ ^ 2 * Real.exp (-Real.pi * (hermForm Hm z z).re)) /
               (MeasureTheory.volume Fd).toReal = 1)
 
+/- English proof (translation)
+Unfold `Formalism.L2.PjFree.IsUnf at h`. Take `⟨-, -, -, -, -, g, e, F, ik, φ, hisom, hpt⟩` from `h`. Conclude with `⟨{ g := g, e := e, F := F, ik := ik, φ := φ, isom := hisom, pt := hpt }⟩`.
+-/
 theorem nonempty_uw {σ : c.F →+* ℂ} {U : Unf Xo c σ r} (h : IsUnf U) : Nonempty (UW U) := by
   unfold Formalism.L2.PjFree.IsUnf at h
   obtain ⟨-, -, -, -, -, g, e, F, ik, φ, hisom, hpt⟩ := h

@@ -27,6 +27,9 @@ def IsMod (θ : InfF D) (V : HSp D) (φ : GA D V → ℂ) : Prop :=
   φ ∈ SmFun θ V ∧ (∀ γ ∈ GQ V, ∀ g, φ (γ * g) = φ g) ∧ ∀ l, (∀ p ∈ l, p.2 ∈ lieAt V p.1) →
     Continuous (word θ V l φ) ∧ ∃ (N : ℕ) (C : ℝ), ∀ g, ‖word θ V l φ g‖ ≤ C * (height θ V g : ℝ) ^ N
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact hφ`. Consider the case `cons p l ih`. Conclude with `Rder_mem (ih fun q hq => hl q (List.mem_cons_of_mem _ hq)) (hl p (by simp))`.
+-/
 private theorem word_mem_smFun {θ : InfF D} {V : HSp D} {l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ)}
     (hl : ∀ p ∈ l, p.2 ∈ lieAt V p.1) {φ : GA D V → ℂ} (hφ : φ ∈ SmFun θ V) : word θ V l φ ∈ SmFun θ V := by
   induction l with
@@ -34,6 +37,11 @@ private theorem word_mem_smFun {θ : InfF D} {V : HSp D} {l : List (D.what₂.Ta
   | cons p l ih =>
     exact Rder_mem (ih fun q hq => hl q (List.mem_cons_of_mem _ hq)) (hl p (by simp))
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons p l ih`. Establish `hl' : ∀ q ∈ l, q.2 ∈ lieAt V q.1` using `fun q hq => hl q (List.mem_cons_of_mem _ hq)`. Use `show Rder θ V p.1 p.2 (word θ V l (φ + ψ)) = Rder θ V p.1 p.2 (word θ V l φ) + Rder θ V p.1 p.2 (word θ V l ψ)`.
+
+Rewrite using `[ih hl', Rder_add (word_mem_smFun hl' hφ) (word_mem_smFun hl' hψ) (hl p (by simp))]`.
+-/
 theorem word_add {θ : InfF D} {V : HSp D} {l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ)}
     (hl : ∀ p ∈ l, p.2 ∈ lieAt V p.1) {φ ψ : GA D V → ℂ} (hφ : φ ∈ SmFun θ V) (hψ : ψ ∈ SmFun θ V) :
     word θ V l (φ + ψ) = word θ V l φ + word θ V l ψ := by
@@ -45,6 +53,9 @@ theorem word_add {θ : InfF D} {V : HSp D} {l : List (D.what₂.Tau × Matrix (F
       Rder θ V p.1 p.2 (word θ V l φ) + Rder θ V p.1 p.2 (word θ V l ψ)
     rw [ih hl', Rder_add (word_mem_smFun hl' hφ) (word_mem_smFun hl' hψ) (hl p (by simp))]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons p l ih => show Rder θ V p.1 p.2 (word θ V l (c • φ)) = c • Rder θ V p.1 p.2 (word θ V l φ)`. Rewrite using `[ih fun q hq => hl q (List.mem_cons_of_mem _ hq), Rder_smul]`.
+-/
 theorem word_smul {θ : InfF D} {V : HSp D} {l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ)}
     (hl : ∀ p ∈ l, p.2 ∈ lieAt V p.1) (c : ℂ) (φ : GA D V → ℂ) : word θ V l (c • φ) = c • word θ V l φ := by
   induction l with
@@ -53,6 +64,9 @@ theorem word_smul {θ : InfF D} {V : HSp D} {l : List (D.what₂.Tau × Matrix (
     show Rder θ V p.1 p.2 (word θ V l (c • φ)) = c • Rder θ V p.1 p.2 (word θ V l φ)
     rw [ih fun q hq => hl q (List.mem_cons_of_mem _ hq), Rder_smul]
 
+/- English proof (translation)
+Unfold `word`. Rewrite using `[List.foldr_append]`. Both sides reduce to the same expression.
+-/
 theorem word_Rder {θ : InfF D} {V : HSp D} (l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ))
     (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) (φ : GA D V → ℂ) :
     word θ V l (Rder θ V τ X φ) = word θ V (l ++ [(τ, X)]) φ := by
@@ -89,12 +103,20 @@ def Decay (θ : InfF D) (V : HSp D) : Submodule ℂ (GA D V → ℂ) where
     rw [Pi.smul_apply, norm_smul, mul_assoc]
     exact mul_le_mul_of_nonneg_left (hC g) (norm_nonneg c)
 
+/- English proof (translation)
+Use `show deriv (fun t : ℝ => φ (γ * g * oneP θ V τ X t)) 0 = deriv (fun t : ℝ => φ (g * oneP θ V τ X t)) 0`. Simplify using `only [mul_assoc, h]`.
+-/
 theorem Rder_left {θ : InfF D} {V : HSp D} {φ : GA D V → ℂ} {γ : GA D V} (h : ∀ g, φ (γ * g) = φ g)
     (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) (g : GA D V) :
     Rder θ V τ X φ (γ * g) = Rder θ V τ X φ g := by
   show deriv (fun t : ℝ => φ (γ * g * oneP θ V τ X t)) 0 = deriv (fun t : ℝ => φ (g * oneP θ V τ X t)) 0
   simp only [mul_assoc, h]
 
+/- English proof (translation)
+Introduce `p hp`. Break down `List.mem_append.1 hp with hp | hp` into its components or cases. Conclude with `hl p hp`. Rewrite `hp` using `[List.mem_singleton]`. Substitute `hp` using the available equality.
+
+Conclude with `hX`.
+-/
 theorem append_mem_lie {V : HSp D} {l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ)}
     (hl : ∀ p ∈ l, p.2 ∈ lieAt V p.1) {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ) :
     ∀ p ∈ l ++ [(τ, X)], p.2 ∈ lieAt V p.1 := by
@@ -105,6 +127,9 @@ theorem append_mem_lie {V : HSp D} {l : List (D.what₂.Tau × Matrix (Fin V.ran
     subst hp
     exact hX
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Use `(show _ ∧ _ ∧ _ from ⟨Rder_mem h1 hX, fun γ hγ g => Rder_left (h2 γ hγ) τ X g, fun l hl => ?_⟩)` and prove the remaining obligations. Rewrite using `[word_Rder]`. Conclude with `h3 _ (append_mem_lie hl hX)`.
+-/
 theorem Rder_mem_Decay {θ : InfF D} {V : HSp D} {φ : GA D V → ℂ} (h : φ ∈ Decay θ V) {τ : D.what₂.Tau}
     {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ) : Rder θ V τ X φ ∈ Decay θ V := by
   obtain ⟨h1, h2, h3⟩ := h
@@ -112,6 +137,9 @@ theorem Rder_mem_Decay {θ : InfF D} {V : HSp D} {φ : GA D V → ℂ} (h : φ �
   rw [word_Rder]
   exact h3 _ (append_mem_lie hl hX)
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Unfold `IsMod`. Use `⟨Rder_mem h1 hX, fun γ hγ g => Rder_left (h2 γ hγ) τ X g, fun l hl => ?_⟩` and prove the remaining obligations. Rewrite using `[word_Rder]`. Conclude with `h3 _ (append_mem_lie hl hX)`.
+-/
 theorem IsMod.rder {θ : InfF D} {V : HSp D} {φ : GA D V → ℂ} (h : IsMod θ V φ) {τ : D.what₂.Tau}
     {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ) : IsMod θ V (Rder θ V τ X φ) := by
   obtain ⟨h1, h2, h3⟩ := h
@@ -120,6 +148,11 @@ theorem IsMod.rder {θ : InfF D} {V : HSp D} {φ : GA D V → ℂ} (h : IsMod θ
   rw [word_Rder]
   exact h3 _ (append_mem_lie hl hX)
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact ⟨c, rfl, le_rfl⟩`. Consider the case `cons p l ih`. Take `⟨d, hd, -⟩` from `ih`. Use `⟨0, ?_, by simp⟩` and prove the remaining obligations.
+
+Use `show Rder θ V p.1 p.2 (word θ V l fun _ => c) = _`. Rewrite using `[hd]`. Use function extensionality and compare the values at `g`. Simplify using `[Rder]`.
+-/
 private theorem word_const_eq_const_norm_le {θ : InfF D} {V : HSp D} (c : ℂ)
     (l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ)) :
     ∃ d : ℂ, word θ V l (fun _ => c) = (fun _ => d) ∧ ‖d‖ ≤ ‖c‖ := by
@@ -133,6 +166,11 @@ private theorem word_const_eq_const_norm_le {θ : InfF D} {V : HSp D} (c : ℂ)
     funext g
     simp [Rder]
 
+/- English proof (translation)
+Unfold `IsMod`. Use `⟨?_, fun _ _ _ => rfl, fun l _ => ?_⟩` and prove the remaining obligations. Introduce `k τs Xs _ g`. Conclude with `contDiff_const`. Take `⟨d, hd, hdc⟩` from `word_const_eq_const_norm_le (θ := θ) (V := V) c l`.
+
+Rewrite using `[hd]`. Conclude with `⟨continuous_const, 0, ‖c‖, fun _ => by rw [pow_zero, mul_one]; exact hdc⟩`.
+-/
 theorem isMod_const (θ : InfF D) (V : HSp D) (c : ℂ) : IsMod θ V fun _ => c := by
   unfold IsMod
   refine ⟨?_, fun _ _ _ => rfl, fun l _ => ?_⟩
@@ -162,6 +200,9 @@ def swapKer {V W : HSp D} {M : Type} [AddCommGroup M] [Module ℂ M] (κ : M →
   map_add' f f' := by rw [map_add]; rfl
   map_smul' c f := by rw [map_smul]; rfl
 
+/- English proof (translation)
+The claim follows from `(h.cont f).comp continuous_swap left f γ hγ δ hδ g g' := h.left f δ hδ γ hγ g' g level f := by obtain ⟨U, U', hU, hU', hk⟩ := h.level f exact ⟨U', U, hU', hU, fun k hk1 hk2 k' hk1' hk2' g g' => hk k' hk1' hk2' k hk1 hk2 g' g⟩ growth := by obtain ⟨N, hN⟩ := h.growth refine ⟨N, fun …`.
+-/
 theorem IsKerSys.swap {θ : InfF D} {V W : HSp D} {M : Type} [AddCommGroup M] [Module ℂ M]
     {κ : M →ₗ[ℂ] (GA D V → GA D W → ℂ)} (h : IsKerSys θ V W κ) : IsKerSys θ W V (swapKer κ) where
   cont f := (h.cont f).comp continuous_swap

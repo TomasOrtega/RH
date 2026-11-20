@@ -4,6 +4,17 @@ open NumberField IsDedekindDomain
 
 namespace GlobalTheory.InertiaEigenvalues.UnramPlace
 
+/- English proof (translation)
+Introduce `K L _ _ _ _ φ l _ la hl hun`. Use `letI : Algebra K L := φ.toAlgebra`. Establish `hmap : RingOfIntegers.mapRingHom φ = algebraMap (𝓞 K) (𝓞 L)`. Use extensionality with `x`. Both sides reduce to the same expression.
+
+Use `⟨la.under (𝓞 K), ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `q`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.below, Set.mem_singleton_iff, exists_eq_left, Set.mem_setOf_eq]`. Rewrite using `[hmap]`. Conclude with `⟨fun h => HeightOneSpectrum.ext h, fun h => h ▸ rfl⟩`.
+
+Use `show ((l : ℕ) : 𝓞 K) ∈ la.asIdeal.comap (algebraMap (𝓞 K) (𝓞 L))`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hl`. Introduce `x`. Establish `hu` using `hun la rfl`.
+
+Rewrite `hu` using `[hmap]`. Establish `: la.asIdeal.LiesOver (la.under (𝓞 K)).asIdeal` using `⟨rfl⟩`. Establish `he : (la.under (𝓞 K)).asIdeal.ramificationIdx' la.asIdeal = 1`. Use `Ideal.ramificationIdx'_spec ?_ ?_` and prove the remaining obligations. Rewrite using `[pow_one]`.
+
+Conclude with `Ideal.map_comap_le`. Conclude with `hu`. Establish `h` using `HeightOneSpectrum.valuation_liesOver L (la.under (𝓞 K)) la x`. Rewrite `h` using `[he, pow_one]`. Conclude with `h.symm`.
+-/
 theorem exists_place_below : ∀ (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] (φ : K →+* L) (l : ℕ), l.Prime → ∀ la : HeightOneSpectrum (𝓞 L), ((l : ℕ) : 𝓞 L) ∈ la.asIdeal → GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.UnramAt φ {la} → ∃ p : HeightOneSpectrum (𝓞 K), GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.below φ {la} = {p} ∧ ((l : ℕ) : 𝓞 K) ∈ p.asIdeal ∧ ∀ x : K, la.valuation L (φ x) = p.valuation K x := by
   intro K L _ _ _ _ φ l _ la hl hun
   letI : Algebra K L := φ.toAlgebra

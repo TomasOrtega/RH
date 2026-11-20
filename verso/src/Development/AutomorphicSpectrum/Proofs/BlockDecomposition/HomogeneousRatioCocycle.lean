@@ -14,6 +14,11 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 
 namespace GlobalTheory.CompanionTheory.ConeYq
 
+/- English proof (translation)
+Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Simplify using `only [HomogeneousLocalization.val_mul, HomogeneousLocalization.awayMap_mk, HomogeneousLocalization.Away.val_mk]`. Rewrite using `[Localization.mk_mul, Localization.mk_eq_mk_iff, Localization.r_iff_exists]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Simplify using `only [Submonoid.coe_mul, OneMemClass.coe_one, one_mul, pow_one]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem awayMap_ratio_trans {K : Type} [Field K] {N e : ℕ} {a b c : MvPolynomial (Fin (N + 1)) K}
     (hb : b ∈ MvPolynomial.homogeneousSubmodule (Fin (N + 1)) K e)
     (hc : c ∈ MvPolynomial.homogeneousSubmodule (Fin (N + 1)) K e)
@@ -33,6 +38,9 @@ theorem awayMap_ratio_trans {K : Type} [Field K] {N e : ℕ} {a b c : MvPolynomi
   simp only [Submonoid.coe_mul, OneMemClass.coe_one, one_mul, pow_one]
   ring
 
+/- English proof (translation)
+Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Simplify using `only [HomogeneousLocalization.Away.val_mk, HomogeneousLocalization.val_one]`. Rewrite using `[← Localization.mk_one, Localization.mk_eq_mk_iff, Localization.r_iff_exists]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem away_self {K : Type} [Field K] {N e : ℕ} {a : MvPolynomial (Fin (N + 1)) K}
     (ha : a ∈ MvPolynomial.homogeneousSubmodule (Fin (N + 1)) K e)
     (ha1 : a ∈ MvPolynomial.homogeneousSubmodule (Fin (N + 1)) K (1 • e)) :
@@ -43,6 +51,9 @@ theorem away_self {K : Type} [Field K] {N e : ℕ} {a : MvPolynomial (Fin (N + 1
   refine ⟨1, ?_⟩
   simp
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun φ => φ.hom u) (Proj.awayMap_awayToSection (MvPolynomial.homogeneousSubmodule (Fin (N + 1)) K) hg hx)`. Simplify using `only [CommRingCat.hom_comp, RingHom.coe_comp, Function.comp_apply, CommRingCat.hom_ofHom] at h`. Rewrite using `[h]`. Conclude with `(congrArg (fun φ => φ.hom ((Proj.awayToSection _ f).hom u)) (Scheme.Hom.map_appLE i hW _)).symm`.
+-/
 theorem appLE_awayMap {K : Type} [Field K] {X : Scheme.{0}} {N e : ℕ} (i : X ⟶ PSpace K N)
     {f g x : MvPolynomial (Fin (N + 1)) K}
     (hg : g ∈ MvPolynomial.homogeneousSubmodule (Fin (N + 1)) K e) (hx : x = f * g) (W : X.Opens)
@@ -57,6 +68,13 @@ theorem appLE_awayMap {K : Type} [Field K] {X : Scheme.{0}} {N e : ℕ} (i : X �
   rw [h]
   exact (congrArg (fun φ => φ.hom ((Proj.awayToSection _ f).hom u)) (Scheme.Hom.map_appLE i hW _)).symm
 
+/- English proof (translation)
+Establish `mem : ∀ k, y k ∈ MvPolynomial.homogeneousSubmodule (Fin (N + 1)) K e` using `fun k => (MvPolynomial.mem_homogeneousSubmodule e (y k)).2 (hy k)`. Establish `mem1 : ∀ k, y k ∈ MvPolynomial.homogeneousSubmodule (Fin (N + 1)) K (1 • e)` using `fun k => by simpa using mem k`. Prove the components needed by the constructor for the conclusion. Establish `hW : W ≤ i ⁻¹ᵁ Proj.basicOpen _ (y b * y c)`. Rewrite using `[Proj.basicOpen_mul]`.
+
+Conclude with `le_inf hb hc`. Establish `e1 : (i.appLE _ W hb).hom (yQ y hy a b) = _` using `appLE_awayMap i (mem c) (x := y b * y c) rfl W hW hb (HomogeneousLocalization.Away.mk _ (mem b) 1 (y a) (mem1 a))`. Establish `e2 : (i.appLE _ W hc).hom (yQ y hy b c) = _` using `appLE_awayMap i (mem b) (x := y b * y c) (mul_comm _ _) W hW hc (HomogeneousLocalization.Away.mk _ (mem c) 1 (y b) (mem1 b))`. Establish `e3 : (i.appLE _ W hc).hom (yQ y hy a c) = _` using `appLE_awayMap i (mem b) (x := y b * y c) (mul_comm _ _) W hW hc (HomogeneousLocalization.Away.mk _ (mem c) 1 (y a) (mem1 a))`. Rewrite using `[e1, e2, e3, ← map_mul, ← map_mul, awayMap_ratio_trans (mem b) (mem c) (mem1 a) (mem1 b)]`.
+
+Establish `: yQ y hy a a = 1`. Unfold `yQ`. Rewrite using `[away_self (mem a) (mem1 a), map_one]`. Rewrite using `[this, map_one]`.
+-/
 theorem yQ_mul_yQ {K : Type} [Field K] {X : Scheme.{0}} {N m e : ℕ} (i : X ⟶ PSpace K N)
     (y : Fin m → MvPolynomial (Fin (N + 1)) K) (hy : ∀ k, (y k).IsHomogeneous e) (a b c : Fin m) (W : X.Opens)
     (ha : W ≤ uy i y a) (hb : W ≤ uy i y b) (hc : W ≤ uy i y c) :

@@ -4,6 +4,13 @@ open scoped ENNReal NNReal MatrixGroups
 
 namespace GlobalTheory.CompanionTheory.SW.SmallPair
 
+/- English proof (translation)
+Establish `hc : IsEmpty {w : InfinitePlace F // w.IsComplex}` using `⟨fun w => InfinitePlace.not_isReal_iff_isComplex.mpr w.2 (hF.isReal w.1)⟩`. Set `e : mixedEmbedding.mixedSpace F ≃ₗ[ℝ] (InfinitePlace F → ℝ)` to `{ toFun := fun z w => z.1 ⟨w, hF.isReal w⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl invFun := fun v => (fun w => v w.1, fun w => (hc.false w).elim) left_inv := fun z => by`. Use `Prod.ext rfl ?_` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Conclude with `(hc.false w).elim`.
+
+Use `right_inv := fun v => rfl }`. Use `⟨_, inferInstance, (mixedEmbedding.latticeBasis F).map e, fun i => ⟨RingOfIntegers.basis F i, fun w => ?_⟩⟩` and prove the remaining obligations. Establish `h1 : ((mixedEmbedding.latticeBasis F).map e) i w = InfinitePlace.embedding_of_isReal (hF.isReal w) (integralBasis F i)`. Rewrite using `[Module.Basis.map_apply, mixedEmbedding.latticeBasis_apply]`. Conclude with `mixedEmbedding.mixedEmbedding_apply_isReal F _ ⟨w, hF.isReal w⟩`.
+
+Rewrite using `[h1, integralBasis_apply]`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[InfinitePlace.embedding_of_isReal_apply, hρ]`.
+-/
 theorem exists_realBasis {F : Type} [Field F] [NumberField F] (hF : IsTotallyReal F)
     (ρ : InfinitePlace F → (F →+* ℝ))
     (hρ : ∀ w x, ((ρ w x : ℝ) : ℂ) = w.embedding x) :
@@ -35,6 +42,9 @@ theorem exists_realBasis {F : Type} [Field F] [NumberField F] (hF : IsTotallyRea
 noncomputable def block (τ : ℂ) : Matrix (Fin 2) (Fin 2) ℝ :=
   !![√τ.im, 0; τ.re / √τ.im, 1 / √τ.im]
 
+/- English proof (translation)
+Establish `: √τ.im ≠ 0` using `(Real.sqrt_pos.mpr h).ne'`. Simplify using `[block, det_fin_two]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem det_block (τ : ℂ) (h : 0 < τ.im) : (block τ).det = 1 := by
   have : √τ.im ≠ 0 := (Real.sqrt_pos.mpr h).ne'
   simp [block, det_fin_two]
@@ -44,6 +54,9 @@ noncomputable def bigM {ι : Type} [Fintype ι] [DecidableEq ι] (τ : ι → �
     Matrix (Fin 2 × ι) (Fin 2 × ι) ℝ :=
   blockDiagonal fun w => block (τ w)
 
+/- English proof (translation)
+Simplify using `only [bigM, mulVec, dotProduct, Fintype.sum_prod_type, blockDiagonal_apply]`. Rewrite using `[Finset.sum_comm]`. Simplify using the standard rewrite rules.
+-/
 theorem bigM_mulVec {ι : Type} [Fintype ι] [DecidableEq ι] (τ : ι → ℂ)
     (v : Fin 2 × ι → ℝ) (k : Fin 2) (w : ι) :
     (bigM τ *ᵥ v) (k, w) = ∑ j, block (τ w) k j * v (j, w) := by
@@ -51,10 +64,16 @@ theorem bigM_mulVec {ι : Type} [Fintype ι] [DecidableEq ι] (τ : ι → ℂ)
   rw [Finset.sum_comm]
   simp
 
+/- English proof (translation)
+Simplify using `[bigM, det_blockDiagonal, det_block _ (h _)]`.
+-/
 theorem det_bigM {ι : Type} [Fintype ι] [DecidableEq ι] (τ : ι → ℂ)
     (h : ∀ w, 0 < (τ w).im) : (bigM τ).det = 1 := by
   simp [bigM, det_blockDiagonal, det_block _ (h _)]
 
+/- English proof (translation)
+The claim follows from `|√(τ w).im * u w| ≤ R ∧ |(τ w).re / √(τ w).im * u w + 1 / √(τ w).im * v w| ≤ R := by classical let b₂ : Module.Basis ((_ : Fin 2) × κ) ℝ (Fin 2 × ι → ℝ) := (Pi.basis fun _ : Fin 2 => b).map (LinearEquiv.curry ℝ ℝ (Fin 2) ι).symm have hb₂ : ∀ (ji : (_ : Fin 2) × κ) (k : Fin 2) (w …`.
+-/
 theorem exists_small {ι : Type} [Fintype ι] [DecidableEq ι] {κ : Type} [Fintype κ]
     [Nonempty ι]
     (b : Module.Basis κ ℝ (ι → ℝ)) (S : AddSubgroup (ι → ℝ)) (hS : ∀ i, b i ∈ S) :
@@ -150,6 +169,27 @@ theorem exists_small {ι : Type} [Fintype ι] [DecidableEq ι] {κ : Type} [Fint
     rw [e] at h0 h1
     simpa [block, Fin.sum_univ_two] using And.intro h0 h1
 
+/- English proof (translation)
+Introduce `F _ _ hF ρ hρ`. Take `⟨κ, _, b, hb⟩` from `exists_realBasis hF ρ hρ`. Set `Φ : 𝓞 F →+ (InfinitePlace F → ℝ)` to `{ toFun := fun a w => ρ w (a : F) map_zero' := by funext w; simp map_add' := fun x y => by funext w; simp }`. Take `⟨R, hR, H⟩` from `exists_small b Φ.range (fun i => by`. Take `⟨a, ha⟩` from `hb i`.
+
+Conclude with `⟨a, funext fun w => (ha w).symm⟩)`. Use `⟨2 * R ^ 2, fun τ hτ => ?_⟩` and prove the remaining obligations. Take `⟨u, ⟨c, rfl⟩, v, ⟨d, rfl⟩, hne, hbd⟩` from `H τ hτ`. Use `⟨c, d, ?_, fun w => ?_⟩` and prove the remaining obligations. Break down `hne with h | h` into its components or cases.
+
+Use `left`. Introduce and unpack `rfl`. Conclude with `h (map_zero Φ)`. Use `right`. Introduce and unpack `rfl`.
+
+Conclude with `h (map_zero Φ)`. Take `⟨h1, h2⟩` from `hbd w set y := (τ w).im with hy set X := (τ w).re with hX`. Establish `hy0 : 0 < y` using `hτ w`. Establish `hs : 0 < √y` using `Real.sqrt_pos.mpr hy0`. Establish `hss : √y * √y = y` using `Real.mul_self_sqrt hy0.le`.
+
+Use `set a : ℝ := ρ w (c : F) with ha`. Use `set e : ℝ := ρ w (d : F) with he`. Establish `h1' : |√y * a| ≤ R` using `h1`. Establish `h2' : |X / √y * a + 1 / √y * e| ≤ R` using `h2`. Establish `q1 : (√y * a) ^ 2 ≤ R ^ 2` using `sq_le_sq' (abs_le.mp h1').1 (abs_le.mp h1').2`.
+
+Establish `q2 : (X / √y * a + 1 / √y * e) ^ 2 ≤ R ^ 2` using `sq_le_sq' (abs_le.mp h2').1 (abs_le.mp h2').2`. Establish `r1 : y * a ^ 2 ≤ R ^ 2`. Establish `: (√y * a) ^ 2 = y * a ^ 2` using `by rw [mul_pow, Real.sq_sqrt hy0.le]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `r2 : (X * a + e) ^ 2 ≤ R ^ 2 * y`.
+
+Establish `: (X / √y * a + 1 / √y * e) ^ 2 * y = (X * a + e) ^ 2`. Establish `: X / √y * a + 1 / √y * e = (X * a + e) / √y` using `by field_simp`. Rewrite using `[this, div_pow, Real.sq_sqrt hy0.le]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← this]`.
+
+Conclude with `mul_le_mul_of_nonneg_right q2 hy0.le`. Establish `nrm : ‖((a : ℝ) : ℂ) * τ w + (e : ℝ)‖ ^ 2 = (a * X + e) ^ 2 + (a * y) ^ 2`. Rewrite using `[← Complex.normSq_eq_norm_sq, Complex.normSq_apply]`. Simplify using `[hX, hy]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[nrm]`. Establish `r3 : (a * y) ^ 2 ≤ R ^ 2 * y`. Establish `: (a * y) ^ 2 = (y * a ^ 2) * y` using `by ring`. Rewrite using `[this]`. Conclude with `mul_le_mul_of_nonneg_right r1 hy0.le`.
+
+Establish `r4 : (a * X + e) ^ 2 = (X * a + e) ^ 2` using `by ring`. Rewrite using `[r4]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem exists_small_pair : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F →
     ∀ ρ : InfinitePlace F → (F →+* ℝ), (∀ w x, ((ρ w x : ℝ) : ℂ) = w.embedding x) →
     ∃ C : ℝ, ∀ τ : InfinitePlace F → ℂ, (∀ w, 0 < (τ w).im) → ∃ c d : 𝓞 F, (c ≠ 0 ∨ d ≠ 0) ∧

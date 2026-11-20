@@ -14,6 +14,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 4000000
 namespace GlobalTheory.HeightCounting.Fin3
+/- English proof (translation)
+Introduce `v i hv y hy n a f h`. Establish `h2` using `HEq.trans (heq_of_eq h) (hY.eW i _)`. Conclude with `(by with_unfolding_all exact ((l.c.th ((v)) ((i)) ((hv)) ((y)) ((hy)) n ((a)) ((f)) (((eq_of_heq h2)))) : _))`.
+-/
 theorem emtTheta_L_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T}
     {P : Pre2 K w} {x : St P} (L : LocAll (lay0 (Dof x))) (l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x) {p0 : BaseLevelRowSide (w.D (oL x L).Z)} (Y : YT x L p0)
     (hY : YRel L Y) : EMtTheta Y (_root_.GlobalTheory.HeightCounting.Fin3.yStructureLocal L l) (_root_.GlobalTheory.HeightCounting.Fin3.characterChoiceLocal L l) := by

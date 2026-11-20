@@ -3,6 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.N
 open UpperHalfPlane hiding I
 open scoped Manifold ContDiff
 
+/- English proof (translation)
+Establish `hre : ∀ i j : Fin 2, ContDiff ℝ ∞ (fun x : Fin 2 → Fin 2 → ℝ => ((x i j : ℝ) : ℂ))` using `fun i j => Complex.ofRealCLM.contDiff.comp (by fun_prop)`. Establish `hDd : ContDiff ℝ ∞ (fun x : Fin 2 → Fin 2 → ℝ => x 0 0 * x 1 1 - x 0 1 * x 1 0)` using `by fun_prop`. Establish `hcd : ContDiff ℝ ∞ (fun x : Fin 2 → Fin 2 → ℝ => (x 1 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x 1 1 : ℂ))` using `((hre 1 0).mul contDiff_const).add (hre 1 1)`. Establish `had : ContDiff ℝ ∞ (fun x : Fin 2 → Fin 2 → ℝ => (x 0 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x 0 1 : ℂ))` using `((hre 0 0).mul contDiff_const).add (hre 0 1)`. Establish `habs : ContDiffAt ℝ ∞ (fun x : Fin 2 → Fin 2 → ℝ => |x 0 0 * x 1 1 - x 0 1 * x 1 0|) x0` using `ContDiffAt.comp (g := fun t : ℝ => |t|) x0 (contDiffAt_abs hD) hDd.contDiffAt`.
+
+Establish `h1 : ContDiffAt ℝ ∞ (fun x : Fin 2 → Fin 2 → ℝ => ((|x 0 0 * x 1 1 - x 0 1 * x 1 0| ^ ((k : ℝ) / 2) : ℝ) : ℂ)) x0`. Use `Complex.ofRealCLM.contDiff.contDiffAt.comp x0 ?_` and prove the remaining obligations. Conclude with `habs.rpow_const_of_ne (abs_ne_zero.mpr hD)`. Establish `h2 : ContDiffAt ℝ ∞ (fun x : Fin 2 → Fin 2 → ℝ => ((x 1 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x 1 1 : ℂ)) ^ (-(k : ℤ))) x0`. Establish `hz : AnalyticAt ℂ (fun z : ℂ => z ^ (-(k : ℤ))) ((x0 1 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x0 1 1 : ℂ))` using `(differentiableOn_zpow (-(k : ℤ)) _ (by tauto)).analyticOnNhd isOpen_compl_singleton _ hc`.
+
+Conclude with `(hz.contDiffAt.restrict_scalars ℝ).comp x0 hcd.contDiffAt`. Establish `hinv : ContDiffAt ℝ ∞ (fun x : Fin 2 → Fin 2 → ℝ => ((x 1 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x 1 1 : ℂ)) ^ (-1 : ℤ)) x0`. Establish `hz : AnalyticAt ℂ (fun z : ℂ => z ^ (-1 : ℤ)) ((x0 1 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x0 1 1 : ℂ))` using `(differentiableOn_zpow (-1 : ℤ) _ (by tauto)).analyticOnNhd isOpen_compl_singleton _ hc`. Conclude with `(hz.contDiffAt.restrict_scalars ℝ).comp x0 hcd.contDiffAt`. Establish `hw : ContDiffAt ℝ ∞ (fun x : Fin 2 → Fin 2 → ℝ => σ * (((x 0 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x 0 1 : ℂ)) / ((x 1 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x 1 1 : ℂ)))) x0`.
+
+Simplify using `only [div_eq_mul_inv, ← zpow_neg_one]`. Conclude with `contDiffAt_const.mul (had.contDiffAt.mul hinv)`. Establish `hF : AnalyticAt ℂ (f ∘ ofComplex) (σ * (((x0 0 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x0 0 1 : ℂ)) / ((x0 1 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x0 1 1 : ℂ))))` using `(UpperHalfPlane.mdifferentiable_iff.mp hf).analyticOnNhd isOpen_upperHalfPlaneSet _ him`. Establish `h3` using `ContDiffAt.comp (g := f ∘ ofComplex) (f := fun x : Fin 2 → Fin 2 → ℝ => σ * (((x 0 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x 0 1 : ℂ)) / ((x 1 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x 1 1 : ℂ)))) x0 (hF.contDiffAt.restrict_scalars ℝ) hw`. Conclude with `(h1.mul h2).mul h3`.
+-/
 private theorem archSm_eval_eq (k : ℕ) (f : ℍ → ℂ) (hf : MDiff f) (σ : ℂ)
     (x0 : Fin 2 → Fin 2 → ℝ)
     (hD : x0 0 0 * x0 1 1 - x0 0 1 * x0 1 0 ≠ 0)
@@ -57,6 +66,25 @@ private theorem archSm_eval_eq (k : ℕ) (f : ℍ → ℂ) (hf : MDiff f) (σ : 
     (hF.contDiffAt.restrict_scalars ℝ) hw
   exact (h1.mul h2).mul h3
 
+/- English proof (translation)
+Introduce `k f hf`. Establish `hD : ∀ x : Fin 2 → Fin 2 → ℝ, (Matrix.of x).det = x 0 0 * x 1 1 - x 0 1 * x 1 0`. Introduce `x`. Simplify using `[Matrix.det_fin_two]`. Establish `hDc : Continuous (fun x : Fin 2 → Fin 2 → ℝ => x 0 0 * x 1 1 - x 0 1 * x 1 0)` using `by fun_prop`.
+
+Introduce `x0 hx0`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Establish `hx0' : x0 0 0 * x0 1 1 - x0 0 1 * x0 1 0 ≠ 0`. Simplify `hx0` using `[hD]`. Establish `hc : ((x0 1 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x0 1 1 : ℂ)) ≠ 0`.
+
+Introduce `h`. Establish `h1` using `congrArg Complex.re h`. Establish `h2` using `congrArg Complex.im h`. Simplify using `at h1 h2`. Apply `hx0'` to reduce the goal to its premises.
+
+Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsign : ∀ᶠ x in nhds x0, SignType.sign (x 0 0 * x 1 1 - x 0 1 * x 1 0) = SignType.sign (x0 0 0 * x0 1 1 - x0 0 1 * x0 1 0)`. Break down `lt_or_gt_of_ne hx0' with hneg | hpos` into its components or cases. Use `filter_upwards [hDc.continuousAt.eventually (gt_mem_nhds hneg)] with x hx`.
+
+Rewrite using `[sign_neg hx, sign_neg hneg]`. Use `filter_upwards [hDc.continuousAt.eventually (lt_mem_nhds hpos)] with x hx`. Rewrite using `[sign_pos hx, sign_pos hpos]`. Establish `hq : (((x0 0 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x0 0 1 : ℂ)) / ((x0 1 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x0 1 1 : ℂ))).im = (x0 0 0 * x0 1 1 - x0 0 1 * x0 1 0) / Complex.normSq ((x0 1 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x0 1 1 : ℂ))`. Rewrite using `[Complex.div_im]`.
+
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `hn : 0 < Complex.normSq ((x0 1 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x0 1 1 : ℂ))` using `Complex.normSq_pos.mpr hc`. Establish `him : 0 < ((((SignType.sign (x0 0 0 * x0 1 1 - x0 0 1 * x0 1 0) : ℝ)) : ℂ) * (((x0 0 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x0 0 1 : ℂ)) / ((x0 1 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x0 1 1 : ℂ)))).im`. Rewrite using `[Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, add_zero, hq]`.
+
+Break down `lt_or_gt_of_ne hx0' with hneg | hpos` into its components or cases. Rewrite using `[sign_neg hneg]`. Establish `: (x0 0 0 * x0 1 1 - x0 0 1 * x0 1 0) / Complex.normSq ((x0 1 0 : ℂ) * (UpperHalfPlane.I : ℂ) + (x0 1 1 : ℂ)) < 0` using `div_neg_of_neg_of_pos hneg hn`. Simplify using `only [SignType.coe_neg, SignType.coe_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[sign_pos hpos]`. Simplify using `only [SignType.coe_one, one_mul]`. Conclude with `div_pos hpos hn`. Use `(archSm_eval_eq k f hf _ x0 hx0' hc him).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hsign] with x hx`.
+
+Unfold `UpperTheory.V.Af.Nf.arch UpperTheory.V.Af.Nf.nsl`. Rewrite using `[hD, hx]`. Simplify using `only [Matrix.of_apply]`.
+-/
 theorem UpperTheory.V.Af.Nf.archSm :
     UpperTheory.V.Af.Nf.ArchSm := by
   intro k f hf

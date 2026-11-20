@@ -5,6 +5,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsTopDegreeCoef
 open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH GlobalTheory.W1 UpperTheory.Gal.productCup_of_system
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `F L _ _ _ _ _ _ d x hc hred ρ hρ h`. Take `⟨⟨τ, hτ⟩, -⟩` from `GlobalTheory.T.exists_topDegreeCoefficientForm_and_eq_on_top_forms ℂ F L d (xv x) hc`. Establish `hloc : locCoch ℂ L (xv x) (h : L) Finset.univ = (h : L) • vol0 ℂ L (xv x)` using `if_pos rfl`. Establish `h1 : trF ℂ τ ρ (locCoch ℂ L (xv x) (h : L) Finset.univ) = ρ (Algebra.trace F L (h : L))`. Simplify using `only [trF, LinearMap.comp_apply, LinearMap.restrictScalars_apply, hloc, map_smul, hτ.1, smul_eq_mul, mul_one]`.
+
+Rewrite using `[← h1]`. Conclude with `GlobalTheory.T.trace_cechCochain_fraction_eq_sum_fibre ℂ F L d (xv x) hc τ hτ ρ hρ inferInstance hred h`.
+-/
 theorem UpperTheory.Gal.productCup_of_system.deRham_restriction_trace_degree_one :
     ResidueOfTraceIsFiberSum := by
   intro F L _ _ _ _ _ _ d x hc hred ρ hρ h

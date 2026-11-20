@@ -22,6 +22,15 @@ section IdealSup
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Take `⟨d, hd, h⟩` from `FractionalIdeal.isFractional_of_fg (S := (𝓞 K)⁰) hfg`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Establish `hdK : (d : K) ≠ 0` using `by exact_mod_cast hd0`. Use `⟨d, 𝔞.comap (LinearMap.toSpanSingleton (𝓞 K) K (d : K)⁻¹), hd0, fun x => ⟨fun hx => ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `h x hx`.
+
+Establish `hy' : (y : K) = (d : K) * x`. Rewrite `hy` using `[Algebra.smul_def]`. Conclude with `hy`. Use `⟨y, ?_, hy'⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, LinearMap.toSpanSingleton_apply, Algebra.smul_def]`.
+
+Express the relevant statement in the definitionally equal form `(y : K) * _ ∈ 𝔞`. Rewrite using `[hy', mul_comm (d : K), mul_assoc, mul_inv_cancel₀ hdK, mul_one]`. Conclude with `hx`. Introduce and unpack `⟨y, hy, hy'⟩`. Rewrite `hy` using `[Submodule.mem_comap, LinearMap.toSpanSingleton_apply, Algebra.smul_def]`.
+
+Express the relevant statement in the definitionally equal form `(y : K) * _ ∈ 𝔞 at hy`. Rewrite `hy` using `[hy', mul_comm (d : K), mul_assoc, mul_inv_cancel₀ hdK, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem exists_ideal_mem_iff_of_fg (𝔞 : Submodule (𝓞 K) K) (hfg : 𝔞.FG) :
     ∃ (d : 𝓞 K) (I : Ideal (𝓞 K)), d ≠ 0 ∧ ∀ x : K, x ∈ 𝔞 ↔ ∃ y ∈ I, (y : K) = (d : K) * x := by
   obtain ⟨d, hd, h⟩ := FractionalIdeal.isFractional_of_fg (S := (𝓞 K)⁰) hfg
@@ -42,6 +51,13 @@ theorem exists_ideal_mem_iff_of_fg (𝔞 : Submodule (𝓞 K) K) (hfg : 𝔞.FG)
     change (y : K) * _ ∈ 𝔞 at hy
     rwa [hy', mul_comm (d : K), mul_assoc, mul_inv_cancel₀ hdK, mul_one] at hy
 
+/- English proof (translation)
+Set `J : (Ideal (𝓞 K))⁰` to `⟨I, mem_nonZeroDivisors_of_ne_zero hI⟩`. Establish `h1 : ClassGroup.mk0 (J ^ classNumber K) = 1`. Rewrite using `[map_pow, classNumber, Fintype.card_eq_nat_card]`. Conclude with `pow_card_eq_one'`. Take `⟨a, ha⟩` from `((ClassGroup.mk0_eq_one_iff (J ^ classNumber K).2).mp h1).principal`.
+
+Establish `ha' : I ^ classNumber K = Ideal.span {a}`. Rewrite `ha` using `[SubmonoidClass.coe_pow]`. Conclude with `ha`. Use `⟨classNumber K, a, (classNumber_pos K).ne', ?_, ha'⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Rewrite `ha'` using `[Ideal.span_singleton_eq_bot.mpr rfl]`. Conclude with `pow_ne_zero _ hI ha'`.
+-/
 theorem exists_pow_eq_span_of_ne_bot (I : Ideal (𝓞 K)) (hI : I ≠ ⊥) :
     ∃ (h : ℕ) (b : 𝓞 K), h ≠ 0 ∧ b ≠ 0 ∧ I ^ h = Ideal.span {b} := by
   let J : (Ideal (𝓞 K))⁰ := ⟨I, mem_nonZeroDivisors_of_ne_zero hI⟩
@@ -59,6 +75,13 @@ theorem exists_pow_eq_span_of_ne_bot (I : Ideal (𝓞 K)) (hI : I ≠ ⊥) :
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Establish `hT0 : 0 ≤ T` using `by simpa using hT 0 I.zero_mem`. Proceed by induction on `h with`. Consider the case `zero => intro y _`. Simplify using `using h1 y`. Consider the case `succ n ih`.
+
+Introduce `y hy`. Rewrite `hy` using `[pow_succ]`. Use `Submodule.mul_induction_on hy (fun m hm r hr => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[RingOfIntegers.coe_eq_algebraMap, map_mul, map_mul, pow_succ]`. Conclude with `mul_le_mul (ih m hm) (hT r hr) (u.nonneg _) (pow_nonneg hT0 _)`.
+
+Rewrite using `[RingOfIntegers.coe_eq_algebraMap, map_add]`. Conclude with `(hu _ _).trans (max_le hx hy)`.
+-/
 theorem abv_le_pow_of_mem_pow (u : AbsoluteValue K ℝ) (hu : ∀ x y, u (x + y) ≤ max (u x) (u y))
     (h1 : ∀ x : 𝓞 K, u x ≤ 1) (I : Ideal (𝓞 K)) {T : ℝ} (hT : ∀ y ∈ I, u y ≤ T) (h : ℕ) :
     ∀ y ∈ I ^ h, u y ≤ T ^ h := by
@@ -76,6 +99,21 @@ theorem abv_le_pow_of_mem_pow (u : AbsoluteValue K ℝ) (hu : ∀ x y, u (x + y)
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Establish `hdK : (d : K) ≠ 0` using `by exact_mod_cast hd`. Establish `hbK : (b : K) ≠ 0` using `by exact_mod_cast hb`. Establish `hud : 0 < u d` using `u.pos hdK`. Establish `hub : 0 < u b` using `u.pos hbK`. Use `set r : ℝ := (u b) ^ ((h : ℝ)⁻¹) with hr`.
+
+Establish `hr0 : 0 < r` using `Real.rpow_pos_of_pos hub _`. Establish `hrh : r ^ h = u b` using `Real.rpow_inv_natCast_pow hub.le hh`. Establish `hup : ∀ a : 𝔞, u a ≤ r / u d`. Introduce `a`. Take `⟨y, hy, hy'⟩` from `(hI a).1 a.2`.
+
+Establish `hm : y ^ h ∈ Ideal.span {b}` using `hIb ▸ Ideal.pow_mem_pow hy h`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hm`. Establish `h2 : u y ^ h ≤ r ^ h`. Establish `hc' : (c : K) * (b : K) = (y : K) ^ h` using `by exact_mod_cast congrArg (fun z : 𝓞 K => (z : K)) hc`. Rewrite using `[hrh, ← map_pow, ← hc', map_mul]`.
+
+Conclude with `mul_le_of_le_one_left hub.le (h1 c)`. Establish `h3 : u y ≤ r` using `(pow_le_pow_iff_left₀ (u.nonneg _) hr0.le hh).1 h2`. Rewrite using `[le_div_iff₀ hud, mul_comm, ← map_mul, ← hy']`. Conclude with `h3`. Establish `hbdd : BddAbove (Set.range fun a : 𝔞 => u a)` using `⟨r / u d, by rintro _ ⟨a, rfl⟩; exact hup a⟩`.
+
+Establish `hS : (⨆ a : 𝔞, u a) = r / u d`. Use `le_antisymm (ciSup_le hup) ?_` and prove the remaining obligations. Establish `hT : ∀ y ∈ I, u y ≤ (⨆ a : 𝔞, u a) * u d`. Introduce `y hy`. Establish `hm : (d : K)⁻¹ * y ∈ 𝔞` using `(hI _).2 ⟨y, hy, by rw [mul_inv_cancel_left₀ hdK]⟩`.
+
+Use `le_ciSup hbdd ⟨_, hm⟩` as an intermediate fact. Simplify using `only [map_mul, map_inv₀] at this`. Rewrite `this` using `[inv_mul_le_iff₀ hud, mul_comm]`. Then use the resulting hypothesis. Establish `h4` using `abv_le_pow_of_mem_pow u hu h1 I hT h b (hIb ▸ Ideal.mem_span_singleton_self b)`. Rewrite `h4` using `[← hrh]`.
+
+Establish `hT0 : 0 ≤ (⨆ a : 𝔞, u a) * u d` using `by simpa using hT 0 I.zero_mem`. Rewrite using `[div_le_iff₀ hud]`. Conclude with `(pow_le_pow_iff_left₀ hr0.le hT0 hh).1 h4`. Rewrite using `[hS, Real.log_div hr0.ne' hud.ne', hr, Real.log_rpow hub]`.
+-/
 theorem log_iSup_abv_eq (u : AbsoluteValue K ℝ) (hu : ∀ x y, u (x + y) ≤ max (u x) (u y))
     (h1 : ∀ x : 𝓞 K, u x ≤ 1) (𝔞 : Submodule (𝓞 K) K) {d b : 𝓞 K} {I : Ideal (𝓞 K)} {h : ℕ} (hd : d ≠ 0)
     (hI : ∀ x : K, x ∈ 𝔞 ↔ ∃ y ∈ I, (y : K) = (d : K) * x) (hh : h ≠ 0) (hb : b ≠ 0)
@@ -116,12 +154,38 @@ theorem log_iSup_abv_eq (u : AbsoluteValue K ℝ) (hu : ∀ x y, u (x + y) ≤ m
     exact (pow_le_pow_iff_left₀ hr0.le hT0 hh).1 h4
   rw [hS, Real.log_div hr0.ne' hud.ne', hr, Real.log_rpow hub]
 
+/- English proof (translation)
+Establish `hzK : (z : K) ≠ 0` using `by exact_mod_cast hz`. Rewrite using `[sum_log_norm_embeddings_eq_log_norm _ hzK, Ideal.absNorm_span_singleton, ← Algebra.coe_norm_int]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_log_norm_eq_log_absNorm (z : 𝓞 K) (hz : z ≠ 0) :
     ∑ σ : K →+* ℂ, Real.log ‖σ z‖ = Real.log (Ideal.absNorm (Ideal.span {z}) : ℝ) := by
   have hzK : (z : K) ≠ 0 := by exact_mod_cast hz
   rw [sum_log_norm_embeddings_eq_log_norm _ hzK, Ideal.absNorm_span_singleton, ← Algebra.coe_norm_int]
   simp
 
+/- English proof (translation)
+Establish `hdK : (d : K) ≠ 0` using `by exact_mod_cast hd`. Establish `ha : ∃ a ∈ 𝔞, a ≠ 0` using `Submodule.exists_mem_ne_zero_of_ne_bot h𝔞`. Rewrite using `[idealLog, dif_pos ha]`. Take `⟨ha1, ha0⟩` from `ha.choose_spec`. Generalize the expression as in `ha.choose = a at ha1 ha0`.
+
+Take `⟨y, hy, hy'⟩` from `(hI a).1 ha1`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Conclude with `mul_ne_zero hdK ha0 (by simpa using hy'.symm)`. Set `f : 𝓞 K →+ K` to `(AddMonoidHom.mulLeft (d : K)⁻¹).comp (algebraMap (𝓞 K) K).toAddMonoidHom`.
+
+Establish `hf (x : 𝓞 K) : f x = (d : K)⁻¹ * (x : K)` using `rfl`. Establish `hfi : Function.Injective f` using `fun x x' hx => by`. Rewrite `hx` using `[hf, hf]`. Conclude with `RingOfIntegers.ext (mul_left_cancel₀ (inv_ne_zero hdK) hx)`. Establish `e1 : 𝔞.toAddSubgroup = I.toAddSubgroup.map f`.
+
+Use extensionality with `x`. Simplify using `only [Submodule.mem_toAddSubgroup, AddSubgroup.mem_map, hI, hf]`. Use `exists_congr fun z => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[inv_mul_eq_iff_eq_mul₀ hdK]`. Establish `e2 : (Submodule.span (𝓞 K) {a}).toAddSubgroup = (Ideal.span {y}).toAddSubgroup.map f`.
+
+Use extensionality with `x`. Simplify using `only [Submodule.mem_toAddSubgroup, AddSubgroup.mem_map, hf, Ideal.mem_span_singleton', Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Use `⟨c * y, ⟨c, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Algebra.smul_def, RingOfIntegers.coe_eq_algebraMap (c * y), map_mul, ← RingOfIntegers.coe_eq_algebraMap y, hy']`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨_, ⟨c, rfl⟩, rfl⟩`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, RingOfIntegers.coe_eq_algebraMap (c * y), map_mul, ← RingOfIntegers.coe_eq_algebraMap y, hy']`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hle : (Ideal.span {y}).toAddSubgroup ≤ I.toAddSubgroup` using `(Ideal.span_singleton_le_iff_mem I).2 hy`. Establish `h1` using `AddSubgroup.relIndex_mul_index hle`. Establish `hN (J : Ideal (𝓞 K)) : J.toAddSubgroup.index = Ideal.absNorm J`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+
+Both sides reduce to the same expression. Rewrite `h1` using `[hN, hN]`. Establish `hy1 : Ideal.absNorm (Ideal.span {y}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hy0`.
+
+Rewrite `hy1` using `[← h1]`. Establish `h2 : Real.log (Ideal.absNorm (Ideal.span {y}) : ℝ) = Real.log ((Ideal.span {y}).toAddSubgroup.relIndex I.toAddSubgroup : ℝ) + Real.log (Ideal.absNorm I : ℝ)`. Rewrite using `[← h1, Nat.cast_mul, Real.log_mul (Nat.cast_ne_zero.2 (left_ne_zero_of_mul hy1)) (Nat.cast_ne_zero.2 (right_ne_zero_of_mul hy1))]`. Establish `h3 : ∑ σ : K →+* ℂ, Real.log ‖σ b‖ = h * Real.log (Ideal.absNorm I : ℝ)`. Rewrite using `[sum_log_norm_eq_log_absNorm b hb, ← hIb, map_pow, Nat.cast_pow, Real.log_pow]`.
+
+Establish `h4 : ∑ σ : K →+* ℂ, Real.log ‖σ y‖ = ∑ σ : K →+* ℂ, Real.log ‖σ d‖ + ∑ σ : K →+* ℂ, Real.log ‖σ a‖`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[hy', map_mul, norm_mul, Real.log_mul (norm_ne_zero_iff.2 ((map_ne_zero σ).2 hdK)) (norm_ne_zero_iff.2 ((map_ne_zero σ).2 ha0))]`. Rewrite `h4` using `[sum_log_norm_eq_log_absNorm y hy0, h2]`.
+
+Establish `hh' : (h : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hh`. Rewrite using `[e1, e2, AddSubgroup.relIndex_map_map_of_injective _ _ hfi, h3, mul_neg, inv_mul_cancel_left₀ hh']`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem idealLog_eq_of_pow_eq_span (𝔞 : Submodule (𝓞 K) K) (h𝔞 : 𝔞 ≠ ⊥) {d b : 𝓞 K} {I : Ideal (𝓞 K)} {h : ℕ}
     (hd : d ≠ 0) (hI : ∀ x : K, x ∈ 𝔞 ↔ ∃ y ∈ I, (y : K) = (d : K) * x) (hh : h ≠ 0) (hb : b ≠ 0)
     (hIb : I ^ h = Ideal.span {b}) :
@@ -185,6 +249,19 @@ theorem idealLog_eq_of_pow_eq_span (𝔞 : Submodule (𝓞 K) K) (h𝔞 : 𝔞 �
 
 end IdealSup
 
+/- English proof (translation)
+Introduce `F _ _ K _ _ φ 𝔞 hfg h𝔞`. Take `⟨d, I, hd, hI⟩` from `exists_ideal_mem_iff_of_fg 𝔞 hfg`. Establish `hdK : (d : K) ≠ 0` using `by exact_mod_cast hd`. Establish `hI0 : I ≠ ⊥`. Introduce and unpack `rfl`.
+
+Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h𝔞`. Take `⟨y, hy, hy'⟩` from `(hI a).1 ha`. Rewrite `hy` using `[Ideal.mem_bot]`. Substitute `hy` using the available equality. Conclude with `mul_ne_zero hdK ha0 (by simpa using hy'.symm)`.
+
+Take `⟨h, b, hh, hb, hIb⟩` from `exists_pow_eq_span_of_ne_bot I hI0`. Establish `hbK : (b : K) ≠ 0` using `by exact_mod_cast hb`. Establish `hfun : (fun v : HeightOneSpectrum (𝓞 F) => ∑ θ : EmbOver φ, Real.log (⨆ a : 𝔞, (extOf v).w (θ.1 a))) = fun v => (h : ℝ)⁻¹ * (∑ θ : EmbOver φ, Real.log ((extOf v).w (θ.1 b))) - ∑ θ : EmbOver φ, Real.log ((extOf v).w (θ.1 d))`. Use function extensionality and compare the values at `v`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl fun θ _ => ?_` and prove the remaining obligations. Conclude with `log_iSup_abv_eq ((extOf v).w.comp θ.1.injective) (fun x y => by`. Express the relevant statement in the definitionally equal form `(extOf v).w (θ.1 (x + y)) ≤ max ((extOf v).w (θ.1 x)) ((extOf v).w (θ.1 y))`. Rewrite using `[map_add]`. Conclude with `TrueGeo.Ext.w_add_le_max F v _ _ _)`.
+
+Use the proof step `(fun x => (extOf v).w_le_one_of_isIntegral (x.isIntegral_coe.map θ.1.toIntAlgHom)) 𝔞 hd hI hh hb hIb`. Take `⟨b1, b2⟩` from `finsum_sum_log_embOver_eq φ (b : K) hbK`. Take `⟨d1, d2⟩` from `finsum_sum_log_embOver_eq φ (d : K) hdK`. Establish `b3 : (Function.support fun v : HeightOneSpectrum (𝓞 F) => (h : ℝ)⁻¹ * ∑ θ : EmbOver φ, Real.log ((extOf v).w (θ.1 b))).Finite` using `b1.subset (Function.support_mul_subset_right _ _)`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hfun]`. Conclude with `(b3.union d1).subset (Function.support_sub _ _)`. Rewrite using `[hfun, finsum_sub_distrib b3 d1, ← mul_finsum, b2, d2, idealLog_eq_of_pow_eq_span 𝔞 h𝔞 hd hI hh hb hIb]`.
+-/
 theorem finsum_sum_log_iSup_eq_idealLog : ∀ {F : Type} [Field F] [NumberField F] {K : Type} [Field K] [NumberField K] (φ : F →+* K) (𝔞 : Submodule (𝓞 K) K), 𝔞.FG → 𝔞 ≠ ⊥ → (Function.support fun v : HeightOneSpectrum (𝓞 F) => ∑ θ : EmbOver φ, Real.log (⨆ a : 𝔞, (extOf v).w (θ.1 a))).Finite ∧ ∑ᶠ v : HeightOneSpectrum (𝓞 F), ∑ θ : EmbOver φ, Real.log (⨆ a : 𝔞, (extOf v).w (θ.1 a)) = idealLog 𝔞 := by
   intro F _ _ K _ _ φ 𝔞 hfg h𝔞
   obtain ⟨d, I, hd, hI⟩ := exists_ideal_mem_iff_of_fg 𝔞 hfg

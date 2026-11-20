@@ -17,6 +17,15 @@ namespace PositivityTheory.Rg.BcB.F.Rd.B
 
 open PositivityTheory.Rg.BcB.F PositivityTheory.Rg.BcB.F.Rd
 
+/- English proof (translation)
+Establish `hc : ∀ c : ℂ, Fintype.card {a // f a = c} = Fintype.card {b // g b = c}`. Introduce `c`. Establish `h1` using `congrArg (Multiset.count c) h`. Rewrite `h1` using `[Multiset.count_map, Multiset.count_map]`. Rewrite using `[Fintype.card_subtype, Fintype.card_subtype]`.
+
+Establish `e1 : (Finset.univ.filter fun a => f a = c) = (Finset.univ.filter fun a => c = f a)`. Use extensionality with `a`. Simplify using `[eq_comm]`. Establish `e2 : (Finset.univ.filter fun a => g a = c) = (Finset.univ.filter fun a => c = g a)`. Use extensionality with `a`.
+
+Simplify using `[eq_comm]`. Rewrite using `[e1, e2]`. Conclude with `h1` after adjusting the coercions. Set `e : ∀ c, {a // f a = c} ≃ {b // g b = c}` to `fun c => Fintype.equivOfCardEq (hc c)`. Use `⟨Equiv.ofFiberEquiv e, fun a => ?_⟩` and prove the remaining obligations.
+
+Conclude with `Equiv.ofFiberEquiv_map e a`.
+-/
 theorem perm_of_map_eq {n : ℕ} (f g : Fin n → ℂ)
     (h : Multiset.map f Finset.univ.val = Multiset.map g Finset.univ.val) :
     ∃ σ : Equiv.Perm (Fin n), ∀ a, g (σ a) = f a := by
@@ -35,6 +44,19 @@ theorem perm_of_map_eq {n : ℕ} (f g : Fin n → ℂ)
   refine ⟨Equiv.ofFiberEquiv e, fun a => ?_⟩
   exact Equiv.ofFiberEquiv_map e a
 
+/- English proof (translation)
+Use `set τ := v.embedding with hτ`. Take `⟨hre, hsym⟩` from `h τ`. Establish `hv : InfinitePlace.mk τ = v` using `InfinitePlace.mk_embedding v`. Establish `hcv : InfinitePlace.mk ((starRingEnd ℂ).comp τ) = v`. Use `InfinitePlace.mk_conjugate_eq τ` as an intermediate fact.
+
+Rewrite using `[← hv]`. Conclude with `this`. Establish `hne : ((starRingEnd ℂ).comp τ) ≠ v.embedding`. Introduce `e`. Establish `hr : ComplexEmbedding.IsReal τ`.
+
+Rewrite using `[ComplexEmbedding.isReal_iff]`. Conclude with `e`. Conclude with `(IsTotallyComplex.complexEmbedding_not_isReal τ) hr`. Establish `m1 : mOf χ τ = Multiset.map (χ v true) Finset.univ.val`. Unfold `mOf`.
+
+Rewrite using `[hv]`. Simplify using `[hτ]`. Establish `m2 : mOf χ ((starRingEnd ℂ).comp τ) = Multiset.map (χ v false) Finset.univ.val`. Unfold `mOf`. Rewrite using `[hcv]`.
+
+Simplify using `[hne]`. Rewrite `hsym` using `[m1, m2, Multiset.map_map]`. Take `⟨σ, hσ⟩` from `perm_of_map_eq _ _ hsym.symm`. Use `⟨σ, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[hσ a]`.
+
+Establish `ha : (χ v true a).im = 0`. Rewrite `hre` using `[m1]`. Conclude with `hre _ (Multiset.mem_map_of_mem _ (Finset.mem_univ_val a))`. Establish `hc : starRingEnd ℂ (χ v true a) = χ v true a` using `Complex.conj_eq_iff_im.2 ha`. Simplify using `[hc]`.
+-/
 theorem herm_of_realSym {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (χ : InfinitePlace E → Inf n)
     (h : RealSym (mOf χ)) (v : InfinitePlace E) : IsHerm (χ v) := by
   set τ := v.embedding with hτ
@@ -67,9 +89,17 @@ theorem herm_of_realSym {E : Type} [Field E] [NumberField E] [IsCMField E] {n : 
   have hc : starRingEnd ℂ (χ v true a) = χ v true a := Complex.conj_eq_iff_im.2 ha
   simp [hc]
 
+/- English proof (translation)
+The claim follows from `smul_left_injective ℂ hf h`.
+-/
 theorem smul_cancel {ι X : Type} {f : ι → X → ℂ} (hf : f ≠ 0) {c d : ℂ} (h : c • f = d • f) : c = d :=
   smul_left_injective ℂ hf h
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i x`. Simplify using `only [PositivityTheory.Rg.BcB.E.conv, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem conv_smul {a b : ℕ} {E : Type} [Field E] [NumberField E] [IsCMField E] {ι : Type} [Fintype ι]
     (μ : Measure (H E a b)) (Φ : Matrix ι ι (H E a b → ℂ)) (c : ℂ) (f : ι → H E a b → ℂ) :
     PositivityTheory.Rg.BcB.E.conv μ Φ (c • f) = c • PositivityTheory.Rg.BcB.E.conv μ Φ f := by
@@ -79,6 +109,9 @@ theorem conv_smul {a b : ℕ} {E : Type} [Field E] [NumberField E] [IsCMField E]
   rw [← integral_const_mul]
   congr 1; funext y; ring
 
+/- English proof (translation)
+Unfold `MClose mOf`. Conclude with `hIC n _ _ (h _ _) ε hε`.
+-/
 theorem mclose_of (hIC : InfConv) {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
     (χk : ℕ → InfinitePlace E → Inf n) (χ₀ : InfinitePlace E → Inf n)
     (h : ∀ v s m, Tendsto (fun k => GlobalTheory.Dec.gelfVal (χk k v s) m) atTop (𝓝 (GlobalTheory.Dec.gelfVal (χ₀ v s) m)))
@@ -88,6 +121,11 @@ theorem mclose_of (hIC : InfConv) {E : Type} [Field E] [NumberField E] [IsCMFiel
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Take `⟨h1, ⟨R, hR⟩, h3, h4⟩` from `hk`. Use `⟨h1.const_smul (n : ℂ), ⟨R, fun y hy hl => by simp [hR y hy hl]⟩, fun y hy k₁ k₂ => ?_, fun u hu x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, h3 y hy k₁ k₂, smul_mul_assoc, mul_smul_comm]`. Establish `e` using `h4 u hu x hx`. Simplify using `only [PositivityTheory.RgBcC.act, Pi.smul_apply, _root_.smul_apply] at e ⊢`.
+
+Rewrite using `[integral_smul, e]`. Simplify using `only [zOp, gel, Epow, id, if_true, Finset.sum_apply, Finset.sum_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[Nat.cast_smul_eq_nsmul]`.
+-/
 theorem isKer_smul_rank {n : ℕ} [MeasurableSpace (G n)] (μ : Measure (G n)) (M : KMod n) (g : ℝ → ℝ)
     (k : Mat n → (M.V →L[ℂ] M.V)) (s : Bool) (hk : IsKer μ M [] g k) : IsKer μ M [(s, 0)] g ((n : ℂ) • k) := by
   obtain ⟨h1, ⟨R, hR⟩, h3, h4⟩ := hk
@@ -99,15 +137,28 @@ theorem isKer_smul_rank {n : ℕ} [MeasurableSpace (G n)] (μ : Measure (G n)) (
     simp only [zOp, gel, Epow, id, if_true, Finset.sum_apply, Finset.sum_const, Finset.card_univ, Fintype.card_fin]
     rw [Nat.cast_smul_eq_nsmul]
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Use `⟨contDiffOn_const, ⟨0, fun _ _ _ => rfl⟩, fun y _ k₁ k₂ => by simp, fun u _ x _ => ?_⟩` and prove the remaining obligations. Simplify using `[PositivityTheory.RgBcC.act, zOp, gel]`.
+-/
 theorem isKer_zero_rank {n : ℕ} (hn : n = 0) [MeasurableSpace (G n)] (μ : Measure (G n)) (M : KMod n) (g : ℝ → ℝ)
     (s : Bool) (m : ℕ) : IsKer μ M [(s, m)] g 0 := by
   subst hn
   refine ⟨contDiffOn_const, ⟨0, fun _ _ _ => rfl⟩, fun y _ k₁ k₂ => by simp, fun u _ x _ => ?_⟩
   simp [PositivityTheory.RgBcC.act, zOp, gel]
 
+/- English proof (translation)
+Simplify using `[ent, inner_smul_right]`.
+-/
 theorem ent_smul {n : ℕ} (M : KMod n) (c : ℂ) (A : M.V →L[ℂ] M.V) (i j : Ix M) : ent M (c • A) i j = c * ent M A i j := by
   simp [ent, inner_smul_right]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j y`. Simplify using `only [tens, entA, Pi.smul_apply, smul_eq_mul]`. Establish `e : ∀ w, ent (Ma w) (Function.update ka v (c • ka v) w (gInf w y.1).val) (i.1.1 w) (j.1.1 w) = (if w = v then c else 1) * ent (Ma w) (ka w (gInf w y.1).val) (i.1.1 w) (j.1.1 w)`. Introduce `w`. Distinguish the cases in `h : w = v`.
+
+Substitute `h` using the available equality. Simplify using `[ent_smul]`. Simplify using `[Function.update_of_ne h, h]`. Simplify using `only [e, Finset.prod_mul_distrib, Finset.prod_ite_eq', Finset.mem_univ, if_true]`. Simplify using `only [Matrix.smul_apply, Pi.smul_apply, smul_eq_mul, tens, entA]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tens_update_smul {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ} {Ma : Mods E a} {Mb : Mods E b}
     {κ : Type} (ka : Kers Ma) (kb : Kers Mb) (ψ : Matrix κ κ (Hf E a b → ℂ)) (v : InfinitePlace E) (c : ℂ) :
     tens (Function.update ka v (c • ka v)) kb ψ = c • tens ka kb ψ := by
@@ -123,6 +174,13 @@ theorem tens_update_smul {E : Type} [Field E] [NumberField E] [IsCMField E] {a b
   simp only [Matrix.smul_apply, Pi.smul_apply, smul_eq_mul, tens, entA]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j y`. Simplify using `only [tens, entA, Pi.smul_apply, smul_eq_mul]`. Establish `e : ∀ w, ent (Mb w) (Function.update kb v (c • kb v) w (gInf w y.2).val) (i.1.2 w) (j.1.2 w) = (if w = v then c else 1) * ent (Mb w) (kb w (gInf w y.2).val) (i.1.2 w) (j.1.2 w)`. Introduce `w`. Distinguish the cases in `h : w = v`.
+
+Substitute `h` using the available equality. Simplify using `[ent_smul]`. Simplify using `[Function.update_of_ne h, h]`. Simplify using `only [e, Finset.prod_mul_distrib, Finset.prod_ite_eq', Finset.mem_univ, if_true]`. Simplify using `only [Matrix.smul_apply, Pi.smul_apply, smul_eq_mul, tens, entA]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tens_update_smul_b {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ} {Ma : Mods E a}
     {Mb : Mods E b} {κ : Type} (ka : Kers Ma) (kb : Kers Mb) (ψ : Matrix κ κ (Hf E a b → ℂ)) (v : InfinitePlace E)
     (c : ℂ) : tens ka (Function.update kb v (c • kb v)) ψ = c • tens ka kb ψ := by
@@ -138,6 +196,9 @@ theorem tens_update_smul_b {E : Type} [Field E] [NumberField E] [IsCMField E] {a
   simp only [Matrix.smul_apply, Pi.smul_apply, smul_eq_mul, tens, entA]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j y`. Simplify using `only [tens, entA, Matrix.zero_apply, Pi.zero_apply]`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ v) (by simp [ent_zero])]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tens_update_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ} {Ma : Mods E a} {Mb : Mods E b}
     {κ : Type} (ka : Kers Ma) (kb : Kers Mb) (ψ : Matrix κ κ (Hf E a b → ℂ)) (v : InfinitePlace E) :
     tens (Function.update ka v 0) kb ψ = 0 := by
@@ -146,6 +207,9 @@ theorem tens_update_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {a b
   rw [Finset.prod_eq_zero (Finset.mem_univ v) (by simp [ent_zero])]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j y`. Simplify using `only [tens, entA, Matrix.zero_apply, Pi.zero_apply]`. Rewrite using `[Finset.prod_eq_zero (f := fun w => ent (Mb w) (Function.update kb v 0 w (gInf w y.2).val) (i.1.2 w) (j.1.2 w)) (Finset.mem_univ v) (by simp [ent_zero])]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tens_update_zero_b {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ} {Ma : Mods E a}
     {Mb : Mods E b} {κ : Type} (ka : Kers Ma) (kb : Kers Mb) (ψ : Matrix κ κ (Hf E a b → ℂ)) (v : InfinitePlace E) :
     tens ka (Function.update kb v 0) ψ = 0 := by
@@ -155,6 +219,11 @@ theorem tens_update_zero_b {E : Type} [Field E] [NumberField E] [IsCMField E] {a
     (Finset.mem_univ v) (by simp [ent_zero])]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i x`. Simplify using `only [PositivityTheory.Rg.BcB.E.conv, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem conv_smulM {a b : ℕ} {E : Type} [Field E] [NumberField E] [IsCMField E] {ι : Type} [Fintype ι]
     (μ : Measure (H E a b)) (Φ : Matrix ι ι (H E a b → ℂ)) (c : ℂ) (f : ι → H E a b → ℂ) :
     PositivityTheory.Rg.BcB.E.conv μ (c • Φ) f = c • PositivityTheory.Rg.BcB.E.conv μ Φ f := by
@@ -164,17 +233,26 @@ theorem conv_smulM {a b : ℕ} {E : Type} [Field E] [NumberField E] [IsCMField E
   rw [← integral_const_mul]
   congr 1; funext y; ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i x`. Simplify using `only [PositivityTheory.Rg.BcB.E.conv, Matrix.zero_apply, Pi.zero_apply, zero_mul, integral_zero, Finset.sum_const_zero]`.
+-/
 theorem conv_zeroM {a b : ℕ} {E : Type} [Field E] [NumberField E] [IsCMField E] {ι : Type} [Fintype ι]
     (μ : Measure (H E a b)) (f : ι → H E a b → ℂ) :
     PositivityTheory.Rg.BcB.E.conv μ (0 : Matrix ι ι (H E a b → ℂ)) f = 0 := by
   funext i x
   simp only [PositivityTheory.Rg.BcB.E.conv, Matrix.zero_apply, Pi.zero_apply, zero_mul, integral_zero, Finset.sum_const_zero]
 
+/- English proof (translation)
+The claim follows from `| _, .leaf V _, h => hPQ _ V h | _, .node t₁ t₂, h => ⟨allLeaves_mono hPQ t₁ h.1, allLeaves_mono hPQ t₂ h.2⟩`.
+-/
 theorem allLeaves_mono {E : Type} [Field E] [NumberField E] [IsCMField E] {P Q : ∀ M : ℕ, Submodule ℂ (Sm E M) → Prop}
     (hPQ : ∀ M V, P M V → Q M V) : ∀ {N : ℕ} (t : Tr E N), t.AllLeaves P → t.AllLeaves Q
   | _, .leaf V _, h => hPQ _ V h
   | _, .node t₁ t₂, h => ⟨allLeaves_mono hPQ t₁ h.1, allLeaves_mono hPQ t₂ h.2⟩
 
+/- English proof (translation)
+Use `⟨hF.1, fun x => Submodule.span_mono ?_ (hF.2 x)⟩` and prove the remaining obligations. Introduce and unpack `f ⟨w₁, hw₁, w₂, hw₂, rfl⟩`. Conclude with `⟨w₁, h₁ hw₁, w₂, h₂ hw₂, rfl⟩`.
+-/
 theorem typeH_mono {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ} {K₁ : Subgroup (GL (Fin a) (Af E))}
     {K₂ : Subgroup (GL (Fin b) (Af E))} {W₁ W₁' : Submodule ℂ (Kinf E a → ℂ)} {W₂ W₂' : Submodule ℂ (Kinf E b → ℂ)}
     (h₁ : W₁ ≤ W₁') (h₂ : W₂ ≤ W₂') {F : H E a b → ℂ} (hF : TypeH K₁ K₂ W₁ W₂ F) : TypeH K₁ K₂ W₁' W₂' F := by

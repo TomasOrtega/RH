@@ -2,6 +2,15 @@ import Mathlib
 
 namespace GlobalTheory.KeyLemmaTwo
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => set w := z ^ (2 ^ k) with hw`. Establish `hw2 : z ^ (2 ^ (k + 1)) = w ^ 2` using `by rw [hw, ← pow_mul, pow_succ]`. Establish `hlt : ‖w - 1‖ < 1 / 2` using `h _`.
+
+Establish `hplus : (3 / 2 : ℝ) ≤ ‖w + 1‖`. Establish `e : w + 1 = (2 : ℂ) + (w - 1)` using `by ring`. Establish `h2 : ‖(2 : ℂ)‖ = 2` using `by simp`. Use `norm_sub_norm_le (2 : ℂ) (-(w - 1))` as an intermediate fact. Rewrite using `[e]`.
+
+Establish `h3 : ‖(2 : ℂ) - -(w - 1)‖ = ‖(2 : ℂ) + (w - 1)‖` using `by rw [sub_neg_eq_add]`. Rewrite `this` using `[norm_neg, h2, h3]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `fac : w ^ 2 - 1 = (w - 1) * (w + 1)` using `by ring`. Rewrite using `[hw2, fac, norm_mul, pow_succ]`.
+
+Establish `hn : 0 ≤ ‖w - 1‖` using `norm_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma key {z : ℂ} (h : ∀ (n : ℕ), ‖z ^ n - (1 : ℂ)‖ < (1 / 2 : ℝ)) (k : ℕ) :
     (3 / 2 : ℝ) ^ k * ‖z - 1‖ ≤ ‖z ^ (2 ^ k) - 1‖ := by
   induction k with
@@ -25,6 +34,11 @@ lemma key {z : ℂ} (h : ∀ (n : ℕ), ‖z ^ n - (1 : ℂ)‖ < (1 / 2 : ℝ))
       _ ≤ ‖w - 1‖ * (3 / 2) := by gcongr
       _ ≤ ‖w - 1‖ * ‖w + 1‖ := by gcongr
 
+/- English proof (translation)
+Introduce `z h`. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖z - 1‖` using `norm_pos_iff.mpr (sub_ne_zero.mpr hne)`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt (1 / 2 / ‖z - 1‖) (by norm_num : (1 : ℝ) < 3 / 2)`. Establish `h1` using `key h k`.
+
+Establish `h2` using `h (2 ^ k)`. Rewrite `hk` using `[div_lt_iff₀ hpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem main : ∀ {z : ℂ}, (∀ (n : ℕ), ‖z ^ n - (1 : ℂ)‖ < (1 / 2 : ℝ)) → z = (1 : ℂ) := by
   intro z h
   by_contra hne

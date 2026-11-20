@@ -15,6 +15,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨hi, -, hP⟩` from `hPD ψ hψ S T ΛS ΛT hS hT`. Take `⟨hd2, hd3, hfin, hop⟩` from `hP P e he`. Establish `hc₁` using `isSplitIdem_cA he₁`. Establish `hmapH : ∀ (f : AE D), f * f = f → ∀ u : WO S T, IsHalf f (u.map (fun a => f * a))` using `fun f hf u i j => by`. Simplify using `only [Matrix.map_apply]`.
+
+Rewrite using `[← mul_assoc, hf]`. Establish `hmapId : ∀ (f : AE D) (u : WO S T), IsHalf f u → u.map (fun a => f * a) = u` using `fun f u hu => by`. Use extensionality with `i j`. Conclude with `hu i j`. Establish `hfinE : ∀ (f f' : AE D), f' * f' = f' → (∀ u : WO S T, IsHalf f' u → IsHalf f u) → (∀ u ∈ latAll S T ΛS ΛT, u.map (fun a => f' * a) ∈ latAll S T ΛS ΛT) → (∀ k : ℕ, 0 < k → ∃ R : Finset (WO S T), ∀ u ∈ latAll S T ΛS ΛT, IsHalf f u → ∃ r ∈ R, ∃ v ∈ latAll S T ΛS ΛT, IsHalf f v ∧ u …`.
+
+Introduce `f f' hf' hsub hmul hF k hk`. Take `⟨R, hR⟩` from `hF k hk`. Use `⟨R.image (fun r => r.map (fun a => f' * a)), fun u hu hue => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, v, hv, -, huv⟩` from `hR u hu (hsub u hue)`. Use `⟨r.map (fun a => f' * a), Finset.mem_image_of_mem _ hr, v.map (fun a => f' * a), hmul v hv, hmapH f' hf' v, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hmapId f' u hue, huv]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨fun u hu => hi e₁ he₁ u hu, fun x hx hxe y hy hye => (hd2 y (chalf_sub_of S T h1 hye)).2 hy x hx (half_sub_of S T h1 hxe), fun y hye H => (hd2 y (chalf_sub_of S T h1 hye)).1 fun x hx _ => ?_, fun x hxe H => (hd3 x (half_sub_of S T h1 hxe)).1 fun y hy _ => ?_, hfinE e e₁ he₁.1 (f …` and prove the remaining obligations.
+
+Rewrite using `[symplO_left_e₁ S T hye]`. Conclude with `H _ (hi e₁ he₁ x hx) (hmapH e₁ he₁.1 x)`. Rewrite using `[symplO_right_ce₁ S T hxe]`. Conclude with `H _ (hi (cA D e₁) hc₁ y hy) (hmapH (cA D e₁) hc₁.1 y)`.
+-/
 theorem facts_at_e₁ (hPD : PlaceLatDual D) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (S T : HSp D)
     {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
     (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) {P : Finset (Formalism.L2.DIV.Pl D.host.E)} {e e₁ : AE D}
@@ -70,6 +81,59 @@ theorem facts_at_e₁ (hPD : PlaceLatDual D) {ψ : AddChar (AF D.host.F) ℂ} (h
 
 open Classical in
 
+/- English proof (translation)
+Introduce `ψ S T χS χT om hω ΛS ΛT hS hT P e he f₀ hf₀ hvac Tm hTm e₁ he₁ h1 g h hg hh x y hx hy`. Establish `hψ` using `hω.std`. Take `⟨hΛe₁, hLL₁, hdY₁, hdX₁, hfX₁, hfY₁, -, hoY₁⟩` from `facts_at_e₁ hPD hψ S T hS hT he he₁ h1`. Take `⟨-, hvi, hP⟩` from `hPD ψ hψ S T ΛS ΛT hS hT`. Take `⟨hd2, -, -, -⟩` from `hP P e he`.
+
+Take `⟨Tc, -, huniq, htheta, -⟩` from `placeModelAt_of hPD ψ hψ S T ΛS ΛT hS hT P e he f₀ hf₀ hvac e (Or.inl rfl)`. Establish `hthm : ∀ Φ, IsSBHalf e (latAll S T ΛS ΛT) Φ → IsThetaFunO ψ S T (Tm Φ)` using `fun Φ hΦ => by`. Rewrite using `[huniq Tm hTm Φ hΦ]`. Conclude with `htheta Φ hΦ`. Take `⟨r, hr, hsplit⟩` from `hω.om_split e₁ he₁ g h hg hh x y hx hy`.
+
+Use `set c : ℂ := (r : ℂ) * (splitFacO χS χT x y : ℂ) with hcdef`. Establish `hc0 : c ≠ 0` using `mul_ne_zero (by exact_mod_cast hr.ne') (Circle.coe_ne_zero _)`. Take `⟨k₁, hk₁, h₁⟩` from `hvi e₁ he₁ g h hg hh`. Take `⟨k₂, hk₂, h₂⟩` from `hvi e₁ he₁ g⁻¹ h⁻¹ (suppAt_inv_fp hg) (suppAt_inv_fp hh)`. Establish `h₁' : ∀ t ∈ latAll S T ΛS ΛT, k₁ • actO S T g⁻¹⁻¹ h⁻¹⁻¹ t ∈ latAll S T ΛS ΛT`.
+
+Simplify `h₁` using `only [inv_inv]`. Establish `hSBp : ∀ Φ, IsSBHalf e (latAll S T ΛS ΛT) Φ → IsSBHalf e (latAll S T ΛS ΛT) (fun t => Φ (actO S T g h t))` using `fun Φ hΦ => sb_comp S T g h hk₁ h₁ hk₂ h₂ hΦ`. Establish `hSBq : ∀ Φ, IsSBHalf e (latAll S T ΛS ΛT) Φ → IsSBHalf e (latAll S T ΛS ΛT) (fun t => Φ (actO S T g⁻¹ h⁻¹ t))` using `fun Φ hΦ => sb_comp S T g⁻¹ h⁻¹ hk₂ h₂ hk₁ h₁' hΦ`. Establish `hindSB : IsSBHalf e (latAll S T ΛS ΛT) (halfInd e (latAll S T ΛS ΛT))` using `(isSBHalf_iff S T).2 Four.isSB_ind`. Establish `hf₀T : Tm (halfInd e (latAll S T ΛS ΛT)) = f₀`.
+
+Use `hTm.vac` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Establish `hG` using `hSBp _ hindSB`. Establish `hG₁` using `hthm _ hG`. Establish `hw : om (g, h) (Tm (fun t => halfInd e (latAll S T ΛS ΛT) (actO S T g h t))) = c • f₀`.
+
+Assume the negation of the conclusion as `hne`. Establish `hw0 : om (g, h) (Tm (fun t => halfInd e (latAll S T ΛS ΛT) (actO S T g h t))) - c • f₀ ≠ 0` using `sub_ne_zero.2 hne`. Establish `hwθ : IsThetaFunO ψ S T (om (g, h) (Tm (fun t => halfInd e (latAll S T ΛS ΛT) (actO S T g h t))) - c • f₀)`. Rewrite using `[sub_eq_add_neg, ← neg_smul]`. Conclude with `Formalism.IndefR.Eqv.thetaO_add (hω.om_pres _ _ hG₁) (Formalism.IndefR.Eqv.thetaO_smul _ hf₀)`.
+
+Establish `hfixG : ∀ u ∈ latAll S T ΛS ΛT, (IsHalf e₁ u ∨ IsHalf (cA D e₁) u) → heisO ψ S T (actO S T g⁻¹ h⁻¹ u) (Tm (fun t => halfInd e (latAll S T ΛS ΛT) (actO S T g h t))) = Tm (fun t => halfInd e (latAll S T ΛS ΛT) (actO S T g h t))`. Introduce `u hu hue`. Break down `hue with hue | hue` into its components or cases. Establish `hqu : IsHalf e (actO S T g⁻¹ h⁻¹ u)` using `isHalf_actO_fp S T _ _ (half_sub_of S T h1 hue)`. Rewrite using `[← hTm.trans _ hG _ hqu]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[Formalism.IndefR.Eqv.actO_add, Formalism.IndefR.Eqv.actO_inv_actO, halfInd_add S T hu (half_sub_of S T h1 hue)]`. Establish `hqu : IsHalf (cA D e) (actO S T g⁻¹ h⁻¹ u)` using `isHalf_actO_fp S T _ _ (chalf_sub_of S T h1 hue)`. Rewrite using `[← hTm.modul _ hG _ hqu]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `t`. Distinguish the cases in `hc : actO S T g h t ∈ latAll S T ΛS ΛT ∧ IsHalf e (actO S T g h t)`. Establish `h1' : symplO S T t (actO S T g⁻¹ h⁻¹ u) = symplO S T (actO S T g h t) u`. Rewrite using `[← Formalism.IndefR.Eqv.symplO_actO S T g h t (actO S T g⁻¹ h⁻¹ u), Formalism.IndefR.Eqv.actO_inv_actO]`.
+
+Rewrite using `[h1', (hd2 u (chalf_sub_of S T h1 hue)).2 hu _ hc.1 hc.2, one_mul]`. Establish `: halfInd e (latAll S T ΛS ΛT) (actO S T g h t) = 0` using `by unfold halfInd; rw [if_neg hc]`. Rewrite using `[this, mul_zero]`. Establish `hfix : ∀ u ∈ latAll S T ΛS ΛT, (IsHalf e₁ u ∨ IsHalf (cA D e₁) u) → heisO ψ S T u (om (g, h) (Tm (fun t => halfInd e (latAll S T ΛS ΛT) (actO S T g h t))) - c • f₀) = om (g, h) (Tm (fun t => halfInd e (latAll S T ΛS ΛT) (actO S T g h t))) - c • f₀`. Introduce `u hu hue`.
+
+Establish `e1` using `hω.om_heis g h (actO S T g⁻¹ h⁻¹ u) _ hG₁`. Rewrite `e1` using `[Formalism.IndefR.Eqv.actO_inv_actO, hfixG u hu hue]`. Establish `e2 : heisO ψ S T u f₀ = f₀` using `hvac u hu (hue.imp (half_sub_of S T h1) (chalf_sub_of S T h1))`. Rewrite using `[← heisL_apply, map_sub, map_smul, heisL_apply, heisL_apply, ← e1, e2]`. Take `⟨ℓ, hℓ, hℓw⟩` from `exists_invForm ψ S T e₁ he₁.2.1 (latAll S T ΛS ΛT) hLL₁ hdY₁ hfX₁ hfY₁ hoY₁ (fun f hf => by`.
+
+Take `⟨k, hk, hk'⟩` from `hlev ψ hψ S T ΛS ΛT hS hT f hf`. Conclude with `⟨k, hk, fun u hu _ => hk' u hu⟩)`. Use `hwθ (fun u hu hue => hfix u hu (Or.inl hue)) (fun u hu hue => hfix u hu (Or.inr hue)) hw0`. Apply `hℓw` to reduce the goal to its premises. Establish `hΨSB : IsSBHalf e (latAll S T ΛS ΛT) ((fun t => halfInd e (latAll S T ΛS ΛT) (actO S T g h t)) - halfInd e (latAll S T ΛS ΛT))`.
+
+Rewrite using `[sub_eq_add_neg, ← neg_one_smul ℂ (halfInd e (latAll S T ΛS ΛT))]`. Conclude with `(isSBHalf_iff S T).2 (((isSBHalf_iff S T).1 hG).add (((isSBHalf_iff S T).1 hindSB).smul (-1)))`. Establish `hev` using `evalYZero_zero S T ψ he₁ h1 (latAll S T ΛS ΛT) hΛe₁ hLL₁ hdX₁ hfY₁ Tm hTm.modul hthm ℓ hℓ hΨSB (fun t ht h0 => by show halfInd e (latAll S T ΛS ΛT) (actO S T g h t) - halfInd e (latAll S T ΛS ΛT) t = 0`. Rewrite using `[actO_fix S T he.2 h1 hg hh ht h0, sub_self])`. Rewrite `hev` using `[map_sub, map_sub, hf₀T]`.
+
+Rewrite using `[map_sub, map_smul, hsplit ℓ hℓ _ hG₁, smul_eq_mul, ← mul_sub, hev, mul_zero]`. Set `Tm' : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)` to `c⁻¹ • ((om (g, h)).comp (Tm.comp (Formalism.IndefR.Eqv.pull S T g h)))`. Establish `hTm'ap : ∀ Φ, Tm' Φ = c⁻¹ • om (g, h) (Tm (fun t => Φ (actO S T g h t)))` using `fun Φ => rfl`. Establish `hTm' : IsPlaceModel ψ (symplO S T) (heisO ψ S T) e (latAll S T ΛS ΛT) 1 f₀ Tm'`. Use `⟨fun Φ hΦ x₀ hx₀ => ?_, fun Φ hΦ y₀ hy₀ => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hTm'ap, hTm'ap]`. Establish `hq : IsHalf e (actO S T g⁻¹ h⁻¹ x₀)` using `isHalf_actO_fp S T _ _ hx₀`. Establish `e1 : (fun t => Φ (actO S T g h t + x₀)) = fun t => Φ (actO S T g h (t + actO S T g⁻¹ h⁻¹ x₀))`. Use function extensionality and compare the values at `t`. Rewrite using `[Formalism.IndefR.Eqv.actO_add, Formalism.IndefR.Eqv.actO_inv_actO]`.
+
+Use `show c⁻¹ • om (g, h) (Tm (fun t => Φ (actO S T g h t + x₀))) = _`. Rewrite using `[e1, hTm.trans _ (hSBp Φ hΦ) _ hq, hω.om_heis g h _ _ (hthm _ (hSBp Φ hΦ)), Formalism.IndefR.Eqv.actO_inv_actO, ← heisL_apply, ← heisL_apply, map_smul]`. Rewrite using `[hTm'ap, hTm'ap]`. Establish `hq : IsHalf (cA D e) (actO S T g⁻¹ h⁻¹ y₀)` using `isHalf_actO_fp S T _ _ hy₀`. Establish `e1 : (fun t => ψ (symplO S T (actO S T g h t) y₀) * Φ (actO S T g h t)) = fun t => ψ (symplO S T t (actO S T g⁻¹ h⁻¹ y₀)) * Φ (actO S T g h t)`.
+
+Use function extensionality and compare the values at `t`. Rewrite using `[← Formalism.IndefR.Eqv.symplO_actO S T g h t (actO S T g⁻¹ h⁻¹ y₀), Formalism.IndefR.Eqv.actO_inv_actO]`. Use `show c⁻¹ • om (g, h) (Tm (fun t => ψ (symplO S T (actO S T g h t) y₀) * Φ (actO S T g h t))) = _`. Rewrite using `[e1, hTm.modul _ (hSBp Φ hΦ) _ hq, hω.om_heis g h _ _ (hthm _ (hSBp Φ hΦ)), Formalism.IndefR.Eqv.actO_inv_actO, ← heisL_apply, ← heisL_apply, map_smul]`. Rewrite using `[one_smul, hTm'ap] show c⁻¹ • om (g, h) (Tm (fun t => halfInd e (latAll S T ΛS ΛT) (actO S T g h t))) = f₀`.
+
+Rewrite using `[hw, smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Use `⟨r, hr, fun Φ hΦ => ?_, fun hstab hnorm => ?_⟩` and prove the remaining obligations. Establish `e1` using `huniq Tm' hTm' _ (hSBq Φ hΦ)`. Establish `e2` using `huniq Tm hTm _ (hSBq Φ hΦ)`. Rewrite `e1` using `[← e2, hTm'ap]`.
+
+Establish `e3 : (fun t => (fun t => Φ (actO S T g⁻¹ h⁻¹ t)) (actO S T g h t)) = Φ`. Use function extensionality and compare the values at `t`. Conclude with `congrArg Φ (Formalism.IndefR.Eqv.actO_actO_inv S T g h t)`. Rewrite `e1` using `[e3]`. Rewrite using `[← e1, smul_smul, mul_inv_cancel₀ hc0, one_smul]`.
+
+Take `⟨μ, 𝓕, ⟨hHaar, hFD, -⟩, hn⟩` from `hnorm`. Establish `hindeq : (fun t => halfInd e (latAll S T ΛS ΛT) (actO S T g h t)) = halfInd e (latAll S T ΛS ΛT)`. Use function extensionality and compare the values at `t`. Unfold `halfInd`. Distinguish the cases in `ht : IsHalf e t`.
+
+Establish `h2` using `(isHalf_actO_iff S T g h t).2 ht`. Simplify using `only [hstab t ht, ht, h2, and_true]`. Establish `h2 : ¬ IsHalf e (actO S T g h t)` using `fun h' => ht ((isHalf_actO_iff S T g h t).1 h')`. Simplify using `only [ht, h2, and_false, if_false]`. Rewrite `hw` using `[hindeq, hf₀T]`.
+
+Establish `hU` using `hω.om_unit μ 𝓕 hHaar hFD (g, h) f₀ hf₀`. Rewrite `hU` using `[hw]`. Establish `hn' : ∫ w in 𝓕, ‖f₀ w‖ ^ 2 ∂μ = 1` using `hn`. Establish `hint : Integrable (fun w => ‖f₀ w‖ ^ 2) (μ.restrict 𝓕)`. Assume the negation of the conclusion as `hni`.
+
+Rewrite `hn'` using `[integral_undef hni]`. Conclude with `zero_ne_one hn'`. Establish `hI : ∫⁻ w in 𝓕, ‖f₀ w‖ₑ ^ 2 ∂μ = 1`. Establish `h3` using `ofReal_integral_eq_lintegral_ofReal hint (Filter.Eventually.of_forall fun w => by simp only [Pi.zero_apply]; positivity)`. Rewrite `h3` using `[hn', ENNReal.ofReal_one]`.
+
+Rewrite using `[h3]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`. Establish `hsm : (fun w => ‖(c • f₀) w‖ₑ ^ 2) = fun w => ‖c‖ₑ ^ 2 * ‖f₀ w‖ₑ ^ 2`.
+
+Use function extensionality and compare the values at `w`. Rewrite using `[Pi.smul_apply, smul_eq_mul, enorm_mul, mul_pow]`. Rewrite `hU` using `[hsm, lintegral_const_mul' _ _ (by simp), hI, mul_one]`. Rewrite `hU` using `[← ofReal_norm_eq_enorm, ← ENNReal.ofReal_pow (norm_nonneg _), ENNReal.ofReal_eq_one]`. Establish `hcn : ‖c‖ = 1` using `(pow_eq_one_iff_of_nonneg (norm_nonneg c) two_ne_zero).1 hU`.
+
+Establish `hsf : ‖(splitFacO χS χT x y : ℂ)‖ = 1` using `Circle.norm_coe _`. Rewrite `hcn` using `[hcdef, norm_mul, hsf, mul_one, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hr]`. Conclude with `hcn`.
+-/
 theorem splitLin_of (hPD : PlaceLatDual D) (hlev : LatLevel D) : SplitLin D := by
   intro ψ S T χS χT om hω ΛS ΛT hS hT P e he f₀ hf₀ hvac Tm hTm e₁ he₁ h1 g h hg hh x y hx hy
   have hψ := hω.std

@@ -11,6 +11,11 @@ namespace GlobalTheory.RestrMeas
 
 section Pi
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[← ((measurePreserving_piFinSuccAbove μ 0).symm).lintegral_comp_emb (MeasurableEquiv.measurableEmbedding _), Fin.prod_univ_succ, ← ih fun i => hf _, ← lintegral_prod_mul (hf 0)]`. Use `lintegral_congr fun a => ?_` and prove the remaining obligations.
+
+Rewrite using `[Fin.prod_univ_succ]`. Both sides reduce to the same expression. Conclude with `Finset.aemeasurable_fun_prod _ fun i _ => (hf _).comp_quasiMeasurePreserving (quasiMeasurePreserving_eval (fun i : Fin n => μ i.succ) i)`.
+-/
 theorem lintegral_fin_prod_eq_prod {n : ℕ} {E : Fin n → Type} {mE : ∀ i, MeasurableSpace (E i)}
     {μ : ∀ i, Measure (E i)} [∀ i, SigmaFinite (μ i)] {f : ∀ i, E i → ℝ≥0∞} (hf : ∀ i, AEMeasurable (f i) (μ i)) :
     ∫⁻ x : ∀ i, E i, ∏ i, f i (x i) ∂(Measure.pi μ) = ∏ i, ∫⁻ x, f i x ∂(μ i) := by
@@ -25,6 +30,9 @@ theorem lintegral_fin_prod_eq_prod {n : ℕ} {E : Fin n → Type} {mE : ∀ i, M
     · exact Finset.aemeasurable_fun_prod _ fun i _ =>
         (hf _).comp_quasiMeasurePreserving (quasiMeasurePreserving_eval (fun i : Fin n => μ i.succ) i)
 
+/- English proof (translation)
+Set `e` to `(Fintype.equivFin ι).symm`. Rewrite using `[← (measurePreserving_piCongrLeft _ e).lintegral_comp_emb (MeasurableEquiv.measurableEmbedding _)]`. Repeatedly rewrite using `[← e.prod_comp, MeasurableEquiv.coe_piCongrLeft, Equiv.piCongrLeft_apply_apply]`. Conclude with `lintegral_fin_prod_eq_prod fun i => hf _`.
+-/
 theorem lintegral_fintype_prod_eq_prod {ι : Type} [Fintype ι] {E : ι → Type} {mE : ∀ i, MeasurableSpace (E i)}
     {μ : ∀ i, Measure (E i)} [∀ i, SigmaFinite (μ i)] {f : ∀ i, E i → ℝ≥0∞} (hf : ∀ i, AEMeasurable (f i) (μ i)) :
     ∫⁻ x : ∀ i, E i, ∏ i, f i (x i) ∂(Measure.pi μ) = ∏ i, ∫⁻ x, f i x ∂(μ i) := by
@@ -35,6 +43,9 @@ theorem lintegral_fintype_prod_eq_prod {ι : Type} [Fintype ι] {E : ι → Type
 
 end Pi
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => simp`. Consider the case `cons i s hi ih`. Rewrite using `[Finset.sum_cons, Finset.prod_cons]`. Use polynomial arithmetic with `[ha i, Finset.sum_nonneg fun j (_ : j ∈ s) => ha j]`.
+-/
 theorem one_add_sum_le_prod_one_add {ι : Type} (s : Finset ι) {a : ι → ℝ} (ha : ∀ i, 0 ≤ a i) :
     1 + ∑ i ∈ s, a i ≤ ∏ i ∈ s, (1 + a i) := by
   induction s using Finset.cons_induction with
@@ -46,11 +57,17 @@ theorem one_add_sum_le_prod_one_add {ι : Type} (s : Finset ι) {a : ι → ℝ}
 variable {X W V : Type} {Ya : W → Type} {Yf : V → Type} {pa : ∀ w, X → Ya w} {pf : ∀ v, X → Yf v}
   {K : ∀ v, Set (Yf v)}
 
+/- English proof (translation)
+The claim follows from `finprod_eq_prod_of_mulSupport_subset _ fun v hv => by_contra fun h' => hv (h1 v h' _ (hx v h'))`.
+-/
 theorem finprod_eq_prod_of_mem {M : Type} [CommMonoid M] {ff : ∀ v, Yf v → M} {S : Finset V}
     (h1 : ∀ v ∉ S, ∀ y ∈ K v, ff v y = 1) {x : X} (hx : ∀ v ∉ S, pf v x ∈ K v) :
     ∏ᶠ v, ff v (pf v x) = ∏ v ∈ S, ff v (pf v x) :=
   finprod_eq_prod_of_mulSupport_subset _ fun v hv => by_contra fun h' => hv (h1 v h' _ (hx v h'))
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `exists_finset_of_eventually hx`. Use `push Not at hx'`. Take `⟨u, hu, hu'⟩` from `hx'`. Rewrite using `[finprod_eq_prod_of_mem (K := K) (S := S ∪ T) (fun v hv y hy => by rw [h1 v fun h' => hv (Finset.mem_union_left _ h'), indicator_of_mem hy, Pi.one_apply]) fun v hv => hT v fun h' => hv (Finset.mem_union_right _ h')]`. Conclude with `Finset.prod_eq_zero (Finset.mem_union_right _ (by_contra fun h' => hu' (hT u h'))) (by rw [h1 u hu, indicator_of_notMem hu'])`.
+-/
 theorem finprod_eq_zero_of_notMem {M : Type} [CommMonoidWithZero M] {ff : ∀ v, Yf v → M} {S : Finset V}
     (h1 : ∀ v ∉ S, ff v = (K v).indicator 1) {x : X} (hx : ∀ᶠ v in cofinite, pf v x ∈ K v)
     (hx' : ¬ ∀ v ∉ S, pf v x ∈ K v) : ∏ᶠ v, ff v (pf v x) = 0 := by
@@ -64,9 +81,15 @@ theorem finprod_eq_zero_of_notMem {M : Type} [CommMonoidWithZero M] {ff : ∀ v,
   exact Finset.prod_eq_zero (Finset.mem_union_right _ (by_contra fun h' => hu' (hT u h')))
     (by rw [h1 u hu, indicator_of_notMem hu'])
 
+/- English proof (translation)
+Introduce `_ _ h _ hx v hv` and use `hx v fun h' => hv (h h')`.
+-/
 theorem monotone_level : Monotone fun S : Finset V => {x | ∀ v ∉ S, pf v x ∈ K v} :=
   fun _ _ h _ hx v hv => hx v fun h' => hv (h h')
 
+/- English proof (translation)
+Use `eq_univ_of_forall fun x => ?_` and prove the remaining obligations. Take `⟨T, hT⟩` from `exists_finset_of_eventually (hX x)`. Conclude with `mem_iUnion.2 ⟨⟨S₀ ∪ T, Finset.subset_union_left⟩, fun v hv => hT v fun h' => hv (Finset.mem_union_right _ h')⟩`.
+-/
 theorem iUnion_level (hX : ∀ x, ∀ᶠ v in cofinite, pf v x ∈ K v) (S₀ : Finset V) :
     ⋃ S : {S : Finset V // S₀ ⊆ S}, {x | ∀ v ∉ S.1, pf v x ∈ K v} = univ := by
   classical
@@ -74,6 +97,9 @@ theorem iUnion_level (hX : ∀ x, ∀ᶠ v in cofinite, pf v x ∈ K v) (S₀ : 
   obtain ⟨T, hT⟩ := exists_finset_of_eventually (hX x)
   exact mem_iUnion.2 ⟨⟨S₀ ∪ T, Finset.subset_union_left⟩, fun v hv => hT v fun h' => hv (Finset.mem_union_right _ h')⟩
 
+/- English proof (translation)
+Conclude with `fun S T => ⟨⟨S ∪ T, S.2.trans Finset.subset_union_left⟩, monotone_level Finset.subset_union_left, monotone_level Finset.subset_union_right⟩`.
+-/
 theorem directed_level (S₀ : Finset V) :
     Directed (· ⊆ ·) fun S : {S : Finset V // S₀ ⊆ S} => {x | ∀ v ∉ S.1, pf v x ∈ K v} := by
   classical
@@ -82,6 +108,9 @@ theorem directed_level (S₀ : Finset V) :
 
 variable [MeasurableSpace X] [∀ w, MeasurableSpace (Ya w)] [∀ v, MeasurableSpace (Yf v)] [Countable V]
 
+/- English proof (translation)
+Simplify using `only [setOf_forall]`. Conclude with `MeasurableSet.iInter fun v => MeasurableSet.iInter fun _ => hf v (hK v)`.
+-/
 theorem measurableSet_level (hf : ∀ v, Measurable (pf v)) (hK : ∀ v, MeasurableSet (K v)) (S : Finset V) :
     MeasurableSet {x | ∀ v ∉ S, pf v x ∈ K v} := by
   simp only [setOf_forall]
@@ -92,6 +121,13 @@ variable [Fintype W] {μa : ∀ w, Measure (Ya w)} {μf : ∀ v, Measure (Yf v)}
 
 omit [Countable V] in
 
+/- English proof (translation)
+Establish `hπ : Measurable fun x => (fun w => pa w x, fun v : S => pf v x)` using `(measurable_pi_lambda _ ha).prodMk (measurable_pi_lambda _ fun v => hf v)`. Use `⟨hπ, (prod_eq_generateFrom generateFrom_pi generateFrom_pi isPiSystem_pi isPiSystem_pi (FiniteSpanningSetsIn.pi fun w => (μa w).toFiniteSpanningSetsIn) (FiniteSpanningSetsIn.pi fun v : S => (μf v).toFiniteSpanningSetsIn) ?_).symm⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨A, hA, rfl⟩ _ ⟨B, hB, rfl⟩`. Establish `hm` using `(MeasurableSet.univ_pi fun w => hA w (mem_univ _)).prod (MeasurableSet.univ_pi fun v => hB v (mem_univ _))`. Establish `e` using `h.2 S hS A (fun v => if hv : v ∈ S then B ⟨v, hv⟩ else univ) (fun w => hA w (mem_univ _)) fun v hv => by simp only [dif_pos hv]; exact hB ⟨v, hv⟩ (mem_univ _)`.
+
+Rewrite using `[Measure.map_apply hπ hm, Measure.restrict_apply (hπ hm), Measure.pi_pi, Measure.pi_pi]`. Use `e using 2` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using `only [mem_inter_iff, mem_preimage, mem_prod, mem_univ_pi, mem_cyl, mem_setOf_eq, and_assoc, Subtype.forall]`. Conclude with `and_congr_right fun _ => and_congr_left fun _ => forall₂_congr fun v hv => by rw [dif_pos hv]`.
+
+Rewrite using `[← Finset.prod_coe_sort S]`. Conclude with `Finset.prod_congr rfl fun v _ => by rw [dif_pos v.2]`.
+-/
 theorem IsCylProd.measurePreserving_level (h : IsCylProd pa pf K μa μf μ) (ha : ∀ w, Measurable (pa w))
     (hf : ∀ v, Measurable (pf v)) {S : Finset V} (hS : ∀ v ∉ S, μf v (K v) = 1) :
     MeasurePreserving (fun x => (fun w => pa w x, fun v : S => pf v x)) (μ.restrict {x | ∀ v ∉ S, pf v x ∈ K v})
@@ -123,6 +159,11 @@ section Nonneg
 
 variable {fa : ∀ w, Ya w → ℝ≥0∞} {ff : ∀ v, Yf v → ℝ≥0∞}
 
+/- English proof (translation)
+Establish `ma : AEMeasurable (fun y : ∀ w, Ya w => ∏ w, fa w (y w)) (Measure.pi μa)` using `Finset.aemeasurable_fun_prod _ fun w _ => (hfa w).comp_quasiMeasurePreserving (quasiMeasurePreserving_eval μa w)`. Establish `mf : AEMeasurable (fun y : ∀ v : S, Yf v => ∏ v : S, ff v (y v)) (Measure.pi fun v : S => μf v)` using `Finset.aemeasurable_fun_prod _ fun v _ => (hff v v.2).comp_quasiMeasurePreserving (quasiMeasurePreserving_eval (fun v : S => μf v) v)`. Establish `hp` using `h.measurePreserving_level ha hf hS`. Rewrite using `[← Finset.prod_coe_sort S, ← lintegral_fintype_prod_eq_prod hfa, ← lintegral_fintype_prod_eq_prod fun v : S => hff v v.2, ← lintegral_prod_mul ma mf, ← hp.map_eq, lintegral_map' (hp.map_eq ▸ ma.comp_fst.mul mf.comp_snd) hp.aemeasurable]`. Use `setLIntegral_congr_fun (measurableSet_level hf hK S) fun x hx => ?_` and prove the remaining obligations.
+
+Simplify using `only [finprod_eq_prod_of_mem h1 hx, ← Finset.prod_coe_sort S]`.
+-/
 theorem IsCylProd.setLIntegral_tensor {S : Finset V} (hS : ∀ v ∉ S, μf v (K v) = 1)
     (h1 : ∀ v ∉ S, ∀ y ∈ K v, ff v y = 1) (hfa : ∀ w, AEMeasurable (fa w) (μa w))
     (hff : ∀ v ∈ S, AEMeasurable (ff v) (μf v)) :
@@ -140,6 +181,9 @@ theorem IsCylProd.setLIntegral_tensor {S : Finset V} (hS : ∀ v ∉ S, μf v (K
   refine setLIntegral_congr_fun (measurableSet_level hf hK S) fun x hx => ?_
   simp only [finprod_eq_prod_of_mem h1 hx, ← Finset.prod_coe_sort S]
 
+/- English proof (translation)
+Rewrite using `[← setLIntegral_univ, ← iUnion_level hX S₀, setLIntegral_iUnion_of_directed _ (directed_level S₀), iSup_subtype']`. Conclude with `iSup_congr fun S => h.setLIntegral_tensor ha hf hK (fun v hv => hS v fun h' => hv (S.2 h')) (fun v hv => h1 v fun h' => hv (S.2 h')) hfa fun v _ => hff v`.
+-/
 theorem IsCylProd.lintegral_tensor (hX : ∀ x, ∀ᶠ v in cofinite, pf v x ∈ K v) {S₀ : Finset V}
     (hS : ∀ v ∉ S₀, μf v (K v) = 1) (h1 : ∀ v ∉ S₀, ∀ y ∈ K v, ff v y = 1)
     (hfa : ∀ w, AEMeasurable (fa w) (μa w)) (hff : ∀ v, AEMeasurable (ff v) (μf v)) :
@@ -149,6 +193,9 @@ theorem IsCylProd.lintegral_tensor (hX : ∀ x, ∀ᶠ v in cofinite, pf v x ∈
   exact iSup_congr fun S => h.setLIntegral_tensor ha hf hK (fun v hv => hS v fun h' => hv (S.2 h'))
     (fun v hv => h1 v fun h' => hv (S.2 h')) hfa fun v _ => hff v
 
+/- English proof (translation)
+Rewrite using `[← h.setLIntegral_tensor ha hf hK hS (fun v hv y hy => by rw [h1 v hv, indicator_of_mem hy, Pi.one_apply]) hfa hff, ← lintegral_indicator (measurableSet_level hf hK S)]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ {x | ∀ v ∉ S, pf v x ∈ K v}`. Rewrite using `[indicator_of_mem hx]`. Rewrite using `[indicator_of_notMem hx, finprod_eq_zero_of_notMem h1 (hX x) hx, mul_zero]`.
+-/
 theorem IsCylProd.lintegral_tensor_indicator (hX : ∀ x, ∀ᶠ v in cofinite, pf v x ∈ K v) {S : Finset V}
     (hS : ∀ v ∉ S, μf v (K v) = 1) (h1 : ∀ v ∉ S, ff v = (K v).indicator 1)
     (hfa : ∀ w, AEMeasurable (fa w) (μa w)) (hff : ∀ v ∈ S, AEMeasurable (ff v) (μf v)) :
@@ -165,6 +212,11 @@ end Nonneg
 
 variable {𝕜 : Type} [RCLike 𝕜] {fa : ∀ w, Ya w → 𝕜} {ff : ∀ v, Yf v → 𝕜}
 
+/- English proof (translation)
+Establish `hp` using `h.measurePreserving_level ha hf hS`. Establish `hi` using `(Integrable.fintype_prod_dep hfa).mul_prod (Integrable.fintype_prod_dep (μ := fun v : S => μf v) fun v : S => hff v v.2)`. Establish `e : EqOn (fun x => (∏ w, fa w (pa w x)) * ∏ v : S, ff v (pf v x)) (fun x => (∏ w, fa w (pa w x)) * ∏ᶠ v, ff v (pf v x)) {x | ∀ v ∉ S, pf v x ∈ K v}` using `fun x hx => by`. Simplify using `only [finprod_eq_prod_of_mem h1 hx, ← Finset.prod_coe_sort S]`. Use `⟨IntegrableOn.congr_fun (hp.integrable_comp_of_integrable hi) e (measurableSet_level hf hK S), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← setIntegral_congr_fun (measurableSet_level hf hK S) e, ← Finset.prod_coe_sort S, ← integral_fintype_prod_eq_prod, ← integral_fintype_prod_eq_prod, ← integral_prod_mul, ← hp.map_eq, integral_map hp.aemeasurable (hp.map_eq ▸ hi.aestronglyMeasurable)]`.
+-/
 theorem IsCylProd.setIntegral_tensor {S : Finset V} (hS : ∀ v ∉ S, μf v (K v) = 1)
     (h1 : ∀ v ∉ S, ∀ y ∈ K v, ff v y = 1) (hfa : ∀ w, Integrable (fa w) (μa w))
     (hff : ∀ v ∈ S, Integrable (ff v) (μf v)) :
@@ -182,6 +234,9 @@ theorem IsCylProd.setIntegral_tensor {S : Finset V} (hS : ∀ v ∉ S, μf v (K 
     ← integral_fintype_prod_eq_prod, ← integral_fintype_prod_eq_prod, ← integral_prod_mul, ← hp.map_eq,
     integral_map hp.aemeasurable (hp.map_eq ▸ hi.aestronglyMeasurable)]
 
+/- English proof (translation)
+Take `⟨hi, e⟩` from `h.setIntegral_tensor ha hf hK hS (fun v hv y hy => by rw [h1 v hv, indicator_of_mem hy, Pi.one_apply]) hfa hff`. Establish `h0 : ∀ x ∉ {x | ∀ v ∉ S, pf v x ∈ K v}, (∏ w, fa w (pa w x)) * ∏ᶠ v, ff v (pf v x) = 0` using `fun x hx => by`. Rewrite using `[finprod_eq_zero_of_notMem h1 (hX x) hx, mul_zero]`. Conclude with `⟨hi.integrable_of_forall_notMem_eq_zero h0, by rw [← e, setIntegral_eq_integral_of_forall_compl_eq_zero h0]⟩`.
+-/
 theorem IsCylProd.integral_tensor_indicator (hX : ∀ x, ∀ᶠ v in cofinite, pf v x ∈ K v) {S : Finset V}
     (hS : ∀ v ∉ S, μf v (K v) = 1) (h1 : ∀ v ∉ S, ff v = (K v).indicator 1)
     (hfa : ∀ w, Integrable (fa w) (μa w)) (hff : ∀ v ∈ S, Integrable (ff v) (μf v)) :
@@ -194,6 +249,13 @@ theorem IsCylProd.integral_tensor_indicator (hX : ∀ x, ∀ᶠ v in cofinite, p
     rw [finprod_eq_zero_of_notMem h1 (hX x) hx, mul_zero]
   exact ⟨hi.integrable_of_forall_notMem_eq_zero h0, by rw [← e, setIntegral_eq_integral_of_forall_compl_eq_zero h0]⟩
 
+/- English proof (translation)
+Establish `hi` using `fun S : {S : Finset V // S₀ ⊆ S} => (h.setIntegral_tensor ha hf hK (fun v hv => hS v fun h' => hv (S.2 h')) (fun v hv => h1 v fun h' => hv (S.2 h')) hfa fun v _ => hff v).1`. Establish `hn` using `fun S : {S : Finset V // S₀ ⊆ S} => (h.setIntegral_tensor ha hf hK (fa := fun w y => ‖fa w y‖) (ff := fun v y => ‖ff v y‖) (fun v hv => hS v fun h' => hv (S.2 h')) (fun v hv y hy => by rw [h1 v (fun h' => hv (S.2 h')) y hy, norm_one]) (fun w => (hfa w).norm) fun v _ => (hff v).no …`. Rewrite using `[← integrableOn_univ, ← iUnion_level hX S₀]`. Use `⟨AEStronglyMeasurable.iUnion fun S => (hi S).1, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_enorm, setLIntegral_iUnion_of_directed _ (directed_level S₀)]`.
+
+Use `(iSup_le fun S => ?_).trans_lt (ENNReal.ofReal_lt_top (r := (∏ w, ∫ y, ‖fa w y‖ ∂μa w) * C))` and prove the remaining obligations. Rewrite using `[← ofReal_integral_norm_eq_lintegral_enorm (hi S)]`. Use `ENNReal.ofReal_le_ofReal (le_of_eq_of_le (Eq.trans ?_ (hn S)) (mul_le_mul_of_nonneg_left (hC S S.2) (Finset.prod_nonneg fun w _ => integral_nonneg fun _ => norm_nonneg _)))` and prove the remaining obligations. Use `setIntegral_congr_fun (measurableSet_level hf hK S) fun x hx => ?_` and prove the remaining obligations. Establish `h2 : ∀ v ∉ S.1, ∀ y ∈ K v, ff v y = 1` using `fun v hv => h1 v fun h' => hv (S.2 h')`.
+
+Simplify using `only [finprod_eq_prod_of_mem h2 hx, norm_mul, norm_prod, finprod_eq_prod_of_mem (ff := fun v y => ‖ff v y‖) (fun v hv y hy => by rw [h2 v hv y hy, norm_one]) hx]`.
+-/
 theorem IsCylProd.integrable_tensor (hX : ∀ x, ∀ᶠ v in cofinite, pf v x ∈ K v) {S₀ : Finset V}
     (hS : ∀ v ∉ S₀, μf v (K v) = 1) (h1 : ∀ v ∉ S₀, ∀ y ∈ K v, ff v y = 1)
     (hfa : ∀ w, Integrable (fa w) (μa w)) (hff : ∀ v, Integrable (ff v) (μf v)) {C : ℝ}
@@ -217,6 +279,9 @@ theorem IsCylProd.integrable_tensor (hX : ∀ x, ∀ᶠ v in cofinite, pf v x �
   simp only [finprod_eq_prod_of_mem h2 hx, norm_mul, norm_prod, finprod_eq_prod_of_mem (ff := fun v y => ‖ff v y‖)
     (fun v hv y hy => by rw [h2 v hv y hy, norm_one]) hx]
 
+/- English proof (translation)
+Establish `hu : ⋃ S : Finset V, {x | ∀ v ∉ S, pf v x ∈ K v} = univ` using `eq_univ_of_forall fun x => mem_iUnion.2 (exists_finset_of_eventually (hX x))`. Use `tendsto_setIntegral_of_monotone (measurableSet_level hf hK) monotone_level hi.integrableOn` as an intermediate fact. Rewrite `this` using `[hu, Measure.restrict_univ]`. Use `this.congr' ((eventually_ge_atTop S₀).mono fun S hs => ?_)` and prove the remaining obligations. Conclude with `(h.setIntegral_tensor ha hf hK (fun v hv => hS v fun h' => hv (hs h')) (fun v hv => h1 v fun h' => hv (hs h')) hfa fun v _ => hff v).2`.
+-/
 theorem IsCylProd.tendsto_integral_tensor (hX : ∀ x, ∀ᶠ v in cofinite, pf v x ∈ K v) {S₀ : Finset V}
     (hS : ∀ v ∉ S₀, μf v (K v) = 1) (h1 : ∀ v ∉ S₀, ∀ y ∈ K v, ff v y = 1)
     (hfa : ∀ w, Integrable (fa w) (μa w)) (hff : ∀ v, Integrable (ff v) (μf v))
@@ -233,6 +298,17 @@ theorem IsCylProd.tendsto_integral_tensor (hX : ∀ x, ∀ᶠ v in cofinite, pf 
 
 omit h ha hf [Countable V] [∀ v, SigmaFinite (μf v)] in
 
+/- English proof (translation)
+Establish `h0 : ∀ v, 0 ≤ ∫ y, ‖ff v y‖ ∂μf v` using `fun v => integral_nonneg fun _ => norm_nonneg _`. Break down `(Finset.prod_nonneg fun v (_ : v ∈ S₀) => h0 v).eq_or_lt with hP | hP` into its components or cases. Take `⟨v, -, hv⟩` from `Finset.prod_eq_zero_iff.1 hP.symm`. Conclude with `multipliable_of_exists_eq_zero ⟨v, norm_le_zero_iff.1 ((norm_integral_le_integral_norm _).trans hv.le)⟩`. Establish `hb : ∀ v ∉ S₀, 1 + ‖∫ y, ff v y ∂μf v - 1‖ ≤ ∫ y, ‖ff v y‖ ∂μf v` using `fun v hv => by`.
+
+Establish `e1 : ∫ y in K v, ff v y ∂μf v = 1`. Rewrite using `[setIntegral_congr_fun (hK v) (g := fun _ => 1) (h1 v hv)]`. Simplify using `[measureReal_def, hS v hv]`. Establish `e2 : ∫ y in K v, ‖ff v y‖ ∂μf v = 1`. Rewrite using `[setIntegral_congr_fun (hK v) (g := fun _ => 1) fun y hy => by simp [h1 v hv y hy]]`.
+
+Simplify using `[measureReal_def, hS v hv]`. Rewrite using `[← integral_add_compl (hK v) (hff v), ← integral_add_compl (hK v) (hff v).norm, e1, e2, add_sub_cancel_left]`. Conclude with `add_le_add_right (norm_integral_le_integral_norm _) _`. Establish `hs : Summable fun v => ‖∫ y, ff v y ∂μf v - 1‖`. Use `summable_of_sum_le (c := ∑ v ∈ S₀, ‖∫ y, ff v y ∂μf v - 1‖ + C / ∏ v ∈ S₀, ∫ y, ‖ff v y‖ ∂μf v) (fun _ => norm_nonneg _) fun T => ?_` and prove the remaining obligations.
+
+Use `(Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_union_right (s₁ := S₀)) fun _ _ _ => norm_nonneg _).trans ?_` and prove the remaining obligations. Rewrite using `[← Finset.union_sdiff_self_eq_union, Finset.sum_union Finset.disjoint_sdiff]`. Use `add_le_add_right ?_ _` and prove the remaining obligations. Establish `e` using `hC (S₀ ∪ T \ S₀) Finset.subset_union_left`. Rewrite `e` using `[Finset.prod_union Finset.disjoint_sdiff, ← le_div_iff₀' hP]`.
+
+Use `le_trans ?_ ((Finset.prod_le_prod (fun v _ => by positivity) fun v hv => hb v (Finset.mem_sdiff.1 hv).2).trans e)` and prove the remaining obligations. Conclude with `(le_add_of_nonneg_left zero_le_one).trans (one_add_sum_le_prod_one_add _ fun _ => norm_nonneg _)`. Simplify using `using multipliable_one_add_of_summable hs`.
+-/
 theorem multipliable_integral {S₀ : Finset V} (hS : ∀ v ∉ S₀, μf v (K v) = 1)
     (h1 : ∀ v ∉ S₀, ∀ y ∈ K v, ff v y = 1) (hff : ∀ v, Integrable (ff v) (μf v)) {C : ℝ}
     (hC : ∀ S : Finset V, S₀ ⊆ S → ∏ v ∈ S, ∫ y, ‖ff v y‖ ∂μf v ≤ C) :
@@ -265,6 +341,9 @@ theorem multipliable_integral {S₀ : Finset V} (hS : ∀ v ∉ S₀, μf v (K v
     exact (le_add_of_nonneg_left zero_le_one).trans (one_add_sum_le_prod_one_add _ fun _ => norm_nonneg _)
   simpa using multipliable_one_add_of_summable hs
 
+/- English proof (translation)
+The claim follows from `tendsto_nhds_unique (h.tendsto_integral_tensor ha hf hK hX hS h1 hfa hff (h.integrable_tensor ha hf hK hX hS h1 hfa hff hC)) (Tendsto.const_mul _ (multipliable_integral hK hS h1 hff hC).hasProd)`.
+-/
 theorem IsCylProd.integral_tensor_eq_tprod (hX : ∀ x, ∀ᶠ v in cofinite, pf v x ∈ K v) {S₀ : Finset V}
     (hS : ∀ v ∉ S₀, μf v (K v) = 1) (h1 : ∀ v ∉ S₀, ∀ y ∈ K v, ff v y = 1)
     (hfa : ∀ w, Integrable (fa w) (μa w)) (hff : ∀ v, Integrable (ff v) (μf v)) {C : ℝ}
@@ -280,6 +359,13 @@ namespace GlobalTheory.AdelicU
 
 open NumberField IsDedekindDomain GlobalTheory.RestrMeas
 
+/- English proof (translation)
+Use `h.haar_arch` as an intermediate fact. Use `h.haar_loc` as an intermediate fact. Use `GlobalTheory.AdelicUnitaryTop.countable_heightOneSpectrum F` as an intermediate fact. Establish `hc` using `h.isCylProd`. Establish `ha` using `fun w => (continuous_projArch σ J w).measurable`.
+
+Establish `hf` using `fun v => (continuous_proj σ J v).measurable`. Establish `hK` using `fun v => (isOpen_stabLoc σ J L v).measurableSet`. Establish `hX` using `eventually_proj_mem_stabLoc σ J L`. Use `⟨fun fa ff hfa => ⟨fun h1 S hs hff => ?_, fun h1 hff => hc.integral_tensor_indicator ha hf hK hX hS h1 hfa hff, fun h1 hff ⟨C, hC⟩ => ?_⟩, fun fa ff hfa => ⟨fun h1 S hs hff => ?_, fun h1 hff => hc.lintegral_tensor_indicator ha hf hK hX hS h1 hfa hff, fun h1 hff => hc.lintegral_te …` and prove the remaining obligations. Conclude with `hc.setIntegral_tensor ha hf hK (fun v hv => hS v fun h' => hv (hs h')) (fun v hv => h1 v fun h' => hv (hs h')) hfa hff`.
+
+Establish `hi` using `hc.integrable_tensor ha hf hK hX hS h1 hfa hff hC`. Conclude with `⟨hi, hc.tendsto_integral_tensor ha hf hK hX hS h1 hfa hff hi, multipliable_integral hK hS h1 hff hC, hc.integral_tensor_eq_tprod ha hf hK hX hS h1 hfa hff hC⟩`. Conclude with `hc.setLIntegral_tensor ha hf hK (fun v hv => hS v fun h' => hv (hs h')) (fun v hv => h1 v fun h' => hv (hs h')) hfa hff`.
+-/
 theorem IsRestrictedProd.euler_product {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {L : Submodule (𝓞 E) (Fin n → E)}
     [Submodule.IsLattice E L] {μa : ∀ w, Measure (GArch σ J w)} {μf : ∀ v, Measure (GLoc σ J v)}

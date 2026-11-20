@@ -10,6 +10,13 @@ namespace GlobalTheory.CompanionTheory.LFSmooth
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Establish `key : ∀ w ∈ GLnLocal.integralGL F 3, modulus ((GeneralLinearGroup.det w : Fˣ) : F) ≤ 1`. Introduce and unpack `_ ⟨v, rfl⟩`. Rewrite using `[modulus_le_one_iff]`. Establish `h : ((GeneralLinearGroup.det (GLnLocal.integralGLHom F 3 v) : Fˣ) : F) = (𝒪[F]).subtype (v : Matrix (Fin 3) (Fin 3) 𝒪[F]).det`. Rewrite using `[RingHom.map_det]`.
+
+Both sides reduce to the same expression. Rewrite using `[h]`. Conclude with `Subtype.property _`. Establish `h1` using `key u hu`. Establish `h2` using `key u⁻¹ (inv_mem hu)`.
+
+Rewrite `h2` using `[map_inv, Units.val_inv_eq_inv_val, modulus_inv]`. Conclude with `le_antisymm h1 ((inv_le_one₀ (modulus_pos (Units.ne_zero _))).1 h2)`.
+-/
 theorem modulus_det_eq_one {u : GL (Fin 3) F} (hu : u ∈ GLnLocal.integralGL F 3) :
     modulus ((GeneralLinearGroup.det u : Fˣ) : F) = 1 := by
   have key : ∀ w ∈ GLnLocal.integralGL F 3,
@@ -27,6 +34,17 @@ theorem modulus_det_eq_one {u : GL (Fin 3) F} (hu : u ∈ GLnLocal.integralGL F 
   rw [map_inv, Units.val_inv_eq_inv_val, modulus_inv] at h2
   exact le_antisymm h1 ((inv_le_one₀ (modulus_pos (Units.ne_zero _))).1 h2)
 
+/- English proof (translation)
+Establish `hcont : Continuous fun p : Matrix (Fin 2) (Fin 3) F × GL (Fin 3) F => p.1 * (p.2 : Matrix (Fin 3) (Fin 3) F)` using `continuous_fst.matrix_mul (Units.continuous_val.comp continuous_snd)`. Establish `hlc : IsLocallyConstant fun p : Matrix (Fin 2) (Fin 3) F × GL (Fin 3) F => Φ (p.1 * (p.2 : Matrix (Fin 3) (Fin 3) F)) - Φ p.1` using `(hl.comp_continuous hcont).sub (hl.comp_continuous continuous_fst)`. Establish `hopen` using `hlc.isOpen_fiber 0`. Establish `hsub : tsupport Φ ×ˢ ({1} : Set (GL (Fin 3) F)) ⊆ (fun p : Matrix (Fin 2) (Fin 3) F × GL (Fin 3) F => Φ (p.1 * (p.2 : Matrix (Fin 3) (Fin 3) F)) - Φ p.1) ⁻¹' {0}`. Introduce and unpack `⟨X, u⟩ ⟨-, hu⟩`.
+
+Take `rfl : u = 1` from `hu`. Simplify using the standard rewrite rules. Take `⟨A, B, -, hB, hA, h1, hAB⟩` from `generalized_tube_lemma hc isCompact_singleton hopen hsub`. Take `⟨m, -, hm⟩` from `(GLnLocal.hasBasis_nhds_one F 3).mem_iff.1 (hB.mem_nhds (h1 rfl))`. Establish `hfix : ∀ u ∈ GLnLocal.congruenceSubgroup F 3 m, ∀ X, Φ X ≠ 0 → Φ (X * (u : Matrix (Fin 3) (Fin 3) F)) = Φ X`.
+
+Introduce `u hu X hX`. Establish `: (X, u) ∈ A ×ˢ B` using `⟨hA (subset_tsupport _ hX), hm hu⟩`. Conclude with `sub_eq_zero.1 (hAB this)`. Use `⟨⟨GLnLocal.congruenceSubgroup F 3 m, GLnLocal.isOpen_congruenceSubgroup F 3 m⟩, fun u hu => GLnLocal.congruenceSubgroup_le F 3 m hu, fun u hu X => ?_⟩` and prove the remaining obligations. Establish `hu' : u ∈ GLnLocal.congruenceSubgroup F 3 m` using `hu`.
+
+Distinguish the cases in `hX : Φ X = 0`. Distinguish the cases in `hY : Φ (X * (u : Matrix (Fin 3) (Fin 3) F)) = 0`. Rewrite using `[hX, hY]`. Establish `h` using `hfix u⁻¹ (inv_mem hu') _ hY`. Rewrite `h` using `[Matrix.mul_assoc, Units.mul_inv_of_eq rfl, Matrix.mul_one]`.
+
+Conclude with `h.symm`. Conclude with `hfix u hu' X hX`.
+-/
 theorem exists_openSubgroup_invariant {Φ : Matrix (Fin 2) (Fin 3) F → ℂ}
     (hl : IsLocallyConstant Φ) (hc : HasCompactSupport Φ) :
     ∃ U : OpenSubgroup (GL (Fin 3) F), (∀ u ∈ U, u ∈ GLnLocal.integralGL F 3) ∧
@@ -65,6 +83,11 @@ theorem exists_openSubgroup_invariant {Φ : Matrix (Fin 2) (Fin 3) F → ℂ}
       exact h.symm
   · exact hfix u hu' X hX
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ ν W' Φ h`. Take `⟨hl, hc⟩` from `h.2.2.2`. Take `⟨U, hUK, hU⟩` from `exists_openSubgroup_invariant hl hc`. Use `⟨U, fun g u hu => ?_⟩` and prove the remaining obligations. Establish `hinn : ∀ k, inn ψ Φ k (g * u) = inn ψ Φ k g`.
+
+Introduce `k`. Simplify using `only [inn, Units.val_mul, ← Matrix.mul_assoc, hU u hu]`. Establish `hdet : mp (GeneralLinearGroup.det (g * u)) 1 = mp (GeneralLinearGroup.det g) 1`. Simplify using `only [mp, map_mul, Units.val_mul, modulus_mul, modulus_det_eq_one (hUK u hu), mul_one]`. Simplify using `only [Wp, hinn, hdet]`.
+-/
 theorem smoothW : Ad3.LFS.SSmoothW := by
   intro F _ _ _ _ _ _ ψ ν W' Φ h
   obtain ⟨hl, hc⟩ := h.2.2.2

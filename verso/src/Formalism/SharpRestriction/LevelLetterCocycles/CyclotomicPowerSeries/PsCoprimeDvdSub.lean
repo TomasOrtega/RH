@@ -6,6 +6,11 @@ namespace LevelStatements.Lv
 
 open PowerSeries IsLocalRing
 
+/- English proof (translation)
+Use `first`. Consider the case `exact ψ.commutes c`. Consider the case `(have e : (C c : PowerSeries O) = c • (1 : PowerSeries O) := by`. Rewrite using `[PowerSeries.smul_eq_C_mul, mul_one]`. Rewrite using `[e, map_smul, map_one])`.
+
+Consider the case `simpa using ψ.commutes c`.
+-/
 theorem powerSeries_algHom_C' {O : Type} [CommRing O] (ψ : PowerSeries O →ₐ[O] PowerSeries O) (c : O) :
     ψ (C c) = C c := by
   first
@@ -15,6 +20,11 @@ theorem powerSeries_algHom_C' {O : Type} [CommRing O] (ψ : PowerSeries O →ₐ
      rw [e, map_smul, map_one])
   | simpa using ψ.commutes c
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : (X : PowerSeries O) ∣ a - C (constantCoeff a) := by`. Rewrite using `[PowerSeries.X_dvd_iff]`. Simplify using the standard rewrite rules. Establish `e : φ (a - C (constantCoeff a)) = φ a - C (constantCoeff a)`. Rewrite using `[map_sub, powerSeries_algHom_C']`.
+
+Rewrite using `[← e, hb, map_mul]`. Conclude with `dvd_mul_of_dvd_left h _`.
+-/
 theorem psCoprime_dvdSub {O : Type} [CommRing O] (l : ℕ) (φ : PowerSeries O →ₐ[O] PowerSeries O)
     (h : (X * (X + C (l : O)) : PowerSeries O) ∣ φ X) (a : PowerSeries O) :
     (X * (X + C (l : O)) : PowerSeries O) ∣ φ a - C (constantCoeff a) := by
@@ -26,6 +36,11 @@ theorem psCoprime_dvdSub {O : Type} [CommRing O] (l : ℕ) (φ : PowerSeries O �
   rw [← e, hb, map_mul]
   exact dvd_mul_of_dvd_left h _
 
+/- English proof (translation)
+Establish `h1` using `psCoprime_dvdSub l φ h a`. Establish `h2 : (X : PowerSeries O) ∣ φ a - C (constantCoeff a)` using `dvd_trans (dvd_mul_right (X : PowerSeries O) _) h1`. Rewrite `h2` using `[PowerSeries.X_dvd_iff]`. Use `first`. Consider the case `simpa [sub_eq_zero] using h2`.
+
+Consider the case `(rw [map_sub, PowerSeries.constantCoeff_C, sub_eq_zero] at h2; exact h2)`.
+-/
 private theorem constantCoeff_algHom_eq_of_X_mul_dvd {O : Type} [CommRing O] (l : ℕ)
     (φ : PowerSeries O →ₐ[O] PowerSeries O)
     (h : (X * (X + C (l : O)) : PowerSeries O) ∣ φ X) (a : PowerSeries O) :
@@ -38,6 +53,9 @@ private theorem constantCoeff_algHom_eq_of_X_mul_dvd {O : Type} [CommRing O] (l 
   | simpa [sub_eq_zero] using h2
   | (rw [map_sub, PowerSeries.constantCoeff_C, sub_eq_zero] at h2; exact h2)
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply', constantCoeff_algHom_eq_of_X_mul_dvd l φ h, ih]`.
+-/
 theorem psCoprime_cc {O : Type} [CommRing O] (l : ℕ) (φ : PowerSeries O →ₐ[O] PowerSeries O)
     (h : (X * (X + C (l : O)) : PowerSeries O) ∣ φ X) (s : ℕ) :
     constantCoeff ((⇑φ)^[s] (X + C (l : O))) = (l : O) := by
@@ -46,6 +64,9 @@ theorem psCoprime_cc {O : Type} [CommRing O] (l : ℕ) (φ : PowerSeries O →�
   | succ n ih =>
     rw [Function.iterate_succ_apply', constantCoeff_algHom_eq_of_X_mul_dvd l φ h, ih]
 
+/- English proof (translation)
+Rewrite using `[Function.iterate_succ_apply']`. Establish `h1` using `psCoprime_dvdSub l φ h ((⇑φ)^[t] (X + C (l : O)))`. Rewrite `h1` using `[psCoprime_cc l φ h t]`. Conclude with `dvd_trans (dvd_mul_left _ _) h1`.
+-/
 theorem psCoprime_qdvd {O : Type} [CommRing O] (l : ℕ) (φ : PowerSeries O →ₐ[O] PowerSeries O)
     (h : (X * (X + C (l : O)) : PowerSeries O) ∣ φ X) (t : ℕ) :
     (X + C (l : O) : PowerSeries O) ∣ (⇑φ)^[t + 1] (X + C (l : O)) - C (l : O) := by
@@ -54,6 +75,9 @@ theorem psCoprime_qdvd {O : Type} [CommRing O] (l : ℕ) (φ : PowerSeries O →
   rw [psCoprime_cc l φ h t] at h1
   exact dvd_trans (dvd_mul_left _ _) h1
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Simplify using `only [Function.iterate_succ_apply', ih, map_add, map_mul, powerSeries_algHom_C']`.
+-/
 private theorem algHom_iterate_C_add_mul {O : Type} [CommRing O] (φ : PowerSeries O →ₐ[O] PowerSeries O)
     (c : O) (s : ℕ) (b d : PowerSeries O) :
     (⇑φ)^[s] (C c + b * d) = C c + (⇑φ)^[s] b * (⇑φ)^[s] d := by
@@ -62,6 +86,11 @@ private theorem algHom_iterate_C_add_mul {O : Type} [CommRing O] (φ : PowerSeri
   | succ n ih =>
     simp only [Function.iterate_succ_apply', ih, map_add, map_mul, powerSeries_algHom_C']
 
+/- English proof (translation)
+Take `⟨t, rfl⟩ : ∃ t, s' = s + (t + 1)` from `⟨s' - s - 1, by omega⟩`. Take `⟨q, hq⟩` from `psCoprime_qdvd l φ h t`. Establish `hq' : (⇑φ)^[t + 1] (X + C (l : O)) = C (l : O) + (X + C (l : O)) * q`. Take the linear combination `hq`. Establish `e : (⇑φ)^[s + (t + 1)] (X + C (l : O)) = C (l : O) + (⇑φ)^[s] (X + C (l : O)) * (⇑φ)^[s] q`.
+
+Rewrite using `[Function.iterate_add_apply, hq', algHom_iterate_C_add_mul]`. Rewrite using `[Ideal.mem_span_pair]`. Conclude with `⟨-((⇑φ)^[s] q), 1, by linear_combination e⟩`.
+-/
 theorem psCoprime_lt {O : Type} [CommRing O] (l : ℕ) (φ : PowerSeries O →ₐ[O] PowerSeries O)
     (h : (X * (X + C (l : O)) : PowerSeries O) ∣ φ X) (s s' : ℕ) (hs : s < s') :
     (C (l : O) : PowerSeries O) ∈ Ideal.span {(⇑φ)^[s] (X + C (l : O)), (⇑φ)^[s'] (X + C (l : O))} := by
@@ -75,6 +104,13 @@ theorem psCoprime_lt {O : Type} [CommRing O] (l : ℕ) (φ : PowerSeries O →�
   rw [Ideal.mem_span_pair]
   exact ⟨-((⇑φ)^[s] q), 1, by linear_combination e⟩
 
+/- English proof (translation)
+Unfold `PsCoprimeStatement`. Introduce `O _ l φ h`. Use `⟨fun s => ?_, fun s s' hss => ?_⟩` and prove the remaining obligations. Establish `hc` using `psCoprime_cc l φ h s`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr⟩ : (X : PowerSeries O) ∣ (⇑φ)^[s] (X + C (l : O)) - C (l : O) := by`.
+
+Rewrite using `[PowerSeries.X_dvd_iff, map_sub, hc]`. Use `first`. Consider the case `simp`. Consider the case `rw [PowerSeries.constantCoeff_C, sub_self]`. Rewrite using `[Ideal.mem_span_pair]`.
+
+Conclude with `⟨1, -r, by linear_combination hr⟩`. Break down `Nat.lt_or_gt_of_ne hss with hlt | hlt` into its components or cases. Conclude with `psCoprime_lt l φ h s s' hlt`. Rewrite using `[Set.pair_comm]`. Conclude with `psCoprime_lt l φ h s' s hlt`.
+-/
 theorem psCoprime : PsCoprimeStatement := by
   unfold PsCoprimeStatement
   intro O _ l φ h

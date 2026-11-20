@@ -40,6 +40,15 @@ def der (u : M.Vec) (τ : D.what₂.Tau) {X : Matrix (Fin V.rank) (Fin V.rank) �
   ⟨dRep (trRep (M.σ τ) (M.fr τ)) X (u τ), (MultGelf.mem_sm M τ).2
     (dRep_mem (gram_unit (M.fr_unit τ) (M.fr_gram τ)) (MultGelf.isURep M τ) ((MultGelf.mem_sm M τ).1 (u τ).2) hX)⟩
 
+/- English proof (translation)
+Use `haveI : CompleteSpace (M.H τ) := (M.ds τ).1`. Establish `hG` using `gram_unit (M.fr_unit τ) (M.fr_gram τ)`. Take `⟨ℓ, hℓ, hℓT⟩` from `hs τ u x`. Take `⟨m, ls, a, hls, ha⟩` from `GlobalTheory.T.sobolevContinuousForm_sum_lieWord_inner _ _ _ (M.σ τ) (M.fr τ) _ (M.fr_unit τ) (M.fr_gram τ) (M.ds τ).2.2.1 ℓ hℓ`. Establish `hu` using `(MultGelf.mem_sm M τ).1 (u τ).2`.
+
+Establish `hmem : ∀ t : ℝ, trRep (M.σ τ) (M.fr τ) (NormedSpace.exp (t • X)) (u τ) ∈ smSub (gramAt D V τ) (trRep (M.σ τ) (M.fr τ))` using `fun t => rep_mem hG (MultGelf.isURep M τ) hu (exp_mem_UH hG hX t)`. Establish `h1 : (fun t : ℝ => Φ u (x * oneP θ V τ X t)) = fun t : ℝ => ∑ i, ⟪a i, word (trRep (M.σ τ) (M.fr τ)) (ls i) (trRep (M.σ τ) (M.fr τ) (NormedSpace.exp (t • X)) (u τ))⟫_ℂ`. Use function extensionality and compare the values at `t`. Rewrite using `[← ha _ (hmem t)]`. Establish `h2` using `he τ _ (exp_mem_UH hG hX t) u ⟨_, (MultGelf.mem_sm M τ).2 (hmem t)⟩ rfl`.
+
+Establish `h3` using `hℓT ⟨_, (MultGelf.mem_sm M τ).2 (hmem t)⟩`. Rewrite `h3` using `[h2]`. Conclude with `h3.symm`. Rewrite using `[h1, ← hℓT, show ((der u τ hX : M.sm τ) : M.H τ) = dRep (trRep (M.σ τ) (M.fr τ)) X (u τ) from rfl, ha _ (dRep_mem hG (MultGelf.isURep M τ) hu hX)]`. Use `HasDerivAt.fun_sum fun i _ => ?_` and prove the remaining obligations.
+
+Establish `h5` using `(hasDerivAt_const (0 : ℝ) (a i)).inner ℂ (GlobalTheory.T.lieWord_commutes_oneParameter_derivative _ _ _ (M.σ τ) (M.fr τ) _ (M.fr_unit τ) (M.fr_gram τ) (M.ds τ).2.2.1 (ls i) (hls i) _ hu X hX)`. Simplify using `using h5`.
+-/
 theorem hasDerivAt_apply (he : IsEquiv θ Φ) (hs : IsSob Φ) (τ : D.what₂.Tau) (u : M.Vec)
     {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ) (x : GA D V) :
     HasDerivAt (fun t : ℝ => Φ u (x * oneP θ V τ X t)) (Φ (Function.update u τ (der u τ hX)) x) 0 := by
@@ -67,11 +76,19 @@ theorem hasDerivAt_apply (he : IsEquiv θ Φ) (hs : IsSob Φ) (τ : D.what₂.Ta
     (GlobalTheory.T.lieWord_commutes_oneParameter_derivative _ _ _ (M.σ τ) (M.fr τ) _ (M.fr_unit τ) (M.fr_gram τ) (M.ds τ).2.2.1 (ls i) (hls i) _ hu X hX)
   simpa using h5
 
+/- English proof (translation)
+The claim follows from `funext fun x => (hasDerivAt_apply he hs τ u hX x).deriv`.
+-/
 theorem rder_apply (he : IsEquiv θ Φ) (hs : IsSob Φ) (τ : D.what₂.Tau) (u : M.Vec)
     {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ) :
     Rder θ V τ X (Φ u) = Φ (Function.update u τ (der u τ hX)) :=
   funext fun x => (hasDerivAt_apply he hs τ u hX x).deriv
 
+/- English proof (translation)
+Establish `hp` using `parts_mem (gram_unit (M.fr_unit τ) (M.fr_gram τ)) (gram_herm (M.fr_gram τ)) Z`. Establish `h1` using `rder_apply he hs τ (Function.update v τ u) hp.1`. Establish `h2` using `rder_apply he hs τ (Function.update v τ u) hp.2`. Rewrite `h1`, `h2` using `[Function.update_idem]`. Establish `h3 : w = der (Function.update v τ u) τ hp.1 + Complex.I • der (Function.update v τ u) τ hp.2` using `Subtype.ext (by rw [hw]; simp only [der, Function.update_self]; rfl)`.
+
+Rewrite using `[h3, Φ.map_update_add, Φ.map_update_smul, ← h1, ← h2]`. Both sides reduce to the same expression.
+-/
 theorem rderC_apply (he : IsEquiv θ Φ) (hs : IsSob Φ) (τ : D.what₂.Tau) (v : M.Vec)
     (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) (u w : M.sm τ)
     (hw : (w : M.H τ) = dRepC (gramAt D V τ) (trRep (M.σ τ) (M.fr τ)) Z u) :
@@ -85,6 +102,11 @@ theorem rderC_apply (he : IsEquiv θ Φ) (hs : IsSob Φ) (τ : D.what₂.Tau) (v
   rw [h3, Φ.map_update_add, Φ.map_update_smul, ← h1, ← h2]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact ⟨u, rfl, rfl⟩`. Consider the case `cons Z l ih`. Take `⟨w, h1, h2⟩` from `ih`. Use `⟨⟨_, (MultGelf.mem_sm M τ).2 (dRepC_mem (gram_unit (M.fr_unit τ) (M.fr_gram τ)) (gram_herm (M.fr_gram τ)) (MultGelf.isURep M τ) Z ((MultGelf.mem_sm M τ).1 w.2))⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[List.map_cons, List.foldr_cons, ← h1]`. Rewrite using `[List.map_cons, List.foldr_cons, h2]`. Conclude with `rderC_apply he hs τ v Z w _ rfl`.
+-/
 theorem foldr_apply (he : IsEquiv θ Φ) (hs : IsSob Φ) (τ : D.what₂.Tau) (v : M.Vec)
     (l : List (Matrix (Fin V.rank) (Fin V.rank) ℂ)) (u : M.sm τ) :
     ∃ w : M.sm τ, (w : M.H τ) =
@@ -101,6 +123,13 @@ theorem foldr_apply (he : IsEquiv θ Φ) (hs : IsSob Φ) (τ : D.what₂.Tau) (v
     · rw [List.map_cons, List.foldr_cons, h2]
       exact rderC_apply he hs τ v Z w _ rfl
 
+/- English proof (translation)
+Use `haveI : CompleteSpace (M.H τ) := (M.ds τ).1`. Take `⟨c, hc⟩` from `GlobalTheory.SmVec.GelfScalar.gelfH_scalar _ _ _ _ _ _ (M.fr_unit τ) (M.fr_gram τ) (M.ds τ).2.2.1 (M.ds τ).2.2.2.1 k`. Use `⟨c, fun v => ?_⟩` and prove the remaining obligations. Use `choose f hf1 hf2 using fun idx : Fin (k + 1) → Fin V.rank => foldr_apply he hs τ v (List.ofFn fun a : Fin (k + 1) => Matrix.single (idx a) (idx (a + 1)) (1 : ℂ)) (v τ)`. Simplify using `only [List.map_ofFn, Function.comp_def, Function.update_eq_self] at hf1 hf2`.
+
+Establish `h1 : c • v τ = ∑ idx, f idx`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, ← hc _ ((MultGelf.mem_sm M τ).1 (v τ).2), Submodule.coe_sum]`. Conclude with `Finset.sum_congr rfl fun idx _ => (hf1 idx).symm`. Establish `h2 : c • Φ v = Φ (Function.update v τ (c • v τ))`.
+
+Rewrite using `[Φ.map_update_smul, Function.update_eq_self]`. Rewrite using `[h2, h1]`. Use `Eq.trans ?_ (map_sum (Φ.toLinearMap v τ) f Finset.univ).symm` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun idx _ => hf2 idx`.
+-/
 theorem gelf_scalar (he : IsEquiv θ Φ) (hs : IsSob Φ) (τ : D.what₂.Tau) (k : ℕ) :
     ∃ c : ℂ, ∀ v : M.Vec, gelf θ V τ k (Φ v) = c • Φ v := by
   haveI : CompleteSpace (M.H τ) := (M.ds τ).1
@@ -120,6 +149,11 @@ theorem gelf_scalar (he : IsEquiv θ Φ) (hs : IsSob Φ) (τ : D.what₂.Tau) (k
   refine Eq.trans ?_ (map_sum (Φ.toLinearMap v τ) f Finset.univ).symm
   exact Finset.sum_congr rfl fun idx _ => hf2 idx
 
+/- English proof (translation)
+Use `⟨Submodule.span ℂ {Φ u}, inferInstance, Submodule.mem_span_singleton_self _, fun τ k f hf => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hf`. Take `⟨c, hc⟩` from `gelf_scalar he hs τ k`. Establish `h2 : a • Φ u = Φ (Function.update u τ (a • u τ))`. Rewrite using `[Φ.map_update_smul, Function.update_eq_self]`.
+
+Rewrite using `[h2, hc, ← h2]`. Conclude with `Submodule.smul_mem _ _ hf`.
+-/
 theorem zfin (he : IsEquiv θ Φ) (hs : IsSob Φ) (u : M.Vec) :
     ∃ W : Submodule ℂ (GA D V → ℂ), FiniteDimensional ℂ W ∧ Φ u ∈ W ∧ ∀ τ k, ∀ f ∈ W, gelf θ V τ k f ∈ W := by
   refine ⟨Submodule.span ℂ {Φ u}, inferInstance, Submodule.mem_span_singleton_self _, fun τ k f hf => ?_⟩
@@ -131,6 +165,13 @@ theorem zfin (he : IsEquiv θ Φ) (hs : IsSob Φ) (u : M.Vec) :
   exact Submodule.smul_mem _ _ hf
 
 attribute [local instance 100] LieRing.ofAssociativeRing in
+/- English proof (translation)
+Use `GlobalTheory.T.derivative_along_lie_algebra_preserves_smooth_space D θ V hθ (Set.range Φ) ?_ _ ⟨u, rfl⟩ k τs Xs hX g` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Use `⟨hc v, fun τ => ⟨fun X => Rder θ V τ X (Φ v), fun X hX => ?_, fun a X hX Y hY => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [rder_apply he hs τ v hX]`. Conclude with `⟨⟨_, rfl⟩, hasDerivAt_apply he hs τ v hX⟩`.
+
+Use `haveI : CompleteSpace (M.H τ) := (M.ds τ).1`. Take `⟨h1, h2⟩` from `GlobalTheory.SmVecLinear.dRep_linear _ _ _ _ _ _ (M.fr_unit τ) (M.fr_gram τ) (M.ds τ).2.2.1 _ ((MultGelf.mem_sm M τ).1 (v τ).2)`. Establish `haX : a • X ∈ lieAt V τ` using `(GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.lieU (gramAt D V τ)).smul_mem' a hX`. Establish `hXY : a • X + Y ∈ lieAt V τ` using `(GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.lieU (gramAt D V τ)).add_mem' haX hY`. Establish `h3 : der v τ hXY = (a : ℂ) • der v τ hX + der v τ hY` using `Subtype.ext ((h1 _ haX _ hY).trans (by rw [h2 a X hX]; rfl))`.
+
+Simplify using `only [rder_apply he hs τ v hX, rder_apply he hs τ v hY, rder_apply he hs τ v hXY]`. Rewrite using `[h3, Φ.map_update_add, Φ.map_update_smul]`.
+-/
 theorem smooth (hθ : IsInfFam θ) (he : IsEquiv θ Φ) (hs : IsSob Φ) (hc : ∀ u, Continuous (Φ u)) (u : M.Vec)
     (k : ℕ) (τs : Fin k → D.what₂.Tau) (Xs : Fin k → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (hX : ∀ i, Xs i ∈ lieAt V (τs i)) (g : GA D V) :
@@ -150,6 +191,9 @@ theorem smooth (hθ : IsInfFam θ) (he : IsEquiv θ Φ) (hs : IsSob Φ) (hc : �
     simp only [rder_apply he hs τ v hX, rder_apply he hs τ v hY, rder_apply he hs τ v hXY]
     rw [h3, Φ.map_update_add, Φ.map_update_smul]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact ⟨u, rfl⟩`. Consider the case `cons p l ih`. Take `⟨v, hv⟩` from `ih fun q hq => hl q (List.mem_cons_of_mem _ hq)`. Conclude with `⟨_, by rw [List.foldr_cons, hv, rder_apply he hs p.1 v (hl p List.mem_cons_self)]⟩`.
+-/
 theorem foldr_rder (he : IsEquiv θ Φ) (hs : IsSob Φ) (u : M.Vec)
     (l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ)) (hl : ∀ p ∈ l, p.2 ∈ lieAt V p.1) :
     ∃ v, l.foldr (fun p f => Rder θ V p.1 p.2 f) (Φ u) = Φ v := by
@@ -163,6 +207,11 @@ section Inst
 
 variable {pl : InfinitePlace D.host.F ≃ D.what₂.Tau} {X : ModInst D V M pl} {T : GA D V ≃* X.inst.GA}
 
+/- English proof (translation)
+Establish `hd : IsUnit (M.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Establish `hk : Eᴴ * Formalism.REAL.Jm (M.ε τ) + Formalism.REAL.Jm (M.ε τ) * E = 0` using `hE`. Establish `h1 : ((M.fr τ)⁻¹)ᴴ * (M.fr τ)ᴴ = 1` using `by rw [← conjTranspose_mul, mul_nonsing_inv _ hd, conjTranspose_one]`. Express the relevant statement in the definitionally equal form `((M.fr τ)⁻¹ * E * M.fr τ)ᴴ * gramAt D V τ + gramAt D V τ * ((M.fr τ)⁻¹ * E * M.fr τ) = 0`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← M.fr_gram τ]`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc, Matrix.mul_add, Matrix.add_mul]`. Use `_ = 0 := by rw [h1, mul_nonsing_inv _ hd, Matrix.mul_one, Matrix.mul_one, hk]; simp`.
+-/
 theorem conj_lie (τ : D.what₂.Tau) {E : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hE : Formalism.REAL.inG (M.ε τ) E) :
     (M.fr τ)⁻¹ * E * M.fr τ ∈ lieAt V τ := by
   have hd : IsUnit (M.fr τ).det := (Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)
@@ -204,6 +253,11 @@ theorem conj_lie (τ : D.what₂.Tau) {E : Matrix (Fin V.rank) (Fin V.rank) ℂ}
   Re := 0
   Re_spec := ⟨integrable_zero _ _ _, fun _ _ => by simp⟩
 
+/- English proof (translation)
+Use `⟨hc, hl, ?_⟩` and prove the remaining obligations. Establish `h1` using `B.R_spec 1 y`. Rewrite `h1` using `[(GlobalTheory.RightRegFund.rightReg_unitary_continuous B).1]`. Use `filter_upwards [h1, ae_restrict_of_ae (s := B.fund) h] with x a b`. Rewrite using `[b]`.
+
+Simplify using `using a`.
+-/
 theorem isContRep_of_ae (B : RowsAut) {y : B.I.L2 B.μf B.fund} {f : B.I.GA → ℂ} (hc : Continuous f)
     (hl : ∀ γ ∈ B.I.GFset, ∀ x, f (γ * x) = f x) (h : ∀ᵐ x ∂(B.I.muA B.μf), f x = B.I.ext y x) :
     GlobalTheory.Dec.IsContRep B y f := by
@@ -214,12 +268,20 @@ theorem isContRep_of_ae (B : RowsAut) {y : B.I.L2 B.μf B.fund} {f : B.I.GA → 
   rw [b]
   simpa using a
 
+/- English proof (translation)
+Take `⟨-, -, -, -, hop⟩` from `GlobalTheory.T.adelicUnitaryHaar_bi_invariant B.I B.μf`. Establish `: (B.I.muA B.μf).IsOpenPosMeasure` using `⟨fun U hU hne => (hop U hU hne).ne'⟩`. Conclude with `(Continuous.ae_eq_iff_eq (B.I.muA B.μf) hc hc').1 h`.
+-/
 theorem eq_of_ae (B : RowsAut) {f f' : B.I.GA → ℂ} (hc : Continuous f) (hc' : Continuous f')
     (h : f =ᵐ[B.I.muA B.μf] f') : f = f' := by
   obtain ⟨-, -, -, -, hop⟩ := GlobalTheory.T.adelicUnitaryHaar_bi_invariant B.I B.μf
   have : (B.I.muA B.μf).IsOpenPosMeasure := ⟨fun U hU hne => (hop U hU hne).ne'⟩
   exact (Continuous.ae_eq_iff_eq (B.I.muA B.μf) hc hc').1 h
 
+/- English proof (translation)
+Use `Prod.ext (funext fun v => Subtype.ext (Units.ext ?_)) h2` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `uMat (h.1 v) = NormedSpace.exp (t • (GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.atPlace B w E v).1)`. Distinguish the cases in `c : v = w`. Substitute `c` using the available equality. Rewrite using `[hw, GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.atPlace, Pi.single_eq_same]`.
+
+Rewrite using `[hv v c, GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.atPlace, Pi.single_eq_of_ne c]`. Simplify using the standard rewrite rules.
+-/
 theorem eq_onePar (B : RowsAut) (w : InfinitePlace B.I.F) (E : GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.gLie (B.I.ε w)) (t : ℝ) {h : B.I.GA}
     (h2 : h.2 = 1) (hw : uMat (h.1 w) = NormedSpace.exp (t • E.1)) (hv : ∀ v, v ≠ w → uMat (h.1 v) = 1) :
     h = GlobalTheory.SobolevBound.onePar B (GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.atPlace B w E) t := by
@@ -231,6 +293,9 @@ theorem eq_onePar (B : RowsAut) (w : InfinitePlace B.I.F) (E : GlobalTheory.Inde
   · rw [hv v c, GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis.atPlace, Pi.single_eq_of_ne c]
     simp
 
+/- English proof (translation)
+Simplify using `only [← hc, map_mul, T.symm_apply_apply]`. Conclude with `hasDerivAt_apply he hs τ u hY (T.symm y)`.
+-/
 theorem hasDerivAt_switch (he : IsEquiv θ Φ) (hs : IsSob Φ) (τ : D.what₂.Tau) (u : M.Vec)
     {Y : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hY : Y ∈ lieAt V τ) {G : Type} [Group G] (T : GA D V ≃* G) (c : ℝ → G)
     (hc : ∀ t, T (oneP θ V τ Y t) = c t) (y : G) :

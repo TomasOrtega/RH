@@ -16,6 +16,9 @@ section SlopeTestRemainingChoices
 variable {K : Type} [Field K] [NumberField K] {w : HeightOneSpectrum (𝓞 K)}
   {c : (w.adicCompletion K)ˣ →* ℂˣ}
 
+/- English proof (translation)
+Use `haveI : (Valued.v : Valuation (w.adicCompletion K) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `he` using `isEquiv (valuation (w.adicCompletion K)) (Valued.v : Valuation (w.adicCompletion K) (WithZero (Multiplicative ℤ)))`. Conclude with `hc x (he.eq_one_iff_eq_one.2 hx)`.
+-/
 private theorem unram_apply (hc : IsUnram c) {x : (w.adicCompletion K)ˣ}
     (hx : Valued.v (x : w.adicCompletion K) = 1) : c x = 1 := by
   haveI : (Valued.v : Valuation (w.adicCompletion K) (WithZero (Multiplicative ℤ))).Compatible :=
@@ -24,10 +27,18 @@ private theorem unram_apply (hc : IsUnram c) {x : (w.adicCompletion K)ˣ}
     (Valued.v : Valuation (w.adicCompletion K) (WithZero (Multiplicative ℤ)))
   exact hc x (he.eq_one_iff_eq_one.2 hx)
 
+/- English proof (translation)
+The claim follows from `unram_apply hc (GlobalTheory.SphGal.isUnitAt_det_of_mem hg)`.
+-/
 private theorem unram_det (hc : IsUnram c) {n : ℕ} {g : GL (Fin n) (w.adicCompletion K)} (hg : g ∈ KGL w n) :
     c (Matrix.GeneralLinearGroup.det g) = 1 :=
   unram_apply hc (GlobalTheory.SphGal.isUnitAt_det_of_mem hg)
 
+/- English proof (translation)
+Establish `h : c (a * b⁻¹) = 1`. Use `unram_apply hc ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀, show Valued.v (a : w.adicCompletion K) = _ from ha, show Valued.v (b : w.adicCompletion K) = _ from hb]`. Conclude with `mul_inv_cancel₀ (by simp)`. Rewrite `h` using `[map_mul, map_inv]`.
+
+Conclude with `mul_inv_eq_one.1 h`.
+-/
 private theorem unram_unif (hc : IsUnram c) {a b : (w.adicCompletion K)ˣ} (ha : IsUnifV K w (a : w.adicCompletion K))
     (hb : IsUnifV K w (b : w.adicCompletion K)) : c a = c b := by
   have h : c (a * b⁻¹) = 1 := by
@@ -40,6 +51,17 @@ private theorem unram_unif (hc : IsUnram c) {a b : (w.adicCompletion K)ˣ} (ha :
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `K _ _ w n c V _ _ ρ hc ϖ₀ h₀ B h`. Establish `hf : ∀ x, x ∈ fixed (twist ρ (detChar (Fin n) c)) (KGL w n) ↔ x ∈ fixed ρ (KGL w n)` using `fun x => by`. Simplify using `only [GlobalTheory.LGrp.mem_fixed]`. Use `forall₂_congr fun g hg => ?_` and prove the remaining obligations. Rewrite using `[twist_apply, detChar_apply, unram_det hc hg, Units.val_one, one_smul]`.
+
+Use `⟨?_, fun y hy h0 => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, h0⟩` from `(Submodule.ne_bot_iff _).1 h.1`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨x, (hf x).2 hx, h0⟩`. Establish `hx` using `h.2 y ((hf y).1 hy) h0`. Use `⟨h0, hy, by rw [Multiset.card_map, hx.2.2.1], fun ϖ hϖ j hj => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.SphGal.satEig_map_mul, mul_smul, ← hx.2.2.2 ϖ hϖ j hj, heckeVec, heckeVec, smul_finsum]`. Use `finsum_congr fun t => ?_` and prove the remaining obligations. Distinguish the cases in `ht : Tj ℂ n (Ov K w) ϖ j t.out = 0`. Simplify using `[ht]`. Take `⟨a, ha, b, hb, e⟩` from `Set.mem_of_indicator_ne_zero ht`.
+
+Establish `hϖ0 : ϖ ≠ 0` using `fun h0 => by simp [IsUnifV, h0] at hϖ`. Establish `e2 : Matrix.GeneralLinearGroup.det t.out = Matrix.GeneralLinearGroup.det a * Units.mk0 ϖ hϖ0 ^ j * Matrix.GeneralLinearGroup.det b`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `t.out.val.det = a.val.det * _ * b.val.det`. Rewrite using `[e, Matrix.det_mul, Matrix.det_mul, GlobalTheory.SphGal.det_diagJ ϖ hj]`.
+
+Simplify using the standard rewrite rules. Establish `e3 : c (Units.mk0 ϖ hϖ0) = c ϖ₀` using `unram_unif hc hϖ h₀`. Rewrite using `[twist_apply, detChar_apply, e2, map_mul, map_mul, unram_det hc ha, unram_det hc hb, map_pow, e3, one_mul, mul_one, smul_comm, Units.val_pow_eq_pow_val]`.
+-/
 theorem satTwist : SatTwist := by
   intro K _ _ w n c V _ _ ρ hc ϖ₀ h₀ B h
   have hf : ∀ x, x ∈ fixed (twist ρ (detChar (Fin n) c)) (KGL w n) ↔ x ∈ fixed ρ (KGL w n) := fun x => by

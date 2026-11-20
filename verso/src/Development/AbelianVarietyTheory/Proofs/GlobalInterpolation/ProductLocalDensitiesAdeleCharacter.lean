@@ -20,12 +20,25 @@ variable {F : Type} [Field F] [NumberField F]
 def colonV (v : HeightOneSpectrum (𝓞 F)) (c : Fv F v) : AddSubgroup (Fv F v) :=
   (intV F v).comap (AddMonoidHom.mulRight c)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_colonV {v : HeightOneSpectrum (𝓞 F)} {c t : Fv F v} :
     t ∈ colonV v c ↔ t * c ∈ v.adicCompletionIntegers F := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_intV {v : HeightOneSpectrum (𝓞 F)} {t : Fv F v} :
     t ∈ intV F v ↔ t ∈ v.adicCompletionIntegers F := Iff.rfl
 
+/- English proof (translation)
+Establish `hv : Valued.v (c : Fv F v) ≠ 0` using `by simpa using hc`. Establish `h1 : Valued.v (c : Fv F v) ≤ 1` using `c.2`. Establish `hl : WithZero.log (Valued.v (c : Fv F v)) ≤ 0`. Rewrite using `[← WithZero.exp_le_exp, WithZero.exp_log hv, WithZero.exp_zero]`. Conclude with `h1`.
+
+Take `⟨e, he⟩ : ∃ e : ℕ, WithZero.log (Valued.v (c : Fv F v)) = -(e : ℤ)` from `⟨(-WithZero.log (Valued.v (c : Fv F v))).toNat, by omega⟩`. Establish `he' : Valued.v (c : Fv F v) = WithZero.exp (-(e : ℤ))`. Rewrite using `[← he, WithZero.exp_log hv]`. Rewrite using `[(GlobalTheory.CNorm.isAdicComplete_and_card_quotient_adicCompletionIntegers F v).2 c e he', FinitePlace.norm_def, WithZeroMulInt.toNNReal_neg_apply _ hv]`. Establish `: Multiplicative.toAdd (WithZero.unzero hv) = -(e : ℤ)`.
+
+Rewrite using `[← he]`. Use `conv_rhs => rw [← WithZero.coe_unzero hv]`. Both sides reduce to the same expression. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem card_quot_span (v : HeightOneSpectrum (𝓞 F)) (c : v.adicCompletionIntegers F)
     (hc : (c : Fv F v) ≠ 0) :
     (Nat.card (v.adicCompletionIntegers F ⧸ Ideal.span {c}) : ℝ) = ‖(c : Fv F v)‖⁻¹ := by
@@ -46,6 +59,15 @@ theorem card_quot_span (v : HeightOneSpectrum (𝓞 F)) (c : v.adicCompletionInt
   rw [this]
   simp
 
+/- English proof (translation)
+Set `f : v.adicCompletionIntegers F →+ Fv F v` to `((v.adicCompletionIntegers F).subtype : _ →+* _).toAddMonoidHom`. Establish `hr : f.range = intV F v`. Use extensionality with `x`. Conclude with `⟨fun ⟨y, hy⟩ => hy ▸ y.2, fun hx => ⟨⟨x, hx⟩, rfl⟩⟩`. Establish `hcm : (colonV v (c : Fv F v)⁻¹).comap f = (Ideal.span {c}).toAddSubgroup`.
+
+Use extensionality with `x`. Express the relevant statement in the definitionally equal form `(x : Fv F v) * (c : Fv F v)⁻¹ ∈ v.adicCompletionIntegers F ↔ x ∈ Ideal.span {c}`. Rewrite using `[Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Conclude with `⟨⟨_, h⟩, Subtype.ext (inv_mul_cancel_right₀ hc _)⟩`. Introduce and unpack `⟨a, rfl⟩`. Express the relevant statement in the definitionally equal form `(a : Fv F v) * c * (c : Fv F v)⁻¹ ∈ _`. Rewrite using `[mul_inv_cancel_right₀ hc]`. Conclude with `a.2`.
+
+Rewrite using `[← hr, ← AddSubgroup.index_comap, hcm, ← card_quot_span v c hc]`. Both sides reduce to the same expression.
+-/
 theorem relIndex_colonV_inv (v : HeightOneSpectrum (𝓞 F)) (c : v.adicCompletionIntegers F)
     (hc : (c : Fv F v) ≠ 0) :
     ((colonV v (c : Fv F v)⁻¹).relIndex (intV F v) : ℝ) = ‖(c : Fv F v)‖⁻¹ := by
@@ -68,6 +90,11 @@ theorem relIndex_colonV_inv (v : HeightOneSpectrum (𝓞 F)) (c : v.adicCompleti
   rw [← hr, ← AddSubgroup.index_comap, hcm, ← card_quot_span v c hc]
   rfl
 
+/- English proof (translation)
+Establish `h1 : intV F v = (colonV v c⁻¹).comap (AddMonoidHom.mulRight c)`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `_ ↔ x * c * c⁻¹ ∈ v.adicCompletionIntegers F`. Rewrite using `[mul_inv_cancel_right₀ hc]`. Both sides reduce to the same expression.
+
+Establish `hs : Function.Surjective (AddMonoidHom.mulRight c)` using `fun y => ⟨y * c⁻¹, inv_mul_cancel_right₀ hc y⟩`. Use `conv_lhs => rw [h1]`. Rewrite using `[AddSubgroup.relIndex_comap, colonV, colonV, AddSubgroup.map_comap_eq_self_of_surjective hs]`.
+-/
 theorem relIndex_intV_colonV (v : HeightOneSpectrum (𝓞 F)) (c : Fv F v) (hc : c ≠ 0) :
     (intV F v).relIndex (colonV v c) = (colonV v c⁻¹).relIndex (intV F v) := by
   have h1 : intV F v = (colonV v c⁻¹).comap (AddMonoidHom.mulRight c) := by
@@ -80,6 +107,15 @@ theorem relIndex_intV_colonV (v : HeightOneSpectrum (𝓞 F)) (c : Fv F v) (hc :
   conv_lhs => rw [h1]
   rw [AddSubgroup.relIndex_comap, colonV, colonV, AddSubgroup.map_comap_eq_self_of_surjective hs]
 
+/- English proof (translation)
+Establish `hn : ‖c‖ ≠ 0` using `norm_ne_zero_iff.2 hc`. Break down `(v.adicCompletionIntegers F).mem_or_inv_mem c with h | h` into its components or cases. Establish `e1 : ((intV F v).relIndex (colonV v c) : ℝ) = ‖c‖⁻¹`. Rewrite using `[relIndex_intV_colonV v c hc]`. Conclude with `relIndex_colonV_inv v ⟨c, h⟩ hc`.
+
+Establish `e2 : (colonV v c).relIndex (intV F v) = 1` using `AddSubgroup.relIndex_eq_one.2 fun x hx => mem_colonV.2 (mul_mem (mem_intV.1 hx) h)`. Use `⟨⟨fun h0 => ?_, by rw [e2]; exact one_ne_zero⟩, by rw [e1, e2]; simp⟩` and prove the remaining obligations. Rewrite `e1` using `[h0, Nat.cast_zero]`. Conclude with `inv_ne_zero hn e1.symm`. Establish `e1 : ((colonV v c).relIndex (intV F v) : ℝ) = ‖c‖`.
+
+Use `relIndex_colonV_inv v ⟨c⁻¹, h⟩ (inv_ne_zero hc)` as an intermediate fact. Simplify using `using this`. Establish `e2 : (intV F v).relIndex (colonV v c) = 1` using `AddSubgroup.relIndex_eq_one.2 fun x hx => by`. Use `mul_mem (mem_colonV.1 hx) h` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_right₀ hc]`. Then use the resulting hypothesis.
+
+Use `⟨⟨by rw [e2]; exact one_ne_zero, fun h0 => ?_⟩, by rw [e1, e2]; simp⟩` and prove the remaining obligations. Rewrite `e1` using `[h0, Nat.cast_zero]`. Conclude with `hn e1.symm`.
+-/
 theorem index_colonV (v : HeightOneSpectrum (𝓞 F)) (c : Fv F v) (hc : c ≠ 0) :
     ((intV F v).relIndex (colonV v c) ≠ 0 ∧ (colonV v c).relIndex (intV F v) ≠ 0) ∧
       ((intV F v).relIndex (colonV v c) : ℝ) / ((colonV v c).relIndex (intV F v) : ℝ) = ‖c‖⁻¹ := by
@@ -104,6 +140,11 @@ theorem index_colonV (v : HeightOneSpectrum (𝓞 F)) (c : Fv F v) (hc : c ≠ 0
     rw [h0, Nat.cast_zero] at e1
     exact hn e1.symm
 
+/- English proof (translation)
+Take `⟨δ, hδ⟩` from `(IsPrincipalIdealRing.principal (differentV F v)).principal`. Use `⟨δ, fun h => ?_, hδ⟩` and prove the remaining obligations. Establish `h0 : δ = 0` using `Subtype.ext h`. Rewrite `hδ` using `[h0, Submodule.span_zero_singleton, differentV, Ideal.map_eq_bot_iff_of_injective]`. Conclude with `differentIdeal_ne_bot hδ`.
+
+Introduce `x y hxy`. Use `congrArg (fun z : v.adicCompletionIntegers F => (z : Fv F v)) hxy` as an intermediate fact. Simplify using `only [HeightOneSpectrum.algebraMap_adicCompletionIntegers_apply] at this`. Conclude with `FaithfulSMul.algebraMap_injective (𝓞 F) F ((algebraMap F (Fv F v)).injective this)`.
+-/
 theorem exists_generator_differentV (v : HeightOneSpectrum (𝓞 F)) :
     ∃ δ : v.adicCompletionIntegers F, (δ : Fv F v) ≠ 0 ∧ differentV F v = Ideal.span {δ} := by
   obtain ⟨δ, hδ⟩ := (IsPrincipalIdealRing.principal (differentV F v)).principal
@@ -116,6 +157,13 @@ theorem exists_generator_differentV (v : HeightOneSpectrum (𝓞 F)) :
     simp only [HeightOneSpectrum.algebraMap_adicCompletionIntegers_apply] at this
     exact FaithfulSMul.algebraMap_injective (𝓞 F) F ((algebraMap F (Fv F v)).injective this)
 
+/- English proof (translation)
+Rewrite using `[psiV, psiV, h]`. Use `congr 1`. Use `Prod.ext (mul_zero _) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap F (Af F) a * singleV F v t = singleV F v _`. Use `DFunLike.ext _ _ fun w => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `algebraMap F (Fv F w) a * singleV F v t w = _`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Establish `e : ∀ y : Fv F w, singleV F w y w = y` using `fun y => RestrictedProduct.single_eq_same _ w y`. Rewrite using `[e, e]`.
+
+Establish `e : ∀ y : Fv F v, singleV F v y w = 0` using `fun y => RestrictedProduct.single_eq_of_ne _ y hw`. Rewrite using `[e, e, mul_zero]`.
+-/
 theorem psiV_of_eq {ψ₀ ψ : AddChar (AF F) ℂ} {a : F}
     (h : ∀ x, ψ x = ψ₀ (algebraMap F (AF F) a * x)) (v : HeightOneSpectrum (𝓞 F)) (t : Fv F v) :
     psiV F ψ v t = psiV F ψ₀ v (algebraMap F (Fv F v) a * t) := by
@@ -135,6 +183,15 @@ theorem psiV_of_eq {ψ₀ ψ : AddChar (AF F) ℂ} {a : F}
       RestrictedProduct.single_eq_of_ne _ y hw
     rw [e, e, mul_zero]
 
+/- English proof (translation)
+Take `⟨δ, hδ, hD⟩` from `exists_generator_differentV v`. Establish `e : dualV F ψ v = colonV v (algebraMap F (Fv F v) a * δ)`. Use extensionality with `t`. Establish `e1 : t ∈ dualV F ψ v ↔ algebraMap F (Fv F v) a * t ∈ dualV F ψ₀ v`. Express the relevant statement in the definitionally equal form `(∀ s ∈ _, _) ↔ (∀ s ∈ _, _)`.
+
+Simplify using `only [psiV_of_eq h, mul_assoc]`. Rewrite using `[e1, h₀, hD, mem_colonV, ← mul_assoc, mul_comm t]`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Conclude with `H δ (Ideal.mem_span_singleton_self δ)`.
+
+Introduce `H d hd`. Take `⟨z, rfl⟩` from `Ideal.mem_span_singleton'.1 hd`. Use `mul_mem H z.2` as an intermediate fact. Express the relevant statement in the definitionally equal form `_ * ((z : Fv F v) * δ) ∈ _`. Rewrite using `[mul_comm (z : Fv F v), ← mul_assoc]` and apply the resulting hypothesis.
+
+Establish `hc : algebraMap F (Fv F v) a * δ ≠ 0` using `mul_ne_zero ((map_ne_zero _).2 ha) hδ`. Rewrite using `[dualIndex, e]`. Use `⟨(index_colonV v _ hc).1, ?_⟩` and prove the remaining obligations. Rewrite using `[(index_colonV v _ hc).2, normDifferentV, hD, card_quot_span v δ hδ, norm_mul, mul_inv, mul_comm]`.
+-/
 theorem dual_scaled {ψ₀ ψ : AddChar (AF F) ℂ} {a : F} (ha : a ≠ 0)
     (h : ∀ x, ψ x = ψ₀ (algebraMap F (AF F) a * x)) (v : HeightOneSpectrum (𝓞 F))
     (h₀ : ∀ t : Fv F v, t ∈ dualV F ψ₀ v ↔
@@ -162,6 +219,11 @@ theorem dual_scaled {ψ₀ ψ : AddChar (AF F) ℂ} {a : F} (ha : a ≠ 0)
   rw [(index_colonV v _ hc).2, normDifferentV, hD, card_quot_span v δ hδ, norm_mul, mul_inv,
     mul_comm]
 
+/- English proof (translation)
+Establish `hc : IsCharAF F (ψ₀.mulShift (algebraMap F (AF F) a))`. Use `⟨h₀.1.1.comp (continuous_const_mul _), fun y => h₀.1.2.1 _, fun b => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[AddChar.mulShift_apply, ← map_mul]`. Conclude with `h₀.1.2.2.1 _`. Take `⟨y, hy⟩` from `h₀.1.2.2.2`.
+
+Use `⟨algebraMap F (AF F) a⁻¹ * y, ?_⟩` and prove the remaining obligations. Rewrite using `[AddChar.mulShift_apply, ← mul_assoc, ← map_mul, mul_inv_cancel₀ ha, map_one, one_mul]` and apply the resulting hypothesis. Establish `hs' : IsScalingInf F (ψ₀.mulShift (algebraMap F (AF F) a)) a` using `isScalingInf_of_eq F h₀ fun _ => rfl`. Rewrite using `[GlobalTheory.StdAdelicChar.eq_of_psiInf_eq hψ hc fun y => (hs y).trans (hs' y).symm]`. Both sides reduce to the same expression.
+-/
 theorem eq_of_isScalingInf {ψ₀ ψ : AddChar (AF F) ℂ} (h₀ : IsStdChar F ψ₀) (hψ : IsCharAF F ψ)
     {a : F} (ha : a ≠ 0) (hs : IsScalingInf F ψ a) (x : AF F) :
     ψ x = ψ₀ (algebraMap F (AF F) a * x) := by
@@ -176,17 +238,28 @@ theorem eq_of_isScalingInf {ψ₀ ψ : AddChar (AF F) ℂ} (h₀ : IsStdChar F �
   rw [GlobalTheory.StdAdelicChar.eq_of_psiInf_eq hψ hc fun y => (hs y).trans (hs' y).symm]
   rfl
 
+/- English proof (translation)
+The claim follows from `(FinitePlace.hasFiniteMulSupport ha).preimage (FinitePlace.equivHeightOneSpectrum (K := F)).symm.injective.injOn`.
+-/
 theorem finite_norm_ne_one {a : F} (ha : a ≠ 0) :
     (Function.mulSupport fun v : HeightOneSpectrum (𝓞 F) =>
       ‖algebraMap F (Fv F v) a‖).Finite :=
   (FinitePlace.hasFiniteMulSupport ha).preimage
     (FinitePlace.equivHeightOneSpectrum (K := F)).symm.injective.injOn
 
+/- English proof (translation)
+Rewrite using `[← prod_abs_eq_one ha, ← finprod_comp_equiv FinitePlace.equivHeightOneSpectrum.symm]`. Both sides reduce to the same expression.
+-/
 theorem absInf_mul_finprod {a : F} (ha : a ≠ 0) :
     absInf F a * ∏ᶠ v : HeightOneSpectrum (𝓞 F), ‖algebraMap F (Fv F v) a‖ = 1 := by
   rw [← prod_abs_eq_one ha, ← finprod_comp_equiv FinitePlace.equivHeightOneSpectrum.symm]
   rfl
 
+/- English proof (translation)
+Use `Summable.of_nonneg_of_le (fun _ => abs_nonneg _) (fun v => ?_) (GlobalTheory.PrimeSquareSum.summable_absNorm_inv_sq F).1` and prove the remaining obligations. Establish `h1 : (1 : ℝ) ≤ (Ideal.absNorm v.asIdeal : ℕ)`. Conclude with `(HeightOneSpectrum.one_lt_absNorm v).le` after adjusting the coercions. Establish `h2 : |etaV F E v| = 1`. Apply the tactic sequence `unfold etaV; split_ifs <;> simp`.
+
+Rewrite using `[eulerInv, sub_sub_cancel_left, abs_neg, abs_mul, abs_pow, h2, one_pow, one_mul, resCard, zpow_neg, zpow_natCast, abs_of_nonneg (by positivity)]`. Conclude with `inv_anti₀ (by positivity) (pow_le_pow_right₀ h1 hM)`.
+-/
 theorem summable_eulerInv (E : Type) [Field E] [Algebra F E] (M : ℕ) (hM : 2 ≤ M) :
     Summable fun v => |eulerInv F E M v - 1| := by
   refine Summable.of_nonneg_of_le (fun _ => abs_nonneg _) (fun v => ?_)
@@ -199,6 +272,25 @@ theorem summable_eulerInv (E : Type) [Field E] [Algebra F E] (M : ℕ) (hM : 2 �
     zpow_neg, zpow_natCast, abs_of_nonneg (by positivity)]
   exact inv_anti₀ (by positivity) (pow_le_pow_right₀ h1 hM)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ hCM hst hU ψ hψ`. Take `⟨ψ₀, h₀, -⟩` from `GlobalTheory.T.existsUnique_isStandardAdeleChar_unramifiedCM_base F E σ hCM hst hU`. Establish `hd` using `GlobalTheory.T.dual_lattice_different_index F E σ hCM hst hU ψ₀ h₀`. Take `⟨hfin, hprod, -⟩` from `GlobalTheory.T.finprod_localDifferentIdealNorm_eq_discr F E σ hCM hst hU`. Use `⟨fun v => ?_, fun a ha hs M hM => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, ha, h⟩` from `GlobalTheory.T.exists_eq_standardAdeleChar_rational_dilate F E σ hCM hst hU ψ₀ h₀ ψ hψ`. Conclude with `(dual_scaled ha h v (hd v).1).1`. Take `⟨hL, hE⟩` from `GlobalTheory.T.hasProd_quadExtLocalEulerFactorInv_inv F E σ hCM hst hU M hM`. Establish `hn : ∀ v, dualIndex F ψ v = normDifferentV F v * ‖algebraMap F (Fv F v) a‖⁻¹` using `fun v => (dual_scaled ha (eq_of_isScalingInf h₀ hψ ha hs) v (hd v).1).2`. Establish `hfa` using `finite_norm_ne_one ha`.
+
+Set `S : Finset (HeightOneSpectrum (𝓞 F))` to `hfin.toFinset ∪ hfa.toFinset`. Establish `hS : ∀ v ∉ S, dualIndex F ψ v = 1` using `fun v hv => by`. Simplify using `only [S, Finset.mem_union, Set.Finite.mem_toFinset, Function.mem_mulSupport, not_or, not_not] at hv`. Rewrite using `[hn, hv.1, hv.2]`. Simplify using the standard rewrite rules.
+
+Establish `hA : 0 < absInf F a` using `Finset.prod_pos fun w _ => pow_pos (InfinitePlace.pos_iff.2 ha) _`. Establish `hD : 0 < absDiscr F` using `abs_pos.2 (by exact_mod_cast discr_ne_zero F)`. Establish `hSp : ∏ v ∈ S, dualIndex F ψ v = absDiscr F * absInf F a`. Establish `e1` using `absInf_mul_finprod ha`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ (s := S) (by`.
+
+Introduce `v hv`. Simplify using `only [S, Finset.coe_union, Set.Finite.coe_toFinset]`. Conclude with `Or.inr hv)] at e1`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ (s := S) (by`. Introduce `v hv`.
+
+Simplify using `only [S, Finset.coe_union, Set.Finite.coe_toFinset]`. Conclude with `Or.inl hv)] at hprod`. Simplify using `only [hn]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_inv_distrib, ← hprod, Nat.cast_prod, inv_eq_of_mul_eq_one_left e1]`. Establish `h1 : HasProd (fun v => dualIndex F ψ v ^ ((1 : ℝ) / 2 - M)) ((absDiscr F * absInf F a) ^ ((1 : ℝ) / 2 - M))`.
+
+Rewrite using `[← hSp, ← Real.finset_prod_rpow _ _ (fun v _ => by rw [hn]; positivity)]`. Conclude with `hasProd_prod_of_ne_finset_one fun v hv => by rw [hS v hv, Real.one_rpow]`. Establish `h2 : HasProd (eulerInv F E M) (Formalism.HermitianLatticesTheory.lValEta E M)⁻¹`. Use `Filter.Tendsto.inv₀ hE hL.ne'` as an intermediate fact. Simplify using `only [Finset.prod_inv_distrib, inv_inv] at this`.
+
+Conclude with `this`. Use `⟨?_, _, by positivity, h1.mul h2, ?_⟩` and prove the remaining obligations. Use `(summable_eulerInv E M hM).congr_cofinite ?_ filter_upwards [S.eventually_cofinite_notMem] with v hv` and prove the remaining obligations. Rewrite using `[localDensity, hS v hv, Real.one_rpow, one_mul]`. Rewrite using `[Real.mul_rpow hD.le hA.le, div_eq_mul_inv _ (Formalism.HermitianLatticesTheory.lValEta E M), ← mul_assoc, mul_left_comm, ← Real.rpow_add hA]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem density_product : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E] (σ : E →ₐ[F] E), IsCMExt F E σ → (∀ x : E, star x = σ x) → Formalism.HermitianLatticesTheory.IsCMUnram E → ∀ ψ, IsCharAF F ψ → (∀ v, (intV F v).relIndex (dualV F ψ v) ≠ 0 ∧ (dualV F ψ v).relIndex (intV F v) ≠ 0) ∧ ∀ a : F, a ≠ 0 → IsScalingInf F ψ a → ∀ M : ℕ, 2 ≤ M → Summable (fun v => |localDensity F E ψ M v - 1|) ∧ ∃ P : ℝ, 0 < P ∧ HasProd (localDensity F E ψ M) P ∧ absInf F a ^ ((M : ℝ) - 1 / 2) * P = absDiscr F ^ ((1 : ℝ) / 2 - M) / Formalism.HermitianLatticesTheory.lValEta E M := by
   intro F E _ _ _ _ _ _ σ hCM hst hU ψ hψ
   obtain ⟨ψ₀, h₀, -⟩ := GlobalTheory.T.existsUnique_isStandardAdeleChar_unramifiedCM_base F E σ hCM hst hU

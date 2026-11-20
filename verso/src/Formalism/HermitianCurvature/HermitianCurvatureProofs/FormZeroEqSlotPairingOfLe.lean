@@ -8,6 +8,9 @@ open scoped ComplexConjugate ComplexOrder
 
 noncomputable section
 
+/- English proof (translation)
+The claim follows from `| [], x, x', y, y', hx, hx' => h x x' y y' hx hx' | _ :: ys, x, x', y, y', hx, hx' => by show KB.pairJ Ξ1 ys _ _ - KB.pairJ Ξ1 ys _ _ = c * (KB.pairJ Ξ2 ys _ _ - KB.pairJ Ξ2 ys _ _) have a1 := pairJ_rel R c Ξ1 Ξ2 h ys (fun e => x (Fin.cons 1 e)) (fun e => x' (Fin.cons 0 e)) (fun …`.
+-/
 theorem pairJ_rel {X Y : Type} {w : List C.Letter} (R : X → Y → Prop) (c : ℂ)
     (Ξ1 : (Ix (Fin w.length) → X) → (Ix (Fin w.length) → X) → ℂ)
     (Ξ2 : (Ix (Fin w.length) → Y) → (Ix (Fin w.length) → Y) → ℂ)
@@ -24,6 +27,11 @@ theorem pairJ_rel {X Y : Type} {w : List C.Letter} (R : X → Y → Prop) (c : �
       (fun e => y (Fin.cons 0 e)) (fun e => y' (Fin.cons 1 e)) (fun e => hx _) (fun e => hx' _)
     exact (congrArg₂ (· - ·) a1 a2).trans (mul_sub _ _ _).symm
 
+/- English proof (translation)
+Proceed by induction on `zs with`. Consider the case `nil => simp`. Consider the case `cons z zs ih`. Establish `hz` using `h z (by simp)`. Take `⟨h1, h2⟩` from `ih fun z' hz' => h z' (by simp [hz'])`.
+
+Simplify using `only [List.prod_cons, List.map_cons, Complex.mul_im, Complex.mul_re, hz, h1, mul_zero, zero_mul, add_zero, sub_zero, h2]`. Conclude with `⟨trivial, trivial⟩`.
+-/
 theorem prod_real (zs : List ℂ) (h : ∀ z ∈ zs, z.im = 0) : zs.prod.im = 0 ∧ zs.prod.re = (zs.map Complex.re).prod := by
   induction zs with
   | nil => simp
@@ -34,6 +42,9 @@ theorem prod_real (zs : List ℂ) (h : ∀ z ∈ zs, z.im = 0) : zs.prod.im = 0 
       add_zero, sub_zero, h2]
     exact ⟨trivial, trivial⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem form_castIx {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
     {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)} (μ : MeasureTheory.Measure (Mt k r))
@@ -42,6 +53,11 @@ theorem form_castIx {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Ty
   subst h
   rfl
 
+/- English proof (translation)
+Unfold `form`. Use `congr 1`. Use function extensionality and compare the values at `c'`. Use `congr 1`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ (Finset.univ.image ι)), Finset.sum_image (fun a _ b _ h => hι h)]`.
+
+Simplify using `only [hι.extend_apply]`. Introduce `z _ hz`. Establish `: ¬ ∃ a, ι a = z` using `fun ⟨a, ha⟩ => hz (Finset.mem_image.2 ⟨a, Finset.mem_univ a, ha⟩)`. Rewrite using `[Function.extend_apply' _ _ _ this, Pi.zero_apply, pairAt_zero_left]`.
+-/
 theorem form_embed {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
     {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)} (μ : MeasureTheory.Measure (Mt k r))
@@ -58,6 +74,11 @@ theorem form_embed {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Typ
     have : ¬ ∃ a, ι a = z := fun ⟨a, ha⟩ => hz (Finset.mem_image.2 ⟨a, Finset.mem_univ a, ha⟩)
     rw [Function.extend_apply' _ _ _ this, Pi.zero_apply, pairAt_zero_left]
 
+/- English proof (translation)
+Unfold `pairS`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ (Finset.univ.image ι)), Finset.sum_image (fun a _ b _ h => hι h)]`. Simplify using `only [hι.extend_apply]`. Introduce `z _ hz`. Establish `: ¬ ∃ a, ι a = z` using `fun ⟨a, ha⟩ => hz (Finset.mem_image.2 ⟨a, Finset.mem_univ a, ha⟩)`.
+
+Rewrite using `[Function.extend_apply' _ _ _ this, Pi.zero_apply, hβ]`.
+-/
 theorem pairS_embed {V : Type} [AddCommGroup V] [Module ℂ V] {S S' : Type} [Fintype S] [DecidableEq S] [Fintype S']
     [DecidableEq S'] (β : V → V → ℂ) (hβ : ∀ v, β 0 v = 0) (ι : Ix S' → Ix S) (hι : Function.Injective ι)
     (x y : Ix S' → V) : pairS β (Function.extend ι x 0) (Function.extend ι y 0) = pairS β x y := by
@@ -70,12 +91,18 @@ theorem pairS_embed {V : Type} [AddCommGroup V] [Module ℂ V] {S S' : Type} [Fi
 
 def ixEmb {m n : ℕ} (h : m ≤ n) (e : Ix (Fin m)) : Ix (Fin n) := fun t => if ht : t.val < m then e ⟨t, ht⟩ else 0
 
+/- English proof (translation)
+Introduce `e e' he`. Use function extensionality and compare the values at `t`. Use `congrFun he ⟨t.val, by omega⟩` as an intermediate fact. Simplify `this` using `[ixEmb, t.isLt]`.
+-/
 theorem ixEmb_inj {m n : ℕ} (h : m ≤ n) : Function.Injective (ixEmb h) := by
   intro e e' he
   funext t
   have := congrFun he ⟨t.val, by omega⟩
   simpa [ixEmb, t.isLt] using this
 
+/- English proof (translation)
+Unfold `bet`. Use `pairLev_smul_left (μ := μ) (i := 0) v v' (fun _ => 1) (-1)` as an intermediate fact. Establish `e : ((-1 : ℂ) • v) = -v` using `neg_one_smul ℂ v`. Rewrite `this` using `[e, neg_one_mul]`. Conclude with `this`.
+-/
 theorem bet_neg {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
     {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)} (μ : MeasureTheory.Measure (Mt k r))
@@ -86,6 +113,9 @@ theorem bet_neg {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} 
   rw [e, neg_one_mul] at this
   exact this
 
+/- English proof (translation)
+Unfold `bet`. Conclude with `pairLev_zero_left v _`.
+-/
 theorem bet_zero {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
     {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)} (μ : MeasureTheory.Measure (Mt k r))
@@ -101,6 +131,13 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   {L : R.LevelData (Pr (RadSp P.k P.r z z' π π')) P.r} {st : Fr.Start (Pr (RadSp P.k P.r z z' π π'))} {l0 : ℕ}
   {K : Fin (P.r + 1) → Submodule ℂ (RadSp P.k P.r z z' π π')}
 
+/- English proof (translation)
+Establish `extK : ∀ v : Ix (Fin m) → RadSp P.k P.r z z' π π', (∀ a, v a ∈ K 0) → ∀ z, Function.extend (ixEmb hmn) v 0 z ∈ K 0`. Introduce `v hv z`. Distinguish the cases in `hz : ∃ a, ixEmb hmn a = z`. Take `⟨a, rfl⟩` from `hz`. Rewrite using `[(ixEmb_inj hmn).extend_apply]`.
+
+Conclude with `hv a`. Rewrite using `[Function.extend_apply' _ _ _ hz]`. Conclude with `(K 0).zero_mem`. Establish `e1` using `form_embed μ (ixEmb hmn) (ixEmb_inj hmn) Y₁ Y₂ 0`. Establish `e2` using `form_zero_eq_position_pairing hThm (Function.extend (ixEmb hmn) Y₁ 0) (Function.extend (ixEmb hmn) Y₂ 0) (extK _ h₁) (extK _ h₂)`.
+
+Establish `e3` using `pairS_embed (V := RadSp P.k P.r z z' π π') (bet μ) (fun v => bet_zero μ v) (ixEmb hmn) (ixEmb_inj hmn) Y₁ Y₂`. Conclude with `e1.symm.trans (e2.trans e3)`.
+-/
 theorem form_zero_eq_position_pairing_of_le (hThm : ThmPOn (S := Fin n) P z z' π π' μ L st K l0) {m : ℕ} (hmn : m ≤ n)
     (Y₁ Y₂ : Ix (Fin m) → RadSp P.k P.r z z' π π') (h₁ : ∀ a, Y₁ a ∈ K 0) (h₂ : ∀ a, Y₂ a ∈ K 0) :
     form μ 0 Y₁ Y₂ 0 = pairS (bet μ) Y₁ Y₂ := by
@@ -119,6 +156,13 @@ theorem form_zero_eq_position_pairing_of_le (hThm : ThmPOn (S := Fin n) P z z' �
 
 end EmbData
 
+/- English proof (translation)
+Take `⟨hQi, hQr⟩` from `prod_real qs fun z hz => (hqs z hz).2`. Establish `hpos : 0 < (qs.map Complex.re).prod` using `List.prod_pos fun x hx => by`. Take `⟨z, hz, rfl⟩` from `List.mem_map.1 hx`. Conclude with `(hqs z hz).1`. Establish `eA : A = (A.re : ℂ)` using `Complex.ext (by simp) (by simp [hAi])`.
+
+Establish `eB : B = (B.re : ℂ)` using `Complex.ext (by simp) (by simp [hBi])`. Establish `eQ : Q = ((qs.map Complex.re).prod : ℂ)`. Rewrite using `[hQ]; exact Complex.ext (by simp [hQr]) (by simp [hQi])`. Establish `h1 : (A * B / Q).re = A.re * B.re / (qs.map Complex.re).prod`. Rewrite using `[eA, eB, eQ, ← Complex.ofReal_mul, ← Complex.ofReal_div, Complex.ofReal_re]`.
+
+Simplify using the standard rewrite rules. Rewrite `hdk` using `[h1, le_div_iff₀ hpos]`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, Complex.re_ofReal_mul, Complex.re_ofReal_mul, mul_pow, sq_abs]`. Use polynomial arithmetic with `[sq_nonneg Cst]`.
+-/
 theorem final_ineq (Cst : ℝ) (A B P0 Q : ℂ) (qs : List ℂ) (hQ : Q = qs.prod)
     (hqs : ∀ z ∈ qs, 0 < z.re ∧ z.im = 0) (hAi : A.im = 0) (hBi : B.im = 0) (hdk : ‖P0‖ ^ 2 ≤ (A * B / Q).re) :
     ‖(Cst : ℂ) * P0‖ ^ 2 * (qs.map Complex.re).prod ≤ ((Cst : ℂ) * A).re * ((Cst : ℂ) * B).re := by
@@ -137,10 +181,16 @@ theorem final_ineq (Cst : ℝ) (A B P0 Q : ℂ) (qs : List ℂ) (hQ : Q = qs.pro
   rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, Complex.re_ofReal_mul, Complex.re_ofReal_mul, mul_pow, sq_abs]
   nlinarith [sq_nonneg Cst]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[castL_rfl]` and apply the resulting hypothesis.
+-/
 theorem cast_map_pred {n m : ℕ} (h : n = m) (Q : ∀ k, List (Letter ℂ (Fin k)) → Prop) (u : List (Letter ℂ (Fin n)))
     (hu : Q n u) : Q m (u.map (castL h)) := by
   subst h; rwa [castL_rfl]
 
+/- English proof (translation)
+Apply `List.ext_getElem` to reduce the goal to its premises. Simplify using `[Lw_length]`. Introduce `i h1 h2`. Rewrite using `[List.getElem_map, List.getElem_map, Lw_getElem, qw_Ww]`.
+-/
 theorem Lw_qw (q : ℂ → ℂ) (ys : List ℝ) (w : List C.Letter) :
     ((Lw ys w).map fun l => qw q (Ww ys w) l.pt) = ys.map fun y : ℝ => qw q (D.positionted w) (y : ℂ) := by
   apply List.ext_getElem
@@ -148,6 +198,49 @@ theorem Lw_qw (q : ℂ → ℂ) (ys : List ℝ) (w : List C.Letter) :
   · intro i h1 h2
     rw [List.getElem_map, List.getElem_map, Lw_getElem, qw_Ww]
 
+/- English proof (translation)
+Introduce `hP Wp Wq _ _ _ _ _ _ P p j hj w ys hc1 hc2 hys`. Establish `hOK : P.OK` using `p.hP.1`. Take `⟨hl1, hlk, -⟩` from `p.hl`. Establish `hqpos` using `qw_pos P hOK p.l0 hl1 hlk w ys hc1 hc2`. Use `⟨fun y hy => (hqpos y hy).1, ?_⟩` and prove the remaining obligations.
+
+Introduce `x x' ε hε hx hx'`. Set `jF : Fin (P.r + 1)` to `⟨j, by omega⟩`. Establish `hPl` using `Formalism.FourierDecayAlt.P.JCTx5.isPlace_lev P p.T jF p.hP`. Take `⟨X⟩` from `Formalism.FourierDecayAlt.P.actual_operators_exist _ _ _ _ _ _ _ hPl`. Take `⟨L, st, h1, h2, h3, h4, h5, h6⟩` from `Formalism.FourierDecayAlt.P.level_start_actual _ _ _ _ _ _ _ hPl X p.l0`.
+
+Take `⟨μ0, hμ0⟩` from `Formalism.FourierDecayAlt.P.JCTx5.exists_haar_level_zero (Nat.sub_self P.r) (p.T.bs P.r)`. Use `set μ := μ0.map (Formalism.FourierDecayAlt.P.JCTx5.embL P.k (P.r - j)) with hμ`. Establish `hD : IsData (JC.parLev P jF) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' X μ L st p.l0` using `⟨hPl, Formalism.FourierDecayAlt.P.JCTx5.haar_glev μ0 hμ0, h1, h2, h3, h4, h5, h6⟩`. Take `⟨K, hThm, -, -, hJ⟩` from `hP Wp Wq (Fin (KB.plusW ys w).length) (JC.parLev P jF) _ _ _ _ X μ L st p.l0 (p.T.bs jF) _ _ hD hl1 hlk rfl rfl rfl rfl le_rfl le_rfl`. Take `⟨Cst, hC, hform⟩` from `Formalism.FourierDecayAlt.P.radial_module_form Wp Wq P p.T jF X μ L st p.l0 hD`.
+
+Establish `hJ' : PicsIn p.T jF (K 0)` using `hJ`. Use `choose Φ hΦK hΦ using fun a => hJ (x a) ε hε (hx a).2.1 (hx a).2.2`. Use `choose Φ' hΦ'K hΦ' using fun a => hJ (x' a) ε hε (hx' a).2.1 (hx' a).2.2`. Set `Pts : Set ℝ` to `{Y | (∃ l ∈ KB.plusW ys w, l.2 = Y) ∨ (∃ l ∈ KB.minusW ys w, l.2 = Y)}`. Establish `hW1` using `Formalism.FourierDecayAlt.P.JCTx5.wordOK_of (JC.parLev P jF) _ _ _ _ st p.l0 hPl.1 hl1 hlk h3 h4 (KB.plusW ys w) hc1.1 hc1.2`.
+
+Establish `hW2` using `Formalism.FourierDecayAlt.P.JCTx5.wordOK_of (JC.parLev P jF) _ _ _ _ st p.l0 hPl.1 hl1 hlk h3 h4 (KB.minusW ys w) hc2.1 hc2.2`. Establish `hPts : ∀ Y ∈ Pts, ∃ s0 : Fin (KB.plusW ys w).length, WordOK (JC.parLev P jF) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' st p.l0 [(⟨true, s0, (Y : ℂ)⟩ : Letter ℂ (Fin (KB.plusW ys w).length))]`. Introduce `Y hY`. Establish `hn : 0 < (KB.plusW ys w).length ∧ I.OnCut P.u P.u' p.l0 Y`. Break down `hY with ⟨l, hl, rfl⟩ | ⟨l, hl, rfl⟩` into its components or cases.
+
+Conclude with `⟨List.length_pos_of_mem hl, cutWord_mem P hc1 hl⟩`. Conclude with `⟨by rw [← len_pm]; exact List.length_pos_of_mem hl, cutWord_mem P hc2 hl⟩`. Use `⟨⟨0, hn.1⟩, wordOK_gen (JC.parLev P jF) _ _ _ _ st p.l0 hPl.1 hl1 hlk h3 h4 _ (by simp) (fun l hl => ⟨Y, by simp at hl; rw [hl], hn.2⟩) (by simp)⟩` and prove the remaining obligations. Establish `hΦU : ∀ e, Φ e ∈ Ucls (K 0) (Gen L st Pts)` using `fun e => pic_mem_Ucls hD hJ' Pts hε (hx e) (Φ e) (hΦ e)`. Establish `hΦ'U : ∀ e, Φ' e ∈ Ucls (K 0) (Gen L st Pts)` using `fun e => pic_mem_Ucls hD hJ' Pts hε (hx' e) (Φ' e) (hΦ' e)`.
+
+Establish `hS` using `isStart_QQi _ _ _ _ _ X μ L st p.l0 hD 0`. Establish `hle` using `Ucls_le (K 0) (Gen L st Pts)`. Establish `hU` using `(sesquilinear_level_zero_pairing hThm).mono hle`. Establish `hP1 : ∀ l ∈ Lw ys w ++ Ww ys w, ∃ Y ∈ Pts, l.pt = (Y : ℂ)`. Introduce `l hl`.
+
+Rewrite `hl` using `[Lw_append_Ww]`. Unfold `D.positionted at hl`. Take `⟨a, rfl⟩` from `List.mem_ofFn.1 hl`. Conclude with `⟨((KB.plusW ys w).get a).2, Or.inl ⟨_, List.get_mem _ _, rfl⟩, rfl⟩`. Establish `hLmem : ∀ l ∈ Lw ys w, ∃ y ∈ ys, l.pt = (y : ℂ)`.
+
+Introduce `l hl`. Take `⟨i, hi, rfl⟩` from `List.getElem_of_mem hl`. Rewrite using `[Lw_getElem]`. Conclude with `⟨_, List.getElem_mem _, rfl⟩`. Establish `hP2 : ∀ l ∈ Lw ys w, ∃ Y ∈ Pts, l.pt + 1 = (Y : ℂ)`.
+
+Introduce `l hl`. Take `⟨y, hy, e⟩` from `hLmem l hl`. Use `⟨y + 1, Or.inr ⟨(false, y + 1), ?_, rfl⟩, by rw [e]; push_cast; ring⟩` and prove the remaining obligations. Rewrite using `[minusW_eq]`. Conclude with `List.mem_append_left _ (List.mem_map.2 ⟨y, hy, rfl⟩)`.
+
+Establish `hOK1 : WordOK (JC.parLev P jF) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' st p.l0 (Lw ys w ++ Ww ys w)` using `by rw [Lw_append_Ww]; exact hW1`. Establish `hOK2 : WordOK (JC.parLev P jF) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' st p.l0 ((Lw ys w).map dl ++ Ww ys w)`. Rewrite using `[Lw_dual]`. Conclude with `cast_map_pred (len_pm ys w) (fun k u => WordOK (JC.parLev P jF) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' st p.l0 u) _ hW2`. Establish `hDK : FormPairingAction.DKHyp (M.qC (JC.parLev P jF)) (Ww ys w) (Lw ys w)`.
+
+Use `⟨Lw_plus ys w, good_of_adm st _ hOK1.1, good_of_adm st _ hOK2.1, Lw_pairwise w ys hys, ?_⟩` and prove the remaining obligations. Introduce `l hl`. Take `⟨y, hy, e⟩` from `hLmem l hl`. Rewrite using `[e, qw_Ww]`. Introduce `h0`.
+
+Use `(hqpos y hy).1` as an intermediate fact. Rewrite `this` using `[show qw (M.qC P) (D.positionted w) (y : ℂ) = qw (M.qC (JC.parLev P jF)) (D.positionted w) (y : ℂ) from rfl, h0]`. Simplify using `at this`. Establish `dk` using `dk_radial hD hThm Pts hPts (Ww ys w) (Lw ys w) hDK hOK1 hOK2 hP1 hP2 Φ (fun z => Φ' (z ∘ Fin.cast (len_pm ys w))) hΦU (fun e => hΦ'U _)`. Establish `hRRw : RRw (QQi L st 0) (D.positionted w) ∈ entSub (adjB (Ucls (K 0) (Gen L st Pts)) (bet μ) hU)`.
+
+Use `rrw_mem_at _ _ fun l hl a b => ?_` and prove the remaining obligations. Unfold `D.positionted at hl`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hl`. Use `gen_mem_adjB hThm hS Pts hPts ⟨(w.get i).2, Or.inl ⟨w.get i, ?_, rfl⟩, a, b, rfl⟩` and prove the remaining obligations. Rewrite using `[plusW_eq]`.
+
+Conclude with `List.mem_append_right _ (List.get_mem _ _)`. Establish `hodd` using `bet_neg (k := (JC.parLev P jF).k) (r := (JC.parLev P jF).r) (z := (p.T.bs jF).z) (z' := (p.T.bs jF).z') (π := (p.T.bs jF).π) (π' := (p.T.bs jF).π') μ`. Establish `hmn : w.length ≤ (KB.plusW ys w).length` using `by rw [len_plusW]; omega`. Establish `ePlus` using `hform (KB.plusW ys w) x x Φ Φ ε hε hx hx hΦ hΦ`. Establish `eMinus` using `hform (KB.minusW ys w) x' x' Φ' Φ' ε hε hx' hx' hΦ' hΦ'`.
+
+Establish `ePJ` using `pairJ_rel (w := w) (fun F Ψ => JC.NiceCoef (p.T.bs jF) ε F ∧ IsPic p.T jF Ψ F) (Cst : ℂ) (p.form j hj w) (fun u u' => form μ 0 (P5.act (RRi L st 0 (D.positionted w)) u) u' 0) (fun u u' v v' hu hu' => hform w u u' v v' ε hε (fun e => (hu e).1) (fun e => (hu' e).1) (fun e => (hu e) …`. Establish `eXi` using `pairJ_rel (w := w) (fun a b => a = b ∧ a ∈ Ucls (K 0) (Gen L st Pts)) (1 : ℂ) (fun u u' => form μ 0 (P5.act (RRi L st 0 (D.positionted w)) u) u' 0) (fun x x' => ∑ e, bet μ (actP (RRw (QQi L st 0) (D.positionted w)) x e) (x' e)) (fun u u' v v' hu hu' => by`. Establish `e1 : u = v` using `funext fun e => (hu e).1`. Establish `e2 : u' = v'` using `funext fun e => (hu' e).1`. Substitute `e1 e2` using the available equality.
+
+Rewrite using `[one_mul]`. Establish `hin : InU (Ucls (K 0) (Gen L st Pts)) (actP (RRw (QQi L st 0) (D.positionted w)) u)` using `blockMulVec_apply_mem (fun a b x hx => (hRRw a b).1 x hx) (fun e => (hu e).2)`. Conclude with `form_zero_eq_position_pairing_of_le hThm hmn _ _ (fun a => hle (hin a)) (fun a => hle (hu' a).2))`. Use `ys Φ Φ' Φ Φ' (fun e => ⟨rfl, hΦU e⟩) (fun e => ⟨rfl, hΦ'U e⟩)`. Establish `ePosition` using `position_pair (V := RadSp (JC.parLev P jF).k (JC.parLev P jF).r (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π') (bet μ) hodd (QQi L st 0) w ys Φ Φ'`.
+
+Establish `eA : form μ 0 (P5.act (RRi L st 0 (Lw ys w ++ Ww ys w)) Φ) Φ 0 = form μ 0 (P5.act (RRi L st 0 (D.positionted (KB.plusW ys w))) Φ) Φ 0` using `by rw [Lw_append_Ww]`. Establish `eB : form μ 0 (P5.act (RRi L st 0 ((Lw ys w).map dl ++ Ww ys w)) (fun z => Φ' (z ∘ Fin.cast (len_pm ys w)))) (fun z => Φ' (z ∘ Fin.cast (len_pm ys w))) 0 = form μ 0 (P5.act (RRi L st 0 (D.positionted (KB.minusW ys w))) Φ') Φ' 0`. Rewrite using `[Lw_dual]`. Use `show form μ 0 (actP (RRw (QQi L st 0) ((D.positionted (KB.minusW ys w)).map (castL (len_pm ys w)))) (fun z => Φ' (z ∘ Fin.cast (len_pm ys w)))) (fun z => Φ' (z ∘ Fin.cast (len_pm ys w))) 0 = _`. Establish `hc` using `blockMulVec_cast (QQi L st 0) (len_pm ys w) (D.positionted (KB.minusW ys w)) Φ'`.
+
+Conclude with `(congrArg (fun V => form μ 0 V (fun z => Φ' (z ∘ Fin.cast (len_pm ys w))) 0) hc).trans (form_castIx μ (len_pm ys w) _ _ 0)`. Take `⟨hAi, -, hBi, -, hdk⟩` from `dk`. Establish `ePlus' : p.form j hj (KB.plusW ys w) x x = (Cst : ℂ) * form μ 0 (P5.act (RRi L st 0 (Lw ys w ++ Ww ys w)) Φ) Φ 0` using `ePlus.trans (congrArg _ eA.symm)`. Establish `eMinus' : p.form j hj (KB.minusW ys w) x' x' = (Cst : ℂ) * form μ 0 (P5.act (RRi L st 0 ((Lw ys w).map dl ++ Ww ys w)) (fun z => Φ' (z ∘ Fin.cast (len_pm ys w)))) (fun z => Φ' (z ∘ Fin.cast (len_pm ys w))) 0` using `eMinus.trans (congrArg _ eB.symm)`. Establish `hPJ : KB.pairJ (p.form j hj w) ys x x' = (Cst : ℂ) * pairS (bet μ) (actP (JL (Lw ys w) * RRw (QQi L st 0) (Ww ys w)) Φ) (fun z => Φ' (z ∘ Fin.cast (len_pm ys w)))` using `ePJ.trans (congrArg (fun t => (Cst : ℂ) * t) (eXi.trans ((one_mul _).trans ePosition.symm)))`.
+
+Establish `hQ : ((Lw ys w).map fun l => qw (M.qC (JC.parLev P jF)) (Ww ys w) l.pt).prod = (ys.map fun y : ℝ => qw (M.qC P) (D.positionted w) (y : ℂ)).prod` using `congrArg List.prod (Lw_qw _ ys w)`. Establish `hre : (ys.map fun y : ℝ => (qw (M.qC P) (D.positionted w) (y : ℂ)).re) = (ys.map fun y : ℝ => qw (M.qC P) (D.positionted w) (y : ℂ)).map Complex.re`. Rewrite using `[List.map_map]`. Both sides reduce to the same expression. Rewrite using `[hPJ, ePlus', eMinus', hre]`.
+
+Use `final_ineq Cst _ _ _ _ _ hQ (fun z hz => ?_) hAi hBi hdk` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hz`. Conclude with `hqpos y hy`.
+-/
 theorem pb_sizeStd_main : Formalism.FourierDecayAlt.KB.SizeStd := by
   intro hP Wp Wq _ _ _ _ _ _ P p j hj w ys hc1 hc2 hys
   have hOK : P.OK := p.hP.1
@@ -296,6 +389,9 @@ end Formalism.FourierDecayAlt.P.PBF
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `PBF.pb_sizeStd_main`.
+-/
 theorem list_duality_level_group : Formalism.FourierDecayAlt.KB.SizeStd := PBF.pb_sizeStd_main
 
 end Formalism.FourierDecayAlt.P

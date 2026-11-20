@@ -10,6 +10,9 @@ namespace GlobalTheory.CompanionTheory.DSCoreSub
 
 variable {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `| 0, _, _, _, x => by simp | t + 1, f', f, h, x => by rw [List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, Module.End.mul_apply, Module.End.mul_apply, h, ofFn_prod_intertwine φ _ (fun k => f k.succ) (fun k => h k.succ)]`.
+-/
 theorem ofFn_prod_intertwine (φ : V' →ₗ[ℂ] V) :
     ∀ {t : ℕ} (f' : Fin t → Module.End ℂ V') (f : Fin t → Module.End ℂ V),
       (∀ k x, φ (f' k x) = f k (φ x)) → ∀ x, φ ((List.ofFn f').prod x) = (List.ofFn f).prod (φ x)
@@ -18,6 +21,11 @@ theorem ofFn_prod_intertwine (φ : V' →ₗ[ℂ] V) :
     rw [List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, Module.End.mul_apply,
       Module.End.mul_apply, h, ofFn_prod_intertwine φ _ (fun k => f k.succ) (fun k => h k.succ)]
 
+/- English proof (translation)
+Unfold `qdet qminor`. Simplify using `only [LinearMap.sum_apply, map_sum, Module.End.mul_apply, Module.End.intCast_apply, map_zsmul]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `ofFn_prod_intertwine φ _ _ (fun k y => ?_) x` and prove the remaining obligations.
+
+Unfold `Tm`. Apply the tactic sequence `split_ifs <;> simp [h, Module.algebraMap_end_apply]`.
+-/
 theorem qdet_intertwine (φ : V' →ₗ[ℂ] V) (E' : Fin n → Fin n → Module.End ℂ V')
     (E : Fin n → Fin n → Module.End ℂ V) (h : ∀ a b x, φ (E' a b x) = E a b (φ x)) (u : ℂ) (x : V') :
     φ (qdet E' u x) = qdet E u (φ x) := by
@@ -29,6 +37,15 @@ theorem qdet_intertwine (φ : V' →ₗ[ℂ] V) (E' : Fin n → Fin n → Module
   unfold Tm
   split_ifs <;> simp [h, Module.algebraMap_end_apply]
 
+/- English proof (translation)
+Introduce `hA n ε lam V _ _ E V₀ v S hlam hgl hun hst hS hv hfd hK hvS hmin Y`. Set `E' : Fin n → Fin n → Module.End ℂ V₀` to `fun a b => (E a b).restrict (hst a b)`. Establish `hE : ∀ a b (x : V₀), ((E' a b x : V₀) : V) = E a b x` using `fun a b x => rfl`. Establish `hhi : ∀ (μ : Fin n → ℝ) (x : V₀), KHighest ε E' μ x ↔ KHighest ε E μ (x : V)`. Introduce `μ x`.
+
+Unfold `KHighest IsWeight`. Simplify using `only [Subtype.ext_iff, hE, Submodule.coe_smul, Submodule.coe_zero]`. Establish `hgl' : GlRel E'`. Introduce `a b c d`. Use extensionality with `x`.
+
+Use `LinearMap.congr_fun (hgl a b c d) (x : V)` as an intermediate fact. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Submodule.coe_sub, hE] at this ⊢`. Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp [hE]`. Establish `hun' : IsUnitary ε E'` using `fun a b x y => hun a b x y`.
+
+Use `haveI : FiniteDimensional ℂ (S.comap V₀.subtype) := (Submodule.comapSubtypeEquivOfLe hS).symm.finiteDimensional`. Establish `key` using `hA n ε lam V₀ E' ⟨v, hS hvS⟩ (S.comap V₀.subtype) hlam hgl' hun' ((hhi _ _).2 hv) inferInstance (fun a b hab x hx => hK a b hab x hx) hvS (fun μ x hx hμ => hmin μ x x.2 (fun h0 => hx (Subtype.ext h0)) ((hhi μ x).1 hμ)) Y`. Establish `h2` using `qdet_intertwine V₀.subtype E' E hE (Y + ((n : ℂ) - 1) / 2) ⟨v, hS hvS⟩`. Rewrite `h2` using `[key]`. Simplify using `using h2.symm`.
+-/
 theorem algCoreSub_of_algCore : AlgCore → AlgCoreSub := by
   intro hA n ε lam V _ _ E V₀ v S hlam hgl hun hst hS hv hfd hK hvS hmin Y
   let E' : Fin n → Fin n → Module.End ℂ V₀ := fun a b => (E a b).restrict (hst a b)

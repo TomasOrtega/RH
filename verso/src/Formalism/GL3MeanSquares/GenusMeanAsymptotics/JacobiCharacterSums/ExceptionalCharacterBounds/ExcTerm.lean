@@ -4,6 +4,15 @@ noncomputable section
 
 namespace Formalism.HermitianLattices.Ext.SupplyAP
 
+/- English proof (translation)
+Establish `hβpos : 0 < β` using `by linarith`. Establish `hsplit : x ^ β = x * x ^ (β - 1)`. Rewrite using `[Real.rpow_sub hx, Real.rpow_one]`. Clear the denominators using the available nonvanishing facts. Establish `hy0 : 0 ≤ x ^ (β - 1)` using `Real.rpow_nonneg hx.le _`.
+
+Establish `hyE : x ^ (β - 1) * Real.exp (4 * (1 - β)) ≤ 1`. Rewrite using `[Real.rpow_def_of_pos hx, ← Real.exp_add]`. Establish `hneg : Real.log x * (β - 1) + 4 * (1 - β) ≤ 0` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation. Establish `hE` using `Real.add_one_le_exp (4 * (1 - β))`.
+
+Establish `hPpos : 0 ≤ β * (1 - (1 - β) / 2)` using `mul_nonneg hβpos.le (by linarith)`. Establish `hP : 1 ≤ (4 * (1 - β) + 1) * (β * (1 - (1 - β) / 2))`. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg (sub_nonneg.2 hβ2) (sub_nonneg.2 hβ1)) (by linarith : (0:ℝ) ≤ 5 / 2 + 2 * β), sub_nonneg.2 hβ2]`. Establish `hEP : 1 ≤ Real.exp (4 * (1 - β)) * (β * (1 - (1 - β) / 2))` using `le_trans hP (mul_le_mul_of_nonneg_right hE hPpos)`. Establish `hyP : x ^ (β - 1) ≤ β * (1 - (1 - β) / 2)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsplit, div_le_iff₀ hβpos]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem excTerm (x β : ℝ) (hx : 0 < x) (hL : 4 ≤ Real.log x) (hβ1 : 1 / 2 ≤ β) (hβ2 : β ≤ 1) :
     x ^ β / β ≤ x * (1 - (1 - β) / 2) := by
   have hβpos : 0 < β := by linarith
@@ -34,6 +43,9 @@ theorem excTerm (x β : ℝ) (hx : 0 < x) (hL : 4 ≤ Real.log x) (hβ1 : 1 / 2 
   calc x * x ^ (β - 1) ≤ x * (β * (1 - (1 - β) / 2)) := mul_le_mul_of_nonneg_left hyP hx.le
     _ = x * (1 - (1 - β) / 2) * β := by ring
 
+/- English proof (translation)
+Rewrite using `[Complex.ofReal_div, Complex.ofReal_cpow hx]`.
+-/
 theorem excTerm_ofReal (x β : ℝ) (hx : 0 ≤ x) :
     (x : ℂ) ^ (β : ℂ) / (β : ℂ) = ((x ^ β / β : ℝ) : ℂ) := by
   rw [Complex.ofReal_div, Complex.ofReal_cpow hx]

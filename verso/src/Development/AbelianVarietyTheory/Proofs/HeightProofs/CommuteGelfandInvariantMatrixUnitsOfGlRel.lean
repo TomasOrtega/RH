@@ -10,11 +10,19 @@ section GelfandCentral
 
 variable {A : Type} [Ring A] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[← Fintype.sum_prod_type']`. Conclude with `((Fin.consEquiv fun _ : Fin (k + 1) => Fin n).sum_comp f).symm`.
+-/
 theorem sum_fin_succ_fun_cons {M : Type} [AddCommMonoid M] (k : ℕ) (f : (Fin (k + 1) → Fin n) → M) :
     ∑ idx, f idx = ∑ c : Fin n, ∑ idx : Fin k → Fin n, f (Fin.cons c idx) := by
   rw [← Fintype.sum_prod_type']
   exact ((Fin.consEquiv fun _ : Fin (k + 1) => Fin n).sum_comp f).symm
 
+/- English proof (translation)
+Proceed by induction on `k generalizing c with`. Consider the case `zero => simp [Fin.snoc]`. Consider the case `succ k ih`. Rewrite using `[pow_succ', Matrix.mul_apply, sum_fin_succ_fun_cons]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[ih, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun idx _ => ?_` and prove the remaining obligations. Rewrite using `[List.ofFn_succ (n := k + 1), List.prod_cons, ← Fin.cons_snoc_eq_snoc_cons]`. Simplify using the standard rewrite rules.
+-/
 theorem pow_of_apply_eq_sum_paths (E : Fin n → Fin n → A) (k : ℕ) (c e : Fin n) :
     (Matrix.of E ^ (k + 1)) c e = ∑ idx : Fin k → Fin n, (List.ofFn fun a : Fin (k + 1) =>
       E ((Fin.cons c idx : Fin (k + 1) → Fin n) a) ((Fin.snoc idx e : Fin (k + 1) → Fin n) a)).prod := by
@@ -28,6 +36,13 @@ theorem pow_of_apply_eq_sum_paths (E : Fin n → Fin n → A) (k : ℕ) (c e : F
     rw [List.ofFn_succ (n := k + 1), List.prod_cons, ← Fin.cons_snoc_eq_snoc_cons]
     simp
 
+/- English proof (translation)
+Rewrite using `[gelfA, sum_fin_succ_fun_cons]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[pow_of_apply_eq_sum_paths]`. Use `Finset.sum_congr rfl fun idx _ => ?_` and prove the remaining obligations. Use `congr 2`.
+
+Use function extensionality and compare the values at `a`. Use `congr 1`. Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[Fin.coeSucc_eq_succ]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem gelfA_eq_sum_pow (E : Fin n → Fin n → A) (k : ℕ) :
     gelfA E k = ∑ c, (Matrix.of E ^ (k + 1)) c c := by
   rw [gelfA, sum_fin_succ_fun_cons]
@@ -41,6 +56,11 @@ theorem gelfA_eq_sum_pow (E : Fin n → Fin n → A) (k : ℕ) :
   · simp
   · rw [Fin.coeSucc_eq_succ]; simp
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.PowEntryCommutator.target`. Consider the case `exact _root_.GlobalTheory.PowEntryCommutator.target`. Consider the case `(apply _root_.GlobalTheory.PowEntryCommutator.target <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.PowEntryCommutator.target <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.PowEntryCommutator.target <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.PowEntryCommutator.target ..)`.
+-/
 theorem comm_pow_of_apply (E : Fin n → Fin n → A) (hE : Formalism.REAL.GlRel E) (a b : Fin n) (m : ℕ)
     (c e : Fin n) : E a b * (Matrix.of E ^ m) c e - (Matrix.of E ^ m) c e * E a b =
       (if b = c then (Matrix.of E ^ m) a e else 0) - (if e = a then (Matrix.of E ^ m) c b else 0) := by
@@ -54,6 +74,9 @@ theorem comm_pow_of_apply (E : Fin n → Fin n → A) (hE : Formalism.REAL.GlRel
 
 end GelfandCentral
 
+/- English proof (translation)
+Introduce `A _ _ n E hE k a b`. Rewrite using `[← sub_eq_zero, gelfA_eq_sum_pow, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]`. Simplify using `only [comm_pow_of_apply E hE, Finset.sum_sub_distrib, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, sub_self]`.
+-/
 theorem commute_gelfA : ∀ (A : Type) [Ring A] [Algebra ℂ A] (n : ℕ) (E : Fin n → Fin n → A), Formalism.REAL.GlRel E → ∀ (k : ℕ) (a b : Fin n), E a b * gelfA E k = gelfA E k * E a b := by
   intro A _ _ n E hE k a b
   rw [← sub_eq_zero, gelfA_eq_sum_pow, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]

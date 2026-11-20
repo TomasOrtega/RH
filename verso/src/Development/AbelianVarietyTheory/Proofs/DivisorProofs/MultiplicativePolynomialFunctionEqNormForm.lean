@@ -11,6 +11,29 @@ namespace GlobalTheory.MulPolyNorm
 
 open Polynomial GlobalTheory.PolyNorm
 
+/- English proof (translation)
+Introduce `Ω _ _ _ d δ P hm hΦ0 hP hPd hPe`. Use `choose Φ hh hΦ using fun r : ℕ => hΦ0 r (fun i : Fin r => (X : ℤ[X]) ^ (i : ℕ))`. Establish `hN : ∀ r (F : ℤ[X]), F.natDegree < r → δ F = ev (Φ r) (F.map (Int.castRingHom ℚ))`. Introduce `r F hF`. Use `hΦ r fun i => F.coeff i` as an intermediate fact.
+
+Establish `e : ∑ i : Fin r, F.coeff i • (X : ℤ[X]) ^ (i : ℕ) = F` using `by conv_rhs => rw [← gen_coeff F hF]`. Unfold `gen`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_C_mul, C_mul_X_pow_eq_monomial]`. Rewrite `this` using `[e]`.
+
+Rewrite using `[← this]`. Simplify using `[ev, MvPolynomial.aeval_eq_eval]`. Establish `h11 : δ 1 = δ 1 * δ 1` using `by rw [← hm, _root_.one_mul]`. Establish `h1 : δ 1 = 1`. Assume the negation of the conclusion as `hne`.
+
+Establish `h0 : δ 1 = 0`. Establish `: δ 1 * (δ 1 - 1) = 0` using `by rw [mul_sub, ← h11]; ring`. Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (sub_eq_zero.1 h) hne`.
+
+Establish `hP0 : P = 0`. Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Use `Set.Infinite.mono (s := Set.range (Int.cast : ℤ → ℚ)) ?_ (Set.infinite_range_of_injective Int.cast_injective)` and prove the remaining obligations. Introduce and unpack `_ ⟨n, rfl⟩`. Simplify using `only [Set.mem_setOf_eq, IsRoot.def]`.
+
+Rewrite using `[hPe, ← _root_.one_mul (C n - Polynomial.X : ℤ[X]), hm, h0, zero_mul]`. Conclude with `hP.ne_zero hP0`. Take `⟨M, hM⟩` from `exists_ext δ Φ hN h1 hm Ω`. Establish `hPP : ev (Φ 2) (C Polynomial.X - Polynomial.X : ℚ[X][X]) = P`. Apply `Polynomial.eq_of_infinite_eval_eq` to reduce the goal to its premises.
+
+Use `Set.Infinite.mono (s := Set.range (Int.cast : ℤ → ℚ)) ?_ (Set.infinite_range_of_injective Int.cast_injective)` and prove the remaining obligations. Introduce and unpack `_ ⟨n, rfl⟩`. Simplify using `only [Set.mem_setOf_eq]`. Rewrite using `[hPe, hN 2 _ (lt_of_le_of_lt (natDegree_sub_le _ _) (by simp)), ← coe_evalRingHom, ev_map]`. Use `congr 1`.
+
+Simplify using the standard rewrite rules. Establish `ha : P.map (algebraMap ℚ Ω) = ((P.aroots Ω).map fun x => Polynomial.X - C x).prod` using `(prod_multiset_X_sub_C_of_monic_of_roots_card_eq (hP.map _) IsAlgClosed.card_roots_eq_natDegree).symm`. Establish `hac : Multiset.card (P.aroots Ω) = 2 * d`. Rewrite using `[aroots_def, IsAlgClosed.card_roots_eq_natDegree, hP.natDegree_map, hPd]`. Establish `hMa : ∀ F, M F = ((P.aroots Ω).map fun x => F.eval x).prod`.
+
+Use `eq_prod_of_mul M (P.aroots Ω) (fun c => ?_) (fun β => ?_)` and prove the remaining obligations. Rewrite using `[hM 1 _ (by simp), ← _root_.mul_one (C c), ev_homog (hh 1), ev_one δ Φ hN h1, _root_.mul_one, hac]`. Use `congrArg (eval β) ha` as an intermediate fact. Rewrite `this` using `[Polynomial.eval_multiset_prod, Multiset.map_map, Polynomial.eval_map, ← coe_eval₂RingHom, ← hPP, ev_map, hPP]`. Rewrite using `[hM 2]`.
+
+Simplify using `using this`. Conclude with `lt_of_le_of_lt (natDegree_sub_le _ _) (by simp)`. Introduce `F`. Use `hMa (F.map (algebraMap ℤ Ω))` as an intermediate fact. Simplify using `only [eval_map_algebraMap] at this`.
+
+Rewrite using `[← this, hM (F.natDegree + 1) _ (Nat.lt_succ_of_le natDegree_map_le), hN _ F (Nat.lt_succ_self _), ev_map, Polynomial.map_map]`. Use `congr 2`. Conclude with `RingHom.ext_int _ _`.
+-/
 theorem eq_prod_aroots : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra ℚ Ω] (d : ℕ) (δ : Polynomial ℤ → ℚ) (P : Polynomial ℚ), (∀ F G, δ (F * G) = δ F * δ G) → (∀ (n : ℕ) (u : Fin n → Polynomial ℤ), ∃ Φ : MvPolynomial (Fin n) ℚ, Φ.IsHomogeneous (2 * d) ∧ ∀ m : Fin n → ℤ, MvPolynomial.eval (fun i => (m i : ℚ)) Φ = δ (∑ i, m i • u i)) → P.Monic → P.natDegree = 2 * d → (∀ n : ℤ, P.eval (n : ℚ) = δ (Polynomial.C n - Polynomial.X)) → ∀ F : Polynomial ℤ, algebraMap ℚ Ω (δ F) = ((P.aroots Ω).map (fun a => Polynomial.aeval a F)).prod := by
   intro Ω _ _ _ d δ P hm hΦ0 hP hPd hPe
   choose Φ hh hΦ using fun r : ℕ => hΦ0 r (fun i : Fin r => (X : ℤ[X]) ^ (i : ℕ))

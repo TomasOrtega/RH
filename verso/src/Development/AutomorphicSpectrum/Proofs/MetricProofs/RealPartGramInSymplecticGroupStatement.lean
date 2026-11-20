@@ -18,6 +18,9 @@ open GroundTheory.Heights₂.Heights TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.NformRed.symplectic_reduction_basis | exact GlobalTheory.CompanionTheory.Ar.NformRed.symplectic_reduction_basis | (intros; apply GlobalTheory.CompanionTheory.Ar.NformRed.symplectic_reduction_basis <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.real_part_gram_in_symplectic_group : ∀ (g : ℕ) [NeZero g] (Λ : Submodule ℤ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ)
     (bs : Module.Basis (Fin g ⊕ Fin g) ℤ Λ),
     Hm.IsHermitian → (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re) →

@@ -3,12 +3,18 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.DeterminantPadicFree.ZlUniq
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, map_sum, hp]`.
+-/
 private theorem mapL {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (j : A →+* B) (p : B →+ A)
     (hp : ∀ a y, p (j a * y) = a * p y) (M : Matrix (Fin n) (Fin n) A) (Z : Matrix (Fin n) (Fin n) B) :
     (M.map j * Z).map p = M * Z.map p := by
   ext a b
   simp [Matrix.mul_apply, map_sum, hp]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Matrix.mul_apply, map_sum, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, hp, mul_comm]`.
+-/
 private theorem mapR {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (j : A →+* B) (p : B →+ A)
     (hp : ∀ a y, p (j a * y) = a * p y) (M : Matrix (Fin n) (Fin n) A) (Z : Matrix (Fin n) (Fin n) B) :
     (Z * M.map j).map p = Z.map p * M := by
@@ -29,6 +35,15 @@ private def ddP {A B : Type} [CommRing A] [CommRing B] (g : ℕ) (p : B →+ A) 
   map_zero' := by ext <;> simp
   map_add' x y := by ext <;> simp
 
+/- English proof (translation)
+Establish `key : ∀ (b1 b2 b3 b4 : Bool) (y : DD B g), y ∈ ddPart B B g b1 b2 b3 b4 → ddP g p y ∈ ddPart A A g b1 b2 b3 b4`. Introduce and unpack `b1 b2 b3 b4 y ⟨h1, h2, h3, h4⟩`. Use `⟨fun e => ?_, fun e => ?_, fun e => ?_, fun e => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `p y.a = 0`. Rewrite using `[h1 e, map_zero]`.
+
+Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `p (y.ep i) = 0`. Rewrite using `[h2 e]`. Conclude with `map_zero p`. Use function extensionality and compare the values at `i`.
+
+Express the relevant statement in the definitionally equal form `p (y.ep' i) = 0`. Rewrite using `[h3 e]`. Conclude with `map_zero p`. Express the relevant statement in the definitionally equal form `p y.eta = 0`. Rewrite using `[h4 e, map_zero]`.
+
+Conclude with `fun r s => ⟨fun e => key _ _ _ _ _ ((hZ r s).1 e), fun e => key _ _ _ _ _ ((hZ r s).2 e)⟩`.
+-/
 private theorem map_additive_mem_symmetric_deformation {A B : Type} [CommRing A] [CommRing B] {g n a : ℕ} (p : B →+ A)
     (Z : Matrix (Fin n) (Fin n) (DD B g)) (hZ : Z ∈ pairedDualFirstOrderDualMatrixSpace n B B g a) : Z.map (ddP g p) ∈ pairedDualFirstOrderDualMatrixSpace n A A g a := by
   have key : ∀ (b1 b2 b3 b4 : Bool) (y : DD B g), y ∈ ddPart B B g b1 b2 b3 b4 →
@@ -47,6 +62,9 @@ private theorem map_additive_mem_symmetric_deformation {A B : Type} [CommRing A]
       rw [h4 e, map_zero]
   exact fun r s => ⟨fun e => key _ _ _ _ _ ((hZ r s).1 e), fun e => key _ _ _ _ _ ((hZ r s).2 e)⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => ext <;> simp`. Consider the case `insert i s hi ih => ext <;> simp [Finset.sum_insert hi, ih]`.
+-/
 private theorem sum_dd {X ι : Type} [CommRing X] {g : ℕ} (s : Finset ι) (f : ι → DD X g) :
     ∑ i ∈ s, f i = ⟨∑ i ∈ s, (f i).a, fun j => ∑ i ∈ s, (f i).ep j, fun j => ∑ i ∈ s, (f i).ep' j,
       ∑ i ∈ s, (f i).eta⟩ := by
@@ -55,6 +73,11 @@ private theorem sum_dd {X ι : Type} [CommRing X] {g : ℕ} (s : Finset ι) (f :
   | empty => ext <;> simp
   | insert i s hi ih => ext <;> simp [Finset.sum_insert hi, ih]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Use `⟨ddJ _ j, fun i => ddP _ (p i), fun c => ?_, fun K => ?_, fun i a y => ?_, fun y => ?_, fun _ _ => rfl, fun i Z h => map_additive_mem_symmetric_deformation (p i) Z h, fun Z h => map_additive_mem_symmetric_deformation j.toAddMonoidHom Z h⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [ddJ]`. Apply the tactic sequence `ext <;> simp [ddJ, DD.epM]`. Apply the tactic sequence `ext <;> simp [ddJ, ddP, hp]`.
+
+Rewrite using `[sum_dd]`. Apply the tactic sequence `ext <;> simp [ddJ, ddP, ← hb]`.
+-/
 private theorem exJP {A B : Type} [CommRing A] [CommRing B] {g g' n a m : ℕ} (e : g' = g) (j : A →+* B)
     (b : Fin m → B) (p : Fin m → B →+ A) (hb : ∀ y, y = ∑ i, j (p i y) * b i)
     (hp : ∀ i a y, p i (j a * y) = a * p i y) :
@@ -74,6 +97,41 @@ private theorem exJP {A B : Type} [CommRing A] [CommRing B] {g g' n a m : ℕ} (
   · rw [sum_dd]
     ext <;> simp [ddJ, ddP, ← hb]
 
+/- English proof (translation)
+Introduce `l _ F n x x' j hE k k' e hκ S hD z hz hell`. Take `⟨⟨hinj, hloc, hfin, hρ, ha, -⟩, -⟩` from `hE`. Take `⟨m, b, p, -, hb, hp, -, -, r, u, -, hu⟩` from `UpperTheory.V.Pa.Det.extFree j hinj hloc hfin`. Take `⟨J, P, JC, Jep, hP, hB, Peta, PW, JW⟩` from `exJP (n := n) (a := x.a) e j b p hb hp`. Establish `hl : (l : x'.A) = 0` using `by haveI := (UpperTheory.V.Pa.Det.zlUniq l).1 (algebraMap ℤ_[l] x'.K)`.
+
+Use `congrArg (algebraMap x'.K x'.A) (CharP.cast_eq_zero x'.K l)` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero]`. Then use the resulting hypothesis. Establish `he : ∀ g, epsD k' x'.A g = J (epsD k x.A g)`. Introduce `g`. Use `((UpperTheory.V.Pa.Det.zlUniq l).2 (algebraMap ℤ_[l] x'.A) (j.comp (algebraMap ℤ_[l] x.A)) hl).1` as an intermediate fact.
+
+Conclude with `(congrArg DD.C (DFunLike.congr_fun this ((F.ε g : ℤ_[l]ˣ) : ℤ_[l]))).trans (JC _).symm`. Establish `hr : ∀ g, k'.ρ1 x'.A g = (k.ρ1 x.A g).map J`. Introduce `g`. Establish `h1 : x'.ρX (DD x'.A k'.g) g = (x.ρX (DD x.A k.g) g).map J` using `by ext1 a c`. Simplify using `only [NP.ρX, hρ, Matrix.map_apply]`.
+
+Conclude with `(JC _).symm`. Rewrite using `[Kap.ρ1, Kap.ρ1, Matrix.map_mul, ← h1, Matrix.map_add _ (map_add J), Jep, Matrix.map_one _ (map_zero J) (map_one J)]`. Simplify using `only [hκ]`. Both sides reduce to the same expression. Establish `h3 : (u : x'.A) * ((u⁻¹ : (PowerSeries x'.K)ˣ) : x'.A) = 1` using `u.mul_inv`.
+
+Establish `hpow : ∀ N, (DD.C x'.t : DD x'.A k'.g) ^ (r * N) = J (DD.C x.t ^ N) * DD.C (((u⁻¹ : (PowerSeries x'.K)ˣ) : x'.A) ^ N)`. Introduce `N`. Rewrite using `[map_pow J, JC, ← map_pow, ← map_pow, ← map_mul, hu, ← mul_pow, mul_right_comm, h3, one_mul, pow_mul]`. Take `⟨z1, z2, z3, z4⟩` from `hz`. Establish `hsm : ∀ i (c : DD x.A k.g) (Z : Matrix (Fin n) (Fin n) (DD x'.A k'.g)), (J c • Z).map (P i) = c • Z.map (P i)`.
+
+Introduce `i c Z`. Use `ext1 a c`. Conclude with `hP _ _ _`. Establish `hzi : ∀ i, (fun g => (z g).map (P i)) ∈ TwZ k x.A`. Introduce `i`.
+
+Use `⟨fun g => PW i _ (ha ▸ z1 g), fun a c N => ?_, fun g h => ?_, fun g => ?_⟩` and prove the remaining obligations. Use `z2 a c (r * N)` as an intermediate fact. Rewrite `this`, the goal using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g`. Use `filter_upwards [this g] with h hh`.
+
+Rewrite `hh`, the goal using `[Ideal.Quotient.eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Take `⟨w, hw⟩` from `hh`. Express the relevant statement in the definitionally equal form `_ = (DD.C x'.t : DD x'.A k'.g) ^ (r * N) * w at hw`. Use `⟨P i (DD.C (((u⁻¹ : (PowerSeries x'.K)ˣ) : x'.A) ^ N) * w), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `P i (z h a c) - P i (z g a c) = (DD.C x.t : DD x.A k.g) ^ N * _`.
+
+Rewrite using `[← map_sub, hw, hpow, mul_assoc, hP]`. Simplify using `only`. Rewrite using `[z3, Matrix.map_add _ (map_add (P i)), he, hsm, hr, hr, mapR J (P i) (hP i), mapL J (P i) (hP i)]`. Simplify using `only`. Rewrite using `[z4, Matrix.map_neg _ (map_neg (P i)), he, hsm, Matrix.transpose_map]`.
+
+Establish `hli : ∀ i, ∀ σ ∈ S, ell k x.A σ (fun g => (z g).map (P i)) = 0`. Introduce `i σ hσ`. Establish `h0` using `hell σ hσ`. Simplify using `only [ell] at h0 ⊢`. Rewrite using `[← mapR J (P i) (hP i), ← hr, ← AddMonoidHom.map_trace, Peta, h0, map_zero]`.
+
+Use `choose s Y hY hT hs using fun i => hD _ (hzi i) (hli i)`. Establish `hle : ∀ i, s i ≤ ∑ i, s i` using `fun i => Finset.single_le_sum (f := s) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`. Use `set N := ∑ i, s i with hN`. Set `d : Fin m → x'.A` to `fun i => ((u⁻¹ : (PowerSeries x'.K)ˣ) : x'.A) ^ N * b i * j (x.t ^ (N - s i))`. Establish `key : ∀ y : DD x'.A k'.g, ∑ i, d i • J (x.t ^ s i • P i y) = x'.t ^ (r * N) • y`.
+
+Introduce `y`. Use `conv_rhs => rw [hB y, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `DD.C (d i) * J (DD.C (x.t ^ s i) * P i y) = DD.C (x'.t ^ (r * N)) * _`. Establish `h4 : J ((DD.C x.t : DD x.A k.g) ^ N) = DD.C (j (x.t ^ (N - s i))) * J (DD.C (x.t ^ s i))`.
+
+Rewrite using `[← JC, ← map_mul, ← map_mul, ← pow_add, Nat.sub_add_cancel (hle i), map_pow DD.C]`. Rewrite using `[map_pow DD.C x'.t, hpow, h4]`. Simplify using `only [d, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hJs : ∀ (c : DD x.A k.g) (Z : Matrix (Fin n) (Fin n) (DD x.A k.g)), (c • Z).map J = J c • Z.map J`.
+
+Introduce `c Z`. Use `ext1 a c`. Conclude with `map_mul J _ _`. Use `⟨r * N, ∑ i, d i • (Y i).map J, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `sum_mem fun i _ => Submodule.smul_mem _ _ (ha ▸ JW _ (hY i))`.
+
+Rewrite using `[Matrix.transpose_sum, Finset.smul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← hT i]`. Rewrite using `[Matrix.map_neg _ (map_neg J), hJs, ← he, Matrix.transpose_smul, Matrix.transpose_map, smul_neg, smul_comm]`. Use function extensionality and compare the values at `g`.
+
+Establish `h5 : (x'.t ^ (r * N) • z) g = ∑ i, d i • ((x.t ^ s i • fun g => (z g).map (P i)) g).map J` using `by ext1 a c`. Rewrite using `[Matrix.sum_apply]`. Conclude with `(key _).symm`. Rewrite using `[h5, Finset.mul_sum, Finset.sum_mul, Finset.smul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hs i]`. Simplify using `only`. Rewrite using `[Matrix.map_sub _ (map_sub J), hJs, Matrix.map_mul, Matrix.map_mul, ← he, ← hr, ← hr, smul_sub, Matrix.mul_smul, Matrix.smul_mul, smul_comm]`.
+-/
 theorem UpperTheory.V.Pa.Det.detPush :
     ∀ {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} (x x' : NP F n) (j : x.A →+* x'.A), x.Ext2 x' j → ∀ (k : Kap x) (k' : Kap x') (e : k'.g = k.g), (∀ i g, k'.κ i g = (k.κ (Fin.cast e i) g).map j) → ∀ S : Set F.G₀, Detects k S → Detects k' S := by
   intro l _ F n x x' j hE k k' e hκ S hD z hz hell

@@ -18,6 +18,13 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Set `f : UJ ε →* MG (UH (Hpk k r)) hG` to `{ toFun := fun g => MG.mk hG _ (SchurHpk.iota_mem hP g) map_one' := MG.ext (SchurHpk.iota_one hP) map_mul' := fun a b => MG.ext (SchurHpk.iota_mul hP a b) }`. Establish `hf : Continuous f` using `MG.continuous_iff.2 (SchurHpk.iota_closedEmb hP).continuous`. Establish `hs : Function.Surjective f` using `fun x => by`. Take `⟨g, hg⟩` from `SchurHpk.exists_iota_eq hP x.mem`. Conclude with `⟨g, MG.ext hg⟩`.
+
+Establish `hce : IsClosedEmbedding f` using `IsClosedEmbedding.of_comp MG.isClosedEmbedding_mat.isEmbedding (SchurHpk.iota_closedEmb hP)`. Establish `hH : IsHaarMeasure (Measure.map f (muG ε))` using `isHaarMeasure_map (muG ε) f hf hs hce.tendsto_cocompact`. Establish `hI` using `(PIW.HCFdeg.stUnimod _ ε).2`. Establish `hinv : (Measure.map f (muG ε)).inv = Measure.map f (muG ε)`. Rewrite using `[Measure.inv_def, Measure.map_map measurable_inv hf.measurable]`.
+
+Establish `: (Inv.inv ∘ f : UJ ε → _) = f ∘ Inv.inv` using `funext fun g => (map_inv f g).symm`. Rewrite using `[this, ← Measure.map_map hf.measurable measurable_inv, Measure.map_inv_eq_self]`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[isMulLeftInvariant_eq_smul haar (Measure.map f (muG ε)), Measure.inv_def, Measure.map_smul, ← Measure.inv_def, hinv]`.
+-/
 theorem isInvInvariant_haar {ε : Fin (2 * r + k + 1) → Bool} {P : Mat (2 * r + k + 1)} (hP : IsCayley k r ε P)
     (hG : IsMatGroup (UH (Hpk k r))) : (haar : Measure (MG (UH (Hpk k r)) hG)).IsInvInvariant := by
   let f : UJ ε →* MG (UH (Hpk k r)) hG :=
@@ -47,12 +54,25 @@ def theta (k r : ℕ) : Mat (2 * r + k + 1) →L[ℝ] Mat (2 * r + k + 1) :=
       map_smul' := fun c a => by
         rw [Matrix.conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, star_trivial]; rfl }
 
+/- English proof (translation)
+The claim follows from `(PI.HwUniqW.inv_eq_UH hx).symm`.
+-/
 theorem theta_eq (x : Mat (2 * r + k + 1)) (hx : x ∈ UH (Hpk k r)) : theta k r x = x⁻¹ :=
   (PI.HwUniqW.inv_eq_UH hx).symm
 
+/- English proof (translation)
+Rewrite using `[← List.sum_ofFn, ← Function.comp_def f, ← List.map_ofFn, List.ofFn_get]`.
+-/
 theorem sum_get {α : Type} (L : List α) (f : α → ℝ) : ∑ i : Fin L.length, f (L.get i) = (L.map f).sum := by
   rw [← List.sum_ofFn, ← Function.comp_def f, ← List.map_ofFn, List.ofFn_get]
 
+/- English proof (translation)
+Establish `hG : IsMatGroup (UH (Hpk k r))` using `PI.QuotSetU.UnitaryGroupMassFormula.unitary_hermitian_group k r`. Establish `hU` using `SchurHpk.isURepOn_of_ds hR.2`. Establish `hU'` using `SchurHpk.isURepOn_of_ds hR'.2`. Take `⟨h1, h2, h3, h4, h5, C, Ws, Ws', hW, hbd⟩` from `hB`. Take `⟨P, hP, hDS⟩` from `id hR.2`.
+
+Take `⟨P', -, hDS'⟩` from `id hR'.2`. Use `hDS.2.1` as an intermediate fact. Use `hDS'.2.1` as an intermediate fact. Use `isInvInvariant_haar hP.1 hG` as an intermediate fact. Establish `hI : IsInv (UH (Hpk k r)) R.σ R'.σ Ws.get Ws'.get C B` using `{ add_left := fun x x' y hx hx' hy => h1 x hx x' hx' y hy smul_left := fun a x y hx hy => h2 a x hx y hy add_right := fun x y y' hx hy hy' => h3 x hx y hy y' hy' smul_right := fun a x y hx hy => h4 a x hx y hy inv := fun g hg x y hx hy => h5 g hg x hx y hy bd := fun x y hx hy => …`.
+
+Rewrite using `[sum_get Ws fun W => ‖dsW R.σ W x‖, sum_get Ws' fun W => ‖dsW R'.σ W y‖]`. Simplify `hbd x hx y hy }` using `only [dsigW_eq']`. Take `⟨T, hT, hTB⟩` from `hI.exists_op (hG := hG) (theta k r) theta_eq ⟨hG.2.1, hG.2.2.1, hU.1.1, hU.1.2⟩ ⟨hG.2.1, hG.2.2.1, hU'.1.1, hU'.1.2⟩ hU.2.1 hU'.2.1 hU.2.2 hU'.2.2 (SchurHpk.isIrredOn_of_ds hR.2) (SchurHpk.isIrredOn_of_ds hR'.2) (fun i X hX t => ex_mem_of_lie (hW _ (List.mem_append_left _ (List.g …`. Conclude with `⟨T, hT, fun x hx y hy => hTB x y hx hy⟩`.
+-/
 theorem exists_op {ε ε' : Fin (2 * r + k + 1) → Bool} {mu mu' : Fin (2 * r + k + 1) → ℝ} {R R' : BranchingSupport.Rep k r}
     (hR : R.IsDS ε mu) (hR' : R'.IsDS ε' mu') {B : R.H → R'.H → ℂ} (hB : BranchingSupport.IsInvForm R R' B) :
     ∃ T : R'.H →L[ℂ] R.H, (∀ g ∈ UH (Hpk k r), ∀ y, T (R'.σ g y) = R.σ g (T y)) ∧
@@ -82,6 +102,13 @@ theorem exists_op {ε ε' : Fin (2 * r + k + 1) → Bool} {mu mu' : Fin (2 * r +
     (fun i X hX t => ex_mem_of_lie (hW _ (List.mem_append_right _ (List.get_mem _ _)) X hX) t)
   exact ⟨T, hT, fun x hx y hy => hTB x y hx hy⟩
 
+/- English proof (translation)
+Take `⟨T, hT, hTB⟩` from `exists_op hR hR' hB`. Distinguish the cases in `h0 : T = 0`. Conclude with `Or.inl fun x hx y hy => by rw [hTB x hx y hy, h0]; simp`. Use `right`. Take `⟨P, hP, hDS⟩` from `id hR.2`.
+
+Take `⟨P', -, hDS'⟩` from `id hR'.2`. Use `hDS.2.1` as an intermediate fact. Use `hDS'.2.1` as an intermediate fact. Take `⟨e⟩` from `((SchurHpk.toURep_irred hP.1 R'.σ (SchurHpk.isURepOn_of_ds hR'.2) (SchurHpk.isIrredOn_of_ds hR'.2)).isEquivalent_of_mem_intertwiners (SchurHpk.toURep_irred hP.1 R.σ (SchurHpk.isURepOn_of_ds hR.2) (SchurHpk.isIrredOn_of_ds hR.2)) (T := T) (fun g v => hT _ (SchurHpk.iota_mem hP.1 g …`. Use `⟨e.toLinearIsometryEquiv, fun g hg x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, rfl⟩` from `SchurHpk.exists_iota_eq hP.1 hg`. Conclude with `e.map_apply' a x`.
+-/
 theorem vanish_or_equiv {ε ε' : Fin (2 * r + k + 1) → Bool} {mu mu' : Fin (2 * r + k + 1) → ℝ} {R R' : BranchingSupport.Rep k r}
     (hR : R.IsDS ε mu) (hR' : R'.IsDS ε' mu') {B : R.H → R'.H → ℂ} (hB : BranchingSupport.IsInvForm R R' B) :
     (∀ x ∈ R.sm, ∀ y ∈ R'.sm, B x y = 0) ∨
@@ -101,6 +128,13 @@ theorem vanish_or_equiv {ε ε' : Fin (2 * r + k + 1) → Bool} {mu mu' : Fin (2
   obtain ⟨a, rfl⟩ := SchurHpk.exists_iota_eq hP.1 hg
   exact e.map_apply' a x
 
+/- English proof (translation)
+Introduce `k r ε mu mu' R R' hR hR'`. Use `⟨fun B hB => ?_, fun B hB => vanish_or_equiv hR hR' hB⟩` and prove the remaining obligations. Take `⟨T, hT, hTB⟩` from `exists_op hR hR hB`. Take `⟨P, hP, hDS⟩` from `id hR.2`. Use `hDS.2.1` as an intermediate fact.
+
+Take `⟨c, hc⟩` from `(SchurHpk.toURep_irred hP.1 R.σ (SchurHpk.isURepOn_of_ds hR.2) (SchurHpk.isIrredOn_of_ds hR.2)).exists_eq_smul_one (T := T) fun g v => hT _ (SchurHpk.iota_mem hP.1 g) v`. Use `⟨star c, fun x hx y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[hTB x hx y hy, hc]`. Use `show ⟪c • y, x⟫_ℂ = _`. Rewrite using `[inner_smul_left]`.
+
+Both sides reduce to the same expression.
+-/
 theorem poulsen_smooth_vectors_dense : BranchingSupport.Poulsen := by
   intro k r ε mu mu' R R' hR hR'
   refine ⟨fun B hB => ?_, fun B hB => vanish_or_equiv hR hR' hB⟩

@@ -12,6 +12,15 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic
 
 namespace GlobalTheory.PassageDown
 
+/- English proof (translation)
+Establish `key : ∀ x : V, ∃ n : ℕ, 1 ≤ n ∧ ∃ s : (lbPow H n).Sec, (x : X) ∈ nonzeroLocus s ∧ nonzeroLocus s ≤ V ∧ IsAffineOpen (nonzeroLocus s)` using `fun x => h.exists_affine_le x.2`. Use `choose n hn s hxs hsV hsA using key`. Take `⟨t, ht⟩` from `hV.elim_finite_subcover (fun x : V => (nonzeroLocus (s x) : Set X)) (fun x => (nonzeroLocus (s x)).isOpen) (fun y hy => Set.mem_iUnion.2 ⟨⟨y, hy⟩, hxs _⟩)`. Use `⟨t.card, fun a => n (t.equivFin.symm a), fun a => s (t.equivFin.symm a), fun a => hn _, fun a => hsA _, ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises.
+
+Conclude with `iSup_le fun a => hsV _`. Introduce `y hy`. Establish `hy'` using `ht hy`. Simplify using `only [Set.mem_iUnion] at hy'`. Take `⟨i, hi, hyi⟩` from `hy'`.
+
+Rewrite using `[TopologicalSpace.Opens.mem_iSup]`. Take `⟨j, hj⟩ : ∃ j, t.equivFin.symm j = ⟨i, hi⟩` from `⟨_, Equiv.symm_apply_apply _ _⟩`. Use `⟨j, ?_⟩` and prove the remaining obligations. Use `show y ∈ nonzeroLocus (s ↑(t.equivFin.symm j))`. Rewrite using `[hj]`.
+
+Conclude with `hyi`.
+-/
 theorem exists_cover_of_isCompact {X : Scheme.{0}} {H : LB X} (h : IsAmpleLB H) {V : X.Opens}
     (hV : IsCompact (V : Set X)) : ∃ (r : ℕ) (e : Fin r → ℕ) (σ : ∀ a, (lbPow H (e a)).Sec),
       (∀ a, 0 < e a) ∧ (∀ a, IsAffineOpen (nonzeroLocus (σ a))) ∧ ⨆ a, nonzeroLocus (σ a) = V := by
@@ -38,6 +47,13 @@ theorem exists_cover_of_isCompact {X : Scheme.{0}} {H : LB X} (h : IsAmpleLB H) 
 
 end GlobalTheory.PassageDown
 
+/- English proof (translation)
+Establish `hV' : s ⁻¹ᵁ V ≤ ⨆ i, s ⁻¹ᵁ U i`. Introduce `y hy`. Establish `hy'` using `hV hy`. Rewrite `hy'`, the goal using `[TopologicalSpace.Opens.mem_iSup]`. Conclude with `hy'`.
+
+Set `φ` to `cechCubePushforwardIso V U (R := ℤ) F (g := s) (fun r => by simp)`. Use `haveI : IsIso (cechComplexMap φ.hom) := isIso_cechComplexMap _ (fun t _ => ConcreteCategory.bijective_of_isIso (φ.hom.app t))`. Set `e1` to `cechAbHEquivH' hV (cechAcyclicMod_iff.1 hP) n`. Set `e2` to `cechAbHEquivH' hV' (cechAcyclicMod_iff.1 hF) n`. Set `e3` to `cechAbHEquiv ℤ ((Scheme.Modules.pushforward s).obj F) V U n`.
+
+Set `e4` to `cechAbHEquiv ℤ F (s ⁻¹ᵁ V) (fun i => s ⁻¹ᵁ U i) n`. Set `e5` to `(HomologicalComplex.homologyMapIso (asIso (cechComplexMap φ.hom)) n).toLinearEquiv.toAddEquiv`. Conclude with `⟨e1.symm.trans (e3.trans (e5.trans (e4.symm.trans e2)))⟩`.
+-/
 private theorem passage_cohOn_lemma {X Y : Scheme.{0}} (s : Y ⟶ X) (F : Y.Modules) (V : X.Opens)
     {ι : Type} [LinearOrder ι] [Finite ι] (U : ι → X.Opens) (hV : V ≤ ⨆ i, U i)
     (hP : CechAcyclicMod V U ((Scheme.Modules.pushforward s).obj F))
@@ -58,6 +74,17 @@ private theorem passage_cohOn_lemma {X Y : Scheme.{0}} (s : Y ⟶ X) (F : Y.Modu
   let e5 := (HomologicalComplex.homologyMapIso (asIso (cechComplexMap φ.hom)) n).toLinearEquiv.toAddEquiv
   exact ⟨e1.symm.trans (e3.trans (e5.trans (e4.symm.trans e2)))⟩
 
+/- English proof (translation)
+Introduce `X Y _ _ _ _ s F _ H hH hvan`. Use `haveI : SheafOfModules.IsQuasicoherent ((Scheme.Modules.pushforward s).obj F) := GlobalTheory.QCoh.isQuasicoherent_pushforward s F`. Establish `key : ∀ V : X.Opens, IsCompact (V : Set X) → ∀ n, Nonempty (cohOn ((Scheme.Modules.pushforward s).obj F) V n ≃+ cohOn F (s ⁻¹ᵁ V) n)`. Introduce `V hV n`. Take `⟨r, e, σ, he, hA, hcov⟩` from `GlobalTheory.PassageDown.exists_cover_of_isCompact hH hV`.
+
+Establish `hle : ∀ a, nonzeroLocus (σ a) ≤ V` using `fun a => hcov ▸ le_iSup (fun a => nonzeroLocus (σ a)) a`. Establish `hint : ∀ t : Finset (Fin r), t.Nonempty → IsAffineOpen (⨅ a ∈ t, nonzeroLocus (σ a))` using `fun t ht => GlobalTheory.MumfordSupport.isAffineOpen_biInf_of_isSeparated (R := Γ(X, ⊤)) X.toSpecΓ hA t ht`. Apply `passage_cohOn_lemma s F V (fun a => nonzeroLocus (σ a)) hcov.ge` to reduce the goal to its premises. Conclude with `cechAcyclicMod_of_isAffineOpen (isAffineOpen_cechOpen_of_le hle hint) _`. Introduce `t ht q`.
+
+Rewrite using `[← preimage_cechOpen, cechOpen_of_nonempty hle ht]`. Conclude with `subsingleton_cohOn_preimage_iInf_nonzeroLocus X Y s F H hH.isLB (q + 1) (hvan _ (Nat.succ_pos q)) r e σ he t ht`. Use `⟨fun i => ?_, fun U hU j hj => ?_⟩` and prove the remaining obligations. Take `⟨f⟩` from `key ⊤ (by rw [TopologicalSpace.Opens.coe_top]; exact isCompact_univ) i`. Conclude with `⟨f⟩`.
+
+Take `⟨f⟩` from `key U hU.isCompact j haveI : Subsingleton (cohOn ((Scheme.Modules.pushforward s).obj F) U j) := by`. Use `subsingleton_cohOn_of_cechAcyclic (ι := Unit) (U := fun _ => U) (le_iSup (fun _ : Unit => U) ()) ?_ (by rw [Fintype.card_unit]; exact hj)` and prove the remaining obligations. Use `cechAcyclicMod_of_isAffineOpen (isAffineOpen_cechOpen_of_le (fun _ => le_rfl) ?_) _` and prove the remaining obligations. Introduce `t ht`. Take `⟨i, hi⟩` from `ht`.
+
+Rewrite using `[show (⨅ _ ∈ t, U) = U from le_antisymm (biInf_le _ hi) (le_iInf₂ fun _ _ => le_rfl)]` and apply the resulting hypothesis. Conclude with `f.symm.toEquiv.subsingleton`.
+-/
 theorem GlobalTheory.passage_down_of_twist_vanishing : ∀ (X Y : Scheme.{0}) [CompactSpace X] [X.IsSeparated] [CompactSpace Y] [Y.IsSeparated] (s : Y ⟶ X) (F : Y.Modules) [F.IsQuasicoherent] (H : LB X), IsAmpleLB H → (∀ j, 0 < j → ∀ᶠ c : ℕ in atTop, Subsingleton (coh (twist F (lbPow (H.pull s) c)) j)) → (∀ i, Nonempty (coh ((Scheme.Modules.pushforward s).obj F) i ≃+ coh F i)) ∧ ∀ U : X.Opens, IsAffineOpen U → ∀ j, 0 < j → Subsingleton (cohOn F (s ⁻¹ᵁ U) j) := by
   intro X Y _ _ _ _ s F _ H hH hvan
   haveI : SheafOfModules.IsQuasicoherent ((Scheme.Modules.pushforward s).obj F) :=

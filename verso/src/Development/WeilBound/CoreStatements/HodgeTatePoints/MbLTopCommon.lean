@@ -13,6 +13,23 @@ open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberFiel
 
 namespace PositivityTheory.HtPt.Mb.LTopCommon
 
+/- English proof (translation)
+Introduce `o _ _ Ω _ _ κ _ x M A _ κa _ w B _ E _ _ L V _ hw hL hV`. Use `choose κb hκb v hv0 hv1 hv2 using fun b => PositivityTheory.HtPt.Mb.flatten o Ω κ x M (E b) (L b) (V b) (hL b) (hV b)`. Set `κs : A ⊕ B → Type` to `fun s => match s with`. Consider the case `.inl a => κa a`. Consider the case `.inr b => κb b`.
+
+Set `ws : ∀ s, κs s → Ω` to `fun s => match s with`. Consider the case `.inl a => w a`. Consider the case `.inr b => v b`. Use `haveI : ∀ s, Finite (κs s) := fun s => match s with`. Consider the case `.inl a => inferInstanceAs (Finite (κa a))`.
+
+Consider the case `.inr b => hκb b`. Establish `hws : ∀ s, ∃ l, ws s l ≠ 0` using `fun s => match s with`. Consider the case `.inl a => hw a`. Consider the case `.inr b => hv0 b`. Take `⟨κ₁, _, y₁, M₁, f, hf, hch, hiso⟩` from `PositivityTheory.HtPt.Mb.join_many o Ω κ x M (A ⊕ B) κs ws hws`.
+
+Take `⟨κ₂, hκ₂, y₂, M₂, g, hg, hN, -, hnorm⟩` from `PositivityTheory.HtPt.Mb.norm_exists o Ω κ₁ y₁ M₁ Ω`. Use `replace hg : Dominates M₂.ξ M₁.ξ g (RingHom.id Ω) := hg`. Use `replace hnorm : ∀ p, NormAt M₂.ξ g (RingHom.id Ω) p := hnorm`. Establish `hgf : Dominates M₂.ξ M.ξ (g ≫ f) (RingHom.id Ω)`. Unfold `Dominates at *`.
+
+Rewrite using `[← Category.assoc, hg, Category.assoc, hf]`. Simplify using the standard rewrite rules. Establish `hch₂ : ∀ s (p' : Cpt M₂.ξ), ∃ l, InChart M₂.ξ (ws s) l p'`. Introduce `s p'`. Take `⟨h, h1, -⟩` from `PositivityTheory.HtPt.Mb.dom_local _ Ω M₁.ξ _ Ω M₂.ξ _ g hg p'`.
+
+Take `⟨l, hl⟩` from `hch s ⟨_, h⟩`. Conclude with `⟨l, hl.1, fun c => h1 _ (hl.2 c)⟩`. Use `⟨κ₂, hκ₂, y₂, M₂, g ≫ f, hgf, hN, fun a => hch₂ (.inl a), fun b => ?_, fun p hp hfr => ?_⟩` and prove the remaining obligations. Take `⟨e, hc⟩` from `PositivityTheory.HtPt.Mb.pull_eq o Ω κ x M (E b) (L b) _ Ω M₂.ξ _ (E b) (AddMonoidHom.id _) (g ≫ f) (hL b) hgf`. Establish `key` using `hv2 b _ Ω M₂.ξ (RingHom.id Ω) (E b) (AddMonoidHom.id _) ⟨fun _ _ => rfl, fun _ _ h => h⟩`.
+
+Establish `hu : {p' | p' ∈ ctrSet o x (RingHom.id Ω) M₂.ξ ∧ ∃ l, InChart M₂.ξ (fun l => RingHom.id Ω (v b l)) l p'} = Set.univ` using `Set.eq_univ_of_forall fun p' => ⟨hc p', hch₂ (.inr b) p'⟩`. Establish `hs : Submodule.span Ω (AddMonoidHom.id (E b) '' (V b : Set (E b))) = V b` using `by simp`. Rewrite `key` using `[hu, hs]`. Rewrite using `[e]`. Conclude with `key`.
+
+Use `(PositivityTheory.HtPt.Mb.iso_comp _ Ω M.ξ _ _ Ω (RingHom.id Ω) p).1 M₁.ξ M₂.ξ f g hg (hiso p ?_) fun p₁ _ => hnorm p₁` and prove the remaining obligations. Introduce and unpack `(a | b)`. Conclude with `hp a`. Conclude with `hv1 b p (hfr b)`.
+-/
 theorem exists_common_normal_model : ∀ (o : Type) [CommRing o] [Algebra.EssFiniteType ℤ o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (M : PModel o x) (A : Type) [Finite A] (κa : A → Type) [∀ a, Finite (κa a)] (w : ∀ a, κa a → Ω) (B : Type) [Finite B] (E : B → Type) [∀ b, AddCommGroup (E b)] [∀ b, Module Ω (E b)] (L : ∀ b, Lat M.ξ (E b)) (V : ∀ b, Submodule Ω (E b)) [∀ b, FiniteDimensional Ω (V b)], (∀ a, ∃ l, w a l ≠ 0) → (∀ b, (L b).IsCohOn Set.univ) → (∀ b p, Submodule.span Ω (L b p : Set (E b)) = V b) → ∃ (κ' : Type) (_ : Finite κ') (y : κ' → Ω) (M' : PModel o y) (f : M'.X ⟶ M.X), Dominates M'.ξ M.ξ f (RingHom.id Ω) ∧ Flat.NormalCpt M'.ξ ∧ (∀ a (p' : Cpt M'.ξ), ∃ l, InChart M'.ξ (w a) l p') ∧ (∀ b, ((L b).pull M'.ξ f (AddMonoidHom.id (E b))).IsVB (Module.finrank Ω (V b)) (V b)) ∧ ∀ p : Cpt M.ξ, (∀ a, ∃ l, InChart M.ξ (w a) l p) → (∀ b, ∃ (r : ℕ) (g : Fin r → E b), (L b).IsFrameAt g p) → NormAt M'.ξ f (RingHom.id Ω) p := by
   intro o _ _ Ω _ _ κ _ x M A _ κa _ w B _ E _ _ L V _ hw hL hV
   choose κb hκb v hv0 hv1 hv2 using fun b => PositivityTheory.HtPt.Mb.flatten o Ω κ x M (E b) (L b) (V b) (hL b) (hV b)
@@ -59,5 +76,8 @@ end PositivityTheory.HtPt.Mb.LTopCommon
 
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField in
 
+/- English proof (translation)
+The claim follows from `@PositivityTheory.HtPt.Mb.LTopCommon.exists_common_normal_model`.
+-/
 theorem PositivityTheory.HtPt.Mb.top_common : ∀ (o : Type) [CommRing o] [Algebra.EssFiniteType ℤ o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (M : PModel o x) (A : Type) [Finite A] (κa : A → Type) [∀ a, Finite (κa a)] (w : ∀ a, κa a → Ω) (B : Type) [Finite B] (E : B → Type) [∀ b, AddCommGroup (E b)] [∀ b, Module Ω (E b)] (L : ∀ b, Lat M.ξ (E b)) (V : ∀ b, Submodule Ω (E b)) [∀ b, FiniteDimensional Ω (V b)], (∀ a, ∃ l, w a l ≠ 0) → (∀ b, (L b).IsCohOn Set.univ) → (∀ b p, Submodule.span Ω (L b p : Set (E b)) = V b) → ∃ (κ' : Type) (_ : Finite κ') (y : κ' → Ω) (M' : PModel o y) (f : M'.X ⟶ M.X), Dominates M'.ξ M.ξ f (RingHom.id Ω) ∧ Flat.NormalCpt M'.ξ ∧ (∀ a (p' : Cpt M'.ξ), ∃ l, InChart M'.ξ (w a) l p') ∧ (∀ b, ((L b).pull M'.ξ f (AddMonoidHom.id (E b))).IsVB (Module.finrank Ω (V b)) (V b)) ∧ ∀ p : Cpt M.ξ, (∀ a, ∃ l, InChart M.ξ (w a) l p) → (∀ b, ∃ (r : ℕ) (g : Fin r → E b), (L b).IsFrameAt g p) → NormAt M'.ξ f (RingHom.id Ω) p :=
   @PositivityTheory.HtPt.Mb.LTopCommon.exists_common_normal_model

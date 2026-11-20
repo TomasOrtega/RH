@@ -28,6 +28,19 @@ section Loc
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hp : ∀ c, colPos κ (Fin τ) c = (e c).val` using `fun c => by`. Rewrite using `[he c]`. Break down `c with (c | c) | c` into its components or cases. Use `exacts [rfl, c.elim0, c.1.elim0]`. Set `M : Matrix (XIx (Fin κ) (Fin τ) 0) (XIx (Fin κ) (Fin τ) 0) 𝒪[k]` to `Matrix.of fun a b => ⟨g.val a b, hint a b⟩`.
+
+Establish `hM : ∀ a b, e b ≤ e a → (residue 𝒪[k]).mapMatrix M a b = (1 : Matrix _ _ 𝓀[k]) a b` using `fun a b hab => by`. Establish `h1 : (1 : Matrix _ _ 𝓀[k]) a b = residue 𝒪[k] ((1 : Matrix _ _ 𝒪[k]) a b)`. Simplify using `only [Matrix.one_apply, apply_ite (residue 𝒪[k]), map_one, map_zero]`. Rewrite using `[h1, RingHom.mapMatrix_apply, Matrix.map_apply, ← sub_eq_zero, ← map_sub, residue_eq_zero_iff]`. Use `Valuation.Integer.not_isUnit_iff_valuation_lt_one.2 ?_` and prove the remaining obligations.
+
+Use `h a b hab using 2` and compare the differences between its conclusion and the goal. Simplify using `only [M, Matrix.one_apply, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hdet : ((residue 𝒪[k]).mapMatrix M).det = 1`. Rewrite using `[← Matrix.det_submatrix_equiv_self e.symm, Matrix.det_of_upperTriangular]`.
+
+Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.submatrix_apply, hM _ _ le_rfl, Matrix.one_apply_eq]`. Introduce `i j hij`. Establish `hij' : j < i` using `hij`. Rewrite using `[Matrix.submatrix_apply, hM _ _ (by simpa using hij'.le), Matrix.one_apply_ne (e.symm.injective.ne hij'.ne')]`.
+
+Establish `hu : IsUnit M`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, ← residue_ne_zero_iff_isUnit, RingHom.map_det, hdet]`. Conclude with `one_ne_zero`. Use `⟨_, ⟨hu.unit, Units.ext ?_, rfl⟩, fun a b hab => ?_⟩` and prove the remaining obligations. Use extensionality with `a b`.
+
+Both sides reduce to the same expression. Rewrite `hab` using `[hp, hp]`. Conclude with `hM a b hab`.
+-/
 theorem mem_colGroup {κ τ n : ℕ} (e : XIx (Fin κ) (Fin τ) 0 ≃ Fin n) (he : IsOrd xPos e) (g : GL (XIx (Fin κ) (Fin τ) 0) k)
     (hint : ∀ a b, valuation k (g.val a b) ≤ 1)
     (h : ∀ a b, e b ≤ e a → valuation k (g.val a b - (1 : Matrix _ _ k) a b) < 1) : g ∈ colGroup k κ (Fin τ) := by
@@ -60,6 +73,9 @@ theorem mem_colGroup {κ τ n : ℕ} (e : XIx (Fin κ) (Fin τ) 0 ≃ Fin n) (he
   · rw [hp, hp] at hab
     exact hM a b hab
 
+/- English proof (translation)
+Take `⟨-, h2, -⟩` from `GlobalTheory.FirstVertexFrame.firstVertex_typeChain k S.ψ S.ϖ s (Fin τ) κ S.P (GlobalTheory.SymShape.sym_shape _ _ _ _ _ _ _ S.sym) S.μ S.tame (s + 1) (Nat.zero_add _)`. Conclude with `(h2 g hg).1`.
+-/
 theorem embX_mem {s κ τ : ℕ} (S : SymData k s κ) (g : GL (XIx (Fin κ) (Fin τ) 0) k) (hg : g ∈ colGroup k κ (Fin τ)) :
     embX (s + 1) g ∈ ((S.T (Fin τ)).lev 0 (s + 1) (Nat.zero_add _)).J := by
   obtain ⟨-, h2, -⟩ := GlobalTheory.FirstVertexFrame.firstVertex_typeChain k S.ψ S.ϖ s (Fin τ) κ S.P
@@ -68,6 +84,21 @@ theorem embX_mem {s κ τ : ℕ} (S : SymData k s κ) (g : GL (XIx (Fin κ) (Fin
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Take `⟨e, he, hβ⟩` from `hF`. Use `choose R hR hR' using hA`. Establish `hM : ∀ i j, valuation k ((mt V x).map q.pr i j - q.pr (incA D (R i j))) < 1` using `fun i j => by`. Establish `h2 : y.1 i j = toEAf D (mt V x i j)`.
+
+Rewrite using `[← hy]`. Both sides reduce to the same expression. Establish `h3` using `LevChi.val_pr_lt q hq (z := mt V x i j - incA D (R i j)) (by`. Rewrite using `[RingHom.map_sub, ← h2, RingHom.map_sub]`. Conclude with `(congrArg (fun t => Valued.v (adAt D.host.F PP (y.1 i j) - t)) (adAt_inclE D.host.F PP _)).trans_lt (hR' i j))`.
+
+Rewrite `h3` using `[RingHom.map_sub]`. Then use the resulting hypothesis. Establish `hgM : ∀ a b, g.val a b = (mt V x).map q.pr (e a) (e b)` using `fun a b => by`. Establish `h1 : (mt V x).map q.pr * F.β = F.β * g.val` using `by rw [hg, Matrix.mul_assoc, F.γβ, Matrix.mul_one]`. Establish `h2` using `congrFun (congrFun h1 (e a)) b`. Rewrite `h2` using `[hβ]`.
+
+Simplify `h2.symm` using `[Matrix.mul_apply, Matrix.one_apply]`. Use `mem_colGroup e he g (fun a b => ?_) fun a b hab => ?_` and prove the remaining obligations. Use `(valuation k).map_add_le (hM (e a) (e b)).le (LevelTest.val_le_one q (R (e a) (e b)))` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, ← hgM]`. Then use the resulting hypothesis. Take `⟨-, h1, h2⟩` from `Formalism.L2.Col.mem_uniUT.1 hU`.
+
+Establish `ha : (e a).val < κ` using `hn ▸ (e a).2`. Break down `hab.eq_or_lt with h | h` into its components or cases. Take `rfl : b = a` from `e.injective h`. Establish `h3 : R (e b) (e b) - 1 ∈ PP.asIdeal`. Rewrite using `[← Ideal.Quotient.eq, hR, h2 _ ha, map_one]`.
+
+Use `(valuation k).map_add_lt (hM (e b) (e b)) ((LevelTest.val_lt_one_iff q hq _).2 h3)` as an intermediate fact. Rewrite `this` using `[← hgM]`. Simplify using `using this`. Establish `h3 : R (e a) (e b) ∈ PP.asIdeal`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, hR, h1 _ _ ha h]`.
+
+Use `(valuation k).map_add_lt (hM (e a) (e b)) ((LevelTest.val_lt_one_iff q hq _).2 h3)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, ← hgM]`. Rewrite using `[Matrix.one_apply_ne (fun h' : a = b => h.ne' (congrArg e h')), sub_zero]` and apply the resulting hypothesis.
+-/
 theorem colGroup_of_red {D : D7} (q : GlobalTheory.FinPl.SplitPt D k) {PP : Formalism.L2.DIV.Pl D.host.E} (hq : Formalism.L2.NTheta.IsIdemAt q.e PP)
     (V : HSp D) {n κ τ : ℕ} (hr : V.rank = n) (hn : n = κ) (F : Frame k V.rank (XIx (Fin κ) (Fin τ) 0)) (hF : IsStdFr xPos F)
     {x : GA D V} {y : GL (Fin n) (GlobalTheory.AdForm.EF D)} (hy : GlobalTheory.AdForm.finM V hr x = y.1)
@@ -110,6 +141,9 @@ theorem colGroup_of_red {D : D7} (q : GlobalTheory.FinPl.SplitPt D k) {PP : Form
 
 end Loc
 
+/- English proof (translation)
+Substitute `hJ` using the available equality. Take `⟨h, h1, h2, -⟩` from `TC.GLev0.chi_prod I S hR hI x`. Conclude with `⟨_, inv_mem (h1 ⟨w, hw⟩), h2 ⟨w, hw⟩⟩`.
+-/
 theorem exists_red {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} (I : TC B X) (hI : I.Ok) {u : B.Word} {T f : ℕ}
     {bad : Set (HeightOneSpectrum (𝓞 B.host.F))} {J : Matrix (Fin (B.R.N 0)) (Fin (B.R.N 0)) B.host.E} (hJ : J = 1)
     (S : Formalism.L2.Forms.StepLevel B.host.F B.host.E B.sp.cm.sig J T f bad) {y : (I.stp u I.mu0 0).Cl → TC.GA B (B.R.N 0)}
@@ -123,6 +157,11 @@ theorem exists_red {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPr
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a ha _ row col _ κ _ y hκy hy i g hg`. Take `⟨hS⟩` from `hA.tr.std`. Take `⟨hP⟩` from `hA.tr.pins`. Take `⟨k₀, hR⟩` from `(hS u).ends 0 (Nat.zero_le _) (Or.inl rfl)`. Take `⟨A, hU, hA'⟩` from `exists_red I hA.tr.ok ((TC.spaces_in_coordinates I hA.tr.ok hP l Z).2.2.2 0 (Nat.zero_le _)).1 ((W.R.T.cols.forms u).cls 0 (Nat.zero_le _) (Or.inl rfl)).lev hR ⟨_, hy⟩ (a.pl i).1 ((hA.lev.2.1 _).1 (a.pl i).2)`.
+
+Use `letI := (a.G i).fld`. Use `letI := (a.G i).val`. Use `letI := (a.G i).top`. Use `letI := (a.G i).loc`. Conclude with `embX_mem (a.G i).S g (colGroup_of_red (a.G i).q ((ha.tie row col).2.idem i).1 ((I.rec7 l Z).sp.X 0) (Formalism.L2.Forms.rankN (I.rec7 l Z) 0 (Nat.zero_le _)) (show B.R.N 0 = B.R.k by simp [Ranks.N]) _ ((ha.stdG i).1 0 (Nat.zero_le _)) hκy hA' hU g hg)`.
+-/
 theorem traceAtG_of_mem : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ row col, (a.fam row col).c.Is → ∀ κ ∈ GfC ((I.rec7 l Z).sp.X 0), ∀ y : Formalism.UG.UPts (Formalism.L2.Forms.sigD (I.rec7 l Z)) (Formalism.L2.Forms.gramN (I.rec7 l Z) 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F), GlobalTheory.AdForm.finM ((I.rec7 l Z).sp.X 0) (Formalism.L2.Forms.rankN (I.rec7 l Z) 0 (Nat.zero_le _)) κ = y.1.1 → (y : GL _ _) ∈ (F0 W u).cls0.lev.U → GlobalTheory.FamTrace.TraceAtG a κ := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a ha _ row col _ κ _ y hκy hy i g hg
   obtain ⟨hS⟩ := hA.tr.std

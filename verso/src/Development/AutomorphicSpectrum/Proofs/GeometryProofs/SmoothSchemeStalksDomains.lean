@@ -8,6 +8,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.CompanionTheory.Ar.SncBase
 
+/- English proof (translation)
+Set `p : PrimeSpectrum K` to `y`. Establish `hle : p.asIdeal.primeCompl ≤ IsUnit.submonoid K` using `fun x hx => isUnit_iff_ne_zero.2 fun h0 => hx (h0 ▸ p.asIdeal.zero_mem)`. Set `e₁ : K ≃+* Localization.AtPrime p.asIdeal` to `(IsLocalization.atUnits K p.asIdeal.primeCompl hle).toRingEquiv`. Set `e₂ : (Sp K).presheaf.stalk y ≃+* Localization.AtPrime p.asIdeal` to `(AlgebraicGeometry.Spec.stalkIso (CommRingCat.of K) p).commRingCatIsoToRingEquiv`. Set `e : K ≃+* (Sp K).presheaf.stalk y` to `e₁.trans e₂.symm`.
+
+Use `haveI := Field.instIsIntegrallyClosed K`. Conclude with `⟨(MulEquiv.isField (Field.toIsField K) e.symm.toMulEquiv).isDomain, IsIntegrallyClosed.of_equiv e⟩`.
+-/
 theorem isDomain_and_isIntegrallyClosed_stalk_sp_field (K : Type) [Field K] (y : Sp K) :
     IsDomain ((Sp K).presheaf.stalk y) ∧ IsIntegrallyClosed ((Sp K).presheaf.stalk y) := by
   let p : PrimeSpectrum K := y
@@ -21,6 +26,9 @@ theorem isDomain_and_isIntegrallyClosed_stalk_sp_field (K : Type) [Field K] (y :
   haveI := Field.instIsIntegrallyClosed K
   exact ⟨(MulEquiv.isField (Field.toIsField K) e.symm.toMulEquiv).isDomain, IsIntegrallyClosed.of_equiv e⟩
 
+/- English proof (translation)
+Use `haveI : Smooth g := SmoothOfRelativeDimension.smooth e g`. Conclude with `(GlobalTheory.forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth g (isDomain_and_isIntegrallyClosed_stalk_sp_field K) x).1`.
+-/
 theorem isDomain_stalk_of_smoothOfRelativeDimension_field (K : Type) [Field K] (e : ℕ)
     (X : Scheme.{0}) (g : X ⟶ Sp K) (hg : SmoothOfRelativeDimension e g) (x : X) :
     IsDomain (X.presheaf.stalk x) := by

@@ -16,6 +16,15 @@ def gens {A : Type} [CommRing A] (𝓔 : Set (Set (MvPolynomial (Fin 3) A))) :
   {f | ∃ (E : 𝓔) (q : MvPolynomial (Fin 3) A), q ∈ E.1 ∧
     f = MvPolynomial.rename (fun t => (E, t)) q}
 
+/- English proof (translation)
+Establish `hg : ∀ g : {g // g ∈ F}, ∃ (E : 𝓔) (q : MvPolynomial (Fin 3) A), q ∈ E.1 ∧ g.1 = MvPolynomial.rename (fun t => (E, t)) q` using `fun g => hF g.2`. Use `choose Eg qg hq hgq using hg`. Take `⟨B₁, i1, i2, hP, hC, hpt⟩` from `hfin (Set.range fun g : {g // g ∈ F} => (Eg g).1) (Set.finite_range _) (by rintro _ ⟨g, rfl⟩; exact (Eg g).2)`. Establish `hpt' : ∀ E : 𝓔, ∃ y : Fin 3 → B₁, E.1 ∈ (Set.range fun g : {g // g ∈ F} => (Eg g).1) → ∀ q ∈ E.1, MvPolynomial.eval₂ (algebraMap A B₁) y q = 0`. Introduce `E`.
+
+Distinguish the cases in `h : E.1 ∈ (Set.range fun g : {g // g ∈ F} => (Eg g).1)`. Take `⟨y, hy⟩` from `hpt _ h`. Conclude with `⟨y, fun _ => hy⟩`. Conclude with `⟨0, fun h' => absurd h' h⟩`. Use `choose y hy using hpt'`.
+
+Use `⟨B₁, i1, i2, hP, hC, MvPolynomial.aeval (fun v => y v.1 v.2), ?_⟩` and prove the remaining obligations. Introduce `g hg`. Establish `e` using `hgq ⟨g, hg⟩`. Simplify using `only at e`. Rewrite using `[e, MvPolynomial.aeval_rename, MvPolynomial.aeval_def]`.
+
+Conclude with `hy _ ⟨⟨g, hg⟩, rfl⟩ _ (hq ⟨g, hg⟩)`.
+-/
 theorem exists_kill (p : ℕ) {A : Type} [CommRing A] (r : ℕ → A)
     {𝓔 : Set (Set (MvPolynomial (Fin 3) A))}
     (hfin : ∀ J : Set (Set (MvPolynomial (Fin 3) A)), J.Finite → J ⊆ 𝓔 →
@@ -45,6 +54,27 @@ theorem exists_kill (p : ℕ) {A : Type} [CommRing A] (r : ℕ → A)
   rw [e, MvPolynomial.aeval_rename, MvPolynomial.aeval_def]
   exact hy _ ⟨⟨g, hg⟩, rfl⟩ _ (hq ⟨g, hg⟩)
 
+/- English proof (translation)
+Introduce `p _ A _ r 𝓔 hA hfin`. Establish `hpS : (p : MvPolynomial (𝓔 × Fin 3) A) = 0`. Use `congrArg (algebraMap A (MvPolynomial (𝓔 × Fin 3) A)) hA.char` as an intermediate fact. Simplify using `using this`. Take `⟨B, instB, i, hQ⟩` from `GlobalTheory.CompanionTheory.PerfClos.exists_PQ p (MvPolynomial (𝓔 × Fin 3) A) (Ideal.span (gens 𝓔)) hpS`.
+
+Use `letI instAB : Algebra A B := (i.comp MvPolynomial.C).toAlgebra`. Set `iA : MvPolynomial (𝓔 × Fin 3) A →ₐ[A] B` to `{ i with commutes' := fun _ => rfl }`. Use `⟨B, instB, instAB, hQ.pf, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `GlobalTheory.CompanionTheory.CovCmp.cov_of_solv` to reduce the goal to its premises. Introduce `m n a c hS`.
+
+Take `⟨k, s, hs⟩` from `GlobalTheory.CompanionTheory.PerfectQuotient.solv_pow p A (MvPolynomial (𝓔 × Fin 3) A) B iA (Ideal.span (gens 𝓔)) m n a c hA.char hQ hS`. Establish `hT` using `fun t => Submodule.mem_span_finite_of_mem_span (hs t)`. Use `choose G hGs hGm using hT`. Take `⟨B₁, i1, i2, hP, hC, τ, hτ⟩` from `exists_kill p r hfin (Finset.univ.biUnion G) (by`. Introduce `g hg`.
+
+Take `⟨t, -, ht⟩` from `Finset.mem_biUnion.1 (Finset.mem_coe.1 hg)`. Conclude with `hGs t ht)`. Use `⟨B₁, i1, i2, hC, GlobalTheory.CompanionTheory.PerfectRing.solv_of_solv_pow p A B₁ m n k a c hP ⟨fun j => τ (s j), fun t => ?_⟩⟩` and prove the remaining obligations. Establish `hle : Ideal.span (G t : Set (MvPolynomial (𝓔 × Fin 3) A)) ≤ RingHom.ker τ` using `Ideal.span_le.2 fun g hg => hτ g (Finset.mem_biUnion.2 ⟨t, Finset.mem_univ t, Finset.mem_coe.1 hg⟩)`. Establish `h0` using `hle (hGm t)`.
+
+Rewrite `h0` using `[RingHom.mem_ker, map_sub, map_sum, AlgHom.commutes, sub_eq_zero]`. Simplify `h0` using `only [map_smul]`. Introduce `E hE`. Use `⟨fun t => i (MvPolynomial.X ((⟨E, hE⟩ : 𝓔), t)), fun q hq => ?_⟩` and prove the remaining obligations. Establish `hz : i (MvPolynomial.rename (fun t => ((⟨E, hE⟩ : 𝓔), t)) q) = 0` using `(hQ.ker _).2 ⟨0, by`.
+
+Establish `h : MvPolynomial.rename (fun t => ((⟨E, hE⟩ : 𝓔), t)) q ∈ Ideal.span (gens 𝓔)` using `Ideal.subset_span ⟨⟨E, hE⟩, q, hq, rfl⟩`. Simplify using `using h⟩`. Establish `hi : i = MvPolynomial.eval₂Hom (i.comp MvPolynomial.C) (fun v => i (MvPolynomial.X v))` using `MvPolynomial.ringHom_ext (by simp) (by simp)`. Establish `hz' : MvPolynomial.eval₂Hom (i.comp MvPolynomial.C) (fun v => i (MvPolynomial.X v)) (MvPolynomial.rename (fun t => ((⟨E, hE⟩ : 𝓔), t)) q) = 0`. Rewrite using `[← hi]`.
+
+Conclude with `hz`. Rewrite `hz'` using `[MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_rename]`. Conclude with `hz'`. Introduce `T _ x hT hpts`. Establish `hpts' : ∀ E : 𝓔, ∃ y : Fin 3 → T, ∀ q ∈ E.1, MvPolynomial.eval₂ x y q = 0` using `fun E => hpts E.1 E.2`.
+
+Use `choose y hy using hpts'`. Establish `hle : Ideal.span (gens 𝓔) ≤ RingHom.ker (MvPolynomial.eval₂Hom x (fun v : 𝓔 × Fin 3 => y v.1 v.2))`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨E, q, hq, rfl⟩`. Use `show MvPolynomial.eval₂Hom x (fun v : 𝓔 × Fin 3 => y v.1 v.2) _ = 0`.
+
+Rewrite using `[MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_rename]`. Conclude with `hy E q hq`. Take `⟨ψ, hψ, -⟩` from `GlobalTheory.CompanionTheory.PerfectRing.pq_lift p _ B T i _ (MvPolynomial.eval₂Hom x (fun v : 𝓔 × Fin 3 => y v.1 v.2)) hQ hT (fun g hg => hle hg)`. Use `⟨ψ, RingHom.ext fun a => ?_⟩` and prove the remaining obligations. Use `RingHom.congr_fun hψ (MvPolynomial.C a)` as an intermediate fact.
+
+Use `show ψ (i (MvPolynomial.C a)) = x a`. Simplify using `using this`.
+-/
 theorem big_step : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A] (r : ℕ → A) (𝓔 : Set (Set (MvPolynomial (Fin 3) A))), Pf p A → (∀ J : Set (Set (MvPolynomial (Fin 3) A)), J.Finite → J ⊆ 𝓔 → ∃ (B : Type) (_ : CommRing B) (_ : Algebra A B), Pf p B ∧ Cov p r B ∧ ∀ E ∈ J, Pt (algebraMap A B) E) → ∃ (B : Type) (_ : CommRing B) (_ : Algebra A B), Pf p B ∧ Cov p r B ∧ (∀ E ∈ 𝓔, Pt (algebraMap A B) E) ∧ ∀ (T : Type) [CommRing T] (x : A →+* T), Pf p T → (∀ E ∈ 𝓔, Pt x E) → ∃ y : B →+* T, y.comp (algebraMap A B) = x := by
   classical
   intro p _ A _ r 𝓔 hA hfin

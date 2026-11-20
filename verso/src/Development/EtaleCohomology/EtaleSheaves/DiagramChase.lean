@@ -28,6 +28,11 @@ def DiagramChase₂ : Prop := Hyp → MV → ∀ (q : ℕ) {J : Type} [SmallCate
   (U V : X.Opens), U ⊔ V = ⊤ → PO q D c j0 (e.hom ⁻¹ᵁ U) → PO q D c j0 (e.hom ⁻¹ᵁ V) → PO q D c j0 (e.hom ⁻¹ᵁ (U ⊓ V)) →
   ∀ n i : ℤ, ∀ x : Ht q (sch.obj c.pt) n i, ∃ j y, pull _ (sch.map (c.π.app j)) _ _ y = x
 
+/- English proof (translation)
+Introduce `h hmv X U V hU hV hUV pU pV pW q J _ _ D c hc ha hcs hqs hu j0 ⟨e⟩ n i`. Establish `: QuasiSeparatedSpace X` using `quasiSeparatedSpace_of_quasiSeparated e.inv`. Establish `hW : IsCompact ((U ⊓ V : X.Opens) : Set X)`. Rewrite using `[TopologicalSpace.Opens.coe_inf]`. Conclude with `QuasiSeparatedSpace.inter_isCompact _ _ U.2 hU V.2 hV`.
+
+Conclude with `hC h hmv q D c hc ha hcs hqs hu j0 X e U V hUV (hR q D c hc ha hcs hqs hu j0 X e U hU pU) (hR q D c hc ha hcs hqs hu j0 X e V hV pV) (hR q D c hc ha hcs hqs hu j0 X e (U ⊓ V) hW pW) n i`.
+-/
 theorem S_of_restr_chase (hR : Restr) (hC : DiagramChase₂) : LateralTheory.E.ContStepPf.StepS := by
   intro h hmv X U V hU hV hUV pU pV pW q J _ _ D c hc ha hcs hqs hu j0 ⟨e⟩ n i
   have : QuasiSeparatedSpace X := quasiSeparatedSpace_of_quasiSeparated e.inv
@@ -37,11 +42,23 @@ theorem S_of_restr_chase (hR : Restr) (hC : DiagramChase₂) : LateralTheory.E.C
   exact hC h hmv q D c hc ha hcs hqs hu j0 X e U V hUV (hR q D c hc ha hcs hqs hu j0 X e U hU pU)
     (hR q D c hc ha hcs hqs hu j0 X e V hV pV) (hR q D c hc ha hcs hqs hu j0 X e (U ⊓ V) hW pW) n i
 
+/- English proof (translation)
+Substitute `hB` using the available equality. Conclude with `id`.
+-/
 theorem po_res_zero {q : ℕ} {Y Z : Scheme.{0}} (φ : Y ⟶ Z) (A : Z.Opens) (B B' : Y.Opens) (hB : B = B')
     (h : B ≤ φ ⁻¹ᵁ A) (h' : B' ≤ φ ⁻¹ᵁ A) (n i : ℤ) (y : Ht q (sch.obj A.toScheme) n i) :
     pull _ (sch.map (φ.resLE A B h)) _ _ y = 0 → pull _ (sch.map (φ.resLE A B' h')) (tw q i) n y = 0 := by
   subst hB; exact id
 
+/- English proof (translation)
+Introduce `q J _ _ D c hc ha hcs hqs hu j0 X e W hWc pW`. Establish `: ∀ {i j : J} (f : i ⟶ j), IsAffineHom (D.map f)` using `ha`. Use `set W' : (D.obj j0).Opens := e.hom ⁻¹ᵁ W with hW'def`. Establish `hW' : IsCompact (W' : Set (D.obj j0))` using `QuasiCompact.isCompact_preimage (f := e.hom) _ W.2 hWc`. Establish `key` using `pW q (opensDiagram D j0 W') (opensCone D c j0 W') (isLimitOpensCone D c hc j0 W') (fun f => inferInstance) (fun j => isCompact_iff_compactSpace.mp (QuasiCompact.isCompact_preimage (f := D.map j.hom) _ W'.2 hW')) (fun j => by have := hqs j.left; exact (D.map j.hom ⁻¹ᵁ W').ι.isOpen …`.
+
+Establish `h` using `(hu j.left).map ((D.map j.hom ⁻¹ᵁ W').ι.appTop.hom)`. Simplify using `only [map_natCast] at h`. Conclude with `h)`. Use the proof step `(Over.mk (𝟙 j0)) ⟨(Scheme.isoOfEq _ (by simp [hW'def])) ≪≫ e.hom.preimageIso W⟩`. Introduce `n i`.
+
+Use `⟨fun x => ?_, fun k f y hy => ?_⟩` and prove the remaining obligations. Take `⟨j, y, hy⟩` from `(key n i).1 x`. Conclude with `⟨j.left, j.hom, y, hy⟩`. Take `⟨k', g, hg⟩` from `(key n i).2 (Over.mk f) y hy`. Establish `hw : g.left ≫ f = k'.hom` using `Over.w g`.
+
+Use `⟨k'.left, g.left, ?_⟩` and prove the remaining obligations. Conclude with `po_res_zero (D.map g.left) _ _ _ (by rw [hw]) _ _ n i y hg`.
+-/
 theorem restr : Restr := by
   intro q J _ _ D c hc ha hcs hqs hu j0 X e W hWc pW
   have : ∀ {i j : J} (f : i ⟶ j), IsAffineHom (D.map f) := ha

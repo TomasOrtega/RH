@@ -20,6 +20,15 @@ open GlobalTheory GlobalTheory.CM
 noncomputable section
 namespace GlobalTheory.CM.Recog
 
+/- English proof (translation)
+Introduce `y`. Take `⟨e, he⟩` from `exists_mulEquiv_of_isGrpPullback hχ t' t ht`. Take `⟨n, i, x, hx⟩` from `h (e.symm y)`. Use `⟨n, i, fun m => Over.homMk ((x m).left ≫ φ) ?_, ?_⟩` and prove the remaining obligations. Establish `hw` using `Over.w (x m)`.
+
+Simplify using `only [Over.mk_hom] at hw ⊢`. Rewrite using `[Category.assoc, hφ, ← Category.assoc, hw, ht]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hx, map_list_prod, List.map_ofFn]`. Both sides reduce to the same expression.
+
+Use `_ = _ := by`. Use `congr 1`. Use `List.ofFn_inj.mpr (funext fun m => ?_)` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[he, Over.comp_left, Over.comp_left, Category.assoc, hψ]`.
+
+Both sides reduce to the same expression.
+-/
 theorem ontoAt_of_isGrpPullback {S S' : Scheme.{0}} {f : S' ⟶ S} {I : Type} {B A : Over S} {B' A' : Over S'}
     [GrpObj A] [GrpObj A'] {φ : B'.left ⟶ B.left} {χ : A'.left ⟶ A.left} (hφ : φ ≫ B.hom = B'.hom ≫ f)
     (hχ : IsGrpPullback A' A f χ) {ψ : I → (B ⟶ A)} {ψ' : I → (B' ⟶ A')}
@@ -42,12 +51,38 @@ theorem ontoAt_of_isGrpPullback {S S' : Scheme.{0}} {f : S' ⟶ S} {I : Type} {B
         rw [he, Over.comp_left, Over.comp_left, Category.assoc, hψ]
         rfl
 
+/- English proof (translation)
+Unfold `spMap`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 private lemma spMap_comp_moduli_spaces {A B C' : Type} [CommRing A] [CommRing B] [CommRing C'] (f : A →+* B) (g : B →+* C') :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   unfold spMap
   rw [← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Introduce `hU hL hD E _ _ _ H k _ ω C T r hP hT`. Establish `hB : Out.PolBaseChangeSt` using `hL.polBaseChange`. Take `⟨Ck, φk, hCk⟩` from `GlobalTheory.CM.exists_ellMap hB E H (𝓞 k) ω C k (algebraMap (𝓞 k) k)`. Take `⟨Tk, mk, -⟩` from `GlobalTheory.T.exists_pat_pullback_g_eq E H _ _ (spMap (algebraMap (𝓞 k) k)) T`. Take `⟨Cc, φc, hCc⟩` from `GlobalTheory.CM.exists_ellMap hB E H k _ Ck ℂ (algebraMap k ℂ)`.
+
+Take `⟨Tc, mc, -⟩` from `GlobalTheory.T.exists_pat_pullback_g_eq E H _ _ (spMap (algebraMap k ℂ)) Tk`. Establish `hPk : Ck.IsPrincipalAt (algebraMap k ℂ)` using `(GlobalTheory.CM.EllComp.ellMap_comp E H (𝓞 k) ω C k _ Ck (algebraMap (𝓞 k) k) φk hCk).2.1 _ hP`. Establish `hPc : Cc.IsPrincipalAt (RingHom.id ℂ)` using `(GlobalTheory.CM.EllComp.ellMap_comp E H k _ Ck ℂ _ Cc (algebraMap k ℂ) φc hCc).2.1 _ (by rwa [RingHom.id_comp])`. Take `⟨nc, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp mk mc`. Rewrite `nc` using `[spMap_comp_moduli_spaces]`.
+
+Establish `hinj : Function.Injective ((algebraMap k ℂ).comp (algebraMap (𝓞 k) k))`. Rewrite using `[RingHom.coe_comp]`. Conclude with `(algebraMap k ℂ).injective.comp (IsFractionRing.injective (𝓞 k) k)`. Establish `hTc` using `(GlobalTheory.CM.hasType_baseChange E H (𝓞 k) ℂ _ T.t Tc.t nc (2 * ω - 1) r 0).1 hinj hT`. Establish `hωc : ((algebraMap k ℂ).comp (algebraMap (𝓞 k) k)) (2 * ω - 1) = 2 * algebraMap k ℂ (algebraMap (𝓞 k) k ω) - 1`.
+
+Simplify using `only [map_sub, map_mul, map_ofNat, map_one, RingHom.comp_apply]`. Rewrite `hTc` using `[hωc]`. Take `⟨D, ε, h, ψc, hpq, hK, hpos, hFc, hOc⟩` from `GlobalTheory.T.exists_homFamily_of_pureType_complex_triple hU hL E H _ Cc Tc r hPc hTc`. Take `⟨k₁, hfin, hk, huniv⟩` from `GlobalTheory.T.cmFamily_descends_to_numberField hU hL E H k _ Ck D h Tk ⊤ _ Cc φc Tc mc ψc hCc hFc`. Establish `: FiniteDimensional ℚ k₁` using `hfin`.
+
+Establish `: NumberField k₁` using `⟨⟩`. Take `⟨C₁, φ₁, hC₁⟩` from `GlobalTheory.CM.exists_ellMap hB E H (𝓞 k) ω C (𝓞 k₁) (RingOfIntegers.mapRingHom (IntermediateField.inclusion hk).toRingHom)`. Take `⟨T₁, m₁, -⟩` from `GlobalTheory.T.exists_pat_pullback_g_eq E H _ _ (spMap (RingOfIntegers.mapRingHom (IntermediateField.inclusion hk).toRingHom)) T`. Take `⟨C₂, φa, hC₂⟩` from `GlobalTheory.CM.exists_ellMap hB E H (𝓞 k₁) _ C₁ k₁ (algebraMap (𝓞 k₁) k₁)`. Take `⟨T₂, ma, -⟩` from `GlobalTheory.T.exists_pat_pullback_g_eq E H _ _ (spMap (algebraMap (𝓞 k₁) k₁)) T₁`.
+
+Establish `hring : (algebraMap (𝓞 k₁) k₁).comp (RingOfIntegers.mapRingHom (IntermediateField.inclusion hk).toRingHom) = (IntermediateField.inclusion hk).toRingHom.comp (algebraMap (𝓞 k) k)`. Use extensionality with `x`. Both sides reduce to the same expression. Establish `hring' : (algebraMap k₁ ℂ).comp (IntermediateField.inclusion hk).toRingHom = algebraMap k ℂ`. Use extensionality with `x`.
+
+Both sides reduce to the same expression. Establish `h21` using `(GlobalTheory.CM.EllComp.ellMap_comp E H (𝓞 k) ω C (𝓞 k₁) _ C₁ _ φ₁ hC₁).1 k₁ _ C₂ _ φa hC₂`. Rewrite `h21` using `[hring]`. Take `⟨φ₂, hφ₂, -⟩` from `GlobalTheory.CM.Factor.ellMap_cancel hCk h21`. Establish `hCc' : EllMap Cc Ck ((algebraMap k₁ ℂ).comp (IntermediateField.inclusion hk).toRingHom) φc`.
+
+Rewrite using `[hring']`. Conclude with `hCc`. Take `⟨φ₃, hφ₃, hφ₃c⟩` from `GlobalTheory.CM.Factor.ellMap_cancel hφ₂ hCc'`. Take `⟨n21, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp m₁ ma`. Take `⟨m₂, -⟩` from `(GlobalTheory.CM.Factor.ellMap_cancel_and_sabMap_cancel E H k k k₁ (RingHom.id k) (IntermediateField.inclusion hk).toRingHom).2 _ _ _ T.t Tk.t T₂.t mk n21 (by rw [spMap_comp_moduli_spaces, spMap_comp_moduli_spaces, hring])`.
+
+Take `⟨m₃, hm₃⟩` from `(GlobalTheory.CM.Factor.ellMap_cancel_and_sabMap_cancel E H k₁ k₁ ℂ (RingHom.id k₁) (algebraMap k₁ ℂ)).2 _ _ _ Tk.t T₂.t Tc.t m₂ mc (by rw [spMap_comp_moduli_spaces, hring'])`. Take `⟨ψ₂, hF₂, hψ₂⟩` from `huniv k₁ hk le_rfl _ C₂ φ₂ φ₃ T₂ m₂ m₃ hφ₂ hφ₃ hφ₃c hm₃`. Take `⟨ψ₁, hF₁, hψ₁⟩` from `GlobalTheory.T.cmFamily_extends_over_dedekindDomain hL hD E H (𝓞 k₁) k₁ _ C₁ D h T₁ ⊤ _ C₂ φa T₂ ma ψ₂ hC₂ hF₂`. Take `⟨n1, hn1⟩` from `GlobalTheory.ObjMaps.exists_sab_comp ma m₃`. Take `⟨-, ⟨-, ⟨hsq3, -⟩, -⟩, -⟩` from `hφ₃`.
+
+Take `⟨-, ⟨-, ⟨hsqa, -⟩, -⟩, -⟩` from `hC₂`. Establish `hOnto : OntoAt ψ₁ (spMap ((algebraMap k₁ ℂ).comp (algebraMap (𝓞 k₁) k₁)))`. Use `ontoAt_of_isGrpPullback (φ := φ₃ ≫ φa) (χ := n1.φ) ?_ n1.cart (fun a => ?_) ?_ hOc` and prove the remaining obligations. Rewrite using `[Category.assoc, hsqa.w, ← Category.assoc, hsq3.w, Category.assoc]`. Rewrite using `[hn1, ← Category.assoc, hψ₂ a, Category.assoc, hψ₁ a, Category.assoc]`.
+
+Rewrite using `[spMap_comp_moduli_spaces, spMap_comp_moduli_spaces, RingHom.id_comp]`. Establish `hinj₁ : Function.Injective ((algebraMap k₁ ℂ).comp (algebraMap (𝓞 k₁) k₁))`. Rewrite using `[RingHom.coe_comp]`. Conclude with `(algebraMap k₁ ℂ).injective.comp (IsFractionRing.injective (𝓞 k₁) k₁)`. Conclude with `⟨k₁, inferInstance, hk, _, C₁, φ₁, T₁, m₁, D, ε, h, hC₁, hpq, hK, hpos, GlobalTheory.T.nonempty_tensor_of_onto_full_family hL E H (𝓞 k₁) _ _ C₁ D ε h T₁ ψ₁ hinj₁ hK hpos hF₁ hOnto⟩`.
+-/
 theorem exists_isTen_of_hasType : ThetaUnifAV → Out.Laws → HomExtDvr → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (k : IntermediateField ℚ ℂ) [NumberField k] (ω : 𝓞 k) (C : Ell H (𝓞 k) ω) (T : PAT H (Sp (𝓞 k))) (r : ℕ), C.IsPrincipalAt ((algebraMap k ℂ).comp (algebraMap (𝓞 k) k)) → HasType H T.t.act (2 * ω - 1) r 0 →
   ∃ (k₁ : IntermediateField ℚ ℂ) (_ : NumberField k₁) (hk : k ≤ k₁) (ω₁ : 𝓞 k₁) (C₁ : Ell H (𝓞 k₁) ω₁) (φ : C₁.P.A.left ⟶ C.P.A.left) (T₁ : PAT H (Sp (𝓞 k₁))) (_ : SABMap T₁.t T.t (spMap (RingOfIntegers.mapRingHom (IntermediateField.inclusion hk).toRingHom))) (D : Datum H) (ε : ℤˣ) (h : D.La → D.La → OK H), EllMap C₁ C (RingOfIntegers.mapRingHom (IntermediateField.inclusion hk).toRingHom) φ ∧ D.p + D.q = r ∧ IsKForm D ε h ∧ (∀ x : D.La, x ≠ 0 → 0 < (ε : ℤ) * D.EF (H.w0 • x) x) ∧ Nonempty (IsTen C₁ D h T₁) := by
   intro hU hL hD E _ _ _ H k _ ω C T r hP hT

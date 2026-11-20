@@ -15,6 +15,17 @@ open scoped ContDiff
 
 namespace GlobalTheory.ThetaRR
 
+/- English proof (translation)
+Introduce `HC k _ X _ p hp E h H`. Establish `hφ : ∀ σ c y, ((VMetric.det H).φ σ).φ c y = 0`. Introduce `σ c y`. Use `show -Real.log ((h.met σ).G c y).det.re = 0`. Simplify using `[Matrix.det_isEmpty]`.
+
+Establish `hd : ∀ σ (c : AlgChart p σ 1) y, c.chernDens ((VMetric.det H).φ σ) y = 0`. Introduce `σ c y`. Simplify using `only [AlgChart.chernDens, AlgChart.hess, hφ]`. Establish `h0 : ReciprocityTheory.L2DbarEstimates.cHess 1 (fun _ => ((0 : ℝ) : ℂ)) (c.e y) = 0`. Establish `hw : ∀ b : Fin 1, ReciprocityTheory.L2DbarEstimates.wdb 1 b (fun _ => ((0 : ℝ) : ℂ)) = fun _ => 0`.
+
+Introduce `b`. Use function extensionality and compare the values at `v`. Simplify using `[ReciprocityTheory.L2DbarEstimates.wdb]`. Use extensionality with `a b`. Simplify using `only [ReciprocityTheory.L2DbarEstimates.cHess, Matrix.of_apply, hw]`.
+
+Simplify using `[ReciprocityTheory.L2DbarEstimates.wd]`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `hm : ∀ σ (ε : ℤˣ), ((VMetric.det H).φ σ).chernPart 1 ε = 0`. Introduce `σ ε`.
+
+Simplify using `only [Weight.chernPart, hd, mul_zero, ENNReal.ofReal_zero]`. Establish `hz : ∀ g : ReciprocityTheory.L2DbarEstimates.V 1 → CxPts p σ, (fun _ : CxPts p σ => (0 : ENNReal)) ∘ g = 0` using `fun _ => rfl`. Simplify using `only [ChartGlue.glueMeas, ChartGlue.chartMeas, hz, MeasureTheory.withDensity_zero, MeasureTheory.Measure.map_zero]`. Conclude with `le_antisymm (iSup_le fun _ => le_rfl) (MeasureTheory.Measure.zero_le _)`. Simplify using `[gdeg, chInt, Weight.chernInt, hm]`.
+-/
 theorem gdeg_det_rank_zero : ∀ (HC : GlobalTheory.Published.ArCalc) {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} (hp : IsArithVar p 1) {E : X.Modules} {h : VMetric p E 0} (H : h.IsCInf), gdeg (VMetric.det H) 1 = 0 := by
   intro HC k _ X _ p hp E h H
   have hφ : ∀ σ c y, ((VMetric.det H).φ σ).φ c y = 0 := by

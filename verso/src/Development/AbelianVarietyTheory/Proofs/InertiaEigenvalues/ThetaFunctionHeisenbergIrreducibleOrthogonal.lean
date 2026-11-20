@@ -20,6 +20,11 @@ namespace GlobalTheory.ThetaIrred
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
+/- English proof (translation)
+Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by rw [Measure.restrict_apply_univ, h1]; exact ENNReal.one_lt_top⟩`. Take `⟨Cf, hCf⟩` from `GlobalTheory.ThetaSchurBdd.exists_bound hψ hf`. Take `⟨Cg, hCg⟩` from `GlobalTheory.ThetaSchurBdd.exists_bound hψ hg`. Use `Integrable.of_bound (hf.cont.star.mul (hq.mul hg.cont)).aestronglyMeasurable (Cf * (Cq * Cg)) (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, norm_mul, norm_star]`. Establish `a0 : 0 ≤ Cq` using `(norm_nonneg _).trans (hCq x)`. Establish `b0 : 0 ≤ Cf` using `(norm_nonneg _).trans (hCf x)`. Conclude with `mul_le_mul (hCf x) (mul_le_mul (hCq x) (hCg x) (norm_nonneg _) a0) (by positivity) b0`.
+-/
 theorem integrable_star_mul (hψ : IsStdChar D ψ (-1)) {μ : Measure (WO S T)} {𝓕 : Set (WO S T)} (h1 : μ 𝓕 = 1)
     {f g q : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (hg : IsThetaFunO ψ S T g) (hq : Continuous q)
     {Cq : ℝ} (hCq : ∀ x, ‖q x‖ ≤ Cq) :
@@ -35,6 +40,29 @@ theorem integrable_star_mul (hψ : IsStdChar D ψ (-1)) {μ : Measure (WO S T)} 
   have b0 : 0 ≤ Cf := (norm_nonneg _).trans (hCf x)
   exact mul_le_mul (hCf x) (mul_le_mul (hCq x) (hCg x) (norm_nonneg _) a0) (by positivity) b0
 
+/- English proof (translation)
+Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by rw [Measure.restrict_apply_univ, h1]; exact ENNReal.one_lt_top⟩`. Establish `hth` using `(GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T).1`. Take `⟨Ch, hCh⟩` from `GlobalTheory.ThetaSchurBdd.exists_bound hψ hh`. Take `⟨Ck, hCk⟩` from `GlobalTheory.ThetaSchurBdd.exists_bound hψ hk`.
+
+Establish `ch0 : 0 ≤ Ch` using `(norm_nonneg _).trans (hCh 0)`. Establish `ck0 : 0 ≤ Ck` using `(norm_nonneg _).trans (hCk 0)`. Use `set I := ∫ x in 𝓕, star (h x) * (q x * k x) ∂μ with hIdef`. Establish `hint` using `integrable_star_mul hψ h1 hh hk hq hCq`. Establish `key : ∀ δ : ℝ, 0 < δ → ‖I‖ ≤ δ * (Ch * Ck)`.
+
+Introduce `δ hδ`. Take `⟨s, c, hsc⟩` from `GlobalTheory.ThetaSchurBdd.trig_approx hψ hq hqp hδ`. Establish `hpk` using `GlobalTheory.ThetaSchurBdd.trig_mul_eq s c hk`. Establish `hsum : ∀ x, star (h x) * ((∑ a ∈ s, c a * ψ (symplO S T x a)) * k x) = ∑ a ∈ s, c a * (star (h x) * heisO ψ S T a k x)`. Introduce `x`.
+
+Use `congrFun hpk x` as an intermediate fact. Rewrite using `[this, Finset.sum_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hint_a : ∀ a ∈ s, Integrable (fun x => c a * (star (h x) * heisO ψ S T a k x)) (μ.restrict 𝓕)`. Introduce `a _`. Use `integrable_star_mul hψ h1 hh (hth a k hk) (q := fun _ => (1 : ℂ)) continuous_const (Cq := 1) (fun _ => by simp)` as an intermediate fact. Simplify using `only [one_mul] at this`. Conclude with `this.const_mul (c a)`.
+
+Establish `hP : ∫ x in 𝓕, star (h x) * ((∑ a ∈ s, c a * ψ (symplO S T x a)) * k x) ∂μ = 0`. Repeatedly rewrite using `[hsum]`. Rewrite using `[integral_finset_sum s hint_a]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul]`.
+
+Use `horth a a.2` as an intermediate fact. Unfold `thetaIP at this`. Rewrite using `[this, mul_zero]`. Establish `hPint : Integrable (fun x => star (h x) * ((∑ a ∈ s, c a * ψ (symplO S T x a)) * k x)) (μ.restrict 𝓕)`. Repeatedly rewrite using `[hsum]`.
+
+Conclude with `integrable_finset_sum s hint_a`. Establish `hdiff : I = ∫ x in 𝓕, (star (h x) * (q x * k x) - star (h x) * ((∑ a ∈ s, c a * ψ (symplO S T x a)) * k x)) ∂μ`. Rewrite using `[integral_sub hint hPint, hP, sub_zero]`. Rewrite using `[hdiff]`. Establish `hb : ∀ᵐ x ∂(μ.restrict 𝓕), ‖star (h x) * (q x * k x) - star (h x) * ((∑ a ∈ s, c a * ψ (symplO S T x a)) * k x)‖ ≤ δ * (Ch * Ck)`.
+
+Use `Filter.Eventually.of_forall fun x => ?_` and prove the remaining obligations. Rewrite using `[show star (h x) * (q x * k x) - star (h x) * ((∑ a ∈ s, c a * ψ (symplO S T x a)) * k x) = star (h x) * ((q x - ∑ a ∈ s, c a * ψ (symplO S T x a)) * k x) by ring]`. Rewrite using `[norm_mul, norm_mul, norm_star]`. Establish `e1` using `hsc x`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `(norm_integral_le_of_norm_le_const hb).trans ?_` and prove the remaining obligations. Rewrite using `[measureReal_def, Measure.restrict_apply_univ, h1, ENNReal.toReal_one, mul_one]`. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖I‖` using `norm_pos_iff.2 hne`. Establish `hM : 0 < Ch * Ck + 1` using `by positivity`.
+
+Use `key (‖I‖ / (Ch * Ck + 1)) (div_pos hpos hM)` as an intermediate fact. Rewrite `this` using `[div_mul_eq_mul_div, le_div_iff₀ hM]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem orth_periodic (hψ : IsStdChar D ψ (-1)) {μ : Measure (WO S T)} {𝓕 : Set (WO S T)} (h1 : μ 𝓕 = 1)
     {h k : WO S T → ℂ} (hh : IsThetaFunO ψ S T h) (hk : IsThetaFunO ψ S T k)
     (horth : ∀ γ ∈ ratL T S, thetaIP μ 𝓕 h (heisO ψ S T γ k) = 0)
@@ -102,6 +130,23 @@ theorem orth_periodic (hψ : IsStdChar D ψ (-1)) {μ : Measure (WO S T)} {𝓕 
   rw [div_mul_eq_mul_div, le_div_iff₀ hM] at this
   nlinarith
 
+/- English proof (translation)
+Establish `h1 : μ 𝓕 = 1` using `hcv.2.2`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Take `⟨Ch, hCh⟩` from `GlobalTheory.ThetaSchurBdd.exists_bound hψ hh`. Take `⟨Ck, hCk⟩` from `GlobalTheory.ThetaSchurBdd.exists_bound hψ hk`. Establish `ch0 : 0 ≤ Ch` using `(norm_nonneg _).trans (hCh 0)`.
+
+Use `set q : WO S T → ℂ := fun x => h x * star (k x) with hq`. Establish `hqc : Continuous q` using `hh.cont.mul hk.cont.star`. Establish `hqb : ∀ x, ‖q x‖ ≤ Ch * Ck` using `fun x => by`. Rewrite using `[hq, norm_mul, norm_star]`. Conclude with `mul_le_mul (hCh x) (hCk x) (norm_nonneg _) ch0`.
+
+Establish `hqp : ∀ γ ∈ ratL T S, ∀ x, q (γ + x) = q x` using `fun γ hγ x => GlobalTheory.ThetaSchur.prod_periodic hψ hh hk hγ x`. Establish `hz` using `orth_periodic hψ h1 hh hk horth hqc hqp hqb`. Use `set F : WO S T → ℝ := fun x => ‖h x‖ ^ 2 * ‖k x‖ ^ 2 with hF`. Establish `hpt : ∀ x, star (h x) * (q x * k x) = ((F x : ℝ) : ℂ)`. Introduce `x`.
+
+Rewrite using `[hq, hF, show star (h x) * (h x * star (k x) * k x) = (star (h x) * h x) * (star (k x) * k x) by ring]`. Simplify using `only [Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hint` using `integrable_star_mul hψ h1 hh hk hqc hqb`.
+
+Rewrite `hz`, `hint` using `[hpt]`. Rewrite `hz` using `[integral_complex_ofReal, Complex.ofReal_eq_zero]`. Establish `hFi : Integrable F (μ.restrict 𝓕)`. Use `hint.re` as an intermediate fact. Simplify using `using this`.
+
+Establish `hae : ∀ᵐ x ∂(μ.restrict 𝓕), F x = 0` using `(integral_eq_zero_iff_of_nonneg (fun x => by positivity) hFi).1 hz`. Establish `hf` using `GlobalTheory.ThetaSchurBdd.isTheta_star_mul_mul hψ hk hk hh`. Establish `h0 : nrm2 μ 𝓕 (fun x => star (k x) * k x * h x) = 0`. Unfold `nrm2`. Use `integral_eq_zero_of_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hae] with y hy`. Establish `e : ‖star (k y) * k y * h y‖ ^ 2 = ‖k y‖ ^ 2 * F y`. Rewrite using `[hF, norm_mul, norm_mul, norm_star]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Pi.zero_apply, e, hy, mul_zero]`.
+
+Use `congrFun (GlobalTheory.ThetaSchurBdd.thetaFunction_eq_zero_of_meanSquare_zero hψ hcv hf h0) x` as an intermediate fact. Simplify using `only [Pi.zero_apply, mul_eq_zero, star_eq_zero, or_self] at this`. Conclude with `this.symm`.
+-/
 theorem pointwise (hψ : IsStdChar D ψ (-1)) {μ : Measure (WO S T)} {𝓕 : Set (WO S T)}
     (hcv : IsCovolOne (ratL T S) μ 𝓕)
     {h k : WO S T → ℂ} (hh : IsThetaFunO ψ S T h) (hk : IsThetaFunO ψ S T k)
@@ -149,6 +194,19 @@ theorem pointwise (hψ : IsStdChar D ψ (-1)) {μ : Measure (WO S T)} {𝓕 : Se
 
 end GlobalTheory.ThetaIrred
 
+/- English proof (translation)
+Introduce `D ψ S T hψ μ 𝓕 hcv h e hh he horth`. Establish `hth` using `(GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T).1`. Establish `hhh` using `(GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T).2.1`. Establish `key : ∀ w x, h x = 0 ∨ heisO ψ S T w e x = 0`. Introduce `w x`.
+
+Use `GlobalTheory.ThetaIrred.pointwise hψ hcv hh (hth w e he) (fun γ _ => ?_) x` and prove the remaining obligations. Rewrite using `[hhh γ w e]`. Unfold `thetaIP`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_left_comm (star (h _))]`. Rewrite using `[integral_const_mul]`.
+
+Use `horth (γ + w)` as an intermediate fact. Unfold `thetaIP at this`. Rewrite using `[this, mul_zero]`. Distinguish the cases in `he0 : e = 0`. Conclude with `Or.inr he0`.
+
+Use `left`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, e y ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Conclude with `he0 (funext hn)`.
+
+Use function extensionality and compare the values at `x`. Break down `key (y - x) x with h0 | h0` into its components or cases. Conclude with `h0`. It suffices to derive a contradiction. Simplify using `only [heisO, add_sub_cancel] at h0`.
+
+Break down `mul_eq_zero.1 h0 with h1 | h1` into its components or cases. Conclude with `GlobalTheory.ThetaSchurBdd.psi_ne_zero hψ _ h1`. Conclude with `hy h1`.
+-/
 theorem GlobalTheory.ThetaIrred.orth_heis_translates : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D), IsStdChar D ψ (-1) →
     ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 →
     ∀ h e : WO S T → ℂ, IsThetaFunO ψ S T h → IsThetaFunO ψ S T e →

@@ -3,6 +3,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Inert
 open NumberField IsDedekindDomain Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.HeckeGal GlobalTheory.CuspRep UpperTheory.V.Published GlobalTheory.RealGal GlobalTheory.UnitaryBC
 open UpperTheory.Gal.UnramifiedFromSplittingCriterion
 
+/- English proof (translation)
+Use `set y₀ : 𝓞 M := algebraMap (𝓞 K) (𝓞 M) (algebraMap (𝓞 (maximalRealSubfield K)) (𝓞 K) x) with hy₀`. Establish `hz : (y₀ : M) = algebraMap K M (((x : maximalRealSubfield K)) : K)` using `rfl`. Establish `hmem : (y₀ : M) ∈ maximalRealSubfield M`. Rewrite using `[hz]`. Conclude with `(mem_maximalRealSubfield_iff _).2 fun φ => (mem_maximalRealSubfield_iff _).1 (x : maximalRealSubfield K).2 (φ.comp (algebraMap K M))`.
+
+Establish `hint : IsIntegral ℤ (⟨(y₀ : M), hmem⟩ : maximalRealSubfield M)` using `(isIntegral_algebraMap_iff (B := M) (algebraMap (maximalRealSubfield M) M).injective).1 (RingOfIntegers.isIntegral_coe y₀)`. Conclude with `⟨⟨⟨(y₀ : M), hmem⟩, hint⟩, RingOfIntegers.ext rfl⟩`.
+-/
 private theorem exists_real_lift (K M : Type) [Field K] [NumberField K] [IsCMField K] [Field M] [NumberField M] [IsCMField M]
     [Algebra K M] (x : 𝓞 (maximalRealSubfield K)) :
     ∃ y : 𝓞 (maximalRealSubfield M), algebraMap (𝓞 (maximalRealSubfield M)) (𝓞 M) y =
@@ -18,6 +23,17 @@ private theorem exists_real_lift (K M : Type) [Field K] [NumberField K] [IsCMFie
       (RingOfIntegers.isIntegral_coe y₀)
   exact ⟨⟨⟨(y₀ : M), hmem⟩, hint⟩, RingOfIntegers.ext rfl⟩
 
+/- English proof (translation)
+Introduce `K M _ _ _ _ _ _ _`. Use `⟨fun w₁ w₂ hap h => hap ?_, fun v => ?_⟩` and prove the remaining obligations. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Apply `Ideal.ext` to reduce the goal to its premises. Introduce `x`.
+
+Take `⟨y, hy⟩` from `exists_real_lift K M x`. Establish `h' : y ∈ (w₁.under (𝓞 (maximalRealSubfield M))).asIdeal ↔ y ∈ (w₂.under (𝓞 (maximalRealSubfield M))).asIdeal` using `by rw [h]`. Simplify using `only [HeightOneSpectrum.under_asIdeal, Ideal.mem_comap, hy] at h' ⊢`. Conclude with `h'`. Establish `hinj : Function.Injective (algebraMap (𝓞 K) (𝓞 M))` using `FaithfulSMul.algebraMap_injective _ _`.
+
+Establish `hker : RingHom.ker (algebraMap (𝓞 K) (𝓞 M)) ≤ v.asIdeal`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 hinj]`. Conclude with `bot_le`. Use `haveI := v.isMaximal`. Take `⟨Q, hQ, hQm⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 M) v.asIdeal hker`.
+
+Establish `hne : Q ≠ ⊥`. Introduce and unpack `rfl`. Apply `v.ne_bot` to reduce the goal to its premises. Rewrite using `[← hQm, ← RingHom.ker_eq_comap_bot, (RingHom.injective_iff_ker_eq_bot _).1 hinj]`. Use `⟨⟨Q, hQ.isPrime, hne⟩, ?_⟩` and prove the remaining obligations.
+
+Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Rewrite using `[HeightOneSpectrum.under_asIdeal]`. Conclude with `hQm`.
+-/
 theorem UpperTheory.Gal.UnramifiedFromSplittingCriterion.apartUp :
     ApartUp := by
   intro K M _ _ _ _ _ _ _

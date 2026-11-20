@@ -7,24 +7,46 @@ noncomputable section
 
 namespace GlobalTheory.GrassTop
 
+/- English proof (translation)
+The claim follows from `Ideal.subset_span (Or.inl ⟨k, hk, rfl⟩)`.
+-/
 lemma rel_mem_J {p q k : ℕ} (hk : 1 ≤ k) : rel k ∈ J p q :=
   Ideal.subset_span (Or.inl ⟨k, hk, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `Ideal.subset_span (Or.inr (Or.inl ⟨b, rfl⟩))`.
+-/
 lemma X_zero_sub_one_mem_J {p q : ℕ} (b : Bool) :
     (X (b, 0) - 1 : MvPolynomial (Bool × ℕ) ℝ) ∈ J p q :=
   Ideal.subset_span (Or.inr (Or.inl ⟨b, rfl⟩))
 
+/- English proof (translation)
+The claim follows from `Ideal.subset_span (Or.inr (Or.inr (Or.inl ⟨k, hk, rfl⟩)))`.
+-/
 lemma X_true_mem_J {p q k : ℕ} (hk : p < k) : (X (true, k) : MvPolynomial (Bool × ℕ) ℝ) ∈ J p q :=
   Ideal.subset_span (Or.inr (Or.inr (Or.inl ⟨k, hk, rfl⟩)))
 
+/- English proof (translation)
+The claim follows from `Ideal.subset_span (Or.inr (Or.inr (Or.inr ⟨k, hk, rfl⟩)))`.
+-/
 lemma X_false_mem_J {p q k : ℕ} (hk : q < k) : (X (false, k) : MvPolynomial (Bool × ℕ) ℝ) ∈ J p q :=
   Ideal.subset_span (Or.inr (Or.inr (Or.inr ⟨k, hk, rfl⟩)))
 
+/- English proof (translation)
+Use `I.mul_mem_left (C ((-1 : ℝ) ^ n)) h` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← C_mul, ← mul_pow, neg_one_mul, neg_neg, one_pow, C_1, one_mul]`. Then use the resulting hypothesis.
+-/
 lemma mem_of_neg_one_pow_mul {I : Ideal (MvPolynomial (Bool × ℕ) ℝ)} {x : MvPolynomial (Bool × ℕ) ℝ}
     (n : ℕ) (h : C ((-1 : ℝ) ^ n) * x ∈ I) : x ∈ I := by
   have := I.mul_mem_left (C ((-1 : ℝ) ^ n)) h
   rwa [← mul_assoc, ← C_mul, ← mul_pow, neg_one_mul, neg_neg, one_pow, C_1, one_mul] at this
 
+/- English proof (translation)
+Establish `hrel` using `rel_mem_J (p := p) (q := q) hpq`. Establish `hp : p ∈ Finset.range (p + q + 1)` using `Finset.mem_range.2 (by omega)`. Rewrite `hrel` using `[rel, ← Finset.add_sum_erase _ _ hp]`. Establish `hrest : (∑ a ∈ (Finset.range (p + q + 1)).erase p, C ((-1 : ℝ) ^ (p + q - a)) * X (true, a) * X (false, p + q - a)) ∈ J p q`. Use `Ideal.sum_mem _ fun a ha => ?_` and prove the remaining obligations.
+
+Establish `hap` using `Finset.ne_of_mem_erase ha`. Break down `lt_or_gt_of_ne hap with h | h` into its components or cases. Conclude with `(J p q).mul_mem_left _ (X_false_mem_J (by omega))`. Conclude with `(J p q).mul_mem_right _ ((J p q).mul_mem_left _ (X_true_mem_J h))`. Use `(J p q).sub_mem hrel hrest` as an intermediate fact.
+
+Rewrite `this` using `[add_sub_cancel_right, Nat.add_sub_cancel_left, mul_assoc]`. Conclude with `mem_of_neg_one_pow_mul q this`.
+-/
 lemma X_mul_X_mem_J {p q : ℕ} (hpq : 1 ≤ p + q) :
     (X (true, p) * X (false, q) : MvPolynomial (Bool × ℕ) ℝ) ∈ J p q := by
   have hrel := rel_mem_J (p := p) (q := q) hpq
@@ -41,6 +63,11 @@ lemma X_mul_X_mem_J {p q : ℕ} (hpq : 1 ≤ p + q) :
   rw [add_sub_cancel_right, Nat.add_sub_cancel_left, mul_assoc] at this
   exact mem_of_neg_one_pow_mul q this
 
+/- English proof (translation)
+Use `MvPolynomial.induction_on (motive := fun P => P - C (eval v P) ∈ I) P (fun a => ?_) (fun P Q hP hQ => ?_) (fun P y hP => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `I.add_mem hP hQ` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `I.add_mem (I.mul_mem_right (X y) hP) (I.mul_mem_left (C (eval v P)) (hv y))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_mul, eval_X]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma sub_C_eval_mem {I : Ideal (MvPolynomial (Bool × ℕ) ℝ)} (v : Bool × ℕ → ℝ)
     (hv : ∀ y, X y - C (v y) ∈ I) (P : MvPolynomial (Bool × ℕ) ℝ) : P - C (eval v P) ∈ I := by
   refine MvPolynomial.induction_on (motive := fun P => P - C (eval v P) ∈ I) P (fun a => ?_) (fun P Q hP hQ => ?_) (fun P y hP => ?_)
@@ -52,6 +79,11 @@ lemma sub_C_eval_mem {I : Ideal (MvPolynomial (Bool × ℕ) ℝ)} (v : Bool × �
     convert this using 1
     simp only [map_mul, eval_X]; ring
 
+/- English proof (translation)
+Establish `hrel` using `rel_mem_J (p := 0) (q := q) hk`. Rewrite `hrel` using `[rel, Finset.sum_range_succ']`. Establish `hrest : (∑ i ∈ Finset.range k, C ((-1 : ℝ) ^ (k - (i + 1))) * X (true, i + 1) * X (false, k - (i + 1))) ∈ J 0 q` using `Ideal.sum_mem _ fun i _ => (J 0 q).mul_mem_right _ ((J 0 q).mul_mem_left _ (X_true_mem_J (by omega)))`. Establish `h0` using `(J 0 q).sub_mem hrel hrest`. Rewrite `h0` using `[add_sub_cancel_left, Nat.sub_zero]`.
+
+Establish `h1` using `(J 0 q).sub_mem h0 ((J 0 q).mul_mem_right (C ((-1 : ℝ) ^ k) * X (false, k)) (X_zero_sub_one_mem_J true))`. Use `mem_of_neg_one_pow_mul k ?_` and prove the remaining obligations. Use `h1 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma X_false_mem_J_zero {q k : ℕ} (hk : 1 ≤ k) : (X (false, k) : MvPolynomial (Bool × ℕ) ℝ) ∈ J 0 q := by
   have hrel := rel_mem_J (p := 0) (q := q) hk
   rw [rel, Finset.sum_range_succ'] at hrel
@@ -66,6 +98,11 @@ lemma X_false_mem_J_zero {q k : ℕ} (hk : 1 ≤ k) : (X (false, k) : MvPolynomi
   convert h1 using 1
   ring
 
+/- English proof (translation)
+Establish `hrel` using `rel_mem_J (p := p) (q := 0) hk`. Rewrite `hrel` using `[rel, Finset.sum_range_succ]`. Establish `hrest : (∑ a ∈ Finset.range k, C ((-1 : ℝ) ^ (k - a)) * X (true, a) * X (false, k - a)) ∈ J p 0` using `Ideal.sum_mem _ fun a ha => (J p 0).mul_mem_left _ (X_false_mem_J (by simp at ha; omega))`. Establish `h0` using `(J p 0).sub_mem hrel hrest`. Rewrite `h0` using `[add_sub_cancel_left, Nat.sub_self, pow_zero, C_1, one_mul]`.
+
+Establish `h1` using `(J p 0).sub_mem h0 ((J p 0).mul_mem_left (X (true, k)) (X_zero_sub_one_mem_J false))`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma X_true_mem_J_zero {p k : ℕ} (hk : 1 ≤ k) : (X (true, k) : MvPolynomial (Bool × ℕ) ℝ) ∈ J p 0 := by
   have hrel := rel_mem_J (p := p) (q := 0) hk
   rw [rel, Finset.sum_range_succ] at hrel
@@ -78,6 +115,11 @@ lemma X_true_mem_J_zero {p k : ℕ} (hk : 1 ≤ k) : (X (true, k) : MvPolynomial
   convert h1 using 1
   ring
 
+/- English proof (translation)
+Take `⟨b, k⟩` from `y`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Simplify using `using X_zero_sub_one_mem_J (p := 0) (q := q) b`. Simplify using `only [show k ≠ 0 by omega, if_false, C_0, sub_zero]`. Consider the cases of `b`.
+
+Conclude with `X_false_mem_J_zero hk`. Conclude with `X_true_mem_J hk`.
+-/
 lemma hv_zero_left (q : ℕ) (y : Bool × ℕ) :
     X y - C (if y.2 = 0 then (1 : ℝ) else 0) ∈ J 0 q := by
   obtain ⟨b, k⟩ := y
@@ -88,6 +130,11 @@ lemma hv_zero_left (q : ℕ) (y : Bool × ℕ) :
     · exact X_false_mem_J_zero hk
     · exact X_true_mem_J hk
 
+/- English proof (translation)
+Take `⟨b, k⟩` from `y`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Simplify using `using X_zero_sub_one_mem_J (p := p) (q := 0) b`. Simplify using `only [show k ≠ 0 by omega, if_false, C_0, sub_zero]`. Consider the cases of `b`.
+
+Conclude with `X_false_mem_J hk`. Conclude with `X_true_mem_J_zero hk`.
+-/
 lemma hv_zero_right (p : ℕ) (y : Bool × ℕ) :
     X y - C (if y.2 = 0 then (1 : ℝ) else 0) ∈ J p 0 := by
   obtain ⟨b, k⟩ := y
@@ -98,6 +145,15 @@ lemma hv_zero_right (p : ℕ) (y : Bool × ℕ) :
     · exact X_false_mem_J hk
     · exact X_true_mem_J_zero hk
 
+/- English proof (translation)
+Establish `h1` using `sub_C_eval_mem (fun y => if y.2 = 0 then (1 : ℝ) else 0) (hv_zero_left q) h`. Use `set c := eval (fun y : Bool × ℕ => if y.2 = 0 then (1 : ℝ) else 0) h`. Establish `hpow : (1 : MvPolynomial (Bool × ℕ) ℝ) - X (true, 0) ^ q ∈ J 0 q`. Take `⟨d, hd⟩` from `sub_dvd_pow_sub_pow (X (true, 0) : MvPolynomial (Bool × ℕ) ℝ) 1 q`. Rewrite `hd` using `[one_pow]`.
+
+Use `(J 0 q).mul_mem_right d (X_zero_sub_one_mem_J true)` as an intermediate fact. Rewrite `this` using `[← hd]`. Simplify using `using (J 0 q).neg_mem this`. Establish `hdecomp : h = (h - C c + C c * (1 - X (true, 0) ^ q)) + c • X (true, 0) ^ q`. Rewrite using `[smul_eq_C_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hdecomp]`. Use `Submodule.add_mem _ (Submodule.mem_sup_left ?_) (Submodule.mem_sup_right ?_)` and prove the remaining obligations. Rewrite using `[Submodule.restrictScalars_mem]`. Conclude with `(J 0 q).add_mem h1 ((J 0 q).mul_mem_left _ hpow)`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Or.inr rfl))`.
+-/
 lemma base_left (q : ℕ) (h : MvPolynomial (Bool × ℕ) ℝ) :
     h ∈ (J 0 q).restrictScalars ℝ ⊔ Submodule.span ℝ (basis 0 q) := by
   have h1 := sub_C_eval_mem (fun y => if y.2 = 0 then (1 : ℝ) else 0) (hv_zero_left q) h
@@ -116,6 +172,11 @@ lemma base_left (q : ℕ) (h : MvPolynomial (Bool × ℕ) ℝ) :
     exact (J 0 q).add_mem h1 ((J 0 q).mul_mem_left _ hpow)
   · exact Submodule.smul_mem _ _ (Submodule.subset_span (Or.inr rfl))
 
+/- English proof (translation)
+Establish `h1` using `sub_C_eval_mem (fun y => if y.2 = 0 then (1 : ℝ) else 0) (hv_zero_right p) h`. Use `set c := eval (fun y : Bool × ℕ => if y.2 = 0 then (1 : ℝ) else 0) h`. Establish `hdecomp : h = (h - C c) + c • X (true, p) ^ 0`. Rewrite using `[pow_zero, smul_eq_C_mul, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hdecomp]`. Use `Submodule.add_mem _ (Submodule.mem_sup_left ?_) (Submodule.mem_sup_right ?_)` and prove the remaining obligations. Rewrite using `[Submodule.restrictScalars_mem]` and apply the resulting hypothesis. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Or.inr rfl))`.
+-/
 lemma base_right (p : ℕ) (h : MvPolynomial (Bool × ℕ) ℝ) :
     h ∈ (J p 0).restrictScalars ℝ ⊔ Submodule.span ℝ (basis p 0) := by
   have h1 := sub_C_eval_mem (fun y => if y.2 = 0 then (1 : ℝ) else 0) (hv_zero_right p) h
@@ -127,6 +188,11 @@ lemma base_right (p : ℕ) (h : MvPolynomial (Bool × ℕ) ℝ) :
   · rwa [Submodule.restrictScalars_mem]
   · exact Submodule.smul_mem _ _ (Submodule.subset_span (Or.inr rfl))
 
+/- English proof (translation)
+Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `f (⟨k, hk, rfl⟩ | ⟨b, rfl⟩ | ⟨k, hk, rfl⟩ | ⟨k, hk, rfl⟩)`. Conclude with `Ideal.mem_sup_left (rel_mem_J hk)`. Conclude with `Ideal.mem_sup_left (X_zero_sub_one_mem_J b)`. Break down `Nat.lt_or_ge (p + 1) k with h | h` into its components or cases.
+
+Conclude with `Ideal.mem_sup_left (X_true_mem_J h)`. Take `rfl : k = p + 1` from `by omega`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`. Conclude with `Ideal.mem_sup_left (X_false_mem_J hk)`.
+-/
 lemma J_le_succ_left (p q : ℕ) :
     J p q ≤ J (p + 1) q ⊔ Ideal.span {(X (true, p + 1) : MvPolynomial (Bool × ℕ) ℝ)} := by
   refine Ideal.span_le.2 ?_
@@ -139,6 +205,11 @@ lemma J_le_succ_left (p q : ℕ) :
       exact Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)
   · exact Ideal.mem_sup_left (X_false_mem_J hk)
 
+/- English proof (translation)
+Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `f (⟨k, hk, rfl⟩ | ⟨b, rfl⟩ | ⟨k, hk, rfl⟩ | ⟨k, hk, rfl⟩)`. Conclude with `Ideal.mem_sup_left (rel_mem_J hk)`. Conclude with `Ideal.mem_sup_left (X_zero_sub_one_mem_J b)`. Conclude with `Ideal.mem_sup_left (X_true_mem_J hk)`.
+
+Break down `Nat.lt_or_ge (q + 1) k with h | h` into its components or cases. Conclude with `Ideal.mem_sup_left (X_false_mem_J h)`. Take `rfl : k = q + 1` from `by omega`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`.
+-/
 lemma J_le_succ_right (p q : ℕ) :
     J p q ≤ J p (q + 1) ⊔ Ideal.span {(X (false, q + 1) : MvPolynomial (Bool × ℕ) ℝ)} := by
   refine Ideal.span_le.2 ?_
@@ -151,16 +222,27 @@ lemma J_le_succ_right (p q : ℕ) :
     · obtain rfl : k = q + 1 := by omega
       exact Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)
 
+/- English proof (translation)
+Unfold `wt`. Rewrite using `[Finsupp.sum_add_index' (fun _ => mul_zero _) (fun _ _ _ => mul_add _ _ _), Finsupp.sum_single_index (mul_zero _), mul_one]`.
+-/
 lemma wt_add_single (d : Bool × ℕ →₀ ℕ) (y : Bool × ℕ) :
     wt (d + Finsupp.single y 1) = wt d + y.2 := by
   unfold wt
   rw [Finsupp.sum_add_index' (fun _ => mul_zero _) (fun _ _ _ => mul_add _ _ _),
     Finsupp.sum_single_index (mul_zero _), mul_one]
 
+/- English proof (translation)
+Unfold `wt`. Rewrite using `[Finsupp.sum_single_index (mul_zero _)]`.
+-/
 lemma wt_single (y : Bool × ℕ) (n : ℕ) : wt (Finsupp.single y n) = y.2 * n := by
   unfold wt
   rw [Finsupp.sum_single_index (mul_zero _)]
 
+/- English proof (translation)
+Introduce and unpack `f (⟨d, hd, rfl⟩ | rfl)`. Conclude with `Or.inl ⟨d, lt_of_lt_of_le hd (Nat.mul_le_mul_right _ (Nat.le_succ p)), rfl⟩`. Use `Or.inl ⟨Finsupp.single (true, p) (q + 1), ?_, X_pow_eq_monomial⟩` and prove the remaining obligations. Rewrite using `[wt_single]`. Use `show p * (q + 1) < (p + 1) * (q + 1)`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 lemma basis_subset_succ_left (p q : ℕ) : basis p (q + 1) ⊆ basis (p + 1) (q + 1) := by
   rintro f (⟨d, hd, rfl⟩ | rfl)
   · exact Or.inl ⟨d, lt_of_lt_of_le hd (Nat.mul_le_mul_right _ (Nat.le_succ p)), rfl⟩
@@ -169,6 +251,13 @@ lemma basis_subset_succ_left (p q : ℕ) : basis p (q + 1) ⊆ basis (p + 1) (q 
     show p * (q + 1) < (p + 1) * (q + 1)
     nlinarith
 
+/- English proof (translation)
+Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem x hx`. Apply `Submodule.subset_span` to reduce the goal to its premises. Break down `hx with ⟨d, hd, rfl⟩ | rfl` into its components or cases. Use `Or.inl ⟨d + Finsupp.single (true, p + 1) 1, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[wt_add_single] show wt d + (p + 1) < (p + 1) * (q + 1)`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[add_comm d, monomial_single_add, pow_one]`. Conclude with `Or.inr (by rw [pow_succ'])`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ a hx`.
+-/
 lemma X_mul_span_basis (p q : ℕ) {s : MvPolynomial (Bool × ℕ) ℝ}
     (hs : s ∈ Submodule.span ℝ (basis (p + 1) q)) :
     X (true, p + 1) * s ∈ Submodule.span ℝ (basis (p + 1) (q + 1)) := by
@@ -186,6 +275,11 @@ lemma X_mul_span_basis (p q : ℕ) {s : MvPolynomial (Bool × ℕ) ℝ}
   | add x y _ _ hx hy => rw [mul_add]; exact Submodule.add_mem _ hx hy
   | smul a x _ hx => rw [mul_smul_comm]; exact Submodule.smul_mem _ a hx
 
+/- English proof (translation)
+Take `⟨j, hj, s, hs, rfl⟩` from `Submodule.mem_sup.1 hf`. Rewrite using `[mul_add]`. Use `Submodule.add_mem _ (Submodule.mem_sup_left ?_) (Submodule.mem_sup_right (X_mul_span_basis p q hs))` and prove the remaining obligations. Rewrite `hj`, the goal using `[Submodule.restrictScalars_mem]`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 (J_le_succ_right (p + 1) q hj)`.
+
+Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hb`. Establish `hXX` using `X_mul_X_mem_J (p := p + 1) (q := q + 1) (by omega)`. Establish `: X (true, p + 1) * (a + c * X (false, q + 1)) = X (true, p + 1) * a + c * (X (true, p + 1) * X (false, q + 1))` using `by ring`. Rewrite using `[this]`. Conclude with `(J _ _).add_mem ((J _ _).mul_mem_left _ ha) ((J _ _).mul_mem_left _ hXX)`.
+-/
 lemma X_mul_mem (p q : ℕ) (f : MvPolynomial (Bool × ℕ) ℝ)
     (hf : f ∈ (J (p + 1) q).restrictScalars ℝ ⊔ Submodule.span ℝ (basis (p + 1) q)) :
     X (true, p + 1) * f ∈
@@ -203,6 +297,15 @@ lemma X_mul_mem (p q : ℕ) (f : MvPolynomial (Bool × ℕ) ℝ)
   rw [this]
   exact (J _ _).add_mem ((J _ _).mul_mem_left _ ha) ((J _ _).mul_mem_left _ hXX)
 
+/- English proof (translation)
+Introduce `p`. Proceed by induction on `p with`. Consider the case `zero => exact base_left`. Consider the case `succ p ihp`. Introduce `q`.
+
+Proceed by induction on `q with`. Consider the case `zero => exact base_right (p + 1)`. Consider the case `succ q ihq`. Introduce `h`. Take `⟨j, hj, s, hs, rfl⟩` from `Submodule.mem_sup.1 (ihp (q + 1) h)`.
+
+Rewrite `hj` using `[Submodule.restrictScalars_mem]`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 (J_le_succ_left p (q + 1) hj)`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hb`. Use `Submodule.add_mem _ (Submodule.add_mem _ (Submodule.mem_sup_left ?_) ?_) (Submodule.mem_sup_right ?_)` and prove the remaining obligations. Rewrite using `[Submodule.restrictScalars_mem]` and apply the resulting hypothesis.
+
+Rewrite using `[mul_comm]`. Conclude with `X_mul_mem p q c (ihq c)`. Conclude with `Submodule.span_mono (basis_subset_succ_left p q) hs`.
+-/
 theorem mem_rel_sup_span_low_or_top : ∀ (p q : ℕ) (h : MvPolynomial (Bool × ℕ) ℝ),
     h ∈ (J p q).restrictScalars ℝ ⊔ Submodule.span ℝ (basis p q) := by
   intro p

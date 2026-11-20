@@ -16,6 +16,21 @@ section Lift
 
 variable {R S : Type} [CommRing R] [StarRing R] [Ring S] [StarRing S] [Algebra R S] [StarModule R S]
 
+/- English proof (translation)
+Distinguish the cases in `hpm : p ∣ m`. Take `⟨q, hq⟩` from `hpm`. Establish `hX : star ((m : R) • D) = (m : R) • D`. Rewrite `h` using `[← sub_eq_iff_eq_add']`. Rewrite using `[← h]`.
+
+Simplify using the standard rewrite rules. Establish `e : A + (m : R) • (-(w • (A * D))) = A * (1 - w • (m : R) • D)`. Simplify using `only [mul_sub, mul_one, mul_smul_comm]`. Use `module`. Establish `hq' : (m : R) = p * q` using `by rw [hq]; push_cast; rfl`.
+
+Establish `hw' : star w = 1 - w` using `by linear_combination hw`. Use `⟨-(w • (A * D)), (q : R) • (((1 - w) * w - 1) • (D * D) + ((1 - w) * w * m) • (D * D * D)), ?_⟩` and prove the remaining obligations. Rewrite using `[e, star_mul, star_sub, star_one, star_smul, hX, hw', mul_assoc, ← mul_assoc (star A), h]`. Simplify using `only [mul_sub, sub_mul, mul_add, add_mul, mul_one, one_mul, mul_smul_comm, smul_mul_assoc, mul_assoc]`. Use `push_cast`.
+
+Rewrite using `[hq']`. Use `module`. Establish `hc : IsCoprime (m : ℤ) (p : ℤ)` using `Nat.Coprime.cast ((Nat.Prime.coprime_iff_not_dvd hp).2 hpm).symm`. Take `⟨a, b, hab⟩` from `hc`. Establish `hab' : (a : R) * m + b * p = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → R) hab`.
+
+Establish `e : A + (m : R) • ((a : R) • (1 - A)) = ((b : R) * p) • A + ((a : R) * m) • (1 : S)`. Establish `: (b : R) * p = 1 - a * m` using `by linear_combination hab'`. Rewrite using `[this]`. Use `module`. Use `⟨(a : R) • (1 - A), ((b : R) * b * p) • D + ((a : R) * b) • (star A + A - (2 : R) • 1), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e]`. Simplify using `only [star_add, star_smul, star_mul, star_natCast, star_intCast, star_one, mul_add, add_mul, mul_one, one_mul, mul_smul_comm, smul_mul_assoc, h]`. Use `push_cast`. Establish `: (1 : S) = (((a : R) * m + b * p) ^ 2) • (1 : S)` using `by rw [hab']; simp`. Use `conv_rhs => enter [1]`.
+
+Rewrite using `[this]`. Use `module`.
+-/
 theorem lift_step {w : R} (hw : w + star w = 1) (m : ℕ) {p : ℕ} (hp : p.Prime) {A D : S}
     (h : star A * A = 1 + (m : R) • D) :
     ∃ B D' : S, star (A + (m : R) • B) * (A + (m : R) • B) = 1 + ((m * p : ℕ) : R) • D' := by
@@ -52,6 +67,13 @@ theorem lift_step {w : R} (hw : w + star w = 1) (m : ℕ) {p : ℕ} (hp : p.Prim
     conv_rhs => enter [1]; rw [this]
     module
 
+/- English proof (translation)
+Proceed by induction on `k using Nat.recOnMul with`. Consider the case `zero => exact absurd hk (lt_irrefl 0)`. Consider the case `one => exact fun m A D h => ⟨0, D, by simpa using h⟩`. Consider the case `prime p hp => exact fun m A D h => lift_step hw m hp h`. Consider the case `mul a b ha hb`.
+
+Introduce `m A D h`. Take `⟨B, D', h'⟩` from `ha (Nat.pos_of_mul_pos_right hk) m h`. Take `⟨B', D'', h''⟩` from `hb (Nat.pos_of_mul_pos_left hk) (m * a) h'`. Use `⟨B + (a : R) • B', D'', ?_⟩` and prove the remaining obligations. Establish `e : A + (m : R) • (B + (a : R) • B') = A + (m : R) • B + ((m * a : ℕ) : R) • B'`.
+
+Use `push_cast`. Use `module`. Rewrite using `[e, h'', mul_assoc]`.
+-/
 theorem lift_unitary {w : R} (hw : w + star w = 1) {k : ℕ} (hk : 0 < k) : ∀ (m : ℕ) {A D : S},
     star A * A = 1 + (m : R) • D →
     ∃ B D' : S, star (A + (m : R) • B) * (A + (m : R) • B) = 1 + ((m * k : ℕ) : R) • D' := by
@@ -69,6 +91,11 @@ theorem lift_unitary {w : R} (hw : w + star w = 1) {k : ℕ} (hk : 0 < k) : ∀ 
       module
     rw [e, h'', mul_assoc]
 
+/- English proof (translation)
+Establish `e : ∀ u v : Fin n → R, ∑ j, u j * star (v j) = star v ⬝ᵥ u` using `fun u v => by`. Simplify using `[dotProduct, mul_comm]`. Establish `e1 : star (A *ᵥ y) ⬝ᵥ (A *ᵥ x) = star y ⬝ᵥ x + M * (star y ⬝ᵥ (D *ᵥ x))`. Rewrite using `[Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, ← Matrix.star_eq_conjTranspose, h, ← Matrix.dotProduct_mulVec, Matrix.add_mulVec, Matrix.one_mulVec, Matrix.smul_mulVec, dotProduct_add, dotProduct_smul, smul_eq_mul]`. Use `⟨star y ⬝ᵥ (D *ᵥ x) + star (A *ᵥ y) ⬝ᵥ s + star t ⬝ᵥ (A *ᵥ x + M • s), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e, e, star_add, star_smul, hM, add_dotProduct, dotProduct_add, e1, smul_dotProduct, dotProduct_smul]`. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_congr {n : ℕ} {M : R} (hM : star M = M) {A D : Matrix (Fin n) (Fin n) R} (h : star A * A = 1 + M • D)
     (x y s t : Fin n → R) : ∃ b : R,
       ∑ j, (A *ᵥ x + M • s) j * star ((A *ᵥ y + M • t) j) = ∑ j, x j * star (y j) + M * b := by
@@ -89,6 +116,15 @@ section Field
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Use `set c := IsCMField.ringOfIntegersComplexConj E with hc`. Establish `hcc : ∀ x, c (c x) = x` using `fun x => by ext; simp [hc]`. Set `J : Ideal (𝓞 E)` to `{ carrier := {x | ∃ b, x * c x = b + c b} zero_mem' := ⟨0, by simp⟩ add_mem' := by`. Introduce and unpack `x y ⟨a, ha⟩ ⟨b, hb⟩`. Use `⟨a + b + x * c y, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [map_add, map_mul, hcc]`. Take the linear combination `ha + hb`. Use the proof step `smul_mem' := by`. Introduce and unpack `a x ⟨b, hb⟩`. Use `⟨a * c a * b, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [smul_eq_mul, map_mul, hcc]`. Take the linear combination `a * c a * hb }`. Distinguish the cases in `hJ : J = ⊤`. Take `⟨b, hb⟩ : (1 : 𝓞 E) ∈ J` from `hJ ▸ trivial`. Conclude with `⟨b, by simpa using hb.symm⟩`.
+
+Take `⟨x, hx⟩` from `GlobalTheory.SelfDualGenus.exists_sub_conj_notMem J hJ`. Use `absurd ⟨-(x * (x - c x)), ?_⟩ hx` and prove the remaining obligations. Simplify using `only [← hc, map_neg, map_mul, map_sub, hcc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_trace_one [Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E)] :
     ∃ w : 𝓞 E, w + IsCMField.ringOfIntegersComplexConj E w = 1 := by
   set c := IsCMField.ringOfIntegersComplexConj E with hc
@@ -114,6 +150,9 @@ theorem exists_trace_one [Algebra.Unramified (𝓞 (maximalRealSubfield E)) (�
     simp only [← hc, map_neg, map_mul, map_sub, hcc]
     ring
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct, adjM, Matrix.of_apply, map_sum, map_mul, IsCMField.complexConj_apply_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem form_adj (g : Matrix (Fin n) (Fin n) E) (v w : Fin n → E) :
     ∑ j, IsCMField.complexConj E (v j) * g.mulVec w j =
       ∑ j, IsCMField.complexConj E ((adjM g).mulVec v j) * w j := by
@@ -123,10 +162,22 @@ theorem form_adj (g : Matrix (Fin n) (Fin n) E) (v w : Fin n → E) :
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Simplify using `[actLat]`.
+-/
 theorem mem_act (g : Matrix (Fin n) (Fin n) E) (Λ : GenLat E n) (v' : Fin n → E) :
     v' ∈ (actLat g Λ).La ↔ ∃ v ∈ Λ.La, g.mulVec v = v' := by
   simp [actLat]
 
+/- English proof (translation)
+Introduce `v`. Establish `e : v ∈ (actLat g Λ).La ↔ (adjM g).mulVec v ∈ Λ.La`. Rewrite using `[mem_act]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`.
+
+Rewrite using `[Matrix.mulVec_mulVec, h, Matrix.one_mulVec]` and apply the resulting hypothesis. Introduce `hv`. Conclude with `⟨_, hv, by rw [Matrix.mulVec_mulVec, mul_eq_one_comm.1 h, Matrix.one_mulVec]⟩`. Rewrite using `[e, hΛ]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hv w hw`. Take `⟨u, hu, rfl⟩` from `(mem_act _ _ _).1 hw`. Rewrite using `[form_adj]`. Conclude with `hv u hu`. Introduce `hv w hw`.
+
+Rewrite using `[← form_adj]`. Conclude with `hv _ ((mem_act _ _ _).2 ⟨w, hw, rfl⟩)`.
+-/
 theorem unimod_act {g : Matrix (Fin n) (Fin n) E} (h : adjM g * g = 1) {Λ : GenLat E n} (hΛ : Λ.Unimod) :
     (actLat g Λ).Unimod := by
   intro v
@@ -147,11 +198,35 @@ theorem unimod_act {g : Matrix (Fin n) (Fin n) E} (h : adjM g * g = 1) {Λ : Gen
     rw [← form_adj]
     exact hv _ ((mem_act _ _ _).2 ⟨w, hw, rfl⟩)
 
+/- English proof (translation)
+Take `⟨N, hN, -, -, h⟩` from `GlobalTheory.AdelTranslate.exists_pos Λ hU (M := 1) ⟨0, by simp, by simp, by simp⟩`. Conclude with `⟨N, hN, (GlobalTheory.AdelTranslate.span_smul_le_iff _ _ _).2 h⟩`.
+-/
 theorem exists_smul_std_le (Λ : GenLat E n) (hU : Λ.Unimod) :
     ∃ N : ℕ, 0 < N ∧ Ideal.span {(N : 𝓞 E)} • stdLat E n ≤ Λ.La := by
   obtain ⟨N, hN, -, -, h⟩ := GlobalTheory.AdelTranslate.exists_pos Λ hU (M := 1) ⟨0, by simp, by simp, by simp⟩
   exact ⟨N, hN, (GlobalTheory.AdelTranslate.span_smul_le_iff _ _ _).2 h⟩
 
+/- English proof (translation)
+Take `⟨N, hN, hle⟩` from `exists_smul_std_le Λ hU`. Take `⟨Λ', hΛ', hsd⟩` from `GlobalTheory.AdaptUnitary.exists_lat Λ hU hN hle`. Take `⟨g, hg, h₁, h₂⟩` from `GlobalTheory.AdaptUnitary.exists_unitary_of_selfDual hsd hM.ne'`. Establish `hg' : adjM g * g = 1` using `hg`. Establish `hg₂ : g * adjM g = 1` using `mul_eq_one_comm.1 hg'`.
+
+Establish `haa : adjM (adjM g) = g`. Use extensionality with `i j`. Simplify using `[adjM]`. Set `f : Matrix (Fin n) (Fin n) E → (Fin n → E) →ₗ[𝓞 E] (Fin n → E)` to `fun M => (Matrix.mulVecLin M).restrictScalars (𝓞 E)`. Take `⟨k₁, hk₁, e₁⟩` from `GlobalTheory.AdaptUnitary.exists_coprime_uniform M (L₂ := GlobalTheory.IndefiniteRowSideFullHecke.AdmissibleHarmonicLattice.stdMod E n) (Λ'.fg.map (f (adjM g))) (by rintro _ ⟨x, hx, rfl⟩; exact h₁ x hx)`.
+
+Take `⟨k₂, hk₂, e₂⟩` from `GlobalTheory.AdaptUnitary.exists_coprime_uniform M (L₂ := Λ'.L) ((GlobalTheory.IndefiniteRowSideFullHecke.AdmissibleHarmonicLattice.Lat.std E n).fg.map (f g)) (by rintro _ ⟨x, hx, rfl⟩; exact h₂ x hx)`. Establish `hT : (actLat (adjM g) Λ).TrivAt M`. Apply the tactic sequence `refine ⟨k₁ * k₂, Nat.Coprime.mul_left hk₁ hk₂, ?_, ?_⟩ <;> rw [GlobalTheory.AdelTranslate.span_smul_le_iff]`. Introduce `x hx`. Take `⟨v, hv, rfl⟩` from `(mem_act _ _ _).1 hx`.
+
+Rewrite using `[mul_comm, mul_smul]`. Conclude with `nsmul_mem (e₁ _ ⟨v, hΛ' ▸ hv, rfl⟩) k₂`. Introduce `x hx`. Use `(mem_act _ _ _).2 ⟨(k₁ * k₂) • g *ᵥ x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, ← hΛ']`.
+
+Conclude with `nsmul_mem (e₂ _ ⟨x, hx, rfl⟩) k₁`. Rewrite using `[← Nat.cast_smul_eq_nsmul E, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hg', Matrix.one_mulVec, Nat.cast_smul_eq_nsmul]`. Take `⟨κ, ⟨c₁, c₂, c₃⟩, -⟩` from `GlobalTheory.Jets.TautMarking.exists_tautological_marking E n M _ hM (unimod_act (g := adjM g) (by rw [haa, hg₂]) hU) hT`. Set `φ : Λ.La →ₗ[𝓞 E] (actLat (adjM g) Λ).La` to `(f (adjM g)).restrict fun x hx => (mem_act _ _ _).2 ⟨x, hx, rfl⟩`. Establish `hφ : ∀ v : Λ.La, (φ v : Fin n → E) = adjM g *ᵥ (v : Fin n → E)` using `fun _ => rfl`.
+
+Establish `hφs : Function.Surjective φ` using `fun y => by`. Take `⟨v, hv, e⟩` from `(mem_act _ _ _).1 y.2`. Conclude with `⟨⟨v, hv⟩, Subtype.ext e⟩`. Establish `hφi : Function.Injective φ` using `fun x y h => by`. Use `congrArg (fun z : (actLat (adjM g) Λ).La => g *ᵥ (z : Fin n → E)) h` as an intermediate fact.
+
+Simplify using `only [hφ, Matrix.mulVec_mulVec, hg₂, Matrix.one_mulVec] at this`. Conclude with `Subtype.ext this`. Use `⟨κ ∘ₗ φ, c₁.comp hφs, fun v => (c₂ (φ v)).trans ⟨?_, ?_⟩, fun v w x y hx hy => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨u, hu⟩`. Take `⟨u, rfl⟩` from `hφs u`.
+
+Rewrite `hu` using `[← map_nsmul]`. Conclude with `⟨u, u.2, by rw [hφi hu, Nat.cast_smul_eq_nsmul]; rfl⟩`. Introduce and unpack `⟨u, hu, e⟩`. Use `⟨φ ⟨u, hu⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_nsmul]`.
+
+Use `congr 1`. Conclude with `Subtype.ext (by rw [e, Nat.cast_smul_eq_nsmul]; rfl)`. Take `⟨s, hs⟩` from `c₃ (φ w) (φ v) y x hy hx`. Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite `hs` using `[hφ, hφ, form_adj, haa, Matrix.mulVec_mulVec, hg₂, Matrix.one_mulVec]`.
+
+Rewrite using `[← hs]`. Simplify using `only [mul_comm]`.
+-/
 theorem exists_isomMod [Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E)] (Λ : GenLat E n) (hU : Λ.Unimod)
     {M : ℕ} (hM : 0 < M) : ∃ io : Λ.La →ₗ[𝓞 E] StdMod E n M, IsIsomMod Λ M io := by
   obtain ⟨N, hN, hle⟩ := exists_smul_std_le Λ hU
@@ -210,6 +285,45 @@ theorem exists_isomMod [Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 
 
 end Field
 
+/- English proof (translation)
+Introduce `E _ _ _ n m hun hm Λ io hU ⟨_, b₂, b₃⟩ k hk`. Take `⟨κ, c₁, c₂, c₃⟩` from `exists_isomMod Λ hU (Nat.mul_pos hm hk)`. Use `letI : StarRing (𝓞 E) := { star := IsCMField.ringOfIntegersComplexConj E star_involutive := fun a => by ext; simp star_mul := fun a b => by rw [map_mul, mul_comm] star_add := fun a b => map_add _ a b }`. Establish `hst : ∀ a : 𝓞 E, algebraMap (𝓞 E) E (star a) = IsCMField.complexConj E (a : E)` using `fun a => IsCMField.coe_ringOfIntegersComplexConj E a`. Take `⟨w₀, hw₀⟩` from `exists_trace_one (E := E)`.
+
+Use `choose e he using fun i : Fin n => c₁ fun j => Ideal.Quotient.mk _ ((Pi.single i 1 : Fin n → 𝓞 E) j)`. Use `choose a ha using fun j i : Fin n => Ideal.Quotient.mk_surjective (io (e i) j)`. Use `choose s hs using fun i l : Fin n => c₃ (e i) (e l) _ _ (congrFun (he i)) (congrFun (he l))`. Use `choose t ht using fun i l : Fin n => b₃ (e i) (e l) _ _ (fun j => (ha j i).symm) (fun j => (ha j l).symm)`. Establish `hA : star (Matrix.of a) * Matrix.of a = 1 + (m : 𝓞 E) • Matrix.of fun l i => k * s i l - t i l`.
+
+Use extensionality with `l i`. Establish `h1` using `hs i l`. Establish `h2` using `ht i l`. Establish `h3 : ∑ j, ((Pi.single i 1 : Fin n → 𝓞 E) j : E) * IsCMField.complexConj E ((Pi.single l 1 : Fin n → 𝓞 E) j : E) = if l = i then 1 else 0`. Rewrite using `[Finset.sum_eq_single i]`.
+
+Distinguish the cases in `h : l = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Introduce `j _ hj`.
+
+Simplify using `[hj]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[h3]`. Simplify using `only [Matrix.mul_apply, Matrix.star_apply, Matrix.of_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, RingOfIntegers.coe_eq_algebraMap, map_sum, map_mul, map_add, map_sub, map_natCast, hst, apply_ite (algebraMap (𝓞 E) E), map_one, map_zero] at h1 h2 ⊢`. Move the coercions through the operations in `at h1`.
+
+Simplify using `only [mul_comm (IsCMField.complexConj E _)]`. Take the linear combination `h1 - h2`. Take `⟨B, D, hB⟩` from `lift_unitary (w := w₀) hw₀ hk m hA`. Use `set A := Matrix.of a + (m : 𝓞 E) • B with hAdef`. Set `π` to `Ideal.Quotient.mk (Ideal.span {((m * k : ℕ) : 𝓞 E)})`.
+
+Establish `hπ : π ((m * k : ℕ) : 𝓞 E) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`. Establish `hinv : (star A).map π * A.map π = 1`. Rewrite using `[← Matrix.map_mul, hB]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, hπ, Matrix.one_apply, apply_ite π, map_one, map_zero, zero_mul, add_zero]`.
+
+Establish `hinv'` using `mul_eq_one_comm.1 hinv`. Establish `key : ∀ (v : Λ.La) (x : Fin n → 𝓞 E), (∀ j, (A.map π *ᵥ κ v) j = π (x j)) → ∃ x₀ r : Fin n → 𝓞 E, (∀ j, κ v j = π (x₀ j)) ∧ x = A *ᵥ x₀ + ((m * k : ℕ) : 𝓞 E) • r`. Introduce `v x hx`. Use `choose x₀ hx₀ using fun j => Ideal.Quotient.mk_surjective (κ v j)`. Establish `: ∀ j, ∃ r, x j - (A *ᵥ x₀) j = ((m * k : ℕ) : 𝓞 E) * r` using `fun j => by`.
+
+Use `Ideal.mem_span_singleton.1 (Ideal.Quotient.eq.1 ?_)` and prove the remaining obligations. Use `(hx j).symm.trans ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_mulVec]`. Use `congr 2`. Conclude with `funext fun i => (hx₀ i).symm`.
+
+Use `choose r hr using this`. Use `⟨x₀, r, fun j => (hx₀ j).symm, funext fun j => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `hr j`. Use `⟨(Matrix.mulVecLin (A.map π)).restrictScalars (𝓞 E) ∘ₗ κ, ⟨fun z => ?_, fun v => ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Take `⟨v, hv⟩` from `c₁ ((star A).map π *ᵥ z)`. Use `⟨v, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `A.map π *ᵥ κ v = z`. Rewrite using `[hv, Matrix.mulVec_mulVec, hinv', Matrix.one_mulVec]`. Rewrite using `[← c₂]`.
+
+Express the relevant statement in the definitionally equal form `A.map π *ᵥ κ v = 0 ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg ((star A).map π *ᵥ ·) h` as an intermediate fact. Simplify `this` using `only [Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec, Matrix.mulVec_zero]`.
+
+Introduce `h`. Rewrite using `[h, Matrix.mulVec_zero]`. Introduce `v w x y hx hy`. Take `⟨x₀, r, hx₀, rfl⟩` from `key v x hx`. Take `⟨y₀, r', hy₀, rfl⟩` from `key w y hy`.
+
+Take `⟨b, hb⟩` from `c₃ v w x₀ y₀ hx₀ hy₀`. Take `⟨b', hb'⟩` from `form_congr (star_natCast _) hB x₀ y₀ r r'`. Establish `h` using `congrArg (algebraMap (𝓞 E) E) hb'`. Simplify using `only [map_sum, map_add, map_mul, hst, map_natCast] at h`. Use `⟨b - b', ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [RingOfIntegers.coe_eq_algebraMap, map_sub] at h hb ⊢`. Take the linear combination `hb - h`. Introduce `v x hx j`. Take `⟨x₀, r, hx₀, rfl⟩` from `key v x hx`. Establish `h0 : κ (v - ∑ i, x₀ i • e i) = 0`.
+
+Use function extensionality and compare the values at `l`. Simplify using `only [map_sub, map_sum, map_smul, he, Pi.sub_apply, Finset.sum_apply, Pi.smul_apply, hx₀, Pi.zero_apply]`. Rewrite using `[Finset.sum_eq_single l]`. Simplify using `[π, Algebra.smul_def]`. Introduce `i _ hi`.
+
+Simplify using `[Ne.symm hi]`. Simplify using the standard rewrite rules. Take `⟨u, hu, eu⟩` from `(c₂ _).1 h0`. Establish `h1 : io (v - ∑ i, x₀ i • e i) = 0` using `(b₂ _).2 ⟨k • u, nsmul_mem hu k, by`. Rewrite using `[eu, ← Nat.cast_smul_eq_nsmul E, smul_smul, Nat.cast_mul]⟩`.
+
+Rewrite `h1` using `[map_sub, sub_eq_zero]`. Establish `hm0 : Ideal.Quotient.mk (Ideal.span {(m : 𝓞 E)}) (m : 𝓞 E) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`. Rewrite using `[h1]`. Simplify using `only [map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, ← ha, hAdef, Pi.add_apply, Matrix.mulVec, dotProduct, Matrix.add_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul, Nat.cast_mul, map_add, map_mul, hm0, zero_mul, add_zero]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq, mul_comm]`.
+-/
 theorem exists_lift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n m : ℕ), Algebra.Unramified (𝓞 (maximalRealSubfield E)) (𝓞 E) → 0 < m → ∀ (Λ : GenLat E n) (io : Λ.La →ₗ[𝓞 E] StdMod E n m), Λ.Unimod → IsIsomMod Λ m io → ∀ k : ℕ, 0 < k → ∃ io' : Λ.La →ₗ[𝓞 E] StdMod E n (m * k), IsIsomMod Λ (m * k) io' ∧ ∀ (v : Λ.La) (x : Fin n → 𝓞 E), (∀ j, io' v j = Ideal.Quotient.mk _ (x j)) → ∀ j, io v j = Ideal.Quotient.mk _ (x j) := by
   intro E _ _ _ n m hun hm Λ io hU ⟨_, b₂, b₃⟩ k hk
   obtain ⟨κ, c₁, c₂, c₃⟩ := exists_isomMod Λ hU (Nat.mul_pos hm hk)

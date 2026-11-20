@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LatticeModelVacu
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.Gam0
 open Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Hk3.HoweDuality.exists_finset_reps_mul_inv | exact GlobalTheory.Hk3.HoweDuality.exists_finset_reps_mul_inv | (intros; apply GlobalTheory.Hk3.HoweDuality.exists_finset_reps_mul_inv <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_finset_representatives_mul_inv_integral : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L), Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) → (∀ K : ℕ, ∃ R : Finset L, (∀ r ∈ R, r ∈ Formalism.UG.intL L) ∧ ∀ c ∈ Formalism.UG.intL L, ∃ r ∈ R, Valued.v (c - r) ≤ Valued.v ϖ ^ K) →
   ∀ (n n' : ℕ) (a : GL (Fin n) L) (x : Matrix (Fin n') (Fin n) L),
   (∀ i j, (x * (a : Matrix (Fin n) (Fin n) L)) i j ∈ Formalism.UG.intL L) →

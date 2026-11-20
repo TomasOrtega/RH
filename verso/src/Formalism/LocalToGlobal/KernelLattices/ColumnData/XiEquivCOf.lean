@@ -15,6 +15,9 @@ section Red
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Λ : ∀ j, LevFam X.E X.K (R.N j) Pr.vGs) (Ch : Chars X Pr R.m)
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S : Set ℕ) (Gc : ChGlob X R.m) (Am : Amb X) (u : Pr.Word)
 
+/- English proof (translation)
+The claim follows from `kernelEquiv_trivialTuple W Λ Ch sel S (cstC Ch sel S Gc n) Am u m2 hX hPr (by omega) hTh (idxC_ok hm hn hX hPr hCh h4 hG H) hXi hPsi hF hTop`.
+-/
 theorem xiEquivC_of {n m2 : ℕ} (hm : R.m = m2 + 2) (hn : 1 ≤ n) (hX : X.Ok) (hPr : Pr.Ok) (hCh : Ch.Ok) (h4 : ∀ w ∈ Pr.vGs, qOf w % 4 = 1)
     (hG : GlobTied Ch Gc) (H : IdxHyp Λ Ch sel S Gc n m2)
     (hTh : ThHyp W Ch sel (mu0 X.F X.E X.K S) (cstC Ch sel S Gc n) Am u m2)

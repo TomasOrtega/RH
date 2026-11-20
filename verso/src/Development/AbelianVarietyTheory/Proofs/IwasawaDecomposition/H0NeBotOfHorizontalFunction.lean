@@ -21,10 +21,16 @@ section General
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {d : ℕ} {R : AnRead p σ d}
   {A : Set (CxPts p σ)}
 
+/- English proof (translation)
+The claim follows from `h.of_subset_closure (hf.continuousOn hT) (hg.continuousOn hT) inter_subset_left (hA.open_subset_closure_inter hT)`.
+-/
 theorem eqOn_of_dense (hA : Dense A) {T : Set (CxPts p σ)} (hT : IsOpen T) {f g : CxPts p σ → ℂ}
     (hf : R.HoloOn T f) (hg : R.HoloOn T g) (h : EqOn f g (T ∩ A)) : EqOn f g T :=
   h.of_subset_closure (hf.continuousOn hT) (hg.continuousOn hT) inter_subset_left (hA.open_subset_closure_inter hT)
 
+/- English proof (translation)
+Use `choose! T f hT hy hf he using h`. Use `⟨fun y => f y y, AnRead.holoOn_of_cover (T := fun y : S => T y) (fun y => hT y y.2) (fun y hS => ⟨⟨y, hS⟩, hy y hS⟩) fun y => ((hf y y.2).mono inter_subset_right).congr fun z hz => ?_, fun y hS => he y hS.1 ⟨hy y hS.1, hS.2⟩⟩` and prove the remaining obligations. Conclude with `eqOn_of_dense hA ((hT z hz.1).inter (hT y y.2)) ((hf z hz.1).mono inter_subset_left) ((hf y y.2).mono inter_subset_right) (fun w hw => (he z hz.1 ⟨hw.1.1, hw.2⟩).trans (he y y.2 ⟨hw.1.2, hw.2⟩).symm) ⟨hy z hz.1, hz.2⟩`.
+-/
 theorem exists_holoOn_of_local (hA : Dense A) {S : Set (CxPts p σ)} {u : CxPts p σ → ℂ}
     (h : ∀ y ∈ S, ∃ (T : Set (CxPts p σ)) (f : CxPts p σ → ℂ), IsOpen T ∧ y ∈ T ∧ R.HoloOn T f ∧ EqOn f u (T ∩ A)) :
     ∃ f, R.HoloOn S f ∧ EqOn f u (S ∩ A) := by
@@ -36,6 +42,9 @@ theorem exists_holoOn_of_local (hA : Dense A) {S : Set (CxPts p σ)} {u : CxPts 
     ((hf y y.2).mono inter_subset_right)
     (fun w hw => (he z hz.1 ⟨hw.1.1, hw.2⟩).trans (he y y.2 ⟨hw.1.2, hw.2⟩).symm) ⟨hy z hz.1, hz.2⟩
 
+/- English proof (translation)
+Introduce `U f` and use `by refine ⟨?_, (c.holo U f).mono fun b hb => ⟨h hb.1, hb.2⟩⟩ exact (c.e.continuousOn_symm.mono h).isOpen_inter_preimage hB (isOpen_ptsIn U)`.
+-/
 theorem isHolTo_symm (c : AlgChart p σ d) {B : Set (ReciprocityTheory.L2DbarEstimates.V d)} (hB : IsOpen B) (h : B ⊆ c.e.target) :
     IsHolTo B fun b => (c.e.symm b).1 := fun U f => by
   refine ⟨?_, (c.holo U f).mono fun b hb => ⟨h hb.1, hb.2⟩⟩
@@ -43,6 +52,9 @@ theorem isHolTo_symm (c : AlgChart p σ d) {B : Set (ReciprocityTheory.L2DbarEst
 
 variable [IsIntegral Y]
 
+/- English proof (translation)
+Establish `hy : y ∈ ptsIn p σ (U ⊓ V ⊓ W)` using `mem_ptsIn_inf.2 ⟨mem_ptsIn_inf.2 ⟨hU, hV⟩, hW⟩`. Rewrite using `[← ev_res (inf_le_left.trans inf_le_left) hy, ← ev_res (inf_le_left.trans inf_le_right) hy, ← ev_res inf_le_right hy, ← ev_mul]`. Use `congr 1`. Conclude with `fn_ext fun _ => by rw [map_mul, fnOf_resG, fnOf_resG, fnOf_resG, h]`.
+-/
 theorem ev_mul_eq {U V W : Y.Opens} {a : Γ(Y, U)} {b : Γ(Y, V)} {c : Γ(Y, W)} {y : CxPts p σ}
     (hU : y ∈ ptsIn p σ U) (hV : y ∈ ptsIn p σ V) (hW : y ∈ ptsIn p σ W)
     (h : ∀ h₁ h₂ h₃, fnOf U h₁ a * fnOf V h₂ b = fnOf W h₃ c) : ev p σ U a y * ev p σ V b y = ev p σ W c y := by
@@ -52,6 +64,17 @@ theorem ev_mul_eq {U V W : Y.Opens} {a : Γ(Y, U)} {b : Γ(Y, V)} {c : Γ(Y, W)}
   congr 1
   exact fn_ext fun _ => by rw [map_mul, fnOf_resG, fnOf_resG, fnOf_resG, h]
 
+/- English proof (translation)
+Use `choose r hr using fun (i : (toLB D).ι) (y : Y) => exists_unit_fnOf_eq (U := (toLB D).U i ⊓ W y) (f := (i.1.2 : Y.functionField) / (δ y : Y.functionField)) fun x hx => (hδ y x hx.2).iff_unitAt.1 (i.2.2 x hx.1)`. Set `pt (z : CxPts p σ) : Y` to `z.1 (IsLocalRing.closedPoint ℂ)`. Establish `hpt (z : CxPts p σ) : z ∈ ptsIn p σ (W (pt z))` using `mem_ptsIn.2 (hW _)`. Set `s (i : (toLB D).ι) (z : CxPts p σ) : ℂ` to `ev p σ _ (r i (pt z)).val z * u (pt z) z`. Establish `key {i y z} (hi : z ∈ ptsIn p σ ((toLB D).U i)) (hy : z ∈ ptsIn p σ (W y)) : s i z = ev p σ _ (r i y).val z * u y z`.
+
+Take `⟨t, ht⟩` from `exists_unit_fnOf_eq (U := W (pt z) ⊓ W y) (f := (δ (pt z) : Y.functionField) / (δ y : Y.functionField)) fun x hx => (hδ y x hx.2).iff_unitAt.1 (hδ _ x hx.1)`. Establish `hz` using `mem_ptsIn_inf.2 ⟨hpt z, hy⟩`. Establish `e : u (pt z) z = ev p σ _ t.val z * u y z` using `eqOn_of_dense (R := R) hA (isOpen_ptsIn _) ((hu _).mono (ptsIn_mono inf_le_left)) ((R.holoOn_ev _ t.val).mul ((hu y).mono (ptsIn_mono inf_le_right))) (hc _ _ _ ht) hz`. Rewrite using `[← ev_mul_eq (a := (r i (pt z)).val) (b := t.val) (mem_ptsIn_inf.2 ⟨hi, hpt z⟩) hz (mem_ptsIn_inf.2 ⟨hi, hy⟩) fun _ _ _ => by rw [hr, hr, ht, div_mul_div_cancel₀ (Units.ne_zero _)], _root_.mul_assoc, ← e]`. Establish `hs : s ∈ R.holSec (toLB D)`.
+
+Use `⟨⟨fun i j z hi hj => ?_, fun i z hi => ?_⟩, fun i => ?_⟩` and prove the remaining obligations. Establish `e` using `ev_mul_eq (a := ((toLB D).g i j).val) (b := (r j (pt z)).val) (c := (r i (pt z)).val) (mem_ptsIn_inf.2 ⟨hi, hj⟩) (mem_ptsIn_inf.2 ⟨hj, hpt z⟩) (mem_ptsIn_inf.2 ⟨hi, hpt z⟩) fun _ _ _ => by rw [hr, hr, fnOf_toLB_g, div_mul_div_cancel₀ (Units.ne_zero _)]`. Simplify using `only [s]`. Rewrite using `[← e, _root_.mul_assoc]`. Both sides reduce to the same expression.
+
+Simplify using `only [s]`. Rewrite using `[ev_of_notMem (fun h => hi (mem_ptsIn_inf.1 h).1), zero_mul]`. Conclude with `AnRead.holoOn_of_cover (T := fun y => ptsIn p σ (W y)) (fun y => isOpen_ptsIn _) (fun z _ => ⟨_, hpt z⟩) fun y => ((AnRead.holoOn_ev_of_subset (r i y).val fun _ => mem_ptsIn_inf.2).mul ((hu y).mono inter_subset_right)).congr fun z hz => key hz.1 hz.2`. Take `⟨z, hz⟩` from `hA.nonempty`. Introduce `hb`.
+
+Rewrite `hs` using `[hb, Submodule.mem_bot]`. Set `i : (toLB D).ι` to `⟨(W (pt z), δ (pt z)), gen_mem (hW _), hδ _⟩`. Conclude with `mul_ne_zero (ev_ne_zero (mem_ptsIn_inf.2 ⟨hpt z, hpt z⟩) (r i (pt z)).isUnit) (h0 _ z ⟨hpt z, hz⟩) (congrFun (congrFun hs i) z)`.
+-/
 theorem holSec_ne_bot [Nonempty (CxPts p σ)] (hA : Dense A) (D : CartierDiv Y) (W : Y → Y.Opens)
     (δ : Y → Y.functionFieldˣ) (hW : ∀ y, y ∈ W y) (hδ : ∀ y, ∀ y' ∈ W y, D.IsEqn y' (δ y))
     (u : Y → CxPts p σ → ℂ) (hu : ∀ y, R.HoloOn (ptsIn p σ (W y)) (u y))
@@ -105,6 +128,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
   {σ : c.F →+* ℂ}
 
+/- English proof (translation)
+Introduce `x₀` and use `by obtain ⟨N, φ, h₁, h₂, h₃, h₄, h₅⟩ := hg x₀ refine ⟨N, φ, h₁, h₂, h₃, h₄, fun V _ _ _ B a hB ha hN b₀ hb => ?_⟩ obtain ⟨C, k, hk⟩ := h₅ V B a hB ha hN b₀ hb exact ⟨C, k, hk.mono fun b hb hi => ⟨(hb hi).2, by rw [inv_inv]; exact (hb hi).1⟩⟩`.
+-/
 theorem logGrowth_inv {h : CxFr Z σ → ℂ} (hg : LogGrowth h) : LogGrowth fun a => (h a)⁻¹ := fun x₀ => by
   obtain ⟨N, φ, h₁, h₂, h₃, h₄, h₅⟩ := hg x₀
   refine ⟨N, φ, h₁, h₂, h₃, h₄, fun V _ _ _ B a hB ha hN b₀ hb => ?_⟩
@@ -113,11 +139,31 @@ theorem logGrowth_inv {h : CxFr Z σ → ℂ} (hg : LogGrowth h) : LogGrowth fun
 
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ' : k →+* ℂ} {d : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Inner, h, mem_ptsIn]`. Both sides reduce to the same expression.
+-/
 theorem inner_iff {π : Y ⟶ gen Z} {z : CxPts p σ'} {x : CxPts (genStr Z) σ} (h : x.1 = z.1 ≫ π) :
     Inner x ↔ z ∈ ptsIn p σ' (π ⁻¹ᵁ (genBd Z).compl) := by
   rw [Inner, h, mem_ptsIn]
   rfl
 
+/- English proof (translation)
+Use `exists_holoOn_of_local hA fun y hy => ?_` and prove the remaining obligations. Take `⟨N, φ, hN, hyN, hφ, hφ0, hgr⟩` from `hg (a y).1`. Take `⟨N', hN', rfl⟩` from `isOpen_induced_iff.1 hN`. Take `⟨i, hi⟩` from `R.cover y`. Use `set c := R.chart i`.
+
+Set `T : Set (CxPts p σ')` to `S ∩ (fun z => z.1 ≫ π) ⁻¹' N'`. Establish `hT : IsOpen T` using `hS.inter (hN'.preimage ((Points.continuous_comp π).comp continuous_subtype_val))`. Establish `hTN (z) (hz : z ∈ T) : (a z).1 ∈ Subtype.val ⁻¹' N'`. Rewrite using `[mem_preimage, ha z hz.1]`. Conclude with `hz.2`.
+
+Establish `hyT : y ∈ T` using `⟨hy, by rw [mem_preimage, ← ha y hy]; exact hyN⟩`. Set `B` to `c.e.target ∩ c.e.symm ⁻¹' T`. Establish `hB : IsOpen B` using `ChartGlue.isOpen_over c.e hT`. Establish `hfam {B' : Set (ReciprocityTheory.L2DbarEstimates.V d)} (hB' : IsOpen B') (e : B' ⊆ B) : HolFam B' fun b => a (c.e.symm b)` using `hf _ B' c.e.symm hB' (isHolTo_symm c hB' (e.trans inter_subset_left)) fun b hb => (e hb).2.1`. Establish `hφB : DifferentiableOn ℂ (fun b => φ (a (c.e.symm b)).1) B` using `hφ _ B (fun b => (a (c.e.symm b)).1) hB (hfam hB subset_rfl).1 fun b hb => hTN _ hb.2`.
+
+Establish `hin (z) (hz : z ∈ T) : φ (a z).1 ≠ 0 ↔ z ∈ ptsIn p σ' (π ⁻¹ᵁ (genBd Z).compl)` using `(hφ0 _ (hTN z hz)).trans (inner_iff (ha z hz.1))`. Establish `hB' : IsOpen {b ∈ B | φ (a (c.e.symm b)).1 ≠ 0}` using `hφB.continuousOn.isOpen_inter_preimage hB isOpen_ne`. Take `⟨u, hu, he⟩` from `GlobalTheory.T.riemann_extension_of_log_growth _ B _ (fun b => h (a (c.e.symm b))) hB hφB (hh _ _ _ hB' (hfam hB' (sep_subset _ _)) fun b hb => (hφ0 _ (hTN _ hb.1.2)).1 hb.2) (fun b hb => by`. Establish `hs` using `c.e.map_target hb.1`. Establish `h₁` using `hA.open_subset_closure_inter (c.e.open_source.inter hT) ⟨hs, hb.2⟩`.
+
+Establish `h₂` using `(c.e.continuousAt hs).continuousWithinAt.mem_closure_image h₁`. Rewrite `h₂` using `[c.e.right_inv hb.1]`. Use `closure_mono ?_ h₂` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Use `⟨ChartGlue.mem_over c.e hz.1.1 hz.1.2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[c.e.left_inv hz.1.1]`. Conclude with `(hin z hz.1.2).2 hz.2)`. Use `fun b hb => by`. Take `⟨C, n, hn⟩` from `hgr _ B _ hB (hfam hB subset_rfl) (fun b hb => hTN _ hb.2) b hb`. Use `⟨C, n, ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [hn, hB.mem_nhds hb] with b' h₁ h₂ h₃`. Conclude with `(h₁ ((hφ0 _ (hTN _ h₂.2)).1 h₃)).1`. Use `⟨c.e.source ∩ T, u ∘ c.e, c.e.open_source.inter hT, ⟨hi, hyT⟩, AnRead.holoOn_of_chart c (hu.congr fun b hb => congrArg u (c.e.right_inv hb.1)), fun z hz => ?_⟩` and prove the remaining obligations. Use `he (x := c.e z) ⟨ChartGlue.mem_over c.e hz.1.1 hz.1.2, by` as an intermediate fact. Rewrite using `[c.e.left_inv hz.1.1]`.
+
+Conclude with `(hin z hz.1.2).2 hz.2⟩`. Simplify `this` using `only [c.e.left_inv hz.1.1, Function.comp_apply]`.
+-/
 theorem exists_extension (R : AnRead p σ' d) (π : Y ⟶ gen Z)
     (hA : Dense (ptsIn p σ' (π ⁻¹ᵁ (genBd Z).compl))) {S : Set (CxPts p σ')} (hS : IsOpen S)
     {a : CxPts p σ' → CxFr Z σ} (ha : ∀ z ∈ S, (a z).1.1 = z.1 ≫ π)
@@ -173,6 +219,19 @@ theorem exists_extension (R : AnRead p σ' d) (π : Y ⟶ gen Z)
 
 end Flag
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z σ F _ _ e C τ h hτ hh`. Take `⟨W, δ, a, hW, hδ, ha, hf, hc⟩` from `GlobalTheory.T.exists_local_equation_complex_points E H Dw l Xo c O β Z σ F e C τ hτ`. Take `⟨hne, hd⟩` from `GlobalTheory.T.complexPoints_nonempty_dense_variety F C.Y (σ.comp e.toRingHom)`. Establish `hA` using `hd (C.π ⁻¹ᵁ (genBd Z).compl) ⟨genericPt C.Y (IsLocalRing.closedPoint C.Y.Fn), fun hb => hb ⟨_, congrArg (fun g => g (IsLocalRing.closedPoint C.Y.Fn)) C.y0_x⟩⟩`. Set `R` to `AnRead.all C.Y.str (σ.comp e.toRingHom) C.Y.dim`.
+
+Use `choose u hu he using fun y => exists_extension R C.π hA (isOpen_ptsIn (W y)) (ha y) (hf y) hh.2.2.1 hh.2.2.2`. Use `choose u' hu' he' using fun y => exists_extension R C.π hA (isOpen_ptsIn (W y)) (ha y) (hf y) (h := fun a => (h a)⁻¹) (fun V _ _ _ B a hB ha hi => (hh.2.2.1 V B a hB ha hi).inv fun b hb => hh.1 _ (hi b hb)) (logGrowth_inv hh.2.2.2)`. Establish `h0 (y) (z) (hz : z ∈ ptsIn _ _ (W y) ∩ ptsIn _ _ (C.π ⁻¹ᵁ (genBd Z).compl)) : h (a y z) ≠ 0` using `hh.1 _ ((inner_iff (ha y z hz.1)).2 hz.2)`. Establish `hr (y y') (U : C.Y.X.Opens) (r : Γ(C.Y.X, U)) (hr : ∀ hU, fnOf U hU r = (δ y : C.Y.Fn) / (δ y' : C.Y.Fn)) (z) (hy : z ∈ ptsIn _ _ (W y)) (hy' : z ∈ ptsIn _ _ (W y')) (hU : z ∈ ptsIn _ _ U) (hz : z ∈ ptsIn _ _ (C.π ⁻¹ᵁ (genBd Z).compl)) : h (a y z) = ev _ _ U r z * h (a y' z)`. Take `⟨M, N, hM, hN, hM0, hMN⟩` from `hc y y' U (gen_mem (mem_ptsIn.1 hU)) r (hr _) z (mem_ptsIn_inf.2 ⟨mem_ptsIn_inf.2 ⟨hy, hy'⟩, hU⟩)`.
+
+Use `mul_right_cancel₀ hM0 ?_` and prove the remaining obligations. Rewrite using `[hh.2.1 _ _ M N ((inner_iff (ha y' z hy')).2 hz) hM hN, ← hMN]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨GlobalTheory.T.H0_ne_bot_of_holSec_ne_bot F C.Y _ R _ (holSec_ne_bot hA _ W δ hW hδ u hu (fun y z hz => ?_) fun y y' r hr' z hz => ?_), GlobalTheory.T.H0_ne_bot_of_holSec_ne_bot F C.Y _ R _ (holSec_ne_bot hA _ W (fun y => (δ y)⁻¹) hW (fun y y' hy => (hδ y y' hy).neg) u' hu' (fun …` and prove the remaining obligations. Rewrite using `[he y hz]`.
+
+Conclude with `h0 y z hz`. Establish `hz'` using `mem_ptsIn_inf.1 hz.1`. Rewrite using `[he y ⟨hz'.1, hz.2⟩, he y' ⟨hz'.2, hz.2⟩]`. Conclude with `hr y y' _ r hr' z hz'.1 hz'.2 hz.1 hz.2`. Rewrite using `[he' y hz]`.
+
+Conclude with `inv_ne_zero (h0 y z hz)`. Establish `hz'` using `mem_ptsIn_inf.1 hz.1`. Establish `e` using `hr y' y _ r (fun hU => by`. Rewrite using `[hr', Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, inv_div_inv]) z hz'.2 hz'.1 hz.1 hz.2`. Rewrite using `[he' y ⟨hz'.1, hz.2⟩, he' y' ⟨hz'.2, hz.2⟩]`.
+
+Establish `h₁` using `h0 y' z ⟨hz'.2, hz.2⟩`. Rewrite using `[eq_mul_inv_iff_mul_eq₀ h₁, e, _root_.mul_comm, mul_inv_cancel_right₀ (h0 y z ⟨hz'.1, hz.2⟩)]`.
+-/
 theorem H0_ne_bot_of_horFn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (σ : c.F →+* ℂ) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (C : FlagCpt Z e) (τ : E →+* ℂ) (h : CxFr Z σ → ℂ), τ (H.rt : E) = H.rt0 → HorFn τ h → (C.Y.H0 (divOf C (expo Dw (detSym Dw (fun _ => false) none τ))) ≠ ⊥ ∧ C.Y.H0 (-divOf C (expo Dw (detSym Dw (fun _ => false) none τ))) ≠ ⊥) := by
   intro E _ _ _ H Dw l Xo c O _ β Z σ F _ _ e C τ h hτ hh
   obtain ⟨W, δ, a, hW, hδ, ha, hf, hc⟩ := GlobalTheory.T.exists_local_equation_complex_points E H Dw l Xo c O β Z σ F e C τ hτ

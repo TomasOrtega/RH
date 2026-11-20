@@ -9,6 +9,17 @@ open Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `l _ a _ g hg`. Use `haveI : IsAdicComplete (Ideal.span {(l : Wq l a)}) (Wq l a) := WittVector.isAdicCompleteIdealSpanP`. Establish `hsurj : Function.Surjective (WittVector.constantCoeff (p` using `l) (R := Fq l a)) := fun x => ⟨WittVector.teichmuller l x, by simp⟩`. Establish `hm : IsLocalRing.maximalIdeal (Wq l a) = Ideal.span {(l : Wq l a)}`. Rewrite using `[← WittVector.ker_constantCoeff]`.
+
+Use `haveI := RingHom.ker_isMaximal_of_surjective _ hsurj`. Conclude with `(IsLocalRing.eq_maximalIdeal this).symm`. Use `haveI : IsAdicComplete (IsLocalRing.maximalIdeal (Wq l a)) (Wq l a) := hm ▸ inferInstance`. Establish `hg' : g.map (IsLocalRing.residue (Wq l a)) ≠ 0`. Introduce `h0`.
+
+Apply `hg` to reduce the goal to its premises. Apply `dvd_of_map_eq_zero l a g` to reduce the goal to its premises. Use extensionality with `n`. Establish `h1 : IsLocalRing.residue (Wq l a) (coeff n g) = 0`. Simplify using `using congrArg (coeff n) h0`.
+
+Rewrite `h1` using `[IsLocalRing.residue_eq_zero_iff, hm, ← WittVector.ker_constantCoeff, RingHom.mem_ker]`. Simplify using `using h1`. Take `⟨f, h, H⟩` from `g.exists_isWeierstrassFactorization hg'`. Use `⟨f, h, H.isUnit, H.isDistinguishedAt.monic, fun i hi => ?_, ?_⟩` and prove the remaining obligations. Use `H.isDistinguishedAt.mem hi` as an intermediate fact.
+
+Rewrite `this` using `[hm]`. Conclude with `Ideal.mem_span_singleton.1 this`. Rewrite using `[H.eq_mul, mul_comm]`.
+-/
 theorem weierstrass_prep_not_dvd_l : ∀ (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (g : (Wq l a)⟦X⟧), ¬ (l : (Wq l a)⟦X⟧) ∣ g →
     ∃ (P : Polynomial (Wq l a)) (U : (Wq l a)⟦X⟧), IsUnit U ∧ P.Monic ∧
       (∀ i < P.natDegree, (l : Wq l a) ∣ P.coeff i) ∧ g = U * (P : (Wq l a)⟦X⟧) := by

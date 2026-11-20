@@ -62,6 +62,11 @@ structure HNFiltration (Φ : M →ₛₗ[F.phi] M) where
       slope i * finrank (Robba K) (N (i + 1) ⧸ inSub (N i) (N (i + 1)))
   slope_lt : ∀ i j, i < j → j < length → slope i < slope j
 
+/- English proof (translation)
+Use `free_subquot (N := N) (N' := N')` as an intermediate fact. Use `finite_subquot (N := N) (N' := N')` as an intermediate fact. Use `isTorsionFree_subquot (N := N) (N' := N')` as an intermediate fact. Rewrite using `[Module.finrank_pos_iff_exists_ne_zero]`. Take `⟨x, hx, hxN⟩` from `SetLike.exists_of_lt hlt`.
+
+Use `⟨Submodule.Quotient.mk ⟨x, hx⟩, fun h0 => hxN ?_⟩` and prove the remaining obligations. Rewrite `h0` using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `h0`.
+-/
 theorem finrank_subquot_pos {N N' : Submodule (Robba K) M} (hlt : N < N')
     [Module.IsTorsionFree (Robba K) (M ⧸ N)] [Module.IsTorsionFree (Robba K) (M ⧸ N')] :
     0 < finrank (Robba K) (N' ⧸ inSub N N') := by
@@ -104,6 +109,9 @@ def HNFiltration.toSlopeFiltration {Φ : M →ₛₗ[F.phi] M}
     exact hp
   slope_lt := S.slope_lt
 
+/- English proof (translation)
+The claim follows from `hHN.map (HNFiltration.toSlopeFiltration hss)`.
+-/
 theorem nonempty_slopeFiltration_of {Φ : M →ₛₗ[F.phi] M}
     (hss : ∀ (M' : Type u) [AddCommGroup M'] [Module (Robba K) M'] [Module.Free (Robba K) M']
       [Module.Finite (Robba K) M'] (Φ' : M' →ₛₗ[F.phi] M'), IsSemistable F Φ' →

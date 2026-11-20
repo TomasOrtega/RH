@@ -8,6 +8,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {K : Type} [Field K] [Algebra O K] [IsFractionRing O K]
 variable {H : Type} [AddCommGroup H] [Module O H] {c : Ideal (OF E)}
 
+/- English proof (translation)
+Introduce `x h hx hxh`. Establish `hK : (algebraMap O K x) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O K)).2 hx`. Use `show inK K H h ∈ eigK ρ σ`. Establish `h1 : inK K H (x • h) ∈ eigK ρ σ` using `hxh`. Rewrite `h1` using `[map_smul, ← algebraMap_smul K]`.
+
+Use `(eigK ρ σ).smul_mem (algebraMap O K x)⁻¹ h1` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hK, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem sat (ρ : orderC c →+* Module.End O H) (σ : E →+* K) : IsSat (eigLat ρ σ) := by
   intro x h hx hxh
   have hK : (algebraMap O K x) ≠ 0 := (map_ne_zero_iff _ (IsFractionRing.injective O K)).2 hx
@@ -17,6 +22,15 @@ theorem sat (ρ : orderC c →+* Module.End O H) (σ : E →+* K) : IsSat (eigLa
   have := (eigK ρ σ).smul_mem (algebraMap O K x)⁻¹ h1
   rwa [smul_smul, inv_mul_cancel₀ hK, one_smul] at this
 
+/- English proof (translation)
+Establish `: Nontrivial (eigK ρ σ)` using `Module.nontrivial_of_finrank_eq_succ h1`. Take `⟨⟨v, hv⟩, hv0⟩` from `_root_.exists_ne (0 : eigK ρ σ)`. Establish `hv0' : v ≠ 0` using `fun h => hv0 (by ext; simp [h])`. Use `haveI : IsLocalizedModule (nonZeroDivisors O) (inK K H) := (isLocalizedModule_iff_isBaseChange (nonZeroDivisors O) K (inK K H)).2 (TensorProduct.isBaseChange O H K)`. Take `⟨⟨h, s⟩, hs⟩` from `IsLocalizedModule.surj (nonZeroDivisors O) (inK K H) v`.
+
+Establish `hsK : algebraMap O K (s : O) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O K)).2 (nonZeroDivisors.ne_zero s.2)`. Establish `hs' : inK K H h = algebraMap O K (s : O) • v`. Simplify using `only at hs`. Rewrite using `[← hs, Submonoid.smul_def, algebraMap_smul]`. Use `⟨h, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `h0`. Rewrite `hs'` using `[h0, map_zero]`. Conclude with `(smul_ne_zero hsK hv0') hs'.symm`. Use `show inK K H h ∈ eigK ρ σ`. Rewrite using `[hs']`.
+
+Conclude with `(eigK ρ σ).smul_mem _ hv`.
+-/
 theorem exists_ne_mem (ρ : orderC c →+* Module.End O H) (σ : E →+* K) (h1 : Module.finrank K (eigK ρ σ) = 1) :
     ∃ g : H, g ≠ 0 ∧ g ∈ eigLat ρ σ := by
   have : Nontrivial (eigK ρ σ) := Module.nontrivial_of_finrank_eq_succ h1
@@ -34,6 +48,17 @@ theorem exists_ne_mem (ρ : orderC c →+* Module.End O H) (σ : E →+* K) (h1 
   · show inK K H h ∈ eigK ρ σ
     rw [hs']; exact (eigK ρ σ).smul_mem _ hv
 
+/- English proof (translation)
+Use `haveI : Module.Flat O K := IsLocalization.flat K (nonZeroDivisors O)`. Use `haveI : Module.Finite K (eigK ρ σ) := Module.finite_of_finrank_eq_succ h1`. Use `set N := eigLat ρ σ`. Establish `hinj : Function.Injective (N.subtype.baseChange K)`. Rewrite using `[LinearMap.baseChange_eq_ltensor]`.
+
+Conclude with `Module.Flat.lTensor_preserves_injective_linearMap _ N.injective_subtype`. Establish `hmem : ∀ z, N.subtype.baseChange K z ∈ eigK ρ σ`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul k n`. Rewrite using `[LinearMap.baseChange_tmul]`. Establish `hn : inK K H (n : H) ∈ eigK ρ σ` using `n.2`. Establish `: k ⊗ₜ[O] (N.subtype n) = k • inK K H (n : H)`. Simplify using `[inK, TensorProduct.smul_tmul']`.
+
+Rewrite using `[this]`. Conclude with `(eigK ρ σ).smul_mem k hn`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `(eigK ρ σ).add_mem hx hy`. Establish `hle` using `LinearMap.finrank_le_finrank_of_injective (f := (N.subtype.baseChange K).codRestrict (eigK ρ σ) hmem) (fun a b hab => hinj (by simpa using congrArg Subtype.val hab))`.
+
+Rewrite `hle` using `[Module.finrank_baseChange, h1]`. Conclude with `hle`.
+-/
 theorem finrank_le [Module.Free O H] [Module.Finite O H] (ρ : orderC c →+* Module.End O H) (σ : E →+* K)
     (h1 : Module.finrank K (eigK ρ σ) = 1) : Module.finrank O (eigLat ρ σ) ≤ 1 := by
   haveI : Module.Flat O K := IsLocalization.flat K (nonZeroDivisors O)
@@ -59,6 +84,17 @@ theorem finrank_le [Module.Free O H] [Module.Finite O H] (ρ : orderC c →+* Mo
   rw [Module.finrank_baseChange, h1] at hle
   exact hle
 
+/- English proof (translation)
+Use `haveI : Module.IsTorsionFree O (H ⧸ N) := by`. Rewrite using `[Module.isTorsionFree_iff_smul_eq_zero]`. Introduce `r m hrm`. Distinguish the cases in `hr : r = 0`. Conclude with `Or.inl hr`.
+
+Use `right`. Take `⟨h, rfl⟩` from `N.mkQ_surjective m`. Rewrite `hrm` using `[← map_smul]`. Rewrite `hrm`, the goal using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hN r h hr hrm`.
+
+Use `haveI : Module.Free O (H ⧸ N) := Module.free_of_finite_type_torsion_free'`. Take `⟨s, hs⟩` from `Module.projective_lifting_property N.mkQ LinearMap.id N.mkQ_surjective`. Establish `hs' : ∀ q, N.mkQ (s q) = q` using `fun q => LinearMap.congr_fun hs q`. Set `f : H →ₗ[O] N` to `LinearMap.codRestrict N (LinearMap.id - s ∘ₗ N.mkQ) (by`. Introduce `h`.
+
+Rewrite using `[← Submodule.Quotient.mk_eq_zero]`. Simplify using `only [LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply]`. Rewrite using `[Submodule.Quotient.mk_sub]`. Use `hs' (N.mkQ h)` as an intermediate fact. Simplify using `only [Submodule.mkQ_apply] at this ⊢`.
+
+Rewrite using `[this, sub_self])`. Use `⟨LinearMap.ker f, LinearMap.isCompl_of_proj (f := f) ?_⟩` and prove the remaining obligations. Introduce `x`. Use `ext`. Simplify using `[f, (Submodule.Quotient.mk_eq_zero N).2 x.2]`.
+-/
 theorem compl [Module.Finite O H] (N : Submodule O H) (hN : IsSat N) : ∃ C : Submodule O H, IsCompl N C := by
   haveI : Module.IsTorsionFree O (H ⧸ N) := by
     rw [Module.isTorsionFree_iff_smul_eq_zero]
@@ -87,6 +123,17 @@ theorem compl [Module.Finite O H] (N : Submodule O H) (hN : IsSat N) : ∃ C : S
   simp [f, (Submodule.Quotient.mk_eq_zero N).2 x.2]
 end GlobalTheory.EigenLattice
 
+/- English proof (translation)
+Introduce `E _ _ _ c _ l _ O _ _ _ _ K _ _ _ _ _ D _ _ I _ φ _ H _ _ ρ Fil B hL σ`. Take `⟨hfree, hfin, -, hline, -⟩` from `hL`. Use `haveI := hfree`. Use `haveI := hfin`. Establish `hsat` using `GlobalTheory.EigenLattice.sat (K := K) ρ σ`.
+
+Take `⟨g0, hg0, hg0m⟩` from `GlobalTheory.EigenLattice.exists_ne_mem ρ σ (hline σ)`. Use `set N := eigLat ρ σ`. Establish `hle` using `GlobalTheory.EigenLattice.finrank_le ρ σ (hline σ)`. Use `haveI : Nontrivial N := ⟨⟨⟨g0, hg0m⟩, 0, fun h => hg0 (congrArg Subtype.val h)⟩⟩`. Establish `hpos : 0 < Module.finrank O N` using `Module.finrank_pos_iff.2 inferInstance`.
+
+Establish `h1 : Module.finrank O N = 1` using `le_antisymm hle hpos`. Set `b` to `Module.finBasisOfFinrankEq O N h1`. Use `⟨hsat, ⟨(b 0 : H), fun h => b.ne_zero 0 (Subtype.ext h), ?_⟩, inferInstance, h1, GlobalTheory.EigenLattice.compl N hsat⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`.
+
+Use `b.sum_repr ⟨x, hx⟩` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_one]`. Rewrite using `[Submodule.mem_span_singleton]`. Conclude with `⟨b.repr ⟨x, hx⟩ 0, by simpa using congrArg Subtype.val this⟩`. Rewrite using `[Submodule.span_singleton_le_iff_mem]`.
+
+Conclude with `(b 0).2`.
+-/
 theorem GlobalTheory.EigenLattice.main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (c : Ideal (OF E)), c ≠ ⊥ → ∀ (l : ℕ), l.Prime → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (K : Type) [Field K] [Algebra O K] [IsFractionRing O K], (l : O) ∈ IsLocalRing.maximalIdeal O → Nat.card (E →+* K) = Module.finrank ℚ E → ∀ (D : O), D ≠ 0 → ClearsIdem K c D → ∀ (I : Type) [Fintype I] (φ : I → E →+* K), IsCMTypeIn φ → ∀ (H : Type) [AddCommGroup H] [Module O H] (ρ : orderC c →+* Module.End O H) (Fil : Submodule O H) (B : LinearMap.BilinForm O H), IsCMLattice φ ρ Fil B → ∀ σ : E →+* K, IsSat (eigLat ρ σ) ∧ (∃ g : H, g ≠ 0 ∧ eigLat ρ σ = O ∙ g) ∧ Module.Free O (eigLat ρ σ) ∧ Module.finrank O (eigLat ρ σ) = 1 ∧ ∃ C : Submodule O H, IsCompl (eigLat ρ σ) C := by
   intro E _ _ _ c _ l _ O _ _ _ _ K _ _ _ _ _ D _ _ I _ φ _ H _ _ ρ Fil B hL σ
   obtain ⟨hfree, hfin, -, hline, -⟩ := hL

@@ -9,20 +9,42 @@ namespace GlobalTheory.FlagMeas.Model
 
 open Formalism.MainNotions.S GlobalTheory.Count GlobalTheory.FlagMeas
 
+/- English proof (translation)
+Simplify using `[sphV]`.
+-/
 theorem sphV_zero : sphV 0 = 1 := by simp [sphV]
 
+/- English proof (translation)
+Simplify using `[volU, sphV]`.
+-/
 theorem volU_one : volU 1 = 2 * Real.pi := by simp [volU, sphV]
 
+/- English proof (translation)
+Establish `: Finset.Icc 1 2 = {1, 2}` using `by decide`. Simplify using `[volU, sphV, this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem volU_two : volU 2 = 8 * Real.pi ^ 3 := by
   have : Finset.Icc 1 2 = {1, 2} := by decide
   simp [volU, sphV, this]; ring
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem dimN_two : dimN 2 ![1] = 1 := by decide
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem dimN_test : 9 ^ 2 = (9 - 2 * 3) ^ 2 + 2 * (1 ^ 2 + 2 ^ 2) + 2 * dimN 9 ![1, 2] := by decide
 
 open Pointwise in
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `iInf_le_of_le D (iInf_le_of_le hm (iInf_le_of_le (fun x _ => hc x) le_rfl))`. Use `le_iInf fun D' => le_iInf fun hm' => le_iInf fun hc' => ?_` and prove the remaining obligations. Rewrite using `[hD.measure_eq_tsum D']`. Establish `: D ⊆ ⋃ g : Γ, (g • D' ∩ D)`.
+
+Introduce `x hx`. Take `⟨γ, hγ, h⟩` from `hc' x trivial`. Use `Set.mem_iUnion.2 ⟨(⟨γ, hγ⟩ : Γ)⁻¹, ?_, hx⟩` and prove the remaining obligations. Rewrite using `[Set.mem_inv_smul_set_iff]`. Conclude with `h`.
+
+Conclude with `(measure_mono this).trans (measure_iUnion_le _)`.
+-/
 theorem covol_eq {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (Γ : Subgroup G) [Countable Γ]
     (μ : Measure G) [μ.IsMulLeftInvariant] (D : Set G) (hD : IsFundamentalDomain Γ D μ)
     (hm : MeasurableSet D) (hc : ∀ x, ∃ γ ∈ (Γ : Set G), γ * x ∈ D) :
@@ -43,6 +65,13 @@ def e2 : Fin 2 → Bool := ![true, false]
 
 def W2 : Fin 2 → Submodule ℂ (Fin 2 → ℂ) := ![⊥, Submodule.span ℂ {![1, 1]}]
 
+/- English proof (translation)
+Use `⟨rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro a b hab fin_cases a <;> fin_cases b <;> simp_all [W2]`. Introduce `i fin_cases i`. Establish `: (![1, 1] : Fin 2 → ℂ) ≠ 0`. Introduce `h`.
+
+Simplify using `using congrFun h 0`. Express the relevant statement in the definitionally equal form `Module.finrank ℂ (Submodule.span ℂ {(![1, 1] : Fin 2 → ℂ)}) = Module.finrank ℂ (⊥ : Submodule ℂ (Fin 2 → ℂ)) + 1`. Rewrite using `[finrank_span_singleton this, finrank_bot]`. Introduce `x hx y hy`. Express the relevant statement in the definitionally equal form `x ∈ Submodule.span ℂ {![1, 1]} at hx`.
+
+Express the relevant statement in the definitionally equal form `y ∈ Submodule.span ℂ {![1, 1]} at hy`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hx`. Take `⟨b, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Simplify using `[Formalism.REAL.Jm, e2, dotProduct, Matrix.mulVec, Fin.sum_univ_two, Matrix.diagonal]`.
+-/
 theorem isIsotropicFlag_unitary_one_one : IsIsoFlag e2 ![1] W2 := by
   refine ⟨rfl, ?_, ?_, ?_⟩
   · intro a b hab
@@ -64,10 +93,16 @@ theorem isIsotropicFlag_unitary_one_one : IsIsoFlag e2 ![1] W2 := by
 def nM (t : ℝ) : Matrix (Fin 2) (Fin 2) ℂ :=
   !![1 + t * Complex.I / 2, -(t * Complex.I / 2); t * Complex.I / 2, 1 - t * Complex.I / 2]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [nM, Matrix.mul_apply, Fin.sum_univ_two] <;> ring`.
+-/
 theorem nM_add (s t : ℝ) : nM s * nM t = nM (s + t) := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [nM, Matrix.mul_apply, Fin.sum_univ_two] <;> ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [nM]`.
+-/
 theorem nM_zero : nM 0 = 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [nM]
@@ -82,9 +117,15 @@ def nU (t : ℝ) : Formalism.REAL.UJ e2 :=
         map_ofNat] <;>
       ring⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Units.ext (nM_add s t))`.
+-/
 theorem nU_add (s t : ℝ) : nU s * nU t = nU (s + t) :=
   Subtype.ext (Units.ext (nM_add s t))
 
+/- English proof (translation)
+Establish `: Formalism.REAL.hs (uMat (nU t) - 1) = t ^ 2`. Express the relevant statement in the definitionally equal form `Formalism.REAL.hs (nM t - 1) = t ^ 2`. Simplify using `[Formalism.REAL.hs, nM, Fin.sum_univ_two, Matrix.one_apply, div_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Real.sqrt_sq_eq_abs]`.
+-/
 theorem hs_nU (t : ℝ) : Real.sqrt (Formalism.REAL.hs (uMat (nU t) - 1)) = |t| := by
   have : Formalism.REAL.hs (uMat (nU t) - 1) = t ^ 2 := by
     change Formalism.REAL.hs (nM t - 1) = t ^ 2
@@ -92,15 +133,52 @@ theorem hs_nU (t : ℝ) : Real.sqrt (Formalism.REAL.hs (uMat (nU t) - 1)) = |t| 
     ring
   rw [this, Real.sqrt_sq_eq_abs]
 
+/- English proof (translation)
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [nM] <;> fun_prop`.
+-/
 theorem continuous_nM : Continuous nM := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
   fin_cases i <;> fin_cases j <;> simp [nM] <;> fun_prop
 
+/- English proof (translation)
+Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Use `Units.continuous_iff.2 ⟨continuous_nM, ?_⟩` and prove the remaining obligations. Conclude with `continuous_nM.comp continuous_neg`.
+-/
 theorem continuous_nU : Continuous nU := by
   refine Continuous.subtype_mk ?_ _
   refine Units.continuous_iff.2 ⟨continuous_nM, ?_⟩
   exact continuous_nM.comp continuous_neg
 
+/- English proof (translation)
+Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, -⟩`. Establish `h` using `h1 0 ![1, 1] (Submodule.subset_span rfl)`. Express the relevant statement in the definitionally equal form `_ ∈ (⊥ : Submodule ℂ (Fin 2 → ℂ)) at h`.
+
+Rewrite `h` using `[Submodule.mem_bot, sub_eq_zero]`. Establish `hu : (uMat g)ᴴ * Formalism.REAL.Jm e2 * uMat g = Formalism.REAL.Jm e2` using `g.2`. Establish `a0` using `congrFun h 0`. Establish `a1` using `congrFun h 1`. Establish `b00` using `congrFun (congrFun hu 0) 0`.
+
+Establish `b01` using `congrFun (congrFun hu 0) 1`. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_two] at a0 a1`. Simplify using `[Formalism.REAL.Jm, e2, Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal] at b00 b01`. Use `set a := uMat g 0 0 with ha`. Use `set b := uMat g 0 1 with hb`.
+
+Use `set c := uMat g 1 0 with hc`. Use `set d := uMat g 1 1 with hd`. Establish `hb' : b = 1 - a` using `by linear_combination a0`. Establish `hd' : d = 1 - c` using `by linear_combination a1`. Establish `hac : (starRingEnd ℂ) a - (starRingEnd ℂ) c = 1`.
+
+Rewrite `b01` using `[hb', hd']`. Take the linear combination `b00 + b01`. Establish `hac' : a = 1 + c`. Use `congrArg (starRingEnd ℂ) hac` as an intermediate fact. Simplify using `at this`.
+
+Take the linear combination `this`. Establish `hre : c.re = 0`. Establish `h3 : c + (starRingEnd ℂ) c = 0`. Establish `h4 : (starRingEnd ℂ) a = 1 + (starRingEnd ℂ) c` using `by linear_combination hac`. Rewrite `b00` using `[h4, hac']`.
+
+Take the linear combination `b00`. Use `congrArg Complex.re h3` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcI : c = ((2 * c.im : ℝ) : ℂ) * Complex.I / 2`.
+
+Apply the tactic sequence `apply Complex.ext <;> simp [hre]`. Use `⟨2 * c.im, Subtype.ext (Units.ext ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `nM (2 * c.im) = uMat g`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`.
+
+Express the relevant statement in the definitionally equal form `1 + _ = a`. Rewrite using `[← hcI, hac']`. Express the relevant statement in the definitionally equal form `-_ = b`. Rewrite using `[← hcI, hb', hac']`. Expand and normalize the polynomial expressions, which then agree.
+
+Express the relevant statement in the definitionally equal form `_ = c`. Conclude with `hcI.symm`. Express the relevant statement in the definitionally equal form `1 - _ = d`. Rewrite using `[← hcI, hd']`. Introduce and unpack `⟨t, rfl⟩`.
+
+Establish `key : ∀ a : ℂ, uMat (nU t) *ᵥ (a • ![1, 1]) - a • ![1, 1] = 0`. Introduce `a`. Express the relevant statement in the definitionally equal form `nM t *ᵥ (a • ![1, 1]) - a • ![1, 1] = 0`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [nM, Matrix.mulVec, dotProduct, Fin.sum_univ_two] <;> ring`.
+
+Use `⟨fun i y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `fin_cases i`. Express the relevant statement in the definitionally equal form `y ∈ Submodule.span ℂ {![1, 1]} at hy`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Rewrite using `[key]`.
+
+Conclude with `Submodule.zero_mem _`. Establish `h` using `hy ![1, 1] (Submodule.subset_span rfl)`. Simplify using `[Formalism.REAL.Jm, e2, dotProduct, Matrix.mulVec, Fin.sum_univ_two, Matrix.diagonal] at h`. Establish `: y = y 0 • ![1, 1]`. Use extensionality with `i`.
+
+Use `fin_cases i`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take the linear combination `-h`. Rewrite using `[this, key]`.
+
+Conclude with `Submodule.zero_mem _`.
+-/
 theorem flagVariety_unitary_one_one : flagN e2 W2 = Set.range nU := by
   ext g
   constructor
@@ -170,6 +248,25 @@ theorem flagVariety_unitary_one_one : flagN e2 W2 = Set.range nU := by
         · simp; linear_combination -h
       rw [this, key]; exact Submodule.zero_mem _
 
+/- English proof (translation)
+Establish `hm : Measurable nU` using `continuous_nU.measurable`. Rewrite using `[dimN_two, flagVariety_unitary_one_one]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective nU`. Introduce `s t h`.
+
+Use `congrArg (fun g => (uMat g 1 0).im) h` as an intermediate fact. Express the relevant statement in the definitionally equal form `(nM s 1 0).im = (nM t 1 0).im at this`. Simplify `this` using `[nM]`. Establish `: MeasurableSet (Set.range nU)` using `hm.measurableEmbedding hinj |>.measurableSet_range`. Rewrite using `[Measure.map_apply hm this.compl]`.
+
+Simplify using the standard rewrite rules. Introduce and unpack `_ ⟨s, rfl⟩`. Rewrite using `[Measure.map_map (measurable_const_mul _) hm]`. Establish `: ((fun g => nU s * g) ∘ nU) = nU ∘ fun t => s + t`. Use function extensionality and compare the values at `t`.
+
+Conclude with `nU_add s t`. Rewrite using `[this, ← Measure.map_map hm (measurable_const_add s), map_add_left_eq_self]`. Establish `hb : volume (Metric.ball (0 : EuclideanSpace ℝ (Fin 1)) 1) = 2`. Rewrite using `[EuclideanSpace.volume_ball]`. Establish `: Real.Gamma (1 / 2 + 1) = √Real.pi / 2`.
+
+Rewrite using `[Real.Gamma_add_one (by norm_num), Real.Gamma_one_half_eq]; ring`. Establish `hp : √Real.pi ≠ 0` using `by positivity`. Simplify using `only [Fintype.card_fin, Nat.cast_one, this, pow_one, ENNReal.ofReal_one, one_mul]`. Rewrite using `[show √Real.pi / (√Real.pi / 2) = 2 by field_simp]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hb]`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with r hr`. Establish `hr' : 0 < r` using `hr`. Establish `hcl : MeasurableSet {g : Formalism.REAL.UJ e2 | Real.sqrt (Formalism.REAL.hs (uMat g - 1)) ≤ r}`.
+
+Use `(isClosed_le ?_ continuous_const).measurableSet` and prove the remaining obligations. Establish `: Continuous fun g : Formalism.REAL.UJ e2 => uMat g` using `Units.continuous_val.comp continuous_subtype_val`. Unfold `Formalism.REAL.hs`. Use `fun_prop`. Rewrite using `[Measure.map_apply hm hcl]`.
+
+Establish `: nU ⁻¹' {g : Formalism.REAL.UJ e2 | Real.sqrt (Formalism.REAL.hs (uMat g - 1)) ≤ r} = Set.Icc (-r) r`. Use extensionality with `t`. Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq, hs_nU, Set.mem_Icc, abs_le]`. Rewrite using `[this, Real.volume_Icc, pow_one, ← ENNReal.ofReal_div_of_pos hr']`. Rewrite using `[show (r - -r) / r = 2 by field_simp; ring]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem isGaugeSub_flagN : IsGaugeSub (flagN e2 W2) (dimN 2 ![1]) (Measure.map nU volume) := by
   have hm : Measurable nU := continuous_nU.measurable
   rw [dimN_two, flagVariety_unitary_one_one]
@@ -224,16 +321,29 @@ def mU : Formalism.REAL.UJ e2 :=
       simp [Formalism.REAL.Jm, e2, Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal, Matrix.conjTranspose_apply,
         map_ofNat] <;> norm_num⟩
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `!![5 / 4, 3 / 4; 3 / 4, 5 / 4] *ᵥ (a • ![1, 1]) = _`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two] <;> ring`.
+-/
 theorem mU_act (a : ℂ) : uMat mU *ᵥ (a • ![1, 1]) = (2 * a) • ![1, 1] := by
   change !![5 / 4, 3 / 4; 3 / 4, 5 / 4] *ᵥ (a • ![1, 1]) = _
   ext i
   fin_cases i <;> simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two] <;> ring
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(!![5 / 4, 3 / 4; 3 / 4, 5 / 4] : Matrix (Fin 2) (Fin 2) ℂ)ᴴ = !![5 / 4, 3 / 4; 3 / 4, 5 / 4]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.conjTranspose_apply, map_ofNat]`.
+-/
 theorem mU_herm : (uMat mU)ᴴ = uMat mU := by
   change (!![5 / 4, 3 / 4; 3 / 4, 5 / 4] : Matrix (Fin 2) (Fin 2) ℂ)ᴴ = !![5 / 4, 3 / 4; 3 / 4, 5 / 4]
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Matrix.conjTranspose_apply, map_ofNat]
 
+/- English proof (translation)
+Introduce `i y hy`. Rewrite using `[mU_herm, and_self]`. Use `fin_cases i`. Express the relevant statement in the definitionally equal form `y ∈ (⊥ : Submodule ℂ (Fin 2 → ℂ)) at hy`. Rewrite `hy` using `[Submodule.mem_bot]`.
+
+Substitute `hy` using the available equality. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `y ∈ Submodule.span ℂ {![1, 1]} at hy`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Rewrite using `[mU_act]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span rfl)`.
+-/
 theorem mU_mem : mU ∈ flagM e2 W2 := by
   intro i y hy
   rw [mU_herm, and_self]
@@ -247,6 +357,17 @@ theorem mU_mem : mU ∈ flagM e2 W2 := by
     rw [mU_act]
     exact Submodule.smul_mem _ _ (Submodule.subset_span rfl)
 
+/- English proof (translation)
+Establish `hne : (![1, 1] : Fin 2 → ℂ) ≠ 0`. Introduce `h`. Simplify using `using congrFun h 0`. Establish `h0 : detOn (uMat mU) ⊥ = 1`. Unfold `detOn`.
+
+Rewrite using `[dif_pos (by intro y hy; rw [Submodule.mem_bot] at hy; subst hy; simp)]`. Rewrite using `[LinearMap.det_eq_one_of_subsingleton]`. Simplify using the standard rewrite rules. Establish `h1 : detOn (uMat mU) (Submodule.span ℂ {![1, 1]}) = 2`. Establish `hs : ∀ y ∈ Submodule.span ℂ {(![1, 1] : Fin 2 → ℂ)}, Matrix.toLin' (uMat mU) y ∈ Submodule.span ℂ {(![1, 1] : Fin 2 → ℂ)}` using `fun y hy => (mU_mem 1 y hy).1`.
+
+Unfold `detOn`. Rewrite using `[dif_pos hs]`. Establish `: (Matrix.toLin' (uMat mU)).restrict hs = (2 : ℂ) • LinearMap.id`. Use extensionality with `⟨y, hy⟩ : 1`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hy`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `uMat mU *ᵥ (a • ![1, 1]) = (2 : ℂ) • a • ![1, 1]`. Rewrite using `[mU_act, mul_smul]`. Rewrite using `[this, LinearMap.det_smul, finrank_span_singleton hne]`. Simplify using the standard rewrite rules.
+
+Express the relevant statement in the definitionally equal form `(detOn (uMat mU) (Submodule.span ℂ {![1, 1]}) / detOn (uMat mU) ⊥) ^ (-(1 : ℝ) / ((1 : ℕ) : ℝ)) = 1 / 2`. Rewrite using `[h0, h1]`. Evaluate the numerical expressions using `[Real.rpow_neg_one]`.
+-/
 theorem locSize_mU : locSize ![1] W2 (uMat mU) 0 = 1 / 2 := by
   have hne : (![1, 1] : Fin 2 → ℂ) ≠ 0 := by
     intro h; simpa using congrFun h 0

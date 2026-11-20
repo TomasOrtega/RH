@@ -15,6 +15,11 @@ namespace GlobalTheory
 
 namespace ArtinReduction
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.EqZeroOfMemMaximalPow.eq_zero_of_mem_pow_maximal`. Consider the case `exact _root_.GlobalTheory.EqZeroOfMemMaximalPow.eq_zero_of_mem_pow_maximal`. Consider the case `(apply _root_.GlobalTheory.EqZeroOfMemMaximalPow.eq_zero_of_mem_pow_maximal <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.EqZeroOfMemMaximalPow.eq_zero_of_mem_pow_maximal <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.EqZeroOfMemMaximalPow.eq_zero_of_mem_pow_maximal <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.EqZeroOfMemMaximalPow.eq_zero_of_mem_pow_maximal ..)`.
+-/
 theorem eq_zero_of_forall_mem_pow {R : Type} [CommRing R] [IsNoetherianRing R] (y : R)
     (hy : ∀ i : MaximalSpectrum R × ℕ, y ∈ i.1.asIdeal ^ (i.2 + 1)) : y = 0 := by
   first
@@ -25,6 +30,13 @@ theorem eq_zero_of_forall_mem_pow {R : Type} [CommRing R] [IsNoetherianRing R] (
   | (intros; apply @_root_.GlobalTheory.EqZeroOfMemMaximalPow.eq_zero_of_mem_pow_maximal <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.EqZeroOfMemMaximalPow.eq_zero_of_mem_pow_maximal ..)
 
+/- English proof (translation)
+Establish `hJt : m ^ (n + 1) ≠ ⊤` using `fun h => hm.ne_top (top_le_iff.1 (h ▸ Ideal.pow_le_self (Nat.succ_ne_zero n)))`. Establish `: Nontrivial (R ⧸ m ^ (n + 1))` using `Ideal.Quotient.nontrivial_iff.2 hJt`. Establish `key : ∀ P : Ideal (R ⧸ m ^ (n + 1)), P.IsPrime → P = m.map (Ideal.Quotient.mk (m ^ (n + 1)))`. Introduce `P hP`. Establish `hc : (P.comap (Ideal.Quotient.mk (m ^ (n + 1)))).IsPrime` using `Ideal.comap_isPrime _ _`.
+
+Establish `h1 : m ≤ P.comap (Ideal.Quotient.mk (m ^ (n + 1)))`. Use `Ideal.IsPrime.le_of_pow_le (n := n + 1) fun a ha => ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.2 ha]`. Conclude with `P.zero_mem`. Conclude with `(Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective P).symm.trans (congrArg _ (hm.eq_of_le hc.ne_top h1).symm)`.
+
+Take `⟨P, hP⟩` from `Ideal.exists_maximal (R ⧸ m ^ (n + 1))`. Conclude with `((Ring.krullDimLE_zero_and_isLocalRing_tfae (R ⧸ m ^ (n + 1))).out 1 0 rfl rfl).mp ⟨P, hP.isPrime, fun Q hQ => (key Q hQ).trans (key P hP.isPrime).symm⟩`.
+-/
 theorem krullDimLE_and_isLocalRing_quotient_pow {R : Type} [CommRing R] (m : Ideal R)
     [hm : m.IsMaximal] (n : ℕ) :
     Ring.KrullDimLE 0 (R ⧸ m ^ (n + 1)) ∧ IsLocalRing (R ⧸ m ^ (n + 1)) := by
@@ -45,6 +57,13 @@ theorem krullDimLE_and_isLocalRing_quotient_pow {R : Type} [CommRing R] (m : Ide
   exact ((Ring.krullDimLE_zero_and_isLocalRing_tfae (R ⧸ m ^ (n + 1))).out 1 0 rfl rfl).mp
     ⟨P, hP.isPrime, fun Q hQ => (key Q hQ).trans (key P hP.isPrime).symm⟩
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h`. Establish `h4 : ∃ w : LB.Gen (LB.LinComb L (K` using `Fin 2) (fun i => (q ▷ A).left ≫ ![(lift (fst T A ≫ x) (snd T A) ≫ μ[A]).left, (snd T A).left] i) ![1, -1]), w.IsGen := ⟨_, DVR.pullGen_isGen _ _ _ c hc _⟩`. Establish `h3 : (fun i => (q ▷ A).left ≫ ![(lift (fst T A ≫ x) (snd T A) ≫ μ[A]).left, (snd T A).left] i) = ![(lift (fst T' A ≫ q ≫ x) (snd T' A) ≫ μ[A]).left, (snd T' A).left]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+
+Express the relevant statement in the definitionally equal form `(q ▷ A ≫ lift (fst T A ≫ x) (snd T A) ≫ μ[A]).left = (lift (fst T' A ≫ q ≫ x) (snd T' A) ≫ μ[A]).left`. Rewrite using `[comp_lift_assoc, whiskerRight_fst_assoc, whiskerRight_snd]`. Express the relevant statement in the definitionally equal form `(q ▷ A ≫ snd T A).left = (snd T' A).left`. Rewrite using `[whiskerRight_snd]`. Rewrite `h4` using `[h3]`.
+
+Conclude with `h4`.
+-/
 theorem exists_isGen_translDiff_comp {S : Scheme.{0}} (A : Over S) [GrpObj A] (L : LB A.left)
     {T T' : Over S} (q : T' ⟶ T) (x : T ⟶ A)
     (h : ∃ c : LB.Gen (Out.translDiff A L x), c.IsGen) :
@@ -70,6 +89,11 @@ end ArtinReduction
 
 open ArtinReduction in
 
+/- English proof (translation)
+Introduce `A _ L hA _ h R _ _ hR x hx`. Use `hA.proper` as an intermediate fact. Establish `: IsNoetherianRing R` using `Algebra.FiniteType.isNoetherianRing ℂ R`. Use `TorusLocal.pt_ext_of_quotients (A := ℂ) (C := R) (fun i : MaximalSpectrum R × ℕ => i.1.asIdeal ^ (i.2 + 1)) eq_zero_of_forall_mem_pow (B := A) fun i => ?_` and prove the remaining obligations. Use `i.1.isMaximal` as an intermediate fact.
+
+Take `⟨h1, h2⟩` from `krullDimLE_and_isLocalRing_quotient_pow i.1.asIdeal i.2`. Establish `h3 : Module.Finite ℂ (R ⧸ i.1.asIdeal ^ (i.2 + 1))` using `(Module.finite_iff_krullDimLE_zero ℂ _).2 h1`. Conclude with `(h _ h2 h3 _ (exists_isGen_translDiff_comp A L _ x hx)).trans (MonObj.comp_one _).symm`.
+-/
 theorem translDiff_triv_of_artin_local :
     (∀ (A : Over (Sp ℂ)) [GrpObj A] (L : LB A.left), IsAbelianScheme A → L.IsLB → (∀ (R : Type) [CommRing R] [Algebra ℂ R], IsLocalRing R → Module.Finite ℂ R → ∀ (x : Over.mk (spMap (algebraMap ℂ R)) ⟶ A), (∃ c : LB.Gen (Out.translDiff A L x), c.IsGen) → x = 1) → (∀ (R : Type) [CommRing R] [Algebra ℂ R], Algebra.FiniteType ℂ R → ∀ (x : Over.mk (spMap (algebraMap ℂ R)) ⟶ A), (∃ c : LB.Gen (Out.translDiff A L x), c.IsGen) → x = 1)) := by
   intro A _ L hA _ h R _ _ hR x hx

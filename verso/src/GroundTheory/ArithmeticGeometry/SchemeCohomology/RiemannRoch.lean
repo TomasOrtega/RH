@@ -29,6 +29,9 @@ variable (hX : topologicalKrullDim X = 1)
 omit [HasExt.{w'} (Sheaf (Opens.grothendieckTopology X.toTopCat) AddCommGrpCat.{u})] in
 include hX in
 
+/- English proof (translation)
+Establish `: IsNoetherian X` using `isNoetherian_of_finiteType (k := k) X`. Conclude with `⟨this, isLocallyFactorial_of_dim_le_one hX.le, isFunctionField X hX⟩`.
+-/
 theorem curve_instances :
     IsNoetherian X ∧ IsLocallyFactorial X ∧ IsFunctionField k X.functionField := by
   have : IsNoetherian X := isNoetherian_of_finiteType (k := k) X

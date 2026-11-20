@@ -18,6 +18,13 @@ noncomputable section
 
 namespace GlobalTheory.Poinc
 
+/- English proof (translation)
+Introduce `g n o _ ζ F W hW K _ u`. Take `⟨L₁, -⟩` from `abelianSchemeLaws_all`. Establish `hG` using `L₁.globalFns`. Set `c` to `GlobalTheory.LowChart.siegPull F.univ u (u ≫ F.s) rfl`. Establish `hpb : SiegPB c F.univ u` using `GlobalTheory.LowChart.siegPB_siegPull F.univ u _ rfl`.
+
+Establish `hc : c.Principal` using `GlobalTheory.LowChart.principal_siegPull F.univ u _ rfl F.princ`. Take `⟨d, hd⟩` from `GlobalTheory.AbelianDim.exists_relDim K c.A c.ab`. Take `⟨G, _, pr, hA, hdim, hpr, hu⟩` from `GlobalTheory.EighthPower.exists_power c.A c.ab hd 8`. Establish `hb` using `GlobalTheory.EighthPower.isSymBilin hG c hc.1`. Establish `hL : (GlobalTheory.MatrixBundle.matLB c.P pr W).IsLB` using `LB.isLB_linComb c.isLB _ _`.
+
+Use `⟨{ A := G, isAb := hA, g := 8 * d, smoothDim := hdim, L := GlobalTheory.MatrixBundle.matLB c.P pr W, isLB := hL rigid := GlobalTheory.MatrixBundle.rigidified_matLB c.isLB hb hpr, sym := GlobalTheory.MatrixBundle.sym_matLB c.isLB hb hpr ample := _root_.GlobalTheory.PosDefAmple.rel …` and prove the remaining obligations. Conclude with `PolBaseChange.lbIso_refl hL`.
+-/
 theorem exists_sharpOver_field : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o) (F : SFam g n ζ) (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (K : Type) [Field K] (u : Sp K ⟶ F.X), ∃ P : PolAV (Sp K), SharpOver F W P u := by
   intro g n o _ ζ F W hW K _ u
   obtain ⟨L₁, -⟩ := abelianSchemeLaws_all

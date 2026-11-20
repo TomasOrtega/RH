@@ -4,6 +4,13 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC GlobalTheory.GalV 
 open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
+/- English proof (translation)
+Introduce `hGC B R _ T hT Z W p r c hc d hd hfet`. Take `⟨V, e, G, _, _, a, σ, hgal, hspl⟩` from `hGC c d hfet`. Establish `h0 : σ ⟨0, hd⟩ ≫ c = e` using `hspl.1 _`. Substitute `h0` using the available equality. Establish `hinj` using `hT.inj p ((σ ⟨0, hd⟩ ≫ c) ≫ p) (σ ⟨0, hd⟩ ≫ c) rfl G a hgal`.
+
+Establish `hσr : σ ⟨0, hd⟩ ≫ r = (σ ⟨0, hd⟩ ≫ c) ≫ p`. Rewrite using `[← hc, Category.assoc]`. Establish `hcomp` using `T.pull_comp (σ ⟨0, hd⟩) c hσr hc rfl`. Introduce `x y hxy`. Apply `hinj` to reduce the goal to its premises.
+
+Rewrite using `[hcomp x, hcomp y, hxy]`.
+-/
 theorem UpperTheory.Gal.G3.pFEtInj :
     GalClosD → FEtInj.{u} := by
   intro hGC B R _ T hT Z W p r c hc d hd hfet

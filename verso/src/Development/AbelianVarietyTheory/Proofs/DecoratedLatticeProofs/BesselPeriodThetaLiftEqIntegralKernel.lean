@@ -21,6 +21,11 @@ open GlobalTheory.Unf
 
 namespace GlobalTheory.Unf
 
+/- English proof (translation)
+Use `(enorm_integral_le_lintegral_enorm _).trans (lintegral_mono fun u => ?_)` and prove the remaining obligations. Use `(enorm_integral_le_lintegral_enorm _).trans (lintegral_mono fun b => ?_)` and prove the remaining obligations. Simplify using `only [flFun]`. Rewrite using `[enorm_mul]`. Use `mul_le_of_le_one_left' ?_` and prove the remaining obligations.
+
+Rewrite using `[← ofReal_norm_eq_enorm]`. Conclude with `ENNReal.ofReal_le_one.2 (hTh _)`.
+-/
 theorem enorm_fl_le {D : D7} (ψ : AddChar (AF D.host.F) ℂ) {V V₀ : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ) (W : HSp D)
     (v : VolM D W.rank ρ) (vb : VolM D ρ V₀.rank) (vU : VolU D ρ) (Th : GA D V → ℂ) (hTh : ∀ n, ‖Th n‖ ≤ 1)
     (x : Mx D W.rank ρ) (Ψ : WO V W → ℂ) :
@@ -34,6 +39,9 @@ theorem enorm_fl_le {D : D7} (ψ : AddChar (AF D.host.F) ℂ) {V V₀ : HSp D} {
   rw [← ofReal_norm_eq_enorm]
   exact ENNReal.ofReal_le_one.2 (hTh _)
 
+/- English proof (translation)
+Establish `e : ∀ h, thetaKO om (n * g) h Φ = thetaKO om n h (om (g, 1) Φ)` using `fun h => by`. Simplify using `only [thetaKO]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Simplify using `only [liftS, Formalism.IndefR.Lift.liftInt, e]`.
+-/
 theorem liftS_mul {D : D7} {V W : HSp D} (om : Om V W) (μ : Measure (GA D W)) (𝓕 : Set (GA D W)) (G : GA D W → ℂ)
     (Φ : WO V W → ℂ) (n g : GA D V) : liftS om μ 𝓕 G Φ (n * g) = liftS om μ 𝓕 G (om (g, 1) Φ) n := by
   have e : ∀ h, thetaKO om (n * g) h Φ = thetaKO om n h (om (g, 1) Φ) := fun h => by
@@ -41,6 +49,37 @@ theorem liftS_mul {D : D7} {V W : HSp D} (om : Om V W) (μ : Measure (GA D W)) (
     rw [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]
   simp only [liftS, Formalism.IndefR.Lift.liftInt, e]
 
+/- English proof (translation)
+Introduce `D hD ψ ρ B J s φ G Φ hφ hG hΦ 𝓑 h𝓑`. Take `⟨om', hom'⟩` from `(hD ψ B.V J.W s.χV s.χW s.om s.weil).1 B.V₀ ρ B.d`. Take `⟨hb, hg, hx, hR, -, -⟩` from `GlobalTheory.T.unfolding_base_point_fourierJacobi_group D J.W J.W₀ ρ J.d`. Establish `hemb : Continuous (embA B.d B.o)` using `(GlobalTheory.T.unfolding_base_point_fourierJacobi_group D B.V B.V₀ ρ B.d).2.2.2.2.1.comp (B.o.continuous_emb.comp (continuous_id.prodMk continuous_const))`. Establish `hTh` using `GlobalTheory.T.conjBesselCharacter_isUnfoldingThetaFunction_of_gram_zero D ψ s.weil.std ρ B J.W J.d.e hg`.
+
+Establish `h𝓑'` using `h𝓑`. Rewrite `h𝓑'` using `[← hR]`. Use `set Th : GA D B.V → ℂ := fun n => star (psiBes ψ B.d 1 (vecB B.o B.ζ) n) with hThd`. Establish `hn : ∀ n, ‖Th n‖ ≤ 1` using `fun n => by`. Simplify using `only [hThd, norm_star, psiBes, psiE]`.
+
+Conclude with `(s.weil.std.1.2.1 _).le`. Establish `hfl : ∀ p, fl ψ B.d J.W s.vS s.vT s.vU Th (rat J.d.e) (s.om p Φ) = flatBF s (s.om p Φ) 0` using `fun p => by`. Rewrite using `[← hx]`. Conclude with `GlobalTheory.T.flagUnipotentUnfolding_besselFourierJacobi_eq D ψ ρ B J s _ (s.weil.om_pres p Φ hΦ)`. Establish `hom : ∀ g h, s.om (1, h) (s.om (g, 1) Φ) = s.om (g, h) Φ` using `fun g h => by`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, one_mul]`. Establish `h1 : ∀ g, ∫ n in B.vN.𝓝, Th n.1 * s.lift G Φ (n.1 * g) ∂B.vN.ν = ∫ h in 𝓑, G h * flatBF s (s.om (g, h) Φ) 0 ∂s.vW.μ` using `fun g => by`. Use `(GlobalTheory.T.unfold_over_flagUnipotent_thetaLift D hD ψ B.V B.V₀ J.W ρ B.d s.χV s.χW s.om om' s.weil hom' s.vS B.vN s.vT s.vU s.vW J.d.e Th hb hTh G (s.om (g, 1) Φ) hG (s.weil.om_pres _ Φ hΦ) 𝓑 h𝓑').2` as an intermediate fact. Simplify using `only [hom, hfl] at this`. Simplify using `only [Step.lift, liftS_mul]`.
+
+Conclude with `this`. Take `⟨i1, i2, i3⟩` from `GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D B.A`. Take `⟨j1, j2, j3⟩` from `GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D J.W`. Use `haveI : BorelSpace (GA D B.A) := ⟨rfl⟩`. Use `haveI : BorelSpace (GA D J.W) := ⟨rfl⟩`.
+
+Use `haveI := B.vA.haar`. Use `haveI := s.vW.haar`. Take `⟨hc, hd, -⟩` from `GlobalTheory.T.rational_unitary_subgroup_countable_discrete_fundDomain D B.A (GQ B.A) le_rfl`. Use `set f : GA D B.A → GA D J.W → ℂ := fun h₀ h => φ h₀ * (G h * flatBF s (s.om (embA B.d B.o h₀, h) Φ) 0) with hf`. Establish `hcont : Continuous (Function.uncurry f)`.
+
+Establish `h2` using `GlobalTheory.T.continuous_flatMap_weilRepresentation_joint D ψ B.V B.V₀ J.W J.W₀ ρ ρ B.d J.d s.vS s.vT s.χV s.χW s.om s.weil s.vU J.d.e hb.1 Φ hΦ`. Rewrite `h2` using `[← hx]`. Establish `h3 : Continuous fun p : GA D B.A × GA D J.W => (((embA B.d B.o p.1, p.2), yZero B.V₀ ρ (vecB B.o B.ζ), 0) : (GA D B.V × GA D J.W) × Mx D B.V₀.rank ρ × WO B.V₀ J.W₀)` using `((hemb.comp continuous_fst).prodMk continuous_snd).prodMk continuous_const`. Establish `h4` using `h2.comp h3`. Simplify using `only [Function.comp_def] at h4`.
+
+Establish `h5 : Continuous fun p : GA D B.A × GA D J.W => flatBF s (s.om (embA B.d B.o p.1, p.2) Φ) 0`. Simplify using `only [flatBF, flat]`. Conclude with `h4`. Conclude with `(hφ.2.comp continuous_fst).mul ((hG.2.1.comp continuous_snd).mul h5)`. Establish `hinv` using `(GlobalTheory.T.unfoldedBesselJacobiKernel_laws D ψ ρ B J s om' hom' φ G Φ hφ hG hΦ).2.2.1`.
+
+Take `⟨C, A, hC⟩` from `GlobalTheory.T.unfolded_besselJacobi_integral_abs_le D ψ B.V B.V₀ J.W ρ B.d s.χV s.χW s.om om' s.weil hom' s.vS s.vT s.vU s.vW J.d.e hb G Φ hG hΦ 𝓑 h𝓑'`. Establish `hint : Integrable (Function.uncurry f) ((B.vA.μ.restrict B.vA.𝓕).prod (s.vW.μ.restrict 𝓑))`. Use `GlobalTheory.fubini_compact_quotient (GA D B.A) B.vA.μ (GQ B.A) hc hd B.cpt B.vA.𝓕 B.vA.fund (GA D J.W) _ f hcont.measurable (fun γ hγ h x => by simp only [hf, hφ.1 γ hγ, hinv γ hγ]) fun K hK => ?_` and prove the remaining obligations. Establish `hq : Continuous fun h₀ => ‖φ h₀‖ * (C * height B.V (embA B.d B.o h₀) ^ A)` using `hφ.2.norm.mul (continuous_const.mul (((continuous_height B.V).comp hemb).pow A))`. Take `⟨M, hM⟩` from `hK.bddAbove_image hq.continuousOn`.
+
+Use `⟨M.toNNReal, fun h₀ hh => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← lintegral_const_mul' _ _ enorm_ne_top]`. Simplify using `only [hf, enorm_mul]`. Use `_ ≤ ‖φ h₀‖ₑ * ENNReal.ofReal (C * height B.V (embA B.d B.o h₀) ^ A) := by`.
+
+Use `mul_le_mul_right (le_trans (lintegral_mono fun h => mul_le_mul_right ?_ _) (hC _)) _` and prove the remaining obligations. Rewrite using `[← hfl]`. Conclude with `enorm_fl_le ψ B.d J.W s.vS s.vT s.vU Th hn _ _`. Use `_ = ENNReal.ofReal (‖φ h₀‖ * (C * height B.V (embA B.d B.o h₀) ^ A)) := by`. Rewrite using `[ENNReal.ofReal_mul (norm_nonneg _), ofReal_norm_eq_enorm]`.
+
+Use `_ ≤ M.toNNReal := ENNReal.ofReal_le_ofReal (hM ⟨h₀, hh, rfl⟩)`. Establish `hker : kerBF s φ G Φ = fun h => ∫ h₀ in B.vA.𝓕, f h₀ h ∂B.vA.μ`. Use function extensionality and compare the values at `h`. Simplify using `only [kerBF, hf]`. Rewrite using `[← integral_const_mul]`.
+
+Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun _ => mul_left_comm _ _ _)`. Rewrite using `[hker]`. Use `⟨hint.integral_prod_right, ?_⟩` and prove the remaining obligations. Rewrite using `[← integral_integral_swap hint]`. Simplify using `only [BesLev.per, besPer, besFun, hf]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun h₀ => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[integral_const_mul, ← h1, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun n => ?_)` and prove the remaining obligations. Simplify using `only [hThd]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem besPer_lift_eq_integral_kerBF : ∀ (D : D7), Descent D → ∀ (ψ : AddChar (AF D.host.F) ℂ) (ρ : ℕ) (B : BesLev D ρ) (J : JacLev D ρ) (s : StepBF ψ B J) (φ : GA D B.A → ℂ) (G : GA D J.W → ℂ) (Φ : WO B.V J.W → ℂ), IsContAut B.A φ → RapidDec J.W G → IsThetaFunO ψ B.V J.W Φ → ∀ 𝓑 : Set (GA D J.W), IsFundamentalDomain (GQ J.W ⊓ jacGrp J.d : Subgroup (GA D J.W)) 𝓑 s.vW.μ → IntegrableOn (kerBF s φ G Φ) 𝓑 s.vW.μ ∧ B.per ψ φ (s.lift G Φ) = ∫ h in 𝓑, kerBF s φ G Φ h ∂s.vW.μ := by
   intro D hD ψ ρ B J s φ G Φ hφ hG hΦ 𝓑 h𝓑
   obtain ⟨om', hom'⟩ := (hD ψ B.V J.W s.χV s.χW s.om s.weil).1 B.V₀ ρ B.d

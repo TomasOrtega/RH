@@ -7,6 +7,11 @@ set_option autoImplicit false
 
 namespace GlobalTheory.DualFrobNilMat
 
+/- English proof (translation)
+Establish `hU : ∀ r s, U.transpose⁻¹ r s = U⁻¹ s r` using `fun r s => by`. Rewrite using `[← Matrix.transpose_nonsing_inv]`. Both sides reduce to the same expression. Simplify using `only [Matrix.mulVec, dotProduct, blk, Matrix.mul_diagonal, hU, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, mul_one, Finset.mul_sum]`. Use `congr 1`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem mulVec_transpose_inv_blk_apply {B : Type} [CommRing B] (σ : B →+* B) (p : ℕ) {d k : ℕ}
     (U : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) B) (w : Fin d ⊕ Fin k → B) (r : Fin d ⊕ Fin k) :
     ((U.transpose⁻¹ * blk d k 1 (p : B)).mulVec fun j => σ (w j)) r =
@@ -18,6 +23,27 @@ theorem mulVec_transpose_inv_blk_apply {B : Type} [CommRing B] (σ : B →+* B) 
   congr 1
   exact Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Introduce `B O _ _ θ σ p m hp hm hσ d k U c hc hS`. Take `⟨N, hN⟩` from `hS`. Use `set ρ : B →+* O ⧸ m := (Ideal.Quotient.mk m).comp θ with hρ`. Establish `hρp : ρ (p : B) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 hp`. Establish `hρσ : ∀ b, ρ (σ b) = ρ b ^ p`.
+
+Introduce `b`. Take `⟨e, he⟩` from `hσ b`. Establish `h` using `congrArg ρ he`. Rewrite `h` using `[map_sub, map_mul, map_pow, hρp, zero_mul, sub_eq_zero]`. Conclude with `h`.
+
+Establish `hp0 : p ≠ 0`. Introduce and unpack `rfl`. Apply `hm` to reduce the goal to its premises. Take `⟨e, he⟩` from `hσ 0`. Simplify using `only [map_zero, pow_zero, zero_sub, Nat.cast_zero, zero_mul, neg_eq_zero] at he`.
+
+Establish `h1 : (1 : O) = 0` using `by rw [← map_one θ, he, map_zero]`. Rewrite using `[Ideal.eq_top_iff_one, h1]`. Conclude with `m.zero_mem`. Establish `hT : ∀ (w : Fin d ⊕ Fin k → B) r, ρ (((U.transpose⁻¹ * blk d k 1 (p : B)).mulVec fun j => σ (w j)) r) = ∑ j, ρ (U⁻¹ (Sum.inl j) r) * ρ (w (Sum.inl j)) ^ p`. Introduce `w r`.
+
+Rewrite using `[mulVec_transpose_inv_blk_apply, map_add, map_mul, hρp, zero_mul, add_zero, map_sum]`. Simplify using `only [map_mul, hρσ]`. Establish `hinl : ∀ a j, ρ (U⁻¹ (Sum.inl j) (Sum.inl a)) = ρ (c a j)`. Introduce `a j`. Take `⟨e, he⟩` from `hc a j`.
+
+Establish `h` using `congrArg ρ he`. Rewrite `h` using `[map_sub, map_mul, hρp, zero_mul, sub_eq_zero]`. Conclude with `h.symm`. Establish `hiter : ∀ (t : ℕ) (v : Fin d ⊕ Fin k → B), (fun a => ρ (((fun w : Fin d ⊕ Fin k → B => (U.transpose⁻¹ * blk d k 1 (p : B)).mulVec fun j => σ (w j))^[t] v) (Sum.inl a))) = (fun w : Fin d → O ⧸ m => fun a => ∑ j, Ideal.Quotient.mk m (θ (c a j)) * w j ^ p)^[t] (fun a => ρ (v (Sum.in …`. Introduce `t`.
+
+Proceed by induction on `t with`. Consider the case `zero => intro v`. Both sides reduce to the same expression. Consider the case `succ t ih`. Introduce `v`.
+
+Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', ← ih]`. Use function extensionality and compare the values at `a`. Rewrite using `[hT]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hinl]; rfl`. Use `⟨N + 1, fun v r hu => hm ?_⟩` and prove the remaining obligations.
+
+Rewrite `hu` using `[Function.iterate_succ_apply']`. Establish `h0 : ρ (((U.transpose⁻¹ * blk d k 1 (p : B)).mulVec fun j => σ (((fun w : Fin d ⊕ Fin k → B => (U.transpose⁻¹ * blk d k 1 (p : B)).mulVec fun j => σ (w j))^[N] v) j)) r) = 0`. Rewrite using `[hT]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `h` using `congrFun (hiter N v) j`.
+
+Rewrite `h` using `[hN]`. Simplify using `only [Pi.zero_apply] at h`. Rewrite using `[h, zero_pow hp0, mul_zero]`. Conclude with `Ideal.eq_top_of_isUnit_mem _ (Ideal.Quotient.eq_zero_iff_mem.1 h0) hu`.
+-/
 theorem isNil_of_block : ∀ (B O : Type) [CommRing B] [CommRing O] (θ : B →+* O) (σ : B →+* B) (p : ℕ) (m : Ideal O), θ (p : B) ∈ m → m ≠ ⊤ → (∀ b, ∃ c, σ b - b ^ p = p * c) → ∀ (d k : ℕ) (U : Matrix (Fin d ⊕ Fin k) (Fin d ⊕ Fin k) B) (c : Fin d → Fin d → B), (∀ a j, ∃ b, c a j - U⁻¹ (Sum.inl j) (Sum.inl a) = p * b) → (∃ N : ℕ, ∀ w : Fin d → O ⧸ m, (fun w : Fin d → O ⧸ m => fun a => ∑ j, Ideal.Quotient.mk m (θ (c a j)) * w j ^ p)^[N] w = 0) → IsNil θ σ (U.transpose⁻¹ * blk d k 1 (p : B)) := by
   intro B O _ _ θ σ p m hp hm hσ d k U c hc hS
   obtain ⟨N, hN⟩ := hS

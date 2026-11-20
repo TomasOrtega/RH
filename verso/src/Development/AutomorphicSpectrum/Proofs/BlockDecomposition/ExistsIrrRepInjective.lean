@@ -18,10 +18,16 @@ def subIncl {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {ρ : Represe
     (S : Subrepresentation ρ) : S.toRepresentation.IntertwiningMap ρ :=
   ⟨S.toSubmodule.subtype, fun _ => rfl⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.val_injective`.
+-/
 theorem subIncl_injective {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ G V} (S : Subrepresentation ρ) : Function.Injective (subIncl S) :=
   Subtype.val_injective
 
+/- English proof (translation)
+Take `⟨T, f, hf⟩` from `h`. Conclude with `GlobalTheory.JacquetBlocks.hasFiniteLength_of_surjective f hf (GlobalTheory.ProdLength.hasFiniteLength_of_injective (subIncl T) (subIncl_injective T) hρ)`.
+-/
 theorem hasFiniteLength_of_isSubquotient {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] {σ : Representation ℂ G W} {ρ : Representation ℂ G V}
     (h : IsSubquotient σ ρ) (hρ : HasFiniteLength ρ) : HasFiniteLength σ := by
@@ -29,6 +35,11 @@ theorem hasFiniteLength_of_isSubquotient {G V W : Type} [Group G] [AddCommGroup 
   exact GlobalTheory.JacquetBlocks.hasFiniteLength_of_surjective f hf
     (GlobalTheory.ProdLength.hasFiniteLength_of_injective (subIncl T) (subIncl_injective T) hρ)
 
+/- English proof (translation)
+Establish `hbt : (⊤ : Subrepresentation ρ) ≠ ⊥`. Introduce `e`. Take `⟨x, hx⟩` from `exists_ne (0 : V)`. Establish `hmem : x ∈ (⊤ : Subrepresentation ρ).toSubmodule` using `Submodule.mem_top`. Rewrite `hmem` using `[e]`.
+
+Conclude with `hx ((Submodule.mem_bot ℂ).1 hmem)`. Take `⟨S, hS, -⟩` from `GlobalTheory.CompanionTheory.JacExp.exists_atom_le h hbt`. Conclude with `⟨S, hS⟩`.
+-/
 theorem exists_isAtom {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ G V} [Nontrivial V] (h : HasFiniteLength ρ) :
     ∃ S : Subrepresentation ρ, IsAtom S := by
@@ -41,6 +52,9 @@ theorem exists_isAtom {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
   obtain ⟨S, hS, -⟩ := GlobalTheory.CompanionTheory.JacExp.exists_atom_le h hbt
   exact ⟨S, hS⟩
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n V W _ _ _ _ A A₀ hsm hnt hsub hfl`. Take `⟨S, hS⟩` from `exists_isAtom (hasFiniteLength_of_isSubquotient hsub hfl)`. Conclude with `⟨⟨S.toSubmodule, S.toRepresentation, GlobalTheory.CompanionTheory.JacExp.isSmooth_sub hsm S, GlobalTheory.ClassFin.isIrreducible_toRepresentation_of_isAtom S hS⟩, subIncl S, subIncl_injective S⟩`.
+-/
 theorem exists_irrRep_injective : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n : ℕ) (V W : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (A : Representation ℂ (GL (Fin n) k) V) (A₀ : Representation ℂ (GL (Fin n) k) W),

@@ -29,6 +29,9 @@ def SMor.qC (m : SMor Φ Φ' σ) (c : R') {b : IdF Φ.A} {b' : IdF Φ'.A} (hb : 
   QuotientAddGroup.map (b.S _).toAddSubgroup (b'.S T).toAddSubgroup
     ((AddMonoidHom.mulLeft (algebraMap R' _ c)).comp (m.ρ T).toAddMonoidHom) fun x hx => hb T x hx
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem SMor.qC_mk (m : SMor Φ Φ' σ) (c : R') {b : IdF Φ.A} {b' : IdF Φ'.A} (hb : m.LeC c b b') (T : C') (x) :
     m.qC c hb T (Ideal.Quotient.mk _ x) = Ideal.Quotient.mk _ (algebraMap R' _ c * m.ρ T x) := rfl
 
@@ -105,9 +108,15 @@ def rs {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) : Γ(X, U) →+* Γ(X, V) 
 
 def capO {X : Scheme.{0}} {ι : Type} (U : ι → X.Opens) {n : ℕ} (i : Fin n → ι) : X.Opens := ⨅ a, U (i a)
 
+/- English proof (translation)
+The claim follows from `iInf_le (fun a => U (i a)) a`.
+-/
 theorem capO_le {X : Scheme.{0}} {ι : Type} (U : ι → X.Opens) {n : ℕ} (i : Fin n → ι) (a : Fin n) : capO U i ≤ U (i a) :=
   iInf_le (fun a => U (i a)) a
 
+/- English proof (translation)
+The claim follows from `le_iInf fun b => capO_le U i (θ b)`.
+-/
 theorem capO_comp {X : Scheme.{0}} {ι : Type} (U : ι → X.Opens) {m n : ℕ} (i : Fin n → ι) (θ : Fin m → Fin n) :
     capO U i ≤ capO U (i ∘ θ) := le_iInf fun b => capO_le U i (θ b)
 

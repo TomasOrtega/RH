@@ -2,6 +2,49 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ I D _ _ _ _ φ hI2 h2 hskew hsurj F N hFN hF`. Establish `hII : ∀ a ∈ I, ∀ b ∈ I, a * b = 0`. Introduce `a ha b hb`. Establish `h : a * b ∈ I ^ 2` using `by rw [pow_two]; exact Ideal.mul_mem_mul ha hb`. Rewrite `h` using `[hI2]`.
+
+Conclude with `(Submodule.mem_bot R).1 h`. Establish `hφI : ∀ a ∈ I • (⊤ : Submodule R D), ∀ y, φ a y ∈ I`. Introduce `a ha y`. Use `Submodule.smul_induction_on (p := fun a => φ a y ∈ I) ha ?_ ?_` and prove the remaining obligations. Introduce `r hr m _`.
+
+Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `I.mul_mem_right _ hr`. Introduce `x z hx hz`. Simplify using `only [map_add, LinearMap.add_apply]`. Conclude with `I.add_mem hx hz`.
+
+Establish `hφII : ∀ a ∈ I • (⊤ : Submodule R D), ∀ b ∈ I • (⊤ : Submodule R D), φ a b = 0`. Introduce `a ha b hb`. Use `Submodule.smul_induction_on (p := fun a => φ a b = 0) ha ?_ ?_` and prove the remaining obligations. Introduce `r hr m _`. Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+
+Establish `: φ m b ∈ I` using `by rw [hskew]; exact I.neg_mem (hφI b hb m)`. Conclude with `hII r hr _ this`. Introduce `x z hx hz`. Simplify using `only [map_add, LinearMap.add_apply, hx, hz, add_zero]`. Establish `hsmul0 : ∀ r ∈ I, ∀ w ∈ I • (⊤ : Submodule R D), r • w = 0`.
+
+Introduce `r hr w hw`. Use `Submodule.smul_induction_on (p := fun w => r • w = 0) hw ?_ ?_` and prove the remaining obligations. Introduce `r' hr' m _`. Rewrite using `[smul_smul, hII r hr r' hr', zero_smul]`. Introduce `x z hx hz`.
+
+Rewrite using `[smul_add, hx, hz, add_zero]`. Take `⟨n, f, hf⟩` from `Module.Finite.exists_fin' R D`. Take `⟨s, hs⟩` from `Module.projective_lifting_property f LinearMap.id hf`. Establish `hfs : ∀ x, f (s x) = x` using `fun x => by simpa using LinearMap.congr_fun hs x`. Set `e : Fin n → D` to `fun i => f (fun j => if i = j then 1 else 0)`.
+
+Establish `hexp : ∀ x, x = ∑ i, s x i • e i` using `fun x => by conv_lhs => rw [← hfs x]`. Conclude with `LinearMap.pi_apply_eq_sum_univ f (s x)`. Use `choose z hz using fun i : Fin n => hsurj ((LinearMap.proj i).comp s)`. Establish `hz' : ∀ i x, s x i - φ x (z i) ∈ I` using `fun i x => by simpa using hz i x`. Set `P : D →ₗ[R] D` to `F.subtype ∘ₗ Submodule.linearProjOfIsCompl F N hFN`.
+
+Establish `hPF : ∀ x, P x ∈ F` using `fun x => (Submodule.linearProjOfIsCompl F N hFN x).2`. Establish `hPx : ∀ x ∈ F, P x = x` using `fun x hx => congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left hFN ⟨x, hx⟩)`. Set `B : D →ₗ[R] D →ₗ[R] R` to `φ.compl₁₂ P P`. Establish `hB : ∀ x y, B x y = φ (P x) (P y)` using `fun x y => rfl`. Establish `hBI : ∀ x y, B x y ∈ I` using `fun x y => hF _ (hPF x) _ (hPF y)`.
+
+Set `c : R` to `↑(h2.unit⁻¹)`. Establish `hc : c * 2 = 1` using `h2.val_inv_mul`. Set `T : D →ₗ[R] D` to `∑ i, (-c) • (LinearMap.smulRight (B (e i)) (z i))`. Establish `hT : ∀ y, T y = ∑ i, (-c) • (B (e i) y • z i)` using `fun y => by`. Simplify using `[T]`.
+
+Establish `hTr : ∀ y, T y ∈ I • (⊤ : Submodule R D)` using `fun y => by`. Rewrite using `[hT]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.smul_mem_smul (hBI _ _) Submodule.mem_top)`. Establish `hTI : ∀ a ∈ I • (⊤ : Submodule R D), T a = 0`. Introduce `a ha`.
+
+Use `Submodule.smul_induction_on (p := fun a => T a = 0) ha ?_ ?_` and prove the remaining obligations. Introduce `r hr m _`. Rewrite using `[map_smul]`. Conclude with `hsmul0 r hr _ (hTr m)`. Introduce `x w hx hw`.
+
+Rewrite using `[map_add, hx, hw, add_zero]`. Establish `hTT : ∀ y, T (T y) = 0` using `fun y => hTI _ (hTr y)`. Establish `hkey0 : ∀ x y, φ x (T y) = -c * B x y`. Introduce `x y`. Establish `hBx : B x y = ∑ i, s x i * B (e i) y` using `by conv_lhs => rw [hexp x]`.
+
+Simplify using `[map_sum, LinearMap.sum_apply, smul_eq_mul]`. Establish `h0 : ∑ i, B (e i) y * (s x i - φ x (z i)) = 0` using `Finset.sum_eq_zero fun i _ => hII _ (hBI _ _) _ (hz' i x)`. Rewrite using `[hT, map_sum, hBx]`. Simplify using `only [map_smul, smul_eq_mul]`. Rewrite using `[Finset.mul_sum]`.
+
+Establish `h1 : ∑ i, -c * (s x i * B (e i) y) - ∑ i, -c * (B (e i) y * φ x (z i)) = 0`. Rewrite using `[← Finset.sum_sub_distrib]`. Establish `: ∀ i, -c * (s x i * B (e i) y) - -c * (B (e i) y * φ x (z i)) = -c * (B (e i) y * (s x i - φ x (z i)))` using `fun i => by ring`. Simplify using `only [this]`. Rewrite using `[← Finset.mul_sum, h0, mul_zero]`.
+
+Conclude with `(sub_eq_zero.1 h1).symm`. Establish `hkey : ∀ x ∈ F, ∀ y ∈ F, φ x (T y) = -c * φ x y`. Introduce `x hx y hy`. Rewrite using `[hkey0, hB, hPx x hx, hPx y hy]`. Set `u : D ≃ₗ[R] D` to `LinearEquiv.ofLinear (LinearMap.id + T) (LinearMap.id - T) (LinearMap.ext fun y => by simp [hTT]) (LinearMap.ext fun y => by simp [hTT])`.
+
+Establish `hu : ∀ x, u x = x + T x` using `fun x => rfl`. Use `⟨F.map (u : D →ₗ[R] D), N.map (u : D →ₗ[R] D), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Submodule.orderIsoMapComap u).isCompl hFN`. Introduce and unpack `_ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩ show φ (u x) (u y) = 0`. Rewrite using `[hu, hu, map_add, map_add, LinearMap.add_apply, LinearMap.add_apply]`.
+
+Establish `h1` using `hkey x hx y hy`. Establish `h2'` using `hkey y hy x hx`. Establish `h3` using `hskew (T x) y`. Establish `h4` using `hskew y x`. Establish `h5` using `hφII (T x) (hTr x) (T y) (hTr y)`.
+
+Take the linear combination `h1 + h3 - h2' + h5 + c * h4 - (φ x y) * hc`. Apply `le_antisymm` to reduce the goal to its premises. Use `sup_le ?_ le_sup_right` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `show u x ∈ _`.
+
+Rewrite using `[hu]`. Conclude with `Submodule.add_mem_sup hx (hTr x)`. Use `sup_le ?_ le_sup_right` and prove the remaining obligations. Introduce `x hx`. Use `Submodule.mem_sup.2 ⟨u x, ⟨x, hx, rfl⟩, -T x, Submodule.neg_mem _ (hTr x), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hu]`. Normalize the expressions using the abelian group laws.
+-/
 theorem isotropic_summand_lift : ∀ (R : Type) [CommRing R] (I : Ideal R) (D : Type) [AddCommGroup D] [Module R D] [Module.Finite R D] [Module.Projective R D] (φ : D →ₗ[R] D →ₗ[R] R), I ^ 2 = ⊥ → IsUnit (2 : R) → (∀ x y, φ x y = -φ y x) → (∀ l : D →ₗ[R] R, ∃ z, ∀ x, l x - φ x z ∈ I) → ∀ F N : Submodule R D, IsCompl F N → (∀ x ∈ F, ∀ y ∈ F, φ x y ∈ I) → ∃ E N' : Submodule R D, IsCompl E N' ∧ (∀ x ∈ E, ∀ y ∈ E, φ x y = 0) ∧ E ⊔ I • (⊤ : Submodule R D) = F ⊔ I • (⊤ : Submodule R D) := by
   intro R _ I D _ _ _ _ φ hI2 h2 hskew hsurj F N hFN hF
   have hII : ∀ a ∈ I, ∀ b ∈ I, a * b = 0 := by

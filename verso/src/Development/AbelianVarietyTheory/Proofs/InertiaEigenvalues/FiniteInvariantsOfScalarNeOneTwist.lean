@@ -8,6 +8,15 @@ open ReciprocityTheory.Gal
 
 namespace GlobalTheory.ShapeNeg
 
+/- English proof (translation)
+Introduce `O _ _ _ _ M _ _ e G _ ρ g a ha hg`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hb : a - 1 ≠ 0` using `sub_ne_zero.2 ha`. Take `⟨c, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb hϖ`. Establish `hkill : ∀ m : ρ.invariants, ϖ ^ c • (m : M) = 0`.
+
+Introduce `m`. Establish `hm : ρ g (m : M) = m` using `(Representation.mem_invariants ρ (m : M)).1 m.2 g`. Establish `h1 : (a - 1) • (m : M) = 0`. Rewrite using `[sub_smul, one_smul, ← hg, hm, sub_self]`. Rewrite `h1` using `[hu, mul_smul]`.
+
+Establish `h2` using `congrArg (fun x : M => ((u⁻¹ : Oˣ) : O) • x) h1`. Simplify using `only [smul_zero, smul_smul] at h2`. Rewrite `h2` using `[← mul_assoc, Units.inv_mul, one_mul]`. Then use the resulting hypothesis. Use `haveI := (lev_pow_card hϖ e c).1`. Use `Finite.of_injective (fun m : ρ.invariants => (Lev.mk (m : M) (hkill m) : Lev M (ϖ ^ c))) ?_` and prove the remaining obligations.
+
+Introduce `x y hxy`. Use `congrArg Lev.val hxy` as an intermediate fact. Simplify using `only [Lev.val_mk] at this`. Conclude with `Subtype.ext this`.
+-/
 theorem finite_invariants_of_smul_ne_one : ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Finite (IsLocalRing.ResidueField O)]
     {M : Type} [AddCommGroup M] [Module O M], (M ≃ₗ[O] Formalism.NG.KO O) → ∀ {G : Type} [Group G]

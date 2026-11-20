@@ -12,6 +12,45 @@ open GlobalTheory.AbDual (evc IsAdditive swap)
 attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
+/- English proof (translation)
+Introduce `hCS hOM hQO hOT hPK`. Introduce `p _ D O _ _ _ _ f b N r w _ hstd M j hj T K _ _ hp x G hGk hGs hGc`. Take `⟨o₁, ⟨m⟩⟩` from `GlobalTheory.T.exists_harrisTaylorObject_pullback p D O b N M.X (Sp K) M.s x M.univ`. Establish `hcm : ∀ {X Y Z : Over M.X} [MonObj Z] (e : X ⟶ Y) (u v : Y ⟶ Z), e ≫ (u * v) = (e ≫ u) * (e ≫ v)`. Introduce `X Y Z _ e u v`.
+
+Rewrite using `[Hom.mul_def, Hom.mul_def, ← Category.assoc, CartesianMonoidalCategory.comp_lift]`. Set `eI : Over.mk x ≅ (Over.map x).obj (𝟙_ (Over (Sp K)))` to `Over.isoMk (Iso.refl _) (by simp)`. Set `Φ : (𝟙_ (Over (Sp K)) ⟶ o₁.A) →* (Over.mk x ⟶ M.univ.A)` to `{ toFun := fun u => eI.hom ≫ m.ptEquiv _ u map_one' := by rw [map_one]; simp [Hom.one_def] map_mul' := fun a c => by rw [map_mul]; exact hcm _ _ _ }`. Establish `hΦl : ∀ u, (Φ u).left = u.left ≫ m.φ` using `fun u => by`. Simplify using `[Φ, eI, GlobalTheory.UPel.HT.ObjMap.ptEquiv_left]`.
+
+Establish `hΦi : Function.Injective Φ` using `fun a c h => by`. Establish `h2 : m.ptEquiv _ a = m.ptEquiv _ c`. Simplify `congrArg (fun t => eI.inv ≫ t) h` using `[Φ]`. Conclude with `(m.ptEquiv _).injective h2`. Establish `hΦs : Function.Surjective Φ` using `fun g => ⟨(m.ptEquiv _).symm (eI.inv ≫ g), by simp [Φ]⟩`.
+
+Establish `hPK1` using `hPK p D O b N M.X (Sp K) M.s (x ≫ M.s) x M.univ M.univ o₁ o₁ m m (𝟙 _) (𝟙 _) (by simp)`. Establish `hkill : ∀ u I, KilledBy o₁ I u ↔ KilledBy M.univ I (Φ u)` using `fun u I => ((hPK1.1 (𝟙_ (Over (Sp K))) (Over.mk x) rfl u (Φ u) (by simp [hΦl])).2.2 I)`. Establish `hpw : (p : 𝓞 D.F) ∈ w` using `hstd.ule (GlobalTheory.UPel.HT.ES.p_mem_uIdeal D r)`. Establish `hGO : ∀ g ∈ G, ∀ a : D.O, g ≫ M.univ.act.act a ∈ G`. Introduce `g hg a`.
+
+Take `⟨c, y', rfl⟩` from `hOM p D hstd.m1 a`. Establish `h1 : g ≫ M.univ.act.act (algebraMap (𝓞 D.F) D.O (p : 𝓞 D.F)) = 1` using `hGk g hg _ hpw`. Use `haveI := M.univ.act.hom y'`. Rewrite using `[GlobalTheory.UPel.HT.OActN.add, hcm, Algebra.commutes, GlobalTheory.UPel.HT.OActN.mul, ← Category.assoc, h1]`. Simplify using `only [Hom.one_def, Category.assoc, IsMonHom.one_hom]`.
+
+Rewrite using `[← Hom.one_def, _root_.mul_one]`. Conclude with `hGs g hg c`. Establish `hcard : Nat.card (G.comap Φ) = Nat.card G` using `Nat.card_congr ((Subgroup.equivMapOfInjective (G.comap Φ) Φ hΦi).toEquiv.trans (MulEquiv.subgroupCongr (Subgroup.map_comap_eq_self_of_surjective hΦs G)).toEquiv)`. Establish `hne : Nat.card G ≠ 0`. Rewrite using `[hGc, hstd.norm]`.
+
+Conclude with `pow_ne_zero _ (pow_ne_zero _ (Fact.out : Nat.Prime p).ne_zero)`. Establish `hfin : Finite (G.comap Φ)` using `Nat.finite_of_card_ne_zero (hcard ▸ hne)`. Use `haveI := o₁.ab`. Use `haveI := IsAbelianScheme.proper (A := o₁.A)`. Take `⟨G', _, i, hi1, hi2, hi3, hi4, hi5, hi6, hi7, hi8⟩` from `hCS K o₁.A inferInstance (G.comap Φ) hfin`.
+
+Establish `hΦact : ∀ u a, Φ (u ≫ o₁.act.act a) = Φ u ≫ M.univ.act.act a` using `fun u a => Over.OverMorphism.ext (by rw [hΦl, Over.comp_left, Over.comp_left, hΦl, Category.assoc, Category.assoc, m.act])`. Establish `hks : ∀ (T' : Over (Sp K)) (z : T' ⟶ o₁.A), GlobalTheory.IwLevel.InSub i z → KilledBy o₁ w z`. Introduce and unpack `T' z ⟨y0, rfl⟩ a ha`. Establish `h7 : i ≫ o₁.act.act (algebraMap _ _ a) = 1` using `hi7 _ (fun u hu => ((hkill u w).2 (hGk _ hu)) a ha)`. Rewrite using `[Category.assoc, h7]`.
+
+Simplify using `[Hom.one_def]`. Establish `hstab : ∀ a : D.O, ∃ g, g ≫ i = i ≫ o₁.act.act a` using `fun a => hi8 _ (fun u hu => by`. Rewrite using `[Subgroup.mem_comap, hΦact]`. Conclude with `hGO _ hu a)`. Establish `hisog : GlobalTheory.IwLevel.IsIsogDeg (toUnit G') (Ideal.absNorm w ^ j)`.
+
+Rewrite using `[← hGc, ← hcard]`. Conclude with `hi5`. Establish `hf0 : 0 < f`. Break down `Nat.eq_zero_or_pos f with h0 | h0` into its components or cases. It suffices to derive a contradiction.
+
+Establish `h` using `hstd.card`. Rewrite `h` using `[h0, pow_zero, Nat.card_eq_one_iff_unique]`. Conclude with `(not_subsingleton _) h.1`. Conclude with `h0`. Establish `hu : IsUnit (p : Γ(Sp K, ⊤))`.
+
+Establish `h0 : IsUnit (p : K)` using `hp.isUnit`. Simplify using `using h0.map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom`. Take `⟨o', ψ, hψ1, hψ2, hψ3⟩` from `hQO p D O b N hstd.three hstd.cop hstd.m1 r w j (p ^ (f * j)) inferInstance hstd.ule hj ⟨f * j, rfl, fun h => Nat.mul_pos hf0 h⟩ (Sp K) (x ≫ M.s) hu o₁ G' i hi1 hi2 hi3 hi4 hks hstab hisog`. Take `⟨y, ⟨hy, m₀, m₁, hsq⟩, -⟩` from `T.univ (Sp K) x o₁ o' m ψ hu hψ1 hψ2`. Use `⟨y, hy, fun g hg => ?_⟩` and prove the remaining obligations.
+
+Take `⟨u, rfl⟩` from `hΦs g`. Establish `key : m₀.φ ≫ T.ms.φ = m.φ`. Take `⟨m₂, hm₂⟩` from `GlobalTheory.HTQuotRigid.objMap_comp_φ m₀ T.ms`. Establish `hcast : ∀ (f₁ f₂ : Sp K ⟶ M.X) (h : f₁ = f₂) (mm : GlobalTheory.UPel.HT.ObjMap o₁ M.univ f₂), ∃ mm' : GlobalTheory.UPel.HT.ObjMap o₁ M.univ f₁, mm'.φ = mm.φ`. Introduce and unpack `f₁ f₂ rfl mm`.
+
+Conclude with `⟨mm, rfl⟩`. Take `⟨m', hm'⟩` from `hcast _ _ hy m`. Rewrite using `[← hm', ← hm₂]`. Conclude with `(hOT p D O b N hstd.three hstd.cop _ _ _ _ _ _ o₁ M.univ M.univ _ (𝟙 _)).1 m₂ m'`. Establish `h1 : Φ u ∈ G ↔ u ≫ ψ = 1`.
+
+Rewrite using `[← Subgroup.mem_comap, ← hi6, ← hψ3]`. Conclude with `⟨fun h => h.1, fun h => ⟨h, 1, by`. Rewrite using `[pow_one]`. Introduce `a ha`. Conclude with `((hkill u w).2 hg) a (hstd.ule ha)⟩⟩`.
+
+Establish `hPK2` using `hPK p D O b N T.Y (Sp K) (T.s ≫ M.s) (x ≫ M.s) y T.o T.o' o₁ o' m₀ m₁ T.ψ ψ hsq`. Set `eY : Over.mk y ≅ (Over.map y).obj (𝟙_ (Over (Sp K)))` to `Over.isoMk (Iso.refl _) (by simp)`. Set `a₀ : Over.mk y ⟶ T.o.A` to `eY.hom ≫ m₀.ptEquiv _ u`. Establish `hl0 : a₀.left = u.left ≫ m₀.φ`. Simplify using `[a₀, eY, GlobalTheory.UPel.HT.ObjMap.ptEquiv_left]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hK`. Establish `ha0 : a₀ ≫ T.ψ = 1` using `hK a₀ (by rw [hl0, Category.assoc, key, hΦl])`. Rewrite using `[h1]`. Conclude with `((hPK2.1 _ _ rfl u a₀ (by rw [eqToHom_refl, Category.id_comp, hl0])).1).2 ha0`.
+
+Introduce `hG a' ha'`. Rewrite `hG` using `[h1]`. Set `u'` to `(m₀.ptEquiv _).symm (eY.inv ≫ a')`. Establish `hu'l : u'.left ≫ m₀.φ = a'.left`. Rewrite using `[← GlobalTheory.UPel.HT.ObjMap.ptEquiv_left]`.
+
+Simplify using `[u', eY]`. Establish `huu : u' = u` using `hΦi (Over.OverMorphism.ext (by`. Rewrite using `[hΦl, hΦl, ← key, ← Category.assoc, hu'l, ha', hΦl, key]))`. Conclude with `((hPK2.1 _ _ rfl u a' (by rw [eqToHom_refl, Category.id_comp, ← huu, hu'l])).1).1 hG`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.Mod.secSurj_of :
     ConstSub → OMod → QuotObj → ObjTri → PullKer → SecSurj := by
   intro hCS hOM hQO hOT hPK

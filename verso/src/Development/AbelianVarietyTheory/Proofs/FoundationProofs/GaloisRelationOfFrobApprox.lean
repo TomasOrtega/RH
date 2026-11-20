@@ -4,6 +4,23 @@ open GlobalTheory.KZ Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `Ω _ _ E _ r A t d v hcont happrox hdens s`. Use function extensionality and compare the values at `i`. Set `G : (Fin r → Fin r → E) × E × E → E` to `fun x => (Matrix.of x.1 *ᵥ (Matrix.of x.1 *ᵥ v) - x.2.1 • (Matrix.of x.1 *ᵥ v) + x.2.2 • v) i`. Establish `hG : Continuous G`. Simplify using `only [G, Matrix.mulVec, dotProduct, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Matrix.of_apply]`.
+
+Use `fun_prop`. Establish `key : ∀ ε : ℝ, 0 < ε → ‖(A s *ᵥ (A s *ᵥ v) - t s • (A s *ᵥ v) + d s • v) i‖ < ε`. Introduce `ε hε`. Take `⟨η, hη, hGη⟩` from `Metric.continuous_iff.mp hG (fun a b => A s a b, t s, d s) (ε / 2) (by linarith)`. Take `⟨E0, hE0⟩` from `hcont s η hη`.
+
+Take `⟨S, hS⟩` from `happrox (ε / 2) (by linarith)`. Take `⟨s', q, hfix, hq, hqS, hfr⟩` from `hdens s E0 S`. Take `⟨hA, ht, hd⟩` from `hE0 s' hfix`. Establish `h1` using `hS q hq hqS (s * s') hfr i`. Establish `hdist : dist (fun a b => A (s * s') a b, t (s * s'), d (s * s')) (fun a b => A s a b, t s, d s) < η`.
+
+Rewrite using `[Prod.dist_eq, Prod.dist_eq]`. Use `max_lt ?_ (max_lt ?_ ?_)` and prove the remaining obligations. Rewrite using `[dist_pi_lt_iff hη]`. Introduce `a`. Rewrite using `[dist_pi_lt_iff hη]`.
+
+Introduce `b`. Rewrite using `[dist_eq_norm]`. Conclude with `hA a b`. Rewrite using `[dist_eq_norm]`. Conclude with `ht`.
+
+Rewrite using `[dist_eq_norm]`. Conclude with `hd`. Establish `h2` using `hGη _ hdist`. Establish `e1 : G (fun a b => A (s * s') a b, t (s * s'), d (s * s')) = (A (s * s') *ᵥ (A (s * s') *ᵥ v) - t (s * s') • (A (s * s') *ᵥ v) + d (s * s') • v) i` using `rfl`. Establish `e2 : G (fun a b => A s a b, t s, d s) = (A s *ᵥ (A s *ᵥ v) - t s • (A s *ᵥ v) + d s • v) i` using `rfl`.
+
+Rewrite `h2` using `[e1, e2, dist_eq_norm]`. Use `norm_sub_le_norm_sub_add_norm_sub ((A s *ᵥ (A s *ᵥ v) - t s • (A s *ᵥ v) + d s • v) i) ((A (s * s') *ᵥ (A (s * s') *ᵥ v) - t (s * s') • (A (s * s') *ᵥ v) + d (s * s') • v) i) 0` as an intermediate fact. Rewrite `h2` using `[norm_sub_rev]`. Simplify using `only [sub_zero] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `: ‖(A s *ᵥ (A s *ᵥ v) - t s • (A s *ᵥ v) + d s • v) i‖ = 0`. Assume the negation of the conclusion as `h`. Establish `hpos` using `lt_of_le_of_ne (norm_nonneg _) (Ne.symm h)`. Conclude with `lt_irrefl _ (key _ hpos)`. Simplify using `using this`.
+-/
 theorem galois_relation_of_frob_approx : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] {E : Type} [NormedField E] (r : ℕ) (A : (Ω ≃ₐ[ℚ] Ω) → Matrix (Fin r) (Fin r) E) (t d : (Ω ≃ₐ[ℚ] Ω) → E) (v : Fin r → E), (∀ (s : Ω ≃ₐ[ℚ] Ω) (δ : ℝ), 0 < δ → ∃ E0 : Finset Ω, ∀ s' : Ω ≃ₐ[ℚ] Ω, (∀ x ∈ E0, s' x = x) → (∀ i j, ‖A (s * s') i j - A s i j‖ < δ) ∧ ‖t (s * s') - t s‖ < δ ∧ ‖d (s * s') - d s‖ < δ) → (∀ δ : ℝ, 0 < δ → ∃ S : Finset ℕ, ∀ q : ℕ, q.Prime → q ∉ S → ∀ s, FrobAt q s → ∀ i, ‖(A s *ᵥ (A s *ᵥ v) - t s • (A s *ᵥ v) + d s • v) i‖ < δ) → (∀ (s : Ω ≃ₐ[ℚ] Ω) (E0 : Finset Ω) (S : Finset ℕ), ∃ (s' : Ω ≃ₐ[ℚ] Ω) (q : ℕ), (∀ x ∈ E0, s' x = x) ∧ q.Prime ∧ q ∉ S ∧ FrobAt q (s * s')) → ∀ s, A s *ᵥ (A s *ᵥ v) - t s • (A s *ᵥ v) + d s • v = 0 := by
   intro Ω _ _ E _ r A t d v hcont happrox hdens s
   funext i

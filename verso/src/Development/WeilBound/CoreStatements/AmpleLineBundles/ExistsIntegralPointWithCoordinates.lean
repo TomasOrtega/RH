@@ -22,6 +22,11 @@ namespace PtExt
 
 variable {R L : Type} [CommRing R] [IsDedekindDomain R] [Field L] [Algebra R L] [IsFractionRing R L]
 
+/- English proof (translation)
+Distinguish the cases in `hP : P = ⊥`. Establish `hF : IsField (Localization.AtPrime P)`. Rewrite using `[IsLocalRing.isField_iff_maximalIdeal_eq, ← Localization.AtPrime.map_eq_maximalIdeal]`. Conclude with `(congrArg (Ideal.map _) hP).trans Ideal.map_bot`. Set `` to `hF.toField`.
+
+Conclude with `ValuationRing.of_field _`. Use `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain R hP (Localization.AtPrime P) infer_instance` as an intermediate fact.
+-/
 theorem valRing (P : Ideal R) [P.IsPrime] : ValuationRing (Localization.AtPrime P) := by
   by_cases hP : P = ⊥
   · have hF : IsField (Localization.AtPrime P) := by
@@ -32,6 +37,17 @@ theorem valRing (P : Ideal R) [P.IsPrime] : ValuationRing (Localization.AtPrime 
   · have := IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain R hP (Localization.AtPrime P)
     infer_instance
 
+/- English proof (translation)
+Establish `: x.asIdeal.IsPrime` using `PrimeSpectrum.isPrime x`. Set `T` to `Localization.AtPrime x.asIdeal`. Establish `hu : ∀ y : x.asIdeal.primeCompl, IsUnit (algebraMap R L y)` using `fun y => by`. Use `IsUnit.mk0 _ fun h0 => y.2 ?_` and prove the remaining obligations. Establish `: (y : R) = 0` using `IsFractionRing.injective R L (by rw [h0, map_zero])`.
+
+Rewrite using `[this]`. Conclude with `x.asIdeal.zero_mem`. Set `: Algebra T L` to `(IsLocalization.lift (S := T) hu).toAlgebra`. Establish `: IsScalarTower R T L` using `IsScalarTower.of_algebraMap_eq fun r => (IsLocalization.lift_eq hu r).symm`. Establish `: IsFractionRing T L` using `IsFractionRing.isFractionRing_of_isDomain_of_isLocalization x.asIdeal.primeCompl T L`.
+
+Establish `: ValuationRing T` using `valRing x.asIdeal`. Establish `hE : ValuativeCriterion.Existence s` using `(UniversallyClosed.eq_valuativeCriterion ▸ (inferInstance : UniversallyClosed s) : (ValuativeCriterion.Existence ⊓ @QuasiCompact) s).1`. Take `⟨⟨l⟩⟩` from `hE { R := T, K := L, i₁ := zL, i₂ := specZIsTerminal.from _, commSq := ⟨specZIsTerminal.hom_ext _ _⟩ }`. Establish `hl : spMap (algebraMap T L) ≫ l.l = zL` using `l.fac_left`. Set `e` to `Spec.stalkIso (CommRingCat.of R) x`.
+
+Take `⟨U, hxU, f, h₁, -⟩` from `spread_out_of_isGermInjective' (specZIsTerminal.from (Sp R)) s (x := x) (Spec.map e.inv ≫ l.l) (specZIsTerminal.hom_ext _ _)`. Use `⟨U, f, hxU, fun u hu' => ?_⟩` and prove the remaining obligations. Establish `e1 : u = spMap (algebraMap T L) ≫ Spec.map e.hom ≫ U.fromSpecStalkOfMem x hxU`. Rewrite using `[← cancel_mono U.ι, hu', Category.assoc, Category.assoc, Scheme.Opens.fromSpecStalkOfMem_ι, Spec.fromSpecStalk_eq, ← Spec.algebraMap_stalkIso_inv, ← Spec.map_comp, ← Spec.map_comp]`. Establish `h2 : (CommRingCat.ofHom (algebraMap R T) ≫ e.inv) ≫ e.hom = CommRingCat.ofHom (algebraMap R T)`.
+
+Rewrite using `[Category.assoc, e.inv_hom_id, Category.comp_id]`. Use `congrArg Spec.map (Eq.symm ((congrArg (· ≫ CommRingCat.ofHom (algebraMap T L)) h2).trans ?_))` and prove the remaining obligations. Use extensionality with `r`. Conclude with `(IsScalarTower.algebraMap_apply R T L r).symm`. Rewrite using `[e1, Category.assoc, Category.assoc, ← h₁, ← Spec.map_comp_assoc e.inv, Iso.inv_hom_id, Spec.map_id, Category.id_comp, hl]`.
+-/
 theorem local_ext {Y : Scheme.{0}} (s : Y ⟶ Spec (CommRingCat.of ℤ)) [IsProper s] (zL : Sp L ⟶ Y) (x : Sp R) :
     ∃ (W : (Sp R).Opens) (h : W.toScheme ⟶ Y), x ∈ W ∧
       ∀ u : Sp L ⟶ W.toScheme, u ≫ W.ι = spMap (algebraMap R L) → u ≫ h = zL := by
@@ -67,6 +83,23 @@ theorem local_ext {Y : Scheme.{0}} (s : Y ⟶ Spec (CommRingCat.of ℤ)) [IsProp
   rw [e1, Category.assoc, Category.assoc, ← h₁, ← Spec.map_comp_assoc e.inv, Iso.inv_hom_id, Spec.map_id,
     Category.id_comp, hl]
 
+/- English proof (translation)
+Use `choose W h hz hξ using fun x : Sp R => local_ext s zL x`. Set `gp : Sp L ⟶ Sp R` to `spMap (algebraMap R L)`. Establish `hpt : ∀ y : Sp L, ∀ q : Sp R, gp y ⤳ q`. Introduce `y q`. Establish `h0 : (gp y).asIdeal = ⊥`.
+
+Establish `: y.asIdeal.IsPrime` using `PrimeSpectrum.isPrime y`. Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap R L) y.asIdeal = ⊥`. Rewrite using `[(Ideal.eq_bot_of_prime y.asIdeal), Ideal.comap_bot_of_injective _ (IsFractionRing.injective R L)]`. Conclude with `(PrimeSpectrum.le_iff_specializes _ _).1 (by`. Express the relevant statement in the definitionally equal form `(gp y).asIdeal ≤ q.asIdeal`.
+
+Rewrite using `[h0]`. Conclude with `bot_le)`. Establish `hd : IsDominant gp` using `⟨fun q => by`. Use `specializes_iff_mem_closure.1 (hpt (IsLocalRing.closedPoint L) q)` as an intermediate fact. Conclude with `closure_mono (Set.singleton_subset_iff.2 (Set.mem_range_self (f := gp) _)) this⟩`.
+
+Establish `hx : ∀ z, ∃ x : Sp L ⟶ (W z).toScheme, x ≫ (W z).ι = gp` using `fun z => ⟨_, IsOpenImmersion.lift_fac (W z).ι gp (by`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `(hpt y z).mem_open (W z).2 (hz z))⟩`. Use `choose x hx using hx`.
+
+Establish `hW : TopologicalSpace.IsOpenCover W` using `top_unique fun z _ => TopologicalSpace.Opens.mem_iSup.2 ⟨z, hz z⟩`. Set `𝒰` to `(Sp R).openCoverOfIsOpenCover W hW`. Establish `hc : ∀ a b, pullback.fst (W a).ι (W b).ι ≫ h a = pullback.snd (W a).ι (W b).ι ≫ h b`. Introduce `a b`. Set `m : Sp L ⟶ pullback (W a).ι (W b).ι` to `pullback.lift (x a) (x b) ((hx a).trans (hx b).symm)`.
+
+Establish `e : m ≫ pullback.fst _ _ ≫ (W a).ι = gp` using `by rw [pullback.lift_fst_assoc, hx]`. Establish `: IsDominant (m ≫ pullback.fst _ _ ≫ (W a).ι)` using `e ▸ hd`. Establish `: IsDominant m` using `.of_comp_of_isOpenImmersion m (pullback.fst _ _ ≫ (W a).ι)`. Establish `: IsReduced (pullback (W a).ι (W b).ι)` using `isReduced_of_isOpenImmersion (pullback.fst _ _ ≫ (W a).ι)`. Use `ext_of_isDominant_of_isSeparated s (specZIsTerminal.hom_ext _ _) m ?_` and prove the remaining obligations.
+
+Rewrite using `[pullback.lift_fst_assoc, pullback.lift_snd_assoc, hξ _ _ (hx a), hξ _ _ (hx b)]`. Establish `he : ∀ a, (W a).ι ≫ 𝒰.glueMorphisms h hc = h a` using `fun a => 𝒰.ι_glueMorphisms h hc a`. Set `a` to `gp (IsLocalRing.closedPoint L)`. Use `⟨𝒰.glueMorphisms h hc, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `gp ≫ _ = _`.
+
+Rewrite using `[← hx a, Category.assoc, he, hξ _ _ (hx _)]`.
+-/
 theorem ext_dedekind {Y : Scheme.{0}} (s : Y ⟶ Spec (CommRingCat.of ℤ)) [IsProper s] (zL : Sp L ⟶ Y) :
     ∃ z : Sp R ⟶ Y, spMap (algebraMap R L) ≫ z = zL := by
   choose W h hz hξ using fun x : Sp R => local_ext s zL x
@@ -109,6 +142,11 @@ theorem ext_dedekind {Y : Scheme.{0}} (s : Y ⟶ Spec (CommRingCat.of ℤ)) [IsP
 
 end PtExt
 
+/- English proof (translation)
+Introduce `X Ω _ K _ J _ y ξ _ hall tie L _ _ w hw`. Take `⟨zL, ⟨-, hz⟩, -⟩` from `(GlobalTheory.T.local_ring_points_existsUnique X Ω ξ K J y tie L).1 w (fun k => (hw.1 k).imp fun _ h => isUnit_iff_ne_zero.mpr h) hw.2`. Take `⟨s, h1, h2, -⟩` from `GlobalTheory.T.finite_type_over_integers_model X Ω ξ _ _ hall tie`. Use `GlobalTheory.CompanionTheory.Ar.Flat.LocModel.isProper_of_coordTie hall tie s` as an intermediate fact. Take `⟨z, hz'⟩` from `PtExt.ext_dedekind (R := 𝓞 L) s zL`.
+
+Conclude with `⟨z, hz' ▸ hz⟩`.
+-/
 theorem exists_integral_point_with_coordinates : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (ξ : Sp Ω ⟶ X), CharZero Ω → (∀ q : X, genPt ξ ⤳ q) → CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) → ∀ (L : Type) [Field L] [NumberField L], ∀ w ∈ Small.ptsOver L (mCoordIdeal y), ∃ z : Sp (𝓞 L) ⟶ X, CoordsAt ξ y (spMap (algebraMap (𝓞 L) L) ≫ z) w := by
   classical
   intro X Ω _ K _ J _ y ξ _ hall tie L _ _ w hw

@@ -17,6 +17,19 @@ open ModularForm (E₄ E₆)
 
 namespace GlobalTheory.FN
 
+/- English proof (translation)
+Introduce `g w N F hN hinv ⟨a, ha⟩`. Establish `hmf : IsMF (w : ℤ) F` using `GlobalTheory.QFam.isMF_of_invariant_of_hasQ N w F a hN hinv ha`. Take `⟨s, c, hwt, hF⟩` from `GlobalTheory.QFam.isMF_eq_sum_monomials w F hmf`. Use `⟨fun τ => ∑ p ∈ s, g (c p) * (E₄ τ ^ p.1 * E₆ τ ^ p.2), ?_, ?_⟩` and prove the remaining obligations. Set `act : Unit → SL(2, ℤ) → Unit` to `fun i _ => i`.
+
+Establish `hfam : IsFam act (w : ℤ) (fun _ τ => ∑ p ∈ s, g (c p) * (E₄ τ ^ p.1 * E₆ τ ^ p.2))`. Use `IsFam.sum_fun s (f := fun p _ τ => g (c p) * (E₄ τ ^ p.1 * E₆ τ ^ p.2)) ?_` and prove the remaining obligations. Introduce `p hp`. Establish `h4` using `(isFam_const_E4 Unit act).pow_fun p.1`. Establish `h6` using `(isFam_const_E6 Unit act).pow_fun p.2`.
+
+Establish `hm` using `(h4.mul_fun h6).const_mul_fun (g (c p))`. Establish `e : ((p.1 : ℕ) : ℤ) * 4 + ((p.2 : ℕ) : ℤ) * 6 = (w : ℤ)`. Rewrite using `[← hwt p hp]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `hm` using `[e]`. Conclude with `hm`. Introduce `γ`. Conclude with `hfam () γ`. Establish `hFe : F = fun τ => ∑ p ∈ s, c p * (E₄ τ ^ p.1 * E₆ τ ^ p.2)` using `funext hF`.
+
+Rewrite using `[hFe]`. Use `QConj.sum s (f := fun p τ => c p * (E₄ τ ^ p.1 * E₆ τ ^ p.2)) (f' := fun p τ => g (c p) * (E₄ τ ^ p.1 * E₆ τ ^ p.2)) ?_` and prove the remaining obligations. Introduce `p _`. Establish `h4 : QConj g N ⇑E₄ ⇑E₄` using `eis_qConj N hN _ (Or.inl rfl) g`. Establish `h6 : QConj g N ⇑E₆ ⇑E₆` using `eis_qConj N hN _ (Or.inr (Or.inl rfl)) g`.
+
+Conclude with `QConj.mul hN (QConj.const g N (c p)) (QConj.mul hN (QConj.pow hN p.1 h4) (QConj.pow hN p.2 h6))`.
+-/
 theorem exists_conj_level_one : ∀ (g : ℂ ≃+* ℂ) (w N : ℕ) (F : ℍ → ℂ), 0 < N →
     (∀ γ : SL(2, ℤ), F ∣[(w : ℤ)] γ = F) → (∃ a, HasQ N F a) →
     ∃ F' : ℍ → ℂ, (∀ γ : SL(2, ℤ), F' ∣[(w : ℤ)] γ = F') ∧ QConj g N F F' := by

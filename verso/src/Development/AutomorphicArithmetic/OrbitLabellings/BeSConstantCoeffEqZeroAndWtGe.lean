@@ -5,17 +5,30 @@ import Formalism.GaussJetBounds.OneLetterRadius
 open scoped BigOperators
 open Formalism.DworkPowerSeriesWeights Formalism.IncomingBounds UpperTheory.G2
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [Nat.mul_succ, ← add_assoc, ← hp.add, hp.period, ih]`.
+-/
 private theorem pos_add_mul {Lt : Type} {i : ℕ} {pos : Lt → ℕ → Lt} (hp : IsPos i pos) (z : Lt) (a k : ℕ) :
     pos z (a + i * k) = pos z a := by
   induction k with
   | zero => simp
   | succ k ih => rw [Nat.mul_succ, ← add_assoc, ← hp.add, hp.period, ih]
 
+/- English proof (translation)
+Establish `h' : a % i = b % i` using `Nat.ModEq.of_mul_left 2 h`. Rewrite using `[← Nat.mod_add_div a i, ← Nat.mod_add_div b i, pos_add_mul hp, pos_add_mul hp, h']`.
+-/
 private theorem pos_congr {Lt : Type} {i : ℕ} {pos : Lt → ℕ → Lt} (hp : IsPos i pos) (z : Lt) {a b : ℕ}
     (h : a ≡ b [MOD 2 * i]) : pos z a = pos z b := by
   have h' : a % i = b % i := Nat.ModEq.of_mul_left 2 h
   rw [← Nat.mod_add_div a i, ← Nat.mod_add_div b i, pos_add_mul hp, pos_add_mul hp, h']
 
+/- English proof (translation)
+Take `⟨e, rfl⟩` from `Nat.exists_eq_add_of_le hab`. Establish `h1 : ((s.val + e : ℕ) : ZMod (2 * i)) = ((s'.val : ℕ) : ZMod (2 * i))`. Move the coercions through the operations in `at h ⊢`. Rewrite using `[ZMod.natCast_zmod_val, ZMod.natCast_zmod_val]`. Take the linear combination `h`.
+
+Establish `h2 : s.val + e ≡ s'.val [MOD 2 * i]` using `(ZMod.natCast_eq_natCast_iff _ _ _).mp h1`. Establish `h3 : (s.val + e) % 2 = s'.val % 2` using `Nat.ModEq.of_mul_right i h2`. Establish `he : Odd e` using `Nat.odd_iff.mpr (by omega)`. Establish `h4` using `hs.2 (pos r s.val) e he`. Rewrite `h4` using `[hp.add, pos_congr hp r h2]`.
+
+Establish `h5 : (1 : ℝ) ≤ (l : ℝ) ^ b` using `one_le_pow₀ hl`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem radii_sum_ge_one_opposite_parity {Lt : Type} {l i : ℕ} [NeZero i] (hl : (1 : ℝ) ≤ l) {pos : Lt → ℕ → Lt} (hp : IsPos i pos)
     {sig : Lt → ℝ} (hs : IsRadii l pos sig) (r : Lt) (s s' : ZMod (2 * i)) (a b : ℕ) (hab : b ≤ a)
     (hpar : s.val % 2 ≠ s'.val % 2) (h : s + (a : ZMod (2 * i)) = s' + (b : ZMod (2 * i))) :
@@ -36,6 +49,29 @@ private theorem radii_sum_ge_one_opposite_parity {Lt : Type} {l i : ℕ} [NeZero
         mul_le_mul h5 h4 zero_le_one (by linarith)
     _ = _ := by ring
 
+/- English proof (translation)
+Introduce `K _ _ _ l i _ hl hodd hpi K0 hK0 ζ hζ Lt β _ _ _ _ pos hp sig hs R sg be hsg hbe`. Establish `hl1 : (1 : ℝ) ≤ l` using `by exact_mod_cast hl.one_le`. Establish `h0 : 0 < ‖(l : K)‖` using `norm_pos_iff.mpr (Nat.cast_ne_zero.mpr hl.ne_zero)`. Establish `h1 : ‖(l : K)‖ ≤ 1` using `hpi.le`. Establish `hi : 2 ≤ 2 * i` using `by have := NeZero.pos i; omega`.
+
+Establish `hX0 : ∀ (r : Lt) (b : β) (s : ZMod (2 * i)), MvPowerSeries.constantCoeff (MvPowerSeries.X (pos r s.val, b) : MvPowerSeries (Lt × β) K) = 0` using `fun r b s => MvPowerSeries.constantCoeff_X _`. Establish `hXw : ∀ v : Lt × β, WtGe ‖(l : K)‖ (fun v : Lt × β => rho l + sig v.1) (rho l + sig v.1) (MvPowerSeries.X v : MvPowerSeries (Lt × β) K)`. Introduce `v n`. Rewrite using `[monoWtGe_iff, MvPowerSeries.coeff_X]`. Use `split_ifs with h`.
+
+Substitute `h` using the available equality. Rewrite using `[asmR_dot_single]`. Simplify using the standard rewrite rules. Simplify using `using Real.rpow_nonneg h0.le _`. Unfold `beS`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun r hr => asmOne_smul_const _ ?_` and prove the remaining obligations. Establish `hbe0 : MvPowerSeries.constantCoeff (be r) = 0`. Assume the negation of the conclusion as `h`.
+
+Establish `h' : MvPowerSeries.coeff 0 (be r) ≠ 0`. Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply]` and apply the resulting hypothesis. Use `((hbe r hr).2.2.1 0 h').1` as an intermediate fact. Simplify using `[degE] at this`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Conclude with `MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero (hX0 r b)) (hX0 r b) hbe0`. Use `wtGe_sum h0 _ _ fun r hr => ?_` and prove the remaining obligations. Take `⟨hS1, hS2⟩` from `lemmaS K l (2 * i) hl hodd hi (even_two_mul i) hpi K0 hK0 ζ hζ (be r) (hbe r hr)`. Establish `hbeR : WtGe ‖(l : K)‖ (fun s : ZMod (2 * i) => rho l + sig (pos r s.val)) (1 / ((l : ℝ) - 1)) (be r)`.
+
+Introduce `n`. Distinguish the cases in `hb : IsBiPower l n`. Take `⟨s, s', α, γ, hs0, hs', _, hsum, rfl⟩` from `hb`. Establish `hq : 1 ≤ (l : ℝ) ^ α * sig (pos r s.val) + (l : ℝ) ^ γ * sig (pos r s'.val)`. Break down `le_total γ α with h | h` into its components or cases.
+
+Conclude with `radii_sum_ge_one_opposite_parity hl1 hp hs r s s' α γ h (by omega) hsum`. Rewrite using `[add_comm]`. Conclude with `radii_sum_ge_one_opposite_parity hl1 hp hs r s' s γ α h (by omega) hsum.symm`. Establish `hn` using `hS1 (Finsupp.single s (l ^ α) + Finsupp.single s' (l ^ γ))`. Rewrite `hn`, the goal using `[monoWtGe_iff]`.
+
+Use `le_trans hn (Real.rpow_le_rpow_of_exponent_ge h0 h1 ?_)` and prove the remaining obligations. Simplify using `only [dot_add, asmR_dot_single, Nat.cast_pow]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `asmR_monoWtGe_rad h0 h1 (fun s => le_add_of_nonneg_right (hs.1 _)) (hS2 n hb)`. Establish `hsg1 : ‖sg r / 2‖ ≤ 1`.
+
+Apply the tactic sequence `have hs1 : ‖sg r‖ = 1 := by rcases hsg r hr with h | h <;> simp [h]`. Establish `h2` using `asmOne_one_le_norm_two (K := K) hodd hpi`. Rewrite using `[norm_div, hs1]`. Conclude with `(div_le_one (lt_of_lt_of_le one_pos h2)).mpr h2`. Use `asmOne_smul_wt hsg1 (wtGe_sum h0 _ _ fun b _ => ?_)` and prove the remaining obligations.
+
+Conclude with `substitution_weight_bound K ‖(l : K)‖ h0 hpi (ZMod (2 * i)) (Lt × β) _ _ _ _ (be r) (hX0 r b) (fun s => hXw (pos r s.val, b)) hbeR`.
+-/
 theorem UpperTheory.beS_constantCoeff_eq_zero_and_wtGe :
     ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (l i : ℕ) [NeZero i], l.Prime → Odd l → ‖(l : K)‖ < 1 →
     ∀ (K0 : Subfield K), Unram l K0 → ∀ ζ : K, IsPrimitiveRoot ζ (l ^ (2 * i) - 1) →

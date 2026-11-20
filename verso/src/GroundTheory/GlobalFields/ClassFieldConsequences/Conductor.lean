@@ -17,6 +17,13 @@ namespace Modulus
 
 variable (𝔪 : Modulus K)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `(𝔪.mem_congruenceSubgroup.1 h).1 v` as an intermediate fact. Rewrite `this` using `[finiteProj_finiteEmbedding]`. Then use the resulting hypothesis. Introduce `hu`.
+
+Use `𝔪.mem_congruenceSubgroup.2 ⟨fun w ↦ ?_, fun w _ ↦ ?_⟩` and prove the remaining obligations. Distinguish the cases in `hwv : w = v`. Substitute `hwv` using the available equality. Rewrite using `[finiteProj_finiteEmbedding]` and apply the resulting hypothesis. Rewrite using `[finiteProj_finiteEmbedding_of_ne hwv]`.
+
+Conclude with `one_mem _`. Rewrite using `[infiniteProj_finiteEmbedding, Units.val_one, map_one]`. Conclude with `one_pos`.
+-/
 theorem finiteEmbedding_mem_congruenceSubgroup_iff (v : HeightOneSpectrum (𝓞 K))
     (u : (v.adicCompletion K)ˣ) :
     finiteEmbedding v u ∈ 𝔪.congruenceSubgroup ↔ u ∈ unitsLevel v (𝔪.exponent v) := by
@@ -34,6 +41,9 @@ theorem finiteEmbedding_mem_congruenceSubgroup_iff (v : HeightOneSpectrum (𝓞 
     · rw [infiniteProj_finiteEmbedding, Units.val_one, map_one]
       exact one_pos
 
+/- English proof (translation)
+Use `𝔪.mem_congruenceSubgroup.2 ⟨fun v ↦ ?_, fun w' hw' ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[finiteProj_infiniteEmbedding]`. Conclude with `one_mem _`. Rewrite using `[infiniteProj_infiniteEmbedding_of_ne (hw w' hw'), Units.val_one, map_one]`. Conclude with `one_pos`.
+-/
 theorem infiniteEmbedding_mem_congruenceSubgroup {w : InfinitePlace K}
     (hw : ∀ w' ∈ 𝔪.real, w'.1 ≠ w) (a : (w.Completion)ˣ) :
     infiniteEmbedding w a ∈ 𝔪.congruenceSubgroup := by
@@ -59,10 +69,18 @@ variable {K}
 
 namespace Modulus
 
+/- English proof (translation)
+The claim follows from `multiplicity_finprod_asIdeal_pow_eq (finite_support_localConductorExponent L) v`.
+-/
 theorem exponent_conductor (v : HeightOneSpectrum (𝓞 K)) :
     (conductor K L).exponent v = localConductorExponent L v :=
   multiplicity_finprod_asIdeal_pow_eq (finite_support_localConductorExponent L) v
 
+/- English proof (translation)
+Rewrite using `[dvd_iff, ideal_dvd_ideal_iff]`. Simplify using `only [exponent_conductor]`. Use `and_congr Iff.rfl ⟨fun h w hw ↦ ?_, fun h w hw ↦ ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hw (h hne)`.
+
+Assume the negation of the conclusion as `hn`. Conclude with `hw (h w hn)`.
+-/
 theorem conductor_dvd_iff (𝔪 : Modulus K) :
     conductor K L ∣ 𝔪 ↔ (∀ v, localConductorExponent L v ≤ 𝔪.exponent v) ∧
       ∀ w : {w : InfinitePlace K // w.IsReal}, w ∉ 𝔪.real → infiniteLocalSymbol L w.1 = 1 := by
@@ -74,6 +92,19 @@ theorem conductor_dvd_iff (𝔪 : Modulus K) :
   · by_contra hn
     exact hw (h w hn)
 
+/- English proof (translation)
+Rewrite using `[conductor_dvd_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun v ↦ ?_, fun w hw ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← unitsLevel_le_ker_localSymbol_iff]`.
+
+Introduce `u hu`. Use `h ((𝔪.finiteEmbedding_mem_congruenceSubgroup_iff v u).2 hu)` as an intermediate fact. Rewrite `this` using `[MonoidHom.mem_ker, ideleSymbol_finiteEmbedding]`. Then use the resulting hypothesis. Use extensionality with `a : 1`. Establish `hne : ∀ w' ∈ 𝔪.real, w'.1 ≠ w.1` using `fun w' hw' heq ↦ hw (Subtype.ext heq ▸ hw')`.
+
+Use `h (𝔪.infiniteEmbedding_mem_congruenceSubgroup hne a)` as an intermediate fact. Rewrite `this` using `[MonoidHom.mem_ker, ideleSymbol_infiniteEmbedding]`. Rewrite using `[this, MonoidHom.one_apply]`. Introduce and unpack `⟨hf, hi⟩ x hx`. Take `⟨hxf, hxi⟩` from `𝔪.mem_congruenceSubgroup.1 hx`.
+
+Rewrite using `[MonoidHom.mem_ker, ideleSymbol_apply]`. Establish `h1 : ∀ v, localSymbol L v (finiteProj v x) = 1` using `fun v ↦ (unitsLevel_le_ker_localSymbol_iff L v).2 (hf v) (hxf v)`. Establish `h2 : ∀ w, infiniteLocalSymbol L w (infiniteProj w x) = 1`. Introduce `w`. Distinguish the cases in `hw : w.IsReal`.
+
+Distinguish the cases in `hm : (⟨w, hw⟩ : {w : InfinitePlace K // w.IsReal}) ∈ 𝔪.real`. Take `⟨w'⟩` from `IdeleNorm.nonempty_infinitePlacesOver L w`. Rewrite using `[infiniteLocalSymbol_apply L w hw w', if_neg (not_lt.2 (hxi _ hm).le)]`. Rewrite using `[hi _ hm, MonoidHom.one_apply]`. Rewrite using `[infiniteLocalSymbol_of_not_isReal L w hw, MonoidHom.one_apply]`.
+
+Simplify using `only [h1, h2, finprod_one, Finset.prod_const_one, mul_one]`.
+-/
 theorem congruenceSubgroup_le_ker_ideleSymbol_iff (𝔪 : Modulus K) :
     𝔪.congruenceSubgroup ≤ (ideleSymbol K L).ker ↔ conductor K L ∣ 𝔪 := by
   rw [conductor_dvd_iff]
@@ -104,6 +135,9 @@ theorem congruenceSubgroup_le_ker_ideleSymbol_iff (𝔪 : Modulus K) :
       · rw [infiniteLocalSymbol_of_not_isReal L w hw, MonoidHom.one_apply]
     simp only [h1, h2, finprod_one, Finset.prod_const_one, mul_one]
 
+/- English proof (translation)
+Rewrite using `[← congruenceSubgroup_le_ker_ideleSymbol_iff, ← ker_reciprocityMap, Subgroup.map_le_iff_le_comap]`. Conclude with `Iff.rfl`.
+-/
 theorem map_congruenceSubgroup_le_range_ideleClassNorm_iff (𝔪 : Modulus K) :
     𝔪.congruenceSubgroup.map (IdeleClassGroup.mk K) ≤ (ideleClassNorm K L).range ↔
       conductor K L ∣ 𝔪 := by

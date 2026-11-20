@@ -20,6 +20,33 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `n a J _ _ Δ hΔ hpos z hz`. Use `set U := Metric.ball (0 : Fin n → ℂ) 1 with hU`. Establish `hcont : ∀ i j, ContinuousOn (fun w => Δ w i j) U` using `fun i j => (hΔ i j).continuousOn`. Establish `hM : ContinuousOn (fun w => (Δ w).map Complex.im) U`. Use `continuousOn_pi.2 fun i => continuousOn_pi.2 fun j => ?_` and prove the remaining obligations.
+
+Conclude with `Complex.continuous_im.comp_continuousOn (hcont i j)`. Establish `hMT : ContinuousOn (fun w => ((Δ w).map Complex.im)ᵀ) U`. Use `continuousOn_pi.2 fun i => continuousOn_pi.2 fun j => ?_` and prove the remaining obligations. Conclude with `Complex.continuous_im.comp_continuousOn (hcont j i)`. Establish `hsymm : ((Δ z).map Complex.im)ᵀ = (Δ z).map Complex.im`.
+
+Use `eq_on_ball_of_eq_on_logExp_image n a 1 (Matrix J J ℝ) (fun w => ((Δ w).map Complex.im)ᵀ) (fun w => (Δ w).map Complex.im) le_rfl hMT hM ?_ z hz` and prove the remaining obligations. Introduce `s hs _`. Establish `h1` using `(hpos s hs).1`. Unfold `Matrix.IsHermitian at h1`. Rewrite `h1` using `[Matrix.conjTranspose_eq_transpose_of_trivial]`. Then use the resulting hypothesis.
+
+Use `Matrix.PosDef.of_dotProduct_mulVec_pos ?_ ?_` and prove the remaining obligations. Unfold `Matrix.IsHermitian`. Rewrite using `[Matrix.conjTranspose_eq_transpose_of_trivial]`. Conclude with `hsymm`. Introduce `x hx`.
+
+Use `set q : (Fin n → ℂ) → ℂ := fun w => ∑ i, ∑ j, (x i : ℂ) * Δ w i j * (x j : ℂ) with hq`. Establish `hqim : ∀ w, (q w).im = star x ⬝ᵥ ((Δ w).map Complex.im *ᵥ x)`. Introduce `w`. Simplify using `[q, dotProduct, mulVec, Complex.im_sum, Complex.mul_im, Finset.mul_sum, mul_comm, mul_left_comm, mul_assoc]`. Establish `hqd : DifferentiableOn ℂ q U`.
+
+Rewrite using `[hq]`. Apply `DifferentiableOn.fun_sum` to reduce the goal to its premises. Introduce `i _`. Apply `DifferentiableOn.fun_sum` to reduce the goal to its premises. Introduce `j _`.
+
+Conclude with `((hΔ i j).const_mul (x i : ℂ)).mul_const (x j : ℂ)`. Establish `hqpos : ∀ s ∈ logDom n a, 0 < (q (logExp a s)).im`. Introduce `s hs`. Rewrite using `[hqim]`. Conclude with `(hpos s hs).dotProduct_mulVec_pos hx`.
+
+Establish `hqc : ContinuousOn (fun w => (q w).im) U` using `Complex.continuous_im.comp_continuousOn hqd.continuousOn`. Establish `hnn : ∀ w ∈ U, 0 ≤ (q w).im`. Introduce `w hw`. Use `eq_on_ball_of_eq_on_logExp_image n a 1 ℝ (fun w => min (q w).im 0) (fun _ => 0) le_rfl ((continuous_id.min continuous_const).comp_continuousOn hqc) continuousOn_const (fun s hs _ => min_eq_right (hqpos s hs).le) w hw` as an intermediate fact. Conclude with `(min_eq_right_iff.1 this)`.
+
+Rewrite using `[← hqim]`. Break down `(hnn z hz).lt_or_eq with h | h0` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Use `set F : (Fin n → ℂ) → ℂ := fun w => Complex.exp (Complex.I * q w) with hF`.
+
+Establish `hFn : ∀ w, ‖F w‖ = Real.exp (-(q w).im)`. Introduce `w`. Simplify using `[F, Complex.norm_exp, Complex.I_mul_re]`. Establish `hFd : DifferentiableOn ℂ F U` using `(hqd.const_mul Complex.I).cexp`. Establish `hmax : IsMaxOn (norm ∘ F) U z`.
+
+Introduce `w hw`. Simplify using `only [Set.mem_setOf_eq, Function.comp, hFn, ← h0, neg_zero]`. Conclude with `Real.exp_le_exp.2 (by linarith [hnn w hw])`. Establish `heq` using `Complex.eqOn_of_isPreconnected_of_isMaxOn_norm (convex_ball (0 : Fin n → ℂ) 1).isPreconnected Metric.isOpen_ball hFd hz hmax`. Take `⟨s, hs⟩` from `(GlobalTheory.ShFam.Hor.Mark.nonempty_logDom : (logDom n a).Nonempty)`.
+
+Establish `hmem : logExp a s ∈ U` using `GlobalTheory.ShFam.Hor.Mark.logExp_mem hs`. Establish `h2` using `congrArg norm (heq hmem)`. Simplify using `only [Function.const_apply, hFn, ← h0, neg_zero] at h2`. Establish `h3 : (q (logExp a s)).im = 0`. Use `Real.exp_injective h2` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(hqpos s hs).ne' h3`.
+-/
 theorem posDef_im_on_ball_of_logExp : ∀ (n a : ℕ) (J : Type) [Fintype J] [DecidableEq J] (Δ : (Fin n → ℂ) → Matrix J J ℂ), (∀ i j, DifferentiableOn ℂ (fun z => Δ z i j) (Metric.ball 0 1)) → (∀ s ∈ logDom n a, ((Δ (logExp a s)).map Complex.im).PosDef) → ∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, ((Δ z).map Complex.im).PosDef := by
   intro n a J _ _ Δ hΔ hpos z hz
   set U := Metric.ball (0 : Fin n → ℂ) 1 with hU

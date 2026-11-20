@@ -8,6 +8,9 @@ section General
 
 variable {K : Type*} [NormedField K]
 
+/- English proof (translation)
+Use `Summable.of_nonneg_of_le (fun n => norm_nonneg _) (fun n => ?_) ((summable_geometric_of_lt_one (norm_nonneg t) ht).mul_left B)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_mul_of_nonneg_right (ha n) (pow_nonneg (norm_nonneg t) n)`.
+-/
 theorem summable_norm_of_bounded {a : ℕ → K} {B : ℝ} (ha : ∀ n, ‖a n‖ ≤ B) {t : K}
     (ht : ‖t‖ < 1) : Summable fun n => ‖a n * t ^ n‖ := by
   refine Summable.of_nonneg_of_le (fun n => norm_nonneg _) (fun n => ?_)
@@ -15,6 +18,11 @@ theorem summable_norm_of_bounded {a : ℕ → K} {B : ℝ} (ha : ∀ n, ‖a n�
   rw [norm_mul, norm_pow]
   exact mul_le_mul_of_nonneg_right (ha n) (pow_nonneg (norm_nonneg t) n)
 
+/- English proof (translation)
+Rewrite using `[tsum_mul_tsum_eq_tsum_sum_antidiagonal_of_summable_norm hf hg]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[coeff_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Take `rfl : p.1 + p.2 = n` from `by simpa using hp`.
+
+Rewrite using `[pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tsum_coeff_mul [CompleteSpace K] (f g : K⟦X⟧) (t : K)
     (hf : Summable fun n => ‖coeff n f * t ^ n‖) (hg : Summable fun n => ‖coeff n g * t ^ n‖) :
     ∑' n, coeff n (f * g) * t ^ n = (∑' n, coeff n f * t ^ n) * ∑' n, coeff n g * t ^ n := by
@@ -26,12 +34,18 @@ theorem tsum_coeff_mul [CompleteSpace K] (f g : K⟦X⟧) (t : K)
   rw [pow_add]
   ring
 
+/- English proof (translation)
+Rewrite using `[tsum_eq_single 0]`. Simplify using the standard rewrite rules. Introduce `n hn`. Simplify using `[coeff_C, hn]`.
+-/
 theorem tsum_coeff_C (c t : K) : ∑' n, coeff n (C c : K⟦X⟧) * t ^ n = c := by
   rw [tsum_eq_single 0]
   · simp
   · intro n hn
     simp [coeff_C, hn]
 
+/- English proof (translation)
+Rewrite using `[tsum_eq_single 1]`. Simplify using the standard rewrite rules. Introduce `n hn`. Simplify using `[coeff_X, hn]`.
+-/
 theorem tsum_coeff_X (t : K) : ∑' n, coeff n (X : K⟦X⟧) * t ^ n = t := by
   rw [tsum_eq_single 1]
   · simp
@@ -65,14 +79,23 @@ noncomputable def evalDisc (i : O →+* K) (hi : ∀ a, ‖i a‖ ≤ 1) (t : K)
 
 variable (i : O →+* K) (hi : ∀ a, ‖i a‖ ≤ 1) (t : K) (ht : ‖t‖ < 1)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evalDisc_apply (f : O⟦X⟧) : evalDisc i hi t ht f = ∑' n, i (coeff n f) * t ^ n := rfl
 
+/- English proof (translation)
+Rewrite using `[evalDisc_apply, tsum_eq_single 0]`. Simplify using the standard rewrite rules. Introduce `n hn`. Simplify using `[coeff_C, hn]`.
+-/
 @[simp] theorem evalDisc_C (a : O) : evalDisc i hi t ht (C a) = i a := by
   rw [evalDisc_apply, tsum_eq_single 0]
   · simp
   · intro n hn
     simp [coeff_C, hn]
 
+/- English proof (translation)
+Rewrite using `[evalDisc_apply, tsum_eq_single 1]`. Simplify using the standard rewrite rules. Introduce `n hn`. Simplify using `[coeff_X, hn]`.
+-/
 @[simp] theorem evalDisc_X : evalDisc i hi t ht X = t := by
   rw [evalDisc_apply, tsum_eq_single 1]
   · simp
@@ -108,19 +131,31 @@ def boundedSeries (F : Type*) [NormedField F] [IsUltrametricDist F] : Subring F�
 
 variable {F : Type*} [NormedField F] [IsUltrametricDist F]
 
+/- English proof (translation)
+Conclude with `Iff.rfl`.
+-/
 theorem mem_boundedSeries {f : F⟦X⟧} :
     f ∈ boundedSeries F ↔ ∃ B : ℝ, ∀ n, ‖coeff n f‖ ≤ B := by exact Iff.rfl
 
+/- English proof (translation)
+Use `mem_boundedSeries.2 ⟨‖c‖, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_C]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem C_mem_boundedSeries (c : F) : (C c : F⟦X⟧) ∈ boundedSeries F := by
   refine mem_boundedSeries.2 ⟨‖c‖, fun n => ?_⟩
   rw [coeff_C]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `mem_boundedSeries.2 ⟨1, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem X_mem_boundedSeries : (X : F⟦X⟧) ∈ boundedSeries F := by
   refine mem_boundedSeries.2 ⟨1, fun n => ?_⟩
   rw [coeff_X]
   split_ifs <;> simp
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `mem_boundedSeries.1 f.2`. Conclude with `summable_norm_of_bounded hB hπ`.
+-/
 theorem summable_norm_boundedSeries (f : boundedSeries F) {π : F} (hπ : ‖π‖ < 1) :
     Summable fun n => ‖coeff n (f : F⟦X⟧) * π ^ n‖ := by
   obtain ⟨B, hB⟩ := mem_boundedSeries.1 f.2
@@ -141,14 +176,23 @@ noncomputable def evalBounded (π : F) (hπ : ‖π‖ < 1) : boundedSeries F �
 
 variable (π : F) (hπ : ‖π‖ < 1)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evalBounded_apply (f : boundedSeries F) :
     evalBounded π hπ f = ∑' n, coeff n (f : F⟦X⟧) * π ^ n := rfl
 
+/- English proof (translation)
+Rewrite using `[evalBounded_apply]`. Conclude with `tsum_coeff_C c π`.
+-/
 @[simp] theorem evalBounded_C (c : F) :
     evalBounded π hπ ⟨C c, C_mem_boundedSeries c⟩ = c := by
   rw [evalBounded_apply]
   exact tsum_coeff_C c π
 
+/- English proof (translation)
+Rewrite using `[evalBounded_apply]`. Conclude with `tsum_coeff_X π`.
+-/
 @[simp] theorem evalBounded_X : evalBounded π hπ ⟨X, X_mem_boundedSeries⟩ = π := by
   rw [evalBounded_apply]
   exact tsum_coeff_X π

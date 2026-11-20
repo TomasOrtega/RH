@@ -11,10 +11,16 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S PI.AmpRootCommon
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Conclude with `(Matrix.isUnit_det_of_left_inverse (uh_left ha)).ne_zero`.
+-/
 theorem det_ne_of_uh {a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (ha : a ∈ UH (Hpk k r)) :
     a.det ≠ 0 := by
   exact (Matrix.isUnit_det_of_left_inverse (uh_left ha)).ne_zero
 
+/- English proof (translation)
+Use `continuousAt_matrix_inv a ?_` and prove the remaining obligations. Rewrite using `[Ring.inverse_eq_inv']`. Conclude with `continuousAt_inv₀ (det_ne_of_uh ha)`.
+-/
 theorem continuousAt_inv_of_uh {a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (ha : a ∈ UH (Hpk k r)) : ContinuousAt (Inv.inv : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → _) a := by
   refine continuousAt_matrix_inv a ?_
@@ -24,6 +30,9 @@ theorem continuousAt_inv_of_uh {a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k
 def RS (k r : ℕ) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) : Set (Mt k r) :=
   {x | Matrix.of x ∈ RStab k r g}
 
+/- English proof (translation)
+The claim follows from `IsClosed.preimage (f := fun x : Mt k r => Matrix.of x) continuous_id (isClosed_RStab g)`.
+-/
 theorem isClosed_RS (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) : IsClosed (RS k r g) := IsClosed.preimage (f := fun x : Mt k r => Matrix.of x) continuous_id (isClosed_RStab g)
 
 abbrev RT (k r : ℕ) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) : Type := RS k r g
@@ -34,16 +43,31 @@ variable {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} [hg : Fact
 
 def toM (x : RT k r g) : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ := Matrix.of x.1
 
+/- English proof (translation)
+The claim follows from `x.2`.
+-/
 theorem toM_mem (x : RT k r g) : toM x ∈ RStab k r g := x.2
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Matrix.of.injective h)`.
+-/
 theorem toM_inj {x y : RT k r g} (h : toM x = toM y) : x = y := Subtype.ext (Matrix.of.injective h)
 
 instance : Mul (RT k r g) := ⟨fun x y => ⟨fun i j => (toM x * toM y) i j, rstab_mul hg.out x.2 y.2⟩⟩
 instance : One (RT k r g) := ⟨⟨fun i j => (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) i j, rstab_one hg.out⟩⟩
 instance : Inv (RT k r g) := ⟨fun x => ⟨fun i j => (toM x)⁻¹ i j, rstab_inv hg.out x.2⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toM_mul (x y : RT k r g) : toM (x * y) = toM x * toM y := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toM_one : toM (1 : RT k r g) = 1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toM_inv (x : RT k r g) : toM x⁻¹ = (toM x)⁻¹ := rfl
 
 instance instGroupRT : Group (RT k r g) where
@@ -52,6 +76,9 @@ instance instGroupRT : Group (RT k r g) where
   mul_one x := toM_inj (by rw [toM_mul, toM_one, Matrix.mul_one])
   inv_mul_cancel x := toM_inj (by rw [toM_mul, toM_inv, toM_one, uh_inv_mul (toM_mem x).1.1])
 
+/- English proof (translation)
+The claim follows from `continuous_subtype_val`.
+-/
 theorem continuous_toM : Continuous (toM : RT k r g → Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) := continuous_subtype_val
 
 instance : IsTopologicalGroup (RT k r g) where
@@ -71,14 +98,25 @@ section Meas
 
 variable {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} {μR : Measure (Mt k r)}
 
+/- English proof (translation)
+The claim follows from `MeasurableEmbedding.subtype_coe (isClosed_RS g).measurableSet`.
+-/
 theorem rs_emb (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     MeasurableEmbedding (Subtype.val : RT k r g → Mt k r) := MeasurableEmbedding.subtype_coe (isClosed_RS g).measurableSet
 
+/- English proof (translation)
+Rewrite using `[(rs_emb g).map_comap, Subtype.range_coe]`. Conclude with `Measure.restrict_eq_self_of_ae_mem (ae_iff.mpr hc)`.
+-/
 theorem rs_back (hc : μR {x | Matrix.of x ∉ RStab k r g} = 0) :
     (μR.comap (Subtype.val : RT k r g → Mt k r)).map Subtype.val = μR := by
   rw [(rs_emb g).map_comap, Subtype.range_coe]
   exact Measure.restrict_eq_self_of_ae_mem (ae_iff.mpr hc)
 
+/- English proof (translation)
+Apply `measurable_pi_lambda` to reduce the goal to its premises. Introduce `i`. Apply `measurable_pi_lambda` to reduce the goal to its premises. Introduce `j`. Establish `: Continuous (fun x : Mt k r => (a * Matrix.of x) i j)`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Conclude with `continuous_finset_sum _ fun l _ => continuous_const.mul ((continuous_apply j).comp (continuous_apply l))`. Conclude with `this.measurable`.
+-/
 theorem measurable_lmulM (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Measurable (lmulM (k := k) (r := r) a) := by
   apply measurable_pi_lambda
@@ -91,11 +129,19 @@ theorem measurable_lmulM (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1))
       continuous_const.mul ((continuous_apply j).comp (continuous_apply l))
   exact this.measurable
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Both sides reduce to the same expression.
+-/
 theorem rs_val_mul [Fact (g ∈ UH (Hpk k r))] (a : RT k r g) :
     (Subtype.val : RT k r g → Mt k r) ∘ (fun x => a * x) = lmulM (toM a) ∘ Subtype.val := by
   funext x
   rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `a`. Establish `hf : Measurable (fun x : RT k r g => a * x)`. Rewrite using `[← (rs_emb g).measurable_comp_iff, rs_val_mul a]`. Conclude with `(measurable_lmulM _).comp measurable_subtype_coe`.
+
+Rewrite using `[← (rs_emb g).comap_map (Measure.map (fun x => a * x) (μR.comap Subtype.val)), Measure.map_map (rs_emb g).measurable hf, rs_val_mul a, ← Measure.map_map (measurable_lmulM _) (rs_emb g).measurable, rs_back hc, hinv _ (toM_mem a)]`.
+-/
 theorem rs_inv [Fact (g ∈ UH (Hpk k r))] (hc : μR {x | Matrix.of x ∉ RStab k r g} = 0)
     (hinv : ∀ s ∈ RStab k r g, μR.map (lmulM s) = μR) :
     IsMulLeftInvariant (μR.comap (Subtype.val : RT k r g → Mt k r)) := by
@@ -108,6 +154,19 @@ theorem rs_inv [Fact (g ∈ UH (Hpk k r))] (hc : μR {x | Matrix.of x ∉ RStab 
     Measure.map_map (rs_emb g).measurable hf, rs_val_mul a,
     ← Measure.map_map (measurable_lmulM _) (rs_emb g).measurable, rs_back hc, hinv _ (toM_mem a)]
 
+/- English proof (translation)
+Take `⟨hσ, h0, hc, hinv⟩` from `hμ`. Establish `hback` using `rs_back hc`. Use `haveI : SigmaFinite (μR.comap (Subtype.val : RT k r g → Mt k r)) := SigmaFinite.of_map _ (rs_emb g).measurable.aemeasurable (by rw [hback]; exact hσ)`. Use `haveI : IsMulLeftInvariant (μR.comap (Subtype.val : RT k r g → Mt k r)) := rs_inv hc hinv`. Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : RT k r g)`.
+
+Establish `hK0 : (haar : Measure (RT k r g)) K ≠ 0` using `(measure_pos_of_mem_nhds haar hK1).ne'`. Establish `hKt : (haar : Measure (RT k r g)) K ≠ ⊤` using `hK.measure_lt_top.ne`. Establish `heq` using `measure_eq_div_smul (μ' := μR.comap (Subtype.val : RT k r g → Mt k r)) (ν' := (haar : Measure (RT k r g))) hK0 hKt`. Use `⟨_, ?_, ?_, heq⟩` and prove the remaining obligations. Introduce `hz`.
+
+Rewrite `heq` using `[hz, zero_smul]`. Apply `h0` to reduce the goal to its premises. Rewrite using `[← hback, heq, Measure.map_zero]`. Introduce `ht`. Rewrite `heq` using `[ht]`.
+
+Use `set ν := μR.comap (Subtype.val : RT k r g → Mt k r) with hνdef`. Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n, (haar : Measure (RT k r g)) (spanningSets ν n) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hU : (haar : Measure (RT k r g)) (⋃ n, spanningSets ν n) = 0` using `measure_iUnion_null hcon`.
+
+Rewrite `hU` using `[iUnion_spanningSets]`. Conclude with `isOpen_univ.measure_ne_zero haar Set.univ_nonempty hU`. Establish `h2 : ν (spanningSets ν n) = ((⊤ : ℝ≥0∞) • (haar : Measure (RT k r g))) (spanningSets ν n)`. Rewrite using `[← heq]`. Rewrite `h2` using `[Measure.smul_apply, smul_eq_mul, ENNReal.top_mul hn]`.
+
+Conclude with `(measure_spanningSets_lt_top ν n).ne h2`.
+-/
 theorem rs_smul [Fact (g ∈ UH (Hpk k r))] (hμ : IsHaarOn (RStab k r g) μR) :
     ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ⊤ ∧
       μR.comap (Subtype.val : RT k r g → Mt k r) = c • (haar : Measure (RT k r g)) := by
@@ -140,6 +199,13 @@ theorem rs_smul [Fact (g ∈ UH (Hpk k r))] (hμ : IsHaarOn (RStab k r g) μR) :
     rw [Measure.smul_apply, smul_eq_mul, ENNReal.top_mul hn] at h2
     exact (measure_spanningSets_lt_top ν n).ne h2
 
+/- English proof (translation)
+Use `haveI : Fact (g ∈ UH (Hpk k r)) := ⟨hg⟩`. Take `⟨c, hc1, hc2, hν⟩` from `rs_smul hμ`. Establish `hback` using `rs_back hμ.2.2.1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `C hC`.
+
+Establish `hpc : IsCompact ((Subtype.val : RT k r g → Mt k r) ⁻¹' C)`. Rewrite using `[Subtype.isCompact_iff, Set.image_preimage_eq_inter_range, Subtype.range_coe]`. Conclude with `hC.inter_right (isClosed_RS g)`. Rewrite using `[← hback, Measure.map_apply (rs_emb g).measurable hC.measurableSet, hν, Measure.smul_apply, smul_eq_mul]`. Conclude with `ENNReal.mul_lt_top hc2.lt_top hpc.measure_lt_top`.
+
+Introduce and unpack `U hU ⟨x, hxU, hxR⟩`. Rewrite using `[← hback, Measure.map_apply (rs_emb g).measurable hU.measurableSet, hν, Measure.smul_apply, smul_eq_mul]`. Conclude with `mul_ne_zero hc1 ((hU.preimage continuous_subtype_val).measure_ne_zero haar ⟨⟨x, hxR⟩, hxU⟩)`.
+-/
 theorem rhaar_props (hg : g ∈ UH (Hpk k r)) (hμ : IsHaarOn (RStab k r g) μR) :
     (∀ C : Set (Mt k r), IsCompact C → μR C < ⊤) ∧
       (∀ U : Set (Mt k r), IsOpen U → (U ∩ RS k r g).Nonempty → μR U ≠ 0) := by

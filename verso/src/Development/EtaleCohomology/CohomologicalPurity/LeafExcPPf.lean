@@ -18,21 +18,33 @@ def LeafChartFact : Prop := Hyp → ∀ (q : ℕ) [NeZero q] (d : ℕ) (R : Type
     (∀ i, Eqv _ α.left (tw q i)) ∧ (∀ i, Eqv _ α.right (tw q i)) ∧
     IsPullback P.hom β.left β.right (pr d R).hom ∧ Cover2 (ZMod q) β.right (pr d R).hom
 
+/- English proof (translation)
+The claim follows from `pushout.hom_ext h0 h1`.
+-/
 theorem dbl_hom_ext {P : Arrow Spc} {X : Spc} {f g : dbl P ⟶ X} (h0 : dbl.inl P ≫ f = dbl.inl P ≫ g)
     (h1 : dbl.inr P ≫ f = dbl.inr P ≫ g) : f = g := pushout.hom_ext h0 h1
 
+/- English proof (translation)
+Apply `dbl_hom_ext` to reduce the goal to its premises. Rewrite using `[inl_map, ← Category.assoc, inl_map, Category.assoc, inl_map, Arrow.comp_right, Category.assoc]`. Rewrite using `[dbl.inr_map, ← Category.assoc, dbl.inr_map, Category.assoc, dbl.inr_map, Arrow.comp_right, Category.assoc]`.
+-/
 theorem dbl_map_comp {P'' P' P : Arrow Spc} (α : P'' ⟶ P') (β : P' ⟶ P) :
     dbl.map (α ≫ β) = dbl.map α ≫ dbl.map β := by
   apply dbl_hom_ext
   · rw [inl_map, ← Category.assoc, inl_map, Category.assoc, inl_map, Arrow.comp_right, Category.assoc]
   · rw [dbl.inr_map, ← Category.assoc, dbl.inr_map, Category.assoc, dbl.inr_map, Arrow.comp_right, Category.assoc]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `GlobalTheory.EtC.pull _ (dbl.map (α ≫ β)) _ n x.1 = GlobalTheory.EtC.pull _ (dbl.map α) _ n (GlobalTheory.EtC.pull _ (dbl.map β) _ n x.1)`. Rewrite using `[dbl_map_comp, pull_comp]`.
+-/
 theorem pull_comp_apply (q : ℕ) {P'' P' P : Arrow Spc} (α : P'' ⟶ P') (β : P' ⟶ P) (n i : ℤ) (x : Hs q P n i) :
     Hs.pull q (α ≫ β) n i x = Hs.pull q α n i (Hs.pull q β n i x) := by
   apply Subtype.ext
   change GlobalTheory.EtC.pull _ (dbl.map (α ≫ β)) _ n x.1 = GlobalTheory.EtC.pull _ (dbl.map α) _ n (GlobalTheory.EtC.pull _ (dbl.map β) _ n x.1)
   rw [dbl_map_comp, pull_comp]
 
+/- English proof (translation)
+Introduce `n i` and use `by have : (Hs.pull q (α ≫ β) n i : Hs q P n i → Hs q P'' n i) = Hs.pull q α n i ∘ Hs.pull q β n i := funext (pull_comp_apply q α β n i) rw [this] exact (hα n i).comp (hβ n i)`.
+-/
 theorem exc_comp (q : ℕ) {P'' P' P : Arrow Spc} (α : P'' ⟶ P') (β : P' ⟶ P) (hα : Exc q α) (hβ : Exc q β) :
     Exc q (α ≫ β) := fun n i => by
   have : (Hs.pull q (α ≫ β) n i : Hs q P n i → Hs q P'' n i) = Hs.pull q α n i ∘ Hs.pull q β n i :=
@@ -40,17 +52,38 @@ theorem exc_comp (q : ℕ) {P'' P' P : Arrow Spc} (α : P'' ⟶ P') (β : P' ⟶
   rw [this]
   exact (hα n i).comp (hβ n i)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `GlobalTheory.EtC.pull _ (dbl.inl P') _ n (GlobalTheory.EtC.pull _ (dbl.map φ) _ n x.1) = GlobalTheory.EtC.pull _ φ.right _ n (GlobalTheory.EtC.pull _ (dbl.inl P) _ n x.1)`. Rewrite using `[← pull_comp, inl_map, pull_comp]`.
+-/
 theorem fgt_pull (q : ℕ) {P' P : Arrow Spc} (φ : P' ⟶ P) (n i : ℤ) (x : Hs q P n i) :
     Hs.fgt q P' n i (Hs.pull q φ n i x) = GlobalTheory.EtC.pull _ φ.right _ n (Hs.fgt q P n i x) := by
   change GlobalTheory.EtC.pull _ (dbl.inl P') _ n (GlobalTheory.EtC.pull _ (dbl.map φ) _ n x.1) =
     GlobalTheory.EtC.pull _ φ.right _ n (GlobalTheory.EtC.pull _ (dbl.inl P) _ n x.1)
   rw [← pull_comp, inl_map, pull_comp]
 
+/- English proof (translation)
+Rewrite using `[← pull_comp, ← pull_comp, Arrow.w φ]`.
+-/
 theorem res_pull (q : ℕ) {P' P : Arrow Spc} (φ : P' ⟶ P) (n i : ℤ) (c : Ht q P.right n i) :
     GlobalTheory.EtC.pull _ P'.hom (tw q i) n (GlobalTheory.EtC.pull _ φ.right _ n c) =
       GlobalTheory.EtC.pull _ φ.left _ n (GlobalTheory.EtC.pull _ P.hom (tw q i) n c) := by
   rw [← pull_comp, ← pull_comp, Arrow.w φ]
 
+/- English proof (translation)
+Take `⟨hex, hnat, -⟩` from `hδ`. Take `⟨-, e2, e3⟩` from `hex q P h m i`. Take `⟨-, e2', e3'⟩` from `hex q P' h' m i`. Take `⟨e1, -, -⟩` from `hex q P h (m + 1) i`. Take `⟨e1', -, -⟩` from `hex q P' h' (m + 1) i`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `hf : Hs.fgt q P (m + 1) i x = 0`. Apply `(hr i (m + 1)).1` to reduce the goal to its premises.
+
+Rewrite using `[← fgt_pull, hx, map_zero, map_zero]`. Take `⟨u, rfl⟩` from `(e3 x).1 hf`. Establish `hu : δ q P' m i (GlobalTheory.EtC.pull _ φ.left _ m u) = 0` using `by rw [← hnat q P' P φ h' h m i u]; exact hx`. Take `⟨w', hw'⟩` from `(e2' _).1 hu`. Take `⟨w, rfl⟩` from `(hr i m).2 w'`.
+
+Rewrite `hw'` using `[res_pull]`. Use `(hl i m).1 hw'` as an intermediate fact. Rewrite using `[← this]`. Conclude with `(e2 _).2 ⟨w, rfl⟩`. Introduce `y`.
+
+Take `⟨c, hc⟩` from `(hr i (m + 1)).2 (Hs.fgt q P' (m + 1) i y)`. Establish `hc0 : GlobalTheory.EtC.pull _ P.hom (tw q i) (m + 1) c = 0`. Apply `(hl i (m + 1)).1` to reduce the goal to its premises. Rewrite using `[← res_pull, hc, map_zero]`. Conclude with `(e1' _).2 ⟨y, rfl⟩`.
+
+Take `⟨x, hx⟩` from `(e1 c).1 hc0`. Establish `hd : Hs.fgt q P' (m + 1) i (y - Hs.pull q φ (m + 1) i x) = 0`. Rewrite using `[map_sub, fgt_pull, hx, hc, sub_self]`. Take `⟨u', hu'⟩` from `(e3' _).1 hd`. Take `⟨u, rfl⟩` from `(hl i m).2 u'`.
+
+Use `⟨x + δ q P m i u, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hnat q P' P φ h' h m i u, hu', add_sub_cancel]`.
+-/
 theorem five (δ : ∀ (q : ℕ) (P : Arrow Spc) (n i : ℤ), Ht q P.left n i →+ Hs q P (n + 1) i) (hδ : IsBd δ)
     (q : ℕ) {P' P : Arrow Spc} (φ : P' ⟶ P) (h' : Mono P'.hom) (h : Mono P.hom)
     (hl : ∀ i, Eqv _ φ.left (tw q i)) (hr : ∀ i, Eqv _ φ.right (tw q i)) (m i : ℤ) :
@@ -88,6 +121,9 @@ theorem five (δ : ∀ (q : ℕ) (P : Arrow Spc) (n i : ℤ), Ht q P.left n i �
     refine ⟨x + δ q P m i u, ?_⟩
     rw [map_add, hnat q P' P φ h' h m i u, hu', add_sub_cancel]
 
+/- English proof (translation)
+Introduce `δ hδ q P' P φ h' h hl hr n i`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by ring⟩`. Conclude with `five δ hδ q φ h' h hl hr m i`.
+-/
 theorem leafFive : LeafFive := by
   intro δ hδ q P' P φ h' h hl hr n i
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by ring⟩
@@ -97,6 +133,9 @@ end LateralTheory.CohomologicalPurity.Thom.ExcP
 
 namespace LateralTheory.CohomologicalPurity.Thom
 
+/- English proof (translation)
+Introduce `hH q _ d R _ I hI hq Φ hΦ`. Take `⟨δ, hδ⟩` from `hBd`. Take `⟨P, α, β, hαβ, hm1, hm2, hl, hr, hpb, hcov⟩` from `hFact hH q d R I hI hq Φ hΦ`. Rewrite using `[← hαβ]`. Conclude with `ExcP.exc_comp q α β (ExcP.leafFive δ hδ q α hm1 hm2 hl hr) (hSp hH.1 q β hpb hcov)`.
+-/
 theorem excision_of_thom_chart_factorization (hBd : LeafBd) (hSp : LeafExcSp) (hFact : ExcP.LeafChartFact) :
     LeafExcP := by
   intro hH q _ d R _ I hI hq Φ hΦ

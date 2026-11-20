@@ -9,6 +9,11 @@ namespace GlobalTheory.OmAStab
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `(IsLocallyConstant.iff_eventually_eq _).mpr fun g0 => ?_` and prove the remaining obligations. Establish `hn : (fun g => g0⁻¹ * g) ⁻¹' (χ.ker : Set G) ∈ 𝓝 g0` using `(hχ.preimage (continuous_const.mul continuous_id)).mem_nhds (by simp)`. Use `filter_upwards [hn] with g hg`. Establish `hg' : χ (g0⁻¹ * g) = 1` using `hg`. Rewrite `hg'` using `[map_mul, map_inv, inv_mul_eq_one]`.
+
+Conclude with `hg'.symm`.
+-/
 theorem isLocallyConstant_of_isOpen_ker {G H : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [Group H] (χ : G →* H) (hχ : IsOpen (χ.ker : Set G)) : IsLocallyConstant χ := by
   refine (IsLocallyConstant.iff_eventually_eq _).mpr fun g0 => ?_
@@ -19,14 +24,35 @@ theorem isLocallyConstant_of_isOpen_ker {G H : Type*} [Group G] [TopologicalSpac
   rw [map_mul, map_inv, inv_mul_eq_one] at hg'
   exact hg'.symm
 
+/- English proof (translation)
+The claim follows from `(Units.continuous_coe_inv (M := Matrix D D k)).matrix_transpose`.
+-/
 theorem continuous_invT_val {D : Type} [Fintype D] [DecidableEq D] :
     Continuous fun h : GL D k => (invT h).val :=
   (Units.continuous_coe_inv (M := Matrix D D k)).matrix_transpose
 
+/- English proof (translation)
+The claim follows from `(Units.continuous_val (M := Matrix D D k)).matrix_transpose`.
+-/
 theorem continuous_invT_inv_val {D : Type} [Fintype D] [DecidableEq D] :
     Continuous fun h : GL D k => ((invT h)⁻¹).val :=
   (Units.continuous_val (M := Matrix D D k)).matrix_transpose
 
+/- English proof (translation)
+Take `⟨hl, hK⟩ : IsLocallyConstant Φ ∧ HasCompactSupport Φ` from `hΦ`. Use `(IsLocallyConstant.iff_eventually_eq _).mpr fun h0 => ?_` and prove the remaining obligations. Use `set M : GL D k → Matrix D D k := fun h => (invT h).val with hM`. Use `set N : GL D k → Matrix D D k := fun h => ((invT h)⁻¹).val with hN`. Establish `hMc : Continuous M` using `continuous_invT_val`.
+
+Establish `hNc : Continuous N` using `continuous_invT_inv_val`. Establish `hMN : ∀ h, M h * N h = 1` using `fun h => Units.mul_inv (invT h)`. Establish `hNM : ∀ h, N h * M h = 1` using `fun h => Units.inv_mul (invT h)`. Establish `hq : IsLocallyConstant fun p : GL D k × Matrix A D k => Φ (p.2 * M p.1)` using `hl.comp_continuous (continuous_snd.matrix_mul (hMc.comp continuous_fst))`. Establish `hr : IsLocallyConstant fun p : GL D k × Matrix A D k => Φ (p.2 * N p.1 * M h0)` using `hl.comp_continuous ((continuous_snd.matrix_mul (hNc.comp continuous_fst)).matrix_mul continuous_const)`.
+
+Establish `hK1 : IsCompact ((fun Y => Y * N h0) '' tsupport Φ)` using `hK.isCompact.image (continuous_id.matrix_mul continuous_const)`. Establish `htend : ∀ X : Matrix A D k, Filter.Tendsto (fun p : GL D k × Matrix A D k => (h0, p.2)) (𝓝 (h0, X)) (𝓝 (h0, X))` using `fun X => (continuous_const.prodMk continuous_snd).tendsto' _ _ rfl`. Establish `e1 : ∀ᶠ h in 𝓝 h0, ∀ X ∈ (fun Y => Y * N h0) '' tsupport Φ, Φ (X * M h) = Φ (X * M h0)`. Use `hK1.eventually_forall_of_forall_eventually fun X _ => ?_` and prove the remaining obligations. Establish `a1` using `hq.eventually_eq (h0, X)`.
+
+Establish `a2` using `(htend X).eventually (hq.eventually_eq (h0, X))`. Use `filter_upwards [a1, a2] with p hp1 hp2`. Conclude with `hp1.trans hp2.symm`. Establish `e2 : ∀ᶠ h in 𝓝 h0, ∀ Y ∈ tsupport Φ, Φ (Y * N h * M h0) = Φ Y`. Use `hK.isCompact.eventually_forall_of_forall_eventually fun Y _ => ?_` and prove the remaining obligations.
+
+Establish `a2` using `(continuous_snd.tendsto (h0, Y)).eventually (hl.eventually_eq Y)`. Use `filter_upwards [hr.eventually_eq (h0, Y), a2] with p hp hp2`. Use `hp.trans (Eq.trans ?_ hp2.symm)` and prove the remaining obligations. Use `show Φ (Y * N h0 * M h0) = Φ Y`. Rewrite using `[Matrix.mul_assoc, hNM, Matrix.mul_one]`.
+
+Use `filter_upwards [e1, e2] with h h1 h2`. Use function extensionality and compare the values at `X`. Use `show Φ (X * M h) = Φ (X * M h0)`. Distinguish the cases in `hA : X * M h0 ∈ tsupport Φ`. Conclude with `h1 X ⟨X * M h0, hA, by simp only [Matrix.mul_assoc, hMN, Matrix.mul_one]⟩`.
+
+Distinguish the cases in `hB : X * M h ∈ tsupport Φ`. Use `h2 _ hB` as an intermediate fact. Rewrite `this` using `[Matrix.mul_assoc X, hMN, Matrix.mul_one]`. Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hA, image_eq_zero_of_notMem_tsupport hB]`.
+-/
 theorem isLocallyConstant_comp_invT {A D : Type} [Fintype A] [Fintype D] [DecidableEq D]
     {Φ : Matrix A D k → ℂ} (hΦ : Φ ∈ SB (Matrix A D k)) :
     IsLocallyConstant fun h : GL D k => fun X : Matrix A D k => Φ (X * (invT h).val) := by
@@ -70,6 +96,11 @@ theorem isLocallyConstant_comp_invT {A D : Type} [Fintype A] [Fintype D] [Decida
     exact this.symm
   rw [image_eq_zero_of_notMem_tsupport hA, image_eq_zero_of_notMem_tsupport hB]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ a d ν β hβ Φ hΦ`. Establish `hb : IsLocallyConstant fun h : GL (Fin d) k => β (gdet h)` using `(isLocallyConstant_of_isOpen_ker β hβ).comp_continuous Matrix.GeneralLinearGroup.continuous_det`. Establish `hn : IsLocallyConstant fun h : GL (Fin d) k => GlobalTheory.SplitWeil.nabs k (gdet h)` using `(GlobalTheory.SplitWeil.isLocallyConstant_nabs k).comp_continuous Matrix.GeneralLinearGroup.continuous_det`. Establish `hc : IsLocallyConstant fun h : GL (Fin d) k => omA ν β 1 h Φ`. Use `(IsLocallyConstant.iff_eventually_eq _).mpr fun h0 => ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hb.eventually_eq h0, hn.eventually_eq h0, (isLocallyConstant_comp_invT hΦ).eventually_eq h0] with h e1 e2 e3`. Use function extensionality and compare the values at `X`. Establish `e4` using `congrFun e3 X`. Simplify using `only [omA, apow, inv_one, Units.val_one, Matrix.one_mul, e1, e2, e4]`. Conclude with `hc.isOpen_fiber Φ`.
+-/
 theorem isOpen_omA_stab : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (a d : ℕ) (ν β : kˣ →* ℂˣ), GlobalTheory.SmGL.IsSmoothChar β → ∀ Φ ∈ GlobalTheory.WeilM.SB (Matrix (Fin a) (Fin d) k),
       IsOpen {h : GL (Fin d) k | GlobalTheory.SplitFlip.omA ν β 1 h Φ = Φ} := by

@@ -12,6 +12,9 @@ open GlobalTheory.CuspRep
 
 namespace UpperTheory.HilbertEisensteinWeightOne.PoissonSummationAdelic
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Both sides reduce to the same expression.
+-/
 theorem toR_homeomorphMixedSpace (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (x : Ad F) :
     toR F (homeomorphMixedSpace F x.1) = UpperTheory.V.TR.pInf F x := by
   funext v
@@ -22,6 +25,9 @@ variable (F : Type) [Field F] [NumberField F] [IsTotallyReal F]
 instance isEmpty_isComplex : IsEmpty {w : InfinitePlace F // InfinitePlace.IsComplex w} :=
   ⟨fun w => (InfinitePlace.not_isReal_iff_isComplex.2 w.2) (IsTotallyReal.isReal w.1)⟩
 
+/- English proof (translation)
+Rewrite using `[← real_inner_self_eq_norm_sq, mixedToEuclidean, ContinuousLinearEquiv.trans_apply, inner_toMixed_symm]`. Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty, add_zero, mapComplexCoord_apply]`. Rewrite using `[← Equiv.sum_comp (Equiv.subtypeUnivEquiv (fun v => IsTotallyReal.isReal v)).symm]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `[toR, sq]`.
+-/
 theorem norm_sq_mixedToEuclidean (u : mixedSpace F) :
     ‖mixedToEuclidean F u‖ ^ 2 = ∑ v, (toR F u v) ^ 2 := by
   rw [← real_inner_self_eq_norm_sq, mixedToEuclidean, ContinuousLinearEquiv.trans_apply,
@@ -31,6 +37,9 @@ theorem norm_sq_mixedToEuclidean (u : mixedSpace F) :
   refine Finset.sum_congr rfl fun v _ => ?_
   simp [toR, sq]
 
+/- English proof (translation)
+Rewrite using `[GroundTheory.Automorphic.Adele2.toEuclid2_apply, WithLp.prod_norm_sq_eq_of_L2, Finset.sum_add_distrib, ← norm_sq_mixedToEuclidean, ← norm_sq_mixedToEuclidean]`. Both sides reduce to the same expression.
+-/
 theorem norm_sq_toEuclid2 (u : Fin 2 → mixedSpace F) :
     ‖GroundTheory.Automorphic.Adele2.toEuclid2 F u‖ ^ 2 = ∑ v, ((toR F (u 0) v) ^ 2 + (toR F (u 1) v) ^ 2) := by
   rw [GroundTheory.Automorphic.Adele2.toEuclid2_apply, WithLp.prod_norm_sq_eq_of_L2, Finset.sum_add_distrib,
@@ -43,16 +52,27 @@ def coordCLM (i : Fin 2) (v : InfinitePlace F) : (Fin 2 → mixedSpace F) →L[�
       map_add' := fun _ _ => rfl
       map_smul' := fun _ _ => rfl }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coordCLM_apply (i : Fin 2) (v : InfinitePlace F) (u : Fin 2 → mixedSpace F) :
     coordCLM F i v u = toR F (u i) v := rfl
 
 def lin (v : InfinitePlace F) : (Fin 2 → mixedSpace F) →L[ℝ] ℂ :=
   Complex.ofRealCLM.comp (coordCLM F 0 v) + Complex.I • Complex.ofRealCLM.comp (coordCLM F 1 v)
 
+/- English proof (translation)
+Simplify using `[lin, coordCLM_apply]`.
+-/
 theorem lin_apply (v : InfinitePlace F) (u : Fin 2 → mixedSpace F) :
     lin F v u = (toR F (u 0) v : ℂ) + Complex.I * (toR F (u 1) v : ℂ) := by
   simp [lin, coordCLM_apply]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Establish `h` using `(hf a).mul ih`. Establish `e : (fun x => ∏ i ∈ insert a s, f i x) = (f a * fun x => ∏ i ∈ s, f i x)`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[Finset.prod_insert ha]`. Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem hasTemperateGrowth_prod {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {ι : Type*}
     (s : Finset ι) (f : ι → E → ℂ) (hf : ∀ i, (f i).HasTemperateGrowth) :
     (fun x => ∏ i ∈ s, f i x).HasTemperateGrowth := by
@@ -68,9 +88,19 @@ theorem hasTemperateGrowth_prod {E : Type*} [NormedAddCommGroup E] [NormedSpace 
 
 def poly (u : Fin 2 → mixedSpace F) : ℂ := ∏ v, lin F v u
 
+/- English proof (translation)
+The claim follows from `hasTemperateGrowth_prod _ (fun v u => lin F v u) fun v => (lin F v).hasTemperateGrowth`.
+-/
 theorem hasTemperateGrowth_poly : (poly F).HasTemperateGrowth :=
   hasTemperateGrowth_prod _ (fun v u => lin F v u) fun v => (lin F v).hasTemperateGrowth
 
+/- English proof (translation)
+Use `⟨SchwartzMap.smulLeftCLM ℂ (poly F) (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (GroundTheory.Automorphic.Adele2.toEuclid2 F) (gaussianSchwartz _)), fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply (hasTemperateGrowth_poly F)]`. Simplify using `only [SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, gaussianSchwartz_apply, smul_eq_mul]`. Rewrite using `[norm_sq_toEuclid2, arch, Finset.prod_mul_distrib, poly]`. Use `congr 1`.
+
+Apply the tactic sequence `all_goals first`. Consider the case `exact Finset.prod_congr rfl fun v _ => lin_apply F v u`. Consider the case `(rw [← Complex.exp_sum, Complex.ofReal_exp]`. Use `congr 1`. Use `push_cast`.
+
+Rewrite using `[Finset.mul_sum])`.
+-/
 theorem exists_schwartz_arch :
     ∃ φ : SchwartzMap (Fin 2 → NumberField.mixedEmbedding.mixedSpace F) ℂ,
       ∀ u, φ u = arch (toR F (u 0)) (toR F (u 1)) := by
@@ -94,6 +124,11 @@ section Support
 open IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.N
 open GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V.Af UpperTheory.V.Base
 
+/- English proof (translation)
+Take `⟨m, hm, h⟩` from `isOfFinOrder_iff_pow_eq_one.1 hfin`. Establish `ho` using `GlobalTheory.HeckeGal.isOpen_ker_of_pow ω.1 ω.2.1 hm fun x => congrArg (fun ξ : HChar F => ξ.1 x) h`. Take `⟨S, M, hS, key⟩` from `GlobalTheory.OpenIdeleCongr.localIdele_mem_of_isOpen ω.1.ker ho`. Use `hS.subset fun w hw => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hwS`.
+
+Apply `hw` to reduce the goal to its premises. Use `Nat.le_zero.1 ((hc w).2 ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq]`. Introduce `x hu _`. Conclude with `key w x hu fun h => absurd h hwS`.
+-/
 theorem finite_support_of_cond (ω : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ) (hfin : IsOfFinOrder ω)
     (hc : ∀ w, UpperTheory.V.Sd.IsCondAt w ω (c w)) : {w | c w ≠ 0}.Finite := by
   obtain ⟨m, hm, h⟩ := isOfFinOrder_iff_pow_eq_one.1 hfin

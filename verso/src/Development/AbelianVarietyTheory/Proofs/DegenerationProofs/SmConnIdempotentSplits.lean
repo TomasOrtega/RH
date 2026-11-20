@@ -19,17 +19,29 @@ variable {C : Type*} [Category C] [CartesianMonoidalCategory C] {G H : C} [GrpOb
   (i : H ⟶ G) (r : G ⟶ H) (hir : i ≫ r = 𝟙 H) [he : IsMonHom (r ≫ i)]
 
 include hir in
+/- English proof (translation)
+Rewrite using `[reassoc_of% hir]`.
+-/
 theorem sec_idem : i ≫ r ≫ i = i := by rw [reassoc_of% hir]
 
+/- English proof (translation)
+Rewrite using `[Category.assoc, IsMonHom.one_hom]`.
+-/
 theorem one_comp : (η[G] ≫ r) ≫ i = η[G] := by
   rw [Category.assoc, IsMonHom.one_hom]
 
 include hir in
+/- English proof (translation)
+Rewrite using `[Category.assoc, Category.assoc, IsMonHom.mul_hom, tensorHom_comp_tensorHom_assoc, sec_idem i r hir]`.
+-/
 theorem mul_comp : ((i ⊗ₘ i) ≫ μ[G] ≫ r) ≫ i = (i ⊗ₘ i) ≫ μ[G] := by
   rw [Category.assoc, Category.assoc, IsMonHom.mul_hom, tensorHom_comp_tensorHom_assoc,
     sec_idem i r hir]
 
 include hir in
+/- English proof (translation)
+Rewrite using `[Category.assoc, Category.assoc, GrpObj.inv_hom, ← Category.assoc, sec_idem i r hir]`.
+-/
 theorem inv_comp : (i ≫ GrpObj.inv ≫ r) ≫ i = i ≫ GrpObj.inv := by
   rw [Category.assoc, Category.assoc, GrpObj.inv_hom, ← Category.assoc, sec_idem i r hir]
 
@@ -69,11 +81,17 @@ theorem inv_comp : (i ≫ GrpObj.inv ≫ r) ≫ i = i ≫ GrpObj.inv := by
       have h2 := congrArg (i ≫ ·) this
       simpa using h2 }
 
+/- English proof (translation)
+The claim follows from `letI := grpObj i r hir { one_hom := one_comp i r mul_hom := mul_comp i r hir }`.
+-/
 theorem isMonHom_sec : letI := grpObj i r hir; IsMonHom i :=
   letI := grpObj i r hir
   { one_hom := one_comp i r
     mul_hom := mul_comp i r hir }
 
+/- English proof (translation)
+The claim follows from `letI := grpObj i r hir { one_hom := rfl mul_hom := by haveI : Mono i := (SplitMono.mk r hir).mono change μ[G] ≫ r = (r ⊗ₘ r) ≫ (i ⊗ₘ i) ≫ μ[G] ≫ r rw [← cancel_mono i, Category.assoc, Category.assoc (r ⊗ₘ r), mul_comp i r hir, tensorHom_comp_tensorHom_assoc, IsMonHom.mul_hom] }`.
+-/
 theorem isMonHom_ret : letI := grpObj i r hir; IsMonHom r :=
   letI := grpObj i r hir
   { one_hom := rfl
@@ -83,6 +101,9 @@ theorem isMonHom_ret : letI := grpObj i r hir; IsMonHom r :=
       rw [← cancel_mono i, Category.assoc, Category.assoc (r ⊗ₘ r), mul_comp i r hir,
         tensorHom_comp_tensorHom_assoc, IsMonHom.mul_hom] }
 
+/- English proof (translation)
+The claim follows from `letI := grpObj i r hir { mul_comm := by change (β_ H H).hom ≫ (i ⊗ₘ i) ≫ μ[G] ≫ r = (i ⊗ₘ i) ≫ μ[G] ≫ r rw [← BraidedCategory.braiding_naturality_assoc, IsCommMonObj.mul_comm_assoc] }`.
+-/
 theorem isComm [BraidedCategory C] [IsCommMonObj G] : letI := grpObj i r hir; IsCommMonObj H :=
   letI := grpObj i r hir
   { mul_comm := by
@@ -95,6 +116,13 @@ end GlobalTheory.SS.IdemSplit
 
 namespace GlobalTheory.SS
 
+/- English proof (translation)
+Introduce `S G _ hG e he hee`. Take `⟨hc, hs, hsep, hqc, hgc⟩` from `hG`. Set `i` to `equalizer.ι e (𝟙 G)`. Set `r : G ⟶ equalizer e (𝟙 G)` to `equalizer.lift e (by simp [hee])`. Establish `hri : r ≫ i = e` using `equalizer.lift_ι _ _`.
+
+Establish `hir : i ≫ r = 𝟙 _`. Rewrite using `[← cancel_mono i, Category.assoc, hri, Category.id_comp]`. Simplify using `using equalizer.condition e (𝟙 G)`. Use `haveI : IsMonHom (r ≫ i) := by rw [hri]; exact he`. Establish `hl : i.left ≫ r.left = 𝟙 _` using `by rw [← Over.comp_left, hir, Over.id_left]`.
+
+Establish `hw` using `Over.w r`. Conclude with `⟨_, IdemSplit.grpObj i r hir, i, r, ⟨IdemSplit.isComm i r hir, GlobalTheory.Retract.smooth hl hw, GlobalTheory.Retract.isSeparated hl hw, GlobalTheory.Retract.quasiCompact hl hw, GlobalTheory.Retract.geometricallyConnected hl hw⟩, IdemSplit.isMonHom_sec i r hir, IdemSplit.isMonHo …`.
+-/
 theorem smConn_idempotent_splits : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G], SmConn G → ∀ e : G ⟶ G, IsMonHom e → e ≫ e = e → ∃ (G₁ : Over S) (_ : GrpObj G₁) (i : G₁ ⟶ G) (r : G ⟶ G₁), SmConn G₁ ∧ IsMonHom i ∧ IsMonHom r ∧ i ≫ r = 𝟙 G₁ ∧ r ≫ i = e := by
   intro S G _ hG e he hee
   obtain ⟨hc, hs, hsep, hqc, hgc⟩ := hG

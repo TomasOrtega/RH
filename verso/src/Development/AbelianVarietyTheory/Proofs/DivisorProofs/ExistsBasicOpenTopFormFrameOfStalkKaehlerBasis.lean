@@ -14,6 +14,27 @@ namespace GlobalTheory.FrameSpread
 
 open GlobalTheory.TopForm
 
+/- English proof (translation)
+Introduce `k _ X p n _ U x₀ hx x hbs`. Take `⟨V, ω, hxV, hω⟩` from `TopForm.exists_isFrame p n x₀`. Take `⟨s, hsV, hxs⟩` from `U.2.exists_basicOpen_le ⟨x₀, hxV⟩ hx`. Establish `hWU : X.basicOpen s ≤ U.1` using `X.basicOpen_le s`. Establish `hWaff : IsAffineOpen (X.basicOpen s)` using `U.2.basicOpen s`.
+
+Establish `hωW` using `hω.res hWaff hsV`. Use `set η : FormsOn p n (X.basicOpen s) := TopForm.dOn p (fun i => resG X hWU (x i)) with hη`. Use `set J : Γ(X, X.basicOpen s) := hωW.gen.repr η with hJdef`. Establish `hJ : J • TopForm.resForm hsV ω = η` using `hωW.gen.repr_smul η`. Take `⟨bs, hbs⟩` from `hbs`.
+
+Use `set ρ : Γ(X, X.basicOpen s) →+* X.presheaf.stalk x₀ := (X.presheaf.germ (X.basicOpen s) x₀ hxs).hom with hρ`. Establish `hgerm : ∀ a : Γ(X, U.1), ρ (resG X hWU a) = (X.presheaf.germ U.1 x₀ hx).hom a` using `fun a => by`. Use `TopCat.Presheaf.germ_res X.presheaf (homOfLE hWU) x₀ hxs` as an intermediate fact. Conclude with `congrArg (fun φ => (ConcreteCategory.hom φ) a) this`. Establish `hρα : ρ.comp (algX p (X.basicOpen s)) = (X.presheaf.germ U.1 x₀ hx).hom.comp (algX p U.1)`.
+
+Rewrite using `[← resG_comp_algX p hWU]`. Use extensionality with `a`. Conclude with `hgerm _`. Establish `hfe : letI` using `ρ.toAlgebra; Algebra.FormallyEtale Γ(X, X.basicOpen s) (X.presheaf.stalk x₀) := by`. Use `letI := ρ.toAlgebra`.
+
+Use `haveI := hWaff.isLocalization_stalk ⟨x₀, hxs⟩`. Conclude with `Algebra.FormallyEtale.of_isLocalization (hWaff.primeIdealOf ⟨x₀, hxs⟩).asIdeal.primeCompl`. Establish `h1 : IsFreeGen (X.presheaf.stalk x₀) (TopForm.formMap n ρ hρα (TopForm.resForm hsV ω))`. Use `letI := (algX p (X.basicOpen s)).toAlgebra`. Use `letI := ((X.presheaf.germ U.1 x₀ hx).hom.comp (algX p U.1)).toAlgebra`.
+
+Use `letI := ρ.toAlgebra`. Use `haveI : IsScalarTower k Γ(X, X.basicOpen s) (X.presheaf.stalk x₀) := IsScalarTower.of_algebraMap_eq' hρα.symm`. Use `haveI : Algebra.FormallyEtale Γ(X, X.basicOpen s) (X.presheaf.stalk x₀) := hfe`. Conclude with `hωW.gen.of_isBaseChange (isBaseChange_exteriorPower (KaehlerDifferential.isBaseChange_of_formallyEtale k Γ(X, X.basicOpen s) (X.presheaf.stalk x₀)) n)`. Establish `h2 : IsFreeGen (X.presheaf.stalk x₀) (dForm ((X.presheaf.germ U.1 x₀ hx).hom.comp (algX p U.1)) (fun i => (X.presheaf.germ U.1 x₀ hx).hom (x i)))` using `isFreeGen_dForm _ bs hbs`.
+
+Establish `h3 : TopForm.formMap n ρ hρα η = ρ J • TopForm.formMap n ρ hρα (TopForm.resForm hsV ω)`. Rewrite using `[← hJ, map_smulₛₗ]`. Establish `h4 : TopForm.formMap n ρ hρα η = dForm ((X.presheaf.germ U.1 x₀ hx).hom.comp (algX p U.1)) (fun i => (X.presheaf.germ U.1 x₀ hx).hom (x i))`. Rewrite using `[hη, dOn, formMap_dForm]`. Simplify using `only [hgerm]`.
+
+Establish `hu : IsUnit (ρ J)` using `h1.smul_iff.1 (h3 ▸ h4 ▸ h2)`. Establish `hxJ : x₀ ∈ X.basicOpen J` using `(X.mem_basicOpen J x₀ hxs).2 hu`. Take `⟨t, htJ, hxt⟩` from `U.2.exists_basicOpen_le ⟨x₀, hxJ⟩ hx`. Use `⟨t, hxt, ?_⟩` and prove the remaining obligations. Establish `hJW : X.basicOpen J ≤ X.basicOpen s` using `X.basicOpen_le J`.
+
+Establish `hte : X.basicOpen t ≤ X.basicOpen s` using `htJ.trans hJW`. Establish `hframe` using `hωW.res (U.2.basicOpen t) hte`. Establish `e : TopForm.dOn p (fun i => resG X (X.basicOpen_le t) (x i)) = resG X hte J • TopForm.resForm hte (TopForm.resForm hsV ω)`. Rewrite using `[← resForm_smul, hJ, hη, resForm_dOn]`. Simplify using `only [resG_resG]`.
+
+Rewrite using `[e]`. Use `⟨U.2.basicOpen t, hframe.gen.smul_iff.2 ?_⟩` and prove the remaining obligations. Establish `hu' : IsUnit (resG X hJW J)` using `X.toRingedSpace.isUnit_res_basicOpen J`. Use `hu'.map (resG X htJ)` as an intermediate fact. Rewrite `this` using `[resG_resG]`. Then use the resulting hypothesis.
+-/
 theorem exists_basicOpen_isFrame_dOn : ∀ (k : Type) [Field k] (X : Scheme.{0}) (p : X ⟶ Sp k) (n : ℕ) [SmoothOfRelativeDimension n p] (U : X.affineOpens) (x₀ : X) (hx : x₀ ∈ U.1) (x : Fin n → Γ(X, U.1)), (letI := ((X.presheaf.germ U.1 x₀ hx).hom.comp (algX p U.1)).toAlgebra; ∃ bs : Module.Basis (Fin n) (X.presheaf.stalk x₀) Ω[X.presheaf.stalk x₀⁄k], ∀ i, bs i = KaehlerDifferential.D k (X.presheaf.stalk x₀) ((X.presheaf.germ U.1 x₀ hx).hom (x i))) → ∃ s : Γ(X, U.1), x₀ ∈ X.basicOpen s ∧ GlobalTheory.TopForm.IsFrame (GlobalTheory.TopForm.dOn p fun i => resG X (X.basicOpen_le s) (x i)) := by
   intro k _ X p n _ U x₀ hx x hbs
   obtain ⟨V, ω, hxV, hω⟩ := TopForm.exists_isFrame p n x₀

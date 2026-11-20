@@ -9,6 +9,19 @@ namespace GlobalTheory
 
 open scoped Topology
 
+/- English proof (translation)
+Use `⟨continuous_of_continuousAt_one _ ?_, continuous_of_continuousAt_one _ ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one, Filter.tendsto_def]`. Introduce `s hs`. Take `⟨E, hE, hEs⟩` from `(krullTopology_mem_nhds_one_iff K Ω s).1 hs`. Establish `: IsScalarTower k K E` using `⟨fun a b x => Subtype.ext (smul_assoc a b (x : Ω))⟩`.
+
+Establish `hE' : Module.Finite k E` using `Module.Finite.trans K E`. Establish `hfin : FiniteDimensional k (E.restrictScalars k)` using `hE'`. Rewrite using `[mem_nhds_subtype]`. Use `⟨(E.restrictScalars k).fixingSubgroup, (krullTopology_mem_nhds_one_iff k Ω _).2 ⟨E.restrictScalars k, hfin, subset_rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `σ hσ`.
+
+Apply `hEs` to reduce the goal to its premises. Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ x hx`. Rewrite using `[ContinuousAt, map_one, Filter.tendsto_def]`.
+
+Introduce `s hs`. Take `⟨u, hu, hus⟩` from `(mem_nhds_subtype _ _ _).1 hs`. Take `⟨E, hE, hEu⟩` from `(krullTopology_mem_nhds_one_iff k Ω u).1 hu`. Set `F : IntermediateField K Ω` to `IntermediateField.extendScalars (le_sup_right : K ≤ E ⊔ K)`. Establish `hk : FiniteDimensional k (E ⊔ K : IntermediateField k Ω)` using `inferInstance`.
+
+Establish `: Module.Finite k F` using `hk`. Establish `hF : FiniteDimensional K F` using `Module.Finite.of_restrictScalars_finite k K F`. Use `(krullTopology_mem_nhds_one_iff K Ω _).2 ⟨F, hF, ?_⟩` and prove the remaining obligations. Introduce `τ hτ`. Apply `hus` to reduce the goal to its premises.
+
+Apply `hEu` to reduce the goal to its premises. Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hτ x ((IntermediateField.mem_extendScalars _).2 (le_sup_left (a := E) hx))`.
+-/
 theorem fixingSubgroupEquiv_bicontinuous (k Ω : Type) [Field k] [Field Ω] [Algebra k Ω]
     (K : IntermediateField k Ω) [FiniteDimensional k ↥K] :
     Continuous (IntermediateField.fixingSubgroupEquiv K) ∧

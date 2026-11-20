@@ -11,15 +11,24 @@ section Ring
 
 variable {A : Type} [CommRing A]
 
+/- English proof (translation)
+Unfold `cT`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`.
+-/
 theorem cT_mul (τ : A →+* A) {a b c : ℕ} (x : Matrix (Fin a) (Fin b) A)
     (y : Matrix (Fin b) (Fin c) A) : cT τ (x * y) = cT τ y * cT τ x := by
   unfold cT
   rw [Matrix.map_mul, Matrix.transpose_mul]
 
+/- English proof (translation)
+Unfold `cT`. Rewrite using `[Matrix.map_one _ (map_zero τ) (map_one τ), Matrix.transpose_one]`.
+-/
 theorem cT_one (τ : A →+* A) {a : ℕ} : cT τ (1 : Matrix (Fin a) (Fin a) A) = 1 := by
   unfold cT
   rw [Matrix.map_one _ (map_zero τ) (map_one τ), Matrix.transpose_one]
 
+/- English proof (translation)
+Unfold `cT`. Use extensionality with `i j`. Conclude with `hτ (x i j)`.
+-/
 theorem cT_cT (τ : A →+* A) (hτ : ∀ a, τ (τ a) = a) {a b : ℕ} (x : Matrix (Fin a) (Fin b) A) :
     cT τ (cT τ x) = x := by
   unfold cT
@@ -43,6 +52,9 @@ def covEquiv (τ : A →+* A) {m n : ℕ} (G G' : Matrix (Fin n) (Fin n) A)
           simp only [Matrix.mul_assoc]
       _ = y := by rw [hP', h, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `hg2 : cT τ g' * cT τ g = 1` using `by rw [← cT_mul, hg, cT_one]`. Rewrite using `[← hD]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hg2, hg, Matrix.one_mul, Matrix.mul_one]`. Use `_ = cT τ g' * (cT τ g * h * g) * g' := by simp only [Matrix.mul_assoc]`.
+-/
 theorem eq_of_conj (τ : A →+* A) {n : ℕ} {h D g g' : Matrix (Fin n) (Fin n) A}
     (hg : g * g' = 1) (hD : cT τ g * h * g = D) : h = cT τ g' * D * g' := by
   have hg2 : cT τ g' * cT τ g = 1 := by rw [← cT_mul, hg, cT_one]
@@ -51,6 +63,9 @@ theorem eq_of_conj (τ : A →+* A) {n : ℕ} {h D g g' : Matrix (Fin n) (Fin n)
         rw [hg2, hg, Matrix.one_mul, Matrix.mul_one]
     _ = cT τ g' * (cT τ g * h * g) * g' := by simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[cT_mul, cT_mul, cT_cT τ hτ]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.trace_mul_comm (cT τ g')]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem trace_cov (τ : A →+* A) (hτ : ∀ a, τ (τ a) = a) {m n : ℕ}
     (D g' : Matrix (Fin n) (Fin n) A) (E p' : Matrix (Fin m) (Fin m) A)
     (x : Matrix (Fin m) (Fin n) A) :
@@ -67,20 +82,32 @@ section Red
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Unfold `red`. Conclude with `Matrix.map_mul`.
+-/
 theorem red_mul (ϖ : R) (k : ℕ) {a b c : ℕ} (x : Matrix (Fin a) (Fin b) R)
     (y : Matrix (Fin b) (Fin c) R) : red ϖ k (x * y) = red ϖ k x * red ϖ k y := by
   unfold red
   exact Matrix.map_mul
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `(barσ_mk σ ϖ hf k (x j i)).symm`.
+-/
 theorem red_cT (σ : R →+* R) (ϖ : R) (hf : σ ϖ = ϖ) (k : ℕ) {a b : ℕ}
     (x : Matrix (Fin a) (Fin b) R) : red ϖ k (cT σ x) = cT (barσ σ ϖ hf k) (red ϖ k x) := by
   ext i j
   exact (barσ_mk σ ϖ hf k (x j i)).symm
 
+/- English proof (translation)
+Unfold `red`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem red_one (ϖ : R) (k : ℕ) {a : ℕ} : red ϖ k (1 : Matrix (Fin a) (Fin a) R) = 1 := by
   unfold red
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[barσ_mk, barσ_mk, hσ]`.
+-/
 theorem barσ_inv (σ : R →+* R) (ϖ : R) (hf : σ ϖ = ϖ) (hσ : ∀ a, σ (σ a) = a) (k : ℕ)
     (a : R ⧸ lev ϖ k) : barσ σ ϖ hf k (barσ σ ϖ hf k a) = a := by
   obtain ⟨b, rfl⟩ := Ideal.Quotient.mk_surjective a
@@ -88,6 +115,13 @@ theorem barσ_inv (σ : R →+* R) (ϖ : R) (hf : σ ϖ = ϖ) (hσ : ∀ a, σ (
 
 end Red
 
+/- English proof (translation)
+Establish `hh : h = cT σ g' * D * g'` using `eq_of_conj σ hg hD`. Establish `hS : S = cT σ p' * E * p'` using `eq_of_conj σ hp hE`. Establish `rg : red ϖ k g * red ϖ k g' = 1` using `by rw [← red_mul, hg, red_one]`. Establish `rg' : red ϖ k g' * red ϖ k g = 1` using `by rw [← red_mul, hg', red_one]`. Establish `rp : red ϖ k p * red ϖ k p' = 1` using `by rw [← red_mul, hp, red_one]`.
+
+Establish `rp' : red ϖ k p' * red ϖ k p = 1` using `by rw [← red_mul, hp', red_one]`. Use `Fintype.sum_equiv (covEquiv (barσ σ ϖ hf k) (red ϖ k g) (red ϖ k g') (red ϖ k p) (red ϖ k p') rg rg' rp rp') _ _ ?_` and prove the remaining obligations. Introduce `x`. Establish `key : Matrix.trace (red ϖ k h * (cT (barσ σ ϖ hf k) x * red ϖ k S * x)) = Matrix.trace (red ϖ k D * (cT (barσ σ ϖ hf k) (red ϖ k p' * x * cT (barσ σ ϖ hf k) (red ϖ k g')) * red ϖ k E * (red ϖ k p' * x * cT (barσ σ ϖ hf k) (red ϖ k g'))))`. Rewrite using `[hh, hS, red_mul, red_mul, red_mul, red_mul, red_cT σ ϖ hf, red_cT σ ϖ hf]`.
+
+Conclude with `trace_cov (barσ σ ϖ hf k) (barσ_inv σ ϖ hf hσ k) (red ϖ k D) (red ϖ k g') (red ϖ k E) (red ϖ k p') x`. Conclude with `congrArg (⇑χ) key`.
+-/
 theorem gauss_cov (R : Type) [CommRing R] (σ : R →+* R) (ϖ : R) (hf : σ ϖ = ϖ)
     (hσ : ∀ a, σ (σ a) = a) (k : ℕ) [Fintype (R ⧸ lev ϖ k)] (χ : AddChar (R ⧸ lev ϖ k) ℂ)
     (m n : ℕ) (h D g g' : Matrix (Fin n) (Fin n) R) (S E p p' : Matrix (Fin m) (Fin m) R)

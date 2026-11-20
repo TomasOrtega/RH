@@ -17,6 +17,9 @@ abbrev Ix {n : ℕ} (M : KMod n) : Type := Fin (Module.finrank ℂ M.V)
 def ent {n : ℕ} (M : KMod n) (A : M.V →L[ℂ] M.V) (i j : Ix M) : ℂ :=
   inner ℂ (stdOrthonormalBasis ℂ M.V i) (A (stdOrthonormalBasis ℂ M.V j))
 
+/- English proof (translation)
+Simplify using `[ent]`.
+-/
 theorem ent_zero {n : ℕ} (M : KMod n) (i j : Ix M) : ent M 0 i j = 0 := by simp [ent]
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b n : ℕ}

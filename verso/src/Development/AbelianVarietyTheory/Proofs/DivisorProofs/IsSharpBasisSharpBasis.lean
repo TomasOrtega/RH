@@ -23,6 +23,9 @@ def sharpBasis (W : Matrix (Fin 8) (Fin 8) ℤ) (hW : (e8 W).det = 1) (h : ℕ) 
       left_inv := twistSnd_twistSnd _ _ (by rw [Matrix.mul_adjugate, hW, one_smul])
       right_inv := twistSnd_twistSnd _ _ (by rw [Matrix.adjugate_mul, hW, one_smul]) }
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[← sum_omegaStd_single h i j]`. Conclude with `sum_omegaStd_twistSnd (e8 W) _ (by simp [e8, Matrix.transpose_add, add_comm]) (by rw [Matrix.mul_adjugate, hW, one_smul]) _ _`.
+-/
 theorem isSharpBasis_sharpBasis (W : Matrix (Fin 8) (Fin 8) ℤ) (hW : (e8 W).det = 1) (h : ℕ) :
     IsSharpBasis W (sharpBasis W hW h) := by
   intro i j
@@ -41,6 +44,9 @@ def ptOf {A B : Over S} [GrpObj A] [GrpObj B] [IsCommMonObj B] {pr : Fin 8 → (
     {T : Over S} {C : Type} [Fintype C] (b : C → (T ⟶ B)) (x : Fin 8 → C → ℤ) : T ⟶ A :=
   (hP.2 T fun u => ∏ c, b c ^ x u c).exists.choose
 
+/- English proof (translation)
+The claim follows from `(hP.2 T fun u => ∏ c, b c ^ x u c).exists.choose_spec u`.
+-/
 theorem ptOf_pr {A B : Over S} [GrpObj A] [GrpObj B] [IsCommMonObj B] {pr : Fin 8 → (A ⟶ B)} (hP : IsProd pr)
     {T : Over S} {C : Type} [Fintype C] (b : C → (T ⟶ B)) (x : Fin 8 → C → ℤ) (u : Fin 8) :
     ptOf hP b x ≫ pr u = ∏ c, b c ^ x u c :=

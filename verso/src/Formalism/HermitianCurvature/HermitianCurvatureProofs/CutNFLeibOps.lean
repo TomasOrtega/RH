@@ -15,15 +15,24 @@ section ops
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Unfold `B.hsVec`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+-/
 theorem nfLeibOps_hsVec_smul (c : ℂ) (A : Wq →L[ℂ] Wp) : B.hsVec (c • A) = c • B.hsVec A := by
   unfold B.hsVec
   ext i
   simp
 
+/- English proof (translation)
+Unfold `B.hsInner`. Rewrite using `[nfLeibOps_hsVec_smul, inner_smul_right]`.
+-/
 theorem nfLeibOps_hsInner_smul_left (c : ℂ) (A B' : Wq →L[ℂ] Wp) : B.hsInner (c • A) B' = c * B.hsInner A B' := by
   unfold B.hsInner
   rw [nfLeibOps_hsVec_smul, inner_smul_right]
 
+/- English proof (translation)
+Unfold `B.hsInner`. Rewrite using `[nfLeibOps_hsVec_smul, inner_smul_left]`.
+-/
 theorem nfLeibOps_hsInner_smul_right (c : ℂ) (A B' : Wq →L[ℂ] Wp) :
     B.hsInner A (c • B') = conj c * B.hsInner A B' := by
   unfold B.hsInner
@@ -47,6 +56,11 @@ def nfLeibOps_mk (Bs : B.RealPlaceData k r Wp Wq) (T : B.DTerm k r Wp Wq)
     simp only [ContinuousLinearMap.smul_apply]
     rw [nfLeibOps_hsInner_smul_left, nfLeibOps_hsInner_smul_right, T.adj_id, Complex.conj_conj]
 
+/- English proof (translation)
+Unfold `B.CkOn at hc hf ⊢`. Introduce `g₀ hg₀`. Take `⟨U₁, c', hU₁, hg₁, hc', ec⟩` from `hc g₀ hg₀`. Take `⟨U₂, f', hU₂, hg₂, hf', ef⟩` from `hf g₀ hg₀`. Use `⟨U₁ ∩ U₂, fun g => c' g • f' g, hU₁.inter hU₂, ⟨hg₁, hg₂⟩, (hc'.mono Set.inter_subset_left).smul (hf'.mono Set.inter_subset_right), ?_⟩` and prove the remaining obligations.
+
+Introduce `g hg hgG`. Use `show c g • f g = c' g • f' g`. Rewrite using `[ec g hg.1 hgG, ef g hg.2 hgG]`.
+-/
 theorem nfLeibOps_ckOn_smul {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {UU : Set (B.Mat k r)}
     {c : B.Mat k r → ℂ} {f : B.Mat k r → E} (hc : B.CkOn ⊤ UU c) (hf : B.CkOn ⊤ UU f) :
     B.CkOn ⊤ UU (fun g => c g • f g) := by
@@ -60,6 +74,11 @@ theorem nfLeibOps_ckOn_smul {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ 
   show c g • f g = c' g • f' g
   rw [ec g hg.1 hgG, ef g hg.2 hgG]
 
+/- English proof (translation)
+Unfold `B.CkOn at hc ⊢`. Introduce `g₀ hg₀`. Take `⟨U, c', hU, hg, hc', ec⟩` from `hc g₀ hg₀`. Use `⟨U, fun g => conj (c' g), hU, hg, ?_, ?_⟩` and prove the remaining obligations. Use `(Complex.conjCLE.contDiff.comp_contDiffOn hc').congr (fun g _ => ?_)` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Introduce `g hgU hgG show conj (c g) = conj (c' g)`. Rewrite using `[ec g hgU hgG]`.
+-/
 theorem nfLeibOps_ckOn_conj {UU : Set (B.Mat k r)} {c : B.Mat k r → ℂ} (hc : B.CkOn ⊤ UU c) :
     B.CkOn ⊤ UU (fun g => conj (c g)) := by
   unfold B.CkOn at hc ⊢
@@ -72,6 +91,13 @@ theorem nfLeibOps_ckOn_conj {UU : Set (B.Mat k r)} {c : B.Mat k r → ℂ} (hc :
     show conj (c g) = conj (c' g)
     rw [ec g hgU hgG]
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U1, c1, hU1, hg1, hc1, he1⟩` from `hP.1 g₀ hg₀.1`. Establish `hGc : ContDiff ℝ (⊤ : ℕ∞) (fun g : B.Mat k r => ((Gf k r Bs.z Bs.z' g : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp (Formalism.FourierDecayAlt.P.JCx1.contDiff_Gf Bs.z Bs.z')`. Establish `hO : IsOpen {g : B.Mat k r | 0 < Gf k r Bs.z Bs.z' g}` using `isOpen_lt continuous_const (Formalism.FourierDecayAlt.P.JCx1.contDiff_Gf Bs.z Bs.z').continuous`. Use `⟨U1 ∩ {g | 0 < Gf k r Bs.z Bs.z' g}, fun g => c1 g * ((Gf k r Bs.z Bs.z' g : ℝ) : ℂ)⁻¹ ^ t.2.2.1, hU1.inter hO, ⟨hg1, hg₀.2.1⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `(hc1.mono Set.inter_subset_left).mul ?_` and prove the remaining obligations. Use `ContDiffOn.pow ?_ _` and prove the remaining obligations. Use `(hGc.contDiffOn.inv fun g hg => ?_).mono Set.inter_subset_right` and prove the remaining obligations. Conclude with `(ne_of_gt hg)` after adjusting the coercions. Introduce `g hg hgG`.
+
+Simplify using `only [nfLeibOps_sc, he1 g hg.1 hgG]`.
+-/
 theorem nfLeibOps_ckOn_sc (Bs : B.RealPlaceData k r Wp Wq) (t : ℕ × (B.Mat k r → ℂ) × ℕ × List (B.Mat k r)) (D : ℕ)
     (hP : ListSumSplittings.PolyClass D t.2.1) : B.CkOn ⊤ (C6.domL Bs ∅) (nfLeibOps_sc Bs t) := by
   intro g₀ hg₀
@@ -91,6 +117,15 @@ theorem nfLeibOps_ckOn_sc (Bs : B.RealPlaceData k r Wp Wq) (t : ℕ × (B.Mat k 
 
 end ops
 
+/- English proof (translation)
+Introduce `l hl`. Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons t l ih`. Rewrite using `[List.map_cons, List.sum_cons, ih (fun t' ht' => hl t' (by simp [ht']))]`.
+
+Establish `hq : key t < Q + 1` using `Nat.lt_succ_of_le (hl t (by simp))`. Establish `hsplit : ∀ q : Fin (Q + 1), f q • (((t :: l).filter fun t' => key t' = (q : ℕ)).map a).sum = (if key t = (q : ℕ) then f q • a t else 0) + f q • ((l.filter fun t' => key t' = (q : ℕ)).map a).sum`. Introduce `q`. Distinguish the cases in `h : key t = (q : ℕ)`. Simplify using `[List.filter_cons, h, smul_add]`.
+
+Simplify using `[List.filter_cons, h]`. Rewrite using `[Finset.sum_congr rfl (fun q _ => hsplit q), Finset.sum_add_distrib]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single ⟨key t, hq⟩]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Establish `hne : key t ≠ (b : ℕ)` using `fun h => hb (Fin.ext h.symm)`. Simplify using `[hne]`. Simplify using the standard rewrite rules.
+-/
 theorem nfLeibOps_sum_key {E : Type*} [AddCommGroup E] [Module ℂ E] {α : Type*} (Q : ℕ) (key : α → ℕ)
     (f : ℕ → ℂ) (a : α → E) : ∀ l : List α, (∀ t ∈ l, key t ≤ Q) →
     (l.map fun t => f (key t) • a t).sum =
@@ -117,6 +152,31 @@ theorem nfLeibOps_sum_key {E : Type*} [AddCommGroup E] [Module ℂ E] {α : Type
       simp [hne]
     · simp
 
+/- English proof (translation)
+Introduce `k r Wp Wq _ _ _ _ _ Bs Dop hsm`. Set `terms : B.DTerm k r Wp Wq → List (ℕ × (B.Mat k r → ℂ) × ℕ × List (B.Mat k r))` to `fun T => (hE k r Wp Wq Bs T.word T.word_lie).choose`. Establish `hspec` using `fun T : B.DTerm k r Wp Wq => (hE k r Wp Wq Bs T.word T.word_lie).choose_spec`. Use `set Q : ℕ := (Dop.map fun T => T.word.length).sum with hQ`. Establish `hQle : ∀ T ∈ Dop, T.word.length ≤ Q` using `fun T hT => List.le_sum_of_mem (List.mem_map.2 ⟨T, hT, rfl⟩)`.
+
+Set `LT : B.DTerm k r Wp Wq → Fin (Q + 1) → B.DiffOp k r Wp Wq` to `fun T q => ((terms T).filter fun t => t.1 = (q : ℕ)).map (nfLeibOps_mk Bs T)`. Use `⟨Q, fun q => Dop.flatMap fun T => LT T q, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `q T' hT'`. Take `⟨T, hT, hT'T⟩` from `List.mem_flatMap.1 hT'`. Take `⟨t, ht, rfl⟩` from `List.mem_map.1 hT'T`.
+
+Establish `htm : t ∈ terms T` using `(List.mem_filter.1 ht).1`. Establish `hP` using `((hspec T).1 t htm).2.1`. Conclude with `⟨nfLeibOps_ckOn_smul (nfLeibOps_ckOn_sc Bs t _ hP) (hsm T hT).1, nfLeibOps_ckOn_smul (nfLeibOps_ckOn_conj (nfLeibOps_ckOn_sc Bs t _ hP)) (hsm T hT).2⟩`. Introduce `q T' hT'`. Take `⟨T, hT, hT'T⟩` from `List.mem_flatMap.1 hT'`.
+
+Take `⟨t, ht, rfl⟩` from `List.mem_map.1 hT'T`. Establish `htm : t ∈ terms T` using `(List.mem_filter.1 ht).1`. Take `⟨-, hP, hsub⟩` from `(hspec T).1 t htm`. Use `⟨T, hT, t.2.1, t.2.2.1, hP, ?_, fun g _ => rfl⟩` and prove the remaining obligations. Establish `hlie : ∀ X ∈ t.2.2.2, B.inLie k r X` using `fun X hX => T.word_lie X (hsub.subset hX)`.
+
+Simplify using `only [nfLeibOps_mk]`. Rewrite using `[if_pos hlie]`. Conclude with `hsub`. Introduce `Ψ hΨ F hF x hx`. Establish `hT1 : ∀ T ∈ Dop, T.coef x (B.Rw T.word (fun y => ((Ψ 0 (Gf k r Bs.z Bs.z' y) : ℝ) : ℂ) • F y) x) = ∑ q : Fin (Q + 1), ((Ψ q (Gf k r Bs.z Bs.z' x) : ℝ) : ℂ) • B.opApply (LT T q) F x`.
+
+Introduce `T hT`. Rewrite using `[(hspec T).2 Ψ hΨ F hF x hx, map_list_sum, List.map_map]`. Establish `e1 : ((terms T).map ((T.coef x) ∘ fun t => ((((Ψ t.1 (Gf k r Bs.z Bs.z' x) : ℝ) : ℂ) * t.2.1 x * ((Gf k r Bs.z Bs.z' x : ℝ) : ℂ)⁻¹ ^ t.2.2.1) • B.Rw t.2.2.2 F x))) = (terms T).map fun t => (fun n : ℕ => ((Ψ n (Gf k r Bs.z Bs.z' x) : ℝ) : ℂ)) t.1 • (fun t => nfLeibOps_sc Bs t x • …`. Use `List.map_congr_left fun t _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, map_smul, nfLeibOps_sc, smul_smul, mul_assoc]`.
+
+Rewrite using `[e1]`. Use `(nfLeibOps_sum_key Q (fun t => t.1) (fun n : ℕ => ((Ψ n (Gf k r Bs.z Bs.z' x) : ℝ) : ℂ)) (fun t => nfLeibOps_sc Bs t x • T.coef x (B.Rw t.2.2.2 F x)) (terms T) (fun t ht => ((hspec T).1 t ht).1.trans (hQle T hT))).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Use `congr 1`. Unfold `B.opApply`.
+
+Rewrite using `[List.map_map]`. Use `congrArg List.sum (List.map_congr_left fun t ht => ?_)` and prove the remaining obligations. Establish `htm : t ∈ terms T` using `(List.mem_filter.1 ht).1`. Establish `hlie : ∀ X ∈ t.2.2.2, B.inLie k r X` using `fun X hX => T.word_lie X (((hspec T).1 t htm).2.2.subset hX)`. Simplify using `only [Function.comp_apply, nfLeibOps_mk, if_pos hlie, ContinuousLinearMap.smul_apply]`.
+
+Establish `hall : ∀ D' : B.DiffOp k r Wp Wq, (∀ T ∈ D', T ∈ Dop) → B.opApply D' (fun y => ((Ψ 0 (Gf k r Bs.z Bs.z' y) : ℝ) : ℂ) • F y) x = ∑ q : Fin (Q + 1), ((Ψ q (Gf k r Bs.z Bs.z' x) : ℝ) : ℂ) • B.opApply (D'.flatMap fun T => LT T q) F x`. Introduce `D'`. Proceed by induction on `D' with`. Consider the case `nil => intro _`. Simplify using `[B.opApply]`.
+
+Consider the case `cons T D' ih`. Introduce `hsub`. Establish `eA : ∀ (D'' : B.DiffOp k r Wp Wq) (G : B.Mat k r → (Wq →L[ℂ] Wp)), B.opApply (T :: D'') G x = T.coef x (B.Rw T.word G x) + B.opApply D'' G x`. Introduce `D'' G`. Simplify using `[B.opApply]`.
+
+Establish `eB : ∀ (l1 l2 : B.DiffOp k r Wp Wq) (G : B.Mat k r → (Wq →L[ℂ] Wp)), B.opApply (l1 ++ l2) G x = B.opApply l1 G x + B.opApply l2 G x`. Introduce `l1 l2 G`. Simplify using `[B.opApply]`. Rewrite using `[eA, hT1 T (hsub T List.mem_cons_self), ih fun T' hT' => hsub T' (List.mem_cons_of_mem _ hT'), ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[List.flatMap_cons, eB, smul_add]`. Conclude with `hall Dop fun T hT => hT`.
+-/
 theorem nfLeibOps_of (hE : NFLeibExp) : NFLeibOps := by
   intro k r Wp Wq _ _ _ _ _ Bs Dop hsm
   classical

@@ -15,6 +15,11 @@ namespace SpecChart
 variable {K : Type} [Field K] [NumberField K] {n e : ℕ} {I : Ideal (MvPolynomial (Fin n) K)} {j : Fin n}
   {v : HeightOneSpectrum (𝓞 K)} {W : Ideal (MvPolynomial (Fin n) (𝓞 K))}
 
+/- English proof (translation)
+Rewrite using `[Q_eq, Ideal.map_le_iff_le_comap, Ideal.comap_comap, Wb, Ideal.map_le_iff_le_comap, Ideal.comap_comap, Ideal.map_le_iff_le_comap, Ideal.comap_comap]`. Introduce `w hw`. Rewrite using `[Ideal.mem_comap]`. Express the relevant statement in the definitionally equal form `Φ hj (C (toBase I j w)) ∈ _`. Rewrite using `[Φ_C, baseToBn_toBase, IsLocalization.AtPrime.to_map_mem_maximal_iff (Localization.AtPrime 𝔫) 𝔫, ← h𝔫]`.
+
+Conclude with `Ideal.mem_map_of_mem _ hw`.
+-/
 theorem Q_le_comap {𝔫 : Ideal (SecB e I v)} [𝔫.IsPrime] (hj : toSecB e I v (X j) ∉ 𝔫)
     (h𝔫 : W.map (toSecB e I v) = 𝔫) :
     Q e I j W ≤ (IsLocalRing.maximalIdeal (Localization.AtPrime 𝔫)).comap (Φ hj) := by
@@ -26,6 +31,11 @@ theorem Q_le_comap {𝔫 : Ideal (SecB e I v)} [𝔫.IsPrime] (hj : toSecB e I v
   rw [Φ_C, baseToBn_toBase, IsLocalization.AtPrime.to_map_mem_maximal_iff (Localization.AtPrime 𝔫) 𝔫, ← h𝔫]
   exact Ideal.mem_map_of_mem _ hw
 
+/- English proof (translation)
+Introduce `hQ`. Establish `h1` using `Q_le_comap hj h𝔫 hQ`. Rewrite `h1` using `[Ideal.mem_comap, ← RingHom.comp_apply, Φ_σ]`. Simplify using `only [RingHom.comp_apply] at h1`. Establish `hu : IsUnit (algebraMap (MvPolynomial (Par e n) (𝓞 K)) (ParDVR e n v) s)` using `IsLocalization.map_units (ParDVR e n v) (⟨s, hs⟩ : (parPrime e n v).primeCompl)`.
+
+Conclude with `IsLocalRing.notMem_maximalIdeal.mpr ((hu.map _).map _) h1`.
+-/
 theorem σ_not_mem {𝔫 : Ideal (SecB e I v)} [𝔫.IsPrime] (hj : toSecB e I v (X j) ∉ 𝔫)
     (h𝔫 : W.map (toSecB e I v) = 𝔫) (s : MvPolynomial (Par e n) (𝓞 K))
     (hs : s ∈ (parPrime e n v).primeCompl) : σ e I j s ∉ Q e I j W := by
@@ -49,11 +59,17 @@ def ρ (hσ : ∀ s ∈ (parPrime e n v).primeCompl, σ e I j s ∉ Q e I j W) :
         IsLocalization.AtPrime.to_map_mem_maximal_iff _ (Q e I j W)]
       exact hσ s s.2
 
+/- English proof (translation)
+The claim follows from `IsLocalization.lift_eq _ _`.
+-/
 theorem ρ_algebraMap (hσ : ∀ s ∈ (parPrime e n v).primeCompl, σ e I j s ∉ Q e I j W)
     (s : MvPolynomial (Par e n) (𝓞 K)) :
     ρ hσ (algebraMap _ (ParDVR e n v) s) = algebraMap (Poly e I j) (Localization.AtPrime (Q e I j W)) (σ e I j s) :=
   IsLocalization.lift_eq _ _
 
+/- English proof (translation)
+Rewrite using `[parY, ρ_algebraMap, σ_X]`.
+-/
 theorem ρ_parY (hσ : ∀ s ∈ (parPrime e n v).primeCompl, σ e I j s ∉ Q e I j W) (p : Par e n) :
     ρ hσ (parY e n v p) = algebraMap (Poly e I j) (Localization.AtPrime (Q e I j W)) (val e I j p) := by
   rw [parY, ρ_algebraMap, σ_X]
@@ -62,6 +78,11 @@ def G' (hσ : ∀ s ∈ (parPrime e n v).primeCompl, σ e I j s ∉ Q e I j W) :
     MvPolynomial (Fin n) (ParDVR e n v) →+* Localization.AtPrime (Q e I j W) :=
   eval₂Hom (ρ hσ) fun l => algebraMap (Poly e I j) (Localization.AtPrime (Q e I j W)) (cx e I j l)
 
+/- English proof (translation)
+Establish `h : (G' hσ).comp (MvPolynomial.map (algebraMap (𝓞 K) (ParDVR e n v))) = (algebraMap (Poly e I j) (Localization.AtPrime (Q e I j W))).comp (C.comp (toBase I j))`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `only [RingHom.comp_apply, map_C, G', eval₂Hom_C]`. Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 K) (MvPolynomial (Par e n) (𝓞 K)) (ParDVR e n v), ρ_algebraMap, MvPolynomial.algebraMap_eq, σ_C]`.
+
+Introduce `l`. Simplify using `only [RingHom.comp_apply, map_X, G', eval₂Hom_X', cx]`. Conclude with `RingHom.congr_fun h g`.
+-/
 theorem G'_map (hσ : ∀ s ∈ (parPrime e n v).primeCompl, σ e I j s ∉ Q e I j W)
     (g : MvPolynomial (Fin n) (𝓞 K)) :
     G' hσ (g.map (algebraMap (𝓞 K) (ParDVR e n v))) = algebraMap (Poly e I j) (Localization.AtPrime (Q e I j W)) (C (toBase I j g)) := by
@@ -76,6 +97,13 @@ theorem G'_map (hσ : ∀ s ∈ (parPrime e n v).primeCompl, σ e I j s ∉ Q e 
       simp only [RingHom.comp_apply, map_X, G', eval₂Hom_X', cx]
   exact RingHom.congr_fun h g
 
+/- English proof (translation)
+Use `sup_le (sup_le ?_ ?_) ?_` and prove the remaining obligations. Rewrite using `[modelR, Ideal.map_le_iff_le_comap]`. Introduce `g hg`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, G'_map, toBase, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem.mpr hg, map_zero, map_zero, map_zero]`. Rewrite using `[Ideal.span_le, Set.range_subset_iff]`.
+
+Introduce `i`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker, secForm, linForm, map_sum]`. Simplify using `only [map_mul, G', eval₂Hom_C, eval₂Hom_X', ρ_parY]`. Establish `h` using `congrArg (algebraMap (Poly e I j) (Localization.AtPrime (Q e I j W))) (sum_val_inl e I j i)`. Simplify `h` using `only [map_sum, map_mul, map_zero]`.
+
+Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker, chartForm, linForm, map_sub, map_sum, map_one]`. Simplify using `only [map_mul, G', eval₂Hom_C, eval₂Hom_X', ρ_parY]`. Establish `h` using `congrArg (algebraMap (Poly e I j) (Localization.AtPrime (Q e I j W))) (sum_val_inr e I j)`. Simplify `h` using `only [map_sum, map_mul, map_sub, map_one, map_zero]`.
+-/
 theorem G'_kills (hσ : ∀ s ∈ (parPrime e n v).primeCompl, σ e I j s ∉ Q e I j W) :
     secIdeal (modelR e I v) (parY e n v) ≤ RingHom.ker (G' hσ) := by
   refine sup_le (sup_le ?_ ?_) ?_
@@ -99,14 +127,25 @@ def G (hσ : ∀ s ∈ (parPrime e n v).primeCompl, σ e I j s ∉ Q e I j W) :
     SecB e I v →+* Localization.AtPrime (Q e I j W) :=
   Ideal.Quotient.lift _ (G' hσ) fun _ ha => RingHom.mem_ker.mp (G'_kills hσ ha)
 
+/- English proof (translation)
+Rewrite using `[toSecB, RingHom.comp_apply, G, Ideal.Quotient.lift_mk, G'_map]`.
+-/
 theorem G_toSecB (hσ : ∀ s ∈ (parPrime e n v).primeCompl, σ e I j s ∉ Q e I j W)
     (g : MvPolynomial (Fin n) (𝓞 K)) : G hσ (toSecB e I v g) = algebraMap (Poly e I j) (Localization.AtPrime (Q e I j W)) (C (toBase I j g)) := by
   rw [toSecB, RingHom.comp_apply, G, Ideal.Quotient.lift_mk, G'_map]
 
+/- English proof (translation)
+Rewrite using `[← Ideal.Quotient.mk_algebraMap, G, Ideal.Quotient.lift_mk, MvPolynomial.algebraMap_eq, G', eval₂Hom_C]`.
+-/
 theorem G_algebraMap (hσ : ∀ s ∈ (parPrime e n v).primeCompl, σ e I j s ∉ Q e I j W)
     (r : ParDVR e n v) : G hσ (algebraMap _ (SecB e I v) r) = ρ hσ r := by
   rw [← Ideal.Quotient.mk_algebraMap, G, Ideal.Quotient.lift_mk, MvPolynomial.algebraMap_eq, G', eval₂Hom_C]
 
+/- English proof (translation)
+Rewrite `hb` using `[← h𝔫]`. Establish `h : W.map (toSecB e I v) ≤ (IsLocalRing.maximalIdeal (Localization.AtPrime (Q e I j W))).comap (G hσ)`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `w hw`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, G_toSecB, IsLocalization.AtPrime.to_map_mem_maximal_iff _ (Q e I j W)]`.
+
+Conclude with `C_toBase_mem_Q e j hw`. Conclude with `h hb`.
+-/
 theorem G_mem (hσ : ∀ s ∈ (parPrime e n v).primeCompl, σ e I j s ∉ Q e I j W)
     {𝔫 : Ideal (SecB e I v)} (h𝔫 : W.map (toSecB e I v) = 𝔫) {b : SecB e I v} (hb : b ∈ 𝔫) :
     G hσ b ∈ IsLocalRing.maximalIdeal (Localization.AtPrime (Q e I j W)) := by
@@ -119,6 +158,9 @@ theorem G_mem (hσ : ∀ s ∈ (parPrime e n v).primeCompl, σ e I j s ∉ Q e I
     exact C_toBase_mem_Q e j hw
   exact h hb
 
+/- English proof (translation)
+Establish `h` using `G_mem hσ h𝔫 hg`. Rewrite `h` using `[G_toSecB, IsLocalization.AtPrime.to_map_mem_maximal_iff _ (Q e I j W)]`. Conclude with `mem_of_C_toBase_mem_Q e j hPW hXj h`.
+-/
 theorem mem_of_toSecB_mem [W.IsPrime] (hPW : integralModel I ≤ W) (hXj : X j ∉ W)
     (hσ : ∀ s ∈ (parPrime e n v).primeCompl, σ e I j s ∉ Q e I j W)
     {𝔫 : Ideal (SecB e I v)} (h𝔫 : W.map (toSecB e I v) = 𝔫) {g : MvPolynomial (Fin n) (𝓞 K)}
@@ -127,6 +169,9 @@ theorem mem_of_toSecB_mem [W.IsPrime] (hPW : integralModel I ≤ W) (hXj : X j �
   rw [G_toSecB, IsLocalization.AtPrime.to_map_mem_maximal_iff _ (Q e I j W)] at h
   exact mem_of_C_toBase_mem_Q e j hPW hXj h
 
+/- English proof (translation)
+Establish `h : 𝔫 = (IsLocalRing.maximalIdeal (Localization.AtPrime (Q e I j W))).comap (G hσ)` using `Ideal.IsMaximal.eq_of_le ‹_› (Ideal.comap_ne_top _ (IsLocalRing.maximalIdeal.isMaximal _).ne_top) (fun _ hb => G_mem hσ h𝔫 hb)`. Rewrite using `[h]`. Conclude with `hb`.
+-/
 theorem mem_of_G_mem (hσ : ∀ s ∈ (parPrime e n v).primeCompl, σ e I j s ∉ Q e I j W)
     {𝔫 : Ideal (SecB e I v)} [𝔫.IsMaximal] (h𝔫 : W.map (toSecB e I v) = 𝔫) {b : SecB e I v}
     (hb : G hσ b ∈ IsLocalRing.maximalIdeal (Localization.AtPrime (Q e I j W))) : b ∈ 𝔫 := by
@@ -144,11 +189,19 @@ def Gloc (hσ : ∀ s ∈ (parPrime e n v).primeCompl, σ e I j s ∉ Q e I j W)
   IsLocalization.lift (M := 𝔫.primeCompl) (g := G hσ) fun b =>
     IsLocalRing.notMem_maximalIdeal.mp fun h => b.2 (hG _ h)
 
+/- English proof (translation)
+The claim follows from `IsLocalization.lift_eq _ _`.
+-/
 theorem Gloc_algebraMap (hσ : ∀ s ∈ (parPrime e n v).primeCompl, σ e I j s ∉ Q e I j W)
     (hG : ∀ b, G hσ b ∈ IsLocalRing.maximalIdeal (Localization.AtPrime (Q e I j W)) → b ∈ 𝔫)
     (b : SecB e I v) : Gloc hσ hG (algebraMap _ _ b) = G hσ b :=
   IsLocalization.lift_eq _ _
 
+/- English proof (translation)
+Rewrite `hx` using `[← Localization.AtPrime.map_eq_maximalIdeal]`. Establish `h : 𝔫.map (algebraMap (SecB e I v) (Localization.AtPrime 𝔫)) ≤ (IsLocalRing.maximalIdeal (Localization.AtPrime (Q e I j W))).comap (Gloc hσ hG)`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `b hb`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, Gloc_algebraMap]`.
+
+Conclude with `G_mem hσ h𝔫 hb`. Conclude with `h hx`.
+-/
 theorem Gloc_max (hσ : ∀ s ∈ (parPrime e n v).primeCompl, σ e I j s ∉ Q e I j W)
     (hG : ∀ b, G hσ b ∈ IsLocalRing.maximalIdeal (Localization.AtPrime (Q e I j W)) → b ∈ 𝔫)
     (h𝔫 : W.map (toSecB e I v) = 𝔫) {x : Localization.AtPrime 𝔫}
@@ -163,6 +216,13 @@ theorem Gloc_max (hσ : ∀ s ∈ (parPrime e n v).primeCompl, σ e I j s ∉ Q 
     exact G_mem hσ h𝔫 hb
   exact h hx
 
+/- English proof (translation)
+Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `b`. Simplify using `only [RingHom.comp_apply, Φ_C]`. Establish `h : (Gloc hσ hG).comp (baseToBn hj) = (algebraMap (Poly e I j) (Localization.AtPrime (Q e I j W))).comp C`. Apply `IsLocalization.ringHom_ext (Submonoid.powers (Ideal.Quotient.mk (integralModel I) (X j)))` to reduce the goal to its premises.
+
+Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises. Use `RingHom.ext fun g => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Gloc hσ hG (baseToBn hj (toBase I j g)) = algebraMap (Poly e I j) (Localization.AtPrime (Q e I j W)) (C (toBase I j g))`. Rewrite using `[baseToBn_toBase, Gloc_algebraMap, G_toSecB]`. Conclude with `RingHom.congr_fun h b`.
+
+Introduce `y`. Simplify using `only [RingHom.comp_apply, Φ_X, parB, Gloc_algebraMap, G_algebraMap, ρ_parY, val_free]`.
+-/
 theorem Gloc_Φ (hj : toSecB e I v (X j) ∉ 𝔫)
     (hσ : ∀ s ∈ (parPrime e n v).primeCompl, σ e I j s ∉ Q e I j W)
     (hG : ∀ b, G hσ b ∈ IsLocalRing.maximalIdeal (Localization.AtPrime (Q e I j W)) → b ∈ 𝔫) :
@@ -181,6 +241,9 @@ theorem Gloc_Φ (hj : toSecB e I v (X j) ∉ 𝔫)
   · intro y
     simp only [RingHom.comp_apply, Φ_X, parB, Gloc_algebraMap, G_algebraMap, ρ_parY, val_free]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hu`. Rewrite `hu` using `[← IsLocalRing.notMem_maximalIdeal, not_not]`. Establish `h2` using `Gloc_max hσ hG h𝔫 hu`. Rewrite `h2` using `[← RingHom.comp_apply, Gloc_Φ, IsLocalization.AtPrime.to_map_mem_maximal_iff _ (Q e I j W)]`. Conclude with `hc h2`.
+-/
 theorem Φ_isUnit (hj : toSecB e I v (X j) ∉ 𝔫)
     (hσ : ∀ s ∈ (parPrime e n v).primeCompl, σ e I j s ∉ Q e I j W)
     (hG : ∀ b, G hσ b ∈ IsLocalRing.maximalIdeal (Localization.AtPrime (Q e I j W)) → b ∈ 𝔫)
@@ -198,6 +261,9 @@ def Φloc (hj : toSecB e I v (X j) ∉ 𝔫)
     (h𝔫 : W.map (toSecB e I v) = 𝔫) : Localization.AtPrime (Q e I j W) →+* Localization.AtPrime 𝔫 :=
   IsLocalization.lift (M := (Q e I j W).primeCompl) (g := Φ hj) fun c => Φ_isUnit hj hσ hG h𝔫 c c.2
 
+/- English proof (translation)
+The claim follows from `IsLocalization.lift_eq _ _`.
+-/
 theorem Φloc_algebraMap (hj : toSecB e I v (X j) ∉ 𝔫)
     (hσ : ∀ s ∈ (parPrime e n v).primeCompl, σ e I j s ∉ Q e I j W)
     (hG : ∀ b, G hσ b ∈ IsLocalRing.maximalIdeal (Localization.AtPrime (Q e I j W)) → b ∈ 𝔫)
@@ -205,6 +271,9 @@ theorem Φloc_algebraMap (hj : toSecB e I v (X j) ∉ 𝔫)
     Φloc hj hσ hG h𝔫 (algebraMap _ _ c) = Φ hj c :=
   IsLocalization.lift_eq _ _
 
+/- English proof (translation)
+Apply `IsLocalization.ringHom_ext (Q e I j W).primeCompl` to reduce the goal to its premises. Use `RingHom.ext fun c => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, Φloc_algebraMap, RingHom.id_apply]`. Rewrite using `[← RingHom.comp_apply, Gloc_Φ]`.
+-/
 theorem Gloc_Φloc (hj : toSecB e I v (X j) ∉ 𝔫)
     (hσ : ∀ s ∈ (parPrime e n v).primeCompl, σ e I j s ∉ Q e I j W)
     (hG : ∀ b, G hσ b ∈ IsLocalRing.maximalIdeal (Localization.AtPrime (Q e I j W)) → b ∈ 𝔫)
@@ -214,6 +283,17 @@ theorem Gloc_Φloc (hj : toSecB e I v (X j) ∉ 𝔫)
   simp only [RingHom.comp_apply, Φloc_algebraMap, RingHom.id_apply]
   rw [← RingHom.comp_apply, Gloc_Φ]
 
+/- English proof (translation)
+Apply `IsLocalization.ringHom_ext 𝔫.primeCompl` to reduce the goal to its premises. Establish `hρ : (Φloc hj hσ hG h𝔫).comp (ρ hσ) = (algebraMap (SecB e I v) (Localization.AtPrime 𝔫)).comp (algebraMap (ParDVR e n v) (SecB e I v))`. Apply `IsLocalization.ringHom_ext (parPrime e n v).primeCompl` to reduce the goal to its premises. Use `RingHom.ext fun s => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, ρ_algebraMap, Φloc_algebraMap]`.
+
+Rewrite using `[← RingHom.comp_apply (Φ hj), Φ_σ]`. Both sides reduce to the same expression. Establish `h : (Φloc hj hσ hG h𝔫).comp (G hσ) = algebraMap (SecB e I v) (Localization.AtPrime 𝔫)`. Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+
+Introduce `r`. Use `RingHom.congr_fun hρ r` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this ⊢`. Rewrite using `[G, Ideal.Quotient.lift_mk, G', eval₂Hom_C, this, ← Ideal.Quotient.mk_algebraMap, MvPolynomial.algebraMap_eq]`. Introduce `l`.
+
+Simplify using `only [RingHom.comp_apply]`. Rewrite using `[G, Ideal.Quotient.lift_mk, G', eval₂Hom_X', Φloc_algebraMap, Φ_cx]`. Simplify using `[toSecB]`. Use `RingHom.ext fun b => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, Gloc_algebraMap, RingHom.id_apply]`.
+
+Conclude with `RingHom.congr_fun h b`.
+-/
 theorem Φloc_Gloc (hj : toSecB e I v (X j) ∉ 𝔫)
     (hσ : ∀ s ∈ (parPrime e n v).primeCompl, σ e I j s ∉ Q e I j W)
     (hG : ∀ b, G hσ b ∈ IsLocalRing.maximalIdeal (Localization.AtPrime (Q e I j W)) → b ∈ 𝔫)
@@ -242,6 +322,13 @@ theorem Φloc_Gloc (hj : toSecB e I v (X j) ∉ 𝔫)
   simp only [RingHom.comp_apply, Gloc_algebraMap, RingHom.id_apply]
   exact RingHom.congr_fun h b
 
+/- English proof (translation)
+Establish `h : quotToBn e 𝔫 = (Φloc hj hσ hG h𝔫).comp ((algebraMap (Poly e I j) (Localization.AtPrime (Q e I j W))).comp ((C : Base I j →+* Poly e I j).comp (algebraMap (MvPolynomial (Fin n) (𝓞 K) ⧸ integralModel I) (Base I j))))`. Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises. Use `RingHom.ext fun g => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `quotToBn e 𝔫 (Ideal.Quotient.mk _ g) = Φloc hj hσ hG h𝔫 (algebraMap (Poly e I j) (Localization.AtPrime (Q e I j W)) (C (toBase I j g)))`. Rewrite using `[quotToBn_mk, Φloc_algebraMap, Φ_C, baseToBn_toBase]`.
+
+Establish `hbij : Function.Bijective (Φloc hj hσ hG h𝔫)` using `Function.bijective_iff_has_inverse.mpr ⟨Gloc hσ hG, fun x => RingHom.congr_fun (Gloc_Φloc hj hσ hG h𝔫) x, fun y => RingHom.congr_fun (Φloc_Gloc hj hσ hG h𝔫) y⟩`. Establish `h1 : (algebraMap (MvPolynomial (Fin n) (𝓞 K) ⧸ integralModel I) (Base I j)).Flat` using `RingHom.flat_algebraMap_iff.mpr (IsLocalization.flat (Base I j) (Submonoid.powers (Ideal.Quotient.mk (integralModel I) (X j))))`. Establish `h2 : (C : Base I j →+* Poly e I j).Flat`. Rewrite using `[← MvPolynomial.algebraMap_eq]`. Conclude with `RingHom.flat_algebraMap_iff.mpr inferInstance`.
+
+Establish `h3 : RingHom.Flat (R` using `Poly e I j) (S := Localization.AtPrime (Q e I j W)) (algebraMap (Poly e I j) (Localization.AtPrime (Q e I j W))) := RingHom.flat_algebraMap_iff.mpr (IsLocalization.flat (Localization.AtPrime (Q e I j W)) (Q e I j W).primeCompl)`. Rewrite using `[h]`. Conclude with `RingHom.Flat.comp (RingHom.Flat.comp (RingHom.Flat.comp h1 h2) h3) (RingHom.Flat.of_bijective hbij)`.
+-/
 theorem quotToBn_flat (hj : toSecB e I v (X j) ∉ 𝔫)
     (hσ : ∀ s ∈ (parPrime e n v).primeCompl, σ e I j s ∉ Q e I j W)
     (hG : ∀ b, G hσ b ∈ IsLocalRing.maximalIdeal (Localization.AtPrime (Q e I j W)) → b ∈ 𝔫)
@@ -273,6 +360,11 @@ theorem quotToBn_flat (hj : toSecB e I v (X j) ∉ 𝔫)
 
 end Back
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `exists_secCoord_not_mem e I v 𝔫 (Ideal.IsMaximal.ne_top ‹_›)`. Establish `hXj : X j ∉ W` using `fun h => hj (h𝔫 ▸ Ideal.mem_map_of_mem _ h)`. Use `Q_isPrime e j hPW hXj` as an intermediate fact. Establish `hσ` using `σ_not_mem hj h𝔫`. Establish `hG : ∀ b, G hσ b ∈ IsLocalRing.maximalIdeal (Localization.AtPrime (Q e I j W)) → b ∈ 𝔫` using `fun b hb => mem_of_G_mem hσ h𝔫 hb`.
+
+Conclude with `⟨fun g hg => mem_of_toSecB_mem hPW hXj hσ h𝔫 hg, quotToBn_flat hj hσ hG h𝔫⟩`.
+-/
 theorem contraction_and_flat [W.IsPrime] (𝔫 : Ideal (SecB e I v)) [𝔫.IsMaximal]
     (hPW : integralModel I ≤ W) (h𝔫 : W.map (toSecB e I v) = 𝔫) :
     (∀ g, toSecB e I v g ∈ 𝔫 → g ∈ W) ∧ RingHom.Flat (R := MvPolynomial (Fin n) (𝓞 K) ⧸ integralModel I) (S := Localization.AtPrime 𝔫) (quotToBn e 𝔫) := by

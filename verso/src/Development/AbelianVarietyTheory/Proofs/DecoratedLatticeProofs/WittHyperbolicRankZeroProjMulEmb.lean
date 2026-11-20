@@ -22,6 +22,9 @@ open GlobalTheory.Mem.Isom
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← hM l k]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem entries_fix {A : Type} [CommRing A] {m n : ℕ} (c : A) {M : Matrix (Fin n) (Fin n) A} (hM : ∀ i j, c * M i j = M i j)
     (P : Matrix (Fin m) (Fin n) A) (Q : Matrix (Fin n) (Fin m) A) (i j : Fin m) : c * (P * M * Q) i j = (P * M * Q) i j := by
   simp only [Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]
@@ -29,6 +32,9 @@ theorem entries_fix {A : Type} [CommRing A] {m n : ℕ} (c : A) {M : Matrix (Fin
   conv_rhs => rw [← hM l k]
   ring
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← hM l j]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem entries_fix' {A : Type} [CommRing A] {m n k : ℕ} (c : A) {M : Matrix (Fin n) (Fin k) A} (hM : ∀ i j, c * M i j = M i j)
     (P : Matrix (Fin m) (Fin n) A) (i : Fin m) (j : Fin k) : c * (P * M) i j = (P * M) i j := by
   simp only [Matrix.mul_apply, Finset.mul_sum]
@@ -36,15 +42,36 @@ theorem entries_fix' {A : Type} [CommRing A] {m n k : ℕ} (c : A) {M : Matrix (
   conv_rhs => rw [← hM l j]
   ring
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, PQ]`.
+-/
 theorem sub_one_conj {A : Type} [CommRing A] {m n : ℕ} {P : Matrix (Fin m) (Fin n) A} {Q : Matrix (Fin n) (Fin m) A} (PQ : P * Q = 1)
     (M : Matrix (Fin n) (Fin n) A) : P * M * Q - 1 = P * (M - 1) * Q := by
   rw [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, PQ]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[Matrix.det_mul, Matrix.det_mul, mul_comm (P.det), mul_assoc, ← Matrix.det_mul, mul_eq_one_comm.1 QP, Matrix.det_one, mul_one]`.
+-/
 theorem det_conj_rect {A : Type} [CommRing A] {m n : ℕ} (h : n = m) {P : Matrix (Fin m) (Fin n) A} {Q : Matrix (Fin n) (Fin m) A}
     (QP : Q * P = 1) (M : Matrix (Fin n) (Fin n) A) : (P * M * Q).det = M.det := by
   subst h
   rw [Matrix.det_mul, Matrix.det_mul, mul_comm (P.det), mul_assoc, ← Matrix.det_mul, mul_eq_one_comm.1 QP, Matrix.det_one, mul_one]
 
+/- English proof (translation)
+Establish `hinf : ∀ w : WO S V', w.map (infPart D) = 0 → ((I.phi S).symm w).map (infPart D) = 0` using `fun w h => by show (HMul.hMul I.aQ w).map (infPart D) = 0`. Rewrite using `[Matrix.map_mul, h, Matrix.mul_zero]`. Establish `hfin : ∀ w : WO S V', w.map (finPart D) = 0 → ((I.phi S).symm w).map (finPart D) = 0` using `fun w h => by show (HMul.hMul I.aQ w).map (finPart D) = 0`. Rewrite using `[Matrix.map_mul, h, Matrix.mul_zero]`. Use `⟨fun γ w => ?_, ?_, hf.cont.comp (I.continuous_phi_symm S), fun k L hL h0 w => ?_⟩` and prove the remaining obligations.
+
+Take `⟨w, rfl⟩` from `(I.phi S).surjective w`. Establish `e : ratW V' S γ = I.phi S (ratW V S (I.Q * γ))`. Rewrite using `[IsoMat.phi_ratW, ← Matrix.mul_assoc, I.PQ, Matrix.one_mul]`. Rewrite using `[e, ← map_add, I.symplOH_phi]`. Simplify using `only [IsoMat.trW, AddEquiv.symm_apply_apply]`.
+
+Conclude with `hf.quasi _ _`. Take `⟨U, hU, e⟩` from `hf.level`. Use `⟨U.map (I.phi S).toAddMonoidHom, ?_, ?_⟩` and prove the remaining obligations. Establish `e : ((U.map (I.phi S).toAddMonoidHom : AddSubgroup (WO S V')) : Set (WO S V')) = (I.phi S).symm ⁻¹' U`. Use extensionality with `w`.
+
+Simplify using `only [AddSubgroup.coe_map, Set.mem_image, Set.mem_preimage, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Simplify using `using hu`. Introduce `hw`.
+
+Conclude with `⟨_, hw, by simp⟩`. Rewrite using `[e]`. Conclude with `hU.preimage (I.continuous_phi_symm S)`. Introduce and unpack `_ ⟨u, hu, rfl⟩ h0`. Establish `h1 : u.map (infPart D) = 0`.
+
+Use `hinf _ h0` as an intermediate fact. Simplify using `using this`. Use `show heisO ψ S V' (I.phi S u) (I.trW S f) = I.trW S f`. Rewrite using `[I.heisO_trW, e u hu h1]`. Use `hf.smooth k ((I.phi S).symm.toAddMonoidHom.comp L) ((I.continuous_phi_symm S).comp hL) (fun t => hfin _ (h0 t)) ((I.phi S).symm w)` as an intermediate fact.
+
+Simplify `this` using `[IsoMat.trW]`.
+-/
 theorem isThetaFunO_tr {V V' : HSp D} (I : IsoMat V V') (S : HSp D) {ψ : AddChar (AF D.host.F) ℂ} {f : WO S V → ℂ}
     (hf : IsThetaFunO ψ S V f) : IsThetaFunO ψ S V' (I.trW S f) := by
   have hinf : ∀ w : WO S V', w.map (infPart D) = 0 → ((I.phi S).symm w).map (infPart D) = 0 := fun w h => by
@@ -82,6 +109,25 @@ theorem isThetaFunO_tr {V V' : HSp D} (I : IsoMat V V') (S : HSp D) {ψ : AddCha
       ((I.phi S).symm w)
     simpa [IsoMat.trW] using this
 
+/- English proof (translation)
+Establish `hT : ∀ f, IsThetaFunO ψ S V' f → IsThetaFunO ψ S V (I.symm.trW S f)` using `fun f hf => isThetaFunO_tr I.symm S hf`. Use `⟨h.std, h.hecS, h.hecT, h.resS, I.rank_eq ▸ h.resT, fun p f hf => ?_, fun g k w₀ f hf => ?_, fun γ hγ γ' hγ' f hf => ?_, fun f hf w => ?_, fun μ 𝓕 hμ h𝓕 p f hf => ?_, fun e he g k hg hk x y hx hy => ?_⟩` and prove the remaining obligations. Conclude with `isThetaFunO_tr I S (h.om_pres _ _ (hT f hf))`. Rewrite using `[IsoMat.omT_apply, IsoMat.omT_apply, ← I.symm.heisO_trW S ψ w₀ f, h.om_heis _ _ _ _ (hT f hf), ← I.heisO_trW, I.actO_phi]`. Use `congr 2`.
+
+Conclude with `I.kap.apply_symm_apply k`. Conclude with `(I.phi S).apply_symm_apply w₀`. Rewrite using `[IsoMat.omT_apply] show om (γ, I.kap.symm γ') (I.symm.trW S f) ((I.phi S).symm 0) = f 0`. Use `h.om_aut γ hγ (I.kap.symm γ') (I.symm.kap_mem_GQ hγ') _ (hT f hf)` as an intermediate fact. Rewrite using `[map_zero, this]`.
+
+Use `show f ((I.phi S) 0) = f 0`. Rewrite using `[map_zero]`. Conclude with `(h.om_cont _ (hT f hf) ((I.phi S).symm w)).comp (continuous_fst.prodMk ((I.continuous_kap_symm).comp continuous_snd))`. Take `⟨ν, 𝓖, hν, h𝓖, hu⟩` from `GlobalTheory.Mem.Isom.haar_fd_phi D V V' I S μ 𝓕 hμ h𝓕`. Establish `e1` using `hu fun x => ‖om (p.1, I.kap.symm p.2) (I.symm.trW S f) x‖ₑ ^ 2`.
+
+Establish `e2` using `hu fun x => ‖I.symm.trW S f x‖ₑ ^ 2`. Establish `e3 : ∀ w, I.symm.trW S f ((I.phi S).symm w) = f w` using `fun w => congrArg f ((I.phi S).apply_symm_apply w)`. Simplify using `only [e3] at e2`. Rewrite using `[IsoMat.omT_apply]`. Conclude with `e1.trans ((h.om_unit ν 𝓖 hν h𝓖 _ _ (hT f hf)).trans e2.symm)`.
+
+Establish `e0 : mt V (I.kap.symm k) - 1 = _` using `sub_one_conj I.aQ_aP (mt V' k)`. Establish `hsupp : SuppAt e V (I.kap.symm k)` using `fun i j => by`. Unfold `SuppAt at hk`. Rewrite using `[e0]`. Conclude with `entries_fix _ hk _ _ i j`.
+
+Establish `e1 : (mt V (I.kap.symm k)).det = (mt V' k).det` using `det_conj_rect I.rank_eq.symm I.aP_aQ (mt V' k)`. Establish `hdet : IsDetAt e V (I.kap.symm k) y`. Unfold `IsDetAt at hy ⊢`. Rewrite using `[e1]`. Conclude with `hy`.
+
+Take `⟨r, hr, H⟩` from `h.om_split e he g (I.kap.symm k) hg hsupp x y hx hdet`. Use `⟨r, hr, fun ℓ hℓ f hf => ?_⟩` and prove the remaining obligations. Establish `hinv : ∀ u : WO S V, (∀ i j, cA D e * u i j = u i j) → ∀ f, IsThetaFunO ψ S V f → (ℓ ∘ₗ I.trL S) (heisO ψ S V u f) = (ℓ ∘ₗ I.trL S) f`. Introduce `u hu f hf`. Use `show ℓ (I.trW S (heisO ψ S V u f)) = ℓ (I.trW S f)`.
+
+Rewrite using `[← I.heisO_trW]`. Conclude with `hℓ _ (fun i j => entries_fix' _ hu I.aP i j) _ (isThetaFunO_tr I S hf)`. Use `H (ℓ ∘ₗ I.trL S) hinv _ (hT f hf)` as an intermediate fact. Establish `e1 : (ℓ ∘ₗ I.trL S) (I.symm.trW S f) = ℓ f` using `congrArg ℓ (I.symm.trW_symm_trW S f)`. Rewrite `this` using `[e1]`.
+
+Conclude with `this`.
+-/
 theorem isWeilDatumO_tr {V V' : HSp D} (I : IsoMat V V') (S : HSp D) {ψ : AddChar (AF D.host.F) ℂ} {χ χ' : (AE D)ˣ →* Circle}
     {om : GA D S × GA D V →* Module.End ℂ (WO S V → ℂ)}
     (h : IsWeilDatumO ψ S V χ χ' om) : IsWeilDatumO ψ S V' χ χ' (I.omT S om) := by
@@ -133,14 +179,26 @@ theorem isWeilDatumO_tr {V V' : HSp D} (I : IsoMat V V') (S : HSp D) {ψ : AddCh
 
 variable {T T₀ : HSp D} (d : HypDec T T₀ 0)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+-/
 theorem mul_fin_zero {m n : ℕ} (A : Matrix (Fin m) (Fin 0) D.host.E) (B : Matrix (Fin 0) (Fin n) D.host.E) : A * B = 0 := by
   ext i j; simp [Matrix.mul_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`.
+-/
 theorem mul_fin_zero' {m n : ℕ} (A : Mx D m 0) (B : Mx D 0 n) : A ⬝ B = 0 := by
   ext i j; simp [Matrix.mul_apply]
 
+/- English proof (translation)
+The claim follows from `rat_injective (by rw [rat_mul, rat_one]; exact d.p0_j0)`.
+-/
 theorem wittHyperbolicRankZero_proj_mul_emb : d.q0 * d.i₀ = 1 := rat_injective (by rw [rat_mul, rat_one]; exact d.p0_j0)
 
+/- English proof (translation)
+Establish `h` using `d.sum_eq_one_rat`. Rewrite `h` using `[mul_fin_zero, mul_fin_zero, zero_add, add_zero]`. Then use the resulting hypothesis.
+-/
 theorem wittHyperbolicRankZero_emb_mul_proj : d.i₀ * d.q0 = 1 := by
   have h := d.sum_eq_one_rat
   rwa [mul_fin_zero, mul_fin_zero, zero_add, add_zero] at h
@@ -152,6 +210,9 @@ def iso : IsoMat T₀ T where
   QP := wittHyperbolicRankZero_proj_mul_emb d
   gram := d.iso
 
+/- English proof (translation)
+Apply `mt_injective T` to reduce the goal to its premises. Rewrite using `[IsoMat.mt_kap, IsoMat.conjM_apply, HypDec.unitaryMatrix_wittCoreEmbedding, mul_fin_zero' d.jX, mul_fin_zero' d.jY, zero_add, add_zero]`. Both sides reduce to the same expression.
+-/
 theorem kap_eq (h : GA D T₀) : (iso d).kap h = d.emb0 h := by
   apply mt_injective T
   rw [IsoMat.mt_kap, IsoMat.conjM_apply, HypDec.unitaryMatrix_wittCoreEmbedding, mul_fin_zero' d.jX, mul_fin_zero' d.jY, zero_add, add_zero]
@@ -160,6 +221,15 @@ theorem kap_eq (h : GA D T₀) : (iso d).kap h = d.emb0 h := by
 end GlobalTheory.TargetIsom
 
 open GlobalTheory.TargetIsom in
+/- English proof (translation)
+Introduce `D ψ S T T₀ d hψ`. Establish `hphi : (d.inc0 S : WO S T₀ → WO S T) = (iso d).phi S` using `funext fun w => rfl`. Use `⟨hphi ▸ ((iso d).phi S).bijective, fun f => ⟨fun hf => ?_, fun hf => ?_⟩, fun χS χT om om₀ hom hom₀ g h f hf => ?_⟩` and prove the remaining obligations. Use `isThetaFunO_tr (iso d) S hf` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `w`. Use `show f w = f ((iso d).phi S (((iso d).phi S).symm w))`. Rewrite using `[AddEquiv.apply_symm_apply]`. Conclude with `isThetaFunO_tr (iso d).symm S hf`. Establish `hT` using `isWeilDatumO_tr (iso d).symm S hom`.
+
+Establish `hf0 : IsThetaFunO ψ S T₀ (fun w => f (d.inc0 S w))` using `isThetaFunO_tr (iso d).symm S hf`. Rewrite using `[GlobalTheory.WeilUniq.weilDatum_unique D ψ hψ S T₀ χS χT om₀ _ hom₀ hT (g, h) _ hf0]`. Use function extensionality and compare the values at `w`. Rewrite using `[GlobalTheory.Mem.Isom.IsoMat.omT_apply]`. Establish `e1 : ((iso d).symm.kap.symm h) = d.emb0 h` using `kap_eq d h`.
+
+Establish `e2 : (iso d).symm.symm.trW S (fun w => f (d.inc0 S w)) = f` using `(iso d).symm.trW_symm_trW S f`. Rewrite using `[e1, e2]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.TargetIsom.transport : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T T₀ : HSp D) (d : HypDec T T₀ 0), IsStdChar D ψ (-1) → Function.Bijective (d.inc0 S) ∧ (∀ f : WO S T → ℂ, IsThetaFunO ψ S T₀ (fun w => f (d.inc0 S w)) ↔ IsThetaFunO ψ S T f) ∧ ∀ (χS χT : (AE D)ˣ →* Circle) (om : Om S T) (om₀ : Om S T₀), IsWeilDatumO ψ S T χS χT om → IsWeilDatumO ψ S T₀ χS χT om₀ → ∀ g h f, IsThetaFunO ψ S T f → om₀ (g, h) (fun w => f (d.inc0 S w)) = fun w => om (g, d.emb0 h) f (d.inc0 S w) := by
   intro D ψ S T T₀ d hψ
   have hphi : (d.inc0 S : WO S T₀ → WO S T) = (iso d).phi S := funext fun w => rfl

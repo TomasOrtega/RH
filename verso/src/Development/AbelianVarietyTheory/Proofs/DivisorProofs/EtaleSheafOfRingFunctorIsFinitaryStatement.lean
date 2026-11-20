@@ -4,6 +4,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IndEtOfForallFinset
 import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondition
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex TensorProduct GlobalTheory.EtC
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Use `first`. Consider the case `exact @GlobalTheory.ofRings_finitary`. Consider the case `exact GlobalTheory.ofRings_finitary`. Consider the case `(intros; apply GlobalTheory.ofRings_finitary <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.etaleSheafOfRingFunctor_isFinitary : ∀ (R : Type) [CommRing R] (M : CommRingCat.{0} ⥤ ModuleCat.{1} (ULift.{1} R)), PreservesFilteredColimitsOfSize.{0, 0} M → Finitary (ofRings R M) := by
   first
   | exact @GlobalTheory.ofRings_finitary

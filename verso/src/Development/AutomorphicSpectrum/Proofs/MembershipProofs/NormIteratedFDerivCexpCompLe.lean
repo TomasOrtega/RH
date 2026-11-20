@@ -10,6 +10,9 @@ namespace GlobalTheory.CompanionTheory.OM
 
 namespace GaussSch
 
+/- English proof (translation)
+Establish `h1 : (1 + r) ^ N ≤ Real.exp r ^ N` using `pow_le_pow_left₀ (by linarith) (by linarith [Real.add_one_le_exp r]) N`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Rewrite using `[le_div_iff₀ (by positivity)]`. Use polynomial arithmetic with `[sq_nonneg ((N : ℝ) - 2 * c * r)]`.
+-/
 theorem one_add_pow_mul_exp_le {c r : ℝ} (hc : 0 < c) (hr : 0 ≤ r) (N : ℕ) :
     (1 + r) ^ N * Real.exp (-c * r ^ 2) ≤ Real.exp (N ^ 2 / (4 * c)) := by
   have h1 : (1 + r) ^ N ≤ Real.exp r ^ N :=
@@ -22,6 +25,9 @@ theorem one_add_pow_mul_exp_le {c r : ℝ} (hc : 0 < c) (hr : 0 ≤ r) (N : ℕ)
         rw [le_div_iff₀ (by positivity)]
         nlinarith [sq_nonneg ((N : ℝ) - 2 * c * r)]
 
+/- English proof (translation)
+Rewrite using `[← ((Complex.contDiff_exp : ContDiff ℂ (i : WithTop ℕ∞) cexp).contDiffAt (x := y)).restrictScalars_iteratedFDeriv (𝕜 := ℝ), Function.comp_apply, ContinuousMultilinearMap.norm_restrictScalars, norm_iteratedFDeriv_eq_norm_iteratedDeriv, iteratedDeriv_eq_iterate, Complex.iter_deriv_ …`.
+-/
 theorem norm_iteratedFDeriv_cexp (i : ℕ) (y : ℂ) :
     ‖iteratedFDeriv ℝ i cexp y‖ = Real.exp y.re := by
   rw [← ((Complex.contDiff_exp : ContDiff ℂ (i : WithTop ℕ∞) cexp).contDiffAt (x := y)).restrictScalars_iteratedFDeriv (𝕜 := ℝ),
@@ -31,6 +37,13 @@ theorem norm_iteratedFDeriv_cexp (i : ℕ) (y : ℂ) :
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
+/- English proof (translation)
+Take `⟨m, K, hK, hbd⟩` from `hq.norm_iteratedFDeriv_le_uniform n`. Use `⟨n ! * (max K 1) ^ n, m * n, by positivity, fun x ↦ ?_⟩` and prove the remaining obligations. Establish `h1x : (1 : ℝ) ≤ 1 + ‖x‖` using `by linarith [norm_nonneg x]`. Establish `hD1 : 1 ≤ max K 1 * (1 + ‖x‖) ^ m` using `one_le_mul_of_one_le_of_one_le (le_max_right _ _) (one_le_pow₀ h1x)`. Establish `hD : ∀ i, 1 ≤ i → i ≤ n → ‖iteratedFDeriv ℝ i q x‖ ≤ (max K 1 * (1 + ‖x‖) ^ m) ^ i`.
+
+Introduce `i hi hin`. Combine the equalities or inequalities in the displayed calculation. Establish `hC : ∀ i, i ≤ n → ‖iteratedFDeriv ℝ i cexp (q x)‖ ≤ Real.exp (q x).re` using `fun i _ => (norm_iteratedFDeriv_cexp i (q x)).le`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, ← pow_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_iteratedFDeriv_cexp_comp_le {q : E → ℂ} (hq : q.HasTemperateGrowth) (n : ℕ) :
     ∃ (C : ℝ) (k : ℕ), 0 ≤ C ∧ ∀ x : E, ‖iteratedFDeriv ℝ n (cexp ∘ q) x‖ ≤
       C * (1 + ‖x‖) ^ k * Real.exp (q x).re := by

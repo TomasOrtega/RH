@@ -12,11 +12,17 @@ section Subst
 
 variable {B : Type} {m : B → ℕ}
 
+/- English proof (translation)
+Rewrite using `[show f = X from funext hf, bind₁_X_left]`. Both sides reduce to the same expression.
+-/
 theorem bind₁_eq_self_of {σ R : Type} [CommSemiring R] (f : σ → MvPolynomial σ R) (hf : ∀ v, f v = X v)
     (P : MvPolynomial σ R) : bind₁ f P = P := by
   rw [show f = X from funext hf, bind₁_X_left]
   rfl
 
+/- English proof (translation)
+Unfold `substFr`. Apply `bind₁_eq_self_of` to reduce the goal to its premises. Introduce and unpack `⟨b, i, k⟩`. Simplify using `[Matrix.one_apply]`.
+-/
 theorem substFr_one {R : Type} [CommRing R] (P : MvPolynomial (FrVar m) R) :
     substFr (fun b => (1 : Matrix (Fin (m b)) (Fin (m b)) R)) P = P := by
   unfold substFr
@@ -24,6 +30,11 @@ theorem substFr_one {R : Type} [CommRing R] (P : MvPolynomial (FrVar m) R) :
   rintro ⟨b, i, k⟩
   simp [Matrix.one_apply]
 
+/- English proof (translation)
+Unfold `substFr`. Rewrite using `[bind₁_bind₁]`. Use `congrArg (fun g => bind₁ g P) (funext fun v => ?_)` and prove the remaining obligations. Simplify using `only [map_sum, map_mul, bind₁_C_right, bind₁_X_right, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem substFr_substFr {R : Type} [CommRing R] (U U' : ∀ b, Matrix (Fin (m b)) (Fin (m b)) R)
     (P : MvPolynomial (FrVar m) R) : substFr U (substFr U' P) = substFr (fun b => U b * U' b) P := by
   unfold substFr
@@ -34,6 +45,9 @@ theorem substFr_substFr {R : Type} [CommRing R] (U U' : ∀ b, Matrix (Fin (m b)
   refine Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Unfold `evalFr substFr`. Use `show eval₂Hom (RingHom.id R) _ (bind₁ _ P) = eval₂Hom (RingHom.id R) _ P`. Rewrite using `[eval₂Hom_bind₁]`. Use `congrArg (fun g => eval₂Hom (RingHom.id R) g P) (funext fun v => ?_)` and prove the remaining obligations. Simplify using `[Matrix.mul_apply, mul_comm]`.
+-/
 theorem evalFr_substFr {R : Type} [CommRing R] (U : ∀ b, Matrix (Fin (m b)) (Fin (m b)) R)
     (P : MvPolynomial (FrVar m) R) (Y : ∀ b, Matrix (Fin (m b)) (Fin (m b)) R) :
     evalFr (substFr U P) Y = evalFr P (fun b => (U b).transpose * Y b) := by
@@ -43,11 +57,17 @@ theorem evalFr_substFr {R : Type} [CommRing R] (U : ∀ b, Matrix (Fin (m b)) (F
   refine congrArg (fun g => eval₂Hom (RingHom.id R) g P) (funext fun v => ?_)
   simp [Matrix.mul_apply, mul_comm]
 
+/- English proof (translation)
+Unfold `substFr`. Rewrite using `[map_mul, bind₁_C_right]`.
+-/
 theorem substFr_C_mul {R : Type} [CommRing R] (U : ∀ b, Matrix (Fin (m b)) (Fin (m b)) R) (a : R)
     (P : MvPolynomial (FrVar m) R) : substFr U (C a * P) = C a * substFr U P := by
   unfold substFr
   rw [map_mul, bind₁_C_right]
 
+/- English proof (translation)
+Unfold `substFr`. Rewrite using `[map_bind₁]`. Use `congrArg (fun g => bind₁ g (MvPolynomial.map f P)) (funext fun v => ?_)` and prove the remaining obligations. Simplify using `[map_sum, map_mul, map_C, map_X]`.
+-/
 theorem map_substFr {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (U : ∀ b, Matrix (Fin (m b)) (Fin (m b)) R)
     (P : MvPolynomial (FrVar m) R) :
     MvPolynomial.map f (substFr U P) = substFr (fun b => (U b).map f) (MvPolynomial.map f P) := by
@@ -56,6 +76,9 @@ theorem map_substFr {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (U : 
   refine congrArg (fun g => bind₁ g (MvPolynomial.map f P)) (funext fun v => ?_)
   simp [map_sum, map_mul, map_C, map_X]
 
+/- English proof (translation)
+Unfold `evalFr`. Simplify using the standard rewrite rules.
+-/
 theorem evalFr_C_mul {R : Type} [CommRing R] (a : R) (P : MvPolynomial (FrVar m) R)
     (Y : ∀ b, Matrix (Fin (m b)) (Fin (m b)) R) : evalFr (C a * P) Y = a * evalFr P Y := by
   unfold evalFr
@@ -63,6 +86,11 @@ theorem evalFr_C_mul {R : Type} [CommRing R] (a : R) (P : MvPolynomial (FrVar m)
 
 end Subst
 
+/- English proof (translation)
+Introduce `R _ B _ m P U`. Use `⟨fun Y => evalFr_substFr U P Y, fun hU => ?_, substFr_one P⟩` and prove the remaining obligations. Rewrite using `[substFr_substFr]`. Establish `h : (fun b => U b * (U b)⁻¹) = fun b => (1 : Matrix (Fin (m b)) (Fin (m b)) R)`. Use function extensionality and compare the values at `fun b => Matrix.mul_nonsing_inv _ (hU b)`.
+
+Rewrite using `[h, substFr_one]`.
+-/
 theorem subst_eval : SubstEval := by
   intro R _ B _ m P U
   refine ⟨fun Y => evalFr_substFr U P Y, fun hU => ?_, substFr_one P⟩
@@ -71,8 +99,20 @@ theorem subst_eval : SubstEval := by
     funext fun b => Matrix.mul_nonsing_inv _ (hU b)
   rw [h, substFr_one]
 
+/- English proof (translation)
+The claim follows from `LemmaG_of largeResidueExtension`.
+-/
 theorem large_residue_extension_lemma : LemmaG := LemmaG_of largeResidueExtension
 
+/- English proof (translation)
+Introduce `V K' _ _ _ _ _ _ B _ m G U c τ hV hfin hτ hU hc hG μ`. Establish `hUu : ∀ b, IsUnit (U b).det` using `fun b => isUnit_iff_ne_zero.mpr (hU b)`. Use `set P : MvPolynomial (FrVar m) K' := C τ⁻¹ * substFr (fun b => (U b)⁻¹) G with hP`. Establish `hPc : ∀ ν, coeff ν P ∈ Set.range (algebraMap V K')`. Use `large_residue_extension_lemma V K' B m P hV hfin ?_` and prove the remaining obligations.
+
+Introduce `W KW _ _ _ _ _ _ _ f hW hWf hloc hcomp X hX`. Take `⟨w, hw⟩` from `hG W KW f hW hWf hloc hcomp (fun b => (((U b)⁻¹).map f).transpose * (X b).map (algebraMap W KW)) X hX (by`. Introduce `b`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.transpose_mul, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ (hUu b), Matrix.map_one _ (map_zero f) (map_one f), Matrix.transpose_one, Matrix.one_mul])`. Use `⟨w, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hP, map_mul, map_C, map_substFr, evalFr_C_mul, evalFr_substFr]`. Rewrite using `[hw, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hτ, map_one, one_mul]`. Establish `hS` using `substGauss V K' B m P U c hPc hc μ`. Establish `hsub : substFr U P = C τ⁻¹ * G`. Rewrite using `[hP, substFr_C_mul, (subst_eval K' B m G U).2.1 hUu]`.
+
+Take `⟨w, hw⟩` from `hS`. Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite `hw` using `[hsub, coeff_C_mul]`. Rewrite using `[hw]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem coeff_integral_local : CoeffIntegralLoc := by
   intro V K' _ _ _ _ _ _ B _ m G U c τ hV hfin hτ hU hc hG μ
   classical

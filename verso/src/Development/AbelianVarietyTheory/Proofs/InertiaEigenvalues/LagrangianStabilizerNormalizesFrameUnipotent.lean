@@ -19,11 +19,19 @@ open GlobalTheory.MixModel
 
 variable {D : D7}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `v ∈ Submodule.span D.host.E (Set.range I.col) ↔ _`. Rewrite using `[← Matrix.range_mulVecLin]`. Both sides reduce to the same expression.
+-/
 theorem mem_span_cols {n s : ℕ} (I : Matrix (Fin n) (Fin s) D.host.E) (v : Fin n → D.host.E) :
     v ∈ Submodule.span D.host.E (Set.range I.transpose) ↔ ∃ a, I *ᵥ a = v := by
   change v ∈ Submodule.span D.host.E (Set.range I.col) ↔ _
   rw [← Matrix.range_mulVecLin]; rfl
 
+/- English proof (translation)
+Establish `h1 : ∀ j, ∃ b, I *ᵥ b = M *ᵥ I.transpose j` using `fun j => (mem_span_cols I _).1 (h _ (Submodule.subset_span ⟨j, rfl⟩))`. Use `choose f hf using h1`. Use `⟨Matrix.of fun i j => f j i, ?_⟩` and prove the remaining obligations. Use `Matrix.ext fun k j => ?_` and prove the remaining obligations. Use `congrFun (hf j) k` as an intermediate fact.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.transpose_apply] at this`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply]`. Simplify using `using this.symm`.
+-/
 theorem exists_mul_eq_mul {n s : ℕ} (I : Matrix (Fin n) (Fin s) D.host.E) (M : Matrix (Fin n) (Fin n) D.host.E)
     (h : ∀ v ∈ Submodule.span D.host.E (Set.range I.transpose),
       M *ᵥ v ∈ Submodule.span D.host.E (Set.range I.transpose)) :
@@ -38,6 +46,9 @@ theorem exists_mul_eq_mul {n s : ℕ} (I : Matrix (Fin n) (Fin s) D.host.E) (M :
   rw [Matrix.mul_apply, Matrix.mul_apply]
   simpa using this.symm
 
+/- English proof (translation)
+Establish `h1 : (c * c')ᴴ = 1` using `by rw [hc, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem frame_gram_mul {n s : ℕ} (I : Matrix (Fin n) (Fin s) D.host.E) (J c c' : Matrix (Fin n) (Fin n) D.host.E)
     (hc : c * c' = 1) (hu : cᴴ * J * c = J) : Iᴴ * J * c = (c' * I)ᴴ * J := by
   have h1 : (c * c')ᴴ = 1 := by rw [hc, Matrix.conjTranspose_one]
@@ -45,11 +56,17 @@ theorem frame_gram_mul {n s : ℕ} (I : Matrix (Fin n) (Fin s) D.host.E) (J c c'
     _ = Iᴴ * c'ᴴ * (cᴴ * J * c) := by rw [Matrix.conjTranspose_mul]; simp only [Matrix.mul_assoc]
     _ = (c' * I)ᴴ * J := by rw [hu, Matrix.conjTranspose_mul]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc, h, ← Matrix.mul_assoc, Matrix.mul_assoc C, h0, Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem mul_mul_mul_eq_zero {R : Type} [CommRing R] {n s : ℕ} (C C' m : Matrix (Fin n) (Fin n) R)
     (I : Matrix (Fin n) (Fin s) R) (A' : Matrix (Fin s) (Fin s) R) (h : C' * I = I * A') (h0 : m * I = 0) :
     C * m * C' * I = 0 := by
   rw [Matrix.mul_assoc, h, ← Matrix.mul_assoc, Matrix.mul_assoc C, h0, Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h, Matrix.mul_assoc A', h0, Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem mul_mul_mul_eq_zero' {R : Type} [CommRing R] {n s : ℕ} (C C' m : Matrix (Fin n) (Fin n) R)
     (K : Matrix (Fin s) (Fin n) R) (A' : Matrix (Fin s) (Fin s) R) (h : K * C = A' * K) (h0 : K * m = 0) :
     K * (C * m * C') = 0 := by
@@ -57,6 +74,31 @@ theorem mul_mul_mul_eq_zero' {R : Type} [CommRing R] {n s : ℕ} (C C' m : Matri
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D W Y s I _ hS γ hY n hn`. Use `set c := gqMat W γ with hc_def`. Use `set c' := gqMat W γ⁻¹ with hc'_def`. Establish `hcc' : c * c' = 1` using `gqMat_mul_inv W γ`. Establish `hc'c : c' * c = 1` using `gqMat_inv_mul W γ`.
+
+Establish `memS : ∀ v, v ∈ Submodule.span D.host.E (Set.range I.transpose) ↔ ((v, 0) : _ × _) ∈ Y.1`. Introduce `v`. Rewrite using `[hS, Submodule.mem_comap, LinearMap.inl_apply]`. Establish `memY : ∀ y, y ∈ Y.1 ↔ (c' *ᵥ y.1, y.2) ∈ Y.1`. Introduce `y`.
+
+Use `conv_lhs => rw [← hY]`. Conclude with `mem_lagAct W γ Y y`. Establish `hcS : ∀ v ∈ Submodule.span D.host.E (Set.range I.transpose), c *ᵥ v ∈ Submodule.span D.host.E (Set.range I.transpose)`. Introduce `v hv`. Rewrite using `[memS, memY]`.
+
+Simplify `(memS v).1 hv` using `[Matrix.mulVec_mulVec, hc'c]`. Establish `hc'S : ∀ v ∈ Submodule.span D.host.E (Set.range I.transpose), c' *ᵥ v ∈ Submodule.span D.host.E (Set.range I.transpose)`. Introduce `v hv`. Rewrite using `[memS]`. Conclude with `(memY _).1 ((memS v).1 hv)`.
+
+Take `⟨A, hA⟩` from `exists_mul_eq_mul I c' hc'S`. Take `⟨B, hB⟩` from `exists_mul_eq_mul I c hcS`. Establish `hIc : Iᴴ * W.gram * c = Aᴴ * (Iᴴ * W.gram)`. Rewrite using `[frame_gram_mul I W.gram c c' hcc' (gqMat_unitary W γ), hA, Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Establish `hIc' : Iᴴ * W.gram * c' = Bᴴ * (Iᴴ * W.gram)`.
+
+Rewrite using `[frame_gram_mul I W.gram c' c hc'c (gqMat_unitary W γ⁻¹), hB, Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Establish `hrat : ∀ {a b : ℕ} (M : Matrix (Fin a) (Fin b) D.host.E), M.map (incA D) = rat M` using `fun _ => rfl`. Establish `hγ : mt W (γ : GA D W) = rat c` using `(rat_gqMat W γ).symm`. Establish `hγ' : mt W ((γ : GA D W)⁻¹) = rat c'` using `(rat_gqMat W γ⁻¹).symm`. Establish `hle : NI W I ≤ (NI W I).comap (MulAut.conj (γ : GA D W)).toMonoidHom`.
+
+Unfold `NI`. Rewrite using `[Subgroup.closure_le]`. Introduce `g hg`. Take `⟨h1, h2, h3⟩` from `hg`. Apply `Subgroup.subset_closure` to reduce the goal to its premises.
+
+Establish `hm : (matHom W ((MulAut.conj (γ : GA D W)).toMonoidHom g)).1 - 1 = rat c * ((matHom W g).1 - 1) * rat c'`. Express the relevant statement in the definitionally equal form `mt W ((γ : GA D W) * g * (γ : GA D W)⁻¹) - 1 = rat c * (mt W g - 1) * rat c'`. Rewrite using `[mt_mul, mt_mul, hγ, hγ', Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, ← rat_mul, hcc', rat_one]`. Rewrite `h2`, `h3` using `[cT_sig, hrat]`. Rewrite `h1` using `[hrat]`.
+
+Establish `hA' : rat c' ⬝ rat I = rat I ⬝ rat A` using `by rw [← rat_mul, hA, rat_mul]`. Establish `hIc2 : rat (Iᴴ * W.gram) ⬝ rat c = rat Aᴴ ⬝ rat (Iᴴ * W.gram)` using `by rw [← rat_mul, hIc, rat_mul]`. Establish `hB' : rat c ⬝ rat I = rat I ⬝ rat B` using `by rw [← rat_mul, hB, rat_mul]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hm, hrat]`.
+
+Conclude with `mul_mul_mul_eq_zero (rat c) (rat c') _ (rat I) (rat A) hA' h1`. Rewrite using `[hm, cT_sig, hrat]`. Conclude with `mul_mul_mul_eq_zero' (rat c) (rat c') _ (rat (Iᴴ * W.gram)) (rat Aᴴ) hIc2 h2`. Introduce `x hx`. Rewrite `hx` using `[cT_sig]`.
+
+Establish `hx' : (Iᴴ * W.gram) *ᵥ (c' *ᵥ x) = 0`. Rewrite using `[Matrix.mulVec_mulVec, hIc', ← Matrix.mulVec_mulVec, hx, Matrix.mulVec_zero]`. Take `⟨a, ha⟩` from `h3 (c' *ᵥ x) hx'`. Use `⟨rat B *ᵥ a, ?_⟩` and prove the remaining obligations. Establish `hv : rat c' *ᵥ (fun i => incA D (x i)) = fun i => incA D ((c' *ᵥ x) i)`.
+
+Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (incA D) c' x i).symm`. Rewrite using `[hm, hrat, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hv, ha, Matrix.mulVec_mulVec, hB', Matrix.mulVec_mulVec]`. Conclude with `hle hn`.
+-/
 theorem conj_mem_NI : ∀ (D : D7) (W : HSp D) (Y : Lag W) (s : ℕ) (I : Matrix (Fin W.rank) (Fin s) D.host.E), IsIsoFrame W I → Submodule.span D.host.E (Set.range I.transpose) = Y.1.comap (LinearMap.inl D.host.E _ _) → ∀ γ : GQ W, GlobalTheory.RallisCusp.lagAct W γ Y = Y → ∀ n ∈ NI W I, (γ : GA D W) * n * (γ : GA D W)⁻¹ ∈ NI W I := by
   intro D W Y s I _ hS γ hY n hn
   set c := gqMat W γ with hc_def

@@ -21,6 +21,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 def qv : P.D.toPre.X → ℤ := fun χ => (QForm.exists_QVal hϖ P.D χ).choose
 
+/- English proof (translation)
+Introduce `χ` and use `(QForm.exists_QVal hϖ P.D χ).choose_spec`.
+-/
 theorem isQ_qv : QForm.IsQ P.D.toPre ϖ (qv P hϖ) := fun χ => (QForm.exists_QVal hϖ P.D χ).choose_spec
 
 def beF : LinearMap.BilinForm ℤ P.D.toPre.X :=
@@ -28,19 +31,34 @@ def beF : LinearMap.BilinForm ℤ P.D.toPre.X :=
     (fun a a' b => by simp [map_add]) (fun n a b => by simp [map_zsmul])
     (fun a b b' => by simp [map_add]) (fun n a b => by simp [map_zsmul])
 
+/- English proof (translation)
+The claim follows from `QForm.bOf_comm P.D a b`.
+-/
 theorem beF_symm (a b : P.D.toPre.X) : beF P hϖ a b = beF P hϖ b a := QForm.bOf_comm P.D a b
 
+/- English proof (translation)
+The claim follows from `(QForm.two_Q_eq hϖ P.D (isQ_qv P hϖ) a).symm`.
+-/
 theorem beF_self (a : P.D.toPre.X) : beF P hϖ a a = 2 * qv P hϖ a :=
   (QForm.two_Q_eq hϖ P.D (isQ_qv P hϖ) a).symm
 
+/- English proof (translation)
+Use `QForm.Q_pos hϖ P.D (isQ_qv P hϖ) ha` as an intermediate fact. Rewrite using `[beF_self]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem beF_pos {a : P.D.toPre.X} (ha : a ≠ 0) : 0 < beF P hϖ a a := by
   have := QForm.Q_pos hϖ P.D (isQ_qv P hϖ) ha
   rw [beF_self]; omega
 
+/- English proof (translation)
+The claim follows from `letI := H.starRing QForm.bOf_balance hϖ P.D GlobalTheory.abelianSchemeLaws_all.1 P.oD (isQ_qv P hϖ) x a b`.
+-/
 theorem beF_adj (x : 𝓞 E) (a b : P.D.toPre.X) : beF P hϖ (x • a) b = beF P hϖ a (H.bar x • b) :=
   letI := H.starRing
   QForm.bOf_balance hϖ P.D GlobalTheory.abelianSchemeLaws_all.1 P.oD (isQ_qv P hϖ) x a b
 
+/- English proof (translation)
+Establish `h₁` using `beF_adj P hϖ H.w0 a a`. Establish `hb : H.bar H.w0 = 1 - H.w0` using `by rw [HostModel.cmHost_bar_halfIntegerGenerator]`. Rewrite `h₁` using `[hb, sub_smul, one_smul, map_sub, beF_symm P hϖ (H.w0 • a) a]`. Establish `h₂` using `beF_self P hϖ a`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem beF_w0 (a : P.D.toPre.X) : beF P hϖ a (H.w0 • a) = qv P hϖ a := by
   have h₁ := beF_adj P hϖ H.w0 a a
   have hb : H.bar H.w0 = 1 - H.w0 := by rw [HostModel.cmHost_bar_halfIntegerGenerator]
@@ -54,6 +72,11 @@ def piK : (FractionRing T.V)ˣ :=
 
 def tF (a b : P.D.toPre.X) : (FractionRing T.V)ˣ := piK hϖ ^ (-(beF P hϖ a b))
 
+/- English proof (translation)
+Use `letI := H.starRing`. Use `⟨fun a b b' => ?_, fun a b => ?_, fun x a b => ?_⟩` and prove the remaining obligations. Simplify using `only [tF, map_add, neg_add, zpow_add]`. Rewrite using `[tF, tF, beF_symm]`. Rewrite using `[tF, tF, beF_adj]`.
+
+Both sides reduce to the same expression.
+-/
 theorem isScalarForm_tF : letI := H.starRing; IsScalarForm (𝓞 E) (tF P hϖ) := by
   letI := H.starRing
   refine ⟨fun a b b' => ?_, fun a b => ?_, fun x a b => ?_⟩
@@ -61,6 +84,9 @@ theorem isScalarForm_tF : letI := H.starRing; IsScalarForm (𝓞 E) (tF P hϖ) :
   · rw [tF, tF, beF_symm]
   · rw [tF, tF, beF_adj]; rfl
 
+/- English proof (translation)
+The claim follows from `halfUnit_add_star H`.
+-/
 theorem cmIdempotent_add_star_eq_one : letI := H.starRing; H.w0 + star H.w0 = 1 := halfUnit_add_star H
 
 abbrev D0 : DegPre T.V := letI := H.starRing; GlobalTheory.TauTwist.twist P.D.toPre H.w0 (tF P hϖ)
@@ -68,6 +94,9 @@ abbrev D0 : DegPre T.V := letI := H.starRing; GlobalTheory.TauTwist.twist P.D.to
 def oa0 : letI := H.starRing; (D0 P hϖ).OAct (𝓞 E) :=
   letI := H.starRing; twistAct (cmIdempotent_add_star_eq_one (H := H)) (isScalarForm_tF P hϖ) P.oD
 
+/- English proof (translation)
+The claim follows from `psiUnitOn_rescale_of_qVal T P.D.toPre ϖ hϖ a (qv P hϖ a) (isQ_qv P hϖ a) _ (by show ((piK hϖ ^ (-(beF P hϖ a (H.w0 • a))) : (FractionRing T.V)ˣ) : FractionRing T.V) = _ rw [beF_w0, Units.val_zpow_eq_zpow_val]; rfl)`.
+-/
 theorem gen0 (a : P.D.toPre.X) : PsiUnitOn (D0 P hϖ) a Set.univ :=
   psiUnitOn_rescale_of_qVal T P.D.toPre ϖ hϖ a (qv P hϖ a) (isQ_qv P hϖ a) _ (by
     show ((piK hϖ ^ (-(beF P hϖ a (H.w0 • a))) : (FractionRing T.V)ˣ) : FractionRing T.V) = _
@@ -75,6 +104,11 @@ theorem gen0 (a : P.D.toPre.X) : PsiUnitOn (D0 P hϖ) a Set.univ :=
 
 def rF (k : ℕ) (a b : P.D.toPre.X) : (FractionRing T.V)ˣ := piK hϖ ^ (-(beF P hϖ a b / k))
 
+/- English proof (translation)
+Use `letI := H.starRing`. Use `⟨⟨fun a b b' => ?_, fun a b => ?_, fun x a b => ?_⟩, fun a b => ?_⟩` and prove the remaining obligations. Simplify using `only [rF, map_add]`. Rewrite using `[Int.add_ediv_of_dvd_left (hk a b), neg_add, zpow_add]`. Rewrite using `[rF, rF, beF_symm]`.
+
+Rewrite using `[rF, rF, beF_adj]`. Both sides reduce to the same expression. Rewrite using `[rF, tF, ← zpow_natCast, ← zpow_mul, neg_mul, Int.ediv_mul_cancel (hk a b)] ext`. Simplify using the standard rewrite rules.
+-/
 theorem isRootForm_rF {k : ℕ} (hk : ∀ a b, (k : ℤ) ∣ beF P hϖ a b) :
     letI := H.starRing; IsRootForm (𝓞 E) k (tF P hϖ) (rF P hϖ k) := by
   letI := H.starRing
@@ -86,6 +120,9 @@ theorem isRootForm_rF {k : ℕ} (hk : ∀ a b, (k : ℤ) ∣ beF P hϖ a b) :
   · rw [rF, tF, ← zpow_natCast, ← zpow_mul, neg_mul, Int.ediv_mul_cancel (hk a b)]
     ext; simp
 
+/- English proof (translation)
+The claim follows from `psiRel_rescale _ _`.
+-/
 theorem psiRel0 : letI := H.starRing; PsiRel P.D.toPre (D0 P hϖ).psi fun y => tF P hϖ y (H.w0 • y) :=
   psiRel_rescale _ _
 
@@ -94,6 +131,9 @@ section ThetaShiftProofs
 variable {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
   (Y : Model Xo c β) (b : O →+* T.V) (y : Sp T.V ⟶ Y.X) (m : SABMap t Y.t y)
 
+/- English proof (translation)
+The claim follows from `(Int.natCast_dvd_natCast.2 hk).trans ((dvd_mul_left _ _).trans (hdiv a a'))`.
+-/
 theorem dvd_of_dvd {k : ℕ} (hk : k ∣ l.M') (hdiv : ∀ a a', (2 * l.M' : ℤ) ∣ beF P hϖ a a') (a a' : P.D.toPre.X) :
     (k : ℤ) ∣ beF P hϖ a a' :=
   (Int.natCast_dvd_natCast.2 hk).trans ((dvd_mul_left _ _).trans (hdiv a a'))
@@ -157,6 +197,9 @@ def arc (hX : Nontrivial P.D.toPre.X) (hdiv : ∀ a a', (2 * l.M' : ℤ) ∣ beF
       obtain ⟨I, h₁, h₂, h₃⟩ := hTate F z hz
       exact ⟨hLie F r hr, I, h₁, h₂, h₃⟩ }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem arc_D₀ (hX) (hdiv) (hL) (hLie) (hTate) : (arc P hϖ Y b y m hX hdiv hL hLie hTate).D₀ = D0 P hϖ := rfl
 
 end ThetaShiftProofs

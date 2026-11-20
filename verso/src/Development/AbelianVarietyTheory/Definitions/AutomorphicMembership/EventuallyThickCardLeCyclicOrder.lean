@@ -36,6 +36,11 @@ structure AdmStd (C : FC) : Prop where
   GK : C.GK.Nonneg
   La : 1088 ≤ C.GK.La
 
+/- English proof (translation)
+Take `⟨⟨hF, h1, h2, h3, h4, h5, h6, h7, h8, h9, -, h11, h12, h13, hm, hl⟩, hG, hLa⟩` from `h`. Establish `hnW` using `hF.2.2.2.2.2.2.2.1`. Simplify using `only [FC.cMid, FC.cLast, List.mem_cons, forall_eq_or_imp, List.not_mem_nil, IsEmpty.forall_iff, implies_true, and_true] at hm hl`. Take `⟨m1, m2, -⟩` from `hm`. Take `⟨l1, l2, l3, l4, l5, -, l7, l8, l9, l10, l11, l12, l13, l14, l15, l16, l17, l18, -⟩` from `hl`.
+
+Establish `hc : 0 < C.P.cLL` using `inv_pos.1 (by linarith)`. Use `⟨hF, h8, h7, h9, h1, by rw [h2]; norm_num, h3, h4, h5, h6, h11, ?_, by linarith, by linarith, l17, l18, by linarith, hG, by linarith⟩` and prove the remaining obligations. Simplify using `only [PC.list, List.mem_cons, forall_eq_or_imp, List.not_mem_nil, IsEmpty.forall_iff, implies_true, and_true]`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, hc, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> linarith`.
+-/
 theorem AdmStd.adm {C : FC} (h : AdmStd C) : admitted C := by
   obtain ⟨⟨hF, h1, h2, h3, h4, h5, h6, h7, h8, h9, -, h11, h12, h13, hm, hl⟩, hG, hLa⟩ := h
   have hnW := hF.2.2.2.2.2.2.2.1
@@ -49,10 +54,16 @@ theorem AdmStd.adm {C : FC} (h : AdmStd C) : admitted C := by
   simp only [PC.list, List.mem_cons, forall_eq_or_imp, List.not_mem_nil, IsEmpty.forall_iff, implies_true, and_true]
   refine ⟨?_, ?_, ?_, hc, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> linarith
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, h5, -, -, -, -, h10, -⟩` from `h.std`. Conclude with `⟨h10, by rw [h10, h5]; norm_num⟩`.
+-/
 theorem AdmStd.CTu {C : FC} (h : AdmStd C) : C.CTu = 25 ∧ C.CTu = 2 * C.P.CYL + 3 + 4 := by
   obtain ⟨-, -, -, -, -, h5, -, -, -, -, h10, -⟩ := h.std
   exact ⟨h10, by rw [h10, h5]; norm_num⟩
 
+/- English proof (translation)
+The claim follows from `h.std.2.2.2.2.2.2.2.2.2.2.2.2.2.1`.
+-/
 theorem AdmStd.CP {C : FC} (h : AdmStd C) : 1000 ≤ C.T.CP := h.std.2.2.2.2.2.2.2.2.2.2.2.2.2.1
 
 def EvS (P : Scale → Prop) : Prop := ∀ eps : ℝ, ∃ x1 : ℝ, ∀ s : Scale, s.eps = eps → x1 ≤ s.x → P s
@@ -284,6 +295,11 @@ def consts (CT2 C8 Cdg C5 : ℝ) (full : Prop) (p m l : ℝ) : FC where
   P := ⟨l, l, l, l⁻¹, 10, l, l, 11 * 405, 405, l, 9 / 10, l, l, l, l, l, l, 6, l, 9, C8, 1, m⟩
   T := ⟨p, 12, 1, l, 377, l, l⟩
 
+/- English proof (translation)
+Establish `hm0 : 0 ≤ m` using `by linarith`. Establish `hl0 : 0 ≤ l` using `by linarith`. Use `⟨⟨⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, le_rfl, rfl⟩, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, h8, hp, ?_, ?_⟩, ?_, hm⟩` and prove the remaining obligations. Introduce `c hc`. Establish `: c = m` using `by simpa [FC.cMid, consts] using hc`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce `c hc`. Establish `: c = l` using `by simpa [FC.cLast, consts] using hc`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[G.Consts.Nonneg, consts, hm0, hl0]`.
+-/
 theorem admissibleStandard_constants (CT2 Cdg C5 : ℝ) (full : Prop) {C8 p m l : ℝ} (h8 : 1 ≤ C8) (hp : 1000 ≤ p) (hm : 1088 ≤ m) (hl : 1 ≤ l) :
     AdmStd (consts CT2 C8 Cdg C5 full p m l) := by
   have hm0 : 0 ≤ m := by linarith
@@ -298,14 +314,26 @@ theorem admissibleStandard_constants (CT2 Cdg C5 : ℝ) (full : Prop) {C8 p m l 
     linarith
   · simp [G.Consts.Nonneg, consts, hm0, hl0]
 
+/- English proof (translation)
+The claim follows from `(admissibleStandard_constants 1 1 1 True le_rfl le_rfl le_rfl le_rfl).adm`.
+-/
 example : admitted (consts 1 1 1 1 True 1000 1088 1) := (admissibleStandard_constants 1 1 1 True le_rfl le_rfl le_rfl le_rfl).adm
 
+/- English proof (translation)
+Introduce `h` and use `by have := h.CP norm_num [consts] at this`.
+-/
 example : ¬ AdmStd (consts 1 1 1 1 True 999 1088 1) := fun h => by
   have := h.CP
   norm_num [consts] at this
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iota_inv (φ : Formalism.HC.Frame) (t : φ.A) : φ.iotaInv (φ.tau1 t).2 = t := rfl
 
+/- English proof (translation)
+Unfold `Host.topPlaces at hg`. Take `⟨t, ht, rfl⟩` from `Finset.mem_image.1 hg`. Conclude with `⟨t, ht, rfl⟩`.
+-/
 theorem top_ex {R : Ranks} (H : Host R) {g : R.GG} (hg : g ∈ H.topPlaces) : ∃ t ∈ H.TT, g = R.tau1 t := by
   classical
   unfold Host.topPlaces at hg

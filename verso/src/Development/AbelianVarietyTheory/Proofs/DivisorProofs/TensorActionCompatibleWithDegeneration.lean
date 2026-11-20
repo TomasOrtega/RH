@@ -24,6 +24,11 @@ def degCHom {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) :
     rw [h1]; rfl
   map_add' x y := by rw [D.c_add]; rfl
 
+/- English proof (translation)
+Establish `h` using `congrArg Additive.toMul (map_sum (degCHom D) (fun j => n j • x j) Finset.univ)`. Rewrite `h` using `[toMul_sum]`. Use `h.trans ?_` and prove the remaining obligations. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, toMul_zsmul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem degC_sum_zsmul {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) {r : ℕ} (n : Fin r → ℤ) (x : Fin r → D.X) :
     D.c (∑ j, n j • x j) = ∏ j, D.c (x j) ^ n j := by
   have h := congrArg Additive.toMul (map_sum (degCHom D) (fun j => n j • x j) Finset.univ)
@@ -33,6 +38,13 @@ theorem degC_sum_zsmul {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) {r : 
   rw [map_zsmul, toMul_zsmul]
   rfl
 
+/- English proof (translation)
+Introduce `R _ _ D D' r W T s`. Use `letI := T.mod s`. Introduce `a y`. Use `Fan.IsLimit.hom_ext T.lim _ _ fun i => ?_` and prove the remaining obligations. Use `show D'.c (a • y) ≫ T.pr i = (D'.c y ≫ T.act (TensO.mat s a)) ≫ T.pr i`.
+
+Rewrite using `[T.c_pr, Category.assoc, T.act_pr, Tens.xe_smul, degC_sum_zsmul D]`. Establish `h` using `map_prod (precompHom (M := D.P.A) (D'.c y)) (fun j => T.pr j ^ TensO.mat s a i j) Finset.univ`. Use `Eq.trans ?_ h.symm` and prove the remaining obligations. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow]`.
+
+Use `show _ = (D'.c y ≫ T.pr j) ^ _`. Rewrite using `[T.c_pr]`.
+-/
 theorem Tens.c_smul : ∀ (R : Type) [CommRing R] [IsDomain R] (D D' : DegPre R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ)
     (T : Tens D D' W) (s : SymUnit r), letI := T.mod s; ∀ (a : TensO s) (y : D'.X),
     D'.c (a • y) = D'.c y ≫ T.act (TensO.mat s a) := by

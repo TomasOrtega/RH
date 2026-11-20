@@ -12,6 +12,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.EtC.ExtQis
 
+/- English proof (translation)
+Rewrite `h` using `[← HomotopyCategory.quotient_obj_mem_subcategoryAcyclic_iff_acyclic]`. Establish `hu : HomotopyCategory.quasiIso 𝒜 (ComplexShape.up ℤ) ((HomotopyCategory.quotient 𝒜 (ComplexShape.up ℤ)).map u)`. Rewrite using `[HomotopyCategory.quasiIso_eq_trW_subcategoryAcyclic]`. Conclude with `((HomotopyCategory.subcategoryAcyclic 𝒜).trW_iff_of_distinguished _ (HomotopyCategory.mappingCone_triangleh_distinguished u)).2 h`. Rewrite `hu` using `[HomotopyCategory.quotient_map_mem_quasiIso_iff]`. Then use the resulting hypothesis.
+-/
 theorem quasiIso_of_mappingCone_acyclic {𝒜 : Type*} [Category 𝒜] [Abelian 𝒜]
     {K L : CochainComplex 𝒜 ℤ} (u : K ⟶ L) (h : (CochainComplex.mappingCone u).Acyclic) : QuasiIso u := by
   rw [← HomotopyCategory.quotient_obj_mem_subcategoryAcyclic_iff_acyclic] at h
@@ -22,6 +25,11 @@ theorem quasiIso_of_mappingCone_acyclic {𝒜 : Type*} [Category 𝒜] [Abelian 
       (HomotopyCategory.mappingCone_triangleh_distinguished u)).2 h
   rwa [HomotopyCategory.quotient_map_mem_quasiIso_iff] at hu
 
+/- English proof (translation)
+Take `⟨hiso, hzero⟩` from `GlobalTheory.T.isLocallyFlatEtaleSheaf_iso_and_zero (ZMod Q)`. Use `hiso (HomologicalComplex.homotopyCofiber.XIsoBiprod (resAug F) n (n + 1) rfl).symm (GlobalTheory.T.isLocallyFlatEtaleSheaf_biprod _ _ _ ?_ ?_)` and prove the remaining obligations. Distinguish the cases in `h : n + 1 = 0`. Conclude with `hiso (HomologicalComplex.singleObjXIsoOfEq (ComplexShape.up ℤ) 0 F (n + 1) h).symm hF`. Conclude with `hzero _ (HomologicalComplex.isZero_single_obj_X _ _ _ _ h)`.
+
+Use `haveI : Injective ((res (ZMod Q) F).X n) := (inferInstance : Injective ((injectiveResolution F).cochainComplex.X n))`. Conclude with `(GlobalTheory.T.flat_sections_of_injective_zmodEtaleSheaf Q _).2`.
+-/
 theorem flatS_cone (Q : ℕ) [NeZero Q] (F : Shv (ZMod Q)) (hF : FlatS F) (n : ℤ) :
     FlatS ((mappingCone (resAug F)).X n) := by
   obtain ⟨hiso, hzero⟩ := GlobalTheory.T.isLocallyFlatEtaleSheaf_iso_and_zero (ZMod Q)
@@ -34,6 +42,11 @@ theorem flatS_cone (Q : ℕ) [NeZero Q] (F : Shv (ZMod Q)) (hF : FlatS F) (n : �
       (inferInstance : Injective ((injectiveResolution F).cochainComplex.X n))
     exact (GlobalTheory.T.flat_sections_of_injective_zmodEtaleSheaf Q _).2
 
+/- English proof (translation)
+Introduce `Q q _ hq i`. Establish `hq' : QuasiIso (resAug (tw Q i))` using `(inferInstance : QuasiIso (injectiveResolution (tw Q i)).ι')`. Establish `hK : (mappingCone (resAug (tw Q i))).Acyclic` using `GlobalTheory.mappingCone_acyclic_of_quasiIso _`. Use `haveI : (res (ZMod Q) (tw Q i)).IsStrictlyGE 0 := (inferInstance : (injectiveResolution (tw Q i)).cochainComplex.IsStrictlyGE 0)`. Use `haveI : (mappingCone (resAug (tw Q i))).IsStrictlyGE (-1) := CochainComplex.isStrictlyGE_mappingCone _ 0 0 (-1)`.
+
+Establish `hE` using `GlobalTheory.T.acyclic_extendScalars_zmod_of_flat_boundedBelow Q q hq (mappingCone (resAug (tw Q i))) (-1) (flatS_cone Q (tw Q i) (GlobalTheory.T.tateTwistSheaf_isLocallyFlat Q i)) hK`. Establish `hC : (mappingCone (((extSh (ZMod.castHom hq (ZMod q))).mapHomologicalComplex _).map (resAug (tw Q i)))).Acyclic` using `fun n => (hE n).of_iso (CochainComplex.mappingCone.mapHomologicalComplexIso (resAug (tw Q i)) (extSh (ZMod.castHom hq (ZMod q))))`. Establish `h1` using `quasiIso_of_mappingCone_acyclic _ hC`. Establish `h2 : QuasiIso ((HomologicalComplex.singleMapHomologicalComplex (extSh (ZMod.castHom hq (ZMod q))) (ComplexShape.up ℤ) 0).inv.app (tw Q i))` using `quasiIso_of_isIso _`. Conclude with `quasiIso_comp (hφ := h2) (hφ' := h1) _ _`.
+-/
 theorem quasiIso_extAug : ∀ (Q q : ℕ) [NeZero Q] (hq : q ∣ Q) (i : ℤ),
     QuasiIso (extAug (ZMod.castHom hq (ZMod q)) (tw Q i)) := by
   intro Q q _ hq i

@@ -2,6 +2,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.OddResidueBounds.Z
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Bern UpperTheory.V.B4 UpperTheory.V.B5 UpperTheory.V.Odd
 
+/- English proof (translation)
+Establish `hk1 : k + 1 ≤ T ^ 2` using `by nlinarith`. Establish `f1 : (k + 1).factorial ≤ (T ^ 2) ^ (k + 1)` using `(Nat.factorial_le_pow _).trans (Nat.pow_le_pow_left hk1 _)`. Establish `f2 : k.factorial ≤ T ^ k` using `(Nat.factorial_le_pow _).trans (Nat.pow_le_pow_left hk _)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem bdX_mul_le (M a k T : ℕ) (hT : 2 ≤ T) (hM : M ≤ T) (ha : a ≤ T ^ 3) (hk : k ≤ T) (hk2 : 2 ≤ k) :
     bdX M a k * M ≤ T ^ (10 * k) := by
   have hk1 : k + 1 ≤ T ^ 2 := by nlinarith
@@ -13,6 +16,23 @@ private theorem bdX_mul_le (M a k T : ℕ) (hT : 2 ≤ T) (hM : M ≤ T) (ha : a
     _ = T ^ (7 * k + 6) := by ring
     _ ≤ T ^ (10 * k) := Nat.pow_le_pow_right (by omega) (by omega)
 
+/- English proof (translation)
+Use `⟨30, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `N l e hN hl he`. Establish `h2 : e * 2 ≤ e * l` using `Nat.mul_le_mul_left e hl`. Establish `h3 : e * l ≤ e * l * N` using `Nat.le_mul_of_pos_right _ hN`. Establish `h4 : 1 * l * N ≤ e * l * N` using `by gcongr`.
+
+Establish `h5 : N * l ≤ e * l * N` using `by nlinarith`. Establish `hX2 : 2 ≤ e * l * N` using `by nlinarith`. Establish `hT : 2 ≤ 3 * (e * l * N)` using `by omega`. Establish `hM : N * l ≤ 3 * (e * l * N)` using `by omega`. Establish `ha : 2 * (N * l) + 1 ≤ (3 * (e * l * N)) ^ 3` using `le_trans (by omega) (Nat.le_self_pow (by norm_num) _)`.
+
+Establish `hk : e + 1 ≤ 3 * (e * l * N)` using `by nlinarith`. Establish `key` using `bdX_mul_le (N * l) (2 * (N * l) + 1) (e + 1) (3 * (e * l * N)) hT hM ha hk (by omega)`. Establish `hNl : 0 < N * l` using `by positivity`. Establish `hb : 0 < bdX (N * l) (2 * (N * l) + 1) (e + 1)`. Unfold `bdX denY sizeY`.
+
+Check the signs of the components of the expression. Establish `hbpos : (0 : ℝ) < (bdX (N * l) (2 * (N * l) + 1) (e + 1) : ℝ)` using `by exact_mod_cast hb`. Establish `hMpos : (0 : ℝ) < (N : ℝ) * l` using `by exact_mod_cast hNl`. Rewrite using `[← Real.log_mul hbpos.ne' hMpos.ne']`. Establish `hcast : (bdX (N * l) (2 * (N * l) + 1) (e + 1) : ℝ) * ((N : ℝ) * l) = ((bdX (N * l) (2 * (N * l) + 1) (e + 1) * (N * l) : ℕ) : ℝ)` using `by push_cast; ring`.
+
+Rewrite using `[hcast]`. Establish `hXr : (2 : ℝ) ≤ (e : ℝ) * l * N` using `by exact_mod_cast hX2`. Establish `hlog2 : Real.log 2 ≤ Real.log ((e : ℝ) * l * N)` using `Real.log_le_log (by norm_num) hXr`. Establish `hlog3 : Real.log 3 ≤ 2 * Real.log 2`. Rewrite using `[← Real.log_rpow (by norm_num)]`.
+
+Conclude with `Real.log_le_log (by norm_num) (by norm_num)`. Establish `hlog2pos : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Establish `hlogT : Real.log (((3 * (e * l * N) : ℕ) : ℝ)) ≤ 3 * Real.log ((e : ℝ) * l * N)`. Use `push_cast`. Rewrite using `[Real.log_mul (by norm_num) (by positivity)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpos : (0 : ℝ) < ((bdX (N * l) (2 * (N * l) + 1) (e + 1) * (N * l) : ℕ) : ℝ)`. Conclude with `Nat.mul_pos hb hNl` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Nat.cast_pow, Real.log_pow]`.
+
+Use `_ ≤ (10 * (e + 1) : ℕ) * (3 * Real.log ((e : ℝ) * l * N)) := mul_le_mul_of_nonneg_left hlogT (by positivity)`. Use `_ = 30 * ((e : ℝ) + 1) * Real.log ((e : ℝ) * l * N) := by push_cast; ring`.
+-/
 theorem UpperTheory.V.Odd.bdxLog :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ N l e : ℕ, 1 ≤ N → 2 ≤ l → 1 ≤ e → Real.log (bdX (N * l) (2 * (N * l) + 1) (e + 1)) + Real.log ((N : ℝ) * l) ≤ C * (e + 1) * Real.log ((e : ℝ) * l * N) := by
   refine ⟨30, by norm_num, ?_⟩

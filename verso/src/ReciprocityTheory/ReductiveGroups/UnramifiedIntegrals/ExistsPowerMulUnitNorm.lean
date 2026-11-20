@@ -10,6 +10,11 @@ open Formalism.L2.Th1.CM
 
 variable (l : ℕ) [Fact l.Prime]
 
+/- English proof (translation)
+Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem x hx => exact (muP_norm l hx).le`. Consider the case `zero => simp`. Consider the case `one => simp`. Consider the case `add x y _ _ hx hy`.
+
+Conclude with `(IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)`. Consider the case `neg x _ hx => rwa [norm_neg]`. Consider the case `mul x y _ _ hx hy`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ hx (norm_nonneg _) hy`.
+-/
 theorem rmu_norm_le {x : ℂ_[l]} (hx : x ∈ Rmu l) : ‖x‖ ≤ 1 := by
   induction hx using Subring.closure_induction with
   | mem x hx => exact (muP_norm l hx).le
@@ -22,6 +27,9 @@ theorem rmu_norm_le {x : ℂ_[l]} (hx : x ∈ Rmu l) : ‖x‖ ≤ 1 := by
     rw [norm_mul]
     exact mul_le_one₀ hx (norm_nonneg _) hy
 
+/- English proof (translation)
+Take `⟨y, hy, z, hz, rfl⟩` from `Subfield.mem_closure_iff.1 hx`. Distinguish the cases in `hz0 : z = 0`. Use `⟨0, (Rmu l).zero_mem, 1, (Rmu l).one_mem, one_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[hz0, div_zero, zero_div]`. Conclude with `⟨y, hy, z, hz, hz0, rfl⟩`.
+-/
 theorem kmu_frac {x : ℂ_[l]} (hx : x ∈ Kmu l) :
     ∃ a ∈ Rmu l, ∃ b ∈ Rmu l, b ≠ 0 ∧ x = a / b := by
   obtain ⟨y, hy, z, hz, rfl⟩ := Subfield.mem_closure_iff.1 hx
@@ -30,6 +38,25 @@ theorem kmu_frac {x : ℂ_[l]} (hx : x ∈ Kmu l) :
     rw [hz0, div_zero, zero_div]
   · exact ⟨y, hy, z, hz, hz0, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Introduce `a ha _ h`. Rewrite `h` using `[pow_zero, one_mul]`. Conclude with `absurd (rmu_norm_le l ha) (not_le.2 h)`.
+
+Consider the case `succ k ih`. Introduce `a ha ha0 h`. Break down `(rmu_norm_le l ha).eq_or_lt with h1 | h1` into its components or cases. Conclude with `⟨0, a, ha, 1, (Rmu l).one_mem, h1, norm_one, by rw [pow_zero, one_mul, mul_one]⟩`. Take `⟨f, hf, r, hr, he⟩` from `rmu_frob l a ha`.
+
+Establish `hl1 : 1 < l` using `(Fact.out : l.Prime).one_lt`. Establish `hq : 1 ≤ l ^ f - 1`. Establish `: 2 ≤ l ^ f` using `le_trans (Fact.out : l.Prime).two_le (Nat.le_self_pow hf.ne' l)`. Use linear arithmetic over natural numbers and integers. Use `set u := a ^ (l ^ f - 1) - 1 with hu`.
+
+Establish `huR : u ∈ Rmu l` using `sub_mem (pow_mem ha _) (Rmu l).one_mem`. Establish `hu1 : ‖u‖ = 1`. Establish `hsm : ‖a ^ (l ^ f - 1)‖ < 1`. Rewrite using `[norm_pow]`. Conclude with `pow_lt_one₀ (norm_nonneg _) h1 (by omega)`.
+
+Use `ReciprocityTheory.ChartRestriction.PadicPolynomialApproximation.norm_eq_of_norm_sub_lt' l (a := u) (b := -1) (by rw [hu, sub_neg_eq_add, sub_add_cancel, norm_neg, norm_one]; exact hsm)` as an intermediate fact. Rewrite `this` using `[norm_neg, norm_one]`. Then use the resulting hypothesis. Establish `hau : a * u = (l : ℂ_[l]) * r`. Rewrite using `[← he, hu, mul_sub, mul_one, ← pow_succ', Nat.sub_add_cancel (by omega : 1 ≤ l ^ f)]`. Establish `hnr : ‖r‖ = l * ‖a‖`.
+
+Use `congrArg norm hau` as an intermediate fact. Rewrite `this` using `[norm_mul, norm_mul, hu1, mul_one, norm_l_Cl]`. Establish `hl0 : (l : ℝ) ≠ 0` using `by positivity`. Rewrite using `[this, ← mul_assoc, mul_inv_cancel₀ hl0, one_mul]`. Establish `hr0 : r ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hnr` using `[norm_zero]`. Establish `: (0 : ℝ) < l * ‖a‖` using `mul_pos (by positivity) (norm_pos_iff.2 ha0)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h' : 1 < (l : ℝ) ^ k * ‖r‖`.
+
+Rewrite using `[hnr, ← mul_assoc, ← pow_succ]`. Conclude with `h`. Take `⟨m, c, hc, v, hv, hc1, hv1, hrv⟩` from `ih r hr hr0 h'`. Use `⟨m + 1, c, hc, u * v, mul_mem huR hv, hc1, by rw [norm_mul, hu1, hv1, one_mul], ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, hau, mul_assoc, hrv, pow_succ]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_power_mul_unitNorm (k : ℕ) : ∀ a ∈ Rmu l, a ≠ 0 → 1 < (l : ℝ) ^ k * ‖a‖ →
     ∃ m : ℕ, ∃ c ∈ Rmu l, ∃ u ∈ Rmu l, ‖c‖ = 1 ∧ ‖u‖ = 1 ∧ a * u = (l : ℂ_[l]) ^ m * c := by
   induction k with
@@ -74,6 +101,9 @@ theorem exists_power_mul_unitNorm (k : ℕ) : ∀ a ∈ Rmu l, a ≠ 0 → 1 < (
     rw [← mul_assoc, hau, mul_assoc, hrv, pow_succ]
     ring
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt (‖a‖⁻¹) (by exact_mod_cast (Fact.out : l.Prime).one_lt : (1 : ℝ) < l)`. Use `exists_power_mul_unitNorm l k a ha ha0 ?_` and prove the remaining obligations. Establish `hpos : 0 < ‖a‖` using `norm_pos_iff.2 ha0`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rmu_shape {a : ℂ_[l]} (ha : a ∈ Rmu l) (ha0 : a ≠ 0) :
     ∃ m : ℕ, ∃ c ∈ Rmu l, ∃ u ∈ Rmu l, ‖c‖ = 1 ∧ ‖u‖ = 1 ∧ a * u = (l : ℂ_[l]) ^ m * c := by
   obtain ⟨k, hk⟩ := pow_unbounded_of_one_lt (‖a‖⁻¹) (by exact_mod_cast (Fact.out : l.Prime).one_lt :
@@ -83,6 +113,13 @@ theorem rmu_shape {a : ℂ_[l]} (ha : a ∈ Rmu l) (ha0 : a ≠ 0) :
   calc (1 : ℝ) = ‖a‖⁻¹ * ‖a‖ := (inv_mul_cancel₀ hpos.ne').symm
     _ < (l : ℝ) ^ k * ‖a‖ := mul_lt_mul_of_pos_right hk hpos
 
+/- English proof (translation)
+Take `⟨a, ha, b, hb, hb0, rfl⟩` from `kmu_frac l hx`. Establish `ha0 : a ≠ 0` using `by rintro rfl; exact hx0 (zero_div b)`. Take `⟨m, c, hc, u, hu, hc1, hu1, hau⟩` from `rmu_shape l ha ha0`. Take `⟨n, d, hd, v, hv, hd1, hv1, hbv⟩` from `rmu_shape l hb hb0`. Establish `hl0 : (l : ℂ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`.
+
+Establish `hu0 : u ≠ 0` using `by rintro rfl; simp at hu1`. Establish `hv0 : v ≠ 0` using `by rintro rfl; simp at hv1`. Establish `hd0 : d ≠ 0` using `by rintro rfl; simp at hd1`. Use `⟨(m : ℤ) - n, c * v, mul_mem hc hv, d * u, mul_mem hd hu, by rw [norm_mul, hc1, hv1, one_mul], by rw [norm_mul, hd1, hu1, one_mul], ?_⟩` and prove the remaining obligations. Rewrite using `[zpow_sub₀ hl0, zpow_natCast, zpow_natCast]`.
+
+Establish `ha' : a = (l : ℂ_[l]) ^ m * c / u` using `by rw [← hau, mul_div_cancel_right₀ _ hu0]`. Establish `hb' : b = (l : ℂ_[l]) ^ n * d / v` using `by rw [← hbv, mul_div_cancel_right₀ _ hv0]`. Rewrite using `[ha', hb']`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem kmu_shape {x : ℂ_[l]} (hx : x ∈ Kmu l) (hx0 : x ≠ 0) :
     ∃ m : ℤ, ∃ a ∈ Rmu l, ∃ b ∈ Rmu l, ‖a‖ = 1 ∧ ‖b‖ = 1 ∧ x = (l : ℂ_[l]) ^ m * (a / b) := by
   obtain ⟨a, ha, b, hb, hb0, rfl⟩ := kmu_frac l hx

@@ -26,6 +26,13 @@ def IsTraceFn {H Γ W : Type} [Group H] [Group Γ] [AddCommGroup W] [Module ℂ 
     ∀ L : W →ₗ[ℂ] ℂ, (∀ (γ : Γ) (hγ : z₀⁻¹ * ι γ * z₀ ∈ J), L ((χ ⟨_, hγ⟩ : ℂ) • ρ γ⁻¹ w) = L w) →
       L (f z₀) = (Nat.card (Bridge.stab ι J z₀) : ℂ) * L w
 
+/- English proof (translation)
+Substitute `hJ` using the available equality. Use `⟨fun z hz => ?_, fun L hL => ?_⟩` and prove the remaining obligations. Use `show T (f z) = 0`. Rewrite using `[hf.1 z hz, map_zero]`. Set `L' : W →ₗ[ℂ] ℂ` to `{ toFun := fun v => τ.symm (L (T v)) map_add' := fun a b => by rw [map_add, map_add, map_add] map_smul' := fun a v => by`.
+
+Rewrite using `[hs, map_smul, smul_eq_mul, map_mul, RingEquiv.symm_apply_apply]`. Use `rfl }`. Establish `hL' : ∀ v, L' v = τ.symm (L (T v))` using `fun v => rfl`. Establish `key` using `hf.2 L' fun γ hγ => by`. Rewrite using `[hL', hL', hs, hρ, ← hχ _ hγ hγ, hL γ hγ]`.
+
+Rewrite `key` using `[hL', hL']`. Use `congrArg τ key` as an intermediate fact. Rewrite `this` using `[map_mul, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply, map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem IsTraceFn.post {H Γ W : Type} [Group H] [Group Γ] [AddCommGroup W] [Module ℂ W] (ι : Γ →* H)
     (ρ : Γ →* Module.End ℂ W) {J J' : Subgroup H} (hJ : J' = J) (χ : J →* ℂˣ) (χ' : J' →* ℂˣ) (τ : ℂ ≃+* ℂ) (T : W →+ W)
     (hs : ∀ (a : ℂ) w, T (a • w) = τ a • T w) (hρ : ∀ γ w, T (ρ γ w) = ρ γ (T w))
@@ -49,6 +56,29 @@ theorem IsTraceFn.post {H Γ W : Type} [Group H] [Group Γ] [AddCommGroup W] [Mo
     have := congrArg τ key
     rwa [map_mul, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply, map_natCast] at this
 
+/- English proof (translation)
+Take `⟨y', c₀, hy', e₀⟩` from `GlobalTheory.TraceLift.exists_isReps_through _ _ hy (p h₀)`. Establish `hlift : ∀ z : Hf, ∃ k ∈ F, p k = z` using `fun z => by`. Take `⟨u, hu⟩` from `hp z`. Take `⟨k, hk, -, -, -, e⟩` from `hdec u`. Conclude with `⟨k, hk, e.trans hu⟩`.
+
+Use `choose σ hσ hσ' using hlift`. Set `r : Cl → H` to `Function.update (fun k => σ (y' k)) c₀ h₀`. Establish `hr : ∀ k, r k ∈ F ∧ p (r k) = y' k` using `fun k => by`. Distinguish the cases in `hk : k = c₀`. Substitute `hk` using the available equality.
+
+Simplify using `only [r, Function.update_self]`. Conclude with `⟨hh₀, e₀.symm⟩`. Simplify using `only [r, Function.update_of_ne hk]`. Conclude with `⟨hσ _, hσ' _⟩`. Establish `hr0 : r c₀ = h₀` using `Function.update_self _ _ _`.
+
+Establish `hyr : (fun k => p (r k)) = y'` using `funext fun k => (hr k).2`. Establish `hf0` using `GlobalTheory.TraceLift.finite_stab _ _ hy hfin (p h₀)`. Take `⟨hz, hv⟩` from `hf`. Use `⟨r, fun k => (hr k).1, by rw [hyr]; exact hy', fun {G' X} _ x₀ om Λ hom hΛa hΛk g => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single c₀ ?_ (fun h => absurd (Finset.mem_univ _) h)]`.
+
+Set `L₀ : W →ₗ[ℂ] ℂ` to `(LinearMap.proj x₀ : (X → ℂ) →ₗ[ℂ] ℂ) ∘ₗ (om (h₀, g)) ∘ₗ Λ`. Establish `hL₀ : ∀ v, L₀ v = om (h₀, g) (Λ v) x₀` using `fun v => rfl`. Establish `key` using `hv L₀ fun γ hγ => ?_`. Establish `hN : ((Nat.card (Bridge.stab (p.comp Γ.subtype) J (p h₀)) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.card_pos).ne'`. Rewrite using `[hr0, Subgroup.relIndex_self, Nat.cast_one, inv_one, one_mul, ← hL₀, key, inv_mul_cancel_left₀ hN, hL₀]`.
+
+Take `⟨k, hk, b, hb, e, e'⟩` from `hdec ((γ : H)⁻¹ * h₀)`. Establish `hκ : h₀⁻¹ * k ∈ F` using `mul_mem (inv_mem hh₀) hk`. Establish `eκ : p (h₀⁻¹ * k) = ((p h₀)⁻¹ * (p.comp Γ.subtype) γ * p h₀)⁻¹` using `by show p (h₀⁻¹ * k) = ((p h₀)⁻¹ * p γ * p h₀)⁻¹`. Rewrite using `[map_mul, e', map_mul, map_inv, map_inv]`. Use `group`.
+
+Establish `hκ' : p (h₀⁻¹ * k) ∈ J` using `by rw [eκ]; exact inv_mem hγ`. Establish `eχ : ((χ ⟨_, hκ'⟩ : ℂˣ) : ℂ)⁻¹ = χ ⟨_, hγ⟩`. Rewrite using `[show (⟨_, hκ'⟩ : J) = ⟨_, hγ⟩⁻¹ from Subtype.ext eκ, map_inv, Units.val_inv_eq_inv_val, inv_inv]`. Establish `eρ : (ρ.comp Γ.subtype) γ⁻¹ v = ρ b v`. Establish `h1` using `congrArg ρ e`.
+
+Rewrite `h1` using `[map_mul, map_mul, hρ _ hh₀, hρ _ hk, mul_one, one_mul]`. Rewrite using `[← h1]`. Both sides reduce to the same expression. Establish `e3 : ((h₀, g) : H × G') * (h₀⁻¹ * k, 1) * (b, 1) = (((γ : H)⁻¹, 1) : H × G') * (h₀, g)`. Rewrite using `[Prod.mk_mul_mk, Prod.mk_mul_mk, Prod.mk_mul_mk, mul_inv_cancel_left, e, mul_one, mul_one, one_mul]`.
+
+Rewrite using `[hL₀, hL₀, map_smul, eρ, ← eχ, ← hΛk _ hκ hκ', ← hΛa b hb, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, e3, map_mul]`. Conclude with `hom _ (inv_mem γ.2) _ _`. Introduce `k _ hk`. Rewrite using `[hz _ ?_, map_zero, map_zero]`. Simplify using the standard rewrite rules.
+
+Introduce `hex`. Take `⟨j, -, hu⟩` from `hy' (y' k)`. Use `hk ((hu k ⟨1, 1, by simp⟩).trans (hu c₀ ?_).symm)` and prove the remaining obligations. Use `show ∃ (γ : Γ) (m : J), y' k = (p.comp Γ.subtype) γ * y' c₀ * m`. Rewrite using `[e₀, ← (hr k).2]`.
+
+Conclude with `hex`.
+-/
 theorem IsTraceFn.sum_eq {H Hf W : Type} [Group H] [Group Hf] [AddCommGroup W] [Module ℂ W] (p : H →* Hf)
     (hp : Function.Surjective p) (Γ F R : Subgroup H) (ρ : H →* Module.End ℂ W) (J : Subgroup Hf) (χ : J →* ℂˣ)
     (hdec : ∀ u : H, ∃ k ∈ F, ∃ a ∈ R, u = k * a ∧ p k = p u) (hρ : ∀ k ∈ F, ρ k = 1)
@@ -119,6 +149,11 @@ theorem IsTraceFn.sum_eq {H Hf W : Type} [Group H] [Group Hf] [AddCommGroup W] [
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Use `(hR.thP.thF i t).elim fun thP hPF => ?_` and prove the remaining obligations. Use `(IsTraceFn.sum_eq (finHom (Vc D i)).rangeRestrict (finHom (Vc D i)).rangeRestrict_surjective (GQ (Vc D i)) (GfC (Vc D i)) (GinfC (Vc D i)) (R.cV i).ρ (levEnv _ (R.βV i) (R.datVt i t)).J (levEnv _ (R.βV i) (R.datVt i t)).χ (GlobalTheory.LiftUnfold.exists_fin_mul_real (Vc D i)) (hR …` and prove the remaining obligations. Establish `hf : (R.HV i t).e x ∈ Bridge.AdForms (Bridge.ratF (Vc D i)) (R.cV i).coef.ρ (levEnv _ (R.βV i) (R.datVt i t)).J (levEnv _ (R.βV i) (R.datVt i t)).χ` using `(hR.models.HV i t).2.1.le (LinearMap.mem_range_self _ x)`. Establish `hfin : ∀ k ∈ GfC (Vc D i), ∀ hk : Formalism.IndefR.FWT.fin (Vc D i) k ∈ levJ R i t, ∀ P, R.ωP i t (k, 1) (R.ptP i t P) = (((levEnv (Vc D i) (R.βV i) (R.datVt i t)).χ ⟨Formalism.IndefR.FWT.fin (Vc D i) k, hk⟩ : ℂˣ) : ℂ)⁻¹ • R.ptP i t P` using `fun k hk hk' => GlobalTheory.FiniteFock.om_pureTensorO_of_finite R.ψ R.θ (Vc D i) (Wc D i) _ _ (R.ωP i t) hR.models.inf (hR.thP.ωP i t) _ _ _ _ _ (hR.thP.pt_theta i t) k hk 1 (one_mem _) _ (GlobalTheory.AdTh.LevelLawCore.omega_level_vP_core D G Pl0 T0 A Ks R F hR i t k hV hk hk')`. Establish `key` using `GlobalTheory.LiftUnfold.integral_theta (hR.thP.ωP i t) (D.sp.V_sig _) (hR.models.vpos i) (R.cV i) (hR.models.cV i) (R.βV i) (R.datVt i t) (fun _ => Iff.rfl) hf (pureTensorO R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i (sg0 D A))) (R.BV i) (onb (R.MW i (sg0 D A))) (R.vP i …`.
+
+Establish `key2` using `hr.2.2 (0 : WO (Vc D i) (Wc D i)) (R.ωP i t) (pureTensorO R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i (sg0 D A))) (R.BV i) (onb (R.MW i (sg0 D A))) (R.vP i t) ∘ₗ R.ioP i (PiTensorProduct.tprod ℂ u)) (fun γ hγ z v => (hR.thP.ωP i t).om_aut γ hγ 1 (one_mem _) _ ((hR.thP.ωP …`. Establish `h1` using `congrFun (hPF.2 x u) g`. Establish `h2` using `hPF.1.eq ((R.extV i t).rangeRestrict x) (PiTensorProduct.tprod ℂ u) g`. Use `h1.trans (h2.trans (Eq.trans ?_ (key.trans key2)))` and prove the remaining obligations. Both sides reduce to the same expression.
+-/
 theorem thF_eq_ser_of_isTraceFn {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A)
     (hR : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (hV : VStd D i) (t : T0) (h : GA D (Vc D i)) (hh : h ∈ GfC (Vc D i))
@@ -158,6 +193,21 @@ theorem thF_eq_ser_of_isTraceFn {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ hCore hFW i Tp tup M hPins c hc τ t t' hFix hConj h hh x x' hxx`. Establish `hX` using `GlobalTheory.CoefExtC.exists_extC_bijective_unique D G Pl0 T0 A T R F κ v₀ hCore hFW i Tp tup M hPins`. Use `hX.elim fun c₁ hc₁ => ?_` and prove the remaining obligations. Establish `hb : Function.Bijective c` using `(congrArg (fun f : VsV D i ℂ →ₗ[ℂ] (R.cV i).W => Function.Bijective f) (hc₁.2.2 c hc)).mpr hc₁.2.1`. Use `(exists_conjW M hPins c hc hb τ hFix.host).elim fun TW hTW => ?_` and prove the remaining obligations.
+
+Establish `hs` using `hTW.1`. Establish `hTc` using `hTW.2.1`. Establish `hρ` using `hTW.2.2`. Establish `hZ` using `(GlobalTheory.T.conjugate_tuples_conjugate_residue_levels D G Pl0 T0 A T R F κ v₀ hCore τ t t' hConj).2.2.2 i hFix`. Establish `hJ` using `hZ.1`.
+
+Establish `hχ` using `hZ.2`. Establish `hV` using `hCore.models.HV i t`. Establish `hV'` using `hCore.models.HV i t'`. Establish `hfin` using `GlobalTheory.TraceLift.finite_stab (Bridge.ratF (Vc D i)) (levEnv _ (R.βV i) (R.datVt i t)).J (R.B.L i t).pres.reps (fun k => Finite.of_equiv _ ((R.B.L i t).pres.stabI k).toEquiv) (Formalism.IndefR.FWT.fin (Vc D i) h)`. Use `(GlobalTheory.TraceLift.exists_traceForm (Bridge.ratF (Vc D i)) (R.cV i).coef.ρ (levEnv _ (R.βV i) (R.datVt i t)).J (levEnv _ (R.βV i) (R.datVt i t)).χ (Formalism.IndefR.FWT.fin (Vc D i) h) hfin (c x)).elim fun f hf => ?_` and prove the remaining obligations.
+
+Establish `hf1 : IsTraceFn (Bridge.ratF (Vc D i)) (R.cV i).coef.ρ (levEnv _ (R.βV i) (R.datVt i t)).J (levEnv _ (R.βV i) (R.datVt i t)).χ (Formalism.IndefR.FWT.fin (Vc D i) h) (c x) f` using `hf.2`. Establish `hf2` using `IsTraceFn.post (Bridge.ratF (Vc D i)) (R.cV i).coef.ρ hJ _ _ τ TW.toAddMonoidHom hs hρ hχ hf1`. Establish `hm2` using `post_mem (Bridge.ratF (Vc D i)) (R.cV i).coef.ρ hJ _ _ τ TW.toAddMonoidHom hs hρ hχ hf.1`. Use `(LinearMap.mem_range.1 (hV.2.1.ge hf.1)).elim fun y hy => ?_` and prove the remaining obligations. Use `(LinearMap.mem_range.1 (hV'.2.1.ge hm2)).elim fun y' hy' => ?_` and prove the remaining obligations.
+
+Establish `hx' : x' = GlobalTheory.CoefModel.mapVV (τ : ℂ →+* ℂ) (lamV D i) x` using `Subtype.ext (hxx.trans (GlobalTheory.CoefModel.mapVV_coe _ _ _).symm)`. Establish `hcx : TW.toAddMonoidHom (c x) = c x'` using `(hTc x).trans (congrArg c hx').symm`. Use `⟨y, y', fun k => ?_, fun u g => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `(hb.2 (f (Formalism.IndefR.FWT.fin (Vc D i) k))).elim fun z hz => ?_` and prove the remaining obligations. Use `⟨z, GlobalTheory.CoefModel.mapVV (τ : ℂ →+* ℂ) (lamV D i) z, GlobalTheory.CoefModel.mapVV_coe _ _ _, (congrFun hy _).trans hz.symm, (congrFun hy' _).trans ?_⟩` and prove the remaining obligations.
+
+Conclude with `(congrArg TW hz.symm).trans (hTc z)`. Use `thF_eq_ser_of_isTraceFn R F hCore i hPins.lift.std t h hh (c x) y ?_ u g` and prove the remaining obligations. Rewrite using `[hy]`. Conclude with `hf1`. Use `thF_eq_ser_of_isTraceFn R F hCore i hPins.lift.std t' h hh (c x') y' ?_ u g` and prove the remaining obligations.
+
+Rewrite using `[hy', ← hcx]`. Conclude with `hf2`.
+-/
 theorem exists_conjForm_thF_eq_ser : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), GlobalTheory.Hk3.Core R F → Nonempty (FWTie T R κ v₀) → ∀ (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0) (M : OMDat T.toCore R i Tp tup), M.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) M.s0) → ∀ (c : VsV D i ℂ →ₗ[ℂ] (R.cV i).W), ExtC R i (inC M.c') M.c0' c → ∀ (τ : ℂ ≃+* ℂ) (t t' : T0), FixBase T R i τ → ConjTup R τ t t' → ∀ h ∈ GfC (Vc D i), ∀ x x' : VsV D i ℂ, ConjVec i τ x x' → ∃ (y : (R.HV i t).H) (y' : (R.HV i t').H), ConjForm R i τ c t t' y y' ∧ ∀ (u : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) (g : GA D (Wc D i)), R.thF i t y (fun ρ => u ρ) g = ser R i t (R.vP i t) u h (c x) g ∧ R.thF i t' y' (fun ρ => u ρ) g = ser R i t' (R.vP i t') u h (c x') g := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ hCore hFW i Tp tup M hPins c hc τ t t' hFix hConj h hh x x' hxx
   have hX := GlobalTheory.CoefExtC.exists_extC_bijective_unique D G Pl0 T0 A T R F κ v₀ hCore hFW i Tp tup M hPins

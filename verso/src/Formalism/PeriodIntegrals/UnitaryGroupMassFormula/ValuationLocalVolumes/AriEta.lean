@@ -13,12 +13,18 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.L
 
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Establish `h : Valued.v (((x : F) : v.adicCompletion F)) = v.valuation F (x : F)` using `IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (x : F)`. Rewrite using `[h]`. Conclude with `v.valuation_le_one x`.
+-/
 theorem val_int (x : 𝓞 F) : Valued.v (((x : F) : v.adicCompletion F)) ≤ 1 := by
   have h : Valued.v (((x : F) : v.adicCompletion F)) = v.valuation F (x : F) :=
     IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (x : F)
   rw [h]
   exact v.valuation_le_one x
 
+/- English proof (translation)
+Establish `h : Valued.v (((x : F) : v.adicCompletion F)) = v.valuation F (x : F)` using `IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (x : F)`. Rewrite using `[h]`. Conclude with `(v.valuation_lt_one_iff_mem x).mpr hx`.
+-/
 theorem val_int_lt (x : 𝓞 F) (hx : x ∈ v.asIdeal) : Valued.v (((x : F) : v.adicCompletion F)) < 1 := by
   have h : Valued.v (((x : F) : v.adicCompletion F)) = v.valuation F (x : F) :=
     IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (x : F)
@@ -27,12 +33,18 @@ theorem val_int_lt (x : 𝓞 F) (hx : x ∈ v.asIdeal) : Valued.v (((x : F) : v.
 
 abbrev ψo : 𝓞 F →+* v.adicCompletion F := (algebraMap F (v.adicCompletion F)).comp (algebraMap (𝓞 F) F)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ψo_apply (x : 𝓞 F) : ψo v x = ((x : F) : v.adicCompletion F) := rfl
 
 def io (x : 𝓞 F) : v.adicCompletionIntegers F := ⟨ψo v x, val_int v x⟩
 
 abbrev ρ : v.adicCompletionIntegers F →+* v.adicCompletion F := (v.adicCompletionIntegers F).toSubring.subtype
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ρ_io (x : 𝓞 F) : ρ v (io v x) = ψo v x := rfl
 
 variable {E : Type} [Field E] [NumberField E] [Algebra F E]

@@ -11,6 +11,27 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace PositivityTheory.Rg.Rsw.Cell
 
+/- English proof (translation)
+Introduce `D p mu hmu nb hnb w hw`. Use `⟨∅, fun S _ e he lam hlam => ?_⟩` and prove the remaining obligations. Take `⟨hG2, hGlc, hGsc, hH2, hHlc, hHsc, hHb⟩` from `hT D p e`. Use `haveI := hlam`. Take `⟨h, hSet, hRho, hKh, hInv⟩` from `hS D p mu hmu`.
+
+Use `letI : MeasurableSpace (G D p ⧸ P D p) := borel _`. Use `haveI : BorelSpace (G D p ⧸ P D p) := ⟨rfl⟩`. Take `⟨ν, hν⟩` from `hR (G D p) (P D p) h mu hSet`. Take `⟨τ, hcell, -, hmm⟩` from `hA D p nb hnb w hw S e he`. Establish `hfew : Few (P D p) h mu (cell e)` using `hW D p mu h nb hnb w hw (fun y => (hInv nb hnb w hw y).2) S e he`.
+
+Establish `hnull : ν {q | rp q ∉ cell e} = 0` using `hN (G D p) (P D p) h mu hSet ν hν (cell e) hcell.isOpen (fun q hq x hx => (hcell.left q hq x hx).1) hfew`. Establish `hdec : ∀ x ∈ cell e, ∃ q ∈ P D p, ∃ u ∈ KOff D p S, x = q * (w * nb (τ x).1) * u ∧ ∀ z : hermS D p e, nb z.1 * u = u * nb z.1` using `fun x hx => hD D p nb hnb w hw S e he x hx (τ x) (hmm x hx)`. Establish `hrel : ∀ (y : hermS D p e), ∀ x ∈ cell e, h (x * nb y.1) * h (w * nb (τ x).1) = h (w * nb (τ x + y).1) * h x`. Introduce `y x hx`. Take `⟨q, hq, u, hu, ex, hcomm⟩` from `hdec x hx`.
+
+Establish `hadd : nb (τ x + y).1 = nb (τ x).1 * nb y.1` using `hcell.nbAdd (τ x) y`. Establish `e0 : h (x * nb y.1) = h (q * (w * nb (τ x).1) * u * nb y.1)` using `congrArg (fun z => h (z * nb y.1)) ex`. Establish `e1 : q * (w * nb (τ x).1) * u * nb y.1 = q * (w * nb (τ x + y).1) * u`. Rewrite using `[hadd]`. Simplify using `only [mul_assoc]`.
+
+Rewrite using `[← hcomm y]`. Establish `hx1 : h (x * nb y.1) = h (q * (w * nb (τ x + y).1))`. Rewrite using `[e0, e1, hKh S u hu]`. Establish `hx2 : h x = h (q * (w * nb (τ x).1))` using `(congrArg h ex).trans (hKh S u hu _)`. Rewrite using `[hx1, hx2]`.
+
+Conclude with `hSet.law q hq _ _`. Take `⟨c, hc⟩` from `hF (G D p) (P D p) h mu hSet ν hν (hermS D p e) lam (cell e) τ w (fun y => nb y.1) hcell (fun y => (hInv nb hnb w hw y.1).1) hrel hnull`. Establish `hOn : ∀ f, IsRho f → (∀ u ∈ KOff D p S, ∀ g, f (g * u) = f g) → OnCell h (cell e) τ w (fun y => nb y.1) f`. Introduce `f hf hfK x hx`. Take `⟨q, hq, u, hu, ex, -⟩` from `hdec x hx`.
+
+Establish `hsec` using `(hRho f).mp hf`. Establish `hf1 : f x = f (q * (w * nb (τ x).1))` using `(congrArg f ex).trans (hfK u hu _)`. Establish `hh1 : h x = h (q * (w * nb (τ x).1))` using `(congrArg h ex).trans (hKh S u hu _)`. Use `show f x * h (w * nb (τ x).1) = f (w * nb (τ x).1) * h x`. Rewrite using `[hf1, hh1]`.
+
+Conclude with `hsec.2 q hq _`. Distinguish the cases in `hc0 : c = 0`. Use `left`. Introduce `f hf hfK`. Establish `hmu'` using `(hc f ((hRho f).mp hf) (hOn f hf hfK)).2`.
+
+Rewrite using `[hmu', hc0, zero_smul, integral_zero_measure]`. Use `right`. Use `⟨c, NNReal.coe_pos.mpr (pos_iff_ne_zero.mpr hc0), fun f hf hfK => ?_⟩` and prove the remaining obligations. Take `⟨hi, heq⟩` from `hc f ((hRho f).mp hf) (hOn f hf hfK)`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hi'` using `hi.smul_measure_nnreal (c := c⁻¹)`. Rewrite `hi'` using `[smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Then use the resulting hypothesis. Rewrite using `[heq, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`.
+-/
 theorem muCell_of (hR : Riesz) (hN : NullC) (hF : CellFormula) (hA : CellAlg) (hD : Decomp) (hW : FewC) (hS : SetC)
     (hT : TopC) : MuCell := by
   intro D p mu hmu nb hnb w hw

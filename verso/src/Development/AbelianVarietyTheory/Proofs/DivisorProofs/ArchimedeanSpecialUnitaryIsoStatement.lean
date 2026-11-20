@@ -8,6 +8,9 @@ open Formalism.BasicNotions Formalism.MainNotions.GlobalTheoryTheory.GenusMassVo
 open scoped TensorProduct ENNReal
 open GlobalTheory.TamSU GlobalTheory.SUVol GlobalTheory.UCls GlobalTheory.AdLat GlobalTheory.Published GlobalTheory.TamUnf
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.InfUnitarySU.infSU_equiv_realSU | exact GlobalTheory.InfUnitarySU.infSU_equiv_realSU | (intros; apply GlobalTheory.InfUnitarySU.infSU_equiv_realSU <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.archimedean_special_unitary_iso : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G : Matrix (Fin r) (Fin r) E)
     (Ψ : Finset (E →+* ℂ)) (θ : Ψ → (Ainf (maximalRealSubfield E) ⊗[maximalRealSubfield E] E →+* ℂ)),
     (∀ ρ : Ψ, IsInfEmb ρ.1 (θ ρ)) →

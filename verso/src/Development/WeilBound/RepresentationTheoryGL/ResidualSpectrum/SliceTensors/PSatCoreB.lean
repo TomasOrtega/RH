@@ -14,10 +14,18 @@ variable {α : Type} [Fintype α] {Γ X : α → Type} [∀ a, Group (Γ a)] [�
 def evT (ev : ∀ a, X a →ₗ[ℂ] ℂ) : (⨂[ℂ] a, X a) →ₗ[ℂ] ℂ :=
   PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra ℂ α ℂ).compLinearMap ev)
 
+/- English proof (translation)
+Simplify using `[evT]`.
+-/
 theorem evT_tprod (ev : ∀ a, X a →ₗ[ℂ] ℂ) (x : ∀ a, X a) :
     evT ev (PiTensorProduct.tprod ℂ x) = ∏ a, ev a (x a) := by
   simp [evT]
 
+/- English proof (translation)
+Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r x`. Rewrite using `[map_smul, map_smul, piTensor_tprod, piTensor_tprod, smul_comm]`. Use `congr 1`. Simplify using `only [twist_apply]`.
+
+Rewrite using `[MultilinearMap.map_smul_univ, Units.coe_prod]`. Consider the case `add y₁ y₂ h₁ h₂ => rw [map_add, map_add, h₁, h₂, smul_add]`.
+-/
 theorem piTensor_twist (ρ : ∀ a, Representation ℂ (Γ a) (X a)) (χ : ∀ a, Γ a →* ℂˣ) (g : ∀ a, Γ a)
     (y : ⨂[ℂ] a, X a) :
     piTensor (fun a => twist (ρ a) (χ a)) g y = ((∏ a, χ a (g a) : ℂˣ) : ℂ) • piTensor ρ g y := by
@@ -42,6 +50,13 @@ variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {
 
 omit h in
 
+/- English proof (translation)
+Set `Φ : (⨂[ℂ] a, X a) →ₗ[ℂ] ((∀ a, GL (Fin (N a)) (w.adicCompletion E)) → ℂ)` to `{ toFun := fun y ν => evT ev (piTensor π ν y) map_add' := fun y y' => funext fun ν => by simp [map_add] map_smul' := fun r y => funext fun ν => by simp [map_smul] }`. Establish `hΦs : ∀ y, Φ y ∈ smoothPart (rightReg ℂ (∀ a, GL (Fin (N a)) (w.adicCompletion E)) ℂ)` using `fun y => mem_smoothPart_of_nhds (Filter.mem_of_superset ((isSmooth_piTensor hs y).mem_nhds (by simp)) fun g hg =>`. Use function extensionality and compare the values at `fun ν => by`. Establish `hg' : piTensor π g y = y` using `hg`. Use `show evT ev (piTensor π (ν * g) y) = evT ev (piTensor π ν y)`.
+
+Rewrite using `[map_mul, Module.End.mul_apply, hg'])`. Set `Φ' : (⨂[ℂ] a, X a) →ₗ[ℂ] smoothPart (rightReg ℂ (∀ a, GL (Fin (N a)) (w.adicCompletion E)) ℂ)` to `Φ.codRestrict _ hΦs`. Establish `hΦe : ∀ g y, Φ' (piTensor π g y) = smoothRep (rightReg ℂ _ ℂ) g (Φ' y)` using `fun g y => Subtype.ext (funext fun ν => by show evT ev (piTensor π ν (piTensor π g y)) = evT ev (piTensor π (ν * g) y)`. Rewrite using `[map_mul, Module.End.mul_apply])`. Establish `key` using `idem_map (isSmooth_piTensor hs) (isSmooth_smoothRep _) hC Φ' hΦe v`.
+
+Establish `hfix : Φ' v ∈ fixed (smoothRep (rightReg ℂ (∀ a, GL (Fin (N a)) (w.adicCompletion E)) ℂ)) (Subgroup.pi Set.univ fun a => KO (w.adicCompletion E) (Fin (N a)))` using `GlobalTheory.LGrp.mem_fixed.2 fun κ hκ => Subtype.ext (funext fun ν => by show evT ev (piTensor π (ν * κ) v) = evT ev (piTensor π ν v)`. Conclude with `hinv ν κ fun a => hκ a trivial)`. Rewrite `key` using `[idem_of_mem _ _ hfix]`. Conclude with `congrFun (congrArg Subtype.val key) μ`.
+-/
 theorem evT_idem (hs : ∀ a, IsSmooth (π a))
     (hC : IsCompact (Subgroup.pi Set.univ (fun a => KO (w.adicCompletion E) (Fin (N a))) :
       Set (∀ a, GL (Fin (N a)) (w.adicCompletion E))))
@@ -75,6 +90,45 @@ theorem evT_idem (hs : ∀ a, IsSmooth (π a))
   rw [idem_of_mem _ _ hfix] at key
   exact congrFun (congrArg Subtype.val key) μ
 
+/- English proof (translation)
+Establish `hKO : ∀ m, KGL w m = KO (w.adicCompletion E) (Fin m)` using `fun m => (SphCompletion.KO_completion w m).symm`. Set `χ : ∀ a, GL (Fin (N a)) (w.adicCompletion E) →* ℂˣ` to `fun a => detChar (Fin (N a)) (absPow (w.adicCompletion E) (-((modExp (fun a => Fin (N a)) a : ℂ) / 2)))`. Set `π' : ∀ a, Representation ℂ (GL (Fin (N a)) (w.adicCompletion E)) (X a)` to `fun a => twist (π a) (χ a)`. Establish `hs' : ∀ a, IsSmooth (π' a)` using `fun a => isSmooth_twist (hs a) (isSmoothChar_of_isUnram (isUnram_absPow _ _)).detChar`. Establish `hχK : ∀ a, ∀ g ∈ KO (w.adicCompletion E) (Fin (N a)), χ a g = 1` using `fun a g hg => absPow_det_of_mem _ (by rw [hKO]; exact hg)`.
+
+Establish `hC : IsCompact (Subgroup.pi Set.univ (fun a => KO (w.adicCompletion E) (Fin (N a))) : Set (∀ a, GL (Fin (N a)) (w.adicCompletion E)))` using `isCompact_univ_pi fun a => GlobalTheory.SplitFlip.isCompact_KO`. Establish `hsT` using `isSmooth_piTensor hs`. Use `set P := idem hsT hC with hPdef`. Establish `hPfix : ∀ y, ∀ g : ∀ a, GL (Fin (N a)) (w.adicCompletion E), (∀ a, g a ∈ KO (w.adicCompletion E) (Fin (N a))) → piTensor π' g (P y) = P y` using `fun y g hg => by`. Rewrite using `[piTensor_twist, Finset.prod_eq_one fun a _ => hχK a _ (hg a), Units.val_one, one_smul]`.
+
+Conclude with `GlobalTheory.LGrp.mem_fixed.1 (idem_mem hsT hC y) g fun a _ => hg a`. Use `set Bt := ∑ a, (S a).map (· * z a) with hBt`. Establish `hQ : ∀ y, ∀ f : IndSp (stdBlocks N h) (piTensor π'), f ∈ fixed (multiProd (stdBlocks N h) π') (KGL w n) → f.1.1 1 = P y → (∀ ϖ, IsUnifV E w ϖ → ∀ j ≤ n, heckeVec (multiProd (stdBlocks N h) π') (KGL w n) (Tj ℂ n (Ov E w) ϖ j) f = satEig (qV E w) n Bt j • f) ∧ (f ≠ 0 → Bt.card = n)`. Introduce `y`. Proceed by induction on `y using PiTensorProduct.induction_on with`.
+
+Consider the case `smul_tprod r x`. Introduce `f hf hf1`. Distinguish the cases in `hf0 : f = 0`. Substitute `hf0` using the available equality. Use `⟨fun ϖ hϖ j hj => ?_, fun h0 => absurd rfl h0⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_zero]`. Conclude with `(SatCompare.heckeLin (Final.GLintComm E w n) (Tj_mem_hecke hϖ j) _).map_zero`. Establish `hfKO : f ∈ fixed (multiProd (stdBlocks N h) π') (KO (w.adicCompletion E) (Fin n))`. Rewrite using `[← hKO]`. Conclude with `hf`.
+
+Establish `e1 : f.1.1 1 = r • PiTensorProduct.tprod ℂ fun a => idem (hs a) GlobalTheory.SplitFlip.isCompact_KO (x a)`. Rewrite using `[hf1, map_smul, hPdef, idem_tprod hs (fun a => GlobalTheory.SplitFlip.isCompact_KO) hC]`. Establish `hx0 : ∀ a, idem (hs a) GlobalTheory.SplitFlip.isCompact_KO (x a) ≠ 0` using `fun a ha => hf0 (by`. Use `eq_zero_of_apply_one (stdBlocks N h) hfKO ?_` and prove the remaining obligations. Rewrite using `[e1, MultilinearMap.map_coord_zero _ a ha, smul_zero])`.
+
+Establish `hsat : ∀ a, IsSatVecGL w (π' a) (idem (hs a) GlobalTheory.SplitFlip.isCompact_KO (x a)) ((S a).map (· * z a))` using `fun a => isSatVecGL_twist (hS a _ (by rw [hKO]; exact idem_mem _ _ _) (hx0 a)) _ (by rw [hz a, neg_neg])`. Establish `hf'` using `isSatVecGL_multiProd h hs' hsat hf hf0 e1`. Conclude with `⟨hf'.2.2.2, fun _ => hf'.2.2.1⟩`. Consider the case `add y₁ y₂ ih₁ ih₂`. Introduce `f hf hf1`.
+
+Take `⟨f₁, hf₁, e₁⟩` from `exists_fixed_apply_one (stdBlocks N h) (ρ := piTensor π') (x := P y₁) (hPfix y₁)`. Take `⟨f₂, hf₂, e₂⟩` from `exists_fixed_apply_one (stdBlocks N h) (ρ := piTensor π') (x := P y₂) (hPfix y₂)`. Establish `hf₁' : f₁ ∈ fixed (multiProd (stdBlocks N h) π') (KGL w n)` using `by rw [hKO]; exact hf₁`. Establish `hf₂' : f₂ ∈ fixed (multiProd (stdBlocks N h) π') (KGL w n)` using `by rw [hKO]; exact hf₂`. Establish `hsum : f = f₁ + f₂`.
+
+Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_apply_one (stdBlocks N h) (sub_mem (by rw [← hKO]; exact hf) (add_mem hf₁ hf₂)) ?_` and prove the remaining obligations. Use `show f.1.1 1 - (f₁.1.1 1 + f₂.1.1 1) = 0`. Rewrite using `[hf1, e₁, e₂, map_add, sub_self]`. Take `⟨H₁, C₁⟩` from `ih₁ f₁ hf₁' e₁`.
+
+Take `⟨H₂, C₂⟩` from `ih₂ f₂ hf₂' e₂`. Use `⟨fun ϖ hϖ j hj => ?_, fun h0 => ?_⟩` and prove the remaining obligations. Use `(SatCompare.heckeLin (Final.GLintComm E w n) (Tj_mem_hecke hϖ j) (multiProd (stdBlocks N h) π')).map_add f₁ f₂` as an intermediate fact. Simplify using `only [SatCompare.heckeLin_apply] at this`. Rewrite using `[hsum, this, H₁ ϖ hϖ j hj, H₂ ϖ hϖ j hj, smul_add]`.
+
+Distinguish the cases in `h1 : f₁ = 0`. Use `C₂ fun h2 => h0 ?_` and prove the remaining obligations. Rewrite using `[hsum, h1, h2, add_zero]`. Conclude with `C₁ h1`. Take `⟨f, hf, hf1⟩` from `exists_fixed_apply_one (stdBlocks N h) (ρ := piTensor π') (x := P v) (hPfix v)`.
+
+Establish `hfK : f ∈ fixed (multiProd (stdBlocks N h) π') (KGL w n)` using `by rw [hKO]; exact hf`. Set `Y : IndSp (stdBlocks N h) (piTensor π') →ₗ[ℂ] (GL (Fin n) (w.adicCompletion E) → ℂ)` to `(evT ev).compLeft _ ∘ₗ Submodule.subtype _ ∘ₗ Submodule.subtype _`. Establish `hYe : ∀ g F, Y (multiProd (stdBlocks N h) π' g F) = rightReg ℂ _ ℂ g (Y F)` using `fun _ _ => rfl`. Establish `hδ : ∀ μ : ∀ a, GL (Fin (N a)) (w.adicCompletion E), (deltaHalf (w.adicCompletion E) (fun a => Fin (N a)) μ : ℂ) * ((∏ a, χ a (μ a) : ℂˣ) : ℂ) = 1` using `fun μ => by`. Rewrite using `[← Units.val_mul, deltaHalf_apply, ← Finset.prod_mul_distrib, Finset.prod_eq_one, Units.val_one]`.
+
+Introduce `a _`. Simplify using `only [χ, detChar_apply, absPow_neg, MonoidHom.inv_apply, mul_inv_cancel]`. Establish `hinv : ∀ (μ κ : ∀ a, GL (Fin (N a)) (w.adicCompletion E)), (∀ a, κ a ∈ KO (w.adicCompletion E) (Fin (N a))) → evT ev (piTensor π (μ * κ) v) = evT ev (piTensor π μ v)` using `fun μ κ hκ => by`. Rewrite using `[← hGv, ← hGv, map_mul, hGK]`. Use `((LeviInt.levi_integral_facts _ _ _ _ (stdBlocks N h)).1 κ 1 (one_mem _)).2 ⟨hκ, one_mem _⟩` as an intermediate fact.
+
+Rewrite `this` using `[mul_one]`. Rewrite using `[hKO]`. Conclude with `this`. Establish `hYG : Y f = G`. Use function extensionality and compare the values at `g`.
+
+Take `⟨p, hp, x, hx, rfl⟩` from `(LeviInt.levi_integral_facts _ _ _ _ (stdBlocks N h)).2.2.2.2.2.2.2.2 g`. Rewrite using `[hGK _ _ (by rw [hKO]; exact hx)]`. Use `show evT ev (f.1.1 (p * x)) = _`. Rewrite using `[apply_mul_of_fixed _ hf p hx]`. Take `⟨u, hu, hpu⟩` from `exists_levi_mul_unip _ (stdBlocks N h) ⟨p, hp⟩`.
+
+Establish `hlaw` using `parInd_law (stdBlocks N h) (piTensor π') f ⟨p, hp⟩ 1`. Rewrite `hlaw` using `[mul_one]`. Generalize the expression as in `leviProj (w.adicCompletion E) (stdBlocks N h) ⟨p, hp⟩ = μ at hpu hlaw`. Establish `hN` using `leviEmb_mem_normalizer (w.adicCompletion E) (stdBlocks N h) μ`. Establish `hu'` using `(Subgroup.mem_normalizer_iff.1 hN u).1 hu`.
+
+Establish `hG1 : G p = G (leviEmb (w.adicCompletion E) (stdBlocks N h) μ)`. Establish `e : p = (leviEmb (w.adicCompletion E) (stdBlocks N h) μ * u * (leviEmb (w.adicCompletion E) (stdBlocks N h) μ)⁻¹) * leviEmb (w.adicCompletion E) (stdBlocks N h) μ`. Rewrite using `[inv_mul_cancel_right]`. Conclude with `hpu`. Rewrite using `[e]`.
+
+Conclude with `hGN _ hu' _`. Rewrite using `[hG1, hlaw, hf1, piTensor_twist, smul_smul, map_smul, smul_eq_mul, hδ, one_mul, evT_idem hs hC ev v hinv μ, hGv]`. Establish `hfne : f ≠ 0` using `fun e => hG0 (by rw [← hYG, e, map_zero])`. Take `⟨hH, hcard⟩` from `hQ v f hfK hf1`. Use `⟨hG0, GlobalTheory.LGrp.mem_fixed.2 fun k hk => funext fun g => hGK g k hk, hcard hfne, fun ϖ hϖ j hj => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hYG, ← map_heckeVec (Final.GLintComm E w n) (Tj_mem_hecke hϖ j) Y hYe f, hH ϖ hϖ j hj, map_smul]`.
+-/
 theorem isSatVecGL_of_levi (hs : ∀ a, IsSmooth (π a)) (S : Fin c → Multiset ℂˣ)
     (hS : ∀ a, ∀ x ∈ fixed (π a) (KGL w (N a)), x ≠ 0 → IsSatVecGL w (π a) x (S a))
     (z : Fin c → ℂˣ) (hz : ∀ a, (z a : ℂ) = (qV E w : ℂ) ^ ((modExp (fun a => Fin (N a)) a : ℂ) / 2))

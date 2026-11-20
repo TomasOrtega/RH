@@ -21,6 +21,11 @@ noncomputable section
 
 namespace GlobalTheory.ThetaRealDeriv
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.WeilM.schr, ← mul_assoc, ← AddChar.map_add_eq_mul, add_assoc]`. Use `congr 2`. Simplify using `only [Prod.fst_add, Prod.snd_add, add_dotProduct, dotProduct_add]`. Rewrite using `[dotProduct_comm w'.1 w.2]`. Use `first`.
+
+Consider the case `linear_combination (w.1 ⬝ᵥ w'.2) * invOf_mul_self (2 : R)`. Consider the case `linear_combination (-(w.1 ⬝ᵥ w'.2)) * invOf_mul_self (2 : R)`.
+-/
 theorem schr_comp_apply {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (w w' : (κ → R) × (κ → R)) (Φ : (κ → R) → ℂ) (x : κ → R) :
     GlobalTheory.WeilM.schr ψ w (GlobalTheory.WeilM.schr ψ w' Φ) x =
@@ -33,6 +38,13 @@ theorem schr_comp_apply {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddCh
     | linear_combination (w.1 ⬝ᵥ w'.2) * invOf_mul_self (2 : R)
     | linear_combination (-(w.1 ⬝ᵥ w'.2)) * invOf_mul_self (2 : R)
 
+/- English proof (translation)
+Establish `hGH : G * H = 1` using `mul_eq_one_comm.1 hHG`. Establish `hl : ∀ u : Matrix β γ A, ((uᵀ.submatrix e.symm id * G * H)ᵀ).submatrix id e = u` using `fun u => by`. Rewrite using `[Matrix.mul_assoc, hGH, Matrix.mul_one]`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Use `⟨⟨⟨fun u => uᵀ.submatrix e.symm id * G, fun x => ((x * H)ᵀ).submatrix id e, hl, fun x => ?_⟩, fun u v => ?_⟩, fun _ => rfl, hl⟩` and prove the remaining obligations. Use `show ((((x * H)ᵀ).submatrix id e)ᵀ).submatrix e.symm id * G = x`. Establish `: ((((x * H)ᵀ).submatrix id e)ᵀ).submatrix e.symm id = x * H`. Use extensionality with `i j`. Simplify using `only [submatrix_apply, transpose_apply, id, Equiv.apply_symm_apply]`.
+
+Rewrite using `[this, Matrix.mul_assoc, hHG, Matrix.mul_one]`. Use `show (u + v)ᵀ.submatrix e.symm id * G = uᵀ.submatrix e.symm id * G + vᵀ.submatrix e.symm id * G`. Rewrite using `[← Matrix.add_mul]`. Both sides reduce to the same expression.
+-/
 theorem exists_transpose_mul_equiv {A : Type} [CommRing A] {α β γ : Type} [Fintype β] [DecidableEq β] (e : γ ≃ α)
     {G H : Matrix β β A} (hHG : H * G = 1) :
     ∃ T : Matrix β γ A ≃+ Matrix α β A, (∀ u, T u = uᵀ.submatrix e.symm id * G) ∧
@@ -53,6 +65,9 @@ theorem exists_transpose_mul_equiv {A : Type} [CommRing A] {α β γ : Type} [Fi
     rw [← Matrix.add_mul]
     rfl
 
+/- English proof (translation)
+Establish `h0 : finPart D (algebraMap (AF D.host.F) (AE D) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t)) = 0` using `by show ((0 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E)) = 0`. Conclude with `TensorProduct.zero_tmul _ _`. Rewrite using `[Algebra.smul_def, map_mul, h0, zero_mul]`.
+-/
 theorem finPart_realAd_smul (D : D7) (t : ℝ) (y : AE D) :
     finPart D (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • y) = 0 := by
   have h0 : finPart D (algebraMap (AF D.host.F) (AE D) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t)) = 0 := by
@@ -62,6 +77,25 @@ theorem finPart_realAd_smul (D : D7) (t : ℝ) (y : AE D) :
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Establish `hF : IsTotallyReal D.host.F` using `hBs.cm.1`. Establish `hψc : IsCharAF D.host.F Bs.ψ` using `GlobalTheory.StdCharFromIsStd.isCharAF hBs.std`. Establish `hdet : IsUnit S.gram.det` using `(Formalism.L2.Theta.gram_det_ne S).isUnit`. Establish `hHG : (S.gram⁻¹).map (incA D) * S.gram.map (incA D) = 1`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ hdet, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Establish `hG : (S.gram.map (incA D)).map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) = (S.gram.map (incA D))ᵀ`. Use extensionality with `i j`. Establish `h` using `hV j i`. Rewrite `h` using `[hVJ, Matrix.neg_apply, Matrix.neg_apply, map_neg, neg_inj]`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig (incA D (S.gram i j)) = incA D (S.gram j i)`.
+
+Rewrite using `[← h]`. Both sides reduce to the same expression. Take `⟨cS, hc, hci⟩` from `exists_transpose_mul_equiv e (α := Fin X.rank) hHG`. Establish `hth : ∀ Ψ u, GlobalTheory.TripleRead.thO M Bs.ψ S.gram e Ψ (cS u) = GlobalTheory.WeilM.thetaSum D.host.F (M.co.rho Bs.ψ u Ψ)` using `fun Ψ u => congrArg (fun v => GlobalTheory.WeilM.thetaSum D.host.F (M.co.rho Bs.ψ v Ψ)) (hci u)`. Take `⟨co, hco⟩` from `GlobalTheory.SquareAgree.exists_darboux_transpose_mul (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) e.symm (X.gram.map (incA D)) (incA D D.host.xi0) hHG hG (JV := GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Vs.J) (JW := Globa …`.
+
+Establish `hform : ∀ w w' : Matrix (Fin S.rank) (Fin d) (AE D), symplO S X (cS w) (cS w') = (M.co.e w).1 ⬝ᵥ (M.co.e w').2 - (M.co.e w').1 ⬝ᵥ (M.co.e w).2`. Introduce `w w'`. Rewrite using `[← GlobalTheory.WeilSchrodinger.symp_eq_symplO D S X X.gramᵀ (D.host.xi0 • S.gram⁻¹) 1 rfl (one_smul _ _), co.form, hco, hco]`. Establish `hcs : ∀ (a : AF D.host.F) (v : Matrix (Fin S.rank) (Fin d) (AE D)), cS (a • v) = a • cS v`. Introduce `a v`.
+
+Rewrite using `[hc, hc, ← Matrix.smul_mul]`. Both sides reduce to the same expression. Establish `h2 : algebraMap D.host.F (AF D.host.F) (1 / 2) = ⅟(2 : AF D.host.F)` using `(invOf_eq_right_inv (by rw [← map_ofNat (algebraMap D.host.F (AF D.host.F)) 2, ← map_mul]; norm_num)).symm`. Use `⟨AddMonoidHom.mk' (fun t => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • cS u₀) fun s t => by` and prove the remaining obligations. Rewrite using `[GlobalTheory.ThetaLineDeriv.realAd_add, add_smul], ?_, fun t => ?_, funext fun x => ?_⟩`.
+
+Use `continuous_pi fun i => continuous_pi fun j => ?_ show Continuous fun t : ℝ => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • cS u₀ i j` and prove the remaining obligations. Conclude with `(GlobalTheory.ThetaLineDeriv.continuous_realAd (F := D.host.F)).fun_smul continuous_const`. Use extensionality with `i j`. Conclude with `finPart_realAd_smul D t (cS u₀ i j)`. Take `⟨u, rfl⟩` from `cS.surjective x`.
+
+Establish `hkey : ∀ t : ℝ, heisO Bs.ψ S X (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • cS u₀) (GlobalTheory.TripleRead.thO M Bs.ψ S.gram e Φ) (cS u) = GlobalTheory.WeilM.thetaSum D.host.F (M.co.rho Bs.ψ u (M.co.rho Bs.ψ (GlobalTheory.IndefiniteRowSideFullHec …`. Introduce `t`. Rewrite using `[← hcs]`. Use `set u' := GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.realAd D.host.F t • u₀`. Establish `e1 : ∀ x, M.co.rho Bs.ψ u (M.co.rho Bs.ψ u' Φ) x = Bs.ψ (⅟(2 : AF D.host.F) * ((M.co.e u).1 ⬝ᵥ (M.co.e u').2 - (M.co.e u').1 ⬝ᵥ (M.co.e u).2)) * M.co.rho Bs.ψ (u + u') Φ x`.
+
+Introduce `x`. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, map_add]`. Conclude with `schr_comp_apply Bs.ψ _ _ _ x`. Simplify using `only [heisO]`. Rewrite using `[← map_add, hth]`.
+
+Simplify using `only [GlobalTheory.WeilM.thetaSum, e1, tsum_mul_left]`. Rewrite using `[symplOH, hform, h2]`. Rewrite using `[hth]`. Establish `hder` using `GlobalTheory.ThetaLineDeriv.hasDerivAt_thetaSum_rho M.co Bs.ψ hF hψc u₀ _ hΦ _ h1 hd u`. Conclude with `(hder.deriv.symm.trans (congrArg (fun g => deriv g 0) (funext hkey)).symm)`.
+-/
 theorem exists_line (D : D7) (S X : HSp D) {d : ℕ} (e : Fin d ≃ Fin X.rank)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (hBs : Bs.IsGood D.sp.cm.sig)
     (Vs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E S.rank) (Ws : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E d)
@@ -136,6 +170,9 @@ theorem exists_line (D : D7) (S X : HSp D) {d : ℕ} (e : Fin d ≃ Fin X.rank)
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `_ _ D ψ θ _ _ W W₁ X A A₁ B α β _ ωA ωB _ _ e Bs Γ Xc om om' h _ _ R Rf hM f φ u f₁ _ _ hact hφ hvac`. Take `rfl` from `h.ψ`. Establish `hstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x : Fin W₁.rank × Fin (W.rank + W₁.rank) → v.adicCompletion D.host.F | ∀ i, x i ∈ v.adicCompletionIntegers D.host.F} 1` using `(hvac.and hM.triple.geo.hM'.std).mono fun v h => h.1.trans h.2`. Conclude with `exists_line D W₁ X e Bs hM.triple.base Γ.V' Γ.W (h.JW₁.trans (neg_one_smul _ _)) h.JX hM.triple.geo.hV'.herm Γ.M' u _ _ (GlobalTheory.TensUniq.pure_mem_schA f φ hφ hstd) (GlobalTheory.TensUniq.pure_mem_schA f₁ φ hφ hstd) fun x => hact _ (GlobalTheory.ThK.EvUniqInf.rest_pure f φ h …`.
+-/
 theorem thO_pure_deriv_second : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →

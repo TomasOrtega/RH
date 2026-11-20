@@ -12,6 +12,13 @@ open NumberField Complex ReciprocityTheory.ChartRestriction.G.I2 ReciprocityTheo
 open ReciprocityTheory.GeometryOfNumbersTheory (stdLat)
 open scoped nonZeroDivisors
 
+/- English proof (translation)
+Establish `h1 : A₁ ⊓ A₂ = B₁.comap f ⊓ A₂`. Use extensionality with `v`. Simplify using `only [AddSubgroup.mem_inf, AddSubgroup.mem_comap]`. Conclude with `⟨fun h => ⟨(hker v h.2).2 h.1, h.2⟩, fun h => ⟨(hker v h.2).1 h.1, h.2⟩⟩`. Establish `h2 : B₁ ⊔ A₂.map f = B₁ ⊔ B₂`.
+
+Use `le_antisymm (sup_le_sup_left ?_ _) (sup_le le_sup_left fun u hu => ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `hf v hv`. Take `⟨v, hv, h⟩` from `hsurj u hu`. Conclude with `AddSubgroup.mem_sup.2 ⟨_, h, f v, ⟨v, hv, rfl⟩, sub_add_cancel _ _⟩`.
+
+Rewrite using `[← AddSubgroup.inf_relIndex_right, h1, AddSubgroup.inf_relIndex_right, AddSubgroup.relIndex_comap, ← AddSubgroup.relIndex_sup_left, h2, AddSubgroup.relIndex_sup_left]`.
+-/
 theorem relIndex_eq_of_hom {M M' : Type*} [AddCommGroup M] [AddCommGroup M']
     {A₁ A₂ : AddSubgroup M} {B₁ B₂ : AddSubgroup M'} (f : M →+ M')
     (hf : ∀ v ∈ A₂, f v ∈ B₂) (hker : ∀ v ∈ A₂, f v ∈ B₁ ↔ v ∈ A₁)
@@ -30,6 +37,11 @@ theorem relIndex_eq_of_hom {M M' : Type*} [AddCommGroup M] [AddCommGroup M']
     AddSubgroup.relIndex_comap, ← AddSubgroup.relIndex_sup_left, h2,
     AddSubgroup.relIndex_sup_left]
 
+/- English proof (translation)
+Set `f : (AddSubgroup.pi Set.univ L) →+ (∀ i, L i ⧸ (L' i).addSubgroupOf (L i))` to `{ toFun := fun x i => QuotientAddGroup.mk ⟨x.1 i, x.2 i (Set.mem_univ i)⟩ map_zero' := rfl map_add' := fun _ _ => rfl }`. Establish `hf : Function.Surjective f` using `fun y => ⟨⟨fun i => (y i).out, fun i _ => (y i).out.2⟩, funext fun i => (y i).out_eq⟩`. Establish `hc : (AddSubgroup.pi Set.univ L').addSubgroupOf (AddSubgroup.pi Set.univ L) = f.ker`. Use extensionality with `x`. Rewrite using `[AddMonoidHom.mem_ker, funext_iff, AddSubgroup.mem_addSubgroupOf, AddSubgroup.mem_pi]`.
+
+Use `forall_congr' fun i => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ↔ (QuotientAddGroup.mk ⟨x.1 i, x.2 i (Set.mem_univ i)⟩ : L i ⧸ (L' i).addSubgroupOf (L i)) = 0`. Simplify using `[AddSubgroup.mem_addSubgroupOf]`. Rewrite using `[AddSubgroup.relIndex, hc, AddSubgroup.index_ker, AddMonoidHom.range_eq_top.2 hf, AddSubgroup.card_top, Nat.card_pi]`. Both sides reduce to the same expression.
+-/
 theorem relIndex_pi_univ {ι : Type*} [Fintype ι] {G : ι → Type*} [∀ i, AddCommGroup (G i)]
     (L' L : ∀ i, AddSubgroup (G i)) :
     (AddSubgroup.pi Set.univ L').relIndex (AddSubgroup.pi Set.univ L) =
@@ -51,6 +63,13 @@ theorem relIndex_pi_univ {ι : Type*} [Fintype ι] {G : ι → Type*} [∀ i, Ad
     AddSubgroup.card_top, Nat.card_pi]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← Fintype.card_coe, ← Nat.card_eq_fintype_card]`. Use `Nat.card_eq_of_bijective (fun y : R => (QuotientAddGroup.mk ⟨y, hR y y.2⟩ : B ⧸ A.addSubgroupOf B)) ⟨?_, ?_⟩` and prove the remaining obligations. Introduce `y y' h`. Establish `h1 : (y : M) - y' ∈ A`. Simplify `QuotientAddGroup.eq_iff_sub_mem.1 h` using `[AddSubgroup.mem_addSubgroupOf]`.
+
+Conclude with `Subtype.ext ((hR' y (hR y y.2)).unique ⟨y.2, by simp⟩ ⟨y'.2, h1⟩)`. Introduce `q`. Take `⟨y, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Take `⟨r, ⟨hr, h⟩, -⟩` from `hR' y y.2`. Use `⟨⟨r, hr⟩, (QuotientAddGroup.eq_iff_sub_mem.2 ?_).symm⟩` and prove the remaining obligations.
+
+Simplify `h` using `[AddSubgroup.mem_addSubgroupOf]`.
+-/
 theorem card_eq_relIndex_of_reps {M : Type*} [AddCommGroup M] {A B : AddSubgroup M} {R : Finset M}
     (hR : ∀ y ∈ R, y ∈ B) (hR' : ∀ y ∈ B, ∃! r ∈ R, y - r ∈ A) : R.card = A.relIndex B := by
   rw [← Fintype.card_coe, ← Nat.card_eq_fintype_card]
@@ -66,6 +85,13 @@ theorem card_eq_relIndex_of_reps {M : Type*} [AddCommGroup M] {A B : AddSubgroup
     refine ⟨⟨r, hr⟩, (QuotientAddGroup.eq_iff_sub_mem.2 ?_).symm⟩
     simpa [AddSubgroup.mem_addSubgroupOf] using h
 
+/- English proof (translation)
+Use `haveI : Fintype (B ⧸ A.addSubgroupOf B) := AddSubgroup.fintypeOfIndexNeZero h`. Use `⟨Finset.univ.image fun q : B ⧸ A.addSubgroupOf B => (q.out : M), ?_, fun y hy => ?_⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `q.out.2`.
+
+Establish `key : ∀ q : B ⧸ A.addSubgroupOf B, y - (q.out : M) ∈ A ↔ QuotientAddGroup.mk ⟨y, hy⟩ = q` using `fun q => by conv_rhs => rw [← QuotientAddGroup.out_eq' q, QuotientAddGroup.eq_iff_sub_mem]`. Simplify using `[AddSubgroup.mem_addSubgroupOf]`. Use `⟨_, ⟨Finset.mem_image_of_mem _ (Finset.mem_univ _), (key _).2 rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `r ⟨hr, h⟩`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hr`.
+
+Rewrite using `[(key q).1 h]`.
+-/
 theorem exists_reps_of_relIndex_ne_zero {M : Type*} [AddCommGroup M] {A B : AddSubgroup M}
     (h : A.relIndex B ≠ 0) :
     ∃ R : Finset M, (∀ y ∈ R, y ∈ B) ∧ ∀ y ∈ B, ∃! r ∈ R, y - r ∈ A := by
@@ -112,6 +138,17 @@ open ReciprocityTheory.MultiplicativeHeights.SemiDegIdx ReciprocityTheory.PGsh
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨C, z, hfgC, h1, htri, hdiag, hin, hdec, hidx⟩` from `lattice_split K n X hfg hstd`. Set `CF : Fin n → FractionalIdeal (𝓞 K)⁰ K` to `fun i => ⟨C i, FractionalIdeal.isFractional_of_fg (hfgC i)⟩`. Use `⟨∏ i, CF i, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[coe_prod_frac]`. Express the relevant statement in the definitionally equal form `∏ i, C i = _`.
+
+Use `le_antisymm ?_ (Submodule.span_le.2 ?_)` and prove the remaining obligations. Rewrite using `[prod_eq_span_prod]`. Use `Submodule.span_mono fun x hx => ?_` and prove the remaining obligations. Take `⟨t, ht, rfl⟩` from `(Set.mem_fintype_prod _ _).1 hx`. Use `⟨fun i => t i • z i, fun i => smul_mem_of_split hin i (ht i), ?_⟩` and prove the remaining obligations.
+
+Establish `: (Matrix.of fun i => t i • z i) = Matrix.diagonal t * rowMat z`. Use extensionality with `i j`. Simplify using `[rowMat, Matrix.diagonal_mul]`. Rewrite using `[this, Matrix.det_mul, det_rowMat z htri hdiag, Matrix.det_diagonal, mul_one]`. Introduce and unpack `_ ⟨v, hv, rfl⟩ choose T hT hTv using fun i => hdec (v i) (hv i)`.
+
+Establish `: Matrix.of v = Matrix.of T * rowMat z`. Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, hTv i]`. Simplify using `[rowMat, Matrix.mul_apply, Finset.sum_apply]`. Rewrite using `[this, Matrix.det_mul, det_rowMat z htri hdiag, mul_one, ← Matrix.det_transpose]`.
+
+Conclude with `det_mem_prod_sub C _ fun i j => hT j i`. Rewrite using `[hidx, map_prod, Nat.cast_prod, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one fun i _ => absNorm_mul_relIndex_one (C i) (hfgC i) (h1 i)`.
+-/
 theorem exists_coe_eq_span_det_of_intVec_le (X : Submodule (𝓞 K) (Fin n → K)) (hfg : X.FG)
     (hstd : intVec K n ≤ X) :
     ∃ J : FractionalIdeal (𝓞 K)⁰ K, (J : Submodule (𝓞 K) K) = Submodule.span (𝓞 K)
@@ -143,6 +180,29 @@ theorem exists_coe_eq_span_det_of_intVec_le (X : Submodule (𝓞 K) (Fin n → K
   · rw [hidx, map_prod, Nat.cast_prod, ← Finset.prod_mul_distrib]
     exact Finset.prod_eq_one fun i _ => absNorm_mul_relIndex_one (C i) (hfgC i) (h1 i)
 
+/- English proof (translation)
+Use `choose d hd0 hd using fun k : Fin n => exists_smul_mem_of_mem_span_fraction (K := K) Λ (Pi.single k (1 : K)) (hsp ▸ Submodule.mem_top)`. Use `set δ : K := algebraMap (𝓞 K) K (∏ k, d k) with hδ`. Establish `hδ0 : δ ≠ 0` using `by simpa [hδ, Finset.prod_ne_zero_iff] using hd0`. Set `μ : (Fin n → K) →ₗ[𝓞 K] (Fin n → K)` to `(LinearMap.lsmul K _ δ).restrictScalars (𝓞 K)`. Establish `hμ : ∀ x, μ x = δ • x` using `fun _ => rfl`.
+
+Establish `hinj : Function.Injective μ` using `smul_right_injective _ hδ0`. Establish `hsurj : Function.Surjective μ` using `fun x => ⟨δ⁻¹ • x, by rw [hμ, smul_inv_smul₀ hδ0]⟩`. Establish `hstd : intVec K n ≤ Λ.comap μ`. Introduce `x hx`. Use `choose c hc using fun k => Submodule.mem_one.1 (mem_intVec.1 hx k)`.
+
+Establish `: x = ∑ k, c k • (Pi.single k (1 : K) : Fin n → K)`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply, Algebra.smul_def, hc]`. Rewrite using `[this]`. Use `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+
+Rewrite using `[Submodule.mem_comap, hμ, hδ, algebraMap_smul, ← Finset.prod_erase_mul _ _ (Finset.mem_univ k), mul_smul]`. Conclude with `Λ.smul_mem _ (hd k)`. Establish `key : ∀ Y : Submodule (𝓞 K) (Fin n → K), Λ ≤ Y → Y.FG → ∃ J : FractionalIdeal (𝓞 K)⁰ K, (J : Submodule (𝓞 K) K) = Submodule.span (𝓞 K) {d | ∃ v : Fin n → Fin n → K, (∀ i, v i ∈ Y) ∧ d = (Matrix.of v).det} ∧ FractionalIdeal.absNorm J * ((intVec K n).toAddSubgroup.relIndex (Y.comap …`. Introduce `Y hY hYfg`. Take `⟨J, hJ, hN⟩` from `exists_coe_eq_span_det_of_intVec_le (Y.comap μ) (Submodule.fg_of_fg_map_injective μ hinj (by rwa [Submodule.map_comap_eq_of_surjective hsurj])) (hstd.trans (Submodule.comap_mono hY))`.
+
+Use `⟨FractionalIdeal.spanSingleton _ (δ ^ n) * J, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[FractionalIdeal.coe_mul, FractionalIdeal.coe_spanSingleton, hJ, Submodule.span_mul_span, Set.singleton_mul]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨_, ⟨v, hv, rfl⟩, rfl⟩`. Use `⟨δ • v, hv, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (δ • Matrix.of v).det`. Rewrite using `[Matrix.det_smul, Fintype.card_fin]`. Introduce and unpack `⟨v, hv, rfl⟩`.
+
+Use `⟨_, ⟨δ⁻¹ • v, fun i => ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, hμ, Pi.smul_apply, smul_inv_smul₀ hδ0]`. Conclude with `hv i`. Express the relevant statement in the definitionally equal form `_ * (δ⁻¹ • Matrix.of v).det = _`. Rewrite using `[Matrix.det_smul, Fintype.card_fin, inv_pow, mul_inv_cancel_left₀ (pow_ne_zero _ hδ0)]`.
+
+Rewrite using `[map_mul, mul_assoc, hN, mul_one, FractionalIdeal.absNorm_span_singleton]`. Take `⟨J, hJ, hN⟩` from `key Λ le_rfl (hfg.of_le hle)`. Take `⟨J', hJ', hN'⟩` from `key Λ' hle hfg`. Establish `hn0 : |Algebra.norm ℚ (δ ^ n)| ≠ 0` using `abs_ne_zero.2 (Algebra.norm_ne_zero_iff.2 (pow_ne_zero _ hδ0))`. Establish `hidx : (Λ.comap μ).toAddSubgroup.relIndex (Λ'.comap μ).toAddSubgroup = Λ.toAddSubgroup.relIndex Λ'.toAddSubgroup`.
+
+Express the relevant statement in the definitionally equal form `(Λ.toAddSubgroup.comap μ.toAddMonoidHom).relIndex (Λ'.toAddSubgroup.comap μ.toAddMonoidHom) = _`. Rewrite using `[AddSubgroup.relIndex_comap, AddSubgroup.map_comap_eq_self_of_surjective hsurj]`. Establish `htower` using `AddSubgroup.relIndex_mul_relIndex (intVec K n).toAddSubgroup (Λ.comap μ).toAddSubgroup (Λ'.comap μ).toAddSubgroup hstd (Submodule.comap_mono hle)`. Use `⟨J, J', ?_, ?_, hJ, hJ', ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Rewrite `hN` using `[map_zero, zero_mul]`. Conclude with `hn0 hN.symm`. Introduce and unpack `rfl`. Rewrite `hN'` using `[map_zero, zero_mul]`. Conclude with `hn0 hN'.symm`.
+
+Rewrite `hN'` using `[← htower, hidx, Nat.cast_mul, ← hN]`. Use `mul_right_cancel₀ (right_ne_zero_of_mul (hN ▸ hn0)) ?_` and prove the remaining obligations. Take the linear combination `-hN'`.
+-/
 theorem exists_coe_eq_span_det {Λ Λ' : Submodule (𝓞 K) (Fin n → K)} (hle : Λ ≤ Λ') (hfg : Λ'.FG)
     (hsp : Submodule.span K (Λ : Set (Fin n → K)) = ⊤) :
     ∃ J J' : FractionalIdeal (𝓞 K)⁰ K, J ≠ 0 ∧ J' ≠ 0 ∧
@@ -221,6 +281,11 @@ theorem exists_coe_eq_span_det {Λ Λ' : Submodule (𝓞 K) (Fin n → K)} (hle 
     refine mul_right_cancel₀ (right_ne_zero_of_mul (hN ▸ hn0)) ?_
     linear_combination -hN'
 
+/- English proof (translation)
+Rewrite using `[FractionalIdeal.coe_mul]`. Use `le_antisymm (Submodule.smul_le.2 fun a ha x hx => ?_) (Submodule.mul_le.2 fun a ha x hx => ?_)` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Conclude with `Submodule.mul_mem_mul (FractionalIdeal.mem_coeIdeal_of_mem _ ha) hx`. Take `⟨b, hb, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 ha`.
+
+Rewrite using `[← Algebra.smul_def]`. Conclude with `Submodule.smul_mem_smul hb hx`.
+-/
 theorem smul_coe_fractionalIdeal (𝔫 : Ideal (𝓞 K)) (J : FractionalIdeal (𝓞 K)⁰ K) :
     𝔫 • (J : Submodule (𝓞 K) K) =
       (((𝔫 : FractionalIdeal (𝓞 K)⁰ K) * J : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K) := by
@@ -233,6 +298,13 @@ theorem smul_coe_fractionalIdeal (𝔫 : Ideal (𝓞 K)) (J : FractionalIdeal (�
     rw [← Algebra.smul_def]
     exact Submodule.smul_mem_smul hb hx
 
+/- English proof (translation)
+Take `⟨J, J', h0, h0', hJ, hJ', hN⟩` from `exists_coe_eq_span_det hle hfg hsp`. Establish `hJJ : J ≤ J'`. Rewrite using `[← FractionalIdeal.coe_le_coe, hJ, hJ']`. Conclude with `Submodule.span_mono fun _ ⟨v, hv, h⟩ => ⟨v, fun i => hle (hv i), h⟩`. Establish `h1 : J * J'⁻¹ ≤ 1`.
+
+Rewrite using `[← mul_inv_cancel₀ h0']`. Use `gcongr`. Take `⟨𝔫, h𝔫⟩` from `FractionalIdeal.le_one_iff_exists_coeIdeal.1 h1`. Establish `h2 : J = 𝔫 * J'` using `by rw [h𝔫, inv_mul_cancel_right₀ h0']`. Use `⟨𝔫, ?_, ?_, fun 𝔪 => ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `rfl`. Simplify using `[h0] at h2`. Rewrite `hN` using `[h2, map_mul, FractionalIdeal.coeIdeal_absNorm]`. Conclude with `mul_right_cancel₀ (FractionalIdeal.absNorm_eq_zero_iff.not.2 h0') hN` after adjusting the coercions. Rewrite using `[← hJ, ← hJ', smul_coe_fractionalIdeal, FractionalIdeal.coeToSubmodule_inj, h2, mul_left_inj' h0', FractionalIdeal.coeIdeal_inj, eq_comm]`.
+-/
 theorem exists_indexIdeal_span_det {Λ Λ' : Submodule (𝓞 K) (Fin n → K)} (hle : Λ ≤ Λ')
     (hfg : Λ'.FG) (hsp : Submodule.span K (Λ : Set (Fin n → K)) = ⊤) :
     ∃ 𝔫 : Ideal (𝓞 K), 𝔫 ≠ ⊥ ∧ Ideal.absNorm 𝔫 = Λ.toAddSubgroup.relIndex Λ'.toAddSubgroup ∧

@@ -15,16 +15,25 @@ def Good (F : Type) [Field F] [NumberField F] [Algebra F L] (χ : HChar L) : Pro
 
 variable {F : Type} [Field F] [NumberField F] [Algebra F L]
 
+/- English proof (translation)
+Simplify using `only [HChar.resFin, MonoidHom.finsetProd_apply, ← Finset.prod_mul_distrib]`. Both sides reduce to the same expression.
+-/
 theorem resFin_mul (χ χ' : HChar L) (v : HeightOneSpectrum (𝓞 F)) (k : Fˣ) :
     (χ * χ').resFin v k = χ.resFin v k * χ'.resFin v k := by
   simp only [HChar.resFin, MonoidHom.finsetProd_apply, ← Finset.prod_mul_distrib]
   rfl
 
+/- English proof (translation)
+Simplify using `only [HChar.resInf, MonoidHom.finsetProd_apply, ← Finset.prod_mul_distrib]`. Both sides reduce to the same expression.
+-/
 theorem resInf_mul (χ χ' : HChar L) (v : InfinitePlace F) (k : Fˣ) :
     (χ * χ').resInf v k = χ.resInf v k * χ'.resInf v k := by
   simp only [HChar.resInf, MonoidHom.finsetProd_apply, ← Finset.prod_mul_distrib]
   rfl
 
+/- English proof (translation)
+Use `⟨⟨1, one_pos, one_pow 1⟩, ⟨fun v k => ?_, fun v k => ?_⟩, fun _ _ _ _ => rfl⟩` and prove the remaining obligations. Simplify using `only [HChar.resFin, MonoidHom.finsetProd_apply]`. Conclude with `Finset.prod_eq_one fun _ _ => rfl`. Simplify using `only [HChar.resInf, MonoidHom.finsetProd_apply]`. Conclude with `Finset.prod_eq_one fun _ _ => rfl`.
+-/
 theorem good_one : Good F (1 : HChar L) := by
   refine ⟨⟨1, one_pos, one_pow 1⟩, ⟨fun v k => ?_, fun v k => ?_⟩, fun _ _ _ _ => rfl⟩
   · simp only [HChar.resFin, MonoidHom.finsetProd_apply]
@@ -32,6 +41,11 @@ theorem good_one : Good F (1 : HChar L) := by
   · simp only [HChar.resInf, MonoidHom.finsetProd_apply]
     exact Finset.prod_eq_one fun _ _ => rfl
 
+/- English proof (translation)
+Take `⟨⟨n, hn, h1⟩, h2, h3⟩` from `h`. Take `⟨⟨n', hn', h1'⟩, h2', h3'⟩` from `h'`. Use `⟨⟨n * n', Nat.mul_pos hn hn', ?_⟩, ⟨fun v k => ?_, fun v k => ?_⟩, fun v x hx hx' => ?_⟩` and prove the remaining obligations. Unfold `HChar.OrderDvd at *`. Rewrite using `[mul_pow, pow_mul, h1, one_pow, pow_mul', h1', one_pow, one_mul]`.
+
+Rewrite using `[resFin_mul, h2.1, h2'.1, one_mul]`. Rewrite using `[resInf_mul, h2.2, h2'.2, one_mul]`. Rewrite using `[HChar.loc_mul, h3 v x hx hx', h3' v x hx hx', one_mul]`.
+-/
 theorem Good.mul {χ χ' : HChar L} (h : Good F χ) (h' : Good F χ') : Good F (χ * χ') := by
   obtain ⟨⟨n, hn, h1⟩, h2, h3⟩ := h
   obtain ⟨⟨n', hn', h1'⟩, h2', h3'⟩ := h'
@@ -44,6 +58,13 @@ theorem Good.mul {χ χ' : HChar L} (h : Good F χ) (h' : Good F χ') : Good F (
 
 end
 
+/- English proof (translation)
+Establish `hd : Good B.host.F f.del` using `⟨f.isDel.fin, f.isDel.triv, f.isDel.tame⟩`. Establish `hd' : Good B.host.F f.del'` using `⟨f.isDel'.fin, f.isDel'.triv, f.isDel'.tame⟩`. Break down `h with (rfl | rfl | rfl) | ⟨w, rfl⟩` into its components or cases. Conclude with `good_one`. Conclude with `hd`.
+
+Conclude with `hd'`. Establish `hp : Good B.host.F (T.psi w)` using `⟨(T.psi_tw w).1, (T.psi_tw w).2.1, (T.psi_tw w).2.2.1⟩`. Unfold `TwDat.xiTw`. Use `split_ifs`. Conclude with `hd'.mul hp`.
+
+Conclude with `hd.mul hp`.
+-/
 theorem good_set {B : Base} (f : Fr B.toPre) (T : TwDat B) {χ : HChar B.host.E} (h : χ ∈ T.set f) : Good B.host.F χ := by
   have hd : Good B.host.F f.del := ⟨f.isDel.fin, f.isDel.triv, f.isDel.tame⟩
   have hd' : Good B.host.F f.del' := ⟨f.isDel'.fin, f.isDel'.triv, f.isDel'.tame⟩

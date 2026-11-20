@@ -12,21 +12,33 @@ def TAbs (D : D7) : Prop :=
   ∀ u (w : D.what₂.places.Pl), D.what₂.places.resChar w = (D.mem u).A.T → ∀ x : (D.div.Nu u).V,
     ∃ m : ℕ, ∀ a ∈ (D.plEq w).asIdeal ^ m, D.nuIn u (a • x) ∈ LT.Nlam D u w
 
+/- English proof (translation)
+Unfold `VV at h`. Assume the negation of the conclusion as `hc`. Rewrite `h` using `[if_neg fun h' => hc h'.1]`. Conclude with `h rfl`.
+-/
 theorem cand_of_VV {p : ℕ} (h : VV X K (aL L) (bL L) p ≠ ∅) : Cand D L K p := by
   unfold VV at h
   by_contra hc
   rw [if_neg fun h' => hc h'.1] at h
   exact h rfl
 
+/- English proof (translation)
+Use `(Set.finite_lt_nat ⌈L.sc.X'⌉₊).subset fun p hp => ?_` and prove the remaining obligations. Establish `h1` using `(cand_of_VV X K hp).2.1`. Conclude with `Nat.lt_ceil.mpr h1`.
+-/
 theorem VV_fin : {p | VV X K (aL L) (bL L) p ≠ ∅}.Finite := by
   refine (Set.finite_lt_nat ⌈L.sc.X'⌉₊).subset fun p hp => ?_
   have h1 := (cand_of_VV X K hp).2.1
   exact Nat.lt_ceil.mpr h1
 
+/- English proof (translation)
+Rewrite using `[← c.cmp_M u w hg]`. Conclude with `Submodule.subset_span ⟨D.nuIn u y, hy, rfl⟩`.
+-/
 theorem cmpN_mem_M (u w hg) (y : (D.div.Nu u).V) (hy : y ∈ DV.MramL D u) : c.cmpN u w hg y ∈ (D.gat u w hg).M := by
   rw [← c.cmp_M u w hg]
   exact Submodule.subset_span ⟨D.nuIn u y, hy, rfl⟩
 
+/- English proof (translation)
+Establish `h1 : D.nuIn u y ∈ (D.fm u).ramSub` using `by rw [← D.nuIn_range u]; exact ⟨y, rfl⟩`. Establish `h2 : c.cmpN u w hg y ∈ (Y.Vram u w hg : Set (D.gat u w hg).Fn)`. Rewrite using `[hv u w hg]`. Conclude with `Submodule.subset_span ⟨D.nuIn u y, h1, rfl⟩`. Conclude with `h2`.
+-/
 theorem cmpN_mem_Vram (hv : c.VramDef Y) (u w hg) (y : (D.div.Nu u).V) : c.cmpN u w hg y ∈ Y.Vram u w hg := by
   have h1 : D.nuIn u y ∈ (D.fm u).ramSub := by rw [← D.nuIn_range u]; exact ⟨y, rfl⟩
   have h2 : c.cmpN u w hg y ∈ (Y.Vram u w hg : Set (D.gat u w hg).Fn) := by
@@ -34,6 +46,11 @@ theorem cmpN_mem_Vram (hv : c.VramDef Y) (u w hg) (y : (D.div.Nu u).V) : c.cmpN 
     exact Submodule.subset_span ⟨D.nuIn u y, h1, rfl⟩
   exact h2
 
+/- English proof (translation)
+Introduce `F hF`. Unfold `NP at hF`. Take `⟨⟨-, h2⟩, h3⟩` from `hF`. Use `⟨?_, h3⟩` and prove the remaining obligations. Take `⟨F0, hF0, rfl⟩` from `h2`.
+
+Conclude with `Submodule.smul_mem _ _ hF0`.
+-/
 theorem NP_le (u w hg) : NP X Y K u w hg ≤ (D.gat u w hg).M ⊓ Y.Vram u w hg := by
   intro F hF
   unfold NP at hF
@@ -42,6 +59,11 @@ theorem NP_le (u w hg) : NP X Y K u w hg ≤ (D.gat u w hg).M ⊓ Y.Vram u w hg 
   obtain ⟨F0, hF0, rfl⟩ := h2
   exact Submodule.smul_mem _ _ hF0
 
+/- English proof (translation)
+Use `⟨⌈tauP X K (aL L) (bL L) (D.what₂.places.resChar w)⌉.toNat + ∑ t0 ∈ VV X K (aL L) (bL L) (D.what₂.places.resChar w), ⌈Sv X K (aL L) (bL L) (D.what₂.places.resChar w) t0⌉.toNat, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hM` using `cmpN_mem_M c u w hg y hy`. Establish `hV` using `cmpN_mem_Vram c Y hv u w hg y`. Rewrite using `[pow_add, mul_smul]`. Unfold `NP`.
+
+Use `⟨⟨Submodule.smul_mem _ _ (Submodule.subset_span ⟨∅, Finset.empty_subset _, _, hM, ?_⟩), ?_⟩, Submodule.smul_mem _ _ (Submodule.smul_mem _ _ hV)⟩` and prove the remaining obligations. Simplify using `[yProd]`. Conclude with `⟨_, Submodule.smul_mem _ _ hM, rfl⟩`.
+-/
 theorem exists_residueChar_pow_smul_mem (hv : c.VramDef Y) (u w hg) : ∃ N : ℕ, ∀ y ∈ DV.MramL D u,
     ((D.what₂.places.resChar w : ℕ) : (D.gat u w hg).O) ^ N • c.cmpN u w hg y ∈ NP X Y K u w hg := by
   refine ⟨⌈tauP X K (aL L) (bL L) (D.what₂.places.resChar w)⌉.toNat +

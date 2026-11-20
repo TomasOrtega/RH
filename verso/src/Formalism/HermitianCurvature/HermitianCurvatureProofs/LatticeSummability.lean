@@ -9,12 +9,20 @@ namespace Formalism.FourierDecayAlt.P.LatticeSummability
 
 open Formalism.FourierDecayAlt.crystallineComparison
 
+/- English proof (translation)
+Unfold `mfac`. Use `split_ifs`. Conclude with `zero_le_one`. Conclude with `le_min zero_le_one (by positivity)`.
+-/
 theorem mfac_nonneg (K : ℕ) {L : ℝ} (hL : 0 ≤ L) (a : ℝ) (ha : 0 ≤ a) : 0 ≤ mfac K L a := by
   unfold mfac
   split_ifs
   · exact zero_le_one
   · exact le_min zero_le_one (by positivity)
 
+/- English proof (translation)
+Unfold `mfac`. Distinguish the cases in `hb0 : b = 0`. Rewrite using `[if_pos hb0] split_ifs`. Conclude with `le_rfl`. Conclude with `min_le_left _ _`.
+
+Establish `hbpos : 0 < b` using `lt_of_le_of_ne hb (Ne.symm hb0)`. Establish `hb'0 : b' ≠ 0` using `by linarith`. Rewrite using `[if_neg hb0, if_neg hb'0]`. Use `min_le_min le_rfl (pow_le_pow_left₀ (div_nonneg hL.le (by linarith)) ?_ K)` and prove the remaining obligations. Conclude with `div_le_div_of_nonneg_left hL.le hbpos hbb`.
+-/
 theorem mfac_anti (K : ℕ) {L : ℝ} (hL : 0 < L) {b b' : ℝ} (hb : 0 ≤ b) (hbb : b ≤ b') :
     mfac K L b' ≤ mfac K L b := by
   unfold mfac
@@ -29,6 +37,15 @@ theorem mfac_anti (K : ℕ) {L : ℝ} (hL : 0 < L) {b b' : ℝ} (hb : 0 ≤ b) (
     refine min_le_min le_rfl (pow_le_pow_left₀ (div_nonneg hL.le (by linarith)) ?_ K)
     exact div_le_div_of_nonneg_left hL.le hbpos hbb
 
+/- English proof (translation)
+Unfold `mfac`. Establish `had : a + δ ≠ 0` using `by linarith`. Rewrite using `[if_neg had]`. Establish `hone : ∀ {x : ℝ}, 1 ≤ x → min 1 (x ^ K) = 1` using `fun hx => min_eq_left (one_le_pow₀ hx)`. Break down `le_or_gt L a with hLa | hLa` into its components or cases.
+
+Establish `ha0 : a ≠ 0` using `by linarith`. Rewrite using `[if_neg ha0]`. Establish `hapos : 0 < a` using `by linarith`. Use `min_le_min le_rfl (pow_le_pow_left₀ (div_nonneg hL.le hapos.le) ?_ K)` and prove the remaining obligations. Rewrite using `[div_le_div_iff₀ hapos (by linarith)]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `h1 : 1 ≤ (L + δ) / (a + δ)` using `(one_le_div (by linarith : (0 : ℝ) < a + δ)).mpr (by linarith)`. Rewrite using `[hone h1]`. Use `split_ifs`. Conclude with `le_rfl`.
+
+Conclude with `min_le_left _ _`.
+-/
 theorem mfac_shift (K : ℕ) {L δ : ℝ} (hL : 0 < L) (hδ : 0 < δ) {a : ℝ} (ha : 0 ≤ a) :
     mfac K L a ≤ mfac K (L + δ) (a + δ) := by
   unfold mfac
@@ -48,6 +65,13 @@ theorem mfac_shift (K : ℕ) {L δ : ℝ} (hL : 0 < L) (hδ : 0 < δ) {a : ℝ} 
     · exact le_rfl
     · exact min_le_left _ _
 
+/- English proof (translation)
+Establish `h1a : 0 < 1 + a` using `by linarith`. Rewrite using `[Real.rpow_neg h1a.le, Real.rpow_natCast, ← div_eq_mul_inv, ← div_pow]`. Unfold `mfac`. Use `split_ifs with h0`. Substitute `h0` using the available equality.
+
+Simplify using `only [add_zero, div_one]`. Conclude with `one_le_pow₀ (by linarith)`. Establish `hapos : 0 < a` using `lt_of_le_of_ne ha (Ne.symm h0)`. Break down `le_or_gt a M with haM | haM` into its components or cases. Conclude with `(min_le_left _ _).trans (one_le_pow₀ ((one_le_div h1a).mpr (by linarith)))`.
+
+Use `(min_le_right _ _).trans (pow_le_pow_left₀ (div_nonneg hM.le hapos.le) ?_ K)` and prove the remaining obligations. Rewrite using `[div_le_div_iff₀ hapos h1a]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 private theorem mfac_le_one_add_pow_mul_rpow_neg (K : ℕ) {M a : ℝ} (hM : 0 < M) (ha : 0 ≤ a) :
     mfac K M a ≤ (1 + M) ^ K * (1 + a) ^ (-(K : ℝ)) := by
   have h1a : 0 < 1 + a := by linarith
@@ -64,6 +88,37 @@ private theorem mfac_le_one_add_pow_mul_rpow_neg (K : ℕ) {M a : ℝ} (hM : 0 <
       rw [div_le_div_iff₀ hapos h1a]
       nlinarith
 
+/- English proof (translation)
+Introduce `f K L La _ hK hL`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr, hball⟩ : ∃ r > 0, ∀ σ : La, σ ≠ 0 → r ≤ ‖(σ : V f)‖ := by`. Establish `h0 : IsOpen ({0} : Set La)` using `isOpen_discrete _`. Rewrite `h0` using `[Metric.isOpen_iff]`. Take `⟨r, hr, hsub⟩` from `h0 0 rfl`.
+
+Use `⟨r, hr, fun σ hσ => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hmem : σ ∈ Metric.ball (0 : La) r`. Rewrite using `[Metric.mem_ball, dist_zero_right]`.
+
+Conclude with `hlt`. Conclude with `hσ (hsub hmem)`. Use `set δ := r / 2 with hδ`. Establish `hδ0 : 0 < δ` using `by positivity`. Establish `hnn : ∀ σ : V f, 0 ≤ mL K L σ` using `fun σ => Finset.prod_nonneg fun v _ => mfac_nonneg K (hL v).le _ (norm_nonneg _)`.
+
+Establish `hdom : ∀ σ z : V f, dist z σ < δ → mL K L σ ≤ mL K (fun v => L v + δ) z`. Introduce `σ z hz`. Unfold `mL`. Apply `Finset.prod_le_prod (fun v _ => mfac_nonneg K (hL v).le _ (norm_nonneg _))` to reduce the goal to its premises. Introduce `v _`.
+
+Establish `h1 : ‖z v‖ ≤ ‖σ v‖ + δ`. Establish `h3` using `norm_le_pi_norm (z - σ) v`. Establish `h2 : ‖z v‖ ≤ ‖σ v‖ + ‖(z - σ) v‖`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hz` using `[dist_eq_norm]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Establish `hint : Integrable (fun z : V f => mL K (fun v => L v + δ) z)`. Establish `h1 : ∀ v, Integrable (fun l : ℂ => mfac K (L v + δ) ‖l‖)`. Introduce `v`.
+
+Establish `hM0 : 0 < L v + δ` using `by linarith [hL v]`. Establish `hg : Integrable (fun l : ℂ => (1 + (L v + δ)) ^ K * (1 + ‖l‖) ^ (-(K : ℝ)))` using `(integrable_one_add_norm (by rw [Complex.finrank_real_complex]; exact_mod_cast hK)).const_mul _`. Use `hg.mono' ?_ (Filter.Eventually.of_forall fun l => ?_)` and prove the remaining obligations. Establish `hmeas : Measurable (fun l : ℂ => mfac K (L v + δ) ‖l‖)`. Unfold `mfac`.
+
+Conclude with `Measurable.ite (measurableSet_eq_fun measurable_norm measurable_const) measurable_const (by fun_prop)`. Conclude with `hmeas.aestronglyMeasurable`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (mfac_nonneg K hM0.le _ (norm_nonneg _))]`. Conclude with `mfac_le_one_add_pow_mul_rpow_neg K hM0 (norm_nonneg _)`. Use `Integrable.fintype_prod (f := fun v (l : ℂ) => mfac K (L v + δ) ‖l‖) (μ := fun _ => (volume : Measure ℂ)) h1` as an intermediate fact.
+
+Rewrite `this` using `[← volume_pi]`. Conclude with `this`. Establish `hIt` using `hint.lintegral_lt_top`. Use `summable_of_sum_le (c := (∫⁻ z, ENNReal.ofReal (mL K (fun v => L v + δ) z)).toReal / (volume (Metric.ball (0 : V f) δ)).toReal) (fun σ => hnn σ) ?_` and prove the remaining obligations. Introduce `F`.
+
+Establish `hB0 : 0 < volume (Metric.ball (0 : V f) δ)` using `Metric.measure_ball_pos _ _ hδ0`. Establish `hBt : volume (Metric.ball (0 : V f) δ) < ⊤` using `measure_ball_lt_top`. Establish `hkey : volume (Metric.ball (0 : V f) δ) * ∑ σ ∈ F, ENNReal.ofReal (mL K L (σ : V f)) ≤ ∫⁻ z, ENNReal.ofReal (mL K (fun v => L v + δ) z)`. Rewrite using `[Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[setLIntegral_const, Measure.addHaar_ball_center volume (σ : V f) δ]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ∑ σ ∈ F, ∫⁻ z in Metric.ball (σ : V f) δ, ENNReal.ofReal (mL K (fun v => L v + δ) z) := Finset.sum_le_sum fun σ _ => setLIntegral_mono' measurableSet_ball fun z hz => ENNReal.ofReal_le_ofReal (hdom _ _ hz)`. Use `_ = ∫⁻ z in ⋃ σ ∈ F, Metric.ball (σ : V f) δ, ENNReal.ofReal (mL K (fun v => L v + δ) z) := by`.
+
+Rewrite using `[lintegral_biUnion_finset]`. Introduce `σ _ σ' _ hne`. Apply `Metric.ball_disjoint_ball` to reduce the goal to its premises. Establish `h4` using `hball (σ - σ') (sub_ne_zero.mpr hne)`. Rewrite using `[dist_eq_norm]`.
+
+Establish `h5 : ((σ - σ' : La) : V f) = (σ : V f) - σ'` using `rfl`. Rewrite `h4` using `[h5]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `σ _`. Conclude with `measurableSet_ball`.
+
+Use `_ ≤ _ := setLIntegral_le_lintegral _ _`. Rewrite `hkey` using `[← ENNReal.ofReal_sum_of_nonneg (f := fun σ : La => mL K L (σ : V f)) fun σ _ => hnn σ]`. Establish `h6` using `ENNReal.toReal_mono hIt.ne hkey`. Establish `hs0 : 0 ≤ ∑ σ ∈ F, mL K L (σ : V f)` using `Finset.sum_nonneg fun σ _ => hnn _`. Rewrite `h6` using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal hs0]`.
+
+Rewrite using `[le_div_iff₀ (ENNReal.toReal_pos hB0.ne' hBt.ne), mul_comm]`. Conclude with `h6`.
+-/
 theorem latticeSummable : LatticeSummable := by
   intro f K L La _ hK hL
   classical
@@ -152,4 +207,7 @@ theorem latticeSummable : LatticeSummable := by
 
 end Formalism.FourierDecayAlt.P.LatticeSummability
 
+/- English proof (translation)
+The claim follows from `LatticeSummability.latticeSummable`.
+-/
 theorem Formalism.FourierDecayAlt.P.latticeSummable_statement : Formalism.FourierDecayAlt.crystallineComparison.LatticeSummable := LatticeSummability.latticeSummable

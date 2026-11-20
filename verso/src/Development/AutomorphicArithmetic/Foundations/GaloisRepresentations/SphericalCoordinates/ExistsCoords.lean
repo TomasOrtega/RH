@@ -5,6 +5,23 @@ open GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKGe
 open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
+/- English proof (translation)
+Set `f : K →+* Module.End ℚ V` to `(rep : C →+* Module.End ℚ V).comp (algebraMap K C)`. Use `letI : Module K V := Module.compHom V f`. Establish `hsm : ∀ (x : K) (w : V), x • w = rep (algebraMap K C x) w` using `fun _ _ => rfl`. Use `haveI : IsScalarTower ℚ K V := by`. Use `⟨fun q x w => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hsm, hsm, ← IsScalarTower.toAlgHom_apply ℚ K C, map_smul, map_smul]`. Both sides reduce to the same expression. Use `haveI : Module.Finite K V := Module.Finite.of_restrictScalars_finite ℚ K V`. Establish `hfin : Module.finrank K V = n`. Establish `h` using `Module.finrank_mul_finrank ℚ K V`.
+
+Establish `hpos : 0 < Module.finrank ℚ K` using `Module.finrank_pos`. Rewrite `h` using `[hdim, mul_comm n]`. Conclude with `Nat.eq_of_mul_eq_mul_left hpos h`. Set `b : Module.Basis (Fin n) K V` to `Module.finBasisOfFinrankEq K V hfin`. Set `r : C →ₐ[K] Module.End K V` to `AlgHom.ofLinearMap { toFun := fun c => { toFun := rep c map_add' := map_add _ map_smul' := fun x w => by`.
+
+Simplify using `only [RingHom.id_apply, hsm]`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, Algebra.commutes] }`. Use the proof step `map_add' := fun c c' => by ext w; simp`. Use the proof step `map_smul' := fun x c => by`. Use extensionality with `w`.
+
+Simplify using `[hsm, Algebra.smul_def, Module.End.mul_apply] }`. Use the proof step `(by ext w; simp) (fun c c' => by ext w; simp [Module.End.mul_apply])`. Establish `hr : ∀ c w, r c w = rep c w` using `fun _ _ => rfl`. Set `s : C →ₐ[K] Matrix (Fin n) (Fin n) K` to `(LinearMap.toMatrixAlgEquiv b).toAlgHom.comp r`. Establish `hsinj : Function.Injective s`.
+
+Introduce `c c' h`. Establish `h' : r c = r c'` using `(LinearMap.toMatrixAlgEquiv b).injective h`. Apply `hinj` to reduce the goal to its premises. Use extensionality with `w`. Conclude with `congrArg (fun g => g w) h'`.
+
+Establish `hrk : Module.finrank K C = Module.finrank K (Matrix (Fin n) (Fin n) K)`. Rewrite using `[hC, Module.finrank_matrix, Module.finrank_self, Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsurj : Function.Surjective s` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (f := s.toLinearMap) hrk).1 hsinj`. Use `⟨b.equivFun.toAddEquiv, AlgEquiv.ofBijective s ⟨hsinj, hsurj⟩, fun c w => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `LinearMap.toMatrix_mulVec_repr b b (r c) w`. Conclude with `h.symm`.
+-/
 private theorem exists_coords {K C V : Type} [Field K] [Ring C] [Algebra K C] [Algebra ℚ K] [Algebra ℚ C]
     [IsScalarTower ℚ K C] [AddCommGroup V] [Module ℚ V] [FiniteDimensional ℚ V] [FiniteDimensional ℚ K]
     [FiniteDimensional K C] (n : ℕ)
@@ -54,6 +71,11 @@ private theorem exists_coords {K C V : Type} [Field K] [Ring C] [Algebra K C] [A
   have h := LinearMap.toMatrix_mulVec_repr b b (r c) w
   exact h.symm
 
+/- English proof (translation)
+Introduce `p _ D G L hm`. Use `haveI := D.freeLa`. Use `haveI := D.finLa`. Establish `hK : Module.finrank ℚ G.F = Module.finrank ℚ D.F` using `((AlgEquiv.ofRingEquiv (f := L.e) (fun q => map_ratCast L.e q)).toLinearEquiv.finrank_eq).symm`. Establish `hdim : Module.finrank ℚ (VQ D) = G.n * Module.finrank ℚ G.F`.
+
+Rewrite using `[Module.finrank_baseChange, D.rankLa, hm, Nat.one_mul, L.n_eq, hK]`. Conclude with `exists_coords G.n L.rep L.rep_inj G.rankC hdim`.
+-/
 theorem UpperTheory.Gal.W2.fMat_of :
     UpperTheory.Gal.W2.FMat := by
   intro p _ D G L hm

@@ -17,6 +17,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace PositivityTheory.HtPt.Cf
 
+/- English proof (translation)
+Introduce `E _ _ _ H _ hs X0 t hP k _ p _ _ x d g ⟨k', _, _, x', hx, h⟩`. Take `⟨Ω, _, _, y, a, -, e⟩` from `exists_common x (IsLocalRing.closedPoint k) x' hx`. Take `⟨b, rfl⟩ : ∃ b : k →+* Ω, y = spMap b` from `⟨(Spec.preimage y).hom, (Spec.map_preimage y).symm⟩`. Establish `: CharP Ω p` using `charP_of_injective_ringHom b.injective p`. Establish `h' : GeomPF t (spMap b ≫ x)` using `e ▸ (geompf_bc E H X0 t).1 k' Ω a x' h`.
+
+Take `⟨g₂, hg, -⟩` from `hbc E H hs X0 t k Ω b x d g`. Conclude with `(PositivityTheory.HtPt.Cc.conjInj_map hg p).1 (hinj E H hs X0 t Ω p _ d g₂ (htan E H hs X0 t hP Ω p _ h'))`.
+-/
 theorem fib_inj_of (htan : type_of% @GlobalTheory.T.geometric_to_tangent_power_free) (hbc : type_of% @GlobalTheory.T.formal_germ_base_change)
     (hinj : type_of% @GlobalTheory.T.tangent_power_free_conj_injective) : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (X0 : Scheme.{0}) (t : SAB H X0), PowFns t → ∀ (k : Type) [Field k] (p : ℕ) [Fact p.Prime] [CharP k p] (x : Sp k ⟶ X0) (d : ℕ) (g : GermAt t x d), FibPF t (x (IsLocalRing.closedPoint k)) → ConjInj g.B p := by
   intro E _ _ _ H _ hs X0 t hP k _ p _ _ x d g ⟨k', _, _, x', hx, h⟩
@@ -27,6 +32,9 @@ theorem fib_inj_of (htan : type_of% @GlobalTheory.T.geometric_to_tangent_power_f
   obtain ⟨g₂, hg, -⟩ := hbc E H hs X0 t k Ω b x d g
   exact (PositivityTheory.HtPt.Cc.conjInj_map hg p).1 (hinj E H hs X0 t Ω p _ d g₂ (htan E H hs X0 t hP Ω p _ h'))
 
+/- English proof (translation)
+Introduce `i` and use `by rw [h'.F, h.F, MvPowerSeries.map_comp]; rfl act := fun a i => by rw [h'.act, h.act, MvPowerSeries.map_comp]; rfl ph1 := by rw [h'.ph1, h.ph1, MvPowerSeries.map_comp]; rfl ph2 := by rw [h'.ph2, h.ph2, MvPowerSeries.map_comp]; rfl sy := by rw [h'.sy, h.sy, MvPowerSeries.map_comp …`.
+-/
 theorem isMapOf_cancel {R R₂ R₃ O : Type} [CommRing R] [CommRing R₂] [CommRing R₃] [CommRing O] [StarRing O] {d : ℕ}
     {f : R →+* R₂} {g : R₂ →+* R₃} {B : Germ.FB R d O} {B₂ : Germ.FB R₂ d O} {B₃ : Germ.FB R₃ d O}
     (h : IsMapOf f B B₂) (h' : IsMapOf (g.comp f) B B₃) : IsMapOf g B₂ B₃ where
@@ -37,13 +45,24 @@ theorem isMapOf_cancel {R R₂ R₃ O : Type} [CommRing R] [CommRing R₂] [Comm
   sy := by rw [h'.sy, h.sy, MvPowerSeries.map_comp]; rfl
   ad := fun a => by rw [h'.ad, h.ad, MvPowerSeries.map_comp]; rfl
 
+/- English proof (translation)
+The claim follows from `(Spec.map_comp _ _).symm`.
+-/
 theorem spMap_comp' {R R₂ R₃ : Type} [CommRing R] [CommRing R₂] [CommRing R₃] (f : R →+* R₂) (g : R₂ →+* R₃) :
     spMap g ≫ spMap f = spMap (g.comp f) := (Spec.map_comp _ _).symm
 
+/- English proof (translation)
+Apply the tactic sequence `ext r <;> simp [GlobalTheory.CompanionTheory.Ar.dualMap]`.
+-/
 theorem dualMap_comp' {R R₂ R₃ : Type} [CommRing R] [CommRing R₂] [CommRing R₃] (f : R →+* R₂) (g : R₂ →+* R₃) :
     (GlobalTheory.CompanionTheory.Ar.dualMap g).comp (GlobalTheory.CompanionTheory.Ar.dualMap f) = GlobalTheory.CompanionTheory.Ar.dualMap (g.comp f) := by
   ext r <;> simp [GlobalTheory.CompanionTheory.Ar.dualMap]
 
+/- English proof (translation)
+Establish `hr : Set.range x ⊆ Set.range j`. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `((IsLocalRing.specializes_closedPoint q).map x.continuous).mem_open j.isOpenEmbedding.isOpen_range h`. Use `⟨(Spec.preimage (IsOpenImmersion.lift j x hr)).hom, ?_⟩` and prove the remaining obligations. Use `show x = Spec.map (Spec.preimage (IsOpenImmersion.lift j x hr)) ≫ j`.
+
+Rewrite using `[Spec.map_preimage, IsOpenImmersion.lift_fac]`.
+-/
 theorem exists_factor {R A : Type} [CommRing R] [IsLocalRing R] [CommRing A] {X : Scheme.{0}} (x : Sp R ⟶ X)
     (j : Sp A ⟶ X) [IsOpenImmersion j] (h : GlobalTheory.CompanionTheory.Ar.centre x ∈ Set.range j) : ∃ a : A →+* R, x = spMap a ≫ j := by
   have hr : Set.range x ⊆ Set.range j := by
@@ -53,11 +72,35 @@ theorem exists_factor {R A : Type} [CommRing R] [IsLocalRing R] [CommRing A] {X 
   show x = Spec.map (Spec.preimage (IsOpenImmersion.lift j x hr)) ≫ j
   rw [Spec.map_preimage, IsOpenImmersion.lift_fac]
 
+/- English proof (translation)
+Distinguish the cases in `h : x = 0`. Simplify using `[h]`. Conclude with `(C.fin x h).subset fun i hi e => hi e.le`.
+-/
 theorem finite_nonint {K : Type} [Field K] (C : ACurve K) (x : K) : {i | ¬ C.v i x ≤ 1}.Finite := by
   by_cases h : x = 0
   · simp [h]
   · exact (C.fin x h).subset fun i hi e => hi e.le
 
+/- English proof (translation)
+Introduce `E _ _ _ H _ hs X0 t hP K _ p _ _ C z Y hY`. Establish `bc : ∀ {S S₂ : Type} [CommRing S] [CommRing S₂] (f : S →+* S₂) {x : Sp S ⟶ X0} {x₂ : Sp S₂ ⟶ X0} (_ : x₂ = spMap f ≫ x) {d : ℕ} (g : GermAt t x d), ∃ g₂ : GermAt t x₂ d, IsMapOf f g.B g₂.B ∧ ∀ l, g₂.tg l = spMap (GlobalTheory.CompanionTheory.Ar.dualMap f) ≫ g.tg l`. Introduce `S S₂ _ _ f x x₂ e d g`. Substitute `e` using the available equality. Conclude with `hbc E H hs X0 t S S₂ f x d g`.
+
+Take `⟨A, _, j, d, _, hj, ⟨gA⟩⟩` from `haff E H hs X0 t hP (GlobalTheory.CompanionTheory.Ar.centre z)`. Take `⟨a, ha⟩` from `exists_factor z j hj`. Take `⟨g, hg, hgt⟩` from `bc a ha gA`. Take `⟨φ₀, ψ₀, lam₀, h₀, h₀t⟩` from `hiso E H hs X0 t hP K z d g g`. Establish `loc : ∀ i : C.I, ∃ (gi : GermAt t (Y.x i) d) (BK : Germ.FB K d (𝓞 E)) (φ ψ : Germ.Pt K 1 d) (lam : Germ.PS K 2 d), IsMapOf (C.v i).valuationSubring.subtype gi.B BK ∧ GlobalTheory.CompanionTheory.Ar.Conj.IsIso g.B BK φ ψ lam ∧ (GlobalTheory.CompanionTheory.Ar.centre (Y.x i) ∈ Set. …`.
+
+Introduce `i`. Distinguish the cases in `hi : GlobalTheory.CompanionTheory.Ar.centre (Y.x i) ∈ Set.range j`. Take `⟨b, hb⟩` from `exists_factor (Y.x i) j hi`. Take `⟨gi, hgi, hgit⟩` from `bc b hb gA`. Establish `e : spMap ((C.v i).valuationSubring.subtype.comp b) = spMap a`.
+
+Rewrite using `[← cancel_mono j, ← ha, ← spMap_comp', Category.assoc, ← hb]`. Conclude with `Y.gen i`. Take `rfl : (C.v i).valuationSubring.subtype.comp b = a` from `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`. Use `⟨gi, g.B, φ₀, ψ₀, lam₀, isMapOf_cancel hgi hg, h₀, fun _ => ⟨rfl, rfl, rfl⟩, fun l => ?_⟩` and prove the remaining obligations. Rewrite using `[hgit, ← Category.assoc, spMap_comp', dualMap_comp', ← hgt]`.
+
+Conclude with `h₀t l`. Take `⟨d', ⟨gi⟩⟩` from `PositivityTheory.HtPt.Cd.germ_local E H hs X0 t hP _ (Y.x i)`. Take `⟨g₂, hg₂, hg₂t⟩` from `bc (C.v i).valuationSubring.subtype (Y.gen i).symm gi`. Take `rfl` from `(huniv E H hs X0 t K z d g).1 d' g₂`. Take `⟨φ, ψ, lam, h, ht⟩` from `hiso E H hs X0 t hP K z d g g₂`.
+
+Conclude with `⟨gi, g₂.B, φ, ψ, lam, hg₂, h, fun h' => absurd h' hi, fun l => hg₂t l ▸ ht l⟩`. Use `choose gi BK φ ψ lam hK hI hgood ht using loc`. Establish `red : ∀ i : C.I, ∃ Bk : Germ.FB (IsLocalRing.ResidueField (C.v i).valuationSubring) d (𝓞 E), IsMapOf (IsLocalRing.residue _) (gi i).B Bk ∧ ConjInj Bk p`. Introduce `i`. Take `⟨gk, hk, -⟩` from `bc (IsLocalRing.residue _) rfl (gi i)`.
+
+Establish `h0 : (p : (C.v i).valuationSubring) = 0` using `Subtype.ext (by simp)`. Establish `: CharP (IsLocalRing.ResidueField (C.v i).valuationSubring) p` using `(CharP.charP_iff_prime_eq_zero Fact.out).2 (by`. Rewrite using `[← map_natCast (IsLocalRing.residue (C.v i).valuationSubring), h0, map_zero])`. Use `⟨gk.B, hk, hfib E H hs X0 t hP _ p _ d gk ?_⟩` and prove the remaining obligations. Establish `e : (spMap (IsLocalRing.residue (C.v i).valuationSubring) ≫ Y.x i) (IsLocalRing.closedPoint _) = GlobalTheory.CompanionTheory.Ar.centre (Y.x i)` using `(Scheme.Hom.comp_apply _ _ _).trans (congrArg (Y.x i) (IsLocalRing.comap_closedPoint (IsLocalRing.residue _)))`.
+
+Conclude with `e ▸ hY i`. Use `choose Bk hk hinj using red`. Use `⟨d, ⟨g.B, fun i => (gi i).B, BK, Bk, hK, hk, hinj, φ, ψ, lam, hI, ?_⟩, g, rfl, fun i => ⟨gi i, ht i⟩⟩` and prove the remaining obligations. Use `((Y.ae j.opensRange hj).union (Set.finite_iUnion fun a : Fin d => Set.finite_iUnion fun b : Fin d => (finite_nonint C (lin φ₀ 1 a b)).union ((finite_nonint C (lin ψ₀ 1 a b)).union (finite_nonint C (bil lam₀ 1 1 a b))))).subset fun i hi => ?_` and prove the remaining obligations. Distinguish the cases in `hc : GlobalTheory.CompanionTheory.Ar.centre (Y.x i) ∈ Set.range j`.
+
+Take `⟨e₁, e₂, e₃⟩` from `hgood i hc`. Rewrite `hi` using `[Set.mem_ofPred_eq, e₁, e₂, e₃]`. Simplify using `only [not_forall, not_and_or] at hi`. Take `⟨a, b, h⟩` from `hi`. Conclude with `Or.inr (Set.mem_iUnion.2 ⟨a, Set.mem_iUnion.2 ⟨b, h⟩⟩)`.
+
+Conclude with `Or.inl hc`.
+-/
 theorem family_ex_of' (hfib : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (X0 : Scheme.{0}) (t : SAB H X0), PowFns t → ∀ (k : Type) [Field k] (p : ℕ) [Fact p.Prime] [CharP k p] (x : Sp k ⟶ X0) (d : ℕ) (g : GermAt t x d), FibPF t (x (IsLocalRing.closedPoint k)) → ConjInj g.B p)
     (hbc : type_of% @GlobalTheory.T.formal_germ_base_change) (huniv : type_of% @GlobalTheory.T.formal_germ_dimension_unique) (hiso : type_of% @GlobalTheory.T.formal_germs_isomorphic)
     (haff : type_of% @GlobalTheory.T.exists_formal_germ_open_affine) : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (X0 : Scheme.{0}) (t : SAB H X0), PowFns t → ∀ (K : Type) [Field K] (p : ℕ) [Fact p.Prime] [CharP K p] (C : ACurve K) (z : Sp K ⟶ X0) (Y : CurveIn C z), (∀ i, FibPF t (GlobalTheory.CompanionTheory.Ar.centre (Y.x i))) → ∃ (d : ℕ) (F : Family C p d (𝓞 E)) (g : GermAt t z d), g.B = F.B ∧ ∀ i, ∃ gi : GermAt t (Y.x i) d, ∀ l, IsCombAtG t z g.tg (fun j => lin (F.φ i) 1 j l) (spMap (GlobalTheory.CompanionTheory.Ar.dualMap (C.v i).valuationSubring.subtype) ≫ gi.tg l) := by
@@ -121,6 +164,9 @@ theorem family_ex_of' (hfib : ∀ (E : Type) [Field E] [NumberField E] [IsCMFiel
     exact Or.inr (Set.mem_iUnion.2 ⟨a, Set.mem_iUnion.2 ⟨b, h⟩⟩)
   · exact Or.inl hc
 
+/- English proof (translation)
+The claim follows from `family_ex_of' (fib_inj_of htan hbc hinj) hbc PositivityTheory.HtPt.Cd.germ_univ PositivityTheory.HtPt.Cd.germ_iso haff`.
+-/
 theorem family_ex_of (htan : type_of% @GlobalTheory.T.geometric_to_tangent_power_free)
     (hbc : type_of% @GlobalTheory.T.formal_germ_base_change) (hinj : type_of% @GlobalTheory.T.tangent_power_free_conj_injective)
     (haff : type_of% @GlobalTheory.T.exists_formal_germ_open_affine) : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (X0 : Scheme.{0}) (t : SAB H X0), PowFns t → ∀ (K : Type) [Field K] (p : ℕ) [Fact p.Prime] [CharP K p] (C : ACurve K) (z : Sp K ⟶ X0) (Y : CurveIn C z), (∀ i, FibPF t (GlobalTheory.CompanionTheory.Ar.centre (Y.x i))) → ∃ (d : ℕ) (F : Family C p d (𝓞 E)) (g : GermAt t z d), g.B = F.B ∧ ∀ i, ∃ gi : GermAt t (Y.x i) d, ∀ l, IsCombAtG t z g.tg (fun j => lin (F.φ i) 1 j l) (spMap (GlobalTheory.CompanionTheory.Ar.dualMap (C.v i).valuationSubring.subtype) ≫ gi.tg l) :=

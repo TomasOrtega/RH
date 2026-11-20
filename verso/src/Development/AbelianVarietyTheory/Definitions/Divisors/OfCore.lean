@@ -22,9 +22,15 @@ structure Core5 (R : RealDat D A Ks) (F : Face D A) : Prop where
   models : R.IsModels
   thP : R.IsThP
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.lev, h.grp, h.fam, h.models, h.thP⟩`.
+-/
 theorem Core5.of_char {R : RealDat D A Ks} {F : Face D A} (h : R.Char F) : Core5 R F :=
   ⟨h.lev, h.grp, h.fam, h.models, h.thP⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.lev, h.grp, h.fam, h.models, h.thP⟩`.
+-/
 theorem Core5.of_core {R : RealDat D A Ks} {F : Face D A} (h : GlobalTheory.Hk3.Core R F) : Core5 R F :=
   ⟨h.lev, h.grp, h.fam, h.models, h.thP⟩
 

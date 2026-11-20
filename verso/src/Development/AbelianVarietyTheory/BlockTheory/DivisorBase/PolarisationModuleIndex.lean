@@ -17,12 +17,21 @@ def latMod (c : Ideal (OF E)) (y : (Af E)ˣ) : Submodule (OF E) E where
     rw [Algebra.smul_def]
     exact mul_mem_lattice (algebraMap_mem_orderC c a) hx
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_latMod (c : Ideal (OF E)) (y : (Af E)ˣ) : (latMod c y : Set E) = lattice c y := rfl
 
 def TrInt (x : E) : Prop := ∃ n : ℤ, Algebra.trace ℚ E x = n
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, by simp⟩`.
+-/
 theorem TrInt.zero : TrInt (0 : E) := ⟨0, by simp⟩
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `hx`. Take `⟨n, hn⟩` from `hy`. Conclude with `⟨m + n, by rw [map_add, hm, hn]; push_cast; rfl⟩`.
+-/
 theorem TrInt.add {x y : E} (hx : TrInt x) (hy : TrInt y) : TrInt (x + y) := by
   obtain ⟨m, hm⟩ := hx
   obtain ⟨n, hn⟩ := hy
@@ -32,6 +41,9 @@ variable [IsCMField E]
 
 abbrev bar (x : E) : E := IsCMField.complexConj E x
 
+/- English proof (translation)
+The claim follows from `(IsCMField.complexConj E).commutes (a : maximalRealSubfield E)`.
+-/
 theorem bar_algebraMap (a : OF E) : bar (algebraMap (OF E) E a) = algebraMap (OF E) E a :=
   (IsCMField.complexConj E).commutes (a : maximalRealSubfield E)
 
@@ -101,13 +113,22 @@ def PolarisationModuleInduced : Prop :=
       ∀ (d : ℕ) (δ : E), 0 < d → δ ^ 2 = -(d : E) → (∀ i, φ i δ = Complex.I * (Real.sqrt d : ℝ)) →
         ∀ e₀ : ℤˣ, ModulePart φ e₀ ∧ SizePart φ e₀
 
+/- English proof (translation)
+The claim follows from `Submodule.mul_le.2 fun _ hξ x hx y hy => hξ.2 x hx y hy`.
+-/
 theorem polMod_mul_le (L : Submodule (OF E) E) : polMod L * L ≤ dualLat L :=
   Submodule.mul_le.2 fun _ hξ x hx y hy => hξ.2 x hx y hy
 
+/- English proof (translation)
+Simplify using `[polPos]`.
+-/
 example {I : Type} (φ : I → E →+* ℂ) (e₀ : ℤˣ) (L : Submodule (OF E) E) (ξ : E) :
     ξ ∈ polPos φ (-e₀) L ↔ -ξ ∈ polPos φ e₀ L := by
   simp [polPos]
 
+/- English proof (translation)
+Introduce `h` and use `by simpa using h.2 (Classical.arbitrary I)`.
+-/
 example {I : Type} [Nonempty I] (φ : I → E →+* ℂ) (e₀ : ℤˣ) (L : Submodule (OF E) E) : (0 : E) ∉ polPos φ e₀ L :=
   fun h => by simpa using h.2 (Classical.arbitrary I)
 

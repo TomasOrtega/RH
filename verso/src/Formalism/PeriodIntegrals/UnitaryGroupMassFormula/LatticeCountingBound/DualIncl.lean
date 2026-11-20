@@ -21,9 +21,15 @@ abbrev SS (I : Formalism.MainNotions.S.AutInst) : Subring (AA I) := Formalism.Ma
 
 abbrev iA (I : Formalism.MainNotions.S.AutInst) : I.E →+* AA I := Formalism.UG.inclE (F := I.F) (Formalism.MainNotions.S.Af I.F)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sig_eq (I : Formalism.MainNotions.S.AutInst) :
     ((I.cm.sig : I.E →ₐ[I.F] I.E) : I.E →+* I.E) = starRingEnd I.E := rfl
 
+/- English proof (translation)
+Unfold `PI.LatCountG.latSet`. Rewrite using `[Set.mem_setOf_eq, PI.UnitaryGroupMassFormula.LSC.LatIs.lamAf_eq I]`. Both sides reduce to the same expression.
+-/
 theorem mem_latSet (I : Formalism.MainNotions.S.AutInst) (y : I.GA) (u : Fin I.n → I.E) :
     u ∈ PI.LatCountG.latSet I y ↔
       (((y.2 : GL (Fin I.n) (AA I))⁻¹ : GL (Fin I.n) (AA I)) : Matrix (Fin I.n) (Fin I.n) (AA I)) *ᵥ
@@ -32,27 +38,46 @@ theorem mem_latSet (I : Formalism.MainNotions.S.AutInst) (y : I.GA) (u : Fin I.n
   rw [Set.mem_setOf_eq, PI.UnitaryGroupMassFormula.LSC.LatIs.lamAf_eq I]
   rfl
 
+/- English proof (translation)
+Unfold `hform`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem hform_smul_right {A : Type} [CommRing A] {n : Type} [Fintype n] (τ : A →+* A)
     (J : Matrix n n A) (a : A) (w x : n → A) : hform τ J w (a • x) = a * hform τ J w x := by
   unfold hform
   simp only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Unfold `hform`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem hform_add_right {A : Type} [CommRing A] {n : Type} [Fintype n] (τ : A →+* A)
     (J : Matrix n n A) (w x x' : n → A) : hform τ J w (x + x') = hform τ J w x + hform τ J w x' := by
   unfold hform
   simp only [Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Unfold `hform`. Simplify using `only [Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]`.
+-/
 theorem hform_sub_right {A : Type} [CommRing A] {n : Type} [Fintype n] (τ : A →+* A)
     (J : Matrix n n A) (w x x' : n → A) : hform τ J w (x - x') = hform τ J w x - hform τ J w x' := by
   unfold hform
   simp only [Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Unfold `hform`. Simplify using the standard rewrite rules.
+-/
 theorem hform_zero_right {A : Type} [CommRing A] {n : Type} [Fintype n] (τ : A →+* A)
     (J : Matrix n n A) (w : n → A) : hform τ J w 0 = 0 := by
   unfold hform
   simp
 
+/- English proof (translation)
+Unfold `latS at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h`. Take `⟨l, hl, rfl⟩` from `h`. Conclude with `csDual_span I.cm.sig I.J I.L l ((I.L_dual l).mp hl) (fun i => iA I (w i)) (Submodule.subset_span ⟨w, hw, rfl⟩)`.
+
+Consider the case `zero`. Rewrite using `[hform_zero_right]`. Conclude with `(SS I).zero_mem`. Consider the case `add x y _ _ hx hy`. Rewrite using `[hform_add_right]`.
+
+Conclude with `(SS I).add_mem hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[Subring.smul_def, hform_smul_right]`. Conclude with `(SS I).mul_mem a.2 hx`.
+-/
 theorem pair_int (I : Formalism.MainNotions.S.AutInst) (w : Fin I.n → I.E) (hw : w ∈ I.L)
     (x : Fin I.n → AA I) (hx : x ∈ latS (F := I.F) (Formalism.MainNotions.S.Af I.F) (SS I) I.L) :
     hform (sigR I.cm.sig (Formalism.MainNotions.S.Af I.F)) (I.J.map (iA I)) (fun i => iA I (w i)) x ∈ SS I := by
@@ -75,6 +100,43 @@ theorem pair_int (I : Formalism.MainNotions.S.AutInst) (w : Fin I.n → I.E) (hw
 end DualI
 
 open DualI Formalism.UG Formalism.UG.P in
+/- English proof (translation)
+Introduce `I y u hu`. Establish `hfin : Module.Finite (𝓞 I.E) I.L` using `Module.Finite.iff_fg.mpr I.L_fg`. Establish `hdet : IsUnit I.J.det` using `isUnit_iff_ne_zero.mpr I.J_det`. Use `set g : GL (Fin I.n) (AA I) := (y.2 : GL (Fin I.n) (AA I)) with hg`. Establish `hU : cT (sigR I.cm.sig (Formalism.MainNotions.S.Af I.F)) (g : Matrix (Fin I.n) (Fin I.n) (AA I)) * I.J.map (iA I) * (g : Matrix (Fin I.n) (Fin I.n) (AA I)) = I.J.map (iA I)` using `y.2.2`.
+
+Establish `hu' : ∀ w ∈ Formalism.UG.CS.globLat g I.L, hform ((I.cm.sig : I.E →ₐ[I.F] I.E) : I.E →+* I.E) I.J w u ∈ (algebraMap (𝓞 I.E) I.E).range`. Introduce `w hw`. Apply `hu w` to reduce the goal to its premises. Rewrite using `[mem_latSet]`. Conclude with `hw`.
+
+Take `⟨z, hz⟩ : ∃ z, z = ((g⁻¹ : GL (Fin I.n) (AA I)) : Matrix (Fin I.n) (Fin I.n) (AA I)) *ᵥ (fun i => iA I (u i))` from `⟨_, rfl⟩`. Establish `hxz : (fun i => iA I (u i)) = (g : Matrix (Fin I.n) (Fin I.n) (AA I)) *ᵥ z`. Rewrite using `[hz, mulVec_mulVec, Units.mul_inv, one_mulVec]`. Establish `hw : ∀ w ∈ latS (F` using `I.F) (Formalism.MainNotions.S.Af I.F) (SS I) I.L, hform (sigR I.cm.sig (Formalism.MainNotions.S.Af I.F)) (I.J.map (iA I)) w z ∈ SS I := by`. Introduce `w hw`.
+
+Establish `hu2` using `(span_recovery_of_integral_adelic_approx csGlob_intAdApprox I.F I.E (Fin I.n) I.L hfin I.L_span g ((g : Matrix (Fin I.n) (Fin I.n) (AA I)) *ᵥ w)).2 (by rwa [mulVec_mulVec, Units.inv_mul, one_mulVec])`. Use `csDual_span I.cm.sig I.J (Formalism.UG.CS.globLat g I.L) u hu' _ hu2` as an intermediate fact. Rewrite `this` using `[hxz, hform_mulVec, hU]`. Then use the resulting hypothesis. Take `⟨c, hc, hlow⟩` from `adelstabL_lower (F := I.F) I.L I.L_span`. Take `⟨m, hm0, hm⟩` from `adelstabL_den (fun p : Fin I.n × Fin I.n => (I.J⁻¹) p.1 p.2)`.
+
+Establish `hi : ∀ i, levelafC I.E c * ((I.J.map (iA I)) *ᵥ z) i ∈ SS I`. Introduce `i`. Establish `h1` using `hw _ (hlow (Pi.single i (1 : AA I)) (fun k => by`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`.
+
+Conclude with `one_mem _`. Conclude with `zero_mem _))`. Establish `h2 : (fun k => levelafC I.E c * (Pi.single i (1 : AA I) : Fin I.n → _) k) = levelafC I.E c • (Pi.single i (1 : AA I) : Fin I.n → _)`. Use function extensionality and compare the values at `k`. Simplify using `[Pi.smul_apply]`.
+
+Rewrite `h1` using `[h2, csDual_hform_smul_left, csDual_sig_C, sf_single]`. Then use the resulting hypothesis. Establish `hinv : (I.J⁻¹).map (iA I) * I.J.map (iA I) = 1`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul I.J hdet, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hz2 : (I.J⁻¹).map (iA I) *ᵥ ((I.J.map (iA I)) *ᵥ z) = z`. Rewrite using `[mulVec_mulVec, hinv, one_mulVec]`.
+
+Establish `hv : ∀ k, levelafC I.E c * iA I (m : I.E) * z k ∈ SS I`. Introduce `k`. Use `csDual_expand (F := I.F) (I.J⁻¹) ((I.J.map (iA I)) *ᵥ z) (levelafC I.E c) (iA I (m : I.E)) k` as an intermediate fact. Rewrite `this` using `[hz2]`. Rewrite using `[this]`.
+
+Use `sum_mem fun i _ => mul_mem ?_ (hi i)` and prove the remaining obligations. Rewrite using `[← map_mul]`. Conclude with `adelstabL_incl_int (F := I.F) _ (hm (k, i))`. Use `set D : 𝓞 I.F := c * (m : 𝓞 I.F) with hD`. Establish `hD0 : D ≠ 0` using `mul_ne_zero hc (Int.cast_ne_zero.2 hm0)`.
+
+Establish `hmC : levelafC I.E ((m : 𝓞 I.F)) = iA I (m : I.E)`. Rewrite using `[← adelstab_incl_C, map_intCast]`. Establish `hDl : levelafC I.E D = levelafC I.E c * iA I (m : I.E)`. Rewrite using `[hD, levelafC_mul, hmC]`. Establish `hDE : algebraMap (𝓞 I.F) I.E D ≠ 0` using `adelstab_algebraMap_ne_zero (F := I.F) (E := I.E) D hD0`.
+
+Establish `happ : ∀ k, ∃ b : 𝓞 I.E, ∃ t ∈ SS I, levelafC I.E D * z k = iA I (algebraMap (𝓞 I.E) I.E b) + levelafC I.E (D * c) * t`. Introduce `k`. Take `⟨b, t, ht, hbt⟩` from `csGlob_approx (F := I.F) (E := I.E) csGlob_intAdApprox (D * c) (mul_ne_zero hD0 hc) (levelafC I.E D * z k) (by rw [hDl]; exact hv k)`. Conclude with `⟨b, t, ht, hbt⟩`. Use `choose b t ht hbt using happ`.
+
+Use `set v : Fin I.n → I.E := fun k => algebraMap (𝓞 I.E) I.E (b k) * (algebraMap (𝓞 I.F) I.E D)⁻¹ with hvdef`. Establish `hq : iA I ((algebraMap (𝓞 I.F) I.E D)⁻¹) * levelafC I.E D = 1`. Rewrite using `[← adelstab_incl_C, ← map_mul, inv_mul_cancel₀ hDE, map_one]`. Establish `hzk : ∀ k, z k = iA I (v k) + levelafC I.E c * t k`. Introduce `k`.
+
+Establish `h1` using `hbt k`. Rewrite `h1` using `[levelafC_mul D c]`. Establish `h3 : iA I (v k) = iA I (algebraMap (𝓞 I.E) I.E (b k)) * iA I ((algebraMap (𝓞 I.F) I.E D)⁻¹)`. Rewrite using `[hvdef]`. Conclude with `map_mul _ _ _`.
+
+Rewrite using `[h3]`. Take the linear combination `iA I ((algebraMap (𝓞 I.F) I.E D)⁻¹) * h1 - z k * hq + (levelafC I.E c * t k) * hq`. Establish `hct : (fun k => levelafC I.E c * t k) ∈ latS (F` using `I.F) (Formalism.MainNotions.S.Af I.F) (SS I) I.L := hlow _ ht`. Establish `hzv : (fun k => iA I (v k)) = z - (fun k => levelafC I.E c * t k)`. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[Pi.sub_apply, hzk k]`. Expand and normalize the polynomial expressions, which then agree. Establish `hvL : v ∈ I.L`. Rewrite using `[I.L_dual v]`. Introduce `w hwL`.
+
+Establish `hint : IsIntegral ℤ (Formalism.UG.hform (starRingEnd I.E) I.J w v)`. Apply `csGlob_int (F := I.F)` to reduce the goal to its premises. Rewrite using `[← sig_eq, ← csDual_hform_incl, hzv, hform_sub_right]`. Conclude with `sub_mem (hw _ (Submodule.subset_span ⟨w, hwL, rfl⟩)) (pair_int I w hwL _ hct)`. Conclude with `⟨⟨_, hint⟩, rfl⟩`.
+
+Rewrite using `[mem_latSet]`. Use `show ((g⁻¹ : GL (Fin I.n) (AA I)) : Matrix (Fin I.n) (Fin I.n) (AA I)) *ᵥ (fun i => iA I (u i)) ∈ _`. Rewrite using `[← hz]`. Establish `hz3 : z = (fun k => iA I (v k)) + (fun k => levelafC I.E c * t k)`. Rewrite using `[hzv]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[hz3]`. Conclude with `add_mem (Submodule.subset_span ⟨v, hvL, rfl⟩) hct`.
+-/
 theorem dual_lattice_inclusion : DualIncl := by
   intro I y u hu
   have hfin : Module.Finite (𝓞 I.E) I.L := Module.Finite.iff_fg.mpr I.L_fg

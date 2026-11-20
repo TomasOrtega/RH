@@ -4,6 +4,19 @@ import Development.AbelianVarietyTheory.Proofs.DegenerationProofs.ExistsComplete
 open TensorProduct
 namespace GlobalTheory.FieldExtensionExists
 
+/- English proof (translation)
+Use `letI : Algebra R R' := ρ.toAlgebra`. Use `haveI : Algebra.IsIntegral R R' := ⟨fun x => hfin.to_isIntegral x⟩`. Use `haveI : (RingHom.ker φ).IsPrime := RingHom.ker_isPrime φ`. Take `⟨q, -, hq, hqc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (RingHom.ker φ) (⊥ : Ideal R') (by`. Introduce `x hx`.
+
+Establish `: ρ x = 0` using `hx`. Establish `h0 : x = 0` using `hinj (this.trans (map_zero ρ).symm)`. Rewrite using `[h0]`. Conclude with `Ideal.zero_mem _)`. Establish `hqc' : q.comap ρ = RingHom.ker φ` using `hqc`.
+
+Set `j : (R ⧸ RingHom.ker φ) →+* (R' ⧸ q)` to `Ideal.quotientMap q ρ hqc'.ge`. Establish `hj : Function.Injective j` using `Ideal.quotientMap_injective' hqc'.le`. Establish `hjf : j.Finite`. Apply `RingHom.Finite.of_comp_finite (f := Ideal.Quotient.mk (RingHom.ker φ))` to reduce the goal to its premises. Establish `: j.comp (Ideal.Quotient.mk (RingHom.ker φ)) = (Ideal.Quotient.mk q).comp ρ`.
+
+Use extensionality with `x`. Simplify using `[j]`. Rewrite using `[this]`. Conclude with `(RingHom.Finite.of_surjective _ Ideal.Quotient.mk_surjective).comp hfin`. Use `letI : Algebra (R ⧸ RingHom.ker φ) (R' ⧸ q) := j.toAlgebra`.
+
+Use `letI : Algebra (R ⧸ RingHom.ker φ) K := (RingHom.kerLift φ).toAlgebra`. Use `haveI : Module.Finite (R ⧸ RingHom.ker φ) (R' ⧸ q) := hjf`. Use `haveI : Nontrivial (K ⊗[R ⧸ RingHom.ker φ] (R' ⧸ q)) := Algebra.TensorProduct.nontrivial_of_algebraMap_injective_of_isDomain _ _ _ (RingHom.kerLift_injective φ) hj`. Take `⟨M, hM⟩` from `Ideal.exists_maximal (K ⊗[R ⧸ RingHom.ker φ] (R' ⧸ q))`. Use `⟨(K ⊗[R ⧸ RingHom.ker φ] (R' ⧸ q)) ⧸ M, Ideal.Quotient.field M, inferInstance, (inferInstance : Module.Finite K ((K ⊗[R ⧸ RingHom.ker φ] (R' ⧸ q)) ⧸ M)), (Ideal.Quotient.mk M).comp ((Algebra.TensorProduct.includeRight (R := R ⧸ RingHom.ker φ) (A := K) (B := R' ⧸ q)).toRingHom.com …` and prove the remaining obligations.
+
+Use extensionality with `r`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk M (Algebra.TensorProduct.includeRight (R := R ⧸ RingHom.ker φ) (A := K) (B := R' ⧸ q) (algebraMap (R ⧸ RingHom.ker φ) (R' ⧸ q) (Ideal.Quotient.mk _ r))) = Ideal.Quotient.mk M ((φ r) ⊗ₜ 1)`. Rewrite using `[AlgHom.commutes, Algebra.TensorProduct.algebraMap_apply]`. Both sides reduce to the same expression.
+-/
 theorem exists_field_extension {R R' K : Type} [CommRing R] [CommRing R'] [Field K]
     (ρ : R →+* R') (hinj : Function.Injective ρ) (hfin : ρ.Finite) (φ : R →+* K) :
     ∃ (L : Type) (_ : Field L) (_ : Algebra K L) (_ : FiniteDimensional K L) (χ : R' →+* L),
@@ -43,6 +56,19 @@ theorem exists_field_extension {R R' K : Type} [CommRing R] [CommRing R'] [Field
   rw [AlgHom.commutes, Algebra.TensorProduct.algebraMap_apply]
   rfl
 
+/- English proof (translation)
+Introduce `R R' _ _ _ _ ρ hinj hfin V _ _ _ hV ψ hψ`. Take `⟨h1, h2, h3⟩` from `hV`. Use `haveI : CharZero (FractionRing V) := charZero_of_injective_algebraMap (IsFractionRing.injective V (FractionRing V))`. Take `⟨L, _, _, _, χ, hχ⟩` from `exists_field_extension ρ hinj hfin ((algebraMap V (FractionRing V)).comp ψ)`. Take `⟨W, _, _, hW1, hW2, _, _, _, hc, -, hf, hl, hint, -⟩` from `GlobalTheory.SS.exists_complete_dvr_finite_extension V (FractionRing V) L`.
+
+Establish `hWL : Function.Injective (algebraMap W L)` using `IsFractionRing.injective W L`. Establish `hmem : ∀ x : R', ∃ w : W, algebraMap W L w = χ x`. Introduce `x`. Take `⟨P, hP, hPx⟩` from `hfin.to_isIntegral x`. Use `hint (χ x) ⟨P.map ψ, hP.map ψ, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Polynomial.eval₂_map, RingHom.comp_assoc, ← hχ, ← Polynomial.hom_eval₂, hPx, map_zero]`. Use `choose g hg using hmem`. Set `ψ' : R' →+* W` to `{ toFun := g map_one' := hWL (by simp [hg]) map_mul' := fun x y => hWL (by simp [hg]) map_zero' := hWL (by simp [hg]) map_add' := fun x y => hWL (by simp [hg]) }`. Establish `hcomp : ψ'.comp ρ = (algebraMap V W).comp ψ`. Use extensionality with `r`.
+
+Apply `hWL` to reduce the goal to its premises. Establish `e1` using `RingHom.congr_fun hχ r`. Establish `e2` using `RingHom.congr_fun hc (ψ r)`. Simplify using `only [RingHom.comp_apply] at e1 e2 ⊢`. Rewrite using `[e2, ← e1]`.
+
+Conclude with `hg _`. Establish `hloc : IsLocalHom (ψ'.comp ρ)` using `by rw [hcomp]; infer_instance`. Establish `hmax : ((IsLocalRing.maximalIdeal W).comap ψ').IsMaximal`. Apply `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap' ρ hfin.to_isIntegral` to reduce the goal to its premises. Establish `e : (IsLocalRing.maximalIdeal W).comap (ψ'.comp ρ) = IsLocalRing.maximalIdeal R` using `((IsLocalRing.local_hom_TFAE (ψ'.comp ρ)).out 0 4).1 hloc`.
+
+Rewrite using `[Ideal.comap_comap, e]`. Use `infer_instance`. Use `⟨W, inferInstance, inferInstance, inferInstance, algebraMap V W, ψ', ⟨hW1, hW2, charZero_of_injective_algebraMap hf⟩, hf, hl, ?_, hcomp⟩` and prove the remaining obligations. Conclude with `((IsLocalRing.local_hom_TFAE ψ').out 0 4).2 (IsLocalRing.eq_maximalIdeal hmax)`.
+-/
 theorem exists_extension : ∀ (R R' : Type) [CommRing R] [IsLocalRing R] [CommRing R'] [IsLocalRing R'] (ρ : R →+* R'),
     Function.Injective ρ → ρ.Finite → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.LN.CDvr V →
     ∀ (ψ : R →+* V), IsLocalHom ψ → ∃ (V' : Type) (_ : CommRing V') (_ : IsDomain V') (_ : IsLocalRing V')

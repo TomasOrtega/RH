@@ -20,11 +20,17 @@ def pd {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] (Φ : H × Z → W)
 
 variable {O : Set H} {OZ : Set Z}
 
+/- English proof (translation)
+Establish `h1 : ContDiffOn ℝ ∞ (fderiv ℝ Φ) (O ×ˢ OZ)` using `hΦ.fderiv_of_isOpen (hO.prod hOZ) (by simp)`. Conclude with `h1.clm_comp contDiffOn_const`.
+-/
 theorem contDiffOn_pd {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {Φ : H × Z → W}
     (hO : IsOpen O) (hOZ : IsOpen OZ) (hΦ : ContDiffOn ℝ ∞ Φ (O ×ˢ OZ)) : ContDiffOn ℝ ∞ (pd Φ) (O ×ˢ OZ) := by
   have h1 : ContDiffOn ℝ ∞ (fderiv ℝ Φ) (O ×ˢ OZ) := hΦ.fderiv_of_isOpen (hO.prod hOZ) (by simp)
   exact h1.clm_comp contDiffOn_const
 
+/- English proof (translation)
+Establish `hd : DifferentiableAt ℝ Φ (x, z)` using `(hΦ.differentiableOn (by simp)).differentiableAt ((hO.prod hOZ).mem_nhds ⟨hx, hz⟩)`. Conclude with `hd.hasFDerivAt.comp x (hasFDerivAt_prodMk_left x z)`.
+-/
 theorem hasFDerivAt_pd {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {Φ : H × Z → W}
     (hO : IsOpen O) (hOZ : IsOpen OZ) (hΦ : ContDiffOn ℝ ∞ Φ (O ×ˢ OZ)) {x : H} {z : Z} (hx : x ∈ O)
     (hz : z ∈ OZ) : HasFDerivAt (fun x' => Φ (x', z)) (pd Φ (x, z)) x := by
@@ -32,6 +38,9 @@ theorem hasFDerivAt_pd {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {Φ
     (hΦ.differentiableOn (by simp)).differentiableAt ((hO.prod hOZ).mem_nhds ⟨hx, hz⟩)
   exact hd.hasFDerivAt.comp x (hasFDerivAt_prodMk_left x z)
 
+/- English proof (translation)
+Establish `h1` using `hasFDerivAt_pd hO hOZ hΦ (hUO hx) hz`. Establish `h2 : HasFDerivAt (fun x' => Φ (x', z)) (0 : H →L[ℝ] W) x` using `(hasFDerivAt_const (0 : W) x).congr_of_eventuallyEq (eventually_of_mem (hU.mem_nhds hx) fun x' hx' => h0 x' hx')`. Conclude with `h1.unique h2`.
+-/
 theorem pd_eq_zero {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {Φ : H × Z → W}
     (hO : IsOpen O) (hOZ : IsOpen OZ) (hΦ : ContDiffOn ℝ ∞ Φ (O ×ˢ OZ)) {U : Set H} (hU : IsOpen U)
     (hUO : U ⊆ O) {z : Z} (hz : z ∈ OZ) (h0 : ∀ x ∈ U, Φ (x, z) = 0) {x : H} (hx : x ∈ U) : pd Φ (x, z) = 0 := by
@@ -41,6 +50,9 @@ theorem pd_eq_zero {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {Φ : H
       (eventually_of_mem (hU.mem_nhds hx) fun x' hx' => h0 x' hx')
   exact h1.unique h2
 
+/- English proof (translation)
+Introduce `x₀ hx₀`. Take `⟨U, hUo, hxU, hUO, K, hK, hKz⟩` from `hS x₀ hx₀`. Conclude with `⟨U, hUo, hxU, hUO, K, hK, fun x hx y hy => pd_eq_zero hO hOZ hΦ hUo hUO (hι y) (fun x' hx' => hKz x' hx' y hy) hx⟩`.
+-/
 theorem locSupp_pd {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {Φ : H × Z → W} {ι : Γ → Z}
     (hO : IsOpen O) (hOZ : IsOpen OZ) (hι : ∀ y, ι y ∈ OZ) (hΦ : ContDiffOn ℝ ∞ Φ (O ×ˢ OZ))
     (hS : LocSupp O ι Φ) : LocSupp O ι (pd Φ) := by
@@ -49,6 +61,9 @@ theorem locSupp_pd {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {Φ : H
   exact ⟨U, hUo, hxU, hUO, K, hK, fun x hx y hy =>
     pd_eq_zero hO hOZ hΦ hUo hUO (hι y) (fun x' hx' => hKz x' hx' y hy) hx⟩
 
+/- English proof (translation)
+The claim follows from `hΦ.comp_continuous (continuous_const.prodMk hιc) fun y => ⟨hx, hι y⟩`.
+-/
 theorem continuous_slice {W : Type} [TopologicalSpace W] {Φ : H × Z → W} {ι : Γ → Z} (hιc : Continuous ι)
     (hι : ∀ y, ι y ∈ OZ) (hΦ : ContinuousOn Φ (O ×ˢ OZ)) {x : H} (hx : x ∈ O) :
     Continuous fun y : Γ => Φ (x, ι y) :=
@@ -58,12 +73,18 @@ section Int
 
 variable (μ : Measure Γ) [IsFiniteMeasureOnCompacts μ] {ι : Γ → Z}
 
+/- English proof (translation)
+The claim follows from `(continuous_slice hιc hι hΦ hx).integrable_of_hasCompactSupport (HasCompactSupport.intro hK hKz)`.
+-/
 theorem integrable_slice {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensional ℝ W]
     {Φ : H × Z → W} (hιc : Continuous ι) (hι : ∀ y, ι y ∈ OZ) (hΦ : ContinuousOn Φ (O ×ˢ OZ)) {x : H} (hx : x ∈ O)
     {K : Set Γ} (hK : IsCompact K) (hKz : ∀ y : Γ, y ∉ K → Φ (x, ι y) = 0) :
     Integrable (fun y : Γ => Φ (x, ι y)) μ :=
   (continuous_slice hιc hι hΦ hx).integrable_of_hasCompactSupport (HasCompactSupport.intro hK hKz)
 
+/- English proof (translation)
+Take `⟨U, hUo, hxU, hUO, K, hK, hKz⟩` from `locSupp_pd hO hOZ hι hΦ hS x hx`. Conclude with `integrable_slice μ hιc hι (contDiffOn_pd hO hOZ hΦ).continuousOn hx hK fun y hy => hKz x hxU y hy`.
+-/
 theorem integrable_pd {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensional ℝ W]
     {Φ : H × Z → W} (hO : IsOpen O) (hOZ : IsOpen OZ) (hιc : Continuous ι) (hι : ∀ y, ι y ∈ OZ)
     (hΦ : ContDiffOn ℝ ∞ Φ (O ×ˢ OZ)) (hS : LocSupp O ι Φ) {x : H} (hx : x ∈ O) :
@@ -71,6 +92,19 @@ theorem integrable_pd {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [Fin
   obtain ⟨U, hUo, hxU, hUO, K, hK, hKz⟩ := locSupp_pd hO hOZ hι hΦ hS x hx
   exact integrable_slice μ hιc hι (contDiffOn_pd hO hOZ hΦ).continuousOn hx hK fun y hy => hKz x hxU y hy
 
+/- English proof (translation)
+Use `haveI : CompleteSpace W := FiniteDimensional.complete ℝ W`. Use `haveI : ProperSpace H := FiniteDimensional.proper ℝ H`. Take `⟨U, hUo, hxU, hUO, K, hK, hKz⟩` from `hS x₀ hx₀`. Take `⟨r, hr, hrU⟩` from `Metric.isOpen_iff.1 hUo x₀ hxU`. Establish `hcb : closedBall x₀ (r / 2) ⊆ U` using `(closedBall_subset_ball (by linarith)).trans hrU`.
+
+Establish `hpdc : ContinuousOn (pd Φ) (O ×ˢ OZ)` using `(contDiffOn_pd hO hOZ hΦ).continuousOn`. Establish `hcomp : IsCompact (closedBall x₀ (r / 2) ×ˢ K)` using `(isCompact_closedBall x₀ (r / 2)).prod hK`. Establish `hcont : ContinuousOn (fun q : H × Γ => ‖pd Φ (q.1, ι q.2)‖) (closedBall x₀ (r / 2) ×ˢ K)`. Use `(hpdc.comp (continuous_fst.prodMk (hιc.comp continuous_snd)).continuousOn ?_).norm` and prove the remaining obligations. Introduce `q hq`.
+
+Conclude with `⟨hUO (hcb hq.1), hι q.2⟩`. Take `⟨C, hC⟩` from `hcomp.exists_bound_of_continuousOn hcont`. Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (𝕜 := ℝ) (F' := fun x y => pd Φ (x, ι y)) (s := ball x₀ (r / 2)) (bound := K.indicator fun _ => C) (ball_mem_nhds x₀ (by linarith)) ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `filter_upwards [hUo.mem_nhds hxU] with x hx`.
+
+Conclude with `(continuous_slice hιc hι hΦ.continuousOn (hUO hx)).aestronglyMeasurable`. Conclude with `integrable_slice μ hιc hι hΦ.continuousOn hx₀ hK fun y hy => hKz x₀ hxU y hy`. Conclude with `(continuous_slice hιc hι hpdc hx₀).aestronglyMeasurable`. Use `Filter.Eventually.of_forall fun y x hx => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ K`.
+
+Rewrite using `[indicator_of_mem hy]`. Use `hC (x, y) ⟨ball_subset_closedBall hx, hy⟩` as an intermediate fact. Simplify using `using this`. Rewrite using `[indicator_of_notMem hy, pd_eq_zero hO hOZ hΦ hUo hUO (hι y) (fun x' hx' => hKz x' hx' y hy) (hcb (ball_subset_closedBall hx))]`. Simplify using the standard rewrite rules.
+
+Conclude with `(integrable_indicator_iff hKm).2 (integrableOn_const hK.measure_lt_top.ne)`. Conclude with `Filter.Eventually.of_forall fun y x hx => hasFDerivAt_pd hO hOZ hΦ (hUO (hcb (ball_subset_closedBall hx))) (hι y)`.
+-/
 theorem hasFDerivAt_int {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensional ℝ W]
     {Φ : H × Z → W} (hO : IsOpen O) (hOZ : IsOpen OZ) (hιc : Continuous ι) (hι : ∀ y, ι y ∈ OZ)
     (hΦ : ContDiffOn ℝ ∞ Φ (O ×ˢ OZ)) (hS : LocSupp O ι Φ) {x₀ : H} (hx₀ : x₀ ∈ O) :
@@ -106,6 +140,13 @@ theorem hasFDerivAt_int {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [F
   · exact Filter.Eventually.of_forall fun y x hx =>
       hasFDerivAt_pd hO hOZ hΦ (hUO (hcb (ball_subset_closedBall hx))) (hι y)
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `W _ _ _ Φ hΦ hS`. Use `contDiffOn_zero.2 fun x hx => ?_` and prove the remaining obligations.
+
+Conclude with `(hasFDerivAt_int μ hO hOZ hιc hι hΦ hS hx).continuousAt.continuousWithinAt`. Consider the case `succ m ih`. Introduce `W _ _ _ Φ hΦ hS`. Rewrite using `[show ((m + 1 : ℕ) : WithTop ℕ∞) = (m : WithTop ℕ∞) + 1 by push_cast; rfl, contDiffOn_succ_iff_fderiv_of_isOpen hO]`. Use `⟨fun x hx => (hasFDerivAt_int μ hO hOZ hιc hι hΦ hS hx).differentiableAt.differentiableWithinAt, fun h => absurd h (by simp), ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `ih (contDiffOn_pd hO hOZ hΦ) (locSupp_pd hO hOZ hι hΦ hS)`. Conclude with `h1.congr fun x hx => (hasFDerivAt_int μ hO hOZ hιc hι hΦ hS hx).fderiv`.
+-/
 theorem contDiffOn_int_nat (hO : IsOpen O) (hOZ : IsOpen OZ) (hιc : Continuous ι) (hι : ∀ y, ι y ∈ OZ) :
     ∀ (m : ℕ) {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensional ℝ W]
     {Φ : H × Z → W}, ContDiffOn ℝ ∞ Φ (O ×ˢ OZ) → LocSupp O ι Φ →
@@ -125,6 +166,9 @@ theorem contDiffOn_int_nat (hO : IsOpen O) (hOZ : IsOpen OZ) (hιc : Continuous 
     have h1 := ih (contDiffOn_pd hO hOZ hΦ) (locSupp_pd hO hOZ hι hΦ hS)
     exact h1.congr fun x hx => (hasFDerivAt_int μ hO hOZ hιc hι hΦ hS hx).fderiv
 
+/- English proof (translation)
+The claim follows from `contDiffOn_infty.2 fun m => contDiffOn_int_nat μ hO hOZ hιc hι m hΦ hS`.
+-/
 theorem contDiffOn_int {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensional ℝ W]
     {Φ : H × Z → W} (hO : IsOpen O) (hOZ : IsOpen OZ) (hιc : Continuous ι) (hι : ∀ y, ι y ∈ OZ)
     (hΦ : ContDiffOn ℝ ∞ Φ (O ×ˢ OZ)) (hS : LocSupp O ι Φ) :

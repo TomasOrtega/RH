@@ -31,6 +31,11 @@ namespace GlobalTheory.ShareOn
 open NumberField IsDedekindDomain
 open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Indef.Tree Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Cx Formalism.IndefR.FWT
 open GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.OntoChain GlobalTheory.RealIndexBound GlobalTheory.OnTies Formalism.MainNotions.ArithmeticCylinders
+/- English proof (translation)
+Introduce `hM`. Unfold `_root_.GlobalTheory.ShareOn.ModelStatement _root_.GlobalTheory.BigOn.ForallTwoRuns _root_.GlobalTheory.BigOn.AtPtsAlt at hM`. Unfold `_root_.GlobalTheory.ShareOn.SharedWeightStatement _root_.GlobalTheory.BigOn.ForallTwoRuns _root_.GlobalTheory.BigOn.AtPtsAlt`. Use `(hM.and GlobalTheory.T.shareSize_bounds_along_family).imp ?_` and prove the remaining obligations. Introduce `eps Fm CH _ h`.
+
+Take `⟨⟨x1, h1⟩, ⟨x2, h2⟩⟩` from `h`. Use `⟨max x1 x2, fun x hx hle ι p hp hmore r hr hown i => ?_⟩` and prove the remaining obligations. Establish `hm` using `h1 x hx ((le_max_left _ _).trans hle) ι p hp hmore r hr hown i`. Establish `hn` using `h2 x hx ((le_max_right _ _).trans hle) ι`. Conclude with `shareW_of_modelAt p i _ _ (by positivity) hm (by obtain ⟨_, _, -, -, h⟩ := _root_.GlobalTheory.T.exists_whittaker_lam_psi_half_unip _ _ _ _ _ _ _ _ _ _ p hp; exact h) (fun p0 h0 => (hn p0 h0).1) (hn 0 (Nat.zero_le _)).2`.
+-/
 theorem shareWSt_of_modelSt_alt : _root_.GlobalTheory.ShareOn.ModelStatement → _root_.GlobalTheory.ShareOn.SharedWeightStatement := by
   intro hM
   unfold _root_.GlobalTheory.ShareOn.ModelStatement _root_.GlobalTheory.BigOn.ForallTwoRuns _root_.GlobalTheory.BigOn.AtPtsAlt at hM

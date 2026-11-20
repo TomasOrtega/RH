@@ -13,32 +13,52 @@ variable {R V k W : Type} [CommRing R] [AddCommGroup V] [Module R V] [Field k] [
 def Rel (res : R →+* k) (t : R) (Λ : Submodule R V) (π : V → W) (q : Pr R V k) (w : W) : Prop :=
   q.Ok res ∧ q.IsKer Λ ∧ ∃ e, q.f e = 1 ∧ π (t • e) = w
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Rewrite `he` using `[h.off e hn]`. Conclude with `zero_ne_one he`.
+-/
 theorem mem_of_one {q : Pr R V k} (h : q.Ok res) {e : V} (he : q.f e = 1) : e ∈ q.L := by
   by_contra hn
   rw [h.off e hn] at he
   exact zero_ne_one he
 
+/- English proof (translation)
+Use `h.add (x - y) (sub_mem hx hy) y hy` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem f_sub {q : Pr R V k} (h : q.Ok res) {x y : V} (hx : x ∈ q.L) (hy : y ∈ q.L) :
     q.f (x - y) = q.f x - q.f y := by
   have := h.add (x - y) (sub_mem hx hy) y hy
   rw [sub_add_cancel] at this
   rw [this]; ring
 
+/- English proof (translation)
+Use `h.add (x - y) (sub_mem hx hy) y hy` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Rewrite using `[this]`. Normalize the expressions using the abelian group laws.
+-/
 theorem pi_sub (h : Red res t Λ π) {x y : V} (hx : x ∈ Λ) (hy : y ∈ Λ) : π (x - y) = π x - π y := by
   have := h.add (x - y) (sub_mem hx hy) y hy
   rw [sub_add_cancel] at this
   rw [this]; abel
 
+/- English proof (translation)
+The claim follows from `(hk _).2 ⟨q.L.smul_mem _ he, by rw [h.smul _ _ he, ht, zero_mul]⟩`.
+-/
 theorem te_mem (ht : res t = 0) {q : Pr R V k} (h : q.Ok res) (hk : q.IsKer Λ) {e : V} (he : e ∈ q.L) :
     t • e ∈ Λ :=
   (hk _).2 ⟨q.L.smul_mem _ he, by rw [h.smul _ _ he, ht, zero_mul]⟩
 
+/- English proof (translation)
+Take `⟨y, hy, s, hs, h⟩` from `(hr.ker _ hx).1 h0`. Establish `: s • x - y = 0` using `htf _ (by rw [smul_sub, smul_comm, h, sub_self])`. Conclude with `hsat s x hs (by rw [sub_eq_zero.1 this]; exact hy)`.
+-/
 theorem mem_of_pi (htf : ∀ x : V, t • x = 0 → x = 0) (hsat : ∀ s x, res s ≠ 0 → s • x ∈ Λ → x ∈ Λ)
     (hr : Red res t Λ π) {x : V} (hx : t • x ∈ Λ) (h0 : π (t • x) = 0) : x ∈ Λ := by
   obtain ⟨y, hy, s, hs, h⟩ := (hr.ker _ hx).1 h0
   have : s • x - y = 0 := htf _ (by rw [smul_sub, smul_comm, h, sub_self])
   exact hsat s x hs (by rw [sub_eq_zero.1 this]; exact hy)
 
+/- English proof (translation)
+Take `⟨ho, hk, e, he, rfl⟩` from `h`. Take `⟨-, -, e', he', rfl⟩` from `h'`. Establish `m` using `mem_of_one ho he`. Establish `m'` using `mem_of_one ho he'`. Establish `h1 : e - e' ∈ Λ` using `(hk _).2 ⟨sub_mem m m', by rw [f_sub ho m m', he, he', sub_self]⟩`.
+
+Establish `h2` using `hr.smul t _ h1`. Rewrite `h2` using `[ht, zero_smul, smul_sub, pi_sub hr (te_mem ht ho hk m) (te_mem ht ho hk m')]`. Conclude with `sub_eq_zero.1 h2`.
+-/
 theorem rel_fun (ht : res t = 0) (hr : Red res t Λ π) {q : Pr R V k} {w w' : W}
     (h : Rel res t Λ π q w) (h' : Rel res t Λ π q w') : w = w' := by
   obtain ⟨ho, hk, e, he, rfl⟩ := h
@@ -50,6 +70,13 @@ theorem rel_fun (ht : res t = 0) (hr : Red res t Λ π) {q : Pr R V k} {w w' : W
   rw [ht, zero_smul, smul_sub, pi_sub hr (te_mem ht ho hk m) (te_mem ht ho hk m')] at h2
   exact sub_eq_zero.1 h2
 
+/- English proof (translation)
+Establish `m` using `mem_of_one ho he`. Establish `m'` using `mem_of_one ho' he'`. Take `⟨a, ha⟩` from `hs (q.f y)`. Establish `h1 : y - a • e ∈ Λ` using `(hk _).2 ⟨sub_mem hy (q.L.smul_mem _ m), by`. Rewrite using `[f_sub ho hy (q.L.smul_mem _ m), ho.smul _ _ m, he, ha, mul_one, sub_self]⟩`.
+
+Establish `h2 : y - a • e' ∈ Λ`. Use `add_mem h1 (Λ.smul_mem a h)` as an intermediate fact. Rewrite `this` using `[smul_sub, sub_add_sub_cancel]`. Then use the resulting hypothesis. Take `⟨h3, h4⟩` from `(hk' _).1 h2`. Establish `h5 : y ∈ q'.L`.
+
+Use `add_mem h3 (q'.L.smul_mem a m')` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Use `⟨h5, ?_⟩` and prove the remaining obligations. Rewrite `h4` using `[f_sub ho' h5 (q'.L.smul_mem _ m'), ho'.smul _ _ m', he', mul_one, ha]`. Conclude with `sub_eq_zero.1 h4`.
+-/
 theorem le_of_sub (hs : Function.Surjective res) {q q' : Pr R V k} (ho : q.Ok res) (hk : q.IsKer Λ)
     (ho' : q'.Ok res) (hk' : q'.IsKer Λ) {e e' : V} (he : q.f e = 1) (he' : q'.f e' = 1) (h : e - e' ∈ Λ)
     (y : V) (hy : y ∈ q.L) : y ∈ q'.L ∧ q'.f y = q.f y := by
@@ -69,6 +96,13 @@ theorem le_of_sub (hs : Function.Surjective res) {q q' : Pr R V k} (ho : q.Ok re
   rw [f_sub ho' h5 (q'.L.smul_mem _ m'), ho'.smul _ _ m', he', mul_one, ha] at h4
   exact sub_eq_zero.1 h4
 
+/- English proof (translation)
+Take `⟨ho, hk, e, he, rfl⟩` from `h`. Take `⟨ho', hk', e', he', hw⟩` from `h'`. Establish `m` using `te_mem ht ho hk (mem_of_one ho he)`. Establish `m'` using `te_mem ht ho' hk' (mem_of_one ho' he')`. Establish `h1 : e - e' ∈ Λ` using `mem_of_pi htf hsat hr (by rw [smul_sub]; exact sub_mem m m') (by rw [smul_sub, pi_sub hr m m', hw, sub_self])`.
+
+Establish `h2 : e' - e ∈ Λ` using `by rw [← neg_sub]; exact neg_mem h1`. Establish `A` using `le_of_sub hs ho hk ho' hk' he he' h1`. Establish `B` using `le_of_sub hs ho' hk' ho hk he' he h2`. Use extensionality with `y`. Conclude with `⟨fun h => (A y h).1, fun h => (B y h).1⟩`.
+
+Distinguish the cases in `hy : y ∈ q.L`. Conclude with `(A y hy).2.symm`. Rewrite using `[ho.off y hy, ho'.off y (fun h => hy (B y h).1)]`.
+-/
 theorem rel_inj (hs : Function.Surjective res) (ht : res t = 0) (htf : ∀ x : V, t • x = 0 → x = 0)
     (hsat : ∀ s x, res s ≠ 0 → s • x ∈ Λ → x ∈ Λ) (hr : Red res t Λ π) {q q' : Pr R V k} {w : W}
     (h : Rel res t Λ π q w) (h' : Rel res t Λ π q' w) : q = q' := by
@@ -87,6 +121,9 @@ theorem rel_inj (hs : Function.Surjective res) (ht : res t = 0) (htf : ∀ x : V
     · exact (A y hy).2.symm
     · rw [ho.off y hy, ho'.off y (fun h => hy (B y h).1)]
 
+/- English proof (translation)
+Introduce and unpack `⟨ho, hk, e, he, h⟩`. Use `((hk _).1 (mem_of_pi htf hsat hr (te_mem ht ho hk (mem_of_one ho he)) h)).2` as an intermediate fact. Rewrite `this` using `[he]`. Conclude with `one_ne_zero this`.
+-/
 theorem rel_ne (ht : res t = 0) (htf : ∀ x : V, t • x = 0 → x = 0)
     (hsat : ∀ s x, res s ≠ 0 → s • x ∈ Λ → x ∈ Λ) (hr : Red res t Λ π) (q : Pr R V k) :
     ¬ Rel res t Λ π q 0 := by
@@ -95,6 +132,11 @@ theorem rel_ne (ht : res t = 0) (htf : ∀ x : V, t • x = 0 → x = 0)
   rw [he] at this
   exact one_ne_zero this
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `ho.ne`. Establish `m : x ∈ q.L`. Assume the negation of the conclusion as `hn`. Conclude with `hx (ho.off x hn)`. Take `⟨a, ha⟩` from `hs (q.f x)⁻¹`.
+
+Conclude with `⟨_, ho, hk, a • x, by rw [ho.smul _ _ m, ha, inv_mul_cancel₀ hx], rfl⟩`.
+-/
 theorem rel_ex (hs : Function.Surjective res) {q : Pr R V k} (ho : q.Ok res) (hk : q.IsKer Λ) :
     ∃ w, Rel res t Λ π q w := by
   obtain ⟨x, hx⟩ := ho.ne
@@ -104,6 +146,11 @@ theorem rel_ex (hs : Function.Surjective res) {q : Pr R V k} (ho : q.Ok res) (hk
   obtain ⟨a, ha⟩ := hs (q.f x)⁻¹
   exact ⟨_, ho, hk, a • x, by rw [ho.smul _ _ m, ha, inv_mul_cancel₀ hx], rfl⟩
 
+/- English proof (translation)
+Take `⟨ho, hk, e, he, rfl⟩` from `h`. Take `⟨b, rfl⟩` from `hs a`. Establish `m` using `mem_of_one ho he`. Use `⟨ho.dil (inv_ne_zero ha), fun y => ?_, b • e, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hk y] show _ ↔ y ∈ q.L ∧ (res b)⁻¹ * q.f y = 0`.
+
+Simplify using `[ha]`. Use `show (res b)⁻¹ * q.f (b • e) = 1`. Rewrite using `[ho.smul _ _ m, he, mul_one, inv_mul_cancel₀ ha]`. Rewrite using `[smul_comm, hr.smul _ _ (te_mem ht ho hk m)]`.
+-/
 theorem rel_dil (hs : Function.Surjective res) (ht : res t = 0) (hr : Red res t Λ π) {q : Pr R V k} {w : W}
     (h : Rel res t Λ π q w) {a : k} (ha : a ≠ 0) : Rel res t Λ π (q.dil a⁻¹) (a • w) := by
   obtain ⟨ho, hk, e, he, rfl⟩ := h
@@ -123,6 +170,27 @@ namespace GlobalTheory.LevelHecke
 
 open UpInj in
 
+/- English proof (translation)
+Introduce `R V k W M _ _ _ _ _ _ _ _ _ _ _ res t Λ π Φ hs ht htf hsat hr hup hnm`. Set `ψ : W → M` to `fun w => if h : ∃ q, Rel res t Λ π q w then Φ h.choose else 0`. Establish `ψ1 : ∀ q w, Rel res t Λ π q w → ψ w = Φ q` using `fun q w h => by`. Establish `h0 : ∃ q, Rel res t Λ π q w` using `⟨q, h⟩`. Simplify using `only [ψ, dif_pos h0]`.
+
+Rewrite using `[rel_inj hs ht htf hsat hr h0.choose_spec h]`. Establish `ψ0 : ∀ w, (¬ ∃ q, Rel res t Λ π q w) → ψ w = 0` using `fun w h => dif_neg h`. Set `j : Pr R V k → W` to `fun q => if h : ∃ w, Rel res t Λ π q w then h.choose else 0`. Establish `j1 : ∀ q : Pr R V k, q.Ok res → q.IsKer Λ → Rel res t Λ π q (j q)` using `fun q ho hk => by`. Establish `h0 : ∃ w, Rel res t Λ π q w` using `rel_ex hs ho hk`.
+
+Simplify using `only [j, dif_pos h0]`. Conclude with `h0.choose_spec`. Establish `key` using `GlobalTheory.T.eq_zero_of_affineHyperplane_line_sums k W M ψ (ψ0 _ fun ⟨q, h⟩ => rel_ne ht htf hsat hr q h) (fun g hg => ?_) (fun w => ?_)`. Introduce `q ho hk`. Rewrite using `[← ψ1 q _ (j1 q ho hk)]`.
+
+Conclude with `key _`. Take `⟨d, rfl, hd, hsum⟩` from `hup g hg`. Establish `hinj : Set.InjOn j {q | Pr.Inc res t d q}` using `fun q hq q' hq' h => rel_inj hs ht htf hsat hr (j1 q hq.1 hq.2.1) (h ▸ j1 q' hq'.1 hq'.2.1)`. Establish `e1 : ∑ᶠ x ∈ {x | g x = 1}, ψ x = ∑ᶠ x ∈ j '' {q | Pr.Inc res t d q}, ψ x`. Apply `finsum_mem_inter_support_eq'` to reduce the goal to its premises.
+
+Introduce `w hw`. Establish `hex : ∃ q, Rel res t d.L π q w`. Assume the negation of the conclusion as `hn`. Conclude with `hw (ψ0 w hn)`. Take `⟨q, hq⟩` from `hex`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hg1`. Use `⟨q, ?_, rel_fun ht hr (j1 q hq.1 hq.2.1) hq⟩` and prove the remaining obligations. Take `⟨ho, hk, e, he, rfl⟩` from `hq`. Conclude with `⟨ho, hk, e, he, by rw [hd _ (te_mem ht ho hk (mem_of_one ho he))]; exact hg1⟩`.
+
+Introduce and unpack `⟨q', ⟨ho, hk, e, he, h1⟩, rfl⟩`. Rewrite `h1` using `[hd _ (te_mem ht ho hk (mem_of_one ho he))]`. Use `show g _ = 1`. Rewrite using `[rel_fun ht hr (j1 q' ho hk) ⟨ho, hk, e, he, rfl⟩]`. Conclude with `h1`.
+
+Rewrite using `[e1, finsum_mem_image hinj, ← hsum]`. Conclude with `finsum_mem_congr rfl fun q hq => ψ1 q _ (j1 q hq.1 hq.2.1)`. Distinguish the cases in `hex : ∃ q, Rel res t Λ π q w`. Take `⟨q, hq⟩` from `hex`. Rewrite using `[← hnm q hq.1 hq.2.1, ← Equiv.sum_comp (Equiv.inv kˣ)]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `ψ1 _ _ (rel_dil hs ht hr hq (a⁻¹).ne_zero)` as an intermediate fact. Rewrite `this` using `[Units.val_inv_eq_inv_val, inv_inv]`. Rewrite using `[← this, Equiv.inv_apply, Units.val_inv_eq_inv_val]`. Use `Finset.sum_eq_zero fun a _ => ψ0 _ ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨q, hq⟩`. Use `rel_dil hs ht hr hq (inv_ne_zero a.ne_zero)` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ a.ne_zero, one_smul]`. Conclude with `hex ⟨_, this⟩`.
+-/
 theorem eq_zero_of_upSum_of_norm : ∀ (R V k W M : Type) [CommRing R] [AddCommGroup V] [Module R V] [Field k] [AddCommGroup W] [Module k W] [Fintype k] [DecidableEq k] [Finite W] [AddCommGroup M] [Module ℂ M] (res : R →+* k) (t : R) (Λ : Submodule R V) (π : V → W) (Φ : Pr R V k → M), Function.Surjective res → res t = 0 → (∀ x : V, t • x = 0 → x = 0) → (∀ s x, res s ≠ 0 → s • x ∈ Λ → x ∈ Λ) → Red res t Λ π → (∀ g : Module.Dual k W, g ≠ 0 → ∃ d : Pr R V k, d.L = Λ ∧ (∀ x ∈ Λ, d.f x = g (π x)) ∧ ∑ᶠ q ∈ {q | Pr.Inc res t d q}, Φ q = 0) → (∀ q : Pr R V k, q.Ok res → q.IsKer Λ → ∑ a : kˣ, Φ (q.dil (a : k)) = 0) → ∀ q : Pr R V k, q.Ok res → q.IsKer Λ → Φ q = 0 := by
   intro R V k W M _ _ _ _ _ _ _ _ _ _ _ res t Λ π Φ hs ht htf hsat hr hup hnm
   classical

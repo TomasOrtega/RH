@@ -10,6 +10,13 @@ open scoped ComplexOrder Classical
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.StepW.FlagPoint
 
+/- English proof (translation)
+Introduce `h`. Establish `hi'` using `i.2`. Distinguish the cases in `hi : (i : ℕ) + 1 ≤ j`. Establish `hm : (⟨N - j, by omega⟩ : Fin N) ∈ stepCols N j i`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, if_pos hi]`.
+
+Apply the tactic sequence `constructor <;> simp`. Simplify using `[h] at hm`. Establish `hm : (⟨0, by omega⟩ : Fin N) ∈ stepCols N j i`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, if_neg hi]`. Use `show 0 < (i : ℕ) + 1 - j`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `[h] at hm`.
+-/
 theorem stepCols_ne_empty {N j : ℕ} (hj : j ≤ N) (i : Fin N) : stepCols N j i ≠ ∅ := by
   intro h
   have hi' := i.2
@@ -24,6 +31,11 @@ theorem stepCols_ne_empty {N j : ℕ} (hj : j ≤ N) (i : Fin N) : stepCols N j 
       omega
     simp [h] at hm
 
+/- English proof (translation)
+Establish `R` using `GlobalTheory.CompanionTheory.Ar.PB.ValRing.regAt_valAt_ring K ι Ω x z hz`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using ⟨R.1, R.2.2.1⟩`. Consider the case `insert a s ha ih`. Establish `ih'` using `ih fun b hb => hf b (Finset.mem_insert_of_mem hb)`.
+
+Establish `h` using `R.2.2.2.2 (f a) _ (hf a (Finset.mem_insert_self _ _)) ih'.1`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `⟨h.2.1, h.2.2.2.trans (by rw [ih'.2])⟩`.
+-/
 theorem val_sum {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
     {x : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal x)) {α : Type} (s : Finset α)
     (f : α → Ω) (hf : ∀ a ∈ s, RegAt x (mCoordIdeal z) (f a)) :
@@ -37,6 +49,41 @@ theorem val_sum {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     rw [Finset.sum_insert ha, Finset.sum_insert ha]
     exact ⟨h.2.1, h.2.2.2.trans (by rw [ih'.2])⟩
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n BM p k₀ l x₀ z hblk hx hz horb`. Take `⟨F, hFe⟩ : ∃ F, F = BM.F l` from `⟨_, rfl⟩`. Rewrite using `[← hFe]`. Establish `hF : M.IsFrame F` using `hFe ▸ BM.isFrame l`. Establish `hG₀ : M.GoodAt F (mCoordIdeal (BM.Rb.lift x₀ x₀))` using `hFe ▸ BM.good l x₀ hx`.
+
+Take `⟨hp1, -, hp3⟩` from `GlobalTheory.T.flag_model_base_projection_points K ι Φ y Ψ N j M`. Take `⟨zb, hzbe⟩ : ∃ zb, zb = basePart M.blk z` from `⟨_, rfl⟩`. Rewrite `horb`, the goal using `[← hzbe]`. Establish `hzbm : zb ∈ mcPts (mCoordIdeal M.x)` using `hzbe ▸ hp1 z hz`. Take `⟨c₀, hc₀, hc₀e⟩` from `horb`.
+
+Establish `hG : M.GoodAt F (mCoordIdeal zb)`. Establish `e : mCoordIdeal zb = mCoordIdeal (BM.Rb.lift x₀ x₀)`. Rewrite using `[hc₀e]`. Conclude with `(GlobalTheory.CompanionTheory.Ar.PB.StepW.TorusAct.main _ _ _ M.x (BM.Rb.lift x₀ x₀) c₀ hc₀).1`. Rewrite using `[e]`.
+
+Conclude with `hG₀`. Establish `hne : ∀ k : NonPluckerBlocks M.blk, zb ⟨k, F.c k⟩ ≠ 0` using `fun k h0 => hG.1 k (by show mConeMap zb (X ⟨k, F.c k⟩) = 0`. Rewrite using `[mConeMap, aeval_X, h0, map_zero, zero_mul])`. Set `c : K → ℂ` to `fun k => if h : ∀ p', M.blk p' ≠ some k then (zb ⟨⟨k, h⟩, F.c ⟨k, h⟩⟩)⁻¹ else 1`. Establish `hck : ∀ k : NonPluckerBlocks M.blk, c k.1 = (zb ⟨k, F.c k⟩)⁻¹` using `fun k => dif_pos k.2`.
+
+Establish `hc : ∀ k, c k ≠ 0` using `fun k => by`. Distinguish the cases in `h : ∀ p', M.blk p' ≠ some k`. Rewrite using `[hck ⟨k, h⟩]`. Conclude with `inv_ne_zero (hne ⟨k, h⟩)`. Establish `: c k = 1` using `dif_neg h`.
+
+Rewrite using `[this]`. Conclude with `one_ne_zero`. Establish `hck₀ : c k₀ = 1` using `dif_neg fun h => h p hblk`. Set `z₁ : (Σ k, ι k) → ℂ` to `fun q => c q.1 * z q`. Establish `hz₁ : z₁ ∈ mcPts (mCoordIdeal y)` using `((GlobalTheory.CompanionTheory.Ar.PB.StepW.TorusAct.main K ι Φ y z c hc).2 hz).1`.
+
+Set `cb : NonPluckerBlocks M.blk → ℂ` to `fun k => c k.1`. Establish `hb₁ : basePart M.blk z₁ = fun q => cb q.1 * zb q`. Rewrite using `[hzbe]`. Both sides reduce to the same expression. Take `⟨hT1, hT2⟩` from `GlobalTheory.CompanionTheory.Ar.PB.StepW.TorusAct.main (NonPluckerBlocks M.blk) (baseIdx ι M.blk) M.Ω M.x zb cb fun k => hc k.1`.
+
+Take `⟨-, hval⟩` from `hT2 hzbm`. Establish `hG₁ : M.GoodAt F (mCoordIdeal (basePart M.blk z₁))`. Rewrite using `[hb₁, hT1]`. Conclude with `hG`. Establish `hnorm : ∀ k, basePart M.blk z₁ ⟨k, F.c k⟩ = 1` using `fun k => by`.
+
+Rewrite using `[hb₁]`. Use `show c k.1 * zb ⟨k, F.c k⟩ = 1`. Rewrite using `[hck, inv_mul_cancel₀ (hne k)]`. Take `⟨hh, -, hτ, hstep⟩` from `(hp3 F hF z₁ (hp1 z₁ hz₁) hG₁ hnorm).1 hz₁`. Take `⟨a, ha, hza⟩` from `hstep p k₀ hblk`.
+
+Establish `hvals : ∀ s, valAt M.x s (basePart M.blk z₁) = valAt M.x s zb` using `fun s => by`. Rewrite using `[hb₁]`. Conclude with `hval s`. Establish `hzk : ∀ m : ι k₀, z ⟨k₀, m⟩ = a * ∑ I, valAt M.x (F.u ⟨k₀, m⟩ I) zb * minorIJ (hh p.1) I (stepCols N j p.2)` using `fun m => by`. Establish `e : z₁ ⟨k₀, m⟩ = z ⟨k₀, m⟩` using `by show c k₀ * _ = _`.
+
+Rewrite using `[hck₀, one_mul]`. Use `hza m` as an intermediate fact. Rewrite `this` using `[e]`. Simplify `this` using `only [hvals]`. Use `⟨hh p.1, a, (hτ p.1).1, (hτ p.1).2, ha, fun I hI => ?_, hzk⟩` and prove the remaining obligations.
+
+Establish `R` using `GlobalTheory.CompanionTheory.Ar.PB.ValRing.regAt_valAt_ring _ _ _ M.x zb hzbm`. Establish `hδ : ∀ I', IsStepRows N j p.2 I' → ∑ m : ι k₀, valAt M.x (F.u' I ⟨k₀, m⟩) zb * valAt M.x (F.u ⟨k₀, m⟩ I') zb = if I = I' then 1 else 0`. Introduce `I' hI'`. Establish `h1` using `(val_sum hzbm Finset.univ (fun m : ι k₀ => F.u' I ⟨k₀, m⟩ * F.u ⟨k₀, m⟩ I') fun m _ => (R.2.2.2.2 _ _ (hG.2.1 ⟨k₀, m⟩ I).2 (hG.2.1 ⟨k₀, m⟩ I').1).1).2`. Rewrite `h1` using `[hF.2.2.1 p k₀ hblk I I' hI hI']`.
+
+Establish `h2 : ∀ m : ι k₀, valAt M.x (F.u' I ⟨k₀, m⟩ * F.u ⟨k₀, m⟩ I') zb = valAt M.x (F.u' I ⟨k₀, m⟩) zb * valAt M.x (F.u ⟨k₀, m⟩ I') zb` using `fun m => (R.2.2.2.2 _ _ (hG.2.1 ⟨k₀, m⟩ I).2 (hG.2.1 ⟨k₀, m⟩ I').1).2.2.1`. Simplify using `only [h2] at h1`. Rewrite using `[← h1]`. Use `split_ifs`. Conclude with `R.2.2.2.1`.
+
+Conclude with `R.2.2.1`. Establish `hmin : ∀ I', ¬ IsStepRows N j p.2 I' → minorIJ (hh p.1) I' (stepCols N j p.2) = 0` using `fun I' hI' => ((GlobalTheory.T.block_diagonal_minor_vanishing ℂ N j p.2 M.j_le).2.1 (hh p.1) I' (hτ p.1).1 hI').resolve_right (stepCols_ne_empty M.j_le p.2)`. Establish `hsum : ∑ I', (∑ m : ι k₀, valAt M.x (F.u' I ⟨k₀, m⟩) zb * valAt M.x (F.u ⟨k₀, m⟩ I') zb) * minorIJ (hh p.1) I' (stepCols N j p.2) = minorIJ (hh p.1) I (stepCols N j p.2)`. Rewrite using `[Finset.sum_eq_single I]`. Rewrite using `[hδ I hI, if_pos rfl, one_mul]`.
+
+Introduce `I' _ hne'`. Distinguish the cases in `hs : IsStepRows N j p.2 I'`. Rewrite using `[hδ I' hs, if_neg (Ne.symm hne'), zero_mul]`. Rewrite using `[hmin I' hs, mul_zero]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ I) h`. Establish `hplk : plk M F k₀ z I = ∑ m : ι k₀, valAt M.x (F.u' I ⟨k₀, m⟩) zb * z ⟨k₀, m⟩`. Rewrite using `[hzbe]`. Both sides reduce to the same expression. Rewrite using `[hplk, ← hsum, Finset.mul_sum]`.
+
+Simplify using `only [hzk, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun I' _ => Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ]
     (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n : ℕ)
     (BM : BaseMetric M n) (p : Ψ × Fin N) (k₀ : K) (l : Fin BM.q) (x₀ : BM.Rb.X) (z : (Σ k, ι k) → ℂ),

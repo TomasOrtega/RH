@@ -12,6 +12,9 @@ open scoped Pointwise
 
 namespace GlobalTheory.CompanionTheory.TorusAdj
 
+/- English proof (translation)
+Establish `k : D * U * Di * (D * A * Di) = D * (U * A) * Di`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem conj_one_add {R : Type} [Ring R] (U A D Di : R) (h1 : D * Di = 1) (h2 : Di * D = 1) :
     D * (1 + (U - 1) * A) * Di = 1 + (D * U * Di - 1) * (D * A * Di) := by
   have k : D * U * Di * (D * A * Di) = D * (U * A) * Di := by
@@ -21,6 +24,11 @@ theorem conj_one_add {R : Type} [Ring R] (U A D Di : R) (h1 : D * Di = 1) (h2 : 
     _ = 1 + (D * U * Di * (D * A * Di) - D * A * Di) := by rw [h1, k]
     _ = 1 + (D * U * Di - 1) * (D * A * Di) := by noncomm_ring
 
+/- English proof (translation)
+Establish `e1 : (σ.mapMatrix (1 + A * (u - 1)))ᵀ = 1 + ((u.map σ)ᵀ - 1) * (A.map σ)ᵀ`. Rewrite using `[map_add, map_mul, map_sub, map_one, Matrix.transpose_add, Matrix.transpose_mul, Matrix.transpose_sub, Matrix.transpose_one]`. Both sides reduce to the same expression. Establish `e2 : (D * (1 + ((u.map σ)ᵀ - 1) * (A.map σ)ᵀ) * Di).det = (1 + ((u.map σ)ᵀ - 1) * (A.map σ)ᵀ).det`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, mul_comm D.det, mul_assoc, ← Matrix.det_mul, h1, Matrix.det_one, mul_one]`.
+
+Rewrite using `[RingHom.map_det, ← Matrix.det_transpose, e1, ← e2, conj_one_add _ _ _ _ h1 h2, hS]`.
+-/
 theorem map_det_adj {R : Type} [CommRing R] (σ : R →+* R) {n : ℕ} (A u t D Di : Matrix (Fin n) (Fin n) R)
     (h1 : D * Di = 1) (h2 : Di * D = 1) (hS : D * (u.map σ)ᵀ * Di = t) :
     σ (1 + A * (u - 1)).det = (1 + (t - 1) * (D * (A.map σ)ᵀ * Di)).det := by
@@ -34,9 +42,15 @@ theorem map_det_adj {R : Type} [CommRing R] (σ : R →+* R) {n : ℕ} (A u t D 
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem rm_one : rm (1 : Matrix (Fin n) (Fin n) E) = 1 :=
   Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Establish `h : ((rm e).map (conjAd E))ᵀ = rm (e.map (conjE E))ᵀ`. Use extensionality with `i j`. Simplify using `[rm, conjAd_algebraMap]`. Both sides reduce to the same expression. Rewrite using `[h, sg, rm_mul, rm_mul]`.
+-/
 theorem adj_rm (d : GL (Fin n) E) (e : Matrix (Fin n) (Fin n) E) :
     rm d.val * ((rm e).map (conjAd E))ᵀ * rm (d⁻¹ : GL (Fin n) E).val = rm (sg d e) := by
   have h : ((rm e).map (conjAd E))ᵀ = rm (e.map (conjE E))ᵀ := by
@@ -45,6 +59,11 @@ theorem adj_rm (d : GL (Fin n) E) (e : Matrix (Fin n) (Fin n) E) :
     rfl
   rw [h, sg, rm_mul, rm_mul]
 
+/- English proof (translation)
+Establish `h : t⁻¹ * ratGL E n d * thetaA E n t = ratGL E n d` using `ht`. Establish `hv : (t⁻¹ : GA E n).val * rm d.val * ((t⁻¹ : GA E n).val.map (conjAd E))ᵀ = rm d.val` using `congrArg Units.val h`. Establish `h1 : rm d.val * rm (d⁻¹ : GL (Fin n) E).val = 1`. Rewrite using `[← rm_mul, Units.mul_inv, rm_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [← mul_assoc, Units.mul_inv, one_mul]`. Use `_ = t.val := by rw [hv, mul_assoc, h1, mul_one]`.
+-/
 theorem adj_inv (d : GL (Fin n) E) (t : GA E n) (ht : t ∈ adCent d) :
     rm d.val * ((t⁻¹ : GA E n).val.map (conjAd E))ᵀ * rm (d⁻¹ : GL (Fin n) E).val = t.val := by
   have h : t⁻¹ * ratGL E n d * thetaA E n t = ratGL E n d := ht
@@ -58,6 +77,11 @@ theorem adj_inv (d : GL (Fin n) E) (t : GA E n) (ht : t ∈ adCent d) :
         simp only [← mul_assoc, Units.mul_inv, one_mul]
     _ = t.val := by rw [hv, mul_assoc, h1, mul_one]
 
+/- English proof (translation)
+Establish `h1 : rm d.val * rm (d⁻¹ : GL (Fin n) E).val = 1`. Rewrite using `[← rm_mul, Units.mul_inv, rm_one]`. Establish `h2 : rm (d⁻¹ : GL (Fin n) E).val * rm d.val = 1`. Rewrite using `[← rm_mul, Units.inv_mul, rm_one]`. Establish `hcom : (t.val - 1) * rm (sg d e) = rm (sg d e) * (t.val - 1)`.
+
+Rewrite using `[sub_mul, mul_sub, hc, one_mul, mul_one]`. Rewrite using `[chi, chi, map_det_adj (conjAd E) (rm e) _ t.val _ _ h1 h2 (adj_inv d t ht), adj_rm, hcom]`.
+-/
 theorem chi_sg (d : GL (Fin n) E) (e : Matrix (Fin n) (Fin n) E) (t : GA E n) (ht : t ∈ adCent d)
     (hc : t.val * rm (sg d e) = rm (sg d e) * t.val) : chi (sg d e) t = conjAd E (chi e t⁻¹) := by
   have h1 : rm d.val * rm (d⁻¹ : GL (Fin n) E).val = 1 := by
@@ -68,6 +92,9 @@ theorem chi_sg (d : GL (Fin n) E) (e : Matrix (Fin n) (Fin n) E) (t : GA E n) (h
     rw [sub_mul, mul_sub, hc, one_mul, mul_one]
   rw [chi, chi, map_det_adj (conjAd E) (rm e) _ t.val _ _ h1 h2 (adj_inv d t ht), adj_rm, hcom]
 
+/- English proof (translation)
+Rewrite using `[← lam_inv e he t h1, lam, lam, chi_sg d e t ht h2]`. Conclude with `GlobalTheory.CompanionTheory.DegPairingProof.logAbs_conj GlobalTheory.CompanionTheory.ConjAtPlaces.conjPlaces _`.
+-/
 theorem lam_sg (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (d : GL (Fin n) E)
     (e : Matrix (Fin n) (Fin n) E) (he : e * e = e) (t : GA E n) (ht : t ∈ adCent d)
     (h1 : t.val * rm e = rm e * t.val) (h2 : t.val * rm (sg d e) = rm (sg d e) * t.val) :

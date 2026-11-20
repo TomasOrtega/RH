@@ -15,6 +15,11 @@ open GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.
 
 namespace GlobalTheory.PrimIn
 
+/- English proof (translation)
+Use `Ev.mono ?_ GlobalTheory.Mem.HostFrames.hostHyp_frames_ev` and prove the remaining obligations. Introduce `K hK B f T w Z hX Wt z hOv hG hEx L hsz`. Take `⟨hHost, hF, -, -, -, -, -, hstdX⟩` from `hK (w.st Z) hOv`. Establish `hC` using `z.pins.char`. Establish `hcore` using `(GlobalTheory.CoreOfWeak.core_of_weak z.R z.F hC hEx).1`.
+
+Establish `hfin : Finite (TupU w.I (usedOf w.I T Wt))`. Establish `hs : ({τ | τ = (mu0F (X` using `B.fields) (tuOf w.I (usedOf w.I T Wt))).1 ∨ τ ∈ tuOf w.I (usedOf w.I T Wt)} : Set _).Finite := (Set.finite_singleton _).union (tuOf w.I (usedOf w.I T Wt)).finite_toSet`. Conclude with `hs.to_subtype`. Conclude with `{ size := hsz eser := hG.eSerTie Z.V Z.S Z.G host := hHost hF := hF core := hcore mu_off := hC.tup.mu_off mu_used := hC.tup.mu_used mu_ne := hC.tup.mu_ne mu_conj := hC.tup.mu_conj mu_on := hC.tup.mu_on grp := hC.base.grp.record guard := z.pins.keep.guard fin := hfin fullY := hC.f …`.
+-/
 theorem rowTest_setting_dat : Ev fun K => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt)
     (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt), K.Over B.toPre → GrpTrue Z.N f →
     z.R.toRealDat.ExAt → ∀ L : SizeData₂ (w.st Z).toD7, GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows L →

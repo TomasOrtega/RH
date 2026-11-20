@@ -74,6 +74,9 @@ def tens (D : Split ι s m) (n : ℕ) (φ : Fin (m + 1) → GL (Fin n) R → ℂ
 
 end Split
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨RingEquiv.refl _, continuous_id, continuous_id, fun _ _ => rfl, fun x i => congrArg x (Subsingleton.elim _ _)⟩`.
+-/
 example (R : Type) [CommRing R] [TopologicalSpace R] :
     Split (Pi.constRingHom (Fin 1) R) (RingHom.id (Fin 1 → R)) 0 :=
   ⟨RingEquiv.refl _, continuous_id, continuous_id, fun _ _ => rfl, fun x i => congrArg x (Subsingleton.elim _ _)⟩

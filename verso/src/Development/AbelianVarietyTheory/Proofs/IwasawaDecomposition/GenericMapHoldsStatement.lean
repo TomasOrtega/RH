@@ -3,5 +3,8 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.GenericMapHo
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.BlowPolSt
 open GlobalTheory.TorRef GlobalTheory.ShFam
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GenMap.genMapSt | exact GlobalTheory.GenMap.genMapSt | (intros; apply GlobalTheory.GenMap.genMapSt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.generic_map_holds : GenMapSt := by
   first | exact @GlobalTheory.GenMap.genMapSt | exact GlobalTheory.GenMap.genMapSt | (intros; apply GlobalTheory.GenMap.genMapSt <;> assumption)

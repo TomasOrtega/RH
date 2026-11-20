@@ -3,6 +3,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IsUnitAtOfValua
 
 open NumberField IsDedekindDomain Formalism.L2.Host
 
+/- English proof (translation)
+Introduce `E _ _ _ μ e hμ w _ hun`. Establish `hc` using `GlobalTheory.CompanionTheory.MuLocal.loc_mul_loc_conj hμ w (Formalism.L2.Host.atFin (GlobalTheory.ThetaSatake.cw w) (Formalism.L2.Host.unif (GlobalTheory.ThetaSatake.cw w)))`. Rewrite `hc` using `[μ.val_eq hun _ (GlobalTheory.CompanionTheory.MuLocal.isUnifAt_conj w _ (Formalism.L2.Host.unif_spec _))]`. Conclude with `eq_inv_of_mul_eq_one_left hc`.
+-/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.muConj :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.MuConj := by
   intro E _ _ _ μ e hμ w _ hun

@@ -7,9 +7,21 @@ noncomputable section
 
 namespace Formalism.QuantumDeterminants
 
+/- English proof (translation)
+The claim follows from `preserved_operators_holds`.
+-/
 theorem presOps : PresOps := preserved_operators_holds
+/- English proof (translation)
+The claim follows from `linear_operators_holds`.
+-/
 theorem linOps : LinOps := linear_operators_holds
+/- English proof (translation)
+The claim follows from `weyl_functional_holds`.
+-/
 theorem weylFun : WeylFun := weyl_functional_holds
+/- English proof (translation)
+The claim follows from `commuting_functional_holds`.
+-/
 theorem commFun : CommFun := commuting_functional_holds
 
 variable {m : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
@@ -31,6 +43,11 @@ abbrev cbEnd (l : Fin m) : Module.End ℂ (WSm m E) := opEnd l 4
 
 abbrev cbiEnd (l : Fin m) : Module.End ℂ (WSm m E) := opEnd l 5
 
+/- English proof (translation)
+Establish `hw` using `weyl_functional_holds`. Unfold `WeylFun at hw`. Unfold `Formalism.YangianSpanCharacter.T.WeylRel`. Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> refine LinearMap.ext fun f => Subtype.ext ?_`. Conclude with `(hw m E l f f.2).1`.
+
+Conclude with `(hw m E l f f.2).2.1`. Conclude with `(hw m E l f f.2).2.2.1`.
+-/
 theorem weylRel_end (l : Fin m) :
     Formalism.YangianSpanCharacter.T.WeylRel (pEnd (E := E) l) (cEnd l) (ciEnd l) := by
   have hw := weyl_functional_holds
@@ -41,6 +58,11 @@ theorem weylRel_end (l : Fin m) :
   · exact (hw m E l f f.2).2.1
   · exact (hw m E l f f.2).2.2.1
 
+/- English proof (translation)
+Establish `hw` using `weyl_functional_holds`. Unfold `WeylFun at hw`. Unfold `Formalism.YangianSpanCharacter.T.WeylRel`. Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> refine LinearMap.ext fun f => Subtype.ext ?_`. Conclude with `(hw m E l f f.2).2.2.2.1`.
+
+Conclude with `(hw m E l f f.2).2.2.2.2.1`. Conclude with `(hw m E l f f.2).2.2.2.2.2`.
+-/
 theorem weylRel_end_bar (l : Fin m) :
     Formalism.YangianSpanCharacter.T.WeylRel (pbEnd (E := E) l) (cbEnd l) (cbiEnd l) := by
   have hw := weyl_functional_holds

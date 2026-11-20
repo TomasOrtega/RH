@@ -5,6 +5,31 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N
 
 namespace GlobalTheory.IrredOfAbsIrred
 
+/- English proof (translation)
+Introduce `k Γ _ _ a ρ h`. Take `⟨h0, -, h2⟩` from `h`. Use `set K := AlgebraicClosure k`. Use `set f := algebraMap k K with hf`. Establish `hinj : Function.Injective f` using `f.injective`.
+
+Use `⟨fun hb => h0 ?_, fun U hU => ?_⟩` and prove the remaining obligations. Rewrite using `[hb, Submodule.span_eq_bot]`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Establish `: v = 0` using `by simpa using hv`. Substitute `this` using the available equality.
+
+Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hst : IsInv (mapRep f ρ) (Submodule.span K ((fun v : Fin a → k => f ∘ v) '' (U : Set (Fin a → k))))`. Introduce `g v hv`. Proceed by induction on `hv using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨u, hu, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨(ρ g : Matrix (Fin a) (Fin a) k).mulVec u, hU g u hu, ?_⟩` and prove the remaining obligations. Use extensionality with `p`. Conclude with `RingHom.map_mulVec f _ u p`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+
+Break down `h2 _ (Submodule.span_mono (Set.image_mono (fun _ _ => trivial))) hst with h1 | h1` into its components or cases. Use `left`. Rewrite `h1` using `[Submodule.span_eq_bot]`. Rewrite using `[eq_bot_iff]`. Introduce `v hv`.
+
+Use `h1 _ ⟨v, hv, rfl⟩` as an intermediate fact. Rewrite using `[Submodule.mem_bot]`. Use extensionality with `p`. Apply `hinj` to reduce the goal to its premises. Simplify using `using congrFun this p`.
+
+Use `right`. Assume the negation of the conclusion as `hne`. Take `⟨φ, hφ0, hφ⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Set `F : (Fin a → K) →ₗ[K] K` to `{ toFun := fun X => ∑ i, X i * f (φ (Pi.single i 1)) map_add' := fun X Y => by simp [add_mul, Finset.sum_add_distrib] map_smul' := fun c X => by`. Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply, mul_assoc]`.
+
+Conclude with `(Finset.mul_sum _ _ _).symm }`. Establish `hF : ∀ X : Fin a → k, F (f ∘ X) = f (φ X)`. Introduce `X`. Use `conv_rhs => rw [← Finset.univ_sum_single X]`. Simplify using `only [map_sum]`.
+
+Express the relevant statement in the definitionally equal form `∑ i, f (X i) * f (φ (Pi.single i 1)) = _`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `: Pi.single i (X i) = X i • (Pi.single i (1 : k) : Fin a → k)`. Rewrite using `[← Pi.single_smul, smul_eq_mul, mul_one]`. Rewrite using `[this, map_smul, smul_eq_mul, map_mul]`.
+
+Establish `hker : Submodule.span K ((fun v : Fin a → k => f ∘ v) '' (U : Set (Fin a → k))) ≤ LinearMap.ker F`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Establish `: φ u = 0` using `hφ hu`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, hF, this, map_zero]`.
+
+Apply `hφ0` to reduce the goal to its premises. Use `LinearMap.ext fun X => ?_` and prove the remaining obligations. Establish `h3 : F (f ∘ X) = 0` using `hker (by rw [h1]; exact Submodule.subset_span ⟨X, trivial, rfl⟩)`. Rewrite `h3` using `[hF]`. Conclude with `hinj (by rw [h3]; simp)`.
+-/
 theorem isIrred_of_absIrrSub :
     ∀ {k Γ : Type} [Field k] [Group Γ] {a : ℕ} (ρ : Γ →* GL (Fin a) k), AbsIrrSub ρ ⊤ → GlobalTheory.IndefiniteRowSideFullHecke.SemisimplificationConstituents.IsIrred (matRep ((Units.coeHom _).comp ρ)) := by
   intro k Γ _ _ a ρ h

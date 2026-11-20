@@ -12,6 +12,9 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 
 namespace GlobalTheory.JointSix
 
+/- English proof (translation)
+Unfold `KillingConditions.psiW GlobalTheory.PtCore.psiG`. Consider the cases of `h : C.sd w`. Use extensionality with `g`. Simplify using `[BlochKatoReduction.Gen.psiAt]`. Simplify using `[BlochKatoReduction.Gen.psiAt]`.
+-/
 theorem psiAt_psiW {D : D7} (C : NChoice D) (w : D.what₂.places.Pl) :
     BlochKatoReduction.Gen.psiAt (C.sd w) (KillingConditions.psiW C w) = GlobalTheory.PtCore.psiG D C w := by
   unfold KillingConditions.psiW GlobalTheory.PtCore.psiG
@@ -20,6 +23,11 @@ theorem psiAt_psiW {D : D7} (C : NChoice D) (w : D.what₂.places.Pl) :
     simp [BlochKatoReduction.Gen.psiAt]
   · simp [BlochKatoReduction.Gen.psiAt]
 
+/- English proof (translation)
+Introduce `hC D C r ρ hF hT hTr hS hG hR i _`. Establish `hsel` using `GlobalTheory.PtSel.selCore hC D C hT hTr hG hR hS ρ (fun i π hπ => hF.pt i π (Formalism.L2.zgoodSub D i hπ))`. Use `⟨fun π hπ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨s, h1, h2, h3, h4, -⟩` from `hsel i π hπ`. Use `⟨s, h1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h2, psiAt_psiW]`. Conclude with `⟨h3, h4⟩`. Rewrite using `[Rat.cast_sum, ← hT.Q_eq i]`. Conclude with `Finset.sum_le_sum fun v hv => GlobalTheory.T.conductorRoot_sub_one_length_le_tameValue D C hT i v hv`.
+-/
 theorem main : GlobalTheory.TwSys.Cheb → ∀ (D : D7) (C : NChoice D)
     (r : ∀ i : D.nd.Loc, D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (ρ : ∀ i : D.nd.Loc, D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))),
@@ -36,6 +44,9 @@ theorem main : GlobalTheory.TwSys.Cheb → ∀ (D : D7) (C : NChoice D)
   · rw [Rat.cast_sum, ← hT.Q_eq i]
     exact Finset.sum_le_sum fun v hv => GlobalTheory.T.conductorRoot_sub_one_length_le_tameValue D C hT i v hv
 
+/- English proof (translation)
+The claim follows from `main`.
+-/
 example : GlobalTheory.TwSys.Cheb → ∀ (D : D7) (C : NChoice D) (r : ∀ i : D.nd.Loc, D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : ∀ i : D.nd.Loc, D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))), GlobalTheory.PtCore.PtFam D r ρ → NChTie D C → GlobalTheory.PtCore.TriplesGood D → GlobalTheory.PtCore.SameTwist D C → GlobalTheory.PtCore.GoodPtRow D → GlobalTheory.PtCore.ResAbsIrr D → KillingConditions.SignatureChoiceCondition ρ C := main
 
 end GlobalTheory.JointSix

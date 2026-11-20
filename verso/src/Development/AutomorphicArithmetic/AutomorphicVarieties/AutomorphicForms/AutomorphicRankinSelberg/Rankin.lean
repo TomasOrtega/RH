@@ -4,12 +4,21 @@ open MeasureTheory Set CongruenceSubgroup UpperTheory.V.Af UpperTheory.V.Sd Uppe
 open UpperHalfPlane hiding I
 open scoped MatrixGroups ModularForm ComplexConjugate
 
+/- English proof (translation)
+Simplify using `[pt, UpperHalfPlane.ofComplex_apply_of_im_pos, hy]`.
+-/
 private theorem pt_im (x y : ℝ) (hy : 0 < y) : (pt x y).im = y := by
   simp [pt, UpperHalfPlane.ofComplex_apply_of_im_pos, hy]
 
+/- English proof (translation)
+The claim follows from `CuspFormClass.qExpansion_coeff_zero f one_pos (by simp)`.
+-/
 private theorem coef_zero (k L : ℕ) [NeZero L] (f : CuspForm (Gamma1 L) (k : ℤ)) : coef f 0 = 0 :=
   CuspFormClass.qExpansion_coeff_zero f one_pos (by simp)
 
+/- English proof (translation)
+Establish `h` using `integrableOn_rpow_mul_exp_neg_mul_rpow (p := 1) (s := A - 1) (b := r) (by linarith) one_pos hr`. Use `h.congr_fun (fun y _ => ?_) measurableSet_Ioi` and prove the remaining obligations. Simplify using `[Real.rpow_one]`.
+-/
 private theorem integrableOn_rpow_mul_exp_neg_Ioi (A r : ℝ) (hA : 0 < A) (hr : 0 < r) :
     IntegrableOn (fun y : ℝ => y ^ (A - 1) * Real.exp (-r * y)) (Ioi 0) := by
   have h := integrableOn_rpow_mul_exp_neg_mul_rpow (p := 1) (s := A - 1) (b := r)
@@ -17,6 +26,9 @@ private theorem integrableOn_rpow_mul_exp_neg_Ioi (A r : ℝ) (hA : 0 < A) (hr :
   refine h.congr_fun (fun y _ => ?_) measurableSet_Ioi
   simp [Real.rpow_one]
 
+/- English proof (translation)
+Establish `h` using `Real.integral_rpow_mul_exp_neg_mul_Ioi hA hr`. Simplify using `only [neg_mul] at h ⊢`. Rewrite using `[h, Real.div_rpow zero_le_one hr.le, Real.one_rpow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem integral_rpow_mul_exp_neg_Ioi_eq_gamma_div (A r : ℝ) (hA : 0 < A) (hr : 0 < r) :
     ∫ y in Ioi (0:ℝ), y ^ (A - 1) * Real.exp (-r * y) = Real.Gamma A / r ^ A := by
   have h := Real.integral_rpow_mul_exp_neg_mul_Ioi hA hr
@@ -24,6 +36,9 @@ private theorem integral_rpow_mul_exp_neg_Ioi_eq_gamma_div (A r : ℝ) (hA : 0 <
   rw [h, Real.div_rpow zero_le_one hr.le, Real.one_rpow]
   ring
 
+/- English proof (translation)
+Rewrite using `[Real.mul_rpow (by positivity) (by positivity)]`. Establish `h1 : (0:ℝ) < (4 * Real.pi) ^ A` using `by positivity`. Establish `h2 : (0:ℝ) < (n : ℝ) ^ A` using `Real.rpow_pos_of_pos (by exact_mod_cast hn) A`. Clear the denominators using the available nonvanishing facts.
+-/
 private theorem gamma_div_four_pi_mul_rpow_eq (A : ℝ) (n : ℕ) (hn : 0 < n) :
     Real.Gamma A / (4 * Real.pi * n) ^ A = Real.Gamma A / (4 * Real.pi) ^ A / (n : ℝ) ^ A := by
   rw [Real.mul_rpow (by positivity) (by positivity)]
@@ -31,6 +46,37 @@ private theorem gamma_div_four_pi_mul_rpow_eq (A : ℝ) (n : ℕ) (hn : 0 < n) :
   have h2 : (0:ℝ) < (n : ℝ) ^ A := Real.rpow_pos_of_pos (by exact_mod_cast hn) A
   field_simp
 
+/- English proof (translation)
+Introduce `hFub hInt hNice hPars hSum k L _ f g s hs`. Establish `hs1 : 1 < s` using `hs.1`. Establish `hk : (0:ℝ) ≤ k` using `Nat.cast_nonneg k`. Use `set A : ℝ := (k:ℝ) + s - 1 with hAdef`. Establish `hA : 0 < A` using `by rw [hAdef]; linarith`.
+
+Use `set a : ℕ → ℂ := fun n => starRingEnd ℂ (coef g n) * coef f n with ha`. Establish `ha0 : a 0 = 0` using `by simp [ha, coef_zero k L f]`. Use `set G : ℕ → ℝ → ℂ := fun n y => a n * ((y ^ (A - 1) * Real.exp (-(4 * Real.pi * n) * y) : ℝ) : ℂ) with hG`. Establish `hpt : ∀ y : ℝ, 0 < y → (∫ x in (0:ℝ)..1, UpperHalfPlane.petersson (k : ℤ) g f (pt x y) * (((pt x y).im ^ s : ℝ) : ℂ)) / ((y ^ 2 : ℝ) : ℂ) = ∑' n, G n y`. Introduce `y hy`.
+
+Establish `h1 : ∀ x : ℝ, UpperHalfPlane.petersson (k : ℤ) g f (pt x y) * (((pt x y).im ^ s : ℝ) : ℂ) = (starRingEnd ℂ (g (pt x y)) * f (pt x y)) * ((y : ℂ) ^ k * ((y ^ s : ℝ) : ℂ))`. Introduce `x`. Simplify using `only [UpperHalfPlane.petersson, pt_im x y hy, zpow_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `hyA : ((y ^ (A - 1) : ℝ) : ℂ) = (y : ℂ) ^ k * ((y ^ s : ℝ) : ℂ) / ((y ^ 2 : ℝ) : ℂ)`.
+
+Establish `hr : y ^ (A - 1) = y ^ k * y ^ s / y ^ 2`. Rewrite using `[show A - 1 = ((k:ℝ) + s) - 2 by rw [hAdef]; ring, Real.rpow_sub hy, Real.rpow_add hy, Real.rpow_natCast, Real.rpow_two]`. Rewrite using `[hr]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Repeatedly rewrite using `[h1]`. Rewrite using `[intervalIntegral.integral_mul_const, ← (hPars k L f g y hy).tsum_eq, ← tsum_mul_right, ← tsum_div_const]`. Use `congr 1`. Use extensionality with `n`. Simplify using `only [hG, ha]`.
+
+Rewrite using `[Complex.ofReal_mul, hyA]`. Expand and normalize the polynomial expressions, which then agree. Establish `hr : ∀ n : ℕ, 0 < n → (0:ℝ) < 4 * Real.pi * n` using `fun n hn => by`. Establish `: (0:ℝ) < n` using `by exact_mod_cast hn`. Check the signs of the components of the expression.
+
+Establish `hGi : ∀ n, Integrable (G n) (volume.restrict (Ioi (0:ℝ)))`. Introduce `n`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `: G 0 = fun _ => 0` using `by funext y; simp [hG, ha0]`. Rewrite using `[this]`.
+
+Conclude with `integrable_zero _ _ _`. Conclude with `((integrableOn_rpow_mul_exp_neg_Ioi A _ hA (hr n hn)).ofReal).const_mul (a n)`. Establish `hsum : Summable (fun n : ℕ => ‖a n‖ / (n:ℝ) ^ A)`. Use `Summable.of_nonneg_of_le (fun n => by positivity) (fun n => ?_) (((hSum k L f s hs).add (hSum k L g s hs)).div_const 2)` and prove the remaining obligations. Establish `key : ‖coef g n‖ * ‖coef f n‖ ≤ (‖coef f n‖ ^ 2 + ‖coef g n‖ ^ 2) / 2`.
+
+Use polynomial arithmetic with `[sq_nonneg (‖coef f n‖ - ‖coef g n‖)]`. Establish `hn : (0:ℝ) ≤ (n:ℝ) ^ A` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[ha, norm_mul]`. Use `_ ≤ ((‖coef f n‖ ^ 2 + ‖coef g n‖ ^ 2) / 2) / (n:ℝ) ^ A := by gcongr`.
+
+Use `_ = _ := by ring`. Establish `hGs : Summable (fun n => ∫ y in Ioi (0:ℝ), ‖G n y‖)`. Use `(hsum.mul_left (Real.Gamma A / (4 * Real.pi) ^ A)).congr (fun n => ?_)` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `[hG, ha0]`.
+
+Establish `hc : ∫ y in Ioi (0:ℝ), ‖G n y‖ = ∫ y in Ioi (0:ℝ), ‖a n‖ * (y ^ (A - 1) * Real.exp (-(4 * Real.pi * n) * y))`. Use `setIntegral_congr_fun measurableSet_Ioi (fun y hy => ?_)` and prove the remaining obligations. Establish `hy' : (0:ℝ) < y` using `hy`. Simplify using `only [hG, norm_mul, Complex.norm_real]`. Rewrite using `[Real.norm_of_nonneg (by positivity), Real.norm_of_nonneg (Real.exp_pos _).le]`.
+
+Rewrite using `[hc, integral_const_mul, integral_rpow_mul_exp_neg_Ioi_eq_gamma_div A _ hA (hr n hn), gamma_div_four_pi_mul_rpow_eq A n hn]`. Expand and normalize the polynomial expressions, which then agree. Establish `hI` using `hInt _ (hNice k L f g) s hs`. Take `⟨-, heq⟩` from `hFub _ hI`. Use `show (∫ z in strip, _) = _`.
+
+Rewrite using `[heq, setIntegral_congr_fun measurableSet_Ioi (fun y hy => hpt y hy), ← integral_tsum_of_summable_integral_norm hGi hGs, ← tsum_mul_left]`. Use `congr 1`. Use extensionality with `n`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `[hG, ha0, coef_zero k L f]`.
+
+Simplify using `only [hG]`. Rewrite using `[integral_const_mul, integral_complex_ofReal, integral_rpow_mul_exp_neg_Ioi_eq_gamma_div A _ hA (hr n hn), gamma_div_four_pi_mul_rpow_eq A n hn, gam]`. Establish `h2 : (0:ℝ) < (n : ℝ) ^ A` using `Real.rpow_pos_of_pos (by exact_mod_cast hn) A`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Simplify using `only [ha]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Af.Rs.rankin :
     UpperTheory.V.Af.Rs.StripFub → UpperTheory.V.Af.Rs.StripInt → UpperTheory.V.Af.Rs.NicePet → UpperTheory.V.Af.Rs.Pars → UpperTheory.V.Af.Rs.RankSum → UpperTheory.V.Af.Rs.Rankin := by
   intro hFub hInt hNice hPars hSum k L _ f g s hs

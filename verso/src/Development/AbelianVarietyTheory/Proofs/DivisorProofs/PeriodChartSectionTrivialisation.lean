@@ -16,6 +16,9 @@ open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 
 namespace GlobalTheory.RelCotAb
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.app_eq_appLE, ← relCotIso_hom_d A hU hT hW' le_rfl, ← hh a]`. Use `(GlobalTheory.Twist.app_resM (relCotIso A).hom hT _).symm.trans (congrArg _ ?_)` and prove the remaining obligations. Conclude with `QCoh.res_pullbackSections A.hom (omega A) le_rfl hT _`.
+-/
 theorem resM_frame {S : Scheme.{0}} (A : Over S) [GrpObj A] [QuasiSeparated A.hom] {g : ℕ}
     (hE : GlobalTheory.VB.IsVB (omega A) g) (c₀ : GlobalTheory.VB.Chart (omega A) g) (W₁ : A.left.Opens)
     (hU : c₀.U ≤ unitSec A ⁻¹ᵁ W₁) (h : Fin g → Γ(A.left, W₁)) (hh : ∀ a, c₀.e a = dUnit A hU (h a))
@@ -27,11 +30,27 @@ theorem resM_frame {S : Scheme.{0}} (A : Over S) [GrpObj A] [QuasiSeparated A.ho
   refine (GlobalTheory.Twist.app_resM (relCotIso A).hom hT _).symm.trans (congrArg _ ?_)
   exact QCoh.res_pullbackSections A.hom (omega A) le_rfl hT _
 
+/- English proof (translation)
+Rewrite using `[← unitPair_snd A, ← diag_shear_left A]`. Conclude with `(Category.assoc _ _ _).symm`.
+-/
 theorem diagonal_divMap {S : Scheme.{0}} (A : Over S) [GrpObj A] :
     Limits.pullback.diagonal A.hom ≫ divMap A = A.hom ≫ unitSec A := by
   rw [← unitPair_snd A, ← diag_shear_left A]
   exact (Category.assoc _ _ _).symm
 
+/- English proof (translation)
+Introduce `k _ S p D A _ _ g w σ c τ ex H v z hv c₀ W₁ hU h hh hc W F hW`. Establish `h₁` using `(H.2.2 v hv).1`. Set `c₁` to `(c₀.pull w.isVB A.hom).map (relCotIso A)`. Establish `hT : W ⊓ c₁.U ≤ A.hom ⁻¹ᵁ c₀.U` using `inf_le_right`. Establish `hx : ex (v, z) ∈ ptsIn (A.hom ≫ p) σ (W ⊓ c₁.U)`.
+
+Use `mem_ptsIn_inf.2 ⟨hW, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `⊤ ≤ ((ex (v, z)).1 ≫ A.hom) ⁻¹ᵁ c₀.U`. Rewrite using `[h₁ z]`. Conclude with `hc`. Establish `hW' : W ⊓ c₁.U ≤ Limits.pullback.diagonal A.hom ⁻¹ᵁ (divMap A ⁻¹ᵁ W₁)` using `(Conormal.le_preimage_of_comp (diagonal_divMap A)).2 (hT.trans (A.hom.preimage_mono hU))`.
+
+Establish `hol : IsHolTo Set.univ (fun u : Fin g → ℂ => (ex (v, z + u)).1)` using `FrameHol.isHolTo_precomp H.2.1 isOpen_univ (β := fun u : Fin g → ℂ => (v, z + u)) (by fun_prop) fun _ _ => ⟨hv, trivial⟩`. Establish `hs : GlobalTheory.Twist.resM (relCot A.hom) (inf_le_left : W ⊓ c₁.U ≤ W) (dRel A.hom W F) = ∑ a, (c₁.isFrame.basis inf_le_right).repr (GlobalTheory.Twist.resM (relCot A.hom) (inf_le_left : W ⊓ c₁.U ≤ W) (dRel A.hom W F)) a • GlobalTheory.Conormal.d (Limits.pullback.diagonal_fst A …`. Use `((c₁.isFrame.basis inf_le_right).sum_repr _).symm.trans (Finset.sum_congr rfl fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[VB.IsFrame.basis_apply]`. Conclude with `congrArg _ (resM_frame A w.isVB c₀ W₁ hU h hh hT hW' a)`.
+
+Establish `e` using `GlobalTheory.T.holomorphic_translation_section_sum A g (fun u => ex (v, z + u)) (fun u => (h₁ _).trans (h₁ _).symm) hol W _ inf_le_left F (by simpa only [add_zero] using hx) g _ _ (fun _ => hW') _ hs`. Establish `sh (z' : Fin g → ℂ) (e : z' = z) (u : Fin g → ℂ) (hz : (ex (v, z')).1 ≫ A.hom = (ex (v, z + u)).1 ≫ A.hom) (a : Fin g) : ev _ σ (divMap A ⁻¹ᵁ W₁) ((divMap A).app W₁ (h a)) (pairPt A (ex (v, z')) (ex (v, z + u)) hz) = ev (A.hom ≫ p) σ W₁ (h a) (ex (v, u))`. Substitute `e` using the available equality. Conclude with `GlobalTheory.T.period_chart_translation_lift k S p D A g w σ c τ ex H v hv _ u hz W₁ (h a)`. Simplify using `only [sh (z + 0) (add_zero z)] at e`.
+
+Rewrite `e` using `[fderiv_comp_add_left (f := fun u => ev (A.hom ≫ p) σ W F (ex (v, u)))]`. Simplify using `only [add_zero] at e`. Use function extensionality and compare the values at `i`. Rewrite using `[cotAt]`. Simplify using `only [e, _root_.sum_apply, _root_.smul_apply, smul_eq_mul, mulVec, dotProduct, of_apply]`.
+
+Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`.
+-/
 theorem cot_mulVec_crd : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (D : ℕ) (A : Over S) [GrpObj A]
     [QuasiSeparated A.hom] (g : ℕ) (w : VMetric p (omega A) g) (σ : k →+* ℂ) (c : AlgChart p σ D)
     (τ : V D → Matrix (Fin g) (Fin g) ℂ) (ex : Pt (V D) g → CxPts (A.hom ≫ p) σ), IsPeriodChart w c τ ex →

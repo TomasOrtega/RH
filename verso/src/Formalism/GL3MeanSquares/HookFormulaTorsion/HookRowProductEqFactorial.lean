@@ -7,6 +7,13 @@ namespace Formalism.HermitianLattices.TraceIntegrality
 open Finset
 open Formalism.LogVandermondeBounds.flipTwoThree (hookF Interlace B0 len)
 
+/- English proof (translation)
+Introduce `X X' V V' _ _ _ _ _ _ e P φ he`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun x' _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (P.le_opNorm _) 2`.
+
+Use `_ = ‖P‖ ^ 2 * ∑ x', ‖φ (e x')‖ ^ 2 := by rw [Finset.mul_sum]`. Use `_ ≤ ‖P‖ ^ 2 * ∑ x, ‖φ x‖ ^ 2 := by`. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_map]`.
+
+Both sides reduce to the same expression. Use `_ ≤ ∑ x, ‖φ x‖ ^ 2 := Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) (fun x _ _ => by positivity)`.
+-/
 theorem third_zeta_injective : InjectiveReindexNormLe := by
   intro X X' V V' _ _ _ _ _ _ e P φ he
   calc ∑ x', ‖P (φ (e x'))‖ ^ 2 ≤ ∑ x', ‖P‖ ^ 2 * ‖φ (e x')‖ ^ 2 := by
@@ -22,6 +29,13 @@ theorem third_zeta_injective : InjectiveReindexNormLe := by
               Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _)
                 (fun x _ _ => by positivity)
 
+/- English proof (translation)
+Establish `hij' : ((i:ℕ):ℝ) + 1 ≤ ((j:ℕ):ℝ)` using `by exact_mod_cast hij`. Establish `hd : (0:ℝ) < ((j : ℕ) : ℝ) - ((i : ℕ) : ℝ)` using `by linarith`. Establish `h1 : (lam j : ℝ) ≤ lam i` using `by exact_mod_cast h hij.le`. Establish `h2 : (lam i : ℝ) ≤ lam 0` using `by exact_mod_cast h (Fin.zero_le i)`. Establish `h3 : (lam (Fin.last n) : ℝ) ≤ lam j` using `by exact_mod_cast h (Fin.le_last j)`.
+
+Establish `hn0 : (0:ℝ) ≤ (n:ℝ)` using `Nat.cast_nonneg _`. Prove the components needed by the constructor for the conclusion. Rewrite using `[le_div_iff₀ hd]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[div_le_iff₀ hd]`. Unfold `Wnum`. Use `push_cast`. Use polynomial arithmetic with `[mul_nonneg (by linarith : (0:ℝ) ≤ (lam 0 : ℝ) - lam (Fin.last n)) (by linarith : (0:ℝ) ≤ ((j : ℕ) : ℝ) - ((i : ℕ) : ℝ) - 1), mul_nonneg hn0 hd.le]`.
+-/
 private lemma weyl_factor_bounds {n : ℕ} (lam : Fin (n + 1) → ℤ) (h : Antitone lam) (i j : Fin (n + 1))
     (hij : i < j) :
     1 ≤ (((lam i - lam j + (j : ℤ) - (i : ℤ) : ℤ) : ℝ) / (((j : ℕ) : ℝ) - ((i : ℕ) : ℝ))) ∧
@@ -40,12 +54,26 @@ private lemma weyl_factor_bounds {n : ℕ} (lam : Fin (n + 1) → ℤ) (h : Anti
       (by linarith : (0:ℝ) ≤ ((j : ℕ) : ℝ) - ((i : ℕ) : ℝ) - 1),
       mul_nonneg hn0 hd.le]
 
+/- English proof (translation)
+Establish `h2 : (lam (Fin.last n) : ℝ) ≤ lam 0` using `by exact_mod_cast h (Fin.zero_le _)`. Establish `hn0 : (0:ℝ) ≤ (n:ℝ)` using `Nat.cast_nonneg _`. Unfold `Wnum`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma one_le_weyl_numerator {n : ℕ} (lam : Fin (n + 1) → ℤ) (h : Antitone lam) :
     (1:ℝ) ≤ (Wnum lam : ℝ) := by
   have h2 : (lam (Fin.last n) : ℝ) ≤ lam 0 := by exact_mod_cast h (Fin.zero_le _)
   have hn0 : (0:ℝ) ≤ (n:ℝ) := Nat.cast_nonneg _
   unfold Wnum; push_cast; linarith
 
+/- English proof (translation)
+Introduce `n lam h`. Establish `hW` using `one_le_weyl_numerator lam h`. Establish `hlow : 1 ≤ weylDim lam`. Unfold `weylDim`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `Finset.prod_le_prod (fun i _ => by simp) fun i _ => ?_` and prove the remaining obligations. Use `Finset.prod_le_prod (fun j _ => zero_le_one) fun j hj => ?_` and prove the remaining obligations. Conclude with `(weyl_factor_bounds lam h i j (Finset.mem_filter.1 hj).2).1`. Use `⟨hlow, ?_⟩` and prove the remaining obligations. Establish `hup : weylDim lam ≤ (Wnum lam : ℝ) ^ ((n + 1) * (n + 1))`.
+
+Unfold `weylDim`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_le_prod (fun i _ => Finset.prod_nonneg fun j hj => ?_) fun i _ => ?_` and prove the remaining obligations. Conclude with `le_trans zero_le_one (weyl_factor_bounds lam h i j (Finset.mem_filter.1 hj).2).1`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `Finset.prod_le_prod (fun j hj => ?_) fun j hj => ?_` and prove the remaining obligations. Conclude with `le_trans zero_le_one (weyl_factor_bounds lam h i j (Finset.mem_filter.1 hj).2).1`. Conclude with `(weyl_factor_bounds lam h i j (Finset.mem_filter.1 hj).2).2`. Use `_ = (Wnum lam : ℝ) ^ (univ.filter (fun j => i < j)).card := by simp`. Use `_ ≤ (Wnum lam : ℝ) ^ (n + 1) := by`.
+
+Use `pow_le_pow_right₀ hW ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `_ = _ := by simp [pow_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem third_zeta_dimension_bound : WeylDimensionBounds := by
   intro n lam h
   have hW := one_le_weyl_numerator lam h
@@ -76,6 +104,9 @@ theorem third_zeta_dimension_bound : WeylDimensionBounds := by
         Real.log_le_log (by linarith) hup
     _ = _ := by rw [Real.log_pow]; push_cast; ring
 
+/- English proof (translation)
+The claim follows from `| 0, _ => by simp | c + 1, h => by rw [prod_range_succ, prod_range_succ] have ih := shifted_product_telescoping a M c (by omega) have e : a - (c + 1) + M + 1 = a - c + M := by omega rw [e] calc _ = ((∏ j ∈ range c, (a - j + M + 1)) * (a - c + M + 1)) * (a - c + M) := by ring _ = …`.
+-/
 private lemma shifted_product_telescoping (a M : ℕ) : ∀ c, c ≤ a →
     (∏ j ∈ range c, (a - j + M + 1)) * (a - c + M + 1) = (a + M + 1) * ∏ j ∈ range c, (a - j + M)
   | 0, _ => by simp
@@ -87,6 +118,9 @@ private lemma shifted_product_telescoping (a M : ℕ) : ∀ c, c ≤ a →
     calc _ = ((∏ j ∈ range c, (a - j + M + 1)) * (a - c + M + 1)) * (a - c + M) := by ring
       _ = _ := by rw [ih]; ring
 
+/- English proof (translation)
+The claim follows from `| 0, _, _ => by simp only [range_zero, sum_empty, prod_empty, add_zero, mul_one] rw [← Finset.prod_range_add_one_eq_factorial, ← Finset.prod_range_reflect] refine prod_congr rfl fun j hj => ?_ have := mem_range.1 hj omega | M + 1, hanti, hle => by have ih := hook_row_product_eq_f …`.
+-/
 private lemma hook_row_product_eq_factorial (a : ℕ) (μ : ℕ → ℕ) : ∀ M, (∀ k l, k ≤ l → l < M → μ l ≤ μ k) →
     (∀ k, k < M → μ k ≤ a) →
     (∏ j ∈ range a, (a - j + ∑ k ∈ range M, if j < μ k then 1 else 0))
@@ -141,6 +175,13 @@ private lemma hook_row_product_eq_factorial (a : ℕ) (μ : ℕ → ℕ) : ∀ M
               * ∏ k ∈ range M, (a - μ k + k + 1)) := by rw [key]; ring
       _ = _ := by rw [ih, ← add_assoc, Nat.factorial_succ]
 
+/- English proof (translation)
+Rewrite using `[prod_filter]`. Establish `h1 : ∏ j : Fin N, (if i < j then g j else 1) = ∏ n ∈ range N, (if (i : ℕ) < n then g n else 1)` using `Fin.prod_univ_eq_prod_range (fun n => if (i : ℕ) < n then g n else 1) N`. Rewrite using `[h1, ← prod_range_mul_prod_Ico _ (show (i : ℕ) + 1 ≤ N from i.2), prod_Ico_eq_prod_range]`. Rewrite using `[prod_eq_one, one_mul]`. Use `prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[if_pos]`. Use linear arithmetic over natural numbers and integers. Introduce `n hn`. Use `mem_range.1 hn` as an intermediate fact. Rewrite using `[if_neg]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 private lemma prod_filter_gt_eq_prod_range {α : Type} [CommMonoid α] {N : ℕ} (i : Fin N) (g : ℕ → α) :
     ∏ j ∈ (univ : Finset (Fin N)).filter (fun j => i < j), g j
       = ∏ k ∈ range (N - (i + 1)), g (i + 1 + k) := by
@@ -156,6 +197,13 @@ private lemma prod_filter_gt_eq_prod_range {α : Type} [CommMonoid α] {N : ℕ}
     have := mem_range.1 hn
     rw [if_neg]; omega
 
+/- English proof (translation)
+Rewrite using `[sum_filter]`. Establish `h1 : ∑ j : Fin N, (if i < j then g j else 0) = ∑ n ∈ range N, (if (i : ℕ) < n then g n else 0)` using `Fin.sum_univ_eq_sum_range (fun n => if (i : ℕ) < n then g n else 0) N`. Rewrite using `[h1, ← sum_range_add_sum_Ico _ (show (i : ℕ) + 1 ≤ N from i.2), sum_Ico_eq_sum_range]`. Rewrite using `[sum_eq_zero, zero_add]`. Use `sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[if_pos]`. Use linear arithmetic over natural numbers and integers. Introduce `n hn`. Use `mem_range.1 hn` as an intermediate fact. Rewrite using `[if_neg]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 private lemma sum_filter_gt_eq_sum_range {N : ℕ} (i : Fin N) (g : ℕ → ℕ) :
     ∑ j ∈ (univ : Finset (Fin N)).filter (fun j => i < j), g j
       = ∑ k ∈ range (N - (i + 1)), g (i + 1 + k) := by
@@ -171,6 +219,19 @@ private lemma sum_filter_gt_eq_sum_range {N : ℕ} (i : Fin N) (g : ℕ → ℕ)
     have := mem_range.1 hn
     rw [if_neg]; omega
 
+/- English proof (translation)
+Use `set ν' : ℕ → ℕ := fun n => if hn : n < N then nu ⟨n, hn⟩ else 0 with hν'`. Establish `hv : ∀ j : Fin N, ν' j = nu j` using `fun j => by simp [hν']`. Establish `hanti : ∀ p q, p ≤ q → q < N → ν' q ≤ ν' p`. Introduce `p q hpq hq`. Establish `hp : p < N` using `by omega`.
+
+Simplify using `only [hν', dif_pos hp, dif_pos hq]`. Conclude with `h (by simpa using hpq)`. Establish `e1 : ∏ j ∈ univ.filter (fun j => i < j), (nu i - nu j + ((j : ℕ) - (i : ℕ))) = ∏ k ∈ range (N - (i + 1)), (nu i - ν' (i + 1 + k) + k + 1)`. Use `prod_filter_gt_eq_prod_range i (fun n => nu i - ν' n + (n - (i : ℕ)))` as an intermediate fact. Simplify using `only [hv] at this`.
+
+Rewrite using `[this]`. Use `prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers. Establish `e2 : ∀ j, hookLen nu i j = nu i - j + ∑ k ∈ range (N - (i + 1)), if j < ν' (i + 1 + k) then 1 else 0`. Introduce `j`.
+
+Unfold `hookLen`. Rewrite using `[← filter_filter, card_filter]`. Use `sum_filter_gt_eq_sum_range i (fun n => if j < ν' n then 1 else 0)` as an intermediate fact. Simplify using `only [hv] at this`. Rewrite using `[this]`.
+
+Rewrite using `[e1, prod_congr rfl (fun j _ => e2 j)]`. Use `hook_row_product_eq_factorial (nu i) (fun k => ν' (i + 1 + k)) (N - (i + 1)) (fun k l hkl hl => hanti _ _ (by omega) (by omega)) (fun k hk => by` as an intermediate fact. Use `hanti i (i + 1 + k) (by omega) (by omega)` as an intermediate fact. Rewrite using `[hv] at this)` and apply the resulting hypothesis. Rewrite using `[this]`.
+
+Use `congr 1`. Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 private lemma hook_row_identity_fin {N : ℕ} (nu : Fin N → ℕ) (h : Antitone nu) (i : Fin N) :
     (∏ j ∈ range (nu i), hookLen nu i j)
       * ∏ j ∈ univ.filter (fun j => i < j), (nu i - nu j + ((j : ℕ) - (i : ℕ)))
@@ -208,6 +269,17 @@ private lemma hook_row_identity_fin {N : ℕ} (nu : Fin N → ℕ) (h : Antitone
   have := i.2
   omega
 
+/- English proof (translation)
+Introduce `N nu h`. Establish `hden : ∀ i : Fin N, ∏ j ∈ univ.filter (fun j => i < j), (((nu i : ℤ) - nu j + j - i : ℤ) : ℝ) = ((∏ j ∈ univ.filter (fun j => i < j), (nu i - nu j + ((j : ℕ) - (i : ℕ))) : ℕ) : ℝ)`. Introduce `i`. Rewrite using `[Nat.cast_prod]`. Use `prod_congr rfl fun j hj => ?_` and prove the remaining obligations.
+
+Establish `hij : i < j` using `(mem_filter.1 hj).2`. Establish `h1 : nu j ≤ nu i` using `h hij.le`. Establish `h2 : (i : ℕ) ≤ j` using `hij.le`. Move the coercions through the operations in `[Nat.cast_sub h1, Nat.cast_sub h2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hpos : ∀ i : Fin N, 0 < ∏ j ∈ univ.filter (fun j => i < j), (nu i - nu j + ((j : ℕ) - (i : ℕ)))`. Introduce `i`. Use `prod_pos fun j hj => ?_` and prove the remaining obligations. Establish `hij : (i : ℕ) < j` using `(mem_filter.1 hj).2`. Use linear arithmetic over natural numbers and integers.
+
+Unfold `hookF`. Rewrite using `[eq_div_iff]`. Rewrite using `[prod_congr rfl (fun i _ => hden i)]`. Unfold `hookProd`. Rewrite using `[Nat.cast_prod, ← prod_mul_distrib]`.
+
+Use `prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Nat.cast_mul, hook_row_identity_fin nu h i]`. Rewrite using `[prod_congr rfl (fun i _ => hden i)]`. Use `prod_ne_zero_iff.2 fun i _ => ?_` and prove the remaining obligations. Conclude with `(hpos i).ne'` after adjusting the coercions.
+-/
 theorem hook_length_formula : HookLengthFormula := by
   intro N nu h
   have hden : ∀ i : Fin N, ∏ j ∈ univ.filter (fun j => i < j), (((nu i : ℤ) - nu j + j - i : ℤ) : ℝ)
@@ -237,6 +309,9 @@ theorem hook_length_formula : HookLengthFormula := by
     refine prod_ne_zero_iff.2 fun i _ => ?_
     exact_mod_cast (hpos i).ne'
 
+/- English proof (translation)
+Unfold `hookProd`. Use `Nat.succ_le_of_lt (prod_pos fun i _ => prod_pos fun j hj => ?_)` and prove the remaining obligations. Use `mem_range.1 hj` as an intermediate fact. Unfold `hookLen`. Use linear arithmetic over natural numbers and integers.
+-/
 private lemma one_le_hook_product {N : ℕ} (nu : Fin N → ℕ) : 1 ≤ hookProd nu := by
   unfold hookProd
   refine Nat.succ_le_of_lt (prod_pos fun i _ => prod_pos fun j hj => ?_)
@@ -244,6 +319,13 @@ private lemma one_le_hook_product {N : ℕ} (nu : Fin N → ℕ) : 1 ≤ hookPro
   unfold hookLen
   omega
 
+/- English proof (translation)
+Establish `hlM : 0 ≤ Real.log M` using `Real.log_nonneg hM`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hn`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Real.log_le_log (by exact_mod_cast n.factorial_pos) ?_` and prove the remaining obligations. Conclude with `Nat.factorial_le_pow n` after adjusting the coercions. Use `_ = n * Real.log n := by rw [Real.log_pow]`. Use `_ ≤ n * Real.log M := by`.
+
+Conclude with `mul_le_mul_of_nonneg_left (Real.log_le_log hn' h) hn'.le`. Use `_ ≤ M * Real.log M := mul_le_mul_of_nonneg_right h hlM`.
+-/
 private lemma log_factorial_le_mul_log (n : ℕ) (M : ℝ) (hM : 1 ≤ M) (h : (n : ℝ) ≤ M) :
     Real.log (n.factorial : ℝ) ≤ M * Real.log M := by
   have hlM : 0 ≤ Real.log M := Real.log_nonneg hM
@@ -258,6 +340,25 @@ private lemma log_factorial_le_mul_log (n : ℕ) (M : ℝ) (hM : 1 ≤ M) (h : (
           exact mul_le_mul_of_nonneg_left (Real.log_le_log hn' h) hn'.le
       _ ≤ M * Real.log M := mul_le_mul_of_nonneg_right h hlM
 
+/- English proof (translation)
+Introduce `C₀ hC`. Use `⟨(3 + C₀) * (Real.log (3 + C₀) + 1) + (2 + C₀) * C₀, ?_⟩` and prove the remaining obligations. Introduce `R nu b' L logOm hanti hrow hb hL hlb hR hOm`. Establish `hl3 : 0 ≤ Real.log (3 + C₀)` using `Real.log_nonneg (by linarith)`. Establish `hR0 : (0 : ℝ) ≤ R` using `Nat.cast_nonneg _`.
+
+Use `set M : ℝ := (3 + C₀) * b' with hMdef`. Establish `hM1 : 1 ≤ M` using `by nlinarith`. Establish `hlogM : Real.log M ≤ (Real.log (3 + C₀) + 1) * L`. Rewrite using `[hMdef, Real.log_mul (by linarith) (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hlogM0 : 0 ≤ Real.log M` using `Real.log_nonneg hM1`. Establish `hform : (hookProd nu : ℝ) = hookF nu` using `hook_length_formula (R + 1) nu hanti`. Establish `hF1 : 1 ≤ hookF nu`. Rewrite using `[← hform]`. Conclude with `one_le_hook_product nu` after adjusting the coercions.
+
+Establish `hlow : 0 ≤ Real.log (hookF nu)` using `Real.log_nonneg hF1`. Establish `hup : Real.log (hookF nu) ≤ ((R : ℝ) + 1) * (M * Real.log M)`. Establish `h1` using `(Formalism.LogVandermondeBounds.flipTwoThree.hook_product_bounds R nu hanti).1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.log_prod]`.
+
+Introduce `i _`. Conclude with `(Nat.factorial_pos _).ne'` after adjusting the coercions. Use `_ ≤ ∑ _i : Fin (R + 1), M * Real.log M := by`. Use `sum_le_sum fun i _ => log_factorial_le_mul_log _ M hM1 ?_` and prove the remaining obligations. Establish `h2 : ((nu i + R - i : ℕ) : ℝ) ≤ (nu i : ℝ) + R`.
+
+Conclude with `Nat.sub_le _ _` after adjusting the coercions. Establish `h3` using `hrow i`. Rewrite using `[hMdef]`. Use the polynomial consequences of the given equalities and inequalities. Use `_ = _ := by simp`.
+
+Establish `hS0 : 0 ≤ ∑ i, (nu i : ℝ)` using `sum_nonneg fun i _ => Nat.cast_nonneg _`. Establish `hS : ∑ i, (nu i : ℝ) ≤ ((R : ℝ) + 1) * ((2 + C₀) * b')`. Combine the equalities or inequalities in the displayed calculation. Unfold `placeTerm`. Establish `hSO : |(∑ i, (nu i : ℝ)) * logOm| ≤ ((R : ℝ) + 1) * ((2 + C₀) * b') * (C₀ * L)`.
+
+Rewrite using `[abs_mul, abs_of_nonneg hS0]`. Conclude with `mul_le_mul hS hOm (abs_nonneg _) (by positivity)`. Establish `hML : M * Real.log M ≤ M * ((Real.log (3 + C₀) + 1) * L)` using `mul_le_mul_of_nonneg_left hlogM (by linarith)`. Establish `hup2 : ((R : ℝ) + 1) * (M * Real.log M) ≤ ((R : ℝ) + 1) * (M * ((Real.log (3 + C₀) + 1) * L))` using `mul_le_mul_of_nonneg_left hML (by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[abs_of_nonneg hlow]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = _ := by rw [hMdef]; ring`.
+-/
 theorem thin_partition_bound : ThinPlaceHookBound := by
   intro C₀ hC
   refine ⟨(3 + C₀) * (Real.log (3 + C₀) + 1) + (2 + C₀) * C₀, ?_⟩

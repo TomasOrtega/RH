@@ -164,16 +164,25 @@ def dimY : ℕ := D.R.f * (D.R.r.choose 2)
 def PP (CP AP : ℝ) : ℝ :=
   CP * ((D.R.f : ℝ) * (D.R.r : ℝ) * large₂.sc.L) ^ AP
 
+/- English proof (translation)
+Rewrite using `[T.PP_eq]`. Both sides reduce to the same expression.
+-/
 theorem PP_eq_par {D : D7} {large₂ : SizeData₂ D} {P : ParameterChoice' D large₂} (T : ParamsT D large₂ P) : PP D large₂ T.CP T.eP = T.PP := by
   rw [T.PP_eq]
   rfl
 
 def TT (CP AP : ℝ) : ℝ := (⌈PP D large₂ CP AP ^ 2 * (dimY D : ℝ) ^ 2 * (D.R.k : ℝ) / (D.R.m : ℝ)⌉₊ : ℝ)
 
+/- English proof (translation)
+Unfold `TT`. Check the signs of the components of the expression.
+-/
 theorem TT_nonneg (CP AP : ℝ) : 0 ≤ TT D large₂ CP AP := by
   unfold TT
   positivity
 
+/- English proof (translation)
+Unfold `TT`. Conclude with `Nat.ceil_le.mpr h` after adjusting the coercions.
+-/
 theorem TT_le_nat (CP AP : ℝ) (n : ℕ)
     (h : PP D large₂ CP AP ^ 2 * (dimY D : ℝ) ^ 2 * (D.R.k : ℝ) / (D.R.m : ℝ) ≤ (n : ℝ)) : TT D large₂ CP AP ≤ (n : ℝ) := by
   unfold TT
@@ -244,11 +253,19 @@ def GapsA : Prop :=
   ∀ τ (i : ℕ) (h : i + 1 < D.R.m),
     LevelStarExponents.h0 large₂ ≤ (((D.hc τ).b ⟨i + 1, h⟩ - (D.hc τ).b ⟨i, by omega⟩ : ℚ) : ℝ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(D.hc τ).gap_be j, fun h => (D.hc τ).gap_eb j h⟩`.
+-/
 theorem distCentre (D : D7) (τ : D.what₂.Tau) (j : Fin D.R.m) :
     ((D.R.t : ℚ) + 3) / 2 ≤ (D.hc τ).e j - (D.hc τ).b j ∧
       ∀ h : j.1 + 1 < D.R.m, ((D.R.t : ℚ) + 3) / 2 ≤ (D.hc τ).b ⟨j.1 + 1, h⟩ - (D.hc τ).e j :=
   ⟨(D.hc τ).gap_be j, fun h => (D.hc τ).gap_eb j h⟩
 
+/- English proof (translation)
+Consider the cases of `P`. Name the introduced variables `z1 z2 z3 z4 z5 z6 z7 z8 z9 z10 z11 z12 z13 z14 z15 z16 z17 z18 z19 z20 z21 z22 z23 z24 z25 z26 z27 z28 z29 z30 z31 z32 z33 z34 z35 z36 z37 z38 z39 z40 z41 z42 z43 z44 z45`. Unfold `GapsA NN`. Use `⟨?_, fun τ i h => (z19 τ i h).1⟩` and prove the remaining obligations. Establish `h3 : (0:ℝ) ≤ (D.R.N D.R.m : ℝ) ^ 3` using `by positivity`.
+
+Establish `ht : (0:ℝ) ≤ (D.R.t : ℝ)` using `by positivity`. Combine the linear relations using `[z15.2.2.2.2.1]`.
+-/
 theorem GapsA_of {D : D7} {large₂ : SizeData₂ D} (P : ParameterChoice' D large₂) : GapsA D large₂ := by
   cases P
   rename_i z1 z2 z3 z4 z5 z6 z7 z8 z9 z10 z11 z12 z13 z14 z15 z16 z17 z18 z19 z20 z21 z22 z23 z24 z25 z26 z27 z28 z29 z30 z31 z32 z33 z34 z35 z36 z37 z38 z39 z40 z41 z42 z43 z44 z45
@@ -294,6 +311,13 @@ def LiftSizeAtEmbedding (C : ℝ) : Prop :=
     opSq D u i h s ≤ Real.exp (sumKerAt D u (i + 1) s +
       (D.R.f : ℝ) * D.R.N i * D.R.N (i + 1) * Real.log (D.gx.thOne s ^ 2) + errK D large₂ C u)
 
+/- English proof (translation)
+Introduce `u i hK hi s`. Use `(h u i hK hi s).trans (Real.exp_le_exp.mpr ?_)` and prove the remaining obligations. Establish `h3` using `h2 u i hi`. Establish `e1 : sumKerAt D u (i + 1) s = sumPhi D u (i + 1) - sumNuOm D u (i + 1) s`. Unfold `sumKerAt sumPhi sumNuOm`.
+
+Rewrite using `[← Finset.sum_sub_distrib]`. Establish `e2 : errK D large₂ (C + C') u = errK D large₂ C u + errK D large₂ C' u`. Unfold `errK`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lift_size_of_hook_and_stirling {D : D7} {large₂ : SizeData₂ D} {C C' : ℝ} (h : LiftSizeWithHook D large₂ C) (h2 : HookStirlingBound D large₂ C') :
     LiftSizeAtEmbedding D large₂ (C + C') := by
   intro u i hK hi s
@@ -346,6 +370,9 @@ def PointsLemma : Prop :=
 def FrobeniusOrbitPlaceCount : Prop :=
   ∀ j, 1 ≤ j → j ≤ D.R.m → ∀ (c : X.Comp j) τ, X.degHH j c τ = dFl D large₂ j
 
+/- English proof (translation)
+Introduce `j hj hj' c τ`. Conclude with `(h j hj hj' c τ).2`.
+-/
 theorem degree_value_of_determinant {D : D7} {large₂ : SizeData₂ D} {X : DivX D} {Lc : Loc D X} (h : PointsLemma D large₂ X Lc) : FrobeniusOrbitPlaceCount D large₂ X := by
   intro j hj hj' c τ
   exact (h j hj hj' c τ).2

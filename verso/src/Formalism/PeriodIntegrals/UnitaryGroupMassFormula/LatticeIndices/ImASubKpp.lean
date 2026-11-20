@@ -10,6 +10,13 @@ open scoped TensorProduct Matrix
 
 variable {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I)
 
+/- English proof (translation)
+Use `Submodule.smul_induction_on hu ?_ ?_` and prove the remaining obligations. Introduce `r hr n hn`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.mp hr`. Take `⟨A, hA, h1, h2⟩` from `imA_lift_lat X p hn`. Establish `hA' : scP X p a • A ∈ X.B.I.Lf` using `Submodule.smul_mem _ (⟨_, scalarAt_mem_integralAdeles X p a⟩ : Formalism.MainNotions.S.IntAf X.B.I.F X.B.I.E) hA`.
+
+Use `⟨(m : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) • (scP X p a • A), Submodule.subset_span ⟨_, hA', rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[imA_vecV_smul', imA_vecV_smul', component_scalarAt_same, h1, smul_smul, imA_smul_alg, map_natCast]`. Use `congr 1`. Use `push_cast`. Rewrite using `[mul_comm]`.
+
+Introduce `v hv`. Rewrite using `[imA_vecV_smul', imA_vecV_smul', component_scalarAt_of_ne X p v hv, zero_smul, smul_zero]`. Introduce and unpack `x y ⟨A, hA, h1, h2⟩ ⟨B, hB, h3, h4⟩`. Conclude with `⟨A + B, add_mem hA hB, by rw [imA_vecV_add', h1, h3], fun v hv => by rw [imA_vecV_add', h2 v hv, h4 v hv, add_zero]⟩`.
+-/
 theorem imA_lift_mL (p : TypX X) (m : ℕ) {u : Fin X.B.I.n → Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E}
     (hu : u ∈ Ideal.span {((m : ℕ) : p.1.adicCompletionIntegers X.B.I.F)} •
       latLoc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))) :
@@ -32,6 +39,13 @@ theorem imA_lift_mL (p : TypX X) (m : ℕ) {u : Fin X.B.I.n → Fv X.B.I.F p.1 �
     exact ⟨A + B, add_mem hA hB, by rw [imA_vecV_add', h1, h3],
       fun v hv => by rw [imA_vecV_add', h2 v hv, h4 v hv, add_zero]⟩
 
+/- English proof (translation)
+Take `⟨a, ha, b, hb', hab⟩` from `Submodule.mem_sup.mp h`. Take `⟨A, hA, h1, h2⟩` from `imA_lift_sp X p S ha`. Take `⟨B, hB, h3, h4⟩` from `imA_lift_mL X p m hb'`. Establish `hw : w = A + B`. Rewrite using `[← sub_eq_zero]`.
+
+Apply `imA_vec_ext X` to reduce the goal to its premises. Introduce `v`. Rewrite using `[imA_vecV_sub, imA_vecV_add']`. Distinguish the cases in `hv : v = p.1`. Substitute `hv` using the available equality.
+
+Rewrite using `[h1, h3, hab, sub_self]`. Rewrite using `[hs v hv, h2 v hv, h4 v hv, add_zero, sub_zero]`. Rewrite using `[hw]`. Conclude with `Submodule.mem_sup.mpr ⟨A, hA, B, hB, rfl⟩`.
+-/
 theorem imA_inMod_glob (p : TypX X) (m : ℕ) (S : Set (Fin X.B.I.n → X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F))
     (w : Fin X.B.I.n → X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F)
     (hs : ∀ v, v ≠ p.1 → PI.FinKW.vecV X.B.I v w = 0)
@@ -51,6 +65,9 @@ theorem imA_inMod_glob (p : TypX X) (m : ℕ) (S : Set (Fin X.B.I.n → X.B.I.E 
   rw [hw]
   exact Submodule.mem_sup.mpr ⟨A, hA, B, hB, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[LocIdxLift_vecV_mulVec, Matrix.map_sub _ (map_sub _), LocIdxLift_psiV_fmat X.B.I hb, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem imA_vecV_mulVec' (v : HeightOneSpectrum (𝓞 X.B.I.F)) (x : X.B.I.Gf)
     (w : Fin X.B.I.n → X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) :
     PI.FinKW.vecV X.B.I v ((X.B.I.fmat x - 1) *ᵥ w) =
@@ -61,6 +78,21 @@ theorem imA_vecV_mulVec' (v : HeightOneSpectrum (𝓞 X.B.I.F)) (x : X.B.I.Gf)
   rw [LocIdxLift_vecV_mulVec, Matrix.map_sub _ (map_sub _), LocIdxLift_psiV_fmat X.B.I hb,
     Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Introduce and unpack `y ⟨hy, h1, h2, h3⟩`. Take `⟨x, hx⟩` from `Bridge_tf_surjective X.B.I hb (liftHA X.B.I p.1 y)`. Establish `hcomp : ∀ v, v ≠ p.1 → piV X.B.I v (tf X.B.I hb x) = 1` using `fun v h => by`. Rewrite using `[hx, LocIdxLift_piV_ne X.B.I p.1 v h]`. Establish `hsame : piV X.B.I p.1 (tf X.B.I hb x) = y` using `by rw [hx, LocIdxLift_piV_same]`.
+
+Establish `hsupp : ∀ w, ∀ v, v ≠ p.1 → PI.FinKW.vecV X.B.I v ((X.B.I.fmat x - 1) *ᵥ w) = 0`. Introduce `w v hv`. Rewrite using `[imA_vecV_mulVec' X hb, hcomp v hv]`. Establish `: ((HA.mat (Fv X.B.I.F v) X.B.I.cm.sig X.B.I.J (1 : HA (Fv X.B.I.F v) X.B.I.cm.sig X.B.I.J) : GL (Fin X.B.I.n) (Fv X.B.I.F v ⊗[X.B.I.F] X.B.I.E)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Fv X.B.I.F v ⊗[X.B.I.F] X.B.I.E)) = 1` using `rfl`. Rewrite using `[this, sub_self, Matrix.zero_mulVec]`.
+
+Establish `hloc : ∀ w, PI.FinKW.vecV X.B.I p.1 ((X.B.I.fmat x - 1) *ᵥ w) = (((HA.mat (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J y : GL (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) - 1) *ᵥ PI.FinKW.vecV X.B.I p.1 w`. Introduce `w`. Rewrite using `[imA_vecV_mulVec' X hb, hsame]`. Establish `hxK : x ∈ X.B.I.Kset`. Rewrite using `[← Bridge_mem_Kf_iff X.B.I hb, Kf, Subgroup.mem_iInf]`.
+
+Introduce `v`. Use `show HA.mat (Fv X.B.I.F v) X.B.I.cm.sig X.B.I.J (piV X.B.I v (tf X.B.I hb x)) ∈ Kloc v (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))`. Distinguish the cases in `h : v = p.1`. Substitute `h` using the available equality. Rewrite using `[hsame]`.
+
+Conclude with `hy`. Rewrite using `[hcomp v h]`. Conclude with `(Kloc v _).one_mem`. Establish `hc : K2cong X.B.I X.B.g X.e0 X.z0 X.bw x`. Use `⟨fun a => ?_, ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Apply `imA_inMod_glob X p _ _ _ (hsupp _)` to reduce the goal to its premises. Rewrite using `[hloc, Set.image_image]`. Conclude with `h1 a`. Apply `imA_inMod_glob X p _ _ _ (hsupp _)` to reduce the goal to its premises. Rewrite using `[hloc, ← Set.range_comp]`.
+
+Conclude with `h2`. Apply `imA_inMod_glob X p _ _ _ (hsupp _)` to reduce the goal to its premises. Rewrite using `[hloc, Set.image_union, Set.image_image, ← Set.range_comp]`. Conclude with `h3 i`. Conclude with `⟨tf X.B.I hb x, ⟨x, ⟨hxK, hc⟩, rfl⟩, hsame⟩`.
+-/
 theorem imA_sub_kpp (p : TypX X) : {y | y ∈ KvX X p ∧ LocCong X p y} ⊆ KppX X hb p := by
   rintro y ⟨hy, h1, h2, h3⟩
   obtain ⟨x, hx⟩ := Bridge_tf_surjective X.B.I hb (liftHA X.B.I p.1 y)
@@ -98,6 +130,9 @@ theorem imA_sub_kpp (p : TypX X) : {y | y ∈ KvX X p ∧ LocCong X p y} ⊆ Kpp
       rw [hloc, Set.image_union, Set.image_image, ← Set.range_comp]; exact h3 i
   exact ⟨tf X.B.I hb x, ⟨x, ⟨hxK, hc⟩, rfl⟩, hsame⟩
 
+/- English proof (translation)
+The claim follows from `Set.Subset.antisymm (imA_kpp_sub X hb p) (imA_sub_kpp X hb p)`.
+-/
 theorem stImAloc_holds (p : TypX X) : StImAloc X hb p :=
   Set.Subset.antisymm (imA_kpp_sub X hb p) (imA_sub_kpp X hb p)
 

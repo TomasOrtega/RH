@@ -4,6 +4,17 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.ConjScalesMeasure
 
+/- English proof (translation)
+Use `haveI : SecondCountableTopology M := TopologicalSpace.Subtype.secondCountableTopology (M : Set G)`. Establish `hemb : MeasurableEmbedding (Subtype.val : M → G)` using `MeasurableEmbedding.subtype_coe hM.measurableSet`. Use `set ν : Measure M := μ.comap Subtype.val with hν`. Establish `hmap : ν.map Subtype.val = μ`. Rewrite using `[hν, hemb.map_comap, Subtype.range_coe]`.
+
+Conclude with `Measure.restrict_eq_self_of_ae_mem hμ`. Establish `hinj : ∀ ρ : Measure M, (ρ.map (Subtype.val : M → G)).comap Subtype.val = ρ` using `fun ρ => hemb.comap_map ρ`. Use `haveI : ν.IsMulLeftInvariant := by`. Use `⟨fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[← hinj (ν.map _), Measure.map_map hemb.measurable (measurable_const_mul s)]`.
+
+Establish `: (Subtype.val : M → G) ∘ (fun g => s * g) = (fun g => (s : G) * g) ∘ Subtype.val` using `rfl`. Rewrite using `[this, ← Measure.map_map (measurable_const_mul _) hemb.measurable, hmap, hinv s s.2]`. Use `haveI : IsFiniteMeasureOnCompacts ν := by`. Use `⟨fun K hK => ?_⟩` and prove the remaining obligations. Rewrite using `[hν, hemb.comap_apply]`.
+
+Conclude with `(hK.image continuous_subtype_val).measure_lt_top`. Establish `e1` using `Measure.isMulLeftInvariant_eq_smul ν (Measure.haar : Measure M)`. Use `⟨Measure.haarScalarFactor ν (Measure.haar : Measure M), ?_⟩` and prove the remaining obligations. Rewrite using `[← Measure.map_smul]`. Use `conv_lhs => rw [← hmap, e1]`.
+
+Both sides reduce to the same expression.
+-/
 theorem eq_smul_map_haar {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
     (M : Subgroup G) [LocallyCompactSpace M] (hM : IsClosed (M : Set G)) (μ : Measure G)
@@ -32,6 +43,17 @@ theorem eq_smul_map_haar {G : Type} [Group G] [TopologicalSpace G] [IsTopologica
   conv_lhs => rw [← hmap, e1]
   rfl
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace S := hS.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `hcm : Measurable (fun u : G => m * u * m⁻¹)` using `((continuous_const.mul continuous_id).mul continuous_const).measurable`. Use `haveI : IsFiniteMeasureOnCompacts (μ.map (fun u => m * u * m⁻¹)) := Measure.IsFiniteMeasureOnCompacts.map μ ((Homeomorph.mulLeft m).trans (Homeomorph.mulRight m⁻¹))`. Take `⟨a, ha⟩` from `eq_smul_map_haar S hS μ hμ hinv`. Take `⟨b, hb⟩` from `eq_smul_map_haar S hS (μ.map (fun u => m * u * m⁻¹)) (by`.
+
+Rewrite using `[Measure.map_apply hcm hS.measurableSet.compl]`. Use `hμ using 2` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Conclude with `not_congr (hm g).symm)`. Use the proof step `(by`.
+
+Introduce `s hs`. Establish `hs' : m⁻¹ * s * m ∈ S` using `(hm _).2 (by simpa [mul_assoc] using hs)`. Rewrite using `[Measure.map_map (measurable_const_mul s) hcm]`. Establish `: (fun g => s * g) ∘ (fun u : G => m * u * m⁻¹) = (fun u : G => m * u * m⁻¹) ∘ (fun g => (m⁻¹ * s * m) * g)`. Use function extensionality and compare the values at `g`.
+
+Simplify using `[mul_assoc]`. Rewrite using `[this, ← Measure.map_map hcm (measurable_const_mul _), hinv _ hs'])`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `h0 (by simpa using ha)`.
+
+Use `⟨b / a, ?_⟩` and prove the remaining obligations. Rewrite using `[hb]`. Use `conv_rhs => rw [ha]`. Rewrite using `[smul_smul, ← ENNReal.coe_mul, div_mul_cancel₀ _ ha0]`.
+-/
 theorem map_conj_eq_smul_of_group {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
     (S : Subgroup G) (μ : Measure G) (hS : IsClosed (S : Set G)) (hμ : μ (S : Set G)ᶜ = 0)
@@ -67,6 +89,9 @@ theorem map_conj_eq_smul_of_group {G : Type} [Group G] [TopologicalSpace G] [IsT
   conv_rhs => rw [ha]
   rw [smul_smul, ← ENNReal.coe_mul, div_mul_cancel₀ _ ha0]
 
+/- English proof (translation)
+Introduce `_ _ S μ hS hμ hinv hfin h0 m hm` and use `map_conj_eq_smul_of_group S μ hS hμ hinv hfin h0 m hm`.
+-/
 theorem map_conj_eq_smul : ∀ (n : ℕ) (ε : Fin n → Bool) (S : Subgroup (Formalism.REAL.UJ ε)) (μ : Measure (Formalism.REAL.UJ ε)), IsClosed (S : Set (Formalism.REAL.UJ ε)) → μ (S : Set (Formalism.REAL.UJ ε))ᶜ = 0 → (∀ s ∈ S, μ.map (fun g => s * g) = μ) → IsFiniteMeasureOnCompacts μ → μ ≠ 0 → ∀ m : Formalism.REAL.UJ ε, (∀ g, g ∈ S ↔ m * g * m⁻¹ ∈ S) → ∃ c : NNReal, μ.map (fun u => m * u * m⁻¹) = (c : ENNReal) • μ :=
   fun _ _ S μ hS hμ hinv hfin h0 m hm => map_conj_eq_smul_of_group S μ hS hμ hinv hfin h0 m hm
 

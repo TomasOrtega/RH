@@ -110,12 +110,20 @@ open Classical in
 
 def wI {N N' : ℕ} (τ : D.what₂.Tau) : GL3Theta.Idx D N N' → ℕ := fun k => if k.1 = τ then 1 else 0
 
+/- English proof (translation)
+Rewrite using `[aeval_monomial, monomial_eq, Finsupp.prod, Finsupp.prod, Finsupp.prod, algebraMap_eq]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, map_mul, map_prod, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aeval_CX_monomial {σ R : Type} [CommRing R] (c : σ → R) (s : σ →₀ ℕ) (a : R) :
     aeval (fun i => C (c i) * X i) (monomial s a) = monomial s (a * s.prod fun i k => c i ^ k) := by
   rw [aeval_monomial, monomial_eq, Finsupp.prod, Finsupp.prod, Finsupp.prod, algebraMap_eq]
   simp only [mul_pow, Finset.prod_mul_distrib, map_mul, map_prod, map_pow]
   ring
 
+/- English proof (translation)
+Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial s a`. Rewrite using `[aeval_CX_monomial, coeff_monomial, coeff_monomial]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_zero]`. Consider the case `add P Q hP hQ => rw [map_add, coeff_add, coeff_add, hP, hQ, mul_add]`.
+-/
 theorem coeff_aeval_CX {σ R : Type} [CommRing R] (c : σ → R) (Q : MvPolynomial σ R) (n : σ →₀ ℕ) :
     coeff n (aeval (fun i => C (c i) * X i) Q) = (n.prod fun i k => c i ^ k) * coeff n Q := by
   classical
@@ -127,6 +135,11 @@ theorem coeff_aeval_CX {σ R : Type} [CommRing R] (c : σ → R) (Q : MvPolynomi
     · rw [mul_zero]
   | add P Q hP hQ => rw [map_add, coeff_add, coeff_add, hP, hQ, mul_add]
 
+/- English proof (translation)
+Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `k`. Rewrite using `[colSub, aeval_X, aeval_X, Finset.sum_eq_single k.2.2]`. Rewrite using `[Matrix.diagonal_apply_eq]`. Introduce `r _ hr`.
+
+Rewrite using `[Matrix.diagonal_apply_ne _ hr, map_zero, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem colSub_diag {N : ℕ} (d : D.what₂.Tau → ℂ) :
     colSub (fun τ' => Matrix.diagonal fun _ : Fin N => d τ') =
       aeval (fun k : GL3Theta.FrV D N => C (d k.1) * X k) := by
@@ -138,10 +151,28 @@ theorem colSub_diag {N : ℕ} (d : D.what₂.Tau → ℂ) :
     rw [Matrix.diagonal_apply_ne _ hr, map_zero, zero_mul]
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem two_pow_ite (b : Prop) [Decidable b] (k : ℕ) :
     ((if b then (2 : ℂ) else 1) ^ k) = (2 : ℂ) ^ (if b then k else 0) := by
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `set d : D.what₂.Tau → ℂ := fun τ' => if τ' = τ then 2 else 1 with hd`. Establish `hB : IsBor (fun τ' => Matrix.diagonal fun _ : Fin N => d τ')`. Introduce `τ'`. Use `⟨fun r s hsr => Matrix.diagonal_apply_ne _ (ne_of_gt hsr), fun r => ?_⟩` and prove the remaining obligations. Use `show Matrix.diagonal (fun _ : Fin N => d τ') r r ≠ 0`.
+
+Rewrite using `[Matrix.diagonal_apply_eq, hd]`. Use `show (if τ' = τ then (2 : ℂ) else 1) ≠ 0`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `h1` using `hQ (fun τ' => Matrix.diagonal fun _ : Fin N => d τ') hB`. Rewrite `h1` using `[colSub_diag]`.
+
+Establish `h2` using `congrArg (coeff m) h1`. Rewrite `h2` using `[coeff_aeval_CX, coeff_smul, smul_eq_mul]`. Establish `h3` using `mul_right_cancel₀ hm h2`. Establish `hl : (m.prod fun k e => d k.1 ^ e) = (2 : ℂ) ^ Finsupp.weight (wF τ) m`. Rewrite using `[Finsupp.weight_apply, Finsupp.prod, Finsupp.sum, hd]`.
+
+Simplify using `only [two_pow_ite]`. Rewrite using `[Finset.prod_pow_eq_pow_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Unfold `wF`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `hr : (∏ τ', ∏ r, (Matrix.diagonal fun _ : Fin N => d τ') r r ^ ν τ' r) = (2 : ℂ) ^ ∑ r, ν τ r`. Simplify using `only [Matrix.diagonal_apply_eq, hd, two_pow_ite]`. Simplify using `only [Finset.prod_pow_eq_pow_sum]`. Use `congr 1`.
+
+Rewrite using `[Finset.sum_eq_single τ]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`. Rewrite `h3` using `[hl, hr]`. Establish `h4 : ((2 ^ Finsupp.weight (wF τ) m : ℕ) : ℂ) = ((2 ^ ∑ r, ν τ r : ℕ) : ℂ)` using `by push_cast; exact h3`. Conclude with `Nat.pow_right_injective (le_refl 2) (Nat.cast_injective h4)`.
+-/
 theorem wt_deg {N : ℕ} (ν : D.what₂.Tau → Fin N → ℕ) (Q : MvPolynomial (GL3Theta.FrV D N) ℂ) (hQ : Q ∈ WtPol ℂ ν)
     (τ : D.what₂.Tau) (m : GL3Theta.FrV D N →₀ ℕ) (hm : coeff m Q ≠ 0) :
     Finsupp.weight (wF τ) m = ∑ r, ν τ r := by
@@ -179,6 +210,13 @@ theorem wt_deg {N : ℕ} (ν : D.what₂.Tau → Fin N → ℕ) (Q : MvPolynomia
   have h4 : ((2 ^ Finsupp.weight (wF τ) m : ℕ) : ℂ) = ((2 ^ ∑ r, ν τ r : ℕ) : ℂ) := by push_cast; exact h3
   exact Nat.pow_right_injective (le_refl 2) (Nat.cast_injective h4)
 
+/- English proof (translation)
+Establish `hf : ∀ k : GL3Theta.FrV D N, IsWeightedHomogeneous (wI (N` using `N) (N' := N') τ) (∑ b : Fin N', C (C (s k.1) * (if h : (k.2.2 : ℕ) < N' then (X (k.1, b, ⟨k.2.2, h⟩) : MvPolynomial (GL3Theta.FrV D N') ℂ) else 0)) * X ((k.1, b, k.2.1) : GL3Theta.Idx D N N')) (wF τ k) := by`. Introduce `k`. Use `IsWeightedHomogeneous.sum _ _ _ fun b _ => ?_` and prove the remaining obligations. Conclude with `(isWeightedHomogeneous_X _ _ _).C_mul _`. Unfold `polDY`.
+
+Use `conv => enter [2]`. Rewrite using `[Q.as_sum]`. Rewrite using `[map_sum]`. Use `IsWeightedHomogeneous.sum _ _ _ fun m hm => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial, MvPolynomial.algebraMap_apply, ← wt_deg ν Q hQ τ m (mem_support_iff.1 hm), Finsupp.weight_apply]`.
+
+Use `(isWeightedHomogeneous_C (wI (N := N) (N' := N') τ) (algebraMap ℂ (MvPolynomial (GL3Theta.FrV D N') ℂ) (coeff m Q))).mul (IsWeightedHomogeneous.prod _ _ _ fun x _ => (hf x).pow (m x) : IsWeightedHomogeneous (wI (N := N) (N' := N') τ) (m.prod fun x e => (∑ b : Fin N', C (C (s x.1) …` as an intermediate fact. Rewrite `this` using `[zero_add]`. Conclude with `this`.
+-/
 theorem polDY_wh {N N' : ℕ} (s : D.what₂.Tau → ℂ) (ν : D.what₂.Tau → Fin N → ℕ) (Q : MvPolynomial (GL3Theta.FrV D N) ℂ)
     (hQ : Q ∈ WtPol ℂ ν) (τ : D.what₂.Tau) :
     IsWeightedHomogeneous (wI (N := N) (N' := N') τ) (polDY D s Q (N' := N')) (∑ r, ν τ r) := by
@@ -206,6 +244,11 @@ section Deg2
 
 open MvPolynomial
 
+/- English proof (translation)
+Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (fun _ => by simp), Fintype.sum_prod_type, Finset.sum_eq_single τ]`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `[wI]`. Introduce `b _ hb`.
+
+Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Simplify using `[wI, hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem weight_wI {D : D7} {N N' : ℕ} (τ : D.what₂.Tau) (α : GL3Theta.Idx D N N' →₀ ℕ) :
     Finsupp.weight (wI (N := N) (N' := N') τ) α = ∑ b : Fin N', ∑ a : Fin N, α (τ, b, a) := by
   classical
@@ -218,6 +261,9 @@ theorem weight_wI {D : D7} {N N' : ℕ} (τ : D.what₂.Tau) (α : GL3Theta.Idx 
     simp [wI, hb]
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Introduce `D N N' s ν Q hQ α hα τ`. Rewrite using `[← weight_wI τ α]`. Conclude with `polDY_wh (N' := N') s ν Q hQ τ (mem_support_iff.1 hα)`.
+-/
 theorem difference_polynomial_degree : PolDYDeg := by
   intro D N N' s ν Q hQ α hα τ
   rw [← weight_wI τ α]
@@ -225,6 +271,9 @@ theorem difference_polynomial_degree : PolDYDeg := by
 
 end Deg2
 
+/- English proof (translation)
+Establish `h` using `pos.symm_apply_apply ⟨v, s⟩`. Simplify using `only [eIdx]`. Generalize the expression as in `pos.symm (pos ⟨v, s⟩) = q at h ⊢`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem eIdx_pos {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) (j : ℕ)
     (hN : RankTie X D j) (v : X.Pl) (s : Fin (X.G.P.n' v)) (b : Fin (D.R.N (j + 1))) (a : Fin (D.R.N j)) :
     eIdx X D pos j hN (pos ⟨v, s⟩, b, a) = ⟨v, (s, Fin.cast hN.1 a, Fin.cast hN.2 b)⟩ := by
@@ -234,6 +283,11 @@ theorem eIdx_pos {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.
   subst h
   rfl
 
+/- English proof (translation)
+Use `Fintype.sum_equiv (finCongr hN.1).symm _ _ fun a => ?_` and prove the remaining obligations. Use `Fintype.sum_equiv (finCongr hN.2).symm _ _ fun b => ?_` and prove the remaining obligations. Establish `h` using `eIdx_pos X D pos j hN v s ((finCongr hN.2).symm b) ((finCongr hN.1).symm a)`. Simplify using `only [finCongr_symm, finCongr_apply, Fin.cast_cast, Fin.cast_eq_self] at h`. Rewrite using `[← h, Finsupp.mapDomain_apply (eIdx_injective X D pos j hN)]`.
+
+Both sides reduce to the same expression.
+-/
 theorem blk_mapDomain {p : ℕ} [Fact p.Prime] (X : Sys p) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau)
     (j : ℕ) (hN : RankTie X D j) (α : GL3Theta.Idx D (D.R.N j) (D.R.N (j + 1)) →₀ ℕ) (v : X.Pl) (s : Fin (X.G.P.n' v)) :
     ∑ a, ∑ b, (α.mapDomain (eIdx X D pos j hN)) ⟨v, (s, a, b)⟩ = ∑ a', ∑ b', α (pos ⟨v, s⟩, b', a') := by

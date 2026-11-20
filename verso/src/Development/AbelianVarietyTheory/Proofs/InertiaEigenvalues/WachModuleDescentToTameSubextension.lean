@@ -5,6 +5,11 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ValOfPowAssoci
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.WachLatticeDeltaInvariantBasisStatement
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc TensorProduct GlobalTheory.NL Formalism.MainNotions.DeltaInvariantLattices
 
+/- English proof (translation)
+Introduce `D HW F l _ K s LL h T hT hs hl`. Establish `hp : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Rewrite `hl`, the goal using `[hp]`. Take `⟨hc, ⟨π', E', hr⟩, h1⟩` from `GlobalTheory.DelParam.torsion_parameters D HW l K s LL h hs hl`. Establish `md` using `GlobalTheory.T.wachLattice_deltaInvariant_basis D HW F l K s LL h T hT hs hl`.
+
+Establish `hpos : 0 < ((HW l).W K s LL h).DelF.card` using `Finset.card_pos.2 ⟨1, (((HW l).W K s LL h).DelF_def 1).2 ⟨1, one_pos, one_pow _⟩⟩`. Establish `hl1 : 0 < l - 1` using `Nat.sub_pos_of_lt (Fact.out : l.Prime).one_lt`. Use `⟨hc, ⟨π', E', hr, md _ _ _ _ (hc ▸ hpos) hr⟩, fun he => ⟨h1 he, md _ _ _ _ hl1 (h1 he)⟩⟩` and prove the remaining obligations.
+-/
 theorem GlobalTheory.NL.p9_statement : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), P9 D HW F := by
   intro D HW F l _ K s LL h T hT hs hl
   have hp : ((D.loc l).PD K).p = l := (D.loc l).PD_p K

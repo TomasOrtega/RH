@@ -49,21 +49,59 @@ import Development.EtaleCohomology.TateTwists.EtaleTorsionCohomologyLocalization
 namespace LateralTheory.Fix.CupProductTensor
 open LateralTheory.EtaleFoundations
 
+/- English proof (translation)
+The claim follows from `LateralTheory.Fin.EtaleCupProductNaturalInCoefficients.etale_cup_product_compatibility_specification_of_components`.
+-/
 theorem cup_spec0 : t_cup_spec0 := LateralTheory.Fin.EtaleCupProductNaturalInCoefficients.etale_cup_product_compatibility_specification_of_components
+/- English proof (translation)
+The claim follows from `etale_cochain_cup_assoc_of_cup_spec_and_alexander_whitney_assoc cup_spec0 (t_aw_assoc0_of etale_chain_cochain_eval_basic_properties_hold simplicial_subinterval_of_subinterval_along_etale)`.
+-/
 theorem cup_assoc0 : EtaleCochainCupAssociativeOfPairing :=
   etale_cochain_cup_assoc_of_cup_spec_and_alexander_whitney_assoc cup_spec0 (t_aw_assoc0_of etale_chain_cochain_eval_basic_properties_hold simplicial_subinterval_of_subinterval_along_etale)
+/- English proof (translation)
+The claim follows from `etale_sheaf_sections_separated_holds`.
+-/
 theorem secSep : EtaleTensorTripleProductLeibnizSeparated.SecSep := etale_sheaf_sections_separated_holds
+/- English proof (translation)
+The claim follows from `etale_tensor_triple_product_of_family_and_leibniz (etale_tensor_triple_product_family_of_gluing LateralTheory.Fin.EtaleSheafSectionsSeparatedAndGlue.intersectionNumber_baseChange) (etale_tensor_triple_product_leibniz_of_separated secSep)`.
+-/
 theorem tens_tri : EtaleTensorPairProductAssociative :=
   etale_tensor_triple_product_of_family_and_leibniz (etale_tensor_triple_product_family_of_gluing LateralTheory.Fin.EtaleSheafSectionsSeparatedAndGlue.intersectionNumber_baseChange)
     (etale_tensor_triple_product_leibniz_of_separated secSep)
+/- English proof (translation)
+The claim follows from `tt_tens_ex_of tt_tens_pre_of etale_presheaf_tensor_data_sheafification_is_tensor_complex`.
+-/
 theorem tens_ex : tt_tens_ex := tt_tens_ex_of tt_tens_pre_of etale_presheaf_tensor_data_sheafification_is_tensor_complex
+/- English proof (translation)
+The claim follows from `twpair_tens_univ_exdeg_of`.
+-/
 theorem univ_exdeg : twpair_tens_univ_exdeg := twpair_tens_univ_exdeg_of
+/- English proof (translation)
+The claim follows from `twpair_tens_univ_of univ_exdeg`.
+-/
 theorem tens_univ : twpair_tens_univ := twpair_tens_univ_of univ_exdeg
+/- English proof (translation)
+The claim follows from `tt_tens_ge_of (by intro R _ I J K τ hτ; exact (tens_univ R τ hτ).2.1)`.
+-/
 theorem tens_ge : tt_tens_ge := tt_tens_ge_of (by intro R _ I J K τ hτ; exact (tens_univ R τ hτ).2.1)
+/- English proof (translation)
+The claim follows from `tt_res_side_of tens_univ LateralTheory.Fin.EtaleTensorPairQuasiIsoOfFlatQuasiIso.intersectionNumber_baseChange`.
+-/
 theorem res_side : tt_res_side := tt_res_side_of tens_univ LateralTheory.Fin.EtaleTensorPairQuasiIsoOfFlatQuasiIso.intersectionNumber_baseChange
+/- English proof (translation)
+The claim follows from `LateralTheory.Fin.EtaleTwistResolutionUniversalExtension.intersectionNumber_baseChange`.
+-/
 theorem twres_ext : EtaleTwistResolutionUniversalExtension := LateralTheory.Fin.EtaleTwistResolutionUniversalExtension.intersectionNumber_baseChange
+/- English proof (translation)
+The claim follows from `LateralTheory.Fin.EtaleCupProductNaturalInCoefficients.intersectionNumber_baseChange`.
+-/
 theorem cup_compat : EtaleCupProductNaturalInCoefficients := LateralTheory.Fin.EtaleCupProductNaturalInCoefficients.intersectionNumber_baseChange
 
+/- English proof (translation)
+Establish `hsec : TwMulGenMap.twSec` using `hts`. Establish `hloc : EtaleTateTwistSectionsLocallyMultiplesOfGenerator` using `fun q _ i => (hts q i).1`. Establish `hinj : EtaleTateTwistGeneratorMapSectionsInjective` using `etale_tate_twist_generator_map_injective_of_sections_glue hts LateralTheory.Fin.EtaleLocalPropertyBasicClosure.intersectionNumber_baseChange LateralTheory.Fin.EtaleSheafSectionsSeparatedAndGlue.intersectionNumber_baseChange`. Establish `tw_mul : EtaleTateTwistSingletonTensorGenMul` using `etale_tate_twist_tensor_iso_of_generator_map_iso (etale_tate_twist_multiplication_tensor_exists_of_complex_tensor_exists tens_ex) (etale_tate_twist_multiplication_generator_map_of_section_description hsec) (etale_tate_twist_generator_map_isIso_of_inj_surj etale_sheaf_mono_epi_iff …`. Establish `twist : tt_twist_side` using `tt_twist_side_of tw_mul LateralTheory.Fin.EtaleTateTwistSheafFlat.intersectionNumber_baseChange LateralTheory.Fin.EtaleComplexPairingFlipExists.intersectionNumber_baseChange LateralTheory.Fin.EtaleTensorPairQuasiIsoOfFlatQuasiIso.intersectionNumber_baseChange`.
+
+Establish `twres : EtaleTensorPairTwistResolutionMul` using `etale_tensor_twisted_resolution_of_existence_bound_and_sides tens_ex tens_ge twist res_side`. Establish `pa : t_pair_assoc` using `t_pair_assoc_of twres tens_tri twres_ext cup_compat cup_assoc0 t_pa_tens_ex_of t_pa_tens_univ_of t_pa_precomp_of t_pa_cpush_id_of t_pa_cpush_htpy_of`. Establish `tp : EtaleTwistResolutionPairingCupUnique` using `etale_tate_twist_cup_pairing_of_tensor_and_resolution_properties tens_ex tens_univ twres twres_ext cup_compat twpair_zc_fun_of`. Conclude with `⟨etale_twisted_cup_assoc_of_twisted_pairing_exists_assoc (t_twpair_ex_of tp) pa, tp⟩`.
+-/
 theorem holds_of (hts : EtaleTateTwistSectionsLocallyGenerated) :
     EtaleTwistedCupProductAssociative ∧ EtaleTwistResolutionPairingCupUnique := by
   have hsec : TwMulGenMap.twSec := hts
@@ -81,12 +119,29 @@ theorem holds_of (hts : EtaleTateTwistSectionsLocallyGenerated) :
   have tp : EtaleTwistResolutionPairingCupUnique := etale_tate_twist_cup_pairing_of_tensor_and_resolution_properties tens_ex tens_univ twres twres_ext cup_compat twpair_zc_fun_of
   exact ⟨etale_twisted_cup_assoc_of_twisted_pairing_exists_assoc (t_twpair_ex_of tp) pa, tp⟩
 
+/- English proof (translation)
+The claim follows from `(holds_of LateralTheory.CohomologicalPurity.LeafAWCutTw.twSec).1`.
+-/
 theorem ringAssoc : LateralTheory.E.CupProductRingLaws.LeafRingAssoc := (holds_of LateralTheory.CohomologicalPurity.LeafAWCutTw.twSec).1
+/- English proof (translation)
+Introduce `R _ _ _ _ μ E _ _ _ hk` and use `cup_spec0 R μ (E := E) hk`.
+-/
 theorem cupSpec : LateralTheory.E.CupProductRingLaws.LeafCupSpec := fun R _ _ _ _ μ E _ _ _ hk => cup_spec0 R μ (E := E) hk
+/- English proof (translation)
+The claim follows from `etale_twisted_cup_graded_comm_of_flip_and_unique_pairing hf (fun R _ _ _ _ μ => (LateralTheory.Fin.EtaleComplexPairingFlipExists.intersectionNumber_baseChange R μ).imp fun _ h => h.1) (holds_of LateralTheory.CohomologicalPurity.LeafAWCutTw.twSec).2`.
+-/
 theorem ringComm (hf : cc_cup_flip) : LateralTheory.E.CupProductRingLaws.LeafRingComm :=
   etale_twisted_cup_graded_comm_of_flip_and_unique_pairing hf (fun R _ _ _ _ μ => (LateralTheory.Fin.EtaleComplexPairingFlipExists.intersectionNumber_baseChange R μ).imp fun _ h => h.1) (holds_of LateralTheory.CohomologicalPurity.LeafAWCutTw.twSec).2
+/- English proof (translation)
+The claim follows from `cc_aw_flip_of LateralTheory.Fin.PrismAlexanderWhitneySwapChainHomotopy.intersectionNumber_baseChange cupflip_eta_delta_of`.
+-/
 theorem awFlip : cc_aw_flip := cc_aw_flip_of LateralTheory.Fin.PrismAlexanderWhitneySwapChainHomotopy.intersectionNumber_baseChange cupflip_eta_delta_of
 
+/- English proof (translation)
+Introduce `R _ I J K μ ν hf E n m k h h' a b`. Take `⟨α, rfl⟩` from `a.mk_surjective`. Take `⟨β, rfl⟩` from `b.mk_surjective`. Take `⟨γ, hγ⟩` from `(cupSpec R μ E h).1 α β`. Take `⟨γ', hγ'⟩` from `(cupSpec R ν E h').1 β α`.
+
+Rewrite using `[(cupSpec R μ E h).2 _ _ _ hγ, (cupSpec R ν E h').2 _ _ _ hγ']`. Conclude with `awFlip R μ ν hf E h h' α β γ γ' hγ hγ'`.
+-/
 theorem cupFlip : cc_cup_flip := by
   intro R _ I J K μ ν hf E n m k h h' a b
   obtain ⟨α, rfl⟩ := a.mk_surjective
@@ -95,6 +150,12 @@ theorem cupFlip : cc_cup_flip := by
   obtain ⟨γ', hγ'⟩ := (cupSpec R ν E h').1 β α
   rw [(cupSpec R μ E h).2 _ _ _ hγ, (cupSpec R ν E h').2 _ _ _ hγ']
   exact awFlip R μ ν hf E h h' α β γ γ' hγ hγ'
+/- English proof (translation)
+The claim follows from `ringComm cupFlip`.
+-/
 theorem ringComm' : LateralTheory.E.CupProductRingLaws.LeafRingComm := ringComm cupFlip
+/- English proof (translation)
+Introduce `q _ i j` and use `⟨_, ((holds_of LateralTheory.CohomologicalPurity.LeafAWCutTw.twSec).2 q i j).1⟩`.
+-/
 theorem twPairExists : LateralTheory.E.CupProductRingLaws.LeafTwPairExists := fun q _ i j => ⟨_, ((holds_of LateralTheory.CohomologicalPurity.LeafAWCutTw.twSec).2 q i j).1⟩
 end LateralTheory.Fix.CupProductTensor

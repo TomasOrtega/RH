@@ -6,6 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry IsLocalRing GlobalTheory.EtC Tensor
 
 namespace GlobalTheory.IntClLocal
 
+/- English proof (translation)
+Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => ?_` and prove the remaining obligations. Establish `: Module.Finite O (Algebra.adjoin O {a})` using `Algebra.finite_adjoin_simple_of_isIntegral (Algebra.IsIntegral.isIntegral a)`. Use `GlobalTheory.TameKummer.isLocalRing_of_finite O (Algebra.adjoin O {a})` as an intermediate fact. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self (⟨a, Algebra.self_mem_adjoin_singleton O a⟩ : Algebra.adjoin O {a}) with h | h` into its components or cases. Conclude with `Or.inl (h.map (Algebra.adjoin O {a}).val)`.
+
+Conclude with `Or.inr (by simpa using h.map (Algebra.adjoin O {a}).val)`.
+-/
 theorem isLocalRing_of_isIntegral_of_henselian (O : Type) [CommRing O] [HenselianLocalRing O]
     (S : Type) [CommRing S] [IsDomain S] [Algebra O S] [Algebra.IsIntegral O S] : IsLocalRing S := by
   refine IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => ?_
@@ -17,6 +22,9 @@ theorem isLocalRing_of_isIntegral_of_henselian (O : Type) [CommRing O] [Henselia
   · exact Or.inl (h.map (Algebra.adjoin O {a}).val)
   · exact Or.inr (by simpa using h.map (Algebra.adjoin O {a}).val)
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ _ hSH Ω _ _ _ _ _`. Take `⟨hH, -⟩` from `hSH`. Conclude with `isLocalRing_of_isIntegral_of_henselian O (integralClosure O Ω)`.
+-/
 theorem isLocalRing_integralClosure : ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] [IsFractionRing O K], SH O → ∀ (Ω : Type) [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] [Algebra O Ω] [IsScalarTower O K Ω], IsLocalRing (integralClosure O Ω) := by
   intro O K _ _ _ _ _ _ hSH Ω _ _ _ _ _
   obtain ⟨hH, -⟩ := hSH

@@ -20,6 +20,11 @@ open NumberField IsDedekindDomain Module Formalism.BasicNotions Formalism.L2.Pj 
 
 namespace GlobalTheory.FlatCore
 
+/- English proof (translation)
+Introduce `hSW hP2 hQ2 hQ3 hPD`. Introduce `E _ _ _ H hH _ χ hχ Dw l Xo c r U x hL`. Establish `hPS : GlobalTheory.FlatCM.PlaceShiftSt` using `GlobalTheory.placeShiftSt_of_scholzeWeinstein hP2 hSW`. Establish `hCM : CMDiffSt` using `GlobalTheory.T.cm_different_from_ideal (GlobalTheory.T.ideal_from_place_shift hPS)`. Establish `hArch : ArchEx U x` using `GlobalTheory.T.archimedean_existence_everywhere E H Dw l Xo c r U x hL`.
+
+Establish `hHT : HTConst U x` using `GlobalTheory.T.hodge_tate_constant_everywhere hP2 hQ2 hQ3 hPD E H Dw l Xo c r U x hL`. Establish `hSh : HTShift Xo c` using `GlobalTheory.T.hodge_tate_shift_cm hP2 hPS E H hH Dw l Xo c`. Establish `hFin : FinConst U x` using `GlobalTheory.FlatCore.Fin.finConst_main E H Dw l Xo c r U x hL hSh hHT`. Establish `hFr : FrameDeg U x (GlobalTheory.CM.logOm E χ).re` using `GlobalTheory.T.frame_degree_cm_log_period hCM E H hH χ hχ Dw l Xo c r U x hL`. Conclude with `GlobalTheory.FlatCore.flatDegree_of_steps E H Dw l Xo c r U x hL _ hArch hFin hFr`.
+-/
 theorem flatDegreeSt_of_prismaticDieudonne :
     GlobalTheory.Published.ScholzeWeinsteinB → GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.CanonicalExtensionRankOne →
       GlobalTheory.Published.DeRhamCanonicalExtension → GlobalTheory.Published.PrismaticDieudonneHodge → FlatDegreeSt := by

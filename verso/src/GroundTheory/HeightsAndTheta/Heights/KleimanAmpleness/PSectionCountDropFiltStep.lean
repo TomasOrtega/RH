@@ -16,6 +16,13 @@ namespace SectionCount.Drop.Filt.Step
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ}
   {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+Use `Submodule.span_induction (p := fun z _ ↦ ∃ (h t : Poly S N) (d : ℕ), h ∈ J ∧ t ∈ monos I.1 ∧ h.IsHomogeneous d ∧ t.IsHomogeneous d ∧ z = aeval x h / aeval x t) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨f, s, e, hf, hs, hfe, hse, rfl⟩`. Conclude with `⟨f, s, e, hf, hs, hfe, hse, rfl⟩`. Conclude with `⟨0, 1, 0, J.zero_mem, one_mem _, isHomogeneous_zero _ _ _, isHomogeneous_one _ _, by simp⟩`. Introduce and unpack `_ _ _ _ ⟨h, t, d, hh, ht, hhd, htd, rfl⟩ ⟨h', t', d', hh', ht', hhd', htd', rfl⟩`.
+
+Use `⟨h * t' + t * h', t * t', d + d', J.add_mem (J.mul_mem_right _ hh) (J.mul_mem_left _ hh'), mul_mem ht ht', (hhd.mul htd').add (htd.mul hhd'), htd.mul htd', ?_⟩` and prove the remaining obligations. Rewrite using `[div_add_div _ _ (eval_ne_zero_of_mem_monos I ht) (eval_ne_zero_of_mem_monos I ht')]`. Simplify using `only [map_add, map_mul]`. Introduce and unpack `a _ _ ⟨h, t, d, hh, ht, hhd, htd, rfl⟩`. Take `⟨f, s, e, hs, hf, hse, ha⟩` from `a.2`.
+
+Use `⟨f * h, s * t, e + d, J.mul_mem_left _ hh, mul_mem hs ht, hf.mul hhd, hse.mul htd, ?_⟩` and prove the remaining obligations. Rewrite using `[chartRing_smul_def, ha, map_mul, map_mul, div_mul_div_comm]`.
+-/
 theorem exists_frac_of_mem_idealMod {J : Ideal (Poly S N)} {I : Chart x} {z : Ω}
     (hz : z ∈ idealMod J I) : ∃ (h t : Poly S N) (d : ℕ), h ∈ J ∧ t ∈ monos I.1 ∧
       h.IsHomogeneous d ∧ t.IsHomogeneous d ∧ z = aeval x h / aeval x t := by
@@ -35,6 +42,17 @@ theorem exists_frac_of_mem_idealMod {J : Ideal (Poly S N)} {I : Chart x} {z : Ω
     refine ⟨f * h, s * t, e + d, J.mul_mem_left _ hh, mul_mem hs ht, hf.mul hhd, hse.mul htd, ?_⟩
     rw [chartRing_smul_def, ha, map_mul, map_mul, div_mul_div_comm]
 
+/- English proof (translation)
+Establish `hxi : x i ≠ 0` using `(mem_support x).mp (I.2.2 hi)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, s, d, hf, hs, hfd, hsd, rfl⟩`. Establish `hs0` using `eval_ne_zero_of_mem_monos I hs`. Take `⟨j, hj, cg, hcg, hjc⟩` from `Submodule.mem_sup.mp hf`.
+
+Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hcg`. Establish `hf' : f = homogeneousComponent d j + homogeneousComponent d (c * g)`. Rewrite using `[← map_add, hjc, homogeneousComponent_of_mem ((mem_homogeneousSubmodule _ _).mpr hfd), if_pos rfl]`. Rewrite using `[SetLike.mem_coe, hf', map_add, add_div]`. Use `Submodule.add_mem_sup (Submodule.subset_span ⟨_, s, d, hJ j hj d, hs, homogeneousComponent_isHomogeneous d j, hsd, rfl⟩) ?_` and prove the remaining obligations.
+
+Rewrite using `[show c * g = ∑ k ∈ Finset.range (c.totalDegree + 1), homogeneousComponent k c * g by`. Rewrite using `[← Finset.sum_mul, sum_homogeneousComponent], map_sum, map_sum, Finset.sum_div]`. Use `Submodule.sum_mem _ fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[homogeneousComponent_of_mem ((mem_homogeneousSubmodule _ _).mpr ((homogeneousComponent_isHomogeneous k c).mul hg))]`. Use `split_ifs with hk`.
+
+Establish `hdeg : (homogeneousComponent k c * X i ^ e : Poly S N).IsHomogeneous d`. Rewrite using `[hk]`. Conclude with `(homogeneousComponent_isHomogeneous k c).mul (isHomogeneous_X_pow i e)`. Use `Submodule.mem_span_singleton.mpr ⟨⟨_, _, s, d, hs, hdeg, hsd, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[chartRing_smul_def]`.
+
+Simplify using `only [map_mul, map_pow, aeval_X]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[map_zero, zero_div]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem idealMod_sup_span_le {J₁ : Ideal (Poly S N)}
     (hJ : ∀ f ∈ J₁, ∀ d : ℕ, homogeneousComponent d f ∈ J₁) {g : Poly S N} {e : ℕ}
     (hg : g.IsHomogeneous e) (I : Chart x) {i : Fin (N + 1)} (hi : i ∈ I.1) :
@@ -67,6 +85,15 @@ theorem idealMod_sup_span_le {J₁ : Ideal (Poly S N)}
     field_simp
   · rw [map_zero, zero_div]; exact Submodule.zero_mem _
 
+/- English proof (translation)
+Establish `hxi : x i ≠ 0` using `(mem_support x).mp (I.2.2 hi)`. Take `⟨f, s, d, hs, hf, hsd, haf⟩` from `a.2`. Establish `hs0` using `eval_ne_zero_of_mem_monos I hs`. Rewrite `ha`, the goal using `[haf]`. Take `⟨h, t, d', hh, ht, hhd, htd, heq⟩` from `exists_frac_of_mem_idealMod ha`.
+
+Establish `ht0` using `eval_ne_zero_of_mem_monos I ht`. Establish `hP : f * g * t - h * s * X i ^ e ∈ primeOf (S` using `S) x := by`. Establish `h2 : (h * s * X i ^ e : Poly S N).IsHomogeneous (d + e + d')`. Use `(hhd.mul hsd).mul (isHomogeneous_X_pow (R := S) i e)` as an intermediate fact. Rewrite `this` using `[show d' + d + e = d + e + d' by ring]`. Then use the resulting hypothesis.
+
+Use `(mem_primeOf_of_isHomogeneous x (((hf.mul hg).mul htd).sub h2)).mpr ?_` and prove the remaining obligations. Rewrite `heq` using `[div_mul_div_comm, div_eq_div_iff (mul_ne_zero hs0 (pow_ne_zero _ hxi)) ht0]`. Simplify using `only [map_sub, map_mul, map_pow, aeval_X]`. Take the linear combination `heq`. Establish `hfg : f * t * g ∈ J₁`.
+
+Establish `h1 : h * s * X i ^ e ∈ J₁` using `J₁.mul_mem_right _ (J₁.mul_mem_right _ hh)`. Use `J₁.add_mem (hJ hP) h1` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, mul_right_comm]`. Then use the resulting hypothesis. Use `Submodule.subset_span ⟨f * t, s * t, d + d', (hpp _).mpr hfg, mul_mem hs ht, hf.mul htd, hsd.mul htd, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, mul_div_mul_right _ _ ht0]`.
+-/
 theorem mem_idealMod_of_mul_mem {J₁ pp : Ideal (Poly S N)} (hJ : primeOf (S := S) x ≤ J₁)
     {g : Poly S N} {e : ℕ} (hpp : ∀ f, f ∈ pp ↔ f * g ∈ J₁) (hg : g.IsHomogeneous e)
     {I : Chart x} {i : Fin (N + 1)} (hi : i ∈ I.1) (a : chartRing S x I)
@@ -93,6 +120,9 @@ theorem mem_idealMod_of_mul_mem {J₁ pp : Ideal (Poly S N)} (hJ : primeOf (S :=
     hf.mul htd, hsd.mul htd, ?_⟩
   rw [map_mul, map_mul, mul_div_mul_right _ _ ht0]
 
+/- English proof (translation)
+Take `⟨h, t, d, hh, ht, hhd, htd, rfl⟩` from `exists_frac_of_mem_idealMod hb`. Use `Submodule.subset_span ⟨h * g, t * X i ^ e, d + e, (hpp h).mp hh, mul_mem ht (pow_mem (X_mem_monos hi) e), hhd.mul hg, htd.mul (isHomogeneous_X_pow i e), ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_pow, aeval_X]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mul_mem_idealMod_of_mem {J₁ pp : Ideal (Poly S N)} {g : Poly S N} {e : ℕ}
     (hpp : ∀ f, f ∈ pp ↔ f * g ∈ J₁) (hg : g.IsHomogeneous e) {I : Chart x} {i : Fin (N + 1)}
     (hi : i ∈ I.1) {b : Ω} (hb : b ∈ idealMod pp I) :
@@ -110,6 +140,9 @@ variable {n : ℕ} {U : Finset (Fin n)} {R : Type*} [CommRing R] {G : Cell U →
 
 def toH0 : LinearMap.ker (Cech.d G ρ 0) →ₗ[R] Cech.H G ρ 0 := Submodule.mkQ _
 
+/- English proof (translation)
+Establish `h1` using `(Submodule.Quotient.mk_eq_zero _).mp h`. Rewrite `h1` using `[Submodule.mem_comap]`. Conclude with `(Submodule.mem_bot R).mp h1`.
+-/
 theorem eq_zero_of_toH0_eq_zero_degree_zero (c : LinearMap.ker (Cech.d G ρ 0)) (h : toH0 c = 0) :
     (c : Cech.Cochain G 0) = 0 := by
   have h1 := (Submodule.Quotient.mk_eq_zero _).mp h
@@ -118,9 +151,19 @@ theorem eq_zero_of_toH0_eq_zero_degree_zero (c : LinearMap.ker (Cech.d G ρ 0)) 
 
 end CechZero
 
+/- English proof (translation)
+Simplify using `[SubSystem.secs, Submodule.mem_iInf]`.
+-/
 theorem mem_secs_iff' {F : SubSystem S x Ω} {y : Ω} : y ∈ F.secs ↔ ∀ I, y ∈ F.sub I := by
   simp [SubSystem.secs, Submodule.mem_iInf]
 
+/- English proof (translation)
+Establish `hs' : s ∈ (idealMod J₁ I ⊔ Submodule.span (chartRing S x I) {aeval x g / x i ^ e}) * Qi` using `(Submodule.mul_le.mpr fun m hm n hn ↦ Submodule.mul_mem_mul (idealMod_sup_span_le hJ hg I hi hm) hn) hs`. Rewrite `hs'` using `[Submodule.sup_mul]`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hs'`. Take `⟨q, hq, rfl⟩` from `Submodule.mem_span_singleton_mul.mp hb`. Use `⟨x i ^ (-(e : ℤ)) * q, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[twistMod_eq_span _ I hi]`. Conclude with `Submodule.mul_mem_mul (Submodule.mem_span_singleton_self _) hq`. Establish `h : aeval x g * (x i ^ (-(e : ℤ)) * q) = aeval x g / x i ^ e * q`. Rewrite using `[← mul_assoc, zpow_neg, zpow_natCast, div_eq_mul_inv]`. Rewrite using `[h, add_sub_cancel_right]`.
+
+Conclude with `ha`.
+-/
 theorem exists_chart {J₁ : Ideal (Poly S N)}
     (hJ : ∀ f ∈ J₁, ∀ d : ℕ, homogeneousComponent d f ∈ J₁) {g : Poly S N} {e : ℕ}
     (hg : g.IsHomogeneous e) (I : Chart x) {i : Fin (N + 1)} (hi : i ∈ I.1)
@@ -141,6 +184,19 @@ theorem exists_chart {J₁ : Ideal (Poly S N)}
     rw [h, add_sub_cancel_right]
     exact ha
 
+/- English proof (translation)
+Rewrite `hy`, the goal using `[twistMod_eq_span _ I hi]`. Take `⟨q, hq, rfl⟩` from `Submodule.mem_span_singleton_mul.mp hy`. Establish `hγ : aeval x g * (x i ^ (-(e : ℤ)) * q) = aeval x g / x i ^ e * q`. Rewrite using `[← mul_assoc, zpow_neg, zpow_natCast, div_eq_mul_inv]`. Rewrite `hgy` using `[hγ]`.
+
+Establish `hle : Submodule.span (chartRing S x I) {q} * Q' ≤ idealMod pp I`. Use `Submodule.mul_le.mpr fun m hm n hn ↦ ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hm`. Establish `hqn : q * n ∈ (1 : Submodule (chartRing S x I) Ω)` using `hQ ▸ Submodule.mul_mem_mul hq hn`. Take `⟨a, ha⟩` from `Submodule.mem_one.mp hqn`.
+
+Establish `ha' : (a : Ω) = q * n` using `ha`. Establish `h1` using `Submodule.mul_mem_mul hgy hn`. Rewrite `h1` using `[mul_assoc (idealMod J₁ I), hQ, mul_one]`. Establish `h2 : (a : Ω) * (aeval x g / x i ^ e) ∈ idealMod J₁ I`. Rewrite using `[ha']`.
+
+Use `h1 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `mem_idealMod_of_mul_mem hJ hpp hg hi a h2`. Rewrite using `[smul_mul_assoc, ← ha']`. Conclude with `Submodule.smul_mem _ c h3`.
+
+Establish `hq1 : q ∈ idealMod pp I * Qi`. Establish `h1 : q ∈ Submodule.span (chartRing S x I) {q} * (Qi * Q')`. Rewrite using `[hQ, mul_one]`. Conclude with `Submodule.mem_span_singleton_self q`. Rewrite `h1` using `[mul_comm Qi Q', ← mul_assoc]`.
+
+Conclude with `(Submodule.mul_le.mpr fun m hm n hn ↦ Submodule.mul_mem_mul (hle hm) hn) h1`. Rewrite using `[mul_left_comm]`. Conclude with `Submodule.mul_mem_mul (Submodule.mem_span_singleton_self _) hq1`.
+-/
 theorem mem_chart_of_mul_mem {J₁ pp : Ideal (Poly S N)} (hJ : primeOf (S := S) x ≤ J₁)
     {g : Poly S N} {e : ℕ} (hpp : ∀ f, f ∈ pp ↔ f * g ∈ J₁) (hg : g.IsHomogeneous e)
     (I : Chart x) {i : Fin (N + 1)} (hi : i ∈ I.1) (Qi Q' : Submodule (chartRing S x I) Ω)
@@ -175,6 +231,11 @@ theorem mem_chart_of_mul_mem {J₁ pp : Ideal (Poly S N)} (hJ : primeOf (S := S)
   rw [mul_left_comm]
   exact Submodule.mul_mem_mul (Submodule.mem_span_singleton_self _) hq1
 
+/- English proof (translation)
+Rewrite `hy` using `[twistMod_eq_span _ I hi]`. Establish `h1` using `Submodule.mul_mem_mul (Submodule.mem_span_singleton_self (R := chartRing S x I) (aeval x g)) hy`. Rewrite `h1` using `[mul_left_comm (idealMod pp I), ← mul_assoc, Submodule.span_mul_span, Set.singleton_mul_singleton, ← mul_assoc]`. Establish `hle : Submodule.span (chartRing S x I) {aeval x g * x i ^ (-(e : ℤ))} * idealMod pp I ≤ idealMod J₁ I`. Use `Submodule.mul_le.mpr fun m hm n hn ↦ ?_` and prove the remaining obligations.
+
+Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hm`. Rewrite using `[smul_mul_assoc, zpow_neg, zpow_natCast, ← div_eq_mul_inv]`. Conclude with `Submodule.smul_mem _ c (mul_mem_idealMod_of_mem hpp hg hi hn)`. Conclude with `(Submodule.mul_le.mpr fun m hm n hn ↦ Submodule.mul_mem_mul (hle hm) hn) h1`.
+-/
 theorem mul_mem_chart {J₁ pp : Ideal (Poly S N)} {g : Poly S N} {e : ℕ}
     (hpp : ∀ f, f ∈ pp ↔ f * g ∈ J₁) (hg : g.IsHomogeneous e) (I : Chart x) {i : Fin (N + 1)}
     (hi : i ∈ I.1) (Qi : Submodule (chartRing S x I) Ω) {y : Ω}
@@ -192,6 +253,39 @@ theorem mul_mem_chart {J₁ pp : Ideal (Poly S N)} {g : Poly S N} {e : ℕ}
     exact Submodule.smul_mem _ c (mul_mem_idealMod_of_mem hpp hg hi hn)
   exact (Submodule.mul_le.mpr fun m hm n hn ↦ Submodule.mul_mem_mul (hle hm) hn) h1
 
+/- English proof (translation)
+Introduce `S _ Ω _ _ N x Q J₁ pp g e hJh hJ hg hpp`. Use `set F₁ : SubSystem S x Ω := Q.twist (twistSys S x (-(e : ℤ))) with hF₁`. Use `set F₂ : SubSystem S x Ω := F₁.twist (idealSys x pp) with hF₂`. Use `set V := (Q.twist (idealSys x (J₁ ⊔ Ideal.span {g}))).secs with hV`. Establish `hsub : ∀ (J : Ideal (Poly S N)) (I : Chart x), (Q.twist (idealSys x J)).sub I = idealMod J I * Q.sub I` using `fun J I ↦ SubSystem.twist_sub_eq_mul_of_line _ _ I`.
+
+Establish `hF₁s : ∀ I, F₁.sub I = twistMod S x (-(e : ℤ)) I * Q.sub I` using `fun I ↦ SubSystem.twist_sub_eq_mul_of_line _ _ I`. Establish `hF₂s : ∀ I, F₂.sub I = idealMod pp I * (twistMod S x (-(e : ℤ)) I * Q.sub I)` using `fun I ↦ by`. Rewrite using `[hF₂, SubSystem.twist_sub_eq_mul_of_line, hF₁s]`. Both sides reduce to the same expression. Establish `hE : ∀ s ∈ V, ∀ I : Chart x, ∃ y ∈ F₁.sub I, s - aeval x g * y ∈ (Q.twist (idealSys x J₁)).sub I`.
+
+Introduce `s hs I`. Take `⟨i, hi⟩` from `I.2.1`. Establish `hsI` using `mem_secs_iff'.mp hs I`. Rewrite `hsI` using `[hsub]`. Rewrite using `[hF₁s, hsub]`.
+
+Conclude with `exists_chart hJh hg I hi _ hsI`. Establish `hU : ∀ I (y : Ω), y ∈ F₁.sub I → aeval x g * y ∈ (Q.twist (idealSys x J₁)).sub I → y ∈ F₂.sub I`. Introduce `I y hy hgy`. Take `⟨i, hi⟩` from `I.2.1`. Take `⟨Q', hQ'⟩` from `Q.invertible I`.
+
+Rewrite `hy` using `[hF₁s]`. Rewrite `hgy` using `[hsub]`. Rewrite using `[hF₂s]`. Conclude with `mem_chart_of_mul_mem hJ hpp hg I hi _ Q' hQ' hy hgy`. Establish `hC : ∀ I (y : Ω), y ∈ F₂.sub I → aeval x g * y ∈ (Q.twist (idealSys x J₁)).sub I`.
+
+Introduce `I y hy`. Take `⟨i, hi⟩` from `I.2.1`. Rewrite `hy` using `[hF₂s]`. Rewrite using `[hsub]`. Conclude with `mul_mem_chart hpp hg I hi _ hy`.
+
+Set `yc : V → ∀ I, F₁.sub I` to `fun s I ↦ ⟨(hE s s.2 I).choose, (hE s s.2 I).choose_spec.1⟩`. Establish `hyc : ∀ (s : V) I, (s : Ω) - aeval x g * (yc s I : Ω) ∈ (Q.twist (idealSys x J₁)).sub I` using `fun s I ↦ (hE s s.2 I).choose_spec.2`. Establish `hcls : ∀ I (y y' : F₁.sub I), aeval x g * ((y : Ω) - y') ∈ (Q.twist (idealSys x J₁)).sub I → (Submodule.Quotient.mk y : F₁.sub I ⧸ SubSystem.quotSub F₁ F₂ I) = Submodule.Quotient.mk y'`. Introduce `I y y' h`. Rewrite using `[Submodule.Quotient.eq]`.
+
+Conclude with `hU I _ (y - y').2 h`. Set `v : V → ∀ I, F₁.sub I ⧸ SubSystem.quotSub F₁ F₂ I` to `fun s I ↦ Submodule.Quotient.mk (yc s I)`. Establish `hcompat : ∀ s I J h, SubSystem.quotRes F₁ F₂ I J h (v s I) = v s J`. Introduce `s I J h`. Use `hcls J _ _ ?_` and prove the remaining obligations.
+
+Establish `h1` using `sub_mem (hyc s J) ((Q.twist (idealSys x J₁)).mono I J h _ (hyc s I))`. Express the relevant statement in the definitionally equal form `aeval x g * ((yc s I : Ω) - (yc s J : Ω)) ∈ _`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hcoc : ∀ s, Cech.d (fun I ↦ F₁.sub I ⧸ SubSystem.quotSub F₁ F₂ I) (SubSystem.quotRes F₁ F₂) 0 (fun I ↦ v s I.1) = 0` using `fun s ↦ Cech.d_zero_of_compat _ (hcompat s)`.
+
+Set `ψ : V →ₗ[S] LinearMap.ker (Cech.d (fun I ↦ F₁.sub I ⧸ SubSystem.quotSub F₁ F₂ I) (SubSystem.quotRes F₁ F₂) 0)` to `{ toFun := fun s ↦ ⟨fun I ↦ v s I.1, hcoc s⟩ map_add' := fun s t ↦ by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `I`. Express the relevant statement in the definitionally equal form `v (s + t) I.1 = v s I.1 + v t I.1`. Rewrite using `[← Submodule.Quotient.mk_add]`.
+
+Use `hcls I.1 _ _ ?_` and prove the remaining obligations. Establish `h1` using `sub_mem (add_mem (hyc s I.1) (hyc t I.1)) (hyc (s + t) I.1)`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Submodule.coe_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use the proof step `map_smul' := fun c s ↦ by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `I`. Express the relevant statement in the definitionally equal form `v (c • s) I.1 = c • v s I.1`. Rewrite using `[← Submodule.Quotient.mk_smul]`.
+
+Use `hcls I.1 _ _ ?_` and prove the remaining obligations. Establish `h1` using `sub_mem (Submodule.smul_of_tower_mem _ c (hyc s I.1)) (hyc (c • s) I.1)`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Submodule.coe_smul, Submodule.coe_smul_of_tower, Algebra.smul_def]`. Use `ring }`.
+
+Use `⟨toH0.comp ψ, fun s hs ↦ ?_⟩` and prove the remaining obligations. Establish `hs` using `eq_zero_of_toH0_eq_zero_degree_zero (ψ s) hs`. Establish `hzero : ∀ I : Cech.Idx (support x) 0, (yc s I.1 : Ω) ∈ F₂.sub I.1`. Introduce `I`. Establish `h1 : v s I.1 = 0` using `congrFun hs I`.
+
+Conclude with `(Submodule.Quotient.mk_eq_zero (SubSystem.quotSub F₁ F₂ I.1)).mp h1`. Use `mem_secs_iff'.mpr fun J ↦ ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `J.2.1`. Set `K : Chart x` to `⟨{j}, Finset.singleton_nonempty j, Finset.singleton_subset_iff.mpr (J.2.2 hj)⟩`. Establish `hK : (s : Ω) ∈ (Q.twist (idealSys x J₁)).sub K`.
+
+Establish `h1` using `add_mem (hyc s K) (hC K _ (hzero ⟨K, Finset.card_singleton j⟩))`. Rewrite `h1` using `[sub_add_cancel]`. Then use the resulting hypothesis. Conclude with `(Q.twist (idealSys x J₁)).mono K J (Finset.singleton_subset_iff.mpr hj) _ hK`.
+-/
 theorem proof : Statement.{u, w} := by
   classical
   intro S _ Ω _ _ N x Q J₁ pp g e hJh hJ hg hpp

@@ -17,6 +17,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 open GlobalTheory.HalfGeo GlobalTheory.HtGen.CoverChart GlobalTheory.LineNorm.Chart GlobalTheory.LieMet in
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t F _ _ Y V ρ' ρ hρ m u₀ f T hf hT hc U hU g e he N h`. Distinguish the cases in `hgen : V.j (genericPoint V.G) ∈ U`. Use `swap`. Conclude with `⟨0, fun z hz => absurd (((genericPoint_specializes z).map V.j.continuous).mem_open U.isOpen hz) hgen⟩`. Use `choose α hα using fun (z : V.G) (hz : V.j z ∈ U) => exists_stalkHom hU V.j z hz`.
+
+Establish `hα' : ∀ z hz, spMap (α z hz) ≫ hU.fromSpec ≫ ρ' = V.G.fromSpecStalk z ≫ V.π ≫ ρ` using `fun z hz => by`. Rewrite using `[← Category.assoc, hα, Category.assoc, hρ]`. Set `ι₀ : Γ(V.X, U) →+* V.G.functionField` to `α _ hgen`. Establish `hι : spMap ι₀ ≫ hU.fromSpec ≫ ρ' = spMap V.φ ≫ GlobalTheory.ShFam.genericPt Y ≫ ρ` using `(hα' _ hgen).trans (by rw [← Category.assoc, V.φ_spec, Category.assoc]; rfl)`. Establish `hαι : ∀ z hz, (algebraMap (V.G.presheaf.stalk z) V.G.functionField).comp (α z hz) = ι₀` using `fun z hz => ringHom_ext hU (by`.
+
+Rewrite using `[sp_comp, Category.assoc, hα, ← Category.assoc, gen_eq']`. Conclude with `(hα _ hgen).symm)`. Establish `ha : ∀ z (hz : V.j z ∈ U) l, ∃ a, IsCombAtG t (spMap (α z hz) ≫ hU.fromSpec ≫ ρ') (fun i => spMap (dualMap (α z hz)) ≫ e i) a (spMap (dualMap (V.π.stalkMap z).hom) ≫ f (V.π z) l)` using `fun z hz l => (he.2 _ (α z hz) _ (isTan_map _ (by`. Rewrite using `[hα', ← Category.assoc, ← Category.assoc, ← stalk_eq]`. Use the proof step `rfl) (hf (V.π z) l))).exists`.
+
+Use `choose a ha using ha`. Establish `key : ∀ z (hz : V.j z ∈ U) i, IsCombAtG t (spMap ι₀ ≫ hU.fromSpec ≫ ρ') (fun i => spMap (dualMap ι₀) ≫ e i) (∑ l, V.φ (T (V.π z) l i) • fun j => algebraMap (V.G.presheaf.stalk z) V.G.functionField (a z hz l j)) (spMap (dualMap V.φ) ≫ u₀ i)`. Introduce `z hz i`. Establish `h4` using `GlobalTheory.LatDRFree.comb_map t V.φ (hc (V.π z) i)`. Use `comb_comb (fun j => isTan_map _ rfl (he.1 j)) (fun l => ?_) (hι ▸ h4)` and prove the remaining obligations.
+
+Use `coord_map _ (algebraMap (V.G.presheaf.stalk z) V.G.functionField) (ha z hz l)` as an intermediate fact. Rewrite `this` using `[hαι, dual_comp, alg_comp_stalkMap]`. Rewrite using `[dual_comp]`. Conclude with `this`. Establish `hA₀ : ∀ i, ∃ b, IsCombAtG t (spMap ι₀ ≫ hU.fromSpec ≫ ρ') (fun i => spMap (dualMap ι₀) ≫ e i) b (spMap (dualMap V.φ) ≫ u₀ i)` using `fun i => ⟨_, key _ hgen i⟩`.
+
+Use `choose A₀ hA₀ using hA₀`. Establish `hA : ∀ z hz i, A₀ i = ∑ l, V.φ (T (V.π z) l i) • fun j => algebraMap (V.G.presheaf.stalk z) V.G.functionField (a z hz l j)` using `fun z hz i => (he.2 _ ι₀ _ (comb_tan (fun j => isTan_map _ rfl (he.1 j)) (key z hz i))).unique (hA₀ i) (key z hz i)`. Use `⟨Matrix.of fun r i => ∑ j, ι₀ (h r j) * A₀ i j, fun z hz => ⟨α z hz, a z hz, hα z hz, ha z hz, fun r l => ?_⟩⟩` and prove the remaining obligations. Establish `hι₀ : ∀ b, ι₀ b = algebraMap (V.G.presheaf.stalk z) V.G.functionField (α z hz b)` using `fun b => (congrArg (fun q => q b) (hαι z hz)).symm`. Establish `hdet : IsUnit ((T (V.π z)).map V.φ).det`.
+
+Establish `h0` using `(hT (V.π z)).map V.φ`. Rewrite `h0` using `[RingHom.map_det]`. Conclude with `h0`. Establish `hM : (Matrix.of fun r i => ∑ j, ι₀ (h r j) * A₀ i j) = (Matrix.of fun r l => algebraMap (V.G.presheaf.stalk z) V.G.functionField (∑ j, α z hz (h r j) * a z hz l j)) * (T (V.π z)).map V.φ`. Use extensionality with `r i`.
+
+Simplify using `only [Matrix.of_apply, Matrix.mul_apply, Matrix.map_apply, hA z hz i, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, hι₀, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[hM, Matrix.mul_nonsing_inv_cancel_right _ _ hdet]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.HalfGeo.chartSt_holds : ChartSt := by
   intro E _ _ _ H X t F _ _ Y V ρ' ρ hρ m u₀ f T hf hT hc U hU g e he N h
   by_cases hgen : V.j (genericPoint V.G) ∈ U

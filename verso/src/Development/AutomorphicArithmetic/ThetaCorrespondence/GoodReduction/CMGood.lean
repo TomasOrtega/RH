@@ -15,6 +15,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace UpperTheory.Lit
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ _ _ A _ hA F _ _ hF`. Establish `: IsCommMonObj A` using `hA.comm`. Take `⟨V, hV⟩` from `exists_isAbove R K (SeparableClosure K)`. Take `⟨l, hl, hlk⟩` from `GlobalTheory.Proof.exists_prime_natCast_ne_zero (ResidueField R)`. Establish `hlK : (l : K) ≠ 0`.
+
+Introduce `h`. Apply `hlk` to reduce the goal to its premises. Establish `h1 : (l : R) = 0` using `IsFractionRing.injective R K (by rw [map_natCast, map_zero, h])`. Rewrite using `[← map_natCast (residue R), h1, map_zero]`. Establish `hc` using `GlobalTheory.T.tateModule_galoisImages_commute_of_complexMultiplication K (SeparableClosure K) A hA F hF l hlK`.
+
+Establish `he` using `GlobalTheory.T.exists_exponent_inertia_tateModule_finite_residue R K (SeparableClosure K) V hV A hA l hlk hc`. Take `⟨⟨d, hd, -⟩, -⟩` from `hF`. Establish `hcard` using `GlobalTheory.T.card_abelianVariety_torsion_sepClosed K (SeparableClosure K) A hA d hd (l ^ 2) (by rw [Nat.cast_pow]; exact pow_ne_zero _ hlK)`. Establish `hfin : Finite {x : ptOver K (SeparableClosure K) ⟶ A // x ^ (l ^ 2) = 1}` using `Nat.finite_of_card_ne_zero (by rw [hcard]; exact pow_ne_zero _ (pow_ne_zero _ hl.out.ne_zero))`. Conclude with `(GlobalTheory.potentialGoodReduction_of_neronOggShafarevich hN R K (SeparableClosure K) V hV A hA l hlk).2 (GlobalTheory.T.finite_image_tateModule_of_bounded_exponent_comm K (SeparableClosure K) A l _ hfin hc he)`.
+-/
 theorem cmPotentialGoodReduction_of_nos (hN : GlobalTheory.Published.NeronOggShafarevichSt) :
     GlobalTheory.Published.CMPotentialGoodReductionSt := by
   intro R K _ _ _ _ _ _ _ A _ hA F _ _ hF

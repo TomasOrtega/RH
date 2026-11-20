@@ -16,6 +16,27 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.EisUnfold
 
+/- English proof (translation)
+Introduce `D ψ hψ θ hθ V n r hrn μ 𝓕 hμ μr h𝓕r c a hca b Φ hΦ`. Take `⟨𝓕r, hμr⟩` from `h𝓕r`. Take `⟨s, rfl⟩` from `Nat.exists_eq_add_of_le hrn`. Take `⟨μs, 𝓕s, hμs⟩` from `exists_isCovolOne D V.rank s`. Take `⟨hΦc, B, hB⟩` from `GlobalTheory.T.schwartz_lattice_sum_bounded D θ hθ V.rank (r + s) Φ hΦ`.
+
+Establish `ha : IsUnit a.det` using `hca.1`. Set `e : Matrix (Fin V.rank) (Fin r) D.host.E × Matrix (Fin V.rank) (Fin s) D.host.E ≃ Matrix (Fin V.rank) (Fin (r + s)) D.host.E` to `joinEquiv.trans { toFun := fun ξ => ξ * a invFun := fun ξ => ξ * a⁻¹ left_inv := fun ξ => Matrix.mul_nonsing_inv_cancel_right a ξ ha right_inv := fun ξ => Matrix.nonsing_inv_mul_cancel_right a ξ ha }`. Use `set T : Mx D V.rank (r + s) → ℂ := fun y => ∑' ξ : Matrix (Fin V.rank) (Fin (r + s)) D.host.E, Heisenberg₂ ψ V (HMul.hMul (zy y) ((repMat (D.sp.cm.sig : D.host.E →+* D.host.E) b.1 a).map (incA D))) Φ (ξ.map (incA D)) with hT`. Establish `hform : ∀ y₁ y₂, T (colJoin y₁ y₂) = ∑' pq : Matrix (Fin V.rank) (Fin r) D.host.E × Matrix (Fin V.rank) (Fin s) D.host.E, cellTerm ψ V b.1 a Φ pq.1 pq.2 y₁ y₂`. Introduce `y₁ y₂`.
+
+Take `⟨hx, hy⟩` from `GlobalTheory.T.weil_action_block_matrix_components D V.rank r s b.1 a y₁ y₂`. Rewrite using `[hT]`. Simplify using `only`. Rewrite using `[← e.tsum_eq]`. Conclude with `tsum_congr fun pq => GlobalTheory.T.block_weil_action_theta_unfolding D ψ hψ V r s b.1 b.2 a ha Φ y₁ y₂ _ hx hy pq.1 pq.2`.
+
+Establish `hper : ∀ γ ∈ ratMx D V.rank (r + s), ∀ y, T (γ + y) = T y`. Introduce `γ hγ y`. Take `⟨g, rfl⟩` from `mem_ratMx.1 hγ`. Rewrite using `[← colJoin_colL_colR g, ← colJoin_colL_colR y, rat_colJoin, ← colJoin_add, hform, hform, add_comm (rat (colL g)), add_comm (rat (colR g))]`. Conclude with `GlobalTheory.T.lattice_sum_shift_invariant D ψ hψ V r s b.1 a Φ (colL g) (colR g) (colL y) (colR y)`.
+
+Establish `hE` using `GlobalTheory.T.covolume_one_column_join_product D V.rank r s μr 𝓕r μs 𝓕s hμr hμs`. Use `show ∫ y in 𝓕, T y ∂μ = _`. Rewrite using `[covolOne_integral_eq hE hμ T hper]`. Take `⟨i1, i2, i3, i4, i5, -⟩` from `lattice_Mx D V.rank r`. Take `⟨j1, j2, j3, j4, j5, -⟩` from `lattice_Mx D V.rank s`.
+
+Take `⟨k1, k2, k3, k4, k5, -⟩` from `lattice_Mx D V.rank (r + s)`. Use `haveI : BorelSpace (Mx D V.rank r) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx D V.rank s) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx D V.rank (r + s)) := ⟨rfl⟩`. Establish `hc : Continuous fun z : Mx D V.rank r × Mx D V.rank s => colJoin z.1 z.2`.
+
+Use `continuous_matrix fun i k => ?_` and prove the remaining obligations. Simplify using `only [colJoin, Matrix.of_apply]`. Break down `finSumFinEquiv.symm k with j | j` into its components or cases. Conclude with `(continuous_apply_apply i j).comp continuous_fst`. Conclude with `(continuous_apply_apply i j).comp continuous_snd`.
+
+Establish `hc' : Continuous fun y : Mx D V.rank (r + s) => ((colL y, colR y) : Mx D V.rank r × Mx D V.rank s)`. Use `Continuous.prodMk (continuous_matrix fun i j => ?_) (continuous_matrix fun i j => ?_)` and prove the remaining obligations. Conclude with `continuous_apply_apply i (Fin.castAdd s j)`. Conclude with `continuous_apply_apply i (Fin.natAdd r j)`. Set `hj : (Mx D V.rank r × Mx D V.rank s) ≃ₜ Mx D V.rank (r + s)` to `{ (joinEquiv : (Mx D V.rank r × Mx D V.rank s) ≃ Mx D V.rank (r + s)) with continuous_toFun := hc continuous_invFun := hc' }`.
+
+Establish `hmp : MeasurePreserving hj.toMeasurableEquiv (μr.prod μs) ((μr.prod μs).map fun z => colJoin z.1 z.2)` using `⟨hj.toMeasurableEquiv.measurable, rfl⟩`. Establish `h1` using `hmp.setIntegral_image_emb hj.toMeasurableEquiv.measurableEmbedding T (𝓕r ×ˢ 𝓕s)`. Use `erw [h1]`. Establish `h2 : ∀ z : Mx D V.rank r × Mx D V.rank s, T (hj.toMeasurableEquiv z) = ∑' pq : Matrix (Fin V.rank) (Fin r) D.host.E × Matrix (Fin V.rank) (Fin s) D.host.E, cellTerm ψ V b.1 a Φ pq.1 pq.2 z.1 z.2` using `fun z => hform z.1 z.2`. Simplify using `only [h2]`.
+
+Rewrite using `[GlobalTheory.T.eisenstein_coefficient_block_unfolding D ψ hψ V r s μr 𝓕r μs 𝓕s hμr hμs b.1 a ha Φ hΦc B hB]`. Conclude with `GlobalTheory.T.eisenstein_hermitian_integral_unfolding D ψ V r s μr 𝓕r hμr c a hca b Φ`.
+-/
 theorem unfold2 : Unfold2 := by
   intro D ψ hψ θ hθ V n r hrn μ 𝓕 hμ μr h𝓕r c a hca b Φ hΦ
   obtain ⟨𝓕r, hμr⟩ := h𝓕r

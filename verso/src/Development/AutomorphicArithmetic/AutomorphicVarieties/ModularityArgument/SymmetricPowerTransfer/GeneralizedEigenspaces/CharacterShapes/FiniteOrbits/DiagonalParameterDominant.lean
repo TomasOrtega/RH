@@ -20,6 +20,11 @@ section Scalar
 
 variable {k : Type} [Field k]
 
+/- English proof (translation)
+Establish `h : (fun i => ((![z, z] i : kˣ) : k)) = fun _ => (z : k)`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, val_diagT, h]`.
+
+Use extensionality with `i j`. Rewrite using `[Matrix.diagonal_mul, Matrix.mul_diagonal, mul_comm]`.
+-/
 private theorem dg_comm (z : kˣ) (x : GL (Fin 2) k) : dg ![z, z] * x = x * dg ![z, z] := by
   have h : (fun i => ((![z, z] i : kˣ) : k)) = fun _ => (z : k) := by
     funext i
@@ -35,10 +40,18 @@ variable {F : Type} [Field F] [NumberField F] {Δ : F} (A : SD Δ)
 
 private abbrev d1 (t : Dat.Par F) : ParN F 2 := fun v => ![t v, 1]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v i`. Apply the tactic sequence `fin_cases i <;> simp [d1]`.
+-/
 private theorem diagonal_parameter_mul (t t' : Dat.Par F) : d1 (t * t') = d1 t * d1 t' := by
   funext v i
   fin_cases i <;> simp [d1]
 
+/- English proof (translation)
+Introduce `v hv i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `le_rfl`. Simplify using `using h v hv`. Conclude with `absurd hij (by decide)`.
+
+Conclude with `le_rfl`.
+-/
 private theorem diagonal_parameter_dominant {t : Dat.Par F} (h : ∀ v ∈ A.Sg, valuation (Kv v) (t v : Kv v) ≤ 1) : A.DomS (d1 t) := by
   intro v hv i j hij
   fin_cases i <;> fin_cases j
@@ -47,12 +60,18 @@ private theorem diagonal_parameter_dominant {t : Dat.Par F} (h : ∀ v ∈ A.Sg,
   · exact absurd hij (by decide)
   · exact le_rfl
 
+/- English proof (translation)
+Introduce `v hv`. Use `(h v hv).le.trans (pow_le_one₀ zero_le' ?_)` and prove the remaining obligations. Rewrite using `[GlAx.unif_spec]`. Conclude with `uniformizer_lt_one.le`.
+-/
 private theorem cone_le {t : Dat.Par F} (h : A.Cone t) : ∀ v ∈ A.Sg, valuation (Kv v) (t v : Kv v) ≤ 1 := by
   intro v hv
   refine (h v hv).le.trans (pow_le_one₀ zero_le' ?_)
   rw [GlAx.unif_spec]
   exact uniformizer_lt_one.le
 
+/- English proof (translation)
+Introduce `v hv`. Establish `h : valuation (Kv v) ((x * y) v : Kv v) = valuation (Kv v) (x v : Kv v) * valuation (Kv v) (y v : Kv v)`. Rewrite using `[Pi.mul_apply, Units.val_mul, map_mul]`. Rewrite using `[h]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hx v hv)) (hy v hv)`.
+-/
 private theorem cone_mul {x y : Dat.Par F} (hx : ∀ v ∈ A.Sg, valuation (Kv v) (x v : Kv v) ≤ 1) (hy : A.Cone y) :
     A.Cone (x * y) := by
   intro v hv
@@ -65,26 +84,44 @@ private def cc (t : Dat.Par F) : ℂ := ∏ v ∈ A.Sg, (((A.χ v (t v))⁻¹ : 
 
 private def pp (a : Chs F) (t : Dat.Par F) : ℂ := ∏ v ∈ A.Sg, ((a v (t v) : ℂˣ) : ℂ)
 
+/- English proof (translation)
+Simplify using `only [cc, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.mul_apply, map_mul, mul_inv, Units.val_mul]`.
+-/
 private theorem cc_mul (t t' : Dat.Par F) : cc A (t * t') = cc A t * cc A t' := by
   simp only [cc, ← Finset.prod_mul_distrib]
   refine Finset.prod_congr rfl fun v _ => ?_
   rw [Pi.mul_apply, map_mul, mul_inv, Units.val_mul]
 
+/- English proof (translation)
+Simplify using `only [pp, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.mul_apply, map_mul, Units.val_mul]`.
+-/
 private theorem pp_mul (a : Chs F) (t t' : Dat.Par F) : pp A a (t * t') = pp A a t * pp A a t' := by
   simp only [pp, ← Finset.prod_mul_distrib]
   refine Finset.prod_congr rfl fun v _ => ?_
   rw [Pi.mul_apply, map_mul, Units.val_mul]
 
+/- English proof (translation)
+The claim follows from `Finset.prod_ne_zero_iff.2 fun _ _ => Units.ne_zero _`.
+-/
 private theorem cc_ne (t : Dat.Par F) : cc A t ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun _ _ => Units.ne_zero _
 
+/- English proof (translation)
+The claim follows from `Finset.prod_ne_zero_iff.2 fun _ _ => Units.ne_zero _`.
+-/
 private theorem pp_ne (a : Chs F) (t : Dat.Par F) : pp A a t ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun _ _ => Units.ne_zero _
 
+/- English proof (translation)
+Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.pow_apply, MonoidHom.pow_apply, Pi.mul_apply, map_mul, pow_two]`.
+-/
 private theorem pp_sq (a : Chs F) (t : Dat.Par F) : pp A (a ^ 2) t = pp A a (t * t) := by
   refine Finset.prod_congr rfl fun v _ => ?_
   rw [Pi.pow_apply, MonoidHom.pow_apply, Pi.mul_apply, map_mul, pow_two]
 
+/- English proof (translation)
+Simplify using `only [SD.exS, pp, cc, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Establish `hχ : A.χ v = absPow (Kv v) 1` using `((datOk F Δ A hA).2.2.1 v hv).2.2.2.2`. Establish `h` using `(expoEq (Kv v) (a v)).2.1 (t v)`. Rewrite using `[SD.dS, h, hχ, absPow_neg, MonoidHom.inv_apply]`.
+-/
 private theorem exS_eq (hA : A.Ok) (a : Chs F) (t : Dat.Par F) : A.exS a t = pp A a t * cc A t := by
   simp only [SD.exS, pp, cc, ← Finset.prod_mul_distrib]
   refine Finset.prod_congr rfl fun v hv => ?_
@@ -92,6 +129,11 @@ private theorem exS_eq (hA : A.Ok) (a : Chs F) (t : Dat.Par F) : A.exS a t = pp 
   have h := (expoEq (Kv v) (a v)).2.1 (t v)
   rw [SD.dS, h, hχ, absPow_neg, MonoidHom.inv_apply]
 
+/- English proof (translation)
+Establish `hU` using `(datOk F Δ A hA).2.2.2.2`. Rewrite `hu`, the goal using `[hU]`. Use `⟨fun v h => ?_, fun v h => ?_⟩` and prove the remaining obligations. Establish `e : (s⁻¹ * u * s).1 v = (s.1 v)⁻¹ * u.1 v * s.1 v` using `rfl`. Establish `e' : eD (A.hs v h) (s.1 v) = dg ![z v, z v]` using `hs.1 v h`.
+
+Rewrite using `[e, map_mul, map_mul, map_inv, e', mul_assoc, ← dg_comm, inv_mul_cancel_left]`. Conclude with `hu.1 v h`. Establish `e : (s⁻¹ * u * s).1 v = (s.1 v)⁻¹ * u.1 v * s.1 v` using `rfl`. Rewrite using `[e, hs.2 v h]`. Simplify using `using hu.2 v h`.
+-/
 private theorem conj_mem (hA : A.Ok) {s u : DA Δ} {z : Dat.Par F} (hs : A.IsElD s fun v => ![z v, z v])
     (hu : u ∈ A.dat.U2) : s⁻¹ * u * s ∈ A.dat.U2 := by
   have hU := (datOk F Δ A hA).2.2.2.2
@@ -107,10 +149,16 @@ private theorem conj_mem (hA : A.Ok) {s u : DA Δ} {z : Dat.Par F} (hs : A.IsElD
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+The claim follows from `map_smul (dc (rightReg ℂ G V) U U a) c φ`.
+-/
 private theorem dc_smul {G : Type} [Group G] (U : Subgroup G) (a : G) (c : ℂ) (φ : G → V) :
     dcF U a (c • φ) = c • dcF U a φ :=
   map_smul (dc (rightReg ℂ G V) U U a) c φ
 
+/- English proof (translation)
+Establish `hm` using `(elEx F Δ A hA).2.2.2.1 g g' d d' hg hg'`. Conclude with `(uFMul _ V _ g g' (dMul F Δ A hA g d hg).1 (dMul F Δ A hA g' d' hg').1 (dMul F Δ A hA _ _ hm).1 ((dMul F Δ A hA g d hg).2 g' d' hg' hd hd') φ hφ).symm`.
+-/
 private theorem mulOp (hA : A.Ok) {g g' : DA Δ} {d d' : ParN F 2} (hg : A.IsElD g d) (hg' : A.IsElD g' d')
     (hd : A.DomS d) (hd' : A.DomS d') (φ : DA Δ → V) (hφ : ∀ u ∈ A.dat.U2, ∀ x, φ (x * u) = φ x) :
     dcF A.dat.U2 (g * g') φ = dcF A.dat.U2 g (dcF A.dat.U2 g' φ) := by
@@ -118,6 +166,13 @@ private theorem mulOp (hA : A.Ok) {g g' : DA Δ} {d d' : ParN F 2} (hg : A.IsElD
   exact (uFMul _ V _ g g' (dMul F Δ A hA g d hg).1 (dMul F Δ A hA g' d' hg').1 (dMul F Δ A hA _ _ hm).1
     ((dMul F Δ A hA g d hg).2 g' d' hg' hd hd') φ hφ).symm
 
+/- English proof (translation)
+Establish `h1 : ∀ y ∈ ({s} : Finset (DA Δ)), y ∈ DC A.dat.U2 s`. Introduce `y hy`. Rewrite `hy` using `[Finset.mem_singleton]`. Substitute `hy` using the available equality. Conclude with `⟨1, one_mem _, 1, one_mem _, by simp⟩`.
+
+Establish `h2 : ∀ y ∈ DC A.dat.U2 s, ∃! r, r ∈ ({s} : Finset (DA Δ)) ∧ r⁻¹ * y ∈ A.dat.U2`. Introduce and unpack `y ⟨u, hu, u', hu', rfl⟩`. Use `⟨s, ⟨Finset.mem_singleton_self _, ?_⟩, fun r hr => Finset.mem_singleton.1 hr.1⟩` and prove the remaining obligations. Establish `e : s⁻¹ * (u * s * u') = (s⁻¹ * u * s) * u'` using `by group`. Rewrite using `[e]`.
+
+Conclude with `mul_mem (conj_mem A hA hs hu) hu'`. Establish `h` using `(dcBasic _ V A.dat.U2 s (dMul F Δ A hA s _ hs).1 φ hφ).2.2.2.2 {s} h1 h2 x`. Simplify using `using h`.
+-/
 private theorem dcScal (hA : A.Ok) {s : DA Δ} {z : Dat.Par F} (hs : A.IsElD s fun v => ![z v, z v])
     (φ : DA Δ → V) (hφ : ∀ u ∈ A.dat.U2, ∀ x, φ (x * u) = φ x) (x : DA Δ) :
     dcF A.dat.U2 s φ x = φ (x * s) := by
@@ -137,6 +192,35 @@ private theorem dcScal (hA : A.Ok) {s : DA Δ} {z : Dat.Par F} (hs : A.IsElD s f
 
 end UpperTheory.V.Z.Sym.So
 
+/- English proof (translation)
+Introduce `F _ _ Δ A hA V _ _ ch B hB`. Take `⟨hop, hinv, hsc⟩` from `kOps F Δ A hA V ch B hB`. Establish `hexD` using `(elEx F Δ A hA).2.1`. Establish `hmulD` using `(elEx F Δ A hA).2.2.2.1`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `t t' ht ht'`. Use `LinearMap.ext fun φ => Subtype.ext ?_` and prove the remaining obligations. Take `⟨g, hg, -⟩` from `hexD (d1 t)`. Take `⟨g', hg', -⟩` from `hexD (d1 t')`. Establish `hgg : A.IsElD (g * g') (d1 (t * t'))`.
+
+Rewrite using `[diagonal_parameter_mul]`. Conclude with `hmulD _ _ _ _ hg hg'`. Establish `e1` using `hop (t * t') (g * g') (cone_mul A (cone_le A ht) ht') hgg φ`. Establish `e2` using `hop t g ht hg ((Base.Tw.one B).R (A.dat.FK t') φ)`. Establish `e3` using `hop t' g' ht' hg' φ`.
+
+Rewrite using `[Module.End.mul_apply, e1, e2, e3, dc_smul, smul_smul, mulOp A hA hg hg' (diagonal_parameter_dominant A (cone_le A ht)) (diagonal_parameter_dominant A (cone_le A ht')) φ.1 (hinv φ.1 φ.2)]`. Use `cc_mul A t t'` as an intermediate fact. Simplify using `only [cc] at this`. Rewrite using `[this]`. Introduce `a φ hE t g hd hg`.
+
+Establish `hφ` using `hinv φ.1 φ.2`. Establish `hT : ∀ τ h, A.Cone τ → A.IsElD h (d1 τ) → dcF A.dat.U2 h φ.1 = pp A a τ • φ.1`. Introduce `τ h hτ hh`. Establish `h1` using `congrArg Subtype.val (hE τ hτ)`. Rewrite `h1` using `[hop τ h hτ hh φ, Submodule.coe_smul, exS_eq A hA, mul_comm, ← smul_smul]`.
+
+Conclude with `smul_right_injective _ (cc_ne A τ) h1`. Establish `ht2 : ∀ v ∈ A.Sg, valuation (Kv v) ((t * t) v : Kv v) ≤ 1`. Introduce `v hv`. Establish `h0 : valuation (Kv v) (t v : Kv v) ≤ valuation (Kv v) (((t v)⁻¹ : (Kv v)ˣ) : Kv v)`. Simplify `hd v hv 0 1 (by decide)` using `[SD.dS]`.
+
+Establish `h1` using `mul_le_mul' h0 (le_refl (valuation (Kv v) (t v : Kv v)))`. Establish `e : valuation (Kv v) (((t v)⁻¹ : (Kv v)ˣ) : Kv v) * valuation (Kv v) (t v : Kv v) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Rewrite `h1` using `[e, ← map_mul]`. Rewrite using `[Pi.mul_apply, Units.val_mul]`.
+
+Conclude with `h1`. Set `t0 : Dat.Par F` to `fun v => unif (Kv v) ^ 3`. Establish `h0 : A.Cone t0`. Introduce `v hv`. Use `show valuation (Kv v) ((unif (Kv v) ^ 3 : (Kv v)ˣ) : Kv v) < _`.
+
+Rewrite using `[Units.val_pow_eq_pow_val, map_pow, GlAx.unif_spec]`. Conclude with `pow_lt_pow_right_of_lt_one₀ uniformizer_pos uniformizer_lt_one (by norm_num)`. Take `⟨g0, hg0, -⟩` from `hexD (d1 t0)`. Take `⟨g1, hg1, -⟩` from `hexD (d1 (t * t))`. Establish `hgg : A.IsElD (g1 * g0) (d1 (t * t * t0))`.
+
+Rewrite using `[diagonal_parameter_mul]`. Conclude with `hmulD _ _ _ _ hg1 hg0`. Establish `hg1φ : dcF A.dat.U2 g1 φ.1 = pp A a (t * t) • φ.1`. Establish `e` using `hT _ _ (cone_mul A ht2 h0) hgg`. Rewrite `e` using `[mulOp A hA hg1 hg0 (diagonal_parameter_dominant A ht2) (diagonal_parameter_dominant A (cone_le A h0)) φ.1 hφ, hT _ _ h0 hg0, dc_smul, pp_mul, mul_comm, ← smul_smul]`.
+
+Conclude with `smul_right_injective _ (pp_ne A a t0) e`. Take `⟨s, hs, -⟩` from `hexD fun v => ![t⁻¹ v, t⁻¹ v]`. Establish `hm : A.IsElD (g1 * s) (SD.dS t)`. Establish `e : SD.dS t = d1 (t * t) * fun v => ![t⁻¹ v, t⁻¹ v]`. Use function extensionality and compare the values at `v i`.
+
+Apply the tactic sequence `fin_cases i <;> simp [SD.dS]`. Rewrite using `[e]`. Conclude with `hmulD _ _ _ _ hg1 hs`. Establish `hgs : g = g1 * s` using `(hexD (SD.dS t)).unique hg hm`. Establish `hdom : A.DomS fun v => ![t⁻¹ v, t⁻¹ v]`.
+
+Introduce `v _ i j _`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> exact le_rfl`. Establish `hsφ : dcF A.dat.U2 s φ.1 = cc A t • φ.1`. Use function extensionality and compare the values at `x`. Rewrite using `[dcScal A hA hs φ.1 hφ x, hsc φ.1 φ.2 _ s hs x, Pi.smul_apply]`.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.inv_apply, map_inv]`. Rewrite using `[hgs, mulOp A hA hg1 hs (diagonal_parameter_dominant A ht2) hdom φ.1 hφ, hsφ, dc_smul, hg1φ, smul_smul, exS_eq A hA, pp_sq, mul_comm]`.
+-/
 theorem UpperTheory.V.Z.Sym.So.kSpec :
     UpperTheory.V.Z.Sym.So.KSpec := by
   intro F _ _ Δ A hA V _ _ ch B hB

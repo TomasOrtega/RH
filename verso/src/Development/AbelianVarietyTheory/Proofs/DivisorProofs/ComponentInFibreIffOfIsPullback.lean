@@ -4,6 +4,13 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Apply `Set.Subset.antisymm` to reduce the goal to its premises. Conclude with `(isPreconnected_connectedComponent.image q hq.continuous.continuousOn).subset_connectedComponentIn ⟨a, mem_connectedComponent, rfl⟩ (Set.image_subset_range _ _)`. Introduce `x hx`. Establish `hsub : connectedComponentIn (Set.range q) (q a) ⊆ Set.range q` using `connectedComponentIn_subset _ _`. Establish `himg : q '' (q ⁻¹' connectedComponentIn (Set.range q) (q a)) = connectedComponentIn (Set.range q) (q a)` using `Set.image_preimage_eq_of_subset hsub`.
+
+Establish `hpc : IsPreconnected (q ⁻¹' connectedComponentIn (Set.range q) (q a))`. Rewrite using `[← hq.isInducing.isPreconnected_image, himg]`. Conclude with `isPreconnected_connectedComponentIn`. Establish `hS : q ⁻¹' connectedComponentIn (Set.range q) (q a) ⊆ connectedComponent a` using `hpc.subset_connectedComponent (mem_connectedComponentIn ⟨a, rfl⟩)`. Rewrite `hx` using `[← himg]`.
+
+Conclude with `Set.image_mono hS hx`.
+-/
 theorem image_connectedComponent_of_isEmbedding {A B : Type} [TopologicalSpace A] [TopologicalSpace B]
     {q : A → B} (hq : Topology.IsEmbedding q) (a : A) :
     q '' connectedComponent a = connectedComponentIn (Set.range q) (q a) := by
@@ -22,6 +29,11 @@ theorem image_connectedComponent_of_isEmbedding {A B : Type} [TopologicalSpace A
     rw [← himg] at hx
     exact Set.image_mono hS hx
 
+/- English proof (translation)
+Introduce `X S f e s Y g q y₀ hP h0 y`. Use `haveI : IsPreimmersion q := MorphismProperty.of_isPullback (P := @IsPreimmersion) hP.flip inferInstance`. Establish `hq : Topology.IsEmbedding q` using `q.isEmbedding`. Establish `hr : Set.range q = f ⁻¹' {s}`. Establish `h1 : Set.range q = Set.range (pullback.fst f (S.fromSpecResidueField s))`.
+
+Rewrite using `[← hP.isoPullback_hom_fst, Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, Set.range_eq_univ.mpr, Set.image_univ]`. Conclude with `(TopCat.homeoOfIso (Scheme.forgetToTop.mapIso hP.isoPullback)).surjective`. Rewrite using `[h1, Scheme.Pullback.range_fst, Scheme.range_fromSpecResidueField]`. Rewrite using `[← h0, ← hr, ← image_connectedComponent_of_isEmbedding hq]`. Conclude with `hq.injective.mem_set_image`.
+-/
 theorem component_in_fibre_iff_of_isPullback :
     ∀ (X S : Scheme.{0}) (f : X ⟶ S) (e : S ⟶ X) (s : S) (Y : Scheme.{0}) (g : Y ⟶ Spec (S.residueField s))
       (q : Y ⟶ X) (y₀ : Y), IsPullback q g f (S.fromSpecResidueField s) → q y₀ = e s →

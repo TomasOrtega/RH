@@ -17,13 +17,24 @@ def bil {P : V → V → ℝ} (h : IsPairing P) : LinearMap.BilinForm ℝ V :=
   LinearMap.mk₂ ℝ P h.addL (fun c x y => by simpa [smul_eq_mul] using h.smulL c x y) h.addR
     (fun c x y => by simpa [smul_eq_mul] using h.smulR c x y)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bil_apply {P : V → V → ℝ} (h : IsPairing P) (x y : V) : bil h x y = P x y := rfl
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `GlobalTheory.SchOp.sch_schwartz (bil h) w.1 w.2 f`. Conclude with `⟨g, hg⟩`.
+-/
 theorem schrF_schwartz [FiniteDimensional ℝ V] {P : V → V → ℝ} (h : IsPairing P) (w : V × V) (f : 𝓢(V, ℂ)) :
     ∃ g : 𝓢(V, ℂ), ⇑g = schrF P w ⇑f := by
   obtain ⟨g, hg⟩ := GlobalTheory.SchOp.sch_schwartz (bil h) w.1 w.2 f
   exact ⟨g, hg⟩
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (bil h).flip`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `b hb`. Conclude with `h.nondegR b fun x => by simpa [bil_apply] using LinearMap.congr_fun hb x`. Establish `hsurj` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (Subspace.dual_finrank_eq (K := ℝ) (V := V)).symm).1 hinj`.
+
+Take `⟨b, hb⟩` from `hsurj (L : V →ₗ[ℝ] ℝ)`. Conclude with `⟨b, fun y => by simpa [bil_apply] using LinearMap.congr_fun hb y⟩`.
+-/
 theorem exists_right [FiniteDimensional ℝ V] {P : V → V → ℝ} (h : IsPairing P) (L : V →L[ℝ] ℝ) :
     ∃ b, ∀ y, P y b = L y := by
   have hinj : Function.Injective (bil h).flip := by
@@ -38,8 +49,16 @@ theorem exists_right [FiniteDimensional ℝ V] {P : V → V → ℝ} (h : IsPair
 def evAt (x : V) : 𝓢(V, ℂ) →L[ℂ] ℂ :=
   (BoundedContinuousFunction.evalCLM ℂ x).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ V ℂ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evAt_apply (x : V) (f : 𝓢(V, ℂ)) : evAt x f = f x := rfl
 
+/- English proof (translation)
+Set `b : ContDiffBump (0 : V)` to `⟨1, 2, one_pos, one_lt_two⟩`. Establish `h1 : HasCompactSupport (fun x => ((b x : ℝ) : ℂ))` using `b.hasCompactSupport.comp_left (g := fun r : ℝ => (r : ℂ)) (by simp)`. Use `⟨h1.toSchwartzMap (Complex.ofRealCLM.contDiff.comp b.contDiff), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((b 0 : ℝ) : ℂ) = 1`. Rewrite using `[b.one_of_mem_closedBall (Metric.mem_closedBall_self zero_le_one)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_one [FiniteDimensional ℝ V] : ∃ Φ : 𝓢(V, ℂ), Φ 0 = 1 := by
   let b : ContDiffBump (0 : V) := ⟨1, 2, one_pos, one_lt_two⟩
   have h1 : HasCompactSupport (fun x => ((b x : ℝ) : ℂ)) :=

@@ -19,6 +19,33 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL] [CommRing O] [Algebra O LL]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Establish `hπ` using `Formalism.MainNotions.UnusedSlot80.UnivC.uniformizer_mem_delta_invariants W`. Establish `hAC` using `(hArc hCA h5 A hA c hc e hje hel).2 T hT`. Use `set c' := c - ((A.len c : ℕ) : ZMod n) with hc'`. Use `set a := c' + (e : ZMod n) with ha`. Use `set Λ := abelian₂ W A a e with hΛdef`.
+
+Take `⟨hP1, hP2, -, hF⟩` from `hAC`. Take `⟨-, -, hlift, -, hNL, hzero, -⟩` from `hF d b sol hhor`. Establish `hΛmem : Λ ∈ W.AΔ` using `lam_mem W A a e`. Take `⟨u, huP, huR⟩` from `hlift f hf`. Take `⟨p0, hp0, hup0⟩` from `huP`.
+
+Rewrite `hup0` using `[one_smul]`. Establish `hlet : InLet W T a u` using `by show (letE a : LetA O n) • u = u`. Use `lam_cancel W hR A a e T ?_` and prove the remaining obligations. Rewrite using `[smul_comm, hup0]`. Conclude with `Relay2.Pp_letter W T c' e p0 hp0`.
+
+Establish `hΔ : IsΔ W T u`. Introduce `δ hδ`. Use `lam_cancel W hR A a e T ?_` and prove the remaining obligations. Establish `h1 : W.γD T δ (Λ • u) = Λ • W.γD T δ u`. Rewrite using `[Formalism.MainNotions.LiftingTheory.frame_γD_smul, hΛmem δ hδ]`.
+
+Rewrite using `[← h1, hup0, Relay2.Pp_Δ W T c' e p0 hp0 δ hδ]`. Take `⟨w, hw, w', hw', hww, hγΛ⟩` from `lam_γ W hS A a e`. Take `⟨u0, hu0, hγπ⟩` from `hP`. Establish `hπΛ : ∃ t, W.γA W.gam (W.π₀ * Λ ^ 2) = t * (W.π₀ * Λ ^ 2) ∧ t ∈ W.AΔ` using `⟨u0 * w ^ 2, by rw [map_mul, map_pow, hγπ, hγΛ]; ring, W.AΔ.mul_mem hu0 (W.AΔ.pow_mem hw _)⟩`. Establish `hJJ : ∀ x', Formalism.MainNotions.LiftingTheory.InNΔi W T c' x' → InFP W T c' e (W.π₀ * Λ ^ 2) (((W.φD T) ^ e) (W.π₀ ^ A.M PD.p • x'))` using `fun x' hx' => jj_lam W hR h5 A hA a e T c' hx'`.
+
+Establish `hsol : ∀ k, Formalism.MainNotions.LiftingTheory.IsSol W T c' b 0 (sol k)` using `fun k => (hhor.2 k).1`. Establish `hγu` using `repVV_γ W hsol hJJ hw hw' hww hγΛ hπΛ huR`. Take `⟨g, hgNL, hg⟩` from `hinv`. Take `⟨y, hyN, hyR⟩` from `hNL g hgNL`. Establish `hπy` using `repVV_smul W hyR hπ`.
+
+Establish `hz` using `repVV_sub W hinj (repVV_sub W hinj hγu huR) hπy`. Establish `hz0 : (((fun k => W.γE W.gam (lE W (A.σ PD.p) * f k)) - fun k => lE W (A.σ PD.p) * f k) - fun k => algebraMap (LetA O n) W.EE W.π₀ * (lE W (A.σ PD.p) * g k)) = 0`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.sub_apply, Pi.zero_apply, map_mul]`. Establish `hl : W.γE W.gam (lE W (A.σ PD.p)) = lE W (A.σ PD.p)`.
+
+Unfold `lE`. Rewrite using `[map_pow, map_natCast]`. Rewrite using `[hl, ← mul_sub, hg k]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hz` using `[hz0]`.
+
+Establish `hγΛu : InFP W T c' e 1 (Λ • W.γ T u)`. Establish `h1 : Λ • W.γ T u = w' • W.γ T (Λ • u)` using `by show _ = w' • W.γD T W.gam (Λ • u)`. Rewrite using `[Formalism.MainNotions.LiftingTheory.frame_γD_smul, hγΛ, smul_smul, ← mul_assoc, hww, one_mul]`. Both sides reduce to the same expression. Use `⟨w' • W.γ T p0, Relay2.Pp_smul W T c' _ hw' _ (Relay2.Pp_γ W T c' _ p0 hp0), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[one_smul, h1, hup0]`. Establish `hΛu : InFP W T c' e 1 (Λ • u)` using `⟨p0, hp0, by rw [one_smul, hup0]⟩`. Establish `hΛy : InFP W T c' e 1 (Λ • (W.π₀ • y))`. Rewrite using `[smul_comm]`. Conclude with `Relay2.inMultiple_smul W T c' _ _ hπ (hP2 y hyN)`.
+
+Establish `hΛz : InFP W T c' e 1 (Λ • (W.γ T u - u - W.π₀ • y))`. Rewrite using `[smul_sub, smul_sub]`. Conclude with `Relay2.inMultiple_sub W T c' _ _ (Relay2.inMultiple_sub W T c' _ _ hγΛu hΛu) hΛy`. Take `⟨p1, hp1, hzp⟩` from `hzero _ hΛz hz`. Take `⟨y2, hy2, hy2c, hy2e⟩` from `hP1 p1 hp1`.
+
+Take `⟨y1, hy1, hy1c, hy1e⟩` from `hyN`. Rewrite `hy2e`, `hy1e` using `[one_smul]`. Use `⟨u, ⟨hlet, hΔ, y1 + y2, (W.NΔ T).add_mem hy1 hy2, ?_, ?_⟩, ⟨p0, hp0, by rw [one_smul, hup0]⟩, huR⟩` and prove the remaining obligations. Rewrite using `[smul_add, hy1c, hy2c]`. Establish `: W.γ T u - u = (W.γ T u - u - W.π₀ • y) + W.π₀ • y` using `by abel`.
+
+Rewrite using `[this, hzp, mul_smul, hy2e, hy1e, smul_add, add_comm]`.
+-/
 theorem gamma_lift_along_arc [IsDomain O] (hinj : Function.Injective (algebraMap O LL))
     (hArc : ArcCore W)
     (hR : Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W 1 (PD.p - 1) W.π₀

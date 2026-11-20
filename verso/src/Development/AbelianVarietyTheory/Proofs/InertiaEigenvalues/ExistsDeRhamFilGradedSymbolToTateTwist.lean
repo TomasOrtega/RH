@@ -12,11 +12,17 @@ namespace GlobalTheory.DeRhamSymbol
 
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l}
 
+/- English proof (translation)
+Establish `h` using `P.PD_Fil K (botExt l) a`. Rewrite using `[← SetLike.mem_coe, h, SetLike.mem_coe]`.
+-/
 theorem mem_iff (K : FinExt l) (a : ℤ) (x : P.R.BdR) :
     x ∈ (P.PD K).Fil a ↔ x ∈ (P.PD (botExt l)).Fil a := by
   have h := P.PD_Fil K (botExt l) a
   rw [← SetLike.mem_coe, h, SetLike.mem_coe]
 
+/- English proof (translation)
+Take `⟨K, hK⟩ : ∃ K : FinExt l, x ∈ K.1` from `⟨⟨IntermediateField.adjoin ℚ_[l] {x}, IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral x)⟩, IntermediateField.mem_adjoin_simple_self _ x⟩`. Establish `h` using `((P.PD K).Fil 0).smul_mem ⟨x, hK⟩ (P.PD K).one_mem`. Rewrite `h` using `[Algebra.smul_def, mul_one]`. Conclude with `(mem_iff K 0 _).1 h`.
+-/
 theorem om_mem (x : Om l) : algebraMap (Om l) P.R.BdR x ∈ (P.PD (botExt l)).Fil 0 := by
   obtain ⟨K, hK⟩ : ∃ K : FinExt l, x ∈ K.1 := ⟨⟨IntermediateField.adjoin ℚ_[l] {x},
     IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral x)⟩,
@@ -25,6 +31,9 @@ theorem om_mem (x : Om l) : algebraMap (Om l) P.R.BdR x ∈ (P.PD (botExt l)).Fi
   rw [Algebra.smul_def, mul_one] at h
   exact (mem_iff K 0 _).1 h
 
+/- English proof (translation)
+Establish `hu` using `(P.PD (botExt l)).t_unit`. Rewrite `hu` using `[P.period_datum_t_eq]`. Conclude with `hu.map P.ιB`.
+-/
 theorem t_isUnit (P : LocPrime l) : IsUnit (P.ιB P.tB) := by
   have hu := (P.PD (botExt l)).t_unit
   rw [P.period_datum_t_eq] at hu
@@ -32,13 +41,22 @@ theorem t_isUnit (P : LocPrime l) : IsUnit (P.ιB P.tB) := by
 
 def tU (P : LocPrime l) : P.R.BdRˣ := (t_isUnit P).unit
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tU_val : ((tU P : P.R.BdRˣ) : P.R.BdR) = P.ιB P.tB := rfl
 
+/- English proof (translation)
+Use `(P.PD (botExt l)).Fil_G ⟨g, mem_GK_bot g⟩ a x hx` as an intermediate fact. Rewrite `this` using `[P.PD_actdR]`. Then use the resulting hypothesis.
+-/
 theorem act_mem {a : ℤ} (g : GQ l) {x : P.R.BdR} (hx : x ∈ (P.PD (botExt l)).Fil a) :
     P.actQdR g x ∈ (P.PD (botExt l)).Fil a := by
   have := (P.PD (botExt l)).Fil_G ⟨g, mem_GK_bot g⟩ a x hx
   rwa [P.PD_actdR] at this
 
+/- English proof (translation)
+Establish `h` using `(P.PD (botExt l)).t_act ⟨g, mem_GK_bot g⟩`. Rewrite `h` using `[P.PD_actB, P.period_datum_t_eq, P.PD_χ]`. Establish `h3` using `(P.PD (botExt l)).ι_comm ⟨g, mem_GK_bot g⟩ P.tB`. Rewrite `h3` using `[P.PD_ι, P.PD_ι, P.PD_actB, P.PD_actdR]`. Rewrite using `[← h3, h, map_smul, Algebra.smul_def]`.
+-/
 theorem actQdR_periodT_eq_cyclotomic_bottom (g : GQ l) :
     P.actQdR g (P.ιB P.tB) = algebraMap ℚ_[l] P.R.BdR (P.χQ g) * P.ιB P.tB := by
   have h := (P.PD (botExt l)).t_act ⟨g, mem_GK_bot g⟩
@@ -47,6 +65,9 @@ theorem actQdR_periodT_eq_cyclotomic_bottom (g : GQ l) :
   rw [P.PD_ι, P.PD_ι, P.PD_actB, P.PD_actdR] at h3
   rw [← h3, h, map_smul, Algebra.smul_def]
 
+/- English proof (translation)
+Establish `h : Units.map ((P.actQdR g : P.R.BdR ≃ₐ[ℚ_[l]] P.R.BdR) : P.R.BdR →* P.R.BdR) (tU P) = Units.map (algebraMap ℚ_[l] P.R.BdR : ℚ_[l] →* P.R.BdR) (P.χQ g) * tU P` using `Units.ext (actQdR_periodT_eq_cyclotomic_bottom g)`. Establish `h2` using `congrArg (fun u : P.R.BdRˣ => ((u ^ n : P.R.BdRˣ) : P.R.BdR)) h`. Simplify using `only [mul_zpow, ← map_zpow, Units.val_mul] at h2`. Rewrite `h2` using `[map_zpow P.χQ]`. Conclude with `h2`.
+-/
 theorem act_zpow (g : GQ l) (n : ℤ) :
     P.actQdR g ((tU P ^ n : P.R.BdRˣ) : P.R.BdR) =
       algebraMap ℚ_[l] P.R.BdR ((P.χQ g ^ n : ℚ_[l]ˣ) : ℚ_[l]) * ((tU P ^ n : P.R.BdRˣ) : P.R.BdR) := by
@@ -61,6 +82,13 @@ theorem act_zpow (g : GQ l) (n : ℤ) :
 variable {AI : LocAinf l P} (J : ThetaL P AI)
 include J
 
+/- English proof (translation)
+Establish `h1 : ((tU P : P.R.BdRˣ) : P.R.BdR) ∈ (P.PD (botExt l)).Fil 1`. Use `(P.PD (botExt l)).mem_filtration_one` as an intermediate fact. Rewrite `this` using `[P.PD_ι, P.period_datum_t_eq]`. Then use the resulting hypothesis. Establish `h2 : (((tU P)⁻¹ : P.R.BdRˣ) : P.R.BdR) ∈ (P.PD (botExt l)).Fil (-1)`. Take `⟨y, hy, e⟩` from `(J.fil_succ_iff_mul_t (-1) 1).1 (by simpa using (P.PD (botExt l)).one_mem)`.
+
+Rewrite `e` using `[← tU_val]`. Rewrite using `[Units.inv_eq_of_mul_eq_one_right e.symm]` and apply the resulting hypothesis. Proceed by induction on `n using Int.induction_on with`. Consider the case `zero => simpa using (P.PD (botExt l)).one_mem`. Consider the case `succ n ih`.
+
+Rewrite using `[zpow_add_one, Units.val_mul]`. Conclude with `(P.PD (botExt l)).Fil_mul _ _ _ _ ih h1`. Consider the case `pred n ih`. Rewrite using `[zpow_sub_one, Units.val_mul, sub_eq_add_neg]`. Conclude with `(P.PD (botExt l)).Fil_mul _ _ _ _ ih h2`.
+-/
 theorem zpow_mem (n : ℤ) : ((tU P ^ n : P.R.BdRˣ) : P.R.BdR) ∈ (P.PD (botExt l)).Fil n := by
   have h1 : ((tU P : P.R.BdRˣ) : P.R.BdR) ∈ (P.PD (botExt l)).Fil 1 := by
     have := (P.PD (botExt l)).mem_filtration_one
@@ -78,6 +106,11 @@ theorem zpow_mem (n : ℤ) : ((tU P ^ n : P.R.BdRˣ) : P.R.BdR) ∈ (P.PD (botEx
     rw [zpow_sub_one, Units.val_mul, sub_eq_add_neg]
     exact (P.PD (botExt l)).Fil_mul _ _ _ _ ih h2
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `(P.PD (botExt l)).Fil_mul _ _ _ _ (zpow_mem J a) h` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← Units.val_mul, ← zpow_add, add_neg_cancel, zpow_zero, Units.val_one, one_mul]`. Then use the resulting hypothesis. Introduce `h`.
+
+Use `(P.PD (botExt l)).Fil_mul _ _ _ _ (zpow_mem J (-a)) h` as an intermediate fact. Rewrite `this` using `[neg_add_cancel_left]`. Then use the resulting hypothesis.
+-/
 theorem shift_iff (a b : ℤ) (x : P.R.BdR) :
     ((tU P ^ (-a) : P.R.BdRˣ) : P.R.BdR) * x ∈ (P.PD (botExt l)).Fil b ↔
       x ∈ (P.PD (botExt l)).Fil (a + b) := by
@@ -92,6 +125,13 @@ theorem shift_iff (a b : ℤ) (x : P.R.BdR) :
 
 omit J in
 
+/- English proof (translation)
+Introduce `l _ P AI J K`. Use `⟨fun a x => J.θ (((tU P ^ (-a) : P.R.BdRˣ) : P.R.BdR) * x), fun a => ?_⟩` and prove the remaining obligations. Establish `key : ∀ x ∈ (P.PD K).Fil a, ((tU P ^ (-a) : P.R.BdRˣ) : P.R.BdR) * x ∈ (P.PD (botExt l)).Fil 0` using `fun x hx => (shift_iff J a 0 x).2 (by rw [add_zero]; exact (mem_iff K a x).1 hx)`. Use `⟨fun x hx y hy => ?_, fun c x hx => ?_, fun x hx => ?_, fun g x hx => ?_⟩` and prove the remaining obligations. Use `beta_reduce`.
+
+Rewrite using `[mul_add, J.θ_add _ (key x hx) _ (key y hy)]`. Use `beta_reduce`. Rewrite using `[mul_left_comm, J.θ_mul _ (om_mem c) _ (key x hx), J.θ_Om]`. Use `beta_reduce`. Rewrite using `[J.θ_ker _ (key x hx), shift_iff J, mem_iff K]`.
+
+Use `beta_reduce`. Establish `e : ((tU P ^ (-a) : P.R.BdRˣ) : P.R.BdR) * P.actQdR g x = algebraMap (Om l) P.R.BdR (algebraMap ℚ_[l] (Om l) ((P.χQ g ^ a : ℚ_[l]ˣ) : ℚ_[l])) * P.actQdR g (((tU P ^ (-a) : P.R.BdRˣ) : P.R.BdR) * x)`. Rewrite using `[← IsScalarTower.algebraMap_apply, map_mul, act_zpow, ← mul_assoc, ← mul_assoc, ← map_mul, ← Units.val_mul, ← zpow_add, add_neg_cancel, zpow_zero, Units.val_one, map_one, one_mul]`. Rewrite using `[e, J.θ_mul _ (om_mem _) _ (act_mem g (key x hx)), J.θ_Om, J.θ_act g _ (key x hx)]`. Both sides reduce to the same expression.
+-/
 theorem exists_symbol : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), ThetaL P AI →
     ∀ (K : FinExt l), ∃ sy : ℤ → P.R.BdR → PadicComplex l, ∀ a : ℤ,
       (∀ x ∈ (P.PD K).Fil a, ∀ y ∈ (P.PD K).Fil a, sy a (x + y) = sy a x + sy a y) ∧

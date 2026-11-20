@@ -75,11 +75,17 @@ def fullFrame {R : Type} [CommRing R] (U : Matrix (Fin (g + g)) (Fin g) R) (J : 
     (Lft : Matrix (Fin g) (Fin (g + g)) R) : Matrix (Fin (g + g)) (Fin (g + g)) R :=
   Matrix.of fun r c => Fin.addCases (fun k => U r k) (fun k => (J⁻¹ * Lft.transpose * antiDiag R g) r k) c
 
+/- English proof (translation)
+Simplify using `[fullFrame]`.
+-/
 @[simp] theorem fullFrame_left {R : Type} [CommRing R] (U : Matrix (Fin (g + g)) (Fin g) R)
     (J : Matrix (Fin (g + g)) (Fin (g + g)) R) (Lft : Matrix (Fin g) (Fin (g + g)) R) (r : Fin (g + g)) (k : Fin g) :
     fullFrame U J Lft r (Fin.castAdd g k) = U r k := by
   simp [fullFrame]
 
+/- English proof (translation)
+Unfold `fullFrame`. Rewrite using `[Matrix.of_apply, Fin.addCases_right]`.
+-/
 @[simp] theorem fullFrame_right {R : Type} [CommRing R] (U : Matrix (Fin (g + g)) (Fin g) R)
     (J : Matrix (Fin (g + g)) (Fin (g + g)) R) (Lft : Matrix (Fin g) (Fin (g + g)) R) (r : Fin (g + g)) (k : Fin g) :
     fullFrame U J Lft r (Fin.natAdd g k) = (J⁻¹ * Lft.transpose * antiDiag R g) r k := by

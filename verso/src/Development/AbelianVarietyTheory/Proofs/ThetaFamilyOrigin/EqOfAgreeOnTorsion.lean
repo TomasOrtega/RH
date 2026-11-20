@@ -36,6 +36,11 @@ def tensSec {A B : LB X} (s : A.Sec) (t : B.Sec) : (tens A B).Sec :=
     rw [gs_compat s (𝟙 X) y hp.1 hq.1, gs_compat t (𝟙 X) y hp.2 hq.2, Units.val_mul]
     exact mul_mul_mul_comm _ _ _ _
 
+/- English proof (translation)
+Use `nonzeroLocus_eq_of _ _ (fun y hy => ?_) fun y p hp => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_chart_of_mem_nonzeroLocus hy.1`. Take `⟨j', hj'⟩` from `exists_chart_of_mem_nonzeroLocus hy.2`. Conclude with `⟨(j, j'), hj, hj'⟩`. Establish `e : gs (𝟙 X) y _ ((tensSec s t).f p) = gs (𝟙 X) y _ (s.f p.1) * gs (𝟙 X) y _ (t.f p.2)` using `(gs_mul _ y _ hp _ _).trans (congrArg₂ (· * ·) (gs_res _ y _ hp _) (gs_res _ y _ hp _))`.
+
+Rewrite using `[e, IsUnit.mul_iff]`. Conclude with `and_congr (mem_nonzeroLocus_iff_isUnit s hp.1).symm (mem_nonzeroLocus_iff_isUnit t hp.2).symm`.
+-/
 theorem nonzeroLocus_tensSec {A B : LB X} (s : A.Sec) (t : B.Sec) :
     nonzeroLocus (tensSec s t) = nonzeroLocus s ⊓ nonzeroLocus t := by
   refine nonzeroLocus_eq_of _ _ (fun y hy => ?_) fun y p hp => ?_
@@ -54,21 +59,35 @@ def subSec {A : LB X} (s t : A.Sec) : A.Sec where
 def IsLocus (c : Pic X) (W : X.Opens) : Prop :=
   ∃ (L : LB X) (hL : L.IsLB) (s : L.Sec), cls L hL = c ∧ nonzeroLocus s = W
 
+/- English proof (translation)
+Take `⟨L, hL, s, rfl, rfl⟩` from `h`. Take `⟨L', hL', s', rfl, rfl⟩` from `h'`. Conclude with `⟨_, isLB_tens hL hL', tensSec s s', rfl, nonzeroLocus_tensSec s s'⟩`.
+-/
 theorem IsLocus.add {c c' : Pic X} {W W' : X.Opens} (h : IsLocus c W) (h' : IsLocus c' W') :
     IsLocus (c + c') (W ⊓ W') := by
   obtain ⟨L, hL, s, rfl, rfl⟩ := h
   obtain ⟨L', hL', s', rfl, rfl⟩ := h'
   exact ⟨_, isLB_tens hL hL', tensSec s s', rfl, nonzeroLocus_tensSec s s'⟩
 
+/- English proof (translation)
+Take `⟨L', hL', s', e, rfl⟩` from `h`. Conclude with `exists_sec_nonzeroLocus_eq_of_lbIso hL hL' ((cls_eq_iff _ _).1 e.symm) s'`.
+-/
 theorem IsLocus.exists_sec {L : LB X} (hL : L.IsLB) {W : X.Opens} (h : IsLocus (cls L hL) W) :
     ∃ s : L.Sec, nonzeroLocus s = W := by
   obtain ⟨L', hL', s', e, rfl⟩ := h
   exact exists_sec_nonzeroLocus_eq_of_lbIso hL hL' ((cls_eq_iff _ _).1 e.symm) s'
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `(cls_eq_zero_iff (LB.isLB_triv X)).1 rfl`. Conclude with `⟨_, LB.isLB_triv X, _, rfl, nonzeroLocus_genSec (LB.isLB_triv X) t ht⟩`.
+-/
 theorem isLocus_zero : IsLocus (0 : Pic X) ⊤ := by
   obtain ⟨t, ht⟩ := (cls_eq_zero_iff (LB.isLB_triv X)).1 rfl
   exact ⟨_, LB.isLB_triv X, _, rfl, nonzeroLocus_genSec (LB.isLB_triv X) t ht⟩
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨⊤, trivial, isLocus_zero⟩`. Consider the case `insert k T hk ih`. Take `⟨W, hy, hW⟩` from `ih`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show h k y ∈ ⨆ i, nonzeroLocus (s i) by rw [hs]; trivial)`.
+
+Rewrite using `[Finset.sum_insert hk]`. Conclude with `⟨h k ⁻¹ᵁ nonzeroLocus (s i) ⊓ W, ⟨hi, hy⟩, IsLocus.add ⟨_, pull_isLB hM _, secPull (s i) (h k), rfl, nonzeroLocus_secPull _ _⟩ hW⟩`.
+-/
 theorem exists_isLocus_sum {M : LB X} (hM : M.IsLB) {σ I : Type} (s : σ → M.Sec)
     (hs : ⨆ i, nonzeroLocus (s i) = ⊤) (h : I → (Y ⟶ X)) (y : Y) (T : Finset I) :
     ∃ W, y ∈ W ∧ IsLocus (∑ k ∈ T, pull (h k) (cls M hM)) W := by
@@ -87,16 +106,27 @@ def minor {M : LB X} (f f' : Y ⟶ X) (s t : M.Sec) : (tens (M.pull f) (M.pull f
 
 variable {F : Type} [Field F]
 
+/- English proof (translation)
+The claim follows from `congrArg (fun r => (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom (r.hom a)) (Scheme.Hom.appLE_comp_appLE z q U V ⊤ e h)`.
+-/
 theorem val_appLE (z : Sp F ⟶ Y) (q : Y ⟶ X) (U : X.Opens) (V : Y.Opens) (e : V ≤ q ⁻¹ᵁ U) (h : ⊤ ≤ z ⁻¹ᵁ V)
     (h' : ⊤ ≤ (z ≫ q) ⁻¹ᵁ U) (a : Γ(X, U)) : val z V h ((q.appLE U V e).hom a) = val (z ≫ q) U h' a :=
   congrArg (fun r => (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom (r.hom a))
     (Scheme.Hom.appLE_comp_appLE z q U V ⊤ e h)
 
+/- English proof (translation)
+The claim follows from `(TorsionZero.top_le_iff z _).trans ((mem_nonzeroLocus_iff_basicOpen s ((TorsionZero.top_le_iff z _).1 hk)).trans ((TorsionZero.top_le_iff z _).symm.trans (val_ne_zero_iff z _ hk _).symm))`.
+-/
 theorem le_nonzeroLocus_iff {M : LB X} (s : M.Sec) (z : Sp F ⟶ X) (k : M.ι) (hk : ⊤ ≤ z ⁻¹ᵁ M.U k) :
     ⊤ ≤ z ⁻¹ᵁ nonzeroLocus s ↔ val z _ hk (s.f k) ≠ 0 :=
   (TorsionZero.top_le_iff z _).trans ((mem_nonzeroLocus_iff_basicOpen s ((TorsionZero.top_le_iff z _).1 hk)).trans
     ((TorsionZero.top_le_iff z _).symm.trans (val_ne_zero_iff z _ hk _).symm))
 
+/- English proof (translation)
+Substitute `hx hx'` using the available equality. Establish `h₁ : ⊤ ≤ z ⁻¹ᵁ (M.pull f).U (fun _ => k)` using `fun y hy => mem_pull.2 (hk hy)`. Establish `h₂ : ⊤ ≤ z ⁻¹ᵁ (M.pull f').U (fun _ => k')` using `fun y hy => mem_pull.2 (hk' hy)`. Establish `h : ⊤ ≤ z ⁻¹ᵁ (tens (M.pull f) (M.pull f')).U (fun _ => k, fun _ => k')` using `fun y hy => ⟨h₁ hy, h₂ hy⟩`. Establish `e : ∀ s t : M.Sec, val z _ h ((tensSec (secPull s f) (secPull t f')).f (fun _ => k, fun _ => k')) = val (z ≫ f) _ hk (s.f k) * val (z ≫ f') _ hk' (t.f k')` using `fun s t => (map_mul _ _ _).trans (congrArg₂ (· * ·) ((val_res z _ h h₁ _).trans (val_appLE z f _ _ _ h₁ hk _)) ((val_res z _ h h₂ _).trans (val_appLE z f' _ _ _ h₂ hk' _)))`.
+
+Rewrite using `[le_nonzeroLocus_iff _ z _ h, ← e, ← e]`. Conclude with `(iff_of_eq (congrArg (· ≠ 0) (map_sub _ _ _))).trans sub_ne_zero`.
+-/
 theorem le_minor_iff {M : LB X} (f f' : Y ⟶ X) (s t : M.Sec) (z : Sp F ⟶ Y) {x x' : Sp F ⟶ X} (hx : z ≫ f = x)
     (hx' : z ≫ f' = x') (k k' : M.ι) (hk : ⊤ ≤ x ⁻¹ᵁ M.U k) (hk' : ⊤ ≤ x' ⁻¹ᵁ M.U k') :
     ⊤ ≤ z ⁻¹ᵁ nonzeroLocus (minor f f' s t) ↔
@@ -112,6 +142,19 @@ theorem le_minor_iff {M : LB X} (f f' : Y ⟶ X) (s t : M.Sec) (z : Sp F ⟶ Y) 
   rw [le_nonzeroLocus_iff _ z _ h, ← e, ← e]
   exact (iff_of_eq (congrArg (· ≠ 0) (map_sub _ _ _))).trans sub_ne_zero
 
+/- English proof (translation)
+Establish `hmem : ∀ z : Sp F ⟶ X, ∃ i, ⊤ ≤ z ⁻¹ᵁ nonzeroLocus (s i)` using `fun z => by`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show z (default : PrimeSpectrum F) ∈ ⨆ i, nonzeroLocus (s i) by rw [hcov]; trivial)`. Conclude with `⟨i, (TorsionZero.top_le_iff z _).2 hi⟩`. Establish `hval : ∀ (z : Sp F ⟶ X) i j k (hi : ⊤ ≤ z ⁻¹ᵁ nonzeroLocus (s i)) (hk : ⊤ ≤ z ⁻¹ᵁ M.U k), val z _ hk ((s j).f k) = val z _ hi (r i j) * val z _ hk ((s i).f k)` using `fun z i j k hi hk => by`. Establish `hW : ⊤ ≤ z ⁻¹ᵁ (nonzeroLocus (s i) ⊓ M.U k)` using `fun y hy => ⟨hi hy, hk hy⟩`.
+
+Establish `h1` using `congrArg (val z _ hW) (hr i j k)`. Rewrite `h1` using `[map_mul]`. Conclude with `(val_res z _ hW hk _).symm.trans (h1.trans (congrArg₂ (· * ·) (val_res z _ hW hi _) (val_res z _ hW hk _)))`. Take `⟨i, hi⟩` from `hmem x`. Take `⟨j, hj⟩` from `hmem x'`.
+
+Establish `a` using `(le_nonzeroLocus_iff _ x k hk).1 hi`. Establish `b` using `(le_nonzeroLocus_iff _ x' k' hk').1 hj`. Establish `c : val x' _ hk' ((s i).f k') ≠ 0` using `fun h0 => mul_ne_zero a b (by rw [h i j, h0, mul_zero])`. Establish `hi'` using `(le_nonzeroLocus_iff _ x' k' hk').2 c`. Use `point_ext (haff i) hi hi' (RingHom.ext fun f => ?_)` and prove the remaining obligations.
+
+Take `⟨G, rfl⟩` from `hgen i f`. Rewrite using `[MvPolynomial.eval₂_comp_left, MvPolynomial.eval₂_comp_left]`. Use `congr 1`. Use `RingHom.ext fun t => (val_appLE x p ⊤ _ le_top hi le_top _).trans (Eq.trans ?_ (val_appLE x' p ⊤ _ le_top hi' le_top _).symm)` and prove the remaining obligations. Establish `aux : ∀ {u u' : Sp F ⟶ Sp K} (_ : u = u') h h', val u ⊤ h = val u' ⊤ h'`.
+
+Introduce and unpack `_ _ rfl _ _`. Both sides reduce to the same expression. Conclude with `congrArg (fun q : _ →+* F => q _) (aux hp _ _)`. Use function extensionality and compare the values at `l`. Establish `e` using `h i l`.
+
+Rewrite `e` using `[hval x i l k hi hk, hval x' i l k' hi' hk']`. Use `mul_right_cancel₀ (mul_ne_zero a c) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `val x _ hi (r i l) * _ = val x' _ hi' (r i l) * _`. Take the linear combination `-e`.
+-/
 theorem point_eq_of_minors {K : Type} [Field K] (p : X ⟶ Sp K) {M : LB X} {σ : Type} (s : σ → M.Sec)
     (hcov : ⨆ i, nonzeroLocus (s i) = ⊤) (haff : ∀ i, IsAffineOpen (nonzeroLocus (s i)))
     (r : ∀ i, σ → Γ(X, nonzeroLocus (s i)))
@@ -161,12 +204,20 @@ section Classes
 
 variable {K : Type} [Field K] (P : PolAV (Sp K))
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `P.rigid`. Take `⟨c⟩` from `(hc _ P ⟨P.L, t, P.isLB, ht⟩ rfl).1`. Rewrite using `[lam_comm, lam_mul_left P.isLB ⟨c.t, c.isGen⟩, lam_comm _ y, lam_comm _ z]`.
+-/
 theorem lam_mul_right (hc : CubeSt) {T : Over (Sp K)} (x y z : T ⟶ P.A) :
     lam (cls P.L P.isLB) x (y * z) = lam (cls P.L P.isLB) x y + lam (cls P.L P.isLB) x z := by
   obtain ⟨t, ht⟩ := P.rigid
   obtain ⟨c⟩ := (hc _ P ⟨P.L, t, P.isLB, ht⟩ rfl).1
   rw [lam_comm, lam_mul_left P.isLB ⟨c.t, c.isGen⟩, lam_comm _ y, lam_comm _ z]
 
+/- English proof (translation)
+Establish `h₀ : pull (eSec P.A) (cls P.L P.isLB) = 0` using `(cls_eq_zero_iff (pull_isLB P.isLB _)).2 P.rigid`. Establish `h₁ : pull (1 : P.A ⟶ P.A).left (cls P.L P.isLB) = 0`. Rewrite using `[Hom.one_def, Over.comp_left, pull_comp]`. Conclude with `(congrArg _ h₀).trans (map_zero _)`. Establish `h₂` using `(cls_eq_zero_iff (LB.isLB_linComb P.isLB _ _)).2 (hm _ P 2)`.
+
+Rewrite `h₂` using `[cls_linComb P.isLB, Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, pull_id, sq, neg_smul, one_smul, add_neg_eq_zero] at h₂`. Rewrite using `[lam, h₁, ← h₂, Over.id_left, pull_id]`. Use `push_cast`. Use `module`.
+-/
 theorem lam_self (hm : MulPullSt) : lam (cls P.L P.isLB) (𝟙 P.A) (𝟙 P.A) = 2 • cls P.L P.isLB := by
   have h₀ : pull (eSec P.A) (cls P.L P.isLB) = 0 := (cls_eq_zero_iff (pull_isLB P.isLB _)).2 P.rigid
   have h₁ : pull (1 : P.A ⟶ P.A).left (cls P.L P.isLB) = 0 := by
@@ -179,6 +230,13 @@ theorem lam_self (hm : MulPullSt) : lam (cls P.L P.isLB) (𝟙 P.A) (𝟙 P.A) =
   push_cast
   module
 
+/- English proof (translation)
+Take `⟨U, hU, ht⟩` from `h (default : PrimeSpectrum K)`. Take `rfl : U = ⊤` from `top_unique fun y _ => by`. Take `rfl : y = (default : PrimeSpectrum K)` from `Subsingleton.elim (α := PrimeSpectrum K) _ _`. Conclude with `hU`. Establish `: IsIso ((P.A ⊗ P.A).hom ⁻¹ᵁ ⊤).ι` using `inferInstanceAs (IsIso ((P.A ⊗ P.A).left.topIso).hom)`.
+
+Establish `h₁` using `congrArg (pull ((lift x y).left ≫ inv ((P.A ⊗ P.A).hom ⁻¹ᵁ ⊤).ι)) ((cls_linComb P.isLB _ _ _).symm.trans ((cls_eq_zero_iff (LB.isLB_linComb P.isLB _ _)).2 ht))`. Establish `e : ∀ u v : P.A ⊗ P.A ⟶ P.A, padd P.A u v = u * v` using `fun _ _ => rfl`. Simplify using `only [map_sum, map_zsmul, map_zero, ← pull_comp, Category.assoc, IsIso.inv_hom_id_assoc] at h₁`. Simplify using `only [Fin.sum_univ_succ, rosatiφ, rosatiε, Matrix.cons_val_zero, Matrix.cons_val_succ, ← Over.comp_left, e, MonObj.comp_mul, lift_fst, lift_snd, lift_fst_assoc, lift_snd_assoc, Fin.sum_univ_zero] at h₁`. Rewrite using `[← sub_eq_zero, ← h₁, lam, lam]`.
+
+Use `module`.
+-/
 theorem lam_rosati {f g : P.A ⟶ P.A} (h : RosatiAdj P.A P.L f g) {T : Over (Sp K)} (x y : T ⟶ P.A) :
     lam (cls P.L P.isLB) (x ≫ f) y = lam (cls P.L P.isLB) x (y ≫ g) := by
   obtain ⟨U, hU, ht⟩ := h (default : PrimeSpectrum K)
@@ -197,11 +255,19 @@ theorem lam_rosati {f g : P.A ⟶ P.A} (h : RosatiAdj P.A P.L f g) {T : Over (Sp
 
 variable {O : Type} [Ring O] [StarRing O] (ρ : P.OAct O)
 
+/- English proof (translation)
+Rewrite using `[← map_nsmul, ← lam_self P hm, pull_lam, ρ.map_mul, ← lam_rosati P (ρ.rosati b), Category.comp_id, Category.id_comp]`.
+-/
 theorem two_nsmul_pull_act (hm : MulPullSt) (b : O) :
     2 • pull (ρ.act b).left (cls P.L P.isLB) = lam (cls P.L P.isLB) (𝟙 P.A) (ρ.act (star b * b)) := by
   rw [← map_nsmul, ← lam_self P hm, pull_lam, ρ.map_mul, ← lam_rosati P (ρ.rosati b), Category.comp_id,
     Category.id_comp]
 
+/- English proof (translation)
+Set `Φ : O →+ Pic P.A.left` to `AddMonoidHom.mk' (fun u => lam (cls P.L P.isLB) (𝟙 P.A) (ρ.act u)) fun u v => (congrArg _ (ρ.map_add u v)).trans (lam_mul_right P hc _ _ _)`. Establish `h₁ : Φ 1 = 2 • cls P.L P.isLB` using `(congrArg (lam _ _) ρ.map_one).trans (lam_self P hm)`. Establish `h₂ : ∀ u, pull (ρ.act u).left (4 • cls P.L P.isLB) = 2 • Φ (star u * u)` using `fun u => by`. Rewrite using `[map_nsmul, show 4 = 2 * 2 from rfl, mul_nsmul, two_nsmul_pull_act P ρ hm]`. Both sides reduce to the same expression.
+
+Simplify using `only [h₂]`. Rewrite using `[← Finset.smul_sum, ← smul_add, ← map_sum, ← map_add, h, ← nsmul_one, map_nsmul, h₁]`. Use `module`.
+-/
 theorem sum_pull_act (hm : MulPullSt) (hc : CubeSt) {r c : ℕ} (a : O) (b : Fin r → O)
     (h : star a * a + ∑ i, star (b i) * b i = (c : O)) :
     pull (ρ.act a).left (4 • cls P.L P.isLB) + ∑ i, pull (ρ.act (b i)).left (4 • cls P.L P.isLB) =
@@ -218,6 +284,23 @@ theorem sum_pull_act (hm : MulPullSt) (hc : CubeSt) {r c : ℕ} (a : O) (b : Fin
 
 end Classes
 
+/- English proof (translation)
+Use `polAV_isIntegral_of_isAlgClosed K P` as an intermediate fact. Use `P'.isAb.proper` as an intermediate fact. Take `⟨m, s, hcov, hs⟩` from `veryAmple_lbPow hA K P' 4 le_rfl`. Use `choose haff r hr hgen using hs`. Establish `hL` using `isLB_lbPow P'.isLB 4`.
+
+Establish `hchart : ∀ {F : Type} [Field F] (x : Sp F ⟶ P'.A.left), ∃ k, ⊤ ≤ x ⁻¹ᵁ (lbPow P'.L 4).U k` using `fun {F} _ x => by`. Take `⟨k, hk⟩` from `exists_chart hL (x (default : PrimeSpectrum F))`. Conclude with `⟨k, (TorsionZero.top_le_iff x _).2 hk⟩`. Establish `hM1 : 1 ≤ M` using `Nat.pos_of_ne_zero fun e => hM (by rw [e, Nat.cast_zero])`. Establish `hcard` using `(hN (Sp K) P M hM1).2.2.2.2 K (𝟙 _) hM`.
+
+Rewrite `hsum` using `[← cls_lbPow P'.isLB 4 hL, ← cls_lbPow P.isLB _ (isLB_lbPow P.isLB _)]`. Take `⟨W, hW, hloc⟩` from `exists_isLocus_sum hL s hcov h (genericPoint P.A.left) Finset.univ`. Establish `hmin : ∀ i j, genericPoint P.A.left ∉ nonzeroLocus (minor f.left f'.left (s i) (s j))` using `fun i j hij => by`. Establish `h₁ : IsLocus (pull f.left (cls _ hL) + pull f'.left (cls _ hL)) (nonzeroLocus (minor f.left f'.left (s i) (s j)))` using `⟨_, isLB_tens (pull_isLB hL _) (pull_isLB hL _), _, rfl, rfl⟩`. Establish `h₂` using `h₁.add hloc`.
+
+Rewrite `h₂` using `[hsum]`. Take `⟨u, hu⟩` from `h₂.exists_sec`. Establish `h₃ : genericPoint P.A.left ∈ nonzeroLocus u` using `by rw [hu]; exact ⟨hij, hW⟩`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 h₃`. Establish `h₄` using `hZ u ⟨k, fun e => by rw [e, Scheme.basicOpen_zero] at hk; exact hk⟩`.
+
+Establish `h₅ : ∀ x : baseOver (Sp K) ⟶ P.A, x ^ M = 1 → ¬ ⊤ ≤ x.left ⁻¹ᵁ nonzeroLocus u` using `fun x hx hx' => by`. Take `⟨k, hk⟩` from `hchart (F := K) (x ≫ f).left`. Rewrite `hx'` using `[hu]`. Conclude with `(le_minor_iff f.left f'.left (s i) (s j) (F := K) x.left (x := (x ≫ f).left) (x' := (x ≫ f).left) rfl (congrArg (·.left) (hf x hx)).symm k k hk hk).1 (fun y hy => (hx' hy).1) (mul_comm _ _)`. Establish `e : M ^ (2 * P.g) = M ^ 2 * M ^ (2 * P.g - 2)` using `by rw [← pow_add]; congr 1; omega`.
+
+Rewrite `h₄` using `[Nat.card_congr (Equiv.subtypeEquivRight fun x => and_iff_left_of_imp (h₅ x)), hcard, e]`. Conclude with `absurd (Nat.le_of_mul_le_mul_right h₄ (pow_pos hM1 _)) (not_le.2 hd)`. Set `F : Type` to `P.A.left.residueField (genericPoint P.A.left)`. Set `z : Sp F ⟶ P.A.left` to `P.A.left.fromSpecResidueField (genericPoint P.A.left)`. Establish `hz : ∀ y, z y = genericPoint P.A.left` using `fun y => Scheme.fromSpecResidueField_apply _ y`.
+
+Establish `: IsDominant z` using `⟨(genericPoint_spec P.A.left).def.ge |> fun e => dense_iff_closure_eq.2 (top_unique (e.trans (closure_mono (Set.singleton_subset_iff.2 ⟨(default : PrimeSpectrum F), hz _⟩))))⟩`. Establish `hw : f.left ≫ P'.A.hom = f'.left ≫ P'.A.hom` using `(Over.w f).trans (Over.w f').symm`. Take `⟨k, hk⟩` from `hchart (z ≫ f.left)`. Take `⟨k', hk'⟩` from `hchart (z ≫ f'.left)`. Use `Over.OverMorphism.ext (ext_of_isDominant_of_isSeparated P'.A.hom hw z (point_eq_of_minors P'.A.hom s hcov haff r hr hgen _ _ (by rw [Category.assoc, Category.assoc, hw]) k k' hk hk' fun i j => ?_))` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hmin i j (hz _ ▸ (TorsionZero.top_le_iff z _).1 ((le_minor_iff f.left f'.left (s i) (s j) z rfl rfl k k' hk hk').2 hne))`.
+-/
 theorem eq_of_agree_on_torsion {K : Type} [Field K] [IsAlgClosed K] (hA : AmpleSt) (hN : MulNSt)
     (P P' : PolAV (Sp K)) {d M : ℕ} (hM : (M : K) ≠ 0) (hg : 1 ≤ P.g) (hd : 4 ^ P.g * P.g.factorial * d < M ^ 2)
     (hZ : ∀ s : (lbPow P.L (4 * d)).Sec, (∃ j, s.f j ≠ 0) →
@@ -272,6 +355,11 @@ theorem eq_of_agree_on_torsion {K : Type} [Field K] [IsAlgClosed K] (hA : AmpleS
   exact hmin i j (hz _ ▸ (TorsionZero.top_le_iff z _).1
     ((le_minor_iff f.left f'.left (s i) (s j) z rfl rfl k k' hk hk').2 hne))
 
+/- English proof (translation)
+Use `polAV_isIntegral_of_isAlgClosed K P` as an intermediate fact. Use `P'.isAb.proper` as an intermediate fact. Establish `: Etale P.A.hom` using `(Etale.iff_smoothOfRelativeDimension_zero _).2 (hg ▸ P.smoothDim)`. Set `e : Sp K ⟶ P.A.left` to `(1 : baseOver (Sp K) ⟶ P.A).left`. Use `isOpenImmersion_of_section_of_etale P.A.hom e (Over.w _)` as an intermediate fact.
+
+Establish `: IsDominant e` using `⟨e.isOpenEmbedding.isOpen_range.dense ⟨_, (default : PrimeSpectrum K), rfl⟩⟩`. Conclude with `Over.OverMorphism.ext (ext_of_isDominant_of_isSeparated P'.A.hom ((Over.w f).trans (Over.w f').symm) e (congrArg (·.left) hf))`.
+-/
 theorem eq_of_dim_zero {K : Type} [Field K] [IsAlgClosed K] (P P' : PolAV (Sp K)) (hg : P.g = 0) (f f' : P.A ⟶ P'.A)
     (hf : (1 : baseOver (Sp K) ⟶ P.A) ≫ f = 1 ≫ f') : f = f' := by
   have := polAV_isIntegral_of_isAlgClosed K P
@@ -289,6 +377,19 @@ namespace GlobalTheory
 
 open CechPic EndOnTorsion in
 
+/- English proof (translation)
+Introduce and unpack `laws hZ g c M hc K _ _ hM P P' rfl - φ ⟨hφ, hφL⟩ O _ _ ρ ρ' a ⟨m, r, b, hm, hb⟩ hx`. Break down `Nat.eq_zero_or_pos P.g with hg | hg` into its components or cases. Conclude with `eq_of_dim_zero P P' hg _ _ (hx 1 (one_pow _))`. Use `ρ'.hom a` as an intermediate fact. Establish `hl : pull φ.hom.left (cls P'.L P'.isLB) = cls P.L P.isLB` using `(cls_eq_iff (pull_isLB P'.isLB _) P.isLB).2 hφL`.
+
+Establish `e₁ : ρ.act (m * a) ≫ φ.hom = mulA P.A m ≫ ρ.act a ≫ φ.hom`. Rewrite using `[Nat.cast_comm, ρ.map_mul, ThetaPtDet.act_natCast ρ.toRingAct, Category.assoc]`. Establish `e₂ : φ.hom ≫ ρ'.act (m * a) = mulA P.A m ≫ φ.hom ≫ ρ'.act a`. Rewrite using `[Nat.cast_comm, ρ'.map_mul, ← Category.assoc, ← ThetaPtDet.conclusion_natCast P P' φ ⟨hφ, hφL⟩ ρ ρ' m, ThetaPtDet.act_natCast ρ.toRingAct, Category.assoc]`. Establish `e₃ : ρ.act (m * a) ≫ φ.hom = (ρ.act a ≫ φ.hom) ^ m`.
+
+Use `ρ.hom a` as an intermediate fact. Rewrite using `[e₁, MonObj.pow_comp, Category.id_comp]`. Establish `e₄ : φ.hom ≫ ρ'.act (m * a) = (φ.hom ≫ ρ'.act a) ^ m`. Rewrite using `[e₂, MonObj.pow_comp, Category.id_comp]`. Establish `key : ρ.act (m * a) ≫ φ.hom = φ.hom ≫ ρ'.act (m * a)`.
+
+Use `eq_of_agree_on_torsion laws.ample laws.mulN P P' hM hg hc (hZ K P 4 (2 * c) M 1 hg le_rfl hM) _ _ (I := Fin r ⊕ Fin r) (Sum.elim (fun l => (ρ.act (b l)).left ≫ φ.hom.left) fun l => φ.hom.left ≫ (ρ'.act (b l)).left) ?_ fun x h => ?_` and prove the remaining obligations. Establish `h₁` using `sum_pull_act P ρ laws.mulPull laws.cube _ b hb`. Establish `h₂` using `congrArg (pull φ.hom.left) (sum_pull_act P' ρ' laws.mulPull laws.cube _ b hb)`. Rewrite `h₂` using `[map_add, map_sum, map_nsmul _ (4 * c), hl]`. Simplify using `only [Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, Over.comp_left, pull_comp, map_nsmul (pull φ.hom.left) 4 (cls P'.L P'.isLB), hl]`.
+
+Rewrite using `[add_add_add_comm, h₁, h₂]`. Use `module`. Rewrite using `[e₃, e₄, MonObj.comp_pow, MonObj.comp_pow, hx x h]`. Rewrite `key` using `[e₁, e₂]`. Use `polAV_isIntegral_of_isAlgClosed K P` as an intermediate fact.
+
+Use `P'.isAb.proper` as an intermediate fact. Use `(laws.mulN _ P m hm).2.2.1` as an intermediate fact. Conclude with `Over.OverMorphism.ext (ext_of_isDominant_of_isSeparated P'.A.hom ((Over.w _).trans (Over.w _).symm) (mulA P.A m).left (congrArg (·.left) key))`.
+-/
 theorem endDeterminedOnTorsion : Out.Laws →
     (∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (N d k : ℕ) (b : Out.baseOver (Sp K) ⟶ P.A),
       1 ≤ P.g → 4 ≤ N → (k : K) ≠ 0 → ∀ s : (lbPow P.L (N * d)).Sec, (∃ j, s.f j ≠ 0) →

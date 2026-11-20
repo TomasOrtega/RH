@@ -7,6 +7,11 @@ namespace GlobalTheory
 
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory in
 
+/- English proof (translation)
+Establish `hb` using `_root_.GlobalTheory.classNumber_le_sqrt_discr_mul_pow_pred K`. Rewrite `hb` using `[h]`. Evaluate the numerical expressions using `at hb`. Establish `hs` using `_root_.GlobalTheory.one_le_sqrt_abs_discr K`. Use `set s := √|(NumberField.discr K : ℝ)| with hs_def`.
+
+Establish `hlog : Real.log s ≤ s - 1` using `Real.log_le_sub_one_of_pos (by linarith)`. Establish `hsq : s * s = |(NumberField.discr K : ℝ)|` using `Real.mul_self_sqrt (abs_nonneg _)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem _root_.GlobalTheory.classNumber_le_abs_discr_of_finrank_eq_two (K : Type) [Field K] [NumberField K]
     (h : Module.finrank ℚ K = 2) :
     (NumberField.classNumber K : ℝ) ≤ |(NumberField.discr K : ℝ)| := by
@@ -24,6 +29,9 @@ theorem _root_.GlobalTheory.classNumber_le_abs_discr_of_finrank_eq_two (K : Type
 
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory in
 
+/- English proof (translation)
+Introduce `K _ _ h`. Use `_root_.GlobalTheory.classNumber_le_abs_discr_of_finrank_eq_two K h` as an intermediate fact. Use `abs_nonneg (NumberField.discr K : ℝ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem _root_.GlobalTheory.classNumber_le_four_mul_abs_discr :
     ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 →
       (NumberField.classNumber K : ℝ) ≤ 4 * |(NumberField.discr K : ℝ)| := by

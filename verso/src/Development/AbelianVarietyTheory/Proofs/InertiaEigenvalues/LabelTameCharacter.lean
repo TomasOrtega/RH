@@ -16,9 +16,15 @@ section Local
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Rewrite using `[map_natCast, ZMod.natCast_zmod_val]`.
+-/
 theorem red_natCast_val (hp : resCard F = p) (a : ZMod p) : red hp ((a.val : ℕ) : 𝒪[F]) = a := by
   rw [map_natCast, ZMod.natCast_zmod_val]
 
+/- English proof (translation)
+Establish `hu : IsUnit (((a : ZMod p).val : ℕ) : 𝒪[F])` using `isUnit_of_red_ne_zero hp (by rw [red_natCast_val]; exact a.ne_zero)`. Use `(Valuation.integer.integers (valuation F)).isUnit_iff_valuation_eq_one.1 hu` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem valuation_natCast_val (hp : resCard F = p) (a : (ZMod p)ˣ) :
     valuation F ((((a : ZMod p).val : ℕ) : F)) = 1 := by
   have hu : IsUnit (((a : ZMod p).val : ℕ) : 𝒪[F]) :=
@@ -26,6 +32,11 @@ theorem valuation_natCast_val (hp : resCard F = p) (a : (ZMod p)ˣ) :
   have := (Valuation.integer.integers (valuation F)).isUnit_iff_valuation_eq_one.1 hu
   rwa [map_natCast] at this
 
+/- English proof (translation)
+Establish `h1 : valuation F (((x / y : Fˣ) : F) - 1) < 1`. Establish `: ((x / y : Fˣ) : F) - 1 = ((x : F) - y) / y`. Rewrite using `[Units.val_div_eq_div_val, sub_div, div_self y.ne_zero]`. Rewrite using `[this, map_div₀, hy, div_one]`. Conclude with `hxy`.
+
+Use `hχ _ h1` as an intermediate fact. Rewrite `this` using `[_root_.map_div, div_eq_one]`. Then use the resulting hypothesis.
+-/
 theorem tame_eq {χ : Fˣ →* ℂˣ} (hχ : IsTame χ) {x y : Fˣ} (hy : valuation F (y : F) = 1)
     (hxy : valuation F ((x : F) - y) < 1) : χ x = χ y := by
   have h1 : valuation F (((x / y : Fˣ) : F) - 1) < 1 := by
@@ -42,10 +53,20 @@ def unitOf (hp : resCard F = p) (a : (ZMod p)ˣ) : Fˣ :=
     rw [h, map_zero] at this
     exact zero_ne_one this
 
+/- English proof (translation)
+The claim follows from `tame_eq hχ (valuation_natCast_val hp a) hx`.
+-/
 theorem eq_unitOf {χ : Fˣ →* ℂˣ} (hχ : IsTame χ) (hp : resCard F = p) (a : (ZMod p)ˣ) (x : Fˣ)
     (hx : valuation F ((x : F) - ((a : ZMod p).val : F)) < 1) : χ x = χ (unitOf hp a) :=
   tame_eq hχ (valuation_natCast_val hp a) hx
 
+/- English proof (translation)
+Use `⟨{ toFun := fun a => χ (unitOf hp a), map_one' := ?_, map_mul' := fun a b => ?_ }, fun a x hx => ?_⟩` and prove the remaining obligations. Establish `h` using `eq_unitOf hχ hp 1 1 (by`. Use `(red_eq_iff_val hp 1 ((1 : (ZMod p)ˣ) : ZMod p)).1 (by simp)` as an intermediate fact. Simplify using `using this)`. Rewrite `h` using `[map_one]`.
+
+Conclude with `h.symm`. Establish `h` using `eq_unitOf hχ hp (a * b) (unitOf hp a * unitOf hp b) (by`. Use `(red_eq_iff_val hp (((a : ZMod p).val : ℕ) * ((b : ZMod p).val : ℕ) : 𝒪[F]) ((a * b : (ZMod p)ˣ) : ZMod p)).1 (by rw [map_mul, red_natCast_val, red_natCast_val, Units.val_mul])` as an intermediate fact. Rewrite `this` using `[MulMemClass.coe_mul, SubringClass.coe_natCast, SubringClass.coe_natCast]`. Rewrite using `[Units.val_mul]`.
+
+Conclude with `this)`. Rewrite `h` using `[map_mul]`. Conclude with `h.symm`. Conclude with `eq_unitOf hχ hp a x hx`.
+-/
 theorem exists_charLift (hp : resCard F = p) {χ : Fˣ →* ℂˣ} (hχ : IsTame χ) : ∃ θ : (ZMod p)ˣ →* ℂˣ, CharLift θ χ := by
   refine ⟨{ toFun := fun a => χ (unitOf hp a), map_one' := ?_, map_mul' := fun a b => ?_ }, fun a x hx => ?_⟩
   · have h := eq_unitOf hχ hp 1 1 (by
@@ -71,6 +92,15 @@ namespace GlobalTheory.TameCharLabel
 
 open NumberField IsDedekindDomain GlobalTheory.SerSys.TameGen GlobalTheory.Published.DepthZeroModel
 
+/- English proof (translation)
+Establish `: (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Establish `he` using `isEquiv (valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))`. Use `⟨LinearMap.id, fun e => (one_ne_zero : (1 : ℂ) ≠ 0) (LinearMap.congr_fun e (1 : ℂ)), fun k (v : ℂ) => ?_⟩` and prove the remaining obligations. Use `set c := Matrix.GeneralLinearGroup.det k`. Establish `e2 : Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map i.toRingHom (GlobalTheory.GLp.inc g 1 k)) = Units.map i.toRingHom.toMonoidHom (Units.map (algebraMap ℤ_[g] ℚ_[g]).toMonoidHom c)` using `by ext; simp [c, GlobalTheory.GLp.inc, RingHom.map_det]`.
+
+Establish `e3 : Matrix.GeneralLinearGroup.det (GlobalTheory.GLp.red g 1 k) = Units.map (PadicInt.toZMod (p` using `g)).toMonoidHom c := by ext; simp [c, GlobalTheory.GLp.red, RingHom.map_det]`. Use `set r : ℕ := (PadicInt.toZMod (c : ℤ_[g])).val`. Establish `hk : ‖(((c : ℤ_[g]) - r : ℤ_[g]) : ℚ_[g])‖ < 1`. Establish `: (c : ℤ_[g]) - r ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := by`. Rewrite using `[RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`.
+
+Rewrite `this` using `[PadicInt.ker_toZMod, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits]`. Conclude with `this`. Establish `h6` using `he.lt_one_iff_lt_one.2 (GlobalTheory.Published.DepthZeroTypeModel.v_lt_one i hi hk)`. Establish `h7 : χ (Units.map i.toRingHom.toMonoidHom (Units.map (algebraMap ℤ_[g] ℚ_[g]).toMonoidHom c)) = θ (Units.map (PadicInt.toZMod (p` using `g)).toMonoidHom c) := by`. Use `hθ _ _ ?_` and prove the remaining obligations.
+
+Use `h6 using 2` and compare the differences between its conclusion and the goal. Simplify using `[r]`. Express the relevant statement in the definitionally equal form `((θ (Matrix.GeneralLinearGroup.det (GlobalTheory.GLp.red g 1 k)) : ℂˣ) : ℂ) • v = ((χ (Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map i.toRingHom (GlobalTheory.GLp.inc g 1 k))) : ℂˣ) : ℂ) • v`. Rewrite using `[e2, e3, h7]`.
+-/
 theorem inflates_det {E : Type} [Field E] [NumberField E] {g : ℕ} [Fact g.Prime] {w : HeightOneSpectrum (𝓞 E)}
     (i : ℚ_[g] ≃+* w.adicCompletion E) (hi : Continuous i) {θ : (ZMod g)ˣ →* ℂˣ} {χ : (w.adicCompletion E)ˣ →* ℂˣ}
     (hχ : IsSmoothChar χ) (hθ : CharLift θ χ) :
@@ -103,6 +133,9 @@ theorem inflates_det {E : Type} [Field E] [NumberField E] {g : ℕ} [Fact g.Prim
     ((χ (Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map i.toRingHom (GlobalTheory.GLp.inc g 1 k))) : ℂˣ) : ℂ) • v
   rw [e2, e3, h7]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨D.host.g_prime k⟩; resCard ((D.naut.plGw k v).adicCompletion D.host.E) = D.host.g k ∧ ∀ L : GlobalTheory.GLq.LabelDatum (D.host.g k), L.teich = D.ntypes.teichC k → L.gen = Γ.ζ k → ∃ θ : (ZMod (D.host.g k))ˣ →* ℂˣ, CharLift θ χ ∧ GlobalTheory.GLp.IsCharLab L θ u := by intro H hL …`.
+-/
 theorem label_reduction : GlobalTheory.Published.DepthZeroInertia → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : Formalism.BasicNotions.D7) (Γ : GlobalTheory.HeightCounting.GrpSide D) (k : Fin 2) (v : D.nd.PlG k) (χ : ((D.naut.plGw k v).adicCompletion D.host.E)ˣ →* ℂˣ) (hχ : IsSmoothChar χ) (u : ZMod (D.host.g k)), IsTame χ → labAt hL D k v (Irr.ofDet 1 χ hχ) = Polynomial.X - Polynomial.C u → haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩; resCard ((D.naut.plGw k v).adicCompletion D.host.E) = D.host.g k ∧ ∀ L : GlobalTheory.GLq.LabelDatum (D.host.g k), L.teich = D.ntypes.teichC k → L.gen = Γ.ζ k → ∃ θ : (ZMod (D.host.g k))ˣ →* ℂˣ, CharLift θ χ ∧ GlobalTheory.GLp.IsCharLab L θ u := by
   intro H hL D Γ k v χ hχ u htame hlab
   haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩

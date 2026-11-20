@@ -8,5 +8,8 @@ open CategoryTheory Limits AlgebraicGeometry IsLocalRing TensorProduct
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.Vert GlobalTheory.MixedLocalChains GlobalTheory.PerfdLat GlobalTheory.Published GlobalTheory.GroupBplus GlobalTheory.BplusDescent GlobalTheory.LatGlue
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor (resG)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Vert.Model.natCast_prime_ne_zero_kbar | exact GlobalTheory.Vert.Model.natCast_prime_ne_zero_kbar | (intros; apply GlobalTheory.Vert.Model.natCast_prime_ne_zero_kbar <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.prime_nonzero_in_function_field : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] (B : GlobalTheory.Vert.Model O), ((p : ℕ) : Kbar B.X) ≠ 0 := by
   first | exact @GlobalTheory.Vert.Model.natCast_prime_ne_zero_kbar | exact GlobalTheory.Vert.Model.natCast_prime_ne_zero_kbar | (intros; apply GlobalTheory.Vert.Model.natCast_prime_ne_zero_kbar <;> assumption)

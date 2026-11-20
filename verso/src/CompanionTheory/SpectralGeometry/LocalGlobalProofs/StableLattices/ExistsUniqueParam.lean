@@ -5,6 +5,19 @@ open Finset
 
 namespace GlobalTheory.CompanionTheory.ArrCount
 
+/- English proof (translation)
+Establish `hval : ∀ a, (((χ a).re : ℝ) : ℂ) = χ a` using `fun a => Complex.ext (by simp) (by simp [(h a).1])`. Set `r : Fin n → ℝ` to `fun a => (χ a).re`. Establish `hr : Function.Injective r` using `fun a b hab => hχ (by`. Rewrite using `[← hval a, ← hval b]`. Conclude with `congrArg _ hab)`.
+
+Set `τ₀ : Equiv.Perm (Fin n)` to `Fin.revPerm.trans (Tuple.sort r)`. Establish `hmono : StrictMono (r ∘ Tuple.sort r)` using `(Tuple.monotone_sort r).strictMono_of_injective (hr.comp (Tuple.sort r).injective)`. Establish `hanti : StrictAnti (r ∘ τ₀)` using `fun a b hab => hmono (Fin.rev_lt_rev.2 hab)`. Use `⟨r ∘ τ₀, fun m => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨hm, -⟩, τ, hτ⟩`.
+
+Establish `hmr : ∀ a, m a = r (τ a)` using `fun a => by`. Establish `e` using `hτ a`. Rewrite `e` using `[← hval]`. Conclude with `e` after adjusting the coercions. Set `σ : Equiv.Perm (Fin n)` to `τ.trans τ₀.symm`.
+
+Establish `hσ : ∀ a, m a = (r ∘ τ₀) (σ a)` using `fun a => by simp [σ, hmr]`. Establish `hσm : StrictMono σ` using `fun a b hab => by`. Establish `e` using `hm hab`. Rewrite `e` using `[hσ a, hσ b]`. Conclude with `hanti.lt_iff_gt.1 e`.
+
+Establish `hid : (σ : Fin n → Fin n) = id` using `(StrictMono.range_inj hσm strictMono_id).1 (by simp [σ.surjective.range_eq])`. Use function extensionality and compare the values at `a`. Rewrite using `[hσ a, hid]`. Both sides reduce to the same expression. Introduce and unpack `rfl`.
+
+Conclude with `⟨⟨hanti, fun a => (h _).2⟩, τ₀, fun a => hval _⟩`.
+-/
 theorem exists_unique_param {n : ℕ} (χ : Fin n → ℂ) (hχ : Function.Injective χ)
     (h : ∀ a, (χ a).im = 0 ∧ ∃ m : ℤ, (χ a).re - ((n : ℝ) - 1) / 2 = m) :
     ∃ μ : Fin n → ℝ, ∀ m : Fin n → ℝ,
@@ -37,6 +50,15 @@ theorem exists_unique_param {n : ℕ} (χ : Fin n → ℂ) (hχ : Function.Injec
   · rintro rfl
     exact ⟨⟨hanti, fun a => (h _).2⟩, τ₀, fun a => hval _⟩
 
+/- English proof (translation)
+Introduce `n ε χ χ' hχ hχ' h h'`. Take `⟨μ, hμ⟩` from `exists_unique_param χ hχ h`. Take `⟨μ', hμ'⟩` from `exists_unique_param χ' hχ' h'`. Set `P : Finset (Equiv.Perm (Fin n))` to `univ.filter fun s => ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b`. Establish `key : ∀ (ψ : Fin n → ℂ) (ν : Fin n → ℝ), (∀ m : Fin n → ℝ, (Formalism.QuantumDeterminants.IsHCParam m ∧ ∃ τ : Equiv.Perm (Fin n), ∀ a, ((m a : ℝ) : ℂ) = ψ (τ a)) ↔ m = ν) → ∀ d : Equiv.Perm (Fin n) × (Fin n → ℝ), d ∈ P.image (fun s => (s, ν)) ↔ (Formalism.QuantumDeterminants.IsHC …`.
+
+Introduce and unpack `ψ ν hν ⟨s, m⟩`. Prove the components needed by the constructor for the conclusion. Introduce `hd`. Take `⟨t, ht, e⟩` from `mem_image.1 hd`. Take `⟨rfl, rfl⟩` from `Prod.mk.inj e`.
+
+Take `⟨h1, h2⟩` from `(hν _).2 rfl`. Conclude with `⟨h1, (mem_filter.1 ht).2, h2⟩`. Introduce and unpack `⟨h1, h2, h3⟩`. Establish `e : m = ν` using `(hν m).1 ⟨h1, h3⟩`. Conclude with `mem_image.2 ⟨s, mem_filter.2 ⟨mem_univ _, h2⟩, by simp [e]⟩`.
+
+Establish `hinj : ∀ ν : Fin n → ℝ, Function.Injective (fun s : Equiv.Perm (Fin n) => (s, ν))` using `fun ν a b e => (Prod.mk.inj e).1`. Use `⟨P.image fun s => (s, μ), P.image fun s => (s, μ'), ?_, key χ μ hμ, key χ' μ' hμ'⟩` and prove the remaining obligations. Rewrite using `[card_image_of_injective _ (hinj μ), card_image_of_injective _ (hinj μ')]`.
+-/
 theorem arrCount : CompanionTheory.RgExh.Fin.ArrCount := by
   classical
   intro n ε χ χ' hχ hχ' h h'

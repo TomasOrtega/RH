@@ -16,6 +16,25 @@ namespace Data
 
 variable (d : Data K ι Ω WT A)
 
+/- English proof (translation)
+Use `set φ : Fin d.D × Fin (d.N + 1) → TVar d.D d.N := fun p => (p.1.succ, p.2) with hφ`. Establish `hφi : Function.Injective φ` using `fun p p' h => by`. Simplify using `only [hφ, Prod.mk.injEq] at h`. Conclude with `Prod.ext (Fin.succ_injective _ h.1) h.2`. Establish `hvars : (q.vars : Set (TVar d.D d.N)) ⊆ Set.range φ`.
+
+Introduce `v hv`. Rewrite `hv` using `[Finset.mem_coe, MvPolynomial.mem_vars]`. Take `⟨s, hs, hsv⟩` from `hv`. Establish `h0 : v.1 ≠ 0`. Introduce `h0`.
+
+Establish `h1` using `hqm s hs 0`. Rewrite `h1` using `[hm]`. Establish `hz` using `(Finset.sum_eq_zero_iff.1 h1) v.2 (Finset.mem_univ _)`. Apply `(Finsupp.mem_support_iff.1 hsv)` to reduce the goal to its premises. Establish `e : v = (0, v.2)` using `Prod.ext h0 rfl`.
+
+Rewrite using `[e]`. Conclude with `hz`. Take `⟨i, hi⟩` from `Fin.exists_succ_eq.2 h0`. Conclude with `⟨(i, v.2), Prod.ext hi rfl⟩`. Take `⟨q', hq'⟩` from `MvPolynomial.exists_rename_eq_of_vars_subset_range q φ hφi hvars`.
+
+Use `set g : MvPolynomial (Fin d.D × Fin (d.N + 1)) ℂ := MvPolynomial.map sg q' with hgdef`. Establish `heval : ∀ z, d.evT sg 0 (d.tOf z) q = MvPolynomial.eval (ReciprocityTheory.MultiplicativeHeights.blockPoint z) g`. Introduce `z`. Rewrite using `[← hq', evT, MvPolynomial.eval₂_rename, hgdef, MvPolynomial.eval_map]`. Use `congr 1`.
+
+Establish `hq'0 : q' ≠ 0`. Introduce and unpack `rfl`. Conclude with `hq (by rw [← hq', map_zero])`. Establish `hg0 : g ≠ 0`. Introduce `h0`.
+
+Apply `hq'0` to reduce the goal to its premises. Apply `MvPolynomial.map_injective sg sg.injective` to reduce the goal to its premises. Rewrite using `[← hgdef, h0, map_zero]`. Establish `hgm : ReciprocityTheory.MultiplicativeHeights.IsMultiHomogeneous (fun i : Fin d.D => m i.succ) g`. Introduce `s hs b`.
+
+Establish `hs' : s ∈ q'.support` using `MvPolynomial.support_map_subset _ _ hs`. Establish `hsq : Finsupp.mapDomain φ s ∈ q.support`. Rewrite using `[← hq', MvPolynomial.support_rename_of_injective hφi]`. Conclude with `Finset.mem_image_of_mem _ hs'`. Use `show _ = m b.succ`.
+
+Rewrite using `[← hqm _ hsq b.succ]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `(Finsupp.mapDomain_apply hφi s (b, j)).symm`. Conclude with `⟨g, hg0, hgm, heval⟩`.
+-/
 theorem evT_eq_blockPoint_of_mh (sg : K →+* ℂ) (q : KTp K d.D d.N) (hq : q ≠ 0) (m : Fin (d.D + 1) → ℕ)
     (hm : m 0 = 0) (hqm : ReciprocityTheory.MultiplicativeHeights.IsMultiHomogeneous m q) :
     ∃ g : MvPolynomial (Fin d.D × Fin (d.N + 1)) ℂ, g ≠ 0 ∧
@@ -66,6 +85,11 @@ theorem evT_eq_blockPoint_of_mh (sg : K →+* ℂ) (q : KTp K d.D d.N) (hq : q �
     exact (Finsupp.mapDomain_apply hφi s (b, j)).symm
   exact ⟨g, hg0, hgm, heval⟩
 
+/- English proof (translation)
+Distinguish the cases in `hq : q = 0`. Substitute `hq` using the available equality. Simplify using `[evT]`. Take `⟨g, hg, hgm, heq⟩` from `d.evT_eq_blockPoint_of_mh sg q hq m hm hqm`. Repeatedly rewrite using `[heq]`.
+
+Conclude with `ReciprocityTheory.MultiplicativeHeights.Closed.sphereLogIntegrable d.D (d.N + 1) _ g hg hgm`.
+-/
 theorem logInt_evT_of_mh (sg : K →+* ℂ) (q : KTp K d.D d.N) (m : Fin (d.D + 1) → ℕ)
     (hm : m 0 = 0) (hqm : ReciprocityTheory.MultiplicativeHeights.IsMultiHomogeneous m q) :
     MeasureTheory.Integrable (fun z => Real.log ‖d.evT sg 0 (d.tOf z) q‖)
@@ -77,6 +101,9 @@ theorem logInt_evT_of_mh (sg : K →+* ℂ) (q : KTp K d.D d.N) (m : Fin (d.D + 
     simp_rw [heq]
     exact ReciprocityTheory.MultiplicativeHeights.Closed.sphereLogIntegrable d.D (d.N + 1) _ g hg hgm
 
+/- English proof (translation)
+Take `⟨-, -, m, hm0, hma, hmb⟩` from `hab`. Conclude with `(d.logInt_evT_of_mh sg a m hm0 hma).sub (d.logInt_evT_of_mh sg b m hm0 hmb)`.
+-/
 theorem integrable_log_norm_sub_log_norm (hd : d.AxH 𝒜) (h : d.S1) (a b : KTp K d.D d.N) (hab : d.IsPres hd h a b)
     (sg : K →+* ℂ) :
     MeasureTheory.Integrable (fun z => Real.log ‖d.evT sg 0 (d.tOf z) a‖ -

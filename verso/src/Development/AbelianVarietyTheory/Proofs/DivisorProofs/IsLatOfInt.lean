@@ -17,6 +17,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.AdTh
 variable {D : D7} {r g : ℕ}
 
+/- English proof (translation)
+Establish `hpsi : ∀ τ : D.host.E →+* ℂ, τ ∈ X.Ψ ↔ ∃ ρ, τ = tauE D ρ`. Introduce `τ`. Use `⟨fun h => ?_, fun ⟨ρ, h⟩ => h ▸ hp ρ⟩` and prove the remaining obligations. Establish `h1` using `(X.cmType τ).1 h`. Take `⟨ρ, hρ⟩` from `(GlobalTheory.StdRat.tauE_cm D τ).2 (fun ⟨ρ, hρ⟩ => h1 (hρ ▸ hp ρ))`.
+
+Conclude with `⟨ρ, hρ.symm⟩`. Choose the witnesses or unpack the hypotheses as in `⟨ρ⟩ : Nonempty D.what₂.Tau := by`. Assume the negation of the conclusion as `hne`. Establish `h` using `GlobalTheory.StdRat.tauE_cm D D.host.φ₀`. Take `⟨ρ, -⟩` from `h.2 (fun ⟨ρ, _⟩ => hne ⟨ρ⟩)`.
+
+Conclude with `hne ⟨ρ⟩`. Use `⟨hm, hpsi, ?_⟩` and prove the remaining obligations. Establish `h1` using `X.κ0_sign ⟨tauE D ρ, hp ρ⟩`. Establish `h2` using `xi_zero_im_pos D ρ`. Break down `X.κ0_xi with h | h` into its components or cases.
+
+Rewrite using `[h, hm.2]`. Expand and normalize the polynomial expressions, which then agree. It suffices to derive a contradiction. Rewrite `h1` using `[h, hm.2]`. Simplify using `[map_ofNat] at h1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem isMod_of (W : HSp D) (hr : W.rank = r) (X : Data D.host.E r) (hm : Formalism.L2.Pj.ModelW W hr X)
     (hp : ∀ ρ, tauE D ρ ∈ X.Ψ) : IsMod W hr X := by
   have hpsi : ∀ τ : D.host.E →+* ℂ, τ ∈ X.Ψ ↔ ∃ ρ, τ = tauE D ρ := by

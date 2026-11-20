@@ -4,11 +4,29 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Local
 open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH GlobalTheory.W1 UpperTheory.Gal.productCup_of_system
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `s1 : GlobalTheory.cubeSign ({i} : Finset ι) i = 1` using `GlobalTheory.cubeSign_singleton i`. Simplify using `[wd, s1]`.
+-/
 private theorem wd_single' {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module ℂ E]
     (w : ι → Module.End ℂ E) (f : Finset ι → E) (i : ι) : wd w f {i} = w i (f ∅) := by
   have s1 : GlobalTheory.cubeSign ({i} : Finset ι) i = 1 := GlobalTheory.cubeSign_singleton i
   simp [wd, s1]
 
+/- English proof (translation)
+Establish `hne : i ≠ i'` using `ne_of_lt h`. Establish `s1 : GlobalTheory.cubeSign {i, i'} i = 1`. Apply `GlobalTheory.cubeSign_eq_one_of_forall_le` to reduce the goal to its premises. Introduce `j hj`. Break down `Finset.mem_insert.mp hj with rfl | hj` into its components or cases.
+
+Conclude with `le_rfl`. Rewrite using `[Finset.mem_singleton.mp hj]`. Conclude with `le_of_lt h`. Establish `s2 : GlobalTheory.cubeSign {i, i'} i' = -1`. Establish `: ({x ∈ ({i, i'} : Finset _) | x < i'}) = {i}`.
+
+Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨rfl | rfl, hx⟩`. Both sides reduce to the same expression.
+
+Conclude with `absurd hx (lt_irrefl _)`. Introduce and unpack `rfl`. Conclude with `⟨Or.inl rfl, h⟩`. Simplify using `[GlobalTheory.cubeSign, this]`. Establish `e1 : ({i, i'} : Finset _).erase i = {i'}`.
+
+Rewrite using `[Finset.erase_insert (by simpa using hne)]`. Establish `e2 : ({i, i'} : Finset _).erase i' = {i}`. Use extensionality with `x`. Simplify using `only [Finset.mem_erase, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hx, rfl | rfl⟩`. Both sides reduce to the same expression. Conclude with `absurd rfl hx`. Introduce and unpack `rfl`. Conclude with `⟨hne, Or.inl rfl⟩`.
+
+Simplify using `only [wd, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.proj_apply]`. Rewrite using `[Finset.sum_pair hne, s1, s2, e1, e2, one_smul, neg_one_smul, sub_eq_add_neg]`.
+-/
 private theorem wd_pair' {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module ℂ E]
     (w : ι → Module.End ℂ E) (f : Finset ι → E) {i i' : ι} (h : i < i') :
     wd w f {i, i'} = w i (f {i'}) - w i' (f {i}) := by
@@ -43,6 +61,9 @@ private theorem wd_pair' {ι E : Type} [LinearOrder ι] [AddCommGroup E] [Module
     LinearMap.proj_apply]
   rw [Finset.sum_pair hne, s1, s2, e1, e2, one_smul, neg_one_smul, sub_eq_add_neg]
 
+/- English proof (translation)
+Take `⟨x, y, hne, rfl⟩` from `Finset.card_eq_two.1 h`. Break down `lt_or_gt_of_ne hne with h' | h'` into its components or cases. Conclude with `⟨x, y, h', rfl⟩`. Conclude with `⟨y, x, h', Finset.pair_comm _ _⟩`.
+-/
 private theorem pair_lt' {ι : Type} [LinearOrder ι] {s : Finset ι} (h : s.card = 2) :
     ∃ x y, x < y ∧ s = {x, y} := by
   obtain ⟨x, y, hne, rfl⟩ := Finset.card_eq_two.1 h
@@ -50,6 +71,53 @@ private theorem pair_lt' {ι : Type} [LinearOrder ι] {s : Finset ι} (h : s.car
   · exact ⟨x, y, h', rfl⟩
   · exact ⟨y, x, h', Finset.pair_comm _ _⟩
 
+/- English proof (translation)
+Introduce `hL2 hOk h d S E _ _ _ _ T κ _ _ n z hG hAd hKE c0 hZ hB1 hB2`. Take `⟨hW, -, -⟩` from `hOk d S E T κ n z hG hAd`. Establish `lu1 : ∀ (b : Finset (Two d)) (L : Finset κ), lft (uni b L) = b` using `fun b L => (h (Two d) κ ℂ 0 0 b L).2.1`. Establish `ru1 : ∀ (b : Finset (Two d)) (L : Finset κ), rgt (uni b L) = L` using `fun b L => (h (Two d) κ ℂ 0 0 b L).2.2.1`. Establish `lu2 : ∀ (I J : Finset (Fin (d + 1))), lft (uni I J) = I` using `fun I J => (h (Fin (d + 1)) (Fin (d + 1)) ℂ 0 0 I J).2.1`.
+
+Establish `ru2 : ∀ (I J : Finset (Fin (d + 1))), rgt (uni I J) = J` using `fun I J => (h (Fin (d + 1)) (Fin (d + 1)) ℂ 0 0 I J).2.2.1`. Establish `cu2 : ∀ (I J : Finset (Fin (d + 1))), (uni I J).card = I.card + J.card` using `fun I J => (h (Fin (d + 1)) (Fin (d + 1)) ℂ 0 0 I J).2.2.2.1`. Establish `ul2 : ∀ (s : Finset (Two d)), uni (lft s) (rgt s) = s` using `fun s => (h (Fin (d + 1)) (Fin (d + 1)) ℂ 0 0 ∅ ∅).2.2.2.2 s`. Use `set A : Finset (Two d ⊕ₗ κ) → Submodule ℂ E := fun s ↦ mixF (fun I J ↦ Submodule.map (T.act ↑(∏ l ∈ rgt s, T.u n (pk I) (pk J) l)) (T.M I J)) (lft s) with hAdef`. Establish `hcol : ∀ I J : Finset (Fin (d + 1)), I.Nonempty → J.Nonempty → colA A (T.wt z) (uni I J) = T.colCx n z I J`.
+
+Introduce `I J hI hJ`. Simplify using `only [colA, Sys.colCx, kosT]`. Use `congr 1`. Use function extensionality and compare the values at `L`. Simplify using `only [A, mixF, lu1, ru1, lu2, ru2, hI, hJ, and_self, if_true]`.
+
+Establish `hbot : ∀ b : Finset (Two d), ¬ ((lft b).Nonempty ∧ (rgt b).Nonempty) → ∀ L, A (uni b L) = ⊥`. Introduce `b hb L`. Simplify using `only [A, mixF, lu1, ru1]`. Rewrite using `[if_neg hb]`. Use `set c0' : Finset (Two d) → Finset κ → E := fun b => if (lft b).card = 1 ∧ (rgt b).card = 1 then c0 (pk (lft b)) (pk (rgt b)) else 0 with hc0'`.
+
+Establish `pk1 : ∀ i : Fin (d + 1), pk ({i} : Finset (Fin (d + 1))) = i`. Introduce `i`. Simplify using `[pk]`. Establish `c0ij : ∀ i j : Fin (d + 1), c0' (uni {i} {j}) = c0 i j`. Introduce `i j`.
+
+Simplify using `[c0', lu2, ru2, pk1]`. Establish `cv : ∀ I' J' : Finset (Fin (d + 1)), c0' (uni I' J') = if I'.card = 1 ∧ J'.card = 1 then c0 (pk I') (pk J') else 0`. Introduce `I' J'`. Simplify using `only [hc0', lu2, ru2]`. Establish `hKEA : ∀ b : Finset (Two d), KE (colA A (T.wt z) b) d`.
+
+Introduce `b`. Distinguish the cases in `hb : (lft b).Nonempty ∧ (rgt b).Nonempty`. Rewrite using `[← ul2 b, hcol _ _ hb.1 hb.2]`. Conclude with `hKE _ _ hb.1 hb.2`. Introduce `m _ x hx`.
+
+Establish `hx0 : x = 0`. Use function extensionality and compare the values at `L`. Establish `h1` using `(Submodule.mem_inf.mp hx).1`. Establish `h2` using `(Submodule.mem_pi.mp h1) L (Set.mem_univ _)`. Simplify `h2` using `[hbot b hb L]`.
+
+Rewrite using `[hx0]`. Conclude with `zero_mem _`. Establish `hZA : ∀ b : Finset (Two d), (b.card : ℤ) = (d : ℤ) + 2 - d → c0' b ∈ (colA A (T.wt z) b).Z d`. Introduce `b hbc`. Distinguish the cases in `h11 : (lft b).card = 1 ∧ (rgt b).card = 1`.
+
+Take `⟨i, hi⟩` from `Finset.card_eq_one.mp h11.1`. Take `⟨j, hj⟩` from `Finset.card_eq_one.mp h11.2`. Establish `hb' : b = uni {i} {j}` using `by rw [← hi, ← hj, ul2]`. Substitute `hb'` using the available equality. Rewrite using `[c0ij, hcol _ _ (Finset.singleton_nonempty i) (Finset.singleton_nonempty j)]`.
+
+Conclude with `hZ i j`. Establish `h0 : c0' b = 0` using `by simp only [hc0', h11, if_false]`. Rewrite using `[h0]`. Conclude with `zero_mem _`. Establish `hw : (fun i : Two d => T.wt z (inlE i : Two d ⊕ₗ κ)) = fun _ => 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Sys.wt, inlE]`. Establish `hBA : ∀ b : Finset (Two d), (b.card : ℤ) = (d : ℤ) + 2 - d + 1 → (fun L => (wd fun i => T.wt z (inlE i)) (fun b' => c0' b' L) b) ∈ (colA A (T.wt z) b).B d`. Introduce `b hbc`. Establish `hb3 : b.card = 3` using `by omega`.
+
+Rewrite using `[hw]`. Take `⟨I, J, rfl⟩ : ∃ I J, b = uni I J` from `⟨lft b, rgt b, (ul2 b).symm⟩`. Establish `hIJ : I.card + J.card = 3` using `by rw [← cu2]; exact hb3`. Establish `dec : ∀ L, (wd fun _ : Two d => (1 : Module.End ℂ E)) (fun b' => c0' b' L) (uni I J) = (wd fun _ => 1) (fun I' => c0' (uni I' J) L) I + (-1) ^ I.card • (wd fun _ => 1) (fun J' => c0' (uni I J') L) J` using `fun L => (h (Fin (d + 1)) (Fin (d + 1)) E (fun _ => 1) (fun b' => c0' b' L) I J).1`. Establish `hcases : I.card = 0 ∨ I.card = 1 ∨ I.card = 2 ∨ I.card = 3` using `by omega`.
+
+Break down `hcases with hI | hI | hI | hI` into its components or cases. Establish `hI0 : I = ∅` using `Finset.card_eq_zero.mp hI`. Substitute `hI0` using the available equality. Establish `hf : (fun L => (wd fun _ : Two d => (1 : Module.End ℂ E)) (fun b' => c0' b' L) (uni ∅ J)) = 0`. Use function extensionality and compare the values at `L`.
+
+Rewrite using `[dec]`. Establish `z1 : (fun J' => c0' (uni ∅ J') L) = 0`. Use function extensionality and compare the values at `J'`. Simplify using `[cv]`. Rewrite using `[z1, map_zero]`.
+
+Simplify using `[wd]`. Rewrite using `[hf]`. Conclude with `zero_mem _`. Take `⟨i, rfl⟩` from `Finset.card_eq_one.mp hI`. Establish `hJ2 : J.card = 2` using `by simp at hIJ; omega`.
+
+Take `⟨j, j', hjj, rfl⟩` from `pair_lt' hJ2`. Establish `hf : (fun L => (wd fun _ : Two d => (1 : Module.End ℂ E)) (fun b' => c0' b' L) (uni {i} {j, j'})) = c0 i j - c0 i j'`. Use function extensionality and compare the values at `L`. Rewrite using `[dec, wd_single', wd_pair' _ _ hjj]`. Simplify using `[cv, pk1]`.
+
+Rewrite using `[hf, hcol _ _ (Finset.singleton_nonempty i) (Finset.insert_nonempty _ _)]`. Conclude with `hB2 i j j'`. Take `⟨i, i', hii, rfl⟩` from `pair_lt' hI`. Establish `hJ1 : J.card = 1` using `by omega`. Take `⟨j, rfl⟩` from `Finset.card_eq_one.mp hJ1`.
+
+Establish `hf : (fun L => (wd fun _ : Two d => (1 : Module.End ℂ E)) (fun b' => c0' b' L) (uni {i, i'} {j})) = -(c0 i j - c0 i' j)`. Use function extensionality and compare the values at `L`. Rewrite using `[dec, wd_single', wd_pair' _ _ hii]`. Simplify using `[cv, pk1, Finset.card_pair (ne_of_lt hii)]`. Rewrite using `[hf, hcol _ _ (Finset.insert_nonempty _ _) (Finset.singleton_nonempty j)]`.
+
+Conclude with `neg_mem (hB1 i i' j)`. Establish `hJ0 : J = ∅` using `Finset.card_eq_zero.mp (by omega)`. Substitute `hJ0` using the available equality. Establish `hf : (fun L => (wd fun _ : Two d => (1 : Module.End ℂ E)) (fun b' => c0' b' L) (uni I ∅)) = 0`. Use function extensionality and compare the values at `L`.
+
+Rewrite using `[dec]`. Establish `z1 : (fun I' => c0' (uni I' ∅) L) = 0`. Use function extensionality and compare the values at `I'`. Simplify using `[cv]`. Rewrite using `[z1, map_zero]`.
+
+Simplify using `[wd]`. Rewrite using `[hf]`. Conclude with `zero_mem _`. Take `⟨c, hc, hcb, -⟩` from `hL2 (Two d) κ E A (T.wt z) d (d + 2) hW hKEA c0' hZA hBA`. Use `⟨c, hc, fun i j => ?_⟩` and prove the remaining obligations.
+
+Use `hcb (uni {i} {j}) (by rw [cu2]; simp)` as an intermediate fact. Rewrite using `[this, c0ij]`.
+-/
 theorem UpperTheory.Gal.productCup_of_system.coordinateSystem_degree_two_of_universalDerivation :
     L2 → SysOk → WdUni → CechKoszulSystemCocycleGluing := by
   intro hL2 hOk h d S E _ _ _ _ T κ _ _ n z hG hAd hKE c0 hZ hB1 hB2

@@ -20,6 +20,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c β)
   {R R' : Type} [CommRing R] [CommRing R']
 
+/- English proof (translation)
+The claim follows from `gt_push Y.m.cart (gt_pull Y.m0.cart (Small.tanF_hom Y y τ i) (by have e : Small.tanF Y y τ i ≫ Y.m0.cm.F = y.u τ i := Small.tanF_φ Y y τ i rw [e, Small.ptF_fst] exact y.tan τ i))`.
+-/
 theorem tanY_gt [Algebra c.F R] (y : FrPt Xo c R) (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) :
     GT Y.t.G (Small.ptY Y y) (Small.tanY Y y τ i) :=
   gt_push Y.m.cart (gt_pull Y.m0.cart (Small.tanF_hom Y y τ i) (by
@@ -27,16 +30,27 @@ theorem tanY_gt [Algebra c.F R] (y : FrPt Xo c R) (τ : E →+* ℂ) (i : Fin (D
     rw [e, Small.ptF_fst]
     exact y.tan τ i))
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Small.ptF_fst, Small.ptF_fst, h.1]`. Rewrite using `[Small.ptF_snd, Small.ptF_snd]`.
+-/
 theorem ptF_bor [Algebra c.F R] {t : Ix Dw → Rˣ} {y y' : FrPt Xo c R} (h : FrBor t y y') :
     Small.ptF y' = Small.ptF y := by
   apply pullback.hom_ext
   · rw [Small.ptF_fst, Small.ptF_fst, h.1]
   · rw [Small.ptF_snd, Small.ptF_snd]
 
+/- English proof (translation)
+Rewrite using `[Small.ptY, Small.ptY, ptF_bor h]`.
+-/
 theorem ptY_bor [Algebra c.F R] {t : Ix Dw → Rˣ} {y y' : FrPt Xo c R} (h : FrBor t y y') :
     Small.ptY Y y' = Small.ptY Y y := by
   rw [Small.ptY, Small.ptY, ptF_bor h]
 
+/- English proof (translation)
+Use `choose cf h1 h2 h3 using h.2.1 τ`. Use `⟨Matrix.of fun j i => cf i j, fun j i hij => h2 i j hij, h1, fun i => ?_⟩` and prove the remaining obligations. Use `gc_push Y.m.cart (gc_pull Y.m0.cart (Small.tanF_hom Y y τ) (by rw [Small.tanF_hom, ptF_bor h]) ?_)` and prove the remaining obligations. Establish `e : ∀ (y : FrPt Xo c R) i, Small.tanF Y y τ i ≫ Y.m0.cm.F = y.u τ i` using `fun y i => Small.tanF_φ Y y τ i`. Simplify using `only [e, Small.ptF_fst]`.
+
+Conclude with `h3 i`.
+-/
 theorem tanY_bor [Algebra c.F R] {t : Ix Dw → Rˣ} {y y' : FrPt Xo c R} (h : FrBor t y y') (τ : E →+* ℂ) :
     ∃ C : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) R, C.BlockTriangular id ∧ (∀ i, C i i = t (some ⟨τ, i⟩)) ∧
       ∀ i, GC Y.t.G (Small.ptY Y y) (Small.tanY Y y τ) (fun j => C j i) (Small.tanY Y y' τ i) := by
@@ -59,12 +73,20 @@ def Crd (f : Γ(Y.X, U) →+* R) (cv : Fin n → R) (w : Sp (DualNumber R) ⟶ Y
 
 variable {Y hU v₀}
 
+/- English proof (translation)
+Take `⟨t, ⟨m⟩⟩` from `(GlobalTheory.ModelPoints.model_points_charts E H Dw l Xo c O β Y).2.1 (Sp R) (spMap f ≫ hU.fromSpec)`. Take `⟨v, hv, hb⟩` from `hC R f t.G m.φ m.cart`. Conclude with `⟨t.G, inferInstance, inferInstance, m.φ, m.cart, v, hv, hb⟩`.
+-/
 theorem IsChart.isBas (hC : IsChart Y hU v₀) (f : Γ(Y.X, U) →+* R) :
     IsBas Y.t.G (spMap f ≫ hU.fromSpec) (fun j => spMap (dualMapR f) ≫ v₀ j) := by
   obtain ⟨t, ⟨m⟩⟩ := (GlobalTheory.ModelPoints.model_points_charts E H Dw l Xo c O β Y).2.1 (Sp R) (spMap f ≫ hU.fromSpec)
   obtain ⟨v, hv, hb⟩ := hC R f t.G m.φ m.cart
   exact ⟨t.G, inferInstance, inferInstance, m.φ, m.cart, v, hv, hb⟩
 
+/- English proof (translation)
+Establish `h1` using `gc_bc ψ h`. Establish `e : dualMapR (ψ.comp f) = (dualMapR ψ).comp (dualMapR f)`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMapR]`. Unfold `Crd`.
+
+Rewrite using `[e, spMap_comp, spMap_comp, Category.assoc]`. Simplify `h1` using `only [Category.assoc]`.
+-/
 theorem Crd.bc (ψ : R →+* R') {f : Γ(Y.X, U) →+* R} {cv : Fin n → R} {w : Sp (DualNumber R) ⟶ Y.t.G.left}
     (h : Crd Y hU v₀ f cv w) : Crd Y hU v₀ (ψ.comp f) (fun j => ψ (cv j)) (spMap (dualMapR ψ) ≫ w) := by
   have h1 := gc_bc ψ h
@@ -75,6 +97,9 @@ theorem Crd.bc (ψ : R →+* R') {f : Γ(Y.X, U) →+* R} {cv : Fin n → R} {w 
   rw [e, spMap_comp, spMap_comp, Category.assoc]
   simpa only [Category.assoc] using h1
 
+/- English proof (translation)
+Take `⟨C, h1, h2, h3⟩` from `tanY_bor Y h τ`. Use `⟨C, h1, h2, fun f hf g u hg hu => ?_⟩` and prove the remaining obligations. Rewrite `h3` using `[hf]`. Use extensionality with `j i`. Conclude with `congrFun ((hC.isBas f).unique ((hC.isBas f).comb hg (h3 i)) (hu i)) j`.
+-/
 theorem IsChart.crd_bor (hC : IsChart Y hU v₀) [Algebra c.F R] {t : Ix Dw → Rˣ} {y y' : FrPt Xo c R}
     (h : FrBor t y y') (τ : E →+* ℂ) :
     ∃ C : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) R, C.BlockTriangular id ∧ (∀ i, C i i = t (some ⟨τ, i⟩)) ∧
@@ -87,6 +112,9 @@ theorem IsChart.crd_bor (hC : IsChart Y hU v₀) [Algebra c.F R] {t : Ix Dw → 
   ext j i
   exact congrFun ((hC.isBas f).unique ((hC.isBas f).comb hg (h3 i)) (hu i)) j
 
+/- English proof (translation)
+Establish `e : (1 : ptOver R R ⟶ A).left = η[A].left` using `by show spMap (RingHom.id R) ≫ η[A].left = _`. Establish `: spMap (RingHom.id R) = 𝟙 _` using `Spec.map_id _`. Rewrite using `[this, Category.id_comp]`. Unfold `IsTan IsTangent`. Rewrite using `[e]`.
+-/
 theorem isTan_iff {A : Over (Sp R)} [GrpObj A] (w : epsR R ⟶ A) : IsTan (V := R) (R := R) w ↔ IsTangent w := by
   have e : (1 : ptOver R R ⟶ A).left = η[A].left := by
     show spMap (RingHom.id R) ≫ η[A].left = _
@@ -95,6 +123,23 @@ theorem isTan_iff {A : Over (Sp R)} [GrpObj A] (w : epsR R ⟶ A) : IsTan (V := 
   unfold IsTan IsTangent
   rw [e]
 
+/- English proof (translation)
+Use `letI := io.toAlgebra`. Take `⟨G, t', m1, m2, ⟨ub, htan, heig, hbasis, hlift⟩, -⟩` from `y.2.2`. Establish `wa : m1.φ ≫ Xo.univ.t.G.hom = (t'.G.hom ≫ Small.ptF y.1) ≫ pullback.fst _ _`. Rewrite using `[m1.cart.1.w, Category.assoc, Small.ptF_fst]`. Set `a : t'.G.left ⟶ Y.oF.t.G.left` to `Y.m0.cart.1.lift m1.φ (t'.G.hom ≫ Small.ptF y.1) wa`.
+
+Establish `ha1 : a ≫ Y.m0.toSABMap.φ = m1.φ` using `IsPullback.lift_fst _ _ _ _`. Establish `ha2 : a ≫ Y.oF.t.G.hom = t'.G.hom ≫ Small.ptF y.1` using `IsPullback.lift_snd _ _ _ _`. Establish `gpa : IsGrpPullback t'.G Y.oF.t.G (Small.ptF y.1) a` using `IsGrpPullback.cancel Y.m0.cart (m1.cart.congr (Small.ptF_fst y.1).symm ha1.symm) ha2`. Establish `hg : Small.ptY Y y.1 = spMap (algebraMap T.V T.Fr) ≫ spMap f₀ ≫ hU.fromSpec`. Rewrite using `[hf, spMap_comp, Category.assoc]`.
+
+Establish `gpY : IsGrpPullback t'.G Y.t.G (spMap (algebraMap T.V T.Fr) ≫ spMap f₀ ≫ hU.fromSpec) (a ≫ Y.m.φ)` using `(gpa.comp Y.m.cart).congr hg rfl`. Establish `acta : ∀ r, (t'.act.act r).left ≫ a = a ≫ (Y.oF.t.act.act r).left`. Introduce `r`. Apply `Y.m0.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, ha1, Y.m0.act r, ← Category.assoc, ha1, m1.act r]`.
+
+Rewrite using `[Category.assoc, Category.assoc, ha2, Over.w (Y.oF.t.act.act r), ha2, ← Category.assoc, Over.w (t'.act.act r)]`. Take `⟨Ψ, hΨ, hm2, -⟩` from `GlobalTheory.T.complete_dvr_pullback_semiabelian E H hExt Y.X Y.t T (spMap f₀ ≫ hU.fromSpec) G t' m2 (a ≫ Y.m.φ) gpY (fun r => by rw [← Category.assoc, acta r, Category.assoc, Y.m.act r, Category.assoc])`. Take `⟨v, hv, hb⟩` from `hC T.V f₀ G.G Ψ hΨ`. Take `⟨u, hu, hp⟩` from `exists_prim hb (I := {q : 𝓞 E × T.V // algebraMap T.V T.Fr q.2 = io (embK c τ q.1)}) (fun q => G.act.act q.1.1) (fun q => G.act.hom _) (fun q => q.1.2) (ub τ) (fun i => (isTan_iff _).1 (htan τ i)) (fun i q => heig τ i _ _ q.2) (fun w hw he => hbasis τ w ((isTan_iff _).2 hw) fun a …`. Use `⟨u, hp, fun i => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : Crd Y hU v₀ f₀ (fun j => u j i) ((ub τ i).left ≫ Ψ)`. Use `(gc_iff hΨ _ _ _).1 (hu i)` as an intermediate fact. Simplify using `only [hv] at this`. Conclude with `this`. Establish `h2` using `h1.bc (algebraMap T.V T.Fr)`.
+
+Take `⟨u', hu1, hu2⟩` from `hlift τ i`. Establish `hbase` using `GlobalTheory.CompanionTheory.Ar.Rec.FinRd.Roots.LieBasis.base_eq T G t' m2 _ u' hu2`. Establish `e : u' ≫ a = Small.tanF Y y.1 τ i`. Apply `Small.eq_tanF` to reduce the goal to its premises. Rewrite using `[Category.assoc, ha1, hu1]`.
+
+Rewrite using `[Category.assoc, ha2, ← Category.assoc, hbase]`. Establish `e2 : Small.tanY Y y.1 τ i = spMap (dualMapR (algebraMap T.V T.Fr)) ≫ (ub τ i).left ≫ Ψ`. Rewrite using `[Small.tanY, ← e, Category.assoc, ← hm2, ← Category.assoc, hu2, Category.assoc]`. Both sides reduce to the same expression. Rewrite using `[e2]`.
+
+Conclude with `h2`.
+-/
 theorem IsChart.integral (hExt : GlobalTheory.Published.SemiAbelianHomExtension) (hC : IsChart Y hU v₀) {T : CDVR}
     {io : c.F →+* T.Fr} (y : IntFr Xo c T io) (f₀ : Γ(Y.X, U) →+* T.V)
     (hf : letI := io.toAlgebra; Small.ptY Y y.1 = spMap ((algebraMap T.V T.Fr).comp f₀) ≫ hU.fromSpec)

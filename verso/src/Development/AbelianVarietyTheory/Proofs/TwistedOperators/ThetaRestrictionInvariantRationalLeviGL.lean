@@ -17,6 +17,13 @@ local infixl:70 " ⬝ " => HMul.hMul
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.MixModel.lattice_Mx D m n`. Set `e : Mx D m n ≃+ Mx D m n` to `{ toFun := fun a => a ⬝ M invFun := fun a => a ⬝ M' left_inv := fun a => by simp only [Matrix.mul_assoc, hMM', Matrix.mul_one] right_inv := fun a => by simp only [Matrix.mul_assoc, hM'M, Matrix.mul_one] map_add' := fun a b => Matrix.add_mul _ _ _ }`. Establish `he : Continuous e` using `continuous_id.matrix_mul continuous_const`. Establish `he' : Continuous e.symm` using `continuous_id.matrix_mul continuous_const`. Establish `hr : ∀ x, e x ∈ GlobalTheory.MixModel.ratMx D m n ↔ x ∈ GlobalTheory.MixModel.ratMx D m n` using `fun x => ⟨fun h => by`.
+
+Establish `h2` using `GlobalTheory.MixModel.ratMx_mul h hM'`. Establish `h3 : e x ⬝ M' = x` using `e.symm_apply_apply x`. Rewrite using `[h3] at h2,` and apply the resulting hypothesis. Use `fun h => GlobalTheory.MixModel.ratMx_mul h hM⟩`. Take `⟨h1, hemb⟩` from `GlobalTheory.Unf.ParCont.isCovolOne_map hμ e he he' hr`.
+
+Rewrite using `[← GlobalTheory.MixModel.covolOne_integral_eq hμ h1 φ hφ, hemb.setIntegral_map, Set.preimage_image_eq _ e.injective]`. Both sides reduce to the same expression.
+-/
 theorem covolOne_integral_mul_right {m n : ℕ} {μ : Measure (Mx D m n)} {𝓕 : Set (Mx D m n)}
     (hμ : IsCovolOne (GlobalTheory.MixModel.ratMx D m n) μ 𝓕) (M M' : Mx D n n) (hM'M : M' * M = 1) (hMM' : M * M' = 1)
     (hM : M ∈ GlobalTheory.MixModel.ratMx D n n) (hM' : M' ∈ GlobalTheory.MixModel.ratMx D n n) (φ : Mx D m n → ℂ)
@@ -47,6 +54,19 @@ namespace GlobalTheory.LeviGLRes
 
 local infixl:70 " ⬝ " => HMul.hMul
 
+/- English proof (translation)
+Introduce `D V V' W r C B hs d hC hB ψ χS χT ω hω μ 𝓨 hcov a f hf`. Substitute `hC hB` using the available equality. Use `set A : GL (Fin r) (AE D) := Matrix.GeneralLinearGroup.map (incA D) a with hA`. Establish `hA1 : A.1 = GlobalTheory.MixModel.rat a.1` using `rfl`. Establish `hAi : (A⁻¹).1 = GlobalTheory.MixModel.rat (a⁻¹).1` using `rfl`.
+
+Establish `hmem : d.levi A ∈ GQ V` using `d.levi_mem_GQ (by rw [hA1]; exact GlobalTheory.MixModel.rat_mem _) (by rw [hAi]; exact GlobalTheory.MixModel.rat_mem _)`. Establish `hsub : ∀ w : WO V W, ω (d.levi A, 1) f w = f (w ⬝ Formalism.L2.Theta.mt V (d.levi A))` using `fun w => by`. Establish `h` using `GlobalTheory.WeilRat.om_rat_actO D ψ hω.std V W χS χT ω hω _ hmem 1 (one_mem _) f hf (w ⬝ Formalism.L2.Theta.mt V (d.levi A))`. Rewrite `h` using `[GlobalTheory.LeviRes.actO_mul_mt]`. Then use the resulting hypothesis. Use `set M : Mx D r r := GlobalTheory.MixModel.adj (A⁻¹).1 with hMdef`.
+
+Use `set M' : Mx D r r := GlobalTheory.MixModel.adj A.1 with hM'def`. Establish `hMM' : M * M' = 1`. Rewrite using `[hMdef, hM'def, ← GlobalTheory.MixModel.adj_mul, Units.mul_inv, GlobalTheory.MixModel.adj_one]`. Establish `hM'M : M' * M = 1`. Rewrite using `[hMdef, hM'def, ← GlobalTheory.MixModel.adj_mul, Units.inv_mul, GlobalTheory.MixModel.adj_one]`.
+
+Establish `hM : M ∈ GlobalTheory.MixModel.ratMx D r r` using `GlobalTheory.MixModel.ratMx_adj (by rw [hAi]; exact GlobalTheory.MixModel.rat_mem _)`. Establish `hM' : M' ∈ GlobalTheory.MixModel.ratMx D r r` using `GlobalTheory.MixModel.ratMx_adj (by rw [hA1]; exact GlobalTheory.MixModel.rat_mem _)`. Use function extensionality and compare the values at `x`. Establish `key : ∀ y : Mx D W.rank r, ω (d.levi A, 1) f (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W d.e y + GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.midPart V V' W d.i₀ x) = f (GlobalTheory.IndefiniteRowSideFullHecke.Adjoin …`. Introduce `y`.
+
+Establish `e1 : GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W d.e y ⬝ Formalism.L2.Theta.mt V (d.levi A) = GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W d.e (y ⬝ M)` using `by show (y ⬝ d.pY) ⬝ Formalism.L2.Theta.mt V (d.levi A) = (y ⬝ M) ⬝ d.pY`. Rewrite using `[Matrix.mul_assoc, d.pY_levi, ← Matrix.mul_assoc]`. Establish `e2 : GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.midPart V V' W d.i₀ x ⬝ Formalism.L2.Theta.mt V (d.levi A) = GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.midPart V V' W d.i₀ x`. Rewrite using `[GlobalTheory.Bridge.orthProjPartHomToHermitian_eq_wittDecompositionCore, GlobalTheory.MixModel.HypDec.matrixExtendByZero_apply, Matrix.mul_assoc, d.wittDecomp_projAnisotropic_levi]`. Rewrite using `[hsub, Matrix.add_mul, e1, e2]`.
+
+Use `show ∫ y in 𝓨, ω (d.levi A, 1) f (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W d.e y + GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.midPart V V' W d.i₀ x) ∂μ = ∫ y in 𝓨, f (GlobalTheory.IndefiniteRowSideFullHecke.Adjoi …`. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall key)]`. Conclude with `covolOne_integral_mul_right hcov M M' hM'M hMM' hM hM' (fun y => f (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart V W d.e y + GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.midPart V V' W d.i₀ x)) (GlobalTheory.LeviRes.period …`.
+-/
 theorem res_levi_GL : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.IsIsoSplit V V' C B → ∀ (d : GlobalTheory.MixModel.HypDec V V' r), d.e = C → d.i₀ = B → ∀ (ψ : AddChar (AF D.host.F) ℂ) (χS χT : (AE D)ˣ →* Circle) (ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)), IsWeilDatumO ψ V W χS χT ω → ∀ (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r)), IsCovolOne (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.ratMx D W.rank r) μ 𝓨 → ∀ (a : GL (Fin r) D.host.E) (f : WO V W → ℂ), IsThetaFunO ψ V W f → GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.res V V' W C B μ 𝓨 (ω (d.levi (Matrix.GeneralLinearGroup.map (incA D) a), 1) f) = GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.res V V' W C B μ 𝓨 f := by
   intro D V V' W r C B hs d hC hB ψ χS χT ω hω μ 𝓨 hcov a f hf
   subst hC hB

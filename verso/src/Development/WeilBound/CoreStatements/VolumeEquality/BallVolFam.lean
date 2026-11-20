@@ -11,6 +11,13 @@ open NumberField Matrix MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo.T
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Establish `e2 : ((a.map (ccH E)).map s)ᵀ = (a.map s)ᴴ`. Use extensionality with `i k`. Conclude with `IsCMField.complexEmbedding_complexConj E s _`. Establish `e3 : (a.map s)ᴴ * (G.map s)ᵀ * a.map s = (G'.map s)ᵀ`. Rewrite using `[← ha, Matrix.map_mul, Matrix.map_mul, transpose_mul, transpose_mul, e2, Matrix.transpose_map, transpose_transpose, Matrix.mul_assoc]`.
+
+Establish `e4 : A * (Ai * (a.map s * A')) = a.map s * A'` using `by rw [← Matrix.mul_assoc, hi, Matrix.one_mul]`. Unfold `IsSgU`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hA, conjTranspose_mul A]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = A'ᴴ * ((a.map s)ᴴ * (G.map s)ᵀ * a.map s) * A' := by`. Rewrite using `[e4, conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [e3, hA']`.
+-/
 theorem sgU_of_iso {j j' N : ℕ} (s : E →+* ℂ) {G G' a : Matrix (Fin N) (Fin N) E} (ha : aᵀ * G * a.map (ccH E) = G')
     {A A' : Matrix (Fin N) (Sg j j') ℂ} {Ai : Matrix (Sg j j') (Fin N) ℂ} (hA : Aᴴ * (G.map s)ᵀ * A = sgI j j')
     (hA' : A'ᴴ * (G'.map s)ᵀ * A' = sgI j j') (hi : A * Ai = 1) : IsSgU (Ai * (a.map s * A')) := by
@@ -30,6 +37,9 @@ theorem sgU_of_iso {j j' N : ℕ} (s : E →+* ℂ) {G G' a : Matrix (Fin N) (Fi
         simp only [Matrix.mul_assoc]
     _ = _ := by rw [e3, hA']
 
+/- English proof (translation)
+Break down `hF with e | e` into its components or cases. Rewrite using `[e]`. Conclude with `h.1 u v`. Rewrite using `[e]`. Conclude with `congrArg Neg.neg (h.1 u v)`.
+-/
 theorem InLevel.form {H : Host E} {l : Level H} {D : Datum H} {γ : D.La ≃ₗ[𝓞 E] D.La} (h : InLevel l D γ)
     {form : D.La →ₗ[ℤ] D.La →ₗ[ℤ] ℤ} (hF : form = D.EF ∨ form = -D.EF) (u v : D.La) : form (γ u) (γ v) = form u v := by
   rcases hF with e | e
@@ -38,6 +48,9 @@ theorem InLevel.form {H : Host E} {l : Level H} {D : Datum H} {γ : D.La ≃ₗ[
   · rw [e]
     exact congrArg Neg.neg (h.1 u v)
 
+/- English proof (translation)
+Use `rigid_of_congr (reForm R) (reForm_pos _) (fun C => ?_) γ.toLinearMap.toAddMonoidHom (reForm_eqv (h.form hF) he) l.M l.three_le h.congr v` and prove the remaining obligations. Take `⟨S, hS₁, hS₂⟩` from `short_finite (fun _ : Unit => R) (fun _ => continuous_const) continuous_const () C`. Conclude with `hS₁.subset hS₂.self_of_nhds`.
+-/
 theorem InLevel.free {H : Host E} {l : Level H} {D : Datum H} {γ : D.La ≃ₗ[𝓞 E] D.La} (h : InLevel l D γ) {g : ℕ}
     (R : RiemLat E g D.La) (hF : R.form = D.EF ∨ R.form = -D.EF) (he : R.EqvBy R γ) (v : D.La) : γ v = v := by
   refine rigid_of_congr (reForm R) (reForm_pos _) (fun C => ?_) γ.toLinearMap.toAddMonoidHom
@@ -45,6 +58,15 @@ theorem InLevel.free {H : Host E} {l : Level H} {D : Datum H} {γ : D.La ≃ₗ[
   obtain ⟨S, hS₁, hS₂⟩ := short_finite (fun _ : Unit => R) (fun _ => continuous_const) continuous_const () C
   exact hS₁.subset hS₂.self_of_nhds
 
+/- English proof (translation)
+Use `⟨hm, ?_, fun s hs => ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Conclude with `hZ.mapsTo (hFF.2.1 ht)`. Take `⟨t, ht, rfl⟩` from `hZ.surjOn hs`. Take `⟨t', ht', δ, hδ, he⟩` from `hFF.2.2.1 t ht`.
+
+Take `⟨γ, hγ, hx⟩` from `h2 δ ((hΓ δ).1 hδ)`. Conclude with `⟨γ, hγ, t', ht', (hq γ hγ δ hx t ht t' (hFF.2.1 ht')).1 he⟩`. Introduce and unpack `_ ⟨t, ht, rfl⟩ γ hγ ⟨t', ht', he⟩`. Take `⟨δ, hδ, hx⟩` from `h1 γ hγ`. Establish `h3` using `(hq γ hγ δ hx t (hFF.2.1 ht) t' (hFF.2.1 ht')).2 he`.
+
+Take `rfl` from `hFF.2.2.2 t ht t' ht' ⟨δ, (hΓ δ).2 hδ, h3⟩`. Establish `h4` using `hδ.free (F.R t) (by rw [F.form_eq]; exact hF) h3`. Establish `h5 : Matrix.toLin' (γ : Matrix (Fin N) (Fin N) E) = LinearMap.id`. Use `LinearMap.ext_on hL.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Rewrite using `[Matrix.toLin'_apply, ← hx, h4]`. Both sides reduce to the same expression. Conclude with `Units.ext (Matrix.toLin'.injective (h5.trans Matrix.toLin'_one.symm))`.
+-/
 theorem mfund_of {H : Host E} {l : Level H} {D : Datum H} {Ψ : Type} [Fintype Ψ] {j j' n g N : ℕ}
     {F : UnivFam E Ψ j j' n g D.La} {Γ : Subgroup (D.La ≃ₗ[𝓞 E] D.La)} {FF : Set (Fin n → ℂ)}
     (hF : F.form = D.EF ∨ F.form = -D.EF) (hΓ : ∀ γ, γ ∈ Γ ↔ InLevel l D γ) (hFF : F.IsFundSet Γ FF)
@@ -75,6 +97,27 @@ theorem mfund_of {H : Host E} {l : Level H} {D : Datum H} {Ψ : Type} [Fintype �
       rfl
     exact Units.ext (Matrix.toLin'.injective (h5.trans Matrix.toLin'_one.symm))
 
+/- English proof (translation)
+Introduce `E _ _ _ H l D D' Ψ _ j j' n g F F' Γ Γ' FF FF' c₀ hj hj' hr hc hσ hrt hF hF' hΓ hΓ' hFF hFF'`. Use `H.unram` as an intermediate fact. Establish `hemb : ∀ (u : 𝓞 E →+* ℂ) (x : 𝓞 E), embOf u (x : E) = u x` using `fun u x => IsFractionRing.lift_algebraMap _ x`. Establish `hext : ∀ u : E →+* ℂ, embOf (u.comp (algebraMap (𝓞 E) E)) = u` using `fun u => IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun x => hemb _ x)`. Establish `hcov : ∀ u : E →+* ℂ, u ∈ Set.range (fun τ => embOf (F.σ τ)) ∨ ComplexEmbedding.conjugate u ∈ Set.range (fun τ => embOf (F.σ τ))` using `fun u => by`.
+
+Distinguish the cases in `h : ∃ τ, F.σ τ = (starRingEnd ℂ).comp (u.comp (algebraMap (𝓞 E) E))`. Take `⟨τ, hτ⟩` from `h`. Conclude with `Or.inr ⟨τ, (congrArg embOf hτ).trans (hext (ComplexEmbedding.conjugate u))⟩`. Take `⟨τ, hτ⟩` from `(F.cm.2 _).2 h`. Conclude with `Or.inl ⟨τ, (congrArg embOf hτ).trans (hext u)⟩`.
+
+Establish `hne : Nonempty Ψ`. Take `⟨u⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply the tactic sequence `rcases hcov u with ⟨τ, -⟩ | ⟨τ, -⟩ <;> exact ⟨τ⟩`. Establish `hξ : ∀ τ, embOf (F.σ τ) (H.rt : E) = Complex.I * (c₀ : ℂ)` using `fun τ => (hemb _ _).trans (hrt τ)`. Take `⟨τ₀⟩` from `hne`.
+
+Establish `: Nonempty Ψ` using `⟨τ₀⟩`. Establish `hξ0 : -(H.rt : E) ≠ 0` using `neg_ne_zero.2 fun h => by`. Use `hξ τ₀` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `mul_ne_zero Complex.I_ne_zero (Complex.ofReal_ne_zero.2 hc.ne') this.symm`.
+
+Establish `hξc : cc (-(H.rt : E)) = - -(H.rt : E)` using `(embOf (F.σ τ₀)).injective (by`. Rewrite using `[cc, IsCMField.complexEmbedding_complexConj, neg_neg, map_neg, hξ]`. Use the proof step `simp)`. Take `⟨G, e, A, Ai, Z, a1, a2, a3, a4, a5, a6, a7, a8, a9⟩` from `h2 E Ψ j j' n g _ H F _ c₀ hc hξ`. Take `⟨G', e', A', Ai', Z', b1, b2, b3, b4, b5, b6, b7, b8, b9⟩` from `h2 E Ψ j j' n g _ H F' _ c₀ hc (hσ ▸ hξ)`.
+
+Rewrite `b6`, `b9` using `[hσ]`. Take `⟨c1, c2, c3⟩` from `h4 E H l D _ G e _ _ hF a3 a4 hξ0 a5`. Take `⟨d1, d2, d3⟩` from `h4 E H l D' _ G' e' _ _ hF' b3 b4 hξ0 b5`. Establish `hne : levIdeal l ≠ ⊥` using `inf_span_ne_bot l.prod (Nat.cast_ne_zero.2 (by have := l.three_le; omega)) (Nat.cast_ne_zero.2 l.A_pos.ne')`. Take `⟨a, ha, hle, hidx⟩` from `h3 E Ψ j j' _ G G' _ _ _ (levIdeal l) hcov hj hj' hr a1 b1 a2 b2 (fun τ => ⟨_, (a6 τ).1⟩) (fun τ => ⟨_, (b6 τ).1⟩) a4 b4 hξ0 hξc c1 d1 hne (neat_mono inf_le_left (neat_of_split E H.bar H.bar_eq l.M l.Mb l.three_le l.prod l.coprime))`.
+
+Take `⟨m1, m2⟩` from `a8 FF hFF.1 hFF.2.1`. Take `⟨m3, m4⟩` from `b8 FF' hFF'.1 hFF'.2.1`. Establish `f1` using `mfund_of (Γm := levelGrp (ccH E) G (LinearMap.range e) (levIdeal l)) hF hΓ hFF a4 a7 m1 (fun γ hγ => a9 γ (Subgroup.mem_inf.1 hγ).1) c2 c3`. Establish `f2` using `mfund_of (Γm := levelGrp (ccH E) G' (LinearMap.range e') (levIdeal l)) hF' hΓ' hFF' b4 b7 m3 (fun γ hγ => b9 γ (Subgroup.mem_inf.1 hγ).1) d2 d3`. Establish `: Countable (Matrix (Fin (j + j')) (Fin (j + j')) E)`.
+
+Establish `: Countable E` using `(Module.finBasis ℚ E).equivFun.toEquiv.countable_iff.2 inferInstance`. Conclude with `inferInstanceAs (Countable (Fin (j + j') → Fin (j + j') → E))`. Establish `: Countable (GL (Fin (j + j')) E)` using `(Units.val_injective.countable : Countable (Matrix (Fin (j + j')) (Fin (j + j')) E)ˣ)`. Establish `canc : ∀ τ (X : Matrix (Fin (j + j')) (Sg j j') ℂ), A τ * (Ai τ * X) = X` using `fun τ X => by`. Rewrite using `[← Matrix.mul_assoc, (a6 τ).2.2, Matrix.one_mul]`.
+
+Establish `canc' : ∀ τ (X : Matrix (Fin (j + j')) (Sg j j') ℂ), A' τ * (Ai' τ * X) = X` using `fun τ X => by`. Rewrite using `[← Matrix.mul_assoc, (b6 τ).2.2, Matrix.one_mul]`. Rewrite using `[← m2, ← m4]`. Use `h1 Ψ j j' n F.q F'.q _ (rho (fun τ => embOf (F.σ τ)) A Ai) (rho (fun τ => embOf (F.σ τ)) A' Ai') (fun τ => Ai τ * ((a : Matrix (Fin (j + j')) (Fin (j + j')) E).map (embOf (F.σ τ)) * A' τ)) (uGrp (ccH E) G) (levelGrp (ccH E) G (LinearMap.range e) (levIdeal l)) (levelGrp (ccH E) G' …` and prove the remaining obligations. Rewrite using `[rho, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul, (a6 τ).2.1]`.
+
+Simplify using `only [rho, Units.val_mul, Matrix.map_mul, Matrix.mul_assoc, canc]`. Establish `: ((a⁻¹ : GL (Fin (j + j')) E) : Matrix (Fin (j + j')) (Fin (j + j')) E).map (embOf (F.σ τ)) * ((a : Matrix (Fin (j + j')) (Fin (j + j')) E).map (embOf (F.σ τ)) * A' τ) = A' τ`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`. Simplify using `only [rho, Units.val_mul, Matrix.map_mul, Matrix.mul_assoc, canc, canc', this]`.
+-/
 theorem famVol_of (h1 : MoebVol) (h2 : StdModel) (h3 : ArithIdx) (h4 : LevelDict) : FamVol := by
   intro E _ _ _ H l D D' Ψ _ j j' n g F F' Γ Γ' FF FF' c₀ hj hj' hr hc hσ hrt hF hF' hΓ hΓ' hFF hFF'
   have := H.unram

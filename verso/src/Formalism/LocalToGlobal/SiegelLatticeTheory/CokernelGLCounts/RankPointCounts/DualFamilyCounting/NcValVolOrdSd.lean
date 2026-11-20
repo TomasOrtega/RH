@@ -13,6 +13,27 @@ open scoped TensorProduct
 attribute [local instance] PI.VolStabSW.secondCountable_Fv PI.VolStabSW.locallyCompact_Fv
   PI.UnitaryGroupMassFormula.LocJacTyp.Sd.finDim
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ v ι _ hE μ _ x hx`. Set `z : ι → Fv F v ⊗[F] E` to `fun i => LocVol.sc v (x i)`. Set `f` to `PI.UnitaryGroupMassFormula.LocJacTyp.BM.mulL v z`. Establish `hLM` using `PI.NglqJacSplitW.linModulusV_of (PI.NglqJacSplitW.linModulus_of PI.NglqJacSplitW.diagonal_one_jacobian)`. Establish `hrank : Module.finrank (Fv F v) (Fv F v ⊗[F] E) = 2`.
+
+Rewrite using `[Module.finrank_baseChange]`. Conclude with `hE`. Establish `hdet : LinearMap.det f = ∏ i, x i ^ 2`. Rewrite using `[PI.UnitaryGroupMassFormula.LocJacTyp.BM.det_mulL]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Algebra.norm (Fv F v) (algebraMap (Fv F v) (Fv F v ⊗[F] E) (x i)) = _`. Rewrite using `[Algebra.norm_algebraMap, hrank]`. Establish `hdet0 : LinearMap.det f ≠ 0`. Rewrite using `[hdet]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun i _ => pow_ne_zero _ (hx i)`.
+
+Use `set S := Set.univ.pi fun i : ι => {c : Fv F v ⊗[F] E | LocVol.sc v (x i) * c ∈ LocVol.OEv v} with hSdef`. Establish `hpre : S = f ⁻¹' (Set.univ.pi fun _ : ι => LocVol.OEv v)`. Use extensionality with `y`. Simplify using `[S, f, z, PI.UnitaryGroupMassFormula.LocJacTyp.BM.mulL_apply]`. Establish `hcont : Continuous f` using `IsModuleTopology.continuous_of_linearMap f`.
+
+Establish `hS : MeasurableSet S`. Rewrite using `[hpre]`. Use `(IsOpen.preimage hcont ?_).measurableSet` and prove the remaining obligations. Conclude with `isOpen_set_pi Set.finite_univ fun i _ => PI.UnitaryGroupMassFormula.LocJacTyp.Sd.isOpen_oev (E := E) v`. Establish `himg : f '' S = Set.univ.pi fun _ : ι => LocVol.OEv v`.
+
+Rewrite using `[hpre, Set.image_preimage_eq]`. Introduce `y`. Use `⟨fun i => ((x i)⁻¹ ⊗ₜ[F] (1 : E)) * y i, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[PI.UnitaryGroupMassFormula.LocJacTyp.BM.mulL_apply]`.
+
+Express the relevant statement in the definitionally equal form `(x i ⊗ₜ[F] (1 : E)) * (((x i)⁻¹ ⊗ₜ[F] (1 : E)) * y i) = y i`. Rewrite using `[← mul_assoc, Algebra.TensorProduct.tmul_mul_tmul, mul_inv_cancel₀ (hx i), one_mul, ← Algebra.TensorProduct.one_def, one_mul]`. Set `b` to `Module.finBasis (Fv F v) (ι → Fv F v ⊗[F] E)`. Set `e0` to `b.equivFun`. Set `e : (ι → Fv F v ⊗[F] E) ≃L[Fv F v] (Fin (Module.finrank (Fv F v) (ι → Fv F v ⊗[F] E)) → Fv F v)` to `{ e0 with continuous_toFun := IsModuleTopology.continuous_of_linearMap e0.toLinearMap continuous_invFun := IsModuleTopology.continuous_of_linearMap e0.symm.toLinearMap }`.
+
+Establish `h` using `hLM (Fv F v) (ι → Fv F v ⊗[F] E) (Fin _) ⟨e⟩ f hdet0 μ inferInstance S hS`. Establish `hne : (∏ i, x i ^ 2) ≠ 0` using `hdet ▸ hdet0`. Rewrite `h` using `[himg, hdet, PI.UnitaryGroupMassFormula.LocJacTyp.BM.modF_Fv v _ hne, PI.UnitaryGroupMassFormula.LocJacTyp.BM.absV_prod]`. Establish `hpos : ∀ i, 0 < PI.LocJacTyp.absV v (x i)` using `fun i => PI.UnitaryGroupMassFormula.LocJacTyp.absV_pos v (hx i)`. Establish `hP : 0 < ∏ i, PI.LocJacTyp.absV v (x i ^ 2)` using `Finset.prod_pos fun i _ => by rw [PI.UnitaryGroupMassFormula.LocJacTyp.absV_pow]; exact pow_pos (hpos i) 2`.
+
+Establish `hR` using `congrArg ENNReal.toReal h`. Rewrite `hR` using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal hP.le]`. Express the relevant statement in the definitionally equal form `(μ S).toReal = (μ (Set.univ.pi fun _ : ι => PI.LocJacTyp.OEv v)).toReal * ∏ i, (PI.LocJacTyp.absV v (x i) ^ 2)⁻¹`. Express the relevant statement in the definitionally equal form `(μ (Set.univ.pi fun _ : ι => PI.LocJacTyp.OEv v)).toReal = _ at hR`. Rewrite using `[hR, Finset.prod_inv_distrib]`.
+
+Rewrite `hP`, the goal using `[PI.UnitaryGroupMassFormula.LocJacTyp.absV_pow]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem boxScaleL_holds : BoxScaleL := by
   intro F E _ _ _ _ _ v ι _ hE μ _ x hx
   classical
@@ -69,6 +90,35 @@ theorem boxScaleL_holds : BoxScaleL := by
   simp_rw [PI.UnitaryGroupMassFormula.LocJacTyp.absV_pow] at hP ⊢
   field_simp
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ ψ v d _ hE hd hann ι _`. Establish `hone : (1 : Fv F v ⊗[F] E) ∈ PI.LocJacTyp.OEv v`. Simplify using `using PI.UnitaryGroupMassFormula.LocJacTyp.Sd.inclR_mem (E := E) v 1`. Establish `hrank : Module.finrank (Fv F v) (Fv F v ⊗[F] E) = 2`. Rewrite using `[Module.finrank_baseChange]`.
+
+Conclude with `hE`. Establish `hinv : LocVol.sc v d * (d⁻¹ ⊗ₜ[F] (1 : E)) = 1`. Express the relevant statement in the definitionally equal form `(d ⊗ₜ[F] (1 : E)) * (d⁻¹ ⊗ₜ[F] (1 : E)) = 1`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_inv_cancel₀ hd, one_mul, ← Algebra.TensorProduct.one_def]`. Establish `hker : PI.UnitaryGroupMassFormula.LocJacTyp.Sd.OpenKer v ψ`.
+
+Use `PI.UnitaryGroupMassFormula.LocJacTyp.Sd.openKer_of v ψ (2 * d⁻¹) (mul_ne_zero two_ne_zero (inv_ne_zero hd)) ?_` and prove the remaining obligations. Introduce `c hc`. Establish `h1` using `(hann (d⁻¹ ⊗ₜ[F] (1 : E))).mpr (by rw [hinv]; exact hone)`. Establish `h2` using `h1 (c • (1 : Fv F v ⊗[F] E)) (PI.UnitaryGroupMassFormula.LocJacTyp.Sd.oev_smul v hc hone)`. Establish `htr : Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (c • (1 : Fv F v ⊗[F] E) * (d⁻¹ ⊗ₜ[F] (1 : E))) = c * (2 * d⁻¹)`.
+
+Establish `: c • (1 : Fv F v ⊗[F] E) * (d⁻¹ ⊗ₜ[F] (1 : E)) = algebraMap (Fv F v) (Fv F v ⊗[F] E) (c * d⁻¹)`. Rewrite using `[Algebra.smul_def, mul_one, map_mul]`. Both sides reduce to the same expression. Rewrite using `[this, Algebra.trace_algebraMap, hrank]`. Simplify using `only [nsmul_eq_mul, Nat.cast_ofNat]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← htr]`. Conclude with `h2`. Establish `hnt : ∃ r : Fv F v, psiV F ψ v r ≠ 1`. Assume the negation of the conclusion as `hall`.
+
+Use `push_neg at hall`. Take `⟨t0, ht0⟩` from `PI.UnitaryGroupMassFormula.LocJacTyp.Sd.exists_not_mem_oev (E := E) v`. Establish `h1` using `(hann ((d⁻¹ ⊗ₜ[F] (1 : E)) * t0)).mp (fun x _ => hall _)`. Rewrite `h1` using `[← mul_assoc, hinv, one_mul]`. Conclude with `ht0 h1`.
+
+Take `hex` from `PI.UnitaryGroupMassFormula.LocJacTyp.Sd.exists_sd (E := E) v ψ hker hnt ι`. Establish `hμ : LocVol.sdE ψ v ι = hex.choose`. Express the relevant statement in the definitionally equal form `PI.LocJacTyp.sdE ψ v ι = _`. Rewrite using `[PI.UnitaryGroupMassFormula.LocJacTyp.Sd.sdE_eq, dif_pos hex]`. Establish `hsd` using `hex.choose_spec`.
+
+Rewrite using `[hμ]`. Use `haveI : hex.choose.IsAddHaarMeasure := hsd.1`. Use `⟨hsd.1, inferInstance, ?_⟩` and prove the remaining obligations. Use `set μ := hex.choose`. Establish `hDopen` using `PI.UnitaryGroupMassFormula.LocJacTyp.Sd.isOpen_dbox (E := E) v ψ hker ι`.
+
+Establish `hDcpt` using `PI.UnitaryGroupMassFormula.LocJacTyp.Sd.isCompact_dbox (E := E) v ψ hker hnt ι`. Establish `htest` using `PI.UnitaryGroupMassFormula.LocJacTyp.Sd.sd_test v ψ ι μ hsd hDopen.measurableSet hDcpt.measure_lt_top`. Establish `hD : PI.UnitaryGroupMassFormula.LocJacTyp.Sd.Dbox v ψ ι = Set.univ.pi fun _ : ι => {c : Fv F v ⊗[F] E | LocVol.sc v d * c ∈ LocVol.OEv v}`. Use extensionality with `y`. Simplify using `only [PI.UnitaryGroupMassFormula.LocJacTyp.Sd.Dbox, Set.mem_pi, Set.mem_univ, true_implies]`.
+
+Conclude with `forall_congr' fun i => hann (y i)`. Establish `hbs` using `boxScaleL_holds v ι hE μ (fun _ => d) (fun _ => hd)`. Rewrite `hbs` using `[← hD]`. Simplify using `only [Measure.real] at htest`. Rewrite `htest` using `[hbs]`.
+
+Express the relevant statement in the definitionally equal form `(μ (Set.univ.pi fun _ : ι => PI.LocJacTyp.OEv v)).toReal = _`. Express the relevant statement in the definitionally equal form `(μ (Set.univ.pi fun _ : ι => PI.LocJacTyp.OEv v)).toReal * ((μ (Set.univ.pi fun _ : ι => PI.LocJacTyp.OEv v)).toReal * ∏ _i : ι, (PI.LocJacTyp.absV v d ^ 2)⁻¹) = 1 at htest`. Use `set a := (μ (Set.univ.pi fun _ : ι => PI.LocJacTyp.OEv v)).toReal`. Establish `hpos : 0 < PI.LocJacTyp.absV v d` using `PI.UnitaryGroupMassFormula.LocJacTyp.absV_pos v hd`. Rewrite `htest` using `[Finset.prod_const, Finset.card_univ]`.
+
+Establish `ha : 0 ≤ a` using `ENNReal.toReal_nonneg`. Establish `hsq : a ^ 2 = (PI.LocJacTyp.absV v d ^ Fintype.card ι) ^ 2`. Establish `hq : 0 < ((PI.LocJacTyp.absV v d ^ 2)⁻¹) ^ Fintype.card ι` using `by positivity`. Establish `: a ^ 2 * ((PI.LocJacTyp.absV v d ^ 2)⁻¹) ^ Fintype.card ι = 1`. Rewrite using `[← htest]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[inv_pow, ← pow_mul]`. Clear denominators, using `at this` for the nonvanishing conditions. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `(pow_left_inj₀ ha (by positivity) two_ne_zero).mp hsq`.
+-/
 theorem sdFromAnn_holds : SdFromAnn := by
   intro F E _ _ _ _ _ ψ v d _ hE hd hann ι _
   classical

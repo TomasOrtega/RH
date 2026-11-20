@@ -14,29 +14,54 @@ noncomputable section
 
 namespace GlobalTheory.UMin.ThBdl
 
+/- English proof (translation)
+Rewrite using `[← Scheme.Hom.appLE_map f e (homOfLE h).op]`. Both sides reduce to the same expression.
+-/
 theorem cross_resG_appLE {X Y : Scheme.{0}} (f : X ⟶ Y) {U : Y.Opens} {V W : X.Opens} (e : V ≤ f ⁻¹ᵁ U)
     (h : W ≤ V) (s : Γ(Y, U)) :
     resG X h ((f.appLE U V e).hom s) = (f.appLE U W (h.trans e)).hom s := by
   rw [← Scheme.Hom.appLE_map f e (homOfLE h).op]
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(X.presheaf.map _ ≫ X.presheaf.map _).hom _ = _`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem cross_resG_resG {X : Scheme.{0}} {U V W : X.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (s : Γ(X, U)) :
     resG X h2 (resG X h1 s) = resG X (h2.trans h1) s := by
   change (X.presheaf.map _ ≫ X.presheaf.map _).hom _ = _
   rw [← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(X.presheaf.map (𝟙 _)).hom s = s`. Rewrite using `[CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+-/
 theorem cross_resG_self {X : Scheme.{0}} {U : X.Opens} (h : U ≤ U) (s : Γ(X, U)) : resG X h s = s := by
   change (X.presheaf.map (𝟙 _)).hom s = s
   rw [CategoryTheory.Functor.map_id]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← Scheme.Hom.map_appLE f e (homOfLE h).op]`. Both sides reduce to the same expression.
+-/
 theorem cross_appLE_resG {X Y : Scheme.{0}} (f : X ⟶ Y) {U U' : Y.Opens} {V : X.Opens} (e : V ≤ f ⁻¹ᵁ U)
     (h : U ≤ U') (s : Γ(Y, U')) :
     (f.appLE U V e).hom (resG Y h s) = (f.appLE U' V (e.trans fun _ hx => h hx)).hom s := by
   rw [← Scheme.Hom.map_appLE f e (homOfLE h).op]
   rfl
 
+/- English proof (translation)
+Take `⟨τ, -, H⟩` from `hc`. Establish `h1 : ((O1 k n).pull x).U (fun _ => a) ≤ x ⁻¹ᵁ (O1 k n).U a` using `LB.wchart_le (O1 k n) (fun _ => x) (fun _ => a) PUnit.unit`. Establish `h2 : ⊤ ≤ ((O1 k n).pull x).U (fun _ => a)` using `fun y hy => Set.mem_iInter.2 fun _ => ha (hU hy)`. Use `set t : Γ(Sp Ω, ⊤) := resG _ h2 (τ.s (fun _ => a)).val with ht`. Establish `key : ∀ b, (x.appLE U ⊤ hU).hom (ratioOn U a ha b) = (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom (c b) * t`.
+
+Introduce `b`. Establish `e` using `congrArg (resG _ h2) (H b (fun _ => a) h1)`. Rewrite `e` using `[map_mul, cross_resG_appLE]`. Establish `e2 : ratioOn U a ha b = resG _ ha (ratio k n a b)` using `rfl`. Rewrite using `[e2, cross_appLE_resG]`.
+
+Use `e.trans (congrArg (· * t) ?_)` and prove the remaining obligations. Conclude with `(cross_resG_resG _ _ _).trans (cross_resG_self _ _)`. Establish `ka` using `key a`. Rewrite `ka` using `[ratioOn_self, map_one]`. Establish `hne : c a ≠ 0`.
+
+Introduce `h0`. Rewrite `ka` using `[h0, map_zero, zero_mul]`. Use `congrArg (Scheme.ΓSpecIso (CommRingCat.of Ω)).hom.hom ka` as an intermediate fact. Rewrite `this` using `[map_one, map_zero]`. Conclude with `one_ne_zero (α := Ω) this`.
+
+Use `⟨hne, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[key, map_mul]`. Use `congr 1`. Establish `: (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom (c a)⁻¹ * (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom (c a) = 1`. Rewrite using `[← map_mul]`.
+
+Conclude with `(congrArg _ (inv_mul_cancel₀ hne)).trans (map_one _)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cross_ratio_val {k Ω : Type} [CommRing k] [Field Ω] {n : ℕ} {x : Sp Ω ⟶ PSpace k n}
     {c : Fin (n + 1) → Ω} (hc : PCrd x c) {U : (PSpace k n).Opens} (hU : ⊤ ≤ x ⁻¹ᵁ U) {a : Fin (n + 1)}
     (ha : U ≤ chart k n a) :
@@ -76,6 +101,11 @@ theorem cross_ratio_val {k Ω : Type} [CommRing k] [Field Ω] {n : ℕ} {x : Sp 
       ((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom (c a) * t) := by rw [← _root_.mul_assoc, this, _root_.one_mul]
     _ = _ := by rw [← ka, _root_.mul_one]
 
+/- English proof (translation)
+Establish `e : (snd (Over.mk ξ) G).left ≫ G.hom = (fst (Over.mk ξ) G).left ≫ ξ` using `(Over.w (snd (Over.mk ξ) G)).trans (Over.w (fst (Over.mk ξ) G)).symm`. Establish `e1 : ((snd (Over.mk ξ) G).left.appLE V W hW).hom (resG _ hV ((G.hom.app N).hom r)) = (G.hom.appLE N V hV ≫ (snd (Over.mk ξ) G).left.appLE V W hW).hom r` using `rfl`. Establish `e2 : liftHom G (T` using `Over.mk ξ) W ((ξ.appLE N ⊤ hN).hom r) = (ξ.appLE N ⊤ hN ≫ (fst (Over.mk ξ) G).left.appLE ⊤ W le_top).hom r := rfl`. Rewrite using `[e1, e2, Scheme.Hom.appLE_comp_appLE]`. Use `erw [Scheme.Hom.appLE_comp_appLE]`.
+
+Simplify using `only [e]`.
+-/
 theorem cross_pull_base {S : Scheme.{0}} (G : Over S) [GrpObj G] {K : Type} [Field K] (ξ : Sp K ⟶ S)
     {N : S.Opens} (hN : ⊤ ≤ ξ ⁻¹ᵁ N) {V : G.left.Opens} (hV : V ≤ G.hom ⁻¹ᵁ N) {W : (Over.mk ξ ⊗ G).left.Opens}
     (hW : W ≤ (snd (Over.mk ξ) G).left ⁻¹ᵁ V) (r : Γ(S, N)) :
@@ -91,6 +121,21 @@ theorem cross_pull_base {S : Scheme.{0}} (G : Over S) [GrpObj G] {K : Type} [Fie
   erw [Scheme.Hom.appLE_comp_appLE]
   simp only [e]
 
+/- English proof (translation)
+Introduce `k Ω _ _ _ M G _ L n c h v hc huniq a b sa sb ha hb i`. Distinguish the cases in `hne : ((h ⁻¹ᵁ (chart k n a ⊓ chart k n b) : M.Z.Opens) : Set M.Z).Nonempty`. Use `swap`. Establish `hbot : L.U i ⊓ G.hom ⁻¹ᵁ (h ⁻¹ᵁ (chart k n a ⊓ chart k n b)) = ⊥` using `eq_bot_iff.2 fun y hy => hne ⟨_, hy.2⟩`. Establish `: Subsingleton Γ(G.left, L.U i ⊓ G.hom ⁻¹ᵁ (h ⁻¹ᵁ (chart k n a ⊓ chart k n b)))`.
+
+Rewrite using `[hbot]`. Use `infer_instance`. Conclude with `Subsingleton.elim _ _`. Take `⟨ha1, ha2⟩` from `ha (hne.mono fun _ hx => hx.1)`. Take `⟨hb1, hb2⟩` from `hb (hne.mono fun _ hx => hx.2)`.
+
+Establish `htop` using `M.top_le_preimage_pt hne`. Establish `hr : Set.range M.pt ⊆ (h ⁻¹ᵁ (chart k n a ⊓ chart k n b) : M.Z.Opens)` using `(top_le_preimage_iff _ _).1 htop`. Establish `htop' : ⊤ ≤ (M.pt ≫ h) ⁻¹ᵁ (chart k n a ⊓ chart k n b)` using `htop`. Take `⟨hca, hra⟩` from `cross_ratio_val hc htop' inf_le_left`. Take `⟨hcb, -⟩` from `cross_ratio_val hc htop' inf_le_right`.
+
+Set `s₂ : LocSec G L (h ⁻¹ᵁ (chart k n a ⊓ chart k n b))` to `fun i => resG _ (fun _ hx => hx.2 : L.U i ⊓ G.hom ⁻¹ᵁ (h ⁻¹ᵁ (chart k n a ⊓ chart k n b)) ≤ G.hom ⁻¹ᵁ (h ⁻¹ᵁ (chart k n a ⊓ chart k n b))) ((G.hom.app _).hom ((h.app _).hom (ratioOn (chart k n a ⊓ chart k n b) a inf_le_left b))) * resG _ (fun _ hx => ⟨hx.1, hx.2.2⟩ : L.U i ⊓ G.ho …`. Establish `g₂ : GenIs M.pt s₂ ((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom (c a)⁻¹ • v)`. Use `⟨hr, funext fun j => ?_⟩` and prove the remaining obligations. Establish `e3` using `congrFun hb2 j`. Simplify using `only [genPull, s₂] at e3 ⊢`.
+
+Rewrite using `[map_mul, cross_pull_base G M.pt htop]`. Use `(congrArg (_ * ·) ((cross_appLE_resG _ _ _ _).trans e3)).trans ?_` and prove the remaining obligations. Establish `e4 : (M.pt.appLE _ ⊤ htop).hom ((h.app _).hom (ratioOn (chart k n a ⊓ chart k n b) a inf_le_left b)) = ((M.pt ≫ h).appLE _ ⊤ htop').hom (ratioOn (chart k n a ⊓ chart k n b) a inf_le_left b)`. Rewrite using `[Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression.
+
+Rewrite using `[e4, hra]`. Express the relevant statement in the definitionally equal form `liftHom G _ _ * (liftHom G _ _ * v.1 j) = liftHom G _ _ * v.1 j`. Rewrite using `[← _root_.mul_assoc, ← map_mul]`. Use `congr 2`. Use `erw [← map_mul]`.
+
+Use `congr 1`. Express the relevant statement in the definitionally equal form `c b * (c a)⁻¹ * (c b)⁻¹ = (c a)⁻¹`. Clear the denominators using the available nonvanishing facts. Establish `e` using `congrArg (resG _ (fun _ hx => ⟨hx.1, hx.2.1, hx.2⟩ : L.U i ⊓ G.hom ⁻¹ᵁ (h ⁻¹ᵁ (chart k n a ⊓ chart k n b)) ≤ L.U i ⊓ G.hom ⁻¹ᵁ (h ⁻¹ᵁ chart k n a ⊓ h ⁻¹ᵁ (chart k n a ⊓ chart k n b)))) (huniq _ _ sa s₂ _ ⟨ha1, ha2⟩ g₂ i)`. Conclude with `(cross_resG_resG _ _ _).symm.trans (e.trans ((cross_resG_resG _ _ _).trans (cross_resG_self _ _)))`.
+-/
 theorem cross_ratio_sections : ∀ (k Ω : Type) [CommRing k] [Field Ω] [Algebra k Ω] (M : RatModel k Ω) (G : Over M.Z) [GrpObj G]
     (L : LB G.left) (n : ℕ) (c : Fin (n + 1) → Ω) (h : M.Z ⟶ PSpace k n) (v : SecM G L 1 (Over.mk M.pt)),
     PCrd (M.pt ≫ h) c →

@@ -14,6 +14,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.ColumnSplitting
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.submatrix_apply, id]`. Break down `e j with k | k` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[hf]`.
+-/
 theorem map_cols0 {R S : Type*} [Zero R] [Zero S] {a r t n : ℕ} (f : R → S) (hf : f 0 = 0)
     (e : Fin n ≃ Fin r ⊕ Fin t) (x : Matrix (Fin a) (Fin r) R) :
     ((Matrix.fromCols x (0 : Matrix (Fin a) (Fin t) R)).submatrix id e).map f =
@@ -24,6 +27,9 @@ theorem map_cols0 {R S : Type*} [Zero R] [Zero S] {a r t n : ℕ} (f : R → S) 
   · simp
   · simp [hf]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply, id]`. Break down `e j with k | k` into its components or cases. Simplify using `[Matrix.mul_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem mul_cols0 {R : Type*} [NonUnitalNonAssocSemiring R] {a b r t n : ℕ}
     (e : Fin n ≃ Fin r ⊕ Fin t) (A : Matrix (Fin a) (Fin b) R) (x : Matrix (Fin b) (Fin r) R) :
     A * (Matrix.fromCols x (0 : Matrix (Fin b) (Fin t) R)).submatrix id e =
@@ -34,6 +40,9 @@ theorem mul_cols0 {R : Type*} [NonUnitalNonAssocSemiring R] {a b r t n : ℕ}
   · simp [Matrix.mul_apply]
   · simp
 
+/- English proof (translation)
+Introduce `D n t W hn x₀ h`. Establish `h1 : (rat (L.ext0 hn x₀) : Matrix (Fin W.rank) (Fin n) (AE D)) = (Matrix.fromCols (rat x₀ : Matrix (Fin W.rank) (Fin W.rank) (AE D)) (0 : Matrix (Fin W.rank) (Fin t) (AE D))).submatrix id (finSumFinEquiv.trans (finCongr hn)).symm` using `map_cols0 (incA D) (map_zero _) _ x₀`. Establish `h2` using `mul_cols0 (t := t) (finSumFinEquiv.trans (finCongr hn)).symm (mt W h⁻¹) (rat x₀ : Matrix (Fin W.rank) (Fin W.rank) (AE D))`. Conclude with `(congrArg (fun M => mt W h⁻¹ * M) h1).trans h2`.
+-/
 theorem extension_by_zero_orbit_action : Ext0 := by
   intro D n t W hn x₀ h
   have h1 : (rat (L.ext0 hn x₀) : Matrix (Fin W.rank) (Fin n) (AE D)) =

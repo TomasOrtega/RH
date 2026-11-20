@@ -15,6 +15,17 @@ open IsDedekindDomain NumberField Matrix GlobalTheory.ChiGrid GlobalTheory.FunOb
 open Formalism.DivisionValues (vw lw)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D T L sc G large₂ hS t p d hP w l hl hlw hA k hk hc`. Distinguish the cases in `h : ∃ PP ∈ d.P, ((l : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`. Take `⟨PP, hPP, hlPP⟩` from `h`. Establish `key : ((l : ℕ) : 𝓞 D.host.F) ∈ (HeightOneSpectrum.under (𝓞 D.host.F) PP).asIdeal`. Rewrite using `[HeightOneSpectrum.under_asIdeal, Ideal.mem_under, map_natCast]`.
+
+Conclude with `hlPP`. Establish `hsplit : GlobalTheory.NormSum.SplitIn D l`. Rewrite `hPP` using `[hP]`. Unfold `locPl at hPP`. Break down `Finset.mem_union.mp hPP with h0 | hQ` into its components or cases.
+
+Unfold `GlobalTheory.ChiGrid.Places.W0 at h0`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.mp h0`. Rewrite `key` using `[G.pl.w_over v hv]`. Conclude with `UpperTheory.WildA.small_set_primes_split large₂ hS v hv l hl key`. Break down `hA PP hQ with hS0 | hno` into its components or cases.
+
+Conclude with `UpperTheory.WildA.small_set_primes_split large₂ hS _ hS0 l hl key`. Conclude with `absurd hlw (hno l hl hlPP)`. Conclude with `⟨k, hk, hc, le_rfl, fun _ => hsplit⟩`. Take `⟨k', hk', hnd, hc'⟩` from `UpperTheory.WildA.depthDrop d l hl (fun w hw hlw' => h ⟨w, hw, hlw'⟩) k hk hc`. Use `⟨k', hk', hc', ?_, fun hd => absurd hd hnd⟩` and prove the remaining obligations.
+
+Rewrite using `[padicValNat.eq_zero_of_not_dvd hnd]`. Conclude with `Nat.zero_le _`.
+-/
 theorem UpperTheory.WildA.depth :
     ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GlobalTheory.ChiGrid.GridData L sc} (large₂ : SizeData₂ D), GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.SizeRows large₂ → ∀ {t : T} {p : GlobalTheory.ChiGrid.Pair T} (d : FinDatum G t p), d.P = locPl G t →
       ∀ (w : PlL D) (l : ℕ), l.Prime → (l : 𝓞 D.what₂.LL) ∈ w.asIdeal → Away G t w → ∀ k : ℕ, 0 < k → IsCosetDatum k d →

@@ -13,8 +13,16 @@ variable (l : ℕ) {A B : Type} [CommRing A] [CommRing B]
 
 def cc (a b : A) : A := ∑ k ∈ Finset.Ioo 0 l, ((l.choose k / l : ℕ) : A) * a ^ k * b ^ (l - k)
 
+/- English proof (translation)
+Simplify using `[cc]`.
+-/
 theorem map_cc (f : A →+* B) (a b : A) : f (cc l a b) = cc l (f a) (f b) := by simp [cc]
 
+/- English proof (translation)
+Rewrite using `[add_pow_prime_eq hl.out, cc, Finset.mul_sum]`. Establish `: ∀ k ∈ Finset.Ioo 0 l, (l : A) * (((l.choose k / l : ℕ) : A) * a ^ k * b ^ (l - k)) = (l : A) * a * b * (a ^ (k - 1) * b ^ (l - k - 1) * ((l.choose k / l : ℕ) : A))` using `fun k hk => by`. Take `⟨h1, h2⟩` from `Finset.mem_Ioo.1 hk`. Take `⟨i, rfl⟩ : ∃ i, k = i + 1` from `⟨k - 1, by omega⟩`. Take `⟨j, hj⟩ : ∃ j, l - (i + 1) = j + 1` from `⟨l - (i + 1) - 1, by omega⟩`.
+
+Rewrite using `[hj, Nat.add_sub_cancel, Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl this, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem l_mul_cc [hl : Fact l.Prime] (a b : A) : (l : A) * cc l a b = (a + b) ^ l - a ^ l - b ^ l := by
   rw [add_pow_prime_eq hl.out, cc, Finset.mul_sum]
   have : ∀ k ∈ Finset.Ioo 0 l, (l : A) * (((l.choose k / l : ℕ) : A) * a ^ k * b ^ (l - k)) =
@@ -44,11 +52,17 @@ instance : Mul (W2 l A) :=
 
 def mapF (f : A →+* B) (x : W2 l A) : W2 l B := ⟨f x.fst, f x.snd⟩
 
+/- English proof (translation)
+The claim follows from `W2.ext (map_add f _ _) (by change f (x.snd + y.snd - cc l x.fst y.fst) = f x.snd + f y.snd - cc l (f x.fst) (f y.fst) rw [map_sub, map_add, map_cc])`.
+-/
 theorem mapF_add (f : A →+* B) (x y : W2 l A) : mapF f (x + y) = mapF f x + mapF f y :=
   W2.ext (map_add f _ _) (by
     change f (x.snd + y.snd - cc l x.fst y.fst) = f x.snd + f y.snd - cc l (f x.fst) (f y.fst)
     rw [map_sub, map_add, map_cc])
 
+/- English proof (translation)
+The claim follows from `W2.ext (map_mul f _ _) (by change f (x.fst ^ l * y.snd + y.fst ^ l * x.snd + (l : A) * x.snd * y.snd) = f x.fst ^ l * f y.snd + f y.fst ^ l * f x.snd + (l : B) * f x.snd * f y.snd simp)`.
+-/
 theorem mapF_mul (f : A →+* B) (x y : W2 l A) : mapF f (x * y) = mapF f x * mapF f y :=
   W2.ext (map_mul f _ _) (by
     change f (x.fst ^ l * y.snd + y.fst ^ l * x.snd + (l : A) * x.snd * y.snd) =
@@ -59,16 +73,25 @@ def gh (x : W2 l A) : A := x.fst ^ l + (l : A) * x.snd
 
 variable [hl : Fact l.Prime]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(x.fst + y.fst) ^ l + (l : A) * (x.snd + y.snd - cc l x.fst y.fst) = _`. Simplify using `only [gh]`. Take the linear combination `-l_mul_cc l x.fst y.fst`.
+-/
 theorem gh_add (x y : W2 l A) : gh (x + y) = gh x + gh y := by
   change (x.fst + y.fst) ^ l + (l : A) * (x.snd + y.snd - cc l x.fst y.fst) = _
   simp only [gh]; linear_combination -l_mul_cc l x.fst y.fst
 
 omit hl in
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(x.fst * y.fst) ^ l + (l : A) * (x.fst ^ l * y.snd + y.fst ^ l * x.snd + (l : A) * x.snd * y.snd) = _`. Simplify using `only [gh]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gh_mul (x y : W2 l A) : gh (x * y) = gh x * gh y := by
   change (x.fst * y.fst) ^ l + (l : A) * (x.fst ^ l * y.snd + y.fst ^ l * x.snd + (l : A) * x.snd * y.snd) = _
   simp only [gh]; ring
 
+/- English proof (translation)
+Use `W2.ext h0 (mul_left_cancel₀ (Nat.cast_ne_zero.2 hl.out.ne_zero : (l : MvPolynomial σ ℤ) ≠ 0) ?_)` and prove the remaining obligations. Simplify using `only [gh, h0] at h1`. Conclude with `add_left_cancel h1`.
+-/
 theorem ext_gh {σ : Type} {x y : W2 l (MvPolynomial σ ℤ)} (h0 : x.fst = y.fst) (h1 : gh x = gh y) : x = y := by
   refine W2.ext h0 (mul_left_cancel₀ (Nat.cast_ne_zero.2 hl.out.ne_zero : (l : MvPolynomial σ ℤ) ≠ 0) ?_)
   simp only [gh, h0] at h1
@@ -76,6 +99,9 @@ theorem ext_gh {σ : Type} {x y : W2 l (MvPolynomial σ ℤ)} (h0 : x.fst = y.fs
 
 omit hl in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨MvPolynomial.X x.fst, MvPolynomial.X x.snd⟩, W2.ext (by simp [mapF]) (by simp [mapF])⟩`.
+-/
 theorem exists_lift (x : W2 l A) :
     ∃ y : W2 l (MvPolynomial A ℤ), mapF (MvPolynomial.eval₂Hom (Int.castRingHom A) id) y = x :=
   ⟨⟨MvPolynomial.X x.fst, MvPolynomial.X x.snd⟩, W2.ext (by simp [mapF]) (by simp [mapF])⟩
@@ -155,6 +181,9 @@ def IsδMap (D : Delta l A) (D' : Delta l B) (f : A →+* B) : Prop := ∀ a, f 
 def δLocus (D : Delta l A) (D' : Delta l B) (f : A →+* B) : Subring A :=
   RingHom.eqLocus ((W2.map f).comp (deltaSectionToWittLengthTwo D)) ((deltaSectionToWittLengthTwo D').comp f)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => congrArg W2.snd h, fun h => W2.ext rfl h⟩`.
+-/
 theorem mem_δLocus {D : Delta l A} {D' : Delta l B} {f : A →+* B} {a : A} :
     a ∈ δLocus D D' f ↔ f (D.δ a) = D'.δ (f a) :=
   ⟨fun h => congrArg W2.snd h, fun h => W2.ext rfl h⟩
@@ -166,10 +195,16 @@ def polyDelta (D : Delta l A) : Delta l (MvPolynomial ℕ A) :=
       (fun a => by rw [RingHom.comp_apply, MvPolynomial.eval₂Hom_C]; rfl)
       (fun i => by rw [RingHom.comp_apply, MvPolynomial.eval₂Hom_X']; rfl)))
 
+/- English proof (translation)
+The claim follows from `congrArg W2.snd (MvPolynomial.eval₂Hom_C _ _ a)`.
+-/
 theorem polyDelta_C (D : Delta l A) (a : A) :
     (polyDelta D).δ (MvPolynomial.C a) = MvPolynomial.C (D.δ a) :=
   congrArg W2.snd (MvPolynomial.eval₂Hom_C _ _ a)
 
+/- English proof (translation)
+The claim follows from `congrArg W2.snd (MvPolynomial.eval₂Hom_X' _ _ i)`.
+-/
 theorem polyDelta_X (D : Delta l A) (i : ℕ) :
     (polyDelta D).δ (MvPolynomial.X i) = MvPolynomial.X (i + 1) :=
   congrArg W2.snd (MvPolynomial.eval₂Hom_X' _ _ i)
@@ -184,6 +219,9 @@ structure IsCompl {L Q : Type} [CommRing L] [CommRing Q] (i : L →+* Q) (J : Id
   surj : ∀ (x : Q) (n : ℕ), ∃ a, x - i a ∈ (J ^ n).map i
   ker : ∀ (a : L) (n : ℕ), i a ∈ (J ^ n).map i → a ∈ J ^ n
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rwa [Ideal.map_id], fun x _ => ⟨x, by simp⟩, fun a n ha => by rwa [Ideal.map_id] at ha⟩`.
+-/
 theorem IsCompl.self {L : Type} [CommRing L] (J : Ideal L) [h : IsAdicComplete J L] : IsCompl (RingHom.id L) J :=
   ⟨by rwa [Ideal.map_id], fun x _ => ⟨x, by simp⟩, fun a n ha => by rwa [Ideal.map_id] at ha⟩
 

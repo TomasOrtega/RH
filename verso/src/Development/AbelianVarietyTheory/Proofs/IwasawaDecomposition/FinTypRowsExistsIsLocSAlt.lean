@@ -30,6 +30,19 @@ open Formalism.IndefR.principalLevelFrame Formalism.IndefR.Mult
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hH hC D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hP _ _ _ σ s`. Take `⟨b, hb⟩` from `principalLevelFrame.rowRepR_occ R.θ (Y.eFT σ)`. Use `set π := principalLevelFrame.rowRepR R.θ (Y.eFT σ) with hπ`. Establish `hne : isotIn (D` using `D) (actM Y.PY (R.MY 0)) (Minf R.θ Y.PY (R.MY 0)) (FinTyp.conjT π) ≠ ⊥ := by`. Introduce `h`.
+
+Apply `hb` to reduce the goal to its premises. Unfold `isotE isotL`. Rewrite using `[h, inf_bot_eq]`. Establish `hM` using `hP.char.base.models`. Establish `hθ : IsInfFam R.θ` using `hM.inf`.
+
+Establish `hSig : (Yc D 0).SigOK` using `D.sp.Y_sig 0`. Establish `hcc` using `GlobalTheory.T.unitary_congruence_conj_contains_congruence D.host.E D.R.r`. Establish `hfd : ∀ j, j < D.R.m → (R.νY A3.A.μ0 j).IsHaarMeasure ∧ IsFundamentalDomain (GQ (Yc D j)) (R.fdY A3.A.μ0 j) (R.νY A3.A.μ0 j)`. Introduce `j hj`. Distinguish the cases in `h : j + 1 < D.R.m`.
+
+Use `hM.νY A3.A.μ0 j h` as an intermediate fact. Conclude with `⟨this.1.1, this.2⟩`. Take `rfl : j = D.R.m - 1` from `by omega`. Use `hM.νY' A3.A.μ0` as an intermediate fact. Conclude with `⟨this.1.1, this.2⟩`.
+
+Take `⟨hHaar, hFD⟩` from `hfd 0 Y.hm`. Establish `hSA : SchurAll D` using `fun V _ S θ M J χ μ 𝓕 => (GlobalTheory.MultFinite.hcFinite_and_schurMult hH hC D θ V S M J χ μ 𝓕).2`. Establish `hHA : HCAll D` using `fun V _ S θ M J χ => (GlobalTheory.MultFinite.hcFinite_and_schurMult hH hC D θ V S M J χ 0 ∅).1`. Take `⟨hlin, hherm, hpos⟩` from `GlobalTheory.FinTypesRows.minf_sesq (M := R.MY 0) (θ := R.θ) (R.νY A3.A.μ0 0) (R.fdY A3.A.μ0 0) Y.PY hSA hSig hθ hHaar hFD`. Take `⟨B', h1, h2, h3, h4⟩` from `GlobalTheory.finTyp_invariant_form_of_isotIn D D.R.r _ (actM Y.PY (R.MY 0)) (Minf R.θ Y.PY (R.MY 0)) (ipM (R.MY 0) (R.νY A3.A.μ0 0) (R.fdY A3.A.μ0 0)) hlin hherm hpos (fun h x hx => GlobalTheory.FinTypesRows.minf_stable Y.PY hcc h hx) (fun h x hx y hy => GlobalTheory.T.schur_pair …`.
+
+Take `⟨B, k1, k2, k3, k4⟩` from `GlobalTheory.RowLocalRows.form_of_conjT π B' h1 h2 h3 h4`. Establish `hadm : ∀ N : ℕ, 0 < N → FiniteDimensional ℂ ↥(Submodule.span ℂ {x | x ∈ Minf R.θ Y.PY (R.MY 0) ∧ ∀ κ, NG.Cong D.host.E D.R.r N κ → actM Y.PY (R.MY 0) κ x = x})` using `fun N hN => GlobalTheory.FinTypesRows.minf_adm (M := R.MY 0) Y.PY hHA hSig hθ (GlobalTheory.FinTypesRows.levN_open Y.PY Y.stdPsi.1) N hN`. Establish `hfix : ∀ N : ℕ, 0 < N → FiniteDimensional ℂ ↥(Submodule.span ℂ {f | f ∈ π.S ∧ ∀ κ, NG.Cong D.host.E D.R.r N κ → NG.rt D.host.E D.R.r κ f = f})` using `fun N hN => GlobalTheory.RowLocalRows.fixed_fd_of_conjT π N (GlobalTheory.RowLocalRows.fixed_fd_of_isotIn _ _ hadm _ hne N hN)`. Take `⟨W, hWS, hW0, hst, hirr⟩` from `GlobalTheory.T.exists_irreducible_subspace_trivialOutside_splitPlace D.host.E D.R.r π B k1 k2 k3 k4 hfix s`. Conclude with `GlobalTheory.RowLocal.isLocS_of_irr π s W hWS hW0 hst hirr`.
+-/
 theorem finTyp_rows_exists_isLocS : GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0), Pins R F cG → Holds R F → HostHyp D → D.host.F = maximalRealSubfield D.host.E → ∀ (σ : D.what₂.FT) (s : SplitPlace D.host.E), ∃ τ, GlobalTheory.HeightCounting.IsLocS (principalLevelFrame.rowRepR R.θ (Y.eFT σ)).S s τ := by
   intro hH hC D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hP _ _ _ σ s
   obtain ⟨b, hb⟩ := principalLevelFrame.rowRepR_occ R.θ (Y.eFT σ)

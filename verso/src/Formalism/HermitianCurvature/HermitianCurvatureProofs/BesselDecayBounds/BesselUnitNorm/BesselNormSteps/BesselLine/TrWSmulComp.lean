@@ -11,6 +11,9 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.MainNotions
 
 variable {k r : ℕ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
 
+/- English proof (translation)
+Conclude with `inner_conj_symm y x`.
+-/
 theorem star_inner (x y : Wp) : star ⟪x, y⟫_ℂ = ⟪y, x⟫_ℂ := by
   exact inner_conj_symm y x
 

@@ -14,6 +14,9 @@ namespace UpperTheory.ConvolutionTheory.L1
 section
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Use `show (AdelicGLn.finiteRestrictedEquiv K n (AdelicGLn.prodEquiv K n (finEmb K n y)).2) v = _`. Rewrite using `[prodEquiv_finEmb]`.
+-/
 private theorem finAt_eq (y : AdelicGLn.FiniteAdelicGL K n) (v : Pl K) :
     finAt v (finEmb K n y) = AdelicGLn.finiteRestrictedEquiv K n y v := by
   show (AdelicGLn.finiteRestrictedEquiv K n (AdelicGLn.prodEquiv K n (finEmb K n y)).2) v = _
@@ -23,6 +26,9 @@ private def tr (T : Finset (Pl K)) (h : AdelicGLn.FiniteAdelicGL K n) : AdelicGL
   (AdelicGLn.finiteRestrictedEquiv K n).symm (AdelicGLn.truncate T (AdelicGLn.finiteRestrictedEquiv K n h))
 
 open Classical in
+/- English proof (translation)
+Unfold `tr`. Rewrite using `[AdelicGLn.truncate_insert hb, map_mul]`. Both sides reduce to the same expression.
+-/
 private theorem tr_insert {T : Finset (Pl K)} {b : Pl K} (hb : b ∉ T) (h : AdelicGLn.FiniteAdelicGL K n) :
     tr (insert b T) h = tr T h * AdelicGLn.localEmbedding b (AdelicGLn.finiteRestrictedEquiv K n h b) := by
   unfold tr
@@ -30,6 +36,11 @@ private theorem tr_insert {T : Finset (Pl K)} {b : Pl K} (hb : b ∉ T) (h : Ade
   rfl
 
 open Classical in
+/- English proof (translation)
+Unfold `tr AdelicGLn.localEmbedding`. Simplify using `only [MonoidHom.coe_mk, OneHom.coe_mk]`. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Use `RestrictedProduct.ext _ _ fun w => ?_` and prove the remaining obligations.
+
+Rewrite using `[RestrictedProduct.mul_apply, RestrictedProduct.mul_apply, AdelicGLn.truncate_apply, RestrictedProduct.coe_mulSingle_apply]`. Distinguish the cases in `hw : w = b`. Substitute `hw` using the available equality. Simplify using `[hb]`. Simplify using `[hw]`.
+-/
 private theorem tr_comm {T : Finset (Pl K)} {b : Pl K} (hb : b ∉ T) (h : AdelicGLn.FiniteAdelicGL K n)
     (g : GL (Fin n) (b.adicCompletion K)) :
     tr T h * AdelicGLn.localEmbedding b g = AdelicGLn.localEmbedding b g * tr T h := by
@@ -45,6 +56,21 @@ private theorem tr_comm {T : Finset (Pl K)} {b : Pl K} (hb : b ∉ T) (h : Adeli
     simp [hb]
   · simp [hw]
 
+/- English proof (translation)
+Use `set Φ := AdelicGLn.finiteRestrictedEquiv K n`. Use `set y := Φ g`. Establish `hopen : ∀ v : Pl K, IsOpen (GLnLocal.integralGL (v.adicCompletion K) n : Set (GL (Fin n) (v.adicCompletion K)))` using `fun v => GLnLocal.isOpen_integralGL (v.adicCompletion K) n`. Establish `hV : Φ.symm ⁻¹' U ∈ 𝓝 y` using `Φ.symm.continuous.continuousAt.preimage_mem_nhds (by convert hU using 2; exact Φ.symm_apply_apply g)`. Establish `: Fact (∀ v : Pl K, IsOpen (GLnLocal.integralGL (v.adicCompletion K) n : Set (GL (Fin n) (v.adicCompletion K))))` using `⟨hopen⟩`.
+
+Establish `hW : (fun w => y * w) ⁻¹' (Φ.symm ⁻¹' U) ∈ 𝓝 (1 : AdelicGLn.FiniteRestrictedGL K n)` using `(continuous_const.mul continuous_id).continuousAt.preimage_mem_nhds (by simpa using hV)`. Establish `h1 : (1 : AdelicGLn.FiniteRestrictedGL K n) = RestrictedProduct.structureMap _ (fun v : Pl K => (GLnLocal.integralGL (v.adicCompletion K) n : Set (GL (Fin n) (v.adicCompletion K)))) cofinite 1` using `rfl`. Rewrite `hW` using `[h1, RestrictedProduct.nhds_eq_map_structureMap hopen, Filter.mem_map, nhds_pi, Filter.mem_pi]`. Take `⟨I, hI, t, ht, hsub⟩` from `hW`. Establish `hbad : {v | y v ∉ GLnLocal.integralGL (v.adicCompletion K) n}.Finite` using `Filter.eventually_cofinite.1 y.2`.
+
+Use `set S : Finset (Pl K) := (hI.toFinset ∪ hbad.toFinset) ∪ B`. Establish `hmem : ∀ v, (y⁻¹ * AdelicGLn.truncate S y) v ∈ GLnLocal.integralGL (v.adicCompletion K) n`. Introduce `v`. Rewrite using `[RestrictedProduct.mul_apply, RestrictedProduct.inv_apply, AdelicGLn.truncate_apply]`. Use `split_ifs with hv`.
+
+Rewrite using `[inv_mul_cancel]`. Conclude with `one_mem _`. Establish `: y v ∈ GLnLocal.integralGL (v.adicCompletion K) n`. Assume the negation of the conclusion as `h`. Conclude with `hv (Finset.mem_union_left _ (Finset.mem_union_right _ (hbad.mem_toFinset.2 h)))`.
+
+Rewrite using `[mul_one]`. Conclude with `inv_mem this`. Set `w' : Π v : Pl K, (GLnLocal.integralGL (v.adicCompletion K) n : Set (GL (Fin n) (v.adicCompletion K)))` to `fun v => ⟨(y⁻¹ * AdelicGLn.truncate S y) v, hmem v⟩`. Establish `hw' : RestrictedProduct.structureMap _ _ cofinite w' = y⁻¹ * AdelicGLn.truncate S y` using `RestrictedProduct.ext _ _ fun v => rfl`. Establish `hw'I : w' ∈ I.pi t`.
+
+Introduce `v hv`. Establish `hvS : v ∈ S` using `Finset.mem_union_left _ (Finset.mem_union_left _ (hI.mem_toFinset.2 hv))`. Establish `: w' v = 1` using `Subtype.ext <| by`. Express the relevant statement in the definitionally equal form `(y⁻¹ * AdelicGLn.truncate S y) v = 1`. Rewrite using `[RestrictedProduct.mul_apply, RestrictedProduct.inv_apply, AdelicGLn.truncate_apply, if_pos hvS, inv_mul_cancel]`.
+
+Rewrite using `[this]`. Conclude with `mem_of_mem_nhds (ht v)`. Establish `hU'` using `hsub hw'I`. Simplify using `only [Set.mem_preimage, hw', mul_inv_cancel_left] at hU'`. Conclude with `⟨S, Finset.subset_union_right, hU'⟩`.
+-/
 private theorem exists_tr_mem (g : AdelicGLn.FiniteAdelicGL K n) {U : Set (AdelicGLn.FiniteAdelicGL K n)}
     (hU : U ∈ 𝓝 g) (B : Finset (Pl K)) : ∃ T, B ⊆ T ∧ tr T g ∈ U := by
   classical
@@ -101,27 +127,55 @@ private theorem exists_tr_mem (g : AdelicGLn.FiniteAdelicGL K n) {U : Set (Adeli
 
 variable (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Unfold `rhoF`. Rewrite using `[map_mul, UnitaryRep.map_mul_apply]`.
+-/
 private theorem rhoF_mul (a b : AdelicGLn.FiniteAdelicGL K n) (x : LL μ) :
     rhoF μ (a * b) x = rhoF μ a (rhoF μ b x) := by
   unfold rhoF
   rw [map_mul, UnitaryRep.map_mul_apply]
 
+/- English proof (translation)
+Unfold `rhoF`. Rewrite using `[map_one, UnitaryRep.map_one_apply]`.
+-/
 private theorem rhoF_one (x : LL μ) : rhoF μ (1 : AdelicGLn.FiniteAdelicGL K n) x = x := by
   unfold rhoF
   rw [map_one, UnitaryRep.map_one_apply]
 
+/- English proof (translation)
+The claim follows from `(UnitaryRep.continuous_orbit _ x).comp MultiplicityOne.continuous_finProj`.
+-/
 private theorem continuous_rhoF (x : LL μ) : Continuous fun g : AdelicGLn.FiniteAdelicGL K n => rhoF μ g x :=
   (UnitaryRep.continuous_orbit _ x).comp MultiplicityOne.continuous_finProj
 
+/- English proof (translation)
+Simplify using `[eigL, Submodule.mem_iInf, LinearMap.mem_eqLocus]`.
+-/
 private theorem mem_eigL {w : Pl K} {J : Subgroup (Gw n w)} {χ : Gw n w → ℂ} {x : LL μ} :
     x ∈ eigL μ w J χ ↔ ∀ g ∈ J, rhoL μ w g x = χ g • x := by
   simp [eigL, Submodule.mem_iInf, LinearMap.mem_eqLocus]
 
+/- English proof (translation)
+Establish `hle : A.topologicalClosure ≤ B.topologicalClosure` using `Submodule.topologicalClosure_mono hAB`. Conclude with `congrArg (fun T : LL μ →L[ℂ] LL μ => T x) (Submodule.starProjection_comp_starProjection_of_le hle)`.
+-/
 private theorem prj_prj_of_le {A B : Submodule ℂ (LL μ)} (hAB : A ≤ B) (x : LL μ) :
     prj A (prj B x) = prj A x := by
   have hle : A.topologicalClosure ≤ B.topologicalClosure := Submodule.topologicalClosure_mono hAB
   exact congrArg (fun T : LL μ →L[ℂ] LL μ => T x) (Submodule.starProjection_comp_starProjection_of_le hle)
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Use `⟨1, fun v hv => ?_⟩` and prove the remaining obligations. Establish `e : tr (∅ : Finset (Pl K)) h = 1`. Unfold `tr`.
+
+Establish `: AdelicGLn.truncate ∅ (AdelicGLn.finiteRestrictedEquiv K n h) = 1` using `RestrictedProduct.ext _ _ fun w => by simp [AdelicGLn.truncate_apply]`. Rewrite using `[this, map_one]`. Rewrite using `[e, rhoF_one, one_smul]`. Conclude with `Submodule.starProjection_eq_self_iff.2 (Submodule.le_topologicalClosure _ hv.2)`. Consider the case `insert b T hb ih`.
+
+Take `⟨c', hc'⟩` from `ih`. Distinguish the cases in `hbP : b ∈ P`. Use `⟨c', fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[tr_insert hb, hP b hbP, map_one, mul_one]`. Conclude with `hc' v hv`.
+
+Take `⟨c, hc⟩` from `hr b hbP (AdelicGLn.finiteRestrictedEquiv K n h b)`. Use `⟨c * c', fun v hv => ?_⟩` and prove the remaining obligations. Establish `hle : (⨅ w ∉ P, eigL μ w (J w) (χ w)) ≤ eigL μ b (J b) (χ b)` using `(iInf_le _ b).trans (iInf_le _ hbP)`. Establish `hvb : v ∈ eigL μ b (J b) (χ b)` using `hle (Submodule.mem_inf.1 hv).2`. Establish `hx : rhoF μ (tr T h) v ∈ V ⊓ eigL μ b (J b) (χ b)`.
+
+Use `⟨hinv _ _ hv.1, (mem_eigL μ).2 fun g hg => ?_⟩` and prove the remaining obligations. Use `(mem_eigL μ).1 hvb g hg` as an intermediate fact. Use `show rhoF μ _ _ = _`. Rewrite using `[← rhoF_mul, ← tr_comm hb, rhoF_mul]`. Express the relevant statement in the definitionally equal form `rhoF μ (tr T h) (rhoL μ b g v) = _`.
+
+Rewrite using `[this, map_smul]`. Rewrite using `[tr_insert hb, tr_comm hb, rhoF_mul, ← prj_prj_of_le μ hle]`. Express the relevant statement in the definitionally equal form `prj _ (prj _ (rhoL μ b _ _)) = _`. Rewrite using `[hc _ hx, map_smul, hc' v hv, smul_smul]`.
+-/
 private theorem scalar_tr (V : Submodule ℂ (LL μ))
     (hinv : ∀ (g : AdelicGLn.FiniteAdelicGL K n), ∀ v ∈ V, rhoF μ g v ∈ V)
     (J : ∀ w : Pl K, Subgroup (Gw n w)) (χ : ∀ w : Pl K, Gw n w → ℂ) (P : Set (Pl K))
@@ -164,6 +218,25 @@ private theorem scalar_tr (V : Submodule ℂ (LL μ))
 
 end
 
+/- English proof (translation)
+Introduce `K _ _ n μ _ V hV J χ hJ hcof P hr h hP`. Establish `hinv : ∀ (g : AdelicGLn.FiniteAdelicGL K n), ∀ v ∈ V, rhoF μ g v ∈ V` using `fun g v hv => hV.inv _ v hv`. Establish `hP' : ∀ w ∈ P, AdelicGLn.finiteRestrictedEquiv K n h w = 1` using `fun w hw => by`. Rewrite using `[← finAt_eq]`. Conclude with `hP w hw`.
+
+Establish `hb1` using `Filter.eventually_cofinite.1 hcof`. Establish `hb2 : {v | AdelicGLn.finiteRestrictedEquiv K n h v ∉ GLnLocal.integralGL (v.adicCompletion K) n}.Finite` using `Filter.eventually_cofinite.1 (AdelicGLn.finiteRestrictedEquiv K n h).2`. Use `set B : Finset (Pl K) := hb1.toFinset ∪ hb2.toFinset with hB`. Take `⟨c, hc⟩` from `scalar_tr μ V hinv J χ P hr h hP' B`. Use `⟨c, fun v hv => ?_⟩` and prove the remaining obligations.
+
+Establish `hloc : ∀ b ∉ B, rhoL μ b (AdelicGLn.finiteRestrictedEquiv K n h b) v = v`. Introduce `b hb`. Distinguish the cases in `hbP : b ∈ P`. Rewrite using `[hP' b hbP] show rhoF μ (AdelicGLn.localEmbedding b 1) v = v`. Rewrite using `[map_one, rhoF_one]`.
+
+Establish `h1 : b ∉ hb1.toFinset` using `fun H => hb (Finset.mem_union_left _ H)`. Establish `h2 : b ∉ hb2.toFinset` using `fun H => hb (Finset.mem_union_right _ H)`. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_not] at h1 h2`. Establish `hvb : v ∈ eigL μ b (J b) (χ b)` using `((iInf_le _ b).trans (iInf_le _ hbP) : (⨅ w ∉ P, eigL μ w (J w) (χ w)) ≤ eigL μ b (J b) (χ b)) (Submodule.mem_inf.1 hv).2`. Use `(mem_eigL μ).1 hvb (AdelicGLn.finiteRestrictedEquiv K n h b) (by rw [h1.1]; exact h2)` as an intermediate fact.
+
+Rewrite using `[this, h1.2]`. Simplify using the standard rewrite rules. Establish `hfix : ∀ D : Finset (Pl K), Disjoint D B → rhoF μ (tr (D ∪ B) h) v = rhoF μ (tr B h) v`. Introduce `D`. Proceed by induction on `D using Finset.induction_on with`.
+
+Consider the case `empty => intro _`. Rewrite using `[Finset.empty_union]`. Consider the case `insert b D hb ih`. Introduce `hd`. Establish `hbB : b ∉ B` using `(Finset.disjoint_insert_left.1 hd).1`.
+
+Establish `hbD : b ∉ D ∪ B` using `by simp [hb, hbB]`. Rewrite using `[Finset.insert_union, tr_insert hbD, rhoF_mul]`. Express the relevant statement in the definitionally equal form `rhoF μ _ (rhoL μ b _ v) = _`. Rewrite using `[hloc b hbB]`. Conclude with `ih (Finset.disjoint_insert_left.1 hd).2`.
+
+Establish `key : rhoF μ h v = rhoF μ (tr B h) v`. Establish `hcl : IsClosed {g : AdelicGLn.FiniteAdelicGL K n | rhoF μ g v = rhoF μ (tr B h) v}` using `isClosed_eq (continuous_rhoF μ v) continuous_const`. Use `hcl.closure_subset_iff.2 subset_rfl (mem_closure_iff_nhds.2 fun U hU => ?_)` and prove the remaining obligations. Take `⟨T, hT, hTU⟩` from `exists_tr_mem h hU B`. Use `⟨_, hTU, ?_⟩` and prove the remaining obligations.
+
+Use `hfix (T \ B) Finset.sdiff_disjoint` as an intermediate fact. Rewrite `this` using `[Finset.sdiff_union_of_subset hT]`. Then use the resulting hypothesis. Rewrite using `[key]`. Conclude with `hc v hv`.
+-/
 theorem restScalar : RestScalar := by
   intro K _ _ n μ _ V hV J χ hJ hcof P hr h hP
   classical

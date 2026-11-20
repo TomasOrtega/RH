@@ -15,6 +15,11 @@ open GlobalTheory.HolHom GlobalTheory.LieMet ReciprocityTheory.ChartRestriction.
 
 namespace GlobalTheory.ShFam.BdArc.LatSec
 
+/- English proof (translation)
+Simplify using `only [IsDerivAt, map_zero]`. Use `and_congr_right fun _ => forall_congr' fun U => forall_congr' fun hU => forall_congr' fun f => ?_` and prove the remaining obligations. Establish `h1 : HasFDerivAt (fun t => valAt' (c t) U f) (fderiv ℂ (fun t => valAt' (c t) U f) 0) (L 0)`. Rewrite using `[map_zero]`. Conclude with `((h U hU).2 f).hasFDerivAt`.
+
+Establish `h2 : fderiv ℂ (fun t => valAt' (c (L t)) U f) 0 w = fderiv ℂ (fun t => valAt' (c t) U f) 0 (L w)` using `congrArg (· w) (h1.comp 0 L.hasFDerivAt).fderiv`. Rewrite using `[h2]`.
+-/
 theorem isDerivAt_comp_iff {V V' : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedAddCommGroup V']
     [NormedSpace ℂ V'] {X : Scheme.{0}} {c : V → (Sp ℂ ⟶ X)} (h : HolAt c 0) (L : V' →L[ℂ] V) (w : V')
     (v : Sp (DualNumber ℂ) ⟶ X) : IsDerivAt (fun t => c (L t)) 0 w v ↔ IsDerivAt c 0 (L w) v := by
@@ -26,6 +31,11 @@ theorem isDerivAt_comp_iff {V V' : Type} [NormedAddCommGroup V] [NormedSpace ℂ
     congrArg (· w) (h1.comp 0 L.hasFDerivAt).fderiv
   rw [h2]
 
+/- English proof (translation)
+Use `⟨?_, fun U hU f => ?_⟩` and prove the remaining obligations. Rewrite using `[← h.1, ← Category.assoc, ← Spec.map_comp]`. Use `congr 2`. Conclude with `CommRingCat.hom_ext (RingHom.ext fun x => by simp [epsMul])`. Rewrite using `[valR_spMap _ _ _ ((le_preimage_dual_iff h.1 U).2 hU), map_smul, ← h.2 U hU f]`.
+
+Simplify using `[epsMul]`.
+-/
 theorem isDerivAt_smul {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X : Scheme.{0}} {c : V → (Sp ℂ ⟶ X)}
     {z w : V} {v : Sp (DualNumber ℂ) ⟶ X} (h : IsDerivAt c z w v) (a : ℂ) :
     IsDerivAt c z (a • w) (spMap (epsMul a) ≫ v) := by
@@ -36,6 +46,11 @@ theorem isDerivAt_smul {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X 
   · rw [valR_spMap _ _ _ ((le_preimage_dual_iff h.1 U).2 hU), map_smul, ← h.2 U hU f]
     simp [epsMul]
 
+/- English proof (translation)
+Establish `hl : ∀ L : V × V →L[ℂ] V, HolAt (fun t => (e (L t)).left) 0` using `fun L => HolAt.precomp (c := fun z => (e z).left) (by rw [map_zero]; exact hol) L.differentiableAt`. Establish `h1` using `(isDerivAt_comp_iff hol (ContinuousLinearMap.fst ℂ V V) (w, w') _).2 hv`. Establish `h2` using `(isDerivAt_comp_iff hol (ContinuousLinearMap.snd ℂ V V) (w, w') _).2 hv'`. Establish `h3` using `isDerivAt_mul (hl _) (hl _) h1 h2`. Simplify using `only [← he] at h3`.
+
+Conclude with `(isDerivAt_comp_iff hol (ContinuousLinearMap.fst ℂ V V + ContinuousLinearMap.snd ℂ V V) (w, w') _).1 h3`.
+-/
 theorem isDerivAt_add {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {S : Scheme.{0}} {G : Over S} [GrpObj G]
     {y : Sp ℂ ⟶ S} {e : V → (Over.mk y ⟶ G)} (he : ∀ z w, e (z + w) = e z * e w)
     (hol : HolAt (fun z => (e z).left) 0) {w w' : V} {v v' : epsPt y ⟶ G}
@@ -51,6 +66,11 @@ theorem isDerivAt_add {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {S :
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
+/- English proof (translation)
+Establish `h0 : e 0 = 1` using `map_zero_eq_one he`. Use `choose d hd using hol.exists_isDerivAt`. Set `D : (Fin g → ℂ) →ₗ[ℂ] TanM y t.G` to `{ toFun := fun w => tanOf (t := t) ⟨(hd w).over, (hd w).1.trans (congrArg (·.left) h0)⟩ map_add' := fun w w' => tan_ext ((hd _).unique (isDerivAt_add he hol (hd w) (hd w'))) map_smul' := fun a w => tan_ext ((hd _).unique (isDerivAt_smul (hd w) a)) }`. Establish `hu` using `fun v : TanM y t.G => hdiff (tv v) ((isTan_tv v).2.trans (congrArg (·.left) h0.symm))`. Simplify using `only [isDerivAt0_iff] at hu`.
+
+Use `⟨LinearEquiv.ofBijective D ⟨fun w w' h => (hu (D w)).unique (hd w) (by rw [h]; exact hd w'), fun v => ?_⟩, hd⟩` and prove the remaining obligations. Take `⟨w, hw, -⟩` from `hu v`. Conclude with `⟨w, tan_ext ((hd w).unique hw)⟩`.
+-/
 theorem exists_lieEquiv {X : Scheme.{0}} (t : SAB H X) {y : Sp ℂ ⟶ X} {g : ℕ} {e : (Fin g → ℂ) → (Over.mk y ⟶ t.G)}
     (he : ∀ z w, e (z + w) = e z * e w) (hol : HolAt (fun z => (e z).left) 0)
     (hdiff : ∀ v : epsPt y ⟶ t.G, spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v.left = (e 0).left →
@@ -71,6 +91,15 @@ theorem exists_lieEquiv {X : Scheme.{0}} (t : SAB H X) {y : Sp ℂ ⟶ X} {g : �
 variable {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
   {Z : Model Xo c β}
 
+/- English proof (translation)
+Establish `hinj : Function.Injective fun τ : E →+* ℂ => σ.comp (embF c τ)` using `fun τ τ' h => RingHom.ext fun a => congrArg Subtype.val (σ.injective (RingHom.congr_fun h a))`. Set `π` to `Equiv.ofBijective _ (Finite.injective_iff_bijective.1 hinj)`. Set `χ : (E →+* ℂ) → (𝓞 E →+* ℂ)` to `fun τ => σ.comp (embK c τ)`. Take `⟨α, h1, ⟨p, hp, hp'⟩, h3⟩` from `exists_sepElt (RingHom.id ℂ) (fun ρ : E →+* ℂ => ρ.comp (algebraMap (𝓞 E) E)) fun _ _ => rfl`. Establish `hα : Function.Injective fun τ => χ τ α` using `h1.comp π.injective`.
+
+Establish `hp'' : p.map (Int.castRingHom ℂ) = ∏ τ, (Polynomial.X - Polynomial.C (χ τ α))` using `hp'.trans (π.prod_comp _).symm`. Use `⟨Module.Basis.mk (v := fun p => f.vec p.1 p.2) (Fintype.linearIndependent_iff.2 fun a ha q => ?_) fun w _ => ?_, fun _ => Module.Basis.mk_apply _ _ _⟩` and prove the remaining obligations. Use `proj_sum_eig (actR (x0 := y) Z.t.act) χ α hα (fun τ => ∑ i, a ⟨τ, i⟩ • f.vec τ i) (fun τ b => by` as an intermediate fact. Simplify using `only [map_sum, map_smul, f.act_vec, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => smul_comm _ _ _) q.1`.
+
+Rewrite `this` using `[← Fintype.sum_sigma (fun q : Σ τ : E →+* ℂ, Fin (Dw.mult τ) => a q • f.vec q.1 q.2), ha, map_zero]`. Conclude with `Fintype.linearIndependent_iff.1 (f.linearIndependent_vec q.1) _ this.symm q.2`. Use `LinearMap.congr_fun (sum_proj (actR (x0 := y) Z.t.act) χ α hα) w` as an intermediate fact. Rewrite `this` using `[LinearMap.sum_apply, Module.End.one_apply]`. Rewrite using `[← this]`.
+
+Use `Submodule.sum_mem _ fun τ _ => ?_` and prove the remaining obligations. Take `⟨a, ha, -⟩` from `f.existsUnique_sum τ _ (eig_of_alpha (actR (x0 := y) Z.t.act) χ α h3 τ (proj_eig_alpha _ χ α hα p hp hp'' τ w))`. Rewrite using `[ha]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨τ, i⟩, rfl⟩)`.
+-/
 theorem exists_basis {σ : c.F →+* ℂ} {y : Sp ℂ ⟶ Z.X} (f : EigFrame Z σ y) :
     ∃ b : Module.Basis (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ℂ (TanM y Z.t.G), ∀ p, b p = f.vec p.1 p.2 := by
   classical
@@ -99,6 +128,17 @@ theorem exists_basis {σ : c.F →+* ℂ} {y : Sp ℂ ⟶ Z.X} (f : EigFrame Z �
     rw [ha]
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨τ, i⟩, rfl⟩)
 
+/- English proof (translation)
+Establish `hT` using `isAffineOpen_top (Sp B)`. Take `⟨s, hsU, hs₀⟩` from `hT.exists_basicOpen_le (V := V ⁻¹ᵁ U) ⟨p, hp⟩ trivial`. Take `⟨n, g, hg⟩` from `exists_eq_pow_mul_of_isAffineOpen (Sp B) ⊤ hT s (((Sp B).presheaf.map (homOfLE hsU).op).hom ((V.app U).hom f))`. Set `i` to `(Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom`. Establish `hs : (Sp B).basicOpen s = PrimeSpectrum.basicOpen (i s)` using `basicOpen_eq_of_affine' s`.
+
+Establish `hv : ∀ (R : Type) [CommRing R] (ρ : B →+* R) (k : Γ(Sp B, ⊤)), valR (spMap ρ) ⊤ k = ρ (i k)` using `fun R _ ρ k => by`. Use `valR_spMap ρ (𝟙 (Sp B)) ⊤ le_top k` as an intermediate fact. Rewrite `this` using `[Category.comp_id]`. Rewrite using `[this, valR_eq _ _ le_top]`. Simplify using `[evalHom, i, Scheme.Hom.appLE]`.
+
+Use `⟨i s ^ (n + 1), i g * i s, fun h => ?_, fun R _ ρ hu => ?_⟩` and prove the remaining obligations. Rewrite `hs₀` using `[hs]`. Conclude with `hs₀ (p.2.mem_of_pow_mem _ h)`. Rewrite `hu` using `[map_pow, isUnit_pow_succ_iff]`. Establish `ht : ⊤ ≤ spMap ρ ⁻¹ᵁ (Sp B).basicOpen s` using `fun q _ => by`.
+
+Rewrite using `[hs]`. Conclude with `fun h => q.2.ne_top (Ideal.eq_top_of_isUnit_mem _ h hu)`. Establish `h1` using `valR_res (spMap ρ) ((Sp B).basicOpen_le s) g ht`. Establish `h2` using `valR_res (spMap ρ) ((Sp B).basicOpen_le s) s ht`. Establish `h3` using `valR_res (spMap ρ) hsU ((V.app U).hom f) ht`.
+
+Establish `hg' : ((Sp B).presheaf.map (homOfLE ((Sp B).basicOpen_le s)).op).hom g = ((Sp B).presheaf.map (homOfLE ((Sp B).basicOpen_le s)).op).hom s ^ n * ((Sp B).presheaf.map (homOfLE hsU).op).hom ((V.app U).hom f)` using `hg`. Rewrite using `[valR_comp, map_pow, map_mul, pow_succ, ← mul_assoc, ← hv R ρ g, ← h1, ← h3, hg', ← hv R ρ s, ← h2, valR_eq _ _ ht, valR_eq _ _ ht, valR_eq _ _ ht, map_mul, map_pow, mul_comm (_ ^ n)]`.
+-/
 theorem exists_frac {B : Type} [CommRing B] {X : Scheme.{0}} (V : Sp B ⟶ X) (U : X.Opens) (f : Γ(X, U))
     (p : PrimeSpectrum B) (hp : V p ∈ U) : ∃ s a : B, s ∉ p.asIdeal ∧ ∀ (R : Type) [CommRing R] (ρ : B →+* R),
       IsUnit (ρ s) → valR (spMap ρ ≫ V) U f * ρ s = ρ a := by
@@ -129,6 +169,11 @@ theorem exists_frac {B : Type} [CommRing B] {X : Scheme.{0}} (V : Sp B ⟶ X) (U
     rw [valR_comp, map_pow, map_mul, pow_succ, ← mul_assoc, ← hv R ρ g, ← h1, ← h3, hg', ← hv R ρ s, ← h2,
       valR_eq _ _ ht, valR_eq _ _ ht, valR_eq _ _ ht, map_mul, map_pow, mul_comm (_ ^ n)]
 
+/- English proof (translation)
+Use `isHolTo_of_holAt Metric.isOpen_ball fun z hz => HolAt.comp ?_ x` and prove the remaining obligations. Use `holAt_of_affine (isAffineOpen_top _) le_top (.of_forall fun _ => le_top) fun k => ?_` and prove the remaining obligations. Establish `hv : ∀ u, valAt' (spMap (ψ u)) ⊤ k = ψ u (valR (𝟙 (Sp A)) ⊤ k)` using `fun u => by`. Use `valR_spMap (ψ u) (𝟙 (Sp A)) ⊤ le_top k` as an intermediate fact. Rewrite `this` using `[Category.comp_id]`. Then use the resulting hypothesis.
+
+Simplify using `only [hv]`. Conclude with `(h.2 _).differentiableAt (Metric.isOpen_ball.mem_nhds hz)`.
+-/
 theorem isHolTo_spMap {A : Type} [CommRing A] {ψ : ℂ → (A →+* ℂ)} {r : ℝ} (h : IsHolPts ψ r) {X : Scheme.{0}}
     (x : Sp A ⟶ X) : IsHolTo (Metric.ball (0 : ℂ) r) fun u => spMap (ψ u) ≫ x := by
   refine isHolTo_of_holAt Metric.isOpen_ball fun z hz => HolAt.comp ?_ x
@@ -139,6 +184,13 @@ theorem isHolTo_spMap {A : Type} [CommRing A] {ψ : ℂ → (A →+* ℂ)} {r : 
   simp only [hv]
   exact (h.2 _).differentiableAt (Metric.isOpen_ball.mem_nhds hz)
 
+/- English proof (translation)
+Take `⟨s, a, hs, H⟩` from `exists_frac V U f (spMap (dualMap (ψ z)) (IsLocalRing.closedPoint (DualNumber ℂ))) (hU (x := IsLocalRing.closedPoint (DualNumber ℂ)) trivial)`. Establish `h0 : ψ z s.fst ≠ 0` using `fun h0 => hs (by`. Express the relevant statement in the definitionally equal form `dualMap (ψ z) s ∈ IsLocalRing.maximalIdeal (DualNumber ℂ)`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, TrivSqZeroExt.isUnit_iff_isUnit_fst]`. Simplify using `[dualMap, h0])`.
+
+Establish `key : ∀ᶠ u in 𝓝 z, TrivSqZeroExt.snd (valR (spMap (dualMap (ψ u)) ≫ V) U f) = (ψ u a.snd - ψ u a.fst / ψ u s.fst * ψ u s.snd) / ψ u s.fst` using `by filter_upwards [(h s.fst).eventually_ne h0] with u hu`. Use `H _ (dualMap (ψ u)) (TrivSqZeroExt.isUnit_iff_isUnit_fst.2 (by simpa [dualMap] using hu))` as an intermediate fact. Generalize the expression as in `valR (spMap (dualMap (ψ u)) ≫ V) U f = q at this ⊢`. Establish `h1` using `congrArg TrivSqZeroExt.fst this`. Establish `h2` using `congrArg TrivSqZeroExt.snd this`.
+
+Simplify using `[dualMap] at h1 h2`. Rewrite using `[← h1, ← h2]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Conclude with `ContinuousAt.congr (((h _).sub (((h _).div (h _) h0).mul (h _))).div (h _) h0) (key.mono fun _ => Eq.symm)`.
+-/
 theorem continuousAt_snd {A : Type} [CommRing A] {ψ : ℂ → (A →+* ℂ)} {z : ℂ} (h : ∀ a, ContinuousAt (fun u => ψ u a) z)
     {X : Scheme.{0}} (V : Sp (DualNumber A) ⟶ X) (U : X.Opens) (hU : ⊤ ≤ (spMap (dualMap (ψ z)) ≫ V) ⁻¹ᵁ U)
     (f : Γ(X, U)) : ContinuousAt (fun u => TrivSqZeroExt.snd (valR (spMap (dualMap (ψ u)) ≫ V) U f)) z := by
@@ -161,6 +213,23 @@ theorem continuousAt_snd {A : Type} [CommRing A] {ψ : ℂ → (A →+* ℂ)} {z
     ring
   exact ContinuousAt.congr (((h _).sub (((h _).div (h _) h0).mul (h _))).div (h _) h0) (key.mono fun _ => Eq.symm)
 
+/- English proof (translation)
+Establish `hslice : HolAt (fun z => (e b₀ z).left) 0` using `(holAt_of_isHolTo hol (z := (b₀, 0)) ⟨hb₀, trivial⟩).precomp (k := fun z => (b₀, z)) (by fun_prop)`. Set `s : Set ((Fin g → ℂ) →ₗ[ℂ] ℂ)` to `{l | ∃ (U : G.left.Opens) (_ : ⊤ ≤ (e b₀ 0).left ⁻¹ᵁ U) (f : Γ(G.left, U)), l = (fderiv ℂ (fun z => valAt' (e b₀ z).left U f) 0).toLinearMap}`. Establish `hs : Submodule.span ℂ s = ⊤` using `Submodule.span_eq_top_of_ne_zero fun w hw => by`. Assume the negation of the conclusion as `hne`. Use `hw (eq_of_forall_fderiv_eq hslice hdiff fun U hU f => ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_zero]`. Assume the negation of the conclusion as `h0`. Conclude with `hne ⟨_, ⟨U, hU, f, rfl⟩, h0⟩`. Establish `key : ∀ l ∈ Submodule.span ℂ s, ∃ (m : ℂ → (Fin g → ℂ) →L[ℂ] ℂ) (n : ℂ → ℂ), ContinuousAt m b₀ ∧ ContinuousAt n b₀ ∧ (m b₀).toLinearMap = l ∧ ∀ᶠ b in 𝓝 b₀, m b (w b) = n b`. Introduce `l hl`.
+
+Proceed by induction on `hl using Submodule.span_induction with`. Consider the case `mem l hl`. Take `⟨U, hU, f, rfl⟩` from `hl`. Use `⟨fun b => fderiv ℂ (fun z => valAt' (e b z).left U f) 0, _, (differentiableAt_partial (hol U f).1 (hol U f).2 ⟨⟨hb₀, trivial⟩, hU⟩).continuousAt, hc U ((le_preimage_dual_iff (hv b₀ hb₀).1 U).2 hU) f, rfl, ?_⟩` and prove the remaining obligations. Establish `h3 : ContinuousAt (fun b : ℂ => (b, (0 : Fin g → ℂ))) b₀` using `by fun_prop`.
+
+Use `filter_upwards [h3.eventually ((hol U f).1.mem_nhds ⟨⟨hb₀, trivial⟩, hU⟩)] with b hb`. Conclude with `((hv b hb.1.1).2 U hb.2 f).symm`. Consider the case `zero => exact ⟨0, 0, continuousAt_const, continuousAt_const, rfl, .of_forall fun _ => rfl⟩`. Consider the case `add l l' _ _ ih ih'`. Take `⟨m, n, hm, hn, rfl, hmn⟩` from `ih`.
+
+Take `⟨m', n', hm', hn', rfl, hmn'⟩` from `ih'`. Use `⟨m + m', n + n', hm.add hm', hn.add hn', rfl, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hmn, hmn'] with b h1 h2`. Simplify using `[h1, h2]`. Consider the case `smul a l _ ih`.
+
+Take `⟨m, n, hm, hn, rfl, hmn⟩` from `ih`. Use `⟨a • m, a • n, hm.const_smul a, hn.const_smul a, rfl, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hmn] with b h1`. Simplify using `[h1]`. Use `choose m n hm hn hm0 hmn using fun i : Fin g => key (LinearMap.proj i) (hs.ge trivial)`.
+
+Set `M : ℂ → (Fin g → ℂ) →L[ℂ] (Fin g → ℂ)` to `fun b => ContinuousLinearMap.pi fun i => m i b`. Establish `hM : ContinuousAt M b₀` using `(ContinuousLinearMap.piEquivL ℂ (Fin g → ℂ) (fun _ : Fin g => ℂ)).continuousAt.comp (continuousAt_pi.2 hm)`. Establish `hM0 : M b₀ = (ContinuousLinearEquiv.refl ℂ (Fin g → ℂ) : _ →L[ℂ] _)` using `by ext1 w`. Use function extensionality and compare the values at `i`. Conclude with `congrArg (· w) (congrArg DFunLike.coe (hm0 i))`.
+
+Establish `hinv : ∀ᶠ b in 𝓝 b₀, (M b).IsInvertible` using `hM.eventually (hM0 ▸ (ContinuousLinearEquiv.refl ℂ (Fin g → ℂ)).nhds :)`. Establish `hI : ContinuousAt (fun b => (M b).inverse) b₀` using `(hinv.self_of_nhds.contDiffAt_map_inverse (n := 1)).continuousAt.comp hM`. Use `(hI.clm_apply (continuousAt_pi.2 hn)).congr ?_` and prove the remaining obligations. Use `filter_upwards [hinv, eventually_all.2 hmn] with b hb hb'`. Conclude with `hb.inverse_apply_eq.2 (funext fun i => (hb' i).symm)`.
+-/
 theorem continuousAt_dir {S : Scheme.{0}} {G : Over S} {g : ℕ} {B : Set ℂ} {y : ℂ → (Sp ℂ ⟶ S)}
     {e : ∀ b, (Fin g → ℂ) → (Over.mk (y b) ⟶ G)}
     (hol : IsHolTo (B ×ˢ Set.univ) (fun bz : ℂ × (Fin g → ℂ) => (e bz.1 bz.2).left)) {b₀ : ℂ} (hb₀ : b₀ ∈ B)
@@ -226,6 +295,29 @@ namespace GlobalTheory.ShFam.BdArc
 
 open LatSec in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z σ A _ φ x fr ψ r g e harc`. Take `⟨g', ρ, e', hρ, hρr, hol, hexp, hdef⟩` from `GlobalTheory.T.exists_semi_abelian_exponential_along_disc Z.X Z.t.G (fun u => spMap (ψ u) ≫ x ≫ genι Z) r Z.t.semi harc.1.1 (isHolTo_spMap harc.1 _)`. Establish `hA : ∀ u ∈ Metric.ball (0 : ℂ) ρ, HolAt (fun z => (e' u z).left) 0` using `fun u hu => holAt_of_isHolTo (hexp u hu).2.2.1 trivial`. Establish `hh : ∀ u, ∃ h : (Fin g → ℂ) →L[ℂ] (Fin g' → ℂ), u ∈ Metric.ball (0 : ℂ) ρ → h.IsInvertible ∧ ∀ j, IsDerivAt (fun z => (e' u z).left) 0 (h (Pi.single j 1)) (spMap (dualMap (ψ u)) ≫ fr.v (e j).1 (e j).2)` using `fun u => by`. Distinguish the cases in `hu : u ∈ Metric.ball (0 : ℂ) ρ`.
+
+Take `⟨D, hD⟩` from `exists_lieEquiv Z.t (hexp u hu).1 (hA u hu) (hexp u hu).2.2.2.2`. Take `⟨f, hf⟩` from `GlobalTheory.T.exists_eigFrame_baseChange' E H Dw l Xo c O β Z A ℂ φ _ fr (ψ u)`. Take `⟨b, hb⟩` from `exists_basis f`. Use `⟨((b.reindex e.symm).equivFun.symm.trans D.symm).toContinuousLinearEquiv, fun _ => ⟨⟨_, rfl⟩, fun j => ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `hD (D.symm (f.vec (e j).1 (e j).2))`.
+
+Rewrite `h1` using `[D.apply_symm_apply]`. Establish `h2 : ((b.reindex e.symm).equivFun.symm.trans D.symm).toContinuousLinearEquiv (Pi.single j 1) = D.symm (f.vec (e j).1 (e j).2)` using `by simp [hb, Pi.single_apply]`. Rewrite using `[← hf, ContinuousLinearEquiv.coe_coe, h2]`. Conclude with `h1`. Conclude with `⟨0, fun h => absurd h hu⟩`.
+
+Use `choose h hh using hh`. Establish `hc : ∀ u ∈ Metric.ball (0 : ℂ) ρ, ContinuousAt (fun u => (h u).inverse) u` using `fun u hu => by`. Use `((hh u hu).1.contDiffAt_map_inverse (n := 1)).continuousAt.comp (continuousAt_clm_apply.2 fun z => ?_)` and prove the remaining obligations. Establish `: ∀ u, h u z = ∑ j, z j • h u (Pi.single j 1)` using `fun u => by`. Simplify using `only [← map_smul, ← map_sum]`.
+
+Conclude with `congrArg _ (pi_eq_sum_univ' z)`. Simplify using `only [this]`. Use `tendsto_finset_sum _ fun j _ => ContinuousAt.const_smul ?_ (z j)` and prove the remaining obligations. Conclude with `continuousAt_dir hol hu (hexp u hu).2.2.2.2 (fun b hb => (hh b hb).2 j) (continuousAt_snd (fun a => ((harc.1.2 a).differentiableAt (Metric.isOpen_ball.mem_nhds (Metric.ball_subset_ball hρr hu))).continuousAt) _)`. Establish `h0 : (0 : ℂ) ∈ Metric.ball (0 : ℂ) ρ` using `Metric.mem_ball_self hρ`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨s, hs, hfin, hspan⟩ : ∃ s ⊆ {z | e' 0 z = 1}, s.Finite ∧ Submodule.span ℂ s = ⊤ := by`. Take `⟨s, h1, h2, h3⟩` from `exists_linearIndependent ℂ {z | e' 0 z = 1}`. Conclude with `⟨s, h1, h3.set_finite_of_isNoetherian, h2.trans (GlobalTheory.T.span_periodLattice_complexSemiAbelian_eq_top _ _ _ _ _ Z.t.semi (hexp 0 h0))⟩`. Take `⟨n, z, -, rfl⟩` from `hfin.fin_param`. Use `choose ζ hζ0 hζa hζ using fun j => hdef (z j) (hs ⟨j, rfl⟩)`.
+
+Take `⟨ρ', hρ', hball⟩` from `Metric.eventually_nhds_iff_ball.1 ((eventually_all.2 hζ).and (eventually_all.2 fun j => (hζa j).eventually_analyticAt))`. Establish `hsub : Metric.ball (0 : ℂ) (min ρ ρ') ⊆ Metric.ball 0 ρ` using `Metric.ball_subset_ball (min_le_left _ _)`. Establish `hsub' : Metric.ball (0 : ℂ) (min ρ ρ') ⊆ Metric.ball 0 ρ'` using `Metric.ball_subset_ball (min_le_right _ _)`. Use `⟨min ρ ρ', n, fun j u => (h u).inverse (ζ j u), lt_min hρ hρ', (min_le_left _ _).trans hρr, fun j u hu => ((hc u (hsub hu)).clm_apply ((hball u (hsub' hu)).2 j).continuousAt).continuousWithinAt, ?_, fun u hu ex hadd hex hd j => ?_⟩` and prove the remaining obligations. Take `⟨L, hL⟩` from `(hh 0 h0).1`.
+
+Establish `: (Set.range fun j => (h 0).inverse (ζ j 0)) = L.symm.toLinearEquiv.toLinearMap '' Set.range z`. Rewrite using `[← Set.range_comp, ← hL]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[hζ0]`.
+
+Rewrite using `[this, ← Submodule.map_span, hspan, Submodule.map_top, LinearEquiv.range]`. Take `⟨hu1, -, hu2, -, hu3⟩` from `hexp u (hsub hu)`. Take `⟨k, hk, -⟩` from `existsUnique_linear hadd hu1 hex hu2 hu3`. Establish `hkh : k = (h u).toLinearMap` using `(Pi.basisFun ℂ (Fin g)).ext fun i => by`. Establish `h1` using `(isDerivAt0_iff _ _ _).1 (hd i)`.
+
+Simplify using `only [hk] at h1`. Establish `h2` using `(isDerivAt_comp_iff (hA u (hsub hu)) (LinearMap.toContinuousLinearMap k) _ _).1 h1`. Rewrite using `[Pi.basisFun_apply]`. Conclude with `(hu3 (Over.homMk _ h2.over) h2.1).unique ((isDerivAt0_iff _ _ _).2 h2) ((isDerivAt0_iff _ _ _).2 ((hh u (hsub hu)).2 i))`. Rewrite using `[hk, hkh, ContinuousLinearMap.coe_coe, (hh u (hsub hu)).1.self_apply_inverse]`.
+
+Conclude with `(hball u (hsub' hu)).1 j`.
+-/
 theorem exists_lattice_sections : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (σ : c.F →+* ℂ) (A : Type) [CommRing A] (φ : c.F →+* A) (x : Sp A ⟶ gen Z) (fr : EigFrame Z φ (x ≫ genι Z)) (ψ : ℂ → (A →+* ℂ)) (r : ℝ) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)), IsArc Z σ φ x ψ r → ∃ (ρ : ℝ) (n : ℕ) (lam : Fin n → ℂ → (Fin g → ℂ)), 0 < ρ ∧ ρ ≤ r ∧ (∀ j, ContinuousOn (lam j) (Metric.ball 0 ρ)) ∧ Submodule.span ℂ (Set.range fun j => lam j 0) = ⊤ ∧ ∀ u ∈ Metric.ball (0 : ℂ) ρ, ∀ ex : (Fin g → ℂ) → (Over.mk (spMap (ψ u) ≫ x ≫ genι Z) ⟶ Z.t.G), (∀ z w, ex (z + w) = ex z * ex w) → IsHolTo Set.univ (fun z => (show Sp ℂ ⟶ Z.t.G.left from (ex z).left)) → (∀ j, IsDerivAt0 (fun z => (ex z).left) (Pi.single j 1) (spMap (dualMap (ψ u)) ≫ fr.v (e j).1 (e j).2)) → ∀ j, ex (lam j u) = 1 := by
   intro E _ _ _ H Dw l Xo c O _ β Z σ A _ φ x fr ψ r g e harc
   obtain ⟨g', ρ, e', hρ, hρr, hol, hexp, hdef⟩ := GlobalTheory.T.exists_semi_abelian_exponential_along_disc Z.X Z.t.G (fun u => spMap (ψ u) ≫ x ≫ genι Z) r

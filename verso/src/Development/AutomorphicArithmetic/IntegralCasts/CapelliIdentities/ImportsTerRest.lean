@@ -11,6 +11,25 @@ noncomputable def UpperTheory.Reformulated.B.Qe31.Statement :
               IsLocalRing.maximalIdeal (Localization.AtPrime P) ^ (2 : ℕ) →
           ∃ s ∉ P, ∀ x ∈ P, s * x ∈ Ideal.span (Set.range f)
 
+/- English proof (translation)
+Introduce `T _ _ P _ h f _ hle`. Establish `hm : IsLocalRing.maximalIdeal (Localization.AtPrime P) ≤ Ideal.span (Set.range fun (i : Fin h) ↦ (algebraMap T (Localization.AtPrime P) : T → Localization.AtPrime P) (f i))`. Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := IsLocalRing.maximalIdeal (Localization.AtPrime P)) (IsNoetherian.noetherian _) (IsLocalRing.maximalIdeal_le_jacobson _) ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, ← pow_two]` and apply the resulting hypothesis. Establish `hI : Ideal.span (Set.range fun (i : Fin h) ↦ (algebraMap T (Localization.AtPrime P) : T → Localization.AtPrime P) (f i)) = (Ideal.span (Set.range f)).map (algebraMap T (Localization.AtPrime P))`.
+
+Rewrite using `[Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Establish `key : ∀ x ∈ P, ∃ s ∉ P, s * x ∈ Ideal.span (Set.range f)`. Introduce `x hx`. Establish `h1 : algebraMap T (Localization.AtPrime P) x ∈ (Ideal.span (Set.range f)).map (algebraMap T (Localization.AtPrime P))`.
+
+Rewrite using `[← hI]`. Apply `hm` to reduce the goal to its premises. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal]`. Conclude with `Ideal.mem_map_of_mem _ hx`. Take `⟨⟨⟨a, ha⟩, ⟨b, hb⟩⟩, hab⟩` from `(IsLocalization.mem_map_algebraMap_iff P.primeCompl _).1 h1`.
+
+Rewrite `hab` using `[← map_mul, IsLocalization.eq_iff_exists P.primeCompl]`. Take `⟨⟨c, hc⟩, hcab⟩` from `hab`. Use `⟨c * b, P.primeCompl.mul_mem hc hb, ?_⟩` and prove the remaining obligations. Establish `: c * b * x = c * a`. Simplify using `only at hcab`.
+
+Rewrite using `[← hcab]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ ha`. Take `⟨S, hS⟩` from `IsNoetherian.noetherian P`.
+
+Establish `hSP : ∀ x ∈ S, x ∈ P` using `fun x hx ↦ hS ▸ Submodule.subset_span hx`. Use `choose! g hg1 hg2 using key`. Use `⟨∏ y ∈ S, g y, P.primeCompl.prod_mem (fun y hy ↦ hg1 y (hSP y hy)), ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[← hS]`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem g hy`. Rewrite using `[hc, mul_comm (g y) c, mul_assoc]`. Conclude with `Ideal.mul_mem_left _ _ (hg2 y (hSP y hy))`.
+
+Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [mul_add]`. Conclude with `Ideal.add_mem _ ha hb`. Consider the case `smul c a _ ha`. Rewrite using `[smul_eq_mul, mul_left_comm]`.
+
+Conclude with `Ideal.mul_mem_left _ _ ha`.
+-/
 theorem UpperTheory.Reformulated.B.Qe31.proof :
     UpperTheory.Reformulated.B.Qe31.Statement := by
   intro T _ _ P _ h f _ hle

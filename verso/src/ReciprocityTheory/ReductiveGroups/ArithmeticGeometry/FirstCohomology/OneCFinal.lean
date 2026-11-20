@@ -16,6 +16,9 @@ namespace ReciprocityTheory.ChartRestriction.G.H1
 
 open ReciprocityTheory.ChartRestriction.G.DVR
 
+/- English proof (translation)
+The claim follows from `oneC_of hL (phiFun_of_globalFns hL.globalFns) h1c (pullback_valuation_forward_of (pullGen_of hL.globalFns) (QuadraticAlgebraValuation.qAl_of hL)) h2f h3 hU (finOrdExists_of_laws hL) (alphaBarEnum_holds hL.weil hL.mulN) hC alphaPair_holds hdim`.
+-/
 theorem cmLiftCondition_of_dimSplit (hL : ReciprocityTheory.ChartRestriction.G.Out.Laws) (h1c : PositiveValuationMaximalIdeal) (h2f : DvrLevelFrame)
     (h3 : FiniteOrderValuationInvariance) (hU : UUStatement) (hC : CanonLiftFixStatement) (hdim : DimSplitStatement) :
     OneCStatement :=
@@ -23,6 +26,9 @@ theorem cmLiftCondition_of_dimSplit (hL : ReciprocityTheory.ChartRestriction.G.O
     (pullback_valuation_forward_of (pullGen_of hL.globalFns) (QuadraticAlgebraValuation.qAl_of hL)) h2f h3 hU (finOrdExists_of_laws hL)
     (alphaBarEnum_holds hL.weil hL.mulN) hC alphaPair_holds hdim
 
+/- English proof (translation)
+The claim follows from `cmLiftCondition_of_dimSplit hL h1c (levelFrame_of_laws hL) (galois_fixed_adelic_matrices_descend hL hTW) hU hC hdim`.
+-/
 theorem cmLiftCondition_of_torsion (hL : ReciprocityTheory.ChartRestriction.G.Out.Laws) (h1c : PositiveValuationMaximalIdeal) (hTW : TWStatement)
     (hU : UUStatement) (hC : CanonLiftFixStatement) (hdim : DimSplitStatement) : OneCStatement :=
   cmLiftCondition_of_dimSplit hL h1c (levelFrame_of_laws hL) (galois_fixed_adelic_matrices_descend hL hTW) hU hC hdim

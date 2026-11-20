@@ -23,6 +23,13 @@ open UpperTheory.Gal.InertialTypesAlt.G
 open UpperTheory.ConvolutionTheory.T
 open scoped ComplexConjugate
 
+/- English proof (translation)
+Use `Submodule.finiteDimensional_of_le (S₂ := LinearMap.range A) fun x hx => ?_` and prove the remaining obligations. Establish `hAx : A x = x`. Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `l`. Rewrite using `[map_sub, (hA x l).2, sub_eq_zero]`.
+
+Establish `e : (fun g => ((J : Set G).indicator (1 : G → ℂ)) g * l (ρ g x)) = (J : Set G).indicator fun _ => l x`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ (J : Set G)`. Establish `hgx : ρ g x = x` using `hx g hg`. Simplify using `[Set.indicator_of_mem hg, hgx]`.
+
+Simplify using `[Set.indicator_of_notMem hg]`. Rewrite using `[e, integral_indicator hJ]`. Simplify using `[Measure.real, h1]`. Conclude with `⟨x, hAx⟩`.
+-/
 private theorem fd_fixed {G V : Type} [Group G] [MeasurableSpace G] [AddCommGroup V] [Module ℂ V]
     (m : Measure G) (ρ : Representation ℂ G V) (J : Subgroup G) (hJ : MeasurableSet (J : Set G))
     (h1 : m (J : Set G) = 1) (A : V →ₗ[ℂ] V) (hA : IsIntegralOp m ρ ((J : Set G).indicator 1) A)
@@ -43,15 +50,24 @@ private theorem fd_fixed {G V : Type} [Group G] [MeasurableSpace G] [AddCommGrou
     simp [Measure.real, h1]
   exact ⟨x, hAx⟩
 
+/- English proof (translation)
+The claim follows from `HeightOneSpectrum.ext w.2.over.symm`.
+-/
 private theorem under_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {v : HeightOneSpectrum (𝓞 F)} (w : PlacesOver E v) : w.1.under (𝓞 F) = v :=
   HeightOneSpectrum.ext w.2.over.symm
 
+/- English proof (translation)
+Introduce `N hN` and use `by obtain ⟨U, -, hU⟩ := exists_openSubgroup_isCompact_subset hN exact ⟨U, U.isOpen, hU⟩`.
+-/
 private theorem small {K : Type} [Field K] [NumberField K] (n : ℕ) (v : Pl K) :
     ∀ N ∈ nhds (1 : Gw n v), ∃ U : Subgroup (Gw n v), IsOpen (U : Set (Gw n v)) ∧ (U : Set (Gw n v)) ⊆ N := fun N hN => by
   obtain ⟨U, -, hU⟩ := exists_openSubgroup_isCompact_subset hN
   exact ⟨U, U.isOpen, hU⟩
 
+/- English proof (translation)
+Establish `h0 : m J ≠ 0` using `hJ.2.measure_ne_zero _ ⟨1, one_mem _⟩`. Establish `hT : m J ≠ ⊤` using `hJ.1.measure_lt_top.ne`. Use `⟨(m J)⁻¹, ENNReal.inv_ne_zero.2 hT, ENNReal.inv_ne_top.2 h0, Measure.IsHaarMeasure.smul _ (ENNReal.inv_ne_zero.2 hT) (ENNReal.inv_ne_top.2 h0), ?_⟩` and prove the remaining obligations. Simplify using `[ENNReal.inv_mul_cancel h0 hT]`.
+-/
 private theorem scale {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     (m : Measure G) (hm : m.IsHaarMeasure) (J : Subgroup G) (hJ : CO J) :
     ∃ d : ENNReal, d ≠ 0 ∧ d ≠ ⊤ ∧ (d • m).IsHaarMeasure ∧ (d • m) J = 1 := by
@@ -61,6 +77,21 @@ private theorem scale {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGr
     Measure.IsHaarMeasure.smul _ (ENNReal.inv_ne_zero.2 hT) (ENNReal.inv_ne_top.2 h0), ?_⟩
   simp [ENNReal.inv_mul_cancel h0 hT]
 
+/- English proof (translation)
+Establish `hq : q ≠ v` using `fun h => L.q_not (h ▸ hv)`. Use `⟨⟨L.S, L.q_not, L.unr, Function.update L.φ v φ, Function.update L.f v f, Function.update L.c v c, Function.update L.UE v UE, Function.update L.UF v UF, fun y hy => ?_, fun y hy => ?_, fun y hy => ?_, fun y hy => ?_, ?_, fun y hy hyq => ?_⟩, rfl, rfl, rfl, rfl, rfl, rfl⟩` and prove the remaining obligations. Distinguish the cases in `h : y = v`. Substitute `h` using the available equality. Simplify using `only [Function.update_self]`.
+
+Conclude with `⟨h1.1, h1.2, h2.1, h2.2⟩`. Simplify using `only [Function.update_of_ne h]`. Conclude with `L.test y hy`. Distinguish the cases in `h : y = v`. Substitute `h` using the available equality.
+
+Simplify using `only [Function.update_self]`. Conclude with `h4`. Simplify using `only [Function.update_of_ne h]`. Conclude with `L.lev y hy`. Distinguish the cases in `h : y = v`.
+
+Substitute `h` using the available equality. Simplify using `only [Function.update_self]`. Conclude with `h5`. Simplify using `only [Function.update_of_ne h]`. Conclude with `L.inv y hy`.
+
+Distinguish the cases in `h : y = v`. Substitute `h` using the available equality. Simplify using `only [Function.update_self]`. Conclude with `h3`. Simplify using `only [Function.update_of_ne h]`.
+
+Conclude with `L.mat y hy`. Simplify using `only [Function.update_of_ne hq]`. Conclude with `L.at_q`. Establish `h : y ≠ v` using `fun h => hy (h ▸ hv)`. Simplify using `only [Function.update_of_ne h]`.
+
+Conclude with `L.off y hy hyq`.
+-/
 private theorem updLoc {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E ≃ₐ[F] E} {n : ℕ}
     {q : Pl F} {w₀ : PlacesOver E q} (L : GM.Loc σ n q w₀) (v : Pl F) (hv : v ∈ L.S)
     (φ : GL (Fin n) (CompletionsOver E v) → ℂ) (f : Gw n v → ℂ) (c : ℂ) (UE : Subgroup (GL (Fin n) (CompletionsOver E v)))
@@ -91,6 +122,101 @@ private theorem updLoc {F E : Type} [Field F] [NumberField F] [Field E] [NumberF
     simp only [Function.update_of_ne h]; exact L.off y hy hyq
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ _ σ hσ hp n hn μE _ π P V hC hP hW v w hv iF bF iE bE mF mE hmF hmE τ τ' hτ hτ' s₀ I₀ hs₀ hI₀`. Take `rfl` from `bF.measurable_eq`. Take `rfl` from `bE.measurable_eq`. Use `letI : ∀ x : Pl E, MeasurableSpace (Gw n x) := fun _ => borel _`. Use `haveI : ∀ x : Pl E, BorelSpace (Gw n x) := fun _ => ⟨rfl⟩`.
+
+Use `letI : ∀ x : Pl F, MeasurableSpace (Gw n x) := fun _ => borel _`. Use `haveI : ∀ x : Pl F, BorelSpace (Gw n x) := fun _ => ⟨rfl⟩`. Set `μF : Measure (normOneGL F n)` to `Measure.haar`. Establish `hV` using `hC.summand`. Take `⟨-, hAtE, -, -, hnp, θ, hθ, hst⟩` from `carryLift F E σ hσ hp n hn μE μF`.
+
+Take `⟨Λ, t, hAt⟩` from `hAtE V hV`. Establish `hVθ` using `(hst P V hC).1 hP`. Establish `hOffA : OffAll F n Λ t`. Assume the negation of the conclusion as `hc`. Conclude with `hnp _ V Λ t hC hAt (famParts F E σ hσ hp n hn (fun m hm _ => liftAll (liftStep (coreLift UpperTheory.ConvolutionTheory.ci GM.gm)) F E σ hσ hp m hm) Λ t hc)`.
+
+Establish `hocc' : Occurs μE V w.1 τ'` using `(occursIff E n μE V hV w.1 τ').2 ((Dp.locIff E n μE P V hC w.1 τ').1 hτ')`. Take `⟨S, q, w₀, hvS, hqS, hq, hunr, hsph, hS'⟩` from `pickS F E σ hσ hp n hn μE V Λ t hV hAt v`. Take `⟨-, -, hne, huniq, -⟩` from `places F E hp`. Take `⟨T, hTS, -, htyped, hrank, c, f₀, UF, -, hL⟩` from `tyEx F E σ hσ hp n hn μE V hV q w₀ hq S hqS hunr hsph fun u => (hne u).some`. Take `rfl : w = T.mk' v` from `huniq v hv _ _`.
+
+Take `⟨u, hu, hu0⟩` from `(Submodule.ne_bot_iff _).1 htyped`. Take `⟨k, hk, D, s, hs, νE, jE, νF, jF, b, a, aE, aF, hposition, harch, hAE, hAF, hpair, hua⟩` from `pickInf F E σ hσ hp n hn μE μF u hu0`. Establish `heig : ∀ x, V ⊓ eigL μE x (T.J x) (T.χ x) ≠ ⊥` using `fun x => (Submodule.ne_bot_iff _).2 ⟨u, ⟨hu.1, (Submodule.mem_iInf _).1 hu.2 x⟩, hu0⟩`. Establish `hmk : ∀ y ∈ S, (T.mk' y).1 ≠ w₀.1` using `fun y hy h => hqS ((by rw [← under_eq (T.mk' y), h, under_eq w₀] : y = q) ▸ hy)`. Establish `hcoI : CO (GLnLocal.iwahori (w₀.1.adicCompletion E) n)` using `T.at_q w₀ ▸ T.co w₀.1`.
+
+Take `⟨m, hm, hm1, hm2⟩ : ∃ m : ∀ x : Pl E, Measure (Gw n x), (∀ x, (m x).IsHaarMeasure) ∧ m w₀.1 (GLnLocal.iwahori (w₀.1.adicCompletion E) n : Set (Gw n w₀.1)) = 1 ∧ m (T.mk' v).1 = mE` from `by choose m₁ hm₁ _ using fun x : Pl E => haar_norm E n x`. Take `⟨d, -, -, hd, hd1⟩` from `scale (m₁ w₀.1) (hm₁ _) _ hcoI`. Use `⟨Function.update (Function.update m₁ w₀.1 (d • m₁ w₀.1)) (T.mk' v).1 mE, fun x => ?_, ?_, Function.update_self ..⟩` and prove the remaining obligations. Distinguish the cases in `h : x = (T.mk' v).1`. Substitute `h` using the available equality.
+
+Rewrite using `[Function.update_self]`. Conclude with `hmE`. Rewrite using `[Function.update_of_ne h]`. Distinguish the cases in `h' : x = w₀.1`. Substitute `h'` using the available equality.
+
+Rewrite using `[Function.update_self]`. Conclude with `hd`. Rewrite using `[Function.update_of_ne h']`. Conclude with `hm₁ x`. Rewrite using `[Function.update_of_ne (hmk v hvS).symm, Function.update_self]`.
+
+Conclude with `hd1`. Take `⟨d, hd0, hdT, hdH, hd1⟩` from `scale mF hmF (GLnLocal.integralGL (v.adicCompletion F) n) ⟨GLnLocal.isCompact_integralGL _ n, GLnLocal.isOpen_integralGL _ n⟩`. Take `⟨m', hm', hm2'⟩ : ∃ m : ∀ x : Pl F, Measure (Gw n x), (∀ x, (m x).IsHaarMeasure ∧ m x (GLnLocal.integralGL (x.adicCompletion F) n) = 1) ∧ m v = d • mF` from `by choose m₁ hm₁ using fun x : Pl F => haar_norm F n x`. Use `⟨Function.update m₁ v (d • mF), fun x => ?_, Function.update_self ..⟩` and prove the remaining obligations. Distinguish the cases in `h : x = v`.
+
+Substitute `h` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `⟨hdH, hd1⟩`. Rewrite using `[Function.update_of_ne h]`. Conclude with `hm₁ x`.
+
+Establish `hoccE : ∀ x : Pl E, ∃ ρ : SmIrr (Gw n x), Occurs μE V x ρ` using `fun x => by haveI := hm x`. Conclude with `(occursBasics E n μE V x (m x) hV).1`. Choose the witnesses or unpack the hypotheses as in `⟨X, hX, hXv⟩ : ∃ X : ∀ y : Pl F, Σ ρ : SmIrr (Gw n (T.mk' y).1), (Gw n (T.mk' y).1 →* Gw n (T.mk' y).1) × (ρ.V ≃ₗ[ℂ] ρ.V), (∀ y, Occurs μE V (T.mk' y).1 (X y).1 ∧ (¬ GM.Split E y → IsLocGal σ (T.mk' y) (X y).2.1 ∧ ∀ g x, (X y).2.2 ((X y).1.ρ g x) = (X y).1.ρ ((X y).2.1 g) ((X y). …`. Establish `hex : ∀ y : Pl F, ∃ Y : Σ ρ : SmIrr (Gw n (T.mk' y).1), (Gw n (T.mk' y).1 →* Gw n (T.mk' y).1) × (ρ.V ≃ₗ[ℂ] ρ.V), Occurs μE V (T.mk' y).1 Y.1 ∧ (¬ GM.Split E y → IsLocGal σ (T.mk' y) Y.2.1 ∧ ∀ g x, Y.2.2 (Y.1.ρ g x) = Y.1.ρ (Y.2.1 g) (Y.2.2 x))` using `fun y => by`. Take `⟨ρ, hρ⟩` from `hoccE (T.mk' y).1`.
+
+Distinguish the cases in `hy : GM.Split E y`. Conclude with `⟨⟨ρ, MonoidHom.id _, LinearEquiv.refl _ _⟩, hρ, fun h => absurd hy h⟩`. Take `⟨-, g, hg, hg'⟩` from `locGalEx F E σ hp n y (T.mk' y) hy`. Take `⟨J, hJ⟩` from `(hg' μE θ hθ).2 V ρ hV hVθ hρ`. Conclude with `⟨⟨ρ, g, J⟩, hρ, fun _ => ⟨hg, hJ⟩⟩`.
+
+Use `choose X₁ hX₁ using hex`. Use `⟨Function.update X₁ v ⟨τ', s₀, I₀⟩, fun y => ?_, Function.update_self ..⟩` and prove the remaining obligations. Distinguish the cases in `h : y = v`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`.
+
+Conclude with `⟨hocc', fun _ => ⟨hs₀, hI₀⟩⟩`. Rewrite using `[Function.update_of_ne h]`. Conclude with `hX₁ y`. Take `⟨τ₀, hτ₀⟩` from `hoccE w₀.1`. Take `⟨y₀, hy₀, hY⟩` from `(twistY F E σ hσ k n hk hn μE θ hθ D s hs hposition νE νF b a aE aF harch q w₀ hq T V hV hVθ hrank).1 ⟨u, hu, hua⟩`.
+
+Take `⟨cE, hcE, hE⟩` from `termEV F E σ hσ k n hk (hk ▸ hp) hn μE θ hθ D s hs hposition νE νF b a aE aF harch m hm q w₀ hq T V hV hVθ (fun y hy hy' x => ⟨hrank y hy hy' x, heig _⟩) τ₀ (fun y => (X y).1) (fun y => (X y).2.1) (fun y => (X y).2.2) hτ₀ (fun y _ => (hX y).1) (fun y _ hy => (hX y).2 hy) y₀ hy₀`. Establish `hYZ : T.Y μE V (fun i => OComponent μE (s i) (hs i) νF a) y₀ ≤ T.Z μE V (fun i => OComponent μE (s i) (hs i) νF a) y₀`. Unfold `Ty.Y Ty.Z Ty.typed`. Conclude with `inf_le_inf_left _ (le_iInf₂ fun w _ => iInf_le _ w)`. Use `replace hcE := hcE fun h => hY (le_bot_iff.1 (h ▸ hYZ))`.
+
+Establish `hfixS : ∀ y, GM.Split E y → ∀ x : PlacesOver E y, V ⊓ fixL μE x.1 (T.J x.1) ≠ ⊥` using `fun y hy x => by`. Establish `h1` using `heig x.1`. Establish `h2` using `T.chr x.1`. Rewrite `h1`, `h2` using `[T.triv y hy x]`. Rewrite `h1` using `[(eigBasic E n μE _ _ _ (T.co _) h2).2.1]`. Then use the resulting hypothesis.
+
+Take `⟨ν, hν⟩` from `goodEx n hn`. Take `⟨Z₀, hZ0, hZ₀, hZ⟩ : ∃ Z : Multiset ℂ, 0 ∉ Z ∧ Z ≠ 0 ∧ ∀ j : ℕ, HasTrace (m w₀.1) τ₀.ρ ((GM.iwCoset w₀.1 (j • ν)).indicator 1) (Z.map (· ^ j)).sum` from `by haveI := hm w₀.1`. Take `⟨hfx, -, -, -, -, A, hA, hfin, -⟩` from `unitTrace E n μE V hV w₀.1 (m w₀.1) (hm _) τ₀ _ hτ₀ hcoI (T.at_q w₀ ▸ hfixS q hq w₀)`. Establish `fd` using `fd_fixed (m w₀.1) τ₀.ρ _ hcoI.2.measurableSet hm1 A hA hfin`. Take `⟨Z, h0, hcard, hZ⟩` from `iwPow E n w₀.1 (m w₀.1) hm1 τ₀ ν hν.1.antitone fd`.
+
+Use `⟨Z, h0, ?_, hZ⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hfx (Submodule.finrank_eq_zero.1 (by simpa using hcard.symm))`. Set `ψ : ∀ y : Pl F, Gw n (T.mk' y).1 → ℂ` to `fun y => (T.J (T.mk' y).1 : Set (Gw n (T.mk' y).1)).indicator fun x => conj (T.χ (T.mk' y).1 x)`. Establish `hψs : ∀ y, GM.Split E y → ψ y = (T.J (T.mk' y).1 : Set (Gw n (T.mk' y).1)).indicator 1` using `fun y hy => by`.
+
+Simplify using `only [ψ, T.triv y hy (T.mk' y)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Establish `hunit` using `fun y (hy : GM.Split E y) => unitTrace E n μE V hV (T.mk' y).1 (m _) (hm _) (X y).1 (T.J _) (hX y).1 (T.co _) (hfixS y hy _)`.
+
+Establish `hbase` using `fun y (hyS : y ∈ T.S) (hy : ¬ GM.Split E y) => baseTw F E σ hσ hp n hn μE V hV q w₀ T y (fun x => huniq y hy _ _) (hrank y hyS hy _) (heig _) (m _) (hm _) (X y).1 (X y).2.1 (X y).2.2 (hX y).1 ((hX y).2 hy).1 ((hX y).2 hy).2`. Establish `htb : ∀ y : Pl F, ∃ z : ℂ, y ∈ T.S → z ≠ 0 ∧ (GM.Split E y → HasTrace (m _) (X y).1.ρ (ψ y) z) ∧ (¬ GM.Split E y → HasTwTrace (m _) (X y).1 (X y).2.2 (ψ y) z)` using `fun y => by`. Distinguish the cases in `hyS : y ∈ T.S`. Distinguish the cases in `hy : GM.Split E y`. Take `⟨z, h1, h2⟩` from `(hunit y hy).2.2.2`.
+
+Conclude with `⟨z, fun _ => ⟨h1, fun _ => hψs y hy ▸ h2, fun h => absurd hy h⟩⟩`. Take `⟨z, h1, h2⟩` from `(hbase y hyS hy).2`. Conclude with `⟨z, fun _ => ⟨h1, fun h => absurd h hy, fun _ => h2⟩⟩`. Conclude with `⟨0, fun h => absurd h hyS⟩`. Use `choose tb htb using htb`.
+
+Take `⟨L₁, hfit, -, -, -⟩` from `hL ψ fun y hy => by`. Establish `hy'` using `(Finset.mem_filter.1 hy).2`. Rewrite using `[hψs y hy']`. Conclude with `⟨(hunit y hy').2.1, (hunit y hy').2.2.1⟩`. Establish `hL₁S : L₁.S = S` using `hfit.S_eq.trans hTS`.
+
+Establish `hvT : v ∈ T.S` using `hTS ▸ hvS`. Take `⟨⟨e, he⟩, hint, -⟩` from `cmpIso F E n v (T.mk' v) fun x => huniq v hv _ _`. Establish `hφn : ∀ y ∈ T.S, ¬ GM.Split E y → L₁.φ y = fun g => ψ y (GM.cmp (T.mk' y) g)` using `fun y hy hy' => by`. Rewrite using `[hfit.nonsplit y hy hy', (cmpIso F E n y (T.mk' y) fun x => huniq y hy' _ _).2.2]`. Take `⟨κ, hκ, hG⟩` from `GM.gm F E σ hσ hp n hn μE μF θ hθ q w₀ hq νE νF aE aF 1 one_pos hAE hAF hpair`.
+
+Use `set SF : Set (Pl F) := {y | y ∈ S ∨ y = q} with hSF`. Use `set SE : Set (Pl E) := {y | y.under (𝓞 F) ∈ SF} with hSE`. Establish `hSFf : SF.Finite` using `(S.finite_toSet.union (Set.finite_singleton q)).subset fun y hy => hy`. Establish `hSEf : SE.Finite`. Take `⟨𝔢, -, h𝔢, -⟩` from `hG L₁ ν hν`.
+
+Establish `heS : 𝔢.S = SE` using `Set.ext fun y => by rw [h𝔢.2.2.1, hL₁S]; rfl`. Conclude with `heS ▸ 𝔢.finS`. Establish `key : ∀ U : Subgroup (Gw n v), IsOpen (U : Set (Gw n v)) → U ≤ GLnLocal.integralGL (v.adicCompletion F) n → ∃ B : ℕ → ℂ, ∀ (φ : Gw n (T.mk' v).1 → ℂ) (f : Gw n v → ℂ) (c₁ z r : ℂ), Test φ → Test f → GM.MatchAt σ v c₁ (fun g => φ (GM.cmp (T.mk' v) g)) f → (∀ g, f g ≠ 0 → g ∈ normS …`. Introduce `U hU1 hU2`. Take `⟨ι, _, V₀, ρ, bF, Z, hι, hF⟩` from `sideSum F E σ n (Module.finrank F E) hn μF νF m' hm' aF q w₀ S (Function.update L₁.UF v U) ν hν.1.antitone (fun V₀ => ∃ Λ' t', At μF SF V₀ Λ' t' ∧ Λ = bcInf Λ' ∧ ∀ y ∉ SE, t y = bcSat t' y) (y₀ ^ (k + 1)) (pow_pos hy₀ _)`.
+
+Establish `hs₁ : ∀ i (y : Pl F), ∃ z : ℂ, y ∈ S → HasTrace (m' y) (ρ i y).ρ (L₁.f y) z` using `fun i y => by`. Distinguish the cases in `hy : y ∈ S`. Use `haveI := (hm' y).1`. Establish `ht` using `L₁.test y (hL₁S ▸ hy)`. Take `⟨z, hz⟩` from `(occursBasics F n μF (V₀ i) y (m' y) (hι i).1).2.2 _ ((hι i).2.2.2 y) (L₁.f y) ⟨ht.2.2.1, ht.2.2.2⟩`.
+
+Conclude with `⟨z, fun _ => hz⟩`. Conclude with `⟨0, fun h => absurd h hy⟩`. Use `choose s₁ hs₁ using hs₁`. Use `⟨fun j => (κ * ∏ y ∈ S.erase v, L₁.c y) * (d.toReal : ℂ) * ∑ i, bF i * ((Z i).map (· ^ j)).sum * ∏ y ∈ S.erase v, s₁ i y, fun φ f c₁ z r hφ hf hmat hsup hz hr hinv => ?_⟩` and prove the remaining obligations. Take `⟨U', hU'1, hU'2, hU'3⟩` from `levEx _ (GLnLocal.integralGL ((T.mk' v).1.adicCompletion E) n) φ (GLnLocal.isOpen_integralGL _ n) (small n _) hφ`.
+
+Establish `hce : (fun g => GM.cmp (n` using `n) (T.mk' v) g) = e := funext fun g => (he g).symm`. Establish `hφt : Test fun g => φ (GM.cmp (T.mk' v) g)`. Establish `: (fun g => φ (GM.cmp (T.mk' v) g)) = φ ∘ e.toHomeomorph` using `funext fun g => congrArg φ (he g).symm`. Rewrite using `[this]`. Conclude with `⟨hφ.1.comp_continuous e.continuous, hφ.2.comp_homeomorph _⟩`.
+
+Take `⟨L, l1, l2, l3, l4, l5, l6⟩` from `updLoc L₁ v (hL₁S ▸ hvS) _ f c₁ (U'.comap (GM.cmp (T.mk' v))) U hφt hf hmat ⟨hU'1.preimage (show Continuous fun g => GM.cmp (n := n) (T.mk' v) g from hce ▸ e.continuous), fun g hg => (hint g).2 (hU'2 hg), hU1, hU2⟩ ⟨fun x hx g => by rw [map_mul]; exact hU'3 _ hx _, hinv⟩`. Establish `hLS : L.S = S` using `l1.trans hL₁S`. Establish `hns : ∀ y ∈ T.sp, y ≠ v` using `fun y hy h => hv (h ▸ (Finset.mem_filter.1 hy).2)`. Establish `hfv : FitsV T L (Function.update ψ v φ)`. Use `⟨l1.trans hfit.S_eq, fun y hy => ?_, fun y hy => ?_, fun y hy => ?_, fun y hy hy' g => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `h : y = v`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hφ`. Rewrite using `[Function.update_of_ne h]`.
+
+Distinguish the cases in `hy' : GM.Split E y`. Conclude with `(hfit.test y (Finset.mem_filter.2 ⟨hy, hy'⟩)).1`. Conclude with `(hbase y hy hy').1`. Rewrite using `[Function.update_of_ne (hns y hy)]`. Conclude with `(hfit.test y hy).2`.
+
+Rewrite using `[l2, l5, Function.update_of_ne (hns y hy), Function.update_of_ne (hns y hy), Function.update_of_ne (hns y hy)]`. Conclude with `hfit.split y hy`. Rewrite using `[l2]`. Distinguish the cases in `h : y = v`. Substitute `h` using the available equality.
+
+Rewrite using `[Function.update_self, Function.update_self]`. Rewrite using `[Function.update_of_ne h, Function.update_of_ne h, hφn y hy hy']`. Take `⟨𝔢, 𝔣, h𝔢, h𝔣, hgeo⟩` from `hG L ν hν`. Establish `heS : 𝔢.S = SE` using `Set.ext fun y => by rw [h𝔢.2.2.1, hLS]; rfl`. Establish `hfS : 𝔣.S = SF` using `Set.ext fun y => by rw [h𝔣.2.2.1, hLS]; rfl`.
+
+Take `⟨hAt', hc1, hc2⟩` from `hS' 𝔢.S fun y => by rw [h𝔢.2.2.1, hLS]`. Establish `hoff : OffFam F n 𝔢.S 𝔣.S Λ t`. Rewrite using `[heS, hfS]`. Conclude with `hOffA SF hSFf`. Establish `hz' : ∀ i, HasTrace (m' v) (ρ i v).ρ f ((d.toReal : ℂ) * z)` using `fun i => by`.
+
+Take `⟨Λ', t', hA, hΛ, ht⟩` from `(hι i).2.1`. Rewrite using `[hm2']`. Conclude with `fibTrace F E σ hσ hp n hn μE μF π P V Λ t hC hAt hW (V₀ i) Λ' t' (hι i).1 ⟨SF, hSFf, hA⟩ hΛ (Filter.mem_of_superset hSEf.compl_mem_cofinite fun y hy => ht y hy) v _ τ _ hτ ((hι i).2.2.2 v) f _ hsup (((trBasic _ mF τ (LinearEquiv.refl _ _) f).2.2 d hdT).1 z hz)`. Use `filter_upwards [UpperTheory.ConvolutionTheory.ci F E n _ hn hp.pos μE μF θ 𝔢 𝔣 _ hgeo Λ t hc1 hc2 hoff (y₀ ^ (k + 1)) (pow_pos hy₀ _)] with j hj`. Rewrite using `[oneTerm E n _ hn μE θ 𝔢 V Λ t hV hVθ hAt' _ j, hE L _ hfv ν _ 𝔢 hν.1.antitone h𝔢 j _ (Function.update tb v r) (hZ j) (fun y hy => by`.
+
+Rewrite using `[Function.update_of_ne (hns y hy), Function.update_of_ne (hns y hy)]`. Conclude with `(htb y (Finset.mem_filter.1 hy).1).2.1 (Finset.mem_filter.1 hy).2) (fun y hy hy' => by`. Distinguish the cases in `h : y = v`. Substitute `h` using the available equality. Rewrite using `[Function.update_self, Function.update_self, hm2]`.
+
+Establish `: ∀ Y : Σ ρ : SmIrr (Gw n (T.mk' y).1), (Gw n (T.mk' y).1 →* Gw n (T.mk' y).1) × (ρ.V ≃ₗ[ℂ] ρ.V), Y = ⟨τ', s₀, I₀⟩ → HasTwTrace mE Y.1 Y.2.2 φ r` using `by rintro _ rfl; exact hr`. Conclude with `this _ hXv`. Rewrite using `[Function.update_of_ne h, Function.update_of_ne h]`. Conclude with `(htb y hy).2.2 hy'), heS, hfS,`. Use `hF L 𝔣 hLS (fun y _ => by rw [l6]) h𝔣 (fun i => Function.update (s₁ i) v ((d.toReal : ℂ) * z)) (fun i y hy => by`.
+
+Rewrite using `[l3]`. Distinguish the cases in `h : y = v`. Substitute `h` using the available equality. Rewrite using `[Function.update_self, Function.update_self]`. Conclude with `hz' i`.
+
+Rewrite using `[Function.update_of_ne h, Function.update_of_ne h]`. Conclude with `hs₁ i y hy) j, hLS, l4,`. Use the proof step `Finset.prod_update_of_mem hvT, Finset.prod_update_of_mem hvS] at hj`. Simplify using `only [Finset.prod_update_of_mem hvS, Finset.sdiff_singleton_eq_erase] at hj`. Establish `e2 : ∑ i, bF i * ((Z i).map (· ^ j)).sum * ((d.toReal : ℂ) * z * ∏ y ∈ S.erase v, s₁ i y) = (d.toReal : ℂ) * z * ∑ i, bF i * ((Z i).map (· ^ j)).sum * ∏ y ∈ S.erase v, s₁ i y`.
+
+Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite `hj` using `[e2]`. Take the linear combination `hj`. Establish `ht₁` using `L₁.test v (hL₁S ▸ hvS)`.
+
+Take `⟨hc1, hc2⟩` from `matchCut F E σ hσ hp n hn v (L₁.c v) (L₁.φ v) (L₁.f v)`. Establish `hb1` using `hc2 ⟨ht₁.2.2.1, ht₁.2.2.2⟩`. Establish `hb2 : GM.MatchAt σ v (L₁.c v) (fun g => ψ v (GM.cmp (T.mk' v) g)) ((normSet E n v).indicator (L₁.f v))`. Rewrite using `[← hφn v hvT hv]`. Conclude with `@hc1 (@GM.Loc.mat _ _ _ _ _ _ _ _ _ _ _ L₁ v (hL₁S ▸ hvS))`.
+
+Establish `hb3 : ∀ g, (normSet E n v).indicator (L₁.f v) g ≠ 0 → g ∈ normSet E n v` using `fun g hg => Set.mem_of_indicator_ne_zero hg`. Take `⟨z₀, hz₀⟩` from `trEx F n hn π v mF hmF τ hτ _ hb1`. Establish `hr₀ : HasTwTrace mE τ' I₀ (ψ v) (tb v)`. Establish `h` using `(htb v hvT).2.2 hv`. Rewrite `h` using `[hm2]`.
+
+Establish `: ∀ Y : Σ ρ : SmIrr (Gw n (T.mk' v).1), (Gw n (T.mk' v).1 →* Gw n (T.mk' v).1) × (ρ.V ≃ₗ[ℂ] ρ.V), Y = ⟨τ', s₀, I₀⟩ → HasTwTrace mE Y.1 Y.2.2 (ψ v) (tb v) → HasTwTrace mE τ' I₀ (ψ v) (tb v)` using `by rintro _ rfl h; exact h`. Conclude with `this _ hXv h`. Establish `hr0` using `(htb v hvT).1`. Establish `main : ∀ (φ : Gw n (T.mk' v).1 → ℂ) (f : Gw n v → ℂ) (c₁ z r : ℂ), Test φ → Test f → GM.MatchAt σ v c₁ (fun g => φ (GM.cmp (T.mk' v) g)) f → (∀ g, f g ≠ 0 → g ∈ normSet E n v) → HasTrace mF τ.ρ f z → HasTwTrace mE τ' I₀ φ r → L₁.c v * z₀ ≠ 0 ∧ r * (L₁.c v * z₀) = tb v * (c₁ * z)`. Introduce `φ f c₁ z r hφ hf hmat hsup hz hr`.
+
+Take `⟨U₁, a1, a2, a3⟩` from `levEx _ _ f (GLnLocal.isOpen_integralGL (v.adicCompletion F) n) (small n v) hf`. Take `⟨U₂, b1, b2, b3⟩` from `levEx _ U₁ _ a1 (small n v) hb1`. Take `⟨B, hB⟩` from `key U₂ b1 (b2.trans a2)`. Take `⟨j, h0, h1, h2⟩` from `((powNe Z₀ hZ₀ hZ0).and_eventually ((hB φ f c₁ z r hφ hf hmat hsup hz hr fun x hx => a3 x (b2 hx)).and (hB (ψ v) _ _ z₀ (tb v) (hbase v hvT hv).1 hb1 hb2 hb3 hz₀ hr₀ b3))).exists`. Establish `hA : cE * (Z₀.map (· ^ j)).sum * ∏ y ∈ T.S.erase v, tb y ≠ 0` using `mul_ne_zero (mul_ne_zero hcE h0) (Finset.prod_ne_zero_iff.2 fun y hy => (htb y (Finset.mem_of_mem_erase hy)).1)`.
+
+Use `⟨fun h => mul_ne_zero hA hr0 (by rw [h2, h, mul_zero]), mul_left_cancel₀ hA ?_⟩` and prove the remaining obligations. Take the linear combination `(L₁.c v * z₀) * h1 - (c₁ * z) * h2`. Establish `hne0` using `(main (ψ v) _ _ z₀ (tb v) (hbase v hvT hv).1 hb1 hb2 hb3 hz₀ hr₀).1`. Use `⟨tb v / (L₁.c v * z₀), div_ne_zero hr0 hne0, fun φ f c₁ z hφ hf hmat hsup hz => ?_⟩` and prove the remaining obligations. Use `haveI := hmE`.
+
+Take `⟨z', hz'⟩` from `(occursBasics E n μE V (T.mk' v).1 mE hV).2.2 τ' hocc' φ hφ`. Take `⟨r, hr⟩` from `(trBasic _ mE τ' I₀ φ).1 z' hz'`. Establish `h` using `(main φ f c₁ z r hφ hf hmat hsup hz hr).2`. Establish `: tb v / (L₁.c v * z₀) * c₁ * z = r`. Rewrite using `[div_mul_eq_mul_div, div_mul_eq_mul_div, div_eq_iff hne0, h]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `hr`.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.G.core :
     UpperTheory.Gal.InertialTypesAlt.G.Core := by
   intro F E _ _ _ _ _ _ _ _ σ hσ hp n hn μE _ π P V hC hP hW v w hv iF bF iE bE mF mE hmF hmE τ τ' hτ hτ' s₀ I₀ hs₀ hI₀

@@ -14,6 +14,11 @@ open GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.BigTop GlobalTheory.Cov
 
 namespace GlobalTheory.CovTop.DeepExist
 
+/- English proof (translation)
+Establish `h3 : 0 < Real.log 3` using `Real.log_pos (by norm_num)`. Establish `he : (expL L : ℝ) ≤ 3 * L / Real.log 3` using `Nat.floor_le (by positivity)`. Establish `he' : (expL L : ℝ) * Real.log 3 ≤ 3 * L` using `(le_div_iff₀ h3).1 he`. Establish `h15 : Real.log 15 ≤ 3 * Real.log 3`. Use `Real.log_le_log (by norm_num : (0 : ℝ) < 15) (by norm_num : (15 : ℝ) ≤ 3 ^ 3)` as an intermediate fact.
+
+Rewrite `this` using `[Real.log_pow]`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `he0 : (0 : ℝ) ≤ expL L` using `Nat.cast_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem floorThreeLOverLogThree_mul_log_fifteen_le {L : ℝ} (hL : 0 ≤ L) : (expL L : ℝ) * Real.log 15 ≤ 9 * L := by
   have h3 : 0 < Real.log 3 := Real.log_pos (by norm_num)
   have he : (expL L : ℝ) ≤ 3 * L / Real.log 3 := Nat.floor_le (by positivity)
@@ -26,6 +31,17 @@ theorem floorThreeLOverLogThree_mul_log_fifteen_le {L : ℝ} (hL : 0 ≤ L) : (e
   have he0 : (0 : ℝ) ≤ expL L := Nat.cast_nonneg _
   nlinarith
 
+/- English proof (translation)
+Establish `hL10` using `hN.big.2.1`. Establish `hcop` using `hN.cop`. Establish `h01 : D.host.g 0 * D.host.g 1 ≠ 0` using `fun h => by`. Rewrite `hcop` using `[h, Nat.coprime_zero_right]`. Evaluate the numerical expressions using `at hcop`.
+
+Establish `hg0 : ((D.host.g 0 : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast (mul_ne_zero_iff.1 h01).1`. Establish `hg1 : ((D.host.g 1 : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast (mul_ne_zero_iff.1 h01).2`. Establish `h15 : ((15 : ℝ) ^ expL L.sc.L) ≠ 0` using `pow_ne_zero _ (by norm_num)`. Establish `hlog : Real.log ((D.host.g 0 : ℝ) * D.host.g 1 * 15 ^ expL L.sc.L) = Real.log (D.host.g 0 : ℝ) + Real.log (D.host.g 1 : ℝ) + expL L.sc.L * Real.log 15`. Rewrite using `[Real.log_mul (mul_ne_zero hg0 hg1) h15, Real.log_mul hg0 hg1, Real.log_pow]`.
+
+Establish `he` using `floorThreeLOverLogThree_mul_log_fifteen_le (L := L.sc.L) (by linarith)`. Establish `a0` using `hN.logg 0`. Establish `a1` using `hN.logg 1`. Establish `ad` using `hN.logd`. Establish `hf : (8 : ℝ) ≤ D.R.f` using `by exact_mod_cast hN.f8`.
+
+Establish `hm2` using `D.R.two_le_m`. Establish `hmk` using `D.R.m_add_three_le_k`. Establish `hr : (1 : ℝ) ≤ D.R.r` using `by exact_mod_cast (by unfold Ranks.r; omega : 1 ≤ D.R.r)`. Establish `hZ : 8 * L.sc.L ≤ zBase L`. Unfold `zBase`.
+
+Establish `: (8 : ℝ) ≤ D.R.f * D.R.r` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hlog]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem size_le {D : D7} {L : SizeData₂ D} {PP A M o : ℝ} (hN : HostNum D L PP A M) (hF : o ≤ 217 * zBase L ^ 2) :
     o + 20 * (Real.log ((D.host.g 0 : ℝ) * D.host.g 1 * 15 ^ expL L.sc.L) + Real.log D.host.d + 1) ≤
       391 * zBase L ^ 2 := by
@@ -55,6 +71,11 @@ theorem size_le {D : D7} {L : SizeData₂ D} {PP A M o : ℝ} (hN : HostNum D L 
   rw [hlog]
   nlinarith
 
+/- English proof (translation)
+Use `Closed.imp (GlobalTheory.CovTop.Sizes.hostN 0) fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨C, hC, x0, h⟩` from `h`. Use `⟨C, hC, x0, fun x hx hle ι p hp i hi => ?_⟩` and prove the remaining obligations. Establish `hN` using `h x hx hle ι p hp i`. Take `⟨Y, hY⟩` from `GlobalTheory.T.exists_good_cover_over_sized_field hP.p8 (Fm.D x ι) p.T.toCore p.fw.laws.pins ((i : ℕ) + 1) ⟨by omega, i.isLt⟩ hN.split hN.cop (expL (Fm.L x ι).sc.L)`.
+
+Use `⟨Y, (goodCov_iff p i Y).2 (hY.mono (size_le hN ?_))⟩` and prove the remaining obligations. Conclude with `RecTied.core_size_le p hp.2 (by linarith [hN.big.2.1])`.
+-/
 theorem deepEx (hP : Hypotheses2) : DeepEx := by
   refine Closed.imp (GlobalTheory.CovTop.Sizes.hostN 0) fun Fm CH _ h => ?_
   obtain ⟨C, hC, x0, h⟩ := h

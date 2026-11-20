@@ -26,13 +26,24 @@ def nrm (ℓ : ℕ) (τ : O' ≃ₐ[O] O') (s : O' ⊗[O] R) : O' ⊗[O] R :=
 
 abbrev inc : R →ₐ[O] O' ⊗[O] R := Algebra.TensorProduct.includeRight
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.CompanionTheory.UnitNorm.nrm, map_mul, Finset.prod_mul_distrib]`.
+-/
 theorem nrm_mul (ℓ : ℕ) (τ : O' ≃ₐ[O] O') (x y : O' ⊗[O] R) :
     nrm ℓ τ (x * y) = nrm ℓ τ x * nrm ℓ τ y := by
   simp only [GlobalTheory.CompanionTheory.UnitNorm.nrm, map_mul, Finset.prod_mul_distrib]
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.CompanionTheory.UnitNorm.nrm, map_one, Finset.prod_const_one]`.
+-/
 theorem nrm_one (ℓ : ℕ) (τ : O' ≃ₐ[O] O') : nrm ℓ τ (1 : O' ⊗[O] R) = 1 := by
   simp only [GlobalTheory.CompanionTheory.UnitNorm.nrm, map_one, Finset.prod_const_one]
 
+/- English proof (translation)
+Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul x y`. Simplify using `only [GlobalTheory.CompanionTheory.UnitNorm.tw, Algebra.TensorProduct.map_tmul, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe, AlgHom.id_apply, pow_succ', AlgEquiv.mul_apply]`. Both sides reduce to the same expression.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem map_tw (τ : O' ≃ₐ[O] O') (j : ℕ) (s : O' ⊗[O] R) :
     Algebra.TensorProduct.map τ.toAlgHom (AlgHom.id O R) (tw τ j s) = tw τ (j + 1) s := by
   induction s using TensorProduct.induction_on with
@@ -43,16 +54,27 @@ theorem map_tw (τ : O' ≃ₐ[O] O') (j : ℕ) (s : O' ⊗[O] R) :
     rfl
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.CompanionTheory.UnitNorm.tw, hτ, pow_zero]`.
+-/
 theorem tw_period {ℓ : ℕ} {τ : O' ≃ₐ[O] O'} (hτ : τ ^ ℓ = 1) (s : O' ⊗[O] R) :
     tw τ ℓ s = tw τ 0 s := by
   simp only [GlobalTheory.CompanionTheory.UnitNorm.tw, hτ, pow_zero]
 
+/- English proof (translation)
+Take `⟨k, rfl⟩ : ∃ k, ℓ = k + 1` from `⟨ℓ - 1, by omega⟩`. Simplify using `only [GlobalTheory.CompanionTheory.UnitNorm.nrm, map_prod, GlobalTheory.CompanionTheory.UnitNorm.map_tw]`. Rewrite using `[Finset.prod_range_succ, Finset.prod_range_succ', GlobalTheory.CompanionTheory.UnitNorm.tw_period hτ]`.
+-/
 theorem nrm_fixed {ℓ : ℕ} {τ : O' ≃ₐ[O] O'} (hℓ : 0 < ℓ) (hτ : τ ^ ℓ = 1) (s : O' ⊗[O] R) :
     Algebra.TensorProduct.map τ.toAlgHom (AlgHom.id O R) (nrm ℓ τ s) = nrm ℓ τ s := by
   obtain ⟨k, rfl⟩ : ∃ k, ℓ = k + 1 := ⟨ℓ - 1, by omega⟩
   simp only [GlobalTheory.CompanionTheory.UnitNorm.nrm, map_prod, GlobalTheory.CompanionTheory.UnitNorm.map_tw]
   rw [Finset.prod_range_succ, Finset.prod_range_succ', GlobalTheory.CompanionTheory.UnitNorm.tw_period hτ]
 
+/- English proof (translation)
+Use `le_antisymm ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap, Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, AlgHom.commutes]`. Conclude with `Ideal.mem_map_of_mem _ hx`.
+
+Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, ← AlgHom.commutes (GlobalTheory.CompanionTheory.UnitNorm.inc : R →ₐ[O] O' ⊗[O] R) x]`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.mem_map_of_mem _ hx)`.
+-/
 theorem map_inc_map (A : Ideal O) :
     Ideal.map (inc : R →ₐ[O] O' ⊗[O] R) (Ideal.map (algebraMap O R) A) =
       Ideal.map (algebraMap O (O' ⊗[O] R)) A := by
@@ -66,6 +88,11 @@ theorem map_inc_map (A : Ideal O) :
     rw [Ideal.mem_comap, ← AlgHom.commutes (GlobalTheory.CompanionTheory.UnitNorm.inc : R →ₐ[O] O' ⊗[O] R) x]
     exact Ideal.mem_map_of_mem _ (Ideal.mem_map_of_mem _ hx)
 
+/- English proof (translation)
+Establish `h : Ideal.map (algebraMap O (O' ⊗[O] R)) A ≤ Ideal.comap (GlobalTheory.CompanionTheory.UnitNorm.tw τ j) (Ideal.map (algebraMap O (O' ⊗[O] R)) A)`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, AlgHom.commutes]`. Conclude with `Ideal.mem_map_of_mem _ ha`.
+
+Conclude with `h hx`.
+-/
 theorem tw_mem (τ : O' ≃ₐ[O] O') (j : ℕ) (A : Ideal O) {x : O' ⊗[O] R}
     (hx : x ∈ Ideal.map (algebraMap O (O' ⊗[O] R)) A) :
     tw τ j x ∈ Ideal.map (algebraMap O (O' ⊗[O] R)) A := by
@@ -77,6 +104,9 @@ theorem tw_mem (τ : O' ≃ₐ[O] O') (j : ℕ) (A : Ideal O) {x : O' ⊗[O] R}
     exact Ideal.mem_map_of_mem _ ha
   exact h hx
 
+/- English proof (translation)
+Rewrite using `[← Ideal.Quotient.eq]`. Simplify using `only [GlobalTheory.CompanionTheory.UnitNorm.nrm, map_prod]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Ideal.Quotient.eq, ← map_sub]`. Conclude with `GlobalTheory.CompanionTheory.UnitNorm.tw_mem τ j A h`.
+-/
 theorem nrm_sub_mem (ℓ : ℕ) (τ : O' ≃ₐ[O] O') (A : Ideal O) {x y : O' ⊗[O] R}
     (h : x - y ∈ Ideal.map (algebraMap O (O' ⊗[O] R)) A) :
     nrm ℓ τ x - nrm ℓ τ y ∈ Ideal.map (algebraMap O (O' ⊗[O] R)) A := by
@@ -86,6 +116,21 @@ theorem nrm_sub_mem (ℓ : ℕ) (τ : O' ≃ₐ[O] O') (A : Ideal O) {x y : O' �
   rw [Ideal.Quotient.eq, ← map_sub]
   exact GlobalTheory.CompanionTheory.UnitNorm.tw_mem τ j A h
 
+/- English proof (translation)
+Establish `hfix_incR : ∀ x : R, Algebra.TensorProduct.map τ.toAlgHom (AlgHom.id O R) ((GlobalTheory.CompanionTheory.UnitNorm.inc : R →ₐ[O] O' ⊗[O] R) x) = (GlobalTheory.CompanionTheory.UnitNorm.inc : R →ₐ[O] O' ⊗[O] R) x`. Introduce `x`. Simplify using `only [GlobalTheory.CompanionTheory.UnitNorm.inc, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply]`. Take `⟨r, hr⟩` from `hfixS ((GlobalTheory.CompanionTheory.UnitNorm.inc : R →ₐ[O] O' ⊗[O] R) u - GlobalTheory.CompanionTheory.UnitNorm.nrm ℓ τ (P : O' ⊗[O] R)) (by`. Rewrite using `[map_sub, hfix_incR, GlobalTheory.CompanionTheory.UnitNorm.nrm_fixed hℓ hτ])`.
+
+Take `⟨v, hv⟩` from `hfixS (GlobalTheory.CompanionTheory.UnitNorm.nrm ℓ τ ((P⁻¹ : (O' ⊗[O] R)ˣ) : O' ⊗[O] R)) (GlobalTheory.CompanionTheory.UnitNorm.nrm_fixed hℓ hτ _)`. Establish `hrm : r ∈ (⊥ : Ideal R).jacobson ^ m`. Establish `h'` using `h`. Rewrite `h'` using `[← hr]`. Conclude with `GlobalTheory.T.tensor_ideal_map_injective O O' R _ r h'`.
+
+Establish `hvr : v * r ∈ (⊥ : Ideal R).jacobson ^ m` using `Ideal.mul_mem_left _ v hrm`. Establish `hsplit : a ⊗ₜ[O] (v * r) = (a ⊗ₜ[O] (1 : R)) * (GlobalTheory.CompanionTheory.UnitNorm.inc : R →ₐ[O] O' ⊗[O] R) (v * r)`. Simplify using `only [GlobalTheory.CompanionTheory.UnitNorm.inc, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Establish `hmem : a ⊗ₜ[O] (v * r) ∈ Ideal.map (GlobalTheory.CompanionTheory.UnitNorm.inc : R →ₐ[O] O' ⊗[O] R) ((⊥ : Ideal R).jacobson ^ m)`. Rewrite using `[hsplit]`.
+
+Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ hvr)`. Establish `hJ : a ⊗ₜ[O] (v * r) ∈ Ideal.map (GlobalTheory.CompanionTheory.UnitNorm.inc : R →ₐ[O] O' ⊗[O] R) (⊥ : Ideal R).jacobson` using `Ideal.map_mono (Ideal.pow_le_self (by omega)) hmem`. Establish `hU : IsUnit (1 + a ⊗ₜ[O] (v * r))` using `GlobalTheory.T.isUnit_one_add_jacobson_tensor O O' R _ hJ`. Establish `hPP : GlobalTheory.CompanionTheory.UnitNorm.nrm ℓ τ (P : O' ⊗[O] R) * GlobalTheory.CompanionTheory.UnitNorm.nrm ℓ τ ((P⁻¹ : (O' ⊗[O] R)ˣ) : O' ⊗[O] R) = 1`. Rewrite using `[← GlobalTheory.CompanionTheory.UnitNorm.nrm_mul, Units.mul_inv, GlobalTheory.CompanionTheory.UnitNorm.nrm_one]`.
+
+Establish `hc' : (GlobalTheory.CompanionTheory.UnitNorm.inc : R →ₐ[O] O' ⊗[O] R) (1 + v * r) - GlobalTheory.CompanionTheory.UnitNorm.nrm ℓ τ (1 + a ⊗ₜ[O] (v * r)) ∈ Ideal.map (GlobalTheory.CompanionTheory.UnitNorm.inc : R →ₐ[O] O' ⊗[O] R) ((⊥ : Ideal R).jacobson ^ (m + 1))`. Establish `h''` using `neg_mem (hcong m hm (v * r) hvr)`. Rewrite `h''` using `[neg_sub]`. Then use the resulting hypothesis. Establish `key : (GlobalTheory.CompanionTheory.UnitNorm.inc : R →ₐ[O] O' ⊗[O] R) u - GlobalTheory.CompanionTheory.UnitNorm.nrm ℓ τ (P : O' ⊗[O] R) * GlobalTheory.CompanionTheory.UnitNorm.nrm ℓ τ (1 + a ⊗ₜ[O] (v * r)) = GlobalTheory.CompanionTheory.UnitNorm.nrm ℓ τ (P : O' ⊗[O] R) * ((Global …`. Rewrite using `[map_add, map_one, map_mul]`.
+
+Take the linear combination `(-1 : O' ⊗[O] R) * hr + (-((GlobalTheory.CompanionTheory.UnitNorm.inc : R →ₐ[O] O' ⊗[O] R) r * GlobalTheory.CompanionTheory.UnitNorm.nrm ℓ τ (P : O' ⊗[O] R))) * hv + (-((GlobalTheory.CompanionTheory.UnitNorm.inc : R →ₐ[O] O' ⊗[O] R) r)) * hPP`. Use `⟨P * hU.unit, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, IsUnit.unit_spec, show (P : O' ⊗[O] R) * (1 + a ⊗ₜ[O] (v * r)) - P = P * (a ⊗ₜ[O] (v * r)) by ring]`. Conclude with `Ideal.mul_mem_left _ _ hmem`. Rewrite using `[Units.val_mul, IsUnit.unit_spec, GlobalTheory.CompanionTheory.UnitNorm.nrm_mul, key]`.
+
+Conclude with `Ideal.mul_mem_left _ _ hc'`.
+-/
 theorem step [Module.Finite O O'] [Module.Free O O'] [Nontrivial O'] {ℓ : ℕ} {τ : O' ≃ₐ[O] O'}
     (hℓ : 0 < ℓ) (hτ : τ ^ ℓ = 1)
     (hfixS : ∀ s : O' ⊗[O] R, Algebra.TensorProduct.map τ.toAlgHom (AlgHom.id O R) s = s →
@@ -150,6 +195,19 @@ theorem step [Module.Finite O O'] [Module.Free O O'] [Nontrivial O'] {ℓ : ℕ}
 
 end Basics
 
+/- English proof (translation)
+Introduce `hInt hConj`. Unfold `PositivityTheory.Rg.Tf.Loc.N3`. Introduce `O O' R _ _ _ _ _ _ _ _ _ _ _ _ ℓ τ hℓ hτ hfix hbasis r`. Distinguish the cases in `hO' : Nontrivial O'`. Use `swap`.
+
+Use `haveI : Subsingleton O' := not_nontrivial_iff_subsingleton.mp hO'`. Establish `h1 : (1 : O' ⊗[O] R) = 0`. Combine the equalities or inequalities in the displayed calculation. Use `haveI : Subsingleton (O' ⊗[O] R) := subsingleton_of_zero_eq_one h1.symm`. Conclude with `⟨1, Subsingleton.elim _ _⟩`.
+
+Use `haveI := hO'`. Take `⟨hfixS, a, ha1, hcong⟩` from `hConj O O' R ℓ τ hℓ hτ hfix hbasis`. Take `⟨hle, N, hN⟩` from `GlobalTheory.T.local_finite_algebra_jacobson_radical O R`. Use `haveI : IsAdicComplete (IsLocalRing.maximalIdeal O) (O' ⊗[O] R) := GlobalTheory.T.finite_module_adic_complete O (O' ⊗[O] R)`. Take `⟨P₁, hP₁⟩` from `GlobalTheory.T.cyclic_algebra_hilbert_ninety hInt O O' R ℓ τ hℓ hτ hfix hbasis ⟨a, ha1⟩ r`.
+
+Establish `h2 : ∀ k : ℕ, Ideal.map (GlobalTheory.CompanionTheory.UnitNorm.inc : R →ₐ[O] O' ⊗[O] R) ((⊥ : Ideal R).jacobson ^ (N * k + 1)) ≤ Ideal.map (algebraMap O (O' ⊗[O] R)) (IsLocalRing.maximalIdeal O ^ k)`. Introduce `k`. Rewrite using `[← GlobalTheory.CompanionTheory.UnitNorm.map_inc_map]`. Use `Ideal.map_mono ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_pow]`.
+
+Conclude with `le_trans (Ideal.pow_le_pow_right (Nat.le_succ _)) (by rw [pow_mul]; exact Ideal.pow_right_mono hN k)`. Establish `h3 : Ideal.map (algebraMap O (O' ⊗[O] R)) (IsLocalRing.maximalIdeal O) ≤ Ideal.map (GlobalTheory.CompanionTheory.UnitNorm.inc : R →ₐ[O] O' ⊗[O] R) ((⊥ : Ideal R).jacobson ^ 1)`. Rewrite using `[← GlobalTheory.CompanionTheory.UnitNorm.map_inc_map, pow_one]`. Conclude with `Ideal.map_mono hle`. Establish `h4 : ∀ x ∈ Ideal.map (GlobalTheory.CompanionTheory.UnitNorm.inc : R →ₐ[O] O' ⊗[O] R) ((⊥ : Ideal R).jacobson ^ 1), IsUnit (1 + x)` using `fun x hx => GlobalTheory.T.isUnit_one_add_jacobson_tensor O O' R x (by rwa [pow_one] at hx)`.
+
+Establish `h6 : (GlobalTheory.CompanionTheory.UnitNorm.inc : R →ₐ[O] O' ⊗[O] R) (r : R) - GlobalTheory.CompanionTheory.UnitNorm.nrm ℓ τ (P₁ : O' ⊗[O] R) ∈ Ideal.map (GlobalTheory.CompanionTheory.UnitNorm.inc : R →ₐ[O] O' ⊗[O] R) ((⊥ : Ideal R).jacobson ^ 1)`. Rewrite using `[pow_one, ← neg_sub]`. Conclude with `neg_mem hP₁`. Take `⟨L, hL⟩` from `GlobalTheory.T.norm_map_congruence O (O' ⊗[O] R) (IsLocalRing.maximalIdeal O) (fun m => Ideal.map (GlobalTheory.CompanionTheory.UnitNorm.inc : R →ₐ[O] O' ⊗[O] R) ((⊥ : Ideal R).jacobson ^ m)) N (GlobalTheory.CompanionTheory.UnitNorm.nrm ℓ τ) ((GlobalTheory.CompanionTheory.UnitNor …`. Conclude with `⟨L, hL⟩`.
+-/
 theorem norm_units_surjective : PositivityTheory.Rg.Tf.Loc.N1 → PositivityTheory.Rg.Tf.Loc.N2 → PositivityTheory.Rg.Tf.Loc.N3 := by
   intro hInt hConj
   unfold PositivityTheory.Rg.Tf.Loc.N3

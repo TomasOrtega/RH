@@ -10,10 +10,16 @@ variable {ι : Type*} [Fintype ι] [DecidableEq ι] {H : Matrix ι ι ℂ}
 
 omit [Fintype ι] [DecidableEq ι] in
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem map_starRingEnd_transpose (M : Matrix ι ι ℂ) : (M.map (starRingEnd ℂ))ᵀ = Mᴴ := by
   ext i j
   simp
 
+/- English proof (translation)
+Rewrite using `[mem_unitaryGroupMatrix, map_starRingEnd_transpose]`.
+-/
 theorem mem_unitaryGroupMatrix_star_iff {g : GL ι ℂ} :
     g ∈ unitaryGroupMatrix (starRingEnd ℂ) H ↔
       (g : Matrix ι ι ℂ)ᴴ * H * (g : Matrix ι ι ℂ) = H := by
@@ -27,6 +33,9 @@ noncomputable def negEigenCount : ℕ := Fintype.card {i // hH.eigenvalues i < 0
 
 variable {hH}
 
+/- English proof (translation)
+Introduce `h0`. Rewrite `hu` using `[hH.det_eq_prod_eigenvalues]`. Apply `hu.ne_zero` to reduce the goal to its premises. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp [h0])`.
+-/
 theorem eigenvalues_ne_zero (hu : IsUnit H.det) (i : ι) : hH.eigenvalues i ≠ 0 := by
   intro h0
   rw [hH.det_eq_prod_eigenvalues] at hu
@@ -42,6 +51,13 @@ noncomputable def signEquiv (hu : IsUnit H.det) : ι ≃ Fin (posEigenCount hH) 
           · intro h; exact lt_of_le_of_ne (not_lt.1 h) this
           · intro h; exact not_lt.2 h.le).trans (Fintype.equivFin _)))
 
+/- English proof (translation)
+Break down `k with a | b` into its components or cases. Establish `h : 0 < hH.eigenvalues ((signEquiv hu).symm (Sum.inl a))`. Simplify using `only [signEquiv, Equiv.symm_trans_apply]`. Conclude with `((Fintype.equivFin _).symm a).2`. Rewrite using `[abs_of_pos h, div_self h.ne']`.
+
+Both sides reduce to the same expression. Establish `h : hH.eigenvalues ((signEquiv hu).symm (Sum.inr b)) < 0`. Simplify using `only [signEquiv, Equiv.symm_trans_apply]`. Conclude with `(((Fintype.equivFin _).symm b : {i // hH.eigenvalues i < 0})).2`. Rewrite using `[abs_of_neg h, div_neg, div_self h.ne]`.
+
+Both sides reduce to the same expression.
+-/
 theorem sign_eigenvalues_signEquiv_symm (hu : IsUnit H.det) (k : Fin (posEigenCount hH) ⊕ Fin (negEigenCount hH)) :
     (hH.eigenvalues ((signEquiv hu).symm k) / |hH.eigenvalues ((signEquiv hu).symm k)| : ℝ) =
       Sum.elim (fun _ => (1 : ℝ)) (fun _ => -1) k := by
@@ -57,6 +73,11 @@ theorem sign_eigenvalues_signEquiv_symm (hu : IsUnit H.det) (k : Fin (posEigenCo
     rw [abs_of_neg h, div_neg, div_self h.ne]
     rfl
 
+/- English proof (translation)
+Use `set U := (hH.eigenvectorUnitary : Matrix ι ι ℂ)`. Establish `h1 : star U * U = 1` using `Unitary.coe_star_mul_self _`. Use `conv_lhs => rw [hH.spectral_theorem, Unitary.conjStarAlgAut_apply]`. Express the relevant statement in the definitionally equal form `star U * (U * _ * star U) * U = _`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [h1, Matrix.one_mul, Matrix.mul_one]; rfl`.
+-/
 theorem star_eigenvectorUnitary_mul_mul (hH : H.IsHermitian) :
     star (hH.eigenvectorUnitary : Matrix ι ι ℂ) * H * (hH.eigenvectorUnitary : Matrix ι ι ℂ) =
       diagonal (fun i => (hH.eigenvalues i : ℂ)) := by
@@ -69,6 +90,27 @@ theorem star_eigenvectorUnitary_mul_mul (hH : H.IsHermitian) :
         simp only [Matrix.mul_assoc]
     _ = _ := by rw [h1, Matrix.one_mul, Matrix.mul_one]; rfl
 
+/- English proof (translation)
+Use `set U := (hH.eigenvectorUnitary : Matrix ι ι ℂ)`. Use `set lam := hH.eigenvalues`. Establish `hl : ∀ i, lam i ≠ 0` using `eigenvalues_ne_zero hu`. Establish `hs : ∀ i, 0 < Real.sqrt |lam i|` using `fun i => Real.sqrt_pos.2 (abs_pos.2 (hl i))`. Use `set d : ι → ℂ := fun i => ((Real.sqrt |lam i|)⁻¹ : ℝ)`.
+
+Use `set d' : ι → ℂ := fun i => (Real.sqrt |lam i| : ℝ)`. Establish `hdd : ∀ i, d' i * d i = 1` using `fun i => by`. Simplify using `only [d, d', ← Complex.ofReal_mul, mul_inv_cancel₀ (hs i).ne', Complex.ofReal_one]`. Establish `hdd' : ∀ i, d i * d' i = 1` using `fun i => by rw [mul_comm]; exact hdd i`. Establish `h1 : star U * U = 1` using `Unitary.coe_star_mul_self _`.
+
+Establish `h2 : U * star U = 1` using `Unitary.coe_mul_star_self _`. Use `set e := signEquiv (hH := hH) hu`. Use `set P0 := U * diagonal d`. Use `set Q0 := diagonal d' * star U`. Establish `hQP : Q0 * P0 = 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hPQ : P0 * Q0 = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[diagonal_mul_diagonal]`. Establish `: (fun i => d i * d' i) = fun _ => 1` using `funext hdd'`.
+
+Rewrite using `[this, diagonal_one, Matrix.mul_one, h2]`. Establish `hPHP : P0ᴴ * H * P0 = diagonal (fun i => ((lam i / |lam i| : ℝ) : ℂ))`. Establish `hdh : (diagonal d)ᴴ = diagonal d`. Rewrite using `[diagonal_conjTranspose]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[d]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [P0, conjTranspose_mul, hdh, star_eq_conjTranspose, Matrix.mul_assoc]`. Use `_ = _ := by`.
+
+Rewrite using `[star_eigenvectorUnitary_mul_mul, diagonal_mul_diagonal, diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [d]`. Establish `hsq : Real.sqrt |lam i| * Real.sqrt |lam i| = |lam i|` using `Real.mul_self_sqrt (abs_nonneg _)`.
+
+Rewrite using `[← Complex.ofReal_mul, ← Complex.ofReal_mul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Use `⟨P0.submatrix id e.symm, Q0.submatrix e.symm id, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← submatrix_mul Q0 P0 e.symm id e.symm Function.bijective_id, hQP, submatrix_one_equiv]`.
+
+Rewrite using `[submatrix_mul_equiv P0 Q0 id e.symm id, hPQ, submatrix_id_id]`. Rewrite using `[conjTranspose_submatrix]`. Establish `e1` using `submatrix_mul P0ᴴ H e.symm id id Function.bijective_id`. Rewrite `e1` using `[submatrix_id_id]`. Rewrite using `[← e1, ← submatrix_mul (P0ᴴ * H) P0 e.symm id e.symm Function.bijective_id, hPHP, submatrix_diagonal_equiv, indefJ]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp_apply]`. Rewrite using `[sign_eigenvalues_signEquiv_symm hu k]`. Apply the tactic sequence `rcases k with a | b <;> simp`.
+-/
 theorem exists_congr_indefJ (hu : IsUnit H.det) :
     ∃ (P : Matrix ι (Fin (posEigenCount hH) ⊕ Fin (negEigenCount hH)) ℂ)
       (Q : Matrix (Fin (posEigenCount hH) ⊕ Fin (negEigenCount hH)) ι ℂ),
@@ -167,11 +209,17 @@ def congrUnitary (hQP : Q * P = 1) (hPQ : P * Q = 1) (hH' : Pᴴ * H * P = H')
             rw [← Matrix.mul_assoc H m P, ← Matrix.mul_assoc mᴴ (H * m) P, ← Matrix.mul_assoc mᴴ H m,
               hg]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_congrUnitary (hQP : Q * P = 1) (hPQ : P * Q = 1) (hH' : Pᴴ * H * P = H')
     (g : unitaryGroupMatrix (starRingEnd ℂ) H) :
     ((congrUnitary hQP hPQ hH' g : GL κ ℂ) : Matrix κ κ ℂ) = Q * ((g : GL ι ℂ) : Matrix ι ι ℂ) * P :=
   rfl
 
+/- English proof (translation)
+Establish `h1 : Continuous fun x : unitaryGroupMatrix (starRingEnd ℂ) H => Q * ((x : GL ι ℂ) : Matrix ι ι ℂ) * P` using `(continuous_const.matrix_mul (Units.continuous_val.comp continuous_subtype_val)).matrix_mul continuous_const`. Establish `h2 : Continuous fun x : unitaryGroupMatrix (starRingEnd ℂ) H => Q * (((x : GL ι ℂ)⁻¹ : GL ι ℂ) : Matrix ι ι ℂ) * P` using `(continuous_const.matrix_mul (Units.continuous_coe_inv.comp continuous_subtype_val)).matrix_mul continuous_const`. Conclude with `Continuous.subtype_mk (Units.continuous_iff.2 ⟨h1, h2⟩) _`.
+-/
 theorem continuous_congrUnitary (hQP : Q * P = 1) (hPQ : P * Q = 1) (hH' : Pᴴ * H * P = H') :
     Continuous (congrUnitary hQP hPQ hH') := by
   have h1 : Continuous fun x : unitaryGroupMatrix (starRingEnd ℂ) H =>
@@ -217,6 +265,9 @@ def congrUnitaryEquiv (hQP : Q * P = 1) (hPQ : P * Q = 1) (hH' : Pᴴ * H * P = 
 
 end Congr
 
+/- English proof (translation)
+Use extensionality with `g`. Rewrite using `[mem_unitaryGroupMatrix_star_iff, mem_indefiniteUnitaryGroup_iff]`.
+-/
 theorem unitaryGroupMatrix_indefJ (p q : ℕ) :
     unitaryGroupMatrix (starRingEnd ℂ) (indefJ p q) = indefiniteUnitaryGroup p q := by
   ext g
@@ -246,6 +297,9 @@ noncomputable def sylvesterQ (hu : IsUnit H.det) :
 
 variable {hH}
 
+/- English proof (translation)
+The claim follows from `(exists_congr_indefJ (hH := hH) hu).choose_spec.choose_spec`.
+-/
 theorem sylvester_spec (hu : IsUnit H.det) :
     sylvesterQ hH hu * sylvesterP hH hu = 1 ∧ sylvesterP hH hu * sylvesterQ hH hu = 1 ∧
       (sylvesterP hH hu)ᴴ * H * sylvesterP hH hu =

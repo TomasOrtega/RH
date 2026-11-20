@@ -15,6 +15,9 @@ namespace GlobalTheory.CompanionTheory.Ar.HtHoriz
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {G : Over X} [GrpObj G]
   {E : Type} [AddCommGroup E] [Module Ω E] {R : Type} [CommRing R] {L : Type} [AddCommGroup L] [Module R L]
 
+/- English proof (translation)
+Establish `key : ∀ e, M.pt (j e) = LieCarrier.epsHom k x ξ hx ≫ M₀.pt e` using `fun e => Over.OverMorphism.ext (hj e)`. Apply `M.inj` to reduce the goal to its premises. Rewrite using `[M.add, key, key, key, M₀.add, MonObj.comp_mul]`.
+-/
 theorem map_add_of_compat (M : LieModel G ξ E) {x : Spec (CommRingCat.of R) ⟶ X} {k : R →+* Ω}
     (hx : Spec.map (CommRingCat.ofHom k) ≫ x = ξ) (M₀ : LieModel G x L) (j : L → E)
     (hj : ∀ e, (M.pt (j e)).left = Spec.map (CommRingCat.ofHom (dualMap k)) ≫ (M₀.pt e).left)
@@ -24,6 +27,9 @@ theorem map_add_of_compat (M : LieModel G ξ E) {x : Spec (CommRingCat.of R) ⟶
   apply M.inj
   rw [M.add, key, key, key, M₀.add, MonObj.comp_mul]
 
+/- English proof (translation)
+Apply `M.inj` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hj, M₀.smul, M.smul, hj, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, LieCarrier.dualMap_epsMul]`.
+-/
 theorem map_smul_of_compat (M : LieModel G ξ E) {x : Spec (CommRingCat.of R) ⟶ X} {k : R →+* Ω}
     (M₀ : LieModel G x L) (j : L → E)
     (hj : ∀ e, (M.pt (j e)).left = Spec.map (CommRingCat.ofHom (dualMap k)) ≫ (M₀.pt e).left)
@@ -33,6 +39,11 @@ theorem map_smul_of_compat (M : LieModel G ξ E) {x : Spec (CommRingCat.of R) �
   rw [hj, M₀.smul, M.smul, hj, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp,
     ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, LieCarrier.dualMap_epsMul]
 
+/- English proof (translation)
+Take `⟨s, hs, h⟩` from `h`. Use `⟨s, hs, fun e => ?_⟩` and prove the remaining obligations. Take `⟨v, h1, h2, h3⟩` from `h e`. Use `⟨v, h1, h2, h3.trans ?_⟩` and prove the remaining obligations. Use `congr 2`.
+
+Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Conclude with `⟨-u e, by simp⟩`.
+-/
 theorem isHT_add_natCast_smul {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T] (Γ : BT.QFGroup R T)
     {S : Scheme.{0}} {G : Over S} [GrpObj G] {x : Spec (CommRingCat.of R) ⟶ S} {i : Γ.G.left ⟶ G.left}
     {L : Type} [AddCommGroup L] [Module R L] {M : LieModel G x L} {N : ℕ} {χ : T →* Rˣ}
@@ -46,6 +57,11 @@ theorem isHT_add_natCast_smul {R : Type} [CommRing R] [IsDomain R] {T : Type} [C
   rw [Ideal.Quotient.eq, Ideal.mem_span_singleton]
   exact ⟨-u e, by simp⟩
 
+/- English proof (translation)
+Take `⟨hd, T, _, Γ, i, L, _, _, M₀, j, χ, w₀, ht, hj, hHT, h0⟩` from `h`. Establish `hreg : ∀ e, ∃ r, k r = w (j e)` using `fun e => hw (j e) (M₀.pt e) (M₀.tan e) (hj e)`. Use `choose f hf using hreg`. Set `u : Module.Dual R L` to `{ toFun := f map_add' := fun a b => hk (by rw [map_add, hf, hf, hf, map_add_of_compat M hx M₀ j hj, map_add]) map_smul' := fun c e => hk (by`. Simplify using `only [RingHom.id_apply, smul_eq_mul, map_mul]`.
+
+Rewrite using `[hf, hf, map_smul_of_compat M M₀ j hj, map_smul, smul_eq_mul]) }`. Use `⟨hd, T, _, Γ, i, L, _, _, M₀, j, χ, w₀ + (N : R) • u, ht, hj, isHT_add_natCast_smul Γ hHT u, fun e => ?_⟩` and prove the remaining obligations. Establish `h1 : k (w₀ e) = 0` using `(h0 e).symm`. Establish `h2 : k (u e) = w (j e)` using `hf e`. Simplify using `[h1, h2]`.
+-/
 theorem natCast_smul_isHTFormOver (M : LieModel G ξ E) (N : ℕ) {x : Spec (CommRingCat.of R) ⟶ X} {k : R →+* Ω}
     (hx : Spec.map (CommRingCat.ofHom k) ≫ x = ξ) (hk : Function.Injective k) (h : M.IsHTFormOver N x k 0)
     (w : Module.Dual Ω E)
@@ -70,6 +86,13 @@ end GlobalTheory.CompanionTheory.Ar.HtHoriz
 
 namespace GlobalTheory.CompanionTheory.Ar
 
+/- English proof (translation)
+Introduce `X Ω _ ξ G _ _ V _ _ M N p hξ _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨_, T, _, Γ, i, L, _, _, M₀, j, χ, w₀, -, hj, -, hw⟩ e he`. Take `⟨v, hv, hev⟩` from `((lieLat_carrier X G Ω ξ V M p).1 e).1 he`.
+
+Take `⟨e₀, rfl⟩` from `M₀.onto v hv`. Establish `: j e₀ = e` using `M.inj (Over.OverMorphism.ext ((hj e₀).trans hev.symm))`. Substitute `this` using the available equality. Conclude with `⟨w₀ e₀, (hw e₀).symm⟩`. Introduce `h w hw`.
+
+Conclude with `Submodule.subset_span (HtHoriz.natCast_smul_isHTFormOver M N (LieCarrier.genMap_fromSpecStalk p) (hξ.inj p) h w fun e v hv hev => hw e (Submodule.subset_span ⟨v, hv, hev⟩))`.
+-/
 theorem htLat_le_omLat_and_smul_mem : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (G : Over X) [GrpObj G]
     [IsCommMonObj G] (V : Type) [AddCommGroup V] [Module Ω V] (M : LieModel G ξ V) (N : ℕ) (p : Cpt ξ),
     IsCptGen ξ → Smooth G.hom → M.htLat N p ≤ M.omLat p ∧

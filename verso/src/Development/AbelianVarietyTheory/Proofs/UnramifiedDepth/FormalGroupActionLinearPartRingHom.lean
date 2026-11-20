@@ -16,6 +16,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ChF
 
 open ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.EigA in
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h` using `coeff_lin_ev (m := 1) ![ψ] (by intro k l; fin_cases k; exact hψ l) (φ i) (0, j)`. Rewrite `h` using `[Fintype.sum_prod_type, Fin.sum_univ_one]`. Rewrite using `[Matrix.mul_apply]`. Conclude with `h`.
+-/
 private theorem linear_part_comp_single {R : Type} [CommRing R] {d : ℕ} (φ ψ : Pt R 1 d)
     (hψ : ∀ i, MvPowerSeries.constantCoeff (ψ i) = 0) : lin (comp1 φ ψ) = lin φ * lin ψ := by
   ext i j
@@ -25,6 +28,9 @@ private theorem linear_part_comp_single {R : Type} [CommRing R] {d : ℕ} (φ ψ
   exact h
 
 open ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.EigA in
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h` using `coeff_lin_ev (m := 2) ![φ, ψ] (by intro k l; fin_cases k; exacts [hφ l, hψ l]) (F.F i) (0, j)`. Rewrite `h` using `[Fintype.sum_prod_type, Fin.sum_univ_two]`. Simplify using `only [formal_group_coeff_first_linear, formal_group_coeff_second_linear, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`. Conclude with `h.trans (congrArg₂ (· + ·) (_root_.one_mul _) (_root_.one_mul _))`.
+-/
 private theorem linear_part_formal_add {R : Type} [CommRing R] {d : ℕ} (F : FGLaw R d) (φ ψ : Pt R 1 d)
     (hφ : ∀ i, MvPowerSeries.constantCoeff (φ i) = 0)
     (hψ : ∀ i, MvPowerSeries.constantCoeff (ψ i) = 0) : lin (F.add φ ψ) = lin φ + lin ψ := by
@@ -37,12 +43,20 @@ private theorem linear_part_formal_add {R : Type} [CommRing R] {d : ℕ} (F : FG
   exact h.trans (congrArg₂ (· + ·) (_root_.one_mul _) (_root_.one_mul _))
 
 open ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.EigA in
+/- English proof (translation)
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `MvPowerSeries.coeff _ (MvPowerSeries.X ((0 : Fin 1), i) : PS R 1 d) = _`. Rewrite using `[coeff_X_single, Matrix.one_apply]`. Simplify using `[eq_comm]`.
+-/
 private theorem linear_part_zero_point {R : Type} [CommRing R] {d : ℕ} : lin (pt R (n := 1) d 0) = 1 := by
   ext i j
   change MvPowerSeries.coeff _ (MvPowerSeries.X ((0 : Fin 1), i) : PS R 1 d) = _
   rw [coeff_X_single, Matrix.one_apply]
   simp [eq_comm]
 
+/- English proof (translation)
+Introduce `R _ d F OE _ act S _ β`. Set `ρ₀ : OE →+* Matrix (Fin d) (Fin d) R` to `RingHom.mk' { toFun := fun a => lin (act.act a) map_one' := by rw [act.one_act, linear_part_zero_point] map_mul' := fun a b => by rw [act.mul_act, linear_part_comp_single _ _ (act.const b)] } (fun a b => by`. Express the relevant statement in the definitionally equal form `lin (act.act (a + b)) = lin (act.act a) + lin (act.act b)`. Rewrite using `[act.add_act, linear_part_formal_add _ _ _ (act.const a) (act.const b)])`. Use `⟨(β.mapMatrix).comp ρ₀, fun a => ⟨?_, rfl⟩⟩` and prove the remaining obligations.
+
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `β (MvPowerSeries.coeff _ (act.act a i)) = MvPowerSeries.coeff _ (MvPowerSeries.map β (act.act a i))`. Rewrite using `[MvPowerSeries.coeff_map]`.
+-/
 theorem linPart_act_ringHom : ∀ (R : Type) [CommRing R] (d : ℕ) (F : FGLaw R d) (OE : Type) [CommRing OE] (act : Geo.Tor.Germ.OAct OE F) (S : Type) [CommRing S] (β : R →+* S), ∃ ρ : OE →+* Matrix (Fin d) (Fin d) S, ∀ a, ρ a = linPart (actMap β act a) ∧ ρ a = (lin (act.act a)).map β := by
   intro R _ d F OE _ act S _ β
   let ρ₀ : OE →+* Matrix (Fin d) (Fin d) R := RingHom.mk'

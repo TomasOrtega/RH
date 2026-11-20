@@ -16,6 +16,11 @@ namespace GlobalTheory.AscFin.ShiftVal
 
 open scoped Pointwise
 
+/- English proof (translation)
+Distinguish the cases in `hb0 : b = 0`. Rewrite using `[hb0, map_zero]`. Conclude with `zero_le'`. Establish `h1 : FractionalIdeal.count K w I ≤ FractionalIdeal.count K w (FractionalIdeal.spanSingleton (𝓞 K)⁰ b)` using `FractionalIdeal.count_mono K w (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hb0) ((FractionalIdeal.spanSingleton_le_iff_mem).mpr hb)`. Rewrite `h1` using `[ReciprocityTheory.Neutral.Bridge.HCFR.count_spanSingleton K w hb0]`.
+
+Establish `hv : w.valuation K b ≠ 0` using `(map_ne_zero _).mpr hb0`. Rewrite using `[← WithZero.exp_log hv, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem valuation_le_of_mem {K : Type} [Field K] [NumberField K] (w : IsDedekindDomain.HeightOneSpectrum (𝓞 K))
     {I : FractionalIdeal (𝓞 K)⁰ K} {b : K} (hb : b ∈ I) :
     w.valuation K b ≤ WithZero.exp (-FractionalIdeal.count K w I) := by
@@ -29,6 +34,17 @@ theorem valuation_le_of_mem {K : Type} [Field K] [NumberField K] (w : IsDedekind
   rw [← WithZero.exp_log hv, WithZero.exp_le_exp]
   omega
 
+/- English proof (translation)
+Introduce `D hq T L μ0 hL sc G w hw b hb`. Establish `hM : ((G.pl.modul sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]`. Conclude with `G.pl.modul_ne_bot sc`. Establish `hMb : ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0`.
+
+Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]`. Unfold `Places.modulBar`. Introduce `h`. Apply `G.pl.modul_ne_bot sc` to reduce the goal to its premises. Use `congrArg (fun J : Ideal (𝓞 D.host.E) => D.host.conj⁻¹ • J) h` as an intermediate fact.
+
+Simplify `this` using `[smul_smul]`. Establish `hwl : w ∈ locPl G μ0` using `by unfold locPl; exact Finset.mem_union_left _ hw`. Establish `hc : FractionalIdeal.count D.host.E w (shiftId G) = cosExp G w` using `by show FractionalIdeal.count D.host.E w (((G.pl.modul sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) * ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)⁻¹) = _`. Rewrite using `[FractionalIdeal.count_mul _ _ hM (inv_ne_zero hMb), FractionalIdeal.count_inv, count_modul, count_modulBar G hwl, neg_zero, add_zero]`. Rewrite using `[Good.valued_alg]`.
+
+Use `FractionalIdeal.mul_induction_on hb ?_ ?_` and prove the remaining obligations. Introduce `a ha s hs`. Rewrite using `[map_mul]`. Establish `h1` using `GlobalTheory.DepthFix.aa_int hL hq G hw a ha`. Rewrite `h1` using `[Good.valued_alg]`.
+
+Establish `h2` using `valuation_le_of_mem w hs`. Rewrite `h2` using `[hc]`. Combine the equalities or inequalities in the displayed calculation. Introduce `x y hx hy`. Conclude with `Valuation.map_add_le _ hx hy`.
+-/
 theorem val_le_cosExp : ∀ {D : D7}, OffQ D → ∀ {T : Type} {L : LevCh D T} (μ0 : T), L.Is μ0 → ∀ {sc : Consts}
     (G : GridData L sc), ∀ w ∈ G.pl.W0, ∀ b ∈ D.host.AA * shiftId G,
       Valued.v (algebraMap D.host.E (Kw w) b) ≤ WithZero.exp (-(cosExp G w : ℤ)) := by

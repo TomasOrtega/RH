@@ -8,6 +8,41 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.BirigidPow (val_one_left val_one_right val_pow_right comp_pow_pt) in
 open GlobalTheory.CechPic (cls cls_pull cls_eq_iff cls_eq_zero_iff pull_comp) in
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `p _ D R _ b N c Y s o o' ψ ψ' hp hI hq T σ hσ x hx`. Establish `hP` using `o.isLB`. Establish `hP'` using `o'.isLB`. Establish `hc0 : 0 < c` using `hI.pos`. Take `⟨k, hk⟩` from `hI.1`.
+
+Use `haveI := hq.1`. Use `haveI := hq.2.1`. Establish `hu : IsUnit (c : Γ(Y, ⊤))`. Establish `h` using `hp.map (s.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)`. Rewrite `h` using `[map_natCast]`.
+
+Rewrite using `[hk, Nat.cast_pow]`. Conclude with `h.pow k`. Establish `hQ1 : (o.P.pull (sq2 ψ')).IsLB` using `pull_isLB hP _`. Establish `hQ2 : (Hecke.lbPow o'.P c).IsLB` using `LB.isLB_linComb hP' _ _`. Establish `cQ1 : cls _ hQ1 = GlobalTheory.CechPic.pull (sq2 ψ') (cls o.P hP)` using `cls_pull hP _ hQ1`.
+
+Establish `cQ2 : cls _ hQ2 = c • cls o'.P hP'` using `GlobalTheory.BirigidPow.cls_lbPow hP' c hQ2`. Establish `atQ₁ : ∀ {U : Over Y} (a b : U ⟶ o'.A), GlobalTheory.CechPic.pull (lift a b).left (cls _ hQ1) = GlobalTheory.BirigidPow.val hP (a ≫ ψ') (b ≫ ψ')`. Introduce `U a b`. Rewrite using `[cQ1, GlobalTheory.BirigidPow.val, ← pull_comp, sq2, ← Over.comp_left, comp_lift, lift_fst_assoc, lift_snd_assoc]`. Establish `atQ₂ : ∀ {U : Over Y} (a b : U ⟶ o'.A), GlobalTheory.CechPic.pull (lift a b).left (cls _ hQ2) = c • GlobalTheory.BirigidPow.val hP' a b`.
+
+Introduce `U a b`. Rewrite using `[cQ2, map_nsmul, GlobalTheory.BirigidPow.val]`. Establish `ax1 : IsAxesTriv o'.A (o.P.pull (sq2 ψ'))`. Use `⟨hQ1, (cls_eq_zero_iff (pull_isLB hQ1 _)).1 ?_, (cls_eq_zero_iff (pull_isLB hQ1 _)).1 ?_⟩` and prove the remaining obligations. Rewrite using `[cls_pull hQ1 _ (pull_isLB hQ1 _), atQ₁, MonObj.one_comp]`.
+
+Conclude with `val_one_left hP o.rig₁ _`. Rewrite using `[cls_pull hQ1 _ (pull_isLB hQ1 _), atQ₁, MonObj.one_comp]`. Conclude with `val_one_right hP o.rig₂ _`. Establish `ax2 : IsAxesTriv o'.A (Hecke.lbPow o'.P c)`. Use `⟨hQ2, (cls_eq_zero_iff (pull_isLB hQ2 _)).1 ?_, (cls_eq_zero_iff (pull_isLB hQ2 _)).1 ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[cls_pull hQ2 _ (pull_isLB hQ2 _), atQ₂, val_one_left hP' o'.rig₁, smul_zero]`. Rewrite using `[cls_pull hQ2 _ (pull_isLB hQ2 _), atQ₂, val_one_right hP' o'.rig₂, smul_zero]`. Establish `eP : GlobalTheory.CechPic.pull (sq2 ψ) (cls o'.P hP') = c • cls o.P hP`. Take `⟨i⟩` from `hI.2.2.2.2.1`. Establish `h` using `(cls_eq_iff (LB.isLB_linComb hP _ _) (pull_isLB hP' _)).2 i`.
+
+Rewrite `h` using `[cls_pull hP' _ (pull_isLB hP' _)]`. Rewrite using `[← h]`. Conclude with `GlobalTheory.BirigidPow.cls_lbPow hP c _`. Establish `eC : GlobalTheory.CechPic.pull (sq2 ((𝟙 o.A) ^ c)) (cls o.P hP) = (c ^ 2) • cls o.P hP`. Establish `i` using `GlobalTheory.BirigidPow.lineBundleIso_tensorPowSq_pullback_mulPair hP o.ab o.ample o.rig₁ o.rig₂ c`.
+
+Establish `h` using `(cls_eq_iff (LB.isLB_linComb hP _ _) (pull_isLB hP _)).2 i`. Rewrite `h` using `[cls_pull hP _ (pull_isLB hP _)]`. Rewrite using `[← h]`. Conclude with `GlobalTheory.BirigidPow.cls_lbPow hP _ _`. Establish `eS : sq2 ψ ≫ sq2 ψ' = sq2 ((𝟙 o.A) ^ c)`.
+
+Rewrite using `[← hq.2.2.1, sq2, sq2, sq2, ← Over.comp_left, comp_lift]`. Simplify using the standard rewrite rules. Establish `iso : LBIso ((o.P.pull (sq2 ψ')).pull (sq2 ψ)) ((Hecke.lbPow o'.P c).pull (sq2 ψ))`. Use `(cls_eq_iff (pull_isLB hQ1 _) (pull_isLB hQ2 _)).1 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hQ1 _ (pull_isLB hQ1 _), cls_pull hQ2 _ (pull_isLB hQ2 _), cQ1, cQ2, map_nsmul, eP, ← pull_comp, eS, eC, smul_smul, sq]`.
+
+Establish `cE : cls _ hQ1 = cls _ hQ2` using `(cls_eq_iff hQ1 hQ2).2 (GlobalTheory.QuasiInvPull.lbIso_of_pullback_quasiInverseIsogeny_trivial_axes Y o.A o'.A c ψ ψ' _ _ o'.ab hc0 hu hq ax1 ax2 iso)`. Establish `key : ∀ {U : Over Y} (a b : U ⟶ o'.A), GlobalTheory.BirigidPow.val hP (a ≫ ψ') (b ≫ ψ') = c • GlobalTheory.BirigidPow.val hP' a b`. Introduce `U a b`. Rewrite using `[← atQ₁, cE, atQ₂]`. Establish `hT : PullPolTriv o ψ' x ↔ GlobalTheory.BirigidPow.val hP' (fst o'.A T) (snd o'.A T ≫ x ^ c) = 0`.
+
+Unfold `PullPolTriv`. Rewrite using `[← cls_eq_zero_iff (pull_isLB hP _), cls_pull hP _ (pull_isLB hP _)]`. Express the relevant statement in the definitionally equal form `GlobalTheory.BirigidPow.val hP _ _ = 0 ↔ _`. Rewrite using `[← Category.assoc (snd o'.A T) x ψ', key, comp_pow_pt, val_pow_right hP' o'.ab o'.ample o'.rig₁ o'.rig₂]`. Establish `hsym : ∀ {U : Over Y} (a b : U ⟶ o'.A), GlobalTheory.BirigidPow.val hP' a b = GlobalTheory.BirigidPow.val hP' b a`.
+
+Introduce `U a b`. Take `⟨i⟩ : Nonempty (LBIso o'.P (o'.P.pull (lift (snd o'.A o'.A) (fst o'.A o'.A)).left))` from `⟨o'.symm⟩`. Establish `h` using `(cls_eq_iff hP' (pull_isLB hP' _)).2 i`. Rewrite `h` using `[cls_pull hP' _ (pull_isLB hP' _)]`. Rewrite using `[GlobalTheory.BirigidPow.val, h, ← pull_comp, ← Over.comp_left, comp_lift, lift_snd, lift_fst, GlobalTheory.BirigidPow.val]`.
+
+Rewrite using `[hT]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨e, he, hker⟩` from `o'.kerP`. Establish `h1 : (x ^ c) ^ e = 1` using `hker T (x ^ c) ((cls_eq_zero_iff (pull_isLB hP' _)).1 (by`.
+
+Rewrite using `[cls_pull hP' _ (pull_isLB hP' _)]`. Conclude with `(hsym _ _).trans h))`. Establish `h2 : (x ^ c) ^ (c ^ 2) = 1`. Rewrite using `[← pow_mul, ← pow_succ', hx]`. Establish `hco : e.gcd (c ^ 2) = 1`.
+
+Rewrite using `[hk]`. Conclude with `Nat.Coprime.pow_right _ (Nat.Coprime.pow_right _ he)`. Use `pow_gcd_eq_one.2 ⟨h1, h2⟩` as an intermediate fact. Rewrite `this` using `[hco, pow_one]`. Then use the resulting hypothesis. Introduce `h`.
+
+Rewrite using `[h, MonObj.comp_one]`. Conclude with `val_one_right hP' o'.rig₂ _`.
+-/
 theorem UpperTheory.Cb.polarization_kernel_of_p_isogeny_quasi_inverse :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (c : ℕ) (Y : Scheme.{0}) (s : Y ⟶ Sp R) (o o' : Obj b N s) (ψ : o.A ⟶ o'.A) (ψ' : o'.A ⟶ o.A), IsUnit ((p : ℕ) : R) → IsPIsog c o o' ψ → IsQuasiInv c ψ ψ' → PolKerAt o ψ' c (𝟙 Y) := by
   intro p _ D R _ b N c Y s o o' ψ ψ' hp hI hq T σ hσ x hx

@@ -23,6 +23,9 @@ variable (F) in
 def digitSum (m : ℕ) (a : Fin m → 𝓀[F]) : F :=
   ∑ t : Fin m, (residueLift F (a t) : F) * ϖ ^ (t : ℕ)
 
+/- English proof (translation)
+Rewrite using `[digitSum, Fin.sum_univ_succ, digitSum, Finset.mul_sum]`. Simplify using `only [Fin.val_zero, pow_zero, mul_one, Fin.val_succ, pow_succ, Fin.tail]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun t _ => by ring`.
+-/
 theorem digitSum_succ (m : ℕ) (a : Fin (m + 1) → 𝓀[F]) :
     digitSum F (m + 1) a = residueLift F (a 0) + ϖ * digitSum F m (Fin.tail a) := by
   rw [digitSum, Fin.sum_univ_succ, digitSum, Finset.mul_sum]
@@ -30,10 +33,16 @@ theorem digitSum_succ (m : ℕ) (a : Fin (m + 1) → 𝓀[F]) :
   congr 1
   exact Finset.sum_congr rfl fun t _ => by ring
 
+/- English proof (translation)
+The claim follows from `Subring.sum_mem _ fun t _ => Subring.mul_mem _ (residueLift F (a t)).2 (Subring.pow_mem _ (GLnLocal.uniformizer F).2 _)`.
+-/
 theorem digitSum_mem (m : ℕ) (a : Fin m → 𝓀[F]) : digitSum F m a ∈ 𝒪[F] :=
   Subring.sum_mem _ fun t _ =>
     Subring.mul_mem _ (residueLift F (a t)).2 (Subring.pow_mem _ (GLnLocal.uniformizer F).2 _)
 
+/- English proof (translation)
+Establish `hϖ : ϖ ≠ 0` using `Cartan.uniformizer_ne_zero F`. Use `⟨(ϖ ^ m)⁻¹ * x, ?_, by rw [← mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hϖ), one_mul]⟩` and prove the remaining obligations. Apply `mem_of_bdd` to reduce the goal to its premises. Use `(bdd_zpow (F := F) (-(m : ℤ))).mul hx` as an intermediate fact. Rewrite `this` using `[neg_add_cancel, _root_.zpow_neg, zpow_natCast]`. Then use the resulting hypothesis.
+-/
 theorem exists_eq_uniformizer_pow_mul {m : ℕ} {x : F} (hx : Bdd F m x) :
     ∃ y ∈ 𝒪[F], x = ϖ ^ m * y := by
   have hϖ : ϖ ≠ 0 := Cartan.uniformizer_ne_zero F
@@ -42,6 +51,17 @@ theorem exists_eq_uniformizer_pow_mul {m : ℕ} {x : F} (hx : Bdd F m x) :
   have := (bdd_zpow (F := F) (-(m : ℤ))).mul hx
   rwa [neg_add_cancel, _root_.zpow_neg, zpow_natCast] at this
 
+/- English proof (translation)
+Proceed by induction on `m generalizing x with`. Consider the case `zero => exact ⟨Fin.elim0, by simpa [digitSum] using bdd_of_mem hx⟩`. Consider the case `succ m ih => set a₀ := IsLocalRing.residue 𝒪[F] ⟨x, hx⟩`. Establish `h1 : Bdd F 1 (x - residueLift F a₀)`. Use `(bdd_one_of_mem_maximalIdeal (residueLift_sub_mem (F := F) ⟨x, hx⟩)).neg` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨y, hy, hxy⟩` from `exists_eq_uniformizer_pow_mul (m := 1) (by simpa using h1)`. Take `⟨a', ha'⟩` from `ih hy`.
+
+Use `⟨Fin.cons a₀ a', ?_⟩` and prove the remaining obligations. Rewrite using `[digitSum_succ, Fin.cons_zero, Fin.tail_cons]`. Establish `heq : x - ((residueLift F a₀ : F) + ϖ * digitSum F m a') = ϖ * (y - digitSum F m a')`. Rewrite using `[mul_sub, ← pow_one ϖ, ← hxy]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[heq]`. Use `(bdd_zpow (F := F) 1).mul ha'` as an intermediate fact. Rewrite `this` using `[zpow_one]`. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_digitSum (m : ℕ) {x : F} (hx : x ∈ 𝒪[F]) :
     ∃ a : Fin m → 𝓀[F], Bdd F m (x - digitSum F m a) := by
   induction m generalizing x with
@@ -67,6 +87,23 @@ theorem exists_digitSum (m : ℕ) {x : F} (hx : x ∈ 𝒪[F]) :
     push_cast
     ring
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => exact funext fun t => t.elim0`. Consider the case `succ m ih`. Rewrite `h` using `[digitSum_succ, digitSum_succ]`. Use `set D := digitSum F m (Fin.tail a) - digitSum F m (Fin.tail b)`.
+
+Establish `hD : D ∈ 𝒪[F]` using `Subring.sub_mem _ (digitSum_mem _ _) (digitSum_mem _ _)`. Establish `hd : (residueLift F (a 0) : F) + ϖ * digitSum F m (Fin.tail a) - ((residueLift F (b 0) : F) + ϖ * digitSum F m (Fin.tail b)) = ((residueLift F (a 0) : F) - residueLift F (b 0)) + ϖ * D`. Simplify using `only [D]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[hd]`.
+
+Establish `hϖD : Bdd F 1 (ϖ * D)`. Use `(bdd_zpow (F := F) 1).mul (bdd_of_mem hD)` as an intermediate fact. Rewrite `this` using `[zpow_one, add_zero]`. Then use the resulting hypothesis. Establish `h0 : Bdd F 1 ((residueLift F (a 0) : F) - residueLift F (b 0))`. Use `(h.mono (show (1 : ℤ) ≤ ((m + 1 : ℕ) : ℤ) by omega)).add hϖD.neg` as an intermediate fact.
+
+Rewrite `this` using `[add_neg_cancel_right]`. Then use the resulting hypothesis. Establish `ha0 : a 0 = b 0`. Establish `hmax : residueLift F (a 0) - residueLift F (b 0) ∈ IsLocalRing.maximalIdeal 𝒪[F]`. Use `(mem_maximalIdeal_pow_iff F (m := 1) (y := residueLift F (a 0) - residueLift F (b 0))).2 (by` as an intermediate fact. Rewrite using `[pow_one]`.
+
+Use `push_cast`. Simplify `h0)` using `[Bdd]`. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Use `(IsLocalRing.residue_eq_zero_iff _).2 hmax` as an intermediate fact. Rewrite `this` using `[map_sub, residue_residueLift, residue_residueLift, sub_eq_zero]`.
+
+Conclude with `this`. Establish `htail : Bdd F m D`. Rewrite `h` using `[ha0, sub_self, zero_add]`. Use `(bdd_zpow (F := F) (-1)).mul h` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← zpow_add_one₀ (Cartan.uniformizer_ne_zero F), neg_add_cancel, zpow_zero, one_mul]`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `ht` using `ih htail`. Use function extensionality and compare the values at `t`.
+
+Use `Fin.cases ha0 (fun t => ?_) t` and prove the remaining obligations. Conclude with `congrFun ht t`.
+-/
 theorem eq_of_bdd_digitSum_sub (m : ℕ) {a b : Fin m → 𝓀[F]}
     (h : Bdd F m (digitSum F m a - digitSum F m b)) : a = b := by
   induction m with
@@ -121,26 +158,44 @@ variable (F) in
 def normalMat (l : Fin n → ℕ) (c : NormalData F l) : Matrix (Fin n) (Fin n) F :=
   fun i j => if h : i < j then digitSum F (l i) (c ⟨(i, j), h⟩) else if i = j then ϖ ^ l i else 0
 
+/- English proof (translation)
+Simplify using `[normalMat, h]`.
+-/
 theorem normalMat_of_lt (l : Fin n → ℕ) (c : NormalData F l) {i j : Fin n} (h : i < j) :
     normalMat F l c i j = digitSum F (l i) (c ⟨(i, j), h⟩) := by
   simp [normalMat, h]
 
+/- English proof (translation)
+Simplify using `[normalMat]`.
+-/
 theorem normalMat_self (l : Fin n → ℕ) (c : NormalData F l) (i : Fin n) :
     normalMat F l c i i = ϖ ^ l i := by
   simp [normalMat]
 
+/- English proof (translation)
+Simplify using `[normalMat, not_lt.2 h.le, (ne_of_lt h).symm]`.
+-/
 theorem normalMat_of_gt (l : Fin n → ℕ) (c : NormalData F l) {i j : Fin n} (h : j < i) :
     normalMat F l c i j = 0 := by
   simp [normalMat, not_lt.2 h.le, (ne_of_lt h).symm]
 
+/- English proof (translation)
+Introduce `_ _ h` and use `normalMat_of_gt l c h`.
+-/
 theorem normalMat_isUpperTriangular (l : Fin n → ℕ) (c : NormalData F l) :
     (normalMat F l c).IsUpperTriangular := fun _ _ h => normalMat_of_gt l c h
 
+/- English proof (translation)
+Rewrite using `[det_of_isUpperTriangular (normalMat_isUpperTriangular l c)]`. Conclude with `Finset.prod_congr rfl fun i _ => normalMat_self l c i`.
+-/
 theorem det_normalMat (l : Fin n → ℕ) (c : NormalData F l) :
     (normalMat F l c).det = ∏ i, ϖ ^ l i := by
   rw [det_of_isUpperTriangular (normalMat_isUpperTriangular l c)]
   exact Finset.prod_congr rfl fun i _ => normalMat_self l c i
 
+/- English proof (translation)
+Rewrite using `[det_normalMat]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ (Cartan.uniformizer_ne_zero F)`.
+-/
 theorem det_normalMat_ne_zero (l : Fin n → ℕ) (c : NormalData F l) : (normalMat F l c).det ≠ 0 := by
   rw [det_normalMat]
   exact Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ (Cartan.uniformizer_ne_zero F)
@@ -150,14 +205,25 @@ variable (F) in
 def normalGL (l : Fin n → ℕ) (c : NormalData F l) : GL (Fin n) F :=
   ((Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 (det_normalMat_ne_zero l c))).unit
 
+/- English proof (translation)
+The claim follows from `IsUnit.unit_spec _`.
+-/
 theorem coe_normalGL (l : Fin n → ℕ) (c : NormalData F l) :
     (normalGL F l c : Matrix (Fin n) (Fin n) F) = normalMat F l c :=
   IsUnit.unit_spec _
 
+/- English proof (translation)
+Rewrite using `[Iwasawa.mem_borel, coe_normalGL]`. Conclude with `normalMat_isUpperTriangular l c`.
+-/
 theorem normalGL_mem_borel (l : Fin n → ℕ) (c : NormalData F l) : normalGL F l c ∈ Iwasawa.borel F n := by
   rw [Iwasawa.mem_borel, coe_normalGL]
   exact normalMat_isUpperTriangular l c
 
+/- English proof (translation)
+Use `set L : Fin n → ℤ := fun i => (l i : ℤ)`. Use `set u := normalGL F l c * torusPow F n (-L) with hu`. Establish `huN : u ∈ unipotent F n`. Use `(mem_unipotent F n).2 ⟨(Iwasawa.borel F n).mul_mem (normalGL_mem_borel l c) (torusPow_mem_borel F n _), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hu, mul_apply_self_of_mem_borel F n (normalGL_mem_borel l c) (torusPow_mem_borel F n _)]`.
+
+Rewrite using `[coe_normalGL, normalMat_self, coe_torusPow, diagonal_apply_eq, Pi.neg_apply, ← zpow_natCast, ← zpow_add₀ (Cartan.uniformizer_ne_zero F), add_neg_cancel, zpow_zero]`. Establish `: normalGL F l c = u * torusPow F n L * 1`. Rewrite using `[mul_one, hu, torusPow_neg, inv_mul_cancel_right]`. Rewrite using `[this]`. Conclude with `iwasawaExponent_eq F n huN (integralGL F n).one_mem`.
+-/
 theorem iwasawaExponent_normalGL (l : Fin n → ℕ) (c : NormalData F l) :
     iwasawaExponent F n (normalGL F l c) = fun i => (l i : ℤ) := by
   set L : Fin n → ℤ := fun i => (l i : ℤ)
@@ -173,6 +239,31 @@ theorem iwasawaExponent_normalGL (l : Fin n → ℕ) (c : NormalData F l) :
   rw [this]
   exact iwasawaExponent_eq F n huN (integralGL F n).one_mem
 
+/- English proof (translation)
+Introduce `c c' h`. Establish `hϖ : ϖ ≠ 0` using `Cartan.uniformizer_ne_zero F`. Establish `hk : (normalGL F l c)⁻¹ * normalGL F l c' ∈ integralGL F n` using `QuotientGroup.eq.1 h`. Use `set b := normalGL F l c with hbdef`. Use `set b' := normalGL F l c' with hb'def`.
+
+Use `set k := b⁻¹ * b' with hkdef`. Establish `hb : b ∈ Iwasawa.borel F n` using `normalGL_mem_borel l c`. Establish `hb' : b' ∈ Iwasawa.borel F n` using `normalGL_mem_borel l c'`. Establish `hbU : (b : Matrix (Fin n) (Fin n) F).IsUpperTriangular` using `(Iwasawa.mem_borel F n).1 hb`. Establish `hkB : k ∈ Iwasawa.borel F n` using `(Iwasawa.borel F n).mul_mem ((Iwasawa.borel F n).inv_mem hb) hb'`.
+
+Establish `hkU : (k : Matrix (Fin n) (Fin n) F).IsUpperTriangular` using `(Iwasawa.mem_borel F n).1 hkB`. Establish `hkO : ∀ i j, k i j ∈ 𝒪[F]` using `((mem_integralGL_iff F n).1 hk).1`. Establish `hbk : (b' : Matrix (Fin n) (Fin n) F) = (b : Matrix (Fin n) (Fin n) F) * k`. Rewrite using `[← Units.val_mul, hkdef, mul_inv_cancel_left]`. Establish `hbd : ∀ i, (b : Matrix (Fin n) (Fin n) F) i i = ϖ ^ l i` using `fun i => by`.
+
+Rewrite using `[hbdef, coe_normalGL, normalMat_self]`. Establish `hb'd : ∀ i, (b' : Matrix (Fin n) (Fin n) F) i i = ϖ ^ l i` using `fun i => by`. Rewrite using `[hb'def, coe_normalGL, normalMat_self]`. Establish `hkdiag : ∀ j, k j j = 1`. Introduce `j`.
+
+Rewrite using `[hkdef, mul_apply_self_of_mem_borel F n ((Iwasawa.borel F n).inv_mem hb) hb', inv_apply_self_of_mem_borel F n hb]`. Rewrite using `[hbd, hb'd, inv_mul_cancel₀ (pow_ne_zero _ hϖ)]`. Establish `key : ∀ d : ℕ, ∀ i j : Fin n, ∀ hij : i < j, (j : ℕ) - i = d → k i j = 0 ∧ c ⟨(i, j), hij⟩ = c' ⟨(i, j), hij⟩`. Introduce `d`. Proceed by induction on `d using Nat.strong_induction_on with`.
+
+Consider the case `_ d ih`. Introduce `i j hij hd`. Establish `hsum : (b' : Matrix (Fin n) (Fin n) F) i j = ϖ ^ l i * k i j + (b : Matrix (Fin n) (Fin n) F) i j`. Rewrite using `[hbk, Matrix.mul_apply, Fintype.sum_eq_add i j (ne_of_lt hij)]`. Rewrite using `[hbd, hkdiag, mul_one]`.
+
+Introduce and unpack `m ⟨hmi, hmj⟩`. Break down `lt_or_gt_of_ne hmi with hm | hm` into its components or cases. Rewrite using `[hbU hm, zero_mul]`. Break down `lt_or_gt_of_ne hmj with hm' | hm'` into its components or cases. Establish `hmj' : (j : ℕ) - m < d`.
+
+Use `Fin.lt_def.1 hm` as an intermediate fact. Use `Fin.lt_def.1 hm'` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[(ih _ hmj' m j hm' rfl).1, mul_zero]`. Rewrite using `[hkU hm', mul_zero]`.
+
+Rewrite `hsum` using `[hbdef, hb'def, coe_normalGL, coe_normalGL, normalMat_of_lt l c' hij, normalMat_of_lt l c hij]`. Establish `hbdd : Bdd F (l i) (digitSum F (l i) (c ⟨(i, j), hij⟩) - digitSum F (l i) (c' ⟨(i, j), hij⟩))`. Rewrite using `[hsum]`. Use `((bdd_zpow (F := F) (l i)).mul (bdd_of_mem (hkO i j))).neg` as an intermediate fact. Rewrite `this` using `[add_zero, zpow_natCast]`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hc` using `eq_of_bdd_digitSum_sub (l i) hbdd`. Use `⟨?_, hc⟩` and prove the remaining obligations. Establish `hdc : digitSum F (l i) (c ⟨(i, j), hij⟩) = digitSum F (l i) (c' ⟨(i, j), hij⟩)`.
+
+Rewrite using `[hc]`. Establish `h0 : ϖ ^ l i * k i j = 0` using `by linear_combination -hsum - hdc`. Conclude with `(mul_eq_zero.1 h0).resolve_left (pow_ne_zero _ hϖ)`. Use function extensionality and compare the values at `p`. Take `⟨⟨i, j⟩, hij⟩` from `p`.
+
+Conclude with `(key _ i j hij rfl).2`.
+-/
 theorem normalGL_injective (l : Fin n → ℕ) :
     Function.Injective fun c : NormalData F l =>
       (QuotientGroup.mk (normalGL F l c) : GL (Fin n) F ⧸ integralGL F n) := by
@@ -238,10 +329,38 @@ theorem normalGL_injective (l : Fin n → ℕ) :
   obtain ⟨⟨i, j⟩, hij⟩ := p
   exact (key _ i j hij rfl).2
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, coe_torusPow, mul_diagonal]`.
+-/
 theorem diag_mul_torusPow' {u : GL (Fin n) F} (hu : u ∈ unipotent F n) (l : Fin n → ℤ) (i j : Fin n) :
     ((u * torusPow F n l : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j = u i j * ϖ ^ l j := by
   rw [Units.val_mul, coe_torusPow, mul_diagonal]
 
+/- English proof (translation)
+Establish `hBU : (h : Matrix (Fin n) (Fin n) F).IsUpperTriangular` using `(Iwasawa.mem_borel F n).1 hB`. Establish `hy : ∀ j, ∃ e : Fin (l i) → 𝓀[F], ∃ y ∈ 𝒪[F], h i j - digitSum F (l i) e = ϖ ^ l i * y` using `fun j => by`. Take `⟨e, he⟩` from `exists_digitSum (l i) (hO i j)`. Take `⟨y, hy, hxy⟩` from `exists_eq_uniformizer_pow_mul he`. Conclude with `⟨e, y, hy, hxy⟩`.
+
+Use `choose e y hyO hxy using hy`. Use `set A : Matrix (Fin n) (Fin n) F := Matrix.of fun a b => if a = i ∧ i < b then -y b else 0 with hA`. Use `set E : Matrix (Fin n) (Fin n) F := 1 + A with hE`. Establish `hEU : E.IsUpperTriangular`. Introduce `a b hab`.
+
+Establish `hab' : b < a` using `hab`. Simplify using `only [hE, hA, Matrix.add_apply, Matrix.of_apply, Matrix.one_apply_ne (ne_of_gt hab')]`. Use `split_ifs with h1`. Conclude with `absurd (h1.1 ▸ h1.2) (not_lt.2 hab'.le)`. Simplify using the standard rewrite rules.
+
+Establish `hEd : ∀ a, E a a = 1` using `fun a => by`. Simplify using `only [hE, hA, Matrix.add_apply, Matrix.of_apply, Matrix.one_apply_eq]`. Rewrite using `[if_neg (fun h => by obtain ⟨rfl, h2⟩ := h; exact lt_irrefl _ h2), add_zero]`. Establish `hEO : ∀ a b, E a b ∈ 𝒪[F]` using `fun a b => by`. Simplify using `only [hE, hA, Matrix.add_apply, Matrix.of_apply]`.
+
+Use `Subring.add_mem _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply] split_ifs`. Conclude with `(𝒪[F]).one_mem`. Conclude with `(𝒪[F]).zero_mem`. Use `split_ifs`.
+
+Conclude with `Subring.neg_mem _ (hyO b)`. Conclude with `(𝒪[F]).zero_mem`. Establish `hdet : E.det = 1`. Rewrite using `[det_of_isUpperTriangular hEU]`. Simplify using `[hEd]`.
+
+Use `set Eg : GL (Fin n) F := ((Matrix.isUnit_iff_isUnit_det E).2 (by rw [hdet]; exact isUnit_one)).unit with hEgdef`. Establish `hEg : (Eg : Matrix (Fin n) (Fin n) F) = E` using `IsUnit.unit_spec _`. Establish `hEgN : Eg ∈ unipotent F n` using `(mem_unipotent F n).2 ⟨by rw [hEg]; exact hEU, fun a => by`. Rewrite using `[hEg]`. Conclude with `hEd a⟩`.
+
+Establish `hEgK : Eg ∈ integralGL F n` using `((mem_unipotent_inf_integralGL_iff F n).2 ⟨hEgN, fun a b => by`. Rewrite using `[hEg]`. Conclude with `hEO a b⟩).2`. Establish `hmul : ∀ a b, (h * Eg : GL (Fin n) F) a b = h a b + if i < b then h a i * -y b else 0`. Introduce `a b`.
+
+Rewrite using `[Units.val_mul, hEg, hE, Matrix.mul_add, Matrix.mul_one, Matrix.add_apply, Matrix.mul_apply]`. Use `congr 1`. Distinguish the cases in `hib : i < b`. Rewrite using `[if_pos hib, Finset.sum_eq_single i]`. Simplify using `[hA, hib]`.
+
+Introduce `m _ hm`. Simplify using `[hA, hm]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hib]`. Conclude with `Finset.sum_eq_zero fun m _ => by simp [hA, hib]`.
+
+Use `⟨Eg, hEgK, (Iwasawa.borel F n).mul_mem hB (unipotent_le_borel F n hEgN), fun a => ?_, fun a b => ?_, fun a b hia => ?_, fun j hij => ⟨e j, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[mul_apply_self_of_mem_borel F n hB (unipotent_le_borel F n hEgN), hd, hEgN.2, mul_one]`. Rewrite using `[hmul]`. Use `Subring.add_mem _ (hO a b) ?_` and prove the remaining obligations. Use `split_ifs`.
+
+Conclude with `Subring.mul_mem _ (hO a i) (Subring.neg_mem _ (hyO b))`. Conclude with `(𝒪[F]).zero_mem`. Rewrite using `[hmul, hBU hia, zero_mul, ite_self, add_zero]`. Rewrite using `[hmul, if_pos hij, hd]`. Take the linear combination `hxy j`.
+-/
 theorem exists_reduce_row (l : Fin n → ℕ) {h : GL (Fin n) F} (hB : h ∈ Iwasawa.borel F n)
     (hd : ∀ a, h a a = ϖ ^ l a) (hO : ∀ a b, h a b ∈ 𝒪[F]) (i : Fin n) :
     ∃ k ∈ integralGL F n, h * k ∈ Iwasawa.borel F n ∧ (∀ a, (h * k) a a = ϖ ^ l a) ∧
@@ -314,6 +433,33 @@ theorem exists_reduce_row (l : Fin n → ℕ) {h : GL (Fin n) F} (hB : h ∈ Iwa
   · rw [hmul, if_pos hij, hd]
     linear_combination hxy j
 
+/- English proof (translation)
+Take `⟨u, hu, k₀, hk₀, he⟩` from `exists_eq_mul_torusPow_iwasawaExponent F n g`. Use `set L := iwasawaExponent F n g`. Use `set h := u * torusPow F n L with hh`. Establish `hhg : h = g * k₀⁻¹` using `by rw [he, mul_inv_cancel_right]`. Establish `hO : ∀ i j, h i j ∈ 𝒪[F]` using `fun i j => by`.
+
+Rewrite using `[hhg]`. Rewrite using `[Units.val_mul]`. Conclude with `mul_mem_of_forall_mem hg ((mem_integralGL_iff F n).1 ((integralGL F n).inv_mem hk₀)).1 i j`. Establish `hdiag : ∀ i, h i i = ϖ ^ L i` using `fun i => by`. Express the relevant statement in the definitionally equal form `((u * torusPow F n L : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i i = _`.
+
+Rewrite using `[diag_mul_torusPow' hu, hu.2 i, one_mul]`. Establish `hL : ∀ i, 0 ≤ L i` using `fun i => by`. Use `bdd_of_mem (hO i i)` as an intermediate fact. Rewrite `this` using `[hdiag]`. Conclude with `le_of_bdd_zpow this`.
+
+Use `set l : Fin n → ℕ := fun i => (L i).toNat with hldef`. Establish `hdl : ∀ i, h i i = ϖ ^ l i` using `fun i => by`. Rewrite using `[hdiag, hldef, ← zpow_natCast, Int.toNat_of_nonneg (hL i)]`. Establish `hB : h ∈ Iwasawa.borel F n` using `(Iwasawa.borel F n).mul_mem (unipotent_le_borel F n hu) (torusPow_mem_borel F n L)`. Establish `red : ∀ r : ℕ, ∃ k ∈ integralGL F n, h * k ∈ Iwasawa.borel F n ∧ (∀ a, (h * k) a a = ϖ ^ l a) ∧ (∀ a b, (h * k) a b ∈ 𝒪[F]) ∧ ∀ i j : Fin n, i < j → n ≤ r + i → ∃ e : Fin (l i) → 𝓀[F], (h * k) i j = digitSum F (l i) e`.
+
+Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`. Use `⟨1, one_mem _, by simpa using hB, by simpa using hdl, by simpa using hO, fun i j _ hi => absurd hi ?_⟩` and prove the remaining obligations. Use `i.2` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Consider the case `succ r ih`. Take `⟨k, hk, hB', hd', hO', hred⟩` from `ih`. Distinguish the cases in `hr : r < n`. Use `set i₀ : Fin n := ⟨n - 1 - r, by omega⟩ with hi₀`.
+
+Take `⟨k', hk', hB'', hd'', hO'', hrows, hrow⟩` from `exists_reduce_row l hB' hd' hO' i₀`. Use `⟨k * k', mul_mem hk hk', by rwa [← mul_assoc], by rwa [← mul_assoc], by rwa [← mul_assoc], fun i j hij hi => ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc]`. Distinguish the cases in `hii : i = i₀`. Substitute `hii` using the available equality.
+
+Conclude with `hrow j hij`. Establish `hne : (i : ℕ) ≠ n - 1 - r` using `fun h' => hii (Fin.ext h')`. Establish `hi' : i₀ < i`. Rewrite using `[Fin.lt_def]`. Use `show n - 1 - r < (i : ℕ)`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hrows i j hi']`. Conclude with `hred i j hij (by omega)`. Conclude with `⟨k, hk, hB', hd', hO', fun i j hij hi => hred i j hij (by omega)⟩`. Take `⟨k, hk, hB', hd', hO', hred⟩` from `red n`.
+
+Use `set c : NormalData F l := fun p => (hred p.1.1 p.1.2 p.2 (Nat.le_add_right _ _)).choose with hcdef`. Establish `hc : ∀ p : UpperPairs n, (h * k) p.1.1 p.1.2 = digitSum F (l p.1.1) (c p)` using `fun p => (hred p.1.1 p.1.2 p.2 (Nat.le_add_right _ _)).choose_spec`. Establish `hBU : ((h * k : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).IsUpperTriangular` using `(Iwasawa.mem_borel F n).1 hB'`. Use `⟨l, c, ?_⟩` and prove the remaining obligations. Establish `heq : normalGL F l c = h * k`.
+
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[coe_normalGL]`. Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases. Rewrite using `[normalMat_of_lt l c hij]`. Conclude with `(hc ⟨(i, j), hij⟩).symm`.
+
+Rewrite using `[normalMat_self]`. Conclude with `(hd' i).symm`. Rewrite using `[normalMat_of_gt l c hij]`. Conclude with `(hBU hij).symm`. Rewrite using `[heq, hhg, mul_assoc]`.
+
+Conclude with `QuotientGroup.mk_mul_of_mem g ((integralGL F n).mul_mem ((integralGL F n).inv_mem hk₀) hk)`.
+-/
 theorem exists_normalGL {g : GL (Fin n) F} (hg : ∀ i j, g i j ∈ 𝒪[F]) :
     ∃ l : Fin n → ℕ, ∃ c : NormalData F l,
       (QuotientGroup.mk (normalGL F l c) : GL (Fin n) F ⧸ integralGL F n) = QuotientGroup.mk g := by
@@ -389,6 +535,9 @@ theorem exists_normalGL {g : GL (Fin n) F} (hg : ∀ i j, g i j ∈ 𝒪[F]) :
   rw [heq, hhg, mul_assoc]
   exact QuotientGroup.mk_mul_of_mem g ((integralGL F n).mul_mem ((integralGL F n).inv_mem hk₀) hk)
 
+/- English proof (translation)
+Rewrite using `[GodementJacquet.ordDet, coe_normalGL, det_normalMat, GodementJacquet.ord_prod _ (fun i _ => pow_ne_zero _ (Cartan.uniformizer_ne_zero F))]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, GodementJacquet.ord_zpow_uniformizer]`.
+-/
 theorem ordDet_normalGL (l : Fin n → ℕ) (c : NormalData F l) :
     GodementJacquet.ordDet (normalGL F l c) = ∑ i, (l i : ℤ) := by
   rw [GodementJacquet.ordDet, coe_normalGL, det_normalMat,
@@ -396,6 +545,11 @@ theorem ordDet_normalGL (l : Fin n → ℕ) (c : NormalData F l) :
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [← zpow_natCast, GodementJacquet.ord_zpow_uniformizer]
 
+/- English proof (translation)
+Rewrite using `[coe_normalGL]`. Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases. Rewrite using `[normalMat_of_lt l c hij]`. Conclude with `digitSum_mem _ _`. Rewrite using `[normalMat_self]`.
+
+Conclude with `Subring.pow_mem _ (GLnLocal.uniformizer F).2 _`. Rewrite using `[normalMat_of_gt l c hij]`. Conclude with `(𝒪[F]).zero_mem`.
+-/
 theorem normalGL_apply_mem (l : Fin n → ℕ) (c : NormalData F l) (i j : Fin n) :
     (normalGL F l c) i j ∈ 𝒪[F] := by
   rw [coe_normalGL]
@@ -412,10 +566,18 @@ variable (F n) in
 def integralShell (k : ℕ) : Set (GL (Fin n) F) :=
   {g | (∀ i j, g i j ∈ 𝒪[F]) ∧ GodementJacquet.ordDet g = k}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨normalGL_apply_mem l c, by rw [ordDet_normalGL]; push_cast; rfl⟩`.
+-/
 theorem normalGL_mem_integralShell (l : Fin n → ℕ) (c : NormalData F l) :
     normalGL F l c ∈ integralShell F n (∑ i, l i) :=
   ⟨normalGL_apply_mem l c, by rw [ordDet_normalGL]; push_cast; rfl⟩
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hg`. Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul]`. Conclude with `mul_mem_of_forall_mem (mul_mem_of_forall_mem ((mem_integralGL_iff F n).1 ha).1 h1) ((mem_integralGL_iff F n).1 hb).1 i j`. Rewrite using `[GodementJacquet.ordDet_mul, GodementJacquet.ordDet_mul, GodementJacquet.ordDet_of_mem_integralGL ha, GodementJacquet.ordDet_of_mem_integralGL hb, h2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mul_mem_integralShell {k : ℕ} {g a b : GL (Fin n) F} (hg : g ∈ integralShell F n k)
     (ha : a ∈ integralGL F n) (hb : b ∈ integralGL F n) : a * g * b ∈ integralShell F n k := by
   obtain ⟨h1, h2⟩ := hg
@@ -427,12 +589,20 @@ theorem mul_mem_integralShell {k : ℕ} {g a b : GL (Fin n) F} (hg : g ∈ integ
       GodementJacquet.ordDet_of_mem_integralGL ha, GodementJacquet.ordDet_of_mem_integralGL hb, h2]
     ring
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => mul_mem_integralShell h ha hb⟩` and prove the remaining obligations. Use `mul_mem_integralShell h ((integralGL F n).inv_mem ha) ((integralGL F n).inv_mem hb)` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+-/
 theorem mul_mem_integralShell_iff {k : ℕ} {a g b : GL (Fin n) F} (ha : a ∈ integralGL F n)
     (hb : b ∈ integralGL F n) : a * g * b ∈ integralShell F n k ↔ g ∈ integralShell F n k := by
   refine ⟨fun h => ?_, fun h => mul_mem_integralShell h ha hb⟩
   have := mul_mem_integralShell h ((integralGL F n).inv_mem ha) ((integralGL F n).inv_mem hb)
   simpa [mul_assoc] using this
 
+/- English proof (translation)
+Take `⟨l, c, hc⟩` from `exists_normalGL hg.1`. Establish `hk : (normalGL F l c)⁻¹ * g ∈ integralGL F n` using `QuotientGroup.eq.1 hc`. Establish `h1` using `GodementJacquet.ordDet_mul (normalGL F l c) ((normalGL F l c)⁻¹ * g)`. Rewrite `h1` using `[mul_inv_cancel_left, GodementJacquet.ordDet_of_mem_integralGL hk, add_zero, hg.2, ordDet_normalGL]`. Use `⟨l, Finset.Nat.mem_antidiagonalTuple.2 ?_, c, hc⟩` and prove the remaining obligations.
+
+Conclude with `h1.symm` after adjusting the coercions.
+-/
 theorem exists_normalGL_of_mem {k : ℕ} {g : GL (Fin n) F} (hg : g ∈ integralShell F n k) :
     ∃ l ∈ Finset.Nat.antidiagonalTuple n k, ∃ c : NormalData F l,
       (QuotientGroup.mk (normalGL F l c) : GL (Fin n) F ⧸ integralGL F n) = QuotientGroup.mk g := by
@@ -444,6 +614,13 @@ theorem exists_normalGL_of_mem {k : ℕ} {g : GL (Fin n) F} (hg : g ∈ integral
   refine ⟨l, Finset.Nat.mem_antidiagonalTuple.2 ?_, c, hc⟩
   exact_mod_cast h1.symm
 
+/- English proof (translation)
+Use extensionality with `g`. Simplify using `only [Set.mem_iUnion]`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨l, hl, c, hc⟩` from `exists_normalGL_of_mem hg`.
+
+Establish `hk : (normalGL F l c)⁻¹ * g ∈ integralGL F n` using `QuotientGroup.eq.1 hc`. Conclude with `⟨⟨l, hl⟩, c, _, hk, by simp [smul_eq_mul]⟩`. Introduce and unpack `⟨⟨l, hl⟩, c, k', hk', rfl⟩`. Use `mul_mem_integralShell (normalGL_mem_integralShell l c) (integralGL F n).one_mem hk'` as an intermediate fact. Rewrite `this` using `[one_mul, Finset.Nat.mem_antidiagonalTuple.1 hl]`.
+
+Conclude with `this`.
+-/
 theorem integralShell_eq (k : ℕ) :
     integralShell F n k = ⋃ (l : Finset.Nat.antidiagonalTuple n k) (c : NormalData F l.1),
       normalGL F l.1 c • (integralGL F n : Set (GL (Fin n) F)) := by
@@ -459,14 +636,23 @@ theorem integralShell_eq (k : ℕ) :
     rw [one_mul, Finset.Nat.mem_antidiagonalTuple.1 hl] at this
     exact this
 
+/- English proof (translation)
+Rewrite using `[integralShell_eq]`. Conclude with `isCompact_iUnion fun l => isCompact_iUnion fun c => (isCompact_integralGL F n).smul _`.
+-/
 theorem isCompact_integralShell (k : ℕ) : IsCompact (integralShell F n k) := by
   rw [integralShell_eq]
   exact isCompact_iUnion fun l => isCompact_iUnion fun c => (isCompact_integralGL F n).smul _
 
+/- English proof (translation)
+Rewrite using `[integralShell_eq]`. Conclude with `isOpen_iUnion fun l => isOpen_iUnion fun c => (isOpen_integralGL F n).smul _`.
+-/
 theorem isOpen_integralShell (k : ℕ) : IsOpen (integralShell F n k) := by
   rw [integralShell_eq]
   exact isOpen_iUnion fun l => isOpen_iUnion fun c => (isOpen_integralGL F n).smul _
 
+/- English proof (translation)
+Rewrite using `[Nat.card_pi]`. Simplify using `only [Nat.card_fun, Nat.card_eq_fintype_card (α := Fin _), Fintype.card_fin]`. Rewrite using `[Finset.prod_pow_eq_pow_sum]`. Both sides reduce to the same expression.
+-/
 theorem natCard_normalData (l : Fin n → ℕ) :
     Nat.card (NormalData F l) = qF F ^ ∑ p : UpperPairs n, l p.1.1 := by
   rw [Nat.card_pi]
@@ -474,6 +660,11 @@ theorem natCard_normalData (l : Fin n → ℕ) :
   rw [Finset.prod_pow_eq_pow_sum]
   rfl
 
+/- English proof (translation)
+Establish `hs` using `Finset.sum_subtype (Finset.univ.filter fun p : Fin n × Fin n => p.1 < p.2) (p := fun p : Fin n × Fin n => p.1 < p.2) (F := inferInstance) (fun x => by simp) (fun p => f p.1)`. Rewrite using `[← hs, Finset.sum_filter, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter]`. Simplify using `only`.
+
+Rewrite using `[Finset.sum_const, Finset.filter_lt_eq_Ioi, Fin.card_Ioi, nsmul_eq_mul]`. Establish `hi` using `i.2`. Rewrite using `[Nat.sub_sub, Nat.cast_sub (by omega : 1 + (i : ℕ) ≤ n)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_upperPairs (f : Fin n → ℤ) :
     ∑ p : UpperPairs n, f p.1.1 = ∑ i : Fin n, ((n : ℤ) - 1 - ((i : ℕ) : ℤ)) * f i := by
   classical
@@ -489,6 +680,9 @@ theorem sum_upperPairs (f : Fin n → ℤ) :
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[sum_upperPairs (fun i => (l i : ℤ)), rhoPair, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem two_mul_sum_upperPairs_sub_rhoPair (l : Fin n → ℕ) :
     2 * (∑ p : UpperPairs n, (l p.1.1 : ℤ)) - rhoPair (fun i => (l i : ℤ)) =
       ((n : ℤ) - 1) * ∑ i, (l i : ℤ) := by
@@ -507,10 +701,26 @@ def integralHecke (k : ℕ) : SphericalHecke μ (F := F) (n := n) :=
     fun a ha x => ⟨by simpa using mul_mem_integralShell_iff (g := x) (k := k) ha (integralGL F n).one_mem,
       by simpa using mul_mem_integralShell_iff (g := x) (k := k) (integralGL F n).one_mem ha⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem integralHecke_apply (k : ℕ) (g : GL (Fin n) F) :
     (integralHecke μ k : HeckeAlgebra μ) g = (integralShell F n k).indicator (fun _ => (1 : ℂ)) g :=
   rfl
 
+/- English proof (translation)
+Use `haveI : Fintype 𝓀[F] := Fintype.ofFinite _`. Use `set Cs : Finset (GL (Fin n) F ⧸ integralGL F n) := (Finset.Nat.antidiagonalTuple n k).biUnion fun l => Finset.univ.image fun c : NormalData F l => (QuotientGroup.mk (normalGL F l c) : _)`. Rewrite using `[satake_eq_sum _ Cs]`. Use `congr 1`. Rewrite using `[Finset.sum_biUnion]`.
+
+Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Establish `hlk` using `Finset.Nat.mem_antidiagonalTuple.1 hl`. Rewrite using `[Finset.sum_image fun c _ c' _ h => normalGL_injective l h]`. Establish `: ∀ c : NormalData F l, AddMonoidAlgebra.single (iwasawaExponent F n (QuotientGroup.mk (normalGL F l c) : GL (Fin n) F ⧸ integralGL F n).out) ((integralHecke μ k : HeckeAlgebra μ) (QuotientGroup.mk (normalGL F l c) : GL (Fin n) F ⧸ integralGL F n).out) = monomial (fun i => (l i : …`. Introduce `c`.
+
+Establish `hmem` using `normalGL_mem_integralShell l c`. Rewrite `hmem` using `[hlk]`. Rewrite using `[iwasawaExponent_out, iwasawaExponent_normalGL, apply_out, integralHecke_apply, Set.indicator_of_mem hmem]`. Simplify using `only [this, Finset.sum_const, Finset.card_univ, Nat.card_eq_fintype_card]`. Rewrite using `[Nat.cast_smul_eq_nsmul]`.
+
+Introduce `l _ l' _ hne`. Simplify using `only [Function.onFun]`. Rewrite using `[Finset.disjoint_left]`. Introduce `x hx hx'`. Take `⟨c, -, rfl⟩` from `Finset.mem_image.1 hx`.
+
+Take `⟨c', -, hc'⟩` from `Finset.mem_image.1 hx'`. Use `congrArg (fun x : GL (Fin n) F ⧸ integralGL F n => iwasawaExponent F n x.out) hc'` as an intermediate fact. Simplify using `only [iwasawaExponent_out, iwasawaExponent_normalGL] at this`. Conclude with `hne (funext fun i => by exact_mod_cast (congrFun this i).symm)`. Introduce `x hx`.
+
+Rewrite using `[integralHecke_apply]`. Use `Set.indicator_of_notMem (fun hm => hx ?_) _` and prove the remaining obligations. Take `⟨l, hl, c, hc⟩` from `exists_normalGL_of_mem hm`. Rewrite `hc` using `[QuotientGroup.out_eq']`. Conclude with `Finset.mem_biUnion.2 ⟨l, hl, Finset.mem_image.2 ⟨c, Finset.mem_univ _, hc⟩⟩`.
+-/
 theorem satake_integralHecke (k : ℕ) :
     satake μ (integralHecke μ k) = (μ.real (integralGL F n : Set (GL (Fin n) F)) : ℂ) •
       ∑ l ∈ Finset.Nat.antidiagonalTuple n k,
@@ -553,6 +763,17 @@ theorem satake_integralHecke (k : ℕ) :
     rw [QuotientGroup.out_eq'] at hc
     exact Finset.mem_biUnion.2 ⟨l, hl, Finset.mem_image.2 ⟨c, Finset.mem_univ _, hc⟩⟩
 
+/- English proof (translation)
+Rewrite using `[satakeTransform_apply, evalAt_normalize, satake_integralHecke, map_smul, map_sum, smul_eq_mul, mul_assoc]`. Use `congr 1`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Establish `hlk` using `Finset.Nat.mem_antidiagonalTuple.1 hl`.
+
+Rewrite using `[map_smul, evalAt_single, one_mul, map_mul, monomialChar_halfPoint, natCard_normalData, halfModulus_eq, smul_eq_mul]`. Establish `hz : monomialChar (fun i => (l i : ℤ)) z = ∏ i, (z i : ℂ) ^ l i`. Rewrite using `[monomialChar_apply]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Units.val_zpow_eq_zpow_val, zpow_natCast]`.
+
+Rewrite using `[hz]`. Establish `hq : ((qF F ^ ∑ p : UpperPairs n, l p.1.1 : ℕ) : ℂ) = sqrtQ F ^ (2 * (∑ p : UpperPairs n, (l p.1.1 : ℤ)))`. Use `push_cast`. Rewrite using `[← sqrtQ_sq, ← pow_mul, ← zpow_natCast]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Establish `hexp` using `two_mul_sum_upperPairs_sub_rhoPair l`. Rewrite using `[hq, show sqrtQ F ^ (((n : ℤ) - 1) * k) = sqrtQ F ^ (2 * (∑ p : UpperPairs n, (l p.1.1 : ℤ))) * sqrtQ F ^ (-rhoPair (fun i => (l i : ℤ))) by`. Rewrite using `[← zpow_add₀ (sqrtQ_ne_zero (F := F)), ← sub_eq_add_neg, hexp, ← hlk]`. Use `push_cast`.
+
+Use the proof step `rfl]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem evalAt_satakeTransform_integralHecke (z : Fin n → ℂˣ) (k : ℕ) :
     evalAt z (satakeTransform μ (integralHecke μ k)) =
       (μ.real (integralGL F n : Set (GL (Fin n) F)) : ℂ) * sqrtQ F ^ (((n : ℤ) - 1) * k) *

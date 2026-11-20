@@ -17,6 +17,17 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 
 namespace GlobalTheory.ConsAll
 
+/- English proof (translation)
+Rewrite using `[P.as_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun u hu => ?_` and prove the remaining obligations. Establish `h1 : u.degree = d`. Use `hP (mem_support_iff.1 hu)` as an intermediate fact. Rewrite using `[Finsupp.degree_eq_weight_one]`.
+
+Conclude with `this`. Establish `e₁ : (monomial u (P.coeff u) : MvPolynomial ι ℚ) = P.coeff u • monomial u 1`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Establish `e₂ : (monomial u 1 : MvPolynomial ι ℚ) = ((Finsupp.toMultiset u).map X).prod`. Rewrite using `[monomial_eq, C_1, one_mul, Finsupp.toMultiset_map, Finsupp.prod_toMultiset, Finsupp.prod_mapDomain_index (fun _ => pow_zero _) fun _ _ _ => pow_add _ _ _]`.
+
+Establish `e₃ : Multiset.card (Finsupp.toMultiset u) = d`. Rewrite using `[Finsupp.card_toMultiset, ← h1]`. Both sides reduce to the same expression. Take `⟨l, hl⟩` from `Quotient.exists_rep (Finsupp.toMultiset u)`. Rewrite using `[e₁, map_smul, map_smul, e₂, ← hl]`.
+
+Rewrite `e₃` using `[← hl]`. Take `rfl : l.length = d` from `e₃`. Establish `e₄ : (Multiset.map X (⟦l⟧ : Multiset ι)).prod = ∏ i, (X (l.get i) : MvPolynomial ι ℚ)`. Express the relevant statement in the definitionally equal form `(Multiset.map X (l : Multiset ι)).prod = _`. Rewrite using `[Multiset.map_coe, Multiset.prod_coe, ← List.prod_ofFn]`.
+
+Use `congr 1`. Use `conv_lhs => rw [← List.ofFn_get l]`. Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression. Rewrite using `[e₄, h]`.
+-/
 private theorem ext_of_prod {ι : Type} {d : ℕ} (f g : MvPolynomial ι ℚ →ₗ[ℚ] ℝ)
     (h : ∀ ν : Fin d → ι, f (∏ i, X (ν i)) = g (∏ i, X (ν i))) {P : MvPolynomial ι ℚ} (hP : P.IsHomogeneous d) :
     f P = g P := by
@@ -46,6 +57,9 @@ private theorem ext_of_prod {ι : Type} {d : ℕ} (f g : MvPolynomial ι ℚ →
     rfl
   rw [e₄, h]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `Y.interPoly_prod Δ ν`.
+-/
 private theorem interPoly_prod' {F : Type} [Field F] (Y : GlobalTheory.ProjVar.Var F) {κ : Type} (Δ : κ → Y.Dv) {d : ℕ}
     (h : Y.dim = d) (ν : Fin d → κ) : Y.interPoly Δ (∏ i, X (ν i)) =
       (interNum F (GlobalTheory.structureModule Y.X) fun i => GlobalTheory.Cartier.toLB (Δ (ν i)) : ℤ) := by
@@ -56,6 +70,17 @@ private noncomputable def ch {D : D7} (O : Setup D) : MvPolynomial (Rt D.what₂
 
 open Classical in
 
+/- English proof (translation)
+Set `d` to `dimFl D.what₂.Tau O.N`. Set `ψ : MvPolynomial (Rt D.what₂.Tau O.N) ℝ →ₗ[ℝ] ℝ` to `∑ c, (O.var c).interPoly (fun x : Rt D.what₂.Tau O.N => divOf (O.Φ.C c) (O.ex x)) - ch O`. Establish `hc {Q : MvPolynomial (Rt D.what₂.Tau O.N) ℝ} {e : ℕ} (hQ : Q.IsHomogeneous e) : homogeneousComponent d Q = if d = e then Q else 0` using `homogeneousComponent_of_mem ((mem_homogeneousSubmodule _ _).2 hQ)`. Establish `hl (n : Rt D.what₂.Tau O.N → ℝ) : (GlobalTheory.ArInt.lin n ^ d).IsHomogeneous d`. Establish `h1 : (GlobalTheory.ArInt.lin n).IsHomogeneous 1` using `IsHomogeneous.sum _ _ _ fun i _ => isHomogeneous_C_mul_X (n i) i`.
+
+Simplify using `using h1.pow d`. Establish `key` using `GlobalTheory.ArInt.Model.eq_zero_of_pow d (ψ ∘ₗ homogeneousComponent d) (fun n => by`. Rewrite using `[LinearMap.comp_apply, hc (hl _), if_pos rfl, LinearMap.sub_apply, LinearMap.sum_apply, sub_eq_zero]`. Establish `hl : linRoot (fun τ i => ((-n (τ, i) : ℤ) : ℝ)) = GlobalTheory.ArInt.lin fun x => (n x : ℝ)`. Simplify using `[linRoot, GlobalTheory.ArInt.lin, Finset.sum_neg_distrib]`.
+
+Establish `hv : ∀ Q, ch O Q = (∑ c, (O.s.cx O.L O.B O.fl).volC c) * degFl D.what₂.Tau O.N Q` using `fun Q => by show O.Y.vol * Formalism.L2.Geo.degFlL D.what₂.Tau O.N Q = _ erw [Formalism.L2.Geo.degFlL_apply]; rfl`. Rewrite using `[hv, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `h` using `GlobalTheory.CompPropObj.interPoly_int (GlobalTheory.T.stronger_published_hypotheses_imply h2).p16 O c fun τ i => -n (τ, i)`. Simplify using `only [neg_neg, O.dim_eq c] at h`.
+
+Use `h.trans ?_` and prove the remaining obligations. Rewrite using `[← hl]`. Use the proof step `rfl)`. Use the proof step `(fun Q e he hQ => by rw [LinearMap.comp_apply, hc hQ, if_neg (Ne.symm he), map_zero])`. Use `LinearMap.congr_fun key P` as an intermediate fact.
+
+Rewrite `this` using `[LinearMap.comp_apply, hc hP, if_pos rfl, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.zero_apply, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 private theorem sum_interPoly (h2 : GlobalTheory.CovTop.Hypotheses2) {D : D7} (O : Setup D) {P : MvPolynomial (Rt D.what₂.Tau O.N) ℝ}
     (hP : P.IsHomogeneous (dimFl D.what₂.Tau O.N)) :
     ∑ c, (O.var c).interPoly (fun x : Rt D.what₂.Tau O.N => divOf (O.Φ.C c) (O.ex x)) P = ch O P := by
@@ -88,6 +113,11 @@ private theorem sum_interPoly (h2 : GlobalTheory.CovTop.Hypotheses2) {D : D7} (O
   rwa [LinearMap.comp_apply, hc hP, if_pos rfl, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.zero_apply,
     sub_eq_zero] at this
 
+/- English proof (translation)
+Establish `hN` using `O.S.rank_eq`. Establish `hN2` using `O.S.two_le`. Establish `hs` using `GlobalTheory.ConsGeo.sum_fibreDeg (Fact.out : p.Prime) hW (by omega) z O.Φ (dimFl D.what₂.Tau O.N) O.dim_eq (RelDim.relDim_comp D O.A O.N O.j O.S O.κ p Fact.out W hW z) (fun i => z.rootLB false (tauEmb D (ν i).1) (ν i).2) (fun c i => divOf (O.Φ.C c) (O.ex (ν i))) fun L c X _ ι sX …`. Establish `hh : (∏ i, X (ν i) : MvPolynomial (Rt D.what₂.Tau O.N) ℝ).IsHomogeneous (dimFl D.what₂.Tau O.N)`. Simplify using `using IsHomogeneous.prod Finset.univ (fun i => (X (ν i) : MvPolynomial (Rt D.what₂.Tau O.N) ℝ)) (fun _ => 1) fun i _ => isHomogeneous_X ℝ _`.
+
+Use `(congrArg (fun a : ℚ => (a : ℝ)) hs).trans ?_` and prove the remaining obligations. Rewrite using `[← sum_interPoly h2 O hh, Rat.cast_mul, Rat.cast_natCast, Rat.cast_sum]`. Use `congrArg _ (Finset.sum_congr rfl fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[interPoly_prod' (O.var c) _ (O.dim_eq c) ν, Rat.cast_intCast]`.
+-/
 private theorem geo_prod (h2 : GlobalTheory.CovTop.Hypotheses2) {D : D7} (O : Setup D) (p : ℕ) [Fact p.Prime] (W : ValuationSubring ℂ)
     (hW : (p : ℂ) ∈ W.nonunits) (z : AdmAt O.S O.κ (Fact.out : p.Prime) hW)
     [IsDiscreteValuationRing (z.Z.i.c.V W)] (ν : Fin (dimFl D.what₂.Tau O.N) → Rt D.what₂.Tau O.N) :
@@ -108,12 +138,20 @@ private theorem geo_prod (h2 : GlobalTheory.CovTop.Hypotheses2) {D : D7} (O : Se
   refine congrArg _ (Finset.sum_congr rfl fun c _ => ?_)
   rw [interPoly_prod' (O.var c) _ (O.dim_eq c) ν, Rat.cast_intCast]
 
+/- English proof (translation)
+The claim follows from `ext_of_prod (Algebra.linearMap ℚ ℝ ∘ₗ f ∘ₗ (aeval a).toLinearMap) (((c • g).restrictScalars ℚ) ∘ₗ (mapAlgHom (Algebra.ofId ℚ ℝ)).toLinearMap) (fun ν => by simpa using h ν) hP`.
+-/
 private theorem aeval_ext {ι A : Type} [CommRing A] [Algebra ℚ A] {d : ℕ} (f : A →ₗ[ℚ] ℚ) (a : ι → A)
     (g : MvPolynomial ι ℝ →ₗ[ℝ] ℝ) (c : ℝ) (h : ∀ ν : Fin d → ι, (f (∏ i, a (ν i)) : ℝ) = c * g (∏ i, X (ν i)))
     {P : MvPolynomial ι ℚ} (hP : P.IsHomogeneous d) : (f (aeval a P) : ℝ) = c * g (toR P) :=
   ext_of_prod (Algebra.linearMap ℚ ℝ ∘ₗ f ∘ₗ (aeval a).toLinearMap)
     (((c • g).restrictScalars ℚ) ∘ₗ (mapAlgHom (Algebra.ofId ℚ ℝ)).toLinearMap) (fun ν => by simpa using h ν) hP
 
+/- English proof (translation)
+Set `f : PicSym z.Z.X →ₗ[ℚ] ℚ` to `∑ C : (nmodel z.Z).Comp, ((nmodel z.Z).comp C).toBase.fibreDeg ∘ₗ (picSymPull ((nmodel z.Z).compι C)).toLinearMap`. Establish `hf (Q : PicSym z.Z.X) : f Q = ∑ C : (nmodel z.Z).Comp, ((nmodel z.Z).comp C).toBase.fibreDeg (picSymPull ((nmodel z.Z).compι C) Q)` using `LinearMap.sum_apply _ _ _`. Rewrite using `[← hf]`. Use `aeval_ext f _ (ch O) _ (fun ν => ?_) hP` and prove the remaining obligations. Rewrite using `[hf]`.
+
+Conclude with `geo_prod h2 O p W hW z ν`.
+-/
 private theorem geoAll (h2 : GlobalTheory.CovTop.Hypotheses2) {D : D7} (O : Setup D) (p : ℕ) [Fact p.Prime] (W : ValuationSubring ℂ)
     (hW : (p : ℂ) ∈ W.nonunits) (z : AdmAt O.S O.κ (Fact.out : p.Prime) hW)
     [IsDiscreteValuationRing (z.Z.i.c.V W)] (P : MvPolynomial (Rt D.what₂.Tau O.N) ℚ)
@@ -130,6 +168,9 @@ private theorem geoAll (h2 : GlobalTheory.CovTop.Hypotheses2) {D : D7} (O : Setu
   rw [hf]
   exact geo_prod h2 O p W hW z ν
 
+/- English proof (translation)
+Rewrite using `[NModel.capDeg_vp_eq_sum, Finset.filter_true_of_mem fun C _ => hd C]`. Use `Finset.sum_congr rfl fun C _ => ?_` and prove the remaining obligations. Rewrite using `[NModel.vResQ_toQ, NModel.divP, NModel.vRes_div]`. Conclude with `GlobalTheory.T.capDeg_divP_eq_fibreDeg' O p (Z.comp C) _`.
+-/
 private theorem capDeg_divP_eq_sum {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime]
     [CharZero O] [CharP (ResidueField O) p] (Z : NModel O) (d : ℕ) (hd : ∀ C, (Z.comp C).relDim = d) (Q : PicSym Z.X) :
     Z.capDeg_vp p d (NModel.toQ (Z.divP p)) Q = ∑ C, (Z.comp C).toBase.fibreDeg (picSymPull (Z.compι C) Q) := by
@@ -141,6 +182,19 @@ private theorem capDeg_divP_eq_sum {O : Type} [CommRing O] [IsDomain O] [IsDiscr
 end GlobalTheory.ConsAll
 
 set_option maxHeartbeats 400000 in
+/- English proof (translation)
+Introduce `h2 _ _ _ _ D O _ p _ W hW jc _ z G hG`. Establish `hcomm : Comm (mdlOf z jc)` using `GlobalTheory.T.admissible_model_commutes D O.A O.N O.j O.S O.κ p Fact.out W hW z jc`. Establish `hI : ∀ y ∈ Ideal.span (Set.range (mdlOf z jc).Z.cD), (mdlOf z jc).Z.capDeg (mdlOf z jc).Z.divP y = 0`. Introduce `y hy`. It suffices to establish `h : ∀ a, (mdlOf z jc).Z.capDeg (mdlOf z jc).Z.divP (a * y) = 0 by simpa using h 1`.
+
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨V, rfl⟩` from `hx`. Introduce `a`. Rewrite using `[mul_comm, hcomm, (mdlOf z jc).Z.cD_divP, zero_mul, map_zero]`.
+
+Consider the case `zero => intro a`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro a`. Rewrite using `[mul_add, map_add, hx, hy, add_zero]`. Consider the case `smul b x _ hx => intro a`.
+
+Rewrite using `[smul_eq_mul, ← mul_assoc]`. Conclude with `hx _`. Establish `e1 : (mdlOf z jc).Z.capDeg (mdlOf z jc).Z.divP (evC (mdlOf z jc) (rootOf z jc) G) = (mdlOf z jc).Z.capDeg (mdlOf z jc).Z.divP (aeval (fun x => (mdlOf z jc).Z.c1 (rootOf z jc (false, x))) (GlobalTheory.ConsNumber.collapseQ D O.N G))`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `hI _ (GlobalTheory.T.chern_evaluation_collapse_vertical D O.A O.N O.j O.S O.κ p Fact.out W hW z jc G)`.
+
+Use `haveI := isDiscreteValuationRing_V z.Z.i.c (Fact.out : p.Prime) hW`. Use `haveI := charP_residueField_of_mem_nonunits z.Z.i.c (Fact.out : p.Prime) hW`. Establish `e2 : ∀ Q : (mdlOf z jc).Z.Ch, (mdlOf z jc).Z.capDeg (mdlOf z jc).Z.divP Q = ∑ C, ((nmodel z.Z).comp C).toBase.fibreDeg (picSymPull ((nmodel z.Z).compι C) Q)` using `fun Q => GlobalTheory.ConsAll.capDeg_divP_eq_sum p (nmodel z.Z) _ (RelDim.relDim_comp D O.A O.N O.j O.S O.κ p Fact.out W hW z) Q`. Establish `hcov : (0 : ℝ) < ((mdlOf z jc).cov : ℝ)` using `Nat.cast_pos.2 (mdlOf z jc).cov_pos`. Establish `e3` using `(GlobalTheory.ConsAll.geoAll h2 O p W hW z _ (GlobalTheory.ConsNumber.isHomogeneous_collapseQ D O.N hG)).trans (congrArg (fun Q => (cov z : ℝ) * GlobalTheory.ConsAll.ch O Q) (GlobalTheory.ConsNumber.toR_collapseQ D O.N G))`.
+
+Conclude with `(div_eq_iff hcov.ne').2 ((congrArg (fun a : ℚ => (a : ℝ)) (e1.trans (e2 _))).trans (e3.trans (mul_comm _ _)))`.
+-/
 theorem _root_.GlobalTheory.T.chern_model_root_consistent : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → GlobalTheory.Published.RegularAlteration → GlobalTheory.Published.ScholzeWeinsteinB → GlobalTheory.Published.PrismaticDieudonnePerfd → AtAll fun _ O _ _ _ _ jc z => Cons (mdlOf z jc) (rootOf z jc) O.Y.chern := by
   intro h2 _ _ _ _ D O _ p _ W hW jc _ z G hG
   have hcomm : Comm (mdlOf z jc) := GlobalTheory.T.admissible_model_commutes D O.A O.N O.j O.S O.κ p Fact.out W hW z jc

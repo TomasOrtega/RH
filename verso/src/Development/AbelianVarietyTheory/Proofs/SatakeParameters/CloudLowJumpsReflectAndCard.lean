@@ -5,6 +5,17 @@ open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 
 namespace GlobalTheory.HTW
 
+/- English proof (translation)
+Establish `hnd : (block R).Nodup`. Unfold `block`. Conclude with `(Multiset.nodup_range R.t).map (fun a b h => by exact_mod_cast h)`. Establish `hmem : ∀ x : ℤ, x ∈ block R ↔ 0 ≤ x ∧ x < R.t`. Introduce `x`.
+
+Unfold `block`. Simplify using `only [Multiset.mem_map, Multiset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, rfl⟩`. Conclude with `⟨by positivity, by exact_mod_cast hc⟩`.
+
+Introduce and unpack `⟨h0, h1⟩`. Conclude with `⟨x.toNat, by omega, by omega⟩`. Use `(Multiset.Nodup.ext (hnd.map (fun a b h => by simpa using h)) hnd).2 ?_` and prove the remaining obligations. Introduce `x`. Rewrite using `[Multiset.mem_map, hmem]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Rewrite `hy` using `[hmem]`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨h0, h1⟩`.
+
+Conclude with `⟨(R.t : ℤ) - 1 - x, by rw [hmem]; omega, by ring⟩`.
+-/
 theorem block_map_reflect (R : Ranks) :
     (block R).map (fun u => (R.t : ℤ) - 1 - u) = block R := by
   have hnd : (block R).Nodup := by
@@ -29,6 +40,15 @@ theorem block_map_reflect (R : Ranks) :
     · rintro ⟨h0, h1⟩
       exact ⟨(R.t : ℤ) - 1 - x, by rw [hmem]; omega, by ring⟩
 
+/- English proof (translation)
+Establish `hk : 1 ≤ R.k` using `by have := R.m_add_three_le_k; omega`. Establish `hW : ∀ s, (jW P j s).card = R.r`. Introduce `s`. Establish `h : (cloud P j + lows P j).card = R.r`. Simplify using `only [Multiset.card_add, cloud, lows, Multiset.card_map, Finset.card_val, Finset.card_univ, Fintype.card_fin, Ranks.r]`.
+
+Use linear arithmetic over natural numbers and integers. Consider the cases of `s`. Simplify using `only [jW, Bool.false_eq_true, if_false, Multiset.card_map, h]`. Simplify using `only [jW, if_true, h]`. Use `⟨?_, fun s => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [jR, jW, if_true, Bool.false_eq_true, if_false, Multiset.map_add, block_map_reflect]`. Establish `hR : (jR P j s).card = R.nV`. Simplify using `only [jR, Multiset.card_add, hW s, block, Multiset.card_map, Multiset.card_range, Ranks.nV]`. Use `⟨hW s, hR, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [jT2, Multiset.card_map, hW s]`.
+
+Unfold `jT2 jT1 jR`. Conclude with `Multiset.map_le_map (Multiset.le_add_right _ _)`.
+-/
 theorem jR_symm_card {R : Ranks} (P : HCParam R) (j : Fin R.m) :
     jR P j false = (jR P j true).map (fun u => (R.t : ℤ) - 1 - u) ∧ ∀ s, (jW P j s).card = R.r ∧
       (jR P j s).card = R.nV ∧ (jT2 P j s).card = R.r ∧ jT2 P j s ≤ jT1 P j s := by

@@ -37,6 +37,13 @@ def TransExp {X₁ : GSet} {z₁ : X₁.M.Z} {act : I → (X₁.ρ.P.A ⟶ X₁.
       ((χ (Multiplicative.ofAdd (𝔪.e₈ mu)) : (FractionRing V)ˣ) : FractionRing V) * algebraMap V (FractionRing V) (T mu c) =
         𝔪.yK (algebraMap X₁.o₁ X₁.S.R (X₁.S.ζ ^ e)) * algebraMap V (FractionRing V) (T' mu c')
 
+/- English proof (translation)
+Use `letI : Module R K := Module.compHom K (algebraMap R (FractionRing R))`. Take `⟨N, hN, hs, hx, hlim⟩` from `h`. Use `⟨N, hN, hs, fun j => hx _, fun k => ?_⟩` and prove the remaining obligations. Take `⟨S, hS⟩` from `hlim k`. Use `⟨S.map e.symm.toEmbedding, fun T hT => ?_⟩` and prove the remaining obligations.
+
+Establish `hsub : S ⊆ T.map e.toEmbedding`. Introduce `a ha`. Use `hT (Finset.mem_map_of_mem e.symm.toEmbedding ha)` as an intermediate fact. Conclude with `Finset.mem_map.2 ⟨e.symm a, this, by simp⟩`. Use `hS _ hsub` as an intermediate fact.
+
+Rewrite `this` using `[Finset.sum_map]`. Then use the resulting hypothesis.
+-/
 theorem sumF_comp_equiv {R : Type} [CommRing R] [IsDomain R] {J : Ideal R} {K : Type} [Field K]
     [Algebra (FractionRing R) K] {Ix Jx : Type} {x : Ix → K} {s : K} (e : Jx ≃ Ix) (h : SumF J K x s) :
     SumF J K (fun j => x (e j)) s := by

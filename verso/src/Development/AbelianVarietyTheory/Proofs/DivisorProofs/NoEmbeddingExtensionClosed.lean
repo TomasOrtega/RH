@@ -8,6 +8,11 @@ set_option autoImplicit false
 
 namespace GlobalTheory.FrobFilt
 
+/- English proof (translation)
+Set `G : X.Modules ⥤ Ab` to `Scheme.Modules.toPresheaf X ⋙ (evaluation _ _).obj (Opposite.op W)`. Use `haveI : PreservesLimitsOfSize.{0, 0} ((evaluation (TopologicalSpace.Opens X)ᵒᵖ Ab).obj (Opposite.op W)) := ⟨fun {J} _ => evaluation_preservesLimitsOfShape _⟩`. Use `haveI : PreservesLimits G := comp_preservesLimits _ _`. Use `haveI : PreservesFiniteLimits G := inferInstance`. Use `haveI : G.PreservesZeroMorphisms := inferInstance`.
+
+Use `haveI : Mono S.f := hS.mono_f`. Establish `hM : Mono (G.map S.f)` using `inferInstance`. Establish `hE : (S.map G).Exact` using `hS.exact.map_of_mono_of_preservesKernel G inferInstance inferInstance`. Use `⟨(AddCommGrpCat.mono_iff_injective _).1 hM, ?_⟩` and prove the remaining obligations. Conclude with `(ShortComplex.ab_exact_iff _).1 hE`.
+-/
 theorem sections_leftExact {X : Scheme.{0}} (S : ShortComplex X.Modules) (hS : S.ShortExact)
     (W : X.Opens) : Function.Injective (S.f.app W) ∧
       ∀ x : Γ(S.X₂, W), S.g.app W x = 0 → ∃ a : Γ(S.X₁, W), S.f.app W a = x := by
@@ -23,6 +28,17 @@ theorem sections_leftExact {X : Scheme.{0}} (S : ShortComplex X.Modules) (hS : S
   refine ⟨(AddCommGrpCat.mono_iff_injective _).1 hM, ?_⟩
   exact (ShortComplex.ab_exact_iff _).1 hE
 
+/- English proof (translation)
+Introduce `U V hVU hV`. Set `i : (Opposite.op U : B.X.Opensᵒᵖ) ⟶ Opposite.op V` to `(homOfLE hVU).op`. Establish `natg : ∀ u : Γ(S.X₂, U), S.g.app V ((Scheme.Modules.presheaf S.X₂).map i u) = (Scheme.Modules.presheaf S.X₃).map i (S.g.app U u)` using `fun u => ConcreteCategory.congr_hom (S.g.mapPresheaf.naturality i) u`. Establish `natf : ∀ u : Γ(S.X₁, U), S.f.app V ((Scheme.Modules.presheaf S.X₁).map i u) = (Scheme.Modules.presheaf S.X₂).map i (S.f.app U u)` using `fun u => ConcreteCategory.congr_hom (S.f.mapPresheaf.naturality i) u`. Establish `hU` using `sections_leftExact S hS U`.
+
+Establish `hVi` using `sections_leftExact S hS V`. Use `(injective_iff_map_eq_zero ((Scheme.Modules.presheaf S.X₂).map i).hom).2 ?_` and prove the remaining obligations. Introduce `s hs`. Establish `hs' : (Scheme.Modules.presheaf S.X₂).map i s = 0` using `hs`. Establish `e3 : S.g.app U s = 0`.
+
+Apply `h₃ U V hVU hV` to reduce the goal to its premises. Rewrite using `[← natg, hs']`. Simplify using the standard rewrite rules. Take `⟨a, rfl⟩` from `hU.2 s e3`. Establish `ea : a = 0`.
+
+Apply `h₁ U V hVU hV` to reduce the goal to its premises. Apply `hVi.1` to reduce the goal to its premises. Rewrite using `[natf, hs']`. Simplify using the standard rewrite rules. Substitute `ea` using the available equality.
+
+Simplify using the standard rewrite rules.
+-/
 theorem noEmb_of_shortExact (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (B : GlobalTheory.Vert.Model O) (S : ShortComplex B.X.Modules) (hS : S.ShortExact)
     (h₁ : NoEmb B S.X₁) (h₃ : NoEmb B S.X₃) : NoEmb B S.X₂ := by

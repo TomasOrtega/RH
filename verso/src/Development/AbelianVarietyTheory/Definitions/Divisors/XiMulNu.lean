@@ -33,6 +33,9 @@ open WittVector Ideal Matrix in
 variable (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)]
   [IsAdicComplete (span {(p : O)}) O] in
 variable {p O} in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.Sandwich.xi _root_.GlobalTheory.Sandwich.nu _root_.GlobalTheory.Sandwich.mu`. Rewrite using `[geom_sum_mul, ← map_pow]`. Use `congr 2`. Unfold `_root_.GlobalTheory.Sandwich.root`. Rewrite using `[← frobenius_def, frobenius_apply_frobeniusEquiv_symm]`.
+-/
 theorem _root_.GlobalTheory.Sandwich.xi_mul_nu (ε : PreTilt O p) :
     _root_.GlobalTheory.Sandwich.xi ε * _root_.GlobalTheory.Sandwich.nu ε = _root_.GlobalTheory.Sandwich.mu ε := by
   unfold _root_.GlobalTheory.Sandwich.xi _root_.GlobalTheory.Sandwich.nu _root_.GlobalTheory.Sandwich.mu
@@ -45,6 +48,9 @@ open WittVector Ideal Matrix in
 variable (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)]
   [IsAdicComplete (span {(p : O)}) O] in
 variable {p O} in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.Sandwich.phiInv _root_.GlobalTheory.Sandwich.mu _root_.GlobalTheory.Sandwich.nu`. Rewrite using `[map_sub, map_one, WittVector.map_teichmuller]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.Sandwich.phiInv_mu (ε : PreTilt O p) :
     _root_.GlobalTheory.Sandwich.phiInv p O (_root_.GlobalTheory.Sandwich.mu ε) = _root_.GlobalTheory.Sandwich.nu ε := by
   unfold _root_.GlobalTheory.Sandwich.phiInv _root_.GlobalTheory.Sandwich.mu _root_.GlobalTheory.Sandwich.nu

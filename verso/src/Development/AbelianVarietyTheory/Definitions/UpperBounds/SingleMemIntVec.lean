@@ -13,6 +13,11 @@ open NumberField in
 open scoped ComplexConjugate ComplexOrder Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.herm`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Simplify using `[Matrix.one_apply, Ne.symm hb]`. Simplify using the standard rewrite rules.
+-/
 theorem _root_.GlobalTheory.Up.Definite.herm_one (x y : Fin r → E) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.herm (1 : Matrix (Fin r) (Fin r) E) x y = ∑ a, x a * _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (y a) := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.herm
@@ -27,6 +32,11 @@ open NumberField in
 open scoped ComplexConjugate ComplexOrder Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.Up.Definite.herm_one, map_sum]`. Use `push_cast`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, _root_.ReciprocityTheory.ChartRestriction.G.FD.emb_cc, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.Up.Definite.map_herm_one_self (φ : E →+* ℂ) (x : Fin r → E) :
     φ (_root_.ReciprocityTheory.ChartRestriction.G.FD.herm (1 : Matrix (Fin r) (Fin r) E) x x) = ((∑ a, ‖φ (x a)‖ ^ 2 : ℝ) : ℂ) := by
   rw [_root_.GlobalTheory.Up.Definite.herm_one, map_sum]
@@ -45,6 +55,9 @@ open scoped ComplexConjugate ComplexOrder Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.Up.Definite.intVec, Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.mem_one]`. Use `forall_congr' fun a => ⟨?_, fun h => ⟨⟨x a, h⟩, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Rewrite using `[← hy]`. Conclude with `y.isIntegral_coe`.
+-/
 theorem _root_.GlobalTheory.Up.Definite.mem_intVec (x : Fin r → E) :
     x ∈ _root_.GlobalTheory.Up.Definite.intVec E r ↔ ∀ a, IsIntegral ℤ (x a) := by
   simp only [_root_.GlobalTheory.Up.Definite.intVec, Submodule.mem_pi, Set.mem_univ, true_implies,
@@ -59,6 +72,11 @@ open scoped ComplexConjugate ComplexOrder Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.Up.Definite.mem_intVec]`. Introduce `a`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `using isIntegral_one`.
+
+Simplify `isIntegral_zero` using `[h]`.
+-/
 theorem _root_.GlobalTheory.Up.Definite.single_mem_intVec (b : Fin r) :
     (Pi.single b 1 : Fin r → E) ∈ _root_.GlobalTheory.Up.Definite.intVec E r := by
   rw [_root_.GlobalTheory.Up.Definite.mem_intVec]
@@ -72,6 +90,11 @@ open NumberField in
 open scoped ComplexConjugate ComplexOrder Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [IsCMField E] in
+/- English proof (translation)
+Establish `hT` using `Embeddings.finite_of_norm_le E ℂ B`. Establish `hpi : (Set.univ.pi fun _ : Fin r => Set.univ.pi fun _ : Fin r => {x : E | IsIntegral ℤ x ∧ ∀ φ : E →+* ℂ, ‖φ x‖ ≤ B}).Finite` using `Set.Finite.pi fun _ => Set.Finite.pi fun _ => hT`. Establish `hinj : Function.Injective fun γ : GL (Fin r) E => fun a b => c * (γ : Matrix (Fin r) (Fin r) E) a b`. Introduce `γ δ h`. Use extensionality with `a b`.
+
+Conclude with `mul_left_cancel₀ hc (congrFun (congrFun h a) b)`. Use `(hpi.preimage hinj.injOn).subset fun γ hγ => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_setOf_eq]`. Conclude with `fun a b => hγ a b`.
+-/
 private theorem finite_GL_of_scaled_entries_integral_bounded (c : E) (hc : c ≠ 0) (B : ℝ) :
     {γ : GL (Fin r) E | ∀ a b, IsIntegral ℤ (c * (γ : Matrix (Fin r) (Fin r) E) a b) ∧
       ∀ φ : E →+* ℂ, ‖φ (c * (γ : Matrix (Fin r) (Fin r) E) a b)‖ ≤ B}.Finite := by
@@ -92,6 +115,9 @@ open scoped ComplexConjugate ComplexOrder Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [IsCMField E] in
 
+/- English proof (translation)
+Simplify using `using finite_GL_of_scaled_entries_integral_bounded (r := r) (1 : E) one_ne_zero 1`.
+-/
 theorem _root_.GlobalTheory.Up.Definite.finite_small :
     {γ : GL (Fin r) E | ∀ a b, IsIntegral ℤ ((γ : Matrix (Fin r) (Fin r) E) a b) ∧
       ∀ φ : E →+* ℂ, ‖φ ((γ : Matrix (Fin r) (Fin r) E) a b)‖ ≤ 1}.Finite := by
@@ -174,11 +200,23 @@ noncomputable def data : Data E r where
     ext a b
     simp [transvMat, hξ, Matrix.one_apply]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[gram, hermC, col, Matrix.one_apply, apply_ite, Matrix.mul_apply]`.
+-/
 theorem gram_one (τ : E →+* ℂ) (x : Matrix (Fin r) (Fin r) ℂ) :
     gram τ (1 : Matrix (Fin r) (Fin r) E) x = (x.map conj)ᴴ * x.map conj := by
   ext a b
   simp [gram, hermC, col, Matrix.one_apply, apply_ite, Matrix.mul_apply]
 
+/- English proof (translation)
+Use `⟨fun h τ => (h τ).1, fun h τ => ⟨h τ, fun i => ?_⟩⟩` and prove the remaining obligations. Establish `hp : psgn r i = 1`. Use `Finset.prod_eq_one fun a ha => ?_` and prove the remaining obligations. Use `Finset.mem_range.mp ha` as an intermediate fact. Use `i.isLt` as an intermediate fact.
+
+Conclude with `if_pos (by omega)`. Establish `hd : ((mat x τ).map conj).det ≠ 0`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Simplify using `using h τ`. Establish `hpd : (gram τ.1 (1 : Matrix (Fin r) (Fin r) E) (mat x τ)).PosDef`.
+
+Rewrite using `[gram_one]`. Conclude with `Matrix.PosDef.conjTranspose_mul_self _ (Matrix.mulVec_injective_iff_isUnit.mpr ((Matrix.isUnit_iff_isUnit_det _).mpr hd.isUnit))`. Use `(hpd.submatrix (Fin.castLE_injective (Nat.le_of_lt_succ i.isLt))).det_pos` as an intermediate fact. Express the relevant statement in the definitionally equal form `0 < psgn r i * (lminor (gram τ.1 (1 : Matrix (Fin r) (Fin r) E) (mat x τ)) i).re`. Rewrite using `[hp, one_mul]`.
+
+Conclude with `(Complex.lt_def.mp this).1`.
+-/
 theorem mem_dom (x : Frame (data E r).Ψ r) : x ∈ (data E r).dom ↔ ∀ τ, (mat x τ).det ≠ 0 := by
   refine ⟨fun h τ => (h τ).1, fun h τ => ⟨h τ, fun i => ?_⟩⟩
   have hp : psgn r i = 1 := by
@@ -200,11 +238,19 @@ theorem mem_dom (x : Frame (data E r).Ψ r) : x ∈ (data E r).dom ↔ ∀ τ, (
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Simplify using `only [lact, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`. Both sides reduce to the same expression.
+-/
 theorem lact_one {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ r) : lact 1 x = x := by
   funext τ
   simp only [lact, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]
   rfl
 
+/- English proof (translation)
+Establish `hc : Fintype.card (E →+* ℂ) = 2` using `by rw [Embeddings.card, h]`. Establish `hb : X.Ψ.card = X.Ψᶜ.card`. Use `Finset.card_bij (fun τ _ => ComplexEmbedding.conjugate τ) (fun τ hτ => Finset.mem_compl.mpr ((X.cmType τ).mp hτ)) (fun _ _ _ _ h => star_injective h) fun τ hτ => ⟨ComplexEmbedding.conjugate τ, (X.cmType _).mpr ?_, star_star τ⟩` and prove the remaining obligations. Rewrite using `[show ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ from star_star τ]`. Conclude with `Finset.mem_compl.mp hτ`.
+
+Use `X.Ψ.card_add_card_compl` as an intermediate fact. Rewrite using `[Fintype.card_coe]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_cmType (X : Data E r) (h : Module.finrank ℚ E = 2) : Fintype.card X.Ψ = 1 := by
   classical
   have hc : Fintype.card (E →+* ℂ) = 2 := by rw [Embeddings.card, h]

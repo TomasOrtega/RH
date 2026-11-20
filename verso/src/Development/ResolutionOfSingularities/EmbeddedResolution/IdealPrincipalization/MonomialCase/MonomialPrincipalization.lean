@@ -25,6 +25,9 @@ def intersectionIdeal (L : List Y.IdealSheafData) (J : Finset (Fin L.length)) : 
   ⨆ j ∈ J, L.get j
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem intersectionIdeal_eq_iSup (L : List Y.IdealSheafData) (J : Finset (Fin L.length)) :
     intersectionIdeal L J = ⨆ j ∈ J, L.get j := rfl
 
@@ -115,9 +118,15 @@ def monomialBlowupIterate (hinv : ComapIsoInvariance.{u}) (d : MarkedBlowupSeque
   | 0 => d
   | (n + 1) => blowupAtCenter hinv (monomialBlowupIterate hinv d n)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem monomialBlowupIterate_zero (hinv : ComapIsoInvariance.{u}) (d : MarkedBlowupSequenceData p I m E) :
     monomialBlowupIterate hinv d 0 = d := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem monomialBlowupIterate_succ (hinv : ComapIsoInvariance.{u}) (d : MarkedBlowupSequenceData p I m E) (n : ℕ) :
     monomialBlowupIterate hinv d (n + 1) = blowupAtCenter hinv (monomialBlowupIterate hinv d n) := rfl
 
@@ -142,6 +151,9 @@ end
 def monomialPrincipalization (hinv : ComapIsoInvariance.{u}) : PrincipalizationAssignment.{u} :=
   fun T => (monomialBlowupSeq hinv T.structMap T.ideal T.mult T.boundary).toMarkedSequenceOfBlowups
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem monomialPrincipalization_apply (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u}) :
     monomialPrincipalization hinv T =
       (monomialBlowupSeq hinv T.structMap T.ideal T.mult T.boundary).toMarkedSequenceOfBlowups := rfl

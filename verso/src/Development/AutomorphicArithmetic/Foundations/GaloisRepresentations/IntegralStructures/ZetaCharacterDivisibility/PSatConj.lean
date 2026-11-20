@@ -12,6 +12,19 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.PRep Formalism.UG GlobalTheory.DefU
 open UpperTheory.Gal.Int.Div
 
+/- English proof (translation)
+Introduce `hL E _ _ _ a U hU w hw ⟨B, σ, ⟨hirr, f, hf0, hfU, hfe⟩, hB⟩`. Take `⟨hloc, β, hβ, hK, -⟩` from `hL E a w hw`. Take `⟨e, he⟩` from `GlobalTheory.locU_equiv_GL E a w hw`. Establish `hpe : ∀ g, cLoc w ((e.symm g : locU a w) : UA E a) = g` using `fun g => by`. Rewrite using `[← he, e.apply_symm_apply]`.
+
+Take `⟨x, hx⟩` from `hB.exists_vec`. Establish `hker : LinearMap.ker f = ⊥` using `((GlobalTheory.CuspRep.isIrreducible_iff σ.ρ).1 hirr).2 _ (fun g v hv => by`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Establish `h1` using `hfe (e.symm g) v`. Rewrite `h1` using `[MonoidHom.comp_apply, Subgroup.subtype_apply, hpe]`.
+
+Rewrite using `[h1, hv, map_zero]) |>.resolve_right fun h => hf0 (LinearMap.ker_eq_top.1 h)`. Establish `h0 : f x ≠ 0` using `(map_ne_zero_iff f (LinearMap.ker_eq_bot.1 hker)).2 hx.1`. Take `⟨hne, hund, -⟩` from `GlobalTheory.SplitPts.over_split hw`. Establish `hs : IsSplitAt (cpl w)` using `⟨w, hne.symm, hund.symm⟩`. Establish `hfix : ∀ y ∈ locU a (cpl w), cLoc (cpl w) y ∈ GlobalTheory.LFun.KGL (cpl w) a → RU E a y (f x) = f x`.
+
+Introduce `y hy hk`. Establish `hy' : y ∈ locU a w` using `hloc ▸ hy`. Establish `hk' : cLoc w y ∈ GlobalTheory.LFun.KGL w a`. Rewrite using `[← hβ y]`. Conclude with `hK _ hk`.
+
+Establish `h2` using `GlobalTheory.LGrp.mem_fixed.1 hx.2.1 _ hk'`. Establish `h1` using `hfe ⟨y, hy'⟩ x`. Express the relevant statement in the definitionally equal form `f (σ.ρ (cLoc w y) x) = RU E a y (f x) at h1`. Rewrite `h1` using `[h2]`. Conclude with `h1.symm`.
+
+Take `⟨σ', S, hc, hS, -⟩` from `GlobalTheory.FrameAut.exists_locComp_hasSatGL_heckeVec E a U hU (cpl w) hs (f x) (hfU x) h0 hfix`. Conclude with `⟨S, σ', hc, hS⟩`.
+-/
 theorem UpperTheory.Gal.Int.Div.satConj_of :
     LocIso → SatConj := by
   intro hL E _ _ _ a U hU w hw ⟨B, σ, ⟨hirr, f, hf0, hfU, hfe⟩, hB⟩

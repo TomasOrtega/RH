@@ -8,6 +8,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Bl
 
+/- English proof (translation)
+Introduce `hC Ω _ _ _ l _ S c s B hP A _ _ _ _ T _ _ _ _ ρ P K hA hl hL hs hc hK hU`. Establish `hcard` using `cardP A T P hL.sat hL.ne`. Establish `hfin : ∀ n, Finite (T ⧸ lev A T n)` using `fun n => (hcard n).1`. Establish `htor : ∀ n, ∀ m : T ⧸ lev A T n, (l ^ n) • m = 0`. Introduce `n m`.
+
+Take `⟨x, rfl⟩` from `(lev A T n).mkQ_surjective m`. Rewrite using `[← map_nsmul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, ← Nat.cast_smul_eq_nsmul A, Nat.cast_pow]`. Conclude with `Submodule.smul_mem_smul (Ideal.pow_mem_pow hl n) Submodule.mem_top`. Establish `hlc : ∀ n, ∀ m : T ⧸ lev A T n, IsLocallyConstant fun g => modRep ρ n g m`. Introduce `n m`.
+
+Take `⟨x, rfl⟩` from `(lev A T n).mkQ_surjective m`. Conclude with `hL.cont n x`. Establish `hker : ∀ n, K ≤ (modRep ρ n).ker`. Introduce `n g hg`. Establish `h1 : ρ g = 1` using `hK hg`.
+
+Use `LinearMap.ext fun m => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(lev A T n).mkQ_surjective m`. Rewrite using `[modRep_mk, h1]`. Both sides reduce to the same expression. Establish `hneg : ∀ n, ∀ m : T ⧸ lev A T n, modRep ρ n c m = -m`.
+
+Introduce `n m`. Take `⟨x, rfl⟩` from `(lev A T n).mkQ_surjective m`. Rewrite using `[modRep_mk, hc, map_neg]`. Establish `hbij : ∀ n, Function.Bijective fun m : T ⧸ lev A T n => modRep ρ n s m - m`. Introduce `n`.
+
+Use `haveI := hfin n`. Use `Finite.surjective_iff_bijective.1 fun m => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(lev A T n).mkQ_surjective m`. Take `⟨y, rfl⟩` from `hs.2 x`. Conclude with `⟨(lev A T n).mkQ y, by simp only [modRep_mk, map_sub]⟩`.
+
+Establish `hstab : ∀ n, ∀ h ∈ Dec (F` using `ℚ) B, ∀ x ∈ P.map (lev A T n).mkQ, modRep ρ n h x ∈ P.map (lev A T n).mkQ := by`. Introduce and unpack `n h hh _ ⟨x, hx, rfl⟩`. Conclude with `⟨ρ h x, hL.stab h hh x hx, rfl⟩`. Establish `hZ : ∀ n, (Zn ρ c (neSet l K) (Dec (F` using `ℚ) B) P n).Finite := fun n => by haveI := hfin n`. Conclude with `zcFin hC.gf S c s B hP A _ (modRep ρ n) n (htor n) (hlc n) K (hker n) hU _`.
+
+Establish `hge : ∀ n, n ≤ Nat.card (Zn ρ c (neSet l K) (Dec (F` using `ℚ) B) P n) := fun n => by haveI := hfin n`. Conclude with `(hcard n).2.trans (gwCount hC S c s B hP A _ (modRep ρ n) n (htor n) (hlc n) K (hker n) hU (hneg n) (hbij n) _ (hstab n))`. Take `⟨z, y, h1, h2, h3, h4⟩` from `compat A T _ ρ c _ _ P hfin hZ (primEx A T _ ρ c _ _ P hL hZ hge)`. Conclude with `limit A T _ ρ c _ _ P hA z y h1 h2 h3 h4`.
+-/
 theorem UpperTheory.V.Ws.Bl.cocT :
     CohomologyHyp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] (S : Finset ℕ) (c s : G ℚ Ω) (B : ValuationSubring Ω), Pos l S c s B → ∀ (A : Type) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] [Finite (ResidueField A)] (T : Type) [AddCommGroup T] [Module A T] [Module.Finite A T] [Module.Free A T] (ρ : Representation A (G ℚ Ω) T) (P : Submodule A T) (K : Subgroup (G ℚ Ω)),
           IsAdicComplete (maximalIdeal A) A → (l : A) ∈ maximalIdeal A → Lat ρ (Dec (F := ℚ) B) P → (Function.Bijective fun x => ρ s x - x) → (∀ x, ρ c x = -x) → K ≤ ρ.ker → (∀ A', Raw.Away S A' → Ine (F := ℚ) A' ≤ K) →

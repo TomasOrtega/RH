@@ -14,6 +14,45 @@ open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `hH hP hK hLM D ψ θ hψ hθ A A' WW FA FA' FW a b had hsA hsA' hsW hex Pr q q' hq hq' hfac`. Take `⟨α, β, hT, hE⟩` from `hex`. Take `⟨⟨ωA, ωB, Pi, rf, rl, p, p', hm⟩, hfac2⟩` from `hfac α β hT hE`. Take `⟨Pf, r, r', e, hr, hr', hpA, hpB⟩` from `hfac2 _ _ _ _ _ _ _ hm`. Establish `hPi : Nontrivial Pi` using `hm.irred.1`.
+
+Establish `hall : ¬ ∀ z : Pr ⊗[ℂ] Pf, z = 0`. Introduce `h`. Take `⟨z, hz⟩` from `exists_ne (0 : Pi)`. Conclude with `hz (by rw [← e.apply_symm_apply z, h (e.symm z), map_zero])`. Establish `hPr : Nontrivial Pr`.
+
+Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_nontrivial_iff_subsingleton]`. Conclude with `hall fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rfl`.
+
+Consider the case `tmul x y => rw [Subsingleton.elim x 0, TensorProduct.zero_tmul]`. Consider the case `add u v hu hv => rw [hu, hv, add_zero]`. Establish `hPf : Nontrivial Pf`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_nontrivial_iff_subsingleton]`.
+
+Conclude with `hall fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rfl`. Consider the case `tmul x y => rw [Subsingleton.elim y 0, TensorProduct.tmul_zero]`. Consider the case `add u v hu hv => rw [hu, hv, add_zero]`.
+
+Take `⟨y, hy⟩` from `exists_ne (0 : Pf)`. Take `⟨f, hf, hfy⟩` from `hr y`. Take `⟨f', hf', hfy'⟩` from `hr' y`. Establish `hf0 : f ≠ 0` using `by rintro rfl; exact hy (by rw [← hfy, map_zero])`. Establish `canc : ∀ x x' : Pr, e (x ⊗ₜ y) = e (x' ⊗ₜ y) → x = x'`.
+
+Introduce `x x' h`. Assume the negation of the conclusion as `hne`. Establish `h2 : (x - x') ⊗ₜ[ℂ] y = 0`. Rewrite using `[TensorProduct.sub_tmul]`. Conclude with `sub_eq_zero.2 (e.injective h)`.
+
+Conclude with `GlobalTheory.RealQuotBot.tmul_ne_zero (sub_ne_zero.2 hne) hy h2`. Establish `sA` using `fun τ => GlobalTheory.T.diagonalHermitianFrame_signs_pos_of_definite D A FA τ (hsA τ)`. Establish `sA'` using `fun τ => GlobalTheory.T.diagonalHermitianFrame_signs_pos_of_definite D A' FA' τ (hsA' τ)`. Establish `sW` using `fun τ => GlobalTheory.T.diagonalHermitianFrame_signs_pos_of_definite D WW FW τ (hsW τ)`. Take `⟨hTA, hcoA, -⟩` from `GlobalTheory.RealQuot.oriented_maps D ψ θ hθ true A WW FA FW β (β / α) ωA b (fun τ => b τ - a τ) hm.weilA (fun τ => ⟨(hE τ).2, GlobalTheory.RealQuot.hasInfExp_div D α β τ (a τ) (b τ) (hE τ).1 (hE τ).2⟩) Pi rf rl p hm.mapA`.
+
+Take `⟨hTB, hcoB, -⟩` from `GlobalTheory.RealQuot.oriented_maps D ψ θ hθ false A' WW FA' FW α (α / β) ωB a (fun τ => a τ - b τ) hm.weilB (fun τ => ⟨(hE τ).1, GlobalTheory.RealQuot.hasInfExp_div D β α τ (b τ) (a τ) (hE τ).2 (hE τ).1⟩) Pi rf rl p' hm.mapB`. Take `⟨n₀, hn₀⟩` from `GlobalTheory.T.definiteBottomTriple_weight_natural D ψ θ A A' WW FA FW a b α β ωA hθ hsA hsW hT hE hm.weilA ⟨f, hf, hf0⟩`. Establish `kA : GlobalTheory.RealQuot.coinv true FA FW (fun τ => b τ - a τ) ≤ LinearMap.ker q`. Introduce `P hP`. Establish `h` using `hcoA f hf P hP`.
+
+Rewrite `h` using `[hpA f hf P, hfy]`. Rewrite using `[LinearMap.mem_ker]`. Use `canc _ _ ?_` and prove the remaining obligations. Rewrite using `[h, TensorProduct.zero_tmul, map_zero]`. Establish `kB : GlobalTheory.RealQuot.coinv false FA' FW (fun τ => a τ - b τ) ≤ LinearMap.ker q'`.
+
+Introduce `P hP`. Establish `h` using `hcoB f' hf' P hP`. Rewrite `h` using `[hpB f' hf' P, hfy']`. Rewrite using `[LinearMap.mem_ker]`. Use `canc _ _ ?_` and prove the remaining obligations.
+
+Rewrite using `[h, TensorProduct.zero_tmul, map_zero]`. Establish `hrel : ∀ P P', q P = q' P' → ∀ τ, ∀ Y ∈ lieAt WW τ, q (GlobalTheory.RealQuot.actT true FA FW b τ Y P) = q' (GlobalTheory.RealQuot.actT false FA' FW a τ Y P')`. Introduce `P P' hPP τ Y hY`. Establish `h1` using `hTA f hf τ Y hY P`. Establish `h2` using `hTB f' hf' τ Y hY P'`.
+
+Rewrite `h1` using `[hpA f hf, hpA f hf, hfy]`. Rewrite `h2` using `[hpB f' hf', hpB f' hf', hfy']`. Use `canc _ _ ?_` and prove the remaining obligations. Rewrite using `[h1, h2, hPP]`. Establish `hrow` using `GlobalTheory.T.definite_bottom_row_transport_contragredient D A A' WW FA FA' FW b a n₀ Pr q q' sA sA' sW (fun τ => by`.
+
+Establish `hc : ((A.rank : ℚ) + (A'.rank : ℚ)) = (WW.rank : ℚ)` using `by exact_mod_cast had`. Rewrite using `[hn₀ τ, hc]) hrel`. Establish `hdet : ∀ κ : D.what₂.Tau → Matrix.unitaryGroup (Fin WW.rank) ℂ, GlobalTheory.MinorFrame.detChar n₀ (fun τ => (κ τ : Matrix (Fin WW.rank) (Fin WW.rank) ℂ)) ≠ 0`. Introduce `κ`. Unfold `GlobalTheory.MinorFrame.detChar`.
+
+Conclude with `Finset.prod_ne_zero_iff.2 fun τ _ => pow_ne_zero _ (GlobalTheory.RealQuotBot.det_unitary_ne_zero (κ τ))`. Set `σ : (D.what₂.Tau → Matrix (Fin WW.rank) (Fin WW.rank) ℂ) → Module.End ℂ Pr` to `fun κ => if h : LinearMap.ker q ≤ LinearMap.ker (q ∘ₗ (GlobalTheory.MinorFrame.rowSub (fun τ => (κ τ).map (starRingEnd ℂ))).toLinearMap) then (LinearMap.ker q).liftQ _ h ∘ₗ (q.quotKerEquivOfSurjective hq).symm.toLinearMap else 0`. Establish `hσ : ∀ (κ : D.what₂.Tau → Matrix.unitaryGroup (Fin WW.rank) ℂ) P, σ (fun τ => (κ τ : Matrix (Fin WW.rank) (Fin WW.rank) ℂ)) (q P) = q (GlobalTheory.MinorFrame.rowSub (fun τ => (κ τ : Matrix (Fin WW.rank) (Fin WW.rank) ℂ).map (starRingEnd ℂ)) P)`. Introduce `κ P`. Establish `hk : LinearMap.ker q ≤ LinearMap.ker (q ∘ₗ (GlobalTheory.MinorFrame.rowSub (fun τ => (κ τ : Matrix (Fin WW.rank) (Fin WW.rank) ℂ).map (starRingEnd ℂ))).toLinearMap)`.
+
+Introduce `P₀ hP₀`. Rewrite `hP₀`, the goal using `[LinearMap.mem_ker]`. Establish `h` using `hrow κ P₀ 0 (by rw [hP₀, map_zero])`. Rewrite `h` using `[map_zero, map_zero]`. Conclude with `(smul_eq_zero.1 h.symm).resolve_left (hdet κ)`.
+
+Establish `e1 : (q.quotKerEquivOfSurjective hq).symm (q P) = Submodule.Quotient.mk P`. Rewrite using `[LinearEquiv.symm_apply_eq, LinearMap.quotKerEquivOfSurjective_apply_mk]`. Simplify using `only [σ, dif_pos hk, LinearMap.comp_apply, LinearEquiv.coe_coe, e1, Submodule.liftQ_apply, AlgHom.toLinearMap_apply]`. Use `⟨hPr, n₀, σ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.columnSubstitution_unitary_of_kills_lieCoinvariants D true A WW FA FW (fun τ => b τ - a τ) n₀ Pr q sA sW (fun τ => by simp only [if_true]; exact hn₀ τ) kA`.
+
+Conclude with `GlobalTheory.T.columnSubstitution_unitary_of_kills_lieCoinvariants D false A' WW FA' FW (fun τ => a τ - b τ) n₀ Pr q' sA' sW (fun τ => by simp only [Bool.false_eq_true, if_false]; rw [hn₀ τ]; ring) kB`. Introduce `κ P _`. Rewrite using `[hσ]`. Introduce `κ P' _`. Take `⟨P, hP⟩` from `hq (q' P')`.
+
+Rewrite using `[hrow κ P P' hP, ← hP, hσ]`.
+-/
 theorem GlobalTheory.RealQuotBot.real_quotient_invariants_equiv : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
   ∀ (A A' WW : HSp D) (FA : GlobalTheory.ChainFr.Fr A) (FA' : GlobalTheory.ChainFr.Fr A') (FW : GlobalTheory.ChainFr.Fr WW) (a b : D.what₂.Tau → ℚ)
@@ -159,6 +198,9 @@ open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.RealQuotBot.real_quotient_invariants_equiv | exact _root_.GlobalTheory.RealQuotBot.real_quotient_invariants_equiv | (intros; apply _root_.GlobalTheory.RealQuotBot.real_quotient_invariants_equiv <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.real_quotient_bottom_invariants_equiv : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
   ∀ (A A' WW : HSp D) (FA : GlobalTheory.ChainFr.Fr A) (FA' : GlobalTheory.ChainFr.Fr A') (FW : GlobalTheory.ChainFr.Fr WW) (a b : D.what₂.Tau → ℚ)

@@ -8,14 +8,45 @@ namespace GlobalTheory.RootExchangeFixed
 section alg
 variable {k : Type} [Field k] {n : Type} [Fintype n] [DecidableEq n] {c p : ℕ}
 
+/- English proof (translation)
+Use `ext1`. Simplify using `[lowU, fromBlocks_multiply]`.
+-/
 theorem lowU_neg_mul (C : Matrix (Fin c) n k) : lowU (-C) * lowU C = 1 := by
   ext1
   simp [lowU, fromBlocks_multiply]
 
+/- English proof (translation)
+Simplify using `[lowU, upU, fromBlocks_multiply, h, Matrix.add_mul, Matrix.mul_assoc]`.
+-/
 theorem conj_val (C : Matrix (Fin c) n k) (B : Matrix n (Fin c) k) (h : B * C = 0) :
     (lowU C * upU B * lowU (-C)).val = fromBlocks 1 B 0 (C * B + 1) := by
   simp [lowU, upU, fromBlocks_multiply, h, Matrix.add_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Use `set C : Matrix (Fin c) n k := Matrix.of fun l s => if l.val + 1 = p then u s else 0 with hC`. Use `set B : Matrix n (Fin c) k := Matrix.of fun r i => if i.val + 1 = p + 1 then β r else 0 with hB`. Establish `hBC : B * C = 0`. Use extensionality with `r s`. Simplify using `only [hB, hC, Matrix.mul_apply, Matrix.of_apply, Matrix.zero_apply]`.
+
+Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with a b`. Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `all_goals simp`. Establish `hCB : ∀ l i, (C * B) l i = if l.val + 1 = p ∧ i.val = p then ∑ r, u r * β r else 0`.
+
+Introduce `l i`. Simplify using `only [hB, hC, Matrix.mul_apply, Matrix.of_apply]`. Apply the tactic sequence `by_cases a : l.val + 1 = p <;> by_cases b : i.val = p <;> simp [a, b]`. Establish `hv` using `conj_val C B hBC`. Use `⟨lowU C * upU B * lowU (-C), Subgroup.subset_closure ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `r s hrs`. Rewrite using `[hv]`. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s`. Simplify using `[Matrix.one_apply]`. Simplify using `only [lev, Sum.elim_inl, Sum.elim_inr] at hrs`.
+
+Simplify using `only [fromBlocks_apply₁₂, hB, Matrix.of_apply]`. Rewrite using `[if_neg (by omega)]; simp`. Simplify using the standard rewrite rules. Simplify using `only [lev, Sum.elim_inr] at hrs`. Simplify using `only [fromBlocks_apply₂₂, Matrix.add_apply, hCB]`.
+
+Rewrite using `[if_neg (by omega)]; simp [Matrix.one_apply]`. Unfold `simpleSum`. Rewrite using `[hv]`. Simplify using `only [fromBlocks_apply₂₂, Matrix.add_apply, hCB]`. Rewrite using `[Finset.sum_eq_single (⟨p - 1, by omega⟩ : Fin c), Finset.sum_eq_single (⟨p, hc⟩ : Fin c)]`.
+
+Rewrite using `[if_pos (by simp; omega), if_pos (by simp; omega), Matrix.one_apply_ne, add_zero]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `j _ hj`. Rewrite using `[if_neg]`. Introduce `h`. Apply `hj` to reduce the goal to its premises. Use `ext`.
+
+Simplify using `at h ⊢`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Introduce `i _ hi`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs with a b`. It suffices to derive a contradiction. Apply `hi` to reduce the goal to its premises. Use `ext`. Simplify using the standard rewrite rules.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[Matrix.one_apply_ne, add_zero]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Use `show lowU C * upU B = _ * lowU C`. Rewrite using `[mul_assoc, lowU_neg_mul, mul_one]`.
+-/
 theorem exists_conj (h1 : 1 ≤ p) (hc : p < c) (u β : n → k) :
     ∃ g ∈ N k n c p, simpleSum g = ∑ r, u r * β r ∧
       rowE c p u * colE c (p + 1) β = g * rowE c p u := by
@@ -80,6 +111,11 @@ end alg
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Set `C' : Matrix (Fin c) n 𝒪[k]` to `Matrix.of fun l s => ⟨C l s, h l s⟩`. Use `⟨⟨fromBlocks 1 0 C' 1, fromBlocks 1 0 (-C') 1, by simp [fromBlocks_multiply], by simp [fromBlocks_multiply]⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `r s`. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s <;>`. Simplify using `[lowU, C', Matrix.one_apply, apply_ite (algebraMap 𝒪[k] k)]`.
+
+Apply the tactic sequence `all_goals first | rfl | (split_ifs <;> simp)`.
+-/
 theorem lowU_mem_KO {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} (C : Matrix (Fin c) n k)
     (h : ∀ l s, valuation k (C l s) ≤ 1) : lowU C ∈ KO k (n ⊕ Fin c) := by
   let C' : Matrix (Fin c) n 𝒪[k] := Matrix.of fun l s => ⟨C l s, h l s⟩
@@ -90,6 +126,11 @@ theorem lowU_mem_KO {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} (C : Matrix
     simp [lowU, C', Matrix.one_apply, apply_ite (algebraMap 𝒪[k] k)]
   all_goals first | rfl | (split_ifs <;> simp)
 
+/- English proof (translation)
+Set `C' : Matrix n (Fin c) 𝒪[k]` to `Matrix.of fun l s => ⟨C l s, h l s⟩`. Use `⟨⟨fromBlocks 1 C' 0 1, fromBlocks 1 (-C') 0 1, by simp [fromBlocks_multiply], by simp [fromBlocks_multiply]⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `r s`. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s <;>`. Simplify using `[upU, C', Matrix.one_apply, apply_ite (algebraMap 𝒪[k] k)]`.
+
+Apply the tactic sequence `all_goals first | rfl | (split_ifs <;> simp)`.
+-/
 theorem upU_mem_KO {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} (C : Matrix n (Fin c) k)
     (h : ∀ l s, valuation k (C l s) ≤ 1) : upU C ∈ KO k (n ⊕ Fin c) := by
   let C' : Matrix n (Fin c) 𝒪[k] := Matrix.of fun l s => ⟨C l s, h l s⟩
@@ -100,6 +141,11 @@ theorem upU_mem_KO {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} (C : Matrix 
     simp [upU, C', Matrix.one_apply, apply_ite (algebraMap 𝒪[k] k)]
   all_goals first | rfl | (split_ifs <;> simp)
 
+/- English proof (translation)
+Set `_` to `IsTopologicalAddGroup.rightUniformSpace k`. Use `isUniformAddGroup_of_addCommGroup (G := k)` as an intermediate fact. Set `_ : (Valued.v (R` to `k)).RankOne :=`. Use the proof step `{ hom' := IsRankLeOne.nonempty.some.emb (R := k).comp MonoidWithZeroHom.ValueGroup₀.embedding strictMono' := IsRankLeOne.nonempty.some.strictMono.comp MonoidWithZeroHom.ValueGroup₀.embedding_strictMono }`. Use `open scoped Valued in`.
+
+Establish `: ProperSpace k` using `.of_nontriviallyNormedField_of_weaklyLocallyCompactSpace k`. Use `open scoped Valued in`. Conclude with `⟨secondCountable_of_proper, inferInstance⟩`.
+-/
 theorem nonarchimedeanLocalField_secondCountable_t2Space : SecondCountableTopology k ∧ T2Space k := by
   let _ := IsTopologicalAddGroup.rightUniformSpace k
   have := isUniformAddGroup_of_addCommGroup (G := k)
@@ -112,6 +158,21 @@ theorem nonarchimedeanLocalField_secondCountable_t2Space : SecondCountableTopolo
   open scoped Valued in
   exact ⟨secondCountable_of_proper, inferInstance⟩
 
+/- English proof (translation)
+Establish `hs : 0 < valuation k (s : k)` using `by simp [pos_iff_ne_zero]`. Establish `hu : 0 < valuation k (u r)` using `hs.trans (not_le.1 hr)`. Establish `hu0 : u r ≠ 0` using `by rintro h; simp [h] at hu`. Establish `hx : ¬ valuation k (u r / s) ≤ valuation k ((1 : kˣ) : k)`. Rewrite using `[map_div₀, div_le_iff₀ hs]`.
+
+Simplify using `using hr`. Rewrite `hx` using `[← hψ]`. Use `push Not at hx`. Take `⟨y, hy, hy1⟩` from `hx`. Take `⟨g, hg, hsum, hmul⟩` from `exists_conj h1 hc u (Pi.single r (y / u r))`.
+
+Establish `hfix` using `hβ (Pi.single r (y / u r)) (by`. Introduce `t`. Distinguish the cases in `ht : t = r`. Substitute `ht` using the available equality. Rewrite `hy` using `[map_div₀, le_div_iff₀ hs]`.
+
+Rewrite using `[Pi.single_eq_same, map_mul, map_div₀, div_mul_eq_mul_div, div_le_iff₀ hu, one_mul]`. Conclude with `hy`. Simplify using `[Pi.single_eq_of_ne ht])`. Establish `hy' : simpleSum g = y`. Rewrite using `[hsum, Finset.sum_eq_single r]`.
+
+Simplify using `only [Pi.single_eq_same]`. Clear the denominators using the available nonvanishing facts. Introduce `t _ ht`. Simplify using `[Pi.single_eq_of_ne ht]`. Simplify using the standard rewrite rules.
+
+Establish `key : l (σ (rowE c p u) v) = (ψ y : ℂ) * l (σ (rowE c p u) v)` using `by conv_lhs => rw [← hfix]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hmul, map_mul, Module.End.mul_apply, hl g hg, hy']`. Assume the negation of the conclusion as `hne`. Apply `hy1` to reduce the goal to its premises. Establish `: (ψ y : ℂ) = 1`.
+
+Establish `h2 : (ψ y : ℂ) * l (σ (rowE c p u) v) = 1 * l (σ (rowE c p u) v)`. Rewrite using `[one_mul]`. Conclude with `key.symm`. Conclude with `mul_right_cancel₀ hne h2`. Conclude with `Circle.ext (by simpa using this)`.
+-/
 theorem vanish {n : Type} [Fintype n] [DecidableEq n] {c p : ℕ} (h1 : 1 ≤ p) (hc : p < c)
     {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) {A : Type} [AddCommGroup A] [Module ℂ A]
     (σ : Representation ℂ (GL (n ⊕ Fin c) k) A) (l : A →ₗ[ℂ] ℂ) (hl : IsNEquiv ψ p σ l) (v : A)
@@ -153,6 +214,11 @@ theorem vanish {n : Type} [Fintype n] [DecidableEq n] {c p : ℕ} (h1 : 1 ≤ p)
 
 variable [MeasurableSpace k] [BorelSpace k]
 
+/- English proof (translation)
+Establish `hs : 0 < valuation k (s : k)` using `by simp [pos_iff_ne_zero]`. Use extensionality with `x`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem]`. Use `show _ ↔ valuation k (((s⁻¹ : kˣ) : k) * x) ≤ 1`. Rewrite using `[map_mul, Units.val_inv_eq_inv_val, map_inv₀, inv_mul_le_iff₀ hs, mul_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem ball_eq (s : kˣ) : {x : k | valuation k x ≤ valuation k (s : k)} = s • (𝒪[k] : Set k) := by
   have hs : 0 < valuation k (s : k) := by simp [pos_iff_ne_zero]
   ext x
@@ -161,11 +227,17 @@ theorem ball_eq (s : kˣ) : {x : k | valuation k x ≤ valuation k (s : k)} = s 
   rw [map_mul, Units.val_inv_eq_inv_val, map_inv₀, inv_mul_le_iff₀ hs, mul_one]
   rfl
 
+/- English proof (translation)
+Rewrite using `[ball_eq]`. Use `(IsOpen.smul ?_ s).measurableSet` and prove the remaining obligations. Conclude with `Valuation.isOpen_integer`.
+-/
 theorem meas_ball (s : kˣ) : MeasurableSet {x : k | valuation k x ≤ valuation k (s : k)} := by
   rw [ball_eq]
   refine (IsOpen.smul ?_ s).measurableSet
   exact Valuation.isOpen_integer
 
+/- English proof (translation)
+Use `haveI := hν.1`. Take `⟨_, _⟩` from `nonarchimedeanLocalField_secondCountable_t2Space (k := k)`. Rewrite using `[ball_eq, ← distribHaarChar_mul ν s, hν.2, nabs]`. Simplify using the standard rewrite rules.
+-/
 theorem vol_ball (ν : Measure k) (hν : IsUnitVol ν) (s : kˣ) :
     ν {x : k | valuation k x ≤ valuation k (s : k)} = ENNReal.ofReal (nabs k s) := by
   haveI := hν.1
@@ -173,6 +245,15 @@ theorem vol_ball (ν : Measure k) (hν : IsUnitVol ν) (s : kˣ) :
   rw [ball_eq, ← distribHaarChar_mul ν s, hν.2, nabs]
   simp
 
+/- English proof (translation)
+Use `haveI := hν.1`. Take `⟨_, _⟩` from `nonarchimedeanLocalField_secondCountable_t2Space (k := k)`. Set `S : Set (n → k)` to `Set.univ.pi fun _ => {x : k | valuation k x ≤ valuation k (s : k)}`. Establish `hS : MeasurableSet S` using `MeasurableSet.univ_pi fun _ => meas_ball s`. Establish `hf : (fun u : n → k => l (σ (rowE c p u) v)) = S.indicator fun _ => l v`.
+
+Use function extensionality and compare the values at `u`. Distinguish the cases in `h : u ∈ S`. Rewrite using `[Set.indicator_of_mem h, hu u fun r => h r trivial]`. Rewrite using `[Set.indicator_of_notMem h]`. Simplify using `only [S, Set.mem_pi, Set.mem_univ, true_imp_iff, not_forall] at h`.
+
+Take `⟨r, hr⟩` from `h`. Conclude with `vanish h1 hc hψ σ l hl v s hβ u r hr`. Establish `hn : 0 ≤ nabs k s` using `NNReal.coe_nonneg _`. Unfold `exUp`. Rewrite using `[hf, integral_indicator_const _ hS, Measure.real, Measure.pi_pi]`.
+
+Simplify using `[vol_ball ν hν s, hn]`.
+-/
 theorem exUp_of_fixed {n : Type} [Fintype n] [DecidableEq n] {c p : ℕ} (h1 : 1 ≤ p) (hc : p < c)
     {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) (ν : Measure k) (hν : IsUnitVol ν)
     {A : Type} [AddCommGroup A] [Module ℂ A]
@@ -197,6 +278,15 @@ theorem exUp_of_fixed {n : Type} [Fintype n] [DecidableEq n] {c p : ℕ} (h1 : 1
   rw [hf, integral_indicator_const _ hS, Measure.real, Measure.pi_pi]
   simp [vol_ball ν hν s, hn]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ n _ _ c p h1 hc ψ hψ ν hν A _ _ σ l hl v`. Use `⟨fun s hβ hu => exUp_of_fixed h1 hc hψ ν hν σ l hl v s hβ hu, fun hK => ?_⟩` and prove the remaining obligations. Rewrite using `[exUp_of_fixed h1 hc hψ ν hν σ l hl v 1]`. Simplify using `[nabs]`. Introduce `β h`.
+
+Use `hK _ (upU_mem_KO _ fun r i => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.of_apply]`. Use `split_ifs`. Simplify using `using h r`. Simplify using the standard rewrite rules.
+
+Introduce `u h`. Use `hK _ (lowU_mem_KO _ fun r i => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.of_apply]`. Use `split_ifs`. Simplify using `using h i`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exUp_fixed_vector : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (c p : ℕ) (_ : 1 ≤ p) (_ : p < c) (ψ : AddChar k Circle) (_ : HasConductor ψ 1) (ν : Measure k) (_ : IsUnitVol ν) (A : Type) [AddCommGroup A] [Module ℂ A] (σ : Representation ℂ (GL (n ⊕ Fin c) k) A) (l : A →ₗ[ℂ] ℂ) (_ : IsNEquiv ψ p σ l) (v : A), (∀ s : kˣ, (∀ β : n → k, (∀ r, valuation k (β r * s) ≤ 1) → σ (colE c (p + 1) β) v = v) → (∀ u : n → k, (∀ r, valuation k (u r) ≤ valuation k (s : k)) → σ (rowE c p u) v = v) → exUp ν p σ l v = ((nabs k s ^ Fintype.card n : ℝ) : ℂ) * l v) ∧ ((∀ g ∈ KO k (n ⊕ Fin c), σ g v = v) → exUp ν p σ l v = l v) := by
   intro k _ _ _ _ _ _ n _ _ c p h1 hc ψ hψ ν hν A _ _ σ l hl v
   refine ⟨fun s hβ hu => exUp_of_fixed h1 hc hψ ν hν σ l hl v s hβ hu, fun hK => ?_⟩

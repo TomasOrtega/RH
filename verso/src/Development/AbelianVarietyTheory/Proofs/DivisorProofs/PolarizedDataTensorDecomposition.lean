@@ -7,6 +7,23 @@ open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMas
 
 namespace GlobalTheory.ThK.SoPolSplit
 
+/- English proof (translation)
+Set `ev : α → K →ₗ[ℂ] ℂ` to `fun x => (LinearMap.proj x).comp K.subtype`. Set `W : Finset α → Submodule ℂ K` to `fun s => ⨅ x ∈ s, LinearMap.ker (ev x)`. Establish `hW : ∀ s (v : K), v ∈ W s ↔ ∀ x ∈ s, (v : α → ℂ) x = 0`. Introduce `s v`. Simplify using `[W, ev, Submodule.mem_iInf, LinearMap.mem_ker]`.
+
+Take `⟨M, ⟨s, rfl⟩, hmin⟩` from `IsArtinian.set_has_minimal (Set.range W) ⟨_, ⟨∅, rfl⟩⟩`. Establish `hbot : ∀ v : K, v ∈ W s → v = 0`. Introduce `v hv`. Use extensionality with `x`. Establish `hle : W (insert x s) ≤ W s` using `fun w hw => (hW _ _).2 fun y hy => (hW _ _).1 hw y (Finset.mem_insert_of_mem hy)`.
+
+Establish `heq : W (insert x s) = W s`. Assume the negation of the conclusion as `hne`. Conclude with `hmin _ ⟨_, rfl⟩ (lt_of_le_of_ne hle hne)`. Establish `hv' : v ∈ W (insert x s)` using `heq ▸ hv`. Simplify using `using (hW _ _).1 hv' x (Finset.mem_insert_self x s)`.
+
+Set `p : Fin s.card → α` to `fun i => (s.equivFin.symm i : α)`. Set `R : K →ₗ[ℂ] (Fin s.card → ℂ)` to `LinearMap.pi fun i => ev (p i)`. Establish `hker : LinearMap.ker R = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `v hv`.
+
+Apply `hbot` to reduce the goal to its premises. Rewrite using `[hW]`. Introduce `x hx`. Use `congrFun hv (s.equivFin ⟨x, hx⟩)` as an intermediate fact. Simplify `this` using `[R, ev, p]`.
+
+Take `⟨L, hL⟩` from `LinearMap.exists_leftInverse_of_injective R hker`. Use `⟨s.card, p, fun i => (L (Pi.single i 1) : α → ℂ), fun i => (L _).2, ?_⟩` and prove the remaining obligations. Introduce `f hf`. Establish `h1 : (⟨f, hf⟩ : K) = L (R ⟨f, hf⟩)`. Rewrite using `[← LinearMap.comp_apply, hL, LinearMap.id_apply]`.
+
+Establish `h2 : R ⟨f, hf⟩ = ∑ i, f (p i) • (Pi.single i 1 : Fin s.card → ℂ)`. Use extensionality with `j`. Simplify using `[R, ev, Finset.sum_apply, Pi.single_apply]`. Establish `h3` using `congrArg Subtype.val h1`. Rewrite `h3` using `[h2, map_sum]`.
+
+Simplify `h3` using `[map_smul, Submodule.coe_sum]`.
+-/
 theorem exists_interp {α : Type} (K : Submodule ℂ (α → ℂ)) [FiniteDimensional ℂ K] :
     ∃ (r : ℕ) (p : Fin r → α) (e : Fin r → α → ℂ), (∀ s, e s ∈ K) ∧ ∀ f ∈ K, f = ∑ s, f (p s) • e s := by
   classical
@@ -61,14 +78,23 @@ def glue {κ : Type} (a : κ → mixedEmbedding.mixedSpace F) (y : κ → AF F) 
   fun i => (show Ainf F × Af F from
     ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (a i), (y i).2))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[glue, evI]`.
+-/
 theorem evI_glue {κ : Type} (a : κ → mixedEmbedding.mixedSpace F) (y : κ → AF F) :
     (fun i => evI F (glue a y i)) = a := by
   funext i
   simp [glue, evI]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finPart_glue {κ : Type} (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) (a : κ → mixedEmbedding.mixedSpace F)
     (y : κ → AF F) : finPart φ (glue a y) = finPart φ y := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1), (x i).2) : Ainf F × Af F) = x i`. Rewrite using `[RingEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+-/
 theorem glue_self {κ : Type} (x : κ → AF F) : glue (fun i => evI F (x i)) x = x := by
   funext i
   change (((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1),
@@ -76,6 +102,9 @@ theorem glue_self {κ : Type} (x : κ → AF F) : glue (fun i => evI F (x i)) x 
   rw [RingEquiv.symm_apply_apply]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pure_eq {κ : Type} [Fintype κ] (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) (x : κ → AF F) :
     pure f φ x = f (fun i => evI F (x i)) * finPart φ x := rfl
 
@@ -85,11 +114,19 @@ namespace GlobalTheory.ThK.SoPolSplit
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, SchwartzMap.smul_apply, Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+-/
 theorem pure_smul {κ : Type} [Fintype κ] (c : ℂ) (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) :
     pure (c • f) φ = c • pure f φ := by
   funext y
   simp only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, SchwartzMap.smul_apply, Pi.smul_apply, smul_eq_mul, mul_assoc]
 
+/- English proof (translation)
+Take `⟨n, c, x, hx⟩` from `Submodule.mem_span_set'.1 h`. Use `choose f φ hf hφ hpure using fun i => hS _ (x i).2`. Use `⟨n, fun i => c i • f i, φ, fun i => ⟨hP _ _ (hf i), hφ i⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hx]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hpure i, pure_smul]`.
+-/
 theorem exists_sum_of_mem_span {κ : Type} [Fintype κ] (P : SInf F κ → Prop) (Q : (∀ v : Pl F, (κ → Fv F v) → ℂ) → Prop)
     (hP : ∀ (c : ℂ) f, P f → P (c • f)) (S : Set ((κ → AF F) → ℂ))
     (hS : ∀ Φ ∈ S, ∃ f φ, P f ∧ Q φ ∧ Φ = pure f φ) {Φ : (κ → AF F) → ℂ} (h : Φ ∈ Submodule.span ℂ S) :
@@ -102,6 +139,9 @@ theorem exists_sum_of_mem_span {κ : Type} [Fintype κ] (P : SInf F κ → Prop)
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [hpure i, pure_smul]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, SchwartzMap.add_apply, ih]`.
+-/
 theorem sch_sum_apply {κ : Type} [Fintype κ] {ι : Type} (s : Finset ι) (g : ι → SInf F κ) (y : κ → mixedEmbedding.mixedSpace F) :
     (∑ i ∈ s, g i) y = ∑ i ∈ s, g i y := by
   classical
@@ -109,6 +149,23 @@ theorem sch_sum_apply {κ : Type} [Fintype κ] {ι : Type} (s : Finset ι) (g : 
   | empty => simp
   | insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, SchwartzMap.add_apply, ih]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' _ Φ hΦ`. Rewrite `hΦ` using `[Submodule.mem_inf]`. Take `⟨hPol, hSo⟩` from `hΦ`. Take `⟨m₁, f₁, φ₁, hf₁, hΦ₁⟩` from `exists_sum_of_mem_span (fun f => f ∈ G.M'.Pol B.ψ B.emb) (fun _ => True) (fun c f hf => Submodule.smul_mem _ c hf) _ (fun Φ hΦ => by obtain ⟨f, hf, φ, _, _, h⟩ := hΦ; exact ⟨f, φ, hf, trivial, h⟩) hPol`. Take `⟨m₂, h₂, ψ₂, hψ₂, hΦ₂⟩` from `exists_sum_of_mem_span (fun _ => True) (fun φ => (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) ∧ (∀ᶠ v in Filter.cofinite, φ v = G.M'.vac v) ∧ φ B.v₁ ∈ G.M'.SoLoc B.ψ B.τ₁) (fun _ _ _ => trivial) _ (fun Φ hΦ => by obtain ⟨f, φ, h1, h2, h3, h⟩ := hΦ; exact ⟨f, φ, trivial, ⟨h1, h2, h3⟩, h⟩) …`.
+
+Set `k : Fin m₂ → (Fin a' × Fin (a + a') → AF F) → ℂ` to `fun j => finPart (ψ₂ j)`. Set `K` to `Submodule.span ℂ (Set.range k)`. Use `haveI : FiniteDimensional ℂ K := FiniteDimensional.span_of_finite ℂ (Set.finite_range k)`. Take `⟨r, p, e, he, hrep⟩` from `exists_interp K`. Use `choose c hc using fun s => (Submodule.mem_span_range_iff_exists_fun ℂ).1 (he s)`.
+
+Set `H : Fin r → SInf F (Fin a' × Fin (a + a'))` to `fun s => ∑ i, finPart (φ₁ i) (p s) • f₁ i`. Establish `hH : ∀ s, H s ∈ G.M'.Pol B.ψ B.emb` using `fun s => Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hf₁ i).1`. Establish `key : ∀ x, Φ x = ∑ s, H s (fun i => evI F (x i)) * e s x`. Introduce `x`. Establish `hmemK : (fun y => Φ (glue (fun i => evI F (x i)) y)) ∈ K`.
+
+Establish `: (fun y => Φ (glue (fun i => evI F (x i)) y)) = ∑ j, h₂ j (fun i => evI F (x i)) • k j`. Use function extensionality and compare the values at `y`. Rewrite using `[hΦ₂]`. Simplify using `only [Finset.sum_apply, pure_eq, evI_glue, finPart_glue, Pi.smul_apply, smul_eq_mul, k]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `h1` using `congrFun (hrep _ hmemK) x`. Simplify using `only [glue_self, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h1`. Rewrite using `[h1]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Rewrite using `[hΦ₁]`. Simplify using `only [Finset.sum_apply, pure_eq, evI_glue, finPart_glue, H, sch_sum_apply, SchwartzMap.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Use `⟨r * m₂, fun t => c (finProdFinEquiv.symm t).1 (finProdFinEquiv.symm t).2 • H (finProdFinEquiv.symm t).1, fun t => ψ₂ (finProdFinEquiv.symm t).2, fun t => ⟨Submodule.smul_mem _ _ (hH _), (hψ₂ _).2⟩, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[key x, Finset.sum_apply]`. Rewrite using `[Fintype.sum_equiv finProdFinEquiv.symm _ (fun q : Fin r × Fin m₂ => pure (c q.1 q.2 • H q.1) (ψ₂ q.2) x) (fun t => rfl), Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[← hc s]`.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, pure_eq, SchwartzMap.smul_apply, k]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem exists_sum_pure_pol_so : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

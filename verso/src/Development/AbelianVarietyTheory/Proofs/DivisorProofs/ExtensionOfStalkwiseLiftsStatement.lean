@@ -8,5 +8,8 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open GlobalTheory.FlagCls
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagCls.exists_hom_of_forall_stalk | exact GlobalTheory.FlagCls.exists_hom_of_forall_stalk | (intros; apply GlobalTheory.FlagCls.exists_hom_of_forall_stalk <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.extension_of_stalkwise_lifts : ∀ (G Y S : Scheme.{0}) [IsIntegral G] (s : G ⟶ S) (t : Y ⟶ S) [IsSeparated t] [LocallyOfFiniteType t] (p : Sp G.functionField ⟶ Y), p ≫ t = GlobalTheory.FlagCov.genPt G ≫ s → (∀ z : G, ∃ q : Sp (G.presheaf.stalk z) ⟶ Y, spMap (algebraMap (G.presheaf.stalk z) G.functionField) ≫ q = p ∧ q ≫ t = G.fromSpecStalk z ≫ s) → ∃ f : G ⟶ Y, GlobalTheory.FlagCov.genPt G ≫ f = p ∧ f ≫ t = s := by
   first | exact @GlobalTheory.FlagCls.exists_hom_of_forall_stalk | exact GlobalTheory.FlagCls.exists_hom_of_forall_stalk | (intros; apply GlobalTheory.FlagCls.exists_hom_of_forall_stalk <;> assumption)

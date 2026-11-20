@@ -24,6 +24,11 @@ namespace GlobalTheory.BesselNilp
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.Hpk at h`. Distinguish the cases in `h1 : i.val < r ∧ i.val + j.val = 2 * r + k`. Conclude with `Or.inl h1`. Distinguish the cases in `h2 : j.val < r ∧ i.val + j.val = 2 * r + k`. Conclude with `Or.inr (Or.inl h2)`.
+
+Distinguish the cases in `h3 : r ≤ i.val ∧ i.val ≤ r + k ∧ i = j`. Conclude with `Or.inr (Or.inr ⟨h3.1, h3.2.1, congrArg Fin.val h3.2.2⟩)`. Rewrite `h` using `[if_neg h1, if_neg h2, if_neg h3]`. Conclude with `absurd rfl h`.
+-/
 theorem H_ne {i j : Fin (2 * r + k + 1)} (h : Formalism.QuantumDeterminants.Hpk k r i j ≠ 0) :
     (i.val < r ∧ i.val + j.val = 2 * r + k) ∨ (j.val < r ∧ i.val + j.val = 2 * r + k) ∨
       (r ≤ i.val ∧ i.val ≤ r + k ∧ i.val = j.val) := by
@@ -37,6 +42,11 @@ theorem H_ne {i j : Fin (2 * r + k + 1)} (h : Formalism.QuantumDeterminants.Hpk 
   · rw [if_neg h1, if_neg h2, if_neg h3] at h
     exact absurd rfl h
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [conjTranspose_apply, Formalism.QuantumDeterminants.Hpk]`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Simplify using `only [Fin.ext_iff]`.
+
+Apply the tactic sequence `split_ifs <;> first | omega | simp`.
+-/
 theorem H_herm : (Formalism.QuantumDeterminants.Hpk k r)ᴴ = Formalism.QuantumDeterminants.Hpk k r := by
   ext i j
   simp only [conjTranspose_apply, Formalism.QuantumDeterminants.Hpk]
@@ -45,6 +55,19 @@ theorem H_herm : (Formalism.QuantumDeterminants.Hpk k r)ᴴ = Formalism.QuantumD
   simp only [Fin.ext_iff]
   split_ifs <;> first | omega | simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Rewrite using `[Matrix.mul_apply]`. Distinguish the cases in `hm : r ≤ i.val ∧ i.val ≤ r + k`.
+
+Rewrite using `[Finset.sum_eq_single i]`. Apply the tactic sequence `simp only [Formalism.QuantumDeterminants.Hpk, Matrix.one_apply, Fin.ext_iff, and_true] split_ifs <;> first | omega | simp`. Introduce `b _ hb`. Establish `: Formalism.QuantumDeterminants.Hpk k r i b = 0`. Assume the negation of the conclusion as `hne`.
+
+Establish `h1` using `H_ne hne`. Establish `: b.val ≠ i.val` using `fun e => hb (Fin.ext e)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, zero_mul]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[Finset.sum_eq_single (⟨2 * r + k - i.val, by omega⟩ : Fin (2 * r + k + 1))]`. Apply the tactic sequence `simp only [Formalism.QuantumDeterminants.Hpk, Matrix.one_apply, Fin.ext_iff] split_ifs <;> first | omega | simp`. Introduce `b _ hb`. Establish `: Formalism.QuantumDeterminants.Hpk k r i b = 0`.
+
+Assume the negation of the conclusion as `hne`. Establish `h1` using `H_ne hne`. Establish `: b.val ≠ 2 * r + k - i.val` using `fun e => hb (Fin.ext e)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, zero_mul]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem H_sq : Formalism.QuantumDeterminants.Hpk k r * Formalism.QuantumDeterminants.Hpk k r = 1 := by
   ext i j
   have hi := i.isLt
@@ -77,6 +100,15 @@ theorem H_sq : Formalism.QuantumDeterminants.Hpk k r * Formalism.QuantumDetermin
 def Pat (Y : Mx k r) : Prop :=
   ∀ i j : Fin (2 * r + k + 1), ¬ (i < j ∧ ¬ (r ≤ i.val ∧ j.val ≤ r + k)) → Y i j = 0
 
+/- English proof (translation)
+Introduce `i j hij`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : Formalism.QuantumDeterminants.Hpk k r b j = 0`. Rewrite using `[hb, mul_zero]`.
+
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_zero, zero_mul]`. Introduce `a _`. Distinguish the cases in `ha : Formalism.QuantumDeterminants.Hpk k r i a = 0`. Rewrite using `[ha, zero_mul]`. Establish `h1` using `H_ne ha`.
+
+Establish `h2` using `H_ne hb`. Establish `: Y b a = 0`. Apply `hY` to reduce the goal to its premises. Rewrite `hij`, the goal using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[conjTranspose_apply, this, star_zero, mul_zero]`.
+-/
 theorem pat_theta {Y : Mx k r} (hY : Pat Y) : Pat (Formalism.QuantumDeterminants.Hpk k r * Yᴴ * Formalism.QuantumDeterminants.Hpk k r) := by
   intro i j hij
   rw [Matrix.mul_apply]
@@ -95,6 +127,11 @@ theorem pat_theta {Y : Mx k r} (hY : Pat Y) : Pat (Formalism.QuantumDeterminants
     omega
   rw [conjTranspose_apply, this, star_zero, mul_zero]
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.ell`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs`. Both sides reduce to the same expression.
+
+Rewrite using `[Matrix.add_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem ell_add (z : Fin (2 * r + k + 1) → ℂ) (A B : Mx k r) :
     Formalism.QuantumDeterminants.ell k r z (A + B) = Formalism.QuantumDeterminants.ell k r z A + Formalism.QuantumDeterminants.ell k r z B := by
   unfold Formalism.QuantumDeterminants.ell
@@ -104,6 +141,11 @@ theorem ell_add (z : Fin (2 * r + k + 1) → ℂ) (A B : Mx k r) :
   · rfl
   · rw [Matrix.add_mulVec]; rfl
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.ell`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs`. Both sides reduce to the same expression.
+
+Rewrite using `[Matrix.smul_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem ell_smul (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (A : Mx k r) :
     Formalism.QuantumDeterminants.ell k r z (c • A) = c * Formalism.QuantumDeterminants.ell k r z A := by
   unfold Formalism.QuantumDeterminants.ell
@@ -113,11 +155,17 @@ theorem ell_smul (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (A : Mx k r) :
   · rfl
   · rw [Matrix.smul_mulVec]; rfl
 
+/- English proof (translation)
+Establish `: A - B = A + (-1 : ℂ) • B` using `by simp [sub_eq_add_neg]`. Rewrite using `[this, ell_add, ell_smul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ell_sub (z : Fin (2 * r + k + 1) → ℂ) (A B : Mx k r) :
     Formalism.QuantumDeterminants.ell k r z (A - B) = Formalism.QuantumDeterminants.ell k r z A - Formalism.QuantumDeterminants.ell k r z B := by
   have : A - B = A + (-1 : ℂ) • B := by simp [sub_eq_add_neg]
   rw [this, ell_add, ell_smul]; ring
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[conjTranspose_mul, conjTranspose_mul, H_herm, conjTranspose_conjTranspose, Matrix.mul_assoc, Matrix.mul_assoc, H_sq, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, H_sq, Matrix.one_mul]`.
+-/
 theorem theta_key (Y : Mx k r) :
     (Formalism.QuantumDeterminants.Hpk k r * Yᴴ * Formalism.QuantumDeterminants.Hpk k r)ᴴ * Formalism.QuantumDeterminants.Hpk k r = Formalism.QuantumDeterminants.Hpk k r * Y ∧
     Formalism.QuantumDeterminants.Hpk k r * (Formalism.QuantumDeterminants.Hpk k r * Yᴴ * Formalism.QuantumDeterminants.Hpk k r) = Yᴴ * Formalism.QuantumDeterminants.Hpk k r := by
@@ -126,6 +174,9 @@ theorem theta_key (Y : Mx k r) :
       Matrix.mul_assoc, H_sq, Matrix.mul_one]
   · rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, H_sq, Matrix.one_mul]
 
+/- English proof (translation)
+Use `show _ᴴ * Formalism.QuantumDeterminants.Hpk k r + Formalism.QuantumDeterminants.Hpk k r * _ = 0`. Take `⟨h1, h2⟩` from `theta_key Y`. Establish `hs : star (1 / 2 : ℂ) = 1 / 2` using `by simp`. Rewrite using `[conjTranspose_smul, hs, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, conjTranspose_add, conjTranspose_neg, Matrix.add_mul, Matrix.mul_add, Matrix.neg_mul, Matrix.mul_neg, h1, h2]`. Simplify using the standard rewrite rules.
+-/
 theorem lie_re (Y : Mx k r) : PI.UpqRep.InLieHpk k r
     ((1 / 2 : ℂ) • (Y + -(Formalism.QuantumDeterminants.Hpk k r * Yᴴ * Formalism.QuantumDeterminants.Hpk k r))) := by
   show _ᴴ * Formalism.QuantumDeterminants.Hpk k r + Formalism.QuantumDeterminants.Hpk k r * _ = 0
@@ -135,6 +186,9 @@ theorem lie_re (Y : Mx k r) : PI.UpqRep.InLieHpk k r
     conjTranspose_neg, Matrix.add_mul, Matrix.mul_add, Matrix.neg_mul, Matrix.mul_neg, h1, h2]
   simp
 
+/- English proof (translation)
+Use `show _ᴴ * Formalism.QuantumDeterminants.Hpk k r + Formalism.QuantumDeterminants.Hpk k r * _ = 0`. Take `⟨h1, h2⟩` from `theta_key Y`. Establish `hs : star (1 / (2 * Complex.I) : ℂ) = -(1 / (2 * Complex.I))` using `by simp`. Rewrite using `[conjTranspose_smul, hs, Matrix.smul_mul, Matrix.mul_smul, neg_smul, neg_add_eq_zero, sub_neg_eq_add, conjTranspose_add, Matrix.add_mul, Matrix.mul_add, h1, h2, add_comm (Yᴴ * _)]`.
+-/
 theorem lie_im (Y : Mx k r) : PI.UpqRep.InLieHpk k r
     ((1 / (2 * Complex.I)) • (Y - -(Formalism.QuantumDeterminants.Hpk k r * Yᴴ * Formalism.QuantumDeterminants.Hpk k r))) := by
   show _ᴴ * Formalism.QuantumDeterminants.Hpk k r + Formalism.QuantumDeterminants.Hpk k r * _ = 0
@@ -143,6 +197,13 @@ theorem lie_im (Y : Mx k r) : PI.UpqRep.InLieHpk k r
   rw [conjTranspose_smul, hs, Matrix.smul_mul, Matrix.mul_smul, neg_smul, neg_add_eq_zero, sub_neg_eq_add,
     conjTranspose_add, Matrix.add_mul, Matrix.mul_add, h1, h2, add_comm (Yᴴ * _)]
 
+/- English proof (translation)
+Take `⟨hadd, hsmul, heq, hc⟩` from `hl`. Take `⟨hN, hd⟩` from `GlobalTheory.T.exp_mem_unipotent_and_hasDerivAt_character k r z X hz hX hP`. Establish `h1` using `(GlobalTheory.T.frechetContinuous_continuousOn_orbit_hasDerivAt hK k r ε mu R hR Wp l hadd hsmul hc v hv).2 X hX`. Establish `h2` using `hd.smul_const (l v)`. Establish `hone : (1 : Mx k r) ∈ Formalism.QuantumDeterminants.UWset k r z`.
+
+Use `⟨?_, fun a => ⟨Matrix.one_mulVec _, Matrix.one_mulVec _⟩, Matrix.one_mulVec _⟩` and prove the remaining obligations. Use `show (1 : Mx k r)ᴴ * Formalism.QuantumDeterminants.Hpk k r * 1 = Formalism.QuantumDeterminants.Hpk k r`. Simplify using the standard rewrite rules. Establish `e : (fun t : ℝ => l (R.σ (NormedSpace.exp ((t : ℂ) • X)) v)) = fun t : ℝ => Formalism.QuantumDeterminants.psi k r z Formalism.QuantumDeterminants.cStd (NormedSpace.exp ((t : ℂ) • X)) • l v`. Use function extensionality and compare the values at `t`.
+
+Use `heq 1 hone _ (hN t) v hv` as an intermediate fact. Rewrite `this` using `[Matrix.one_mul, hπ]`. Then use the resulting hypothesis. Rewrite `h1` using `[e]`. Conclude with `h1.unique h2`.
+-/
 theorem on_real (hK : PI.KFinSmooth) {ε : Fin (2 * r + k + 1) → Bool} {mu : Fin (2 * r + k + 1) → ℝ}
     {R : Rep k r} (hR : R.IsDG ε mu) {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [CompleteSpace Wp] {z : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)} {l : R.H → Wp}
@@ -166,6 +227,17 @@ theorem on_real (hK : PI.KFinSmooth) {ε : Fin (2 * r + k + 1) → Bool} {mu : F
   rw [e] at h1
   exact h1.unique h2
 
+/- English proof (translation)
+Introduce `hK k r ε mu R hR Wp _ _ _ _ z π l hz hπ hl Y hY v hv`. Establish `hθ` using `pat_theta (Y := Y) hY`. Establish `p1 : Pat ((1 / 2 : ℂ) • (Y + -(Formalism.QuantumDeterminants.Hpk k r * Yᴴ * Formalism.QuantumDeterminants.Hpk k r)))`. Introduce `i j hij`. Simplify using `only [Matrix.smul_apply, Matrix.add_apply, Matrix.neg_apply, hY i j hij, hθ i j hij]`.
+
+Simplify using the standard rewrite rules. Establish `p2 : Pat ((1 / (2 * Complex.I)) • (Y - -(Formalism.QuantumDeterminants.Hpk k r * Yᴴ * Formalism.QuantumDeterminants.Hpk k r)))`. Introduce `i j hij`. Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, Matrix.neg_apply, hY i j hij, hθ i j hij]`. Simplify using the standard rewrite rules.
+
+Establish `s1` using `GlobalTheory.DerivedAction.dsig_smooth hR.2 (lie_re Y) hv`. Establish `s2` using `GlobalTheory.DerivedAction.dsig_smooth hR.2 (lie_im Y) hv`. Establish `e1` using `on_real hK hR hz hπ hl (lie_re Y) p1 hv`. Establish `e2` using `on_real hK hR hz hπ hl (lie_im Y) p2 hv`. Unfold `Rep.dC`.
+
+Rewrite using `[hl.1 _ s1 _ (R.smSub.smul_mem Complex.I s2), hl.2.1 _ _ s2, e1, e2, smul_smul, ← add_smul, ell_smul, ell_smul, ell_add, ell_sub]`. Use `congr 1`. Establish `hI : (1 / (2 * Complex.I) : ℂ) = -(Complex.I / 2)`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+
+Rewrite using `[hI]`. Simplify using `only [star_mul', star_add, star_sub, star_neg, star_div₀, star_one, star_ofNat, Complex.star_def, Complex.conj_I]`. Put the polynomial expressions in normal form. Simplify using `only [Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bessel_dC : PI.KFinSmooth → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r), R.IsDG ε mu → ∀ (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (l : R.H → Wp), Formalism.QuantumDeterminants.inWb k r z → (∀ x, π 1 x = x) → IsBes R z π l → ∀ Y : Mx k r, (∀ i j : Fin (2 * r + k + 1), ¬ (i < j ∧ ¬ (r ≤ i.val ∧ j.val ≤ r + k)) → Y i j = 0) → ∀ v ∈ R.sm, l (R.dC Y v) = (Formalism.QuantumDeterminants.ell k r z Y - star (Formalism.QuantumDeterminants.ell k r z (-((Formalism.QuantumDeterminants.Hpk k r) * Yᴴ * (Formalism.QuantumDeterminants.Hpk k r))))) • l v := by
   intro hK k r ε mu R hR Wp _ _ _ _ z π l hz hπ hl Y hY v hv
   have hθ := pat_theta (Y := Y) hY

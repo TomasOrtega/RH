@@ -14,6 +14,11 @@ section QFr
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {ST SG Q : Finset (Pl E)}
 
+/- English proof (translation)
+Introduce `y`. Establish `h1` using `p'.2 P ((p'.fr P).symm (γ (p.fr P y)))`. Establish `e1 : p'.1.2 P ((p'.fr P).symm (γ (p.fr P y))) = γ (p.fr P y)` using `LinearEquiv.apply_symm_apply _ _`. Rewrite `h1` using `[e1]`. Rewrite using `[← h1]`.
+
+Use `show γ (p.fr P y) ∈ localization₂ P.1.asIdeal p'.1.1.1.N ↔ _`. Establish `hN' : p'.1.1.1.N = gmap γ p.1.1.1.N` using `hN`. Rewrite using `[hN', mem_localization_gmap, LinearEquiv.symm_apply_apply]`. Conclude with `p.2 P y`.
+-/
 theorem qdf_frame_ratio (p p' : DecoF E n ST SG Q) (γ : Sp E n ≃ₗ[E] Sp E n)
     (hN : p'.deco.1.N = gmap γ p.deco.1.N) (P : Q) :
     ∀ y, (p'.fr P).symm (γ (p.fr P y)) ∈ stdAt E n P.1 ↔ y ∈ stdAt E n P.1 := by

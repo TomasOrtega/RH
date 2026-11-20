@@ -23,6 +23,17 @@ open Formalism.L2.Th1.H (CmOK cmL matH stdH stdLat blk4 pow4 imgLat relIdx IsIso
 open Formalism.L2.DIV.C.X (gcm_mem_map_smul gcm_relIdx_map_smul gcm_opU_scale gcm_alphaQ_scale gcm_dualLat_scale gcm_matH_scale
   blockFour_smul gcm_stdH_scale gcm_stdLat_scale gcm_imgLat_scale gcm_scalePair_scalePair gcm_kernel4_scale)
 
+/- English proof (translation)
+Establish `ha : MvPowerSeries.HasSubst (fun i => ∑ j, MvPowerSeries.C (B' i j) * (at1 j lg : MvPowerSeries n K))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => Formalism.L2.Th1.H.FormalGroupLawNegation.cc_lin (B' i) fun j => Formalism.L2.Th1.E.CompatibleChartOperations.constantCoeff_inVar_eq_zero j hlg`. Establish `hb : MvPowerSeries.HasSubst (fun i => ∑ j, MvPowerSeries.C (((Matrix.diagonal fun _ : n => s).map ι) i j) * (MvPowerSeries.X j : MvPowerSeries n K))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => Formalism.L2.Th1.H.FormalGroupLawNegation.cc_lin _ fun j => MvPowerSeries.constantCoeff_X _`. Establish `hmv : (fun z : n → ℂ => G (s • z)) = fun w => G ((Matrix.diagonal fun _ : n => s).mulVec w)`. Use function extensionality and compare the values at `w`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.mulVec_diagonal]`. Both sides reduce to the same expression. Unfold `Formalism.L2.Th1.H.thetaU`. Rewrite using `[hmv, Formalism.L2.Th1.H.taylorMvComp n n _ G hG, Formalism.L2.Th1.H.FormalGroupLawNegation.map_linSubst]`.
+
+Unfold `Formalism.L2.Th1.H.linSubst`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply hb ha]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← MvPowerSeries.coe_substAlgHom ha, map_sum, Finset.sum_eq_single i]`.
+
+Rewrite using `[map_mul, MvPowerSeries.coe_substAlgHom ha, MvPowerSeries.subst_C, MvPowerSeries.subst_X ha, Matrix.map_apply, Matrix.diagonal_apply_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← map_mul]`. Introduce `j _ hj`. Rewrite using `[Matrix.map_apply, Matrix.diagonal_apply_ne _ (Ne.symm hj), map_zero, map_zero, zero_mul, map_zero]`.
+
+Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`.
+-/
 theorem thetaU_smul {K : Type} [Field K] (ι : ℂ →+* K) {lg : PowerSeries K}
     (hlg : PowerSeries.constantCoeff lg = 0) {n : Type} [Fintype n] [DecidableEq n] (B' : Matrix n n K)
     (s : ℂ) (G : (n → ℂ) → ℂ) (hG : AnalyticAt ℂ G 0) :
@@ -58,6 +69,9 @@ theorem thetaU_smul {K : Type} [Field K] (ι : ℂ →+* K) {lg : PowerSeries K}
   · intro hi
     exact absurd (Finset.mem_univ i) hi
 
+/- English proof (translation)
+Rewrite `hiso`, the goal using `[KS.stdH_congr hL]`. Rewrite `i1`, `i2` using `[ReBase.stdLat_congr hL]`. Conclude with `ReBase.stdData_congr hL hω hn (Formalism.L2.Th1.H.stdDataCm a₀ b₀ c₀ d ha hd lam hlam hcm.1 hcm.2.1 hcm.2.2.1 n h Λ g hiso hsd hst i1 i2)`.
+-/
 theorem stdData_cm {a₀ : ℕ} {b₀ c₀ : ℤ} {d : ℕ} (ha : 0 < a₀) (hd : 0 < d) {lam : ℂ} (hlam : lam ≠ 0)
     (hcm : CmOK a₀ b₀ c₀ d) {L : PeriodPair} (hL : L.lattice = (cmL a₀ b₀ d ha hd lam hlam).lattice)
     {ω₀ : ℂ} (hω : (ω₀ - lam * a₀) / 2 ∈ (cmL a₀ b₀ d ha hd lam hlam).lattice) (hn : ω₀ / 2 ∉ L.lattice)
@@ -81,6 +95,41 @@ open Formalism.L2.Th1.H (CmOK cmL matH stdH stdLat blk4 pow4 imgLat relIdx IsIso
 open Formalism.L2.DIV.C.X (gcm_mem_map_smul gcm_relIdx_map_smul gcm_opU_scale gcm_alphaQ_scale gcm_dualLat_scale gcm_matH_scale
   blockFour_smul gcm_stdH_scale gcm_stdLat_scale gcm_imgLat_scale gcm_scalePair_scalePair gcm_kernel4_scale)
 
+/- English proof (translation)
+Introduce `D cc δ B hcc hδ p _ h5 hj ι c hc g2 g3 ε s2 hLT hg2 hg3 hdisc hε hth g₁ e hI σ hσ hN γ B' hFr t N hN0 hpN ht`. Take `⟨hiso, hndvd, i2, he, hten⟩` from `hI`. Take `⟨a₀, gg, b₀, c₀, ha, hd, hl, B'', hcm, -, hIs, hlat, -, -, -, hω, -, -⟩` from `ReBase.theta_change_of_base D cc δ B hcc`. Establish `i1 : relIdx (stdLat B.L (Fin 4 × D.what₂.Tau)) (imgLat (g₁ : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) (pow4 B.lamM)) ≠ 0`. Introduce `h0`.
+
+Conclude with `hndvd (h0 ▸ dvd_zero p)`. Establish `hLB : B.L.lattice = (cmL a₀ b₀ D.host.d ha hd ((gg : ℂ) * δ) hl).lattice`. Rewrite using `[← hlat, hIs.1]`. Establish `hωB : (B.ω₀ - (gg : ℂ) * δ * a₀) / 2 ∈ (cmL a₀ b₀ D.host.d ha hd ((gg : ℂ) * δ) hl).lattice`. Rewrite using `[← hIs.2, ← hIs.1, hlat]`.
+
+Conclude with `hω`. Establish `hsd` using `Kap.kap_selfDual_lamM B hcc hδ`. Establish `hst` using `Kap.kap_stable_lamM B b₀ (Kap.kap_odd hcm)`. Establish `S1 : StdData B.L B.ω₀ (hOne B.L D.what₂.Tau) B.lamM (alphaQ (Real.sqrt D.host.d / 2) (matH (hOne B.L D.what₂.Tau))) (alphaQ (Real.sqrt D.host.d / 2) (stdH B.L (Fin 4 × D.what₂.Tau))) g₁` using `MMScale.stdData_cm ha hd hl hcm hLB hωB (Base.half_not_mem B) _ _ g₁ hiso hsd hst i1 i2`. Establish `hH'` using `gcm_matH_scale c (hOne B.L D.what₂.Tau)`.
+
+Establish `hcmL : cmL a₀ b₀ D.host.d ha hd ((gg : ℂ) * δ * c) (mul_ne_zero hl hc) = Formalism.L2.Th1.F.scalePair (cmL a₀ b₀ D.host.d ha hd ((gg : ℂ) * δ) hl) c hc` using `(gcm_scalePair_scalePair _ ((gg : ℂ) * δ) c hl hc).symm`. Establish `hL2 : (Formalism.L2.Th1.F.scalePair B.L c hc).lattice = (cmL a₀ b₀ D.host.d ha hd ((gg : ℂ) * δ * c) (mul_ne_zero hl hc)).lattice`. Rewrite using `[hcmL]`. Use extensionality with `z`. Rewrite using `[(Formalism.L2.Th1.F.homogeneity _ c hc).1, (Formalism.L2.Th1.F.homogeneity _ c hc).1, hLB]`.
+
+Establish `hω2 : (c * B.ω₀ - (gg : ℂ) * δ * c * a₀) / 2 ∈ (cmL a₀ b₀ D.host.d ha hd ((gg : ℂ) * δ * c) (mul_ne_zero hl hc)).lattice`. Rewrite using `[hcmL, (Formalism.L2.Th1.F.homogeneity _ c hc).1]`. Establish `e1 : c⁻¹ * ((c * B.ω₀ - (gg : ℂ) * δ * c * a₀) / 2) = (B.ω₀ - (gg : ℂ) * δ * a₀) / 2`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1]`.
+
+Conclude with `hωB`. Establish `hn2 : c * B.ω₀ / 2 ∉ (Formalism.L2.Th1.F.scalePair B.L c hc).lattice`. Rewrite using `[(Formalism.L2.Th1.F.homogeneity _ c hc).1]`. Establish `e1 : c⁻¹ * (c * B.ω₀ / 2) = B.ω₀ / 2`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[e1]`. Conclude with `Base.half_not_mem B`. Establish `hiso2 : IsIsom (matH (blk4 (((Complex.normSq c : ℝ) : ℂ)⁻¹ • hOne B.L D.what₂.Tau))) (stdH (Formalism.L2.Th1.F.scalePair B.L c hc) (Fin 4 × D.what₂.Tau)) (g₁ : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ))`. Introduce `x y`. Rewrite using `[gcm_stdH_scale, blockFour_smul, gcm_matH_scale]`.
+
+Use `hiso (c⁻¹ • x) (c⁻¹ • y)` as an intermediate fact. Rewrite `this` using `[map_smul (g₁ : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) c⁻¹ x, map_smul (g₁ : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) c⁻¹ y]`. Conclude with `this`. Establish `hsd2 : IsSelfDual (matH (((Complex.normSq c : ℝ) : ℂ)⁻¹ • hOne B.L D.what₂.Tau)) (B.lamM.map (DistribSMul.toAddMonoidHom (D.what₂.Tau → ℂ) c))` using `by show Formalism.L2.Th1.H.dualLat _ _ = _`. Rewrite using `[gcm_dualLat_scale hc hH', hsd]`.
+
+Establish `hst2 : ∀ x ∈ B.lamM.map (DistribSMul.toAddMonoidHom (D.what₂.Tau → ℂ) c), Formalism.L2.Th1.F.cmTheta b₀ D.host.d • x ∈ B.lamM.map (DistribSMul.toAddMonoidHom (D.what₂.Tau → ℂ) c)`. Introduce `x hx`. Rewrite `hx`, the goal using `[gcm_mem_map_smul hc]`. Rewrite using `[smul_comm]`. Conclude with `hst _ hx`.
+
+Establish `j1 : relIdx (stdLat (Formalism.L2.Th1.F.scalePair B.L c hc) (Fin 4 × D.what₂.Tau)) (imgLat (g₁ : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) (pow4 (B.lamM.map (DistribSMul.toAddMonoidHom (D.what₂.Tau → ℂ) c)))) = relIdx (stdLat B.L (Fin 4 × D.what₂.Tau)) (imgLat (g …`. Rewrite using `[gcm_stdLat_scale, gcm_imgLat_scale _ hc, gcm_relIdx_map_smul hc]`. Establish `j2 : relIdx (imgLat (g₁ : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] (Fin 4 × D.what₂.Tau → ℂ)) (pow4 (B.lamM.map (DistribSMul.toAddMonoidHom (D.what₂.Tau → ℂ) c)))) (stdLat (Formalism.L2.Th1.F.scalePair B.L c hc) (Fin 4 × D.what₂.Tau)) = relIdx (imgLat (g₁ : (Fin 4 × D.what₂.Tau → ℂ) →ₗ[ℂ] …`. Rewrite using `[gcm_stdLat_scale, gcm_imgLat_scale _ hc, gcm_relIdx_map_smul hc]`. Establish `S2` using `MMScale.stdData_cm ha hd (mul_ne_zero hl hc) hcm hL2 hω2 hn2 _ _ g₁ hiso2 hsd2 hst2 (j1 ▸ i1) (j2 ▸ i2)`.
+
+Establish `hspec` using `B.thMM_spec (B.stdOK hcc hδ)`. Establish `hmem : B.thMM ∈ Th (matH (hOne B.L D.what₂.Tau)) (alphaQ (Real.sqrt D.host.d / 2) (matH (hOne B.L D.what₂.Tau))) B.lamM` using `hspec.1`. Establish `hmem2 : (fun x => B.thMM (c⁻¹ • x)) ∈ Th (matH (((Complex.normSq c : ℝ) : ℂ)⁻¹ • hOne B.L D.what₂.Tau)) (alphaQ (Real.sqrt D.host.d / 2) (matH (((Complex.normSq c : ℝ) : ℂ)⁻¹ • hOne B.L D.what₂.Tau))) (B.lamM.map (DistribSMul.toAddMonoidHom (D.what₂.Tau → ℂ) c))`. Use `⟨fun z _ => ?_, fun x hx z => ?_⟩` and prove the remaining obligations. Establish `hlin : AnalyticAt ℂ (fun w : D.what₂.Tau → ℂ => c⁻¹ • w) z` using `(analyticAt_id (𝕜 := ℂ)).const_smul (c := c⁻¹)`.
+
+Conclude with `AnalyticAt.comp (f := fun w : D.what₂.Tau → ℂ => c⁻¹ • w) (hmem.1 (c⁻¹ • z) (Set.mem_univ _)) hlin`. Use `show alphaQ _ (matH _) x * Formalism.L2.Th1.H.opU (matH _) x (fun w => B.thMM (c⁻¹ • w)) z = B.thMM (c⁻¹ • z)`. Rewrite using `[gcm_alphaQ_scale hH', gcm_opU_scale hH']`. Conclude with `hmem.2 _ ((gcm_mem_map_smul hc B.lamM x).1 hx) _`. Establish `hF1` using `(Formalism.L2.Th1.H.product_theta_mem' _ B.ω₀ (Fin 4 × D.what₂.Tau) S1.per S1.half _ S1.betaStd).1.2`.
+
+Establish `hten2 : tens4 (fun x => B.thMM (c⁻¹ • x)) = e • kernel4 (Formalism.L2.Th1.F.scalePair B.L c hc) (c * B.ω₀) (B.lamM.map (DistribSMul.toAddMonoidHom (D.what₂.Tau → ℂ) c)) (alphaQ (Real.sqrt D.host.d / 2) (stdH (Formalism.L2.Th1.F.scalePair B.L c hc) (Fin 4 × D.what₂.Tau))) g₁`. Use function extensionality and compare the values at `z`. Establish `ht0 : tens4 (fun x => B.thMM (c⁻¹ • x)) z = tens4 B.thMM (c⁻¹ • z)` using `rfl`. Rewrite using `[ht0, hten, Pi.smul_apply, Pi.smul_apply, gcm_kernel4_scale _ c hc _ _ B.lamM g₁ S1.betaSemi hF1 i1]`. Both sides reduce to the same expression.
+
+Establish `ht2 : (N : ℂ) • (c • t) ∈ B.lamM.map (DistribSMul.toAddMonoidHom (D.what₂.Tau → ℂ) c)`. Rewrite using `[gcm_mem_map_smul hc, smul_comm, inv_smul_smul₀ hc]`. Conclude with `ht`. Establish `hK` using `Formalism.L2.Th1.Top.local_kappa_shape_holds p h5 _ ι g2 g3 ε s2 hLT hg2 hg3 hdisc hε hth (c * B.ω₀) S2.per S2.half D.what₂.Tau _ _ _ _ g₁ S2 (by rw [j1]; exact hndvd) e he _ hmem2 hten2 (c • t) N hN0 hpN ht2 σ γ B' hFr`. Take `⟨σ0, F, -, -, -, -, -, hF, -⟩` from `Formalism.L2.Th1.Top.InhA.joint p h5 1 0 0`.
+
+Establish `hInt` using `Formalism.L2.Th1.Top.kappa_integral p h5 g2 g3 ε s2 hg2 hg3 hε hth σ hσ F hF hN D.what₂.Tau _ γ hFr.1 hK`. Establish `hGan : AnalyticAt ℂ (Formalism.L2.Th1.H.opU (matH (hOne B.L D.what₂.Tau)) t B.thMM) 0` using `Formalism.L2.Th1.H.opUAnalytic (D.what₂.Tau → ℂ) (matH (hOne B.L D.what₂.Tau)) t B.thMM hmem.1 0 (Set.mem_univ _)`. Establish `hfun : Formalism.L2.Th1.H.opU (matH (((Complex.normSq c : ℝ) : ℂ)⁻¹ • hOne B.L D.what₂.Tau)) (c • t) (fun x => B.thMM (c⁻¹ • x)) = fun z => Formalism.L2.Th1.H.opU (matH (hOne B.L D.what₂.Tau)) t B.thMM (c⁻¹ • z)`. Use function extensionality and compare the values at `z`. Rewrite using `[gcm_opU_scale hH', inv_smul_smul₀ hc]`.
+
+Establish `hread : Formalism.L2.Th1.Top.thetaH p ι B' (((Complex.normSq c : ℝ) : ℂ)⁻¹ • hOne B.L D.what₂.Tau) (c • t) (fun x => B.thMM (c⁻¹ • x)) = ReadTh1 p (fun τ j => (ι c)⁻¹ * B' τ j) (MvPowerSeries.map (ι : ℂ →+* ℂ_[p]) (Formalism.L2.Th1.H.taylorMv (Formalism.L2.Th1.H.opU (matH (hOne B …`. Unfold `Formalism.L2.Th1.Top.thetaH ReadTh1`. Rewrite using `[hfun, MMScale.thetaU_smul (ι : ℂ →+* ℂ_[p]) (Formalism.InvariantFactorPaths.G7.FormalGroupLaws.constantCoeff_lgF p (by omega)) B' c⁻¹ _ hGan]`. Simplify using `only [RingEquiv.coe_toRingHom, map_inv₀]`. Rewrite using `[← hread]`.
+
+Conclude with `hInt`.
+-/
 theorem scale_integrality : ScaleInt := by
   intro D cc δ B hcc hδ p _ h5 hj ι c hc g2 g3 ε s2 hLT hg2 hg3 hdisc hε hth g₁ e hI σ hσ hN γ B' hFr t N hN0 hpN ht
   obtain ⟨hiso, hndvd, i2, he, hten⟩ := hI

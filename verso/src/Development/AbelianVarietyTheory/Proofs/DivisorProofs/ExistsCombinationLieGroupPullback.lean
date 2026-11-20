@@ -22,6 +22,9 @@ open GlobalTheory.HTLat.OmegaRank
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X : Scheme.{0}}
   {t : SAB H X} {p : ℕ} [Fact p.Prime] [StarRing (𝓞 E)] {P : PtP E p}
 
+/- English proof (translation)
+The claim follows from `| 0, _, _, _, _ => Corr.one | g + 1, U, xb, xG, h => by rw [lieComb_succ, lieComb_succ] exact Corr.mul (Corr.comp (dualScale (U 0)) (h 0)) (corr_lieComb (Fin.tail U) (Fin.tail xb) (Fin.tail xG) fun b => h b.succ)`.
+-/
 theorem corr_lieComb : ∀ {g : ℕ} (U : Fin g → 𝓞_ℂ_[p]) (xb : Fin g → LieG P.Gt) (xG : Fin g → LieG P.G),
     (∀ b, Corr P (xb b).1 (xG b).1) → Corr P (lieComb P.Gt U xb).1 (lieComb P.G U xG).1
   | 0, _, _, _, _ => Corr.one
@@ -32,6 +35,9 @@ theorem corr_lieComb : ∀ {g : ℕ} (U : Fin g → 𝓞_ℂ_[p]) (xb : Fin g �
 
 variable {yb : Sp 𝓞_ℂ_[p] ⟶ X} {π : P.G.left ⟶ t.G.left}
 
+/- English proof (translation)
+The claim follows from `| 0, U, xG => by rw [List.ofFn_zero, List.prod_nil, lieComb_zero] exact grpPull_one hP _ | g + 1, U, xG => by rw [List.ofFn_succ, List.prod_cons, lieComb_succ] exact hP.2 _ _ _ _ _ rfl (prod_push hP (Fin.tail U) (Fin.tail xG))`.
+-/
 theorem prod_push (hP : IsGrpPullback P.G t.G yb π) :
     ∀ {g : ℕ} (U : Fin g → 𝓞_ℂ_[p]) (xG : Fin g → LieG P.G),
     (List.ofFn fun i => pushPt hP.1.w (AvDefs.lieScale P.G (U i) (xG i)).1).prod.left =
@@ -43,6 +49,9 @@ theorem prod_push (hP : IsGrpPullback P.G t.G yb π) :
     rw [List.ofFn_succ, List.prod_cons, lieComb_succ]
     exact hP.2 _ _ _ _ _ rfl (prod_push hP (Fin.tail U) (Fin.tail xG))
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t p _ _ P yb π hP g e xb hT U`. Use `choose xG hc he using hT`. Use `⟨(lieComb P.G U xG).1.left ≫ π, ⟨fun i => pushPt hP.1.w (AvDefs.lieScale P.G (U i) (xG i)).1, fun i => ?_, prod_push hP U xG⟩, lieComb P.G U xG, corr_lieComb U xb xG hc, rfl⟩` and prove the remaining obligations. Rewrite using `[← he i]`. Both sides reduce to the same expression.
+-/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0})
     (t : SAB H X) (p : ℕ) [Fact p.Prime] [StarRing (𝓞 E)] (P : PtP E p) (yb : Sp 𝓞_ℂ_[p] ⟶ X) (π : P.G.left ⟶ t.G.left),
     IsGrpPullback P.G t.G yb π → ∀ (g : ℕ) (e : Fin g → (Sp (DualNumber 𝓞_ℂ_[p]) ⟶ t.G.left)) (xb : Fin g → LieG P.Gt),

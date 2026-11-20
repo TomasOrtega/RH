@@ -7,6 +7,11 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 
 namespace GlobalTheory.CompanionTheory.SerreFin
 
+/- English proof (translation)
+Establish `hk : LinearMap.ker g = LinearMap.range f` using `LinearMap.exact_iff.1 h`. Use `haveI : Module.Finite R (LinearMap.ker g) := by`. Rewrite using `[hk]`. Conclude with `Module.Finite.range f`. Use `haveI : IsNoetherian R M₃ := isNoetherian_of_isNoetherianRing_of_finite R M₃`.
+
+Use `haveI : Module.Finite R (M₂ ⧸ LinearMap.ker g) := Module.Finite.equiv g.quotKerEquivRange.symm`. Conclude with `Module.Finite.of_submodule_quotient (LinearMap.ker g)`.
+-/
 theorem finite_mid {R : Type} [CommRing R] [IsNoetherianRing R] {M₁ M₂ M₃ : Type*}
     [AddCommGroup M₁] [Module R M₁] [AddCommGroup M₂] [Module R M₂] [AddCommGroup M₃] [Module R M₃]
     (f : M₁ →ₗ[R] M₂) (g : M₂ →ₗ[R] M₃) (h : Function.Exact f g)
@@ -19,6 +24,9 @@ theorem finite_mid {R : Type} [CommRing R] [IsNoetherianRing R] {M₁ M₂ M₃ 
   haveI : Module.Finite R (M₂ ⧸ LinearMap.ker g) := Module.Finite.equiv g.quotKerEquivRange.symm
   exact Module.Finite.of_submodule_quotient (LinearMap.ker g)
 
+/- English proof (translation)
+Introduce `R _ _`. Use `⟨⟨fun M _ _ => Module.Finite R M, fun M _ _ _ => ?_, ?_⟩, fun M _ _ => Iff.rfl⟩` and prove the remaining obligations. Conclude with `Module.Finite.of_surjective (0 : (Fin 0 → R) →ₗ[R] M) (fun x => ⟨0, Subsingleton.elim _ _⟩)`. Introduce `M₁ M₂ M₃ _ _ _ _ _ _ f g h h₁ h₃`. Conclude with `finite_mid f g h`.
+-/
 theorem exists_serre_finite : ∀ (R : Type) [CommRing R] [IsNoetherianRing R], ∃ 𝒮 : Serre.{1} R,
     ∀ (M : Type 1) [AddCommGroup M] [Module R M], 𝒮.P M ↔ Module.Finite R M := by
   intro R _ _

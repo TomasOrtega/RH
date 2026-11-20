@@ -13,6 +13,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace GlobalTheory.DecGalois
 
+/- English proof (translation)
+Introduce `p _ F Ω _ _ _ _ _ A j hj`. Set `K : Formalism.BasicNotions.Loc.FinExt p` to `⟨IntermediateField.adjoin ℚ_[p] (Set.range fun x : F => j (algebraMap F Ω x)), GlobalTheory.PlaceBridge.finiteDimensional_adjoin_range (j.comp (algebraMap F Ω))⟩`. Establish `hK` using `K.2`. Take `⟨e, he, he', hec⟩` from `GlobalTheory.PlaceBridge.exists_mulEquiv (E := F) hj K rfl`. Take `⟨hf, hf'⟩` from `GlobalTheory.fixingSubgroupEquiv_bicontinuous ℚ_[p] (PadicAlgCl p) K.1`.
+
+Set `e2 : ↥(A.decompositionSubgroup F) ≃* (PadicAlgCl p ≃ₐ[↥K.1] PadicAlgCl p)` to `e.trans (IntermediateField.fixingSubgroupEquiv K.1)`. Use `⟨{ e2 with continuous_toFun := hf.comp he, continuous_invFun := he'.comp hf' }, fun g x => ?_⟩` and prove the remaining obligations. Conclude with `hec g x`.
+-/
 theorem exists_continuousMulEquiv : ∀ (p : ℕ) [Fact p.Prime] (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] (A : ValuationSubring Ω) (j : Ω →+* PadicAlgCl p), (∀ x, x ∈ A ↔ ‖j x‖ ≤ 1) →
     ∃ i : ↥(A.decompositionSubgroup F) ≃ₜ*

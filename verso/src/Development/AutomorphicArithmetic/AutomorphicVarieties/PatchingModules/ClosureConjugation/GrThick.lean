@@ -3,6 +3,31 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Cl
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.CA UpperTheory.V.Pa Polynomial
 open scoped TensorProduct
 
+/- English proof (translation)
+Use `set J := TwoSidedIdeal.span (MonoidAlgebra.mapRingHom Γ ((algebraMap Bh κ).comp (algebraMap B Bh)) '' I) with hJ`. Set `π : MonoidAlgebra κ Γ →+* J.ringCon.Quotient` to `J.ringCon.mk'`. Establish `hπ : ∀ z, z ∈ J → π z = 0`. Introduce `z hz`. Rewrite using `[← map_zero π]`.
+
+Conclude with `(RingCon.eq _).2 ((TwoSidedIdeal.mem_iff _ _).1 hz)`. Set `ψ0 : MonoidAlgebra Bh Γ →+* J.ringCon.Quotient` to `π.comp (MonoidAlgebra.mapRingHom Γ (algebraMap Bh κ))`. Establish `hk : RingHom.ker ι.toRingHom ≤ RingHom.ker ψ0`. Introduce `y hy`. Establish `h1` using `ker y hy`.
+
+Establish `h2 : TwoSidedIdeal.span (MonoidAlgebra.mapRingHom Γ (algebraMap B Bh) '' I) ≤ TwoSidedIdeal.ker ψ0`. Rewrite using `[TwoSidedIdeal.span_le]`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Rewrite using `[SetLike.mem_coe, TwoSidedIdeal.mem_ker]`. Apply `hπ` to reduce the goal to its premises.
+
+Apply `TwoSidedIdeal.subset_span` to reduce the goal to its premises. Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Simplify using the standard rewrite rules. Conclude with `(TwoSidedIdeal.mem_ker _).1 (h2 h1)`.
+
+Set `ψ : E →+* J.ringCon.Quotient` to `ι.toRingHom.liftOfSurjective surj ⟨ψ0, hk⟩`. Establish `hψ : ∀ y, ψ (ι y) = ψ0 y` using `fun y => RingHom.liftOfSurjective_comp_apply ι.toRingHom surj ⟨ψ0, hk⟩ y`. Set `ψa : E →ₐ[Bh] J.ringCon.Quotient` to `{ ψ with commutes' := fun b => by`. Express the relevant statement in the definitionally equal form `ψ (algebraMap Bh E b) = π (algebraMap Bh (MonoidAlgebra κ Γ) b)`. Rewrite using `[← ι.commutes, hψ]`.
+
+Express the relevant statement in the definitionally equal form `π _ = _`. Use `congr 1`. Simplify using `[MonoidAlgebra.coe_algebraMap] }`. Set `ka : κ →ₐ[Bh] J.ringCon.Quotient` to `{ π.comp (algebraMap κ (MonoidAlgebra κ Γ)) with commutes' := fun b => by`. Express the relevant statement in the definitionally equal form `π _ = π (algebraMap Bh (MonoidAlgebra κ Γ) b)`.
+
+Use `congr 1 }`. Establish `hc : ∀ a y, Commute (ka a) (ψa y)`. Introduce `a y`. Take `⟨y, rfl⟩` from `surj y`. Express the relevant statement in the definitionally equal form `Commute (π (algebraMap κ _ a)) (ψ (ι y))`.
+
+Rewrite using `[hψ]`. Conclude with `Commute.map (Algebra.commutes a _) π`. Set `Φ` to `Algebra.TensorProduct.lift ka ψa hc`. Use `RingHom.isSemisimpleRing_of_surjective Φ.toRingHom ?_` and prove the remaining obligations. Introduce `w`.
+
+Take `⟨w, rfl⟩ : ∃ z, π z = w` from `J.ringCon.mk'_surjective w`. Proceed by induction on `w using MonoidAlgebra.induction_linear with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add u v hu hv`. Take `⟨a, ha⟩` from `hu`.
+
+Take `⟨b, hb⟩` from `hv`. Conclude with `⟨a + b, by rw [map_add, map_add, ha, hb]⟩`. Consider the case `single m a`. Use `⟨a ⊗ₜ ι (MonoidAlgebra.single m 1), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Φ _ = _`.
+
+Rewrite using `[Algebra.TensorProduct.lift_tmul]`. Express the relevant statement in the definitionally equal form `π (algebraMap κ _ a) * ψ (ι _) = _`. Rewrite using `[hψ]`. Express the relevant statement in the definitionally equal form `π _ * π _ = _`. Rewrite using `[← map_mul]`.
+
+Use `congr 1`. Simplify using `[MonoidAlgebra.coe_algebraMap, MonoidAlgebra.single_mul_single]`.
+-/
 private theorem quot_ss {B Bh E κ Γ : Type} [CommRing B] [CommRing Bh] [Algebra B Bh] [Ring E] [Algebra Bh E]
     [Field κ] [Algebra Bh κ] [Group Γ] (I : Set (MonoidAlgebra B Γ))
     (ι : MonoidAlgebra Bh Γ →ₐ[Bh] E) (surj : Function.Surjective ι)
@@ -74,6 +99,11 @@ private theorem quot_ss {B Bh E κ Γ : Type} [CommRing B] [CommRing Bh] [Algebr
     congr 1
     simp [MonoidAlgebra.coe_algebraMap, MonoidAlgebra.single_mul_single]
 
+/- English proof (translation)
+Introduce `l _ L G G0 h n x B _ _ D I Bh _ _ _ _ e H ep g Q _ hQ s hs`. Take `⟨κ, _, f, hf, hns⟩` from `hQ`. Assume the negation of the conclusion as `hsQ`. Use `letI : Algebra Bh κ := f.toAlgebra`. Establish `hs0 : algebraMap Bh κ s ≠ 0` using `fun h0 => hsQ (hf ▸ (RingHom.mem_ker.2 h0 : s ∈ RingHom.ker f))`.
+
+Use `haveI := UpperTheory.V.Pa.gr_ss g κ s hs0 hs`. Conclude with `hns (quot_ss (κ := κ) I H.ι H.surj (fun y hy => (H.ker y).1 hy))`.
+-/
 theorem UpperTheory.V.Pa.gr_thick :
     ∀ {l : ℕ} [Fact l.Prime] {L : Loc} {G G0 : Glob l L} {h : G.Hom G0} {n : ℕ} {x : NP G0.frame n} {B : Type} [CommRing B] [IsLocalRing B] {D : GDet n B G.G₀} {I : Set (MonoidAlgebra B G.G₀)} {Bh : Type} [CommRing Bh] [IsLocalRing Bh] [Algebra B Bh] [Algebra Bh (FractionRing x.A)] {e : G.G₀ →* Bˣ} (H : Hat h x D I Bh e) {ep : Fin n → H.E} (g : GrAlg H.T n x.a H.r ep), ∀ Q : Ideal Bh, Q.IsPrime → NonSS I (algebraMap B Bh) Q → Module.annihilator Bh g.N ≤ Q := by
   intro l _ L G G0 h n x B _ _ D I Bh _ _ _ _ e H ep g Q _ hQ s hs

@@ -5,6 +5,17 @@ open GlobalTheory.UnitLemma Polynomial
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `haveI : IsArtinianRing B.A := IsArtinianRing.of_finite K.E B.A`. Set `e` to `IsArtinianRing.equivPi B.A`. Set `v : (I : MaximalSpectrum B.A) → B.A ⧸ I.asIdeal` to `fun I => if h : I = m then h ▸ z else 1`. Establish `hv : IsUnit v`. Rewrite using `[Pi.isUnit_iff]`.
+
+Introduce `I`. Use `letI := Ideal.Quotient.field I.asIdeal`. Rewrite using `[isUnit_iff_ne_zero]`. Distinguish the cases in `h : I = m`. Substitute `h` using the available equality.
+
+Simplify `hz` using `[v]`. Simplify using `[v, h]`. Establish `hy : IsUnit (e.symm v)` using `hv.map e.symm`. Use `⟨hy.unit, ?_, ?_⟩` and prove the remaining obligations. Use `IsArtinianRing.equivPi_apply B.A (e.symm v) m` as an intermediate fact.
+
+Rewrite `this` using `[AlgEquiv.apply_symm_apply]`. Simplify using `only [IsUnit.unit_spec]`. Rewrite using `[← this]`. Simplify using `[v]`. Introduce `m' hm'`.
+
+Use `IsArtinianRing.equivPi_apply B.A (e.symm v) m'` as an intermediate fact. Rewrite `this` using `[AlgEquiv.apply_symm_apply]`. Simplify using `only [IsUnit.unit_spec]`. Rewrite using `[← this]`. Simplify using `[v, hm']`.
+-/
 theorem UnitLemma.exists_unit_residue (K : UQ) (B : InvAlg K) (hB : IsReduced B.A) (m : MaximalSpectrum B.A)
     (z : B.A ⧸ m.asIdeal) (hz : z ≠ 0) :
     ∃ y : B.Aˣ, Ideal.Quotient.mk m.asIdeal (y : B.A) = z ∧
@@ -34,6 +45,9 @@ theorem UnitLemma.exists_unit_residue (K : UQ) (B : InvAlg K) (hB : IsReduced B.
     simp only [IsUnit.unit_spec]
     rw [← this]; simp [v, hm']
 
+/- English proof (translation)
+Introduce `K B hB m z hz` and use `UnitLemma.exists_unit_residue K B hB m z hz`.
+-/
 theorem UnitLemma.unit_prescribed_residue : ∀ (K : UQ) (B : InvAlg K), IsReduced B.A → ∀ (m : MaximalSpectrum B.A)
     (z : B.A ⧸ m.asIdeal), z ≠ 0 → ∃ y : B.Aˣ, Ideal.Quotient.mk m.asIdeal (y : B.A) = z ∧
       ∀ m' : MaximalSpectrum B.A, m' ≠ m → Ideal.Quotient.mk m'.asIdeal (y : B.A) = 1 :=

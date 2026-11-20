@@ -10,13 +10,25 @@ open GlobalTheory.PhiGam GlobalTheory.IndefiniteRowSideFullHecke
 section Subst
 variable {k : Type} [Field k]
 
+/- English proof (translation)
+Simplify using `[vv]`.
+-/
 theorem vv_eq : vv k = ((PowerSeries.X : k⟦X⟧) : k⸨X⸩) := by simp [vv]
 
+/- English proof (translation)
+Simplify using `[vv]`.
+-/
 theorem vv_ne : vv k ≠ 0 := by simp [vv]
 
+/- English proof (translation)
+Rewrite using `[vv, ← RatFunc.single_zpow]`.
+-/
 theorem single_eq (m : ℤ) : (HahnSeries.single m 1 : k⸨X⸩) = vv k ^ m := by
   rw [vv, ← RatFunc.single_zpow]
 
+/- English proof (translation)
+Introduce `e` and use `h (HahnSeries.ofPowerSeries_injective (e.trans (map_zero _).symm))`.
+-/
 theorem coe_ne {f : k⟦X⟧} (h : f ≠ 0) : (f : k⸨X⸩) ≠ 0 := fun e =>
   h (HahnSeries.ofPowerSeries_injective (e.trans (map_zero _).symm))
 
@@ -31,6 +43,11 @@ def substHom (f : k⟦X⟧) (h0 : PowerSeries.constantCoeff f = 0) (h1 : f ≠ 0
       refine pow_ne_zero _ ?_
       simpa [PowerSeries.substAlgHom_X] using coe_ne h1)
 
+/- English proof (translation)
+Use `IsLocalization.lift_eq (S := k⸨X⸩) (M := Submonoid.powers (PowerSeries.X : k⟦X⟧)) (g := (HahnSeries.ofPowerSeries ℤ k).comp (PowerSeries.substAlgHom (PowerSeries.HasSubst.of_constantCoeff_zero' h0) : k⟦X⟧ →ₐ[k] k⟦X⟧).toRingHom) (by` as an intermediate fact. Introduce and unpack `⟨_, n, rfl⟩`. Use `IsUnit.mk0 _ ?_` and prove the remaining obligations. Simplify using `only [map_pow]`. Use `pow_ne_zero _ ?_` and prove the remaining obligations.
+
+Simplify `coe_ne h1) a` using `[PowerSeries.substAlgHom_X]`. Use `this.trans ?_` and prove the remaining obligations. Simplify using `[PowerSeries.coe_substAlgHom]`.
+-/
 theorem substHom_coe (f : k⟦X⟧) (h0 : PowerSeries.constantCoeff f = 0) (h1 : f ≠ 0) (a : k⟦X⟧) :
     substHom f h0 h1 (a : k⸨X⸩) = ((a.subst f : k⟦X⟧) : k⸨X⸩) := by
   have := IsLocalization.lift_eq (S := k⸨X⸩) (M := Submonoid.powers (PowerSeries.X : k⟦X⟧))
@@ -45,15 +62,24 @@ theorem substHom_coe (f : k⟦X⟧) (h0 : PowerSeries.constantCoeff f = 0) (h1 :
   refine this.trans ?_
   simp [PowerSeries.coe_substAlgHom]
 
+/- English proof (translation)
+Use `conv_rhs => rw [← LaurentSeries.single_order_mul_powerSeriesPart x]`. Rewrite using `[map_mul, substHom_coe, single_eq, map_zpow₀, vv_eq, substHom_coe, PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero' h0), FrobeniusBinomialReduction.substL]`.
+-/
 theorem substL_eq (f : k⟦X⟧) (h0 : PowerSeries.constantCoeff f = 0) (h1 : f ≠ 0) (x : k⸨X⸩) :
     FrobeniusBinomialReduction.substL f x = substHom f h0 h1 x := by
   conv_rhs => rw [← LaurentSeries.single_order_mul_powerSeriesPart x]
   rw [map_mul, substHom_coe, single_eq, map_zpow₀, vv_eq, substHom_coe,
     PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero' h0), FrobeniusBinomialReduction.substL]
 
+/- English proof (translation)
+The claim follows from `IsLocalization.ringHom_ext (Submonoid.powers (PowerSeries.X : k⟦X⟧)) (RingHom.ext h)`.
+-/
 theorem hom_ext {F G : k⸨X⸩ →+* k⸨X⸩} (h : ∀ a : k⟦X⟧, F (a : k⸨X⸩) = G (a : k⸨X⸩)) : F = G :=
   IsLocalization.ringHom_ext (Submonoid.powers (PowerSeries.X : k⟦X⟧)) (RingHom.ext h)
 
+/- English proof (translation)
+Take `⟨⟨a, _, n, rfl⟩, h⟩` from `IsLocalization.surj (Submonoid.powers (PowerSeries.X : k⟦X⟧)) x`. Use `⟨n, a, ?_⟩` and prove the remaining obligations. Simplify `h` using `[vv_eq]`.
+-/
 theorem exists_mul_pow (x : k⸨X⸩) : ∃ (n : ℕ) (a : k⟦X⟧), x * vv k ^ n = (a : k⸨X⸩) := by
   obtain ⟨⟨a, _, n, rfl⟩, h⟩ := IsLocalization.surj (Submonoid.powers (PowerSeries.X : k⟦X⟧)) x
   refine ⟨n, a, ?_⟩
@@ -64,11 +90,17 @@ end Subst
 section Frob
 variable (k : Type) [Field k] (l : ℕ) [hl : Fact l.Prime]
 
+/- English proof (translation)
+Unfold `OnePlusPowerCharacters.phiPi`. Use `erw [HahnSeries.embDomainRingHom_apply]`. Conclude with `HahnSeries.embDomain_coeff (a := q)`.
+-/
 theorem phiPi_coeff_mul (x : k⸨X⸩) (q : ℤ) : (OnePlusPowerCharacters.phiPi k l x).coeff (l * q) = x.coeff q := by
   unfold OnePlusPowerCharacters.phiPi
   erw [HahnSeries.embDomainRingHom_apply]
   exact HahnSeries.embDomain_coeff (a := q)
 
+/- English proof (translation)
+Unfold `OnePlusPowerCharacters.phiPi`. Use `erw [HahnSeries.embDomainRingHom_apply]`. Use `HahnSeries.embDomain_of_notMem_range ?_` and prove the remaining obligations. Introduce and unpack `⟨q, rfl⟩`. Conclude with `h ⟨q, rfl⟩`.
+-/
 theorem phiPi_coeff_not (x : k⸨X⸩) (n : ℤ) (h : ¬ (l : ℤ) ∣ n) : (OnePlusPowerCharacters.phiPi k l x).coeff n = 0 := by
   unfold OnePlusPowerCharacters.phiPi
   erw [HahnSeries.embDomainRingHom_apply]
@@ -76,9 +108,23 @@ theorem phiPi_coeff_not (x : k⸨X⸩) (n : ℤ) (h : ¬ (l : ℤ) ∣ n) : (One
   rintro ⟨q, rfl⟩
   exact h ⟨q, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[PowerSeries.coeff_coe, if_pos h]`.
+-/
 theorem coeff_neg (a : k⟦X⟧) {n : ℤ} (h : n < 0) : (a : k⸨X⸩).coeff n = 0 := by
   rw [PowerSeries.coeff_coe, if_pos h]
 
+/- English proof (translation)
+Establish `hp` using `hl.out.ne_zero`. Establish `h0 : PowerSeries.constantCoeff ((PowerSeries.X : k⟦X⟧) ^ l) = 0` using `by simp [hp]`. Establish `h1 : ((PowerSeries.X : k⟦X⟧) ^ l) ≠ 0` using `pow_ne_zero _ PowerSeries.X_ne_zero`. Rewrite using `[FrobeniusBinomialReduction.frobπ, substL_eq _ h0 h1]`. Use `congr 1`.
+
+Use `hom_ext fun a => ?_` and prove the remaining obligations. Rewrite using `[substHom_coe]`. Use extensionality with `n`. Establish `hpos : (0 : ℤ) < l` using `by exact_mod_cast hl.out.pos`. Distinguish the cases in `hd : (l : ℤ) ∣ n`.
+
+Take `⟨q, rfl⟩` from `hd`. Rewrite using `[phiPi_coeff_mul]`. Break down `lt_or_ge q 0 with hq | hq` into its components or cases. Rewrite using `[coeff_neg k a hq, coeff_neg k _ (mul_neg_of_pos_of_neg hpos hq)]`. Take `⟨m, rfl⟩` from `Int.eq_ofNat_of_zero_le hq`.
+
+Rewrite using `[← Nat.cast_mul, LaurentSeries.coeff_coe_powerSeries, LaurentSeries.coeff_coe_powerSeries, PowerSeries.coeff_subst_X_pow hp, if_pos (dvd_mul_right _ _), Nat.mul_div_cancel_left _ hl.out.pos]`. Simplify using the standard rewrite rules. Rewrite using `[phiPi_coeff_not k l _ _ hd]`. Break down `lt_or_ge n 0 with hq | hq` into its components or cases. Rewrite using `[coeff_neg k _ hq]`.
+
+Take `⟨m, rfl⟩` from `Int.eq_ofNat_of_zero_le hq`. Rewrite using `[LaurentSeries.coeff_coe_powerSeries, PowerSeries.coeff_subst_X_pow hp, if_neg]`. Conclude with `fun h => hd (Int.natCast_dvd_natCast.2 h)`.
+-/
 theorem phiPi_eq (x : k⸨X⸩) : OnePlusPowerCharacters.phiPi k l x = FrobeniusBinomialReduction.frobπ k l x := by
   have hp := hl.out.ne_zero
   have h0 : PowerSeries.constantCoeff ((PowerSeries.X : k⟦X⟧) ^ l) = 0 := by simp [hp]
@@ -107,6 +153,15 @@ theorem phiPi_eq (x : k⸨X⸩) : OnePlusPowerCharacters.phiPi k l x = Frobenius
 
 def assembleX (y : Fin l → k⸨X⸩) : k⸨X⸩ := ∑ j : Fin l, vv k ^ (j : ℕ) * OnePlusPowerCharacters.phiPi k l (y j)
 
+/- English proof (translation)
+Establish `hv : ∀ (i : ℕ) (z : k⸨X⸩) (n : ℤ), (vv k ^ i * z).coeff n = z.coeff (n - i)`. Introduce `i z n`. Rewrite using `[← zpow_natCast, ← single_eq]`. Use `conv_lhs => rw [← sub_add_cancel n i]`. Rewrite using `[HahnSeries.coeff_single_mul_add, one_mul]`.
+
+Rewrite using `[assembleX, HahnSeries.coeff_sum, Finset.sum_eq_single j]`. Rewrite using `[hv, add_sub_cancel_right, phiPi_coeff_mul]`. Introduce `i _ hij`. Rewrite using `[hv, phiPi_coeff_not]`. Introduce `hd`.
+
+Rewrite `hd` using `[add_sub_assoc]`. Establish `h2 : (l : ℤ) ∣ ((j : ℕ) : ℤ) - (i : ℕ)` using `(dvd_add_right (dvd_mul_right _ _)).1 hd`. Establish `h3` using `Int.eq_zero_of_abs_lt_dvd h2 (by`. Use `i.2` as an intermediate fact. Use `j.2` as an intermediate fact.
+
+Apply the tactic sequence `rw [abs_lt]; constructor <;> omega)`. Conclude with `hij (Fin.ext (by omega))`. Simplify using the standard rewrite rules.
+-/
 theorem assembleX_coeff (y : Fin l → k⸨X⸩) (q : ℤ) (j : Fin l) :
     (assembleX k l y).coeff (l * q + (j : ℕ)) = (y j).coeff q := by
   have hv : ∀ (i : ℕ) (z : k⸨X⸩) (n : ℤ), (vv k ^ i * z).coeff n = z.coeff (n - i) := by
@@ -127,6 +182,19 @@ theorem assembleX_coeff (y : Fin l → k⸨X⸩) (q : ℤ) (j : Fin l) :
     exact hij (Fin.ext (by omega))
   · simp
 
+/- English proof (translation)
+Establish `hpos : (0 : ℤ) < l` using `by exact_mod_cast hl.out.pos`. Prove the components needed by the constructor for the conclusion. Introduce `y z h`. Use function extensionality and compare the values at `j`. Use extensionality with `q`.
+
+Rewrite using `[← assembleX_coeff, h, assembleX_coeff]`. Introduce `x`. Establish `hb : ∀ j : Fin l, BddBelow (Function.support fun q : ℤ => x.coeff (l * q + (j : ℕ)))`. Introduce `j`. Use `⟨-|x.order| - 1, fun q hq => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : x.order ≤ l * q + (j : ℕ)` using `HahnSeries.order_le_of_coeff_ne_zero hq`. Establish `h2 : ((j : ℕ) : ℤ) < l` using `by exact_mod_cast j.2`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `h3` using `neg_abs_le x.order`.
+
+Establish `h4` using `abs_nonneg x.order`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨fun j => HahnSeries.ofSuppBddBelow _ (hb j), ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Establish `hn : n = l * (n / l) + ((⟨(n % l).toNat, by`.
+
+Use `Int.emod_lt_of_pos n hpos; have := Int.emod_nonneg n hpos.ne'; omega⟩ : Fin l) : ℕ) := by` as an intermediate fact. Use `Int.emod_nonneg n hpos.ne'` as an intermediate fact. Simplify using `only [Int.toNat_of_nonneg this]`. Conclude with `(Int.mul_ediv_add_emod n l).symm`. Rewrite using `[hn, assembleX_coeff]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem assembleX_bijective : Function.Bijective (assembleX k l) := by
   have hpos : (0 : ℤ) < l := by exact_mod_cast hl.out.pos
   constructor
@@ -155,6 +223,17 @@ theorem assembleX_bijective : Function.Bijective (assembleX k l) := by
     rw [hn, assembleX_coeff]
     simp
 
+/- English proof (translation)
+Set `T : Matrix (Fin l) (Fin l) k⸨X⸩` to `Matrix.of fun m j => (((j : ℕ).choose m : ℕ) : k⸨X⸩)`. Establish `hdet : T.det = 1`. Rewrite using `[Matrix.det_of_upperTriangular]`. Simplify using `[T]`. Introduce `i j h`.
+
+Simplify using `only [T, Matrix.of_apply]`. Rewrite using `[Nat.choose_eq_zero_of_lt (show (j : ℕ) < i from h), Nat.cast_zero]`. Establish `hT : Function.Bijective T.mulVec` using `⟨Matrix.mulVec_injective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det T).2 (hdet ▸ isUnit_one)), Matrix.mulVec_surjective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det T).2 (hdet ▸ isUnit_one))⟩`. Establish `e : OnePlusPowerCharacters.assemble k l = assembleX k l ∘ T.mulVec`. Use function extensionality and compare the values at `y`.
+
+Simplify using `only [Function.comp, OnePlusPowerCharacters.assemble, assembleX, Matrix.mulVec, dotProduct, map_sum, map_mul, T, Matrix.of_apply, map_natCast, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [← mul_assoc]`. Rewrite using `[← Finset.sum_mul, add_comm, add_pow]`.
+
+Use `congr 1`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun m => vv k ^ m * (((j : ℕ).choose m : ℕ) : k⸨X⸩))]`. Simplify using `only [one_pow, mul_one]`. Use `Finset.sum_subset (Finset.range_subset_range.2 j.2) fun m _ hm => ?_` and prove the remaining obligations. Rewrite using `[Nat.choose_eq_zero_of_lt (by simpa using hm), Nat.cast_zero, mul_zero]`.
+
+Rewrite using `[e]`. Conclude with `(assembleX_bijective k l).comp hT`.
+-/
 theorem assemble_bijective : Function.Bijective (OnePlusPowerCharacters.assemble k l) := by
   let T : Matrix (Fin l) (Fin l) k⸨X⸩ := Matrix.of fun m j => (((j : ℕ).choose m : ℕ) : k⸨X⸩)
   have hdet : T.det = 1 := by
@@ -187,36 +266,62 @@ end Frob
 section Ring
 variable {k : Type} [Field k] {l : ℕ} [hl : Fact l.Prime] [CharP k l]
 
+/- English proof (translation)
+Rewrite using `[map_sub, ← PowerSeries.coeff_zero_eq_constantCoeff_apply, FrobeniusBinomialReduction.binomPow, PowerSeries.coeff_map, PowerSeries.binomialSeries_coeff]`. Simplify using the standard rewrite rules.
+-/
 theorem binom_const (t : ℤ_[l]) : PowerSeries.constantCoeff (FrobeniusBinomialReduction.binomPow k l t - 1) = 0 := by
   rw [map_sub, ← PowerSeries.coeff_zero_eq_constantCoeff_apply, FrobeniusBinomialReduction.binomPow, PowerSeries.coeff_map,
     PowerSeries.binomialSeries_coeff]
   simp
 
+/- English proof (translation)
+Introduce `e`. Use `congrArg (PowerSeries.coeff 1) e` as an intermediate fact. Rewrite `this` using `[map_sub, FrobeniusBinomialReduction.binomPow, PowerSeries.coeff_map, PowerSeries.binomialSeries_coeff]`. Conclude with `h (by simpa [PowerSeries.coeff_one] using this)`.
+-/
 theorem binom_ne (t : ℤ_[l]) (h : FrobeniusBinomialReduction.red k l t ≠ 0) : FrobeniusBinomialReduction.binomPow k l t - 1 ≠ 0 := by
   intro e
   have := congrArg (PowerSeries.coeff 1) e
   rw [map_sub, FrobeniusBinomialReduction.binomPow, PowerSeries.coeff_map, PowerSeries.binomialSeries_coeff] at this
   exact h (by simpa [PowerSeries.coeff_one] using this)
 
+/- English proof (translation)
+The claim follows from `binom_ne _ (t.isUnit.map (FrobeniusBinomialReduction.red k l)).ne_zero`.
+-/
 theorem binom_unit_ne (t : ℤ_[l]ˣ) : FrobeniusBinomialReduction.binomPow k l t - 1 ≠ 0 :=
   binom_ne _ (t.isUnit.map (FrobeniusBinomialReduction.red k l)).ne_zero
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem gam_const : PowerSeries.constantCoeff ((1 + PowerSeries.X : k⟦X⟧) ^ (1 + l) - 1) = 0 := by simp
 
+/- English proof (translation)
+Rewrite using `[← FrobeniusBinomialReduction.binomPow_natCast k l]`. Use `binom_ne _ ?_` and prove the remaining obligations. Rewrite using `[map_natCast]`. Simplify using the standard rewrite rules.
+-/
 theorem gam_ne : (1 + PowerSeries.X : k⟦X⟧) ^ (1 + l) - 1 ≠ 0 := by
   rw [← FrobeniusBinomialReduction.binomPow_natCast k l]
   refine binom_ne _ ?_
   rw [map_natCast]
   simp
 
+/- English proof (translation)
+Rewrite using `[FrobeniusBinomialReduction.gamπ, substL_eq _ gam_const gam_ne, substHom_coe, OnePlusPowerCharacters.gammaPi]`.
+-/
 theorem gam_coe (b : k⟦X⟧) : FrobeniusBinomialReduction.gamπ k l (b : k⸨X⸩) = ((OnePlusPowerCharacters.gammaPi k l b : k⟦X⟧) : k⸨X⸩) := by
   rw [FrobeniusBinomialReduction.gamπ, substL_eq _ gam_const gam_ne, substHom_coe, OnePlusPowerCharacters.gammaPi]
 
+/- English proof (translation)
+Rewrite using `[FrobeniusBinomialReduction.actπ, substL_eq _ (binom_const _) (binom_unit_ne t), substHom_coe]`. Both sides reduce to the same expression.
+-/
 theorem act_coe (t : ℤ_[l]ˣ) (b : k⟦X⟧) :
     FrobeniusBinomialReduction.actπ k l t (b : k⸨X⸩) = ((OnePlusPowerCharacters.deltaPi k l t b : k⟦X⟧) : k⸨X⸩) := by
   rw [FrobeniusBinomialReduction.actπ, substL_eq _ (binom_const _) (binom_unit_ne t), substHom_coe]
   rfl
 
+/- English proof (translation)
+Establish `h1 : l - 1 ≠ 0` using `by have := hl.out.two_le; omega`. Prove the components needed by the constructor for the conclusion. Introduce `h z hz`. Take `⟨t, rfl⟩` from `IsUnit.of_pow_eq_one hz h1`. Use `h t (Units.ext (by simpa using hz))` as an intermediate fact.
+
+Rewrite `this` using `[act_coe]`. Conclude with `HahnSeries.ofPowerSeries_injective this`. Introduce `h t ht`. Rewrite using `[act_coe, h t (by rw [← Units.val_pow_eq_pow_val, ht, Units.val_one])]`.
+-/
 theorem deltaInv_coe (b : k⟦X⟧) : FrobeniusBinomialReduction.DeltaInv k l (b : k⸨X⸩) ↔
     ∀ z : ℤ_[l], z ^ (l - 1) = 1 → OnePlusPowerCharacters.deltaPi k l z b = b := by
   have h1 : l - 1 ≠ 0 := by have := hl.out.two_le; omega
@@ -229,6 +334,9 @@ theorem deltaInv_coe (b : k⟦X⟧) : FrobeniusBinomialReduction.DeltaInv k l (b
   · intro h t ht
     rw [act_coe, h t (by rw [← Units.val_pow_eq_pow_val, ht, Units.val_one])]
 
+/- English proof (translation)
+Introduce `t ht`. Establish `h1` using `hx t ht`. Establish `h2` using `hy t ht`. Rewrite `h1`, `h2`, the goal using `[FrobeniusBinomialReduction.actπ, substL_eq _ (binom_const _) (binom_unit_ne t)]`. Rewrite using `[map_mul, h1, h2]`.
+-/
 theorem deltaInv_mul {x y : k⸨X⸩} (hx : FrobeniusBinomialReduction.DeltaInv k l x) (hy : FrobeniusBinomialReduction.DeltaInv k l y) :
     FrobeniusBinomialReduction.DeltaInv k l (x * y) := by
   intro t ht
@@ -237,6 +345,9 @@ theorem deltaInv_mul {x y : k⸨X⸩} (hx : FrobeniusBinomialReduction.DeltaInv 
   rw [FrobeniusBinomialReduction.actπ, substL_eq _ (binom_const _) (binom_unit_ne t)] at h1 h2 ⊢
   rw [map_mul, h1, h2]
 
+/- English proof (translation)
+Introduce `t ht`. Establish `h1` using `hx t ht`. Rewrite `h1`, the goal using `[FrobeniusBinomialReduction.actπ, substL_eq _ (binom_const _) (binom_unit_ne t)]`. Rewrite using `[map_zpow₀, h1]`.
+-/
 theorem deltaInv_zpow {x : k⸨X⸩} (hx : FrobeniusBinomialReduction.DeltaInv k l x) (m : ℤ) :
     FrobeniusBinomialReduction.DeltaInv k l (x ^ m) := by
   intro t ht
@@ -244,6 +355,29 @@ theorem deltaInv_zpow {x : k⸨X⸩} (hx : FrobeniusBinomialReduction.DeltaInv k
   rw [FrobeniusBinomialReduction.actπ, substL_eq _ (binom_const _) (binom_unit_ne t)] at h1 ⊢
   rw [map_zpow₀, h1]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨u, hu⟩, hint, hinv, hφ, hγ⟩`. Establish `hA : ∀ a : k⟦X⟧, FrobeniusBinomialReduction.DeltaInv k l (ι (a : k⸨X⸩))`. Introduce `a`. Take `⟨b, hb⟩` from `hint a`.
+
+Rewrite using `[hb, deltaInv_coe, hinv]`. Conclude with `⟨a, hb⟩`. Establish `hv : FrobeniusBinomialReduction.DeltaInv k l (ι (vv k))` using `by rw [vv_eq]; exact hA _`. Use `⟨?_, ?_, ⟨u, hu⟩, fun x => by rw [hφ, phiPi_eq], ?_⟩` and prove the remaining obligations. Use extensionality with `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Rewrite using `[← LaurentSeries.single_order_mul_powerSeriesPart x, single_eq, map_mul, map_zpow₀]`. Conclude with `deltaInv_mul (deltaInv_zpow hv _) (hA _)`. Introduce `hy`.
+
+Take `⟨n, c, hc⟩` from `exists_mul_pow y`. Take `⟨e, he⟩ : ∃ e, l - 1 = e + 1` from `⟨l - 2, by have := hl.out.two_le; omega⟩`. Establish `hb : y * ι (vv k) ^ n = ((c * ((u : k⟦X⟧) * PowerSeries.X ^ e) ^ n : k⟦X⟧) : k⸨X⸩)`. Rewrite using `[hu, he, map_mul, map_pow, map_mul, map_pow, ← hc, ← vv_eq]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2 : FrobeniusBinomialReduction.DeltaInv k l (y * ι (vv k) ^ n)` using `deltaInv_mul hy (by simpa using deltaInv_zpow hv n)`. Rewrite `h2` using `[hb, deltaInv_coe, hinv]`. Take `⟨a, ha⟩` from `h2`. Establish `hne : ι (vv k) ≠ 0` using `(map_ne_zero ι).2 vv_ne`. Use `⟨(a : k⸨X⸩) / vv k ^ n, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_div₀, map_pow, ha, ← hb, mul_div_cancel_right₀ _ (pow_ne_zero _ hne)]`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨hint a, hA a⟩`.
+
+Introduce and unpack `⟨⟨b, rfl⟩, hb⟩`. Rewrite `hb` using `[deltaInv_coe, hinv]`. Conclude with `hb`. Establish `: (ι : k⸨X⸩ →+* k⸨X⸩).comp (R.γ : k⸨X⸩ →+* k⸨X⸩) = (substHom _ (gam_const (k` using `k) (l := l)) gam_ne).comp (ι : k⸨X⸩ →+* k⸨X⸩) := by`. Use `hom_ext fun a => ?_` and prove the remaining obligations.
+
+Take `⟨b, hb⟩` from `hint a`. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe]`. Rewrite using `[hγ a b hb, hb, substHom_coe, OnePlusPowerCharacters.gammaPi]`. Introduce `x`. Rewrite using `[FrobeniusBinomialReduction.gamπ, substL_eq _ gam_const gam_ne]`.
+
+Simplify `RingHom.congr_fun this x` using `only [RingHom.comp_apply, RingHom.coe_coe]`. Introduce and unpack `⟨-, hA, hu, hφ, hγ⟩`. Use `⟨hu, fun a => ?_, fun b => ?_, fun x => by rw [hφ, phiPi_eq], fun a b hab => ?_⟩` and prove the remaining obligations. Establish `: ι (a : k⸨X⸩) ∈ Set.range (fun a : k⟦X⟧ => ι (a : k⸨X⸩))` using `⟨a, rfl⟩`. Rewrite `this` using `[hA]`.
+
+Conclude with `this.1`. Rewrite using `[← deltaInv_coe]`. Express the relevant statement in the definitionally equal form `_ ↔ (b : k⸨X⸩) ∈ Set.range (fun a : k⟦X⟧ => ι (a : k⸨X⸩))`. Rewrite using `[hA]`. Conclude with `⟨fun h => ⟨⟨b, rfl⟩, h⟩, fun h => h.2⟩`.
+
+Rewrite using `[hγ, hab, gam_coe]`.
+-/
 theorem isCyclotomic_iff (R : RingPG k l) (ι : k⸨X⸩ →ₐ[k] k⸨X⸩) :
     OnePlusPowerCharacters.IsCyclotomic R ι ↔ FrobeniusBinomialReduction.IsCyclotomic R ι := by
   constructor
@@ -302,6 +436,11 @@ theorem isCyclotomic_iff (R : RingPG k l) (ι : k⸨X⸩ →ₐ[k] k⸨X⸩) :
 
 omit hl [CharP k l] in
 
+/- English proof (translation)
+Establish `e : {x : k⸨X⸩ | ∃ b : k⟦X⟧, x = (b : k⸨X⸩)} = Set.range (fun b : k⟦X⟧ => (b : k⸨X⸩))`. Use extensionality with `x`. Simplify using `[eq_comm]`. Unfold `OnePlusPowerCharacters.PsiRing FrobeniusBinomialReduction.PsiRing`. Rewrite using `[e]`.
+
+Use `and_congr_right fun h => and_congr_left fun _ => ⟨fun h1 => by simpa using h1 1, fun h1 a => ?_⟩` and prove the remaining obligations. Use `h a 1` as an intermediate fact. Rewrite `this` using `[mul_one, h1, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem psiRing_iff (R : RingPG k l) (ψ : k⸨X⸩ →ₗ[k] k⸨X⸩) :
     OnePlusPowerCharacters.PsiRing R ψ ↔ FrobeniusBinomialReduction.PsiRing R ψ := by
   have e : {x : k⸨X⸩ | ∃ b : k⟦X⟧, x = (b : k⸨X⸩)} = Set.range (fun b : k⟦X⟧ => (b : k⸨X⸩)) := by
@@ -319,8 +458,24 @@ section Mod
 variable {k : Type} [Field k] {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Module k V]
   [IsScalarTower k⟦X⟧ k⸨X⸩ V] [IsScalarTower k k⸨X⸩ V] [IsScalarTower k k⟦X⟧ V]
 
+/- English proof (translation)
+The claim follows from `algebraMap_smul k⸨X⸩ b x`.
+-/
 theorem coe_smul (b : k⟦X⟧) (x : V) : (b : k⸨X⸩) • x = b • x := algebraMap_smul k⸨X⸩ b x
 
+/- English proof (translation)
+Use extensionality with `m`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨y, hy, rfl⟩, rfl⟩`. Establish `key : ∀ b : k⟦X⟧, Ψ (vv k ^ a • b • y) ∈ M₀`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨m, hm, rfl⟩` from `hx`. Introduce `b`. Establish `: ψ (vv k ^ a * (b : k⸨X⸩)) ∈ Set.range (fun b : k⟦X⟧ => (b : k⸨X⸩))` using `h3 ▸ ⟨_, ⟨b, rfl⟩, rfl⟩`. Take `⟨c, hc⟩` from `this`.
+
+Rewrite using `[← coe_smul, ← mul_smul, h1, ← hc, coe_smul]`. Conclude with `M₀.smul_mem c hm`. Consider the case `zero => intro b`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro b`.
+
+Rewrite using `[smul_add, smul_add, map_add]`. Conclude with `M₀.add_mem (hx b) (hy b)`. Consider the case `smul c x _ hx => intro b`. Rewrite using `[← mul_smul b]`. Conclude with `hx _`.
+
+Simplify using `using key 1`. Introduce `hm`. Establish `: (1 : k⸨X⸩) ∈ Set.range (fun b : k⟦X⟧ => (b : k⸨X⸩))` using `⟨1, map_one _⟩`. Rewrite `this` using `[← h3]`. Take `⟨_, ⟨b, rfl⟩, hb⟩` from `this`.
+
+Use `⟨_, ⟨b • f m, Submodule.smul_mem _ b (Submodule.subset_span ⟨m, hm, rfl⟩), rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ψ (vv k ^ a • b • f m) = m`. Rewrite using `[← coe_smul, ← mul_smul, h1, hb, one_smul]`.
+-/
 theorem image_sh_pull (ψ : k⸨X⸩ →ₗ[k] k⸨X⸩) (f Ψ : V →ₗ[k] V) (a : ℤ)
     (h3 : ψ '' {x | ∃ b : k⟦X⟧, x = vv k ^ a * (b : k⸨X⸩)} = Set.range (fun b : k⟦X⟧ => (b : k⸨X⸩)))
     (h1 : ∀ (a : k⸨X⸩) (x : V), Ψ (a • f x) = ψ a • x) (M₀ : Submodule k⟦X⟧ V) :
@@ -350,6 +505,9 @@ theorem image_sh_pull (ψ : k⸨X⸩ →ₗ[k] k⸨X⸩) (f Ψ : V →ₗ[k] V) 
     change Ψ (vv k ^ a • b • f m) = m
     rw [← coe_smul, ← mul_smul, h1, hb, one_smul]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨h.1, h.2.1, fun M₀ hM hc => (h.2.2 M₀ hM).2 hc⟩, fun h => ⟨h.1, h.2.1, fun M₀ hM => ⟨fun a h1 h2 => image_sh_pull ψ f Ψ a (hψ.2.2.2 a h1 h2) h.1 M₀, h.2.2 M₀ hM⟩⟩⟩`.
+-/
 theorem psiMod_iff {l : ℕ} (R : RingPG k l) (ψ : k⸨X⸩ →ₗ[k] k⸨X⸩) (hψ : FrobeniusBinomialReduction.PsiRing R ψ)
     (f g₀ g Ψ : V →ₗ[k] V) :
     OnePlusPowerCharacters.PsiMod l ψ f g₀ g Ψ ↔

@@ -11,6 +11,15 @@ open GlobalTheory.RealGeo GlobalTheory.Unframe GlobalTheory.UnframePt
 
 namespace GlobalTheory.Unframe
 
+/- English proof (translation)
+Introduce `i σ`. Take `⟨h1, h2, h3⟩` from `hU i σ`. Establish `hl : ∀ x, (R.FW i).ρ (w i σ)⁻¹ ((R.FW i).ρ (w i σ) x) = x` using `fun x => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Establish `hr : ∀ x, (R.FW i).ρ (w i σ) ((R.FW i).ρ (w i σ)⁻¹ x) = x` using `fun x => by`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `hc : ∀ g x, (R.FW i).ρ (w i σ) ((R.FW i).ρ g x) = (R.FW i).ρ g ((R.FW i).ρ (w i σ) x)` using `fun g x => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Subgroup.mem_center_iff.1 (hw i σ) g, map_mul, Module.End.mul_apply]`. Use `⟨fun n b hb => ?_, ?_, fun g x => ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective ((R.FW i).ρ (w i σ))` using `Function.LeftInverse.injective hl`.
+
+Conclude with `h1 n (fun k => (R.FW i).ρ (w i σ) (b k)) (hb.map' _ (LinearMap.ker_eq_bot.2 hinj))`. Use `top_le_iff.1 (h2 ▸ Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨(R.FW i).ρ (w i σ)⁻¹ x, congrArg ((R.FW i).j σ) (hr x)⟩`. Establish `h` using `h3 g ((R.FW i).ρ (w i σ) x)`.
+
+Rewrite `h` using `[← hc]`. Conclude with `h`.
+-/
 theorem lUnif_moveR {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
     (w : Fin D.R.m → (D.what₂.LL →+* ℂ) → G) (hw : ∀ i σ, w i σ ∈ Subgroup.center G) (hU : R.LUnif) :

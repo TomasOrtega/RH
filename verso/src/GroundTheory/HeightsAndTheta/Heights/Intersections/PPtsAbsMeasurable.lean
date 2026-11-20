@@ -17,6 +17,25 @@ section PushForward
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Establish `hne : Nonempty (ChartPartition A)` using `existsPartition A`. Use `set Pt := hne.some with hPt`. Use `set hj : Fin A.n → (Fin e → ℂ) → ℝ := fun j u => |Pt.χ j ((A.chart j).symm u) * g ((A.chart j).symm u) * locDens A Φ j u| with hhj`. Use `set Qj : Fin A.n → (Fin e → ℂ) → (Fin e → ℂ) := fun j => q ∘ (A.chart j).symm with hQj`. Use `set N : Fin A.n → Set (Fin e → ℂ) := fun j => Qj j '' (goodT A q j ∩ (A.chart j).symm ⁻¹' S) with hNdef`.
+
+Establish `hN : ∀ j, volume (N j) = 0`. Introduce `j`. Use `addHaar_image_eq_zero_of_differentiableOn_of_addHaar_eq_zero volume ?_ ?_` and prove the remaining obligations. Introduce `u hu`. Conclude with `(hu.1.2.1.differentiableAt.restrictScalars ℝ).differentiableWithinAt`.
+
+Conclude with `measure_mono_null (inter_subset_inter_left _ fun u (hu : u ∈ goodT A q j) => hu.1) (hS j)`. Establish `hfib : ∀ j, ∀ y ∉ N j, goodT A q j ∩ Qj j ⁻¹' {y} = (A.chart j) '' ((A.chart j).source ∩ (q ⁻¹' {y} \ S))` using `fun j y hy => goodT_fibre_eq A q S hq j hy`. Establish `hfinj : ∀ j, ∀ᵐ y, (goodT A q j ∩ Qj j ⁻¹' {y}).Finite`. Introduce `j`. Use `filter_upwards [measure_eq_zero_iff_ae_notMem.mp (hN j)] with y hy`.
+
+Rewrite using `[hfib j y hy]`. Conclude with `((hfin y).subset inter_subset_right).image _`. Establish `hint : ∀ j, Integrable (fibSum (goodT A q j) (Qj j) (hj j))` using `fun j => (area_open (isOpen_goodT A q j) (fun u hu => hu.2) ((show IntegrableOn (hj j) (A.chart j).target volume from (integrableOn_chart A Pt Φ g hg j).abs).mono_set fun u hu => hu.1) (hfinj j)).1`. Use `(integrable_finsetSum Finset.univ fun j _ => hint j).congr ?_` and prove the remaining obligations. Establish `hNall : ∀ᵐ y, ∀ j, y ∉ N j` using `ae_all_iff.mpr fun j => measure_eq_zero_iff_ae_notMem.mp (hN j)`.
+
+Use `filter_upwards [hNall] with y hy`. Establish `hterm : ∀ j, fibSum (goodT A q j) (Qj j) (hj j) y = ∑ᶠ x ∈ q ⁻¹' {y} \ S, Pt.χ j x * |g x * pushDens A Φ q x|`. Introduce `j`. Unfold `fibSum`. Rewrite using `[hfib j y (hy j), finsum_mem_image ((A.chart j).injOn.mono inter_subset_left)]`.
+
+Use `(finsum_mem_congr (g := fun x => Pt.χ j x * |g x * pushDens A Φ q x|) rfl fun x hx => ?_).trans ?_` and prove the remaining obligations. Establish `hJ : 0 ≤ jacN (Qj j) (A.chart j x)` using `by unfold jacN; positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[abs_div, abs_of_nonneg hJ]`. Use `_ = |Pt.χ j x * (g x * pushDens A Φ q x)| := by`.
+
+Rewrite using `[fib_term A Φ hΦ q S hq Pt g j hx.1 hx.2.2]`. Use `_ = Pt.χ j x * |g x * pushDens A Φ q x| := by`. Rewrite using `[abs_mul, abs_of_nonneg (Pt.nonneg j x)]`. Use `finsum_mem_inter_support_eq' _ _ _ fun x hx => ?_` and prove the remaining obligations. Establish `hχ : Pt.χ j x ≠ 0` using `left_ne_zero_of_mul hx`.
+
+Establish `hxs : x ∈ (A.chart j).source` using `Pt.tsupport_subset j (subset_tsupport _ hχ)`. Conclude with `⟨fun h => h.2, fun h => ⟨hxs, h⟩⟩`. Repeatedly rewrite using `[hterm]`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (hfin y)]`. Repeatedly rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (hfin y)]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, Pt.sum_eq_one x, one_mul]`.
+-/
 theorem integrable_absPushSum [CompactSpace X] [T2Space X] (A : FinHolAtlas e X)
     (Φ : Fin e → LocPot X) (hΦ : ∀ i, IsPotential A (Φ i)) (q : X → Fin e → ℂ) (S : Set X)
     (hS : ∀ j, volume ((A.chart j).target ∩ (A.chart j).symm ⁻¹' S) = 0)
@@ -90,6 +109,9 @@ section Res
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {P J : Ideal (MRing ι)} {e : ℕ}
 
+/- English proof (translation)
+The claim follows from `|logNorm A s (R.lift x x) * pushDens R.A (fun j => potOf R (L j)) (brQ R Ψ) x| := by have hN : volume ({y : Fin e → ℂ | ∃ z ∈ mcPts P, z ∈ mcPts J ∧ Ψ (segre z) = Fin.cons 1 y} ∪ brQ R Ψ '' (brBad R Ψ ∩ {x | Ψ (segre (R.lift x x)) 0 ≠ 0})) = 0 := measure_union_null (projB_null Ψ …`.
+-/
 theorem absFibreSum_ae (R : AnLogRes P J e) (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ))
     (L : Fin e → HermLine ι) (A : HermLine ι) (s : MRing ι)
     (hP : IsArithVar P (e + 1)) (hΨ : IsGoodProj P Ψ) (hL : ∀ j, IsSmoothHerm (L j))
@@ -130,6 +152,9 @@ end PointsAbsMeasurable
 
 open PointsAbsMeasurable in
 
+/- English proof (translation)
+Introduce `K _ ι _ P e Ψ L A s hP hΨ hL hA hs`. Take `⟨J, ⟨R⟩⟩` from `exists_anLogRes hE hP`. Establish `hI` using `integrable_absPushSum R.A (fun j => potOf R (L j)) (fun j => potOf_isPotential R (L j) (hL j)) (brQ R Ψ) (brBad R Ψ) (brBad_null R Ψ hP hΨ) (brGood R Ψ) (brFib_finite R Ψ hP hΨ) _ (brIntegrable R L A s hP hL hA hs)`. Conclude with `hI.aestronglyMeasurable.congr ((absFibreSum_ae R Ψ L A s hP hΨ hL hA hs).mono fun y hy => hy.symm)`.
+-/
 theorem PtsAbsMeasurable.proof (hE : ResExistsStatement) : PtsAbsMeasurable.Statement := by
   intro K _ ι _ P e Ψ L A s hP hΨ hL hA hs
   obtain ⟨J, ⟨R⟩⟩ := exists_anLogRes hE hP

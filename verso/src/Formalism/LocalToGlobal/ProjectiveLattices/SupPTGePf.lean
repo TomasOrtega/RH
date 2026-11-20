@@ -33,6 +33,9 @@ def DensK (h : GenFrEx (Tc.Q.Xo j) Tc.Q.c) (ka : WeightFamilies.Wt D j)
         ⨆ P : PT (Ω := Om Z) sg, recNrm (Tc.U j (goodOf Tc.Q.c (sgOf (P : Om Z →+* ℂ)))) (xiR D) (wtA ka) ka.n
           (F : Tc.R j) (pt Z P).1 (pt Z P).2.1
 
+/- English proof (translation)
+Introduce `Z F hF hev`. Take `⟨F', hF', hne, hsup⟩` from `hden Z F hF hev`. Use `⟨F', hF', hne, fun sg => (hsup sg).trans (le_of_eq ?_)⟩` and prove the remaining obligations. Conclude with `iSup_congr fun P => (htie Z P (F : Tc.R j)).symm`.
+-/
 theorem supPTGe_of (h : GenFrEx (Tc.Q.Xo j) Tc.Q.c)
     (fn : ∀ σ : Tc.Q.c.F →+* ℂ, FrPt (Tc.Q.Xo j) Tc.Q.c (CAt σ) → Ix (Tc.Q.Dw j) → ℝ)
     (yP : ∀ Z : Comp (Tc.Q.Xo j) Tc.Q.c, ∀ P : Om Z →+* ℂ, FrPt (Tc.Q.Xo j) Tc.Q.c (CAt (sgOf P)))

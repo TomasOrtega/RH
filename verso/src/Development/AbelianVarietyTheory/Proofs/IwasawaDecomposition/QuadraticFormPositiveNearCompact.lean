@@ -7,6 +7,23 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.CxPts GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4O GlobalTheory.ChernReg
 open scoped TensorProduct ContDiff
 
+/- English proof (translation)
+Introduce `d C U f q hC hU hCU hf hf0 hq hhom hpos`. Establish `hK : IsCompact (C ×ˢ Metric.sphere (0 : ReciprocityTheory.L2DbarEstimates.V d) 1)` using `hC.prod (isCompact_sphere 0 1)`. Establish `hqK : ContinuousOn (fun x : ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d => q x.1 x.2) (C ×ˢ Metric.sphere (0 : ReciprocityTheory.L2DbarEstimates.V d) 1)` using `hq.mono (Set.prod_mono le_rfl (Set.subset_univ _))`. Take `⟨m, hm0, hm⟩` from `hK.exists_forall_le' hqK (a := 0) (by`. Introduce and unpack `⟨z, u⟩ ⟨hz, hu⟩`.
+
+Establish `hu1 : ‖u‖ = 1` using `by simpa using hu`. Conclude with `hpos z hz u (by rintro rfl; simp at hu1))`. Establish `hC0 : IsCompact (C ×ˢ ({0} : Set (ReciprocityTheory.L2DbarEstimates.V d)))` using `hC.prod isCompact_singleton`. Establish `hsub : C ×ˢ ({0} : Set (ReciprocityTheory.L2DbarEstimates.V d)) ⊆ f ⁻¹' U`. Introduce and unpack `⟨z, w⟩ ⟨hz, hw⟩`.
+
+Simplify using `only [Set.mem_singleton_iff] at hw`. Substitute `hw` using the available equality. Simplify `hCU hz` using `[hf0 z hz]`. Take `⟨δ, hδ0, hδ⟩` from `hC0.exists_thickening_subset_open (hU.preimage hf) hsub`. Use `⟨m * δ ^ 2, by positivity, ?_⟩` and prove the remaining obligations.
+
+Introduce `z hz η hη`. Distinguish the cases in `h0 : η = 0`. Substitute `h0` using the available equality. Rewrite using `[hf0 z hz]`. Conclude with `hCU hz`.
+
+Establish `hn : 0 < ‖η‖` using `norm_pos_iff.mpr h0`. Establish `hu : ‖η‖⁻¹ • η ∈ Metric.sphere (0 : ReciprocityTheory.L2DbarEstimates.V d) 1`. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ hn.ne']`. Establish `hmu` using `hm (z, ‖η‖⁻¹ • η) ⟨hz, hu⟩`. Establish `heq : q z η = ‖η‖ ^ 2 * q z (‖η‖⁻¹ • η)`.
+
+Rewrite using `[← hhom z hz, smul_smul, mul_inv_cancel₀ hn.ne', one_smul]`. Establish `hlt : ‖η‖ ^ 2 < δ ^ 2`. Establish `h1 : m * ‖η‖ ^ 2 ≤ q z η`. Rewrite using `[heq]`. Simplify using `only at hmu`.
+
+Use polynomial arithmetic with `[sq_nonneg ‖η‖]`. Establish `: m * ‖η‖ ^ 2 < m * δ ^ 2` using `lt_of_le_of_lt h1 hη`. Conclude with `lt_of_mul_lt_mul_left this hm0.le`. Establish `hnδ : ‖η‖ < δ` using `lt_of_pow_lt_pow_left₀ 2 hδ0.le hlt`. Establish `hmem : (z, η) ∈ Metric.thickening δ (C ×ˢ ({0} : Set (ReciprocityTheory.L2DbarEstimates.V d)))`.
+
+Rewrite using `[Metric.mem_thickening_iff]`. Use `⟨(z, 0), ⟨hz, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Prod.dist_eq, dist_self, dist_zero_right]`. Simplify using `using hnδ`. Conclude with `hδ hmem`.
+-/
 theorem GlobalTheory.shortRadius_of_fixes_zero_section : ∀ (d : ℕ) (C U : Set (ReciprocityTheory.L2DbarEstimates.V d)) (f : ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d → ReciprocityTheory.L2DbarEstimates.V d) (q : ReciprocityTheory.L2DbarEstimates.V d → ReciprocityTheory.L2DbarEstimates.V d → ℝ), IsCompact C → IsOpen U → C ⊆ U → Continuous f → (∀ z ∈ C, f (z, 0) = z) → ContinuousOn (fun x : ReciprocityTheory.L2DbarEstimates.V d × ReciprocityTheory.L2DbarEstimates.V d => q x.1 x.2) (C ×ˢ Set.univ) → (∀ z ∈ C, ∀ (t : ℝ) η, q z (t • η) = t ^ 2 * q z η) → (∀ z ∈ C, ∀ η, η ≠ 0 → 0 < q z η) → ∃ ε, 0 < ε ∧ ∀ z ∈ C, ∀ η, q z η < ε → f (z, η) ∈ U := by
   intro d C U f q hC hU hCU hf hf0 hq hhom hpos
   have hK : IsCompact (C ×ˢ Metric.sphere (0 : ReciprocityTheory.L2DbarEstimates.V d) 1) :=

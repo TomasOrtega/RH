@@ -59,6 +59,11 @@ def realOfRead {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
   given := hg
   full := hf
 
+/- English proof (translation)
+Substitute `hcf` using the available equality. Substitute `hC` using the available equality. Consider the cases of `eq_of_heq htp`. Substitute `hM` using the available equality. Consider the cases of `eq_of_heq hrep`.
+
+Conclude with `⟨⟨P, X, ag, e0⟩, rfl, HEq.rfl⟩`.
+-/
 theorem exists_tied {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} (P : GlobalTheory.NPin.Pin hL D) {cf : CharFrame D} {nch : NChoice D}
     {tp : TupTied D cf nch} (X : GlobalTheory.NJoin.RealAt D cf nch tp) (hcf : P.cf = cf) (hC : P.C = nch) (htp : HEq P.tp tp)
     {M : MtFam D} {rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r} (hM : P.M = M) (hrep : HEq P.rep rep)

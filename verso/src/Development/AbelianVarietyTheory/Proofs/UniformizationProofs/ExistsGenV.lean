@@ -28,6 +28,9 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : 
   {F : Type} [Field F] [Algebra (FractionRing V) F] {v : AddValuation F (WithTop ℚ)} (hv : ValOver ϖ F v)
   {X : Scheme.{0}} {L : LB X}
 
+/- English proof (translation)
+Use `⟨?_⟩` and prove the remaining obligations. Use `show DenseRange (PrimeSpectrum.comap (algebraMap (Ov v) F))`. Rewrite using `[PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical, (RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective (Ov v) F)]`. Conclude with `bot_le`.
+-/
 theorem isDominant_ι : IsDominant (ιS hϖ hv).left := by
   refine ⟨?_⟩
   show DenseRange (PrimeSpectrum.comap (algebraMap (Ov v) F))
@@ -35,18 +38,29 @@ theorem isDominant_ι : IsDominant (ιS hϖ hv).left := by
     (RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective (Ov v) F)]
   exact bot_le
 
+/- English proof (translation)
+Introduce `a b h`. Use `isDominant_ι hϖ hv` as an intermediate fact. Establish `: IsReduced (TO hϖ hv).left` using `inferInstanceAs (IsReduced (Spec (CommRingCat.of (Ov v))))`. Conclude with `ext_of_isDominant (ιS hϖ hv).left h`.
+-/
 theorem ι_inj [X.IsSeparated] : Function.Injective fun ψ : (TO hϖ hv).left ⟶ X => (ιS hϖ hv).left ≫ ψ := by
   intro a b h
   have := isDominant_ι hϖ hv
   have : IsReduced (TO hϖ hv).left := inferInstanceAs (IsReduced (Spec (CommRingCat.of (Ov v))))
   exact ext_of_isDominant (ιS hϖ hv).left h
 
+/- English proof (translation)
+Rewrite using `[cst_eq, gs_eq _ z ⊤ trivial]`. Conclude with `congrArg ((TF (R := V) F).left.presheaf.germ ⊤ z trivial).hom (appTop_specMap (CommRingCat.ofHom (algebraMap (Ov v) F)) a)`.
+-/
 theorem gs_ι (z : (TF (R := V) F).left) (a : Γ(Spec (CommRingCat.of (Ov v)), ⊤)) :
     gs (ιS hϖ hv).left z ⊤ a = cst F z (ιr (v := v) a) := by
   rw [cst_eq, gs_eq _ z ⊤ trivial]
   exact congrArg ((TF (R := V) F).left.presheaf.germ ⊤ z trivial).hom
     (appTop_specMap (CommRingCat.ofHom (algebraMap (Ov v) F)) a)
 
+/- English proof (translation)
+Take `⟨s₀, hs⟩` from `exists_sec hL (K' := PEmpty) (φ' := PEmpty.elim) (ε' := PEmpty.elim) (fun U _ h => by`. Use `Eq.trans ?_ ((hf U (Function.extend (fun ψ => (ιS hϖ hv).left ≫ ψ) h 1)).trans (Fintype.prod_empty _).symm)` and prove the remaining obligations. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[(ι_inj hϖ hv).extend_apply]) s`. Establish `le : (⊤ : (TO hϖ hv).left.Opens) ≤ LB.wchart L (PEmpty.elim : PEmpty → ((TO hϖ hv).left ⟶ X)) PEmpty.elim` using `fun _ _ => Set.mem_iInter.2 fun k => k.elim`.
+
+Use `⟨ιr (v := v) (((TO hϖ hv).left.presheaf.map (homOfLE le).op).hom (s₀.f PEmpty.elim)), v_ιr _, fun z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hs _ _ z J hJ, sval_of s₀ _ z J PEmpty.elim (fun k => k.elim), ← gs_ι hϖ hv]`. Conclude with `(gs_res _ z le trivial _).symm`.
+-/
 theorem sec_int [X.IsSeparated] (hL : L.IsLB) {K : Type} [Fintype K] {φ : K → ((TO hϖ hv).left ⟶ X)} {ε : K → ℤ}
     (s : LB.Sec (LB.LinComb L φ ε))
     (hf : ∀ (U : Type) [CommGroup U] (h : ((TF (R := V) F).left ⟶ X) → U), ∏ i, h ((ιS hϖ hv).left ≫ φ i) ^ ε i = 1) :
@@ -74,6 +88,11 @@ def HV (L : LB X) (σ : FS V F X)
 
 variable {hϖ hv}
 
+/- English proof (translation)
+Take `⟨K, _, φ, ε, t, ht, hs, e⟩` from `H`. Take `⟨K', _, φ', ε', t', ht', hs', e'⟩` from `H'`. Use `⟨K ⊕ K', inferInstance, _, _, LB.mulGen L _ _ _ _ t t', mulGen_isGen _ _ _ _ _ _ _ ht ht', fun U _ h => ?_, fun z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.prod_sum_type]`. Conclude with `congrArg₂ (· * ·) (hs U h) (hs' U h)`.
+
+Rewrite using `[val_mul hJ]`. Simplify using `only [e z J hJ, e' z J hJ, cst_eq, map_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem HV.mul {σ σ' : FS V F X} {f f'} {x x' : F} (H : HV hϖ hv L σ f x) (H' : HV hϖ hv L σ' f' x') :
     HV hϖ hv L (fun U _ h => σ U h * σ' U h) (fun z J => f z J * f' z J) (x * x') := by
   obtain ⟨K, _, φ, ε, t, ht, hs, e⟩ := H
@@ -86,29 +105,50 @@ theorem HV.mul {σ σ' : FS V F X} {f f'} {x x' : F} (H : HV hϖ hv L σ f x) (H
     simp only [e z J hJ, e' z J hJ, cst_eq, map_mul, Units.val_mul]
     ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨PEmpty, inferInstance, _, _, LB.oneGen L (Y := (TO hϖ hv).left), fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm, fun U _ h => Fintype.prod_empty _, fun z J _ => by rw [val_one, cst_eq, map_one, Units.val_one, _ …`.
+-/
 theorem HV.one : HV hϖ hv L (fun _ _ _ => 1) (fun _ _ => 1) 1 :=
   ⟨PEmpty, inferInstance, _, _, LB.oneGen L (Y := (TO hϖ hv).left),
     fun i j => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm,
     fun U _ h => Fintype.prod_empty _, fun z J _ => by rw [val_one, cst_eq, map_one, Units.val_one, _root_.mul_one]⟩
 
+/- English proof (translation)
+Take `⟨K, _, φ, ε, t, ht, hs, e⟩` from `H`. Conclude with `⟨K, _, φ, ε, t, ht, fun U _ h => (hs U h).trans (hσ U h), fun z J hJ => (hf z J hJ).trans (e z J hJ)⟩`.
+-/
 theorem HV.congr {σ σ' : FS V F X} {f f'} {x : F} (H : HV hϖ hv L σ f x)
     (hσ : ∀ (U : Type) [CommGroup U] h, σ U h = σ' U h) (hf : ∀ z J, Good L z J → f' z J = f z J) :
     HV hϖ hv L σ' f' x := by
   obtain ⟨K, _, φ, ε, t, ht, hs, e⟩ := H
   exact ⟨K, _, φ, ε, t, ht, fun U _ h => (hs U h).trans (hσ U h), fun z J hJ => (hf z J hJ).trans (e z J hJ)⟩
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa only [pow_zero] using HV.one`. Consider the case `succ n ih => simpa only [pow_succ] using ih.mul H`.
+-/
 theorem HV.pow {σ : FS V F X} {f} {x : F} (H : HV hϖ hv L σ f x) (n : ℕ) :
     HV hϖ hv L (fun U _ h => σ U h ^ n) (fun z J => f z J ^ n) (x ^ n) := by
   induction n with
   | zero => simpa only [pow_zero] using HV.one
   | succ n ih => simpa only [pow_succ] using ih.mul H
 
+/- English proof (translation)
+Take `⟨K, _, φ, ε, t, ht, hs, e⟩` from `H`. Use `⟨K, _, φ, ε, t, ht, hs, fun z J hJ => ?_⟩` and prove the remaining obligations. Simplify using `only [e z J hJ, cst_eq, map_mul, _root_.mul_assoc]`.
+-/
 theorem HV.smul {σ : FS V F X} {f} {x : F} (H : HV hϖ hv L σ f x) (c : F) :
     HV hϖ hv L σ (fun z J => cst F z c * f z J) (c * x) := by
   obtain ⟨K, _, φ, ε, t, ht, hs, e⟩ := H
   refine ⟨K, _, φ, ε, t, ht, hs, fun z J hJ => ?_⟩
   simp only [e z J hJ, cst_eq, map_mul, _root_.mul_assoc]
 
+/- English proof (translation)
+Take `⟨K, _, φ, ε, t, ht, hs, e⟩` from `H`. Take `⟨K', _, φ', ε', t', ht', hs', e'⟩` from `H'`. Establish `hu` using `mulGen_isGen _ _ _ _ _ _ _ ht (invGen_isGen _ _ _ _ ht')`. Take `⟨a, ha, hav⟩` from `sec_int hϖ hv hL (Geo.Tor.genSec _ hu) (fun U _ h => by`. Rewrite using `[Fintype.prod_sum_type]`.
+
+Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib]`. Rewrite using `[hs, hs', mul_inv_cancel])`. Take `⟨z⟩` from `exists_pt (R := V) (F := F)`. Take `⟨J, hJ⟩` from `exists_good' hL z`. Establish `b` using `hav z J hJ`.
+
+Rewrite `b` using `[sval_genSec _ hu _ z hJ, val_mul hJ, val_inv]`. Establish `c : x' = x * a`. Apply `cstH_inj (R := V) z` to reduce the goal to its premises. Establish `d` using `(e z J hJ).symm.trans (e' z J hJ)`. Rewrite using `[map_mul, ← cst_eq, ← cst_eq, ← cst_eq, ← b, Units.val_mul, ← _root_.mul_assoc, d, _root_.mul_assoc, Units.mul_inv, _root_.mul_one]`.
+
+Rewrite using `[c, AddValuation.map_mul]`. Conclude with `le_add_of_nonneg_right ha`.
+-/
 theorem HV.le [X.IsSeparated] (hL : L.IsLB) {σ : FS V F X} {f} {x x' : F} (H : HV hϖ hv L σ f x)
     (H' : HV hϖ hv L σ f x') : v x ≤ v x' := by
   obtain ⟨K, _, φ, ε, t, ht, hs, e⟩ := H
@@ -130,6 +170,9 @@ theorem HV.le [X.IsSeparated] (hL : L.IsLB) {σ : FS V F X} {f} {x x' : F} (H : 
   rw [c, AddValuation.map_mul]
   exact le_add_of_nonneg_right ha
 
+/- English proof (translation)
+The claim follows from `le_antisymm ((H.congr hσ hf).le hL H') (H'.le hL (H.congr hσ hf))`.
+-/
 theorem HV.cmp [X.IsSeparated] (hL : L.IsLB) {σ σ' : FS V F X} {f f'} {x x' : F} (H : HV hϖ hv L σ f x)
     (H' : HV hϖ hv L σ' f' x') (hσ : ∀ (U : Type) [CommGroup U] h, σ U h = σ' U h)
     (hf : ∀ z J, Good L z J → f' z J = f z J) : v x = v x' :=
@@ -137,6 +180,9 @@ theorem HV.cmp [X.IsSeparated] (hL : L.IsLB) {σ σ' : FS V F X} {f f'} {x x' : 
 
 variable {K : Type} [Fintype K] {ε : K → ℤ}
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Conclude with `⟨K, _, _, ε, LB.pullGen L φ ε t r₀, pullGen_isGen _ _ _ _ ht _, fun U _ h => by simp only [Category.assoc], fun z J hJ => by rw [val_pull hJ, cst_eq, map_one, _root_.one_mul]⟩`.
+-/
 theorem hv_gen {Y : Scheme.{0}} {φ : K → (Y ⟶ X)} {t : LB.Gen (LB.LinComb L φ ε)} (ht : t.IsGen)
     (r₀ : (TO hϖ hv).left ⟶ Y) {r : (TF (R := V) F).left ⟶ Y} (hr : (ιS hϖ hv).left ≫ r₀ = r) :
     HV hϖ hv L (fun _ _ h => ∏ i, h (r ≫ φ i) ^ ε i) (fun z J => (val t r z J).val) 1 := by
@@ -144,6 +190,11 @@ theorem hv_gen {Y : Scheme.{0}} {φ : K → (Y ⟶ X)} {t : LB.Gen (LB.LinComb L
   exact ⟨K, _, _, ε, LB.pullGen L φ ε t r₀, pullGen_isGen _ _ _ _ ht _, fun U _ h => by simp only [Category.assoc],
     fun z J hJ => by rw [val_pull hJ, cst_eq, map_one, _root_.one_mul]⟩
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Take `⟨t, ht⟩` from `exists_gen_of_local (V := Ov v) L hL (fun i => r₀ ≫ φ i) ε`. Establish `hi` using `invGen_isGen _ _ _ _ ht`. Take `⟨a, ha, hav⟩` from `sec_int hϖ hv hL (pullMulSec s r₀ _ hi) (fun U _ h => by`. Rewrite using `[Fintype.prod_sum_type]`.
+
+Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib, mul_inv_cancel])`. Use `⟨a, ha, K, _, _, ε, t, ht, fun U _ h => by simp only [Category.assoc], fun z J hJ => ?_⟩` and prove the remaining obligations. Establish `b` using `hav z J hJ`. Rewrite `b` using `[sval_pullMulSec _ _ _ hi _ z hJ, val_inv]`. Rewrite using `[← b, _root_.mul_assoc, Units.inv_mul, _root_.mul_one]`.
+-/
 theorem hv_sec [X.IsSeparated] (hL : L.IsLB) {Y : Scheme.{0}} {φ : K → (Y ⟶ X)} (s : LB.Sec (LB.LinComb L φ ε))
     (r₀ : (TO hϖ hv).left ⟶ Y) {r : (TF (R := V) F).left ⟶ Y} (hr : (ιS hϖ hv).left ≫ r₀ = r) :
     ∃ x, 0 ≤ v x ∧ HV hϖ hv L (fun _ _ h => ∏ i, h (r ≫ φ i) ^ ε i) (fun z J => sval s r z J) x := by
@@ -158,12 +209,18 @@ theorem hv_sec [X.IsSeparated] (hL : L.IsLB) {Y : Scheme.{0}} {φ : K → (Y ⟶
   rw [sval_pullMulSec _ _ _ hi _ z hJ, val_inv] at b
   rw [← b, _root_.mul_assoc, Units.inv_mul, _root_.mul_one]
 
+/- English proof (translation)
+Take `⟨φ₀, h₀, t₀, ht₀, x, hx, e⟩` from `H`. Conclude with `⟨x, hx, K, _, φ₀, ε, t₀, ht₀, fun U _ h => by simp only [h₀], e⟩`.
+-/
 theorem hv_of_genV {φ : K → ((TF (R := V) F).left ⟶ X)} {t : LB.Gen (LB.LinComb L φ ε)} {r : ℚ}
     (H : GenV hϖ hv t r) :
     ∃ x, v x = r ∧ HV hϖ hv L (fun _ _ h => ∏ i, h (φ i) ^ ε i) (fun z J => (val t (𝟙 _) z J).val) x := by
   obtain ⟨φ₀, h₀, t₀, ht₀, x, hx, e⟩ := H
   exact ⟨x, hx, K, _, φ₀, ε, t₀, ht₀, fun U _ h => by simp only [h₀], e⟩
 
+/- English proof (translation)
+Take `⟨x, hx, a⟩` from `hv_of_genV H`. Take `⟨x', hx', a'⟩` from `hv_of_genV H'`. Use `a.cmp hL a' (fun _ _ _ => rfl) (fun _ _ _ => rfl)` as an intermediate fact. Rewrite `this` using `[hx, hx']`. Conclude with `this` after adjusting the coercions.
+-/
 theorem genV_unique [X.IsSeparated] (hL : L.IsLB) {φ : K → ((TF (R := V) F).left ⟶ X)}
     {t : LB.Gen (LB.LinComb L φ ε)} {r r' : ℚ} (H : GenV hϖ hv t r) (H' : GenV hϖ hv t r') : r = r' := by
   obtain ⟨x, hx, a⟩ := hv_of_genV H
@@ -172,6 +229,11 @@ theorem genV_unique [X.IsSeparated] (hL : L.IsLB) {φ : K → ((TF (R := V) F).l
   rw [hx, hx'] at this
   exact_mod_cast this
 
+/- English proof (translation)
+Use `choose φ₀ h₀ using hφ`. Take `⟨t₀, ht₀⟩` from `exists_gen_of_local (V := Ov v) L hL φ₀ ε`. Take `⟨c, hc, e⟩` from `exists_ratio hL t ht (LB.pullGen L _ _ t₀ (ιS hϖ hv).left) (pullGen_isGen _ _ _ _ ht₀ _) (fun U _ h => Finset.prod_congr rfl fun i _ => by rw [h₀])`. Take `⟨q, hq⟩` from `wt_coe_of_ne (v := v) hc`. Use `⟨q, φ₀, h₀, t₀, ht₀, c, hq, fun z J hJ => ?_⟩` and prove the remaining obligations.
+
+Use `e (TF (R := V) F).left (𝟙 (TF (R := V) F).left) z J hJ` as an intermediate fact. Rewrite `this` using `[val_pull hJ, Category.id_comp]`. Conclude with `this`.
+-/
 theorem exists_genV (hL : L.IsLB) {φ : K → ((TF (R := V) F).left ⟶ X)} {t : LB.Gen (LB.LinComb L φ ε)} (ht : t.IsGen)
     (hφ : ∀ i, ∃ ψ, φ i = (ιS hϖ hv).left ≫ ψ) : ∃ r, GenV hϖ hv t r := by
   choose φ₀ h₀ using hφ

@@ -5,6 +5,17 @@ namespace GlobalTheory
 
 open Polynomial
 
+/- English proof (translation)
+Introduce `T _ ⟨hdom, hroot⟩`. Use `⟨fun M hM => ?_, fun p hp => ?_⟩` and prove the remaining obligations. Establish `hle : M ≤ nonZeroDivisors T` using `le_nonZeroDivisors_of_noZeroDivisors hM haveI : IsDomain (Localization M) := IsLocalization.isDomain_localization hle`. Use `⟨inferInstance, fun f hf hdeg => ?_⟩` and prove the remaining obligations. Establish `hl` using `IsLocalization.scaleRoots_commonDenom_mem_lifts M f (by rw [hf.leadingCoeff]; exact one_mem _)`.
+
+Take `⟨g, hg, hgdeg, hgm⟩` from `lifts_and_natDegree_eq_and_monic hl ((monic_scaleRoots_iff _).2 hf)`. Rewrite `hgdeg` using `[natDegree_scaleRoots]`. Take `⟨y, hy⟩` from `hroot g hgm (hgdeg ▸ hdeg)`. Use `set s : Localization M := algebraMap T (Localization M) (IsLocalization.commonDenom M f.support f.coeff) with hs`. Establish `hu : IsUnit s` using `IsLocalization.map_units _ _`.
+
+Use `⟨algebraMap T (Localization M) y * ↑hu.unit⁻¹, ?_⟩` and prove the remaining obligations. Establish `key` using `scaleRoots_eval_mul f (algebraMap T (Localization M) y * ↑hu.unit⁻¹) s`. Establish `hsr : s * (algebraMap T (Localization M) y * ↑hu.unit⁻¹) = algebraMap T (Localization M) y`. Rewrite using `[mul_left_comm, IsUnit.mul_val_inv, mul_one]`. Rewrite `key` using `[hsr, ← hg, eval_map, eval₂_hom, hy, map_zero]`.
+
+Conclude with `((hu.pow _).mul_right_eq_zero).1 key.symm`. Use `haveI := hp haveI : IsDomain (T ⧸ p) := Ideal.Quotient.isDomain p`. Use `⟨inferInstance, fun f hf hdeg => ?_⟩` and prove the remaining obligations. Establish `hl : f ∈ lifts (Ideal.Quotient.mk p)` using `(mem_lifts _).2 (map_surjective _ Ideal.Quotient.mk_surjective f)`. Take `⟨g, hg, hgdeg, hgm⟩` from `lifts_and_natDegree_eq_and_monic hl hf`.
+
+Take `⟨y, hy⟩` from `hroot g hgm (hgdeg ▸ hdeg)`. Use `⟨Ideal.Quotient.mk p y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hg, eval_map, eval₂_hom, hy, map_zero]`.
+-/
 theorem absIntClosed_localization_and_quotient : ∀ (T : Type) [CommRing T], (IsDomain T ∧ ∀ f : Polynomial T, f.Monic → 0 < f.natDegree → ∃ x : T, f.eval x = 0) → (∀ (M : Submonoid T), 0 ∉ M → (IsDomain (Localization M) ∧ ∀ f : Polynomial (Localization M), f.Monic → 0 < f.natDegree → ∃ x : (Localization M), f.eval x = 0)) ∧ (∀ (p : Ideal T), p.IsPrime → (IsDomain (T ⧸ p) ∧ ∀ f : Polynomial (T ⧸ p), f.Monic → 0 < f.natDegree → ∃ x : (T ⧸ p), f.eval x = 0)) := by
   intro T _ ⟨hdom, hroot⟩
   refine ⟨fun M hM => ?_, fun p hp => ?_⟩

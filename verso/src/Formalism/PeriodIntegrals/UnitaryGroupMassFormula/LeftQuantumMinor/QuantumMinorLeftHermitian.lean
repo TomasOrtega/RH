@@ -10,6 +10,13 @@ namespace Formalism.FourierDecayAlt.Q.QnMinorLeftPf
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `E _ _ n t H f a b u h`. Establish `hT : ∀ (c : ℂ) (i j : Fin n) (g : Matrix (Fin n) (Fin n) ℂ → E), Formalism.QuantumDeterminants.Top (EabH H) c i j (fun x => g (h * x)) = fun x => Formalism.QuantumDeterminants.Top (EabH H) c i j g (h * x)`. Introduce `c i j g`. Use function extensionality and compare the values at `x`. Simplify using `only [Formalism.QuantumDeterminants.Top]`.
+
+Rewrite using `[ioLeft_eabH_left]`. Use function extensionality and compare the values at `x`. Simplify using `only [qminorOp, Finset.sum_apply, Pi.smul_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Rewrite using `[ioLeft_foldr_left h _ (fun T hTm g => ?_) f]`. Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hTm`. Conclude with `hT _ _ _ g`.
+-/
 theorem left_quantum_minor_qMinorLeftH : QMinorLeftH := by
   intro E _ _ n t H f a b u h
   have hT : ∀ (c : ℂ) (i j : Fin n) (g : Matrix (Fin n) (Fin n) ℂ → E),

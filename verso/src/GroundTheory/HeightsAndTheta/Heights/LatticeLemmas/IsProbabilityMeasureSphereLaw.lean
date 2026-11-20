@@ -78,6 +78,9 @@ def sphereBall (h : HermNorm n) (k : ℕ) : Set (Fin k × Fin n → ℂ) :=
 def sphereNormalize (h : HermNorm n) (k : ℕ) (u : Fin k × Fin n → ℂ) : Fin k × Fin n → ℂ :=
   fun ij ↦ ((h.norm fun j ↦ u (ij.1, j) : ℝ) : ℂ)⁻¹ * u ij
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sphereMean_eq (h : HermNorm n) (k : ℕ) (g : (Fin k × Fin n → ℂ) → ℝ) :
     sphereMean h k g = ⨍ u in sphereBall h k, g (sphereNormalize h k u) := rfl
 
@@ -218,8 +221,14 @@ def HeightOfCycle.Statement : Prop :=
 
 section Inhabitants
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance⟩`.
+-/
 example : IsUltrametricDist ℚ_[2] ∧ CompleteSpace ℚ_[2] := ⟨inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Establish `h1 : ∀ i j, ‖(1 : Matrix (Fin 2) (Fin 2) ℚ_[2]) i j‖ ≤ 1`. Introduce `i j`. Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use `⟨h1, fun i ↦ by simp, by simp, by simp [h1], fun y hy ↦ ⟨y, hy, by simp⟩⟩` and prove the remaining obligations.
+-/
 theorem gaussNormBasic_hyps :
     (∀ i j, ‖(1 : Matrix (Fin 2) (Fin 2) ℚ_[2]) i j‖ ≤ 1) ∧ (∀ i, ‖(0 : Fin 2 → ℚ_[2]) i‖ ≤ 1) ∧
     IsUnit (1 : Matrix (Fin 2) (Fin 2) ℚ_[2]).det ∧
@@ -232,17 +241,28 @@ theorem gaussNormBasic_hyps :
     split_ifs <;> simp
   refine ⟨h1, fun i ↦ by simp, by simp, by simp [h1], fun y hy ↦ ⟨y, hy, by simp⟩⟩
 
+/- English proof (translation)
+Use `⟨X_ne_zero _, fun i ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[degreeOf_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem schwartzZippel_hyps :
     (X 0 : MvPolynomial (Fin 2) ℤ) ≠ 0 ∧ ∀ i, (X 0 : MvPolynomial (Fin 2) ℤ).degreeOf i ≤ 1 := by
   refine ⟨X_ne_zero _, fun i ↦ ?_⟩
   rw [degreeOf_X]
   split_ifs <;> simp
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `Ideal.exists_maximal (𝓞 ℚ)`. Conclude with `⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (NumberField.RingOfIntegers.not_isField ℚ)⟩⟩`.
+-/
 theorem nonempty_place_rat : Nonempty (IsDedekindDomain.HeightOneSpectrum (𝓞 ℚ)) := by
   obtain ⟨M, hM⟩ := Ideal.exists_maximal (𝓞 ℚ)
   exact ⟨⟨M, hM.isPrime,
     Ring.ne_bot_of_isMaximal_of_not_isField hM (NumberField.RingOfIntegers.not_isField ℚ)⟩⟩
 
+/- English proof (translation)
+Establish `hne : (1 : 𝓞 ℚ) ≠ -1`. Introduce `h`. Use `congrArg (fun x : 𝓞 ℚ ↦ (x : ℚ)) h` as an intermediate fact. Evaluate the numerical expressions using `at this`. Use `⟨Nat.prime_two, ?_, by simp, by simp, hne⟩` and prove the remaining obligations.
+
+Use `IsPrimitiveRoot.mk_of_lt (-1) (by norm_num) (by simp) fun l hl0 hl2 hl ↦ ?_` and prove the remaining obligations. Use `interval_cases l`. Conclude with `absurd (by simpa using hl) (Ne.symm hne)`.
+-/
 theorem rootsOfUnity_hyps :
     Nat.Prime 2 ∧ IsPrimitiveRoot (-1 : 𝓞 ℚ) 2 ∧ (1 : 𝓞 ℚ) ^ 2 = 1 ∧ (-1 : 𝓞 ℚ) ^ 2 = 1 ∧
       (1 : 𝓞 ℚ) ≠ -1 := by
@@ -255,10 +275,18 @@ theorem rootsOfUnity_hyps :
   interval_cases l
   exact absurd (by simpa using hl) (Ne.symm hne)
 
+/- English proof (translation)
+Simplify using `[HermNorm.norm, HermNorm.std]`.
+-/
 theorem HermNorm.std_norm_eq {n : ℕ} (v : Fin n → ℂ) :
     (HermNorm.std n).norm v = √(∑ i, ‖v i‖ ^ 2) := by
   simp [HermNorm.norm, HermNorm.std]
 
+/- English proof (translation)
+Establish `: sphereBall (HermNorm.std N) 1 = ⋂ i : Fin 1, {u | (HermNorm.std N).norm (fun j ↦ u (i, j)) < 1}`. Use extensionality with `u`. Simplify using `[sphereBall]`. Rewrite using `[this]`. Use `isOpen_iInter_of_finite fun i ↦ isOpen_lt ?_ continuous_const` and prove the remaining obligations.
+
+Simplify using `only [HermNorm.std_norm_eq]`. Use `fun_prop`.
+-/
 theorem isOpen_sphereBall_std (N : ℕ) : IsOpen (sphereBall (HermNorm.std N) 1) := by
   have : sphereBall (HermNorm.std N) 1 = ⋂ i : Fin 1, {u | (HermNorm.std N).norm (fun j ↦ u (i, j)) < 1} := by
     ext u; simp [sphereBall]
@@ -267,6 +295,11 @@ theorem isOpen_sphereBall_std (N : ℕ) : IsOpen (sphereBall (HermNorm.std N) 1)
   simp only [HermNorm.std_norm_eq]
   fun_prop
 
+/- English proof (translation)
+Introduce `u hu`. Rewrite using `[Metric.mem_closedBall, dist_zero_right, pi_norm_le_iff_of_nonneg zero_le_one]`. Introduce `ij`. Establish `h` using `hu ij.1`. Rewrite `h` using `[HermNorm.std_norm_eq]`.
+
+Establish `hle : ‖u ij‖ ≤ √(∑ j, ‖u (ij.1, j)‖ ^ 2)`. Rewrite using `[Real.le_sqrt (norm_nonneg _) (Finset.sum_nonneg fun _ _ ↦ by positivity)]`. Use `Finset.single_le_sum (f := fun j ↦ ‖u (ij.1, j)‖ ^ 2) (fun _ _ ↦ by positivity) (Finset.mem_univ ij.2)` as an intermediate fact. Simplify using `using this`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sphereBall_std_subset (N : ℕ) : sphereBall (HermNorm.std N) 1 ⊆ Metric.closedBall 0 1 := by
   intro u hu
   rw [Metric.mem_closedBall, dist_zero_right, pi_norm_le_iff_of_nonneg zero_le_one]
@@ -294,11 +327,20 @@ instance isProbabilityMeasure_sphereLaw (N : ℕ) : IsProbabilityMeasure (sphere
   simp only [HermNorm.std_norm_eq]
   fun_prop
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem unit_one : ∑ j, ‖(Pi.single 0 1 : Fin 1 → ℂ) j‖ ^ 2 = 1 := by simp
 
+/- English proof (translation)
+Simplify using `[Fin.sum_univ_two]`.
+-/
 theorem unit_two : ∑ j, ‖(Pi.single 0 1 : Fin 2 → ℂ) j‖ ^ 2 = 1 := by
   simp [Fin.sum_univ_two]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨X_ne_zero _, isHomogeneous_X _ _, by simp⟩, ⟨X_ne_zero _, isHomogeneous_X _ _, by simp⟩⟩`.
+-/
 theorem linear_form_hyps :
     ((X 0 : MvPolynomial (Fin 1) ℂ) ≠ 0 ∧ (X 0 : MvPolynomial (Fin 1) ℂ).IsHomogeneous 1 ∧
       eval (Pi.single 0 1) (X 0 : MvPolynomial (Fin 1) ℂ) ≠ 0) ∧
@@ -314,8 +356,16 @@ def ratPointVec : DualVec ℚ (Fin 2 → 𝓞 ℚ) ℚ where
       map_mul, Algebra.algebraMap_self, RingHom.id_apply]
     ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ratPointVec_apply (x : Fin 2 → 𝓞 ℚ) : ratPointVec x = (x 0 : ℚ) + 2 * (x 1 : ℚ) := rfl
 
+/- English proof (translation)
+Establish `h1 : ratPointVec (Pi.single 0 1) = 1`. Simplify using `[ratPointVec_apply]`. Establish `h0 : ratPointVec (Pi.basisFun (𝓞 ℚ) (Fin 2) 0) = 1`. Rewrite using `[Pi.basisFun_apply]`. Conclude with `h1`.
+
+Use `⟨(Pi.basisFun (𝓞 ℚ) (Fin 2)).span_eq, fun h ↦ ?_, by rw [h0]; exact one_ne_zero⟩` and prove the remaining obligations. Use `congrArg (fun f : DualVec ℚ (Fin 2 → 𝓞 ℚ) ℚ ↦ f (Pi.basisFun (𝓞 ℚ) (Fin 2) 0)) h` as an intermediate fact. Simplify using `only [h0, LinearMap.zero_apply] at this`. Conclude with `one_ne_zero this`.
+-/
 theorem heightOfPoint_hyps :
     Submodule.span (𝓞 ℚ) (Set.range (Pi.basisFun (𝓞 ℚ) (Fin 2))) = ⊤ ∧ ratPointVec ≠ 0 ∧
       ratPointVec (Pi.basisFun (𝓞 ℚ) (Fin 2) 0) ≠ 0 := by
@@ -328,6 +378,9 @@ theorem heightOfPoint_hyps :
   simp only [h0, LinearMap.zero_apply] at this
   exact one_ne_zero this
 
+/- English proof (translation)
+Simplify using `[Fin.sum_univ_two, ratPointVec_apply]`.
+-/
 theorem heightOfCycle_hyp :
     (X 0 + C 2 * X 1 : MvPolynomial (Fin 2) ℚ).map (algebraMap ℚ ℚ) =
       C 1 * ∏ _q : Fin 1, ∑ k, C (ratPointVec (Pi.basisFun (𝓞 ℚ) (Fin 2) k)) * X k := by

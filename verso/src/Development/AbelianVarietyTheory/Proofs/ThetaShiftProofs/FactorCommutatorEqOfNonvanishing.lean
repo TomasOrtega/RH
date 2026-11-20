@@ -4,6 +4,17 @@ import Development.AbelianVarietyTheory.Proofs.ThetaShiftProofs.ExistsEqCexpQuad
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hA : Differentiable ℂ A` using `(LinearMap.toContinuousLinearMap A).differentiable`. Establish `hB : Differentiable ℂ B` using `(LinearMap.toContinuousLinearMap B).differentiable`. Establish `hρ' : Differentiable ℂ fun z => ρ (z + la)` using `hρ.comp (differentiable_id.add_const la)`. Establish `hF : Differentiable ℂ fun z => a * Complex.exp (A z) * ρ (z + la) - b * Complex.exp (B z) * ρ z` using `((hA.cexp.const_mul a).mul hρ').sub ((hB.cexp.const_mul b).mul hρ)`. Establish `key : ∀ z, a * Complex.exp (A z) * ρ (z + la) - b * Complex.exp (B z) * ρ z = 0`.
+
+Break down `entire_eq_zero_or_eq_zero_of_mul_eq_zero θ _ hθ hF (fun z => by` into its components or cases. Use `h2 z` as an intermediate fact. Rewrite `this` using `[h1 z]`. Take the linear combination `this) with h | h`. Conclude with `absurd (funext h) hθ0`.
+
+Conclude with `h`. Establish `hexp : ∀ z, Complex.exp (q (z + la) - q z - (B z - A z)) = b / a`. Introduce `z`. Establish `hk` using `key z`. Rewrite `hk` using `[← hqρ, ← hqρ]`.
+
+Establish `e1` using `Complex.exp_ne_zero (q z)`. Establish `e2` using `Complex.exp_ne_zero (A z)`. Establish `e3` using `Complex.exp_ne_zero (B z)`. Rewrite using `[Complex.exp_sub, Complex.exp_sub, Complex.exp_sub]`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `hk`. Establish `hc : Continuous fun z => q (z + la) - q z - (B z - A z)` using `((hq.comp (continuous_id.add continuous_const)).sub hq).sub (hB.continuous.sub hA.continuous)`. Conclude with `Complex.isCoveringMap_exp.const_of_comp hc (fun u v => Subtype.ext ((hexp u).trans (hexp v).symm)) z w`.
+-/
 theorem log_translate_sub_const_of_quasiPeriodic {g : ℕ} {θ ρ q : (Fin g → ℂ) → ℂ}
     {la : Fin g → ℂ} {A B : (Fin g → ℂ) →ₗ[ℂ] ℂ} {a b : ℂ} (hθ : Differentiable ℂ θ) (hθ0 : θ ≠ 0)
     (hρ : Differentiable ℂ ρ) (hq : Continuous q) (hqρ : ∀ z, Complex.exp (q z) = ρ z)
@@ -39,6 +50,11 @@ theorem log_translate_sub_const_of_quasiPeriodic {g : ℕ} {θ ρ q : (Fin g →
   exact Complex.isCoveringMap_exp.const_of_comp hc
     (fun u v => Subtype.ext ((hexp u).trans (hexp v).symm)) z w
 
+/- English proof (translation)
+Introduce `g θ ρ la mu A₁ A₂ B₁ B₂ a₁ a₂ b₁ b₂ hθ hθ0 hρ hρ0 ha₁ ha₂ h1 h2 h3 h4`. Take `⟨q, hq, hqρ⟩` from `exists_continuous_cexp_eq hρ.continuous hρ0`. Establish `e1` using `log_translate_sub_const_of_quasiPeriodic hθ hθ0 hρ hq hqρ ha₁ h1 h3 mu 0`. Establish `e2` using `log_translate_sub_const_of_quasiPeriodic hθ hθ0 hρ hq hqρ ha₂ h2 h4 la 0`. Simplify using `only [zero_add, map_zero, sub_zero] at e1 e2`.
+
+Rewrite `e1` using `[add_comm mu la]`. Take the linear combination `e2 - e1`.
+-/
 theorem factor_commutator_eq_of_nonvanishing :
     ∀ (g : ℕ) (θ ρ : (Fin g → ℂ) → ℂ) (la mu : Fin g → ℂ) (A₁ A₂ B₁ B₂ : (Fin g → ℂ) →ₗ[ℂ] ℂ)
       (a₁ a₂ b₁ b₂ : ℂ), Differentiable ℂ θ → θ ≠ 0 → Differentiable ℂ ρ → (∀ z, ρ z ≠ 0) →

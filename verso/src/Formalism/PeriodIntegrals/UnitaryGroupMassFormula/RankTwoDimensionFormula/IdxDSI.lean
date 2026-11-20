@@ -9,6 +9,11 @@ open Matrix NumberField Formalism.MainNotions.S Formalism.L2.SG.HidaSetting
 
 namespace PI.UnitaryDimensionFormula
 
+/- English proof (translation)
+Introduce `I`. Use `⟨unitaryCongruence.sigA_sigA (I := I), ?_⟩` and prove the remaining obligations. Unfold `Formalism.UG.IsHerm Formalism.UG.cT`. Use extensionality with `i j`. Simplify using `[JA, sigA, Formalism.UG.inclE, Formalism.UG.sigR]`.
+
+Use `congr 1`. Rewrite using `[← unitaryCongruence.J_conj (I := I) j i]`. Use `first`. Consider the case `rfl`. Consider the case `simp`.
+-/
 theorem idxDSig : IdxDSig := by
   intro I
   refine ⟨unitaryCongruence.sigA_sigA (I := I), ?_⟩
@@ -21,6 +26,9 @@ theorem idxDSig : IdxDSig := by
   | rfl
   | simp
 
+/- English proof (translation)
+Introduce `I` and use `⟨fun _ hx _ hy => unitaryCongruence.hA_int I hx hy, fun _ hc => unitaryCongruence.sigA_mem I hc⟩`.
+-/
 theorem idxDInt : IdxDInt := fun I =>
   ⟨fun _ hx _ hy => unitaryCongruence.hA_int I hx hy, fun _ hc => unitaryCongruence.sigA_mem I hc⟩
 

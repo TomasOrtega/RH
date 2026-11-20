@@ -23,6 +23,11 @@ open GlobalTheory.MulPull
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor in
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `h`. Establish `le : ∀ p : (PUnit → L.ι) × L.ι, (L.pull F).U p.1 ⊓ L.U p.2 ≤ LB.wchart L ![F, 𝟙 X] ![p.1 PUnit.unit, p.2]` using `fun p y hy => Set.mem_iInter.2 fun k => by fin_cases k exacts [mem_pull.1 hy.1, hy.2]`. Use `⟨⟨fun p => res (le p) (t.s ![p.1 PUnit.unit, p.2])⟩, (isGen_iff _).2 ?_⟩` and prove the remaining obligations. Introduce `Y f y j j' k k' hj hj' hk hk'`. Establish `m₁ : f y ∈ (L.pull F).U (fun _ => j) ⊓ L.U k` using `⟨mem_pull.2 hj, hk⟩`.
+
+Establish `m₂ : f y ∈ (L.pull F).U (fun _ => j') ⊓ L.U k'` using `⟨mem_pull.2 hj', hk'⟩`. Use `(gm_res f y (le (fun _ => j, k)) m₁ _).trans ((gen_trans ht f y (le (fun _ => j, k) m₁) (le (fun _ => j', k') m₂)).trans (congrArg₂ (· * ·) ?_ (gm_res f y (le (fun _ => j', k')) m₂ _).symm))` and prove the remaining obligations. Rewrite using `[trF, Fin.prod_univ_two]`. Simplify using `only [Category.comp_id, Matrix.cons_val_zero, Matrix.cons_val_one, zpow_one, zpow_neg]`. Conclude with `congrArg (fun u => _ * u⁻¹) (map_zpow (gm f y (L.U k ⊓ L.U k')) (L.g k k') m).symm`.
+-/
 theorem iso_of_hasGen {X : Scheme.{0}} {L : LB X} {F : X ⟶ X} {m : ℤ}
     (h : HasGen L (K := Fin 2) ![F, 𝟙 X] ![1, -m]) :
     ∃ w : LB.Iso (AbLaw.pw L m) (L.pull F), w.IsGen := by
@@ -42,6 +47,15 @@ theorem iso_of_hasGen {X : Scheme.{0}} {L : LB X} {F : X ⟶ X} {m : ℤ}
   simp only [Category.comp_id, Matrix.cons_val_zero, Matrix.cons_val_one, zpow_one, zpow_neg]
   exact congrArg (fun u => _ * u⁻¹) (map_zpow (gm f y (L.U k ⊓ L.U k')) (L.g k k') m).symm
 
+/- English proof (translation)
+Introduce `K _ _ B _ hB H hH ⟨w, hw⟩ n`. Use `hB.comm` as an intermediate fact. Establish `hcube : HasGen H (thφ B (x3 B)) thε` using `GlobalTheory.exists_gen_theta_of_isAbelianScheme K B hB H hH`. Establish `hrig : HasGen H (K` using `PUnit) (fun _ => eSec B) (fun _ => 1) := DVR.exists_gen_of_local (V := K) H hH _ _`. Establish `hneg : HasGen H (K` using `Fin 2) ![𝟙 B.left ≫ (GrpObj.inv : B ⟶ B).left, 𝟙 B.left] ![1, -1] := Geo.Tor.gen_of_iso ((Geo.Tor.isGen_iff w).1 hw) _`.
+
+Establish `main : HasGen H (K` using `Fin 2) ![(𝟙 B : B ⟶ B).left, ((𝟙 B : B ⟶ B) ^ n).left] ![(n : ℤ) ^ 2, -1] := by`. Use `hasGen_pow hH hcube (𝟙 B) ?_ ?_ n` and prove the remaining obligations. Use `(hrig.pull (toUnit B).left).of_formEq hH (fun U _ h => ?_)` and prove the remaining obligations. Simplify using `only [Finset.univ_unique, Finset.prod_singleton, Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, _root_.mul_one]`. Both sides reduce to the same expression.
+
+Use `hneg.inv.of_formEq hH (fun U _ h => ?_)` and prove the remaining obligations. Simplify using `only [Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, neg_neg, _root_.mul_one]`. Conclude with `_root_.mul_comm _ _`. Use `iso_of_hasGen (main.inv.of_formEq hH (fun U _ h => ?_))` and prove the remaining obligations. Simplify using `only [Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, neg_neg, _root_.mul_one, Nat.cast_pow]`.
+
+Conclude with `_root_.mul_comm _ _`.
+-/
 theorem mulPull_of_symm : ∀ (K : Type) [Field K] [IsAlgClosed K] (B : Over (Spec (CommRingCat.of K))) [GrpObj B], IsAbelianScheme B → ∀ H : LB B.left, H.IsLB → (∃ w : LB.Iso H (H.pull (GrpObj.inv : B ⟶ B).left), w.IsGen) → ∀ n : ℕ, ∃ w : LB.Iso (pw H ((n ^ 2 : ℕ) : ℤ)) (H.pull (mulA B n).left), w.IsGen := by
   intro K _ _ B _ hB H hH ⟨w, hw⟩ n
   have := hB.comm

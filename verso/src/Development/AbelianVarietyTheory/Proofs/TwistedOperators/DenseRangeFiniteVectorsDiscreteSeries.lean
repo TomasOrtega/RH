@@ -10,6 +10,17 @@ noncomputable section
 namespace GlobalTheory.AnalyticDense
 open GlobalTheory.FockTensor
 
+/- English proof (translation)
+Take `⟨g, hg⟩ : ∃ g : ℕ → ℝ → ℂ, g = fun k s => inner ℂ w (D.U.π (T.expt (s • Y)) (D.ι ((D.HK.act Y ^ k) y)))` from `⟨_, rfl⟩`. Establish `hd : ∀ k s, HasDerivAt (g k) (g (k + 1) s) s`. Introduce `k s`. Establish `h1` using `hasDerivAt_orbit D.U hY (D.der Y hY ((D.HK.act Y ^ k) y)) s`. Establish `h2` using `((innerSL ℂ w).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt s h1`.
+
+Establish `e : (D.HK.act Y ^ (k + 1)) y = D.HK.act Y ((D.HK.act Y ^ k) y)`. Rewrite using `[pow_succ']`. Both sides reduce to the same expression. Substitute `hg` using the available equality. Simplify using `only [e]`.
+
+Conclude with `h2`. Establish `hb' : ∀ k s, ‖g k s‖ ≤ (‖w‖ * C) * ρ ^ k * (k.factorial : ℝ)`. Introduce `k s`. Substitute `hg` using the available equality. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h0 : ∀ k, g k 0 = 0`. Introduce `k`. Substitute `hg` using the available equality. Simplify using `only [zero_smul, T.expt_zero, map_one, ContinuousLinearMap.one_apply]`. Conclude with `hw _`.
+
+Establish `key` using `GlobalTheory.FactorialJet.eq_zero_of_factorial_bound ℂ g (‖w‖ * C) ρ (mul_nonneg (norm_nonneg w) hC) hρ hd hb' h0 0 t`. Substitute `hg` using the available equality. Simplify using `using key`.
+-/
 theorem inner_orbit_eq_zero {p q : ℕ} {T : GrpData p q} (D : DSRep T) {Y : Mat p q}
     (hY : Y ∈ upq p q) (y : D.HK.V) {C ρ : ℝ} (hC : 0 ≤ C) (hρ : 0 < ρ)
     (hb : ∀ k : ℕ, ‖D.ι ((D.HK.act Y ^ k) y)‖ ≤ C * ρ ^ k * (k.factorial : ℝ))
@@ -48,6 +59,11 @@ theorem inner_orbit_eq_zero {p q : ℕ} {T : GrpData p q} (D : DSRep T) {Y : Mat
   subst hg
   simpa using key
 
+/- English proof (translation)
+Establish `hsub : LinearMap.range D.ι ≤ (LinearMap.range D.ι).topologicalClosure.comap ((D.U.π (T.expt (t • Y)) : D.U.H →L[ℂ] D.U.H) : D.U.H →ₗ[ℂ] D.U.H)`. Introduce `z hz`. Take `⟨v, rfl⟩` from `LinearMap.mem_range.1 hz`. Take `⟨C, ρ, hC, hρ, hk⟩` from `hb v`. Rewrite using `[Submodule.mem_comap, ← Submodule.orthogonal_orthogonal_eq_closure, Submodule.mem_orthogonal]`.
+
+Introduce `u hu`. Rewrite using `[ContinuousLinearMap.coe_coe]`. Conclude with `inner_orbit_eq_zero D hY v hC hρ hk u (fun z => (Submodule.mem_orthogonal' _ _).1 hu _ (LinearMap.mem_range_self _ z)) t`. Establish `hcl : IsClosed (((LinearMap.range D.ι).topologicalClosure.comap ((D.U.π (T.expt (t • Y)) : D.U.H →L[ℂ] D.U.H) : D.U.H →ₗ[ℂ] D.U.H) : Submodule ℂ D.U.H) : Set D.U.H)` using `(Submodule.isClosed_topologicalClosure _).preimage (D.U.π _).continuous`. Conclude with `Submodule.topologicalClosure_minimal _ hsub hcl hx`.
+-/
 theorem orbit_mem_closure {p q : ℕ} {T : GrpData p q} (D : DSRep T) {Y : Mat p q}
     (hY : Y ∈ upq p q)
     (hb : ∀ y, ∃ C ρ : ℝ, 0 ≤ C ∧ 0 < ρ ∧
@@ -72,6 +88,27 @@ theorem orbit_mem_closure {p q : ℕ} {T : GrpData p q} (D : DSRep T) {Y : Mat p
     (Submodule.isClosed_topologicalClosure _).preimage (D.U.π _).continuous
   exact Submodule.topologicalClosure_minimal _ hsub hcl hx
 
+/- English proof (translation)
+Introduce `p q hpq T D hnt hb`. Establish `hgen : ∀ g ∈ T.expt '' upq p q, ∀ x ∈ (LinearMap.range D.ι).topologicalClosure, D.U.π g x ∈ (LinearMap.range D.ι).topologicalClosure ∧ D.U.π g⁻¹ x ∈ (LinearMap.range D.ι).topologicalClosure`. Introduce and unpack `_ ⟨Y, hY, rfl⟩ x hx`. Establish `hneg : (T.expt Y)⁻¹ = T.expt ((-1 : ℝ) • Y)`. Establish `h` using `T.expt_add Y hY (-1) 1`.
+
+Establish `e : ((-1 : ℝ) + 1) = 0` using `by norm_num`. Rewrite `h` using `[e, zero_smul, T.expt_zero, one_smul]`. Conclude with `(eq_inv_of_mul_eq_one_left h.symm).symm`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `orbit_mem_closure D hY (hb Y hY) 1 x hx`.
+
+Rewrite `h1` using `[one_smul]`. Then use the resulting hypothesis. Rewrite using `[hneg]`. Conclude with `orbit_mem_closure D hY (hb Y hY) (-1) x hx`. Establish `hall : ∀ g : T.G, ∀ x ∈ (LinearMap.range D.ι).topologicalClosure, D.U.π g x ∈ (LinearMap.range D.ι).topologicalClosure ∧ D.U.π g⁻¹ x ∈ (LinearMap.range D.ι).topologicalClosure`. Introduce `g`.
+
+Establish `hg : g ∈ Subgroup.closure (T.expt '' upq p q)`. Rewrite using `[(GlobalTheory.T.coverUpq_closure_exp_top_and_cartan p q hpq T).1]`. Conclude with `Subgroup.mem_top g`. Proceed by induction on `hg using Subgroup.closure_induction with`. Consider the case `mem a ha => exact hgen a ha`.
+
+Consider the case `one`. Introduce `x hx`. Rewrite using `[inv_one, map_one, ContinuousLinearMap.one_apply]`. Conclude with `⟨hx, hx⟩`. Consider the case `mul a b _ _ ha hb'`.
+
+Introduce `x hx`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ContinuousLinearMap.mul_apply]`. Conclude with `(ha _ (hb' x hx).1).1`. Rewrite using `[mul_inv_rev, map_mul, ContinuousLinearMap.mul_apply]`.
+
+Conclude with `(hb' _ (ha x hx).2).2`. Consider the case `inv a _ ha`. Introduce `x hx`. Rewrite using `[inv_inv]`. Conclude with `⟨(ha x hx).2, (ha x hx).1⟩`.
+
+Break down `D.3 _ (Submodule.isClosed_topologicalClosure _) (fun g x hx => (hall g x hx).1) with h | h` into its components or cases. It suffices to derive a contradiction. Take `⟨v, hv⟩` from `exists_ne (0 : D.HK.V)`. Establish `h1 : D.ι v ∈ (LinearMap.range D.ι).topologicalClosure` using `Submodule.le_topologicalClosure _ (LinearMap.mem_range_self _ v)`. Rewrite `h1` using `[h, Submodule.mem_bot]`.
+
+Conclude with `hv (D.9 (h1.trans (map_zero D.ι).symm))`. Establish `e : ((LinearMap.range D.ι : Submodule ℂ D.U.H) : Set D.U.H) = Set.range D.ι`. Use extensionality with `z`. Simplify using the standard rewrite rules. Rewrite using `[← e]`.
+
+Conclude with `Submodule.dense_iff_topologicalClosure_eq_top.2 h`.
+-/
 theorem dense_range_of_factorial_bound : ∀ (p q : ℕ), 1 ≤ p + q → ∀ (T : GrpData p q)
     (D : DSRep T), Nontrivial D.HK.V →
     (∀ Y ∈ upq p q, ∀ y, ∃ C ρ : ℝ, 0 ≤ C ∧ 0 < ρ ∧

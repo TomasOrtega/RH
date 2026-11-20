@@ -13,6 +13,9 @@ variable {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)} {
 
 def IntM (M : Matrix (Fin n) (Fin n) (v.adicCompletion F)) : Prop := ∀ i j, Valued.v (M i j) ≤ 1
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_mul]`. Conclude with `mul_le_one' (hA i k) (hB k j)`.
+-/
 theorem IntM.mul {A B : Matrix (Fin n) (Fin n) (v.adicCompletion F)} (hA : IntM A) (hB : IntM B) : IntM (A * B) := by
   intro i j
   rw [Matrix.mul_apply]
@@ -20,19 +23,45 @@ theorem IntM.mul {A B : Matrix (Fin n) (Fin n) (v.adicCompletion F)} (hA : IntM 
   rw [Valuation.map_mul]
   exact mul_le_one' (hA i k) (hB k j)
 
+/- English proof (translation)
+Introduce `i j` and use `(Valuation.map_add _ _ _).trans (max_le (hA i j) (hB i j))`.
+-/
 theorem IntM.add {A B : Matrix (Fin n) (Fin n) (v.adicCompletion F)} (hA : IntM A) (hB : IntM B) : IntM (A + B) :=
   fun i j => (Valuation.map_add _ _ _).trans (max_le (hA i j) (hB i j))
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.smul_apply, smul_eq_mul, Valuation.map_mul]; exact mul_le_one' hc (hA i j)`.
+-/
 theorem IntM.smul {A : Matrix (Fin n) (Fin n) (v.adicCompletion F)} (hA : IntM A) {c : v.adicCompletion F}
     (hc : Valued.v c ≤ 1) : IntM (c • A) := fun i j => by
   rw [Matrix.smul_apply, smul_eq_mul, Valuation.map_mul]; exact mul_le_one' hc (hA i j)
 
+/- English proof (translation)
+Introduce `i j` and use `by by_cases h : i = j · subst h; simpa using hd i · simp [Matrix.diagonal_apply_ne _ h]`.
+-/
 theorem IntM.diagonal {d : Fin n → v.adicCompletion F} (hd : ∀ i, Valued.v (d i) ≤ 1) :
     IntM (Matrix.diagonal d) := fun i j => by
   by_cases h : i = j
   · subst h; simpa using hd i
   · simp [Matrix.diagonal_apply_ne _ h]
 
+/- English proof (translation)
+Use `set D := Formalism.UG.diagJ n ϖ k`. Set `D' : Matrix (Fin n) (Fin n) (v.adicCompletion F)` to `Matrix.diagonal fun i => if (i : ℕ) < k then 1 else ϖ`. Establish `hDD : D' * D = ϖ • (1 : Matrix (Fin n) (Fin n) (v.adicCompletion F))`. Simplify using `only [D', D, Formalism.UG.diagJ, Matrix.diagonal_mul_diagonal]`. Use extensionality with `i j`.
+
+Distinguish the cases in `h : i = j`. Apply the tactic sequence `subst h; simp only [Matrix.diagonal_apply_eq, Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one] split_ifs <;> simp`. Simplify using `[Matrix.diagonal_apply_ne _ h, Matrix.one_apply_ne h]`. Apply the tactic sequence `have hD : IntM D := IntM.diagonal fun i => by show Valued.v (if (i : ℕ) < k then ϖ else 1) ≤ 1 split_ifs <;> simp [hϖ]`. Apply the tactic sequence `have hD' : IntM D' := IntM.diagonal fun i => by show Valued.v (if (i : ℕ) < k then 1 else ϖ) ≤ 1 split_ifs <;> simp [hϖ]`.
+
+Establish `haa : ((a⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * a = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `hbb : ((b⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * b = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `hgg : (g : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * ((g⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) = 1`.
+
+Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `haa' : ∀ Y : Matrix (Fin n) (Fin n) (v.adicCompletion F), ((a⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * ((a : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * Y) = Y`. Introduce `Y`. Rewrite using `[← mul_assoc, haa, one_mul]`. Establish `hbb' : ∀ Y : Matrix (Fin n) (Fin n) (v.adicCompletion F), ((b⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * ((b : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * Y) = Y`.
+
+Introduce `Y`. Rewrite using `[← mul_assoc, hbb, one_mul]`. Establish `hDD' : ∀ Y : Matrix (Fin n) (Fin n) (v.adicCompletion F), D' * (D * Y) = ϖ • Y`. Introduce `Y`. Rewrite using `[← mul_assoc, hDD, Matrix.smul_mul, one_mul]`.
+
+Establish `hgi : ϖ • ((g⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) = ((b⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * D' * ((a⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F …`. Establish `h1 : ((b⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * D' * ((a⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * g = ϖ • 1`. Rewrite using `[hg]`. Simplify using `only [mul_assoc, haa', hDD', Matrix.mul_smul, hbb]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.smul_mul, one_mul]`. Use `_ = _ := by rw [← h1, mul_assoc _ (g : Matrix (Fin n) (Fin n) (v.adicCompletion F)), hgg, mul_one]`. Use `⟨((b⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * D' * ((a⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)) * E * D * b' + ϖ • (((b⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCom …` and prove the remaining obligations. Conclude with `((((hbi.mul hD').mul hai).mul hE).mul hD |>.mul hb').add (hbi.mul hF |>.smul hϖ)`. Apply `smul_right_injective _ hϖ0` to reduce the goal to its premises.
+
+Simplify using `only`. Rewrite using `[Units.val_mul, ← Matrix.smul_mul, hgi, hg', ha, hb]`. Simplify using `only [add_mul, mul_add, Matrix.mul_smul, Matrix.smul_mul, smul_add, mul_assoc, haa', hDD', hbb, hbb']`. Use `module`.
+-/
 theorem local_cong (ϖ : v.adicCompletion F) (k N : ℕ) (hϖ : Valued.v ϖ ≤ 1) (hϖ0 : ϖ ≠ 0)
     (a a' b b' g g' : GL (Fin n) (v.adicCompletion F))
     (hai : IntM ((a⁻¹ : GL (Fin n) (v.adicCompletion F)) : Matrix (Fin n) (Fin n) (v.adicCompletion F)))
@@ -97,12 +126,18 @@ theorem local_cong (ϖ : v.adicCompletion F) (k N : ℕ) (hϖ : Valued.v ϖ ≤ 
     module
 end Loc
 
+/- English proof (translation)
+Introduce `i j` and use `by by_cases h : i = j · subst h; simp · simp [Matrix.one_apply_ne h]`.
+-/
 theorem IntM.one {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)} {n : ℕ} :
     IntM (1 : Matrix (Fin n) (Fin n) (v.adicCompletion F)) := fun i j => by
   by_cases h : i = j
   · subst h; simp
   · simp [Matrix.one_apply_ne h]
 
+/- English proof (translation)
+Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Use `push_cast`. Conclude with `(Valuation.map_add _ _ _).trans (max_le ih (by simp))`.
+-/
 theorem natCast_le_one {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (N : ℕ) :
     Valued.v (N : v.adicCompletion F) ≤ 1 := by
   induction N with
@@ -116,9 +151,23 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
 local notation3 "L⁺" => maximalRealSubfield L
 
+/- English proof (translation)
+Simplify using `[SplitPlace.proj, Algebra.TensorProduct.lift_tmul]`.
+-/
 theorem proj_tmul_one (s : SplitPlace L) (c : L) : s.proj (c ⊗ₜ[L⁺] (1 : AFplus L)) = s.i c := by
   simp [SplitPlace.proj, Algebra.TensorProduct.lift_tmul]
 
+/- English proof (translation)
+Take `⟨e, he, he'⟩` from `GlobalTheory.SplitSep.exists_sep L s`. Introduce `i j`. Establish `hconj : conjAL L ((x.1 : Matrix (Fin n) (Fin n) (AL L)) i j) = (((x⁻¹ : GA L n).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) j i`. Establish `hm` using `x.2`. Simplify using `only [GA, UGroup, Subgroup.mem_mk] at hm`.
+
+Establish `h1 : ((x.1⁻¹ : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) = conjT (conjAL L) x.1` using `Units.inv_eq_of_mul_eq_one_right hm`. Simplify using `only [InvMemClass.coe_inv, h1, conjT, Matrix.transpose_apply, Matrix.map_apply]`. Establish `hz : (x.1 : Matrix (Fin n) (Fin n) (AL L)) i j - (1 : Matrix (Fin n) (Fin n) (AL L)) i j ∈ ALint L`. Apply `GlobalTheory.TSetFin.mem_ALint_of_local s e he he'` to reduce the goal to its premises. Introduce `w hw`.
+
+Use `congrFun (congrFun (hx w (by simpa using hw)) i) j` as an intermediate fact. Simplify using `only [Matrix.map_apply] at this`. Rewrite using `[map_sub, this]`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Establish `e1 : s.proj ((x.1 : Matrix (Fin n) (Fin n) (AL L)) i j) = ((s.loc n x : GL (Fin n) (s.v.adicCompletion L⁺)) : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) i j` using `rfl`.
+
+Rewrite using `[map_sub, e1]`. Use `(Valuation.map_sub _ _ _).trans (max_le (h1 i j) ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Establish `e1 : s.proj ((((x⁻¹ : GA L n).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) j i) = ((s.loc n x⁻¹ : GL (Fin n) (s.v.adicCompletion L⁺)) : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) j i` using `rfl`. Rewrite using `[map_sub, map_sub, hconj, e1]`.
+
+Use `(Valuation.map_sub _ _ _).trans (max_le (h2 j i) ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Use `add_mem hz (show (1 : Matrix (Fin n) (Fin n) (AL L)) i j ∈ ALint L by` as an intermediate fact. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij, Subring.one_mem, Subring.zero_mem])`. Simplify using `using this`.
+-/
 theorem mem_Umax_of_loc (s : SplitPlace L) (x : GA L n) (hx : TrivOutside {s.v} x)
     (h1 : ∀ i j, Valued.v (((s.loc n x : GL (Fin n) (s.v.adicCompletion L⁺)) : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) i j) ≤ 1)
     (h2 : ∀ i j, Valued.v (((s.loc n x⁻¹ : GL (Fin n) (s.v.adicCompletion L⁺)) : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) i j) ≤ 1) :
@@ -153,6 +202,29 @@ theorem mem_Umax_of_loc (s : SplitPlace L) (x : GA L n) (hx : TrivOutside {s.v} 
     by_cases hij : i = j <;> simp [Matrix.one_apply, hij, Subring.one_mem, Subring.zero_mem])
   simpa using this
 
+/- English proof (translation)
+Take `⟨X, hX, eX⟩` from `h1`. Take `⟨Y, hY, eY⟩` from `h2`. Establish `hNv` using `natCast_le_one s.v N`. Establish `iX : IntM ((s.loc n κ : GL (Fin n) (s.v.adicCompletion L⁺)) : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺))`. Rewrite using `[eX]`.
+
+Conclude with `IntM.one.add (hX.smul hNv)`. Establish `iY : IntM ((s.loc n κ⁻¹ : GL (Fin n) (s.v.adicCompletion L⁺)) : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺))`. Rewrite using `[eY]`. Conclude with `IntM.one.add (hY.smul hNv)`. Use `⟨mem_Umax_of_loc s κ hκ iX iY, fun i j => ?_⟩` and prove the remaining obligations.
+
+Take `⟨e, he, he'⟩` from `GlobalTheory.SplitSep.exists_sep L s`. Establish `hN0 : (N : L) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `hconj : conjAL L ((κ.1 : Matrix (Fin n) (Fin n) (AL L)) i j) = (((κ⁻¹ : GA L n).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) j i`. Establish `hm` using `κ.2`. Simplify using `only [GA, UGroup, Subgroup.mem_mk] at hm`.
+
+Establish `h1 : ((κ.1⁻¹ : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) = conjT (conjAL L) κ.1` using `Units.inv_eq_of_mul_eq_one_right hm`. Simplify using `only [InvMemClass.coe_inv, h1, conjT, Matrix.transpose_apply, Matrix.map_apply]`. Establish `hNK : (N : s.v.adicCompletion L⁺) ≠ 0`. Rewrite using `[← map_natCast s.i N]`. Conclude with `(map_ne_zero _).2 hN0`.
+
+Establish `hone : ∀ i j, s.proj ((1 : Matrix (Fin n) (Fin n) (AL L)) i j) = (1 : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) i j`. Apply the tactic sequence `intro i j; by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Establish `hconj1 : conjAL L ((1 : Matrix (Fin n) (Fin n) (AL L)) i j) = (1 : Matrix (Fin n) (Fin n) (AL L)) j i`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij, Matrix.one_apply_ne (Ne.symm hij)]`. Establish `hcN : conjAL L ((N : L)⁻¹ ⊗ₜ[L⁺] (1 : AFplus L)) = (N : L)⁻¹ ⊗ₜ[L⁺] (1 : AFplus L)`. Simplify using `[conjAL, Algebra.TensorProduct.map_tmul]`. Use `⟨((N : L)⁻¹ ⊗ₜ[L⁺] (1 : AFplus L)) * ((κ.1 : Matrix (Fin n) (Fin n) (AL L)) i j - (1 : Matrix (Fin n) (Fin n) (AL L)) i j), ?_, ?_⟩` and prove the remaining obligations.
+
+Apply `GlobalTheory.TSetFin.mem_ALint_of_local s e he he'` to reduce the goal to its premises. Introduce `w hw`. Use `congrFun (congrFun (hκ w (by simpa using hw)) i) j` as an intermediate fact. Simplify using `only [Matrix.map_apply] at this`. Rewrite using `[map_mul, map_sub, this]`.
+
+Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Rewrite using `[map_mul, proj_tmul_one, map_sub, hone]`. Establish `e1 : s.proj ((κ.1 : Matrix (Fin n) (Fin n) (AL L)) i j) = ((s.loc n κ : GL (Fin n) (s.v.adicCompletion L⁺)) : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) i j` using `rfl`. Rewrite using `[e1, eX]`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, add_sub_cancel_left, map_inv₀, map_natCast]`.
+
+Rewrite using `[← mul_assoc, inv_mul_cancel₀ hNK, one_mul]`. Conclude with `hX i j`. Rewrite using `[map_mul, map_sub, hconj, hconj1, hcN, map_mul, proj_tmul_one, map_sub, hone]`. Establish `e1 : s.proj ((((κ⁻¹ : GA L n).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) j i) = ((s.loc n κ⁻¹ : GL (Fin n) (s.v.adicCompletion L⁺)) : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) j i` using `rfl`. Rewrite using `[e1, eY]`.
+
+Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, add_sub_cancel_left, map_inv₀, map_natCast]`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hNK, one_mul]`. Conclude with `hY j i`. Rewrite using `[← mul_assoc]`. Establish `: (N : AL L) * ((N : L)⁻¹ ⊗ₜ[L⁺] (1 : AFplus L)) = 1`.
+
+Rewrite using `[← map_natCast (Algebra.TensorProduct.includeLeftRingHom : L →+* AL L) N, Algebra.TensorProduct.includeLeftRingHom_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_inv_cancel₀ hN0, one_mul, Algebra.TensorProduct.one_def]`. Rewrite using `[this, one_mul]`.
+-/
 theorem cong_of_loc (s : SplitPlace L) (N : ℕ) (hN : 0 < N) (κ : GAf L n) (hκ : TrivOutside {s.v} κ)
     (h1 : ∃ X : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺), IntM X ∧
       ((s.loc n κ : GL (Fin n) (s.v.adicCompletion L⁺)) : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) = 1 + (N : s.v.adicCompletion L⁺) • X)
@@ -213,6 +285,39 @@ theorem cong_of_loc (s : SplitPlace L) (N : ℕ) (hN : 0 < N) (κ : GAf L n) (h�
     rw [this, one_mul]
 end Glob
 
+/- English proof (translation)
+Introduce `L _ _ _ n J hJ s ϖ k hϖ`. Take `⟨N, hN, hJN⟩` from `hJ`. Establish `hunif : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `hϖ`. Establish `hϖ1 : Valued.v ϖ ≤ 1`. Rewrite using `[hunif, ← WithZero.exp_zero, WithZero.exp_le_exp]`.
+
+Evaluate the numerical expressions. Establish `hϖ0 : ϖ ≠ 0`. Introduce `h`. Rewrite `hunif` using `[h, Valuation.map_zero]`. Conclude with `WithZero.coe_ne_zero hunif.symm`.
+
+Establish `hN0 : (N : s.v.adicCompletion (maximalRealSubfield L)) ≠ 0`. Rewrite using `[← map_natCast s.i N]`. Conclude with `(map_ne_zero _).2 (Nat.cast_ne_zero.2 hN.ne')`. Set `μ : s.v.adicCompletionIntegers (maximalRealSubfield L)` to `⟨(N : s.v.adicCompletion (maximalRealSubfield L)) * ϖ, by rw [HeightOneSpectrum.mem_adicCompletionIntegers, Valuation.map_mul]; exact mul_le_one' (natCast_le_one s.v N) hϖ1⟩`. Establish `hμ : μ ≠ 0`.
+
+Introduce `h`. Use `congrArg Subtype.val h` as an intermediate fact. Conclude with `mul_ne_zero hN0 hϖ0 this`. Use `haveI : Finite (s.v.adicCompletionIntegers (maximalRealSubfield L) ⧸ Ideal.span {μ}) := Formalism.UG.P.glint_finite_quotient_of_dvr (Formalism.UG.P.glint_finite_residueField s.v) _ (by rwa [Ne, Ideal.span_singleton_eq_bot])`. Set `K` to `s.v.adicCompletion (maximalRealSubfield L)`.
+
+Set `Q` to `s.v.adicCompletionIntegers (maximalRealSubfield L) ⧸ Ideal.span {μ}`. Set `c : K → Q` to `fun y => if h : Valued.v y ≤ 1 then Ideal.Quotient.mk _ ⟨y, by rw [HeightOneSpectrum.mem_adicCompletionIntegers]; exact h⟩ else 0`. Establish `hc : ∀ y y' : K, Valued.v y ≤ 1 → Valued.v y' ≤ 1 → c y = c y' → ∃ e : K, Valued.v e ≤ 1 ∧ y' = y + ((N : K) * ϖ) * e`. Introduce `y y' hy hy' hcy`. Simplify using `only [c, dif_pos hy, dif_pos hy'] at hcy`.
+
+Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq.1 hcy.symm)`. Use `⟨(a : K), a.2, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val ha` as an intermediate fact. Simplify using `only [μ, MulMemClass.coe_mul, AddSubgroupClass.coe_sub] at this`. Rewrite using `[mul_comm _ (a : K), this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hmat : ∀ M M' : Matrix (Fin n) (Fin n) K, IntM M → IntM M' → (fun i j => c (M i j)) = (fun i j => c (M' i j)) → ∃ E : Matrix (Fin n) (Fin n) K, IntM E ∧ M' = M + ((N : K) * ϖ) • E`. Introduce `M M' hM hM' hMM`. Establish `: ∀ i j, ∃ e : K, Valued.v e ≤ 1 ∧ M' i j = M i j + ((N : K) * ϖ) * e` using `fun i j => hc _ _ (hM i j) (hM' i j) (congrFun (congrFun hMM i) j)`. Use `choose E hE1 hE2 using this`.
+
+Conclude with `⟨Matrix.of E, hE1, by ext i j; simp [hE2]⟩`. Set `cl : GAf L n → (Fin n → Fin n → Q) × (Fin n → Fin n → Q)` to `fun x => if h : x ∈ tSet L n s ϖ k then (fun i j => c (((h.2.choose : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) i j), fun i j => c (((h.2.choose_spec.2.choose : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) i j)) else 0`. Establish `key : ∀ x ∈ tSet L n s ϖ k, ∀ x' ∈ tSet L n s ϖ k, cl x = cl x' → (x : GAf L n ⧸ J) = x'`. Introduce `x hx x' hx' hcl`. Simplify using `only [cl, dif_pos hx, dif_pos hx', Prod.mk.injEq] at hcl`.
+
+Establish `ha` using `hx.2.choose_spec.1`. Establish `hb` using `hx.2.choose_spec.2.choose_spec.1`. Establish `hg` using `hx.2.choose_spec.2.choose_spec.2`. Establish `ha'` using `hx'.2.choose_spec.1`. Establish `hb'` using `hx'.2.choose_spec.2.choose_spec.1`.
+
+Establish `hg'` using `hx'.2.choose_spec.2.choose_spec.2`. Use `set a := hx.2.choose`. Use `set b := hx.2.choose_spec.2.choose`. Use `set a' := hx'.2.choose`. Use `set b' := hx'.2.choose_spec.2.choose`.
+
+Establish `ia` using `GlobalTheory.TSetFin.glint_int ha`. Establish `ib` using `GlobalTheory.TSetFin.glint_int hb`. Establish `ia'` using `GlobalTheory.TSetFin.glint_int ha'`. Establish `ib'` using `GlobalTheory.TSetFin.glint_int hb'`. Take `⟨E, hE, eE⟩` from `hmat _ _ ia.1 ia'.1 hcl.1`.
+
+Take `⟨F', hF, eF⟩` from `hmat _ _ ib.1 ib'.1 hcl.2`. Take `⟨E2, hE2, eE2⟩` from `hmat _ _ ia'.1 ia.1 hcl.1.symm`. Take `⟨F2, hF2, eF2⟩` from `hmat _ _ ib'.1 ib.1 hcl.2.symm`. Establish `h1` using `local_cong ϖ k N hϖ1 hϖ0 a a' b b' _ _ ia.2 ib.2 ib'.1 E F' hE hF eE eF hg hg'`. Establish `h2` using `local_cong ϖ k N hϖ1 hϖ0 a' a b' b _ _ ia'.2 ib'.2 ib.1 E2 F2 hE2 hF2 eE2 eF2 hg' hg`.
+
+Rewrite using `[QuotientGroup.eq]`. Apply `hJN` to reduce the goal to its premises. Establish `htriv : TrivOutside {s.v} (x⁻¹ * x')` using `GlobalTheory.TSetFin.triv_mul (GlobalTheory.TSetFin.triv_inv hx.1) hx'.1`. Use `cong_of_loc s N hN _ htriv ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_inv]`.
+
+Conclude with `h1`. Rewrite using `[mul_inv_rev, inv_inv, map_mul, map_inv]`. Conclude with `h2`. Set `g : GAf L n ⧸ J → (Fin n → Fin n → Q) × (Fin n → Fin n → Q)` to `fun q => if h : ∃ x ∈ tSet L n s ϖ k, (x : GAf L n ⧸ J) = q then cl h.choose else 0`. Use `Set.Finite.of_finite_image (f := g) (Set.toFinite _) ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩ _ ⟨x', hx', rfl⟩ hgg`. Establish `h : ∃ y ∈ tSet L n s ϖ k, (y : GAf L n ⧸ J) = x` using `⟨x, hx, rfl⟩`. Establish `h' : ∃ y ∈ tSet L n s ϖ k, (y : GAf L n ⧸ J) = x'` using `⟨x', hx', rfl⟩`. Simplify using `only [g, dif_pos h, dif_pos h'] at hgg`. Use `show (x : GAf L n ⧸ J) = x'`.
+
+Rewrite using `[← h.choose_spec.2, ← h'.choose_spec.2]`. Conclude with `key _ h.choose_spec.1 _ h'.choose_spec.1 hgg`.
+-/
 theorem finite_image_tSet_cong : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ)
     (J : Subgroup (Formalism.AUTREP.GAf L n)), (∃ N : ℕ, 0 < N ∧ ∀ κ, Formalism.L2.NG.Cong L n N κ → κ ∈ J) →
     ∀ (s : ReciprocityTheory.Aut.SplitPlace L) (ϖ : s.v.adicCompletion (NumberField.maximalRealSubfield L)) (k : ℕ),

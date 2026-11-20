@@ -19,10 +19,16 @@ end Gen
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `Prod.ext h1 h2`.
+-/
 theorem AF_ext' {p q : AF D.host.F} (h1 : fstA D.host.F p = fstA D.host.F q) (h2 : sndA D.host.F p = sndA D.host.F q) :
     p = q :=
   Prod.ext h1 h2
 
+/- English proof (translation)
+Use `conv_lhs => rw [← (bA D.host.F D.host.E).sum_equivFun z]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem expand_cE (z : AE D) :
     z = ∑ k, (cE D.host.F D.host.E z k) ⊗ₜ[D.host.F] (Module.finBasis D.host.F D.host.E k) := by
   conv_lhs => rw [← (bA D.host.F D.host.E).sum_equivFun z]
@@ -30,12 +36,18 @@ theorem expand_cE (z : AE D) :
   rw [Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]
   rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h i j => by simpa using congrFun (congrFun h i) j, fun h => by ext i j; simpa using h i j⟩`.
+-/
 theorem mapFin_zero_iff {m n : ℕ} (x : Mx D m n) : x.map (finPart D) = 0 ↔ ∀ i j, finPart D (x i j) = 0 :=
   ⟨fun h i j => by simpa using congrFun (congrFun h i) j, fun h => by ext i j; simpa using h i j⟩
 
 def Ps (m n : ℕ) (p : Fin m → Fin n → Fin (nE D) → AF D.host.F) : Mx D m n :=
   Matrix.of fun i j => (cE D.host.F D.host.E).symm (p i j)
 
+/- English proof (translation)
+The claim follows from `continuous_matrix fun i j => (cE D.host.F D.host.E).symm.continuous.comp ((continuous_apply j).comp (continuous_apply i))`.
+-/
 theorem continuous_Ps {m n : ℕ} : Continuous (Ps (D := D) m n) :=
   continuous_matrix fun i j =>
     (cE D.host.F D.host.E).symm.continuous.comp ((continuous_apply j).comp (continuous_apply i))
@@ -44,12 +56,20 @@ def boxB (D : D7) (m n : ℕ) : Set (Mx D m n) :=
   Ps m n '' Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => Set.pi Set.univ fun _ =>
     (fun a : Af D.host.F => pairA D.host.F 0 a) '' Ohat D.host.F
 
+/- English proof (translation)
+Establish `hc : Continuous fun a : Af D.host.F => pairA D.host.F 0 a`. Unfold `pairA`. Conclude with `continuous_const.prodMk continuous_id`. Conclude with `(isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => (isCompact_Ohat D.host.F).image hc).image continuous_Ps`.
+-/
 theorem isCompact_boxB (m n : ℕ) : IsCompact (boxB D m n) := by
   have hc : Continuous fun a : Af D.host.F => pairA D.host.F 0 a := by
     unfold pairA; exact continuous_const.prodMk continuous_id
   exact (isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_univ_pi fun _ =>
     (isCompact_Ohat D.host.F).image hc).image continuous_Ps
 
+/- English proof (translation)
+Use `AF_ext' ?_ ?_` and prove the remaining obligations. Rewrite using `[map_nsmul]`. Use `show N • (0 : Ainf D.host.F) = 0`. Conclude with `nsmul_zero N`. Rewrite using `[map_nsmul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem nsmul_pairA (N : ℕ) (a : Af D.host.F) : N • pairA D.host.F 0 a = pairA D.host.F 0 (N • a) := by
   refine AF_ext' ?_ ?_
   · rw [map_nsmul]; show N • (0 : Ainf D.host.F) = 0; exact nsmul_zero N

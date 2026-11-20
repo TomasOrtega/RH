@@ -17,13 +17,22 @@ noncomputable def weightedDeriv (m n : ℕ) (φ : SchwartzMap D ℂ) :
       rw [norm_smul, Real.norm_of_nonneg (by positivity)]
       exact SchwartzMap.le_seminorm ℂ m n φ x)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma weightedDeriv_apply (m n : ℕ) (φ : SchwartzMap D ℂ) (x : D) :
     weightedDeriv m n φ x = (‖x‖ ^ m) • iteratedFDeriv ℝ n φ x := rfl
 
+/- English proof (translation)
+The claim follows from `BoundedContinuousFunction.norm_ofNormedAddCommGroup_le _ (apply_nonneg _ _) _`.
+-/
 lemma norm_weightedDeriv_le (m n : ℕ) (φ : SchwartzMap D ℂ) :
     ‖weightedDeriv m n φ‖ ≤ SchwartzMap.seminorm ℂ m n φ :=
   BoundedContinuousFunction.norm_ofNormedAddCommGroup_le _ (apply_nonneg _ _) _
 
+/- English proof (translation)
+The claim follows from `SchwartzMap.seminorm_le_bound ℂ m n φ (norm_nonneg _) (fun x => by have := (weightedDeriv m n φ).norm_coe_le_norm x rwa [weightedDeriv_apply, norm_smul, Real.norm_of_nonneg (by positivity)] at this)`.
+-/
 lemma seminorm_le_norm_weightedDeriv (m n : ℕ) (φ : SchwartzMap D ℂ) :
     SchwartzMap.seminorm ℂ m n φ ≤ ‖weightedDeriv m n φ‖ :=
   SchwartzMap.seminorm_le_bound ℂ m n φ (norm_nonneg _) (fun x => by
@@ -50,6 +59,11 @@ noncomputable def embLin (N : ℕ) : SchwartzMap D ℂ →ₗ[ℂ] Target D N wh
     rw [iteratedFDeriv_const_smul_apply ((φ.smooth ⊤).of_le (mod_cast le_top)).contDiffAt,
       smul_comm]
 
+/- English proof (translation)
+Establish `h0 : ∀ m n, 0 ≤ SchwartzMap.seminorm ℂ m n φ` using `fun m n => apply_nonneg _ _`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun m => ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun n => ?_` and prove the remaining obligations. Use `(norm_weightedDeriv_le m n φ).trans ?_` and prove the remaining obligations. Use `le_trans ?_ (Finset.single_le_sum (fun i _ => Finset.sum_nonneg fun j _ => h0 i j) (Finset.mem_range.2 m.2))` and prove the remaining obligations.
+
+Conclude with `Finset.single_le_sum (fun j _ => h0 _ j) (Finset.mem_range.2 n.2)`.
+-/
 lemma norm_embLin_le (N : ℕ) (φ : SchwartzMap D ℂ) :
     ‖embLin N φ‖ ≤ ∑ m ∈ Finset.range (N + 1), ∑ n ∈ Finset.range (N + 1),
       SchwartzMap.seminorm ℂ m n φ := by
@@ -71,6 +85,11 @@ noncomputable def emb (N : ℕ) : SchwartzMap D ℂ →L[ℂ] Target D N :=
       exact Seminorm.le_finset_sup_apply (p := schwartzSeminormFamily ℂ D ℂ) (i := ((m : ℕ), (n : ℕ)))
         (Finset.mem_product.2 ⟨Finset.mem_range.2 m.2, Finset.mem_range.2 n.2⟩)⟩
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `φ h`. Use extensionality with `x`. Establish `h1 : weightedDeriv 0 0 φ = 0` using `congrFun (congrFun h 0) 0`. Establish `h2` using `congrArg (fun g => g x (fun _ => x)) h1`.
+
+Simplify `h2` using `[weightedDeriv_apply]`.
+-/
 lemma embLin_injective (N : ℕ) : Function.Injective (embLin (D := D) N) := by
   rw [injective_iff_map_eq_zero]
   intro φ h
@@ -79,6 +98,13 @@ lemma embLin_injective (N : ℕ) : Function.Injective (embLin (D := D) N) := by
   have h2 := congrArg (fun g => g x (fun _ => x)) h1
   simpa [weightedDeriv_apply] using h2
 
+/- English proof (translation)
+Set `e` to `LinearEquiv.ofInjective ι hι`. Establish `he : ∀ y : LinearMap.range ι, ι (e.symm y) = y` using `fun y => by`. Establish `: ((e (e.symm y) : LinearMap.range ι) : B) = ι (e.symm y)` using `rfl`. Rewrite using `[← this, e.apply_symm_apply]`. Set `g : LinearMap.range ι →L[ℂ] ℂ` to `(T ∘ₗ e.symm.toLinearMap).mkContinuous C (fun y => by`.
+
+Use `h (e.symm y)` as an intermediate fact. Rewrite `this` using `[he]`. Conclude with `this)`. Take `⟨T', hT', -⟩` from `exists_extension_norm_eq (LinearMap.range ι) g`. Use `⟨T', fun φ => ?_⟩` and prove the remaining obligations.
+
+Use `hT' (e φ)` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `T (e.symm (e φ)) = T φ`. Rewrite using `[e.symm_apply_apply]`.
+-/
 lemma exists_factor {E B : Type} [AddCommGroup E] [Module ℂ E] [NormedAddCommGroup B]
     [NormedSpace ℂ B] (ι : E →ₗ[ℂ] B) (hι : Function.Injective ι) (T : E →ₗ[ℂ] ℂ) (C : ℝ)
     (h : ∀ φ, ‖T φ‖ ≤ C * ‖ι φ‖) : ∃ T' : B →L[ℂ] ℂ, ∀ φ, T' (ι φ) = T φ := by
@@ -97,6 +123,11 @@ lemma exists_factor {E B : Type} [AddCommGroup E] [Module ℂ E] [NormedAddCommG
   change T (e.symm (e φ)) = T φ
   rw [e.symm_apply_apply]
 
+/- English proof (translation)
+Take `⟨s, C, -, hC⟩` from `Seminorm.bound_of_continuous (schwartz_withSeminorms ℂ D ℂ) ((normSeminorm ℂ ℂ).comp T.toLinearMap) (T.continuous.norm)`. Use `⟨s.sup (fun p => max p.1 p.2), C, fun φ => ?_⟩` and prove the remaining obligations. Use `(hC φ).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(C : ℝ) * _ ≤ _`. Use `mul_le_mul_of_nonneg_left ?_ C.2` and prove the remaining obligations.
+
+Use `Seminorm.finset_sup_apply_le (norm_nonneg _) fun p hp => ?_` and prove the remaining obligations. Establish `hle : max p.1 p.2 ≤ s.sup (fun p => max p.1 p.2)` using `Finset.le_sup (f := fun p : ℕ × ℕ => max p.1 p.2) hp`. Use `(seminorm_le_norm_weightedDeriv p.1 p.2 φ).trans ?_` and prove the remaining obligations. Conclude with `(norm_le_pi_norm (embLin (s.sup (fun p => max p.1 p.2)) φ ⟨p.1, by omega⟩) ⟨p.2, by omega⟩).trans (norm_le_pi_norm _ _)`.
+-/
 lemma exists_bound (T : SchwartzMap D ℂ →L[ℂ] ℂ) :
     ∃ (N : ℕ) (C : ℝ), ∀ φ, ‖T φ‖ ≤ C * ‖embLin N φ‖ := by
   obtain ⟨s, C, -, hC⟩ := Seminorm.bound_of_continuous (schwartz_withSeminorms ℂ D ℂ)
@@ -112,6 +143,17 @@ lemma exists_bound (T : SchwartzMap D ℂ →L[ℂ] ℂ) :
   exact (norm_le_pi_norm (embLin (s.sup (fun p => max p.1 p.2)) φ ⟨p.1, by omega⟩)
     ⟨p.2, by omega⟩).trans (norm_le_pi_norm _ _)
 
+/- English proof (translation)
+Introduce `D S _ _ _ _ _ _ ν f F hf hc hF T`. Take `⟨N, C, hC⟩` from `exists_bound T`. Take `⟨T', hT'⟩` from `exists_factor (embLin N) (embLin_injective N) T.toLinearMap C hC`. Use `choose c hc1 hc2 using hc`. Use `haveI : SecondCountableTopologyEither S (Target D N) := ⟨Or.inl inferInstance⟩`.
+
+Establish `hint : Integrable (fun s => emb N (f s)) ν`. Use `Integrable.mono' (g := fun s => ∑ m ∈ Finset.range (N + 1), ∑ n ∈ Finset.range (N + 1), c m n s) ?_ ((emb N).continuous.comp hf).aestronglyMeasurable (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Conclude with `integrable_finset_sum _ fun m _ => integrable_finset_sum _ fun n _ => hc1 m n`. Use `(norm_embLin_le N (f s)).trans ?_` and prove the remaining obligations. Conclude with `Finset.sum_le_sum fun m _ => Finset.sum_le_sum fun n _ => hc2 m n s`.
+
+Establish `hE : emb N F = ∫ s, emb N (f s) ∂ν`. Use function extensionality and compare the values at `m n`. Use extensionality with `x : 1`. Set `L : Target D N →L[ℂ] ContinuousMultilinearMap ℝ (fun _ : Fin (n : ℕ) => D) ℂ` to `(BoundedContinuousFunction.evalCLM ℂ x).comp ((ContinuousLinearMap.proj (R := ℂ) (φ := fun n : Fin (N + 1) => D →ᵇ ContinuousMultilinearMap ℝ (fun _ : Fin (n : ℕ) => D) ℂ) n).comp (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (N + 1) => (n : Fin (N + 1)) → D →ᵇ ContinuousM …`. Establish `h1` using `L.integral_comp_comm hint`.
+
+Express the relevant statement in the definitionally equal form `_ = L _`. Rewrite using `[← h1]`. Express the relevant statement in the definitionally equal form `(‖x‖ ^ (m : ℕ)) • iteratedFDeriv ℝ n F x = ∫ s, (‖x‖ ^ (m : ℕ)) • iteratedFDeriv ℝ n (f s) x ∂ν`. Rewrite using `[integral_smul, hF]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `congr 1`. Use function extensionality and compare the values at `s`. Conclude with `hT' (f s)`.
+-/
 theorem form_integral_comm : ∀ {D S : Type} [NormedAddCommGroup D] [NormedSpace ℝ D]
     [TopologicalSpace S] [SecondCountableTopology S]
     [MeasurableSpace S] [OpensMeasurableSpace S] (ν : Measure S) (f : S → SchwartzMap D ℂ)

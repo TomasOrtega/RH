@@ -7,6 +7,27 @@ noncomputable section
 
 namespace PositivityTheory.Xgf
 
+/- English proof (translation)
+Introduce `E _ _`. Take `⟨bC, hv⟩ : ∃ bC : Module.Basis (Module.Free.ChooseBasisIndex ℤ (𝓞 E)) ℂ ((E →+* ℂ) → ℂ), ∀ i (τ : E →+* ℂ), bC i τ = τ (RingOfIntegers.basis E i : E)` from `⟨canonicalEmbedding.latticeBasis E, fun i τ => by`. Rewrite using `[canonicalEmbedding.latticeBasis_apply, canonicalEmbedding.apply_at, integralBasis_apply]⟩`. Use `⟨∑ τ : E →+* ℂ, ∑ i, ‖τ (RingOfIntegers.basis E i : E)‖, fun c hc => ?_⟩` and prove the remaining obligations. Establish `hsum : c = ∑ i, bC.repr c i • bC i` using `(bC.sum_repr c).symm`.
+
+Establish `hcτ : ∀ τ : E →+* ℂ, c τ = ∑ i, bC.repr c i * τ (RingOfIntegers.basis E i : E)`. Introduce `τ`. Use `conv_lhs => rw [hsum]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hv]`. Establish `hconj : ∀ τ : E →+* ℂ, ∑ i, starRingEnd ℂ (bC.repr c i) * τ (RingOfIntegers.basis E i : E) = c τ`.
+
+Introduce `τ`. Establish `h1` using `hc τ`. Rewrite `h1` using `[hcτ (ComplexEmbedding.conjugate τ)]`. Establish `h2` using `congrArg (starRingEnd ℂ) h1`. Rewrite `h2` using `[Complex.conj_conj, map_sum]`.
+
+Rewrite using `[← h2]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ComplexEmbedding.conjugate_coe_eq, Complex.conj_conj]`. Establish `hli` using `Fintype.linearIndependent_iff.mp bC.linearIndependent (fun i => bC.repr c i - starRingEnd ℂ (bC.repr c i)) (by`. Use function extensionality and compare the values at `τ`.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, hv, sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[hconj τ, ← hcτ τ, sub_self])`. Establish `hreal : ∀ i, (bC.repr c i).im = 0`. Introduce `i`. Establish `h3` using `congrArg Complex.im (hli i)`.
+
+Rewrite `h3` using `[Complex.sub_im, Complex.conj_im, sub_neg_eq_add, Complex.zero_im]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨x, hx⟩ : ∃ x : Module.Free.ChooseBasisIndex ℤ (𝓞 E) → ℝ, ∀ i, bC.repr c i = (x i : ℂ)` from `⟨fun i => (bC.repr c i).re, fun i => Complex.ext (by simp) (by simp [hreal i])⟩`. Use `⟨∑ i, round (x i) • RingOfIntegers.basis E i, fun τ => ?_⟩` and prove the remaining obligations. Establish `hτa : τ ((∑ i, round (x i) • RingOfIntegers.basis E i : 𝓞 E) : E) = ∑ i, (round (x i) : ℂ) * τ (RingOfIntegers.basis E i : E)`.
+
+Express the relevant statement in the definitionally equal form `(τ.comp (algebraMap (𝓞 E) E)) (∑ i, round (x i) • RingOfIntegers.basis E i) = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, zsmul_eq_mul]`. Both sides reduce to the same expression.
+
+Establish `hcx : c τ = ∑ i, (x i : ℂ) * τ (RingOfIntegers.basis E i : E)`. Rewrite using `[hcτ τ]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hx i]`. Rewrite using `[hτa, hcx, ← Finset.sum_sub_distrib]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← sub_mul, norm_mul]`. Establish `hr : ‖(round (x i) : ℂ) - (x i : ℂ)‖ ≤ 1`. Establish `h` using `abs_sub_round (x i)`. Rewrite using `[show ((round (x i) : ℤ) : ℂ) - ((x i : ℝ) : ℂ) = (((round (x i) : ℝ) - x i : ℝ) : ℂ) by push_cast; ring, Complex.norm_real, Real.norm_eq_abs, abs_sub_comm]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Use `_ ≤ ∑ τ' : E →+* ℂ, ∑ i, ‖τ' (RingOfIntegers.basis E i : E)‖ := Finset.single_le_sum (f := fun τ' : E →+* ℂ => ∑ i, ‖τ' (RingOfIntegers.basis E i : E)‖) (fun τ' _ => Finset.sum_nonneg fun i _ => norm_nonneg _) (Finset.mem_univ τ)`.
+-/
 theorem exists_integer_near_conj_vector : ∀ (E : Type) [Field E] [NumberField E], ∃ B : ℝ, ∀ c : (E →+* ℂ) → ℂ, (∀ τ, c (ComplexEmbedding.conjugate τ) = starRingEnd ℂ (c τ)) → ∃ a : 𝓞 E, ∀ τ : E →+* ℂ, ‖τ (a : E) - c τ‖ ≤ B := by
   intro E _ _
   classical

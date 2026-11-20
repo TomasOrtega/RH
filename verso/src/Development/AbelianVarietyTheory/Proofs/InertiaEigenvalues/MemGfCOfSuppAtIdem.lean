@@ -28,6 +28,13 @@ def RelConj : Prop := ∀ (n : ℕ) (a : Fin n → ℂ) (f : Fin n → T.toCore.
 
 variable {M κ τ}
 
+/- English proof (translation)
+Establish `h0 : Expands M κ (fun _ => 0) (Fin.append a fun k => -b k) (Fin.append f f')`. Introduce `g`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, neg_mul, Finset.sum_neg_distrib]`. Rewrite using `[← h1 g, ← h2 g]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `g`. Establish `e` using `hz _ _ _ h0 g`. Rewrite `e` using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, map_neg, neg_mul, Finset.sum_neg_distrib] at e`.
+
+Rewrite using `[hΨ g]`. Use `beta_reduce`. Simplify using `only [mul_assoc, ← Finset.mul_sum]`. Take the linear combination `-ζ * e`.
+-/
 theorem expands_conj_swap (hz : RelConj M κ τ) (ζ : ℂ) {Φ Ψ : GA D (Wc D i) → ℂ} {n m : ℕ} {a : Fin n → ℂ} {b : Fin m → ℂ}
     {f : Fin n → T.toCore.cuspA ((i : ℕ) + 1) (wtA κ) κ.n} {f' : Fin m → T.toCore.cuspA ((i : ℕ) + 1) (wtA κ) κ.n}
     (h1 : Expands M κ Φ a f) (h2 : Expands M κ Φ b f') (hΨ : Expands M κ Ψ (fun k => ζ * τ (a k)) f) :
@@ -47,11 +54,21 @@ theorem expands_conj_swap (hz : RelConj M κ τ) (ζ : ℂ) {Φ Ψ : GA D (Wc D 
   simp only [mul_assoc, ← Finset.mul_sum]
   linear_combination -ζ * e
 
+/- English proof (translation)
+Establish `e0 : Expands M κ (0 : GA D (Wc D i) → ℂ) (Fin.elim0 : Fin 0 → ℂ) Fin.elim0` using `fun g => by simp`. Use `⟨⟨0, _, _, e0⟩, fun n a f e => ?_⟩` and prove the remaining obligations. Conclude with `expands_conj_swap hz ζ e0 e (fun g => by simp)`.
+-/
 theorem conjFun_zero (hz : RelConj M κ τ) (ζ : ℂ) : ConjFun M κ τ ζ 0 0 := by
   have e0 : Expands M κ (0 : GA D (Wc D i) → ℂ) (Fin.elim0 : Fin 0 → ℂ) Fin.elim0 := fun g => by simp
   refine ⟨⟨0, _, _, e0⟩, fun n a f e => ?_⟩
   exact expands_conj_swap hz ζ e0 e (fun g => by simp)
 
+/- English proof (translation)
+Take `⟨⟨n₁, a₁, f₁, e₁⟩, k₁⟩` from `h₁`. Take `⟨⟨n₂, a₂, f₂, e₂⟩, k₂⟩` from `h₂`. Establish `e₁₂ : Expands M κ (Φ₁ + Φ₂) (Fin.append a₁ a₂) (Fin.append f₁ f₂)`. Introduce `g`. Rewrite using `[Fin.sum_univ_add]`.
+
+Simplify using `only [Fin.append_left, Fin.append_right, Pi.add_apply]`. Rewrite using `[e₁ g, e₂ g]`. Use `⟨⟨_, _, _, e₁₂⟩, fun n a f e => expands_conj_swap hz ζ e₁₂ e ?_⟩` and prove the remaining obligations. Introduce `g`. Rewrite using `[Fin.sum_univ_add]`.
+
+Simplify using `only [Fin.append_left, Fin.append_right, Pi.add_apply]`. Rewrite using `[k₁ _ _ _ e₁ g, k₂ _ _ _ e₂ g]`.
+-/
 theorem conjFun_add (hz : RelConj M κ τ) {ζ : ℂ} {Φ₁ Φ₁' Φ₂ Φ₂' : GA D (Wc D i) → ℂ} (h₁ : ConjFun M κ τ ζ Φ₁ Φ₁')
     (h₂ : ConjFun M κ τ ζ Φ₂ Φ₂') : ConjFun M κ τ ζ (Φ₁ + Φ₂) (Φ₁' + Φ₂') := by
   obtain ⟨⟨n₁, a₁, f₁, e₁⟩, k₁⟩ := h₁
@@ -67,6 +84,13 @@ theorem conjFun_add (hz : RelConj M κ τ) {ζ : ℂ} {Φ₁ Φ₁' Φ₂ Φ₂'
   simp only [Fin.append_left, Fin.append_right, Pi.add_apply]
   rw [k₁ _ _ _ e₁ g, k₂ _ _ _ e₂ g]
 
+/- English proof (translation)
+Take `⟨⟨n, a, f, e⟩, k⟩` from `h`. Establish `eb : Expands M κ (b • Φ) (fun j => b * a j) f`. Introduce `g`. Rewrite using `[Pi.smul_apply, smul_eq_mul, e g, Finset.mul_sum]`. Simplify using `only [mul_assoc]`.
+
+Use `⟨⟨_, _, _, eb⟩, fun n' a' f' e' => expands_conj_swap hz ζ eb e' ?_⟩` and prove the remaining obligations. Introduce `g`. Rewrite using `[Pi.smul_apply, smul_eq_mul, k _ _ _ e g, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `beta_reduce`.
+
+Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem conjFun_smul (hz : RelConj M κ τ) {ζ : ℂ} {Φ Φ' : GA D (Wc D i) → ℂ} (b : ℂ) (h : ConjFun M κ τ ζ Φ Φ') :
     ConjFun M κ τ ζ (b • Φ) (τ b • Φ') := by
   obtain ⟨⟨n, a, f, e⟩, k⟩ := h
@@ -94,6 +118,11 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F} {i : Fin D.R.m} {Tp : Type} {tup : Tp → T0}
   {M : OMDat T.toCore R i Tp tup} {κ : WeightFamilies.Wt D ((i : ℕ) + 1)} {τ : ℂ ≃+* ℂ}
 
+/- English proof (translation)
+Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro _`. Simplify using `using conjFun_zero hz ζ`. Consider the case `insert a s ha ih`.
+
+Introduce `h`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `conjFun_add hz (h a (Finset.mem_insert_self a s)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem conjFun_sum (hz : RelConj M κ τ) (ζ : ℂ) {ι : Type} (Φ Φ' : ι → GA D (Wc D i) → ℂ) :
     ∀ s : Finset ι, (∀ j ∈ s, ConjFun M κ τ ζ (Φ j) (Φ' j)) → ConjFun M κ τ ζ (∑ j ∈ s, Φ j) (∑ j ∈ s, Φ' j) := by
   classical
@@ -107,6 +136,9 @@ theorem conjFun_sum (hz : RelConj M κ τ) (ζ : ℂ) {ι : Type} (Φ Φ' : ι �
 
 end Generic2
 
+/- English proof (translation)
+Unfold `Base.levJ Base.levS`. Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 theorem levJ_eq {D : D7} {S T : HSp D} (B : Base S T) (ψ ψ' : Twist D Circle) (h : ψ'.Q = ψ.Q) : B.levJ ψ' = B.levJ ψ := by
   unfold Base.levJ Base.levS
   rw [h]
@@ -131,6 +163,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {M : OMDat T.toCore R i Tp tup} {w : WeightFamilies.Wt D ((i : ℕ) + 1)} {τ : ℂ ≃+* ℂ} {B : Base (Vc D i) (Wc D i)}
   {W : Type} [AddCommGroup W] [Module ℂ W] (io : W →ₗ[ℂ] PolF D (Wc D i).rank (Vc D i).rank) (c : VsV D i ℂ →ₗ[ℂ] W)
 
+/- English proof (translation)
+Unfold `ConjVec at h ⊢`. Simplify using `only [Submodule.coe_smul]`. Rewrite using `[h, MvPolynomial.smul_eq_C_mul, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C]`. Both sides reduce to the same expression.
+-/
 theorem conjVec_smul (z : ℂ) {x0 x1 : VsV D i ℂ} (h : ConjVec i τ x0 x1) : ConjVec i τ (z • x0) (τ z • x1) := by
   unfold ConjVec at h ⊢
   simp only [Submodule.coe_smul]
@@ -139,6 +174,15 @@ theorem conjVec_smul (z : ℂ) {x0 x1 : VsV D i ℂ} (h : ConjVec i τ x0 x1) : 
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Rewrite using `[B.classSum_apply, B.classSum_apply, Finset.smul_sum, Finset.smul_sum, levJ_eq B ψ ψ' hQ]`. Use `conjFun_sum hz ζ _ _ _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm (p * κ), smul_comm (p * κ)]`. Take `⟨x, x', hxx, hx, hx'⟩` from `hff (finPt (Vc D i) (rep j))`. Establish `key : ConjFun M w τ ζ ((p * κ) • series B.F ω (B.vecFlat ψ) (rep j) (f (finPt (Vc D i) (rep j)))) ((p * κ) • series B.F ω' (B.vecFlat ψ') (rep j) (f' (finPt (Vc D i) (rep j))))`.
+
+Establish `e1 : (p * κ) • series B.F ω (B.vecFlat ψ) (rep j) (f (finPt (Vc D i) (rep j))) = p • series B.F ω (B.vecFlat ψ) (rep j) (io (c (κ • x)))`. Rewrite using `[hx, map_smul, map_smul, map_smul, smul_smul]`. Establish `e2 : (p * κ) • series B.F ω' (B.vecFlat ψ') (rep j) (f' (finPt (Vc D i) (rep j))) = p • series B.F ω' (B.vecFlat ψ') (rep j) (io (c (τ κ • x')))`. Rewrite using `[hx']`. Simplify using `only [map_smul, smul_smul]`.
+
+Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1, e2]`. Conclude with `H (rep j) (hfin j) _ _ (conjVec_smul κ hxx)`. Establish `hr` using `conjFun_smul hz ((Nat.card (Bridge.stab (Bridge.ratF (Vc D i)) (B.levJ ψ) (finPt (Vc D i) (rep j))) : ℂ)⁻¹) key`.
+
+Rewrite `hr` using `[map_inv₀, map_natCast]`. Conclude with `hr`.
+-/
 theorem classSum_conj (hz : RelConj M w τ) {p κ ζ : ℂ} (hκ0 : κ ≠ 0) {ψ ψ' : Twist D Circle} (hQ : ψ'.Q = ψ.Q)
     {ω ω' : PairRep (Vc D i) (Wc D i)}
     (H : ∀ h ∈ GfC (Vc D i), ∀ x x' : VsV D i ℂ, ConjVec i τ x x' → ConjFun M w τ ζ

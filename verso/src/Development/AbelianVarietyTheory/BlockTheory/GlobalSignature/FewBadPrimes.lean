@@ -14,6 +14,9 @@ variable {R : Ranks}
 
 def condE (H : Host R) : ℕ := H.QS * H.q * H.d
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (H : Host R) : condE H = H.condN := rfl
 
 def dlogH (H : Host R) : ℝ :=
@@ -24,6 +27,9 @@ def dlogH (H : Host R) : ℝ :=
     DirichletCharacter.LFunction
       ((quadraticChar (ZMod H.d)).ringHomComp (Int.castRingHom ℂ) : DirichletCharacter ℂ H.d) 1).re
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (D : D7) : dlogH D.host = dlogL D 1 := rfl
 
 def frobH (H : Host R) (p : ℕ) : R.A :=
@@ -31,6 +37,9 @@ def frobH (H : Host R) (p : ℕ) : R.A :=
     g ∈ {g : R.GG | ∃ (P : Ideal (𝓞 H.E)) (_ : P.IsPrime) (_ : P.LiesOver (Ideal.span {(p : ℤ)}))
       (σ : H.E ≃ₐ[ℚ] H.E), IsArithFrobAt ℤ σ P ∧ H.galE σ = g})).2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (D : D7) (p : ℕ) : frobH D.host p = G.hP D p := rfl
 
 def logPowerBoundClassPrimes (H : Host R) (s : Scale) : ℕ :=
@@ -42,12 +51,18 @@ def GoodH (H : Host R) (s : Scale) (p : ℕ) (t0 : R.A) : Prop :=
     (Finset.univ.filter (fun i : Fin (addOrderOf (frobH H p)) => t0 + (i : ℕ) • frobH H p ∈ H.TT))
     (logPowerBoundClassPrimes H s) (G.KG s) (G.rG s) s.delta1 (G.hG s) s.x
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 example {D : D7} {L : SizeData₂ D} (X : G.Inst D L) (p : ℕ) (t0 : G.HH D) :
     GoodH D.host L.sc p t0 ↔ G.Good X p t0 := Iff.rfl
 
 def IsOrigins {φ : Formalism.HC.Frame} (bs : φ.A → φ.A → φ.A) : Prop :=
   (∀ h t, ∃ i : ℕ, bs h t + i • h = t) ∧ ∀ h t, bs h (t + h) = bs h t
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨X.bs_orb, X.bs_step⟩`.
+-/
 example {D : D7} {L : SizeData₂ D} (X : G.Inst D L) : IsOrigins (φ := D.R.toFrame) X.bs := ⟨X.bs_orb, X.bs_step⟩
 
 open Classical in
@@ -62,6 +77,9 @@ def CharOf (H : Host R) {N : ℕ} (χ : DirichletCharacter ℂ N) : Prop :=
   χ.IsPrimitive ∧ ∃ ψ : R.GG →* ℂˣ, ∀ (a : ℕ) (h : a.Coprime H.condN),
     χ (a : ZMod N) = ((ψ (H.art (ZMod.unitOfCoprime a h)) : ℂˣ) : ℂ)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 example (D : D7) {N : ℕ} (χ : DirichletCharacter ℂ N) : CharOf D.host χ ↔ GlobalTheoryTheory.IsCharED D χ := Iff.rfl
 
 def RealBoxes (H : Host R) (Y eps : ℝ) : Prop :=
@@ -69,14 +87,23 @@ def RealBoxes (H : Host R) (Y eps : ℝ) : Prop :=
     (H.d ∣ N → GlobalTheoryTheory.GoodFor (8 * ((ordCompl[2] H.QS : ℕ) : ℝ) * GlobalTheoryTheory.X1 Y eps * GlobalTheoryTheory.X2 Y eps) χ) ∧
     (H.q ∣ N → ¬ H.d ∣ N → GlobalTheoryTheory.GoodFor (8 * ((ordCompl[2] H.QS : ℕ) : ℝ) * GlobalTheoryTheory.X1 Y eps) χ)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 example (D : D7) (Y eps : ℝ) : RealBoxes D.host Y eps ↔ GlobalTheoryTheory.BoxE D Y eps := Iff.rfl
 
 def BoxesInWindow (s : Scale) (H : Host R) : Prop :=
   ∃ Y : ℝ, PairWin s Y ∧ PairRow Y s.eps H ∧ Boxq Y s.eps H.q H.d ∧ RealBoxes H Y s.eps
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 example (s : Scale) (D : D7) : BoxesInWindow s D.host ↔
     ∃ Y : ℝ, PairWin s Y ∧ QDRows_at D Y s.eps ∧ Boxes_at D Y s.eps ∧ GlobalTheoryTheory.BoxE D Y s.eps := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `let ⟨Y, h1, h2, h3, h4⟩ := h ⟨⟨Y, h1, h3, h4⟩, Y, h1, h2⟩`.
+-/
 example (s : Scale) (D : D7) (h : BoxesInWindow s D.host) : BoxesW D s ∧ QDRowsW D s :=
   let ⟨Y, h1, h2, h3, h4⟩ := h
   ⟨⟨Y, h1, h3, h4⟩, Y, h1, h2⟩
@@ -105,6 +132,9 @@ def hostAt (H : Host R) (hc : H.ccK = ⊤) (u0 : R.A) (S : Finset ℕ) (hS : ∀
     ccK_coprime := fun p _ => by rw [hc, Ideal.absNorm_top]; exact Nat.coprime_one_left p
     level_coprimeS := fun p hp => (Finset.mem_union.1 hp).elim (H.level_coprimeS p) (hS p) }
 
+/- English proof (translation)
+Establish `h1` using `h.1`. Unfold `HostVal at h1`. Use the proof step `casesm* _ ∧ _`. Use the matching hypothesis.
+-/
 theorem ArithData.ccK_eq {C : FC} {s : Scale} {H : Host R} {q0 : ℕ}
     {bs : R.A → R.A → R.A} (h : ArithData C s H q0 bs) : H.ccK = ⊤ := by
   have h1 := h.1
@@ -147,6 +177,13 @@ def ObjectsExist (Q : PtProp) : Prop :=
             (∀ w, s.b ^ ((R.m : ℝ) / 2) ≤ (T w : ℝ) ∧ (T w : ℝ) ≤ s.b ^ (25 * (R.m : ℝ))) ∧
             FactDGam p.D Cdg
 
+/- English proof (translation)
+Take `⟨Cdg, h0, h⟩` from `h`. Use `⟨Cdg, h0, fun eps h1 h2 C8 h8 => ?_⟩` and prove the remaining obligations. Take `⟨K0, h⟩` from `h eps h1 h2 C8 h8`. Use `⟨K0, fun C hC hP hL => ?_⟩` and prove the remaining obligations. Take `⟨c1, h⟩` from `h C hC hP hL`.
+
+Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, h⟩` from `h cD hcD`. Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨x0, h⟩` from `h ch hch`. Use `⟨x0, fun s hs hx R hR H q0 bs hH a b hw code hc => ?_⟩` and prove the remaining obligations.
+
+Take `⟨off, h⟩` from `h s hs hx R hR H q0 bs hH a b hw code hc`. Use `⟨off, fun u0 => ?_⟩` and prove the remaining obligations. Take `⟨T, p, h3, h4, h5, h6, h7⟩` from `h u0`. Conclude with `⟨T, p, h3, h4, h5, hQ _ _ _ _ _ _ _ _ _ h6, h7⟩`.
+-/
 example {Q Q' : PtProp} (hQ : ∀ D L g x y K X c e, Q D L g x y K X c e → Q' D L g x y K X c e)
     (h : ObjectsExist Q) : ObjectsExist Q' := by
   obtain ⟨Cdg, h0, h⟩ := h

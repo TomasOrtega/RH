@@ -15,12 +15,18 @@ variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
 
 def bl (y : V) : V →ₗ[K] K := H.B.flip y
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem bl_apply (y v : V) : bl H y v = H.B v y := rfl
 
 def crd (e f : Fin r → V) (z : V) (g h : Fin r → V) (t : V) : V →ₗ[K] V :=
   ∑ a, (bl H (f a)).smulRight (g a) + ∑ a, (bl H (e a)).smulRight (h a) +
     ((H.B z z)⁻¹ • bl H z).smulRight t
 
+/- English proof (translation)
+Simplify using `[crd, LinearMap.sum_apply, smul_eq_mul]`.
+-/
 theorem crd_apply (e f : Fin r → V) (z : V) (g h : Fin r → V) (t v : V) :
     crd H e f z g h t v = ∑ a, H.B v (f a) • g a + ∑ a, H.B v (e a) • h a +
       ((H.B z z)⁻¹ * H.B v z) • t := by
@@ -28,14 +34,25 @@ theorem crd_apply (e f : Fin r → V) (z : V) (g h : Fin r → V) (t v : V) :
 
 def nil (e f : Fin r → V) : V →ₗ[K] V := LinearMap.id - ∑ b, (bl H (f b)).smulRight (e b)
 
+/- English proof (translation)
+Simplify using `[nil, LinearMap.sum_apply]`.
+-/
 theorem nil_apply (e f : Fin r → V) (w : V) : nil H e f w = w - ∑ b, H.B w (f b) • e b := by
   simp [nil, LinearMap.sum_apply]
 
 def rmap (e f : Fin r → V) (z : V) (e' f' : Fin r → V) (z' : V) : V →ₗ[K] V :=
   crd H e' f' z' e f z + nil H e f ∘ₗ (LinearMap.id - crd H e' f' z' e' f' z')
 
+/- English proof (translation)
+Rewrite using `[← H.herm, h, star_zero]`.
+-/
 theorem herm0 {x y : V} (h : H.B x y = 0) : H.B y x = 0 := by rw [← H.herm, h, star_zero]
 
+/- English proof (translation)
+Establish `hfe : ∀ a b, H.B (f a) (e b) = if a = b then 1 else 0`. Apply the tactic sequence `intro a b; rw [← H.herm, hef]; split_ifs with h1 h2 h2 <;> simp_all`. Establish `hze : ∀ a, H.B z (e a) = 0` using `fun a => herm0 H (hez a)`. Establish `hzf : ∀ a, H.B z (f a) = 0` using `fun a => herm0 H (hfz a)`. Simplify using `only [map_add, map_sub, map_neg, map_sum, map_smul, map_smulₛₗ, map_zero, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.zero_apply, smul_eq_mul, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, sub_zero, mul_ite, ite_ …`.
+
+Simplify using `only [mul_comm (star _)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram (e f : Fin r → V) (z : V)
     (hee : ∀ a b, H.B (e a) (e b) = 0) (hff : ∀ a b, H.B (f a) (f b) = 0)
     (hef : ∀ a b, H.B (e a) (f b) = if a = b then 1 else 0)
@@ -52,6 +69,11 @@ theorem gram (e f : Fin r → V) (z : V)
     Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, starRingEnd_apply, star_zero, star_one, hee, hff, hef, hfe, hez, hfz, hze, hzf]
   simp only [mul_comm (star _)]; ring
 
+/- English proof (translation)
+Establish `hfe : ∀ a b, H.B (f a) (e b) = if a = b then 1 else 0`. Apply the tactic sequence `intro a b; rw [← H.herm, hef]; split_ifs with h1 h2 h2 <;> simp_all`. Establish `hze : ∀ a, H.B z (e a) = 0` using `fun a => herm0 H (hez a)`. Establish `hzf : ∀ a, H.B z (f a) = 0` using `fun a => herm0 H (hfz a)`. Apply the tactic sequence `refine ⟨fun a => ?_, fun a => ?_, ?_⟩ <;>`.
+
+Simplify using `only [crd_apply, map_add, map_sub, map_neg, map_sum, map_smul, map_smulₛₗ, map_zero, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.sum_apply,`. Use the proof step `LinearMap.smul_apply, LinearMap.zero_apply, smul_eq_mul, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, sub_zero, mul_ite, ite_mul, mul_one, one_mul,`. Use the proof step `Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, starRingEnd_apply, star_zero, star_one, hee, hff, hef, hfe, hez, hfz, hze, hzf, sub_self]`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+-/
 theorem rem_perp (e f : Fin r → V) (z : V)
     (hee : ∀ a b, H.B (e a) (e b) = 0) (hff : ∀ a b, H.B (f a) (f b) = 0)
     (hef : ∀ a b, H.B (e a) (f b) = if a = b then 1 else 0)
@@ -69,18 +91,29 @@ theorem rem_perp (e f : Fin r → V) (z : V)
   field_simp
   simp
 
+/- English proof (translation)
+Introduce `x hx`. Establish `: Submodule.span K S ≤ LinearMap.ker (bl H y)` using `Submodule.span_le.2 (fun s hs => h s hs)`. Conclude with `this hx`.
+-/
 theorem spanL {S : Set V} {y : V} (h : ∀ s ∈ S, H.B s y = 0) :
     ∀ x ∈ Submodule.span K S, H.B x y = 0 := by
   intro x hx
   have : Submodule.span K S ≤ LinearMap.ker (bl H y) := Submodule.span_le.2 (fun s hs => h s hs)
   exact this hx
 
+/- English proof (translation)
+Introduce `x hx`. Establish `: Submodule.span K S ≤ LinearMap.ker (H.B y)` using `Submodule.span_le.2 (fun s hs => h s hs)`. Conclude with `this hx`.
+-/
 theorem spanR {S : Set V} {y : V} (h : ∀ s ∈ S, H.B y s = 0) :
     ∀ x ∈ Submodule.span K S, H.B y x = 0 := by
   intro x hx
   have : Submodule.span K S ≤ LinearMap.ker (H.B y) := Submodule.span_le.2 (fun s hs => h s hs)
   exact this hx
 
+/- English proof (translation)
+Use `set x := z' - z`. Establish `hz' : z' = z + x` using `by simp [x]`. Establish `h1 : H.B x z = 0` using `spanL H (by rintro _ ⟨a, rfl⟩; exact hez a) x hx`. Establish `h2 : H.B z x = 0` using `herm0 H h1`. Establish `h3 : ∀ a, H.B x (e a) = 0` using `fun a => spanL H (by rintro _ ⟨b, rfl⟩; exact hee b a) x hx`.
+
+Establish `h4 : H.B x x = 0` using `spanR H (by rintro _ ⟨b, rfl⟩; exact h3 b) x hx`. Rewrite using `[hz']`. Simplify using `[h1, h2, h4]`.
+-/
 theorem zz_eq (e : Fin r → V) (z z' : V) (hee : ∀ a b, H.B (e a) (e b) = 0)
     (hez : ∀ a, H.B (e a) z = 0) (hx : z' - z ∈ Submodule.span K (Set.range e)) :
     H.B z' z' = H.B z z := by
@@ -92,6 +125,9 @@ theorem zz_eq (e : Fin r → V) (z z' : V) (hee : ∀ a b, H.B (e a) (e b) = 0)
   have h4 : H.B x x = 0 := spanR H (by rintro _ ⟨b, rfl⟩; exact h3 b) x hx
   rw [hz']; simp [h1, h2, h4]
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨fun a => ?_, fun a => ?_, ?_⟩ <;>`. Simplify using `only [nil_apply, map_add, map_sub, map_neg, map_sum, map_smul, map_smulₛₗ, map_zero, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.sum_apply,`. Use the proof step `LinearMap.smul_apply, LinearMap.zero_apply, smul_eq_mul, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, sub_zero, mul_ite, ite_mul, mul_one, one_mul,`. Use the proof step `Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, starRingEnd_apply, star_zero, star_one, hee, hef, hez, hw, sub_self]`.
+-/
 theorem nil_perp (e f : Fin r → V) (z : V) (hee : ∀ a b, H.B (e a) (e b) = 0) (hff : ∀ a b, H.B (f a) (f b) = 0)
     (hef : ∀ a b, H.B (e a) (f b) = if a = b then 1 else 0)
     (hez : ∀ a, H.B (e a) z = 0) (hfz : ∀ a, H.B (f a) z = 0) (w : V) (hw : ∀ a, H.B w (e a) = 0) :
@@ -102,6 +138,9 @@ theorem nil_perp (e f : Fin r → V) (z : V) (hee : ∀ a b, H.B (e a) (e b) = 0
     LinearMap.smul_apply, LinearMap.zero_apply, smul_eq_mul, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, sub_zero, mul_ite, ite_mul, mul_one, one_mul,
     Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, starRingEnd_apply, star_zero, star_one, hee, hef, hez, hw, sub_self]
 
+/- English proof (translation)
+Establish `hw'' : ∀ a, H.B (e a) w' = 0` using `fun a => herm0 H (hw' a)`. Simplify using `only [nil_apply, map_add, map_sub, map_neg, map_sum, map_smul, map_smulₛₗ, map_zero, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.zero_apply, smul_eq_mul, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, sub_zero, mu …`.
+-/
 theorem nil_isom (e f : Fin r → V) (hee : ∀ a b, H.B (e a) (e b) = 0) (w w' : V)
     (hw : ∀ a, H.B w (e a) = 0) (hw' : ∀ a, H.B w' (e a) = 0) :
     H.B (nil H e f w) (nil H e f w') = H.B w w' := by
@@ -110,6 +149,11 @@ theorem nil_isom (e f : Fin r → V) (hee : ∀ a b, H.B (e a) (e b) = 0) (w w' 
     LinearMap.smul_apply, LinearMap.zero_apply, smul_eq_mul, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, sub_zero, mul_ite, ite_mul, mul_one, one_mul,
     Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, starRingEnd_apply, star_zero, star_one, hee, hw, hw'', sub_self]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `rem_perp H e' f' z' he'e hf'f he'f he'z hf'z hzz'0 u`. Establish `h4 : ∀ a, H.B (u - crd H e' f' z' e' f' z' u) (e a) = 0` using `fun a => spanR H (by rintro _ ⟨b, rfl⟩; exact h1 b) _ (hsp a)`. Establish `h5 : H.B (u - crd H e' f' z' e' f' z' u) (z' - z) = 0` using `spanR H (by rintro _ ⟨b, rfl⟩; exact h4 b) _ hzd`. Use `⟨h1, h2, h3, h4, ?_⟩` and prove the remaining obligations. Establish `: H.B (u - crd H e' f' z' e' f' z' u) z = H.B (u - crd H e' f' z' e' f' z' u) z' - H.B (u - crd H e' f' z' e' f' z' u) (z' - z)`.
+
+Rewrite using `[map_sub (H.B (u - crd H e' f' z' e' f' z' u)) z' z, sub_sub_cancel]`. Rewrite using `[this, h3, h5, sub_zero]`.
+-/
 theorem rem_all (e f e' f' : Fin r → V) (z z' : V) (he'e : ∀ a b, H.B (e' a) (e' b) = 0) (hf'f : ∀ a b, H.B (f' a) (f' b) = 0)
     (he'f : ∀ a b, H.B (e' a) (f' b) = if a = b then 1 else 0)
     (he'z : ∀ a, H.B (e' a) z' = 0) (hf'z : ∀ a, H.B (f' a) z' = 0) (hzz'0 : H.B z' z' ≠ 0)
@@ -127,10 +171,32 @@ theorem rem_all (e f e' f' : Fin r → V) (z z' : V) (he'e : ∀ a b, H.B (e' a)
     rw [map_sub (H.B (u - crd H e' f' z' e' f' z' u)) z' z, sub_sub_cancel]
   rw [this, h3, h5, sub_zero]
 
+/- English proof (translation)
+Simplify using `[rmap]`.
+-/
 theorem rmap_apply (e f e' f' : Fin r → V) (z z' v : V) :
     rmap H e f z e' f' z' v = crd H e' f' z' e f z v + nil H e f (v - crd H e' f' z' e' f' z' v) := by
   simp [rmap]
 
+/- English proof (translation)
+Establish `hzz' : H.B z' z' = H.B z z` using `zz_eq H e z z' hee hez hzd`. Establish `hzz'0 : H.B z' z' ≠ 0` using `hzz' ▸ hzz`. Take `⟨a1, a2, a3, a4, a5⟩` from `rem_all H e f e' f' z z' he'e hf'f he'f he'z hf'z hzz'0 hsp hzd v`. Take `⟨b1, b2, b3, b4, b5⟩` from `rem_all H e f e' f' z z' he'e hf'f he'f he'z hf'z hzz'0 hsp hzd v'`. Establish `hv : H.B v v' = H.B (crd H e' f' z' e' f' z' v + (v - crd H e' f' z' e' f' z' v)) (crd H e' f' z' e' f' z' v' + (v' - crd H e' f' z' e' f' z' v'))`.
+
+Simplify using `only [add_sub_cancel]`. Rewrite using `[hv, rmap_apply, rmap_apply]`. Generalize the expression as in `v - crd H e' f' z' e' f' z' v = w at a1 a2 a3 a4 a5 ⊢`. Generalize the expression as in `v' - crd H e' f' z' e' f' z' v' = w' at b1 b2 b3 b4 b5 ⊢`. Take `⟨n1, n2, n3⟩` from `nil_perp H e f z hee hff hef hez hfz _ a4`.
+
+Take `⟨m1, m2, m3⟩` from `nil_perp H e f z hee hff hef hez hfz _ b4`. Establish `b1' : ∀ a, H.B (e' a) w' = 0` using `fun a => herm0 H (b1 a)`. Establish `b2' : ∀ a, H.B (f' a) w' = 0` using `fun a => herm0 H (b2 a)`. Establish `b3' : H.B z' w' = 0` using `herm0 H b3`. Establish `m1' : ∀ a, H.B (e a) (nil H e f w') = 0` using `fun a => herm0 H (m1 a)`.
+
+Establish `m2' : ∀ a, H.B (f a) (nil H e f w') = 0` using `fun a => herm0 H (m2 a)`. Establish `m3' : H.B z (nil H e f w') = 0` using `herm0 H (m3.trans b5)`. Establish `hA : H.B (crd H e' f' z' e f z v) (crd H e' f' z' e f z v') = H.B (crd H e' f' z' e' f' z' v) (crd H e' f' z' e' f' z' v')`. Rewrite using `[crd_apply, crd_apply, crd_apply, crd_apply, gram H e f z hee hff hef hez hfz, gram H e' f' z' he'e hf'f he'f he'z hf'z, hzz']`. Establish `c1 : H.B (crd H e' f' z' e f z v) (nil H e f w') = 0`.
+
+Rewrite using `[crd_apply]`. Simplify using `only [map_add, map_sub, map_neg, map_sum, map_smul, map_smulₛₗ, map_zero, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.sum_apply,`. Use the proof step `LinearMap.smul_apply, LinearMap.zero_apply, smul_eq_mul, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, sub_zero, mul_ite, ite_mul, mul_one, one_mul,`. Use the proof step `Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, starRingEnd_apply, star_zero, star_one, m1', m2', m3']`. Establish `c2 : H.B (nil H e f w) (crd H e' f' z' e f z v') = 0`.
+
+Rewrite using `[crd_apply]`. Simplify using `only [map_add, map_sub, map_neg, map_sum, map_smul, map_smulₛₗ, map_zero, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.sum_apply,`. Use the proof step `LinearMap.smul_apply, LinearMap.zero_apply, smul_eq_mul, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, sub_zero, mul_ite, ite_mul, mul_one, one_mul,`. Use the proof step `Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, starRingEnd_apply, star_zero, star_one, n1, n2, n3, a5]`. Establish `c3 : H.B (crd H e' f' z' e' f' z' v) w' = 0`.
+
+Rewrite using `[crd_apply]`. Simplify using `only [map_add, map_sub, map_neg, map_sum, map_smul, map_smulₛₗ, map_zero, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.sum_apply,`. Use the proof step `LinearMap.smul_apply, LinearMap.zero_apply, smul_eq_mul, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, sub_zero, mul_ite, ite_mul, mul_one, one_mul,`. Use the proof step `Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, starRingEnd_apply, star_zero, star_one, b1', b2', b3']`. Establish `c4 : H.B w (crd H e' f' z' e' f' z' v') = 0`.
+
+Rewrite using `[crd_apply]`. Simplify using `only [map_add, map_sub, map_neg, map_sum, map_smul, map_smulₛₗ, map_zero, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.sum_apply,`. Use the proof step `LinearMap.smul_apply, LinearMap.zero_apply, smul_eq_mul, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, sub_zero, mul_ite, ite_mul, mul_one, one_mul,`. Use the proof step `Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, starRingEnd_apply, star_zero, star_one, a1, a2, a3]`. Simplify using `only [map_add, LinearMap.add_apply]`.
+
+Rewrite using `[hA, c1, c2, c3, c4, nil_isom H e f hee _ _ a4 b4]`.
+-/
 theorem rmap_isom (e f e' f' : Fin r → V) (z z' : V) (hee : ∀ a b, H.B (e a) (e b) = 0) (hff : ∀ a b, H.B (f a) (f b) = 0)
     (hef : ∀ a b, H.B (e a) (f b) = if a = b then 1 else 0)
     (hez : ∀ a, H.B (e a) z = 0) (hfz : ∀ a, H.B (f a) z = 0) (hzz : H.B z z ≠ 0) (he'e : ∀ a b, H.B (e' a) (e' b) = 0) (hf'f : ∀ a b, H.B (f' a) (f' b) = 0)
@@ -177,6 +243,11 @@ theorem rmap_isom (e f e' f' : Fin r → V) (z z' : V) (hee : ∀ a b, H.B (e a)
   simp only [map_add, LinearMap.add_apply]
   rw [hA, c1, c2, c3, c4, nil_isom H e f hee _ _ a4 b4]
 
+/- English proof (translation)
+Establish `hf'e : ∀ a b, H.B (f' a) (e' b) = if a = b then 1 else 0`. Apply the tactic sequence `intro a b; rw [← H.herm, he'f]; split_ifs with h1 h2 h2 <;> simp_all`. Establish `hz'e : ∀ a, H.B z' (e' a) = 0` using `fun a => herm0 H (he'z a)`. Establish `hz'f : ∀ a, H.B z' (f' a) = 0` using `fun a => herm0 H (hf'z a)`. Apply the tactic sequence `refine ⟨fun a => ?_, fun a => ?_, ?_⟩ <;>`.
+
+Simplify using `only [rmap_apply, crd_apply, map_add, map_sub, map_neg, map_sum, map_smul, map_smulₛₗ, map_zero, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.sum_apply,`. Use the proof step `LinearMap.smul_apply, LinearMap.zero_apply, smul_eq_mul, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, sub_zero, mul_ite, ite_mul, mul_one, one_mul,`. Use the proof step `Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, starRingEnd_apply, star_zero, star_one, ite_smul, one_smul, zero_smul, Finset.sum_const_zero, he'e, hf'f, he'f, hf'e, he'z, hf'z, hz'e, hz'f, inv_mul_cancel₀ hzz'0, sub_self, nil_apply]`.
+-/
 theorem rmap_vals (e f e' f' : Fin r → V) (z z' : V) (he'e : ∀ a b, H.B (e' a) (e' b) = 0) (hf'f : ∀ a b, H.B (f' a) (f' b) = 0)
     (he'f : ∀ a b, H.B (e' a) (f' b) = if a = b then 1 else 0)
     (he'z : ∀ a, H.B (e' a) z' = 0) (hf'z : ∀ a, H.B (f' a) z' = 0) (hzz'0 : H.B z' z' ≠ 0) :
@@ -192,6 +263,15 @@ theorem rmap_vals (e f e' f' : Fin r → V) (z z' : V) (he'e : ∀ a b, H.B (e' 
     Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, starRingEnd_apply, star_zero, star_one, ite_smul, one_smul, zero_smul, Finset.sum_const_zero, he'e, hf'f, he'f, hf'e, he'z, hf'z, hz'e, hz'f,
       inv_mul_cancel₀ hzz'0, sub_self, nil_apply]
 
+/- English proof (translation)
+Establish `he' : ∀ a, e' a ∈ Submodule.span K (Set.range e)` using `fun a => by`. Establish `: e' a = (e' a - e a) + e a` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ (hsp' a) (Submodule.subset_span ⟨a, rfl⟩)`. Establish `hβ : ∀ a, H.B y (e' a) = 0` using `fun a => herm0 H (spanL H (by rintro _ ⟨b, rfl⟩; exact hy b) _ (he' a))`.
+
+Establish `heq : rmap H e f z e' f' z' y - y = ∑ a, H.B y (f' a) • (e a - e' a) + ((H.B z' z')⁻¹ * H.B y z') • (z - z') - ∑ b, H.B (y - crd H e' f' z' e' f' z' y) (f b) • e b`. Rewrite using `[rmap_apply, nil_apply]`. Generalize the expression as in `H.B (y - crd H e' f' z' e' f' z' y) = φ`. Rewrite using `[crd_apply, crd_apply]`. Simplify using `only [hβ, zero_smul, Finset.sum_const_zero, add_zero, smul_sub, Finset.sum_sub_distrib]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[heq]`. Use `Submodule.sub_mem _ (Submodule.add_mem _ (Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ ?_) (Submodule.smul_mem _ _ ?_)) (Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩))` and prove the remaining obligations. Rewrite using `[← neg_sub]`. Conclude with `Submodule.neg_mem _ (hsp' a)`.
+
+Rewrite using `[← neg_sub]`. Conclude with `Submodule.neg_mem _ hzd`.
+-/
 theorem rmap_perp (e f e' f' : Fin r → V) (z z' : V)
     (hsp' : ∀ a, e' a - e a ∈ Submodule.span K (Set.range e)) (hzd : z' - z ∈ Submodule.span K (Set.range e))
     (y : V) (hy : ∀ a, H.B (e a) y = 0) :
@@ -215,6 +295,11 @@ theorem rmap_perp (e f e' f' : Fin r → V) (z z' : V)
   · rw [← neg_sub]; exact Submodule.neg_mem _ (hsp' a)
   · rw [← neg_sub]; exact Submodule.neg_mem _ hzd
 
+/- English proof (translation)
+Introduce `a`. Proceed by induction on `a using WellFoundedLT.induction with`. Consider the case `_ a ih`. Establish `hsub : Submodule.span K (e '' {b | b < a}) ≤ Submodule.span K (Set.range e')` using `Submodule.span_le.2 (by rintro _ ⟨b, hb, rfl⟩; exact ih b hb)`. Establish `: e a = e' a - (e' a - e a)` using `by abel`.
+
+Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ (Submodule.subset_span ⟨a, rfl⟩) (hsub (h a))`.
+-/
 theorem tri_span (e e' : Fin r → V) (h : ∀ a, e' a - e a ∈ Submodule.span K (e '' {b | b < a})) :
     ∀ a, e a ∈ Submodule.span K (Set.range e') := by
   intro a
@@ -225,6 +310,11 @@ theorem tri_span (e e' : Fin r → V) (h : ∀ a, e' a - e a ∈ Submodule.span 
   have : e a = e' a - (e' a - e a) := by abel
   rw [this]; exact Submodule.sub_mem _ (Submodule.subset_span ⟨a, rfl⟩) (hsub (h a))
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Establish `: T (e b) = (T (e b) - e b) + e b` using `by abel`. Rewrite using `[this]`.
+
+Use `Submodule.add_mem _ ?_ (Submodule.subset_span ⟨b, hb, rfl⟩)` and prove the remaining obligations. Conclude with `Submodule.span_mono (Set.image_mono (f := e) (fun c (hc : c < b) => lt_trans hc hb)) (h b hb)`.
+-/
 theorem tri_le (e : Fin r → V) (T : V →ₗ[K] V) (a : Fin r)
     (h : ∀ b < a, T (e b) - e b ∈ Submodule.span K (e '' {c | c < b})) :
     Submodule.span K (e '' {b | b < a}) ≤ (Submodule.span K (e '' {b | b < a})).comap T := by
@@ -236,6 +326,11 @@ theorem tri_le (e : Fin r → V) (T : V →ₗ[K] V) (a : Fin r)
   refine Submodule.add_mem _ ?_ (Submodule.subset_span ⟨b, hb, rfl⟩)
   exact Submodule.span_mono (Set.image_mono (f := e) (fun c (hc : c < b) => lt_trans hc hb)) (h b hb)
 
+/- English proof (translation)
+Introduce `a`. Proceed by induction on `a using WellFoundedLT.induction with`. Consider the case `_ a ih`. Establish `hle` using `tri_le e T a ih`. Establish `: T (e a) - e a = -(T (e' a - e a))` using `by rw [map_sub, hT]; abel`.
+
+Rewrite using `[this]`. Conclude with `Submodule.neg_mem _ (hle (h a))`.
+-/
 theorem tri_map (e e' : Fin r → V) (T : V →ₗ[K] V) (hT : ∀ a, T (e' a) = e a)
     (h : ∀ a, e' a - e a ∈ Submodule.span K (e '' {b | b < a})) :
     ∀ a, T (e a) - e a ∈ Submodule.span K (e '' {b | b < a}) := by
@@ -246,6 +341,9 @@ theorem tri_map (e e' : Fin r → V) (T : V →ₗ[K] V) (hT : ∀ a, T (e' a) =
   have : T (e a) - e a = -(T (e' a - e a)) := by rw [map_sub, hT]; abel
   rw [this]; exact Submodule.neg_mem _ (hle (h a))
 
+/- English proof (translation)
+Establish `hle : S.map (m : V →ₗ[K] V) ≤ S` using `Submodule.map_le_iff_le_comap.2 hS`. Establish `heq : S.map (m : V →ₗ[K] V) = S` using `Submodule.eq_of_le_of_finrank_eq hle (LinearEquiv.finrank_map_eq m S)`. Introduce `x hx`. Rewrite `hx` using `[← heq]`. Conclude with `(Submodule.mem_map_equiv S).1 hx`.
+-/
 theorem symm_mem [FiniteDimensional K V] (m : V ≃ₗ[K] V) (S : Submodule K V)
     (hS : S ≤ S.comap (m : V →ₗ[K] V)) : ∀ x ∈ S, m.symm x ∈ S := by
   have hle : S.map (m : V →ₗ[K] V) ≤ S := Submodule.map_le_iff_le_comap.2 hS
@@ -255,6 +353,25 @@ theorem symm_mem [FiniteDimensional K V] (m : V ≃ₗ[K] V) (S : Submodule K V)
   rw [← heq] at hx
   exact (Submodule.mem_map_equiv S).1 hx
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ H r e f e' f' z z' hee hff hef hez hfz hzz he'e hf'f he'f he'z hf'z htri hzd`. Establish `hsp : ∀ a, e a ∈ Submodule.span K (Set.range e')` using `tri_span e e' htri`. Establish `hsp' : ∀ a, e' a - e a ∈ Submodule.span K (Set.range e)` using `fun a => Submodule.span_mono (Set.image_subset_range e _) (htri a)`. Establish `hzz'0 : H.B z' z' ≠ 0` using `(zz_eq H e z z' hee hez hzd) ▸ hzz`. Establish `hiso` using `rmap_isom H e f e' f' z z' hee hff hef hez hfz hzz he'e hf'f he'f he'z hf'z hsp hzd`.
+
+Take `⟨v1, v2, v3⟩` from `rmap_vals H e f e' f' z z' he'e hf'f he'f he'z hf'z hzz'0`. Establish `hinj : Function.Injective (rmap H e f z e' f' z')`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Apply `H.nondeg` to reduce the goal to its premises.
+
+Introduce `w`. Rewrite using `[← hiso x w, hx, map_zero, LinearMap.zero_apply]`. Use `set T := rmap H e f z e' f' z' with hTdef`. Set `m : V ≃ₗ[K] V` to `LinearEquiv.ofInjectiveEndo T hinj`. Establish `hm : ∀ x, m x = T x` using `fun x => rfl`.
+
+Establish `h5 : ∀ a, T (e a) - e a ∈ Submodule.span K (e '' {b | b < a})` using `tri_map e e' T v1 htri`. Establish `h6 : ∀ y, (∀ a, H.B (e a) y = 0) → T y - y ∈ Submodule.span K (Set.range e)` using `fun y hy => rmap_perp H e f e' f' z z' hsp' hzd y hy`. Establish `hX : Submodule.span K (Set.range e) ≤ (Submodule.span K (Set.range e)).comap T`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`.
+
+Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Establish `: T (e a) = (T (e a) - e a) + e a` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ (Submodule.span_mono (Set.image_subset_range e _) (h5 a)) (Submodule.subset_span ⟨a, rfl⟩)`. Use `⟨m, fun x y => hiso x y, v1, v2, v3, h5, h6, fun a => ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Establish `hS` using `symm_mem m _ (tri_le e T a (fun b _ => h5 b)) _ (h5 a)`. Establish `: m.symm (e a) - e a = -(m.symm (T (e a) - e a))`. Rewrite using `[map_sub, ← hm, LinearEquiv.symm_apply_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`.
+
+Conclude with `Submodule.neg_mem _ hS`. Establish `hy' : ∀ a, H.B (e a) (m.symm y) = 0`. Introduce `a`. Establish `: H.B (e a) (m.symm y) = H.B (T (e a)) y`. Rewrite using `[← hiso (e a) (m.symm y), ← hm (m.symm y), LinearEquiv.apply_symm_apply]`.
+
+Rewrite using `[this]`. Conclude with `spanL H (by rintro _ ⟨b, rfl⟩; exact hy b) _ (hX (Submodule.subset_span ⟨a, rfl⟩))`. Establish `h` using `h6 (m.symm y) hy'`. Rewrite `h` using `[← hm, LinearEquiv.apply_symm_apply]`. Rewrite using `[← neg_sub]`.
+
+Conclude with `Submodule.neg_mem _ h`.
+-/
 theorem exists_isometry_frame_unipotent : ∀ {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V]
     (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) {r : ℕ} (e f e' f' : Fin r → V) (z z' : V),
     (∀ a b, H.B (e a) (e b) = 0) → (∀ a b, H.B (f a) (f b) = 0) →

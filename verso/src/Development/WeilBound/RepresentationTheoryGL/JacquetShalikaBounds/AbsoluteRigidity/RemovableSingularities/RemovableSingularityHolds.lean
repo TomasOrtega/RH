@@ -12,6 +12,11 @@ def D (G : ℂ → ℂ) : ℕ → ℂ → ℂ
   | 0 => G
   | j + 1 => dslope (D G j) 1
 
+/- English proof (translation)
+Break down `eq_or_ne z 1 with rfl | hne` into its components or cases. Establish `hev` using `h1.eventually_analyticAt`. Establish `hd : DifferentiableOn ℂ f {w | AnalyticAt ℂ f w}` using `fun w hw => hw.differentiableAt.differentiableWithinAt`. Establish `hs : {w | AnalyticAt ℂ f w} ∈ 𝓝 (1 : ℂ)` using `hev`. Conclude with `((Complex.differentiableOn_dslope hs).2 hd).analyticAt hs`.
+
+Establish `hsl : AnalyticAt ℂ (fun w => (w - 1)⁻¹ • (f w - f 1)) z` using `((analyticAt_id.sub analyticAt_const).inv (sub_ne_zero.2 hne)).smul (hz.sub analyticAt_const)`. Use `hsl.congr ?_` and prove the remaining obligations. Use `filter_upwards [isOpen_ne.mem_nhds hne] with w hw`. Rewrite using `[dslope_of_ne _ hw, slope_def_module]`.
+-/
 theorem analyticAt_dslope {f : ℂ → ℂ} {z : ℂ} (h1 : AnalyticAt ℂ f 1) (hz : AnalyticAt ℂ f z) :
     AnalyticAt ℂ (dslope f 1) z := by
   rcases eq_or_ne z 1 with rfl | hne
@@ -25,6 +30,9 @@ theorem analyticAt_dslope {f : ℂ → ℂ} {z : ℂ} (h1 : AnalyticAt ℂ f 1) 
     filter_upwards [isOpen_ne.mem_nhds hne] with w hw
     rw [dslope_of_ne _ hw, slope_def_module]
 
+/- English proof (translation)
+The claim follows from `| 0 => hG | j + 1 => fun σ hσ => by have h1 := analytic_D hG j 1 one_pos simp only [Complex.ofReal_one] at h1 exact analyticAt_dslope h1 (analytic_D hG j σ hσ)`.
+-/
 theorem analytic_D {G : ℂ → ℂ} (hG : ∀ σ : ℝ, 0 < σ → AnalyticAt ℂ G σ) :
     ∀ j, ∀ σ : ℝ, 0 < σ → AnalyticAt ℂ (D G j) σ
   | 0 => hG
@@ -33,6 +41,9 @@ theorem analytic_D {G : ℂ → ℂ} (hG : ∀ σ : ℝ, 0 < σ → AnalyticAt �
       simp only [Complex.ofReal_one] at h1
       exact analyticAt_dslope h1 (analytic_D hG j σ hσ)
 
+/- English proof (translation)
+The claim follows from `| 0, _, z => by simp [D] | j + 1, h, z => by have ih := factor G j (fun i hi => h i (by omega)) z have e := sub_smul_dslope (D G j) 1 z rw [h j (by omega), sub_zero, smul_eq_mul] at e rw [ih, ← e] simp only [D] ring`.
+-/
 theorem factor (G : ℂ → ℂ) : ∀ j, (∀ i < j, D G i 1 = 0) → ∀ z, G z = (z - 1) ^ j * D G j z
   | 0, _, z => by simp [D]
   | j + 1, h, z => by
@@ -46,6 +57,27 @@ theorem factor (G : ℂ → ℂ) : ∀ j, (∀ i < j, D G i 1 = 0) → ∀ z, G 
 end RemovableSingularityAlt
 
 open RemovableSingularityAlt in
+/- English proof (translation)
+Introduce `G r M hG hM`. Establish `han` using `analytic_D hG`. Establish `key : ∀ j ≤ r, ∀ i < j, D G i 1 = 0`. Introduce `j`. Proceed by induction on `j with`.
+
+Consider the case `zero => intro _ i hi`. Use linear arithmetic over natural numbers and integers. Consider the case `succ j ih`. Introduce `hj i hi`. Establish `hprev` using `ih (by omega)`.
+
+Break down `Nat.lt_succ_iff_lt_or_eq.1 hi with hi | rfl` into its components or cases. Conclude with `hprev i hi`. Establish `hfac` using `factor G i hprev`. Establish `hc : ContinuousAt (D G i) 1`. Use `(han i 1 one_pos).continuousAt` as an intermediate fact.
+
+Simplify using `using this`. Establish `hb : ∀ σ : ℝ, 1 < σ → σ ≤ 2 → ‖D G i σ‖ ≤ |M| * (σ - 1)`. Introduce `σ h1 h2`. Establish `h0 : (0 : ℝ) < σ - 1` using `by linarith`. Establish `hle` using `hM σ h1 h2`.
+
+Rewrite `hle` using `[hfac, norm_mul, norm_pow, show ((σ : ℂ) - 1) = ((σ - 1 : ℝ) : ℂ) by push_cast; ring, Complex.norm_real, Real.norm_of_nonneg h0.le]`. Establish `hpow : (σ - 1) ^ r = (σ - 1) ^ i * (σ - 1) ^ (r - i)`. Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `hle` using `[hpow]`. Establish `hpi : 0 < (σ - 1) ^ i` using `pow_pos h0 i`. Establish `h3 : ‖D G i σ‖ ≤ M * (σ - 1) ^ (r - i)`. Use `le_of_mul_le_mul_left (by linarith [hle] : (σ - 1) ^ i * ‖D G i σ‖ ≤ (σ - 1) ^ i * (M * (σ - 1) ^ (r - i))) hpi` as an intermediate fact. Conclude with `this`.
+
+Establish `h4 : (σ - 1) ^ (r - i) ≤ σ - 1`. Establish `hr : 1 ≤ r - i` using `by omega`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hlim : Tendsto (fun σ : ℝ => D G i σ) (𝓝[>] 1) (𝓝 (D G i 1))`.
+
+Establish `hcr : Tendsto (fun σ : ℝ => (σ : ℂ)) (𝓝[>] (1 : ℝ)) (𝓝 (1 : ℂ))`. Use `(Complex.continuous_ofReal.tendsto (1 : ℝ)).mono_left (nhdsWithin_le_nhds (s := Set.Ioi (1 : ℝ)))` as an intermediate fact. Simplify using `using this`. Conclude with `hc.tendsto.comp hcr`. Establish `hlim0 : Tendsto (fun σ : ℝ => D G i σ) (𝓝[>] 1) (𝓝 0)`.
+
+Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Use `squeeze_zero' (g := fun σ : ℝ => |M| * (σ - 1)) (Eventually.of_forall fun _ => norm_nonneg _) ?_ ?_` and prove the remaining obligations. Use `filter_upwards [Ioo_mem_nhdsGT (show (1 : ℝ) < 2 by norm_num)] with σ hσ`. Conclude with `hb σ hσ.1 hσ.2.le`. Establish `: Tendsto (fun σ : ℝ => |M| * (σ - 1)) (𝓝 1) (𝓝 (|M| * (1 - 1)))` using `(continuous_const.mul (continuous_id.sub continuous_const)).tendsto 1`.
+
+Rewrite `this` using `[sub_self, mul_zero]`. Conclude with `this.mono_left nhdsWithin_le_nhds`. Conclude with `tendsto_nhds_unique hlim hlim0`. Use `⟨D G r, han r, fun σ _ => factor G r (key r le_rfl) σ⟩` and prove the remaining obligations.
+-/
 theorem removable_singularity_holds : Remov := by
   intro G r M hG hM
   have han := analytic_D hG

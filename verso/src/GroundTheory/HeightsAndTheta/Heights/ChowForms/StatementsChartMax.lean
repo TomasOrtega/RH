@@ -36,12 +36,18 @@ section Inhabitants
 def pointIdealZeroOne : Ideal (MvPolynomial (Fin 2) ℚ) :=
   RingHom.ker (MvPolynomial.eval ![(0 : ℚ), 1])
 
+/- English proof (translation)
+Use `⟨RingHom.ker_isPrime _, ?_⟩` and prove the remaining obligations. Rewrite using `[pointIdealZeroOne, RingHom.mem_ker, linForm_tLine]`. Simplify using the standard rewrite rules.
+-/
 theorem ChartHomogenise.hypotheses_inhabited :
     pointIdealZeroOne.IsPrime ∧ linForm tLine - 1 ∈ pointIdealZeroOne := by
   refine ⟨RingHom.ker_isPrime _, ?_⟩
   rw [pointIdealZeroOne, RingHom.mem_ker, linForm_tLine]
   simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(isProjPrime_span_X_zero ℚ).isPrime, (isProjPrime_span_X_zero ℚ).isHomog, linearFormLine_not_mem_span_X0, isHomogeneous_X _ _, Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)⟩`.
+-/
 theorem ChartDehomog.hypotheses_inhabited :
     (Ideal.span {(X 0 : MvPolynomial (Fin 2) ℚ)}).IsPrime ∧
       IsHomogIdeal (Ideal.span {(X 0 : MvPolynomial (Fin 2) ℚ)}) ∧
@@ -55,6 +61,15 @@ theorem ChartDehomog.hypotheses_inhabited :
 def substZeroOne : MvPolynomial (Fin 1 × Fin 2) ℚ →ₐ[ℚ] MvPolynomial (Fin 1 × Fin 2) ℚ :=
   aeval fun ij => if ij = ((0 : Fin 1), (1 : Fin 2)) then 0 else X ij
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp [substZeroOne]`. Consider the case `add p q hp hq`. Establish `e : p + q - substZeroOne (p + q) = (p - substZeroOne p) + (q - substZeroOne q)`. Simplify using `only [map_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `dvd_add hp hq`. Consider the case `mul_X p i hp`. Establish `e : p * X i - substZeroOne (p * X i) = (p - substZeroOne p) * X i + substZeroOne p * (X i - substZeroOne (X i))`.
+
+Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `dvd_add (hp.mul_right _) (Dvd.dvd.mul_left ?_ _)` and prove the remaining obligations. Distinguish the cases in `hi : i = (0, 1)`.
+
+Substitute `hi` using the available equality. Simplify using `[substZeroOne]`. Simplify using `[substZeroOne, hi]`.
+-/
 theorem X_zero_one_dvd_sub_substZeroOne (g : MvPolynomial (Fin 1 × Fin 2) ℚ) : X (0, 1) ∣ g - substZeroOne g := by
   induction g using MvPolynomial.induction_on with
   | C a => simp [substZeroOne]
@@ -72,6 +87,15 @@ theorem X_zero_one_dvd_sub_substZeroOne (g : MvPolynomial (Fin 1 × Fin 2) ℚ) 
     · subst hi; simp [substZeroOne]
     · simp [substZeroOne, hi]
 
+/- English proof (translation)
+Introduce `g hg`. Simplify using `only [incIdeal, Submodule.mem_iInf, RingHom.mem_ker] at hg`. Rewrite using `[Ideal.mem_span_singleton, qLine]`. Establish `hz : substZeroOne g = 0`. Apply `MvPolynomial.map_injective (algebraMap ℚ (AlgebraicClosure ℚ)) (algebraMap ℚ _).injective` to reduce the goal to its premises.
+
+Rewrite using `[map_zero]`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[eval_map, ← aeval_def, map_zero, substZeroOne, ← AlgHom.comp_apply, comp_aeval]`. Establish `hw : (fun ij : Fin 1 × Fin 2 => aeval v (if ij = ((0 : Fin 1), (1 : Fin 2)) then (0 : MvPolynomial (Fin 1 × Fin 2) ℚ) else X ij)) ∈ incidence (Ideal.span {(X 0 : MvPolynomial (Fin 2) ℚ)}) 1`.
+
+Use `⟨![0, 1], fun h => one_ne_zero (congrFun h 1), fun g hg => ?_, fun i => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.mp hg`. Simplify using the standard rewrite rules. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Simplify using `[Fin.sum_univ_two]`.
+
+Conclude with `hg _ hw`. Simplify `X_zero_one_dvd_sub_substZeroOne g` using `[hz]`.
+-/
 theorem incidenceIdeal_pointZeroOne_le_span :
     incIdeal (Ideal.span {(X 0 : MvPolynomial (Fin 2) ℚ)}) 1 ≤ Ideal.span {qLine} := by
   intro g hg
@@ -93,6 +117,9 @@ theorem incidenceIdeal_pointZeroOne_le_span :
     exact hg _ hw
   simpa [hz] using X_zero_one_dvd_sub_substZeroOne g
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨LineChowForm.isProjPrime_line, ringKrullDim_quot_bot ℚ 2, linForm_uLine_not_mem_bot, isProjPrime_span_X_zero ℚ, by rw [bot_sup_eq, linForm_uLine], prime_qLine, incidenceIdeal_pointZeroOne_le_span⟩`.
+-/
 theorem ComponentOfIncIdeal.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 2) ℚ)) ∧
       ringKrullDim (MvPolynomial (Fin 2) ℚ ⧸ (⊥ : Ideal (MvPolynomial (Fin 2) ℚ))) =

@@ -13,12 +13,18 @@ open GroundTheory.Global GroundTheory.LocalField
 
 variable (F : Type) [Field F] [NumberField F]
 
+/- English proof (translation)
+Use `show ((adelicChar F (pairA F 0 (singleV F v y)) : Circle) : ℂ) = ((adelicChar F (finitePlaceIncl v y) : Circle) : ℂ)`. Use `congr 2`.
+-/
 theorem psiV_std (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v) :
     psiV F (Circle.coeHom.compAddChar (adelicChar F)) v y = ((localAdelicChar F v y : Circle) : ℂ) := by
   classical
   show ((adelicChar F (pairA F 0 (singleV F v y)) : Circle) : ℂ) = ((adelicChar F (finitePlaceIncl v y) : Circle) : ℂ)
   congr 2
 
+/- English proof (translation)
+Rewrite using `[show ((ValuativeRel.valuation (Fv F v)).integer : Set (Fv F v)) = (valBall (Fv F v) 0 : Set (Fv F v)) from coe_valBall_zero.symm]`. Use extensionality with `x`. Use `show x ∈ valBall (Fv F v) 0 ↔ x ∈ v.adicCompletionIntegers F`. Rewrite using `[mem_valBall_iff_valued, HeightOneSpectrum.mem_adicCompletionIntegers]`. Simplify using the standard rewrite rules.
+-/
 theorem coe_integers_eq (v : HeightOneSpectrum (𝓞 F)) :
     ((ValuativeRel.valuation (Fv F v)).integer : Set (Fv F v)) = (v.adicCompletionIntegers F : Set (Fv F v)) := by
   rw [show ((ValuativeRel.valuation (Fv F v)).integer : Set (Fv F v)) = (valBall (Fv F v) 0 : Set (Fv F v)) from coe_valBall_zero.symm]
@@ -30,6 +36,9 @@ theorem coe_integers_eq (v : HeightOneSpectrum (𝓞 F)) :
 noncomputable def cV (v : HeightOneSpectrum (𝓞 F)) : ℝ≥0 :=
   (Ideal.absNorm v.asIdeal : ℝ≥0) ^ (((-differentExp v : ℤ) : ℝ) / 2)
 
+/- English proof (translation)
+Take `⟨hH, h1⟩` from `h`. Establish `e` using `eq_smul_haarIntegers lam`. Rewrite `e` using `[coe_integers_eq F v, h1, one_smul]`. Rewrite using `[e, GroundTheory.LocalField.selfDualMeasure, addCharConductor_localAdelicChar, residueCard_adicCompletion]`. Both sides reduce to the same expression.
+-/
 theorem smul_eq_selfDualMeasure (v : HeightOneSpectrum (𝓞 F)) (lam : Measure (Fv F v)) (h : IsStdV v lam) :
     cV F v • lam = GroundTheory.LocalField.selfDualMeasure (localAdelicChar F v) := by
   obtain ⟨hH, h1⟩ := h
@@ -38,6 +47,13 @@ theorem smul_eq_selfDualMeasure (v : HeightOneSpectrum (𝓞 F)) (lam : Measure 
   rw [e, GroundTheory.LocalField.selfDualMeasure, addCharConductor_localAdelicChar, residueCard_adicCompletion]
   rfl
 
+/- English proof (translation)
+Introduce `F _ _ hF laminf lam hinf hlam`. Use `⟨Circle.coeHom.compAddChar (adelicChar F), ?_, Real.toNNReal (Real.sqrt |(discr F : ℝ)|), cV F, ?_, GlobalTheory.T.archimedean_selfdual_measure_discriminant_scaled F hF laminf hinf, fun v => ?_⟩` and prove the remaining obligations. Use `⟨continuous_subtype_val.comp (continuous_adelicChar (K := F)), fun x => Circle.norm_coe _, fun a => ?_, ?_⟩` and prove the remaining obligations. Use `show ((adelicChar F _ : Circle) : ℂ) = 1`. Rewrite using `[adelicChar_algebraMap]`.
+
+Both sides reduce to the same expression. Assume the negation of the conclusion as `h push Not at h`. Apply `adelicChar_ne_one (K := F)` to reduce the goal to its premises. Use extensionality with `x`. Conclude with `h x`.
+
+Conclude with `GlobalTheory.T.discriminant_different_product_formula F`. Rewrite using `[smul_eq_selfDualMeasure F v (lam v) (hlam v)]`. Simplify using `only [psiV_std]`. Conclude with `GlobalTheory.T.local_field_selfdual_measure_exists _ _ (continuous_localAdelicChar v) (localAdelicChar_ne_one v)`.
+-/
 theorem selfDual_std : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F → ∀ (laminf : Measure (Ainf F)) (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), IsStdInf laminf → (∀ v, IsStdV v (lam v)) → ∃ ψ, IsCharAF F ψ ∧ ∃ (cinf : ℝ≥0) (c : HeightOneSpectrum (𝓞 F) → ℝ≥0), IsUnitProd cinf c ∧ (SelfDual (cinf • laminf) (fun s t => psiInf F ψ (s * t))) ∧ ∀ v : HeightOneSpectrum (𝓞 F), (SelfDual (c v • lam v) (fun s t => psiV F ψ v (s * t))) := by
   intro F _ _ hF laminf lam hinf hlam
   refine ⟨Circle.coeHom.compAddChar (adelicChar F), ?_, Real.toNNReal (Real.sqrt |(discr F : ℝ)|), cV F, ?_, GlobalTheory.T.archimedean_selfdual_measure_discriminant_scaled F hF laminf hinf, fun v => ?_⟩

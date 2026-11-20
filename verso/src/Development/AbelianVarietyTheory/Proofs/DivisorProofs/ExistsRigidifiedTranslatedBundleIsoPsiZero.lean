@@ -15,6 +15,19 @@ section General
 
 variable {X X' S : Scheme.{0}} {L : LB X} {L' : LB X'}
 
+/- English proof (translation)
+Establish `hw` using `(isGen_iff w₀).1 hw₀`. Take `⟨u, hu, vu⟩` from `exists_up hw hL hL' (K := PUnit) (φ' := fun _ => e') (ε := fun _ => 1) ρ' hρ'`. Establish `l₀ : ∀ (j : Fin 3 → L.ι) (q : L'.ι), LB.wchart L ![Φ, p ≫ e' ≫ Φ, p ≫ e] j ⊓ L'.U q ≤ (L.pull Φ).U (fun _ => j 0) ⊓ L'.U q` using `fun j q x hx => ⟨mem_pull.2 (Set.mem_iInter.1 hx.1 0), hx.2⟩`. Establish `l₁ : ∀ (j : Fin 3 → L.ι) (q : L'.ι), LB.wchart L ![Φ, p ≫ e' ≫ Φ, p ≫ e] j ⊓ L'.U q ≤ p ⁻¹ᵁ LB.wchart L (fun _ : PUnit => e' ≫ Φ) (fun _ => j 1)` using `fun j q x hx => Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hx.1 1`. Establish `l₂ : ∀ (j : Fin 3 → L.ι) (q : L'.ι), LB.wchart L ![Φ, p ≫ e' ≫ Φ, p ≫ e] j ⊓ L'.U q ≤ p ⁻¹ᵁ LB.wchart L (fun _ : PUnit => e) (fun _ => j 2)` using `fun j q x hx => Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hx.1 2`.
+
+Set `w : LB.Iso L' (LB.LinComb L ![Φ, p ≫ e' ≫ Φ, p ≫ e] twε)` to `⟨fun c => res (l₀ c.1 c.2) (w₀.s (fun _ => c.1 0, c.2)) * (res (l₁ c.1 c.2) (pullU p _ (u.s (fun _ => c.1 1))))⁻¹ * res (l₂ c.1 c.2) (pullU p _ (ρ.s (fun _ => c.1 2)))⟩`. Establish `vw : ∀ (Z : Scheme.{0}) (f : Z ⟶ X') (z : Z) (j : Fin 3 → L.ι) (q : L'.ι), f z ∈ LB.wchart L ![Φ, p ≫ e' ≫ Φ, p ≫ e] j ⊓ L'.U q → gm f z (LB.wchart L ![Φ, p ≫ e' ≫ Φ, p ≫ e] j ⊓ L'.U q) (w.s (j, q)) = gw w₀ f z (j 0) q * (gm (f ≫ p) z (LB.wchart L (fun _ : PUnit => e' ≫ Φ) (fun _ …` using `fun Z f z j q hz => (map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res f z (l₀ j q) hz _) ((map_inv _ _).trans (congrArg (·⁻¹) ((gm_res f z (l₁ j q) hz _).trans (gm_pull f p z _ (l₁ j q hz) _)))))) ((gm_res f z (l₂ j q) hz _).trans (gm_pull …`. Use `⟨w, ?_, fun Z r z j q hj hq => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨j, q⟩ ⟨j', q'⟩`. Use `unit_ext fun x hx => ?_` and prove the remaining obligations.
+
+Use `((gm_res (𝟙 X') x _ hx _).trans (vw _ _ x j q hx.1)).trans (Eq.symm ((map_mul _ _ _).trans ((congrArg₂ (· * ·) ((gm_div L' _ (𝟙 X') x (j, q) (j', q') hx).trans (congrArg (· * _) (gm_linComb L _ twε (𝟙 X') x j j' hx.1.1 hx.2.1))) ((gm_res (𝟙 X') x _ hx _).trans (vw _ _ x j' q' hx. …` and prove the remaining obligations. Rewrite using `[hw _ (𝟙 X') x (j 0) (j' 0) q q' (Set.mem_iInter.1 hx.1.1 0) (Set.mem_iInter.1 hx.2.1 0) hx.1.2 hx.2.2, gen_trans hu (𝟙 X' ≫ p) x (l₁ j q hx.1) (l₁ j' q' hx.2), gen_trans hρ (𝟙 X' ≫ p) x (l₂ j q hx.1) (l₂ j' q' hx.2), Fin.prod_univ_three]`. Simplify using `only [trF, Fintype.prod_unique, twε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, zpow_one, zpow_neg, Category.assoc]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+
+Normalize the expressions using the abelian group laws. Establish `hp : (r ≫ e') ≫ p = r` using `by rw [Category.assoc, he, Category.comp_id]`. Establish `hz : p (e' (r z)) = r z` using `congrArg (fun g => g z) hp`. Establish `m₀ : Φ (e' (r z)) ∈ L.U (j 0)` using `Set.mem_iInter.1 hj 0`. Establish `m₁ : Φ (e' (r z)) ∈ L.U (j 1)`.
+
+Establish `: Φ (e' (p (e' (r z)))) ∈ L.U (j 1)` using `Set.mem_iInter.1 hj 1`. Rewrite `this` using `[hz]`. Then use the resulting hypothesis. Use `(vw Z (r ≫ e') z j q ⟨hj, hq⟩).trans ?_` and prove the remaining obligations. Rewrite using `[hp, vu Z r z (fun _ => j 1) (fun _ => q) (Set.mem_iInter.2 fun _ => m₁) (Set.mem_iInter.2 fun _ => hq), pw, Fintype.prod_unique, zpow_one, hw Z (r ≫ e') z (j 0) (j 1) q q m₀ m₁ hq hq, gm_self hL' (r ≫ e') z hq]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv, inv_one, ofMul_one]`. Normalize the expressions using the abelian group laws.
+-/
 theorem exists_iso (hL : L.IsLB) (hL' : L'.IsLB) (p : X' ⟶ S) (e' : S ⟶ X') (he : e' ≫ p = 𝟙 S) (Φ : X' ⟶ X)
     (e : S ⟶ X) (ρ' : LB.Gen (L'.pull e')) (hρ' : ρ'.IsGen) (ρ : LB.Gen (L.pull e)) (hρ : ρ.IsGen)
     (w₀ : LB.Iso L' (L.pull Φ)) (hw₀ : w₀.IsGen) :
@@ -73,6 +86,21 @@ theorem exists_iso (hL : L.IsLB) (hL' : L'.IsLB) (p : X' ⟶ S) (e' : S ⟶ X') 
     simp only [ofMul_mul, ofMul_inv, inv_one, ofMul_one]
     abel
 
+/- English proof (translation)
+Substitute `hb hx` using the available equality. Take `⟨w, hw, vw⟩` from `exists_iso hL hL' p e' he Φ e ρ' hρ' ρ hρ w₀ hw₀`. Establish `hp : (r ≫ e') ≫ p = r` using `by rw [Category.assoc, he, Category.comp_id]`. Establish `hz : ∀ z, p (e' (r z)) = r z` using `fun z => congrArg (fun g => g z) hp`. Establish `l₁ : ∀ j : Fin 3 → L.ι, LB.wchart L (fun i => (r ≫ e') ≫ (![Φ, p ≫ e' ≫ Φ, p ≫ e] : Fin 3 → (X' ⟶ X)) i) j ≤ ((r ≫ e') ≫ Φ) ⁻¹ᵁ (L.U (j 0) ⊓ L.U (j 1))` using `fun j y hy => ⟨Set.mem_iInter.1 hy 0, by`.
+
+Establish `: Φ (e' (p (e' (r y)))) ∈ L.U (j 1)` using `Set.mem_iInter.1 hy 1`. Rewrite `this` using `[hz]`. Conclude with `this⟩`. Establish `l₂ : ∀ j : Fin 3 → L.ι, LB.wchart L (fun i => (r ≫ e') ≫ (![Φ, p ≫ e' ≫ Φ, p ≫ e] : Fin 3 → (X' ⟶ X)) i) j ≤ r ⁻¹ᵁ LB.wchart L (fun _ : PUnit => e) (fun _ => j 2)` using `fun j y hy => Set.mem_iInter.2 fun _ => by`. Establish `: e (p (e' (r y))) ∈ L.U (j 2)` using `Set.mem_iInter.1 hy 2`.
+
+Rewrite `this` using `[hz]`. Conclude with `this`. Set `t : LB.Gen (LB.LinComb L (fun i => (r ≫ e') ≫ (![Φ, p ≫ e' ≫ Φ, p ≫ e] : Fin 3 → (X' ⟶ X)) i) (fun i => -1 * twε i))` to `⟨fun j => (res (l₁ j) (pullU ((r ≫ e') ≫ Φ) (L.U (j 0) ⊓ L.U (j 1)) (L.g (j 0) (j 1))) * res (l₂ j) (pullU r _ (ρ.s (fun _ => j 2))))⁻¹⟩`. Establish `vt : ∀ (y : Y) (j : Fin 3 → L.ι), y ∈ LB.wchart L (fun i => (r ≫ e') ≫ (![Φ, p ≫ e' ≫ Φ, p ≫ e] : Fin 3 → (X' ⟶ X)) i) j → gm (𝟙 Y) y (LB.wchart L (fun i => (r ≫ e') ≫ (![Φ, p ≫ e' ≫ Φ, p ≫ e] : Fin 3 → (X' ⟶ X)) i) j) (t.s j) = (gm ((r ≫ e') ≫ Φ) y (L.U (j 0) ⊓ L.U (j 1)) (L.g ( …` using `fun y j hy => (map_inv _ _).trans (congrArg (·⁻¹) ((map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_res (𝟙 Y) y (l₁ j) hy _).trans ((gm_pull (𝟙 Y) ((r ≫ e') ≫ Φ) y (L.U (j 0) ⊓ L.U (j 1)) (l₁ j hy) _).trans (by rw [Category.id_comp]))) ((gm_res (𝟙 Y) y (l₂ j) hy _).trans ((gm_pull ( …`. Use `⟨w, hw, t, fun j q => unit_ext fun y hy => ?_, fun y J hJ => ?_⟩` and prove the remaining obligations.
+
+Use `((gm_res (𝟙 Y) y _ hy _).trans (vt y j (mapsAtExp_le_b L L' _ twε _ j q hy))).trans (Eq.symm ((map_mul _ _ _).trans ((congrArg₂ (· * ·) ((map_zpow _ _ _).trans (congrArg (· ^ (-1 : ℤ)) ((gm_pull (𝟙 Y) (r ≫ e') y _ hy _).trans ((congrArg (fun f => gv w f y j q) (Category.id_comp _ …` and prove the remaining obligations. Rewrite using `[zpow_neg, zpow_one, ← mul_inv, inv_mul_cancel_right]`. Establish `e₁ : (r ≫ e') ≫ p ≫ e' ≫ Φ = (r ≫ e') ≫ Φ` using `by rw [← Category.assoc, hp, Category.assoc]`. Establish `e₂ : (r ≫ e') ≫ p ≫ e = r ≫ e` using `by rw [← Category.assoc, hp]`. Rewrite using `[val_of t (𝟙 Y) y J ![J ((r ≫ e') ≫ Φ), J ((r ≫ e') ≫ Φ), J (r ≫ e)] (fun k => by`.
+
+Rewrite using `[Category.id_comp]`. Use `fin_cases k`. Use `exacts [rfl, congrArg J e₁, congrArg J e₂])]`. Use `(vt y _ (Set.mem_iInter.2 fun k => ?_)).trans ?_` and prove the remaining obligations. Use `fin_cases k`.
+
+Conclude with `hJ ((r ≫ e') ≫ Φ)`. Use `show ((r ≫ e') ≫ p ≫ e' ≫ Φ) y ∈ L.U (J ((r ≫ e') ≫ Φ))`. Rewrite using `[e₁]`. Conclude with `hJ _`. Use `show ((r ≫ e') ≫ p ≫ e) y ∈ L.U (J (r ≫ e))`.
+
+Rewrite using `[e₂]`. Conclude with `hJ _`. Conclude with `congrArg (·⁻¹) ((congrArg (· * _) (gm_self hL ((r ≫ e') ≫ Φ) y (hJ _))).trans (_root_.one_mul _))`.
+-/
 theorem exists_iso_maps (hL : L.IsLB) (hL' : L'.IsLB) (p : X' ⟶ S) (e' : S ⟶ X') (he : e' ≫ p = 𝟙 S) (Φ : X' ⟶ X)
     (b e : S ⟶ X) (hb : e' ≫ Φ = b) (ρ' : LB.Gen (L'.pull e')) (hρ' : ρ'.IsGen) (ρ : LB.Gen (L.pull e)) (hρ : ρ.IsGen)
     (w₀ : LB.Iso L' (L.pull Φ)) (hw₀ : w₀.IsGen) {Y : Scheme.{0}} (r : Y ⟶ S) (x : Y ⟶ X') (hx : x = r ≫ e')
@@ -134,6 +162,13 @@ theorem exists_iso_maps (hL : L.IsLB) (hL' : L'.IsLB) (p : X' ⟶ S) (e' : S ⟶
 
 end General
 
+/- English proof (translation)
+Introduce `R _ _ I D D₂ g β hβ w₀ hw₀`. Establish `hb : eSec D₂.toPre.P.A ≫ (padd D.toPre.P.A β (toUnit D₂.toPre.P.A ≫ g.b)).left = g.b.left`. Rewrite using `[eSec, ← Over.comp_left]`. Use `congr 1`. Use `show η[D₂.toPre.P.A] ≫ (β * (toUnit D₂.toPre.P.A ≫ g.b)) = g.b`.
+
+Establish `h₁ : η[D₂.toPre.P.A] ≫ β = 1` using `by rw [IsMonHom.one_hom, Hom.one_def, toUnit_unit, Category.id_comp]`. Establish `h₂ : η[D₂.toPre.P.A] ≫ toUnit D₂.toPre.P.A = 𝟙 _` using `toUnit_unique _ _`. Rewrite using `[MonObj.comp_mul, h₁, ← Category.assoc, h₂, Category.id_comp, _root_.one_mul]`. Establish `he : eSec D₂.toPre.P.A ≫ (toUnit D₂.toPre.P.A).left = 𝟙 _`. Rewrite using `[eSec, ← Over.comp_left, toUnit_unique (η[D₂.toPre.P.A] ≫ toUnit D₂.toPre.P.A) (𝟙 _)]`.
+
+Both sides reduce to the same expression. Take `⟨w, hw, t, h₁, h₂⟩` from `exists_iso_maps D.toPre.P.isLB D₂.toPre.P.isLB (toUnit D₂.toPre.P.A).left (eSec D₂.toPre.P.A) he _ g.b.left (eSec D.toPre.P.A) hb D₂.toPre.rig D₂.toPre.rig_gen D.toPre.rig D.toPre.rig_gen w₀ hw₀ (jK R) (D₂.toPre.xK 0) (Uniq.xK_zero D₂.toPre) (D₂.toPre.psi 0) (fun y q hq => Uniq.g …`. Use `⟨w, hw, t, h₁, corr_of_val D.toPre.P.isLB fun y J hJ => (h₂ y J hJ).trans ?_⟩` and prove the remaining obligations. Use `Eq.symm ((val_mul hJ _ _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[PsiZero.val_psi_zero D.tau_bimult hJ, val_pull hJ, val_corr hJ g.s_zero, val_one, _root_.mul_one]`.
+-/
 theorem exists_rigidified : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D D₂ : DegData R I) (g : GtPt D.toPre (𝟙_ (Over (Sp R)))) (β : D₂.toPre.P.A ⟶ D.toPre.P.A), IsMonHom β → ∀ w₀ : LB.Iso D₂.toPre.P.L (D.toPre.P.L.pull (padd D.toPre.P.A β (toUnit D₂.toPre.P.A ≫ g.b)).left), w₀.IsGen → ∃ w : LB.Iso D₂.toPre.P.L (LB.LinComb D.toPre.P.L (GlobalTheory.MumCmp.twφ D₂.toPre D.toPre β g.b) GlobalTheory.MumCmp.twε), w.IsGen ∧ ∃ t : LB.Gen (LB.LinComb D.toPre.P.L (fun i => D₂.toPre.xK 0 ≫ GlobalTheory.MumCmp.twφ D₂.toPre D.toPre β g.b i) (fun i => -1 * GlobalTheory.MumCmp.twε i)), GlobalTheory.MumCmp.MapsAtExp D.toPre.P.L D₂.toPre.P.L (GlobalTheory.MumCmp.twφ D₂.toPre D.toPre β g.b) GlobalTheory.MumCmp.twε w (D₂.toPre.xK 0) (-1) (D₂.toPre.psi 0) t ∧ LB.Gen.Corr D.toPre.P.L _ _ _ _ t (LB.mulGen D.toPre.P.L _ _ _ _ (D.toPre.psi 0) (LB.pullGen D.toPre.P.L _ _ (g.s 0) (toUnit (TK R)).left)) := by
   intro R _ _ I D D₂ g β hβ w₀ hw₀
   have hb : eSec D₂.toPre.P.A ≫ (padd D.toPre.P.A β (toUnit D₂.toPre.P.A ≫ g.b)).left = g.b.left := by

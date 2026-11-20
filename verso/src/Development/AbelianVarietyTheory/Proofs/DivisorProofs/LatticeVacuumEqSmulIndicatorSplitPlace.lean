@@ -28,6 +28,21 @@ noncomputable section
 
 namespace GlobalTheory.VacShape
 
+/- English proof (translation)
+Introduce `D a a' Bs Γ X om om' hTr L₁ L₂ θ hθ φ₀ h0 hne hfix huniq`. Take `⟨ι, hι⟩` from `GlobalTheory.T.exists_linearModel_intertwiner_goodSplitPlace Bs Γ X om om' hTr`. Establish `hfSB : ι φ₀ ∈ GlobalTheory.WeilM.SB _` using `hι.bij.mapsTo h0`. Establish `hf0 : ι φ₀ ≠ 0`. Introduce `h`.
+
+Apply `hne` to reduce the goal to its premises. Use `hι.bij.injOn h0 (zero_mem _) ?_` and prove the remaining obligations. Rewrite using `[h, map_zero]`. Establish `hinv : ∀ s ∈ GlobalTheory.VacShape.Sa Bs Γ L₁ L₂, ∀ Y, ι φ₀ (Y + s) = ι φ₀ Y`. Introduce and unpack `_ ⟨u, hu, hu0, rfl⟩ Y`.
+
+Establish `hat` using `(GlobalTheory.LatVac.latAtV_at_stable _ _ _).1 u hu`. Establish `hA` using `hfix u hu`. Rewrite `hA` using `[GlobalTheory.T.traceSymplectic_self_zero_splitSupported Bs Γ X om om' hTr u hat (Or.inl hu0), mul_zero, AddChar.map_zero_eq_one, one_smul]`. Conclude with `(hι.trans u hat hu0 φ₀ h0 φ₀ h0 hA Y).symm`. Establish `hsupp : ∀ Y ∉ GlobalTheory.VacShape.Bd Bs Γ L₁ L₂, ι φ₀ Y = 0`.
+
+Introduce `Y hY`. Simplify using `only [GlobalTheory.VacShape.Bd, Set.mem_setOf_eq, not_forall] at hY`. Take `⟨x, hx, hx0, rfl, u, hu, hu0, hne1⟩` from `hY`. Establish `hat` using `(GlobalTheory.LatVac.latAtV_at_stable _ _ _).1 u hu`. Establish `hB` using `hfix u hu`.
+
+Rewrite `hB` using `[GlobalTheory.T.traceSymplectic_self_zero_splitSupported Bs Γ X om om' hTr u hat (Or.inr hu0), mul_zero, AddChar.map_zero_eq_one, one_smul]`. Establish `hm` using `hι.mult u hat hu0 φ₀ h0 φ₀ h0 hB x hx hx0`. Assume the negation of the conclusion as `h`. Conclude with `hne1 ((mul_eq_right₀ h).mp hm.symm)`. Take `⟨c, hc, hop, hcp⟩` from `GlobalTheory.T.schwartzBruhat_matrices_invariant_supported_eq_smul Bs.v₁ _ _ (GlobalTheory.T.latticePairingTrivialMatrices_sub_mem Bs Γ X om om' hTr L₁ L₂) (ι φ₀) hfSB hf0 hinv hsupp (GlobalTheory.T.schwartzBruhat_invariant_supported_eq_smul_vacuum Bs Γ X om om' hTr L₁ L₂ θ hθ ι …`.
+
+Take `⟨P, Λ, hPΛ⟩` from `GlobalTheory.T.closure_vanishing_lattice_eq_row_lattice_matrices Bs Γ X om om' hTr L₁ L₂ hop hcp`. Use `⟨ι, P, Λ, c, hι, fun Y => ?_⟩` and prove the remaining obligations. Establish `hY` using `congrFun hc Y`. Rewrite `hY` using `[Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hY]`.
+
+Use `congr 1`. Distinguish the cases in `h : Y ∈ closure (GlobalTheory.VacShape.Sa Bs Γ L₁ L₂ : Set _)`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (show P.val * Y ∈ (matLat (Fin a') Λ : Set _) from (hPΛ Y).1 h)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (show P.val * Y ∉ (matLat (Fin a') Λ : Set _) from fun h' => h ((hPΛ Y).2 h'))]`.
+-/
 theorem vacuum_eq_smul_indicator : ∀ {D : D7} {a a' : ℕ} (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig a a')
     (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars D.host.F D.host.E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep D.sp.cm.sig Γ.V Γ.W)
     (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep D.sp.cm.sig Γ.V' Γ.W) (hTr : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple Bs Γ X om om')

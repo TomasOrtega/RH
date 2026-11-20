@@ -11,6 +11,9 @@ section General
 
 variable {R V : Type} [CommRing R] [AddCommGroup V] [Module R V]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_loc {p : Ideal R} {N : Submodule R V} {x : V} :
     x ∈ loc p N ↔ ∃ s : R, s ∉ p ∧ s • x ∈ N := Iff.rfl
 
@@ -31,18 +34,32 @@ def locSub (p : Ideal R) (hp : p.IsPrime) (N : Submodule R V) : Submodule R V wh
     rw [smul_comm s c x]
     exact N.smul_mem c hsx
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_locSub {p : Ideal R} {hp : p.IsPrime} {N : Submodule R V} {x : V} :
     x ∈ locSub p hp N ↔ x ∈ loc p N := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `mem_loc.2 ⟨1, (Ideal.ne_top_iff_one p).1 hp, by simpa using hx⟩`.
+-/
 theorem mem_loc_of_mem {p : Ideal R} (hp : p ≠ ⊤) {N : Submodule R V} {x : V} (hx : x ∈ N) :
     x ∈ loc p N :=
   mem_loc.2 ⟨1, (Ideal.ne_top_iff_one p).1 hp, by simpa using hx⟩
 
+/- English proof (translation)
+Take `⟨s, hs, hsy⟩` from `mem_loc.1 h`. Conclude with `mem_loc.2 ⟨s * u, fun h' => (hp.mem_or_mem h').elim hs hu, by rwa [mul_smul]⟩`.
+-/
 theorem mem_loc_of_smul {p : Ideal R} (hp : p.IsPrime) {N : Submodule R V} {u : R} {y : V}
     (hu : u ∉ p) (h : u • y ∈ loc p N) : y ∈ loc p N := by
   obtain ⟨s, hs, hsy⟩ := mem_loc.1 h
   exact mem_loc.2 ⟨s * u, fun h' => (hp.mem_or_mem h').elim hs hu, by rwa [mul_smul]⟩
 
+/- English proof (translation)
+Set `I : Ideal R` to `N.comap (LinearMap.toSpanSingleton R V x)`. Establish `hI : ∀ r, r ∈ I ↔ r • x ∈ N` using `fun r => by simp [I]`. Distinguish the cases in `htop : I = ⊤`. Establish `h1 : (1 : R) ∈ I` using `by rw [htop]; exact Submodule.mem_top`. Simplify using `using (hI 1).1 h1`.
+
+Take `⟨p, hp, hIp⟩` from `Ideal.exists_le_maximal I htop`. Take `⟨s, hs, hsx⟩` from `mem_loc.1 (h p hp)`. Conclude with `absurd (hIp ((hI s).2 hsx)) hs`.
+-/
 theorem mem_of_forall_loc (N : Submodule R V) (x : V)
     (h : ∀ p : Ideal R, p.IsMaximal → x ∈ loc p N) : x ∈ N := by
   let I : Ideal R := N.comap (LinearMap.toSpanSingleton R V x)
@@ -56,6 +73,13 @@ theorem mem_of_forall_loc (N : Submodule R V) (x : V)
 
 end General
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `insert a T ha ih`. Take `⟨c, hc, hPc⟩` from `ih (fun i hi => hT i (Finset.mem_insert_of_mem hi))`. Take `⟨ca, hca, hPa⟩` from `hT a (Finset.mem_insert_self a T)`.
+
+Use `⟨c * ca, mul_ne_zero hc hca, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Conclude with `hP _ _ _ hPa`. Rewrite using `[mul_comm]`.
+
+Conclude with `hP _ _ _ (hPc i hi)`.
+-/
 theorem commonMult {R ι : Type} [CommRing R] [IsDomain R] (P : ι → R → Prop)
     (hP : ∀ i c d, P i c → P i (d * c)) (T : Finset ι)
     (hT : ∀ i ∈ T, ∃ c : R, c ≠ 0 ∧ P i c) : ∃ c : R, c ≠ 0 ∧ ∀ i ∈ T, P i c := by
@@ -76,10 +100,18 @@ section Frac
 variable {R K V : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
   [AddCommGroup V] [Module K V] [Module R V] [IsScalarTower R K V]
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.general_b_fact_third_bis_other.goal1 .. | (apply Bl.general_b_fact_third_bis_other.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_third_bis_other.goal1 <;> assumption) | (apply @Bl.general_b_fact_third_bis_other.goal1 <;> assumption) | (intros; apply @B …`.
+-/
 theorem exists_smul_mem (N : Submodule R V) {v : V} (hv : v ∈ Submodule.span K (N : Set V)) :
     ∃ c : R, c ≠ 0 ∧ c • v ∈ N := by
   first | exact Bl.general_b_fact_third_bis_other.goal1 .. | (apply Bl.general_b_fact_third_bis_other.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_third_bis_other.goal1 <;> assumption) | (apply @Bl.general_b_fact_third_bis_other.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_third_bis_other.goal1 <;> assumption) | (apply @Bl.general_b_fact_third_bis_other.goal1 <;> first | assumption | infer_instance) | exact @Bl.general_b_fact_third_bis_other.goal1 R K V ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› N v hv | exact @Bl.general_b_fact_third_bis_other.goal1 R K V ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› N v | exact @Bl.general_b_fact_third_bis_other.goal1 R K V ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› N | exact @Bl.general_b_fact_third_bis_other.goal1 R K V ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› | exact @Bl.general_b_fact_third_bis_other.goal1 R K V ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› | exact @Bl.general_b_fact_third_bis_other.goal1 R K V ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› | exact @Bl.general_b_fact_third_bis_other.goal1 R K V ‹_› ‹_› ‹_› ‹_› ‹_› ‹_› | exact @Bl.general_b_fact_third_bis_other.goal1 R K V ‹_› ‹_› ‹_› ‹_› ‹_› | exact @Bl.general_b_fact_third_bis_other.goal1 R K V ‹_› ‹_› ‹_› ‹_› | exact @Bl.general_b_fact_third_bis_other.goal1 R K V ‹_› ‹_› ‹_› | exact @Bl.general_b_fact_third_bis_other.goal1 R K V ‹_› ‹_› | exact @Bl.general_b_fact_third_bis_other.goal1 R K V ‹_› | exact @Bl.general_b_fact_third_bis_other.goal1 R K V | exact @Bl.general_b_fact_third_bis_other.goal1 R K | exact @Bl.general_b_fact_third_bis_other.goal1 R
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `hN`. Take `⟨c, hc, hcs⟩` from `commonMult (fun (g : V) (c : R) => c • g ∈ N') (fun g c d h => by rw [mul_smul]; exact N'.smul_mem d h) s (fun g _ => exists_smul_mem (K := K) N' (by rw [hN']; exact Submodule.mem_top))`. Use `⟨c, hc, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hle : Submodule.span R (s : Set V) ≤ N'.comap (c • LinearMap.id)`. Rewrite using `[Submodule.span_le]`.
+
+Introduce `g hg`. Simplify using `using hcs g hg`. Simplify using `using hle hx`.
+-/
 theorem exists_smul_le {N N' : Submodule R V} (hN : N.FG)
     (hN' : Submodule.span K (N' : Set V) = ⊤) : ∃ c : R, c ≠ 0 ∧ ∀ x ∈ N, c • x ∈ N' := by
   obtain ⟨s, rfl⟩ := hN
@@ -99,6 +131,33 @@ section DedekindLFunctions
 
 variable {R V : Type} [CommRing R] [IsDedekindDomain R] [AddCommGroup V] [Module R V]
 
+/- English proof (translation)
+Distinguish the cases in `hdp : d ∈ p`. Use `swap`. Conclude with `⟨d, hdp, hdx⟩`. Establish `hpbot : p ≠ ⊥` using `fun h => hd (by rw [h] at hdp; simpa using hdp)`. Establish `hnf : ¬ IsField R`.
+
+Rewrite using `[Ring.not_isField_iff_exists_ideal_bot_lt_and_lt_top]`. Conclude with `⟨p, bot_lt_iff_ne_bot.2 hpbot, lt_top_iff_ne_top.2 hp.ne_top⟩`. Set `I : Ideal R` to `L.comap (LinearMap.toSpanSingleton R V x)`. Establish `hI : ∀ r, r ∈ I ↔ r • x ∈ L` using `fun r => by simp [I]`. Establish `hI0 : I ≠ ⊥`.
+
+Introduce `h`. Establish `h1` using `(hI d).2 hdx`. Rewrite `h1` using `[h]`. Conclude with `hd (by simpa using h1)`. Take `⟨Z, hZle, hZne⟩` from `PrimeSpectrum.exists_primeSpectrum_prod_le_and_ne_bot_of_domain hnf hI0`.
+
+Establish `key : ∀ Y : Multiset (Ideal R), (∀ P ∈ Y, P.IsPrime ∧ P ≠ ⊥) → ∀ y ∈ W p, (∀ r ∈ Y.prod, r • y ∈ L) → ∃ s : R, s ∉ p ∧ s • y ∈ L`. Introduce `Y`. Proceed by induction on `Y using Multiset.induction_on with`. Consider the case `empty`. Introduce `_ y _ hy`.
+
+Use `⟨1, (Ideal.ne_top_iff_one p).1 hp.ne_top, hy 1 ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Consider the case `cons P Y ih`. Introduce `hPY y hyp hy`. Establish `hP` using `hPY P (Multiset.mem_cons.2 (Or.inl rfl))`.
+
+Establish `hPmax : P.IsMaximal` using `Ring.DimensionLEOne.maximalOfPrime hP.2 hP.1`. Establish `hY' : ∀ Q ∈ Y, Q.IsPrime ∧ Q ≠ ⊥` using `fun Q hQ => hPY Q (Multiset.mem_cons.2 (Or.inr hQ))`. Rewrite `hy` using `[Multiset.prod_cons]`. Distinguish the cases in `hPp : P = p`. Apply `ih hY' y hyp` to reduce the goal to its premises.
+
+Introduce `r hr`. Rewrite using `[hL]`. Introduce `q hq`. Distinguish the cases in `hqp : q = p`. Rewrite using `[hqp]`.
+
+Conclude with `hWsmul p hp r y hyp`. Choose the witnesses or unpack the hypotheses as in `⟨t, htP, htq⟩ : ∃ t ∈ P, t ∉ q := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hqp ((hPmax.eq_of_le hq.ne_top (fun t ht => h t ht)).symm.trans hPp)`.
+
+Establish `h1` using `(hL _).1 (hy (t * r) (Ideal.mul_mem_mul htP hr)) q hq`. Rewrite `h1` using `[mul_smul]`. Conclude with `hWsat q hq t _ htq h1`. Choose the witnesses or unpack the hypotheses as in `⟨a, haP, hap⟩ : ∃ a ∈ P, a ∉ p := by`. Assume the negation of the conclusion as `h`.
+
+Use `push Not at h`. Conclude with `hPp (hPmax.eq_of_le hp.ne_top (fun t ht => h t ht))`. Take `⟨s, hs, hsy⟩` from `ih hY' (a • y) (hWsmul p hp a y hyp) (fun r hr => by`. Establish `h1` using `hy (a * r) (Ideal.mul_mem_mul haP hr)`. Rewrite using `[mul_comm, mul_smul] at h1)` and apply the resulting hypothesis.
+
+Use `⟨s * a, fun h => (hp.isPrime.mem_or_mem h).elim hs hap, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul]` and apply the resulting hypothesis. Apply `key (Z.map PrimeSpectrum.asIdeal) _ x hx` to reduce the goal to its premises. Introduce `r hr`. Conclude with `(hI r).1 (hZle hr)`.
+
+Introduce `P hP`. Take `⟨P', _, rfl⟩` from `Multiset.mem_map.1 hP`. Use `⟨P'.isPrime, fun h => hZne ?_⟩` and prove the remaining obligations. Establish `h0 : (0 : Ideal R) ∈ Z.map PrimeSpectrum.asIdeal`. Rewrite using `[Ideal.zero_eq_bot, ← h]`.
+
+Conclude with `hP`. Rewrite using `[← Ideal.zero_eq_bot]`. Conclude with `Multiset.prod_eq_zero h0`.
+-/
 theorem exists_smul_mem_of_local (W : Ideal R → Set V) (L : Submodule R V)
     (hL : ∀ y, y ∈ L ↔ ∀ q : Ideal R, q.IsMaximal → y ∈ W q)
     (hWsmul : ∀ q : Ideal R, q.IsMaximal → ∀ (r : R) (y : V), y ∈ W q → r • y ∈ W q)
@@ -176,6 +235,47 @@ section Main
 variable {R K V : Type} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K]
   [IsFractionRing R K] [AddCommGroup V] [Module K V] [Module R V] [IsScalarTower R K V]
 
+/- English proof (translation)
+Take `⟨hL0fg, hL0sp⟩` from `hL0`. Use `choose! N hNfull hMN using hM`. Establish `hMsmul : ∀ q : Ideal R, q.IsMaximal → ∀ (r : R) (y : V), y ∈ M q → r • y ∈ M q`. Introduce `q hq r y hy`. Rewrite `hy`, the goal using `[hMN q hq]`.
+
+Conclude with `mem_locSub.1 ((locSub q hq.isPrime (N q)).smul_mem r (mem_locSub.2 hy))`. Establish `hMsat : ∀ q : Ideal R, q.IsMaximal → ∀ (u : R) (y : V), u ∉ q → u • y ∈ M q → y ∈ M q`. Introduce `q hq u y hu h`. Rewrite `h`, the goal using `[hMN q hq]`. Conclude with `mem_loc_of_smul hq.isPrime hu h`.
+
+Set `L : Submodule R V` to `⨅ q : {q : Ideal R // q.IsMaximal}, locSub q.1 q.2.isPrime (N q.1)`. Establish `hL : ∀ x, x ∈ L ↔ ∀ q : Ideal R, q.IsMaximal → x ∈ M q`. Introduce `x`. Simplify using `only [L, Submodule.mem_iInf, mem_locSub]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h q hq`. Rewrite using `[hMN q hq]`. Conclude with `h ⟨q, hq⟩`. Introduce `h q`. Rewrite using `[← hMN q.1 q.2]`.
+
+Conclude with `h q.1 q.2`. Take `⟨c1, hc1, hc1N⟩` from `commonMult (fun (q : Ideal R) (c : R) => ∀ y ∈ N q, c • y ∈ L0) (fun q c d h y hy => by rw [mul_smul]; exact L0.smul_mem d (h y hy)) hfin.toFinset (fun q hq => by`. Establish `hq' : q.IsMaximal ∧ M q ≠ loc q L0` using `(Set.Finite.mem_toFinset hfin).1 hq`. Take `⟨hfg, _⟩` from `hNfull q hq'.1`. Conclude with `exists_smul_le (K := K) hfg hL0sp)`.
+
+Take `⟨c2, hc2, hc2N⟩` from `commonMult (fun (q : Ideal R) (c : R) => ∀ y ∈ L0, c • y ∈ N q) (fun q c d h y hy => by rw [mul_smul]; exact (N q).smul_mem d (h y hy)) hfin.toFinset (fun q hq => by`. Establish `hq' : q.IsMaximal ∧ M q ≠ loc q L0` using `(Set.Finite.mem_toFinset hfin).1 hq`. Take `⟨_, hsp⟩` from `hNfull q hq'.1`. Conclude with `exists_smul_le (K := K) hL0fg hsp)`. Establish `hLc1 : ∀ x ∈ L, c1 • x ∈ L0`.
+
+Introduce `x hx`. Apply `mem_of_forall_loc` to reduce the goal to its premises. Introduce `q hq`. Establish `hxq` using `(hL x).1 hx q hq`. Distinguish the cases in `hqS : M q = loc q L0`.
+
+Rewrite `hxq` using `[hqS]`. Conclude with `mem_locSub.1 ((locSub q hq.isPrime L0).smul_mem c1 (mem_locSub.2 hxq))`. Rewrite `hxq` using `[hMN q hq]`. Take `⟨s, hs, hsx⟩` from `mem_loc.1 hxq`. Use `mem_loc.2 ⟨s, hs, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_comm]`. Conclude with `hc1N q ((Set.Finite.mem_toFinset hfin).2 ⟨hq, hqS⟩) _ hsx`. Establish `hLc2 : ∀ y ∈ L0, c2 • y ∈ L`. Introduce `y hy`. Rewrite using `[hL]`.
+
+Introduce `q hq`. Distinguish the cases in `hqS : M q = loc q L0`. Rewrite using `[hqS]`. Conclude with `mem_loc_of_mem hq.ne_top (L0.smul_mem c2 hy)`. Rewrite using `[hMN q hq]`.
+
+Conclude with `mem_loc_of_mem hq.ne_top (hc2N q ((Set.Finite.mem_toFinset hfin).2 ⟨hq, hqS⟩) y hy)`. Establish `hLfg : L.FG`. Set `f : V →ₗ[R] V` to `c1 • LinearMap.id`. Establish `hK1 : algebraMap R K c1 ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R K)).2 hc1`. Establish `hf : Function.Injective f` using `fun v w h => by`.
+
+Establish `h' : c1 • v = c1 • w` using `by simpa only [f, LinearMap.smul_apply, LinearMap.id_apply] using h`. Establish `h'' : algebraMap R K c1 • v = algebraMap R K c1 • w`. Rewrite using `[algebraMap_smul, algebraMap_smul]`. Conclude with `h'`. Conclude with `(smul_right_inj hK1).1 h''`.
+
+Use `Submodule.fg_of_fg_map_injective (f := f) hf ?_` and prove the remaining obligations. Use `Submodule.FG.of_le hL0fg ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Simplify `hLc1 x hx` using `[f]`. Establish `hLspan : Submodule.span K (L : Set V) = ⊤`.
+
+Rewrite using `[eq_top_iff, ← hL0sp, Submodule.span_le]`. Introduce `y hy`. Establish `hK : algebraMap R K c2 ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R K)).2 hc2`. Establish `h1 : c2 • y ∈ Submodule.span K (L : Set V)` using `Submodule.subset_span (hLc2 y hy)`. Establish `h2` using `Submodule.smul_mem _ (algebraMap R K c2)⁻¹ h1`.
+
+Rewrite `h2` using `[← algebraMap_smul K c2 y, inv_smul_smul₀ hK]`. Then use the resulting hypothesis. Establish `hLfull : IsFullLat K L`. Unfold `IsFullLat`. Conclude with `⟨hLfg, hLspan⟩`. Establish `hloc : ∀ p : Ideal R, p.IsMaximal → loc p L = M p`.
+
+Introduce `p hp`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨s, hs, hsx⟩` from `mem_loc.1 hx`.
+
+Conclude with `hMsat p hp s x hs ((hL _).1 hsx p hp)`. Introduce `hx`. Take `⟨d, hd, hdx⟩` from `exists_smul_mem (K := K) L (v := x) (by rw [hLspan]; exact Submodule.mem_top)`. Take `⟨s, hs, hsx⟩` from `exists_smul_mem_of_local M L hL hMsmul hMsat hp hx hd hdx`. Conclude with `mem_loc.2 ⟨s, hs, hsx⟩`.
+
+Use `ExistsUnique.intro L ⟨hLfull, hloc⟩ ?_` and prove the remaining obligations. Introduce and unpack `L' ⟨_, hloc'⟩`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Rewrite using `[hL]`. Introduce `q hq`. Rewrite using `[← hloc' q hq]`. Conclude with `mem_loc_of_mem hq.ne_top hx`. Introduce `hx`.
+
+Apply `mem_of_forall_loc L' x` to reduce the goal to its premises. Introduce `q hq`. Rewrite using `[hloc' q hq]`. Conclude with `(hL x).1 hx q hq`.
+-/
 theorem exists_unique_lat (L0 : Submodule R V) (hL0 : IsFullLat K L0) (M : Ideal R → Set V)
     (hM : ∀ p : Ideal R, p.IsMaximal → ∃ N : Submodule R V, IsFullLat K N ∧ M p = loc p N)
     (hfin : Set.Finite {p : Ideal R | p.IsMaximal ∧ M p ≠ loc p L0}) :
@@ -286,6 +386,9 @@ theorem exists_unique_lat (L0 : Submodule R V) (hL0 : IsFullLat K L0) (M : Ideal
 
 end Main
 
+/- English proof (translation)
+Introduce `R K V _ _ _ _ _ _ _ _ _ _ L0 hL0 M hM hfin`. Conclude with `exists_unique_lat L0 hL0 M hM hfin`.
+-/
 theorem latLocGlob_core : LatLocGlob := by
   intro R K V _ _ _ _ _ _ _ _ _ _ L0 hL0 M hM hfin
   exact exists_unique_lat L0 hL0 M hM hfin

@@ -11,6 +11,9 @@ open scoped NumberField.AdeleRing ValuativeRel
 
 namespace GlobalTheory.CompanionTheory.WS
 
+/- English proof (translation)
+Establish `h0 : ord (t : F) = 0` using `mem_unitFiltrationUnits_zero_iff_ord.1 ht`. Distinguish the cases in `hy : y = 0`. Simplify using `[hy]`. Rewrite using `[mem_valBall_iff_le_ord (mul_ne_zero t.ne_zero hy), mem_valBall_iff_le_ord hy, ord_mul t.ne_zero hy, h0, zero_add]`.
+-/
 theorem unit_mul_mem_valBall_iff {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] (n : ℤ) (t : Fˣ) (ht : t ∈ unitFiltrationUnits F 0) (y : F) :
     (t : F) * y ∈ valBall F n ↔ y ∈ valBall F n := by
@@ -20,6 +23,15 @@ theorem unit_mul_mem_valBall_iff {F : Type} [Field F] [ValuativeRel F] [Topologi
   rw [mem_valBall_iff_le_ord (mul_ne_zero t.ne_zero hy), mem_valBall_iff_le_ord hy,
     ord_mul t.ne_zero hy, h0, zero_add]
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ n x t ht`. Establish `hti : t⁻¹ ∈ unitFiltrationUnits F 0` using `inv_mem ht`. Establish `hc : ∀ a b : F, a - (t : F) * b ∈ valBall F n ↔ ((t⁻¹ : Fˣ) : F) * a - b ∈ valBall F n`. Introduce `a b`. Establish `e : ((t⁻¹ : Fˣ) : F) * (a - (t : F) * b) = ((t⁻¹ : Fˣ) : F) * a - b`.
+
+Rewrite using `[mul_sub, ← mul_assoc, Units.inv_mul, one_mul]`. Rewrite using `[← e, unit_mul_mem_valBall_iff n t⁻¹ hti]`. Establish `hs : ∀ v : F × F, v - (t : F) • x ∈ Ln F n ↔ ((t⁻¹ : Fˣ) : F) • v - x ∈ Ln F n`. Introduce `v`. Simplify using `only [Ln, Set.mem_ofPred_eq, Prod.fst_sub, Prod.snd_sub, Prod.smul_fst, Prod.smul_snd, smul_eq_mul, hc]`.
+
+Use function extensionality and compare the values at `v`. Establish `hm : v ∈ {w : F × F | w - (t : F) • x ∈ Ln F n} ↔ ((t⁻¹ : Fˣ) : F) • v ∈ {w : F × F | w - x ∈ Ln F n}` using `hs v`. Unfold `cosetInd`. Distinguish the cases in `h : v ∈ {w : F × F | w - (t : F) • x ∈ Ln F n}`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (hm.1 h)]`.
+
+Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (fun h' => h (hm.2 h'))]`.
+-/
 theorem cosetInd_unit_smul : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (n : ℤ) (x : F × F) (t : Fˣ),
     t ∈ unitFiltrationUnits F 0 →

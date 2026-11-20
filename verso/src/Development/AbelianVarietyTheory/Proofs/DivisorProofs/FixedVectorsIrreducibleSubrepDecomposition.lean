@@ -4,6 +4,19 @@ open Submodule
 
 namespace GlobalTheory.AbsDec
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `Submodule.exists_isCompl (⨆ i, t i)`. Establish `hcompl : ∀ i, IsCompl (t i) ((⨆ (j) (_ : j ≠ i), t j) ⊔ C)`. Introduce `i`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`.
+
+Introduce `x hx hx'`. Take `⟨q, hq, c, hc, rfl⟩` from `Submodule.mem_sup.1 hx'`. Establish `hcQ : c ∈ ⨆ i, t i`. Establish `h1 : q + c ∈ ⨆ i, t i` using `Submodule.mem_iSup_of_mem i hx`. Establish `h2 : q ∈ ⨆ i, t i` using `(iSup₂_le fun j _ => le_iSup t j : (⨆ (j) (_ : j ≠ i), t j) ≤ ⨆ i, t i) hq`.
+
+Simplify using `using Submodule.sub_mem _ h1 h2`. Establish `hc0 : c = 0` using `(Submodule.disjoint_def.1 hC.disjoint) c hcQ hc`. Substitute `hc0` using the available equality. Rewrite `hx`, the goal using `[add_zero]`. Conclude with `(Submodule.disjoint_def.1 ((iSupIndep_def.1 ht) i)) q hx hq`.
+
+Rewrite using `[codisjoint_iff, eq_top_iff, ← hC.sup_eq_top]`. Use `sup_le (iSup_le fun j => ?_) (le_sup_of_le_right le_sup_right)` and prove the remaining obligations. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Conclude with `le_sup_left`.
+
+Conclude with `le_sup_of_le_right (le_sup_of_le_left (le_iSup₂_of_le j h le_rfl))`. Use `⟨fun i => (t i).subtype ∘ₗ Submodule.linearProjOfIsCompl _ _ (hcompl i), fun i v => ?_, fun i j v hv => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Conclude with `congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left (hcompl i) ⟨v, hv⟩)`. Establish `hv' : v ∈ (⨆ (k) (_ : k ≠ i), t k) ⊔ C` using `Submodule.mem_sup_left (Submodule.mem_iSup_of_mem j (Submodule.mem_iSup_of_mem (Ne.symm h) hv))`. Use `Submodule.linearProjOfIsCompl_apply_right (hcompl i) ⟨v, hv'⟩` as an intermediate fact. Conclude with `congrArg Subtype.val this`.
+-/
 theorem exists_proj {V : Type} [AddCommGroup V] [Module ℂ V] {ι : Type} [Fintype ι]
     [DecidableEq ι] (t : ι → Submodule ℂ V) (ht : iSupIndep t) :
     ∃ T : ι → V →ₗ[ℂ] V, (∀ i v, T i v ∈ t i) ∧
@@ -40,6 +53,9 @@ theorem exists_proj {V : Type} [AddCommGroup V] [Module ℂ V] {ι : Type} [Fint
       have := Submodule.linearProjOfIsCompl_apply_right (hcompl i) ⟨v, hv'⟩
       exact congrArg Subtype.val this
 
+/- English proof (translation)
+Use `Submodule.iSup_induction t (motive := fun v => ∑ i, T i v = v) hv (fun j x hx => ?_) (by simp) (fun x y hx hy => ?_)` and prove the remaining obligations. Simplify using `[hT _ j x hx]`. Simplify using `only [map_add, Finset.sum_add_distrib, hx, hy]`.
+-/
 theorem sum_proj {V : Type} [AddCommGroup V] [Module ℂ V] {ι : Type} [Fintype ι]
     [DecidableEq ι] (t : ι → Submodule ℂ V) (T : ι → V →ₗ[ℂ] V)
     (hT : ∀ i j, ∀ v ∈ t j, T i v = if i = j then v else 0) {v : V} (hv : v ∈ ⨆ i, t i) :
@@ -49,6 +65,9 @@ theorem sum_proj {V : Type} [AddCommGroup V] [Module ℂ V] {ι : Type} [Fintype
   · simp [hT _ j x hx]
   · simp only [map_add, Finset.sum_add_distrib, hx, hy]
 
+/- English proof (translation)
+Use `Submodule.iSup_induction t (motive := fun v => T i (ρ g v) = ρ g (T i v)) hv (fun j x hx => ?_) (by simp) (fun x y hx hy => ?_)` and prove the remaining obligations. Apply the tactic sequence `rw [hT i j _ (hst j g x hx), hT i j x hx] split_ifs <;> simp`. Simplify using `only [map_add, hx, hy]`.
+-/
 theorem proj_comm {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) {ι : Type} [Fintype ι] [DecidableEq ι]
     (t : ι → Submodule ℂ V) (T : ι → V →ₗ[ℂ] V)
@@ -65,6 +84,43 @@ end GlobalTheory.AbsDec
 
 namespace GlobalTheory.AbsDec
 
+/- English proof (translation)
+Introduce `G V _ _ _ ρ K F hF 𝒜 h𝒜 hfd`. Set `good : Finset (Submodule ℂ V) → Prop` to `fun s => (∀ P ∈ s, P ∈ 𝒜 ∧ P ⊓ F ≠ ⊥) ∧ s.SupIndep id`. Establish `bound : ∀ s, good s → s.card ≤ Module.finrank ℂ (⨆ P ∈ 𝒜, P ⊓ F : Submodule ℂ V)`. Introduce `s hs`. Establish `hv : ∀ P : s, ∃ v, v ∈ (P : Submodule ℂ V) ⊓ F ∧ v ≠ 0` using `fun P => Submodule.exists_mem_ne_zero_of_ne_bot (hs.1 P P.2).2`.
+
+Use `choose v hv0 hvne using hv`. Establish `hind : iSupIndep (fun P : s => (P : Submodule ℂ V) ⊓ F)` using `((iSupIndep_comp_coe_iff_supIndep (f := id)).2 hs.2).mono fun P => inf_le_left`. Establish `hli : LinearIndependent ℂ v` using `hind.linearIndependent _ hv0 hvne`. Establish `hvM : ∀ P : s, v P ∈ (⨆ P ∈ 𝒜, P ⊓ F : Submodule ℂ V)` using `fun P => (le_iSup₂_of_le (f := fun (Q : Submodule ℂ V) (_ : Q ∈ 𝒜) => Q ⊓ F) (P : Submodule ℂ V) (hs.1 P P.2).1 le_rfl) (hv0 P)`. Establish `hli' : LinearIndependent ℂ (fun P : s => (⟨v P, hvM P⟩ : (⨆ P ∈ 𝒜, P ⊓ F : Submodule ℂ V)))` using `LinearIndependent.of_comp (Submodule.subtype _) hli`.
+
+Simplify using `using hli'.fintype_card_le_finrank`. Establish `h0 : ∃ s, good s ∧ s.card = 0` using `⟨∅, ⟨by simp, Finset.supIndep_empty _⟩, rfl⟩`. Take `⟨s, hs, hsN⟩` from `Nat.findGreatest_spec (P := fun n => ∃ s, good s ∧ s.card = n) (Nat.zero_le (Module.finrank ℂ (⨆ P ∈ 𝒜, P ⊓ F : Submodule ℂ V))) h0`. Establish `hmax : ∀ s', good s' → s'.card ≤ s.card`. Introduce `s' hs'`.
+
+Rewrite using `[hsN]`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Conclude with `Nat.findGreatest_is_greatest hlt (bound s' hs') ⟨s', hs', rfl⟩`. Establish `hQ : ∀ g, ∀ v ∈ ⨆ P : s, (P : Submodule ℂ V), ρ g v ∈ ⨆ P : s, (P : Submodule ℂ V)`.
+
+Introduce `g v hv`. Establish `: (⨆ P : s, (P : Submodule ℂ V)) ≤ (⨆ P : s, (P : Submodule ℂ V)).comap (ρ g)` using `iSup_le fun P w hw => Submodule.mem_iSup_of_mem P ((h𝒜 P (hs.1 P P.2).1).2.1 g w hw)`. Conclude with `this hv`. Establish `hsup : s.sup id = ⨆ P : s, (P : Submodule ℂ V)`. Rewrite using `[Finset.sup_eq_iSup, iSup_subtype']`.
+
+Both sides reduce to the same expression. Establish `hcover : ∀ P ∈ 𝒜, P ⊓ F ≠ ⊥ → P ≤ ⨆ Q : s, (Q : Submodule ℂ V)`. Introduce `P hP hPF`. Take `⟨hne, hst, hirr⟩` from `h𝒜 P hP`. Break down `hirr (P ⊓ ⨆ Q : s, (Q : Submodule ℂ V)) inf_le_left (fun g v hv => ⟨hst g v hv.1, hQ g v hv.2⟩) with h | h` into its components or cases.
+
+It suffices to derive a contradiction. Establish `hPs : P ∉ s`. Introduce `hPs`. Establish `hle : P ≤ P ⊓ ⨆ Q : s, (Q : Submodule ℂ V)` using `le_inf le_rfl (le_iSup_of_le (⟨P, hPs⟩ : s) le_rfl)`. Rewrite `hle` using `[h]`.
+
+Conclude with `hne (eq_bot_iff.2 hle)`. Establish `hgood : good (insert P s)`. Use `⟨fun R hR => ?_, hs.2.insert ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hR with rfl | hR` into its components or cases. Conclude with `⟨hP, hPF⟩`.
+
+Conclude with `hs.1 R hR`. Rewrite using `[hsup, disjoint_iff]`. Conclude with `h`. Use `hmax _ hgood` as an intermediate fact. Rewrite `this` using `[Finset.card_insert_of_notMem hPs]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[← h]`. Conclude with `inf_le_right`. Establish `hind : iSupIndep (fun P : s => (P : Submodule ℂ V))` using `(iSupIndep_comp_coe_iff_supIndep (f := id)).2 hs.2`. Take `⟨T, hTmem, hT⟩` from `exists_proj (fun P : s => (P : Submodule ℂ V)) hind`.
+
+Establish `hst' : ∀ (j : s) g, ∀ v ∈ (j : Submodule ℂ V), ρ g v ∈ (j : Submodule ℂ V)` using `fun j => (h𝒜 j (hs.1 j j.2).1).2.1`. Use `⟨s, inferInstance, fun P => P, fun i => hs.1 i i.2, hind.mono fun i => inf_le_left, ?_, ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `iSup_le fun i => le_iSup₂_of_le (f := fun (Q : Submodule ℂ V) (_ : Q ∈ 𝒜) => Q ⊓ F) (i : Submodule ℂ V) (hs.1 i i.2).1 le_rfl`. Use `iSup₂_le fun P hP => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hPF : P ⊓ F = ⊥`. Rewrite using `[hPF]`. Conclude with `bot_le`. Introduce `φ hφ`. Establish `hφQ` using `hcover P hP hPF hφ.1`.
+
+Rewrite using `[← sum_proj _ T hT hφQ]`. Use `Submodule.sum_mem _ fun i _ => Submodule.mem_iSup_of_mem i ⟨hTmem i φ, ?_⟩` and prove the remaining obligations. Use `(hF _).2 fun k hk => ?_` and prove the remaining obligations. Rewrite using `[← proj_comm ρ _ T hT hst' i k hφQ, (hF φ).1 hφ.2 k hk]`. Introduce `P hP hPF`.
+
+Take `⟨hne, hst, hirr⟩` from `h𝒜 P hP`. Establish `hPQ` using `hcover P hP hPF`. Establish `hex : ∃ i, ∀ v ∈ P, T i v = 0 → v = 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+
+Establish `hall : ∀ i, ∀ v ∈ P, T i v = 0`. Introduce `i`. Take `⟨w, hwP, hw0, hwne⟩` from `hcon i`. Break down `hirr (P ⊓ LinearMap.ker (T i)) inf_le_left (fun g v hv => ⟨hst g v hv.1, LinearMap.mem_ker.2 (by` into its components or cases. Rewrite using `[proj_comm ρ _ T hT hst' i g (hPQ hv.1), LinearMap.mem_ker.1 hv.2, map_zero])⟩)`.
+
+Use `with h | h`. Conclude with `absurd ((Submodule.eq_bot_iff _).1 h w ⟨hwP, hw0⟩) hwne`. Introduce `v hv`. Establish `hv' : v ∈ P ⊓ LinearMap.ker (T i)` using `by rw [h]; exact hv`. Conclude with `hv'.2`.
+
+Take `⟨v, hv, hvne⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Apply `hvne` to reduce the goal to its premises. Rewrite using `[← sum_proj _ T hT (hPQ hv)]`. Conclude with `Finset.sum_eq_zero fun i _ => hall i v hv`. Take `⟨i, hi⟩` from `hex`.
+
+Conclude with `⟨i, T i, fun v _ => hTmem i v, hi, fun g v hv => proj_comm ρ _ T hT hst' i g (hPQ hv)⟩`.
+-/
 theorem fixed_decomposition : ∀ {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (K : Set G) (F : Submodule ℂ V), (∀ v, v ∈ F ↔ ∀ k ∈ K, ρ k v = v) → ∀ 𝒜 : Set (Submodule ℂ V), (∀ P ∈ 𝒜, P ≠ ⊥ ∧ (∀ g, ∀ v ∈ P, ρ g v ∈ P) ∧ ∀ W : Submodule ℂ V, W ≤ P → (∀ g, ∀ v ∈ W, ρ g v ∈ W) → W = ⊥ ∨ W = P) → FiniteDimensional ℂ ((⨆ P ∈ 𝒜, P ⊓ F : Submodule ℂ V)) → ∃ (ι : Type) (_ : Fintype ι) (π : ι → Submodule ℂ V), (∀ i, π i ∈ 𝒜 ∧ π i ⊓ F ≠ ⊥) ∧ iSupIndep (fun i => π i ⊓ F) ∧ (⨆ i, π i ⊓ F) = (⨆ P ∈ 𝒜, P ⊓ F) ∧ ∀ P ∈ 𝒜, P ⊓ F ≠ ⊥ → ∃ i, ∃ T : V →ₗ[ℂ] V, (∀ v ∈ P, T v ∈ π i) ∧ (∀ v ∈ P, T v = 0 → v = 0) ∧ ∀ g, ∀ v ∈ P, T (ρ g v) = ρ g (T v) := by
   intro G V _ _ _ ρ K F hF 𝒜 h𝒜 hfd
   classical

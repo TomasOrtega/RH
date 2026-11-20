@@ -4,6 +4,23 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hI`. Take `⟨N, hN⟩` from `(c.isEval n).2 1`. Set `S : Finset (Fin d →₀ ℕ)` to `Finset.Iic (Finsupp.equivFunOnFinite.symm fun _ => N)`. Set `h₁ : MvPowerSeries (Fin d) O` to `∑ α ∈ S, monomial α (coeff α h)`. Establish `hmon : ∀ α, (monomial α (coeff α h) : MvPowerSeries (Fin d) O) = coeff α h • monomial α (1 : O)`.
+
+Introduce `α`. Use extensionality with `β`. Simplify using `only [coeff_monomial, coeff_smul]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hcoeff : ∀ β ∈ S, coeff β h₁ = coeff β h`.
+
+Introduce `β hβ`. Simplify using `only [h₁, map_sum, coeff_monomial]`. Rewrite using `[Finset.sum_eq_single_of_mem β hβ]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Simplify using `[Ne.symm hb]`. Establish `h₂ : (p : G.A n) ^ 1 ∣ c.ev n (h - h₁)`. Apply `hN` to reduce the goal to its premises. Introduce `β hβ`. Establish `hmem : β ∈ S`.
+
+Simplify using `only [S, Finset.mem_Iic]`. Introduce `i`. Use `show β i ≤ N`. Establish `: β i ≤ β.degree`. Distinguish the cases in `h0 : β i = 0`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[Finsupp.degree]`. Conclude with `Finset.single_le_sum (f := fun j => β j) (fun _ _ => Nat.zero_le _) (by simpa using h0)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[map_sub, hcoeff β hmem, sub_self]`.
+
+Take `⟨b, hb⟩` from `h₂`. Use `⟨c.ev n h₁, ?_, b, ?_⟩` and prove the remaining obligations. Simplify using `only [h₁, map_sum]`. Use `Submodule.sum_mem _ fun α _ => ?_` and prove the remaining obligations. Rewrite using `[hmon, map_smul]`.
+
+Conclude with `Submodule.smul_mem_smul (hI α) Submodule.mem_top`. Rewrite `hb` using `[map_sub, pow_one]`. Rewrite using `[← hb]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Chart.ev_mem_ideal_smul_add_p (p : ℕ) (O : Type) [CommRing O] (G : PDivGroup p O) (d : ℕ)
     (c : QLog.Chart G d) (n : ℕ) (I : Ideal O) (h : MvPowerSeries (Fin d) O) :
     (∀ α, coeff α h ∈ I) → ∃ a ∈ I • (⊤ : Submodule O (G.A n)), ∃ b : G.A n,

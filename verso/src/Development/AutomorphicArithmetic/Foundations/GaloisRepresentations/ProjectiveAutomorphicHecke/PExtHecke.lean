@@ -9,11 +9,19 @@ open GlobalTheory.LKDef.HeckeTraceForms
 
 variable {H A : Type} [Group H] [Group A]
 
+/- English proof (translation)
+Rewrite using `[← finsum_mem_range hm, ← finsum_mem_inter_support, Set.inter_eq_right.2 hs, finsum_mem_support]`.
+-/
 private theorem finsum_comp_inj {α β M : Type*} [AddCommMonoid M] {m : α → β}
     (hm : Function.Injective m) (f : β → M) (hs : Function.support f ⊆ Set.range m) :
     ∑ᶠ b, f b = ∑ᶠ a, f (m a) := by
   rw [← finsum_mem_range hm, ← finsum_mem_inter_support, Set.inter_eq_right.2 hs, finsum_mem_support]
 
+/- English proof (translation)
+Introduce `a b hab`. Establish `h1 : ((a.out : H) * w)⁻¹ * ((b.out : H) * w) ∈ K` using `QuotientGroup.eq.1 hab`. Establish `e : ((a.out : H) * w)⁻¹ * ((b.out : H) * w) = (a.out : H)⁻¹ * (b.out : H)`. Rewrite using `[← hw (a.out : H), ← hw (b.out : H)]`. Use `group`.
+
+Rewrite `h1` using `[e]`. Establish `h2 : (a.out)⁻¹ * b.out ∈ K.subgroupOf c.ker` using `Subgroup.mem_subgroupOf.2 (by simpa using h1)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem mk_injective (c : H →* A) (K : Subgroup H) {w : H} (hw : ∀ g, w * g = g * w) :
     Function.Injective (fun q : c.ker ⧸ K.subgroupOf c.ker =>
       (QuotientGroup.mk ((q.out : H) * w) : H ⧸ K)) := by
@@ -27,11 +35,21 @@ private theorem mk_injective (c : H →* A) (K : Subgroup H) {w : H} (hw : ∀ g
     _ = QuotientGroup.mk b.out := QuotientGroup.eq.2 h2
     _ = b := QuotientGroup.out_eq' b
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K x`. Rewrite using `[hk]`. Conclude with `hG k k.2 x`.
+-/
 private theorem out_inv {X : Type*} (K : Subgroup H) {G : H → X} (hG : ∀ k ∈ K, ∀ g, G (g * k) = G g)
     (x : H) : G ((QuotientGroup.mk x : H ⧸ K).out) = G x := by
   obtain ⟨k, hk⟩ := QuotientGroup.mk_out_eq_mul K x
   rw [hk]; exact hG k k.2 x
 
+/- English proof (translation)
+Take `⟨u, k, hu, hk, e⟩` from `hsup _ hh`. Establish `huk : u ∈ c.ker` using `MonoidHom.mem_ker.2 hu`. Take `⟨k', hk'⟩` from `QuotientGroup.mk_out_eq_mul (K.subgroupOf c.ker) (⟨u, huk⟩ : c.ker)`. Use `⟨QuotientGroup.mk ⟨u, huk⟩, ?_⟩` and prove the remaining obligations. Establish `e1 : (((QuotientGroup.mk ⟨u, huk⟩ : c.ker ⧸ K.subgroupOf c.ker).out : c.ker) : H) = u * ((k' : c.ker) : H)`.
+
+Rewrite using `[hk']`. Both sides reduce to the same expression. Establish `e2 : h = (QuotientGroup.mk (u * w) : H ⧸ K)`. Combine the equalities or inequalities in the displayed calculation. Establish `e3 : u * ((k' : c.ker) : H) * w = u * w * ((k' : c.ker) : H)`.
+
+Rewrite using `[mul_assoc, ← hw, mul_assoc]`. Use `show (QuotientGroup.mk (((QuotientGroup.mk ⟨u, huk⟩ : c.ker ⧸ K.subgroupOf c.ker).out : H) * w) : H ⧸ K) = h`. Rewrite using `[e1, e3, e2]`. Conclude with `QuotientGroup.mk_mul_of_mem _ (Subgroup.mem_subgroupOf.1 k'.2)`.
+-/
 private theorem mem_range_mk (c : H →* A) (K : Subgroup H) {w : H} (hw : ∀ g, w * g = g * w) {F : H → ℂ}
     (hsup : ∀ g, F g ≠ 0 → ∃ u k, c u = 1 ∧ k ∈ K ∧ g = u * w * k) (h : H ⧸ K) (hh : F h.out ≠ 0) :
     h ∈ Set.range (fun q : c.ker ⧸ K.subgroupOf c.ker =>
@@ -53,6 +71,11 @@ private theorem mem_range_mk (c : H →* A) (K : Subgroup H) {w : H} (hw : ∀ g
   rw [e1, e3, e2]
   exact QuotientGroup.mk_mul_of_mem _ (Subgroup.mem_subgroupOf.1 k'.2)
 
+/- English proof (translation)
+Rewrite using `[finsum_comp_inj (mk_injective c K hw) (fun h : H ⧸ K => F h.out • Φ (g * h.out))]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Establish `hG : ∀ k ∈ K, ∀ x, Φ (g * (x * k)) = Φ (g * x)` using `fun k hk x => by`. Rewrite using `[← mul_assoc, hΦ k hk]`. Use `show F (QuotientGroup.mk ((q.out : H) * w) : H ⧸ K).out • Φ (g * (QuotientGroup.mk ((q.out : H) * w) : H ⧸ K).out) = _`.
+
+Rewrite using `[out_inv K hFK, out_inv K (G := fun x => Φ (g * x)) hG]`. Introduce `h hh`. Use `mem_range_mk c K hw hsup h fun h0 => hh ?_` and prove the remaining obligations. Simplify using `[h0]`.
+-/
 private theorem hecke_eq {V : Type} [AddCommGroup V] [Module ℂ V] (c : H →* A) (K : Subgroup H) {w : H}
     (hw : ∀ g, w * g = g * w) {F : H → ℂ} (hFK : ∀ k ∈ K, ∀ g, F (g * k) = F g)
     (hsup : ∀ g, F g ≠ 0 → ∃ u k, c u = 1 ∧ k ∈ K ∧ g = u * w * k)
@@ -70,6 +93,9 @@ private theorem hecke_eq {V : Type} [AddCommGroup V] [Module ℂ V] (c : H →* 
     refine mem_range_mk c K hw hsup h fun h0 => hh ?_
     simp [h0]
 
+/- English proof (translation)
+Use `(hfin.preimage (mk_injective c K hw).injOn).subset fun q hq => ?_` and prove the remaining obligations. Use `show F (QuotientGroup.mk ((q.out : H) * w) : H ⧸ K).out ≠ 0`. Rewrite using `[out_inv K hFK]`. Conclude with `hq`.
+-/
 private theorem finite_supp (c : H →* A) (K : Subgroup H) {w : H} (hw : ∀ g, w * g = g * w) {F : H → ℂ}
     (hFK : ∀ k ∈ K, ∀ g, F (g * k) = F g) (hfin : Set.Finite {h : H ⧸ K | F h.out ≠ 0}) :
     Set.Finite {q : c.ker ⧸ K.subgroupOf c.ker | F ((q.out : H) * w) ≠ 0} := by
@@ -78,6 +104,13 @@ private theorem finite_supp (c : H →* A) (K : Subgroup H) {w : H} (hw : ∀ g,
   rw [out_inv K hFK]
   exact hq
 
+/- English proof (translation)
+Establish `hs` using `finite_supp c K hw hFK hfin`. Use `⟨∑ q ∈ hs.toFinset, Finsupp.single (q.out : H) (F ((q.out : H) * w)), fun u hu => ?_, fun Ψ g => ?_⟩` and prove the remaining obligations. Take `⟨q, -, hq⟩` from `Finset.mem_biUnion.1 (Finsupp.support_finset_sum hu)`. Establish `: u = (q.out : H)` using `by simpa using Finsupp.support_single_subset hq`. Rewrite using `[this]`.
+
+Conclude with `MonoidHom.mem_ker.1 q.out.2`. Unfold `rop`. Rewrite using `[← Finsupp.sum_finset_sum_index (h := fun u (a : ℂ) => a • Ψ (g * u)) (fun _ => zero_smul _ _) (fun _ _ _ => add_smul _ _ _)]`. Rewrite using `[finsum_eq_sum_of_support_subset (s := hs.toFinset)]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Conclude with `Finsupp.sum_single_index (zero_smul _ _)`. Introduce `q hq`. Establish `: F ((q.out : H) * w) ≠ 0` using `fun h0 => hq (by simp [h0])`. Simplify using `using this`.
+-/
 private theorem exists_r {V : Type} [AddCommGroup V] [Module ℂ V] (c : H →* A) (K : Subgroup H) {w : H}
     (hw : ∀ g, w * g = g * w) {F : H → ℂ} (hFK : ∀ k ∈ K, ∀ g, F (g * k) = F g)
     (hfin : Set.Finite {h : H ⧸ K | F h.out ≠ 0}) :
@@ -104,6 +137,21 @@ private theorem exists_r {V : Type} [AddCommGroup V] [Module ℂ V] (c : H →* 
 end UpperTheory.Gal.CertificateRingHomMap.ExtensionHeckeOperators
 
 open UpperTheory.Gal.CertificateRingHomMap.ExtensionHeckeOperators GlobalTheory.LKDef.HeckeTraceForms in
+/- English proof (translation)
+Introduce `hE Γ H A Z V _ _ _ _ _ _ ι K ξ _ c ζ hζ φ hφ hne J F z T θ hT hFK hfin hsup hθ`. Establish `hw : ∀ j, ∀ g, ζ (z j) * g = g * ζ (z j)` using `fun j => hζ (z j)`. Establish `mem : ∀ Ψ : H → V, Ψ ∈ forms ι K ξ ↔ ((∀ γ g, Ψ (ι γ * g) = ξ γ (Ψ g)) ∧ ∀ k ∈ K, ∀ g, Ψ (g * k) = Ψ g)` using `fun _ => Iff.rfl`. Establish `hFK' : ∀ j, ∀ k ∈ K, ∀ g, F j (g * k) = F j g` using `hFK`. Use `choose r hr1 hr2 using fun j => exists_r (V := V) c K (hw j) (hFK' j) (hfin j)`.
+
+Establish `hT' : ∀ j (Ψ : forms ι K ξ) g, (T j Ψ : H → V) g = rop (r j) (Ψ : H → V) (g * ζ (z j))`. Introduce `j Ψ g`. Rewrite using `[hT j Ψ g, hecke_eq c K (hw j) (hFK' j) (hsup j) (Ψ : H → V) ((mem _).1 Ψ.2).2, hr2]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc g (ζ (z j)), hw j]`.
+
+Establish `hpres : ∀ j, ∀ Φ ∈ forms ι K ξ, rop (r j) Φ ∈ forms ι K ξ`. Introduce `j Φ hΦ`. Establish `e : ∀ g, rop (r j) Φ g = (T j ⟨Φ, hΦ⟩ : H → V) (g * (ζ (z j))⁻¹)`. Introduce `g`. Rewrite using `[hT']`.
+
+Simplify using the standard rewrite rules. Establish `hf` using `(mem _).1 (T j ⟨Φ, hΦ⟩).2`. Use `(mem _).2 ⟨fun γ g => ?_, fun k hk g => ?_⟩` and prove the remaining obligations. Rewrite using `[e, e, mul_assoc]`. Conclude with `hf.1 γ _`.
+
+Establish `hc : (ζ (z j))⁻¹ * k = k * (ζ (z j))⁻¹`. Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, hw j k, mul_inv_cancel_right]`. Rewrite using `[e, e, mul_assoc, ← hc, ← mul_assoc]`. Conclude with `hf.2 k hk _`. Take `⟨Φ, hΦ, hne', hev, ψ, hψ⟩` from `hE Γ H A Z V ι K ξ c ζ hζ φ hφ hne J r θ hr1 hpres (fun j u hu => by rw [hr2]; exact hθ j u hu)`.
+
+Use `⟨⟨Φ, hΦ⟩, fun h => hne' (congrArg Subtype.val h), ψ, hψ, fun j => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Rewrite using `[hT', hev j]`. Use `show θ j • Φ (g * ζ (z j)) = (θ j * (ψ (z j) : ℂ)) • Φ g`.
+
+Rewrite using `[hψ.1, mul_smul]`.
+-/
 theorem UpperTheory.Gal.CertificateRingHomMap.pExtHecke_holds :
     UpperTheory.Gal.CertificateRingHomMap.ExtEig → UpperTheory.Gal.CertificateRingHomMap.ExtHecke := by
   intro hE Γ H A Z V _ _ _ _ _ _ ι K ξ _ c ζ hζ φ hφ hne J F z T θ hT hFK hfin hsup hθ

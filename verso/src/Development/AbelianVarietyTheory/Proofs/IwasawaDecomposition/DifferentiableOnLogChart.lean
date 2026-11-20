@@ -14,6 +14,17 @@ set_option autoImplicit false
 
 namespace GlobalTheory.ShFam.Hor.LogCh
 
+/- English proof (translation)
+Introduce `D A N j S κ s σ n g r k ch ex lam ρ h`. Take `⟨hE, -, hlc, hlat, -⟩` from `h`. Take `⟨htar, -, -, hadd, hhol, htan⟩` from `hE`. Take `⟨hDo, -, hEa, hEm⟩` from `GlobalTheory.logDom_chart_props n k`. Establish `hKB : IsLatFam ch.target (fun b => {w | ex (ch.symm b) w = 1})`.
+
+Use `isLatFam_ker _ _ _ s.T.Z.t n g ch.target (fun b => (ch.symm b).1 ≫ genι s.T.Z) (fun b => ex (ch.symm b)) ch.open_target hhol fun b hb => ?_` and prove the remaining obligations. Establish `hx` using `ch.map_target hb`. Conclude with `⟨hadd _ hx, (htan _ hx).1, (htan _ hx).2⟩`. Establish `hK` using `IsLatFam.pullback_analytic n n g ch.target (logDom n k) _ (logExp k) hKB hDo (fun s _ => hEa s) (by rw [htar]; exact hEm)`. Introduce `s₀ hs₀`.
+
+Establish `hgr : ∀ i : Fin r, ∃ ζ : (Fin n → ℂ) → Fin g → ℂ, AnalyticAt ℂ ζ s₀ ∧ (fun s => lam s i) =ᶠ[𝓝 s₀] ζ`. Introduce `i`. Establish `hw₀ : lam s₀ i ∈ {w | ex (ch.symm (logExp k s₀)) w = 1}` using `((hlat s₀ hs₀).2.1 (lam s₀ i)).2 ⟨Pi.single i 1, by simp [Pi.single_apply]⟩`. Take `⟨ζ, hζ0, hζa, hζ⟩` from `hK.2.2.2 s₀ hs₀ (lam s₀ i) hw₀`. Use `⟨ζ, hζa, ?_⟩` and prove the remaining obligations.
+
+Establish `hci : ContinuousAt (fun s => lam s i) s₀` using `(continuous_apply i).continuousAt.comp (hlc.continuousAt (hDo.mem_nhds hs₀))`. Establish `ht : Filter.Tendsto (fun s => (s, lam s i)) (𝓝 s₀) (𝓝 (s₀, lam s₀ i))` using `(continuousAt_id.prodMk hci).tendsto`. Use `filter_upwards [ht.eventually hζ, hDo.mem_nhds hs₀] with s h1 h2`. Use `h1.1 ?_` and prove the remaining obligations. Conclude with `((hlat s h2).2.1 (lam s i)).2 ⟨Pi.single i 1, by simp [Pi.single_apply]⟩`.
+
+Use `choose ζ hζa hζe using hgr`. Establish `hA : AnalyticAt ℂ (fun s i => ζ i s) s₀` using `AnalyticAt.pi hζa`. Establish `hEq : lam =ᶠ[𝓝 s₀] fun s i => ζ i s` using `by filter_upwards [Filter.eventually_all.2 hζe] with s hs`. Conclude with `funext hs`. Conclude with `(hA.differentiableAt.congr_of_eventuallyEq hEq).differentiableWithinAt`.
+-/
 theorem differentiableOn_lam_of_isLogChart : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (σ : κ.c.F →+* ℂ) (n g r k : ℕ) (ch : OpenPartialHomeomorph (CxPts (genStr s.T.Z) σ) (Fin n → ℂ)) (ex : ExpMaps s.T.Z σ g) (lam : (Fin n → ℂ) → Fin r → Fin g → ℂ) (ρ : Fin g → Fin r → ℂ), IsLogChart k ch ex lam ρ → DifferentiableOn ℂ lam (logDom n k) := by
   intro D A N j S κ s σ n g r k ch ex lam ρ h
   obtain ⟨hE, -, hlc, hlat, -⟩ := h

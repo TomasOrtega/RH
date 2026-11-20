@@ -7,12 +7,18 @@ namespace ReciprocityTheory.MultiplicativeHeights.SemiDegIdx
 open NumberField Matrix
 open scoped nonZeroDivisors Pointwise
 
+/- English proof (translation)
+Rewrite using `[← Submodule.prod_span]`. Simplify using `only [Submodule.span_eq]`.
+-/
 theorem prod_eq_span_prod {K : Type} [Field K] [NumberField K] {k : ℕ}
     (p : Fin k → Submodule (𝓞 K) K) :
     ∏ i, p i = Submodule.span (𝓞 K) (∏ i, (p i : Set K)) := by
   rw [← Submodule.prod_span]
   simp only [Submodule.span_eq]
 
+/- English proof (translation)
+The claim follows from `map_prod (FractionalIdeal.coeSubmoduleHom (𝓞 K)⁰ K) F Finset.univ`.
+-/
 theorem coe_prod_frac {K : Type} [Field K] [NumberField K] {k : ℕ}
     (F : Fin k → FractionalIdeal (𝓞 K)⁰ K) :
     ((∏ i, F i : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K) = ∏ i, (F i : Submodule (𝓞 K) K) :=
@@ -21,6 +27,27 @@ theorem coe_prod_frac {K : Type} [Field K] [NumberField K] {k : ℕ}
 def vecIdx {K : Type} [Field K] [NumberField K] {k : ℕ} (X : Submodule (𝓞 K) (Fin k → K)) : ℕ :=
   (intVec K k).toAddSubgroup.relIndex X.toAddSubgroup
 
+/- English proof (translation)
+Take `⟨C, z, hfgC, h1, htri, hdiag, hin, hdec, hidx⟩` from `lattice_split K k X hfg hstd`. Set `CF : Fin k → FractionalIdeal (𝓞 K)⁰ K` to `fun i => ⟨C i, FractionalIdeal.isFractional_of_fg (hfgC i)⟩`. Set `cF : Fin k → FractionalIdeal (𝓞 K)⁰ K` to `fun i => ⟨cImage S.c (C i), FractionalIdeal.isFractional_of_fg (cImage_fg S.c S.c_invol (C i) (hfgC i))⟩`. Set `D : FractionalIdeal (𝓞 K)⁰ K` to `FractionalIdeal.spanSingleton (𝓞 K)⁰ S.G.det`. Establish `hcF0 : ∀ i, cF i ≠ 0`.
+
+Introduce `i h`. Establish `: (1 : K) ∈ (cF i : Submodule (𝓞 K) K)` using `one_le_cImage S.c (C i) (h1 i) (Submodule.mem_one.2 ⟨1, map_one _⟩)`. Rewrite `this` using `[h, FractionalIdeal.coe_zero]`. Simplify using `at this`. Use `⟨(∏ i, cF i) * D * ∏ i, CF i, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← FractionalIdeal.coe_le_coe, FractionalIdeal.coe_one, FractionalIdeal.coe_mul, FractionalIdeal.coe_mul, coe_prod_frac, coe_prod_frac, FractionalIdeal.coe_spanSingleton]`. Express the relevant statement in the definitionally equal form `(∏ i, cImage S.c (C i)) * Submodule.span (𝓞 K) {S.G.det} * (∏ i, C i) ≤ 1`. Rewrite using `[prod_eq_span_prod, prod_eq_span_prod, Submodule.span_mul_span, Submodule.span_mul_span, Submodule.span_le]`. Introduce and unpack `x hx`. Take `⟨_, ⟨a, ha, _, rfl, rfl⟩, b, hb, rfl⟩` from `hx`.
+
+Take `⟨g, hg, rfl⟩` from `(Set.mem_fintype_prod _ _).1 ha`. Take `⟨t, ht, rfl⟩` from `(Set.mem_fintype_prod _ _).1 hb`. Conclude with `split_integral S htri hdiag hin hint g t (fun i => hg i) ht`. Introduce `hsd hG`. Establish `hCc : (∏ i, cF i) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => hcF0 i`.
+
+Establish `hinv : (∏ i, cF i)⁻¹ ≤ D * ∏ i, CF i`. Rewrite using `[← Finset.prod_inv_distrib, ← FractionalIdeal.coe_le_coe, FractionalIdeal.coe_mul, coe_prod_frac, coe_prod_frac, FractionalIdeal.coe_spanSingleton, prod_eq_span_prod, Submodule.span_le]`. Introduce `x hx`. Take `⟨g, hg, rfl⟩` from `(Set.mem_fintype_prod _ _).1 hx`. Use `split_selfDual S htri hdiag hdec hsd hG g fun j w hw => ?_` and prove the remaining obligations.
+
+Use `(FractionalIdeal.mem_inv_iff (hcF0 j)).1 (hg j) w hw` as an intermediate fact. Take `⟨a, ha⟩` from `(FractionalIdeal.mem_one_iff _).1 this`. Conclude with `Submodule.mem_one.2 ⟨a, ha⟩`. Combine the equalities or inequalities in the displayed calculation. Set `ι : Fin k → ℚ` to `fun i => ((1 : Submodule (𝓞 K) K).toAddSubgroup.relIndex (C i).toAddSubgroup : ℚ)`.
+
+Establish `hCF : ∀ i, FractionalIdeal.absNorm (CF i) * ι i = 1` using `fun i => absNorm_mul_relIndex_one (C i) (hfgC i) (h1 i)`. Establish `hcFn : ∀ i, FractionalIdeal.absNorm (cF i) * ι i = 1`. Introduce `i`. Use `absNorm_mul_relIndex_one (cImage S.c (C i)) (cImage_fg S.c S.c_invol (C i) (hfgC i)) (one_le_cImage S.c (C i) (h1 i))` as an intermediate fact. Rewrite `this` using `[relIndex_cImage S.c S.c_invol]`. Then use the resulting hypothesis.
+
+Establish `hι0 : ∀ i, ι i ≠ 0` using `fun i h => by simpa [h] using hCF i`. Establish `hP0 : ∏ i, ι i ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => hι0 i`. Establish `hA : FractionalIdeal.absNorm (∏ i, CF i) = (∏ i, ι i)⁻¹`. Rewrite using `[map_prod, ← Finset.prod_inv_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => eq_inv_of_mul_eq_one_left (hCF i)`.
+
+Establish `hC : FractionalIdeal.absNorm (∏ i, cF i) = (∏ i, ι i)⁻¹`. Rewrite using `[map_prod, ← Finset.prod_inv_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => eq_inv_of_mul_eq_one_left (hcFn i)`. Establish `hI : (vecIdx X : ℚ) = ∏ i, ι i`. Simplify using `only [vecIdx, hidx, Nat.cast_prod, ι]`.
+
+Rewrite using `[map_mul, map_mul, hA, hC, FractionalIdeal.absNorm_span_singleton, hI]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem split_norm {K : Type} [Field K] [NumberField K] {k : ℕ} (S : HermForm K k)
     (X : Submodule (𝓞 K) (Fin k → K)) (hfg : X.FG) (hstd : intVec K k ≤ X)
     (hint : IsIntegralOn S X) :
@@ -87,6 +114,15 @@ theorem split_norm {K : Type} [Field K] [NumberField K] {k : ℕ} (S : HermForm 
     rw [map_mul, map_mul, hA, hC, FractionalIdeal.absNorm_span_singleton, hI]
     field_simp
 
+/- English proof (translation)
+Take `⟨J, hJ1, -, hJ⟩` from `split_norm S X hfg hstd hint`. Establish `hN : (0 : ℚ) < |Algebra.norm ℚ S.G.det|` using `abs_pos.2 (Algebra.norm_ne_zero_iff.2 hG)`. Establish `hpos : (0 : ℚ) < FractionalIdeal.absNorm J * (vecIdx X : ℚ) ^ 2`. Rewrite using `[hJ]`. Conclude with `hN`.
+
+Take `⟨I, rfl⟩` from `FractionalIdeal.le_one_iff_exists_coeIdeal.1 hJ1`. Rewrite `hJ`, `hpos` using `[FractionalIdeal.coeIdeal_absNorm]`. Establish `hI : Ideal.absNorm I ≠ 0`. Introduce `h0`. Rewrite `hpos` using `[h0]`.
+
+Simplify using `at hpos`. Establish `h1 : (1 : ℚ) ≤ (Ideal.absNorm I : ℚ)`. Conclude with `Nat.one_le_iff_ne_zero.2 hI` after adjusting the coercions. Establish `hv : (0 : ℚ) ≤ (vecIdx X : ℚ) ^ 2` using `by positivity`. Rewrite using `[← hJ]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem vec_integral_bound {K : Type} [Field K] [NumberField K] {k : ℕ} (S : HermForm K k)
     (X : Submodule (𝓞 K) (Fin k → K)) (hfg : X.FG) (hstd : intVec K k ≤ X)
     (hint : IsIntegralOn S X) (hG : S.G.det ≠ 0) :
@@ -107,6 +143,11 @@ theorem vec_integral_bound {K : Type} [Field K] [NumberField K] {k : ℕ} (S : H
   rw [← hJ]
   nlinarith
 
+/- English proof (translation)
+Distinguish the cases in `hG : S.G.det = 0`. Rewrite using `[hG, Algebra.norm_zero, abs_zero]`. Check the signs of the components of the expression. Take `⟨J, hJ1, hJsd, hJ⟩` from `split_norm S X hfg hstd hsd.1`. Establish `hJe : J = 1` using `le_antisymm hJ1 (hJsd hsd hG)`.
+
+Rewrite `hJ` using `[hJe, map_one, one_mul]`. Conclude with `hJ.ge`.
+-/
 theorem vec_selfDual_bound {K : Type} [Field K] [NumberField K] {k : ℕ} (S : HermForm K k)
     (X : Submodule (𝓞 K) (Fin k → K)) (hfg : X.FG) (hstd : intVec K k ≤ X)
     (hsd : IsSelfDual S X) : |Algebra.norm ℚ S.G.det| ≤ (vecIdx X : ℚ) ^ 2 := by

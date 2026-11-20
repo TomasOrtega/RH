@@ -18,16 +18,25 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : 
   {D : DegData V (maximalIdeal V)} {F : Type} [Field F] [Algebra (FractionRing V) F]
   {v : AddValuation F (WithTop ℚ)} (hv : ValOver ϖ F v)
 
+/- English proof (translation)
+Simplify using `only [TF, jFK, jK]`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression.
+-/
 theorem TF_hom : (TF (R := V) F).hom = Spec.map (CommRingCat.ofHom (algVF (F := F) (V := V))) := by
   simp only [TF, jFK, jK]
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
   rfl
 
+/- English proof (translation)
+Use `haveI : IsProper D.toPre.P.A.hom := D.toPre.P.isAb.proper`. Take `⟨x', hx'p, hx'⟩` from `TWO.exists_lift v hϖ hv D.toPre.P.A.hom b.left (by rw [Over.w b, TF_hom])`. Conclude with `⟨Over.homMk x' hx'p, Over.OverMorphism.ext hx'⟩`.
+-/
 theorem exists_liftO (b : TF (R := V) F ⟶ D.toPre.P.A) : ∃ m : TO hϖ hv ⟶ D.toPre.P.A, ιS hϖ hv ≫ m = b := by
   haveI : IsProper D.toPre.P.A.hom := D.toPre.P.isAb.proper
   obtain ⟨x', hx'p, hx'⟩ := TWO.exists_lift v hϖ hv D.toPre.P.A.hom b.left (by rw [Over.w b, TF_hom])
   exact ⟨Over.homMk x' hx'p, Over.OverMorphism.ext hx'⟩
 
+/- English proof (translation)
+Use `haveI : IsProper D.toPre.P.A.hom := D.toPre.P.isAb.proper`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `TWO.lift_unique v hϖ hv D.toPre.P.A.hom m₁.left m₂.left (Over.w m₁) (Over.w m₂) (congrArg (fun g => g.left) h)`.
+-/
 theorem liftO_unique (m₁ m₂ : TO hϖ hv ⟶ D.toPre.P.A) (h : ιS hϖ hv ≫ m₁ = ιS hϖ hv ≫ m₂) : m₁ = m₂ := by
   haveI : IsProper D.toPre.P.A.hom := D.toPre.P.isAb.proper
   apply Over.OverMorphism.ext
@@ -43,15 +52,30 @@ def lineφO (m : TO hϖ hv ⟶ D.toPre.P.A) : Fin 2 → ((TO hϖ hv).left ⟶ D.
 def trO (m : TO hϖ hv ⟶ D.toPre.P.A) : TO hϖ hv ⊗ D.toPre.P.A ⟶ TO hϖ hv ⊗ D.toPre.P.A :=
   lift (fst _ _) (padd D.toPre.P.A (snd _ _) (fst _ _ ≫ m))
 
+/- English proof (translation)
+Unfold `trO`. Conclude with `lift_fst _ _`.
+-/
 theorem trO_fst (m : TO hϖ hv ⟶ D.toPre.P.A) : trO hϖ hv m ≫ fst _ _ = fst _ _ := by
   unfold trO
   exact lift_fst _ _
 
+/- English proof (translation)
+Unfold `trO`. Rewrite using `[lift_snd]`. Both sides reduce to the same expression.
+-/
 theorem trO_snd (m : TO hϖ hv ⟶ D.toPre.P.A) : trO hϖ hv m ≫ snd _ _ = snd _ _ * (fst _ _ ≫ m) := by
   unfold trO
   rw [lift_snd]
   rfl
 
+/- English proof (translation)
+Establish `h1 : jO hϖ hv (D` using `D) ≫ trO hϖ hv m ≫ snd (TO hϖ hv) D.toPre.P.A = snd (TF (R := V) F) D.toPre.P.A * (fst (TF (R := V) F) D.toPre.P.A ≫ b) := by`. Rewrite using `[trO_snd, MonObj.comp_mul, whiskerRight_snd, ← Category.assoc, whiskerRight_fst, Category.assoc, hm]`. Establish `h2 : DegPre.trPt D.toPre F b ≫ jO hϖ hv (D` using `D) ≫ snd (TO hϖ hv) D.toPre.P.A = snd (TF (R := V) F) D.toPre.P.A * (fst (TF (R := V) F) D.toPre.P.A ≫ b) := by`. Rewrite using `[whiskerRight_snd]`. Unfold `DegPre.trPt`.
+
+Rewrite using `[lift_snd]`. Both sides reduce to the same expression. Establish `h3 : jO hϖ hv (D` using `D) ≫ trO hϖ hv m ≫ fst (TO hϖ hv) D.toPre.P.A = fst (TF (R := V) F) D.toPre.P.A ≫ ιS hϖ hv := by`. Rewrite using `[trO_fst, whiskerRight_fst]`. Establish `h4 : DegPre.trPt D.toPre F b ≫ jO hϖ hv (D` using `D) ≫ fst (TO hϖ hv) D.toPre.P.A = fst (TF (R := V) F) D.toPre.P.A ≫ ιS hϖ hv := by`.
+
+Rewrite using `[whiskerRight_fst, ← Category.assoc, tr_fst]`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc]`. Rewrite using `[h3, h4]`. Simplify using `only [Category.assoc]`.
+
+Rewrite using `[h1, h2]`.
+-/
 theorem jO_trO (b : TF (R := V) F ⟶ D.toPre.P.A) (m : TO hϖ hv ⟶ D.toPre.P.A) (hm : ιS hϖ hv ≫ m = b) :
     jO hϖ hv (D := D) ≫ trO hϖ hv m = DegPre.trPt D.toPre F b ≫ jO hϖ hv := by
   have h1 : jO hϖ hv (D := D) ≫ trO hϖ hv m ≫ snd (TO hϖ hv) D.toPre.P.A =
@@ -75,6 +99,23 @@ theorem jO_trO (b : TF (R := V) F ⟶ D.toPre.P.A) (m : TO hϖ hv ⟶ D.toPre.P.
   · simp only [Category.assoc]
     rw [h1, h2]
 
+/- English proof (translation)
+Set `a : TO hϖ hv ⊗ D.toPre.P.A ⟶ D.toPre.P.A` to `cP D.toPre _ α`. Set `mm : TO hϖ hv ⊗ D.toPre.P.A ⟶ D.toPre.P.A` to `fst _ _ ≫ m`. Set `x : TO hϖ hv ⊗ D.toPre.P.A ⟶ D.toPre.P.A` to `snd _ _`. Establish `hα' : cP D.toPre (TO hϖ hv ⊗ D.toPre.P.A) α' = a * mm ^ k`. Rewrite using `[← comp_cP D.toPre (fst (TO hϖ hv) D.toPre.P.A), hα]`.
+
+Conclude with `(map_mul (preHom (fst (TO hϖ hv) D.toPre.P.A)) _ _).trans (congrArg₂ (· * ·) (comp_cP D.toPre _ α) (map_pow (preHom (fst (TO hϖ hv) D.toPre.P.A)) _ _))`. Take `⟨N, hN, vN⟩` from `exists_cubN D.toPre.cub a mm x k`. Take `⟨u₀, hu₀, vu₀⟩` from `exists_gen D.toPre.P.isLB (φ' := Sum.elim (fun i => (snd (TO hϖ hv) D.toPre.P.A).left ≫ D.toPre.famφB α' i) (fun i => (trO hϖ hv m ≫ snd _ _).left ≫ D.toPre.famφB α i)) (ε' := DegPre.deltaε k) (fun U _ h => by`. Establish `p₁` using `prod_cub a x mm h`. Establish `p₂` using `hF U (fun q => h ((fst (TO hϖ hv) D.toPre.P.A).left ≫ q))`.
+
+Establish `p₃` using `SectionScalarValuation.prod_famB D.toPre (snd (TO hϖ hv) D.toPre.P.A) α' k h`. Establish `p₄` using `SectionScalarValuation.prod_famB D.toPre (trO hϖ hv m ≫ snd _ _) α k h`. Establish `q₁ : (fst (TO hϖ hv) D.toPre.P.A).left ≫ (cP D.toPre _ α * m).left = (a * mm).left` using `congrArg (fun q : TO hϖ hv ⊗ D.toPre.P.A ⟶ D.toPre.P.A => q.left) ((MonObj.comp_mul (fst (TO hϖ hv) D.toPre.P.A) (cP D.toPre _ α) m).trans (congrArg (· * mm) (comp_cP D.toPre (fst (TO hϖ hv) D.toPre.P.A) α)))`. Establish `q₂ : (fst (TO hϖ hv) D.toPre.P.A).left ≫ (cP D.toPre _ α).left = a.left` using `congrArg (fun q : TO hϖ hv ⊗ D.toPre.P.A ⟶ D.toPre.P.A => q.left) (comp_cP D.toPre (fst (TO hϖ hv) D.toPre.P.A) α)`. Establish `q₃ : (fst (TO hϖ hv) D.toPre.P.A).left ≫ (1 : TO hϖ hv ⟶ D.toPre.P.A).left = (1 : TO hϖ hv ⊗ D.toPre.P.A ⟶ D.toPre.P.A).left` using `congrArg (fun q : TO hϖ hv ⊗ D.toPre.P.A ⟶ D.toPre.P.A => q.left) (MonObj.comp_one (M := D.toPre.P.A) (fst (TO hϖ hv) D.toPre.P.A))`.
+
+Establish `q₄ : (fst (TO hϖ hv) D.toPre.P.A).left ≫ m.left = mm.left` using `rfl`. Rewrite `p₂` using `[q₁, q₂, q₃, q₄]`. Establish `c₁ : SectionScalarValuation.cQ D.toPre (TO hϖ hv ⊗ D.toPre.P.A) α' = a * mm ^ k` using `hα'`. Establish `c₂ : SectionScalarValuation.cQ D.toPre (TO hϖ hv ⊗ D.toPre.P.A) α = a` using `rfl`. Rewrite `p₃` using `[c₁]`.
+
+Rewrite `p₄` using `[c₂]`. Use `conv at p₄ => rhs`. Rewrite using `[trO_snd]`. Use `Eq.trans (prod_sum₂ (K := Fin 8 ⊕ thK) (K' := K) (U := U) _ (prod_sum₂ (K := Fin 8) (K' := thK) (U := U) _ rfl (prod_neg _ _ p₁)) p₂) (Eq.trans ?_ (prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ p₃ (prod_neg _ _ p₄)).symm)` and prove the remaining obligations. Establish `r1 : x * (a * mm ^ k) = a * mm ^ k * x` using `mul_comm _ _`.
+
+Establish `r2 : x * mm * a = a * x * mm` using `by rw [mul_comm, ← _root_.mul_assoc]`. Establish `r3 : mm * x = x * mm` using `mul_comm _ _`. Rewrite using `[r1, r2, r3]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `[Fin.prod_univ_succ, ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow, a, mm, x]`.
+
+Use the proof step `module)`. Use the proof step `(LB.mulGen D.toPre.P.L _ _ _ _ (LB.mulGen D.toPre.P.L _ _ _ _ N (LB.invGen D.toPre.P.L _ _ (LB.pullGen D.toPre.P.L (thφ D.toPre.P.A (x3 D.toPre.P.A)) thε D.toPre.cub.t (lift a (lift x mm)).left))) (LB.pullGen D.toPre.P.L _ _ vO (fst (TO hϖ hv) D.toPre.P.A).left))`. Use the proof step `(mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ hN (invGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ D.toPre.cub.isGen _))) (pullGen_isGen _ _ _ _ hvO _))`. Use `⟨u₀, hu₀, fun T ρ z J hJ => ?_⟩` and prove the remaining obligations. Use `(vu₀ _ _ z J hJ).trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans ((congrArg₂ (· * ·) (vN T ρ z J hJ) ((val_inv _ _).trans (congrArg (·⁻¹) (val_cub D.toPre.cub ρ hJ _ _ _)))).trans ?_)) (val_pull hJ _ _ _)))` and prove the remaining obligations.
+
+Rewrite using `[← comp_cP D.toPre ρ α]`.
+-/
 theorem gen_uO (k : ℕ) (α α' : D.toPre.X) (m : TO hϖ hv ⟶ D.toPre.P.A)
     (hα : cP D.toPre _ α' = cP D.toPre _ α * m ^ k) {K : Type} [Fintype K]
     {φ : K → ((TO hϖ hv).left ⟶ D.toPre.P.A.left)} {ε : K → ℤ}

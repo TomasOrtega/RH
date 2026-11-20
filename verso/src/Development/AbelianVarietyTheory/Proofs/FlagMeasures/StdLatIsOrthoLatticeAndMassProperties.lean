@@ -14,6 +14,11 @@ namespace GlobalTheory.Mass.StdMass
 open NumberField Matrix in
 open scoped ENNReal Classical in
 
+/- English proof (translation)
+Unfold `_root_.Formalism.HermitianLatticesTheory.IsOrthoLattice at hL`. Take `⟨e, -, hspan, -, horth⟩` from `hL`. Use `LinearMap.IsSymm.mk fun x y => ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `_root_.ReciprocityTheory.ChartRestriction.L3.StandardSymmetricSums.exists_coord hspan x`. Take `⟨d, rfl⟩` from `_root_.ReciprocityTheory.ChartRestriction.L3.StandardSymmetricSums.exists_coord hspan y`.
+
+Rewrite using `[_root_.ReciprocityTheory.ChartRestriction.L3.StandardSymmetricSums.form_sum horth, _root_.ReciprocityTheory.ChartRestriction.L3.StandardSymmetricSums.form_sum horth]`. Simplify using `only [map_sum, starRingEnd_apply, star_mul, star_star]`.
+-/
 theorem _root_.GlobalTheory.Mass.StdMass.isSymm_of_ortho {K V : Type} [Field K] [NumberField K] [StarRing K]
     [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
     {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V} {n : ℕ} (hL : _root_.Formalism.HermitianLatticesTheory.IsOrthoLattice h L n) :
@@ -28,6 +33,19 @@ theorem _root_.GlobalTheory.Mass.StdMass.isSymm_of_ortho {K V : Type} [Field K] 
 
 open NumberField Matrix in
 open scoped ENNReal Classical in
+/- English proof (translation)
+Establish `hsub : ∀ M N : Submodule (𝓞 K) (Fin 0 → K), M = N` using `fun M N => Subsingleton.elim M N`. Use `haveI : Subsingleton ((Fin 0 → K) ≃ₗ[K] (Fin 0 → K)) := ⟨fun f g => LinearEquiv.ext fun x => Subsingleton.elim _ _⟩`. Establish `hlat : Submodule.IsLattice K (_root_.Formalism.MainNotions.S.Cnt.stdLat K 0)` using `_root_.ReciprocityTheory.ChartRestriction.L3.isLattice_of_ortho (_root_.Formalism.MainNotions.StandardLattice.stdLat_ortho K 0)`. Establish `hgen : _root_.Formalism.MainNotions.S.Cnt.stdLat K 0 ∈ _root_.Formalism.HermitianLatticesTheory.genus (_root_.Formalism.MainNotions.S.Cnt.stdH K 0) (_root_.Formalism.MainNotions.S.Cnt.stdLat K 0)`. Unfold `_root_.Formalism.HermitianLatticesTheory.genus _root_.Formalism.HermitianLatticesTheory.SameGenus`.
+
+Conclude with `⟨hlat, fun p _ => ⟨1, one_mem _, hsub _ _⟩⟩`. Establish `hs : ∃ s, _root_.Formalism.ThetaLiftIndependence.IsClassReps (_root_.Formalism.MainNotions.S.Cnt.stdH K 0) (_root_.Formalism.MainNotions.S.Cnt.stdLat K 0) s`. Use `⟨{_root_.Formalism.MainNotions.S.Cnt.stdLat K 0}, ?_⟩` and prove the remaining obligations. Unfold `_root_.Formalism.ThetaLiftIndependence.IsClassReps`. Use `⟨fun M hM => ?_, fun M _ => ⟨_root_.Formalism.MainNotions.S.Cnt.stdLat K 0, ⟨Finset.mem_singleton_self _, 1, one_mem _, hsub _ _⟩, fun N hN => Finset.mem_singleton.mp hN.1⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.mem_singleton.mp hM]`. Conclude with `hgen`. Establish `hchoose : hs.choose = {_root_.Formalism.MainNotions.S.Cnt.stdLat K 0}`. Establish `hspec` using `hs.choose_spec`. Unfold `_root_.Formalism.ThetaLiftIndependence.IsClassReps at hspec`.
+
+Take `⟨N, ⟨hN, -⟩, -⟩` from `hspec.2 _ hgen`. Rewrite using `[Finset.eq_singleton_iff_unique_mem]`. Use `⟨?_, fun M _ => hsub _ _⟩` and prove the remaining obligations. Establish `hN' : N = _root_.Formalism.MainNotions.S.Cnt.stdLat K 0` using `hsub _ _`. Conclude with `hN' ▸ hN`.
+
+Establish `hcard : Nat.card (_root_.Formalism.ThetaLiftIndependence.autL (_root_.Formalism.MainNotions.S.Cnt.stdH K 0) (_root_.Formalism.MainNotions.S.Cnt.stdLat K 0)) = 1`. Rewrite using `[Nat.card_eq_one_iff_unique]`. Use `⟨inferInstance, ⟨⟨1, ?_⟩⟩⟩` and prove the remaining obligations. Unfold `_root_.Formalism.ThetaLiftIndependence.autL`. Conclude with `⟨one_mem _, hsub _ _⟩`.
+
+Unfold `_root_.Formalism.MainNotions.S.Cnt.massU`. Rewrite using `[_root_.Formalism.HermitianLatticesTheory.massBasic_mass_eq _ _ hs, hchoose, Finset.sum_singleton, hcard]`. Evaluate the numerical expressions.
+-/
 private theorem massU_zero_eq_one (K : Type) [Field K] [NumberField K] [StarRing K] :
     _root_.Formalism.MainNotions.S.Cnt.massU K 0 = 1 := by
   have hsub : ∀ M N : Submodule (𝓞 K) (Fin 0 → K), M = N := fun M N => Subsingleton.elim M N
@@ -65,6 +83,13 @@ private theorem massU_zero_eq_one (K : Type) [Field K] [NumberField K] [StarRing
 open NumberField Matrix in
 open scoped ENNReal Classical in
 
+/- English proof (translation)
+Introduce `K _ _ _ hK j`. Establish `hsymm : (_root_.Formalism.MainNotions.S.Cnt.stdH K j).IsSymm` using `_root_.ReciprocityTheory.ChartRestriction.L3.stdForm_isSymm K j`. Establish `hortho : _root_.Formalism.HermitianLatticesTheory.IsOrthoLattice (_root_.Formalism.MainNotions.S.Cnt.stdH K j) (_root_.Formalism.MainNotions.S.Cnt.stdLat K j) j` using `_root_.Formalism.MainNotions.StandardLattice.stdLat_ortho K j`. Use `⟨hsymm, hortho, ?_, massU_zero_eq_one K, fun V _ _ _ _ h L hL => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Unfold `_root_.Formalism.MainNotions.S.Cnt.massU`.
+
+Conclude with `_root_.ReciprocityTheory.ChartRestriction.L3.mass_pos_of_ortho hK hsymm hortho`. Conclude with `(_root_.Formalism.MainNotions.StandardLattice.mass_ortho K hK j V h L hL).trans rfl`. Establish `hpos` using `_root_.ReciprocityTheory.ChartRestriction.L3.isTotPosDef_of_ortho hK (_root_.GlobalTheory.Mass.StdMass.isSymm_of_ortho hL) hL`. Unfold `_root_.ReciprocityTheory.ChartRestriction.L3.IsTotPosDef at hpos`. Unfold `_root_.GlobalTheory.Mass.PD`.
+
+Conclude with `fun τ x hx => hpos x hx τ`.
+-/
 theorem _root_.GlobalTheory.Mass.StdMass.main : ∀ (K : Type) [Field K] [NumberField K]
     [StarRing K], _root_.Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ j : ℕ, (_root_.Formalism.MainNotions.S.Cnt.stdH K j).IsSymm ∧
       _root_.Formalism.HermitianLatticesTheory.IsOrthoLattice (_root_.Formalism.MainNotions.S.Cnt.stdH K j) (_root_.Formalism.MainNotions.S.Cnt.stdLat K j) j ∧ 0 < _root_.Formalism.MainNotions.S.Cnt.massU K j ∧ _root_.Formalism.MainNotions.S.Cnt.massU K 0 = 1 ∧

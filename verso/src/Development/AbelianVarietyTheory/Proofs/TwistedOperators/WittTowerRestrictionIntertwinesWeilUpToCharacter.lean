@@ -20,14 +20,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TowerRestrictScalar
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.integral_leftMul_unitaryMatrix_addHaar`.
+-/
 theorem integral_unitary_mul : ∀ (D : D7) (W : HSp D) (r : ℕ) (h : GA D W) (ν : Measure (Mx D W.rank r)), ν.IsAddHaarMeasure → ∀ Φ : Mx D W.rank r → ℂ, ∫ y, Φ (HMul.hMul (Formalism.L2.Theta.mt W h) (y : Matrix (Fin W.rank) (Fin r) (AE D)) : Mx D W.rank r) ∂ν = ∫ y, Φ y ∂ν :=
   GlobalTheory.T.integral_leftMul_unitaryMatrix_addHaar
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.restrictedTheta_coefficient_eq_isotropic_integral`.
+-/
 theorem coef_unfold : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), IsIsoSplit V V' C B → ∀ (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r)), IsCovolOne (ratMx D W.rank r) μ 𝓨 → ∀ (μV : Measure (WO V W)) (𝓕V : Set (WO V W)), μV.IsAddHaarMeasure → IsAddFundamentalDomain (ratL W V) 𝓕V μV → ∀ (μ' : Measure (WO V' W)) (𝓕' : Set (WO V' W)), μ'.IsAddHaarMeasure → IsAddFundamentalDomain (ratL W V') 𝓕' μ' → ∃ ν : Measure (Mx D W.rank r), ν.IsAddHaarMeasure ∧ ∀ F G, IsThetaFunO ψ V W F → IsThetaFunO ψ V W G → ∀ x : WO V' W, ∫ w in 𝓕', heisO ψ V' W x (res V V' W C B μ 𝓨 F) w * star (res V V' W C B μ 𝓨 G w) ∂μ' = ∫ y, (∫ w in 𝓕V, heisO ψ V W (isoPart V W C y + midPart V V' W B x) F w * star (G w) ∂μV) ∂ν :=
   GlobalTheory.T.restrictedTheta_coefficient_eq_isotropic_integral
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Take `⟨μ, 𝓕, hμ, h𝓕, -⟩` from `(GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact (WO S T) (ratL T S) K hK hKc).1`. Conclude with `⟨μ, 𝓕, hμ, h𝓕⟩`.
+-/
 theorem exists_fd (S T : HSp D) :
     ∃ (m : Measure (WO S T)) (F : Set (WO S T)), m.IsAddHaarMeasure ∧ IsAddFundamentalDomain (ratL T S) F m := by
   obtain ⟨i1, i2, i3, i4, i5, K, hK, hKc⟩ := GlobalTheory.AdelicMatrixLattice.lattice D T S
@@ -36,6 +45,13 @@ theorem exists_fd (S T : HSp D) :
     (GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact (WO S T) (ratL T S) K hK hKc).1
   exact ⟨μ, 𝓕, hμ, h𝓕⟩
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Use `haveI : Countable (ratL T S) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by`. Rewrite using `[Measure.restrict_apply_univ]`.
+
+Conclude with `GlobalTheory.measure_addFundamentalDomain_lt_top_of_cocompact (G := WO S T) (ratL T S) hK hKc μ h𝓕⟩`. Establish `hcont : Continuous fun x => f x * star (g x)` using `hf.cont.mul hg.cont.star`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hcont.continuousOn`. Use `Integrable.of_bound hcont.aestronglyMeasurable C (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Take `⟨γ, hγ, h⟩` from `hKc w`.
+
+Rewrite using `[← GlobalTheory.ThetaSchur.prod_periodic hψ hf hg hγ w]`. Conclude with `hC _ h`.
+-/
 theorem integrable_prod (hψ : IsStdChar D ψ (-1)) {S T : HSp D} (μ : Measure (WO S T)) (𝓕 : Set (WO S T))
     (hμ : μ.IsAddHaarMeasure) (h𝓕 : IsAddFundamentalDomain (ratL T S) 𝓕 μ) {f g : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) (hg : IsThetaFunO ψ S T g) :
@@ -53,26 +69,44 @@ theorem integrable_prod (hψ : IsStdChar D ψ (-1)) {S T : HSp D} (μ : Measure 
   rw [← GlobalTheory.ThetaSchur.prod_periodic hψ hf hg hγ w]
   exact hC _ h
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heisO_smul (S T : HSp D) (w₀ : WO S T) (c : ℂ) (f : WO S T → ℂ) :
     heisO ψ S T w₀ (c • f) = c • heisO ψ S T w₀ f := by
   funext w
   simp only [heisO, Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Simplify using `[Formalism.L2.Theta.mt]`.
+-/
 theorem mt_one' (S : HSp D) : Formalism.L2.Theta.mt S 1 = 1 := by
   simp [Formalism.L2.Theta.mt]
 
+/- English proof (translation)
+Simplify using `[Formalism.L2.Theta.mt]`.
+-/
 theorem mt_mul' (S : HSp D) (h k : GA D S) :
     Formalism.L2.Theta.mt S (h * k) = Formalism.L2.Theta.mt S h * Formalism.L2.Theta.mt S k := by
   simp [Formalism.L2.Theta.mt]
 
+/- English proof (translation)
+Simplify using `[actO, mt_one', mt_mul', Matrix.mul_assoc]`.
+-/
 theorem actO_one_mul (S T : HSp D) (h k : GA D T) (x : WO S T) :
     actO S T 1 h (actO S T 1 k x) = actO S T 1 (h * k) x := by
   simp [actO, mt_one', mt_mul', Matrix.mul_assoc]
 
+/- English proof (translation)
+Simplify using `[actO, mt_one']`.
+-/
 theorem actO_one_one (S T : HSp D) (x : WO S T) : actO S T 1 1 x = x := by
   simp [actO, mt_one']
 
+/- English proof (translation)
+Simplify using `[actO, isoPart, midPart, mt_one', Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`.
+-/
 theorem actO_iso_mid (V V' W : HSp D) {r : ℕ} (C : Matrix (Fin V.rank) (Fin r) D.host.E)
     (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E) (k : GA D W) (y : Mx D W.rank r) (x : WO V' W) :
     actO V W 1 k (isoPart V W C y + midPart V V' W B x) =
@@ -80,16 +114,53 @@ theorem actO_iso_mid (V V' W : HSp D) {r : ℕ} (C : Matrix (Fin V.rank) (Fin r)
         midPart V V' W B (actO V' W 1 k x) := by
   simp [actO, isoPart, midPart, mt_one', Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[hω.om_heis 1 h _ P hP, actO_one_mul, mul_inv_cancel, actO_one_one]`.
+-/
 theorem move (S T : HSp D) {χS χT : (AE D)ˣ →* Circle} {ω : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     (hω : IsWeilDatumO ψ S T χS χT ω) (h : GA D T) (w : WO S T) (P : WO S T → ℂ) (hP : IsThetaFunO ψ S T P) :
     heisO ψ S T w (ω (1, h) P) = ω (1, h) (heisO ψ S T (actO S T 1 h⁻¹ w) P) := by
   rw [hω.om_heis 1 h _ P hP, actO_one_mul, mul_inv_cancel, actO_one_one]
 
+/- English proof (translation)
+Establish `e : ((1 : GA D S), h⁻¹) * ((1 : GA D S), h) = 1` using `Prod.ext (by simp) (by simp)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, e, map_one, Module.End.one_apply]`.
+-/
 theorem inv_apply (S T : HSp D) (ω : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (h : GA D T)
     (z : WO S T → ℂ) : ω (1, h⁻¹) (ω (1, h) z) = z := by
   have e : ((1 : GA D S), h⁻¹) * ((1 : GA D S), h) = 1 := Prod.ext (by simp) (by simp)
   rw [← Module.End.mul_apply, ← map_mul, e, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Establish `hψ` using `hω.std`. Take `⟨hR, f₀, hf₀, hR0⟩` from `GlobalTheory.T.thetaRestrictIsotropicQuotient_wittTower_properties D V V' W r C B hs ψ hψ μ 𝓨 hμ`. Establish `thV` using `(GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ V W).1`. Establish `thV'` using `(GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ V' W).1`. Take `⟨μV, 𝓕V, hμV, h𝓕V⟩` from `exists_fd (D := D) V W`.
+
+Take `⟨μ', 𝓕', hμ', h𝓕'⟩` from `exists_fd (D := D) V' W`. Take `⟨ν, hν, hMC⟩` from `coef_unfold D V V' W r C B hs ψ hψ μ 𝓨 hμ μV 𝓕V hμV h𝓕V μ' 𝓕' hμ' h𝓕'`. Establish `hU : ∀ P Q, IsThetaFunO ψ V W P → IsThetaFunO ψ V W Q → ∫ w in 𝓕V, ω (1, h) P w * star (ω (1, h) Q w) ∂μV = ∫ w in 𝓕V, P w * star (Q w) ∂μV` using `fun P Q hP hQ => GlobalTheory.Mem.LiftPolar.scalar_eq D ψ hψ V W μV 𝓕V hμV h𝓕V (ω (1, h)) (hω.om_pres _) (hω.om_unit μV 𝓕V hμV h𝓕V _) P Q hP hQ`. Establish `hU' : ∀ P Q, IsThetaFunO ψ V' W P → IsThetaFunO ψ V' W Q → ∫ w in 𝓕', ω' (1, h) P w * star (ω' (1, h) Q w) ∂μ' = ∫ w in 𝓕', P w * star (Q w) ∂μ'` using `fun P Q hP hQ => GlobalTheory.Mem.LiftPolar.scalar_eq D ψ hψ V' W μ' 𝓕' hμ' h𝓕' (ω' (1, h)) (hω'.om_pres _) (hω'.om_unit μ' 𝓕' hμ' h𝓕' _) P Q hP hQ`. Establish `hpair : ∀ f g, IsThetaFunO ψ V W f → IsThetaFunO ψ V W g → ∀ x : WO V' W, ∫ w in 𝓕', heisO ψ V' W x (res V V' W C B μ 𝓨 (ω (1, h) f)) w * star (res V V' W C B μ 𝓨 (ω (1, h) g) w) ∂μ' = ∫ w in 𝓕', heisO ψ V' W x (ω' (1, h) (res V V' W C B μ 𝓨 f)) w * star (ω' (1, h) (res V V' W C …`.
+
+Introduce `f g hf hg x`. Establish `hf1` using `hω.om_pres (1, h) f hf`. Establish `hg1` using `hω.om_pres (1, h) g hg`. Establish `hRf` using `(hR f hf).2.1`. Establish `hRg` using `(hR g hg).2.1`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `congrArg (fun Φ : Mx D W.rank r → ℂ => ∫ y, Φ y ∂ν) (funext fun y => ?_)` and prove the remaining obligations. Rewrite using `[move V W hω h _ f hf, actO_iso_mid, hU _ _ (thV _ f hf) hg]`. Use `_ = ∫ y, (∫ w in 𝓕V, heisO ψ V W (isoPart V W C y + midPart V V' W B (actO V' W 1 h⁻¹ x)) f w * star (g w) ∂μV) ∂ν := integral_unitary_mul D W r h⁻¹ ν hν (fun y => ∫ w in 𝓕V, heisO ψ V W (isoPart V W C y + midPart V V' W B (actO V' W 1 h⁻¹ x)) f w * star (g w) ∂μV)`. Use `_ = ∫ w in 𝓕', heisO ψ V' W (actO V' W 1 h⁻¹ x) (res V V' W C B μ 𝓨 f) w * star (res V V' W C B μ 𝓨 g w) ∂μ' := (hMC f g hf hg _).symm`.
+
+Use `_ = ∫ w in 𝓕', ω' (1, h) (heisO ψ V' W (actO V' W 1 h⁻¹ x) (res V V' W C B μ 𝓨 f)) w * star (ω' (1, h) (res V V' W C B μ 𝓨 g) w) ∂μ' := (hU' _ _ (thV' _ _ hRf) hRg).symm`. Use `_ = _ := by rw [move V' W hω' h x _ hRf]`. Establish `hcoef : ∀ f, IsThetaFunO ψ V W f → ∃ c : ℂ, ‖c‖ = 1 ∧ res V V' W C B μ 𝓨 (ω (1, h) f) = c • ω' (1, h) (res V V' W C B μ 𝓨 f)` using `fun f hf => GlobalTheory.ThetaCoefficient.exists_unit_smul_of_coefficient_eq D ψ hψ V' W μ' 𝓕' hμ' h𝓕' (ω' (1, h) (res V V' W C B μ 𝓨 f)) (res V V' W C B μ 𝓨 (ω (1, h) f)) (hω'.om_pres _ _ (hR f hf).2.1) (hR _ (hω.om_pres _ f hf)).2.1 (fun w => hpair f f hf hf w)`. Establish `hv0t : IsThetaFunO ψ V' W (ω' (1, h) (res V V' W C B μ 𝓨 f₀))` using `hω'.om_pres _ _ (hR f₀ hf₀).2.1`. Establish `hv0 : ω' (1, h) (res V V' W C B μ 𝓨 f₀) ≠ 0` using `fun h0 => hR0 (by`.
+
+Rewrite using `[← inv_apply V' W ω' h (res V V' W C B μ 𝓨 f₀), h0, map_zero])`. Take `⟨c, hc, hu0⟩` from `hcoef f₀ hf₀`. Establish `hdiag : ∃ x, ∫ w in 𝓕', heisO ψ V' W x (ω' (1, h) (res V V' W C B μ 𝓨 f₀)) w * star (ω' (1, h) (res V V' W C B μ 𝓨 f₀) w) ∂μ' ≠ 0`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+
+Take `⟨c', -, h'⟩` from `GlobalTheory.ThetaCoefficient.exists_unit_smul_of_coefficient_eq D ψ hψ V' W μ' 𝓕' hμ' h𝓕' 0 (ω' (1, h) (res V V' W C B μ 𝓨 f₀)) GlobalTheory.WeilVacMove.isTheta_zero hv0t (fun w => by`. Rewrite using `[hne w]`. Simplify using `[heisO])`. Conclude with `hv0 (by rw [h', smul_zero])`. Establish `hA : ∀ g, IsThetaFunO ψ V W g → (∃ x, ∫ w in 𝓕', heisO ψ V' W x (ω' (1, h) (res V V' W C B μ 𝓨 f₀)) w * star (ω' (1, h) (res V V' W C B μ 𝓨 g) w) ∂μ' ≠ 0) → res V V' W C B μ 𝓨 (ω (1, h) g) = c • ω' (1, h) (res V V' W C B μ 𝓨 g)`.
+
+Introduce and unpack `g hg ⟨x, hx⟩`. Take `⟨cg, hcg, hug⟩` from `hcoef g hg`. Establish `e` using `hpair f₀ g hf₀ hg x`. Rewrite `e` using `[hu0, hug, heisO_smul]`. Establish `e2 : (∫ w in 𝓕', heisO ψ V' W x (ω' (1, h) (res V V' W C B μ 𝓨 f₀)) w * star (ω' (1, h) (res V V' W C B μ 𝓨 g) w) ∂μ') * (c * star cg) = (∫ w in 𝓕', heisO ψ V' W x (ω' (1, h) (res V V' W C B μ 𝓨 f₀)) w * star (ω' (1, h) (res V V' W C B μ 𝓨 g) w) ∂μ') * 1`.
+
+Rewrite using `[mul_one, ← integral_mul_const]`. Use `Eq.trans ?_ e` and prove the remaining obligations. Use `congrArg (fun Φ : WO V' W → ℂ => ∫ w in 𝓕', Φ w ∂μ') (funext fun w => ?_)` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e3 : c * star cg = 1` using `mul_left_cancel₀ hx e2`. Establish `hcg2 : cg * star cg = 1`. Rewrite using `[Complex.star_def, Complex.mul_conj', hcg]`. Simplify using the standard rewrite rules. Establish `: cg = c`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hug, this]`. Use `⟨c, hc, fun g hg => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : ∃ x, ∫ w in 𝓕', heisO ψ V' W x (ω' (1, h) (res V V' W C B μ 𝓨 f₀)) w * star (ω' (1, h) (res V V' W C B μ 𝓨 g) w) ∂μ' ≠ 0`. Conclude with `hA g hg hx`.
+
+Use `push_neg at hx`. Take `⟨x₁, hx₁⟩` from `hdiag`. Establish `hRadd : ∀ a b, IsThetaFunO ψ V W a → IsThetaFunO ψ V W b → res V V' W C B μ 𝓨 (a + b) = res V V' W C B μ 𝓨 a + res V V' W C B μ 𝓨 b` using `fun a b ha hb => by`. Use function extensionality and compare the values at `z`. Simplify using `only [res, Pi.add_apply]`.
+
+Conclude with `integral_add ((hR a ha).1 z) ((hR b hb).1 z)`. Establish `hv' : ω' (1, h) (res V V' W C B μ 𝓨 (f₀ + g)) = ω' (1, h) (res V V' W C B μ 𝓨 f₀) + ω' (1, h) (res V V' W C B μ 𝓨 g)`. Rewrite using `[hRadd _ _ hf₀ hg, map_add]`. Establish `hu' : res V V' W C B μ 𝓨 (ω (1, h) (f₀ + g)) = res V V' W C B μ 𝓨 (ω (1, h) f₀) + res V V' W C B μ 𝓨 (ω (1, h) g)`. Rewrite using `[map_add, hRadd _ _ (hω.om_pres _ _ hf₀) (hω.om_pres _ _ hg)]`.
+
+Establish `hvg : IsThetaFunO ψ V' W (ω' (1, h) (res V V' W C B μ 𝓨 g))` using `hω'.om_pres _ _ (hR g hg).2.1`. Establish `key` using `hA (f₀ + g) (GlobalTheory.WeilVacMove.isTheta_add hf₀ hg) ⟨x₁, by`. Rewrite using `[hv']`. Simplify using `only [Pi.add_apply, star_add, mul_add]`. Rewrite using `[integral_add (integrable_prod hψ μ' 𝓕' hμ' h𝓕' (thV' x₁ _ hv0t) hv0t) (integrable_prod hψ μ' 𝓕' hμ' h𝓕' (thV' x₁ _ hv0t) hvg), hx x₁, add_zero]`.
+
+Conclude with `hx₁⟩`. Rewrite `key` using `[hu', hv', hu0, smul_add]`. Conclude with `add_left_cancel key`.
+-/
 theorem per_h {V V' W : HSp D} {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) D.host.E}
     {B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E} (hs : IsIsoSplit V V' C B)
     {χS χT χS' χT' : (AE D)ˣ →* Circle} {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)}
@@ -210,6 +281,19 @@ theorem per_h {V V' W : HSp D} {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) D.host
     rw [hu', hv', hu0, smul_add] at key
     exact add_left_cancel key
 
+/- English proof (translation)
+Introduce `D V V' W r C B hs ψ χS χT χS' χT' ω ω' hω hω' μ 𝓨 hμ`. Establish `P` using `fun h => per_h hs hω hω' hμ h`. Take `⟨-, f₀, hf₀, hR0⟩` from `GlobalTheory.T.thetaRestrictIsotropicQuotient_wittTower_properties D V V' W r C B hs ψ hω.std μ 𝓨 hμ`. Set `c : GA D W → ℂ` to `fun h => Classical.choose (P h)`. Establish `hc1 : ∀ h, ‖c h‖ = 1` using `fun h => (Classical.choose_spec (P h)).1`.
+
+Establish `hc : ∀ h f, IsThetaFunO ψ V W f → res V V' W C B μ 𝓨 (ω (1, h) f) = c h • ω' (1, h) (res V V' W C B μ 𝓨 f)` using `fun h => (Classical.choose_spec (P h)).2`. Establish `uniq : ∀ h (a b : ℂ), a • ω' (1, h) (res V V' W C B μ 𝓨 f₀) = b • ω' (1, h) (res V V' W C B μ 𝓨 f₀) → a = b` using `fun h a b e => by`. Assume the negation of the conclusion as `hab`. Establish `hz : (a - b) • ω' (1, h) (res V V' W C B μ 𝓨 f₀) = 0` using `by rw [sub_smul, e, sub_self]`. Break down `smul_eq_zero.1 hz with h1 | h1` into its components or cases.
+
+Conclude with `hab (sub_eq_zero.1 h1)`. Conclude with `hR0 (by rw [← inv_apply V' W ω' h (res V V' W C B μ 𝓨 f₀), h1, map_zero])`. Set `cc : GA D W → Circle` to `fun h => ⟨c h, by simp [Submonoid.unitSphere, hc1 h]⟩`. Establish `hcc : ∀ h, ((cc h : Circle) : ℂ) = c h` using `fun h => rfl`. Use `⟨{ toFun := cc, map_one' := ?_, map_mul' := ?_ }, fun h f hf => ?_⟩` and prove the remaining obligations.
+
+Apply `Circle.ext` to reduce the goal to its premises. Rewrite using `[hcc, Circle.coe_one]`. Apply `uniq 1` to reduce the goal to its premises. Rewrite using `[← hc 1 f₀ hf₀, one_smul]`. Use `show res V V' W C B μ 𝓨 (ω 1 f₀) = ω' 1 (res V V' W C B μ 𝓨 f₀)`.
+
+Rewrite using `[map_one, map_one, Module.End.one_apply, Module.End.one_apply]`. Introduce `h k`. Apply `Circle.ext` to reduce the goal to its premises. Rewrite using `[hcc, Circle.coe_mul, hcc, hcc]`. Apply `uniq (h * k)` to reduce the goal to its premises.
+
+Establish `e1 : ω (1, h * k) = ω (1, h) * ω (1, k)` using `by rw [← map_mul, Prod.mk_mul_mk, one_mul]`. Establish `e1' : ω' (1, h * k) = ω' (1, h) * ω' (1, k)` using `by rw [← map_mul, Prod.mk_mul_mk, one_mul]`. Rewrite using `[← hc (h * k) f₀ hf₀, e1, Module.End.mul_apply, hc h _ (hω.om_pres _ _ hf₀), hc k _ hf₀, map_smul, smul_smul, e1', Module.End.mul_apply]`. Conclude with `hc h f hf`.
+-/
 theorem main : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), IsIsoSplit V V' C B → ∀ (ψ : AddChar (AF D.host.F) ℂ) (χS χT χS' χT' : (AE D)ˣ →* Circle) (ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ω' : GA D V' × GA D W →* Module.End ℂ (WO V' W → ℂ)), IsWeilDatumO ψ V W χS χT ω → IsWeilDatumO ψ V' W χS' χT' ω' → ∀ (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r)), IsCovolOne (ratMx D W.rank r) μ 𝓨 → ∃ c : GA D W →* Circle, ∀ h f, IsThetaFunO ψ V W f → res V V' W C B μ 𝓨 (ω (1, h) f) = (c h : ℂ) • ω' (1, h) (res V V' W C B μ 𝓨 f) := by
   intro D V V' W r C B hs ψ χS χT χS' χT' ω ω' hω hω' μ 𝓨 hμ
   have P := fun h => per_h hs hω hω' hμ h

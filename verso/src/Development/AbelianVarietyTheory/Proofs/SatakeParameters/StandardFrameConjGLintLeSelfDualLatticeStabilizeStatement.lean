@@ -18,6 +18,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SplitFrameLattice.glint_mul_frame_basis | exact GlobalTheory.SplitFrameLattice.glint_mul_frame_basis | (intros; apply GlobalTheory.SplitFrameLattice.glint_mul_frame_basis <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.standardFrame_conj_GLint_le_selfDualLattice_stabilizer : ∀ {D : D7} (hF : D.host.F = maximalRealSubfield D.host.E) {V : TH.HSp D}
     (Ps : Formalism.IndefR.principalLevelFrame.RowPsi V V.rank) (sp : SplitPlace D.host.E)
     (β β' : Matrix (Fin V.rank) (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)),

@@ -14,6 +14,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace PositivityTheory.Rg.Rsw.Kplug
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `k0 k1 k2 k2b k2c k3a k3b k4 hP hC D ψ θ A cA a hDef _ B W t hd _ _ hW0 _ hA h2 hlt χ omB omW hWB hWW ν 𝓕 hν m hm u hu hinv hK φ hφ hKφ`. Establish `hrk` using `hd.rank_add`. Establish `hIw` using `GlobalTheory.Core.Rk.IP.hasIwasawa_Khat D A a hDef.maj`. Establish `hχ` using `GlobalTheory.T.isHeckeChar_restrictionEta_inv D χ W.rank hWW.hecT hWW.resT`. Take `⟨hEC, hReg⟩` from `hP D A (by omega) a hDef.maj hIw χ⁻¹ W.rank hχ.1 hχ.2 _ _ (k0 D ψ A B χ omB hWB ν 𝓕 hν a hDef.maj φ hφ hKφ)`.
+
+Take `⟨U, d, E, ε, hU, hR, hs, hd0, hhol, hc, hi, he, hrad⟩` from `k1 D A _ hEC hReg (fun g => hEC.1.analyticOnNhd_flat g) (sZero A B)`. Take `⟨m0, hm0, hp0⟩` from `GlobalTheory.T.exists_siegel_parabolic_conj_doubled_compact D`. Take `⟨κ, hκ⟩` from `GlobalTheory.T.exists_standardUnitaryChart_doubledSpace D A m0 hm0`. Take `⟨p, hp⟩` from `hp0 A a hDef.maj κ hκ`. Take `⟨lam, hlam, hψ', -⟩` from `GlobalTheory.T.shiftedAdditiveCharacter_archimedeanParameters D ψ hWB.std θ hDef.inf m0 hm0`.
+
+Take `⟨oB, hTB⟩` from `GlobalTheory.T.exists_weilDatum_transport_schwartzBruhat_standard D ψ A B χ omB hWB ν 𝓕 hν θ hDef.inf κ`. Take `⟨νW, 𝓨, hνW⟩` from `GlobalTheory.MixModel.exists_isCovolOne D W.rank A.rank`. Take `⟨oW, hTW⟩` from `GlobalTheory.T.exists_weilDatum_transport_schwartzBruhat_standard D ψ A W χ omW hWW νW 𝓨 hνW θ hDef.inf κ`. Establish `hSB : IsWeilSch (shift ψ lam) χ⁻¹ θ B ν oB` using `⟨GlobalTheory.T.transportedSchrodinger_standardLeviAction D ψ A B χ omB hWB ν 𝓕 hν θ hDef.inf m0 hm0 κ hκ oB hTB lam hlam, GlobalTheory.T.transportedSchrodinger_siegelUnipotentAction D ψ A B χ omB hWB ν 𝓕 hν θ hDef.inf m0 hm0 κ hκ oB hTB lam hlam, GlobalTheory.T.weyl_formula_stan …`. Establish `hSW : IsWeilSch (shift ψ lam) χ⁻¹ θ W νW oW` using `⟨GlobalTheory.T.transportedSchrodinger_standardLeviAction D ψ A W χ omW hWW νW 𝓨 hνW θ hDef.inf m0 hm0 κ hκ oW hTW lam hlam, GlobalTheory.T.transportedSchrodinger_siegelUnipotentAction D ψ A W χ omW hWW νW 𝓨 hνW θ hDef.inf m0 hm0 κ hκ oW hTW lam hlam, GlobalTheory.T.weyl_formula_ …`.
+
+Set `Φ : schwartzA θ B.rank A.rank` to `⟨sch ψ A B ν 𝓕 (omB ((p : GA D (dblSp A))⁻¹, 1) φ), (GlobalTheory.T.schrodingerTheta_eq_schwartzBruhat D ψ hWB.std θ hDef.inf A B ν 𝓕 hν).1 _ (hWB.om_pres _ φ hφ)⟩`. Take `⟨-, hCont, hser⟩` from `k3b D ψ A B χ omB hWB ν 𝓕 hν θ hDef.inf m0 hm0 κ hκ oB hTB lam hlam a hDef.maj p hp φ hφ hKφ Φ rfl U d E hU hR hs hd0 hhol hc hi he`. Take `⟨hH, hL⟩` from `k3a D A m0 hm0 κ hκ a hDef.maj p hp`. Establish `hs0 : sZero A B = (t : ℂ) / 2`. Establish `hBr : B.rank = W.rank + 2 * t` using `by omega`.
+
+Simplify using `only [sZero]`. Rewrite using `[hBr, hA]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨hcc, hcl⟩` from `k2c D _ _ _ _ _ _ _ _ hCont ε hrad 1`.
+
+Establish `hCont'` using `hCont`. Establish `hrad'` using `hrad`. Rewrite `hCont'`, `hrad'` using `[hs0]`. Take `⟨hv, hkill⟩` from `hC D A.rank t B W ⟨hd⟩ hA.symm h2 hlt hW0 (shift ψ lam) hψ' χ⁻¹ hχ.1 hχ.2 θ hDef.inf ν νW ⟨𝓕, hν⟩ ⟨𝓨, hνW⟩ oB oW hSB hSW _ hH hL Φ U d _ _ hCont' ε hrad'`. Rewrite `hv`, `hkill` using `[← hs0]`.
+
+Use `⟨fun g => cf d (fun z g => npow (absA D (aP A p)) (z - sZero A B) * E z (κ.symm g * ((p : GA D (dblSp A))⁻¹))) (sZero A B) ε 1 (κ (g * p)), ⟨hEC.1, fun g => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `k2 _ _ U d (sZero A B) ε _ hU hR (hCont.hol (κ (g * p))) hd0 hrad (fun z hz => hCont.eq z hz (κ (g * p))) (fun k hk => congrFun (hv k hk) (κ (g * p)))`. Conclude with `k2b _ _ _ _ _ _ (hom_pos _ _) h1 h2 (fun s hs => hser s hs g)`. Conclude with `k4 D ψ θ A cA a hDef W χ omW hWW νW 𝓨 hνW m0 hm0 κ hκ oW hTW p m hm u hu hinv hK _ hcc hcl (fun X _ νX _ c hc hcp w hw h0 => hkill X νX c w hc hcp hw h0)`.
+-/
 theorem residue_vanishes_of_siegel_eisenstein : K0 → K1 → K2 → SimplePoleRescaling → ContinuousInvariantCoefficients → KillingPolyConst → ContinuationThroughChart → K4 →
     GlobalTheory.Published.SiegelEisensteinContinuation → PositivityTheory.Rg.Rsw.ResCore → ResidueVanishing := by
   intro k0 k1 k2 k2b k2c k3a k3b k4 hP hC D ψ θ A cA a hDef _ B W t hd _ _ hW0 _ hA h2 hlt χ omB omW hWB hWW ν 𝓕 hν m hm u hu hinv hK φ hφ hKφ

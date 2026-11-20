@@ -17,6 +17,29 @@ open GlobalTheory.PureMatch GlobalTheory.SquareFlipReach ValuativeRel
 
 namespace GlobalTheory.PurityDepth
 
+/- English proof (translation)
+Introduce `k _ _ _ _ A' C _ _ _ _ ϖ P Ψ hΨ hϖ`. Establish `hΨ' : Ψ ∈ GlobalTheory.SplitWeil.SB (Matrix A' C k)` using `hΨ`. Establish `hϖ' : GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ` using `fun x => by rw [hϖ, le_uniformizer_iff]`. Take `⟨Λ, hΛ, hinv⟩` from `GlobalTheory.RootEx.sb_matrix_exists_isOpen_addSubgroup k A' C Ψ hΨ'`. Set `f : (A' × C → k) → Matrix A' C k` to `fun z => Matrix.of fun i j => z (i, j)`.
+
+Establish `hf : Continuous f`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Conclude with `continuous_apply (i, j)`. Establish `hΛn : f ⁻¹' (Λ : Set (Matrix A' C k)) ∈ nhds (0 : A' × C → k)` using `(hΛ.preimage hf).mem_nhds (by show f 0 ∈ Λ`. Conclude with `(show f 0 = 0 from rfl) ▸ Λ.zero_mem)`.
+
+Establish `hc : IsCompact (tsupport Ψ)` using `hΨ.2`. Establish `h1 : ∀ q : A' × C, ∀ᶠ e : ℕ in Filter.atTop, (fun x : Matrix A' C k => x q.1 q.2) '' tsupport Ψ ⊆ GlobalTheory.SplitWeil.cball (ϖ ^ e)⁻¹` using `fun q => GlobalTheory.AdaptedExp.eventually_subset_cball hϖ' (hc.image (by fun_prop))`. Take `⟨M, hM1, hM2⟩` from `((Filter.eventually_all.2 h1).and (GlobalTheory.AdaptedExp.eventually_box_subset hϖ' hΛn)).exists`. Use `⟨M, fun n hn => ?_⟩` and prove the remaining obligations. Use `set w := valuation k (ϖ : k) with hw`.
+
+Establish `hw1 : w ≤ 1` using `hϖ.mem`. Use `set u := valuation k ((ϖ ^ M : kˣ) : k) with hu`. Establish `hu0 : 0 < u` using `zero_lt_iff.2 (by simp [hu])`. Establish `huw : u = w ^ M` using `by rw [hu, Units.val_pow_eq_pow_val, map_pow]`. Establish `hinvu : valuation k (((ϖ ^ M)⁻¹ : kˣ) : k) = u⁻¹`.
+
+Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀]`. Establish `hn' : valuation k ((ϖ ^ n : kˣ) : k) ≤ u * u`. Rewrite using `[Units.val_pow_eq_pow_val, map_pow, huw, ← pow_add, ← two_mul]`. Conclude with `pow_le_pow_right_of_le_one' hw1 hn`. Establish `hd : ∀ (X : Matrix A' C k) i j, (X * diagonal (fun col => if col ∈ P then ((ϖ ^ M : kˣ) : k) else (((ϖ ^ M)⁻¹ : kˣ) : k))) i j = X i j * (if j ∈ P then ((ϖ ^ M : kˣ) : k) else (((ϖ ^ M)⁻¹ : kˣ) : k))` using `fun X i j => mul_diagonal _ _ _ _`.
+
+Use `⟨fun Y hY => ?_, fun Y Z hZ => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Apply `hY` to reduce the goal to its premises. Establish `hs` using `subset_tsupport _ hne`. Establish `he : ∀ i j, valuation k (Y i j * (if j ∈ P then ((ϖ ^ M : kˣ) : k) else (((ϖ ^ M)⁻¹ : kˣ) : k))) ≤ u⁻¹` using `fun i j => by`.
+
+Use `hM1 (i, j) ⟨_, hs, rfl⟩` as an intermediate fact. Simplify `this` using `only [GlobalTheory.SplitWeil.cball, Set.mem_setOf_eq, hd, hinvu]`. Use `GlobalTheory.SplitFlip.FourierDepth.mem_matLat_blockLat.2 ⟨fun i j hj => ?_, fun i j hj => ?_⟩` and prove the remaining obligations. Establish `h` using `he i j`. Rewrite `h` using `[if_pos hj, map_mul, ← hu]`.
+
+Rewrite using `[Valuation.mem_integer_iff, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `h` using `he i j`. Rewrite `h` using `[if_neg hj, map_mul, hinvu]`. Rewrite using `[Valuation.mem_integer_iff]`.
+
+Use `mul_le_mul_left h u` as an intermediate fact. Rewrite `this` using `[mul_assoc, inv_mul_cancel₀ hu0.ne', mul_one]`. Then use the resulting hypothesis. Take `⟨h1, h2⟩` from `GlobalTheory.SplitFlip.FourierDepth.mem_matLat_smul_blockLat.1 hZ show Ψ ((Y + Z) * _) = Ψ (Y * _)`. Rewrite using `[Matrix.add_mul]`. Use `hinv _ _ ?_` and prove the remaining obligations.
+
+Use `hM2 (fun q => (Z * diagonal (fun col => if col ∈ P then ((ϖ ^ M : kˣ) : k) else (((ϖ ^ M)⁻¹ : kˣ) : k))) q.1 q.2) ?_` and prove the remaining obligations. Unfold `GlobalTheory.StepData.box`. Introduce `q`. Use `beta_reduce`. Rewrite using `[hd, map_mul, ← hu]`.
+
+Distinguish the cases in `hj : q.2 ∈ P`. Rewrite using `[if_pos hj, ← hu]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[if_neg hj, hinvu]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem hasDepth_scaled : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (A' C : Type) [Fintype A'] [DecidableEq A'] [Fintype C] [DecidableEq C] (ϖ : kˣ) (P : Finset C) (Ψ : Matrix A' C k → ℂ),
     Ψ ∈ GlobalTheory.WeilM.SB (Matrix A' C k) → IsUnif ϖ → ∃ M : ℕ, ∀ n, 2 * M ≤ n →

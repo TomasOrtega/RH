@@ -16,6 +16,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Num.HodgeModel.DualPair
 
 open GroundTheory.Heights₂.Heights.NumbersDVR (IsVerticalDivisor ratDiv)
 
+/- English proof (translation)
+Simplify using `[dotDual, AddSubgroup.mem_iInf]`.
+-/
 theorem mem_dualBundle {O : Type} [CommRing O] {Ω : Type} [Field Ω] [Algebra O Ω] {r : ℕ}
     (R : Subalgebra O Ω) (L : AddSubgroup (Fin r → Ω)) (e : Fin r → Ω) :
     e ∈ dotDual R L ↔ ∀ l ∈ L, l ⬝ᵥ e ∈ R := by
@@ -36,8 +39,16 @@ def dotForm (Ω : Type) [Field Ω] (r : ℕ) : (Fin r → Ω) →ₗ[Ω] (Fin r 
   LinearMap.mk₂ Ω (fun a b => a ⬝ᵥ b) add_dotProduct (fun c a b => smul_dotProduct c a b) dotProduct_add
     (fun c a b => dotProduct_smul c a b)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dotForm_apply (Ω : Type) [Field Ω] (r : ℕ) (a b : Fin r → Ω) : dotForm Ω r a b = a ⬝ᵥ b := rfl
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (dotForm Ω r).flip`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `b hb`. Use function extensionality and compare the values at `q`. Use `LinearMap.congr_fun hb (Pi.single q 1)` as an intermediate fact.
+
+Simplify `this` using `[dotForm_apply, single_one_dotProduct]`. Use `⟨hinj, ?_⟩` and prove the remaining obligations. Conclude with `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp [Subspace.dual_finrank_eq])).1 hinj`.
+-/
 theorem dotForm_flip_bijective (Ω : Type) [Field Ω] (r : ℕ) : Function.Bijective (dotForm Ω r).flip := by
   have hinj : Function.Injective (dotForm Ω r).flip := by
     rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
@@ -49,6 +60,13 @@ theorem dotForm_flip_bijective (Ω : Type) [Field Ω] (r : ℕ) : Function.Bijec
   exact (LinearMap.injective_iff_surjective_of_finrank_eq_finrank
     (by simp [Subspace.dual_finrank_eq])).1 hinj
 
+/- English proof (translation)
+Take `⟨bf, bg, hf, hg, hb⟩` from `h.degrees`. Conclude with `⟨bg, bf, hg, hf, by rw [← hb]; funext k; simp⟩`. Use `num_not_mem := h.den_not_mem`. Use `den_not_mem := h.num_not_mem`. Use `vertical W hW := h.vertical W (by`.
+
+Introduce `h0`. Apply `hW` to reduce the goal to its premises. Simplify using `only [ratDiv] at h0 ⊢`. Use the proof step `omega)`. Use `unit_off_special W hp hPW hrel hϖ := by`.
+
+Take `⟨u, v, hu, hv, h1⟩` from `h.unit_off_special W hp hPW hrel hϖ`. Conclude with `⟨v, u, hv, hu, by rw [← neg_sub]; exact P.neg_mem h1⟩`.
+-/
 theorem isVerticalDivisor_swap {K : Type} [DecidableEq K] {ι : K → Type} {O : Type} [CommRing O]
     {P : Ideal (MvPolynomial (Σ k, ι k) O)} {ϖ : O} {b : K → ℤ} {f g : MvPolynomial (Σ k, ι k) O}
     (h : IsVerticalDivisor P ϖ b f g) : IsVerticalDivisor P ϖ (-b) g f where
@@ -63,6 +81,15 @@ theorem isVerticalDivisor_swap {K : Type} [DecidableEq K] {ι : K → Type} {O :
     obtain ⟨u, v, hu, hv, h1⟩ := h.unit_off_special W hp hPW hrel hϖ
     exact ⟨v, u, hv, hu, by rw [← neg_sub]; exact P.neg_mem h1⟩
 
+/- English proof (translation)
+Introduce `O _ _ _ Ω _ _ K _ _ J _ y ϖ r B B' w w' x x' f g h`. Take `⟨v, hv⟩` from `GlobalTheory.T.exists_reversed_dual_basis Ω r w`. Take `⟨v', hv'⟩` from `GlobalTheory.T.exists_reversed_dual_basis Ω r w'`. Take `⟨htri, hdiag⟩` from `GlobalTheory.T.reversed_dual_triangular Ω r w w' v v' hv hv' h.sameFlag`. Establish `hdual : ∀ B₀ : ChartBundle O (segreVec y) r (Fin r → Ω), IsDualLat O y (dotForm Ω r) B₀.lat (dualBundle B₀).lat`.
+
+Introduce `B₀`. Use `⟨dotForm_flip_bijective Ω r, fun s _ e => ?_⟩` and prove the remaining obligations. Conclude with `mem_dualBundle _ _ _`. Use `⟨dualBundle B, dualBundle B', v, v', fun c _ => ⟨rfl, rfl⟩, ?_⟩` and prove the remaining obligations. Use `⟨?_, ?_, htri, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Conclude with `GlobalTheory.T.dual_lattice_flag_frame O Ω K J y r (Fin r → Ω) (Fin r → Ω) B (dualBundle B) (dotForm Ω r) (hdual B) w x h.flag v (fun i j => by rw [dotForm_apply]; exact hv i j)`. Conclude with `GlobalTheory.T.dual_lattice_flag_frame O Ω K J y r (Fin r → Ω) (Fin r → Ω) B' (dualBundle B') (dotForm Ω r) (hdual B') w' x' h.flag' v' (fun i j => by rw [dotForm_apply]; exact hv' i j)`. Use `isVerticalDivisor_swap (h.vertical i.rev)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`.
+
+Simplify using `only [Pi.sub_apply, Pi.neg_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `show aeval y (g i.rev) = v.repr (v' i) i * aeval y (f i.rev)`. Rewrite using `[h.generic i.rev, ← mul_assoc, hdiag i, one_mul]`.
+-/
 theorem dualPair : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω]
     [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω)
     (ϖ : O) (r : ℕ) (B B' : ChartBundle O (segreVec y) r (Fin r → Ω)) (w w' : Module.Basis (Fin r) Ω (Fin r → Ω))

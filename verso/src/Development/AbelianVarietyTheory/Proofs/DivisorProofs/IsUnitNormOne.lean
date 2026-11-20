@@ -20,6 +20,9 @@ def gram2R (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {M : ℕ} 
 def IsUnitNorm (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (a : R ⊗[F] E) : Prop :=
   ∃ s : R ⊗[F] E, IsUnit s ∧ s * sigR R σ s = a
 
+/- English proof (translation)
+Take `⟨s, hs, rfl⟩` from `h`. Conclude with `hs.mul (hs.map (sigR R σ))`.
+-/
 theorem IsUnitNorm.isUnit {R : Type} [CommRing R] [Algebra F R] {σ : E →ₐ[F] E} {a : R ⊗[F] E}
     (h : IsUnitNorm R σ a) : IsUnit a := by
   obtain ⟨s, hs, rfl⟩ := h

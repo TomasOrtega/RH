@@ -11,6 +11,15 @@ open scoped ContDiff ENNReal Matrix
 
 namespace GlobalTheory.UpTie
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hg`. Unfold `domSpan at hg`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem g hg`.
+
+Take `⟨f, hf, rfl⟩` from `hg`. Conclude with `⟨hind f hf, fun x hx => Set.indicator_of_notMem hx _⟩`. Consider the case `zero => exact ⟨h0, fun _ _ => rfl⟩`. Consider the case `add P Q _ _ hP hQ`. Conclude with `⟨hadd _ hP.1 _ hQ.1, fun x hx => by rw [Pi.add_apply, hP.2 x hx, hQ.2 x hx, add_zero]⟩`.
+
+Consider the case `smul a P _ hP`. Conclude with `⟨hsmul a _ hP.1, fun x hx => by rw [Pi.smul_apply, hP.2 x hx, smul_zero]⟩`. Introduce and unpack `⟨hg, hz⟩`. Use `Submodule.subset_span ⟨g, hg, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+
+Distinguish the cases in `hx : x ∈ X.dom`. Conclude with `Set.indicator_of_mem hx _`. Conclude with `(Set.indicator_of_notMem hx _).trans (hz x hx).symm`.
+-/
 theorem mem_domSpan_iff_of_closed {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
     (A : Set (Frame X.Ψ r → ℂ)) (h0 : 0 ∈ A) (hadd : ∀ P ∈ A, ∀ Q ∈ A, P + Q ∈ A)
     (hsmul : ∀ (a : ℂ), ∀ P ∈ A, a • P ∈ A) (hind : ∀ f ∈ A, X.dom.indicator f ∈ A) (g : Frame X.Ψ r → ℂ) :
@@ -34,6 +43,11 @@ theorem mem_domSpan_iff_of_closed {E : Type} [Field E] [NumberField E] [IsCMFiel
     · exact Set.indicator_of_mem hx _
     · exact (Set.indicator_of_notMem hx _).trans (hz x hx).symm
 
+/- English proof (translation)
+Introduce `E _ _ _ r X la c`. Establish `h1 : ∀ f ∈ X.SS la, X.dom.indicator f ∈ X.SS la` using `fun f hf => (GlobalTheory.DomCongr.bddSec_cusp_congr E r X la f _ (fun x hx => (Set.indicator_of_mem hx _).symm)).2 hf`. Establish `h2 : ∀ f ∈ X.SSgt la c, X.dom.indicator f ∈ X.SSgt la c`. Introduce `f hf`. Use `⟨h1 f hf.1, fun ξ hξ ν hν x hx => ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `GlobalTheory.fj_eq_sum_of_eqOn_dom E r X la 1 (fun _ => 1) (fun _ => f) (X.dom.indicator f) (fun _ => hf.1.1) (fun y hy => by simp [Set.indicator_of_mem hy]) ξ hξ ν x hx`. Rewrite using `[e]`. Simplify using `[hf.2 ξ hξ ν hν x hx]`. Take `⟨⟨a0, a1, a2⟩, -, ⟨b0, b1, b2⟩, -⟩` from `siegelSpaceAlgebra_holds (E := E) r X la la c`. Conclude with `⟨h1, h2, mem_domSpan_iff_of_closed X _ a0 a1 a2 h1, mem_domSpan_iff_of_closed X _ b0 b1 b2 h2⟩`.
+-/
 theorem indicator_mem_SS_and_domSpan : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (la : Wt X.Ψ r) (c : ℝ), (∀ f ∈ X.SS la, X.dom.indicator f ∈ X.SS la) ∧ (∀ f ∈ X.SSgt la c, X.dom.indicator f ∈ X.SSgt la c) ∧ (∀ g, g ∈ domSpan X (X.SS la) ↔ g ∈ X.SS la ∧ ∀ x ∉ X.dom, g x = 0) ∧ (∀ g, g ∈ domSpan X (X.SSgt la c) ↔ g ∈ X.SSgt la c ∧ ∀ x ∉ X.dom, g x = 0) := by
   intro E _ _ _ r X la c
   have h1 : ∀ f ∈ X.SS la, X.dom.indicator f ∈ X.SS la := fun f hf =>

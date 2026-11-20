@@ -21,6 +21,17 @@ def Deep (ϖ : kˣ) (x : Fin n → ℤ) (d : ℕ) (g : GL (Fin n) k) : Prop :=
   ∀ i j : Fin n, i < j → j.val ≤ i.val + d →
     valuation k ((g : Matrix (Fin n) (Fin n) k) i j) ≤ valuation k (((ϖ ^ (x i - x j) : kˣ)) : k)
 
+/- English proof (translation)
+Introduce `i j hij hd`. Take `⟨g0, g1⟩` from `(mem_unipB k).1 hg.2`. Take `⟨h0, h1⟩` from `(mem_unipB k).1 hh.2`. Rewrite using `[Units.val_mul, Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations.
+
+Break down `lt_trichotomy l i with hl | rfl | hl` into its components or cases. Rewrite using `[g0 i l hl, zero_mul, map_zero]`. Conclude with `zero_le'`. Rewrite using `[g1, one_mul]`. Conclude with `dh _ _ hij hd`.
+
+Break down `lt_trichotomy l j with hl' | rfl | hl'` into its components or cases. Rewrite using `[map_mul]`. Establish `e : (((ϖ ^ (x i - x j) : kˣ)) : k) = ((ϖ ^ (x i - x l) : kˣ) : k) * ((ϖ ^ (x l - x j) : kˣ) : k)`. Rewrite using `[← Units.val_mul, ← _root_.zpow_add]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_mul]`. Conclude with `mul_le_mul' (dg _ _ hl (by have := Fin.lt_def.1 hl'; omega)) (dh _ _ hl' (by have := Fin.lt_def.1 hl; omega))`. Rewrite using `[h1, mul_one]`. Conclude with `dg _ _ hij hd`.
+
+Rewrite using `[h0 l j hl', mul_zero, map_zero]`. Conclude with `zero_le'`.
+-/
 theorem Deep.mul {ϖ : kˣ} {x : Fin n → ℤ} {d : ℕ} {g h : GL (Fin n) k} (hg : g ∈ nO k n) (hh : h ∈ nO k n)
     (dg : Deep ϖ x d g) (dh : Deep ϖ x d h) : Deep ϖ x d (g * h) := by
   intro i j hij hd
@@ -56,6 +67,9 @@ def filt (ϖ : kˣ) (x : Fin n → ℤ) (d : ℕ) : Subgroup (GL (Fin n) k) wher
     rintro g ⟨hg, dg, dg'⟩
     exact ⟨inv_mem hg, dg', by simpa using dg⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_filt {ϖ : kˣ} {x : Fin n → ℤ} {d : ℕ} {g : GL (Fin n) k} :
     g ∈ filt ϖ x d ↔ g ∈ nO k n ∧ Deep ϖ x d g ∧ Deep ϖ x d g⁻¹ := Iff.rfl
 

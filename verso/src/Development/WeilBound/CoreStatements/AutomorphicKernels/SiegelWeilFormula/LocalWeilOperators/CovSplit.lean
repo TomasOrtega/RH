@@ -15,6 +15,9 @@ namespace SD
 
 variable (d : SD σ)
 
+/- English proof (translation)
+The claim follows from `KFock.cov_split d w ins hins ν hν`.
+-/
 theorem cov_split (w : InfinitePlace F) (ins : Matrix (Fin d.m) (Fin d.n) ℂ → Mx F E d.m d.n)
     (hins : ∀ M, d.cw w (ins M) = M ∧ (∀ w', w' ≠ w → d.cw w' (ins M) = 0) ∧ finOne F • ins M = 0)
     (ν : Measure (Mx F E d.m d.n)) (hν : d.IsCov ν) :

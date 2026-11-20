@@ -27,6 +27,9 @@ def rowZero (hstd : Formalism.L2.Theta.IsStdChar (I.rec7 l Z) (pk W).ψ (-1)) (g
   io := fun _ => 0
   ioT := fun _ _ => 0
 
+/- English proof (translation)
+The claim follows from `((ha.tie (fun t => rowZero W.Q.stdChar a.g t) (fun t => colNone t)).2.idem n).1`.
+-/
 theorem idem_at (hW : AllTrue W) (a : GeoAll W u) (ha : a.Is) (n : Fin a.n) :
     Formalism.L2.NTheta.IsIdemAt (a.G n).q.e (a.pl n).1 :=
   ((ha.tie (fun t => rowZero W.Q.stdChar a.g t) (fun t => colNone t)).2.idem n).1

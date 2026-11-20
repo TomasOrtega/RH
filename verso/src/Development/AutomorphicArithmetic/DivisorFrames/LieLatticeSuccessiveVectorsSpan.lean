@@ -11,6 +11,9 @@ open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Semi 
 section
 open GlobalTheory.ShFam GlobalTheory.ShFam.Pad
 
+/- English proof (translation)
+Take `⟨τ, i⟩` from `x`. Take `⟨a, rfl⟩` from `(Fintype.equivFin (E →+* ℂ)).symm.surjective τ`. Unfold `letters`. Conclude with `List.mem_flatMap.2 ⟨a, List.mem_finRange _, List.mem_map.2 ⟨i, List.mem_finRange _, rfl⟩⟩`.
+-/
 private theorem mem_letters' {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (Dw : Datum H) (x : Letter Dw) : x ∈ letters Dw := by
   obtain ⟨τ, i⟩ := x
@@ -18,6 +21,13 @@ private theorem mem_letters' {E : Type} [Field E] [NumberField E] [IsCMField E] 
   unfold letters
   exact List.mem_flatMap.2 ⟨a, List.mem_finRange _, List.mem_map.2 ⟨i, List.mem_finRange _, rfl⟩⟩
 
+/- English proof (translation)
+Unfold `letters`. Rewrite using `[List.nodup_flatMap]`. Use `⟨fun a _ => (List.nodup_finRange _).map fun i j h => ?_, ?_⟩` and prove the remaining obligations. Conclude with `eq_of_heq (Sigma.mk.inj_iff.1 h).2`. Use `(List.nodup_finRange _).imp ?_` and prove the remaining obligations.
+
+Introduce `a b hab`. Simplify using `only [Function.onFun]`. Introduce `x hx hy`. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hx`. Take `⟨j, -, h⟩` from `List.mem_map.1 hy`.
+
+Conclude with `hab ((Fintype.equivFin (E →+* ℂ)).symm.injective (congrArg Sigma.fst h)).symm`.
+-/
 private theorem nodup_letters' {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (Dw : Datum H) : (letters Dw).Nodup := by
   unfold letters
@@ -32,6 +42,17 @@ private theorem nodup_letters' {E : Type} [Field E] [NumberField E] [IsCMField E
     obtain ⟨j, -, h⟩ := List.mem_map.1 hy
     exact hab ((Fintype.equivFin (E →+* ℂ)).symm.injective (congrArg Sigma.fst h)).symm
 
+/- English proof (translation)
+Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨d, hd, hx⟩` from `hx`.
+
+Take `⟨e, he, hy⟩` from `hy`. Use `⟨d * e, mul_ne_zero hd he, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `L.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`.
+
+Conclude with `L.smul_mem _ hx`. Rewrite using `[mul_smul]`. Conclude with `L.smul_mem _ hy`. Consider the case `smul a x _ hx`. Take `⟨d, hd, hx⟩` from `hx`.
+
+Take `⟨⟨e, he⟩, b, hb⟩` from `IsLocalization.exists_integer_multiple (nonZeroDivisors (𝓞 K)) a`. Use `⟨e * d, mul_ne_zero (nonZeroDivisors.ne_zero he) hd, ?_⟩` and prove the remaining obligations. Establish `: (e * d) • a • x = b • d • x`. Rewrite using `[mul_comm, mul_smul, ← smul_assoc e a x, show e • a = algebraMap _ K b from hb.symm, algebraMap_smul, smul_comm]`. Rewrite using `[this]`.
+
+Conclude with `L.smul_mem _ hx`.
+-/
 private theorem exists_mul_mem' {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (L : Submodule (𝓞 K) V) (v : V)
     (hv : v ∈ Submodule.span K (L : Set V)) : ∃ d : 𝓞 K, d ≠ 0 ∧ d • v ∈ L := by
@@ -58,6 +79,31 @@ private theorem exists_mul_mem' {K : Type} [Field K] [NumberField K] {V : Type} 
 end
 
 open GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.LieRead in
+/- English proof (translation)
+Introduce `D O K _ _ F hg hfull ρ`. Establish `key : ∀ i : Fin (O.S.Dw.mult ρ), ∃ q : Fin F.P₀.g, (letters O.S.Dw)[(q : ℕ)]? = some ⟨ρ, i⟩ ∧ stepVec O F ρ i = Pi.single q 1`. Introduce `i`. Take `⟨n, hn, hq⟩` from `List.getElem_of_mem (mem_letters' O.S.Dw ⟨ρ, i⟩)`. Set `q : Fin F.P₀.g` to `⟨n, hg ▸ hn⟩`.
+
+Establish `hq' : (letters O.S.Dw)[(q : ℕ)]? = some ⟨ρ, i⟩` using `List.getElem?_eq_some_iff.2 ⟨hn, hq⟩`. Use `⟨q, hq', ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Unfold `stepVec`. Distinguish the cases in `hp : p = q`.
+
+Substitute `hp` using the available equality. Rewrite using `[if_pos ⟨_, rfl, rfl, hq'⟩, Pi.single_eq_same]`. Rewrite using `[Pi.single_eq_of_ne hp, if_neg]`. Introduce and unpack `⟨⟨τ', j⟩, h1, h2, h3⟩`. Simplify using `only at h1 h2`.
+
+Substitute `h1` using the available equality. Take `rfl : j = i` from `Fin.ext h2`. Take `⟨hp', h4⟩` from `List.getElem?_eq_some_iff.1 h3`. Conclude with `hp (Fin.ext ((List.Nodup.getElem_inj_iff (nodup_letters' O.S.Dw)).1 (h4.trans hq.symm)))`. Use `choose q hq hvec using key`.
+
+Establish `hinj : Function.Injective q`. Introduce `i j h`. Establish `h1` using `hq i`. Rewrite `h1` using `[h, hq j]`. Conclude with `(eq_of_heq (Sigma.mk.inj_iff.1 (Option.some.inj h1)).2).symm`.
+
+Establish `hset : {v : Fin F.P₀.g → K | ∃ (i : Fin F.P₀.g) (x : Letter O.S.Dw), x.1 = ρ ∧ (x.2 : ℕ) < O.S.Dw.mult ρ ∧ (letters O.S.Dw)[(i : ℕ)]? = some x ∧ v = Pi.single i 1} = Set.range fun i : Fin (O.S.Dw.mult ρ) => stepVec O F ρ i`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, ⟨τ', j⟩, h1, -, h3, rfl⟩ dsimp only at h1`. Substitute `h1` using the available equality.
+
+Use `⟨j, ?_⟩` and prove the remaining obligations. Take `⟨hk', h4⟩` from `List.getElem?_eq_some_iff.1 h3`. Take `⟨hj', h5⟩` from `List.getElem?_eq_some_iff.1 (hq j)`. Establish `: q j = k` using `Fin.ext ((List.Nodup.getElem_inj_iff (nodup_letters' O.S.Dw)).1 (h5.trans h4.symm))`. Simplify using `only [hvec, this]`.
+
+Introduce and unpack `⟨i, rfl⟩`. Conclude with `⟨q i, ⟨ρ, i⟩, rfl, i.2, hq i, hvec i⟩`. Establish `hlat : stepLat O F ρ (O.S.Dw.mult ρ) = F.lieLat ⊓ (Submodule.span K (Set.range fun i : Fin (O.S.Dw.mult ρ) => stepVec O F ρ i)).restrictScalars (𝓞 K)`. Rewrite using `[stepLat, hset]`. Use `⟨?_, hlat, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `(Pi.basisFun K (Fin F.P₀.g)).linearIndependent.comp q hinj`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[hvec]`. Conclude with `Submodule.FG.of_le hfull.1 inf_le_left`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `v hv`. Take `⟨d, hd, hdv⟩` from `exists_mul_mem' F.lieLat v (by rw [hfull.2]; trivial)`. Establish `hm : d • v ∈ stepLat O F ρ (O.S.Dw.mult ρ)`. Rewrite using `[hlat]`.
+
+Conclude with `⟨hdv, Submodule.smul_mem ((Submodule.span K (Set.range fun i : Fin (O.S.Dw.mult ρ) => stepVec O F ρ i)).restrictScalars (𝓞 K)) d hv⟩`. Establish `hd' : (algebraMap (𝓞 K) K d) ≠ 0` using `by simpa using hd`. Establish `: v = (algebraMap (𝓞 K) K d)⁻¹ • d • v`. Rewrite using `[← algebraMap_smul K d v, smul_smul, inv_mul_cancel₀ hd', one_smul]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hm)`. Rewrite using `[Submodule.span_le, hlat]`. Conclude with `fun v hv => hv.2`.
+-/
 theorem UpperTheory.lie_lattice_successive_vectors_span :
     ∀ (D : D7) (O : GlobalTheory.Mean4O.Setup D) (K : Type) [Field K] [NumberField K] (F : GlobalTheory.LieHt.SemiFib K), F.P₀.g = (GlobalTheory.ShFam.Pad.letters O.S.Dw).length → GlobalTheory.LieHt.Full F.lieLat → ∀ ρ : D.host.E →+* ℂ, LinearIndependent K (fun i : Fin (O.S.Dw.mult ρ) => GlobalTheory.LieRead.stepVec O F ρ i) ∧ GlobalTheory.LieRead.stepLat O F ρ (O.S.Dw.mult ρ) = F.lieLat ⊓ (Submodule.span K (Set.range fun i : Fin (O.S.Dw.mult ρ) => GlobalTheory.LieRead.stepVec O F ρ i)).restrictScalars (𝓞 K) ∧ (GlobalTheory.LieRead.stepLat O F ρ (O.S.Dw.mult ρ)).FG ∧ Submodule.span K (Set.range fun i : Fin (O.S.Dw.mult ρ) => GlobalTheory.LieRead.stepVec O F ρ i) = Submodule.span K (GlobalTheory.LieRead.stepLat O F ρ (O.S.Dw.mult ρ) : Set (Fin F.P₀.g → K)) := by
   classical

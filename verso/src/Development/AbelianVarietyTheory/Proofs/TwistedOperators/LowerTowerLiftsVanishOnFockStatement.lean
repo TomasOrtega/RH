@@ -7,5 +7,8 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.PairLift
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LowerMembersRule.lowFock | exact GlobalTheory.LowerMembersRule.lowFock | (intros; apply GlobalTheory.LowerMembersRule.lowFock <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lowerTowerLifts_vanish_on_fock : ∀ (D : D7) (X : ProvA), Inputs D X → LowFock D X := by
   first | exact @GlobalTheory.LowerMembersRule.lowFock | exact GlobalTheory.LowerMembersRule.lowFock | (intros; apply GlobalTheory.LowerMembersRule.lowFock <;> assumption)

@@ -34,6 +34,11 @@ def ThetaPrimeExistsFor (R : RealDat D A Ks) : Prop :=
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨-, thP, h1, h2⟩` from `h`. Establish `e1` using `h1.integ ((R.extV i t).rangeRestrict x) (PiTensorProduct.tprod ℂ v) g`. Establish `e2` using `h1.eq ((R.extV i t).rangeRestrict x) (PiTensorProduct.tprod ℂ v) g`. Establish `e3 : (((R.extV i t).rangeRestrict x : LinearMap.range (R.extV i t)) : GA D (Vc D i) → (R.cV i).W) = R.extV i t x` using `rfl`. Simplify using `only [Lift.thetaPInt, thetaKO, e3] at e1 e2`.
+
+Conclude with `⟨e1, (congrFun (h2 x v) g).trans e2⟩`.
+-/
 theorem IsThetaPrimeMult.integral {R : RealDat D A Ks} {i : Fin D.R.m} {t : T}
     {y : (R.HV i t).H →ₗ[ℂ] MMap (R.MW i (sg0 D A))} (h : IsThetaPrimeMult R i t y)
     (x : (R.HV i t).H) (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) (g : GA D (Wc D i)) :
@@ -48,6 +53,9 @@ theorem IsThetaPrimeMult.integral {R : RealDat D A Ks} {i : Fin D.R.m} {t : T}
   simp only [Lift.thetaPInt, thetaKO, e3] at e1 e2
   exact ⟨e1, (congrFun (h2 x v) g).trans e2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨fun i t => (h i t).1, fun i t => (h i t).2⟩, fun h i t => ⟨h.1 i t, h.2 i t⟩⟩`.
+-/
 theorem isThetaPrimeMult_thF_iff (R : RealDat D A Ks) :
     (∀ i t, IsThetaPrimeMult R i t (R.thF i t)) ↔ R.thP_thF_mem ∧ R.thP_thF :=
   ⟨fun h => ⟨fun i t => (h i t).1, fun i t => (h i t).2⟩, fun h i t => ⟨h.1 i t, h.2 i t⟩⟩

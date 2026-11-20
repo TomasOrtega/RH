@@ -19,6 +19,11 @@ section Fourier
 
 variable [MeasurableSpace F] [BorelSpace F]
 
+/- English proof (translation)
+Establish `hm : Measurable (L : (ι → F) → (ι → F))` using `(L.toLinearMap.continuous_on_pi).measurable`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply hm hs]`. Establish `h1 : (L : (ι → F) → (ι → F)) ⁻¹' s = L⁻¹ • s`.
+
+Rewrite using `[← Set.preimage_smul]`. Both sides reduce to the same expression. Rewrite using `[h1, ← distribHaarChar_mul, map_inv, hL, inv_one, ENNReal.coe_one, one_mul]`.
+-/
 theorem measurePreserving_of_distribHaarChar_eq_one {ι : Type*} [Fintype ι]
     {L : (ι → F) ≃ₗ[F] (ι → F)} (hL : distribHaarChar (ι → F) L = 1)
     (μ₀ : Measure (ι → F)) [μ₀.IsAddHaarMeasure] : MeasurePreserving L μ₀ μ₀ := by
@@ -39,11 +44,21 @@ def mulMulEntries (a b : GL (Fin n) F) : (Fin n × Fin n → F) ≃ₗ[F] (Fin n
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F]
   [BorelSpace F] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulMulEntries_apply (a b : GL (Fin n) F) (z : Fin n × Fin n → F) :
     mulMulEntries F n a b z = entries F n ((a : Matrix (Fin n) (Fin n) F) * (entries F n).symm z *
       (b : Matrix (Fin n) (Fin n) F)) := rfl
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Establish `key : ∀ {a b : GL (Fin n) F}, a ∈ integralGL F n → b ∈ integralGL F n → ∀ x ∈ box F (Fin n × Fin n), mulMulEntries F n a b x ∈ box F (Fin n × Fin n)`. Introduce `a b ha hb x hx`. Rewrite `hx`, the goal using `[mem_box]`. Introduce `ij`. Rewrite using `[mulMulEntries_apply, entries_apply]`.
+
+Conclude with `mul_mul_apply_mem_integer ((mem_integralGL_iff F n).1 ha).1 (fun i j => hx (i, j)) ((mem_integralGL_iff F n).1 hb).1 _ _`. Use `distribHaarChar_eq_one_of_mapsTo_box (key ha hb) fun x hx => ?_` and prove the remaining obligations. Establish `: (mulMulEntries F n a b).symm x = mulMulEntries F n a⁻¹ b⁻¹ x`. Rewrite using `[LinearEquiv.symm_apply_eq, mulMulEntries_apply, mulMulEntries_apply]`. Use extensionality with `ij`.
+
+Simplify using `[← mul_assoc]`. Rewrite using `[this]`. Conclude with `key (inv_mem ha) (inv_mem hb) x hx`.
+-/
 theorem distribHaarChar_mulMulEntries {a b : GL (Fin n) F} (ha : a ∈ integralGL F n)
     (hb : b ∈ integralGL F n) :
     distribHaarChar (Fin n × Fin n → F) (mulMulEntries F n a b) = 1 := by
@@ -63,6 +78,11 @@ theorem distribHaarChar_mulMulEntries {a b : GL (Fin n) F} (ha : a ∈ integralG
   rw [this]
   exact key (inv_mem ha) (inv_mem hb) x hx
 
+/- English proof (translation)
+Establish `hL` using `measurePreserving_of_distribHaarChar_eq_one (distribHaarChar_mulMulEntries ha hb) (Measure.pi fun _ : Fin n × Fin n => μF)`. Set `E : Matrix (Fin n) (Fin n) F ≃ᵐ (Fin n × Fin n → F)` to `(matrixCoordHomeomorph (Fin n) F).toMeasurableEquiv`. Establish `hE : MeasurePreserving E (matrixMeasure μF) (Measure.pi fun _ => μF)` using `measurePreserving_matrixCoord (n := Fin n) μF`. Establish `hcomp` using `(hE.symm E).comp (hL.comp hE)`. Use `hcomp using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `X`. Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem measurePreserving_mul_mul (μF : Measure F) [μF.IsAddHaarMeasure] {a b : GL (Fin n) F}
     (ha : a ∈ integralGL F n) (hb : b ∈ integralGL F n) :
     MeasurePreserving (fun X : Matrix (Fin n) (Fin n) F =>
@@ -80,6 +100,15 @@ theorem measurePreserving_mul_mul (μF : Measure F) [μF.IsAddHaarMeasure] {a b 
   ext i j
   rfl
 
+/- English proof (translation)
+Establish `hT` using `measurePreserving_mul_mul (LocalField.selfDualMeasure ψ) ha hb`. Establish `hmeas : ∀ c d : GL (Fin n) F, Measurable (fun X : Matrix (Fin n) (Fin n) F => (c : Matrix (Fin n) (Fin n) F) * X * (d : Matrix (Fin n) (Fin n) F))` using `fun c d => ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const).measurable`. Establish `hemb : MeasurableEmbedding (fun X : Matrix (Fin n) (Fin n) F => (a : Matrix (Fin n) (Fin n) F) * X * (b : Matrix (Fin n) (Fin n) F))`. Use `MeasurableEmbedding.of_measurable_inverse (hmeas a b) ?_ (hmeas a⁻¹ b⁻¹) ?_` and prove the remaining obligations. Establish `: Set.range (fun X : Matrix (Fin n) (Fin n) F => (a : Matrix (Fin n) (Fin n) F) * X * (b : Matrix (Fin n) (Fin n) F)) = Set.univ` using `Set.eq_univ_of_forall fun Y => ⟨((a⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * Y * ((b⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F), by`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Units.inv_mul, Matrix.mul_one, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]⟩`. Rewrite using `[this]`. Conclude with `MeasurableSet.univ`. Introduce `X`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Units.mul_inv, Matrix.mul_one, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Rewrite using `[localMatrixFourier, localMatrixFourier]`. Use `conv_rhs => rw [← hT.integral_comp hemb]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `X`. Establish `htr : trace ((a : Matrix (Fin n) (Fin n) F) * X * (b : Matrix (Fin n) (Fin n) F) * (((b⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * y * ((a⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F))) = trace (X * y)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (b : Matrix (Fin n) (Fin n) F), Units.mul_inv, Matrix.one_mul, Matrix.trace_mul_comm, Matrix.mul_assoc, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`. Rewrite using `[htr]`.
+-/
 theorem localMatrixFourier_mul_mul (ψ : AddChar F Circle) {a b : GL (Fin n) F}
     (ha : a ∈ integralGL F n) (hb : b ∈ integralGL F n) (Φ : Matrix (Fin n) (Fin n) F → ℂ)
     (y : Matrix (Fin n) (Fin n) F) :
@@ -116,6 +145,9 @@ theorem localMatrixFourier_mul_mul (ψ : AddChar F Circle) {a b : GL (Fin n) F}
       Matrix.trace_mul_comm, Matrix.mul_assoc, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]
   rw [htr]
 
+/- English proof (translation)
+Establish `h` using `localMatrixFourier_mul_mul ψ (inv_mem hx) (one_mem _) Φ y`. Simplify using `only [Units.val_one, Matrix.mul_one, inv_one, Matrix.one_mul, inv_inv] at h`. Conclude with `h`.
+-/
 theorem localMatrixFourier_inv_mul (ψ : AddChar F Circle) {x : GL (Fin n) F}
     (hx : x ∈ integralGL F n) (Φ : Matrix (Fin n) (Fin n) F → ℂ) (y : Matrix (Fin n) (Fin n) F) :
     localMatrixFourier ψ (fun X => Φ (((x⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * X)) y =
@@ -124,6 +156,13 @@ theorem localMatrixFourier_inv_mul (ψ : AddChar F Circle) {x : GL (Fin n) F}
   simp only [Units.val_one, Matrix.mul_one, inv_one, Matrix.one_mul, inv_inv] at h
   exact h
 
+/- English proof (translation)
+Introduce `k hk Y`. Prove the components needed by the constructor for the conclusion. Establish `h` using `localMatrixFourier_mul_mul ψ (one_mem _) (hK0 k hk) Φ ((k : Matrix _ _ F) * Y)`. Establish `hfun : (fun X => Φ (((1 : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * X * (k : Matrix (Fin n) (Fin n) F))) = Φ`. Use function extensionality and compare the values at `X`.
+
+Rewrite using `[Units.val_one, Matrix.one_mul, (hΦK k hk X).2]`. Rewrite `h` using `[hfun, inv_one, Units.val_one, Matrix.mul_one, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Conclude with `h`. Establish `h` using `localMatrixFourier_mul_mul ψ (hK0 k hk) (one_mem _) Φ (Y * (k : Matrix _ _ F))`. Establish `hfun : (fun X => Φ ((k : Matrix (Fin n) (Fin n) F) * X * ((1 : GL (Fin n) F) : Matrix (Fin n) (Fin n) F))) = Φ`.
+
+Use function extensionality and compare the values at `X`. Rewrite using `[Units.val_one, Matrix.mul_one, (hΦK k hk X).1]`. Rewrite `h` using `[hfun, inv_one, Units.val_one, Matrix.one_mul, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Conclude with `h`.
+-/
 theorem localMatrixFourier_invariant (ψ : AddChar F Circle) {K : Subgroup (GL (Fin n) F)}
     (hK0 : ∀ k ∈ K, k ∈ integralGL F n) {Φ : Matrix (Fin n) (Fin n) F → ℂ}
     (hΦK : ∀ k ∈ K, ∀ X, Φ ((k : Matrix (Fin n) (Fin n) F) * X) = Φ X ∧
@@ -150,6 +189,9 @@ theorem localMatrixFourier_invariant (ψ : AddChar F Circle) {K : Subgroup (GL (
       Matrix.mul_one] at h
     exact h
 
+/- English proof (translation)
+Establish `hΘ : IsSchwartzBruhat (fun X : Matrix (Fin n) (Fin n) F => Φ' (-X))` using `⟨hΦ'.1.comp_continuous continuous_neg, hΦ'.2.comp_homeomorph (Homeomorph.neg _)⟩`. Use `⟨localMatrixFourier ψ (fun X => Φ' (-X)), hΘ.localMatrixFourier hψ hψ1, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `X`. Rewrite using `[localMatrixFourier_localMatrixFourier hψ hψ1 hΘ, neg_neg]`.
+-/
 theorem exists_localMatrixFourier_eq {ψ : AddChar F Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1)
     {Φ' : Matrix (Fin n) (Fin n) F → ℂ} (hΦ' : IsSchwartzBruhat Φ') :
     ∃ Φ : Matrix (Fin n) (Fin n) F → ℂ, IsSchwartzBruhat Φ ∧ localMatrixFourier ψ Φ = Φ' := by
@@ -167,6 +209,33 @@ variable {α : Type*} [LinearOrder α] {β : Fin n → α} {W : Type*} [AddCommG
   {σ : Representation ℂ (levi F n β) W} [MeasurableSpace (GL (Fin n) F)]
   [BorelSpace (GL (Fin n) F)]
 
+/- English proof (translation)
+Use `set h : ℤ → GL (Fin n) F → ℂ := fun j => {g : GL (Fin n) F | ordDet g = j}.indicator H with hhdef`. Establish `hordl : ∀ k ∈ K, ∀ g, ordDet (k * g) = ordDet g` using `fun k hk g => by`. Rewrite using `[ordDet_mul, ordDet_of_mem_integralGL (hK0 k hk), zero_add]`. Establish `hordr : ∀ k ∈ K, ∀ g, ordDet (g * k) = ordDet g` using `fun k hk g => by`. Rewrite using `[ordDet_mul, ordDet_of_mem_integralGL (hK0 k hk), add_zero]`.
+
+Establish `hhl : ∀ j, ∀ k ∈ K, ∀ g, h j (k * g) = h j g` using `fun j k hk g => by`. Simplify using `only [h, Set.indicator_apply, Set.mem_ofPred_eq, hordl k hk, hHl k hk]`. Establish `hhr : ∀ j, ∀ k ∈ K, ∀ g, h j (g * k) = h j g` using `fun j k hk g => by`. Simplify using `only [h, Set.indicator_apply, Set.mem_ofPred_eq, hordr k hk, hHr k hk]`. Establish `hcont : ∀ G' : GL (Fin n) F → ℂ, (∀ g, ∀ k ∈ K, G' (g * k) = G' g) → Continuous G'` using `fun G' hG' => (isLocallyConstant_of_mul_right hKo hG').continuous`.
+
+Establish `hfr : ∀ g, ∀ k ∈ K, lam (parabolicInd F n β σ (g * k) φ) = lam (parabolicInd F n β σ g φ)` using `fun g k hk => by`. Rewrite using `[map_mul, Module.End.mul_apply, show parabolicInd F n β σ k φ = φ from hφ k hk]`. Establish `hφr : ∀ x g, ∀ k ∈ K, (φ : GL (Fin n) F → W) (x * (g * k)) = (φ : GL (Fin n) F → W) (x * g)` using `fun x g k hk => by`. Use `congrArg (fun ψ : parabolicIndSpace F n β σ => (ψ : GL (Fin n) F → W) (x * g)) (hφ k hk)` as an intermediate fact. Simplify using `only [coe_indRep_apply] at this`.
+
+Rewrite using `[← mul_assoc, this]`. Establish `hhf : ∀ j, Integrable (fun g => ‖h j g * lam (parabolicInd F n β σ g φ)‖) μ` using `fun j => ((hcont _ fun g k' hk' => by rw [hhr j k' hk', hfr g k' hk']).norm).integrable_of_hasCompactSupport (hHc j).mul_right.norm`. Establish `hhint : ∀ j, ∀ x ∈ R, Integrable (fun g => ‖h j g‖ * ‖ℓ x ((φ : GL (Fin n) F → W) (x * g))‖) μ` using `fun j x _ => ((hcont _ fun g k' hk' => by rw [hhr j k' hk']).norm.mul (hcont _ fun g k' hk' => by rw [hφr x g k' hk']).norm).integrable_of_hasCompactSupport (hHc j).norm.mul_right`. Establish `hInt : Integrable (fun g => H g * lam (parabolicInd F n β σ g φ)) μ`. Use `⟨(hcont _ fun g k hk => by rw [hHr k hk, hfr g k hk]).aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[HasFiniteIntegral]`. Repeatedly rewrite using `[← ofReal_norm]`. Rewrite using `[lintegral_eq_tsum_shell]`. Establish `hterm : ∀ j : ℤ, ∫⁻ g in {g : GL (Fin n) F | ordDet g = j}, ENNReal.ofReal ‖H g * lam (parabolicInd F n β σ g φ)‖ ∂μ ≤ ∑ x ∈ R, ∫⁻ g in {g : GL (Fin n) F | ordDet g = j}, ENNReal.ofReal ‖H g * ℓ x ((φ : GL (Fin n) F → W) (x * g))‖ ∂μ`. Introduce `j`.
+
+Establish `e1 : ∀ g, {g : GL (Fin n) F | ordDet g = j}.indicator (fun g => ENNReal.ofReal ‖H g * lam (parabolicInd F n β σ g φ)‖) g = ENNReal.ofReal ‖h j g * lam (parabolicInd F n β σ g φ)‖`. Introduce `g`. Distinguish the cases in `hg : g ∈ {g : GL (Fin n) F | ordDet g = j}`. Simplify using `[h, Set.indicator_of_mem hg]`. Simplify using `[h, Set.indicator_of_notMem hg]`.
+
+Establish `e2 : ∀ x g, {g : GL (Fin n) F | ordDet g = j}.indicator (fun g => ENNReal.ofReal ‖H g * ℓ x ((φ : GL (Fin n) F → W) (x * g))‖) g = ENNReal.ofReal (‖h j g‖ * ‖ℓ x ((φ : GL (Fin n) F → W) (x * g))‖)`. Introduce `x g`. Distinguish the cases in `hg : g ∈ {g : GL (Fin n) F | ordDet g = j}`. Simplify using `[h, Set.indicator_of_mem hg]`. Simplify using `[h, Set.indicator_of_notMem hg]`.
+
+Rewrite using `[← lintegral_indicator (measurableSet_shell j), lintegral_congr e1]`. Repeatedly rewrite using `[← lintegral_indicator (measurableSet_shell j), e2]`. Conclude with `lintegral_norm_mul_coeff_le μ hKc hKo hlam hφ hdec (hHc j) (hhl j) (hhr j) (hhf j) (hhint j)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Summable.tsum_finsetSum fun _ _ => ENNReal.summable]`.
+
+Conclude with `Finset.sum_congr rfl fun x _ => (lintegral_eq_tsum_shell μ _).symm`. Use `_ < ⊤ := by`. Use `ENNReal.sum_lt_top.2 fun x hx => ?_` and prove the remaining obligations. Use `(hint x hx).2` as an intermediate fact. Simplify `this` using `[HasFiniteIntegral, ofReal_norm]`.
+
+Use `⟨hInt, ?_⟩` and prove the remaining obligations. Establish `hZsum` using `hasSum_integral_shell μ hInt`. Establish `hTsum : ∀ x ∈ R, HasSum (fun j : ℤ => ∫ g in {g : GL (Fin n) F | ordDet g = j}, H g * ℓ x ((φ : GL (Fin n) F → W) (x * g)) ∂μ) (∫ g, H g * ℓ x ((φ : GL (Fin n) F → W) (x * g)) ∂μ)` using `fun x hx => hasSum_integral_shell μ (hint x hx)`. Establish `hsum` using `hasSum_sum hTsum`. Establish `hshell_eq : ∀ j : ℤ, ∫ g in {g : GL (Fin n) F | ordDet g = j}, H g * lam (parabolicInd F n β σ g φ) ∂μ = ∑ x ∈ R, ∫ g in {g : GL (Fin n) F | ordDet g = j}, H g * ℓ x ((φ : GL (Fin n) F → W) (x * g)) ∂μ`.
+
+Introduce `j`. Rewrite using `[← integral_indicator (measurableSet_shell j)]`. Repeatedly rewrite using `[Set.indicator_mul_left _ H]`. Rewrite using `[integral_mul_coeff_eq μ hKc hKo hφ hdec (hHc j) (hhl j) (hhr j)]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← integral_indicator (measurableSet_shell j)]`. Repeatedly rewrite using `[Set.indicator_mul_left _ H]`. Use `hZsum.unique ?_` and prove the remaining obligations. Use `hsum using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+
+Conclude with `hshell_eq j`.
+-/
 theorem integrable_and_integral_mul_coeff_eq (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure]
     {K : Subgroup (GL (Fin n) F)} (hKc : IsCompact (K : Set (GL (Fin n) F)))
     (hKo : IsOpen (K : Set (GL (Fin n) F))) (hK0 : ∀ k ∈ K, k ∈ integralGL F n)
@@ -286,6 +355,51 @@ universe u
 variable {V : Type u} [AddCommGroup V] [Module ℂ V] {π : Representation ℂ (GL (Fin n) F) V}
   [MeasurableSpace F] [BorelSpace F] [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
 
+/- English proof (translation)
+Take `⟨β, W, _, _, σ, hσirr, hσs, hσc, hσa, ι, hι⟩` from `exists_embedding_parabolicInd (π := π) hπ.1`. Take `⟨γ, hγ⟩` from `hI β W σ hσa hσirr hσc`. Use `⟨γ, fun Φ hΦ v ℓ hℓ => ?_⟩` and prove the remaining obligations. Establish `: μ.IsInvInvariant` using `⟨inv_eq_self_GL F n μ⟩`. Take `⟨m₀, hm₀⟩` from `hΦ.exists_congruence_invariant`.
+
+Take `⟨m₁, -, hm₁⟩` from `(hasBasis_nhds_one F n).mem_iff.1 ((hπ.1 v).mem_nhds (one_mem (stabilizerOf π v)))`. Take `⟨m₂, -, hm₂⟩` from `(hasBasis_nhds_one F n).mem_iff.1 ((mem_smoothVectors.1 hℓ).mem_nhds (one_mem (stabilizerOf (Representation.dual π) ℓ)))`. Use `set m := max m₀ (max m₁ m₂) with hmdef`. Use `set K := congruenceSubgroup F n m with hKdef`. Establish `hKc : IsCompact (K : Set (GL (Fin n) F))` using `isCompact_congruenceSubgroup F n m`.
+
+Establish `hKo : IsOpen (K : Set (GL (Fin n) F))` using `isOpen_congruenceSubgroup F n m`. Establish `hK0 : ∀ k ∈ K, k ∈ integralGL F n` using `fun k hk => congruenceSubgroup_le F n m hk`. Establish `hvK : ∀ k ∈ K, π k v = v` using `fun k hk => hm₁ (congruenceSubgroup_antitone F n (le_max_of_le_right (le_max_left m₁ m₂)) hk)`. Establish `hℓK : ∀ k ∈ K, ∀ x, ℓ (π k x) = ℓ x` using `mem_fixedVectors_dual.1 fun k hk => hm₂ (congruenceSubgroup_antitone F n (le_max_of_le_right (le_max_right m₁ m₂)) hk)`. Establish `hΦK : ∀ k ∈ K, ∀ X, Φ ((k : Matrix (Fin n) (Fin n) F) * X) = Φ X ∧ Φ (X * (k : Matrix (Fin n) (Fin n) F)) = Φ X` using `fun k hk => hm₀ k (congruenceSubgroup_antitone F n (le_max_left _ _) hk)`.
+
+Take `⟨lam, hlamK, hlam⟩` from `exists_extend_dual hπ.1 (isSmooth_parabolicInd σ) ι hι hKc hKo hℓK`. Take `⟨R, hR₀, hR⟩` from `exists_reps_congruenceSubgroup F n m`. Take `⟨ℓx, hℓxK, hdec⟩` from `exists_eval_decomposition hσs hR₀ hR lam`. Use `set φ : parabolicIndSpace F n β σ := ι v with hφdef`. Establish `hφK : φ ∈ fixedVectors (parabolicInd F n β σ) K` using `fun k hk => by`.
+
+Rewrite using `[hφdef, ← ι.isIntertwining, hvK k hk]`. Establish `hf : ∀ g, matrixCoeff π v ℓ g = lam (parabolicInd F n β σ g φ)` using `fun g => by`. Rewrite using `[matrixCoeff, ← hlam, hφdef, ι.isIntertwining]`. Establish `hℓxs : ∀ x, ℓx x ∈ smoothVectors (Representation.dual σ)` using `fun x => mem_smoothVectors_of_mem_fixedVectors (isOpen_subgroupOf_levi hKo) (hℓxK x)`. Use `set Φx : GL (Fin n) F → Matrix (Fin n) (Fin n) F → ℂ := fun x X => Φ (((x⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * X) with hΦxdef`.
+
+Establish `hΦx : ∀ x, IsSchwartzBruhat (Φx x)` using `fun x => hΦ.comp_mul_left x⁻¹`. Establish `hJ` using `fun x : GL (Fin n) F => hγ (Φx x) (hΦx x) (φ : GL (Fin n) F → W) φ.2 (ℓx x) (hℓxs x)`. Use `choose hJA hJB hJR using hJ`. Use `choose sA hsA using hJA`. Use `choose sB hsB using hJB`.
+
+Use `set SA : ℝ := ∑ x ∈ R, |sA x| with hSA`. Establish `hSAx : ∀ x ∈ R, sA x ≤ SA` using `fun x hx => (le_abs_self _).trans (Finset.single_le_sum (f := fun x => |sA x|) (fun _ _ => abs_nonneg _) hx)`. Use `set SB : ℝ := -∑ x ∈ R, |sB x| with hSB`. Establish `hSBx : ∀ x ∈ R, SB ≤ sB x` using `fun x hx => by`. Establish `h1` using `Finset.single_le_sum (f := fun x => |sB x|) (fun _ _ => abs_nonneg _) hx`.
+
+Establish `h2` using `neg_abs_le (sB x)`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨r, A, -, hA⟩` from `hΦ.exists_invariant`. Establish `hAdec : ∀ s : ℂ, SA < s.re → Integrable (fun g : GL (Fin n) F => (Φ (g : Matrix (Fin n) (Fin n) F) * detPow g (s + ((n : ℂ) - 1) / 2)) * lam (parabolicInd F n β σ g φ)) μ ∧ ∫ g : GL (Fin n) F, (Φ (g : Matrix (Fin n) (Fin n) F) * detPow g (s + ((n : ℂ) - 1) / 2)) * lam (parabolicI …`. Introduce `s hs`.
+
+Use `integrable_and_integral_mul_coeff_eq μ hKc hKo hK0 hlamK hφK hdec (H := fun g : GL (Fin n) F => Φ (g : Matrix (Fin n) (Fin n) F) * detPow g (s + ((n : ℂ) - 1) / 2)) (fun k hk g => ?_) (fun k hk g => ?_) (fun j => ?_) (fun x hx => ?_)` and prove the remaining obligations. Rewrite using `[Units.val_mul, (hΦK k hk _).1, detPow_mul, detPow_of_mem_integralGL (hK0 k hk), one_mul]`. Rewrite using `[Units.val_mul, (hΦK k hk _).2, detPow_mul, detPow_of_mem_integralGL (hK0 k hk), mul_one]`. Use `HasCompactSupport.intro (isCompact_shell F n A j) fun g hg => ?_` and prove the remaining obligations. Simplify using `only [Set.indicator_apply, Set.mem_ofPred_eq]`.
+
+Use `split_ifs with hj`. Assume the negation of the conclusion as `hne`. Conclude with `hg ⟨hA _ (left_ne_zero_of_mul hne), hj⟩`. Both sides reduce to the same expression. Use `((hsA x s (lt_of_le_of_lt (hSAx x hx) hs)).comp_mul_left x).congr (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations.
+
+Simplify using `only [Φx]`. Rewrite using `[Units.val_mul, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul, detPow_mul, detPow_of_mem_integralGL (hR₀ x hx), one_mul]`. Establish `hΦh : IsSchwartzBruhat (localMatrixFourier ψ Φ)` using `hΦ.localMatrixFourier hψ hψ1`. Establish `hΦhK` using `localMatrixFourier_invariant ψ hK0 hΦK`. Take `⟨r', A', -, hA'⟩` from `hΦh.exists_invariant`.
+
+Establish `hBdec : ∀ s : ℂ, s.re < SB → Integrable (fun g : GL (Fin n) F => (localMatrixFourier ψ Φ ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * detPow g⁻¹ (1 - s + ((n : ℂ) - 1) / 2)) * lam (parabolicInd F n β σ g φ)) μ ∧ ∫ g : GL (Fin n) F, (localMatrixFourier ψ Φ ((g⁻¹ : GL (Fin n …`. Introduce `s hs`. Use `integrable_and_integral_mul_coeff_eq μ hKc hKo hK0 hlamK hφK hdec (H := fun g : GL (Fin n) F => localMatrixFourier ψ Φ ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * detPow g⁻¹ (1 - s + ((n : ℂ) - 1) / 2)) (fun k hk g => ?_) (fun k hk g => ?_) (fun j => ?_) (fun x hx => ?_)` and prove the remaining obligations. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, (hΦhK k⁻¹ (inv_mem hk) _).2, detPow_mul, detPow_of_mem_integralGL (hK0 _ (inv_mem hk)), mul_one]`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, (hΦhK k⁻¹ (inv_mem hk) _).1, detPow_mul, detPow_of_mem_integralGL (hK0 _ (inv_mem hk)), one_mul]`.
+
+Use `HasCompactSupport.intro ((isCompact_shell F n A' (-j)).image continuous_inv) fun g hg => ?_` and prove the remaining obligations. Simplify using `only [Set.indicator_apply, Set.mem_ofPred_eq]`. Use `split_ifs with hj`. Assume the negation of the conclusion as `hne`. Conclude with `hg ⟨g⁻¹, ⟨hA' _ (left_ne_zero_of_mul hne), by rw [ordDet_inv, hj]⟩, inv_inv g⟩`.
+
+Both sides reduce to the same expression. Use `(((hsB x s (lt_of_lt_of_le hs (hSBx x hx))).comp_inv).comp_mul_left x).congr (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [Φx]`. Rewrite using `[inv_inv, _root_.mul_inv_rev, Units.val_mul, localMatrixFourier_inv_mul ψ (hR₀ x hx), Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one, detPow_mul, detPow_of_mem_integralGL (inv_mem (hR₀ x hx)), mul_one]`. Establish `hsumFE` using `RatFE.sum (F := F) (γ := γ) R (fun x _ => hJR x)`.
+
+Use `⟨⟨SA, fun s hs => ?_⟩, ⟨SB, fun s hs => ?_⟩, hsumFE.congr ⟨SA, fun s hs => ?_⟩ ⟨SB, fun s hs => ?_⟩⟩` and prove the remaining obligations. Use `(hAdec s hs).1.congr (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hf g]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `((hBdec s hs).1.comp_inv).congr (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[inv_inv, hf g⁻¹]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : zetaIntegral μ Φ (matrixCoeff π v ℓ) s = ∫ g : GL (Fin n) F, (Φ (g : Matrix (Fin n) (Fin n) F) * detPow g (s + ((n : ℂ) - 1) / 2)) * lam (parabolicInd F n β σ g φ) ∂μ`.
+
+Rewrite using `[zetaIntegral]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hf g]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e1, (hAdec s hs).2]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [Φx]`.
+
+Rewrite using `[Units.val_mul, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul, detPow_mul, detPow_of_mem_integralGL (hR₀ x hx), one_mul]`. Use `_ = _ := integral_mul_left_eq_self (μ := μ) (fun g : GL (Fin n) F => Φx x (g : Matrix (Fin n) (Fin n) F) * detPow g (s + ((n : ℂ) - 1) / 2) * ℓx x ((φ : GL (Fin n) F → W) g)) x`. Establish `e1 : zetaIntegral μ (localMatrixFourier ψ Φ) (fun g => matrixCoeff π v ℓ g⁻¹) (1 - s) = ∫ g : GL (Fin n) F, (fun g : GL (Fin n) F => (localMatrixFourier ψ Φ ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * detPow g⁻¹ (1 - s + ((n : ℂ) - 1) / 2)) * lam (parabolicInd F n β σ g φ …`. Rewrite using `[zetaIntegral]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations.
+
+Simplify using `only [inv_inv]`. Rewrite using `[hf g⁻¹]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, integral_inv_eq_self (fun g : GL (Fin n) F => (localMatrixFourier ψ Φ ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * detPow g⁻¹ (1 - s + ((n : ℂ) - 1) / 2)) * lam (parabolicInd F n β σ g φ)) μ, (hBdec s hs).2]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations.
+
+Use `set Bx : GL (Fin n) F → ℂ := fun g => localMatrixFourier ψ (Φx x) (g : Matrix (Fin n) (Fin n) F) * detPow g (1 - s + ((n : ℂ) - 1) / 2) * ℓx x ((φ : GL (Fin n) F → W) g⁻¹) with hBx`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [Bx, Φx]`. Rewrite using `[inv_inv, _root_.mul_inv_rev, Units.val_mul, localMatrixFourier_inv_mul ψ (hR₀ x hx), Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one, detPow_mul, detPow_of_mem_integralGL (inv_mem (hR₀ x hx)), mul_one]`.
+
+Use `_ = ∫ g : GL (Fin n) F, Bx g⁻¹ ∂μ := integral_mul_left_eq_self (μ := μ) (fun g : GL (Fin n) F => Bx g⁻¹) x`. Use `_ = ∫ g : GL (Fin n) F, Bx g ∂μ := integral_inv_eq_self Bx μ`.
+-/
 theorem exists_coeffFE_of_inducedFE [π.IsIrreducible] (hπ : IsAdmissible π)
     (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] {ψ : AddChar F Circle} (hψ : Continuous ψ)
     (hψ1 : ψ ≠ 1)

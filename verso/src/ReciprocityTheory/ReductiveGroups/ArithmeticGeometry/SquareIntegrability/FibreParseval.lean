@@ -12,6 +12,9 @@ namespace ZM
 
 variable [IsCMField E] {X : PT E} {DF : ℕ} {P : Par X DF} {I : Submodule ℤ (Vsp X.dim)}
 
+/- English proof (translation)
+The claim follows from `tof_torus_parseval (fun t => zmG I s (v + tb hI t)) (fib_continuous hI hs v) (fun t n => fib_periodic hI hs v t n)`.
+-/
 theorem fibre_parseval (hI : IsSplit P I) {s : (Fin 1 → Vsp X.dim) → ℂ} (hs : s ∈ X.Sec 1 1)
     (v : Vsp X.dim) :
     HasSum (fun n => ‖zmC hI s n v‖ ^ 2)

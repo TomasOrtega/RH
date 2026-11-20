@@ -18,5 +18,8 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.FlagZ
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagZ.TautCell.isFrame_colOn | exact GlobalTheory.FlagZ.TautCell.isFrame_colOn | (intros; apply GlobalTheory.FlagZ.TautCell.isFrame_colOn <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.GL_columns_isFrame : ∀ (N : ℕ) (X : Scheme.{0}) (U : X.Opens) (M : GL (Fin N) Γ(X, U)), GlobalTheory.VB.IsFrame (GlobalTheory.FlagZ.TautCell.colOn M.1) := by
   first | exact @GlobalTheory.FlagZ.TautCell.isFrame_colOn | exact GlobalTheory.FlagZ.TautCell.isFrame_colOn | (intros; apply GlobalTheory.FlagZ.TautCell.isFrame_colOn <;> assumption)

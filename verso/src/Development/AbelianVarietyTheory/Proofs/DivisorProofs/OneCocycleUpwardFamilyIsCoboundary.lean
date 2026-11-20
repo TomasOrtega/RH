@@ -15,6 +15,41 @@ open CategoryTheory AlgebraicGeometry KaehlerDifferential GlobalTheory.CatCoh Gl
 
 namespace GlobalTheory.CatCoh.Desc.Basis
 
+/- English proof (translation)
+Introduce `R _ C _ C' _ F G _ _ H hdir t₀ Sg hSg hcovT`. Introduce `y hy`. Set `Q : C' → Prop` to `fun t ↦ ∃ a : t₀ ⟶ t, Sg t a`. Establish `hQ : ∀ t t', Q t → (t ⟶ t') → Q t'` using `fun t t' ⟨a, ha⟩ b ↦ ⟨a ≫ b, hSg t t' a b ha⟩`. Set `yb : ∀ t t' : C', F.obj (G.obj t')` to `fun t t' ↦ if h : Q t ∧ Nonempty (t ⟶ t') then y t t' h.1.choose h.2.some else 0`.
+
+Establish `hyb : ∀ t t' (u : t₀ ⟶ t) (a : t ⟶ t'), Sg t u → y t t' u a = yb t t'`. Introduce `t t' u a hu`. Establish `h : Q t ∧ Nonempty (t ⟶ t')` using `⟨⟨u, hu⟩, ⟨a⟩⟩`. Simplify using `only [yb, dif_pos h]`. Conclude with `congrArg₂ (y t t') (Subsingleton.elim _ _) (Subsingleton.elim _ _)`.
+
+Establish `hyc : ∀ t t' t'', Q t → ∀ (a : t ⟶ t') (b : t' ⟶ t''), yb t t'' = mp F (G.map b) (yb t t') + yb t' t''`. Introduce and unpack `t t' t'' ⟨u, hu⟩ a b`. Rewrite using `[← hyb t t'' u (a ≫ b) hu, ← hyb t t' u a hu, ← hyb t' t'' (u ≫ a) b (hSg t t' u a hu)]`. Conclude with `hy t t' t'' u a b hu`. Take `⟨n, b, hb, hcT⟩` from `hcovT`.
+
+Establish `hpt : ∀ i : Fin n, ∃ p : C', Q p ∧ ∀ S (u : G.obj t₀ ⟶ S), IsUnit (mp F u (b i)) → Nonempty (G.obj p ⟶ S)`. Introduce `i`. Take `⟨T', l, hl, -, -, huniv⟩` from `H (G.obj t₀) (b i)`. Take `⟨p, a, ha, ⟨w⟩⟩` from `hcT i T' l hl`. Conclude with `⟨p, ⟨a, ha⟩, fun S u hu ↦ by obtain ⟨m, -⟩ := huniv S u hu; exact ⟨w ≫ m⟩⟩`.
+
+Use `choose p hpQ hp using hpt`. Establish `hc0 : ∀ i j : Fin n, ∃ x : ∀ S, F.obj S, (∀ S, Nonempty (G.obj (p i) ⟶ S) → Nonempty (G.obj (p j) ⟶ S) → ∀ t S' (ψ : S ⟶ S') (w : G.obj t ⟶ S'), Nonempty (p i ⟶ t) → Nonempty (p j ⟶ t) → mp F ψ (x S) = mp F w (yb (p j) t - yb (p i) t)) ∧ (∀ S S' (ψ : S ⟶ S'), Nonempty (G.obj (p i …`. Introduce `i j`. Use `exists_glue_points F G H hdir (p i) (p j) _ fun t t' a ⟨ai⟩ ⟨aj⟩ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_sub, hyc (p j) t t' (hpQ j) aj a, hyc (p i) t t' (hpQ i) ai a]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `choose c hc hc' using hc0`. Establish `hs : ∀ i j, IsSec F (fun S u ↦ IsUnit (mp F u (b i)) ∧ IsUnit (mp F u (b j))) (fun S (_ : G.obj t₀ ⟶ S) ↦ c i j S)` using `fun i j S S' u ψ h ↦ hc' i j S S' ψ (hp i S u h.1) (hp j S u h.2)`. Establish `hcc : ∀ i j k S (u : G.obj t₀ ⟶ S), IsUnit (mp F u (b i)) → IsUnit (mp F u (b j)) → IsUnit (mp F u (b k)) → c j k S - c i k S + c i j S = 0`. Introduce `i j k S u hi hj hk`.
+
+Use `eq_zero_of_local₃ F G H hdir (hp i S u hi) (hp j S u hj) (hp k S u hk) _ fun t S' ψ ai aj ak ⟨w⟩ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_add, map_sub, hc j k S (hp j S u hj) (hp k S u hk) t S' ψ w aj ak, hc i k S (hp i S u hi) (hp k S u hk) t S' ψ w ai ak, hc i j S (hp i S u hi) (hp j S u hj) t S' ψ w ai aj]`. Simplify using `only [map_sub]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨e, he, he'⟩` from `cech1 H hb (fun i j S (_ : G.obj t₀ ⟶ S) ↦ c i j S) hs hcc`.
+
+Establish `he'' : ∀ i j S (u : G.obj t₀ ⟶ S), IsUnit (mp F u (b i)) → IsUnit (mp F u (b j)) → c i j S = e j S u - e i S u` using `he'`. Establish `hX0 : ∀ i (t : C') (_ : Q t), ∃ x : ∀ S, F.obj S, (∀ S, Nonempty (G.obj t ⟶ S) → Nonempty (G.obj (p i) ⟶ S) → ∀ t' S' (ψ : S ⟶ S') (w : G.obj t' ⟶ S'), Nonempty (t ⟶ t') → Nonempty (p i ⟶ t') → mp F ψ (x S) = mp F w (yb (p i) t' - yb t t')) ∧ (∀ S S' (ψ : S ⟶ S'), Nonempty (G.obj …`. Introduce `i t ht`. Use `exists_glue_points F G H hdir t (p i) _ fun t' t'' a ⟨a0⟩ ⟨ai⟩ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_sub, hyc (p i) t' t'' (hpQ i) ai a, hyc t t' t'' ht a0 a]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `choose X hX hX' using hX0`. Establish `indep : ∀ t (ht : Q t) (u : G.obj t₀ ⟶ G.obj t) S (ψ : G.obj t ⟶ S) i j, IsUnit (mp F (u ≫ ψ) (b i)) → IsUnit (mp F (u ≫ ψ) (b j)) → X i t ht S - e i S (u ≫ ψ) = X j t ht S - e j S (u ≫ ψ)`. Introduce `t ht u S ψ i j hi hj`. Establish `key : X i t ht S - X j t ht S + c i j S = 0` using `eq_zero_of_local₃ F G H hdir ⟨ψ⟩ (hp i S _ hi) (hp j S _ hj) _ fun t' S' χ a0 ai aj ⟨w⟩ ↦ by`.
+
+Rewrite using `[map_add, map_sub, hX i t ht S ⟨ψ⟩ (hp i S _ hi) t' S' χ w a0 ai, hX j t ht S ⟨ψ⟩ (hp j S _ hj) t' S' χ w a0 aj, hc i j S (hp i S _ hi) (hp j S _ hj) t' S' χ w ai aj]`. Simplify using `only [map_sub]`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `key - he'' i j S (u ≫ ψ) hi hj`. Establish `hg0 : ∀ t (ht : Q t) (u : G.obj t₀ ⟶ G.obj t), ∃ x : F.obj (G.obj t), ∀ S (ψ : G.obj t ⟶ S) i, IsUnit (mp F (u ≫ ψ) (b i)) → mp F ψ x = X i t ht S - e i S (u ≫ ψ)`.
+
+Introduce `t ht u`. Set `σ : ∀ S, (G.obj t ⟶ S) → F.obj S` to `fun S ψ ↦ if h : ∃ i, IsUnit (mp F (u ≫ ψ) (b i)) then X h.choose t ht S - e h.choose S (u ≫ ψ) else 0`. Establish `hσ : ∀ S ψ i, IsUnit (mp F (u ≫ ψ) (b i)) → σ S ψ = X i t ht S - e i S (u ≫ ψ)`. Introduce `S ψ i hi`. Establish `h : ∃ i, IsUnit (mp F (u ≫ ψ) (b i))` using `⟨i, hi⟩`.
+
+Simplify using `only [σ, dif_pos h]`. Conclude with `indep t ht u S ψ _ i h.choose_spec hi`. Take `⟨x, hx⟩` from `glue_std H (span_map_eq_top F u hb) σ fun S S' ψ χ ⟨i, hi⟩ ↦ by`. Establish `hi' : IsUnit (mp F (u ≫ ψ) (b i))` using `by rw [mp_comp]; exact hi`. Establish `hi'' : IsUnit (mp F (u ≫ ψ ≫ χ) (b i))`.
+
+Rewrite using `[← Category.assoc, mp_comp]`. Conclude with `hi'.map _`. Rewrite using `[hσ S' (ψ ≫ χ) i hi'', hσ S ψ i hi', map_sub, ← hX' i t ht S S' χ ⟨ψ⟩ (hp i S _ hi'), ← he i S S' (u ≫ ψ) χ hi', Category.assoc]`. Conclude with `⟨x, fun S ψ i hi ↦ by`. Rewrite using `[hx S ψ ⟨i, by rw [mp_comp] at hi; exact hi⟩, hσ S ψ i hi]⟩`.
+
+Use `choose g hg using hg0`. Use `⟨fun t' a ↦ if h : Sg t' a then g t' ⟨a, h⟩ (G.map a) else 0, fun t t' u a hu ↦ ?_⟩` and prove the remaining obligations. Establish `hu' : Sg t' (u ≫ a)` using `hSg t t' u a hu`. Establish `ht : Q t` using `⟨u, hu⟩`. Establish `ht' : Q t'` using `⟨u ≫ a, hu'⟩`.
+
+Simplify using `only`. Rewrite using `[dif_pos hu', dif_pos hu, G.map_comp]`. Express the relevant statement in the definitionally equal form `g t' ht' (G.map u ≫ G.map a) - mp F (G.map a) (g t ht (G.map u)) = y t t' u a`. Rewrite using `[hyb t t' u a hu]`. Use `sub_eq_zero.1 (sep_std H (span_map_eq_top F (G.map u ≫ G.map a) hb) _ fun S χ ⟨i, hi⟩ ↦ ?_)` and prove the remaining obligations.
+
+Establish `hi' : IsUnit (mp F ((G.map u ≫ G.map a) ≫ χ) (b i))` using `by rw [mp_comp]; exact hi`. Establish `hi'' : IsUnit (mp F (G.map u ≫ G.map a ≫ χ) (b i))` using `by rw [← Category.assoc]; exact hi'`. Rewrite using `[map_sub, map_sub, hg t' ht' (G.map u ≫ G.map a) S χ i hi', ← mp_comp, hg t ht (G.map u) S (G.map a ≫ χ) i hi'', Category.assoc]`. Establish `key : X i t' ht' S - X i t ht S - mp F χ (yb t t') = 0` using `eq_zero_of_local F G H hdir ⟨χ⟩ (hp i S _ hi') _ fun t'' S' ψ ⟨a'⟩ ai ⟨w⟩ ↦ by`. Rewrite using `[map_sub, map_sub, hX i t' ht' S ⟨χ⟩ (hp i S _ hi') t'' S' ψ w ⟨a'⟩ ai, hX i t ht S ⟨G.map a ≫ χ⟩ (hp i S _ hi') t'' S' ψ w ⟨a ≫ a'⟩ ai, ← mp_comp, (Subsingleton.elim _ _ : χ ≫ ψ = G.map a' ≫ w), mp_comp, hyc t t' t'' ht a a']`.
+
+Simplify using `only [map_sub, map_add]`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `key`.
+-/
 theorem oneCocycle_upwardFamily_isCoboundary : ∀ {R : Type} [CommRing R] {C : Type} [Category.{0} C] {C' : Type} [Category.{0} C'] (F : C ⥤ CommAlgCat.{0} R) (G : C' ⥤ C), [Quiver.IsThin C] → [Quiver.IsThin C'] → Desc.HasLoc F → (∀ (t₁ t₂ : C') (S : C), (G.obj t₁ ⟶ S) → (G.obj t₂ ⟶ S) → ∃ (n : ℕ) (b : Fin n → F.obj S), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S' : C) (u : S ⟶ S'), IsUnit (mp F u (b i)) → ∃ t₃, Nonempty (t₁ ⟶ t₃) ∧ Nonempty (t₂ ⟶ t₃) ∧ Nonempty (G.obj t₃ ⟶ S')) → ∀ (t : C') (Sg : ∀ t', (t ⟶ t') → Prop), (∀ t' t'' (a : t ⟶ t') (b : t' ⟶ t''), Sg t' a → Sg t'' (a ≫ b)) → Desc.VandermondeTwoBasis.CovBy F (fun S ↦ ∃ (t' : C') (a : t ⟶ t'), Sg t' a ∧ Nonempty (G.obj t' ⟶ S)) (G.obj t) → Desc.Van1 (G ⋙ F) Sg := by
   intro R _ C _ C' _ F G _ _ H hdir t₀ Sg hSg hcovT
   classical

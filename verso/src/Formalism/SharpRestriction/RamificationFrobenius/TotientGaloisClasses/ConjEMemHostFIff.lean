@@ -178,27 +178,84 @@ namespace HostAx
 
 variable {φ : Frame} (H : HostAx φ)
 
+/- English proof (translation)
+The claim follows from `H.galois`.
+-/
 theorem hostE_isGalois : IsGalois ℚ H.E := H.galois
+/- English proof (translation)
+The claim follows from `H.der.cm`.
+-/
 theorem isCMField_hostE : IsCMField H.E := H.der.cm
+/- English proof (translation)
+The claim follows from `H.der.finrank_E`.
+-/
 theorem finrank_cmField : Module.finrank ℚ H.E = 4 * φ.ord := H.der.finrank_E
+/- English proof (translation)
+The claim follows from `H.der.finrank_F`.
+-/
 theorem finrank_hostF : Module.finrank ℚ H.F = 2 * φ.ord := H.der.finrank_F
+/- English proof (translation)
+The claim follows from `map_mul H.gal σ τ`.
+-/
 theorem galE_mul (σ τ : H.E ≃ₐ[ℚ] H.E) : H.galE (σ * τ) = H.galE σ * H.galE τ := map_mul H.gal σ τ
+/- English proof (translation)
+The claim follows from `H.gal.bijective`.
+-/
 theorem galE_bijective : Function.Bijective H.galE := H.gal.bijective
+/- English proof (translation)
+The claim follows from `H.gal.injective`.
+-/
 theorem galE_injective : Function.Injective H.galE := H.gal.injective
+/- English proof (translation)
+The claim follows from `map_one H.gal`.
+-/
 theorem galE_one : H.galE 1 = 1 := map_one H.gal
+/- English proof (translation)
+The claim follows from `map_inv H.gal σ`.
+-/
 theorem galE_inv (σ : H.E ≃ₐ[ℚ] H.E) : H.galE σ⁻¹ = (H.galE σ)⁻¹ := map_inv H.gal σ
+/- English proof (translation)
+The claim follows from `map_pow H.gal σ k`.
+-/
 theorem galE_pow (σ : H.E ≃ₐ[ℚ] H.E) (k : ℕ) : H.galE (σ ^ k) = H.galE σ ^ k := map_pow H.gal σ k
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨H.gal.symm g, H.gal.apply_symm_apply g⟩`.
+-/
 theorem exists_galE_eq (g : φ.GG) : ∃ σ : H.E ≃ₐ[ℚ] H.E, H.galE σ = g := ⟨H.gal.symm g, H.gal.apply_symm_apply g⟩
+/- English proof (translation)
+The claim follows from `MulEquiv.map_eq_one_iff H.gal`.
+-/
 theorem galE_eq_one_iff (σ : H.E ≃ₐ[ℚ] H.E) : H.galE σ = 1 ↔ σ = 1 := MulEquiv.map_eq_one_iff H.gal
+/- English proof (translation)
+The claim follows from `H.gal.apply_symm_apply φ.cc`.
+-/
 theorem galE_conjE : H.galE H.conj = φ.cc := H.gal.apply_symm_apply φ.cc
+/- English proof (translation)
+Conclude with `MulEquiv.eq_symm_apply H.gal`.
+-/
 theorem eq_conjE_iff (σ : H.E ≃ₐ[ℚ] H.E) : σ = H.conj ↔ H.galE σ = φ.cc := by
   exact MulEquiv.eq_symm_apply H.gal
+/- English proof (translation)
+The claim follows from `H.der.conj_iff ψ σ`.
+-/
 theorem isConj_iff_galE (ψ : H.E →+* ℂ) (σ : H.E ≃ₐ[ℚ] H.E) :
     (∀ x, ψ (σ x) = starRingEnd ℂ (ψ x)) ↔ H.galE σ = φ.cc := H.der.conj_iff ψ σ
+/- English proof (translation)
+The claim follows from `(H.der.conj_iff ψ H.conj).2 H.galE_conjE x`.
+-/
 theorem conjE_apply (ψ : H.E →+* ℂ) (x : H.E) : ψ (H.conj x) = starRingEnd ℂ (ψ x) := (H.der.conj_iff ψ H.conj).2 H.galE_conjE x
+/- English proof (translation)
+The claim follows from `H.der.mem_F x`.
+-/
 theorem conjE_mem_hostF_iff (x : H.E) : x ∈ H.F ↔ H.conj x = x := H.der.mem_F x
+/- English proof (translation)
+The claim follows from `H.gal_sqd σ`.
+-/
 theorem galE_bE (σ : H.E ≃ₐ[ℚ] H.E) : σ H.sqd = ((((H.galE σ).1.2 : ℤˣ) : ℤ) : H.E) * H.sqd := H.gal_sqd σ
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `H.sqd_sq`. Rewrite `h1` using `[h]`. Establish `hd : H.d = 0` using `by simpa using h1.symm`. Conclude with `H.hyp.2.1.ne_zero hd`.
+-/
 theorem sqd_ne_zero : H.sqd ≠ 0 := by
   intro h
   have h1 := H.sqd_sq
@@ -206,6 +263,13 @@ theorem sqd_ne_zero : H.sqd ≠ 0 := by
   have hd : H.d = 0 := by simpa using h1.symm
   exact H.hyp.2.1.ne_zero hd
 
+/- English proof (translation)
+Establish `hs` using `H.sqd_ne_zero`. Rewrite using `[H.galE_bE σ]`. Express the relevant statement in the definitionally equal form `(H.galE σ).1.2 = 1 ↔ _`. Apply the tactic sequence `rcases Int.units_eq_one_or (H.galE σ).1.2 with h | h <;> rw [h]`. Simplify using the standard rewrite rules.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h2`. Conclude with `absurd h2 (by decide)`. Introduce `h2`. It suffices to derive a contradiction.
+
+Apply `hs` to reduce the goal to its premises. Establish `h4 : ((((-1 : ℤˣ) : ℤ) : H.E)) = -1` using `by simp`. Rewrite `h2` using `[h4]`. Establish `h3 : (2 : H.E) * H.sqd = 0` using `by linear_combination -h2`. Conclude with `(mul_eq_zero.1 h3).resolve_left two_ne_zero`.
+-/
 theorem galE_mem_Psi_iff (σ : H.E ≃ₐ[ℚ] H.E) : H.galE σ ∈ φ.Psi ↔ σ H.sqd = H.sqd := by
   have hs := H.sqd_ne_zero
   rw [H.galE_bE σ]

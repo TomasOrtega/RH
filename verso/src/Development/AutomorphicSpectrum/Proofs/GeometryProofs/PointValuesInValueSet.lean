@@ -27,6 +27,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.Ar.Rec
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c la y`. Take `⟨q, T, io, e, ho, z, hz, t, ht, rfl⟩` from `y`. Conclude with `⟨PtV.mk (cls := algCls Xo c) (PY := Unit) (lies := fun _ _ _ _ => True) la ho z hz () trivial, rfl⟩`.
+-/
 theorem val_mem_valSet_of_uniformised : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (la : HeightOneSpectrum (𝓞 c.F)) (y : (Ref.pjSys Xo c).Pt la), (fun f => (Ref.pjSys Xo c).val y f) ∈ valSet Xo c (algCls Xo c) la := by
   intro E _ _ _ H Dw l Xo c la y
   obtain ⟨q, T, io, e, ho, z, hz, t, ht, rfl⟩ := y

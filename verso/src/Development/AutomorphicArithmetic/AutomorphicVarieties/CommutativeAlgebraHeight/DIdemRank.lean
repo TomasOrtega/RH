@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
+/- English proof (translation)
+Rewrite using `[← D.nat]`. Use `congr 1`. Simplify using the standard rewrite rules.
+-/
 private theorem determinant_evaluation_aeval {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) (e : E)
     (B : Type) [CommRing B] [Algebra A B] (b : B) :
     D.D B (1 + (b - 1) ⊗ₜ e) = aeval b (D.D A[X] (1 + (X - 1) ⊗ₜ e)) := by
@@ -10,6 +13,13 @@ private theorem determinant_evaluation_aeval {n : ℕ} {A E : Type} [CommRing A]
   congr 1
   simp
 
+/- English proof (translation)
+Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, Polynomial.coeff_add, hp, hq, Polynomial.coeff_add, map_add, add_mul]`. Consider the case `monomial i c`. Establish `e1 : aeval (Polynomial.C a * Polynomial.X : A[X][X]) (monomial i c) = Polynomial.C (Polynomial.C c * a ^ i) * Polynomial.X ^ i`. Rewrite using `[aeval_monomial, mul_pow, ← Polynomial.C_pow, Polynomial.algebraMap_apply, Polynomial.algebraMap_apply]`.
+
+Simplify using `[mul_assoc]`. Rewrite using `[e1, Polynomial.coeff_C_mul_X_pow, Polynomial.coeff_monomial]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[h, Ne.symm h]`.
+-/
 private theorem coeff_aeval_C_mul_X' {A : Type} [CommRing A] (P : A[X]) (a : A[X]) (j : ℕ) :
     (aeval (Polynomial.C a * Polynomial.X : A[X][X]) P).coeff j = Polynomial.C (P.coeff j) * a ^ j := by
   induction P using Polynomial.induction_on' with
@@ -24,11 +34,31 @@ private theorem coeff_aeval_C_mul_X' {A : Type} [CommRing A] (P : A[X]) (a : A[X
     · subst h; simp
     · simp [h, Ne.symm h]
 
+/- English proof (translation)
+Use `Polynomial.aeval_algHom_apply (Polynomial.CAlgHom (R := A) (A := A[X])) (X : A[X]) P` as an intermediate fact. Simplify `this` using `[Polynomial.aeval_X_left_apply]`.
+-/
 private theorem aeval_C_X_eq_C {A : Type} [CommRing A] (P : A[X]) :
     aeval (Polynomial.C (X : A[X]) : A[X][X]) P = Polynomial.C P := by
   have := Polynomial.aeval_algHom_apply (Polynomial.CAlgHom (R := A) (A := A[X])) (X : A[X]) P
   simpa [Polynomial.aeval_X_left_apply] using this
 
+/- English proof (translation)
+Use `set P := D.D A[X] (1 + (X - 1) ⊗ₜ e) with hP`. Establish `ev : ∀ (B : Type) [CommRing B] [Algebra A B] (b : B), aeval b P = D.D B (1 + (b - 1) ⊗ₜ e)` using `fun B _ _ b => (determinant_evaluation_aeval D e B b).symm`. Establish `mul : ∀ (B : Type) [CommRing B] [Algebra A B] (s t : B), aeval (s * t) P = aeval s P * aeval t P`. Introduce `B _ _ s t`. Rewrite using `[ev, ev, ev, ← map_mul]`.
+
+Use `congr 1`. Establish `key : ∀ u v : B, (1 + u ⊗ₜ[A] e : B ⊗[A] E) * (1 + v ⊗ₜ[A] e) = 1 + (u + v + u * v) ⊗ₜ[A] e`. Introduce `u v`. Simplify using `only [mul_add, add_mul, one_mul, mul_one, Algebra.TensorProduct.tmul_mul_tmul, he.eq, add_tmul]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[key]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hcoef : ∀ j, Polynomial.C (P.coeff j) * X ^ j = P * Polynomial.C (P.coeff j)`. Introduce `j`.
+
+Establish `hm` using `mul A[X][X] (Polynomial.C X) Polynomial.X`. Establish `h1 : (Polynomial.X : A[X][X]) = Polynomial.C 1 * Polynomial.X` using `by simp`. Establish `cj` using `congrArg (fun q => Polynomial.coeff q j) hm`. Rewrite `cj` using `[coeff_aeval_C_mul_X', aeval_C_X_eq_C, Polynomial.coeff_C_mul, h1, coeff_aeval_C_mul_X', one_pow, mul_one]`. Conclude with `cj`.
+
+Establish `h1 : P.eval 1 = 1`. Use `ev A 1` as an intermediate fact. Rewrite `this` using `[sub_self, zero_tmul, add_zero, map_one]`. Rewrite using `[← Polynomial.coe_aeval_eq_eval]`. Conclude with `this`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, IsUnit (P.coeff j) := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hmem : P.eval 1 ∈ maximalIdeal A`. Rewrite using `[Polynomial.eval_eq_sum_range]`.
+
+Use `Ideal.sum_mem _ (fun i _ => Ideal.mul_mem_right _ _ ?_)` and prove the remaining obligations. Conclude with `(mem_maximalIdeal _).2 (hcon i)`. Rewrite `hmem` using `[h1]`. Conclude with `(mem_maximalIdeal _).1 hmem isUnit_one`. Use `⟨j, ?_⟩` and prove the remaining obligations.
+
+Establish `hu : IsUnit (Polynomial.C (P.coeff j))` using `hj.map Polynomial.C`. Apply `hu.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[hcoef j, mul_comm]`.
+-/
 private theorem pow_aux {n : ℕ} {A E : Type} [CommRing A] [IsLocalRing A] [Ring E] [Algebra A E]
     (D : Det n A E) (e : E) (he : IsIdempotentElem e) :
     ∃ r, D.D A[X] (1 + (X - 1) ⊗ₜ e) = X ^ r := by
@@ -72,6 +102,15 @@ private theorem pow_aux {n : ℕ} {A E : Type} [CommRing A] [IsLocalRing A] [Rin
   apply hu.mul_left_cancel
   rw [hcoef j, mul_comm]
 
+/- English proof (translation)
+Introduce `n A E _ _ _ _ D e he`. Take `⟨r, hr⟩` from `pow_aux D e he`. Take `⟨r', hr'⟩` from `pow_aux D (1 - e) he.one_sub`. Use `⟨r, ?_, ?_⟩` and prove the remaining obligations. Establish `hz : (1 - e) * e = 0` using `by rw [sub_mul, one_mul, he.eq, sub_self]`.
+
+Establish `step : ∀ a : A[X], (1 + a ⊗ₜ[A] (1 - e) : A[X] ⊗[A] E) * (1 + a ⊗ₜ[A] e) = 1 + a ⊗ₜ[A] (1 : E)`. Introduce `a`. Rewrite using `[mul_add, add_mul, add_mul, one_mul, one_mul, mul_one, Algebra.TensorProduct.tmul_mul_tmul, hz, tmul_zero, add_zero, add_assoc, ← tmul_add, sub_add_cancel]`. Establish `key : (1 + (X - 1) ⊗ₜ[A] (1 - e) : A[X] ⊗[A] E) * (1 + (X - 1) ⊗ₜ[A] e) = (X : A[X]) • (1 : A[X] ⊗[A] E)`. Rewrite using `[step, Algebra.TensorProduct.one_def, ← add_tmul, add_sub_cancel, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+
+Establish `h2` using `congrArg (D.D A[X]) key`. Rewrite `h2` using `[map_mul, hr, hr', D.homog, map_one, mul_one, ← pow_add]`. Establish `h3` using `congrArg Polynomial.natDegree h2`. Rewrite `h3` using `[Polynomial.natDegree_X_pow, Polynomial.natDegree_X_pow]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h4` using `determinant_evaluation_aeval D e A[X] (1 + X)`. Establish `h5 : (1 + X : A[X]) - 1 = X` using `by ring`. Rewrite `h4` using `[h5, hr, map_pow, aeval_X]`. Conclude with `h4`.
+-/
 theorem UpperTheory.V.CA.d_idem_rank :
     ∀ {n : ℕ} {A E : Type} [CommRing A] [IsLocalRing A] [Ring E] [Algebra A E] (D : Det n A E) (e : E), IsIdempotentElem e → ∃ r ≤ n, D.D A[X] (1 + X ⊗ₜ e) = (1 + X) ^ r := by
   intro n A E _ _ _ _ D e he

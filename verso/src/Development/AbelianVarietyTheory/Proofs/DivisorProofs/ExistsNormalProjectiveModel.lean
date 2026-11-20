@@ -17,6 +17,9 @@ namespace GlobalTheory.CommonModel
 
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry TopologicalSpace in
 
+/- English proof (translation)
+Take `⟨N, i, hi, rfl⟩` from `hs`. Use `haveI := _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str R N`. Use `infer_instance`.
+-/
 theorem _root_.GlobalTheory.CommonModel.isProper_of_isProjOver {R : Type} [CommRing R] {X : Scheme.{0}} {s : X ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp R}
     (hs : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsProjOver s) : IsProper s := by
   obtain ⟨N, i, hi, rfl⟩ := hs
@@ -25,6 +28,15 @@ theorem _root_.GlobalTheory.CommonModel.isProper_of_isProjOver {R : Type} [CommR
 
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry TopologicalSpace in
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Conclude with `⟨W₀, i₀, 𝟙 W₀, by simpa using hs₀, by simp, by simp⟩`. Consider the case `insert j S _ ih`. Take `⟨W, h, r, hr, hhr, hg⟩` from `ih`.
+
+Establish `hc : h ≫ (r ≫ s₀) = f j ≫ p j`. Rewrite using `[← Category.assoc, hhr, hf]`. Use `⟨pullback (r ≫ s₀) (p j), pullback.lift h (f j) hc, pullback.fst _ _ ≫ r, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc]`. Conclude with `_root_.GlobalTheory.ProjSpace.isProjOver_pullback hr (hp j)`.
+
+Rewrite using `[← Category.assoc, pullback.lift_fst, hhr]`. Introduce `i hi`. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Use `⟨pullback.snd _ _, pullback.lift_snd _ _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← pullback.condition]`.
+
+Take `⟨g, hg₁, hg₂⟩` from `hg i hi`. Use `⟨pullback.fst _ _ ≫ g, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, pullback.lift_fst, hg₁]`. Rewrite using `[Category.assoc, hg₂, Category.assoc]`.
+-/
 theorem _root_.GlobalTheory.CommonModel.exists_common {R : Type} [CommRing R] {Y W₀ : Scheme.{0}}
     (s₀ : W₀ ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp R) (hs₀ : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsProjOver s₀) (i₀ : Y ⟶ W₀)
     {ι : Type} (P : ι → Scheme.{0}) (p : ∀ i, P i ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp R) (f : ∀ i, Y ⟶ P i)

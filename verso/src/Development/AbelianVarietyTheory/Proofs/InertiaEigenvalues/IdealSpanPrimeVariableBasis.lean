@@ -7,6 +7,11 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BSP
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.ClosedStatement.main`. Consider the case `exact _root_.GlobalTheory.ClosedStatement.main`. Consider the case `(apply _root_.GlobalTheory.ClosedStatement.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ClosedStatement.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.ClosedStatement.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ClosedStatement.main ..)`.
+-/
 theorem exists_residue_basis_of_isMaximal {R A : Type} [CommRing R] [CommRing A] (f : R →+* A) (m : Ideal R)
     [hm : m.IsMaximal] (h : m.map f ≠ ⊤) :
     ∃ (ι : Type) (b : ι → A) (i₀ : ι), b i₀ = 1 ∧
@@ -20,6 +25,15 @@ theorem exists_residue_basis_of_isMaximal {R A : Type} [CommRing R] [CommRing A]
   | (intros; apply @_root_.GlobalTheory.ClosedStatement.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.ClosedStatement.main ..)
 
+/- English proof (translation)
+Establish `hmax : (Ideal.span {(l : Wq l a)}).IsMaximal`. Rewrite using `[← (WittVector.irreducible l (k := Fq l a)).maximalIdeal_eq]`. Use `infer_instance`. Establish `hsurj : Function.Surjective (constantCoeff (R` using `Wq l a)) := fun w => ⟨C w, by simp⟩`. Establish `heq : Ideal.span {(l : (Wq l a)⟦X⟧)} ⊔ Ideal.span {(X : (Wq l a)⟦X⟧)} = (Ideal.span {(l : Wq l a)}).comap (constantCoeff (R` using `Wq l a)) := by`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Apply the tactic sequence `refine sup_le ?_ ?_ <;> rw [Ideal.span_singleton_le_iff_mem, Ideal.mem_comap]`. Rewrite using `[map_natCast]`. Conclude with `Ideal.mem_span_singleton_self _`. Simplify using the standard rewrite rules.
+
+Introduce `x hx`. Take `⟨w, hw⟩` from `Ideal.mem_span_singleton'.1 (Ideal.mem_comap.1 hx)`. Establish `hX : (X : (Wq l a)⟦X⟧) ∣ x - C w * l`. Rewrite using `[X_dvd_iff, map_sub, map_mul, map_natCast, constantCoeff_C, hw, sub_self]`. Establish `: x = C w * l + (x - C w * l)` using `by ring`.
+
+Rewrite using `[this]`. Conclude with `Submodule.add_mem_sup (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)) (Ideal.mem_span_singleton.2 hX)`. Rewrite using `[heq]`. Conclude with `Ideal.comap_isMaximal_of_surjective _ hsurj`.
+-/
 theorem isMaximal_span_l_sup_span_X (l a : ℕ) [Fact l.Prime] [NeZero a] :
     (Ideal.span {(l : (Wq l a)⟦X⟧)} ⊔ Ideal.span {(X : (Wq l a)⟦X⟧)}).IsMaximal := by
   have hmax : (Ideal.span {(l : Wq l a)}).IsMaximal := by
@@ -44,6 +58,19 @@ theorem isMaximal_span_l_sup_span_X (l a : ℕ) [Fact l.Prime] [NeZero a] :
   rw [heq]
   exact Ideal.comap_isMaximal_of_surjective _ hsurj
 
+/- English proof (translation)
+Set `M : Ideal (Ainf l)` to `(IsLocalRing.maximalIdeal (OC l)).comap (Per.θ l)`. Use `haveI hM : M.IsPrime := Ideal.comap_isPrime _ _`. Set `N : Ideal bk.S` to `M.comap bk.ev`. Use `haveI hN : N.IsPrime := Ideal.comap_isPrime _ _`. Establish `hl : (l : bk.S) ∈ N`.
+
+Express the relevant statement in the definitionally equal form `Per.θ l (bk.ev l) ∈ IsLocalRing.maximalIdeal (OC l)`. Rewrite using `[map_natCast, map_natCast]`. Conclude with `(Fact.out : ¬ IsUnit (l : OC l))`. Establish `hE : bk.E ∈ N`. Express the relevant statement in the definitionally equal form `Per.θ l (bk.ev bk.E) ∈ IsLocalRing.maximalIdeal (OC l)`.
+
+Establish `: bk.ev bk.E ∈ RingHom.ker (Per.θ l)` using `bk.span_ev ▸ Ideal.mem_span_singleton_self _`. Rewrite using `[RingHom.mem_ker.1 this]`. Conclude with `Ideal.zero_mem _`. Establish `hX : (X : bk.S) ∈ N`. Apply `hN.mem_of_pow_mem bk.Ep.natDegree` to reduce the goal to its premises.
+
+Establish `h1` using `congrArg (Polynomial.coeToPowerSeries.ringHom (R := Wq l bk.a)) bk.monic.as_sum`. Rewrite `h1` using `[map_add, map_pow, map_sum]`. Establish `hs : ∑ i ∈ Finset.range bk.Ep.natDegree, Polynomial.coeToPowerSeries.ringHom (R` using `Wq l bk.a) (Polynomial.C (bk.Ep.coeff i) * Polynomial.X ^ i) ∈ N := by`. Use `Ideal.sum_mem _ fun i hi => ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `bk.dvd_coeff i (Finset.mem_range.1 hi)`.
+
+Rewrite using `[hw, map_mul, map_mul, map_mul, map_natCast, map_natCast]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ hl)`. Establish `h2` using `N.sub_mem hE hs`. Simplify using `only [Polynomial.coeToPowerSeries.ringHom_apply, Polynomial.coe_X] at h1 h2`. Establish `h3` using `sub_eq_of_eq_add h1`.
+
+Rewrite `h2` using `[h3]`. Then use the resulting hypothesis. Introduce `htop`. Apply `hM.ne_top` to reduce the goal to its premises. Rewrite using `[eq_top_iff, ← htop, Ideal.map_le_iff_le_comap]`. Conclude with `sup_le ((Ideal.span_singleton_le_iff_mem _).2 hl) ((Ideal.span_singleton_le_iff_mem _).2 hX)`.
+-/
 theorem BK.map_span_l_sup_span_X_ne_top {l : ℕ} [Fact l.Prime] {K : FinExt l} (bk : BK K) :
     (Ideal.span {(l : bk.S)} ⊔ Ideal.span {(X : bk.S)}).map bk.ev ≠ ⊤ := by
   let M : Ideal (Ainf l) := (IsLocalRing.maximalIdeal (OC l)).comap (Per.θ l)
@@ -78,6 +105,9 @@ theorem BK.map_span_l_sup_span_X_ne_top {l : ℕ} [Fact l.Prime] {K : FinExt l} 
   rw [eq_top_iff, ← htop, Ideal.map_le_iff_le_comap]
   exact sup_le ((Ideal.span_singleton_le_iff_mem _).2 hl) ((Ideal.span_singleton_le_iff_mem _).2 hX)
 
+/- English proof (translation)
+Introduce `l _ K bk`. Use `haveI := isMaximal_span_l_sup_span_X l bk.a`. Conclude with `exists_residue_basis_of_isMaximal bk.ev _ bk.map_span_l_sup_span_X_ne_top`.
+-/
 theorem BK.exists_residue_basis : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K),
     ∃ (ι : Type) (b : ι → Ainf l) (i₀ : ι), b i₀ = 1 ∧
       (∀ x : Ainf l, ∃ a : ι →₀ bk.S, x - a.sum (fun i y => bk.ev y * b i) ∈

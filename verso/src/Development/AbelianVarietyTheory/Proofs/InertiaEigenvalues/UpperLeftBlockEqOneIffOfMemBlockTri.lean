@@ -7,6 +7,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.PrincipalLevel
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `hg : g ∈ blockTri (κ` using `κ) (blk2 r) := fun i j hij => by`. Simplify using `[blk2, i.2, j.2] at hij`. Prove the components needed by the constructor for the conclusion. Introduce `h1`.
+
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `congrArg (fun u : GL (Fin r) κ => (u : Matrix (Fin r) (Fin r) κ) i j) h1` as an intermediate fact. Simplify using `only [upper_block_val_submatrix hr hg, Matrix.submatrix_apply] at this`. Establish `ei : Fin.castLE hr i = i` using `Fin.ext rfl`.
+
+Establish `ej : Fin.castLE hr j = j` using `Fin.ext rfl`. Rewrite `this` using `[ei, ej]`. Simplify using `using this`. Introduce and unpack `rfl`. Conclude with `blockDiagonalExtendByOnePrimeField_one _ _`.
+-/
 theorem upperLeftBlock_eq_one_iff_of_mem_blockTri {κ : Type} [CommRing κ] {n r : ℕ} (hr : r ≤ n) (h : r = n) (g : GL (Fin n) κ) :
     upperLeftBlock hr g = 1 ↔ g = 1 := by
   subst h
@@ -25,6 +32,13 @@ theorem upperLeftBlock_eq_one_iff_of_mem_blockTri {κ : Type} [CommRing κ] {n r
   · rintro rfl
     exact blockDiagonalExtendByOnePrimeField_one _ _
 
+/- English proof (translation)
+Establish `h0 : ∀ a : Fin n, blkOf L.r L.t a = 0` using `fun a => by`. Unfold `blkOf`. Rewrite using `[if_pos (by rw [hr]; exact a.2)]`. Rewrite using `[mem_lev, mem_parLev, hP, Subgroup.mem_bot]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨⟨h1, h2, -, -⟩, h3⟩`. Conclude with `⟨h1, h2, fun PP hPP => (upperLeftBlock_eq_one_iff_of_mem_blockTri L.hr hr _).1 (congrFun h3 ⟨PP, hPP⟩)⟩`. Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨⟨h1, h2, fun PP _ i j hij => ?_, fun PP hPP => ?_⟩, funext fun PP => (upperLeftBlock_eq_one_iff_of_mem_blockTri L.hr hr _).2 (h3 PP.1 PP.2)⟩` and prove the remaining obligations. Rewrite `hij` using `[h0, h0]`.
+
+Conclude with `absurd hij (lt_irrefl 0)`. Rewrite `hPP` using `[hQ]`. Conclude with `absurd hPP (Finset.notMem_empty _)`.
+-/
 theorem mem_lev_whole {D : D7} {n : ℕ} (J : Matrix (Fin n) (Fin n) D.host.E) (β : GL (Fin n) (Lev.EAf D))
     (L : LevDat D.host.E ℂ n) (hr : L.r = n) (hQ : L.Q = ∅) (hP : L.P.H = ⊥) (x : GL (Fin n) (Lev.EAf D)) :
     x ∈ lev D.sp.cm J β L ↔ x ∈ UA D.sp.cm J ∧ x ∈ St β ∧ ∀ PP ∈ L.Pg, redFn β PP x = 1 := by
@@ -42,6 +56,11 @@ theorem mem_lev_whole {D : D7} {n : ℕ} (J : Matrix (Fin n) (Fin n) D.host.E) (
     · rw [hQ] at hPP
       exact absurd hPP (Finset.notMem_empty _)
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 I0 T A3 Ks _ _ _ Rl cG ρ hpin i j b`. Use `show Lev.levG (Wc D j) (ρ.B i j b).F.βT (Lev.flag1L (ρ.B i j b).G.levT) = _`. Rewrite using `[hpin.frT i j b]`. Unfold `Lev.levG`. Use `congr 1`.
+
+Use extensionality with `x`. Rewrite using `[mem_lev_whole _ _ _ rfl rfl rfl, mem_lev_whole _ _ _ (FWT.rank_Wc j).symm rfl rfl]`. Establish `hg : (Lev.flag1L (ρ.B i j b).G.levT).Pg = (Rl.datWp j Rl.triv).Pg` using `hpin.Pg i j b`. Rewrite using `[hg]`.
+-/
 theorem levK_eq_levG : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {Rl : RealDat3 D A3 Ks} {cG : G0 Rl.Pg D.R.r ≃* G0g D.nd} {ρ : GlobalTheory.SeriesTie.Setup D.ntw}, GlobalTheory.SeriesTie.RealPin Rl cG ρ → ∀ (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool), ρ.levK i j b = Formalism.IndefR.Lev.levG (Wc D j) (Rl.βW j) (Rl.datWp j Rl.triv) := by
   intro D Γ _ _ Pl0 I0 T A3 Ks _ _ _ Rl cG ρ hpin i j b
   show Lev.levG (Wc D j) (ρ.B i j b).F.βT (Lev.flag1L (ρ.B i j b).G.levT) = _

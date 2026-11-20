@@ -21,6 +21,11 @@ namespace GlobalTheory.LocOver.MoveBB
 
 open Formalism.MainNotions.S.Loc Formalism.MainNotions.S.LocNG
 
+/- English proof (translation)
+Establish `hr : Set.range (fun i => e (m i)) = (e : W →ₗ[R] W) '' Set.range m`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[hr, Submodule.span_image]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy, hyw⟩`. Establish `: y = w` using `e.injective hyw`. Conclude with `this ▸ hy`. Introduce `h`. Conclude with `⟨w, h, rfl⟩`.
+-/
 theorem mem_span_range_comp {R W ι : Type} [Semiring R] [AddCommGroup W] [Module R W] (e : W ≃ₗ[R] W)
     (m : ι → W) (w : W) :
     e w ∈ Submodule.span R (Set.range (fun i => e (m i))) ↔ w ∈ Submodule.span R (Set.range m) := by
@@ -38,6 +43,11 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
   {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] {r : ℕ}
 
+/- English proof (translation)
+Unfold `HermSp.MMfam`. Break down `hs : M.split with _ | s` into its components or cases. Apply the tactic sequence `rcases x with a | a <;> rfl`. Break down `x with a | a` into its components or cases. Both sides reduce to the same expression.
+
+Use `show algebraMap F E ((s.q : F)⁻¹) • (g (t.f' a) - g (t.f a)) = g (algebraMap F E ((s.q : F)⁻¹) • (t.f' a - t.f a))`. Rewrite using `[map_smul, map_sub]`.
+-/
 theorem MMfam_move (H : HermSp M V) (g : V ≃ₗ[E] V) (t : Term V M r) (x : Fin (r + 1) ⊕ Fin (r + 1)) :
     H.MMfam (move g t) x = g (H.MMfam t x) := by
   unfold HermSp.MMfam
@@ -55,6 +65,13 @@ namespace GlobalTheory.LocOver
 
 open Formalism.MainNotions.S.Loc Formalism.MainNotions.S.LocNG GlobalTheory.LocOver.MoveBB
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M V _ _ H r g t`. Establish `hfam : H.MMfam (move g t) = fun x => g (H.MMfam t x)` using `funext (MMfam_move H g t)`. Set `gO : V ≃ₗ[M.L.O] V` to `g.restrictScalars M.L.O`. Establish `hE : ∀ w, g w ∈ Submodule.span E (Set.range (H.MMfam (move g t))) ↔ w ∈ Submodule.span E (Set.range (H.MMfam t))` using `fun w => by`. Rewrite using `[hfam]`.
+
+Conclude with `mem_span_range_comp g _ w`. Establish `hO : ∀ w, g w ∈ Submodule.span M.L.O (Set.range (H.MMfam (move g t))) ↔ w ∈ Submodule.span M.L.O (Set.range (H.MMfam t))` using `fun w => by`. Rewrite using `[hfam]`. Conclude with `mem_span_range_comp gO _ w`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨v, hv, h1, h2⟩`. Take `⟨w, hw, rfl⟩` from `Submodule.mem_map.1 hv`. Conclude with `⟨w, hw, (hE w).1 h1, fun h => h2 ((hO w).2 h)⟩`. Introduce and unpack `⟨w, hw, h1, h2⟩`. Conclude with `⟨g w, Submodule.mem_map_of_mem hw, (hE w).2 h1, fun h => h2 ((hO w).1 h)⟩`.
+-/
 theorem bbne_move : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] {M : Formalism.MainNotions.S.Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : Formalism.MainNotions.S.Loc.HermSp M V) {r : ℕ} (g : V ≃ₗ[E] V) (t : Formalism.MainNotions.S.Loc.Term V M r), LocNG.BBne (H := H) (move g t) ↔ LocNG.BBne (H := H) t := by
   intro F _ _ _ E _ _ _ _ M V _ _ H r g t
   have hfam : H.MMfam (move g t) = fun x => g (H.MMfam t x) := funext (MMfam_move H g t)

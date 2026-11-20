@@ -13,6 +13,27 @@ namespace GlobalTheory.CycLift
 
 open Polynomial
 
+/- English proof (translation)
+Establish `hp` using `Nat.pos_of_ne_zero hn`. Set `L` to `FractionRing V`. Establish `hinj : Function.Injective (algebraMap V L)` using `IsFractionRing.injective V L`. Use `haveI : CharZero L := charZero_of_injective_algebraMap hinj`. Establish `hz : IsPrimitiveRoot (zetaAway n : ℂ) n` using `Complex.isPrimitiveRoot_exp n hn`.
+
+Establish `hi : IsIntegral ℚ (zetaAway n : ℂ)` using `(hz.isIntegral hp).tower_top`. Set `K` to `IntermediateField.adjoin ℚ {(zetaAway n : ℂ)}`. Establish `hle : cycAway n ≤ K.toSubfield.toSubring`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x (rfl | rfl)`.
+
+Conclude with `IntermediateField.mem_adjoin_simple_self ℚ _`. Conclude with `K.inv_mem (natCast_mem K n)`. Establish `huL : IsPrimitiveRoot (algebraMap V L u) n` using `hu.map_of_injective hinj`. Establish `hr : algebraMap V L u ∈ (minpoly ℚ (zetaAway n : ℂ)).aroots L`. Rewrite using `[← cyclotomic_eq_minpoly_rat hz hp, mem_aroots]`.
+
+Use `⟨cyclotomic_ne_zero n ℚ, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_def, eval₂_eq_eval_map, map_cyclotomic]`. Conclude with `huL.isRoot_cyclotomic hp`. Set `g : K →ₐ[ℚ] L` to `(IntermediateField.algHomAdjoinIntegralEquiv ℚ hi).symm ⟨_, hr⟩`. Establish `hg : g (IntermediateField.AdjoinSimple.gen ℚ (zetaAway n : ℂ)) = algebraMap V L u` using `IntermediateField.algHomAdjoinIntegralEquiv_symm_apply_gen ℚ hi ⟨_, hr⟩`.
+
+Set `f₀ : cycAway n →+* L` to `g.toRingHom.comp (Subring.inclusion hle)`. Establish `hf₀ : Function.Injective f₀` using `g.toRingHom.injective.comp (Subring.inclusion_injective hle)`. Establish `hζ : f₀ (zetaAway n) = algebraMap V L u` using `hg`. Establish `hmem : ∀ x, f₀ x ∈ (algebraMap V L).range`. Introduce and unpack `⟨x, hx⟩`.
+
+Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with rfl | rfl` into its components or cases. Conclude with `⟨u, hζ.symm⟩`. Use `⟨↑hnV.unit⁻¹, ?_⟩` and prove the remaining obligations.
+
+Establish `e : (n : cycAway n) * ⟨(n : ℂ)⁻¹, Subring.subset_closure (Or.inr rfl)⟩ = 1` using `Subtype.ext (by simpa using mul_inv_cancel₀ (Nat.cast_ne_zero.2 hn : (n : ℂ) ≠ 0))`. Establish `e₁` using `congrArg f₀ e`. Rewrite `e₁` using `[map_mul, map_natCast, map_one]`. Establish `e₂ : (n : L) * algebraMap V L ↑hnV.unit⁻¹ = 1`. Rewrite using `[← map_natCast (algebraMap V L) n, ← map_mul, hnV.mul_val_inv, map_one]`.
+
+Conclude with `mul_left_cancel₀ (left_ne_zero_of_mul_eq_one e₂) (e₂.trans e₁.symm)`. Consider the case `zero => exact Set.mem_of_eq_of_mem (map_zero f₀) (zero_mem _)`. Consider the case `one => exact Set.mem_of_eq_of_mem (map_one f₀) (one_mem _)`. Consider the case `add x y hx hy ihx ihy => exact (map_add f₀ ⟨x, hx⟩ ⟨y, hy⟩) ▸ add_mem ihx ihy`. Consider the case `neg x hx ih => exact (map_neg f₀ ⟨x, hx⟩) ▸ neg_mem ih`.
+
+Consider the case `mul x y hx hy ihx ihy => exact (map_mul f₀ ⟨x, hx⟩ ⟨y, hy⟩) ▸ mul_mem ihx ihy`. Set `e` to `RingEquiv.ofBijective (algebraMap V L).rangeRestrict ⟨fun a b h => hinj (congrArg Subtype.val h), RingHom.rangeRestrict_surjective _⟩`. Establish `he : ∀ y, algebraMap V L (e.symm y) = y` using `fun y => congrArg Subtype.val (e.apply_symm_apply y)`. Use `⟨e.symm.toRingHom.comp (f₀.codRestrict _ hmem), e.symm.injective.comp (fun a b h => hf₀ (congrArg Subtype.val h)), hinj ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, he]`.
+
+Conclude with `hζ`.
+-/
 theorem exists_injective_hom {n : ℕ} (hn : n ≠ 0) {V : Type} [CommRing V] [IsDomain V] [CharZero V]
     {u : V} (hu : IsPrimitiveRoot u n) (hnV : IsUnit (n : V)) :
     ∃ f : cycAway n →+* V, Function.Injective f ∧ f (zetaAway n) = u := by

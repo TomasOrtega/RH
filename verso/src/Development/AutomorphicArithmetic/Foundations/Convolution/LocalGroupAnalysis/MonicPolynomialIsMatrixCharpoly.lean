@@ -3,6 +3,11 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.HermitianDescen
 
 open PositivityTheory.Rg.Tf.Geo PositivityTheory.Rg.Tf.Loc Polynomial
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `hP0 : P ≠ 0` using `hP.ne_zero`. Establish `hdim : (AdjoinRoot.powerBasis hP0).dim = P.natDegree` using `AdjoinRoot.powerBasis_dim hP0`. Use `⟨Matrix.reindex (finCongr hdim) (finCongr hdim) (Algebra.leftMulMatrix (AdjoinRoot.powerBasis hP0).basis (AdjoinRoot.powerBasis hP0).gen), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.charpoly_reindex, charpoly_leftMulMatrix, AdjoinRoot.minpoly_powerBasis_gen hP0]`.
+
+Simplify using `[hP.leadingCoeff]`.
+-/
 private theorem exists_matrix_charpoly {k : Type} [Field k] (P : k[X]) (hP : P.Monic) (n : ℕ)
     (hn : P.natDegree = n) : ∃ M : Matrix (Fin n) (Fin n) k, M.charpoly = P := by
   subst hn
@@ -13,6 +18,21 @@ private theorem exists_matrix_charpoly {k : Type} [Field k] (P : k[X]) (hP : P.M
   rw [Matrix.charpoly_reindex, charpoly_leftMulMatrix, AdjoinRoot.minpoly_powerBasis_gen hP0]
   simp [hP.leadingCoeff]
 
+/- English proof (translation)
+Introduce `k E _ _ _ _ _ _ σ hgen n δ hreg`. Take `⟨P, hP⟩` from `charpoly_normGL_lifts σ hgen δ`. Establish `hPm : P.Monic` using `Polynomial.monic_of_injective (algebraMap k E).injective (by rw [hP]; exact Matrix.charpoly_monic _)`. Establish `hdeg : P.natDegree = n`. Rewrite using `[← Polynomial.natDegree_map (f := algebraMap k E), hP, Matrix.charpoly_natDegree_eq_dim]`.
+
+Simplify using the standard rewrite rules. Take `⟨M, hM⟩` from `exists_matrix_charpoly P hPm n hdeg`. Establish `hMc : (M.map (algebraMap k E)).charpoly = ((normGL σ δ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).charpoly`. Rewrite using `[Matrix.charpoly_map, hM, hP]`. Establish `hdetE : (M.map (algebraMap k E)).det = ((normGL σ δ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).det`.
+
+Rewrite using `[Matrix.det_eq_sign_charpoly_coeff, Matrix.det_eq_sign_charpoly_coeff, hMc]`. Establish `hNu : IsUnit ((normGL σ δ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (normGL σ δ).isUnit`. Establish `hdet : IsUnit M.det`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`.
+
+Rewrite `hNu` using `[← hdetE]`. Establish `e : (M.map (algebraMap k E)).det = algebraMap k E M.det` using `((algebraMap k E).map_det M).symm`. Rewrite `hNu` using `[e, h0, map_zero]`. Conclude with `not_isUnit_zero hNu`. Set `γ : GL (Fin n) k` to `Matrix.nonsingInvUnit M hdet`.
+
+Establish `hγ : ((incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) = M.map (algebraMap k E)` using `rfl`. Take `⟨x, hx⟩` from `(UpperTheory.ConvolutionTheory.D.conjSep E E n _ hreg).1 ((incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) (by rw [hγ]; exact hMc)`. Establish `hx' : normGL σ δ * x = x * incl γ` using `Units.ext hx`. Use `⟨x, γ, ?_⟩` and prove the remaining obligations. Establish `hℓ : σ ^ Module.finrank k E = 1`.
+
+Rewrite using `[← IsGalois.card_aut_eq_finrank]`. Conclude with `pow_card_eq_one'`. Establish `hθ : (sigmaGL σ : Monoid.End (GL (Fin n) E)) ^ Module.finrank k E = 1`. Rewrite using `[← sigmaGL_pow, hℓ, sigmaGL_one]`. Establish `h` using `twNorm_twConj_of_pow_eq_one (sigmaGL σ) hθ x δ`.
+
+Express the relevant statement in the definitionally equal form `twNorm (sigmaGL σ) (Module.finrank k E) (twConj (sigmaGL σ) x δ) = incl γ`. Rewrite using `[h]`. Express the relevant statement in the definitionally equal form `x⁻¹ * normGL σ δ * x = incl γ`. Rewrite using `[mul_assoc, hx', inv_mul_cancel_left]`.
+-/
 theorem UpperTheory.ConvolutionTheory.G.monic_polynomial_is_matrix_charpoly :
     N1 := by
   intro k E _ _ _ _ _ _ σ hgen n δ hreg

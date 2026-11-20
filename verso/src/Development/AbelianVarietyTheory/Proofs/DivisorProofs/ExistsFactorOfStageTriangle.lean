@@ -29,6 +29,9 @@ open MeasureTheory
 
 variable {D : D7} {T : Type} {A A' WW : HSp D}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `[Tri.ker, thetaKO, map_add, map_smul]`.
+-/
 theorem ker_add_smul (X : Tri T A A' WW) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (t : T)
     (P Q : PolF D WW.rank A.rank) (c : ℂ) (h : GA D WW) :
     X.ker ψ θ t (P + c • Q) h = fun g => X.ker ψ θ t P h g + c * X.ker ψ θ t Q h g := by
@@ -52,10 +55,26 @@ def linI (X : Tri T A A' WW) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (t
     simp only [Tri.I, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, e, e0, Pi.zero_apply, zero_add]
     exact integral_const_mul c _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem linI_apply (X : Tri T A A' WW) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (t : T)
     (hint : ∀ P h, IntegrableOn (X.ker ψ θ t P h) X.fd X.m) (P : PolF D WW.rank A.rank) :
     linI X ψ θ t hint P = X.I ψ θ t P := rfl
 
+/- English proof (translation)
+Break down `isEmpty_or_nonempty T with hT | ⟨⟨t₀⟩⟩` into its components or cases. Use `⟨hlam, ModuleCat.of ℂ ℂ, MvPolynomial.lcoeff ℂ 0, MvPolynomial.lcoeff ℂ 0, fun _ => 0, fun z => ⟨MvPolynomial.C z, by simp⟩, fun t => hT.elim t, fun t => hT.elim t, fun t => hT.elim t, fun t => hT.elim t, 1, by simp, fun t => hT.elim t⟩` and prove the remaining obligations. Set `K : Submodule ℂ (PolF D WW.rank A.rank)` to `LinearMap.ker (linI X ψ θ t₀ (hint t₀))`. Establish `hK : ∀ t, LinearMap.ker (linI X ψ θ t (hint t)) = K` using `fun t => by`. Use extensionality with `P`.
+
+Simplify using `only [K, LinearMap.mem_ker, linI_apply]`. Conclude with `⟨hker t t₀ P, hker t₀ t P⟩`. Set `Jb : T → ((PolF D WW.rank A.rank ⧸ K) →ₗ[ℂ] (GA D WW → ℂ))` to `fun t => K.liftQ (linI X ψ θ t (hint t)) (hK t).ge`. Establish `hJb : ∀ t, Function.Injective (Jb t)` using `fun t => by`. Rewrite using `[← LinearMap.ker_eq_bot]`.
+
+Conclude with `Submodule.ker_liftQ_eq_bot _ _ _ (hK t).le`. Use `⟨hlam, ModuleCat.of ℂ (PolF D WW.rank A.rank ⧸ K), K.mkQ, K.mkQ ∘ₗ s, fun t => (lam t)⁻¹ • Jb t, K.mkQ_surjective, fun t => ?_, hint, fun t P => ?_, fun t P' hP' => ?_, ?_⟩` and prove the remaining obligations. Introduce `x y hxy`. Conclude with `hJb t (smul_right_injective _ (inv_ne_zero (hlam t)) hxy)`. Use `show X.I ψ θ t P = lam t • ((lam t)⁻¹ • Jb t (K.mkQ P))`.
+
+Rewrite using `[smul_smul, mul_inv_cancel₀ (hlam t), one_smul]`. Both sides reduce to the same expression. Use `show X.I' ψ θ t P' = (lam t)⁻¹ • Jb t (K.mkQ (s P'))`. Establish `: Jb t (K.mkQ (s P')) = X.I ψ θ t (s P')` using `rfl`. Rewrite using `[this, hs t P' hP', smul_smul, inv_mul_cancel₀ (hlam t), one_smul]`.
+
+Take `⟨P', hc, hne⟩` from `hconv`. Use `⟨P', fun h0 => hne t₀ ?_, hc⟩` and prove the remaining obligations. Establish `h1 : s P' ∈ K` using `(Submodule.Quotient.mk_eq_zero K).1 h0`. Establish `h2 : X.I ψ θ t₀ (s P') = 0` using `h1`. Rewrite `h2` using `[hs t₀ P' (hc t₀)]`.
+
+Conclude with `(smul_eq_zero.1 h2).resolve_left (hlam t₀)`.
+-/
 theorem factor_of_parts (X : Tri T A A' WW) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)
     (hint : ∀ t P h, IntegrableOn (X.ker ψ θ t P h) X.fd X.m)
     (hker : ∀ t t' P, X.I ψ θ t P = 0 → X.I ψ θ t' P = 0)
@@ -98,6 +117,11 @@ end GlobalTheory.StageFactor
 
 open GlobalTheory.StageFactor
 
+/- English proof (translation)
+Introduce `hP hK hL`. Take `⟨c, hc⟩` from `GlobalTheory.SqTop.Model.gBig_and (GlobalTheory.SqTop.Model.gBig_and (GlobalTheory.T.stage_triangle_kernel_integrable hP hK hL) (GlobalTheory.T.stage_triangle_integral_vanishing hP hK hL)) (GlobalTheory.SqTop.Model.gBig_and (GlobalTheory.T.exists_stage_triangle_transfer hP hK hL) …`. Use `⟨c, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, x0, h⟩` from `hc ε CF hCF`. Use `⟨C0, x0, fun C hC D large₂ a b r T Lc μ hL G W S hW hN i j p q A A' WW X hX => ?_⟩` and prove the remaining obligations.
+
+Take `⟨⟨h1, h2⟩, h3, h4⟩` from `h C hC D large₂ a b r T Lc μ hL G`. Take `⟨lam, s, hlam, hs⟩` from `h3 W S hW hN i j p q A A' WW X hX`. Conclude with `⟨lam, factor_of_parts X W.ψ W.θ (h1 W S hW hN i j p q A A' WW X hX) (h2 W S hW hN i j p q A A' WW X hX) lam s hlam hs (h4 W S hW hN i j p q A A' WW X hX)⟩`.
+-/
 theorem GlobalTheory.StageFactor.factor_stage : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →
     NumbersIn D.what₂.embLL S μ₀ → ∀ (i j : Fin D.R.m) (p q : ℕ) (A A' WW : HSp D) (X : Tri T A A' WW), GlobalTheory.SqTower.IsStageC W i j p q X →

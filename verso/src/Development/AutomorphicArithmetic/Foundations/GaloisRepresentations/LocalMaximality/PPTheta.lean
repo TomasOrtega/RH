@@ -4,11 +4,19 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Local
 open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH GlobalTheory.W1 UpperTheory.Gal.productCup_of_system
 open scoped TensorProduct
 
+/- English proof (translation)
+Unfold `pk`. Rewrite using `[dif_pos h]`. Conclude with `Finset.min'_mem _ _`.
+-/
 private lemma pk_mem {d : ℕ} {I : Finset (Fin (d + 1))} (h : I.Nonempty) : pk I ∈ I := by
   unfold pk
   rw [dif_pos h]
   exact Finset.min'_mem _ _
 
+/- English proof (translation)
+Rewrite using `[(hA F d x hpd I i hi).2.1]`. Establish `hne : (∏ m ∈ Iᶜ, ((x m : F) / x i)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun m _ => div_ne_zero (x m).ne_zero (x i).ne_zero`. Establish `e : (∏ m ∈ Iᶜ, ((x m : F) / x i)) / omG x i = ∏ m ∈ I, ((x i : F) / x m)`. Unfold `omG`. Rewrite using `[← Finset.prod_mul_prod_compl I (fun l => (x l : F) / x i), div_mul_cancel_right₀ hne, ← Finset.prod_inv_distrib]`.
+
+Conclude with `Finset.prod_congr rfl fun m _ => inv_div _ _`. Rewrite using `[e]`. Conclude with `Subalgebra.prod_mem _ fun m hm => Algebra.subset_adjoin ⟨m, hm, i, rfl⟩`.
+-/
 private lemma lat_mem (hA : LatA) {F : Type} [Field F] [Algebra ℂ F] {d : ℕ} (x : Fin (d + 1) → Fˣ)
     (hpd : IsPd ℂ (xv x)) (I : Finset (Fin (d + 1))) (i : Fin (d + 1)) (hi : i ∈ I) :
     (∏ m ∈ Iᶜ, ((x m : F) / x i)) ∈ omA ℂ (xv x) I := by
@@ -23,6 +31,9 @@ private lemma lat_mem (hA : LatA) {F : Type} [Field F] [Algebra ℂ F] {d : ℕ}
   rw [e]
   exact Subalgebra.prod_mem _ fun m hm => Algebra.subset_adjoin ⟨m, hm, i, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_const, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun m _ => (div_mul_cancel₀ _ (x i).ne_zero).symm`.
+-/
 private lemma prod_split {F : Type} [Field F] {d : ℕ} (x : Fin (d + 1) → Fˣ) (I : Finset (Fin (d + 1)))
     (i : Fin (d + 1)) : ∏ m ∈ Iᶜ, (x m : F) = (∏ m ∈ Iᶜ, ((x m : F) / x i)) * (x i : F) ^ Iᶜ.card := by
   rw [← Finset.prod_const, ← Finset.prod_mul_distrib]
@@ -32,20 +43,85 @@ section
 variable {F : Type} (K : Type) [Field F] [Field K] [Algebra ℂ F] [Algebra ℂ K] [Algebra F K] [IsScalarTower ℂ F K]
   {d : ℕ} (x : Fin (d + 1) → Fˣ) (a : ℕ)
 
+/- English proof (translation)
+Simplify using `[sysP, Module.endTensorEndAlgHom_apply]`.
+-/
 private lemma act_tmul (f g : F) (k : K) (w : DR ℂ K) :
     (sysP K x a).act (f ⊗ₜ k) (g ⊗ₜ w) = (f * g) ⊗ₜ (k • w) := by
   simp [sysP, Module.endTensorEndAlgHom_apply]
 
+/- English proof (translation)
+Simplify using `[mulP]`.
+-/
 private lemma mulP_one (w : DR ℂ K) : mulP F K ((1 : F) ⊗ₜ[ℂ] w) = w := by
   simp [mulP]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma X_val (i : Fin (d + 1)) : (((sysP K x a).X i : (F ⊗[ℂ] K)ˣ) : F ⊗[ℂ] K) = (x i : F) ⊗ₜ 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma Y_val (i : Fin (d + 1)) : (((sysP K x a).Y i : (F ⊗[ℂ] K)ˣ) : F ⊗[ℂ] K) =
     1 ⊗ₜ algebraMap F K (x i) := rfl
 
 end
 
+/- English proof (translation)
+Introduce `hMJ hTh hLat hKap hLA hAL hG hSB _ F K _ _ _ _ _ _ d x hc a p β hβ`. Establish `hU` using `wdUni_of`. Establish `hl : ∀ {A B : Type} [LinearOrder A] [LinearOrder B] (b : Finset A) (L : Finset B), lft (uni b L) = b` using `fun {A B} _ _ b L => (hU A B ℂ (fun _ => 0) (fun _ => 0) b L).2.1`. Establish `hr : ∀ {A B : Type} [LinearOrder A] [LinearOrder B] (b : Finset A) (L : Finset B), rgt (uni b L) = L` using `fun {A B} _ _ b L => (hU A B ℂ (fun _ => 0) (fun _ => 0) b L).2.2.1`. Establish `hcard : ∀ {A B : Type} [LinearOrder A] [LinearOrder B] (b : Finset A) (L : Finset B), (uni b L).card = b.card + L.card` using `fun {A B} _ _ b L => (hU A B ℂ (fun _ => 0) (fun _ => 0) b L).2.2.2.1`.
+
+Establish `hlr : ∀ {A B : Type} [LinearOrder A] [LinearOrder B] (s : Finset (A ⊕ₗ B)), uni (lft s) (rgt s) = s` using `fun {A B} _ _ s => (hU A B ℂ (fun _ => 0) (fun _ => 0) ∅ ∅).2.2.2.2 s`. Establish `hGood : (sysP K x a).Good` using `(hG F K d x hc a).2.1`. Establish `hβC : ∀ J, β J ∈ (if J.Nonempty ∧ (J.card : ℤ) = (p : ℤ) + 1 then omB ℂ K (rB ℂ K (xv x) J) a else ⊥)` using `fun J => hβ.1 J (Set.mem_univ J)`. Use `set b : Finset (Fin (d + 1)) → F ⊗[ℂ] DR ℂ K := fun J => (1 : F) ⊗ₜ[ℂ] β J with hbdef`. Establish `hb0 : ∀ J, ¬ (J.Nonempty ∧ J.card = p + 1) → b J = 0`.
+
+Introduce `J hJ`. Establish `h` using `hβC J`. Rewrite `h` using `[if_neg (by rintro ⟨h1, h2⟩; exact hJ ⟨h1, by exact_mod_cast h2⟩)]`. Simplify using `only [hbdef, (Submodule.mem_bot ℂ).1 h, TensorProduct.tmul_zero]`. Establish `hb1 : deltaL ℂ _ _ b = 0`.
+
+Use function extensionality and compare the values at `t`. Establish `h0 : deltaL ℂ _ _ β t = 0` using `congrFun hβ.2 t`. Express the relevant statement in the definitionally equal form `∑ i ∈ t, GlobalTheory.cubeSign t i • b (t.erase i) = 0`. Establish `h1 : ∑ i ∈ t, GlobalTheory.cubeSign t i • β (t.erase i) = 0` using `h0`. Establish `h2` using `congrArg (TensorProduct.mk ℂ F (DR ℂ K) 1) h1`.
+
+Rewrite `h2` using `[map_sum, map_zero]`. Rewrite using `[← h2]`. Conclude with `Finset.sum_congr rfl fun i _ => by simp only [hbdef, Units.smul_def, map_zsmul, TensorProduct.mk_apply]`. Establish `hb2 : ∀ J, J.card ≠ p + 1 → b J = 0` using `fun J hJ => hb0 J fun h => hJ h.2`. Establish `hθ0 : ∀ (I : Finset (Fin (d + 1))) (L : Finset (Mi d)), I.card + L.card ≠ d + 1 → detC (sysP K x a).rowMu (uni I L) = 0`.
+
+Introduce `I L h`. Unfold `detC`. Rewrite using `[dif_neg (by rw [hcard]; exact h)]`. Establish `hθe : ∀ L : Finset (Mi d), detC (sysP K x a).rowMu (uni ∅ L) = 0` using `(hTh d _ _ (sysP K x a)).2.1`. Establish `hval : ∀ (I J : Finset (Fin (d + 1))) (L : Finset (Mi d)), (sysP K x a).mj p (detC (sysP K x a).rowMu) b (uni (uni I J) L) = ((-1 : ℤ) ^ ((p + 1) * L.card)) • (sysP K x a).act (detC (sysP K x a).rowMu (uni I L)) (b J)`.
+
+Introduce `I J L`. Simplify using `only [Sys.mj, hl, hr]`. Establish `hzero : ∀ (I J : Finset (Fin (d + 1))) (L : Finset (Mi d)), (I = ∅ ∨ ¬ (J.Nonempty ∧ J.card = p + 1) ∨ I.card + L.card ≠ d + 1) → (sysP K x a).mj p (detC (sysP K x a).rowMu) b (uni (uni I J) L) = 0`. Introduce `I J L h`. Rewrite using `[hval]`.
+
+Break down `h with rfl | h | h` into its components or cases. Rewrite using `[hθe]`. Simplify using the standard rewrite rules. Rewrite using `[hb0 J h]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hθ0 I L h]`. Simplify using the standard rewrite rules. Use `⟨(sysP K x a).mj p (detC (sysP K x a).rowMu) b, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[(hSB d _ _ (sysP K x a) (Mi d) n11 (sysP K x a).mu _).2.1]`.
+
+Introduce `I J`. Use `split_ifs with hIJ`. Take `⟨hI, hJ⟩` from `hIJ`. Introduce `L _`. Express the relevant statement in the definitionally equal form `(sysP K x a).mj p (detC (sysP K x a).rowMu) b (uni (uni I J) L) ∈ _`.
+
+Simplify using `only`. Rewrite using `[SetLike.mem_coe]`. Use `split_ifs with hL`. Distinguish the cases in `hJc : J.card = p + 1`. Establish `hIL : I.card + L.card = d + 1` using `by push_cast [hJc] at hL; omega`.
+
+Establish `hi` using `pk_mem hI`. Establish `hj` using `pk_mem hJ`. Take `⟨s, hs, hdet⟩` from `(hLat d _ _ (sysP K x a) hGood).2 I J L hI (pk J) hj`. Establish `hbJ : β J ∈ omB ℂ K (rB ℂ K (xv x) J) a`. Establish `h` using `hβC J`.
+
+Rewrite `h` using `[if_pos ⟨hJ, by exact_mod_cast hJc⟩]`. Then use the resulting hypothesis. Establish `hcompl : Iᶜ.card = L.card`. Rewrite using `[Finset.card_compl, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Establish `hfm` using `lat_mem hLA x hc.pd I (pk I) hi`.
+
+Establish `hsplit` using `prod_split x I (pk I)`. Generalize the expression as in `(∏ m ∈ Iᶜ, ((x m : F) / x (pk I))) = f at hfm hsplit`. Establish `hm : f ⊗ₜ[ℂ] β J ∈ (sysP K x a).M I J` using `Submodule.apply_mem_map₂ _ hfm hbJ`. Establish `hm'` using `hGood.stab I J hI hJ s hs _ hm`. Establish `hXprod : ∏ m ∈ Iᶜ, (((sysP K x a).X m : (F ⊗[ℂ] K)ˣ) : F ⊗[ℂ] K) = (f ⊗ₜ (1 : K)) * (((sysP K x a).X (pk I) : (F ⊗[ℂ] K)ˣ) : F ⊗[ℂ] K) ^ L.card`.
+
+Establish `e` using `congrArg (Algebra.TensorProduct.includeLeftRingHom : F →+* F ⊗[ℂ] K) hsplit`. Rewrite `e` using `[map_prod, map_mul, map_pow, hcompl]`. Conclude with `e`. Establish `hU' : (((∏ l ∈ L, (sysP K x a).u n11 (pk I) (pk J) l : (F ⊗[ℂ] K)ˣ)) : F ⊗[ℂ] K) = (((sysP K x a).X (pk I) : (F ⊗[ℂ] K)ˣ) : F ⊗[ℂ] K) ^ L.card * (((sysP K x a).Y (pk J) : (F ⊗[ℂ] K)ˣ) : F ⊗[ℂ] K) ^ L.card`. Establish `: ∀ l : Mi d, (sysP K x a).u n11 (pk I) (pk J) l = (sysP K x a).X (pk I) * (sysP K x a).Y (pk J)`.
+
+Introduce `l`. Simplify using `[Sys.u, n11]`. Simplify using `only [this, Finset.prod_const, mul_pow, Units.val_mul, Units.val_pow_eq_pow_val]`. Establish `hact : (sysP K x a).act (f ⊗ₜ (1 : K)) (b J) = f ⊗ₜ[ℂ] β J`. Simplify using `[hbdef, act_tmul]`.
+
+Rewrite using `[hval]`. Apply `zsmul_mem` to reduce the goal to its premises. Use `⟨(sysP K x a).act s (f ⊗ₜ[ℂ] β J), hm', ?_⟩` and prove the remaining obligations. Rewrite using `[hdet, hXprod, hU', ← hact, ← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hzero I J L (Or.inr (Or.inl fun h => hJc h.2))]`. Conclude with `Submodule.zero_mem _`. Establish `: (sysP K x a).mj p (detC (sysP K x a).rowMu) b (uni (uni I J) L) = 0`. Use `hzero I J L ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hJc : J.card = p + 1`. Use `Or.inr (Or.inr fun h => hL ?_)` and prove the remaining obligations. Move the coercions through the operations in `[hJc]`. Use linear arithmetic over natural numbers and integers. Conclude with `Or.inr (Or.inl fun h => hJc h.2)`.
+
+Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Use function extensionality and compare the values at `L`. Use `hzero I J L ?_` and prove the remaining obligations. Distinguish the cases in `hI : I.Nonempty`.
+
+Conclude with `Or.inr (Or.inl fun h => hIJ ⟨hI, h.1⟩)`. Conclude with `Or.inl (Finset.not_nonempty_iff_eq_empty.1 hI)`. Conclude with `hMJ d _ _ (sysP K x a) (Mi d) (sysP K x a).mu p _ b (hTh d _ _ (sysP K x a)).1 hb1 hb2`. Introduce `s L hL`. Take `⟨I, J, rfl⟩ : ∃ I J, s = uni I J` from `⟨lft s, rgt s, (hlr s).symm⟩`.
+
+Use `hzero I J L ?_` and prove the remaining obligations. Distinguish the cases in `hI : I = ∅`. Conclude with `Or.inl hI`. Use `Or.inr (Or.inr fun h => hI ?_)` and prove the remaining obligations. Conclude with `Finset.card_eq_zero.1 (by omega)`.
+
+Introduce `s L hL`. Take `⟨I, J, rfl⟩ : ∃ I J, s = uni I J` from `⟨lft s, rgt s, (hlr s).symm⟩`. Establish `hedge : edge2 β (uni I J) = if I.card = 1 then β J else 0` using `by simp only [edge2, hl, hr]`. Rewrite using `[hedge]`. Distinguish the cases in `hI : I.card = 1`.
+
+Rewrite using `[if_pos hI]`. Take `⟨i, rfl⟩` from `Finset.card_eq_one.1 hI`. Take `⟨τ, hτ⟩` from `hc.exists_isTop`. Establish `h5` using `(hAL F K d x hc τ hτ a).2.2.2.2.1`. Establish `hk` using `hKap F K d x hc _ _ (sysP K x a) (Algebra.TensorProduct.productMap (IsScalarTower.toAlgHom ℂ F K) (AlgHom.id ℂ K)) (fun m => by rw [X_val]; simp) (fun m => by rw [Y_val]; simp) i L hL`.
+
+Rewrite using `[hval, hL, map_zsmul, h5, hk, hbdef]`. Simplify using `only [mulP_one]`. Rewrite using `[smul_comm]`. Rewrite using `[if_neg hI, hzero I J L (Or.inr (Or.inr (by omega)))]`. Simplify using the standard rewrite rules.
+
+Introduce `J`. Rewrite using `[hval, (hTh d _ _ (sysP K x a)).2.2.1]`. Simplify using `[hbdef]`.
+-/
 theorem UpperTheory.Gal.productCup_of_system.pTheta_of :
     MJ → ThMu → ThMuLat → KapInd → LatA → ActsLin → GoodZ → SysBasic → SysOk → PTheta := by
   intro hMJ hTh hLat hKap hLA hAL hG hSB _ F K _ _ _ _ _ _ d x hc a p β hβ

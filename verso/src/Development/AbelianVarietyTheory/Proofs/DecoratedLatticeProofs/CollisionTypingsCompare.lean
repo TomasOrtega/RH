@@ -17,6 +17,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 open GlobalTheory.Core.Deg GlobalTheory.IndefiniteRowSideFullHecke.WordCollisionBound
 
+/- English proof (translation)
+Establish `hk : 0 < D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Establish `h : 1 ≤ D.R.k ∧ D.R.k ≤ D.R.k` using `⟨hk, le_rfl⟩`. Simplify using `only [uOne, dif_pos h, uS]`. Establish `a` using `D.hcW_last w τ hk`. Establish `b` using `D.hcW_last u τ hk`.
+
+Conclude with `congrArg (fun q : ℚ => (q : ℝ)) (a.trans b.symm)`.
+-/
 theorem uOne_last (D : D7) (u w : D.what₂.Word) (τ : D.what₂.Tau) : uOne D w τ D.R.k = uOne D u τ D.R.k := by
   have hk : 0 < D.R.k := by have := D.R.m_add_three_le_k; omega
   have h : 1 ≤ D.R.k ∧ D.R.k ≤ D.R.k := ⟨hk, le_rfl⟩
@@ -25,6 +30,9 @@ theorem uOne_last (D : D7) (u w : D.what₂.Word) (τ : D.what₂.Tau) : uOne D 
   have b := D.hcW_last u τ hk
   exact congrArg (fun q : ℚ => (q : ℝ)) (a.trans b.symm)
 
+/- English proof (translation)
+The claim follows from `S.splitsCompl_of_ncard _ _ (D.mem w).A.T_prime (Formalism.L2.GlobalTheoryTheory.FiltrationCocycleLiftCriterion.split_clause _ Formalism.L2.SG.ResidEvFree.cycSplit_holds _ (D.mem w).A.T_prime (S.level_norm_one_mod_conductor _ w)).2`.
+-/
 theorem splits_level (D : D7) (w : D.what₂.Word) : SplitsE D (D.mem w).A.T :=
   S.splitsCompl_of_ncard _ _ (D.mem w).A.T_prime
     (Formalism.L2.GlobalTheoryTheory.FiltrationCocycleLiftCriterion.split_clause _ Formalism.L2.SG.ResidEvFree.cycSplit_holds _ (D.mem w).A.T_prime (S.level_norm_one_mod_conductor _ w)).2

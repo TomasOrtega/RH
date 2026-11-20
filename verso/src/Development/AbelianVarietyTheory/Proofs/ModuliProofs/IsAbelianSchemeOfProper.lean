@@ -19,12 +19,20 @@ section Pts
 
 variable {k : Type} [Field k] [IsAlgClosed k]
 
+/- English proof (translation)
+Use `(isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field k _ X.hom hX).1` as an intermediate fact. Conclude with `Over.OverMorphism.ext (ComplexPoints.hom_ext_of_points X.hom Y.hom (by rw [Over.w, Over.w]) fun x hx => congrArg (fun q => q.left) (h (Over.homMk x hx)))`.
+-/
 theorem hom_ext_pts {X Y : Over (Sp k)} (hX : Smooth X.hom) [IsSeparated Y.hom] {f g : X ⟶ Y}
     (h : ∀ x : 𝟙_ (Over (Sp k)) ⟶ X, x ≫ f = x ≫ g) : f = g := by
   have := (isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field k _ X.hom hX).1
   exact Over.OverMorphism.ext (ComplexPoints.hom_ext_of_points X.hom Y.hom (by rw [Over.w, Over.w]) fun x hx =>
     congrArg (fun q => q.left) (h (Over.homMk x hx)))
 
+/- English proof (translation)
+Set `y' : Sp k ⟶ B.left` to `y.left`. Take `⟨z, -⟩` from `(pullback.snd ψ.left y').surjective (default : PrimeSpectrum k)`. Take `⟨x, hx, -⟩` from `ComplexPoints.exists_point_mem (pullback.snd ψ.left y') (Z := Set.univ) isClosed_univ.isLocallyClosed ⟨z, trivial⟩`. Establish `e : (x ≫ pullback.fst ψ.left y') ≫ ψ.left = y'`. Rewrite using `[Category.assoc, pullback.condition, reassoc_of% hx]`.
+
+Conclude with `⟨Over.homMk (x ≫ pullback.fst ψ.left y') (by rw [← Over.w ψ, ← Category.assoc, e]; exact Over.w y), Over.OverMorphism.ext e⟩`.
+-/
 theorem exists_lift_pt {S : Scheme.{0}} {A B : Over S} (ψ : A ⟶ B) [LocallyOfFiniteType ψ.left] [Surjective ψ.left]
     (t : Sp k ⟶ S) (y : Over.mk t ⟶ B) : ∃ x : Over.mk t ⟶ A, x ≫ ψ = y := by
   let y' : Sp k ⟶ B.left := y.left
@@ -36,6 +44,15 @@ theorem exists_lift_pt {S : Scheme.{0}} {A B : Over S} (ψ : A ⟶ B) [LocallyOf
   exact ⟨Over.homMk (x ≫ pullback.fst ψ.left y') (by rw [← Over.w ψ, ← Category.assoc, e]; exact Over.w y),
     Over.OverMorphism.ext e⟩
 
+/- English proof (translation)
+Set `R : Over (Sp k)` to `Over.mk (pullback.fst ψ₀.left ψ₀.left ≫ A.hom)`. Set `p₁ : R ⟶ A` to `Over.homMk (pullback.fst _ _) rfl`. Set `p₂ : R ⟶ A` to `Over.homMk (pullback.snd _ _) (by show _ = pullback.fst ψ₀.left ψ₀.left ≫ A.hom`. Rewrite using `[← Over.w ψ₀, ← pullback.condition_assoc])`. Establish `e₀ : p₁ ≫ ψ₀ = p₂ ≫ ψ₀` using `Over.OverMorphism.ext pullback.condition`.
+
+Establish `e : p₁ ≫ ψ = p₂ ≫ ψ` using `hom_ext_pts (inferInstanceAs (Smooth (pullback.fst ψ₀.left ψ₀.left ≫ A.hom))) fun x => by`. Use `h ((x ≫ p₁) * (x ≫ p₂)⁻¹) (by` as an intermediate fact. Rewrite using `[MonObj.mul_comp, GrpObj.inv_comp, Category.assoc, e₀, Category.assoc, mul_inv_cancel])`. Rewrite `this` using `[MonObj.mul_comp, GrpObj.inv_comp, mul_inv_eq_one, Category.assoc, Category.assoc]`. Conclude with `this`.
+
+Establish `e' : pullback.fst ψ₀.left ψ₀.left ≫ ψ.left = pullback.snd ψ₀.left ψ₀.left ≫ ψ.left` using `congrArg (fun q => q.left) e`. Establish `hd : ∀ {Z : Scheme.{0}} (g₁ g₂ : Z ⟶ A.left), g₁ ≫ ψ₀.left = g₂ ≫ ψ₀.left → g₁ ≫ ψ.left = g₂ ≫ ψ.left` using `fun g₁ g₂ hg => by`. Rewrite using `[← pullback.lift_fst g₁ g₂ hg, Category.assoc, e', pullback.lift_snd_assoc]`. Establish `f` using `EffectiveEpi.fac ψ₀.left ψ.left hd`. Use `⟨Over.homMk (EffectiveEpi.desc ψ₀.left ψ.left hd) ?_, Over.OverMorphism.ext f⟩` and prove the remaining obligations.
+
+Rewrite using `[← cancel_epi ψ₀.left, reassoc_of% f, Over.w, Over.w]`.
+-/
 theorem exists_fac {A B Y : Over (Sp k)} [GrpObj A] [GrpObj B] [GrpObj Y] (hA : Smooth A.hom) [IsSeparated Y.hom]
     (ψ₀ : A ⟶ B) [IsMonHom ψ₀] [Etale ψ₀.left] [Surjective ψ₀.left] [QuasiCompact ψ₀.left] (ψ : A ⟶ Y) [IsMonHom ψ]
     (h : ∀ x : 𝟙_ (Over (Sp k)) ⟶ A, x ≫ ψ₀ = 1 → x ≫ ψ = 1) : ∃ α : B ⟶ Y, ψ₀ ≫ α = ψ := by
@@ -59,6 +76,11 @@ theorem exists_fac {A B Y : Over (Sp k)} [GrpObj A] [GrpObj B] [GrpObj Y] (hA : 
   refine ⟨Over.homMk (EffectiveEpi.desc ψ₀.left ψ.left hd) ?_, Over.OverMorphism.ext f⟩
   rw [← cancel_epi ψ₀.left, reassoc_of% f, Over.w, Over.w]
 
+/- English proof (translation)
+Use `(isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field k _ B.hom hB).1` as an intermediate fact. Establish `: IsProper (α.left ≫ B.hom)` using `by rw [Over.w]; infer_instance`. Establish `: IsProper α.left` using `IsProper.of_comp α.left B.hom`. Establish `: IsClosedImmersion α.left` using `(IsClosedImmersion.iff_isProper_and_mono _).2 ⟨‹_›, ‹_›⟩`. Establish `: Surjective α.left` using `ComplexPoints.surjective_of_geomPoints_lift B.hom (𝟙 (Sp k)) α.left α.left.isClosedEmbedding.isClosed_range fun y hy => by`.
+
+Take `⟨x, hx⟩` from `h (Over.homMk y hy)`. Conclude with `⟨x.left, congrArg (fun q => q.left) hx⟩`. Establish `: IsIso α.left` using `isIso_of_isClosedImmersion_of_surjective _`. Establish `: IsIso ((Over.forget _).map α)` using `‹_›`. Conclude with `isIso_of_reflects_iso α (Over.forget _)`.
+-/
 theorem isIso_of_mono {A B : Over (Sp k)} (α : A ⟶ B) [IsProper A.hom] [IsSeparated B.hom] (hB : Smooth B.hom)
     [Mono α.left] (h : ∀ y : 𝟙_ (Over (Sp k)) ⟶ B, ∃ x, x ≫ α = y) : IsIso α := by
   have := (isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field k _ B.hom hB).1
@@ -75,6 +97,11 @@ theorem isIso_of_mono {A B : Over (Sp k)} (α : A ⟶ B) [IsProper A.hom] [IsSep
 
 omit [IsAlgClosed k] in
 
+/- English proof (translation)
+Establish `: Surjective x` using `⟨fun z => ⟨(default : PrimeSpectrum K), Subsingleton.elim (α := PrimeSpectrum k) _ _⟩⟩`. Establish `: Epi x` using `Flat.epi_of_flat_of_surjective x`. Introduce `a b h`. Establish `e : (toUnit (Over.mk x)).left = x` using `by simp`. Establish `h' : (toUnit (Over.mk x)).left ≫ a.left = (toUnit (Over.mk x)).left ≫ b.left` using `congrArg (fun q => q.left) h`.
+
+Rewrite `h'` using `[e]`. Conclude with `Over.OverMorphism.ext ((cancel_epi x).1 h')`.
+-/
 theorem toUnit_comp_injective {K : Type} [Field K] (x : Sp K ⟶ Sp k) (A : Over (Sp k)) :
     Function.Injective (fun z : 𝟙_ (Over (Sp k)) ⟶ A => toUnit (Over.mk x) ≫ z) := by
   have : Surjective x := ⟨fun z => ⟨(default : PrimeSpectrum K), Subsingleton.elim (α := PrimeSpectrum k) _ _⟩⟩
@@ -85,6 +112,11 @@ theorem toUnit_comp_injective {K : Type} [Field K] (x : Sp K ⟶ Sp k) (A : Over
   rw [e] at h'
   exact Over.OverMorphism.ext ((cancel_epi x).1 h')
 
+/- English proof (translation)
+Establish `hn : 1 ≤ n` using `Nat.pos_of_ne_zero (by rintro rfl; exact hk Nat.cast_zero)`. Establish `c₁ : Nat.card {x : 𝟙_ (Over (Sp k)) ⟶ P.A // x ^ n = 1} = n ^ (2 * P.g)` using `(hM _ P n hn).2.2.2.2 k (𝟙 _) hk`. Establish `c₂` using `(hM _ P n hn).2.2.2.2 K x hK`. Establish `: Finite {y : Over.mk x ⟶ P.A // y ^ n = 1}` using `Nat.finite_of_card_ne_zero (by rw [c₂]; positivity)`. Set `F : {x : 𝟙_ (Over (Sp k)) ⟶ P.A // x ^ n = 1} → {y : Over.mk x ⟶ P.A // y ^ n = 1}` to `fun a => ⟨toUnit _ ≫ a.1, by rw [← MonObj.comp_pow, a.2, MonObj.comp_one]⟩`.
+
+Establish `hF : Function.Bijective F` using `(Nat.bijective_iff_injective_and_card F).2 ⟨fun a b h => Subtype.ext (toUnit_comp_injective x _ (congrArg Subtype.val h)), c₁.trans c₂.symm⟩`. Take `⟨a, ha⟩` from `hF.2 ⟨z, hz⟩`. Conclude with `⟨a.1, congrArg Subtype.val ha⟩`.
+-/
 theorem exists_of_torsion (hM : Out.MulNSt) (P : Out.PolAV (Sp k)) {K : Type} [Field K] [IsAlgClosed K]
     (x : Sp K ⟶ Sp k) {n : ℕ} (hk : (n : k) ≠ 0) (hK : (n : K) ≠ 0) (z : Over.mk x ⟶ P.A) (hz : z ^ n = 1) :
     ∃ z₀ : 𝟙_ (Over (Sp k)) ⟶ P.A, toUnit (Over.mk x) ≫ z₀ = z := by
@@ -101,6 +133,9 @@ theorem exists_of_torsion (hM : Out.MulNSt) (P : Out.PolAV (Sp k)) {K : Type} [F
 
 end Pts
 
+/- English proof (translation)
+Substitute `e` using the available equality. Use `⟨MulEquiv.ofBijective (pushHom h T) ⟨fun a b e => Over.OverMorphism.ext (h.1.hom_ext (congrArg (fun q => q.left) e) (by rw [Over.w, Over.w])), fun z => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Conclude with `⟨Over.homMk (h.1.lift z.left T.hom (Over.w z)) (h.1.lift_snd _ _ _), Over.OverMorphism.ext (h.1.lift_fst _ _ _)⟩`.
+-/
 theorem exists_ptsEquiv {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (T : Over S') (y : T.left ⟶ S) (e : T.hom ≫ f = y) :
     ∃ ρ : (T ⟶ G') ≃* (Over.mk y ⟶ G), ∀ x, (ρ x).left = x.left ≫ φ := by
@@ -109,18 +144,33 @@ theorem exists_ptsEquiv {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj 
     (h.1.hom_ext (congrArg (fun q => q.left) e) (by rw [Over.w, Over.w])), fun z => ?_⟩, fun _ => rfl⟩
   exact ⟨Over.homMk (h.1.lift z.left T.hom (Over.w z)) (h.1.lift_snd _ _ _), Over.OverMorphism.ext (h.1.lift_fst _ _ _)⟩
 
+/- English proof (translation)
+The claim follows from `(Units.mapEquiv (Scheme.ΓSpecIso (CommRingCat.of R)).symm.commRingCatIsoToRingEquiv.toMulEquiv).bijective`.
+-/
 theorem unitOn_bijective (R : Type) [CommRing R] : Function.Bijective (unitOn (R := R)) :=
   (Units.mapEquiv (Scheme.ΓSpecIso (CommRingCat.of R)).symm.commRingCatIsoToRingEquiv.toMulEquiv).bijective
 
+/- English proof (translation)
+The claim follows from `map_pow _ _ _`.
+-/
 theorem unitOn_pow {R : Type} [CommRing R] (c : Rˣ) (n : ℕ) : unitOn (c ^ n) = unitOn c ^ n := map_pow _ _ _
 
+/- English proof (translation)
+The claim follows from `map_one _`.
+-/
 theorem unitOn_one {R : Type} [CommRing R] : unitOn (1 : Rˣ) = 1 := map_one _
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, t.semi.smooth, hp, t.semi.geomConnected⟩`.
+-/
 theorem isAbelianScheme_of_proper {S : Scheme.{0}} (t : SAB H S) (hp : IsProper t.G.hom) : IsAbelianScheme t.G :=
   ⟨inferInstance, t.semi.smooth, hp, t.semi.geomConnected⟩
 
+/- English proof (translation)
+Use `t.semi.smooth` as an intermediate fact. Use `t.semi.geomConnected` as an intermediate fact. Establish `: ConnectedSpace t.G.left` using `GeometricallyConnected.geometrically_connectedSpace (f := t.G.hom) (𝟙 _) (𝟙 _) t.G.hom (IsPullback.of_horiz_isIso ⟨by simp⟩)`. Conclude with `exists_dim_of_preconnected t.G.hom (eSec t.G (default : PrimeSpectrum k))`.
+-/
 theorem exists_dim {k : Type} [Field k] (t : SAB H (Sp k)) : ∃ g, SmoothOfRelativeDimension g t.G.hom := by
   have := t.semi.smooth
   have := t.semi.geomConnected

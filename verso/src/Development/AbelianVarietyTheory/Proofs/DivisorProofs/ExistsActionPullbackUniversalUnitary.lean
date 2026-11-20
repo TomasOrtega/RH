@@ -20,6 +20,17 @@ open MonObj
 
 variable {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S} {φ : G'.left ⟶ G.left}
 
+/- English proof (translation)
+Set `v : G' ⟶ G'` to `Over.homMk (h.1.lift (φ ≫ u.left) G'.hom (by rw [Category.assoc, Over.w u, h.1.w])) (h.1.lift_snd _ _ _)`. Establish `hv : v.left ≫ φ = φ ≫ u.left` using `h.1.lift_fst _ _ _`. Establish `inj : ∀ (T : Over S') (x y : T ⟶ G'), pushPt h.1.w x = pushPt h.1.w y → x = y` using `fun T x y e => Over.OverMorphism.ext (h.1.hom_ext (congrArg (fun z => z.left) e) (by rw [Over.w x, Over.w y]))`. Establish `pa : ∀ (T : Over S') (x : T ⟶ G'), pushPt h.1.w (x ≫ v) = pushPt h.1.w x ≫ u` using `fun T x => Over.OverMorphism.ext (by show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _`. Rewrite using `[Category.assoc, hv, Category.assoc])`.
+
+Establish `pm : ∀ (T : Over S') (x y : T ⟶ G'), pushPt h.1.w (x * y) = pushPt h.1.w x * pushPt h.1.w y` using `fun T x y => Over.OverMorphism.ext (h.2 T x y _ _ rfl rfl).symm`. Establish `p1 : ∀ (T : Over S'), pushPt h.1.w (1 : T ⟶ G') = 1` using `fun T => by`. Use `pm T 1 1` as an intermediate fact. Rewrite `this` using `[_root_.mul_one]`. Conclude with `left_eq_mul.1 this`.
+
+Establish `hm : ∀ (T : Over S') (x y : T ⟶ G'), (x * y) ≫ v = (x ≫ v) * (y ≫ v)` using `fun T x y => inj T _ _ (by`. Rewrite using `[pa, pm, pm, pa, pa, MonObj.mul_comp])`. Establish `h1 : ∀ (T : Over S'), (1 : T ⟶ G') ≫ v = 1` using `fun T => inj T _ _ (by`. Rewrite using `[pa, p1, MonObj.one_comp])`. Use `⟨v, ⟨?_, ?_⟩, hv⟩` and prove the remaining obligations.
+
+Use `h1 (𝟙_ _)` as an intermediate fact. Simplify `this` using `[Hom.one_def]`. Use `hm (G' ⊗ G') (fst _ _) (snd _ _)` as an intermediate fact. Rewrite `this` using `[Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp]`. Rewrite using `[this]`.
+
+Use `congr 1`.
+-/
 theorem exists_lift_end (h : IsGrpPullback G' G f φ) (u : G ⟶ G) [IsMonHom u] :
     ∃ v : G' ⟶ G', IsMonHom v ∧ v.left ≫ φ = φ ≫ u.left := by
   let v : G' ⟶ G' := Over.homMk (h.1.lift (φ ≫ u.left) G'.hom (by rw [Category.assoc, Over.w u, h.1.w]))
@@ -51,6 +62,13 @@ theorem exists_lift_end (h : IsGrpPullback G' G f φ) (u : G ⟶ G) [IsMonHom u]
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c W w G₀ _ β₀ hβ`. Establish `key : ∀ a : 𝓞 E, ∃ v : G₀ ⟶ G₀, IsMonHom v ∧ v.left ≫ β₀ = β₀ ≫ (Xo.univ.t.act.act a).left` using `fun a => haveI := Xo.univ.t.act.hom a exists_lift_end hβ _`. Use `choose f₀ hf₀ using key`. Use `⟨f₀, hf₀, fun T x tT mm => ?_⟩` and prove the remaining obligations. Establish `hp` using `hβ.1`.
+
+Set `γ : tT.G.left ⟶ G₀.left` to `hp.lift mm.φ (tT.G.hom ≫ x) (mm.cart.1.w.trans (by simp only [Category.assoc]))`. Establish `hγ : γ ≫ β₀ = mm.φ` using `hp.lift_fst _ _ _`. Establish `hw : γ ≫ G₀.hom = tT.G.hom ≫ x` using `hp.lift_snd _ _ _`. Establish `hL : LBIso tT.PP.L (Xo.univ.t.PP.L.pull mm.φ)` using `mm.lin.imp fun _ h => h.1`. Establish `hU` using `Xo.univ.t.PP.isLB`.
+
+Use `⟨γ, hβ.cancel (by rw [hγ, ← Category.assoc]; exact mm.cart) hw, hγ, LBIso.trans tT.PP.isLB (pull_isLB hU _) (pull_isLB (pull_isLB hU _) _) hL (GlobalTheory.GenSpread.lbIso_pull_pull hU γ hγ.symm), fun a => ?_⟩` and prove the remaining obligations. Apply `hp.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hγ, mm.act, Category.assoc γ, (hf₀ a).2, ← Category.assoc γ, hγ]`. Rewrite using `[Category.assoc, hw, ← Category.assoc, Over.w, Category.assoc, Over.w, hw]`.
+-/
 theorem exists_action_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (W : Scheme.{0}) (w : W ⟶ Xo.XF c) (G₀ : Over W) [GrpObj G₀] (β₀ : G₀.left ⟶ Xo.univ.t.G.left), IsGrpPullback G₀ Xo.univ.t.G (w ≫ pullback.fst _ _) β₀ → ∃ f₀ : 𝓞 E → (G₀ ⟶ G₀), (∀ a, IsMonHom (f₀ a) ∧ (f₀ a).left ≫ β₀ = β₀ ≫ (Xo.univ.t.act.act a).left) ∧ ∀ (T : Scheme.{0}) (x : T ⟶ W) (tT : SAB H T) (mm : SABMap tT Xo.univ.t ((x ≫ w) ≫ pullback.fst _ _)), ∃ γ : tT.G.left ⟶ G₀.left, IsGrpPullback tT.G G₀ x γ ∧ γ ≫ β₀ = mm.φ ∧ LBIso tT.PP.L ((Xo.univ.t.PP.L.pull β₀).pull γ) ∧ ∀ a, (tT.act.act a).left ≫ γ = γ ≫ (f₀ a).left := by
   intro E _ _ _ H Dw l Xo c W w G₀ _ β₀ hβ
   have key : ∀ a : 𝓞 E, ∃ v : G₀ ⟶ G₀, IsMonHom v ∧ v.left ≫ β₀ = β₀ ≫ (Xo.univ.t.act.act a).left := fun a =>

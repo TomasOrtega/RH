@@ -9,6 +9,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CNorm
 
+/- English proof (translation)
+Establish `hr : ComplexEmbedding.IsReal (Complex.ofRealHom.comp σ)`. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]`. Establish `hv : (InfinitePlace.mk (Complex.ofRealHom.comp σ)).IsReal` using `⟨_, hr, rfl⟩`.
+
+Use `⟨_, hv, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[InfinitePlace.embedding_of_isReal_apply, InfinitePlace.embedding_mk_eq_of_isReal hr]`. Both sides reduce to the same expression.
+-/
 theorem exists_isReal_embedding_eq_hom {F : Type} [Field F] (σ : F →+* ℝ) :
     ∃ (v : InfinitePlace F) (hv : v.IsReal), InfinitePlace.embedding_of_isReal hv = σ := by
   have hr : ComplexEmbedding.IsReal (Complex.ofRealHom.comp σ) := by
@@ -22,6 +27,11 @@ theorem exists_isReal_embedding_eq_hom {F : Type} [Field F] (σ : F →+* ℝ) :
   rw [InfinitePlace.embedding_of_isReal_apply, InfinitePlace.embedding_mk_eq_of_isReal hr]
   rfl
 
+/- English proof (translation)
+Introduce `K L _ _ _ _ _ hG hC a ha hf hi`. Use `GlobalTheory.T.hasseNormPrinciple_of_isCyclic K L hG hC a ha ⟨hf, fun alg => ?_⟩` and prove the remaining obligations. Take `⟨v, hv, hσ⟩` from `exists_isReal_embedding_eq_hom (algebraMap K ℝ)`. Set `φ : v.Completion →ₐ[K] ℝ` to `{ InfinitePlace.Completion.extensionEmbeddingOfIsReal hv with commutes' := fun x => by`. Rewrite using `[← hσ]`.
+
+Conclude with `InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe hv ((WithAbs.equiv v.1).symm x) }`. Conclude with `(GlobalTheory.T.isNormFromBaseChange_base_change_properties K L).1 v.Completion ℝ φ a (hi v)`.
+-/
 theorem hasseNorm : GlobalTheory.Published.HasseNorm := by
   intro K L _ _ _ _ _ hG hC a ha hf hi
   refine GlobalTheory.T.hasseNormPrinciple_of_isCyclic K L hG hC a ha ⟨hf, fun alg => ?_⟩

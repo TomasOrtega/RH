@@ -12,6 +12,19 @@ private def KK (φ : O →+* K) (n : ℕ) : Subgroup (GL (Fin 2) K) :=
   ((mirab _).comap (Matrix.GeneralLinearGroup.map (n := Fin 2)
     (Ideal.Quotient.mk (IsLocalRing.maximalIdeal O ^ n)))).map (Matrix.GeneralLinearGroup.map φ)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, rfl⟩`. Use `⟨h 0 0, h 0 1, h 1 0, h 1 1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> rfl`. Use `(Matrix.GeneralLinearGroup.det h).isUnit` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two]`. Then use the resulting hypothesis. Establish `h0` using `congrFun hh 0`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Simplify `h0` using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Establish `h0` using `congrFun hh 1`.
+
+Rewrite using `[← Ideal.Quotient.eq, map_one]`. Simplify `h0` using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Introduce and unpack `⟨a, b, c, d, hg, hu, hc, hd⟩`. Establish `hu' : IsUnit (!![a, b; c, d] : Matrix (Fin 2) (Fin 2) O)`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_fin_two_of]`.
+
+Conclude with `hu`. Take `⟨h, hh⟩` from `hu'`. Use `⟨h, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Matrix.vecMul ![0, 1] ((h : Matrix (Fin 2) (Fin 2) O).map (Ideal.Quotient.mk (IsLocalRing.maximalIdeal O ^ n))) = ![0, 1]`. Rewrite using `[hh]`.
+
+Rewrite `hc` using `[← Ideal.Quotient.eq_zero_iff_mem]`. Rewrite `hd` using `[← Ideal.Quotient.eq, map_one]`. Apply the tactic sequence `ext i; fin_cases i <;> simp [Matrix.vecMul, dotProduct, Fin.sum_univ_two, hc, hd]`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(h : Matrix (Fin 2) (Fin 2) O).map φ = g`.
+
+Rewrite using `[hh, hg]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> rfl`.
+-/
 private theorem mem_KK (φ : O →+* K) (n : ℕ) (g : GL (Fin 2) K) :
     g ∈ KK φ n ↔ ∃ a b c d : O, (g : Matrix (Fin 2) (Fin 2) K) = !![φ a, φ b; φ c, φ d] ∧
       IsUnit (a * d - b * c) ∧ c ∈ maximalIdeal O ^ n ∧ d - 1 ∈ maximalIdeal O ^ n := by
@@ -43,6 +56,9 @@ private theorem mem_KK (φ : O →+* K) (n : ℕ) (g : GL (Fin 2) K) :
       rw [hh, hg]
       ext i j; fin_cases i <;> fin_cases j <;> rfl
 
+/- English proof (translation)
+Rewrite using `[QuotientGroup.eq, mem_KK]`. Use `exists₄_congr fun a b c d => and_congr_left' ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.inv_mul_eq_iff_eq_mul, eq_comm]`.
+-/
 private theorem coset_iff (φ : O →+* K) (n : ℕ) (y z : GL (Fin 2) K) :
     (y : GL (Fin 2) K ⧸ KK φ n) = z ↔ ∃ a b c d : O,
       (y : Matrix (Fin 2) (Fin 2) K) * !![φ a, φ b; φ c, φ d] = z ∧
@@ -51,6 +67,9 @@ private theorem coset_iff (φ : O →+* K) (n : ℕ) (y z : GL (Fin 2) K) :
   refine exists₄_congr fun a b c d => and_congr_left' ?_
   rw [Units.val_mul, Units.inv_mul_eq_iff_eq_mul, eq_comm]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨k, hk⟩ => ⟨k.1, k.2, hk⟩, fun ⟨k, hk, h⟩ => ⟨⟨k, hk⟩, h⟩⟩`.
+-/
 private theorem orbit_iff (φ : O →+* K) (n : ℕ) (x : GL (Fin 2) K) (q : GL (Fin 2) K ⧸ KK φ n) :
     q ∈ MulAction.orbit (KK φ n) (x : GL (Fin 2) K ⧸ KK φ n) ↔
       ∃ k ∈ KK φ n, ((k * x : GL (Fin 2) K) : GL (Fin 2) K ⧸ KK φ n) = q :=
@@ -58,12 +77,23 @@ private theorem orbit_iff (φ : O →+* K) (n : ℕ) (x : GL (Fin 2) K) (q : GL 
 
 private def zz (π : Kˣ) : GL (Fin 2) K := Matrix.GeneralLinearGroup.scalar (Fin 2) π * (aff π 0)⁻¹
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem aff_val (π : Kˣ) (u : K) : (aff π u : Matrix (Fin 2) (Fin 2) K) = !![(π : K), u; 0, 1] := rfl
 
+/- English proof (translation)
+Rewrite using `[zz, Units.val_mul, Units.mul_inv_eq_iff_eq_mul, aff_val]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 private theorem zz_val (π : Kˣ) : (zz π : Matrix (Fin 2) (Fin 2) K) = !![1, 0; 0, (π : K)] := by
   rw [zz, Units.val_mul, Units.mul_inv_eq_iff_eq_mul, aff_val]
   ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Rewrite using `[orbit_iff]`. Use `⟨aff 1 (φ u), (mem_KK _ _ _).2 ⟨1, u, 0, 1, by simp [aff_val], by simp, by simp, by simp⟩, ?_⟩` and prove the remaining obligations. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul]`.
+
+Simplify using `[aff_val]`.
+-/
 private theorem y_mem (φ : O →+* K) (n : ℕ) (π : Kˣ) (u : O) :
     ((aff π (φ u) : GL (Fin 2) K) : GL (Fin 2) K ⧸ KK φ n) ∈
       MulAction.orbit (KK φ n) ((aff π 0 : GL (Fin 2) K) : GL (Fin 2) K ⧸ KK φ n) := by
@@ -74,6 +104,11 @@ private theorem y_mem (φ : O →+* K) (n : ℕ) (π : Kˣ) (u : O) :
   rw [Units.val_mul]
   simp [aff_val]
 
+/- English proof (translation)
+Rewrite using `[orbit_iff]`. Establish `hu' : IsUnit (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) K)`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_fin_two_of]`. Simplify using the standard rewrite rules. Take `⟨s, hs⟩` from `hu'`.
+
+Use `⟨s, (mem_KK _ _ _).2 ⟨0, 1, 1, 0, by simp [hs], by simp, by simp, by simp⟩, ?_⟩` and prove the remaining obligations. Use `(coset_iff _ _ _ _).2 ⟨0, 1, 1, 0, ?_, by simp, by simp, by simp⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, hs, zz_val, aff_val]`. Simplify using the standard rewrite rules.
+-/
 private theorem z_mem (φ : O →+* K) (π : Kˣ) :
     ((zz π : GL (Fin 2) K) : GL (Fin 2) K ⧸ KK φ 0) ∈
       MulAction.orbit (KK φ 0) ((aff π 0 : GL (Fin 2) K) : GL (Fin 2) K ⧸ KK φ 0) := by
@@ -86,6 +121,21 @@ private theorem z_mem (φ : O →+* K) (π : Kˣ) :
   rw [Units.val_mul, hs, zz_val, aff_val]
   simp
 
+/- English proof (translation)
+Take `⟨k, hk, rfl⟩` from `(orbit_iff _ _ _ _).1 hq`. Take `⟨a, b, c, d, hg, hu, hc, hd⟩` from `(mem_KK _ _ _).1 hk`. Distinguish the cases in `hdu : IsUnit d`. Use `left`. Take `⟨e, he⟩` from `hdu.exists_left_inv`.
+
+Take `⟨u, huS, hue⟩` from `hS (Set.mem_univ (residue O (b * e)))`. Establish `h1 : b * e - u ∈ maximalIdeal O`. Rewrite using `[← residue_eq_zero_iff, map_sub, hue, sub_self]`. Rewrite `h1` using `[hm, Ideal.mem_span_singleton']`. Take `⟨t, ht⟩` from `h1`.
+
+Establish `hb : b = p * (t * d) + u * d` using `by linear_combination (-d) * ht - b * he`. Use `⟨u, huS, (coset_iff _ _ _ _).2 ⟨a - u * c, t * d, c * p, d, ?_, ?_, Ideal.mul_mem_right _ _ hc, hd⟩⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, hg, aff_val, aff_val, ← hp, hb]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring`. Use `hu using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[hb]`. Expand and normalize the polynomial expressions, which then agree. Use `right`. Establish `hdm : d ∈ maximalIdeal O` using `hdu`. Establish `hn : n = 0`.
+
+Assume the negation of the conclusion as `hn`. Establish `h1 : d - 1 ∈ maximalIdeal O` using `Ideal.pow_le_self hn hd`. Establish `h2` using `Ideal.sub_mem _ hdm h1`. Simplify using `at h2`. Substitute `hn` using the available equality.
+
+Rewrite `hdm` using `[hm, Ideal.mem_span_singleton']`. Take `⟨t, rfl⟩` from `hdm`. Use `⟨rfl, (coset_iff _ _ _ _).2 ⟨a * p, b, c, t, ?_, ?_, by simp, by simp⟩⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, hg, aff_val, zz_val, ← hp]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring`.
+
+Use `hu using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem cover (φ : O →+* K) (n : ℕ) (π : Kˣ) (p : O) (hp : φ p = π)
     (hm : maximalIdeal O = Ideal.span {p}) (S : Finset O)
     (hS : Set.SurjOn (residue O) (S : Set O) Set.univ) (q : GL (Fin 2) K ⧸ KK φ n)
@@ -124,6 +174,11 @@ private theorem cover (φ : O →+* K) (n : ℕ) (π : Kˣ) (p : O) (hp : φ p =
     · convert hu using 1
       ring
 
+/- English proof (translation)
+Take `⟨a, b, c, d, hg, -⟩` from `(coset_iff _ _ _ _).1 h`. Rewrite `hg` using `[aff_val, aff_val, ← hp]`. Establish `h1` using `congrFun (congrFun hg 0) 1`. Establish `h2` using `congrFun (congrFun hg 1) 1`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two] at h1 h2`.
+
+Establish `h3 : p * b + u = u'` using `hφ (by rw [map_add, map_mul, ← h1, h2, mul_one])`. Rewrite using `[← h3, map_add, map_mul, (residue_eq_zero_iff _).2 hm, zero_mul, zero_add]`.
+-/
 private theorem yy_res (φ : O →+* K) (hφ : Function.Injective φ) (n : ℕ) (π : Kˣ) (p : O) (hp : φ p = π)
     (hm : p ∈ maximalIdeal O) (u u' : O)
     (h : ((aff π (φ u) : GL (Fin 2) K) : GL (Fin 2) K ⧸ KK φ n) = (aff π (φ u') : GL (Fin 2) K)) :
@@ -136,6 +191,11 @@ private theorem yy_res (φ : O →+* K) (hφ : Function.Injective φ) (n : ℕ) 
   have h3 : p * b + u = u' := hφ (by rw [map_add, map_mul, ← h1, h2, mul_one])
   rw [← h3, map_add, map_mul, (residue_eq_zero_iff _).2 hm, zero_mul, zero_add]
 
+/- English proof (translation)
+Introduce `h`. Take `⟨a, b, c, d, hg, -⟩` from `(coset_iff _ _ _ _).1 h`. Rewrite `hg` using `[aff_val, zz_val, ← hp]`. Establish `h1` using `congrFun (congrFun hg 0) 0`. Establish `h2` using `congrFun (congrFun hg 1) 0`.
+
+Simplify using `[Matrix.mul_apply, Fin.sum_univ_two] at h1 h2`. Establish `h3 : p * a = 1` using `hφ (by rw [map_mul, map_one, ← h1, h2, mul_zero, add_zero])`. Conclude with `hm (IsUnit.of_mul_eq_one a h3)`.
+-/
 private theorem yz_ne (φ : O →+* K) (hφ : Function.Injective φ) (n : ℕ) (π : Kˣ) (p : O) (hp : φ p = π)
     (hm : p ∈ maximalIdeal O) (u : O) :
     ((aff π (φ u) : GL (Fin 2) K) : GL (Fin 2) K ⧸ KK φ n) ≠ (zz π : GL (Fin 2) K) := by
@@ -148,6 +208,27 @@ private theorem yz_ne (φ : O →+* K) (hφ : Function.Injective φ) (n : ℕ) (
   have h3 : p * a = 1 := hφ (by rw [map_mul, map_one, ← h1, h2, mul_zero, add_zero])
   exact hm (IsUnit.of_mul_eq_one a h3)
 
+/- English proof (translation)
+Establish `hpm : p ∈ maximalIdeal O` using `by rw [hm]; exact Ideal.mem_span_singleton_self p`. Establish `hfin : (MulAction.orbit (KK φ n) ((aff π 0 : GL (Fin 2) K) : GL (Fin 2) K ⧸ KK φ n)).Finite`. Use `letI := Fintype.ofFinite (ResidueField O)`. Use `choose s hs using (residue_surjective (R := O))`. Establish `hS : Set.SurjOn (residue O) ((Finset.univ.image s : Finset O) : Set O) Set.univ` using `fun r _ => ⟨s r, by simp, hs r⟩`.
+
+Use `((((Finset.univ.image s).finite_toSet).image fun u => ((aff π (φ u) : GL (Fin 2) K) : GL (Fin 2) K ⧸ KK φ n)).insert ((zz π : GL (Fin 2) K) : GL (Fin 2) K ⧸ KK φ n)).subset fun q hq => ?_` and prove the remaining obligations. Break down `cover φ n π p hp hm _ hS q hq with ⟨u, hu, h⟩ | ⟨-, h⟩` into its components or cases. Conclude with `Or.inr ⟨u, hu, h⟩`. Conclude with `Or.inl h.symm`. Take `⟨h1, h2, -⟩` from `Hi.dcSum ℂ _ V ρ (KK φ n) (KK φ n) (aff π 0) hfin`.
+
+Use `⟨h2 v hv, fun S hS => ?_⟩` and prove the remaining obligations. Establish `hinj : ∀ u ∈ S, ∀ u' ∈ S, ((aff π (φ u) : GL (Fin 2) K) : GL (Fin 2) K ⧸ KK φ n) = (aff π (φ u') : GL (Fin 2) K) → u = u'` using `fun u hu u' hu' h => hS.injOn hu hu' (yy_res φ hφ n π p hp hpm u u' h)`. Establish `hsum : ∑ y ∈ S.image (fun u => aff π (φ u)), ρ y v = ∑ u ∈ S, ρ (aff π (φ u)) v` using `Finset.sum_image fun u hu u' hu' h => hinj u hu u' hu' (congrArg _ h)`. Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality.
+
+Establish `hz : zz π ∉ S.image (fun u => aff π (φ u))`. Introduce `h`. Take `⟨u, -, h⟩` from `Finset.mem_image.1 h`. Conclude with `yz_ne φ hφ 0 π p hp hpm u (congrArg _ h)`. Rewrite using `[h1 (insert (zz π) (S.image fun u => aff π (φ u))) ?_ ?_ v hv, Finset.sum_insert hz, hsum, if_pos rfl, add_comm]`.
+
+Introduce `y hy`. Break down `Finset.mem_insert.1 hy with rfl | hy` into its components or cases. Conclude with `z_mem φ π`. Take `⟨u, -, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `y_mem φ 0 π u`.
+
+Introduce `q hq`. Break down `cover φ 0 π p hp hm S hS.surjOn q hq with ⟨u, hu, rfl⟩ | ⟨-, rfl⟩` into its components or cases. Use `⟨_, ⟨Finset.mem_insert_of_mem (Finset.mem_image_of_mem _ hu), rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨hy, h⟩`. Break down `Finset.mem_insert.1 hy with rfl | hy` into its components or cases.
+
+Conclude with `absurd h.symm (yz_ne φ hφ 0 π p hp hpm u)`. Take `⟨u', hu', rfl⟩` from `Finset.mem_image.1 hy`. Rewrite using `[hinj u' hu' u hu h]`. Use `⟨_, ⟨Finset.mem_insert_self _ _, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨hy, h⟩`.
+
+Break down `Finset.mem_insert.1 hy with rfl | hy` into its components or cases. Both sides reduce to the same expression. Take `⟨u', hu', rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `absurd h (yz_ne φ hφ 0 π p hp hpm u')`. Rewrite using `[h1 (S.image fun u => aff π (φ u)) ?_ ?_ v hv, hsum, if_neg hn, add_zero]`.
+
+Introduce `y hy`. Take `⟨u, -, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `y_mem φ n π u`. Introduce `q hq`. Break down `cover φ n π p hp hm S hS.surjOn q hq with ⟨u, hu, rfl⟩ | ⟨h, -⟩` into its components or cases.
+
+Use `⟨_, ⟨Finset.mem_image_of_mem _ hu, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨hy, h⟩`. Take `⟨u', hu', rfl⟩` from `Finset.mem_image.1 hy`. Rewrite using `[hinj u' hu' u hu h]`. Conclude with `absurd h hn`.
+-/
 private theorem gen (φ : O →+* K) (hφ : Function.Injective φ) [Finite (ResidueField O)] (n : ℕ) (π : Kˣ) (p : O)
     (hp : φ p = π) (hm : maximalIdeal O = Ideal.span {p}) (V : Type) [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (GL (Fin 2) K) V) (v : V) (hv : v ∈ Hi.fixd ρ (KK φ n)) :
@@ -214,6 +295,19 @@ private theorem gen (φ : O →+* K) (hφ : Function.Injective φ) [Finite (Resi
 
 end Gen
 
+/- English proof (translation)
+Establish `hp0 : (p : w.adicCompletion F) ≠ 0`. Introduce `h`. Rewrite `hp` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hp.symm`. Use extensionality with `x`.
+
+Rewrite using `[Ideal.mem_span_singleton', IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : Valued.v (x : w.adicCompletion F) < 1` using `lt_of_le_of_ne x.2 h`. Establish `h2 : Valued.v (x : w.adicCompletion F) ≤ WithZero.exp (-1 : ℤ)`.
+
+Break down `eq_or_ne (Valued.v (x : w.adicCompletion F)) 0 with h0 | h0` into its components or cases. Rewrite using `[h0]`. Conclude with `zero_le'`. Rewrite `h1`, the goal using `[← WithZero.exp_log h0]`. Rewrite `h1` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+
+Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Use `⟨⟨(x : w.adicCompletion F) / p, ?_⟩, Subtype.ext (div_mul_cancel₀ _ hp0)⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_div₀, hp]`. Conclude with `div_le_one_of_le₀ h2 zero_le'`.
+
+Introduce and unpack `⟨z, rfl⟩ h`. Establish `hz : Valued.v (z : w.adicCompletion F) ≤ 1` using `z.2`. Establish `h1 : Valued.v ((z : w.adicCompletion F) * p) ≤ WithZero.exp (-1 : ℤ)`. Rewrite using `[map_mul, hp]`. Conclude with `mul_le_of_le_one_left' hz`.
+
+Establish `h' : Valued.v ((z : w.adicCompletion F) * p) = 1` using `h`. Rewrite `h1` using `[h', ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem span_unif {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F))
     (p : w.adicCompletionIntegers F) (hp : Valued.v (p : w.adicCompletion F) = WithZero.exp (-1 : ℤ)) :
     maximalIdeal (w.adicCompletionIntegers F) = Ideal.span {p} := by
@@ -245,6 +339,11 @@ private theorem span_unif {F : Type} [Field F] [NumberField F] (w : HeightOneSpe
     rw [h', ← WithZero.exp_zero, WithZero.exp_le_exp] at h1
     omega
 
+/- English proof (translation)
+Introduce `F _ _ w V _ _ ρ c v hv`. Use `haveI := Formalism.UG.P.glint_finite_residueField w`. Establish `hπ : Valued.v ((atFin w (unif w) : (w.adicCompletion F)ˣ) : w.adicCompletion F) = WithZero.exp (-1 : ℤ)` using `unif_spec w`. Establish `hmem : ((atFin w (unif w) : (w.adicCompletion F)ˣ) : w.adicCompletion F) ∈ w.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, hπ, ← WithZero.exp_zero, WithZero.exp_le_exp]`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `gen (w.adicCompletionIntegers F).subtype Subtype.val_injective c (atFin w (unif w)) ⟨_, hmem⟩ rfl (span_unif w ⟨_, hmem⟩ hπ) V ρ v hv`.
+-/
 theorem UpperTheory.V.Sd.uopSum :
     UpperTheory.V.Sd.UopSum := by
   intro F _ _ w V _ _ ρ c v hv

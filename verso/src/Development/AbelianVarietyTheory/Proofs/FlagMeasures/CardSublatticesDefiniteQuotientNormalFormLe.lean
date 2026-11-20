@@ -11,6 +11,17 @@ open scoped Pointwise ENNReal Classical
 
 namespace GlobalTheory.DegCnt
 
+/- English proof (translation)
+Establish `: Module.Finite (𝓞 K) M` using `Module.Finite.iff_fg.2 hM`. Establish `: Module.IsTorsionFree (𝓞 K) Q` using `Module.IsTorsionFree.trans_faithfulSMul (𝓞 K) K Q`. Establish `: Module.FinitePresentation (𝓞 K) M` using `Module.finitePresentation_of_finite _ _`. Establish `: Module.Projective (𝓞 K) M` using `Module.Flat.projective_of_finitePresentation`. Take `⟨h1, h2⟩` from `Formalism.SLP.Final.submoduleIndexCountO K M x hx`.
+
+Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `hr : Module.finrank (𝓞 K) M ≤ k`. Use `le_trans ?_ hk` and prove the remaining obligations. Apply `Module.finrank_le_of_rank_le` to reduce the goal to its premises. Establish `h3 : Module.rank (𝓞 K) M ≤ Module.rank (𝓞 K) S` using `Submodule.rank_mono hS`.
+
+Establish `h5 : Module.rank K S = Module.rank (𝓞 K) S` using `IsLocalization.rank_eq K (nonZeroDivisors (𝓞 K)) le_rfl`. Rewrite using `[Module.finrank_eq_rank, h5]`. Conclude with `h3`. Establish `hn : 1 ≤ Module.finrank ℚ K` using `Module.finrank_pos`. Establish `hx1 : (1:ℝ) ≤ x` using `by exact_mod_cast hx`.
+
+Establish `hx0 : (0:ℝ) < x` using `by linarith`. Establish `h4` using `Formalism.SLP.Final.omegaPow (Module.finrank ℚ K) x hn hx`. Establish `h3 : (({N : Submodule (𝓞 K) M | N.toAddSubgroup.index = x}.ncard : ℕ) : ℝ) ≤ ((Module.finrank ℚ K : ℕ) : ℝ) ^ (Nat.primeFactorsList x).length * (x : ℝ) ^ Module.finrank (𝓞 K) M` using `by exact_mod_cast h2`. Establish `hr' : (Module.finrank (𝓞 K) M : ℝ) ≤ k` using `by exact_mod_cast hr`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Real.rpow_add hx0, Real.rpow_natCast, mul_comm]`. Use `_ ≤ _ := Real.rpow_le_rpow_of_exponent_le hx1 (by unfold cf; linarith)`.
+-/
 theorem count_index_fg {K Q : Type} [Field K] [NumberField K] [AddCommGroup Q] [Module K Q]
     [Module (𝓞 K) Q] [IsScalarTower (𝓞 K) K Q] [FiniteDimensional K Q] (M : Submodule (𝓞 K) Q) (hM : M.FG)
     (S : Submodule K Q) (hS : M ≤ S.restrictScalars (𝓞 K)) (k : ℕ) (hk : Module.finrank K S ≤ k)
@@ -45,6 +56,23 @@ theorem count_index_fg {K Q : Type} [Field K] [NumberField K] [AddCommGroup Q] [
         rw [Real.rpow_add hx0, Real.rpow_natCast, mul_comm]
     _ ≤ _ := Real.rpow_le_rpow_of_exponent_le hx1 (by unfold cf; linarith)
 
+/- English proof (translation)
+Take `⟨⟨N, hN, hLa⟩, hsp⟩` from `h`. Set `q : V →ₗ[𝓞 K] (V ⧸ I)` to `I.mkQ.restrictScalars (𝓞 K)`. Establish `hker : LinearMap.ker q = rs (𝓞 K) I`. Use extensionality with `v`. Simplify using `[q]`.
+
+Establish `hM : (La.map q).FG`. Establish `: (rs (𝓞 K) I).map q = ⊥`. Rewrite using `[← hker]`. Conclude with `LinearMap.le_ker_iff_map.1 le_rfl`. Rewrite using `[hLa, Submodule.map_sup, this, sup_bot_eq]`.
+
+Conclude with `hN.map q`. Establish `hS : La.map q ≤ (W.map I.mkQ).restrictScalars (𝓞 K)`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Establish `: v ∈ W ⊔ I` using `hsp ▸ Submodule.subset_span hv`. Take `⟨w, hw, u, hu, rfl⟩` from `Submodule.mem_sup.1 this`.
+
+Use `⟨w, hw, ?_⟩` and prove the remaining obligations. Establish `: I.mkQ u = 0` using `by simpa using hu`. Express the relevant statement in the definitionally equal form `I.mkQ w = I.mkQ (w + u)`. Rewrite using `[map_add, this, add_zero]`. Take `⟨h1, h2⟩` from `count_index_fg (La.map q) hM (W.map I.mkQ) hS _ (Submodule.finrank_map_le _ _) x hx`.
+
+Establish `hle : {Th : Submodule (𝓞 K) V | rs (𝓞 K) I ≤ Th ∧ Th ≤ La ∧ idx La Th = x}.encard ≤ {N : Submodule (𝓞 K) (La.map q) | N.toAddSubgroup.index = x}.encard`. Use `Set.encard_le_encard_of_injOn (f := fun Th => (Th.map q).comap (La.map q).subtype) ?_ ?_` and prove the remaining obligations. Introduce and unpack `Th ⟨hI, hL, hi⟩`. Establish `e : (Th.map q).comap q = Th` using `Submodule.comap_map_eq_self (hker ▸ hI)`. Establish `e2 : idx La ((Th.map q).comap q) = idx (La.map q) (Th.map q)` using `AddSubgroup.relIndex_comap (Th.map q).toAddSubgroup q.toAddMonoidHom La.toAddSubgroup`.
+
+Rewrite `e2` using `[e, hi]`. Conclude with `e2.symm`. Introduce and unpack `Th ⟨hI, hL, -⟩ Th' ⟨hI', hL', -⟩ he`. Establish `he2 : Th.map q = Th'.map q`. Use `congrArg (Submodule.map (La.map q).subtype) he` as an intermediate fact.
+
+Simplify using `only [Submodule.map_comap_subtype] at this`. Rewrite `this` using `[inf_eq_right.2 (Submodule.map_mono hL), inf_eq_right.2 (Submodule.map_mono hL')]`. Then use the resulting hypothesis. Rewrite using `[← Submodule.comap_map_eq_self (f := q) (p := Th) (hker ▸ hI), he2, Submodule.comap_map_eq_self (hker ▸ hI')]`. Use `le_trans (ENat.toENNReal_le.2 hle) ?_` and prove the remaining obligations. Rewrite using `[← h1.cast_ncard_eq, ENat.toENNReal_coe, ← ENNReal.ofReal_natCast]`.
+
+Conclude with `ENNReal.ofReal_le_ofReal h2`.
+-/
 theorem count_index_latMod {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [FiniteDimensional K V] (W I : Submodule K V)
     (La : Submodule (𝓞 K) V) (h : IsLatMod La (W ⊔ I) I) (x : ℕ) (hx : 1 ≤ x) :
@@ -88,6 +116,9 @@ theorem count_index_latMod {K V : Type} [Field K] [NumberField K] [AddCommGroup 
   rw [← h1.cast_ncard_eq, ENat.toENNReal_coe, ← ENNReal.ofReal_natCast]
   exact ENNReal.ofReal_le_ofReal h2
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ H hK r N La i hi h`. Apply the tactic sequence `have hw := (GlobalTheory.DegCnt.NF.geometry K V H hK r N).2.2.2.2.2.2.1`. Rewrite `h` using `[hw]`. Conclude with `count_index_latMod N.Wt _ La h i hi`.
+-/
 theorem count_sublattices_definite : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ) (N : NF H r), ∀ (La : Submodule (𝓞 K) V) (i : ℕ), 1 ≤ i → IsLatMod La (wSp N.F N.F') (II N.F N.F') → ((({Th : Submodule (𝓞 K) V | rs (𝓞 K) (II N.F N.F') ≤ Th ∧ Th ≤ La ∧ idx La Th = i}).encard : ℕ∞) : ℝ≥0∞) ≤ ENNReal.ofReal ((i : ℝ) ^ ((Module.finrank K N.Wt : ℝ) + cf K)) := by
   intro K V _ _ _ _ _ _ _ _ H hK r N La i hi h
   have hw := (GlobalTheory.DegCnt.NF.geometry K V H hK r N).2.2.2.2.2.2.1

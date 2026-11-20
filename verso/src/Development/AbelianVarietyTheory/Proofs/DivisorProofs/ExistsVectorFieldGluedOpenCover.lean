@@ -18,6 +18,9 @@ namespace GlobalTheory.LogKS.Glue
 
 variable {Z : Scheme.{0}}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(Z.presheaf.map (homOfLE h1).op ≫ Z.presheaf.map (homOfLE h2).op).hom f = _`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem resG_resG {U V W : Z.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (f : Γ(Z, U)) :
     resG Z h2 (resG Z h1 f) = resG Z (h2.trans h1) f := by
   change (Z.presheaf.map (homOfLE h1).op ≫ Z.presheaf.map (homOfLE h2).op).hom f = _
@@ -36,6 +39,9 @@ def glue (O : Z.Opens) (f : Γ(Z, O)) : Γ(Z, O) :=
 
 variable {V e}
 
+/- English proof (translation)
+Introduce `i j`. Express the relevant statement in the definitionally equal form `resG Z (inf_le_left : (O ⊓ V i) ⊓ (O ⊓ V j) ≤ O ⊓ V i) (loc V e O f i) = resG Z (inf_le_right : (O ⊓ V i) ⊓ (O ⊓ V j) ≤ O ⊓ V j) (loc V e O f j)`. Simplify using `only [loc]`. Rewrite using `[← (he i).2.2 (O ⊓ V i) _ inf_le_left inf_le_right, ← (he j).2.2 (O ⊓ V j) _ inf_le_right inf_le_right, resG_resG, resG_resG]`. Conclude with `hc i j _ (inf_le_left.trans inf_le_right) (inf_le_right.trans inf_le_right) _`.
+-/
 theorem compat (he : ∀ i, IsField (V i) (e i))
     (hc : ∀ i j (O : Z.Opens), O ≤ V i → O ≤ V j → ∀ f, e i O f = e j O f) (O : Z.Opens) (f : Γ(Z, O)) :
     TopCat.Presheaf.IsCompatible Z.sheaf.1 (fun i => O ⊓ V i) (loc V e O f) := by
@@ -47,6 +53,9 @@ theorem compat (he : ∀ i, IsField (V i) (e i))
     resG_resG, resG_resG]
   exact hc i j _ (inf_le_left.trans inf_le_right) (inf_le_right.trans inf_le_right) _
 
+/- English proof (translation)
+The claim follows from `Z.sheaf.existsUnique_gluing' (fun i => O ⊓ V i) O (fun i => homOfLE inf_le_left) ((le_inf le_rfl hO).trans (inf_iSup_eq _ _).le) (loc V e O f) (compat he hc O f)`.
+-/
 theorem glue_ex (he : ∀ i, IsField (V i) (e i))
     (hc : ∀ i j (O : Z.Opens), O ≤ V i → O ≤ V j → ∀ f, e i O f = e j O f) {O : Z.Opens}
     (hO : O ≤ ⨆ i, V i) (f : Γ(Z, O)) :
@@ -54,6 +63,9 @@ theorem glue_ex (he : ∀ i, IsField (V i) (e i))
   Z.sheaf.existsUnique_gluing' (fun i => O ⊓ V i) O (fun i => homOfLE inf_le_left)
     ((le_inf le_rfl hO).trans (inf_iSup_eq _ _).le) (loc V e O f) (compat he hc O f)
 
+/- English proof (translation)
+Take `⟨t, -, hu⟩` from `glue_ex he hc hO f`. Establish `h : ∃ s : Γ(Z, O), ∀ i, resG Z (inf_le_left : O ⊓ V i ≤ O) s = loc V e O f i` using `⟨s, hs⟩`. Rewrite using `[glue, dif_pos h]`. Conclude with `(hu _ h.choose_spec).trans (hu _ hs).symm`.
+-/
 theorem glue_eq (he : ∀ i, IsField (V i) (e i))
     (hc : ∀ i j (O : Z.Opens), O ≤ V i → O ≤ V j → ∀ f, e i O f = e j O f) {O : Z.Opens}
     (hO : O ≤ ⨆ i, V i) (f : Γ(Z, O)) (s : Γ(Z, O))
@@ -63,6 +75,9 @@ theorem glue_eq (he : ∀ i, IsField (V i) (e i))
   rw [glue, dif_pos h]
   exact (hu _ h.choose_spec).trans (hu _ hs).symm
 
+/- English proof (translation)
+Take `⟨t, ht, -⟩` from `glue_ex he hc hO f`. Rewrite using `[glue_eq he hc hO f t ht]`. Conclude with `ht i`.
+-/
 theorem res_glue (he : ∀ i, IsField (V i) (e i))
     (hc : ∀ i j (O : Z.Opens), O ≤ V i → O ≤ V j → ∀ f, e i O f = e j O f) {O : Z.Opens}
     (hO : O ≤ ⨆ i, V i) (f : Γ(Z, O)) (i : J) :
@@ -73,6 +88,17 @@ theorem res_glue (he : ∀ i, IsField (V i) (e i))
 
 end GlobalTheory.LogKS.Glue
 
+/- English proof (translation)
+Introduce `Z J V e he hc`. Use `open GlobalTheory.LogKS.Glue in`. Use `⟨glue V e, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `W hW f f'`. Use `glue_eq he hc hW _ _ fun i => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_add, res_glue he hc hW f, res_glue he hc hW f']`. Simplify using `only [loc, map_add]`. Conclude with `((he i).1 _ inf_le_right _ _).symm`. Introduce `W hW f f'`. Use `glue_eq he hc hW _ _ fun i => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_add, map_mul, map_mul, res_glue he hc hW f, res_glue he hc hW f']`. Simplify using `only [loc, map_mul]`. Conclude with `((he i).2.1 _ inf_le_right _ _).symm`. Introduce `W W' h hW f`. Use `glue_eq he hc (h.trans hW) _ _ fun i => ?_` and prove the remaining obligations.
+
+Rewrite using `[resG_resG, ← resG_resG (inf_le_left : W ⊓ V i ≤ W) (inf_le_inf_right (V i) h), res_glue he hc hW f]`. Simplify using `only [loc]`. Rewrite using `[← (he i).2.2 _ _ (inf_le_inf_right (V i) h) inf_le_right, resG_resG, resG_resG]`. Introduce `i O hO f`. Use `glue_eq he hc (hO.trans (le_iSup V i)) _ _ fun j => ?_` and prove the remaining obligations.
+
+Simplify using `only [loc]`. Rewrite using `[← (he i).2.2 O (O ⊓ V j) inf_le_left hO f]`. Conclude with `hc i j _ (inf_le_left.trans hO) inf_le_right _`.
+-/
 theorem GlobalTheory.LogKS.isField_glue : ∀ (Z : Scheme.{0}) (J : Type) (V : J → Z.Opens) (e : J → ∀ O : Z.Opens, Γ(Z, O) → Γ(Z, O)), (∀ i, IsField (V i) (e i)) → (∀ i j (O : Z.Opens), O ≤ V i → O ≤ V j → ∀ f, e i O f = e j O f) → ∃ d : ∀ O : Z.Opens, Γ(Z, O) → Γ(Z, O), IsField (⨆ i, V i) d ∧ ∀ i (O : Z.Opens), O ≤ V i → ∀ f, d O f = e i O f := by
   intro Z J V e he hc
   open GlobalTheory.LogKS.Glue in

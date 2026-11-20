@@ -30,6 +30,29 @@ variable {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Type}
 
 open GlobalTheory.SeriesTie.Complex (eGc levOf castG levOf_mem levOf_chi)
 
+/- English proof (translation)
+Take `⟨art, hart, hδ⟩` from `hδ`. Use `choose κ ι hκι hG using hδ`. Take `⟨κA, hκ1, hκ2, hκ3⟩` from `GlobalTheory.CharTransport.exists_hom D`. Set `rc : Recip D D.nd.Om` to `⟨κA, art⟩`. Establish `hrc : rc.Good` using `⟨hκ1, hκ2, hκ3, hart⟩`.
+
+Take `⟨e, ek, he1, he2, he3⟩` from `GlobalTheory.T.exists_ladicCoefficientField_embeddings_complex D D.nd D.ntw (fun i b => (ι i b).toRingHom.comp (κ i b)) hκι hcard`. Use `choose F hF hFstd hFψ hFθ hFsT hFBS hFBT hFΛS hFΛT hFβS hFβT hFf hFlS hFlT using GlobalTheory.T.exists_good_frame_realisation D Γ Pl0 I0 T A3 Ks Rl F3 hC`. Set `f : ∀ i, Bool → (D.ntw.O0 i →+* ℂ)` to `fun i b => ((e i b).comp (algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i)))).comp (algebraMap (D.ntw.O0 i) (D.ntw.O i))`. Establish `hfi : ∀ i b, Function.Injective (f i b)` using `fun i b => ((e i b).injective.comp (IsFractionRing.injective (D.ntw.O i) (FractionRing (D.ntw.O i)))).comp (D.ntw.O_inj i)`. Set `de : D.ntw.Tw → Bool → Twist D Circle` to `fun i b => twistOf rc (f i b) (ch i) (D.ntw.pD i) (Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (D.ntw.delta i))`.
+
+Establish `hde : ∀ i b, (de i b).Good` using `fun i b => GlobalTheory.T.artin_twisting_character_delta_good D rc hrc i (ch i) (hch1 i) (f i b) (hfi i b) b`. Establish `hpl : ∀ i b, PlacesOK Rl.Pg (de i b).Q` using `fun i _ => GlobalTheory.T.typePlaces_twistPlaces_goodPosition D Γ Pl0 I0 T A3 Ks Rl A3.A.μ0 hC.lev hspl hq i (ch i) (hch1 i)`. Establish `hB` using `fun i j b => GlobalTheory.T.liftBaseData_isGood_twist D Γ Pl0 I0 T A3 Ks Rl F3 hC j (F j) (hF j) (de i b) (hde i b) (hpl i b)`. Use `choose w mu hwp hwm hBg using hB`. Set `P : D.ntw.Tw → ∀ j : Fin D.R.m, Bool → LevelP Rl.Pg (Wc D j).rank ℂ` to `fun i j b => ⟨(levOf (eGc Rl cG j) D.nexp.U ((Units.map (e i b).toMonoidHom).comp (D.nexp.psiU i b))).1, (levOf (eGc Rl cG j) D.nexp.U ((Units.map (e i b).toMonoidHom).comp (D.nexp.psiU i b))).2⟩`.
+
+Set `B : D.ntw.Tw → ∀ j : Fin D.R.m, Bool → Base (Vc D j) (Wc D j)` to `fun i j b => ⟨(hF j).rank_le, F j, ⟨Rl.Pg, P i j b, mu i j b⟩, de i b, w i j b, Rl.mu0 ((j : ℕ) + 1), Rl.eta⟩`. Establish `hBG : ∀ i j b, (B i j b).Good` using `fun i j b => hBg i j b (P i j b)`. Establish `hom : ∀ i j b (χ : (AE D)ˣ →* Circle), ∃ ω : PairRep (Vc D j) (Wc D j), ∀ t : Twist D Circle, t.Good → t.chi = χ → (B i j b).IsWeil χ ω`. Introduce `i j b χ`. Distinguish the cases in `h : ∃ t : Twist D Circle, t.Good ∧ t.chi = χ`.
+
+Take `⟨t, ht, rfl⟩` from `h`. Take `⟨ω, hω⟩` from `GlobalTheory.T.exists_weilRep_good_twist D _ _ (B i j b) hW (hBG i j b) (hFstd j) t ht`. Conclude with `⟨ω, fun _ _ _ => hω⟩`. Conclude with `⟨1, fun t ht h' => absurd ⟨t, ht, h'⟩ h⟩`. Use `choose om hom using hom`.
+
+Establish `hcl : ∀ i j b (t : Twist D Circle), ∃ (m : ℕ) (h : Fin m → GA D (Vc D j)), IsClassSystem (Vc D j) ((B i j b).levJ t) h` using `fun i j b t => exists_isClassSystem (B i j b) (hBG i j b).frame t`. Use `choose m rep hrep using hcl`. Set `ρ : Setup D.ntw` to `{ rc := rc ch := ch bad := fun i => ∏ P ∈ D.ntw.S0 i, Ideal.absNorm P.asIdeal e := e ek := ek B := B om := om Cl := fun i j b t => Fin (m i j b t) rep := rep β := fun j P => DetBases.std _ _ _ eG := fun _ j _ => eGc Rl cG j }`. Use `⟨ρ, ?_, ?_, ?_, rfl, fun _ => rfl⟩` and prove the remaining obligations. Conclude with `{ rc := hrc ch := hch1 bad_ne := fun i => Finset.prod_ne_zero_iff.2 fun P _ h => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h) goodSetup_bad_mem_badPlaces := fun i P hP => by`.
+
+Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem (fun Q : Pl D.host.E => Ideal.absNorm Q.asIdeal) hP`. Express the relevant statement in the definitionally equal form `((∏ P ∈ D.ntw.S0 i, Ideal.absNorm P.asIdeal : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`. Rewrite using `[hc, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _)`. Use `goodSetup_badPlaces_conj := hS0c`.
+
+Use `goodSetup_placesOverTwo_subset := hS02`. Use `goodSetup_count_eq_zero_off_badPlaces := hS0A`. Use `e_LL0 := he1`. Use `ek_e := fun i b k x => he2 i b k x`. Use `base := hBG`.
+
+Use `latS := fun _ j _ => hFlS j`. Use `latT := fun _ j _ => hFlT j`. Use `Pg := fun _ _ _ P hP => GlobalTheory.T.typePlaces_mem_placesOver_generators D Γ Pl0 I0 T A3 Ks Rl F3 hC P hP`. Use `delta := fun _ _ _ => rfl`. Use `weil := fun i j b t ht => hom i j b t.chi t ht rfl`.
+
+Use `classes := fun i j b t _ _ => hrep i j b t }`. Conclude with `{ psi := fun _ j _ => hFψ j inf := fun _ j _ => hFθ j cartT := fun _ j _ => hFsT j onbS := fun _ j _ τ => hFBS j τ onbT := fun _ j _ => hFBT j latS := fun _ j _ => hFΛS j latT := fun _ j _ => hFΛT j frS := fun _ j _ => hFβS j frT := fun _ j _ => hFβT j vac := fun _ j _ => hFf j P …`. Conclude with `GlobalTheory.T.twistingCharacter_ladicGaloisCharacter_eq_hecke D rc i (κ i b) (ι i b) (Rl.C.delAt (D.ntw.l i)) (D.ntw.delta i) b hrc (D.ntw.delta_open i) (hG i b) (f i b) (fun y hy => he3 i b y hy) (ch i) (D.ntw.pD i)`. Use `deltaPl := fun i t P hP hPD => hch2 i ⟨t, hP, hPD⟩`. Use `ap := fun i j b τ => hwp i j b τ`.
+
+Use `am := fun i j b τ => hwm i j b τ }`. Conclude with `{ U_eq := fun i j b g => levOf_mem (eGc Rl cG j) D.nexp.U ((Units.map (e i b).toMonoidHom).comp (D.nexp.psiU i b)) g psiU_eq := fun i j b u hu => congrArg Units.val (levOf_chi (eGc Rl cG j) D.nexp.U ((Units.map (e i b).toMonoidHom).comp (D.nexp.psiU i b)) u hu) }`.
+-/
 theorem exists_setup_ch (Rl : RealDat3 D A3 Ks) (cG : G0 Rl.Pg D.R.r ≃* G0g D.nd) (F3 : Face3 D A3) (hC : Rl.Char3 F3)
     (hW : GlobalTheory.Published.WeilRepresentationUnitaryPair)
     (hS0c : ∀ i, ∀ P ∈ D.ntw.S0 i, ∀ P', Formalism.BasicNotions.IsConjPl D.host P P' → P' ∈ D.ntw.S0 i)

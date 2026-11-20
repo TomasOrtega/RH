@@ -20,6 +20,9 @@ noncomputable section
 
 namespace GlobalTheory.BrPairF
 
+/- English proof (translation)
+Introduce `K ι _ _ _ φ n N hN Λ σ u v`. Rewrite using `[← brPair_mapVV φ σ hN Λ u v, brPair, LinearMap.compl₁₂_apply, brPairF_apply, GlobalTheory.BrRat.covOf_eq]`.
+-/
 theorem brPairF_map_descent : ∀ {K ι : Type} [Field K] [CharZero K] [Fintype ι] (φ : K →+* ℂ) {n N : ℕ} (hN : N = n + 1)
     (Λ : ι → DomWeight N) (σ : ι → DomWeight n) (u : VV K Λ) (v : VV K fun τ => (σ τ).dual),
     φ (GlobalTheory.BrPairF.brPairF σ hN Λ u v) =

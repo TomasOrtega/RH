@@ -5,6 +5,25 @@ noncomputable section
 
 namespace UpperTheory.Gal.crystallineComparison
 
+/- English proof (translation)
+Introduce `hMR hDS R S _ _ _ _ _ ι _ s`. Take `⟨m, M, hM⟩` from `hMR R S`. Set `φ : R →+* Polynomial (MvPolynomial ι R)` to `Polynomial.C.comp MvPolynomial.C`. Use `⟨(1 - (M 1).map φ + (Polynomial.X : Polynomial (MvPolynomial ι R)) • (M 1).map φ - ∑ k, (Polynomial.C (MvPolynomial.X (R := R) k) : Polynomial (MvPolynomial ι R)) • (M (s k)).map φ).det, ?_⟩` and prove the remaining obligations. Introduce `B _ _ I _ z hz`.
+
+Take `⟨P, Q, hPQ, hQ⟩` from `hM B I z hz`. Set `ψ : B →+* Polynomial (MvPolynomial ι B)` to `Polynomial.C.comp MvPolynomial.C`. Set `F : Polynomial (MvPolynomial ι R) →+* Polynomial (MvPolynomial ι B)` to `Polynomial.mapRingHom (MvPolynomial.map (algebraMap R B))`. Establish `hPQ' : P.map ψ * Q.map ψ = 1`. Rewrite using `[← Matrix.map_mul, hPQ, Matrix.map_one ψ (map_zero _) (map_one _)]`.
+
+Establish `key` using `hDS (Polynomial (MvPolynomial ι B)) m I (P.map ψ) (Q.map ψ) hPQ' (fun i => form fun k => z i (s k))`. Rewrite using `[← key]`. Establish `hmap : ∀ t : S, ((M t).map φ).map F = Q.map ψ * (Matrix.diagonal fun i => z i t).map ψ * P.map ψ`. Introduce `t`. Establish `: ((M t).map φ).map F = ((M t).map (algebraMap R B)).map ψ`.
+
+Rewrite using `[Matrix.map_map, Matrix.map_map]`. Use `congr 1`. Use function extensionality and compare the values at `r`. Simplify using `[φ, ψ, F]`. Rewrite using `[this, hQ t, Matrix.map_mul, Matrix.map_mul]`.
+
+Establish `hd : Matrix.diagonal (fun i => form fun k => z i (s k)) = (Polynomial.X : Polynomial (MvPolynomial ι B)) • (1 : Matrix I I _) - ∑ k, (Polynomial.C (MvPolynomial.X (R` using `B) k) : Polynomial (MvPolynomial ι B)) • (Matrix.diagonal fun i => z i (s k)).map ψ := by`. Use extensionality with `i j`. Rewrite using `[Matrix.sub_apply, Matrix.smul_apply, Matrix.sum_apply]`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, Matrix.diagonal_apply, Matrix.one_apply]`. Use `split_ifs with h`.
+
+Substitute `h` using the available equality. Simplify using `[form, ψ, map_sum, mul_comm]`. Simplify using the standard rewrite rules. Establish `hs : ∀ (c : Polynomial (MvPolynomial ι R)) (A : Matrix (Fin m) (Fin m) (Polynomial (MvPolynomial ι R))), F.mapMatrix (c • A) = F c • F.mapMatrix A`. Introduce `c A`.
+
+Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `h1 : (Matrix.diagonal fun i => z i 1).map ψ = 1`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `F _ = _`.
+
+Rewrite using `[RingHom.map_det]`. Use `congr 1`. Rewrite using `[map_sub, map_add, map_sub, map_one, map_sum]`. Simplify using `only [hs, RingHom.mapMatrix_apply, hmap, h1, Matrix.mul_one]`. Rewrite using `[hd, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.mul_sum, Matrix.sum_mul]`.
+
+Simplify using `only [Matrix.mul_smul, Matrix.smul_mul]`. Simplify using `[F]`. Normalize the expressions using the abelian group laws.
+-/
 theorem normEx_of : MatRep → DetSplit → NormEx := by
   intro hMR hDS R S _ _ _ _ _ ι _ s
   obtain ⟨m, M, hM⟩ := hMR R S

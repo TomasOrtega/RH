@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Matrix Filter UpperTheory.V UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.Pa.Lev UpperTheory.V.AlgebraTools UpperTheory.V.Th
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `h : ∀ (k : G) (b : T), t (MonoidAlgebra.single k b) = b * t (MonoidAlgebra.single k 1)` using `fun k b => by`. Rewrite using `[← smul_eq_mul, ← map_smul, MonoidAlgebra.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[mul_sub, mul_sub, mul_one, MonoidAlgebra.single_mul_single, MonoidAlgebra.single_mul_single, mul_one, mul_one, map_sub, map_sub, h (g * ta) a, h g a, h g (a * y)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem UpperTheory.V.Th.Sp.trace_partial_charpoly_single {T G : Type} [CommRing T] [Group G] (t : MonoidAlgebra T G →ₗ[T] T)
     (g ta : G) (a y : T) :
     t (MonoidAlgebra.single g a * (MonoidAlgebra.single ta 1 - 1 - MonoidAlgebra.single 1 y)) =
@@ -15,6 +18,15 @@ private theorem UpperTheory.V.Th.Sp.trace_partial_charpoly_single {T G : Type} [
     map_sub, map_sub, h (g * ta) a, h g a, h g (a * y)]
   ring
 
+/- English proof (translation)
+Introduce `O T G X _ _ _ _ _ _ n D x del ta y Q hn hd hy hta`. Take `⟨t, ht⟩` from `(UpperTheory.V.CA.d_tr D.toDet).1 hn`. Establish `ht' : ∀ z, D.tr z = t z` using `fun z => by rw [ht, (UpperTheory.V.CA.d_toDet D z).2.2.1]`. Simplify using `only [ht'] at hta ⊢`. Proceed by induction on `Q using MonoidAlgebra.induction_linear with`.
+
+Consider the case `zero => simp`. Consider the case `add P Q hP hQ`. Simplify using `only [map_add, add_mul, hP.1, hQ.1, hP.2, hQ.2, add_zero, true_and, add_smul]`. Normalize the expressions using the abelian group laws. Consider the case `single g a`.
+
+Establish `h : t (MonoidAlgebra.single g a) = a * t (MonoidAlgebra.single g 1)`. Rewrite using `[← smul_eq_mul, ← map_smul, MonoidAlgebra.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[MonoidAlgebra.mapRingHom_single, UpperTheory.V.Th.Sp.trace_partial_charpoly_single, UpperTheory.V.Th.Sp.trace_partial_charpoly_single, h]`. Establish `h0 : x (t (MonoidAlgebra.single (g * ta) 1) - t (MonoidAlgebra.single g 1)) = 0`. Rewrite using `[map_sub, hta, sub_self]`.
+
+Use `⟨by rw [map_sub, map_mul, map_mul, h0, hy, mul_zero, zero_mul, sub_zero], ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, hd, hd, h0, hy, zero_smul, zero_smul, add_zero, zero_add, zero_mul, sub_zero, RingHom.comp_apply, ← Algebra.smul_def, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Th.Sp.q2 :
     ∀ (O T G X : Type) [CommRing O] [CommRing T] [Algebra O T] [Group G] [AddCommGroup X] [Module O X] (n : ℕ) (D : GDet n T G) (x : T →ₐ[O] O) (del : T →ₗ[O] X) (ta : G) (y : T) (Q : MonoidAlgebra T G), 1 ≤ n → IsDer x del → x y = 0 → (∀ g, x (D.tr (MonoidAlgebra.single (g * ta) 1)) = x (D.tr (MonoidAlgebra.single g 1))) → x (D.tr (Q * (MonoidAlgebra.single ta 1 - 1 - MonoidAlgebra.single 1 y))) = 0 ∧ del (D.tr (Q * (MonoidAlgebra.single ta 1 - 1 - MonoidAlgebra.single 1 y))) = del (D.tr (MonoidAlgebra.mapRingHom G ((algebraMap O T).comp (x : T →+* O)) Q * (MonoidAlgebra.single ta 1 - 1 - MonoidAlgebra.single 1 0))) - x (D.tr Q) • del y := by
   intro O T G X _ _ _ _ _ _ n D x del ta y Q hn hd hy hta

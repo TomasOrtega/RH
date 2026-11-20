@@ -11,6 +11,33 @@ noncomputable section
 
 namespace GlobalTheory.LKCx.PolyArch
 
+/- English proof (translation)
+Use `letI : Algebra G.F ℂ := v.embedding.toAlgebra`. Establish `hτ : algebraMap G.F ℂ = v.embedding` using `rfl`. Set `ψF : G.C →ₐ[G.F] Matrix (Fin G.n) (Fin G.n) ℂ` to `{ G.psi v with commutes' := fun x => by show G.psi v (algebraMap G.F G.C x) = _`. Rewrite using `[G.psi_F, Matrix.algebraMap_eq_diagonal]`. Use `rfl }`.
+
+Set `Ψ : ℂ ⊗[G.F] G.C →ₐ[ℂ] Matrix (Fin G.n) (Fin G.n) ℂ` to `Algebra.TensorProduct.lift (Algebra.ofId ℂ _) ψF (fun a _ => Algebra.commute_algebraMap_left a _)`. Use `haveI : Nontrivial (Matrix (Fin G.n) (Fin G.n) ℂ) := by haveI : Nonempty (Fin G.n) := ⟨⟨0, G.n_pos⟩⟩ infer_instance`. Establish `hinj : Function.Injective Ψ` using `RingHom.injective (Ψ : ℂ ⊗[G.F] G.C →+* Matrix (Fin G.n) (Fin G.n) ℂ)`. Use `set Γ := G.psi v γ with hΓ`. Establish `hΨ : ∀ k : ℕ, Ψ (1 ⊗ₜ (γ ^ k)) = Γ ^ k`.
+
+Introduce `k`. Combine the equalities or inequalities in the displayed calculation. Establish `hli0` using `Module.Flat.linearIndependent_one_tmul (S := ℂ) (linearIndependent_pow (K := G.F) γ)`. Establish `hli` using `hli0.map' Ψ.toLinearMap (LinearMap.ker_eq_bot.2 hinj)`. Establish `hli' : LinearIndependent ℂ (fun i : Fin (minpoly G.F γ).natDegree => Γ ^ (i : ℕ))`.
+
+Establish `e : (⇑Ψ.toLinearMap ∘ fun i : Fin (minpoly G.F γ).natDegree => (1 : ℂ) ⊗ₜ[G.F] (γ ^ (i : ℕ))) = fun i : Fin (minpoly G.F γ).natDegree => Γ ^ (i : ℕ)`. Use function extensionality and compare the values at `i`. Conclude with `hΨ i`. Rewrite `hli` using `[e]`. Conclude with `hli`.
+
+Establish `hint : IsIntegral G.F γ` using `Algebra.IsIntegral.isIntegral _`. Establish `hd0 : 0 < (minpoly G.F γ).natDegree` using `minpoly.natDegree_pos hint`. Establish `hpm : (minpoly G.F γ).Monic` using `minpoly.monic hint`. Use `set Q := (minpoly G.F γ).map (algebraMap G.F ℂ) with hQ`. Establish `hQm : Q.Monic` using `hpm.map _`.
+
+Establish `hQdeg : Q.natDegree = (minpoly G.F γ).natDegree` using `by rw [hQ, hpm.natDegree_map]`. Establish `hQΓ : Polynomial.aeval Γ Q = 0`. Rewrite using `[hQ, Polynomial.aeval_map_algebraMap]`. Establish `h : Polynomial.aeval (ψF γ) (minpoly G.F γ) = 0`. Rewrite using `[Polynomial.aeval_algHom_apply]`.
+
+Simplify using `[minpoly.aeval]`. Conclude with `h`. Establish `hroot : Q.IsRoot w`. Rewrite using `[Polynomial.IsRoot, hQ, Polynomial.eval_map]`. Conclude with `hw`.
+
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hdet : (Γ - algebraMap ℂ (Matrix (Fin G.n) (Fin G.n) ℂ) w).det ≠ 0`. Introduce `h0`. Take `⟨x, hx0, hx⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`.
+
+Apply `hne x hx0` to reduce the goal to its premises. Rewrite `hx` using `[Matrix.sub_mulVec, sub_eq_zero]`. Rewrite using `[hx, Algebra.algebraMap_eq_smul_one, Matrix.smul_mulVec, Matrix.one_mulVec]`. Use `set R := Q /ₘ (Polynomial.X - Polynomial.C w) with hRdef`. Establish `hQR : (Polynomial.X - Polynomial.C w) * R = Q` using `Polynomial.mul_divByMonic_eq_iff_isRoot.2 hroot`.
+
+Establish `hRΓ : Polynomial.aeval Γ R = 0`. Establish `h1` using `hQΓ`. Rewrite `h1` using `[← hQR, map_mul]`. Establish `hu : IsUnit (Polynomial.aeval Γ (Polynomial.X - Polynomial.C w))`. Rewrite using `[map_sub, Polynomial.aeval_X, Polynomial.aeval_C, Matrix.isUnit_iff_isUnit_det]`.
+
+Conclude with `isUnit_iff_ne_zero.2 hdet`. Conclude with `(hu.mul_right_eq_zero).1 h1`. Establish `hRd : R.natDegree = (minpoly G.F γ).natDegree - 1`. Rewrite using `[hRdef, Polynomial.natDegree_divByMonic _ (Polynomial.monic_X_sub_C w), hQdeg, Polynomial.natDegree_X_sub_C]`. Establish `hR0 : R ≠ 0`.
+
+Introduce `h`. Rewrite `hQR` using `[h, mul_zero]`. Conclude with `hQm.ne_zero hQR.symm`. Establish `hsum : ∑ i : Fin (minpoly G.F γ).natDegree, R.coeff i • Γ ^ (i : ℕ) = 0`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => R.coeff i • Γ ^ i), ← hRΓ, Polynomial.aeval_eq_sum_range, hRd, Nat.sub_add_cancel hd0]`.
+
+Establish `hc` using `Fintype.linearIndependent_iff.1 hli' (fun i => R.coeff i) hsum ⟨(minpoly G.F γ).natDegree - 1, by omega⟩`. Conclude with `hR0 (Polynomial.leadingCoeff_eq_zero.1 (by rw [Polynomial.leadingCoeff, hRd]; exact hc))`.
+-/
 theorem roots_eig_any (p : ℕ) [Fact p.Prime] (G : HTGroup p) (v : InfinitePlace G.F) (γ : G.C) (w : ℂ)
     (hw : (minpoly G.F γ).eval₂ v.embedding w = 0) : ∃ x : Fin G.n → ℂ, x ≠ 0 ∧ G.psi v γ *ᵥ x = w • x := by
   letI : Algebra G.F ℂ := v.embedding.toAlgebra

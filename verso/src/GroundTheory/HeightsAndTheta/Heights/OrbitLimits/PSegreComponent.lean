@@ -10,6 +10,13 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 
 universe u v w
 
+/- English proof (translation)
+Introduce `K _ ι _ F _ V n f hV hf`. Assume the negation of the conclusion as `hne`. Establish `hirr : ∀ W ∈ (V ⊔ Ideal.span {f}).minimalPrimes, ¬ IsRelevant W` using `fun W hW hrel => hne ⟨W, hW, hrel⟩`. Take `⟨i, hi⟩ : ∃ i, IsChart V i` from `⟨fun k => (hV.1.2.2 k).choose, fun k => (hV.1.2.2 k).choose_spec⟩`. Use `h₂ K ι F V f i hV.1.2.1 hf hirr` as an intermediate fact.
+
+Establish `: IsArtinianRing (MRingOver F ι ⧸ chartIdeal V i)` using `IsArtinianRing.of_finite F (MRingOver F ι ⧸ chartIdeal V i)`. Establish `hA : ringKrullDim (MRingOver F ι ⧸ chartIdeal V i) ≤ ((0 : ℕ) : WithBot ℕ∞)` using `Ring.krullDimLE_iff.mp inferInstance`. Establish `hdim` using `h₁ K ι F V i hV.1 hi`. Rewrite `hdim` using `[hV.2]`. Establish `h` using `hdim.trans (add_le_add hA le_rfl)`.
+
+Rewrite `h` using `[Nat.cast_zero, zero_add]`. Establish `h' : n + 1 + Fintype.card K ≤ Fintype.card K` using `by exact_mod_cast h`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem SegreComponent.proof (h₁ : ChartDimBound.Statement.{u, v, w})
     (h₂ : ChartFiniteIrrel.Statement.{u, v, w}) : SegreComponent.Statement.{u, v, w} := by
   intro K _ ι _ F _ V n f hV hf

@@ -15,9 +15,17 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimension
 def latticeDomain : Set E :=
   ZSpan.fundamentalDomain ((Free.chooseBasis ℤ L).ofZLatticeBasis ℝ L)
 
+/- English proof (translation)
+The claim follows from `ZSpan.fundamentalDomain_isBounded _`.
+-/
 theorem latticeDomain_isBounded : Bornology.IsBounded (latticeDomain L) :=
   ZSpan.fundamentalDomain_isBounded _
 
+/- English proof (translation)
+Establish `h` using `ZSpan.exist_unique_vadd_mem_fundamentalDomain ((Free.chooseBasis ℤ L).ofZLatticeBasis ℝ L) x`. Establish `hs` using `(Free.chooseBasis ℤ L).ofZLatticeBasis_span ℝ L`. Take `⟨⟨a, ha⟩, h1, h2⟩` from `h`. Use `⟨⟨a, hs ▸ ha⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify `h1` using `[latticeDomain, add_comm, Submodule.vadd_def]`.
+
+Introduce and unpack `⟨b, hb⟩ hb'`. Use `h2 ⟨b, hs.symm ▸ hb⟩ (by simpa [latticeDomain, add_comm, Submodule.vadd_def] using hb')` as an intermediate fact. Conclude with `Subtype.ext (by simpa using this)`.
+-/
 theorem existsUnique_add_mem_latticeDomain (x : E) : ∃! a : L, x + a ∈ latticeDomain L := by
   have h := ZSpan.exist_unique_vadd_mem_fundamentalDomain
     ((Free.chooseBasis ℤ L).ofZLatticeBasis ℝ L) x
@@ -33,13 +41,22 @@ section Measure
 
 variable [MeasurableSpace E] [BorelSpace E]
 
+/- English proof (translation)
+The claim follows from `ZSpan.fundamentalDomain_measurableSet _`.
+-/
 theorem measurableSet_latticeDomain : MeasurableSet (latticeDomain L) :=
   ZSpan.fundamentalDomain_measurableSet _
 
+/- English proof (translation)
+The claim follows from `ZLattice.isAddFundamentalDomain (Free.chooseBasis ℤ L) μ`.
+-/
 theorem isAddFundamentalDomain_latticeDomain (μ : Measure E) :
     IsAddFundamentalDomain L (latticeDomain L) μ :=
   ZLattice.isAddFundamentalDomain (Free.chooseBasis ℤ L) μ
 
+/- English proof (translation)
+Rewrite using `[ZLattice.covolume_eq_measure_fundamentalDomain L μ (isAddFundamentalDomain_latticeDomain L μ), ofReal_measureReal (latticeDomain_isBounded L).measure_lt_top.ne]`.
+-/
 theorem measure_latticeDomain (μ : Measure E) [μ.IsAddHaarMeasure] :
     μ (latticeDomain L) = ENNReal.ofReal (ZLattice.covolume L μ) := by
   rw [ZLattice.covolume_eq_measure_fundamentalDomain L μ (isAddFundamentalDomain_latticeDomain L μ),
@@ -48,6 +65,11 @@ theorem measure_latticeDomain (μ : Measure E) [μ.IsAddHaarMeasure] :
 def latticeProb : Measure E :=
   (Measure.addHaar (latticeDomain L))⁻¹ • (Measure.addHaar : Measure E).restrict (latticeDomain L)
 
+/- English proof (translation)
+Establish `h` using `Measure.isAddLeftInvariant_eq_smul (Measure.addHaar : Measure E) μ`. Establish `hc` using `Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure (Measure.addHaar : Measure E) μ`. Use `set c := Measure.addHaarScalarFactor (Measure.addHaar : Measure E) μ`. Rewrite using `[← measure_latticeDomain, latticeProb, h]`. Establish `hc0 : (c : ENNReal) ≠ 0` using `by exact_mod_cast hc.ne'`.
+
+Rewrite using `[Measure.restrict_smul, Measure.smul_apply, ENNReal.smul_def, ENNReal.smul_def, smul_smul, smul_eq_mul, ENNReal.mul_inv (Or.inl hc0) (Or.inl ENNReal.coe_ne_top), mul_right_comm, ENNReal.inv_mul_cancel hc0 ENNReal.coe_ne_top, one_mul]`.
+-/
 theorem latticeProb_eq (μ : Measure E) [μ.IsAddHaarMeasure] :
     latticeProb L = (ENNReal.ofReal (ZLattice.covolume L μ))⁻¹ • μ.restrict (latticeDomain L) := by
   have h := Measure.isAddLeftInvariant_eq_smul (Measure.addHaar : Measure E) μ
@@ -66,6 +88,9 @@ instance isProbabilityMeasure_latticeProb : IsProbabilityMeasure (latticeProb L)
   rw [measure_latticeDomain]
   simpa using ZLattice.covolume_pos L Measure.addHaar
 
+/- English proof (translation)
+Establish `h0 : Measure.addHaar (latticeDomain L) ≠ 0`. Rewrite using `[measure_latticeDomain]`. Simplify using `using ZLattice.covolume_pos L Measure.addHaar`. Use `Integrable.smul_measure ?_ (ENNReal.inv_ne_top.2 h0)` and prove the remaining obligations. Conclude with `(hf.continuousOn.integrableOn_compact (latticeDomain_isBounded L).isCompact_closure).mono_set subset_closure`.
+-/
 theorem integrable_latticeProb {f : E → G} (hf : Continuous f) : Integrable f (latticeProb L) := by
   have h0 : Measure.addHaar (latticeDomain L) ≠ 0 := by
     rw [measure_latticeDomain]
@@ -81,17 +106,26 @@ def latticeMean (f : E → G) : G :=
   haveI : BorelSpace E := ⟨rfl⟩
   ∫ x, f x ∂(latticeProb L)
 
+/- English proof (translation)
+Take `⟨rfl⟩` from `hm`. Both sides reduce to the same expression.
+-/
 theorem latticeMean_eq_integral [m : MeasurableSpace E] [hm : BorelSpace E] (f : E → G) :
     latticeMean L f = ∫ x, f x ∂(latticeProb L) := by
   obtain ⟨rfl⟩ := hm
   rfl
 
+/- English proof (translation)
+Rewrite using `[latticeMean_eq_integral, latticeProb_eq L μ, integral_smul_measure, ENNReal.toReal_inv, ENNReal.toReal_ofReal (ZLattice.covolume_pos L μ).le]`.
+-/
 theorem latticeMean_eq_latticeDomain [MeasurableSpace E] [BorelSpace E] (μ : Measure E)
     [μ.IsAddHaarMeasure] (f : E → G) :
     latticeMean L f = (ZLattice.covolume L μ)⁻¹ • ∫ x in latticeDomain L, f x ∂μ := by
   rw [latticeMean_eq_integral, latticeProb_eq L μ, integral_smul_measure, ENNReal.toReal_inv,
     ENNReal.toReal_ofReal (ZLattice.covolume_pos L μ).le]
 
+/- English proof (translation)
+Establish `: MeasurableVAdd L E` using `(inferInstance : MeasurableVAdd L.toAddSubgroup E)`. Establish `: VAddInvariantMeasure L E μ` using `(inferInstance : VAddInvariantMeasure L.toAddSubgroup E μ)`. Rewrite using `[latticeMean_eq_latticeDomain L μ, (isAddFundamentalDomain_latticeDomain L μ).setIntegral_eq hD]`. Introduce and unpack `⟨a, ha⟩ x`. Simplify `hf a ha x` using `[Submodule.vadd_def, add_comm]`.
+-/
 theorem latticeMean_eq [MeasurableSpace E] [BorelSpace E] (μ : Measure E)
     [μ.IsAddHaarMeasure] {D : Set E} (hD : IsAddFundamentalDomain L D μ) {f : E → G}
     (hf : ∀ a ∈ L, ∀ x, f (x + a) = f x) :
@@ -103,11 +137,17 @@ theorem latticeMean_eq [MeasurableSpace E] [BorelSpace E] (μ : Measure E)
   rintro ⟨a, ha⟩ x
   simpa [Submodule.vadd_def, add_comm] using hf a ha x
 
+/- English proof (translation)
+Use `borelize E`. Simplify using `[latticeMean_eq_integral]`.
+-/
 @[simp] theorem latticeMean_const [CompleteSpace G] (c : G) :
     latticeMean L (fun _ => c) = c := by
   borelize E
   simp [latticeMean_eq_integral]
 
+/- English proof (translation)
+Use `borelize E`. Simplify using `only [latticeMean_eq_integral]`. Conclude with `integral_finset_sum s fun i hi => integrable_latticeProb L (hf i hi)`.
+-/
 theorem latticeMean_finset_sum {ι : Type*} (s : Finset ι) {f : ι → E → G}
     (hf : ∀ i ∈ s, Continuous (f i)) :
     latticeMean L (fun x => ∑ i ∈ s, f i x) = ∑ i ∈ s, latticeMean L (f i) := by
@@ -115,17 +155,28 @@ theorem latticeMean_finset_sum {ι : Type*} (s : Finset ι) {f : ι → E → G}
   simp only [latticeMean_eq_integral]
   exact integral_finset_sum s fun i hi => integrable_latticeProb L (hf i hi)
 
+/- English proof (translation)
+Use `borelize E`. Simplify using `only [latticeMean_eq_integral]`. Conclude with `integral_const_mul c f`.
+-/
 theorem latticeMean_const_mul {𝕜 : Type*} [RCLike 𝕜] (c : 𝕜) (f : E → 𝕜) :
     latticeMean L (fun x => c * f x) = c * latticeMean L f := by
   borelize E
   simp only [latticeMean_eq_integral]
   exact integral_const_mul c f
 
+/- English proof (translation)
+Use `borelize E`. Simplify using `only [latticeMean_eq_integral]`. Conclude with `integral_nonneg hf`.
+-/
 theorem latticeMean_nonneg {f : E → ℝ} (hf : ∀ x, 0 ≤ f x) : 0 ≤ latticeMean L f := by
   borelize E
   simp only [latticeMean_eq_integral]
   exact integral_nonneg hf
 
+/- English proof (translation)
+Use `borelize E`. Use `set μ : Measure E := Measure.addHaar`. Establish `hD : IsAddFundamentalDomain L ((fun x => x + w) ⁻¹' latticeDomain L) μ`. Use `IsAddFundamentalDomain.mk' ((measurable_add_const w) (measurableSet_latticeDomain L)).nullMeasurableSet fun x => ?_` and prove the remaining obligations. Use `existsUnique_add_mem_latticeDomain L (x + w)` as an intermediate fact.
+
+Simplify `this` using `[Submodule.vadd_def, add_comm, add_left_comm, add_assoc]`. Rewrite using `[latticeMean_eq L μ hD (f := fun x => f (x + w)) (fun a ha x => by simpa [add_right_comm] using hf a ha (x + w)), latticeMean_eq_latticeDomain L μ]`. Use `congr 1`. Conclude with `(measurePreserving_add_right μ w).setIntegral_preimage_emb (measurableEmbedding_addRight w) f _`.
+-/
 theorem latticeMean_comp_add {f : E → G} (hf : ∀ a ∈ L, ∀ x, f (x + a) = f x) (w : E) :
     latticeMean L (fun x => f (x + w)) = latticeMean L f := by
   borelize E
@@ -142,6 +193,15 @@ theorem latticeMean_comp_add {f : E → G} (hf : ∀ a ∈ L, ∀ x, f (x + a) =
   exact (measurePreserving_add_right μ w).setIntegral_preimage_emb
     (measurableEmbedding_addRight w) f _
 
+/- English proof (translation)
+Use `borelize E`. Use `set μ : Measure E := Measure.addHaar`. Establish `: MeasurableVAdd L E` using `(inferInstance : MeasurableVAdd L.toAddSubgroup E)`. Establish `: VAddInvariantMeasure L E μ` using `(inferInstance : VAddInvariantMeasure L.toAddSubgroup E μ)`. Rewrite `h` using `[latticeMean_eq_integral, integral_eq_zero_iff_of_nonneg h0 (integrable_latticeProb L hc), latticeProb_eq L μ]`.
+
+Establish `h1 : f =ᵐ[μ.restrict (latticeDomain L)] 0` using `(Measure.ae_ennreal_smul_measure_iff (ENNReal.inv_ne_zero.2 ENNReal.ofReal_ne_top)).1 h`. Establish `hm : MeasurableSet {x | f x ≠ 0}` using `(isOpen_ne_fun hc continuous_const).measurableSet`. Establish `h2 : μ {x | f x ≠ 0} = 0`. Use `(isAddFundamentalDomain_latticeDomain L μ).measure_zero_of_invariant _ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨a, ha⟩`.
+
+Use extensionality with `x`. Rewrite using `[Set.mem_vadd_set_iff_neg_vadd_mem]`. Use `hf (-a) (L.neg_mem ha) x` as an intermediate fact. Simplify using `only [Submodule.vadd_def, Set.mem_setOf_eq, vadd_eq_add, NegMemClass.coe_neg]`. Rewrite using `[add_comm, this]`.
+
+Rewrite using `[← Measure.restrict_apply hm]`. Conclude with `h1`. Conclude with `(Continuous.ae_eq_iff_eq μ hc continuous_zero).1 h2`.
+-/
 theorem eq_zero_of_latticeMean_eq_zero {f : E → ℝ} (hc : Continuous f) (h0 : ∀ x, 0 ≤ f x)
     (hf : ∀ a ∈ L, ∀ x, f (x + a) = f x) (h : latticeMean L f = 0) : f = 0 := by
   borelize E
@@ -166,6 +226,11 @@ theorem eq_zero_of_latticeMean_eq_zero {f : E → ℝ} (hc : Continuous f) (h0 :
       exact h1
   exact (Continuous.ae_eq_iff_eq μ hc continuous_zero).1 h2
 
+/- English proof (translation)
+Establish `hK` using `(latticeDomain_isBounded L).isCompact_closure`. Take `⟨a₀, ha₀, -⟩` from `existsUnique_add_mem_latticeDomain L 0`. Take `⟨x₀, -, hx₀⟩` from `hK.exists_isMaxOn ⟨_, subset_closure ha₀⟩ hc.continuousOn`. Use `⟨x₀, fun x => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, -⟩` from `existsUnique_add_mem_latticeDomain L x`.
+
+Rewrite using `[← hf a a.2 x]`. Conclude with `hx₀ (subset_closure ha)`.
+-/
 theorem exists_forall_le_of_periodic {f : E → ℝ} (hc : Continuous f)
     (hf : ∀ a ∈ L, ∀ x, f (x + a) = f x) : ∃ x₀, ∀ x, f x ≤ f x₀ := by
   have hK := (latticeDomain_isBounded L).isCompact_closure
@@ -176,6 +241,11 @@ theorem exists_forall_le_of_periodic {f : E → ℝ} (hc : Continuous f)
   rw [← hf a a.2 x]
   exact hx₀ (subset_closure ha)
 
+/- English proof (translation)
+Use `borelize E`. Take `⟨x₀, hx₀⟩` from `exists_forall_le_of_periodic L hc.norm (fun a ha x => by rw [hf a ha x])`. Establish `hi : Integrable (Function.uncurry fun x y : E => f (x + y)) ((latticeProb L).prod (latticeProb L'))` using `Integrable.of_bound (hc.comp continuous_add).aestronglyMeasurable ‖f x₀‖ (ae_of_all _ fun p => hx₀ _)`. Establish `h` using `integral_integral_swap hi`. Simplify using `only [← latticeMean_eq_integral] at h`.
+
+Establish `h1 : ∀ x, latticeMean L' (fun y => f (x + y)) = latticeMean L' f` using `fun x => by`. Simplify `latticeMean_comp_add L' hf' x` using `only [add_comm x]`. Simplify using `only [h1, latticeMean_comp_add L hf, latticeMean_const] at h`. Conclude with `h.symm`.
+-/
 theorem latticeMean_eq_of_periodic (L' : Submodule ℤ E) [DiscreteTopology L'] [IsZLattice ℝ L']
     [CompleteSpace G] {f : E → G} (hc : Continuous f) (hf : ∀ a ∈ L, ∀ x, f (x + a) = f x)
     (hf' : ∀ a ∈ L', ∀ x, f (x + a) = f x) : latticeMean L f = latticeMean L' f := by
@@ -192,6 +262,13 @@ theorem latticeMean_eq_of_periodic (L' : Submodule ℤ E) [DiscreteTopology L'] 
   simp only [h1, latticeMean_comp_add L hf, latticeMean_const] at h
   exact h.symm
 
+/- English proof (translation)
+Use `borelize E E'`. Use `set μ : Measure E := Measure.addHaar`. Establish `hmp : MeasurePreserving e μ (μ.map e)` using `⟨e.continuous.measurable, rfl⟩`. Establish `hD : IsAddFundamentalDomain L (e ⁻¹' latticeDomain L') μ`. Use `IsAddFundamentalDomain.mk' (e.continuous.measurable (measurableSet_latticeDomain L')).nullMeasurableSet fun x => ?_` and prove the remaining obligations.
+
+Take `⟨a, ha, hu⟩` from `existsUnique_add_mem_latticeDomain L' (e x)`. Use `⟨⟨e.symm a, (he _).1 (by simp)⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify `ha` using `[Submodule.vadd_def, add_comm]`. Introduce and unpack `⟨b, hb⟩ hb'`. Use `hu ⟨e b, (he _).2 hb⟩ (by simpa [Submodule.vadd_def, add_comm] using hb')` as an intermediate fact.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[← this]`. Rewrite using `[latticeMean_eq L μ hD (f := fun x => f (e x)) (fun a ha x => by simpa using hf (e a) ((he _).2 ha) (e x)), latticeMean_eq_latticeDomain L' (μ.map e), ZLattice.covolume_eq_measure_fundamentalDomain L μ hD, ZLattice.covolume_eq_measure_fundamentalDomain L' (μ.map e) (isAddFundamen …`. Use `congr 1`. Conclude with `hmp.setIntegral_preimage_emb e.toHomeomorph.measurableEmbedding f _`.
+-/
 theorem latticeMean_comp_equiv {E' : Type*} [NormedAddCommGroup E'] [NormedSpace ℝ E']
     [FiniteDimensional ℝ E'] (L' : Submodule ℤ E') [DiscreteTopology L'] [IsZLattice ℝ L']
     (e : E ≃L[ℝ] E') (he : ∀ x, e x ∈ L' ↔ x ∈ L) {f : E' → G}
@@ -252,6 +329,9 @@ instance isZLattice_submodulePi [∀ i, DiscreteTopology (L i)] [∀ i, IsZLatti
 def piLpLattice : Submodule ℤ (PiLp 2 E) :=
   ZLattice.comap ℝ (Submodule.pi Set.univ L) (PiLp.continuousLinearEquiv 2 ℝ E).toLinearMap
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h i => h i trivial, fun h i _ => h i⟩`.
+-/
 @[simp] theorem mem_piLpLattice {x : PiLp 2 E} : x ∈ piLpLattice L ↔ ∀ i, x i ∈ L i :=
   ⟨fun h i => h i trivial, fun h i _ => h i⟩
 
@@ -290,6 +370,9 @@ instance isZLattice_submoduleProd [DiscreteTopology L] [DiscreteTopology L'] [Is
 def prodLpLattice : Submodule ℤ (WithLp 2 (E × E')) :=
   ZLattice.comap ℝ (L.prod L') (WithLp.prodContinuousLinearEquiv 2 ℝ E E').toLinearMap
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 @[simp] theorem mem_prodLpLattice {x : WithLp 2 (E × E')} :
     x ∈ prodLpLattice L L' ↔ x.fst ∈ L ∧ x.snd ∈ L' := Iff.rfl
 

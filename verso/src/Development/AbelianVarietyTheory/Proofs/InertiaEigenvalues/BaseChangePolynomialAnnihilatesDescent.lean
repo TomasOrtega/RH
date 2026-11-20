@@ -4,6 +4,27 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `rdL : L0 →ₗ[Ks] KB` to `{ toFun := rd map_add' := rd.map_add map_smul' := fun c x => by`. Simplify using `only [Algebra.smul_def, map_mul, hrd, RingHom.id_apply] }`. Set `R : L0 ⊗[Ks] WK →ₗ[Ks] KB ⊗[Ks] WK` to `LinearMap.rTensor WK rdL`. Establish `hRt : ∀ (c : L0) (w : WK), R (c ⊗ₜ[Ks] w) = rd c ⊗ₜ[Ks] w` using `fun c w => rfl`. Establish `hRs : ∀ (c : L0) (z : L0 ⊗[Ks] WK), R (c • z) = rd c • R z`.
+
+Introduce `c z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x w => simp [TensorProduct.smul_tmul', hRt]`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+
+Use `set B0 := LinearMap.baseChange L0 T0 with hB0`. Use `set B := LinearMap.baseChange KB T0 with hB`. Establish `hRB : ∀ z, R (B0 z) = B (R z)`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul x w => simp [hB0, hB, hRt]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hRpow : ∀ (n : ℕ) z, R ((B0 ^ n) z) = (B ^ n) (R z)`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero => intro z`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `z`.
+
+Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, hRB]`. Establish `hRq : ∀ (p : L0[X]) z, Polynomial.aeval B (p.map rd) (R z) = R (Polynomial.aeval B0 p z)`. Introduce `p z`. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p r hp hr`.
+
+Simplify using `only [Polynomial.map_add, map_add, LinearMap.add_apply, hp, hr]`. Consider the case `monomial n c`. Rewrite using `[Polynomial.map_monomial, Polynomial.aeval_monomial, Polynomial.aeval_monomial]`. Simplify using `only [Module.End.mul_apply, Module.algebraMap_end_apply, hRs, hRpow]`. Establish `hE : ∀ (c : KB) (f : WK), (∑ g ∈ s, rd (a g) • LinearMap.baseChange KB (ρ g)) (c ⊗ₜ[Ks] f) = c • R ((∑ g ∈ s, a g • LinearMap.baseChange L0 (ρ g)) ((1 : L0) ⊗ₜ[Ks] f))`.
+
+Introduce `c f`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.baseChange_tmul, map_sum, hRs, hRt, map_one, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Simplify using `only [TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[mul_comm]`.
+
+Introduce and unpack `y ⟨x, rfl⟩`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c f`. Rewrite using `[hE, map_smul, hRq, hq _ ⟨_, rfl⟩, map_zero, smul_zero]`.
+
+Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]`.
+-/
 theorem baseChange_polynomial_kills_descent (Ks L0 KB WK ι : Type) [Field Ks] [Field L0] [Field KB]
     [Algebra Ks L0] [Algebra Ks KB] [AddCommGroup WK]
     [Module Ks WK] (rd : L0 →+* KB) (hrd : ∀ a : Ks, rd (algebraMap Ks L0 a) = algebraMap Ks KB a)

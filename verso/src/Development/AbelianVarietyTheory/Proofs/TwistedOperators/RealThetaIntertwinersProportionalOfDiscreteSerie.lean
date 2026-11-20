@@ -12,6 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Chain.RealLine
 
+/- English proof (translation)
+Introduce `hCover hModules D`. Break down `GlobalTheory.T.exists_provA_discreteSeries_archimedeanRallis hCover hModules with ⟨X, hParam, -, -, -, -, hAR3, -⟩` into its components or cases. Establish `hBridge : GlobalTheory.IndefiniteRowSideFullHecke.BarMatrix.ModelsAreCoverSeries D` using `GlobalTheory.T.thetaModels_are_coverDiscreteSeries_of_harishChandra hCover hModules D`. Establish `hVac : GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.VacChar D` using `GlobalTheory.T.thetaVacuumCharacters_realPlaces D`. Conclude with `itLine D X hParam hAR3 hVac hBridge hModules`.
+-/
 theorem itLine_of_discreteSeries :
     GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → ∀ D : D7, GlobalTheory.Chain.ItLine D := by
   intro hCover hModules D

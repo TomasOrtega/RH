@@ -20,15 +20,24 @@ instance t2Space_adeles_E : T2Space (AE F E) :=
 
 instance borelSpace_adelicU (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : BorelSpace (UA σ J) := ⟨rfl⟩
 
+/- English proof (translation)
+Simplify using `[blkMat, Matrix.fromBlocks_transpose, Matrix.transpose_submatrix]`.
+-/
 theorem transpose_blkMat' {A m k ι : Type} [CommRing A] (e : m ⊕ k ≃ ι) (x : Matrix m m A) (y : Matrix k k A) :
     (blkMat e x y)ᵀ = blkMat e xᵀ yᵀ := by
   simp [blkMat, Matrix.fromBlocks_transpose, Matrix.transpose_submatrix]
 
 variable (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
+/- English proof (translation)
+Rewrite using `[incM, dblGram, blkMat_map _ _ (map_zero _), Matrix.map_neg _ (map_neg _)]`. Both sides reduce to the same expression.
+-/
 theorem incM_dblGram : incM F (dblGram finSumFinEquiv J) = dblGram finSumFinEquiv (incM F J) := by
   rw [incM, dblGram, blkMat_map _ _ (map_zero _), Matrix.map_neg _ (map_neg _)]; rfl
 
+/- English proof (translation)
+Rewrite using `[incM_dblGram]`. Express the relevant statement in the definitionally equal form `(blkMat finSumFinEquiv x.1 y.1)ᵀ * blkMat finSumFinEquiv (incM F J) (-incM F J) * (blkMat finSumFinEquiv x.1 y.1).map (cA σ) = blkMat finSumFinEquiv (incM F J) (-incM F J) ↔ (x.1ᵀ * incM F J * x.1.map (cA σ) = incM F J) ∧ (y.1ᵀ * incM F J * y.1.map (cA σ) = incM F J)`. Rewrite using `[blkMat_map _ _ (map_zero _), transpose_blkMat', blkMat_mul, blkMat_mul, blkMat_inj, Matrix.mul_neg, Matrix.neg_mul, neg_inj]`.
+-/
 theorem blkGL_mem_UG {x y : GL (Fin n) (AE F E)} :
     blkGL finSumFinEquiv (x, y) ∈ UG (cA σ) (incM F (dblGram finSumFinEquiv J)) ↔
       x ∈ UG (cA σ) (incM F J) ∧ y ∈ UG (cA σ) (incM F J) := by
@@ -45,6 +54,13 @@ def ioA : UA σ J × UA σ J →* UA σ (dblGram finSumFinEquiv J) :=
 
 def detA : UA σ J →* (AE F E)ˣ := Matrix.GeneralLinearGroup.det.comp (UG (cA σ) (incM F J)).subtype
 
+/- English proof (translation)
+Use `haveI : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable`. Use `haveI : Countable (Matrix (Fin n) (Fin n) E) := inferInstanceAs (Countable (Fin n → Fin n → E))`. Use `haveI : Countable (GL (Fin n) E) := Units.val_injective.countable`. Use `Function.Injective.countable (f := fun x : ratU σ J => (Classical.choose (Subgroup.mem_subgroupOf.1 x.2) : GL (Fin n) E)) ?_` and prove the remaining obligations. Introduce `x y h`.
+
+Establish `hx` using `Classical.choose_spec (Subgroup.mem_subgroupOf.1 x.2)`. Establish `hy` using `Classical.choose_spec (Subgroup.mem_subgroupOf.1 y.2)`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hx, ← hy]`.
+
+Conclude with `congrArg _ h`.
+-/
 theorem countable_ratU : Countable (ratU σ J) := by
   haveI : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable
   haveI : Countable (Matrix (Fin n) (Fin n) E) := inferInstanceAs (Countable (Fin n → Fin n → E))
@@ -58,6 +74,9 @@ theorem countable_ratU : Countable (ratU σ J) := by
   rw [← hx, ← hy]
   exact congrArg _ h
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `Subgroup.mem_subgroupOf.1 hγ`. Use `Subgroup.mem_subgroupOf.2 ⟨blkGL finSumFinEquiv (1, B), Units.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(blkMat finSumFinEquiv (1 : Matrix (Fin n) (Fin n) E) B.1).map (inclR (F := F) (AF F)) = blkMat finSumFinEquiv (1 : Matrix (Fin n) (Fin n) (AE F E)) ((γ : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E))`. Rewrite using `[blkMat_map _ _ (map_zero _), Matrix.map_one _ (map_zero _) (map_one _), ← hB]`. Both sides reduce to the same expression.
+-/
 theorem ioA_one_mem_ratU {γ : UA σ J} (hγ : γ ∈ ratU σ J) : ioA σ J (1, γ) ∈ ratU σ (dblGram finSumFinEquiv J) := by
   obtain ⟨B, hB⟩ := Subgroup.mem_subgroupOf.1 hγ
   refine Subgroup.mem_subgroupOf.2 ⟨blkGL finSumFinEquiv (1, B), Units.ext ?_⟩

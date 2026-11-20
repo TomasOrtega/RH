@@ -11,6 +11,13 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory.LKMid.Northcott
 
+/- English proof (translation)
+Take `⟨q, hq, hqM⟩` from `hM`. Use `⟨q, hq, ?_⟩` and prove the remaining obligations. Establish `hv : Module.End.HasEigenvector (Matrix.toLin' M) w x` using `⟨Module.End.mem_eigenspace_iff.2 (by simpa [Matrix.toLin'_apply] using hMx), hx⟩`. Establish `h1` using `Module.End.aeval_apply_of_hasEigenvector (p := q.map (algebraMap ℤ ℂ)) hv`. Establish `h2 : Polynomial.aeval (Matrix.toLin' M) (q.map (algebraMap ℤ ℂ)) = 0`.
+
+Rewrite using `[Polynomial.aeval_map_algebraMap]`. Establish `e` using `Polynomial.aeval_algHom_apply ((Matrix.toLinAlgEquiv' : Matrix (Fin n) (Fin n) ℂ ≃ₐ[ℂ] _).toAlgHom.restrictScalars ℤ) M q`. Establish `e2 : Polynomial.aeval M q = 0` using `hqM`. Rewrite `e` using `[e2, map_zero]`. Conclude with `e`.
+
+Rewrite `h1` using `[h2, LinearMap.zero_apply]`. Establish `h3` using `(smul_eq_zero.1 h1.symm).resolve_right hx`. Rewrite `h3` using `[Polynomial.eval_map]`. Then use the resulting hypothesis.
+-/
 theorem isIntegral_eig {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (hM : IsIntegral ℤ M) {w : ℂ}
     {x : Fin n → ℂ} (hx : x ≠ 0) (hMx : M *ᵥ x = w • x) : IsIntegral ℤ w := by
   obtain ⟨q, hq, hqM⟩ := hM
@@ -29,6 +36,17 @@ theorem isIntegral_eig {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (hM : IsIntegr
   have h3 := (smul_eq_zero.1 h1.symm).resolve_right hx
   rwa [Polynomial.eval_map] at h3
 
+/- English proof (translation)
+Establish `hcpos : (0 : ℝ) < c` using `lt_of_le_of_ne (hw ▸ sq_nonneg _) (Ne.symm hc)`. Establish `hconj : IsIntegral ℤ (starRingEnd ℂ ((N : ℂ) * w⁻¹))` using `hI.map (starRingEnd ℂ).toIntAlgHom`. Establish `hprod` using `hI.mul hconj`. Establish `e : (N : ℂ) * w⁻¹ * starRingEnd ℂ ((N : ℂ) * w⁻¹) = (((N : ℚ) ^ 2 / c : ℚ) : ℂ)`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, norm_mul, norm_inv, mul_pow, inv_pow, hw, Complex.norm_natCast]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hprod` using `[e]`. Establish `hq : IsIntegral ℤ ((N : ℚ) ^ 2 / c)`. Use `(isIntegral_algHom_iff ((algebraMap ℚ ℂ).toIntAlgHom) (algebraMap ℚ ℂ).injective (x := (N : ℚ) ^ 2 / c)).1 ?_` and prove the remaining obligations.
+
+Simplify using `using hprod`. Take `⟨k, hk⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := ℤ) (K := ℚ)).1 hq`. Establish `hcq : (0 : ℚ) < c` using `by exact_mod_cast hcpos`. Establish `hNq : (0 : ℚ) < N` using `by exact_mod_cast hN`. Establish `hpos : (0 : ℚ) < (N : ℚ) ^ 2 / c` using `by positivity`.
+
+Establish `hk1 : (1 : ℚ) ≤ (N : ℚ) ^ 2 / c`. Rewrite `hpos`, the goal using `[← hk]`. Rewrite `hpos`, the goal using `[algebraMap_int_eq, eq_intCast]`. Establish `: (0 : ℤ) < k` using `by exact_mod_cast hpos`. Establish `: (1 : ℤ) ≤ k` using `this`.
+
+Conclude with `this` after adjusting the coercions. Establish `hcN : (c : ℚ) ≤ (N : ℚ) ^ 2` using `by rwa [le_div_iff₀ hcq, one_mul] at hk1`. Establish `hcN' : (c : ℝ) ≤ (N : ℝ) ^ 2` using `by exact_mod_cast hcN`. Rewrite `hcN'` using `[← hw]`. Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) (Nat.cast_nonneg _) two_ne_zero).1 hcN'`.
+-/
 theorem norm_le_of_isIntegral_inv (w : ℂ) (c : ℚ) (N : ℕ) (hN : 0 < N) (hw : ‖w‖ ^ 2 = (c : ℝ))
     (hc : (c : ℝ) ≠ 0) (hI : IsIntegral ℤ ((N : ℂ) * w⁻¹)) : ‖w‖ ≤ N := by
   have hcpos : (0 : ℝ) < c := lt_of_le_of_ne (hw ▸ sq_nonneg _) (Ne.symm hc)

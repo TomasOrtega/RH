@@ -23,6 +23,9 @@ open GlobalTheory.BCT.GlobLev GroundTheory.Automorphic
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ}
 
+/- English proof (translation)
+Rewrite using `[AdelicGLn.mem_integralFiniteGL_iff, ← map_inv]`. Simplify using `only [mem_KGL_iff_val, ← map_inv, GroundTheory.Global.mem_integralFiniteAdeles]`. Conclude with `⟨fun h u => ⟨fun i j => h.1 i j u, fun i j => h.2 i j u⟩, fun h => ⟨fun i j u => (h u).1 i j, fun i j u => (h u).2 i j⟩⟩`.
+-/
 theorem finPart_mem_integral_iff (k : finU E a) :
     finPart E a k ∈ AdelicGLn.integralFiniteGL E a ↔ ∀ u, cLoc u k.1 ∈ GlobalTheory.LFun.KGL u a := by
   rw [AdelicGLn.mem_integralFiniteGL_iff, ← map_inv]
@@ -30,6 +33,9 @@ theorem finPart_mem_integral_iff (k : finU E a) :
   exact ⟨fun h u => ⟨fun i j => h.1 i j u, fun i j => h.2 i j u⟩,
     fun h => ⟨fun i j u => (h u).1 i j, fun i j u => (h u).2 i j⟩⟩
 
+/- English proof (translation)
+Establish `hK` using `GlobalTheory.SmGL.SphCompletion.KO_completion (F := E) w a`. Establish `h : IsOpen (GlobalTheory.SplitWeil.KO (w.adicCompletion E) (Fin a) : Set (GL (Fin a) (w.adicCompletion E)))` using `GlobalTheory.SplitFlip.isOpen_KO`. Rewrite `h` using `[hK]`. Then use the resulting hypothesis.
+-/
 theorem isOpen_KGL (w : HeightOneSpectrum (𝓞 E)) (a : ℕ) :
     IsOpen (GlobalTheory.LFun.KGL w a : Set (GL (Fin a) (w.adicCompletion E))) := by
   have hK := GlobalTheory.SmGL.SphCompletion.KO_completion (F := E) w a
@@ -37,14 +43,25 @@ theorem isOpen_KGL (w : HeightOneSpectrum (𝓞 E)) (a : ℕ) :
     GlobalTheory.SplitFlip.isOpen_KO
   rwa [hK] at h
 
+/- English proof (translation)
+The claim follows from `Subgroup.isClosed_of_isOpen _ (isOpen_KGL w a)`.
+-/
 theorem isClosed_KGL (w : HeightOneSpectrum (𝓞 E)) (a : ℕ) :
     IsClosed (GlobalTheory.LFun.KGL w a : Set (GL (Fin a) (w.adicCompletion E))) :=
   Subgroup.isClosed_of_isOpen _ (isOpen_KGL w a)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => (mem_intU.1 h).2 w (fun h' => h' rfl), mem_intU_of hx⟩`.
+-/
 theorem mem_intU_iff_of_mem_locU {w : HeightOneSpectrum (𝓞 E)} {x : UA E a} (hx : x ∈ locU a w) :
     x ∈ intU a w ↔ cLoc w x ∈ GlobalTheory.LFun.KGL w a :=
   ⟨fun h => (mem_intU.1 h).2 w (fun h' => h' rfl), mem_intU_of hx⟩
 
+/- English proof (translation)
+Establish `e : (((intU a w).subgroupOf (locU a w)) : Set (locU a w)) = (fun x : locU a w => cLoc w x.1) ⁻¹' (GlobalTheory.LFun.KGL w a : Set _)`. Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, Subgroup.mem_subgroupOf, Set.mem_preimage]`. Conclude with `mem_intU_iff_of_mem_locU x.2`. Rewrite using `[e]`.
+
+Conclude with `(isOpen_KGL w a).preimage ((continuous_cLoc w).comp continuous_subtype_val)`.
+-/
 theorem isOpen_intU (w : HeightOneSpectrum (𝓞 E)) :
     IsOpen (((intU a w).subgroupOf (locU a w)) : Set (locU a w)) := by
   have e : (((intU a w).subgroupOf (locU a w)) : Set (locU a w)) =
@@ -55,6 +72,21 @@ theorem isOpen_intU (w : HeightOneSpectrum (𝓞 E)) :
   rw [e]
   exact (isOpen_KGL w a).preimage ((continuous_cLoc w).comp continuous_subtype_val)
 
+/- English proof (translation)
+Use `haveI : ∀ u : HeightOneSpectrum (𝓞 E), T2Space (GL (Fin a) (u.adicCompletion E)) := fun _ => Units.isEmbedding_embedProduct.t2Space`. Set `T : Set (finU E a)` to `{x | x.1 ∈ intU a w}`. Establish `hK0 : IsCompact {x : finU E a | ((x : UA E a) : GA E a) ∈ finGL E a '' (AdelicGLn.integralFiniteGL E a : Set _)}` using `isClosedEmbedding_finU.isCompact_preimage ((AdelicGLn.isCompact_integralFiniteGL E a).image continuous_finGL_ad)`. Establish `hTsub : T ⊆ {x : finU E a | ((x : UA E a) : GA E a) ∈ finGL E a '' (AdelicGLn.integralFiniteGL E a : Set _)}`. Introduce `x hx`.
+
+Establish `hx'` using `mem_intU.1 hx`. Establish `hall : ∀ u, cLoc u x.1 ∈ GlobalTheory.LFun.KGL u a`. Introduce `u`. Distinguish the cases in `hu : Apart u w`. Rewrite using `[((GlobalTheory.Cong.LevelExt.mem_locU_iff x.1).1 hx'.1).2 u hu]`.
+
+Conclude with `one_mem _`. Conclude with `hx'.2 u hu`. Use `⟨finPart E a x, (finPart_mem_integral_iff x).2 hall, ?_⟩` and prove the remaining obligations. Establish `h1 : Matrix.GeneralLinearGroup.map (pInf E) ((x : UA E a) : GA E a) = 1` using `x.2`. Conclude with `ga_ext (by rw [pInf_finGL, h1]) (by rw [pFin_finGL]; rfl)`.
+
+Establish `hTe : T = (⋂ u, ⋂ (_ : Apart u w), {x : finU E a | cLoc u x.1 = 1}) ∩ ⋂ u, ⋂ (_ : ¬ Apart u w), {x : finU E a | cLoc u x.1 ∈ GlobalTheory.LFun.KGL u a}`. Use extensionality with `x`. Simplify using `only [T, Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter, mem_intU, GlobalTheory.Cong.LevelExt.mem_locU_iff]`. Conclude with `⟨fun h => ⟨h.1.2, h.2⟩, fun h => ⟨⟨x.2, h.1⟩, h.2⟩⟩`. Establish `hTc : IsClosed T`.
+
+Rewrite using `[hTe]`. Use `(isClosed_iInter fun u => isClosed_iInter fun _ => ?_).inter (isClosed_iInter fun u => isClosed_iInter fun _ => ?_)` and prove the remaining obligations. Conclude with `isClosed_eq ((continuous_cLoc u).comp continuous_subtype_val) continuous_const`. Conclude with `(isClosed_KGL u a).preimage ((continuous_cLoc u).comp continuous_subtype_val)`. Establish `hT` using `(hK0.of_isClosed_subset hTc hTsub).image continuous_subtype_val`.
+
+Establish `e : Subtype.val '' T = (intU a w : Set (UA E a))`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hx`.
+
+Introduce `hy`. Conclude with `⟨⟨y, ((GlobalTheory.Cong.LevelExt.mem_locU_iff y).1 (intU_le_locU w hy)).1⟩, hy, rfl⟩`. Rewrite `hT` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem isCompact_intU (w : HeightOneSpectrum (𝓞 E)) :
     IsCompact (intU a w : Set (UA E a)) := by
   haveI : ∀ u : HeightOneSpectrum (𝓞 E), T2Space (GL (Fin a) (u.adicCompletion E)) :=
@@ -98,6 +130,9 @@ theorem isCompact_intU (w : HeightOneSpectrum (𝓞 E)) :
       exact ⟨⟨y, ((GlobalTheory.Cong.LevelExt.mem_locU_iff y).1 (intU_le_locU w hy)).1⟩, hy, rfl⟩
   rwa [e] at hT
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ w` and use `⟨isCompact_intU w, isOpen_intU w⟩`.
+-/
 theorem intU_isCompact_isOpen : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ) (w : HeightOneSpectrum (𝓞 E)), IsCompact (GlobalTheory.Cong.AdaptLev.intU a w : Set (UA E a)) ∧ IsOpen (((GlobalTheory.Cong.AdaptLev.intU a w).subgroupOf (locU a w)) : Set (locU a w)) :=
   fun _ _ _ _ _ w => ⟨isCompact_intU w, isOpen_intU w⟩
 

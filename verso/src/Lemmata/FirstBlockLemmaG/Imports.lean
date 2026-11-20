@@ -2,6 +2,11 @@ import Mathlib
 
 namespace Bl.FirstBlockLemmaG
 
+/- English proof (translation)
+Introduce `O _ _ a m ha hm`. Assume the negation of the conclusion as `h`. Establish `h1 : a - m ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal (a - m)).mpr (mem_nonunits_iff.mpr h)`. Establish `h2 : a ∈ IsLocalRing.maximalIdeal O`. Establish `h3` using `Ideal.add_mem _ h1 hm`.
+
+Rewrite `h3` using `[sub_add_cancel]`. Then use the resulting hypothesis. Conclude with `(mem_nonunits_iff.mp ((IsLocalRing.mem_maximalIdeal a).mp h2)) ha`.
+-/
 theorem goal1 :
   ∀ {O : Type} [inst : CommRing.{0} O] [inst_1 : IsLocalRing.{0} O] {a m : O},
   IsUnit.{0} a → Membership.mem.{0, 0} (IsLocalRing.maximalIdeal.{0} O) m → IsUnit.{0} (HSub.hSub.{0, 0, 0} a m) := by

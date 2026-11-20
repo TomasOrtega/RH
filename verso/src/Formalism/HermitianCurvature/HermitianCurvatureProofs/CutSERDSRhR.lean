@@ -18,12 +18,33 @@ section pair
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fst_mul_apply (p q : Pr V) (v : V) : (p * q).1 v = p.1 (q.1 v) := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fst_add_apply (p q : Pr V) (v : V) : (p + q).1 v = p.1 v + q.1 v := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fst_sub_apply (p q : Pr V) (v : V) : (p - q).1 v = p.1 v - q.1 v := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fst_neg_apply (p : Pr V) (v : V) : (-p).1 v = -(p.1 v) := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fst_zero_apply (v : V) : (0 : Pr V).1 v = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fst_algebraMap_apply (w : ℂ) (v : V) : (algebraMap ℂ (Pr V) w).1 v = w • v := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fst_mkP (a a' : Module.End ℂ V) : (mkP a a').1 = a := rfl
 
 end pair
@@ -32,6 +53,9 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
   {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
+/- English proof (translation)
+The claim follows from `| [], Ψ => by funext c g simp only [List.map_nil, List.prod_nil, one_smul] rfl | a :: ls, Ψ => by funext c g rw [List.map_cons, List.prod_cons, fst_mul_apply, hL.2.2.2.2.1 a, fst_mkP, X.op_apply, list_cb_apply X L hL ls Ψ] simp only [crd, opL, cbOp, List.map_cons, List.prod_cons, …`.
+-/
 theorem list_cb_apply (X : ActualOps k r z z' π π') (L : R.LevelData (Pr (RadSp k r z z' π π')) r)
     (hL : IsActualLevel X L) : ∀ (ls : List (Fin r)) (Ψ : RadSp k r z z' π π'),
     ((((ls.map L.cb).prod).1 Ψ : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) =
@@ -46,6 +70,9 @@ theorem list_cb_apply (X : ActualOps k r z z' π π') (L : R.LevelData (Pr (RadS
       list_cb_apply X L hL ls Ψ]
     simp only [crd, opL, cbOp, List.map_cons, List.prod_cons, mul_smul]
 
+/- English proof (translation)
+The claim follows from `| [], Ψ => by funext c g simp only [List.map_nil, List.prod_nil, one_smul] rfl | a :: ls, Ψ => by funext c g rw [List.map_cons, List.prod_cons, fst_mul_apply, hL.2.2.1 a, fst_mkP, X.op_apply, list_c_apply X L hL ls Ψ] simp only [crd, opL, cOp, List.map_cons, List.prod_cons, mul_s …`.
+-/
 theorem list_c_apply (X : ActualOps k r z z' π π') (L : R.LevelData (Pr (RadSp k r z z' π π')) r)
     (hL : IsActualLevel X L) : ∀ (ls : List (Fin r)) (Ψ : RadSp k r z z' π π'),
     ((((ls.map L.c).prod).1 Ψ : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) =
@@ -60,6 +87,11 @@ theorem list_c_apply (X : ActualOps k r z z' π π') (L : R.LevelData (Pr (RadSp
       list_c_apply X L hL ls Ψ]
     simp only [crd, opL, cOp, List.map_cons, List.prod_cons, mul_smul]
 
+/- English proof (translation)
+Establish `e : L.Drb = ((List.finRange r).map L.cb).prod`. Rewrite using `[R.LevelData.Drb, List.ofFn_eq_map]`. Rewrite using `[e, list_cb_apply X L hL]`. Use function extensionality and compare the values at `c g`. Simplify using `only [CutMP.dMul, CutMP.drbF, map_prod]`.
+
+Use `congr 1`.
+-/
 theorem drb_apply (X : ActualOps k r z z' π π') (L : R.LevelData (Pr (RadSp k r z z' π π')) r)
     (hL : IsActualLevel X L) (Ψ : RadSp k r z z' π π') :
     (((L.Drb).1 Ψ : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) =
@@ -71,6 +103,11 @@ theorem drb_apply (X : ActualOps k r z z' π π') (L : R.LevelData (Pr (RadSp k 
   simp only [CutMP.dMul, CutMP.drbF, map_prod]
   congr 1
 
+/- English proof (translation)
+Establish `e : L.Dr = ((List.finRange r).map L.c).prod`. Rewrite using `[R.LevelData.Dr, List.ofFn_eq_map]`. Rewrite using `[e, list_c_apply X L hL]`. Use function extensionality and compare the values at `c g`. Simplify using `only [CutMP.dMul, CutMP.drF]`.
+
+Use `congr 1`.
+-/
 theorem dr_apply (X : ActualOps k r z z' π π') (L : R.LevelData (Pr (RadSp k r z z' π π')) r)
     (hL : IsActualLevel X L) (Ψ : RadSp k r z z' π π') :
     (((L.Dr).1 Ψ : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) =
@@ -82,6 +119,9 @@ theorem dr_apply (X : ActualOps k r z z' π π') (L : R.LevelData (Pr (RadSp k r
   simp only [CutMP.dMul, CutMP.drF]
   congr 1
 
+/- English proof (translation)
+Rewrite using `[hQQ Y, Matrix.smul_apply, ActualOps.QQ, Matrix.of_apply, Qx8.smul_mkP]`. Both sides reduce to the same expression.
+-/
 theorem st_fst {P : M.Par} {z z' : Fin (2 * P.r + P.k + 1) → ℂ} {π : Mx P.k P.r → (Wp →L[ℂ] Wp)}
     {π' : Mx P.k P.r → (Wq →L[ℂ] Wq)} (X : ActualOps P.k P.r z z' π π')
     (st : Fr.Start (Pr (RadSp P.k P.r z z' π π'))) (l0 : ℕ) (hQQ : ∀ Y, st.QQ Y = M.sgn P l0 • X.QQ Y)
@@ -89,6 +129,9 @@ theorem st_fst {P : M.Par} {z z' : Fin (2 * P.r + P.k + 1) → ℂ} {π : Mx P.k
   rw [hQQ Y, Matrix.smul_apply, ActualOps.QQ, Matrix.of_apply, Qx8.smul_mkP]
   rfl
 
+/- English proof (translation)
+Establish `hs` using `Qx8.slice_smooth Ψ.2 hx.1`. Conclude with `(transfer_linear_local _ k r z z' (Fin.last r) (Qx8.Dp k r z z') Y a b _ _ 0 (Qx8.Dp_open k r z z') hs (Qx8.smoothLev_congr (Qx8.Dp_open k r z z') hs (fun y hy => (hF y hy).symm)) x.2 ⟨hx.2.1, hx.2.2⟩).2 hF`.
+-/
 theorem t_slice_congr (X : ActualOps k r z z' π π') (Y : ℂ) (a b : Fin 2) (Ψ : RadSp k r z z' π π')
     (F : Fn k r (Wq →L[ℂ] Wp)) (x : (Fin r → ℂ) × Mx k r) (hx : x ∈ DomR k r z z')
     (hF : ∀ y ∈ Glev k r (Fin.last r) ∩ Qx8.Dp k r z z', (Ψ : Fn k r (Wq →L[ℂ] Wp)) x.1 y = F x.1 y) :
@@ -102,6 +145,19 @@ theorem t_slice_congr (X : ActualOps k r z z' π π') (Y : ℂ) (a b : Fin 2) (�
 end RhRPf
 
 open RhRPf in
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 hD hl1 hl2 hr Y hY`. Take `⟨_, _, hL, hQQ, -⟩` from `hD`. Use `⟨M.sgn P l0, ?_⟩` and prove the remaining obligations. Introduce `J hJ Φ hΦ x hx`. Establish `eT : L.Tprod Y = Formalism.FourierDecayAlt.P.JCx2.rma_pref L Y P.r`.
+
+Rewrite using `[Formalism.FourierDecayAlt.P.TLB.rma_pref_take, ← Formalism.FourierDecayAlt.P.TLB.tprod_take_all]`. Establish `hch` using `PBN.radSide_chain X L hL Y P.r le_rfl`. Establish `hA : ∀ y ∈ Glev P.k P.r (Fin.last P.r) ∩ Qx8.Dp P.k P.r z z', (((L.Ar Y).1 Φ : RadSp P.k P.r z z' π π') : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 y = crd (Q.cmp (vAB P.r Y P.r) 0) (resG P.k P.r (Fin.last P.r) J) x.1 y`. Introduce `y hy`. Establish `hxy : (x.1, y) ∈ DomR P.k P.r z z'` using `⟨hx.1, hy.1, hy.2⟩`.
+
+Establish `h1` using `(hch Φ (x.1, y) hxy).1`. Rewrite `h1` using `[← eT]`. Rewrite using `[R.LevelData.Ar, h1]`. Simplify using `only [crd, Q.cmp, if_true]`. Conclude with `(PBN.vAB_loc Y P.r _ _ (fun c' hc' => hΦ (c', y) ⟨hc', hy.1, hy.2⟩) x.1 hx.1).1`.
+
+Establish `hB : ∀ y ∈ Glev P.k P.r (Fin.last P.r) ∩ Qx8.Dp P.k P.r z z', (((L.Br Y).1 Φ : RadSp P.k P.r z z' π π') : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 y = crd (Q.cmp (vAB P.r Y P.r) 1) (resG P.k P.r (Fin.last P.r) J) x.1 y`. Introduce `y hy`. Establish `hxy : (x.1, y) ∈ DomR P.k P.r z z'` using `⟨hx.1, hy.1, hy.2⟩`. Establish `h1` using `(hch Φ (x.1, y) hxy).2`. Rewrite `h1` using `[← eT]`.
+
+Rewrite using `[R.LevelData.Br, h1]`. Simplify using `only [crd, Q.cmp, if_neg (show (1 : Fin 2) ≠ 0 by decide)]`. Conclude with `(PBN.vAB_loc Y P.r _ _ (fun c' hc' => hΦ (c', y) ⟨hc', hy.1, hy.2⟩) x.1 hx.1).2`. Establish `e1 : (((RhR L st Y).1 Φ : RadSp P.k P.r z z' π π') : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2 = (((L.Drb).1 ((st.QQ Y 1 0).1 ((L.Ar Y).1 Φ) + (st.QQ Y 1 1).1 ((L.Br Y).1 Φ)) : RadSp P.k P.r z z' π π') : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2` using `rfl`. Rewrite using `[e1, drb_apply X L hL, st_fst X st l0 hQQ, st_fst X st l0 hQQ]`.
+
+Simplify using `only [CutMP.dMul, CutMP.rhGrp, Submodule.coe_add, Pi.add_apply, LinearMap.smul_apply, Submodule.coe_smul, Pi.smul_apply, QL, grp]`. Rewrite using `[X.t_apply Y 1 0 _ x hx, X.t_apply Y 1 1 _ x hx, t_slice_congr X Y 1 0 _ _ x hx hA, t_slice_congr X Y 1 1 _ _ x hx hB]`. Simplify using `only [smul_add, smul_comm (CutMP.drbF P.r x.1) (M.sgn P l0)]`.
+-/
 theorem spectral_right_rho_action : RDSRhR := by
   intro Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 hD hl1 hl2 hr Y hY
   obtain ⟨_, _, hL, hQQ, -⟩ := hD

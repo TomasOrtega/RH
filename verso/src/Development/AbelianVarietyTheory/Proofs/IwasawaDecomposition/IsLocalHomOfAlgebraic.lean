@@ -17,6 +17,11 @@ section Lin
 
 variable {K : Type} [Field K] {m n : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `i using WellFoundedLT.induction with`. Consider the case `ind i ih`. Introduce `k hk`. Establish `e` using `h i k`. Rewrite using `[h₁ i k hk, Finset.sum_eq_single i (fun j _ hj => by`.
+
+Break down `lt_or_gt_of_ne hj with hj | hj` into its components or cases. Rewrite using `[ih j hj k (hj.trans hk), mul_zero]`. Rewrite `e` using `[h₂ i j hj, zero_mul]) (by simp)]`. Conclude with `(mul_eq_zero.1 e.symm).resolve_left (hd i)`.
+-/
 theorem tri_of_mul {T₁ T₂ M : Fin m → Fin m → K} (h₁ : ∀ i k, i < k → T₁ i k = 0) (h₂ : ∀ i k, i < k → T₂ i k = 0)
     (hd : ∀ i, T₂ i i ≠ 0) (h : ∀ i k, T₁ i k = ∑ j, T₂ i j * M j k) (i : Fin m) : ∀ k, i < k → M i k = 0 := by
   induction i using WellFoundedLT.induction with
@@ -29,6 +34,9 @@ theorem tri_of_mul {T₁ T₂ M : Fin m → Fin m → K} (h₁ : ∀ i k, i < k 
       · rw [h₂ i j hj, zero_mul]) (by simp)] at e
     exact (mul_eq_zero.1 e.symm).resolve_left (hd i)
 
+/- English proof (translation)
+The claim follows from `Finset.sum_eq_single i (fun j _ hj => by rcases lt_or_gt_of_ne hj with hj | hj · rw [hM j i hj, mul_zero] · rw [h₂ i j hj, zero_mul]) (by simp)`.
+-/
 theorem diag_of_mul {T₂ M : Fin m → Fin m → K} (h₂ : ∀ i k, i < k → T₂ i k = 0) (hM : ∀ i k, i < k → M i k = 0)
     (i : Fin m) : ∑ j, T₂ i j * M j i = T₂ i i * M i i :=
   Finset.sum_eq_single i (fun j _ hj => by
@@ -36,6 +44,13 @@ theorem diag_of_mul {T₂ M : Fin m → Fin m → K} (h₂ : ∀ i k, i < k → 
     · rw [hM j i hj, mul_zero]
     · rw [h₂ i j hj, zero_mul]) (by simp)
 
+/- English proof (translation)
+Establish `hdet : IsUnit (Matrix.of T).det`. Rewrite using `[Matrix.det_of_isLowerTriangular (Matrix.of T) (fun i k hk => h i k hk)]`. Conclude with `(Finset.prod_ne_zero_iff.2 fun i _ => hd i).isUnit`. Establish `e1 : Matrix.vecMul (Matrix.vecMul b (Matrix.of T)⁻¹) (Matrix.of T) = b`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hdet, Matrix.vecMul_one]`.
+
+Establish `e2` using `hg (Matrix.vecMul b (Matrix.of T)⁻¹) (by`. Rewrite using `[← hb]`. Use `conv_rhs => rw [← e1]`. Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`. Use the proof step `rfl)`. Rewrite using `[← e1, e2, Matrix.zero_vecMul]`.
+-/
 theorem indep_of_tri {T : Fin m → Fin m → K} (h : ∀ i k, i < k → T i k = 0) (hd : ∀ i, T i i ≠ 0)
     {e : Fin m → Fin n → K} (hg : ∀ a : Fin m → K, ∑ i, a i • ∑ j, T i j • e j = 0 → a = 0)
     {b : Fin m → K} (hb : ∑ j, b j • e j = 0) : b = 0 := by
@@ -63,6 +78,23 @@ open GlobalTheory.LieLocBasis GlobalTheory.ShFam.EigLoc
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
 
+/- English proof (translation)
+Take `⟨n, xc, hx⟩` from `exists_chart Z.t x`. Use `choose e₁ he₁ using fun i => vec_exists hx _ (f₁.tan τ i)`. Use `choose e₂ he₂ using fun i => vec_exists hx _ (f₂.tan τ i)`. Use `choose M hM using fun i => (f₁.basis τ _ (f₂.tan τ i) (f₂.eig τ i)).exists`. Establish `hM' : ∀ i, e₂ i = ∑ j, M i j • e₁ j` using `fun i => by`.
+
+Use `hM i` as an intermediate fact. Rewrite `this` using `[he₂ i, show f₁.v τ = fun j => vec Z.t x xc (e₁ j) from funext he₁]`. Conclude with `(comb_iff hx _ _ _).1 this`. Use `⟨M, fun {k} _ ψ φ' x' g t₁ t₂ h₁ h₂ => ?_⟩` and prove the remaining obligations. Take `⟨rfl, rfl, h₁⟩` from `h₁`.
+
+Take `⟨-, -, h₂⟩` from `h₂`. Use `choose T₁ a₁ b₁ c₁ using h₁ τ`. Use `choose T₂ a₂ b₂ c₂ using h₂ τ`. Use `letI : Algebra R k := ψ.toAlgebra`. Take `⟨xc', hx', hv⟩` from `vec_bc (S' := k) hx`.
+
+Express the relevant statement in the definitionally equal form `∀ cc, vec Z.t (spMap ψ ≫ x) xc' (ψ ∘ cc) = spMap (dualMap ψ) ≫ vec Z.t x xc cc at hv`. Use `choose G hG using fun i => vec_exists hx' _ (g.tan τ i)`. Establish `d₁ : ∀ i, G i = ∑ j, T₁ i j • (ψ ∘ e₁ j)` using `fun i => by`. Use `c₁ i` as an intermediate fact. Simplify using `only [he₁, ← hv] at this`.
+
+Rewrite `this` using `[hG i]`. Conclude with `(comb_iff hx' _ _ _).1 this`. Establish `d₂ : ∀ i, G i = ∑ j, T₂ i j • (ψ ∘ e₂ j)` using `fun i => by`. Use `c₂ i` as an intermediate fact. Simplify using `only [he₂, ← hv] at this`.
+
+Rewrite `this` using `[hG i]`. Conclude with `(comb_iff hx' _ _ _).1 this`. Establish `hind : ∀ a : Fin (Dw.mult τ) → k, ∑ i, a i • G i = 0 → a = 0` using `fun a ha => by`. Establish `hb` using `g.basis τ _ (vec_tan hx' 0) ((vec_eig_iff hx' _ _).2 (Submodule.zero_mem _))`. Rewrite `hb` using `[show g.v τ = fun j => vec Z.t _ xc' (G j) from funext hG]`.
+
+Conclude with `hb.unique ((comb_iff hx' _ _ _).2 ha.symm) ((comb_iff hx' _ _ _).2 (by simp))`. Use `⟨T₁, T₂, a₁, a₂, b₁, b₂, fun i k' => ?_⟩` and prove the remaining obligations. Use `indep_of_tri b₁ (fun i => a₁ i ▸ (t₁ τ i).ne_zero) (e := fun j => ψ ∘ e₁ j) (fun a ha => hind a (by simpa only [d₁] using ha)) (b := fun k' => T₁ i k' - ∑ j, T₂ i j * ψ (M j k')) (by` as an intermediate fact. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[← d₁, d₂, sub_eq_zero]`.
+
+Use function extensionality and compare the values at `q`. Simplify using `only [hM', Finset.sum_apply, Pi.smul_apply, Function.comp_apply, smul_eq_mul, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `Finset.sum_comm)`. Conclude with `sub_eq_zero.1 (congrFun this k')`.
+-/
 theorem exists_matrix {R : Type} [CommRing R] [IsLocalRing R] {φ : c.F →+* R} {x : Sp R ⟶ Z.X}
     (f₁ f₂ : EigFrame Z φ x) (τ : E →+* ℂ) :
     ∃ M : Fin (Dw.mult τ) → Fin (Dw.mult τ) → R, ∀ {k : Type} [Field k] (ψ : R →+* k) {φ' : c.F →+* k}
@@ -113,6 +145,11 @@ theorem exists_matrix {R : Type} [CommRing R] [IsLocalRing R] {φ : c.F →+* R}
       exact Finset.sum_comm)
   exact sub_eq_zero.1 (congrFun this k')
 
+/- English proof (translation)
+Take `rfl : φ₁ = φ₂` from `RingHom.ext fun a => hι ((RingHom.congr_fun h₁.2.1 a).symm.trans (RingHom.congr_fun h₂.2.1 a))`. Use `choose M hM using exists_matrix f₁ f₂`. Establish `hT : ∀ τ i k, i < k → M τ i k = 0` using `fun τ i k hk => by`. Take `⟨T₁, T₂, -, a₂, b₁, b₂, h⟩` from `hM τ ι f₀ t₁ t₂ h₁ h₂`. Conclude with `hι ((tri_of_mul (M := fun i k => ι (M τ i k)) b₁ b₂ (fun i => a₂ i ▸ (t₂ τ i).ne_zero) h i k hk).trans (map_zero ι).symm)`.
+
+Use `⟨fun τ i => M τ i i, fun {k} _ ψ φ' x' g s₁ s₂ g₁ g₂ τ i => ?_⟩` and prove the remaining obligations. Take `⟨T₁, T₂, a₁, a₂, -, b₂, h⟩` from `hM τ ψ g s₁ s₂ g₁ g₂`. Rewrite using `[← a₁, ← a₂, h]`. Conclude with `diag_of_mul (M := fun i k => ψ (M τ i k)) b₂ (fun i k hk => by simp only [hT τ i k hk, map_zero]) i`.
+-/
 theorem exists_ratio {R : Type} [CommRing R] [IsLocalRing R] {φ₁ φ₂ : c.F →+* R} {x : Sp R ⟶ Z.X}
     (f₁ : EigFrame Z φ₁ x) (f₂ : EigFrame Z φ₂ x) {K : Type} [Field K] {ι : R →+* K} (hι : Function.Injective ι)
     {φ₀ : c.F →+* K} {x₀ : Sp K ⟶ Z.X} {f₀ : EigFrame Z φ₀ x₀} {t₁ t₂ : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Kˣ}
@@ -131,6 +168,11 @@ theorem exists_ratio {R : Type} [CommRing R] [IsLocalRing R] {φ₁ φ₂ : c.F 
   rw [← a₁, ← a₂, h]
   exact diag_of_mul (M := fun i k => ψ (M τ i k)) b₂ (fun i k hk => by simp only [hT τ i k hk, map_zero]) i
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `exists_ratio f₁ f₂ hι h₁ h₂`. Take `⟨v, hv⟩` from `exists_ratio f₂ f₁ hι h₂ h₁`. Establish `huv : ∀ τ i, u τ i * v τ i = 1` using `fun τ i => hι (by`. Establish `a` using `hu ι f₀ _ _ h₁ h₂ τ i`. Establish `b` using `hv ι f₀ _ _ h₂ h₁ τ i`.
+
+Rewrite `b` using `[a, mul_assoc]`. Rewrite using `[map_mul, map_one]`. Conclude with `(mul_left_cancel₀ (t₂ τ i).ne_zero ((mul_one _).trans b)).symm)`. Conclude with `⟨fun τ i => Units.mkOfMulEqOne _ _ (huv τ i), fun ψ _ _ g s₁ s₂ g₁ g₂ τ i => Units.ext (hu ψ g s₁ s₂ g₁ g₂ τ i)⟩`.
+-/
 theorem exists_unit_ratio {R : Type} [CommRing R] [IsLocalRing R] {φ₁ φ₂ : c.F →+* R} {x : Sp R ⟶ Z.X}
     (f₁ : EigFrame Z φ₁ x) (f₂ : EigFrame Z φ₂ x) {K : Type} [Field K] {ι : R →+* K} (hι : Function.Injective ι)
     {φ₀ : c.F →+* K} {x₀ : Sp K ⟶ Z.X} {f₀ : EigFrame Z φ₀ x₀} {t₁ t₂ : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Kˣ}
@@ -151,6 +193,13 @@ theorem exists_unit_ratio {R : Type} [CommRing R] [IsLocalRing R] {φ₁ φ₂ :
 
 end Frames
 
+/- English proof (translation)
+Use `letI : Algebra ℚ R := (φ.comp (algebraMap ℚ F)).toAlgebra`. Set `ψ' : R →ₐ[ℚ] k` to `{ ψ with commutes' := fun q => by simp }`. Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Establish `h0 : ψ a ≠ 0` using `ha.ne_zero`. Establish `hi : IsIntegral ℚ (ψ a)` using `(Algebra.IsAlgebraic.isAlgebraic _).isIntegral`.
+
+Establish `hc` using `minpoly.coeff_zero_ne_zero hi h0`. Establish `h1 : ψ (Polynomial.aeval a (minpoly ℚ (ψ a))) = 0` using `(Polynomial.aeval_algHom_apply ψ' a _).symm.trans (minpoly.aeval ℚ (ψ a))`. Establish `h2 : ¬ IsUnit (Polynomial.aeval a (minpoly ℚ (ψ a)))` using `fun h => (h.map ψ).ne_zero h1`. Assume the negation of the conclusion as `hna`. Rewrite `h2` using `[← Polynomial.X_mul_divX_add (minpoly ℚ (ψ a)), map_add, map_mul, Polynomial.aeval_X, Polynomial.aeval_C]`.
+
+Establish `h3 : algebraMap ℚ R ((minpoly ℚ (ψ a)).coeff 0) ∈ IsLocalRing.maximalIdeal R`. Use `Ideal.sub_mem (IsLocalRing.maximalIdeal R) h2 (Ideal.mul_mem_right (Polynomial.aeval a (minpoly ℚ (ψ a)).divX) _ hna)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_left]`. Then use the resulting hypothesis. Conclude with `h3 (hc.isUnit.map _)`.
+-/
 theorem isLocalHom_of_algebraic {R F k : Type} [CommRing R] [IsLocalRing R] [Field F] [CharZero F] (φ : F →+* R)
     [Field k] [CharZero k] [Algebra.IsAlgebraic ℚ k] (ψ : R →+* k) : IsLocalHom ψ := by
   letI : Algebra ℚ R := (φ.comp (algebraMap ℚ F)).toAlgebra
@@ -170,6 +219,9 @@ theorem isLocalHom_of_algebraic {R F k : Type} [CommRing R] [IsLocalRing R] [Fie
     rwa [add_sub_cancel_left] at this
   exact h3 (hc.isUnit.map _)
 
+/- English proof (translation)
+Use `(SpecToEquivOfLocalRing X (.of k)).symm.injective (a₁ := ⟨y, CommRingCat.ofHom ψ, h⟩) (a₂ := ⟨y', CommRingCat.ofHom ψ', h'⟩) e` as an intermediate fact. Take `⟨rfl, e'⟩` from `Sigma.mk.inj_iff.1 this`. Conclude with `⟨rfl, heq_of_eq (congrArg (fun f => f.1.hom) (eq_of_heq e'))⟩`.
+-/
 theorem stalk_ext {X : Scheme.{0}} {k : Type} [Field k] {y y' : X} {ψ : X.presheaf.stalk y →+* k}
     {ψ' : X.presheaf.stalk y' →+* k} (h : IsLocalHom ψ) (h' : IsLocalHom ψ')
     (e : spMap ψ ≫ X.fromSpecStalk y = spMap ψ' ≫ X.fromSpecStalk y') : y = y' ∧ HEq ψ ψ' := by
@@ -186,6 +238,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {k : Type} [Field k] {φ : c.F →+* k} {x : Sp k ⟶ Z.X} {p : Sp k ⟶ Y.Y.X} {g : EigFrame Z φ x}
   {n : Letter Dw → ℤ} {σ : Y.Y.Fn}
 
+/- English proof (translation)
+Take `⟨y, ψ, φ₁, f, t, t', h₁, h₂, h₃⟩` from `h`. Take `⟨φ₂, f₂, t₂, hT, ht⟩` from `Y.gr_spec y`. Take `⟨u, hu⟩` from `exists_unit_ratio f f₂ (IsFractionRing.injective (Y.Y.X.presheaf.stalk y) Y.Y.X.functionField) h₂ hT`. Establish `ht' : ∀ τ i, (Y.gr τ i).IsEqn y (t τ i)` using `fun τ i => (ht τ i).iff_unitAt.2 ⟨u τ i, (u τ i).isUnit, by`. Rewrite using `[hu _ _ _ _ h₂ hT τ i, Units.val_mul, mul_div_cancel_left₀ _ (Units.ne_zero _)]`.
+
+Use the proof step `rfl⟩`. Establish `hE : ∀ s : Finset (Letter Dw), (∑ z ∈ s, n z • Y.gr z.1 z.2).IsEqn y (∏ z ∈ s, t z.1 z.2 ^ n z)` using `fun s => by classical`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using CartierDiv.isEqn_zero y`. Consider the case `insert z s hz ih => rw [Finset.sum_insert hz, Finset.prod_insert hz]`.
+
+Conclude with `((ht' _ _).zsmul _).add ih`. Take `⟨r, hr⟩` from `(hE Finset.univ).regularAt_iff.1 (hσ y)`. Conclude with `⟨_, y, ψ, φ₁, f, t, t', r, h₁, h₂, h₃, hr, rfl⟩`.
+-/
 theorem exists_isCoord (hσ : ∀ y, (divOf Y n).RegularAt y σ) (h : Y.Carries p g) : ∃ a, IsCoord Y p g n σ a := by
   obtain ⟨y, ψ, φ₁, f, t, t', h₁, h₂, h₃⟩ := h
   obtain ⟨φ₂, f₂, t₂, hT, ht⟩ := Y.gr_spec y

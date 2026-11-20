@@ -25,18 +25,30 @@ section HostLemmas
 
 variable {R : Ranks} (H : Host R)
 
+/- English proof (translation)
+Unfold `Host.sigmaOf`. Conclude with `map_mul _ g h`.
+-/
 theorem sigmaOf_mul (g h : R.GG) : H.sigmaOf (g * h) = H.sigmaOf g * H.sigmaOf h := by
   unfold Host.sigmaOf
   exact map_mul _ g h
 
+/- English proof (translation)
+Unfold `Host.sigmaOf`. Conclude with `map_one _`.
+-/
 theorem sigmaOf_one : H.sigmaOf 1 = 1 := by
   unfold Host.sigmaOf
   exact map_one _
 
+/- English proof (translation)
+Unfold `Host.sigmaOf`. Conclude with `MulEquiv.apply_symm_apply _ _`.
+-/
 theorem galE_sigmaOf (g : R.GG) : H.galE (H.sigmaOf g) = g := by
   unfold Host.sigmaOf
   exact MulEquiv.apply_symm_apply _ _
 
+/- English proof (translation)
+Use `H.galE_bE (H.sigmaOf g)` as an intermediate fact. Rewrite `this` using `[galE_sigmaOf, h]`. Unfold `Host.sqrtMinusD`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem sigmaOf_sqrt_neg (g : R.GG) (h : g.1.2 = -1) : H.sigmaOf g H.sqrtMinusD = -H.sqrtMinusD := by
   have := H.galE_bE (H.sigmaOf g)
   rw [galE_sigmaOf, h] at this
@@ -44,6 +56,9 @@ theorem sigmaOf_sqrt_neg (g : R.GG) (h : g.1.2 = -1) : H.sigmaOf g H.sqrtMinusD 
   rw [this]
   simp
 
+/- English proof (translation)
+Use `H.galE_bE (H.sigmaOf g)` as an intermediate fact. Rewrite `this` using `[galE_sigmaOf, h]`. Unfold `Host.sqrtMinusD`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem sigmaOf_sqrt_pos (g : R.GG) (h : g.1.2 = 1) : H.sigmaOf g H.sqrtMinusD = H.sqrtMinusD := by
   have := H.galE_bE (H.sigmaOf g)
   rw [galE_sigmaOf, h] at this
@@ -51,9 +66,15 @@ theorem sigmaOf_sqrt_pos (g : R.GG) (h : g.1.2 = 1) : H.sigmaOf g H.sqrtMinusD =
   rw [this]
   simp
 
+/- English proof (translation)
+Conclude with `H.sqd_sq`.
+-/
 theorem sqrt_sq : H.sqrtMinusD ^ 2 = -(H.d : H.E) := by
   exact H.sqd_sq
 
+/- English proof (translation)
+Unfold `Host.emb`. Rewrite using `[sigmaOf_mul]`. Both sides reduce to the same expression.
+-/
 theorem emb_sigmaOf (g h : R.GG) (x : H.E) : H.emb g (H.sigmaOf h x) = H.emb (g * h) x := by
   unfold Host.emb
   rw [sigmaOf_mul]
@@ -72,6 +93,9 @@ section KurLemmas
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+The claim follows from `Subfield.le_topologicalClosure _ (Subfield.subset_closure ⟨n, hn, hd, hx⟩)`.
+-/
 theorem mem_Kur_of_pow {x : ℂ_[p]} (n : ℕ) (hn : 0 < n) (hd : ¬ p ∣ n) (hx : x ^ n = 1) : x ∈ MaximalUnramifiedExtension p :=
   Subfield.le_topologicalClosure _ (Subfield.subset_closure ⟨n, hn, hd, hx⟩)
 
@@ -102,14 +126,25 @@ open Formalism.FrobeniusOrbits Formalism.TwoAdicCyclotomicDecomposition
 open Formalism.L2.Th1.CM (MaximalUnramifiedExtension)
 open Formalism.MainNotions.G (plGG)
 
+/- English proof (translation)
+Unfold `TaylorLogMetric.embT tauPl`. Rewrite using `[Equiv.apply_symm_apply]`.
+-/
 theorem embT_tauPl (D : D7) (z : Bool × HH D) : TaylorLogMetric.embT D (tauPl D z) = D.host.emb (plGG D z) := by
   unfold TaylorLogMetric.embT tauPl
   rw [Equiv.apply_symm_apply]
 
+/- English proof (translation)
+Unfold `tauPl`. Rewrite using `[Equiv.apply_symm_apply]`.
+-/
 theorem eTau_tauPl (D : D7) (z : Bool × HH D) : (D.eTau (tauPl D z) : D.R.GG) = plGG D z := by
   unfold tauPl
   rw [Equiv.apply_symm_apply]
 
+/- English proof (translation)
+Establish `hm : plGG D (b, t) * TaylorLogMetric.sgm D = plGG D (!b, t)`. Apply the tactic sequence `cases b <;> refine Prod.ext (Prod.ext ?_ ?_) ?_ <;> simp [plGG, Formalism.HC.Frame.tau1, Formalism.HC.Frame.tau2, TaylorLogMetric.sgm]`. Establish `hmem : (D.eTau (tauPl D (b, t)) : D.R.GG) * TaylorLogMetric.sgm D ∈ D.R.Psi`. Rewrite using `[eTau_tauPl, hm]`. Conclude with `plGG_mem_Psi D _`.
+
+Rewrite using `[show TaylorLogMetric.tauSg D (tauPl D (b, t)) = D.eTau.symm ⟨_, hmem⟩ from dif_pos hmem]`. Use `(Equiv.symm_apply_eq _).2 (Subtype.ext ?_)` and prove the remaining obligations. Simplify using `only [eTau_tauPl, hm]`.
+-/
 theorem tauSg_tauPl (D : D7) (b : Bool) (t : HH D) : TaylorLogMetric.tauSg D (tauPl D (b, t)) = tauPl D (!b, t) := by
   have hm : plGG D (b, t) * TaylorLogMetric.sgm D = plGG D (!b, t) := by
     cases b <;> refine Prod.ext (Prod.ext ?_ ?_) ?_ <;> simp [plGG, Formalism.HC.Frame.tau1, Formalism.HC.Frame.tau2, TaylorLogMetric.sgm]
@@ -119,6 +154,25 @@ theorem tauSg_tauPl (D : D7) (b : Bool) (t : HH D) : TaylorLogMetric.tauSg D (ta
   refine (Equiv.symm_apply_eq _).2 (Subtype.ext ?_)
   simp only [eTau_tauPl, hm]
 
+/- English proof (translation)
+Introduce `D p _ hp ι`. Establish `hp2 : p ≠ 2` using `by rw [hp]; exact D.host.hypOdd.2.2.2.2`. Establish `hpq : D.host.q ≠ p` using `by rw [hp]; exact D.host.hypOdd.2.2.1`. Use `⟨D.host.conj.toRingEquiv, (D.host.sigmaOf (sInv D.R)).toRingEquiv, D.host.sqrtMinusD, fun y => rfl, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, tauPl_bij D, fun t => ⟨tauSg_tauPl D false t, tauSg_tauPl D true t⟩⟩` and prove the remaining obligations. Rewrite using `[sqrt_sq, hp]`.
+
+Conclude with `sigmaOf_sqrt_neg D.host (D.R.cc) rfl`. Conclude with `sigmaOf_sqrt_neg D.host (sInv D.R) rfl`. Introduce `y`. Express the relevant statement in the definitionally equal form `D.host.sigmaOf (sInv D.R) (D.host.sigmaOf (sInv D.R) y) = y`. Rewrite using `[← AlgEquiv.mul_apply, ← sigmaOf_mul]`.
+
+Establish `: sInv D.R * sInv D.R = 1`. Apply the tactic sequence `refine Prod.ext (Prod.ext ?_ ?_) ?_ <;> simp [sInv]`. Rewrite using `[this, sigmaOf_one]`. Both sides reduce to the same expression. Introduce `y`.
+
+Express the relevant statement in the definitionally equal form `D.host.sigmaOf (sInv D.R) (D.host.sigmaOf (D.R.cc) y) = D.host.sigmaOf (D.R.cc) (D.host.sigmaOf (sInv D.R) y)`. Rewrite using `[← AlgEquiv.mul_apply, ← AlgEquiv.mul_apply, ← sigmaOf_mul, ← sigmaOf_mul, mul_comm]`. Introduce `z z' h`. Establish `h' : ∀ x, D.host.φ₀ (D.host.sigmaOf (plGG D z) x) = D.host.φ₀ (D.host.sigmaOf (plGG D z') x)` using `fun x => by`. Use `RingHom.congr_fun h x` as an intermediate fact.
+
+Simplify using `only [embT_tauPl] at this`. Conclude with `this`. Establish `hs : D.host.sigmaOf (plGG D z) = D.host.sigmaOf (plGG D z')` using `AlgEquiv.ext fun x => D.host.φ₀.injective (h' x)`. Establish `hg : plGG D z = plGG D z'`. Unfold `Host.sigmaOf at hs`.
+
+Conclude with `(D.host.gal).symm.injective hs`. Apply `(tauPl_bij D).1` to reduce the goal to its premises. Unfold `tauPl`. Use `congr 1`. Conclude with `Subtype.ext hg`.
+
+Introduce `τ ρ`. Express the relevant statement in the definitionally equal form `D.host.φ₀ (D.host.sigmaOf (D.eTau τ : D.R.GG) D.host.sqrtMinusD) = D.host.φ₀ (D.host.sigmaOf (D.eTau ρ : D.R.GG) D.host.sqrtMinusD)`. Rewrite using `[sigmaOf_sqrt_pos D.host _ (D.eTau τ).2, sigmaOf_sqrt_pos D.host _ (D.eTau ρ).2]`. Introduce `t y`. Express the relevant statement in the definitionally equal form `D.host.emb _ y = D.host.emb _ (D.host.sigmaOf (sInv D.R) (D.host.sigmaOf (D.R.cc) y))`.
+
+Rewrite using `[eTau_tauPl, eTau_tauPl, emb_sigmaOf, emb_sigmaOf]`. Establish `hg : plGG D (false, t) * sInv D.R * D.R.cc = plGG D (true, t)`. Apply the tactic sequence `refine Prod.ext (Prod.ext ?_ ?_) ?_ <;> simp [plGG, Formalism.HC.Frame.tau1, Formalism.HC.Frame.tau2, sInv, Formalism.HC.Frame.cc, c0]`. Rewrite using `[hg]`. Introduce `τ y hy`.
+
+Establish `hy' : D.host.sigmaOf (sInv D.R) y = y` using `hy`. Conclude with `UpperTheory.Ram.image_mem_of_fixed_iod D.host ((ι : ℂ →+* ℂ_[p]).comp (TaylorLogMetric.embT D τ)) (MaximalUnramifiedExtension p) (fun z hz => mem_Kur_of_pow _ (Nat.mul_pos D.host.QS_pos D.host.hyp.1.pos) (by rw [hp]; exact D.host.toHostRaw.d_not_dvd_QSq) hz) y hy'`.
+-/
 theorem inertia_pairs : ∀ (D : D7) (p : ℕ) [Fact p.Prime], p = D.host.d → ∀ ι : ℂ ≃+* ℂ_[p],
     ∃ (cE s : D.host.E ≃+* D.host.E) (δ : D.host.E), (∀ y, cE y = D.host.conj y) ∧ δ ^ 2 = -(p : D.host.E) ∧
     cE δ = -δ ∧ s δ = -δ ∧ (∀ y, s (s y) = y) ∧ (∀ y, s (cE y) = cE (s y)) ∧

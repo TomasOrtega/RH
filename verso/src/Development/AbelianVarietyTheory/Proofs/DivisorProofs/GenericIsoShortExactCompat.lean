@@ -19,6 +19,23 @@ open GlobalTheory.Twist (resM app_resM)
 
 namespace GlobalTheory.VBExt
 
+/- English proof (translation)
+Introduce `O _ _ _ Z S S' hS hS' r s _ _ _ _ _ _ g₁ g₂ g₃ hf hg a a' T h`. Establish `hf' : Z.genRes.map S'.f ≫ g₂.inv = g₁.inv ≫ Z.genRes.map S.f`. Rewrite using `[Iso.eq_inv_comp, ← Category.assoc, hf, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Establish `hg' : Z.genRes.map S'.g ≫ g₃.inv = g₂.inv ≫ Z.genRes.map S.g`. Rewrite using `[Iso.eq_inv_comp, ← Category.assoc, hg, Category.assoc, Iso.hom_inv_id, Category.comp_id]`.
+
+Establish `h1 : T ≤ Z.gen.ι ⁻¹ᵁ a.U` using `h.trans (Z.gen.ι.preimage_mono inf_le_left)`. Establish `h2 : T ≤ Z.gen.ι ⁻¹ᵁ a'.U` using `h.trans (Z.gen.ι.preimage_mono inf_le_right)`. Establish `hfg : ∀ x, appLinear (Z.genRes.map S.g) T (appLinear (Z.genRes.map S.f) T x) = 0`. Introduce `x`. Rewrite using `[appLinear_apply, appLinear_apply, QCoh.app_app, ← Functor.map_comp, S.zero, Functor.map_zero]`.
+
+Both sides reduce to the same expression. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul]`. Simplify using `only [GlobalTheory.Vert.Model.GenIso.detUnit, IsFrame.val_detUnit]`. Establish `hb : ∀ i, (((a.mid hS).isFrame.pullback Z.gen.ι).basis h1).reindex finSumFinEquiv.symm (.inl i) = appLinear (Z.genRes.map S.f) T ((a.sub.isFrame.pullback Z.gen.ι).basis h1 i)`.
+
+Introduce `i`. Rewrite using `[Module.Basis.reindex_apply, Equiv.symm_symm, IsFrame.basis_apply, IsFrame.basis_apply, appLinear_apply, app_resM, QCoh.pullback_map_app_pullbackSections]`. Simplify using `[AdaptedChart.mid, AdaptedChart.frame, AdaptedChart.sub]`. Establish `hc : ∀ k, appLinear (Z.genRes.map S.g) T ((((a.mid hS).isFrame.pullback Z.gen.ι).basis h1).reindex finSumFinEquiv.symm (.inr k)) = (a.quot.isFrame.pullback Z.gen.ι).basis h1 k`. Introduce `k`.
+
+Rewrite using `[Module.Basis.reindex_apply, Equiv.symm_symm, IsFrame.basis_apply, IsFrame.basis_apply, appLinear_apply, app_resM, QCoh.pullback_map_app_pullbackSections]`. Simplify using `[AdaptedChart.mid, AdaptedChart.frame, AdaptedChart.quot]`. Establish `key` using `det_sumElim hfg ((a.sub.isFrame.pullback Z.gen.ι).basis h1) ((a.quot.isFrame.pullback Z.gen.ι).basis h1) ((((a.mid hS).isFrame.pullback Z.gen.ι).basis h1).reindex finSumFinEquiv.symm) hb hc (fun i => resM _ h2 (g₁.inv.app _ (pullbackSections Z.gen.ι S'.X₁ le_rfl (a'.e i)))) (fun …`. Rewrite `key` using `[Module.Basis.det_reindex]`. Use `Eq.trans ?_ (key.trans ?_)` and prove the remaining obligations.
+
+Use `congr 1`. Use function extensionality and compare the values at `j`. Take `⟨x, rfl⟩` from `finSumFinEquiv.surjective j`. Break down `x with i | k` into its components or cases. Simplify using `only [AdaptedChart.mid, AdaptedChart.frame, Function.comp_apply, Equiv.symm_apply_apply, Sum.elim_inl]`.
+
+Rewrite using `[← QCoh.pullback_map_app_pullbackSections, QCoh.app_app, hf', appLinear_apply, app_resM, QCoh.app_app]`. Simplify using `only [AdaptedChart.mid, AdaptedChart.frame, Function.comp_apply, Equiv.symm_apply_apply, Sum.elim_inr]`. Use `congr 2`. Use function extensionality and compare the values at `k`. Simplify using `only [AdaptedChart.quot]`.
+
+Rewrite using `[appLinear_apply, app_resM, QCoh.app_app, ← hg', ← QCoh.app_app, QCoh.pullback_map_app_pullbackSections]`.
+-/
 theorem genIso_detUnit_mid : ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {Z : GlobalTheory.Vert.Model O} {S S' : ShortComplex Z.X.Modules} (hS : S.ShortExact) (hS' : S'.ShortExact) {r s : ℕ} [S.X₁.IsQuasicoherent] [S.X₂.IsQuasicoherent] [S.X₃.IsQuasicoherent] [S'.X₁.IsQuasicoherent] [S'.X₂.IsQuasicoherent] [S'.X₃.IsQuasicoherent] (g₁ : Z.GenIso S.X₁ S'.X₁) (g₂ : Z.GenIso S.X₂ S'.X₂) (g₃ : Z.GenIso S.X₃ S'.X₃), g₁.hom ≫ Z.genRes.map S'.f = Z.genRes.map S.f ≫ g₂.hom → g₂.hom ≫ Z.genRes.map S'.g = Z.genRes.map S.g ≫ g₃.hom → ∀ (a : GlobalTheory.VBExt.AdaptedChart S r s) (a' : GlobalTheory.VBExt.AdaptedChart S' r s) {T : Z.gen.toScheme.Opens} (h : T ≤ Z.gen.ι ⁻¹ᵁ (a.U ⊓ a'.U)), g₂.detUnit (a.mid hS) (a'.mid hS') h = g₁.detUnit a.sub a'.sub h * g₃.detUnit a.quot a'.quot h := by
   intro O _ _ _ Z S S' hS hS' r s _ _ _ _ _ _ g₁ g₂ g₃ hf hg a a' T h
   have hf' : Z.genRes.map S'.f ≫ g₂.inv = g₁.inv ≫ Z.genRes.map S.f := by

@@ -23,6 +23,33 @@ attribute [-instance] GlobalTheory.CompHt.fintypePsi
 noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Plug
 
+/- English proof (translation)
+Use `haveI : CharZero Om := charZero_of_injective_algebraMap (algebraMap K Om).injective`. Set `bK` to `Module.finBasis ℚ K`. Set `ψ : K →+* Ω` to `φ.comp (algebraMap K Om)`. Establish `hmemW : ∀ v ∈ V, ∀ i, w * φ (ev v) * f i ∈ Submodule.span ℚ (L : Set Ω)`. Introduce `v hv i`.
+
+Take `⟨N, hN, hs⟩` from `hmem v hv i`. Establish `h1 : (N : Ω) * (w * φ (ev v) * f i) ∈ Submodule.span ℚ (L : Set Ω)` using `Submodule.subset_span hs`. Establish `h2` using `Submodule.smul_mem _ ((N : ℚ)⁻¹) h1`. Establish `hN' : (N : Ω) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `e : ((N : ℚ)⁻¹) • ((N : Ω) * (w * φ (ev v) * f i)) = w * φ (ev v) * f i`.
+
+Rewrite using `[Rat.smul_def]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Establish `key : ∀ (J : Type) [Fintype J] (v : J → V), LinearIndependent K v → Fintype.card J * (Module.finrank ℚ K * d) ≤ Module.finrank ℚ (Submodule.span ℚ (L : Set Ω))`.
+
+Introduce `J _ v hv`. Set `e : J × Fin (Module.finrank ℚ K) × Fin d → Submodule.span ℚ (L : Set Ω)` to `fun x => ⟨w * φ (ev ((bK x.2.1) • (v x.1 : R))) * f x.2.2, hmemW _ (V.smul_mem _ (v x.1).2) _⟩`. Establish `hli : LinearIndependent ℚ e`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`.
+
+Establish `hg' : ∑ x, (g x : Ω) * (w * φ (ev (bK x.2.1 • (v x.1 : R))) * f x.2.2) = 0`. Establish `h0` using `congrArg Subtype.val hg`. Simplify `h0` using `[Rat.smul_def, e]`. Set `c : J → Fin d → K` to `fun a i => ∑ b, (g (a, b, i) : K) * bK b`. Set `s : Fin d → R` to `fun i => ∑ a, c a i • (v a : R)`.
+
+Establish `hs : ∀ i, s i ∈ V` using `fun i => Submodule.sum_mem _ fun a _ => V.smul_mem _ (v a).2`. Establish `hphi : ∀ i, φ (ev (s i)) = ∑ a, (∑ b, (g (a, b, i) : Ω) * ψ (bK b)) * φ (ev (v a))`. Introduce `i`. Simplify using `only [s, c, map_sum, map_smul, Algebra.smul_def, map_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Simplify using `[ψ, map_ratCast]`. Establish `hterm : ∀ a b i, (g (a, b, i) : Ω) * (w * φ (ev (bK b • (v a : R))) * f i) = w * ((g (a, b, i) : Ω) * ψ (bK b) * φ (ev (v a)) * f i)`. Introduce `a b i`. Simplify using `only [map_smul, Algebra.smul_def, map_mul, ψ, RingHom.comp_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hsum : w * ∑ i, φ (ev (s i)) * f i = 0`. Rewrite using `[← hg', Fintype.sum_prod_type]`. Simplify using `only [Fintype.sum_prod_type, hterm, hphi, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_comm` and prove the remaining obligations.
+
+Establish `hA : (fun i => ev (s i)) = 0` using `hf _ ((mul_eq_zero.1 hsum).resolve_left hw)`. Establish `hs0 : ∀ i, s i = 0` using `fun i => hinj _ (hs i) (congrFun hA i)`. Establish `hc : ∀ a i, c a i = 0`. Introduce `a i`. Use `Fintype.linearIndependent_iff.1 hv (fun a => c a i) ?_ a` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify `hs0 i` using `[s]`. Introduce and unpack `⟨a, b, i⟩`. Use `Fintype.linearIndependent_iff.1 bK.linearIndependent (fun b => g (a, b, i)) ?_ b` and prove the remaining obligations. Simplify `hc a i` using `[c, Rat.smul_def]`.
+
+Establish `h3` using `hli.fintype_card_le_finrank`. Simplify `h3` using `[Fintype.card_prod, mul_assoc]`. Establish `hpos : 0 < Module.finrank ℚ K * d` using `Nat.mul_pos Module.finrank_pos hd`. Establish `hrank : Module.rank K V ≤ (Module.finrank ℚ (Submodule.span ℚ (L : Set Ω)) : ℕ)`. Use `rank_le fun s hs => ?_` and prove the remaining obligations.
+
+Use `key s _ hs` as an intermediate fact. Rewrite `this` using `[Fintype.card_coe]`. Conclude with `(Nat.le_mul_of_pos_right _ hpos).trans this`. Use `haveI : Module.Finite K V := Module.rank_lt_aleph0_iff.1 (hrank.trans_lt (Cardinal.nat_lt_aleph0 _))`. Rewrite using `[← Module.finrank_eq_rank, Cardinal.toENat_nat]`.
+
+Use `key _ (Module.finBasis K V) (Module.finBasis K V).linearIndependent` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Conclude with `this` after adjusting the coercions.
+-/
 theorem count_le {K R Om Ω : Type} [Field K] [NumberField K] [AddCommGroup R] [Module K R] [Field Om] [Algebra K Om]
     [Field Ω] [CharZero Ω] (φ : Om →+* Ω) (V : Submodule K R) (ev : R →ₗ[K] Om)
     (hinj : ∀ v ∈ V, ev v = 0 → v = 0) {d : ℕ} (hd : 0 < d) (f : Fin d → Ω)
@@ -97,6 +124,25 @@ theorem count_le {K R Om Ω : Type} [Field K] [NumberField K] [AddCommGroup R] [
   rw [Fintype.card_fin] at this
   exact_mod_cast this
 
+/- English proof (translation)
+Establish `hδ' : (δ : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hδ.ne'`. Set `c : ℕ → ℝ` to `fun τ => (D.factorial : ℝ) * (Rk (τ + k₀) : ℝ) / (((τ + k₀ : ℕ) : ℝ)) ^ D * ((((τ + k₀ : ℕ) : ℝ) / τ) ^ D) / δ`. Establish `h1 : Tendsto (fun τ : ℕ => (((τ + k₀ : ℕ) : ℝ) / τ) ^ D) atTop (𝓝 1)`. Establish `h2 : Tendsto (fun τ : ℕ => 1 + (k₀ : ℝ) / τ) atTop (𝓝 (1 + 0))` using `tendsto_const_nhds.add (tendsto_const_nhds.div_atTop tendsto_natCast_atTop_atTop)`. Establish `h3 : Tendsto (fun τ : ℕ => (((τ + k₀ : ℕ) : ℝ) / τ)) atTop (𝓝 1)`.
+
+Rewrite `h2` using `[add_zero]`. Use `h2.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_gt_atTop 0] with τ hτ`. Establish `: (τ : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hτ.ne'`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Simplify using `using h3.pow D`. Establish `hc : Tendsto c atTop (𝓝 (L / δ))`. Establish `h4` using `(hL.comp (tendsto_add_atTop_nat k₀)).mul h1`. Rewrite `h4` using `[mul_one]`.
+
+Conclude with `h4.div_const _`. Establish `hle : ∀ᶠ τ : ℕ in atTop, (D.factorial : ENNReal) * (r τ : ENNReal) / (τ : ENNReal) ^ D ≤ ENNReal.ofReal (c τ)` using `by filter_upwards [eventually_gt_atTop 0] with τ hτ`. Establish `hτ' : (0 : ℝ) < τ` using `Nat.cast_pos.2 hτ`. Establish `hk : (0 : ℝ) < ((τ + k₀ : ℕ) : ℝ)` using `Nat.cast_pos.2 (by omega)`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m : ℕ, r τ = m := by`.
+
+Use `ENat.ne_top_iff_exists.1 (fun ht => ?_) |>.imp fun _ e => e.symm` and prove the remaining obligations. Use `h τ` as an intermediate fact. Rewrite `this` using `[ht, ENat.top_mul (Nat.cast_ne_zero.2 hδ.ne')]`. Conclude with `ENat.coe_ne_top _ (top_le_iff.1 this)`. Establish `hmle : m * δ ≤ Rk (τ + k₀)`.
+
+Use `h τ` as an intermediate fact. Rewrite `this` using `[hm]`. Conclude with `this` after adjusting the coercions. Establish `e1 : (D.factorial : ENNReal) * (r τ : ENNReal) / (τ : ENNReal) ^ D = ENNReal.ofReal ((D.factorial : ℝ) * m / (τ : ℝ) ^ D)`. Rewrite using `[ENNReal.ofReal_div_of_pos (by positivity), ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_pow hτ'.le, hm]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e1]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `e2 : c τ = (D.factorial : ℝ) * (Rk (τ + k₀) : ℝ) / δ / (τ : ℝ) ^ D`. Simplify using `only [c, div_pow]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[e2]`. Use `div_le_div_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Establish `hd : (0 : ℝ) < δ` using `Nat.cast_pos.2 hδ`. Rewrite using `[le_div_iff₀ hd, mul_assoc]`.
+
+Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Conclude with `hmle` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem growth_le_of_shift (D : ℕ) (r : ℕ → ℕ∞) (Rk : ℕ → ℕ) (δ k₀ : ℕ) (hδ : 0 < δ)
     (h : ∀ τ, r τ * (δ : ℕ∞) ≤ (Rk (τ + k₀) : ℕ∞)) (L : ℝ)
     (hL : Tendsto (fun τ : ℕ => (D.factorial : ℝ) * (Rk τ : ℝ) / (τ : ℝ) ^ D) atTop (𝓝 L)) :
@@ -157,6 +203,11 @@ open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory.CompanionT
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Establish `hP : ∀ a, IsPotential R.A (potOf R (L a))` using `fun a => isPotential_potOf R (hL a)`. Establish `h1 : mInt R.A (fun j => potOf R (PB.combLine L (n j))) (fun _ => 1) = mInt R.A (fun j => sumPot (fun a => (n j a : ℝ)) fun a => potOf R (L a)) (fun _ => 1)`. Use `mInt_congr _ (fun j y hy => ?_) fun _ => rfl` and prove the remaining obligations. Use `ReciprocityTheory.ChartRestriction.G.Geo.maDens_congr fun i => ?_` and prove the remaining obligations. Use `filter_upwards [((R.A.chart j).isOpen_inter_preimage_symm (R.isOpen_U ((R.A.chart j).symm y))).mem_nhds ⟨hy, R.mem_U _⟩] with y' hy'`.
+
+Establish `hm` using `(R.mem _ _ hy'.2).1`. Use `show Real.log (∏ a, (L a).h _ ^ n i a) = ∑ a, (n i a : ℝ) * Real.log ((L a).h _)`. Rewrite using `[Real.log_prod fun a _ => (zpow_pos ((L a).pos _ hm) _).ne']`. Conclude with `Finset.sum_congr rfl fun a _ => Real.log_zpow _ _`. Rewrite using `[h1, (GlobalTheory.T.monge_ampere_integral_multilinear_expansion e R.X R.A σ Set.univ (fun a => potOf R (L a)) (fun j a => (n j a : ℝ)) (fun _ => 1) (fun j => by simp) (fun a x _ => isC2At_of_isPotential _ (hP a) x) (fun w => mIntegrableCont _ _ (fun i => hP _) _ continuous_const …`.
+-/
 theorem mInt_combLine_expand {P J : Ideal (MRing ι)} {e : ℕ} (R : AnLogRes P J e) {σ : Type} [Fintype σ]
     (L : σ → HermLine ι) (hL : ∀ a, IsSmoothHerm (L a)) (n : Fin e → σ → ℤ) :
     mInt R.A (fun j => potOf R (PB.combLine L (n j))) (fun _ => 1) =
@@ -176,6 +227,11 @@ theorem mInt_combLine_expand {P J : Ideal (MRing ι)} {e : ℕ} (R : AnLogRes P 
     (fun _ => 1) (fun j => by simp) (fun a x _ => isC2At_of_isPotential _ (hP a) x)
     (fun w => mIntegrableCont _ _ (fun i => hP _) _ continuous_const)).2]
 
+/- English proof (translation)
+Take `⟨J, ⟨R⟩⟩` from `exists_anLogRes hE hP`. Establish `hs : ∀ i, IsSmoothHerm (Top.combLine L (n i))` using `fun i => by`. Rewrite using `[← PB.combLine_eq_top]`. Conclude with `isSmoothHerm_combLine hL _`. Rewrite using `[ptsIntegral_one_eq_mInt hE resBridge R hP hs]`.
+
+Repeatedly rewrite using `[← PB.combLine_eq_top]`. Rewrite using `[mInt_combLine_expand R L hL n]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[ptsIntegral_one_eq_mInt hE resBridge R hP fun i => hL (w i)]`.
+-/
 theorem ptsIntegral_combLine {P : Ideal (MRing ι)} {e : ℕ} (hE : ResExistsStatement)
     (hP : ReciprocityTheory.ChartRestriction.G.Geo.IsArithVar P (e + 1)) {σ : Type} [Fintype σ] (L : σ → HermLine ι)
     (hL : ∀ a, IsSmoothHerm (L a)) (n : Fin e → σ → ℤ) :
@@ -192,6 +248,11 @@ theorem ptsIntegral_combLine {P : Ideal (MRing ι)} {e : ℕ} (hE : ResExistsSta
 
 variable {Ψ : Type} [Fintype Ψ] {N : ℕ}
 
+/- English proof (translation)
+Establish `h` using `ptsIntegral_combLine (e := 1) hI.resExists hW (M.line 1) (Top.RealGeo.line_smooth M) fun _ => n`. Use `h.trans ?_` and prove the remaining obligations. Use `Fintype.sum_equiv (Equiv.funUnique (Fin 1) _) _ _ fun w => ?_` and prove the remaining obligations. Establish `e : (fun i => M.line 1 (w i)) = fun _ => M.line 1 (w default)` using `funext fun i => by`. Rewrite using `[Subsingleton.elim i default]`.
+
+Simplify using `only [Equiv.funUnique_apply, Finset.univ_unique, Finset.prod_singleton, e]`. Both sides reduce to the same expression.
+-/
 theorem geomDeg_combLine_one (hI : PB.Inputs) (M : Top.RootModel Ψ N) (n : Option (Ψ × Fin N) → ℤ)
     (W : Ideal (MRing M.ι)) (hW : ReciprocityTheory.ChartRestriction.G.Geo.IsArithVar W 2) :
     geomDeg W (Top.combLine (M.line 1) n) 1 = ∑ j, (n j : ℝ) * geomDeg W (M.line 1 j) 1 := by
@@ -203,6 +264,15 @@ theorem geomDeg_combLine_one (hI : PB.Inputs) (M : Top.RootModel Ψ N) (n : Opti
   simp only [Equiv.funUnique_apply, Finset.univ_unique, Finset.prod_singleton, e]
   rfl
 
+/- English proof (translation)
+Establish `hδ : (M.δ : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 M.δ_pos.ne'`. Establish `e1 : Top.toA ((∑ r, MvPolynomial.C (n (some r) : ℝ) * MvPolynomial.X r) ^ Top.dimFl Ψ N) = (∑ o, MvPolynomial.C (n o : ℝ) * MvPolynomial.X o : Top.RPA Ψ N) ^ Top.dimFl Ψ N`. Simplify using `only [Top.toA, map_pow, map_sum, map_mul, MvPolynomial.rename_C, MvPolynomial.rename_X, Fintype.sum_option, hn, Int.cast_zero, map_zero, zero_mul, zero_add]`. Rewrite using `[e1, Top.RealGeo.geoFun_pow, Finset.mul_sum]`. Establish `h` using `ptsIntegral_combLine (e := Top.dimFl Ψ N) hI.resExists M.arith (M.line 1) (Top.RealGeo.line_smooth M) fun _ => n`.
+
+Use `h.trans (Finset.sum_congr rfl fun w _ => ?_)` and prove the remaining obligations. Take `⟨J, ⟨R⟩⟩` from `exists_anLogRes hI.resExists M.arith`. Distinguish the cases in `hw : ∃ j, w j = none`. Take `⟨j, hj⟩` from `hw`. Establish `: ∏ i, (n (w i) : ℝ) = 0` using `Finset.prod_eq_zero (Finset.mem_univ j) (by simp [hj, hn])`.
+
+Simplify using `[this]`. Establish `hc : (∑ j, Finsupp.single (w j) (1 : ℕ)) none = 0`. Rewrite using `[Finsupp.finset_sum_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.single_apply, if_neg fun h => hw ⟨j, h⟩]`.
+
+Rewrite using `[Top.RealGeo.geoMono_word hI M R w, hc, pow_zero, mul_one, ptsIntegral_one_eq_mInt hI.resExists resBridge R M.arith fun i => Top.RealGeo.line_smooth M (w i)]`. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression.
+-/
 theorem geomDeg_combLine_top (hI : PB.Inputs) (M : Top.RootModel Ψ N) (n : Option (Ψ × Fin N) → ℤ) (hn : n none = 0) :
     geomDeg M.P (Top.combLine (M.line 1) n) (Top.dimFl Ψ N) =
       M.δ * M.geoFun (Top.toA ((∑ r, MvPolynomial.C (n (some r) : ℝ) * MvPolynomial.X r) ^ Top.dimFl Ψ N)) := by
@@ -231,6 +301,13 @@ theorem geomDeg_combLine_top (hI : PB.Inputs) (M : Top.RootModel Ψ N) (n : Opti
     rfl
 end Deg
 
+/- English proof (translation)
+Introduce `c hc`. Establish `e : s * t * ∏ k, y ⟨k, c k⟩ ^ (-(((τ₁ + τ₂ : ℕ) : ℤ) * a k)) = (s * ∏ k, y ⟨k, c k⟩ ^ (-((τ₁ : ℤ) * a k))) * (t * ∏ k, y ⟨k, c k⟩ ^ (-((τ₂ : ℤ) * a k)))`. Establish `: ∀ k, y ⟨k, c k⟩ ^ (-(((τ₁ + τ₂ : ℕ) : ℤ) * a k)) = y ⟨k, c k⟩ ^ (-((τ₁ : ℤ) * a k)) * y ⟨k, c k⟩ ^ (-((τ₂ : ℤ) * a k))` using `fun k => by`. Rewrite using `[← zpow_add₀ (hc k)]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [this, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `mul_mem (hs c hc) (ht c hc)`.
+-/
 theorem chartLatNm_mul {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
     {y : (Σ k, ι k) → Ω} {a : K → ℤ} {τ₁ τ₂ : ℕ} {s t : Ω} (hs : s ∈ chartLatNm y a τ₁)
     (ht : t ∈ chartLatNm y a τ₂) : s * t ∈ chartLatNm y a (τ₁ + τ₂) := by
@@ -245,6 +322,9 @@ theorem chartLatNm_mul {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype 
   rw [e]
   exact mul_mem (hs c hc) (ht c hc)
 
+/- English proof (translation)
+Introduce `c hc`. Use `hs c hc` as an intermediate fact. Simplify using `using this`.
+-/
 theorem chartLatNm_smul_one {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
     {y : (Σ k, ι k) → Ω} {a : K → ℤ} {n : ℕ} {s : Ω} (hs : s ∈ chartLatNm y ((n : ℤ) • a) 1) :
     s ∈ chartLatNm y a n := by
@@ -252,6 +332,11 @@ theorem chartLatNm_smul_one {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fin
   have := hs c hc
   simpa using this
 
+/- English proof (translation)
+Establish `h : ∀ j, nOf (n • u) j = (n : ℤ) * nOf u j` using `fun j => by`. Consider the cases of `j with`. Consider the case `none => simp [nOf]`. Consider the case `some r => simp [nOf]`. Use function extensionality and compare the values at `k`.
+
+Use `show (∑ j, nOf (n • u) j • (RM.line 1 j).a) k = (n : ℤ) * (∑ j, nOf u j • (RM.line 1 j).a) k`. Simplify using `only [h, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`.
+-/
 theorem degOf_nsmul {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (u : GlobalTheory.AllWt.Weight Dw) (n : ℕ) :
     degOf RM (n • u) = (n : ℤ) • degOf RM u := by
@@ -263,6 +348,9 @@ theorem degOf_nsmul {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Reci
   show (∑ j, nOf (n • u) j • (RM.line 1 j).a) k = (n : ℤ) * (∑ j, nOf u j • (RM.line 1 j).a) k
   simp only [h, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Distinguish the cases in `h : τ (H.rt : E) = H.rt0`. Conclude with `⟨⟨τ, h⟩⟩`. Conclude with `⟨⟨conjEmb τ, Small.conjEmb_rt_of_ne h⟩⟩`.
+-/
 theorem nonempty_cmType {E : Type} [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) :
     Nonempty (CMType H) := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -270,6 +358,11 @@ theorem nonempty_cmType {E : Type} [Field E] [NumberField E] [IsCMField E] (H : 
   · exact ⟨⟨τ, h⟩⟩
   · exact ⟨⟨conjEmb τ, Small.conjEmb_rt_of_ne h⟩⟩
 
+/- English proof (translation)
+Establish `h1 : 0 < Fintype.card Ψ` using `Fintype.card_pos`. Establish `h2 : 1 ≤ N * (N - 1) / 2`. Take `⟨m, rfl⟩ : ∃ m, N = m + 2` from `⟨N - 2, by omega⟩`. Rewrite using `[Nat.le_div_iff_mul_le (by norm_num)]`. Simplify using `only [Nat.add_sub_cancel, Nat.add_succ_sub_one]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Conclude with `Nat.mul_pos h1 h2`.
+-/
 theorem dimFl_pos {Ψ : Type} [Fintype Ψ] [Nonempty Ψ] {N : ℕ} (hN : 2 ≤ N) : 1 ≤ Top.dimFl Ψ N := by
   have h1 : 0 < Fintype.card Ψ := Fintype.card_pos
   have h2 : 1 ≤ N * (N - 1) / 2 := by
@@ -281,6 +374,41 @@ theorem dimFl_pos {Ψ : Type} [Fintype Ψ] [Nonempty Ψ] {N : ℕ} (hN : 2 ≤ N
 
 end GlobalTheory.CompanionTheory.Ar.Plug
 
+/- English proof (translation)
+Introduce `hRR hG E _ _ _ H Dw l Xo c r U h e hL x hx Y _ T o κ II hκ hII hP hT1 Z u hu`. Establish `hIn : PB.Inputs` using `hG.2.2.2.2.2.2.2.2.2.1`. Establish `hjp : T.j = Dw.p` using `o.toTowerOrigin.j_eq`. Establish `hp : 1 ≤ Dw.p` using `hjp ▸ T.j_pos`. Establish `hq : 1 ≤ Dw.q` using `by have := T.j_lt; omega`.
+
+Take `⟨B, hB⟩` from `exists_nat_gt (Top.bigB0 (reW u) 1)`. Establish `hB' : Top.bigB0 (reW u) 1 < (B : ℝ) + 1` using `hB.trans (lt_add_one _)`. Take `⟨Fr, ⟨Rd⟩⟩` from `GlobalTheory.T.tower_components_compatible_laws E H Dw l Xo c r U h e hL Y T o.toTowerOrigin κ hκ B Z`. Establish `wt` using `GlobalTheory.T.tower_weight_of_zero E H Dw l Xo c (T.M B (κ Z)) u`. Take `⟨-, -, wtn, wtc, -, wtd, -, wtw, -⟩` from `wt`.
+
+Establish `hW : Top.WeightHyp T.j (reW u) 1` using `by rw [hjp]; exact wtw hp hq hu`. Take `⟨k₀, R₀, f, -, -, hfs, hfi, hft⟩` from `GlobalTheory.T.generic_frame_component_bound hG E H Dw l Xo c h Y T o B (κ Z) Fr Z Rd II u 1 hII hT1 hW hB'`. Establish `hinj : ∀ (G : WTZ E), G = (G.1, 0) → ∀ v ∈ GlobalTheory.AllWt.cuspOn U Z G, evL h Z v = 0 → v = 0`. Introduce `G hG0 v hv h0`. Establish `hs : v ∈ Rec.secZ Xo c G.1`.
+
+Establish `hex : Formalism.L2.Pj.exZ Dw G = Rec.exZ Dw G.1`. Use function extensionality and compare the values at `i`. Consider the cases of `i with`. Consider the case `none => exact congrArg Prod.snd hG0`. Consider the case `some x => rfl`.
+
+Establish `h1 : v ∈ GlobalTheory.AllWt.secZ Xo c (Formalism.L2.Pj.exZ Dw G)` using `GlobalTheory.AllWt.cuspW_le_secZ G hv.1`. Rewrite `h1` using `[hex]`. Use `⟨h1.1, fun p t y y' hb => ?_⟩` and prove the remaining obligations. Rewrite using `[h1.2 p t y y' hb]`. Simplify using `[Units.coe_prod]`.
+
+Use `(GlobalTheory.CompanionTheory.Ar.Rec.sections_generic_indicators E H Dw l Xo c r U h e hL).1 G.1 v hs fun Z' => ?_` and prove the remaining obligations. Distinguish the cases in `hZ : Z' = Z`. Substitute `hZ` using the available equality. Conclude with `h0`. Conclude with `GlobalTheory.AllWt.evC_eq_zero h hZ hv.2`.
+
+Set `M` to `T.M B (κ Z)`. Use `letI : Algebra c.F M.Ω := (Rd.φ.comp (algebraMap c.F (Om Z))).toAlgebra`. Use `haveI : CharZero M.Ω := charZero_of_injective_algebraMap (algebraMap c.F M.Ω).injective`. Establish `hN2 : 2 ≤ Dw.p + Dw.q` using `by omega`. Use `haveI := nonempty_cmType H`.
+
+Establish `hD : 1 ≤ Top.dimFl (CMType H) (Dw.p + Dw.q)` using `dimFl_pos hN2`. Establish `hsm : IsSmoothHerm (Top.combLine (M.line 1) (nOf u))`. Rewrite using `[← PB.combLine_eq_top]`. Conclude with `Cmp.isSmoothHerm_combLine (Top.RealGeo.line_smooth M) _`. Establish `hdom : Top.Dominant (reW u)` using `fun τ a b hab => by`.
+
+Use `(hu τ).antitone hab` as an intermediate fact. Use `show (u τ b : ℝ) ≤ u τ a`. Conclude with `this` after adjusting the coercions. Establish `hnef : ∀ W, ReciprocityTheory.ChartRestriction.G.Geo.IsArithVar W 2 → mCoordIdeal M.y ≤ W → 0 ≤ geomDeg W (Top.combLine (M.line 1) (nOf u)) 1`. Introduce `W hW hPW`.
+
+Establish `h1` using `(GlobalTheory.T.real_tower_nef_general GlobalTheory.T.nef_polarization hIn II hII _ _ T (Top.realOf o.toTowerOrigin) o.smooth o.flat B (κ Z)).1 (reW u) hdom W hW hPW`. Rewrite using `[geomDeg_combLine_one hIn M (nOf u) W hW]`. Simplify `h1` using `only [wtc]`. Take `⟨hfin, hlim⟩` from `GlobalTheory.T.section_count_tendsto_geomDeg hRR hG II hII M.K M.ι M.Ω M.y _ (Top.combLine (M.line 1) (nOf u)) hD M.arith M.birational hsm hnef`. Establish `hgeo : geomDeg (mCoordIdeal M.y) (Top.combLine (M.line 1) (nOf u)) (Top.dimFl (CMType H) (Dw.p + Dw.q)) = M.δ * (T.vol (κ Z) * Top.flagDeg (reW u))`.
+
+Establish `e1 : (∑ r, MvPolynomial.C (nOf u (some r) : ℝ) * MvPolynomial.X r : Top.RP (CMType H) (Dw.p + Dw.q)) = Top.linRoot (reW u)`. Simplify using `only [Top.linRoot, nOf, reW, Int.cast_neg, map_neg, neg_mul, Finset.sum_neg_distrib, neg_neg]`. Use `geomDeg_combLine_top hIn M (nOf u) rfl` as an intermediate fact. Rewrite `this` using `[e1]`. Conclude with `this.trans (by rw [hP.2.1 B (κ Z)]; rfl)`.
+
+Establish `hδ : M.δ = Module.finrank ℚ c.F * (o.toTowerOrigin.Or B (κ Z)).Fl.deg` using `(o.toTowerOrigin.Or B (κ Z)).δ_eq`. Establish `hd : 0 < (o.toTowerOrigin.Or B (κ Z)).Fl.deg`. Use `M.δ_pos` as an intermediate fact. Rewrite `this` using `[hδ]`. Conclude with `Nat.pos_of_mul_pos_left this |> fun h => h`.
+
+Establish `hgauge : ∀ v : GlobalTheory.AllWt.Weight Dw, gauge Rd v ≠ 0`. Introduce `v hv`. Use `one_ne_zero (hft v 1 fun i => ?_)` and prove the remaining obligations. Simplify using `[trOf, hv]`. Establish `hcount : ∀ τ : ℕ, Cardinal.toENat (Module.rank c.F (GlobalTheory.AllWt.cuspOn U Z (τ • GlobalTheory.AllWt.wtOf Dw u 0))) * ((M.δ : ℕ) : ℕ∞) ≤ ((Module.finrank ℚ (Submodule.span ℚ (chartLatNm M.y (degOf M u) (τ + k₀) : Set M.Ω)) : ℕ) : ℕ∞)`.
+
+Introduce `τ`. Rewrite using `[hδ]`. Use `count_le Rd.φ _ (evL h Z) (hinj _ ?_) hd f hfi (gauge Rd (τ • u)) (hgauge _) _ (hfin _) ?_` and prove the remaining obligations. Conclude with `Prod.ext rfl (by simp [GlobalTheory.AllWt.wtOf_snd])`. Introduce `v hv i`.
+
+Rewrite `hv` using `[wtn τ]`. Take `⟨N, hN, hs⟩` from `GlobalTheory.T.uniform_norm_section_count hG E H Dw l Xo c r U h e hL x hx Y T o B (κ Z) Fr Z Rd (τ • u) v hv`. Use `⟨N, hN, ?_⟩` and prove the remaining obligations. Establish `hs' : (N : M.Ω) * (gauge Rd (τ • u) * Rd.φ (evC h Z v)) ∈ chartLatNm M.y (degOf M u) τ` using `chartLatNm_smul_one (by rw [← degOf_nsmul]; exact hs)`. Establish `hf' : f i ∈ chartLatNm M.y (degOf M u) k₀` using `chartLatNm_smul_one (by rw [← degOf_nsmul]; exact (hfs i).1)`.
+
+Establish `h1` using `chartLatNm_mul hs' hf'`. Establish `e2 : (N : M.Ω) * (gauge Rd (τ • u) * Rd.φ (evL h Z v) * f i) = (N : M.Ω) * (gauge Rd (τ • u) * Rd.φ (evC h Z v)) * f i`. Rewrite using `[evL_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`.
+
+Conclude with `h1`. Establish `hfinal` using `growth_le_of_shift (Top.dimFl (CMType H) (Dw.p + Dw.q)) _ _ M.δ k₀ M.δ_pos hcount _ hlim`. Rewrite `hfinal` using `[hgeo, mul_div_cancel_left₀ _ (Nat.cast_ne_zero.2 M.δ_pos.ne')]`. Rewrite using `[GlobalTheory.CompHt.growthOn, wtd]`. Conclude with `hfinal`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.Plug.growth_le_vol_deg : GlobalTheory.CompanionTheory.Ar.Pub.NefRR → Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (h : GenFrEx Xo c) (e : Comp Xo c → Rul Xo c), CompLaws U h e → ∀ x : ℝ, (∀ σ, GoodEmb c σ → ∀ k (τ : E →+* ℂ), ‖τ ((U σ).X k).ξ0‖ = x) → ∀ (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) [DecidableEq (CMType H)] (T : Top.RootTower (CMType H) (Dw.p + Dw.q)) (o : Top.GoodOrigin Y T) (κ : Comp Xo c ≃ T.Comp) (II : IntersectionSystem), CompOf o.toTowerOrigin κ → IsFullIntersectionSystem II → T.Proportional → T.T1 II → ∀ (Z : Comp Xo c) (u : GlobalTheory.AllWt.Weight Dw), (∀ τ, StrictAnti (u τ)) → GlobalTheory.CompHt.growthOn U Z (GlobalTheory.AllWt.wtOf Dw u 0) ≤ ENNReal.ofReal (T.vol (κ Z) * Top.flagDeg (reW u)) := by
   intro hRR hG E _ _ _ H Dw l Xo c r U h e hL x hx Y _ T o κ II hκ hII hP hT1 Z u hu
   have hIn : PB.Inputs := hG.2.2.2.2.2.2.2.2.2.1

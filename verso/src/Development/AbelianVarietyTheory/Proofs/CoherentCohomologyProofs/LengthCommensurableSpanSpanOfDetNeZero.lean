@@ -23,12 +23,20 @@ section Cokernel
 
 variable {M : Type*} [AddCommGroup M] [Module R M]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Establish `h'` using `Module.length_ne_top_iff.mp h`. Rewrite `h'` using `[← isArtinianRing_iff_isFiniteLength]`. Conclude with `not_isField R (IsArtinianRing.isField_of_isDomain R)`.
+-/
 theorem length_self_eq_top_of_dvr : Module.length R R = ⊤ := by
   by_contra h
   have h' := Module.length_ne_top_iff.mp h
   rw [← isArtinianRing_iff_isFiniteLength] at h'
   exact not_isField R (IsArtinianRing.isField_of_isDomain R)
 
+/- English proof (translation)
+Use `first`. Consider the case `(rename_i h_1 h_2 h_3; revert R h_1 h_2 h_3 ι s a; exact @_root_.GlobalTheory.AdditiveValuationProduct.addVal_prod)`. Consider the case `exact @_root_.GlobalTheory.AdditiveValuationProduct.addVal_prod`. Consider the case `exact _root_.GlobalTheory.AdditiveValuationProduct.addVal_prod`. Consider the case `(apply _root_.GlobalTheory.AdditiveValuationProduct.addVal_prod <;> assumption)`.
+
+Consider the case `(intros; apply _root_.GlobalTheory.AdditiveValuationProduct.addVal_prod <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.AdditiveValuationProduct.addVal_prod <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.AdditiveValuationProduct.addVal_prod ..)`.
+-/
 theorem addVal_finset_prod {ι : Type*} (s : Finset ι) (a : ι → R) :
     addVal R (∏ i ∈ s, a i) = ∑ i ∈ s, addVal R (a i) := by
   first
@@ -40,6 +48,11 @@ theorem addVal_finset_prod {ι : Type*} (s : Finset ι) (a : ι → R) :
   | (intros; apply @_root_.GlobalTheory.AdditiveValuationProduct.addVal_prod <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.AdditiveValuationProduct.addVal_prod ..)
 
+/- English proof (translation)
+Use `first`. Consider the case `(rename_i h_1 h_2 h_3 h_5 h_6 h_7 h_8; revert R h_1 h_2 h_3 M h_5 h_6 h_7 h_8 f hf; exact @_root_.GlobalTheory.LengthDualFunctional.main)`. Consider the case `exact @_root_.GlobalTheory.LengthDualFunctional.main`. Consider the case `exact _root_.GlobalTheory.LengthDualFunctional.main`. Consider the case `(apply _root_.GlobalTheory.LengthDualFunctional.main <;> assumption)`.
+
+Consider the case `(intros; apply _root_.GlobalTheory.LengthDualFunctional.main <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.LengthDualFunctional.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LengthDualFunctional.main ..)`.
+-/
 theorem length_quotient_range_eq_top_of_det_eq_zero [Module.Free R M] [Module.Finite R M]
     {f : M →ₗ[R] M} (hf : LinearMap.det f = 0) :
     Module.length R (M ⧸ LinearMap.range f) = ⊤ := by
@@ -52,6 +65,11 @@ theorem length_quotient_range_eq_top_of_det_eq_zero [Module.Free R M] [Module.Fi
   | (intros; apply @_root_.GlobalTheory.LengthDualFunctional.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.LengthDualFunctional.main ..)
 
+/- English proof (translation)
+Use `first`. Consider the case `(rename_i h_1 h_2 h_3 h_5 h_6 h_7 h_8; revert R h_1 h_2 h_3 M h_5 h_6 h_7 h_8 N e; exact @_root_.GlobalTheory.LengthQuotientValuationDet.length_quotient_eq_addVal_det)`. Consider the case `exact @_root_.GlobalTheory.LengthQuotientValuationDet.length_quotient_eq_addVal_det`. Consider the case `exact _root_.GlobalTheory.LengthQuotientValuationDet.length_quotient_eq_addVal_det`. Consider the case `(apply _root_.GlobalTheory.LengthQuotientValuationDet.length_quotient_eq_addVal_det <;> assumption)`.
+
+Consider the case `(intros; apply _root_.GlobalTheory.LengthQuotientValuationDet.length_quotient_eq_addVal_det <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.LengthQuotientValuationDet.length_quotient_eq_addVal_det <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LengthQuotientValuationDet.length_quotient_eq_addVal_det ..)`.
+-/
 theorem length_quotient_eq_addVal_det_equiv [Module.Free R M] [Module.Finite R M]
     (N : Submodule R M) (e : M ≃ₗ[R] N) :
     Module.length R (M ⧸ N) = addVal R (LinearMap.det (N.subtype ∘ₗ (e : M →ₗ[R] N))) := by
@@ -64,6 +82,11 @@ theorem length_quotient_eq_addVal_det_equiv [Module.Free R M] [Module.Finite R M
   | (intros; apply @_root_.GlobalTheory.LengthQuotientValuationDet.length_quotient_eq_addVal_det <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.LengthQuotientValuationDet.length_quotient_eq_addVal_det ..)
 
+/- English proof (translation)
+Distinguish the cases in `hf : LinearMap.det f = 0`. Rewrite using `[length_quotient_range_eq_top_of_det_eq_zero hf, hf, addVal_zero]`. Establish `hinj : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot]`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hf (LinearMap.det_eq_zero_iff_ker_ne_bot.mpr h)`. Conclude with `length_quotient_eq_addVal_det_equiv _ (LinearEquiv.ofInjective f hinj)`.
+-/
 theorem length_quotient_range_eq_addVal_det [Module.Free R M] [Module.Finite R M]
     (f : M →ₗ[R] M) :
     Module.length R (M ⧸ LinearMap.range f) = addVal R (LinearMap.det f) := by
@@ -75,6 +98,9 @@ theorem length_quotient_range_eq_addVal_det [Module.Free R M] [Module.Finite R M
       exact hf (LinearMap.det_eq_zero_iff_ker_ne_bot.mpr h)
     exact length_quotient_eq_addVal_det_equiv _ (LinearEquiv.ofInjective f hinj)
 
+/- English proof (translation)
+Rewrite using `[length_quotient_range_eq_addVal_det, ne_eq, addVal_eq_top_iff]`.
+-/
 theorem length_quotient_range_ne_top_iff [Module.Free R M] [Module.Finite R M]
     {f : M →ₗ[R] M} :
     Module.length R (M ⧸ LinearMap.range f) ≠ ⊤ ↔ LinearMap.det f ≠ 0 := by
@@ -82,23 +108,40 @@ theorem length_quotient_range_ne_top_iff [Module.Free R M] [Module.Finite R M]
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Rewrite using `[length_quotient_range_eq_addVal_det, LinearMap.det_toLin']`.
+-/
 theorem length_quotient_range_toLin'_eq_addVal_det (P : Matrix ι ι R) :
     Module.length R ((ι → R) ⧸ LinearMap.range (Matrix.toLin' P)) = addVal R P.det := by
   rw [length_quotient_range_eq_addVal_det, LinearMap.det_toLin']
 
+/- English proof (translation)
+The claim follows from `length_quotient_range_toLin'_eq_addVal_det P`.
+-/
 theorem length_quotient_range_mulVecLin_eq_addVal_det (P : Matrix ι ι R) :
     Module.length R ((ι → R) ⧸ LinearMap.range P.mulVecLin) = addVal R P.det :=
   length_quotient_range_toLin'_eq_addVal_det P
 
+/- English proof (translation)
+Rewrite using `[← Matrix.range_mulVecLin, length_quotient_range_mulVecLin_eq_addVal_det]`.
+-/
 theorem length_quotient_span_cols_eq_addVal_det (P : Matrix ι ι R) :
     Module.length R ((ι → R) ⧸ Submodule.span R (Set.range P.col)) = addVal R P.det := by
   rw [← Matrix.range_mulVecLin, length_quotient_range_mulVecLin_eq_addVal_det]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.det_transpose]`. Conclude with `length_quotient_span_cols_eq_addVal_det P.transpose`.
+-/
 theorem length_quotient_span_rows_eq_addVal_det (P : Matrix ι ι R) :
     Module.length R ((ι → R) ⧸ Submodule.span R (Set.range P.row)) = addVal R P.det := by
   rw [← Matrix.det_transpose]
   exact length_quotient_span_cols_eq_addVal_det P.transpose
 
+/- English proof (translation)
+Use `first`. Consider the case `(rename_i h_1 h_2 h_3 h_5 h_6 h_8 h_9 h_11 h_12; revert R h_1 h_2 h_3 M h_5 h_6 ι h_8 h_9 M' h_11 h_12 b' b f; exact @_root_.GlobalTheory.LengthQuotientSpanValuation.main)`. Consider the case `exact @_root_.GlobalTheory.LengthQuotientSpanValuation.main`. Consider the case `exact _root_.GlobalTheory.LengthQuotientSpanValuation.main`. Consider the case `(apply _root_.GlobalTheory.LengthQuotientSpanValuation.main <;> assumption)`.
+
+Consider the case `(intros; apply _root_.GlobalTheory.LengthQuotientSpanValuation.main <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.LengthQuotientSpanValuation.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LengthQuotientSpanValuation.main ..)`.
+-/
 theorem length_quotient_range_eq_addVal_det_toMatrix {M' : Type*} [AddCommGroup M'] [Module R M']
     (b' : Basis ι R M') (b : Basis ι R M) (f : M' →ₗ[R] M) :
     Module.length R (M ⧸ LinearMap.range f) = addVal R (LinearMap.toMatrix b' b f).det := by
@@ -111,20 +154,32 @@ theorem length_quotient_range_eq_addVal_det_toMatrix {M' : Type*} [AddCommGroup 
   | (intros; apply @_root_.GlobalTheory.LengthQuotientSpanValuation.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.LengthQuotientSpanValuation.main ..)
 
+/- English proof (translation)
+Rewrite using `[← b.constr_range R, length_quotient_range_eq_addVal_det_toMatrix b b, Basis.det_apply, Basis.toMatrix_eq_toMatrix_constr]`. Both sides reduce to the same expression.
+-/
 theorem length_quotient_span_eq_addVal_det (b : Basis ι R M) (v : ι → M) :
     Module.length R (M ⧸ Submodule.span R (Set.range v)) = addVal R (b.det v) := by
   rw [← b.constr_range R, length_quotient_range_eq_addVal_det_toMatrix b b, Basis.det_apply,
     Basis.toMatrix_eq_toMatrix_constr]
   rfl
 
+/- English proof (translation)
+Rewrite using `[length_quotient_span_eq_addVal_det b, ne_eq, addVal_eq_top_iff]`.
+-/
 theorem length_quotient_span_ne_top_iff (b : Basis ι R M) {v : ι → M} :
     Module.length R (M ⧸ Submodule.span R (Set.range v)) ≠ ⊤ ↔ b.det v ≠ 0 := by
   rw [length_quotient_span_eq_addVal_det b, ne_eq, addVal_eq_top_iff]
 
+/- English proof (translation)
+Rewrite using `[length_quotient_span_eq_addVal_det b, hv, addVal_zero]`.
+-/
 theorem length_quotient_span_eq_top_of_det_eq_zero (b : Basis ι R M) {v : ι → M}
     (hv : b.det v = 0) : Module.length R (M ⧸ Submodule.span R (Set.range v)) = ⊤ := by
   rw [length_quotient_span_eq_addVal_det b, hv, addVal_zero]
 
+/- English proof (translation)
+Rewrite using `[← length_quotient_span_eq_addVal_det]`. Establish `: Submodule.span R (Set.range fun i => (c i : M)) = N` using `by conv_rhs => rw [← Submodule.map_subtype_top N, ← c.span_eq, Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+-/
 theorem length_quotient_eq_addVal_det_basis (b : Basis ι R M) (N : Submodule R M)
     (c : Basis ι R N) : Module.length R (M ⧸ N) = addVal R (b.det fun i => (c i : M)) := by
   rw [← length_quotient_span_eq_addVal_det]
@@ -140,6 +195,9 @@ section Relative
 
 variable {V : Type*} [AddCommGroup V] [Module R V] {ι : Type*} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Establish `: Submodule.span R (Set.range fun i => (v i : V)) = (Submodule.span R (Set.range v)).map A.subtype`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[← length_quotient_span_eq_addVal_det, ← relLength_top_left, ← relLength_map_subtype, Submodule.map_subtype_top, this]`.
+-/
 theorem relLength_span_eq_addVal_det {A : Submodule R V} (b : Basis ι R A) (v : ι → A) :
     relLength A (Submodule.span R (Set.range fun i => (v i : V))) = addVal R (b.det v) := by
   have : Submodule.span R (Set.range fun i => (v i : V)) =
@@ -149,6 +207,11 @@ theorem relLength_span_eq_addVal_det {A : Submodule R V} (b : Basis ι R A) (v :
   rw [← length_quotient_span_eq_addVal_det, ← relLength_top_left, ← relLength_map_subtype,
     Submodule.map_subtype_top, this]
 
+/- English proof (translation)
+Use `first`. Consider the case `(rename_i h_1 h_2 h_3 h_5 h_6 h_8 h_9; revert R h_1 h_2 h_3 V h_5 h_6 ι h_8 h_9 a v ha P hv; exact @_root_.GlobalTheory.RelativeLengthSpanDet.relLength_span_eq)`. Consider the case `exact @_root_.GlobalTheory.RelativeLengthSpanDet.relLength_span_eq`. Consider the case `exact _root_.GlobalTheory.RelativeLengthSpanDet.relLength_span_eq`. Consider the case `(apply _root_.GlobalTheory.RelativeLengthSpanDet.relLength_span_eq <;> assumption)`.
+
+Consider the case `(intros; apply _root_.GlobalTheory.RelativeLengthSpanDet.relLength_span_eq <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.RelativeLengthSpanDet.relLength_span_eq <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.RelativeLengthSpanDet.relLength_span_eq ..)`.
+-/
 theorem relLength_span_span_eq_addVal_det {a v : ι → V} (ha : LinearIndependent R a)
     (P : Matrix ι ι R) (hv : ∀ j, v j = ∑ i, P i j • a i) :
     relLength (Submodule.span R (Set.range a)) (Submodule.span R (Set.range v)) =
@@ -162,6 +225,11 @@ theorem relLength_span_span_eq_addVal_det {a v : ι → V} (ha : LinearIndepende
   | (intros; apply @_root_.GlobalTheory.RelativeLengthSpanDet.relLength_span_eq <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.RelativeLengthSpanDet.relLength_span_eq ..)
 
+/- English proof (translation)
+Use `first`. Consider the case `(rename_i h_1 h_2 h_3 h_5 h_6 h_8 h_9; revert R h_1 h_2 h_3 V h_5 h_6 A h_8 h_9 g hg; exact @_root_.GlobalTheory.LengthCokernelInjective.relLength_map_eq_addVal_det)`. Consider the case `exact @_root_.GlobalTheory.LengthCokernelInjective.relLength_map_eq_addVal_det`. Consider the case `exact _root_.GlobalTheory.LengthCokernelInjective.relLength_map_eq_addVal_det`. Consider the case `(apply _root_.GlobalTheory.LengthCokernelInjective.relLength_map_eq_addVal_det <;> assumption)`.
+
+Consider the case `(intros; apply _root_.GlobalTheory.LengthCokernelInjective.relLength_map_eq_addVal_det <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.LengthCokernelInjective.relLength_map_eq_addVal_det <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LengthCokernelInjective.relLength_map_eq_addVal_det ..)`.
+-/
 theorem relLength_map_eq_addVal_det_restrict {A : Submodule R V} [Module.Free R A]
     [Module.Finite R A] (g : V →ₗ[R] V) (hg : ∀ x ∈ A, g x ∈ A) :
     relLength A (A.map g) = addVal R (LinearMap.det (g.restrict hg)) := by
@@ -178,6 +246,9 @@ end Relative
 
 section Lattice
 
+/- English proof (translation)
+Rewrite using `[← relLength_map_mkQ hBC A, relLength_eq_length_map_mkQ A C, relLength_eq_length_map_mkQ B C, relLength_def, add_comm, ← (Submodule.submoduleOfEquivOfLe (Submodule.map_mono (f := C.mkQ) hAB)).length_eq]`. Conclude with `Module.length_eq_add_of_exact _ _ (Submodule.subtype_injective _) (Submodule.mkQ_surjective _) (LinearMap.exact_subtype_mkQ _)`.
+-/
 private theorem relLength_chain {S V : Type*} [Ring S] [AddCommGroup V] [Module S V]
     {A B C : Submodule S V} (hAB : B ≤ A) (hBC : C ≤ B) :
     relLength A C = relLength A B + relLength B C := by
@@ -187,6 +258,11 @@ private theorem relLength_chain {S V : Type*} [Ring S] [AddCommGroup V] [Module 
   exact Module.length_eq_add_of_exact _ _ (Submodule.subtype_injective _)
     (Submodule.mkQ_surjective _) (LinearMap.exact_subtype_mkQ _)
 
+/- English proof (translation)
+Use `first`. Consider the case `(rename_i h_2 h_3 h_4; revert S V h_2 h_3 h_4 A B C hA hB m n hm hn; exact @_root_.GlobalTheory.RelativeLengthAdditivity.signedLength_of_common_lower)`. Consider the case `exact @_root_.GlobalTheory.RelativeLengthAdditivity.signedLength_of_common_lower`. Consider the case `exact _root_.GlobalTheory.RelativeLengthAdditivity.signedLength_of_common_lower`. Consider the case `(apply _root_.GlobalTheory.RelativeLengthAdditivity.signedLength_of_common_lower <;> assumption)`.
+
+Consider the case `(intros; apply _root_.GlobalTheory.RelativeLengthAdditivity.signedLength_of_common_lower <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.RelativeLengthAdditivity.signedLength_of_common_lower <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.RelativeLengthAdditivity.signedLength_of_common_lower ..)`.
+-/
 private theorem signedLength_of_common {S V : Type*} [Ring S] [AddCommGroup V] [Module S V]
     {A B C : Submodule S V} (hA : C ≤ A) (hB : C ≤ B) {m n : ℕ} (hm : relLength A C = m)
     (hn : relLength B C = n) :
@@ -202,6 +278,9 @@ private theorem signedLength_of_common {S V : Type*} [Ring S] [AddCommGroup V] [
 
 variable {K : Type*} [Field K] [Algebra R K] [IsFractionRing R K]
 
+/- English proof (translation)
+Establish `hx : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `at h`. Rewrite using `[Ring.ordFrac_eq_ord R hx, Ring.ordMonoidWithZeroHom_eq_coe R (mem_nonZeroDivisors_of_ne_zero hx) ((Ring.ord_eq_addVal x).trans h)]`. Both sides reduce to the same expression.
+-/
 theorem ordFrac_algebraMap_eq_exp {x : R} {n : ℕ} (h : addVal R x = n) :
     Ring.ordFrac R (algebraMap R K x) = WithZero.exp (n : ℤ) := by
   have hx : x ≠ 0 := by
@@ -211,6 +290,9 @@ theorem ordFrac_algebraMap_eq_exp {x : R} {n : ℕ} (h : addVal R x = n) :
     (mem_nonZeroDivisors_of_ne_zero hx) ((Ring.ord_eq_addVal x).trans h)]
   rfl
 
+/- English proof (translation)
+Rewrite using `[map_mul, map_zpow₀, Ring.ordFrac_of_isUnit u.isUnit, Ring.ordFrac_irreducible hϖ, one_mul, ← WithZero.exp_zsmul, smul_eq_mul, mul_one]`.
+-/
 theorem ordFrac_unit_mul_zpow {ϖ : R} (hϖ : Irreducible ϖ) (u : Rˣ) (n : ℤ) :
     Ring.ordFrac R (algebraMap R K u * algebraMap R K ϖ ^ n) = WithZero.exp n := by
   rw [map_mul, map_zpow₀, Ring.ordFrac_of_isUnit u.isUnit, Ring.ordFrac_irreducible hϖ, one_mul,
@@ -219,6 +301,11 @@ theorem ordFrac_unit_mul_zpow {ϖ : R} (hϖ : Irreducible ϖ) (u : Rˣ) (n : ℤ
 variable {V : Type*} [AddCommGroup V] [Module K V] [Module R V] [IsScalarTower R K V]
   {ι : Type*} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Use `first`. Consider the case `(rename_i h_1 h_2 h_3 h_5 h_6 h_7 h_9 h_10 h_11 h_12 h_14 h_15; revert R h_1 h_2 h_3 K h_5 h_6 h_7 V h_9 h_10 h_11 h_12 ι h_14 h_15 a b ha g hg hb; exact @_root_.GlobalTheory.SignedLengthOrdFracDet.signedLength_span_eq_ordFrac_det)`. Consider the case `exact @_root_.GlobalTheory.SignedLengthOrdFracDet.signedLength_span_eq_ordFrac_det`. Consider the case `exact _root_.GlobalTheory.SignedLengthOrdFracDet.signedLength_span_eq_ordFrac_det`. Consider the case `(apply _root_.GlobalTheory.SignedLengthOrdFracDet.signedLength_span_eq_ordFrac_det <;> assumption)`.
+
+Consider the case `(intros; apply _root_.GlobalTheory.SignedLengthOrdFracDet.signedLength_span_eq_ordFrac_det <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.SignedLengthOrdFracDet.signedLength_span_eq_ordFrac_det <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SignedLengthOrdFracDet.signedLength_span_eq_ordFrac_det ..)`.
+-/
 private theorem lattice_length_ord_frac_det {a b : ι → V} (ha : LinearIndependent K a) (g : Matrix ι ι K)
     (hg : g.det ≠ 0) (hb : ∀ j, b j = ∑ i, g i j • a i) :
     LengthCommensurable (Submodule.span R (Set.range a)) (Submodule.span R (Set.range b)) ∧
@@ -233,23 +320,35 @@ private theorem lattice_length_ord_frac_det {a b : ι → V} (ha : LinearIndepen
   | (intros; apply @_root_.GlobalTheory.SignedLengthOrdFracDet.signedLength_span_eq_ordFrac_det <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.SignedLengthOrdFracDet.signedLength_span_eq_ordFrac_det ..)
 
+/- English proof (translation)
+The claim follows from `(lattice_length_ord_frac_det ha g hg hb).1`.
+-/
 theorem lengthCommensurable_span_span_of_det_ne_zero {a b : ι → V} (ha : LinearIndependent K a)
     (g : Matrix ι ι K) (hg : g.det ≠ 0) (hb : ∀ j, b j = ∑ i, g i j • a i) :
     LengthCommensurable (Submodule.span R (Set.range a)) (Submodule.span R (Set.range b)) :=
   (lattice_length_ord_frac_det ha g hg hb).1
 
+/- English proof (translation)
+The claim follows from `(lattice_length_ord_frac_det ha g hg hb).2`.
+-/
 theorem ordFrac_det_eq_exp_signedLength_span {a b : ι → V} (ha : LinearIndependent K a)
     (g : Matrix ι ι K) (hg : g.det ≠ 0) (hb : ∀ j, b j = ∑ i, g i j • a i) :
     Ring.ordFrac R g.det = WithZero.exp
       (signedLength (Submodule.span R (Set.range a)) (Submodule.span R (Set.range b))) :=
   (lattice_length_ord_frac_det ha g hg hb).2
 
+/- English proof (translation)
+Rewrite using `[ordFrac_det_eq_exp_signedLength_span ha g hg hb, WithZero.log_exp]`.
+-/
 theorem signedLength_span_eq_log_ordFrac_det {a b : ι → V} (ha : LinearIndependent K a)
     (g : Matrix ι ι K) (hg : g.det ≠ 0) (hb : ∀ j, b j = ∑ i, g i j • a i) :
     signedLength (Submodule.span R (Set.range a)) (Submodule.span R (Set.range b)) =
       WithZero.log (Ring.ordFrac R g.det) := by
   rw [ordFrac_det_eq_exp_signedLength_span ha g hg hb, WithZero.log_exp]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨lengthCommensurable_span_span_of_det_ne_zero ha _ g.det_ne_zero hb, signedLength_span_eq_log_ordFrac_det ha _ g.det_ne_zero hb⟩`.
+-/
 theorem signedLength_span_eq_log_ordFrac_det_generalLinear {a b : ι → V}
     (ha : LinearIndependent K a) (g : GL ι K) (hb : ∀ j, b j = ∑ i, g i j • a i) :
     LengthCommensurable (Submodule.span R (Set.range a)) (Submodule.span R (Set.range b)) ∧
@@ -258,6 +357,11 @@ theorem signedLength_span_eq_log_ordFrac_det_generalLinear {a b : ι → V}
   ⟨lengthCommensurable_span_span_of_det_ne_zero ha _ g.det_ne_zero hb,
     signedLength_span_eq_log_ordFrac_det ha _ g.det_ne_zero hb⟩
 
+/- English proof (translation)
+Use `first`. Consider the case `(rename_i h_1 h_2 h_3 h_5 h_6 h_7 h_9 h_10 h_11 h_12 h_14 h_15; revert R h_1 h_2 h_3 K h_5 h_6 h_7 V h_9 h_10 h_11 h_12 ι h_14 h_15 a b ha g hb ϖ hϖ u n hg; exact @_root_.GlobalTheory.SignedLengthTower.signedLength_span_eq)`. Consider the case `exact @_root_.GlobalTheory.SignedLengthTower.signedLength_span_eq`. Consider the case `exact _root_.GlobalTheory.SignedLengthTower.signedLength_span_eq`. Consider the case `(apply _root_.GlobalTheory.SignedLengthTower.signedLength_span_eq <;> assumption)`.
+
+Consider the case `(intros; apply _root_.GlobalTheory.SignedLengthTower.signedLength_span_eq <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.SignedLengthTower.signedLength_span_eq <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SignedLengthTower.signedLength_span_eq ..)`.
+-/
 theorem signedLength_span_eq_of_det_eq_unit_mul_zpow {a b : ι → V} (ha : LinearIndependent K a)
     (g : Matrix ι ι K) (hb : ∀ j, b j = ∑ i, g i j • a i) {ϖ : R} (hϖ : Irreducible ϖ) (u : Rˣ)
     (n : ℤ) (hg : g.det = algebraMap R K u * algebraMap R K ϖ ^ n) :
@@ -271,23 +375,35 @@ theorem signedLength_span_eq_of_det_eq_unit_mul_zpow {a b : ι → V} (ha : Line
   | (intros; apply @_root_.GlobalTheory.SignedLengthTower.signedLength_span_eq <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.SignedLengthTower.signedLength_span_eq ..)
 
+/- English proof (translation)
+The claim follows from `lengthCommensurable_span_span_of_det_ne_zero a.linearIndependent (a.toMatrix b) (a.isUnit_det b).ne_zero fun j => (a.sum_toMatrix_smul_self b j).symm`.
+-/
 theorem lengthCommensurable_span_basis (a b : Basis ι K V) :
     LengthCommensurable (Submodule.span R (Set.range a)) (Submodule.span R (Set.range b)) :=
   lengthCommensurable_span_span_of_det_ne_zero a.linearIndependent (a.toMatrix b)
     (a.isUnit_det b).ne_zero fun j => (a.sum_toMatrix_smul_self b j).symm
 
+/- English proof (translation)
+The claim follows from `ordFrac_det_eq_exp_signedLength_span a.linearIndependent (a.toMatrix b) (a.isUnit_det b).ne_zero fun j => (a.sum_toMatrix_smul_self b j).symm`.
+-/
 theorem ordFrac_basis_det_eq_exp_signedLength (a b : Basis ι K V) :
     Ring.ordFrac R (a.det b) = WithZero.exp
       (signedLength (Submodule.span R (Set.range a)) (Submodule.span R (Set.range b))) :=
   ordFrac_det_eq_exp_signedLength_span a.linearIndependent (a.toMatrix b)
     (a.isUnit_det b).ne_zero fun j => (a.sum_toMatrix_smul_self b j).symm
 
+/- English proof (translation)
+Rewrite using `[ordFrac_basis_det_eq_exp_signedLength, WithZero.log_exp]`.
+-/
 theorem signedLength_span_basis_eq_log_ordFrac_det (a b : Basis ι K V) :
     signedLength (Submodule.span R (Set.range a)) (Submodule.span R (Set.range b)) =
       WithZero.log (Ring.ordFrac R (a.det b)) := by
   rw [ordFrac_basis_det_eq_exp_signedLength, WithZero.log_exp]
 
 omit [IsDiscreteValuationRing R] [IsFractionRing R K] [IsDomain R] [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Use `conv_rhs => rw [← Submodule.map_subtype_top A, ← a.span_eq, Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+-/
 private theorem span_range_coe_basis {A : Submodule R V} (a : Basis ι R A) :
     Submodule.span R (Set.range fun i => (a i : V)) = A := by
   conv_rhs => rw [← Submodule.map_subtype_top A, ← a.span_eq, Submodule.map_span,
@@ -295,6 +411,9 @@ private theorem span_range_coe_basis {A : Submodule R V} (a : Basis ι R A) :
   rfl
 
 omit [IsDiscreteValuationRing R] [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Use `Eq.trans ?_ (span_range_coe_basis a)` and prove the remaining obligations. Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `a.extendOfIsLattice_apply K i`.
+-/
 private theorem span_range_extendOfIsLattice {A : Submodule R V} [A.IsLattice K]
     (a : Basis ι R A) : Submodule.span R (Set.range (a.extendOfIsLattice K)) = A := by
   refine Eq.trans ?_ (span_range_coe_basis a)
@@ -302,6 +421,11 @@ private theorem span_range_extendOfIsLattice {A : Submodule R V} [A.IsLattice K]
   funext i
   exact a.extendOfIsLattice_apply K i
 
+/- English proof (translation)
+Use `first`. Consider the case `(rename_i h_1 h_2 h_3 h_5 h_6 h_7 h_9 h_10 h_11 h_12 h_14 h_15; revert R h_1 h_2 h_3 K h_5 h_6 h_7 V h_9 h_10 h_11 h_12 ι h_14 h_15 A B a b g hg hb; exact @_root_.GlobalTheory.SignedLengthLogDet.signedLength_eq_log_ordFrac_det)`. Consider the case `exact @_root_.GlobalTheory.SignedLengthLogDet.signedLength_eq_log_ordFrac_det`. Consider the case `exact _root_.GlobalTheory.SignedLengthLogDet.signedLength_eq_log_ordFrac_det`. Consider the case `(apply _root_.GlobalTheory.SignedLengthLogDet.signedLength_eq_log_ordFrac_det <;> assumption)`.
+
+Consider the case `(intros; apply _root_.GlobalTheory.SignedLengthLogDet.signedLength_eq_log_ordFrac_det <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.SignedLengthLogDet.signedLength_eq_log_ordFrac_det <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SignedLengthLogDet.signedLength_eq_log_ordFrac_det ..)`.
+-/
 theorem signedLength_eq_log_ordFrac_det_of_bases {A B : Submodule R V} (a : Basis ι R A)
     (b : Basis ι R B) (g : Matrix ι ι K) (hg : g.det ≠ 0)
     (hb : ∀ j, (b j : V) = ∑ i, g i j • (a i : V)) :
@@ -315,6 +439,11 @@ theorem signedLength_eq_log_ordFrac_det_of_bases {A B : Submodule R V} (a : Basi
   | (intros; apply @_root_.GlobalTheory.SignedLengthLogDet.signedLength_eq_log_ordFrac_det <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.SignedLengthLogDet.signedLength_eq_log_ordFrac_det ..)
 
+/- English proof (translation)
+Use `first`. Consider the case `(rename_i h_1 h_2 h_3 h_5 h_6 h_7 h_9 h_10 h_11 h_12 h_14; revert R h_1 h_2 h_3 K h_5 h_6 h_7 V h_9 h_10 h_11 h_12 A h_14 g hg; exact @_root_.GlobalTheory.SignedLengthMapLogDet.signedLength_map_eq_log_ordFrac_det)`. Consider the case `exact @_root_.GlobalTheory.SignedLengthMapLogDet.signedLength_map_eq_log_ordFrac_det`. Consider the case `exact _root_.GlobalTheory.SignedLengthMapLogDet.signedLength_map_eq_log_ordFrac_det`. Consider the case `(apply _root_.GlobalTheory.SignedLengthMapLogDet.signedLength_map_eq_log_ordFrac_det <;> assumption)`.
+
+Consider the case `(intros; apply _root_.GlobalTheory.SignedLengthMapLogDet.signedLength_map_eq_log_ordFrac_det <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.SignedLengthMapLogDet.signedLength_map_eq_log_ordFrac_det <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SignedLengthMapLogDet.signedLength_map_eq_log_ordFrac_det ..)`.
+-/
 theorem signedLength_map_eq_log_ordFrac_det (A : Submodule R V) [A.IsLattice K] (g : V →ₗ[K] V)
     (hg : LinearMap.det g ≠ 0) :
     LengthCommensurable A (A.map (g.restrictScalars R)) ∧
@@ -329,6 +458,9 @@ theorem signedLength_map_eq_log_ordFrac_det (A : Submodule R V) [A.IsLattice K] 
   | (intros; apply @_root_.GlobalTheory.SignedLengthMapLogDet.signedLength_map_eq_log_ordFrac_det <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.SignedLengthMapLogDet.signedLength_map_eq_log_ordFrac_det ..)
 
+/- English proof (translation)
+The claim follows from `h ▸ signedLength_map_eq_log_ordFrac_det A _ g.isUnit_det'.ne_zero`.
+-/
 theorem signedLength_eq_log_ordFrac_det_of_map_eq {A B : Submodule R V} [A.IsLattice K]
     (g : V ≃ₗ[K] V) (h : A.map ((g : V →ₗ[K] V).restrictScalars R) = B) :
     LengthCommensurable A B ∧
@@ -337,6 +469,11 @@ theorem signedLength_eq_log_ordFrac_det_of_map_eq {A B : Submodule R V} [A.IsLat
 
 variable (K) in
 
+/- English proof (translation)
+Use `first`. Consider the case `(rename_i h_1 h_2 h_3 h_5 h_6 h_7 h_9 h_10 h_11 h_12 h_15 h_16; revert R h_1 h_2 h_3 K h_5 h_6 h_7 V h_9 h_10 h_11 h_12 A B h_15 h_16; exact @_root_.GlobalTheory.LatticeLinearEquivBasis.exists_linearEquiv_map_lattice_eq)`. Consider the case `exact @_root_.GlobalTheory.LatticeLinearEquivBasis.exists_linearEquiv_map_lattice_eq`. Consider the case `exact _root_.GlobalTheory.LatticeLinearEquivBasis.exists_linearEquiv_map_lattice_eq`. Consider the case `(apply _root_.GlobalTheory.LatticeLinearEquivBasis.exists_linearEquiv_map_lattice_eq <;> assumption)`.
+
+Consider the case `(intros; apply _root_.GlobalTheory.LatticeLinearEquivBasis.exists_linearEquiv_map_lattice_eq <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.LatticeLinearEquivBasis.exists_linearEquiv_map_lattice_eq <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LatticeLinearEquivBasis.exists_linearEquiv_map_lattice_eq ..)`.
+-/
 theorem exists_linearEquiv_map_eq_of_isLattice (A B : Submodule R V) [A.IsLattice K]
     [B.IsLattice K] : ∃ g : V ≃ₗ[K] V, A.map ((g : V →ₗ[K] V).restrictScalars R) = B := by
   first
@@ -350,11 +487,17 @@ theorem exists_linearEquiv_map_eq_of_isLattice (A B : Submodule R V) [A.IsLattic
 
 variable (K) in
 
+/- English proof (translation)
+The claim follows from `have ⟨g, h⟩ := exists_linearEquiv_map_eq_of_isLattice K A B (signedLength_eq_log_ordFrac_det_of_map_eq g h).1`.
+-/
 theorem lengthCommensurable_of_isLattice (A B : Submodule R V) [A.IsLattice K] [B.IsLattice K] :
     LengthCommensurable A B :=
   have ⟨g, h⟩ := exists_linearEquiv_map_eq_of_isLattice K A B
   (signedLength_eq_log_ordFrac_det_of_map_eq g h).1
 
+/- English proof (translation)
+Rewrite using `[(signedLength_eq_log_ordFrac_det_of_map_eq g h).2, WithZero.exp_neg, WithZero.exp_log ((map_ne_zero _).mpr g.isUnit_det'.ne_zero), Ring.ordFrac_eq_valuation_inv, inv_inv]`.
+-/
 theorem valuation_det_eq_exp_neg_signedLength {A B : Submodule R V} [A.IsLattice K]
     (g : V ≃ₗ[K] V) (h : A.map ((g : V →ₗ[K] V).restrictScalars R) = B) :
     (IsDiscreteValuationRing.maximalIdeal R).valuation K (LinearMap.det (g : V →ₗ[K] V)) =
@@ -363,6 +506,9 @@ theorem valuation_det_eq_exp_neg_signedLength {A B : Submodule R V} [A.IsLattice
     WithZero.exp_log ((map_ne_zero _).mpr g.isUnit_det'.ne_zero), Ring.ordFrac_eq_valuation_inv,
     inv_inv]
 
+/- English proof (translation)
+The claim follows from `signedLength_span_eq_of_det_eq_unit_mul_zpow (K := K) (by simp) (Matrix.of fun _ _ => (algebraMap R K ϖ)⁻¹) (by simp) hϖ 1 (-1) (by simp)`.
+-/
 example {ϖ : R} (hϖ : Irreducible ϖ) :
     signedLength (Submodule.span R (Set.range fun _ : Unit => (1 : K)))
       (Submodule.span R (Set.range fun _ : Unit => (algebraMap R K ϖ)⁻¹)) = -1 :=

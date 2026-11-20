@@ -7,6 +7,25 @@ open MeasureTheory GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.SatakeB
 
 namespace GlobalTheory.WeylCell.WeylUnipotentShell
 
+/- English proof (translation)
+Introduce `L _ _ _ ϖ σ q hU n k hk hn y hy hw _ _ μ _ _ p`. Establish `hS` using `GlobalTheory.T.unitaryWeylCellShell_isOpenCompactSubgroup L ϖ σ q hU n k hk hn y hy hw`. Use `haveI : LocallyCompactSpace (cellU y) := (hS.1 0).2.1.locallyCompactSpace_of_mem_nhds_of_group ((hS.1 0).1.mem_nhds (hS.1 0).2.2.1)`. Set `e : cellU y ≃ᵐ cellU y` to `(Homeomorph.mulRight p).toMeasurableEquiv`. Establish `he : ∀ u, e u = u * p` using `fun _ => rfl`.
+
+Set `ν : Measure (cellU y)` to `μ.map e`. Use `haveI : ν.IsMulLeftInvariant := by`. Establish `: ν = μ.map (fun x => x * p)` using `rfl`. Rewrite using `[this]`. Conclude with `isMulLeftInvariant_map_mul_right p`.
+
+Use `haveI : IsFiniteMeasureOnCompacts ν := by`. Use `⟨fun K hK => ?_⟩` and prove the remaining obligations. Use `show μ.map e K < ⊤`. Rewrite using `[e.map_apply]`. Conclude with `((hK.image (Homeomorph.mulRight p).symm.continuous)).measure_lt_top.trans_le' (by`.
+
+Apply `le_of_eq` to reduce the goal to its premises. Use `congr 1`. Use extensionality with `x`. Simplify using `[e, Homeomorph.mulRight, Equiv.mulRight])`. Use `set j : ℕ := depthU k (p : GU σ n)`.
+
+Establish `hp : p ∈ shellU k y (j : ℤ)` using `mem_shellU_depth k y p`. Take `⟨ho, hc, h1, hmul, hinv⟩` from `hS.1 (j : ℤ)`. Establish `hνS : ν (shellU k y j) = 1 * μ (shellU k y j)`. Rewrite using `[one_mul]`. Use `show μ.map e _ = _`.
+
+Rewrite using `[e.map_apply]`. Use `congr 1`. Use extensionality with `u`. Simplify using `only [Set.mem_preimage, he]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Simplify using `using hmul _ _ h (hinv p hp)`. Introduce `h`. Conclude with `hmul _ _ h hp`. Establish `hνμ : ν = μ`.
+
+Use `GlobalTheory.T.haarMeasure_unique_sigmaCompact_normalised_compactOpen (cellU y) μ ν (fun i : ℕ => shellU k y (i : ℤ)) (fun i => ⟨(hS.1 i).2.1, (hS.1 i).1.measurableSet⟩) (Set.eq_univ_of_forall fun u => Set.mem_iUnion.2 ⟨_, mem_shellU_depth k y u⟩) _ 1 ho hc ⟨1, h1⟩ hνS` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Establish `hmp : MeasurePreserving e μ μ` using `⟨e.measurable, hνμ⟩`. Use `⟨fun F => ?_, fun F => ?_⟩` and prove the remaining obligations. Conclude with `hmp.integral_comp' (g := fun u : cellU y => F (u : GU σ n))`.
+
+Conclude with `hmp.lintegral_comp_emb e.measurableEmbedding (fun u : cellU y => F (u : GU σ n))`.
+-/
 theorem cellU_haar_rightInv : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L)
     (σ : L →+* L) (q : ℕ), IsUnramInv ϖ σ q →
     ∀ (n : ℕ) (k : Fin (n / 2)), ¬ k.val + 1 < n / 2 → ¬ Even n →

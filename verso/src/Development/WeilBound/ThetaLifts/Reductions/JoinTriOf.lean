@@ -13,6 +13,23 @@ open PositivityTheory.ThKF.Unit
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `mem : ∀ T, Φ T ∈ M.Pol B.ψ B.emb` using `fun T => hr ▸ LinearMap.mem_range_self Φ T`. Establish `sA : ∀ N, GlobalTheory.Published.ThetaSubInf M B.ψ B.emb om N → ∀ w Z T, atL w (fockAct1 P Q R S Z) T + (c₁ w * Z.trace) • T ∈ N.comap Φ` using `fun N hN w Z T => by`. Establish `u : ∀ Z ∈ upq P Q, atL w (fockAct1 P Q R S Z) T + (c₁ w * Z.trace) • T ∈ N.comap Φ` using `fun Z hZ => by`. Take `⟨γ, hγ, h⟩` from `line_at hcm fr.2.1 h1 w hZ`. Conclude with `hN.2.1 γ hγ (Φ T) (mem T) _ (h T)`.
+
+Take `⟨Z₁, a1, Z₂, a2, rfl, -⟩` from `decomp Z`. Establish `e : atL w (fockAct1 P Q R S (Z₁ + Complex.I • Z₂)) T + (c₁ w * (Z₁ + Complex.I • Z₂).trace) • T = (atL w (fockAct1 P Q R S Z₁) T + (c₁ w * Z₁.trace) • T) + Complex.I • (atL w (fockAct1 P Q R S Z₂) T + (c₁ w * Z₂.trace) • T)`. Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, Matrix.trace_add, Matrix.trace_smul, smul_eq_mul]`. Use `module`. Rewrite using `[e]`.
+
+Conclude with `add_mem (u Z₁ a1) (Submodule.smul_mem _ _ (u Z₂ a2))`. Establish `sZ : ∀ N, GlobalTheory.Published.ThetaSubInf M B.ψ B.emb om N → ∀ (f : InfinitePlace F → Formalism.BasicNotions.TH.Pol P Q R S) w, f w ∈ ReciprocityTheory.ThetaSummability.Real.coinvSub (ReciprocityTheory.ChartRestriction.G.ThK.Real.act1 P Q R S) (ReciprocityTheory.ChartRestricti …` using `fun N hN f w hf => by`. Set `j : Formalism.BasicNotions.TH.Pol P Q R S →ₗ[ℂ] Tens F P Q R S` to `(PiTensorProduct.tprod ℂ).toLinearMap f w`. Establish `hj : ∀ (L : Module.End ℂ (Formalism.BasicNotions.TH.Pol P Q R S)) x, j (L x) = atL w L (j x)` using `fun L x => (atL_tprod w L f x).symm`. Establish `: ReciprocityTheory.ThetaSummability.Real.coinvSub (ReciprocityTheory.ChartRestriction.G.ThK.Real.act1 P Q R S) (ReciprocityTheory.ChartRestriction.G.ThK.Real.chiTr (-c₁ w)) ≤ (N.comap Φ).comap j` using `iSup_le fun Z => by`.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Use `show j (FockH1Action.fockAct1 P Q R S Z x - (-c₁ w * Z.trace) • x) ∈ N.comap Φ`. Rewrite using `[fockFirstAction_matrixUnit_eq, map_sub, map_smul, hj, neg_mul, neg_smul, sub_neg_eq_add]`. Conclude with `sA N hN w Z _`. Simplify `this hf` using `[j]`.
+
+Establish `sB : ∀ N, GlobalTheory.Published.ThetaSubInf M B.ψ B.emb om N → ∀ w Z, ∀ x ∈ N.comap Φ, atL w (fockAct2 P Q R S Z) x ∈ N.comap Φ` using `fun N hN w Z x hx => by`. Establish `u : ∀ Z ∈ upq R S, atL w (fockAct2 P Q R S Z) x ∈ N.comap Φ` using `fun Z hZ => by`. Take `⟨γ, hγ, h⟩` from `line_at hcm fr.2.2 h2 w hZ`. Establish `: _ ∈ N.comap Φ` using `hN.2.2.2.1 γ hγ (Φ x) hx _ (h x)`. Simplify using `using (N.comap Φ).sub_mem this ((N.comap Φ).smul_mem (c₂ w * Z.trace) hx)`.
+
+Take `⟨Z₁, a1, Z₂, a2, rfl, -⟩` from `decomp Z`. Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply]`. Conclude with `add_mem (u Z₁ a1) (Submodule.smul_mem _ _ (u Z₂ a2))`. Establish `top : ∀ N, GlobalTheory.Published.ThetaSubInf M B.ψ B.emb om N → N.comap Φ = ⊤ → N = M.Pol B.ψ B.emb` using `fun N hN e => le_antisymm hN.1 (by`. Rewrite using `[← hr]`.
+
+Introduce and unpack `_ ⟨T, rfl⟩`. Conclude with `(e ▸ Submodule.mem_top : T ∈ N.comap Φ))`. Introduce `N N' hN hN' n1 n2 e`. Use `choose K k1 k2 k3 v k4 using ho`. Use `(tens_join (V := fun _ : InfinitePlace F => Formalism.BasicNotions.TH.Pol P Q R S) (A := fun _ => Mat R S) (fun _ Z => fockAct2 P Q R S Z) K _ (fun _ => by rw [← (MvPolynomial.basisMonomials _ ℂ).mk_eq_rank'']; exact Cardinal.mk_le_aleph0) k1 (fun w Z x hx => fockSecondAction_mat …` and prove the remaining obligations.
+
+Take `⟨x, hx, y, hy, e'⟩` from `Submodule.mem_sup.1 (e ▸ mem T : Φ T ∈ N ⊔ N')`. Take `⟨x, rfl⟩ : x ∈ LinearMap.range Φ` from `hr ▸ hN.1 hx`. Take `⟨y, rfl⟩ : y ∈ LinearMap.range Φ` from `hr ▸ hN'.1 hy`. Rewrite using `[← inj ((map_add Φ x y).trans e')]`. Conclude with `Submodule.add_mem_sup hx hy`.
+-/
 theorem join_pair {n d P Q R S : ℕ} {X : Spc F E n} {W : Spc F E d} {B : Base F E} {M : Model σ X W} {om : Rep σ X W}
     (hcm : IsCMExt F E σ) {A : InfinitePlace F → Matrix (Fin n) (Ix P Q) ℂ} {C : InfinitePlace F → Matrix (Fin d) (Ix R S) ℂ}
     (fr : Framed B.emb (incM F X.J) (incM F W.J) 1 Complex.I A C) {Φ : Tens F P Q R S →ₗ[ℂ] SInf F (Fin n × Fin d)}
@@ -74,6 +91,19 @@ theorem join_pair {n d P Q R S : ℕ} {X : Spc F E n} {W : Spc F E d} {B : Base 
   rw [← inj ((map_add Φ x y).trans e')]
   exact Submodule.add_mem_sup hx hy
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' t`. Establish `par` using `PositivityTheory.RL.even_im_hermitian_sub F E σ B a a' G X om om' t`. Establish `hg` using `t.geo`. Establish `hb` using `t.base`. Establish `hc` using `t.chars`.
+
+Establish `od : ∀ w, Two (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) (-(((B.mβ w - B.mα w : ℤ) : ℂ) / 2)) ∧ Two G.q (a' - G.q) (a + a' - (G.p + G.q)) (G.p + G.q) (-(((B.mα w - B.mβ w : ℤ) : ℂ) / 2))` using `fun w => by`. Establish `k` using `hg.kappa w`. Take `⟨m, hm⟩` from `par w`. Take `⟨m', hm'⟩` from `hg.even`. Establish `e1` using `hg.lt`.
+
+Establish `e2` using `hg.eBig`. Establish `e3` using `hg.aBig`. Establish `ek : (((B.mα w - B.mβ w).toNat : ℕ) : ℤ) = B.mα w - B.mβ w` using `Int.toNat_of_nonneg (by omega)`. Apply the tactic sequence `have := two_data ⟨a, a', G.p, G.q, (B.mα w - B.mβ w).toNat⟩ (by constructor <;> simp only <;> omega)`. Establish `ec : (((B.mα w - B.mβ w).toNat : ℕ) : ℂ) = ((B.mα w - B.mβ w : ℤ) : ℂ)` using `by exact_mod_cast congrArg (Int.cast : ℤ → ℂ) ek`.
+
+Simplify using `only [ec] at this`. Use `⟨?_, this.2⟩` and prove the remaining obligations. Rewrite using `[show -(((B.mβ w - B.mα w : ℤ) : ℂ) / 2) = ((B.mα w - B.mβ w : ℤ) : ℂ) / 2 by push_cast; ring]`. Conclude with `this.1`. Take `⟨A, C, Φ, fr, a1, a2, hΦ⟩` from `PositivityTheory.ThKF.PC.exists_fock hF (PositivityTheory.ThKG.pairV t)`.
+
+Take `⟨A', C', Φ', fr', a1', a2', hΦ'⟩` from `PositivityTheory.ThKF.PC.exists_fock hF (PositivityTheory.ThKG.pairV' t)`. Establish `hwp : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V.J) (incM F G.W.J) G.M.co X.β (X.β / X.α) om` using `t.weil`. Establish `hwp' : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V'.J) (incM F G.W.J) G.M'.co X.α (X.α / X.β) om'` using `t.weil'`. Take `⟨d, hd, hB1⟩` from `hwp.2.1`. Take `⟨d', hd', hB1'⟩` from `hwp'.2.1`.
+
+Conclude with `⟨join_pair hb.cm fr hΦ.1 (hP F E σ _ _ _ _ _ _ G.V G.W G.M B.ψ B.emb A C Φ hb.cm hb.std fr a1 a2 hΦ) (h1 F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co d 1 Complex.I A C Φ _ _ _ hb.cm hb.std fr hΦ hd hB1 (hasExp_div B.emb hc.expβ hc.expα)) (h2 F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co 1 …`.
+-/
 theorem joinTri_of (hF : FockEx) (hP : PolRange) (h1 : LieFirst) (h2 : LieSecond) : JoinTri := by
   intro F E _ _ _ _ _ σ B a a' G X om om' t
   have par := PositivityTheory.RL.even_im_hermitian_sub F E σ B a a' G X om om' t

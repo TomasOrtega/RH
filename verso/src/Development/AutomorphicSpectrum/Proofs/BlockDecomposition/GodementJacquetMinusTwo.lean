@@ -13,6 +13,11 @@ namespace GlobalTheory.CompanionTheory.GL2Coordinates
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [MeasurableSpace F] [BorelSpace F]
 
+/- English proof (translation)
+Establish `h1 : modulus (-1 : F) = 1`. Establish `h : modulus (-1 : F) * modulus (-1 : F) = 1`. Rewrite using `[← modulus_mul]`. Simplify using the standard rewrite rules. Establish `h2 : modulus (-1 : F) ^ 2 = 1` using `by rw [sq]; exact h`.
+
+Conclude with `(pow_eq_one_iff_of_nonneg zero_le two_ne_zero).1 h2`. Rewrite using `[show -x = (-1) * x by ring, modulus_mul, h1, one_mul]`.
+-/
 theorem modulus_neg' (x : F) : modulus (-x) = modulus x := by
   have h1 : modulus (-1 : F) = 1 := by
     have h : modulus (-1 : F) * modulus (-1 : F) = 1 := by
@@ -25,12 +30,28 @@ section Core
 
 variable (ν : Measure F) [ν.IsAddHaarMeasure]
 
+/- English proof (translation)
+Rewrite using `[lintegral_comp_mul_left ν ha (fun x => g (x + b)), lintegral_add_right_eq_self g b, ← mul_assoc, ENNReal.mul_inv_cancel (by simpa using modulus_ne_zero ha) ENNReal.coe_ne_top, one_mul]`.
+-/
 theorem lint_affine {a : F} (ha : a ≠ 0) (b : F) (g : F → ℝ≥0∞) :
     ∫⁻ x, g x ∂ν = (modulus a : ℝ≥0∞) * ∫⁻ x, g (a * x + b) ∂ν := by
   rw [lintegral_comp_mul_left ν ha (fun x => g (x + b)), lintegral_add_right_eq_self g b,
     ← mul_assoc, ENNReal.mul_inv_cancel (by simpa using modulus_ne_zero ha) ENNReal.coe_ne_top,
     one_mul]
 
+/- English proof (translation)
+Establish `hBn : modulus B ≠ 0` using `modulus_ne_zero hB`. Rewrite using `[lintegral_lintegral_swap hG.aemeasurable]`. Establish `e1 : ∀ D, ∫⁻ C, G C D ∂ν = (((modulus B)⁻¹ : ℝ≥0) : ℝ≥0∞) * ∫⁻ y, G ((A * D - y) / B) D ∂ν`. Introduce `D`. Rewrite using `[lint_affine ν (a := -B⁻¹) (neg_ne_zero.2 (inv_ne_zero hB)) (A * D / B) (fun C => G C D), modulus_neg', modulus_inv]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `y`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Repeatedly rewrite using `[e1]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.coe_ne_top]`. Establish `hm : Measurable (Function.uncurry fun (D y : F) => G ((A * D - y) / B) D)` using `hG.comp (f := fun p : F × F => ((A * p.1 - p.2) / B, p.1)) (by fun_prop)`. Rewrite using `[lintegral_lintegral_swap hm.aemeasurable, ← lintegral_const_mul' _ _ ENNReal.coe_ne_top]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Establish `: ∀ D, G (A * D / B) D = 0` using `fun D => h0 _ _ (by field_simp; ring)`. Simplify using `[this]`. Simplify using `only [hy, if_false]`.
+
+Rewrite using `[lint_affine ν (a := -(B / y)) (neg_ne_zero.2 (div_ne_zero hB hy)) 0 (fun D => G ((A * D - y) / B) D), modulus_neg', ← mul_assoc, ← ENNReal.coe_mul, ← lintegral_const_mul' _ _ ENNReal.coe_ne_top]`. Establish `hc : (modulus B)⁻¹ * modulus (B / y) = (modulus y)⁻¹`. Rewrite using `[div_eq_mul_inv, modulus_mul, modulus_inv, ← mul_assoc, inv_mul_cancel₀ hBn, one_mul]`. Rewrite using `[hc]`. Use `lintegral_congr fun t => ?_` and prove the remaining obligations.
+
+Use `congr 2`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fibre {A B : F} (hB : B ≠ 0) (G : F → F → ℝ≥0∞) (hG : Measurable (Function.uncurry G))
     (h0 : ∀ C D, A * D - B * C = 0 → G C D = 0) :
     ∫⁻ C, ∫⁻ D, G C D ∂ν ∂ν = ∫⁻ y, ∫⁻ t, (if y = 0 then 0 else
@@ -70,6 +91,13 @@ theorem fibre {A B : F} (hB : B ≠ 0) (G : F → F → ℝ≥0∞) (hG : Measur
     · field_simp
       ring
 
+/- English proof (translation)
+Set `R : F × F → F × F → ℝ≥0∞` to `fun p q => P p.1 p.2 q.1 q.2`. Establish `hR : Measurable (Function.uncurry R)` using `hP.comp (f := fun z : (F × F) × (F × F) => (z.1.1, z.1.2, z.2.1, z.2.2)) (by fun_prop)`. Establish `hR1 : ∀ p, Measurable (R p)` using `fun p => hR.of_uncurry_left`. Establish `hR2 : ∀ q, Measurable fun p => R p q` using `fun q => hR.of_uncurry_right`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `lintegral_congr fun a => lintegral_congr fun b => ?_` and prove the remaining obligations. Rewrite using `[lintegral_prod _ (hR1 (a, b)).aemeasurable]`. Use `_ = ∫⁻ p, ∫⁻ q, R p q ∂ν.prod ν ∂ν.prod ν := by`. Conclude with `(lintegral_prod (fun p => ∫⁻ q, R p q ∂ν.prod ν) (Measurable.aemeasurable hR.lintegral_prod_right')).symm`. Use `_ = ∫⁻ q, ∫⁻ p, R p q ∂ν.prod ν ∂ν.prod ν := lintegral_lintegral_swap hR.aemeasurable`.
+
+Use `_ = ∫⁻ c, ∫⁻ d, ∫⁻ p, R p (c, d) ∂ν.prod ν ∂ν ∂ν := by`. Conclude with `lintegral_prod (fun q => ∫⁻ p, R p q ∂ν.prod ν) (Measurable.aemeasurable hR.lintegral_prod_left')`. Use `_ = ∫⁻ c, ∫⁻ d, ∫⁻ a, ∫⁻ b, P a b c d ∂ν ∂ν ∂ν ∂ν := by`. Use `lintegral_congr fun c => lintegral_congr fun d => ?_` and prove the remaining obligations. Rewrite using `[lintegral_prod _ (hR2 (c, d)).aemeasurable]`.
+-/
 theorem swap4 (P : F → F → F → F → ℝ≥0∞)
     (hP : Measurable fun p : F × F × F × F => P p.1 p.2.1 p.2.2.1 p.2.2.2) :
     ∫⁻ a, ∫⁻ b, ∫⁻ c, ∫⁻ d, P a b c d ∂ν ∂ν ∂ν ∂ν = ∫⁻ c, ∫⁻ d, ∫⁻ a, ∫⁻ b, P a b c d ∂ν ∂ν ∂ν ∂ν := by
@@ -97,6 +125,13 @@ section Core2
 
 variable (ν : Measure F) [ν.IsAddHaarMeasure]
 
+/- English proof (translation)
+Take `⟨c, hc, hcn⟩` from `exists_ord_eq F 1`. Establish `h` using `addHaar_smul ν hc ({0} : Set F)`. Rewrite `h` using `[Set.smul_set_singleton, smul_zero]`. Establish `hm : modulus c ≠ 1`. Introduce `h1`.
+
+Use `(modulus_eq_one_iff.1 h1).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `ht : ν {0} ≠ ∞` using `isCompact_singleton.measure_lt_top.ne`. Assume the negation of the conclusion as `h0`. Use `(ENNReal.mul_eq_right h0 ht).1 h.symm` as an intermediate fact.
+
+Conclude with `hm (by exact_mod_cast this)`.
+-/
 theorem null0 : ν {0} = 0 := by
   obtain ⟨c, hc, hcn⟩ := exists_ord_eq F 1
   have h := addHaar_smul ν hc ({0} : Set F)
@@ -118,6 +153,9 @@ def Qc (K : F × F × F × F → ℝ≥0∞) (u v t y : F) : ℝ≥0∞ :=
   if v = 0 ∨ y = 0 then 0 else
     (modulus y : ℝ≥0∞) * K (y * u, y * v, -(t * u) - 1 / v, -(t * v))
 
+/- English proof (translation)
+Establish `hm : Measurable fun x : F => (((modulus x)⁻¹ : ℝ≥0) : ℝ≥0∞)` using `(measurable_modulus.inv).coe_nnreal_ennreal`. Use `Measurable.ite ?_ measurable_const ?_` and prove the remaining obligations. Conclude with `((measurableSet_singleton (0 : F)).preimage (by fun_prop : Measurable fun p : F × F × F × F => p.2.1)).union ((measurableSet_singleton (0 : F)).preimage (by fun_prop : Measurable fun p : F × F × F × F => p.2.2.1))`. Conclude with `(hm.comp (by fun_prop)).mul (hK.comp (by fun_prop))`.
+-/
 theorem measurable_Pc {K : F × F × F × F → ℝ≥0∞} (hK : Measurable K) :
     Measurable fun p : F × F × F × F => Pc K p.1 p.2.1 p.2.2.1 p.2.2.2 := by
   have hm : Measurable fun x : F => (((modulus x)⁻¹ : ℝ≥0) : ℝ≥0∞) :=
@@ -127,6 +165,9 @@ theorem measurable_Pc {K : F × F × F × F → ℝ≥0∞} (hK : Measurable K) 
       ((measurableSet_singleton (0 : F)).preimage (by fun_prop : Measurable fun p : F × F × F × F => p.2.2.1))
   · exact (hm.comp (by fun_prop)).mul (hK.comp (by fun_prop))
 
+/- English proof (translation)
+Establish `hm : Measurable fun x : F => ((modulus x : ℝ≥0) : ℝ≥0∞)` using `measurable_modulus.coe_nnreal_ennreal`. Use `Measurable.ite ?_ measurable_const ?_` and prove the remaining obligations. Conclude with `((measurableSet_singleton (0 : F)).preimage (by fun_prop : Measurable fun p : F × F × F × F => p.2.1)).union ((measurableSet_singleton (0 : F)).preimage (by fun_prop : Measurable fun p : F × F × F × F => p.2.2.2))`. Conclude with `(hm.comp (by fun_prop)).mul (hK.comp (by fun_prop))`.
+-/
 theorem measurable_Qc {K : F × F × F × F → ℝ≥0∞} (hK : Measurable K) :
     Measurable fun p : F × F × F × F => Qc K p.1 p.2.1 p.2.2.1 p.2.2.2 := by
   have hm : Measurable fun x : F => ((modulus x : ℝ≥0) : ℝ≥0∞) :=
@@ -136,6 +177,19 @@ theorem measurable_Qc {K : F × F × F × F → ℝ≥0∞} (hK : Measurable K) 
       ((measurableSet_singleton (0 : F)).preimage (by fun_prop : Measurable fun p : F × F × F × F => p.2.2.2))
   · exact (hm.comp (by fun_prop)).mul (hK.comp (by fun_prop))
 
+/- English proof (translation)
+Distinguish the cases in `hy : y = 0`. Simplify using `[Pc, Qc, hy]`. Establish `hnn : modulus y ≠ 0` using `modulus_ne_zero hy`. Establish `h1 : (modulus y : ℝ≥0∞) * (((modulus y)⁻¹ : ℝ≥0) : ℝ≥0∞) = 1`. Rewrite using `[← ENNReal.coe_mul, mul_inv_cancel₀ hnn, ENNReal.coe_one]`.
+
+Rewrite using `[lint_affine ν hy 0 (fun A => ∫⁻ B, Pc K A B y t ∂ν)]`. Simplify using `only [add_zero]`. Establish `e : ∀ u, ∫⁻ B, Pc K (y * u) B y t ∂ν = ∫⁻ v, (modulus y : ℝ≥0∞) * Pc K (y * u) (y * v) y t ∂ν`. Introduce `u`. Rewrite using `[lint_affine ν hy 0 (fun B => Pc K (y * u) B y t)]`.
+
+Simplify using `only [add_zero]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.coe_ne_top]`. Repeatedly rewrite using `[e]`. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.coe_ne_top]`. Use `lintegral_congr fun u => ?_` and prove the remaining obligations.
+
+Rewrite using `[← lintegral_const_mul' _ _ ENNReal.coe_ne_top]`. Use `lintegral_congr fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v = 0`. Simplify using `[Pc, Qc, hv]`. Establish `ha : ((y * u, y * v, -(t * (y * u) / y) - y / (y * v), -(t * (y * v) / y)) : F × F × F × F) = (y * u, y * v, -(t * u) - 1 / v, -(t * v))`.
+
+Simplify using `only [Prod.mk.injEq, true_and]`. Prove the components needed by the constructor for the conclusion. Clear the denominators using the available nonvanishing facts. Clear the denominators using the available nonvanishing facts. Rewrite using `[Pc, Qc, if_neg (by simp [hy, hv]), if_neg (by simp [hy, hv]), ha]`.
+
+Use `congr 1`. Rewrite using `[← mul_assoc, h1, one_mul]`.
+-/
 theorem scale_Pc (K : F × F × F × F → ℝ≥0∞) (y t : F) :
     ∫⁻ A, ∫⁻ B, Pc K A B y t ∂ν ∂ν = ∫⁻ u, ∫⁻ v, Qc K u v t y ∂ν ∂ν := by
   by_cases hy : y = 0
@@ -167,6 +221,13 @@ theorem scale_Pc (K : F × F × F × F → ℝ≥0∞) (y t : F) :
   congr 1
   rw [← mul_assoc, h1, one_mul]
 
+/- English proof (translation)
+Establish `hQ` using `measurable_Qc hK`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun A => lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [compl_mem_ae_iff.2 (null0 ν)] with B hB`. Establish `hB' : B ≠ 0` using `hB`.
+
+Rewrite using `[fibre ν hB' (fun C D => K (A, B, C, D)) (hK.comp (f := fun p : F × F => (A, B, p.1, p.2)) (by fun_prop)) (fun C D h => h0 A B C D h)]`. Use `lintegral_congr fun y => lintegral_congr fun t => ?_` and prove the remaining obligations. Simplify using `only [Pc, hB', false_or]`. Use `_ = ∫⁻ y, ∫⁻ t, ∫⁻ A, ∫⁻ B, Pc K A B y t ∂ν ∂ν ∂ν ∂ν := swap4 ν (Pc K) (measurable_Pc hK)`. Use `_ = ∫⁻ y, ∫⁻ t, ∫⁻ u, ∫⁻ v, Qc K u v t y ∂ν ∂ν ∂ν ∂ν := lintegral_congr fun y => lintegral_congr fun t => scale_Pc ν K y t`.
+
+Use `_ = ∫⁻ u, ∫⁻ v, ∫⁻ y, ∫⁻ t, Qc K u v t y ∂ν ∂ν ∂ν ∂ν := swap4 ν (fun y t u v => Qc K u v t y) (hQ.comp (f := fun p : F × F × F × F => (p.2.2.1, p.2.2.2, p.2.1, p.1)) (by fun_prop))`. Use `_ = ∫⁻ u, ∫⁻ v, ∫⁻ t, ∫⁻ y, Qc K u v t y ∂ν ∂ν ∂ν ∂ν := by`. Use `lintegral_congr fun u => lintegral_congr fun v => ?_` and prove the remaining obligations. Conclude with `lintegral_lintegral_swap (hQ.comp (f := fun p : F × F => (u, v, p.2, p.1)) (by fun_prop)).aemeasurable`.
+-/
 theorem core (K : F × F × F × F → ℝ≥0∞) (hK : Measurable K)
     (h0 : ∀ A B C D, A * D - B * C = 0 → K (A, B, C, D) = 0) :
     ∫⁻ A, ∫⁻ B, ∫⁻ C, ∫⁻ D, K (A, B, C, D) ∂ν ∂ν ∂ν ∂ν =
@@ -197,11 +258,19 @@ end Core2
 def mat4 (p : F × F × F × F) : Fin 2 × Fin 2 → F :=
   fun ij => !![p.1, p.2.1; p.2.2.1, p.2.2.2] ij.1 ij.2
 
+/- English proof (translation)
+Use `measurable_pi_lambda _ fun ij => ?_` and prove the remaining obligations. Break down `ij with ⟨i, j⟩` into its components or cases. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [mat4] <;> fun_prop`.
+-/
 theorem measurable_entries_four : Measurable (mat4 (F := F)) := by
   refine measurable_pi_lambda _ fun ij => ?_
   rcases ij with ⟨i, j⟩
   fin_cases i <;> fin_cases j <;> simp [mat4] <;> fun_prop
 
+/- English proof (translation)
+Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply measurable_entries_four (MeasurableSet.univ_pi hs)]`. Establish `: mat4 ⁻¹' Set.univ.pi s = s (0, 0) ×ˢ s (0, 1) ×ˢ s (1, 0) ×ˢ s (1, 1)`. Use extensionality with `p`. Simplify using `[mat4, Set.mem_pi, Prod.forall, Fin.forall_fin_two, and_assoc]`.
+
+Rewrite using `[this, Measure.prod_prod, Measure.prod_prod, Measure.prod_prod]`. Simplify using `[Fintype.prod_prod_type, Fin.prod_univ_two, mul_assoc]`.
+-/
 theorem pi_eq_map (ν : Measure F) [ν.IsAddHaarMeasure] :
     (Measure.pi fun _ : Fin 2 × Fin 2 => ν) = (ν.prod (ν.prod (ν.prod ν))).map mat4 := by
   refine Measure.pi_eq fun s hs => ?_
@@ -212,6 +281,11 @@ theorem pi_eq_map (ν : Measure F) [ν.IsAddHaarMeasure] :
   rw [this, Measure.prod_prod, Measure.prod_prod, Measure.prod_prod]
   simp [Fintype.prod_prod_type, Fin.prod_univ_two, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[lintegral_prod _ hK.aemeasurable]`. Use `lintegral_congr fun A => ?_` and prove the remaining obligations. Establish `hA : Measurable fun p : F × F × F => K (A, p)` using `hK.comp (by fun_prop)`. Rewrite using `[lintegral_prod _ hA.aemeasurable]`. Use `lintegral_congr fun B => ?_` and prove the remaining obligations.
+
+Establish `hB : Measurable fun p : F × F => K (A, B, p)` using `hK.comp (by fun_prop)`. Rewrite using `[lintegral_prod _ hB.aemeasurable]`.
+-/
 theorem lint4 (ν : Measure F) [ν.IsAddHaarMeasure] {K : F × F × F × F → ℝ≥0∞} (hK : Measurable K) :
     ∫⁻ p, K p ∂(ν.prod (ν.prod (ν.prod ν))) = ∫⁻ A, ∫⁻ B, ∫⁻ C, ∫⁻ D, K (A, B, C, D) ∂ν ∂ν ∂ν ∂ν := by
   rw [lintegral_prod _ hK.aemeasurable]
@@ -227,18 +301,34 @@ def dens (g : GL (Fin 2) F) : ℝ≥0∞ := (((modulus (g.val).det ^ 2)⁻¹ : �
 def Hf (f : GL (Fin 2) F → ℝ≥0∞) : (Fin 2 × Fin 2 → F) → ℝ≥0∞ :=
   Function.extend (Measures.glChart F 2).toFun (fun g => dens g * f g) 0
 
+/- English proof (translation)
+Establish `hc : Continuous fun g : GL (Fin 2) F => (g.val).det` using `Continuous.matrix_det Units.continuous_val`. Conclude with `((measurable_modulus.comp hc.measurable).pow_const 2).inv.coe_nnreal_ennreal`.
+-/
 theorem measurable_dens : Measurable (dens (F := F)) := by
   have hc : Continuous fun g : GL (Fin 2) F => (g.val).det := Continuous.matrix_det Units.continuous_val
   exact ((measurable_modulus.comp hc.measurable).pow_const 2).inv.coe_nnreal_ennreal
 
+/- English proof (translation)
+The claim follows from `(Measures.glChart F 2).measurableEmbedding.measurable_extend (measurable_dens.mul hf) measurable_const`.
+-/
 theorem measurable_Hf {f : GL (Fin 2) F → ℝ≥0∞} (hf : Measurable f) : Measurable (Hf f) :=
   (Measures.glChart F 2).measurableEmbedding.measurable_extend (measurable_dens.mul hf) measurable_const
 
+/- English proof (translation)
+Rewrite using `[Hf, Function.extend_apply' _ _ _ (by simpa using hx)]`. Both sides reduce to the same expression.
+-/
 theorem Hf_zero (f : GL (Fin 2) F → ℝ≥0∞) {x : Fin 2 × Fin 2 → F}
     (hx : x ∉ Set.range (Measures.glChart F 2).toFun) : Hf f x = 0 := by
   rw [Hf, Function.extend_apply' _ _ _ (by simpa using hx)]
   rfl
 
+/- English proof (translation)
+Establish `he` using `(Measures.glChart F 2).measurableEmbedding`. Establish `hd : (fun g : GL (Fin 2) F => (((distribHaarChar F (Matrix.GeneralLinearGroup.det g) ^ 2)⁻¹ : ℝ≥0) : ℝ≥0∞)) = dens`. Use function extensionality and compare the values at `g`. Rewrite using `[dens, distribHaarChar_eq_modulus, Matrix.GeneralLinearGroup.val_det_apply]`. Rewrite using `[LFS.hG, Measures.haarGL_eq, hd, lintegral_withDensity_eq_lintegral_mul _ measurable_dens hf]`.
+
+Establish `h1 : ∀ g, ((dens : GL (Fin 2) F → ℝ≥0∞) * f) g = Hf f ((Measures.glChart F 2).toFun g)` using `fun g => (he.injective.extend_apply _ _ g).symm`. Rewrite using `[lintegral_congr h1]`. Express the relevant statement in the definitionally equal form `∫⁻ g, Hf f ((Measures.glChart F 2).toFun g) ∂((Measure.pi fun _ : Fin 2 × Fin 2 => selfDualMeasure ψ).comap (Measures.glChart F 2).toFun) = _`. Rewrite using `[← he.lintegral_map, he.map_comap, ← lintegral_indicator he.measurableSet_range]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hx : x ∈ Set.range (Measures.glChart F 2).toFun`. Rewrite using `[Set.indicator_of_mem hx]`. Rewrite using `[Set.indicator_of_notMem hx, Hf_zero f hx]`.
+-/
 theorem lint_hG (ψ : AddChar F Circle) (f : GL (Fin 2) F → ℝ≥0∞) (hf : Measurable f) :
     ∫⁻ g, f g ∂LFS.hG ψ = ∫⁻ x, Hf f x ∂(Measure.pi fun _ : Fin 2 × Fin 2 => selfDualMeasure ψ) := by
   have he := (Measures.glChart F 2).measurableEmbedding
@@ -258,12 +348,18 @@ theorem lint_hG (ψ : AddChar F Circle) (f : GL (Fin 2) F → ℝ≥0∞) (hf : 
   · rw [Set.indicator_of_mem hx]
   · rw [Set.indicator_of_notMem hx, Hf_zero f hx]
 
+/- English proof (translation)
+Establish `hd : (!![(r 1)⁻¹, 0; r 0, r 1] : Matrix (Fin 2) (Fin 2) F).det ≠ 0`. Simplify using `[Matrix.det_fin_two, h1]`. Rewrite using `[hr, dif_pos hd]`. Both sides reduce to the same expression.
+-/
 theorem hr_val {r : Fin 2 → F} (h1 : r 1 ≠ 0) : (hr r).val = !![(r 1)⁻¹, 0; r 0, r 1] := by
   have hd : (!![(r 1)⁻¹, 0; r 0, r 1] : Matrix (Fin 2) (Fin 2) F).det ≠ 0 := by
     simp [Matrix.det_fin_two, h1]
   rw [hr, dif_pos hd]
   rfl
 
+/- English proof (translation)
+Simplify using `only [Units.val_mul]`. Rewrite using `[hr_val h1]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [dg2, w0, uni2, Matrix.mul_apply, Fin.sum_univ_two] <;> field_simp <;> ring`.
+-/
 theorem coord_val {y : F} (hy : y ≠ 0) (t : F) {r : Fin 2 → F} (h1 : r 1 ≠ 0) :
     (dg2 (Units.mk0 y hy) 1 * w0 * uni2 t * hr r).val =
       !![y * r 0, y * r 1; -(t * r 0) - 1 / r 1, -(t * r 1)] := by
@@ -273,6 +369,15 @@ theorem coord_val {y : F} (hy : y ≠ 0) (t : F) {r : Fin 2 → F} (h1 : r 1 ≠
   fin_cases i <;> fin_cases j <;>
     simp [dg2, w0, uni2, Matrix.mul_apply, Fin.sum_univ_two] <;> field_simp <;> ring
 
+/- English proof (translation)
+Use `set g := dg2 (Units.mk0 y hy) 1 * w0 * uni2 t * hr r with hg`. Establish `hv` using `coord_val hy t h1`. Rewrite `hv` using `[← hg]`. Establish `he : (Measures.glChart F 2).toFun g = mat4 (y * r 0, y * r 1, -(t * r 0) - 1 / r 1, -(t * r 1))`. Use function extensionality and compare the values at `ij`.
+
+Break down `ij with ⟨i, j⟩` into its components or cases. Rewrite using `[Measures.glChart_apply, hv]`. Both sides reduce to the same expression. Establish `hdet : (g.val).det = y`. Rewrite using `[hv, Matrix.det_fin_two_of]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hnn : modulus y ≠ 0` using `modulus_ne_zero hy`. Establish `hi : ENNReal.ofReal ((modulus y : ℝ) ^ (-1 : ℤ)) = (((modulus y)⁻¹ : ℝ≥0) : ℝ≥0∞)`. Rewrite using `[_root_.zpow_neg_one, ← NNReal.coe_inv, ENNReal.ofReal_coe_nnreal]`.
+
+Rewrite using `[← he, Hf, (Measures.glChart F 2).measurableEmbedding.injective.extend_apply, dens, hdet, hi, ← mul_assoc, ← ENNReal.coe_mul, mul_comm]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem key (f : GL (Fin 2) F → ℝ≥0∞) {y : F} (hy : y ≠ 0) (t : F) {r : Fin 2 → F} (h1 : r 1 ≠ 0) :
     (modulus y : ℝ≥0∞) * Hf f (mat4 (y * r 0, y * r 1, -(t * r 0) - 1 / r 1, -(t * r 1))) =
       f (dg2 (Units.mk0 y hy) 1 * w0 * uni2 t * hr r) * ENNReal.ofReal ((modulus y : ℝ) ^ (-1 : ℤ)) := by
@@ -296,6 +401,21 @@ theorem key (f : GL (Fin 2) F → ℝ≥0∞) {y : F} (hy : y ≠ 0) (t : F) {r 
   congr 2
   field_simp
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ _ f hf`. Establish `hH` using `measurable_Hf hf`. Establish `hK : Measurable fun p : F × F × F × F => Hf f (mat4 p)` using `hH.comp measurable_entries_four`. Establish `h0 : ∀ A B C D : F, A * D - B * C = 0 → Hf f (mat4 (A, B, C, D)) = 0`. Introduce `A B C D h`.
+
+Use `Hf_zero f ?_` and prove the remaining obligations. Introduce and unpack `⟨g, hg⟩`. Establish `hdet : (g.val).det = 0`. Rewrite using `[Matrix.det_fin_two]`. Establish `e` using `fun i j => congrFun hg (i, j)`.
+
+Simplify using `only [Measures.glChart_apply] at e`. Rewrite using `[e 0 0, e 0 1, e 1 0, e 1 1]`. Simplify `h` using `[mat4]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 g.isUnit).ne_zero hdet`. Rewrite using `[lint_hG ψ f hf, pi_eq_map, lintegral_map hH measurable_entries_four, lint4 _ hK, core _ _ hK h0]`.
+
+Use `set ν := selfDualMeasure ψ`. Use `set K : F × F × F × F → ℝ≥0∞ := fun p => Hf f (mat4 p)`. Establish `hQ` using `measurable_Qc hK`. Set `W : F × F → ℝ≥0∞` to `fun p => ∫⁻ t, ∫⁻ y, Qc K p.1 p.2 t y ∂ν ∂ν`. Establish `hW : Measurable W`.
+
+Establish `h3 : Measurable fun z : (F × F) × F × F => Qc K z.1.1 z.1.2 z.2.1 z.2.2` using `hQ.comp (f := fun z : (F × F) × F × F => (z.1.1, z.1.2, z.2.1, z.2.2)) (by fun_prop)`. Establish `h4 : Measurable fun z : ((F × F) × F) × F => Qc K z.1.1.1 z.1.1.2 z.1.2 z.2` using `hQ.comp (f := fun z : ((F × F) × F) × F => (z.1.1.1, z.1.1.2, z.1.2, z.2)) (by fun_prop)`. Conclude with `(h4.lintegral_prod_right').lintegral_prod_right'`. Establish `hT : ∀ r : Fin 2 → F, W (r 0, r 1) = ∫⁻ t, ∫⁻ y, (if h : y = 0 ∨ r 1 = 0 then 0 else f (dg2 (Units.mk0 y (fun e => h (Or.inl e))) 1 * w0 * uni2 t * hr r) * ENNReal.ofReal ((modulus y : ℝ) ^ (-1 : ℤ))) ∂ν ∂ν`. Introduce `r`.
+
+Use `lintegral_congr fun t => lintegral_congr fun y => ?_` and prove the remaining obligations. Distinguish the cases in `h : y = 0 ∨ r 1 = 0`. Rewrite using `[dif_pos h, Qc, if_pos h.symm]`. Rewrite `h` using `[dif_neg h, Qc, if_neg (fun h' => h h'.symm)] push_neg`. Conclude with `key f h.1 t h.2`.
+
+Establish `hmp` using `(measurePreserving_piFinTwo fun _ : Fin 2 => ν).lintegral_comp hW`. Establish `hR : ∫⁻ u, ∫⁻ v, W (u, v) ∂ν ∂ν = ∫⁻ r, W (r 0, r 1) ∂LFS.vol2 ψ`. Rewrite using `[← lintegral_prod _ hW.aemeasurable]`. Conclude with `hmp.symm`. Use `hR.trans (lintegral_congr hT)` and prove the remaining obligations.
+-/
 theorem gjm2 : Ad3.K.GL2LocalData.GJm2 := by
   intro F _ _ _ _ _ _ ψ _ f hf
   have hH := measurable_Hf hf

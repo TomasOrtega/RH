@@ -4,6 +4,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Introduce `P F Ω _ _ _ _ _ l _ M _ _ _ _ _ hl S₀ S ρ hSS hS₀ hρ htr Av hA m0 hm0`. Establish `hS : ContainsAbove S l` using `fun v hv => hSS (hS₀ v hv)`. Establish `e` using `gwLower P.gf P.gw F Ω l M hl S ρ hS hρ Av hA (gysL S₀ S ρ Av m0)`. Establish `h0 : ∏ v : S, Nat.card (H0 (ρ.comp (locFam S Av v))) ≤ Nat.card M ^ S.card`. Use `Finset.prod_le_pow_card Finset.univ (fun v : S => Nat.card (H0 (ρ.comp (locFam S Av v)))) (Nat.card M) (fun v _ => Nat.card_le_card_of_injective _ Subtype.val_injective)` as an intermediate fact.
+
+Rewrite `this` using `[Finset.card_univ, Fintype.card_coe]`. Then use the resulting hypothesis. Establish `hloc : ∀ v : S, (if v.1 ∈ S₀ then 1 else 2 * Nat.card M) ≤ Nat.card (gysL S₀ S ρ Av m0 v)`. Introduce `v`. Distinguish the cases in `hv : v.1 ∈ S₀`. Rewrite using `[if_pos hv, show gysL S₀ S ρ Av m0 v = ⊥ from if_pos hv]`.
+
+Conclude with `Nat.card_pos`. Rewrite using `[if_neg hv, show gysL S₀ S ρ Av m0 v = _ from if_neg hv]`. Establish `ht` using `htr v.1 v.2 hv (Av v) (hA v)`. Take `⟨φ₁, h1, φ₂, h2, a1, a2, g, a3, a4⟩` from `locHoms P.loc.lt P.loc.le P.uo F Ω l (Av v) v.1 (hA v) (fun h => hv (hS₀ _ h)) (fun g hg => (ht g hg).2)`. Establish `hc : ContAction (ρ.comp (locFam S Av v))` using `hρ.comp ((continuous_locFam S Av v).prodMap continuous_id)`.
+
+Take `⟨-, f1, -, -⟩` from `P.loc.lf F Ω l 1 M (Av v) _ v.1 one_pos (hA v) hc`. Conclude with `ramCard _ _ M _ _ m0 (fun g => (ht g.1 g.2).1) hm0 f1 φ₁ h1 φ₂ h2 a1 a2 ⟨g, a3, a4⟩`. Establish `h1 : (2 * Nat.card M) ^ (S.card - S₀.card) ≤ ∏ v : S, Nat.card (gysL S₀ S ρ Av m0 v)`. Use `le_trans (le_of_eq ?_) (Finset.prod_le_prod' fun v _ => hloc v)` and prove the remaining obligations. Rewrite using `[Finset.prod_coe_sort S (fun v => if v ∈ S₀ then 1 else 2 * Nat.card M), Finset.prod_ite, Finset.prod_const_one, one_mul, Finset.prod_const, ← Finset.sdiff_eq_filter, Finset.card_sdiff_of_subset hSS]`.
+
+Establish `hpos : 0 < Nat.card M ^ (S.card - S₀.card)` using `pow_pos Nat.card_pos _`. Use `Nat.le_of_mul_le_mul_right ?_ hpos` and prove the remaining obligations. Rewrite using `[← mul_pow]`. Use `h1.trans (e.trans ((Nat.mul_le_mul_left _ h0).trans (le_of_eq ?_)))` and prove the remaining obligations. Establish `hc : Nat.card M ^ S.card = Nat.card M ^ S₀.card * Nat.card M ^ (S.card - S₀.card)`.
+
+Rewrite using `[← pow_add, Nat.add_sub_cancel' (Finset.card_le_card hSS)]`. Rewrite using `[hc, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Ws.Gys.selBig :
     CohomologyHyp → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M] [Module (ZMod (l ^ 1)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M], l ≠ 2 → ∀ (S₀ S : Finset (HeightOneSpectrum (𝓞 F))) (ρ : Representation (ZMod (l ^ 1)) (GS Ω (S : Set (HeightOneSpectrum (𝓞 F)))) M), S₀ ⊆ S → ContainsAbove S₀ l → ContAction ρ →
       (∀ v ∈ S, v ∉ S₀ → TrivAt l (ρ.comp (toGS Ω _)) v) → ∀ Av : S → ValuationSubring Ω, (∀ v, IsPlaceOver (Av v) v.1) → ∀ m0 : M, m0 ≠ 0 →

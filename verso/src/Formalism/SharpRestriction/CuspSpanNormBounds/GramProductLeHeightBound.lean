@@ -10,10 +10,16 @@ open NumberField Module Formalism.BasicNotions Formalism.MainNotions Formalism.M
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem one_le_prod_max {ι : Type} (s : Finset ι) (f : ι → ℝ) : 1 ≤ ∏ l ∈ s, max 1 (f l) := by
   calc (1 : ℝ) = ∏ _l ∈ s, (1 : ℝ) := by simp
     _ ≤ _ := Finset.prod_le_prod (fun _ _ => zero_le_one) (fun _ _ => le_max_left _ _)
 
+/- English proof (translation)
+Rewrite using `[← Finset.mul_prod_erase s _ ha]`. Conclude with `le_mul_of_one_le_right (le_trans zero_le_one (le_max_left _ _)) (one_le_prod_max _ _)`.
+-/
 theorem le_prod_max {ι : Type} [DecidableEq ι] {s : Finset ι} {a : ι} (ha : a ∈ s) (f : ι → ℝ) :
     max 1 (f a) ≤ ∏ l ∈ s, max 1 (f l) := by
   rw [← Finset.mul_prod_erase s _ ha]
@@ -23,12 +29,18 @@ section Bound
 
 variable (D : D7) (u u' : D.what₂.Word)
 
+/- English proof (translation)
+Unfold `Cnt.absDl absReal`. Use `mul_nonneg (norm_nonneg _) (Real.rpow_nonneg ?_ _)` and prove the remaining obligations. Unfold `Formalism.BasicNotions.Host.rdE`. Conclude with `Real.rpow_nonneg (abs_nonneg _) _`.
+-/
 theorem absDl_nonneg (Z : GramM D) (l : ℕ) (τ : D.what₂.Tau) : 0 ≤ Cnt.absDl D Z l τ := by
   unfold Cnt.absDl absReal
   refine mul_nonneg (norm_nonneg _) (Real.rpow_nonneg ?_ _)
   unfold Formalism.BasicNotions.Host.rdE
   exact Real.rpow_nonneg (abs_nonneg _) _
 
+/- English proof (translation)
+Unfold `Cnt.sizeZ`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem one_le_sizeZ (b C : ℝ) (Z : GramM D) : 1 ≤ Cnt.sizeZ D b C Z := by
   unfold Cnt.sizeZ
   calc (1 : ℝ) = ∏ _τ : D.what₂.Tau, (1 : ℝ) := by simp

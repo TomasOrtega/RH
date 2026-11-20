@@ -14,14 +14,29 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 abbrev swp : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E ≃ₐ[F] E ⊗[F] Formalism.MainNotions.S.Af F :=
   Algebra.TensorProduct.comm F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) E
 
+/- English proof (translation)
+Introduce `v` and use `by show evalV F v 1 ∈ _ rw [map_one]; exact one_mem _`.
+-/
 theorem intAf_one : (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) ∈ intAf F := fun v => by
   show evalV F v 1 ∈ _
   rw [map_one]; exact one_mem _
 
+/- English proof (translation)
+Introduce `v` and use `by show evalV F v (a * b) ∈ _ rw [map_mul]; exact mul_mem (ha v) (hb v)`.
+-/
 theorem intAf_mul {a b : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F} (ha : a ∈ intAf F) (hb : b ∈ intAf F) : a * b ∈ intAf F := fun v => by
   show evalV F v (a * b) ∈ _
   rw [map_mul]; exact mul_mem (ha v) (hb v)
 
+/- English proof (translation)
+Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, hx, rfl⟩` from `hy`. Conclude with `hc a ha x hx`. Consider the case `zero`.
+
+Use `(latHat F E L).zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `add y z _ _ hy hz`. Use `(latHat F E L).add_mem hy hz using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `i`. Simplify using `[mul_add]`. Consider the case `neg y _ hy`. Use `(latHat F E L).neg_mem hy using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+
+Simplify using `[mul_neg]`.
+-/
 theorem mul_mem_latHat (L : Set (Fin n → E)) (c : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E)
     (hc : ∀ a ∈ intAf F, ∀ x ∈ L, (fun i => c * (a ⊗ₜ[F] x i)) ∈ latHat F E L)
     {w : Fin n → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E} (hw : w ∈ latHat F E L) : (fun i => c * w i) ∈ latHat F E L := by
@@ -39,6 +54,39 @@ theorem mul_mem_latHat (L : Set (Fin n → E)) (c : Formalism.MainNotions.Global
     convert (latHat F E L).neg_mem hy using 1
     funext i; simp [mul_neg]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, hx, rfl⟩` from `hy`.
+
+Establish `hmem : ((1 : E) ⊗ₜ[F] a) ∈ IntAf F E` using `Subring.subset_closure (Or.inr ⟨⟨a, fun v => ha v⟩, rfl⟩)`. Establish `hx' : (fun i => Formalism.UG.inclE (F` using `F) (Formalism.MainNotions.S.Af F) (x i)) ∈ lamAf (F := F) L := Submodule.subset_span ⟨⟨x, hx⟩, rfl⟩`. Use `(lamAf (F := F) L).smul_mem (⟨_, hmem⟩ : IntAf F E) hx'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+
+Simplify using `[swp, Formalism.UG.inclE, Subring.smul_def, Algebra.TensorProduct.tmul_mul_tmul]`. Consider the case `zero`. Use `(lamAf (F := F) L).zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Consider the case `add y z _ _ hy hz`. Use `(lamAf (F := F) L).add_mem hy hz using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `neg y _ hy`.
+
+Use `(lamAf (F := F) L).neg_mem hy using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Introduce `hz`. Set `R : Subring (E ⊗[F] Formalism.MainNotions.S.Af F)` to `{ carrier := {r | ∀ w ∈ latHat F E (L : Set (Fin n → E)), (fun i => swp.symm r * w i) ∈ latHat F E (L : Set (Fin n → E))} mul_mem' := fun {r s} hr hs w hw => by`.
+
+Use `hr _ (hs w hw)` as an intermediate fact. Simplify `this` using `[map_mul, mul_assoc]`. Use the proof step `one_mem' := fun w hw => by simpa using hw`. Use the proof step `add_mem' := fun {r s} hr hs w hw => by`. Use `(latHat F E (L : Set (Fin n → E))).add_mem (hr w hw) (hs w hw) using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `i`. Simplify using `[map_add, add_mul]`. Use the proof step `zero_mem' := fun w _ => by`. Use `(latHat F E (L : Set (Fin n → E))).zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules. Use the proof step `neg_mem' := fun {r} hr w hw => by`. Use `(latHat F E (L : Set (Fin n → E))).neg_mem (hr w hw) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[map_neg, neg_mul] }`.
+
+Establish `hIR : IntAf F E ≤ R`. Use `(Subring.closure_le).2 ?_` and prove the remaining obligations. Introduce and unpack `r (⟨⟨o, ho⟩, rfl⟩ | ⟨⟨a', ha'⟩, rfl⟩)`. Introduce `w hw`. Use `mul_mem_latHat _ _ ?_ hw` and prove the remaining obligations.
+
+Introduce `a ha x hx`. Take `⟨o', rfl⟩` from `ho`. Use `AddSubgroup.subset_closure ⟨a, ha, o' • x, L.smul_mem o' hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[swp, Algebra.TensorProduct.tmul_mul_tmul, Algebra.smul_def]`.
+
+Introduce `w hw`. Use `mul_mem_latHat _ _ ?_ hw` and prove the remaining obligations. Introduce `a ha x hx`. Use `AddSubgroup.subset_closure ⟨a' * a, intAf_mul (fun v => ha' v) ha, x, hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Simplify using `[swp, Algebra.TensorProduct.tmul_mul_tmul]`. Establish `key : ∀ z ∈ lamAf (F` using `F) L, (fun i => swp.symm (z i)) ∈ latHat F E (L : Set (Fin n → E)) := by`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`.
+
+Take `⟨x, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨1, intAf_one, x, x.2, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[swp, Formalism.UG.inclE]`. Consider the case `zero`.
+
+Use `(latHat F E (L : Set (Fin n → E))).zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `add z z' _ _ hz hz'`. Use `(latHat F E (L : Set (Fin n → E))).add_mem hz hz' using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `smul r z _ hz`. Use `hIR r.2 _ hz` as an intermediate fact. Simplify `this` using `[Subring.smul_def, map_mul]`.
+
+Use `key _ hz` as an intermediate fact. Simplify using `using this`.
+-/
 theorem mem_latHat_iff (L : Submodule (𝓞 E) (Fin n → E)) (y : Fin n → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E) :
     y ∈ latHat F E (L : Set (Fin n → E)) ↔ (fun i => swp (y i)) ∈ lamAf (F := F) L := by
   constructor
@@ -116,6 +164,13 @@ theorem mem_latHat_iff (L : Submodule (𝓞 E) (Fin n → E)) (y : Fin n → For
     have := key _ hz
     simpa using this
 
+/- English proof (translation)
+Substitute `hM` using the available equality. Establish `hmv : ∀ y : Fin n → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E, Matrix.mulVec (M.map swp) (fun i => swp (y i)) = fun i => swp ((Matrix.mulVec M y) i)` using `fun y => by`. Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (swp (F := F) (E := E)).toRingEquiv.toRingHom M y i).symm`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h z`. Take `⟨y, rfl⟩ : ∃ y : Fin n → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E, (fun i => swp (y i)) = z` from `⟨fun i => swp.symm (z i), by funext i; simp⟩`. Rewrite using `[hmv, ← mem_latHat_iff, ← mem_latHat_iff]`. Conclude with `h y`. Introduce `h y`.
+
+Rewrite using `[mem_latHat_iff, mem_latHat_iff, ← hmv]`. Conclude with `h _`.
+-/
 theorem stab_iff (L : Submodule (𝓞 E) (Fin n → E)) (M : Matrix (Fin n) (Fin n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E))
     (M' : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.MainNotions.S.Af F)) (hM : M' = M.map swp) :
     (∀ y, y ∈ latHat F E (L : Set (Fin n → E)) ↔ Matrix.mulVec M y ∈ latHat F E (L : Set (Fin n → E))) ↔
@@ -143,10 +198,18 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {V : HSp D}
 
+/- English proof (translation)
+Use extensionality with `x`. Conclude with `(Formalism.IndefR.Eqv.UI.mem_Lv D V x).symm`.
+-/
 theorem hermitianSpaceBaseLattice_eq_frameLattice : L0c D V = ((Formalism.IndefR.Eqv.UI.Lv D V : Submodule _ _) : Set (Fin V.rank → D.host.E)) := by
   ext x
   exact (Formalism.IndefR.Eqv.UI.mem_Lv D V x).symm
 
+/- English proof (translation)
+Establish `hfin` using `Formalism.IndefR.Eqv.finE_brg fr x`. Establish `hM : ((x.2.1 : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)).val : Matrix (Fin V.rank) (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) = (finMat D.sp.cm.sig V.gram (Formalism.IndefR.Eqv.UI.brg fr x)).map swp`. Use `congrArg (fun g : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D) => g.val) hfin` as an intermediate fact. Conclude with `this.symm`. Establish `hL : L0c D V = ((fr.Λ : Submodule _ _) : Set (Fin V.rank → D.host.E))`.
+
+Rewrite using `[hΛ]`. Conclude with `hermitianSpaceBaseLattice_eq_frameLattice`. Rewrite using `[hL]`. Conclude with `stab_iff fr.Λ _ _ hM`.
+-/
 theorem finCond_brg (fr : Formalism.IndefR.Eqv.UI.Frames D V) (hΛ : fr.Λ = Formalism.IndefR.Eqv.UI.Lv D V)
     (x : (Formalism.IndefR.Eqv.UI.instV fr).GA) :
     (∀ y, y ∈ latHat D.host.F D.host.E (L0c D V) ↔

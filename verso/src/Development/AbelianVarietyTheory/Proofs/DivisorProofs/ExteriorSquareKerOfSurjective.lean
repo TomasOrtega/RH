@@ -11,6 +11,9 @@ namespace GlobalTheory.ExtSqKer
 variable {R : Type} [CommRing R] {M H Q : Type} [AddCommGroup M] [Module R M]
   [AddCommGroup H] [Module R H] [AddCommGroup Q] [Module R Q]
 
+/- English proof (translation)
+Establish `h1 : a = b + (a - b)` using `by abel`. Rewrite using `[h1, F.map_update_add, hF (Function.update u j (a - b)) j (by simp [hab]), add_zero]`.
+-/
 theorem upd_congr {J : Type} [DecidableEq J] (p : M →ₗ[R] H) (F : M [⋀^J]→ₗ[R] Q)
     (hF : ∀ (u : J → M) (j : J), p (u j) = 0 → F u = 0)
     (u : J → M) (j : J) (a b : M) (hab : p a = p b) :
@@ -54,9 +57,15 @@ namespace GlobalTheory.ExtSqKer
 variable {R : Type} [CommRing R] {M H Q : Type} [AddCommGroup M] [Module R M]
   [AddCommGroup H] [Module R H] [AddCommGroup Q] [Module R Q]
 
+/- English proof (translation)
+Apply the tactic sequence `ext k; fin_cases k <;> rfl`.
+-/
 theorem fin_two_vector_eq_matrixVecCons (u : Fin 2 → M) : u = ![u 0, u 1] := by
   ext k; fin_cases k <;> rfl
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Function.update_eq_self]`. Use `_ = F (Function.update (Function.update u 0 (u' 0)) 1 (u' 1)) := upd_congr p F hF _ 1 _ _ (by simpa using h 1)`. Use `_ = F u' := by`. Apply the tactic sequence `congr 1; ext k; fin_cases k <;> simp`.
+-/
 theorem congr_two (p : M →ₗ[R] H) (F : M [⋀^Fin 2]→ₗ[R] Q)
     (hF : ∀ (u : Fin 2 → M) (j : Fin 2), p (u j) = 0 → F u = 0)
     (u u' : Fin 2 → M) (h : ∀ k, p (u k) = p (u' k)) : F u = F u' := by
@@ -73,6 +82,23 @@ end GlobalTheory.ExtSqKer
 
 open GlobalTheory.ExtSqKer in
 
+/- English proof (translation)
+Use `set S : Set (⋀[R]^2 M) := {x | ∃ (a : M) (w : W), x = exteriorPower.ιMulti R 2 ![a, i w]}`. Use `set N : Submodule R (⋀[R]^2 M) := Submodule.span R S`. Set `F : M [⋀^Fin 2]→ₗ[R] (⋀[R]^2 M ⧸ N)` to `N.mkQ.compAlternatingMap (exteriorPower.ιMulti R 2)`. Establish `hF : ∀ (u : Fin 2 → M) (j : Fin 2), p (u j) = 0 → F u = 0`. Introduce `u j hj`.
+
+Take `⟨w, hw⟩` from `(hex (u j)).1 hj`. Simplify using `only [F, LinearMap.compAlternatingMap_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `fin_cases j`. Establish `e : u = ![u 1, i w] ∘ Equiv.swap 0 1`. Apply the tactic sequence `ext k; fin_cases k <;> simp [hw]`.
+
+Rewrite using `[e, AlternatingMap.map_swap _ _ (by decide)]`. Conclude with `N.neg_mem (Submodule.subset_span ⟨u 1, w, rfl⟩)`. Rewrite using `[fin_two_vector_eq_matrixVecCons u]`. Conclude with `Submodule.subset_span ⟨u 0, w, by simp [hw]⟩`. Set `g` to `exteriorPower.alternatingMapLinearEquiv (descend p hp F hF)`.
+
+Establish `hg : g ∘ₗ exteriorPower.map 2 p = N.mkQ`. Apply `exteriorPower.linearMap_ext` to reduce the goal to its premises. Use extensionality with `m`. Simplify using `only [LinearMap.compAlternatingMap_apply, LinearMap.coe_comp, Function.comp_apply, exteriorPower.map_apply_ιMulti, g, exteriorPower.alternatingMapLinearEquiv_apply_ιMulti]`. Express the relevant statement in the definitionally equal form `F _ = F m`.
+
+Conclude with `congr_two p F hF _ _ (fun k => by simp [Function.surjInv_eq hp])`. Establish `hN : t ∈ N`. Use `congrArg (fun f => f t) hg` as an intermediate fact. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, ht, map_zero, Submodule.mkQ_apply] at this`. Conclude with `(Submodule.Quotient.mk_eq_zero N).1 this.symm`.
+
+Take `⟨n, c, x, hx⟩` from `Submodule.mem_span_set'.1 hN`. Use `choose a w haw using fun k => (x k).2`. Use `⟨n, fun k => c k • a k, w, ?_⟩` and prove the remaining obligations. Rewrite using `[← hx]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[haw k]`. Establish `e : ![c k • a k, i (w k)] = Function.update ![a k, i (w k)] 0 (c k • a k)`. Apply the tactic sequence `ext l; fin_cases l <;> simp`. Rewrite using `[e, AlternatingMap.map_update_smul]`. Use `congr 2`.
+
+Apply the tactic sequence `ext l; fin_cases l <;> simp`.
+-/
 theorem GlobalTheory.exteriorSquare_ker_of_surjective (R : Type) [CommRing R] (W M H : Type)
     [AddCommGroup W] [Module R W] [AddCommGroup M] [Module R M] [AddCommGroup H] [Module R H]
     (i : W →ₗ[R] M) (p : M →ₗ[R] H) (hp : Function.Surjective p) (hex : Function.Exact i p)

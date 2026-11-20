@@ -3,6 +3,19 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.
 open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory.C Polynomial Topology
 
+/- English proof (translation)
+Introduce `L _ _ B ι ι' _ _ _ _ b ε b' ε' hs hε hb hε' hb'`. Use `set u := UniversalEnvelopingAlgebra.ι ℝ (L := L) with hu`. Establish `e1 : ∀ i, u (b i) = ∑ j, (ε' j * B (b' j) (b i)) • u (b' j)`. Introduce `i`. Use `conv_lhs => rw [eq_sum_of_orthogonal hε' hb' (b i)]`.
+
+Simplify using `only [map_sum, map_smul]`. Establish `e2 : ∀ j, u (b' j) = ∑ i, (ε i * B (b i) (b' j)) • u (b i)`. Introduce `j`. Use `conv_lhs => rw [eq_sum_of_orthogonal hε hb (b' j)]`. Simplify using `only [map_sum, map_smul]`.
+
+Simplify using `only [casimir]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h : u (b i) * u (b i) = u (b i) * ∑ j, (ε' j * B (b' j) (b i)) • u (b' j)` using `congrArg (fun x => u (b i) * x) (e1 i)`. Rewrite using `[h, Finset.mul_sum, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, smul_smul]`. Use `_ = ∑ j, ∑ i, (ε i * (ε' j * B (b' j) (b i))) • (u (b i) * u (b' j)) := Finset.sum_comm`. Use `_ = ∑ j, ε' j • (u (b' j) * u (b' j)) := by`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Establish `h : u (b' j) * u (b' j) = (∑ i, (ε i * B (b i) (b' j)) • u (b i)) * u (b' j)` using `congrArg (fun x => x * u (b' j)) (e2 j)`. Rewrite using `[h, Finset.sum_mul, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, smul_smul, hs (b' j) (b i)]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.casimir_eq_of_orthonormal_bases :
     ∀ (L : Type) [LieRing L] [LieAlgebra ℝ L] (B : LinearMap.BilinForm ℝ L) (ι ι' : Type) [Fintype ι] [DecidableEq ι] [Fintype ι'] [DecidableEq ι'] (b : Module.Basis ι ℝ L) (ε : ι → ℝ) (b' : Module.Basis ι' ℝ L) (ε' : ι' → ℝ), (∀ X Y, B X Y = B Y X) → (∀ i, ε i * ε i = 1) → (∀ i j, B (b i) (b j) = if i = j then ε i else 0) → (∀ i, ε' i * ε' i = 1) → (∀ i j, B (b' i) (b' j) = if i = j then ε' i else 0) → casimir b ε = casimir b' ε' := by
   intro L _ _ B ι ι' _ _ _ _ b ε b' ε' hs hε hb hε' hb'

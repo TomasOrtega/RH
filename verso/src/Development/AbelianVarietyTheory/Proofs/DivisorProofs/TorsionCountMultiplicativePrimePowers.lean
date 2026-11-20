@@ -17,12 +17,43 @@ def killedBy (I : Ideal R) : AddSubgroup M where
 
 def annOf (x : M) : Ideal R := LinearMap.ker (LinearMap.toSpanSingleton R M x)
 
+/- English proof (translation)
+Simplify using `[annOf]`.
+-/
 lemma mem_annOf {x : M} {a : R} : a ∈ annOf x ↔ a • x = 0 := by
   simp [annOf]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h a ha => mem_annOf.2 (h a ha), fun h a ha => mem_annOf.1 (h ha)⟩`.
+-/
 lemma mem_killedBy_iff {I : Ideal R} {x : M} : x ∈ killedBy (M := M) I ↔ I ≤ annOf x :=
   ⟨fun h a ha => mem_annOf.2 (h a ha), fun h a ha => mem_annOf.1 (h ha)⟩
 
+/- English proof (translation)
+Establish `hpow : ∀ k : ℕ, Ideal.span {n ^ k} = P ^ (e * k) * J ^ k`. Introduce `k`. Rewrite using `[← Ideal.span_singleton_pow, hspan, mul_pow, pow_mul]`. Establish `hcop' : ∀ a b : ℕ, P ^ a ⊔ J ^ b = ⊤`. Introduce `a b`.
+
+Conclude with `Ideal.isCoprime_iff_sup_eq.1 ((Ideal.isCoprime_iff_sup_eq.2 hcop).pow)`. Establish `hnmem : ∀ k : ℕ, n ^ k ∈ P ^ (e * k)`. Introduce `k`. Establish `: n ^ k ∈ Ideal.span {n ^ k}` using `Ideal.mem_span_singleton_self _`. Rewrite `this` using `[hpow k]`.
+
+Conclude with `(Ideal.mul_le_left : P ^ (e * k) * J ^ k ≤ P ^ (e * k)) this`. Establish `hn : n ∈ P ^ e` using `by simpa using hnmem 1`. Establish `hexp : e * (j + 1) = e * j + e` using `by ring`. Establish `hle1 : P ^ (e * (j + 1)) ≤ P ^ (e * j)` using `Ideal.pow_le_pow_right (by rw [hexp]; omega)`. Establish `hle2 : P ^ (e * (j + 1)) ≤ P ^ e` using `Ideal.pow_le_pow_right (by rw [hexp]; omega)`.
+
+Set `f : killedBy (M` to `M) (P ^ (e * (j + 1))) →+ killedBy (M := M) (P ^ (e * j)) := AddMonoidHom.mk' (fun x => ⟨n • (x : M), fun a ha => by`. Rewrite using `[smul_smul]`. Apply `x.2` to reduce the goal to its premises. Rewrite using `[hexp, pow_add]`. Conclude with `Ideal.mul_mem_mul ha hn⟩)`.
+
+Use the proof step `(fun x y => by ext; simp [smul_add])`. Establish `hsurj : Function.Surjective f`. Introduce and unpack `⟨y, hy⟩`. Establish `hy0 : n ^ j • y = 0` using `hy _ (hnmem j)`. Take `⟨z, hz, hzy⟩` from `hlift j y hy0`.
+
+Establish `h1 : (1 : R) ∈ P ^ (e * (j + 1)) ⊔ J ^ (j + 1)` using `by rw [hcop']; trivial`. Take `⟨s, hs, t, ht, hst⟩` from `Submodule.mem_sup.1 h1`. Use `⟨⟨t • z, fun a ha => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul]`. Establish `hat : a * t ∈ Ideal.span {n ^ (j + 1)}`.
+
+Rewrite using `[hpow]`. Conclude with `Ideal.mul_mem_mul ha ht`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hat`. Rewrite using `[← hc, mul_smul, hz, smul_zero]`. Use extensionality with `show n • t • z = y`.
+
+Rewrite using `[smul_comm, hzy]`. Establish `hsy : s • y = 0` using `hy s (hle1 hs)`. Combine the equalities or inequalities in the displayed calculation. Establish `hsup : P ^ e ≤ P ^ (e * (j + 1)) ⊔ Ideal.span {n}`. Establish `hc : P ^ (e * j) ⊔ J = ⊤` using `by simpa using hcop' (e * j) 1`.
+
+Establish `: P ^ e = P ^ e * (P ^ (e * j) ⊔ J)` using `by rw [hc, Ideal.mul_top]`. Rewrite using `[this, Ideal.mul_sup, hspan, ← pow_add, hexp, add_comm (e * j) e]`. Establish `hker : Nat.card f.ker = Nat.card (killedBy (M` using `M) (P ^ e)) := by`. Use `Nat.card_congr { toFun := fun x => ⟨(x.1 : M), ?_⟩ invFun := fun x => ⟨⟨(x : M), fun a ha => x.2 a (hle2 ha)⟩, ?_⟩ left_inv := fun x => rfl right_inv := fun x => rfl }` and prove the remaining obligations. Establish `hx1` using `mem_killedBy_iff.1 x.1.2`.
+
+Establish `hx2 : n • (x.1 : M) = 0`. Use `x.2` as an intermediate fact. Rewrite `this` using `[AddMonoidHom.mem_ker]`. Conclude with `congrArg Subtype.val this`. Use `mem_killedBy_iff.2 (le_trans hsup (sup_le hx1 ?_))` and prove the remaining obligations.
+
+Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Conclude with `mem_annOf.2 hx2`. Rewrite using `[AddMonoidHom.mem_ker]`. Use `ext`. Conclude with `x.2 n hn`.
+
+Establish `hmul` using `AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup f.ker`. Rewrite `hmul` using `[Nat.card_congr (QuotientAddGroup.quotientKerEquivOfSurjective f hsurj).toEquiv, hker]`. Conclude with `hmul`.
+-/
 theorem card_killedBy_block (P J : Ideal R) (n : R) (e : ℕ)
     (hspan : Ideal.span {n} = P ^ e * J) (hcop : P ⊔ J = ⊤)
     (hlift : ∀ j : ℕ, ∀ y : M, n ^ j • y = 0 → ∃ z : M, n ^ (j + 1) • z = 0 ∧ n • z = y)
@@ -103,6 +134,17 @@ namespace GlobalTheory
 
 open GlobalTheory.PrimaryTorsionBlocks in
 
+/- English proof (translation)
+Introduce `F _ _ M _ _ N hN _ hlift 𝔭 h𝔭 hN𝔭`. Establish `hne : (N : 𝓞 F) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hI : Ideal.span {(N : 𝓞 F)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis. Take `⟨Q, hPQ, hspan⟩` from `Ideal.eq_prime_pow_mul_coprime hI 𝔭`.
+
+Use `⟨Multiset.count 𝔭 (UniqueFactorizationMonoid.normalizedFactors (Ideal.span {(N : 𝓞 F)})), ?_, fun j => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Establish `h0' : Multiset.count 𝔭 (UniqueFactorizationMonoid.normalizedFactors (Ideal.span {(N : 𝓞 F)})) = 0` using `by omega`. Rewrite `hspan` using `[h0', pow_zero, one_mul]`. Establish `hQ : Q ≤ 𝔭` using `by rw [← hspan, Ideal.span_singleton_le_iff_mem]; exact hN𝔭`.
+
+Rewrite `hPQ` using `[sup_eq_left.2 hQ]`. Conclude with `h𝔭.ne_top hPQ`. Establish `hlift' : ∀ j : ℕ, ∀ y : M, (N : 𝓞 F) ^ j • y = 0 → ∃ z : M, (N : 𝓞 F) ^ (j + 1) • z = 0 ∧ (N : 𝓞 F) • z = y`. Introduce `j y hy`. Rewrite `hy` using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`.
+
+Take `⟨z, h1, h2⟩` from `hlift j y hy`. Use `⟨z, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`. Conclude with `h1`. Rewrite using `[Nat.cast_smul_eq_nsmul]`.
+
+Conclude with `h2`. Conclude with `card_killedBy_block 𝔭 Q (N : 𝓞 F) _ hspan hPQ hlift' j`.
+-/
 theorem card_primaryTorsion_mul_blocks :
     ∀ (F : Type) [Field F] [NumberField F] (M : Type) [AddCommGroup M] [Module (𝓞 F) M] (N : ℕ), 1 ≤ N →
     (∀ j : ℕ, Finite {x : M // (N ^ j) • x = 0}) →

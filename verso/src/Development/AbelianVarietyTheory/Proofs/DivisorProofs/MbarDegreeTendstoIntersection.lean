@@ -9,9 +9,21 @@ open scoped ENNReal TensorProduct
 namespace GlobalTheory.CovHt.Link.DegreePolynomialContinuity
 variable {F : Type} [Field F] [NumberField F] {Y : Var F} {C : CxSt F}
 
+/- English proof (translation)
+Rewrite using `[← TensorProduct.smul_tmul, zsmul_eq_mul, mul_one]`.
+-/
 theorem one_tmul_int (z : ℤ) (y : Y.Dv) : ((z : ℚ) ⊗ₜ[ℤ] y) = (1 : ℚ) ⊗ₜ[ℤ] (z • y) := by
   rw [← TensorProduct.smul_tmul, zsmul_eq_mul, mul_one]
 
+/- English proof (translation)
+Use `set n : ℕ := (A.n : ℕ) with hn`. Establish `hn0 : (n : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 A.n.ne_zero`. Establish `hd0 : (r.den : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 r.den_nz`. Establish `e1` using `congrArg (((r.den * n : ℕ) : ℚ) • ·) h`. Simplify using `only [qDiv, smul_sub, TensorProduct.smul_tmul', smul_eq_mul, mul_one] at e1`.
+
+Establish `h1 : ((r.den * n : ℕ) : ℚ) * (n : ℚ)⁻¹ = ((r.den : ℤ) : ℚ)` using `by push_cast; field_simp`. Establish `h2 : ((r.den * n : ℕ) : ℚ) = ((r.den * n : ℤ) : ℚ)` using `by push_cast; ring`. Establish `h3 : ((r.den * n : ℕ) : ℚ) * r = ((r.num * n : ℤ) : ℚ)` using `by push_cast; rw [mul_comm, ← mul_assoc, Rat.mul_den_eq_num]`. Rewrite `e1` using `[← hn, h1, h3, h2, one_tmul_int, one_tmul_int, one_tmul_int, ← TensorProduct.tmul_sub]`. Take `⟨q, hq, hq'⟩` from `(one_tmul_eq_iff).1 e1`.
+
+Use `⟨q * r.den, q * (r.den * n), -(q * (r.num * n)), by positivity, by positivity, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[neg_div, neg_inj]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[mul_comm, Rat.mul_den_eq_num]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hq'` using `[← natCast_zsmul, ← natCast_zsmul]`. Rewrite using `[mul_smul, hq', smul_sub, ← mul_smul, ← mul_smul, neg_smul, ← sub_eq_add_neg]`.
+-/
 theorem exists_int_eq (A : Adl C Y) (L b : Y.Dv) {r : ℚ} (hr : 0 < r)
     (h : qDiv A = (1 : ℚ) ⊗ₜ[ℤ] L - r ⊗ₜ[ℤ] b) :
     ∃ M a e : ℤ, 0 < M ∧ 0 < a ∧ (e : ℚ) / a = -r ∧ (a : ℚ) = M * ((A.n : ℕ) : ℚ) ∧ M • A.D = a • L + e • b := by
@@ -40,6 +52,11 @@ variable (Y) in
 noncomputable def degPoly (L b : Y.Dv) (x : ℝ) : ℝ :=
   ∑ S : Finset (Fin Y.dim), (∏ i, if i ∈ S then (1 : ℝ) else x) * (Y.inter (S.piecewise (fun _ => L) (fun _ => b)) : ℝ)
 
+/- English proof (translation)
+Use `Y.interForm.map_add_univ (fun _ => a • L) (fun _ => e • b)` as an intermediate fact. Simplify using `only [Var.interForm_apply] at this`. Rewrite using `[show (fun _ : Fin Y.dim => a • L + e • b) = (fun _ => a • L) + (fun _ => e • b) from rfl, this]`. Use `push_cast`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations.
+
+Establish `hp : S.piecewise (fun _ => a • L) (fun _ => e • b) = fun i => (if i ∈ S then a else e) • S.piecewise (fun _ => L) (fun _ => b) i`. Apply the tactic sequence `funext i; by_cases hi : i ∈ S <;> simp [Finset.piecewise, hi]`. Rewrite using `[hp, Var.inter_zsmul]`. Use `push_cast`. Use `congr 1`.
+-/
 theorem inter_add_smul (L b : Y.Dv) (a e : ℤ) :
     (Y.inter (fun _ => a • L + e • b) : ℝ) = ∑ S : Finset (Fin Y.dim),
       (∏ i, if i ∈ S then (a : ℝ) else e) * (Y.inter (S.piecewise (fun _ => L) (fun _ => b)) : ℝ) := by
@@ -55,6 +72,15 @@ theorem inter_add_smul (L b : Y.Dv) (a e : ℤ) :
   push_cast
   congr 1
 
+/- English proof (translation)
+Establish `e1 : (Y.inter (fun _ => M • A.D) : ℝ) = (M : ℝ) ^ Y.dim * Y.inter fun _ => A.D`. Use `Y.inter_zsmul (fun _ => M) (fun _ => A.D)` as an intermediate fact. Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin] at this`. Conclude with `this` after adjusting the coercions. Rewrite `e1` using `[hM, inter_add_smul]`.
+
+Establish `ha' : (a : ℝ) ≠ 0` using `by exact_mod_cast ha.ne'`. Establish `key : ∀ S : Finset (Fin Y.dim), (∏ i, if i ∈ S then (1 : ℝ) else (e : ℝ) / a) = (∏ i, if i ∈ S then (a : ℝ) else e) / (a : ℝ) ^ Y.dim`. Introduce `S`. Rewrite using `[show (a : ℝ) ^ Y.dim = ∏ _i : Fin Y.dim, (a : ℝ) by rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin], ← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `(div_self ha').symm`. Both sides reduce to the same expression. Establish `han' : (a : ℝ) = M * ((A.n : ℕ) : ℝ)` using `by exact_mod_cast congrArg (Rat.cast : ℚ → ℝ) han`. Unfold `Adl.deg degPoly`.
+
+Repeatedly rewrite using `[key, div_mul_eq_mul_div]`. Rewrite using `[← Finset.sum_div, e1, han', mul_pow]`. Establish `hM' : (M : ℝ) ^ Y.dim ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hM0.ne')`. Establish `hn' : ((A.n : ℕ) : ℝ) ^ Y.dim ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 A.n.ne_zero)`. Rewrite using `[mul_div_mul_left _ _ hM']`.
+-/
 theorem deg_eq_degPoly (A : Adl C Y) (L b : Y.Dv) {M a e : ℤ} (hM0 : 0 < M) (ha : 0 < a)
     (han : (a : ℚ) = M * ((A.n : ℕ) : ℚ)) (hM : M • A.D = a • L + e • b) :
     A.deg = degPoly Y L b ((e : ℝ) / a) := by
@@ -80,10 +106,18 @@ theorem deg_eq_degPoly (A : Adl C Y) (L b : Y.Dv) {M a e : ℤ} (hM0 : 0 < M) (h
   have hn' : ((A.n : ℕ) : ℝ) ^ Y.dim ≠ 0 := pow_ne_zero _ (Nat.cast_ne_zero.2 A.n.ne_zero)
   rw [mul_div_mul_left _ _ hM']
 
+/- English proof (translation)
+The claim follows from `continuous_finset_sum _ fun S _ => (continuous_finset_prod _ fun i _ => continuous_const.if_const _ continuous_id).mul continuous_const`.
+-/
 theorem continuous_degPoly (L b : Y.Dv) : Continuous (degPoly Y L b) :=
   continuous_finset_sum _ fun S _ => (continuous_finset_prod _ fun i _ =>
     continuous_const.if_const _ continuous_id).mul continuous_const
 
+/- English proof (translation)
+Unfold `degPoly`. Rewrite using `[Finset.sum_eq_single Finset.univ]`. Simplify using `[Finset.piecewise_univ]`. Introduce `S _ hS`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, i ∉ S := by`.
+
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hS (Finset.eq_univ_of_forall hc)`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ i) (by simp [hi]), zero_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem degPoly_zero (L b : Y.Dv) : degPoly Y L b 0 = (Y.inter fun _ => L : ℝ) := by
   unfold degPoly
   rw [Finset.sum_eq_single Finset.univ]
@@ -96,14 +130,25 @@ theorem degPoly_zero (L b : Y.Dv) : degPoly Y L b 0 = (Y.inter fun _ => L : ℝ)
     rw [Finset.prod_eq_zero (Finset.mem_univ i) (by simp [hi]), zero_mul]
   · simp
 
+/- English proof (translation)
+Simplify using `using (Rat.continuous_coe_real.tendsto 0).mono_left nhdsWithin_le_nhds`.
+-/
 theorem tendsto_cast_zero : Tendsto (fun r : ℚ => (r : ℝ)) (𝓝[>] 0) (𝓝 0) := by
   simpa using (Rat.continuous_coe_real.tendsto 0).mono_left nhdsWithin_le_nhds
 
+/- English proof (translation)
+Use `congrArg (Rat.cast : ℚ → ℝ) hea` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+-/
 theorem cast_div_eq {r : ℚ} {a e : ℤ} (hea : (e : ℚ) / a = -r) : (e : ℝ) / a = -(r : ℝ) := by
   have := congrArg (Rat.cast : ℚ → ℝ) hea
   push_cast at this
   exact this
 
+/- English proof (translation)
+Establish `hneg : Tendsto (fun r : ℚ => -(r : ℝ)) (𝓝[>] 0) (𝓝 0)` using `by simpa using tendsto_cast_zero.neg`. Use `((continuous_degPoly L b).tendsto 0).comp hneg` as an intermediate fact. Rewrite `this` using `[degPoly_zero]`. Use `this.congr' (eventually_nhdsWithin_of_forall fun r (hr : 0 < r) => ?_)` and prove the remaining obligations. Take `⟨M, a, e, hM0, ha, hea, han, hM⟩` from `exists_int_eq (f r) L b hr (h r hr)`.
+
+Use `show degPoly Y L b (-(r : ℝ)) = (f r).deg`. Rewrite using `[deg_eq_degPoly (f r) L b hM0 ha han hM, cast_div_eq hea]`.
+-/
 theorem tendsto_deg (f : ℚ → Adl C Y) (L b : Y.Dv)
     (h : ∀ r : ℚ, 0 < r → qDiv (f r) = (1 : ℚ) ⊗ₜ[ℤ] L - r ⊗ₜ[ℤ] b) :
     Tendsto (fun r => (f r).deg) (𝓝[>] 0) (𝓝 (Y.inter fun _ => L : ℝ)) := by
@@ -115,6 +160,15 @@ theorem tendsto_deg (f : ℚ → Adl C Y) (L b : Y.Dv)
   show degPoly Y L b (-(r : ℝ)) = (f r).deg
   rw [deg_eq_degPoly (f r) L b hM0 ha han hM, cast_div_eq hea]
 
+/- English proof (translation)
+Use `Var.nef_iff.2 fun Z hZ => ?_` and prove the remaining obligations. Establish `hle : ∀ᶠ r : ℚ in 𝓝[>] 0, (r : ℝ) * (Y.deg Z b : ℝ) ≤ (Y.deg Z L : ℝ)` using `by filter_upwards [hn, self_mem_nhdsWithin] with r hr (hr0 : 0 < r)`. Take `⟨M, a, e, hM0, ha, hea, han, hM⟩` from `exists_int_eq (f r) L b hr0 (h r hr0)`. Establish `h1` using `Var.nef_iff.1 hr Z hZ`. Establish `h2 : Y.deg Z (M • (f r).D) = M * Y.deg Z (f r).D` using `hZ.deg_zsmul M _`.
+
+Rewrite `h2` using `[hM, hZ.deg_add, hZ.deg_zsmul, hZ.deg_zsmul]`. Establish `h3 : (0 : ℝ) ≤ (a : ℝ) * Y.deg Z L + (e : ℝ) * Y.deg Z b`. Establish `: (0 : ℤ) ≤ a * Y.deg Z L + e * Y.deg Z b` using `h2 ▸ mul_nonneg hM0.le h1`. Conclude with `this` after adjusting the coercions. Establish `haR : (0 : ℝ) < a` using `by exact_mod_cast ha`.
+
+Establish `hea' : (e : ℝ) = -(r : ℝ) * a`. Rewrite using `[← cast_div_eq hea]`. Clear the denominators using the available nonvanishing facts. Rewrite `h3` using `[hea']`. Establish `h4 : (0 : ℝ) ≤ (a : ℝ) * ((Y.deg Z L : ℝ) - r * Y.deg Z b)` using `by linarith`.
+
+Conclude with `sub_nonneg.1 ((mul_nonneg_iff_of_pos_left haR).1 h4)`. Establish `ht : Tendsto (fun r : ℚ => (r : ℝ) * (Y.deg Z b : ℝ)) (𝓝[>] 0) (𝓝 0)`. Simplify using `using tendsto_cast_zero.mul_const (Y.deg Z b : ℝ)`. Conclude with `le_of_tendsto ht hle` after adjusting the coercions.
+-/
 theorem nef_of_eventually (f : ℚ → Adl C Y) (L b : Y.Dv)
     (h : ∀ r : ℚ, 0 < r → qDiv (f r) = (1 : ℚ) ⊗ₜ[ℤ] L - r ⊗ₜ[ℤ] b)
     (hn : ∀ᶠ r : ℚ in 𝓝[>] 0, Y.nef (f r).D) : Y.nef L := by
@@ -144,6 +198,17 @@ namespace GlobalTheory.CovHt.Link.DegreePolynomialContinuity
 
 variable {D : D7} {A : Amb D} {N j : ℕ} (S : Sig A N j)
 
+/- English proof (translation)
+Establish `hr` using `S.rank_eq`. Establish `hx` using `x.2.2`. Establish `hψ : L.ψ x.1 = ⟨DV.tauEmb D x.1, A.cm x.1⟩` using `Subtype.ext (L.ψ_val x.1)`. Distinguish the cases in `h : (x.2 : ℕ) < S.Dw.p`. Rewrite using `[RootSum.rootLetter, dif_pos h, if_pos h]`.
+
+Rewrite using `[hψ, one_mul]`. Simplify using `only [AllWt.exOf, exZ]`. Unfold `AllWt.wtOf`. Simplify using `only`. Rewrite using `[dif_pos (A.cm x.1), dif_pos h, sub_zero]`.
+
+Both sides reduce to the same expression. Rewrite using `[RootSum.rootLetter, dif_neg h, if_neg h]`. Establish `h' : conjEmb (conjEmb (DV.tauEmb D x.1)) (A.H.rt : D.host.E) = A.H.rt0`. Rewrite using `[RootSum.conjEmb_conjEmb']`. Conclude with `A.cm x.1`.
+
+Establish `hi : S.Dw.p + S.Dw.q - 1 - (x.2 : ℕ) < S.Dw.q` using `by omega`. Simplify using `only [AllWt.exOf, exZ]`. Unfold `AllWt.wtOf`. Simplify using `only`. Rewrite using `[dif_neg (RootSum.conj_tau_ne x.1), dif_pos h', dif_pos hi, sub_zero, neg_one_mul, neg_inj]`.
+
+Use `congr 1`. Conclude with `Subtype.ext ((RootSum.conjEmb_conjEmb' _).trans (L.ψ_val x.1).symm)`. Conclude with `Fin.ext (by simp only [Fin.val_cast]; omega)`.
+-/
 theorem exOf_rootLetter (L : CmList A) (u : AllWt.Weight S.Dw) (x : DV.Rt D.what₂.Tau N) :
     AllWt.exOf S.Dw u 0 (some (RootSum.rootLetter S x)) =
       (if (x.2 : ℕ) < S.Dw.p then 1 else -1) * u (L.ψ x.1) (Fin.cast S.rank_eq.symm x.2) := by
@@ -172,6 +237,9 @@ theorem exOf_rootLetter (L : CmList A) (u : AllWt.Weight S.Dw) (x : DV.Rt D.what
 
 variable {κ : Lv A} {s : FinalTheorems S κ} (Φ : s.Flag) (k : s.Comp)
 
+/- English proof (translation)
+Rewrite using `[← DeKeyTrue.divOf_neg_exOf, divOf, qL, ← (Equiv.ofBijective _ (RootSum.rootLetter_bijective S)).sum_comp]`. Simplify using `only [Equiv.ofBijective_apply, TensorProduct.tmul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[RootSum.divOf_root, exOf_rootLetter S L, one_tmul_int, ← TensorProduct.tmul_neg, smul_smul, ← neg_smul, mul_comm]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem qL_wtR (L : CmList A) (u : AllWt.Weight S.Dw) :
     qL Φ k (fun τ i => ((u (L.ψ τ) (Fin.cast S.rank_eq.symm i) : ℤ) : ℚ)) = (1 : ℚ) ⊗ₜ[ℤ] (Φ.C k).Lw u := by
   rw [← DeKeyTrue.divOf_neg_exOf, divOf, qL,
@@ -182,6 +250,9 @@ theorem qL_wtR (L : CmList A) (u : AllWt.Weight S.Dw) :
     mul_comm]
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `e : wtR L u = fun τ i => (((u (L.ψ τ) (Fin.cast S.rank_eq.symm i) : ℤ) : ℚ) : ℝ)`. Use function extensionality and compare the values at `τ i`. Simplify using `[wtR]`. Rewrite using `[e, mbarOf_cast P B _ hr, PolDat.qDiv_mbarQ, qL_wtR]`.
+-/
 theorem qDiv_mbarOf_wtR {x : ToroidalCompactificationData s} (P : Mean4O.PolOf x Φ) (B : ℝ) (L : CmList A) (u : AllWt.Weight S.Dw)
     {r : ℚ} (hr : 0 < r) :
     qDiv (mbarOf P B (wtR L u) r k) = (1 : ℚ) ⊗ₜ[ℤ] (Φ.C k).Lw u - r ⊗ₜ[ℤ] P.bd k := by
@@ -193,6 +264,9 @@ end GlobalTheory.CovHt.Link.DegreePolynomialContinuity
 
 namespace GlobalTheory.CovHt.Link
 
+/- English proof (translation)
+Introduce `D A N j S κ s Φ L x P B u k`. Establish `h` using `fun (r : ℚ) (hr : 0 < r) => DegreePolynomialContinuity.qDiv_mbarOf_wtR S Φ k P B L u hr`. Conclude with `⟨DegreePolynomialContinuity.tendsto_deg _ _ _ h, DegreePolynomialContinuity.nef_of_eventually _ _ _ h⟩`.
+-/
 theorem tendsto_deg_mbarOf_and_nef : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (L : CmList A) (x : ToroidalCompactificationData s) (P : Mean4O.PolOf x Φ) (B : ℝ) (u : AllWt.Weight S.Dw) (k : s.Comp), Tendsto (fun r : ℚ => (mbarOf P B (wtR L u) r k).deg) (𝓝[>] 0) (𝓝 ((Φ.C k).Y.inter fun _ => (Φ.C k).Lw u : ℝ)) ∧ ((∀ᶠ r : ℚ in 𝓝[>] 0, (Φ.C k).Y.nef (mbarOf P B (wtR L u) r k).D) → (Φ.C k).Y.nef ((Φ.C k).Lw u)) := by
   intro D A N j S κ s Φ L x P B u k
   have h := fun (r : ℚ) (hr : 0 < r) => DegreePolynomialContinuity.qDiv_mbarOf_wtR S Φ k P B L u hr

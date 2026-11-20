@@ -11,6 +11,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 open GlobalTheory.ThK.SplitInv
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThK.SplitQuot.quotTriv_liftSpace | exact GlobalTheory.ThK.SplitQuot.quotTriv_liftSpace | (intros; apply GlobalTheory.ThK.SplitQuot.quotTriv_liftSpace <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.matched_tower_adapted_planes_third : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ)
     (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'),
     IsMatched B G X om om' R Rf → 1 ≤ G.q →

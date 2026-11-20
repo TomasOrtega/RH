@@ -14,15 +14,24 @@ namespace GlobalTheory.DegVol.FrameUnip
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
   {H : HermSpace K V} {k r : ℕ} {σ : K →+* ℂ} {Φ : V → Fin (2 * r + k + 1) → ℂ}
 
+/- English proof (translation)
+Use `h.2.1 0 0` as an intermediate fact. Simplify using `using this`.
+-/
 theorem phi_zero' (h : GlobalTheory.DegVol.IsReal H k r σ Φ) : Φ 0 = 0 := by
   have := h.2.1 0 0
   simpa using this
 
+/- English proof (translation)
+Use `h.1 (x - y) y` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Rewrite using `[this]`. Normalize the expressions using the abelian group laws.
+-/
 theorem phi_sub' (h : GlobalTheory.DegVol.IsReal H k r σ Φ) (x y : V) : Φ (x - y) = Φ x - Φ y := by
   have := h.1 (x - y) y
   rw [sub_add_cancel] at this
   rw [this]; abel
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using phi_zero' h`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, h.1, ih]`.
+-/
 theorem phi_sum' (h : GlobalTheory.DegVol.IsReal H k r σ Φ) {α : Type} (s : Finset α) (f : α → V) :
     Φ (∑ i ∈ s, f i) = ∑ i ∈ s, Φ (f i) := by
   classical
@@ -30,6 +39,11 @@ theorem phi_sum' (h : GlobalTheory.DegVol.IsReal H k r σ Φ) {α : Type} (s : F
   | empty => simpa using phi_zero' h
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, h.1, ih]
 
+/- English proof (translation)
+Establish `hu : u ∈ Submodule.span ℂ (Set.range Φ)` using `by rw [h.2.2.2]; trivial`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨y, rfl⟩ := hx`. Conclude with `h0 y`. Consider the case `zero => rw [← phi_zero' h]`.
+
+Conclude with `h0 0`. Consider the case `add x y _ _ hx hy => exact ha _ _ hx hy`. Consider the case `smul c x _ hx => exact hs _ _ hx`.
+-/
 theorem span_ind' (h : GlobalTheory.DegVol.IsReal H k r σ Φ) (P : (Fin (2 * r + k + 1) → ℂ) → Prop) (h0 : ∀ x, P (Φ x))
     (ha : ∀ u v, P u → P v → P (u + v)) (hs : ∀ (c : ℂ) u, P u → P (c • u)) (u : Fin (2 * r + k + 1) → ℂ) : P u := by
   have hu : u ∈ Submodule.span ℂ (Set.range Φ) := by rw [h.2.2.2]; trivial
@@ -39,6 +53,11 @@ theorem span_ind' (h : GlobalTheory.DegVol.IsReal H k r σ Φ) (P : (Fin (2 * r 
   | add x y _ _ hx hy => exact ha _ _ hx hy
   | smul c x _ hx => exact hs _ _ hx
 
+/- English proof (translation)
+Establish `h1 : ∀ u w, herm (Hpk k r) (m *ᵥ u) (m *ᵥ w) = herm (Hpk k r) u w`. Introduce `u`. Use `span_ind' h (fun u => ∀ w, herm (Hpk k r) (m *ᵥ u) (m *ᵥ w) = herm (Hpk k r) u w) (fun x => ?_) (fun u v hu hv w => by rw [mulVec_add, herm_add_left, herm_add_left, hu, hv]) (fun c u hu w => by rw [mulVec_smul, herm_smul_left, herm_smul_left, hu]) u` and prove the remaining obligations. Conclude with `span_ind' h _ (e x) (fun u v hu hv => by rw [mulVec_add, herm_add_right, herm_add_right, hu, hv]) (fun c u hu => by rw [mulVec_smul, herm_smul_right, herm_smul_right, hu])`. Use extensionality with `i j`.
+
+Conclude with `(herm_bvec _ i j).symm.trans (by rw [← herm_mulVec, h1, herm_bvec])`.
+-/
 theorem mem_UH' (h : GlobalTheory.DegVol.IsReal H k r σ Φ) {m : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (e : ∀ x y, herm (Hpk k r) (m *ᵥ Φ x) (m *ᵥ Φ y) = herm (Hpk k r) (Φ x) (Φ y)) : m ∈ UH (Hpk k r) := by
   have h1 : ∀ u w, herm (Hpk k r) (m *ᵥ u) (m *ᵥ w) = herm (Hpk k r) u w := by
@@ -51,6 +70,13 @@ theorem mem_UH' (h : GlobalTheory.DegVol.IsReal H k r σ Φ) {m : Matrix (Fin (2
   ext i j
   exact (herm_bvec _ i j).symm.trans (by rw [← herm_mulVec, h1, herm_bvec])
 
+/- English proof (translation)
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, hb, rfl⟩` from `hx`. Establish `hb'` using `hS b hb`. Establish `: i ≠ eI k r b` using `fun e => by`.
+
+Use `congrArg Fin.val e` as an intermediate fact. Simplify using `only [eI] at this`. Use linear arithmetic over natural numbers and integers. Simplify using `[he, bvec, this]`. Consider the case `zero => rw [phi_zero' h]`.
+
+Both sides reduce to the same expression. Consider the case `add x y _ _ hx hy => rw [h.1, Pi.add_apply, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [h.2.1, Pi.smul_apply, hx, smul_zero]`.
+-/
 theorem coord_span (h : GlobalTheory.DegVol.IsReal H k r σ Φ) {e : Fin r → V} {ρ : Fin r → ℂ}
     (he : ∀ a, Φ (e a) = ρ a • bvec (eI k r a)) {S : Set (Fin r)} (i : Fin (2 * r + k + 1))
     (hS : ∀ b ∈ S, b.val < i.val) {y : V} (hy : y ∈ Submodule.span K (e '' S)) : Φ y i = 0 := by
@@ -66,6 +92,23 @@ theorem coord_span (h : GlobalTheory.DegVol.IsReal H k r σ Φ) {e : Fin r → V
   | add x y _ _ hx hy => rw [h.1, Pi.add_apply, hx, hy, add_zero]
   | smul c x _ hx => rw [h.2.1, Pi.smul_apply, hx, smul_zero]
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ H k r σ Φ h e f ρ ρ' hρ hρ' he hf hef m hm h2 h3 n hn`. Use `⟨mem_UH' h fun x y => by rw [hn, hn, h.2.2.1, h.2.2.1, hm], fun a i hi => ?_, fun i j hj hj' hi => ?_⟩` and prove the remaining obligations. Use `coord_span h he i (S := {b | b < a}) (fun b hb => lt_of_lt_of_le (Fin.lt_def.1 hb) hi) (h2 a)` as an intermediate fact. Rewrite `this` using `[phi_sub' h, ← hn, he, mulVec_smul, ← smul_sub, Pi.smul_apply, smul_eq_zero, or_iff_right (hρ a), Pi.sub_apply, sub_eq_zero]`. Simplify `this` using `[bvec, Pi.single_apply]`.
+
+Set `P : (Fin (2 * r + k + 1) → ℂ) → Fin (2 * r + k + 1) → ℂ` to `fun u => u - ∑ a : Fin r, herm (Hpk k r) u (Φ (e a)) • Φ (f a)`. Establish `hP : ∀ u, (n *ᵥ P u - P u) i = 0`. Use `span_ind' h _ (fun x => ?_) (fun u v hu hv => ?_) (fun c u hu => ?_)` and prove the remaining obligations. Establish `ex : P (Φ x) = Φ (x - ∑ a : Fin r, H.B x (e a) • f a)`. Simplify using `only [P, phi_sub' h, phi_sum' h, h.2.1, h.2.2.1]`.
+
+Rewrite using `[ex, hn, ← phi_sub' h]`. Establish `hperp : ∀ b, H.B (e b) (x - ∑ a : Fin r, H.B x (e a) • f a) = 0` using `fun b => by`. Rewrite using `[map_sub, map_sum]`. Simplify using `[hef]`. Rewrite using `[starRingEnd_apply, H.herm, sub_self]`.
+
+Use `h3 _ hperp` as an intermediate fact. Rewrite `this` using `[← Set.image_univ]`. Conclude with `coord_span h he i (fun b _ => lt_of_lt_of_le b.2 hi) this`. Establish `ex : P (u + v) = P u + P v`. Simplify using `only [P, herm_add_left, add_smul, Finset.sum_add_distrib]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[ex, mulVec_add, add_sub_add_comm, Pi.add_apply, hu, hv, add_zero]`. Establish `ex : P (c • u) = c • P u`. Simplify using `only [P, herm_smul_left, smul_sub, Finset.smul_sum, smul_smul]`. Rewrite using `[ex, mulVec_smul, ← smul_sub, Pi.smul_apply, hu, smul_zero]`.
+
+Establish `ex : P (bvec j) = bvec j`. Simplify using `only [P]`. Rewrite using `[Finset.sum_eq_zero, sub_zero]`. Introduce `a _`. Establish `hne : esI k r a ≠ j` using `fun e' => by`.
+
+Use `congrArg Fin.val e'` as an intermediate fact. Use `a.2` as an intermediate fact. Simplify using `only [esI] at *`. Use linear arithmetic over natural numbers and integers. Rewrite using `[he, herm_smul_right, herm_eI]`.
+
+Simplify using `[bvec, hne]`. Use `hP (bvec j)` as an intermediate fact. Rewrite `this` using `[ex, Pi.sub_apply, sub_eq_zero]`. Simplify `this` using `[bvec, Pi.single_apply]`.
+-/
 theorem mem_Nset : ∀ {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
     (H : Formalism.HermitianLatticeCounting.S6.HermSpace K V) {k r : ℕ} (σ : K →+* ℂ) (Φ : V → Fin (2 * r + k + 1) → ℂ),
     GlobalTheory.DegVol.IsReal H k r σ Φ → ∀ (e f : Fin r → V) (ρ ρ' : Fin r → ℂ), (∀ a, ρ a ≠ 0) → (∀ a, ρ' a ≠ 0) →

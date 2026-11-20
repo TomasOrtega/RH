@@ -15,5 +15,8 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GroupBplus.Aff.PreChart.tensor_flat_isAlgebraic | exact GlobalTheory.GroupBplus.Aff.PreChart.tensor_flat_isAlgebraic | (intros; apply GlobalTheory.GroupBplus.Aff.PreChart.tensor_flat_isAlgebraic <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flat_algebraic_tensor_chart_ring : ∀ (R : Type) [CommRing R] [IsDomain R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (N : ℕ) (q : PrimeSpectrum R) (c : PreChart G N q), Module.Flat R (c.C ⊗[R] c.C) ∧ Algebra.IsAlgebraic R (c.C ⊗[R] c.C) := by
   first | exact @GlobalTheory.GroupBplus.Aff.PreChart.tensor_flat_isAlgebraic | exact GlobalTheory.GroupBplus.Aff.PreChart.tensor_flat_isAlgebraic | (intros; apply GlobalTheory.GroupBplus.Aff.PreChart.tensor_flat_isAlgebraic <;> assumption)

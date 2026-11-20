@@ -20,6 +20,9 @@ open GlobalTheory.Spread GlobalTheory.HomDescent
 
 variable {k : Type} [Field k] (A₀ : Over (Sp k))
 
+/- English proof (translation)
+Establish `h₁ : LBIso (L.pull (pullback.fst A₀.hom (spMap (algebraMap k S)))) ((L.pull (pullback.fst A₀.hom (spMap (algebraMap k R)))).pull (bcMap A₀.hom ρ))` using `Spread.lbIso_pull_pull hL _ (bcMap_fst A₀.hom ρ).symm`. Establish `hR` using `pull_isLB hL (pullback.fst A₀.hom (spMap (algebraMap k R)))`. Conclude with `LBIso.trans (isLB_lbPow (pull_isLB hL _) N) (isLB_lbPow (pull_isLB hR _) N) (pull_isLB (isLB_lbPow hR N) _) (lbIso_lbPow h₁ N) (lbIso_lbPow_pull hR _ N)`.
+-/
 theorem lbIso_lbPow_bc {R S : Type} [CommRing R] [CommRing S] [Algebra k R] [Algebra k S] (ρ : R →ₐ[k] S)
     {L : LB A₀.left} (hL : L.IsLB) (N : ℕ) :
     LBIso (lbPow (L.pull (pullback.fst A₀.hom (spMap (algebraMap k S)))) N)
@@ -31,6 +34,9 @@ theorem lbIso_lbPow_bc {R S : Type} [CommRing R] [CommRing S] [Algebra k R] [Alg
   exact LBIso.trans (isLB_lbPow (pull_isLB hL _) N) (isLB_lbPow (pull_isLB hR _) N)
     (pull_isLB (isLB_lbPow hR N) _) (lbIso_lbPow h₁ N) (lbIso_lbPow_pull hR _ N)
 
+/- English proof (translation)
+Establish `hR` using `pull_isLB hM (pullback.fst A₀.hom (spMap (algebraMap k R)))`. Establish `h₁ : LBIso (M.pull (pullback.fst A₀.hom (spMap (algebraMap k S)))) ((M.pull (pullback.fst A₀.hom (spMap (algebraMap k R)))).pull (bcMap A₀.hom ρ))` using `Spread.lbIso_pull_pull hM _ (bcMap_fst A₀.hom ρ).symm`. Conclude with `LBIso.trans (LB.isLB_linComb (pull_isLB hM _) _ _) (LB.isLB_linComb (pull_isLB hR _) _ _) (pull_isLB (LB.isLB_linComb hR _ _) _) (PelPrim.lbIso_linComb h₁ φS ε) (SymExtend.lbIso_linComb_pull hR (bcMap A₀.hom ρ) φS φR ε (bcMap A₀.hom ρ) hφ)`.
+-/
 theorem lbIso_linComb_bc {R S : Type} [CommRing R] [CommRing S] [Algebra k R] [Algebra k S] (ρ : R →ₐ[k] S)
     {M : LB A₀.left} (hM : M.IsLB) {K : Type} [Fintype K]
     (φS : K → (pullback A₀.hom (spMap (algebraMap k S)) ⟶ pullback A₀.hom (spMap (algebraMap k S))))
@@ -46,6 +52,9 @@ theorem lbIso_linComb_bc {R S : Type} [CommRing R] [CommRing S] [Algebra k R] [A
     (pull_isLB (LB.isLB_linComb hR _ _) _) (PelPrim.lbIso_linComb h₁ φS ε)
     (SymExtend.lbIso_linComb_pull hR (bcMap A₀.hom ρ) φS φR ε (bcMap A₀.hom ρ) hφ)
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, bcMap_fst, Category.assoc, h]`. Establish `hf : f.left ≫ pullback.snd _ _ = pullback.snd _ _` using `Over.w f`. Establish `hg : g.left ≫ pullback.snd _ _ = pullback.snd _ _` using `Over.w g`. Rewrite using `[Category.assoc, bcMap_snd, ← Category.assoc, hf, Category.assoc, hg, bcMap_snd]`.
+-/
 theorem comm_bc {R S : Type} [CommRing R] [CommRing S] [Algebra k R] [Algebra k S] (ρ : R →ₐ[k] S)
     (f : (Over.pullback (spMap (algebraMap k S))).obj A₀ ⟶ (Over.pullback (spMap (algebraMap k S))).obj A₀)
     (g : (Over.pullback (spMap (algebraMap k R))).obj A₀ ⟶ (Over.pullback (spMap (algebraMap k R))).obj A₀)
@@ -62,6 +71,9 @@ def fam {S : Type} [CommRing S] [Algebra k S] {r : ℕ}
     Option (Fin r) → (pullback A₀.hom (spMap (algebraMap k S)) ⟶ pullback A₀.hom (spMap (algebraMap k S))) :=
   fun o => o.elim (𝟙 _) fun i => (β i).left
 
+/- English proof (translation)
+Consider the cases of `o with`. Consider the case `none => simp [fam]`. Consider the case `some i => exact comm_bc A₀ ρ (β i) (gam i) (h i)`.
+-/
 theorem fam_comm {R S : Type} [CommRing R] [CommRing S] [Algebra k R] [Algebra k S] (ρ : R →ₐ[k] S) {r : ℕ}
     (β : Fin r → ((Over.pullback (spMap (algebraMap k S))).obj A₀ ⟶ (Over.pullback (spMap (algebraMap k S))).obj A₀))
     (gam : Fin r → ((Over.pullback (spMap (algebraMap k R))).obj A₀ ⟶ (Over.pullback (spMap (algebraMap k R))).obj A₀))
@@ -75,6 +87,19 @@ end GlobalTheory.SqDecSpread
 
 open GlobalTheory.Spread GlobalTheory.HomDescent GlobalTheory.SqDecSpread in
 
+/- English proof (translation)
+Introduce `k Ω _ _ _ A₀ _ hA L M hL hM hD`. Take `⟨N, a₀, r, a, β, hN, ha₀, hβ, H⟩` from `hD`. Use `hA.proper` as an intermediate fact. Use `hA.smooth` as an intermediate fact. Set `ε : Option (Fin r) → ℤ` to `fun o => o.elim (a₀ : ℤ) fun i => (a i : ℤ)`.
+
+Use `choose Ri g hRi hg hgeq using fun i => haveI := hβ i`. Use `exists_fg_isMonHom (A := A₀) (A' := A₀) (β i)`. Set `R₁ : Subalgebra k Ω` to `⨆ i, Ri i`. Establish `hR₁ : R₁.FG` using `fg_iSup hRi`. Use `choose gam hgam hgameq using fun i => haveI := hg i`.
+
+Use `exists_specialise (g i) (Subalgebra.inclusion (le_iSup Ri i))`. Establish `key₁ : ∀ i, bcMap A₀.hom R₁.val ≫ (gam i).left ≫ pullback.fst _ _ = (β i).left ≫ pullback.fst _ _`. Introduce `i`. Rewrite using `[hgameq i, ← Category.assoc, bcMap_comp_of_eq A₀.hom (Subalgebra.inclusion (le_iSup Ri i)) R₁.val (Ri i).val (fun _ => rfl), hgeq i]`. Establish `hL₁` using `pull_isLB hL (pullback.fst A₀.hom (spMap (algebraMap k R₁)))`.
+
+Establish `hM₁` using `pull_isLB hM (pullback.fst A₀.hom (spMap (algebraMap k R₁)))`. Establish `hLΩ` using `pull_isLB hL (pullback.fst A₀.hom (spMap (algebraMap k Ω)))`. Establish `hMΩ` using `pull_isLB hM (pullback.fst A₀.hom (spMap (algebraMap k Ω)))`. Establish `H₁ : LBIso ((lbPow (L.pull (pullback.fst A₀.hom (spMap (algebraMap k R₁)))) N).pull (baseChangeMap A₀.hom R₁.val)) ((LB.LinComb (M.pull (pullback.fst A₀.hom (spMap (algebraMap k R₁)))) (fam A₀ gam) ε).pull (baseChangeMap A₀.hom R₁.val))` using `LBIso.trans (pull_isLB (isLB_lbPow hL₁ N) _) (isLB_lbPow hLΩ N) (pull_isLB (LB.isLB_linComb hM₁ _ _) _) (lbIso_lbPow_bc A₀ R₁.val hL N).symm (LBIso.trans (isLB_lbPow hLΩ N) (LB.isLB_linComb hMΩ _ _) (pull_isLB (LB.isLB_linComb hM₁ _ _) _) H (lbIso_linComb_bc A₀ R₁.val hM (fam A₀ …`. Take `⟨R, hR, hRfg, H₂⟩` from `exists_fg_lbIso A₀.hom hR₁ _ _ (isLB_lbPow hL₁ N) (LB.isLB_linComb hM₁ _ _) H₁`.
+
+Use `choose δ hδ hδeq using fun i => haveI := hgam i`. Use `exists_specialise (gam i) (Subalgebra.inclusion hR)`. Establish `hLR` using `pull_isLB hL (pullback.fst A₀.hom (spMap (algebraMap k R)))`. Establish `hMR` using `pull_isLB hM (pullback.fst A₀.hom (spMap (algebraMap k R)))`. Use `⟨R, hRfg, N, a₀, r, a, δ, hN, ha₀, hδ, ?_⟩` and prove the remaining obligations.
+
+Conclude with `LBIso.trans (isLB_lbPow hLR N) (pull_isLB (isLB_lbPow hL₁ N) _) (LB.isLB_linComb hMR _ _) (lbIso_lbPow_bc A₀ (Subalgebra.inclusion hR) hL N) (LBIso.trans (pull_isLB (isLB_lbPow hL₁ N) _) (pull_isLB (LB.isLB_linComb hM₁ _ _) _) (LB.isLB_linComb hMR _ _) H₂ (lbIso_linComb_bc A₀ (Su …`.
+-/
 theorem GlobalTheory.SqDecSpread.sqDec_fg : ∀ (k Ω : Type) [Field k] [Field Ω] [Algebra k Ω] (A₀ : Over (Sp k)) [GrpObj A₀],
     IsAbelianScheme A₀ → ∀ (L M : LB A₀.left), L.IsLB → M.IsLB →
     SqDec ((Over.pullback (spMap (algebraMap k Ω))).obj A₀) (L.pull (pullback.fst A₀.hom (spMap (algebraMap k Ω))))

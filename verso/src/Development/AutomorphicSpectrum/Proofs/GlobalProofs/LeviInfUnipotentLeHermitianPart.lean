@@ -16,10 +16,46 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 abbrev adV {n : ℕ} (v : Fin n → E) : Fin n → AF F ⊗[F] E := fun i => inclR (F := F) (AF F) (v i)
 
+/- English proof (translation)
+The claim follows from `funext fun i => (RingHom.map_mulVec (inclR (F := F) (AF F)) M v i).symm`.
+-/
 theorem adMat_mulVec {a c : ℕ} (M : Matrix (Fin a) (Fin c) E) (v : Fin c → E) :
     adMat F M *ᵥ adV (F := F) v = adV (F := F) (M *ᵥ v) :=
   funext fun i => (RingHom.map_mulVec (inclR (F := F) (AF F)) M v i).symm
 
+/- English proof (translation)
+Take `⟨M, hM⟩ : ∃ M, M = (matHom _ σ J' b).1 - 1` from `⟨_, rfl⟩`. Rewrite `hmat` using `[← hM]`. Establish `hPI' : adMat F P * adMat F I = 1`. Rewrite using `[← Matrix.map_mul, hPI, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hPIv : ∀ w, adMat F P *ᵥ (adMat F I *ᵥ w) = w` using `fun w => by rw [mulVec_mulVec, hPI', one_mulVec]`.
+
+Establish `hGv : ∀ w, (matHom _ σ J g).1 *ᵥ (adMat F I *ᵥ w) - adMat F I *ᵥ w = adMat F I *ᵥ (M *ᵥ w)` using `fun w => by`. Rewrite using `[hmat, Matrix.add_mulVec, one_mulVec, add_sub_cancel_left, ← Matrix.mulVec_mulVec, hPIv, ← Matrix.mulVec_mulVec]`. Establish `hXe : ∀ i, (adMat F X)ᵀ (e i) = adMat F I *ᵥ (adMat F X')ᵀ i` using `fun i => by`. Establish `h : adMat F I * adMat F X' = adMat F (X.submatrix id e)` using `by rw [← Matrix.map_mul, hIX]`. Use function extensionality and compare the values at `j`.
+
+Conclude with `(congrFun (congrFun h j) i).symm`. Establish `hPX : ∀ l ∈ upTo T, adMat F P *ᵥ (adMat F X)ᵀ l = 0` using `fun l hl => by`. Express the relevant statement in the definitionally equal form `adMat F P *ᵥ adV (F := F) (Xᵀ l) = 0`. Rewrite using `[adMat_mulVec, hPl l hl]`. Use function extensionality and compare the values at `i`.
+
+Conclude with `map_zero _`. Establish `hPspan : ∀ (A : Set (Fin r)) (N : Submodule (AF F ⊗[F] E) (Fin n' → AF F ⊗[F] E)), (∀ i ∈ A, adMat F P *ᵥ (adMat F X)ᵀ i ∈ N) → ∀ y ∈ colSpan F X A, adMat F P *ᵥ y ∈ N` using `fun A N h y hy => by`. Establish `h1 : colSpan F X A ≤ N.comap (adMat F P).mulVecLin` using `Submodule.span_le.2 (by rintro _ ⟨i, hi, rfl⟩; exact h i hi)`. Conclude with `h1 hy`. Establish `ha : ∀ i : Fin r', i ≤ k → M *ᵥ (adMat F X')ᵀ i = 0` using `fun i hi => by`.
+
+Establish `h1` using `(Subgroup.mem_iInf.1 hgm.1 (e i)).2 ((adMat F X)ᵀ (e i)) (Submodule.subset_span ⟨e i, rfl, rfl⟩)`. Rewrite `h1` using `[hXe, hGv]`. Establish `h2` using `hPspan _ ⊥ (fun l hl => by`. Take `⟨k', hk', hlk, hkj⟩` from `hl`. Break down `Finset.mem_insert.1 hk' with rfl | h` into its components or cases.
+
+Conclude with `absurd hkj (not_lt.2 (hmono.monotone hi))`. Conclude with `(Submodule.mem_bot _).2 (hPX l ⟨k', h, hlk⟩)) _ h1`. Rewrite `h2` using `[hPIv]`. Conclude with `(Submodule.mem_bot _).1 h2`. Establish `hfix : M * adMat F (initCols X' k) = 0` using `Matrix.ext_col fun i => ha (i.castLE k.2) (Nat.le_of_lt_succ i.2)`.
+
+Establish `c1 : ∀ {a c : ℕ} (Z : Matrix (Fin a) (Fin c) E), Formalism.UG.cT (sigR (AF F) σ) (adMat F Z) = adMat F (Formalism.UG.cT (σ : E →+* E) Z)` using `fun Z => rfl`. Establish `fix : (matHom _ σ J' b).1 * adMat F (initCols X' k) = adMat F (initCols X' k)`. Rewrite `hfix` using `[hM, Matrix.sub_mul, Matrix.one_mul, sub_eq_zero]`. Conclude with `hfix`. Rewrite using `[unip_singleton hW' k]`.
+
+Apply `Subgroup.subset_closure` to reduce the goal to its premises. Use `⟨hM ▸ hfix, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hu : Formalism.UG.cT (sigR (AF F) σ) (matHom _ σ J' b).1 * adMat F J' * (matHom _ σ J' b).1 = adMat F J'` using `b.2`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, sub_eq_zero, adMat, Matrix.map_mul]`. Express the relevant statement in the definitionally equal form `adMat F _ * adMat F J' * _ = adMat F _ * adMat F J'`.
+
+Use `conv_lhs => rw [← c1, ← fix, Formalism.UG.cT_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc _ (adMat F J'), hu, c1]`. Establish `h5 : Formalism.UG.cT (σ : E →+* E) (X.submatrix id e) * J * I = Formalism.UG.cT (σ : E →+* E) X' * J'`. Rewrite using `[← hIX, Formalism.UG.cT_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc _ J, hg, Matrix.mul_assoc, hPI, Matrix.mul_one]`. Establish `hle : ∀ l, l ∉ upTo T → (∃ k' ∈ insert (e k) T, l ≤ k') → ∃ i, i ≤ k ∧ e i = l` using `fun l hl ⟨k', hk', hlk⟩ => by`. Take `⟨i, rfl⟩` from `(hrange l).1 hl`.
+
+Break down `Finset.mem_insert.1 hk' with rfl | h` into its components or cases. Conclude with `⟨i, hmono.le_iff_le.1 hlk, rfl⟩`. Conclude with `absurd ⟨k', h, hlk⟩ hl`. Establish `hz : ∀ l, (∃ k' ∈ insert (e k) T, l ≤ k') → ((Formalism.UG.cT (σ : E →+* E) X * J) *ᵥ (I *ᵥ x)) l = 0` using `fun l hl => by`. Distinguish the cases in `h : l ∈ upTo T`.
+
+Conclude with `hperp x l h`. Take `⟨i, hi, rfl⟩` from `hle l h hl`. Rewrite using `[mulVec_mulVec]`. Establish `h6 : ((Formalism.UG.cT (σ : E →+* E) X * J * I) *ᵥ x) (e i) = ((Formalism.UG.cT (σ : E →+* E) (X.submatrix id e) * J * I) *ᵥ x) i` using `rfl`. Rewrite using `[h6, h5]`.
+
+Conclude with `congrFun hx ⟨i.val, Nat.lt_succ_of_le hi⟩`. Establish `hp : adV (F` using `F) (I *ᵥ x) ∈ colPerp σ J X {i | ∃ k' ∈ insert (e k) T, i ≤ k'} := by`. Simplify using `only [colPerp, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `l hl`. Express the relevant statement in the definitionally equal form `(adMat F (Formalism.UG.cT (σ : E →+* E) X * J) *ᵥ adV (F := F) (I *ᵥ x)) l = 0`.
+
+Rewrite using `[adMat_mulVec]`. Express the relevant statement in the definitionally equal form `inclR (F := F) (AF F) _ = 0`. Rewrite using `[hz l hl]`. Conclude with `map_zero _`. Establish `h3` using `hgm.2.2 _ hp`.
+
+Rewrite `h3` using `[← adMat_mulVec, hGv]`. Establish `h4` using `hPspan _ (colSpan F X' {i | i ≤ k}) (fun l hl => by`. Distinguish the cases in `h : l ∈ upTo T`. Rewrite using `[hPX l h]`. Conclude with `zero_mem _`.
+
+Take `⟨i, hi, rfl⟩` from `hle l h hl`. Rewrite using `[hXe, hPIv]`. Conclude with `Submodule.subset_span ⟨i, hi, rfl⟩) _ h3`. Rewrite `h4` using `[hPIv]`. Take `⟨a, ha'⟩` from `mem_colSpan_iff.1 h4`.
+
+Conclude with `⟨a, by rw [← hM]; exact ha'.symm⟩`.
+-/
 theorem core (σ : E →ₐ[F] E) {n n' r r' : ℕ} {J : Matrix (Fin n) (Fin n) E} {J' : Matrix (Fin n') (Fin n') E}
     {X : Matrix (Fin n) (Fin r) E} {X' Y' : Matrix (Fin n') (Fin r') E} {T : Finset (Fin r)} {e : Fin r' → Fin r}
     {I : Matrix (Fin n) (Fin n') E} {P : Matrix (Fin n') (Fin n) E}
@@ -115,6 +151,15 @@ theorem core (σ : E →ₐ[F] E) {n n' r r' : ℕ} {J : Matrix (Fin n) (Fin n) 
 
 end Core
 
+/- English proof (translation)
+Introduce `D V m X Y hW T V' ι hι hR m' e X' Y' hS hW' s hs k b hb`. Take `⟨hmono, hrange, hIX, -⟩` from `hS`. Use `core D.sp.cm.sig hmono hrange hIX (prM_mul_frameMat hι) cT_frameMat_mul_gram (fun l hl => ?_) (fun x l hl => ?_) hW' k (s b) b (mat_eq hι hs b) hb` and prove the remaining obligations. Conclude with `prM_mulVec_eq_zero fun v' => ((hR (ι v')).1 ⟨v', rfl⟩ l hl).1`. Establish `hv : ι (V'.frame.equivFun.symm x) = V.frame.equivFun.symm (frameMat V V' ι *ᵥ x)`.
+
+Apply `V.frame.equivFun.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`. Establish `h` using `LinearMap.toMatrix_mulVec_repr V'.frame V.frame ι (V'.frame.equivFun.symm x)`. Establish `h' : V'.frame.repr (V'.frame.equivFun.symm x) = x` using `funext fun i => repr_symm V' x i`. Rewrite `h` using `[h']`.
+
+Conclude with `h.symm`. Establish `h` using `((hR (ι (V'.frame.equivFun.symm x))).1 ⟨_, rfl⟩ l hl).1`. Rewrite `h` using `[hv, hT_frame]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.mul_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Eq.trans (Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_) h` and prove the remaining obligations. Both sides reduce to the same expression.
+-/
 theorem mem_unip_of_image : ∀ (D : D7) (V : HSp D) (m : ℕ) (X Y : Matrix (Fin V.rank) (Fin m) D.host.E), GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram X Y → ∀ (T : Finset (Fin m)) (V' : HSp D) (ι : V'.V →ₗ[D.host.E] V.V), HSpace.IsIsomEmb V' V ι → (∀ v : V.V, v ∈ LinearMap.range ι ↔ ∀ i ∈ GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.upTo T, V.hT (V.frame.equivFun.symm fun j => X j i) v = 0 ∧ V.hT (V.frame.equivFun.symm fun j => Y j i) v = 0) → ∀ (m' : ℕ) (e : Fin m' → Fin m) (X' Y' : Matrix (Fin V'.rank) (Fin m') D.host.E), GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.UCore.Slice.IsSliceFrame V V' ι X Y T e X' Y' → GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V'.gram X' Y' → ∀ s : GA D V' →* GA D V, (∀ h, EmbRel V V' ι (s h) h) → ∀ k : Fin m', ∀ b : GA D V', s b ∈ unip D.sp.cm.sig V.gram X (insert (e k) T) → b ∈ unip D.sp.cm.sig V'.gram X' {k} := by
   intro D V m X Y hW T V' ι hι hR m' e X' Y' hS hW' s hs k b hb
   obtain ⟨hmono, hrange, hIX, -⟩ := hS

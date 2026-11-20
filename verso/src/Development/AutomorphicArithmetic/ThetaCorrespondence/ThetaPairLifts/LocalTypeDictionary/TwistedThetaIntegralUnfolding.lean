@@ -7,6 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.UnfoldingOfCuspi
 section
 open GlobalTheory.RowClaim GlobalTheory.RowVal GlobalTheory.RowReal
 namespace GlobalTheory.RowUnfLast
+/- English proof (translation)
+Introduce `p c s` and use `have rel := GlobalTheory.T.lastRow_real_iterated_integral_eq_const_mul_finite have hcv := GlobalTheory.T.cellSumRelationsPassToIntegrals_proof have grp := GlobalTheory.T.rowPeriodGroups_split_real_finite_large_depth have it := _root_.GlobalTheory.T.twisted_iterate_chain have inv …`.
+-/
 theorem twisted_theta_integral_unfolding : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → SumOKK → StepUnfold := fun p c s =>
   have rel := GlobalTheory.T.lastRow_real_iterated_integral_eq_const_mul_finite
   have hcv := GlobalTheory.T.cellSumRelationsPassToIntegrals_proof
@@ -34,6 +37,9 @@ end
 section
 open GlobalTheory.RowClaim
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.RowUnfLast.twisted_theta_integral_unfolding | exact _root_.GlobalTheory.RowUnfLast.twisted_theta_integral_unfolding | (intros; apply _root_.GlobalTheory.RowUnfLast.twisted_theta_integral_unfolding <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twisted_theta_integral_unfolds : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → SumOKK → StepUnfold := by
   first | exact @_root_.GlobalTheory.RowUnfLast.twisted_theta_integral_unfolding | exact _root_.GlobalTheory.RowUnfLast.twisted_theta_integral_unfolding | (intros; apply _root_.GlobalTheory.RowUnfLast.twisted_theta_integral_unfolding <;> assumption)
 end

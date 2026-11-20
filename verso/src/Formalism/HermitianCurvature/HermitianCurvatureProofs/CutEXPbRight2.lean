@@ -9,6 +9,11 @@ noncomputable section
 
 namespace Formalism.FourierDecayAlt.P.CutEXPbRight
 
+/- English proof (translation)
+Substitute `e` using the available equality. Establish `: D.castM rfl g = g`. Use extensionality with `i j`. Simplify using `[D.castM]`. Rewrite using `[this]`.
+
+Conclude with `hg`.
+-/
 theorem castM_nset {k a b : ℕ} (e : a = b) {g : B.Mat k a} (hg : g ∈ Nset k a) : D.castM e g ∈ Nset k b := by
   subst e
   have : D.castM rfl g = g := by
@@ -23,12 +28,18 @@ namespace Formalism.FourierDecayAlt.P
 
 open CutEX
 
+/- English proof (translation)
+Substitute `e` using the available equality. Use extensionality with `i j`. Simplify using `[D.castM]`.
+-/
 private theorem castM_mul_eq_mul_castM {k a b : ℕ} (e : a = b) (g h : B.Mat k a) :
     D.castM e (g * h) = D.castM e g * D.castM e h := by
   subst e
   ext i j
   simp [D.castM]
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P p G _ Z u μ hu`. Establish `hm : D.castM (by omega) (U.muP P.k P.r (P.r - P.r) u) ∈ Nset P.k P.r` using `CutEXPbRight.castM_nset _ (BigCellDiagonalMap.leviElement_nset u hu)`. Unfold `CutEX.pbTop CutEX.psiU PBQ.pbT CutEX.xT`. Rewrite using `[← Ux4.mMap_mul_muP, castM_mul_eq_mul_castM]`. Conclude with `PBQ.pbF_right _ _ _ _ _ _ hm`.
+-/
 theorem pullback_right_action : CutEX.PbRight := by
   intro Wp Wq _ _ _ _ _ _ P p G _ Z u μ hu
   have hm : D.castM (by omega) (U.muP P.k P.r (P.r - P.r) u) ∈ Nset P.k P.r :=

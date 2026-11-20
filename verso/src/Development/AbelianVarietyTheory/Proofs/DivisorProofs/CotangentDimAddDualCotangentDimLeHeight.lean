@@ -21,6 +21,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 open GlobalTheory.PDivGroup.CotDim in
 
+/- English proof (translation)
+Use `haveI : CharP k p := (CharP.charP_iff_prime_eq_zero (Fact.out : p.Prime)).2 hp`. Establish `hp2 : 2 ≤ p` using `(Fact.out : p.Prime).two_le`. Establish `hdimD` using `finrank_level_one Γ.dual`. Establish `hmulP : Function.Injective (Γ.mulP 1)` using `fun a b e => by`. Use `CartierDual.eq_of_forall_apply (R := k) fun φ => ?_` and prove the remaining obligations.
+
+Take `⟨ψ, rfl⟩` from `Γ.dual_mulP_surjective 1 φ`. Express the relevant statement in the definitionally equal form `ψ.ofConv (Γ.mulP 1 a) = ψ.ofConv (Γ.mulP 1 b)`. Rewrite using `[e]`. Establish `hord` using `finrank_eq_ker_mul_range k (Γ.dual.A 1) _ ((relFrob hp Γ.dual).app 1)`. Establish `haD : p ^ Module.finrank k (Cot k (Γ.dual.A 1)) ≤ Module.finrank k (Γ.dual.A 1 ⧸ kerIdeal ((relFrob hp Γ.dual).app 1))` using `(GlobalTheory.T.pow_finrank_cotangent_le_finrank_frobeniusKernelQuotient p k (Γ.dual.A 1)).trans (quot_finrank_le (GlobalTheory.T.relativeFrobeniusKernelIdeal_le_frobeniusKernelIdeal p k hp Γ.dual 1))`.
+
+Establish `hker : LinearMap.ker ((verschiebung hp Γ).app 1 : Γ.A 1 →ₐ[k] (frobTwist hp Γ).A 1).toLinearMap ≤ (kerIdeal ((relFrob hp Γ).app 1)).restrictScalars k` using `fun a ha => by`. Establish `h1` using `GlobalTheory.T.mulP_mem_kerIdeal_comp_relFrob_of_verschiebung_eq_zero p k hp Γ a ha`. Rewrite `h1` using `[kerIdeal_comp]`. Rewrite using `[Submodule.restrictScalars_mem, ← GlobalTheory.T.comap_map_eq_self_of_injective_finiteHopf k _ _ (Γ.mulP 1) hmulP (kerIdeal ((relFrob hp Γ).app 1))]`. Conclude with `h1`.
+
+Establish `hV` using `GlobalTheory.T.finrank_frobeniusDual_add_finrank_ker_verschiebung p k hp Γ`. Establish `hq` using `Submodule.finrank_quotient_add_finrank ((kerIdeal ((relFrob hp Γ).app 1)).restrictScalars k)`. Rewrite `hq` using `[(Submodule.Quotient.restrictScalarsEquiv k (kerIdeal ((relFrob hp Γ).app 1))).finrank_eq]`. Establish `hmono` using `Submodule.finrank_mono hker`. Establish `haA : p ^ Module.finrank k (Cot k (Γ.A 1)) ≤ Module.finrank k (Γ.A 1 ⧸ kerIdeal ((relFrob hp Γ).app 1))` using `(GlobalTheory.T.pow_finrank_cotangent_le_finrank_frobeniusKernelQuotient p k (Γ.A 1)).trans (quot_finrank_le (GlobalTheory.T.relativeFrobeniusKernelIdeal_le_frobeniusKernelIdeal p k hp Γ 1))`.
+
+Establish `hrD : Module.finrank k (Γ.A 1 ⧸ kerIdeal ((relFrob hp Γ).app 1)) ≤ Module.finrank k (LinearMap.range ((relFrob hp Γ.dual).app 1 : (frobTwist hp Γ.dual).A 1 →ₐ[k] Γ.dual.A 1).toLinearMap)` using `by omega`. Establish `key : p ^ (Module.finrank k (Cot k (Γ.A 1)) + Module.finrank k (Cot k (Γ.dual.A 1))) ≤ p ^ Γ.height`. Rewrite using `[pow_add, mul_comm, ← hdimD, hord]`. Conclude with `Nat.mul_le_mul haD (haA.trans hrD)`. Conclude with `(Nat.pow_le_pow_iff_right hp2).1 key`.
+-/
 theorem GlobalTheory.PDivGroup.finrank_cot_add_finrank_cot_dual_le_of_cast_eq_zero (p : ℕ) [Fact p.Prime]
     (k : Type) [Field k] (hp : (p : k) = 0) (Γ : PDivGroup p k) :
     Module.finrank k (Cot k (Γ.A 1)) + Module.finrank k (Cot k (Γ.dual.A 1)) ≤ Γ.height := by

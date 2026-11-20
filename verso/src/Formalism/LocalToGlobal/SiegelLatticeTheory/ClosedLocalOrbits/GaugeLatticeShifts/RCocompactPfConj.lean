@@ -9,9 +9,17 @@ namespace Formalism.L2.SG.Pf.Unip
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] {K : Type*} [CommRing K] [StarRing K]
 
+/- English proof (translation)
+The claim follows from `mul_eq_one_comm.mp h`.
+-/
 private theorem mul_eq_one_comm_of_mul_eq_one {G G' : Matrix ι ι K} (h : G * G' = 1) : G' * G = 1 :=
   mul_eq_one_comm.mp h
 
+/- English proof (translation)
+Establish `hG : G' * G = 1` using `mul_eq_one_comm_of_mul_eq_one h`. Proceed by induction on `j with`. Consider the case `zero => rw [pow_zero, pow_zero, Matrix.mul_one, hG]`. Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ, ← ih]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc G G', h, Matrix.one_mul]`.
+-/
 theorem conj_pow {G G' Z : Matrix ι ι K} (h : G * G' = 1) (j : ℕ) : G' * Z ^ j * G = (G' * Z * G) ^ j := by
   have hG : G' * G = 1 := mul_eq_one_comm_of_mul_eq_one h
   induction j with
@@ -21,11 +29,19 @@ theorem conj_pow {G G' Z : Matrix ι ι K} (h : G * G' = 1) (j : ℕ) : G' * Z ^
     simp only [Matrix.mul_assoc]
     rw [← Matrix.mul_assoc G G', h, Matrix.one_mul]
 
+/- English proof (translation)
+Unfold `geo`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => conj_pow h j`.
+-/
 theorem conj_geo {G G' Z : Matrix ι ι K} (h : G * G' = 1) (N : ℕ) : G' * geo N Z * G = geo N (G' * Z * G) := by
   unfold geo
   rw [Finset.mul_sum, Finset.sum_mul]
   exact Finset.sum_congr rfl fun j _ => conj_pow h j
 
+/- English proof (translation)
+Establish `hG : G' * G = 1` using `mul_eq_one_comm_of_mul_eq_one h`. Establish `e1 : G' * ((⅟2 : K) • Z) * G = (⅟2 : K) • (G' * Z * G)`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Unfold `cay`. Rewrite using `[← e1, ← conj_geo h, mul_add, add_mul, Matrix.mul_one, hG]`.
+
+Use `congr 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc G G', h, Matrix.one_mul]`.
+-/
 theorem conj_cay [Invertible (2 : K)] {G G' Z : Matrix ι ι K} (h : G * G' = 1) (N : ℕ) :
     G' * cay N Z * G = cay N (G' * Z * G) := by
   have hG : G' * G = 1 := mul_eq_one_comm_of_mul_eq_one h
@@ -37,6 +53,11 @@ theorem conj_cay [Invertible (2 : K)] {G G' Z : Matrix ι ι K} (h : G * G' = 1)
   simp only [Matrix.mul_assoc]
   rw [← Matrix.mul_assoc G G', h, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `key : G' = J' * Gᴴ * J`. Combine the equalities or inequalities in the displayed calculation. Establish `key' : G'ᴴ = J * (G * J')`. Rewrite using `[key]`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, hJh, hJ'h, Matrix.mul_assoc]`.
+
+Unfold `sharp`. Rewrite using `[conjTranspose_mul, conjTranspose_mul, key']`. Rewrite using `[key]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc J J', hJ', Matrix.one_mul, hJ, Matrix.mul_one]`.
+-/
 theorem conj_sharp {J J' G G' A : Matrix ι ι K} (hJh : Jᴴ = J) (hJ'h : J'ᴴ = J') (hJ : J' * J = 1) (hJ' : J * J' = 1)
     (hG : Gᴴ * J * G = J) (h : G * G' = 1) : G' * sharp J J' A * G = sharp J J' (G' * A * G) := by
   have key : G' = J' * Gᴴ * J := by
@@ -52,6 +73,9 @@ theorem conj_sharp {J J' G G' A : Matrix ι ι K} (hJh : Jᴴ = J) (hJ'h : J'ᴴ
   simp only [Matrix.mul_assoc]
   rw [← Matrix.mul_assoc J J', hJ', Matrix.one_mul, hJ, Matrix.mul_one]
 
+/- English proof (translation)
+Unfold `proj`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, mul_sub, sub_mul, conj_sharp hJh hJ'h hJ hJ' hG h]`.
+-/
 theorem conj_proj [Invertible (2 : K)] {J J' G G' A : Matrix ι ι K} (hJh : Jᴴ = J) (hJ'h : J'ᴴ = J')
     (hJ : J' * J = 1) (hJ' : J * J' = 1) (hG : Gᴴ * J * G = J) (h : G * G' = 1) :
     G' * proj J J' A * G = proj J J' (G' * A * G) := by

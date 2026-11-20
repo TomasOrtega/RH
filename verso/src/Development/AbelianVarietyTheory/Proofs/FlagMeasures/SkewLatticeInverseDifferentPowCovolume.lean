@@ -20,6 +20,9 @@ open scoped TensorProduct ENNReal nonZeroDivisors
 noncomputable section
 
 namespace GlobalTheory.SnMass.SkewVol
+/- English proof (translation)
+Take `⟨⟨l, hl⟩, h1, h2⟩` from `ZSpan.exist_unique_vadd_mem_fundamentalDomain b v`. Use `⟨l, ⟨hl, by simpa [Submodule.vadd_def, add_comm] using h1⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `l' ⟨hl', h'⟩`. Use `h2 ⟨l', hl'⟩ (by simpa [Submodule.vadd_def, add_comm] using h')` as an intermediate fact. Simplify using `using congrArg Subtype.val this`.
+-/
 theorem dom_of_basis {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {ι : Type} [Finite ι]
     (b : Module.Basis ι ℝ W) (v : W) :
     ∃! l, l ∈ (Submodule.span ℤ (Set.range b) : Set W) ∧ v + l ∈ ZSpan.fundamentalDomain b := by
@@ -29,11 +32,45 @@ theorem dom_of_basis {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {ι :
   have := h2 ⟨l', hl'⟩ (by simpa [Submodule.vadd_def, add_comm] using h')
   simpa using congrArg Subtype.val this
 
+/- English proof (translation)
+Unfold `dInv`. Use `pow_ne_zero _ (inv_ne_zero ?_)` and prove the remaining obligations. Conclude with `FractionalIdeal.coeIdeal_ne_zero.2 differentIdeal_ne_bot`.
+-/
 theorem dInv_ne_zero (K : Type) [Field K] [NumberField K] (j : ℕ) : dInv K j ≠ 0 := by
   unfold dInv
   refine pow_ne_zero _ (inv_ne_zero ?_)
   exact FractionalIdeal.coeIdeal_ne_zero.2 differentIdeal_ne_bot
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM hU t c hc`. Establish `hTC : IsTotallyComplex E` using `hCM.2.1`. Establish `hTR : IsTotallyReal F` using `hCM.1`. Establish `hσw : ∀ (w : InfinitePlace E) (x : E), w.embedding (σ x) = star (w.embedding x)` using `fun w x => hCM.2.2.2 w.embedding x`. Establish `hre : ∀ x : E, reV (σ x) = reV x` using `fun x => funext fun w => by simp [reV, hσw]`.
+
+Establish `him : ∀ x : E, imV (σ x) = -imV x` using `fun x => funext fun w => by simp [imV, hσw]`. Take `⟨e, he, hex⟩` from `GlobalTheory.T.exists_mixedSpace_reIm_coords_totallyComplex E hTC`. Take `⟨ι, _, b, hbs, hbv⟩` from `GlobalTheory.T.fractionalIdeal_basis_transport_measurePreserving E volume e he (Units.mk0 (dInv E (2 * t)) (dInv_ne_zero E _))`. Take `⟨e1, he1, he1x⟩` from `GlobalTheory.T.exists_cmExtension_mixedSpace_realCoords F E σ hCM`. Take `⟨ι1, _, b1, hb1s, hb1v⟩` from `GlobalTheory.T.fractionalIdeal_basis_transport_measurePreserving F volume e1 he1 (Units.mk0 (dInv F (2 * t)) (dInv_ne_zero F _))`.
+
+Simplify using `only [Units.val_mk0] at hbs hbv hb1s hb1v`. Use `set Λ := Submodule.span ℤ (Set.range b) with hΛdef`. Establish `hΛ : ∀ p, p ∈ Λ ↔ ∃ x ∈ dInv E (2 * t), (reV x, imV x) = p`. Introduce `p`. Rewrite using `[← SetLike.mem_coe, hbs]`.
+
+Simplify using `[hex]`. Establish `hL1 : ∀ a, a ∈ (Submodule.span ℤ (Set.range b1) : Set (InfinitePlace E → ℝ)) ↔ (a, (0 : InfinitePlace E → ℝ)) ∈ Λ`. Introduce `a`. Rewrite using `[hb1s, hΛ]`. Simplify using `only [Set.mem_image, Set.mem_setOf_eq, he1x, Prod.mk.injEq]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Establish `h` using `(GlobalTheory.T.mem_inverseDifferentIdealPow_real_iff_unramified_cm F E σ hCM hU (2 * t) (algebraMap F E y)).2 ⟨y, hy, rfl⟩`. Conclude with `⟨_, h.1, rfl, h.2⟩`. Introduce and unpack `⟨x, hx, rfl, h0⟩`.
+
+Take `⟨y, hy, rfl⟩` from `(GlobalTheory.T.mem_inverseDifferentIdealPow_real_iff_unramified_cm F E σ hCM hU _ _).1 ⟨hx, h0⟩`. Conclude with `⟨y, hy, rfl⟩`. Establish `hD1 : ∀ a, ∃! l, l ∈ {a : InfinitePlace E → ℝ | (a, (0 : InfinitePlace E → ℝ)) ∈ Λ.toAddSubgroup} ∧ a + l ∈ ZSpan.fundamentalDomain b1`. Introduce `a`. Take `⟨l, hl, hu⟩` from `dom_of_basis b1 a`.
+
+Conclude with `⟨l, ⟨(hL1 l).1 hl.1, hl.2⟩, fun l' hl' => hu l' ⟨(hL1 l').2 hl'.1, hl'.2⟩⟩`. Establish `h2 : ∀ a y, (a, y) ∈ Λ → ((0 : InfinitePlace E → ℝ), (2 : ℝ) • y) ∈ Λ`. Introduce `a y hay`. Take `⟨x, hx, hxe⟩` from `(hΛ _).1 hay`. Rewrite `hxe` using `[Prod.mk.injEq]`.
+
+Use `(hΛ _).2 ⟨x - σ x, Submodule.sub_mem (dInv E (2 * t) : Submodule (𝓞 E) E) hx (GlobalTheory.T.cmExtension_conj_mem_inverseDifferentIdealPow F E σ hCM _ x hx), ?_⟩` and prove the remaining obligations. Establish `h1 : reV (x - σ x) = reV x - reV (σ x)` using `funext fun w => by simp [reV]`. Establish `h1' : imV (x - σ x) = imV x - imV (σ x)` using `funext fun w => by simp [imV]`. Rewrite using `[h1, h1', hre, him, ← hxe.2]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `hsp : Submodule.span ℝ (Λ : Set ((InfinitePlace E → ℝ) × (InfinitePlace E → ℝ))) = ⊤`.
+
+Rewrite using `[hΛdef, Submodule.span_span_of_tower, b.span_eq]`. Take `⟨D2, hD2m, hD2⟩` from `GlobalTheory.T.exists_fundamentalDomain_snd_of_two_smul_mem' Λ hsp h2`. Establish `hprod` using `GlobalTheory.T.existsUnique_prod_fundamentalDomain_of_extension Λ.toAddSubgroup _ D2 hD1 hD2`. Establish `heq` using `GlobalTheory.T.addFundamentalDomain_measure_eq_of_countable ((volume : Measure (InfinitePlace E → ℝ)).prod (volume : Measure (InfinitePlace E → ℝ))) Λ _ _ ((ZSpan.fundamentalDomain_measurableSet b1).prod hD2m) (ZSpan.fundamentalDomain_measurableSet b) hprod (dom_of_basis b)`. Rewrite `heq` using `[Measure.prod_prod, ← Measure.volume_eq_prod, hbv, hb1v]`.
+
+Establish `hL2 : ∀ y, (∃ a, (a, y) ∈ Λ) ↔ ∃ x ∈ dInv E (2 * t), imV x = y`. Introduce `y`. Simplify using `only [hΛ, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, x, hx, -, rfl⟩`.
+
+Conclude with `⟨x, hx, rfl⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨_, x, hx, rfl, rfl⟩`. Take `⟨θ, hθ⟩` from `GlobalTheory.T.exists_integer_add_conj_eq_one_of_formallyUnramified' F E σ hCM hU`. Establish `hfin` using `GlobalTheory.T.scaledSkewLattice_fundamentalDomain_of_imaginaryParts F E σ hCM (dInv E (2 * t)) (fun x hx => GlobalTheory.T.cmExtension_conj_mem_inverseDifferentIdealPow F E σ hCM _ x hx) θ hθ c hc D2 _ hD2m (fun y => by simpa only [Set.mem_setOf_eq, hL2] using hD2 y) rfl`.
+
+Establish `hd : (1 : ℝ) ≤ |(discr F : ℝ)|`. Establish `h` using `Int.one_le_abs (discr_ne_zero F)`. Rewrite using `[← Int.cast_abs]`. Conclude with `h` after adjusting the coercions. Establish `hnc : InfinitePlace.nrComplexPlaces E = Fintype.card (InfinitePlace E)`.
+
+Establish `h` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces E`. Rewrite `h` using `[IsTotallyComplex.nrRealPlaces_eq_zero E, zero_add]`. Conclude with `h.symm`. Establish `hnr : InfinitePlace.nrComplexPlaces F = 0` using `IsTotallyReal.nrComplexPlaces_eq_zero F`. Rewrite `heq` using `[GlobalTheory.T.absNorm_inverseDifferentIdealPow_eq_discr, GlobalTheory.T.absNorm_inverseDifferentIdealPow_eq_discr, GlobalTheory.T.abs_discr_eq_sq_of_unramified_cmExtension F E σ hCM hU, hnc, hnr]`.
+
+Rewrite `hfin` using `[GlobalTheory.T.covolumeQuotient_ofReal_identity _ c _ t _ hd hc heq.symm]`. Conclude with `hfin`.
+-/
 theorem skew_covol_dInv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → Algebra.FormallyUnramified (𝓞 F) (𝓞 E) → ∀ (t : ℕ) (c : ℝ), 0 < c → HasDom volume (skewLat (σ : E →+* E) (dInv E (2 * t)) c : Set (InfinitePlace E → ℝ)) (ENNReal.ofReal (|(NumberField.discr F : ℝ)| ^ (1 / 2 - 2 * (t : ℝ)) * c ^ Fintype.card (InfinitePlace E))) := by
   intro F E _ _ _ _ _ σ hCM hU t c hc
   have hTC : IsTotallyComplex E := hCM.2.1

@@ -9,12 +9,18 @@ open Matrix
 def splitRT (Kf : Type) [Field Kf] (r t : ℕ) : (Fin (r + t) → Kf) ≃ₗ[Kf] ((Fin r → Kf) × (Fin t → Kf)) :=
   (LinearEquiv.funCongrLeft Kf Kf finSumFinEquiv).trans (LinearEquiv.sumArrowLequivProdArrow (Fin r) (Fin t) Kf Kf)
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `(refine Prod.ext (funext fun i => ?_) (funext fun j => ?_) <;> simp [splitRT])`.
+-/
 private theorem sumSplitEquiv_apply_lemma (Kf : Type) [Field Kf] (r t : ℕ) (z : Fin (r + t) → Kf) :
     splitRT Kf r t z = (fun i => z (Fin.castAdd t i), fun j => z (Fin.natAdd r j)) := by
   first
   | rfl
   | (refine Prod.ext (funext fun i => ?_) (funext fun j => ?_) <;> simp [splitRT])
 
+/- English proof (translation)
+Simplify using `only [sumSplitEquiv_apply_lemma]`. Use `Prod.ext (funext fun i => ?_) (funext fun j => ?_)` and prove the remaining obligations. Simplify using `[Matrix.mulVec_diagonal]`. Simplify using `[Matrix.mulVec_diagonal]`.
+-/
 theorem splitRT_diag (Kf : Type) [Field Kf] (r t : ℕ) (c : Kf) (z : Fin (r + t) → Kf) :
     splitRT Kf r t ((Matrix.diagonal (fun k : Fin (r + t) => if (k : ℕ) < r then 1 else c)).mulVec z) =
       ((splitRT Kf r t z).1, c • (splitRT Kf r t z).2) := by
@@ -35,6 +41,11 @@ def blockHom (k : Type) [Field k] (a b : ℕ) :
         (MonoidHom.prodMap (Matrix.toLinAlgEquiv' : Matrix (Fin a) (Fin a) k ≃ₐ[k] _).toAlgHom.toRingHom.toMonoidHom
           (Matrix.toLinAlgEquiv' : Matrix (Fin b) (Fin b) k ≃ₐ[k] _).toAlgHom.toRingHom.toMonoidHom)))
 
+/- English proof (translation)
+Establish `h1 : blockHom k a b (A, B) = LinearMap.toMatrix' ((splitRT k a b).symm.conjRingEquiv ((Matrix.toLin' A).prodMap (Matrix.toLin' B)))` using `rfl`. Rewrite using `[h1, LinearMap.toMatrix'_mulVec]`. Use `first`. Consider the case `(change splitRT k a b ((splitRT k a b).symm (((Matrix.toLin' A).prodMap (Matrix.toLin' B)) (splitRT k a b u))) = _`. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+
+Simplify using `[Matrix.toLin'_apply])`. Consider the case `(simp [LinearEquiv.conjRingEquiv_apply, LinearEquiv.conj_apply, Matrix.toLin'_apply]; done)`.
+-/
 theorem blockHom_mulVec (A : Matrix (Fin a) (Fin a) k) (B : Matrix (Fin b) (Fin b) k) (u : Fin (a + b) → k) :
     splitRT k a b ((blockHom k a b (A, B)).mulVec u) =
       (A.mulVec (splitRT k a b u).1, B.mulVec (splitRT k a b u).2) := by
@@ -48,6 +59,13 @@ theorem blockHom_mulVec (A : Matrix (Fin a) (Fin a) k) (B : Matrix (Fin b) (Fin 
      simp [Matrix.toLin'_apply])
   | (simp [LinearEquiv.conjRingEquiv_apply, LinearEquiv.conj_apply, Matrix.toLin'_apply]; done)
 
+/- English proof (translation)
+Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun u => ?_` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply]`. Apply `(splitRT k a b).injective` to reduce the goal to its premises. Rewrite using `[blockHom_mulVec]`.
+
+Simplify using `only [sumSplitEquiv_apply_lemma]`. Use `Prod.ext (funext fun i => ?_) (funext fun j => ?_)` and prove the remaining obligations. Use `first`. Consider the case `(simp [Matrix.mulVec, dotProduct, Fin.sum_univ_add]; done)`. Consider the case `(simp [Matrix.mulVec, Matrix.dotProduct, Fin.sum_univ_add]; done)`.
+
+Use `first`. Consider the case `(simp [Matrix.mulVec, dotProduct, Fin.sum_univ_add]; done)`. Consider the case `(simp [Matrix.mulVec, Matrix.dotProduct, Fin.sum_univ_add]; done)`.
+-/
 private theorem blockHom_eq_reindex_lemma_2 (A : Matrix (Fin a) (Fin a) k) (B : Matrix (Fin b) (Fin b) k) :
     blockHom k a b (A, B) =
       Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks A 0 0 B) := by
@@ -65,6 +83,9 @@ private theorem blockHom_eq_reindex_lemma_2 (A : Matrix (Fin a) (Fin a) k) (B : 
     | (simp [Matrix.mulVec, dotProduct, Fin.sum_univ_add]; done)
     | (simp [Matrix.mulVec, Matrix.dotProduct, Fin.sum_univ_add]; done)
 
+/- English proof (translation)
+Rewrite using `[blockHom_eq_reindex_lemma_2, Matrix.charpoly_reindex, Matrix.charpoly_fromBlocks_zero₁₂]`.
+-/
 theorem blockHom_charpoly (A : Matrix (Fin a) (Fin a) k) (B : Matrix (Fin b) (Fin b) k) :
     (blockHom k a b (A, B)).charpoly = A.charpoly * B.charpoly := by
   rw [blockHom_eq_reindex_lemma_2, Matrix.charpoly_reindex, Matrix.charpoly_fromBlocks_zero₁₂]
@@ -74,6 +95,9 @@ def blockRep (ρ : Γ →* GL (Fin a) k) (ρ' : Γ →* GL (Fin b) k) : Γ →* 
     ((MulEquiv.prodUnits.symm : _ ≃* (Matrix (Fin a) (Fin a) k × Matrix (Fin b) (Fin b) k)ˣ).toMonoidHom.comp
       (ρ.prod ρ'))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blockRep_coe (ρ : Γ →* GL (Fin a) k) (ρ' : Γ →* GL (Fin b) k) (g : Γ) :
     ((blockRep ρ ρ' g : GL _ _) : Matrix (Fin (a + b)) (Fin (a + b)) k) =
       blockHom k a b ((ρ g : Matrix (Fin a) (Fin a) k), (ρ' g : Matrix (Fin b) (Fin b) k)) := rfl

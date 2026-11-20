@@ -9,6 +9,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBoun
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
+/- English proof (translation)
+Use `⟨AlgebraicClosure ℚ, inferInstance, inferInstance, (isAlgClosure_iff ℚ (AlgebraicClosure ℚ)).2 ⟨inferInstance, ?_⟩⟩` and prove the remaining obligations. Establish `h` using `AlgebraicClosure.isAlgebraic ℚ`. Use `h using 1` and compare the differences between its conclusion and the goal. Conclude with `Subsingleton.elim (α := Algebra ℚ (AlgebraicClosure ℚ)) _ _`.
+-/
 private theorem exists_closure : ∃ (Q : Type) (_ : Field Q) (_ : CharZero Q), IsAlgClosure ℚ Q := by
   refine ⟨AlgebraicClosure ℚ, inferInstance, inferInstance,
     (isAlgClosure_iff ℚ (AlgebraicClosure ℚ)).2 ⟨inferInstance, ?_⟩⟩
@@ -16,6 +19,11 @@ private theorem exists_closure : ∃ (Q : Type) (_ : Field Q) (_ : CharZero Q), 
   convert h using 1
   exact Subsingleton.elim (α := Algebra ℚ (AlgebraicClosure ℚ)) _ _
 
+/- English proof (translation)
+Establish `key : S.card ≤ (Finset.Icc 1 n).card`. Apply `Finset.card_le_card_of_injOn (fun l : Nat.Primes => (l : ℕ))` to reduce the goal to its premises. Introduce `l hl`. Establish `h1` using `h l hl`. Establish `h2` using `l.2.one_lt`.
+
+Simplify using `only [Finset.coe_Icc, Set.mem_Icc, Finset.mem_Icc, Finset.mem_coe]`. Use linear arithmetic over natural numbers and integers. Introduce `x _ y _ hxy`. Conclude with `Subtype.ext hxy`. Simplify using `using key`.
+-/
 private theorem card_small (S : Finset Nat.Primes) (n : ℕ) (h : ∀ l ∈ S, (l : ℕ) ≤ n) : S.card ≤ n := by
   have key : S.card ≤ (Finset.Icc 1 n).card := by
     apply Finset.card_le_card_of_injOn (fun l : Nat.Primes => (l : ℕ))
@@ -28,6 +36,13 @@ private theorem card_small (S : Finset Nat.Primes) (n : ℕ) (h : ∀ l ∈ S, (
       exact Subtype.ext hxy
   simpa using key
 
+/- English proof (translation)
+Establish `hM1 : (1:ℝ) ≤ M` using `by linarith`. Establish `hpos : 0 ≤ M ^ a + 2 * M * M ^ b` using `by positivity`. Establish `h1 : t * (M ^ a + 2 * M * M ^ b) ≤ M * (M ^ a + 2 * M * M ^ b)` using `mul_le_mul_of_nonneg_right ht hpos`. Establish `hA : M ^ (a + 1) ≤ M ^ (a + b + 3)` using `pow_le_pow_right₀ hM1 (by omega)`. Establish `hB : M ^ (b + 2) ≤ M ^ (a + b + 2)` using `pow_le_pow_right₀ hM1 (by omega)`.
+
+Establish `hY : 0 ≤ M ^ (a + b + 2)` using `by positivity`. Establish `hX : 0 ≤ M ^ (a + b + 3)` using `by positivity`. Establish `eX : M ^ (a + b + 3) = M * M ^ (a + b + 2)` using `by ring`. Establish `e4 : M ^ (a + b + 4) = M * M ^ (a + b + 3)` using `by ring`. Establish `eL : M * (M ^ a + 2 * M * M ^ b) = M ^ (a + 1) + 2 * M ^ (b + 2)` using `by ring`.
+
+Establish `k1 : 0 ≤ (M - 2) * M ^ (a + b + 2)` using `mul_nonneg (by linarith) hY`. Establish `k2 : 0 ≤ (M - 1) * M ^ (a + b + 3)` using `mul_nonneg (by linarith) hX`. Rewrite using `[e4]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 private theorem final_le (M t : ℝ) (a b : ℕ) (hM : 2 ≤ M) (ht : t ≤ M) :
     t * (M ^ a + 2 * M * M ^ b) ≤ M ^ (a + b + 4) := by
   have hM1 : (1:ℝ) ≤ M := by linarith
@@ -47,6 +62,67 @@ private theorem final_le (M t : ℝ) (a b : ℕ) (hM : 2 ≤ M) (ht : t ≤ M) :
   nlinarith
 
 set_option maxHeartbeats 400000 in
+/- English proof (translation)
+Introduce `hI hZ hII hIII χ`. Take `⟨C1, r₁, r₂, hr₁, hr₂, hI⟩` from `hI χ`. Take `⟨CZ, hZ⟩` from `hZ χ`. Take `⟨C2, hII⟩` from `hII χ`. Take `⟨C3, hIII⟩` from `hIII χ`.
+
+Use `⟨C1 + 3 * max CZ (max C2 C3) + 4, r₁, r₂, hr₁, hr₂, ?_⟩` and prove the remaining obligations. Introduce `h hχ hq1 hd hq1' hd' t ht2 hbig E _ _ _ hE Ω _ _ _ ld S hS`. Substitute `hχ` using the available equality. Take `⟨Ω0, iF, iC, iA⟩` from `exists_closure`. Use `set K := max CZ (max C2 C3) with hK`.
+
+Establish `hN1 : (1:ℝ) ≤ (h.N : ℝ)` using `by exact_mod_cast h.N_pos`. Establish `ht2' : (2:ℝ) ≤ (t:ℝ)` using `by exact_mod_cast ht2`. Use `set M : ℝ := (h.N : ℝ) * t with hM`. Establish `hM2 : 2 ≤ M` using `by nlinarith`. Establish `htM : (t:ℝ) ≤ M` using `by nlinarith`.
+
+Establish `hNM : (h.N:ℝ) ≤ M` using `by nlinarith`. Use `haveI : NeZero h.N.totient := ⟨(Nat.totient_pos.2 h.N_pos).ne'⟩`. Use `choose c hc using fun l : Nat.Primes => exists_coef (l : ℕ) h.N.totient`. Establish `hfacts` using `fun (l : Nat.Primes) (hl : l ∈ S) => (bchiFacts h t hbig).2.2.2.2 (l:ℕ) l.2 (hS l hl).1 (hS l hl).2`. Establish `hother : ∀ l ∈ S, ∀ e, 0 < e → e < t → ¬ h.CaseI (l:ℕ) e → ∀ ψ ∈ h.X (c l) e, VLe Ω0 (c l) e ψ (M ^ (3 * K))`.
+
+Introduce `l hl e he1 he2 hn ψ hψ`. Establish `hl2` using `(hS l hl).1`. Establish `hlB` using `(hS l hl).2`. Establish `hchar` using `((Host.mem_X h).1 hψ).1`. Establish `hc4` using `((UpperTheory.V.HV.cases h t hbig (↥(c l).O) ψ hchar (l:ℕ) e l.2 hl2 he1 he2).1 hlB).2.2.2.2.2`.
+
+Establish `hdv : (l:ℕ) - 1 ∣ 2 * e`. Simplify using `only [Host.CaseI, not_and, not_not] at hn`. Conclude with `hn hlB`. Establish `hle` using `(hfacts l hl).2.2.2.2.2.2.2 e he1 he2 hdv`. Establish `hl' : ((l:ℕ):ℝ) ≤ 2 * t` using `by exact_mod_cast hle.2.1`.
+
+Establish `he' : (e:ℝ) ≤ t` using `by exact_mod_cast he2.le`. Establish `hl1 : (1:ℝ) ≤ (l:ℕ)` using `by exact_mod_cast l.2.one_lt.le`. Establish `he1' : (1:ℝ) ≤ e` using `by exact_mod_cast he1`. Establish `hbase1 : (1:ℝ) ≤ ((l:ℕ):ℝ) * h.N * e`. Establish `a1` using `mul_le_mul hl1 hN1 zero_le_one (by positivity)`.
+
+Establish `a2` using `mul_le_mul a1 he1' zero_le_one (by positivity)`. Simplify using `using a2`. Establish `hbase : ((l:ℕ):ℝ) * h.N * e ≤ M ^ 3`. Establish `a1 : ((l:ℕ):ℝ) * h.N ≤ (2 * t) * h.N` using `mul_le_mul_of_nonneg_right hl' (by positivity)`. Establish `a2 : ((l:ℕ):ℝ) * h.N * e ≤ (2 * t) * h.N * t` using `mul_le_mul a1 he' (by positivity) (by positivity)`.
+
+Establish `hM0 : 0 ≤ M` using `by linarith`. Establish `a4 : 2 * M * t ≤ M * M * t` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hM2 hM0) (by positivity)`. Establish `a5 : M * M * t ≤ M * M * M` using `mul_le_mul_of_nonneg_left htM (by positivity)`. Establish `a3 : (2 * (t:ℝ)) * h.N * t = 2 * M * t` using `by rw [hM]; ring`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `key : ∀ C', C' ≤ K → VLe Ω0 (c l) e ψ ((((l:ℕ):ℝ) * h.N * e) ^ C') → VLe Ω0 (c l) e ψ (M ^ (3 * K))`. Introduce `C' hC' v`. Apply `VLe.mono Ω0 (c l) v` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Break down `hc4 with h1 | h1 | h1 | h1` into its components or cases.
+
+Conclude with `absurd h1 hn`. Conclude with `key CZ (le_max_left _ _) (hZ h rfl t hbig Ω0 (l:ℕ) (c l) e hl2 he1 he2 ψ hψ h1)`. Conclude with `key C2 (le_trans (le_max_left _ _) (le_max_right _ _)) (hII h rfl t hbig Ω0 (l:ℕ) (c l) e hl2 he1 he2 ψ hψ h1)`. Conclude with `key C3 (le_trans (le_max_right _ _) (le_max_right _ _)) (hIII h rfl t hbig Ω0 (l:ℕ) (c l) e hl2 he1 he2 ψ hψ h1)`. Establish `hfin : ∀ l ∈ S, ∀ e, 0 < e → e < t → ∀ ψ ∈ h.X (c l) e, Vlen Ω0 (c l) e ψ ≠ ⊤`.
+
+Introduce `l hl e he1 he2 ψ hψ`. Distinguish the cases in `hn : h.CaseI (l:ℕ) e`. Establish `hLs : ∀ l' ∈ ({l} : Finset Nat.Primes), (l':ℕ) ≠ 2 ∧ h.CaseI (l':ℕ) e`. Introduce `l' hl'`. Rewrite `hl'` using `[Finset.mem_singleton]`.
+
+Rewrite using `[hl']`. Conclude with `⟨(hS _ hl).1, hn⟩`. Conclude with `(hI h rfl hq1 hd hq1' hd' t hbig e he1 he2 Ω0 c {l} hLs).1 l (Finset.mem_singleton_self l) ψ hψ`. Conclude with `(hother l hl e he1 he2 hn ψ hψ).1`. Establish `hper : ∀ l ∈ S, (∀ e, 0 < e → e < t → plusLen (ld l) e ≠ ⊤) ∧ ∑ e ∈ Finset.Ico 1 t, ((plusLen (ld l) e).toNat : ℝ) ≤ ∑ e ∈ Finset.Ico 1 t, ∑ ψ ∈ h.X (c l) e, Vn Ω0 (c l) e ψ`.
+
+Introduce `l hl`. Use `haveI := (c l).dvr`. Use `haveI := (c l).fin`. Use `haveI := hc l`. Establish `hidx` using `(hfacts l hl).2.2.2.2.2.2.1`.
+
+Establish `hlev` using `hostLevel h E hE`. Establish `hT : ∀ e, (↑(h.X (c l) e) : Set (DirichletCharacter (↥(c l).O) h.N)) = Chr.evenSet (↥(c l).O) h.H e`. Introduce `e`. Use extensionality with `ψ`. Simplify using `[Host.mem_X, Chr.evenSet, Host.IsChar, PsiEven]`.
+
+Establish `hred` using `fun e (he : e ≠ 0) => redPrime E h.N h.H hlev (l:ℕ) (hS l hl).1 hidx (c l) Ω (ld l) Ω0 e he (h.X (c l) e) (hT e)`. Establish `r` using `Chr.sumBack (l:ℕ) (↥(c l).O) (DirichletCharacter (↥(c l).O) h.N) (fun e => if e < t then h.X (c l) e else ∅) ((Finset.range t).biUnion (fun e => h.X (c l) e)) (fun ψ e => Vlen Ω0 (c l) e ψ) (fun e => plusLen (ld l) e) (fun _ => 0) t (by`. Introduce `e`. Use `split_ifs with h'`. Introduce `ψ hψ`.
+
+Conclude with `Finset.mem_biUnion.2 ⟨e, Finset.mem_range.2 h', hψ⟩`. Conclude with `Finset.empty_subset _)`. Use the proof step `(by`. Introduce `e he1 he2`. Simplify using `only [he2, if_true, Nat.cast_zero, zero_mul, add_zero]`.
+
+Conclude with `⟨hfin l hl e he1 he2, hred e he1.ne'⟩)`. Use `⟨r.1, ?_⟩` and prove the remaining obligations. Establish `r2` using `r.2`. Simplify using `only [Nat.cast_zero, Finset.sum_const_zero, mul_zero, add_zero] at r2`. Use `r2.trans (le_of_eq (Finset.sum_congr rfl fun e he => ?_))` and prove the remaining obligations.
+
+Simplify using `only [Finset.mem_Ico] at he`. Simplify using `only [if_pos he.2]`. Both sides reduce to the same expression. Establish `hstep : ∀ e, 0 < e → e < t → ∑ l ∈ S, Real.log ((l:ℕ):ℝ) * ∑ ψ ∈ h.X (c l) e, Vn Ω0 (c l) e ψ ≤ M ^ C1 + 2 * M * M ^ (3 * K)`. Introduce `e he1 he2`.
+
+Rewrite using `[← Finset.sum_filter_add_sum_filter_not S (fun l : Nat.Primes => h.CaseI (l:ℕ) e)]`. Establish `hLs : ∀ l ∈ S.filter (fun l : Nat.Primes => h.CaseI (l:ℕ) e), (l:ℕ) ≠ 2 ∧ h.CaseI (l:ℕ) e`. Introduce `l hl`. Rewrite `hl` using `[Finset.mem_filter]`. Conclude with `⟨(hS l hl.1).1, hl.2⟩`.
+
+Establish `hA` using `(hI h rfl hq1 hd hq1' hd' t hbig e he1 he2 Ω0 c _ hLs).2`. Establish `hB : ∀ l ∈ S.filter (fun l : Nat.Primes => ¬ h.CaseI (l:ℕ) e), Real.log ((l:ℕ):ℝ) * ∑ ψ ∈ h.X (c l) e, Vn Ω0 (c l) e ψ ≤ (h.N:ℝ) * M ^ (3 * K)`. Introduce `l hl`. Rewrite `hl` using `[Finset.mem_filter]`. Rewrite using `[Finset.mul_sum]`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `ψ hψ`. Rewrite using `[mul_comm]`. Conclude with `(hother l hl.1 e he1 he2 hl.2 ψ hψ).2`.
+
+Use `_ = ((h.X (c l) e).card : ℝ) * M ^ (3 * K) := by rw [Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ (h.N:ℝ) * M ^ (3 * K) := by`. Apply `mul_le_mul_of_nonneg_right _ (by positivity)` to reduce the goal to its premises. Conclude with `(xCard (↥(c l).O) h.N).1 _` after adjusting the coercions. Establish `hcard : ((S.filter (fun l : Nat.Primes => ¬ h.CaseI (l:ℕ) e)).card : ℝ) ≤ 2 * t`.
+
+Use `card_small (S.filter (fun l : Nat.Primes => ¬ h.CaseI (l:ℕ) e)) (2 * t) (by` as an intermediate fact. Introduce `l hl`. Rewrite `hl` using `[Finset.mem_filter]`. Establish `hn` using `hl.2`. Simplify using `only [Host.CaseI, not_and, not_not] at hn`.
+
+Conclude with `((hfacts l hl.1).2.2.2.2.2.2.2 e he1 he2 (hn (hS l hl.1).2)).2.1)`. Conclude with `this` after adjusting the coercions. Establish `hB' : ∑ l ∈ S.filter (fun l : Nat.Primes => ¬ h.CaseI (l:ℕ) e), Real.log ((l:ℕ):ℝ) * ∑ ψ ∈ h.X (c l) e, Vn Ω0 (c l) e ψ ≤ 2 * M * M ^ (3 * K)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`.
+
+Use `_ ≤ (2 * t) * ((h.N:ℝ) * M ^ (3 * K)) := mul_le_mul_of_nonneg_right hcard (by positivity)`. Use `_ = 2 * M * M ^ (3 * K) := by rw [hM]; ring`. Conclude with `add_le_add hA hB'`. Use `⟨fun l hl e he1 he2 => (hper l hl).1 e he1 he2, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `l hl`. Apply `mul_le_mul_of_nonneg_left (hper l hl).2` to reduce the goal to its premises. Conclude with `Real.log_nonneg (by exact_mod_cast l.2.one_lt.le)`. Use `_ = ∑ e ∈ Finset.Ico 1 t, ∑ l ∈ S, Real.log ((l:ℕ):ℝ) * ∑ ψ ∈ h.X (c l) e, Vn Ω0 (c l) e ψ := by`.
+
+Repeatedly rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_comm`. Use `_ ≤ ∑ e ∈ Finset.Ico 1 t, (M ^ C1 + 2 * M * M ^ (3 * K)) := by`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `e he`.
+
+Simplify using `only [Finset.mem_Ico] at he`. Conclude with `hstep e (by omega) he.2`. Use `_ ≤ (t:ℝ) * (M ^ C1 + 2 * M * M ^ (3 * K)) := by`. Rewrite using `[Finset.sum_const, Nat.card_Ico, nsmul_eq_mul]`. Apply `mul_le_mul_of_nonneg_right _ (by positivity)` to reduce the goal to its premises.
+
+Conclude with `Nat.sub_le t 1` after adjusting the coercions. Use `_ ≤ M ^ (C1 + 3 * K + 4) := final_le M t C1 (3 * K) hM2 htM`.
+-/
 theorem UpperTheory.V.HV.sumOut :
     CountI → CountZ → CountII → CountIII → SumOut := by
   classical

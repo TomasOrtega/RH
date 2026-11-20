@@ -8,6 +8,25 @@ open scoped Classical
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Use `set f : ℝ := (Fintype.card (CP E) : ℝ) with hf_def`. Establish `hf : 0 < f` using `Nat.cast_pos.mpr card_complexPlaces_pos`. Use `set D := dE E with hD_def`. Establish `hD : 0 < D` using `dE_pos`. Use `set t := D ^ (1 / f) with ht_def`.
+
+Establish `ht : 0 < t` using `Real.rpow_pos_of_pos hD _`. Establish `htinv : D ^ (-(1 / f)) = t⁻¹` using `Real.rpow_neg hD.le _`. Use `set lam := Real.sqrt (4 * f * t⁻¹) with hlam_def`. Establish `hlam : 0 < lam` using `Real.sqrt_pos.mpr (by positivity)`. Establish `hlam2 : lam ^ 2 = 4 * f * t⁻¹` using `Real.sq_sqrt (by positivity)`.
+
+Establish `hmin : ∀ x ∈ span ℤ (Set.range (bd E)), x ≠ 0 → lam ≤ ‖x‖`. Introduce `x hx hx0`. Establish `h` using `norm_bd_ge x hx hx0`. Rewrite `h` using `[← hf_def, ← hD_def, htinv]`. Rewrite using `[hlam_def, ← Real.sqrt_sq (norm_nonneg x)]`.
+
+Conclude with `Real.sqrt_le_sqrt h`. Take `⟨x, hx, hxb⟩` from `BabaiCovering.cover (bas E) (bd E) inner_bas_bd lam hlam hmin Z`. Take `⟨α, rfl⟩` from `mem_span_bas hx`. Use `⟨α, ?_⟩` and prove the remaining obligations. Establish `hn : (finrank ℝ (VS E) : ℝ) = 2 * f`.
+
+Rewrite using `[finrank_VS, (card_CP (E := E)).2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hfdeg : (fdeg E : ℝ) = f` using `by rw [← (card_CP (E := E)).1]`. Establish `hrd : rdE E ^ 2 = t`.
+
+Rewrite using `[rdE, ← hD_def, (card_CP (E := E)).2, ← Real.rpow_natCast, ← Real.rpow_mul hD.le]`. Use `congr 1`. Use `push_cast`. Rewrite using `[← hf_def]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite `hxb` using `[hn]`. Establish `hbound : (2 * f) / 4 * ((2 * f) ^ 2 / lam) ^ 2 = 2 * f ^ 4 * t`. Rewrite using `[div_pow, hlam2]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `hxb` using `[hbound]`. Establish `hB : 0 ≤ 2 * (fdeg E : ℝ) ^ 2 * rdE E`. Establish `: 0 ≤ rdE E` using `Real.rpow_nonneg (abs_nonneg _) _`. Check the signs of the components of the expression. Rewrite using `[← pow_le_pow_iff_left₀ (norm_nonneg _) hB (by norm_num : (2 : ℕ) ≠ 0)]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, mul_pow, hrd, hfdeg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cover_OE (Z : VS E) :
     ∃ α : 𝓞 E, ‖Z - iota E (α : E)‖ ≤ 2 * (fdeg E : ℝ) ^ 2 * rdE E := by
   set f : ℝ := (Fintype.card (CP E) : ℝ) with hf_def

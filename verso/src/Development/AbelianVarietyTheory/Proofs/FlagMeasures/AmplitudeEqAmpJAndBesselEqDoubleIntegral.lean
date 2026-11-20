@@ -9,6 +9,15 @@ open scoped InnerProductSpace
 noncomputable section
 namespace GlobalTheory.SgInf.AmpJ
 
+/- English proof (translation)
+Distinguish the cases in `hf : AEStronglyMeasurable f (μ.map g)`. Conclude with `integral_map hg.aemeasurable hf`. Establish `hfg : ¬ AEStronglyMeasurable (fun x => f (g x)) μ`. Introduce `h`. Establish `hmm : (μ.map g).map r = μ`.
+
+Rewrite using `[Measure.map_map hr hg]`. Rewrite using `[Measure.map_congr (g := id) (by filter_upwards [hrg] with x hx using hx), Measure.map_id]`. Rewrite `h` using `[← hmm]`. Establish `h2` using `h.comp_aemeasurable hr.aemeasurable`. Apply `hf` to reduce the goal to its premises.
+
+Use `h2.congr ?_` and prove the remaining obligations. Establish `hs : MeasurableSet {y | g (r y) = y}` using `measurableSet_eq_fun (hg.comp hr) measurable_id`. Establish `hae : ∀ᵐ y ∂(μ.map g), g (r y) = y` using `(ae_map_iff hg.aemeasurable hs).2 (by filter_upwards [hrg] with x hx; simp [hx])`. Use `filter_upwards [hae] with y hy`. Simplify using `[Function.comp, hy]`.
+
+Rewrite using `[integral_non_aestronglyMeasurable hf, integral_non_aestronglyMeasurable hfg]`.
+-/
 theorem integral_map_of_ae_leftInv {X Y E : Type*} [MeasurableSpace X] [MeasurableSpace Y] [MeasurableEq Y]
     [NormedAddCommGroup E] [NormedSpace ℝ E] {μ : Measure X} {g : X → Y} {r : Y → X}
     (hg : Measurable g) (hr : Measurable r) (hrg : ∀ᵐ x ∂μ, r (g x) = x) (f : Y → E) :
@@ -33,17 +42,31 @@ theorem integral_map_of_ae_leftInv {X Y E : Type*} [MeasurableSpace X] [Measurab
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `h` using `(hpkFacts k r).2.1`. Establish `: (Hpk k r).det * (Hpk k r).det = 1` using `by rw [← Matrix.det_mul, h, Matrix.det_one]`. Conclude with `isUnit_iff_exists_inv.2 ⟨_, this⟩`.
+-/
 theorem hpk_unit : IsUnit (Hpk k r).det := by
   have h := (hpkFacts k r).2.1
   have : (Hpk k r).det * (Hpk k r).det = 1 := by rw [← Matrix.det_mul, h, Matrix.det_one]
   exact isUnit_iff_exists_inv.2 ⟨_, this⟩
 
+/- English proof (translation)
+The claim follows from `((uHGroup _ (Hpk k r) hpk_unit).2.2 g hg).1`.
+-/
 theorem unit_of_mem {g : Mat k r} (hg : g ∈ UH (Hpk k r)) : IsUnit g.det :=
   ((uHGroup _ (Hpk k r) hpk_unit).2.2 g hg).1
 
+/- English proof (translation)
+The claim follows from `((uHGroup _ (Hpk k r) hpk_unit).2.2 g hg).2`.
+-/
 theorem inv_mem {g : Mat k r} (hg : g ∈ UH (Hpk k r)) : g⁻¹ ∈ UH (Hpk k r) :=
   ((uHGroup _ (Hpk k r) hpk_unit).2.2 g hg).2
 
+/- English proof (translation)
+Take `⟨hU, hfix, hz⟩` from `hh`. Establish `hd` using `unit_of_mem hU`. Establish `key : ∀ v, h *ᵥ v = v → h⁻¹ *ᵥ v = v`. Introduce `v hv`. Use `conv_lhs => rw [← hv]`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hd, Matrix.one_mulVec]`. Conclude with `⟨inv_mem hU, fun a => ⟨key _ (hfix a).1, key _ (hfix a).2⟩, key _ hz⟩`.
+-/
 theorem uw_inv {z : Fin (2 * r + k + 1) → ℂ} {h : Mat k r} (hh : h ∈ UWset k r z) : h⁻¹ ∈ UWset k r z := by
   obtain ⟨hU, hfix, hz⟩ := hh
   have hd := unit_of_mem hU
@@ -53,12 +76,18 @@ theorem uw_inv {z : Fin (2 * r + k + 1) → ℂ} {h : Mat k r} (hh : h ∈ UWset
     rw [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hd, Matrix.one_mulVec]
   exact ⟨inv_mem hU, fun a => ⟨key _ (hfix a).1, key _ (hfix a).2⟩, key _ hz⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Unfold `psi psiGen ell`. Rewrite using `[Finset.mul_sum]`. Both sides reduce to the same expression.
+-/
 theorem psi_eq_psiGen (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) : psi k r z c = psiGen k r z (fun _ => c) := by
   funext g
   unfold psi psiGen ell
   rw [Finset.mul_sum]
   rfl
 
+/- English proof (translation)
+Unfold `psi`. Rewrite using `[h]`.
+-/
 theorem psi_congr {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {g g' : Mat k r} (h : ell k r z g = ell k r z g') :
     psi k r z c g = psi k r z c g' := by
   unfold psi; rw [h]
@@ -82,6 +111,13 @@ def lmulEquiv (γ : Mat k r) (hγ : IsUnit γ.det) : Mt k r ≃ᵐ Mt k r :=
       continuous_toFun := (continuous_const (y := γ)).matrix_mul (continuous_id (X := Mat k r))
       continuous_invFun := (continuous_const (y := γ⁻¹)).matrix_mul (continuous_id (X := Mat k r)) }
 
+/- English proof (translation)
+Establish `hd : IsUnit γ.det` using `unit_of_mem hγ`. Unfold `OO ampJ`. Rewrite using `[Complex.ofReal_one, inv_one, one_smul]`. Establish `hmap : μG.map (lmulEquiv γ hd) = μG` using `hμ.2.2.2 γ hγ`. Use `conv_lhs => rw [← hmap]`.
+
+Rewrite using `[integral_map_equiv]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Use `show rk1 (Φ (γ * Matrix.of x)) (Φ' (γ⁻¹ * (γ * Matrix.of x))) = _`. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hd, Matrix.one_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem part1 {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
     (μG : Measure (Mt k r)) (Φ : Mat k r → Wp) (Φ' : Mat k r → Wq) (hμ : IsHaarOn (GG k r) μG)
@@ -98,6 +134,11 @@ theorem part1 {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   rw [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hd, Matrix.one_mul]
   rfl
 
+/- English proof (translation)
+Establish `hd` using `unit_of_mem hh.1`. Establish `hni : n⁻¹ ∈ Nset k r` using `(nSubgroup k r).2.2 n hn`. Establish `hm` using `uWNormal k r z hz h hh n⁻¹ hni`. Establish `heq : (h * n)⁻¹ = h⁻¹ * (h * n⁻¹ * h⁻¹)`. Rewrite using `[Matrix.mul_inv_rev, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hd, Matrix.one_mul]`.
+
+Rewrite using `[heq, psi_eq_psiGen, ((GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z (fun _ => c) π hz hT hπ).1 h⁻¹ (uw_inv hh) _ hm.1).2, ← psi_eq_psiGen, psi_congr hm.2]`.
+-/
 theorem pis_inv {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
     [CompleteSpace Wp] {z : Fin (2 * r + k + 1) → ℂ} (c : ℂ) {π : Mat k r → (Wp →L[ℂ] Wp)}
     (hz : inWb k r z) (hT : 0 < Tz k r z) (hπ : IsURepOn (UWset k r z) π)
@@ -112,6 +153,11 @@ theorem pis_inv {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [
   rw [heq, psi_eq_psiGen, ((GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z (fun _ => c) π hz hT hπ).1 h⁻¹ (uw_inv hh) _ hm.1).2,
     ← psi_eq_psiGen, psi_congr hm.2]
 
+/- English proof (translation)
+Establish `hd` using `unit_of_mem hh.1`. Establish `h1 : (π h).comp (π h⁻¹) = 1`. Rewrite using `[← hπ.1.2 h hh h⁻¹ (uw_inv hh), Matrix.mul_nonsing_inv _ hd, hπ.1.1]`. Establish `h2 : (ContinuousLinearMap.adjoint (π h)).comp (π h) = 1` using `(ContinuousLinearMap.norm_map_iff_adjoint_comp_self (π h)).1 (hπ.2.1 h hh)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[h1]`. Both sides reduce to the same expression. Use `_ = π h⁻¹ := by rw [← ContinuousLinearMap.comp_assoc, h2]; rfl`.
+-/
 theorem adj_inv {Wq : Type*} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [CompleteSpace Wq]
     {z : Fin (2 * r + k + 1) → ℂ} {π : Mat k r → (Wq →L[ℂ] Wq)} (hπ : IsURepOn (UWset k r z) π)
     {h : Mat k r} (hh : h ∈ UWset k r z) : ContinuousLinearMap.adjoint (π h) = π h⁻¹ := by
@@ -130,6 +176,11 @@ noncomputable section
 namespace GlobalTheory.SgInf.AmpJ
 variable {k r : ℕ}
 
+/- English proof (translation)
+Rewrite using `[pis_inv c₀ hz hT hπ hh hn, pis_inv c₀ hz' hT' hπ' hh' hn', Matrix.nonsing_inv_nonsing_inv _ (unit_of_mem hh.1), Matrix.nonsing_inv_nonsing_inv _ (unit_of_mem hn.1), Matrix.nonsing_inv_nonsing_inv _ (unit_of_mem hh'.1), Matrix.mul_inv_rev h' n']`. Establish `hadj : ∀ η, ⟪ξ', π' h' η⟫_ℂ = ⟪π' h'⁻¹ ξ', η⟫_ℂ`. Introduce `η`. Rewrite using `[← adj_inv hπ' hh', ContinuousLinearMap.adjoint_inner_left]`. Use extensionality with `η`.
+
+Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, rankOneInnerOperator_apply, map_smul, inner_smul_left, smul_smul, hadj, Matrix.mul_assoc]`. Use `congr 1`. Simplify using `only [Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pt {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] [CompleteSpace Wp]
     {Wq : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] [CompleteSpace Wq]
@@ -162,6 +213,11 @@ noncomputable section
 namespace GlobalTheory.SgInf.AmpJ
 variable {k r : ℕ}
 
+/- English proof (translation)
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [hPart]`. Use `split_ifs`. Conclude with `(continuous_apply j).comp (continuous_apply i)`. Conclude with `continuous_const`.
+
+Conclude with `continuous_const`.
+-/
 theorem continuous_hPart : Continuous (X := Mt k r) (Y := Mt k r) (fun s => hPart k r (Matrix.of s)) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
   simp only [hPart]
@@ -170,16 +226,25 @@ theorem continuous_hPart : Continuous (X := Mt k r) (Y := Mt k r) (fun s => hPar
   · exact continuous_const
   · exact continuous_const
 
+/- English proof (translation)
+The claim follows from `(continuous_fst (X := Mat k r) (Y := Mat k r)).matrix_mul continuous_snd`.
+-/
 theorem continuous_mulP : Continuous (fun p : Mt k r × Mt k r => lmulM (Matrix.of p.1) p.2) :=
   (continuous_fst (X := Mat k r) (Y := Mat k r)).matrix_mul continuous_snd
 
 def mulP (p : Mt k r × Mt k r) : Mt k r := lmulM (Matrix.of p.1) p.2
 
+/- English proof (translation)
+The claim follows from `continuous_mulP.measurable`.
+-/
 theorem measurable_mulP : Measurable (mulP : Mt k r × Mt k r → Mt k r) := continuous_mulP.measurable
 
 def splitS (s : Mt k r) : Mt k r × Mt k r :=
   (hPart k r (Matrix.of s), mulP (invM (hPart k r (Matrix.of s)), s))
 
+/- English proof (translation)
+Establish `h0 : Measurable (α` using `Mt k r) (β := Mt k r) (fun s => hPart k r (Matrix.of s)) := continuous_hPart.measurable`. Establish `h1 : Measurable (fun s : Mt k r => (invM (hPart k r (Matrix.of s)), s))` using `(measurable_invM.comp h0).prodMk measurable_id`. Conclude with `h0.prodMk (measurable_mulP.comp h1)`.
+-/
 theorem measurable_splitS : Measurable (splitS : Mt k r → Mt k r × Mt k r) := by
   have h0 : Measurable (α := Mt k r) (β := Mt k r) (fun s => hPart k r (Matrix.of s)) :=
     continuous_hPart.measurable
@@ -187,6 +252,11 @@ theorem measurable_splitS : Measurable (splitS : Mt k r → Mt k r × Mt k r) :=
     (measurable_invM.comp h0).prodMk measurable_id
   exact h0.prodMk (measurable_mulP.comp h1)
 
+/- English proof (translation)
+Establish `hP : hPart k r (Matrix.of p.1 * Matrix.of p.2) = Matrix.of p.1` using `((GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z (fun _ => 0) π hz hT hπ).1 _ hh _ hn).1`. Establish `hd` using `unit_of_mem hh.1`. Unfold `splitS`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `hP`.
+
+Use `show (hPart k r (Matrix.of p.1 * Matrix.of p.2))⁻¹ * (Matrix.of p.1 * Matrix.of p.2) = Matrix.of p.2`. Rewrite using `[hP, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hd, Matrix.one_mul]`.
+-/
 theorem splitS_mul {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
     [CompleteSpace Wp] {z : Fin (2 * r + k + 1) → ℂ} {π : Mat k r → (Wp →L[ℂ] Wp)}
     (hz : inWb k r z) (hT : 0 < Tz k r z) (hπ : IsURepOn (UWset k r z) π)
@@ -210,9 +280,31 @@ variable {k r : ℕ}
 def inv4 (p : (Mt k r × Mt k r) × (Mt k r × Mt k r)) : (Mt k r × Mt k r) × (Mt k r × Mt k r) :=
   Prod.map (Prod.map invM invM) (Prod.map invM invM) p
 
+/- English proof (translation)
+The claim follows from `(measurable_invM.prodMap measurable_invM).prodMap (measurable_invM.prodMap measurable_invM)`.
+-/
 theorem measurable_ambientMatrixFourFoldInverse : Measurable (inv4 : (Mt k r × Mt k r) × (Mt k r × Mt k r) → _) :=
   (measurable_invM.prodMap measurable_invM).prodMap (measurable_invM.prodMap measurable_invM)
 
+/- English proof (translation)
+Use `hμW.1` as an intermediate fact. Use `hμW'.1` as an intermediate fact. Use `hμN.1` as an intermediate fact. Establish `: BorelSpace (Mt k r × Mt k r)` using `Prod.borelSpace`. Establish `: BorelSpace ((Mt k r × Mt k r) × (Mt k r × Mt k r))` using `Prod.borelSpace`.
+
+Establish `: MeasurableEq ((Mt k r × Mt k r) × (Mt k r × Mt k r))` using `⟨isClosed_diagonal.measurableSet⟩`. Establish `aeOf : ∀ {S : Set (Mat k r)} {μ : Measure (Mt k r)}, IsHaarOn S μ → ∀ᵐ x ∂μ, Matrix.of x ∈ S`. Introduce `S μ hμ`. Rewrite using `[ae_iff]`. Simplify using `using hμ.2.2.1`.
+
+Establish `hae : ∀ᵐ p ∂((μW.prod μN).prod (μW'.prod μN)), Matrix.of p.1.1 ∈ UWset k r z ∧ Matrix.of p.1.2 ∈ Nset k r ∧ Matrix.of p.2.1 ∈ UWset k r z' ∧ Matrix.of p.2.2 ∈ Nset k r`. Establish `a1` using `(Measure.quasiMeasurePreserving_fst (μ := μW.prod μN) (ν := μW'.prod μN)).ae ((Measure.quasiMeasurePreserving_fst (μ := μW) (ν := μN)).ae (aeOf hμW))`. Establish `a2` using `(Measure.quasiMeasurePreserving_fst (μ := μW.prod μN) (ν := μW'.prod μN)).ae ((Measure.quasiMeasurePreserving_snd (μ := μW) (ν := μN)).ae (aeOf hμN))`. Establish `a3` using `(Measure.quasiMeasurePreserving_snd (μ := μW.prod μN) (ν := μW'.prod μN)).ae ((Measure.quasiMeasurePreserving_fst (μ := μW') (ν := μN)).ae (aeOf hμW'))`. Establish `a4` using `(Measure.quasiMeasurePreserving_snd (μ := μW.prod μN) (ν := μW'.prod μN)).ae ((Measure.quasiMeasurePreserving_snd (μ := μW') (ν := μN)).ae (aeOf hμN))`.
+
+Use `filter_upwards [a1, a2, a3, a4] with p h1 h2 h3 h4`. Conclude with `⟨h1, h2, h3, h4⟩`. Establish `hWi : μW.map invM = μW` using `((GlobalTheory.T.unimodular_besselSubgroups_UW_N k r z hz hT μW).2.2 hμW).1.2`. Establish `hW'i : μW'.map invM = μW'` using `((GlobalTheory.T.unimodular_besselSubgroups_UW_N k r z' hz' hT' μW').2.2 hμW').1.2`. Establish `hNi : μN.map invM = μN` using `((GlobalTheory.T.unimodular_besselSubgroups_UW_N k r z hz hT μN).2.1 hμN).1.2`.
+
+Establish `hinv4 : ((μW.prod μN).prod (μW'.prod μN)).map inv4 = (μW.prod μN).prod (μW'.prod μN)`. Unfold `inv4`. Rewrite using `[← Measure.map_prod_map _ _ (measurable_invM.prodMap measurable_invM) (measurable_invM.prodMap measurable_invM), ← Measure.map_prod_map _ _ measurable_invM measurable_invM, ← Measure.map_prod_map _ _ measurable_invM measurable_invM, hWi, hW'i, hNi]`. Establish `hii : ∀ᵐ p ∂((μW.prod μN).prod (μW'.prod μN)), inv4 (inv4 p) = p` using `by filter_upwards [hae] with p hp`. Take `⟨⟨a, b⟩, ⟨c, d⟩⟩` from `p`.
+
+Take `⟨h1, h2, h3, h4⟩` from `hp`. Use `show ((invM (invM a), invM (invM b)), (invM (invM c), invM (invM d))) = ((a, b), (c, d))`. Rewrite using `[invM_invM _ (unit_of_mem h1.1), invM_invM _ (unit_of_mem h2.1), invM_invM _ (unit_of_mem h3.1), invM_invM _ (unit_of_mem h4.1)]`. Establish `hsplit : ∀ᵐ p ∂((μW.prod μN).prod (μW'.prod μN)), Prod.map splitS splitS (Prod.map mulP mulP p) = p` using `by filter_upwards [hae] with p hp`. Take `⟨⟨a, b⟩, ⟨c, d⟩⟩` from `p`.
+
+Take `⟨h1, h2, h3, h4⟩` from `hp`. Use `show (splitS (lmulM (Matrix.of a) b), splitS (lmulM (Matrix.of c) d)) = ((a, b), (c, d))`. Rewrite using `[splitS_mul hz hT hπ (a, b) h1 h2, splitS_mul hz' hT' hπ' (c, d) h3 h4]`. Unfold `besselJ Iint`. Rewrite using `[show (fun p : Mt k r × Mt k r => lmulM (Matrix.of p.1) p.2) = mulP from rfl, Measure.map_prod_map _ _ measurable_mulP measurable_mulP, integral_map_of_ae_leftInv (measurable_mulP.prodMap measurable_mulP) (measurable_splitS.prodMap measurable_splitS) hsplit]`.
+
+Use `conv_lhs => rw [← hinv4]`. Rewrite using `[integral_map_of_ae_leftInv measurable_ambientMatrixFourFoldInverse measurable_ambientMatrixFourFoldInverse hii]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with p hp`. Take `⟨h1, h2, h3, h4⟩` from `hp`.
+
+Conclude with `(pt σ z z' c₀ π π' x y ξ ξ' hz hT hz' hT' hπ hπ' γ h1 h2 h3 h4).symm`.
+-/
 theorem part2 {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] [CompleteSpace Wp]
     {Wq : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] [CompleteSpace Wq]
@@ -282,6 +374,9 @@ end GlobalTheory.SgInf.AmpJ
 
 namespace GlobalTheory.SgInf.AmpJ
 
+/- English proof (translation)
+Introduce `k r H _ _ _ Wp _ _ _ _ Wq _ _ _ _`. Use `⟨fun μG Φ Φ' hμ γ hγ => part1 μG Φ Φ' hμ γ hγ, ?_⟩` and prove the remaining obligations. Introduce `σ z z' c₀ π π' μW μW' μN x y ξ ξ' hz hT hz' hT' _ hπ hπ' hμW hμW' hμN γ _`. Conclude with `part2 σ z z' c₀ π π' μW μW' μN x y ξ ξ' hz hT hz' hT' hπ hπ' hμW hμW' hμN γ`.
+-/
 theorem oo_eq_ampJ_and_besselJ_eq_Iint : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] [CompleteSpace Wp] {Wq : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] [CompleteSpace Wq] , (∀ (μG : Measure (Mt k r)) (Φ : Mat k r → Wp) (Φ' : Mat k r → Wq), IsHaarOn (GG k r) μG → ∀ γ ∈ GG k r, OO μG Φ Φ' γ = ampJ μG 1 Φ Φ' γ) ∧ ∀ (σ : Mat k r → (H →L[ℂ] H)) (z z' : Fin (2 * r + k + 1) → ℂ) (c₀ : ℂ) (π : Mat k r → (Wp →L[ℂ] Wp)) (π' : Mat k r → (Wq →L[ℂ] Wq)) (μW μW' μN : Measure (Mt k r)) (x y : H) (ξ : Wp) (ξ' : Wq), inWb k r z → 0 < Tz k r z → inWb k r z' → 0 < Tz k r z' → IsURepOn (GG k r) σ → IsURepOn (UWset k r z) π → IsURepOn (UWset k r z') π' → IsHaarOn (UWset k r z) μW → IsHaarOn (UWset k r z') μW' → IsHaarOn (Nset k r) μN → ∀ γ ∈ GG k r, besselJ k r z z' c₀ π π' μW μN μW' (fun g => coef σ x y g • rk1 ξ ξ') γ = Iint (psi k r z c₀) (psi k r z' c₀) π π' ((μW.prod μN).map fun p : Mt k r × Mt k r => lmulM (Matrix.of p.1) p.2) ((μW'.prod μN).map fun p : Mt k r × Mt k r => lmulM (Matrix.of p.1) p.2) σ x y ξ ξ' γ := by
   intro k r H _ _ _ Wp _ _ _ _ Wq _ _ _ _
   refine ⟨fun μG Φ Φ' hμ γ hγ => part1 μG Φ Φ' hμ γ hγ, ?_⟩

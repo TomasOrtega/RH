@@ -6,6 +6,11 @@ namespace GlobalTheory.Katz
 
 variable {R S : Type} [CommRing R] [CommRing S] (σ : R →+* S) {d : ℕ} {τ : Type}
 
+/- English proof (translation)
+Apply the tactic sequence `have hs : HasSubst (Sum.elim u v) := hasSubst_of_constantCoeff_zero (fun s => by cases s <;> simp [hu, hv])`. Unfold `at2`. Rewrite using `[map_subst hs]`. Use `congr 1`. Use function extensionality and compare the values at `s`.
+
+Apply the tactic sequence `cases s <;> rfl`.
+-/
 theorem map_powerSeriesEvalTwoGroups (c : MvPowerSeries (Fin d ⊕ Fin d) R) {u v : Fin d → MvPowerSeries τ R}
     (hu : ∀ i, constantCoeff (u i) = 0) (hv : ∀ i, constantCoeff (v i) = 0) :
     MvPowerSeries.map σ (at2 c u v) =
@@ -19,6 +24,9 @@ theorem map_powerSeriesEvalTwoGroups (c : MvPowerSeries (Fin d ⊕ Fin d) R) {u 
   funext s
   cases s <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `have h0 : ∀ s, constantCoeff (Sum.elim u v s) = 0 := fun s => by cases s <;> simp [hu, hv]`. Conclude with `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero h0) h0 hc`.
+-/
 theorem constantCoeff_powerSeriesEvalTwoGroups_zero_of {c : MvPowerSeries (Fin d ⊕ Fin d) R}
     (hc : constantCoeff c = 0) {u v : Fin d → MvPowerSeries τ R}
     (hu : ∀ i, constantCoeff (u i) = 0) (hv : ∀ i, constantCoeff (v i) = 0) :
@@ -26,6 +34,9 @@ theorem constantCoeff_powerSeriesEvalTwoGroups_zero_of {c : MvPowerSeries (Fin d
   have h0 : ∀ s, constantCoeff (Sum.elim u v s) = 0 := fun s => by cases s <;> simp [hu, hv]
   exact constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero h0) h0 hc
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `map_powerSeriesEvalTwoGroups σ (μ i) hu hv`.
+-/
 theorem map_op_of_const (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) {u v : Fin d → MvPowerSeries τ R}
     (hu : ∀ i, constantCoeff (u i) = 0) (hv : ∀ i, constantCoeff (v i) = 0) :
     (fun i => MvPowerSeries.map σ (op μ u v i)) =
@@ -34,6 +45,17 @@ theorem map_op_of_const (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) {u v 
   funext i
   exact map_powerSeriesEvalTwoGroups σ (μ i) hu hv
 
+/- English proof (translation)
+Establish `hX : ∀ {κ : Type} (f : Fin d → κ), (fun i => MvPowerSeries.map σ (X (f i) : MvPowerSeries κ R)) = fun i => (X (f i) : MvPowerSeries κ S)`. Introduce `κ f`. Use function extensionality and compare the values at `i`. Conclude with `map_X σ (f i)`. Establish `hcX : ∀ {κ : Type} (f : Fin d → κ) (i : Fin d), constantCoeff (X (f i) : MvPowerSeries κ R) = 0` using `fun f i => constantCoeff_X _`.
+
+Use `⟨fun i => ?_, ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[constantCoeff_map, h.const i, map_zero]`. Establish `h1` using `congrArg (fun w : Fin d → MvPowerSeries (Fin d) R => fun i => MvPowerSeries.map σ (w i)) h.unit`. Rewrite `h1` using `[map_op_of_const σ μ (u := fun i => (X i : MvPowerSeries (Fin d) R)) (fun i => constantCoeff_X i) (fun _ => map_zero _)]`. Simplify `h1` using `only [map_X, map_zero]`.
+
+Establish `h1` using `congrArg (MvPowerSeries.map σ) (h.comm i)`. Unfold `swap at h1 ⊢`. Rewrite `h1` using `[map_powerSeriesEvalTwoGroups σ (μ i) (hcX Sum.inr) (hcX Sum.inl)]`. Simplify `h1` using `only [map_X]`. Establish `hx1 : ∀ i, constantCoeff (x1 (R` using `R) (d := d) i) = 0 := fun i => constantCoeff_X _`.
+
+Establish `hx2 : ∀ i, constantCoeff (x2 (R` using `R) (d := d) i) = 0 := fun i => constantCoeff_X _`. Establish `hx3 : ∀ i, constantCoeff (x3 (R` using `R) (d := d) i) = 0 := fun i => constantCoeff_X _`. Establish `c12 : ∀ i, constantCoeff (op μ x1 x2 i) = 0` using `fun i => constantCoeff_powerSeriesEvalTwoGroups_zero_of (h.const i) hx1 hx2`. Establish `c23 : ∀ i, constantCoeff (op μ x2 x3 i) = 0` using `fun i => constantCoeff_powerSeriesEvalTwoGroups_zero_of (h.const i) hx2 hx3`. Establish `h1` using `congrArg (fun w : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R => fun i => MvPowerSeries.map σ (w i)) h.assoc`.
+
+Rewrite `h1` using `[map_op_of_const σ μ c12 hx3, map_op_of_const σ μ hx1 c23, map_op_of_const σ μ hx1 hx2, map_op_of_const σ μ hx2 hx3]`. Establish `e1 : (fun i => MvPowerSeries.map σ (x1 (R` using `R) (d := d) i)) = x1 := hX _`. Establish `e2 : (fun i => MvPowerSeries.map σ (x2 (R` using `R) (d := d) i)) = x2 := hX _`. Establish `e3 : (fun i => MvPowerSeries.map σ (x3 (R` using `R) (d := d) i)) = x3 := hX _`. Rewrite `h1` using `[e1, e2, e3]`. Then use the resulting hypothesis.
+-/
 theorem isLaw_map (R S : Type) [CommRing R] [CommRing S] (σ : R →+* S) (d : ℕ)
     (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (h : IsLaw μ) :
     IsLaw (fun i => MvPowerSeries.map σ (μ i)) := by

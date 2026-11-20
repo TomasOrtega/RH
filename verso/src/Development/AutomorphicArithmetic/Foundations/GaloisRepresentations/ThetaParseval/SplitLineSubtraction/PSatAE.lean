@@ -13,6 +13,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.Gal.TP.Sub
 open GlobalTheory.PRep Formalism.UG GlobalTheory.BCT
 
+/- English proof (translation)
+Introduce `E _ _ _ a U hU`. Take `⟨φ, hφ, hφ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hU.ne_bot`. Set `L : Subgroup (finU E a)` to `{ carrier := {k | RU E a k φ = φ} one_mem' := by simp mul_mem' := by`. Introduce `x y hx hy`. Simplify using `only [Set.mem_setOf_eq] at *`.
+
+Rewrite using `[Subgroup.coe_mul, map_mul, Module.End.mul_apply, hy, hx]`. Use the proof step `inv_mem' := by`. Introduce `x hx`. Simplify using `only [Set.mem_setOf_eq] at *`. Use `conv_lhs => rw [← hx]`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, Subgroup.coe_inv, inv_mul_cancel, map_one, Module.End.one_apply] }`. Establish `hLo : IsOpen (L : Set (finU E a))` using `(hU.aut φ hφ).level`. Use `filter_upwards [GlobalTheory.T.eventually_localIntegralPoints_mem_openSubgroup_definiteUnitary E a L hLo] with w hw hs`. Take `⟨hJo, hJc⟩` from `GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a`. Take `⟨σ, hσ, v, hv0, hv⟩` from `GlobalTheory.T.exists_localComponent_eigenvector_splitPlace E a U hU w hs (GlobalTheory.LFun.KGL w a) hJo hJc 1 φ hφ hφ0 (fun x hx hxK => by`.
+
+Establish `h : RU E a x φ = φ` using `hw x hx hxK hx.1`. Simplify using `using h)`. Establish `hsph : GlobalTheory.LGrp.IsSpherical σ.ρ (GlobalTheory.LFun.KGL w a)` using `(Submodule.ne_bot_iff _).2 ⟨v, GlobalTheory.LGrp.mem_fixed.2 fun k hk => by simpa using hv ⟨k, hk⟩, hv0⟩`. Take `⟨B, hB⟩` from `GlobalTheory.SatInd.exists_hasSatGL_of_isIrreducible σ.smooth σ.irred hsph`. Conclude with `⟨B, σ, hσ, hB⟩`.
+-/
 theorem UpperTheory.Gal.TP.Sub.satAE_holds :
     SatAE := by
   intro E _ _ _ a U hU

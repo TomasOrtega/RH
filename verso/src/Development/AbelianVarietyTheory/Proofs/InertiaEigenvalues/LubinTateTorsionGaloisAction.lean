@@ -11,6 +11,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hx`. Use `haveI : IsSepClosed Ω := IsSepClosure.sep_closed K`. Establish `hx' : x ∈ lubinTateTorsion Ω (hπ` using `hπ) hf (n + 1) := by`. Rewrite `hx`, the goal using `[mem_lubinTateTorsion]`. Rewrite using `[pow_succ', mul_smul, hx, smul_zero]`.
+
+Establish `hab : IsAbelianGalois K (lubinTateField Ω hπ hf (n + 1) ⊔ ⊥ : IntermediateField K Ω)`. Rewrite using `[sup_bot_eq]`. Conclude with `isAbelianGalois_of_mul_comm _ (lubinTateField_mul_comm hπ hf (n + 1))`. Establish `hmem : x.val ∈ (lubinTateField Ω hπ hf (n + 1) ⊔ ⊥ : IntermediateField K Ω)` using `le_sup_left (a := lubinTateField Ω hπ hf (n + 1)) (val_mem_lubinTateField hπ hf hx')`. Use `⟨le_maximalAbelianExtension _ hmem, ?_⟩` and prove the remaining obligations.
+
+Take `⟨τ, hτd, hτ⟩` from `exists_lubinTate_action (Ω := Ω) hπ hf n.succ_pos u k`. Establish `h` using `restrictAb_localArtinMap_lubinTate hπ hf n.succ_pos ⊥ bot_le u k τ hτd hτ`. Establish `e` using `congrArg (fun σ => (((σ ⟨x.val, hmem⟩ : (lubinTateField Ω hπ hf (n + 1) ⊔ ⊥ : IntermediateField K Ω))) : Ω)) h`. Rewrite `e` using `[restrictAb_apply, AlgEquiv.restrictNormalHom_apply]`. Rewrite using `[e, ← lubinTateGalPointMap_val, hτ x hx']`.
+-/
 theorem localArtinMap_unitUniformizerPow_lubinTateTorsion
     (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
     (Ω : Type) [Field Ω] [ValuativeRel Ω] [TopologicalSpace Ω] [IsValuativeTopology Ω] [Algebra K Ω]

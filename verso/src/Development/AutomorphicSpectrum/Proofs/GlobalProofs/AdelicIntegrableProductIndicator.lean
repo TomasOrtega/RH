@@ -11,6 +11,23 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test
 
+/- English proof (translation)
+Introduce `F _ _ ψ _ db laminf lf hl hf e he hmp g B hB hfin b`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Use `haveI : BorelSpace (Af F) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (Af F) := (GlobalTheory.CompanionTheory.AdeleTop.adele_top F).2.1`. Use `haveI : SecondCountableTopology (Af F) := (GlobalTheory.CompanionTheory.AdeleTop.adele_top F).2.2.1`.
+
+Use `haveI : SecondCountableTopology (Ainf F) := by haveI : SecondCountableTopology (Ainf F × Af F) := (GlobalTheory.CompanionTheory.AdeleTop.adele_top F).1.2.1`. Conclude with `(Topology.IsEmbedding.of_comp (f := fun x : Ainf F => (x, (0 : Af F))) (g := Prod.fst) (by fun_prop) continuous_fst Topology.IsEmbedding.id).secondCountableTopology`. Use `haveI : LocallyCompactSpace (Ainf F) := inferInstance`. Use `haveI : IsLocallyFiniteMeasure laminf := isLocallyFiniteMeasure_of_isFiniteMeasureOnCompacts`. Use `haveI : IsLocallyFiniteMeasure lf := isLocallyFiniteMeasure_of_isFiniteMeasureOnCompacts`.
+
+Use `haveI : SFinite laminf := inferInstance`. Use `haveI : SFinite lf := inferInstance`. Use `set χ : Af F → ℂ := fun u => psiF ψ (u * sndA F b) with hχ`. Establish `hχadd : ∀ x y, χ (x + y) = χ x * χ y` using `fun x y => by`. Simplify using `only [hχ, add_mul, psiF_add]`.
+
+Establish `hpt : ∀ p : Ainf F × Af F, (g (fstA F (e p)) * (B : Set (Af F)).indicator (fun _ => (1 : ℂ)) (sndA F (e p))) * ψ (e p * b) = (g p.1 * psiInf F ψ (p.1 * fstA F b)) * (B : Set (Af F)).indicator χ p.2`. Introduce and unpack `⟨x, u⟩`. Establish `h1 : e (x, u) * b = pairA F (x * fstA F b) (u * sndA F b)`. Rewrite using `[he]`. Both sides reduce to the same expression.
+
+Establish `h2 : fstA F (e (x, u)) = x` using `by rw [he]; rfl`. Establish `h3 : sndA F (e (x, u)) = u` using `by rw [he]; rfl`. Rewrite using `[h1, h2, h3, psi_pairA]`. Distinguish the cases in `hu : u ∈ (B : Set (Af F))`. Simplify using `only [Set.indicator_of_mem hu, hχ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Set.indicator_of_notMem hu]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hmp.integral_comp e.measurableEmbedding]`. Simplify using `only [hpt]`.
+
+Rewrite using `[integral_prod_mul (fun x => g x * psiInf F ψ (x * fstA F b)) (fun u => (B : Set (Af F)).indicator χ u), mul_assoc]`. Use `congr 1`. Distinguish the cases in `hb : sndA F b ∈ annF ψ (B : Set (Af F))`. Rewrite using `[integral_indicator_char_of_trivial lf B hB χ (fun x hx => hb x hx), Set.indicator_of_mem hb, mul_one]`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy, hne⟩ : ∃ y ∈ (B : Set (Af F)), psiF ψ (y * sndA F b) ≠ 1 := by`.
+
+Simplify `hb` using `[annF]`. Rewrite using `[integral_indicator_char_of_ne lf B χ hχadd hy hne, Set.indicator_of_notMem hb, mul_zero]`.
+-/
 theorem integral_pure_indicator_char : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsCharAF F ψ → ∀ (db : Measure (AF F)) (laminf : Measure (Ainf F)) (lf : Measure (Af F)), laminf.IsAddHaarMeasure → lf.IsAddHaarMeasure → ∀ e : (Ainf F × Af F) ≃ᵐ AF F, (∀ p, e p = pairA F p.1 p.2) → MeasurePreserving e (laminf.prod lf) db → ∀ (g : Ainf F → ℂ) (B : AddSubgroup (Af F)), MeasurableSet (B : Set (Af F)) → lf (B : Set (Af F)) ≠ ⊤ → ∀ b : AF F, ∫ y, (g (fstA F y) * (B : Set (Af F)).indicator (fun _ => (1 : ℂ)) (sndA F y)) * ψ (y * b) ∂db = (∫ x, g x * psiInf F ψ (x * fstA F b) ∂laminf) * ((lf (B : Set (Af F))).toReal : ℂ) * (annF ψ (B : Set (Af F))).indicator (fun _ => (1 : ℂ)) (sndA F b) := by
   intro F _ _ ψ _ db laminf lf hl hf e he hmp g B hB hfin b
   haveI : BorelSpace (Ainf F) := ⟨rfl⟩

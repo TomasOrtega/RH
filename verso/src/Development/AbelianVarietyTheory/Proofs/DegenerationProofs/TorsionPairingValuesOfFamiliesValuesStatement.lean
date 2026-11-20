@@ -8,5 +8,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.Ex
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.WeilValues.weil_eq_values | exact GlobalTheory.WeilValues.weil_eq_values | (intros; apply GlobalTheory.WeilValues.weil_eq_values <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.torsionPairing_values_of_familiesValues : BrGtSt → BrFamSt → BrWpSt := by
   first | exact @GlobalTheory.WeilValues.weil_eq_values | exact GlobalTheory.WeilValues.weil_eq_values | (intros; apply GlobalTheory.WeilValues.weil_eq_values <;> assumption)

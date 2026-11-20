@@ -31,6 +31,13 @@ def conjFn (G : ι → Matrix (Fin n) (Fin n) ℂ) (s : ι → ℤ) : Pol ℂ ι
     congr 1
     simp [MvPolynomial.smul_eq_C_mul]
 
+/- English proof (translation)
+Establish `e : ∀ τ, ((G τ)ᵀ * (y.1 τ).map (starRingEnd ℂ)).map (starRingEnd ℂ) = G τ * y.1 τ` using `fun τ => by`. Rewrite using `[Matrix.map_mul]`. Use `congr 1`. Conclude with `hG τ`. Use extensionality with `a b`.
+
+Simplify using the standard rewrite rules. Use `show (∏ τ, (G τ * y.1 τ).det ^ s τ) * MvPolynomial.eval _ (MvPolynomial.map (starRingEnd ℂ) P) = _`. Rewrite using `[map_mul, map_prod, MvPolynomial.map_eval]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zpow₀, RingHom.map_det, RingHom.mapMatrix_apply, e]`. Use `congr 2`. Use function extensionality and compare the values at `x`. Conclude with `(congrFun (congrFun (e x.1) x.2.1) x.2.2).symm`.
+-/
 theorem conjFn_apply {G : ι → Matrix (Fin n) (Fin n) ℂ} (hG : ∀ τ, (G τ).IsHermitian) (s : ι → ℤ) (P : Pol ℂ ι n) (y : Frames G) :
     conjFn G s P y = starRingEnd ℂ ((∏ τ, ((G τ)ᵀ * (y.1 τ).map (starRingEnd ℂ)).det ^ s τ) *
       MvPolynomial.eval (fun x : ι × Fin n × Fin n => ((G x.1)ᵀ * (y.1 x.1).map (starRingEnd ℂ)) x.2.1 x.2.2) P) := by
@@ -49,6 +56,11 @@ theorem conjFn_apply {G : ι → Matrix (Fin n) (Fin n) ℂ} (hG : ∀ τ, (G τ
     funext x
     exact (congrFun (congrFun (e x.1) x.2.1) x.2.2).symm
 
+/- English proof (translation)
+Establish `h1 : ∀ (Q : Pol ℂ ι n) (z : Frames G), conjFn G (shiftOf lam) Q z = Formalism.L2.Col.evFr G (shiftOf lam) (starRingEnd ℂ) Q (z.tr G hG)` using `fun Q z => by`. Rewrite using `[Formalism.L2.Col.evFr_eq_fnOf, Formalism.L2.Col.fnOf_tr (G' := G) _ 1 G _ _ z fun _ => rfl]`. Simplify using `only [Pi.one_apply, Matrix.one_mul]`. Both sides reduce to the same expression. Rewrite using `[h1, Formalism.L2.Col.evFr_actP, Formalism.L2.Col.fnOf_tr (G' := G) _ _ (fun τ => G τ * g τ) _ _ y' fun τ => by show G τ * y.1 τ = _`.
+
+Rewrite using `[h τ, Matrix.mul_assoc]]`. Use `congrArg (fun M => fnOf G (shiftOf lam) M (MvPolynomial.map (starRingEnd ℂ) P) y') (funext fun τ => ?_)` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc]`. Conclude with `hg τ`.
+-/
 theorem conjFn_actP {G : ι → Matrix (Fin n) (Fin n) ℂ} (hG : ∀ τ, IsUnit (G τ).det) (lam : ι → DomWeight n) (g : ι → GL (Fin n) ℂ)
     (hg : ∀ τ, (g τ : Matrix (Fin n) (Fin n) ℂ)ᴴ * G τ * g τ = G τ) (P : Pol ℂ ι n) (y y' : Frames G)
     (h : IsTr (fun τ => (g τ : Matrix (Fin n) (Fin n) ℂ)) y' y) :
@@ -65,14 +77,23 @@ theorem conjFn_actP {G : ι → Matrix (Fin n) (Fin n) ℂ} (hG : ∀ τ, IsUnit
   rw [← Matrix.mul_assoc]
   exact hg τ
 
+/- English proof (translation)
+Introduce `_ _ h` and use `MvPolynomial.map_injective _ (starRingEnd ℂ).injective (Formalism.L2.Col.fnOf_injective G s G hG ⟨fun _ => 1, fun _ => by simp⟩ h)`.
+-/
 theorem conjFn_injective {G : ι → Matrix (Fin n) (Fin n) ℂ} (hG : ∀ τ, IsUnit (G τ).det) (s : ι → ℤ) :
     Function.Injective (conjFn G s) := fun _ _ h =>
   MvPolynomial.map_injective _ (starRingEnd ℂ).injective
     (Formalism.L2.Col.fnOf_injective G s G hG ⟨fun _ => 1, fun _ => by simp⟩ h)
 
+/- English proof (translation)
+Rewrite using `[map_smulₛₗ, Complex.conj_I]`.
+-/
 example (G : ι → Matrix (Fin n) (Fin n) ℂ) (s : ι → ℤ) (P : Pol ℂ ι n) : conjFn G s (Complex.I • P) = -Complex.I • conjFn G s P := by
   rw [map_smulₛₗ, Complex.conj_I]
 
+/- English proof (translation)
+Simplify using `[conjFn, fnOf, Matrix.mul_apply]`.
+-/
 example (G : ι → Matrix (Fin n) (Fin n) ℂ) (τ : ι) (a b : Fin n) (y : Frames G) :
     conjFn G 0 (MvPolynomial.X (τ, a, b)) y = ∑ c, G τ a c * y.1 τ c b := by
   simp [conjFn, fnOf, Matrix.mul_apply]
@@ -83,18 +104,29 @@ variable {D : D7}
 
 abbrev PtX (D : D7) : Type := Formalism.UG.UPts (sigD D) (gramP D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hx`.
+-/
 theorem reGL_symm_mem {F E : Type} [Field F] [CommRing E] [Algebra F E] (σ : E →ₐ[F] E) (R : Type) [CommRing R] [Algebra F R] {a b : ℕ}
     (h : a = b) (J : Matrix (Fin a) (Fin a) E) {x} (hx : x ∈ Formalism.UG.UPts σ (J.reindex (finCongr h) (finCongr h)) R) :
     (reGL h _).symm x ∈ Formalism.UG.UPts σ J R := by
   subst h
   exact hx
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hx`.
+-/
 theorem reGL_mem {F E : Type} [Field F] [CommRing E] [Algebra F E] (σ : E →ₐ[F] E) (R : Type) [CommRing R] [Algebra F R] {a b : ℕ}
     (h : a = b) (J : Matrix (Fin a) (Fin a) E) {x} (hx : x ∈ Formalism.UG.UPts σ J R) :
     reGL h _ x ∈ Formalism.UG.UPts σ (J.reindex (finCongr h) (finCongr h)) R := by
   subst h
   exact hx
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `(GlobalTheory.Mass.swapPts (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig D.sp.X'.gram).surjective ⟨_, reGL_symm_mem _ _ (rankP D) _ x.2⟩`. Take `⟨h1, h2⟩` from `GlobalTheory.Mass.parts_spec D.sp.cm.sig D.sp.X'.gram`. Take `⟨k, k1, k2⟩` from `h2 1 b.1`. Use `⟨⟨k, (h1 k).2 ⟨k1 ▸ one_mem _, k2 ▸ b.2⟩⟩, k1, fun i j => ?_⟩` and prove the remaining obligations. Establish `e2` using `(GlobalTheory.Mass.coe_swapPts (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig D.sp.X'.gram b).symm.trans (congrArg Subtype.val hb)`.
+
+Conclude with `congrArg (fun g : GL _ (Lev.EAf D) => g.1 i j) ((congrArg (Formalism.UG.bc (Lev.swapAE D)) k2).trans e2)`.
+-/
 theorem exists_hasMat (x : PtX D) : ∃ h, HasMat h x.1 := by
   obtain ⟨b, hb⟩ := (GlobalTheory.Mass.swapPts (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig D.sp.X'.gram).surjective
     ⟨_, reGL_symm_mem _ _ (rankP D) _ x.2⟩
@@ -104,23 +136,40 @@ theorem exists_hasMat (x : PtX D) : ∃ h, HasMat h x.1 := by
   have e2 := (GlobalTheory.Mass.coe_swapPts (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig D.sp.X'.gram b).symm.trans (congrArg Subtype.val hb)
   exact congrArg (fun g : GL _ (Lev.EAf D) => g.1 i j) ((congrArg (Formalism.UG.bc (Lev.swapAE D)) k2).trans e2)
 
+/- English proof (translation)
+The claim follows from `Units.ext (Matrix.ext fun i j => (Algebra.TensorProduct.comm D.host.F _ D.host.E).injective ((H.2 i j).trans (H'.2 i j).symm))`.
+-/
 theorem finHom_eq {h h' : GA D D.sp.X'} {y} (H : HasMat h y) (H' : HasMat h' y) : finHom D.sp.X' h = finHom D.sp.X' h' :=
   Units.ext (Matrix.ext fun i j =>
     (Algebra.TensorProduct.comm D.host.F _ D.host.E).injective ((H.2 i j).trans (H'.2 i j).symm))
 
 def rowPt (x : PtX D) : Bridge.Gf D.sp.X' := (finHom D.sp.X').rangeRestrict (exists_hasMat x).choose
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (finHom_eq H (exists_hasMat x).choose_spec)`.
+-/
 theorem rowPt_eq {h : GA D D.sp.X'} {x : PtX D} (H : HasMat h x.1) : (finHom D.sp.X').rangeRestrict h = rowPt x :=
   Subtype.ext (finHom_eq H (exists_hasMat x).choose_spec)
 
+/- English proof (translation)
+The claim follows from `(exists_hasMat x).choose_spec.2 i j`.
+-/
 theorem rowPt_apply (x : PtX D) (i j) :
     Lev.swapAE D ((rowPt x).1.1 i j) = x.1.1 (finCongr (rankP D) i) (finCongr (rankP D) j) := (exists_hasMat x).choose_spec.2 i j
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Units.ext (Matrix.ext fun i j => (Algebra.TensorProduct.comm D.host.F _ D.host.E).injective ((H i j).trans (rowPt_apply x i j).symm)))`.
+-/
 theorem eq_rowPt {g : Bridge.Gf D.sp.X'} {x : PtX D}
     (H : ∀ i j, Lev.swapAE D (g.1.1 i j) = x.1.1 (finCongr (rankP D) i) (finCongr (rankP D) j)) : g = rowPt x :=
   Subtype.ext (Units.ext (Matrix.ext fun i j =>
     (Algebra.TensorProduct.comm D.host.F _ D.host.E).injective ((H i j).trans (rowPt_apply x i j).symm)))
 
+/- English proof (translation)
+Use `⟨fun x x' h => Subtype.ext (Units.ext (Matrix.ext fun i j => ?_)), ?_⟩` and prove the remaining obligations. Establish `h1` using `rowPt_apply x ((finCongr (rankP D)).symm i) ((finCongr (rankP D)).symm j)`. Rewrite `h1` using `[h, rowPt_apply]`. Conclude with `h1.symm`. Introduce and unpack `⟨_, κ, rfl⟩`.
+
+Take `⟨π, hπ, -⟩` from `GlobalTheory.Mass.existsUnique_isFinProj D.sp.cm.sig D.sp.X'.gram`. Use `(GlobalTheory.Mass.swapPts (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig D.sp.X'.gram (π κ)).2` as an intermediate fact. Rewrite `this` using `[GlobalTheory.Mass.coe_swapPts, hπ κ]`. Conclude with `⟨⟨_, reGL_mem _ _ (rankP D) _ this⟩, (eq_rowPt fun _ _ => rfl).symm⟩`.
+-/
 theorem rowPt_bijective : Function.Bijective (rowPt (D := D)) := by
   refine ⟨fun x x' h => Subtype.ext (Units.ext (Matrix.ext fun i j => ?_)), ?_⟩
   · have h1 := rowPt_apply x ((finCongr (rankP D)).symm i) ((finCongr (rankP D)).symm j)
@@ -142,9 +191,17 @@ def LevIs {bad : Set (HeightOneSpectrum (𝓞 D.host.F))} (S : StepLevel D.host.
     (J : Set (GA D D.sp.X')) (χ : GA D D.sp.X' → ℂ) : Prop :=
   (∀ h, h ∈ J ↔ ∃ κ : S.U, HasMat h κ.1) ∧ ∀ h (κ : S.U), HasMat h κ.1 → χ h = star ((S.chi κ : ℂˣ) : ℂ)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem levIs_iff_topLev {u : D.what₂.Word} (K : ClsPTied u) (J : Set (GA D D.sp.X')) (χ : GA D D.sp.X' → ℂ) :
     LevIs K.lev J χ ↔ TopLev K J χ := Iff.rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x s`. Take `⟨c, hc⟩` from `hy (Quotient.mk'' x)`. Take `⟨a, ha, k, hk, e⟩` from `(DoubleCoset.eq _ _ _ _).1 hc`. Take `⟨γ, hγ, ha⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 ha)`. Take `⟨s', hs⟩` from `exists_isTr' emb γ s`.
+
+Establish `e' : x.1 = Formalism.UG.bc (Formalism.UG.inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) γ * (y c).1 * k.1 := by`. Rewrite using `[ha]`. Conclude with `congrArg Subtype.val e`. Conclude with `(hg γ hγ (y c) x ⟨k.1, hk⟩ e' s s' hs).trans ((congrArg (fun z => _ * z s') (h c)).trans (hg' γ hγ (y c) x ⟨k.1, hk⟩ e' s s' hs).symm)`.
+-/
 theorem adFun_ext {F E ι : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [Fintype ι] {σ : E →ₐ[F] E} {n T f : ℕ}
     {J : Matrix (Fin n) (Fin n) E} {bad : Set (HeightOneSpectrum (𝓞 F))} {S : StepLevel F E σ J T f bad} {emb : ι → E →+* ℂ}
     {cl : Type} {y : cl → Formalism.UG.UPts σ J (FiniteAdeleRing (𝓞 F) F)} (hy : Function.Surjective fun c => (Quotient.mk'' (y c) : Cls S))
@@ -175,6 +232,9 @@ def conjForm (co : R.cX.W →ₗ[ℂ] Pol ℂ D.what₂.Tau D.sp.X'.rank) (t : T
 
 variable {R}
 
+/- English proof (translation)
+Take `⟨gram, c₀, c₁, ht⟩` from `h`. Take `⟨e, he⟩` from `GlobalTheory.CoefReal.exists_scalarExt D.what₂.embLL _ c₀ ht.mapR.2.1 ht.mapR.2.2`. Use `⟨(VV ℂ (lamX D)).subtype ∘ₗ e.symm.toLinearMap, gram, c₀, c₁, ht, fun v => ?_⟩` and prove the remaining obligations. Use `show (e.symm (c₀ v)).1 = _`. Rewrite using `[← he, LinearEquiv.symm_apply_apply, GlobalTheory.CoefModel.mapVV_coe]`.
+-/
 theorem exists_isCoord (h : R.fam_tie) : ∃ co, IsCoord R co := by
   obtain ⟨gram, c₀, c₁, ht⟩ := h
   obtain ⟨e, he⟩ := GlobalTheory.CoefReal.exists_scalarExt D.what₂.embLL _ c₀ ht.mapR.2.1 ht.mapR.2.2
@@ -182,6 +242,11 @@ theorem exists_isCoord (h : R.fam_tie) : ∃ co, IsCoord R co := by
   show (e.symm (c₀ v)).1 = _
   rw [← he, LinearEquiv.symm_apply_apply, GlobalTheory.CoefModel.mapVV_coe]
 
+/- English proof (translation)
+Take `⟨gram, c₀, c₁, ht, hc⟩` from `h`. Take `⟨e, he⟩` from `GlobalTheory.CoefReal.exists_scalarExt D.what₂.embLL _ c₀ ht.mapR.2.1 ht.mapR.2.2`. Establish `: co ∘ₗ e.toLinearMap = (VV ℂ (lamX D)).subtype` using `LinearMap.ext_on_range (GlobalTheory.CoefModel.span_mapVV D.what₂.embLL (lamX D)) fun i => by show co (e _) = _`. Rewrite using `[he, hc]`. Conclude with `(GlobalTheory.CoefModel.mapVV_coe _ _ _).symm`.
+
+Conclude with `⟨e, LinearMap.congr_fun this⟩`.
+-/
 theorem IsCoord.exists_equiv {co} (h : IsCoord R co) : ∃ e : VV ℂ (lamX D) ≃ₗ[ℂ] R.cX.W, ∀ v, co (e v) = v.1 := by
   obtain ⟨gram, c₀, c₁, ht, hc⟩ := h
   obtain ⟨e, he⟩ := GlobalTheory.CoefReal.exists_scalarExt D.what₂.embLL _ c₀ ht.mapR.2.1 ht.mapR.2.2
@@ -192,6 +257,9 @@ theorem IsCoord.exists_equiv {co} (h : IsCoord R co) : ∃ e : VV ℂ (lamX D) �
       exact (GlobalTheory.CoefModel.mapVV_coe _ _ _).symm
   exact ⟨e, LinearMap.congr_fun this⟩
 
+/- English proof (translation)
+Introduce `a b hab` and use `by obtain ⟨e, he⟩ := h.exists_equiv obtain ⟨a, rfl⟩ := e.surjective a obtain ⟨b, rfl⟩ := e.surjective b rw [he, he] at hab rw [Subtype.ext hab]`.
+-/
 theorem IsCoord.injective {co} (h : IsCoord R co) : Function.Injective co := fun a b hab => by
   obtain ⟨e, he⟩ := h.exists_equiv
   obtain ⟨a, rfl⟩ := e.surjective a
@@ -199,6 +267,9 @@ theorem IsCoord.injective {co} (h : IsCoord R co) : Function.Injective co := fun
   rw [he, he] at hab
   rw [Subtype.ext hab]
 
+/- English proof (translation)
+Rewrite using `[hj]`. Both sides reduce to the same expression.
+-/
 theorem conjForm_eq_model (hj : R.models_jX) (co) (t : T) (f : A.fam.amb.FR t) (x : PtX D) :
     conjForm R co t f x = conjVal D (co ((R.HX t).e (R.jX t f) (rowPt x))) := by
   rw [hj]
@@ -206,6 +277,9 @@ theorem conjForm_eq_model (hj : R.models_jX) (co) (t : T) (f : A.fam.amb.FR t) (
 
 end Real
 
+/- English proof (translation)
+Establish `h1 : S.card = N` using `le_antisymm hS (by`. Simplify using `using Finset.card_le_card_of_injOn (s := Finset.univ) c (fun i _ => m i) hc.injective.injOn)`. Establish `k : ∀ {c : Fin N → ℚ}, StrictAnti c → (∀ i, c i ∈ S) → (fun i => c (Fin.rev i)) = S.orderEmbOfFin h1` using `fun hc m => Finset.orderEmbOfFin_unique h1 (fun _ => m _) fun _ _ h => hc (Fin.rev_lt_rev.2 h)`. Use function extensionality and compare the values at `i`. Simplify using `using congrFun ((k hc m).trans (k hc' m').symm) (Fin.rev i)`.
+-/
 theorem strictAnti_unique {N : ℕ} {S : Finset ℚ} (hS : S.card ≤ N) {c c' : Fin N → ℚ} (hc : StrictAnti c) (hc' : StrictAnti c')
     (m : ∀ i, c i ∈ S) (m' : ∀ i, c' i ∈ S) : c = c' := by
   have h1 : S.card = N := le_antisymm hS (by
@@ -215,6 +289,27 @@ theorem strictAnti_unique {N : ℕ} {S : Finset ℚ} (hS : S.card ≤ N) {c c' :
   funext i
   simpa using congrFun ((k hc m).trans (k hc' m').symm) (Fin.rev i)
 
+/- English proof (translation)
+Take `⟨hcard, c, hc, hmem, hw⟩` from `GlobalTheory.ForcedWeights.lamRForced D τ`. Rewrite `hcard`, `hmem` using `[GlobalTheory.ForcedWeights.dpar_eq]`. Establish `hdiv : (((D.R.m * (D.R.t + 1) / 2 : ℕ) : ℤ) : ℚ) = (D.R.m : ℚ) * ((D.R.t : ℚ) + 1) / 2`. Take `⟨b, hb⟩` from `D.R.m_even`. Rewrite using `[show D.R.m * (D.R.t + 1) / 2 = b * (D.R.t + 1) by rw [hb, ← two_mul, mul_assoc, Nat.mul_div_cancel_left _ two_pos], hb]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hrho : ∀ a : Fin D.sp.X'.rank, rhoVec (D.R.N D.R.m - 1) (Fin.cast (rankP D) a) = rhoVec _ a` using `fun a => by show (((D.R.N D.R.m - 1 : ℕ) : ℚ) - 1) / 2 - ((a : ℕ) : ℚ) = ((D.sp.X'.rank : ℚ) - 1) / 2 - ((a : ℕ) : ℚ)`. Conclude with `congrArg (fun n : ℕ => ((n : ℚ) - 1) / 2 - ((a : ℕ) : ℚ)) (rankP D).symm`. Set `c' : Fin D.sp.X'.rank → ℚ` to `fun a => sgHC D.R (D.hcW u τ) a - (D.R.m : ℚ) * ((D.R.t : ℚ) + 1) / 2`.
+
+Establish `e' : ∀ a, c' a = (sg.w (Fin.cast (rankP D) a) : ℚ) + rhoVec _ a - (D.R.m : ℚ) * ((D.R.t : ℚ) + 1) / 2` using `fun a => by`. Rewrite using `[h, hrho]`. Simplify using `[c']`. Establish `hc' : StrictAnti c'` using `fun a b hab => by`. Establish `h1 : (sg.w (Fin.cast (rankP D) b) : ℚ) ≤ sg.w (Fin.cast (rankP D) a)` using `by exact_mod_cast sg.anti hab.le`.
+
+Establish `h2 : ((a : ℕ) : ℚ) < (b : ℕ)` using `by exact_mod_cast hab`. Rewrite using `[e', e']`. Unfold `rhoVec`. Combine the linear equalities and inequalities to obtain the conclusion. Apply the tactic sequence `have hm' : ∀ a, ∃ x, GlobalTheory.ForcedWeights.entry (D.hc τ) x = c' a := fun a => by`.
+
+Establish `ha : (a : ℕ) < D.R.N D.R.m - 1` using `rankP D ▸ a.2`. Simplify using `only [c', sgHC, D.hcW_v, D.hcW_b, D.hcW_e, add_sub_cancel_left]`. Use `split_ifs with h1 h2 h3`. Conclude with `⟨.inl _, rfl⟩`. Conclude with `⟨.inr (.inl _), rfl⟩`.
+
+Use `Nat.mod_lt ((a : ℕ) - (D.R.k - 1)) (Nat.add_one_pos D.R.t)` as an intermediate fact. Use `⟨.inr (.inr (⟨_, h2⟩, ⟨((a : ℕ) - (D.R.k - 1)) % (D.R.t + 1) - 1, by omega⟩)), ?_⟩` and prove the remaining obligations. Simplify using `only [GlobalTheory.ForcedWeights.entry]`. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_one]`. Use `absurd ((Nat.div_lt_iff_lt_mul (Nat.succ_pos _)).2 ?_) h2` and prove the remaining obligations.
+
+Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.N at ha`. Rewrite using `[Nat.succ_eq_add_one]`. Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `have e : c = c' := strictAnti_unique (S := Finset.univ.image (GlobalTheory.ForcedWeights.entry (D.hc τ))) (by`.
+
+Rewrite using `[← hcard, Finset.card_image_of_injective _ (GlobalTheory.ForcedWeights.entry_injective _), Finset.card_image_of_injective _ fun x y hh => GlobalTheory.ForcedWeights.entry_injective _ (Prod.ext_iff.1 hh).1]) hc hc'`. Use the proof step `(fun i => by`. Take `⟨s, hs⟩` from `hmem i`. Take `⟨x, -, hx⟩` from `Finset.mem_image.1 hs`. Conclude with `Finset.mem_image.2 ⟨x, Finset.mem_univ _, (Prod.ext_iff.1 hx).1⟩)`.
+
+Use `fun i => let ⟨x, hx⟩ := hm' i`. Use the proof step `Finset.mem_image.2 ⟨x, Finset.mem_univ _, hx⟩`. Establish `: (((shW sg ((D.R.m * (D.R.t + 1) / 2 : ℕ) : ℤ)).w (Fin.cast (rankP D) a) : ℤ) : ℚ) = ((lamX D τ).w a : ℚ)`. Rewrite using `[hw, e, e']`. Use `show ((sg.w _ - _ : ℤ) : ℚ) = _`.
+
+Rewrite using `[Int.cast_sub, hdiv]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions.
+-/
 theorem shW_eq_lamX (u : D.what₂.Word) (τ : D.what₂.Tau) (sg : DomWeight (D.R.N D.R.m - 1))
     (h : ∀ i, (sg.w i : ℚ) = sgHC D.R (D.hcW u τ) i - rhoVec (D.R.N D.R.m - 1) i) (a : Fin D.sp.X'.rank) :
     (shW sg ((D.R.m * (D.R.t + 1) / 2 : ℕ) : ℤ)).w (Fin.cast (rankP D) a) = (lamX D τ).w a := by
@@ -269,9 +364,15 @@ theorem shW_eq_lamX (u : D.what₂.Word) (τ : D.what₂.Tau) (sg : DomWeight (D
     ring
   exact_mod_cast this
 
+/- English proof (translation)
+The claim follows from `shW_eq_lamX u τ _ (V.sg τ) a`.
+-/
 theorem sgT_eq_lamX {u : D.what₂.Word} {K : ClsPTied u} (V : ValPTied u K) (τ : D.what₂.Tau) (a : Fin D.sp.X'.rank) :
     (sgT u τ).w (Fin.cast (rankP D) a) = (lamX D τ).w a := shW_eq_lamX u τ _ (V.sg τ) a
 
+/- English proof (translation)
+The claim follows from `funext fun τ => by have h0 : 0 < D.R.N D.R.m - 1 := by have := D.R.m_add_three_le_k have := k_le_N D.R D.R.m omega have h1 : 0 < D.sp.X'.rank := rankP D ▸ h0 unfold shiftOf DomWeight.detShift rw [dif_pos h0, dif_pos h1, ← sgT_eq_lamX V τ] exact congrArg _ (Fin.ext (congrArg (· - …`.
+-/
 theorem shiftOf_sgT {u : D.what₂.Word} {K : ClsPTied u} (V : ValPTied u K) : shiftOf (sgT u) = shiftOf (lamX D) := funext fun τ => by
   have h0 : 0 < D.R.N D.R.m - 1 := by
     have := D.R.m_add_three_le_k
@@ -310,16 +411,25 @@ def MtJoinBy (co : Coord p) (e₀ : ∀ u, (D.mem u).P.Mt ≃ₗ[ℂ] D.what₂.
 
 def MtJoin : Prop := ∃ co : Coord p, IsCoord p.R.toRealDat co ∧ MtJoinBy p Cs tw co D.eMt D.eMtTw
 
+/- English proof (translation)
+The claim follows from `exists_isCoord p.charW.base.fam.tie`.
+-/
 theorem exists_coord : ∃ co : Coord p, IsCoord p.R.toRealDat co := exists_isCoord p.charW.base.fam.tie
 
 include p in
 
+/- English proof (translation)
+Use `Matrix.ext fun i j => (p.stdX.1 _ _).trans ?_` and prove the remaining obligations. Simplify using `[Matrix.one_apply]`.
+-/
 theorem gramP_eq_one : gramP D = 1 := by
   refine Matrix.ext fun i j => (p.stdX.1 _ _).trans ?_
   simp [Matrix.one_apply]
 
 include p in
 
+/- English proof (translation)
+Establish `e : gramC (gramP D) (embT D) = 1` using `funext fun τ => by show (gramP D).map _ = 1`. Rewrite using `[gramP_eq_one p, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[shiftOf_sgT V]`. Conclude with `congrArg (fun M => fnOf (gramC (gramP D) (embT D)) (shiftOf (lamX D)) M _) e`.
+-/
 theorem conjVal_eq {u : D.what₂.Word} {K : ClsPTied u} (V : ValPTied u K) (P : Pol ℂ D.what₂.Tau D.sp.X'.rank) :
     conjVal D P = fnOf _ (shiftOf (sgT u)) 1 (MvPolynomial.map (starRingEnd ℂ)
       (MvPolynomial.rename (Prod.map id (Prod.map (Fin.cast (rankP D)) (Fin.cast (rankP D)))) P)) := by
@@ -331,6 +441,9 @@ theorem conjVal_eq {u : D.what₂.Word} {K : ClsPTied u} (V : ValPTied u K) (P :
 
 include p in
 
+/- English proof (translation)
+The claim follows from `(conjFn_injective (fun τ => by show IsUnit ((gramP D).map _).det rw [gramP_eq_one p, Matrix.map_one _ (map_zero _) (map_one _), det_one] exact isUnit_one) _).comp (MvPolynomial.rename_injective _ (Function.injective_id.prodMap ((Fin.cast_injective _).prodMap (Fin.cast_injective _ …`.
+-/
 theorem conjVal_injective : Function.Injective (conjVal D) :=
   (conjFn_injective (fun τ => by
     show IsUnit ((gramP D).map _).det
@@ -338,6 +451,9 @@ theorem conjVal_injective : Function.Injective (conjVal D) :=
     exact isUnit_one) _).comp
     (MvPolynomial.rename_injective _ (Function.injective_id.prodMap ((Fin.cast_injective _).prodMap (Fin.cast_injective _))))
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `(p.P.div.sharp.forms t).span`.
+-/
 theorem span_jA (t : p.P.T) {μ : D.what₂.Tup} (h : p.P.I.tup t = μ) : Submodule.span ℂ (Set.range fun i =>
     (Eq.rec (motive := fun ν _ => D.what₂.Amb ν) (p.P.I.jA t (Pi.single i 1)) h : D.what₂.Amb μ)) = ⊤ := by
   subst h
@@ -346,6 +462,9 @@ theorem span_jA (t : p.P.T) {μ : D.what₂.Tup} (h : p.P.I.tup t = μ) : Submod
 variable {p Cs tw} {co : Coord p} {e₀ e₀' : ∀ u, (D.mem u).P.Mt ≃ₗ[ℂ] D.what₂.Amb D.what₂.mu0}
   {e e' : ∀ u μ, (D.PTw u μ).Mt ≃ₗ[ℂ] D.what₂.Amb μ}
 
+/- English proof (translation)
+Establish `ht` using `p.tupTie _ (Or.inl rfl)`. Conclude with `LinearMap.congr_fun (LinearMap.ext_on_range (f := (Cs.forms u).jM.comp (e₀ u).symm.toLinearMap) (g := (Cs.forms u).jM.comp (e₀' u).symm.toLinearMap) (span_jA p _ ht) fun i => (Cs.forms u).valP.eW.injective (funext fun c => ((h.1 u _ ht).2 _ c).trans ((h'.1 u _ ht).2 _ c).symm)) F`.
+-/
 theorem MtJoinBy.jM_eq (h : MtJoinBy p Cs tw co e₀ e) (h' : MtJoinBy p Cs tw co e₀' e') (u : D.what₂.Word) (F : D.what₂.Amb D.what₂.mu0) :
     (Cs.forms u).jM ((e₀ u).symm F) = (Cs.forms u).jM ((e₀' u).symm F) := by
   have ht := p.tupTie _ (Or.inl rfl)
@@ -353,6 +472,9 @@ theorem MtJoinBy.jM_eq (h : MtJoinBy p Cs tw co e₀ e) (h' : MtJoinBy p Cs tw c
     (g := (Cs.forms u).jM.comp (e₀' u).symm.toLinearMap) (span_jA p _ ht) fun i =>
       (Cs.forms u).valP.eW.injective (funext fun c => ((h.1 u _ ht).2 _ c).trans ((h'.1 u _ ht).2 _ c).symm)) F
 
+/- English proof (translation)
+Take `⟨t, rfl⟩ : ∃ t, p.P.I.tup t = μ` from `⟨_, p.tupTie μ hu⟩`. Conclude with `LinearMap.congr_fun (LinearMap.ext_on_range (f := (tw.ptE.jM u _).comp (e u _).symm.toLinearMap) (g := (tw.ptE.jM u _).comp (e' u _).symm.toLinearMap) (span_jA p t rfl) fun i => (tw.pt.val u _ hμ).eW.injective (funext fun c => ((h.2 u t hu hμ).2 _ c).trans ((h'.2 u t hu hμ).2 _ c …`.
+-/
 theorem MtJoinBy.jM_eq_tw (h : MtJoinBy p Cs tw co e₀ e) (h' : MtJoinBy p Cs tw co e₀' e') (u : D.what₂.Word) {μ : D.what₂.Tup}
     (hu : Used0 D μ) (hμ : μ ≠ D.what₂.mu0) (F : D.what₂.Amb μ) : tw.ptE.jM u μ ((e u μ).symm F) = tw.ptE.jM u μ ((e' u μ).symm F) := by
   obtain ⟨t, rfl⟩ : ∃ t, p.P.I.tup t = μ := ⟨_, p.tupTie μ hu⟩
@@ -360,23 +482,38 @@ theorem MtJoinBy.jM_eq_tw (h : MtJoinBy p Cs tw co e₀ e) (h' : MtJoinBy p Cs t
     (g := (tw.ptE.jM u _).comp (e' u _).symm.toLinearMap) (span_jA p t rfl) fun i =>
       (tw.pt.val u _ hμ).eW.injective (funext fun c => ((h.2 u t hu hμ).2 _ c).trans ((h'.2 u t hu hμ).2 _ c).symm)) F
 
+/- English proof (translation)
+The claim follows from `(injective_iff_map_eq_zero _).2 fun F hF => (D.eMt u).map_eq_zero_iff.1 (inner_self_eq_zero.1 (by rw [H.mu0 u F F, hF, map_zero]))`.
+-/
 theorem jM_injective (H : Formalism.L2.Rows.EMtTied D Cs tw) (u : D.what₂.Word) : Function.Injective (Cs.forms u).jM :=
   (injective_iff_map_eq_zero _).2 fun F hF => (D.eMt u).map_eq_zero_iff.1 (inner_self_eq_zero.1 (by
     rw [H.mu0 u F F, hF, map_zero]))
 
+/- English proof (translation)
+The claim follows from `(injective_iff_map_eq_zero _).2 fun F hF => (D.eMtTw u μ).map_eq_zero_iff.1 (inner_self_eq_zero.1 (by rw [H.tw u μ hμ F F, hF, map_zero]))`.
+-/
 theorem jM_injective_tw (H : Formalism.L2.Rows.EMtTied D Cs tw) (u : D.what₂.Word) {μ : D.what₂.Tup} (hμ : μ ≠ D.what₂.mu0) :
     Function.Injective (tw.ptE.jM u μ) :=
   (injective_iff_map_eq_zero _).2 fun F hF => (D.eMtTw u μ).map_eq_zero_iff.1 (inner_self_eq_zero.1 (by
     rw [H.tw u μ hμ F F, hF, map_zero]))
 
+/- English proof (translation)
+The claim follows from `LinearEquiv.symm_bijective.injective (LinearEquiv.ext fun F => hj (h.jM_eq h' u F))`.
+-/
 theorem MtJoinBy.joinEquiv_eq_at_reference (h : MtJoinBy p Cs tw co e₀ e) (h' : MtJoinBy p Cs tw co e₀' e') {u : D.what₂.Word}
     (hj : Function.Injective (Cs.forms u).jM) : e₀ u = e₀' u :=
   LinearEquiv.symm_bijective.injective (LinearEquiv.ext fun F => hj (h.jM_eq h' u F))
 
+/- English proof (translation)
+The claim follows from `LinearEquiv.symm_bijective.injective (LinearEquiv.ext fun F => hj (h.jM_eq_tw h' u hu hμ F))`.
+-/
 theorem MtJoinBy.eq_tw (h : MtJoinBy p Cs tw co e₀ e) (h' : MtJoinBy p Cs tw co e₀' e') {u : D.what₂.Word} {μ : D.what₂.Tup}
     (hu : Used0 D μ) (hμ : μ ≠ D.what₂.mu0) (hj : Function.Injective (tw.ptE.jM u μ)) : e u μ = e' u μ :=
   LinearEquiv.symm_bijective.injective (LinearEquiv.ext fun F => hj (h.jM_eq_tw h' u hu hμ F))
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `exists_ne (0 : N)`. Use `h (f.symm y)` as an intermediate fact. Rewrite `this` using `[f.apply_symm_apply]`. Conclude with `(smul_left_injective ℂ hy ((one_smul ℂ y).trans this)).symm`.
+-/
 theorem eq_one_of_smul {M N : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N] [Nontrivial N] (f : M ≃ₗ[ℂ] N) {c : ℂ}
     (h : ∀ x, f x = c • f x) : c = 1 := by
   obtain ⟨y, hy⟩ := exists_ne (0 : N)
@@ -384,24 +521,39 @@ theorem eq_one_of_smul {M N : Type} [AddCommGroup M] [Module ℂ M] [AddCommGrou
   rw [f.apply_symm_apply] at this
   exact (smul_left_injective ℂ hy ((one_smul ℂ y).trans this)).symm
 
+/- English proof (translation)
+Introduce `h'` and use `hc (eq_one_of_smul (e₀ u) fun G => by rw [← hs, h.joinEquiv_eq_at_reference h' hj])`.
+-/
 theorem MtJoinBy.not_scale (h : MtJoinBy p Cs tw co e₀ e) {u : D.what₂.Word} (hj : Function.Injective (Cs.forms u).jM)
     [Nontrivial (D.what₂.Amb D.what₂.mu0)] {c : ℂ} (hc : c ≠ 1) (hs : ∀ G, e₀' u G = c • e₀ u G) : ¬ MtJoinBy p Cs tw co e₀' e' :=
   fun h' => hc (eq_one_of_smul (e₀ u) fun G => by rw [← hs, h.joinEquiv_eq_at_reference h' hj])
 
+/- English proof (translation)
+Introduce `h'` and use `hc (eq_one_of_smul (e u μ) fun G => by rw [← hs, h.eq_tw h' hu hμ hj])`.
+-/
 theorem MtJoinBy.not_scale_tw (h : MtJoinBy p Cs tw co e₀ e) {u : D.what₂.Word} {μ : D.what₂.Tup} (hu : Used0 D μ) (hμ : μ ≠ D.what₂.mu0)
     (hj : Function.Injective (tw.ptE.jM u μ)) [Nontrivial (D.what₂.Amb μ)] {c : ℂ} (hc : c ≠ 1) (hs : ∀ G, e' u μ G = c • e u μ G) :
     ¬ MtJoinBy p Cs tw co e₀' e' :=
   fun h' => hc (eq_one_of_smul (e u μ) fun G => by rw [← hs, h.eq_tw h' hu hμ hj])
 
+/- English proof (translation)
+The claim follows from `h.not_scale (jM_injective H u) (by norm_num) hs`.
+-/
 example (h : MtJoinBy p Cs tw co D.eMt D.eMtTw) (H : Formalism.L2.Rows.EMtTied D Cs tw) (u : D.what₂.Word) [Nontrivial (D.what₂.Amb D.what₂.mu0)]
     (hs : ∀ G, e₀' u G = (-1 : ℂ) • D.eMt u G) : ¬ MtJoinBy p Cs tw co e₀' e' :=
   h.not_scale (jM_injective H u) (by norm_num) hs
 
+/- English proof (translation)
+The claim follows from `h.not_scale_tw hu hμ (jM_injective_tw H u hμ) (fun hI => by simpa using congrArg Complex.re hI) hs`.
+-/
 example (h : MtJoinBy p Cs tw co D.eMt D.eMtTw) (H : Formalism.L2.Rows.EMtTied D Cs tw) (u : D.what₂.Word) {μ : D.what₂.Tup} (hu : Used0 D μ)
     (hμ : μ ≠ D.what₂.mu0) [Nontrivial (D.what₂.Amb μ)] (hs : ∀ G, e' u μ G = Complex.I • D.eMtTw u μ G) :
     ¬ MtJoinBy p Cs tw co e₀' e' :=
   h.not_scale_tw hu hμ (jM_injective_tw H u hμ) (fun hI => by simpa using congrArg Complex.re hI) hs
 
+/- English proof (translation)
+The claim follows from `let ⟨_, _, h⟩ := h (h.1 u t ht).1`.
+-/
 theorem MtJoin.topLev (h : MtJoin p Cs tw) (u : D.what₂.Word) (t : p.P.T) (ht : p.P.I.tup t = D.what₂.mu0) :
     TopLev (Cs.forms u).clsP (levS _ p.R.βX (rowDat p t)) (Lev.levChi _ p.R.βX (rowDat p t)) :=
   let ⟨_, _, h⟩ := h

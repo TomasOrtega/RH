@@ -19,21 +19,39 @@ namespace GlobalTheory.ThK.VacImg
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[incM, piInf, compInf, inclR, infEmb_tmul]`.
+-/
 theorem incM_map_piInf_emb {n m : Type} (J : Matrix n m E) {w : InfinitePlace F} (τ : EmbOver E w) :
     (incM F J).map (piInf τ) = J.map τ.1 := by
   ext i j
   simp [incM, piInf, compInf, inclR, infEmb_tmul]
 
+/- English proof (translation)
+Introduce `a ha`. Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, hz a ha, Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem at_sandwich {n n₁ d d₁ : ℕ} (P : Matrix (Fin n) (Fin n₁) (AE F E)) (Q : Matrix (Fin d) (Fin d₁) (AE F E))
     (z : Matrix (Fin n₁) (Fin d₁) (AE F E)) (hz : At (evI F) z) : At (evI F) (P * z * Qᵀ) := by
   intro a ha
   rw [← Matrix.smul_mul, ← Matrix.mul_smul, hz a ha, Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]`.
+-/
 theorem map_sandwich {n n₁ d d₁ : ℕ} (P : Matrix (Fin n) (Fin n₁) (AE F E)) (Q : Matrix (Fin d) (Fin d₁) (AE F E))
     (z : Matrix (Fin n₁) (Fin d₁) (AE F E)) (φ : AE F E →+* ℂ) :
     (P * z * Qᵀ).map φ = P.map φ * z.map φ * (Q.map φ)ᵀ := by
   rw [Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]
 
+/- English proof (translation)
+Take `⟨ε, hε⟩` from `hg`. Use `⟨ε, fun u₁ u₁' hu₁ hu₁' hrel => ?_⟩` and prove the remaining obligations. Establish `key` using `hε (incM F ι * u₁ * (incM F ι')ᵀ) (incM F ι * u₁' * (incM F ι')ᵀ) (at_sandwich _ _ _ hu₁) (at_sandwich _ _ _ hu₁') (fun w => ?_)`. Express the relevant statement in the definitionally equal form `dOp (coordI M₁ u₁').1 (coordI M₁ u₁').2 (ei g) = Complex.I • dOp (coordI M₁ u₁).1 (coordI M₁ u₁).2 (ei g)`. Rewrite using `[← hint, ← hint]`.
+
+Express the relevant statement in the definitionally equal form `ei (dOp (arc (M.co.e (incM F ι * u₁' * (incM F ι')ᵀ)).1) (arc (M.co.e (incM F ι * u₁' * (incM F ι')ᵀ)).2) g) = Complex.I • ei (dOp (arc (M.co.e (incM F ι * u₁ * (incM F ι')ᵀ)).1) (arc (M.co.e (incM F ι * u₁ * (incM F ι')ᵀ)).2) g)`. Rewrite using `[key, map_smul]`. Rewrite using `[map_sandwich, map_sandwich, incM_map_piInf_emb, incM_map_piInf_emb, hrel w, Matrix.mul_smul, Matrix.smul_mul]`. Use `congr 1`. Establish `e1` using `hι w`.
+
+Establish `e2` using `congrArg Matrix.transpose (hι' w)`. Rewrite `e2` using `[Matrix.transpose_mul, Matrix.transpose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (X.θ w * ι.map (B.emb w).1) * u₁.map (piInf (B.emb w)) * ((ι'.map (B.emb w).1)ᵀ * (W.θ w)ᵀ) := by`.
+
+Rewrite using `[← e1, ← e2]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+-/
 theorem gaussD_of_inter {σ : E →ₐ[F] E} (B : Base F E) {n n₁ d d₁ : ℕ} {X : Spc F E n} {W : Spc F E d}
     {X₁ : Spc F E n₁} {W₁ : Spc F E d₁} (M : Model σ X W) (M₁ : Model σ X₁ W₁)
     (ι : Matrix (Fin n) (Fin n₁) E) (ι' : Matrix (Fin d) (Fin d₁) E)

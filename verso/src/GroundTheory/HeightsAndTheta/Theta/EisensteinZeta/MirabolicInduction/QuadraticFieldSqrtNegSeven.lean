@@ -32,15 +32,27 @@ instance : Algebra.IsQuadraticExtension ℚ QuadraticFieldSqrtNegSeven :=
 
 instance : NumberField QuadraticFieldSqrtNegSeven where
 
+/- English proof (translation)
+The claim follows from `QuadraticAlgebra.finrank_eq_two _ _`.
+-/
 theorem finrank_sevenQ : Module.finrank ℚ QuadraticFieldSqrtNegSeven = 2 :=
   QuadraticAlgebra.finrank_eq_two _ _
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [sq, QuadraticAlgebra.re_ofNat, QuadraticAlgebra.im_ofNat]`.
+-/
 theorem omega_sq_sevenQ : (⟨0, 1⟩ : QuadraticFieldSqrtNegSeven) ^ 2 = -((7 : ℕ) : QuadraticFieldSqrtNegSeven) := by
   ext <;> simp [sq, QuadraticAlgebra.re_ofNat, QuadraticAlgebra.im_ofNat]
 
+/- English proof (translation)
+Rewrite using `[NumberField.Embeddings.card, finrank_sevenQ]`.
+-/
 theorem card_embeddings_sevenQ : Fintype.card (QuadraticFieldSqrtNegSeven →+* ℂ) = 2 := by
   rw [NumberField.Embeddings.card, finrank_sevenQ]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by norm_num, rfl, finrank_sevenQ, ⟨_, omega_sq_sevenQ⟩, Fintype.card_pos_iff.mp (by rw [card_embeddings_sevenQ]; norm_num)⟩`.
+-/
 theorem hypotheses_seven :
     Nat.Prime 7 ∧ 7 % 16 = 7 ∧ Module.finrank ℚ QuadraticFieldSqrtNegSeven = 2 ∧
       (∃ x : QuadraticFieldSqrtNegSeven, x ^ 2 = -((7 : ℕ) : QuadraticFieldSqrtNegSeven)) ∧ Nonempty (QuadraticFieldSqrtNegSeven →+* ℂ) :=

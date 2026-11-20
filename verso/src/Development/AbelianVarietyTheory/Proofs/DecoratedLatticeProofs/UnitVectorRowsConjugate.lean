@@ -25,6 +25,13 @@ namespace GlobalTheory.MiTop.LineV
 
 open GlobalTheory.PiTensorInner
 
+/- English proof (translation)
+Use `set w := PiTensorProduct.tprod ℂ a - (starRingEnd ℂ l) • PiTensorProduct.tprod ℂ b with hw`. Establish `hy : ∀ y, ipT y w = 0`. Introduce `y`. Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r x`.
+
+Rewrite using `[hw, map_smul, LinearMap.smul_apply, map_sub, map_smulₛₗ, ipT_tprod, ipT_tprod, h x]`. Simplify using the standard rewrite rules. Consider the case `add x y hx hy => rw [map_add, LinearMap.add_apply, hx, hy, add_zero]`. Assume the negation of the conclusion as `hne`. Use `ipT_pos w (sub_ne_zero.2 hne)` as an intermediate fact.
+
+Rewrite `this` using `[hy w]`. Simplify using `at this`.
+-/
 theorem tprod_eq_smul_of_prod_inner {ι : Type} [Fintype ι] {E : ι → Type*} [∀ i, NormedAddCommGroup (E i)]
     [∀ i, InnerProductSpace ℂ (E i)] (a b : ∀ i, E i) (l : ℂ)
     (h : ∀ x : ∀ i, E i, ∏ i, ⟪a i, x i⟫_ℂ = l * ∏ i, ⟪b i, x i⟫_ℂ) :
@@ -46,6 +53,23 @@ end GlobalTheory.MiTop.LineV
 
 namespace GlobalTheory.MiTop.LineV
 
+/- English proof (translation)
+Establish `hU` using `(GlobalTheory.MultMem.mem_mult_iff D θ _ _ M J χ _).1 ((mem_multT θ M J χ T).1 hT)`. Establish `hU'` using `(GlobalTheory.MultMem.mem_mult_iff D θ _ _ M J χ _).1 ((mem_multT θ M J χ T').1 hT')`. Establish `hva : (PiTensorProduct.lift.symm T : MMap M) a = T (PiTensorProduct.tprod ℂ a)`. Simplify using `[PiTensorProduct.lift_symm]`. Establish `hvb : (PiTensorProduct.lift.symm T' : MMap M) b = T' (PiTensorProduct.tprod ℂ b)`.
+
+Simplify using `[PiTensorProduct.lift_symm]`. Establish `hc` using `(hU.aut a).cont`. Establish `hl` using `(hU.aut a).left`. Establish `hc'` using `(hU'.aut b).cont`. Establish `hl'` using `(hU'.aut b).left`.
+
+Rewrite `he`, the goal using `[← hva, ← hvb]`. Generalize the expression as in `(PiTensorProduct.lift.symm T : MMap M) a = f at hc hl he ⊢`. Generalize the expression as in `(PiTensorProduct.lift.symm T' : MMap M) b = f' at hc' hl' he ⊢`. Set `ι : GA D (D.sp.Y 0) ≃ₜ* X.B.I.GA` to `iotaX X h`. Establish `hQ : ∀ γ ∈ X.B.I.GFset, ι.symm γ ∈ GQ (D.sp.Y 0)`.
+
+Introduce `γ hγ`. Use `(Formalism.IndefR.RationalEmbedding.iota_rat D (ι.symm γ)).2 ?_` and prove the remaining obligations. Use `show Formalism.IndefR.RationalEmbedding.iota D ((Formalism.IndefR.RationalEmbedding.iota D).symm ((castGA h.symm).symm γ)) ∈ _`. Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`. Conclude with `GlobalTheory.TranslatedEvalInj.castGA_symm_mem _ γ hγ`.
+
+Set `φ : X.B.I.GA → ℂ` to `fun x => f (ι.symm x * t) - f' (ι.symm x * t)`. Establish `hφc : Continuous φ`. Establish `hm : Continuous fun x : X.B.I.GA => ι.symm x * t` using `ι.symm.continuous.mul continuous_const`. Conclude with `(hc.comp hm).sub (hc'.comp hm)`. Establish `hφi : ∀ γ ∈ X.B.I.GFset, ∀ y, φ (γ * y) = φ y`.
+
+Introduce `γ hγ y`. Simplify using `only [φ, map_mul, mul_assoc]`. Rewrite using `[hl _ (hQ γ hγ), hl' _ (hQ γ hγ)]`. Establish `hae : φ =ᵐ[(X.B.I.muA X.B.μf).restrict X.B.fund] 0`. Establish `he' : evS X h t f =ᵐ[muX X] evS X h t f'` using `he`.
+
+Use `filter_upwards [he'] with x hx`. Simplify using `only [φ, Pi.zero_apply, sub_eq_zero]`. Conclude with `hx`. Establish `hz` using `GlobalTheory.TranslatedEvalInj.eq_zero_of_ae_fund X.B.I X.B.μf X.B.fund_spec hφc hφi hae`. Use function extensionality and compare the values at `g`.
+
+Establish `e` using `hz (ι (g * t⁻¹))`. Simplify using `only [φ, ContinuousMulEquiv.symm_apply_apply, inv_mul_cancel_right, sub_eq_zero] at e`. Conclude with `e`.
+-/
 theorem eq_of_evS_ae {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
     {θ : InfFam D} {S : D.what₂.Tau → Formalism.BasicNotions.TH.SPar} {M : DSModel (D.sp.Y 0) S} {J : Set (GA D (D.sp.Y 0))}
     {χ : GA D (D.sp.Y 0) → ℂ} (t : GA D (D.sp.Y 0)) {T T' : SmT M →ₗ[ℂ] (GA D (D.sp.Y 0) → ℂ)}
@@ -95,6 +119,25 @@ end GlobalTheory.MiTop.LineV
 
 namespace GlobalTheory.MiTop.LineV
 
+/- English proof (translation)
+Take `⟨ν, 𝓖, hν, h𝓖⟩` from `GlobalTheory.RawLift.exists_haar_fundDomain V`. Establish `hUm` using `(mem_multT θ M J χ T).1 hT`. Establish `hUm'` using `(mem_multT θ M J χ T').1 hT'`. Establish `hU` using `(GlobalTheory.MultMem.mem_mult_iff D θ _ _ M J χ _).1 hUm`. Use `set U : MMap M := PiTensorProduct.lift.symm T with hUd`.
+
+Use `set U' : MMap M := PiTensorProduct.lift.symm T' with hUd'`. Establish `hval : ∀ x, U x = T (PiTensorProduct.tprod ℂ x)` using `fun x => by simp [U, PiTensorProduct.lift_symm]`. Establish `hval' : ∀ x, U' x = T' (PiTensorProduct.tprod ℂ x)` using `fun x => by simp [U', PiTensorProduct.lift_symm]`. Establish `hUv : U v₀ = U' v` using `by rw [hval, hval', he]`. Establish `hne : ∀ τ, (v₀ τ : M.H τ) ≠ 0` using `fun τ hz => by`.
+
+Establish `h1τ` using `h1 τ`. Rewrite `h1τ` using `[hz, norm_zero]`. Conclude with `zero_ne_one h1τ`. Establish `hU0 : U v₀ ≠ 0`. Introduce `hz`.
+
+Apply `hT0` to reduce the goal to its premises. Establish `h0 : U = 0` using `GlobalTheory.TranslatedEvalInj.eq_zero_of_value hU v₀ hne hz`. Establish `: T = PiTensorProduct.lift U` using `(PiTensorProduct.lift.apply_symm_apply T).symm`. Rewrite using `[this, h0, map_zero]`. Take `⟨c1, hc1⟩` from `GlobalTheory.MultFinite.schurMult hP ν 𝓖 hθ hν h𝓖 U hUm U hUm`.
+
+Take `⟨c2, hc2⟩` from `GlobalTheory.MultFinite.schurMult hP ν 𝓖 hθ hν h𝓖 U' hUm' U hUm`. Establish `hpos` using `GlobalTheory.SchurConst.re_pos_of_isMultIP M ν 𝓖 hν h𝓖 U hc1 v₀ (hU.aut v₀).cont (hU.aut v₀).left hU0`. Establish `hc10 : c1 ≠ 0` using `fun hz => by simp [hz] at hpos`. Establish `key : ∀ x : M.Vec, ∏ τ, ⟪v₀ τ, x τ⟫_ℂ = (c2 / c1) * ∏ τ, ⟪v τ, x τ⟫_ℂ`. Introduce `x`.
+
+Establish `e1` using `(hc1 v₀ x).2`. Establish `e2` using `(hc2 v x).2`. Rewrite `e1` using `[hUv, e2]`. Establish `e3 : ∏ τ, ⟪v₀ τ, x τ⟫_ℂ = ∏ τ, ⟪(v₀ τ : M.H τ), (x τ : M.H τ)⟫_ℂ` using `rfl`. Establish `e4 : ∏ τ, ⟪v τ, x τ⟫_ℂ = ∏ τ, ⟪(v τ : M.H τ), (x τ : M.H τ)⟫_ℂ` using `rfl`.
+
+Rewrite using `[e3, e4, div_mul_eq_mul_div, eq_div_iff hc10, mul_comm, e1]`. Establish `hl` using `tprod_eq_smul_of_prod_inner v₀ v _ key`. Use `⟨_, ?_, hl⟩` and prove the remaining obligations. Introduce `hz`. Rewrite `hl` using `[hz, zero_smul]`.
+
+Establish `hp` using `GlobalTheory.PiTensorInner.ipT_tprod v₀ v₀`. Simplify using `only [hl, map_zero] at hp`. Establish `: ∏ τ, ⟪v₀ τ, v₀ τ⟫_ℂ = 1`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[inner_self_eq_norm_sq_to_K]`.
+
+Use `show ((‖(v₀ τ : M.H τ)‖ : ℂ)) ^ 2 = 1`. Rewrite using `[h1]`. Simplify using the standard rewrite rules. Rewrite `hp` using `[this]`. Conclude with `zero_ne_one hp`.
+-/
 theorem line_of_eq {D : D7} {V : Formalism.BasicNotions.TH.HSp D} {S : D.what₂.Tau → Formalism.BasicNotions.TH.SPar} {θ : InfFam D} {M : DSModel V S}
     {J : Set (GA D V)} {χ : GA D V → ℂ} (hP : GlobalTheory.Published.CuspRapidDecay) (hθ : IsInfFam θ)
     {T T' : SmT M →ₗ[ℂ] (GA D V → ℂ)} (hT : T ∈ MultT θ M J χ) (hT' : T' ∈ MultT θ M J χ) (v₀ v : M.Vec)
@@ -150,6 +193,13 @@ end GlobalTheory.MiTop.LineV
 
 namespace GlobalTheory.MiTop
 
+/- English proof (translation)
+Introduce `hDS hCR D L hT Gi Gl Kc Yd cX ex W hB v₀ v hv hn T hTm hT0 φ hφ hst`. Take `⟨-, hθ, -, hM, -, -⟩` from `GlobalTheory.T.bottom_hypothesis_matching_central W hB`. Establish `hMt : Matches W.S.X W.Q.instEq (rJ W) (rChi W) (show GA D (D.sp.Y 0) from W.Q.tS)`. Use `hM 1 (one_mem _) (Subgroup.one_mem _)` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+
+Take `⟨⟨j, hj, hjT⟩, -⟩` from `GlobalTheory.T.evalAll_and_norm_eq_one_of_conjVec hDS hCR D W.S.X W.Q.instEq W.Q.Rl.θ _ (W.Q.Rl.MY 0) (rJ W) (rChi W) (show GA D (D.sp.Y 0) from W.Q.tS) v (by simp) hθ hB.gap hB.idE hMt hv`. Take `⟨T', hT'⟩` from `hj.2 ⟨star φ, hst⟩`. Establish `h1` using `hjT T'`. Rewrite `h1` using `[hT']`. Establish `he : evS W.S.X W.Q.instEq (show GA D (D.sp.Y 0) from W.Q.tS) (T (PiTensorProduct.tprod ℂ v₀)) =ᵐ[muX W.S.X] evS W.S.X W.Q.instEq (show GA D (D.sp.Y 0) from W.Q.tS) (T'.1 (PiTensorProduct.tprod ℂ v))` using `by filter_upwards [hφ, h1, Lp.coeFn_star φ] with x a1 a2 a3`.
+
+Rewrite using `[← a1]`. Establish `a4` using `a3.symm.trans a2`. Simplify using `using congrArg star a4`. Conclude with `LineV.line_of_eq hCR hθ hTm T'.2 v₀ v hn hT0 (LineV.eq_of_evS_ae W.S.X W.Q.instEq _ hTm T'.2 v₀ v he)`.
+-/
 theorem unit_vector_line_conjugate : GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.CuspRapidDecay → ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), BotHyp W → ∀ (v₀ v : (W.Q.Rl.MY 0).Vec), ConjVec W.S.X W.Q.instEq W.Q.Rl.θ (W.Q.Rl.MY 0) v → (∀ τ, ‖(v₀ τ : (W.Q.Rl.MY 0).H τ)‖ = 1) → ∀ T ∈ ThetaLiftSpaceZero W, T ≠ 0 → ∀ φ : L2X W.S.X, (φ : W.S.X.B.I.GA → ℂ) =ᵐ[muX W.S.X] evS W.S.X W.Q.instEq (show GA D (D.sp.Y 0) from W.Q.tS) (T (PiTensorProduct.tprod ℂ v₀)) → star φ ∈ HHX W.S.X → ∃ l : ℂ, l ≠ 0 ∧ PiTensorProduct.tprod ℂ v₀ = l • PiTensorProduct.tprod ℂ v := by
   intro hDS hCR D L hT Gi Gl Kc Yd cX ex W hB v₀ v hv hn T hTm hT0 φ hφ hst
   obtain ⟨-, hθ, -, hM, -, -⟩ := GlobalTheory.T.bottom_hypothesis_matching_central W hB

@@ -34,9 +34,15 @@ def tensMap (r : R →+* R') (κ : K →+ K') (φ : M →+ M') (hκ : ∀ c a, �
       change κ (c • a) ⊗ₜ[R'] φ x = κ a ⊗ₜ[R'] φ (c • x)
       rw [hκ, hφ, TensorProduct.smul_tmul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensMap_tmul (r : R →+* R') (κ : K →+ K') (φ : M →+ M') (hκ hφ) (a : K) (x : M) :
     tensMap r κ φ hκ hφ (a ⊗ₜ x) = κ a ⊗ₜ φ x := rfl
 
+/- English proof (translation)
+The claim follows from `AddMonoidHom.ext fun z => by induction z using TensorProduct.induction_on with | zero => rw [map_zero, map_zero] | tmul a x => exact h a x | add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem tens_ext {P : Type} [AddCommGroup P] {f g : K ⊗[R] M →+ P} (h : ∀ a x, f (a ⊗ₜ x) = g (a ⊗ₜ x)) : f = g :=
   AddMonoidHom.ext fun z => by
     induction z using TensorProduct.induction_on with
@@ -44,6 +50,9 @@ theorem tens_ext {P : Type} [AddCommGroup P] {f g : K ⊗[R] M →+ P} (h : ∀ 
     | tmul a x => exact h a x
     | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+The claim follows from `φ.injective (by rw [hφ, φ.apply_symm_apply, φ.apply_symm_apply, r.apply_symm_apply])`.
+-/
 theorem symm_smul {r : R ≃+* R'} {φ : M ≃+ M'} (hφ : ∀ c x, φ (c • x) = r c • φ x) (c : R') (x : M') :
     φ.symm (c • x) = r.symm c • φ.symm x :=
   φ.injective (by rw [hφ, φ.apply_symm_apply, φ.apply_symm_apply, r.apply_symm_apply])
@@ -55,9 +64,17 @@ def tensEquiv (r : R ≃+* R') (κ : K ≃+ K') (φ : M ≃+ M') (hκ : ∀ c a,
     (tens_ext fun a x => congrArg₂ (· ⊗ₜ[R] ·) (κ.symm_apply_apply a) (φ.symm_apply_apply x))
     (tens_ext fun a x => congrArg₂ (· ⊗ₜ[R'] ·) (κ.apply_symm_apply a) (φ.apply_symm_apply x))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensEquiv_tmul (r : R ≃+* R') (κ : K ≃+ K') (φ : M ≃+ M') (hκ hφ) (a : K) (x : M) :
     tensEquiv r κ φ hκ hφ (a ⊗ₜ x) = κ a ⊗ₜ φ x := rfl
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h => exact hs x h`. Consider the case `zero => rw [map_zero]`. Conclude with `B.zero_mem`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+
+Conclude with `B.add_mem hx hy`. Consider the case `smul c x _ hx => rw [hf]`. Conclude with `B.smul_mem _ hx`.
+-/
 theorem map_mem_of_span {f : M →+ M'} {r : R → R'} (hf : ∀ c x, f (c • x) = r c • f x) {s : Set M} {B : Submodule R' M'}
     (hs : ∀ x ∈ s, f x ∈ B) {x : M} (hx : x ∈ Submodule.span R s) : f x ∈ B := by
   induction hx using Submodule.span_induction with
@@ -126,6 +143,11 @@ def copy (q : KsIso ι eK γ A A') {ι₁ : LL →+* LL'} {eK₁ : Ks ≃+* Ks'}
   rho g x y := by rw [hγ, q.rho]
   chi g := by rw [hγ, hι, q.chi]
 
+/- English proof (translation)
+Use `⟨fun h g x hx => ?_, fun h g x hx => ?_⟩` and prove the remaining obligations. Use `(q.rho (γ.symm g) (q.φ.symm ⟨x, hx⟩) ⟨_, h _ _ (q.φ.symm ⟨x, hx⟩).2⟩).1 rfl` as an intermediate fact. Rewrite `this` using `[γ.apply_symm_apply, q.φ.apply_symm_apply]`. Conclude with `this ▸ Subtype.property _`. Use `(q.rho g ⟨x, hx⟩ (q.φ.symm ⟨_, h (γ g) _ (q.φ ⟨x, hx⟩).2⟩)).2 (by rw [q.φ.apply_symm_apply])` as an intermediate fact.
+
+Conclude with `this ▸ Subtype.property _`.
+-/
 theorem stab_iff (q : KsIso ι eK γ A A') :
     (∀ g x, x ∈ A.WK → A.ρ g x ∈ A.WK) ↔ ∀ g x, x ∈ A'.WK → A'.ρ g x ∈ A'.WK := by
   refine ⟨fun h g x hx => ?_, fun h g x hx => ?_⟩
@@ -167,6 +189,9 @@ def KsIso.ofFormsIso {A : Arith.FormsL LL Ks WL W G} {A' : Arith.FormsL LL Ks' W
     rw [← f.rho, f.e.injective.eq_iff]
   chi g := congrArg Units.val (f.chi g)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem KsIso.ofFormsIso_apply {A : Arith.FormsL LL Ks WL W G} {A' : Arith.FormsL LL Ks' WL' W' G'} (f : NX.FormsIso A A')
     (x : A.WK) : ((KsIso.ofFormsIso f).φ x : WL') = f.e x := rfl
 
@@ -193,9 +218,15 @@ def KsIso.bc (A : Arith.FormsL L0 Ks WL W G) :
     rw [NX.BC.bc_rho_incl, (NX.BC.incl_injective Ks L0 L WL).eq_iff]
   chi _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem KsIso.bc_apply (A : Arith.FormsL L0 Ks WL W G) (x : A.WK) :
     ((KsIso.bc L A).φ x : NX.BC.BCW Ks L0 L WL) = NX.BC.incl Ks L0 L WL x := rfl
 
+/- English proof (translation)
+The claim follows from `NX.BC.bc_j_incl L A σ x`.
+-/
 theorem KsIso.bc_j (A : Arith.FormsL L0 Ks WL W G) (σ : L →+* ℂ) (x : A.WK) :
     (NX.BC.bc L A).j σ ((KsIso.bc L A).φ x : NX.BC.BCW Ks L0 L WL) = A.j (σ.comp (algebraMap L0 L)) x :=
   NX.BC.bc_j_incl L A σ x
@@ -222,10 +253,16 @@ structure Scal (ι : what₂.LL →+* rows'.LL) (e : ↥LL0' ≃+* ↥LL0) (i : 
 variable {S : NX.RatDat tw} {S' : NX.RatDat tw'} {ι : what₂.LL →+* rows'.LL} {e : ↥LL0' ≃+* ↥LL0} {i : tw.Tw} {i' : tw'.Tw}
   {b : Bool} {κ : tw.O i ≃+* tw'.O i'} {eK : S.Ks ≃+* S'.Ks} {γ : S.G ≃* S'.G} {j j' : ℕ}
 
+/- English proof (translation)
+Rewrite using `[← s.read, show e x' = x from Subtype.ext (ι.injective ((s.above x').trans h))]`.
+-/
 theorem Scal.read' (s : Scal ι e i i' b κ) {x : ↥LL0} {x' : ↥LL0'} (h : (x' : rows'.LL) = ι (x : what₂.LL)) :
     fracEquiv κ (NX.BC.rdTw tw i b x) = NX.BC.rdTw tw' i' b x' := by
   rw [← s.read, show e x' = x from Subtype.ext (ι.injective ((s.above x').trans h))]
 
+/- English proof (translation)
+The claim follows from `s.read' (x := S.kKs c) (x' := S'.kKs (eK c)) (by rw [S.kKs_spec, S'.kKs_spec, q.alg])`.
+-/
 theorem Scal.place (s : Scal ι e i i' b κ) (q : KsIso ι eK γ (S.A j) (S'.A j')) (c : S.Ks) :
     fracEquiv κ (NX.ιK S i b c) = NX.ιK S' i' b (eK c) :=
   s.read' (x := S.kKs c) (x' := S'.kKs (eK c)) (by rw [S.kKs_spec, S'.kKs_spec, q.alg])
@@ -236,11 +273,17 @@ def fmOf (s : Scal ι e i i' b κ) (q : KsIso ι eK γ (S.A j) (S'.A j')) : NX.F
 
 variable (s : Scal ι e i i' b κ) (q : KsIso ι eK γ (S.A j) (S'.A j'))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fmOf_tmul (a : NX.KB S i b) (x : NX.FmK S j) :
     fmOf s q (a ⊗ₜ[S.Ks] x : NX.KB S i b ⊗[S.Ks] NX.FmK S j) =
       ((show NX.KB S' i' b from fracEquiv κ a) ⊗ₜ[S'.Ks] (show NX.FmK S' j' from q.φ x) :
         NX.KB S' i' b ⊗[S'.Ks] NX.FmK S' j') := rfl
 
+/- English proof (translation)
+The claim follows from `DFunLike.congr_fun (tens_ext (R := S.Ks) (K := NX.KB S i b) (M := NX.FmK S j) (f := (fmOf s q).toAddMonoidHom.comp (DistribSMul.toAddMonoidHom (NX.Fm S i j b) c)) (g := (DistribSMul.toAddMonoidHom (NX.Fm S' i' j' b) (fracEquiv κ c)).comp (fmOf s q).toAddMonoidHom) fun a x => cong …`.
+-/
 theorem fmOf_smul (c : FractionRing (tw.O i)) (x : NX.Fm S i j b) : fmOf s q (c • x) = fracEquiv κ c • fmOf s q x :=
   DFunLike.congr_fun (tens_ext (R := S.Ks) (K := NX.KB S i b) (M := NX.FmK S j)
     (f := (fmOf s q).toAddMonoidHom.comp (DistribSMul.toAddMonoidHom (NX.Fm S i j b) c))
@@ -248,9 +291,19 @@ theorem fmOf_smul (c : FractionRing (tw.O i)) (x : NX.Fm S i j b) : fmOf s q (c 
     fun a x => congrArg (fun z : NX.KB S' i' b => (z ⊗ₜ[S'.Ks] (show NX.FmK S' j' from q.φ x) :
       NX.KB S' i' b ⊗[S'.Ks] NX.FmK S' j')) (map_mul (fracEquiv κ) c a)) x
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul (FractionRing (tw.O i)) c, fmOf_smul, IsFractionRing.ringEquivOfRingEquiv_algebraMap, algebraMap_smul]`.
+-/
 theorem fmOf_smulO (c : tw.O i) (x : NX.Fm S i j b) : fmOf s q (c • x) = κ c • fmOf s q x := by
   rw [← algebraMap_smul (FractionRing (tw.O i)) c, fmOf_smul, IsFractionRing.ringEquivOfRingEquiv_algebraMap, algebraMap_smul]
 
+/- English proof (translation)
+Establish `h1 : ∀ y : NX.FmK S j, fmOf s q ((1 : NX.KB S i b) ⊗ₜ[S.Ks] y : NX.KB S i b ⊗[S.Ks] NX.FmK S j) = ((1 : NX.KB S' i' b) ⊗ₜ[S'.Ks] (show NX.FmK S' j' from q.φ y) : NX.KB S' i' b ⊗[S'.Ks] NX.FmK S' j')` using `fun y => congrArg (fun z : NX.KB S' i' b => (z ⊗ₜ[S'.Ks] (show NX.FmK S' j' from q.φ y) : NX.KB S' i' b ⊗[S'.Ks] NX.FmK S' j')) (map_one (fracEquiv κ))`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[← (fmOf s q).symm_apply_apply x]`. Use `map_mem_of_span (f := (fmOf s q).symm.toAddMonoidHom) (symm_smul (fmOf_smulO s q)) ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Take `⟨y, rfl⟩` from `q.φ.surjective y`. Use `Submodule.subset_span ⟨y, (q.mk_iff y).2 hy, ?_⟩` and prove the remaining obligations. Conclude with `(fmOf s q).symm_apply_eq.2 (h1 y).symm`. Use `map_mem_of_span (f := (fmOf s q).toAddMonoidHom) (fmOf_smulO s q) ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Conclude with `Submodule.subset_span ⟨q.φ y, (q.mk_iff y).1 hy, h1 y⟩`.
+-/
 theorem fmOf_mem_Bsup (x : NX.Fm S i j b) : fmOf s q x ∈ NX.Bsup S' i' j' b ↔ x ∈ NX.Bsup S i j b := by
   have h1 : ∀ y : NX.FmK S j, fmOf s q ((1 : NX.KB S i b) ⊗ₜ[S.Ks] y : NX.KB S i b ⊗[S.Ks] NX.FmK S j) =
       ((1 : NX.KB S' i' b) ⊗ₜ[S'.Ks] (show NX.FmK S' j' from q.φ y) : NX.KB S' i' b ⊗[S'.Ks] NX.FmK S' j') := fun y =>
@@ -268,9 +321,15 @@ theorem fmOf_mem_Bsup (x : NX.Fm S i j b) : fmOf s q x ∈ NX.Bsup S' i' j' b �
     exact Submodule.subset_span ⟨q.φ y, (q.mk_iff y).1 hy, h1 y⟩
 
 include q in
+/- English proof (translation)
+The claim follows from `q.stab_iff`.
+-/
 theorem KsIso.rhoStab_iff : NX.RhoStab S j ↔ NX.RhoStab S' j' := q.stab_iff
 
 include q in
+/- English proof (translation)
+Introduce `g` and use `by have h1 := q.chi (γ.symm g) rw [γ.apply_symm_apply] at h1 have h2 := he (e.symm ⟨_, h (γ.symm g)⟩) rw [e.apply_symm_apply] at h2 rw [h1, h2] exact Subtype.property _`.
+-/
 theorem KsIso.chiInLL0 (he : ∀ x : ↥LL0', ι (e x : what₂.LL) = (x : rows'.LL)) (h : NX.ChiInLL0 S j) : NX.ChiInLL0 S' j' := fun g => by
   have h1 := q.chi (γ.symm g)
   rw [γ.apply_symm_apply] at h1
@@ -279,6 +338,9 @@ theorem KsIso.chiInLL0 (he : ∀ x : ↥LL0', ι (e x : what₂.LL) = (x : rows'
   rw [h1, h2]
   exact Subtype.property _
 
+/- English proof (translation)
+The claim follows from `DFunLike.congr_fun (tens_ext (R := S.Ks) (K := NX.KB S i b) (M := NX.FmK S j) (f := (fmOf s q).toAddMonoidHom.comp (Module.End.baseChangeHom S.Ks (NX.KB S i b) (NX.FmK S j) u).toAddMonoidHom) (g := (Module.End.baseChangeHom S'.Ks (NX.KB S' i' b) (NX.FmK S' j') u').toAddMonoidHom. …`.
+-/
 theorem fmOf_baseChange (u : Module.End S.Ks (NX.FmK S j)) (u' : Module.End S'.Ks (NX.FmK S' j'))
     (hu : ∀ y : NX.FmK S j, q.φ (u y) = u' (q.φ y)) (x : NX.KB S i b ⊗[S.Ks] NX.FmK S j) :
     fmOf s q (Module.End.baseChangeHom S.Ks (NX.KB S i b) (NX.FmK S j) u x) =
@@ -289,6 +351,9 @@ theorem fmOf_baseChange (u : Module.End S.Ks (NX.FmK S j)) (u' : Module.End S'.K
     fun a y => congrArg (fun z : NX.FmK S' j' => ((show NX.KB S' i' b from fracEquiv κ a) ⊗ₜ[S'.Ks] z :
       NX.KB S' i' b ⊗[S'.Ks] NX.FmK S' j')) (hu y)) x
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `fmOf s q ((show FractionRing (tw.O i) from (NX.readLL0 S i b (NX.chiL S j hχ (S.eG.symm g)))⁻¹) • (show NX.Fm S i j b from Module.End.baseChangeHom S.Ks (NX.KB S i b) (NX.FmK S j) (NX.rhoKG S j hst (S.eG.symm g)) x)) = (show FractionRing (tw'.O i') from (NX.readLL0 S' i' b (NX.ch …`. Rewrite using `[fmOf_smul, hg]`. Use `congrArg₂ (· • ·) ?_ (fmOf_baseChange s q _ _ (fun y => Subtype.ext ((q.rho _ y _).1 rfl).symm) x)` and prove the remaining obligations. Conclude with `(map_inv₀ (fracEquiv κ) _).trans (congrArg _ (s.read' (q.chi _)))`.
+-/
 theorem fmOf_actG (hst : NX.RhoStab S j) (hχ : NX.ChiInLL0 S j) (hst' : NX.RhoStab S' j') (hχ' : NX.ChiInLL0 S' j')
     (g : G0g N) (g' : G0g N') (hg : S'.eG.symm g' = γ (S.eG.symm g)) (x : NX.Fm S i j b) :
     fmOf s q (NX.actG S i j b hst hχ g x) = NX.actG S' i' j' b hst' hχ' g' (fmOf s q x) := by
@@ -301,6 +366,9 @@ theorem fmOf_actG (hst : NX.RhoStab S j) (hχ : NX.ChiInLL0 S j) (hst' : NX.RhoS
   refine congrArg₂ (· • ·) ?_ (fmOf_baseChange s q _ _ (fun y => Subtype.ext ((q.rho _ y _).1 rfl).symm) x)
   exact (map_inv₀ (fracEquiv κ) _).trans (congrArg _ (s.read' (q.chi _)))
 
+/- English proof (translation)
+The claim follows from `fmOf_baseChange s q _ _ (fun y => Subtype.ext (hu y)) x`.
+-/
 theorem fmOf_restrict (u : Module.End what₂.LL (S.WL j)) (u' : Module.End rows'.LL (S'.WL j'))
     (hs : ∀ x ∈ (S.A j).WK, u x ∈ (S.A j).WK) (hs' : ∀ x ∈ (S'.A j').WK, u' x ∈ (S'.A j').WK)
     (hu : ∀ y : (S.A j).WK, (q.φ ⟨u y, hs _ y.2⟩ : S'.WL j') = u' (q.φ y)) (x : NX.KB S i b ⊗[S.Ks] NX.FmK S j) :
@@ -314,6 +382,9 @@ variable (tw' S ι e)
 
 abbrev algKsBC : Algebra S.Ks rows'.LL := (ι.comp (algebraMap S.Ks what₂.LL)).toAlgebra
 
+/- English proof (translation)
+The claim follows from `letI := ι.toAlgebra letI := algKsBC S ι IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+-/
 theorem towKsBC : letI := ι.toAlgebra
     letI := algKsBC S ι
     IsScalarTower S.Ks what₂.LL rows'.LL :=
@@ -347,14 +418,29 @@ def ratDatBC (he : ∀ x : ↥LL0', ι (e x : what₂.LL) = (x : rows'.LL)) (c :
 
 variable (he : ∀ x : ↥LL0', ι (e x : what₂.LL) = (x : rows'.LL)) (c : G0g N ≃* G0g N')
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ratDatBC_Ks : (ratDatBC tw' S ι e he c).Ks = S.Ks := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ratDatBC_G : (ratDatBC tw' S ι e he c).G = S.G := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ratDatBC_eG (g : S.G) : (ratDatBC tw' S ι e he c).eG g = c (S.eG g) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ratDatBC_kKs (x : S.Ks) : (ratDatBC tw' S ι e he c).kKs x = e.symm (S.kKs x) := rfl
 
+/- English proof (translation)
+The claim follows from `towKsBC S ι (ratDatBC tw' S ι e he c).A j = NX.BC.bc rows'.LL (S.A j) := rfl`.
+-/
 theorem ratDatBC_A (j : ℕ) : letI := ι.toAlgebra
     letI := algKsBC S ι
     haveI := towKsBC S ι
@@ -370,12 +456,21 @@ def ksBC (j : ℕ) : KsIso ι (kBC tw' S ι e he c) (gBC tw' S ι e he c) (S.A j
   haveI := towKsBC S ι
   KsIso.bc rows'.LL (S.A j)
 
+/- English proof (translation)
+The claim follows from `(ksBC tw' S ι e he c j).rhoStab_iff`.
+-/
 theorem ratDatBC_rhoStab_iff (j : ℕ) : NX.RhoStab S j ↔ NX.RhoStab (ratDatBC tw' S ι e he c) j :=
   (ksBC tw' S ι e he c j).rhoStab_iff
 
+/- English proof (translation)
+The claim follows from `(ksBC tw' S ι e he c j).chiInLL0 he h`.
+-/
 theorem ratDatBC_chiInLL0 (j : ℕ) (h : NX.ChiInLL0 S j) : NX.ChiInLL0 (ratDatBC tw' S ι e he c) j :=
   (ksBC tw' S ι e he c j).chiInLL0 he h
 
+/- English proof (translation)
+The claim follows from `letI := ι.toAlgebra letI := algKsBC S ι haveI := towKsBC S ι KsIso.bc_j rows'.LL (S.A j) σ x`.
+-/
 theorem ksBC_j (j : ℕ) (σ : rows'.LL →+* ℂ) (x : (S.A j).WK) :
     ((ratDatBC tw' S ι e he c).A j).j σ ((ksBC tw' S ι e he c j).φ x : (ratDatBC tw' S ι e he c).WL j) = (S.A j).j (σ.comp ι) x :=
   letI := ι.toAlgebra
@@ -392,9 +487,15 @@ def ringCast {A B : Type} [iA : CommRing A] [iB : CommRing B] (h : A = B) (hi : 
   map_mul' x y := by subst h; cases hi; rfl
   map_add' x y := by subst h; cases hi; rfl
 
+/- English proof (translation)
+The claim follows from `cast_heq h x`.
+-/
 theorem ringCast_heq {A B : Type} [iA : CommRing A] [iB : CommRing B] (h : A = B) (hi : HEq iA iB) (x : A) :
     HEq (ringCast h hi x) x := cast_heq h x
 
+/- English proof (translation)
+Substitute `h` using the available equality. Consider the cases of `hi`. Conclude with `heq_of_eq (DFunLike.congr_fun (IsFractionRing.ringEquivOfRingEquiv_refl (A := A) (K := FractionRing A)) x)`.
+-/
 theorem fracEquiv_ringCast_heq {A B : Type} [iA : CommRing A] [iB : CommRing B] (h : A = B) (hi : HEq iA iB)
     (x : FractionRing A) : HEq (fracEquiv (ringCast h hi) x) x := by
   subst h; cases hi
@@ -408,11 +509,19 @@ def addCast {A B : Type} [iA : AddCommGroup A] [iB : AddCommGroup B] (h : A = B)
   toEquiv := Equiv.cast h
   map_add' x y := by subst h; cases hi; rfl
 
+/- English proof (translation)
+Substitute `hT` using the available equality. Consider the cases of `hO`. Consider the cases of `hc`. Consider the cases of `hi`. Conclude with `⟨rfl, HEq.rfl⟩`.
+-/
 theorem heq_ring {T T' : Type} {O : T → Type} {O' : T' → Type} {c : ∀ i, CommRing (O i)} {c' : ∀ i, CommRing (O' i)}
     (hT : T = T') (hO : HEq O O') (hc : HEq c c') {i : T} {i' : T'} (hi : HEq i i') : O i = O' i' ∧ HEq (c i) (c' i') := by
   subst hT; cases hO; cases hc; cases hi
   exact ⟨rfl, HEq.rfl⟩
 
+/- English proof (translation)
+Substitute `hT` using the available equality. Consider the cases of `hA`. Consider the cases of `ha`. Consider the cases of `hO`. Consider the cases of `hc`.
+
+Consider the cases of `hg`. Consider the cases of `hi`. Consider the cases of `hx`. Both sides reduce to the same expression.
+-/
 theorem heq_fracMap {T T' : Type} {A O : T → Type} {A' O' : T' → Type} [a : ∀ i, CommRing (A i)] [a' : ∀ i, CommRing (A' i)]
     [c : ∀ i, CommRing (O i)] [c' : ∀ i, CommRing (O' i)] [∀ i, IsDomain (A i)] [∀ i, IsDomain (A' i)]
     [∀ i, IsDomain (O i)] [∀ i, IsDomain (O' i)] [g : ∀ i, Algebra (A i) (O i)] [g' : ∀ i, Algebra (A' i) (O' i)]
@@ -424,6 +533,11 @@ theorem heq_fracMap {T T' : Type} {A O : T → Type} {A' O' : T' → Type} [a : 
   subst hT; cases hA; cases ha; cases hO; cases hc; cases hg; cases hi; cases hx
   rfl
 
+/- English proof (translation)
+Substitute `hT` using the available equality. Consider the cases of `hK`. Consider the cases of `hk`. Consider the cases of `hM`. Consider the cases of `ha`.
+
+Consider the cases of `hm`. Consider the cases of `hi`. Conclude with `⟨rfl, HEq.rfl, fun _ _ _ _ h h' => by cases h; cases h'; rfl⟩`.
+-/
 theorem heq_fam {T T' : Type} {K : T → Type} {K' : T' → Type} {k : ∀ i, CommRing (K i)} {k' : ∀ i, CommRing (K' i)}
     {M : T → ℕ → Bool → Type} {M' : T' → ℕ → Bool → Type} {a : ∀ i j b, AddCommGroup (M i j b)}
     {a' : ∀ i j b, AddCommGroup (M' i j b)} {m : ∀ i j b, Module (FractionRing (K i)) (M i j b)}
@@ -435,6 +549,9 @@ theorem heq_fam {T T' : Type} {K : T → Type} {K' : T' → Type} {k : ∀ i, Co
   subst hT; cases hK; cases hk; cases hM; cases ha; cases hm; cases hi
   exact ⟨rfl, HEq.rfl, fun _ _ _ _ h h' => by cases h; cases h'; rfl⟩
 
+/- English proof (translation)
+Substitute `hR` using the available equality. Consider the cases of `hH`. Substitute `hP` using the available equality. Conclude with `⟨rfl, HEq.rfl⟩`.
+-/
 theorem heq_grp {R R' : Ranks} {H : Host R} {H' : Host R'} {P P' : Fin 2 → Type} (hR : R = R') (hH : HEq H H') (hP : P = P') :
     (∀ kv : (Σ k : Fin 2, P k), GL (Fin R.r) (ZMod (H.g kv.1))) = (∀ kv : (Σ k : Fin 2, P' k), GL (Fin R'.r) (ZMod (H'.g kv.1))) ∧
     HEq (inferInstance : Mul (∀ kv : (Σ k : Fin 2, P k), GL (Fin R.r) (ZMod (H.g kv.1))))
@@ -485,6 +602,9 @@ structure CopyTw (D D' : D7) (ι : D.what₂.LL →+* D'.what₂.LL) (e : ↥D'.
 
 namespace CopyTw
 
+/- English proof (translation)
+The claim follows from `.refl D sp := HEq.rfl Tau := rfl eTau := HEq.rfl hc := HEq.rfl embLL _ := rfl LL0 _ := rfl emb0 _ _ h _ := by cases h; rfl emb0b _ _ h _ := by cases h; rfl inW1 _ _ h := by cases h; rfl delta := HEq.rfl B := HEq.rfl acgB := HEq.rfl modB := HEq.rfl Theta := HEq.rfl hk := HEq.rfl B …`.
+-/
 theorem refl (D : D7) : CopyTw D D (RingHom.id _) (RingEquiv.refl _) where
   toSameExport := .refl D
   sp := HEq.rfl
@@ -510,19 +630,42 @@ theorem refl (D : D7) : CopyTw D D (RingHom.id _) (RingEquiv.refl _) where
 variable {D D' : D7} {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+* ↥D.LL0} (h : CopyTw D D' ι e)
 include h
 
+/- English proof (translation)
+The claim follows from `eq_of_heq h.set.Tw`.
+-/
 theorem Tw_eq : D.ntw.Tw = D'.ntw.Tw := eq_of_heq h.set.Tw
 
+/- English proof (translation)
+The claim follows from `Subsingleton.helim (congrArg Fintype h.Tau) _ _`.
+-/
 theorem instTau : HEq D.what₂.instTau D'.what₂.instTau := Subsingleton.helim (congrArg Fintype h.Tau) _ _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨proof_irrel_heq _ _, proof_irrel_heq _ _⟩`.
+-/
 theorem freeB_finB : HEq D.ntw.freeB D'.ntw.freeB ∧ HEq D.ntw.finB D'.ntw.finB := ⟨proof_irrel_heq _ _, proof_irrel_heq _ _⟩
 
+/- English proof (translation)
+The claim follows from `RingHom.ext h.embLL`.
+-/
 theorem embLL_comp : D'.what₂.embLL.comp ι = D.what₂.embLL := RingHom.ext h.embLL
 
+/- English proof (translation)
+The claim follows from `(h.embLL _).symm.trans (congrArg D'.what₂.embLL (h.LL0 x))`.
+-/
 theorem embLL0_eq (x : ↥D'.LL0) : embLL0 D (e x) = embLL0 D' x := (h.embLL _).symm.trans (congrArg D'.what₂.embLL (h.LL0 x))
 
+/- English proof (translation)
+The claim follows from `D'.what₂.embLL.injective (by rw [h.embLL, D.starLL_cx, D'.starLL_cx, h.embLL])`.
+-/
 theorem map_star (x : D.what₂.LL) : ι (star x) = star (ι x) :=
   D'.what₂.embLL.injective (by rw [h.embLL, D.starLL_cx, D'.starLL_cx, h.embLL])
 
+/- English proof (translation)
+Establish `key : ∀ {R R' : Ranks} {H : Host R} {H' : Host R'}, R = R' → HEq H H' → ∀ {y : H.E} {y' : H'.E}, HEq y y' → H.φ₀ y = H'.φ₀ y'`. Introduce `R R' H H' h1 h2 y y' h3`. Substitute `h1` using the available equality. Consider the cases of `h2`. Consider the cases of `h3`.
+
+Both sides reduce to the same expression. Use `D'.what₂.embLL.injective ((h.embLL _).trans ?_)` and prove the remaining obligations. Conclude with `(DFunLike.congr_fun D.embE_φ₀ x).trans ((key h.gal.R h.gal.host hx).trans (DFunLike.congr_fun D'.embE_φ₀ x').symm)`.
+-/
 theorem map_embE {x : D.host.E} {x' : D'.host.E} (hx : HEq x x') : ι (D.embE x) = D'.embE x' := by
   have key : ∀ {R R' : Ranks} {H : Host R} {H' : Host R'}, R = R' → HEq H H' → ∀ {y : H.E} {y' : H'.E}, HEq y y' →
       H.φ₀ y = H'.φ₀ y' := by
@@ -535,8 +678,14 @@ theorem map_embE {x : D.host.E} {x' : D'.host.E} (hx : HEq x x') : ι (D.embE x)
 def grpEquiv : G0g D.nd ≃* G0g D'.nd :=
   mulCast (heq_grp h.gal.R h.gal.host (eq_of_heq h.gal.PlG)).1 (heq_grp h.gal.R h.gal.host (eq_of_heq h.gal.PlG)).2
 
+/- English proof (translation)
+The claim follows from `cast_heq _ g`.
+-/
 theorem grpEquiv_heq (g : G0g D.nd) : HEq (h.grpEquiv g) g := cast_heq _ g
 
+/- English proof (translation)
+The claim follows from `cast_eq_iff_heq`.
+-/
 theorem grpEquiv_eq_iff {g : G0g D.nd} {g' : G0g D'.nd} : h.grpEquiv g = g' ↔ HEq g g' := cast_eq_iff_heq
 
 variable {i : D.ntw.Tw} {i' : D'.ntw.Tw} (hi : HEq i i')
@@ -544,16 +693,28 @@ variable {i : D.ntw.Tw} {i' : D'.ntw.Tw} (hi : HEq i i')
 def oEquiv : D.ntw.O i ≃+* D'.ntw.O i' :=
   ringCast (heq_ring h.Tw_eq h.set.O h.set.crO hi).1 (heq_ring h.Tw_eq h.set.O h.set.crO hi).2
 
+/- English proof (translation)
+The claim follows from `ringCast_heq _ _ x`.
+-/
 theorem oEquiv_heq (x : D.ntw.O i) : HEq (h.oEquiv hi x) x := ringCast_heq _ _ x
 
+/- English proof (translation)
+The claim follows from `fracEquiv_ringCast_heq _ _ x`.
+-/
 theorem frac_heq (x : FractionRing (D.ntw.O i)) : HEq (fracEquiv (h.oEquiv hi) x) x := fracEquiv_ringCast_heq _ _ x
 
 include hi in
 
+/- English proof (translation)
+The claim follows from `heq_fracMap h.Tw_eq h.set.O0 h.set.crO0 h.set.O h.set.crO h.set.algO hi (D.ntw.O_inj i) (D'.ntw.O_inj i') (by cases b; exacts [h.emb0b i i' hi x, h.emb0 i i' hi x])`.
+-/
 theorem sideEmb_heq (b : Bool) (x : ↥D'.LL0) : HEq (sideEmb D.ntw i b (e x)) (sideEmb D'.ntw i' b x) :=
   heq_fracMap h.Tw_eq h.set.O0 h.set.crO0 h.set.O h.set.crO h.set.algO hi (D.ntw.O_inj i) (D'.ntw.O_inj i')
     (by cases b; exacts [h.emb0b i i' hi x, h.emb0 i i' hi x])
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.LL0, fun x => eq_of_heq ((h.frac_heq hi _).trans (h.sideEmb_heq hi b x))⟩`.
+-/
 theorem scal (b : Bool) : Scal ι e i i' b (h.oEquiv hi) :=
   ⟨h.LL0, fun x => eq_of_heq ((h.frac_heq hi _).trans (h.sideEmb_heq hi b x))⟩
 
@@ -561,8 +722,14 @@ def fmCast (j : ℕ) (b : Bool) : D.nexp.Fm i j b ≃+ D'.nexp.Fm i' j b :=
   addCast (heq_fam h.Tw_eq h.set.O h.set.crO h.frm.Fm h.frm.acgFm h.frm.modFmK hi j b).1
     (heq_fam h.Tw_eq h.set.O h.set.crO h.frm.Fm h.frm.acgFm h.frm.modFmK hi j b).2.1
 
+/- English proof (translation)
+The claim follows from `cast_heq _ x`.
+-/
 theorem fmCast_heq (j : ℕ) (b : Bool) (x : D.nexp.Fm i j b) : HEq (h.fmCast hi j b x) x := cast_heq _ x
 
+/- English proof (translation)
+The claim follows from `eq_of_heq ((h.fmCast_heq hi j b _).trans ((heq_fam h.Tw_eq h.set.O h.set.crO h.frm.Fm h.frm.acgFm h.frm.modFmK hi j b).2.2 _ _ _ _ (h.frac_heq hi c).symm (h.fmCast_heq hi j b x).symm))`.
+-/
 theorem fmCast_smul (j : ℕ) (b : Bool) (c : FractionRing (D.ntw.O i)) (x : D.nexp.Fm i j b) :
     h.fmCast hi j b (c • x) = fracEquiv (h.oEquiv hi) c • h.fmCast hi j b x :=
   eq_of_heq ((h.fmCast_heq hi j b _).trans ((heq_fam h.Tw_eq h.set.O h.set.crO h.frm.Fm h.frm.acgFm h.frm.modFmK hi j b).2.2
@@ -577,6 +744,9 @@ def eFMove {S : NX.RatDat D.ntw} {S' : NX.RatDat D'.ntw} {eK : S.Ks ≃+* S'.Ks}
         c • fmOf (h.scal hi b) q (eF ((h.fmCast hi j b).symm x))
       rw [symm_smul (h.fmCast_smul hi j b), map_smul, fmOf_smul, RingEquiv.apply_symm_apply] }
 
+/- English proof (translation)
+The claim follows from `congrArg (fun y => fmOf (h.scal hi b) q (eF y)) ((h.fmCast hi j b).symm_apply_apply x)`.
+-/
 theorem eFMove_fmCast {S : NX.RatDat D.ntw} {S' : NX.RatDat D'.ntw} {eK : S.Ks ≃+* S'.Ks} {γ : S.G ≃* S'.G} {j : ℕ} {b : Bool}
     (q : KsIso ι eK γ (S.A j) (S'.A j)) (eF : D.nexp.Fm i j b ≃ₗ[FractionRing (D.ntw.O i)] NX.Fm S i j b)
     (x : D.nexp.Fm i j b) : h.eFMove hi q eF (h.fmCast hi j b x) = fmOf (h.scal hi b) q (eF x) :=
@@ -594,12 +764,21 @@ variable {D D' : D7} {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+
 def fmMove : NX.Fm S i j b ≃+ NX.Fm (h.ratDat S) i' j b :=
   fmOf (h.scal hi b) (ksBC D'.ntw S ι e h.LL0 h.grpEquiv j)
 
+/- English proof (translation)
+The claim follows from `fmOf_smul _ _ c x`.
+-/
 theorem fmMove_smul (c : FractionRing (D.ntw.O i)) (x : NX.Fm S i j b) :
     fmMove h S hi j b (c • x) = fracEquiv (h.oEquiv hi) c • fmMove h S hi j b x := fmOf_smul _ _ c x
 
+/- English proof (translation)
+The claim follows from `fmOf_mem_Bsup _ _ x`.
+-/
 theorem fmMove_mem_Bsup (x : NX.Fm S i j b) : fmMove h S hi j b x ∈ NX.Bsup (h.ratDat S) i' j b ↔ x ∈ NX.Bsup S i j b :=
   fmOf_mem_Bsup _ _ x
 
+/- English proof (translation)
+The claim follows from `fmOf_actG _ _ hst hχ hst' hχ' g _ (congrArg S.eG.symm (h.grpEquiv.symm_apply_apply g)) x`.
+-/
 theorem fmMove_actG (hst : NX.RhoStab S j) (hχ : NX.ChiInLL0 S j) (hst' hχ') (g : G0g D.nd) (x : NX.Fm S i j b) :
     fmMove h S hi j b (NX.actG S i j b hst hχ g x) =
       NX.actG (h.ratDat S) i' j b hst' hχ' (h.grpEquiv g) (fmMove h S hi j b x) :=
@@ -620,22 +799,37 @@ structure SameModel (M : Mult.DSModel V P) (M' : Mult.DSModel V' P') : Prop wher
   ε : HEq M.ε M'.ε
   fr : HEq M.fr M'.fr
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨.rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl⟩`.
+-/
 theorem SameModel.refl (M : Mult.DSModel V P) : SameModel M M := ⟨.rfl, .rfl, .rfl, .rfl, .rfl, .rfl, .rfl⟩
 
 def SameVec {M : Mult.DSModel V P} {M' : Mult.DSModel V' P'} (v : M.Vec) (v' : M'.Vec) : Prop :=
   ∀ τ τ', HEq τ τ' → HEq (v τ : M.H τ) (v' τ' : M'.H τ')
 
+/- English proof (translation)
+Introduce `_ _ h` and use `by cases h; rfl`.
+-/
 theorem SameVec.refl {M : Mult.DSModel V P} (v : M.Vec) : SameVec v v := fun _ _ h => by cases h; rfl
 
+/- English proof (translation)
+The claim follows from `funext fun τ => Subtype.ext (eq_of_heq (h τ τ HEq.rfl))`.
+-/
 theorem SameVec.eq {M : Mult.DSModel V P} {v v' : M.Vec} (h : SameVec v v') : v = v' :=
   funext fun τ => Subtype.ext (eq_of_heq (h τ τ HEq.rfl))
 
 def SameMap {M : Mult.DSModel V P} {M' : Mult.DSModel V' P'} (T : Mult.MMap M) (T' : Mult.MMap M') : Prop :=
   ∀ v v', SameVec v v' → ∀ g g', HEq g g' → T v g = T' v' g'
 
+/- English proof (translation)
+Introduce `_ _ h _ _ h'` and use `by cases h'; rw [h.eq]`.
+-/
 theorem SameMap.refl {M : Mult.DSModel V P} (T : Mult.MMap M) : SameMap T T := fun _ _ h _ _ h' => by
   cases h'; rw [h.eq]
 
+/- English proof (translation)
+The claim follows from `MultilinearMap.ext fun v => funext fun g => h v v (.refl v) g g HEq.rfl`.
+-/
 theorem SameMap.eq {M : Mult.DSModel V P} {T T' : Mult.MMap M} (h : SameMap T T') : T = T' :=
   MultilinearMap.ext fun v => funext fun g => h v v (.refl v) g g HEq.rfl
 
@@ -653,10 +847,16 @@ def IsCoef (X : RealSide D)
   ∃ gramR c0R, Bridge.FamTie X.R.B X.R.pl (X.R.Sb : Set (Pl D.host.E)) X.R.Q (labLL D) (fun τ => Bridge.lamRdef (Ptw D) τ)
     (fun j τ => Bridge.lamLdef (Vc D j).rank ((j : ℕ) + 1) τ) gramR c0R c0L
 
+/- English proof (translation)
+The claim follows from `let ⟨g, c, c0L, h⟩ := X.char.fam.tie ⟨c0L, g, c, h⟩`.
+-/
 theorem exists_isCoef (X : RealSide D) : ∃ c0L, IsCoef X c0L :=
   let ⟨g, c, c0L, h⟩ := X.char.fam.tie
   ⟨c0L, g, c, h⟩
 
+/- English proof (translation)
+The claim follows from `sgAt_mk _ X.R.hv0`.
+-/
 theorem sign_at_base_place_eq_embedding (X : RealSide D) : sg0 D X.A3.A = D.what₂.embLL := sgAt_mk _ X.R.hv0
 
 structure RealMove (X : RealSide D) (X' : RealSide D') (ι : D.what₂.LL →+* D'.what₂.LL) : Type where
@@ -718,6 +918,9 @@ structure RealMove (X : RealSide D) (X' : RealSide D') (ι : D.what₂.LL →+* 
 def TupExt (X : RealSide D) (X' : RealSide D') : Prop :=
   ∀ t : X.T, ∃ t' : X'.T, HEq (X.R.xi t) (X'.R.xi t') ∧ HEq (X.R.Q t) (X'.R.Q t')
 
+/- English proof (translation)
+Introduce `t` and use `⟨t, HEq.rfl, HEq.rfl⟩`.
+-/
 theorem TupExt.refl (X : RealSide D) : TupExt X X := fun t => ⟨t, HEq.rfl, HEq.rfl⟩
 
 namespace RealMove
@@ -758,9 +961,15 @@ def refl (X : RealSide D) : RealMove X X (RingHom.id _) where
 variable {X : RealSide D} {X' : RealSide D'} {ι : D.what₂.LL →+* D'.what₂.LL} (m : RealMove X X' ι)
 include m
 
+/- English proof (translation)
+The claim follows from `(heq_of_eq (X.char.allPl : X.R.Sb = X.R.Pg)).trans (m.Pg.trans (heq_of_eq (X'.char.allPl : X'.R.Sb = X'.R.Pg)).symm)`.
+-/
 theorem Sb : HEq X.R.Sb X'.R.Sb :=
   (heq_of_eq (X.char.allPl : X.R.Sb = X.R.Pg)).trans (m.Pg.trans (heq_of_eq (X'.char.allPl : X'.R.Sb = X'.R.Pg)).symm)
 
+/- English proof (translation)
+The claim follows from `(X.phs j).trans (X'.phs j').symm`.
+-/
 theorem phs (j : Fin D.R.m) (j' : Fin D'.R.m) : X.R.phs j = X'.R.phs j' := (X.phs j).trans (X'.phs j').symm
 
 variable {e : ↥D'.LL0 ≃+* ↥D.LL0} (h : CopyTw D D' ι e)
@@ -768,9 +977,17 @@ include h
 
 omit m in
 
+/- English proof (translation)
+Rewrite using `[sign_at_base_place_eq_embedding, sign_at_base_place_eq_embedding, h.embLL_comp]`.
+-/
 theorem fixedEmbedding_comp (X : RealSide D) (X' : RealSide D') : (sg0 D' X'.A3.A).comp ι = sg0 D X.A3.A := by
   rw [sign_at_base_place_eq_embedding, sign_at_base_place_eq_embedding, h.embLL_comp]
 
+/- English proof (translation)
+Establish `key : ∀ {R R' : Ranks} {H : Host R} {H' : Host R'} {P P' : Fin 2 → Type} {Q : Finset (Pl H.E)} {Q' : Finset (Pl H'.E)}, R = R' → HEq H H' → P = P' → HEq Q Q' → ∀ {c : G0 Q R.r ≃* ∀ kv : (Σ k : Fin 2, P k), GL (Fin R.r) (ZMod (H.g kv.1))} {c' : G0 Q' R'.r ≃* ∀ kv : (Σ k : Fin 2, P …`. Introduce `R R' H H' P P' Q Q' h1 h2 h3 h4 c c' h5 x x' h6`. Substitute `h1` using the available equality. Consider the cases of `h2`. Substitute `h3` using the available equality.
+
+Consider the cases of `h4`. Consider the cases of `h5`. Consider the cases of `h6`. Both sides reduce to the same expression. Conclude with `(h.grpEquiv_eq_iff.2 (key h.gal.R h.gal.host (eq_of_heq h.gal.PlG) m.Pg m.cG (m.eG g))).symm`.
+-/
 theorem cG_eG (g : X.Γ) : X'.cG (X'.R.eG (m.γ g)) = h.grpEquiv (X.cG (X.R.eG g)) := by
   have key : ∀ {R R' : Ranks} {H : Host R} {H' : Host R'} {P P' : Fin 2 → Type} {Q : Finset (Pl H.E)} {Q' : Finset (Pl H'.E)},
       R = R' → HEq H H' → P = P' → HEq Q Q' →
@@ -798,6 +1015,9 @@ def eFOf {S : NX.RatDat D.ntw} (YS : NX.NExpRealS X.R X.cG S) (kKs' : X'.core.Q.
 def kKsOf {S : NX.RatDat D.ntw} (YS : NX.NExpRealS X.R X.cG S) (j : Fin D.R.m) : X'.core.Q.c.F →+* ↥D'.LL0 :=
   e.symm.toRingHom.comp (S.kKs.comp ((YS.fi j).eK.trans m.eK).symm.toRingHom)
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `((YS.fi j).eK.trans m.eK).surjective x`. Rewrite using `[(m.ksOf h YS j).alg c, ← S.kKs_spec, ← h.LL0]`. Conclude with `congrArg (fun y : ↥D.LL0 => ι y) ((e.apply_symm_apply _).trans (congrArg S.kKs (RingEquiv.symm_apply_apply _ c)))`.
+-/
 theorem kKsOf_spec {S : NX.RatDat D.ntw} (YS : NX.NExpRealS X.R X.cG S) (j : Fin D.R.m) (x : X'.core.Q.c.F) :
     ((m.kKsOf (e := e) YS j x : ↥D'.LL0) : D'.what₂.LL) = algebraMap X'.core.Q.c.F D'.what₂.LL x := by
   obtain ⟨c, rfl⟩ := ((YS.fi j).eK.trans m.eK).surjective x
@@ -806,17 +1026,29 @@ theorem kKsOf_spec {S : NX.RatDat D.ntw} (YS : NX.NExpRealS X.R X.cG S) (j : Fin
 
 end RealMove
 
+/- English proof (translation)
+The claim follows from `(KsIso.bc_j (CyclotomicField 4 ℚ) NX.BC.testA σ ⟨1, trivial⟩).trans (map_one (σ.comp (algebraMap ℚ _)))`.
+-/
 example (σ : CyclotomicField 4 ℚ →+* ℂ) :
     (show ℂ from (NX.BC.bc (CyclotomicField 4 ℚ) NX.BC.testA).j σ
       ((KsIso.bc (CyclotomicField 4 ℚ) NX.BC.testA).φ ⟨1, trivial⟩ : NX.BC.BCW ℚ ℚ (CyclotomicField 4 ℚ) ℚ)) = 1 :=
   (KsIso.bc_j (CyclotomicField 4 ℚ) NX.BC.testA σ ⟨1, trivial⟩).trans (map_one (σ.comp (algebraMap ℚ _)))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+-/
 example (D : D7) (g : G0g D.nd) (i : D.ntw.Tw) (x : D.ntw.O i) :
     (CopyTw.refl D).grpEquiv g = g ∧ (CopyTw.refl D).oEquiv (i' := i) HEq.rfl x = x := ⟨rfl, rfl⟩
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun x => D.what₂.embLL.injective (h.embLL x)`.
+-/
 example (D : D7) (ι : D.what₂.LL →+* D.what₂.LL) (e : ↥D.LL0 ≃+* ↥D.LL0) (h : CopyTw D D ι e) : ι = RingHom.id _ :=
   RingHom.ext fun x => D.what₂.embLL.injective (h.embLL x)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (X : RealSide D) (j : Fin D.R.m) (x : (X.R.FW j).WK) : ((RealMove.refl X).forms j j rfl).φ x = x := rfl
 
 end GlobalTheory.TwInputs.Move

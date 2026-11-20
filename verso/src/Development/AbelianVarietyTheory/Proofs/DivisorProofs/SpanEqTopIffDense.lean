@@ -16,22 +16,36 @@ namespace MatrixUnits
 
 variable (U : MatrixUnits R N ι)
 
+/- English proof (translation)
+Establish `h` using `LinearMap.congr_fun (U.mul_eq i j k l) x`. Rewrite `h` using `[Module.End.mul_apply]`. Apply the tactic sequence `rw [h]; split_ifs <;> simp`.
+-/
 theorem apply_apply (i j k l : ι) (x : N) : U.E i j (U.E k l x) = if j = k then U.E i l x else 0 := by
   have h := LinearMap.congr_fun (U.mul_eq i j k l) x
   rw [Module.End.mul_apply] at h
   rw [h]; split_ifs <;> simp
 
+/- English proof (translation)
+Establish `h` using `LinearMap.congr_fun U.sum_diag x`. Simplify `h` using `[LinearMap.sum_apply]`.
+-/
 theorem sum_apply (x : N) : ∑ i, U.E i i x = x := by
   have h := LinearMap.congr_fun U.sum_diag x
   simpa [LinearMap.sum_apply] using h
 
 def corner (a : ι) : Submodule R N := LinearMap.range (U.E a a)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[U.apply_apply]`. Simplify using the standard rewrite rules. Introduce `h`.
+
+Conclude with `⟨x, h⟩`.
+-/
 theorem mem_corner_iff (a : ι) (x : N) : x ∈ U.corner a ↔ U.E a a x = x := by
   constructor
   · rintro ⟨y, rfl⟩; rw [U.apply_apply]; simp
   · intro h; exact ⟨x, h⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨U.E a i x, by rw [U.apply_apply]; simp⟩`.
+-/
 theorem apply_mem_corner (a i : ι) (x : N) : U.E a i x ∈ U.corner a := ⟨U.E a i x, by rw [U.apply_apply]; simp⟩
 
 def toPi (a : ι) : N ≃ₗ[R] (ι → U.corner a) where
@@ -49,10 +63,21 @@ def toPi (a : ι) : N ≃ₗ[R] (ι → U.corner a) where
     simp only [map_sum, U.apply_apply]
     simp [(U.mem_corner_iff a _).1 (v j).2]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toPi_apply (a : ι) (x : N) (i : ι) : ((U.toPi a x) i : N) = U.E a i x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toPi_symm_apply (a : ι) (v : ι → U.corner a) : (U.toPi a).symm v = ∑ i, U.E i a (v i) := rfl
 
+/- English proof (translation)
+Use extensionality with `k`. Rewrite using `[toPi_apply, U.apply_apply]`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using `[toPi_apply]`.
+
+Simplify using `[h, Pi.single_apply]`.
+-/
 theorem toPi_E (a i j : ι) (x : N) : U.toPi a (U.E i j x) = Pi.single i (U.toPi a x j) := by
   ext k
   rw [toPi_apply, U.apply_apply]
@@ -89,6 +114,9 @@ def ofModule [Module (Matrix ι ι R) N] [IsScalarTower R (Matrix ι ι R) N] : 
   sum_diag := by
     rw [← map_sum, Matrix.sum_single_one, map_one]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofModule_E [Module (Matrix ι ι R) N] [IsScalarTower R (Matrix ι ι R) N] (i j : ι) (x : N) :
     (ofModule (R := R)).E i j x = Matrix.single i j (1 : R) • x := rfl
 end GlobalTheory.Morita
@@ -97,6 +125,11 @@ namespace GlobalTheory.Morita.MatrixUnits
 variable {R : Type*} [CommRing R] {N : Type*} [AddCommGroup N] [Module R N]
   {ι : Type*} [Fintype ι] [DecidableEq ι] (U : MatrixUnits R N ι)
 
+/- English proof (translation)
+Use extensionality with `i`. Rewrite using `[toPi_apply, ← (U.mem_corner_iff a _).1 y.2, U.apply_apply]`. Distinguish the cases in `h : i = a`. Substitute `h` using the available equality. Simplify using `[(U.mem_corner_iff i _).1 y.2]`.
+
+Simplify using `[h, Pi.single_apply, Ne.symm h]`.
+-/
 theorem toPi_corner (a : ι) (y : U.corner a) : U.toPi a y = Pi.single a y := by
   ext i
   rw [toPi_apply, ← (U.mem_corner_iff a _).1 y.2, U.apply_apply]
@@ -111,9 +144,15 @@ def cornerPart (a : ι) (L : Submodule R N) : Submodule R (U.corner a) := L.coma
 def spread (a : ι) (L₀ : Submodule R (U.corner a)) : Submodule R N :=
   (Submodule.pi Set.univ fun _ => L₀).comap (U.toPi a).toLinearMap
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_cornerPart {a : ι} {L : Submodule R N} {y : U.corner a} : y ∈ U.cornerPart a L ↔ (y : N) ∈ L :=
   Iff.rfl
 
+/- English proof (translation)
+Simplify using `[spread, Submodule.mem_pi]`.
+-/
 theorem mem_spread {a : ι} {L₀ : Submodule R (U.corner a)} {x : N} :
     x ∈ U.spread a L₀ ↔ ∀ i, U.toPi a x i ∈ L₀ := by
   simp [spread, Submodule.mem_pi]
@@ -124,10 +163,18 @@ namespace GlobalTheory.Morita.MatrixUnits
 variable {R : Type*} [CommRing R] {N : Type*} [AddCommGroup N] [Module R N]
   {ι : Type*} [Fintype ι] [DecidableEq ι] (U : MatrixUnits R N ι)
 
+/- English proof (translation)
+Rewrite using `[← (U.toPi a).symm_apply_apply x, toPi_symm_apply]`. Conclude with `L.sum_mem fun i _ => hL i a _ (h i)`.
+-/
 theorem mem_of_forall {L : Submodule R N} (hL : U.IsStable L) (a : ι) {x : N} (h : ∀ i, U.E a i x ∈ L) : x ∈ L := by
   rw [← (U.toPi a).symm_apply_apply x, toPi_symm_apply]
   exact L.sum_mem fun i _ => hL i a _ (h i)
 
+/- English proof (translation)
+Introduce `i j x hx`. Rewrite `hx`, the goal using `[mem_spread]`. Introduce `k`. Rewrite using `[toPi_E]`. Distinguish the cases in `h : k = i`.
+
+Substitute `h` using the available equality. Simplify using `using hx j`. Simplify using `[Pi.single_apply, h, L₀.zero_mem]`.
+-/
 theorem spread_isStable (a : ι) (L₀ : Submodule R (U.corner a)) : U.IsStable (U.spread a L₀) := by
   intro i j x hx
   rw [mem_spread] at hx ⊢
@@ -137,6 +184,11 @@ theorem spread_isStable (a : ι) (L₀ : Submodule R (U.corner a)) : U.IsStable 
   · subst h; simpa using hx j
   · simp [Pi.single_apply, h, L₀.zero_mem]
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[mem_cornerPart, mem_spread, toPi_corner]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `using h a`.
+
+Introduce `h i`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Simplify using `using h`. Simplify using `[Pi.single_apply, hi, L₀.zero_mem]`.
+-/
 theorem cornerPart_spread (a : ι) (L₀ : Submodule R (U.corner a)) : U.cornerPart a (U.spread a L₀) = L₀ := by
   ext y
   rw [mem_cornerPart, mem_spread, toPi_corner]
@@ -147,6 +199,11 @@ theorem cornerPart_spread (a : ι) (L₀ : Submodule R (U.corner a)) : U.cornerP
     · subst hi; simpa using h
     · simp [Pi.single_apply, hi, L₀.zero_mem]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_spread]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `U.mem_of_forall hL a fun i => h i`.
+
+Introduce `h i`. Conclude with `hL a i x h`.
+-/
 theorem spread_cornerPart {L : Submodule R N} (hL : U.IsStable L) (a : ι) : U.spread a (U.cornerPart a L) = L := by
   ext x
   rw [mem_spread]
@@ -169,10 +226,19 @@ def latIso (a : ι) : {L : Submodule R N // U.IsStable L} ≃o Submodule R (U.co
       exact fun i => h (hx i)
     · intro h y hy; exact h hy
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem latIso_apply (a : ι) (L : {L : Submodule R N // U.IsStable L}) : U.latIso a L = U.cornerPart a L.1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem latIso_symm_apply (a : ι) (L₀ : Submodule R (U.corner a)) : ((U.latIso a).symm L₀).1 = U.spread a L₀ := rfl
 
+/- English proof (translation)
+Use `conv_lhs => rw [← U.spread_cornerPart hL a]`. Rewrite using `[spread, Submodule.map_comap_eq_of_surjective (U.toPi a).surjective]`.
+-/
 theorem map_toPi {L : Submodule R N} (hL : U.IsStable L) (a : ι) :
     L.map (U.toPi a).toLinearMap = Submodule.pi Set.univ fun _ => U.cornerPart a L := by
   conv_lhs => rw [← U.spread_cornerPart hL a]
@@ -187,6 +253,11 @@ def partEquiv {L : Submodule R N} (hL : U.IsStable L) (a : ι) : L ≃ₗ[R] (ι
   left_inv x := by ext1; simp
   right_inv v := by ext i; simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Conclude with `h _ hy`. Introduce `h x hx`. Use `U.mem_of_forall hL' a fun i => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul]`. Conclude with `h ⟨U.E a i x, U.apply_mem_corner a i x⟩ (hL a i x hx)`.
+-/
 theorem smul_mem_iff {L L' : Submodule R N} (hL : U.IsStable L) (hL' : U.IsStable L') (a : ι) (r : R) :
     (∀ x ∈ L, r • x ∈ L') ↔ ∀ y ∈ U.cornerPart a L, r • y ∈ U.cornerPart a L' := by
   constructor
@@ -206,13 +277,24 @@ def cornerMap (a : ι) (hF : ∀ i j x, F (U.E i j x) = U.E i j (F x)) : U.corne
     simp only [LinearMap.domRestrict_apply]
     rw [← hF, (U.mem_corner_iff a _).1 y.2]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cornerMap_apply (a : ι) (hF : ∀ i j x, F (U.E i j x) = U.E i j (F x)) (y : U.corner a) :
     (U.cornerMap F a hF y : N) = F y := rfl
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[toPi_apply, cornerMap_apply, hF]`.
+-/
 theorem toPi_map (a : ι) (hF : ∀ i j x, F (U.E i j x) = U.E i j (F x)) (x : N) :
     U.toPi a (F x) = fun i => U.cornerMap F a hF (U.toPi a x i) := by
   ext i; simp [toPi_apply, cornerMap_apply, hF]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Conclude with `h _ hy`. Introduce `h x hx`. Use `U.mem_of_forall hL a fun i => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hF]`. Conclude with `h ⟨U.E a i x, U.apply_mem_corner a i x⟩ (hL a i x hx)`.
+-/
 theorem map_mem_iff (a : ι) (hF : ∀ i j x, F (U.E i j x) = U.E i j (F x)) {L : Submodule R N} (hL : U.IsStable L) :
     (∀ x ∈ L, F x ∈ L) ↔ ∀ y ∈ U.cornerPart a L, U.cornerMap F a hF y ∈ U.cornerPart a L := by
   constructor
@@ -222,6 +304,11 @@ theorem map_mem_iff (a : ι) (hF : ∀ i j x, F (U.E i j x) = U.E i j (F x)) {L 
     rw [← hF]
     exact h ⟨U.E a i x, U.apply_mem_corner a i x⟩ (hL a i x hx)
 
+/- English proof (translation)
+Introduce `i j`. Establish `: Submodule.span R (F '' L) ≤ (Submodule.span R (F '' L)).comap (U.E i j)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap]`.
+
+Rewrite using `[← hF]`. Conclude with `Submodule.subset_span ⟨_, hL i j x hx, rfl⟩`. Conclude with `fun x hx => this hx`.
+-/
 theorem isStable_span_image (hF : ∀ i j x, F (U.E i j x) = U.E i j (F x)) {L : Submodule R N} (hL : U.IsStable L) :
     U.IsStable (Submodule.span R (F '' L)) := by
   intro i j
@@ -233,6 +320,13 @@ theorem isStable_span_image (hF : ∀ i j x, F (U.E i j x) = U.E i j (F x)) {L :
     exact Submodule.subset_span ⟨_, hL i j x hx, rfl⟩
   exact fun x hx => this hx
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Establish `key : (Submodule.span R (F '' L)).map (U.E a a) ≤ (Submodule.span R (U.cornerMap F a hF '' U.cornerPart a L)).map (U.corner a).subtype`. Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨x, hx, rfl⟩, rfl⟩`.
+
+Use `⟨U.cornerMap F a hF ⟨U.E a a x, U.apply_mem_corner a a x⟩, Submodule.subset_span ⟨_, hL a a x hx, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `[cornerMap_apply, hF]`. Take `⟨z, hz, hzy⟩` from `key ⟨(y : N), hy, (U.mem_corner_iff a _).1 y.2⟩`. Establish `: z = y` using `Subtype.ext hzy`. Rewrite using `[← this]` and apply the resulting hypothesis.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `Submodule.subset_span ⟨y, hy, rfl⟩`.
+-/
 theorem cornerPart_span_image (a : ι) (hF : ∀ i j x, F (U.E i j x) = U.E i j (F x)) {L : Submodule R N}
     (hL : U.IsStable L) :
     U.cornerPart a (Submodule.span R (F '' L)) =
@@ -261,6 +355,13 @@ namespace GlobalTheory.Morita.MatrixUnits
 variable {R : Type*} [CommRing R] {N : Type*} [AddCommGroup N] [Module R N]
   {ι : Type*} [Fintype ι] [DecidableEq ι] (U : MatrixUnits R N ι)
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `only [Submodule.mem_map, Submodule.mem_comap, Submodule.mem_pi, Set.mem_univ, true_implies, Submodule.subtype_apply, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩ i`. Conclude with `hL' a i x hx`.
+
+Introduce `h`. Use `⟨(U.partEquiv hL a).symm v, ?_, by simp⟩` and prove the remaining obligations. Use `U.mem_of_forall hL' a fun i => ?_` and prove the remaining obligations. Use `h i` as an intermediate fact. Establish `e : ((U.partEquiv hL a) ((U.partEquiv hL a).symm v) i : N) = U.E a i ((U.partEquiv hL a).symm v : N)` using `rfl`.
+
+Rewrite `e` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[← e]`. Conclude with `this`.
+-/
 theorem map_partEquiv_comap {L L' : Submodule R N} (hL : U.IsStable L) (hL' : U.IsStable L') (a : ι) :
     (L'.comap L.subtype).map (U.partEquiv hL a).toLinearMap =
       Submodule.pi Set.univ fun _ => (U.cornerPart a L').comap (U.cornerPart a L).subtype := by
@@ -278,6 +379,9 @@ theorem map_partEquiv_comap {L L' : Submodule R N} (hL : U.IsStable L) (hL' : U.
     rw [LinearEquiv.apply_symm_apply] at e
     rw [← e]; exact this
 
+/- English proof (translation)
+Rewrite using `[(Submodule.Quotient.equiv _ _ (U.partEquiv hL a) (U.map_partEquiv_comap hL hL' a)).length_eq, (Submodule.quotientPi _).length_eq, Module.length_pi_of_fintype, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+-/
 theorem length_quotient {L L' : Submodule R N} (hL : U.IsStable L) (hL' : U.IsStable L') (a : ι) :
     Module.length R (L ⧸ L'.comap L.subtype) =
       Fintype.card ι * Module.length R (U.cornerPart a L ⧸ (U.cornerPart a L').comap (U.cornerPart a L).subtype) := by
@@ -291,6 +395,11 @@ namespace GlobalTheory.Morita.MatrixUnits
 variable {R : Type*} [CommRing R] {N : Type*} [AddCommGroup N] [Module R N]
   {ι : Type*} [Fintype ι] [DecidableEq ι] (U : MatrixUnits R N ι)
 
+/- English proof (translation)
+Rewrite using `[← Module.Finite.iff_fg, ← Module.Finite.iff_fg]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: Module.Finite R (ι → U.cornerPart a L)` using `Module.Finite.equiv (U.partEquiv hL a)`. Conclude with `Module.Finite.of_surjective (LinearMap.proj a : (ι → U.cornerPart a L) →ₗ[R] _) (fun y => ⟨Pi.single a y, by simp⟩)`.
+
+Introduce `h`. Conclude with `Module.Finite.equiv (U.partEquiv hL a).symm`.
+-/
 theorem fg_iff {L : Submodule R N} (hL : U.IsStable L) (a : ι) :
     L.FG ↔ (U.cornerPart a L).FG := by
   rw [← Module.Finite.iff_fg, ← Module.Finite.iff_fg]
@@ -302,6 +411,11 @@ theorem fg_iff {L : Submodule R N} (hL : U.IsStable L) (a : ι) :
   · intro h
     exact Module.Finite.equiv (U.partEquiv hL a).symm
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h y`. Take `⟨r, hr, hx⟩` from `h y`. Conclude with `⟨r, hr, hx⟩`. Introduce `h x choose r hr hrx using fun i => h (U.toPi a x i)`.
+
+Use `⟨∏ i, r i, prod_mem fun i _ => hr i, U.mem_of_forall hL a fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul]`. Establish `e : (∏ j, r j) = (∏ j ∈ Finset.univ.erase i, r j) * r i` using `(Finset.prod_erase_mul _ _ (Finset.mem_univ i)).symm`. Rewrite using `[e, mul_smul]`. Conclude with `L.smul_mem _ (hrx i)`.
+-/
 theorem dense_iff {L : Submodule R N} (hL : U.IsStable L) (a : ι) :
     (∀ x : N, ∃ r ∈ nonZeroDivisors R, r • x ∈ L) ↔
       ∀ y : U.corner a, ∃ r ∈ nonZeroDivisors R, r • y ∈ U.cornerPart a L := by
@@ -318,6 +432,9 @@ theorem dense_iff {L : Submodule R N} (hL : U.IsStable L) (a : ι) :
     rw [e, mul_smul]
     exact L.smul_mem _ (hrx i)
 
+/- English proof (translation)
+Rewrite using `[toPi_E]`. Use extensionality with `k`. Simplify using `[stdUnits, Pi.single_apply]`.
+-/
 theorem toPi_E_std (a i j : ι) (x : N) :
     U.toPi a (U.E i j x) = (stdUnits (R := R) (U.corner a)).E i j (U.toPi a x) := by
   rw [toPi_E]; ext k; simp [stdUnits, Pi.single_apply]
@@ -331,11 +448,19 @@ def extend (a : ι) (F₀ : U.corner a →ₛₗ[σ] U.corner a) : N →ₛₗ[�
   map_add' x y := by simp [Finset.sum_add_distrib]
   map_smul' r x := by simp [Finset.smul_sum]
 
+/- English proof (translation)
+Rewrite using `[show U.extend a F₀ x = (U.toPi a).symm (fun i => F₀ (U.toPi a x i)) from rfl, LinearEquiv.apply_symm_apply]`.
+-/
 theorem toPi_extend (a : ι) (F₀ : U.corner a →ₛₗ[σ] U.corner a) (x : N) :
     U.toPi a (U.extend a F₀ x) = fun i => F₀ (U.toPi a x i) := by
   rw [show U.extend a F₀ x = (U.toPi a).symm (fun i => F₀ (U.toPi a x i)) from rfl,
     LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Introduce `i j x`. Apply `(U.toPi a).injective` to reduce the goal to its premises. Rewrite using `[toPi_extend, toPi_E, toPi_E, toPi_extend]`. Use function extensionality and compare the values at `k`. Distinguish the cases in `h : k = i`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`.
+-/
 theorem extend_comm (a : ι) (F₀ : U.corner a →ₛₗ[σ] U.corner a) :
     ∀ i j x, U.extend a F₀ (U.E i j x) = U.E i j (U.extend a F₀ x) := by
   intro i j x
@@ -346,6 +471,11 @@ theorem extend_comm (a : ι) (F₀ : U.corner a →ₛₗ[σ] U.corner a) :
   · subst h; simp
   · simp [Pi.single_apply, h]
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[cornerMap_apply]`. Apply `(U.toPi a).injective` to reduce the goal to its premises. Rewrite using `[toPi_extend, toPi_corner, toPi_corner]`. Use function extensionality and compare the values at `k`.
+
+Distinguish the cases in `h : k = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`.
+-/
 theorem cornerMap_extend (a : ι) (F₀ : U.corner a →ₛₗ[σ] U.corner a) :
     U.cornerMap (U.extend a F₀) a (U.extend_comm a F₀) = F₀ := by
   ext y
@@ -357,6 +487,9 @@ theorem cornerMap_extend (a : ι) (F₀ : U.corner a →ₛₗ[σ] U.corner a) :
   · subst h; simp
   · simp [Pi.single_apply, h]
 
+/- English proof (translation)
+Use extensionality with `x`. Apply `(U.toPi a).injective` to reduce the goal to its premises. Rewrite using `[toPi_extend, U.toPi_map F a hF]`.
+-/
 theorem extend_cornerMap (a : ι) (F : N →ₛₗ[σ] N) (hF : ∀ i j x, F (U.E i j x) = U.E i j (F x)) :
     U.extend a (U.cornerMap F a hF) = F := by
   ext x
@@ -395,6 +528,23 @@ end GlobalTheory.Morita
 namespace GlobalTheory.Morita
 variable {R : Type*} [CommRing R] {N : Type*} [AddCommGroup N] [Module R N]
 
+/- English proof (translation)
+Use `haveI : Nontrivial R := nontrivial_of_ne 0 1 fun h => by`. Use `congrArg (algebraMap R K) h` as an intermediate fact. Simplify using `at this`. Prove the components needed by the constructor for the conclusion. Introduce `h x`.
+
+Establish `hx : x ∈ Submodule.span K (L : Set N)` using `h ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_mem _, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, one_mem _, by simp⟩`. Consider the case `add y z _ _ hy hz`.
+
+Take `⟨r, hr, hry⟩` from `hy`. Take `⟨s, hs, hsz⟩` from `hz`. Use `⟨r * s, mul_mem hr hs, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `L.add_mem ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm, mul_smul]`. Conclude with `L.smul_mem _ hry`. Rewrite using `[mul_smul]`. Conclude with `L.smul_mem _ hsz`. Consider the case `smul k y _ hy`.
+
+Take `⟨r, hr, hry⟩` from `hy`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := R) k`. Establish `hB : algebraMap R K b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Establish `hc : algebraMap R K b * (algebraMap R K a / algebraMap R K b) = algebraMap R K a`. Clear the denominators using the available nonvanishing facts.
+
+Establish `e : (b * r) • ((algebraMap R K a / algebraMap R K b) • y) = a • (r • y)`. Rewrite using `[mul_comm b r, mul_smul, ← algebraMap_smul K b, smul_smul, hc, algebraMap_smul, smul_comm]`. Conclude with `⟨b * r, mul_mem hb hr, e ▸ L.smul_mem a hry⟩`. Introduce `h`. Rewrite using `[eq_top_iff]`.
+
+Introduce `x _`. Take `⟨r, hr, hx⟩` from `h x`. Establish `hB : algebraMap R K r ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hr`. Establish `e : x = (algebraMap R K r)⁻¹ • (r • x)`. Rewrite using `[← algebraMap_smul K r x, smul_smul, inv_mul_cancel₀ hB, one_smul]`.
+
+Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hx)`.
+-/
 theorem span_eq_top_iff_dense (K : Type*) [Field K] [Algebra R K] [IsFractionRing R K] [Module K N]
     [IsScalarTower R K N] (L : Submodule R N) :
     Submodule.span K (L : Set N) = ⊤ ↔ ∀ x : N, ∃ r ∈ nonZeroDivisors R, r • x ∈ L := by
@@ -444,6 +594,9 @@ variable {R : Type*} [CommRing R] {N : Type*} [AddCommGroup N] [Module R N]
 
 open MatrixUnits in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i j x => U.toPi_E a i j x, fun _ hL => U.spread_cornerPart hL a, fun L₀ => ⟨U.spread_isStable a L₀, U.cornerPart_spread a L₀⟩, fun _ hL => ⟨⟨U.partEquiv hL a⟩, U.map_toPi hL a⟩, fun x => U.toPi_map F a hF x, fun _ hL => ⟨U.map_mem_iff F a hF hL, U.isStable_span_image F hF hL …`.
+-/
 theorem morita_lattices (U : MatrixUnits R N ι) (a : ι) {σ : R →+* R} (F : N →ₛₗ[σ] N)
     (hF : ∀ i j x, F (U.E i j x) = U.E i j (F x)) :
     (∀ i j x, U.toPi a (U.E i j x) = Pi.single i (U.toPi a x j)) ∧
@@ -481,6 +634,9 @@ theorem morita_lattices (U : MatrixUnits R N ι) (a : ι) {σ : R →+* R} (F : 
     fun K _ _ _ _ _ L => span_eq_top_iff_dense K L, ⟨U.semilinearEquiv a, fun _ => rfl⟩,
     fun M _ _ => ⟨stdCornerEquiv M a, fun _ => rfl⟩⟩
 
+/- English proof (translation)
+Use `⟨(MatrixUnits.mem_corner_iff _ _ _).2 ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext i; fin_cases i <;> simp [stdUnits]`. Introduce `h`. Use `congrFun h 0` as an intermediate fact. Simplify using `at this`.
+-/
 example : (Pi.single 0 1 : Fin 2 → ℤ) ∈ (stdUnits (R := ℤ) (ι := Fin 2) ℤ).corner 0 ∧ (Pi.single 0 1 : Fin 2 → ℤ) ≠ 0 := by
   refine ⟨(MatrixUnits.mem_corner_iff _ _ _).2 ?_, ?_⟩
   · ext i; fin_cases i <;> simp [stdUnits]

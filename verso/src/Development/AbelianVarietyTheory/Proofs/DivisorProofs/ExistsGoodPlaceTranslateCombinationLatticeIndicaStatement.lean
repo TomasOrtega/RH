@@ -18,6 +18,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
 open ValuativeRel
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CombAtGood.exists_comb_translates_mem_So | exact GlobalTheory.CombAtGood.exists_comb_translates_mem_So | (intros; apply GlobalTheory.CombAtGood.exists_comb_translates_mem_So <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_goodPlace_translateCombination_latticeIndicator : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {a a' : ℕ} (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a')
     (hM' : Γ.M'.IsGood B.ψ) (hlt : a' < a)

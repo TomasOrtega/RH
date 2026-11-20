@@ -13,12 +13,18 @@ namespace UpperTheory.V.Z.Sym.Glob
 
 open NumberField IsDedekindDomain Loc QuadraticAlgebra
 
+/- English proof (translation)
+Introduce `h0`. Apply `h` to reduce the goal to its premises. Establish `: τ ^ 2 - 4 = (2 + τ) * (τ - 2)` using `by ring`. Rewrite using `[this, h0, zero_mul]`.
+-/
 private theorem two_add_ne {K : Type} [Field K] {τ : K} (h : τ ^ 2 - 4 ≠ 0) : 2 + τ ≠ 0 := by
   intro h0
   apply h
   have : τ ^ 2 - 4 = (2 + τ) * (τ - 2) := by ring
   rw [this, h0, zero_mul]
 
+/- English proof (translation)
+Establish `h'` using `two_add_ne h`. Establish `: IsUnit (1 + ω : Etau K τ)`. Use `IsUnit.of_mul_eq_one (⟨(1 + τ) / (2 + τ), -1 / (2 + τ)⟩ : Etau K τ) ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [QuadraticAlgebra.re_one, QuadraticAlgebra.im_one] <;> field_simp <;> ring`. Simplify using `[toUnit, this]`.
+-/
 private theorem unit_one_add {K : Type} [Field K] {τ : K} (h : τ ^ 2 - 4 ≠ 0) :
     ((toUnit (1 + ω : Etau K τ) : (Etau K τ)ˣ) : Etau K τ) = 1 + ω := by
   have h' := two_add_ne h
@@ -27,6 +33,9 @@ private theorem unit_one_add {K : Type} [Field K] {τ : K} (h : τ ^ 2 - 4 ≠ 0
     ext <;> simp [QuadraticAlgebra.re_one, QuadraticAlgebra.im_one] <;> field_simp <;> ring
   simp [toUnit, this]
 
+/- English proof (translation)
+Establish `: IsUnit (ω : Etau K τ)`. Use `IsUnit.of_mul_eq_one (⟨τ, -1⟩ : Etau K τ) ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]`. Simplify using `[toUnit, this]`.
+-/
 private theorem unit_om {K : Type} [Field K] (τ : K) :
     ((toUnit (ω : Etau K τ) : (Etau K τ)ˣ) : Etau K τ) = ω := by
   have : IsUnit (ω : Etau K τ) := by
@@ -34,15 +43,24 @@ private theorem unit_om {K : Type} [Field K] (τ : K) :
     ext <;> simp [QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]
   simp [toUnit, this]
 
+/- English proof (translation)
+Simplify using `[jstd, Matrix.trace, Fin.sum_univ_two, Algebra.leftMulMatrix_eq_repr_mul, QuadraticAlgebra.basis]`.
+-/
 private theorem jstd_tr {K : Type} [Field K] (τ : K) : (jstd τ ω).trace = τ := by
   simp [jstd, Matrix.trace, Fin.sum_univ_two, Algebra.leftMulMatrix_eq_repr_mul, QuadraticAlgebra.basis]
 
+/- English proof (translation)
+Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Express the relevant statement in the definitionally equal form `Valued.v (y : v.adicCompletion F) ≤ 1`. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation']` and apply the resulting hypothesis.
+-/
 private theorem mem_int {F : Type} [Field F] [NumberField F] (v : Pl F) (y : F) (hy : v.valuation F y ≤ 1) :
     cv v y ∈ v.adicCompletionIntegers F := by
   rw [HeightOneSpectrum.mem_adicCompletionIntegers]
   change Valued.v (y : v.adicCompletion F) ≤ 1
   rwa [HeightOneSpectrum.valuedAdicCompletion_eq_valuation']
 
+/- English proof (translation)
+Use `(HeightOneSpectrum.Support.finite (𝓞 F) x).subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Simplify using `only [HeightOneSpectrum.Support, Set.mem_setOf_eq, not_lt] at hn`. Conclude with `hv ⟨⟨_, mem_int v x hn⟩, rfl⟩`.
+-/
 private theorem ae_int {F : Type} [Field F] [NumberField F] (x : F) :
     ∀ᶠ v : Pl F in Filter.cofinite, cv v x ∈ (algebraMap (Ov v) (Kv v)).range := by
   refine (HeightOneSpectrum.Support.finite (𝓞 F) x).subset fun v hv => ?_
@@ -50,6 +68,11 @@ private theorem ae_int {F : Type} [Field F] [NumberField F] (x : F) :
   simp only [HeightOneSpectrum.Support, Set.mem_setOf_eq, not_lt] at hn
   exact hv ⟨⟨_, mem_int v x hn⟩, rfl⟩
 
+/- English proof (translation)
+Use `filter_upwards [ae_int x, ae_int x⁻¹] with v ⟨a, ha⟩ ⟨b, hb⟩`. Establish `: a * b = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap (Ov v) (Kv v) (a * b) = 1`. Rewrite using `[map_mul, ha, hb, ← map_mul, mul_inv_cancel₀ hx, map_one]`.
+
+Conclude with `⟨⟨a, b, this, by rw [mul_comm, this]⟩, ha⟩`.
+-/
 private theorem ae_unit {F : Type} [Field F] [NumberField F] {x : F} (hx : x ≠ 0) :
     ∀ᶠ v : Pl F in Filter.cofinite, ∃ u : (Ov v)ˣ, algebraMap (Ov v) (Kv v) u = cv v x := by
   filter_upwards [ae_int x, ae_int x⁻¹] with v ⟨a, ha⟩ ⟨b, hb⟩
@@ -59,6 +82,9 @@ private theorem ae_unit {F : Type} [Field F] [NumberField F] {x : F} (hx : x ≠
     rw [map_mul, ha, hb, ← map_mul, mul_inv_cancel₀ hx, map_one]
   exact ⟨⟨a, b, this, by rw [mul_comm, this]⟩, ha⟩
 
+/- English proof (translation)
+Establish `hg' : (Function.mulSupport fun v => ∏ᶠ (_ : v ∉ S), g v).Finite`. Use `(show {v | ¬ g v = 1}.Finite from hg).subset fun v hv h => hv ?_` and prove the remaining obligations. Simplify using `[h]`. Conclude with `finprod_eq_zero _ v₀ (by simp [h₀, h]) hg'`.
+-/
 private theorem fp_zero {I : Type} (S : Finset I) (g : I → ℂ) (hg : ∀ᶠ v in Filter.cofinite, g v = 1) (v₀ : I) (h₀ : v₀ ∉ S)
     (h : g v₀ = 0) : (∏ᶠ (v : I) (_ : v ∉ S), g v) = 0 := by
   classical
@@ -67,14 +93,27 @@ private theorem fp_zero {I : Type} (S : Finset I) (g : I → ℂ) (hg : ∀ᶠ v
     simp [h]
   exact finprod_eq_zero _ v₀ (by simp [h₀, h]) hg'
 
+/- English proof (translation)
+Use `(map_ne_zero (cv v)).2 h` as an intermediate fact. Simplify `this` using `[map_ofNat]`.
+-/
 private theorem loc_ne {F : Type} [Field F] [NumberField F] {τ : F} (h : τ ^ 2 - 4 ≠ 0) (v : Pl F) : cv v τ ^ 2 - 4 ≠ 0 := by
   have := (map_ne_zero (cv v)).2 h
   simpa [map_ofNat] using this
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 private theorem unr_one (O K : Type) [CommRing O] [Field K] [Algebra O K] : Unr O (1 : Kˣ →* ℂˣ) := fun _ => rfl
 
 variable {F : Type} [Field F] [NumberField F] {Δ : F} (D : Dat Δ)
 
+/- English proof (translation)
+Use `push Not at hi`. Take `⟨w, hw, hi⟩` from `hi`. Establish `ae : ∀ᶠ v : Pl F in Filter.cofinite, gOrb (Ov v) (jstd (cv v τ)) 1 (toUnit ω) = 1 ∧ gOrb (Ov v) (jstd (cv v τ)) (D.χ v) (toUnit (1 + ω)) = 1` using `by filter_upwards [ae_unit h, ae_unit (two_add_ne h), ae_int τ, D.Sg.eventually_cofinite_notMem] with v h1 h2 h4 h3`. Take `⟨a, b, -⟩` from `gVals (Ov v) (Kv v) (cv v Δ) (cv v τ) (hD.off v h3) (loc_ne h v) h4 (jstd _) (D.χ v) (jstd_tr _) (hD.chi v).1 _ (unit_om _) _ (unit_one_add (loc_ne h v))`. Take `⟨-, b', -⟩` from `gVals (Ov v) (Kv v) (cv v Δ) (cv v τ) (hD.off v h3) (loc_ne h v) h4 (jstd _) 1 (jstd_tr _) (unr_one _ _) _ (unit_om _) _ (unit_one_add (loc_ne h v))`.
+
+Use `⟨b' (by simpa [map_ofNat] using h1), ?_⟩` and prove the remaining obligations. Rewrite using `[a (by simpa [map_ofNat] using h2), b (by simpa [map_ofNat] using h1)]`. Prove the components needed by the constructor for the conclusion. Use `fp_zero D.Sg _ (ae.mono fun _ h => h.1) w hw ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`.
+
+Conclude with `hi (gVanish (Ov w) (Kv w) (cv w Δ) (cv w τ) (hD.off w hw) _ (jstd_tr _) _ _ (Or.inl (unit_om _)) hn)`. Use `fp_zero D.Sg _ (ae.mono fun _ h => h.2) w hw ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `hi (gVanish (Ov w) (Kv w) (cv w Δ) (cv w τ) (hD.off w hw) _ (jstd_tr _) _ _ (Or.inr (unit_one_add (loc_ne h w))) hn)`.
+-/
 theorem sg_vanish (hD : D.Ok) {τ : F} (h : τ ^ 2 - 4 ≠ 0) (hi : ¬ ∀ v ∉ D.Sg, cv v τ ∈ (algebraMap (Ov v) (Kv v)).range) :
     D.nS τ = 0 ∧ D.nK τ = 0 := by
   push Not at hi
@@ -96,6 +135,13 @@ theorem sg_vanish (hD : D.Ok) {τ : F} (h : τ ^ 2 - 4 ≠ 0) (hi : ¬ ∀ v ∉
     by_contra hn
     exact hi (gVanish (Ov w) (Kv w) (cv w Δ) (cv w τ) (hD.off w hw) _ (jstd_tr _) _ _ (Or.inr (unit_one_add (loc_ne h w))) hn)
 
+/- English proof (translation)
+Introduce `w hw`. Establish `hl : lcount (Ov w) (cv w c) (elmap (cv w) d) (elmap (cv w) m) ≠ 0`. Introduce `h0`. Use `hn (fp_zero D.Sg _ ?_ w hw h0)` and prove the remaining obligations. Use `filter_upwards [genPl F Δ D hD τ c d m h] with v hv`.
+
+Use `hv 1` as an intermediate fact. Rewrite `this` using `[Units.val_one, one_smul]`. Rewrite using `[this]`. Conclude with `if_pos (one_mem _)`. Use `(vanish (Ov w) (Kv w) (cv w Δ) (cv w τ) (hD.off w hw) _ _ _ (modelMap F (Kv w) (cv w) Δ τ c d m h).1 hl).2` as an intermediate fact.
+
+Rewrite using `[map_mul, map_sub, map_ofNat]`. Conclude with `this`.
+-/
 theorem sg_ev (hD : D.Ok) {τ c : F} {d m : EL Δ τ} (h : IsDat c d m) (hn : D.nL c d m ≠ 0) : D.Ev (c * (2 - τ)) := by
   intro w hw
   have hl : lcount (Ov w) (cv w c) (elmap (cv w) d) (elmap (cv w) m) ≠ 0 := by
@@ -110,6 +156,9 @@ theorem sg_ev (hD : D.Ok) {τ c : F} {d m : EL Δ τ} (h : IsDat c d m) (hn : D.
   rw [map_mul, map_sub, map_ofNat]
   exact this
 
+/- English proof (translation)
+Use `finprod_congr fun v => finprod_congr fun hv => ?_` and prove the remaining obligations. Establish `e` using `he v hv`. Rewrite `e` using `[map_mul, map_sub, map_ofNat]`. Conclude with `stable (Ov v) (Kv v) (cv v Δ) (cv v τ) (hD.off v hv) _ _ _ (modelMap F (Kv v) (cv v) Δ τ c d m h).1 e _ (jstd_tr _) _ (unr_one _ _) _ (unit_om _)`.
+-/
 theorem sg_stab (hD : D.Ok) {τ c : F} {d m : EL Δ τ} (h : IsDat c d m) (he : D.Ev (c * (2 - τ))) :
     (∏ᶠ (v : Pl F) (_ : v ∉ D.Sg), stabSum (Ov v) (cv v c) (elmap (cv v) d) (elmap (cv v) m)) = D.nS τ := by
   refine finprod_congr fun v => finprod_congr fun hv => ?_
@@ -118,6 +167,19 @@ theorem sg_stab (hD : D.Ok) {τ c : F} {d m : EL Δ τ} (h : IsDat c d m) (he : 
   exact stable (Ov v) (Kv v) (cv v Δ) (cv v τ) (hD.off v hv) _ _ _ (modelMap F (Kv v) (cv v) Δ τ c d m h).1 e _ (jstd_tr _) _
     (unr_one _ _) _ (unit_om _)
 
+/- English proof (translation)
+Establish `hp : TPos (2 - τ)` using `fun σ => by`. Use `hτ σ` as an intermediate fact. Simplify using `only [map_sub, map_pow, map_ofNat] at this ⊢`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨hfin, hcard⟩` from `(selCard F Δ D hD).2.2 _ hp`.
+
+Establish `hd : ∀ c : Fˣ, IsDat (c : F) d m` using `fun c => { h with c_ne := c.ne_zero }`. Establish `hT` using `fun c : Fˣ => sumT F Δ D hD τ c d m hτ hs (hd c)`. Establish `hf : (Function.support fun x : (Fˣ ⧸ (powMonoidHom 2 : Fˣ →* Fˣ).range) × (Fˣ ⧸ NE τ) => one (x.1 ∈ D.Sel (2 - τ)) * (one (TPos (x.2.out : F)) * D.nL (x.1.out : F) d ((x.2.out : F) • m))).Finite`. Use `(hfin.biUnion fun c _ => (hT c.out).1.image (Prod.mk c)).subset ?_` and prove the remaining obligations. Introduce and unpack `⟨c, u⟩ hx`.
+
+Establish `h1` using `left_ne_zero_of_mul hx`. Establish `h2` using `right_ne_zero_of_mul hx`. Establish `h3` using `left_ne_zero_of_mul h2`. Simplify using `only [Set.mem_iUnion]`. Use `⟨c, ?_, u, ⟨?_, right_ne_zero_of_mul h2⟩, rfl⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hn`. Conclude with `h1 (if_neg hn)`. Assume the negation of the conclusion as `hn`. Conclude with `h3 (if_neg hn)`. Use `⟨hf, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[finsum_curry _ hf, ← hcard]`. Establish `e1 : ∀ c : Fˣ ⧸ (powMonoidHom 2 : Fˣ →* Fˣ).range, (∑ᶠ u : Fˣ ⧸ NE τ, one (c ∈ D.Sel (2 - τ)) * (one (TPos (u.out : F)) * D.nL (c.out : F) d ((u.out : F) • m))) = ∑ᶠ (_ : c ∈ D.Sel (2 - τ)), (1 / 2 * (D.nS τ + e * D.nK τ))` using `fun c => by`. Distinguish the cases in `hc : c ∈ D.Sel (2 - τ)`. Establish `: one (c ∈ D.Sel (2 - τ)) = 1` using `if_pos hc`. Simplify using `only [this, one_mul]`.
+
+Rewrite using `[(hT c.out).2, sg_stab D hD (hd _) hc.2, hk _ hc.1 hc.2, finsum_eq_if, if_pos hc]`. Establish `: one (c ∈ D.Sel (2 - τ)) = 0` using `if_neg hc`. Simplify using `only [this, zero_mul, finsum_zero]`. Rewrite using `[finsum_eq_if, if_neg hc]`. Rewrite using `[finsum_congr e1, finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.sum_const, Set.ncard_eq_toFinset_card _ hfin, nsmul_eq_mul]`.
+-/
 theorem sg_inner (hD : D.Ok) {τ : F} {e : ℝ} {d m : EL Δ τ} (hτ : IsCM τ) (hs : D.Spl τ) (h : IsDat 1 d m)
     (hk : ∀ c : F, TPos c → D.Ev (c * (2 - τ)) →
       (∏ᶠ (v : Pl F) (_ : v ∉ D.Sg), kapSum (Ov v) (cv v c) (elmap (cv v) d) (elmap (cv v) m)) = e * D.nK τ) :
@@ -159,6 +221,9 @@ theorem sg_inner (hD : D.Ok) {τ : F} {e : ℝ} {d m : EL Δ τ} (hτ : IsCM τ)
       rw [finsum_eq_if, if_neg hc]
   rw [finsum_congr e1, finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.sum_const, Set.ncard_eq_toFinset_card _ hfin, nsmul_eq_mul]
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite T`. Rewrite using `[finsum_eq_sum_of_support_subset (s := Finset.univ.sigma fun i => (hg i).toFinset), Finset.sum_sigma, finsum_eq_sum_of_fintype]`. Conclude with `Finset.sum_congr rfl fun i _ => (finsum_eq_sum _ (hg i)).symm`. Introduce and unpack `⟨i, x⟩ hx`. Simplify using `using hx`.
+-/
 theorem sg_sigma {T : Type} [Finite T] {β : T → Type} (g : (Σ i, β i) → ℂ)
     (hg : ∀ i, (Function.support fun x => g ⟨i, x⟩).Finite) : ∑ᶠ j, g j = ∑ᶠ i, ∑ᶠ x, g ⟨i, x⟩ := by
   classical
@@ -172,9 +237,15 @@ section Scale
 
 variable {K : Type} [Field K] {Δ τ : K}
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [ofE]`.
+-/
 private theorem ofE_mul' (x y : Etau K τ) : ofE Δ (x * y) = ofE Δ x * ofE Δ y := by
   ext <;> simp [ofE]
 
+/- English proof (translation)
+Rewrite using `[← ofE_mul', Units.mul_inv]`. Apply the tactic sequence `ext <;> simp [ofE, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]`.
+-/
 private theorem ofE_inv (z : (Etau K τ)ˣ) : ofE Δ (z : Etau K τ) * ofE Δ ((z⁻¹ : (Etau K τ)ˣ) : Etau K τ) = 1 := by
   rw [← ofE_mul', Units.mul_inv]
   ext <;> simp [ofE, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]
@@ -197,12 +268,29 @@ private noncomputable def scaleEq (Δ : K) (s : Kˣ) (z : (Etau K τ)ˣ) : Sp Δ
     · simp only []
       rw [← mul_assoc, ofE_inv, one_mul]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [ofE, sigL] <;> ring`.
+-/
 private theorem sigL_ofE (z : Etau K τ) (x : EL Δ τ) : sigL (ofE Δ z * x) = ofE Δ z * sigL x := by
   ext <;> simp [ofE, sigL] <;> ring
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [ofE, QuadraticAlgebra.norm_def] <;> ring`.
+-/
 private theorem ofE_norm (z : Etau K τ) (m : EL Δ τ) : QuadraticAlgebra.norm z • m = m * (ofE Δ z * star (ofE Δ z)) := by
   ext <;> simp [ofE, QuadraticAlgebra.norm_def] <;> ring
 
+/- English proof (translation)
+Use `⟨(scaleEq Δ s z).trans P, fun x y => ?_, fun x => ?_, fun w x => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearEquiv.trans_apply]`. Rewrite using `[← h.form]`. Express the relevant statement in the definitionally equal form `_ = algebraMap K (Lsq K Δ) c * (algebraMap K (Lsq K Δ) s * x.1) * star (algebraMap K (Lsq K Δ) s * y.1) + QuadraticAlgebra.trace (m * (ofE Δ (z : Etau K τ) * x.2) * star (sigL (ofE Δ (z : Etau K τ) * y.2)))`. Apply the tactic sequence `have e : star (algebraMap K (Lsq K Δ) s) = algebraMap K (Lsq K Δ) s := by ext <;> simp`.
+
+Rewrite using `[sigL_ofE, star_mul', star_mul', e, herm, ofE_norm, map_mul, map_pow]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [LinearEquiv.trans_apply]`. Rewrite using `[← h.semi]`. Use `congr 1`. Apply the tactic sequence `have e : star (algebraMap K (Lsq K Δ) s) = algebraMap K (Lsq K Δ) s := by ext <;> simp`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `algebraMap K (Lsq K Δ) s * star x.1 = star (algebraMap K (Lsq K Δ) s * x.1)`. Rewrite using `[star_mul', e]`. Express the relevant statement in the definitionally equal form `ofE Δ (z : Etau K τ) * (d * sigL x.2) = d * sigL (ofE Δ (z : Etau K τ) * x.2)`. Rewrite using `[sigL_ofE, mul_left_comm]`. Simplify using `only [LinearEquiv.trans_apply]`.
+
+Rewrite using `[← h.tor]`. Use `congr 1`. Use `Prod.ext rfl ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ofE Δ (z : Etau K τ) * (ofE Δ (quo w) * x.2) = ofE Δ (quo w) * (ofE Δ (z : Etau K τ) * x.2)`. Rewrite using `[mul_left_comm]`.
+-/
 theorem sg_scale {c : K} {d m : EL Δ τ} {δ ι P} (h : Models c d m δ ι P) (s : Kˣ) (z : (Etau K τ)ˣ) :
     ∃ P', Models (c * s ^ 2) d (QuadraticAlgebra.norm (z : Etau K τ) • m) δ ι P' := by
   refine ⟨(scaleEq Δ s z).trans P, fun x y => ?_, fun x => ?_, fun w x => ?_⟩
@@ -232,6 +320,11 @@ theorem sg_scale {c : K} {d m : EL Δ τ} {δ ι P} (h : Models c d m δ ι P) (
     change ofE Δ (z : Etau K τ) * (ofE Δ (quo w) * x.2) = ofE Δ (quo w) * (ofE Δ (z : Etau K τ) * x.2)
     rw [mul_left_comm]
 
+/- English proof (translation)
+Take `⟨⟨_, s, rfl⟩, hs⟩` from `QuotientGroup.mk_out_eq_mul (powMonoidHom 2 : Kˣ →* Kˣ).range c`. Take `⟨⟨_, z, rfl⟩, hz⟩` from `QuotientGroup.mk_out_eq_mul (NE τ) t`. Take `⟨P', h'⟩` from `sg_scale h s z`. Use `⟨(c, t), P', ?_⟩` and prove the remaining obligations. Simplify using `only [hs, hz]`.
+
+Rewrite `h'` using `[smul_smul, mul_comm _ (t : K)]`. Conclude with `h'`.
+-/
 theorem sg_out {c t : Kˣ} {d m : EL Δ τ} {δ ι P} (h : Models (c : K) d ((t : K) • m) δ ι P) :
     ∃ (x : (Kˣ ⧸ (powMonoidHom 2 : Kˣ →* Kˣ).range) × (Kˣ ⧸ NE τ)), ∃ P',
       Models (x.1.out : K) d ((x.2.out : K) • m) δ ι P' := by

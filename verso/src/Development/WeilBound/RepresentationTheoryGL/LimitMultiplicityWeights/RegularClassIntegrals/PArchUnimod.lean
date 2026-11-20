@@ -13,6 +13,11 @@ noncomputable section
 
 namespace MainStatements.WeightKernel
 
+/- English proof (translation)
+Introduce `D V w μ hμ`. Take `⟨hcm, hJ'⟩` from `GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND D.host.F D.host.E D.sp.cm`. Establish `hJ` using `hJ' V`. Use `haveI : SecondCountableTopology w.Completion := (InfinitePlace.Completion.isometry_extensionEmbedding w).isEmbedding.secondCountableTopology`. Establish `hU` using `(GlobalTheory.ArchUnitaryUnimod.unimodularOver_of_artinian (σ := D.sp.cm.sig) w.Completion hcm hJ).1`.
+
+Conclude with `hU.2.2.2.2.2.2 μ hμ`.
+-/
 theorem archUnimod : ArchUnimod := by
   intro D V w μ hμ
   obtain ⟨hcm, hJ'⟩ := GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND D.host.F D.host.E D.sp.cm

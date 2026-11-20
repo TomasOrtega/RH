@@ -11,6 +11,23 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 open scoped ComplexConjugate
 noncomputable section
 namespace GlobalTheory.DblThetaProd
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB hstd nS nT JT JA JB ξ hA κ _ co φ₁ _ φ₂ _`. Establish `hψ : ∀ x, ‖B.ψ x‖ = 1` using `hstd.1.2.1`. Establish `hc : ∀ x, starRingEnd ℂ (B.ψ x) = B.ψ (-x)` using `fun x => by`. Rewrite using `[AddChar.map_neg_eq_inv, Complex.inv_eq_conj (hψ x)]`. Use function extensionality and compare the values at `w`.
+
+Rewrite using `[GlobalTheory.DblTargetDelta.deltaT_apply]`. Establish `he : (GlobalTheory.WeilSchrodinger.DblTargetF.coDbl hA co).e w = (Sum.elim (co.e (GlobalTheory.DblTargetDelta.topR w)).1 (co.e (GlobalTheory.DblTargetDelta.botR w)).1, Sum.elim (co.e (GlobalTheory.DblTargetDelta.topR w)).2 (-(co.e (GlobalTheory.DblTargetDelta.botR w)).2))` using `rfl`. Establish `hn : co.e (-GlobalTheory.DblTargetDelta.botR w) = -(co.e (GlobalTheory.DblTargetDelta.botR w))` using `map_neg _ _`. Simplify using `only [GlobalTheory.WeilSchrodinger.thetaTr, GlobalTheory.WeilM.thetaSum, GlobalTheory.WeilM.Darboux.rho, he, hn]`. Generalize the expression as in `co.e (GlobalTheory.DblTargetDelta.topR w) = p₁`.
+
+Generalize the expression as in `co.e (GlobalTheory.DblTargetDelta.botR w) = p₂`. Take `⟨x₁, y₁⟩` from `p₁`. Take `⟨x₂, y₂⟩` from `p₂`. Simplify using `only`. Use `set A : (κ → F) → (κ → AdeleRing (𝓞 F) F) := fun b i => algebraMap F (AdeleRing (𝓞 F) F) (b i) with hAdef`.
+
+Establish `key : ∀ q : (κ → F) × (κ → F), schr B.ψ (Sum.elim x₁ x₂, Sum.elim y₁ (-y₂)) (boxFun φ₁ φ₂) (fun i => algebraMap F (AdeleRing (𝓞 F) F) ((Equiv.sumArrowEquivProdArrow κ κ F).symm q i)) = schr B.ψ (x₁, y₁) φ₁ (A q.1) * (B.ψ (-(A q.2 ⬝ᵥ y₂) - ⅟(2 : AF F) * (x₂ ⬝ᵥ y₂)) * φ₂ (A q.2 + x …`. Introduce and unpack `⟨a, b⟩`. Establish `h1 : ((fun i => algebraMap F (AdeleRing (𝓞 F) F) ((Equiv.sumArrowEquivProdArrow κ κ F).symm (a, b) i)) + Sum.elim x₁ x₂) ∘ Sum.inl = A a + x₁`. Use function extensionality and compare the values at `i`. Simplify using `[hAdef]`.
+
+Establish `h2 : ((fun i => algebraMap F (AdeleRing (𝓞 F) F) ((Equiv.sumArrowEquivProdArrow κ κ F).symm (a, b) i)) + Sum.elim x₁ x₂) ∘ Sum.inr = A b + x₂`. Use function extensionality and compare the values at `i`. Simplify using `[hAdef]`. Simplify using `only [GlobalTheory.WeilM.schr, GlobalTheory.WeilM.boxFun]`. Rewrite using `[h1, h2, mul_mul_mul_comm, ← AddChar.map_add_eq_mul]`.
+
+Use `congr 2`. Simplify using `only [dotProduct, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, Pi.neg_apply, mul_neg, Finset.sum_neg_distrib, Equiv.sumArrowEquivProdArrow_symm_apply_inl, Equiv.sumArrowEquivProdArrow_symm_apply_inr, hAdef]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← (Equiv.sumArrowEquivProdArrow κ κ F).symm.tsum_eq]`. Use `(tsum_congr key).trans ?_` and prove the remaining obligations.
+
+Use `(tsum_prod_mul (fun a => schr B.ψ (x₁, y₁) φ₁ (A a)) (fun b => B.ψ (-(A b ⬝ᵥ y₂) - ⅟(2 : AF F) * (x₂ ⬝ᵥ y₂)) * φ₂ (A b + x₂))).trans ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[Complex.conj_tsum]`. Use `conv_rhs => rw [← (Equiv.neg (κ → F)).tsum_eq]`. Use `tsum_congr fun b => ?_` and prove the remaining obligations.
+
+Establish `h3 : (fun i => algebraMap F (AdeleRing (𝓞 F) F) ((Equiv.neg (κ → F)) b i)) = -A b`. Use function extensionality and compare the values at `i`. Simplify using `[hAdef]`. Simplify using `only [GlobalTheory.WeilM.schr, h3, map_mul, Complex.conj_conj, hc, Prod.fst_neg, Prod.snd_neg]`. Simplify using `only [neg_dotProduct, dotProduct_neg, neg_neg, neg_add, sub_eq_add_neg, mul_neg]`.
+-/
 theorem thetaTr_coDbl_boxFun_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → Formalism.IndefR.DatumF.IsStdCharF (fun w : InfinitePlace F => (B.emb w).1) B.ψ (-1) →
     ∀ (nS nT : ℕ) (JT JA : Matrix (Fin nT) (Fin nT) E) (JB : Matrix (Fin nS) (Fin nS) E) (ξ : AF F ⊗[F] E)

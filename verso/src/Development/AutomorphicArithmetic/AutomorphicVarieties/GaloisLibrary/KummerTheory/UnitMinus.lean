@@ -2,6 +2,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
+/- English proof (translation)
+Introduce `K _ _ _ n a ha hc`. Take `⟨x, hx⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one K (a : K) (fun v => (ha v (Set.notMem_empty v)).le)`. Take `⟨y, hy⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one K ((a⁻¹ : Kˣ) : K) (fun v => ((Subgroup.inv_mem _ ha) v (Set.notMem_empty v)).le)`. Establish `hxy : x * y = 1`. Apply `IsFractionRing.injective (𝓞 K) K` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, hx, hy, map_one, Units.mul_inv]`. Set `u : (𝓞 K)ˣ` to `Units.mkOfMulEqOne x y hxy`. Set `f : (𝓞 K)ˣ →* Kˣ` to `Units.map (algebraMap (𝓞 K) K).toMonoidHom`. Establish `hu : f u = a` using `Units.ext hx`. Establish `hcu : f (IsCMField.unitsComplexConj K u) = Units.map (cE K).toMonoidHom a`.
+
+Rewrite using `[← hu]`. Conclude with `Units.ext rfl`. Establish `hfin : IsOfFinOrder (u * (IsCMField.unitsComplexConj K u)⁻¹)` using `(IsCMField.unitsMulComplexConjInv K u).2`. Establish `htor : a * (Units.map (cE K).toMonoidHom a)⁻¹ ∈ CommGroup.torsion Kˣ`. Use `f.isOfFinOrder hfin` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_inv, hu, hcu]`. Conclude with `this`. Establish `h2 : a ^ 2 ∈ CommGroup.torsion Kˣ ⊔ powK K n`. Establish `e : a ^ 2 = (a * (Units.map (cE K).toMonoidHom a)⁻¹) * (a * Units.map (cE K).toMonoidHom a)`. Rewrite using `[mul_mul_mul_comm, inv_mul_cancel, mul_one, pow_two]`.
+
+Rewrite using `[e]`. Conclude with `Subgroup.mul_mem_sup htor hc`. Use `⟨h2, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨k, rfl⟩`. Establish `hn : a ^ (2 * k + 1) ∈ CommGroup.torsion Kˣ ⊔ powK K (2 * k + 1)` using `Subgroup.mem_sup_right ⟨a, rfl⟩`.
+
+Rewrite `hn` using `[pow_succ, pow_mul]`. Conclude with `(Subgroup.mul_mem_cancel_left _ (Subgroup.pow_mem _ h2 k)).1 hn`.
+-/
 theorem UpperTheory.V.Kum.unitMinus :
     ∀ (K : Type) [Field K] [NumberField K] [IsCMField K] (n : ℕ) (a : Kˣ), a ∈ (∅ : Set (HeightOneSpectrum (𝓞 K))).unit K → a * Units.map (cE K).toMonoidHom a ∈ powK K n → a ^ 2 ∈ CommGroup.torsion Kˣ ⊔ powK K n ∧ (Odd n → a ∈ CommGroup.torsion Kˣ ⊔ powK K n) := by
   intro K _ _ _ n a ha hc

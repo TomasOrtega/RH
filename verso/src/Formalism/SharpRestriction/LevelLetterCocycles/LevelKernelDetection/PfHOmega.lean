@@ -18,6 +18,13 @@ variable {PD : PeriodData G Qp K₀ K B BdR} {LL : Type} [Field LL] [Algebra Qp 
 
 variable {W : LocWach PD LL O v n}
 
+/- English proof (translation)
+Establish `hH : ∀ g : W.Gam, g ∈ CommGroup.torsion W.Gam ↔ g ∈ W.DelF`. Introduce `g`. Rewrite using `[W.DelF_def, CommGroup.mem_torsion, isOfFinOrder_iff_pow_eq_one]`. Establish `hset : ((CommGroup.torsion W.Gam : Subgroup W.Gam) : Set W.Gam) = (W.DelF : Set W.Gam)`. Use extensionality with `g`.
+
+Simplify using `only [SetLike.mem_coe]`. Conclude with `hH g`. Establish `hcardH : Nat.card (CommGroup.torsion W.Gam) = W.DelF.card`. Rewrite using `[← SetLike.coe_sort_coe, hset, Nat.card_coe_set_eq, Set.ncard_coe_finset]`. Establish `hd` using `orderOf_dvd_natCard (⟨δ, (hH δ).2 hδ⟩ : CommGroup.torsion W.Gam)`.
+
+Rewrite `hd` using `[Subgroup.orderOf_mk, hcardH]`. Conclude with `orderOf_dvd_iff_pow_eq_one.1 hd`.
+-/
 theorem Pf_HOmega_pow_card (δ : W.Gam) (hδ : δ ∈ W.DelF) : δ ^ W.DelF.card = 1 := by
   have hH : ∀ g : W.Gam, g ∈ CommGroup.torsion W.Gam ↔ g ∈ W.DelF := by
     intro g
@@ -32,6 +39,17 @@ theorem Pf_HOmega_pow_card (δ : W.Gam) (hδ : δ ∈ W.DelF) : δ ^ W.DelF.card
   rw [Subgroup.orderOf_mk, hcardH] at hd
   exact orderOf_dvd_iff_pow_eq_one.1 hd
 
+/- English proof (translation)
+Introduce `ω`. Establish `hpos : 0 < PD.p - 1` using `by have := PD.hp.two_le; omega`. Use `set f : W.Gam → LL := fun g => algebraMap O LL (W.χΓ g : O) with hf`. Establish `hAcard : (W.DelF.image f).card = PD.p - 1`. Rewrite using `[Finset.card_image_of_injOn, hcard]`.
+
+Introduce `x _ y _ hxy`. Apply `W.χΓ_inj` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `hinj hxy`. Establish `hARt : W.DelF.image f ⊆ Polynomial.nthRootsFinset (PD.p - 1) (1 : LL)`.
+
+Introduce `x hx`. Take `⟨g, hg, rfl⟩` from `Finset.mem_image.1 hx`. Rewrite using `[Polynomial.mem_nthRootsFinset hpos]`. Establish `h1 : g ^ (PD.p - 1) = 1` using `hcard ▸ Pf_HOmega_pow_card g hg`. Simplify using `only [hf]`.
+
+Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, ← map_pow, h1, map_one, Units.val_one, map_one]`. Establish `hRt : (Polynomial.nthRootsFinset (PD.p - 1) (1 : LL)).card ≤ PD.p - 1`. Unfold `Polynomial.nthRootsFinset`. Conclude with `(Multiset.toFinset_card_le _).trans (Polynomial.card_nthRoots _ _)`. Establish `hEq : W.DelF.image f = Polynomial.nthRootsFinset (PD.p - 1) (1 : LL)` using `Finset.eq_of_subset_of_card_le hARt (by omega)`.
+
+Establish `hωR : algebraMap O LL (ιZ ω.1) ∈ Polynomial.nthRootsFinset (PD.p - 1) (1 : LL)`. Rewrite using `[Polynomial.mem_nthRootsFinset hpos, ← map_pow, ← map_pow, ← Units.val_pow_eq_pow_val, ω.2, Units.val_one, map_one, map_one]`. Rewrite `hωR` using `[← hEq]`. Take `⟨g, hg, hgω⟩` from `Finset.mem_image.1 hωR`. Conclude with `⟨g, hg, hgω⟩`.
+-/
 theorem hω_holds (hcard : W.DelF.card = PD.p - 1) (hinj : Function.Injective (algebraMap O LL))
     (ιZ : ℤ_[PD.p] →+* O) :
     ∀ ω : DeltaT PD.p, ∃ g ∈ W.DelF, algebraMap O LL (W.χΓ g : O) = algebraMap O LL (ιZ ω.1) := by

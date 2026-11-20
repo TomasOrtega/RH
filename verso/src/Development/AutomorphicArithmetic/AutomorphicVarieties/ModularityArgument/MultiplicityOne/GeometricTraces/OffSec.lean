@@ -2,6 +2,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open UpperTheory.V.Z.Mult UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm
 
+/- English proof (translation)
+Introduce `E _ _ _ n S K' K'' h`. Unfold `GlobalTheory.BCT.globLev`. Use `iInf_congr fun w => iInf_congr fun hw => ?_` and prove the remaining obligations. Rewrite using `[h w hw]`.
+-/
 theorem UpperTheory.V.Z.Mult.offSec :
     UpperTheory.V.Z.Mult.OffSec := by
   intro E _ _ _ n S K' K'' h

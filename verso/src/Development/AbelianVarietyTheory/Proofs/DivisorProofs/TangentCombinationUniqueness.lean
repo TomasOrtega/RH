@@ -30,16 +30,25 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 
 omit [NumberField E] [IsCMField E] in
 
+/- English proof (translation)
+Rewrite using `[spMap_comp', spMap_comp', ReciprocityTheory.ChartRestriction.G.PullbackSections.dualMap_comp_epsMul]`.
+-/
 theorem sp_dual_eps {K L : Type} [CommRing K] [CommRing L] (ρ : K →+* L) (a : K) :
     spMap (Formalism.L2.Pj.dualMap ρ) ≫ spMap (epsMul a) = spMap (epsMul (ρ a)) ≫ spMap (Formalism.L2.Pj.dualMap ρ) := by
   rw [spMap_comp', spMap_comp', ReciprocityTheory.ChartRestriction.G.PullbackSections.dualMap_comp_epsMul]
 
+/- English proof (translation)
+Use `⟨GlobalTheory.FactorDepth.isTanAtG_map Z.t ρ h.1, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, h.2 a, ← Category.assoc, sp_dual_eps, Category.assoc]`.
+-/
 theorem isEigTan_map {K L : Type} [CommRing K] [CommRing L] (ρ : K →+* L) (φ : c.F →+* K) {y : Sp K ⟶ Z.X}
     {τ : E →+* ℂ} {w : Sp (DualNumber K) ⟶ Z.t.G.left} (h : IsEigTan Z φ y τ w) :
     IsEigTan Z (ρ.comp φ) (spMap ρ ≫ y) τ (spMap (Formalism.L2.Pj.dualMap ρ) ≫ w) := by
   refine ⟨GlobalTheory.FactorDepth.isTanAtG_map Z.t ρ h.1, fun a => ?_⟩
   rw [Category.assoc, h.2 a, ← Category.assoc, sp_dual_eps, Category.assoc]
 
+/- English proof (translation)
+Establish `h'` using `GlobalTheory.LatDRFree.comb_map Z.t g h`. Simplify using `only [← Category.assoc, spMap_comp', ← ReciprocityTheory.ChartRestriction.G.PullbackSections.dualMap_comp] at h'`. Conclude with `h'`.
+-/
 theorem comb_pull {K L M : Type} [CommRing K] [CommRing L] [CommRing M] (f : K →+* L) (g : L →+* M)
     {y : Sp K ⟶ Z.X} {m : ℕ} {u : Fin m → (Sp (DualNumber K) ⟶ Z.t.G.left)} {cf : Fin m → L}
     {w : Sp (DualNumber K) ⟶ Z.t.G.left}
@@ -51,6 +60,27 @@ theorem comb_pull {K L M : Type} [CommRing K] [CommRing L] [CommRing M] (f : K �
   simp only [← Category.assoc, spMap_comp', ← ReciprocityTheory.ChartRestriction.G.PullbackSections.dualMap_comp] at h'
   exact h'
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Oz _ β Z K _ φ y τ m u s hs h1 h2`. Establish `hEig : ∀ i, IsEigTan Z φ y τ (u i)`. Introduce `i`. Use `⟨⟨?_, ?_⟩, fun e => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.ArLieBase.hom_ext_dualNumber_away hs fun a => ?_` and prove the remaining obligations.
+
+Establish `h` using `((h1 a).1 i).1.1`. Simplify using `only [Category.assoc] at h ⊢`. Rewrite using `[h, ← Category.assoc, ← Category.assoc, spMap_comp', spMap_comp', ReciprocityTheory.ChartRestriction.G.PullbackSections.dualMap_comp_alg]`. Use `GlobalTheory.spec_hom_ext_of_span_eq_top hs fun a => ?_` and prove the remaining obligations. Establish `h` using `((h1 a).1 i).1.2`.
+
+Establish `e : (TrivSqZeroExt.fstHom (Localization.Away (a : K)) (Localization.Away (a : K)) (Localization.Away (a : K))).toRingHom.comp (Formalism.L2.Pj.dualMap (algebraMap K (Localization.Away (a : K)))) = (algebraMap K (Localization.Away (a : K))).comp (TrivSqZeroExt.fstHom K K K).toRing …`. Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Simplify using `[Formalism.L2.Pj.dualMap]`. Rewrite using `[← Category.assoc, spMap_comp', ← e, ← spMap_comp', Category.assoc, h]`. Set `ψ : Over.mk (spMap (algebraMap K (Localization.Away (a : K))) ≫ y) ⟶ Over.mk y` to `Over.homMk (spMap (algebraMap K (Localization.Away (a : K)))) rfl`.
+
+Conclude with `(congrArg (fun g => g.left) (MonObj.comp_one ψ : ψ ≫ (1 : Over.mk y ⟶ Z.t.G) = 1)).symm`. Use `GlobalTheory.ArLieBase.hom_ext_dualNumber_away hs fun a => ?_` and prove the remaining obligations. Establish `h` using `((h1 a).1 i).2 e`. Establish `k` using `sp_dual_eps (algebraMap K (Localization.Away (a : K))) (φ (embK c τ e))`. Simplify using `only [Category.assoc] at h`.
+
+Rewrite using `[h, ← Category.assoc, ← Category.assoc, k]`. Use `⟨hEig, fun w hw => ?_⟩` and prove the remaining obligations. Establish `hw' : ∀ a : s, IsEigTan Z ((algebraMap K (Localization.Away (a : K))).comp φ) (spMap (algebraMap K (Localization.Away (a : K))) ≫ y) τ (spMap (Formalism.L2.Pj.dualMap (algebraMap K (Localization.Away (a : K)))) ≫ w)` using `fun a => isEigTan_map Z _ φ hw`. Use `choose cA hcA using fun a : s => (h1 a).2 _ (hw' a)`. Establish `compat : ∀ (a b : s) (i : Fin m), IsLocalization.Away.awayToAwayRight (S` using `Localization.Away (a : K)) (P := Localization.Away ((a : K) * b)) (a : K) (b : K) (cA a i) = IsLocalization.Away.awayToAwayLeft (S := Localization.Away (b : K)) (P := Localization.Away ((a : K) * b)) (b : K) (a : K) (cA b i) := by`.
+
+Introduce `a b i`. Establish `hr : (IsLocalization.Away.awayToAwayRight (S` using `Localization.Away (a : K)) (P := Localization.Away ((a : K) * b)) (a : K) (b : K)).comp (algebraMap K (Localization.Away (a : K))) = algebraMap K (Localization.Away ((a : K) * b)) := RingHom.ext fun z => IsLocalization.Away.awayToAwayRight_eq (S := Localization.Away (a : K)) (P : …`. Establish `hl : (IsLocalization.Away.awayToAwayLeft (S` using `Localization.Away (b : K)) (P := Localization.Away ((a : K) * b)) (b : K) (a : K)).comp (algebraMap K (Localization.Away (b : K))) = algebraMap K (Localization.Away ((a : K) * b)) := RingHom.ext fun z => IsLocalization.Away.awayToAwayLeft_eq (S := Localization.Away (b : K)) (P := …`. Establish `Ca` using `comb_pull Z _ (IsLocalization.Away.awayToAwayRight (S := Localization.Away (a : K)) (P := Localization.Away ((a : K) * b)) (a : K) (b : K)) (hcA a).1`. Establish `Cb` using `comb_pull Z _ (IsLocalization.Away.awayToAwayLeft (S := Localization.Away (b : K)) (P := Localization.Away ((a : K) * b)) (b : K) (a : K)) (hcA b).1`.
+
+Rewrite `Ca` using `[hr]`. Rewrite `Cb` using `[hl]`. Conclude with `congrFun (((h2 a b).2 _ (isEigTan_map Z _ φ hw)).unique Ca Cb) i`. Use `choose cf hcf using fun i : Fin m => Localization.existsUnique_algebraMap_eq_of_span_eq_top s hs (fun a => cA a i) (fun a b => compat a b i)`. Establish `hut : ∀ k, IsTanAtG Z.t y (u k)` using `fun k => (hEig k).1`.
+
+Take `⟨w', -, hw'c⟩` from `GlobalTheory.ShFam.Pad.Guard.exists_comb hut cf`. Establish `hww : w' = w`. Use `GlobalTheory.ArLieBase.hom_ext_dualNumber_away hs fun a => ?_` and prove the remaining obligations. Establish `e1` using `GlobalTheory.LatDRFree.comb_map Z.t (algebraMap K (Localization.Away (a : K))) hw'c`. Establish `e2 : (fun i => algebraMap K (Localization.Away (a : K)) (cf i)) = cA a` using `funext fun i => (hcf i).1 a`.
+
+Rewrite `e1` using `[e2]`. Conclude with `GlobalTheory.ShFam.Pad.Guard.comb_unique (fun k => ((h1 a).1 k).1) e1 (hcA a).1`. Use `⟨cf, hww ▸ hw'c, fun d hd => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Establish `hda : ∀ a : s, (fun j => algebraMap K (Localization.Away (a : K)) (d j)) = cA a` using `fun a => (hcA a).2 _ (GlobalTheory.LatDRFree.comb_map Z.t _ hd)`.
+
+Conclude with `(hcf i).2 (d i) fun a => congrFun (hda a) i`.
+-/
 theorem isEigBasis_of_cover : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz] {β : Oz →+* c.F} (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) {K : Type} [CommRing K] (φ : c.F →+* K) (y : Sp K ⟶ Z.X) (τ : E →+* ℂ) {m : ℕ} (u : Fin m → (Sp (DualNumber K) ⟶ Z.t.G.left)) {s : Set K}, Ideal.span s = ⊤ → (∀ a : s, IsEigBasis Z ((algebraMap K (Localization.Away (a : K))).comp φ) (spMap (algebraMap K (Localization.Away (a : K))) ≫ y) τ (fun i => spMap (Formalism.L2.Pj.dualMap (algebraMap K (Localization.Away (a : K)))) ≫ u i)) → (∀ a b : s, IsEigBasis Z ((algebraMap K (Localization.Away ((a : K) * b))).comp φ) (spMap (algebraMap K (Localization.Away ((a : K) * b))) ≫ y) τ (fun i => spMap (Formalism.L2.Pj.dualMap (algebraMap K (Localization.Away ((a : K) * b)))) ≫ u i)) → IsEigBasis Z φ y τ u := by
   intro E _ _ _ H Dw l Xo c Oz _ β Z K _ φ y τ m u s hs h1 h2
   have hEig : ∀ i, IsEigTan Z φ y τ (u i) := by

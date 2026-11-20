@@ -8,6 +8,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 noncomputable section
 namespace GlobalTheory.AVGood
 
+/- English proof (translation)
+Take `⟨ξ', hξ', hv⟩` from `GlobalTheory.T.tame_heckeCharacter_split_place_local_component L s χ hχ`. Establish `e : ξ = ξ'` using `GlobalTheory.T.heckeCharacter_splitPlaceComponent_unique L χ s ξ ξ' hξ hξ'`. Establish `hu1 : Valued.v (u : s.v.adicCompletion (maximalRealSubfield L)) = 1`. Establish `h` using `Valuation.map_one_add_of_lt (Valued.v : Valuation (s.v.adicCompletion (maximalRealSubfield L)) _) hu`. Rewrite `h` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+
+Rewrite using `[e, hv u 1 1 (by simp) hu1 (by simpa using hu), map_one]`.
+-/
 theorem compAt_eq_one_of_tameAt {L : Type} [Field L] [NumberField L] [IsCMField L] (s : SplitPlace L) (χ : HChar L)
     (hχ : χ.TameAt s.w) (ξ : (s.v.adicCompletion (maximalRealSubfield L))ˣ →* ℂˣ) (hξ : NG.IsCompAt χ s ξ)
     (u : (s.v.adicCompletion (maximalRealSubfield L))ˣ)
@@ -19,12 +24,18 @@ theorem compAt_eq_one_of_tameAt {L : Type} [Field L] [NumberField L] [IsCMField 
     rwa [add_sub_cancel] at h
   rw [e, hv u 1 1 (by simp) hu1 (by simpa using hu), map_one]
 
+/- English proof (translation)
+Introduce `i j k v s ξ hw hξ u hu`. Conclude with `compAt_eq_one_of_tameAt s _ (hw ▸ h i j k v) ξ hξ u hu`.
+-/
 theorem tameAtG_of_tameAt (D : D7) (tup : D.what₂.Tup → Fin D.R.m → HChar D.host.E)
     (h : ∀ (i : D.nd.Loc) (j : Fin D.R.m) (k : Fin 2) (v : D.nd.PlG k), (tup (D.nd.mu i) j).TameAt (D.naut.plGw k v)) :
     TameAtG D tup := by
   intro i j k v s ξ hw hξ u hu
   exact compAt_eq_one_of_tameAt s _ (hw ▸ h i j k v) ξ hξ u hu
 
+/- English proof (translation)
+The claim follows from `tameAtG_of_tameAt D tp.tup fun i j _ _ x hx hx' => by rw [TupTied.tup, HChar.loc_mul, (cf.isMu0 j).tame _ x hx hx', tp.xi_tame _ _ x hx hx', one_mul]`.
+-/
 theorem tameAtG_of_tupTied (D : D7) (cf : CharFrame D) {C : NChoice D} (tp : TupTied D cf C) : TameAtG D tp.tup :=
   tameAtG_of_tameAt D tp.tup fun i j _ _ x hx hx' => by
     rw [TupTied.tup, HChar.loc_mul, (cf.isMu0 j).tame _ x hx hx', tp.xi_tame _ _ x hx hx', one_mul]

@@ -4,6 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Pa
 open IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 open scoped TensorProduct
 
+/- English proof (translation)
+Set `J : Ideal T` to `I.map (algebraMap S T)`. Establish `hJ : I' = J.map (τ : T →+* S')`. Rewrite using `[hI, Ideal.map_map]`. Set `q : T ⧸ J ≃+* S' ⧸ I'` to `Ideal.quotientEquiv J I' τ hJ`. Set `A1 : T ⊗[S] M ≃ₗ[T] T ⊗[S] (Fin rk → S ⧸ I)` to `LinearEquiv.baseChange S T M _ e`.
+
+Set `A2 : T ⊗[S] (Fin rk → S ⧸ I) ≃ₗ[T] (Fin rk → T ⊗[S] (S ⧸ I))` to `(Algebra.TensorProduct.piRight S T T (fun _ : Fin rk => S ⧸ I)).toLinearEquiv`. Set `A3 : (Fin rk → T ⊗[S] (S ⧸ I)) ≃ₗ[T] (Fin rk → T ⧸ J)` to `LinearEquiv.piCongrRight (fun _ => (Algebra.TensorProduct.quotIdealMapEquivTensorQuot T I).symm.toLinearEquiv)`. Set `A` to `(A1.trans A2).trans A3`. Use `⟨A.toAddEquiv.trans (AddEquiv.piCongrRight fun _ => q.toAddEquiv), ?_⟩` and prove the remaining obligations. Introduce `z m`.
+
+Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `q ((A (z • m)) i) = τ z • q ((A m) i)`. Rewrite using `[A.map_smul, Pi.smul_apply]`. Take `⟨x, hx⟩` from `Ideal.Quotient.mk_surjective (A m i)`. Rewrite using `[← hx, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, Ideal.quotientEquiv_mk, Ideal.quotientEquiv_mk, ← map_mul, map_mul]`.
+-/
 private theorem free_quotient_base_change (S T S' : Type) [CommRing S] [CommRing T] [Algebra S T] [CommRing S']
     (τ : T ≃+* S') (I : Ideal S) (rk : ℕ) (M : Type) [AddCommGroup M] [Module S M]
     (e : M ≃ₗ[S] (Fin rk → S ⧸ I)) (I' : Ideal S')
@@ -28,6 +35,13 @@ private theorem free_quotient_base_change (S T S' : Type) [CommRing S] [CommRing
   rw [← hx, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Algebra.smul_def,
     Ideal.Quotient.algebraMap_eq, Ideal.quotientEquiv_mk, Ideal.quotientEquiv_mk, ← map_mul, map_mul]
 
+/- English proof (translation)
+Introduce `O O' _ _ _ _ S R _ _ _ _ _ _ s M _ _ I rk e he S' _ τ I' hI`. Use `letI : Module S M := Module.compHom M s.toRingHom`. Set `eL : M ≃ₗ[S] (Fin rk → S ⧸ I)` to `e.toLinearEquiv (fun c x => he c x)`. Use `haveI : Module.Finite S M := Module.Finite.equiv eL.symm`. Take `⟨ε, -, hε⟩` from `BC.til_mod O O' S R s M (fun a m => rfl)`.
+
+Take `⟨f, hf⟩` from `free_quotient_base_change S (Til O O' S) S' τ I rk M eL I' (by rw [Til.algebraMap_eq]; exact hI)`. Use `⟨ε.symm.trans f, ?_⟩` and prove the remaining obligations. Introduce `z m`. Establish `hsymm : ε.symm (Til.map O' s z • m) = z • ε.symm m`. Apply `ε.injective` to reduce the goal to its premises.
+
+Rewrite using `[hε, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply]`. Rewrite using `[AddEquiv.trans_apply, hsymm, hf, AddEquiv.trans_apply]`.
+-/
 theorem UpperTheory.V.Pa.BC.free_bc :
     ∀ (O O' : Type) [CommRing O] [CommRing O'] [Algebra O O'] [Module.Finite O O'] (S R : Type) [CommRing S] [Algebra O S] [IsNoetherianRing S] [CommRing R] [Algebra O R] [IsNoetherianRing R] (s : S →ₐ[O] R) (M : Type) [AddCommGroup M] [Module R M] (I : Ideal S) (rk : ℕ) (e : M ≃+ (Fin rk → S ⧸ I)), (∀ z m, e (s z • m) = z • e m) → ∀ (S' : Type) [CommRing S'] (τ : Til O O' S ≃+* S') (I' : Ideal S'), I' = I.map ((τ : Til O O' S →+* S').comp (Til.ι O O' S)) → ∃ e' : Til O O' R ⊗[R] M ≃+ (Fin rk → S' ⧸ I'), ∀ z m, e' (Til.map O' s z • m) = τ z • e' m := by
   intro O O' _ _ _ _ S R _ _ _ _ _ _ s M _ _ I rk e he S' _ τ I' hI

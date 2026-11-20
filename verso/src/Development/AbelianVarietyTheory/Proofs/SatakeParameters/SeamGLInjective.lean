@@ -20,6 +20,9 @@ def seamLE {n : ℕ} (g : GL (Fin n) D.host.E) : Sp X.E n ≃ₗ[X.E] Sp X.E n :
   LinearMap.GeneralLinearGroup.generalLinearEquiv X.E (Fin n → X.E)
     (Matrix.GeneralLinearGroup.toLin (bc (s.iE.symm : D.host.E →+* X.E) g))
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[seamGL, seamLE, bc]`.
+-/
 theorem seamGL_seamLE {n : ℕ} (g : GL (Fin n) D.host.E) : seamGL s (seamLE s g) = g := by
   ext a b
   simp [seamGL, seamLE, bc]

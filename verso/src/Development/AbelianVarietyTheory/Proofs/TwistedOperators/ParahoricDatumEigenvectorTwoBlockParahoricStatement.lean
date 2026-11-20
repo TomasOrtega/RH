@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ParahoricDatumEi
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.BorelParam
 open MeasureTheory ValuativeRel Matrix GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Doubling GlobalTheory.GLDoubling GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection GlobalTheory.ZonalCellDecomposition GlobalTheory.SatakeBound
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DatumEigen.om_datum | exact GlobalTheory.DatumEigen.om_datum | (intros; apply GlobalTheory.DatumEigen.om_datum <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.parahoricDatum_eigenvector_twoBlockParahoric : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (A D E : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] [Fintype E] [DecidableEq E]
     (ξ μ₀ : kˣ →* ℂˣ), IsTame ξ → IsUnram μ₀ →

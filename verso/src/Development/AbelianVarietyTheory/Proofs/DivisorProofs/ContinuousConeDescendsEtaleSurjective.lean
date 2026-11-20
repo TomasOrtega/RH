@@ -9,6 +9,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.EtC
 
+/- English proof (translation)
+Introduce `R _ F S I _ _ G c W V r f hE hS P _ _ hf hZ`. Establish `hstep : ContCone R F ((bc (cechAug f ≫ sch.map r)).mapCone c)`. Use `GlobalTheory.T.cohomologyContinuous_base_change_of_levels R F S (cech f) (cechAug f ≫ sch.map r) I G c (fun k => ?_)` and prove the remaining obligations. Take `⟨Z, π, e, hP, he⟩` from `GlobalTheory.EtC.cech_level_representable P V W f hf k`. Use `⟨Z, π ≫ f ≫ r, e, ?_, hZ Z π hP⟩` and prove the remaining obligations.
+
+Rewrite using `[NatTrans.comp_app, ← Category.assoc, he]`. Express the relevant statement in the definitionally equal form `yoneda.map (π ≫ f) ≫ yoneda.map r = _`. Rewrite using `[← yoneda.map_comp, Category.assoc]`. Use `(ContCone.iff_of_eqv R F I _ _ ((bc (cechAug f ≫ sch.map r)).mapCone c) ((bc (sch.map r)).mapCone c) (Functor.whiskerLeft G (bcMap (cechAug f) (sch.map r))) ((bcMap (cechAug f) (sch.map r)).app c.pt) (fun i => ?_) (fun i => GlobalTheory.T.etaleCohomologyEquivalence_baseChange_cec …` and prove the remaining obligations. Conclude with `((bcMap (cechAug f) (sch.map r)).naturality (c.π.app i))`.
+-/
 theorem contCone_of_etale_surjective : ∀ (R : Type) [CommRing R] (F : Shv R) (S : Scheme.{0}) (I : Type) [SmallCategory I] [IsCofiltered I] (G : I ⥤ Over S) (c : Cone G) (W V : Scheme.{0}) (r : W ⟶ S) (f : V ⟶ W), Etale f → Surjective f → ∀ (P : MorphismProperty Scheme.{0}) [P.IsStableUnderBaseChange] [P.IsMultiplicative], P f → (∀ (Z : Scheme.{0}) (π : Z ⟶ V), P π → ContCone R F ((bc (sch.map (π ≫ f ≫ r))).mapCone c)) → ContCone R F ((bc (sch.map r)).mapCone c) := by
   intro R _ F S I _ _ G c W V r f hE hS P _ _ hf hZ
   have hstep : ContCone R F ((bc (cechAug f ≫ sch.map r)).mapCone c) := by

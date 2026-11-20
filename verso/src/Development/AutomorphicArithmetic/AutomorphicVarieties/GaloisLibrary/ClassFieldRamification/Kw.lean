@@ -6,6 +6,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Clas
 open NumberField IsDedekindDomain IntermediateField UpperTheory.V.Kum UpperTheory.V.CF
 open scoped Pointwise
 
+/- English proof (translation)
+Introduce `Ω _ _ _ L hfd hab`. Take `⟨m, hm⟩` from `@GroundTheory.Global.exists_le_rayClassField ℚ _ _ Ω _ _ _ L hfd hab`. Establish `hn : Ideal.absNorm m.ideal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `m.ideal_ne_bot`.
+
+Use `haveI : NeZero ((Ideal.absNorm m.ideal : ℕ) : Ω) := ⟨Nat.cast_ne_zero.mpr hn⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (Ideal.absNorm m.ideal)`. Conclude with `⟨_, ζ, Nat.pos_of_ne_zero hn, hζ, hm.trans (kwRay Ω m ζ hζ)⟩`.
+-/
 theorem UpperTheory.V.CF.kw :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosed Ω] (L : IntermediateField ℚ Ω) [FiniteDimensional ℚ L] [IsAbelianGalois ℚ L], ∃ (N : ℕ) (ζ : Ω), 0 < N ∧ IsPrimitiveRoot ζ N ∧ L ≤ ℚ⟮ζ⟯ := by
   intro Ω _ _ _ L hfd hab

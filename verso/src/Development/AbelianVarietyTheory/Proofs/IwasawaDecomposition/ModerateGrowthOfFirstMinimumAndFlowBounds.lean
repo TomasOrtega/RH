@@ -14,6 +14,13 @@ section Count
 
 variable {G : Type} [AddCommGroup G]
 
+/- English proof (translation)
+Take `⟨n, f, hf⟩` from `Module.Finite.exists_fin' ℤ G`. Use `⟨n, fun M => ?_⟩` and prove the remaining obligations. Use `choose c hc using hf`. Use `⟨fun v i => (c v i : ZMod M), fun v w h => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ i, ∃ k : ℤ, c v i - c w i = (M : ℤ) * k` using `fun i => (ZMod.intCast_eq_intCast_iff_dvd_sub _ _ _).mp (congrFun h i).symm`.
+
+Use `choose k hk using h1`. Use `⟨f k, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul, ← hc v, ← hc w, ← map_sub]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Simplify using `using hk i`.
+-/
 theorem exists_class (G : Type) [AddCommGroup G] [Module.Finite ℤ G] :
     ∃ n : ℕ, ∀ M : ℕ, ∃ cl : G → Fin n → ZMod M, ∀ v w, cl v = cl w → ∃ u, v - w = (M : ℤ) • u := by
   obtain ⟨n, f, hf⟩ := Module.Finite.exists_fin' ℤ G
@@ -29,6 +36,21 @@ theorem exists_class (G : Type) [AddCommGroup G] [Module.Finite ℤ G] :
   funext i
   simpa using hk i
 
+/- English proof (translation)
+Use `haveI : NeZero M := ⟨hM.ne'⟩`. Establish `h1 : ∀ a : Fin n → ZMod M, ∃ w, (∃ v, Q v < δ ∧ cl v = a) → Q w < δ ∧ cl w = a`. Introduce `a`. Distinguish the cases in `h : ∃ v, Q v < δ ∧ cl v = a`. Take `⟨v, hv⟩` from `h`.
+
+Conclude with `⟨v, fun _ => hv⟩`. Conclude with `⟨0, fun h' => absurd h' h⟩`. Use `choose rep hrep using h1`. Establish `h2 : ∀ v, ∃ u, Q v < δ → v - rep (cl v) = (M : ℤ) • u ∧ Q u < η`. Introduce `v`.
+
+Distinguish the cases in `hv : Q v < δ`. Take `⟨ha, hb⟩` from `hrep (cl v) ⟨v, hv, rfl⟩`. Take `⟨u, hu⟩` from `hcl v _ hb.symm`. Use `⟨u, fun _ => ⟨hu, ?_⟩⟩` and prove the remaining obligations. Establish `h3` using `hsub v (rep (cl v))`.
+
+Rewrite `h3` using `[hu, hsm]`. Establish `hM' : (0 : ℝ) < (M : ℝ) ^ 2` using `by positivity`. Move the coercions through the operations in `at h3`. Conclude with `lt_of_mul_lt_mul_left (a := (M : ℝ) ^ 2) (by linarith) hM'.le`. Conclude with `⟨0, fun h => absurd h hv⟩`.
+
+Use `choose g hg using h2`. Establish `hfin : ((Set.univ : Set (Fin n → ZMod M)) ×ˢ {v | Q v < η}).Finite` using `Set.finite_univ.prod hT`. Establish `hmap : Set.MapsTo (fun v => (cl v, g v)) {v | Q v < δ} ((Set.univ : Set (Fin n → ZMod M)) ×ˢ {v | Q v < η})` using `fun v hv => ⟨trivial, (hg v hv).2⟩`. Establish `hinj : Set.InjOn (fun v => (cl v, g v)) {v | Q v < δ}`. Introduce `v hv w hw h`.
+
+Establish `ha : cl v = cl w` using `congrArg Prod.fst h`. Establish `hb : g v = g w` using `congrArg Prod.snd h`. Establish `h1` using `(hg v hv).1`. Establish `h2` using `(hg w hw).1`. Rewrite `h1` using `[ha, hb, ← h2]`.
+
+Conclude with `sub_left_injective h1`. Use `⟨Set.Finite.of_injOn hmap hinj hfin, ?_⟩` and prove the remaining obligations. Use `Set.ncard_le_ncard_of_injOn _ hmap hinj hfin` as an intermediate fact. Rewrite `this` using `[Set.ncard_prod, Set.ncard_univ, Nat.card_eq_fintype_card, Fintype.card_pi, Finset.prod_const, ZMod.card, Finset.card_univ, Fintype.card_fin]`. Then use the resulting hypothesis.
+-/
 theorem card_le_of_class {n M : ℕ} (hM : 0 < M) (cl : G → Fin n → ZMod M)
     (hcl : ∀ v w, cl v = cl w → ∃ u, v - w = (M : ℤ) • u) (Q : G → ℝ)
     (hsub : ∀ v w, Q (v - w) ≤ 2 * Q v + 2 * Q w) (hsm : ∀ (k : ℤ) v, Q (k • v) = (k : ℝ) ^ 2 * Q v)
@@ -72,6 +94,31 @@ theorem card_le_of_class {n M : ℕ} (hM : 0 < M) (cl : G → Fin n → ZMod M)
   rwa [Set.ncard_prod, Set.ncard_univ, Nat.card_eq_fintype_card, Fintype.card_pi, Finset.prod_const,
     ZMod.card, Finset.card_univ, Fintype.card_fin] at this
 
+/- English proof (translation)
+Establish `hK' : (0 : ℝ) < K` using `by exact_mod_cast hK`. Use `set a : ℝ := 16 * (K : ℝ) ^ 2 * Q ξ with ha`. Establish `ha0 : 0 < a` using `by positivity`. Establish `hδ : 0 < δ` using `ha0.trans hξ`. Use `set y : ℝ := Real.sqrt (δ / a) with hy`.
+
+Establish `hy2 : y ^ 2 = δ / a` using `Real.sq_sqrt (by positivity)`. Establish `hy1 : 1 ≤ y` using `Real.one_le_sqrt.mpr ((one_le_div ha0).mpr hξ.le)`. Use `set L : ℕ := ⌈y⌉₊ with hL`. Establish `hL1 : y ≤ L` using `Nat.le_ceil y`. Establish `hL2 : (L : ℝ) ≤ 2 * y`.
+
+Use `Nat.ceil_lt_add_one (show 0 ≤ y by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA : δ ≤ (L : ℝ) ^ 2 * a`. Establish `: y ^ 2 ≤ (L : ℝ) ^ 2` using `by gcongr`. Rewrite `this` using `[hy2, div_le_iff₀ ha0]`.
+
+Conclude with `this`. Establish `hB : (L : ℝ) ^ 2 * a ≤ 4 * δ`. Establish `: (L : ℝ) ^ 2 ≤ (2 * y) ^ 2` using `by gcongr`. Rewrite `this` using `[mul_pow, hy2]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hmap : ∀ p ∈ (Set.univ : Set (Fin K)) ×ˢ {v | Q' v < δ / 4}, p.2 - (((p.1 : ℕ) : ℤ) * L) • ξ ∈ {v | Q v < δ}`. Introduce and unpack `⟨j, v⟩ ⟨-, hv⟩`. Establish `hv' : Q' v < δ / 4` using `hv`. Establish `h1` using `hsub v ((((j : ℕ) : ℤ) * L) • ξ)`. Establish `h2` using `hle v (by linarith)`.
+
+Rewrite `h1` using `[hsm]`. Establish `hj : ((j : ℕ) : ℝ) ≤ K` using `by exact_mod_cast j.2.le`. Establish `h3 : ((((j : ℕ) : ℤ) * L : ℤ) : ℝ) ^ 2 * Q ξ ≤ δ / 4`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `show Q _ < δ`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hinj : Set.InjOn (fun p : Fin K × G => p.2 - (((p.1 : ℕ) : ℤ) * L) • ξ) ((Set.univ : Set (Fin K)) ×ˢ {v | Q' v < δ / 4})`. Introduce and unpack `⟨j, v⟩ ⟨-, hv⟩ ⟨i, w⟩ ⟨-, hw⟩ h`. Establish `hv' : Q' v < δ / 4` using `hv`.
+
+Establish `hw' : Q' w < δ / 4` using `hw`. Establish `h' : v - (((j : ℕ) : ℤ) * L) • ξ = w - (((i : ℕ) : ℤ) * L) • ξ` using `h`. Establish `h1 : v - w = ((((j : ℕ) : ℤ) - (i : ℕ)) * L) • ξ`. Rewrite using `[sub_mul, sub_smul]`. Rewrite `h'` using `[sub_eq_sub_iff_sub_eq_sub]`.
+
+Conclude with `h'`. Establish `h2` using `hsub' v w`. Rewrite `h2` using `[h1, hsm', hξ']`. Establish `hji : ((j : ℕ) : ℤ) - (i : ℕ) = 0`. Assume the negation of the conclusion as `hne`.
+
+Establish `h3 : (1 : ℤ) ≤ (((j : ℕ) : ℤ) - (i : ℕ)) ^ 2`. Use `sq_pos_of_ne_zero hne` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h4 : (1 : ℝ) ≤ ((((j : ℕ) : ℤ) - (i : ℕ) : ℤ) : ℝ) ^ 2` using `by exact_mod_cast h3`. Rewrite `h2` using `[Int.cast_mul, mul_pow, Int.cast_natCast, mul_assoc]`.
+
+Establish `h5 : (L : ℝ) ^ 2 * a ≤ ((((j : ℕ) : ℤ) - (i : ℕ) : ℤ) : ℝ) ^ 2 * ((L : ℝ) ^ 2 * a)` using `le_mul_of_one_le_left (by positivity) h4`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h1` using `[hji, zero_mul, zero_smul, sub_eq_zero]`. Establish `: j = i` using `Fin.ext (by omega)`. Rewrite using `[this, h1]`.
+
+Use `Set.ncard_le_ncard_of_injOn _ hmap hinj hS` as an intermediate fact. Rewrite `this` using `[Set.ncard_prod, Set.ncard_univ, Nat.card_eq_fintype_card, Fintype.card_fin]`. Then use the resulting hypothesis.
+-/
 theorem mul_card_le (Q Q' : G → ℝ)
     (hsub : ∀ v w, Q (v - w) ≤ 2 * Q v + 2 * Q w) (hsm : ∀ (k : ℤ) v, Q (k • v) = (k : ℝ) ^ 2 * Q v)
     (hsub' : ∀ v w, Q' (v - w) ≤ 2 * Q' v + 2 * Q' w) (hsm' : ∀ (k : ℤ) v, Q' (k • v) = (k : ℝ) ^ 2 * Q' v)
@@ -154,6 +201,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data 
 
 def sqLen (x : Frame X.Ψ r) (v : X.Λ) : ℝ := ∑ τ, X.c τ * X.maj x τ (Data.emb τ.1 (v : Fin r → E))
 
+/- English proof (translation)
+Establish `h : X.posPart x τ (u - v) + X.posPart x τ (u + v) = 2 * X.posPart x τ u + 2 * X.posPart x τ v`. Unfold `Data.posPart`. Rewrite using `[two_mul, two_mul, ← add_re, ← add_re, ← add_re, ← add_re]`. Use `congr 1`. Simplify using `only [← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [hermC_add_left, hermC_sub_left, map_add, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Unfold `Data.maj`. Simplify using `only [hermC_add_left, hermC_sub_left, hermC_add_right, hermC_sub_right, add_re, sub_re]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem maj_parallelogram (x : Frame X.Ψ r) (τ : X.Ψ) (u v : Fin r → ℂ) :
     X.maj x τ (u - v) + X.maj x τ (u + v) = 2 * X.maj x τ u + 2 * X.maj x τ v := by
   have h : X.posPart x τ (u - v) + X.posPart x τ (u + v) = 2 * X.posPart x τ u + 2 * X.posPart x τ v := by
@@ -168,9 +222,19 @@ theorem maj_parallelogram (x : Frame X.Ψ r) (τ : X.Ψ) (u v : Fin r → ℂ) :
   simp only [hermC_add_left, hermC_sub_left, hermC_add_right, hermC_sub_right, add_re, sub_re]
   linarith
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun τ _ => mul_nonneg (IsotropicThreshold.c_pos X τ).le (MajorantOperators.maj_nonneg hx τ _)`.
+-/
 theorem sqLen_nonneg {x : Frame X.Ψ r} (hx : x ∈ X.dom) (v : X.Λ) : 0 ≤ sqLen X x v :=
   Finset.sum_nonneg fun τ _ => mul_nonneg (IsotropicThreshold.c_pos X τ).le (MajorantOperators.maj_nonneg hx τ _)
 
+/- English proof (translation)
+Unfold `sqLen`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun τ _ => ?_` and prove the remaining obligations. Establish `e : Data.emb τ.1 ((v - w : X.Λ) : Fin r → E) = Data.emb τ.1 (v : Fin r → E) - Data.emb τ.1 (w : Fin r → E)`. Use function extensionality and compare the values at `a`.
+
+Simplify using `[Data.emb]`. Establish `h1` using `maj_parallelogram X x τ (Data.emb τ.1 (v : Fin r → E)) (Data.emb τ.1 (w : Fin r → E))`. Establish `h2` using `MajorantOperators.maj_nonneg hx τ (Data.emb τ.1 (v : Fin r → E) + Data.emb τ.1 (w : Fin r → E))`. Establish `h3` using `IsotropicThreshold.c_pos X τ`. Rewrite using `[e]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem sqLen_sub {x : Frame X.Ψ r} (hx : x ∈ X.dom) (v w : X.Λ) :
     sqLen X x (v - w) ≤ 2 * sqLen X x v + 2 * sqLen X x w := by
   unfold sqLen
@@ -185,6 +249,11 @@ theorem sqLen_sub {x : Frame X.Ψ r} (hx : x ∈ X.dom) (v w : X.Λ) :
   rw [e]
   nlinarith
 
+/- English proof (translation)
+Unfold `sqLen`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `e : Data.emb τ.1 ((k • v : X.Λ) : Fin r → E) = (k : ℂ) • Data.emb τ.1 (v : Fin r → E)`. Use function extensionality and compare the values at `a`.
+
+Simplify using `[Data.emb]`. Rewrite using `[e, UnipMove.DeltaValuation.maj_smul, Complex.normSq_intCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sqLen_smul (x : Frame X.Ψ r) (k : ℤ) (v : X.Λ) : sqLen X x (k • v) = (k : ℝ) ^ 2 * sqLen X x v := by
   unfold sqLen
   rw [Finset.mul_sum]
@@ -195,17 +264,40 @@ theorem sqLen_smul (x : Frame X.Ψ r) (k : ℤ) (v : X.Λ) : sqLen X x (k • v)
   rw [e, UnipMove.DeltaValuation.maj_smul, Complex.normSq_intCast]
   ring
 
+/- English proof (translation)
+Use `csInf_le ⟨0, ?_⟩ ⟨v, v.2, fun h => hv (Subtype.ext h), rfl⟩` and prove the remaining obligations. Introduce and unpack `t ⟨u, hu, -, rfl⟩`. Conclude with `sqLen_nonneg X hx ⟨u, hu⟩`.
+-/
 theorem firstMinimumSq_le_latticeVectorSqLengthAtFrame {x : Frame X.Ψ r} (hx : x ∈ X.dom) {v : X.Λ} (hv : v ≠ 0) : X.firstMinimumSq x ≤ sqLen X x v := by
   refine csInf_le ⟨0, ?_⟩ ⟨v, v.2, fun h => hv (Subtype.ext h), rfl⟩
   rintro t ⟨u, hu, -, rfl⟩
   exact sqLen_nonneg X hx ⟨u, hu⟩
 
+/- English proof (translation)
+Take `⟨u, hu, hu0⟩` from `AR.Inst.lam_ne X hr`. Take `⟨t, ⟨v, hv, hv0, rfl⟩, ht⟩` from `exists_lt_of_csInf_lt (by exact ⟨_, ⟨u, hu, hu0, rfl⟩⟩) h`. Conclude with `⟨⟨v, hv⟩, fun h => hv0 (congrArg Subtype.val h), ht⟩`.
+-/
 theorem exists_short (hr : 0 < r) {x : Frame X.Ψ r} {ε : ℝ} (h : X.firstMinimumSq x < ε) :
     ∃ v : X.Λ, v ≠ 0 ∧ sqLen X x v < ε := by
   obtain ⟨u, hu, hu0⟩ := AR.Inst.lam_ne X hr
   obtain ⟨t, ⟨v, hv, hv0, rfl⟩, ht⟩ := exists_lt_of_csInf_lt (by exact ⟨_, ⟨u, hu, hu0, rfl⟩⟩) h
   exact ⟨⟨v, hv⟩, fun h => hv0 (congrArg Subtype.val h), ht⟩
 
+/- English proof (translation)
+Use `set D : ℝ := ∑ σ : E →+* ℂ, ‖σ (X.den : E)‖ + 1 with hD`. Establish `hD0 : 0 < D` using `by positivity`. Establish `hDσ : ∀ σ : E →+* ℂ, ‖σ (X.den : E)‖ < D`. Introduce `σ`. Use `Finset.single_le_sum (f := fun σ : E →+* ℂ => ‖σ (X.den : E)‖) (fun σ _ => norm_nonneg _) (Finset.mem_univ σ)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Choose the witnesses or unpack the hypotheses as in `⟨cm, hcm0, hcm⟩ : ∃ cm : ℝ, 0 < cm ∧ ∀ τ, cm ≤ X.c τ := by`. Break down `isEmpty_or_nonempty X.Ψ with h | h` into its components or cases. Conclude with `⟨1, one_pos, fun τ => h.elim τ⟩`. Take `⟨τ0, hτ0⟩` from `Finite.exists_min (fun τ : X.Ψ => X.c τ)`.
+
+Conclude with `⟨_, IsotropicThreshold.c_pos X τ0, hτ0⟩`. Use `⟨cm / D, by positivity, fun x hx v w hv hw => ?_⟩` and prove the remaining obligations. Establish `hden : (X.den : E) ≠ 0` using `fun h => X.den_ne (by exact_mod_cast h)`. Establish `hmaj : ∀ u : X.Λ, sqLen X x u < cm / D → ∀ τ : X.Ψ, X.maj x τ (Data.emb τ.1 (u : Fin r → E)) < 1 / D`. Introduce `u hu τ`.
+
+Establish `h1 : X.c τ * X.maj x τ (Data.emb τ.1 (u : Fin r → E)) ≤ sqLen X x u` using `Finset.single_le_sum (f := fun τ' : X.Ψ => X.c τ' * X.maj x τ' (Data.emb τ'.1 (u : Fin r → E))) (fun τ' _ => mul_nonneg (IsotropicThreshold.c_pos X τ').le (MajorantOperators.maj_nonneg hx τ' _)) (Finset.mem_univ τ)`. Establish `h2` using `mul_le_mul_of_nonneg_right (hcm τ) (MajorantOperators.maj_nonneg hx τ (Data.emb τ.1 (u : Fin r → E)))`. Rewrite `hu` using `[div_eq_mul_one_div]`. Conclude with `lt_of_mul_lt_mul_left (a := cm) (by linarith) hcm0.le`. Establish `key : ∀ τ : X.Ψ, ‖τ.1 ((X.den : E) * herm X.Gm (v : Fin r → E) w)‖ < 1`.
+
+Introduce `τ`. Rewrite using `[map_mul, norm_mul, ← hermC_emb]`. Establish `h1` using `((hF E r X).2 x hx τ (Data.emb τ.1 (v : Fin r → E)) (Data.emb τ.1 (w : Fin r → E))).1`. Establish `h2 : ‖hermC τ.1 X.Gm (Data.emb τ.1 (v : Fin r → E)) (Data.emb τ.1 (w : Fin r → E))‖ ≤ 1 / D`. Use `(sq_le_sq₀ (norm_nonneg _) (by positivity)).mp (h1.trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[sq]`. Conclude with `mul_le_mul (hmaj v hv τ).le (hmaj w hw τ).le (MajorantOperators.maj_nonneg hx τ _) (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Establish `hall : ∀ σ : E →+* ℂ, ‖σ ((X.den : E) * herm X.Gm (v : Fin r → E) w)‖ < 1`. Introduce `σ`.
+
+Distinguish the cases in `hσ : σ ∈ X.Ψ`. Conclude with `key ⟨σ, hσ⟩`. Establish `hcc : ComplexEmbedding.conjugate (ComplexEmbedding.conjugate σ) = σ` using `RingHom.ext fun a => by simp`. Establish `hc : ComplexEmbedding.conjugate σ ∈ X.Ψ`. Rewrite using `[X.cmType, hcc]`.
+
+Conclude with `hσ`. Establish `h` using `key ⟨_, hc⟩`. Simplify `h` using `[ComplexEmbedding.conjugate_coe_eq]`. Establish `h0` using `UnipotentCoefficientShift.eq_zero_of_conj_lt_one (X.Λ_int v v.2 w w.2) hall`. Conclude with `(mul_eq_zero.mp h0).resolve_left hden`.
+-/
 theorem orth_threshold (hF : FlowMajSt) : ∃ δ : ℝ, 0 < δ ∧ ∀ x ∈ X.dom, ∀ v w : X.Λ,
     sqLen X x v < δ → sqLen X x w < δ → herm X.Gm (v : Fin r → E) w = 0 := by
   classical
@@ -256,6 +348,17 @@ theorem orth_threshold (hF : FlowMajSt) : ∃ δ : ℝ, 0 < δ ∧ ∀ x ∈ X.d
   have h0 := UnipotentCoefficientShift.eq_zero_of_conj_lt_one (X.Λ_int v v.2 w w.2) hall
   exact (mul_eq_zero.mp h0).resolve_left hden
 
+/- English proof (translation)
+Establish `hiso : X.IsIsoV (fun τ => Data.emb τ.1 ξ)` using `fun τ => ⟨by rw [hermC_emb, hξ.2.1, map_zero], emb_ne_zero τ.1 hξ.2.2⟩`. Take `⟨h1, h2⟩` from `flowDomainCriterion_holds r X _ hiso x hx (fun τ => (s τ : ℂ) + I * (((q - 1) * X.tt ξ x τ : ℝ) : ℂ))`. Establish `him : ∀ τ, ((s τ : ℂ) + I * (((q - 1) * X.tt ξ x τ : ℝ) : ℂ)).im = (q - 1) * X.tt ξ x τ`. Introduce `τ`. Rewrite using `[add_im, ofReal_im, I_mul_im, ofReal_re, zero_add]`.
+
+Establish `hm : ∀ τ, 0 < X.maj x τ (Data.emb τ.1 ξ)` using `fun τ => X.maj_pos hx τ (hiso τ).2`. Establish `ht : ∀ τ, 0 < X.tt ξ x τ` using `fun τ => one_div_pos.mpr (mul_pos (IsotropicThreshold.c_pos X τ) (hm τ))`. Establish `hd` using `h1.mpr fun τ => by`. Rewrite using `[him]`. Use `show 0 < 1 + (q - 1) * X.tt ξ x τ / X.tt ξ x τ`.
+
+Rewrite using `[mul_div_assoc, div_self (ht τ).ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨hd, fun τ => ?_⟩` and prove the remaining obligations. Establish `h3` using `h2 hd τ`. Rewrite `h3` using `[him]`.
+
+Establish `h4` using `X.maj_pos hd τ (hiso τ).2`. Establish `h5` using `IsotropicThreshold.c_pos X τ`. Establish `h6` using `hm τ`. Express the relevant statement in the definitionally equal form `1 / (X.c τ * X.maj (X.flow ξ _ x) τ (Data.emb τ.1 ξ)) = 1 / (X.c τ * X.maj x τ (Data.emb τ.1 ξ)) + (q - 1) * (1 / (X.c τ * X.maj x τ (Data.emb τ.1 ξ))) at h3`. Express the relevant statement in the definitionally equal form `0 < X.maj (X.flow ξ _ x) τ (Data.emb τ.1 ξ) at h4`.
+
+Generalize the expression as in `X.maj (X.flow ξ _ x) τ (Data.emb τ.1 ξ) = a at h3 h4 ⊢`. Clear denominators, using `at h3 ⊢` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem flow_shrink {ξ : Fin r → E} (hξ : X.IsIso ξ) {x : Frame X.Ψ r} (hx : x ∈ X.dom) {q : ℝ} (hq : 0 < q)
     (s : X.Ψ → ℝ) :
     X.flow ξ (fun τ => (s τ : ℂ) + I * (((q - 1) * X.tt ξ x τ : ℝ) : ℂ)) x ∈ X.dom ∧
@@ -287,6 +390,17 @@ theorem flow_shrink {ξ : Fin r → E} (hξ : X.IsIso ξ) {x : Frame X.Ψ r} (hx
   field_simp at h3 ⊢
   linarith
 
+/- English proof (translation)
+Establish `hl` using `AR.Inst.la1_pos_of_mem_dom X hr hx`. Establish `hl2 : X.la1 x ^ 2 = X.firstMinimumSq x` using `Real.sq_sqrt (Real.sqrt_pos.1 hl).le`. Establish `hs` using `Real.sqrt_pos.mpr hδ`. Use `set M : ℕ := ⌈2 * Real.sqrt δ / X.la1 x⌉₊ with hM`. Establish `hM0 : 0 < M` using `Nat.ceil_pos.mpr (by positivity)`.
+
+Establish `hM1 : 2 * Real.sqrt δ / X.la1 x ≤ M` using `Nat.le_ceil _`. Establish `hM2 : (M : ℝ) ≤ (2 * Real.sqrt δ + X.la1 x) / X.la1 x`. Rewrite using `[add_div, div_self hl.ne']`. Conclude with `(Nat.ceil_lt_add_one (by positivity)).le`. Establish `hη : 4 * δ ≤ (M : ℝ) ^ 2 * X.firstMinimumSq x`.
+
+Rewrite `hM1` using `[div_le_iff₀ hl]`. Establish `: (2 * Real.sqrt δ) ^ 2 ≤ (M * X.la1 x) ^ 2` using `by gcongr`. Rewrite `this` using `[mul_pow, mul_pow, Real.sq_sqrt hδ.le, hl2]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsub : {v | sqLen X x v < X.firstMinimumSq x} ⊆ {0}` using `fun v hv => by`.
+
+Assume the negation of the conclusion as `h`. Conclude with `absurd (firstMinimumSq_le_latticeVectorSqLengthAtFrame X hx h) (not_le.mpr hv)`. Take `⟨cl, hcl⟩` from `hn M`. Take `⟨h1, h2⟩` from `card_le_of_class hM0 cl hcl (sqLen X x) (sqLen_sub X hx) (sqLen_smul X x) δ _ hη ((Set.finite_singleton _).subset hsub)`. Establish `h3` using `Set.ncard_le_ncard hsub (Set.finite_singleton _)`.
+
+Rewrite `h3` using `[Set.ncard_singleton]`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `h4 : {v | sqLen X x v < δ}.ncard ≤ M ^ n` using `h2.trans (by simpa using Nat.mul_le_mul_left (M ^ n) h3)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem card_short_le (hr : 0 < r) {n : ℕ}
     (hn : ∀ M : ℕ, ∃ cl : X.Λ → Fin n → ZMod M, ∀ v w, cl v = cl w → ∃ u, v - w = (M : ℤ) • u)
     {δ : ℝ} (hδ : 0 < δ) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
@@ -319,6 +433,17 @@ theorem card_short_le (hr : 0 < r) {n : ℕ}
   calc ({v | sqLen X x v < δ}.ncard : ℝ) ≤ (M : ℝ) ^ n := by exact_mod_cast h4
     _ ≤ _ := by gcongr
 
+/- English proof (translation)
+Establish `hK : 0 < 2 * 4 ^ n` using `by positivity`. Establish `hK1 : (1 : ℝ) ≤ ((2 * 4 ^ n : ℕ) : ℝ)` using `by exact_mod_cast hK`. Establish `hξ0 : ξ ≠ 0` using `fun h => hξ.2.2 (congrArg Subtype.val h)`. Establish `h0 : 0 < sqLen X x ξ` using `(Real.sqrt_pos.1 (AR.Inst.la1_pos_of_mem_dom X hr hx)).trans_le (firstMinimumSq_le_latticeVectorSqLengthAtFrame X hx hξ0)`. Establish `hξ' : sqLen X (X.flow ξ s x) ξ = 16 * ((2 * 4 ^ n : ℕ) : ℝ) ^ 2 * sqLen X x ξ`.
+
+Unfold `sqLen`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[hm]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hle : ∀ v, sqLen X (X.flow ξ s x) v < δ → sqLen X x v ≤ sqLen X (X.flow ξ s x) v`. Introduce `v hv`. Establish `h1` using `horth _ hy v ξ hv (hξ' ▸ hshort)`. Use `Finset.sum_le_sum fun τ _ => mul_le_mul_of_nonneg_left ?_ (IsotropicThreshold.c_pos X τ).le` and prove the remaining obligations. Rewrite using `[(hF E r X).1 ξ hξ x hx s hy τ _ (by rw [hermC_emb, h1, map_zero]), hm]`.
+
+Use `le_add_of_nonneg_right (mul_nonneg (sq_nonneg _) ?_)` and prove the remaining obligations. Establish `h2` using `MajorantOperators.maj_nonneg hx τ (Data.emb τ.1 (ξ : Fin r → E))`. Conclude with `sub_nonneg.mpr (le_mul_of_one_le_left h2 (by nlinarith))`. Establish `h1` using `mul_card_le (sqLen X x) (sqLen X (X.flow ξ s x)) (sqLen_sub X hx) (sqLen_smul X x) (sqLen_sub X hy) (sqLen_smul X _) δ (2 * 4 ^ n) ξ h0 hshort hξ' hK hle (card_short_le X hr hn hδ hx).1`. Take `⟨cl, hcl⟩` from `hn 4`.
+
+Establish `h2` using `(card_le_of_class (by norm_num) cl hcl (sqLen X (X.flow ξ s x)) (sqLen_sub X hy) (sqLen_smul X _) δ (δ / 4) (by push_cast; linarith) (card_short_le X hr hn (by positivity) hy).1).2`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem card_short_step (hF : FlowMajSt) (hr : 0 < r) {n : ℕ}
     (hn : ∀ M : ℕ, ∃ cl : X.Λ → Fin n → ZMod M, ∀ v w, cl v = cl w → ∃ u, v - w = (M : ℤ) • u)
     {δ : ℝ} (hδ : 0 < δ) (horth : ∀ x ∈ X.dom, ∀ v w : X.Λ,
@@ -354,6 +479,33 @@ theorem card_short_step (hF : FlowMajSt) (hr : 0 < r) {n : ℕ}
   calc _ ≤ 2 * (4 ^ n * {v | sqLen X (X.flow ξ s x) v < δ / 4}.ncard) := Nat.mul_le_mul_left 2 h2
     _ ≤ _ := by rwa [← mul_assoc]
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Use `⟨φ 0, 0, fun x _ => ?_⟩` and prove the remaining obligations. Rewrite using `[zero_mul, neg_zero, Real.rpow_zero, mul_one, Subsingleton.elim x 0]`. Use `haveI : Module.Finite (𝓞 E) X.Λ := Module.Finite.iff_fg.mpr X.Λ_fg`. Use `haveI : Module.Finite ℤ X.Λ := Module.Finite.trans (𝓞 E) X.Λ`.
+
+Take `⟨n, hn⟩` from `exists_class X.Λ`. Take `⟨δ, hδ, horth⟩` from `orth_threshold X hF`. Take `⟨B, hB0, hB⟩` from `GlobalTheory.FJZero.firstMinimum_bounded_on_domain X`. Use `set p : ℝ := 16 * ((2 * 4 ^ n : ℕ) : ℝ) ^ 2 with hp`. Use `set b : ℕ := (4 * n + 6) * Fintype.card X.Ψ with hb`.
+
+Establish `hp2 : p = 2 ^ (4 * n + 6)`. Rewrite using `[hp, pow_add, pow_mul]`. Use `push_cast`. Rewrite using `[mul_pow, ← pow_mul, mul_comm n 2, pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hp1 : 1 ≤ p` using `hp2 ▸ one_le_pow₀ one_le_two`. Establish `hp0 : 0 < p` using `one_pos.trans_le hp1`. Take `⟨S0, hS0⟩` from `hT (Real.sqrt (δ / p)) (by positivity)`. Use `set S := max S0 0 with hSdef`. Establish `hSn : 0 ≤ S` using `le_max_right _ _`.
+
+Establish `hβ : 0 ≤ (b : ℝ) * w` using `by positivity`. Establish `hpos : ∀ x ∈ X.dom, 1 ≤ {v | sqLen X x v < δ}.ncard` using `fun x hx => by`. Use `(Set.ncard_pos (card_short_le X hr hn hδ hx).1).mpr ⟨0, ?_⟩` and prove the remaining obligations. Use `sqLen_smul X x 0 0` as an intermediate fact. Rewrite `this` using `[zero_smul, Int.cast_zero, zero_pow two_ne_zero, zero_mul]`.
+
+Use `show sqLen X x 0 < δ`. Rewrite using `[this]` and apply the resulting hypothesis. Establish `main : ∀ m : ℕ, ∀ x ∈ X.dom, {v | sqLen X x v < δ}.ncard = m → φ x ≤ S * (m : ℝ) ^ ((b : ℝ) * w)`. Introduce `m`. Proceed by induction on `m using Nat.strong_induction_on with`.
+
+Consider the case `_ m ih`. Introduce `x hx hm`. Establish `hm1 : 1 ≤ m` using `hm ▸ hpos x hx`. Break down `le_or_gt (δ / p) (X.firstMinimumSq x) with h | h` into its components or cases. Establish `h1 : φ x ≤ S` using `(hS0 x hx (Real.sqrt_le_sqrt h)).trans (le_max_left _ _)`.
+
+Conclude with `h1.trans (le_mul_of_one_le_right hSn (Real.one_le_rpow (by exact_mod_cast hm1) hβ))`. Take `⟨ξ, hξ0, hξ⟩` from `exists_short X hr h`. Establish `hshort : p * sqLen X x ξ < δ` using `by rwa [lt_div_iff₀' hp0] at hξ`. Establish `hξδ : sqLen X x ξ < δ` using `(le_mul_of_one_le_left (sqLen_nonneg X hx ξ) hp1).trans_lt hshort`. Establish `hiso : X.IsIso (ξ : Fin r → E)` using `⟨ξ.2, horth x hx ξ ξ hξδ hξδ, fun h => hξ0 (Subtype.ext h)⟩`.
+
+Establish `h1` using `hS ξ hiso x hx (fun _ => p⁻¹) (fun _ => ⟨inv_pos.mpr hp0, inv_le_one_of_one_le₀ hp1⟩) (S * ((m : ℝ) / 2) ^ ((b : ℝ) * w)) (fun s => by`. Take `⟨hy, hmaj⟩` from `flow_shrink X hiso hx (inv_pos.mpr hp0) s`. Rewrite `hmaj` using `[inv_inv]`. Establish `h2` using `card_short_step X hF hr hn hδ horth hx hiso hshort hy hmaj`. Rewrite `h2` using `[hm]`.
+
+Use `(ih _ (by omega) _ hy rfl).trans (mul_le_mul_of_nonneg_left ?_ hSn)` and prove the remaining obligations. Use `Real.rpow_le_rpow (Nat.cast_nonneg _) ?_ hβ` and prove the remaining obligations. Rewrite using `[le_div_iff₀' two_pos]`. Conclude with `h2)` after adjusting the coercions. Use `h1.trans_eq ?_` and prove the remaining obligations.
+
+Establish `e : ∏ _τ : X.Ψ, p⁻¹ ^ (-w) = (2 : ℝ) ^ ((b : ℝ) * w)`. Rewrite using `[Finset.prod_const, Finset.card_univ, Real.inv_rpow hp0.le, Real.rpow_neg hp0.le, inv_inv, hp2, ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul two_pos.le, ← Real.rpow_mul two_pos.le, hb]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, mul_assoc, ← Real.mul_rpow (by positivity) two_pos.le, div_mul_cancel₀ _ two_ne_zero]`. Use `⟨S * (2 * Real.sqrt δ + B) ^ ((n : ℝ) * b * w), n * b, fun x hx => (main _ x hx rfl).trans ?_⟩` and prove the remaining obligations. Establish `hl` using `AR.Inst.la1_pos_of_mem_dom X hr hx`. Establish `h1 : ({v | sqLen X x v < δ}.ncard : ℝ) ≤ ((2 * Real.sqrt δ + B) / X.la1 x) ^ n` using `(card_short_le X hr hn hδ hx).2.trans (by gcongr; exact hB x hx)`. Rewrite using `[mul_assoc S]`.
+
+Use `mul_le_mul_of_nonneg_left ((Real.rpow_le_rpow (Nat.cast_nonneg _) h1 hβ).trans_eq ?_) hSn` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (by positivity), Real.div_rpow (by positivity) hl.le, Real.rpow_neg hl.le, div_eq_mul_inv, mul_assoc]`.
+-/
 theorem moderate_of_stepBound (hF : FlowMajSt) (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r)
     (w : ℝ) (φ : Frame X.Ψ r → ℝ) (hw : 0 ≤ w) (hφ : ∀ x ∈ X.dom, 0 ≤ φ x) (hT : ThickBdd X φ)
     (hS : StepBound X w φ) : ∃ C A : ℝ, ∀ x ∈ X.dom, φ x ≤ C * X.la1 x ^ (-(A * w)) := by

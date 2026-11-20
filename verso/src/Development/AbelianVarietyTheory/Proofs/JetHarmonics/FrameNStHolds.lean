@@ -25,6 +25,9 @@ section General
 
 variable {X X' Y Y₀ Y₁ Y₂ Z : Scheme.{0}} {M : LB X} {M' : LB X'} {n : ℕ} {pr : Fin n → (X' ⟶ X)}
 
+/- English proof (translation)
+Establish `c : LB.Gen.Corr M _ _ _ _ (LB.pullGen M φ ε t ρ) (LB.pullGen M φ' ε' t' ρ')` using `corr_of_val hM fun y J hJ => by`. Rewrite using `[val_pull hJ, val_pull hJ, Category.id_comp, Category.id_comp]`. Conclude with `h y J hJ`. Use `val_corr hJ c r` as an intermediate fact. Rewrite `this` using `[val_pull hJ, val_pull hJ]`. Then use the resulting hypothesis.
+-/
 theorem val_along (hM : M.IsLB) {K K' : Type} [Fintype K] [Fintype K'] {φ : K → (Y₁ ⟶ X)} {ε : K → ℤ}
     {φ' : K' → (Y₂ ⟶ X)} {ε' : K' → ℤ} (t : LB.Gen (LB.LinComb M φ ε)) (t' : LB.Gen (LB.LinComb M φ' ε'))
     (ρ : Y ⟶ Y₁) (ρ' : Y ⟶ Y₂) (h : ∀ y J, Good M y J → val t ρ y J = val t' ρ' y J)
@@ -35,6 +38,11 @@ theorem val_along (hM : M.IsLB) {K K' : Type} [Fintype K] [Fintype K'] {φ : K �
   have := val_corr hJ c r
   rwa [val_pull hJ, val_pull hJ] at this
 
+/- English proof (translation)
+Introduce `(j : I × K → M.ι) (j' : I × K → M.ι)`. Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Establish `v : ∀ j : I × K → M.ι, y ∈ LB.wchart M (fun p : I × K => φ p.1 p.2) j → gm (𝟙 Y) y (LB.wchart M (fun p : I × K => φ p.1 p.2) j) ((GeneratorPullback.finProdGen M φ ε t).s j) = ∏ i, gm (𝟙 Y) y (LB.wchart M (φ i) (fun k => j (i, k))) ((t i).s (fun k => j (i, k)))` using `fun j hj => (map_prod _ _ _).trans (Finset.prod_congr rfl fun _ _ => gm_res (𝟙 Y) y _ hj _)`. Use `((gm_res (𝟙 Y) y _ hy _).trans (v j hy.1)).trans (Eq.trans ?_ ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_linComb M _ _ (𝟙 Y) y j j' hy.1 hy.2) ((gm_res (𝟙 Y) y _ hy _).trans (v j' hy.2)))).symm)` and prove the remaining obligations. Rewrite using `[Fintype.prod_prod_type, ← Finset.prod_mul_distrib]`.
+
+Conclude with `Finset.prod_congr rfl fun i _ => gen_trans (ht i) (𝟙 Y) y (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.1 (i, k)) (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.2 (i, k))`.
+-/
 theorem finProd_isGen {I K : Type} [Fintype I] [Fintype K] (φ : I → K → (Y ⟶ X)) (ε : I → K → ℤ)
     (t : ∀ i, LB.Gen (LB.LinComb M (φ i) (ε i))) (ht : ∀ i, (t i).IsGen) : (GeneratorPullback.finProdGen M φ ε t).IsGen := by
   intro (j : I × K → M.ι) (j' : I × K → M.ι)
@@ -49,6 +57,15 @@ theorem finProd_isGen {I K : Type} [Fintype I] [Fintype K] (φ : I → K → (Y 
   exact Finset.prod_congr rfl fun i _ => gen_trans (ht i) (𝟙 Y) y
     (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.1 (i, k)) (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.2 (i, k))
 
+/- English proof (translation)
+Introduce `jN jL`. Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good_at hM y`. Take `⟨J', hJ', e⟩` from `exists_good M' hM' y (fun _ : PUnit => 𝟙 Y ≫ p) (fun _ => jL) (fun _ _ _ => rfl) (fun _ => hy.2)`. Establish `e' : J' (𝟙 Y ≫ p) = jL` using `e PUnit.unit`.
+
+Establish `h` using `H y J J' hJ hJ'`. Rewrite `h` using `[val_of a _ y J' (fun _ => jL) (fun _ => e'), val_of b _ y J (fun i => J ((𝟙 Y ≫ p) ≫ pr i)) (fun i => by rw [Category.assoc]), om, e']`. Establish `m₁ : (𝟙 Y : Y ⟶ Y) y ∈ LB.wchart M (fun i => p ≫ pr i) jN` using `GeneratorPullback.mapsAt_le_b M M' pr p jN jL hy`. Establish `m₂ : (𝟙 Y : Y ⟶ Y) y ∈ LB.wchart M (fun i => p ≫ pr i) (fun i => J ((𝟙 Y ≫ p) ≫ pr i))` using `Set.mem_iInter.2 fun i => hJ ((𝟙 Y ≫ p) ≫ pr i)`. Establish `m₃ : (𝟙 Y ≫ p) y ∈ LB.wchart M pr jN` using `hy.1`.
+
+Establish `m₄ : (𝟙 Y ≫ p) y ∈ LB.wchart M pr (fun i => J ((𝟙 Y ≫ p) ≫ pr i))` using `Set.mem_iInter.2 fun i => hJ ((𝟙 Y ≫ p) ≫ pr i)`. Establish `m₅ : (𝟙 Y ≫ p) y ∈ M'.U jL` using `hy.2`. Establish `g` using `gm_isGen hw (𝟙 Y ≫ p) y jN (fun i => J ((𝟙 Y ≫ p) ≫ pr i)) jL jL m₃ m₄ m₅ m₅`. Rewrite `g` using `[gm_self hM' _ y m₅, inv_one, _root_.mul_one]`. Establish `g'` using `g.trans (congrArg₂ (· * ·) (gm_linComb M pr (fun _ => 1) (𝟙 Y ≫ p) y _ _ m₃ m₄) rfl)`.
+
+Use `((gm_res _ y _ hy _).trans (gen_trans hb _ y m₁ m₂)).trans (Eq.trans ?_ ((map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_zpow _ _ _).trans (congrArg (· ^ q) ((gm_pull (𝟙 Y) p y _ hy _).trans g'))) (gm_res _ y _ hy _))).symm)` and prove the remaining obligations. Rewrite using `[h, mul_zpow, ← _root_.mul_assoc, ← Finset.prod_zpow]`. Simplify using `only [trF, zpow_one, Category.assoc]`. Both sides reduce to the same expression.
+-/
 theorem mapsAt_of_val (hM : M.IsLB) (hM' : M'.IsLB) (w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))) (hw : w.IsGen)
     (p : Y ⟶ X') (q : ℤ) (a : LB.Gen (LB.LinComb M' (K := PUnit) (fun _ => p) (fun _ => q)))
     (b : LB.Gen (LB.LinComb M (K := Fin n) (fun i => p ≫ pr i) (fun _ => q))) (hb : b.IsGen)
@@ -79,6 +96,13 @@ theorem mapsAt_of_val (hM : M.IsLB) (hM' : M'.IsLB) (w : LB.Iso M' (LB.LinComb M
   simp only [trF, zpow_one, Category.assoc]
   rfl
 
+/- English proof (translation)
+Establish `key : ∀ (j : Fin 1 → M'.ι) (y : Y) (hy : y ∈ LB.wchart M' (fun _ : PUnit.{1} => z ≫ g) (fun _ => j 0)), gs (𝟙 Y) y _ ((Y.presheaf.map (homOfLE (ExpBijectiveUniformisation.wchart_comp_le M' g z j)).op).hom ((z.app _).hom (σ.f j))) = gs z y (LB.wchart M' (fun _ : Fin 1 => g) j) (σ. …` using `fun j y hy => ⟨(gs_res _ y _ hy _).trans ((gs_pull (𝟙 Y) z y _ (ExpBijectiveUniformisation.wchart_comp_le M' g z j hy) _).trans (by rw [Category.id_comp])), (gs_mul _ y _ hy _ _).trans (congrArg₂ (· * ·) (gs_res _ y le_top hy _) (gs_unit _ y _ hy _))⟩`. Prove the components needed by the constructor for the conclusion. Introduce `H y J hJ`. Take `⟨k₁, k₂⟩` from `key (fun _ => J (z ≫ g)) y (Set.mem_iInter.2 fun _ => hJ (z ≫ g))`. Rewrite using `[val_of τ _ y J (fun _ => J (z ≫ g)) (fun _ => by rw [Category.id_comp])]`.
+
+Establish `e` using `congrArg (gs (𝟙 Y) y _) (H (fun _ => J (z ≫ g)))`. Rewrite using `[sval_of σ z y J (fun _ => J (z ≫ g)) (fun _ => rfl)]`. Conclude with `k₁.symm.trans (e.trans k₂)`. Introduce `H j`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations.
+
+Take `⟨J, hJ, e⟩` from `exists_good M' hM' y (fun _ : PUnit => z ≫ g) (fun _ => j 0) (fun _ _ _ => rfl) (fun k => Set.mem_iInter.1 hy k)`. Establish `h` using `H y J hJ`. Rewrite `h` using `[sval_of σ z y J j (fun k => by rw [Fin.fin_one_eq_zero k]; exact e PUnit.unit), val_of τ _ y J (fun _ => j 0) (fun _ => by rw [Category.id_comp]; exact e PUnit.unit)]`. Take `⟨k₁, k₂⟩` from `key j y hy`. Conclude with `k₁.trans (h.trans k₂.symm)`.
+-/
 theorem clause_iff (hM' : M'.IsLB) (g : Y₁ ⟶ X') (z : Y ⟶ Y₁) (q : ℤ)
     (σ : LB.Sec (LB.LinComb M' (K := Fin 1) (fun _ => g) (fun _ => q))) (a : Γ(Y, ⊤))
     (τ : LB.Gen (LB.LinComb M' (K := PUnit.{1}) (fun _ => z ≫ g) (fun _ => q))) :
@@ -111,6 +135,17 @@ theorem clause_iff (hM' : M'.IsLB) (g : Y₁ ⟶ X') (z : Y ⟶ Y₁) (q : ℤ)
     obtain ⟨k₁, k₂⟩ := key j y hy
     exact k₁.trans (h.trans k₂.symm)
 
+/- English proof (translation)
+Establish `hp : ∀ y J J', Good M y J → Good M' y J' → ∏ i, val τ₁ (s ≫ cp i) y J ^ q = om w y J J' (𝟙 Y ≫ z ≫ g) ^ (q : ℤ) * val τ₂ s y J' ^ q` using `fun y J J' hJ hJ' => by`. Rewrite using `[Finset.prod_pow, ← hv _ s y J J' hJ hJ', Category.id_comp, hzg, zpow_natCast, mul_pow]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, b, m, cr, cl⟩ y J' hJ'`. Take `⟨J, hJ⟩` from `exists_good_at hM y`.
+
+Establish `e` using `(mapsAt_val w _ _ τ b m (𝟙 Y) y hJ hJ').symm.trans ((val_corr hJ cr (𝟙 Y)).trans ((hc y J hJ).trans (hp y J J' hJ hJ')))`. Rewrite using `[(clause_iff hM' g z q σ a τ).1 cl y J' hJ', mul_left_cancel e]`. Introduce `H`. Take `⟨τ, -, hτ⟩` from `exists_gen hM' (K' := PUnit.{1}) (φ' := fun _ => z ≫ g) (ε' := fun _ => (q : ℤ)) (by`. Introduce `U _ h`.
+
+Simplify using `[hzg]) _`. Use the proof step `(DVR.powGen_isGen M' _ _ _ (DVR.pullGen_isGen M' _ _ _ h₂ s) q)`. Take `⟨b, hb, hbv⟩` from `exists_gen hM (K' := Fin n) (φ' := fun i => (z ≫ g) ≫ pr i) (ε' := fun _ => (q : ℤ)) (by`. Introduce `U _ h`. Simplify using `[hzg, hz, Fintype.prod_prod_type]) _`.
+
+Use the proof step `(finProd_isGen (I := Fin n) _ _ _ fun i => DVR.powGen_isGen M _ _ _ (DVR.pullGen_isGen M _ _ _ h₁ (s ≫ cp i)) q)`. Establish `τv : ∀ y J', Good M' y J' → val τ (𝟙 Y) y J' = val τ₂ s y J' ^ q` using `fun y J' hJ' => by`. Rewrite using `[hτ _ _ y J' hJ', val_powGen, val_pull hJ', Category.id_comp]`. Establish `bv : ∀ y J, Good M y J → val b (𝟙 Y) y J = ∏ i, val τ₁ (s ≫ cp i) y J ^ q` using `fun y J hJ => by`. Rewrite using `[hbv _ _ y J hJ, val_finProd _ _ _ _ _ hJ]`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[val_powGen, val_pull hJ, Category.id_comp]`. Use `⟨τ, b, mapsAt_of_val hM hM' w hw _ _ τ b hb fun y J J' hJ hJ' => ?_, corr_of_val hM fun y J hJ => (bv y J hJ).trans (hc y J hJ).symm, (clause_iff hM' g z q σ a τ).2 fun y J' hJ' => ?_⟩` and prove the remaining obligations. Rewrite using `[bv y J hJ, τv y J' hJ', hp y J J' hJ hJ']`. Rewrite using `[τv y J' hJ', H y J' hJ']`.
+-/
 theorem core_iff (hM : M.IsLB) (hM' : M'.IsLB) (w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))) (hw : w.IsGen)
     {x : Y₀ ⟶ X} (τ₁ : LB.Gen (LB.LinComb M (K := Fin 1) (fun _ => x) (fun _ => 1))) (h₁ : τ₁.IsGen)
     (cp : Fin n → (Y₂ ⟶ Y₀)) {zv : Y₂ ⟶ X'} (hz : ∀ i, zv ≫ pr i = cp i ≫ x)
@@ -158,6 +193,9 @@ theorem core_iff (hM : M.IsLB) (hM' : M'.IsLB) (w : LB.Iso M' (LB.LinComb M pr (
     · rw [bv y J hJ, τv y J' hJ', hp y J J' hJ hJ']
     · rw [τv y J' hJ', H y J' hJ']
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem corr_genCast {L L' : LB X} (h : L = L') {K K' : Type} [Fintype K] [Fintype K'] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ} (b : LB.Gen (LB.LinComb L φ ε)) (c : LB.Gen (LB.LinComb L' φ' ε')) :
     LB.Gen.Corr L' _ _ _ _ (genCast h _ _ b) c ↔ LB.Gen.Corr L _ _ _ _ b (genCast h.symm _ _ c) := by
@@ -173,15 +211,26 @@ abbrev cpy (V : Type) [CommRing V] (n d m : ℕ) (i : Fin n) : Sp (Jet V (Fin n 
   spMap ((jetCopy (S := V) d m i : Jet V (Fin 1 × Fin d) m →ₐ[V] Jet V (Fin n × Fin d) m) :
     Jet V (Fin 1 × Fin d) m →+* Jet V (Fin n × Fin d) m)
 
+/- English proof (translation)
+The claim follows from `congrArg (fun q => q.left) (pG.lim.fac (Fan.mk _ fun i => Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jetCopy (S := V) d m i) ≫ xT m) ⟨i⟩)`.
+-/
 theorem zV_pr {G' G : Over (Sp V)} [GrpObj G'] [GrpObj G] (pG : IsPowGrp G' G n) (xT : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ G)
     (m : ℕ) (i : Fin n) : (zV pG xT m).left ≫ (pG.pr i).left = cpy V n d m i ≫ (xT m).left :=
   congrArg (fun q => q.left) (pG.lim.fac (Fan.mk _ fun i => Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jetCopy (S := V) d m i) ≫ xT m) ⟨i⟩)
 
+/- English proof (translation)
+Rewrite using `[jcN, ← JetTr.jetCoef_copy]`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+-/
 theorem coef_cpy (F : Type) [Field F] [Algebra V F] (m : ℕ) (i : Fin n) :
     spMap (jetCoef (algebraMap V F) (Fin n × Fin d) m) ≫ cpy V n d m i = jcN V F d n m i := by
   rw [jcN, ← JetTr.jetCoef_copy]
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
+/- English proof (translation)
+Establish `hc : (jetTrunc : Jet V (Fin n × Fin d) (m + 1) →ₐ[V] _).comp (jetCopy d (m + 1) i) = (jetCopy d m i).comp (jetTrunc : Jet V (Fin 1 × Fin d) (m + 1) →ₐ[V] _)`. Apply `GermD.jet_hom_ext` to reduce the goal to its premises. Introduce `p`. Both sides reduce to the same expression. Establish `e` using `(GermD.homAt_comp (𝟙 (Sp V)) _ _).trans ((congrArg (Formalism.L2.Pj.homAt (𝟙 (Sp V))) hc).trans (GermD.homAt_comp (𝟙 (Sp V)) _ _).symm)`.
+
+Conclude with `congrArg (fun q => q.left) e`.
+-/
 theorem trunc_cpy (m : ℕ) (i : Fin n) :
     spMap ((jetTrunc : Jet V (Fin n × Fin d) (m + 1) →ₐ[V] Jet V (Fin n × Fin d) m) :
         Jet V (Fin n × Fin d) (m + 1) →+* Jet V (Fin n × Fin d) m) ≫ cpy V n d (m + 1) i =
@@ -196,12 +245,18 @@ theorem trunc_cpy (m : ℕ) (i : Fin n) :
     (GermD.homAt_comp (𝟙 (Sp V)) _ _).symm)
   exact congrArg (fun q => q.left) e
 
+/- English proof (translation)
+Establish `e : (Over.homMk a rfl : Over.mk (a ≫ G'.hom) ⟶ G') = Over.homMk b h₀.symm` using `pG.lim.hom_ext fun i => Over.OverMorphism.ext (h i.as)`. Conclude with `congrArg (fun q => q.left) e`.
+-/
 theorem pow_ext {G' G : Over (Sp V)} [GrpObj G'] [GrpObj G] (pG : IsPowGrp G' G n) {Y : Scheme.{0}}
     (a b : Y ⟶ G'.left) (h₀ : a ≫ G'.hom = b ≫ G'.hom) (h : ∀ i, a ≫ (pG.pr i).left = b ≫ (pG.pr i).left) : a = b := by
   have e : (Over.homMk a rfl : Over.mk (a ≫ G'.hom) ⟶ G') = Over.homMk b h₀.symm :=
     pG.lim.hom_ext fun i => Over.OverMorphism.ext (h i.as)
   exact congrArg (fun q => q.left) e
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use `show val (GeneratorPullback.finProdGen t.PP.L (J := Fin n) _ _ fun i => LB.pullGen t.PP.L _ _ (genPowG t _ _ e q) (r i)) (𝟙 Y) y J = ∏ i, val e (r i) y J ^ q`. Rewrite using `[val_finProd _ _ _ _ _ hJ]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[val_pull hJ, GermD.val_genPowG, Category.id_comp]`.
+-/
 theorem val_cast_prod {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (t : SAB H (Sp V))
     (L : LB t.G.left) (h : t.PP.L = L) {Y Y₀ : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y₀ ⟶ t.G.left)) (ε : K → ℤ)
     (e : LB.Gen (LB.LinComb t.PP.L φ ε)) (q : ℕ) (r : Fin n → (Y ⟶ Y₀)) (y : Y) (J) (hJ : Good L y J) :
@@ -221,6 +276,29 @@ end GlobalTheory.PowGerm.FrameN
 namespace GlobalTheory.PowGerm
 open GlobalTheory.BoxFamily FrameN
 
+/- English proof (translation)
+Introduce `E _ _ _ H V _ _ _ _ t P d FT act ph1 ph2 sy ad tg xT eT wPT hch hfr hpr n D' A' G' _ _ pD pA pG U' PU`. Take `⟨τ₁, g₁, el, tr⟩` from `frame1St_holds E H V t P d FT act ph1 ph2 sy ad tg xT eT wPT hch hfr hpr`. Establish `hM : P.U.LG.L.IsLB` using `P.U.LG.isLB`. Establish `hM' : U'.LG.L.IsLB` using `U'.LG.isLB`. Establish `ex : ∀ m, ∃ τ : LB.Gen (LB.LinComb U'.LG.L (Y` using `Sp (Jet V (Fin n × Fin d) m)) (K := Fin 1) (fun _ => (zV pG xT m).left) (fun _ => (1 : ℤ))), τ.IsGen ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ Sp (Jet V (Fin n × Fin d) m)) (y : Z) (J J'), Good P.U.LG.L y J → Good U'.LG.L y J' → om PU.wL y J J' (r ≫ (zV pG xT m).left) * val τ r y J' = ∏ i, v …`.
+
+Introduce `m`. Take `⟨τ, hτ, hv⟩` from `exists_boxPull_gen (pr := fun i => (pG.pr i).left) PU.wL PU.wL_gen hM hM' (K := Fin 1) (φ' := fun _ => (zV pG xT m).left) (φ := fun _ _ => (xT m).left) (ε := fun _ => 1) (cpy V n d m) (fun i _ => zV_pr pG xT m i) (fun _ => τ₁ m) (fun _ => g₁ m)`. Use `⟨τ, hτ, fun Z r y J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Use `hv Z r y J J' hJ hJ'` as an intermediate fact. Rewrite `this` using `[Fin.prod_univ_one, zpow_one]`. Then use the resulting hypothesis.
+
+Use `choose τ hτ hv using ex`. Use `⟨τ, hτ, fun htr m y J' hJ' => ?_, fun F _ _ _ _ q σ' f => forall_congr' fun m => exists_congr fun z => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good_at hM y`. Establish `c : ∀ i, val (τ₁ (m + 1)) (spMap ((jetTrunc : Jet V (Fin n × Fin d) (m + 1) →ₐ[V] Jet V (Fin n × Fin d) m) : Jet V (Fin n × Fin d) (m + 1) →+* Jet V (Fin n × Fin d) m) ≫ cpy V n d (m + 1) i) y J = val (τ₁ m) (𝟙 _ ≫ cpy V n d m i) y J` using `fun i => by`. Rewrite using `[trunc_cpy, Category.id_comp]`.
+
+Conclude with `(val_along hM _ _ _ _ (tr htr m) _ y J hJ).trans (by rw [Category.comp_id])`. Establish `ez : spMap ((jetTrunc : Jet V (Fin n × Fin d) (m + 1) →ₐ[V] Jet V (Fin n × Fin d) m) : Jet V (Fin n × Fin d) (m + 1) →+* Jet V (Fin n × Fin d) m) ≫ (zV pG xT (m + 1)).left = 𝟙 _ ≫ (zV pG xT m).left`. Use `pow_ext pG _ _ ?_ fun i => ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp, Category.assoc, Over.w, Over.w]`. Conclude with `Over.w (Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jetTrunc : Jet V (Fin n × Fin d) (m + 1) →ₐ[V] Jet V (Fin n × Fin d) m))`.
+
+Rewrite using `[Category.id_comp, Category.assoc, zV_pr, zV_pr, ← Category.assoc, trunc_cpy, Category.assoc]`. Conclude with `congrArg (fun q => cpy V n d m i ≫ q.left) (hch.trunc m)`. Establish `e` using `(hv (m + 1) _ _ y J J' hJ hJ').trans ((Finset.prod_congr rfl fun i _ => c i).trans (hv m _ _ y J J' hJ hJ').symm)`. Rewrite `e` using `[ez]`. Conclude with `mul_left_cancel e`.
+
+Establish `pts : z ≫ (CartesianMonoidalCategory.fst (TFK (R` using `V) F) ((Over.pullback (jK V)).obj G')).left = spMap (algebraMap F (Jet F (Fin n × Fin d) m)) → ((∀ i, z ≫ UnifPre.gFK (R := V) (G := G') F ≫ (pG.pr i).left = jptN xT F n m i) ↔ z ≫ UnifPre.gFK (R := V) (G := G') F = spMap (jetCoef (algebraMap V F) (Fin n × Fin d) m) ≫ (zV pG xT m …`. Introduce `h₀`. Establish `hp : ∀ i, (spMap (jetCoef (algebraMap V F) (Fin n × Fin d) m) ≫ (zV pG xT m).left) ≫ (pG.pr i).left = jptN xT F n m i` using `fun i => by`. Rewrite using `[Category.assoc, zV_pr, ← Category.assoc, coef_cpy, jptN]`. Use `⟨fun h => pow_ext pG _ _ ?_ fun i => ?_, fun h i => ?_⟩` and prove the remaining obligations.
+
+Establish `hg : UnifPre.gFK (R` using `V) (G := G') F ≫ G'.hom = (CartesianMonoidalCategory.fst (TFK (R := V) F) ((Over.pullback (jK V)).obj G')).left ≫ (TFK (R := V) F).hom ≫ jK V := by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, ← Category.assoc, Over.w]`. Conclude with `congrArg (· ≫ jK V) (Over.w (snd (TFK (R := V) F) ((Over.pullback (jK V)).obj G')))`. Rewrite using `[Category.assoc, hg, ← Category.assoc, h₀, Category.assoc _ (zV pG xT m).left, Over.w (zV pG xT m)]`. Use `show spMap _ ≫ spMap (algebraMap (FractionRing V) F) ≫ spMap (algebraMap V (FractionRing V)) = spMap _ ≫ spMap (algebraMap V (Jet V (Fin n × Fin d) m)) ≫ 𝟙 _`.
+
+Simplify using `only [spMap, Category.comp_id, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Rewrite using `[JetTr.jetCoef_alg, ← IsScalarTower.algebraMap_eq]`. Rewrite using `[hp, Category.assoc, h]`. Rewrite using `[← Category.assoc, h, hp]`. Establish `core` using `fun hzg => core_iff (pr := fun i => (pG.pr i).left) hM hM' PU.wL PU.wL_gen (τ₁ m) (g₁ m) (cpy V n d m) (zV_pr pG xT m) (τ m) (hτ m) (hv m) (spMap (jetCoef (algebraMap V F) (Fin n × Fin d) m)) (UnifPre.gFK (R := V) (G := G') F) z hzg q (genCast (congrArg RigLB.L P.bundle).symm _ _ …`.
+
+Rewrite using `[coef_cpy]`. Use `val_along hM _ _ _ _ (el m) (jcN V F d n m i) y J hJ` as an intermediate fact. Rewrite `this` using `[Category.comp_id]`. Conclude with `congrArg (· ^ q) this.symm)) σ' (toΓ _ (psJet m f))`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, b, h₀, h₁, h₂, h₃, h₄⟩`. Establish `hzg` using `(pts h₀).1 h₁`. Conclude with `⟨h₀, hzg, (core hzg).1 ⟨a, b, h₂, (corr_genCast _ _ _).1 h₃, h₄⟩⟩`. Introduce and unpack `⟨h₀, hzg, h⟩`. Take `⟨a, b, h₂, h₃, h₄⟩` from `(core hzg).2 h`.
+
+Conclude with `⟨a, b, h₀, (pts h₀).2 hzg, h₂, (corr_genCast _ _ _).2 h₃, h₄⟩`.
+-/
 theorem frameNSt_holds : FrameNSt := by
   intro E _ _ _ H V _ _ _ _ t P d FT act ph1 ph2 sy ad tg xT eT wPT hch hfr hpr n D' A' G' _ _ pD pA pG U' PU
   obtain ⟨τ₁, g₁, el, tr⟩ := frame1St_holds E H V t P d FT act ph1 ph2 sy ad tg xT eT wPT hch hfr hpr

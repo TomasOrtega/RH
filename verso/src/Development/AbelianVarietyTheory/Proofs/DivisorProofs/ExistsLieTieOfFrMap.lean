@@ -16,6 +16,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CompHt.TieFrame
 
+/- English proof (translation)
+Establish `e` using `h.2 T 1 1 (pushPt h.1.w 1) (pushPt h.1.w 1) rfl rfl`. Rewrite `e` using `[_root_.mul_one]`. Establish `e' : pushPt h.1.w (1 : T ⟶ G') = 1` using `mul_eq_left.1 (Over.OverMorphism.ext e)`. Use `(congrArg Over.Hom.left e').trans ?_` and prove the remaining obligations. Rewrite using `[Hom.one_def, Over.comp_left, Over.toUnit_left]`.
+
+Conclude with `Category.assoc _ _ _`.
+-/
 theorem one_comp {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (T : Over S') :
     (1 : T ⟶ G').left ≫ φ = T.hom ≫ f ≫ η[G].left := by
@@ -26,6 +31,11 @@ theorem one_comp {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [Grp
   rw [Hom.one_def, Over.comp_left, Over.toUnit_left]
   exact Category.assoc _ _ _
 
+/- English proof (translation)
+Take `⟨e, he, h₁⟩` from `grpPullback_iso hφ (isGrpPullback_pullback G _)`. Take `⟨e', he', h₂⟩` from `grpPullback_iso hφ' (isGrpPullback_pullback G' _)`. Take `⟨F, ⟨hF, hFf⟩, -⟩` from `HomExtExamples.homExtSt_holds V K G G' hG hG' (e.inv ≫ e'.hom) inferInstance`. Establish `a : ((Over.pullback (spMap (algebraMap V K))).map F).left ≫ pullback.fst G'.hom _ = pullback.fst G.hom _ ≫ F.left` using `pullback.lift_fst _ _ _`. Use `⟨F, hF, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← h₁, Category.assoc, ← a, hFf, ← Category.assoc, ← Over.comp_left, e.hom_inv_id_assoc, h₂]`.
+-/
 theorem exists_hom {V K : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K]
     [IsFractionRing V K] {G G' : Over (Sp V)} [GrpObj G] [GrpObj G'] {A : Over (Sp K)} [GrpObj A]
     {φ : A.left ⟶ G.left} {φ' : A.left ⟶ G'.left} (hG : IsSemiAbelian G) (hG' : IsSemiAbelian G')
@@ -39,12 +49,22 @@ theorem exists_hom {V K : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRi
   refine ⟨F, hF, ?_⟩
   rw [← h₁, Category.assoc, ← a, hFf, ← Category.assoc, ← Over.comp_left, e.hom_inv_id_assoc, h₂]
 
+/- English proof (translation)
+Rewrite using `[spMap_spMap, spMap_spMap]`. Use `congr 1`. Apply the tactic sequence `ext s <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem dual_w {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') :
     spMap (dualMap f) ≫ spMap (algebraMap R (DualNumber R)) = spMap (algebraMap R' (DualNumber R')) ≫ spMap f := by
   rw [spMap_spMap, spMap_spMap]
   congr 1
   ext s <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Establish `w : (spMap (dualMap f) ≫ u.left) ≫ G.hom = spMap (algebraMap O (DualNumber O)) ≫ spMap f`. Rewrite using `[Category.assoc, Over.w u, ← dual_w]`. Both sides reduce to the same expression. Use `⟨⟨Over.homMk (h.1.lift _ _ w) (h.1.lift_snd _ _ w), ?_⟩, h.1.lift_fst _ _ w⟩` and prove the remaining obligations. Use `Over.OverMorphism.ext (h.1.hom_ext ?_ ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (one_comp h (specO O O)).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(spMap (TrivSqZeroExt.fstHom O O O).toRingHom ≫ h.1.lift _ _ w) ≫ π = spMap (algebraMap O O) ≫ _`. Establish `e : spMap (TrivSqZeroExt.fstHom O O O).toRingHom ≫ spMap (dualMap f) = spMap f ≫ spMap (TrivSqZeroExt.fstHom V V V).toRingHom`. Rewrite using `[spMap_spMap, spMap_spMap]`. Use `congr 1`.
+
+Apply the tactic sequence `ext s <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Rewrite using `[Category.assoc, h.1.lift_fst, ← Category.assoc, e, Category.assoc, hu, Hom.one_def, Over.comp_left, Over.toUnit_left]`. Express the relevant statement in the definitionally equal form `spMap f ≫ spMap (algebraMap V V) ≫ _ = _`. Rewrite using `[← Category.assoc, ← Category.assoc, spMap_spMap, spMap_spMap]`.
+-/
 theorem exists_pull {V O : Type} [CommRing V] [CommRing O] {G : Over (Sp V)} [GrpObj G] {G' : Over (Sp O)} [GrpObj G']
     {f : V →+* O} {π : G'.left ⟶ G.left} (h : IsGrpPullback G' G (spMap f) π) {u : epsOver V V ⟶ G} (hu : IsTan u) :
     ∃ x : LieG G', x.1.left ≫ π = spMap (dualMap f) ≫ u.left := by
@@ -65,6 +85,23 @@ theorem exists_pull {V O : Type} [CommRing V] [CommRing O] {G : Over (Sp V)} [Gr
   change spMap f ≫ spMap (algebraMap V V) ≫ _ = _
   rw [← Category.assoc, ← Category.assoc, spMap_spMap, spMap_spMap]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c p _ C _ _ _ v O _ _ _ _ _ _ _ _ _ T io y₀ k kO P ψ z hP hz`. Use `letI := io.toAlgebra`. Take `⟨hk, G, t', m₁, m₂, π, φ, hπ, -, hφ, h4, rfl, -⟩` from `hP`. Take `⟨G₀, t₀, n₁, n₂, ⟨ub, ht, -, -, hub⟩, -⟩` from `y₀.2.2`. Take `⟨e, he, h₁⟩` from `grpPullback_iso n₁.cart m₁.cart`.
+
+Establish `h₂ : IsGrpPullback t₀.G G.G (spMap (algebraMap T.V T.Fr)) (e.hom.left ≫ m₂.φ)` using `((isGrpPullback_of_iso e).comp m₂.cart).congr (Category.id_comp _) rfl`. Take `⟨F, hF, h₃⟩` from `exists_hom G₀.semi G.semi n₂.cart h₂`. Use `haveI := P.isLocalRing`. Use `haveI := HodgeTateCompare.isLocalRing_dualNumber (O := O)`. Establish `hp₀ : ¬ IsUnit (p : O)` using `Fact.out`.
+
+Establish `hp : ¬ IsUnit (p : DualNumber O)` using `fun h => hp₀ (by simpa using h.map (TrivSqZeroExt.fstHom O O O))`. It suffices to establish `h : ∀ τ j, ∃ x : LieG P.Gt, LieTie P (φ ≫ m₁.φ) x (z.u τ j) by choose x hx using h`. Conclude with `⟨x, hx⟩`. Introduce `τ j`. Take `⟨u', h5, h6⟩` from `hub τ j`.
+
+Establish `ht' : IsTan (ub τ j ≫ F)`. Unfold `IsTan`. Rewrite using `[Over.comp_left, ← Category.assoc, ht τ j, ← Over.comp_left, MonObj.one_comp]`. Take `⟨xG, hx⟩` from `exists_pull hπ ht'`. Take `⟨x, hc, -⟩` from `existsUnique_left (P := P) hp (isAdicComplete_dualNumber p) xG.1`.
+
+Establish `h7` using `hc.comp (TrivSqZeroExt.fstHom O O O)`. Rewrite `h7` using `[xG.2]`. Establish `hu : (u' ≫ e.hom.left) ≫ t'.G.hom = spMap (algebraMap T.Fr (DualNumber T.Fr))` using `by haveI : Mono (spMap (algebraMap T.V T.Fr)) := haveI : IsPreimmersion (spMap (algebraMap T.V T.Fr)) := IsPreimmersion.of_isLocalization (nonZeroDivisors T.V) inferInstance`. Rewrite using `[← cancel_mono (spMap (algebraMap T.V T.Fr)), Category.assoc, Category.assoc, ← m₂.cart.1.w, ← Category.assoc e.hom.left, ← h₃, Category.assoc, Over.w F, ← Category.assoc, h6, Category.assoc, Over.w (ub τ j), ← dual_w]`. Both sides reduce to the same expression.
+
+Establish `w : (spMap (dualMap k.toRingHom) ≫ u' ≫ e.hom.left) ≫ t'.G.hom = spMap (algebraMap C (DualNumber C)) ≫ spMap k.toRingHom`. Rewrite using `[Category.assoc, hu, dual_w]`. Use `⟨⟨x, (existsUnique_left (P := P) hp₀ inferInstance 1).unique h7 Corr.one⟩, xG, Over.homMk (hφ.1.lift _ _ w) (hφ.1.lift_snd _ _ w), hc, ?_, hπ.1.hom_ext ?_ ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `hφ.1.lift _ _ w ≫ _ = _`. Rewrite using `[hφ.1.lift_fst_assoc, hz.2.1, ← h5, Category.assoc, Category.assoc, h₁]`.
+
+Express the relevant statement in the definitionally equal form `(hφ.1.lift _ _ w ≫ _) ≫ _ = _`. Rewrite using `[Category.assoc, ← h4, hφ.1.lift_fst_assoc, Category.assoc, Category.assoc, ← h₃, ← Category.assoc u', h6, Category.assoc, Category.assoc, hx, ← Category.assoc, ← Category.assoc (spMap _) (spMap _), spMap_spMap, spMap_spMap, Over.comp_left]`. Use `congr 2`. Use `RingHom.ext fun s => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify `(hk s.fst).symm` using `[dualMap]`.
+
+Simplify `(hk s.snd).symm` using `[dualMap, Algebra.algebraMap_eq_smul_one]`. Express the relevant statement in the definitionally equal form `(hφ.1.lift _ _ w ≫ _) ≫ _ = _`. Rewrite using `[Category.assoc, P.gen_pull.1.w, hφ.1.lift_snd_assoc, Category.assoc, Over.w xG.1]`. Conclude with `(dual_w _).symm`.
+-/
 theorem exists_lieTie_of_frMap : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C ℝ≥0) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C] [Algebra c.F C] [StarRing (𝓞 E)] (T : CDVR) (io : c.F →+* T.Fr) (y₀ : IntFr Xo c T io) (k : letI := io.toAlgebra; T.Fr →ₐ[c.F] C) (kO : T.V →+* O) (P : Point p v O (𝓞 E)) (ψ : P.A.A.left ⟶ Xo.univ.t.G.left) (z : FrPt Xo c C), (letI := io.toAlgebra; PointOver P y₀.1.x k.toRingHom kO ψ) → (letI := io.toAlgebra; FrMap k y₀.1 z) → ∃ x : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → LieG P.Gt, ∀ τ j, LieTie P ψ (x τ j) (z.u τ j) := by
   intro E _ _ _ H Dw l Xo c p _ C _ _ _ v O _ _ _ _ _ _ _ _ _ T io y₀ k kO P ψ z hP hz
   letI := io.toAlgebra

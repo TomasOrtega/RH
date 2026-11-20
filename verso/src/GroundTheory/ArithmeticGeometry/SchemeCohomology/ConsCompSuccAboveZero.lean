@@ -11,10 +11,16 @@ variable {X : TopCat.{u}} {ι : Type w}
 
 def inter (U : ι → Opens X) {n : ℕ} (i : Fin n → ι) : Opens X := ⨅ a, U (i a)
 
+/- English proof (translation)
+The claim follows from `le_iInf fun a => iInf_le (fun b => U (i b)) (θ a)`.
+-/
 lemma inter_le_comp (U : ι → Opens X) {m n : ℕ} (i : Fin n → ι) (θ : Fin m → Fin n) :
     inter U i ≤ inter U (i ∘ θ) :=
   le_iInf fun a => iInf_le (fun b => U (i b)) (θ a)
 
+/- English proof (translation)
+The claim follows from `iInf_le (fun b => U (i b)) a`.
+-/
 lemma inter_le (U : ι → Opens X) {n : ℕ} (i : Fin n → ι) (a : Fin n) : inter U i ≤ U (i a) :=
   iInf_le (fun b => U (i b)) a
 
@@ -25,11 +31,17 @@ abbrev Cochain (n : ℕ) : Type (max w u) := ∀ i : Fin (n + 1) → ι, P.obj (
 def res {V W : Opens X} (h : V ≤ W) : P.obj (op W) →+ P.obj (op V) :=
   (P.map (homOfLE h).op).hom
 
+/- English proof (translation)
+Simplify using `only [res, ← ConcreteCategory.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 @[simp] lemma res_res {V W Z : Opens X} (h₁ : V ≤ W) (h₂ : W ≤ Z) (x : P.obj (op Z)) :
     res P h₁ (res P h₂ x) = res P (h₁.trans h₂) x := by
   simp only [res, ← ConcreteCategory.comp_apply, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Simplify using `only [res]`. Establish `: (homOfLE h).op = 𝟙 (op V)` using `rfl`. Rewrite using `[this, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+-/
 @[simp] lemma res_refl {V : Opens X} (h : V ≤ V) (x : P.obj (op V)) : res P h x = x := by
   simp only [res]
   have : (homOfLE h).op = 𝟙 (op V) := rfl
@@ -53,6 +65,9 @@ noncomputable def cechCosimplicial : CosimplicialObject AddCommGrpCat.{max w u} 
     simp [cochainMap]
     rfl
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, AddCommGrpCat.hom_add, AddMonoidHom.add_apply, ih]`.
+-/
 lemma hom_finset_sum_apply {M N : AddCommGrpCat.{v}} {α : Type*} (s : Finset α)
     (f : α → (M ⟶ N)) (x : M) : (∑ a ∈ s, f a).hom x = ∑ a ∈ s, (f a).hom x := by
   classical
@@ -64,6 +79,9 @@ lemma hom_finset_sum_apply {M N : AddCommGrpCat.{v}} {α : Type*} (s : Finset α
 noncomputable def d (n : ℕ) : Cochain P U n →+ Cochain P U (n + 1) :=
   (AlgebraicTopology.AlternatingCofaceMapComplex.objD (cechCosimplicial P U) n).hom
 
+/- English proof (translation)
+Establish `h` using `hom_finset_sum_apply Finset.univ (fun k : Fin (n + 2) => ((-1 : ℤ) ^ (k : ℕ)) • (cechCosimplicial P U).δ k) σ`. Use `(congrFun h i).trans ((Finset.sum_apply i _ _).trans ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+-/
 lemma d_apply (n : ℕ) (σ : Cochain P U n) (i : Fin (n + 2) → ι) :
     d P U n σ i = ∑ k : Fin (n + 2), ((-1 : ℤ) ^ (k : ℕ)) •
       res P (inter_le_comp U i k.succAbove) (σ (i ∘ k.succAbove)) := by
@@ -73,6 +91,9 @@ lemma d_apply (n : ℕ) (σ : Cochain P U n) (i : Fin (n + 2) → ι) :
   refine Finset.sum_congr rfl fun k _ => ?_
   rfl
 
+/- English proof (translation)
+Use `AlgebraicTopology.AlternatingCofaceMapComplex.d_squared (cechCosimplicial P U) n` as an intermediate fact. Establish `h2` using `congrArg (fun f => f.hom σ) this`. Conclude with `h2`.
+-/
 lemma d_d (n : ℕ) (σ : Cochain P U n) : d P U (n + 1) (d P U n σ) = 0 := by
   have := AlgebraicTopology.AlternatingCofaceMapComplex.d_squared (cechCosimplicial P U) n
   have h2 := congrArg (fun f => f.hom σ) this
@@ -87,23 +108,35 @@ def push {P' : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}} (φ : P ⟶ P') (n : ℕ) 
   map_add' σ τ := by ext i; simp
 
 variable {P} in
+/- English proof (translation)
+Simplify using `only [res, ← ConcreteCategory.comp_apply, φ.naturality]`.
+-/
 lemma app_res {P' : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}} (φ : P ⟶ P') {V W : Opens X} (h : V ≤ W)
     (x : P.obj (op W)) : φ.app (op V) (res P h x) = res P' h (φ.app (op W) x) := by
   simp only [res, ← ConcreteCategory.comp_apply, φ.naturality]
 
 variable {P} in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [push, AddMonoidHom.coe_mk, ZeroHom.coe_mk, d_apply, map_sum, map_zsmul, app_res]`.
+-/
 lemma push_d {P' : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}} (φ : P ⟶ P') (n : ℕ) (σ : Cochain P U n) :
     push U φ (n + 1) (d P U n σ) = d P' U n (push U φ n σ) := by
   funext i
   simp only [push, AddMonoidHom.coe_mk, ZeroHom.coe_mk, d_apply, map_sum, map_zsmul, app_res]
 
 variable {P} in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[push]`.
+-/
 lemma push_comp {P' P'' : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}} (φ : P ⟶ P') (ψ : P' ⟶ P'')
     (n : ℕ) (σ : Cochain P U n) : push U ψ n (push U φ n σ) = push U (φ ≫ ψ) n σ := by
   funext i
   simp [push]
 
 variable {P} in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[push]`.
+-/
 lemma push_id (n : ℕ) (σ : Cochain P U n) : push U (𝟙 P) n σ = σ := by
   funext i
   simp [push]
@@ -112,12 +145,18 @@ def CechAcyclic : Prop :=
   ∀ (n : ℕ) (σ : Cochain P U (n + 1)), d P U (n + 1) σ = 0 → ∃ τ, d P U n τ = σ
 
 variable {P} in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[push]`.
+-/
 lemma push_zero' {P' : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}} (n : ℕ) (σ : Cochain P U n) :
     push U (0 : P ⟶ P') n σ = 0 := by
   funext i
   simp [push]
 
 variable {P} in
+/- English proof (translation)
+Introduce `_ _ hστ` and use `funext fun i => h i (congrFun hστ i)`.
+-/
 lemma push_injective {P' : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}} (φ : P ⟶ P') (n : ℕ)
     (h : ∀ i : Fin (n + 1) → ι, Function.Injective (φ.app (op (inter U i)))) :
     Function.Injective (push U φ n) := fun _ _ hστ =>
@@ -125,6 +164,9 @@ lemma push_injective {P' : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}} (φ : P ⟶ P'
 
 variable {P} in
 
+/- English proof (translation)
+Introduce `n σ hσ`. Take `⟨τ, hτ⟩` from `hG n (push U ι' (n + 1) σ) (by rw [← push_d, hσ, map_zero])`. Use `⟨push U r n τ, ?_⟩` and prove the remaining obligations. Rewrite using `[← push_d, hτ, push_comp, hr, push_id]`.
+-/
 lemma CechAcyclic.of_retract {G : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}} (ι' : P ⟶ G) (r : G ⟶ P)
     (hr : ι' ≫ r = 𝟙 P) (hG : CechAcyclic G U) : CechAcyclic P U := by
   intro n σ hσ
@@ -134,6 +176,13 @@ lemma CechAcyclic.of_retract {G : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}} (ι' : 
 
 variable {P} in
 
+/- English proof (translation)
+Introduce `n σ hσ`. Use `choose τ hτ using fun i => hsurj i (σ i)`. Establish `hτ' : push U g (n + 1) τ = σ` using `funext hτ`. Establish `h0 : push U g (n + 2) (d I U (n + 1) τ) = 0` using `by rw [push_d, hτ', hσ]`. Use `choose ρ hρ using fun j => hex j _ (congrFun h0 j)`.
+
+Establish `hρ' : push U f (n + 2) ρ = d I U (n + 1) τ` using `funext hρ`. Establish `hρc : d F U (n + 2) ρ = 0`. Apply `push_injective U f (n + 3) (fun j => hinj j)` to reduce the goal to its premises. Rewrite using `[map_zero, push_d, hρ', d_d]`. Take `⟨α, hα⟩` from `hF (n + 1) ρ hρc`.
+
+Establish `hc : d I U (n + 1) (τ - push U f (n + 1) α) = 0`. Rewrite using `[map_sub, ← push_d, hα, hρ', sub_self]`. Take `⟨β, hβ⟩` from `hI n _ hc`. Use `⟨push U g n β, ?_⟩` and prove the remaining obligations. Rewrite using `[← push_d, hβ, map_sub, hτ', push_comp, hfg, push_zero', sub_zero]`.
+-/
 lemma CechAcyclic.of_shortExact {F I Q : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}} (f : F ⟶ I) (g : I ⟶ Q)
     (hfg : f ≫ g = 0)
     (hinj : ∀ {n : ℕ} (i : Fin n → ι), Function.Injective (f.app (op (inter U i))))
@@ -175,16 +224,25 @@ variable (A : X → AddCommGrpCat.{u})
 def ev {W : Opens X} (x : X) (hx : x ∈ W) : (discPresheaf A).obj (op W) →+ A x :=
   Pi.evalAddMonoidHom (fun y : W => A y.1) ⟨x, hx⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma ev_res {V W : Opens X} (h : V ≤ W) (s : (discPresheaf A).obj (op W)) (x : X) (hx : x ∈ V) :
     ev A x hx (res (discPresheaf A) h s) = ev A x (h hx) s := rfl
 
 variable {U} in
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 lemma ev_congr {n : ℕ} (σ : Cochain (discPresheaf A) U n) {j₁ j₂ : Fin (n + 1) → ι}
     (h : j₁ = j₂) (x : X) (h₁ : x ∈ inter U j₁) (h₂ : x ∈ inter U j₂) :
     ev A x h₁ (σ j₁) = ev A x h₂ (σ j₂) := by
   subst h
   rfl
 
+/- English proof (translation)
+Rewrite using `[d_apply, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, ev_res]`.
+-/
 lemma ev_d {n : ℕ} (σ : Cochain (discPresheaf A) U n) (i : Fin (n + 2) → ι) (x : X)
     (hx : x ∈ inter U i) :
     ev A x hx (d (discPresheaf A) U n σ i) = ∑ k : Fin (n + 2), ((-1 : ℤ) ^ (k : ℕ)) •
@@ -193,17 +251,26 @@ lemma ev_d {n : ℕ} (σ : Cochain (discPresheaf A) U n) (i : Fin (n + 2) → ι
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [map_zsmul, ev_res]
 
+/- English proof (translation)
+Rewrite using `[inter, ← SetLike.mem_coe, Opens.coe_iInf, Set.mem_iInter]`. Both sides reduce to the same expression.
+-/
 lemma mem_inter_iff {n : ℕ} (i : Fin n → ι) (x : X) : x ∈ inter U i ↔ ∀ a, x ∈ U (i a) := by
   rw [inter, ← SetLike.mem_coe, Opens.coe_iInf, Set.mem_iInter]
   rfl
 
 attribute [irreducible] inter
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules.
+-/
 lemma cons_comp_succAbove_zero {n : ℕ} (c : ι) (i : Fin (n + 1) → ι) :
     (Fin.cons c i : Fin (n + 2) → ι) ∘ (0 : Fin (n + 2)).succAbove = i := by
   funext a
   simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Consider the cases of `a using Fin.cases with`. Consider the case `zero => simp`. Consider the case `succ a => simp`.
+-/
 lemma cons_comp_succAbove_succ {n : ℕ} (c : ι) (i : Fin (n + 1) → ι) (k : Fin (n + 1)) :
     (Fin.cons c i : Fin (n + 2) → ι) ∘ k.succ.succAbove = Fin.cons c (i ∘ k.succAbove) := by
   funext a
@@ -213,12 +280,21 @@ lemma cons_comp_succAbove_succ {n : ℕ} (c : ι) (i : Fin (n + 1) → ι) (k : 
 
 noncomputable def chosenIdx (x : X) (h : ∃ a, x ∈ U a) : ι := h.choose
 
+/- English proof (translation)
+The claim follows from `h.choose_spec`.
+-/
 lemma mem_chosenIdx (x : X) (h : ∃ a, x ∈ U a) : x ∈ U (chosenIdx U x h) := h.choose_spec
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨j 0, (mem_inter_iff U j x).1 hx 0⟩`.
+-/
 lemma exists_mem_of_mem_inter {m : ℕ} (j : Fin (m + 1) → ι) {x : X} (hx : x ∈ inter U j) :
     ∃ a, x ∈ U a :=
   ⟨j 0, (mem_inter_iff U j x).1 hx 0⟩
 
+/- English proof (translation)
+Rewrite using `[mem_inter_iff]`. Introduce `a`. Consider the cases of `a using Fin.cases with`. Consider the case `zero => simpa using mem_chosenIdx U x _`. Consider the case `succ a => simpa using (mem_inter_iff U j x).1 hx a`.
+-/
 lemma mem_inter_cons {m : ℕ} (j : Fin (m + 1) → ι) {x : X} (hx : x ∈ inter U j) :
     x ∈ inter U (Fin.cons (chosenIdx U x (exists_mem_of_mem_inter U j hx)) j :
       Fin (m + 2) → ι) := by
@@ -233,11 +309,21 @@ noncomputable def homotopy {n : ℕ} (σ : Cochain (discPresheaf A) U (n + 1)) :
   fun j y => ev A y.1 (mem_inter_cons U j y.2)
     (σ (Fin.cons (chosenIdx U y.1 (exists_mem_of_mem_inter U j y.2)) j))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma ev_homotopy {n : ℕ} (σ : Cochain (discPresheaf A) U (n + 1)) (j : Fin (n + 1) → ι)
     (x : X) (hx : x ∈ inter U j) :
     ev A x hx (homotopy U A σ j) = ev A x (mem_inter_cons U j hx)
       (σ (Fin.cons (chosenIdx U x (exists_mem_of_mem_inter U j hx)) j)) := rfl
 
+/- English proof (translation)
+Introduce `n σ hσ`. Use `⟨homotopy U A σ, funext fun i => funext fun y => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `y`. Establish `hJ` using `mem_inter_cons U i hx`. Establish `hcoc : ev A x hJ (d (discPresheaf A) U (n + 1) σ (Fin.cons (chosenIdx U x (exists_mem_of_mem_inter U i hx)) i)) = 0`.
+
+Rewrite using `[hσ]`. Both sides reduce to the same expression. Rewrite `hcoc` using `[ev_d, Fin.sum_univ_succ]`. Express the relevant statement in the definitionally equal form `ev A x hx (d (discPresheaf A) U n (homotopy U A σ) i) = ev A x hx (σ i)`. Rewrite using `[ev_d]`.
+
+Rewrite `hcoc` using `[Fin.val_zero, pow_zero, one_smul, ev_congr A σ (cons_comp_succAbove_zero _ i) x _ hx]`. Rewrite using `[eq_neg_of_add_eq_zero_left hcoc, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.val_succ, pow_succ, mul_neg_one, neg_smul, neg_neg, ev_homotopy]`. Conclude with `congrArg _ (ev_congr A σ (cons_comp_succAbove_succ _ i k).symm x _ _)`.
+-/
 theorem cechAcyclic_discPresheaf : CechAcyclic (discPresheaf A) U := by
   intro n σ hσ
   refine ⟨homotopy U A σ, funext fun i => funext fun y => ?_⟩

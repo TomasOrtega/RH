@@ -19,6 +19,9 @@ def cz : (Fin n → 𝓞 E) →+ (Ix E n → ℤ) where
   map_zero' := by ext m; simp
   map_add' x y := by ext m; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cz_apply (x : Fin n → 𝓞 E) (m : Ix E n) : cz x m = (RingOfIntegers.basis E).repr (x m.1) m.2 := rfl
 
 def co (p : ℕ) : (Fin n → 𝓞 E) →+ (Ix E n → ZMod p) where
@@ -26,8 +29,16 @@ def co (p : ℕ) : (Fin n → 𝓞 E) →+ (Ix E n → ZMod p) where
   map_zero' := by ext m; simp
   map_add' x y := by ext m; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem co_apply (p : ℕ) (x : Fin n → 𝓞 E) (m : Ix E n) : co p x m = ((cz x m : ℤ) : ZMod p) := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Rewrite using `[Finset.sum_apply, Fintype.sum_prod_type]`. Simplify using `only [dl, cz_apply, Pi.smul_apply, Pi.single_apply]`. Simplify using `only [smul_ite, smul_zero]`. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `only [Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Conclude with `(RingOfIntegers.basis E).sum_repr (x j)`.
+-/
 theorem sum_cz (x : Fin n → 𝓞 E) : ∑ m, cz x m • dl m = x := by
   funext j
   rw [Finset.sum_apply, Fintype.sum_prod_type]
@@ -37,17 +48,28 @@ theorem sum_cz (x : Fin n → 𝓞 E) : ∑ m, cz x m • dl m = x := by
   simp only [Finset.sum_ite_eq, Finset.mem_univ, if_true]
   exact (RingOfIntegers.basis E).sum_repr (x j)
 
+/- English proof (translation)
+Use `conv_lhs => rw [← sum_cz x]`. Rewrite using `[map_sum]`. Simplify using `only [map_zsmul]`.
+-/
 theorem hom_eq {A : Type} [AddCommGroup A] (f : (Fin n → 𝓞 E) →+ A) (x : Fin n → 𝓞 E) :
     f x = ∑ m, cz x m • f (dl m) := by
   conv_lhs => rw [← sum_cz x]
   rw [map_sum]
   simp only [map_zsmul]
 
+/- English proof (translation)
+Introduce `z` and use `⟨fun i => (RingOfIntegers.basis E).equivFun.symm fun j => z (i, j), by funext m rw [cz_apply, ← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]⟩`.
+-/
 theorem cz_surj : Function.Surjective (cz (E := E) (n := n)) := fun z =>
   ⟨fun i => (RingOfIntegers.basis E).equivFun.symm fun j => z (i, j), by
     funext m
     rw [cz_apply, ← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]⟩
 
+/- English proof (translation)
+Introduce `y`. Take `⟨x, hx⟩` from `cz_surj (E := E) (n := n) (fun m => ((y m).cast : ℤ))`. Use `⟨x, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `m`. Rewrite using `[co_apply, hx]`.
+
+Conclude with `ZMod.intCast_zmod_cast (y m)`.
+-/
 theorem co_surj (p : ℕ) : Function.Surjective (co (E := E) (n := n) p) := by
   intro y
   obtain ⟨x, hx⟩ := cz_surj (E := E) (n := n) (fun m => ((y m).cast : ℤ))
@@ -61,10 +83,20 @@ def mkH (p : ℕ) : (Fin n → 𝓞 E) →+ TestPt.NAdd E n p where
   map_zero' := by ext i; simp [mkN]
   map_add' x y := by ext i; simp [mkN]
 
+/- English proof (translation)
+Introduce `z` and use `by choose u hu using fun i => Ideal.Quotient.mk_surjective (z i) exact ⟨u, funext hu⟩`.
+-/
 theorem mkN_surj (p : ℕ) : Function.Surjective (mkN (E := E) (n := n) p) := fun z => by
   choose u hu using fun i => Ideal.Quotient.mk_surjective (z i)
   exact ⟨u, funext hu⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩ k`. Establish `: (p : 𝓞 E) * z = (p : ℤ) • z` using `by simp [zsmul_eq_mul]`. Rewrite using `[this, map_zsmul]`. Simplify using the standard rewrite rules.
+
+Introduce `h choose c hc using h`. Use `⟨∑ k, c k • RingOfIntegers.basis E k, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← (RingOfIntegers.basis E).sum_repr y]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[hc k]`. Simplify using `[zsmul_eq_mul, mul_assoc]`.
+-/
 private theorem natCast_dvd_iff_dvd_basis_repr (p : ℕ) (y : 𝓞 E) :
     (p : 𝓞 E) ∣ y ↔ ∀ k, (p : ℤ) ∣ (RingOfIntegers.basis E).repr y k := by
   constructor
@@ -81,6 +113,11 @@ private theorem natCast_dvd_iff_dvd_basis_repr (p : ℕ) (y : 𝓞 E) :
     rw [hc k]
     simp [zsmul_eq_mul, mul_assoc]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [AddMonoidHom.mem_ker, funext_iff, co_apply, Pi.zero_apply, ZMod.intCast_zmod_eq_zero_iff_dvd, cz_apply]`. Use `show _ ↔ ∀ i, mkN p x i = 0`. Simplify using `only [mkN, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton, natCast_dvd_iff_dvd_basis_repr]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h i k`. Conclude with `h (i, k)`. Introduce `h m`. Conclude with `h m.1 m.2`.
+-/
 theorem ker_co (p : ℕ) : (co (E := E) (n := n) p).ker = (mkH p).ker := by
   ext x
   simp only [AddMonoidHom.mem_ker, funext_iff, co_apply, Pi.zero_apply, ZMod.intCast_zmod_eq_zero_iff_dvd, cz_apply]
@@ -90,6 +127,11 @@ theorem ker_co (p : ℕ) : (co (E := E) (n := n) p).ker = (mkH p).ker := by
   · intro h i k; exact h (i, k)
   · intro h m; exact h m.1 m.2
 
+/- English proof (translation)
+Set `e1` to `QuotientAddGroup.quotientKerEquivOfSurjective _ (co_surj (E := E) (n := n) p)`. Set `e2` to `QuotientAddGroup.quotientAddEquivOfEq (ker_co (E := E) (n := n) p)`. Set `e3` to `QuotientAddGroup.quotientKerEquivOfSurjective (mkH (E := E) (n := n) p) (mkN_surj p)`. Use `⟨e1.symm.trans (e2.trans e3), fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : e1.symm (co p x) = (x : (Fin n → 𝓞 E) ⧸ (co (E` using `E) (n := n) p).ker) := by`.
+
+Rewrite using `[AddEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [AddEquiv.trans_apply, h1]`. Both sides reduce to the same expression.
+-/
 theorem exists_phiN (E : Type) [Field E] [NumberField E] (n p : ℕ) :
     ∃ φ : (Ix E n → ZMod p) ≃+ TestPt.NAdd E n p, ∀ x, φ (co p x) = mkN p x := by
   let e1 := QuotientAddGroup.quotientKerEquivOfSurjective _ (co_surj (E := E) (n := n) p)
@@ -103,6 +145,11 @@ theorem exists_phiN (E : Type) [Field E] [NumberField E] (n p : ℕ) :
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Rewrite using `[Ideal.mem_span_singleton]`. Establish `h` using `ZMod.val_intCast (n := p) z`. Establish `h2 : (((z : ZMod p).val : ℕ) : R) - (z : R) = ((-((p : ℤ) * (z / p)) : ℤ) : R)`. Establish `h3 : (((z : ZMod p).val : ℕ) : R) = ((((z : ZMod p).val : ℕ) : ℤ) : R)` using `by push_cast; rfl`. Rewrite using `[h3, h, Int.emod_def]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Use `push_cast`. Conclude with `⟨-((z / p : ℤ) : R), by ring⟩`.
+-/
 theorem val_sub (p : ℕ) [NeZero p] (z : ℤ) :
     ((((z : ZMod p).val : ℕ) : R)) - (z : R) ∈ Ideal.span {(p : R)} := by
   rw [Ideal.mem_span_singleton]
@@ -116,6 +163,9 @@ theorem val_sub (p : ℕ) [NeZero p] (z : ℤ) :
   push_cast
   exact ⟨-((z / p : ℤ) : R), by ring⟩
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_sub_distrib]`. Use `Ideal.sum_mem _ fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_sub]`. Conclude with `Ideal.mul_mem_left _ _ (val_sub p _)`.
+-/
 theorem sum_co_sub (p : ℕ) [NeZero p] (l : Ix E n → R) (x : Fin n → 𝓞 E) :
     ∑ m, l m * ((co p x m).val : R) - ∑ m, l m * (cz x m : R) ∈ Ideal.span {(p : R)} := by
   rw [← Finset.sum_sub_distrib]
@@ -133,6 +183,17 @@ def IsDualOf (σ : 𝓞 E →+* R) (s : Module.Free.ChooseBasisIndex ℤ (𝓞 E
   ∑ k, s k * σ (RingOfIntegers.basis E k) = 1 ∧
     ∀ a l, σ a * s l = ∑ k, (((RingOfIntegers.basis E).repr (a * RingOfIntegers.basis E k) l : ℤ) : R) * s k
 
+/- English proof (translation)
+Establish `hsurj : Function.Surjective (algebraMap R C).rangeRestrict` using `RingHom.rangeRestrict_surjective _`. Establish `hinj : Function.Injective (algebraMap R C).rangeRestrict` using `fun x y hxy => hi (congrArg Subtype.val hxy)`. Set `e` to `RingEquiv.ofBijective (algebraMap R C).rangeRestrict ⟨hinj, hsurj⟩`. Set `σ0 : 𝓞 E →+* (algebraMap R C).range` to `(σ.comp (algebraMap (𝓞 E) E)).codRestrict _ (fun a => h1 a)`. Set `σ' : 𝓞 E →+* R` to `e.symm.toRingHom.comp σ0`.
+
+Establish `hσ' : ∀ a, algebraMap R C (σ' a) = σ (a : E)`. Introduce `a`. Establish `h3 : e (σ' a) = σ0 a` using `by simp [σ']`. Establish `h4` using `congrArg Subtype.val h3`. Conclude with `h4`.
+
+Use `choose s hs using h2`. Use `⟨σ', s, hσ', hs, ?_⟩` and prove the remaining obligations. Unfold `IsDualOf`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply `hi` to reduce the goal to its premises.
+
+Rewrite using `[map_sum, map_one]`. Simplify using `only [map_mul, hs, hσ']`. Rewrite using `[← map_one σ, ← GlobalTheory.CompanionTheory.Ar.HT.ProjEig.sum_dualInt_mul, map_sum]`. Simplify using `[map_mul]`. Introduce `a l`.
+
+Apply `hi` to reduce the goal to its premises. Simplify using `only [map_mul, map_sum, hs, hσ', map_intCast]`. Rewrite using `[← map_mul, GlobalTheory.CompanionTheory.Ar.HT.ProjEig.mul_dualInt_eq, map_sum]`. Simplify using `[map_mul, map_intCast]`.
+-/
 theorem exists_dualOf {C : Type} [Field C] [Algebra R C] (hi : Function.Injective (algebraMap R C)) (σ : E →+* C)
     (h1 : ∀ a : 𝓞 E, σ (a : E) ∈ (algebraMap R C).range) (h2 : ∀ k, σ (HT.dualInt E k) ∈ (algebraMap R C).range) :
     ∃ (σ' : 𝓞 E →+* R) (s : Module.Free.ChooseBasisIndex ℤ (𝓞 E) → R),
@@ -164,6 +225,13 @@ theorem exists_dualOf {C : Type} [Field C] [Algebra R C] (hi : Function.Injectiv
 
 variable {σ : 𝓞 E →+* R} {s : Module.Free.ChooseBasisIndex ℤ (𝓞 E) → R}
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Fintype.sum_prod_type, Matrix.one_apply]`. Simplify using `only [Pm, Jm, ite_mul, zero_mul, mul_ite, mul_zero]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `only [if_true] split_ifs with hij`.
+
+Rewrite using `[← h.1]`. Simplify using `[mul_comm]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem Pm_mul_Jm (h : IsDualOf σ s) : Pm n σ * Jm n s = 1 := by
   ext i j
   rw [Matrix.mul_apply, Fintype.sum_prod_type, Matrix.one_apply]
@@ -176,6 +244,11 @@ theorem Pm_mul_Jm (h : IsDualOf σ s) : Pm n σ * Jm n s = 1 := by
   · intro b _ hb; simp [hb]
   · simp
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single k]`. Simplify using `only [Pm, if_true, cz_apply] conv_rhs => rw [← (RingOfIntegers.basis E).sum_repr (x k)]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl (fun k' _ => ?_)` and prove the remaining obligations. Rewrite using `[map_zsmul, zsmul_eq_mul, mul_comm]`.
+
+Introduce `b _ hb`. Simplify using `[Pm, hb]`. Simplify using the standard rewrite rules.
+-/
 theorem Pm_cz (k : Fin n) (x : Fin n → 𝓞 E) : ∑ m, Pm n σ k m * (cz x m : R) = σ (x k) := by
   rw [Fintype.sum_prod_type, Finset.sum_eq_single k]
   · simp only [Pm, if_true, cz_apply]
@@ -186,6 +259,11 @@ theorem Pm_cz (k : Fin n) (x : Fin n → 𝓞 E) : ∑ m, Pm n σ k m * (cz x m 
   · intro b _ hb; simp [Pm, hb]
   · simp
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `co_surj p x`. Establish `h1` using `sum_co_sub p (Pm n σ k) x`. Rewrite `h1` using `[Pm_cz]`. Establish `h2 : ((TestPt.fromNAdd pq).comp φ.toAddMonoidHom) (co p x) k = pq (Ideal.Quotient.mk _ (x k))`. Express the relevant statement in the definitionally equal form `TestPt.fromNAdd pq (φ (co p x)) k = _`.
+
+Rewrite using `[hφ]`. Both sides reduce to the same expression. Rewrite using `[h2]`. Use `Ideal.sub_mem _ h1 (hχ (x k)) using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Pm_cong {p : ℕ} [NeZero p] {F : Type} [Field F] (pq : (𝓞 E ⧸ Ideal.span {(p : 𝓞 E)}) →+* F)
     (φ : (Ix E n → ZMod p) ≃+ TestPt.NAdd E n p) (hφ : ∀ x, φ (co p x) = mkN p x) (χ : F → R)
     (hχ : ∀ a, χ (pq (Ideal.Quotient.mk _ a)) - σ a ∈ Ideal.span {(p : R)}) (k : Fin n) (x : Ix E n → ZMod p) :
@@ -204,6 +282,13 @@ theorem Pm_cong {p : ℕ} [NeZero p] {F : Type} [Field F] (pq : (𝓞 E ⧸ Idea
 def Ma (R : Type) [CommRing R] (n : ℕ) (a : 𝓞 E) : Matrix (Ix E n) (Ix E n) R :=
   fun m m' => (cz (a • dl m') m : R)
 
+/- English proof (translation)
+Use extensionality with `m m'`. Rewrite using `[Matrix.mul_apply, Matrix.sum_apply]`. Simplify using `only [Matrix.smul_apply, Ma, Jm, Pm, cz_apply, dl, smul_eq_mul, Pi.smul_apply, Pi.single_apply]`. Distinguish the cases in `hm : m.1 = m'.1`. Rewrite using `[Finset.sum_eq_single m.1 (by intro b _ hb; simp [Ne.symm hb]) (by simp)]`.
+
+Simplify using `only [if_true, hm, mul_ite, mul_zero]`. Rewrite using `[mul_comm (s m.2), h.2 (RingOfIntegers.basis E m'.2) m.2]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_comm (RingOfIntegers.basis E m'.2)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hm' : m'.1 ≠ m.1` using `Ne.symm hm`. Simplify using `[hm, hm']`.
+-/
 theorem Jm_mul_Pm (h : IsDualOf σ s) : Jm n s * Pm n σ = ∑ k, s k • Ma R n (RingOfIntegers.basis E k) := by
   ext m m'
   rw [Matrix.mul_apply, Matrix.sum_apply]
@@ -218,6 +303,11 @@ theorem Jm_mul_Pm (h : IsDualOf σ s) : Jm n s * Pm n σ = ∑ k, s k • Ma R n
   · have hm' : m'.1 ≠ m.1 := Ne.symm hm
     simp [hm, hm']
 
+/- English proof (translation)
+Establish `key : ∀ m', (cz (a • x) m' : R) = ∑ m, (cz x m : R) * (cz (a • dl m) m' : R)`. Introduce `m'`. Use `hom_eq ((cz (E := E) (n := n)).comp (DistribMulAction.toAddMonoidHom (Fin n → 𝓞 E) a)) x` as an intermediate fact. Simplify using `only [AddMonoidHom.comp_apply, DistribMulAction.toAddMonoidHom_apply] at this`. Rewrite using `[this]`.
+
+Simplify using `[Finset.sum_apply]`. Simplify using `only [key, Matrix.vecMul, dotProduct, Ma, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun m _ => Finset.sum_congr rfl (fun m' _ => ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vecMul_Ma (l : Ix E n → R) (a : 𝓞 E) (x : Fin n → 𝓞 E) :
     ∑ m, (l ᵥ* Ma R n a) m * (cz x m : R) = ∑ m, l m * (cz (a • x) m : R) := by
   have key : ∀ m', (cz (a • x) m' : R) = ∑ m, (cz x m : R) * (cz (a • dl m) m' : R) := by
@@ -233,10 +323,26 @@ theorem vecMul_Ma (l : Ix E n → R) (a : 𝓞 E) (x : Fin n → 𝓞 E) :
 
 variable {C : Type} [Field C] [Algebra R C]
 
+/- English proof (translation)
+Take `⟨t, rfl⟩` from `Ideal.mem_span_singleton'.1 h`. Conclude with `Submodule.mem_span_singleton.2 ⟨t, by simp [Algebra.smul_def]⟩`.
+-/
 theorem alg_mem_pInt {p : ℕ} {r : R} (h : r ∈ Ideal.span {(p : R)}) : algebraMap R C r ∈ pInt (C := C) R p := by
   obtain ⟨t, rfl⟩ := Ideal.mem_span_singleton'.1 h
   exact Submodule.mem_span_singleton.2 ⟨t, by simp [Algebra.smul_def]⟩
 
+/- English proof (translation)
+Establish `hMa : ∀ a : 𝓞 E, ∀ l ∈ afLat p MM, l ᵥ* Ma R n a ∈ afLat p MM`. Introduce `a l hl`. Take `⟨g, hg, hgl⟩` from `hl`. Take `⟨f, hf, rfl⟩` from `(hMM g).1 hg`. Use `⟨fun x => f (fun i => Ideal.Quotient.mk _ a * φ x i), (hMM _).2 ⟨_, hact a f hf, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `x`. Take `⟨y, rfl⟩` from `co_surj (E := E) (n := n) p x`. Establish `hy : (fun i => Ideal.Quotient.mk (Ideal.span {(p : 𝓞 E)}) a * φ (co p y) i) = φ (co p (a • y))`. Rewrite using `[hφ, hφ]`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[mkN]`. Use `show f (fun i => Ideal.Quotient.mk (Ideal.span {(p : 𝓞 E)}) a * φ (co p y) i) - _ ∈ _`. Rewrite using `[hy]`. Establish `h1` using `hgl (co p (a • y))`. Establish `h2` using `alg_mem_pInt (C := C) (sum_co_sub p (l ᵥ* Ma R n a) y)`.
+
+Establish `h3` using `alg_mem_pInt (C := C) (sum_co_sub p l (a • y))`. Rewrite `h2` using `[vecMul_Ma]`. Rewrite `h2`, `h3` using `[map_sub]`. Use `Submodule.sub_mem _ (Submodule.add_mem _ h1 h3) h2 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `l hl`. Rewrite using `[Jm_mul_Pm h]`. Establish `hsum : l ᵥ* (∑ k, s k • Ma R n (RingOfIntegers.basis E k)) = ∑ k, s k • (l ᵥ* Ma R n (RingOfIntegers.basis E k))`. Use function extensionality and compare the values at `m`. Simplify using `only [Matrix.vecMul, dotProduct, Finset.sum_apply, Pi.smul_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun k _ => Finset.sum_congr rfl (fun m' _ => ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ (fun k _ => Submodule.smul_mem _ _ (hMa _ l hl))`.
+-/
 theorem afLat_stable {p : ℕ} [NeZero p] (h : IsDualOf σ s)
     (φ : (Ix E n → ZMod p) ≃+ TestPt.NAdd E n p) (hφ : ∀ x, φ (co p x) = mkN p x)
     (M : Submodule R (TestPt.NAdd E n p → C))

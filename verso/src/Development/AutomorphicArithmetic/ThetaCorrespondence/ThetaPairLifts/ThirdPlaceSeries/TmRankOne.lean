@@ -24,6 +24,19 @@ section
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
 variable {N A}
 end
+/- English proof (translation)
+Use `haveI := host_isCMField D.host`. Use `set χ' := (CGu.equivChar D.host.E (C.e 1 π)).1 with hχ'`. Use `set χ := (S.e1 π).1 with hχ`. Establish `hloc : ∀ v, T.e v (D.naut.locG π v) = _root_.GlobalTheory.CuspRep.ParLawsT.locParT hL (CG.ofChar χ') (D.nd.plOm.2 v)` using `fun v => by`. Rewrite using `[C.loc, hχ', CGu.ofChar_equivChar]`.
+
+Both sides reduce to the same expression. Establish `unr' : ∀ v, D.naut.unr (D.naut.locG π v) ↔ χ'.UnrAt v` using `fun v => by`. Rewrite using `[T.unr, hloc v]`. Conclude with `_root_.GlobalTheory.RankOneComp.locParT_ofChar_unr_iff_unrAt hL χ' _`. Establish `hchar : χ' = χ`.
+
+Rewrite using `[← mul_inv_eq_one]`. Apply `GlobalTheory.HeckeSplitRow.eq_one_of_split D.host` to reduce the goal to its premises. Use `filter_upwards [D.naut.locG_unr_ae π] with v hv _`. Establish `u1` using `(S.unr_iff π v).1 hv`. Establish `u2` using `(unr' v).1 hv`.
+
+Use `⟨fun x hx => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.Host.HChar.loc_mul, Formalism.L2.Host.HChar.loc_inv, u1 x hx, u2 x hx, inv_one, mul_one]`. Establish `hf` using `S.frob π v u1`. Establish `hf' : D.naut.frobEig (D.naut.locG π v) = {(((χ'.val v)⁻¹ : ℂˣ) : ℂ)}`. Rewrite using `[T.frobEig _ _ hv, hloc v]`.
+
+Conclude with `_root_.GlobalTheory.RankOneComp.frobEig_locParT_ofChar_of_unrAt hL χ' _ u2`. Rewrite `hf` using `[hf', Multiset.singleton_inj, Units.val_inj, inv_inj]`. Rewrite using `[Formalism.L2.Host.HChar.val_mul, Formalism.L2.Host.HChar.val_inv, hf, mul_inv_cancel]`. Rewrite using `[tm_iff T, hloc, hchar, _root_.GlobalTheory.CuspRep.ParLaws.local_parameter_of_hecke_character_eq_reciprocity]`. Apply the tactic sequence `first | (have hOpn := UpperTheory.One.M.opn _ (_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (D.nd.plOm.2 w)); obtain ⟨a, ha, ε, H⟩ := hOpn) | obtain ⟨a, ha, ε, -, H⟩ := _root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (D.nd.plOm.2 w)`.
+
+Rewrite using `[H.one]`. Use `GlobalTheory.SerSys.LabDepth.tame_of_isTameWD ((PositivityTheory.LocalParametersCuspidal.DZC.tame_lpOfChar_iff _ _).2 fun σ hσ => ?_)` and prove the remaining obligations. Conclude with `GlobalTheory.MuTameQS.isTame_loc ht _ ((GlobalTheory.MuTameQS.val_lt_one_iff w _).2 (PositivityTheory.LocalParametersCuspidal.DZC.wild_to_unitsOne a ha σ hσ))`.
+-/
 theorem tm_rankOne_alt (hL : _root_.UpperTheory.Zero.LLC.RecTExists) {D : D7} {T : GlobalTheory.RowTie.WDTie D.nd D.naut} (C : _root_.GlobalTheory.HeightCounting.CGTrueT hL D T)
     {C₀ : CharFrame D} (S : CharSide D C₀) (π : D.naut.CG 1) (w : PlE D.host) (ht : (S.e1 π).1.TameAt w) :
     Tm D.nd D.naut (D.naut.locG π w) := by

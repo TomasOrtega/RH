@@ -16,6 +16,13 @@ set_option linter.unusedSectionVars false
 
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Establish `key : ∀ a : (Σ k, ι k) →₀ ℕ, Finsupp.weight (blockWeight (extIdx ι J)) (a.mapDomain fun v : Σ k, ι k => (⟨some v.1, v.2⟩ : Σ o, extIdx ι J o)) = liftMDeg (Finsupp.weight (blockWeight ι) a)`. Introduce `a`. Proceed by induction on `a using Finsupp.induction_linear with`. Consider the case `zero => funext o; cases o <;> simp [liftMDeg]`. Consider the case `add x y hx hy`.
+
+Rewrite using `[Finsupp.mapDomain_add, map_add, map_add, hx, hy]`. Apply the tactic sequence `funext o; cases o <;> simp [liftMDeg]`. Consider the case `single v n`. Rewrite using `[Finsupp.mapDomain_single, Finsupp.weight_single, Finsupp.weight_single]`. Apply the tactic sequence `funext o; cases o <;> simp [liftMDeg, blockWeight, Pi.single_apply]`.
+
+Introduce `a ha`. Take `⟨a', rfl, ha'⟩` from `coeff_rename_ne_zero _ _ _ ha`. Rewrite using `[key, h ha']`.
+-/
 theorem isMultiHomog_liftForm {J : Type} {p : MRing ι R} {c : K → ℕ} (h : IsMultiHomog p c) :
     IsMultiHomog (liftForm (J := J) p) (liftMDeg c) := by
   have key : ∀ a : (Σ k, ι k) →₀ ℕ,
@@ -35,6 +42,9 @@ theorem isMultiHomog_liftForm {J : Type} {p : MRing ι R} {c : K → ℕ} (h : I
   obtain ⟨a', rfl, ha'⟩ := coeff_rename_ne_zero _ _ _ ha
   rw [key, h ha']
 
+/- English proof (translation)
+Establish `h` using `IsWeightedHomogeneous.prod Finset.univ (fun k => (X ⟨k, i k⟩ : MRing ι R) ^ e k) (fun k => e k • blockWeight ι ⟨k, i k⟩) (fun k _ => (isWeightedHomogeneous_X R _ _).pow (e k))`. Unfold `IsMultiHomog powMonomial`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using `[Finset.sum_apply, blockWeight, Pi.single_apply]`.
+-/
 theorem isMultiHomog_powMonomial (e : K → ℕ) (i : ∀ k, ι k) :
     IsMultiHomog (powMonomial e i : MRing ι R) e := by
   have h := IsWeightedHomogeneous.prod Finset.univ (fun k => (X ⟨k, i k⟩ : MRing ι R) ^ e k)
@@ -44,26 +54,43 @@ theorem isMultiHomog_powMonomial (e : K → ℕ) (i : ∀ k, ι k) :
   funext k
   simp [Finset.sum_apply, blockWeight, Pi.single_apply]
 
+/- English proof (translation)
+Simplify using `[liftForm, rename_X]`.
+-/
 theorem liftForm_X {J : Type} (v : Σ k, ι k) :
     liftForm (J := J) (X v : MRing ι R) = X ⟨some v.1, v.2⟩ := by
   simp [liftForm, rename_X]
 
+/- English proof (translation)
+Simplify using `[liftForm]`.
+-/
 theorem liftForm_C {J : Type} (r : R) : liftForm (J := J) (C r : MRing ι R) = C r := by
   simp [liftForm]
 
 variable {J : Type}
 
+/- English proof (translation)
+Rewrite using `[blowUpOf, RingHom.mem_ker, aeval_blowUpSubst_liftForm, Ideal.Quotient.eq_zero_iff_mem.mpr h, map_zero]`.
+-/
 theorem liftForm_mem_blowUpOf {P : Ideal (MRing ι R)} {u : J → MRing ι R} {p : MRing ι R} (h : p ∈ P) :
     liftForm p ∈ blowUpOf P u := by
   rw [blowUpOf, RingHom.mem_ker, aeval_blowUpSubst_liftForm, Ideal.Quotient.eq_zero_iff_mem.mpr h,
     map_zero]
 
+/- English proof (translation)
+Rewrite using `[blowUpOf, RingHom.mem_ker, aeval_blowUpSubst_liftForm, Polynomial.C_eq_zero, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `h`.
+-/
 theorem liftForm_not_mem_blowUpOf {P : Ideal (MRing ι R)} {u : J → MRing ι R} {p : MRing ι R}
     (h : p ∉ P) : liftForm (J := J) p ∉ blowUpOf P u := by
   rw [blowUpOf, RingHom.mem_ker, aeval_blowUpSubst_liftForm, Polynomial.C_eq_zero,
     Ideal.Quotient.eq_zero_iff_mem]
   exact h
 
+/- English proof (translation)
+Rewrite using `[blowUpOf, RingHom.mem_ker, newVar, aeval_X]`. Express the relevant statement in the definitionally equal form `¬ (Polynomial.C (Ideal.Quotient.mk P (u j)) * Polynomial.X = 0)`. Introduce `h0`. Establish `h1` using `congrArg (fun p => Polynomial.coeff p 1) h0`. Simplify using `only [Polynomial.coeff_C_mul_X, if_true, Polynomial.coeff_zero] at h1`.
+
+Conclude with `h (Ideal.Quotient.eq_zero_iff_mem.mp h1)`.
+-/
 theorem newVar_not_mem_blowUpOf {P : Ideal (MRing ι R)} {u : J → MRing ι R} {j : J} (h : u j ∉ P) :
     (newVar j : MRing (extIdx ι J) R) ∉ blowUpOf P u := by
   rw [blowUpOf, RingHom.mem_ker, newVar, aeval_X]
@@ -73,6 +100,11 @@ theorem newVar_not_mem_blowUpOf {P : Ideal (MRing ι R)} {u : J → MRing ι R} 
   simp only [Polynomial.coeff_C_mul_X, if_true, Polynomial.coeff_zero] at h1
   exact h (Ideal.Quotient.eq_zero_iff_mem.mp h1)
 
+/- English proof (translation)
+Rewrite using `[blowUpOf, RingHom.mem_ker]`. Simplify using `only [map_sub, map_mul, newVar, aeval_X, blowUpSubst, aeval_blowUpSubst_liftForm]`. Establish `e : Polynomial.C (Ideal.Quotient.mk P (u j)) * Polynomial.X * Polynomial.C (Ideal.Quotient.mk P a) - Polynomial.C (Ideal.Quotient.mk P (u j')) * Polynomial.X * Polynomial.C (Ideal.Quotient.mk P a') = Polynomial.C (Ideal.Quotient.mk P (u j * a - u j' * a')) * Polynomial.X`. Simplify using `only [map_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, Ideal.Quotient.eq_zero_iff_mem.mpr h, map_zero, zero_mul]`.
+-/
 theorem mem_blowUpOf_of_sub {P : Ideal (MRing ι R)} {u : J → MRing ι R} {j j' : J}
     {a a' : MRing ι R} (h : u j * a - u j' * a' ∈ P) :
     newVar j * liftForm a - newVar j' * liftForm a' ∈ blowUpOf P u := by
@@ -84,6 +116,9 @@ theorem mem_blowUpOf_of_sub {P : Ideal (MRing ι R)} {u : J → MRing ι R} {j j
     simp only [map_sub, map_mul]; ring
   rw [e, Ideal.Quotient.eq_zero_iff_mem.mpr h, map_zero, zero_mul]
 
+/- English proof (translation)
+Use `⟨Ideal.comap_isPrime _ _, fun p hp => hQW (liftForm_mem_blowUpOf hp), fun k => ?_, ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hrel (some k)`. Conclude with `⟨i, by rw [Ideal.mem_comap, liftForm_X]; exact hi⟩`. Take `⟨j, hj⟩` from `hrel none`. Conclude with `⟨j, hj⟩`.
+-/
 theorem comap_liftForm_facts {P : Ideal (MRing ι R)} {u : J → MRing ι R}
     {W : Ideal (MRing (extIdx ι J) R)} (hW : W.IsPrime) (hQW : blowUpOf P u ≤ W) (hrel : IsRelevant W) :
     (W.comap (liftForm (J := J))).IsPrime ∧ P ≤ W.comap (liftForm (J := J)) ∧
@@ -94,6 +129,9 @@ theorem comap_liftForm_facts {P : Ideal (MRing ι R)} {u : J → MRing ι R}
   · obtain ⟨j, hj⟩ := hrel none
     exact ⟨j, hj⟩
 
+/- English proof (translation)
+Use `choose i hi using hrel`. Use `⟨i, fun hmem => ?_⟩` and prove the remaining obligations. Establish `h : powMonomial e i ∈ W.primeCompl` using `W.primeCompl.prod_mem fun k _ => W.primeCompl.pow_mem (hi k) _`. Conclude with `h hmem`.
+-/
 theorem powMonomial_not_mem {W : Ideal (MRing ι R)} (hW : W.IsPrime) (hrel : IsRelevant W) (e : K → ℕ) :
     ∃ i : ∀ k, ι k, powMonomial e i ∉ W := by
   choose i hi using hrel
@@ -107,6 +145,11 @@ def blowUpCof (s m : MRing ι R) (e : K → ℕ) (u₀ v₀ : MRing ι R) : Blow
   | some none => v₀ * m
   | some (some i) => v₀ * powMonomial e i
 
+/- English proof (translation)
+Break down `j with _ | _ | i` into its components or cases. Simplify using `only [blowUpGens, blowUpCof]`. Rewrite using `[show u₀ * (s * g) - g * (u₀ * s) = 0 by ring]`. Conclude with `P.zero_mem`. Simplify using `only [blowUpGens, blowUpCof]`.
+
+Rewrite using `[show u₀ * (f * m) - g * (v₀ * m) = m * (u₀ * f - v₀ * g) by ring]`. Conclude with `P.mul_mem_left _ h`. Simplify using `only [blowUpGens, blowUpCof]`. Rewrite using `[show u₀ * (f * powMonomial e i) - g * (v₀ * powMonomial e i) = powMonomial e i * (u₀ * f - v₀ * g) by ring]`. Conclude with `P.mul_mem_left _ h`.
+-/
 theorem blowUpCof_spec {P : Ideal (MRing ι R)} {s g f m u₀ v₀ : MRing ι R} (e : K → ℕ)
     (h : u₀ * f - v₀ * g ∈ P) (j : BlowUpIdx ι) :
     u₀ * blowUpGens s g f m e j - g * blowUpCof s m e u₀ v₀ j ∈ P := by
@@ -122,6 +165,13 @@ theorem blowUpCof_spec {P : Ideal (MRing ι R)} {s g f m u₀ v₀ : MRing ι R}
       powMonomial e i * (u₀ * f - v₀ * g) by ring]
     exact P.mul_mem_left _ h
 
+/- English proof (translation)
+Apply `mem_blowUpOf_of_sub` to reduce the goal to its premises. Establish `h1` using `blowUpCof_spec (s := s) (m := m) e h j`. Establish `h2` using `blowUpCof_spec (s := s) (m := m) e h j'`. Generalize the expression as in `blowUpGens s g f m e j = x at h1 ⊢`. Generalize the expression as in `blowUpGens s g f m e j' = x' at h2 ⊢`.
+
+Generalize the expression as in `blowUpCof s m e u₀ v₀ j = a at h1 ⊢`. Generalize the expression as in `blowUpCof s m e u₀ v₀ j' = a' at h2 ⊢`. Establish `key : g * (x * a' - x' * a) ∈ P`. Rewrite using `[show g * (x * a' - x' * a) = x' * (u₀ * x - g * a) - x * (u₀ * x' - g * a') by ring]`. Conclude with `P.sub_mem (P.mul_mem_left _ h1) (P.mul_mem_left _ h2)`.
+
+Conclude with `(hP.mem_or_mem key).resolve_left hg`.
+-/
 theorem blowUpCof_relation {P : Ideal (MRing ι R)} (hP : P.IsPrime) {s g f m u₀ v₀ : MRing ι R}
     (e : K → ℕ) (hg : g ∉ P) (h : u₀ * f - v₀ * g ∈ P) (j j' : BlowUpIdx ι) :
     newVar j * liftForm (blowUpCof s m e u₀ v₀ j') - newVar j' * liftForm (blowUpCof s m e u₀ v₀ j) ∈
@@ -138,6 +188,15 @@ theorem blowUpCof_relation {P : Ideal (MRing ι R)} (hP : P.IsPrime) {s g f m u�
     exact P.sub_mem (P.mul_mem_left _ h1) (P.mul_mem_left _ h2)
   exact (hP.mem_or_mem key).resolve_left hg
 
+/- English proof (translation)
+Establish `mnm : ∀ {x y}, x ∉ W → y ∉ W → x * y ∉ W` using `fun hx hy hxy => (hW.mem_or_mem hxy).elim hx hy`. Take `⟨hW₀, -, hrel₀, j, hj⟩` from `comap_liftForm_facts hW hQW hrel`. Take `⟨i, hi⟩` from `powMonomial_not_mem hW₀ hrel₀ e`. Establish `hi' : liftForm (powMonomial e i) ∉ W` using `hi`. Establish `key : ∀ j', liftForm (blowUpCof s m e u₀ v₀ j') ∉ W → newVar j' ∉ W`.
+
+Introduce `j' ha hj'`. Establish `hr` using `hQW (blowUpCof_relation hP e hg h j j')`. Establish `h3 : newVar j * liftForm (blowUpCof s m e u₀ v₀ j') ∈ W`. Establish `h4` using `W.add_mem hr (W.mul_mem_right (liftForm (blowUpCof s m e u₀ v₀ j)) hj')`. Rewrite `h4` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+
+Conclude with `mnm hj ha h3`. Use `⟨i, hi', key _ ?_, fun hm => key _ ?_⟩` and prove the remaining obligations. Use `show liftForm (v₀ * powMonomial e i) ∉ W`. Rewrite using `[map_mul]`. Conclude with `mnm hv hi'`.
+
+Use `show liftForm (v₀ * m) ∉ W`. Rewrite using `[map_mul]`. Conclude with `mnm hv hm`.
+-/
 theorem blowUp_offSpecial {P : Ideal (MRing ι R)} (hP : P.IsPrime) {s g f m : MRing ι R} (e : K → ℕ)
     (hg : g ∉ P) {W : Ideal (MRing (extIdx ι (BlowUpIdx ι)) R)} (hW : W.IsPrime)
     (hQW : blowUpOf P (blowUpGens s g f m e) ≤ W) (hrel : IsRelevant W) {u₀ v₀ : MRing ι R}
@@ -163,6 +222,49 @@ theorem blowUp_offSpecial {P : Ideal (MRing ι R)} (hP : P.IsPrime) {s g f m : M
 
 end Helpers
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P d hP b f g hD c s hs hsP hsH e hce m hm hmP hmH`. Establish `hPp : P.IsPrime` using `hP.multiProj.isPrime`. Establish `hDv` using `hD.1`. Take `⟨⟨bf, bg, hf, hg, hb⟩, hfP, hgP, -, hunit⟩` from `hD.1`. Use `set Q := blowUpOf P (blowUpGens s g f m e) with hQ`.
+
+Establish `hsgP : s * g ∉ P` using `fun h => (hPp.mem_or_mem h).elim hsP hgP`. Establish `hfmP : f * m ∉ P` using `fun h => (hPp.mem_or_mem h).elim hfP hmP`. Establish `hdeg : c + bg = bf + e`. Use function extensionality and compare the values at `k`. Establish `h1 : (bf k : ℤ) - bg k = b k` using `congrFun hb k`.
+
+Establish `h2` using `hce k`. Simplify using `only [Pi.add_apply]`. Use linear arithmetic over natural numbers and integers. Establish `hgens : ∀ j, IsMultiHomog (blowUpGens s g f m e j) (c + bg)`. Introduce and unpack `(_ | _ | i)`.
+
+Conclude with `hs.mul hg`. Rewrite using `[hdeg]`. Conclude with `hf.mul hm`. Rewrite using `[hdeg]`. Conclude with `hf.mul (isMultiHomog_powMonomial e i)`.
+
+Establish `hmod` using `hmodel O K ι (BlowUpIdx ι) P (d + 1) hP (c + bg) (blowUpGens s g f m e) hgens ⟨none, hsgP⟩`. Establish `hQp : Q.IsPrime` using `hmod.multiProj.isPrime`. Establish `hY₁ : (newVar (some none) : MRing (extIdx ι (BlowUpIdx ι)) O) ∉ Q` using `newVar_not_mem_blowUpOf (u := blowUpGens s g f m e) (j := some none) hfmP`. Establish `hdegRes : ∃ bf' bg' : Option K → ℕ, IsMultiHomog (newVar (some none) : MRing (extIdx ι (BlowUpIdx ι)) O) bf' ∧ IsMultiHomog (liftForm (J` using `BlowUpIdx ι) m) bg' ∧ (fun k => (bf' k : ℤ) - bg' k) = residualDeg e := ⟨Pi.single none 1, liftMDeg e, isWeightedHomogeneous_X _ _ _, isMultiHomog_liftForm hm, by`. Apply the tactic sequence `funext o; cases o <;> simp [residualDeg, liftDeg, liftMDeg]⟩`.
+
+Establish `hdegExc : ∃ bf' bg' : Option K → ℕ, IsMultiHomog (liftForm (J` using `BlowUpIdx ι) (f * m)) bf' ∧ IsMultiHomog (liftForm g * newVar (some none) : MRing (extIdx ι (BlowUpIdx ι)) O) bg' ∧ (fun k => (bf' k : ℤ) - bg' k) = exceptionalDeg b e := by`. Use `⟨liftMDeg (bf + e), liftMDeg bg + Pi.single none 1, isMultiHomog_liftForm (hf.mul hm), (isMultiHomog_liftForm hg).mul (isWeightedHomogeneous_X _ _ _), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `o`. Consider the cases of `o with`. Consider the case `none => simp [exceptionalDeg, liftDeg, liftMDeg]`.
+
+Consider the case `some k`. Establish `h1 : (bf k : ℤ) - bg k = b k` using `congrFun hb k`. Simplify using `[exceptionalDeg, liftDeg, liftMDeg]`. Use linear arithmetic over natural numbers and integers. Establish `hoff : ∀ W : Ideal (MRing (extIdx ι (BlowUpIdx ι)) O), W.IsPrime → Q ≤ W → IsRelevant W → (C ϖ : MRing (extIdx ι (BlowUpIdx ι)) O) ∉ W → (∃ u v, u ∉ W ∧ v ∉ W ∧ u * newVar (some none) - v * liftForm m ∈ Q) ∧ (∃ u v, u ∉ W ∧ v ∉ W ∧ u * liftForm (f * m) - v * (liftForm g * newVar …`.
+
+Introduce `W hW hQW hrel hϖW`. Establish `mnm : ∀ {x y}, x ∉ W → y ∉ W → x * y ∉ W` using `fun hx hy hxy => (hW.mem_or_mem hxy).elim hx hy`. Take `⟨hW₀, hPW₀, hrel₀, -⟩` from `comap_liftForm_facts hW hQW hrel`. Take `⟨u₀, v₀, hu, hv, h⟩` from `hunit _ hW₀ hPW₀ hrel₀ (by rw [Ideal.mem_comap, liftForm_C]; exact hϖW)`. Take `⟨i, hpm, hYi, hY₁m⟩` from `blowUp_offSpecial hPp e hgP hW hQW hrel (u₀ := u₀) hv h`.
+
+Use `⟨⟨liftForm (powMonomial e i), newVar (some (some i)), hpm, hYi, ?_⟩, ⟨liftForm u₀ * newVar (some (some i)), liftForm (v₀ * powMonomial e i), mnm hu hYi, by rw [map_mul]; exact mnm hv hpm, ?_⟩, hY₁m⟩` and prove the remaining obligations. Establish `h3` using `mem_blowUpOf_of_sub (P := P) (u := blowUpGens s g f m e) (j := some none) (j' := some (some i)) (a := powMonomial e i) (a' := m) (by`. Simplify using `only [blowUpGens]`. Rewrite using `[show f * m * powMonomial e i - f * powMonomial e i * m = 0 by ring]`. Conclude with `P.zero_mem)`.
+
+Use `h3 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `mem_blowUpOf_of_sub (P := P) (u := blowUpGens s g f m e) (j := some (some i)) (j' := some none) (a := u₀ * (f * m)) (a' := v₀ * powMonomial e i * g) (by`. Simplify using `only [blowUpGens]`. Rewrite using `[show f * powMonomial e i * (u₀ * (f * m)) - f * m * (v₀ * powMonomial e i * g) = (f * m * powMonomial e i) * (u₀ * f - v₀ * g) by ring]`.
+
+Conclude with `P.mul_mem_left _ h)`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hRes : IsEffectiveVertical Q ϖ (residualDeg e) (newVar (some none)) (liftForm m)`.
+
+Use `⟨IsVerticalDivisor.of_unit_off_special hdegRes hY₁ (liftForm_not_mem_blowUpOf hmP) fun W hW hQW hrel hϖW => (hoff W hW hQW hrel hϖW).1, ?_⟩` and prove the remaining obligations. Introduce `W hW hQW hrel`. Take `⟨hW₀, -, hrel₀, -⟩` from `comap_liftForm_facts hW hQW hrel`. Take `⟨i, hi⟩` from `powMonomial_not_mem hW₀ hrel₀ e`. Use `⟨liftForm (powMonomial e i), newVar (some (some i)), hi, ?_⟩` and prove the remaining obligations.
+
+Establish `h3` using `mem_blowUpOf_of_sub (P := P) (u := blowUpGens s g f m e) (j := some none) (j' := some (some i)) (a := powMonomial e i) (a' := m) (by`. Simplify using `only [blowUpGens]`. Rewrite using `[show f * m * powMonomial e i - f * powMonomial e i * m = 0 by ring]`. Conclude with `P.zero_mem)`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hExc : IsEffectiveVertical Q ϖ (exceptionalDeg b e) (liftForm (f * m)) (liftForm g * newVar (some none))`. Use `⟨IsVerticalDivisor.of_unit_off_special hdegExc (liftForm_not_mem_blowUpOf hfmP) (fun h => (hQp.mem_or_mem h).elim (liftForm_not_mem_blowUpOf hgP) hY₁) fun W hW hQW hrel hϖW => (hoff W hW hQW hrel hϖW).2.1, ?_⟩` and prove the remaining obligations. Introduce `W hW hQW hrel`. Take `⟨hW₀, hPW₀, hrel₀, j, hj⟩` from `comap_liftForm_facts hW hQW hrel`.
+
+Take `⟨u₀, v₀, hu, h⟩` from `hD.2 _ hW₀ hPW₀ hrel₀`. Use `⟨liftForm u₀ * newVar j, liftForm (blowUpCof s m e u₀ v₀ j), fun h' => (hW.mem_or_mem h').elim hu hj, ?_⟩` and prove the remaining obligations. Establish `h3` using `mem_blowUpOf_of_sub (P := P) (u := blowUpGens s g f m e) (j := j) (j' := some none) (a := u₀ * (f * m)) (a' := blowUpCof s m e u₀ v₀ j * g) (by`. Establish `h4` using `blowUpCof_spec (s := s) (m := m) e h j`. Use `show blowUpGens s g f m e j * (u₀ * (f * m)) - f * m * (blowUpCof s m e u₀ v₀ j * g) ∈ P`.
+
+Rewrite using `[show blowUpGens s g f m e j * (u₀ * (f * m)) - f * m * (blowUpCof s m e u₀ v₀ j * g) = (f * m) * (u₀ * blowUpGens s g f m e j - g * blowUpCof s m e u₀ v₀ j) by ring]`. Conclude with `P.mul_mem_left _ h4)`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hhor : ∀ H : Ideal (MRing (extIdx ι (BlowUpIdx ι)) O), (C ϖ : MRing (extIdx ι (BlowUpIdx ι)) O) ∉ H → (divCycle Q (liftForm s) H ≠ 0 ∨ divCycle Q (newVar none) H ≠ 0) → IsVerticalDivisor H ϖ (residualDeg e) (newVar (some none)) (liftForm m) ∧ IsVerticalDivisor H ϖ (exceptionalDeg …`. Introduce `H hϖH hH`. Establish `hsupp : H.IsPrime ∧ Q ≤ H ∧ IsRelevant H`. Break down `hH with hH | hH` into its components or cases. Conclude with `le_and_isRelevant_of_divCycle_ne_zero hH`.
+
+Conclude with `le_and_isRelevant_of_divCycle_ne_zero hH`. Take `⟨hHp, hQH, hHrel⟩` from `hsupp`. Establish `mnm : ∀ {x y}, x ∉ H → y ∉ H → x * y ∉ H` using `fun hx hy hxy => (hHp.mem_or_mem hxy).elim hx hy`. Establish `h0` using `hst O ϖ hϖ K ι P d hP b f g hDv s hsP e m H hϖH hH`. Establish `hϖH₀ : (C ϖ : MRing ι O) ∉ H.comap (liftForm (J` using `BlowUpIdx ι)) := by`.
+
+Rewrite using `[Ideal.mem_comap, liftForm_C]`. Conclude with `hϖH`. Establish `hvH₀` using `hsH _ h0 hϖH₀`. Establish `hmH : liftForm m ∉ H` using `hmH _ h0 hϖH₀`. Establish `hfH : liftForm f ∉ H` using `hvH₀.num_not_mem`.
+
+Establish `hgH : liftForm g ∉ H` using `hvH₀.den_not_mem`. Establish `hY₁H` using `(hoff H hHp hQH hHrel hϖH).2.2 hmH`. Establish `tr : ∀ {F G : MRing (extIdx ι (BlowUpIdx ι)) O}, (∀ W : Ideal (MRing (extIdx ι (BlowUpIdx ι)) O), W.IsPrime → Q ≤ W → IsRelevant W → (C ϖ : MRing (extIdx ι (BlowUpIdx ι)) O) ∉ W → ∃ u v, u ∉ W ∧ v ∉ W ∧ u * F - v * G ∈ Q) → ∀ W : Ideal (MRing (extIdx ι (BlowUpIdx ι)) O), W.IsPrim …`. Introduce `F G hF W hW hHW hrel hϖW`. Take `⟨u', v', hu', hv', h'⟩` from `hF W hW (hQH.trans hHW) hrel hϖW`.
+
+Conclude with `⟨u', v', hu', hv', hQH h'⟩`. Use `⟨IsVerticalDivisor.of_unit_off_special hdegRes hY₁H hmH (tr fun W hW hQW hrel hϖW => (hoff W hW hQW hrel hϖW).1), IsVerticalDivisor.of_unit_off_special hdegExc (by rw [map_mul]; exact mnm hfH hmH) (mnm hgH hY₁H) (tr fun W hW hQW hrel hϖW => (hoff W hW hQW hrel hϖW).2.1)⟩` and prove the remaining obligations. Conclude with `⟨hmod, isMultiHomog_liftForm hs, liftForm_not_mem_blowUpOf hsP, newVar_not_mem_blowUpOf (u := blowUpGens s g f m e) (j := none) hsgP, hRes, hExc, fun H hH hϖH => hhor H hϖH (Or.inl hH), fun H hH hϖH => (hhor H hϖH (Or.inr hH)).2⟩`.
+-/
 theorem BlowUpDecomposition.proof (hmodel : BlowUpModel.Statement.{u})
     (hst : BlowUpStrictTransform.Statement.{u}) : BlowUpDecomposition.Statement.{u} := by
   intro O _ _ _ ϖ hϖ K _ _ ι _ P d hP b f g hD c s hs hsP hsH e hce m hm hmP hmH

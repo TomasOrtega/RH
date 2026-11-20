@@ -14,6 +14,15 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.ThK
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ τ β hCM hβ`. Take `⟨z, hz, hzw⟩` from `exists_at_evI_piInf_eq F E σ hCM τ (fun w => β w - 1)`. Take `⟨z', hz', hzw'⟩` from `exists_at_evI_piInf_eq F E σ hCM τ (fun w => (β w)⁻¹ - 1)`. Establish `hs : At (evI F) (z + z' + z * z')`. Introduce `u hu`.
+
+Rewrite using `[smul_add, smul_add, ← smul_mul_assoc, hz u hu, hz' u hu, zero_mul, add_zero, add_zero]`. Establish `h1 : (1 + z) * (1 + z') = 1`. Establish `h0 : z + z' + z * z' = 0`. Use `GlobalTheory.ArchInj.eq_zero_of_at_of_piInf F E σ hCM τ _ hs fun w => ?_` and prove the remaining obligations. Rewrite using `[map_add, map_add, map_mul, hzw, hzw']`.
+
+Use `hβ w` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `h0`. Use `⟨Units.mkOfMulEqOne (1 + z) (1 + z') h1, ?_, fun w => ?_⟩` and prove the remaining obligations.
+
+Simplify using `using hz`. Simplify using `[Units.val_mkOfMulEqOne, map_add, hzw]`.
+-/
 theorem exists_unit_at_evI_piInf_eq : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (τ : ∀ w : InfinitePlace F, EmbOver E w) (β : InfinitePlace F → ℂ), IsCMExt F E σ → (∀ w, β w ≠ 0) → ∃ t : (AE F E)ˣ, At (evI F) (t.1 - 1) ∧ ∀ w, piInf (τ w) t.1 = β w := by
   intro F E _ _ _ _ _ σ τ β hCM hβ
   obtain ⟨z, hz, hzw⟩ := exists_at_evI_piInf_eq F E σ hCM τ (fun w => β w - 1)

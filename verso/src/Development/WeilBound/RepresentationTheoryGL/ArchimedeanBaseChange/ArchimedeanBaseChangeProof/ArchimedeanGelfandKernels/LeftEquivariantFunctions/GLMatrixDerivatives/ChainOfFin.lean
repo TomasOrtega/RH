@@ -17,6 +17,11 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use `show det k.1 ≠ 0`. Introduce `h0`. Establish `hd` using `Matrix.det_of_mem_unitary k.2`. Rewrite `hd` using `[h0]`. Establish `h1 : star (0 : ℂ) * 0 = 1` using `hd.1`.
+
+Simplify using `at h1`.
+-/
 theorem unitary_mem_GLs (k : Matrix.unitaryGroup (Fin n) ℂ) : k.1 ∈ GLs n := by
   show det k.1 ≠ 0
   intro h0
@@ -25,6 +30,13 @@ theorem unitary_mem_GLs (k : Matrix.unitaryGroup (Fin n) ℂ) : k.1 ∈ GLs n :=
   have h1 : star (0 : ℂ) * 0 = 1 := hd.1
   simp at h1
 
+/- English proof (translation)
+Unfold `act`. Establish `hFx : ContinuousOn (fun z => F (x * z)) (GLs n)` using `hF.comp (continuous_const.mul continuous_id).continuousOn (fun z hz => mul_mem_GLs hx hz)`. Establish `hint : ∀ i, Integrable (fun y : G n => (ks i ↑y) (F (x * ↑y))) μ` using `fun i => int_of_cptK hL μ (ks i) (fun z => F (x * z)) (hcont i) hFx (hcpt i)`. Establish `hint' : ∀ i ∈ (Finset.univ : Finset (Fin m)), Integrable (fun y : G n => c i • (ks i ↑y) (F (x * ↑y))) μ` using `fun i _ => (hint i).smul (c i)`. Establish `hfun : (fun y : G n => (k ↑y) (F (x * ↑y))) = fun (y : G n) => ∑ i, c i • (ks i ↑y) (F (x * ↑y))`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[hsum _ (mem_GLs_of y)]`. Simplify using `[ContinuousLinearMap.sum_apply]`. Rewrite using `[hfun, integral_finset_sum _ hint']`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[integral_smul]`.
+-/
 theorem act_sum (hL : LgFacts) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
     (E : KMod n) {m : ℕ} (c : Fin m → ℂ) (ks : Fin m → Mat n → (E.V →L[ℂ] E.V)) (k : Mat n → (E.V →L[ℂ] E.V))
     (hsum : ∀ y ∈ GLs n, k y = ∑ i, c i • ks i y) (hcont : ∀ i, ContinuousOn (ks i) (GLs n)) (hcpt : ∀ i, Cpt (ks i))
@@ -46,6 +58,11 @@ theorem act_sum (hL : LgFacts) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : 
   refine Finset.sum_congr rfl (fun i _ => ?_)
   rw [integral_smul]
 
+/- English proof (translation)
+Establish `hsd : HasFDerivAt (fun x => ∑ i, c i • h i x) (∑ i, c i • fderiv ℝ (h i) 1) 1` using `HasFDerivAt.fun_sum fun i _ => (hd i).hasFDerivAt.const_smul (c i)`. Simplify using `only [DC, Rd, hsd.fderiv]`. Simplify using `only [ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.coe_smul', Pi.smul_apply, map_sum, map_smul, Finset.smul_sum, smul_add]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_add_distrib, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_add, map_smul]`.
+-/
 theorem dc_sum {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (ε : Mat n →ₗ[ℝ] (V →L[ℂ] V))
     (Fr : Mat n → (V →L[ℂ] V)) {m : ℕ} (c : Fin m → ℂ) (h : Fin m → Mat n → V)
     (hd : ∀ i, DifferentiableAt ℝ (h i) 1) :

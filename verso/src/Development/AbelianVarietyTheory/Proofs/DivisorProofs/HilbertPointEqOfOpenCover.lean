@@ -7,6 +7,13 @@ set_option autoImplicit false
 
 namespace GlobalTheory.HilbGlue
 
+/- English proof (translation)
+Use `Scheme.IdealSheafData.ext_of_iSup_eq_top (ι := Σ i, (X i).affineOpens) (fun a => ⟨f a.1 ''ᵁ a.2.1, a.2.2.image_of_isOpenImmersion (f a.1)⟩) ?_ ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `x -`. Take `⟨i, y, rfl⟩` from `hf x`. Choose the witnesses or unpack the hypotheses as in `⟨W, hW, hyW⟩ : ∃ W : (X i).Opens, IsAffineOpen W ∧ y ∈ W := by`.
+
+Take `⟨_, ⟨W, hW, rfl⟩, hy, -⟩` from `(X i).isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ y) isOpen_univ`. Conclude with `⟨W, hW, hy⟩`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨i, W, hW⟩, ⟨y, hyW, rfl⟩⟩`. Introduce and unpack `⟨i, W⟩`. Establish `e` using `congrArg (fun K : (X i).IdealSheafData => K.ideal W) (h i)`.
+
+Simplify using `only [Scheme.IdealSheafData.ideal_comap_of_isOpenImmersion] at e`. Conclude with `Ideal.comap_injective_of_surjective _ ((ConcreteCategory.bijective_of_isIso ((f i).appIso W).inv).2) e`.
+-/
 theorem idealSheaf_ext_of_openImmersions {P : Scheme.{0}} {ι : Type*} {X : ι → Scheme.{0}}
     (f : ∀ i, X i ⟶ P) [∀ i, IsOpenImmersion (f i)] (hf : ∀ x : P, ∃ i y, f i y = x)
     (I J : P.IdealSheafData) (h : ∀ i, I.comap (f i) = J.comap (f i)) : I = J := by
@@ -28,6 +35,13 @@ theorem idealSheaf_ext_of_openImmersions {P : Scheme.{0}} {ι : Type*} {X : ι �
 
 end GlobalTheory.HilbGlue
 
+/- English proof (translation)
+Introduce `S Z z r Y 𝒰 x x' e`. Take `⟨g, I⟩` from `x`. Take `⟨g', I'⟩` from `x'`. Take `rfl : g = g'` from `𝒰.hom_ext _ _ fun i => congrArg Sigma.fst (e i)`. Rewrite using `[HPt.mk_eq_mk_iff]`.
+
+Establish `hP : ∀ i : 𝒰.I₀, IsPullback (pullback.snd z (𝒰.f i ≫ g)) (bc z (𝒰.f i) g (𝒰.f i ≫ g) rfl) (𝒰.f i) (pullback.snd z g)` using `fun i => (isPullback_bc z (𝒰.f i) g (𝒰.f i ≫ g) rfl).flip`. Use `haveI : ∀ i : 𝒰.I₀, IsOpenImmersion (bc z (𝒰.f i) g (𝒰.f i ≫ g) rfl) := fun i => MorphismProperty.of_isPullback (P := @IsOpenImmersion) (hP i) inferInstance`. Use `idealSheaf_ext_of_openImmersions (ι := 𝒰.I₀) (X := fun i => pullback z (𝒰.f i ≫ g)) (fun i => bc z (𝒰.f i) g (𝒰.f i ≫ g) rfl) ?_ I.1 I'.1 fun i => ?_` and prove the remaining obligations. Introduce `x`. Take `⟨i, y, hy⟩` from `𝒰.exists_eq (pullback.snd z g x)`.
+
+Take `⟨w, hw, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := pullback.snd z g) (g := 𝒰.f i) x y hy.symm`. Use `⟨i, (isPullback_bc z (𝒰.f i) g (𝒰.f i ≫ g) rfl).isoPullback.inv w, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, IsPullback.isoPullback_inv_fst, hw]`. Use `(HPt.mk_eq_mk_iff _ _).1 (e i)` as an intermediate fact. Conclude with `this`.
+-/
 theorem GlobalTheory.HilbGlue.HPt.ext_openCover : ∀ {S Z : Scheme.{0}} (z : Z ⟶ S) (r : ℕ) (Y : Scheme.{0}) (𝒰 : Y.OpenCover) (x x' : GlobalTheory.HilbGlue.HPt z r Y), (∀ i, GlobalTheory.HilbGlue.HPt.map (𝒰.f i) x = GlobalTheory.HilbGlue.HPt.map (𝒰.f i) x') → x = x' := by
   intro S Z z r Y 𝒰 x x' e
   obtain ⟨g, I⟩ := x

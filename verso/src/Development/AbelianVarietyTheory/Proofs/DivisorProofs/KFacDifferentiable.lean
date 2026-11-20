@@ -56,6 +56,11 @@ def IsGood (P : ℂ → (Emb F → ℂ) → ℂ) : Prop :=
   (∀ σ ∈ halfPlane, ContDiffOn ℝ ∞ (P σ) (upperHalf F)) ∧
   (∀ w : List (Emb F × Bool), ∀ z ∈ upperHalf F, DifferentiableOn ℂ (fun σ => wirtWord w (P σ) z) halfPlane)
 
+/- English proof (translation)
+Introduce `σ`. Unfold `kFac`. Rewrite using `[show (fun σ : ℂ => ∏ _τ : Emb F, ((2 * (Real.pi : ℂ) * I)⁻¹ ^ 2 * ((2 * Real.pi : ℝ) : ℂ) ^ (-2 * σ))) = fun σ => ((2 * (Real.pi : ℂ) * I)⁻¹ ^ 2 * ((2 * Real.pi : ℝ) : ℂ) ^ (-2 * σ)) ^ Fintype.card (Emb F) from`. Use function extensionality and compare the values at `fun σ => Finset.prod_const _]`. Use `DifferentiableAt.pow (DifferentiableAt.const_mul ?_ _) _` and prove the remaining obligations.
+
+Use `DifferentiableAt.const_cpow (differentiableAt_id.const_mul _) (Or.inl ?_)` and prove the remaining obligations. Conclude with `(mul_pos two_pos Real.pi_pos).ne'` after adjusting the coercions.
+-/
 theorem kFac_differentiable : Differentiable ℂ (kFac F) := by
   intro σ
   unfold kFac
@@ -66,6 +71,9 @@ theorem kFac_differentiable : Differentiable ℂ (kFac F) := by
   refine DifferentiableAt.const_cpow (differentiableAt_id.const_mul _) (Or.inl ?_)
   exact_mod_cast (mul_pos two_pos Real.pi_pos).ne'
 
+/- English proof (translation)
+Simplify using `[eisTerm, latPt]`.
+-/
 example (𝔞 : Frac F) (σ : ℂ) (z : Emb F → ℂ) (a : F) : eisTerm 2 σ z (a, 0) = eisTerm 2 σ 0 (a, 0) := by
   simp [eisTerm, latPt]
 

@@ -21,6 +21,9 @@ def projProj : (((k : Unit) → projBlocks K i k) → ℂ) →ₗ[ℂ] (Fin i �
       Finset.mul_sum]
     exact Finset.sum_congr rfl fun σ _ => Finset.sum_congr rfl fun m _ => by ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem projProj_apply (s : ((k : Unit) → projBlocks K i k) → ℂ) :
     projProj s = ∑ σ : K →+* ℂ, embComp σ (fun q => s fun _ => q) := rfl
 
@@ -41,13 +44,25 @@ def ProjStdMassAt.Statement : Prop :=
     ptsIntegralAt (e := D) (projSpaceIdeal K (D + 1)) projProj
       (fun _ z => Real.log ((latticeLine F).h z)) (fun _ => 1) = Fintype.card (K →+* ℂ)
 
+/- English proof (translation)
+The claim follows from `projProj`.
+-/
 example : (((k : Unit) → projBlocks ℚ 1 k) → ℂ) →ₗ[ℂ] (Fin 1 → ℂ) := projProj
 
+/- English proof (translation)
+The claim follows from `projPlanePt (Rat.castHom ℂ) fun _ => 1`.
+-/
 example : (Σ _ : Unit, ProjIdx ℚ 1) → ℂ := projPlanePt (Rat.castHom ℂ) fun _ => 1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Rat.castHom ℂ, fun _ => 1, fun h => one_ne_zero (congrFun h 0)⟩`.
+-/
 example : ∃ (_ : ℚ →+* ℂ) (v : Fin 1 → ℂ), v ≠ 0 :=
   ⟨Rat.castHom ℂ, fun _ => 1, fun h => one_ne_zero (congrFun h 0)⟩
 
+/- English proof (translation)
+Introduce `_` and use `rfl`.
+-/
 example : ∀ σ, (HermLattice.standard ℚ (0 + 1)).metric σ = 1 := fun _ => rfl
 
 end

@@ -18,6 +18,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.BigOn.Exp
 
+/- English proof (translation)
+Set `k : Subfield K` to `(algebraicClosure ℚ ℂ).toSubfield.comap e`. Establish `hk : ∀ a : K, a ∈ k ↔ IsAlgebraic ℚ (e a)` using `fun a => mem_algebraicClosure_iff`. Use `haveI : Countable {x : ℂ | IsAlgebraic ℚ x} := (Algebraic.countable ℚ ℂ).to_subtype`. Use `haveI : Countable k := Function.Injective.countable (f := fun a : k => (⟨e a, (hk a).1 a.2⟩ : {x : ℂ | IsAlgebraic ℚ x})) (fun a b hab => Subtype.ext (e.injective (congrArg Subtype.val hab)))`. Take `⟨τ, hτ⟩` from `GlobalTheory.CompRat.exists_ringEquiv_complex_comp_eq k (e.comp k.subtype) (e'.comp k.subtype)`.
+
+Conclude with `⟨τ, fun a ha => hτ ⟨a, (hk a).2 ha⟩⟩`.
+-/
 theorem exists_aut_alg {K : Type} [Field K] (e e' : K →+* ℂ) :
     ∃ τ : ℂ ≃+* ℂ, ∀ a : K, IsAlgebraic ℚ (e a) → τ (e a) = e' a := by
   let k : Subfield K := (algebraicClosure ℚ ℂ).toSubfield.comap e

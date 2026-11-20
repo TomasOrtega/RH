@@ -39,16 +39,25 @@ def pts (h : IsGrpPullback G' G f φ) {T : Over S'} {g : T.left ⟶ S} (hg : T.h
     subst hg
     exact Over.OverMorphism.ext (h.2 T v w _ _ rfl rfl).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pts_left (h : IsGrpPullback G' G f φ) {T : Over S'} {g : T.left ⟶ S} (hg : T.hom ≫ f = g)
     (v : T ⟶ G') : (pts h hg v).left = v.left ≫ φ := rfl
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Establish `e` using `map_one (pts h (T := Over.mk x') (g := x' ≫ f) rfl)`. Conclude with `(pts_left h rfl _).symm.trans (congrArg (fun z => z.left) e)`.
+-/
 theorem one_left (h : IsGrpPullback G' G f φ) (x' : Sp R ⟶ S') :
     (1 : Over.mk x' ⟶ G').left ≫ φ = (1 : Over.mk (x' ≫ f) ⟶ G).left := by
   have e := map_one (pts h (T := Over.mk x') (g := x' ≫ f) rfl)
   exact (pts_left h rfl _).symm.trans (congrArg (fun z => z.left) e)
 
+/- English proof (translation)
+The claim follows from `Category.assoc _ _ _`.
+-/
 theorem eps_assoc (x' : Sp R ⟶ S') : (epsAt x').hom ≫ f = (epsAt (x' ≫ f)).hom :=
   Category.assoc _ _ _
 
@@ -56,6 +65,11 @@ abbrev tanPts (h : IsGrpPullback G' G f φ) (x' : Sp R ⟶ S') :
     (epsAt x' ⟶ G') ≃* (epsAt (x' ≫ f) ⟶ G) :=
   pts h (T := epsAt x') (g := (epsAt (x' ≫ f)).hom) (eps_assoc x')
 
+/- English proof (translation)
+Establish `e : (CommRingCat.ofHom (algebraMap R (DualNumber R))) ≫ CommRingCat.ofHom (TrivSqZeroExt.fstHom R R R).toRingHom = 𝟙 _`. Use extensionality with `r`. Simplify using the standard rewrite rules. Establish `e'` using `congrArg Spec.map e`. Simplify using `only [Spec.map_comp, Spec.map_id] at e'`.
+
+Use `show _ ≫ Spec.map _ ≫ x' = x'`. Rewrite using `[← Category.assoc, e', Category.id_comp]`.
+-/
 theorem fst_comp_base (x' : Sp R ⟶ S') :
     Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom R R R).toRingHom) ≫ (epsAt x').hom = x' := by
   have e : (CommRingCat.ofHom (algebraMap R (DualNumber R))) ≫
@@ -67,6 +81,11 @@ theorem fst_comp_base (x' : Sp R ⟶ S') :
   show _ ≫ Spec.map _ ≫ x' = x'
   rw [← Category.assoc, e', Category.id_comp]
 
+/- English proof (translation)
+Establish `e : (CommRingCat.ofHom (algebraMap R (DualNumber R))) ≫ CommRingCat.ofHom (epsMul c) = CommRingCat.ofHom (algebraMap R (DualNumber R))`. Use `CommRingCat.hom_ext (RingHom.ext fun r => ?_)` and prove the remaining obligations. Use `show epsMul c (algebraMap R (DualNumber R) r) = algebraMap R (DualNumber R) r`. Rewrite using `[TrivSqZeroExt.algebraMap_eq_inl]`. Apply the tactic sequence `ext <;> simp [epsMul]`.
+
+Establish `e'` using `congrArg Spec.map e`. Simplify using `only [Spec.map_comp] at e'`. Use `show _ ≫ Spec.map _ ≫ x' = Spec.map _ ≫ x'`. Rewrite using `[← Category.assoc, e']`.
+-/
 theorem epsMul_comp_base (x' : Sp R ⟶ S') (c : R) :
     Spec.map (CommRingCat.ofHom (epsMul c)) ≫ (epsAt x').hom = (epsAt x').hom := by
   have e : (CommRingCat.ofHom (algebraMap R (DualNumber R))) ≫ CommRingCat.ofHom (epsMul c) =
@@ -80,6 +99,11 @@ theorem epsMul_comp_base (x' : Sp R ⟶ S') (c : R) :
   show _ ≫ Spec.map _ ≫ x' = Spec.map _ ≫ x'
   rw [← Category.assoc, e']
 
+/- English proof (translation)
+Unfold `IsTanAt`. Prove the components needed by the constructor for the conclusion. Introduce `t`. Apply `h.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, one_left h x', ← pts_left h (eps_assoc x') v]`.
+
+Conclude with `t`. Rewrite using `[Category.assoc, Over.w v, fst_comp_base]`. Conclude with `(Over.w (1 : Over.mk x' ⟶ G')).symm`. Introduce `t`. Rewrite using `[← one_left h x', ← t, pts_left h (eps_assoc x') v, Category.assoc]`.
+-/
 theorem isTan_iff (h : IsGrpPullback G' G f φ) (x' : Sp R ⟶ S') (v : epsAt x' ⟶ G') :
     IsTanAt G (x' ≫ f) (tanPts h x' v) ↔ IsTanAt G' x' v := by
   unfold IsTanAt
@@ -127,6 +151,9 @@ def modelPush (h : IsGrpPullback G' G f φ) (x' : Sp R ⟶ S') {E : Type} [AddCo
     show (M.pt (c • e)).left ≫ φ = _ ≫ (M.pt e).left ≫ φ
     rw [M.smul, Category.assoc]
 
+/- English proof (translation)
+Introduce `S S' G G' _ _ f φ h R _ x' E _ _`. Use `⟨fun M => ⟨modelPull h x' M, fun e => ?_⟩, fun M' => ⟨modelPush h x' M', fun e => rfl⟩⟩` and prove the remaining obligations. Use `show ((tanPts h x').symm (M.pt e)).left ≫ φ = _`. Rewrite using `[← pts_left h (eps_assoc x'), MulEquiv.apply_symm_apply]`.
+-/
 theorem lieModel_pullback : ∀ (S S' : Scheme.{0}) (G : Over S) (G' : Over S') [GrpObj G] [GrpObj G'] (f : S' ⟶ S) (φ : G'.left ⟶ G.left), IsGrpPullback G' G f φ → ∀ (R : Type) [CommRing R] (x' : Sp R ⟶ S') (E : Type) [AddCommGroup E] [Module R E], (∀ M : LieModel G (x' ≫ f) E, ∃ M' : LieModel G' x' E, ∀ e, (M'.pt e).left ≫ φ = (M.pt e).left) ∧ ∀ M' : LieModel G' x' E, ∃ M : LieModel G (x' ≫ f) E, ∀ e, (M'.pt e).left ≫ φ = (M.pt e).left := by
   intro S S' G G' _ _ f φ h R _ x' E _ _
   refine ⟨fun M => ⟨modelPull h x' M, fun e => ?_⟩, fun M' => ⟨modelPush h x' M', fun e => rfl⟩⟩

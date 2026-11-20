@@ -11,6 +11,9 @@ namespace GlobalTheory.TopZeroInv
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
+/- English proof (translation)
+Introduce `D T L sc G W U S t p hp d hd`. Establish `hIn : p.InRange D.R.m`. Establish `hn` using `hp.nodes`. Apply the tactic sequence `cases p <;> simp only [DefPair, DefNode] at hp hn <;> simp only [Pair.InRange, Node.InRange] <;> omega`. Conclude with `GlobalTheory.LastVertexInv.vec_theta S hp hIn d hd`.
+-/
 theorem vec_isThetaFunO : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
     (S : GridChoice W U) {t : T} {p : Pair T}, DefPair D.R.m p → ∀ d : FinDatum G t p, S.Z.HasVec d →
     IsThetaFunO W.ψ (G.pS p) (G.pT p) (S.Z.vec d) := by

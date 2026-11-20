@@ -7,6 +7,25 @@ open scoped TensorProduct NNReal ENNReal
 
 namespace GlobalTheory.GaugeEx.ProdInt
 
+/- English proof (translation)
+Establish `hT : Measurable (fun X => (pi X, fun v : S => pv v X))` using `hpi.prodMk (measurable_pi_lambda _ fun v => hpv v)`. Distinguish the cases in `hc0 : c = 0`. Use `h (fun _ => 1) (fun _ _ => 1) measurable_const (fun _ => measurable_const)` as an intermediate fact. Simplify using `only [hc0, mul_zero, Finset.prod_const_one, mul_one, lintegral_const, one_mul, Measure.measure_univ_eq_zero] at this`. Simplify using `[this, hc0]`.
+
+Establish `key : mi.prod (Measure.pi fun v : S => mv v) = c⁻¹ • ρ.map (fun X => (pi X, fun v : S => pv v X))`. Use `Measure.prod_eq_generateFrom (C := {s | MeasurableSet s}) (D := Set.pi Set.univ '' Set.pi Set.univ fun v : S => {s : Set (Zv v) | MeasurableSet s}) MeasurableSpace.generateFrom_measurableSet generateFrom_pi MeasurableSpace.isPiSystem_measurableSet isPiSystem_pi mi.toFiniteSpannin …` and prove the remaining obligations. Introduce and unpack `s hs _ ⟨t, ht, rfl⟩`. Establish `hs' : MeasurableSet s` using `hs`. Establish `ht' : ∀ v : S, MeasurableSet (t v)` using `fun v => ht v (Set.mem_univ _)`.
+
+Set `fv : ∀ v, Zv v → ℝ≥0∞` to `fun v => if hv : v ∈ S then (t ⟨v, hv⟩).indicator 1 else 0`. Establish `hfv : ∀ v, Measurable (fv v)`. Introduce `v`. Distinguish the cases in `hv : v ∈ S`. Simplify using `only [fv, dif_pos hv]`.
+
+Conclude with `measurable_one.indicator (ht' _)`. Simplify using `only [fv, dif_neg hv]`. Conclude with `measurable_zero`. Establish `hfv' : ∀ v : S, fv v = (t v).indicator 1` using `fun v => by simp only [fv, dif_pos v.2]`. Establish `h1` using `h (s.indicator 1) fv (measurable_one.indicator hs') hfv`.
+
+Establish `hm : MeasurableSet (s ×ˢ Set.pi Set.univ t)` using `hs'.prod (MeasurableSet.univ_pi ht')`. Rewrite using `[Measure.smul_apply, Measure.map_apply hT hm, ← lintegral_indicator_one (hT hm), Measure.pi_pi]`. Establish `h2 : ∀ X, ((fun X => (pi X, fun v : S => pv v X)) ⁻¹' (s ×ˢ Set.pi Set.univ t)).indicator (1 : Z → ℝ≥0∞) X = s.indicator 1 (pi X) * ∏ v ∈ S, fv v (pv v X)`. Introduce `X`. Rewrite using `[← Finset.prod_coe_sort S]`.
+
+Simplify using `only [hfv']`. Distinguish the cases in `hX : pi X ∈ s`. Distinguish the cases in `hY : ∀ v : S, pv v X ∈ t v`. Rewrite using `[Set.indicator_of_mem (by simpa [hX] using hY)]`. Simplify using `[hX, hY]`.
+
+Rewrite `hY` using `[Set.indicator_of_notMem (by simpa [hX] using hY)] push_neg`. Take `⟨v, hv⟩` from `hY`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ v) (by simp [hv])]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem (by simp [hX])]`.
+
+Simplify using `[hX]`. Repeatedly rewrite using `[h2]`. Rewrite using `[h1, ← Finset.prod_coe_sort S]`. Simplify using `only [hfv', lintegral_indicator_one hs', lintegral_indicator_one (ht' _), smul_eq_mul]`. Rewrite using `[mul_comm c⁻¹, mul_assoc, ENNReal.mul_inv_cancel hc0 hc, mul_one]`.
+
+Rewrite using `[key, smul_smul, ENNReal.mul_inv_cancel hc0 hc, one_smul]`.
+-/
 theorem map_eq_smul_prod {ι Z Zi : Type} {Zv : ι → Type} [MeasurableSpace Z] [MeasurableSpace Zi]
     [∀ v, MeasurableSpace (Zv v)] (ρ : Measure Z) (mi : Measure Zi) (mv : ∀ v, Measure (Zv v))
     [SigmaFinite mi] [∀ v, SigmaFinite (mv v)] (pi : Z → Zi) (pv : ∀ v, Z → Zv v)
@@ -68,6 +87,15 @@ theorem map_eq_smul_prod {ι Z Zi : Type} {Zv : ι → Type} [MeasurableSpace Z]
     rw [mul_comm c⁻¹, mul_assoc, ENNReal.mul_inv_cancel hc0 hc, mul_one]
   rw [key, smul_smul, ENNReal.mul_inv_cancel hc0 hc, one_smul]
 
+/- English proof (translation)
+Establish `hT : Measurable (fun X => (pi X, fun v : S => pv v X))` using `hpi.prodMk (measurable_pi_lambda _ fun v => hpv v)`. Establish `hmap` using `map_eq_smul_prod ρ mi mv pi pv hpi hpv S c hc h`. Set `G : Zi × (∀ v : S, Zv v) → ℂ` to `fun Y => Φi Y.1 * ∏ v : S, Φv v (Y.2 v)`. Establish `hG : Integrable G (mi.prod (Measure.pi fun v : S => mv v))` using `hi.mul_prod (Integrable.fintype_prod_dep (f := fun v : S => Φv v) fun v => hv v)`. Establish `hG' : Integrable G (ρ.map (fun X => (pi X, fun v : S => pv v X)))`.
+
+Rewrite using `[hmap]`. Conclude with `hG.smul_measure hc`. Establish `he : (fun X => Φi (pi X) * ∏ v ∈ S, Φv v (pv v X)) = G ∘ (fun X => (pi X, fun v : S => pv v X))`. Use function extensionality and compare the values at `X`. Simplify using `only [G, Function.comp]`.
+
+Rewrite using `[← Finset.prod_coe_sort S]`. Rewrite using `[he]`. Use `⟨(integrable_map_measure hG'.aestronglyMeasurable hT.aemeasurable).1 hG', ?_⟩` and prove the remaining obligations. Use `integral_map hT.aemeasurable hG'.aestronglyMeasurable` as an intermediate fact. Simplify using `only [Function.comp_def]`.
+
+Rewrite using `[← this, hmap, integral_smul_measure]`. Simplify using `only [G]`. Rewrite using `[integral_prod_mul Φi (fun Y : ∀ v : S, Zv v => ∏ v : S, Φv v (Y v)), integral_fintype_prod_eq_prod (fun v : S => Φv v), ← Finset.prod_coe_sort S, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integral_tensor {ι Z Zi : Type} {Zv : ι → Type} [MeasurableSpace Z] [MeasurableSpace Zi]
     [∀ v, MeasurableSpace (Zv v)] (ρ : Measure Z) (mi : Measure Zi) (mv : ∀ v, Measure (Zv v))
     [SigmaFinite mi] [∀ v, SigmaFinite (mv v)] (pi : Z → Zi) (pv : ∀ v, Z → Zv v)
@@ -102,6 +130,13 @@ theorem integral_tensor {ι Z Zi : Type} {Zv : ι → Type} [MeasurableSpace Z] 
     integral_fintype_prod_eq_prod (fun v : S => Φv v), ← Finset.prod_coe_sort S, Complex.real_smul]
   ring
 
+/- English proof (translation)
+Establish `hm : Multipliable fun v : {v // v ∉ S} => a v.1`. Establish `h1 : Summable fun v : {v // v ∉ S} => ‖a v.1 - 1‖` using `hs.subtype _`. Simplify using `using multipliable_one_add_of_summable h1`. Establish `h0 : 0 ≤ ∏' v : {v // v ∉ S}, a v.1` using `ge_of_tendsto' hm.hasProd fun s => Finset.prod_nonneg fun v _ => ha _`. Rewrite using `[ENNReal.toReal_ofReal h0]`.
+
+Establish `h2` using `hm.hasProd.map Complex.ofRealHom Complex.continuous_ofReal`. Use `(S.hasProd f).mul_compl ?_` and prove the remaining obligations. Establish `h3 : (f ∘ Subtype.val : {v // v ∉ S} → ℂ) = Complex.ofRealHom ∘ fun v : {v // v ∉ S} => a v.1`. Use function extensionality and compare the values at `fun v => hf v.1 v.2`. Establish `h4 : HasProd (f ∘ Subtype.val : {v // v ∉ S} → ℂ) ((∏' v : {v // v ∉ S}, a v.1 : ℝ) : ℂ)` using `by rw [h3]; exact h2`.
+
+Conclude with `h4`.
+-/
 theorem hasProd_of_tail {ι : Type} (f : ι → ℂ) (a : ι → ℝ) (ha : ∀ v, 0 ≤ a v)
     (hs : Summable fun v => |a v - 1|) (S : Finset ι) (hf : ∀ v ∉ S, f v = a v) :
     HasProd f ((∏ v ∈ S, f v) *
@@ -120,6 +155,33 @@ theorem hasProd_of_tail {ι : Type} (f : ι → ℂ) (a : ι → ℝ) (ha : ∀ 
       ((∏' v : {v // v ∉ S}, a v.1 : ℝ) : ℂ) := by rw [h3]; exact h2
   exact h4
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ d b n M ν mi mv hP d' b' Φ Φinf Φf Φv hc hcs hpure hΦ`. Take `⟨⟨hmi, hmv, hsum⟩, hP⟩` from `hP`. Take `⟨hsb, hae, hfin⟩` from `hpure`. Take `⟨hco, -, hint, hbb⟩` from `GlobalTheory.GaugeEx.IntBasis.main F E (AlgHom.id F E) d b`. Take `⟨-, -, hci, hcv⟩` from `GlobalTheory.T.measurableEmbedding_adelicTuple_localComponents F E d b n M`.
+
+Use `haveI : FiniteDimensional F E := Module.Finite.of_basis b`. Establish `hae' : ∀ᶠ v in Filter.cofinite, Φv v = (latV b v).indicator 1` using `by filter_upwards [hae, hbb d' b'] with v h1 h2`. Rewrite using `[h1]`. Use `congr 1`. Use extensionality with `Y`.
+
+Rewrite using `[mem_latV_iff, mem_latV_iff, h2]`. Establish `hfinS` using `Filter.eventually_cofinite.1 hae'`. Use `set S := hfinS.toFinset with hS`. Establish `hout : ∀ v ∉ S, Φv v = (latV b v).indicator 1`. Introduce `v hv`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hv (by simpa [hS] using hne)`. Establish `hlat : ∀ v : HeightOneSpectrum (𝓞 F), IsClosed (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E))`. Introduce `v`. Establish `: (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E)) = ⋂ a, ⋂ i, (fun Y => Y a i) ⁻¹' intV b v`.
+
+Use extensionality with `Y`. Simplify using `[mem_latV_iff]`. Rewrite using `[this]`. Conclude with `isClosed_iInter fun a => isClosed_iInter fun i => (hco v).1.isClosed.preimage (by fun_prop)`. Use `set B : Set (Fin n → Fin M → AF F ⊗[F] E) := {X | ∀ v ∉ S, projV v (projFin X) ∈ latV b v} with hB`.
+
+Establish `hBm : MeasurableSet B`. Establish `: B = ⋂ v, ⋂ (_ : v ∉ S), (fun X => projV v (projFin X)) ⁻¹' latV b v`. Use extensionality with `X`. Simplify using `[hB]`. Rewrite using `[this]`.
+
+Conclude with `(isClosed_iInter fun v => isClosed_iInter fun _ => (hlat v).preimage (hcv v)).measurableSet`. Establish `hΦB : Φ = B.indicator fun X => Φinf (projInf X) * ∏ v ∈ S, Φv v (projV v (projFin X))`. Use function extensionality and compare the values at `X`. Rewrite using `[hΦ X, hfin]`. Distinguish the cases in `hX : X ∈ B`.
+
+Rewrite using `[Set.indicator_of_mem hX, finprod_eq_prod_of_mulSupport_subset (s := S)]`. Introduce `v hv`. Assume the negation of the conclusion as `hvS`. Establish `hvS' : v ∉ S` using `hvS`. Apply `hv` to reduce the goal to its premises.
+
+Simplify using `only [hout v hvS']`. Conclude with `Set.indicator_of_mem (hX v hvS') _`. Rewrite using `[Set.indicator_of_notMem hX]`. Simplify using `only [hB, Set.mem_setOf_eq, not_forall] at hX`. Take `⟨v, hvS, hv⟩` from `hX`.
+
+Establish `hev : ∀ᶠ v in Filter.cofinite, Φv v (projV v (projFin X)) = 1`. Establish `h1 : ∀ᶠ v in Filter.cofinite, ∀ a i, prV v (X a i) ∈ intV b v` using `Filter.eventually_all.2 fun a => Filter.eventually_all.2 fun i => hint _`. Use `filter_upwards [hae', h1] with w h2 h3`. Rewrite using `[h2]`. Conclude with `Set.indicator_of_mem (show projV w (projFin X) ∈ latV b w from h3) _`.
+
+Rewrite using `[finprod_eq_zero _ v (by rw [hout v hvS]; exact Set.indicator_of_notMem hv _) (Filter.eventually_cofinite.1 hev), mul_zero]`. Use `haveI : SigmaFinite mi := inferInstance`. Use `haveI : ∀ v, SigmaFinite (mv v) := fun v => inferInstance`. Take `⟨h1, h2⟩` from `integral_tensor (ν.restrict B) mi mv projInf (fun v X => projV v (projFin X)) hci.measurable (fun v => (hcv v).measurable) S (tailProd b mv S) ENNReal.ofReal_ne_top (hP S) Φinf Φv (hc.integrable_of_hasCompactSupport hcs) (fun v => (hsb v).1.continuous.integrable_of_hasCompactSupp …`. Establish `h3` using `hasProd_of_tail (fun v => ∫ X, Φv v X ∂(mv v)) (fun v => (mv v (latV b v)).toReal) (fun v => ENNReal.toReal_nonneg) hsum S (by`.
+
+Introduce `v hv`. Rewrite using `[hout v hv]`. Use `integral_indicator_const (μ := mv v) (1 : ℂ) (hlat v).measurableSet` as an intermediate fact. Simplify `this)` using `[Measure.real, Pi.one_def]`. Use `⟨?_, h3.multipliable, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hΦB]`. Conclude with `(integrable_indicator_iff hBm).2 h1`. Rewrite using `[h3.tprod_eq, hΦB, integral_indicator hBm, h2]`. Both sides reduce to the same expression.
+-/
 theorem integral_pure : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E], ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (n M : ℕ) (ν : Measure (Fin n → Fin M → AF F ⊗[F] E)) (mi : Measure (Fin n → Fin M → Ainf F ⊗[F] E)) (mv : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin n → Fin M → Fv F v ⊗[F] E)), IsProd b ν mi mv → ∀ (d' : ℕ) (b' : Module.Basis (Fin d') F E) (Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ) (Φinf : (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ) (Φf : (Fin n → Fin M → Af F ⊗[F] E) → ℂ) (Φv : ∀ v : HeightOneSpectrum (𝓞 F), (Fin n → Fin M → Fv F v ⊗[F] E) → ℂ), Continuous Φinf → HasCompactSupport Φinf → IsPureFin b' Φf Φv → IsProdInfFin Φ Φinf Φf → Integrable Φ ν ∧ Multipliable (fun v => ∫ X, Φv v X ∂(mv v)) ∧ ∫ X, Φ X ∂ν = (∫ X, Φinf X ∂mi) * ∏' v, ∫ X, Φv v X ∂(mv v) := by
   intro F E _ _ _ _ _ d b n M ν mi mv hP d' b' Φ Φinf Φf Φv hc hcs hpure hΦ
   obtain ⟨⟨hmi, hmv, hsum⟩, hP⟩ := hP

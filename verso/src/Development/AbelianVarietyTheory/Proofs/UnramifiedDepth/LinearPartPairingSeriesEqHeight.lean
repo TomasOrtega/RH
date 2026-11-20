@@ -23,6 +23,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ChF
 
+/- English proof (translation)
+Introduce `R₀ _ B p Tw Dt g Y gb S hS τ u hu hP ht hH`. Use function extensionality and compare the values at `l`. Rewrite using `[← sub_eq_zero]`. Use `Tw.sep _ fun n => (Dt.Dp n).free _ ?_` and prove the remaining obligations. Use `set Dp := Dt.Dp n`.
+
+Take `⟨z, hz, hz'⟩` from `hH n (gb l)`. Set `s : LHom Tw.O Dp.D` to `Dp.σ.comp (Tw.q n)`. Establish `hs : ∀ x, s.1 x = Dp.σ.1 ((Tw.q n).1 x)` using `fun _ => rfl`. Establish `hc : ((p ^ (n + 1) : ℕ) : (Tw.R n : Type)) = 0`. Rewrite using `[← map_natCast (Tw.π n).1, Tw.char n, map_zero]`.
+
+Establish `hp : IsNilpotent (p : (Dp.D : Type))` using `⟨n + 1, by rw [← Nat.cast_pow, ← map_natCast Dp.σ.1, hc, map_zero]⟩`. Establish `hsq : ∀ x y : (Dp.D : Type), x * Dp.η * (y * Dp.η) = 0` using `fun x y => by`. Rewrite using `[_root_.mul_mul_mul_comm, Dp.η_sq, mul_zero]`. Establish `ha : ∀ k, IsNilpotent (s.1 (S k l) * Dp.η)` using `fun k => ⟨2, by rw [pow_two, hsq]⟩`. Rewrite `hz` using `[hS Dp.D _ s Dp.π Dp.sqZero l Dp.ηk, ← B.map_comp]`.
+
+Establish `h1` using `hP Dp.D s (fun k => s.1 (S k l) * Dp.η) n z hp ha hz`. Establish `h2` using `(nv_calculus _ _ s.1.toRingHom 1 g ![fun k => s.1 (S k l) * Dp.η] (fun i j => by simpa using ha j)).2.2.2.2.2 (fun i j i' j' => by simpa using hsq _ _) u`. Rewrite `h1` using `[h2, hz', hu, map_one, add_right_inj, Fintype.sum_prod_type, Fin.sum_univ_one]`. Rewrite using `[← hs, map_sub, sub_mul, sub_eq_zero]`. Use `Eq.trans ?_ h1.symm` and prove the remaining obligations.
+
+Simplify using `only [mulVec, dotProduct, transpose_apply, dl, map_sum, map_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.cons_val_fin_one, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dl_pairSer_eq_height : ∀ (R₀ : Type) [CommRing R₀] (B : BX R₀) (p : ℕ) (Tw : ATowerL R₀ p) (Dt : DualTower Tw) (g : ℕ) (Y : ∀ R : LAlg R₀, LHom Tw.O R → (Fin g → (R : Type)) → B.G R) (gb : Module.Basis (Fin g) R₀ B.gg) (S : Matrix (Fin g) (Fin g) (Tw.O : Type)), TanMat B Tw.O Y gb S → ∀ (τ : ℕ → B.G Tw.O) (u : PS (Tw.O : Type) 1 g), MvPowerSeries.constantCoeff u = 1 → PairSer B Tw.O Y p τ u → ∀ ht : B.gg →ₗ[R₀] (Tw.O : Type), (∀ n, B.IsHeight (Dt.Dp n) (p ^ (n + 1)) (B.map (Tw.q n) (τ n)) ((Tw.q n).1.toLinearMap ∘ₗ ht)) → Sᵀ *ᵥ dl u = fun l => ht (gb l) := by
   intro R₀ _ B p Tw Dt g Y gb S hS τ u hu hP ht hH
   funext l

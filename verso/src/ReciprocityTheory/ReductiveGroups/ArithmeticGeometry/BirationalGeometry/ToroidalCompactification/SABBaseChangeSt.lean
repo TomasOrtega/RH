@@ -13,6 +13,9 @@ section Transport
 variable {K : Type} [Field K] {G₁ G₂ : Over (Spec (CommRingCat.of K))} [GrpObj G₁] [GrpObj G₂]
 
 omit [GrpObj G₁] [GrpObj G₂] in
+/- English proof (translation)
+The claim follows from `Functor.map_isIso (Over.forget _) e.inv`.
+-/
 lemma isIso_inv_left (e : G₁ ≅ G₂) : IsIso e.inv.left :=
   Functor.map_isIso (Over.forget _) e.inv
 
@@ -54,6 +57,9 @@ instance : IsMonHom (pullCompIso p f G).hom := by
   show IsMonHom (pullCompMon p f G).hom.hom
   infer_instance
 
+/- English proof (translation)
+Use `h.comm; infer_instance smooth := by have := h.smooth; show Smooth (pullback.snd G.hom f); infer_instance separated := by have := h.separated; show IsSeparated (pullback.snd G.hom f); infer_instance quasiCompact := by have := h.quasiCompact; show QuasiCompact (pullback.snd G.hom f …` as an intermediate fact. Take `⟨E⟩` from `h.fibres Ω (q ≫ f)`. Conclude with `⟨torusExtOfIso (pullCompIso q f G) E⟩`.
+-/
 theorem IsSemiAbelian.pullback (h : IsSemiAbelian G) : IsSemiAbelian ((Over.pullback f).obj G) where
   comm := by have := h.comm; infer_instance
   smooth := by have := h.smooth; show Smooth (pullback.snd G.hom f); infer_instance

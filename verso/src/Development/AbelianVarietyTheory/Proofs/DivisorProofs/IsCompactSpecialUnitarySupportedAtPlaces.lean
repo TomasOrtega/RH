@@ -14,6 +14,27 @@ noncomputable section
 
 namespace GlobalTheory.SUSuppCompact
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ S₁ S₂ ε hε h₁ h₂`. Use `haveI : FiniteDimensional F E := inferInstance`. Establish `h₁' : ∀ w : InfinitePlace F, ∃ C : Set (w.Completion ⊗[F] E), IsCompact C ∧ (w ∈ S₁ → ∀ g : Matrix (Fin M) (Fin M) (w.Completion ⊗[F] E), Formalism.UG.cT (sigR w.Completion σ) g * JR w.Completion J * g = JR w.Completion J → ∀ i j, g i j ∈ C)`. Introduce `w`. Distinguish the cases in `hw : w ∈ S₁`.
+
+Take `⟨C, hC, hC'⟩` from `h₁ w hw`. Conclude with `⟨C, hC, fun _ => hC'⟩`. Conclude with `⟨∅, isCompact_empty, fun h => absurd h hw⟩`. Establish `h₂' : ∀ v : HeightOneSpectrum (𝓞 F), ∃ C : Set (Fv F v ⊗[F] E), IsCompact C ∧ (v ∈ S₂ → ∀ g : Matrix (Fin M) (Fin M) (Fv F v ⊗[F] E), Formalism.UG.cT (sigR (Fv F v) σ) g * JR (Fv F v) J * g = JR (Fv F v) J → ∀ i j, g i j ∈ C)`. Introduce `v`.
+
+Distinguish the cases in `hv : v ∈ S₂`. Take `⟨C, hC, hC'⟩` from `h₂ v hv`. Conclude with `⟨C, hC, fun _ => hC'⟩`. Conclude with `⟨∅, isCompact_empty, fun h => absurd h hv⟩`. Use `choose C₁ hC₁ hC₁' using h₁'`.
+
+Use `choose C₂ hC₂ hC₂' using h₂'`. Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _`. Establish `hsum : ∀ {ι : Type} (s : Finset ι) (f : ι → Set (AF F ⊗[F] E)), (∀ i ∈ s, IsCompact (f i)) → IsCompact (∑ i ∈ s, f i)`. Introduce `ι s f hf`.
+
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, ← Set.singleton_zero]`. Conclude with `isCompact_singleton`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi]`.
+
+Conclude with `(hf i (Finset.mem_insert_self i s)).add (ih fun j hj => hf j (Finset.mem_insert_of_mem hj))`. Use `set e := algebraMap (AF F) (AF F ⊗[F] E) ε with he`. Set `X : Set (AF F ⊗[F] E)` to `(fun δ => δ * (1 - e)) '' ({0, 1} : Set (AF F ⊗[F] E)) + (∑ w ∈ S₁, GlobalTheory.CompanionTheory.SaGen.iB (GlobalTheory.CompanionTheory.SaGen.placeMapInf w) '' C₁ w) + ∑ v ∈ S₂, GlobalTheory.CompanionTheory.SaGen.iB (GlobalTheory.CompanionTheory.SaGen.placeMapFin v) '' C₂ v`. Establish `hX : IsCompact X` using `((((Set.toFinite _).isCompact).image (continuous_id.mul continuous_const)).add (hsum _ _ fun w _ => (hC₁ w).image (GlobalTheory.T.continuous_placeExtensionByZero_tensor_of_place _))).add (hsum _ _ fun v _ => (hC₂ v).image (GlobalTheory.T.continuous_placeExtensionByZero_tensor_of_ …`. Use `GlobalTheory.T.isCompact_specialUnitarySupportedAtPlaces σ J ε X hX (GlobalTheory.T.isClosed_specialUnitarySupportedAtPlaces σ J ε) fun g hg i j => ?_` and prove the remaining obligations.
+
+Establish `hu : Formalism.UG.cT (sigR (AF F) σ) ((HA.mat (AF F) σ J g).1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) * JR (AF F) J * ((HA.mat (AF F) σ J g).1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) = JR (AF F) J`. Set `g' : HR (AF F) σ J` to `g`. Conclude with `g'.2`. Use `set a := ((HA.mat (AF F) σ J g).1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) i j with ha`. Use `set δ := (1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) i j with hδ`.
+
+Establish `hfix : e * (a - δ) = a - δ`. Use `hg.2 i j` as an intermediate fact. Simplify `this` using `only [Matrix.sub_apply]`. Establish `hdec : a = δ * (1 - e) + e * a` using `by linear_combination (-1 : AF F ⊗[F] E) * hfix`. Rewrite using `[hdec, GlobalTheory.T.idempotentAdeleOfPlaces_mul_eq_sum_components S₁ S₂ ε hε a, ← add_assoc]`.
+
+Use `Set.add_mem_add (Set.add_mem_add ⟨δ, ?_, rfl⟩ (Set.finsetSum_mem_finsetSum _ _ _ fun w hw => ⟨_, ?_, rfl⟩)) (Set.finsetSum_mem_finsetSum _ _ _ fun v hv => ⟨_, ?_, rfl⟩)` and prove the remaining obligations. Rewrite using `[hδ, Matrix.one_apply] split_ifs`. Conclude with `Or.inr rfl`. Conclude with `Or.inl rfl`. Conclude with `hC₁' w hw _ (GlobalTheory.T.unitaryEquation_baseChange_algHom σ J _ _ hu) i j`.
+
+Conclude with `hC₂' v hv _ (GlobalTheory.T.unitaryEquation_baseChange_algHom σ J _ _ hu) i j`.
+-/
 theorem isCompact_SUSupp_of_bounded : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (S₁ : Finset (InfinitePlace F)) (S₂ : Finset (HeightOneSpectrum (𝓞 F))) (ε : AF F), IsPlacesIdem S₁ S₂ ε → (∀ w ∈ S₁, ∃ C : Set (w.Completion ⊗[F] E), IsCompact C ∧ ∀ g : Matrix (Fin M) (Fin M) (w.Completion ⊗[F] E), Formalism.UG.cT (sigR w.Completion σ) g * JR w.Completion J * g = JR w.Completion J → ∀ i j, g i j ∈ C) → (∀ v ∈ S₂, ∃ C : Set (Fv F v ⊗[F] E), IsCompact C ∧ ∀ g : Matrix (Fin M) (Fin M) (Fv F v ⊗[F] E), Formalism.UG.cT (sigR (Fv F v) σ) g * JR (Fv F v) J * g = JR (Fv F v) J → ∀ i j, g i j ∈ C) → IsCompact (SUSupp σ J ε) := by
   intro F E _ _ _ _ _ σ hCM M J hJ S₁ S₂ ε hε h₁ h₂
   classical

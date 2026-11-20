@@ -8,6 +8,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Parseval
 
+/- English proof (translation)
+Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun r => ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun c => ?_` and prove the remaining obligations. Establish `h1 : ‖(cat A y) r‖ ≤ ‖cat A y‖` using `norm_le_pi_norm (cat A y) r`. Use `le_trans ?_ h1` and prove the remaining obligations. Use `fin_cases c`.
+
+Conclude with `norm_le_pi_norm (cat A y r) 0`. Conclude with `norm_le_pi_norm (cat A y r) 1`.
+-/
 lemma norm_le_norm_cat_left (A : Ad3.LR.M22) (y : Fin 2 → ℝ) : ‖A‖ ≤ ‖cat A y‖ := by
   refine (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun r => ?_
   refine (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun c => ?_
@@ -17,11 +22,31 @@ lemma norm_le_norm_cat_left (A : Ad3.LR.M22) (y : Fin 2 → ℝ) : ‖A‖ ≤ �
   · exact norm_le_pi_norm (cat A y r) 0
   · exact norm_le_pi_norm (cat A y r) 1
 
+/- English proof (translation)
+Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun r => ?_` and prove the remaining obligations. Establish `h1 : ‖(cat A y) r‖ ≤ ‖cat A y‖` using `norm_le_pi_norm (cat A y) r`. Conclude with `le_trans (norm_le_pi_norm (cat A y r) 2) h1`.
+-/
 lemma norm_le_norm_cat_right (A : Ad3.LR.M22) (y : Fin 2 → ℝ) : ‖y‖ ≤ ‖cat A y‖ := by
   refine (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun r => ?_
   have h1 : ‖(cat A y) r‖ ≤ ‖cat A y‖ := norm_le_pi_norm (cat A y) r
   exact le_trans (norm_le_pi_norm (cat A y r) 2) h1
 
+/- English proof (translation)
+Introduce `Φ N`. Use `set C' : ℝ := 2 ^ (N + 3) * ((Finset.Iic ((N + 3, 0) : ℕ × ℕ)).sup fun m => SchwartzMap.seminorm ℝ m.1 m.2) Φ with hC'`. Establish `hdec : ∀ X : Ad3.LR.M23, (1 + ‖X‖) ^ (N + 3) * ‖Φ X‖ ≤ C'`. Introduce `X`. Use `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℝ) (m := (N + 3, 0)) (k := N + 3) (n := 0) le_rfl le_rfl Φ X` as an intermediate fact.
+
+Simplify `this` using `[norm_iteratedFDeriv_zero]`. Establish `hC'0 : 0 ≤ C'`. Establish `h0` using `hdec 0`. Use `le_trans ?_ h0` and prove the remaining obligations. Check the signs of the components of the expression.
+
+Establish `hint : Integrable (fun y : Fin 2 → ℝ => (1 + ‖y‖) ^ (-(3 : ℝ)))` using `integrable_one_add_norm (by simp; norm_num)`. Use `set I : ℝ := ∫ y : Fin 2 → ℝ, (1 + ‖y‖) ^ (-(3 : ℝ)) with hI`. Use `⟨C' * I, fun A ξ => ?_⟩` and prove the remaining obligations. Establish `hA : 0 < (1 + ‖A‖) ^ N` using `by positivity`. Establish `hpt : ∀ y : Fin 2 → ℝ, ‖(Φ (cat A y) : ℂ) * Complex.exp (2 * Real.pi * Complex.I * ((ξ 0 * y 0 + ξ 1 * y 1 : ℝ) : ℂ))‖ ≤ (C' / (1 + ‖A‖) ^ N) * (1 + ‖y‖) ^ (-(3 : ℝ))`.
+
+Introduce `y`. Establish `hph : ‖Complex.exp (2 * Real.pi * Complex.I * ((ξ 0 * y 0 + ξ 1 * y 1 : ℝ) : ℂ))‖ = 1`. Establish `: (2 * Real.pi * Complex.I * ((ξ 0 * y 0 + ξ 1 * y 1 : ℝ) : ℂ)) = ((2 * Real.pi * (ξ 0 * y 0 + ξ 1 * y 1) : ℝ) : ℂ) * Complex.I` using `by push_cast; ring`. Rewrite using `[this, Complex.norm_exp_ofReal_mul_I]`. Rewrite using `[norm_mul, hph, mul_one]`.
+
+Establish `hy : 0 < 1 + ‖y‖` using `by positivity`. Establish `hy3 : (1 + ‖y‖) ^ (-(3 : ℝ)) = ((1 + ‖y‖) ^ 3)⁻¹`. Rewrite using `[Real.rpow_neg hy.le]`. Use `norm_cast`. Rewrite using `[hy3, div_mul_eq_mul_div, ← div_eq_mul_inv, div_div, le_div_iff₀ (by positivity)]`.
+
+Establish `h1 : (1 + ‖A‖) ^ N ≤ (1 + ‖cat A y‖) ^ N` using `pow_le_pow_left₀ (by positivity) (by linarith [norm_le_norm_cat_left A y]) N`. Establish `h2 : (1 + ‖y‖) ^ 3 ≤ (1 + ‖cat A y‖) ^ 3` using `pow_le_pow_left₀ (by positivity) (by linarith [norm_le_norm_cat_right A y]) 3`. Establish `h3 : (1 + ‖A‖) ^ N * (1 + ‖y‖) ^ 3 ≤ (1 + ‖cat A y‖) ^ (N + 3)`. Rewrite using `[pow_add]`. Conclude with `mul_le_mul h1 h2 (by positivity) (by positivity)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hbound : ‖fz Φ A ξ‖ ≤ (C' / (1 + ‖A‖) ^ N) * I`. Unfold `fz`. Use `norm_integral_le_of_norm_le (hint.const_mul (C' / (1 + ‖A‖) ^ N)) (Filter.Eventually.of_forall hpt)` as an intermediate fact. Rewrite `this` using `[integral_const_mul]`. Then use the resulting hypothesis.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem fz_decay_in_A : ∀ (Φ : Ad3.LR.Sw) (N : ℕ), ∃ C : ℝ, ∀ (A : Ad3.LR.M22) (ξ : Fin 2 → ℝ),
     (1 + ‖A‖) ^ N * ‖GlobalTheory.CompanionTheory.Parseval.fz Φ A ξ‖ ≤ C := by
   intro Φ N

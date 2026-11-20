@@ -28,6 +28,9 @@ local notation "dg" => ((MonoidHom.id H).prod (MonoidHom.id H))
 set_option quotPrecheck false in
 local notation "sw" => ((MulEquiv.prodComm : H × H ≃* H × H).toMonoidHom)
 
+/- English proof (translation)
+Unfold `Subgroup.relIndex`. Rewrite using `[← Subgroup.index_prod, ← Subgroup.index_comap_of_surjective ((A.subgroupOf B).prod (A.subgroupOf B)) (f := (Subgroup.prodEquiv B B).toMonoidHom) (Subgroup.prodEquiv B B).surjective]`. Use `congr 1`.
+-/
 theorem relIndex_sq (A B : Subgroup H) :
     (A.prod A).relIndex (B.prod B) = A.relIndex B * A.relIndex B := by
   unfold Subgroup.relIndex
@@ -38,12 +41,20 @@ theorem relIndex_sq (A B : Subgroup H) :
 
 def FF (N : H) (f₁ f₂ : H → ℂ) (p : H × H) : ℂ := f₁ (p.1⁻¹ * N * p.2) * f₂ (p.2⁻¹ * p.1)
 
+/- English proof (translation)
+Take `⟨x, y⟩` from `p`. Rewrite using `[hf]`. Simplify using `[FF]`.
+-/
 theorem twist_eq_FF (N : H) (f₁ f₂ : H → ℂ) (f : H × H → ℂ) (hf : ∀ y, f y = f₁ y.1 * f₂ y.2) (p : H × H) :
     f (p⁻¹ * (N, 1) * sw p) = FF N f₁ f₂ p := by
   obtain ⟨x, y⟩ := p
   rw [hf]
   simp [FF]
 
+/- English proof (translation)
+Establish `hinj : Function.Injective dg` using `fun a b h => congrArg Prod.fst h`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `_ ⟨⟨t, ht, rfl⟩, ⟨⟨k₁, k₂⟩, ⟨hk₁, -⟩, he⟩⟩`. Use `⟨t, hK x.1 ⟨ht, k₁, hk₁, congrArg Prod.fst he⟩, rfl⟩` and prove the remaining obligations. Establish `h0` using `Subgroup.relIndex_inf_ne_zero (hL x.1) (hL x.2)`.
+
+Rewrite `h0` using `[← Subgroup.relIndex_map_map_of_injective _ _ hinj]`. Use `ne_zero_of_dvd_ne_zero h0 (Subgroup.relIndex_dvd_of_le_left _ ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ⟨⟨ht, l₁, hl₁, e₁⟩, ⟨-, l₂, hl₂, e₂⟩⟩, rfl⟩`. Use `⟨⟨t, ht, rfl⟩, (l₁, l₂), ⟨hl₁, hl₂⟩, Prod.ext e₁ e₂⟩` and prove the remaining obligations.
+-/
 theorem stab_pair (Z C K L : Subgroup H)
     (hK : ∀ x : H, Z ⊓ K.map (MulAut.conj x).toMonoidHom ≤ C)
     (hL : ∀ x : H, (Z ⊓ L.map (MulAut.conj x).toMonoidHom).relIndex C ≠ 0) (x : H × H) :
@@ -63,6 +74,11 @@ section Top
 
 variable [TopologicalSpace H]
 
+/- English proof (translation)
+Establish `hc : ∀ q : H ⧸ L, FF N f₁ f₂ (x, q.out) = (fun p : H ⧸ L => f₁ p.out * f₂ (p.out⁻¹ * (x⁻¹ * N * x))) ((x⁻¹ * N) • q)`. Introduce `q`. Take `⟨r, hr⟩` from `QuotientGroup.mk_out_eq_mul L (x⁻¹ * N * q.out)`. Establish `hq : (x⁻¹ * N) • q = (QuotientGroup.mk (x⁻¹ * N * q.out) : H ⧸ L)` using `by conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression.
+
+Establish `e : (x⁻¹ * N * q.out * (r : H))⁻¹ * (x⁻¹ * N * x) = (r : H)⁻¹ * (q.out⁻¹ * x)` using `by group`. Simplify using `only [hq, hr, FF]`. Rewrite using `[e, (h₁.2 _ r.2 _).2, (h₂.2 _ (L.inv_mem r.2) _).1]`. Repeatedly rewrite using `[hc]`. Conclude with `finsum_comp_equiv (MulAction.toPerm (x⁻¹ * N) : (H ⧸ L) ≃ (H ⧸ L)) (f := fun p : H ⧸ L => f₁ p.out * f₂ (p.out⁻¹ * (x⁻¹ * N * x)))`.
+-/
 theorem sum_reindex (L : Subgroup H) (N x : H) (f₁ f₂ : H → ℂ) (h₁ : IsHecke L f₁) (h₂ : IsHecke L f₂) :
     ∑ᶠ p : H ⧸ L, FF N f₁ f₂ (x, p.out) = ∑ᶠ p : H ⧸ L, f₁ p.out * f₂ (p.out⁻¹ * (x⁻¹ * N * x)) := by
   have hc : ∀ q : H ⧸ L, FF N f₁ f₂ (x, q.out) =
@@ -79,6 +95,11 @@ theorem sum_reindex (L : Subgroup H) (N x : H) (f₁ f₂ : H → ℂ) (h₁ : I
   exact finsum_comp_equiv (MulAction.toPerm (x⁻¹ * N) : (H ⧸ L) ≃ (H ⧸ L))
     (f := fun p : H ⧸ L => f₁ p.out * f₂ (p.out⁻¹ * (x⁻¹ * N * x)))
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.T.hecke_integral_finite_sum H K L _ hLK hidx, ← mul_assoc, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hidx), one_mul]`. Conclude with `sum_reindex L N x f₁ f₂ h₁ h₂`. Introduce `l hl z`. Establish `e : (z * l)⁻¹ * (x⁻¹ * N * x) = l⁻¹ * (z⁻¹ * (x⁻¹ * N * x))` using `by group`. Use `show f₁ (z * l) * f₂ ((z * l)⁻¹ * (x⁻¹ * N * x)) = f₁ z * f₂ (z⁻¹ * (x⁻¹ * N * x))`.
+
+Rewrite using `[e, (h₁.2 _ hl _).2, (h₂.2 _ (L.inv_mem hl) _).1]`.
+-/
 theorem sum_eq_hint (K L : Subgroup H) (N x : H) (f₁ f₂ : H → ℂ) (hLK : L ≤ K) (hidx : L.relIndex K ≠ 0)
     (h₁ : IsHecke L f₁) (h₂ : IsHecke L f₂) :
     ∑ᶠ p : H ⧸ L, FF N f₁ f₂ (x, p.out) =
@@ -90,6 +111,11 @@ theorem sum_eq_hint (K L : Subgroup H) (N x : H) (f₁ f₂ : H → ℂ) (hLK : 
     show f₁ (z * l) * f₂ ((z * l)⁻¹ * (x⁻¹ * N * x)) = f₁ z * f₂ (z⁻¹ * (x⁻¹ * N * x))
     rw [e, (h₁.2 _ hl _).2, (h₂.2 _ (L.inv_mem hl) _).1]
 
+/- English proof (translation)
+Use `⟨HasCompactSupport.of_support_subset_isCompact (h₁.1.isCompact.prod h₂.1.isCompact) ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Rewrite `hy` using `[Function.mem_support, hf]`. Conclude with `⟨subset_tsupport _ (left_ne_zero_of_mul hy), subset_tsupport _ (right_ne_zero_of_mul hy)⟩`. Introduce and unpack `⟨k₁, k₂⟩ ⟨hk₁, hk₂⟩ ⟨x, y⟩`.
+
+Simplify using `only [hf, Prod.mk_mul_mk]`. Rewrite using `[(h₁.2 _ hk₁ _).1, (h₂.2 _ hk₂ _).1, (h₁.2 _ hk₁ _).2, (h₂.2 _ hk₂ _).2]`. Conclude with `⟨rfl, rfl⟩`.
+-/
 theorem hecke_tensor (L : Subgroup H) [T2Space H] (f₁ f₂ : H → ℂ) (h₁ : IsHecke L f₁) (h₂ : IsHecke L f₂)
     (f : H × H → ℂ) (hf : ∀ y, f y = f₁ y.1 * f₂ y.2) : IsHecke (L.prod L) f := by
   refine ⟨HasCompactSupport.of_support_subset_isCompact (h₁.1.isCompact.prod h₂.1.isCompact) ?_, ?_⟩
@@ -103,6 +129,9 @@ theorem hecke_tensor (L : Subgroup H) [T2Space H] (f₁ f₂ : H → ℂ) (h₁ 
 
 variable [IsTopologicalGroup H]
 
+/- English proof (translation)
+Take `⟨D, hD, h⟩` from `hprop (tsupport f₁ * tsupport f₂) (h₁.isCompact.mul h₂.isCompact)`. Use `⟨D, hD, fun x z a b => h x ?_⟩` and prove the remaining obligations. Use `Set.mul_mem_mul (subset_tsupport _ (Function.mem_support.2 a)) (subset_tsupport _ (Function.mem_support.2 b))` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+-/
 theorem cover {N : H} {f₁ f₂ : H → ℂ}
     (hprop : ∀ C : Set H, IsCompact C → ∃ D : Set H, IsCompact D ∧ ∀ x : H, x⁻¹ * N * x ∈ C →
       ∃ t ∈ twCent (MonoidHom.id H) N, ∃ d ∈ D, x = t * d)
@@ -115,6 +144,13 @@ theorem cover {N : H} {f₁ f₂ : H → ℂ}
     (subset_tsupport _ (Function.mem_support.2 b))
   rwa [mul_inv_cancel_left] at this
 
+/- English proof (translation)
+Take `⟨D, hD, h⟩` from `cover hprop h₁ h₂`. Establish `hD2 : IsCompact ((fun p : H × H => p.1 * p.2⁻¹) '' (D ×ˢ tsupport f₂))` using `(hD.prod h₂.isCompact).image (by fun_prop)`. Use `GlobalTheory.CompanionTheory.TwistOrbit.finite_of_subset_mul' _ (L.prod L) (by rw [Subgroup.coe_prod]; exact hLo.prod hLo) _ (hD.prod hD2) (fun p => FF N f₁ f₂ p ≠ 0) ?_` and prove the remaining obligations. Introduce and unpack `⟨x, y⟩ hp`. Establish `hp' : f₁ (x⁻¹ * N * y) * f₂ (y⁻¹ * x) ≠ 0` using `hp`.
+
+Establish `a` using `left_ne_zero_of_mul hp'`. Establish `b` using `right_ne_zero_of_mul hp'`. Establish `e₀ : (x⁻¹ * N * y)⁻¹ * (x⁻¹ * N * x) = y⁻¹ * x` using `by group`. Take `⟨t, ht, d, hd, e⟩` from `h x (x⁻¹ * N * y) a (by rwa [e₀])`. Use `⟨dg t, ⟨t, ht, rfl⟩, (d, d * (y⁻¹ * x)⁻¹), ⟨hd, ⟨(d, y⁻¹ * x), ⟨hd, subset_tsupport _ (Function.mem_support.2 b)⟩, rfl⟩⟩, ?_⟩` and prove the remaining obligations.
+
+Use `Prod.ext e ?_` and prove the remaining obligations. Use `show y = t * (d * (y⁻¹ * x)⁻¹)`. Rewrite using `[← mul_assoc, ← e]`. Use `group`.
+-/
 theorem finite_pairs (L : Subgroup H) (hLo : IsOpen (L : Set H)) {N : H} {f₁ f₂ : H → ℂ}
     (hprop : ∀ C : Set H, IsCompact C → ∃ D : Set H, IsCompact D ∧ ∀ x : H, x⁻¹ * N * x ∈ C →
       ∃ t ∈ twCent (MonoidHom.id H) N, ∃ d ∈ D, x = t * d)
@@ -139,6 +175,9 @@ theorem finite_pairs (L : Subgroup H) (hLo : IsOpen (L : Set H)) {N : H} {f₁ f
   rw [← mul_assoc, ← e]
   group
 
+/- English proof (translation)
+Take `⟨D, hD, h⟩` from `cover hprop h₁ h₂`. Use `GlobalTheory.CompanionTheory.TwistOrbit.finite_of_subset_mul' _ L hLo D hD (fun x => cv (x⁻¹ * N * MonoidHom.id H x) ≠ 0) ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨z, a, b⟩` from `hcv _ hx`. Conclude with `h x z a b`.
+-/
 theorem finite_single (L : Subgroup H) (hLo : IsOpen (L : Set H)) {N : H} {f₁ f₂ : H → ℂ}
     (hprop : ∀ C : Set H, IsCompact C → ∃ D : Set H, IsCompact D ∧ ∀ x : H, x⁻¹ * N * x ∈ C →
       ∃ t ∈ twCent (MonoidHom.id H) N, ∃ d ∈ D, x = t * d)
@@ -153,6 +192,33 @@ theorem finite_single (L : Subgroup H) (hLo : IsOpen (L : Set H)) {N : H} {f₁ 
   obtain ⟨z, a, b⟩ := hcv _ hx
   exact h x z a b
 
+/- English proof (translation)
+Establish `hI` using `GlobalTheory.T.rel_index_ne_zero_of_open_le H K L hLo hKc hLK`. Establish `hidx` using `hI.1`. Establish `hZK : ∀ x : H, twCent (MonoidHom.id H) N ⊓ K.map (MulAut.conj x).toMonoidHom ≤ cptPart (twCent (MonoidHom.id H) N)` using `fun x => (hG.2 x).1`. Establish `hZL : ∀ x : H, (twCent (MonoidHom.id H) N ⊓ L.map (MulAut.conj x).toMonoidHom).relIndex (cptPart (twCent (MonoidHom.id H) N)) ≠ 0` using `fun x => hI.2 _ _ x (hG.2 x).2`. Establish `hle : ∀ x : H, twCent (MonoidHom.id H) N ⊓ L.map (MulAut.conj x).toMonoidHom ≤ cptPart (twCent (MonoidHom.id H) N)` using `fun x => le_trans (inf_le_inf_left _ (Subgroup.map_mono hLK)) (hZK x)`.
+
+Establish `hCZ : cptPart (twCent (MonoidHom.id H) N) ≤ twCent (MonoidHom.id H) N` using `(Subgroup.closure_le _).2 fun t ht => ht.1`. Establish `hT : twCent sw ((N, 1) : H × H) = (twCent (MonoidHom.id H) N).map dg` using `GlobalTheory.T.swap_twisted_centralizer_diagonal H N`. Establish `hCp : cptPart (twCent sw ((N, 1) : H × H)) = (cptPart (twCent (MonoidHom.id H) N)).map dg`. Rewrite using `[hT]`. Conclude with `GlobalTheory.T.compact_part_diagonal_map H _`.
+
+Establish `hfF` using `twist_eq_FF N f₁ f₂ f hf`. Establish `hK2o : IsOpen ((K.prod K : Subgroup (H × H)) : Set (H × H))`. Rewrite using `[Subgroup.coe_prod]`. Conclude with `hKo.prod hKo`. Establish `hK2c : IsCompact ((K.prod K : Subgroup (H × H)) : Set (H × H))`.
+
+Rewrite using `[Subgroup.coe_prod]`. Conclude with `hKc.prod hKc`. Establish `hL2o : IsOpen ((L.prod L : Subgroup (H × H)) : Set (H × H))`. Rewrite using `[Subgroup.coe_prod]`. Conclude with `hLo.prod hLo`.
+
+Establish `hfin` using `finite_pairs L hLo hprop h₁.1 h₂.1 (N := N)`. Take `⟨A1, A2⟩` from `GlobalTheory.T.twistedOrbitalIntegral_eq_sum_smallerLevel (H × H) sw (K.prod K) hK2o hK2c (fun k hk => ⟨hk.2, hk.1⟩) (L.prod L) ⟨hL2o, Subgroup.prod_mono hLK hLK, fun k hk => ⟨hk.2, hk.1⟩⟩ (N, 1) f (hecke_tensor L f₁ f₂ h₁ h₂ f hf) (by`. Introduce `x`. Rewrite using `[hCp, hT]`. Conclude with `stab_pair _ _ K L hZK hZL x)`.
+
+Use the proof step `(by`. Rewrite using `[hT]`. Simplify `hfin)` using `only [hfF]`. Establish `hcvf : cv = fun y => hint K fun z => f₁ z * f₂ (z⁻¹ * y)` using `funext hcv`. Establish `hconv` using `GlobalTheory.T.hecke_convolution_support H K L f₁ f₂ hLK hidx h₁ h₂`.
+
+Take `⟨B1, B2⟩` from `GlobalTheory.T.twistedOrbitalIntegral_eq_sum_smallerLevel H (MonoidHom.id H) K hKo hKc (fun k hk => hk) L ⟨hLo, hLK, fun k hk => hk⟩ N cv (hcvf ▸ hconv.1) (fun x => ⟨hZK x, hZL x⟩) (finite_single L hLo hprop h₁.1 h₂.1 cv fun y hy => hconv.2 y (by rwa [← hcv]))`. Establish `hcount` using `GlobalTheory.T.finite_diagonal_double_cosets H (twCent (MonoidHom.id H) N) L (cptPart (twCent (MonoidHom.id H) N)) (FF N f₁ f₂) (fun x => ⟨hle x, hZL x⟩) (fun t ht c hc => by`. Rewrite using `[hG.1 t ht c (hCZ hc), mul_inv_cancel_right]`. Conclude with `hc)`. Use the proof step `(fun t ht x y => by`.
+
+Establish `e : t * N = N * t` using `ht`. Establish `e' : (t * x)⁻¹ * N * (t * y) = x⁻¹ * N * y`. Combine the equalities or inequalities in the displayed calculation. Establish `e'' : (t * y)⁻¹ * (t * x) = y⁻¹ * x` using `by group`. Simplify using `only [FF, e', e''])`.
+
+Use the proof step `(fun l hl l' hl' x y => by`. Establish `e' : (x * l)⁻¹ * N * (y * l') = l⁻¹ * ((x⁻¹ * N * y) * l')` using `by group`. Establish `e'' : (y * l')⁻¹ * (x * l) = l'⁻¹ * ((y⁻¹ * x) * l)` using `by group`. Simplify using `only [FF, e', e'']`. Rewrite using `[(h₁.2 _ (L.inv_mem hl) _).1, (h₁.2 _ hl' _).2, (h₂.2 _ (L.inv_mem hl') _).1, (h₂.2 _ hl _).2])`.
+
+Use `hfin`. Rewrite `A2` using `[hCp, hT]`. Simplify using `only [hfF] at A2`. Establish `hp : ∀ x : H, ∑ᶠ p : H ⧸ L, FF N f₁ f₂ (x, p.out) = ((L.relIndex K : ℕ) : ℂ) * cv (x⁻¹ * N * MonoidHom.id H x)`. Introduce `x`.
+
+Rewrite using `[hcv]`. Conclude with `sum_eq_hint K L N x f₁ f₂ hLK hidx h₁ h₂`. Simplify using `only [hp] at hcount`. Rewrite using `[A1, A2, hcount, B1, B2, relIndex_sq]`. Establish `hc : ((L.relIndex K : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hidx`.
+
+Establish `key` using `smul_finsum ((L.relIndex K : ℕ) : ℂ) (fun q : DoubleCoset.Quotient (twCent (MonoidHom.id H) N : Set H) (L : Set H) => (((twCent (MonoidHom.id H) N ⊓ L.map (MulAut.conj (Quotient.out q)).toMonoidHom).relIndex (cptPart (twCent (MonoidHom.id H) N)) : ℕ) : ℂ) * cv ((Quotient.out q)⁻¹ …`. Simplify using `only [smul_eq_mul] at key`. Establish `key2 : ∀ q : DoubleCoset.Quotient (twCent (MonoidHom.id H) N : Set H) (L : Set H), (((twCent (MonoidHom.id H) N ⊓ L.map (MulAut.conj (Quotient.out q)).toMonoidHom).relIndex (cptPart (twCent (MonoidHom.id H) N)) : ℕ) : ℂ) * (((L.relIndex K : ℕ) : ℂ) * cv ((Quotient.out q)⁻¹ * N * …` using `fun q => by ring`. Simplify using `only [key2]`. Rewrite using `[← key]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem core [T2Space H] (K L : Subgroup H) (N : H) (f₁ f₂ : H → ℂ)
     (hKo : IsOpen (K : Set H)) (hKc : IsCompact (K : Set H)) (hLo : IsOpen (L : Set H)) (hLK : L ≤ K)
     (h₁ : IsHecke L f₁) (h₂ : IsHecke L f₂) (hG : Good (MonoidHom.id H) K N)
@@ -244,6 +310,9 @@ theorem core [T2Space H] (K L : Subgroup H) (N : H) (f₁ f₂ : H → ℂ)
 
 end Top
 
+/- English proof (translation)
+Introduce `H _ _ _ _ K L N f₁ f₂ hKo hKc hLo hLK h₁ h₂ hG hprop`. Conclude with `core K L N f₁ f₂ hKo hKc hLo hLK h₁ h₂ hG hprop _ (fun _ => rfl) _ (fun _ => rfl)`.
+-/
 theorem main : ∀ (H : Type) [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [T2Space H] (K L : Subgroup H) (N : H) (f₁ f₂ : H → ℂ),
   IsOpen (K : Set H) → IsCompact (K : Set H) → IsOpen (L : Set H) → L ≤ K → IsHecke L f₁ → IsHecke L f₂ → Good (MonoidHom.id H) K N →
   (∀ C : Set H, IsCompact C → ∃ D : Set H, IsCompact D ∧ ∀ x : H, x⁻¹ * N * x ∈ C → ∃ t ∈ twCent (MonoidHom.id H) N, ∃ d ∈ D, x = t * d) →

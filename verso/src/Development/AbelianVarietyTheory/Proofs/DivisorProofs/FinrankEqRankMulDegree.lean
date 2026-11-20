@@ -3,6 +3,11 @@ open NumberField
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hmem` using `Ideal.absNorm_mem (Ideal.span {a})`. Rewrite `hmem` using `[Ideal.mem_span_singleton]`. Take `⟨b, hb⟩` from `hmem`. Establish `hn : Ideal.absNorm (Ideal.span {a}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`.
+
+Conclude with `ha`. Establish `h2 : (Ideal.absNorm (Ideal.span {a})) • m = 0`. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 F), hb, mul_comm, mul_smul, h, smul_zero]`. Conclude with `nsmul_right_injective hn (by simpa using h2)`.
+-/
 theorem smul_eq_zero_of_ringOfIntegers {F : Type} [Field F] [NumberField F] {M : Type}
     [AddCommGroup M] [Module (𝓞 F) M] [IsAddTorsionFree M] {a : 𝓞 F} (ha : a ≠ 0) {m : M}
     (h : a • m = 0) : m = 0 := by
@@ -15,6 +20,19 @@ theorem smul_eq_zero_of_ringOfIntegers {F : Type} [Field F] [NumberField F] {M :
     rw [← Nat.cast_smul_eq_nsmul (𝓞 F), hb, mul_comm, mul_smul, h, smul_zero]
   exact nsmul_right_injective hn (by simpa using h2)
 
+/- English proof (translation)
+Set `φ : (Fin r → 𝓞 F) →ₗ[ℤ] M` to `(Fintype.linearCombination (𝓞 F) x).restrictScalars ℤ`. Establish `hφ : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `g hg`. Use function extensionality and compare the values at `i`.
+
+Conclude with `Fintype.linearIndependent_iff.mp hx g (by simpa [φ, Fintype.linearCombination_apply] using hg) i`. Establish `hdom : Module.finrank ℤ (Fin r → 𝓞 F) = r * Module.finrank ℚ F`. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `[RingOfIntegers.rank]`. Set `ψ : M →ₗ[ℤ] M` to `(LinearMap.lsmul (𝓞 F) M c).restrictScalars ℤ`.
+
+Establish `hψ : Function.Injective ψ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `m hm`. Conclude with `smul_eq_zero_of_ringOfIntegers hc (by simpa [ψ] using hm)`. Establish `hrange : ∀ m, ψ m ∈ LinearMap.range φ`.
+
+Introduce `m`. Take `⟨g, hg⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 F)).mp (hspan m)`. Conclude with `⟨g, by simpa [φ, ψ, Fintype.linearCombination_apply] using hg⟩`. Set `ψ' : M →ₗ[ℤ] LinearMap.range φ` to `ψ.codRestrict _ hrange`. Establish `hψ' : Function.Injective ψ'`.
+
+Introduce `a b hab`. Apply `hψ` to reduce the goal to its premises. Simplify `congrArg Subtype.val hab` using `[ψ']`. Establish `h1 : Module.finrank ℤ (Fin r → 𝓞 F) ≤ Module.finrank ℤ M` using `LinearMap.finrank_le_finrank_of_injective hφ`. Establish `hfin : Module.Finite ℤ (LinearMap.range φ)` using `inferInstance`.
+
+Establish `h2 : Module.finrank ℤ M ≤ Module.finrank ℤ (LinearMap.range φ)` using `LinearMap.finrank_le_finrank_of_injective hψ'`. Rewrite `h2` using `[LinearMap.finrank_range_of_inj hφ]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_int_eq_of_span_smul (F : Type) [Field F] [NumberField F] (M : Type) [AddCommGroup M]
     [Module (𝓞 F) M] [Module.Finite ℤ M] [IsAddTorsionFree M] (r : ℕ) (x : Fin r → M)
     (hx : LinearIndependent (𝓞 F) x) (c : 𝓞 F) (hc : c ≠ 0)

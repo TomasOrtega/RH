@@ -12,6 +12,11 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 
 namespace GlobalTheory.NLink
 
+/- English proof (translation)
+Introduce `D L P X C h`. Take `⟨tf, hF, h23⟩` from `h.two`. Use `⟨tab L X tf C, ?_⟩` and prove the remaining obligations. Establish `h2 : TwistedPlaces.adm2 L` using `fun j hj w hw _ => h.mult j hj w hw`. Take `⟨hA, hB, hC, hD, hBand⟩` from `GlobalTheory.T.admA_admB_inert_band_tab D L P X C tf h`.
+
+Take `⟨hE, hExc⟩` from `GlobalTheory.T.localBoundTableAllPrimes_vanishing_excluded D L P X C tf h`. Take `⟨hG, hH⟩` from `GlobalTheory.T.ramifiedPrimeLengthBound_and_generatorPrimeEtaBound_tab D L P X C tf h`. Conclude with `⟨h.pass, h2, h.rank, GlobalTheory.T.admissible_table_of_local_bounds D L P X C tf h h23, GlobalTheory.T.localBoundTableAllPrimes_sizeConditionFive D L P X C tf h, GlobalTheory.T.localBoundTableAllPrimes_sizeConditionSix D L P X C tf h, hA, hB, hC, hD, hBand, hE, hExc, GlobalTheor …`.
+-/
 theorem admittedStatements_of_localBoundsConclusion : ∀ (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (X : KillingConditions.HubData D) (C : ℝ),
     Concl L P X C → ∃ tb : TwistedPlaces.Tab L, TwistedPlaces.AdmT L tb C P := by
   intro D L P X C h

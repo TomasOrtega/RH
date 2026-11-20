@@ -7,6 +7,11 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 
 open Topology
 
+/- English proof (translation)
+Introduce `σ _ X w d A hX hirr hiso hinj ℓ N a δ q ha hδ hq hδ0 hP hsep hQ`. Take `⟨c, e, hc, he, hce, hsh⟩` from `hcut σ X w d A hX hiso ℓ N a δ q ha hδ hq hδ0 hP hsep hQ`. Break down `hirr.2 c e hc he hce with hc0 | he0` into its components or cases. Conclude with `⟨_, hc0.and hsh, fun y hy hyδ => ((hy.2.2 hy.1 hyδ).1).2 (hy.2.1 hy.1)⟩`. It suffices to derive a contradiction.
+
+Take `⟨z, hz, hzδ, hzs⟩` from `hnear σ X w d A hX hirr hiso hinj ℓ N a δ q ha hδ hq hδ0 hP hsep hQ _ (he0.and hsh)`. Conclude with `(hz.2.2 hz.1 hzδ).2 hzs (hz.2.1 hz.1)`.
+-/
 theorem PrimitiveFormSheetedOffDiscriminant.proof (hcut : PrimitiveFormSheetedLocusCutOut.Statement)
     (hnear : PrimitiveFormSheetedPointsNear.Statement) : PrimitiveFormSheetedOffDiscriminant.Statement := by
   intro σ _ X w d A hX hirr hiso hinj ℓ N a δ q ha hδ hq hδ0 hP hsep hQ

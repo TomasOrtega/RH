@@ -8,6 +8,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilQuotientHaar.Siegel
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilQuotientHaar.BruhatDecomposition
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WeilQuotientHaar.LocalWeilRepresentation
 
+/- English proof (translation)
+The claim follows from `QPK.quotProdK_of QPK.weil_quotient_global_assumptions QPK.haar_measure_uniqueness (QPK.locPack_of QPK.haar_measure_existence QPK.conjugation_invariant_measure QPK.siegel_measure_definition QPK.bruhat_decomposition' QPK.local_weil_representation)`.
+-/
 theorem quotient_product_compact : PI.QuotProdK.QuotProdK :=
   QPK.quotProdK_of QPK.weil_quotient_global_assumptions QPK.haar_measure_uniqueness
     (QPK.locPack_of QPK.haar_measure_existence QPK.conjugation_invariant_measure QPK.siegel_measure_definition QPK.bruhat_decomposition'

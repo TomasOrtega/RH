@@ -9,6 +9,9 @@ namespace GlobalTheory.LeviIso.Places
 noncomputable def placeEquiv (I : AutInst) : InfinitePlace I.F ≃ InfinitePlace I.E :=
   (Equiv.ofBijective _ (GlobalTheory.Count.FrameMajorant.comap_bijective I)).symm
 
+/- English proof (translation)
+Establish `h : (I.φ v).comp (algebraMap I.F I.E) = v.embedding` using `RingHom.ext (I.φ_over v)`. Rewrite using `[placeEquiv, Equiv.symm_apply_eq]`. Use `show v = (InfinitePlace.mk (I.φ v)).comap (algebraMap I.F I.E)`. Rewrite using `[InfinitePlace.comap_mk, h, InfinitePlace.mk_embedding]`.
+-/
 theorem placeEquiv_apply (I : AutInst) (v : InfinitePlace I.F) :
     placeEquiv I v = InfinitePlace.mk (I.φ v) := by
   have h : (I.φ v).comp (algebraMap I.F I.E) = v.embedding := RingHom.ext (I.φ_over v)
@@ -25,6 +28,9 @@ noncomputable def comapEquiv {K L : Type} [Field K] [Field L] (e : K ≃+* L) :
   right_inv w := by
     beta_reduce; rw [← InfinitePlace.comap_comp]; simp [InfinitePlace.comap_id]
 
+/- English proof (translation)
+Break down `InfinitePlace.mk_eq_iff.mp h with h' | h'` into its components or cases. Conclude with `⟨RingHom.id ℂ, Or.inl rfl, fun y => by rw [h', RingHom.id_apply]⟩`. Use `⟨starRingEnd ℂ, Or.inr rfl, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← h', ComplexEmbedding.conjugate_coe_eq, Complex.conj_conj]`.
+-/
 theorem exists_twist {K : Type} [Field K] (φ ψ : K →+* ℂ)
     (h : InfinitePlace.mk φ = InfinitePlace.mk ψ) :
     ∃ τ : ℂ →+* ℂ, (τ = RingHom.id ℂ ∨ τ = starRingEnd ℂ) ∧ ∀ y, φ y = τ (ψ y) := by
@@ -33,6 +39,13 @@ theorem exists_twist {K : Type} [Field K] (φ ψ : K →+* ℂ)
   · refine ⟨starRingEnd ℂ, Or.inr rfl, fun y => ?_⟩
     rw [← h', ComplexEmbedding.conjugate_coe_eq, Complex.conj_conj]
 
+/- English proof (translation)
+Introduce `I I₀ e _`. Set `σ : InfinitePlace I.F ≃ InfinitePlace I₀.F` to `(placeEquiv I).trans ((comapEquiv e).trans (placeEquiv I₀).symm)`. Establish `h1 : ∀ v : InfinitePlace I.F, ∃ τ : ℂ →+* ℂ, (τ = RingHom.id ℂ ∨ τ = starRingEnd ℂ) ∧ ∀ y, I.φ v y = τ ((placeEquiv I v).embedding y)` using `fun v => exists_twist _ _ (by rw [InfinitePlace.mk_embedding, placeEquiv_apply])`. Establish `h2 : ∀ v : InfinitePlace I.F, ∃ τ : ℂ →+* ℂ, (τ = RingHom.id ℂ ∨ τ = starRingEnd ℂ) ∧ ∀ y, I.φ v (e y) = τ (I₀.φ (σ v) y)`. Introduce `v`.
+
+Use `exists_twist ((I.φ v).comp (e : I₀.E →+* I.E)) (I₀.φ (σ v)) ?_` and prove the remaining obligations. Rewrite using `[← placeEquiv_apply]`. Simplify using `only [σ, Equiv.trans_apply, Equiv.apply_symm_apply]`. Rewrite using `[placeEquiv_apply]`. Use `show _ = (InfinitePlace.mk (I.φ v)).comap (e : I₀.E →+* I.E)`.
+
+Rewrite using `[InfinitePlace.comap_mk]`. Use `choose τ hτ using h1`. Use `choose τ₀ hτ₀ using h2`. Conclude with `⟨placeEquiv I, σ, τ, τ₀, fun v => (hτ v).1, fun v => (hτ₀ v).1, fun v => (hτ v).2, fun v => (hτ₀ v).2⟩`.
+-/
 theorem places_match : ∀ (I I₀ : AutInst) (e : I₀.E ≃+* I.E), (∀ y, e (star y) = star (e y)) → ∃ (β : InfinitePlace I.F ≃ InfinitePlace I.E) (σ : InfinitePlace I.F ≃ InfinitePlace I₀.F) (τ τ₀ : InfinitePlace I.F → (ℂ →+* ℂ)), (∀ v, τ v = RingHom.id ℂ ∨ τ v = starRingEnd ℂ) ∧ (∀ v, τ₀ v = RingHom.id ℂ ∨ τ₀ v = starRingEnd ℂ) ∧ (∀ v y, I.φ v y = τ v ((β v).embedding y)) ∧ ∀ v y, I.φ v (e y) = τ₀ v (I₀.φ (σ v) y) := by
   intro I I₀ e _
 

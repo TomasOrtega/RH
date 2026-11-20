@@ -5,6 +5,11 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BSP
 
+/- English proof (translation)
+Introduce `l _ A A' _ _ f u u' ρ ρ' k hρ' hdvd hk`. Take `⟨z, hz⟩` from `hdvd`. Establish `h : ‖toDisc l u' ρ' (f u)‖ ≤ ρ`. Rewrite using `[hz, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `⟨Disc.map f h, isDiscMap_map f h⟩`.
+-/
 theorem exists_discMap_of_pow_dvd : ∀ (l : ℕ) [Fact l.Prime], ∀ (A A' : Type) [CommRing A] [CommRing A'] (f : A →+* A') (u : A) (u' : A') (ρ ρ' : ℝ≥0) (k : ℕ), 0 < ρ' → u' ^ k ∣ f u → ρ' ^ k ≤ ρ → ∃ F : Disc l u ρ →+* Disc l u' ρ', IsDiscMap f F := by
   intro l _ A A' _ _ f u u' ρ ρ' k hρ' hdvd hk
   obtain ⟨z, hz⟩ := hdvd

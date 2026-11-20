@@ -20,6 +20,11 @@ def sqZeroMapPt {M N : Type} [AddCommGroup M] [Module R' M] [Module R'ᵐᵒᵖ 
     congr 2
     exact CommRingCat.hom_ext (TrivSqZeroExt.map l).comp_algebraMap)
 
+/- English proof (translation)
+Use `ext1`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Use `CommRingCat.hom_ext (RingHom.ext fun z => ?_)` and prove the remaining obligations.
+
+Apply the tactic sequence `ext <;> simp`.
+-/
 lemma sqZeroMapPt_comp {M N P : Type} [AddCommGroup M] [Module R' M] [Module R'ᵐᵒᵖ M] [IsCentralScalar R' M]
     [AddCommGroup N] [Module R' N] [Module R'ᵐᵒᵖ N] [IsCentralScalar R' N]
     [AddCommGroup P] [Module R' P] [Module R'ᵐᵒᵖ P] [IsCentralScalar R' P]
@@ -34,8 +39,14 @@ lemma sqZeroMapPt_comp {M N P : Type} [AddCommGroup M] [Module R' M] [Module R'�
 
 abbrev epsScalePt (c : R') : epsPtR x ⟶ epsPtR x := sqZeroMapPt x (c • (LinearMap.id : R' →ₗ[R'] R'))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma epsScalePt_left (c : R') : (epsScalePt x c).left = spMap (epsScaleR c) := rfl
 
+/- English proof (translation)
+Rewrite using `[sqZeroMapPt_comp]`. Use `congr 1`. Use `LinearMap.ext_ring ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 lemma sqZeroMapPt_comp_eq {M : Type} [AddCommGroup M] [Module R' M] [Module R'ᵐᵒᵖ M]
     [IsCentralScalar R' M] (l : R' →ₗ[R'] M) (l' : M →ₗ[R'] R') :
     sqZeroMapPt x l' ≫ sqZeroMapPt x l = epsScalePt x (l' (l 1)) := by
@@ -44,6 +55,11 @@ lemma sqZeroMapPt_comp_eq {M : Type} [AddCommGroup M] [Module R' M] [Module R'�
   refine LinearMap.ext_ring ?_
   simp
 
+/- English proof (translation)
+Use `ext1`. Express the relevant statement in the definitionally equal form `Spec.map _ = 𝟙 _`. Rewrite using `[← Spec.map_id]`. Use `congr 1`. Use `CommRingCat.hom_ext (RingHom.ext fun z => ?_)` and prove the remaining obligations.
+
+Apply the tactic sequence `ext <;> simp`.
+-/
 lemma epsScalePt_one : epsScalePt x (1 : R') = 𝟙 _ := by
   ext1
   change Spec.map _ = 𝟙 _
@@ -54,6 +70,13 @@ lemma epsScalePt_one : epsScalePt x (1 : R') = 𝟙 _ := by
 
 variable {G : Over S} [GrpObj G]
 
+/- English proof (translation)
+Set `π : epsPtR x ⟶ Over.mk x` to `Over.homMk (spMap (algebraMap R' (DualNumber R'))) rfl`. Establish `e : (1 : epsPtR x ⟶ G) = π ≫ (1 : Over.mk x ⟶ G)` using `(comp_one π).symm`. Rewrite using `[e]`. Use `ext1`. Rewrite using `[Over.comp_left, Over.comp_left, ← hw, ← Category.assoc]`.
+
+Use `congr 1`. Express the relevant statement in the definitionally equal form `Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Use `CommRingCat.hom_ext (RingHom.ext fun z => ?_)` and prove the remaining obligations.
+
+Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 lemma epsScalePt_zero_comp {w : epsPtR x ⟶ G}
     (hw : spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ w.left = (1 : Over.mk x ⟶ G).left) :
     epsScalePt x 0 ≫ w = 1 := by
@@ -69,6 +92,17 @@ lemma epsScalePt_zero_comp {w : epsPtR x ⟶ G}
   refine CommRingCat.hom_ext (RingHom.ext fun z => ?_)
   ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Set `i₁` to `LinearMap.inl R' R' R'`. Set `i₂` to `LinearMap.inr R' R' R'`. Establish `key : sqZeroMapPt x (i₁ + i₂) ≫ w = (sqZeroMapPt x i₁ ≫ w) * (sqZeroMapPt x i₂ ≫ w)` using `by ext1`. Use `GlobalTheory.TangentCrit.hom_ext_of_ker_inf (CommRingCat.ofHom (TrivSqZeroExt.map (LinearMap.fst R' R' R')).toRingHom) (CommRingCat.ofHom (TrivSqZeroExt.map (LinearMap.snd R' R' R')).toRingHom) ?_ ?_ ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `refine (PrimeSpectrum.isHomeomorph_comap (TrivSqZeroExt.map (LinearMap.fst R' R' R')).toRingHom (fun z => ⟨1, one_pos, TrivSqZeroExt.map i₁ z, by ext <;> simp [i₁]⟩) fun d hd => ?_).surjective`.
+
+Establish `h : d.fst = 0` using `by simpa using congrArg TrivSqZeroExt.fst hd`. Apply the tactic sequence `exact ⟨2, by ext1 <;> simp [pow_two, h]⟩`. Introduce `d h₁ h₂`. Establish `h₃ : d.fst = 0` using `by simpa using congrArg TrivSqZeroExt.fst h₁`. Establish `h₄ : d.snd.1 = 0` using `by simpa using congrArg TrivSqZeroExt.snd h₁`.
+
+Establish `h₅ : d.snd.2 = 0` using `by simpa using congrArg TrivSqZeroExt.snd h₂`. Conclude with `TrivSqZeroExt.ext h₃ (Prod.ext h₄ h₅)`. Use `congrArg Over.Hom.left (?_ : sqZeroMapPt x (LinearMap.fst R' R' R') ≫ _ = sqZeroMapPt x (LinearMap.fst R' R' R') ≫ _)` and prove the remaining obligations. Rewrite using `[comp_mul]`. Simplify using `only [← Category.assoc, sqZeroMapPt_comp_eq]`.
+
+Simplify using `[i₁, i₂, epsScalePt_zero_comp x hw, epsScalePt_one]`. Use `congrArg Over.Hom.left (?_ : sqZeroMapPt x (LinearMap.snd R' R' R') ≫ _ = sqZeroMapPt x (LinearMap.snd R' R' R') ≫ _)` and prove the remaining obligations. Rewrite using `[comp_mul]`. Simplify using `only [← Category.assoc, sqZeroMapPt_comp_eq]`. Simplify using `[i₁, i₂, epsScalePt_zero_comp x hw, epsScalePt_one]`.
+
+Use `congrArg (sqZeroMapPt x (a • LinearMap.fst R' R' R' + b • LinearMap.snd R' R' R') ≫ ·) key` as an intermediate fact. Simplify using `only [comp_mul, ← Category.assoc, sqZeroMapPt_comp_eq] at this`. Simplify `this` using `[i₁, i₂]`.
+-/
 theorem epsScalePt_add_comp (a b : R') {w : epsPtR x ⟶ G}
     (hw : spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ w.left = (1 : Over.mk x ⟶ G).left) :
     epsScalePt x (a + b) ≫ w = (epsScalePt x a ≫ w) * (epsScalePt x b ≫ w) := by
@@ -102,6 +136,9 @@ theorem epsScalePt_add_comp (a b : R') {w : epsPtR x ⟶ G}
   simp only [comp_mul, ← Category.assoc, sqZeroMapPt_comp_eq] at this
   simpa [i₁, i₂] using this
 
+/- English proof (translation)
+Introduce `S G _ R' _ x w hw a b wa wb ha hb`. Establish `ea : wa = epsScalePt x a ≫ w` using `Over.OverMorphism.ext ha`. Establish `eb : wb = epsScalePt x b ≫ w` using `Over.OverMorphism.ext hb`. Rewrite using `[ea, eb, ← epsScalePt_add_comp x a b hw]`. Both sides reduce to the same expression.
+-/
 theorem tanadd : ∀ {S : Scheme.{0}} (G : Over S) [GrpObj G] {R' : Type} [CommRing R'] (x : Sp R' ⟶ S)
     (w : epsPtR x ⟶ G), spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ w.left = (1 : Over.mk x ⟶ G).left →
     ∀ (a b : R') (wa wb : epsPtR x ⟶ G), wa.left = spMap (epsScaleR a) ≫ w.left →

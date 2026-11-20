@@ -18,6 +18,9 @@ section Algebraic
 variable (K L : Type*) [Field K] [ValuativeRel K] [Field L] [ValuativeRel L]
   [Algebra K L] [ValuativeExtension K L]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h ↦ h.1, fun h ↦ ⟨h⟩⟩`.
+-/
 theorem isUnramified_iff : IsUnramified K L ↔ ramificationIndex K L = 1 :=
   ⟨fun h ↦ h.1, fun h ↦ ⟨h⟩⟩
 
@@ -29,6 +32,11 @@ variable (K L : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarc
   [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
   [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L]
 
+/- English proof (translation)
+Rewrite using `[isUnramified_iff, ← ramificationIndex_mul_residueDegree K L]`. Establish `h` using `residueDegree_pos K L`. Prove the components needed by the constructor for the conclusion. Introduce `h1`. Rewrite using `[h1, one_mul]`.
+
+Introduce `h1`. Establish `: ramificationIndex K L * residueDegree K L = 1 * residueDegree K L`. Rewrite using `[one_mul]`. Conclude with `h1.symm`. Conclude with `Nat.eq_of_mul_eq_mul_right h this`.
+-/
 theorem isUnramified_iff_residueDegree_eq_finrank :
     IsUnramified K L ↔ residueDegree K L = Module.finrank K L := by
   rw [isUnramified_iff, ← ramificationIndex_mul_residueDegree K L]
@@ -42,14 +50,23 @@ theorem isUnramified_iff_residueDegree_eq_finrank :
       exact h1.symm
     exact Nat.eq_of_mul_eq_mul_right h this
 
+/- English proof (translation)
+Rewrite using `[isUnramified_iff_residueDegree_eq_finrank, residueDegree_eq_finrank]`.
+-/
 theorem isUnramified_iff_finrank_residueField :
     IsUnramified K L ↔ Module.finrank 𝓀[K] 𝓀[L] = Module.finrank K L := by
   rw [isUnramified_iff_residueDegree_eq_finrank, residueDegree_eq_finrank]
 
+/- English proof (translation)
+The claim follows from `(isUnramified_iff_residueDegree_eq_finrank K L).1 inferInstance`.
+-/
 theorem IsUnramified.residueDegree_eq_finrank [IsUnramified K L] :
     residueDegree K L = Module.finrank K L :=
   (isUnramified_iff_residueDegree_eq_finrank K L).1 inferInstance
 
+/- English proof (translation)
+The claim follows from `(isUnramified_iff_finrank_residueField K L).1 inferInstance`.
+-/
 theorem IsUnramified.finrank_residueField [IsUnramified K L] :
     Module.finrank 𝓀[K] 𝓀[L] = Module.finrank K L :=
   (isUnramified_iff_finrank_residueField K L).1 inferInstance
@@ -65,16 +82,28 @@ variable (K L M : Type*) [Field K] [ValuativeRel K]
   [ValuativeExtension K L] [ValuativeExtension L M] [ValuativeExtension K M]
   [FiniteDimensional L M]
 
+/- English proof (translation)
+Simplify using `only [isUnramified_iff, ramificationIndex_tower K L M, mul_eq_one]`.
+-/
 theorem isUnramified_tower_iff :
     IsUnramified K M ↔ IsUnramified K L ∧ IsUnramified L M := by
   simp only [isUnramified_iff, ramificationIndex_tower K L M, mul_eq_one]
 
+/- English proof (translation)
+The claim follows from `(isUnramified_tower_iff K L M).2 ⟨inferInstance, inferInstance⟩`.
+-/
 theorem IsUnramified.trans [IsUnramified K L] [IsUnramified L M] : IsUnramified K M :=
   (isUnramified_tower_iff K L M).2 ⟨inferInstance, inferInstance⟩
 
+/- English proof (translation)
+The claim follows from `((isUnramified_tower_iff K L M).1 inferInstance).1`.
+-/
 theorem IsUnramified.of_tower_left [IsUnramified K M] : IsUnramified K L :=
   ((isUnramified_tower_iff K L M).1 inferInstance).1
 
+/- English proof (translation)
+The claim follows from `((isUnramified_tower_iff K L M).1 inferInstance).2`.
+-/
 theorem IsUnramified.of_tower_right [IsUnramified K M] : IsUnramified L M :=
   ((isUnramified_tower_iff K L M).1 inferInstance).2
 

@@ -24,6 +24,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ChF
 
+/- English proof (translation)
+Introduce `t ht` and use `h t (Ideal.pow_le_pow_right (by omega) ht)`.
+-/
 private theorem kills_mono {R : Type} [CommRing R] {I : Ideal R} {k l : ℕ} (hkl : k ≤ l) {S : Type} [CommRing S]
     [Algebra R S] (h : Kills I k S) : Kills I l S :=
   fun t ht => h t (Ideal.pow_le_pow_right (by omega) ht)
@@ -33,11 +36,17 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : Out.DegData R I
   {A : Out.PolAV (Spec (CommRingCat.of (FractionRing R)))} {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
   [IsCommMonObj G] (U : Out.UnifPre I D A G) (S : Type) [CommRing S] [Algebra R S]
 
+/- English proof (translation)
+Proceed by induction on `l, hkl using Nat.le_induction with`. Consider the case `base => exact h`. Consider the case `succ n _ ih => exact GlobalTheory.ChF.qRel_succ R I D A G U n S z y ih`.
+-/
 private theorem qRel_mono {k l : ℕ} (hkl : k ≤ l) {z y} (h : QRel (U.gt k) S z y) : QRel (U.gt l) S z y := by
   induction l, hkl using Nat.le_induction with
   | base => exact h
   | succ n _ ih => exact GlobalTheory.ChF.qRel_succ R I D A G U n S z y ih
 
+/- English proof (translation)
+Proceed by induction on `l, hkl using Nat.le_induction with`. Consider the case `base => exact h`. Consider the case `succ n _ ih => exact GlobalTheory.T.torus_point_relation_succ_thickening R I D A G U n S χ z ih`.
+-/
 private theorem iRel_mono {k l : ℕ} (hkl : k ≤ l) {χ z} (h : IRel (U.gt k) S χ z) : IRel (U.gt l) S χ z := by
   induction l, hkl using Nat.le_induction with
   | base => exact h
@@ -46,10 +55,16 @@ private theorem iRel_mono {k l : ℕ} (hkl : k ≤ l) {χ z} (h : IRel (U.gt k) 
 private def qFun (h : ∃ k, Kills I k S) (z : sp (R₀ := R) S ⟶ G) : sp (R₀ := R) S ⟶ D.toPre.P.A :=
   (((qRel_existsUnique_mul_nat R I _ h.choose G (U.gt h.choose)).1 S h.choose_spec).1 z).exists.choose
 
+/- English proof (translation)
+The claim follows from `(((qRel_existsUnique_mul_nat R I _ h.choose G (U.gt h.choose)).1 S h.choose_spec).1 z).exists.choose_spec`.
+-/
 private theorem qFun_spec (h : ∃ k, Kills I k S) (z : sp (R₀ := R) S ⟶ G) :
     QRel (U.gt h.choose) S z (qFun U S h z) :=
   (((qRel_existsUnique_mul_nat R I _ h.choose G (U.gt h.choose)).1 S h.choose_spec).1 z).exists.choose_spec
 
+/- English proof (translation)
+The claim follows from `(((qRel_existsUnique_mul_nat R I _ _ G (U.gt (max h.choose k))).1 S (kills_mono (le_max_left _ _) h.choose_spec)).1 z).unique (qRel_mono U S (le_max_left _ _) (qFun_spec U S h z)) (qRel_mono U S (le_max_right _ _) hq)`.
+-/
 private theorem qFun_eq (h : ∃ k, Kills I k S) {k : ℕ} {z y} (hq : QRel (U.gt k) S z y) : qFun U S h z = y :=
   (((qRel_existsUnique_mul_nat R I _ _ G (U.gt (max h.choose k))).1 S
     (kills_mono (le_max_left _ _) h.choose_spec)).1 z).unique
@@ -58,10 +73,16 @@ private theorem qFun_eq (h : ∃ k, Kills I k S) {k : ℕ} {z y} (hq : QRel (U.g
 private def iFun (h : ∃ k, Kills I k S) (χ : Multiplicative D.toPre.X →* Sˣ) : sp (R₀ := R) S ⟶ G :=
   (((GlobalTheory.irel_points R I _ h.choose G (U.gt h.choose)).1 S h.choose_spec).1 χ).exists.choose
 
+/- English proof (translation)
+The claim follows from `(((GlobalTheory.irel_points R I _ h.choose G (U.gt h.choose)).1 S h.choose_spec).1 χ).exists.choose_spec`.
+-/
 private theorem iFun_spec (h : ∃ k, Kills I k S) (χ : Multiplicative D.toPre.X →* Sˣ) :
     IRel (U.gt h.choose) S χ (iFun U S h χ) :=
   (((GlobalTheory.irel_points R I _ h.choose G (U.gt h.choose)).1 S h.choose_spec).1 χ).exists.choose_spec
 
+/- English proof (translation)
+The claim follows from `(((GlobalTheory.irel_points R I _ _ G (U.gt (max h.choose k))).1 S (kills_mono (le_max_left _ _) h.choose_spec)).1 χ).unique (iRel_mono U S (le_max_left _ _) (iFun_spec U S h χ)) (iRel_mono U S (le_max_right _ _) hq)`.
+-/
 private theorem iFun_eq (h : ∃ k, Kills I k S) {k : ℕ} {χ z} (hq : IRel (U.gt k) S χ z) : iFun U S h χ = z :=
   (((GlobalTheory.irel_points R I _ _ G (U.gt (max h.choose k))).1 S
     (kills_mono (le_max_left _ _) h.choose_spec)).1 χ).unique
@@ -100,6 +121,11 @@ private def ptExt {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : Out.De
     obtain ⟨z, hz, hq⟩ := GlobalTheory.T.abelianPart_lift_square_zero_unit_point R I _ h.choose G (U.gt h.choose) S h.choose_spec S' ρ σ h1 h2 y hy
     exact ⟨z, hz, qFun_eq U S h hq⟩
 
+/- English proof (translation)
+Introduce `R _ _ I D A G _ _ U`. Use `⟨ptExt U, ?_⟩` and prove the remaining obligations. Introduce `OE _ _ _ io oD oA hL a S _ _ h`. Establish `key` using `qRel_iRel_equivariant R I D A G U OE io oD oA hL h.choose a S`. Use `⟨fun z => qFun_eq U S h (key.1 _ _ (qFun_spec U S h z)), fun χ χ' e => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(iFun_eq U S h (key.2 _ _ _ e (iFun_spec U S h χ))).symm`.
+-/
 theorem exists_ptExt_of_unif : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : Out.DegData R I) (A : Out.PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : Out.UnifPre I D A G), ∃ E : PtExt I G D.toPre.P.A D.toPre.X, ∀ (OE : Type) [CommRing OE] [StarRing OE] [Module OE D.toPre.X] (io : Out.RingAct G OE) (oD : D.OAct OE) (oA : A.OAct OE), U.OLinear OE oD oA io → ∀ (a : OE) (S : Type) [CommRing S] [Algebra R S] (h : ∃ k, Kills I k S), (∀ z, E.q S h (z ≫ io.act a) = E.q S h z ≫ oD.onB.act a) ∧ ∀ χ χ', (∀ x, χ' (Multiplicative.ofAdd x) = χ (Multiplicative.ofAdd (star a • x))) → E.i S h χ ≫ io.act a = E.i S h χ' := by
   intro R _ _ I D A G _ _ U
   refine ⟨ptExt U, ?_⟩

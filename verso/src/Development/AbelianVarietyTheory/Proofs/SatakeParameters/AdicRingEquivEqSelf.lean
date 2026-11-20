@@ -10,6 +10,27 @@ namespace GlobalTheory.TwV.Xc
 
 open Topology Filter
 
+/- English proof (translation)
+Establish `hval : ∀ b : F, Valued.v (algebraMap F (w.adicCompletion F) b) = w.valuation F b`. Introduce `b`. Rewrite using `[HeightOneSpectrum.algebraMap_adicCompletion]`. Simplify using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Establish `hcmp : ∀ (b : F) (u : w.adicCompletion F), b ≠ 0 → (Valued.v u ≤ Valued.v (algebraMap F (w.adicCompletion F) b) ↔ Valued.v (ψ u) ≤ Valued.v (algebraMap F (w.adicCompletion F) b))`.
+
+Introduce `b u hb`. Establish `hb' : (algebraMap F (w.adicCompletion F) b) ≠ 0` using `by simpa using hb`. Establish `hpos : 0 < Valued.v (algebraMap F (w.adicCompletion F) b)` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hb')`. Establish `h1` using `hO (u / algebraMap F _ b)`. Rewrite `h1` using `[map_div₀, hF, HeightOneSpectrum.mem_adicCompletionIntegers, HeightOneSpectrum.mem_adicCompletionIntegers, map_div₀, map_div₀, div_le_one₀ hpos, div_le_one₀ hpos]`.
+
+Conclude with `h1`. Establish `hball : ∀ (b : F) (z : w.adicCompletion F), b ≠ 0 → {x : w.adicCompletion F | Valued.v (x - z) ≤ Valued.v (algebraMap F (w.adicCompletion F) b)} ∈ 𝓝 z`. Introduce `b z hb`. Use `set t := algebraMap F (w.adicCompletion F) b`. Establish `ht : t ≠ 0` using `by simpa [t] using hb`.
+
+Establish `hpos : 0 < Valued.v t` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 ht)`. Establish `hc : Continuous fun x : w.adicCompletion F => (x - z) / t` using `by fun_prop`. Establish `ho` using `(Valued.isOpen_valuationSubring (w.adicCompletion F)).preimage hc`. Use `mem_of_superset (ho.mem_nhds ?_) ?_` and prove the remaining obligations. Use `show (z - z) / t ∈ Valued.v.valuationSubring`.
+
+Rewrite using `[sub_self, zero_div]`. Conclude with `zero_mem _`. Introduce `x hx`. Establish `hx' : Valued.v ((x - z) / t) ≤ 1` using `hx`. Rewrite `hx'` using `[map_div₀, div_le_one₀ hpos]`.
+
+Conclude with `hx'`. Assume the negation of the conclusion as `hne`. Establish `hz0 : ψ y - y ≠ 0` using `sub_ne_zero.mpr hne`. Establish `hvz : Valued.v (ψ y - y) ≠ 0` using `(Valuation.ne_zero_iff _).2 hz0`. Take `⟨b, hb⟩` from `HeightOneSpectrum.valuation_surjective F w (Valued.v (ψ y - y) * WithZero.exp (-1 : ℤ))`.
+
+Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Simplify using `only [map_zero] at hb`. Conclude with `(mul_ne_zero hvz WithZero.exp_ne_zero) hb.symm`. Establish `hbv : Valued.v (algebraMap F (w.adicCompletion F) b) < Valued.v (ψ y - y)`.
+
+Rewrite using `[hval, hb]`. Conclude with `mul_lt_of_lt_one_right (zero_lt_iff.2 hvz) (by have h : (WithZero.exp (1:ℤ))⁻¹ < 1 := compareOfLessAndEq_eq_lt.mp rfl; simpa using h)`. Take `⟨_, hx, a, rfl⟩` from `mem_closure_iff_nhds.1 ((HeightOneSpectrum.denseRange_algebraMap F w) y) _ (hball b y hb0)`. Establish `h1 : Valued.v (y - algebraMap F _ a) ≤ Valued.v (algebraMap F (w.adicCompletion F) b)`. Rewrite using `[← Valuation.map_neg, neg_sub]`.
+
+Conclude with `hx`. Establish `h2` using `(hcmp b _ hb0).1 h1`. Rewrite `h2` using `[map_sub, hF]`. Establish `h3 : ψ y - y = (ψ y - algebraMap F _ a) - (y - algebraMap F _ a)` using `by ring`. Establish `h4` using `Valuation.map_sub Valued.v (ψ y - algebraMap F _ a) (y - algebraMap F _ a)`.
+
+Rewrite `h4` using `[← h3]`. Conclude with `absurd (h4.trans (max_le h2 h1)) (not_le.2 hbv)`.
+-/
 theorem adic_ringEquiv_eq_self {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F))
     (ψ : w.adicCompletion F ≃+* w.adicCompletion F)
     (hF : ∀ a : F, ψ (algebraMap F _ a) = algebraMap F _ a)
@@ -74,6 +95,23 @@ end GlobalTheory.TwV.Xc
 
 namespace GlobalTheory.TwV.Xc
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ W Q _ _ _ w w' e e' φ φ' hφ hφ' hW hW' hE`. Establish `hF : ∀ a : F, e.symm (algebraMap F _ a) = e'.symm (algebraMap F _ a)`. Introduce `a`. Establish `h` using `hE (algebraMap F E a)`. Establish `h1 : (algebraMap F E a) ⊗ₜ[F] (1 : w.adicCompletion F) = (1 : E) ⊗ₜ[F] algebraMap F _ a`.
+
+Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, Algebra.algebraMap_eq_smul_one]`. Establish `h2 : (algebraMap F E a) ⊗ₜ[F] (1 : w'.adicCompletion F) = (1 : E) ⊗ₜ[F] algebraMap F _ a`. Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, Algebra.algebraMap_eq_smul_one]`. Rewrite `h` using `[h1, h2, hφ, hφ']`. Then use the resulting hypothesis. Establish `hO : ∀ x : Q, e x ∈ w.adicCompletionIntegers F ↔ e' x ∈ w'.adicCompletionIntegers F` using `fun x => (hW x).symm.trans (hW' x)`.
+
+Establish `hval : ∀ (v : HeightOneSpectrum (𝓞 F)) (b : F), Valued.v (algebraMap F (v.adicCompletion F) b) = v.valuation F b`. Introduce `v b`. Rewrite using `[HeightOneSpectrum.algebraMap_adicCompletion]`. Simplify using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Establish `hww : w = w'`.
+
+Assume the negation of the conclusion as `hne`. Establish `hle : ¬ w.asIdeal ≤ w'.asIdeal` using `fun h => hne (HeightOneSpectrum.ext (w.isMaximal.eq_of_le w'.isPrime.ne_top h))`. Take `⟨b, hbw, hbw'⟩` from `Set.not_subset.1 hle`. Establish `key` using `hO (e.symm (algebraMap F _ (algebraMap (𝓞 F) F b)⁻¹))`. Rewrite `key` using `[RingEquiv.apply_symm_apply, hF, RingEquiv.apply_symm_apply, HeightOneSpectrum.mem_adicCompletionIntegers, HeightOneSpectrum.mem_adicCompletionIntegers, hval, hval, map_inv₀, map_inv₀, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, HeightOne …`.
+
+Establish `h1 : w.intValuation b < 1` using `(HeightOneSpectrum.intValuation_lt_one_iff_mem w b).2 hbw`. Establish `h0 : w.intValuation b ≠ 0` using `HeightOneSpectrum.intValuation_ne_zero w b (fun h => hbw' (h ▸ w'.asIdeal.zero_mem))`. Use `key.2 le_rfl` as an intermediate fact. Conclude with `absurd this (not_le.2 ((one_lt_inv₀ (zero_lt_iff.2 h0)).2 h1))`. Substitute `hww` using the available equality.
+
+Use `⟨rfl, ?_⟩` and prove the remaining obligations. Establish `hψ` using `adic_ringEquiv_eq_self w (e.symm.trans e') (fun a => by simp [hF a]) (fun y => by simpa using hO (e.symm y))`. Establish `hc : ∀ c, e.symm c = e'.symm c` using `fun c => by`. Establish `h` using `hψ c`. Simplify using `only [RingEquiv.trans_apply] at h`.
+
+Rewrite using `[← e'.symm_apply_apply (e.symm c), h]`. Introduce `x`. Generalize the expression as in `prV (E := E) w x = t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul a c`. Establish `: a ⊗ₜ[F] c = (a ⊗ₜ[F] (1 : w.adicCompletion F)) * ((1 : E) ⊗ₜ[F] c)`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[this, map_mul, map_mul, map_mul, map_mul, hφ, hφ', hE a, hc]`. Consider the case `add x y hx hy => simp [map_add, hx, hy]`.
+-/
 theorem firstFactor_agree : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (W Q : Type) [CommRing W] [Field Q] [Algebra W Q] (w w' : HeightOneSpectrum (𝓞 F)) (e : Q ≃+* w.adicCompletion F) (e' : Q ≃+* w'.adicCompletion F) (φ : E ⊗[F] w.adicCompletion F →+* w.adicCompletion F) (φ' : E ⊗[F] w'.adicCompletion F →+* w'.adicCompletion F), (∀ c, φ ((1 : E) ⊗ₜ[F] c) = c) → (∀ c, φ' ((1 : E) ⊗ₜ[F] c) = c) → (∀ x : Q, x ∈ Set.range (algebraMap W Q) ↔ e x ∈ w.adicCompletionIntegers F) → (∀ x : Q, x ∈ Set.range (algebraMap W Q) ↔ e' x ∈ w'.adicCompletionIntegers F) → (∀ a : E, e.symm (φ (a ⊗ₜ[F] 1)) = e'.symm (φ' (a ⊗ₜ[F] 1))) → w = w' ∧ ∀ x : AfE F E, e.symm (φ (prV (E := E) w x)) = e'.symm (φ' (prV (E := E) w' x)) := by
   intro F E _ _ _ _ _ W Q _ _ _ w w' e e' φ φ' hφ hφ' hW hW' hE
   have hF : ∀ a : F, e.symm (algebraMap F _ a) = e'.symm (algebraMap F _ a) := by

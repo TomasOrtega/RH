@@ -28,6 +28,13 @@ section Glue
 variable {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}} {i : F.X ⟶ Z}
   {X₁ : Setup F W i} {z₁ : X₁.M.Z} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)}
 
+/- English proof (translation)
+Take `⟨K, hK, hl⟩` from `h`. Establish `y₀` using `GlobalTheory.T.surjective_labelHom_lattice_mod_level_thetaMember g n F W Z i X₁ z₁ act V₀ ev₀ X₀ m₀ t₀ δ₀ 𝔪₀`. Establish `y₁` using `GlobalTheory.T.surjective_labelHom_lattice_mod_level_thetaMember g n F W Z i X₁ z₁ act V ev X m t δ 𝔪`. Use `⟨K.symm, fun a mu => K.injective ?_, fun a mu' h => ?_⟩` and prove the remaining obligations. Rewrite using `[K.apply_symm_apply, hK]`.
+
+Simplify using `only [K.apply_symm_apply]`. Take `⟨mu, hmu⟩` from `y₀.1 a`. Establish `hc` using `(y₁.2.2.1 a (K mu) mu' (hl a mu hmu)).1 h`. Use `(y₀.2.2.1 a mu (K.symm mu') hmu).2 fun v => ?_` and prove the remaining obligations. Use `choose w hw using hc`.
+
+Establish `e : mu' = K mu + (X₁.S.r * X₁.S.N) • w` using `funext fun u => by simpa using hw u`. Use `⟨K.symm w v, ?_⟩` and prove the remaining obligations. Establish `e' : K.symm mu' = mu + (X₁.S.r * X₁.S.N) • K.symm w`. Rewrite using `[e, map_add, K.symm_apply_apply, map_nsmul]`. Conclude with `congrFun e' v`.
+-/
 theorem LatTo.symm' {V₀ : Type} [CommRing V₀] [IsDomain V₀] [IsLocalRing V₀] {ev₀ : X₁.M.Z.presheaf.stalk z₁ →+* V₀}
     {X₀ : Type} [AddCommGroup X₀] {m₀ : ℕ} {t₀ : Fin m₀ → V₀} {δ₀ : Fin m₀ → LinearMap.BilinForm ℤ X₀}
     {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {ev : X₁.M.Z.presheaf.stalk z₁ →+* V}
@@ -49,6 +56,9 @@ theorem LatTo.symm' {V₀ : Type} [CommRing V₀] [IsDomain V₀] [IsLocalRing V
       rw [e, map_add, K.symm_apply_apply, map_nsmul]
     exact congrFun e' v
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(ξ ≫ πY) (closedPoint V) = z₁`. Rewrite using `[h]`. Express the relevant statement in the definitionally equal form `X₁.M.Z.fromSpecStalk z₁ (spMap ev (closedPoint V)) = z₁`. Rewrite using `[show spMap ev (closedPoint V) = closedPoint _ from IsLocalRing.comap_closedPoint ev]`. Conclude with `Scheme.fromSpecStalk_closedPoint`.
+-/
 theorem closed_over {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {ev : X₁.M.Z.presheaf.stalk z₁ →+* V}
     [IsLocalHom ev] {Y : Scheme.{0}} {πY : Y ⟶ X₁.M.Z} {ξ : Sp V ⟶ Y}
     (h : ξ ≫ πY = spMap ev ≫ X₁.M.Z.fromSpecStalk z₁) : πY (ξ (closedPoint V)) = z₁ := by
@@ -65,6 +75,25 @@ section Main
 variable {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}} {i : F.X ⟶ Z}
   {X₁ : Setup F W i} {z₁ : X₁.M.Z} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)}
 
+/- English proof (translation)
+Take `⟨Y, πY, hY⟩` from `GlobalTheory.T.exists_semiabelianExtensionModel_above_thetaSetup g n F W Z i X₁`. Establish `lift : ∀ {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {ev : X₁.M.Z.presheaf.stalk z₁ →+* V} {X : Type} [AddCommGroup X] {m : ℕ} {t : Fin m → V} {δ : Fin m → LinearMap.BilinForm ℤ X} (𝔪 : UMem X₁ z₁ act V ev X t δ), ∃ (V' : Type) (_ : CommRing V') (_ : IsDomain V') (_ : Is …`. Introduce `V _ _ _ ev X _ m t δ 𝔪`. Take `⟨V₁, _, _, _, _, j₁, hcn₁, hj₁, hl₁⟩` from `GlobalTheory.T.exists_completeDVR_local_embedding_normal V 𝔪.cn`. Use `haveI := 𝔪.loc`.
+
+Use `haveI := hl₁`. Take `⟨V₂, _, _, _, _, j₂, ξ, hcn₂, hj₂, hl₂, hξ⟩` from `GlobalTheory.T.exists_trait_lift_semiabelianExtensionModel g n F W Z i X₁ z₁ Y πY hY V₁ (j₁.comp ev) inferInstance hcn₁`. Use `haveI := hl₂`. Take `⟨m', t', δ', 𝔫, hyy⟩` from `GlobalTheory.T.member_baseChange_injective_local_complete_normal g n F W Z i X₁ z₁ act hact V ev X m t δ 𝔪 V₂ (j₂.comp j₁) hcn₂ (hj₂.comp hj₁) inferInstance`. Conclude with `⟨V₂, inferInstance, inferInstance, inferInstance, inferInstance, (j₂.comp j₁).comp ev, m', t', δ', 𝔫, ξ, hξ, AddEquiv.refl _, fun _ _ => rfl, hyy⟩`.
+
+Take `⟨W₀, _, _, _, _, e₀, n₀, s₀, d₀, 𝔫₀, ξ₀, hξ₀, a₀⟩` from `lift 𝔪₀`. Take `⟨W₁, _, _, _, _, e₁, n₁, s₁, d₁, 𝔫₁, ξ₁, hξ₁, a₁⟩` from `lift 𝔪`. Set `P : Y.Z → Prop` to `fun y => ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] [IsDiscreteValuationRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (m : ℕ) (t : Fin m → V) (δ : Fin m → LinearMap.BilinForm ℤ X) (𝔠 : UMem X₁ z₁ act V ev X t δ) (ξc : Sp V ⟶ Y.Z), ξc ≫ πY = …`. Establish `step : ∀ a b : Y.Z, πY a = z₁ → πY b = z₁ → a ⤳ b → (P a ↔ P b)`. Introduce `a b ha hb hab`.
+
+Take `⟨Va, _, _, _, _, eva, Xa, _, ma, ta, δa, 𝔠a, ξa, hξa, hca⟩` from `GlobalTheory.T.exists_uniformised_member_through_point_of_model_above g n F W Z i X₁ z₁ act hact Y πY hY a ha`. Take `⟨Vb, _, _, _, _, evb, Xb, _, mb, tb, δb, 𝔠b, ξb, hξb, hcb⟩` from `GlobalTheory.T.exists_uniformised_member_through_point_of_model_above g n F W Z i X₁ z₁ act hact Y πY hY b hb`. Prove the components needed by the constructor for the conclusion. Introduce `hP V _ _ _ _ ev X _ m t δ 𝔠 ξc hξc hc`. Establish `h1` using `hP Va eva Xa ma ta δa 𝔠a ξa hξa hca`.
+
+Establish `h2` using `GlobalTheory.T.memberLattices_iso_of_specialising_closedPoints g n F W Z i X₁ z₁ act hact Y πY hY Va eva Xa ma ta δa 𝔠a ξa V ev X m t δ 𝔠 ξc hξa hξc (by rw [hca, hc]; exact hab)`. Conclude with `h1.trans h2`. Introduce `hP V _ _ _ _ ev X _ m t δ 𝔠 ξc hξc hc`. Establish `h1` using `hP Vb evb Xb mb tb δb 𝔠b ξb hξb hcb`. Establish `h2` using `GlobalTheory.T.memberLattices_iso_of_specialising_closedPoints g n F W Z i X₁ z₁ act hact Y πY hY V ev X m t δ 𝔠 ξc Vb evb Xb mb tb δb 𝔠b ξb hξc hξb (by rw [hc, hcb]; exact hab)`.
+
+Conclude with `h1.trans h2.symm'`. Establish `key : ∀ y y' : Y.Z, Relation.EqvGen (fun a b : Y.Z => πY a = z₁ ∧ πY b = z₁ ∧ a ⤳ b) y y' → (P y ↔ P y')`. Introduce `y y' h`. Proceed by induction on `h with`. Consider the case `rel a b hr => exact step a b hr.1 hr.2.1 hr.2.2`.
+
+Consider the case `refl => exact Iff.rfl`. Consider the case `symm _ _ _ ih => exact ih.symm`. Consider the case `trans _ _ _ _ _ ih1 ih2 => exact ih1.trans ih2`. Use `haveI := 𝔫₀.loc`. Use `haveI := 𝔫₁.loc`.
+
+Establish `c₀ : πY (ξ₀ (closedPoint W₀)) = z₁` using `closed_over hξ₀`. Establish `c₁ : πY (ξ₁ (closedPoint W₁)) = z₁` using `closed_over hξ₁`. Establish `P0 : P (ξ₀ (closedPoint W₀))`. Introduce `V _ _ _ _ ev X _ m t δ 𝔠 ξc hξc hc`. Conclude with `GlobalTheory.T.memberLattices_iso_of_specialising_closedPoints g n F W Z i X₁ z₁ act hact Y πY hY W₀ e₀ X₀ n₀ s₀ d₀ 𝔫₀ ξ₀ V ev X m t δ 𝔠 ξc hξ₀ hξc (by rw [hc])`.
+
+Establish `P1` using `(key _ _ (GlobalTheory.T.semiabelianModel_fibre_specialization_chain g n F W Z i X₁ z₁ Y πY hY _ _ c₀ c₁)).1 P0`. Conclude with `a₀.trans ((P1 W₁ e₁ X n₁ s₁ d₁ 𝔫₁ ξ₁ hξ₁ rfl).trans a₁.symm')`.
+-/
 theorem latTo_all (hact : IsAct X₁ act)
     {V₀ : Type} [CommRing V₀] [IsDomain V₀] [IsLocalRing V₀] {ev₀ : X₁.M.Z.presheaf.stalk z₁ →+* V₀}
     {X₀ : Type} [AddCommGroup X₀] {m₀ : ℕ} {t₀ : Fin m₀ → V₀} {δ₀ : Fin m₀ → LinearMap.BilinForm ℤ X₀}
@@ -132,6 +161,9 @@ theorem latTo_all (hact : IsAct X₁ act)
 
 end Main
 
+/- English proof (translation)
+Introduce `g _ n _ _ F Z z i _ _ _ _ _ W _ _ X₁ z₁ act hact V₀ _ _ _ ev₀ X₀ _ m₀ t₀ δ₀ 𝔪₀ V _ _ _ ev X _ m t δ 𝔪`. Conclude with `latTo_all hact 𝔪₀ 𝔪`.
+-/
 theorem exists_latEquiv_of_members : ∀ g : ℕ, 1 ≤ g → ∀ n : ℕ, 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (Z : Scheme.{0}) (z : Z ⟶ Sp (cycAway n)) (i : F.X ⟶ Z) [IsOpenImmersion i], IsProjOver z → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Z → i ≫ z = F.s → Dense (Set.range i) → ∀ W : Matrix (Fin 8) (Fin 8) ℤ, IsE8 W → ThetaInt F W i → ∀ (X₁ : Setup F W i) (z₁ : X₁.M.Z) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), IsAct X₁ act → ∀ (V₀ : Type) [CommRing V₀] [IsDomain V₀] [IsLocalRing V₀] (ev₀ : X₁.M.Z.presheaf.stalk z₁ →+* V₀) (X₀ : Type) [AddCommGroup X₀] (m₀ : ℕ) (t₀ : Fin m₀ → V₀) (δ₀ : Fin m₀ → LinearMap.BilinForm ℤ X₀) (𝔪₀ : UMem X₁ z₁ act V₀ ev₀ X₀ t₀ δ₀) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (m : ℕ) (t : Fin m → V) (δ : Fin m → LinearMap.BilinForm ℤ X) (𝔪 : UMem X₁ z₁ act V ev X t δ), ∃ K : (Fin 8 → X₀) ≃+ (Fin 8 → X), (∀ (a : Matrix (Fin 8) (Fin 8) ℤ) (mu : Fin 8 → X₀), K (fun u => ∑ v, a u v • mu v) = fun u => ∑ v, a u v • K mu v) ∧ ∀ a mu, 𝔪₀.YY a mu → 𝔪.YY a (K mu) := by
   intro g _ n _ _ F Z z i _ _ _ _ _ W _ _ X₁ z₁ act hact V₀ _ _ _ ev₀ X₀ _ m₀ t₀ δ₀ 𝔪₀ V _ _ _ ev X _ m t δ 𝔪
   exact latTo_all hact 𝔪₀ 𝔪

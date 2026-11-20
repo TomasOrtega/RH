@@ -10,6 +10,9 @@ namespace GroundTheory.Arith.SchemeCoh
 section
 variable {X : Scheme.{u}}
 
+/- English proof (translation)
+Rewrite using `[← Skeleton.toSkeleton_tensorObj, Skeleton.one_eq]`. Use `isIso_dualEval hL` as an intermediate fact. Conclude with `congr_toSkeleton_of_iso (asIso (dualEval L))`.
+-/
 lemma toSkeleton_dualSheaf_mul {L : X.Modules} (hL : IsInvertibleSheaf L) :
     toSkeleton (dualSheaf L) * toSkeleton L = 1 := by
   rw [← Skeleton.toSkeleton_tensorObj, Skeleton.one_eq]
@@ -52,6 +55,11 @@ noncomputable def mk (L : X.Modules) (hL : IsInvertibleSheaf L) : Pic X :=
 
 def toClass (p : Pic X) : Skeleton X.Modules := ((p : ↥(picardSubgroup X)) : (Skeleton X.Modules)ˣ)
 
+/- English proof (translation)
+Rewrite using `[← toSkeleton_eq_toSkeleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `congrArg toClass h`. Introduce `h`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `h`.
+-/
 theorem mk_eq_mk_iff {L M : X.Modules} (hL : IsInvertibleSheaf L) (hM : IsInvertibleSheaf M) :
     mk L hL = mk M hM ↔ Nonempty (L ≅ M) := by
   rw [← toSkeleton_eq_toSkeleton_iff]
@@ -63,28 +71,43 @@ theorem mk_eq_mk_iff {L M : X.Modules} (hL : IsInvertibleSheaf L) (hM : IsInvert
     apply Units.ext
     exact h
 
+/- English proof (translation)
+Take `⟨v, L, hL, hv⟩` from `p`. Use `⟨L, hL, Subtype.ext (Units.ext ?_)⟩` and prove the remaining obligations. Conclude with `hv`.
+-/
 theorem exists_mk (p : Pic X) : ∃ (L : X.Modules) (hL : IsInvertibleSheaf L), mk L hL = p := by
   obtain ⟨v, L, hL, hv⟩ := p
   refine ⟨L, hL, Subtype.ext (Units.ext ?_)⟩
   exact hv
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `Skeleton.toSkeleton_tensorObj L M`.
+-/
 theorem mk_tensor {L M : X.Modules} (hL : IsInvertibleSheaf L) (hM : IsInvertibleSheaf M) :
     mk (L ⊗ M) (hL.tensor hM) = mk L hL * mk M hM := by
   apply Subtype.ext
   apply Units.ext
   exact Skeleton.toSkeleton_tensorObj L M
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+-/
 theorem mk_unit : mk (𝟙_ X.Modules) isInvertibleSheaf_unit = 1 := by
   apply Subtype.ext
   apply Units.ext
   rfl
 
+/- English proof (translation)
+Rewrite using `[eq_inv_iff_mul_eq_one, ← mk_tensor, ← mk_unit, mk_eq_mk_iff]`. Use `isIso_dualEval hL` as an intermediate fact. Conclude with `⟨asIso (dualEval L)⟩`.
+-/
 theorem mk_dualSheaf {L : X.Modules} (hL : IsInvertibleSheaf L) :
     mk (dualSheaf L) hL.dual = (mk L hL)⁻¹ := by
   rw [eq_inv_iff_mul_eq_one, ← mk_tensor, ← mk_unit, mk_eq_mk_iff]
   have := isIso_dualEval hL
   exact ⟨asIso (dualEval L)⟩
 
+/- English proof (translation)
+Rewrite using `[← mk_unit, mk_eq_mk_iff]`.
+-/
 theorem mk_eq_one_iff {L : X.Modules} (hL : IsInvertibleSheaf L) :
     mk L hL = 1 ↔ Nonempty (L ≅ 𝟙_ X.Modules) := by
   rw [← mk_unit, mk_eq_mk_iff]

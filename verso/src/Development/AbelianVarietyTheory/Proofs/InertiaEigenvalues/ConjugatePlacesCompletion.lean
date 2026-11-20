@@ -11,6 +11,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.CuspRep GlobalTheory.SmGL
 
+/- English proof (translation)
+Take `⟨e, h1, -⟩` from `WD.mk_eq_mk.1 hb`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[h1, map_smul]`. Use extensionality with `k`. Simplify using the standard rewrite rules.
+-/
 theorem GlobalTheory.WeilDeligne.WDRep.rho_apply_of_mk_eq_lpOfChar {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
     {n : ℕ} (b : WDRep h (Fin n → ℂ)) (χ : Weil h →* ℂˣ) (hχ : WeilDeligne.IsSmooth χ)
@@ -21,6 +24,15 @@ theorem GlobalTheory.WeilDeligne.WDRep.rho_apply_of_mk_eq_lpOfChar {E Ω : Type}
   ext k
   simp
 
+/- English proof (translation)
+Introduce `hL E Ω _ _ _ _ _ A A' w w' h h' c j i hcA hcj hi hij a ha ε H a' ha' ε' H' ξ hξ σ σ' hσ`. Use `set iU : (w.adicCompletion E)ˣ →* (w'.adicCompletion E)ˣ := Units.map i.toRingHom.toMonoidHom with hiU`. Establish `hcont : Continuous iU` using `Units.continuous_map hi`. Establish `hs : IsSmoothChar (ξ.comp iU)` using `hξ.comp iU hcont`. Take `⟨b, b', hb, hb', -, hρ⟩` from `hL.2 E Ω A w h E Ω A' w' h' (ParLaws.locRec hL h) (ParLaws.locRec hL h') (ParLaws.isRec_locRec hL h) (ParLaws.isRec_locRec hL h') c j i hcA hcj hi hij 1 (IrrRep.det (Fin 1) (ξ.comp iU) hs) (IrrRep.det (Fin 1) ξ hξ) (LinearEquiv.refl ℂ ℂ) (by`.
+
+Introduce `g v`. Establish `hd : Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map i.toRingHom g) = iU (Matrix.GeneralLinearGroup.det g)`. Use `ext`. Simplify using `[hiU, RingHom.map_det]`. Use `show (LinearEquiv.refl ℂ ℂ) ((ξ.comp iU (Matrix.GeneralLinearGroup.det g) : ℂ) • v) = _`.
+
+Use `show _ = ((ξ (Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map i.toRingHom g)) : ℂ) • v)`. Rewrite using `[hd]`. Use the proof step `rfl)`. Establish `e1 : WD.mk b = WD.lpOfChar h ((ξ.comp iU).comp a) (ha.smooth hs)` using `hb.trans (H.one _ hs)`. Establish `e2 : WD.mk b' = WD.lpOfChar h' (ξ.comp a') (ha'.smooth hξ)` using `hb'.trans (H'.one _ hξ)`.
+
+Establish `k` using `congrFun (congrArg (fun f : Module.End ℂ (Fin 1 → ℂ) => f (fun _ => 1)) (hρ σ σ' hσ)) 0`. Simplify using `only [b.rho_apply_of_mk_eq_lpOfChar _ _ e1, b'.rho_apply_of_mk_eq_lpOfChar _ _ e2] at k`. Simplify using `at k`. Conclude with `Units.ext (by simpa [hiU] using k)`.
+-/
 theorem GlobalTheory.LocLanglands.artin_transport : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {A A' : ValuationSubring Ω} {w w' : HeightOneSpectrum (𝓞 E)} (h : IsPlaceOver A w) (h' : IsPlaceOver A' w') (c : Ω ≃+* Ω) (j : E →+* E) (i : w.adicCompletion E ≃+* w'.adicCompletion E), (∀ z, c z ∈ A' ↔ z ∈ A) → (∀ x, c (algebraMap E Ω x) = algebraMap E Ω (j x)) → Continuous i → (∀ x, i (algebraMap E _ x) = algebraMap E _ (j x)) → ∀ {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a} {ε : EpsFamily A}, Laws a ha ε (ParLaws.locRec hL h) → ∀ {a' : Weil h' →* (w'.adicCompletion E)ˣ} {ha' : IsLocalArtin h' a'} {ε' : EpsFamily A'}, Laws a' ha' ε' (ParLaws.locRec hL h') → ∀ (ξ : (w'.adicCompletion E)ˣ →* ℂˣ), IsSmoothChar ξ → ∀ (σ : Weil h) (σ' : Weil h'), (∀ z, c ((σ : G E Ω) z) = (σ' : G E Ω) (c z)) → ξ (Units.map i.toRingHom.toMonoidHom (a σ)) = ξ (a' σ') := by
   intro hL E Ω _ _ _ _ _ A A' w w' h h' c j i hcA hcj hi hij a ha ε H a' ha' ε' H' ξ hξ σ σ' hσ
   set iU : (w.adicCompletion E)ˣ →* (w'.adicCompletion E)ˣ := Units.map i.toRingHom.toMonoidHom with hiU

@@ -30,6 +30,17 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Sl.FrameLen
 
+/- English proof (translation)
+Introduce `E _ _ _ H L _ _ D σ A _ φ g u Hm χ hab hp h1 h2 hah a x c hvec`. Take `⟨v, hlift, v', hv', hdiff⟩` from `hvec`. Establish `e : spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ 𝟙 (Sp (𝓞 L)) = emb σ` using `Category.comp_id _`. Set `v₀ : epsAt (spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ 𝟙 (Sp (𝓞 L))) ⟶ D.t.G` to `Over.homMk v.left (by simpa using Over.w v)`. Establish `hl₀ : D.MB.Lifts (σ.comp (algebraMap (𝓞 L) L)) (𝟙 D.t.G.left) x v₀` using `hlift`.
+
+Take `⟨hL, hvt, -, A', _, φ', g', u', Hm', χ', p, q, a', b', hp', hah', ep, eq', dp, dq, hval⟩` from `D.fib σ x x v₀ v₀ hl₀ hl₀`. Establish `hp₀ : IsGrpPullback A D.t.G (spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ 𝟙 (Sp (𝓞 L))) φ` using `IsGrpPullback.congr hp e.symm rfl`. Establish `hpz : IsGrpPullback A' D.t.G (emb σ) φ'` using `IsGrpPullback.congr hp' e rfl`. Set `x₁ : epsR ℂ ⟶ A` to `(HodgeLin.tanEquiv hp₀).symm v₀`. Establish `hx₁ : HodgeLin.tanEquiv hp₀ x₁ = v₀` using `(HodgeLin.tanEquiv hp₀).apply_symm_apply _`.
+
+Establish `tx₁ : IsTangent x₁` using `(HodgeLin.isTangent_iff hp₀ x₁).2 (by rw [hx₁]; exact hvt)`. Establish `lx₁ : x₁.left ≫ φ = v.left` using `congrArg (fun r => r.left) hx₁`. Take `⟨w, hw, -⟩` from `h1 x₁ tx₁`. Establish `T1` using `GlobalTheory.T.hol_unif_compare_isogeny (Sp (𝓞 L)) D.t.G D.t.PP.L (emb σ) A a.A φ a.φ g D.g u a.u Hm a.Hm χ a.χ D.t.PP.isLB hab hp a.cart h1 h2 hah a.ah x₁ x₁ v' v' w w c c tx₁ tx₁ (hv'.trans lx₁.symm) (hv'.trans lx₁.symm) hw hw hdiff hdiff`. Establish `T2` using `GlobalTheory.T.hol_unif_compare_isogeny (Sp (𝓞 L)) D.t.G D.t.PP.L (emb σ) A A' φ φ' g g' u u' Hm Hm' χ χ' D.t.PP.isLB hab hp hpz h1 h2 hah hah' x₁ x₁ q p w w b' a' tx₁ tx₁ (eq'.trans lx₁.symm) (ep.trans lx₁.symm) hw hw dq dp`.
+
+Establish `hH : a.herm c c = hermForm Hm' b' a'` using `T1.trans T2.symm`. Establish `hin : ((D.B.metric.form σ).inner ((1 : ComplexAt σ) ⊗ₜ[𝓞 L] x) ((1 : ComplexAt σ) ⊗ₜ[𝓞 L] x) : ℂ) = Real.pi * a.herm c c`. Rewrite using `[hH]`. Conclude with `hval`. Establish `hnn : 0 ≤ ((D.B.metric.form σ).inner ((1 : ComplexAt σ) ⊗ₜ[𝓞 L] x) ((1 : ComplexAt σ) ⊗ₜ[𝓞 L] x) : ℂ).re` using `(D.B.metric.form σ).re_inner_nonneg _`.
+
+Unfold `PPData.len`. Rewrite using `[Real.sq_sqrt hnn, hin, Complex.re_ofReal_mul]`.
+-/
 theorem len_sq_eq_pi_herm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type) [Field L] [NumberField L] (D : PPData H L) (σ : L →+* ℂ) (A : Over (Sp ℂ)) [GrpObj A] (φ : A.left ⟶ D.t.G.left) (g : ℕ) (u : HolUnif A (D.t.PP.L.pull φ) g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ), IsAbelianScheme A → IsGrpPullback A D.t.G (emb σ) φ → (∀ v, IsTangent v → ∃! w, u.IsDiff w v) → (∀ w, ∃! v, IsTangent v ∧ u.IsDiff w v) → u.IsAH Hm χ → ∀ (a : D.Frame σ) (x : D.B.carrier) (c : Fin D.g → ℂ), D.IsVec a x c → D.len σ x ^ 2 = Real.pi * (a.herm c c).re := by
   intro E _ _ _ H L _ _ D σ A _ φ g u Hm χ hab hp h1 h2 hah a x c hvec
   obtain ⟨v, hlift, v', hv', hdiff⟩ := hvec

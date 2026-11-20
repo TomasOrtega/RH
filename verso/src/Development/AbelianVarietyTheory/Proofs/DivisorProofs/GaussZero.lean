@@ -25,16 +25,27 @@ def emb {K : Type} [Field K] (φ : I → K →+* ℂ) (α : K) : I → ℂ := fu
 def ulog {K : Type} [Field K] [NumberField K] (φ : I → K →+* ℂ) (u : (𝓞 K)ˣ) : I → ℝ :=
   fun i => Real.log (‖φ i ((u : 𝓞 K) : K)‖ ^ 2)
 
+/- English proof (translation)
+Unfold `hmon`. Use `split_ifs with h`. Rewrite using `[map_zero]; exact zero_pow (by omega)`. Conclude with `zero_pow (by omega)`.
+-/
 theorem hmon_zero {n : ℤ} (hn : n ≠ 0) : hmon n 0 = 0 := by
   unfold hmon
   split_ifs with h
   · rw [map_zero]; exact zero_pow (by omega)
   · exact zero_pow (by omega)
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `hn`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp [hmon_zero hi])`.
+-/
 theorem gauss_zero {n : I → ℤ} (hn : ∃ i, n i ≠ 0) : gauss n 0 = 0 := by
   obtain ⟨i, hi⟩ := hn
   exact Finset.prod_eq_zero (Finset.mem_univ i) (by simp [hmon_zero hi])
 
+/- English proof (translation)
+Unfold `hmon`. Use `split_ifs with h`. Rewrite using `[norm_pow, Complex.norm_conj]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[norm_pow]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem norm_hmon (n : ℤ) (z : ℂ) : ‖hmon n z‖ = ‖z‖ ^ n.natAbs := by
   unfold hmon
   split_ifs with h

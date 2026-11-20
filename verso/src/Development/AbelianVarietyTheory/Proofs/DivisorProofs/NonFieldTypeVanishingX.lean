@@ -18,6 +18,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {J : Matrix (Fin n) (Fin n) E}
 end Star
 
+/- English proof (translation)
+Introduce `D V hodd S M T hH U μa _ μf _ f hf 𝔉 hP`. Take `⟨a, ha0, ha2, hpar⟩` from `parabolicAtSplitPlaces D V hodd T 𝔉 hP`. Take `⟨v, hv⟩` from `hH a ha0 (by omega)`. Take `⟨fa, ff, hfa, hff, rfl⟩` from `hf`. Take `⟨h, hh, e⟩` from `hff.2.1 v`.
+
+Establish `hA : ∀ w, fa w ∈ CcArch D.sp.cm.sig V.gram w` using `hfa.mem`. Establish `hF` using `hff.isFinFamily`. Establish `he` using `(T.frame v).idem_mem (μf v.1) (T.τ v)`. Prove the components needed by the constructor for the conclusion. Use `GlobalTheory.T.unipotentIntegrals_pureTensor_vanish_of_local D V 𝔉 fa ff hA hF v.1 fun ν _ x y => ?_` and prove the remaining obligations.
+
+Conclude with `(GlobalTheory.T.typeIdempotent_unipotentIntegral_vanish_splitPlace D V T v a ha0 (by omega) hv 𝔉 (hpar v).1 (μf v.1) _ (conv_mem_SB he hh) (ff v.1) (Or.inr e) ν x y).2`. Rewrite using `[starFn_tensor]`. Use `GlobalTheory.T.unipotentIntegrals_pureTensor_vanish_of_local D V 𝔉 _ _ (fun w => starFn_mem_ccArch (hA w)) (isFinFamily_starFn hF) v.1 fun ν _ x y => ?_` and prove the remaining obligations. Establish `e' : starFn (ff v.1) = GlobalTheory.AutomorphicL2Unitary.conv (μf v.1) ((T.frame v).idem (μf v.1) (T.τ v)) (GlobalTheory.AutomorphicL2Unitary.conv (μf v.1) (starFn h) ((T.frame v).idem (μf v.1) (T.τ v)))`. Rewrite using `[e, starFn_conv, starFn_conv]`.
+
+Simplify using `only [TypeData.idem, SplitAt.starFn_idem]`. Conclude with `(GlobalTheory.T.typeIdempotent_unipotentIntegral_vanish_splitPlace D V T v a ha0 (by omega) hv 𝔉 (hpar v).1 (μf v.1) _ (conv_mem_SB (starFn_mem_SB hh) he) _ (Or.inl e') ν x y).2`.
+-/
 theorem testFnConstTermVanishX : TestFnConstTermVanishX := by
   intro D V hodd S M T hH U μa _ μf _ f hf 𝔉 hP
   obtain ⟨a, ha0, ha2, hpar⟩ := parabolicAtSplitPlaces D V hodd T 𝔉 hP
@@ -40,6 +49,9 @@ theorem testFnConstTermVanishX : TestFnConstTermVanishX := by
     exact (GlobalTheory.T.typeIdempotent_unipotentIntegral_vanish_splitPlace D V T v a ha0 (by omega) hv 𝔉 (hpar v).1 (μf v.1) _ (conv_mem_SB (starFn_mem_SB hh) he) _
       (Or.inl e') ν x y).2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨parabolicAtSplitPlaces, testFnConstTermVanishX⟩`.
+-/
 theorem parabolicAndConstTermX : ParabolicAndConstTermX := ⟨parabolicAtSplitPlaces, testFnConstTermVanishX⟩
 end GlobalTheory.Proof.parabolic_and_constant_term
 end
@@ -47,6 +59,9 @@ end
 
 section
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Proof.parabolic_and_constant_term.parabolicAndConstTermX | exact GlobalTheory.Proof.parabolic_and_constant_term.parabolicAndConstTermX | (intros; apply GlobalTheory.Proof.parabolic_and_constant_term.parabolicAndConstTermX <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.PsCo.Plug.parabolicT : GlobalTheory.IndefiniteRowSideFullHecke.ConstantTermVanishing.ParabolicAndConstTermX := by
   first | exact @GlobalTheory.Proof.parabolic_and_constant_term.parabolicAndConstTermX | exact GlobalTheory.Proof.parabolic_and_constant_term.parabolicAndConstTermX | (intros; apply GlobalTheory.Proof.parabolic_and_constant_term.parabolicAndConstTermX <;> assumption)
 end
@@ -63,6 +78,15 @@ namespace GlobalTheory.NonFieldType
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {V : HSp D}
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `dta dtf dt hdt 𝓣 h𝓣`. Establish `hreg` using `hγ.1`. Establish `hcm` using `isCMExt_host D`. Establish `hJ` using `isHermND_gram V`. Take `⟨hta, htf, htt, -⟩` from `id hdt`.
+
+Establish `i1 : ∀ w, (dta w).IsMulRightInvariant` using `fun w => haveI := hta w`. Use `isMulRightInvariant_cent (isMulCommutative_cent_HA (isRegSS_projArch_ratEmb hreg w)) _`. Establish `i2 : ∀ v, (dtf v).IsMulRightInvariant` using `fun v => haveI := htf v`. Use `isMulRightInvariant_cent (isMulCommutative_cent_HA (isRegSS_proj_ratEmb hreg v)) _`. Establish `hvol : dt 𝓣 < ⊤` using `@covol_lt_top D V γ hγ dt htt 𝓣 h𝓣`.
+
+Establish `hfa : ∀ w, Continuous (fa w) ∧ HasCompactSupport (fa w)` using `fun w => ⟨continuous_of_mem_ccSmooth (continuous_archCoord _ _ w) (ha.mem w), (ha.mem w).1⟩`. Establish `hff : IsFinFamily D.sp.cm.sig V.gram (frameLat V) ff` using `hf.isFinFamily`. Establish `hKv` using `(regular_semisimple_adelic hcm hJ (frameLat V) γ hreg).1`. Establish `hpa : ∀ w, IsProperOrbit (cent (projArch D.sp.cm.sig V.gram w (ratEmb D.sp.cm.sig V.gram γ))) (projArch D.sp.cm.sig V.gram w (ratEmb D.sp.cm.sig V.gram γ))` using `fun w => isProperOrbit_GArch hcm hJ (isRegSS_projArch_ratEmb hreg w)`. Establish `hpf : ∀ v, IsProperOrbit (cent (proj D.sp.cm.sig V.gram v (ratEmb D.sp.cm.sig V.gram γ))) (proj D.sp.cm.sig V.gram v (ratEmb D.sp.cm.sig V.gram γ))` using `fun v => isProperOrbit_GLoc hcm hJ (isRegSS_proj_ratEmb hreg v)`.
+
+Take `⟨-, hoa, hob, h1, hO⟩` from `@hasOrbInt_tensor _ _ _ _ _ _ _ _ _ _ (frameLat V) _ μa μf μ _ dta dtf dt fa ff hμ hdt i1 i2 hfa hff hKv (fun w => Or.inl (hpa w)) (fun v => Or.inl (hpf v))`. Use `⟨hvol, _, _, hoa, hob, h1, hO, fun 𝓕 h𝓕 => ?_⟩` and prove the remaining obligations. Establish `hc` using `continuous_of_mem_ccAd (tensor_mem_ccAd ha.mem hf.isFinFamily)`. Conclude with `@GlobalTheory.T.classTerm_eq_volume_mul_orbitalIntegral (GA D V) _ _ _ _ _ _ _ _ (GQ V) _ (ratEmb D.sp.cm.sig V.gram γ) (ratEmb_mem_GQ γ) (isMulCommutative_cent_ratEmb hreg) μ hμ.2.2.1 dt htt 𝓣 h𝓣 hvol _ _ hc.1 hc.2 hO 𝓕 h𝓕`.
+-/
 theorem productClauseX {S : D.what₂.Tau → SPar} {M : DSModel V S} {T : TypeDataG V} {U : AuxiliaryPlaceHermitianSpace V}
     {μa : ∀ w, Measure (GArch D.sp.cm.sig V.gram w)} {μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)}
     {μ : Measure (GA D V)} (hμ : IsRestrictedProd D.sp.cm.sig V.gram (frameLat V) μa μf μ)
@@ -98,6 +122,9 @@ theorem productClauseX {S : D.what₂.Tau → SPar} {M : DSModel V S} {T : TypeD
     (isMulCommutative_cent_ratEmb hreg) μ hμ.2.2.1 dt htt 𝓣 h𝓣 hvol _ _ hc.1 hc.2 hO 𝓕 h𝓕
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D V _ S M T U hH μa μf μ hμ fa ff ha hf γ hγ`. Establish `hL` using `localClause (fun v => hμ.2.1 v) hf hγ`. Establish `hP` using `productClauseX hμ ha hf hγ`. Conclude with `⟨hL, hP, zeroClause hH hγ hL hP⟩`.
+-/
 theorem nonFieldTypeVanishingX : NonFieldTypeVanishingX := by
   intro D V _ S M T U hH μa μf μ hμ fa ff ha hf γ hγ
   have hL := localClause (fun v => hμ.2.1 v) hf hγ
@@ -109,6 +136,9 @@ end
 
 section
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.NonFieldType.nonFieldTypeVanishingX | exact GlobalTheory.NonFieldType.nonFieldTypeVanishingX | (intros; apply GlobalTheory.NonFieldType.nonFieldTypeVanishingX <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.PsCo.Plug.nonFieldT : GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.NonFieldTypeVanishingX := by
   first | exact @GlobalTheory.NonFieldType.nonFieldTypeVanishingX | exact GlobalTheory.NonFieldType.nonFieldTypeVanishingX | (intros; apply GlobalTheory.NonFieldType.nonFieldTypeVanishingX <;> assumption)
 end
@@ -122,6 +152,9 @@ open scoped TensorProduct ComplexConjugate Matrix
 noncomputable section
 namespace GlobalTheory.TrEllSum
 
+/- English proof (translation)
+Introduce `D V lam S M T U μa μf μ fa ff h dta dtf dt ht`. Take `⟨-, -, -, -, hμ, ha, hf⟩` from `h`. Conclude with `elliptic_expansion (isCMExt_host D) (GlobalTheory.InertOfConj.unram D) (isHermND_gram V) (frameLat V) hμ ha.mem hf.isFinFamily dta dtf dt ht _ rfl _ rfl`.
+-/
 theorem ellipticPartX : GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.EllipticPartX := by
   intro D V lam S M T U μa μf μ fa ff h dta dtf dt ht
   obtain ⟨-, -, -, -, hμ, ha, hf⟩ := h
@@ -138,6 +171,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots GlobalTheory.Tr
 open GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups (mapH diagH)
 open scoped TensorProduct ComplexConjugate Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TrEllSum.ellipticPartX | exact GlobalTheory.TrEllSum.ellipticPartX | (intros; apply GlobalTheory.TrEllSum.ellipticPartX <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.PsCo.Plug.ellipticT : GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.EllipticPartX := by
   first | exact @GlobalTheory.TrEllSum.ellipticPartX | exact GlobalTheory.TrEllSum.ellipticPartX | (intros; apply GlobalTheory.TrEllSum.ellipticPartX <;> assumption)
 end

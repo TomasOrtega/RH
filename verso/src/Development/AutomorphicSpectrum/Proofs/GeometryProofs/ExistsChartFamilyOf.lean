@@ -21,10 +21,26 @@ open Opposite ReciprocityTheory.ChartRestriction.G.TB.ValAt GlobalTheory.HolHom 
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X : Scheme.{0}}
 
+/- English proof (translation)
+The claim follows from `(hf.mul (hg.inv h0)).congr fun b _ => by simp [div_eq_mul_inv]`.
+-/
 theorem diffOn_div {f g : V → ℂ} {s : Set V} (hf : DifferentiableOn ℂ f s) (hg : DifferentiableOn ℂ g s)
     (h0 : ∀ b ∈ s, g b ≠ 0) : DifferentiableOn ℂ (fun b => f b / g b) s :=
   (hf.mul (hg.inv h0)).congr fun b _ => by simp [div_eq_mul_inv]
 
+/- English proof (translation)
+Introduce `U hU`. Establish `hmU : (c b₀) (default : PrimeSpectrum ℂ) ∈ U` using `(le_preimage_iff _ _).1 hU`. Establish `hmA : (c b₀) (default : PrimeSpectrum ℂ) ∈ A` using `(le_preimage_iff _ _).1 (hin b₀ hb₀)`. Take `⟨r, hrU, hr0⟩` from `hA.exists_basicOpen_le (V := U) ⟨_, hmU⟩ hmA`. Use `set M := {b ∈ N | valAt' (c b) A r ≠ 0} with hMdef`.
+
+Establish `hMo : IsOpen M` using `(hz r).continuousOn.isOpen_inter_preimage hN isOpen_ne`. Establish `hD : ∀ b ∈ M, ⊤ ≤ c b ⁻¹ᵁ X.basicOpen r` using `fun b hb => (le_basicOpen_iff (c b) (hin b hb.1) r).2 hb.2`. Establish `hb0M : b₀ ∈ M` using `⟨hb₀, (le_basicOpen_iff (c b₀) (hin b₀ hb₀) r).1 ((le_preimage_iff _ _).2 hr0)⟩`. Use `⟨?_, fun f => ?_⟩` and prove the remaining obligations. Use `filter_upwards [hMo.mem_nhds hb0M] with b hb`.
+
+Conclude with `(hD b hb).trans (Scheme.Hom.preimage_mono _ hrU)`. Use `haveI := hA.isLocalization_basicOpen r`. Take `⟨⟨hh, s⟩, hk⟩` from `IsLocalization.surj (Submonoid.powers r) (X.presheaf.map (homOfLE hrU).op f)`. Take `⟨k, hks⟩` from `s.2`. Simplify using `only at hk`.
+
+Establish `hval : ∀ b ∈ M, valAt' (c b) U f * valAt' (c b) A r ^ k = valAt' (c b) A hh`. Introduce `b hb`. Establish `e` using `congrArg (valAt' (c b) (X.basicOpen r)) hk`. Rewrite `e` using `[valAt'_mul, valAt'_res (c b) hrU (hD b hb)]`. Establish `e2 : ∀ x : Γ(X, A), valAt' (c b) (X.basicOpen r) (algebraMap Γ(X, A) Γ(X, X.basicOpen r) x) = valAt' (c b) A x` using `fun x => valAt'_res (c b) (X.basicOpen_le r) (hD b hb) x`.
+
+Rewrite `e` using `[e2, e2, ← hks]`. Establish `e3 : valAt' (c b) A (r ^ k) = valAt' (c b) A r ^ k` using `map_pow (valHom (c b) A (hin b hb.1)) r k`. Rewrite `e` using `[e3]`. Conclude with `e`. Establish `h1 : DifferentiableOn ℂ (fun b => valAt' (c b) A hh) M` using `(hz hh).mono fun b (hb : b ∈ M) => hb.1`.
+
+Establish `h2 : DifferentiableOn ℂ (fun b => valAt' (c b) A r) M` using `(hz r).mono fun b (hb : b ∈ M) => hb.1`. Establish `h3 : DifferentiableOn ℂ (fun b => valAt' (c b) A hh / valAt' (c b) A r ^ k) M` using `diffOn_div h1 (h2.fun_pow k) fun b hb => pow_ne_zero _ hb.2`. Use `((h3.congr fun b hb => ?_).differentiableAt (hMo.mem_nhds hb0M))` and prove the remaining obligations. Rewrite using `[eq_div_iff (pow_ne_zero _ hb.2)]`. Conclude with `hval b hb`.
+-/
 theorem holAt_of_isAffineOpen {N : Set V} {c : V → (Sp ℂ ⟶ X)} {A : X.Opens} (hA : IsAffineOpen A) (hN : IsOpen N)
     (hin : ∀ b ∈ N, ⊤ ≤ c b ⁻¹ᵁ A) (hz : ∀ r : Γ(X, A), DifferentiableOn ℂ (fun b => valAt' (c b) A r) N)
     {b₀ : V} (hb₀ : b₀ ∈ N) : HolAt c b₀ := by
@@ -65,6 +81,9 @@ theorem holAt_of_isAffineOpen {N : Set V} {c : V → (Sp ℂ ⟶ X)} {A : X.Open
 variable {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {K : Type} [Fintype K] {J : K → Type}
   {y : (Σ k, J k) → Ω}
 
+/- English proof (translation)
+Establish `h1` using `X.presheaf.germ_stalkSpecializes (U := A) (y := q.1) hq q.2`. Establish `h3 : X.presheaf.germ A q.1 hq ≫ (X.presheaf.stalkSpecializes q.2 ≫ Scheme.stalkClosedPointTo ξ) = X.presheaf.germ A (genPt ξ) hg ≫ Scheme.stalkClosedPointTo ξ` using `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ Scheme.stalkClosedPointTo ξ) h1)`. Conclude with `congrArg (fun f => f.hom r) h3`.
+-/
 theorem genMap_germ {A : X.Opens} (hg : genPt ξ ∈ A) (q : Cpt ξ) (hq : q.1 ∈ A) (r : Γ(X, A)) :
     genMap ξ q (X.presheaf.germ A q.1 hq r) =
       (X.presheaf.germ A (genPt ξ) hg ≫ Scheme.stalkClosedPointTo ξ).hom r := by
@@ -74,6 +93,9 @@ theorem genMap_germ {A : X.Opens} (hg : genPt ξ ∈ A) (q : Cpt ξ) (hq : q.1 �
     (Category.assoc _ _ _).symm.trans (congrArg (· ≫ Scheme.stalkClosedPointTo ξ) h1)
   exact congrArg (fun f => f.hom r) h3
 
+/- English proof (translation)
+Establish `hc : centre z ∈ A` using `(le_preimage_iff z A).1 hz`. Use `⟨hall _, X.presheaf.germ A (centre z) hc r, genMap_germ hg ⟨centre z, hall _⟩ hc r, ?_⟩` and prove the remaining obligations. Rewrite using `[valAt'_of _ _ hz]`. Conclude with `congrArg (fun φ => φ.hom r) (GlobalTheory.Points.germ_stalkClosedPointTo_eq_valMap z A hz)`.
+-/
 theorem valAt_section (hall : ∀ q : X, genPt ξ ⤳ q) {A : X.Opens} (hg : genPt ξ ∈ A) (r : Γ(X, A))
     {z : Sp ℂ ⟶ X} (hz : ⊤ ≤ z ⁻¹ᵁ A) :
     ValAt ξ z ((X.presheaf.germ A (genPt ξ) hg ≫ Scheme.stalkClosedPointTo ξ).hom r) (valAt' z A r) := by
@@ -82,6 +104,21 @@ theorem valAt_section (hall : ∀ q : X, genPt ξ ⤳ q) {A : X.Opens} (hg : gen
   rw [valAt'_of _ _ hz]
   exact congrArg (fun φ => φ.hom r) (GlobalTheory.Points.germ_stalkClosedPointTo_eq_valMap z A hz)
 
+/- English proof (translation)
+Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem a ha`. Take `⟨j, rfl⟩` from `ha`. Use `⟨fun b => ∏ k, β b ⟨k, j k⟩ / β b ⟨k, c k⟩, ?_, fun b hb => ?_⟩` and prove the remaining obligations. Establish `hS : ∀ S : Finset K, DifferentiableOn ℂ (fun b => ∏ k ∈ S, β b ⟨k, j k⟩ / β b ⟨k, c k⟩) N` using `by classical`.
+
+Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using differentiableOn_const (c := (1 : ℂ))`. Consider the case `insert k S hk ih`. Simplify using `only [Finset.prod_insert hk]`.
+
+Conclude with `(diffOn_div (hβ _) (hβ _) fun b hb => hne b hb k).fun_mul ih`. Conclude with `hS _`. Simplify using `only [← Finset.prod_div_distrib]`. Establish `hS : ∀ S : Finset K, ValAt ξ (ζ b) (∏ k ∈ S, y ⟨k, j k⟩ / y ⟨k, c k⟩) (∏ k ∈ S, β b ⟨k, j k⟩ / β b ⟨k, c k⟩)` using `by classical`. Introduce `S`.
+
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using val_one (ξ := ξ) (z := ζ b) (hall _)`. Consider the case `insert k S hk ih`. Rewrite using `[Finset.prod_insert hk, Finset.prod_insert hk]`. Use `val_mul ?_ ih` and prove the remaining obligations.
+
+Take `⟨r, hr, hr'⟩` from `((hco b hb).2 k (c k) (isUnit_iff_ne_zero.2 (hne b hb k))).2 (j k)`. Rewrite using `[hr', mul_div_cancel_right₀ _ (hne b hb k)]` and apply the resulting hypothesis. Conclude with `hS _`. Consider the case `algebraMap n`. Use `⟨fun _ => (n : ℂ), differentiableOn_const _, fun b _ => ?_⟩` and prove the remaining obligations.
+
+Conclude with `⟨hall _, (n : X.presheaf.stalk (centre (ζ b))), by simp, map_intCast _ n⟩`. Consider the case `add a a' _ _ h h'`. Take `⟨F, hF, hv⟩` from `h`. Take `⟨F', hF', hv'⟩` from `h'`. Conclude with `⟨fun b => F b + F' b, hF.fun_add hF', fun b hb => val_add (hv b hb) (hv' b hb)⟩`.
+
+Consider the case `mul a a' _ _ h h'`. Take `⟨F, hF, hv⟩` from `h`. Take `⟨F', hF', hv'⟩` from `h'`. Conclude with `⟨fun b => F b * F' b, hF.fun_mul hF', fun b hb => val_mul (hv b hb) (hv' b hb)⟩`.
+-/
 theorem exists_hol_value (hall : ∀ q : X, genPt ξ ⤳ q) {N : Set V} {β : V → (Σ k, J k) → ℂ} {ζ : V → (Sp ℂ ⟶ X)}
     (c : (k : K) → J k) (hβ : ∀ p, DifferentiableOn ℂ (fun b => β b p) N)
     (hco : ∀ b ∈ N, CoordsAt ξ y (ζ b) (β b)) (hne : ∀ b ∈ N, ∀ k, β b ⟨k, c k⟩ ≠ 0) {a : Ω}
@@ -125,6 +162,15 @@ theorem exists_hol_value (hall : ∀ q : X, genPt ξ ⤳ q) {N : Set V} {β : V 
     obtain ⟨F', hF', hv'⟩ := h'
     exact ⟨fun b => F b * F' b, hF.fun_mul hF', fun b hb => val_mul (hv b hb) (hv' b hb)⟩
 
+/- English proof (translation)
+Use `isHolTo_of_holAt hB fun b₁ hb₁ => ?_` and prove the remaining obligations. Use `choose c hc using (hco b₁ hb₁).1`. Use `set N := {b ∈ B | ∀ k, β b ⟨k, c k⟩ ≠ 0} with hNdef`. Establish `hNB : N ⊆ B` using `fun b hb => hb.1`. Establish `hNo : IsOpen N`.
+
+Use `isOpen_iff_mem_nhds.2 fun b hb => ?_` and prove the remaining obligations. Establish `hk : ∀ᶠ t in 𝓝 b, ∀ k, β t ⟨k, c k⟩ ≠ 0` using `eventually_all.2 fun k => ((hβ _).continuousOn.continuousAt (hB.mem_nhds hb.1)).eventually_ne (hb.2 k)`. Use `filter_upwards [hB.mem_nhds hb.1, hk] with t h1 h2 using ⟨h1, h2⟩`. Establish `hb₁N : b₁ ∈ N` using `⟨hb₁, fun k => (hc k).ne_zero⟩`. Establish `hx0 : (∏ k, y ⟨k, c k⟩) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => ((hco b₁ hb₁).2 k (c k) (hc k)).1`.
+
+Take `⟨A, hA, hAq⟩` from `htie.affine c hx0`. Establish `hin : ∀ b ∈ N, ⊤ ≤ ζ b ⁻¹ᵁ A` using `fun b hb => (le_preimage_iff _ _).2 ((hAq _).2 ⟨hall _, in_chart (hall _) (hco b hb.1) hb.2⟩)`. Establish `hg : genPt ξ ∈ A` using `(hall _).mem_open A.2 ((le_preimage_iff _ _).1 (hin b₁ hb₁N))`. Use `holAt_of_isAffineOpen hA hNo hin (fun r => ?_) hb₁N` and prove the remaining obligations. Establish `ha` using `(htie.ring c hx0 ((X.presheaf.germ A (genPt ξ) hg ≫ Scheme.stalkClosedPointTo ξ).hom r)).2 fun p hp => ⟨_, genMap_germ hg p ((hAq _).2 ⟨p.2, hp⟩) r⟩`.
+
+Take `⟨F, hF, hFv⟩` from `exists_hol_value hall c (fun p => (hβ p).mono hNB) (fun b hb => hco b hb.1) (fun b hb => hb.2) ha`. Use `hF.congr fun b hb => ?_` and prove the remaining obligations. Conclude with `val_unique htie.gen (valAt_section hall hg r (hin b hb)) (hFv b hb)`.
+-/
 theorem isHolTo_of_coordsAt (htie : CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩))
     (hall : ∀ q : X, genPt ξ ⤳ q) {B : Set V} {β : V → (Σ k, J k) → ℂ} {ζ : V → (Sp ℂ ⟶ X)} (hB : IsOpen B)
     (hβ : ∀ p, DifferentiableOn ℂ (fun b => β b p) B) (hco : ∀ b ∈ B, CoordsAt ξ y (ζ b) (β b)) :

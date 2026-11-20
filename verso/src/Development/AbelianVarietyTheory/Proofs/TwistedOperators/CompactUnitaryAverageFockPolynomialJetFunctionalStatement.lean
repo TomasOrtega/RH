@@ -7,6 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.MvZOneEqMa
 open Formalism.BasicNotions Formalism.L2.DIV MeasureTheory
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AvgJet.avg_jet | exact GlobalTheory.AvgJet.avg_jet | (intros; apply GlobalTheory.AvgJet.avg_jet <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.compactUnitaryAverage_fockPolynomial_jetFunctional : ∀ (ι : Type) [Fintype ι] (a b : ℕ), a ≤ b → 0 < a → ∀ (lam : ι → DomWeight a) (lam' : ι → DomWeight b)
     (nn : ι → ℕ), Formalism.L2.Ker.JetInVV ℂ lam lam' nn → ∀ (K : Type) [Group K] [TopologicalSpace K] [IsTopologicalGroup K]
     [MeasurableSpace K] [BorelSpace K] (ν : Measure K) [IsProbabilityMeasure ν] [ν.IsMulLeftInvariant]

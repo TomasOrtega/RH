@@ -12,6 +12,15 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.GodementH
 
+/- English proof (translation)
+Establish `hnorm : ∀ (τ : EmbOver E w) (y : w.Completion ⊗[F] E), ‖infEmb τ y‖₊ = ‖infEmb e y‖₊`. Introduce `τ y`. Break down `infEmb_eq_or_conj hσ e τ with h | h` into its components or cases. Rewrite using `[h]`. Rewrite using `[h, RingHom.comp_apply, RCLike.nnnorm_conj]`.
+
+Establish `hterm : ∀ p : EmbOver E w × J, ‖infEmb e δ.1‖₊ * ‖p.1.1 (u p.2)‖₊ ≤ c`. Introduce and unpack `⟨τ, f⟩`. Establish `h1 : infEmb τ (z f) = τ.1 (u f) * infEmb τ δ.1`. Rewrite using `[hz f, map_mul, infEmb_tmul, map_one, one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hsup : ‖infEmb e δ.1‖₊ * (Finset.univ.sup fun p : EmbOver E w × J => ‖p.1.1 (u p.2)‖₊) ≤ c`. Rewrite using `[Finset.mul_sup₀]`. Conclude with `Finset.sup_le fun p _ => hterm p`. Unfold `locInf`. Rewrite using `[GlobalTheory.Doubling.absEw_eq_sq hσ e, ← mul_pow]`.
+
+Use `pow_le_pow_left' hsup 2` and compare the differences between its conclusion and the goal.
+-/
 theorem absEw_mul_locInf_le (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (J : Type) [Fintype J] (w : InfinitePlace F) (e : EmbOver E w)
     (u : J → E) (δ : (w.Completion ⊗[F] E)ˣ) (z : J → w.Completion ⊗[F] E) (c : ℝ≥0)

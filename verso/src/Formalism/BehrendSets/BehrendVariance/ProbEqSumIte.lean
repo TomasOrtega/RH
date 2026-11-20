@@ -9,6 +9,11 @@ namespace Formalism.BehrendSets.Rand
 
 variable {α : Type} [DecidableEq α]
 
+/- English proof (translation)
+Unfold `prob`. Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : P T`. Rewrite using `[if_pos h, if_pos h]`.
+
+Rewrite using `[if_neg h, if_neg h]`.
+-/
 theorem prob_eq_sum_ite (X : Finset α) (δ : ℝ) (P : Finset α → Prop) [DecidablePred P] :
     prob X δ P = ∑ T ∈ X.powerset, if P T then wt X δ T else 0 := by
   unfold prob
@@ -18,14 +23,25 @@ theorem prob_eq_sum_ite (X : Finset α) (δ : ℝ) (P : Finset α → Prop) [Dec
   · rw [if_pos h, if_pos h]
   · rw [if_neg h, if_neg h]
 
+/- English proof (translation)
+Rewrite using `[prob_eq_sum_ite, Finset.sum_filter]`.
+-/
 theorem prob_filter (X : Finset α) (δ : ℝ) (P : Finset α → Prop) [DecidablePred P] :
     prob X δ P = ∑ T ∈ X.powerset.filter P, wt X δ T := by
   rw [prob_eq_sum_ite, Finset.sum_filter]
 
+/- English proof (translation)
+Unfold `wt`. Conclude with `mul_nonneg (pow_nonneg h0 _) (pow_nonneg (sub_nonneg.mpr h1) _)`.
+-/
 theorem wt_nonneg (X T : Finset α) {δ : ℝ} (h0 : 0 ≤ δ) (h1 : δ ≤ 1) : 0 ≤ wt X δ T := by
   unfold wt
   exact mul_nonneg (pow_nonneg h0 _) (pow_nonneg (sub_nonneg.mpr h1) _)
 
+/- English proof (translation)
+Rewrite using `[prob_filter]`. Rewrite using `[filter_true_of_mem (fun _ _ => trivial)]`. Establish `h : ∀ T ∈ X.powerset, wt X δ T = δ ^ T.card * (1 - δ) ^ (X.card - T.card)`. Introduce `T hT`. Unfold `wt`.
+
+Rewrite using `[card_sdiff_of_subset (mem_powerset.mp hT)]`. Rewrite using `[Finset.sum_congr rfl h, Finset.sum_pow_mul_eq_add_pow, add_sub_cancel, one_pow]`.
+-/
 theorem prob_total (X : Finset α) (δ : ℝ) : prob X δ (fun _ => True) = 1 := by
   rw [prob_filter]
   rw [filter_true_of_mem (fun _ _ => trivial)]
@@ -35,6 +51,11 @@ theorem prob_total (X : Finset α) (δ : ℝ) : prob X δ (fun _ => True) = 1 :=
     rw [card_sdiff_of_subset (mem_powerset.mp hT)]
   rw [Finset.sum_congr rfl h, Finset.sum_pow_mul_eq_add_pow, add_sub_cancel, one_pow]
 
+/- English proof (translation)
+Unfold `wt`. Establish `hd : Disjoint S U`. Rewrite using `[Finset.disjoint_left]`. Introduce `a ha hb`. Conclude with `(mem_sdiff.mp (hU hb)).2 ha`.
+
+Establish `he : X \ (S ∪ U) = (X \ S) \ U`. Use extensionality with `a`. Simplify using `only [mem_sdiff, mem_union]`. The claim follows by propositional logic. Rewrite using `[card_union_of_disjoint hd, pow_add, he, mul_assoc]`.
+-/
 theorem wt_union (X S U : Finset α) (δ : ℝ) (hU : U ⊆ X \ S) :
     wt X δ (S ∪ U) = δ ^ S.card * wt (X \ S) δ U := by
   unfold wt
@@ -48,6 +69,21 @@ theorem wt_union (X S U : Finset α) (δ : ℝ) (hU : U ⊆ X \ S) :
     tauto
   rw [card_union_of_disjoint hd, pow_add, he, mul_assoc]
 
+/- English proof (translation)
+Use `symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[prob_total, mul_one]`. Use `_ = ∑ U ∈ (X \ S).powerset, δ ^ S.card * wt (X \ S) δ U := by`. Rewrite using `[prob_filter, filter_true_of_mem (fun _ _ => trivial), Finset.mul_sum]`.
+
+Use `_ = prob X δ (fun T => S ⊆ T) := by`. Rewrite using `[prob_filter]`. Use `symm`. Use `Finset.sum_nbij' (fun T => T \ S) (fun U => S ∪ U) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `T hT`.
+
+Rewrite `hT` using `[mem_filter, mem_powerset]`. Rewrite using `[mem_powerset]`. Introduce `x hx`. Rewrite `hx`, the goal using `[mem_sdiff]`. Conclude with `⟨hT.1 hx.1, hx.2⟩`.
+
+Introduce `U hU`. Rewrite `hU` using `[mem_powerset]`. Rewrite using `[mem_filter, mem_powerset]`. Conclude with `⟨union_subset hS (hU.trans sdiff_subset), subset_union_left⟩`. Introduce `T hT`.
+
+Rewrite `hT` using `[mem_filter]`. Conclude with `union_sdiff_of_subset hT.2`. Introduce `U hU`. Rewrite `hU` using `[mem_powerset]`. Use extensionality with `x`.
+
+Establish `hx` using `@hU x`. Simplify using `only [mem_sdiff, mem_union] at hx ⊢`. The claim follows by propositional logic. Introduce `T hT`. Rewrite `hT` using `[mem_filter, mem_powerset]`.
+
+Establish `hU : T \ S ⊆ X \ S`. Introduce `x hx`. Rewrite `hx`, the goal using `[mem_sdiff]`. Conclude with `⟨hT.1 hx.1, hx.2⟩`. Rewrite using `[← wt_union X S (T \ S) δ hU, union_sdiff_of_subset hT.2]`.
+-/
 theorem prob_sub (X S : Finset α) (δ : ℝ) (hS : S ⊆ X) :
     prob X δ (fun T => S ⊆ T) = δ ^ S.card := by
   symm
@@ -86,6 +122,11 @@ theorem prob_sub (X S : Finset α) (δ : ℝ) (hS : S ⊆ X) :
             exact ⟨hT.1 hx.1, hx.2⟩
           rw [← wt_union X S (T \ S) δ hU, union_sdiff_of_subset hT.2]
 
+/- English proof (translation)
+Distinguish the cases in `hS : S ⊆ X`. Conclude with `(prob_sub X S δ hS).le`. Establish `h : prob X δ (fun T => S ⊆ T) = 0`. Rewrite using `[prob_filter, Finset.filter_false_of_mem, Finset.sum_empty]`. Introduce `T hT hST`.
+
+Conclude with `hS (hST.trans (mem_powerset.mp hT))`. Rewrite using `[h]`. Conclude with `pow_nonneg h0 _`.
+-/
 theorem prob_sub_le (X S : Finset α) {δ : ℝ} (h0 : 0 ≤ δ) :
     prob X δ (fun T => S ⊆ T) ≤ δ ^ S.card := by
   by_cases hS : S ⊆ X
@@ -97,6 +138,11 @@ theorem prob_sub_le (X S : Finset α) {δ : ℝ} (h0 : 0 ≤ δ) :
     rw [h]
     exact pow_nonneg h0 _
 
+/- English proof (translation)
+Rewrite using `[prob_filter, prob_filter]`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `T hT`. Rewrite `hT`, the goal using `[mem_filter, mem_powerset]`. Conclude with `⟨hT.1, hPQ T hT.1 hT.2⟩`.
+
+Introduce `T _ _`. Conclude with `wt_nonneg X T h0 h1`.
+-/
 theorem prob_mono (X : Finset α) {δ : ℝ} (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (P Q : Finset α → Prop)
     (hPQ : ∀ T ⊆ X, P T → Q T) : prob X δ P ≤ prob X δ Q := by
   classical
@@ -108,6 +154,13 @@ theorem prob_mono (X : Finset α) {δ : ℝ} (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (P 
   · intro T _ _
     exact wt_nonneg X T h0 h1
 
+/- English proof (translation)
+Rewrite using `[prob_eq_sum_ite X δ (fun T => ∃ j ∈ J, E j T), Finset.sum_congr rfl (fun j _ => prob_eq_sum_ite X δ (E j)), Finset.sum_comm]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `T _`. Establish `hnn : ∀ i ∈ J, 0 ≤ (if E i T then wt X δ T else 0)`. Introduce `i _`.
+
+Distinguish the cases in `h : E i T`. Rewrite using `[if_pos h]`. Conclude with `wt_nonneg X T h0 h1`. Rewrite using `[if_neg h]`. Distinguish the cases in `h : ∃ j ∈ J, E j T`.
+
+Rewrite using `[if_pos h]`. Take `⟨j, hj, hE⟩` from `h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[if_neg h]`. Conclude with `Finset.sum_nonneg hnn`.
+-/
 theorem prob_exists_le {ι : Type} (X : Finset α) {δ : ℝ} (h0 : 0 ≤ δ) (h1 : δ ≤ 1)
     (J : Finset ι) (E : ι → Finset α → Prop) :
     prob X δ (fun T => ∃ j ∈ J, E j T) ≤ ∑ j ∈ J, prob X δ (E j) := by
@@ -130,6 +183,21 @@ theorem prob_exists_le {ι : Type} (X : Finset α) {δ : ℝ} (h0 : 0 ≤ δ) (h
   · rw [if_neg h]
     exact Finset.sum_nonneg hnn
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Apply `prob_mono X h0 h1` to reduce the goal to its premises. Introduce and unpack `T - ⟨htT, W, hW𝒲, hK⟩`. Use `⟨W, hW𝒲, ?_⟩` and prove the remaining obligations. Establish `hA : K ≤ ((T ∩ W).erase t).card`.
+
+Use `pred_card_le_card_erase (s := T ∩ W) (a := t)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨S, hSA, hSc⟩` from `exists_subset_card_eq hA`. Use `⟨S, mem_powersetCard.mpr ⟨hSA.trans (erase_subset_erase t inter_subset_right), hSc⟩, ?_⟩` and prove the remaining obligations. Conclude with `insert_subset htT (hSA.trans ((erase_subset t _).trans inter_subset_left))`.
+
+Use `_ ≤ ∑ W ∈ 𝒲, prob X δ (fun T => ∃ S ∈ powersetCard K (W.erase t), insert t S ⊆ T) := prob_exists_le X h0 h1 𝒲 (fun W T => ∃ S ∈ powersetCard K (W.erase t), insert t S ⊆ T)`. Use `_ ≤ ∑ W ∈ 𝒲, ∑ S ∈ powersetCard K (W.erase t), prob X δ (fun T => insert t S ⊆ T) := Finset.sum_le_sum fun W _ => prob_exists_le X h0 h1 _ (fun S T => insert t S ⊆ T)`. Use `_ ≤ ∑ W ∈ 𝒲, ∑ S ∈ powersetCard K (W.erase t), δ ^ (K + 1) := by`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `W _`.
+
+Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `S hS`. Establish `hS'` using `mem_powersetCard.mp hS`. Establish `htS : t ∉ S` using `fun h => (mem_erase.mp (hS'.1 h)).1 rfl`. Establish `hc : (insert t S).card = K + 1` using `by rw [card_insert_of_notMem htS, hS'.2]`.
+
+Rewrite using `[← hc]`. Conclude with `prob_sub_le X _ h0`. Use `_ ≤ ∑ W ∈ 𝒲, (L : ℝ) ^ K * δ ^ (K + 1) := by`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `W hW𝒲`.
+
+Rewrite using `[Finset.sum_const, card_powersetCard, nsmul_eq_mul]`. Apply `mul_le_mul_of_nonneg_right _ (pow_nonneg h0 _)` to reduce the goal to its premises. Establish `h2 : (W.erase t).card.choose K ≤ L ^ K` using `(Nat.choose_le_pow _ _).trans (Nat.pow_le_pow_left (card_erase_le.trans (hW W hW𝒲)) K)`. Conclude with `h2` after adjusting the coercions. Use `_ = δ * 𝒲.card * ((L : ℝ) * δ) ^ K := by`.
+
+Rewrite using `[Finset.sum_const, nsmul_eq_mul, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tops_bad (X : Finset α) (δ : ℝ) (L K : ℕ) (t : α) (𝒲 : Finset (Finset α))
     (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (hW : ∀ W ∈ 𝒲, W.card ≤ L) :
     prob X δ (fun T => t ∈ T ∧ ∃ W ∈ 𝒲, K + 1 ≤ (T ∩ W).card)
@@ -173,6 +241,15 @@ theorem tops_bad (X : Finset α) (δ : ℝ) (L K : ℕ) (t : α) (𝒲 : Finset 
         rw [Finset.sum_const, nsmul_eq_mul, mul_pow]
         ring
 
+/- English proof (translation)
+Unfold `expect`. Establish `h1 : ∀ T ∈ X.powerset, wt X δ T * (T.card : ℝ) = ∑ x ∈ X, if x ∈ T then wt X δ T else 0`. Introduce `T hT`. Rewrite using `[Finset.sum_ite_mem, inter_eq_right.mpr (mem_powerset.mp hT), Finset.sum_const, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Finset.sum_congr rfl h1, Finset.sum_comm]`. Establish `h2 : ∀ x ∈ X, (∑ T ∈ X.powerset, if x ∈ T then wt X δ T else 0) = δ`. Introduce `x hx`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[prob_eq_sum_ite]`.
+
+Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : x ∈ T`. Rewrite using `[if_pos h, if_pos (singleton_subset_iff.mpr h)]`. Rewrite using `[if_neg h, if_neg (fun h' => h (singleton_subset_iff.mp h'))]`. Use `_ = δ := by rw [prob_sub X {x} δ (singleton_subset_iff.mpr hx), card_singleton, pow_one]`.
+
+Rewrite using `[Finset.sum_congr rfl h2, Finset.sum_const, nsmul_eq_mul, mul_comm]`.
+-/
 theorem expect_card (X : Finset α) (δ : ℝ) :
     expect X δ (fun T => (T.card : ℝ)) = δ * X.card := by
   unfold expect
@@ -195,6 +272,13 @@ theorem expect_card (X : Finset α) (δ : ℝ) :
       _ = δ := by rw [prob_sub X {x} δ (singleton_subset_iff.mpr hx), card_singleton, pow_one]
   rw [Finset.sum_congr rfl h2, Finset.sum_const, nsmul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Unfold `expect`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[prob_eq_sum_ite X δ (E i), Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : E i T`. Rewrite using `[if_pos h, if_pos h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h, if_neg h]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem expect_sum_ite {ι : Type} (X : Finset α) (δ : ℝ) (I : Finset ι) (c : ι → ℝ)
     (E : ι → Finset α → Prop) (dec : ∀ i, DecidablePred (E i)) :
     expect X δ (fun T => ∑ i ∈ I, c i * (if E i T then 1 else 0))

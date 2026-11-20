@@ -47,6 +47,9 @@ namespace GlobalTheory.AbelianRR
 
 variable {k : Type} [CommRing k] {S : Scheme.{0}} {p : S ⟶ Sp k} {D : ℕ}
 
+/- English proof (translation)
+Establish `l (i) : B.loc 0 i = 0` using `funext fun v => by`. Unfold `CxForm.HolAtlas.loc`. Apply the tactic sequence `split_ifs <;> rfl`. Conclude with `⟨⟨fun i T => by simpa [l] using contDiffOn_const, fun _ _ _ => by simp⟩, fun _ => ⟨fun T hT => by simp at hT, fun T => by simp⟩⟩`.
+-/
 theorem isRealForm_zero {M : Type} [TopologicalSpace M] {n : ℕ} (B : HolAtlas M n) (j : ℕ) : B.IsRealForm j 0 := by
   have l (i) : B.loc 0 i = 0 := funext fun v => by
     unfold CxForm.HolAtlas.loc
@@ -54,6 +57,11 @@ theorem isRealForm_zero {M : Type} [TopologicalSpace M] {n : ℕ} (B : HolAtlas 
   exact ⟨⟨fun i T => by simpa [l] using contDiffOn_const, fun _ _ _ => by simp⟩,
     fun _ => ⟨fun T hT => by simp at hT, fun T => by simp⟩⟩
 
+/- English proof (translation)
+Use `⟨fun σ => ⟨((GlobalTheory.T.smoothForms_calculus_holomorphicAtlas _ _ _).2.1 1 _ _ (hα.1 σ).1 (hβ.1 σ).1).1, fun x => ⟨fun T hT => ?_, fun T => ?_⟩⟩, fun σ σ' x x' e e' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : (bas D).repr (α σ x) T = 0`. Conclude with `((hβ.1 σ).2 x).1 T (by simpa [h0] using hT)`. Conclude with `((hα.1 σ).2 x).1 T h0`. Simplify using `only [Pi.add_apply, map_add, Finsupp.add_apply, ((hα.1 σ).2 x).2 T, ((hβ.1 σ).2 x).2 T]`.
+
+Simplify using `only [Pi.add_apply, map_add, smul_add, hα.2 σ σ' x x' e e', hβ.2 σ σ' x x' e e']`.
+-/
 theorem isArForm_add (h : IsRegVar p D) {j : ℕ} {α β : h.Fld} (hα : h.IsArForm j α) (hβ : h.IsArForm j β) :
     h.IsArForm j (α + β) := by
   refine ⟨fun σ => ⟨((GlobalTheory.T.smoothForms_calculus_holomorphicAtlas _ _ _).2.1 1 _ _ (hα.1 σ).1 (hβ.1 σ).1).1, fun x => ⟨fun T hT => ?_, fun T => ?_⟩⟩,
@@ -64,9 +72,17 @@ theorem isArForm_add (h : IsRegVar p D) {j : ℕ} {α β : h.Fld} (hα : h.IsArF
   · simp only [Pi.add_apply, map_add, Finsupp.add_apply, ((hα.1 σ).2 x).2 T, ((hβ.1 σ).2 x).2 T]
   · simp only [Pi.add_apply, map_add, smul_add, hα.2 σ σ' x x' e e', hβ.2 σ σ' x x' e e']
 
+/- English proof (translation)
+The claim follows from `h.isArForm_fn (u := fun _ _ => c) (fun _ y => cInfAt_const c y) fun _ _ _ _ _ _ _ => rfl`.
+-/
 theorem isArForm_const (h : IsRegVar p D) (c : ℝ) : h.IsArForm 0 fun σ => (h.atlas σ).fn fun _ => c :=
   h.isArForm_fn (u := fun _ _ => c) (fun _ y => cInfAt_const c y) fun _ _ _ _ _ _ _ => rfl
 
+/- English proof (translation)
+Establish `s {i : ℕ} {x : A} (hx : x ∈ gr i) : GradedAlgebra.proj gr i x = x` using `DirectSum.decompose_of_mem_same gr hx`. Establish `n {i : ℕ} {x : A} (hx : x ∈ gr i) (j : ℕ) (hij : i ≠ j) : GradedAlgebra.proj gr j x = 0` using `DirectSum.decompose_of_mem_ne gr hx hij`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify `congrArg (GradedAlgebra.proj gr 0) e` using `only [map_add, s h₀, s k₀, n h₁ 0 (by decide), n h₂ 0 (by decide), n k₁ 0 (by decide), n k₂ 0 (by decide), add_zero]`. Simplify `congrArg (GradedAlgebra.proj gr 1) e` using `only [map_add, s h₁, s k₁, n h₀ 1 (by decide), n h₂ 1 (by decide), n k₀ 1 (by decide), n k₂ 1 (by decide), add_zero, zero_add]`.
+
+Simplify `congrArg (GradedAlgebra.proj gr 2) e` using `only [map_add, s h₂, s k₂, n h₀ 2 (by decide), n h₁ 2 (by decide), n k₀ 2 (by decide), n k₁ 2 (by decide), add_zero, zero_add]`.
+-/
 theorem parts_eq {A : Type} [CommRing A] [Algebra ℚ A] (gr : ℕ → Submodule ℚ A) [GradedAlgebra gr]
     {a₀ a₁ a₂ b₀ b₁ b₂ : A} (h₀ : a₀ ∈ gr 0) (h₁ : a₁ ∈ gr 1) (h₂ : a₂ ∈ gr 2) (k₀ : b₀ ∈ gr 0) (k₁ : b₁ ∈ gr 1)
     (k₂ : b₂ ∈ gr 2) (e : a₀ + a₁ + a₂ = b₀ + b₁ + b₂) : a₀ = b₀ ∧ a₁ = b₁ ∧ a₂ = b₂ := by
@@ -81,6 +97,11 @@ theorem parts_eq {A : Type} [CommRing A] [Algebra ℚ A] (gr : ℕ → Submodule
   · simpa only [map_add, s h₂, s k₂, n h₀ 2 (by decide), n h₁ 2 (by decide), n k₀ 2 (by decide), n k₁ 2 (by decide),
       add_zero, zero_add] using congrArg (GradedAlgebra.proj gr 2) e
 
+/- English proof (translation)
+Establish `z {i j : ℕ} {a b : A} (ha : a ∈ gr i) (hb' : b ∈ gr j) (hij : 2 < i + j) : a * b = 0`. Use `SetLike.mul_mem_graded ha hb'` as an intermediate fact. Rewrite `this` using `[hb _ hij, Submodule.mem_bot]`. Then use the resulting hypothesis. Establish `hdw` using `sub_mem hd hw`. Take `⟨e₀, e₁, e₂⟩` from `parts_eq gr (SetLike.one_mem_graded gr) (sub_mem hm₁ hα) (sub_mem hm₂ hβ) h₀ (add_mem h₁ (SetLike.mul_mem_graded hx h₀)) (add_mem (add_mem h₂ (SetLike.mul_mem_graded hx h₁)) (SetLike.mul_mem_graded hdw h₀)) (by`.
+
+Take the linear combination `e - (y₀ + y₁ + y₂) * z hx hw (by decide) - (y₀ + y₁ + y₂) * z hd hw (by decide) + z hx h₂ (by decide) + z hdw h₁ (by decide) + z hdw h₂ (by decide))`. Substitute `e₀` using the available equality. Conclude with `⟨by linear_combination e₁, by linear_combination e₂⟩`.
+-/
 theorem parts_of_identity {A : Type} [CommRing A] [Algebra ℚ A] (gr : ℕ → Submodule ℚ A) [GradedAlgebra gr]
     (hb : ∀ j, 2 < j → gr j = ⊥) {m₁ m₂ α β x d w y₀ y₁ y₂ : A} (hm₁ : m₁ ∈ gr 1) (hm₂ : m₂ ∈ gr 2) (hα : α ∈ gr 1)
     (hβ : β ∈ gr 2) (hx : x ∈ gr 1) (hd : d ∈ gr 2) (hw : w ∈ gr 2) (h₀ : y₀ ∈ gr 0) (h₁ : y₁ ∈ gr 1) (h₂ : y₂ ∈ gr 2)
@@ -99,6 +120,31 @@ theorem parts_of_identity {A : Type} [CommRing A] [Algebra ℚ A] (gr : ℕ → 
   subst e₀
   exact ⟨by linear_combination e₁, by linear_combination e₂⟩
 
+/- English proof (translation)
+Introduce `B k _ X Y p q g h h' f hf R R' F G hp hmem hzero hproj hGdeg r E E' hcl L M θ₀ θ₁ h₀ h₁ hid`. Establish `hch (φ) : R'.char E' φ = F (R.char E φ)`. Simplify using `only [CxForm.ArRing.char, AlgHom.comp_apply, hcl]`. Conclude with `(MvPolynomial.comp_aeval_apply _ F _).symm`. Establish `hz {j : ℕ} {x : R.CH} (hx : x ∈ R.gr j) (hj : 2 < j) : x = 0`.
+
+Rewrite `hx` using `[R.gr_eq_bot j hj, Submodule.mem_bot]`. Then use the resulting hypothesis. Establish `hm` using `GlobalTheory.T.char_class_graded_degree B k X p 1 h R r E`. Use `set u := R.a fun σ => (h.atlas σ).fn fun _ => rOne with hu`. Establish `htd : R'.td E' = F (1 + R.char E (tdPart r 1) + R.char E (tdPart r 2))`. Rewrite using `[CxForm.ArRing.td, show g + 1 + 2 = 3 + g by omega, Finset.sum_range_add, Finset.sum_eq_zero (s := Finset.range g), add_zero]`.
+
+Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add, hch, map_add, R.char_tdPart_zero]`. Introduce `j _`. Rewrite using `[hch, hz (hm _).2 (by omega), map_zero]`. Establish `hr : R'.a (R'.rForm E') = F (u * R.cl E 1)`. Establish `e : h.pullFld h' f hf (fun σ => (h.atlas σ).fn fun _ => rOne) = fun σ => (h'.atlas σ).fn fun _ => rOne`.
+
+Use function extensionality and compare the values at `fun σ => funext fun x => AlgHom.commutes _ _`. Establish `e' : CxForm.rCoeff 1 = rOne` using `by simp [CxForm.rCoeff, rOne]`. Rewrite using `[map_mul, hu, hp.a 0 _ (isArForm_const h _), e, R'.a_mul 0 _ (isArForm_const h' _), CxForm.ArRing.rForm, Finset.sum_eq_single 1, hch, R.char_chPart_one, e']`. Conclude with `congrArg _ (funext fun σ => funext fun x => Algebra.smul_def (rOne : ℂ) (h'.coeFld (R'.om (F (R.cl E 1))) σ x))`. Introduce `j hj hj'`.
+
+Establish `: Odd j` using `(Finset.mem_filter.1 hj).2`. Rewrite using `[hch, hz (hm _).1 (by obtain ⟨i, rfl⟩ := this; omega), map_zero, map_zero]`. Conclude with `smul_zero _`. Simplify using the standard rewrite rules. Set `y (i : ℕ) : R.CH` to `(((g + i).factorial : ℚ)⁻¹) • G (R'.c1 L ^ (g + i))`.
+
+Establish `hl (j : ℕ) : R'.c1 L ^ j ∈ R'.gr j` using `by simpa using SetLike.pow_mem_graded j (R'.constant_one_mem_nonvanishing L)`. Establish `hy (i : ℕ) : y i ∈ R.gr i` using `Submodule.smul_mem _ _ (hmem (g + i) i (by omega) _ (hl _))`. Establish `hL : G (R'.ch (.ofLB L)) = y 0 + y 1 + y 2`. Rewrite using `[GlobalTheory.T.chern_character_line_bundle_exp, show g + 1 + 2 = g + 3 by omega, Finset.sum_range_add, map_add, map_sum, Finset.sum_eq_zero, zero_add]`. Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add, map_add, map_smul, y]`.
+
+Introduce `j hj`. Rewrite using `[map_smul, hzero j (by simpa using hj) _ (hl _), smul_zero]`. Establish `hM : R.ch (.ofLB M) = 1 + R.c1 M + (1 / 2 : ℚ) • R.c1 M ^ 2`. Rewrite using `[GlobalTheory.T.chern_character_line_bundle_exp]`. Simplify using `[Finset.sum_range_succ]`.
+
+Establish `hdeg (x : R.CH) (z : R'.CH) : R.deg (G z * x) = R'.deg (z * F x)`. Rewrite using `[mul_comm, ← hproj, mul_comm]`. Conclude with `hGdeg _`. Rewrite `hid` using `[htd, hr, ← map_one F, ← map_sub, ← map_mul, hproj, hL, hM, map_add]`. Establish `hu1 : u ∈ R.gr 1` using `R.a_mem 0 _ (isArForm_const h _)`.
+
+Take `⟨e₁, e₂⟩` from `parts_of_identity R.gr R.gr_eq_bot (R.constant_one_mem_nonvanishing M) (Submodule.smul_mem _ _ (by simpa using SetLike.pow_mem_graded 2 (R.constant_one_mem_nonvanishing M))) (R.a_mem 0 _ h₀) (R.a_mem 1 _ h₁) (hm 1).2 (hm 2).2 (SetLike.mul_mem_graded hu1 (R.cl_mem E 1)) (hy 0) (hy …`. Rewrite `e₁`, `e₂` using `[(GlobalTheory.T.todd_part_low_degree r).1, map_smul, R.char_chPart_one]`. Rewrite `e₂` using `[(GlobalTheory.T.todd_part_low_degree r).2, map_sub, map_smul, map_smul, map_pow, R.char_chPart_one]`. Use `⟨fun N => ?_, ?_⟩` and prove the remaining obligations. Use `congrArg (fun z => R.deg (z * R.c1 N)) e₁` as an intermediate fact.
+
+Simplify using `only [sub_mul, add_mul, map_sub, map_add, y, smul_mul_assoc, map_smul, hdeg, Rat.smul_def] at this`. Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `congrArg R.deg e₂` as an intermediate fact.
+
+Establish `d₂` using `hdeg 1 (R'.c1 L ^ (g + 2))`. Rewrite `d₂` using `[_root_.mul_one, map_one, _root_.mul_one]`. Rewrite `this` using `[mul_comm _ (y 1)]`. Simplify using `only [map_sub, map_add, y, smul_mul_assoc, mul_smul_comm, map_smul, hdeg, d₂, Rat.smul_def] at this`. Move the coercions through the operations in `at this`.
+
+Take the linear combination `this`.
+-/
 theorem ringdeg : ∀ (B : BottChern) (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (g : ℕ) (h : IsRegVar p 1) (h' : IsRegVar q (g + 1)) (f : Y ⟶ X) (hf : f ≫ p = q) (R : ArRing B h) (R' : ArRing B h') (F : R.CH →ₐ[ℚ] R'.CH) (G : R'.CH →ₗ[ℚ] R.CH), R.IsPull R' f hf F →
     (∀ i j : ℕ, i + 1 = j + (g + 1) →
     ∀ x ∈ R'.gr i, G x ∈ R.gr j) →
@@ -174,6 +220,11 @@ theorem ringdeg : ∀ (B : BottChern) (k : Type) [CommRing k] (X Y : Scheme.{0})
     push_cast at this
     linear_combination this
 
+/- English proof (translation)
+Introduce `B k _ X p h R N t ht h0`. Establish `hN` using `R.om_isArForm 1 _ (R.constant_one_mem_nonvanishing N)`. Rewrite using `[R.a_mul 0 _ h0, R.deg_a _ (GlobalTheory.T.arakelov_form_mul_function k X p 1 h t 1 _ h0 hN), one_div_mul_eq_div, chInt]`. Use `congr 1`. Use `finsum_congr fun σ => ?_` and prove the remaining obligations.
+
+Establish `: CompactSpace (CxPts p σ)` using `CxPts.compactSpace σ h.isProjOver`. Establish `: T2Space (CxPts p σ)` using `CxPts.t2Space_cxPts_of_isProjOver σ h.isProjOver`. Establish `: SecondCountableTopology (CxPts p σ)` using `CxPts.secondCountableTopology_of_isProjOver σ h.isProjOver`. Use `(GlobalTheory.T.weighted_integral_of_continuous _ 1 (h.atlas σ) (t σ) (continuous_iff_continuousAt.2 fun y => (ht σ y).continuousAt) _ (hN.1 σ).1).trans ?_` and prove the remaining obligations. Rewrite using `[LineForm.wInt, GlobalTheory.T.curve_chern_part_om_c1, GlobalTheory.T.curve_chern_part_om_c1, Weight.chernInt, Measure.restrict_univ, Measure.restrict_univ]`.
+-/
 theorem deg_a_mul_c1 : ∀ (B : BottChern) (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (h : IsRegVar p 1) (R : ArRing B h) (N : HermLB p) (t : ∀ σ : k →+* ℂ, CxPts p σ → ℝ), (∀ σ y, CInfAt (t σ) y) → h.IsArForm 0 (fun σ => (h.atlas σ).fn (t σ)) → R.deg (R.a (fun σ => (h.atlas σ).fn (t σ)) * R.c1 N) = chInt N 1 t / 2 := by
   intro B k _ X p h R N t ht h0
   have hN := R.om_isArForm 1 _ (R.constant_one_mem_nonvanishing N)
@@ -190,6 +241,43 @@ theorem deg_a_mul_c1 : ∀ (B : BottChern) (k : Type) [CommRing k] (X : Scheme.{
 set_option maxHeartbeats 800000 in
 open MvPolynomial in
 
+/- English proof (translation)
+Introduce and unpack `- - ⟨-, -, hBK, hAn, ⟨B, hG⟩, hV⟩ k _ S p _ hS A _ _ g hA hsm hAV w H L hL M ψ hch`. Establish `h : IsRegVar p 1` using `⟨hS.toIsArithVar, hS.regular⟩`. Establish `hsm' : Smooth A.hom` using `SmoothOfRelativeDimension.smooth g _`. Establish `h' : IsRegVar (A.hom ≫ p) (g + 1)`. Use `h.toIsArithVar.isLocallyNoetherian` as an intermediate fact.
+
+Use `⟨hAV, fun y => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.ThetaExtend.isRegularRing_stalk h.regular A.hom y` as an intermediate fact. Conclude with `.of_isRegularRing_of_isLocalRing _`. Establish `hper (σ) (y : CxPts p σ) : ∃ (c : AlgChart p σ 1) (τ : V 1 → Matrix (Fin g) (Fin g) ℂ) (ex : Pt (V 1) g → CxPts (A.hom ≫ p) σ), y ∈ c.e.source ∧ IsPeriodChart w c τ ex`. Establish `⟨c, τ, ex, h₁, h₂, _⟩` using `hch σ y`.
+
+Use the proof step `⟨c, τ, ex, h₁, h₂⟩`. Take `⟨κ, hκ, hκ'⟩` from `GlobalTheory.T.exists_positive_arithmetic_kaehler_form k S p 1 h`. Take `⟨Ω, hΩ, hΩ'⟩` from `GlobalTheory.T.exists_period_form_from_charts k S p 1 h A _ h' g hA hsm w hper`. Take `⟨φ, hφ⟩` from `GlobalTheory.T.period_chart_fibre_metric k S p 1 A g hA hsm`. Establish `hac` using `GlobalTheory.T.ample_line_bundle_relatively_acyclic hV k S p 1 h.toIsArithVar A hA L.B L.isLB hL`.
+
+Take `⟨hpκ, hpκ'⟩` from `GlobalTheory.T.arithmetic_form_pullback_closed k S A.left p _ 1 _ h h' A.hom rfl 1 κ hκ`. Establish `hcov (σ) (y : CxPts p σ) : ∃ (c : AlgChart p σ 1) (τ : V 1 → Matrix (Fin g) (Fin g) ℂ) (ex : Pt (V 1) g → CxPts (A.hom ≫ p) σ), y ∈ c.e.source ∧ IsUnifChart c τ ex ∧ IsFlatOn h' (Ω σ) c.e.target τ ex`. Establish `⟨c, τ, ex, h₁, h₂⟩` using `hper σ y`. Use the proof step `⟨c, τ, ex, h₁, h₂.isUnifChart, (hΩ' σ).2.2 c τ ex h₂⟩`. Establish `har : h'.IsArForm 1 fun σ => fibForm h h' (Ω σ) (κ σ)` using `isArForm_add h' hΩ hpκ`.
+
+Establish `hfκ (σ) : IsFlatFibration g h h' (Ω σ) (κ σ)`. Take `⟨-, -, -, -, -, e₁, e₂, -⟩` from `(GlobalTheory.T.smoothForms_calculus_holomorphicAtlas _ _ _).2.1 1 _ _ (hΩ.1 σ).1 (hpκ.1 σ).1`. Use `⟨hκ.1 σ, har.1 σ, e₁.trans ?_, e₂.trans ?_, hcov σ⟩` and prove the remaining obligations. Rewrite using `[(hΩ' σ).1, (hpκ' σ).1 (hκ' σ).1, add_zero]`. Rewrite using `[(hΩ' σ).2.1, (hpκ' σ).2 (hκ' σ).2.1, add_zero]`.
+
+Establish `hf0 (σ) : IsFlatFibration g h h' (Ω σ) 0`. Establish `e : fibForm h h' (Ω σ) 0 = Ω σ` using `funext fun x => (congrArg (Ω σ x + ·) (map_zero (CxForm.pull _))).trans (add_zero _)`. Rewrite using `[IsFlatFibration, e]`. Conclude with `⟨isRealForm_zero _ _, hΩ.1 σ, (hΩ' σ).1, (hΩ' σ).2.1, hcov σ⟩`. Take `⟨C, P, hGRS⟩` from `hG k`.
+
+Take `⟨T, T', hT, hT', hid⟩` from `hGRS S p 1 h A _ h' g hsm (.of_smooth _) Ω κ hfκ har (fun σ => GlobalTheory.T.period_chart_form_equation k S p 1 h A _ h' g hA hsm w hper σ _ _ (hΩ.1 σ) (hκ.1 σ) (hΩ' σ).2.2 (hκ' σ).2.2) ((w.pull A.hom rfl).map φ) ((H.pull _ _).map φ) L hac 1 (.ofLB M) ψ fun σ y =>`. Establish `⟨c, τ, ex, h₁, h₂, h₃⟩` using `hch σ y`. Use the proof step `⟨c, τ, ex, h₁, h₂.isUnifChart, (hΩ' σ).2.2 c τ ex h₂, hφ w σ c τ ex h₂, GlobalTheory.T.isL2Metric_of_isUnifChart_of_isL2OnDiagonal k S p σ A g 1 L M ψ c τ ex h₂.isUnifChart h₃⟩`. Use `choose T₀ hT₀ using fun σ => hBK k S p 1 h A _ h' g hsm L hac σ (Ω σ) 0 (hf0 σ)`. Establish `hex (σ) (i)` using `hAn k S p 1 h A _ h' g hsm L hac σ (Ω σ) _ _ (hfκ σ) (hf0 σ) _ _ (hT σ) (hT₀ σ) i`.
+
+Use `choose t ht ht' using fun σ => GlobalTheory.T.real_zero_form_eq_smooth_function k S p 1 h σ _ ((hT₀ σ).1 0)`. Establish `e₀ : T' 0 = fun σ => (h.atlas σ).fn (t σ)` using `funext fun σ => by`. Establish `z₁ : T 0 σ = T' 0 σ` using `GlobalTheory.T.eq_of_exact_type_zero _ 1 (h.atlas σ) (T 0 σ) (T' 0 σ) (fun x => (((hT σ).1 0).2 x).1) (fun x => (((hT' 0).1.1 σ).2 x).1) ((hT' 0).2 σ)`. Establish `z₂ : T 0 σ = T₀ σ 0` using `GlobalTheory.T.eq_of_exact_type_zero _ 1 (h.atlas σ) (T 0 σ) (T₀ σ 0) (fun x => (((hT σ).1 0).2 x).1) (fun x => (((hT₀ σ).1 0).2 x).1) (hex σ 0)`. Rewrite using `[← z₁, z₂, ht' σ]`.
+
+Establish `e₁ : h.integral (T' 1) = h.integral fun σ => T₀ σ 1`. Use `finsum_congr fun σ => ?_` and prove the remaining obligations. Establish `z₁` using `GlobalTheory.T.integral_eq_of_exact_real_form_curve k S p h σ (T 1 σ) (T' 1 σ) ((hT σ).1 1) ((hT' 1).2 σ)`. Establish `z₂` using `GlobalTheory.T.integral_eq_of_exact_real_form_curve k S p h σ (T 1 σ) (T₀ σ 1) ((hT σ).1 1) (hex σ 1)`. Conclude with `z₁.symm.trans z₂`.
+
+Use `⟨t, _, _, ht, GlobalTheory.T.integral_is_top_form_curve k S p h (fun σ => T₀ σ 1) fun σ => ((hT₀ σ).1 1).1, fun σ c τ ex j m hc hj y hy => ?_, fun N Ψ Φ hΨ hΦ => ?_⟩` and prove the remaining obligations. Establish `h₁` using `(hT₀ σ).2 c τ ex j m hc.isUnifChart ((hΩ' σ).2.2 c τ ex hc) hj _ (c.e.map_source hy)`. Set `x : (h.atlas σ).Pt` to `⟨(c, y), hy⟩`. Establish `l (α : (h.atlas σ).Fld) : (h.atlas σ).loc α c (c.e y) = α x` using `(h.atlas σ).loc_crd α x`. Establish `e₂ : hermMat ((0 : (h.atlas σ).Fld) x) = 0` using `by ext; simp [hermMat]`.
+
+Establish `e₃ : (GoodMetric.coordVec : Fin 1 → V 1) = ![EuclideanSpace.single 0 1]`. Use function extensionality and compare the values at `a`. Use `fin_cases a`. Both sides reduce to the same expression. Rewrite `h₁` using `[l, l, e₂, isTorsionFormWith_zero, e₃, Finset.sum_range_succ, Finset.sum_range_one, ht' σ]`.
+
+Rewrite using `[l, ← GlobalTheory.T.repr_real_curve_form _ _ (((hT₀ σ).1 1).2 x).1 (((hT₀ σ).1 1).2 x).2]`. Conclude with `h₁`. Use `set R := C.ring h set R' := C.ring h'`. Set `E : HermVB p g` to `⟨_, w, H⟩`. Establish `hp` using `C.isPull h h' A.hom rfl`.
+
+Apply the tactic sequence `obtain ⟨χ, hχ⟩ := GlobalTheory.T.dual_pullback_hermitian_isometry k S A.left p _ A.hom rfl g E _ φ`. Rewrite `hid` using `[Finset.sum_range_succ, Finset.sum_range_one]`. Take `⟨q₁, q₂⟩` from `ringdeg B k S A.left p _ g h h' A.hom rfl R R' _ _ hp (P.mem h h' _ _ _) (P.eq_zero h h' _ _ _) (P.proj h h' _ _ _) (P.deg h h' _ _ _) g E.dual _ (fun j => ((R'.cl_congr _ (HermVB.dual ⟨_, _, (H.pull _ _).map φ⟩) χ hχ j).symm.trans (hp.cl _ j).symm)) L M _ _ (hT' 0).1 (hT' 1).1 h …`. Establish `c₁ : R.cl E.dual 1 = -R.c1 (VMetric.det H)`. Rewrite using `[R.cl_one, R.firstChernCongr _ _ (GlobalTheory.T.det_dual_isometric_dual_det k S p g E), R.firstChern_dual]`.
+
+Both sides reduce to the same expression. Establish `dΨ` using `R.deg_aeval hΨ`. Establish `dΦ` using `R'.deg_aeval hΦ`. Establish `a₁` using `dΨ (X 0 * X 2)`. Establish `a₂` using `dΨ (X 1 * X 2)`.
+
+Establish `a₃` using `dΨ (X 0 ^ 2)`. Establish `a₄` using `dΨ (X 1 ^ 2)`. Establish `b₁` using `dΦ (X 0 ^ (g + 1) * X 2)`. Establish `b₂` using `dΦ (X 0 ^ (g + 2))`. Establish `b₃` using `dΦ (X 0 ^ (g + 1) * X 1)`.
+
+Simplify using `only [map_mul, map_pow, aeval_X, map_X, cons_val_zero, cons_val_one, cons_val_two, Nat.succ_eq_add_one, Nat.reduceAdd, tail_cons, head_cons] at a₁ a₂ a₃ a₄ b₁ b₂ b₃`. Use `⟨?_, fun fl a ha => ?_⟩` and prove the remaining obligations. Use `q₁ N` as an intermediate fact. Rewrite `this` using `[e₀, deg_a_mul_c1 B k S p h R N t ht (e₀ ▸ (hT' 0).1), c₁, neg_mul, map_neg, hp.c1, a₁, a₂, b₁]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨fl', ha'⟩` from `GlobalTheory.T.flag_second_chern_dual_bundle k S p g E fl a hS ha`. Establish `g₁ : chInt (VMetric.det H) 1 (fun _ _ => rOne) = rOne * gdeg (VMetric.det H) 1`. Rewrite using `[gdeg, chInt, chInt, mul_finsum]`. Use `finsum_congr fun σ => ?_` and prove the remaining obligations. Rewrite using `[← Weight.chernInt_const_mul]`.
+
+Simplify using `only [_root_.mul_one]`. Rewrite `q₂` using `[GlobalTheory.T.arithmetic_degree_second_chern_flag B k S p h R g E.dual fl' a ha', c₁, R.deg_a _ (hT' 1).1, e₁, neg_sq, map_neg, mul_neg, mul_neg, map_neg, map_neg, deg_a_mul_c1 B k S p h R _ _ (fun _ y => cInfAt_const _ y) (isArForm_const h _), g₁, hp.c1, a₃, a₄, b₂, b₃]`. Rewrite `q₂` using `[neg_div]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem main : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.RegularAlteration → GlobalTheory.Published.ArithRiemannRoch →
     GlobalTheory.Published.ArithRiemannRochAbelian := by
   rintro - - ⟨-, -, hBK, hAn, ⟨B, hG⟩, hV⟩ k _ S p _ hS A _ _ g hA hsm hAV w H L hL M ψ hch

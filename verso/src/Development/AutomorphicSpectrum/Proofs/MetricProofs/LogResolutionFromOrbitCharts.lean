@@ -13,6 +13,11 @@ open GlobalTheory.CompanionTheory.Ar.Cmp.SncRes
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {P : Ideal (MRing ι)} {e : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simpa using analyticAt_const`. Consider the case `add p q hp hq`. Use `(hp.add hq).congr (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Consider the case `mul_X p n hp`. Use `(hp.mul (hg n)).congr (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem analyticAt_eval {E σ : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : E → σ → ℂ} {w₀ : E}
     (hg : ∀ q, AnalyticAt ℂ (fun w => g w q) w₀) (f : MvPolynomial σ ℂ) :
     AnalyticAt ℂ (fun w => eval (g w) f) w₀ := by
@@ -30,12 +35,18 @@ section Overlap
 variable (hP : IsMultiHomogIdeal P) (C₁ C₂ : OrbitChart P e) (x₁ x₂ : PtsOf P)
 include hP
 
+/- English proof (translation)
+Establish `h' : rep (cls (C₁.φ w) (C₁.mem w hw)) ∈ C₂.O`. Rewrite using `[← clsT_of_mem x₁ (C₁.mem w hw)]`. Conclude with `h`. Conclude with `mem_O_of_orbit C₂ hP h' (Proj.orbit_symm (rep_cls_orbit _ _)) (rep_mem_mcPts _)`.
+-/
 theorem mem_O_of_mem_srcOf {w : Fin e → ℂ} (hw : w ∈ C₁.D) (h : clsT x₁ (C₁.φ w) ∈ srcOf C₂) : C₁.φ w ∈ C₂.O := by
   have h' : rep (cls (C₁.φ w) (C₁.mem w hw)) ∈ C₂.O := by
     rw [← clsT_of_mem x₁ (C₁.mem w hw)]
     exact h
   exact mem_O_of_orbit C₂ hP h' (Proj.orbit_symm (rep_cls_orbit _ _)) (rep_mem_mcPts _)
 
+/- English proof (translation)
+Establish `hO` using `mem_O_of_mem_srcOf hP C₁ C₂ x₁ hw h`. Use `C₂.ρ_orbit _ hO _ h ?_` and prove the remaining obligations. Rewrite using `[clsT_of_mem x₁ (C₁.mem w hw)]`. Conclude with `rep_cls_orbit _ _`.
+-/
 theorem rho_clsT {w : Fin e → ℂ} (hw : w ∈ C₁.D) (h : clsT x₁ (C₁.φ w) ∈ srcOf C₂) :
     C₂.ρ (rep (clsT x₁ (C₁.φ w))) = C₂.ρ (C₁.φ w) := by
   have hO := mem_O_of_mem_srcOf hP C₁ C₂ x₁ hw h
@@ -43,10 +54,16 @@ theorem rho_clsT {w : Fin e → ℂ} (hw : w ∈ C₁.D) (h : clsT x₁ (C₁.φ
   rw [clsT_of_mem x₁ (C₁.mem w hw)]
   exact rep_cls_orbit _ _
 
+/- English proof (translation)
+The claim follows from `(orbChart hP C₁ x₁).isOpen_inter_preimage_symm (isOpen_srcOf hP C₂)`.
+-/
 theorem isOpen_overlap :
     IsOpen ((orbChart hP C₁ x₁).target ∩ (orbChart hP C₁ x₁).symm ⁻¹' srcOf C₂) :=
   (orbChart hP C₁ x₁).isOpen_inter_preimage_symm (isOpen_srcOf hP C₂)
 
+/- English proof (translation)
+Establish `h1 : AnalyticOnNhd ℂ (fun w => C₂.ρ (C₁.φ w)) ((orbChart hP C₁ x₁).target ∩ (orbChart hP C₁ x₁).symm ⁻¹' srcOf C₂)` using `(GlobalTheory.T.orbit_chart_transition_analytic K ι P e C₁ C₂).mono fun w hw => ⟨hw.1, mem_O_of_mem_srcOf hP C₁ C₂ x₁ hw.1 hw.2⟩`. Conclude with `h1.congr (isOpen_overlap hP C₁ C₂ x₁) fun w hw => (rho_clsT hP C₁ C₂ x₁ hw.1 hw.2).symm`.
+-/
 theorem analytic_transition :
     AnalyticOnNhd ℂ (orbChart hP C₂ x₂ ∘ (orbChart hP C₁ x₁).symm)
       ((orbChart hP C₁ x₁).target ∩ (orbChart hP C₁ x₁).symm ⁻¹' (orbChart hP C₂ x₂).source) := by
@@ -55,6 +72,11 @@ theorem analytic_transition :
     (GlobalTheory.T.orbit_chart_transition_analytic K ι P e C₁ C₂).mono fun w hw => ⟨hw.1, mem_O_of_mem_srcOf hP C₁ C₂ x₁ hw.1 hw.2⟩
   exact h1.congr (isOpen_overlap hP C₁ C₂ x₁) fun w hw => (rho_clsT hP C₁ C₂ x₁ hw.1 hw.2).symm
 
+/- English proof (translation)
+Establish `h1 : AnalyticOnNhd ℂ (fun w => C₂.φ (C₂.ρ (C₁.φ w)) p) ((orbChart hP C₁ x₁).target ∩ (orbChart hP C₁ x₁).symm ⁻¹' srcOf C₂)` using `fun w hw => by`. Establish `hO` using `mem_O_of_mem_srcOf hP C₁ C₂ x₁ hw.1 hw.2`. Conclude with `AnalyticAt.comp (g := fun v => C₂.φ v p) (f := fun w => C₂.ρ (C₁.φ w)) (C₂.holo p _ (C₂.ρ_mem _ hO)) (GlobalTheory.T.orbit_chart_transition_analytic K ι P e C₁ C₂ w ⟨hw.1, hO⟩)`. Use `h1.congr (isOpen_overlap hP C₁ C₂ x₁) fun w hw => ?_` and prove the remaining obligations. Establish `e1 : C₂.ρ (rep (clsT x₁ (C₁.φ w))) = C₂.ρ (C₁.φ w)` using `rho_clsT hP C₁ C₂ x₁ hw.1 hw.2`.
+
+Use `show C₂.φ (C₂.ρ (C₁.φ w)) p = C₂.φ (C₂.ρ (rep (clsT x₁ (C₁.φ w)))) p`. Rewrite using `[e1]`.
+-/
 theorem analytic_lift (p : Σ k, ι k) :
     AnalyticOnNhd ℂ ((fun y : PtsOf P => C₂.φ (C₂.ρ (rep y)) p) ∘ (orbChart hP C₁ x₁).symm)
       ((orbChart hP C₁ x₁).target ∩ (orbChart hP C₁ x₁).symm ⁻¹' srcOf C₂) := by
@@ -68,6 +90,13 @@ theorem analytic_lift (p : Σ k, ι k) :
   show C₂.φ (C₂.ρ (C₁.φ w)) p = C₂.φ (C₂.ρ (rep (clsT x₁ (C₁.φ w)))) p
   rw [e1]
 
+/- English proof (translation)
+Use `set ψ := orbChart hP C₁ x₁ with hψ`. Establish `hw₀ : ψ x ∈ ψ.target` using `ψ.map_source hx₁`. Establish `hsym : ψ.symm (ψ x) = x` using `ψ.left_inv hx₁`. Establish `hV : ψ.target ∩ ψ.symm ⁻¹' srcOf C₂ ∈ 𝓝 (ψ x)` using `(isOpen_overlap hP C₁ C₂ x₁).mem_nhds ⟨hw₀, by rw [Set.mem_preimage, hsym]; exact hx₂⟩`. Establish `heq : (fun y => affCoord p (C₂.φ (C₂.ρ (rep (ψ.symm y))))) =ᶠ[𝓝 (ψ x)] fun y => affCoord p (C₁.φ y)` using `by filter_upwards [hV] with w hw`.
+
+Establish `hm` using `C₁.mem w hw.1`. Establish `h1 : SameOrbit (rep (ψ.symm w)) (C₁.φ w)` using `by show SameOrbit (rep (clsT x₁ (C₁.φ w))) (C₁.φ w)`. Rewrite using `[clsT_of_mem x₁ hm]`. Conclude with `rep_cls_orbit _ hm`. Conclude with `Proj.affCoord_eq (Proj.orbit_trans (C₂.φ_ρ _ hw.2) h1) p`.
+
+Rewrite using `[heq.fderiv_eq]`. Establish `ho : SameOrbit (C₂.φ (C₂.ρ (rep x))) (C₁.φ (ψ x))` using `Proj.orbit_trans (C₂.φ_ρ _ hx₂) (Proj.orbit_symm (C₁.φ_ρ _ hx₁))`. Conclude with `C₁.immersion _ hw₀ p fun k => Proj.orbit_ne ho (hp k)`.
+-/
 theorem immersion_lift {x : PtsOf P} (hx₂ : x ∈ srcOf C₂) (hx₁ : x ∈ srcOf C₁) (p : (k : K) → ι k)
     (hp : ∀ k, C₂.φ (C₂.ρ (rep x)) ⟨k, p k⟩ ≠ 0) :
     (fderiv ℂ (fun y => affCoord p (C₂.φ (C₂.ρ (rep ((orbChart hP C₁ x₁).symm y)))))
@@ -105,11 +134,17 @@ def atlasOf (hP : IsMultiHomogIdeal P) (Cx : PtsOf P → OrbitChart P e) (t : Fi
     exact hx
   holo j k := analytic_transition hP _ _ _ _
 
+/- English proof (translation)
+Introduce `_` and use `⟨analytic_transition hP _ _ _ _, analytic_transition hP _ _ _ _⟩`.
+-/
 theorem isCompat_orbChart (hP : IsMultiHomogIdeal P) (Cx : PtsOf P → OrbitChart P e) (t : Finset (PtsOf P))
     (hcov : ∀ x, ∃ y ∈ t, x ∈ srcOf (Cx y)) (C : OrbitChart P e) (x₀ : PtsOf P) :
     IsCompatChart (atlasOf hP Cx t hcov) (orbChart hP C x₀) := fun _ =>
   ⟨analytic_transition hP _ _ _ _, analytic_transition hP _ _ _ _⟩
 
+/- English proof (translation)
+Introduce `j w hw` and use `analyticAt_eval (g := fun w => C.φ (C.ρ (rep (((atlasOf hP Cx t hcov).chart j).symm w)))) (fun q => analytic_lift hP _ C _ q w hw) f`.
+-/
 theorem holoOn_eval (hP : IsMultiHomogIdeal P) (Cx : PtsOf P → OrbitChart P e) (t : Finset (PtsOf P))
     (hcov : ∀ x, ∃ y ∈ t, x ∈ srcOf (Cx y)) (C : OrbitChart P e) (f : MvPolynomial (Σ k, ι k) ℂ) :
     (atlasOf hP Cx t hcov).HoloOn (srcOf C) (fun y => eval (C.φ (C.ρ (rep y))) f) := fun j w hw =>
@@ -155,6 +190,13 @@ def resOf (hP : IsMultiHomogIdeal P) (hnd : ¬ (⊤ : Ideal (MRing ι)) ≤ P) (
     rw [this]
     simp
 
+/- English proof (translation)
+Introduce `K _ ι _ P e _ hP hnd hcov`. Establish `h' : ∀ x : PtsOf P, ∃ C : OrbitChart P e, x ∈ srcOf C` using `fun x => hcov _ (rep_mem_mcPts x)`. Use `choose Cx hCx using h'`. Use `haveI : CompactSpace (PtsOf P) := Top.compactSpace_pts (isMultiHomogIdeal_pC hP)`. Take `⟨t, ht⟩` from `isCompact_univ.elim_nhds_subcover (fun x => srcOf (Cx x)) (fun x _ => (isOpen_srcOf hP _).mem_nhds (hCx x))`.
+
+Establish `hc : ∀ x, ∃ y ∈ t, x ∈ srcOf (Cx y)` using `fun x => by`. Simplify using `using ht.2 (Set.mem_univ x)`. Use `⟨resOf hP hnd Cx hCx t hc, fun C hne => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hne`. Establish `ho : ∀ x : PtsOf P, SameOrbit ((Cx x).φ ((Cx x).ρ (rep x))) (rep x)` using `fun x => (Cx x).φ_ρ _ (hCx x)`.
+
+Establish `hm : ∀ x : PtsOf P, (Cx x).φ ((Cx x).ρ (rep x)) ∈ mcPts P` using `fun x => (Cx x).mem _ ((Cx x).ρ_mem _ (hCx x))`. Use `⟨orbChart hP C (cls z hz), isCompat_orbChart hP Cx t hc C _, rfl, fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `⟨fun h => mem_O_of_orbit C hP h (ho x) (rep_mem_mcPts x), fun h => mem_O_of_orbit C hP h (Proj.orbit_symm (ho x)) (hm x)⟩`. Conclude with `Proj.orbit_trans (C.φ_ρ _ hx) (Proj.orbit_symm (ho x))`.
+-/
 theorem exists_anLogRes_of_orbitCharts : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) (e : ℕ), Nonempty K → IsMultiHomogIdeal P → ¬ (⊤ : Ideal (MRing ι)) ≤ P → (∀ z ∈ mcPts P, ∃ C : OrbitChart P e, z ∈ C.O) → ∃ R : AnLogRes P ⊤ e, ∀ C : OrbitChart P e, (mcPts P).Nonempty → ∃ ψ : OpenPartialHomeomorph R.X (Fin e → ℂ), IsCompatChart R.A ψ ∧ ψ.target = C.D ∧ (∀ x, x ∈ ψ.source ↔ R.lift x x ∈ C.O) ∧ ∀ x ∈ ψ.source, SameOrbit (C.φ (ψ x)) (R.lift x x) := by
   intro K _ ι _ P e _ hP hnd hcov
   have h' : ∀ x : PtsOf P, ∃ C : OrbitChart P e, x ∈ srcOf C := fun x => hcov _ (rep_mem_mcPts x)

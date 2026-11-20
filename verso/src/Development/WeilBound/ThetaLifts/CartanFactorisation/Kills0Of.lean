@@ -17,6 +17,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {a a' : ℕ} {B : Base F E} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
   {R : RealMaps F a a'} {Rf : FinMaps F a a'}
 
+/- English proof (translation)
+The claim follows from `Submodule.span_le.2 (by rintro _ ⟨f, φ, h1, h2, -, rfl⟩ obtain ⟨g, hg, e⟩ := PositivityTheory.ThKG.pure_eq_pureA hM φ h1 h2 rw [e] exact PositivityTheory.ThKG.pureA_mem f hg)`.
+-/
 theorem so_leK {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} {M : Model σ Y W} (hM : M.IsGood B.ψ) : M.So B.ψ B.τ₁ ≤ schA F _ :=
   Submodule.span_le.2 (by
     rintro _ ⟨f, φ, h1, h2, -, rfl⟩
@@ -24,12 +27,20 @@ theorem so_leK {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} {M : Model σ Y W} (h
     rw [e]
     exact PositivityTheory.ThKG.pureA_mem f hg)
 
+/- English proof (translation)
+The claim follows from `have p := PositivityTheory.ThKG.pairV t have w := hW F E σ B _ _ _ _ _ _ _ _ _ _ _ _ p (PositivityTheory.ThKG.weilCondV t) ⟨le_rfl, fun Φ h => (w.1 Φ h).1, (hC F E σ B _ _ _ _ _ _ _ _ _ _ _ _ p).1 (PositivityTheory.ThKG.weilCondV t), fun ψ hψ _ => w.2 ψ hψ, fun μ 𝓕 h1 h2 Φ _ h => …`.
+-/
 theorem clsV (hW : WeilConv) (hC : ICont) (hS : SqInt) (t : IsTriple B G X om om') : Cls B G.M om (schA F _) :=
   have p := PositivityTheory.ThKG.pairV t
   have w := hW F E σ B _ _ _ _ _ _ _ _ _ _ _ _ p (PositivityTheory.ThKG.weilCondV t)
   ⟨le_rfl, fun Φ h => (w.1 Φ h).1, (hC F E σ B _ _ _ _ _ _ _ _ _ _ _ _ p).1 (PositivityTheory.ThKG.weilCondV t), fun ψ hψ _ => w.2 ψ hψ,
     fun μ 𝓕 h1 h2 Φ _ h => (hS F E σ B a a' G X om om' t μ 𝓕 h1 h2).1 Φ h⟩
 
+/- English proof (translation)
+Establish `p` using `PositivityTheory.ThKG.pairV' m.triple`. Use `⟨so_leK p.good, fun Φ h => ((hD F E σ B a a' G X om om' m.triple).2 Φ h).2.1, (hC F E σ B _ _ _ _ _ _ _ _ _ _ _ _ p).2 (hK F E σ B a a' G X om om' R Rf m).2, fun ψ hψ hf h => ?_, fun μ 𝓕 h1 h2 Φ h' h => (hS F E σ B a a' G X om om' m.triple μ 𝓕 h1 h2).2 Φ ⟨h, h'⟩⟩` and prove the remaining obligations. Use `SeqContinuous.continuous fun u f hu => ?_` and prove the remaining obligations. Use `hc F E σ B _ _ _ _ _ _ _ _ _ _ _ _ p 1 (fun _ => ψ) (fun _ => f) (fun k _ => u k) (fun _ => ⟨hψ, hu⟩) (fun k => by simpa using hf (u k)) (by simpa using hf f) h` as an intermediate fact. Simplify using `only [Finset.univ_unique, Finset.sum_singleton] at this`.
+
+Conclude with `this`.
+-/
 theorem clsV' (hD : KDecay) (hK : KCoinv) (hc : SoCont) (hC : ICont) (hS : SqInt) (m : IsMatched B G X om om' R Rf) :
     Cls B G.M' om' (G.M'.So B.ψ B.τ₁) := by
   have p := PositivityTheory.ThKG.pairV' m.triple
@@ -42,6 +53,11 @@ theorem clsV' (hD : KDecay) (hK : KCoinv) (hc : SoCont) (hC : ICont) (hS : SqInt
   simp only [Finset.univ_unique, Finset.sum_singleton] at this
   exact this
 
+/- English proof (translation)
+Take `⟨j, hj, -⟩` from `intersection_update_fsHerm_neg_one pureAct (PositivityTheory.ThKG.pairV' m) f h1 h2 B.v₁`. Rewrite using `[← hj]`. Use `(Submodule.span_le (p := (G.M'.So B.ψ B.τ₁).comap j)).2 (fun y hy => ?_) hx` and prove the remaining obligations. Use `show j y ∈ G.M'.So B.ψ B.τ₁`. Rewrite using `[hj]`.
+
+Conclude with `Submodule.subset_span ⟨f, _, upd_sb h1 hy.1, upd_cof h2 _ _, by rwa [upd_self], rfl⟩`.
+-/
 theorem pure_soK (m : IsTriple B G X om om') (f : SInf F _) {φ} (h1 : ∀ u, φ u ∈ SB _) (h2 : ∀ᶠ u in cofinite, φ u = G.M'.vac u)
     {x} (hx : x ∈ Submodule.span ℂ (G.M'.SoLoc B.ψ B.τ₁)) : pure f (upd φ B.v₁ x) ∈ G.M'.So B.ψ B.τ₁ := by
   obtain ⟨j, hj, -⟩ := intersection_update_fsHerm_neg_one pureAct (PositivityTheory.ThKG.pairV' m) f h1 h2 B.v₁
@@ -51,6 +67,21 @@ theorem pure_soK (m : IsTriple B G X om om') (f : SInf F _) {φ} (h1 : ∀ u, φ
   rw [hj]
   exact Submodule.subset_span ⟨f, _, upd_sb h1 hy.1, upd_cof h2 _ _, by rwa [upd_self], rfl⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' R Rf m q0 f hf φ h1 h2 h3`. Establish `p2` using `PositivityTheory.ThKG.pairV' m.triple`. Establish `cv` using `fun Φ hΦ => ((hW F E σ B _ _ _ _ _ _ _ _ _ _ _ _ p2 (Or.inr (by simp [q0]))).1 Φ hΦ).1`. Take `⟨-, k2, k3, -⟩` from `(hK F E σ B a a' G X om om' R Rf m).1 _ m.triple.chars.good`. Take `⟨x, hx, e⟩` from `k3 B.τ₁ (Rf.p' _ (φ B.v₁))`.
+
+Establish `ha : φ B.v₁ - x ∈ augAt om' B.v₁` using `(k2 _ (sub_mem (h1 _) hx.1)).1 (by rw [map_sub, e, sub_self])`. Take `⟨j, hj, hjS⟩` from `intersection_update_fsHerm_neg_one pureAct p2 f h1 h2 B.v₁`. Establish `js : ∀ y ∈ SB _, j y ∈ schA F _` using `fun y hy => by`. Take `⟨g, hg, e⟩` from `PositivityTheory.ThKG.pure_eq_pureA p2.good _ (upd_sb h1 hy) (upd_cof h2 B.v₁ y)`. Rewrite using `[hj, e]`.
+
+Conclude with `PositivityTheory.ThKG.pureA_mem f hg`. Establish `add : ∀ y ∈ SB _, ∀ z ∈ SB _, G.M'.I om' (j (y + z)) = G.M'.I om' (j y) + G.M'.I om' (j z)` using `fun y hy z hz =>`. Use function extensionality and compare the values at `fun g => by rw [map_add]; exact PositivityTheory.ThKG.I_add p2.weil cv (js y hy) (js z hz) g`. Establish `key : ∀ z ∈ augAt om' B.v₁, G.M'.I om' (j z) = 0` using `fun z hz => by`. Proceed by induction on `hz using Submodule.span_induction with`.
+
+Consider the case `mem z h`. Take `⟨g, hg, x, hx, y, hy, hxy, rfl⟩` from `h`. Establish `e2` using `add _ (sub_mem hy hx) _ hx`. Rewrite `e2` using `[sub_add_cancel, ← hjS _ x hx y hxy, I_left unimodularity_holds hT p2 (js x hx)]`. Conclude with `left_eq_add.1 (e2.trans (add_comm _ _))`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `PositivityTheory.ThKG.I_zero _ _`. Consider the case `add a b ha hb iha ihb => rw [add a (augAt_le _ ha) b (augAt_le _ hb), iha, ihb, add_zero]`. Consider the case `smul c a _ iha => funext h`. Rewrite using `[map_smul, PositivityTheory.ThKG.I_smul, iha]`.
+
+Simplify using the standard rewrite rules. Establish `e3` using `add _ (augAt_le _ ha) x hx.1`. Rewrite `e3` using `[sub_add_cancel, key _ ha, zero_add, hj, hj, upd_eq]`. Rewrite using `[e3]`. Use `(h F E σ B a a' G X om om' R Rf m).2 f hf _ (upd_sb h1 hx.1) (upd_cof h2 _ _) (by rw [upd_self]; exact Submodule.subset_span hx) (h3.imp id fun ⟨v, hv⟩ => ⟨v, ?_⟩)` and prove the remaining obligations.
+
+Distinguish the cases in `ev : v = B.v₁`. Substitute `ev` using the available equality. Rewrite using `[upd_self, e, hv]`. Rewrite using `[upd_ne _ _ _ ev]` and apply the resulting hypothesis.
+-/
 theorem kills0_of (hT : ThetaBasic) (hW : WeilConv) (hK : KCoinv) (h : Kills) : PositivityTheory.ThKG.Loc.Kills0 := by
   intro F E _ _ _ _ _ σ B a a' G X om om' R Rf m q0 f hf φ h1 h2 h3
   have p2 := PositivityTheory.ThKG.pairV' m.triple

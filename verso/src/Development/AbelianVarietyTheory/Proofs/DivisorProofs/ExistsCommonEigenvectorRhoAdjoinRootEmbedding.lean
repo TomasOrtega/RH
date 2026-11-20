@@ -6,6 +6,25 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory.StabFin
 
+/- English proof (translation)
+Introduce `p _ G P i τ hτ`. Set `f : G.Fw i →+* PadicAlgCl p` to `algebraMap (G.Fw i) (PadicAlgCl p)`. Establish `hf : (fun x : G.Fw i => (x : PadicAlgCl p)) = ⇑f` using `rfl`. Establish `hfe : f.comp (G.embW i) = G.emb i`. Use extensionality with `x`.
+
+Both sides reduce to the same expression. Set `ψ : G.C →+* Matrix (Fin G.n) (Fin G.n) (PadicAlgCl p)` to `f.mapMatrix.comp (G.rho i)`. Establish `hψ : ∀ x, ψ x = (G.rho i x).map (fun x => (x : PadicAlgCl p))` using `fun x => rfl`. Use `set M := ψ (P.γ : G.C) with hM`. Use `set lam := τ (AdjoinRoot.root P.pol) with hlam`.
+
+Establish `hchar : M.charpoly = P.pol.map (G.emb i)`. Rewrite using `[hM, hψ, hf, Matrix.charpoly_map, charpoly_rho_eq_map_pol, Polynomial.map_map, hfe]`. Establish `heval : Polynomial.eval lam M.charpoly = 0`. Rewrite using `[hchar, Polynomial.eval_map, ← hτ, ← Polynomial.hom_eval₂, AdjoinRoot.algebraMap_eq, AdjoinRoot.eval₂_root, map_zero]`. Rewrite `heval` using `[Matrix.eval_charpoly]`.
+
+Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 heval`. Establish `hMv : M *ᵥ v = lam • v`. Rewrite `hv` using `[Matrix.sub_mulVec, sub_eq_zero]`. Rewrite using `[← hv]`. Use extensionality with `j`.
+
+Simplify using `[Matrix.scalar_apply, Matrix.mulVec_diagonal]`. Use `⟨v, hv0, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← hψ]`. Take `⟨g, rfl⟩` from `AdjoinRoot.mk_surjective a`. Rewrite using `[jM_mk]`.
+
+Establish `key : ∀ g : Polynomial G.F, ψ (Polynomial.aeval (P.γ : G.C) g) *ᵥ v = τ (AdjoinRoot.mk P.pol g) • v`. Introduce `g`. Proceed by induction on `g using Polynomial.induction_on with`. Consider the case `C c`. Rewrite using `[Polynomial.aeval_C, AdjoinRoot.mk_C, ← AdjoinRoot.algebraMap_eq, ← RingHom.comp_apply τ, hτ]`.
+
+Use `show (f.mapMatrix (G.rho i (algebraMap G.F G.C c))) *ᵥ v = _`. Rewrite using `[G.rho_F]`. Use extensionality with `j`. Simplify using `[Matrix.scalar_apply, Matrix.mulVec_diagonal, RingHom.mapMatrix_apply, Matrix.diagonal_map]`. Conclude with `Or.inl rfl`.
+
+Consider the case `add g h hg hh`. Rewrite using `[map_add, map_add, Matrix.add_mulVec, hg, hh, map_add, map_add, add_smul]`. Consider the case `monomial k c hk`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, map_mul, ← Matrix.mulVec_mulVec, Polynomial.aeval_X, ← hM, hMv, Matrix.mulVec_smul, hk, smul_smul]`. Use `congr 1`.
+
+Rewrite using `[map_mul (AdjoinRoot.mk P.pol) _ Polynomial.X, map_mul τ, AdjoinRoot.mk_X, mul_comm]`. Conclude with `key g`.
+-/
 theorem rho_jM_common_eigvec : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (P : Pair G) (i : Fin G.m)
     (τ : FM P →+* PadicAlgCl p), τ.comp (algebraMap G.F (FM P)) = G.emb i →
     ∃ v : Fin G.n → PadicAlgCl p, v ≠ 0 ∧

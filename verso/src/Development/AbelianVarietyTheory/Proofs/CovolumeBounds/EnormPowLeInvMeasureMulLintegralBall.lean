@@ -9,6 +9,15 @@ section Circle
 
 variable {H : Type*} [NormedAddCommGroup H] [NormedSpace ℂ H] [CompleteSpace H]
 
+/- English proof (translation)
+Establish `h2 : (0 : ℝ) < 2 * π` using `by positivity`. Establish `hc : Continuous fun t => f (circleMap 0 1 t)`. Use `hf.continuousOn.comp_continuous (continuous_circleMap 0 1) fun t => ?_` and prove the remaining obligations. Rewrite using `[closure_ball _ one_ne_zero]`. Conclude with `sphere_subset_closedBall (circleMap_mem_sphere 0 zero_le_one t)`.
+
+Establish `hav : ⨍ t in Ioc 0 (2 * π), f (circleMap 0 1 t) = f 0`. Establish `h` using `DiffContOnCl.circleAverage (f := f) (c := 0) (R := 1) (by simpa using hf)`. Rewrite using `[← h, Real.circleAverage, intervalIntegral.integral_of_le h2.le, setAverage_eq]`. Simplify using `[h2.le]`. Establish `hg : ConvexOn ℝ univ fun x : H => ‖x‖ ^ n` using `(convexOn_univ_norm (E := H)).pow (fun x _ => norm_nonneg x) n`.
+
+Establish `hi : IntegrableOn (fun t => ‖f (circleMap 0 1 t)‖ ^ n) (Ioc 0 (2 * π))` using `(hc.norm.pow n).integrableOn_Ioc`. Establish `hJ` using `hg.map_set_average_le (μ := volume) (t := Ioc 0 (2 * π)) (f := fun t => f (circleMap 0 1 t)) (by fun_prop) isClosed_univ (by simp [Real.pi_pos]) measure_Ioc_lt_top.ne (by simp) hc.integrableOn_Ioc hi`. Rewrite `hJ` using `[hav, setAverage_eq]`. Simplify using `only [Real.volume_real_Ioc, sub_zero, max_eq_left h2.le, smul_eq_mul] at hJ`. Rewrite `hJ` using `[le_inv_mul_iff₀ h2]`.
+
+Establish `hl : ∫⁻ t in Ioc 0 (2 * π), ‖f (circleMap 0 1 t)‖ₑ ^ n = ENNReal.ofReal (∫ t in Ioc 0 (2 * π), ‖f (circleMap 0 1 t)‖ ^ n)`. Rewrite using `[ofReal_integral_eq_lintegral_ofReal hi (Filter.Eventually.of_forall fun t => by positivity)]`. Simplify using `[ENNReal.ofReal_pow]`. Rewrite using `[hl, ← ofReal_norm, ← ENNReal.ofReal_pow (norm_nonneg _), ← ENNReal.ofReal_mul (by positivity), mul_comm]`. Conclude with `ENNReal.ofReal_le_ofReal hJ`.
+-/
 theorem enorm_pow_mul_le_lintegral_circle {f : ℂ → H} (hf : DiffContOnCl ℂ f (ball 0 1)) (n : ℕ) :
     ‖f 0‖ₑ ^ n * ENNReal.ofReal (2 * π) ≤
       ∫⁻ t in Ioc 0 (2 * π), ‖f (circleMap 0 1 t)‖ₑ ^ n := by
@@ -46,6 +55,15 @@ section Haar
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
   [MeasurableSpace E] [BorelSpace E]
 
+/- English proof (translation)
+Establish `hc0 : c ≠ 0` using `by rintro rfl; simp at hc`. Establish `: ProperSpace E` using `FiniteDimensional.proper ℂ E`. Establish `hm : Measurable fun z : E => c • z` using `(continuous_const_smul c).measurable`. Set `e : E ≃L[ℂ] E` to `(LinearEquiv.smulOfNeZero ℂ E c hc0).toContinuousLinearEquiv`. Establish `hH : (μ.map fun z : E => c • z).IsAddHaarMeasure` using `e.isAddHaarMeasure_map μ`.
+
+Establish `h` using `Measure.isAddLeftInvariant_eq_smul (μ.map fun z : E => c • z) μ`. Establish `hb : (μ.map fun z : E => c • z) (ball 0 1) = μ (ball 0 1)`. Rewrite using `[Measure.map_apply hm measurableSet_ball]`. Use `congr 1`. Use extensionality with `z`.
+
+Simplify using `[norm_smul, hc]`. Establish `h0 : μ (ball 0 1) ≠ 0` using `(measure_ball_pos μ 0 one_pos).ne'`. Establish `ht : μ (ball 0 1) ≠ ∞` using `measure_ball_lt_top.ne`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Establish `h1 : Measure.addHaarScalarFactor (μ.map fun z : E => c • z) μ = 1`.
+
+Rewrite `hb` using `[h, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Conclude with `(ENNReal.mul_eq_right h0 ht).1 hb` after adjusting the coercions. Rewrite using `[h, h1, one_smul]`.
+-/
 theorem measurePreserving_smul_of_norm_eq_one (μ : Measure E) [μ.IsAddHaarMeasure] {c : ℂ}
     (hc : ‖c‖ = 1) : MeasurePreserving (fun z : E => c • z) μ μ := by
   have hc0 : c ≠ 0 := by rintro rfl; simp at hc
@@ -69,6 +87,19 @@ theorem measurePreserving_smul_of_norm_eq_one (μ : Measure E) [μ.IsAddHaarMeas
 
 variable {H : Type*} [NormedAddCommGroup H] [NormedSpace ℂ H] [CompleteSpace H]
 
+/- English proof (translation)
+Establish `: ProperSpace E` using `FiniteDimensional.proper ℂ E`. Establish `h2 : (0 : ℝ) < 2 * π` using `by positivity`. Establish `hn : ∀ t, ‖circleMap 0 1 t‖ = 1` using `fun t => by simp`. Use `set g : E → ℝ≥0∞ := S.indicator fun z => ‖φ z‖ₑ ^ n * w z with hg`. Establish `hgm : Measurable g`.
+
+Establish `h1 : ContinuousOn (fun z => ‖φ z‖ₑ ^ n) S` using `(ENNReal.continuous_pow n).comp_continuousOn hφc.enorm`. Establish `h3` using `(h1.measurable_piecewise (g := fun _ => 0) continuousOn_const hS).mul hw`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Apply the tactic sequence `by_cases hz : z ∈ S <;> simp [hg, hz]`.
+
+Establish `hj : Measurable fun p : ℝ × E => g (circleMap 0 1 p.1 • p.2)`. Use `hgm.comp (Continuous.measurable ?_)` and prove the remaining obligations. Conclude with `((continuous_circleMap 0 1).comp continuous_fst).smul continuous_snd`. Establish `hA : ∫⁻ t in Ioc 0 (2 * π), ∫⁻ z, g (circleMap 0 1 t • z) ∂μ = (∫⁻ z in S, ‖φ z‖ₑ ^ n * w z ∂μ) * ENNReal.ofReal (2 * π)`. Establish `h4 : ∀ t, ∫⁻ z, g (circleMap 0 1 t • z) ∂μ = ∫⁻ z in S, ‖φ z‖ₑ ^ n * w z ∂μ` using `fun t => by`.
+
+Rewrite using `[(measurePreserving_smul_of_norm_eq_one μ (hn t)).lintegral_comp hgm, hg, lintegral_indicator hS]`. Simplify using `[h4]`. Rewrite using `[← ENNReal.mul_le_mul_iff_left (ENNReal.ofReal_pos.2 h2).ne' ENNReal.ofReal_ne_top, ← hA, lintegral_lintegral_swap hj.aemeasurable, mul_right_comm, ← lintegral_const_mul _ hw, ← lintegral_indicator hS]`. Use `lintegral_mono fun z => ?_` and prove the remaining obligations. Distinguish the cases in `hz : z ∈ S`.
+
+Establish `h5 : ∀ t, g (circleMap 0 1 t • z) = ‖φ (circleMap 0 1 t • z)‖ₑ ^ n * w z` using `fun t => by`. Rewrite using `[hg, indicator_of_mem (hSc _ (hn t) z hz), hwc _ (hn t) z hz]`. Establish `h6 : Measurable fun t => ‖φ (circleMap 0 1 t • z)‖ₑ ^ n`. Use `Continuous.measurable ((ENNReal.continuous_pow n).comp (Continuous.enorm ?_))` and prove the remaining obligations. Conclude with `hφc.comp_continuous ((continuous_circleMap 0 1).smul continuous_const) fun t => hSc _ (hn t) z hz`.
+
+Simplify using `only [indicator_of_mem hz, h5]`. Rewrite using `[lintegral_mul_const _ h6]`. Use `gcongr`. Simplify using `using enorm_pow_mul_le_lintegral_circle (hφ z hz) n`. Simplify using `[hz]`.
+-/
 theorem enorm_pow_mul_lintegral_le_of_circular (μ : Measure E) [μ.IsAddHaarMeasure] {S : Set E}
     (hS : MeasurableSet S) (hSc : ∀ c : ℂ, ‖c‖ = 1 → ∀ z ∈ S, c • z ∈ S) {φ : E → H}
     (hφc : ContinuousOn φ S) (hφ : ∀ z ∈ S, DiffContOnCl ℂ (fun c : ℂ => φ (c • z)) (ball 0 1))
@@ -113,6 +144,9 @@ theorem enorm_pow_mul_lintegral_le_of_circular (μ : Measure E) [μ.IsAddHaarMea
     simpa using enorm_pow_mul_le_lintegral_circle (hφ z hz) n
   · simp [hz]
 
+/- English proof (translation)
+Use `enorm_pow_mul_lintegral_le_of_circular μ hS (fun c hc z hz => hSc.smul_mem hc.le hz) (fun z hz => (hφ z hz).continuousAt.continuousWithinAt) (fun z hz => ?_) hw hwc n` and prove the remaining obligations. Use `DifferentiableOn.diffContOnCl fun c hc => ?_` and prove the remaining obligations. Rewrite `hc` using `[closure_ball _ one_ne_zero, mem_closedBall_zero_iff]`. Conclude with `((hφ _ (hSc.smul_mem hc hz)).comp c (differentiableAt_id.smul_const z)).differentiableWithinAt`.
+-/
 theorem enorm_pow_mul_lintegral_le_of_balanced (μ : Measure E) [μ.IsAddHaarMeasure] {S : Set E}
     (hS : MeasurableSet S) (hSc : Balanced ℂ S) {φ : E → H}
     (hφ : ∀ z ∈ S, DifferentiableAt ℂ φ z)
@@ -126,6 +160,9 @@ theorem enorm_pow_mul_lintegral_le_of_balanced (μ : Measure E) [μ.IsAddHaarMea
   exact ((hφ _ (hSc.smul_mem hc hz)).comp c
     (differentiableAt_id.smul_const z)).differentiableWithinAt
 
+/- English proof (translation)
+The claim follows from `enorm_pow_mul_lintegral_le_of_balanced μ measurableSet_ball balanced_ball_zero (fun _ hz => hφ.differentiableAt (isOpen_ball.mem_nhds hz)) (w := fun z => w ‖z‖) (hw.comp measurable_norm) (fun c hc z _ => by simp [norm_smul, hc]) n`.
+-/
 theorem enorm_pow_mul_lintegral_ball_le (μ : Measure E) [μ.IsAddHaarMeasure] {r : ℝ} {φ : E → H}
     (hφ : DifferentiableOn ℂ φ (ball 0 r)) {w : ℝ → ℝ≥0∞} (hw : Measurable w) (n : ℕ) :
     ‖φ 0‖ₑ ^ n * ∫⁻ z in ball 0 r, w ‖z‖ ∂μ ≤ ∫⁻ z in ball 0 r, ‖φ z‖ₑ ^ n * w ‖z‖ ∂μ :=
@@ -133,6 +170,11 @@ theorem enorm_pow_mul_lintegral_ball_le (μ : Measure E) [μ.IsAddHaarMeasure] {
     (fun _ hz => hφ.differentiableAt (isOpen_ball.mem_nhds hz)) (w := fun z => w ‖z‖)
     (hw.comp measurable_norm) (fun c hc z _ => by simp [norm_smul, hc]) n
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial E with hE | hE` into its components or cases. Conclude with `enorm_pow_mul_lintegral_le_of_balanced μ measurableSet_closedBall balanced_closedBall_zero (fun z _ => differentiable_of_subsingleton z) (w := fun z => w ‖z‖) (hw.comp measurable_norm) (fun c hc z _ => by simp [norm_smul, hc]) n`. Establish `h : (closedBall (0 : E) r : Set E) =ᵐ[μ] (ball 0 r : Set E)`. Rewrite using `[← ball_union_sphere]`. Conclude with `union_ae_eq_left_of_ae_eq_empty (ae_eq_empty.2 (μ.addHaar_sphere 0 r))`.
+
+Rewrite using `[Measure.restrict_congr_set h]`. Conclude with `enorm_pow_mul_lintegral_ball_le μ hφ hw n`.
+-/
 theorem enorm_pow_mul_lintegral_closedBall_le (μ : Measure E) [μ.IsAddHaarMeasure] {r : ℝ}
     {φ : E → H} (hφ : DifferentiableOn ℂ φ (ball 0 r)) {w : ℝ → ℝ≥0∞} (hw : Measurable w) (n : ℕ) :
     ‖φ 0‖ₑ ^ n * ∫⁻ z in closedBall 0 r, w ‖z‖ ∂μ ≤
@@ -147,6 +189,11 @@ theorem enorm_pow_mul_lintegral_closedBall_le (μ : Measure E) [μ.IsAddHaarMeas
     rw [Measure.restrict_congr_set h]
     exact enorm_pow_mul_lintegral_ball_le μ hφ hw n
 
+/- English proof (translation)
+Establish `: ProperSpace E` using `FiniteDimensional.proper ℂ E`. Establish `hp : (fun z : E => z + a) ⁻¹' ball a r = ball 0 r`. Use extensionality with `z`. Simplify using the standard rewrite rules. Establish `hd : DifferentiableOn ℂ (fun z => φ (z + a)) (ball 0 r)` using `hφ.comp (differentiableOn_id.add_const a) fun z hz => by simpa using hz`.
+
+Establish `h` using `enorm_pow_mul_lintegral_ball_le μ hd hw n`. Establish `hm` using `measurePreserving_add_right μ a`. Establish `he` using `(MeasurableEquiv.addRight a).measurableEmbedding`. Rewrite using `[← hm.setLIntegral_comp_preimage_emb he _ (ball a r), ← hm.setLIntegral_comp_preimage_emb he _ (ball a r), hp]`. Simplify using `using h`.
+-/
 theorem enorm_pow_mul_lintegral_ball_le_of_centre (μ : Measure E) [μ.IsAddHaarMeasure] {a : E}
     {r : ℝ} {φ : E → H} (hφ : DifferentiableOn ℂ φ (ball a r)) {w : ℝ → ℝ≥0∞}
     (hw : Measurable w) (n : ℕ) :
@@ -164,6 +211,9 @@ theorem enorm_pow_mul_lintegral_ball_le_of_centre (μ : Measure E) [μ.IsAddHaar
     ← hm.setLIntegral_comp_preimage_emb he _ (ball a r), hp]
   simpa using h
 
+/- English proof (translation)
+Establish `: ProperSpace E` using `FiniteDimensional.proper ℂ E`. Establish `h` using `enorm_pow_mul_lintegral_ball_le_of_centre μ hφ (w := fun _ => 1) measurable_const n`. Simplify using `only [lintegral_const, one_mul, mul_one, MeasurableSet.univ, Measure.restrict_apply, univ_inter] at h`. Rewrite using `[← ENNReal.div_eq_inv_mul, ENNReal.le_div_iff_mul_le (Or.inl (measure_ball_pos μ a hr).ne') (Or.inl measure_ball_lt_top.ne)]`. Conclude with `h`.
+-/
 theorem enorm_pow_le_inv_measure_mul_lintegral_ball (μ : Measure E) [μ.IsAddHaarMeasure] {a : E}
     {r : ℝ} (hr : 0 < r) {φ : E → H} (hφ : DifferentiableOn ℂ φ (ball a r)) (n : ℕ) :
     ‖φ a‖ₑ ^ n ≤ (μ (ball a r))⁻¹ * ∫⁻ z in ball a r, ‖φ z‖ₑ ^ n ∂μ := by
@@ -176,6 +226,9 @@ theorem enorm_pow_le_inv_measure_mul_lintegral_ball (μ : Measure E) [μ.IsAddHa
       (Or.inl measure_ball_lt_top.ne)]
   exact h
 
+/- English proof (translation)
+Establish `h` using `enorm_pow_mul_lintegral_ball_le_of_centre μ hφ (w := fun t => ENNReal.ofReal (w t)) hw.ennreal_ofReal n`. Establish `h0 : ∀ z : E, 0 ≤ ‖φ z‖ ^ n * w ‖z - a‖` using `fun z => mul_nonneg (by positivity) (hw0 _ (norm_nonneg _))`. Rewrite using `[← ENNReal.ofReal_le_ofReal_iff (integral_nonneg h0), ENNReal.ofReal_mul (by positivity), ofReal_integral_eq_lintegral_ofReal hi (Filter.Eventually.of_forall fun z => hw0 _ (norm_nonneg _)), ofReal_integral_eq_lintegral_ofReal hi' (Filter.Eventually.of_forall h0)]`. Simplify `h` using `[ENNReal.ofReal_mul, ENNReal.ofReal_pow]`.
+-/
 theorem norm_pow_mul_integral_ball_le (μ : Measure E) [μ.IsAddHaarMeasure] {a : E}
     {r : ℝ} {φ : E → H} (hφ : DifferentiableOn ℂ φ (ball a r)) {w : ℝ → ℝ}
     (hw : Measurable w) (hw0 : ∀ t, 0 ≤ t → 0 ≤ w t) (n : ℕ)
@@ -192,6 +245,9 @@ theorem norm_pow_mul_integral_ball_le (μ : Measure E) [μ.IsAddHaarMeasure] {a 
     ofReal_integral_eq_lintegral_ofReal hi' (Filter.Eventually.of_forall h0)]
   simpa [ENNReal.ofReal_mul, ENNReal.ofReal_pow] using h
 
+/- English proof (translation)
+Establish `: ProperSpace E` using `FiniteDimensional.proper ℂ E`. Establish `h` using `norm_pow_mul_integral_ball_le μ hφ (w := fun _ => 1) measurable_const (fun _ _ => zero_le_one) n (integrableOn_const measure_ball_lt_top.ne) (by simpa using hi)`. Establish `h0 : 0 < μ.real (ball a r)` using `ENNReal.toReal_pos (measure_ball_pos μ a hr).ne' measure_ball_lt_top.ne`. Rewrite using `[le_inv_mul_iff₀ h0, mul_comm]`. Simplify using `using h`.
+-/
 theorem norm_pow_le_inv_measure_mul_integral_ball (μ : Measure E) [μ.IsAddHaarMeasure] {a : E}
     {r : ℝ} (hr : 0 < r) {φ : E → H} (hφ : DifferentiableOn ℂ φ (ball a r)) (n : ℕ)
     (hi : IntegrableOn (fun z => ‖φ z‖ ^ n) (ball a r) μ) :
@@ -204,6 +260,9 @@ theorem norm_pow_le_inv_measure_mul_integral_ball (μ : Measure E) [μ.IsAddHaar
   rw [le_inv_mul_iff₀ h0, mul_comm]
   simpa using h
 
+/- English proof (translation)
+Establish `: ProperSpace E` using `FiniteDimensional.proper ℂ E`. Conclude with `((hφ.norm.pow n).integrableOn_compact (isCompact_closedBall a r)).mono_set ball_subset_closedBall`.
+-/
 theorem integrableOn_norm_pow_ball {H : Type*} [NormedAddCommGroup H] (μ : Measure E)
     [μ.IsAddHaarMeasure] {a : E} {r : ℝ} {φ : E → H} (hφ : ContinuousOn φ (closedBall a r))
     (n : ℕ) : IntegrableOn (fun z => ‖φ z‖ ^ n) (ball a r) μ := by
@@ -218,6 +277,13 @@ section Volume
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
   [MeasurableSpace E] [BorelSpace E]
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial E with hE | hE` into its components or cases. Establish `hD0 : D = 0`. Rewrite `hD` using `[Module.finrank_zero_of_subsingleton]`. Use linear arithmetic over natural numbers and integers. Establish `h : ball a r = parallelepiped (stdOrthonormalBasis ℝ E)`.
+
+Use extensionality with `z`. Rewrite using `[Subsingleton.elim z a]`. Simplify using `only [mem_ball_self hr, true_iff, mem_parallelepiped_iff]`. Conclude with `⟨0, by simp, Subsingleton.elim _ _⟩`. Rewrite using `[h, OrthonormalBasis.volume_parallelepiped, hD0]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[InnerProductSpace.volume_ball_of_dim_even hD, hD, ← ENNReal.ofReal_pow hr.le, ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem volume_ball_of_finrank_eq_two_mul {D : ℕ} (hD : Module.finrank ℝ E = 2 * D) (a : E)
     {r : ℝ} (hr : 0 < r) :
     volume (ball a r) = ENNReal.ofReal (π ^ D * r ^ (2 * D) / D.factorial) := by
@@ -237,6 +303,11 @@ theorem volume_ball_of_finrank_eq_two_mul {D : ℕ} (hD : Module.finrank ℝ E =
     congr 1
     ring
 
+/- English proof (translation)
+Rewrite using `[← volume_ball_of_finrank_eq_two_mul hD a hr]`. Break down `subsingleton_or_nontrivial E with hE | hE` into its components or cases. Use `congr 1`. Use extensionality with `z`. Rewrite using `[Subsingleton.elim z a]`.
+
+Simplify using `[hr, hr.le]`. Conclude with `Measure.addHaar_closedBall_eq_addHaar_ball _ _ _`.
+-/
 theorem volume_closedBall_of_finrank_eq_two_mul {D : ℕ} (hD : Module.finrank ℝ E = 2 * D) (a : E)
     {r : ℝ} (hr : 0 < r) :
     volume (closedBall a r) = ENNReal.ofReal (π ^ D * r ^ (2 * D) / D.factorial) := by
@@ -251,12 +322,18 @@ theorem volume_closedBall_of_finrank_eq_two_mul {D : ℕ} (hD : Module.finrank �
 variable [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E]
   {H : Type*} [NormedAddCommGroup H] [NormedSpace ℂ H] [CompleteSpace H]
 
+/- English proof (translation)
+The claim follows from `volume_ball_of_finrank_eq_two_mul (by rw [← Module.finrank_mul_finrank ℝ ℂ E, Complex.finrank_real_complex]) a hr`.
+-/
 theorem volume_ball_complex (a : E) {r : ℝ} (hr : 0 < r) :
     volume (ball a r) = ENNReal.ofReal (π ^ Module.finrank ℂ E * r ^ (2 * Module.finrank ℂ E) /
       (Module.finrank ℂ E).factorial) :=
   volume_ball_of_finrank_eq_two_mul
     (by rw [← Module.finrank_mul_finrank ℝ ℂ E, Complex.finrank_real_complex]) a hr
 
+/- English proof (translation)
+Establish `: FiniteDimensional ℂ E` using `Module.Finite.of_restrictScalars_finite ℝ ℂ E`. Establish `h` using `norm_pow_le_inv_measure_mul_integral_ball volume hr hφ n hi`. Rewrite `h` using `[Measure.real, volume_ball_complex a hr, ENNReal.toReal_ofReal (by positivity), inv_div]`. Then use the resulting hypothesis.
+-/
 theorem norm_pow_le_factorial_div_mul_integral_ball {a : E} {r : ℝ} (hr : 0 < r) {φ : E → H}
     (hφ : DifferentiableOn ℂ φ (ball a r)) (n : ℕ)
     (hi : IntegrableOn (fun z => ‖φ z‖ ^ n) (ball a r)) :
@@ -272,6 +349,9 @@ section Euclidean
 
 variable {ι : Type*} [Fintype ι]
 
+/- English proof (translation)
+The claim follows from `volume_ball_of_finrank_eq_two_mul (by rw [← Module.finrank_mul_finrank ℝ ℂ (EuclideanSpace ℂ ι), Complex.finrank_real_complex, finrank_euclideanSpace]) a hr`.
+-/
 theorem volume_ball_euclideanSpace_complex (a : EuclideanSpace ℂ ι) {r : ℝ} (hr : 0 < r) :
     volume (ball a r) = ENNReal.ofReal (π ^ Fintype.card ι * r ^ (2 * Fintype.card ι) /
       (Fintype.card ι).factorial) :=
@@ -279,6 +359,9 @@ theorem volume_ball_euclideanSpace_complex (a : EuclideanSpace ℂ ι) {r : ℝ}
     rw [← Module.finrank_mul_finrank ℝ ℂ (EuclideanSpace ℂ ι), Complex.finrank_real_complex,
       finrank_euclideanSpace]) a hr
 
+/- English proof (translation)
+The claim follows from `volume_closedBall_of_finrank_eq_two_mul (by rw [← Module.finrank_mul_finrank ℝ ℂ (EuclideanSpace ℂ ι), Complex.finrank_real_complex, finrank_euclideanSpace]) a hr`.
+-/
 theorem volume_closedBall_euclideanSpace_complex (a : EuclideanSpace ℂ ι) {r : ℝ} (hr : 0 < r) :
     volume (closedBall a r) = ENNReal.ofReal (π ^ Fintype.card ι * r ^ (2 * Fintype.card ι) /
       (Fintype.card ι).factorial) :=
@@ -286,6 +369,15 @@ theorem volume_closedBall_euclideanSpace_complex (a : EuclideanSpace ℂ ι) {r 
     rw [← Module.finrank_mul_finrank ℝ ℂ (EuclideanSpace ℂ ι), Complex.finrank_real_complex,
       finrank_euclideanSpace]) a hr
 
+/- English proof (translation)
+Set `e : (ι → ℂ) ≃L[ℂ] EuclideanSpace ℂ ι` to `(PiLp.continuousLinearEquiv 2 ℂ fun _ : ι => ℂ).symm`. Establish `hm : Measurable (WithLp.toLp 2 : (ι → ℂ) → EuclideanSpace ℂ ι)` using `e.continuous.measurable`. Establish `hH : ((volume : Measure (ι → ℂ)).map (WithLp.toLp 2 : (ι → ℂ) → EuclideanSpace ℂ ι)).IsAddHaarMeasure` using `e.isAddHaarMeasure_map volume`. Establish `h` using `Measure.isAddLeftInvariant_eq_smul ((volume : Measure (ι → ℂ)).map (WithLp.toLp 2 : (ι → ℂ) → EuclideanSpace ℂ ι)) volume`. Establish `hb : ((volume : Measure (ι → ℂ)).map (WithLp.toLp 2 : (ι → ℂ) → EuclideanSpace ℂ ι)) (ball 0 1) = volume (ball (0 : EuclideanSpace ℂ ι) 1)`.
+
+Rewrite using `[Measure.map_apply hm measurableSet_ball, volume_ball_euclideanSpace_complex 0 one_pos]`. Establish `h1` using `Complex.volume_sum_rpow_lt_one ι (p := 2) one_le_two`. Establish `h2 : (WithLp.toLp 2 : (ι → ℂ) → EuclideanSpace ℂ ι) ⁻¹' ball 0 1 = {x : ι → ℂ | ∑ i, ‖x i‖ ^ (2 : ℝ) < 1}`. Use extensionality with `x`. Simplify using `[EuclideanSpace.norm_eq, Real.sqrt_lt' one_pos]`.
+
+Rewrite using `[h2, h1, mul_div_cancel_left₀ _ (two_ne_zero' ℝ), Real.Gamma_nat_eq_factorial]`. Evaluate the numerical expressions. Establish `h0 : volume (ball (0 : EuclideanSpace ℂ ι) 1) ≠ 0` using `(measure_ball_pos _ 0 one_pos).ne'`. Establish `ht : volume (ball (0 : EuclideanSpace ℂ ι) 1) ≠ ∞` using `measure_ball_lt_top.ne`. Use `⟨hm, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : Measure.addHaarScalarFactor ((volume : Measure (ι → ℂ)).map (WithLp.toLp 2 : (ι → ℂ) → EuclideanSpace ℂ ι)) volume = 1`. Rewrite `hb` using `[h, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Conclude with `(ENNReal.mul_eq_right h0 ht).1 hb` after adjusting the coercions. Rewrite using `[h, h1, one_smul]`.
+-/
 theorem measurePreserving_toLp_complex :
     MeasurePreserving (WithLp.toLp 2 : (ι → ℂ) → EuclideanSpace ℂ ι) := by
   let e : (ι → ℂ) ≃L[ℂ] EuclideanSpace ℂ ι := (PiLp.continuousLinearEquiv 2 ℂ fun _ : ι => ℂ).symm
@@ -315,12 +407,18 @@ theorem measurePreserving_toLp_complex :
     exact_mod_cast (ENNReal.mul_eq_right h0 ht).1 hb
   rw [h, h1, one_smul]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[EuclideanSpace.norm_eq, Real.sqrt_lt' hr]`.
+-/
 theorem preimage_toLp_ball_complex {r : ℝ} (hr : 0 < r) :
     (WithLp.toLp 2 : (ι → ℂ) → EuclideanSpace ℂ ι) ⁻¹' ball 0 r =
       {x : ι → ℂ | ∑ i, ‖x i‖ ^ 2 < r ^ 2} := by
   ext x
   simp [EuclideanSpace.norm_eq, Real.sqrt_lt' hr]
 
+/- English proof (translation)
+Rewrite using `[← preimage_toLp_ball_complex hr, measurePreserving_toLp_complex.measure_preimage measurableSet_ball.nullMeasurableSet, volume_ball_euclideanSpace_complex 0 hr]`.
+-/
 theorem volume_sum_norm_sq_lt {r : ℝ} (hr : 0 < r) :
     volume {x : ι → ℂ | ∑ i, ‖x i‖ ^ 2 < r ^ 2} =
       ENNReal.ofReal (π ^ Fintype.card ι * r ^ (2 * Fintype.card ι) /
@@ -329,6 +427,11 @@ theorem volume_sum_norm_sq_lt {r : ℝ} (hr : 0 < r) :
     measurePreserving_toLp_complex.measure_preimage measurableSet_ball.nullMeasurableSet,
     volume_ball_euclideanSpace_complex 0 hr]
 
+/- English proof (translation)
+Establish `hq : Continuous fun x : ι → ℂ => ∑ i, ‖x i‖ ^ 2` using `by fun_prop`. Establish `ho : IsOpen {x : ι → ℂ | ∑ i, ‖x i‖ ^ 2 < R}` using `isOpen_lt hq continuous_const`. Use `enorm_pow_mul_lintegral_le_of_balanced volume ho.measurableSet ?_ (fun _ hz => hφ.differentiableAt (ho.mem_nhds hz)) (w := fun z => w (∑ i, ‖z i‖ ^ 2)) (hw.comp hq.measurable) (fun c hc z _ => by simp [hc]) n` and prove the remaining obligations. Introduce and unpack `c hc _ ⟨z, hz, rfl⟩`. Simplify using `only [mem_ofPred_eq, Pi.smul_apply, norm_smul] at hz ⊢`.
+
+Use `lt_of_le_of_lt (Finset.sum_le_sum fun i _ => ?_) hz` and prove the remaining obligations. Use `gcongr`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) hc`.
+-/
 theorem enorm_pow_mul_lintegral_sum_norm_sq_lt_le {H : Type*} [NormedAddCommGroup H]
     [NormedSpace ℂ H] [CompleteSpace H] {R : ℝ} {φ : (ι → ℂ) → H}
     (hφ : DifferentiableOn ℂ φ {x | ∑ i, ‖x i‖ ^ 2 < R}) {w : ℝ → ℝ≥0∞} (hw : Measurable w)
@@ -346,6 +449,11 @@ theorem enorm_pow_mul_lintegral_sum_norm_sq_lt_le {H : Type*} [NormedAddCommGrou
   gcongr
   exact mul_le_of_le_one_left (norm_nonneg _) hc
 
+/- English proof (translation)
+Use `⟨fun w hw => enorm_pow_mul_lintegral_closedBall_le volume hφ hw 2, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `enorm_pow_mul_lintegral_closedBall_le volume hφ (w := fun _ => 1) measurable_const 2`. Simplify using `only [lintegral_const, one_mul, mul_one, MeasurableSet.univ, Measure.restrict_apply, univ_inter] at h`. Rewrite using `[← ENNReal.div_eq_inv_mul, ENNReal.le_div_iff_mul_le (Or.inl (measure_closedBall_pos _ _ hr).ne') (Or.inl measure_closedBall_lt_top.ne)]`. Conclude with `h`.
+
+Simplify using `using volume_closedBall_euclideanSpace_complex (0 : EuclideanSpace ℂ (Fin D)) hr`.
+-/
 theorem submean_sq_closedBall {D : ℕ} {H : Type*} [NormedAddCommGroup H] [NormedSpace ℂ H]
     [CompleteSpace H] {r : ℝ} (hr : 0 < r) {φ : EuclideanSpace ℂ (Fin D) → H}
     (hφ : DifferentiableOn ℂ φ (ball 0 r)) :

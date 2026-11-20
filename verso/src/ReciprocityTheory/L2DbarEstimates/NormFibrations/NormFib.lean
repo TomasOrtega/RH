@@ -11,6 +11,21 @@ def NormFibStatement : Prop :=
     IsCoveringMapOn z U → (∀ x, z x ∈ U) → (∀ y : V n, (z ⁻¹' {y}).Finite) → ConnectedSpace M →
     ∃ δ : ℕ, ∀ y : V n, (z ⁻¹' {y}).encard ≤ δ
 
+/- English proof (translation)
+Introduce `n M _ z U hcov himg hfin hconn`. Establish `hloc : ∀ x : M, ∀ᶠ x' in 𝓝 x, (z ⁻¹' {z x'}).encard = (z ⁻¹' {z x}).encard`. Introduce `x`. Take `⟨hd, W, hxW, hW, hzW, H, hH⟩` from `hcov (z x) (himg x)`. Establish `hev : ∀ w ∈ W, IsEvenlyCovered z w (z ⁻¹' {z x})` using `fun w hw => ⟨hd, W, hw, hW, hzW, H, hH⟩`.
+
+Use `filter_upwards [hzW.mem_nhds (show x ∈ z ⁻¹' W from hxW)] with x' hx'`. Conclude with `Set.encard_congr (hev (z x') hx').fiberHomeomorph.toEquiv.symm`. Take `⟨x0⟩` from `(inferInstance : Nonempty M)`. Establish `hS : IsClopen {x : M | (z ⁻¹' {z x}).encard = (z ⁻¹' {z x0}).encard}`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← isOpen_compl_iff, isOpen_iff_mem_nhds]`. Introduce `x hx`. Use `filter_upwards [hloc x] with x' hx'`. Simplify using `only [Set.mem_compl_iff, Set.mem_ofPred_eq] at hx ⊢`. Rewrite using `[hx']`.
+
+Conclude with `hx`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x hx`. Use `filter_upwards [hloc x] with x' hx'`. Simplify using `only [Set.mem_ofPred_eq] at hx ⊢`.
+
+Rewrite using `[hx', hx]`. Establish `hall` using `hS.eq_univ ⟨x0, rfl⟩`. Use `⟨(z ⁻¹' {z x0}).ncard, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[(hfin (z x0)).cast_ncard_eq]`. Distinguish the cases in `hy : ∃ x, z x = y`.
+
+Take `⟨x, rfl⟩` from `hy`. Establish `hx : (z ⁻¹' {z x}).encard = (z ⁻¹' {z x0}).encard` using `Set.eq_univ_iff_forall.1 hall x`. Conclude with `hx.le`. Establish `h0 : z ⁻¹' {y} = ∅`. Use extensionality with `x`.
+
+Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_empty_iff_false, iff_false]`. Conclude with `fun h => hy ⟨x, h⟩`. Rewrite using `[h0, Set.encard_empty]`. Conclude with `zero_le`.
+-/
 theorem normFib : NormFibStatement.{u} := by
   intro n M _ z U hcov himg hfin hconn
 

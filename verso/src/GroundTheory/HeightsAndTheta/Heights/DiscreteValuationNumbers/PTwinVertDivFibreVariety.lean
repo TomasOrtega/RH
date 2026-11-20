@@ -7,6 +7,9 @@ namespace GroundTheory.Heights₂.Heights.NumbersDVR
 
 open MvPolynomial
 
+/- English proof (translation)
+Introduce `O _ _ _ K _ ι _ P d hP b f g hV W hW`. Conclude with `VerticalDivisorSupportFibre.proof O K ι P d hP b f g hV W (Finsupp.mem_support_iff.mp hW)`.
+-/
 theorem VerticalDivisorFibreVariety.proof : VerticalDivisorFibreVariety.Statement := by
   intro O _ _ _ K _ ι _ P d hP b f g hV W hW
   exact VerticalDivisorSupportFibre.proof O K ι P d hP b f g hV W (Finsupp.mem_support_iff.mp hW)

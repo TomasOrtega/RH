@@ -4,6 +4,25 @@ open PositivityTheory.Rg.Tf.Geo
 open MeasureTheory GroundTheory.Automorphic GroundTheory.Automorphic.RightCosetSpace
 open scoped ENNReal
 
+/- English proof (translation)
+Substitute `hΛ` using the available equality. Use `set D := fundamentalDomain Λ with hDdef`. Use `set E := fundamentalDomain (Λ.map i) with hEdef`. Establish `hD : IsFundamentalDomain Λ D ν` using `isFundamentalDomain_fundamentalDomain Λ ν`. Establish `hE : IsFundamentalDomain (Λ.map i) E μ` using `isFundamentalDomain_fundamentalDomain _ μ`.
+
+Establish `hc : Continuous fun p : X × T => i p.2⁻¹ * p.1` using `(hi.comp continuous_snd.inv).mul continuous_fst`. Establish `hm : Measurable fun p : X × T => ρ (i p.2⁻¹ * p.1)` using `hρ.comp hc.measurable`. Use `set ρ' : X → ℝ≥0∞ := fun x => ∫⁻ d in D, ρ (i d⁻¹ * x) ∂ν with hρ'`. Establish `hρ'm : Measurable ρ'` using `hm.lintegral_prod_right'`. Establish `hinv : ∀ x, ∫⁻ d, ρ (i d⁻¹ * x) ∂ν = 1` using `fun x => by`.
+
+Rewrite using `[← hρ1 x]`. Conclude with `lintegral_inv_eq_self (fun t => ρ (i t * x))`. Establish `hsum : ∀ x, ∑' l : Λ, ρ' (i l * x) = 1` using `fun x => by`. Rewrite using `[← hinv x, hD.lintegral_eq_tsum']`. Use `tsum_congr fun l => ?_` and prove the remaining obligations.
+
+Simplify using `only [hρ']`. Use `lintegral_congr fun d => ?_` and prove the remaining obligations. Simplify using `[Subgroup.smul_def, mul_assoc]`. Establish `hunf : ∫⁻ x, F x * ρ' x ∂μ = ∫⁻ x in E, F x ∂μ`. Rewrite using `[hE.lintegral_eq_tsum'', ← lintegral_tsum]`.
+
+Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[← (Subgroup.equivMapOfInjective Λ i hinj).toEquiv.tsum_eq]`. Establish `: ∀ l : Λ, F ((Subgroup.equivMapOfInjective Λ i hinj).toEquiv l • x) * ρ' ((Subgroup.equivMapOfInjective Λ i hinj).toEquiv l • x) = F x * ρ' (i l * x)` using `fun l => by`. Establish `h : (Subgroup.equivMapOfInjective Λ i hinj).toEquiv l • x = i l * x` using `rfl`. Rewrite using `[h, hFi]`.
+
+Simplify using `only [this]`. Rewrite using `[ENNReal.tsum_mul_left, hsum, mul_one]`. Introduce `g`. Conclude with `((hF.mul hρ'm).comp (measurable_const_smul g)).aemeasurable`. Establish `hfub : ∫⁻ x, F x * ρ' x ∂μ = ν D * ∫⁻ x, F x * ρ x ∂μ`.
+
+Establish `h1 : ∀ x, F x * ρ' x = ∫⁻ d in D, F x * ρ (i d⁻¹ * x) ∂ν` using `fun x => by`. Establish `hd : Measurable fun d : T => ρ (i d⁻¹ * x)` using `hρ.comp ((hi.comp continuous_inv).mul continuous_const).measurable`. Rewrite using `[lintegral_const_mul _ hd]`. Simplify using `only [h1]`. Rewrite using `[lintegral_lintegral_swap]`.
+
+Establish `h2 : ∀ d : T, ∫⁻ x, F x * ρ (i d⁻¹ * x) ∂μ = ∫⁻ x, F x * ρ x ∂μ` using `fun d => by`. Rewrite using `[← lintegral_mul_left_eq_self (fun y => F y * ρ y) (i d⁻¹)]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[hFi]`. Simplify using `only [h2]`.
+
+Rewrite using `[lintegral_const, Measure.restrict_apply_univ, mul_comm]`. Conclude with `((hF.comp measurable_fst).mul hm).aemeasurable`. Rewrite using `[← hunf, hfub]`.
+-/
 private theorem UpperTheory.ConvolutionTheory.G.stage_key
     {X T : Type} [Group X] [TopologicalSpace X] [IsTopologicalGroup X] [LocallyCompactSpace X] [T2Space X]
     [SecondCountableTopology X] [MeasurableSpace X] [BorelSpace X] [Group T] [TopologicalSpace T]
@@ -62,6 +81,27 @@ private theorem UpperTheory.ConvolutionTheory.G.stage_key
     · exact ((hF.comp measurable_fst).mul hm).aemeasurable
   rw [← hunf, hfub]
 
+/- English proof (translation)
+Introduce `hQ1 hQ2 X T _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ _ ν _ _ _ i hi Λ _ Γ₀ _ hΛ hvol Φ hΦc hΦi hint`. Establish `hD : IsFundamentalDomain Λ (fundamentalDomain Λ) ν` using `isFundamentalDomain_fundamentalDomain Λ ν`. Establish `hvolD : quotientMeasure Λ ν Set.univ = ν (fundamentalDomain Λ)` using `quotientMeasure_univ ν hD`. Establish `hD0 : ν (fundamentalDomain Λ) ≠ 0` using `hD.measure_ne_zero (NeZero.ne ν)`. Establish `hΦm : Measurable Φ` using `hΦc.measurable`.
+
+Establish `hic : Continuous i` using `hi.continuous`. Establish `hout : ∀ g, Φ (Quotient.out (RightCosetSpace.mk Γ₀ g)) = Φ g` using `fun g => by`. Take `⟨γ, hγ⟩` from `mk_eq_mk_iff.1 (Quotient.out_eq (RightCosetSpace.mk Γ₀ g))`. Establish `hγm : (γ : X) ∈ Λ.map i` using `hΛ ▸ γ.2`. Take `⟨t, -, ht⟩` from `Subgroup.mem_map.1 hγm`.
+
+Rewrite using `[← hγ, Subgroup.smul_def, smul_eq_mul, ← ht, hΦi]`. Establish `key` using `fun ρ hρ hρ1 F hF hFi => UpperTheory.ConvolutionTheory.G.stage_key μ ν i hic hi.injective Λ Γ₀ hΛ ρ hρ hρ1 F hF hFi`. Establish `hEfin : ∫⁻ x in fundamentalDomain Γ₀, ‖Φ x‖ₑ ∂μ < ⊤`. Establish `h` using `hint.2`. Rewrite `h` using `[HasFiniteIntegral, lintegral_quotientMeasure]`.
+
+Simplify `h` using `only [hout]`. Establish `hfin : ∀ ρ, IsNormAlong id i ν ρ → ∫⁻ x, ‖Φ x‖ₑ * ρ x ∂μ < ⊤` using `fun ρ hρ => by`. Establish `h` using `key ρ hρ.1 hρ.2 (fun x => ‖Φ x‖ₑ) hΦm.enorm (fun t x => by simp only [hΦi])`. Rewrite `hEfin` using `[h]`. Assume the negation of the conclusion as `hc`.
+
+Rewrite `hc` using `[not_lt, top_le_iff]`. Rewrite `hEfin` using `[hc, ENNReal.mul_top hD0]`. Conclude with `lt_irrefl _ hEfin`. Use `⟨?_, hfin⟩` and prove the remaining obligations. Take `⟨ρ₀, hρc, hρn, -⟩` from `hQ2 X T ν i hi`.
+
+Establish `e1` using `hQ1 X X T μ ν (MonoidHom.id X) i measurable_id hic Φ (fun x => (ρ₀ x : ℝ≥0∞)) hΦm hΦi hρn (hfin _ hρn)`. Establish `hmeas : (μ.restrict (fundamentalDomain Γ₀)).map Φ = (ν (fundamentalDomain Λ) • μ.withDensity (fun x => (ρ₀ x : ℝ≥0∞))).map Φ`. Rewrite using `[Measure.ext_iff_lintegral]`. Introduce `f hf`. Establish `hw : ∫⁻ a, f (Φ a) ∂μ.withDensity (fun x => (ρ₀ x : ℝ≥0∞)) = ∫⁻ a, f (Φ a) * (ρ₀ a : ℝ≥0∞) ∂μ`.
+
+Rewrite using `[show (fun a => f (Φ a)) = f ∘ Φ from rfl, lintegral_withDensity_eq_lintegral_mul μ hρn.1 (hf.comp hΦm)]`. Conclude with `lintegral_congr fun a => mul_comm _ _`. Rewrite using `[lintegral_map hf hΦm, lintegral_map hf hΦm, lintegral_smul_measure, hw, smul_eq_mul]`. Conclude with `key _ hρn.1 hρn.2 (fun x => f (Φ x)) (hf.comp hΦm) (fun t x => by simp only [hΦi])`. Establish `hq : ∫ y, Φ (Quotient.out y) ∂quotientMeasure Γ₀ μ = ∫ g in fundamentalDomain Γ₀, Φ g ∂μ`.
+
+Rewrite using `[integral_quotientMeasure]`. Simplify using `only [hout]`. Establish `hz : ∫ g in fundamentalDomain Γ₀, Φ g ∂μ = ∫ x, Φ x ∂(ν (fundamentalDomain Λ) • μ.withDensity (fun x => (ρ₀ x : ℝ≥0∞)))`. Establish `h1 : ∀ m : Measure X, ∫ z, z ∂(m.map Φ) = ∫ x, Φ x ∂m` using `fun m => integral_map hΦm.aemeasurable aestronglyMeasurable_id`. Rewrite using `[← h1, ← h1, hmeas]`.
+
+Rewrite using `[hq, hz, integral_smul_measure, integral_withDensity_eq_integral_toReal_smul hρn.1 (Filter.Eventually.of_forall fun x => ENNReal.coe_lt_top), hvolD, Complex.real_smul]`. Use `congr 1`. Establish `e2 : quotInt μ id i ν Φ = ∫ x, Φ x * (((ρ₀ x : ℝ≥0∞)).toReal : ℂ) ∂μ` using `e1`. Rewrite using `[e2]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Simplify using `[Complex.real_smul, mul_comm]`.
+-/
 theorem UpperTheory.ConvolutionTheory.G.unitaryGroupGeometricSide_of_quotient_identities :
     Q1 → Q2 → U2 := by
   intro hQ1 hQ2 X T _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ _ ν _ _ _ i hi Λ _ Γ₀ _ hΛ hvol Φ hΦc hΦi hint

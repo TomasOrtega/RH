@@ -16,6 +16,19 @@ variable {G α β : Type} [Group G] [MulAction G α] [MulAction G β]
 open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {G α β : Type} [Group G] [MulAction G α] [MulAction G β] in
+/- English proof (translation)
+Establish `hkx : π (k • x) = k • π x` using `hπ k x`. Establish `e1 : MulAction.stabilizer (MulAction.stabilizer G (k • π x)) (k • x) ≃ MulAction.stabilizer G (k • x)` using `{ toFun := fun h => ⟨(h.1 : G), h.2⟩ invFun := fun g => ⟨⟨g.1, by`. Rewrite using `[MulAction.mem_stabilizer_iff, ← hkx, ← hπ, MulAction.mem_stabilizer_iff.1 g.2]⟩, g.2⟩`. Use `left_inv := fun _ => rfl`. Use `right_inv := fun _ => rfl }`.
+
+Establish `e2 : MulAction.stabilizer G (k • x) ≃ MulAction.stabilizer G x`. Rewrite using `[MulAction.stabilizer_smul_eq_stabilizer_map_conj]`. Conclude with `((MulAction.stabilizer G x).equivMapOfInjective _ (MulAut.conj k).injective).toEquiv.symm`. Establish `e3 : MulAction.orbit (MulAction.stabilizer G (k • π x)) (k • x) = MulAction.orbit G x ∩ π ⁻¹' {k • π x}`. Use extensionality with `z`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl⟩`. Use `⟨⟨(h : G) * k, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show ((h : G) * k) • x = (h : G) • (k • x)`. Conclude with `mul_smul _ _ _`.
+
+Use `show π ((h : G) • (k • x)) = k • π x`. Rewrite using `[hπ, hkx]`. Conclude with `h.2`. Introduce and unpack `⟨⟨g, rfl⟩, hz⟩`. Establish `hz' : g • π x = k • π x` using `by rw [← hπ]; exact hz`.
+
+Use `⟨⟨g * k⁻¹, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul, inv_smul_smul, hz']`. Use `show (g * k⁻¹) • (k • x) = g • x`. Rewrite using `[mul_smul, inv_smul_smul]`. Establish `e4 : (MulAction.stabilizer G (k • π x) ⧸ MulAction.stabilizer (MulAction.stabilizer G (k • π x)) (k • x)) ≃ (MulAction.orbit G x ∩ π ⁻¹' {k • π x} : Set α)` using `(MulAction.orbitEquivQuotientStabilizer _ (k • x)).symm.trans (Equiv.setCongr e3)`.
+
+Establish `hcard : ENat.card (MulAction.stabilizer G (k • π x)) = (MulAction.orbit G x ∩ π ⁻¹' {k • π x}).encard * ENat.card (MulAction.stabilizer G x)`. Rewrite using `[Set.encard, ← ENat.card_congr e4, ← ENat.card_congr (e1.trans e2), ← ENat.card_prod]`. Conclude with `ENat.card_congr Subgroup.groupEquivQuotientProdSubgroup`. Rewrite using `[hcard]`. Conclude with `ENat.toENNReal_mul _ _`.
+-/
 theorem _root_.GlobalTheory.Mass.OrbFib.key (π : α → β)
     (hπ : ∀ (g : G) x, π (g • x) = g • π x) (x : α) (k : G) :
     ((ENat.card (MulAction.stabilizer G (k • π x)) : ℕ∞) : ℝ≥0∞) =
@@ -66,6 +79,9 @@ theorem _root_.GlobalTheory.Mass.OrbFib.key (π : α → β)
 open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {G α β : Type} [Group G] [MulAction G α] [MulAction G β] in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(Quotient.sound h).trans (Quotient.out_eq q)`. Introduce `h`. Conclude with `Quotient.exact (h.trans (Quotient.out_eq q).symm)`.
+-/
 theorem _root_.GlobalTheory.Mass.OrbFib.mem_orbit_out (q : MulAction.orbitRel.Quotient G α) (x : α) :
     x ∈ MulAction.orbit G (Quotient.out q) ↔ (Quotient.mk (MulAction.orbitRel G α) x) = q := by
   constructor
@@ -77,6 +93,21 @@ theorem _root_.GlobalTheory.Mass.OrbFib.mem_orbit_out (q : MulAction.orbitRel.Qu
 open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {G α β : Type} [Group G] [MulAction G α] [MulAction G β] in
+/- English proof (translation)
+Establish `hmem : ∀ (q : {q : MulAction.orbitRel.Quotient G α // Quotient.out q ∈ X}) (a : α), a ∈ MulAction.orbit G (Quotient.out q.1) → a ∈ X`. Introduce and unpack `q a ⟨g, rfl⟩`. Conclude with `hX g _ q.2`. Establish `h1 : ∀ T : Set α, ((T.encard : ℕ∞) : ℝ≥0∞) = ∑' a : α, T.indicator (fun _ => (1 : ℝ≥0∞)) a`. Introduce `T`.
+
+Rewrite using `[← ENNReal.tsum_set_one]`. Conclude with `tsum_subtype T (fun _ => (1 : ℝ≥0∞))`. Repeatedly rewrite using `[h1]`. Rewrite using `[ENNReal.tsum_comm]`. Use `tsum_congr fun a => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `haS : a ∈ S`. Distinguish the cases in `haX : a ∈ X`. Establish `hq0 : Quotient.out (Quotient.mk (MulAction.orbitRel G α) a) ∈ X`. Take `⟨g, hg⟩` from `Quotient.mk_out (s := MulAction.orbitRel G α) a`. Rewrite using `[← hg]`.
+
+Conclude with `hX g a haX`. Rewrite using `[Set.indicator_of_mem (show a ∈ X ∩ S from ⟨haX, haS⟩), tsum_eq_single (⟨Quotient.mk _ a, hq0⟩ : {q : MulAction.orbitRel.Quotient G α // Quotient.out q ∈ X})]`. Rewrite using `[Set.indicator_of_mem]`. Conclude with `⟨(_root_.GlobalTheory.Mass.OrbFib.mem_orbit_out _ a).2 rfl, haS⟩`. Introduce `q hq`.
+
+Rewrite using `[Set.indicator_of_notMem]`. Introduce and unpack `⟨h, -⟩`. Conclude with `hq (Subtype.ext ((_root_.GlobalTheory.Mass.OrbFib.mem_orbit_out _ a).1 h).symm)`. Rewrite using `[Set.indicator_of_notMem (fun h : a ∈ X ∩ S => haX h.1)]`. Use `symm`.
+
+Use `ENNReal.tsum_eq_zero.2 fun q => ?_` and prove the remaining obligations. Rewrite using `[Set.indicator_of_notMem]`. Introduce and unpack `⟨h, -⟩`. Conclude with `haX (hmem q a h)`. Rewrite using `[Set.indicator_of_notMem (fun h : a ∈ X ∩ S => haS h.2)]`.
+
+Use `symm`. Use `ENNReal.tsum_eq_zero.2 fun q => ?_` and prove the remaining obligations. Rewrite using `[Set.indicator_of_notMem]`. Introduce and unpack `⟨-, h⟩`. Conclude with `haS h`.
+-/
 theorem _root_.GlobalTheory.Mass.OrbFib.encard_orbits (X : Set α) (hX : _root_.GlobalTheory.Mass.Stable G X)
     (S : Set α) :
     (((X ∩ S).encard : ℕ∞) : ℝ≥0∞) =
@@ -128,6 +159,23 @@ namespace GlobalTheory.Mass
 open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {G α β : Type} [Group G] [MulAction G α] [MulAction G β] in
+/- English proof (translation)
+Take `⟨k, hk⟩` from `Quotient.mk_out (s := MulAction.orbitRel G β) (π x)`. Establish `hr0 : Quotient.out (Quotient.mk (MulAction.orbitRel G β) (π x)) ∈ Y`. Rewrite using `[← hk]`. Conclude with `hY k _ hx`. Rewrite using `[tsum_eq_single ⟨_, hr0⟩]`.
+
+Simplify using `only`. Rewrite using `[← hk, _root_.GlobalTheory.Mass.OrbFib.key π hπ x k]`. Establish `hyY : k • π x ∈ Y` using `hY k _ hx`. Establish `hfy` using `hfin _ hyY`. Establish `hyT : ((ENat.card (MulAction.stabilizer G (k • π x)) : ℕ∞) : ℝ≥0∞) ≠ ⊤` using `by haveI := hfy`.
+
+Rewrite using `[ENat.card_eq_coe_natCard]`. Simplify using the standard rewrite rules. Rewrite `hyT` using `[_root_.GlobalTheory.Mass.OrbFib.key π hπ x k]`. Establish `hc0 : ((ENat.card (MulAction.stabilizer G x) : ℕ∞) : ℝ≥0∞) ≠ 0`. Establish `: ENat.card (MulAction.stabilizer G x) ≠ 0`.
+
+Rewrite using `[Ne, ENat.card_eq_zero_iff_empty, not_isEmpty_iff]`. Conclude with `⟨1⟩`. Simplify using `using this`. Establish `he0 : (((MulAction.orbit G x ∩ π ⁻¹' {k • π x}).encard : ℕ∞) : ℝ≥0∞) ≠ 0`. Establish `hmem : k • x ∈ MulAction.orbit G x ∩ π ⁻¹' {k • π x}` using `⟨⟨k, rfl⟩, by simp [hπ]⟩`.
+
+Establish `: (MulAction.orbit G x ∩ π ⁻¹' {k • π x}).encard ≠ 0` using `Set.encard_ne_zero.2 ⟨_, hmem⟩`. Simplify using `using this`. Establish `heT : (((MulAction.orbit G x ∩ π ⁻¹' {k • π x}).encard : ℕ∞) : ℝ≥0∞) ≠ ⊤`. Introduce `h`. Apply `hyT` to reduce the goal to its premises.
+
+Rewrite using `[h, ENNReal.top_mul hc0]`. Rewrite using `[ENNReal.mul_inv (Or.inl he0) (Or.inl heT), mul_right_comm, ENNReal.inv_mul_cancel he0 heT, one_mul]`. Introduce `r hr`. Establish `hempty : MulAction.orbit G x ∩ π ⁻¹' {Quotient.out r.1} = ∅`. Use extensionality with `z`.
+
+Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_singleton_iff, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce and unpack `⟨g, rfl⟩ hz`. Apply `hr` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite `hz` using `[hπ]`.
+
+Establish `hmem : π x ∈ MulAction.orbit G (Quotient.out r.1)` using `⟨g⁻¹, by rw [← hz]; exact inv_smul_smul g (π x)⟩`. Conclude with `((_root_.GlobalTheory.Mass.OrbFib.mem_orbit_out r.1 (π x)).1 hmem).symm`. Rewrite using `[hempty]`. Simplify using the standard rewrite rules.
+-/
 private theorem tsum_inv_card_stabilizer_mul_encard_orbit_fibre (π : α → β)
     (hπ : ∀ (g : G) x, π (g • x) = g • π x) (Y : Set β) (hY : _root_.GlobalTheory.Mass.Stable G Y)
     (hfin : ∀ y ∈ Y, Finite (MulAction.stabilizer G y)) (x : α) (hx : π x ∈ Y) :
@@ -184,6 +232,11 @@ private theorem tsum_inv_card_stabilizer_mul_encard_orbit_fibre (π : α → β)
 open NumberField Matrix in
 open scoped ENNReal Classical in
 
+/- English proof (translation)
+Introduce `G α β _ _ _ X Y π hπ hX hY hmaps hfin`. Unfold `_root_.GlobalTheory.Mass.orbMass _root_.GlobalTheory.Mass.orbSum`. Simplify using `only`. Establish `step : ∀ r : {r : MulAction.orbitRel.Quotient G β // Quotient.out r ∈ Y}, ((ENat.card (MulAction.stabilizer G (Quotient.out r.1)) : ℕ∞) : ℝ≥0∞)⁻¹ * (((X ∩ π ⁻¹' {Quotient.out r.1}).encard : ℕ∞) : ℝ≥0∞) = ∑' q : {q : MulAction.orbitRel.Quotient G α // Quotient.out q ∈ X}, ((ENat.c …`. Introduce `r`.
+
+Rewrite using `[_root_.GlobalTheory.Mass.OrbFib.encard_orbits X hX, ENNReal.tsum_mul_left]`. Rewrite using `[tsum_congr step, ENNReal.tsum_comm]`. Use `tsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[mul_one]`. Conclude with `(tsum_inv_card_stabilizer_mul_encard_orbit_fibre π hπ Y hY hfin _ (hmaps q.2)).symm`.
+-/
 theorem _root_.GlobalTheory.Mass.orbMass_eq_orbSum_fibre : ∀ (G α β : Type) [Group G] [MulAction G α]
     [MulAction G β] (X : Set α) (Y : Set β) (π : α → β), (∀ (g : G) x, π (g • x) = g • π x) →
     _root_.GlobalTheory.Mass.Stable G X → _root_.GlobalTheory.Mass.Stable G Y → Set.MapsTo π X Y →

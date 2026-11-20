@@ -13,10 +13,18 @@ open scoped Matrix ComplexConjugate
 variable (II : IntersectionSystem)
   (hII : ∀ W : Ideal (MRing (PBlk 2)), IsArithVar W 1 → 0 ≤ II Unit (PBlk 2) W 1 ![fsLine 2])
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hv`. Simplify using the standard rewrite rules.
+-/
 theorem mem_lineF_apply_one {v : Fin 2 → Ω} (hv : v ∈ lineF) : v 1 = 0 := by
   obtain ⟨a, rfl⟩ := Submodule.mem_span_singleton.1 hv
   simp
 
+/- English proof (translation)
+Establish `h : IsValueAt yLine (0 : Ω) z 0` using `by simpa using isValueAt_intCast yLine z 0`. Unfold `valAt`. Rewrite using `[dif_pos ⟨0, h⟩]`. Take `⟨d, g, h', hg, hh, hy, heq, hz0, hv⟩` from `(⟨0, h⟩ : ∃ v, IsValueAt yLine (0 : Ω) z v).choose_spec`. Rewrite using `[hv]`.
+
+Rewrite `heq` using `[zero_mul]`. Establish `hg0 : g = 0`. Use `mem_mCoordIdeal_of_aeval_eq_zero yLine hg heq` as an intermediate fact. Rewrite `this` using `[mCoordIdeal_yLine, Ideal.mem_bot]`. Then use the resulting hypothesis. Simplify using `[hg0]`.
+-/
 theorem valAt_line_zero {z : (Σ _ : Unit, Fin 2) → ℂ} : valAt yLine (0 : Ω) z = 0 := by
   classical
   have h : IsValueAt yLine (0 : Ω) z 0 := by simpa using isValueAt_intCast yLine z 0
@@ -38,6 +46,11 @@ variable {z : (Σ _ : Unit, Fin 2) → ℂ} (d : MuFrameAt (lineHodge II hII) z)
 
 abbrev fb : Fin 2 → Fin 2 → Ω := d.b ()
 
+/- English proof (translation)
+Establish `h` using `(d.adapted ()).2.2`. Establish `hmem : fb d 0 ∈ lineF`. Express the relevant statement in the definitionally equal form `Submodule.span Ω (Set.range (d.b () ∘ headIdx (show 1 ≤ 2 by decide))) = lineF at h`. Rewrite using `[← h]`. Conclude with `Submodule.subset_span ⟨0, rfl⟩`.
+
+Conclude with `mem_lineF_apply_one hmem`.
+-/
 theorem fb_zero_one : fb d 0 1 = 0 := by
   have h := (d.adapted ()).2.2
   have hmem : fb d 0 ∈ lineF := by
@@ -47,6 +60,13 @@ theorem fb_zero_one : fb d 0 1 = 0 := by
   exact mem_lineF_apply_one hmem
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Establish `heq : (PiTensorProduct.tprod Ω (fun _ : Unit => exteriorPower.ιMulti Ω 1 (fun a : Fin 1 => lineF.mkQ ((Pi.basisFun Ω (Fin 2)) (tailIdx (show 1 ≤ 2 by decide) a)))) : PiTensorProduct Ω (fun _ : Unit => ⋀[Ω]^1 ((Fin 2 → Ω) ⧸ lineF))) = (d.u * chartMono yLine d.c 0) • PiTensorProduc …` using `d.eq`. Establish `e1` using `congrArg (PiTensorProduct.subsingletonEquiv (R := Ω) (s := fun _ : Unit => ⋀[Ω]^1 ((Fin 2 → Ω) ⧸ lineF)) ()) heq`. Rewrite `e1` using `[LinearEquiv.map_smul]`. Simplify using `only [PiTensorProduct.subsingletonEquiv_apply_tprod] at e1`. Establish `e2` using `congrArg (exteriorPower.oneEquiv Ω ((Fin 2 → Ω) ⧸ lineF)) e1`.
+
+Simplify using `only [map_smul, exteriorPower.oneEquiv_ιMulti, chartMono, Finset.univ_unique, Finset.prod_singleton] at e2`. Establish `ht' : ∀ (h : 1 ≤ 2) (a : Fin (2 - 1)), tailIdx h a = 1` using `fun _ a => Fin.ext (by`. Use `a.isLt` as an intermediate fact. Simplify using `only [tailIdx, Fin.val_one]`. Use the proof step `omega)`.
+
+Simplify using `only [ht', Pi.basisFun_apply, Pi.zero_apply, zpow_zero, mul_one, Submodule.mkQ_apply, ← Submodule.Quotient.mk_smul] at e2`. Establish `e3` using `(Submodule.Quotient.eq lineF).1 e2`. Use `mem_lineF_apply_one e3` as an intermediate fact. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Pi.single_eq_same] at this`. Conclude with `(sub_eq_zero.1 this).symm`.
+-/
 theorem u_mul_fb : d.u * fb d 1 1 = 1 := by
   have heq : (PiTensorProduct.tprod Ω (fun _ : Unit => exteriorPower.ιMulti Ω 1
       (fun a : Fin 1 => lineF.mkQ ((Pi.basisFun Ω (Fin 2)) (tailIdx (show 1 ≤ 2 by decide) a)))) :
@@ -71,6 +91,9 @@ theorem u_mul_fb : d.u * fb d 1 1 = 1 := by
   simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, Pi.single_eq_same] at this
   exact (sub_eq_zero.1 this).symm
 
+/- English proof (translation)
+Introduce `h` and use `by have := u_mul_fb d rw [h, mul_zero] at this exact zero_ne_one this`.
+-/
 theorem fb_one_one_ne : fb d 1 1 ≠ 0 := fun h => by
   have := u_mul_fb d
   rw [h, mul_zero] at this
@@ -82,6 +105,9 @@ section FrameLemmas
 
 variable {c : Unit → Fin 2} {f : Ω} {b : Fin 2 → Fin 2 → Ω}
 
+/- English proof (translation)
+Apply the tactic sequence `obtain ⟨n, hn⟩ := (hfr.2.2.2.2 (b q)).2 ⟨fun q' => if q' = q then 1 else 0, fun q' => ⟨0, by show f ^ 0 * (if q' = q then (1 : Ω) else 0) ∈ _ split_ifs <;> simp⟩, by simp only [ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]⟩`. Conclude with `⟨n, by simpa [smul_eq_mul] using mem_trivLat.1 hn p⟩`.
+-/
 theorem frame_regular (hfr : IsFrameOver yLine (trivialBundle (segreCoord yLine) 2) c f b) (q p : Fin 2) :
     ∃ n : ℕ, f ^ n * b q p ∈ chartRing ℤ (segreCoord yLine) c := by
   obtain ⟨n, hn⟩ := (hfr.2.2.2.2 (b q)).2 ⟨fun q' => if q' = q then 1 else 0, fun q' => ⟨0, by
@@ -90,6 +116,11 @@ theorem frame_regular (hfr : IsFrameOver yLine (trivialBundle (segreCoord yLine)
       if_true]⟩
   exact ⟨n, by simpa [smul_eq_mul] using mem_trivLat.1 hn p⟩
 
+/- English proof (translation)
+Use `(hfr.2.2.2.2 _).1 ⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, one_smul]`. Use `mem_trivLat.2 fun r => ?_` and prove the remaining obligations. Distinguish the cases in `h : r = 0`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`.
+-/
 theorem frame_first_basis_vector (hfr : IsFrameOver yLine (trivialBundle (segreCoord yLine) 2) c f b) :
     ∃ a : Fin 2 → Ω, (∀ q, ∃ n : ℕ, f ^ n * a q ∈ chartRing ℤ (segreCoord yLine) c) ∧
       (Pi.single 0 1 : Fin 2 → Ω) = ∑ q, a q • b q := by
@@ -102,6 +133,9 @@ theorem frame_first_basis_vector (hfr : IsFrameOver yLine (trivialBundle (segreC
 
 variable {z : (Σ _ : Unit, Fin 2) → ℂ}
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `frame_regular hfr q p`. Conclude with `exists_isValueAt_of_pow_mul_mem (mem_mcPts_line.2 ⟨c (), hz⟩) (segreCoord_line_ne_zero (c ())) (fun _ => hz) hf hn`.
+-/
 theorem frame_value (hfr : IsFrameOver yLine (trivialBundle (segreCoord yLine) 2) c f b)
     (hz : z ⟨(), c ()⟩ ≠ 0) (hf : IsUnitAt yLine f z) (q p : Fin 2) :
     ∃ v, IsValueAt yLine (b q p) z v := by
@@ -109,6 +143,13 @@ theorem frame_value (hfr : IsFrameOver yLine (trivialBundle (segreCoord yLine) 2
   exact exists_isValueAt_of_pow_mul_mem (mem_mcPts_line.2 ⟨c (), hz⟩) (segreCoord_line_ne_zero (c ()))
     (fun _ => hz) hf hn
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `hz`. Establish `hl : ∃ l, InFrameDomain yLine (lineMetric.chart l) (lineMetric.fr l) z` using `⟨i, inFrameDomain_line hi⟩`. Establish `hS : ∃ S : Matrix (Fin 2) (Fin 2) Ω, ∀ q, b q = ∑ p, S p q • lineMetric.b hl.choose p` using `⟨Matrix.of fun p q => b q p, fun q => by`. Use function extensionality and compare the values at `r`. Simplify using `[lineMetric, Finset.sum_apply, Pi.single_apply]⟩`.
+
+Establish `hSe : hS.choose = Matrix.of fun p q => b q p`. Use `Matrix.ext fun p q => ?_` and prove the remaining obligations. Use `congrFun (hS.choose_spec q) p` as an intermediate fact. Simplify using `[lineMetric, Finset.sum_apply, Pi.single_apply] at this`. Conclude with `this.symm`.
+
+Unfold `gramAt`. Rewrite using `[dif_pos hl, dif_pos hS, hSe]`. Use `show _ * (1 : Matrix (Fin 2) (Fin 2) ℂ) * _ = _`. Rewrite using `[Matrix.mul_one]`. Both sides reduce to the same expression.
+-/
 theorem gramAt_line (hz : ∃ i, z ⟨(), i⟩ ≠ 0) :
     gramAt lineMetric b z =
       (Matrix.of fun p q => valAt yLine (b q p) z)ᴴ * Matrix.of fun p q => valAt yLine (b q p) z := by
@@ -130,6 +171,15 @@ theorem gramAt_line (hz : ∃ i, z ⟨(), i⟩ ≠ 0) :
   rw [Matrix.mul_one]
   rfl
 
+/- English proof (translation)
+Unfold `quotNormSq`. Establish `hdet : (Sᴴ * S).det = ((‖S 0 0 * S 1 1‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_fin_two, h10, mul_zero, sub_zero]`. Rewrite using `[show star (S 0 0 * S 1 1) = (starRingEnd ℂ) (S 0 0 * S 1 1) from rfl, Complex.conj_mul']`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hsub : ((Sᴴ * S).submatrix (headIdx (show 1 ≤ 2 by decide)) (headIdx (show 1 ≤ 2 by decide))).det = ((‖S 0 0‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Matrix.det_unique]`. Establish `h0 : headIdx (show 1 ≤ 2 by decide) (default : Fin 1) = 0` using `rfl`. Simplify using `only [Matrix.submatrix_apply, h0, Matrix.mul_apply, Fin.sum_univ_two, Matrix.conjTranspose_apply, h10, star_zero, zero_mul, add_zero]`.
+
+Rewrite using `[show star (S 0 0) = (starRingEnd ℂ) (S 0 0) from rfl, Complex.conj_mul']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hdet, hsub, Complex.ofReal_re, Complex.ofReal_re, norm_mul, mul_pow]`. Establish `: ‖S 0 0‖ ^ 2 ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.2 h00)`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem quotNormSq_line (S : Matrix (Fin 2) (Fin 2) ℂ) (h10 : S 1 0 = 0) (h00 : S 0 0 ≠ 0) :
     quotNormSq (show 1 ≤ 2 by decide) (Sᴴ * S) = ‖S 1 1‖ ^ 2 := by
   unfold quotNormSq
@@ -157,9 +207,29 @@ section Norm
 
 variable {z : (Σ _ : Unit, Fin 2) → ℂ} (d : MuFrameAt (lineHodge II hII) z)
 
+/- English proof (translation)
+The claim follows from `(d.adapted ()).1`.
+-/
 theorem frame_d : IsFrameOver yLine (trivialBundle (segreCoord yLine) 2) d.c d.f (fb d) :=
   (d.adapted ()).1
 
+/- English proof (translation)
+Establish `hzc : z ⟨(), d.c ()⟩ ≠ 0` using `d.inDom.1 ()`. Establish `hzP : z ∈ mcPts (mCoordIdeal yLine)` using `mem_mcPts_line.2 ⟨d.c (), hzc⟩`. Establish `hf` using `d.inDom.2`. Establish `hfr` using `frame_d d`. Take `⟨v00, h00⟩` from `frame_value hfr hzc hf 0 0`.
+
+Take `⟨v11, h11⟩` from `frame_value hfr hzc hf 1 1`. Take `⟨nu, hnu⟩` from `d.unit.2.1`. Take `⟨vu, hu⟩` from `exists_isValueAt_of_pow_mul_mem hzP (segreCoord_line_ne_zero (d.c ())) (fun _ => hzc) hf hnu`. Establish `hu11 : vu * v11 = 1`. Use `isValueAt_mul hu h11` as an intermediate fact.
+
+Rewrite `this` using `[u_mul_fb d]`. Conclude with `isValueAt_one hzP this`. Establish `hv00 : v00 ≠ 0`. Take `⟨a, ha, he⟩` from `frame_first_basis_vector hfr`. Establish `e1` using `congrFun he 1`.
+
+Establish `e0` using `congrFun he 0`. Simplify using `only [Pi.single_apply, Fin.sum_univ_two, Finset.sum_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, fb_zero_one d] at e1 e0`. Express the relevant statement in the definitionally equal form `(0 : Ω) = a 0 * 0 + a 1 * fb d 1 1 at e1`. Establish `ha1 : a 1 = 0`. Rewrite `e1` using `[mul_zero, zero_add]`.
+
+Conclude with `(mul_eq_zero.1 e1.symm).resolve_right (fb_one_one_ne d)`. Express the relevant statement in the definitionally equal form `(1 : Ω) = a 0 * fb d 0 0 + a 1 * fb d 1 0 at e0`. Rewrite `e0` using `[ha1, zero_mul, add_zero]`. Take `⟨na, hna⟩` from `ha 0`. Take `⟨va, hva⟩` from `exists_isValueAt_of_pow_mul_mem hzP (segreCoord_line_ne_zero (d.c ())) (fun _ => hzc) hf hna`.
+
+Use `isValueAt_mul hva h00` as an intermediate fact. Rewrite `this` using `[← e0]`. Establish `h1` using `isValueAt_one hzP this`. Introduce `h`. Rewrite `h1` using `[h, mul_zero]`.
+
+Conclude with `zero_ne_one h1`. Establish `hS10 : valAt yLine (fb d 0 1) z = 0` using `by rw [fb_zero_one d]; exact valAt_line_zero`. Establish `hS00 : valAt yLine (fb d 0 0) z = v00` using `valAt_eq hzP h00`. Establish `hS11 : valAt yLine (fb d 1 1) z = v11` using `valAt_eq hzP h11`. Establish `hU : valAt yLine d.u z = vu` using `valAt_eq hzP hu`.
+
+Use `show ‖valAt yLine d.u z‖ * (∏ k : Unit, ‖z ⟨k, d.c k⟩‖ ^ (0 : Unit → ℤ) k) * ∏ _τ : Unit, Real.sqrt (quotNormSq (show 1 ≤ 2 by decide) (gramAt lineMetric (fb d) z)) = 1`. Rewrite using `[gramAt_line ⟨d.c (), hzc⟩, quotNormSq_line _ (by simpa using hS10) (by simpa [hS00] using hv00)]`. Simplify using `only [Pi.zero_apply, zpow_zero, Finset.prod_const_one, mul_one, Finset.univ_unique, Finset.prod_singleton, Matrix.of_apply]`. Rewrite using `[Real.sqrt_sq (norm_nonneg _), hU, hS11, ← norm_mul, hu11, norm_one]`.
+-/
 theorem norm_muFrameAt : d.norm = 1 := by
   have hzc : z ⟨(), d.c ()⟩ ≠ 0 := d.inDom.1 ()
   have hzP : z ∈ mcPts (mCoordIdeal yLine) := mem_mcPts_line.2 ⟨d.c (), hzc⟩
@@ -233,6 +303,9 @@ def stdFrameAt {z : (Σ _ : Unit, Fin 2) → ℂ} {i : Fin 2} (hi : z ⟨(), i�
     simp only [chartMono, lineHodge_aMu, Pi.zero_apply, zpow_zero, Finset.prod_const_one, one_mul, one_smul]
     rfl
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `hz`. Establish `h : Nonempty (MuFrameAt (lineHodge II hII) z)` using `⟨stdFrameAt hi⟩`. Rewrite using `[muMetric, dif_pos h]`. Conclude with `norm_muFrameAt _`.
+-/
 theorem muMetric_line {z : (Σ _ : Unit, Fin 2) → ℂ} (hz : ∃ i, z ⟨(), i⟩ ≠ 0) :
     muMetric (lineHodge II hII) z = 1 := by
   classical
@@ -241,6 +314,13 @@ theorem muMetric_line {z : (Σ _ : Unit, Fin 2) → ℂ} (hz : ∃ i, z ⟨(), i
   rw [muMetric, dif_pos h]
   exact norm_muFrameAt _
 
+/- English proof (translation)
+Establish `hom : IsHomogOfDeg (lineHodge II hII).aMu (muMetric (lineHodge II hII))`. Introduce `c w hc`. Simplify using `only [lineHodge_aMu, Pi.zero_apply, zpow_zero, Finset.prod_const_one, one_mul]`. Distinguish the cases in `hw : ∃ i, w ⟨(), i⟩ ≠ 0`. Take `⟨i, hi⟩` from `hw`.
+
+Rewrite using `[muMetric_line ⟨i, hi⟩, muMetric_line ⟨i, by simp [torusSmul, hc (), hi]⟩]`. Use `push_neg at hw`. Establish `: torusSmul c w = w`. Use function extensionality and compare the values at `p`. Take `⟨⟨⟩, i⟩` from `p`.
+
+Simplify using `[torusSmul, hw i]`. Rewrite using `[this]`. Take `⟨i, hi⟩` from `hz`. Rewrite using `[muLine, hermOfFun_h hom (fun _ => ⟨i, hi⟩) (by rw [muMetric_line ⟨i, hi⟩]; exact one_pos), muMetric_line ⟨i, hi⟩]`.
+-/
 theorem muLine_h {z : (Σ _ : Unit, Fin 2) → ℂ} (hz : ∃ i, z ⟨(), i⟩ ≠ 0) :
     (muLine (lineHodge II hII)).h z = 1 := by
   have hom : IsHomogOfDeg (lineHodge II hII).aMu (muMetric (lineHodge II hII)) := by
@@ -259,12 +339,20 @@ theorem muLine_h {z : (Σ _ : Unit, Fin 2) → ℂ} (hz : ∃ i, z ⟨(), i⟩ �
   rw [muLine, hermOfFun_h hom (fun _ => ⟨i, hi⟩) (by rw [muMetric_line ⟨i, hi⟩]; exact one_pos),
     muMetric_line ⟨i, hi⟩]
 
+/- English proof (translation)
+Rewrite using `[phMu, muLine_h hz, Real.log_one]`.
+-/
 theorem phMu_line {z : (Σ _ : Unit, Fin 2) → ℂ} (hz : ∃ i, z ⟨(), i⟩ ≠ 0) :
     phMu (lineHodge II hII) z = 0 := by
   rw [phMu, muLine_h hz, Real.log_one]
 
 end Norm
 
+/- English proof (translation)
+Establish `hH : ∀ j, cxHessian (φ j) y = 0`. Introduce `j`. Establish `h2 : fderiv ℝ (fderiv ℝ (φ j)) y = fderiv ℝ (fderiv ℝ (fun _ : Fin 1 → ℂ => (0 : ℝ))) y` using `(h j).fderiv.fderiv_eq`. Use extensionality with `a b`. Simplify using `[cxHessian, h2]`.
+
+Simplify using `[maDensity, mixedDisc, hH]`.
+-/
 theorem maDensity_eq_zero_of_eventually {φ : Fin 1 → (Fin 1 → ℂ) → ℝ} {y : Fin 1 → ℂ}
     (h : ∀ j, φ j =ᶠ[nhds y] fun _ => 0) : maDensity φ y = 0 := by
   have hH : ∀ j, cxHessian (φ j) y = 0 := by
@@ -275,6 +363,13 @@ theorem maDensity_eq_zero_of_eventually {φ : Fin 1 → (Fin 1 → ℂ) → ℝ}
     simp [cxHessian, h2]
   simp [maDensity, mixedDisc, hH]
 
+/- English proof (translation)
+Unfold `degMu geomDeg ptsIntegral`. Rewrite using `[lineData_n]`. Use `split_ifs with hΨ`. Unfold `ptsIntegralAt`. Establish `: ∀ y : Fin 1 → ℂ, ∀ w, sheetDensity (mCoordIdeal (lineData II hII).y) hΨ.choose (fun _ z => Real.log ((muLine (lineHodge II hII)).h z)) (fun _ => 1) y w = 0`.
+
+Introduce `y w`. Unfold `sheetDensity`. Use `split_ifs with hγ`. Rewrite using `[maDensity_eq_zero_of_eventually, mul_zero]`. Introduce `j`.
+
+Use `filter_upwards [hγ.choose_spec.2] with y' hy'`. Rewrite using `[muLine_h (mem_mcPts_line.1 hy'.2.1), Real.log_one]`. Both sides reduce to the same expression. Simplify using `[this]`. Both sides reduce to the same expression.
+-/
 theorem degMu_line : degMu (lineHodge II hII) = 0 := by
   unfold degMu geomDeg ptsIntegral
   rw [lineData_n]
@@ -293,6 +388,9 @@ theorem degMu_line : degMu (lineHodge II hII) = 0 := by
     simp [this]
   · rfl
 
+/- English proof (translation)
+Rewrite using `[meanU, degMu_line, div_zero]`.
+-/
 theorem meanU_line : meanU (lineHodge II hII) (gaussCusp II hII) = 0 := by
   rw [meanU, degMu_line, div_zero]
 

@@ -27,6 +27,11 @@ namespace GlobalTheory.KernelAlg
 
 open GlobalTheory.ThetaAlgebraic in
 
+/- English proof (translation)
+Take `⟨b, κ0, hb, hκ0, rfl⟩` from `he`. Establish `hG` using `hI.g1`. Establish `hU` using `hI.use1`. Establish `hg` using `((good_theta hG hU hC hb ht).iop hG hC hb (StandardLatticesGL3.LaB D (TaylorLogMetric.tor0 D cc δ) b) _ (la_le cc δ hG hb (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N'))).const_mul hκ0.1`. Establish `hg2` using `hg.iop hG hC hb (StandardLatticesGL3.La0 D (TaylorLogMetric.tor0 D cc δ) N N') _ (la_le cc δ hG hb Ls Lt)`.
+
+Establish `hT : ∀ i, Good cc δ b (TaylorLogMetric.U D (TaylorLogMetric.tor0 D cc δ) (s i) (TaylorLogMetric.Iop D (TaylorLogMetric.tor0 D cc δ) (StandardLatticesGL3.La0 D (TaylorLogMetric.tor0 D cc δ) N N') (TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) Ls Lt) fun z => κ0 * TaylorLogMet …` using `fun i => hg2.transl hG hC hb (sat_of_nsmul hk (la_le cc δ hG hb Ls Lt (hs i)))`. Conclude with `((Good.sum Finset.univ _ fun i _ => (hT i).const_mul (r i).2).const_mul hκ).coefIn`.
+-/
 theorem coefIn_dict (D : D7) (hI : GlobalTheory.NormSum.Inp D) {cc : Ideal (𝓞 D.host.K)} {δ t0 : ℂ} (hC : StandardLatticesGL3.Crv D cc δ)
     (ht : GL3Theta.IsTwoTorsionPointUnkilled D (TaylorLogMetric.lamOf D cc δ) t0) {N N' : ℕ} (e0 : TaylorLogMetric.VC D N N' → ℂ)
     (he : StandardLatticesGL3.ThetaVectorUpToUnits D (TaylorLogMetric.tor0 D cc δ) t0 (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N') e0)
@@ -48,6 +53,11 @@ theorem coefIn_dict (D : D7) (hI : GlobalTheory.NormSum.Inp D) {cc : Ideal (𝓞
     hg2.transl hG hC hb (sat_of_nsmul hk (la_le cc δ hG hb Ls Lt (hs i)))
   exact ((Good.sum Finset.univ _ fun i _ => (hT i).const_mul (r i).2).const_mul hκ).coefIn
 
+/- English proof (translation)
+Unfold `GL3Theta.applyAt0`. Use `sum_mem fun α _ => mul_mem (mul_mem ?_ (prod_mem fun _ _ => natCast_mem _ _)) (hG α)` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_monomial]`. Use `split_ifs`. Conclude with `one_mem _`.
+
+Conclude with `zero_mem _`.
+-/
 theorem applyAt0_monomial_mem (D : D7) {N N' : ℕ} (m : GL3Theta.Idx D N N' →₀ ℕ) {G : TaylorLogMetric.VC D N N' → ℂ}
     (hG : TaylorLogMetric.CoefIn D G TaylorLogMetric.Qbar) : GL3Theta.applyAt0 D (MvPolynomial.monomial m 1) G ∈ TaylorLogMetric.Qbar := by
   classical
@@ -58,13 +68,36 @@ theorem applyAt0_monomial_mem (D : D7) {N N' : ℕ} (m : GL3Theta.Idx D N N' →
   · exact one_mem _
   · exact zero_mem _
 
+/- English proof (translation)
+The claim follows from `IsAlgebraic.algHom (opp p).toRatAlgHom hz`.
+-/
 theorem opp_isAlgebraic {T : Type} (p : GlobalTheory.ChiGrid.Pair T) {z : ℂ} (hz : IsAlgebraic ℚ z) : IsAlgebraic ℚ (opp p z) :=
   IsAlgebraic.algHom (opp p).toRatAlgHom hz
 
+/- English proof (translation)
+Apply the tactic sequence `cases p <;> rfl`.
+-/
 theorem fvar_fst {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : ChiGrid.GridData L sc) (p : GlobalTheory.ChiGrid.Pair T)
     (k : DVar D.what₂.Tau (G.V p.small).rank (G.V p.big).rank) : (fvar G p k).1 = k.1 := by
   cases p <;> rfl
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R large₂ F hS ch hch hInp hDict t p hp hW k d hk hcos hz hP hV x y a b`. Take `⟨Ls, Lt, κ, n, r, s, hLs, hLt, hκ, hs, -, -, -, hJ⟩` from `hDict t p hp k d hk hcos hz hP x y`. Use `set Z := ch.S.Z`. Establish `hF` using `coefIn_dict D hInp Z.crv Z.pt0 (Z.e0 p) (Z.e0_is p hp).2.2.2.1 Ls Lt κ hκ.1 r s k hk hs`. Use `set FF := (fun z => κ * ∑ i, ((r i : TaylorLogMetric.Qbar) : ℂ) * TaylorLogMetric.U D (TaylorLogMetric.tor0 D D.host.ccK Z.δ) (s i) (TaylorLogMetric.Iop D (TaylorLogMetric.tor0 D D.host.ccK Z.δ) (StandardLatticesGL3.La0 D (TaylorLogMetric.tor0 D D.host.ccK Z.δ) _ _) (TaylorLogMet …`.
+
+Use `set J2 : (DVar D.what₂.Tau (ch.G.V p.small).rank (ch.G.V p.big).rank →₀ ℕ) → ℂ := fun m => opp p (GL3Theta.applyAt0 D (MvPolynomial.monomial (m.mapDomain (fvar ch.G p)) 1) FF) with hJ2`. Establish `hA : ∀ m, IsAlgebraic ℚ (J2 m)` using `fun m => opp_isAlgebraic p (mem_algebraicClosure_iff.1 (applyAt0_monomial_mem D _ hF))`. Use `set c : D.what₂.Tau → ℂ := fun τ => opp p (period Z.δ τ) with hc`. Establish `hJf : jetTab ch.W ch.S.N.frC p (Z.vec d) (x * ch.S.N.u _) (y * ch.S.N.u _) = fun m => (Z.c0 p : ℂ) * ((m.prod fun k e => c k.1 ^ e) * J2 m)`. Use function extensionality and compare the values at `m`.
+
+Rewrite using `[hJ m, map_mul]`. Use `congr 2`. Rewrite using `[Finsupp.prod_mapDomain_index (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _), map_finsuppProd]`. Simplify using `only [map_pow, fvar_fst, hc]`. Establish `hop : ∀ P : Formalism.L2.DIV.VV ℂ (wt ch.G p.small), jetOp (wt ch.G p.small) (wt ch.G p.big) (jetTab ch.W ch.S.N.frC p (Z.vec d) (x * ch.S.N.u _) (y * ch.S.N.u _)) (nuEnd ch.G p) P = ((Z.c0 p : ℂ) * ∏ τ, c τ ^ fockDeg ch.G p τ) • jetOp _ _ J2 (nuEnd ch.G p) P`.
+
+Introduce `P`. Rewrite using `[hJf]`. Simplify using `only [jetOp, LinearMap.comp_apply, Submodule.subtype_apply]`. Rewrite using `[GlobalTheory.T.thetaJetMap_weighted_table_scale, GlobalTheory.T.blockAction_diagonal_coefficientSpace_smul _ _ _ (hW.2 J2 P.1 P.2), smul_smul, map_smul]`. Both sides reduce to the same expression.
+
+Simplify using `only [Normal.kk, Normal.kkIn, Normal.kkMap, LinearMap.toMatrix_apply, LinearMap.smul_apply, fockComp]`. Rewrite using `[hop, map_smul, map_smul]`. Simplify using `only [Finsupp.smul_apply, smul_eq_mul]`. Establish `hR` using `GlobalTheory.T.jetOperator_bideterminantBasis_repr_isAlgebraic _ _ J2 (nuEnd ch.G p) hA hW.2 a b`. Establish `e : Z.scal 1 p * ((Z.c0 p : ℂ) * ∏ τ, c τ ^ fockDeg ch.G p τ) = ∏ τ, opp p ((1 / period Z.δ τ) * period Z.δ τ) ^ fockDeg ch.G p τ`.
+
+Simplify using `only [Normal.scal, Pi.one_apply, hc, map_mul, mul_pow, Finset.prod_mul_distrib]`. Rewrite using `[mul_mul_mul_comm, Units.inv_mul, one_mul]`. Establish `hK : Z.scal 1 p * ((Z.c0 p : ℂ) * ∏ τ, c τ ^ fockDeg ch.G p τ) ∈ TaylorLogMetric.Qbar`. Rewrite using `[e]`. Use `prod_mem fun τ _ => pow_mem ?_ _` and prove the remaining obligations.
+
+Rewrite using `[mem_algebraicClosure_iff]`. Apply `opp_isAlgebraic` to reduce the goal to its premises. Distinguish the cases in `h : period Z.δ τ = 0`. Simplify using `[h, isAlgebraic_zero]`. Simplify using `[h, isAlgebraic_one]`.
+
+Rewrite using `[← mul_assoc, ← mem_algebraicClosure_iff]`. Conclude with `mul_mem hK (mem_algebraicClosure_iff.2 hR)`.
+-/
 theorem kk_isAlgebraic : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (large₂ : SizeData₂ D) (F : Face D A), HidaSetting large₂ R F → ∀ (ch : Choice R), ch.Is → GlobalTheory.NormSum.Inp D → GlobalTheory.SumSize.DictAt ch → ∀ (t : T) (p : GlobalTheory.ChiGrid.Pair T), DefPair D.R.m p → WtOK ch.G p → ∀ (k : ℕ) (d : FinDatum ch.G t p), 0 < k → IsCosetDatum k d → d.z = 1 → d.P = locPl ch.G t → ch.S.Z.HasVec d → ∀ (x : FinPt ch.G p.small) (y : FinPt ch.G p.big) (a : VVIdx (wt ch.G p.big)) (b : VVIdx (wt ch.G p.small)), IsAlgebraic ℚ (ch.S.Z.kk d x y a b) := by
   intro D Γ _ _ Pl0 T A Ks _ _ _ R large₂ F hS ch hch hInp hDict t p hp hW k d hk hcos hz hP hV x y a b
   obtain ⟨Ls, Lt, κ, n, r, s, hLs, hLt, hκ, hs, -, -, -, hJ⟩ := hDict t p hp k d hk hcos hz hP x y

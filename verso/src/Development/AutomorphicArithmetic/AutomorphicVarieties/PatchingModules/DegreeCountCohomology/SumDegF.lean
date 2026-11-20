@@ -2,6 +2,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Ep
 
 open Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
+/- English proof (translation)
+Introduce `l _ F _ _`. Establish `hl : l.Prime` using `Fact.out`. Set `p : Ideal ℤ` to `Ideal.span {(l : ℤ)}`. Use `haveI hpmax : p.IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hl).irreducible`. Establish `hp0 : p ≠ ⊥`.
+
+Simplify using `only [p, ne_eq, Ideal.span_singleton_eq_bot, Nat.cast_eq_zero]`. Conclude with `hl.ne_zero`. Set `e1 : {v : HeightOneSpectrum (𝓞 F) // ((l : ℕ) : 𝓞 F) ∈ v.asIdeal} ≃ {v : HeightOneSpectrum (𝓞 F) // v.asIdeal ∣ Ideal.map (algebraMap ℤ (𝓞 F)) p}` to `Equiv.subtypeEquivRight (fun v => by`. Rewrite using `[Ideal.dvd_iff_le, Ideal.map_span, Set.image_singleton, Ideal.span_singleton_le_iff_mem, map_natCast])`. Set `e` to `e1.trans (HeightOneSpectrum.equivPrimesOver (𝓞 F) hp0)`.
+
+Establish `h1 : ∑ᶠ v : {v : HeightOneSpectrum (𝓞 F) // ((l : ℕ) : 𝓞 F) ∈ v.asIdeal}, locDeg v.1 = ∑ᶠ q : p.primesOver (𝓞 F), q.1.ramificationIdx ℤ * q.1.inertiaDeg ℤ`. Rewrite using `[← finsum_comp_equiv e]`. Both sides reduce to the same expression. Rewrite using `[h1, finsum_eq_sum_of_fintype, Ideal.sum_ramification_inertia_eq_finrank, NumberField.RingOfIntegers.rank]`.
+-/
 theorem UpperTheory.V.Pa.sumDegF :
     ∀ (l : ℕ) [Fact l.Prime] (F : Type) [Field F] [NumberField F], ∑ᶠ v : {v : HeightOneSpectrum (𝓞 F) // ((l : ℕ) : 𝓞 F) ∈ v.asIdeal}, locDeg v.1 = Module.finrank ℚ F := by
   intro l _ F _ _

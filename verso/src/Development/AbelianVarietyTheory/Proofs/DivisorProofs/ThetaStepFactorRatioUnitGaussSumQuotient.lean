@@ -30,6 +30,43 @@ namespace GlobalTheory.SqStepArith
 
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Chars Base stepFac chrW eps idealVal)
 
+/- English proof (translation)
+Establish `hQn : 0 < Qn G t` using `Finset.prod_pos fun w _ => Nat.pos_of_ne_zero fun h => w.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Take `⟨hc1, -, hcmul, hcinv, -⟩` from `GlobalTheory.Square.isAwayUnit_closure D.what₂.LL (Qn G t) hQn`. Establish `hone : GlobalTheory.Square.IsAwayUnit (Qn G t) (1 : D.what₂.LL)` using `GlobalTheory.Square.IsAwayUnit.one _`. Establish `hzpow : ∀ (x : D.what₂.LL) (n : ℕ), 0 < n → x ^ n = 1 → ∀ e : ℤ, GlobalTheory.Square.IsAwayUnit (Qn G t) (x ^ e)`. Introduce `x n hn hx e`.
+
+Use `hc1 _ n hn ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hx, one_zpow]`. Establish `hprod : ∀ (s : Finset Bs.P) (f : Bs.P → D.what₂.LL), (∀ v ∈ s, GlobalTheory.Square.IsAwayUnit (Qn G t) (f v)) → GlobalTheory.Square.IsAwayUnit (Qn G t) (∏ v ∈ s, f v)`. Introduce `s f hf`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty => simpa using hone`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha]`. Conclude with `hcmul _ _ (hf a (Finset.mem_insert_self _ _)) (ih fun v hv => hf v (Finset.mem_insert_of_mem hv))`. Use `set σ := D.what₂.embLL with hσ`.
+
+Use `set X₀ := GlobalTheory.SqStep.chs G i j μ₀ with hX₀`. Use `set X := GlobalTheory.SqStep.chs G i j t with hX`. Use `set Sz := G.pl.S0 with hS0`. Use `set f : Chars D.host.F D.host.E → Bs.P → ℂ := fun Y v => (chrW Y.ν (Bs.τ v) (Units.map (Int.castRingHom _).toMonoidHom s) : ℂ) * eps Bs.ψ (chrW Y.ν (Bs.τ v)) z with hf`. Establish `hS0T : Sz ⊆ X.T` using `Finset.subset_union_left`.
+
+Establish `hT0 : X₀.T = Sz` using `GlobalTheory.SqStepArith.chs_T_base G hL i j`. Establish `hst : ∀ Y : Chars D.host.F D.host.E, stepFac Bs Y e₁ e₂ s 𝔟 𝔠 z = ((idealVal Y.ν 𝔟 : ℂ)) ^ (e₁ : ℤ) * ((idealVal Y.ν 𝔠 : ℂ)) ^ (e₂ : ℤ) * ∏ v ∈ Finset.univ.filter (fun v : Bs.P => v.1 ∈ Y.T), f Y v`. Introduce `Y`. Simplify using `only [stepFac, Units.val_mul, Units.val_zpow_eq_zpow_val, hf]`. Establish `hsplit : ∏ v ∈ Finset.univ.filter (fun v : Bs.P => v.1 ∈ X.T), f X v = (∏ v ∈ Finset.univ.filter (fun v : Bs.P => v.1 ∈ Sz), f X v) * ∏ v ∈ Finset.univ.filter (fun v : Bs.P => v.1 ∈ X.T ∧ v.1 ∉ Sz), f X v`.
+
+Rewrite using `[← Finset.prod_filter_mul_prod_filter_not (Finset.univ.filter (fun v : Bs.P => v.1 ∈ X.T)) (fun v : Bs.P => v.1 ∈ Sz), Finset.filter_filter, Finset.filter_filter]`. Use `congr 2`. Use extensionality with `v`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `⟨fun h => h.2, fun h => ⟨hS0T h, h⟩⟩`.
+
+Establish `hne : ∀ v : Bs.P, v.1 ∈ Sz → f X v ≠ 0`. Introduce `v hv`. Rewrite `h0` using `[hst, hsplit]`. Establish `h1` using `left_ne_zero_of_mul (right_ne_zero_of_mul h0)`. Conclude with `(Finset.prod_ne_zero_iff.1 h1) v (by simpa using hv)`.
+
+Establish `hS` using `fun (v : Bs.P) (hv : v.1 ∈ Sz) => GlobalTheory.T.base_place_character_factor G hL W S hN i j t Bs hB v hv s z (hne v hv)`. Use `choose bS gS gS' hbS hgS hgS' heS using hS`. Establish `hneT : ∀ v : Bs.P, v.1 ∈ X.T → v.1 ∉ Sz → f X v ≠ 0`. Introduce `v hv hv'`. Rewrite `h0` using `[hst, hsplit]`.
+
+Establish `h1` using `right_ne_zero_of_mul (right_ne_zero_of_mul h0)`. Conclude with `(Finset.prod_ne_zero_iff.1 h1) v (by simpa using And.intro hv hv')`. Establish `hTw` using `fun (v : Bs.P) (hv : v.1 ∈ X.T) (hv' : v.1 ∉ Sz) => GlobalTheory.T.twistPlace_stepFactor_inverse_awayUnit G hL W S hN i j t Bs hB v hv hv' s z (hneT v hv hv')`. Use `choose bT hbT heT using hTw`. Take `⟨b1, ⟨n1, hn1, hb1⟩, e1⟩` from `GlobalTheory.T.squareStepChar_idealValue_eq_base_mul_rootOfUnity G hL W S hN i j t 𝔟`.
+
+Take `⟨b2, ⟨n2, hn2, hb2⟩, e2⟩` from `GlobalTheory.T.squareStepChar_idealValue_eq_base_mul_rootOfUnity G hL W S hN i j t 𝔠`. Set `bS₁ : Bs.P → D.what₂.LL` to `fun v => if h : v.1 ∈ Sz then bS v h else 1`. Set `bT₁ : Bs.P → D.what₂.LL` to `fun v => if h : v.1 ∈ X.T ∧ v.1 ∉ Sz then bT v h.1 h.2 else 1`. Set `g : HeightOneSpectrum (𝓞 D.host.F) → 𝓞 D.what₂.LL` to `fun v => if h : v ∈ Bs.P ∧ v ∈ Sz then gS ⟨v, h.1⟩ h.2 else 1`. Set `g' : HeightOneSpectrum (𝓞 D.host.F) → 𝓞 D.what₂.LL` to `fun v => if h : v ∈ Bs.P ∧ v ∈ Sz then gS' ⟨v, h.1⟩ h.2 else 1`.
+
+Establish `hSP : ∀ v ∈ Sz, v ∈ Bs.P` using `fun v hv => hB.2.1 (hS0T hv)`. Establish `hmap : ∀ F' : HeightOneSpectrum (𝓞 D.host.F) → D.what₂.LL, ∏ v ∈ Finset.univ.filter (fun v : Bs.P => v.1 ∈ Sz), F' v.1 = ∏ v ∈ Sz, F' v`. Introduce `F'`. Rewrite using `[show (∏ v ∈ Finset.univ.filter (fun v : Bs.P => v.1 ∈ Sz), F' v.1) = ∏ v ∈ (Finset.univ.filter (fun v : Bs.P => v.1 ∈ Sz)).map (Function.Embedding.subtype _), F' v from (Finset.prod_map (Finset.univ.filter (fun v : Bs.P => v.1 ∈ Sz)) (Function.Embedding.subtype _) F').symm]`. Use `congr 1`.
+
+Use extensionality with `v`. Simplify using `only [Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and, Function.Embedding.coe_subtype]`. Conclude with `⟨fun ⟨w, hw, e⟩ => e ▸ hw, fun hv => ⟨⟨v, hSP v hv⟩, hv, rfl⟩⟩`. Use `⟨b1 ^ (e₁ : ℤ) * b2 ^ (e₂ : ℤ) * (∏ v ∈ Finset.univ.filter (fun v : Bs.P => v.1 ∈ Sz), bS₁ v) * (∏ v ∈ Finset.univ.filter (fun v : Bs.P => v.1 ∈ X.T ∧ v.1 ∉ Sz), bT₁ v), g, g', ?_, ?_, ?_⟩` and prove the remaining obligations. Use `hcmul _ _ (hcmul _ _ (hcmul _ _ (hzpow b1 n1 hn1 hb1 _) (hzpow b2 n2 hn2 hb2 _)) ?_) ?_` and prove the remaining obligations.
+
+Use `hprod _ _ fun v hv => ?_` and prove the remaining obligations. Establish `hv' : v.1 ∈ Sz` using `by simpa using hv`. Simplify using `only [bS₁, dif_pos hv']`. Conclude with `hbS v hv'`. Use `hprod _ _ fun v hv => ?_` and prove the remaining obligations.
+
+Establish `hv' : v.1 ∈ X.T ∧ v.1 ∉ Sz` using `by simpa using hv`. Simplify using `only [bT₁, dif_pos hv']`. Conclude with `hbT v hv'.1 hv'.2`. Introduce `v hv`. Establish `h : v ∈ Bs.P ∧ v ∈ Sz` using `⟨hSP v hv, hv⟩`.
+
+Simplify using `only [g, g', dif_pos h]`. Conclude with `⟨hgS _ h.2, hgS' _ h.2⟩`. Establish `hA : ∀ v ∈ Finset.univ.filter (fun v : Bs.P => v.1 ∈ Sz), f X₀ v = σ (bS₁ v * ((g v.1 : D.what₂.LL) / (g' v.1 : D.what₂.LL))) * f X v`. Introduce `v hv`. Establish `hv' : v.1 ∈ Sz` using `by simpa using hv`.
+
+Establish `h2 : v.1 ∈ Bs.P ∧ v.1 ∈ Sz` using `⟨v.2, hv'⟩`. Simplify using `only [bS₁, g, g', dif_pos hv', dif_pos h2]`. Conclude with `heS v hv'`. Establish `hTw : (∏ v ∈ Finset.univ.filter (fun v : Bs.P => v.1 ∈ X.T ∧ v.1 ∉ Sz), f X v) * σ (∏ v ∈ Finset.univ.filter (fun v : Bs.P => v.1 ∈ X.T ∧ v.1 ∉ Sz), bT₁ v) = 1`. Rewrite using `[map_prod, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_eq_one fun v hv => ?_` and prove the remaining obligations. Establish `hv' : v.1 ∈ X.T ∧ v.1 ∉ Sz` using `by simpa using hv`. Simplify using `only [bT₁, dif_pos hv']`. Rewrite using `[mul_comm]`. Conclude with `heT v hv'.1 hv'.2`.
+
+Rewrite using `[hst X₀, hst X, hsplit, hT0, Finset.prod_congr rfl hA, Finset.prod_mul_distrib, ← map_prod, Finset.prod_mul_distrib, hmap (fun v => (g v : D.what₂.LL) / (g' v : D.what₂.LL)), e1, e2, mul_zpow, mul_zpow]`. Simplify using `only [map_mul, map_zpow₀]`. Take the linear combination `(-((σ b1) ^ (e₁ : ℤ) * (σ b2) ^ (e₂ : ℤ) * σ (∏ v ∈ Finset.univ.filter (fun v : Bs.P => v.1 ∈ Sz), bS₁ v) * σ (∏ v ∈ Sz, (g v : D.what₂.LL) / (g' v : D.what₂.LL)) * ((idealVal X.ν 𝔟 : ℂ)) ^ (e₁ : ℤ) * ((idealVal X.ν 𝔠 : ℂ)) ^ (e₂ : ℤ) * ∏ v ∈ Finset.univ.filter (fun v : Bs.P => v …`.
+-/
 theorem stepFac_ratio_core {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) {μ₀ : T} (hL : Lc.Is μ₀)
     (W : G.Weil) (S : GridChoice W Set.univ) (hN : NumbersIn D.what₂.embLL S μ₀) (i j : Fin D.R.m) (t : T)
     (Bs : Base D.host.F D.host.E) (e₁ e₂ s : ℤˣ) (𝔟 𝔠 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) (z : ℤ)
@@ -148,6 +185,9 @@ end GlobalTheory.SqStepArith
 
 namespace GlobalTheory.SqStepArith
 
+/- English proof (translation)
+Use `⟨0, fun ε CF _ => ⟨0, 0, fun C _ D large₂ _ _ _ T Lc μ₀ hL G => ?_⟩⟩` and prove the remaining obligations. Introduce `W S _ hN i j t Bs e₁ e₂ s 𝔟 𝔠 z hB h0`. Conclude with `stepFac_ratio_core G hL W S hN i j t Bs e₁ e₂ s 𝔟 𝔠 z hB h0`.
+-/
 theorem stepFac_ratio : GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →
     NumbersIn D.what₂.embLL S μ₀ → ∀ (i j : Fin D.R.m) (t : T) (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (e₁ e₂ s : ℤˣ)
       (𝔟 𝔠 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) (z : ℤ), GlobalTheory.SqStep.BaseFits G W i j t Bs →

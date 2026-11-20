@@ -9,6 +9,9 @@ namespace Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity
 
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric
 
+/- English proof (translation)
+Introduce `z`. Use `⟨Circle.exp (Complex.arg z / n), ?_⟩` and prove the remaining obligations. Establish `hn' : (n : ℝ) ≠ 0` using `by exact_mod_cast hn`. Express the relevant statement in the definitionally equal form `Circle.exp (Complex.arg z / n) ^ n = z`. Rewrite using `[← Circle.exp_zsmul, zsmul_eq_mul, mul_div_cancel₀ _ hn', Circle.exp_arg]`.
+-/
 private theorem circle_pow_surj' {n : ℤ} (hn : n ≠ 0) :
     Function.Surjective (fun a : Circle => a ^ n) := by
   intro z
@@ -17,6 +20,9 @@ private theorem circle_pow_surj' {n : ℤ} (hn : n ≠ 0) :
   change Circle.exp (Complex.arg z / n) ^ n = z
   rw [← Circle.exp_zsmul, zsmul_eq_mul, mul_div_cancel₀ _ hn', Circle.exp_arg]
 
+/- English proof (translation)
+Set `_ : DivisibleBy (Additive Circle) ℤ` to `divisibleByOfSMulRightSurj (Additive Circle) ℤ (fun hn => circle_pow_surj' hn)`. Take `⟨h, hh⟩` from `(Module.Baer.of_divisible (Additive Circle)).extension_property_addMonoidHom (MonoidHom.toAdditive f) hf (MonoidHom.toAdditive g)`. Use `⟨MonoidHom.toAdditive.symm h, fun x => ?_⟩` and prove the remaining obligations. Conclude with `DFunLike.congr_fun hh (Additive.ofMul x)`.
+-/
 theorem circle_extend' {M N : Type} [CommGroup M] [CommGroup N] (f : M →* N)
     (hf : Function.Injective f) (g : M →* Circle) : ∃ h : N →* Circle, ∀ x, h (f x) = g x := by
   let _ : DivisibleBy (Additive Circle) ℤ :=
@@ -26,12 +32,28 @@ theorem circle_extend' {M N : Type} [CommGroup M] [CommGroup N] (f : M →* N)
   refine ⟨MonoidHom.toAdditive.symm h, fun x => ?_⟩
   exact DFunLike.congr_fun hh (Additive.ofMul x)
 
+/- English proof (translation)
+Use `haveI := D.host.isCMField_hostE`. Conclude with `NumberField.IsCMField.complexEmbedding_complexConj D.host.E φ x`.
+-/
 theorem host_star_emb (D : D7) (φ : D.host.E →+* ℂ) (x : D.host.E) :
     φ (@star D.host.E (@InvolutiveStar.toStar _ (@StarMul.toInvolutiveStar _ _
       (@StarRing.toStarMul _ _ D.host.cmStar))) x) = (starRingEnd ℂ) (φ x) := by
   haveI := D.host.isCMField_hostE
   exact NumberField.IsCMField.complexEmbedding_complexConj D.host.E φ x
 
+/- English proof (translation)
+Use `H.galois` as an intermediate fact. Establish `: IsGalois H.K H.E` using `IsGalois.tower_top_of_isGalois ℚ _ _`. Establish `h` using `Algebra.norm_eq_prod_automorphisms H.K x`. Rewrite `h` using `[H.der.norm_mu x hx, map_one]`. Establish `h2` using `congrArg H.φ₀ h`.
+
+Rewrite `h2` using `[map_one, map_prod]`. Rewrite using `[h2]`. Use `symm`. Establish `hmem : ∀ σ : H.E ≃ₐ[H.K] H.E, H.gal (σ.restrictScalars ℚ) ∈ R.Psi` using `fun σ => (H.galE_mem_Psi_iff _).2 (σ.commutes ⟨H.sqd, IntermediateField.mem_adjoin_simple_self ℚ _⟩)`. Use `Fintype.prod_bijective (fun σ : H.E ≃ₐ[H.K] H.E => (⟨H.gal (σ.restrictScalars ℚ), hmem σ⟩ : R.Psi)) ⟨fun σ τ hst => ?_, fun g => ?_⟩ _ _ fun σ => ?_` and prove the remaining obligations.
+
+Conclude with `AlgEquiv.restrictScalars_injective ℚ (H.gal.injective (congrArg Subtype.val hst))`. Establish `hfix : H.gal.symm g.1 H.sqd = H.sqd` using `(H.galE_mem_Psi_iff _).1 (by show H.gal (H.gal.symm g.1) ∈ _`. Rewrite using `[MulEquiv.apply_symm_apply]`. Conclude with `g.2)`. Establish `hK : ∀ y : H.K, H.gal.symm g.1 (y : H.E) = y`.
+
+Establish `hle : H.K ≤ IntermediateField.fixedField (Subgroup.zpowers (H.gal.symm g.1))`. Use `IntermediateField.adjoin_simple_le_iff.2 ?_` and prove the remaining obligations. Rewrite using `[IntermediateField.mem_fixedField_iff]`. Introduce `f hf`. Conclude with `(Subgroup.zpowers_le.2 (show H.gal.symm g.1 ∈ MulAction.stabilizer (H.E ≃ₐ[ℚ] H.E) H.sqd from hfix)) hf`.
+
+Introduce `y`. Conclude with `(IntermediateField.mem_fixedField_iff _ _).1 (hle y.2) _ (Subgroup.mem_zpowers _)`. Use `⟨AlgEquiv.ofRingEquiv (f := (H.gal.symm g.1).toRingEquiv) hK, Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `H.gal.apply_symm_apply g.1`. Use `show H.φ₀ (σ x) = H.φ₀ (H.gal.symm (H.gal (σ.restrictScalars ℚ)) x)`.
+
+Rewrite using `[MulEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+-/
 private theorem prod_emb_eq_one {R : Ranks} (H : Formalism.BasicNotions.Host R) [Fintype R.Psi] (x : H.E)
     (hx : ∃ m : ℕ, 0 < m ∧ x ^ m = 1) : ∏ τ : R.Psi, H.emb (τ : R.GG) x = 1 := by
   classical
@@ -68,6 +90,37 @@ private theorem prod_emb_eq_one {R : Ranks} (H : Formalism.BasicNotions.Host R) 
     rfl
 
 open Classical in
+/- English proof (translation)
+Introduce `D _`. Use `letI := D.host.cmStar`. Establish `hnorm : ∀ (φ : D.host.E →+* ℂ) (z : unitary D.host.E), ‖φ (z : D.host.E)‖ = 1`. Introduce `φ z`. Establish `h1 : φ (star (z : D.host.E)) * φ (z : D.host.E) = 1`.
+
+Rewrite using `[← map_mul, z.2.1, map_one]`. Rewrite `h1` using `[host_star_emb D φ]`. Establish `h2 : ((Complex.normSq (φ (z : D.host.E)) : ℝ) : ℂ) = 1`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Conclude with `h1`.
+
+Establish `h3 : Complex.normSq (φ (z : D.host.E)) = 1` using `by exact_mod_cast h2`. Rewrite `h3` using `[Complex.normSq_eq_norm_sq]`. Use `norm_nonneg (φ (z : D.host.E))` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Set `s : unitary D.host.E →* Submodule (𝓞 D.host.E) D.host.E` to `{ toFun := fun z => Submodule.span (𝓞 D.host.E) {(z : D.host.E)} map_one' := by`.
+
+Express the relevant statement in the definitionally equal form `Submodule.span (𝓞 D.host.E) {(1 : D.host.E)} = 1`. Rewrite using `[Submodule.one_eq_span]`. Use the proof step `map_mul' := fun a b => by`. Express the relevant statement in the definitionally equal form `Submodule.span (𝓞 D.host.E) {(a : D.host.E) * (b : D.host.E)} = Submodule.span (𝓞 D.host.E) {(a : D.host.E)} * Submodule.span (𝓞 D.host.E) {(b : D.host.E)}`. Rewrite using `[Submodule.span_mul_span, Set.singleton_mul_singleton] }`.
+
+Set `ι : unitary D.host.E →* (Submodule (𝓞 D.host.E) D.host.E)ˣ` to `s.toHomUnits`. Establish `hK : ∀ z : unitary D.host.E, ι z = 1 → ∃ m : ℕ, 0 < m ∧ (z : D.host.E) ^ m = 1`. Introduce `z hz`. Establish `hs : Submodule.span (𝓞 D.host.E) {(z : D.host.E)} = 1`. Use `congrArg Units.val hz` as an intermediate fact.
+
+Simplify `this` using `[ι, s]`. Establish `hmem : (z : D.host.E) ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)`. Rewrite using `[← hs]`. Conclude with `Submodule.subset_span rfl`. Take `⟨y, hy⟩` from `Submodule.mem_one.1 hmem`.
+
+Establish `hint : IsIntegral ℤ (z : D.host.E)`. Rewrite using `[← hy]`. Conclude with `RingOfIntegers.isIntegral_coe y`. Take `⟨m, hm, hzm⟩` from `NumberField.Embeddings.pow_eq_one_of_norm_eq_one D.host.E ℂ hint (fun φ => hnorm φ z)`. Conclude with `⟨m, hm, hzm⟩`.
+
+Set `n : unitary D.host.E →* Circle` to `{ toFun := fun z => ⟨∏ τ : D.what₂.Tau, (embT D τ (z : D.host.E))⁻¹, by`. Express the relevant statement in the definitionally equal form `_ ∈ Metric.sphere (0 : ℂ) 1`. Rewrite using `[mem_sphere_zero_iff_norm, norm_prod]`. Conclude with `Finset.prod_eq_one fun τ _ => by rw [norm_inv, hnorm _ z, inv_one]⟩`. Use the proof step `map_one' := by`.
+
+Apply `Circle.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use the proof step `map_mul' := fun a b => by`. Apply `Circle.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(∏ τ : D.what₂.Tau, (embT D τ ((a * b : unitary D.host.E) : D.host.E))⁻¹) = (∏ τ : D.what₂.Tau, (embT D τ (a : D.host.E))⁻¹) * ∏ τ : D.what₂.Tau, (embT D τ (b : D.host.E))⁻¹`.
+
+Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Submonoid.coe_mul, map_mul, mul_inv] }`. Establish `hn : ∀ z : unitary D.host.E, ((n z : Circle) : ℂ) = ∏ τ : D.what₂.Tau, (embT D τ (z : D.host.E))⁻¹` using `fun z => rfl`. Establish `hker : ι.ker ≤ n.ker`.
+
+Introduce `z hz`. Rewrite `hz`, the goal using `[MonoidHom.mem_ker]`. Apply `Circle.ext` to reduce the goal to its premises. Rewrite using `[hn]`. Use `letI : Fintype D.R.Psi := Fintype.ofEquiv _ D.eTau`.
+
+Rewrite using `[Finset.prod_inv_distrib, Circle.coe_one, inv_eq_one, ← prod_emb_eq_one D.host (z : D.host.E) (hK z hz)]`. Conclude with `Fintype.prod_equiv D.eTau _ _ fun τ => rfl`. Take `⟨h, hh⟩` from `circle_extend' (QuotientGroup.kerLift ι) (QuotientGroup.kerLift_injective ι) (QuotientGroup.lift ι.ker n hker)`. Use `⟨fun 𝔞 => if hu : IsUnit 𝔞 then ((h hu.unit : Circle) : ℂ) else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `𝔞 𝔟 ha hb`.
+
+Take `⟨𝔞', -, ha'⟩` from `ha`. Take `⟨𝔟', -, hb'⟩` from `hb`. Establish `hua : IsUnit 𝔞` using `isUnit_iff_exists_inv.2 ⟨_, ha'⟩`. Establish `hub : IsUnit 𝔟` using `isUnit_iff_exists_inv.2 ⟨_, hb'⟩`. Establish `hu : IsUnit (𝔞 * 𝔟)` using `hua.mul hub`.
+
+Establish `hunit : hu.unit = hua.unit * hub.unit` using `Units.ext rfl`. Simplify using `only [dif_pos hu, dif_pos hua, dif_pos hub, hunit, map_mul, Circle.coe_mul]`. Introduce `z`. Establish `hu : IsUnit (Submodule.span (𝓞 D.host.E) {(z : D.host.E)})` using `(ι z).isUnit`. Establish `hunit : hu.unit = ι z` using `Units.ext rfl`.
+
+Simplify using `only [dif_pos hu, hunit]`. Use `hh (QuotientGroup.mk z)` as an intermediate fact. Rewrite `this` using `[QuotientGroup.kerLift_mk, QuotientGroup.lift_mk]`. Rewrite using `[this, hn]`.
+-/
 theorem character_linkage_holds : LinkChi := by
   intro D _
   letI := D.host.cmStar

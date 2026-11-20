@@ -10,6 +10,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.PlaneEv
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.symp_plane_block | exact GlobalTheory.symp_plane_block | (intros; apply GlobalTheory.symp_plane_block <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.block_gram_matrix_orthogonal_sum : ∀ {R S : Type} [CommRing R] [CommRing S] [Algebra R S] (c : S →ₐ[R] S) (ξ : S)
     {α : Type} [Fintype α] [DecidableEq α] {d₁ : ℕ} (JA : Matrix α α S) (J₁ : Matrix (Fin d₁) (Fin d₁) S)
     (G : Matrix (Fin (d₁ + 2)) (Fin (d₁ + 2)) S),

@@ -14,6 +14,19 @@ namespace GlobalTheory
 
 open ThickeningClosed in
 
+/- English proof (translation)
+Establish `: IsLocallyNoetherian Y.left` using `LocallyOfFiniteType.isLocallyNoetherian Y.hom`. Establish `h' : ∀ n : ℕ, ∃ l : pullback Y.hom (thick R I n) ⟶ Z, l ≫ j = pullback.fst Y.hom (thick R I n)` using `fun n => h n`. Establish `hnear : ∀ x : Y.left, x ∈ zeroLocusOpen j.ker`. Assume the negation of the conclusion as `hne`. Simplify using `only [not_forall] at hne`.
+
+Take `⟨x₀, hx₀⟩` from `hne`. Establish `hSc : IsClosed (zeroLocusOpen j.ker)ᶜ` using `(isOpen_zeroLocusOpen j.ker).isClosed_compl`. Establish `hT : IsClosed (Y.hom '' (zeroLocusOpen j.ker)ᶜ)` using `Y.hom.isClosedMap _ hSc`. Take `⟨m, hm, hpm⟩` from `Ideal.exists_le_maximal (Y.hom x₀).asIdeal (Y.hom x₀).isPrime.ne_top`. Establish `hcl : (⟨m, hm.isPrime⟩ : PrimeSpectrum (CommRingCat.of R)) ∈ closure {Y.hom x₀}` using `(PrimeSpectrum.le_iff_mem_closure _ _).mp hpm`.
+
+Take `⟨x, hxS, hx⟩` from `closure_minimal (Set.singleton_subset_iff.mpr (Set.mem_image_of_mem _ hx₀ : Y.hom x₀ ∈ Y.hom '' (zeroLocusOpen j.ker)ᶜ)) hT hcl`. Apply `hxS` to reduce the goal to its premises. Use `ThickeningClosed.mem_of_thickenings I Y.hom j h' x ?_` and prove the remaining obligations. Rewrite using `[hx]`. Conclude with `hI.trans (sInf_le ⟨bot_le, hm⟩)`.
+
+Establish `hker : j.ker = ⊥`. Use extensionality with `U a`. Simplify using `only [Scheme.IdealSheafData.ideal_bot, Pi.bot_apply, Submodule.mem_bot]`. Prove the components needed by the constructor for the conclusion. Introduce `ha`.
+
+Establish `hJ : LinearMap.ker (LinearMap.toSpanSingleton Γ(Y.left, U) Γ(Y.left, U) a) = ⊤`. Assume the negation of the conclusion as `hJ`. Take `⟨q, hq, hJq⟩` from `Ideal.exists_le_maximal _ hJ`. Take `⟨s, hs, hsa⟩` from `ThickeningClosed.exists_mul_eq_zero_of_mem j.ker U ⟨q, hq.isPrime⟩ (hnear _) ha`. Conclude with `hs (hJq (by simp [LinearMap.mem_ker, hsa]))`.
+
+Establish `h1 : (1 : Γ(Y.left, U)) ∈ LinearMap.ker (LinearMap.toSpanSingleton Γ(Y.left, U) Γ(Y.left, U) a)` using `hJ ▸ Submodule.mem_top`. Simplify using `using h1`. Introduce and unpack `rfl`. Conclude with `zero_mem _`. Conclude with `IsClosedImmersion.isIso_iff_ker_eq_bot.mpr hker`.
+-/
 theorem isIso_of_isClosedImmersion_of_thickenings_of_isProper {R : Type} [CommRing R]
     [IsNoetherianRing R] (I : Ideal R) (hI : I ≤ Ideal.jacobson ⊥)
     (Y : Over (Spec (CommRingCat.of R))) [IsProper Y.hom] {Z : Scheme.{0}} (j : Z ⟶ Y.left)
@@ -56,6 +69,15 @@ theorem isIso_of_isClosedImmersion_of_thickenings_of_isProper {R : Type} [CommRi
       exact zero_mem _
   exact IsClosedImmersion.isIso_iff_ker_eq_bot.mpr hker
 
+/- English proof (translation)
+Introduce `R _ _ _ I hI Y Z _ _ f g hfg`. Establish `hf : f.left ≫ Z.hom = Y.hom` using `Over.w f`. Establish `hg : g.left ≫ Z.hom = Y.hom` using `Over.w g`. Take `⟨φ, hφ⟩ : ∃ φ : Y.left ⟶ pullback Z.hom Z.hom, φ = pullback.lift f.left g.left (hf.trans hg.symm)` from `⟨_, rfl⟩`. Establish `hφ1 : φ ≫ pullback.fst Z.hom Z.hom = f.left` using `by rw [hφ, pullback.lift_fst]`.
+
+Establish `hφ2 : φ ≫ pullback.snd Z.hom Z.hom = g.left` using `by rw [hφ, pullback.lift_snd]`. Establish `hι : IsIso (pullback.fst φ (pullback.diagonal Z.hom))`. Use `isIso_of_isClosedImmersion_of_thickenings_of_isProper I hI Y _ fun n => ?_` and prove the remaining obligations. Use `⟨pullback.lift (fstG I n Y).left ((fstG I n Y).left ≫ f.left) ?_, pullback.lift_fst _ _ _⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Simplify using `[hφ1]`. Simplify using `[hφ2, hfg n]`. Establish `key : φ = inv (pullback.fst φ (pullback.diagonal Z.hom)) ≫ pullback.snd φ (pullback.diagonal Z.hom) ≫ pullback.diagonal Z.hom`. Rewrite using `[← pullback.condition, IsIso.inv_hom_id_assoc]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Rewrite using `[← hφ1, ← hφ2, key]`. Simplify using the standard rewrite rules.
+-/
 theorem hom_eq_of_thickenings_of_isProper : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (I : Ideal R), I ≤ Ideal.jacobson ⊥ → ∀ (Y Z : Over (Spec (CommRingCat.of R))) [IsProper Y.hom] [IsSeparated Z.hom] (f g : Y ⟶ Z), (∀ e, (fstG I e Y).left ≫ f.left = (fstG I e Y).left ≫ g.left) → f = g := by
   intro R _ _ _ I hI Y Z _ _ f g hfg
   have hf : f.left ≫ Z.hom = Y.hom := Over.w f

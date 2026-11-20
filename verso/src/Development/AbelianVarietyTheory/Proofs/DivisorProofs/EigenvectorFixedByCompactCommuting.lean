@@ -7,6 +7,11 @@ noncomputable section
 
 namespace GlobalTheory.FockInclK
 
+/- English proof (translation)
+Set `e : Matrix (Ix (R + 1) (S + 1)) (Fin 1) ℂ` to `Matrix.of fun a _ => if a = b then 1 else 0`. Establish `h : extMat r₀ s₀ Y * e = e * (0 : Matrix (Fin 1) (Fin 1) ℂ)`. Use extensionality with `a' j`. Simplify using `[e, Matrix.mul_apply, extMat_apply, hb]`. Establish `h2` using `exp_mul_of_mul h`.
+
+Rewrite `h2` using `[NormedSpace.exp_zero, Matrix.mul_one]`. Establish `h3` using `congrFun (congrFun h2 a) 0`. Simplify `h3` using `[e, Matrix.mul_apply]`.
+-/
 theorem exp_extMat_apply_of_ne {R S : ℕ} (r₀ : Fin (R + 1)) (s₀ : Fin (S + 1)) (Y : Mat R S)
     (b : Ix (R + 1) (S + 1)) (hb : ∀ c, b ≠ skipIx r₀ s₀ c) (a : Ix (R + 1) (S + 1)) :
     NormedSpace.exp (extMat r₀ s₀ Y) a b = if a = b then 1 else 0 := by
@@ -19,6 +24,33 @@ theorem exp_extMat_apply_of_ne {R S : ℕ} (r₀ : Fin (R + 1)) (s₀ : Fin (S +
   have h3 := congrFun (congrFun h2 a) 0
   simpa [e, Matrix.mul_apply] using h3
 
+/- English proof (translation)
+Use `set u : Fin d → ℂ := fun i => Cw i (.inl r₀) with hu`. Use `set v : Fin d → ℂ := fun i => Cw i (.inr s₀) with hv`. Establish `hx' : x = c • (u + v)`. Use function extensionality and compare the values at `i`. Simplify using `[hx, hu, hv]`.
+
+Establish `hsum : K *ᵥ (u + v) = u + v`. Rewrite `hK` using `[hx', Matrix.mulVec_smul]`. Conclude with `smul_right_injective _ hc hK`. Establish `hθu : θ *ᵥ u = u`. Use function extensionality and compare the values at `i`.
+
+Use `congrFun (congrFun hJ i) (.inl r₀)` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Jm_apply] at this`. Simplify `this` using `[Matrix.mulVec, dotProduct, hu]`. Establish `hθv : θ *ᵥ v = -v`. Use function extensionality and compare the values at `i`.
+
+Use `congrFun (congrFun hJ i) (.inr s₀)` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Jm_apply] at this`. Simplify `this` using `[Matrix.mulVec, dotProduct, hv]`. Establish `hdiff : K *ᵥ (u - v) = u - v`. Establish `e : θ *ᵥ (u + v) = u - v` using `by rw [Matrix.mulVec_add, hθu, hθv, sub_eq_add_neg]`.
+
+Rewrite using `[← e, Matrix.mulVec_mulVec, hθ.eq, ← Matrix.mulVec_mulVec, hsum]`. Rewrite `hsum` using `[Matrix.mulVec_add]`. Rewrite `hdiff` using `[Matrix.mulVec_sub]`. Establish `hKu : K *ᵥ u = u`. Use function extensionality and compare the values at `i`.
+
+Establish `a1` using `congrFun hsum i`. Establish `a2` using `congrFun hdiff i`. Simplify using `only [Pi.add_apply, Pi.sub_apply] at a1 a2`. Take the linear combination `(a1 + a2) / 2`. Establish `hKv : K *ᵥ v = v`.
+
+Use function extensionality and compare the values at `i`. Establish `a1` using `congrFun hsum i`. Establish `a2` using `congrFun hdiff i`. Simplify using `only [Pi.add_apply, Pi.sub_apply] at a1 a2`. Take the linear combination `(a1 - a2) / 2`.
+
+Establish `hCι : Cw * incMat r₀ s₀ = ιH * C₁w`. Use extensionality with `i a`. Rewrite using `[mul_incMat_apply, hC]`. Establish `hskip : K * Cw * incMat r₀ s₀ = Cw * NormedSpace.exp (extMat r₀ s₀ Y) * incMat r₀ s₀`. Rewrite using `[Matrix.mul_assoc Cw, exp_mul_of_mul (extMat_mul_incMat r₀ s₀ Y), ← Matrix.mul_assoc Cw, hCι, Matrix.mul_assoc K, hCι, ← Matrix.mul_assoc K, hι, Matrix.mul_assoc, Matrix.mul_assoc, hY]`.
+
+Establish `hfix : ∀ b, (∀ c, b ≠ skipIx r₀ s₀ c) → ∀ i, (Cw * NormedSpace.exp (extMat r₀ s₀ Y)) i b = Cw i b`. Introduce `b hb i`. Simplify using `[Matrix.mul_apply, exp_extMat_apply_of_ne r₀ s₀ Y b hb]`. Use extensionality with `i b`. Distinguish the cases in `hb : ∃ c, b = skipIx r₀ s₀ c`.
+
+Take `⟨a, rfl⟩` from `hb`. Use `congrFun (congrFun hskip i) a` as an intermediate fact. Rewrite `this` using `[mul_incMat_apply, mul_incMat_apply]`. Then use the resulting hypothesis. Use `push Not at hb`. Rewrite using `[hfix b hb]`.
+
+Break down `b with r | s` into its components or cases. Choose the witnesses or unpack the hypotheses as in `rfl : r = r₀ := by`. Assume the negation of the conclusion as `h`. Take `⟨a, ha⟩` from `Fin.exists_succAbove_eq h`. Conclude with `hb (.inl a) (by simp [skipIx, ha])`.
+
+Conclude with `congrFun hKu i`. Choose the witnesses or unpack the hypotheses as in `rfl : s = s₀ := by`. Assume the negation of the conclusion as `h`. Take `⟨a, ha⟩` from `Fin.exists_succAbove_eq h`. Conclude with `hb (.inr a) (by simp [skipIx, ha])`.
+
+Conclude with `congrFun hKv i`.
+-/
 theorem mul_frame_eq_frame_mul_exp_extMat (d d₁ R S : ℕ) (r₀ : Fin (R + 1)) (s₀ : Fin (S + 1))
     (K θ : Matrix (Fin d) (Fin d) ℂ)
     (K₁ : Matrix (Fin d₁) (Fin d₁) ℂ) (ιH : Matrix (Fin d) (Fin d₁) ℂ) (Cw : Matrix (Fin d) (Ix (R + 1) (S + 1)) ℂ)

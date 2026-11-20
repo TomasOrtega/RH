@@ -22,6 +22,33 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {φR : RW →ₐ[O] RW} {gR : G → (RW →ₐ[O] RW)} {πA : O ⊗[Zl] Ai}
     {E : EtTie W (O ⊗[Zl] Ai) RW inclR φR gR πA} {ιdR : Ai →+* BdR} {p1 : Ai} {tS zS : BdR}
 
+/- English proof (translation)
+Establish `hp` using `p_ne_zero_LL W`. Take `⟨u, hu0, hq⟩` from `MC.lev_q_eq W i hζ hp`. Establish `hQ : W.lev i ζ W.Q = PowerSeries.X * u` using `by rw [MC.Q_eq_q W hs]; exact hq`. Take `⟨m, hm⟩` from `W.N_φ T y hy`. Establish `hm' : W.Q ^ m • W.φD T y ∈ W.N T` using `hm`.
+
+Use `set y' : ↥(W.N T) := ⟨y, hy⟩ with hy'`. Establish `hcX : PowerSeries.constantCoeff (W.lev (i - 1) 1 W.X) = 0`. Establish `e : W.X = letπ` using `by simp [LocWach.X, hs]`. Rewrite using `[e, MC.cc_lev_pi W (i - 1) 1 ⟨0, by rw [pow_zero]; exact IsPrimitiveRoot.one⟩, sub_self]`. Establish `hneg : ∀ k : ℤ, k < 0 → C.levB T (i - 1) 1 y' k = 0`.
+
+Introduce `k hk`. Establish `h0` using `(((h4W T hT).1 (i - 1) 1 ⟨0, by simp⟩ hcX).1 y' k).2 hk`. Rewrite `h0` using `[C.levN_eq]`. Conclude with `Formalism.MainNotions.UnusedSlot80.LevR.ιV_inj (PD := PD) (V := T.V) (h0.trans (map_zero _).symm)`. Establish `hζp : ζ ^ PD.p = 1` using `hζ.pow_eq_one`.
+
+Establish `hφrule : ∀ k : ℤ, W.levN T i ζ ⟨W.Q ^ m • W.φD T y, hm'⟩ k = ιV PD (LL` using `LL) (V := T.V) (∑ᶠ j : ℕ, PowerSeries.coeff j (W.lev i ζ (W.Q ^ m)) • (((PD.p : LL) ^ (k - (j : ℤ))) • φVB PD (LL := LL) (V := T.V) (C.levB T (i - 1) 1 y' (k - (j : ℤ))))) := by`. Introduce `k`. Rewrite using `[C.levN_eq, C.levB_φ T hT i ζ ⟨1, by rwa [pow_one]⟩ y' m hm' k, hζp]`. Establish `hcoef : ∀ j : ℕ, j < m → PowerSeries.coeff j (W.lev i ζ (W.Q ^ m)) = 0`. Introduce `j hj`.
+
+Rewrite using `[map_pow, hQ, mul_pow, PowerSeries.coeff_X_pow_mul', if_neg (by omega)]`. Establish `hterm0 : ∀ (k : ℤ) (j : ℕ), (j < m ∨ k < (j : ℤ)) → PowerSeries.coeff j (W.lev i ζ (W.Q ^ m)) • (((PD.p : LL) ^ (k - (j : ℤ))) • φVB PD (LL` using `LL) (V := T.V) (C.levB T (i - 1) 1 y' (k - (j : ℤ)))) = 0 := by`. Introduce `k j h`. Break down `h with h | h` into its components or cases. Rewrite using `[hcoef j h, zero_smul]`.
+
+Rewrite using `[hneg _ (by omega), map_zero, smul_zero, smul_zero]`. Use `set e : ℤ → T.V ⊗[Qp] BdR := W.levN T i ζ ⟨W.Q ^ m • W.φD T y, hm'⟩ with he`. Establish `he_low : ∀ k : ℤ, k < m → e k = 0`. Introduce `k hk`. Rewrite using `[hφrule, finsum_eq_zero_of_forall_eq_zero, map_zero]`.
+
+Introduce `j`. Distinguish the cases in `hj : j < m`. Conclude with `hterm0 k j (Or.inl hj)`. Conclude with `hterm0 k j (Or.inr (by omega))`. Establish `he_m : e m = (PowerSeries.constantCoeff u) ^ m • ιV PD (LL` using `LL) (V := T.V) (φVB PD (LL := LL) (V := T.V) (C.levB T (i - 1) 1 y' 0)) := by`.
+
+Rewrite using `[hφrule, finsum_eq_single _ m (fun j hj => ?_)]`. Rewrite using `[map_pow, hQ, mul_pow, PowerSeries.coeff_X_pow_mul', if_pos le_rfl, Nat.sub_self, PowerSeries.coeff_zero_eq_constantCoeff_apply, map_pow, sub_self, zpow_zero, one_smul, map_smul]`. Break down `Nat.lt_or_gt_of_ne hj with h | h` into its components or cases. Conclude with `hterm0 _ j (Or.inl h)`. Conclude with `hterm0 _ j (Or.inr (by exact_mod_cast h))`.
+
+Use `set e' : ℤ → T.V ⊗[Qp] BdR := fun k => e (k + m) with he'`. Establish `hLBe' : LB 0 e'` using `fun k hk => he_low _ (by omega)`. Establish `huK : PowerSeries.constantCoeff (u ^ m) ≠ 0` using `by rw [map_pow]; exact pow_ne_zero _ hu0`. Use `set d : ℤ → T.V ⊗[Qp] BdR := smulS (u ^ m)⁻¹ e' with hd`. Establish `hLBd : LB 0 d` using `LB_smulS hLBe' _`.
+
+Establish `hde : smulS ((PowerSeries.X * u) ^ m) d = e`. Rewrite using `[mul_pow, smulS_mul hLBd, hd, ← smulS_mul hLBe', PowerSeries.mul_inv_cancel _ huK, smulS_one hLBe', smulS_X_pow hLBe']`. Use function extensionality and compare the values at `k`. Simplify using `[he']`. Use `⟨d, ⟨⟨0, hLBd⟩, W.Q ^ m, hm', ?_, fun k => ?_⟩, fun k hk => hLBd k hk, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_pow, hQ]`. Conclude with `pow_ne_zero _ (mul_ne_zero PowerSeries.X_ne_zero (fun h0 => hu0 (by rw [h0, map_zero])))`. Rewrite using `[map_pow, hQ, conv_eq, hde]`. Establish `h1 : d 0 = PowerSeries.constantCoeff ((u ^ m)⁻¹) • e' 0`. Rewrite using `[hd, smulS_eq_sum hLBe' _ 0 1 (by norm_num)]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h1]`. Simplify using `only [he']`. Rewrite using `[zero_add, he_m, smul_smul, PowerSeries.constantCoeff_inv, map_pow, inv_mul_cancel₀ (pow_ne_zero _ hu0), one_smul]`. Use `congr 2`.
+
+Rewrite using `[← C.cmp_eq T hT (i - 1) y']`. Use `congr 1`. Conclude with `Subtype.ext hyl`.
+-/
 theorem phi_exp (hs : W.s = 1) (C : CmpTie W E ιdR p1 tS zS)
     {Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop} (h4W : Formalism.MainNotions.DeltaInvariantLattices.P4W W Pt)
     (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ) (i : ZMod n) {ζ : LL} (hζ : IsPrimitiveRoot ζ PD.p)

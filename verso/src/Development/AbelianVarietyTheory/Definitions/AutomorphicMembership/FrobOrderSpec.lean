@@ -14,6 +14,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar Formalism.BasicNot
 
 abbrev frobOrder (D : D7) (p : ℕ) : ℕ := orderOf (zH D.R.toFrame (hP D p))
 
+/- English proof (translation)
+Take `⟨hp, -, hc, hn, -⟩` from `hg`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.1 hp`. Establish `hpI : (Ideal.span {(p : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime hpZ.ne_zero).2 hpZ`. Take `⟨⟨P, hPp, hL⟩⟩ : Nonempty ((Ideal.span {(p : ℤ)}).primesOver (𝓞 D.host.E))` from `inferInstance`.
+
+Take `⟨⟨σ, hσ⟩, -⟩` from `D.host.der.frob p (not_dvd_conductor_of_inert hp hc) P`. Establish `hne : ∃ g, g ∈ frobSet D p` using `⟨_, P, hPp, hL, σ, hσ, rfl⟩`. Take `⟨P', hP', hL', σ', hσ', heq⟩` from `Classical.epsilon_spec hne`. Establish `hnF : frobOrder D p = orderOf (D.R.iota (hP D p))`. Unfold `frobOrder`.
+
+Rewrite using `[← Subgroup.orderOf_coe]`. Conclude with `orderOf_injective (MonoidHom.inr Formalism.FrobeniusOrbits.G0 D.R.MA) (fun a b hab => (Prod.ext_iff.1 hab).2) _`. Establish `hev : Even (orderOf (D.R.iota (hP D p)))`. Unfold `hP`. Rewrite using `[Formalism.HC.Frame.iota_iotaInv, ← heq]`.
+
+Conclude with `@hn P' hP' hL' σ' hσ'`. Establish `hpos : 0 < orderOf (D.R.iota (hP D p))` using `orderOf_pos _`. Rewrite using `[hnF]`. Take `⟨k, hk⟩` from `hev`. Conclude with `⟨by omega, k, hk⟩`.
+-/
 theorem frobOrder_spec (D : D7) {T p : ℕ} (hg : GIdx D.host T p) : 2 ≤ frobOrder D p ∧ Even (frobOrder D p) := by
   obtain ⟨hp, -, hc, hn, -⟩ := hg
   haveI : Fact p.Prime := ⟨hp⟩
@@ -64,6 +73,9 @@ def pack : LocPack D u Lc (D.what₂.places.resChar w) where
   I := I
   ψ := ψ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pack_ψ : (pack D u Lc w h5 h2 he I ψ).ψ = ψ := rfl
 
 end Pack
@@ -90,15 +102,27 @@ abbrev record : D7 := recG D sc Ce Lc (packAll D Lc I ψ) hd
 
 abbrev recordTies : GatTies (record D sc Ce Lc I ψ hd) := gatTiesG D sc Ce Lc (packAll D Lc I ψ) hd
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : (record D sc Ce Lc I ψ hd).host = D.host := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : (record D sc Ce Lc I ψ hd).R = D.R := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (u : D.what₂.Word) (w : D.what₂.places.Pl) (h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :
     ((record D sc Ce Lc I ψ hd).gat u w h).O = ORec D w (frobOrder D (D.what₂.places.resChar w)) := rfl
 
 end Record
 
+/- English proof (translation)
+Take `⟨h2, k, hk⟩` from `frobOrder_spec D hg`. Use linear arithmetic over natural numbers and integers.
+-/
 example (D : D7) {T p : ℕ} (hg : GIdx D.host T p) : frobOrder D p ≠ 1 ∧ frobOrder D p ≠ 3 := by
   obtain ⟨h2, k, hk⟩ := frobOrder_spec D hg
   omega

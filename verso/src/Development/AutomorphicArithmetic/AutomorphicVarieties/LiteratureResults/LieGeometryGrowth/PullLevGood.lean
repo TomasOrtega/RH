@@ -13,6 +13,11 @@ open UpperTheory.V.Lit.Geo
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af UpperTheory.V.Lit UpperTheory.V.Lit.Dr UpperTheory.V.Lit.Bor
 open scoped TensorProduct
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `oneReal E a Ξ`. Establish `hr' : Ξ.dmat (oneL E a) = (r : ℂ) • (1 : Matrix (Fin Ξ.d) (Fin Ξ.d) ℂ)` using `hr`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨φ, v, hφ, rfl⟩` from `hx`.
+
+Express the relevant statement in the definitionally equal form `(lie E a (oneL E a)).rTensor _ (φ ⊗ₜ[ℂ] v) + (Matrix.toLin' (Ξ.dmat (oneL E a))).lTensor _ (φ ⊗ₜ[ℂ] v) = 0`. Rewrite using `[LinearMap.rTensor_tmul, LinearMap.lTensor_tmul, hφ.2.2 _ hr', hr', map_smul, Matrix.toLin'_one, LinearMap.smul_apply, LinearMap.id_apply, TensorProduct.smul_tmul, ← TensorProduct.tmul_add, neg_smul, neg_add_cancel, TensorProduct.tmul_zero]`. Consider the case `zero => exact map_zero _`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [map_smul, hx, smul_zero]`.
+-/
 private theorem one_kills {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
     (U : Subgroup (GL (Fin a) (Af E))) (Ξ : AlgRep E a) (m : Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ))
     (hm : m ∈ Submodule.span ℂ {x | ∃ φ v, IsLevelFn U Ξ φ ∧ x = φ ⊗ₜ[ℂ] v}) : smLie Ξ (oneL E a) m = 0 := by
@@ -29,6 +34,13 @@ private theorem one_kills {E : Type} [Field E] [NumberField E] [IsTotallyComplex
   | add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]
   | smul c x _ hx => rw [map_smul, hx, smul_zero]
 
+/- English proof (translation)
+Rewrite using `[dCo_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : i = j`. Substitute `hj` using the available equality. Establish `h` using `one_kills U Ξ _ (hα.val (i.removeNth X))`.
+
+Establish `e : oneL E a = toL (X i).1` using `by rw [hX]`. Rewrite `h` using `[e]`. Rewrite using `[h, smul_zero]`. Take `⟨k, hk⟩` from `Fin.exists_succAbove_eq hj`. Establish `hz : α (j.removeNth X) = 0` using `hα.basic _ k (by rw [← hX, ← hk]; rfl)`.
+
+Rewrite using `[hz, map_zero, smul_zero]`.
+-/
 private theorem d_basic {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
     (U : Subgroup (GL (Fin a) (Af E))) (Ξ : AlgRep E a) {q : ℕ} (α : Co Ξ q) (hα : IsLev U Ξ α)
     (X : Fin (q + 1) → Herm E a) (i : Fin (q + 1)) (hX : (X i).1 = 1) : dCo (smLie Ξ) α X = 0 := by
@@ -44,6 +56,13 @@ private theorem d_basic {E : Type} [Field E] [NumberField E] [IsTotallyComplex E
     have hz : α (j.removeNth X) = 0 := hα.basic _ k (by rw [← hX, ← hk]; rfl)
     rw [hz, map_zero, smul_zero]
 
+/- English proof (translation)
+Introduce `E _ _ _ a ho U Ξ q`. Use `⟨fun α hα => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Establish `hv : ∀ X, LeftInv (α X) ∧ RightInv U (α X)` using `fun X => (levelVal E a U Ξ _).1 (hα.val X)`. Take `⟨w, hw, h0⟩` from `corrFwd E a U Ξ q α hα.equiv fun X => (hv X).2`. Set `w' : (geo ho U Ξ).Om q` to `⟨w, fun s => ⟨corrSmooth E a U Ξ q _ w hw s, h0 s⟩⟩`.
+
+Establish `hw' : Corr U Ξ α w'.1` using `hw`. Conclude with `⟨w', hw', (corrInv E a ho U Ξ q _ _ hw').1 fun X => (hv X).1, (corrBasic E a U Ξ q _ _ hw').1 hα.basic, (corrBasic E a U Ξ (q + 1) _ _ (corrD E a ho U Ξ q _ _ hw')).1 (d_basic U Ξ α hα)⟩`. Take `⟨α, hα⟩` from `corrBwd E a ho U Ξ q w`. Establish `b` using `(corrBasic E a U Ξ q _ _ hα).2 hw.basic`. Establish `b'` using `(corrBasic E a U Ξ (q + 1) _ _ (corrD E a ho U Ξ q _ _ hα)).2 hw.dbasic`.
+
+Take `⟨c1, c2⟩` from `corrCochain E a U Ξ q _ _ hα`. Conclude with `⟨α, hα, c1, b, fun X => (levelVal E a U Ξ _).2 ((corrInv E a ho U Ξ q _ _ hα).2 hw.inv X) (c2 X) (centralOf E a _ (smLie Ξ) q α b b' X)⟩`.
+-/
 theorem UpperTheory.V.Lit.Geo.levGood :
     LevGood := by
   intro E _ _ _ a ho U Ξ q

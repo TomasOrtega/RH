@@ -17,6 +17,13 @@ open Formalism.FourierDecayAlt Finset GlobalTheory.CritLevel
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hkR : (5 : ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `hB0 : 0 < B` using `lt_of_lt_of_le (by positivity) hB`. Establish `h1 : ka ^ (m - 1) ≤ (k : ℝ) ^ (m - 1)` using `pow_le_pow_left₀ hka0.le (by linarith) _`. Establish `h2 : (8 : ℝ) ≤ (k : ℝ) ^ 2` using `by nlinarith`. Establish `h3 : (k : ℝ) ^ (3 * r) * (k : ℝ) ^ (m - 1) * (k : ℝ) ^ 2 ≤ B ^ (m - e)`.
+
+Rewrite using `[← pow_add, ← pow_add]`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : B ^ (m - e) * B ^ e = B ^ m` using `by rw [← pow_add]; congr 1; omega`. Establish `h5 : (k : ℝ) ^ (3 * r) * ka ^ (m - 1) * 8 * ae ≤ P`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[le_div_iff₀ ha0]`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Use `_ ≤ c * (ka ^ (m - 1))⁻¹ * P := by gcongr`.
+-/
 theorem num_bound_pow (k m r e : ℕ) (B P ae c ka : ℝ) (hm : m = 2 * r + 2) (he : 2 * e + 40 ≤ m) (hk : 5 ≤ k)
     (hB : (k : ℝ) ^ 40 ≤ B) (hP : B ^ m ≤ P) (ha0 : 0 < ae) (ha : ae ≤ B ^ e) (hc : 1 / 8 ≤ c) (hka0 : 0 < ka)
     (hka : ka ≤ 4) : (k : ℝ) ^ (3 * r) ≤ c * (ka ^ (m - 1))⁻¹ * P / ae := by
@@ -41,6 +48,11 @@ theorem num_bound_pow (k m r e : ℕ) (B P ae c ka : ℝ) (hm : m = 2 * r + 2) (
     _ ≤ c * (ka ^ (m - 1))⁻¹ * P := by
         gcongr
 
+/- English proof (translation)
+Establish `hB1 : 1 ≤ B` using `le_trans (Real.one_le_rpow hb hcb.le) hB`. Establish `hM : 0 ≤ max Cu 0 / cb` using `div_nonneg (le_max_right _ _) hcb.le`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_mul (by linarith)]; congr 1; field_simp`. Use `_ ≤ B ^ (max Cu 0 / cb) := Real.rpow_le_rpow (by positivity) hB hM`.
+
+Use `_ ≤ B ^ ((⌈max Cu 0 / cb⌉₊ : ℕ) : ℝ) := Real.rpow_le_rpow_of_exponent_le hB1 (Nat.le_ceil _)`. Use `_ = B ^ ⌈max Cu 0 / cb⌉₊ := Real.rpow_natCast _ _`.
+-/
 theorem le_pow_ceil (b B u cb Cu : ℝ) (hcb : 0 < cb) (hb : 1 ≤ b) (hB : b ^ cb ≤ B) (hu : u ≤ b ^ Cu) :
     u ≤ B ^ ⌈max Cu 0 / cb⌉₊ := by
   have hB1 : 1 ≤ B := le_trans (Real.one_le_rpow hb hcb.le) hB
@@ -55,6 +67,59 @@ theorem le_pow_ceil (b B u cb Cu : ℝ) (hcb : 0 < cb) (hb : 1 ≤ b) (hB : b ^ 
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce and unpack `⟨hH, hD, -⟩ u τ`. Take `⟨-, -, -, -, -, -, hmL, hbD, -, -, -, hg0, -, hg1, -, hbj, -, hu, hv, hDel, hgap, -, -, hClm, -⟩` from `hH`. Take `⟨hvw, -, ha, ha', hl, htop, -⟩` from `hD`. Use `set e : ℕ := ⌈max Cu 0 / cb⌉₊ + 4 with he`. Establish `he0 : (0 : ℝ) ≤ (e : ℝ)` using `Nat.cast_nonneg _`.
+
+Establish `hCl40 : (40 : ℝ) ≤ Cl` using `by linarith`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hm2` using `D.R.two_le_m`. Establish `hm` using `GlobalTheory.CritLevel.m_eq D.R`. Establish `hkR : (5 : ℝ) ≤ D.R.k` using `by exact_mod_cast (by omega : 5 ≤ D.R.k)`.
+
+Establish `hmR : (40 : ℝ) ≤ D.R.m` using `hCl40.trans hClm`. Establish `hme : 2 * e + 40 ≤ D.R.m`. Establish `: ((2 * e + 40 : ℕ) : ℝ) ≤ D.R.m` using `by push_cast; linarith`. Conclude with `this` after adjusting the coercions. Establish `hf : (1 : ℝ) ≤ D.R.f`.
+
+Establish `: 1 ≤ D.R.f` using `le_trans (by omega) D.R.m_le_f`. Conclude with `this` after adjusting the coercions. Establish `hn : (1 : ℝ) ≤ D.R.r`. Establish `: 1 ≤ D.R.r` using `by unfold Ranks.r; omega`. Conclude with `this` after adjusting the coercions.
+
+Establish `hL : 1 ≤ large₂.sc.L` using `Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le`. Establish `hb : 1 ≤ large₂.sc.b` using `Real.one_le_exp (by linarith)`. Establish `hlog : Real.log large₂.sc.b = large₂.sc.L` using `Real.log_exp _`. Establish `hD1 : (1 : ℝ) ≤ D.s.Del` using `le_trans (Real.one_le_rpow (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (by linarith) hf) hL) (by linarith)) hDel`. Use `set B := bOne D τ 1 with hBdef`.
+
+Establish `hB : (D.R.k : ℝ) ^ 40 ≤ B`. Use `le_trans ?_ ((le_max_left _ _).trans (hbj τ 1 le_rfl (by omega)).1)` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le (by linarith) (by exact_mod_cast hCl40)`. Establish `hBcb : large₂.sc.b ^ cb ≤ B` using `(le_max_right _ _).trans (hbj τ 1 le_rfl (by omega)).1`.
+
+Establish `hk2 : 3 * (D.R.k : ℝ) ≤ B`. Use `le_trans ?_ hB` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hB1 : 1 ≤ B` using `by linarith`. Establish `hkD : 0 < (D.R.k : ℝ) * D.s.Del` using `by positivity`.
+
+Establish `hBD : 40 * (D.R.m * D.R.k * D.s.Del) ≤ B` using `le_trans (mul_le_mul_of_nonneg_right hCl40 (by positivity)) (hbD τ 1 le_rfl (by omega))`. Establish `hBD' : 8 * ((D.R.k : ℝ) * D.s.Del) ≤ B` using `by nlinarith`. Establish `hg : ∀ j, 1 ≤ j → j < D.R.m → bOne D τ j + 1 ≤ bOne D τ (j + 1)` using `fun j h1 h2 => by`. Establish `h3` using `hgap τ j h1 h2`. Establish `h4 : (1 : ℝ) ≤ Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * large₂.sc.L` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (by linarith) (one_le_pow₀ hn)) (one_le_pow₀ hf)) hL`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmono : ∀ j, 1 ≤ j → j ≤ D.R.m → B ≤ bOne D τ j`. Introduce `j h1`. Proceed by induction on `j, h1 using Nat.le_induction with`. Consider the case `base => intro _`.
+
+Conclude with `le_rfl`. Consider the case `succ j h1 ih => intro h2; linarith [ih (by omega), hg j h1 h2]`. Use `set c := GlobalTheory.CritLevel.cfg D u τ with hc`. Establish `hv1 : c.v 1 = vOne D τ 1` using `GlobalTheory.CritLevel.cfg_v D u τ le_rfl (by omega)`. Establish `htp : c.top = true ↔ IsTop D τ` using `by simp [hc, GlobalTheory.CritLevel.cfg]`.
+
+Establish `hOk : c.Ok`. Use `⟨show 4 ≤ D.R.k by omega, hm2, hD1, (hvw τ _ (by omega) le_rfl).1, ?_, hB1, hg, ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[hv1]; exact (hvw τ 1 le_rfl (by omega)).2`. Rewrite using `[hv1]`. Conclude with `ha u τ`.
+
+Use `htop τ (htp.1 h)` as an intermediate fact. Conclude with `⟨this.2, show bTop D τ ≤ B - 3 by linarith [this.1]⟩`. Establish `hSm : c.Small large₂.sc.b`. Use `⟨hb, ?_, fun j h1 h2 => ?_, ?_⟩` and prove the remaining obligations. Use `show 4 * (D.R.m : ℝ) * D.R.k * D.s.Del / B ≤ 1 / 10`.
+
+Rewrite using `[div_le_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(hbj τ j h1 h2).2` as an intermediate fact. Rewrite `this` using `[Real.rpow_two]`. Then use the resulting hypothesis. Use `show 2 * (D.R.m : ℝ) * Real.log large₂.sc.b / D.R.k ≤ 1 / 10`.
+
+Rewrite using `[hlog, div_le_iff₀ (by linarith)]`. Establish `h1 : (D.R.m : ℝ) * large₂.sc.L ≤ (D.R.m : ℝ) ^ 2 * large₂.sc.L` using `by gcongr; nlinarith`. Establish `h2 : 40 * ((D.R.m : ℝ) ^ 2 * large₂.sc.L) ≤ Cl * ((D.R.m : ℝ) ^ 2 * large₂.sc.L)` using `by gcongr`. Establish `h3 : 0 ≤ (D.R.m : ℝ) * large₂.sc.L` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hpi` using `Real.pi_pos`. Establish `hpi4` using `Real.pi_le_four`. Establish `hrd : D.host.rdE = 2 * D.host.v` using `by unfold Host.v; ring`. Establish `hgg : 2 * Real.pi ≤ gg D`. Establish `h1 : (5 : ℝ) ≤ ((D.R.k : ℝ) * large₂.sc.b) ^ 8` using `le_trans (by nlinarith) (le_self_pow₀ (by nlinarith) (by norm_num))`.
+
+Unfold `gg`. Use the polynomial consequences of the given equalities and inequalities. Establish `hV : 0 < VV D τ` using `mul_pos (D.dsig_pos τ) (prod_pos fun i _ => by positivity)`. Establish `hlow` using `Final.sz_tcritLower c D.R.rS large₂.sc.b (GlobalTheory.CritLevel.letters D u) D.host.ka D.host.rdE (gg D) (VV D τ) hOk hm hSm (GlobalTheory.CritLevel.isWord_letters D u) (by linarith) (by rw [hrd]; unfold Host.ka; field_simp) hgg (by show (1 - 1 / 2) * Sz.Vand (D.R.k + D.R.m - 1) …`. Rewrite using `[← GlobalTheory.CritLevel.cfg_lam D u τ, ← hVV]`.
+
+Use the proof step `linarith)`. Express the relevant statement in the definitionally equal form `_ * gg D ^ D.R.m * (D.host.ka ^ (D.R.m - 1))⁻¹ * _ / _ ≤ Sz.Tcrit D.R.k D.R.m _ _ _ _ (Sz.Vand D.R.k _) at hlow`. Rewrite `hlow` using `[← GlobalTheory.CritLevel.cfg_u D u τ (hl u τ), ← GlobalTheory.CritLevel.tcrit_eq D (by linarith)]`. Establish `hg0' : 0 < gg D` using `by linarith`. Establish `hvone` using `(hvw τ 1 le_rfl (by omega)).1`.
+
+Establish `hBe : B ≤ B ^ e` using `le_self_pow₀ hB1 (by omega)`. Establish `hae : 0 < c.aeff ∧ c.aeff ≤ B ^ e ∧ 0 ≤ c.vthp ∧ c.vthp ≤ 1`. Unfold `Sz.Cfg.aeff Sz.Cfg.vthp`. Distinguish the cases in `ht : IsTop D τ`. Rewrite using `[if_pos (htp.2 ht), if_pos (htp.2 ht)]`.
+
+Take `⟨t1, t2⟩` from `htop τ ht`. Establish `ha0 : 0 < uOne D u τ 1` using `by linarith [ha u τ]`. Establish `hbp : 0 < bTop D τ` using `by linarith`. Establish `hu1 : uOne D u τ 1 ≤ B ^ ⌈max Cu 0 / cb⌉₊` using `le_pow_ceil _ _ _ _ _ hcb hb hBcb (hu u τ)`. Establish `hpe : B ^ ⌈max Cu 0 / cb⌉₊ * B ≤ B ^ e`.
+
+Rewrite using `[← pow_succ]; exact pow_le_pow_right₀ hB1 (by omega)`. Use `⟨div_pos (mul_pos ha0 hbp) hkD, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show uOne D u τ 1 * bTop D τ / ((D.R.k : ℝ) * D.s.Del) ≤ B ^ e`. Use `(div_le_self (by positivity) (by nlinarith)).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Use `show 0 ≤ 4 * (D.R.k : ℝ) * D.s.Del / bTop D τ`. Check the signs of the components of the expression. Use `show 4 * (D.R.k : ℝ) * D.s.Del / bTop D τ ≤ 1`. Rewrite using `[div_le_one hbp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[if_neg (fun h => ht (htp.1 h)), if_neg (fun h => ht (htp.1 h)), hv1]`. Establish `h1` using `ha u τ`. Establish `h2` using `ha' u τ ht`. Use `⟨?_, ?_, le_rfl, zero_le_one⟩` and prove the remaining obligations. Use `show 0 < uOne D u τ 1 - vOne D τ 1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `show uOne D u τ 1 - vOne D τ 1 ≤ B ^ e`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc1 : 1 / 8 ≤ Sz.cOne c large₂.sc.b`. Unfold `Sz.cOne`.
+
+Establish `h1` using `Real.add_one_le_exp (-(2 * c.m * Real.log large₂.sc.b / c.k))`. Establish `h2` using `hSm.hmu`. Rewrite using `[le_div_iff₀ (by linarith [hae.2.2.1])]`. Combine the linear relations using `[hae.2.2.2]`. Establish `hP : B ^ D.R.m ≤ c.prodb`.
+
+Use `prod_le_prod (s := Icc 1 D.R.m) (f := fun _ => B) (g := bOne D τ) (fun _ _ => by linarith) fun j hj => hmono j (mem_Icc.1 hj).1 (mem_Icc.1 hj).2` as an intermediate fact. Rewrite `this` using `[prod_const, Nat.card_Icc, Nat.add_sub_cancel]`. Conclude with `this`. Establish `hka0 : 0 < D.host.ka` using `div_pos hpi (by linarith)`. Establish `hka : D.host.ka ≤ 4` using `(div_le_self hpi.le hv).trans hpi4`.
+
+Establish `hnum` using `num_bound_pow D.R.k D.R.m D.R.rS e B c.prodb c.aeff _ _ hm hme (by omega) hB hP hae.1 hae.2.1 hc1 hka0 hka`. Rewrite using `[Real.rpow_neg hg0'.le, Real.rpow_natCast, le_inv_mul_iff₀ (by positivity)]`. Use `le_trans ?_ hlow` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem tcrit_low_of_sizes (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : ℝ) (hcb : 0 < cb)
     (hCl : 2 * ((⌈max Cu 0 / cb⌉₊ + 4 : ℕ) : ℝ) + 40 ≤ Cl)
     (hVV : ∀ τ, VV D τ = vand (lamSH D.R (D.hc τ))) :
@@ -204,6 +269,9 @@ theorem tcrit_low_of_sizes (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu c
 
 end GlobalTheory.CritLevelSize
 
+/- English proof (translation)
+Introduce `cb Cu hcb`. Conclude with `⟨2 * ((⌈max Cu 0 / cb⌉₊ + 4 : ℕ) : ℝ) + 40, fun D large₂ C' Cl Cg cT CT C0 hCl hVV => GlobalTheory.CritLevelSize.tcrit_low_of_sizes D large₂ C' Cl Cg cb Cu cT CT C0 hcb hCl hVV⟩`.
+-/
 theorem GlobalTheory.CritLevelSize.tcritLow_sizes : ∀ cb Cu : ℝ, 0 < cb → ∃ thr : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cT CT C0 : ℝ), thr ≤ Cl → (∀ τ, VV D τ = vand (lamSH D.R (D.hc τ))) → UnitaryVolumeMass.stTcritLow D large₂ C' Cl Cg cb Cu cT CT C0 := by
   intro cb Cu hcb
   exact ⟨2 * ((⌈max Cu 0 / cb⌉₊ + 4 : ℕ) : ℝ) + 40, fun D large₂ C' Cl Cg cT CT C0 hCl hVV =>

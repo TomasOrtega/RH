@@ -9,6 +9,11 @@ open PositivityTheory.ThKF.Abs
 
 variable {U : Type} [NormedAddCommGroup U] [InnerProductSpace ℂ U]
 
+/- English proof (translation)
+Use `FiniteDimensional.complete ℂ Y` as an intermediate fact. Establish `ex : ∀ x, ∃ t : Y, ∀ y : Y, ⟪t, y⟫_ℂ = b x y` using `fun x => ⟨(InnerProductSpace.toDual ℂ Y).symm (LinearMap.toContinuousLinearMap (b x ∘ₗ Y.subtype)), fun y => by simp⟩`. Use `choose t ht using ex`. Use `⟨⟨⟨t, fun x x' => ext_inner_right ℂ fun y => ?_⟩, fun c x => ext_inner_right ℂ fun y => ?_⟩, fun x y hy => ht x ⟨y, hy⟩⟩` and prove the remaining obligations. Simplify using `[inner_add_left, ht]`.
+
+Simplify using `[inner_smul_left, ht]`.
+-/
 theorem exists_rep (b : U →ₗ⋆[ℂ] U →ₗ[ℂ] ℂ) (Y : Submodule ℂ U) [FiniteDimensional ℂ Y] :
     ∃ T : U →ₗ[ℂ] Y, ∀ x, ∀ y ∈ Y, ⟪(T x : U), y⟫_ℂ = b x y := by
   have := FiniteDimensional.complete ℂ Y
@@ -25,6 +30,25 @@ def homsF {K : Type} [Group K] (κ : K →* Module.End ℂ U) (f : U) : Submodul
   zero_mem' := fun k x => by simp
   smul_mem' := fun c a ha k x => by simp [ha k x]
 
+/- English proof (translation)
+Use `hf f` as an intermediate fact. Establish `: FiniteDimensional ℂ (homsF κ f)`. Set `ev : homsF κ f →ₗ[ℂ] (ι → Module.Dual ℂ (orb κ f))` to `LinearMap.pi fun i => (LinearMap.llcomp ℂ _ _ _ (l i)) ∘ₗ (homsF κ f).subtype`. Use `Module.Finite.of_injective ev ((injective_iff_map_eq_zero ev).2 fun L hL => Subtype.ext (LinearMap.ext fun x => ?_))` and prove the remaining obligations. Use `hl _ fun i k => ?_` and prove the remaining obligations.
+
+Rewrite using `[← L.2 k x]`. Conclude with `LinearMap.congr_fun (congrFun hL i) _`. Set `Z : Submodule ℂ U` to `Submodule.map₂ (LinearMap.id : (orb κ f →ₗ[ℂ] U) →ₗ[ℂ] _) (homsF κ f) ⊤`. Establish `fZ : FiniteDimensional ℂ Z` using `Module.Finite.iff_fg.2 (Submodule.FG.map₂ _ (Module.Finite.iff_fg.1 inferInstance) (Module.Finite.fg_top))`. Establish `mZ : ∀ L ∈ homsF κ f, ∀ x, L x ∈ Z` using `fun L hL x => Submodule.apply_mem_map₂ _ hL trivial`.
+
+Establish `sZ : ∀ k, ∀ z ∈ Z, κ k z ∈ Z` using `fun k => show Z ≤ Z.comap (κ k) from Submodule.map₂_le.2 fun L hL x _ => by show κ k (L x) ∈ Z`. Rewrite using `[← hL k x]`. Conclude with `mZ L hL _`. Establish `orth : ∀ y ∈ Zᗮ, ∀ z ∈ Z, b z y = 0` using `fun y hy => by`. Use `hf y` as an intermediate fact.
+
+Establish `yZ : orb κ y ≤ Zᗮ` using `Submodule.span_le.2 (by rintro _ ⟨k, rfl⟩; exact orth_stab κ hi Z sZ k y hy)`. Take `⟨T, hT⟩` from `exists_rep b (orb κ y)`. Establish `eq : ∀ k x, (T (κ k x) : U) = κ k (T x)` using `fun k x => by`. Establish `: T (κ k x) = ⟨κ k (T x), span_orbit_stab κ y k _ (T x).2⟩` using `ext_inner_right ℂ fun u => by`. Establish `e : (u : U) = κ k (κ k⁻¹ u)` using `by rw [← Module.End.mul_apply, ← map_mul]; simp`.
+
+Use `show ⟪(T (κ k x) : U), (u : U)⟫_ℂ = ⟪κ k (T x), (u : U)⟫_ℂ`. Rewrite using `[hT _ _ u.2, e, hb, hi, hT _ _ (span_orbit_stab κ y k⁻¹ _ u.2)]`. Rewrite using `[this]`. Use `show Z ≤ LinearMap.ker (b.flip y) from Submodule.map₂_le.2 fun L hL x _ => ?_` and prove the remaining obligations. Use `show b (L x) y = 0`.
+
+Establish `h1 : (T (L x) : U) ∈ Z` using `mZ ((orb κ y).subtype ∘ₗ T ∘ₗ L) (fun k x => by show (T (L _) : U) = κ k (T (L x))`. Rewrite using `[hL k x, eq]) x`. Rewrite using `[← hT _ _ (mem_orb κ y)]`. Conclude with `hy _ h1`. Take `⟨T, hT⟩` from `exists_rep b Z`.
+
+Establish `: Nontrivial Z` using `⟨⟨f, mZ (orb κ f).subtype (fun _ _ => rfl) ⟨f, mem_orb κ f⟩⟩, 0, fun h => h0 (congrArg Subtype.val h)⟩`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue (T ∘ₗ Z.subtype)`. Take `⟨x, hx⟩` from `hc.exists_hasEigenvector`. Use `⟨x, starRingEnd ℂ c, fun h => hx.2 (Subtype.ext h), fun y => ?_⟩` and prove the remaining obligations. Establish `e : T x = c • x` using `hx.apply_eq_smul`.
+
+Establish `hy` using `Z.sub_starProjection_mem_orthogonal y`. Establish `e1` using `orth _ hy x x.2`. Establish `e2` using `hy _ x.2`. Rewrite `e1` using `[map_sub, sub_eq_zero]`. Rewrite `e2` using `[inner_sub_right, sub_eq_zero]`.
+
+Rewrite using `[e1, e2, ← hT _ _ (Z.starProjection_apply_mem y), e, Submodule.coe_smul, inner_smul_left]`.
+-/
 theorem exists_eigen {K : Type} [Group K] (κ : K →* Module.End ℂ U) (hi : ∀ k x y, ⟪κ k x, κ k y⟫_ℂ = ⟪x, y⟫_ℂ)
     (hf : ∀ x, FiniteDimensional ℂ (orb κ x)) {ι : Type} [Finite ι] (l : ι → U →ₗ[ℂ] ℂ)
     (hl : ∀ x, (∀ i k, l i (κ k x) = 0) → x = 0) (b : U →ₗ⋆[ℂ] U →ₗ[ℂ] ℂ) (hb : ∀ k x y, b (κ k x) (κ k y) = b x y)

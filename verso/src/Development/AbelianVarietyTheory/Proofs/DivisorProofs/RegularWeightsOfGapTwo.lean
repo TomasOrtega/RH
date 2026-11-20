@@ -13,6 +13,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 def Sep (S : SPar) : Prop := ∀ x ∈ S, ∀ y ∈ S, y.1 < x.1 → y.1 + 2 ≤ x.1
 
+/- English proof (translation)
+Introduce `x hx y hy hxy`. Take `⟨x', hx', rfl⟩` from `Finset.mem_image.1 hx`. Take `⟨y', hy', rfl⟩` from `Finset.mem_image.1 hy`. Use `h y' hy' x' hx' (by simpa using hxy)` as an intermediate fact. Simplify using `only`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem Sep.dual {S : SPar} (h : Sep S) : Sep (dualPar S) := by
   intro x hx y hy hxy
   obtain ⟨x', hx', rfl⟩ := Finset.mem_image.1 hx

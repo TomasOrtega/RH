@@ -26,6 +26,9 @@ namespace GlobalTheory.CuspGK
 variable {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) {V : HSp D} {S : D.what₂.Tau → SPar}
   (M : Formalism.IndefR.Mult.DSModel V S)
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_sInf.2 fun A hA => (h A hA).k τ g hg f (Submodule.mem_sInf.1 hf A hA) lie τ X hX f hf := Submodule.mem_sInf.2 fun A hA => (h A hA).lie τ X hX f (Submodule.mem_sInf.1 hf A hA)`.
+-/
 theorem isGKSub_sInf (s : Set (Submodule ℂ (GA D V → ℂ))) (h : ∀ A ∈ s, IsGKSub θ M A) : IsGKSub θ M (sInf s) where
   k τ g hg f hf := Submodule.mem_sInf.2 fun A hA => (h A hA).k τ g hg f (Submodule.mem_sInf.1 hf A hA)
   lie τ X hX f hf := Submodule.mem_sInf.2 fun A hA => (h A hA).lie τ X hX f (Submodule.mem_sInf.1 hf A hA)
@@ -33,6 +36,19 @@ theorem isGKSub_sInf (s : Set (Submodule ℂ (GA D V → ℂ))) (h : ∀ A ∈ s
 open scoped Matrix in
 variable {M} in
 
+/- English proof (translation)
+Take `⟨hU, hk⟩` from `h`. Establish `hfd : IsUnit (M.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Use `set k := M.fr τ * g * (M.fr τ)⁻¹ with hkdef`. Establish `hku : k ∈ Matrix.unitaryGroup (Fin V.rank) ℂ` using `hk.1`. Establish `hsk : star k * k = 1` using `Matrix.mem_unitaryGroup_iff'.1 hku`.
+
+Establish `hks : k * star k = 1` using `Matrix.mem_unitaryGroup_iff.1 hku`. Establish `hkdet : IsUnit k.det` using `(Matrix.isUnit_iff_isUnit_det _).1 ⟨⟨k, star k, hks, hsk⟩, rfl⟩`. Establish `hdet : k.det = g.det`. Rewrite using `[hkdef, Matrix.det_mul, Matrix.det_mul, mul_comm (M.fr τ).det, mul_assoc, ← Matrix.det_mul, Matrix.mul_nonsing_inv _ hfd, Matrix.det_one, mul_one]`. Establish `hgd : IsUnit g.det` using `hdet ▸ hkdet`.
+
+Establish `hg1 : g * g⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hgd`. Establish `hU' : gᴴ * gramAt D V τ * g = gramAt D V τ` using `hU`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (g⁻¹)ᴴ * gramAt D V τ * g⁻¹ = gramAt D V τ`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = gramAt D V τ := by rw [hg1, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`. Establish `e1 : M.fr τ * g⁻¹ * (M.fr τ)⁻¹ = k⁻¹`. Rewrite using `[hkdef, Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hfd]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Establish `hinv : k⁻¹ = star k` using `Matrix.inv_eq_left_inv hsk`. Rewrite using `[e1, hinv]`. Use `⟨Matrix.mem_unitaryGroup_iff.2 (by rw [star_star]; exact hsk), ?_⟩` and prove the remaining obligations. Establish `hJ : star (Formalism.REAL.Jm (M.ε τ)) = Formalism.REAL.Jm (M.ε τ)` using `Formalism.REAL.Jm_conjTranspose _`.
+
+Establish `hcomm : ∀ m : Matrix (Fin V.rank) (Fin V.rank) ℂ, m * Formalism.REAL.Jm (M.ε τ) = Formalism.REAL.Jm (M.ε τ) * m → star m * Formalism.REAL.Jm (M.ε τ) = Formalism.REAL.Jm (M.ε τ) * star m` using `fun m hm => by`. Establish `h2 : star (m * Formalism.REAL.Jm (M.ε τ)) = star (Formalism.REAL.Jm (M.ε τ) * m)` using `congrArg star hm`. Rewrite `h2` using `[star_mul, star_mul, hJ]`. Conclude with `h2.symm`. Conclude with `hcomm k hk.2`.
+-/
 theorem InK.inv {τ : D.what₂.Tau} {g : Matrix (Fin V.rank) (Fin V.rank) ℂ} (h : InK M τ g) : InK M τ g⁻¹ := by
   obtain ⟨hU, hk⟩ := h
   have hfd : IsUnit (M.fr τ).det := (Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)
@@ -67,6 +83,15 @@ theorem InK.inv {τ : D.what₂.Tau} {g : Matrix (Fin V.rank) (Fin V.rank) ℂ} 
       exact h2.symm
     exact hcomm k hk.2
 
+/- English proof (translation)
+Introduce `hP D θ V S M hθ ψ hA hC hW`. Take `⟨b, hpos, hherm, hK, hL⟩` from `GlobalTheory.T.cusp_form_finite_dim_compact_stable hP θ V S M hθ ψ hA hC hW`. Take `⟨e, he1, he2, he3, he4, he5⟩` from `GlobalTheory.T.cusp_form_finite_dim_frame_stable hP θ V S M hθ ψ hA hC hW b hpos hherm hK hL`. Use `GlobalTheory.T.mem_iSup_irreducible_of_fixed_projector (IsGKSub θ M) (isGKSub_sInf θ M) (gkGen θ M ψ) (isGKSub_gkGen θ M ψ) b hpos hherm (fun A hAle hAP => ?_) e he2 he3 he4 he5 ψ (mem_gkGen θ M ψ) he1` and prove the remaining obligations. Establish `hperp : ∀ f ∈ gkGen θ M ψ ⊓ ⨅ a ∈ A, LinearMap.ker (b a), f ∈ gkGen θ M ψ ∧ ∀ a ∈ A, b a f = 0` using `fun f hf => by`.
+
+Rewrite `hf` using `[Submodule.mem_inf]`. Conclude with `⟨hf.1, fun a ha => LinearMap.mem_ker.1 ((Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 hf.2 a) ha)⟩`. Establish `hmk : ∀ f, f ∈ gkGen θ M ψ → (∀ a ∈ A, b a f = 0) → f ∈ gkGen θ M ψ ⊓ ⨅ a ∈ A, LinearMap.ker (b a)` using `fun f h1 h2 => Submodule.mem_inf.2 ⟨h1, (Submodule.mem_iInf _).2 fun a => (Submodule.mem_iInf _).2 fun ha => LinearMap.mem_ker.2 (h2 a ha)⟩`. Use `⟨fun τ g hg f hf => ?_, fun τ X hX f hf => ?_⟩` and prove the remaining obligations. Take `⟨hfN, hf0⟩` from `hperp f hf`.
+
+Use `hmk _ ((isGKSub_gkGen θ M ψ).k τ g hg f hfN) fun a ha => ?_` and prove the remaining obligations. Rewrite using `[hK τ g hg a (hAle ha) f hfN]`. Conclude with `hf0 _ (hAP.k τ g⁻¹ hg.inv a ha)`. Take `⟨hfN, hf0⟩` from `hperp f hf`. Use `hmk _ ((isGKSub_gkGen θ M ψ).lie τ X hX f hfN) fun a ha => ?_` and prove the remaining obligations.
+
+Rewrite using `[hL τ X hX a (hAle ha) f hfN, hf0 _ (hAP.lie τ X hX a ha), neg_zero]`.
+-/
 theorem mem_iSup_irr : GlobalTheory.FunPr.Hypotheses₂ → ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
     (S : D.what₂.Tau → SPar) (M : Formalism.IndefR.Mult.DSModel V S), IsInfFam (D := D) θ →
     ∀ ψ : GA D V → ℂ, IsAutFunSm θ V ψ → IsCuspFun V ψ →

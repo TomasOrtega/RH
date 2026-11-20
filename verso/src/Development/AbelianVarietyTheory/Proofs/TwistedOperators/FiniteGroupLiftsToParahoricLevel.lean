@@ -11,6 +11,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FiniteGroupLifts
 
+/- English proof (translation)
+Introduce `D V β L Λ N hB hQ hP`. Use `GlobalTheory.T.parahoricLevel_liftsExist V β L Λ N hB ?_ ?_` and prove the remaining obligations. Introduce `PP hPP PP' hPP'`. Break down `hPP' with h | h` into its components or cases. Conclude with `hP PP hPP PP' h`.
+
+Simplify using `[hQ] at h`. Simplify using `[hQ]`.
+-/
 theorem liftsExist_of_twist_empty :
     ∀ {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) (Λ : Submodule (NumberField.RingOfIntegers D.host.E) (Fin V.rank → D.host.E)) (N : ℕ), IsBaseFrame V β Λ N → L.Q = ∅ → (∀ PP ∈ L.Pg, ∀ PP' ∈ L.Pg, ¬ IsConjPl PP PP') → LiftsExist V β L := by
   intro D V β L Λ N hB hQ hP

@@ -18,6 +18,29 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.Poinc
 
+/- English proof (translation)
+Introduce `g n F W hW o Ω _ _ _ _ S ρ ε u' hD p _ y₀ T ι hι hsp hint`. Take `⟨T', ι', yK, e, k, hι', hfac, hy', hϖ, hβ⟩` from `GlobalTheory.T.exists_trait_finiteExtension_classicalPoint_factors g n F o Ω S u' p y₀ T ι hι hsp`. Take `⟨A, φ, cart, lb, εA, hDA, huniq⟩` from `GlobalTheory.T.exists_pullback_eighth_power_endomorphisms_field_point g n F W S.R ρ.P ε u' hD (FractionRing T'.V) yK`. Rewrite `hDA` using `[hy']`. Take `⟨G', _, _, hsemi, D', U', j', hpsi, hcong⟩` from `GlobalTheory.T.eighthPower_trait_uniformisation_lattice_pow_eight g n F W hW T' A εA hDA`.
+
+Use `letI : Algebra (FractionRing T'.V) (PadicAlgCl p) := ι'.toAlgebra`. Set `u : ρ.UTest p y₀` to `{ V := T'.V, complete := T'.complete, norm_le := hι', yK := yK, fac := hfac, A := A, φ := φ, cart := cart, lb := lb, G := G', semi := hsemi, D := D', U := U' }`. Take `⟨l⟩` from `GlobalTheory.ZH.labels_exist GlobalTheory.abelianSchemeLaws_all.1 GlobalTheory.abelianSchemeLaws_all.2 GlobalTheory.ZH.uTors_closed o Ω S ρ p y₀ u hint`. Set `jj : u.D.toPre.X ≃+ (Fin 8 → T.D.toPre.X)` to `j'.trans (AddEquiv.piCongrRight fun _ => e)`. Use `⟨u, l, jj, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `χ`. Take `⟨v, hv⟩` from `hpsi χ`. Take `⟨jc, hjc, hval⟩` from `GlobalTheory.T.psi_value_fractionRing_of_psiCoord T'.V D'.toPre χ _ hv`. Establish `hq` using `l.q_eq χ jc hjc`. Express the relevant statement in the definitionally equal form `‖algebraMap (FractionRing T'.V) (PadicAlgCl p) (valF (𝟙 (Sp (FractionRing T'.V))) _ ((D'.toPre.psi χ).s jc).val)‖ = _ at hq`.
+
+Rewrite `hq` using `[hval, RingHom.algebraMap_toAlgebra]`. Establish `hunit : ‖ι' (algebraMap T'.V _ (v : T'.V))‖ = 1`. Establish `h1 : ‖ι' (algebraMap T'.V _ (v : T'.V))‖ ≤ 1` using `(hι' _).2 ⟨_, rfl⟩`. Establish `h2 : ‖ι' (algebraMap T'.V _ ((v⁻¹ : T'.Vˣ) : T'.V))‖ ≤ 1` using `(hι' _).2 ⟨_, rfl⟩`. Establish `h3 : ‖ι' (algebraMap T'.V _ (v : T'.V))‖ * ‖ι' (algebraMap T'.V _ ((v⁻¹ : T'.Vˣ) : T'.V))‖ = 1`.
+
+Rewrite using `[← norm_mul, ← map_mul, ← map_mul, Units.mul_inv, map_one, map_one, norm_one]`. Use polynomial arithmetic with `[norm_nonneg (ι' (algebraMap T'.V _ (v : T'.V))), norm_nonneg (ι' (algebraMap T'.V _ ((v⁻¹ : T'.Vˣ) : T'.V)))]`. Use `set a := ‖ι' (algebraMap T'.V _ T'.ϖ)‖ with ha`. Establish `hq0 : 0 ≤ qW W T'.β (j' χ)` using `qW_nonneg_of_posW W hW.1 T'.β T'.symm (GlobalTheory.Poinc.Basic₂.trait_nonneg T') (j' χ)`. Establish `hsc : qW W T'.β (j' χ) = (k : ℤ) * qW W T.β (jj χ)`.
+
+Simplify using `only [qW, hβ, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Simplify using `only [jj, AddEquiv.trans_apply, AddEquiv.piCongrRight_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hq` using `[map_mul, map_mul, norm_mul, hunit, one_mul, map_pow, map_pow, norm_pow]`.
+
+Rewrite `hq` using `[← ha]`. Establish `hN : ((qW W T'.β (j' χ)).toNat : ℝ) = ((k : ℤ) : ℝ) * (qW W T.β (jj χ) : ℝ)`. Rewrite using `[← Int.cast_mul, ← hsc]`. Conclude with `Int.toNat_of_nonneg hq0` after adjusting the coercions. Establish `hapos : 0 < a`.
+
+Rewrite using `[ha, norm_pos_iff]`. Introduce `h0`. Establish `: algebraMap T'.V (FractionRing T'.V) T'.ϖ = 0` using `ι'.injective (by rw [h0, map_zero])`. Conclude with `T'.irr.ne_zero (IsFractionRing.injective T'.V (FractionRing T'.V) (by rw [this, map_zero]))`. Establish `hl : -l.q χ = ((qW W T'.β (j' χ)).toNat : ℝ) * Real.log a`.
+
+Rewrite using `[← Real.log_pow, hq, Real.log_exp]`. Rewrite using `[hϖ, Real.log_pow]`. Rewrite `hl` using `[hN]`. Move the coercions through the operations in `at hl ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `m pk pk' x x' E hm h1 h2 hx`. Establish `hc` using `hcong (PadicAlgCl p) m pk pk' x x' E hm h1 h2 (huniq _ x x' E hx)`. Take `⟨w, hw⟩` from `hc`. Use `⟨fun a => e (w a), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+
+Use `congrFun hw a` as an intermediate fact. Simplify using `only [jj, AddEquiv.trans_apply, AddEquiv.piCongrRight_apply, Pi.add_apply, Pi.smul_apply, Finset.sum_apply] at this ⊢`. Rewrite using `[this, map_add, map_sum, map_nsmul]`. Simplify using `[map_zsmul]`.
+-/
 theorem traitLabels : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (ε : Matrix (Fin 8) (Fin 8) ℤ → (ρ.P.A ⟶ ρ.P.A)) (u' : Sp S.R ⟶ F.X), IsDiagEnd F W ρ.P u' ε → ∀ (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (T : Trait F) (ι : FractionRing T.V →+* PadicAlgCl p), (∀ x, ‖ι x‖ ≤ 1 ↔ x ∈ Set.range (algebraMap T.V (FractionRing T.V))) → spMap y₀ ≫ u' = spMap ι ≫ T.y → (∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1) → ∃ (u : ρ.UTest p y₀) (l : u.Lab) (j : u.D.toPre.X ≃+ (Fin 8 → T.D.toPre.X)), (∀ χ, l.q χ = -Real.log ‖ι (algebraMap T.V (FractionRing T.V) T.ϖ)‖ * ((qW W T.β (j χ) : ℤ) : ℝ)) ∧ ∀ (m : ℕ) (pk pk' : QkPt u.D.toPre (PadicAlgCl p) m) (x x' : TFK (R := u.V) (PadicAlgCl p) ⟶ u.A.A) (E : Matrix (Fin 8) (Fin 8) ℤ), 1 ≤ m → QkToAkU u.U.toUnifPre (PadicAlgCl p) m pk x → QkToAkU u.U.toUnifPre (PadicAlgCl p) m pk' x' → x'.left ≫ u.φ = x.left ≫ u.φ ≫ (ε E).left → CongMod m (j pk'.y) (fun a => ∑ b, E a b • j pk.y b) := by
   intro g n F W hW o Ω _ _ _ _ S ρ ε u' hD p _ y₀ T ι hι hsp hint
   obtain ⟨T', ι', yK, e, k, hι', hfac, hy', hϖ, hβ⟩ := GlobalTheory.T.exists_trait_finiteExtension_classicalPoint_factors g n F o Ω S u' p y₀ T ι hι hsp

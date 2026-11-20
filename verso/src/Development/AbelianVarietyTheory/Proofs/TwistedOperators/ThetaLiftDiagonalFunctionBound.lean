@@ -17,6 +17,9 @@ open scoped ComplexConjugate
 
 namespace GlobalTheory.UpArrowApprox
 
+/- English proof (translation)
+Establish `: (GlobalTheory.PairLift.frSgn true (GlobalTheory.ChainFr.Fr.ofModel S.M)).cart = GlobalTheory.Grid.cartS true S`. Use function extensionality and compare the values at `fun τ => GlobalTheory.PairLift.cart_frSgn true _ τ`. Unfold `GlobalTheory.ChainFr.ptF GlobalTheory.Grid.fock`. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem ptF_eq_fock {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : GlobalTheory.Grid.Node D)
     (f : WO S.V T.V → ℂ) (p : GlobalTheory.Grid.Pol S T) :
     GlobalTheory.ChainFr.ptF ψ θ (GlobalTheory.PairLift.frSgn true (GlobalTheory.ChainFr.Fr.ofModel S.M)) (GlobalTheory.ChainFr.Fr.ofModel T.M) f p =
@@ -27,6 +30,9 @@ theorem ptF_eq_fock {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S
   rw [this]
   rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, fun τ => by have := h.2 τ; rwa [GlobalTheory.PairLift.cart_frSgn] at this⟩`.
+-/
 theorem isFinVec_of_isVacF {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : GlobalTheory.Grid.Node D}
     {f : WO S.V T.V → ℂ}
     (h : GlobalTheory.ChainFr.IsVacF ψ θ (GlobalTheory.PairLift.frSgn true (GlobalTheory.ChainFr.Fr.ofModel S.M)) (GlobalTheory.ChainFr.Fr.ofModel T.M) f) :
@@ -37,6 +43,33 @@ end GlobalTheory.UpArrowApprox
 
 namespace GlobalTheory.UpArrowApprox
 
+/- English proof (translation)
+Introduce `hLC hP D hSz G₀ _ _ Pl0 T A Ks _ _ _ R G hR hG i hi Φ hΦ F hF v hint C hC ε hε`. Establish `hθ : IsInfFam R.θ` using `hR.inf`. Establish `hω` using `(hG.arrows.dn i hi).weil`. Establish `hψ : IsStdChar D R.ψ (-1)` using `IsWeilDatumO.std hω`. Establish `hm` using `(hG.meas.P i hi.le).2 (by omega)`.
+
+Establish `hCA` using `hLC D hSz G₀ Pl0 T A Ks R G hR hG`. Take `⟨-, -, hFr⟩` from `GlobalTheory.ChainOnto.MultRapid.multT_apply_rapidDec hP.cuspRapidDecay D _ _ _ R.θ hθ _ _ F hF v`. Take `⟨μ, 𝓕, hμ⟩` from `GlobalTheory.Size.exists_isCovolOne (GlobalTheory.Grid.neg (G.P (i + 1)).V) (G.P i).V`. Take `⟨U, hU, hΦU, hdense⟩` from `GlobalTheory.FockDensity.fockDense D _ _ (GlobalTheory.PairLift.frSgn true (GlobalTheory.ChainFr.Fr.ofModel (G.P (i + 1)).M)) (GlobalTheory.ChainFr.Fr.ofModel (G.P i).M) R.θ R.ψ hψ hθ μ 𝓕 hμ Φ hΦ`. Take `⟨a, d, H⟩` from `GlobalTheory.KernelSeminorm.thetaGrowth D (GlobalTheory.Grid.neg (G.P (i + 1)).V).rank (G.P i).V.rank`.
+
+Take `⟨K, hK0, hK⟩` from `(H (GlobalTheory.Grid.neg (G.P (i + 1)).V) (G.P i).V rfl rfl).real R.ψ hθ hU`. Choose the witnesses or unpack the hypotheses as in `⟨M, hM⟩ : ∃ M : ℝ, ∀ h ∈ C, GlobalTheory.Grow.height (GlobalTheory.Grid.neg (G.P (i + 1)).V) ((GlobalTheory.Grid.ofSgn true (G.P (i + 1)).V).symm h) ≤ M := by`. Take `⟨M, hM⟩` from `hC.bddAbove_image ((GlobalTheory.Grow.continuous_height _).comp (GlobalTheory.Grid.continuous_ofSgn_symm true _)).continuousOn`. Conclude with `⟨M, fun h hh => hM ⟨h, hh, rfl⟩⟩`. Take `⟨B, hB⟩` from `hFr.decay a`.
+
+Establish `hfin : (G.mP i).ν (G.mP i).fd < ⊤` using `GlobalTheory.CuspDecay.measure_lt_top GlobalTheory.Mem.VolFin.finVol _ _ _ hm.1.1 hm.2`. Use `set L : ℝ := K * max M 1 ^ a * 2 ^ a * max B 0 * ((G.mP i).ν (G.mP i).fd).toReal with hL`. Establish `hL0 : 0 ≤ L`. Establish `: 0 ≤ max M 1` using `le_trans zero_le_one (le_max_right _ _)`. Establish `: 0 ≤ max B 0` using `le_max_right _ _`.
+
+Check the signs of the components of the expression. Establish `hδ : 0 < ε / (2 * (L + 1))` using `div_pos hε (by linarith)`. Take `⟨g₀, hg₀, hg₀U, hg₀d⟩` from `hdense d (ENNReal.ofReal (ε / (2 * (L + 1)))) (ENNReal.ofReal_pos.2 hδ)`. Take `⟨n, c, w, hw⟩` from `Submodule.mem_span_set'.1 hg₀`. Use `choose f₀ P hvac hlev hgeq using fun l => (w l).2`.
+
+Use `⟨n, f₀, fun l => c l • P l, fun l => isFinVec_of_isVacF (hvac l), fun h hh => ?_⟩` and prove the remaining obligations. Establish `hsum : g₀ = ∑ l, GlobalTheory.Grid.fock R.ψ R.θ true (G.P (i + 1)) (G.P i) (f₀ l) (c l • P l)`. Rewrite using `[← hw]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hgeq l, ← ptF_eq_fock]`.
+
+Simplify using `only [GlobalTheory.ChainFr.ptF, map_smul]`. Establish `he : Φ - g₀ ∈ GlobalTheory.Size.thetaLevel R.ψ (GlobalTheory.Grid.neg (G.P (i + 1)).V) (G.P i).V U` using `sub_mem hΦU hg₀U`. Establish `hint' : ∀ l, IntegrableOn (fun g => starRingEnd ℂ (thetaKO (G.dn i).ω h g (GlobalTheory.Grid.fock R.ψ R.θ true (G.P (i + 1)) (G.P i) (f₀ l) (c l • P l))) * F v g) (G.mP i).fd (G.mP i).ν` using `fun l => ((hCA.up i hi (f₀ l) (isFinVec_of_isVacF (hvac l)) F hF).choose_spec.2 (c l • P l) v h).1`. Establish `hlin : ∀ g, starRingEnd ℂ (thetaKO (G.dn i).ω h g Φ) * F v g - ∑ l, starRingEnd ℂ (thetaKO (G.dn i).ω h g (GlobalTheory.Grid.fock R.ψ R.θ true (G.P (i + 1)) (G.P i) (f₀ l) (c l • P l))) * F v g = starRingEnd ℂ (thetaKO (G.dn i).ω h g (Φ - g₀)) * F v g`. Introduce `g`.
+
+Rewrite using `[hsum]`. Simplify using `only [thetaKO, map_sub, map_sum, Pi.sub_apply, Finset.sum_apply, sub_mul, Finset.sum_mul]`. Rewrite using `[← integral_finset_sum _ fun l _ => hint' l, ← integral_sub (hint h) (integrable_finset_sum _ fun l _ => hint' l)]`. Establish `e0 : (∫ g in (G.mP i).fd, (starRingEnd ℂ (thetaKO (G.dn i).ω h g Φ) * F v g - ∑ l, starRingEnd ℂ (thetaKO (G.dn i).ω h g (GlobalTheory.Grid.fock R.ψ R.θ true (G.P (i + 1)) (G.P i) (f₀ l) (c l • P l))) * F v g) ∂(G.mP i).ν) = ∫ g in (G.mP i).fd, starRingEnd ℂ (thetaKO (G.dn i).ω h …`. Use `congr 1`.
+
+Use function extensionality and compare the values at `g`. Conclude with `hlin g`. Rewrite using `[e0]`. Use `set s : ℝ := (GlobalTheory.Size.sobO R.ψ R.θ μ 𝓕 d (Φ - g₀)).toReal with hs`. Establish `hs0 : 0 ≤ s` using `ENNReal.toReal_nonneg`.
+
+Use `set h' := (GlobalTheory.Grid.ofSgn true (G.P (i + 1)).V).symm h with hh'`. Establish `hpt : ∀ g, ‖starRingEnd ℂ (thetaKO (G.dn i).ω h g (Φ - g₀)) * F v g‖ ≤ K * max M 1 ^ a * 2 ^ a * max B 0 * s`. Introduce `g`. Establish `e1 : thetaKO (G.dn i).ω h g (Φ - g₀) = thetaKO ((G.dn i).ω.toSgn true) h' g (Φ - g₀)` using `GlobalTheory.UpArrowConv.thetaKO_toSgn _ _ _ _`. Establish `hbd : ∀ g, ‖thetaKO ((G.dn i).ω.toSgn true) h' g (Φ - g₀)‖ ≤ (K * s * GlobalTheory.Grow.height (GlobalTheory.Grid.neg (G.P (i + 1)).V) h' ^ a) * GlobalTheory.Grow.height (G.P i).V g ^ a` using `fun g => by`.
+
+Use `(hK _ _ _ hω μ 𝓕 hμ _ he).2 h' g` as an intermediate fact. Rewrite `this` using `[mul_pow, ← mul_assoc]`. Conclude with `this`. Establish `hq` using `GlobalTheory.Grow.norm_le_quotHeight_pow (f := fun g => thetaKO ((G.dn i).ω.toSgn true) h' g (Φ - g₀)) (GlobalTheory.UpArrowConv.thetaKO_left_snd hω he.1 h') hbd g`. Rewrite using `[norm_mul, RCLike.norm_conj, e1]`.
+
+Establish `hh1 : GlobalTheory.Grow.height (GlobalTheory.Grid.neg (G.P (i + 1)).V) h' ^ a ≤ max M 1 ^ a` using `pow_le_pow_left₀ (GlobalTheory.Grow.height_pos _ _).le ((hM h hh).trans (le_max_left _ _)) a`. Establish `hFB : ‖F v g‖ * GlobalTheory.Grow.quotHeight (G.P i).V g ^ a ≤ max B 0` using `(hB g).trans (le_max_left _ _)`. Establish `a0 : 0 ≤ K * s * GlobalTheory.Grow.height (GlobalTheory.Grid.neg (G.P (i + 1)).V) h' ^ a * 2 ^ a` using `mul_nonneg (mul_nonneg (mul_nonneg hK0 hs0) (pow_nonneg (GlobalTheory.Grow.height_pos _ _).le _)) (by positivity)`. Establish `a1 : K * s * GlobalTheory.Grow.height (GlobalTheory.Grid.neg (G.P (i + 1)).V) h' ^ a * 2 ^ a ≤ K * s * max M 1 ^ a * 2 ^ a` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hh1 (mul_nonneg hK0 hs0)) (by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `(norm_setIntegral_le_of_norm_le_const hfin fun g _ => hpt g).trans_lt ?_` and prove the remaining obligations. Establish `hslt : s < ε / (2 * (L + 1))` using `ENNReal.toReal_lt_of_lt_ofReal hg₀d`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem approx : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.Sizes D → ∀ (G₀ : Type) [Group G₀] [Fintype G₀] (Pl0 T : Type) (A : FamIn D.what₂.LL G₀ Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (G : GlobalTheory.Grid.GridPre R), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.RowBase R → G.Is → ∀ i, i < D.R.m → ∀ Φ, IsThetaFunO R.ψ (GlobalTheory.Grid.neg (G.P (i + 1)).V) (G.P i).V Φ → ∀ F : (G.P i).Maps, F ∈ (G.P i).Cusp R.θ → ∀ v : SmT (G.P i).M, (∀ h, IntegrableOn (fun g => starRingEnd ℂ (thetaKO (G.dn i).ω h g Φ) * F v g) (G.mP i).fd (G.mP i).ν) → ∀ C : Set (GA D (G.P (i + 1)).V), IsCompact C → ∀ ε : ℝ, 0 < ε → ∃ (n : ℕ) (f : Fin n → (WO (G.P (i + 1)).V (G.P i).V → ℂ)) (p : Fin n → GlobalTheory.Grid.Pol (G.P (i + 1)) (G.P i)), (∀ l, GlobalTheory.Grid.IsFinVec R.ψ R.θ true (G.P (i + 1)) (G.P i) (f l)) ∧ ∀ h ∈ C, ‖(∫ g in (G.mP i).fd, starRingEnd ℂ (thetaKO (G.dn i).ω h g Φ) * F v g ∂(G.mP i).ν) - ∑ l, ∫ g in (G.mP i).fd, starRingEnd ℂ (thetaKO (G.dn i).ω h g (GlobalTheory.Grid.fock R.ψ R.θ true (G.P (i + 1)) (G.P i) (f l) (p l))) * F v g ∂(G.mP i).ν‖ < ε := by
   intro hLC hP D hSz G₀ _ _ Pl0 T A Ks _ _ _ R G hR hG i hi Φ hΦ F hF v hint C hC ε hε
   have hθ : IsInfFam R.θ := hR.inf

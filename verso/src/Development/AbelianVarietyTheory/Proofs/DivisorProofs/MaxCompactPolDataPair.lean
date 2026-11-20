@@ -23,6 +23,9 @@ noncomputable section
 
 namespace GlobalTheory.ThKAutBoth
 
+/- English proof (translation)
+Unfold `Model.I theta`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[show ((g, h * k) : UA σ X.J × UA σ W.J) = (g, h) * (1, k) by simp, map_mul, Module.End.mul_apply]`.
+-/
 theorem I_mul_right' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (om : Rep σ X W) (Φ : (Fin n × Fin d → AF F) → ℂ)
     (h k : UA σ W.J) : M.I om Φ (h * k) = M.I om (om (1, k) Φ) h := by
@@ -31,6 +34,13 @@ theorem I_mul_right' {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   funext g
   rw [show ((g, h * k) : UA σ X.J × UA σ W.J) = (g, h) * (1, k) by simp, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Establish `h1 : At (evI F) (mat (1 : UA σ G.V'.J) - 1)`. Introduce `u _`. Simplify using `[mat]`. Establish `hloc` using `GlobalTheory.T.archimedean_theta_local_action hK.base F E σ B a a' G X om om' hT 1 k h1 hk.1`. Proceed by induction on `hΦ using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Take `⟨f, φ, hSB, hvac, hv₁, rfl⟩` from `hx`. Take `⟨f₂, e⟩` from `hloc f φ hSB hvac`. Rewrite using `[e]`. Conclude with `Submodule.subset_span ⟨f₂, φ, hSB, hvac, hv₁, rfl⟩`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem so_stable_kinf (hK : GlobalTheory.ThK.KP) {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W}
     {om' : Rep σ G.V' G.W} (hT : IsTriple B G X om om') {k : UA σ G.W.J} (hk : k ∈ KInf σ G.W B.emb)
@@ -53,6 +63,21 @@ end GlobalTheory.ThKAutBoth
 
 namespace GlobalTheory.ThKAutBoth
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hKP hT c hc hcs Φ hΦ Φ' hΦ'`. Take `⟨K, hK, hKin⟩` from `GlobalTheory.T.maximal_compact_of_skew_hermitian_twist F E σ hσ B _ _ _ G.W hT.base hT.geo.hW c hc hcs`. Take `⟨K₁, -, hA⟩` from `GlobalTheory.T.exists_maximal_compact_invariant F E σ hσ B a a' G X om om' hKP hT c hc hcs Φ hΦ`. Take `⟨K₂, -, hA'⟩` from `GlobalTheory.T.exists_maximal_compact_invariant_dual F E σ hσ B a a' G X om om' hKP hT c hc hcs Φ' hΦ'`. Use `⟨K, hK, ⟨hA.mod, ?_, hA.zfin⟩, ⟨hA'.mod, ?_, hA'.zfin⟩⟩` and prove the remaining obligations.
+
+Take `⟨S, hSf, hSle, hS⟩` from `GlobalTheory.T.polynomial_datum_finite_dimensional_orbit F E σ B _ _ G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ hKP (GlobalTheory.ThK.Inhab.pairV hT) Φ hΦ`. Take `⟨L, hL⟩` from `GlobalTheory.T.theta_integral_linear_in_polynomial F E σ B a a' G X om om' hKP hT`. Set `P` to `GlobalTheory.ThK.PolData B G.M`. Set `S' : Submodule ℂ P` to `S.comap P.subtype`. Use `haveI : FiniteDimensional ℂ S := hSf`.
+
+Use `haveI : FiniteDimensional ℂ S' := FiniteDimensional.of_injective (K := ℂ) (V₂ := S) ((P.subtype.domRestrict S').codRestrict S fun x => x.2) fun x y e => Subtype.ext (Subtype.ext (congrArg (fun z : S => (z : GlobalTheory.ThK.Fn F a (a + a'))) e))`. Set `T : P →ₗ[ℂ] (GAd σ (c • G.W.J.map σ) → ℂ)` to `LinearMap.funLeft ℂ ℂ (toGAd hσ G.W.J hc).symm ∘ₗ L`. Use `Submodule.finiteDimensional_of_le (S₂ := S'.map T) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `hk` using `hS _ (hKin k k.2)`.
+
+Use `⟨⟨om (1, (toGAd hσ G.W.J hc).symm k) Φ, hSle hk⟩, hk, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Simplify using `only [T, LinearMap.coe_comp, Function.comp_apply, LinearMap.funLeft_apply, hL, map_mul, I_mul_right']`. Take `⟨S, hSf, hSle, hS⟩` from `GlobalTheory.T.polynomial_datum_finite_dimensional_orbit F E σ B _ _ G.V' G.W G.M' X.α (X.α / X.β) om' _ _ _ _ hKP (GlobalTheory.ThK.Inhab.pairV' hT) Φ' (Submodule.mem_inf.1 hΦ').1`. Take `⟨L, hL⟩` from `GlobalTheory.T.pol_data_theta_linear F E σ B a a' G X om om' hKP hT`.
+
+Set `P` to `GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁`. Set `S' : Submodule ℂ P` to `S.comap P.subtype`. Use `haveI : FiniteDimensional ℂ S := hSf`. Use `haveI : FiniteDimensional ℂ S' := FiniteDimensional.of_injective (K := ℂ) (V₂ := S) ((P.subtype.domRestrict S').codRestrict S fun x => x.2) fun x y e => Subtype.ext (Subtype.ext (congrArg (fun z : S => (z : GlobalTheory.ThK.Fn F a' (a + a'))) e))`. Set `T : P →ₗ[ℂ] (GAd σ (c • G.W.J.map σ) → ℂ)` to `LinearMap.funLeft ℂ ℂ (toGAd hσ G.W.J hc).symm ∘ₗ L`.
+
+Use `Submodule.finiteDimensional_of_le (S₂ := S'.map T) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `hk` using `hS _ (hKin k k.2)`. Establish `hso` using `so_stable_kinf hKP hT (hKin k k.2) (Submodule.mem_inf.1 hΦ').2`. Use `⟨⟨om' (1, (toGAd hσ G.W.J hc).symm k) Φ', Submodule.mem_inf.2 ⟨hSle hk, hso⟩⟩, hk, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `g`. Simplify using `only [T, LinearMap.coe_comp, Function.comp_apply, LinearMap.funLeft_apply, hL, map_mul, I_mul_right']`.
+-/
 theorem isAut_both : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), GlobalTheory.ThK.KP → IsTriple B G X om om' →

@@ -28,22 +28,40 @@ def ball (v : HeightOneSpectrum (𝓞 F)) (m : ℤ) : AddSubgroup (Fv F v) where
     rw [Valuation.map_neg]
     exact ha
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_ball (m : ℤ) (x : Fv F v) : x ∈ ball v m ↔ Valued.v x ≤ WithZero.exp m := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.LatticeDensity.ball_compact_open v m).1`.
+-/
 theorem ball_isCompact (m : ℤ) : IsCompact (ball v m : Set (Fv F v)) :=
   (GlobalTheory.LatticeDensity.ball_compact_open v m).1
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.LatticeDensity.ball_compact_open v m).2`.
+-/
 theorem ball_isOpen (m : ℤ) : IsOpen (ball v m : Set (Fv F v)) :=
   (GlobalTheory.LatticeDensity.ball_compact_open v m).2
 
+/- English proof (translation)
+Introduce `_ hx` and use `le_trans ((mem_ball _ _).1 hx) (WithZero.exp_le_exp.2 hab)`.
+-/
 theorem ball_le {a b : ℤ} (hab : a ≤ b) : (ball v a : Set (Fv F v)) ⊆ ball v b :=
   fun _ hx => le_trans ((mem_ball _ _).1 hx) (WithZero.exp_le_exp.2 hab)
 
+/- English proof (translation)
+Distinguish the cases in `hx : Valued.v x = 0`. Conclude with `⟨0, by rw [mem_ball, hx]; exact zero_le'⟩`. Conclude with `⟨WithZero.log (Valued.v x), by rw [mem_ball, WithZero.exp_log hx]⟩`.
+-/
 theorem exists_mem_ball (x : Fv F v) : ∃ m, x ∈ ball v m := by
   by_cases hx : Valued.v x = 0
   · exact ⟨0, by rw [mem_ball, hx]; exact zero_le'⟩
   · exact ⟨WithZero.log (Valued.v x), by rw [mem_ball, WithZero.exp_log hx]⟩
 
+/- English proof (translation)
+Use `hK.elim_directed_cover (fun m : ℤ => (ball v m : Set (Fv F v))) ball_isOpen ?_ (Monotone.directed_le fun a b hab => ball_le hab)` and prove the remaining obligations. Introduce `x _`. Take `⟨m, hm⟩` from `exists_mem_ball x`. Conclude with `Set.mem_iUnion.2 ⟨m, hm⟩`.
+-/
 theorem exists_ball_of_isCompact (K : Set (Fv F v)) (hK : IsCompact K) :
     ∃ m, K ⊆ ball v m := by
   refine hK.elim_directed_cover (fun m : ℤ => (ball v m : Set (Fv F v))) ball_isOpen ?_
@@ -52,6 +70,13 @@ theorem exists_ball_of_isCompact (K : Set (Fv F v)) (hK : IsCompact K) :
   obtain ⟨m, hm⟩ := exists_mem_ball x
   exact Set.mem_iUnion.2 ⟨m, hm⟩
 
+/- English proof (translation)
+Take `⟨W, hWU, hWo, h0⟩` from `mem_nhds_iff.1 hU`. Establish `hcl : ∀ m : ℤ, IsClosed (ball v m : Set (Fv F v))` using `fun m => (ball_isCompact m).isClosed`. Take `⟨n, hn⟩` from `(ball_isCompact (v := v) 0).elim_directed_cover (fun n : ℕ => W ∪ (ball v (-(n : ℤ)) : Set (Fv F v))ᶜ) (fun n => hWo.union (hcl _).isOpen_compl) (by`. Introduce `x _`. Distinguish the cases in `hx : x = 0`.
+
+Conclude with `Set.mem_iUnion.2 ⟨0, Or.inl (hx ▸ h0)⟩`. Establish `hv : Valued.v x ≠ 0` using `(Valuation.ne_zero_iff _).2 hx`. Use `Set.mem_iUnion.2 ⟨(WithZero.log (Valued.v x)).natAbs + 1, Or.inr fun hm => ?_⟩` and prove the remaining obligations. Establish `h1` using `WithZero.exp_le_exp.1 ((WithZero.exp_log hv).le.trans ((mem_ball _ _).1 hm))`. Use the proof step `omega)`.
+
+Use the proof step `(Monotone.directed_le fun a b hab x hx => hx.imp id fun h hm => h (ball_le (by omega) hm))`. Use `⟨min (-(n : ℤ)) 0, fun x hx => hWU ?_⟩` and prove the remaining obligations. Break down `hn (ball_le (min_le_right _ _) hx) with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (ball_le (min_le_left _ _) hx) h`.
+-/
 theorem exists_ball_subset (U : Set (Fv F v)) (hU : U ∈ 𝓝 (0 : Fv F v)) :
     ∃ m, (ball v m : Set (Fv F v)) ⊆ U := by
   obtain ⟨W, hWU, hWo, h0⟩ := mem_nhds_iff.1 hU
@@ -74,6 +99,11 @@ theorem exists_ball_subset (U : Set (Fv F v)) (hU : U ∈ 𝓝 (0 : Fv F v)) :
   · exact h
   · exact absurd (ball_le (min_le_left _ _) hx) h
 
+/- English proof (translation)
+Establish `h : pairA F 0 (singleV F v (x + y)) = pairA F 0 (singleV F v x) + pairA F 0 (singleV F v y)`. Establish `: singleV F v (x + y) = singleV F v x + singleV F v y` using `RestrictedProduct.single_add _ v x y`. Rewrite using `[this]`. Conclude with `Prod.ext (add_zero (0 : Ainf F)).symm rfl`. Rewrite using `[psiV, h, AddChar.map_add_eq_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem psiV_add (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) (x y : Fv F v) :
     psiV F ψ v (x + y) = psiV F ψ v x * psiV F ψ v y := by
   classical
@@ -86,6 +116,15 @@ theorem psiV_add (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) (x y
   rw [psiV, h, AddChar.map_add_eq_mul]
   rfl
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `exists_ball_subset (L : Set (Fv F v)) (hLo.mem_nhds L.zero_mem)`. Establish `hy0 : y ≠ 0` using `fun h => hy (h ▸ h0)`. Establish `hv : Valued.v y ≠ 0` using `(Valuation.ne_zero_iff _).2 hy0`. Establish `hcl : IsClosed {t | ∀ s ∈ L, χ (s * t) = 1}`. Simplify using `only [Set.setOf_forall]`.
+
+Conclude with `isClosed_iInter fun s => isClosed_iInter fun _ => isClosed_eq (hc.comp (continuous_const.mul continuous_id)) continuous_const`. Use `(ball_isCompact (v := v) (WithZero.log (Valued.v y) - m)).of_isClosed_subset hcl ?_` and prove the remaining obligations. Introduce `t ht`. Assume the negation of the conclusion as `hne`. Establish `hlt : WithZero.exp (WithZero.log (Valued.v y) - m) < Valued.v t` using `not_le.1 fun h => hne h`.
+
+Establish `hvt : Valued.v t ≠ 0` using `(lt_of_le_of_lt zero_le' hlt).ne'`. Establish `ht0 : t ≠ 0` using `(Valuation.ne_zero_iff _).1 hvt`. Establish `hmem : y / t ∈ ball v m`. Rewrite using `[mem_ball, map_div₀, div_le_iff₀ (zero_lt_iff.2 hvt)]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← WithZero.exp_add, add_sub_cancel, WithZero.exp_log hv]`. Use `_ ≤ WithZero.exp m * Valued.v t := mul_le_mul_right hlt.le _`. Use `ht _ (hm hmem)` as an intermediate fact. Rewrite `this` using `[div_mul_cancel₀ _ ht0]`. Conclude with `hy this`.
+-/
 theorem ann_isCompact {χ : Fv F v → ℂ} (hc : Continuous χ) (h0 : χ 0 = 1) {y : Fv F v} (hy : χ y ≠ 1)
     (L : AddSubgroup (Fv F v)) (hLo : IsOpen (L : Set (Fv F v))) :
     IsCompact {t | ∀ s ∈ L, χ (s * t) = 1} := by
@@ -112,6 +151,13 @@ theorem ann_isCompact {χ : Fv F v → ℂ} (hc : Continuous χ) (h0 : χ 0 = 1)
   rw [div_mul_cancel₀ _ ht0] at this
   exact hy this
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ v k hk ι _`. Take `⟨h1, h2, h3, h4, -⟩` from `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`. Use `haveI := h1`. Use `haveI := h2`. Use `haveI := h3`.
+
+Use `haveI := h4`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨hc, y, hy⟩` from `(GlobalTheory.CompanionTheory.AdeleCharLocal.char_nontrivial_at_every_place F ψ hψ).1 v`. Establish `ha` using `psiV_add ψ v`. Establish `hn : ∀ x, ‖psiV F ψ v x‖ = 1` using `fun x => hψ.2.1 _`.
+
+Use `GlobalTheory.CompanionTheory.SW.FourierPi.selfDual_pi (Fv F v) (psiV F ψ v) hc ha hn k hk ⟨ball v 0, ball_isCompact 0, ball_isOpen 0⟩ (fun L _ hLo => ann_isCompact hc (GlobalTheory.CompanionTheory.SW.FourierPi.psi_zero ha hn) hy L hLo) (fun K hK => ?_) (fun U hU => ?_) ι` and prove the remaining obligations. Take `⟨m, hm⟩` from `exists_ball_of_isCompact K hK`. Conclude with `⟨ball v m, ball_isCompact m, ball_isOpen m, hm⟩`. Take `⟨m, hm⟩` from `exists_ball_subset U hU`. Conclude with `⟨ball v m, ball_isCompact m, ball_isOpen m, hm⟩`.
+-/
 theorem selfDual_pi_v : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsCharAF F ψ → ∀ (v : HeightOneSpectrum (𝓞 F)) (k : Measure (Fv F v)), SelfDual k (fun s t => psiV F ψ v (s * t)) → ∀ (ι : Type) [Fintype ι], SelfDual (Measure.pi fun _ : ι => k) (fun x y => psiV F ψ v (x ⬝ᵥ y)) := by
   intro F _ _ ψ hψ v k hk ι _
   obtain ⟨h1, h2, h3, h4, -⟩ := GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v

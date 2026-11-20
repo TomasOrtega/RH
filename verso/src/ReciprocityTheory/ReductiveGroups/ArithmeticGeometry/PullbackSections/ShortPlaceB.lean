@@ -95,10 +95,16 @@ def ChartValueRamifiedAnyLevel : Prop :=
           nval Tc.V e (∑ mo ∈ P.support, P.coeff mo *
             ∏ b, C.ch.B.nabVal Tc.Fr C.ch.h T.Q.H.w0 k (f b) C.ch.uvec (MvPolynomial.monomial (colOf mo b) 1))
 
+/- English proof (translation)
+Introduce `D T h j hj inst hs Tc io`. Conclude with `hG D T h j hj hs _ _ _ Tc io io (fun a b hab => congrArg io (Subtype.ext hab))`.
+-/
 theorem chartValueIntegral_of_anyLevel (hG : ChartValueIntegralAnyLevel) : ChartValueIntegralGood := by
   intro D T h j hj inst hs Tc io
   exact hG D T h j hj hs _ _ _ Tc io io (fun a b hab => congrArg io (Subtype.ext hab))
 
+/- English proof (translation)
+Introduce `D T h j hj inst hs Tc io`. Conclude with `hG D T h j hj hs _ _ _ Tc io io (fun a b hab => congrArg io (Subtype.ext hab))`.
+-/
 theorem chartValueRamified_of_anyLevel (hG : ChartValueRamifiedAnyLevel) : ChartValueBoundRamified := by
   intro D T h j hj inst hs Tc io
   exact hG D T h j hj hs _ _ _ Tc io io (fun a b hab => congrArg io (Subtype.ext hab))
@@ -108,6 +114,17 @@ section Ultra
 variable {V K' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K'] [Algebra V K']
   [IsFractionRing V K']
 
+/- English proof (translation)
+Unfold `nval at h ⊢`. Use `split_ifs with hs`. Conclude with `le_top`. Establish `hne : s.Nonempty`. Assume the negation of the conclusion as `hn`.
+
+Rewrite `hn` using `[Finset.not_nonempty_iff_eq_empty]`. Conclude with `hs (by rw [hn, Finset.sum_empty])`. Take `⟨i, hi, hmax⟩` from `Finset.exists_max_image s (fun i => valV V (f i)) hne`. Establish `hle : valV V (∑ i ∈ s, f i) ≤ valV V (f i)` using `Valuation.map_sum_le _ hmax`. Establish `hfi : f i ≠ 0`.
+
+Introduce `h0`. Rewrite `hle` using `[h0, Valuation.map_zero]`. Conclude with `hs ((Valuation.zero_iff _).1 (le_antisymm hle zero_le'))`. Establish `h1` using `h i hi`. Rewrite `h1` using `[if_neg hfi]`.
+
+Use `h1.trans ?_` and prove the remaining obligations. Establish `hlog` using `(WithZero.log_le_log ((Valuation.ne_zero_iff _).2 hs) ((Valuation.ne_zero_iff _).2 hfi)).2 hle`. Use `EReal.coe_le_coe_iff.2 ?_` and prove the remaining obligations. Establish `hl : ((-(valV V (f i)).log : ℤ) : ℝ) ≤ ((-(valV V (∑ i ∈ s, f i)).log : ℤ) : ℝ)`. Conclude with `neg_le_neg hlog` after adjusting the coercions.
+
+Conclude with `div_le_div_of_nonneg_right hl (Nat.cast_nonneg e)`.
+-/
 theorem le_nval_sum (e : ℕ) {ι : Type} (s : Finset ι) (f : ι → K') (r : EReal) (h : ∀ i ∈ s, r ≤ nval V e (f i)) :
     r ≤ nval V e (∑ i ∈ s, f i) := by
   classical
@@ -133,6 +150,17 @@ theorem le_nval_sum (e : ℕ) {ι : Type} (s : Finset ι) (f : ι → K') (r : E
       exact_mod_cast neg_le_neg hlog
     exact div_le_div_of_nonneg_right hl (Nat.cast_nonneg e)
 
+/- English proof (translation)
+Use `le_nval_sum e Finset.univ _ r (fun i _ => ?_)` and prove the remaining obligations. Establish `hc'` using `hc i`. Establish `hS'` using `hS i`. Unfold `nval at hc' hS' ⊢`. Distinguish the cases in `h0 : cf i * S i = 0`.
+
+Rewrite using `[if_pos h0]`. Conclude with `le_top`. Rewrite using `[if_neg h0]`. Establish `hcf : cf i ≠ 0` using `left_ne_zero_of_mul h0`. Establish `hSi : S i ≠ 0` using `right_ne_zero_of_mul h0`.
+
+Rewrite `hc'` using `[if_neg hcf]`. Rewrite `hS'` using `[if_neg hSi]`. Use `hS'.trans (EReal.coe_le_coe_iff.2 ?_)` and prove the remaining obligations. Establish `hc''` using `EReal.coe_nonneg.1 hc'`. Establish `h2 : ((vV V (cf i) : ℤ) : ℝ) / (e : ℝ) + ((vV V (S i) : ℤ) : ℝ) / (e : ℝ) = ((vV V (cf i * S i) : ℤ) : ℝ) / (e : ℝ)`.
+
+Unfold `vV`. Rewrite using `[map_mul, WithZero.log_mul ((Valuation.ne_zero_iff _).2 hcf) ((Valuation.ne_zero_iff _).2 hSi)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← h2]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem le_nval_comb (e : ℕ) {ι : Type} [Fintype ι] (cf S : ι → K') (r : EReal) (hc : ∀ i, 0 ≤ nval V e (cf i))
     (hS : ∀ i, r ≤ nval V e (S i)) : r ≤ nval V e (∑ i, cf i * S i) := by
   classical
@@ -160,6 +188,13 @@ theorem le_nval_comb (e : ℕ) {ι : Type} [Fintype ι] (cf S : ι → K') (r : 
 
 end Ultra
 
+/- English proof (translation)
+Use `letI : StarRing (𝓞 D.host.E) := { star := T.Q.H.bar star_involutive := fun a => by`. Apply `NumberField.RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[T.Q.H.bar_eq, T.Q.H.bar_eq]`. Use `first`. Consider the case `simp`.
+
+Consider the case `exact IsCMField.complexConj_apply_apply _ _`. Use `star_mul := fun a b => by rw [map_mul, mul_comm]`. Use `star_add := fun a b => map_add _ a b }`. Establish `hs : ∀ a : 𝓞 D.host.E, star a = T.Q.H.bar a` using `fun a => rfl`. Take `⟨T', iT, e', ho', yI', -, io₂, hio₂, yI₂, hy₂, -, C, ι, hι, cf, P', gm, k, hP', hgm, hcf, hle⟩` from `hV D T hF j hj hs w g Λ N x0 P hsec hU hTb hTl hLev hAdm hP hR Tc io yI e la ho hy hN hA`.
+
+Use `le_trans ?_ hle` and prove the remaining obligations. Conclude with `le_nval_comb e' cf _ 0 hcf (fun i => hCI D T.toTop hF.p j hj hs _ _ _ T' (iT.comp io) io₂ hio₂ yI₂ e' la ho' hy₂ hbad C k (wtA w) w.n P' hP' (gm i) (hgm i))`.
+-/
 theorem shortValInt_of (hV : ShortValChartSt) (hCI : ChartValueIntegralAnyLevel) (D : D7) (T : Full D) (hF : LawsFull T)
     (j : ℕ) (hj : InR D j) (w : WeightFamilies.Wt D j) (g : T.toTop.R j) (Λ : GenLat D.host.E w.n) (N : ℕ)
     (x0 : Fin w.n → (T.Q.Dw j).La) (P : MvPolynomial (LtN (T.Q.Dw j) w.n) T.Q.c.F)
@@ -188,6 +223,19 @@ theorem shortValInt_of (hV : ShortValChartSt) (hCI : ChartValueIntegralAnyLevel)
   exact le_nval_comb e' cf _ 0 hcf (fun i => hCI D T.toTop hF.p j hj hs _ _ _ T' (iT.comp io) io₂ hio₂
     yI₂ e' la ho' hy₂ hbad C k (wtA w) w.n P' hP' (gm i) (hgm i))
 
+/- English proof (translation)
+Establish `hv : (0 : ℤ) ≤ vLa la ((p : ℕ) : T.Q.c.F)` using `by clear hV hCR hsec hU hTb hTl hLev hAdm hP hR ho hy hp hpl hN hA`. Unfold `vLa`. Establish `hle : la.valuation T.Q.c.F ((p : ℕ) : T.Q.c.F) ≤ 1`. Simplify using `using la.valuation_le_one (K := T.Q.c.F) ((p : ℕ) : 𝓞 T.Q.c.F)`. Distinguish the cases in `h0 : la.valuation T.Q.c.F ((p : ℕ) : T.Q.c.F) = 0`.
+
+Rewrite using `[h0, WithZero.log_zero]`. Simplify using the standard rewrite rules. Establish `h1` using `(WithZero.log_le_log h0 one_ne_zero).2 hle`. Rewrite `h1` using `[WithZero.log_one]`. Use linear arithmetic over natural numbers and integers.
+
+Use `letI : StarRing (𝓞 D.host.E) := { star := T.Q.H.bar star_involutive := fun a => by`. Apply `NumberField.RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[T.Q.H.bar_eq, T.Q.H.bar_eq]`. Use `first`. Consider the case `simp`.
+
+Consider the case `exact IsCMField.complexConj_apply_apply _ _`. Use `star_mul := fun a b => by rw [map_mul, mul_comm]`. Use `star_add := fun a b => map_add _ a b }`. Establish `hs : ∀ a : 𝓞 D.host.E, star a = T.Q.H.bar a` using `fun a => rfl`. Take `⟨T', iT, e', ho', yI', -, io₂, hio₂, yI₂, hy₂, -, C, ι, hι, cf, P', gm, k, hP', hgm, hcf, hle⟩` from `hV D T hF j hj hs w g Λ N x0 P hsec hU hTb hTl hLev hAdm hP hR Tc io yI e la ho hy hN hA`.
+
+Use `le_trans ?_ hle` and prove the remaining obligations. Use `le_trans (EReal.coe_le_coe_iff.2 ?_) (le_nval_comb e' cf _ _ hcf (fun i => hCR D T.toTop hF.p j hj hs _ _ _ T' (iT.comp io) io₂ hio₂ yI₂ e' la ho' hy₂ p hp hpl C k (wtA w) w.n P' hP' (gm i) (hgm i)))` and prove the remaining obligations. Establish `h1` using `DF_wtA_le T.toTop j w`. Establish `h2` using `differentExponent_nonneg D p`. Establish `h3 : (0 : ℝ) ≤ ((vLa la ((p : ℕ) : T.Q.c.F) : ℤ) : ℝ)` using `by exact_mod_cast hv`.
+
+Establish `h4 : (Formalism.L2.Pj.DF (T.Q.Dw j) (wtA w) : ℝ) ≤ (WeightAlgebra.DF w : ℝ)` using `by exact_mod_cast h1`. Establish `h5` using `mul_le_mul_of_nonneg_left h4 (mul_nonneg h3 h2)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem shortValRam_of (hV : ShortValChartSt) (hCR : ChartValueRamifiedAnyLevel) (D : D7) (T : Full D) (hF : LawsFull T)
     (j : ℕ) (hj : InR D j) (w : WeightFamilies.Wt D j) (g : T.toTop.R j) (Λ : GenLat D.host.E w.n) (N : ℕ)
     (x0 : Fin w.n → (T.Q.Dw j).La) (P : MvPolynomial (LtN (T.Q.Dw j) w.n) T.Q.c.F)
@@ -234,6 +282,21 @@ theorem shortValRam_of (hV : ShortValChartSt) (hCR : ChartValueRamifiedAnyLevel)
   have h5 := mul_le_mul_of_nonneg_left h4 (mul_nonneg h3 h2)
   linarith
 
+/- English proof (translation)
+Take `⟨k, hk, hk1, hk2⟩` from `hTb`. Establish `hp2qd : p ∣ 2 * D.host.q * D.host.d`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hp`. Break down `hp with rfl | rfl | rfl` into its components or cases. Conclude with `dvd_mul_of_dvd_left (dvd_mul_right _ _) _`.
+
+Conclude with `dvd_mul_of_dvd_left (dvd_mul_left _ _) _`. Conclude with `dvd_mul_left _ _`. Establish `hpb : p ∣ badN D`. Unfold `badN`. Conclude with `dvd_mul_of_dvd_left (hp2qd.trans (Nat.mul_dvd_mul_right (Nat.mul_dvd_mul_right D.host.two_dvd_QS _) _)) _`.
+
+Establish `h2b : 2 ∣ badN D`. Unfold `badN`. Conclude with `dvd_mul_of_dvd_left (dvd_mul_of_dvd_left (dvd_mul_of_dvd_left D.host.two_dvd_QS _) _) _`. Establish `hkl : (k : 𝓞 T.Q.c.F) ∉ la.asIdeal` using `fun h => Pf.not_both_mem la (Nat.Coprime.coprime_dvd_right hpb hk) h hpl`. Establish `hM2 : (T.dδ j n).l₂.M = T.Q.l.M * (T.dδ j n).pd` using `(hF.sh.dLev j hj n).2.1`.
+
+Establish `hMl : ((T.Q.l.M : ℕ) : 𝓞 T.Q.c.F) ∉ la.asIdeal` using `M_not_mem_of_ram D T.toTop hF.p la p hp hpl`. Establish `hpdl : (((T.dδ j n).pd : ℕ) : 𝓞 T.Q.c.F) ∉ la.asIdeal` using `fun h => Pf.not_both_mem la (Nat.Coprime.coprime_dvd_right hp2qd (hOff T hF j hj n)) h hpl`. Use `⟨(T.dδ j n).l₂.M * k, ⟨?_, dvd_mul_right _ _, ?_⟩, ?_, ⟨k, hkl, hk1, hk2⟩⟩` and prove the remaining obligations. Conclude with `(hLev.1.of_dvd_nat hLev.2.1).mul (Nat.coprime_two_right.1 (Nat.Coprime.coprime_dvd_right h2b hk))`. Use `show _ ≤ Λ.La ⊓ stdLat D.host.E n`.
+
+Use `le_inf ((Submodule.smul_mono_left ?_).trans hk2) Submodule.smul_le_right` and prove the remaining obligations. Use `Ideal.span_singleton_le_span_singleton.2 ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_mul]`. Conclude with `dvd_mul_left _ _`. Introduce `h`.
+
+Rewrite `h` using `[hM2, Nat.cast_mul, Nat.cast_mul]`. Break down `la.isPrime.mem_or_mem h with h | h` into its components or cases. Break down `la.isPrime.mem_or_mem h with h | h` into its components or cases. Conclude with `hMl h`. Conclude with `hpdl h`.
+
+Conclude with `hkl h`.
+-/
 theorem levOK_adapt {D : D7} (hOff : PdOffRamD D) (T : Full D) (hF : LawsFull T) (j : ℕ) (hj : InR D j) {n : ℕ}
     (Λ : GenLat D.host.E n) (N : ℕ) (hTb : Λ.TrivAt (badN D)) (hLev : Λ.LevOK N (T.dδ j n).l₂.M)
     (la : HeightOneSpectrum (𝓞 T.Q.c.F)) (p : ℕ) (hp : p ∈ ({2, D.host.q, D.host.d} : Finset ℕ))
@@ -273,6 +336,11 @@ theorem levOK_adapt {D : D7} (hOff : PdOffRamD D) (T : Full D) (hF : LawsFull T)
       · exact hpdl h
     · exact hkl h
 
+/- English proof (translation)
+Take `⟨hsec, Λ, N, x0, P, hU, hTb, hTl, hLev, hAdm, hP, hR⟩` from `hg`. Take `⟨Tc, io, e, ho, yI, hy, eta, heta, hq⟩` from `y.2`. Establish `hv : vAtV y g = nval Tc.V e (evI yI g)` using `by show y.1.1 g = _`. Rewrite using `[hq]`. Both sides reduce to the same expression.
+
+Rewrite using `[hv]`. Take `⟨N', hLev', hN', hA⟩` from `levOK_adapt hOff T hF j hj Λ N hTb hLev la p hp hpl`. Conclude with `shortValRam_of hV hCR D T hF j hj w g Λ N' x0 P hsec hU hTb hTl hLev' hAdm hP (hN D T hF j hj w.n (wtA w) Λ N N' x0 P g hU hTb hP hLev hLev' hR) Tc io yI e la ho hy p hp hpl hN' hA`.
+-/
 theorem shortPlaceRam_of (hN : ShortFreeNSt) (hV : ShortValChartSt) (hCR : ChartValueRamifiedAnyLevel)
     (D : D7) (hOff : PdOffRamD D) (T : Full D) (hF : LawsFull T) (j : ℕ) (hj : InR D j) (w : WeightFamilies.Wt D j) (g : T.toTop.R j)
     (hg : g ∈ T.toTop.sh j w) (la : HeightOneSpectrum (𝓞 T.Q.c.F)) (y : T.toTop.PtA j la) (p : ℕ)
@@ -302,6 +370,9 @@ def ShortPlaceBqdAt (D : D7) : Prop :=
       p ∈ ({D.host.q, D.host.d} : Finset ℕ) → ((p : 𝓞 T.Q.c.F) ∈ la.asIdeal) →
       (((-(((vLa la (p : T.Q.c.F) : ℤ) : ℝ) * (1 / 2) * (DF w : ℝ) / 2)) : ℝ) : EReal) ≤ vAtV y g
 
+/- English proof (translation)
+Use `first`. Consider the case `exact Iff.rfl`. Consider the case `exact ⟨fun h D => h D, fun h D => h D⟩`. Consider the case `exact ⟨fun h D T hF j hj w g hg la y hla => h D T hF j hj w g hg la y hla, fun h D T hF j hj w g hg la y hla => h D T hF j hj w g hg la y hla⟩`.
+-/
 theorem shortSeriesRamifiedPlaceTwo_iff_forall : ShortSeriesRamifiedPlaceTwo ↔ ∀ D, ShortSeriesRamifiedPlaceTwoAt D := by
   first
     | exact Iff.rfl
@@ -309,6 +380,9 @@ theorem shortSeriesRamifiedPlaceTwo_iff_forall : ShortSeriesRamifiedPlaceTwo ↔
     | exact ⟨fun h D T hF j hj w g hg la y hla => h D T hF j hj w g hg la y hla,
         fun h D T hF j hj w g hg la y hla => h D T hF j hj w g hg la y hla⟩
 
+/- English proof (translation)
+Use `first`. Consider the case `exact Iff.rfl`. Consider the case `exact ⟨fun h D => h D, fun h D => h D⟩`. Consider the case `exact ⟨fun h D T hF j hj w g hg la y hla => h D T hF j hj w g hg la y hla, fun h D T hF j hj w g hg la y hla => h D T hF j hj w g hg la y hla⟩`.
+-/
 theorem shortPlaceBqdSt_iff : ShortPlaceBqdSt ↔ ∀ D, ShortPlaceBqdAt D := by
   first
     | exact Iff.rfl
@@ -316,6 +390,9 @@ theorem shortPlaceBqdSt_iff : ShortPlaceBqdSt ↔ ∀ D, ShortPlaceBqdAt D := by
     | exact ⟨fun h D T hF j hj w g hg la y hla => h D T hF j hj w g hg la y hla,
         fun h D T hF j hj w g hg la y hla => h D T hF j hj w g hg la y hla⟩
 
+/- English proof (translation)
+Introduce `T hF j hj w g hg la y hla`. Establish `h` using `shortPlaceRam_of hN hV hCR D hOff T hF j hj w g hg la y 2 (by simp) hla`. Unfold `vdP at h`. Rewrite `h` using `[if_pos rfl]`. Conclude with `h`.
+-/
 theorem shortSeriesRamifiedPlaceTwo_of_charts (hN : ShortFreeNSt) (hV : ShortValChartSt) (hCR : ChartValueRamifiedAnyLevel) {D : D7}
     (hOff : PdOffRamD D) : ShortSeriesRamifiedPlaceTwoAt D := by
   intro T hF j hj w g hg la y hla
@@ -324,6 +401,17 @@ theorem shortSeriesRamifiedPlaceTwo_of_charts (hN : ShortFreeNSt) (hV : ShortVal
   rw [if_pos rfl] at h
   exact h
 
+/- English proof (translation)
+Introduce `T hF j hj w g hg la y p hp hpl`. Establish `hp' : p ∈ ({2, D.host.q, D.host.d} : Finset ℕ)`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hp ⊢`. The claim follows by propositional logic. Establish `h` using `shortPlaceRam_of hN hV hCR D hOff T hF j hj w g hg la y p hp' hpl`.
+
+Unfold `vdP at h`. Establish `hp2 : p ≠ 2`. Introduce `h2`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hp`. Establish `hQ : 2 ∣ D.host.QS` using `(dvd_pow_self 2 (by omega)).trans D.host.tower_dvd`.
+
+Establish `h2dvd : 2 ∣ D.host.q * D.host.d`. Break down `hp with h | h` into its components or cases. Rewrite using `[← h, h2]`. Conclude with `dvd_mul_right 2 _`. Rewrite using `[← h, h2]`.
+
+Conclude with `dvd_mul_left 2 _`. Establish `hc` using `Nat.Coprime.coprime_dvd_left hQ D.host.QS_coprime`. Use `Nat.Coprime.eq_one_of_dvd hc h2dvd` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[if_neg hp2]`.
+
+Conclude with `h`.
+-/
 theorem shortPlaceBqd_at (hN : ShortFreeNSt) (hV : ShortValChartSt) (hCR : ChartValueRamifiedAnyLevel) {D : D7}
     (hOff : PdOffRamD D) : ShortPlaceBqdAt D := by
   intro T hF j hj w g hg la y p hp hpl
@@ -346,6 +434,13 @@ theorem shortPlaceBqd_at (hN : ShortFreeNSt) (hV : ShortValChartSt) (hCR : Chart
   rw [if_neg hp2] at h
   exact h
 
+/- English proof (translation)
+Introduce `D T hF j hj w g hg la y hbad`. Take `⟨u, g', hu, hvu, rfl, Λ, N, x0, P, hsec, hU, hTb, hTl, hLev, hAdm, hP, hA, hN, hR⟩` from `hRep D T hF j hj w g hg la hbad`. Take `⟨Tc, io, e, ho, yI, hy, eta, heta, hq⟩` from `y.2`. Establish `hv : vAtV y (u • g') = nval Tc.V e (evI yI (u • g'))` using `by show y.1.1 (u • g') = _`. Rewrite using `[hq]`.
+
+Both sides reduce to the same expression. Rewrite using `[hv, evI_smul, nval_smul ho hu, hvu]`. Simplify using `only [Int.cast_zero, EReal.coe_zero, zero_add]`. Establish `hbad3 : ∀ p ∈ ({2, D.host.q, D.host.d} : Finset ℕ), ((p : 𝓞 T.Q.c.F) ∉ la.asIdeal)`. Introduce `p hp`.
+
+Apply `hbad p` to reduce the goal to its premises. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hp ⊢`. The claim follows by propositional logic. Conclude with `shortValInt_of hV hCI D T hF j hj w g' Λ N x0 P hsec hU hTb hTl hLev hAdm hP hR Tc io yI e la ho hy hbad3 hN hA`.
+-/
 theorem shortPlaceA_of (hRep : ShortRepSt) (hV : ShortValChartSt) (hCI : ChartValueIntegralAnyLevel) : ShortPlaceASt := by
   intro D T hF j hj w g hg la y hbad
   obtain ⟨u, g', hu, hvu, rfl, Λ, N, x0, P, hsec, hU, hTb, hTl, hLev, hAdm, hP, hA, hN, hR⟩ :=

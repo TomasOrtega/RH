@@ -10,6 +10,9 @@ noncomputable section
 
 section SlopeTestRemainingChoices
 
+/- English proof (translation)
+Establish `h` using `ENNReal.lintegral_mul_le_Lp_mul_Lq μ Real.HolderConjugate.two_two hf hg`. Simplify using `only [Pi.mul_apply, ENNReal.rpow_two] at h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, ← ENNReal.rpow_natCast, ← ENNReal.rpow_natCast (_ ^ (1 / 2 : ℝ)), ← ENNReal.rpow_mul, ← ENNReal.rpow_mul]`. Evaluate the numerical expressions.
+-/
 theorem lintegral_mul_sq_le {α : Type*} [MeasurableSpace α] (μ : Measure α) {f g : α → ℝ≥0∞}
     (hf : AEMeasurable f μ) (hg : AEMeasurable g μ) :
     (∫⁻ a, f a * g a ∂μ) ^ 2 ≤ (∫⁻ a, f a ^ 2 ∂μ) * ∫⁻ a, g a ^ 2 ∂μ := by
@@ -23,12 +26,18 @@ theorem lintegral_mul_sq_le {α : Type*} [MeasurableSpace α] (μ : Measure α) 
           ← ENNReal.rpow_mul, ← ENNReal.rpow_mul]
         norm_num
 
+/- English proof (translation)
+Rewrite using `[eLpNorm_eq_lintegral_rpow_enorm_toReal two_ne_zero ENNReal.ofNat_ne_top, ENNReal.toReal_ofNat, ← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]`. Evaluate the numerical expressions using `[ENNReal.rpow_two]`.
+-/
 theorem eLpNorm_two_sq {α E : Type*} [MeasurableSpace α] [NormedAddCommGroup E] (μ : Measure α)
     (g : α → E) : eLpNorm g 2 μ ^ 2 = ∫⁻ a, ‖g a‖ₑ ^ 2 ∂μ := by
   rw [eLpNorm_eq_lintegral_rpow_enorm_toReal two_ne_zero ENNReal.ofNat_ne_top,
     ENNReal.toReal_ofNat, ← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]
   norm_num [ENNReal.rpow_two]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_lt, top_le_iff]`. Rewrite `h` using `[hc, ENNReal.top_pow two_ne_zero]`. Conclude with `lt_irrefl _ h`.
+-/
 theorem lt_top_of_sq_lt_top {a : ℝ≥0∞} (h : a ^ 2 < ∞) : a < ∞ := by
   by_contra hc
   rw [not_lt, top_le_iff] at hc
@@ -47,25 +56,43 @@ def kernelFun (k : X × Y → 𝕜) (f : Y → 𝕜) (x : X) : 𝕜 := ∫ y, k 
 
 variable (k : Lp 𝕜 2 (μ.prod ν))
 
+/- English proof (translation)
+The claim follows from `((Lp.stronglyMeasurable k).measurable.enorm.pow_const 2).lintegral_prod_right'`.
+-/
 theorem measurable_rowSq :
     Measurable fun x => ∫⁻ y, ‖k (x, y)‖ₑ ^ 2 ∂ν :=
   ((Lp.stronglyMeasurable k).measurable.enorm.pow_const 2).lintegral_prod_right'
 
+/- English proof (translation)
+Rewrite using `[← lintegral_prod _ ((Lp.stronglyMeasurable k).measurable.enorm.pow_const 2).aemeasurable, Lp.enorm_def, eLpNorm_two_sq]`.
+-/
 theorem lintegral_rowSq : ∫⁻ x, ∫⁻ y, ‖k (x, y)‖ₑ ^ 2 ∂ν ∂μ = ‖k‖ₑ ^ 2 := by
   rw [← lintegral_prod _ ((Lp.stronglyMeasurable k).measurable.enorm.pow_const 2).aemeasurable,
     Lp.enorm_def, eLpNorm_two_sq]
 
+/- English proof (translation)
+Use `ae_lt_top (measurable_rowSq k) ?_` and prove the remaining obligations. Rewrite using `[lintegral_rowSq]`. Conclude with `(ENNReal.pow_lt_top enorm_lt_top).ne`.
+-/
 theorem ae_rowSq_lt_top : ∀ᵐ x ∂μ, ∫⁻ y, ‖k (x, y)‖ₑ ^ 2 ∂ν < ∞ := by
   refine ae_lt_top (measurable_rowSq k) ?_
   rw [lintegral_rowSq]
   exact (ENNReal.pow_lt_top enorm_lt_top).ne
 
+/- English proof (translation)
+Rewrite using `[Lp.enorm_def, eLpNorm_two_sq]`.
+-/
 theorem enorm_Lp_sq (f : Lp 𝕜 2 ν) : ‖f‖ₑ ^ 2 = ∫⁻ y, ‖f y‖ₑ ^ 2 ∂ν := by
   rw [Lp.enorm_def, eLpNorm_two_sq]
 
+/- English proof (translation)
+The claim follows from `(Lp.stronglyMeasurable k).measurable.comp measurable_prodMk_left`.
+-/
 theorem measurable_row (x : X) : Measurable fun y => k (x, y) :=
   (Lp.stronglyMeasurable k).measurable.comp measurable_prodMk_left
 
+/- English proof (translation)
+Simplify using `only [enorm_mul]`. Rewrite using `[enorm_Lp_sq]`. Conclude with `lintegral_mul_sq_le ν (measurable_row k x).enorm.aemeasurable (Lp.aestronglyMeasurable f).enorm`.
+-/
 theorem lintegral_row_mul_sq_le (x : X) (f : Lp 𝕜 2 ν) :
     (∫⁻ y, ‖k (x, y) * f y‖ₑ ∂ν) ^ 2 ≤ (∫⁻ y, ‖k (x, y)‖ₑ ^ 2 ∂ν) * ‖f‖ₑ ^ 2 := by
   simp only [enorm_mul]
@@ -73,15 +100,24 @@ theorem lintegral_row_mul_sq_le (x : X) (f : Lp 𝕜 2 ν) :
   exact lintegral_mul_sq_le ν (measurable_row k x).enorm.aemeasurable
     (Lp.aestronglyMeasurable f).enorm
 
+/- English proof (translation)
+The claim follows from `(pow_le_pow_left₀ (by positivity) (enorm_integral_le_lintegral_enorm _) 2).trans (lintegral_row_mul_sq_le k x f)`.
+-/
 theorem enorm_kernelFun_sq_le (x : X) (f : Lp 𝕜 2 ν) :
     ‖kernelFun (ν := ν) k f x‖ₑ ^ 2 ≤ (∫⁻ y, ‖k (x, y)‖ₑ ^ 2 ∂ν) * ‖f‖ₑ ^ 2 :=
   (pow_le_pow_left₀ (by positivity) (enorm_integral_le_lintegral_enorm _) 2).trans
     (lintegral_row_mul_sq_le k x f)
 
+/- English proof (translation)
+The claim follows from `((Lp.aestronglyMeasurable k).mul (Lp.aestronglyMeasurable f).comp_snd).integral_prod_right'`.
+-/
 theorem aestronglyMeasurable_kernelFun (f : Lp 𝕜 2 ν) :
     AEStronglyMeasurable (kernelFun (ν := ν) k f) μ :=
   ((Lp.aestronglyMeasurable k).mul (Lp.aestronglyMeasurable f).comp_snd).integral_prod_right'
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_mul_const _ (measurable_rowSq k), lintegral_rowSq]`.
+-/
 theorem lintegral_kernelFun_sq_le (f : Lp 𝕜 2 ν) :
     ∫⁻ x, ‖kernelFun (ν := ν) k f x‖ₑ ^ 2 ∂μ ≤ ‖k‖ₑ ^ 2 * ‖f‖ₑ ^ 2 := by
   calc ∫⁻ x, ‖kernelFun (ν := ν) k f x‖ₑ ^ 2 ∂μ
@@ -90,12 +126,18 @@ theorem lintegral_kernelFun_sq_le (f : Lp 𝕜 2 ν) :
     _ = ‖k‖ₑ ^ 2 * ‖f‖ₑ ^ 2 := by
         rw [lintegral_mul_const _ (measurable_rowSq k), lintegral_rowSq]
 
+/- English proof (translation)
+Use `⟨aestronglyMeasurable_kernelFun k f, lt_top_of_sq_lt_top ?_⟩` and prove the remaining obligations. Rewrite using `[eLpNorm_two_sq]`. Conclude with `(lintegral_kernelFun_sq_le k f).trans_lt (ENNReal.mul_lt_top (ENNReal.pow_lt_top enorm_lt_top) (ENNReal.pow_lt_top enorm_lt_top))`.
+-/
 theorem memLp_kernelFun (f : Lp 𝕜 2 ν) : MemLp (kernelFun (ν := ν) k f) 2 μ := by
   refine ⟨aestronglyMeasurable_kernelFun k f, lt_top_of_sq_lt_top ?_⟩
   rw [eLpNorm_two_sq]
   exact (lintegral_kernelFun_sq_le k f).trans_lt
     (ENNReal.mul_lt_top (ENNReal.pow_lt_top enorm_lt_top) (ENNReal.pow_lt_top enorm_lt_top))
 
+/- English proof (translation)
+Use `filter_upwards [ae_rowSq_lt_top k] with x hx f`. Use `⟨(measurable_row k x).aestronglyMeasurable.mul (Lp.aestronglyMeasurable f), ?_⟩` and prove the remaining obligations. Use `lt_top_of_sq_lt_top ((lintegral_row_mul_sq_le k x f).trans_lt ?_)` and prove the remaining obligations. Conclude with `ENNReal.mul_lt_top hx (ENNReal.pow_lt_top enorm_lt_top)`.
+-/
 theorem ae_integrable_row_mul :
     ∀ᵐ x ∂μ, ∀ f : Lp 𝕜 2 ν, Integrable (fun y => k (x, y) * f y) ν := by
   filter_upwards [ae_rowSq_lt_top k] with x hx f
@@ -126,15 +168,24 @@ def kernelOpₗ : Lp 𝕜 2 ν →ₗ[𝕜] Lp 𝕜 2 μ where
     filter_upwards [Lp.coeFn_smul c f] with y hy
     rw [hy, Pi.smul_apply, smul_eq_mul, mul_left_comm]
 
+/- English proof (translation)
+The claim follows from `(memLp_kernelFun k f).coeFn_toLp`.
+-/
 theorem kernelOpₗ_apply_ae (f : Lp 𝕜 2 ν) :
     kernelOpₗ k f =ᵐ[μ] fun x => ∫ y, k (x, y) * f y ∂ν :=
   (memLp_kernelFun k f).coeFn_toLp
 
+/- English proof (translation)
+Rewrite using `[Lp.enorm_def, eLpNorm_congr_ae (kernelOpₗ_apply_ae k f), eLpNorm_two_sq]`. Both sides reduce to the same expression.
+-/
 theorem enorm_kernelOpₗ_sq (f : Lp 𝕜 2 ν) :
     ‖kernelOpₗ k f‖ₑ ^ 2 = ∫⁻ x, ‖kernelFun (ν := ν) k f x‖ₑ ^ 2 ∂μ := by
   rw [Lp.enorm_def, eLpNorm_congr_ae (kernelOpₗ_apply_ae k f), eLpNorm_two_sq]
   rfl
 
+/- English proof (translation)
+Establish `h : ‖kernelOpₗ k f‖ₑ ^ 2 ≤ (‖k‖ₑ * ‖f‖ₑ) ^ 2`. Rewrite using `[enorm_kernelOpₗ_sq, mul_pow]`. Conclude with `lintegral_kernelFun_sq_le k f`. Rewrite `h` using `[ENNReal.pow_le_pow_left_iff two_ne_zero, ← ofReal_norm, ← ofReal_norm, ← ofReal_norm, ← ENNReal.ofReal_mul (norm_nonneg _), ENNReal.ofReal_le_ofReal_iff (by positivity)]`. Conclude with `h`.
+-/
 theorem norm_kernelOpₗ_le (f : Lp 𝕜 2 ν) : ‖kernelOpₗ k f‖ ≤ ‖k‖ * ‖f‖ := by
   have h : ‖kernelOpₗ k f‖ₑ ^ 2 ≤ (‖k‖ₑ * ‖f‖ₑ) ^ 2 := by
     rw [enorm_kernelOpₗ_sq, mul_pow]
@@ -146,10 +197,20 @@ theorem norm_kernelOpₗ_le (f : Lp 𝕜 2 ν) : ‖kernelOpₗ k f‖ ≤ ‖k�
 def kernelOp : Lp 𝕜 2 ν →L[𝕜] Lp 𝕜 2 μ :=
   (kernelOpₗ k).mkContinuous ‖k‖ (norm_kernelOpₗ_le k)
 
+/- English proof (translation)
+The claim follows from `kernelOpₗ_apply_ae k f`.
+-/
 theorem kernelOp_apply_ae (f : Lp 𝕜 2 ν) :
     kernelOp k f =ᵐ[μ] fun x => ∫ y, k (x, y) * f y ∂ν :=
   kernelOpₗ_apply_ae k f
 
+/- English proof (translation)
+Establish `hconj : ∀ y, ‖conj (k (x, y))‖ₑ = ‖k (x, y)‖ₑ` using `fun y => by`. Rewrite using `[← ofReal_norm, ← ofReal_norm, RCLike.norm_conj]`. Establish `hm : MemLp (fun y => conj (k (x, y))) 2 ν`. Use `⟨(RCLike.continuous_conj.comp_aestronglyMeasurable (measurable_row k x).aestronglyMeasurable), lt_top_of_sq_lt_top ?_⟩` and prove the remaining obligations. Rewrite using `[eLpNorm_two_sq]`.
+
+Simplify `hx` using `only [hconj]`. Use `⟨hm.toLp _, ?_, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[Lp.enorm_def, eLpNorm_congr_ae hm.coeFn_toLp, eLpNorm_two_sq]`. Simplify using `only [hconj]`. Rewrite using `[MeasureTheory.L2.inner_def, kernelFun]`.
+
+Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hm.coeFn_toLp] with y hy`. Rewrite using `[RCLike.inner_apply, hy, RCLike.conj_conj, mul_comm]`.
+-/
 theorem exists_row {x : X} (hx : ∫⁻ y, ‖k (x, y)‖ₑ ^ 2 ∂ν < ∞) :
     ∃ h : Lp 𝕜 2 ν, ‖h‖ₑ ^ 2 = ∫⁻ y, ‖k (x, y)‖ₑ ^ 2 ∂ν ∧
       ∀ f : Lp 𝕜 2 ν, kernelFun (ν := ν) k f x = ⟪h, f⟫_𝕜 := by
@@ -168,6 +229,11 @@ theorem exists_row {x : X} (hx : ∫⁻ y, ‖k (x, y)‖ₑ ^ 2 ∂ν < ∞) :
     filter_upwards [hm.coeFn_toLp] with y hy
     rw [RCLike.inner_apply, hy, RCLike.conj_conj, mul_comm]
 
+/- English proof (translation)
+Set `b` to `stdHilbertBasis 𝕜 (Lp 𝕜 2 ν)`. Rewrite using `[hsNormSq]`. Use `ENNReal.summable.tsum_le_of_sum_le fun s => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono_ae ?_` and prove the remaining obligations.
+
+Use `filter_upwards [ae_rowSq_lt_top k] with x hx`. Take `⟨h, hh, hK⟩` from `exists_row k hx`. Combine the equalities or inequalities in the displayed calculation. Use `_ = ‖k‖ₑ ^ 2 := lintegral_rowSq k`.
+-/
 theorem hsNormSq_kernelOp_le : hsNormSq (kernelOp k) ≤ ‖k‖ₑ ^ 2 := by
   let b := stdHilbertBasis 𝕜 (Lp 𝕜 2 ν)
   rw [hsNormSq]
@@ -189,11 +255,17 @@ theorem hsNormSq_kernelOp_le : hsNormSq (kernelOp k) ≤ ‖k‖ₑ ^ 2 := by
           _ = ∫⁻ y, ‖k (x, y)‖ₑ ^ 2 ∂ν := by rw [← enorm_sq_eq_tsum b, hh]
     _ = ‖k‖ₑ ^ 2 := lintegral_rowSq k
 
+/- English proof (translation)
+The claim follows from `(hsNormSq_kernelOp_le k).trans_lt (ENNReal.pow_lt_top enorm_lt_top)`.
+-/
 theorem kernelOp_isHilbertSchmidt : IsHilbertSchmidt (kernelOp k) :=
   (hsNormSq_kernelOp_le k).trans_lt (ENNReal.pow_lt_top enorm_lt_top)
 
 end Kernel
 
+/- English proof (translation)
+Use `filter_upwards [kernelOp_apply_ae (hk.toLp k) f, Measure.ae_ae_of_ae_prod hk.coeFn_toLp] with x h1 h2`. Rewrite using `[h1]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [h2] with y hy`. Rewrite using `[hy]`.
+-/
 theorem kernelOp_toLp_apply_ae {k : X × Y → 𝕜} (hk : MemLp k 2 (μ.prod ν)) (f : Lp 𝕜 2 ν) :
     kernelOp (hk.toLp k) f =ᵐ[μ] fun x => ∫ y, k (x, y) * f y ∂ν := by
   filter_upwards [kernelOp_apply_ae (hk.toLp k) f, Measure.ae_ae_of_ae_prod hk.coeFn_toLp] with x h1 h2

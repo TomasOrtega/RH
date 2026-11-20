@@ -26,6 +26,13 @@ namespace GlobalTheory.SupSpanDeep
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `hP D T j Y e o hY hE la hla _`. Use `eq_top_iff.2 fun f _ => ?_` and prove the remaining obligations. Take `⟨k, a, n, g, h, t, hdom, hn, hmem, ht, hgh, hh⟩` from `GlobalTheory.T.exists_power_cusp_multiplier hP D T j Y e o hY hE la hla f.1 f.2`. Take `⟨s, hs, hsv⟩` from `GlobalTheory.T.exists_scalar_cusp_form_integral hP D T j Y e o hY hE a n hdom hn _ hmem`. Establish `key : ∀ la', ∀ v ∈ valSet Y.d.Xo₂ Y.d.c₂ (algCls Y.d.Xo₂ Y.d.c₂) la', 0 ≤ v ((s * t) • ((f : Rul Y.d.Xo₂ Y.d.c₂) ^ (k + 1)))`.
+
+Introduce `la' v hv`. Establish `hV` using `isVal_valSet la' v hv`. Establish `e1 : (s • ((f : Rul Y.d.Xo₂ Y.d.c₂) ^ (k + 1) * g)) * h = (s * t) • ((f : Rul Y.d.Xo₂ Y.d.c₂) ^ (k + 1))`. Rewrite using `[smul_mul_assoc, mul_assoc, hgh, mul_smul_comm, mul_one, smul_smul]`. Rewrite using `[← e1, hV.mul]`.
+
+Conclude with `add_nonneg (hsv la' v hv) (hh la' v hv)`. Take `⟨s', hs', h'⟩` from `GlobalTheory.SupFull.exists_smul_nonneg_of_pow (valSet Y.d.Xo₂ Y.d.c₂ (algCls Y.d.Xo₂ Y.d.c₂)) (fun la => isVal_valSet la) {(f : Rul Y.d.Xo₂ Y.d.c₂) ^ (k + 1)} (by rintro g' rfl; exact ⟨s * t, mul_ne_zero hs ht, key⟩) (f : Rul Y.d.Xo₂ Y.d.c₂) k (Submodule.subset_span rfl)`. Establish `hmem' : s' • f ∈ GlobalTheory.AllWt.latW Y.U (wtOf _ la 0)` using `GlobalTheory.AllWt.mem_supLat.2 fun la v hv => h' la v hv`. Rewrite using `[← inv_smul_smul₀ hs' f]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem')`.
+-/
 theorem span_latW_eq_top : GlobalTheory.CovTop.Hypotheses2 → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ),
     Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → ∀ la : GlobalTheory.AllWt.Weight (T.Q.Dw j), GapGe 1 la →
     FiniteDimensional Y.d.c₂.F (Y.V (wtOf _ la 0)) →

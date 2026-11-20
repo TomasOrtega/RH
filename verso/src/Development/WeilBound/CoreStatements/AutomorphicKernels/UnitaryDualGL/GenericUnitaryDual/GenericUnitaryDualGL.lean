@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.GenericUnitary
 
 namespace PositivityTheory.Gud
 
+/- English proof (translation)
+Introduce `_ _ _ _ _` and use `Fin.genericUnitaryDualGL_holds`.
+-/
 theorem generic_unitary_dual_GL : True → GlobalTheory.Published.SquareIntegrableSegment → GlobalTheory.Published.GenericUnlinkedGL → GlobalTheory.Published.LanglandsMultisegments →
     GlobalTheory.Published.StandardCosocleGL → GlobalTheory.Published.GenericUnitaryDualGL := fun _ _ _ _ _ => Fin.genericUnitaryDualGL_holds
 

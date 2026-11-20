@@ -17,6 +17,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ConjSeq
 
+/- English proof (translation)
+Use `letI := σ.toAlgebra`. Take `⟨hbc, hF⟩` from `H R A g hA hg R' A' φ h`. Use `⟨Submodule.eq_top_iff'.2 fun x ↦ ?_, hF⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hbc.2 x`. Proceed by induction on `z with`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `tmul r c => rw [liftSemi_tmul]`.
+
+Conclude with `Submodule.smul_mem _ r (Submodule.subset_span ⟨c, rfl⟩)`.
+-/
 theorem span_pull_baseChange (H : GlobalTheory.Published.AbelianDeRham.BaseChange) {R R' : Type} [CommRing R]
     [CommRing R'] (σ : R →+* R') {A : Over (Sp R)} [GrpObj A] {A' : Over (Sp R')} [GrpObj A']
     {φ : A'.left ⟶ A.left} (h : IsGrpPullback A' A (spMap σ) φ) {g : ℕ} (hA : IsAbelianScheme A)
@@ -32,6 +39,13 @@ theorem span_pull_baseChange (H : GlobalTheory.Published.AbelianDeRham.BaseChang
   | add a b ha hb => rw [map_add]; exact Submodule.add_mem _ ha hb
   | tmul r c => rw [liftSemi_tmul]; exact Submodule.smul_mem _ r (Submodule.subset_span ⟨c, rfl⟩)
 
+/- English proof (translation)
+Introduce `H p _ R _ hR A A₁ _ _ π hπ F _ hF g hA hg`. Take `⟨h1, h2⟩` from `span_pull_baseChange H _ hπ hA hg`. Establish `key : ∀ c, primPull (dp0 R) (𝟙 _) F ((GlobalTheory.PDiv.grpMor_of_isGrpPullback hπ).pull c) = frobDR p R hR A c` using `fun c ↦ GrpMor.pull_pull (GlobalTheory.PDiv.grpMor_of_isGrpPullback hπ) (homMor (dp0 R) (𝟙 _) F) (frobMor p R hR A (cast_left p R hR A)) (fun _ ↦ rfl) hF c`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.range_eq_map, ← h1, Submodule.map_span, ← Set.range_comp, conjDR]`.
+
+Use `congr 1`. Use extensionality with `x`. Simplify using `only [Set.mem_range, Function.comp_apply, key]`. Rewrite using `[h2, Submodule.span_le]`. Introduce and unpack `_ ⟨c, hc, rfl⟩`.
+
+Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, key]`. Conclude with `GlobalTheory.Published.ConjugateFiltration.Test.grpScheme_absoluteFrobenius_kills_hodgeFiltration p hR A (cast_left p R hR A) (frobMor p R hR A (cast_left p R hR A)) c hc`.
+-/
 theorem range_primPull_relFrob : GlobalTheory.Published.AbelianDeRham.BaseChange → ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] (hR : (p : R) = 0) (A A₁ : Over (Sp R)) [GrpObj A] [GrpObj A₁] (π : A₁.left ⟶ A.left) (hπ : IsGrpPullback A₁ A (spMap (frobR p R hR)) π) (F : A ⟶ A₁) [IsMonHom F] (hF : F.left ≫ π = GlobalTheory.VB.frob A.left p (cast_left p R hR A)) (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → LinearMap.range (primPull (dp0 R) (𝟙 _) F) = conjDR p R hR A ∧ PrimitiveSubmodule A₁ ≤ LinearMap.ker (primPull (dp0 R) (𝟙 _) F) := by
   intro H p _ R _ hR A A₁ _ _ π hπ F _ hF g hA hg
   obtain ⟨h1, h2⟩ := span_pull_baseChange H _ hπ hA hg

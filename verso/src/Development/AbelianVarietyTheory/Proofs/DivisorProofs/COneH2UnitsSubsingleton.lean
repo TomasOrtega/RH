@@ -8,6 +8,31 @@ open CategoryTheory Limits groupCohomology GroundTheory.GroupCoh IntermediateFie
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K L _ _ _ _ _ hC`. Set `A` to `Rep.ofAlgebraAutOnUnits K L`. Establish `h0 : ∀ (S : Subgroup (L ≃ₐ[K] L)) [Fintype S], IsZero (tateCohomology (Rep.res S.subtype A) 0)`. Introduce `S _`. Use `isZero_tateCohomology_zero_of_forall _ fun m hm => ?_` and prove the remaining obligations.
+
+Set `u : Lˣ` to `Additive.toMul m`. Establish `hu : (u : L) ∈ fixedField S` using `fun s => congrArg Units.val (hm s)`. Establish `hCF` using `GlobalTheory.T.c_one_property_finite_extension K (fixedField S) hC`. Establish `hne : (⟨(u : L), hu⟩ : fixedField S) ≠ 0` using `fun h => u.ne_zero (congrArg Subtype.val h)`. Take `⟨x, hx⟩` from `GlobalTheory.T.exists_algebra_norm_eq_of_isFirstChernClass (fixedField S) L hCF _ hne`.
+
+Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hx` using `[Algebra.norm_zero]`. Conclude with `hne hx.symm`. Set `y : Rep.res S.subtype A` to `Additive.ofMul (Units.mk0 x hx0)`.
+
+Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `e1 : (Rep.res S.subtype A).ρ.norm y = ∑ s : S, (Rep.res S.subtype A).ρ s y` using `by first`. Consider the case `rw [Representation.norm, LinearMap.coeFn_sum, Finset.sum_apply]`. Consider the case `simp [Representation.norm]`. Establish `e2 : (Additive.ofMul (∏ s : S, (s : L ≃ₐ[K] L) • Units.mk0 x hx0) : Additive Lˣ) = ∑ s : S, (Rep.res S.subtype A).ρ s y` using `ofMul_prod _ _`.
+
+Rewrite using `[e1, ← e2]`. Express the relevant statement in the definitionally equal form `Additive.ofMul _ = Additive.ofMul u`. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.coe_prod]`.
+
+Establish `h` using `Algebra.norm_eq_prod_automorphisms (fixedField S) x`. Rewrite `h` using `[hx]`. Use `Eq.trans ?_ h.symm` and prove the remaining obligations. Conclude with `Fintype.prod_equiv (subgroupEquivAlgEquiv S).toEquiv _ _ (fun s => rfl)`. Establish `h1 : ∀ (S : Subgroup (L ≃ₐ[K] L)) [Fintype S], IsZero (tateCohomology (Rep.res S.subtype A) (0 + 1))`.
+
+Introduce `S _`. Establish `hz : ∀ z : groupCohomology (Rep.res S.subtype A) 1, z = 0` using `fun z => H1_induction_on z fun f => by`. Rewrite using `[H1π_eq_zero_iff]`. Establish `hf` using `(mem_cocycles₁_iff (A := Rep.res S.subtype A) f).1 f.2`. Set `e` to `subgroupEquivAlgEquiv S`.
+
+Set `g : Gal(L/fixedField S) → Lˣ` to `fun σ => Additive.toMul (f (e.symm σ))`. Establish `hg : IsMulCocycle₁ g`. Introduce `σ τ`. Take `⟨s, rfl⟩` from `e.surjective σ`. Take `⟨t, rfl⟩` from `e.surjective τ`.
+
+Establish `h` using `congrArg (Additive.toMul (α := Lˣ)) (hf s t)`. Simplify using `only [g, ← map_mul, MulEquiv.symm_apply_apply]`. Conclude with `h`. Take `⟨β, hβ⟩` from `isMulCoboundary₁_of_isMulCocycle₁_of_aut_to_units g hg`. Use `⟨Additive.ofMul β, funext fun s => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `congrArg (Additive.ofMul (α := Lˣ)) (hβ (e s))`. Rewrite `h` using `[show g (e s) = Additive.toMul (f s) by simp only [g, MulEquiv.symm_apply_apply]; rfl]`. Conclude with `h`. Establish `hs : Subsingleton (groupCohomology (Rep.res S.subtype A) 1)` using `⟨fun a b => by rw [hz a, hz b]⟩`. Establish `e : (0 + 1 : ℤ) = ((1 : ℕ) : ℤ)` using `by norm_num`.
+
+Rewrite using `[e]`. Conclude with `(ModuleCat.isZero_of_subsingleton (groupCohomology (Rep.res S.subtype A) 1)).of_iso ((TateCohomology.isoGroupCohomology 1).app _)`. Establish `hCT : CohTrivial A` using `cohTrivial_of_forall_subgroup A 0 fun S _ => ⟨h0 S, h1 S⟩`. Establish `h2 : IsZero (tateCohomology A ((2 : ℕ) : ℤ))` using `isZero_tateCohomology_of_index A _ fun p hp _ => ⟨⊤, by simpa [Subgroup.index_top] using hp.one_lt.ne', fun {_} => hCT ⊤ _⟩`. Establish `h2' : IsZero (groupCohomology A 2)` using `h2.of_iso ((TateCohomology.isoGroupCohomology 2).app A).symm`.
+
+Conclude with `(ModuleCat.isZero_iff_subsingleton).1 h2'`.
+-/
 theorem c_one_h2_units_subsingleton : ∀ (K L : Type) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L], (∀ (n d : ℕ) (f : MvPolynomial (Fin n) K), f.IsHomogeneous d → 0 < d → d < n → ∃ x : Fin n → K, x ≠ 0 ∧ MvPolynomial.eval x f = 0) → Subsingleton (groupCohomology (Rep.ofAlgebraAutOnUnits K L) 2) := by
   intro K L _ _ _ _ _ hC
   classical

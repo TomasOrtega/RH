@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `Q` to `Algebra.SubmersivePresentation.localizationAway T P.jacobian`. Set `P' : Algebra.SubmersivePresentation R T (Unit ⊕ ι) (Unit ⊕ σ)` to `{ __ := Q.toPreSubmersivePresentation.comp P jacobian_isUnit := by`. Rewrite using `[Algebra.PreSubmersivePresentation.comp_jacobian_eq_jacobian_smul_jacobian, Algebra.smul_def]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit _).mul Q.jacobian_isUnit }`. Use `P'.isStandardSmoothOfRelativeDimension ?_` and prove the remaining obligations.
+
+Use `(Algebra.PreSubmersivePresentation.dimension_comp_eq_dimension_add_dimension Q.toPreSubmersivePresentation P).trans ?_` and prove the remaining obligations. Simplify using `[Algebra.Presentation.dimension]`.
+-/
 theorem isStandardSmoothOfRelativeDimension_away_jacobian {R S ι σ : Type*} [CommRing R]
     [CommRing S] [Algebra R S] [Finite ι] [Finite σ]
     (P : Algebra.PreSubmersivePresentation R S ι σ) (T : Type*) [CommRing T] [Algebra S T]
@@ -26,6 +31,13 @@ theorem isStandardSmoothOfRelativeDimension_away_jacobian {R S ι σ : Type*} [C
     Q.toPreSubmersivePresentation P).trans ?_
   simp [Algebra.Presentation.dimension]
 
+/- English proof (translation)
+Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Set `b` to `Module.Free.chooseBasis R A`. Use `b.repr.injective (Finsupp.ext fun k => ?_)` and prove the remaining obligations. Rewrite using `[map_zero, Finsupp.zero_apply]`. Use `IsNilpotent.eq_zero (nilpotent_iff_mem_prime.mpr fun p hp => ?_)` and prove the remaining obligations.
+
+Establish `h₁ : AlgebraicGeometry.IsReduced (pullback (Spec.map (CommRingCat.ofHom (algebraMap R p.ResidueField))) (Spec.map (CommRingCat.ofHom (algebraMap R A))))` using `GeometricallyReduced.geometrically_isReduced _ _ _ (IsPullback.of_hasPullback _ _).flip`. Establish `h₂ : _root_.IsReduced (TensorProduct R p.ResidueField A)` using `(affine_isReduced_iff (.of (TensorProduct R p.ResidueField A))).mp (isReduced_of_isOpenImmersion (pullbackSpecIso R p.ResidueField A).inv)`. Establish `h₃ : (1 : p.ResidueField) ⊗ₜ[R] a = 0` using `(ha.map (Algebra.TensorProduct.includeRight (R := R) (A := p.ResidueField))).eq_zero`. Establish `h₄` using `congrArg (fun x => (b.baseChange p.ResidueField).repr x k) h₃`. Simplify using `only [Module.Basis.baseChange_repr_tmul, map_zero, Finsupp.zero_apply, ← Algebra.algebraMap_eq_smul_one] at h₄`.
+
+Conclude with `Ideal.algebraMap_residueField_eq_zero.mp h₄`.
+-/
 theorem isReduced_of_free_of_geometricallyReduced {R A : Type u} [CommRing R] [CommRing A]
     [Algebra R A] [_root_.IsReduced R] [Module.Free R A]
     [GeometricallyReduced (Spec.map (CommRingCat.ofHom (algebraMap R A)))] : _root_.IsReduced A := by
@@ -81,14 +93,23 @@ abbrev DehomRing : Type u := MvPolynomial (Fin 3) R ⧸ Ideal.span (Set.range (d
 
 def dehomCoord (j : Fin 3) : DehomRing W i := Ideal.Quotient.mk _ (X j)
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.eq.mpr (Ideal.subset_span ⟨1, rfl⟩)`.
+-/
 @[simp] theorem dehomCoord_self : dehomCoord W i i = 1 :=
   Ideal.Quotient.eq.mpr (Ideal.subset_span ⟨1, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `RingHom.congr_fun (f := eval₂Hom (algebraMap R (DehomRing W i)) (dehomCoord W i)) (MvPolynomial.ringHom_ext (fun r => by simp; rfl) (fun i => by simp [dehomCoord])) p`.
+-/
 theorem eval₂_dehomCoord (p : MvPolynomial (Fin 3) R) :
     eval₂ (algebraMap R (DehomRing W i)) (dehomCoord W i) p = Ideal.Quotient.mk _ p :=
   RingHom.congr_fun (f := eval₂Hom (algebraMap R (DehomRing W i)) (dehomCoord W i))
     (MvPolynomial.ringHom_ext (fun r => by simp; rfl) (fun i => by simp [dehomCoord])) p
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(W.toProjective.map _).Equation _`. Rewrite using `[WeierstrassCurve.Projective.Equation, WeierstrassCurve.Projective.map_polynomial, MvPolynomial.eval_map, eval₂_dehomCoord, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span ⟨0, rfl⟩`.
+-/
 theorem equation_dehomCoord :
     (W.map (algebraMap R (DehomRing W i))).toProjective.Equation (dehomCoord W i) := by
   change (W.toProjective.map _).Equation _
@@ -96,6 +117,15 @@ theorem equation_dehomCoord :
     MvPolynomial.eval_map, eval₂_dehomCoord, Ideal.Quotient.eq_zero_iff_mem]
   exact Ideal.subset_span ⟨0, rfl⟩
 
+/- English proof (translation)
+Establish `hm` using `awayEval_awayCoord_mul W i (algebraMap R _) (dehomCoord W i) (equation_dehomCoord W i) (by simp)`. Use `set ℓ := awayEval W i (algebraMap R _) (dehomCoord W i) (equation_dehomCoord W i) (by simp)`. Simplify using `only [dehomCoord_self, mul_one] at hm`. Establish `hr : ∀ r, ℓ (awayConst W i r) = algebraMap R _ r` using `awayEval_awayConst W i _ _ _ _`. Set `g : DehomRing W i →+* AwayRing W i` to `Ideal.Quotient.lift _ (eval₂Hom (awayConst W i) (awayCoord W i)) (by`.
+
+Introduce `a ha`. Use `(show Ideal.span (Set.range (dehomRelation W i)) ≤ RingHom.ker _ from ?_) ha` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Use `fin_cases k`.
+
+Establish `h` using `equation_awayCoord W i`. Express the relevant statement in the definitionally equal form `(W.toProjective.map _).Equation _ at h`. Rewrite `h` using `[WeierstrassCurve.Projective.Equation, WeierstrassCurve.Projective.map_polynomial, MvPolynomial.eval_map]`. Then use the resulting hypothesis. Simplify using `[dehomRelation])`. Establish `gr : ∀ r, g (algebraMap R _ r) = awayConst W i r` using `fun r => eval₂_C ..`.
+
+Establish `gc : ∀ j, g (dehomCoord W i j) = awayCoord W i j` using `fun j => eval₂_X ..`. Use `(RingEquiv.ofRingHom ℓ g ?_ ?_).bijective` and prove the remaining obligations. Conclude with `Ideal.Quotient.ringHom_ext (MvPolynomial.ringHom_ext (fun r => (congrArg ℓ (gr r)).trans (hr r)) (fun j => (congrArg ℓ (gc j)).trans (hm j)))`. Conclude with `awayRing_hom_ext W i (fun r => by simp [hr, gr]) (fun j => by simp [hm, gc])`.
+-/
 theorem bijective_awayEval_dehom : Function.Bijective
     (awayEval W i (algebraMap R _) (dehomCoord W i) (equation_dehomCoord W i) (by simp)) := by
   have hm := awayEval_awayCoord_mul W i (algebraMap R _) (dehomCoord W i)
@@ -129,17 +159,28 @@ instance : IsOpenImmersion (dehomChart W i) :=
   isOpenImmersion_ptHom W i _ _ (.of_isUnit (equation_dehomCoord W i) i (by simp)) (by simp)
     (bijective_awayEval_dehom W i)
 
+/- English proof (translation)
+The claim follows from `TopologicalSpace.Opens.ext (range_ptHom W i _ _ (.of_isUnit (equation_dehomCoord W i) i (by simp)) (by simp) (bijective_awayEval_dehom W i)) @[reassoc (attr := simp)]`.
+-/
 theorem opensRange_dehomChart : (dehomChart W i).opensRange = coordOpen W i :=
   TopologicalSpace.Opens.ext (range_ptHom W i _ _
     (.of_isUnit (equation_dehomCoord W i) i (by simp)) (by simp) (bijective_awayEval_dehom W i))
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `pt_toSpec ..`.
+-/
 theorem dehomChart_toSpec : dehomChart W i ≫ toSpec W =
     Spec.map (CommRingCat.ofHom (algebraMap R (DehomRing W i))) :=
   pt_toSpec ..
 
 end Presentation
 
+/- English proof (translation)
+Use `IsZariskiLocalAtSource.of_openCover (P := P) (Scheme.Cover.mkOfCovers (Fin 3) _ (dehomChart W) fun x => ?_) fun (i : Fin 3) => ?_` and prove the remaining obligations. Break down `coordOpen_one_sup_coordOpen_two W |>.ge (Set.mem_univ x) with hx | hx` into its components or cases. Rewrite `hx` using `[← opensRange_dehomChart]`. Conclude with `⟨1, hx⟩`. Rewrite `hx` using `[← opensRange_dehomChart]`.
+
+Conclude with `⟨2, hx⟩`. Express the relevant statement in the definitionally equal form `P (dehomChart W i ≫ toSpec W)`. Rewrite using `[dehomChart_toSpec]`. Conclude with `h i`.
+-/
 theorem of_dehomChart (P : MorphismProperty Scheme.{u}) [IsZariskiLocalAtSource P]
     (h : ∀ i, P (Spec.map (CommRingCat.ofHom (algebraMap R (DehomRing W i))))) :
     P (toSpec W) := by
@@ -165,6 +206,11 @@ section Smooth
 
 open MvPolynomial
 
+/- English proof (translation)
+Distinguish the cases in `hz : P 2 = 0`. Establish `hx` using `WeierstrassCurve.Projective.X_eq_zero_of_Z_eq_zero h hz`. Apply the tactic sequence `have hy : P 1 ≠ 0 := fun hy => hi <| by fin_cases i <;> assumption`. Use `(WeierstrassCurve.Projective.nonsingular_of_Z_eq_zero hz).mpr ⟨h, Or.inr ?_⟩` and prove the remaining obligations. Simplify `hy` using `[hx]`.
+
+Conclude with `(WeierstrassCurve.Projective.nonsingular_of_Z_ne_zero hz).mpr <| (WeierstrassCurve.Affine.equation_iff_nonsingular_of_Δ_ne_zero hΔ).mp <| (WeierstrassCurve.Projective.equation_of_Z_ne_zero hz).mp h`.
+-/
 theorem nonsingular_of_Δ_ne_zero {F : Type*} [Field F] {V : WeierstrassCurve F} (hΔ : V.Δ ≠ 0)
     {P : Fin 3 → F} (h : V.toProjective.Equation P) {i : Fin 3} (hi : P i ≠ 0) :
     V.toProjective.Nonsingular P := by
@@ -177,6 +223,17 @@ theorem nonsingular_of_Δ_ne_zero {F : Type*} [Field F] {V : WeierstrassCurve F}
       (WeierstrassCurve.Affine.equation_iff_nonsingular_of_Δ_ne_zero hΔ).mp <|
         (WeierstrassCurve.Projective.equation_of_Z_ne_zero hz).mp h
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`. Set `` to `Ideal.Quotient.field m`. Use `set g : A →+* A ⧸ m := Ideal.Quotient.mk m`. Establish `hi' : (g ∘ P) i ≠ 0` using `(hi.map g).ne_zero`.
+
+Establish `hns : (V.map g).toProjective.Nonsingular (g ∘ P)` using `nonsingular_of_Δ_ne_zero (by rw [WeierstrassCurve.map_Δ]; exact (hΔ.map g).ne_zero) (h.map g) hi'`. Use `set D : Fin 3 → A ⧸ m := fun j => MvPolynomial.eval (g ∘ P) (pderiv j (V.map g).toProjective.polynomial) with hD`. Establish `hj : ∀ j, j ≠ i → D j = 0` using `fun j hj => by`. Establish `e : (V.map g).toProjective.polynomial = MvPolynomial.map g V.toProjective.polynomial` using `WeierstrassCurve.Projective.map_polynomial ..`. Simplify using `only [hD]`.
+
+Rewrite using `[e, pderiv_map, MvPolynomial.eval_map, ← MvPolynomial.eval₂_comp]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (hle (Ideal.subset_span ⟨⟨j, hj⟩, rfl⟩))`. Establish `euler : 3 * _ = (g ∘ P) 0 * D 0 + (g ∘ P) 1 * D 1 + (g ∘ P) 2 * D 2` using `(V.map g).toProjective.polynomial_relation (g ∘ P)`. Establish `h0 : MvPolynomial.eval (g ∘ P) (V.map g).toProjective.polynomial = 0` using `hns.1`. Rewrite `euler` using `[h0, mul_zero, ← Fin.sum_univ_three (fun j => (g ∘ P) j * D j), Finset.sum_eq_single i (fun j _ h => by rw [hj j h, mul_zero]) (by simp)]`.
+
+Establish `hall : ∀ j, D j = 0` using `fun j => by`. Distinguish the cases in `h : j = i`. Conclude with `h ▸ (mul_eq_zero.mp euler.symm).resolve_left hi'`. Conclude with `hj j h`. Break down `hns.2 with h | h | h` into its components or cases.
+
+Use `exacts [h (hall 0), h (hall 1), h (hall 2)]`.
+-/
 theorem span_pderiv_eq_top {A : Type*} [CommRing A] {V : WeierstrassCurve A} (hΔ : IsUnit V.Δ)
     {P : Fin 3 → A} (h : V.toProjective.Equation P) {i : Fin 3} (hi : IsUnit (P i)) :
     Ideal.span (Set.range fun j : {j : Fin 3 // j ≠ i} =>
@@ -217,6 +274,13 @@ def dehomPresentation : Algebra.PreSubmersivePresentation R (DehomRing W i) (Fin
     intro a b h
     fin_cases a <;> fin_cases b <;> simp_all [hij.symm])
 
+/- English proof (translation)
+Rewrite using `[Algebra.PreSubmersivePresentation.jacobian_eq_jacobiMatrix_det, Matrix.det_fin_two]`. Establish `h : ∀ a b, (dehomPresentation W hij).jacobiMatrix a b = pderiv (![j, i] a) (dehomRelation W i b)` using `fun a b => Algebra.PreSubmersivePresentation.jacobiMatrix_naive ..`. Establish `h₁ : (dehomPresentation W hij).jacobiMatrix 1 1 = 1`. Rewrite using `[h]`. Express the relevant statement in the definitionally equal form `pderiv i (X i - 1 : MvPolynomial (Fin 3) R) = (1 : MvPolynomial (Fin 3) R)`.
+
+Simplify using the standard rewrite rules. Establish `h₂ : (dehomPresentation W hij).jacobiMatrix 0 1 = 0`. Rewrite using `[h]`. Express the relevant statement in the definitionally equal form `pderiv j (X i - 1 : MvPolynomial (Fin 3) R) = (0 : MvPolynomial (Fin 3) R)`. Simplify using `[hij.symm]`.
+
+Rewrite using `[h₁, h₂, mul_one, zero_mul, sub_zero, h, Algebra.Generators.algebraMap_apply]`. Conclude with `eval₂_dehomCoord W i _`.
+-/
 theorem jacobian_dehomPresentation : (dehomPresentation W hij).jacobian =
     Ideal.Quotient.mk _ (pderiv j W.toProjective.polynomial) := by
   rw [Algebra.PreSubmersivePresentation.jacobian_eq_jacobiMatrix_det, Matrix.det_fin_two]
@@ -236,6 +300,9 @@ theorem jacobian_dehomPresentation : (dehomPresentation W hij).jacobian =
 
 include hij in
 
+/- English proof (translation)
+Establish `: IsLocalization.Away (dehomPresentation W hij).jacobian T`. Rewrite using `[jacobian_dehomPresentation]` and apply the resulting hypothesis. Simplify `isStandardSmoothOfRelativeDimension_away_jacobian (dehomPresentation W hij) T` using `[Algebra.Presentation.dimension]`.
+-/
 theorem isStandardSmoothOfRelativeDimension_away_pderiv (T : Type*) [CommRing T]
     [Algebra (DehomRing W i) T] [Algebra R T] [IsScalarTower R (DehomRing W i) T]
     [IsLocalization.Away
@@ -246,6 +313,11 @@ theorem isStandardSmoothOfRelativeDimension_away_pderiv (T : Type*) [CommRing T]
   simpa [Algebra.Presentation.dimension] using
     isStandardSmoothOfRelativeDimension_away_jacobian (dehomPresentation W hij) T
 
+/- English proof (translation)
+Establish `h` using `span_pderiv_eq_top (V := W.map (algebraMap R (DehomRing W i))) (by rw [WeierstrassCurve.map_Δ]; exact hΔ.map _) (equation_dehomCoord W i) (i := i) (by simp)`. Establish `e : (W.map (algebraMap R (DehomRing W i))).toProjective.polynomial = MvPolynomial.map _ W.toProjective.polynomial` using `WeierstrassCurve.Projective.map_polynomial ..`. Simplify using `only [e, pderiv_map, MvPolynomial.eval_map, eval₂_dehomCoord] at h`. Use `⟨_, h, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨j, hj⟩, rfl⟩`.
+
+Rewrite using `[← IsScalarTower.algebraMap_eq, RingHom.isStandardSmoothOfRelativeDimension_algebraMap]`. Conclude with `isStandardSmoothOfRelativeDimension_away_pderiv W hj _`.
+-/
 theorem locally_isStandardSmoothOfRelativeDimension_dehomRing (hΔ : IsUnit W.Δ) (i : Fin 3) :
     RingHom.Locally (RingHom.IsStandardSmoothOfRelativeDimension 1)
       (algebraMap R (DehomRing W i)) := by
@@ -260,6 +332,9 @@ theorem locally_isStandardSmoothOfRelativeDimension_dehomRing (hΔ : IsUnit W.Δ
   rw [← IsScalarTower.algebraMap_eq, RingHom.isStandardSmoothOfRelativeDimension_algebraMap]
   exact isStandardSmoothOfRelativeDimension_away_pderiv W hj _
 
+/- English proof (translation)
+The claim follows from `have := HasRingHomProperty.instIsZariskiLocalAtSource (P := @SmoothOfRelativeDimension.{u} 1) of_dehomChart W (@SmoothOfRelativeDimension 1) fun i => (HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension 1)).2 (locally_isStandardSmoothOfRelativeDimension_dehomRing W hΔ i)`.
+-/
 theorem smoothOfRelativeDimension_toSpec_of_isUnit (hΔ : IsUnit W.Δ) :
     SmoothOfRelativeDimension 1 (toSpec W) :=
   have := HasRingHomProperty.instIsZariskiLocalAtSource (P := @SmoothOfRelativeDimension.{u} 1)
@@ -274,6 +349,9 @@ instance smoothOfRelativeDimension_toSpec [W.IsElliptic] :
 instance smooth_toSpec [W.IsElliptic] : Smooth (toSpec W) :=
   SmoothOfRelativeDimension.smooth 1 _
 
+/- English proof (translation)
+Use `(HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension 1) (φ := CommRingCat.ofHom (algebraMap R W.toAffine.CoordinateRing))).1 ?_` and prove the remaining obligations. Rewrite using `[← chartZ_toSpec]`. Conclude with `inferInstanceAs (SmoothOfRelativeDimension (0 + 1) _)`.
+-/
 theorem locally_isStandardSmoothOfRelativeDimension_coordinateRing [W.IsElliptic] :
     RingHom.Locally (RingHom.IsStandardSmoothOfRelativeDimension 1)
       (algebraMap R W.toAffine.CoordinateRing) := by
@@ -282,6 +360,9 @@ theorem locally_isStandardSmoothOfRelativeDimension_coordinateRing [W.IsElliptic
   rw [← chartZ_toSpec]
   exact inferInstanceAs (SmoothOfRelativeDimension (0 + 1) _)
 
+/- English proof (translation)
+Use `(HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension 1) (φ := CommRingCat.ofHom (algebraMap R (OriginRing W)))).1 ?_` and prove the remaining obligations. Rewrite using `[← chartY_toSpec]`. Conclude with `inferInstanceAs (SmoothOfRelativeDimension (0 + 1) _)`.
+-/
 theorem locally_isStandardSmoothOfRelativeDimension_originRing [W.IsElliptic] :
     RingHom.Locally (RingHom.IsStandardSmoothOfRelativeDimension 1)
       (algebraMap R (OriginRing W)) := by
@@ -308,6 +389,11 @@ section Integral
 
 open Polynomial
 
+/- English proof (translation)
+Establish `h : IsSMulRegular (OriginRing W) (X : R[X])` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (monic_X.mem_nonZeroDivisors : (X : R[X]) ∈ nonZeroDivisors R[X])`. Rewrite using `[mem_nonZeroDivisors_iff_left]`. Introduce `a ha`. Use `h.right_eq_zero_of_smul ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`.
+
+Conclude with `ha`.
+-/
 theorem originW_mem_nonZeroDivisors_originRing : originW W ∈ nonZeroDivisors (OriginRing W) := by
   have h : IsSMulRegular (OriginRing W) (X : R[X]) :=
     Module.Flat.isSMulRegular_of_nonZeroDivisors
@@ -318,6 +404,13 @@ theorem originW_mem_nonZeroDivisors_originRing : originW W ∈ nonZeroDivisors (
   rw [Algebra.smul_def]
   exact ha
 
+/- English proof (translation)
+Use `set g := Spec.map (CommRingCat.ofHom (algebraMap (OriginRing W) (Localization.Away (originW W)))) with hg`. Establish `: IsOpenImmersion g` using `IsOpenImmersion.of_isLocalization (originW W)`. Establish `hr : Set.range (g ≫ chartY W) ⊆ Set.range (chartZ W)`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[← Scheme.Hom.coe_opensRange, opensRange_chartZ, Scheme.Hom.comp_apply]`.
+
+Express the relevant statement in the definitionally equal form `g x ∈ chartY W ⁻¹ᵁ coordOpen W 2`. Rewrite using `[chartY_preimage_coordOpen_two]`. Conclude with `(PrimeSpectrum.localization_away_comap_range (Localization.Away (originW W)) (originW W)).le ⟨x, rfl⟩`. Use `⟨IsOpenImmersion.lift (chartZ W) (g ≫ chartY W) hr, ?_, IsOpenImmersion.lift_fac ..⟩` and prove the remaining obligations. Establish `: IsOpenImmersion (IsOpenImmersion.lift (chartZ W) (g ≫ chartY W) hr ≫ chartZ W)`.
+
+Rewrite using `[IsOpenImmersion.lift_fac]`. Use `infer_instance`. Conclude with `.of_comp _ (chartZ W)`.
+-/
 theorem exists_isOpenImmersion_away_originW :
     ∃ f : Spec (.of (Localization.Away (originW W))) ⟶ Spec (.of W.toAffine.CoordinateRing),
       IsOpenImmersion f ∧ f ≫ chartZ W =
@@ -351,6 +444,11 @@ instance isDomain_originRing [IsDomain R] : IsDomain (OriginRing W) := by
     (affine_isIntegral_iff (.of (Localization.Away (originW W)))).mp this
   exact hinj.isDomain _
 
+/- English proof (translation)
+Introduce `x`. Break down `exists_chartY_or_chartZ W x with ⟨y, rfl⟩ | hx` into its components or cases. Establish `hd : Dense (PrimeSpectrum.basicOpen (originW W) : Set (PrimeSpectrum (OriginRing W)))`. Rewrite using `[← PrimeSpectrum.localization_away_comap_range (Localization.Away (originW W)) (originW W)]`. Use `(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).mpr ?_` and prove the remaining obligations.
+
+Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).mp (IsLocalization.injective _ (M := Submonoid.powers (originW W)) (Submonoid.powers_le.mpr (originW_mem_nonZeroDivisors_originRing W)))]`. Conclude with `bot_le`. Rewrite `hd` using `[← chartY_preimage_coordOpen_two, ← opensRange_chartZ]`. Conclude with `(chartY W).continuous.closure_preimage_subset _ (hd y)`. Conclude with `subset_closure hx`.
+-/
 theorem denseRange_chartZ : DenseRange (chartZ W) := by
   intro x
   rcases exists_chartY_or_chartZ W x with ⟨y, rfl⟩ | hx
@@ -416,6 +514,9 @@ instance isReduced_scheme [_root_.IsReduced R] : AlgebraicGeometry.IsReduced (sc
 
 end Integral
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, ⟨inferInstance, inferInstance, inferInstance⟩, inferInstance, smoothOfRelativeDimension_toSpec_of_isUnit W⟩`.
+-/
 theorem proper_flat_geometricallyIntegral_smooth :
     IsProper (toSpec W) ∧ Flat (toSpec W) ∧
       (LocallyOfFinitePresentation (toSpec W) ∧ QuasiCompact (toSpec W) ∧
@@ -425,6 +526,9 @@ theorem proper_flat_geometricallyIntegral_smooth :
   ⟨inferInstance, inferInstance, ⟨inferInstance, inferInstance, inferInstance⟩, inferInstance,
     smoothOfRelativeDimension_toSpec_of_isUnit W⟩
 
+/- English proof (translation)
+The claim follows from `smoothOfRelativeDimension_toSpec_of_isUnit _ (by simp only [isUnit_iff_ne_zero, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈] norm_num)`.
+-/
 example : SmoothOfRelativeDimension 1 (toSpec (⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℚ)) :=
   smoothOfRelativeDimension_toSpec_of_isUnit _ (by
     simp only [isUnit_iff_ne_zero, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄,

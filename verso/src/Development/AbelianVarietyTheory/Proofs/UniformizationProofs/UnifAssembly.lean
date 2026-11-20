@@ -17,6 +17,11 @@ open GlobalTheory.UU
 
 namespace GlobalTheory.UU
 
+/- English proof (translation)
+Introduce `h1 h2 hA hB V _ _ _ A G _ _ s`. Take `⟨D, U, hP, hg⟩` from `hA V A G s`. Take `⟨D', U', hP', hg', hFE⟩` from `hB V s.cdvr D A G U`. Take `⟨U'', hM⟩` from `GlobalTheory.T.exists_uniformisation_of_functionalEquation_degreeOne h1 h2 V s.cdvr D' A G U' hFE`. Establish `e : U'.P = s.P` using `hP'.trans hP`.
+
+Use `⟨D', U'', ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hM.LG.trans (by rw [e])`. Conclude with `hM.gen.trans (hg'.trans hg)`. Conclude with `hM.cub.trans (by rw [e])`.
+-/
 theorem unif_assembly : Laws → Laws2 → (AllSet fun {V} _ _ _ {A} {G} _ _ s => ∃ (D : DegPre V) (U : PreU (IsLocalRing.maximalIdeal V) D A G), U.P = s.P ∧ U.gen = s.gen) → (AllPre fun {V} _ _ _ {_} {A} {G} _ _ U => ∃ (D' : DegData V (IsLocalRing.maximalIdeal V)) (U' : PreU (IsLocalRing.maximalIdeal V) D'.toPre A G), U'.P = U.P ∧ U'.gen = U.gen ∧ U'.FE (Kbar V) 1) → AllSet fun {V} _ _ _ {A} {G} _ _ s => ∃ (D : DegData V (IsLocalRing.maximalIdeal V)) (U : Unif (IsLocalRing.maximalIdeal V) D A G), U.LG = s.P.L ∧ U.gen = s.gen ∧ HEq U.cubG s.P.c := by
   intro h1 h2 hA hB V _ _ _ A G _ _ s
   obtain ⟨D, U, hP, hg⟩ := hA V A G s

@@ -17,6 +17,19 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {LL : Type} [Field LL] [Algebra Qp LL]
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
 
+/- English proof (translation)
+Establish `hpos : ∀ n : ℕ, (1 : BdR) ∈ PD.Fil ((n : ℤ) + 1)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using h1`. Consider the case `succ n ih`.
+
+Use `PD.Fil_mul 1 ((n : ℤ) + 1) 1 1 h1 ih` as an intermediate fact. Rewrite `this` using `[one_mul]`. Use `this using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hle : ∀ (a : ℤ) (n : ℕ), PD.Fil (a + n) ≤ PD.Fil a`. Introduce `a n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+
+Introduce `x hx`. Apply `ih` to reduce the goal to its premises. Establish `hx' : x ∈ PD.Fil (a + n + 1)`. Establish `e : a + ((n + 1 : ℕ) : ℤ) = a + n + 1` using `by push_cast; ring`. Rewrite `hx` using `[e]`. Then use the resulting hypothesis.
+
+Conclude with `PD.Fil_anti (a + n) hx'`. Introduce `a`. Break down `le_or_gt a 1 with h | h` into its components or cases. Establish `e : (1 : ℤ) = a + ((1 - a).toNat : ℕ)` using `by omega`. Use `hle a (1 - a).toNat` as an intermediate fact.
+
+Rewrite `this` using `[← e]`. Conclude with `this h1`. Take `⟨n, hn⟩ : ∃ n : ℕ, a = (n : ℤ) + 1` from `⟨(a - 1).toNat, by omega⟩`. Rewrite using `[hn]`. Conclude with `hpos n`.
+-/
 theorem inv_one_mem_all (h1 : (1 : BdR) ∈ PD.Fil 1) : ∀ a : ℤ, (1 : BdR) ∈ PD.Fil a := by
   have hpos : ∀ n : ℕ, (1 : BdR) ∈ PD.Fil ((n : ℤ) + 1) := by
     intro n
@@ -47,6 +60,13 @@ theorem inv_one_mem_all (h1 : (1 : BdR) ∈ PD.Fil 1) : ∀ a : ℤ, (1 : BdR) �
   · obtain ⟨n, hn⟩ : ∃ n : ℕ, a = (n : ℤ) + 1 := ⟨(a - 1).toNat, by omega⟩
     rw [hn]; exact hpos n
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `h1 : (1 : BdR) ∈ PD.Fil 1`. Use `(PD.Fil 1).smul_mem c⁻¹ hc` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def, ← map_mul, inv_mul_cancel₀ hne, map_one]`. Then use the resulting hypothesis. Establish `hall` using `inv_one_mem_all PD h1`.
+
+Establish `h0 : (1 : BdR) = 0` using `PD.Fil_sep 1 hall`. Apply `PD.not_mem_filtration_two` to reduce the goal to its premises. Establish `: PD.ι PD.t = 0`. Rewrite using `[← one_mul (PD.ι PD.t), h0, zero_mul]`. Rewrite using `[this]`.
+
+Conclude with `(PD.Fil 2).zero_mem`.
+-/
 theorem field_inter_filtration_one_eq_zero (c : K) (hc : algebraMap K BdR c ∈ PD.Fil 1) : c = 0 := by
   by_contra hne
   have h1 : (1 : BdR) ∈ PD.Fil 1 := by

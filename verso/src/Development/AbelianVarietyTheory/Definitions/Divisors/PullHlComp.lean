@@ -10,6 +10,9 @@ def pick {α : Type*} [Zero α] (P : α → Prop) : α := by
   classical
   exact if h : ∃ a, P a then h.choose else 0
 
+/- English proof (translation)
+Unfold `pick`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem pick_spec {α : Type*} [Zero α] {P : α → Prop} (h : ∃ a, P a) : P (pick P) := by
   unfold pick
   rw [dif_pos h]
@@ -33,6 +36,11 @@ def twRel (q : ℕ) (i : ℤ) (A : Type) [CommRing A] : Submodule (ULift.{1} (ZM
   Submodule.span _ {x | ∃ (ζ ξ : Prim q A) (a : (ZMod q)ˣ), ξ.1 = ζ.1 ^ (a : ZMod q).val ∧
     x = Finsupp.single ξ 1 - Finsupp.single ζ (ULift.up ((a ^ i : (ZMod q)ˣ) : ZMod q))}
 
+/- English proof (translation)
+Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `x ⟨ζ, ξ, a, hξ, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, map_sub, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]`. Use `Submodule.subset_span ⟨Prim.map f ζ, Prim.map f ξ, a, ?_, rfl⟩` and prove the remaining obligations. Use `show f ξ.1 = f ζ.1 ^ _`.
+
+Rewrite using `[hξ, map_pow]`.
+-/
 theorem twRel_le (q : ℕ) (i : ℤ) {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) :
     twRel q i A ≤ (twRel q i B).comap (Finsupp.lmapDomain _ _ (Prim.map f)) := by
   refine Submodule.span_le.mpr ?_
@@ -118,8 +126,14 @@ def cpow (q : ℕ) {E : Spc} (x : Ht q E 2 1) (k : ℕ) : Ht q E (2 * k) k :=
   Nat.rec (motive := fun k : ℕ => Ht q E (2 * k) k) ((one q E).cast (by simp) (by simp))
     (fun _ y => (cup q y x).cast (by push_cast; ring) (by push_cast; ring)) k
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cpow_zero (q : ℕ) {E : Spc} (x : Ht q E 2 1) : cpow q x 0 = (one q E).cast (by simp) (by simp) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cpow_succ (q : ℕ) {E : Spc} (x : Ht q E 2 1) (k : ℕ) :
     cpow q x (k + 1) = (cup q (cpow q x k) x).cast (by push_cast; ring) (by push_cast; ring) := rfl
 
@@ -189,6 +203,9 @@ def redMap (Q q : ℕ) (i : ℤ) : SemiMap (res _ (tw Q i)) (res _ (tw q i)) :=
 
 def red (Q q : ℕ) (E : Spc) (n i : ℤ) : Ht Q E n i →+ Ht q E n i := (redMap Q q i).op.app E n
 
+/- English proof (translation)
+The claim follows from `(redMap Q q i).op.nat f n x`.
+-/
 theorem pull_red (Q q : ℕ) {E E' : Spc} (f : E ⟶ E') (n i : ℤ) (x : Ht Q E' n i) :
     pull _ f _ n (red Q q E' n i x) = red Q q E n i (pull _ f _ n x) :=
   (redMap Q q i).op.nat f n x
@@ -205,6 +222,9 @@ instance (k : ℕ) (E : Spc) (n i : ℤ) : AddCommGroup (HtL l k E n i) := infer
 instance (k : ℕ) (E : Spc) (n i : ℤ) : Module ℤ_[l] (HtL l k E n i) :=
   Module.compHom (Ht (l ^ k) E n i) (PadicInt.toZModPow k)
 
+/- English proof (translation)
+Establish `h1 : PadicInt.toZModPow k r = ((PadicInt.toZModPow k' r).val : ZMod (l ^ k))`. Rewrite using `[← PadicInt.zmod_cast_comp_toZModPow k k' hk, RingHom.comp_apply, ZMod.castHom_apply, ZMod.cast_eq_val]`. Express the relevant statement in the definitionally equal form `PadicInt.toZModPow k r • (show Ht (l ^ k) E n i from x) = _`. Rewrite using `[h1, Nat.cast_smul_eq_nsmul]`. Both sides reduce to the same expression.
+-/
 theorem HtL.smul_eq (k k' : ℕ) (hk : k ≤ k') (E : Spc) (n i : ℤ) (r : ℤ_[l]) (x : HtL l k E n i) :
     r • x = (PadicInt.toZModPow k' r).val • x := by
   have h1 : PadicInt.toZModPow k r = ((PadicInt.toZModPow k' r).val : ZMod (l ^ k)) := by
@@ -229,9 +249,15 @@ def pullHl {E E' : Spc} (f : E ⟶ E') (n i : ℤ) : Hl l E' n i →ₗ[ℤ_[l]]
   map_add' x y := Subtype.ext (funext fun k => map_add (pull _ f _ n) (x.1 k) (y.1 k))
   map_smul' r x := Subtype.ext (funext fun k => (pullL (ZMod (l ^ k)) f (tw (l ^ k) i) n).map_smul (PadicInt.toZModPow k r) (x.1 k))
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun x => Subtype.ext (funext fun k => pull_id _ E _ n (x.1 k))`.
+-/
 theorem pullHl_id (E : Spc) (n i : ℤ) : pullHl l (𝟙 E) n i = LinearMap.id :=
   LinearMap.ext fun x => Subtype.ext (funext fun k => pull_id _ E _ n (x.1 k))
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun x => Subtype.ext (funext fun k => pull_comp _ f g _ n (x.1 k))`.
+-/
 theorem pullHl_comp {E E' E'' : Spc} (f : E ⟶ E') (g : E' ⟶ E'') (n i : ℤ) :
     pullHl l (f ≫ g) n i = (pullHl l f n i).comp (pullHl l g n i) :=
   LinearMap.ext fun x => Subtype.ext (funext fun k => pull_comp _ f g _ n (x.1 k))

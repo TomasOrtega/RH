@@ -7,5 +7,8 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 open Formalism.MainNotions
 open MeasureTheory Formalism.IndefR.Lev Formalism.IndefR.Datum Formalism.IndefR.Mult Formalism.BasicNotions.TH Formalism.L2.Theta
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.OneMeasDim.log_dimAt_le | exact GlobalTheory.OneMeasDim.log_dimAt_le | (intros; apply GlobalTheory.OneMeasDim.log_dimAt_le <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.log_lowestKTypeWeylDimension_le_of_sizeBounds : ∀ (D : D7) (i : Fin D.R.m) (L : ℝ) (hL : GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.Sizes D L) (τ : D.what₂.Tau), Real.log (GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.dimAt D i τ) ≤ 3 / 2 * (D.R.r : ℝ) ^ 2 * L := by
   first | exact @GlobalTheory.OneMeasDim.log_dimAt_le | exact GlobalTheory.OneMeasDim.log_dimAt_le | (intros; apply GlobalTheory.OneMeasDim.log_dimAt_le <;> assumption)

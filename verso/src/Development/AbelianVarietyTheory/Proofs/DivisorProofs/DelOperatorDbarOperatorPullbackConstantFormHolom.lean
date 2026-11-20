@@ -15,6 +15,11 @@ open GlobalTheory.CxForm.FormMul GlobalTheory.CxForm.PullClosed
 
 variable {n m : ℕ}
 
+/- English proof (translation)
+Unfold `delAt`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `h : coefwise (fun g => del g v (coordVec a)) (fun x => ∑ i, f i x • e i) = ∑ i, del (f i) v (coordVec a) • e i`. Use `(bas n).ext_elem fun S => ?_` and prove the remaining obligations. Rewrite using `[repr_coefwise, repr_sum_smul, del_sum (A := fun i x => f i x * (bas n).repr (e i) S) fun i _ => (hf i).mul (differentiableAt_const _), ContinuousLinearMap.sum_apply, map_sum, Finsupp.finset_sum_apply]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[del_mul (b := fun _ => (bas n).repr (e i) S) (hf i) (differentiableAt_const _), del_const]`. Simplify using the standard rewrite rules. Rewrite using `[h, Finset.mul_sum]`. Simplify using `only [mul_smul_comm]`.
+-/
 theorem delAt_sum_smul {ι : Type} [Fintype ι] {v : V n} {f : ι → V n → ℂ} (e : ι → Alt n)
     (hf : ∀ i, DifferentiableAt ℝ (f i) v) :
     delAt (fun x => ∑ i, f i x • e i) v = ∑ a, ∑ i, del (f i) v (coordVec a) • (dz a * e i) := by
@@ -32,6 +37,11 @@ theorem delAt_sum_smul {ι : Type} [Fintype ι] {v : V n} {f : ι → V n → �
   rw [h, Finset.mul_sum]
   simp only [mul_smul_comm]
 
+/- English proof (translation)
+Unfold `delAt`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_add]`. Use `congr 1`.
+
+Use `(bas n).ext_elem fun S => ?_` and prove the remaining obligations. Rewrite using `[map_add, Finsupp.add_apply, repr_coefwise, repr_coefwise, repr_coefwise, ← ContinuousLinearMap.add_apply, ← del_add (hF S) (hG S)]`. Simplify using `only [map_add, Finsupp.add_apply]`.
+-/
 theorem delAt_add {v : V n} {F G : V n → Alt n} (hF : ∀ S, DifferentiableAt ℝ (fun x => (bas n).repr (F x) S) v)
     (hG : ∀ S, DifferentiableAt ℝ (fun x => (bas n).repr (G x) S) v) :
     delAt (fun x => F x + G x) v = delAt F v + delAt G v := by
@@ -45,11 +55,33 @@ theorem delAt_add {v : V n} {F G : V n → Alt n} (hF : ∀ S, DifferentiableAt 
     ← del_add (hF S) (hG S)]
   simp only [map_add, Finsupp.add_apply]
 
+/- English proof (translation)
+Establish `h` using `congrArg swap (sum_symm_dzb hs)`. Simplify `h` using `only [map_sum, map_smul, map_mul, map_zero, fun a : Fin n => (swap_dz a).2]`.
+-/
 theorem sum_symm_dz {s : Fin n → Fin n → ℂ} (hs : ∀ a c, s a c = s c a) :
     ∑ a, ∑ c, s a c • (dz a * dz c : Alt n) = 0 := by
   have h := congrArg swap (sum_symm_dzb hs)
   simpa only [map_sum, map_smul, map_mul, map_zero, fun a : Fin n => (swap_dz a).2] using h
 
+/- English proof (translation)
+Establish `hD : DifferentiableAt ℂ (fderiv ℂ φ) v` using `(hφ.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero`. Establish `hJ (w : V n) (b : Fin m) : HasFDerivAt (fun x => fderiv ℂ φ x w b) (((EuclideanSpace.proj b : V m →L[ℂ] ℂ).comp (ContinuousLinearMap.apply ℂ (V m) w)).comp (fderiv ℂ (fderiv ℂ φ) v)) v` using `((EuclideanSpace.proj b : V m →L[ℂ] ℂ).comp (ContinuousLinearMap.apply ℂ (V m) w)).hasFDerivAt.comp v hD.hasFDerivAt`. Establish `hJR (w : V n) (b : Fin m) : DifferentiableAt ℝ (fun x => fderiv ℂ φ x w b) v` using `(hJ w b).differentiableAt.restrictScalars ℝ`. Establish `hJc (w : V n) (b : Fin m) : DifferentiableAt ℝ (fun x => conj (fderiv ℂ φ x w b)) v` using `Complex.conjCLE.differentiableAt.comp v (hJR w b)`. Establish `hs` using `hφ.isSymmSndFDerivAt (by simp)`.
+
+Establish `hd (θ : Alt m)` using `(diff_and_closed hφ θ).1`. Use `set P : Alt m → Prop := fun θ => delAt (fun x => pull (fderiv ℂ φ x) θ) v = 0 with hP`. Establish `hconst (r : ℂ) : P (algebraMap ℂ _ r)`. Simplify using `only [hP, AlgHom.commutes]`. Simplify using `[delAt, coefwise]`.
+
+Establish `hadd (a b : Alt m) (ha : P a) (hb : P b) : P (a + b)`. Simplify using `only [hP, map_add] at ha hb ⊢`. Rewrite using `[delAt_add (hd a) (hd b), ha, hb, add_zero]`. Establish `hmul (a b : Alt m) (ha : P a) (hb : P b) : P (a * b)`. Simplify using `only [hP, map_mul] at ha hb ⊢`.
+
+Take `⟨y, hy⟩` from `delAt_mul (hd a) (hd b)`. Rewrite using `[hy, ha, hb, zero_mul, mul_zero, add_zero]`. Establish `hgen (i : Fin m ⊕ Fin m) : P (ExteriorAlgebra.ι ℂ (Pi.single i 1))`. Break down `i with b | b` into its components or cases. Express the relevant statement in the definitionally equal form `P (dz b)`.
+
+Simplify using `only [hP, fun L : V n →L[ℂ] V m => (pull_dz L b).1]`. Rewrite using `[delAt_sum_smul _ fun c => hJR _ b]`. Use `sum_symm_dz fun a c => ?_` and prove the remaining obligations. Rewrite using `[del_eq_fderiv (hJ _ b).differentiableAt, del_eq_fderiv (hJ _ b).differentiableAt, (hJ _ b).fderiv, (hJ _ b).fderiv]`. Simplify using `[hs.eq (coordVec a) (coordVec c)]`.
+
+Express the relevant statement in the definitionally equal form `P (dzb b)`. Simplify using `only [hP, fun L : V n →L[ℂ] V m => (pull_dz L b).2]`. Rewrite using `[delAt_sum_smul _ fun c => hJc _ b]`. Use `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[del_conj, dbar_eq_zero (hJ _ b).differentiableAt]`.
+
+Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `P θ`. Proceed by induction on `θ using ExteriorAlgebra.induction with`. Consider the case `algebraMap r => exact hconst r`. Consider the case `ι u`.
+
+Rewrite using `[pi_eq_sum_univ' u, map_sum]`. Use `Finset.sum_induction _ P hadd (by simpa using hconst 0) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.smul_def]`. Conclude with `hmul _ _ (hconst _) (hgen i)`. Consider the case `mul a b ha hb => exact hmul a b ha hb`.
+
+Consider the case `add a b ha hb => exact hadd a b ha hb`.
+-/
 theorem delAt_pull_of_contDiffAt {φ : V n → V m} {v : V n} (hφ : ContDiffAt ℂ 2 φ v) (θ : Alt m) :
     delAt (fun x => pull (fderiv ℂ φ x) θ) v = 0 := by
   have hD : DifferentiableAt ℂ (fderiv ℂ φ) v :=
@@ -102,6 +134,9 @@ theorem delAt_pull_of_contDiffAt {φ : V n → V m} {v : V n} (hφ : ContDiffAt 
   | mul a b ha hb => exact hmul a b ha hb
   | add a b ha hb => exact hadd a b ha hb
 
+/- English proof (translation)
+Introduce `_ _ _ _ γ hU hτ _ hv` and use `⟨delAt_pull_of_contDiffAt (analyticOnNhd_of_holo hU hτ _ hv).contDiffAt γ, dbarAt_pull_fderiv hU hτ hv γ⟩`.
+-/
 theorem delAt_dbarAt_pull_fderiv : ∀ (m n : ℕ) (τ : V m → V n) (U : Set (V m)) (γ : Alt n), IsOpen U →
     DifferentiableOn ℂ τ U →
     ∀ v ∈ U, delAt (fun x => pull (fderiv ℂ τ x) γ) v = 0 ∧ dbarAt (fun x => pull (fderiv ℂ τ x) γ) v = 0 :=

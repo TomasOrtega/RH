@@ -16,6 +16,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SplitLat
 
+/- English proof (translation)
+Introduce `D S L₀ hL₀ I _ K _ _ _ _ q Y _ _ F hinj`. Establish `key : ∀ s : Finset I, ∃ L : GlobalTheory.FinPl.Lat S, IsSelfDualC S L ∧ ∀ i ∈ s, IntIn (q i) S (F i) L`. Introduce `s`. Use `Finset.induction_on s ⟨L₀, hL₀, by simp⟩ ?_` and prove the remaining obligations. Introduce `j s hj ih`.
+
+Take `⟨L, hL, hs⟩` from `ih`. Take `⟨L', hL', hother, hq⟩` from `GlobalTheory.T.exists_selfDualLattice_prescribed_splitPlace D (K j) (q j) S (Y j) (F j) L hL`. Use `⟨L', hL', ?_⟩` and prove the remaining obligations. Introduce `i hi`. Break down `Finset.mem_insert.mp hi with rfl | hi'` into its components or cases.
+
+Conclude with `hq`. Establish `hne : (q i).v ≠ (q j).v` using `fun h => hj (by obtain rfl := hinj i j h; exact hi')`. Establish `h1` using `hs i hi'`. Unfold `IntIn at h1 ⊢`. Rewrite using `[hother _ hne]`.
+
+Conclude with `h1`. Use `haveI := Fintype.ofFinite I`. Take `⟨L, hL, h⟩` from `key Finset.univ`. Conclude with `⟨L, hL, fun i => h i (Finset.mem_univ i)⟩`.
+-/
 theorem exists_selfDual_frames : ∀ (D : D7) (S : HSp D) (L₀ : GlobalTheory.FinPl.Lat S), IsSelfDualC S L₀ → ∀ (I : Type) [Finite I] (K : I → Type) [∀ i, Field (K i)] [∀ i, ValuativeRel (K i)] [∀ i, TopologicalSpace (K i)] [∀ i, IsNonarchimedeanLocalField (K i)] (q : ∀ i, GlobalTheory.FinPl.SplitPt D (K i)) (Y : I → Type) [∀ i, Fintype (Y i)] [∀ i, DecidableEq (Y i)] (F : ∀ i, GlobalTheory.LocMod.Frame (K i) S.rank (Y i)), (∀ i i', (q i).v = (q i').v → i = i') → ∃ L : GlobalTheory.FinPl.Lat S, IsSelfDualC S L ∧ ∀ i, IntIn (q i) S (F i) L := by
   intro D S L₀ hL₀ I _ K _ _ _ _ q Y _ _ F hinj
   have key : ∀ s : Finset I, ∃ L : GlobalTheory.FinPl.Lat S, IsSelfDualC S L ∧ ∀ i ∈ s, IntIn (q i) S (F i) L := by

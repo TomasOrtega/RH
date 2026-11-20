@@ -22,6 +22,9 @@ section Isometry
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ}
 
+/- English proof (translation)
+Establish `h₀` using `h'.isVB.mem_pick y`. Rewrite using `[h.form_eq c hc _ _ hy, h'.form_eq _ h₀ _ _ hy, Chart.crd_app _ c u s hy hc, Chart.crd_app _ c u t hy hc, ← form_chg, ← h'.gram_eq _ h₀ _ hc, e]`.
+-/
 theorem form_app_of_gram {E E' : X.Modules} {r r' : ℕ} {h : Met p σ E r} {h' : Met p σ E' r'} {u : E ⟶ E'}
     (c : Chart E r) {y : CxPts p σ} (hc : y ∈ ptsIn p σ c.U) (e : h'.gram (fun a => u.app c.U (c.e a)) y = h.G c y)
     {V : X.Opens} (s t : Γ(E, V)) (hy : y ∈ ptsIn p σ V) : h'.form (u.app V s) (u.app V t) y = h.form s t y := by
@@ -29,6 +32,9 @@ theorem form_app_of_gram {E E' : X.Modules} {r r' : ℕ} {h : Met p σ E r} {h' 
   rw [h.form_eq c hc _ _ hy, h'.form_eq _ h₀ _ _ hy, Chart.crd_app _ c u s hy hc, Chart.crd_app _ c u t hy hc,
     ← form_chg, ← h'.gram_eq _ h₀ _ hc, e]
 
+/- English proof (translation)
+Introduce `σ V s t z hz` and use `by have hc := (h.met σ).isVB.mem_pick (PtsOver.map π w _ z) refine form_app_of_gram (Chart.pull _ (h.met σ).isVB π) hc ?_ s t hz refine Eq.trans ?_ ((h.met σ).pull_G π w _ hc).symm ext a b rw [← (h.met σ).form_frame _ hc, ← hu σ _ _ _ _ hc, ← (h'.met σ).form_pull π w _ _ le_rfl h …`.
+-/
 theorem IsoHom.pull {E E' : X.Modules} {r : ℕ} {h : VMetric p E r} {h' : VMetric p E' r} {u : E ⟶ E'}
     (hu : IsoHom h h' u) {Y : Scheme.{0}} {q : Y ⟶ Sp k} (π : Y ⟶ X) (w : π ≫ p = q) :
     IsoHom (h.pull π w) (h'.pull π w) ((Scheme.Modules.pullback π).map u) := fun σ V s t z hz => by
@@ -40,6 +46,17 @@ theorem IsoHom.pull {E E' : X.Modules} {r : ℕ} {h : VMetric p E r} {h' : VMetr
     ← QCoh.pullback_map_app_pullbackSections, ← QCoh.pullback_map_app_pullbackSections]
   rfl
 
+/- English proof (translation)
+Establish `hm` using `(ChartGlue.isOpen_over c.e (isOpen_ptsIn (a.U ⊓ a'.U))).mem_nhds (ChartGlue.mem_over c.e hy (mem_ptsIn_inf.2 ⟨ha, ha'⟩))`. Set `A : CxPts p σ → Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ` to `fun z => Matrix.of fun i j => (a'.mid hS').crd p σ (f₂.app a.U (a.frame j)) z (finSumFinEquiv i)`. Establish `hA : MInfAt A y` using `fun i j => (a'.mid hS').vInfAt_crd _ ha ha' _`. Establish `hG (z : CxPts p σ) (hz : z ∈ ptsIn p σ a.U) (hz' : z ∈ ptsIn p σ a'.U) : h.gram a.frame z = chg (A z) (h'.gram a'.frame z)`. Establish `e₁ : h.gram a.frame z = h'.gram (fun j => f₂.app a.U (a.frame j)) z`.
+
+Use extensionality with `i j`. Conclude with `(hu _ _ _ z hz).symm`. Rewrite using `[e₁, h'.gram_eq (a'.mid hS') hz' _ hz, h'.gram_frame hS' a' hz']`. Conclude with `(chg_submatrix (Matrix.of fun i j => (a'.mid hS').crd p σ (f₂.app a.U (a.frame j)) z i) _ finSumFinEquiv id).symm`. Rewrite using `[Met.bcForm, extTrace_congr (K' := fun v => chg (A (c.e.symm v)) (h'.gram a'.frame (c.e.symm v))) (eventually_of_mem hm fun v hv => hG _ (mem_ptsIn_inf.1 hv.2).1 (mem_ptsIn_inf.1 hv.2).2)]`.
+
+Use `extTrace_chg (((H'.gram _ ha').mContDiffAt c hy).of_le (by norm_cast)) (h'.eventually_posDef hS' a' c hy ha') ((hA.mContDiffAt c hy).of_le (by norm_cast)) ?_ (fun η => Matrix.ext fun i j => ?_) (eventually_of_mem hm fun v hv => ?_)` and prove the remaining obligations. Rewrite using `[c.e.left_inv hy]`. Establish `hd` using `(h.posDef_gram_frame hS a ha).det_pos.ne'`. Rewrite `hd` using `[hG y ha ha', det_chg]`. Use `Ne.isUnit fun e => hd ?_` and prove the remaining obligations.
+
+Simplify using `[e]`. Conclude with `congr($(dbar_eq_zero (c.differentiableAt_ev _ hy (mem_ptsIn_inf.2 ⟨ha, ha'⟩))) η)`. Take `⟨hz, hz'⟩` from `mem_ptsIn_inf.1 hv.2`. Use extensionality with `i j`. Establish `e : f₂.app a.U (a.frame (.inl j)) = S'.f.app a.U (f₁.app a.U (a.e j))` using `congr(($hf.symm).app a.U (a.e j))`.
+
+Express the relevant statement in the definitionally equal form `(a'.mid hS').crd p σ (f₂.app a.U (a.frame (.inl j))) _ (finSumFinEquiv (.inr i)) = 0`. Rewrite using `[e, (a'.mid hS').crd_app a'.sub S'.f _ hz hz']`. Simplify using `only [mulVec, dotProduct, of_apply]`. Use `Finset.sum_eq_zero fun b _ => mul_eq_zero_of_left ?_ _` and prove the remaining obligations. Conclude with `(a'.crd_frame hS' hz' (.inr i) (.inl b)).trans (by simp)`.
+-/
 theorem bcForm_eq_of_isometry {S S' : ShortComplex X.Modules} {r s : ℕ} {h : Met p σ S.X₂ (r + s)}
     {h' : Met p σ S'.X₂ (r + s)} (hS : S.ShortExact) (hS' : S'.ShortExact) (H' : h'.IsCInf) (f₁ : S.X₁ ⟶ S'.X₁)
     (f₂ : S.X₂ ⟶ S'.X₂) (hf : f₁ ≫ S'.f = S.f ≫ f₂)
@@ -80,6 +97,9 @@ theorem bcForm_eq_of_isometry {S S' : ShortComplex X.Modules} {r s : ℕ} {h : M
     refine Finset.sum_eq_zero fun b _ => mul_eq_zero_of_left ?_ _
     exact (a'.crd_frame hS' hz' (.inr i) (.inl b)).trans (by simp)
 
+/- English proof (translation)
+The claim follows from `congrArg formMat (bcForm_eq_of_isometry hS hS' H' f₁ f₂ hf hu _ _ c hy (Met.exists_adapted hS h₁ h₃ y).choose_spec (Met.exists_adapted hS' h₁' h₃' y).choose_spec)`.
+-/
 theorem bcMat_eq_of_isometry {S S' : ShortComplex X.Modules} {r s : ℕ} {h : Met p σ S.X₂ (r + s)}
     {h' : Met p σ S'.X₂ (r + s)} (hS : S.ShortExact) (hS' : S'.ShortExact) (h₁ : IsVB S.X₁ r) (h₃ : IsVB S.X₃ s)
     (h₁' : IsVB S'.X₁ r) (h₃' : IsVB S'.X₃ s) (H' : h'.IsCInf) (f₁ : S.X₁ ⟶ S'.X₁)
@@ -90,6 +110,13 @@ theorem bcMat_eq_of_isometry {S S' : ShortComplex X.Modules} {r s : ℕ} {h : Me
   congrArg formMat (bcForm_eq_of_isometry hS hS' H' f₁ f₂ hf hu _ _ c hy (Met.exists_adapted hS h₁ h₃ y).choose_spec
     (Met.exists_adapted hS' h₁' h₃' y).choose_spec)
 
+/- English proof (translation)
+Use `finsum_congr fun σ => total_congr fun c y hy => ?_` and prove the remaining obligations. Use `congrArg (mix d _) (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Take `⟨t₁, h₁⟩` from `hc i.castSucc`. Take `⟨t₂, h₂⟩` from `hc i.succ`. Apply the tactic sequence `refine bcMat_eq_of_isometry (S := VMetric.stepSeq fl i) (S' := VMetric.stepSeq fl' i) (r := i) (s := 1) (h := (h.stepMet fl i).met σ) (h' := (h'.stepMet fl' i).met σ) _ _ _ _ _ _ (H'.restrict (fl'.isSubbundle i.succ) (fl'.isVB i.succ) σ) t₁ t₂ ?_ (fun V s t z hz => ?_) c hy`.
+
+Express the relevant statement in the definitionally equal form `t₁ ≫ fl'.step i = fl.step i ≫ t₂`. Rewrite using `[← cancel_mono (fl'.ι i.succ), Category.assoc, Category.assoc, fl'.step_ι, h₁, h₂, fl.step_ι_assoc]`. Establish `e (s : Γ(fl.F i.succ, V)) : (fl'.ι i.succ).app V (t₂.app V s) = u.app V ((fl.ι i.succ).app V s)` using `congr(($h₂).app V s)`. Use `((h'.met σ).form_restrict (fl'.isSubbundle i.succ) (fl'.isVB i.succ) _ _ hz).trans ?_` and prove the remaining obligations. Rewrite using `[e, e, hu σ V _ _ z hz]`.
+
+Conclude with `((h.met σ).form_restrict (fl.isSubbundle i.succ) (fl.isVB i.succ) _ _ hz).symm`.
+-/
 theorem bcPair_eq_of_compat {E E' : X.Modules} {r : ℕ} {h : VMetric p E r} {h' : VMetric p E' r} (H' : h'.IsCInf)
     {u : E ⟶ E'} (hu : IsoHom h h' u) {fl : Vert.Flag E r} {fl' : Vert.Flag E' r} (hc : Compat u fl fl')
     (N : HermLB p) (d : ℕ) : bcPair h fl N d = bcPair h' fl' N d := by
@@ -108,6 +135,11 @@ theorem bcPair_eq_of_compat {E E' : X.Modules} {r : ℕ} {h : VMetric p E r} {h'
     rw [e, e, hu σ V _ _ z hz]
     exact ((h.met σ).form_restrict (fl.isSubbundle i.succ) (fl.isVB i.succ) _ _ hz).symm
 
+/- English proof (translation)
+Use `HermLB.icls_eq_iff.2 (HermLB.isometric_of_chart (M := .triv p) (fun _ => PUnit.unit) (fun _ => le_top) (fun x j j' _ _ => ?_) fun σ j y _ => ?_)` and prove the remaining obligations. Establish `: (VMetric.det H).B.g j j' = 1` using `Units.ext (by`. Express the relevant statement in the definitionally equal form `(IsFrame.detUnit _ _ _ _).val = _`. Simplify using `[IsFrame.detUnit]`. Use the proof step `rfl)`.
+
+Rewrite using `[this, map_one]`. Conclude with `(map_one _).symm`. Express the relevant statement in the definitionally equal form `(0 : ℝ) = -Real.log ((h.met σ).G j y).det.re`. Simplify using the standard rewrite rules.
+-/
 theorem icls_det_rank_zero {E : X.Modules} {h : VMetric p E 0} (H : h.IsCInf) : (VMetric.det H).icls = 0 := by
   refine HermLB.icls_eq_iff.2 (HermLB.isometric_of_chart (M := .triv p) (fun _ => PUnit.unit) (fun _ => le_top)
     (fun x j j' _ _ => ?_) fun σ j y _ => ?_)
@@ -118,6 +150,11 @@ theorem icls_det_rank_zero {E : X.Modules} {h : VMetric p E 0} (H : h.IsCInf) : 
   · change (0 : ℝ) = -Real.log ((h.met σ).G j y).det.re
     simp
 
+/- English proof (translation)
+Set `t : Fin (r + 1) → HermLB.IsomClass p` to `fun j => (VMetric.det (H.restrict (fl.isSubbundle j) (fl.isVB j))).icls`. Establish `h₀ : t 0 = 0` using `icls_det_rank_zero _`. Apply the tactic sequence `have h₁ : t (Fin.last r) = (VMetric.det H).icls := HermLB.icls_eq_iff.2 (VMetric.isometric_det_of_isIsometry k X p _ E r _ h (asIso (fl.ι (Fin.last r))) _ H fun σ V s t y hy => ((h.met σ).form_restrict (fl.isSubbundle _) (fl.isVB _) s t hy).symm)`. Establish `h₂ (i : Fin r) : (VMetric.grLB fl i H).icls = t i.succ - t i.castSucc` using `eq_sub_of_add_eq' (HermLB.icls_eq_iff.2 (VMetric.isometric_det_tens_grLB p E r h H fl i))`. Simplify using `only [h₂, Finset.sum_sub_distrib]`.
+
+Establish `e` using `(Fin.sum_univ_succ t).symm.trans (Fin.sum_univ_castSucc t)`. Rewrite `e` using `[h₀, zero_add]`. Rewrite using `[e, h₁, add_sub_cancel_left]`.
+-/
 theorem sum_icls_grLB {E : X.Modules} {r : ℕ} {h : VMetric p E r} (H : h.IsCInf) (fl : Vert.Flag E r) :
     ∑ i, (VMetric.grLB fl i H).icls = (VMetric.det H).icls := by
   let t : Fin (r + 1) → HermLB.IsomClass p := fun j => (VMetric.det (H.restrict (fl.isSubbundle j) (fl.isVB j))).icls
@@ -140,6 +177,9 @@ open MvPolynomial
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {D : ℕ}
 
+/- English proof (translation)
+Use `choose n hn hn' using hf`. Take `rfl` from `funext hn`. Rewrite using `[GlobalTheory.ArInt.Model.isArFun_unique hX hΦ (((hI k X p D hX).2 κ L Ψ hΨ).2.2 J M n fun j => HermLB.icls_eq_iff.1 ((icls_comb _ _).trans (hn' j)))]`. Both sides reduce to the same expression.
+-/
 theorem apply_aeval (hI : Published.ArIso) (hX : IsArithVar p D) {κ J : Type} [Fintype κ] [Fintype J] {L : κ → HermLB p}
     {M : J → HermLB p} {Ψ : MvPolynomial κ ℝ →ₗ[ℝ] ℝ} {Φ : MvPolynomial J ℝ →ₗ[ℝ] ℝ} (hΨ : IsArFun L D Ψ)
     (hΦ : IsArFun M D Φ) (f : J → MvPolynomial κ ℝ)
@@ -151,6 +191,11 @@ theorem apply_aeval (hI : Published.ArIso) (hX : IsArithVar p D) {κ J : Type} [
     HermLB.icls_eq_iff.1 ((icls_comb _ _).trans (hn' j)))]
   rfl
 
+/- English proof (translation)
+Substitute `hD` using the available equality. Take `⟨I, _, c, n, rfl⟩` from `FlagCmp.exists_sum_pow hR`. Simplify using `only [Finset.mul_sum _ (fun j => c j • _), mul_smul_comm, map_sum Ψ (fun j => c j • _), map_smul]`. Use `Finset.sum_congr rfl fun j _ => congrArg (c j • ·) ?_` and prove the remaining obligations. Establish `e₁` using `FlagCmp.compare hC hP hX H fl m κ L Ψ hΨ x y hx hy (n j)`.
+
+Establish `e₂` using `FlagCmp.compare hC hP hX H' fl' m' κ L Ψ hΨ x' y' hx' hy' (n j)`. Rewrite `e₁` using `[bcPair_eq_of_compat H' hu hfl, bcPair_eq_of_compat H' hu hm, ← e₂]`. Simplify using `only [sub_mul, map_sub] at e₁ ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem apply_sq_sub_eq (hC : Published.ArCalc) (hP : Published.Principalisation) {d : ℕ} (hD : D = d + 1) (hX : IsArithVar p D)
     {E E' : X.Modules} {r : ℕ} {h : VMetric p E r} {h' : VMetric p E' r} (H : h.IsCInf) (H' : h'.IsCInf) {u : E ⟶ E'}
     (hu : IsoHom h h' u) {fl m : Vert.Flag E r} {fl' m' : Vert.Flag E' r} (hfl : Compat u fl fl') (hm : Compat u m m')
@@ -174,6 +219,25 @@ end Assembly
 
 open MvPolynomial in
 
+/- English proof (translation)
+Introduce `HP k _ B Y X _ _ _ q π ρ p w n e hB hY hc ι _ E E' r h h' H H' u hu ⟨hreg, hm⟩ fl hfl fl' hcf Φ hΦ Q hQ hQ0`. Substitute `w` using the available equality. Use `choose m m' hm using hm`. Establish `hX` using `hc.1`. Set `g : (Σ a, Fin (r a)) ⊕ (Σ a, Fin (r a)) → HermLB q` to `Sum.elim (fun z => VMetric.grLB (m z.1) z.2 (H z.1)) fun z => VMetric.grLB (m' z.1) z.2 (H' z.1)`.
+
+Set `A : Option ((Σ a, Fin (r a)) ⊕ (Σ a, Fin (r a))) → HermLB q` to `fun o => o.elim (comb (fun z => g (.inl z)) fun _ => 1) g`. Take `⟨Ψ, hΨ⟩` from `((HP.p4.arExists k X _ _ hX).2 _ (Sum.elim (Sum.elim (fun z : Σ a, Fin (r a) => (VMetric.grLB (fl z.1) z.2 ((H z.1).pull π rfl)).pull ρ rfl) fun z : Σ a, Fin (r a) => VMetric.grLB (fl' z.1) z.2 (((H' z.1).pull π rfl).pull ρ rfl)) fun z => ((g z).pull π rfl).pull ρ rfl)).1`. Take `⟨ΦB, hΦB⟩` from `((HP.p4.arExists k B _ _ hB).2 _ A).1`. Take `⟨ΨY, hΨY⟩` from `((HP.p4.arExists k Y _ _ hY).2 _ (Sum.elim (fun z : Σ a, Fin (r a) => VMetric.grLB (fl z.1) z.2 ((H z.1).pull π rfl)) fun a => (A a).pull π rfl)).1`. Establish `hsq {κ : Type} (f : (Σ a, Fin (r a)) → κ) : (∑ z, MvPolynomial.X (f z) ^ 2 : MvPolynomial κ ℝ).IsHomogeneous 2` using `IsHomogeneous.sum _ _ _ fun z _ => by simpa using (isHomogeneous_X ℝ (f z)).pow 2`.
+
+Establish `e₁` using `T.flag_bundle_metric_setup HP k B Y q _ _ _ hB hreg hY π rfl ι E r h H fl hfl _ A ΦB ΨY hΦB hΨY ((∑ z, MvPolynomial.X (some (.inr z)) ^ 2 - ∑ z, MvPolynomial.X (some (.inl z)) ^ 2) * MvPolynomial.X none ^ n) Q 0 (by`. Rewrite using `[show n + 1 + 1 = 2 + 1 * n by omega]`. Conclude with `((hsq _).sub (hsq _)).mul ((isHomogeneous_X ℝ none).pow n))`. Use the proof step `(by rwa [Nat.add_sub_cancel_left]) (by rw [hQ0, zero_smul])`. Establish `hpull {F : B.Modules} {s : ℕ} {b : VMetric q F s} (Hb : b.IsCInf) (l : Vert.Flag F s) (i : Fin s) : (((VMetric.grLB l i Hb).pull π rfl).pull ρ rfl).Isometric (VMetric.grLB ((l.pull π).pull ρ) i ((Hb.pull π rfl).pull ρ rfl))` using `((VMetric.isometric_grLB_pull _ _ _ _ _ _ _ _ _ _ ρ rfl i).trans ((VMetric.isometric_grLB_pull _ _ _ _ _ _ _ _ _ _ π rfl i).pull ρ rfl)).symm`.
+
+Establish `e₂` using `apply_aeval HP.p4.arIso hX hΨ ((HP.p4.arProj k Y X _ _ _ hY hX ρ rfl hc.2.1 hc.2.2).2 _ _ ΨY hΨY) (Sum.elim (fun z => MvPolynomial.X (.inl (.inl z))) fun o => o.elim (∑ z, MvPolynomial.X (.inl (.inl z))) fun z => MvPolynomial.X (.inr z)) (by`. Introduce and unpack `(z | _ | z)`. Conclude with `⟨Pi.single (.inl (.inl z)) 1, by simp [lin, Pi.single_apply, apply_ite], by simp [Pi.single_apply]⟩`. Use `⟨Sum.elim (Sum.elim (fun _ => 1) 0) 0, by simp [lin], ?_⟩` and prove the remaining obligations. Establish `e (a : ι) : ∑ i, (VMetric.grLB (fl a) i ((H a).pull π rfl)).icls = ∑ i, ((VMetric.grLB (m a) i (H a)).pull π rfl).icls`.
+
+Rewrite using `[sum_icls_grLB, ← sum_icls_grLB _ ((m a).pull π)]`. Conclude with `Finset.sum_congr rfl fun i _ => HermLB.icls_eq_iff.2 (VMetric.isometric_grLB_pull _ _ _ _ _ _ _ _ _ _ π rfl i)`. Simplify using `only [HermLB.icls_pull] at e`. Simplify using `[A, g, HermLB.icls_pull, icls_comb, Fintype.sum_sigma, ← map_sum, e]`. Conclude with `⟨Pi.single (.inr z) 1, by simp [lin, Pi.single_apply, apply_ite], by simp [Pi.single_apply, A]⟩)`.
+
+Establish `hR : (rename Sum.inl (rename Sum.inl ((∑ z, MvPolynomial.X z) ^ n * Q)) : MvPolynomial (((Σ a, Fin (r a)) ⊕ (Σ a, Fin (r a))) ⊕ ((Σ a, Fin (r a)) ⊕ (Σ a, Fin (r a)))) ℝ).IsHomogeneous (n + e)`. Simplify using `using ((((IsHomogeneous.sum _ _ _ fun z _ => isHomogeneous_X ℝ z).pow n).mul hQ).rename_isHomogeneous (f := Sum.inl)).rename_isHomogeneous (f := Sum.inl)`. Establish `e₃ (a : ι)` using `apply_sq_sub_eq HP.p4 HP.q16 (show n + 1 + e = n + e + 1 by omega) hX (((H a).pull π rfl).pull ρ rfl) (((H' a).pull π rfl).pull ρ rfl) (((hu a).pull π rfl).pull ρ rfl) (hcf a) (((hm a).pull π).pull ρ) hΨ (fun i => .inl (.inl ⟨a, i⟩)) (fun i => .inl (.inr ⟨a, i⟩)) (fun i => .inr ( …`. Establish `e₄` using `Finset.sum_congr rfl fun a (_ : a ∈ Finset.univ) => e₃ a`. Rewrite `e₄` using `[← map_sum, ← map_sum, ← Finset.sum_mul, ← Finset.sum_mul, Finset.sum_sub_distrib, Finset.sum_sub_distrib]`.
+
+Establish `e₅` using `e₂ (rename Sum.inl Q * rename Sum.inr ((∑ z, MvPolynomial.X (some (.inr z)) ^ 2 - ∑ z, MvPolynomial.X (some (.inl z)) ^ 2) * MvPolynomial.X none ^ n))`. Rewrite `e₅` using `[LinearMap.smul_apply, e₁, zero_mul, smul_zero]`. Rewrite using `[← FlagCmp.isArFun_restrict_inl HP.p4.arIso hX _ _ hΦ hΨ, map_mul]`. Use `Eq.trans ?_ (e₄.trans (Eq.trans ?_ e₅))` and prove the remaining obligations. Simplify using `only [map_sub, map_sum, map_pow, rename_X, Fintype.sum_sigma]`.
+
+Use `congr 1`. Establish `eQ : aeval (fun z => MvPolynomial.X (.inl (.inl z))) Q = (rename Sum.inl (rename Sum.inl Q) : MvPolynomial (((Σ a, Fin (r a)) ⊕ (Σ a, Fin (r a))) ⊕ ((Σ a, Fin (r a)) ⊕ (Σ a, Fin (r a)))) ℝ)`. Rewrite using `[rename_rename, rename_eq_aeval]`. Both sides reduce to the same expression. Simplify using `only [map_mul, aeval_rename, Sum.elim_comp_inl, eQ, map_sub, map_sum, map_pow, rename_X, aeval_X, Sum.elim_inr, Option.elim, Fintype.sum_sigma]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vanishOn_regFlagged : GlobalTheory.CovTop.Hypotheses2 → VanishOn RegFlagged := by
   intro HP k _ B Y X _ _ _ q π ρ p w n e hB hY hc ι _ E E' r h h' H H' u hu ⟨hreg, hm⟩ fl hfl fl' hcf Φ hΦ Q hQ hQ0
   subst w

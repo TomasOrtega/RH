@@ -1,6 +1,15 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.HeckeAdjoints.HasPairingOfHerm
 open NumberField IsDedekindDomain Matrix Formalism.L2.Host UpperTheory.V UpperTheory.V.TR UpperTheory.V.Af.Gk
 
+/- English proof (translation)
+Introduce `F _ _ _ π`. Establish `hs : ∀ g h : GlobalTheory.CuspRep.GA F 0, g = h` using `fun g h => Units.ext (Subsingleton.elim _ _)`. Set `e : π.V →ₗ[ℂ] ℂ` to `(LinearMap.proj 1) ∘ₗ (Sm F 0).subtype ∘ₗ π.V.subtype`. Establish `he : ∀ φ, e φ = φ.1.1 1` using `fun _ => rfl`. Establish `hinj : ∀ φ, e φ = 0 → φ = 0` using `fun φ h => Subtype.ext <| Subtype.ext <| funext fun g => by rw [hs g 1]; exact h`.
+
+Establish `hfin : ∀ k φ, e (π.op (.fin k) φ) = e φ` using `fun k φ => congrArg φ.1.1 (hs _ _)`. Establish `hcpt : ∀ k φ, e (π.op (.cpt k) φ) = e φ` using `fun k φ => congrArg φ.1.1 (hs _ _)`. Establish `hlie : ∀ X φ, e (π.op (.lie X) φ) = 0` using `fun X φ => by`. Rewrite using `[Subsingleton.elim X 0]`. Conclude with `map_zero (fderiv ℝ (chart φ.1.1 1) (oneL F 0))`.
+
+Use `⟨(LinearMap.mul ℂ ℂ).compl₁₂ e e, fun φ h => hinj φ (mul_self_eq_zero.1 (h φ)), fun φ h => hinj φ (mul_self_eq_zero.1 (h φ)), fun k φ ψ => ?_, fun k φ ψ => ?_, fun X φ ψ => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e _ * e _ = e φ * e ψ`. Rewrite using `[hfin, hfin]`. Express the relevant statement in the definitionally equal form `e _ * e _ = e φ * e ψ`. Rewrite using `[hcpt, hcpt]`.
+
+Express the relevant statement in the definitionally equal form `e _ * e _ + e _ * e _ = 0`. Rewrite using `[hlie, hlie, zero_mul, mul_zero, add_zero]`.
+-/
 theorem UpperTheory.V.Af.Gk.pairZero :
     UpperTheory.V.Af.Gk.PairZero := by
   intro F _ _ _ π

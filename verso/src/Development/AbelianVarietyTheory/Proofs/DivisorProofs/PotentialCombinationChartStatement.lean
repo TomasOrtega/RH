@@ -6,5 +6,8 @@ open NumberField MvPolynomial ReciprocityTheory.ChartRestriction.G ReciprocityTh
 open ReciprocityTheory.L2DbarEstimates (V)
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ChernWeilLine.locDens_combPot_eq_chernTop | exact GlobalTheory.ChernWeilLine.locDens_combPot_eq_chernTop | (intros; apply GlobalTheory.ChernWeilLine.locDens_combPot_eq_chernTop <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.potential_combination_chart : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {M : Man Y.dim} (I : ManIs M Y) {ι : Type} [Fintype ι] {Δ : ι → Y.Dv} (m : ∀ i σ, (cxSt F).Met Y σ (Δ i)) (t : ι → ℝ) (a : Fin (M.n + 1)) (Q : ι → LocPot (M.X a)), (∀ i, IsPot (I.pt a) (m i (I.ε a)) (Q i) ∧ IsPotential (M.A a) (Q i)) → ∀ (j : Fin (M.A a).n) (c : GlobalTheory.AlgChart Y.str (I.ε a) Y.dim), (M.A a).chart j = (I.pt a).transOpenPartialHomeomorph c.finChart → ∀ z ∈ ((M.A a).chart j).target, ∀ A ∈ (ofDivisors Δ).S (under (c.finChart.symm z)), locDens (M.A a) (fun _ => InhabCalc.combPot Q t 0) j z = chernTop ((∑ i, C (t i) * X (i, 1)) ^ Y.dim) (fun v => lineGram (cxSt F) (fun i => m i (I.ε a)) A (c.e.symm v)) (c.e (c.finChart.symm z)) := by
   first | exact @GlobalTheory.ChernWeilLine.locDens_combPot_eq_chernTop | exact GlobalTheory.ChernWeilLine.locDens_combPot_eq_chernTop | (intros; apply GlobalTheory.ChernWeilLine.locDens_combPot_eq_chernTop <;> assumption)

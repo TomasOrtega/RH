@@ -11,6 +11,9 @@ open Formalism.L2.Pj GlobalTheory.HTLat GlobalTheory.HTLat.OmegaRank GlobalTheor
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.FlatModel
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlatModel.exists_comp_cover_lift | exact GlobalTheory.FlatModel.exists_comp_cover_lift | (intros; apply GlobalTheory.FlatModel.exists_comp_cover_lift <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.component_surjects_of_open_closed : (∀ {A B : Type} [TopologicalSpace A] [TopologicalSpace B] (f : A → B), Continuous f → IsOpenMap f → IsClosedMap f →
     (∀ C ∈ irreducibleComponents A, IsOpen C) → ∀ S : Set B, IsClopen S → IsPreconnected S → ∀ a : A, f a ∈ S →
     ∃ C ∈ irreducibleComponents A, a ∈ C ∧ f '' C = S) → (∀ {X Y : AlgebraicGeometry.Scheme.{0}} (f : X ⟶ Y) [AlgebraicGeometry.LocallyOfFiniteType f] (k : Type) [Field k] [IsAlgClosed k]

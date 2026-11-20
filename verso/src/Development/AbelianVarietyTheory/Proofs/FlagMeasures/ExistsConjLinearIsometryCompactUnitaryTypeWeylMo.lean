@@ -19,9 +19,15 @@ namespace GlobalTheory.WeylConjType
 
 open MvPolynomial
 
+/- English proof (translation)
+Simplify using `[Formalism.REAL.Jm, allPos]`.
+-/
 theorem jm_allPos (k : ℕ) : Formalism.REAL.Jm (allPos k) = 1 := by
   simp [Formalism.REAL.Jm, allPos]
 
+/- English proof (translation)
+Use `show Formalism.REAL.inUJ (allPos k) g`. Unfold `Formalism.REAL.inUJ`. Rewrite using `[jm_allPos, Matrix.mul_one]`. Establish `h` using `mem_unitaryGroup_iff'.mp hg`. Rewrite `h` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis.
+-/
 theorem mem_UJset_of_unitary {k : ℕ} {g : Matrix (Fin k) (Fin k) ℂ} (hg : g ∈ unitaryGroup (Fin k) ℂ) :
     g ∈ UJset (allPos k) := by
   show Formalism.REAL.inUJ (allPos k) g
@@ -30,6 +36,11 @@ theorem mem_UJset_of_unitary {k : ℕ} {g : Matrix (Fin k) (Fin k) ℂ} (hg : g 
   have h := mem_unitaryGroup_iff'.mp hg
   rwa [Matrix.star_eq_conjTranspose] at h
 
+/- English proof (translation)
+Rewrite using `[mem_unitaryGroup_iff]`. Establish `h` using `mem_unitaryGroup_iff'.mp hg`. Establish `h2 : (star g * g)ᵀ = 1` using `by rw [h, Matrix.transpose_one]`. Rewrite `h2` using `[Matrix.transpose_mul]`. Use `h2 using 2` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `i j`. Simplify using `[Matrix.star_apply]`.
+-/
 theorem transpose_mem_unitary {k : ℕ} {g : Matrix (Fin k) (Fin k) ℂ} (hg : g ∈ unitaryGroup (Fin k) ℂ) :
     gᵀ ∈ unitaryGroup (Fin k) ℂ := by
   rw [mem_unitaryGroup_iff]
@@ -40,6 +51,11 @@ theorem transpose_mem_unitary {k : ℕ} {g : Matrix (Fin k) (Fin k) ℂ} (hg : g
   ext i j
   simp [Matrix.star_apply]
 
+/- English proof (translation)
+Establish `h` using `mem_unitaryGroup_iff'.mp hg`. Establish `h1 : star g.det * g.det = 1`. Rewrite using `[← Matrix.det_conjTranspose, ← Matrix.det_mul, ← Matrix.star_eq_conjTranspose, h, Matrix.det_one]`. Establish `h0 : g.det ≠ 0`. Introduce `h0`.
+
+Rewrite `h1` using `[h0, mul_zero]`. Conclude with `zero_ne_one h1`. Conclude with `⟨eq_inv_of_mul_eq_one_left h1, h0⟩`.
+-/
 theorem star_det_of_unitary {k : ℕ} {g : Matrix (Fin k) (Fin k) ℂ} (hg : g ∈ unitaryGroup (Fin k) ℂ) :
     star g.det = g.det⁻¹ ∧ g.det ≠ 0 := by
   have h := mem_unitaryGroup_iff'.mp hg
@@ -54,6 +70,9 @@ theorem star_det_of_unitary {k : ℕ} {g : Matrix (Fin k) (Fin k) ℂ} (hg : g �
 def glOf {k : ℕ} (g : Matrix (Fin k) (Fin k) ℂ) (hg : g ∈ unitaryGroup (Fin k) ℂ) : GL (Fin k) ℂ :=
   ⟨g, star g, mem_unitaryGroup_iff.mp hg, mem_unitaryGroup_iff'.mp hg⟩
 
+/- English proof (translation)
+Unfold `detPow`. Rewrite using `[Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply]`. Both sides reduce to the same expression.
+-/
 theorem detPow_glOf {k : ℕ} (g : Matrix (Fin k) (Fin k) ℂ) (hg : g ∈ unitaryGroup (Fin k) ℂ) (s : ℤ) :
     detPow ℂ k (glOf g hg) s = g.det ^ s := by
   unfold detPow
@@ -66,23 +85,35 @@ def conjL (σ : Type) : MvPolynomial σ ℂ →ₗ⋆[ℂ] MvPolynomial σ ℂ w
   map_smul' c p := by
     simp only [RingHom.id_apply, smul_eq_C_mul, map_mul, map_C]
 
+/- English proof (translation)
+Use `show MvPolynomial.map (starRingEnd ℂ) (MvPolynomial.map (starRingEnd ℂ) p) = p`. Rewrite using `[MvPolynomial.map_map]`. Establish `h : (starRingEnd ℂ).comp (starRingEnd ℂ) = RingHom.id ℂ` using `RingHom.ext fun z => by simp`. Rewrite using `[h, MvPolynomial.map_id]`.
+-/
 theorem conjL_conjL {σ : Type} (p : MvPolynomial σ ℂ) : conjL σ (conjL σ p) = p := by
   show MvPolynomial.map (starRingEnd ℂ) (MvPolynomial.map (starRingEnd ℂ) p) = p
   rw [MvPolynomial.map_map]
   have h : (starRingEnd ℂ).comp (starRingEnd ℂ) = RingHom.id ℂ := RingHom.ext fun z => by simp
   rw [h, MvPolynomial.map_id]
 
+/- English proof (translation)
+Introduce `h`. Apply `GlobalTheory.FockTen.fockF_extremal_ne lam` to reduce the goal to its premises. Rewrite using `[h]`. Simplify using `[Formalism.REAL.fockF]`.
+-/
 private theorem extremal_ne_zero' {k : ℕ} (lam : DomWeight k) : extremal ℂ k lam ≠ 0 := by
   intro h
   apply GlobalTheory.FockTen.fockF_extremal_ne lam
   rw [h]
   simp [Formalism.REAL.fockF]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Formalism.GradedWeylDivisibility.fockHerm _ _ _).symm, (Formalism.GradedWeylDivisibility.fockPos _ _ (extremal_ne_zero' lam)).1⟩`.
+-/
 theorem fockF_ext_real {k : ℕ} (lam : DomWeight k) :
     star (Formalism.REAL.fockF (extremal ℂ k lam) (extremal ℂ k lam)) = Formalism.REAL.fockF (extremal ℂ k lam) (extremal ℂ k lam) ∧
     0 < (Formalism.REAL.fockF (extremal ℂ k lam) (extremal ℂ k lam)).re :=
   ⟨(Formalism.GradedWeylDivisibility.fockHerm _ _ _).symm, (Formalism.GradedWeylDivisibility.fockPos _ _ (extremal_ne_zero' lam)).1⟩
 
+/- English proof (translation)
+Unfold `Formalism.REAL.fockF`. Apply `Finset.sum_subset hS` to reduce the goal to its premises. Introduce `m _ hm`. Simplify using `only [MvPolynomial.mem_support_iff, not_not] at hm`. Simplify using `[hm]`.
+-/
 private theorem fockF_eq_sum_coeff_mul_star {σ : Type} (f g : MvPolynomial σ ℂ) (S : Finset (σ →₀ ℕ))
     (hS : f.support ⊆ S) :
     Formalism.REAL.fockF f g =
@@ -93,6 +124,9 @@ private theorem fockF_eq_sum_coeff_mul_star {σ : Type} (f g : MvPolynomial σ �
   simp only [MvPolynomial.mem_support_iff, not_not] at hm
   simp [hm]
 
+/- English proof (translation)
+Rewrite using `[fockF_eq_sum_coeff_mul_star (f + f') g (f.support ∪ f'.support) MvPolynomial.support_add, fockF_eq_sum_coeff_mul_star f g (f.support ∪ f'.support) (fun x hx => Finset.mem_union_left _ hx), fockF_eq_sum_coeff_mul_star f' g (f.support ∪ f'.support) (fun x hx => Finset.mem_union_ri …`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem fockF_add_left' {σ : Type} (f f' g : MvPolynomial σ ℂ) :
     Formalism.REAL.fockF (f + f') g = Formalism.REAL.fockF f g + Formalism.REAL.fockF f' g := by
   classical
@@ -104,6 +138,9 @@ private theorem fockF_add_left' {σ : Type} (f f' g : MvPolynomial σ ℂ) :
   rw [MvPolynomial.coeff_add]
   ring
 
+/- English proof (translation)
+Rewrite using `[fockF_eq_sum_coeff_mul_star (c • f) g f.support MvPolynomial.support_smul, fockF_eq_sum_coeff_mul_star f g f.support (subset_refl _), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem fockF_smul_left_eq_mul {σ : Type} (c : ℂ) (f g : MvPolynomial σ ℂ) :
     Formalism.REAL.fockF (c • f) g = c * Formalism.REAL.fockF f g := by
   classical
@@ -113,6 +150,9 @@ private theorem fockF_smul_left_eq_mul {σ : Type} (c : ℂ) (f g : MvPolynomial
   rw [MvPolynomial.coeff_smul, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Unfold `Formalism.REAL.fockF`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_add, star_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem fockF_add_right' {σ : Type} (f g g' : MvPolynomial σ ℂ) :
     Formalism.REAL.fockF f (g + g') = Formalism.REAL.fockF f g + Formalism.REAL.fockF f g' := by
   unfold Formalism.REAL.fockF
@@ -121,6 +161,9 @@ private theorem fockF_add_right' {σ : Type} (f g g' : MvPolynomial σ ℂ) :
   rw [MvPolynomial.coeff_add, star_add]
   ring
 
+/- English proof (translation)
+Unfold `Formalism.REAL.fockF`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul, star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem fockF_smul_right' {σ : Type} (c : ℂ) (f g : MvPolynomial σ ℂ) :
     Formalism.REAL.fockF f (c • g) = star c * Formalism.REAL.fockF f g := by
   unfold Formalism.REAL.fockF
@@ -129,6 +172,11 @@ private theorem fockF_smul_right' {σ : Type} (c : ℂ) (f g : MvPolynomial σ �
   rw [MvPolynomial.coeff_smul, smul_eq_mul, star_mul']
   ring
 
+/- English proof (translation)
+Establish `h : (Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `n) A).comp (Formalism.GradedWeylDivisibility.rowAct ℂ B) = Formalism.GradedWeylDivisibility.rowAct ℂ (n := n) (B * A) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [AlgHom.comp_apply, Formalism.GradedWeylDivisibility.rowAct, MvPolynomial.aeval_X, map_sum, map_mul, MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Conclude with `congrArg (fun φ => φ q) h`.
+-/
 private theorem rowAct_rowAct' {r n : ℕ} (A B : Matrix (Fin r) (Fin r) ℂ)
     (q : MvPolynomial (Fin r × Fin n) ℂ) :
     Formalism.GradedWeylDivisibility.rowAct ℂ A (Formalism.GradedWeylDivisibility.rowAct ℂ B q) = Formalism.GradedWeylDivisibility.rowAct ℂ (B * A) q := by
@@ -144,6 +192,11 @@ private theorem rowAct_rowAct' {r n : ℕ} (A B : Matrix (Fin r) (Fin r) ℂ)
     ring
   exact congrArg (fun φ => φ q) h
 
+/- English proof (translation)
+Establish `h : Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `n) (1 : Matrix (Fin r) (Fin r) ℂ) = AlgHom.id ℂ _ := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[Formalism.GradedWeylDivisibility.rowAct, Matrix.one_apply]`. Rewrite using `[h]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem rowAct_one_flag_measures {r n : ℕ} (q : MvPolynomial (Fin r × Fin n) ℂ) :
     Formalism.GradedWeylDivisibility.rowAct ℂ (1 : Matrix (Fin r) (Fin r) ℂ) q = q := by
   have h : Formalism.GradedWeylDivisibility.rowAct ℂ (n := n) (1 : Matrix (Fin r) (Fin r) ℂ) = AlgHom.id ℂ _ := by
@@ -153,6 +206,11 @@ private theorem rowAct_one_flag_measures {r n : ℕ} (q : MvPolynomial (Fin r ×
   rw [h]
   rfl
 
+/- English proof (translation)
+Unfold `normFock`. Use `congr 1`. Establish `hT` using `mem_unitaryGroup_iff.mp (transpose_mem_unitary hg)`. Rewrite `hT` using `[Matrix.star_eq_conjTranspose]`. Take `⟨hs, h0⟩` from `star_det_of_unitary hg`.
+
+Rewrite using `[fockF_smul_left_eq_mul, fockF_smul_right', Formalism.GradedWeylDivisibility.fockRowAdj k k gᵀ p, rowAct_rowAct', hT, rowAct_one_flag_measures]`. Establish `h1 : g.det ^ s * star (g.det ^ s) = 1`. Rewrite using `[star_zpow₀, hs, _root_.inv_zpow', ← zpow_add₀ h0, add_neg_cancel, zpow_zero]`. Rewrite using `[← mul_assoc, h1, one_mul]`.
+-/
 theorem normFock_unitary {k : ℕ} (lam : DomWeight k) {g : Matrix (Fin k) (Fin k) ℂ}
     (hg : g ∈ unitaryGroup (Fin k) ℂ) (s : ℤ) (p q : MvPolynomial (Fin k × Fin k) ℂ) :
     normFock lam ((g.det ^ s) • Formalism.GradedWeylDivisibility.rowAct ℂ gᵀ p) ((g.det ^ s) • Formalism.GradedWeylDivisibility.rowAct ℂ gᵀ q) =
@@ -168,26 +226,41 @@ theorem normFock_unitary {k : ℕ} (lam : DomWeight k) {g : Matrix (Fin k) (Fin 
     rw [star_zpow₀, hs, _root_.inv_zpow', ← zpow_add₀ h0, add_neg_cancel, zpow_zero]
   rw [← mul_assoc, h1, one_mul]
 
+/- English proof (translation)
+Unfold `normFock`. Rewrite using `[fockF_add_left', add_div]`.
+-/
 private theorem normFock_add_left' {k : ℕ} (lam : DomWeight k) (f f' g : MvPolynomial (Fin k × Fin k) ℂ) :
     normFock lam (f + f') g = normFock lam f g + normFock lam f' g := by
   unfold normFock
   rw [fockF_add_left', add_div]
 
+/- English proof (translation)
+Unfold `normFock`. Rewrite using `[fockF_smul_left_eq_mul, mul_div_assoc]`.
+-/
 private theorem normFock_smul_left' {k : ℕ} (lam : DomWeight k) (c : ℂ) (f g : MvPolynomial (Fin k × Fin k) ℂ) :
     normFock lam (c • f) g = c * normFock lam f g := by
   unfold normFock
   rw [fockF_smul_left_eq_mul, mul_div_assoc]
 
+/- English proof (translation)
+Unfold `normFock`. Rewrite using `[fockF_add_right', add_div]`.
+-/
 private theorem normFock_add_right {k : ℕ} (lam : DomWeight k) (f g g' : MvPolynomial (Fin k × Fin k) ℂ) :
     normFock lam f (g + g') = normFock lam f g + normFock lam f g' := by
   unfold normFock
   rw [fockF_add_right', add_div]
 
+/- English proof (translation)
+Unfold `normFock`. Rewrite using `[fockF_smul_right', mul_div_assoc]`.
+-/
 private theorem normFock_smul_right {k : ℕ} (lam : DomWeight k) (c : ℂ) (f g : MvPolynomial (Fin k × Fin k) ℂ) :
     normFock lam f (c • g) = star c * normFock lam f g := by
   unfold normFock
   rw [fockF_smul_right', mul_div_assoc]
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul]`.
+-/
 private theorem map_starRingEnd_smul {σ : Type} (c : ℂ) (p : MvPolynomial σ ℂ) :
     MvPolynomial.map (starRingEnd ℂ) (c • p) = starRingEnd ℂ c • MvPolynomial.map (starRingEnd ℂ) p := by
   rw [MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul]
@@ -196,6 +269,55 @@ end GlobalTheory.WeylConjType
 
 namespace GlobalTheory.WeylConjType
 
+/- English proof (translation)
+Introduce `k n h lam u hu W _ _ π hπ`. Substitute `h` using the available equality. Establish `hsub : ∀ g : Matrix (Fin k) (Fin k) ℂ, g.submatrix (Fin.cast rfl) (Fin.cast rfl) = g`. Introduce `g`. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules. Simplify using `only [hsub]`. Establish `hufun : u = fun i => (lam.w i : ℝ) + ((rhoVec k i : ℚ) : ℝ)`. Use function extensionality and compare the values at `i`. Rewrite using `[hu i]`.
+
+Simplify using the standard rewrite rules. Take `⟨hnt, hfd, hrep, hK⟩` from `hπ`. Take `⟨H, iN, iI, π0, e, hπ0, he_inj, he_mem, he_eq⟩` from `GlobalTheory.T.exists_harishChandraType_dualWeylModuleFockNorm k lam`. Establish `hπ0' : IsHCTypeU k u π0`. Rewrite using `[hufun]`.
+
+Conclude with `hπ0`. Establish `hπ' : IsHCTypeU k u π` using `⟨hnt, hfd, hrep, hK⟩`. Take `⟨A, hA⟩` from `GlobalTheory.T.exists_intertwiner_of_same_harishChandraParam_unitary k u W H π π0 hπ' hπ0'`. Take `⟨hfin, hdn, hstab, hirr⟩` from `GlobalTheory.T.delSq_unitary_stable_and_irreducible k lam`. Take `⟨hcmem, hcrow, hcnf⟩` from `GlobalTheory.T.conj_coefficients_weylModule_rowAct_normFock k lam`.
+
+Take `⟨j0, hj0⟩ : ∃ j0 : W →ₗ[ℂ] MvPolynomial (Fin k × Fin k) ℂ, ∀ ξ, j0 ξ = e (A ξ)` from `⟨e.comp A.toLinearMap, fun _ => rfl⟩`. Establish `hj0_eq : ∀ g ∈ unitaryGroup (Fin k) ℂ, ∀ ξ, j0 (π g ξ) = (g.det ^ lam.detShift) • Formalism.GradedWeylDivisibility.rowAct ℂ gᵀ (j0 ξ)`. Introduce `g hg ξ`. Rewrite using `[hj0, hj0, hA g hg, show π0 g = π0 ((glOf g hg : GL (Fin k) ℂ) : Matrix (Fin k) (Fin k) ℂ) from rfl, he_eq (glOf g hg) hg]`. Unfold `sqAct`.
+
+Rewrite using `[detPow_glOf]`. Both sides reduce to the same expression. Establish `hj0_mem : ∀ ξ, j0 ξ ∈ delSq ℂ k lam`. Introduce `ξ`. Rewrite using `[hj0, hdn]`.
+
+Conclude with `he_mem _`. Establish `hj0_inj : Function.Injective j0`. Introduce `x y hxy`. Rewrite `hxy` using `[hj0, hj0]`. Conclude with `A.injective (he_inj hxy)`.
+
+Establish `hrange : LinearMap.range e = delSq ℂ k lam`. Establish `hle : LinearMap.range e ≤ delSq ℂ k lam`. Introduce and unpack `p ⟨x, rfl⟩`. Rewrite using `[hdn]`. Conclude with `he_mem x`.
+
+Establish `hst : ∀ g ∈ unitaryGroup (Fin k) ℂ, ∀ p ∈ LinearMap.range e, Formalism.GradedWeylDivisibility.rowAct ℂ g p ∈ LinearMap.range e`. Introduce and unpack `g hg p ⟨x, rfl⟩`. Establish `hgT` using `transpose_mem_unitary hg`. Establish `h1` using `he_eq (glOf gᵀ hgT) hgT x`. Unfold `sqAct at h1`.
+
+Rewrite `h1` using `[detPow_glOf]`. Establish `h2 : ((glOf gᵀ hgT : GL (Fin k) ℂ) : Matrix (Fin k) (Fin k) ℂ)ᵀ = g` using `by show gᵀᵀ = g`. Conclude with `Matrix.transpose_transpose g`. Rewrite `h1` using `[h2]`. Establish `hd : (gᵀ.det ^ lam.detShift) ≠ 0` using `zpow_ne_zero _ (star_det_of_unitary hgT).2`.
+
+Use `⟨(gᵀ.det ^ lam.detShift)⁻¹ • π0 ((glOf gᵀ hgT : GL (Fin k) ℂ) : Matrix (Fin k) (Fin k) ℂ) x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul e, h1, inv_smul_smul₀ hd]`. Break down `hirr _ hle hst with h0 | h0` into its components or cases. Use `exfalso haveI : Nontrivial H := hπ0.1`. Take `⟨x, hx⟩` from `exists_ne (0 : H)`.
+
+Establish `hex : e x ∈ LinearMap.range e` using `⟨x, rfl⟩`. Rewrite `hex` using `[h0, Submodule.mem_bot]`. Conclude with `hx (he_inj (by rw [hex, map_zero]))`. Conclude with `h0`. Take `⟨B, hB⟩ : ∃ B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ, ∀ x y, B x y = normFock lam (j0 y) (j0 x)` from `⟨LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) (fun x y => normFock lam (j0 y) (j0 x)) (fun x x' y => by simp only [map_add, normFock_add_right]) (fun c x y => by simp only [map_smul, normFock_smul_right, starRingEnd_apply, smul_eq_mul]) (fun x y y' => by simp only [map_add, no …`.
+
+Use `haveI : FiniteDimensional ℂ W := hfd`. Establish `hE` using `fockF_ext_real lam`. Establish `hEim : (Formalism.REAL.fockF (extremal ℂ k lam) (extremal ℂ k lam)).im = 0` using `(Formalism.GradedWeylDivisibility.fockPos _ _ (extremal_ne_zero' lam)).2`. Take `⟨c, hc, hcB⟩` from `GlobalTheory.T.invariant_posDef_form_eq_smul_inner_of_irreducible' W (unitaryGroup (Fin k) ℂ) (fun i => π i.1) B (fun i v => hrep.2.1 i.1 (mem_UJset_of_unitary i.2) v) (fun S hS => hK.2.2.1 S le_top (fun g hg v hv => hS ⟨g, hg.1⟩ v hv)) (fun i x y => by`. Rewrite using `[hB, hB, hj0_eq i.1 i.2, hj0_eq i.1 i.2]`.
+
+Conclude with `normFock_unitary lam i.2 _ _ _)`. Use the proof step `(fun x y => by`. Rewrite using `[hB, hB]`. Unfold `normFock`. Rewrite using `[star_div₀, ← Formalism.GradedWeylDivisibility.fockHerm _ (j0 y) (j0 x), hE.1])`.
+
+Use the proof step `(fun x hx => by`. Rewrite using `[hB]`. Unfold `normFock`. Establish `hx0 : j0 x ≠ 0` using `fun h0 => hx (hj0_inj (by rw [h0, map_zero]))`. Take `⟨hp, hpim⟩` from `Formalism.GradedWeylDivisibility.fockPos _ _ hx0`.
+
+Rewrite using `[Complex.div_re, hpim, hEim, zero_mul, zero_div, add_zero]`. Apply `div_pos (mul_pos hp hE.2)` to reduce the goal to its premises. Conclude with `Complex.normSq_pos.mpr (fun h0 => by rw [h0] at hE; simp at hE))`. Establish `hcB'` using `hcB hnt`. Establish `hsq : Real.sqrt c ≠ 0` using `(Real.sqrt_pos.mpr hc).ne'`.
+
+Use `set r : ℂ := (((Real.sqrt c)⁻¹ : ℝ) : ℂ) with hr`. Establish `hrs : starRingEnd ℂ r = r` using `Complex.conj_ofReal _`. Establish `hrr0 : (Real.sqrt c)⁻¹ * (Real.sqrt c)⁻¹ * c = 1`. Rewrite using `[← mul_inv, Real.mul_self_sqrt hc.le, inv_mul_cancel₀ hc.ne']`. Establish `hrR0 : (Real.sqrt c)⁻¹ * Real.sqrt c = 1` using `inv_mul_cancel₀ hsq`.
+
+Establish `hrr : r * star r * c = 1`. Rewrite using `[← starRingEnd_apply, hrs, hr]`. Conclude with `hrr0` after adjusting the coercions. Establish `hrR : r * (Real.sqrt c : ℂ) = 1`. Rewrite using `[hr]`.
+
+Conclude with `hrR0` after adjusting the coercions. Set `j1 : W →ₗ[ℂ] MvPolynomial (Fin k × Fin k) ℂ` to `r • j0`. Establish `hj1 : ∀ ξ, j1 ξ = r • j0 ξ` using `fun _ => rfl`. Establish `hjapp : ∀ ξ, ((conjL (Fin k × Fin k)).comp j1 : W →ₗ⋆[ℂ] MvPolynomial (Fin k × Fin k) ℂ) ξ = MvPolynomial.map (starRingEnd ℂ) (r • j0 ξ)` using `fun _ => rfl`. Use `⟨(conjL (Fin k × Fin k)).comp j1, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `ξ`. Rewrite using `[hjapp]`. Conclude with `hcmem _ (Submodule.smul_mem _ _ (hj0_mem ξ))`. Introduce `p hp`. Establish `hp'` using `hcmem p hp`.
+
+Rewrite `hp'` using `[← hrange]`. Take `⟨y, hy⟩` from `hp'`. Use `⟨(Real.sqrt c : ℂ) • A.symm y, ?_⟩` and prove the remaining obligations. Rewrite using `[hjapp, map_smul j0, hj0, LinearEquiv.apply_symm_apply, smul_smul, hrR, one_smul, hy]`. Conclude with `conjL_conjL p`.
+
+Introduce `η ξ`. Rewrite using `[hjapp, hjapp, hcnf, normFock_smul_left', normFock_smul_right, ← hB, hcB']`. Rewrite using `[← mul_assoc, ← mul_assoc, hrr, one_mul]`. Introduce `g hg ξ`. Rewrite using `[hjapp, hjapp, hj0_eq g hg]`.
+
+Simplify using `only [map_starRingEnd_smul, hcrow]`. Rewrite using `[hrs, map_smul (Formalism.GradedWeylDivisibility.rowAct ℂ gᴴ)]`. Take `⟨hs, h0⟩` from `star_det_of_unitary hg`. Establish `hgm : gᵀ.map (starRingEnd ℂ) = gᴴ`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.conjTranspose_apply]`. Establish `hdet : starRingEnd ℂ (g.det ^ lam.detShift) = g.det ^ (-lam.detShift)`. Rewrite using `[map_zpow₀, starRingEnd_apply, hs, _root_.inv_zpow']`. Rewrite using `[hgm, hdet, smul_comm]`.
+-/
 theorem exists_conj_weyl : ∀ (k n : ℕ) (h : k = n) (lam : DomWeight n) (u : Fin k → ℝ), (∀ i : Fin k, u i = (lam.w (Fin.cast h i) : ℝ) + ((rhoVec k i : ℚ) : ℝ)) → ∀ (W : Type) [NormedAddCommGroup W] [InnerProductSpace ℂ W] (π : Matrix (Fin k) (Fin k) ℂ → (W →L[ℂ] W)), IsHCTypeU k u π → ∃ j : W →ₗ⋆[ℂ] MvPolynomial (Fin n × Fin n) ℂ, (∀ ξ, j ξ ∈ delSq ℂ n lam) ∧ (∀ p ∈ delSq ℂ n lam, ∃ ξ, j ξ = p) ∧ (∀ ξ η, normFock lam (j η) (j ξ) = ⟪η, ξ⟫_ℂ) ∧ ∀ g ∈ Matrix.unitaryGroup (Fin n) ℂ, ∀ ξ, j (π (g.submatrix (Fin.cast h) (Fin.cast h)) ξ) = (g.det ^ (-lam.detShift)) • Formalism.GradedWeylDivisibility.rowAct ℂ gᴴ (j ξ) := by
   intro k n h lam u hu W _ _ π hπ
   subst h

@@ -5,6 +5,9 @@ open ValuativeRel Matrix GlobalTheory.SplitFlip GlobalTheory.FullRankCoinv Globa
 
 namespace GlobalTheory.UnitScaleBox
 
+/- English proof (translation)
+Simplify using `only [box, Set.mem_setOf_eq]`. Use `forall₂_congr fun i j => ?_` and prove the remaining obligations. Establish `h : Z i j - p i j = c i j * (Y i j - p i j)` using `by rw [hZ, mul_sub, hp]`. Rewrite using `[h, map_mul, hc, one_mul]`.
+-/
 theorem scale_mem_box_iff {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n d : ℕ} (ϖ : kˣ) (p : Matrix (Fin n) (Fin d) k) (N : ℕ)
     (c : Fin n → Fin d → k) (hc : ∀ i j, valuation k (c i j) = 1) (hp : ∀ i j, c i j * p i j = p i j)
@@ -15,12 +18,28 @@ theorem scale_mem_box_iff {k : Type} [Field k] [ValuativeRel k] [TopologicalSpac
   have h : Z i j - p i j = c i j * (Y i j - p i j) := by rw [hZ, mul_sub, hp]
   rw [h, map_mul, hc, one_mul]
 
+/- English proof (translation)
+Distinguish the cases in `h : i = i₀`. Substitute `h` using the available equality. Simplify using `[ht]`. Simplify using `[Function.update_apply, h]`.
+-/
 theorem val_update {k : Type} [Field k] [ValuativeRel k] {m : ℕ} (i₀ : Fin m) (t : k) (ht : valuation k t = 1)
     (i : Fin m) : valuation k (Function.update (1 : Fin m → k) i₀ t i) = 1 := by
   by_cases h : i = i₀
   · subst h; simp [ht]
   · simp [Function.update_apply, h]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n d i₀ j₀ ϖ u p₁ p₂ N hu h1 h1' h2`. Establish `hu' : valuation k (((u⁻¹ : kˣ) : k)) = 1`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, hu, inv_one]`. Use `set f : Fin n → k := Function.update (1 : Fin n → k) i₀ (u : k) with hf`. Use `set g : Fin d → k := Function.update (1 : Fin d → k) j₀ ((u⁻¹ : kˣ) : k) with hg`.
+
+Establish `hfv : ∀ i, valuation k (f i) = 1` using `val_update i₀ _ hu`. Establish `hgv : ∀ j, valuation k (g j) = 1` using `val_update j₀ _ hu'`. Prove the components needed by the constructor for the conclusion. Use extensionality with `Y`. Simplify using `only [Set.mem_setOf_eq]`.
+
+Use `scale_mem_box_iff ϖ p₁ N (fun i j => f i * g j) (fun i j => by rw [map_mul, hfv, hgv, one_mul]) (fun i j => ?_) Y _ (fun i j => ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases hi : i = i₀ <;> by_cases hj : j = j₀`. Substitute `hi hj` using the available equality. Simplify using `[hf, hg]`. Substitute `hi` using the available equality.
+
+Simplify using `[h1 j, hj]`. Substitute `hj` using the available equality. Simplify using `[h1' i hi]`. Simplify using `[hf, hg, Function.update_apply, hi, hj]`. Rewrite using `[dgl_val, dgl_val, diagonal_transpose, mul_diagonal, diagonal_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use extensionality with `Y`. Simplify using `only [Set.mem_setOf_eq]`. Use `scale_mem_box_iff ϖ p₂ N (fun _ j => g j) (fun i j => hgv j) (fun i j => ?_) Y _ (fun i j => ?_)` and prove the remaining obligations. Distinguish the cases in `hj : j = j₀`.
+
+Substitute `hj` using the available equality. Simplify using `[h2 i]`. Simplify using `[hg, Function.update_apply, hj]`. Rewrite using `[dgl_val, mul_diagonal]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem box_unit_scale : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n d : ℕ) (i₀ : Fin n) (j₀ : Fin d) (ϖ u : kˣ) (p₁ p₂ : Matrix (Fin n) (Fin d) k) (N : ℕ),
     valuation k (u : k) = 1 → (∀ j, p₁ i₀ j = if j = j₀ then 1 else 0) → (∀ i, i ≠ i₀ → p₁ i j₀ = 0) →

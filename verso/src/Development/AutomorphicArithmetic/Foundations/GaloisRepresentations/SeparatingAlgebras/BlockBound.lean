@@ -11,12 +11,20 @@ section CoefLeLemmas
 
 variable {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {σ : Type}
 
+/- English proof (translation)
+Introduce `m`. Rewrite using `[MvPolynomial.coeff_sum, map_sum]`. Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hR (fun a ha => h a ha m)`.
+-/
 private lemma coefLe_sum {α : Type} (s : Finset α) (f : α → MvPolynomial σ ℂ) {R : ℝ} (hR : 0 ≤ R)
     (h : ∀ a ∈ s, CoefLe ι R (f a)) : CoefLe ι R (∑ a ∈ s, f a) := by
   intro m
   rw [MvPolynomial.coeff_sum, map_sum]
   exact IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hR (fun a ha => h a ha m)
 
+/- English proof (translation)
+Introduce `m`. Rewrite using `[MvPolynomial.coeff_mul, map_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg hR hS) ?_` and prove the remaining obligations. Introduce `x _`. Rewrite using `[map_mul, norm_mul]`.
+
+Conclude with `mul_le_mul (hp _) (hq _) (norm_nonneg _) hR`.
+-/
 private lemma coefLe_mul {R S : ℝ} (hR : 0 ≤ R) (hS : 0 ≤ S) {p q : MvPolynomial σ ℂ}
     (hp : CoefLe ι R p) (hq : CoefLe ι S q) : CoefLe ι (R * S) (p * q) := by
   classical
@@ -27,12 +35,18 @@ private lemma coefLe_mul {R S : ℝ} (hR : 0 ≤ R) (hS : 0 ≤ S) {p q : MvPoly
   rw [map_mul, norm_mul]
   exact mul_le_mul (hp _) (hq _) (norm_nonneg _) hR
 
+/- English proof (translation)
+Introduce `m`. Rewrite using `[MvPolynomial.coeff_one]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private lemma coefLe_one : CoefLe ι 1 (1 : MvPolynomial σ ℂ) := by
   classical
   intro m
   rw [MvPolynomial.coeff_one]
   split_ifs <;> simp
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using coefLe_one ι`. Consider the case `succ k ih`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `coefLe_mul ι (pow_nonneg hR _) hR ih hp`.
+-/
 private lemma coefLe_pow {R : ℝ} (hR : 0 ≤ R) {p : MvPolynomial σ ℂ} (hp : CoefLe ι R p) (k : ℕ) :
     CoefLe ι (R ^ k) (p ^ k) := by
   induction k with
@@ -41,6 +55,9 @@ private lemma coefLe_pow {R : ℝ} (hR : 0 ≤ R) {p : MvPolynomial σ ℂ} (hp 
     rw [pow_succ, pow_succ]
     exact coefLe_mul ι (pow_nonneg hR _) hR ih hp
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using coefLe_one ι`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `coefLe_mul ι (hr a) (Finset.prod_nonneg fun b _ => hr b) (h a (Finset.mem_insert_self a s)) (ih fun b hb => h b (Finset.mem_insert_of_mem hb))`.
+-/
 private lemma coefLe_prod {α : Type} (s : Finset α) (f : α → MvPolynomial σ ℂ) (r : α → ℝ)
     (hr : ∀ a, 0 ≤ r a) (h : ∀ a ∈ s, CoefLe ι (r a) (f a)) :
     CoefLe ι (∏ a ∈ s, r a) (∏ a ∈ s, f a) := by
@@ -52,6 +69,9 @@ private lemma coefLe_prod {α : Type} (s : Finset α) (f : α → MvPolynomial �
     exact coefLe_mul ι (hr a) (Finset.prod_nonneg fun b _ => hr b) (h a (Finset.mem_insert_self a s))
       (ih fun b hb => h b (Finset.mem_insert_of_mem hb))
 
+/- English proof (translation)
+Introduce `m`. Rewrite using `[MvPolynomial.coeff_C_mul, MvPolynomial.coeff_X']`. Use `split_ifs`. Simplify using `using hc`. Simplify using `using zero_le_one.trans hR`.
+-/
 private lemma coefLe_C_mul_X {c : ℂ} {R : ℝ} (hR : 1 ≤ R) (hc : ‖ι.symm c‖ ≤ R) (v : σ) :
     CoefLe ι R (MvPolynomial.C c * MvPolynomial.X v) := by
   classical
@@ -61,6 +81,9 @@ private lemma coefLe_C_mul_X {c : ℂ} {R : ℝ} (hR : 1 ≤ R) (hc : ‖ι.symm
   · simpa using hc
   · simpa using zero_le_one.trans hR
 
+/- English proof (translation)
+Establish `h` using `coefLe_prod ι m.support (fun v => y v ^ m v) (fun v => R ^ m v) (fun _ => pow_nonneg hR _) (fun v _ => coefLe_pow ι hR (hy v) (m v))`. Rewrite `h` using `[Finset.prod_pow_eq_pow_sum]`. Then use the resulting hypothesis.
+-/
 private lemma coefLe_monomial_image {τ : Type} {y : σ → MvPolynomial τ ℂ} {R : ℝ} (hR : 0 ≤ R)
     (hy : ∀ v, CoefLe ι R (y v)) (m : σ →₀ ℕ) :
     CoefLe ι (R ^ (m.sum fun _ e => e)) (m.prod fun v e => y v ^ e) := by
@@ -72,6 +95,15 @@ end CoefLeLemmas
 
 end UpperTheory.Gal.Gen
 
+/- English proof (translation)
+Introduce `l _ ι T n A R hR hA D x hx h1`. Establish `hR0 : 0 ≤ R` using `zero_le_one.trans hR`. Use `set y : T × Fin n × Fin n → MvPolynomial (T × Fin n × Fin n) ℂ := fun v => ∑ b : Fin n, MvPolynomial.C (A v.1 v.2.1 b) * MvPolynomial.X (v.1, (b, v.2.2)) with hydef`. Establish `hy : ∀ v, CoefLe ι R (y v)` using `fun v => coefLe_sum ι _ _ hR0 fun b _ => coefLe_C_mul_X ι hR (hA _ _ _) _`. Establish `e : Formalism.GradedWeylDivisibility.blockAct ℂ A x = ∑ m ∈ x.support, MvPolynomial.C (MvPolynomial.coeff m x) * (m.prod fun v e => y v ^ e)` using `by conv_lhs => rw [x.as_sum]`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Formalism.GradedWeylDivisibility.blockAct, MvPolynomial.aeval_monomial]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Use `coefLe_sum ι _ _ (pow_nonneg hR0 _) fun m hm k => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_C_mul, map_mul, norm_mul]`. Establish `hdeg : (m.sum fun _ e => e) ≤ D` using `(MvPolynomial.le_totalDegree hm).trans hx`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_mul]`.
+
+Conclude with `pow_le_pow_right₀ hR hdeg`.
+-/
 theorem UpperTheory.Gal.Gen.blockBound_pf :
     UpperTheory.Gal.Gen.BlockBound := by
   intro l _ ι T n A R hR hA D x hx h1

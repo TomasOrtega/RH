@@ -95,6 +95,47 @@ def RunPar (th tableLineDegreeFive DF cc : ℝ) {n : ℕ} (P₁ : MvPolynomial (
           (ReciprocityTheory.ChartRestriction.G.I2.dstar (E := D.host.E) P.m : ℝ) ^ 4 ≤ PP ∧
         cc = ReciprocityTheory.ChartRestriction.G.I2.RR (E := D.host.E) * PP * DF ^ 2 / P.q
 
+/- English proof (translation)
+Introduce `σ hσ k x hx`. Take `⟨x', hu, hrec, hphi, W, Wu, A, L, hpin, hl2, ρ, hρ, nb, bs, hdisj, hren, hdeg, K, hK⟩` from `hFT hP₁ hw σ hσ k x hx`. Take `⟨hDF, hRP'⟩` from `hRP`. Take `⟨P, hq, hth, hP14, PP, hPP, hcc⟩` from `hRP' σ hσ k x' A nb bs hdisj hdeg`. Establish `hM0 : 0 < T.Q.l.M`.
+
+Break down `Nat.eq_zero_or_pos T.Q.l.M with h | h` into its components or cases. Use `P.hq` as an intermediate fact. Rewrite `this` using `[hq, h]`. Simplify using `at this`. Conclude with `h`.
+
+Establish `hMpos : (0 : ℝ) < T.Q.l.M` using `by exact_mod_cast hM0`. Establish `hπ : ReciprocityTheory.ChartRestriction.G.I2.IsPi A.T P.q ((T.Q.l.M : ℂ) • LinearMap.id)`. Rewrite using `[hq]`. Conclude with `I2FramePointLemmas.isPi_nat A.T T.Q.l.M`. Establish `hK' : ReciprocityTheory.ChartRestriction.G.I2.IsReps A.T P.q w.n ((T.Q.l.M : ℂ) • LinearMap.id) K`.
+
+Rewrite using `[hq]`. Conclude with `hK`. Establish `hI` using `ReciprocityTheory.ChartRestriction.G.I2.I_holds D.host.E A.T w.n nb bs hdisj P _ hπ A.s A.s_mem A.s_ne K hK'`. Rewrite `hI` using `[hl2, one_pow, mul_one, hq]`. Establish `hNs` using `(ReciprocityTheory.ChartRestriction.G.I2.N_holds D.host.E A.T (T.Q.l.M ^ 2) w.n ((T.Q.l.M : ℂ) • LinearMap.id) (hq ▸ P.hq) (I2FramePointLemmas.isPi_nat A.T T.Q.l.M) A.s A.s_mem A.s_ne K hK).1`.
+
+Take `⟨jb, hinj, hb⟩` from `hGC σ hσ k x' W Wu A L K hK hpin`. Establish `hLinj : Function.Injective L`. Introduce `z z' hzz`. Assume the negation of the conclusion as `hne`. Establish `hd : star (z - z') ≠ 0` using `star_ne_zero.2 (sub_ne_zero.2 hne)`.
+
+Establish `hpos` using `Wu.pos _ hd`. Establish `h0` using `hpin.2.1 (z - z') (z - z')`. Rewrite `h0` using `[map_sub, hzz, sub_self]`. Establish `h00 : ReciprocityTheory.ChartRestriction.G.I2.Hf (0 : ReciprocityTheory.ChartRestriction.G.I2.Vsp A.T.dim) 0 = 0`. Simplify using `[ReciprocityTheory.ChartRestriction.G.I2.Hf]`.
+
+Rewrite `h0` using `[h00]`. Establish `h0' : hermForm Wu.Hm (star (z - z')) (star (z - z')) = 0` using `star_eq_zero.1 h0.symm`. Rewrite `hpos` using `[h0']`. Simplify using `at hpos`. Establish `hρi : Function.Injective ρ`.
+
+Introduce `y y' hy`. Establish `h' : L (Pi.single (W.e.symm y) 1) = L (Pi.single (W.e.symm y') 1)` using `by rw [hρ, hρ, hy]`. Establish `h''` using `hLinj h'`. Assume the negation of the conclusion as `hne`. Establish `hne' : W.e.symm y ≠ W.e.symm y'` using `fun h => hne (W.e.symm.injective h)`.
+
+Use `congrFun h'' (W.e.symm y)` as an intermediate fact. Simplify using `[hne'] at this`. Establish `hρ'i : Function.Injective (fun l : LtN (T.Q.Dw j) w.n => ((l.2.2, ρ ⟨l.1, l.2.1⟩) : ReciprocityTheory.ChartRestriction.G.I2.Letter w.n A.T.dim))`. Introduce and unpack `⟨τ, i, b⟩ ⟨τ', i', b'⟩ h`. Simplify using `only [Prod.mk.injEq] at h`.
+
+Take `⟨hb, hr⟩` from `h`. Use `hρi hr` as an intermediate fact. Simplify using `only [Sigma.mk.inj_iff] at this`. Take `⟨rfl, hi⟩` from `this`. Take `rfl` from `eq_of_heq hi`.
+
+Substitute `hb` using the available equality. Both sides reduce to the same expression. Establish `hdir : (fun l : LtN (T.Q.Dw j) w.n => Pi.single l.2.2 (L (Pi.single (W.e.symm ⟨l.1, l.2.1⟩) 1))) = ReciprocityTheory.ChartRestriction.G.I2.dir ∘ (fun l : LtN (T.Q.Dw j) w.n => ((l.2.2, ρ ⟨l.1, l.2.1⟩) : ReciprocityTheory.ChartRestriction.G.I2.Letter w.n A.T.dim))`. Use function extensionality and compare the values at `l`. Simplify using `only [Function.comp_apply, ReciprocityTheory.ChartRestriction.G.I2.dir, hρ]`.
+
+Establish `hpt : ∀ b ∈ K, ‖ReciprocityTheory.ChartRestriction.G.I2.polyDeriv (ReciprocityTheory.ChartRestriction.G.I2.P1 bs) ReciprocityTheory.ChartRestriction.G.I2.dir (A.T.U (T.Q.l.M ^ 2) b (ReciprocityTheory.ChartRestriction.G.I2.s0 A.T ((T.Q.l.M : ℂ) • LinearMap.id) A.s)) 0‖ ≤ (T.Q.l.M …`. Introduce `b hbK`. Take `⟨xd, x2, f, hf, hx2a, hx2b, hbeq, hle⟩` from `hb b hbK`. Establish `hv` using `hTV D T hL j hj nab hnab w xd P₁ hP f hf σ hσ k x' hu W Wu A L hpin x2 hx2a hx2b`. Establish `hdiff : Differentiable ℂ (A.T.U (T.Q.l.M ^ 2) b (ReciprocityTheory.ChartRestriction.G.I2.s0 A.T ((T.Q.l.M : ℂ) • LinearMap.id) A.s))` using `(hNs b hbK).1`.
+
+Rewrite `hv` using `[← hbeq, hdir, ← I2FramePointLemmas.polyDeriv_rename (I2FramePointLemmas.contDiffAt_of_diff hdiff 0) _ hρ'i, hren]`. Establish `hn : ‖toC (evR (T.Q.Xo j) T.Q.c f ((T.U j σ).un k x'))‖ = ((T.Q.l.M : ℝ)⁻¹) ^ P₁.totalDegree * ‖ReciprocityTheory.ChartRestriction.G.I2.polyDeriv (ReciprocityTheory.ChartRestriction.G.I2.P1 bs) ReciprocityTheory.ChartRestriction.G.I2.dir (A.T.U (T.Q.l.M ^ 2) b (ReciprocityTheory. …`. Rewrite using `[hv, norm_mul, norm_pow, norm_inv, Complex.norm_natCast, norm_star]`. Rewrite `hle` using `[hn]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← mul_assoc, ← mul_pow, mul_inv_cancel₀ hMpos.ne', one_pow, one_mul]`. Use `_ ≤ _ := mul_le_mul_of_nonneg_left hle (by positivity)`. Establish `hsum : ∑ b ∈ K, ‖ReciprocityTheory.ChartRestriction.G.I2.polyDeriv (ReciprocityTheory.ChartRestriction.G.I2.P1 bs) ReciprocityTheory.ChartRestriction.G.I2.dir (A.T.U (T.Q.l.M ^ 2) b (ReciprocityTheory.ChartRestriction.G.I2.s0 A.T ((T.Q.l.M : ℂ) • LinearMap.id) A.s)) 0‖ ^ 2 ≤ (T.Q …`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := by`. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Rewrite using `[← Finset.sum_image (f := fun i => recNrm (T.U j σ) xR uL.1 uL.2 (wR i) k x'.1 ^ 2) (fun a ha b hb h => hinj ha hb h)]`.
+
+Conclude with `Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) fun _ _ _ => sq_nonneg _`. Establish `hS` using `hI.trans hsum`. Establish `hJpos` using `I2FramePointLemmas.jbound_pos A.T P w.n`. Establish `hn1 : 1 ≤ w.n` using `I2FramePointLemmas.one_le_n_of_DF bs P.hDF`. Establish `hdgR : ((ReciprocityTheory.ChartRestriction.G.I2.DF bs : ℕ) : ℝ) = DF` using `by rw [hdeg]; exact hDF`.
+
+Establish `hlog` using `I2FramePointLemmas.log_bound A.T P w.n hn1 T.Q.l.M hq tableLineDegreeFive cc PP hP14 hPP (by rw [hdgR]; exact hcc)`. Establish `hph : ReciprocityTheory.ChartRestriction.G.I2.phiFD ((T.U j σ).X k) th x = P.ph`. Rewrite using `[← hphi, ReciprocityTheory.ChartRestriction.G.I2.Par.ph, hth]`. Conclude with `((ReciprocityTheory.ChartRestriction.G.I2.TorusAtPf.torusAtLa1_holds _ _ _ x'.1 x'.2 A.T (ReciprocityTheory.ChartRestriction.G.I2.TorusAtDataPf.torusAtIs_holds _ _ _ _ A)).2 th).symm`. Rewrite using `[hph]`.
+
+Simplify using `only [← hrec]`. Use `set S := ∑ i, recNrm (T.U j σ) xR uL.1 uL.2 (wR i) k x'.1 ^ 2 with hSdef`. Establish `hMp : (0 : ℝ) < (T.Q.l.M : ℝ) ^ (2 * P₁.totalDegree)` using `pow_pos hMpos _`. Establish `hS0 : 0 < S`. Assume the negation of the conclusion as `h`.
+
+Use `mul_nonpos_of_nonneg_of_nonpos hMp.le (not_lt.1 h)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Real.log_sqrt hS0.le]`. Establish `hlJ : Real.log (P.Jbound w.n) ≤ ((2 * P₁.totalDegree : ℕ) : ℝ) * Real.log T.Q.l.M + Real.log S`. Use `Real.log_le_log hJpos hS` as an intermediate fact.
+
+Rewrite `this` using `[Real.log_mul hMp.ne' hS0.ne', Real.log_pow]`. Then use the resulting hypothesis. Move the coercions through the operations in `at hlJ`. Rewrite `hlJ` using `[hDF]`. Rewrite `hlog` using `[hdgR]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem i2iAt_of (hL : LawsP T) (hj : InR D j) (nab : NabV (T.Q.Xo j) T.Q.c)
     (hnab : ∃ _ : StarRing (𝓞 D.host.E), IsNab (T.Q.Xo j) T.Q.c nab)
     (w : WeightFamilies.Wt D j) (P₁ : MvPolynomial (LtN (T.Q.Dw j) w.n) T.Q.c.F) (hP : P₁ ∈ harmA T.Q.c (wtA w) w.n)

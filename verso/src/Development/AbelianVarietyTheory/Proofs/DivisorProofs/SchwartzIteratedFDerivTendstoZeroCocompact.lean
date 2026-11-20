@@ -5,6 +5,11 @@ open scoped ENNReal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `haveI : ProperSpace E := FiniteDimensional.proper_real E`. Take `⟨C, -, hC⟩` from `f.decay 1 j`. Apply the tactic sequence `have hn : Tendsto (fun z : E => ‖z‖) (cocompact E) atTop := by first | exact tendsto_norm_cocompact_atTop | exact tendsto_norm_cocompact_atTop _`. Establish `h0 : Tendsto (fun z : E => C / ‖z‖) (cocompact E) (𝓝 0)` using `tendsto_const_nhds.div_atTop hn`. Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`.
+
+Use `squeeze_zero' (Eventually.of_forall fun _ => norm_nonneg _) ?_ h0` and prove the remaining obligations. Use `filter_upwards [hn.eventually_gt_atTop 0] with z hz`. Rewrite using `[le_div_iff₀ hz, mul_comm]`. Simplify using `using hC z`.
+-/
 theorem schwartz_iteratedFDeriv_tendsto_zero_cocompact
     {E F : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (f : SchwartzMap E F) (j : ℕ) :

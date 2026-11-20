@@ -19,20 +19,40 @@ namespace GlobalTheory.CompanionTheory.LocalWhittakerNorm
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GroundTheory.Automorphic.GodementSection.continuous_localChar c w, fun x => by rw [GroundTheory.Automorphic.GodementSection.coe_localChar]; exact Circle.norm_coe _⟩`.
+-/
 theorem isUnit1_localChar' (c : HeckeCharacter K) (w : PlK K) : IsUnit1 (localChar c w) :=
   ⟨GroundTheory.Automorphic.GodementSection.continuous_localChar c w, fun x => by
     rw [GroundTheory.Automorphic.GodementSection.coe_localChar]; exact Circle.norm_coe _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(isUnit1_localChar' c w).1.comp (Continuous.units_map _ (_root_.continuous_algebraMap (Qv v) (Kv K w))), fun x => (isUnit1_localChar' c w).2 _⟩`.
+-/
 theorem isUnit1_cAt' (c : HeckeCharacter K) (v : Pl) (w : PlK K) [w.asIdeal.LiesOver v.asIdeal] :
     IsUnit1 (cAt c v w) :=
   ⟨(isUnit1_localChar' c w).1.comp (Continuous.units_map _ (_root_.continuous_algebraMap (Qv v) (Kv K w))),
     fun x => (isUnit1_localChar' c w).2 _⟩
 
+/- English proof (translation)
+Unfold `GL2LocalData.nsg`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem norm_nsg (F E : Type) [Field F] [CommRing E] [Algebra F E] (a : F) :
     ‖GL2LocalData.nsg (F := F) E a‖ = 1 := by
   unfold GL2LocalData.nsg
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hstd : IsStd (GP.psiF v)` using `GlobalTheory.CompanionTheory.StdCharQ.stdChar v`. Establish `hχc : Continuous ((GP.psiF v)⁻¹ : AddChar (Qv v) Circle)`. Establish `: (((GP.psiF v)⁻¹ : AddChar (Qv v) Circle) : Qv v → Circle) = fun x => (GP.psiF v x)⁻¹`. Use function extensionality and compare the values at `x`. Conclude with `AddChar.inv_apply' _ _`.
+
+Rewrite using `[this]`. Conclude with `hstd.1.inv`. Establish `hχ1 : (GP.psiF v)⁻¹ ≠ 1` using `inv_ne_one.mpr hstd.2.1`. Consider the cases of `m with`. Consider the case `@sp w₁ w₂ i₁ i₂ Φ`.
+
+Establish `h` using `GlobalTheory.CompanionTheory.SplitCentre.sCen (Qv v) _ hχc hχ1 _ _ (isUnit1_cAt' c v w₁) (isUnit1_cAt' c v w₂) Φ ⟨hok.2.1, hok.2.2⟩ z g`. Use `show ‖GL2LocalData.WcS _ _ _ _ _‖ = ‖GL2LocalData.WcS _ _ _ _ _‖`. Rewrite using `[h, norm_mul, Units.val_mul, norm_mul, (isUnit1_cAt' c v w₁).2, (isUnit1_cAt' c v w₂).2]`. Simplify using the standard rewrite rules. Consider the case `@ns w i σ η Φ => haveI := i`.
+
+Take `⟨-, hσ, hη, hΦ⟩` from `hok`. Establish `h` using `GlobalTheory.CompanionTheory.WeilCentral.wCen (Qv v) _ hχc hχ1 (Kv K w) (GlobalTheory.CompanionTheory.QuadPlace.finrank_eq_two_of_ne_refl K h2 v w i σ hσ) (continuous_adicCompletionMap v w) σ hσ η hη (localChar c w) Φ hΦ z g`. Establish `hn : ‖(((GL2LocalData.resF (F` using `Qv v) (localChar c w) * η) z : ℂˣ) : ℂ)‖ = 1 := by`. Rewrite using `[MonoidHom.mul_apply, Units.val_mul, norm_mul, hη, norm_nsg, mul_one]`. Conclude with `(isUnit1_localChar' c w).2 _`.
+
+Use `show ‖GL2LocalData.WcE _ _ _ _ _ Φ _‖ = ‖GL2LocalData.WcE _ _ _ _ _ Φ _‖`. Rewrite using `[h, norm_mul, hn, one_mul]`.
+-/
 theorem norm_W_central (h2 : Module.finrank ℚ K = 2) {c : HeckeCharacter K} {v : Pl} (m : LM c v)
     (hok : m.ok) (z : (Qv v)ˣ) (g : GL (Fin 2) (Qv v)) :
     ‖m.W (dg2 z z * g)‖ = ‖m.W g‖ := by
@@ -62,6 +82,11 @@ theorem norm_W_central (h2 : Module.finrank ℚ K = 2) {c : HeckeCharacter K} {v
     show ‖GL2LocalData.WcE _ _ _ _ _ Φ _‖ = ‖GL2LocalData.WcE _ _ _ _ _ Φ _‖
     rw [h, norm_mul, hn, one_mul]
 
+/- English proof (translation)
+Introduce `K _ _ h2 c v m hok x y z k`. Establish `e : uni2 x * dg2 y 1 * dg2 z z * k = uni2 x * (dg2 z z * (dg2 y 1 * k))`. Rewrite using `[mul_assoc (uni2 x), GlobalTheory.CompanionTheory.GL2Factorization.PT.diagonal_mul_diagonal_alt, mul_assoc (uni2 x), ← mul_assoc (dg2 z z), GlobalTheory.CompanionTheory.GL2Factorization.PT.diagonal_mul_diagonal_alt]`. Simplify using `[mul_comm]`. Rewrite using `[e, GlobalTheory.CompanionTheory.GlobalWhittakerPsi.local_whittaker_unipotent_character h2 m hok, norm_mul, Circle.norm_coe, one_mul]`.
+
+Conclude with `norm_W_central h2 m hok z _`.
+-/
 theorem main : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (c : HeckeCharacter K) (v : Pl) (m : LM c v), m.ok →
   ∀ (x : Qv v) (y z : (Qv v)ˣ) (k : GL (Fin 2) (Qv v)),
     ‖m.W (uni2 x * dg2 y 1 * dg2 z z * k)‖ = ‖m.W (dg2 y 1 * k)‖ := by

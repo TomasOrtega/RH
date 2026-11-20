@@ -9,6 +9,13 @@ noncomputable section
 
 namespace GlobalTheory.SplitPlaceConj
 
+/- English proof (translation)
+Introduce `D s`. Establish `hc : ∀ z : D.host.E, IsCMField.complexConj D.host.E z = D.host.conj z`. Introduce `z`. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]`.
+
+Take `⟨e, he, he'⟩` from `GlobalTheory.SplitSep.exists_sep D.host.E s`. Set `c : 𝓞 D.host.E →+* 𝓞 D.host.E` to `RingOfIntegers.mapRingHom (IsCMField.complexConj D.host.E : D.host.E →+* D.host.E)`. Establish `hce : ((c e : 𝓞 D.host.E) : D.host.E) = IsCMField.complexConj D.host.E (e : D.host.E)` using `rfl`. Use `⟨c e, (s.split_mem_ideal _).2 (by rw [hce]; exact he'), fun y hy hm => ?_⟩` and prove the remaining obligations. Establish `hye : (y : D.host.E) = (e : D.host.E)`.
+
+Rewrite using `[hy, hce, ← hc, IsCMField.complexConj_apply_apply]`. Establish `h1` using `(s.split_mem_ideal y).1 hm`. Rewrite `h1` using `[hye, he]`. Conclude with `lt_irrefl _ h1`.
+-/
 theorem isSplitPl_w : ∀ (D : D7) (s : SplitPlace D.host.E), IsSplitPl D.host s.w := by
   intro D s
   have hc : ∀ z : D.host.E, IsCMField.complexConj D.host.E z = D.host.conj z := by

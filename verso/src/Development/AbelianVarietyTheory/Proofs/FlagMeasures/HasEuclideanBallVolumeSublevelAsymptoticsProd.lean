@@ -10,11 +10,21 @@ def SublevelLe {X X' : Type} [MeasurableSpace X] [MeasurableSpace X'] (c : ℝ�
     (μ : Measure X) (q : X → ℝ) (μ' : Measure X') (q' : X' → ℝ) : Prop :=
   ∀ t ≤ T, μ {x | q x ≤ t} ≤ c * μ' {x | q' x ≤ t}
 
+/- English proof (translation)
+Introduce `t ht` and use `h t (ht.trans hT)`.
+-/
 theorem SublevelLe.mono {X X' : Type} [MeasurableSpace X] [MeasurableSpace X'] {c : ℝ≥0∞}
     {T T' : ℝ} {μ : Measure X} {q : X → ℝ} {μ' : Measure X'} {q' : X' → ℝ}
     (h : SublevelLe c T μ q μ' q') (hT : T' ≤ T) : SublevelLe c T' μ q μ' q' :=
   fun t ht => h t (ht.trans hT)
 
+/- English proof (translation)
+Introduce `t ht`. Establish `m1 : MeasurableSet {z : X × Y | q z.1 + p z.2 ≤ t}` using `measurableSet_le (by fun_prop) measurable_const`. Establish `m2 : MeasurableSet {z : X' × Y | q' z.1 + p z.2 ≤ t}` using `measurableSet_le (by fun_prop) measurable_const`. Establish `m3 : MeasurableSet {z : X' × Y' | q' z.1 + p' z.2 ≤ t}` using `measurableSet_le (by fun_prop) measurable_const`. Establish `s1 : (μ.prod ν) {z : X × Y | q z.1 + p z.2 ≤ t} ≤ c * (μ'.prod ν) {z : X' × Y | q' z.1 + p z.2 ≤ t}`.
+
+Rewrite using `[Measure.prod_apply_symm m1, Measure.prod_apply_symm m2, ← lintegral_const_mul' _ _ hc]`. Use `lintegral_mono fun y => ?_` and prove the remaining obligations. Use `h1 (t - p y) (by linarith [hp0 y])` as an intermediate fact. Simplify `this` using `only [Set.preimage_setOf_eq, le_sub_iff_add_le]`. Establish `s2 : (μ'.prod ν) {z : X' × Y | q' z.1 + p z.2 ≤ t} ≤ c * (μ'.prod ν') {z : X' × Y' | q' z.1 + p' z.2 ≤ t}`.
+
+Rewrite using `[Measure.prod_apply m2, Measure.prod_apply m3, ← lintegral_const_mul' _ _ hc]`. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Use `h2 (t - q' x) (by linarith [hq0 x])` as an intermediate fact. Simplify `this` using `only [Set.preimage_setOf_eq, le_sub_iff_add_le']`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem SublevelLe.prod {X X' Y Y' : Type} [MeasurableSpace X] [MeasurableSpace X']
     [MeasurableSpace Y] [MeasurableSpace Y'] {c : ℝ≥0∞} {T : ℝ}
     {μ : Measure X} {q : X → ℝ} {μ' : Measure X'} {q' : X' → ℝ}
@@ -48,6 +58,9 @@ theorem SublevelLe.prod {X X' Y Y' : Type} [MeasurableSpace X] [MeasurableSpace 
     _ ≤ c * (c * _) := by gcongr
     _ = _ := by rw [mul_assoc]
 
+/- English proof (translation)
+Establish `: {u : EuclideanSpace ℝ (Fin d) | ‖u‖ ^ 2 ≤ r ^ 2} = Metric.closedBall 0 r`. Use extensionality with `u`. Simplify using `[sq_le_sq₀ (norm_nonneg u) hr]`. Rewrite using `[this, Measure.addHaar_closedBall _ _ hr]`. Simplify using the standard rewrite rules.
+-/
 theorem volume_norm_sq_le (d : ℕ) {r : ℝ} (hr : 0 ≤ r) :
     volume {u : EuclideanSpace ℝ (Fin d) | ‖u‖ ^ 2 ≤ r ^ 2}
       = ENNReal.ofReal (r ^ d) * volume (Metric.ball (0 : EuclideanSpace ℝ (Fin d)) 1) := by
@@ -57,11 +70,19 @@ theorem volume_norm_sq_le (d : ℕ) {r : ℝ} (hr : 0 ≤ r) :
   rw [this, Measure.addHaar_closedBall _ _ hr]
   simp
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[Real.sqrt_le_left hr, Real.sqrt_le_iff, hr]`.
+-/
 theorem setOf_sqrt_le {X : Type} (q : X → ℝ) {r : ℝ} (hr : 0 ≤ r) :
     {x | √(q x) ≤ r} = {x | q x ≤ r ^ 2} := by
   ext x
   simp [Real.sqrt_le_left hr, Real.sqrt_le_iff, hr]
 
+/- English proof (translation)
+Set `f : WithLp 2 (EuclideanSpace ℝ (Fin d) × EuclideanSpace ℝ (Fin e)) ≃ₗᵢ[ℝ] EuclideanSpace ℝ (Fin (d + e))` to `((stdOrthonormalBasis ℝ _).reindex (finCongr (by`. Rewrite using `[(WithLp.linearEquiv 2 ℝ _).finrank_eq]`. Use the proof step `simp))).repr`. Establish `h` using `f.measurePreserving.comp (WithLp.volume_preserving_toLp _ _)`. Rewrite using `[← h.measure_preimage (measurableSet_le (by fun_prop) measurable_const).nullMeasurableSet]`.
+
+Use `congr 1`. Use extensionality with `z`. Simplify using `[WithLp.prod_norm_sq_eq_of_L2]`.
+-/
 theorem volume_prod_norm_sq_le (d e : ℕ) (t : ℝ) :
     ((volume : Measure (EuclideanSpace ℝ (Fin d))).prod
       (volume : Measure (EuclideanSpace ℝ (Fin e)))) {z | ‖z.1‖ ^ 2 + ‖z.2‖ ^ 2 ≤ t}
@@ -76,6 +97,11 @@ theorem volume_prod_norm_sq_le (d e : ℕ) (t : ℝ) :
   ext z
   simp [WithLp.prod_norm_sq_eq_of_L2]
 
+/- English proof (translation)
+Establish `ha : a ≠ ⊤` using `h.ne_top`. Establish `t1 : Tendsto (fun c : ℝ≥0∞ => c * c * a) (𝓝 1) (𝓝 (1 * 1 * a))` using `ENNReal.Tendsto.mul_const (ENNReal.Tendsto.mul tendsto_id (by simp) tendsto_id (by simp)) (Or.inr ha)`. Simplify using `only [one_mul] at t1`. Establish `e1` using `t1.eventually (gt_mem_nhds h)`. Establish `e2 : ∀ᶠ c : ℝ≥0∞ in 𝓝 1, c < ⊤` using `gt_mem_nhds (by simp)`.
+
+Use `haveI : (𝓝[>] (1 : ℝ≥0∞)).NeBot := nhdsGT_neBot_of_exists_gt ⟨⊤, by simp⟩`. Take `⟨c, ⟨h1, h2⟩, h3⟩` from `(((e1.and e2).filter_mono nhdsWithin_le_nhds).and (self_mem_nhdsWithin (s := Set.Ioi (1 : ℝ≥0∞)) (a := 1))).exists`. Conclude with `⟨c, h3, h2.ne, h1⟩`.
+-/
 theorem exists_one_lt_mul_mul_lt {a b : ℝ≥0∞} (h : a < b) :
     ∃ c : ℝ≥0∞, 1 < c ∧ c ≠ ⊤ ∧ c * c * a < b := by
   have ha : a ≠ ⊤ := h.ne_top
@@ -90,6 +116,29 @@ theorem exists_one_lt_mul_mul_lt {a b : ℝ≥0∞} (h : a < b) :
     (self_mem_nhdsWithin (s := Set.Ioi (1 : ℝ≥0∞)) (a := 1))).exists
   exact ⟨c, h3, h2.ne, h1⟩
 
+/- English proof (translation)
+Unfold `IsRadial at h`. Use `set ω := volume (Metric.ball (0 : EuclideanSpace ℝ (Fin d)) 1) with hω`. Establish `ω0 : ω ≠ 0` using `(Metric.measure_ball_pos _ _ one_pos).ne'`. Establish `ωt : ω ≠ ⊤` using `measure_ball_lt_top.ne`. Establish `hlt : ω < c * ω`.
+
+Simplify using `using ENNReal.mul_lt_mul_left ω0 ωt hc`. Establish `e1` using `h.eventually (gt_mem_nhds hlt)`. Establish `e2` using `(ENNReal.Tendsto.const_mul (a := c) h (Or.inl ω0)).eventually (lt_mem_nhds hlt)`. Establish `e3 : ∀ᶠ r in 𝓝[>] (0 : ℝ), μ {x | √(q x) ≤ r} ≤ c * (ENNReal.ofReal (r ^ d) * ω) ∧ ENNReal.ofReal (r ^ d) * ω ≤ c * μ {x | √(q x) ≤ r}` using `by filter_upwards [e1, e2, self_mem_nhdsWithin] with r h1 h2 hr`. Establish `hr' : (0 : ℝ) < r` using `hr`.
+
+Establish `n0 : ENNReal.ofReal (r ^ d) ≠ 0` using `(ENNReal.ofReal_pos.2 (by positivity)).ne'`. Prove the components needed by the constructor for the conclusion. Use `(ENNReal.div_le_iff n0 ENNReal.ofReal_ne_top).1 h1.le` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Rewrite `h2` using `[← mul_div_assoc]`.
+
+Use `(ENNReal.le_div_iff_mul_le (Or.inl n0) (Or.inl ENNReal.ofReal_ne_top)).1 h2.le` as an intermediate fact. Rewrite `this` using `[mul_comm]`. Then use the resulting hypothesis. Establish `tg : Tendsto (fun r : ℝ => μ {x | √(q x) ≤ r}) (𝓝[>] 0) (𝓝 (μ {x | √(q x) ≤ 0}))`. Establish `hI : {x | √(q x) ≤ 0} = ⋂ r > (0 : ℝ), {x | √(q x) ≤ r}`. Use extensionality with `x`.
+
+Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter]`. Conclude with `⟨fun h r hr => h.trans hr.le, fun h => le_of_forall_gt_imp_ge_of_dense h⟩`. Rewrite using `[hI]`. Use `tendsto_measure_biInter_gt (s := fun r : ℝ => {x | √(q x) ≤ r}) (fun r _ => (measurableSet_le (by fun_prop) measurable_const).nullMeasurableSet) (fun i j _ hij x hx => le_trans hx hij) ?_` and prove the remaining obligations. Take `⟨r, h1, h2⟩` from `(e3.and self_mem_nhdsWithin).exists`.
+
+Conclude with `⟨r, h2, ne_top_of_le_ne_top (ENNReal.mul_ne_top hc' (ENNReal.mul_ne_top ENNReal.ofReal_ne_top ωt)) h1.1⟩`. Establish `th : Tendsto (fun r : ℝ => ENNReal.ofReal (r ^ d) * ω) (𝓝[>] 0) (𝓝 (ENNReal.ofReal ((0 : ℝ) ^ d) * ω))` using `ENNReal.Tendsto.mul_const (((ENNReal.continuous_ofReal.comp (continuous_pow d)).tendsto 0).mono_left nhdsWithin_le_nhds) (Or.inr ωt)`. Establish `z1` using `le_of_tendsto_of_tendsto tg (ENNReal.Tendsto.const_mul (a := c) th (Or.inr hc')) (e3.mono fun r h => h.1)`. Establish `z2` using `le_of_tendsto_of_tendsto th (ENNReal.Tendsto.const_mul (a := c) tg (Or.inr hc')) (e3.mono fun r h => h.2)`. Take `⟨δ, hδ, hs⟩` from `(mem_nhdsGT_iff_exists_Ioc_subset).1 e3`.
+
+Establish `hδ' : (0 : ℝ) < δ` using `hδ`. Establish `key : ∀ r, 0 ≤ r → r ≤ δ → μ {x | √(q x) ≤ r} ≤ c * (ENNReal.ofReal (r ^ d) * ω) ∧ ENNReal.ofReal (r ^ d) * ω ≤ c * μ {x | √(q x) ≤ r}`. Introduce `r h0 h1`. Break down `h0.eq_or_lt with rfl | h0` into its components or cases. Conclude with `⟨z1, z2⟩`.
+
+Conclude with `hs ⟨h0, h1⟩`. Establish `key2 : ∀ t ≤ δ ^ 2, μ {x | q x ≤ t} ≤ c * volume {u : EuclideanSpace ℝ (Fin d) | ‖u‖ ^ 2 ≤ t} ∧ volume {u : EuclideanSpace ℝ (Fin d) | ‖u‖ ^ 2 ≤ t} ≤ c * μ {x | q x ≤ t}`. Introduce `t ht`. Break down `lt_or_ge t 0 with h0 | h0` into its components or cases. Establish `a1 : {x | q x ≤ t} = ∅`.
+
+Use extensionality with `x`. Simplify using the standard rewrite rules. Combine the linear relations using `[hq0 x]`. Establish `a2 : {u : EuclideanSpace ℝ (Fin d) | ‖u‖ ^ 2 ≤ t} = ∅`. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules. Use polynomial arithmetic with `[sq_nonneg ‖x‖]`. Simplify using `[a1, a2]`. Use `key (√t) (Real.sqrt_nonneg _) (Real.sqrt_le_iff.2 ⟨hδ'.le, ht⟩)` as an intermediate fact. Rewrite `this` using `[← volume_norm_sq_le d (Real.sqrt_nonneg _), setOf_sqrt_le q (Real.sqrt_nonneg _), Real.sq_sqrt h0]`.
+
+Conclude with `this`. Conclude with `⟨δ ^ 2, by positivity, fun t ht => (key2 t ht).1, fun t ht => (key2 t ht).2⟩`.
+-/
 theorem IsRadial.sublevelLe {X : Type} [MeasurableSpace X] {μ : Measure X} {q : X → ℝ} {d : ℕ}
     (hq : Measurable q) (hq0 : ∀ x, 0 ≤ q x) (h : IsRadial μ q d) {c : ℝ≥0∞} (hc : 1 < c)
     (hc' : c ≠ ⊤) :
@@ -160,6 +209,19 @@ theorem IsRadial.sublevelLe {X : Type} [MeasurableSpace X] {μ : Measure X} {q :
       exact this
   exact ⟨δ ^ 2, by positivity, fun t ht => (key2 t ht).1, fun t ht => (key2 t ht).2⟩
 
+/- English proof (translation)
+Unfold `IsRadial`. Establish `hv` using `fun r => volume_norm_sq_le d (r := r)`. Use `set ω := volume (Metric.ball (0 : EuclideanSpace ℝ (Fin d)) 1) with hω`. Establish `ev : ∀ T > (0 : ℝ), ∀ᶠ r in 𝓝[>] (0 : ℝ), 0 < r ∧ r ^ 2 ≤ T`. Introduce `T hT`.
+
+Use `filter_upwards [Ioc_mem_nhdsGT (Real.sqrt_pos.2 hT)] with r hr`. Conclude with `⟨hr.1, (Real.le_sqrt hr.1.le hT.le).1 hr.2⟩`. Use `tendsto_order.2 ⟨fun a ha => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨c, c1, c2, c3⟩` from `exists_one_lt_mul_mul_lt ha`. Take `⟨T, hT, -, h2⟩` from `h c c1 c2`.
+
+Use `filter_upwards [ev T hT] with r ⟨hr, hrT⟩`. Establish `n0 : ENNReal.ofReal (r ^ d) ≠ 0` using `(ENNReal.ofReal_pos.2 (by positivity)).ne'`. Use `h2 _ hrT` as an intermediate fact. Rewrite `this` using `[hv r hr.le, ← setOf_sqrt_le q hr.le, mul_comm, ← ENNReal.le_div_iff_mul_le (Or.inl n0) (Or.inl ENNReal.ofReal_ne_top), mul_div_assoc]`. Assume the negation of the conclusion as `hn`.
+
+Establish `h3 : c * c * (μ {x | √(q x) ≤ r} / ENNReal.ofReal (r ^ d)) ≤ c * c * a` using `by gcongr; exact not_lt.1 hn`. Conclude with `absurd (c3.trans_le (this.trans h3)) (lt_irrefl _)`. Take `⟨c, c1, c2, c3⟩` from `exists_one_lt_mul_mul_lt ha`. Take `⟨T, hT, h1, -⟩` from `h c c1 c2`. Use `filter_upwards [ev T hT] with r ⟨hr, hrT⟩`.
+
+Establish `n0 : ENNReal.ofReal (r ^ d) ≠ 0` using `(ENNReal.ofReal_pos.2 (by positivity)).ne'`. Use `h1 _ hrT` as an intermediate fact. Rewrite `this` using `[hv r hr.le, ← setOf_sqrt_le q hr.le]`. Use `lt_of_le_of_lt ?_ c3` and prove the remaining obligations. Rewrite using `[ENNReal.div_le_iff n0 ENNReal.ofReal_ne_top]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isRadial_of_sublevelLe {X : Type} [MeasurableSpace X] {μ : Measure X} {q : X → ℝ} {d : ℕ}
     (h : ∀ c : ℝ≥0∞, 1 < c → c ≠ ⊤ → ∃ T > 0,
       SublevelLe (c * c) T μ q volume (fun u : EuclideanSpace ℝ (Fin d) => ‖u‖ ^ 2) ∧
@@ -196,6 +258,11 @@ theorem isRadial_of_sublevelLe {X : Type} [MeasurableSpace X] {μ : Measure X} {
     calc _ ≤ _ := this
       _ = _ := by ring
 
+/- English proof (translation)
+Introduce `X Y _ _ μ ν _ _ q p d e hq hp hq0 hp0 h1 h2`. Use `isRadial_of_sublevelLe fun c c1 c2 => ?_` and prove the remaining obligations. Take `⟨T, hT, a1, a2⟩` from `h1.sublevelLe hq hq0 c1 c2`. Take `⟨T', hT', b1, b2⟩` from `h2.sublevelLe hp hp0 c1 c2`. Use `⟨min T T', lt_min hT hT', fun t ht => ?_, fun t ht => ?_⟩` and prove the remaining obligations.
+
+Use `SublevelLe.prod c2 hq (by fun_prop) hp (by fun_prop) (fun _ => by positivity) hp0 (a1.mono (min_le_left _ _)) (b1.mono (min_le_right _ _)) t ht` as an intermediate fact. Rewrite `this` using `[volume_prod_norm_sq_le]`. Then use the resulting hypothesis. Use `SublevelLe.prod c2 (by fun_prop) hq (by fun_prop) hp hq0 (fun _ => by positivity) (a2.mono (min_le_left _ _)) (b2.mono (min_le_right _ _)) t ht` as an intermediate fact. Rewrite `this` using `[volume_prod_norm_sq_le]`. Then use the resulting hypothesis.
+-/
 theorem isRadial_prod : ∀ (X Y : Type) [MeasurableSpace X] [MeasurableSpace Y] (μ : Measure X) (ν : Measure Y) [SFinite μ] [SFinite ν] (q : X → ℝ) (p : Y → ℝ) (d e : ℕ), Measurable q → Measurable p → (∀ x, 0 ≤ q x) → (∀ y, 0 ≤ p y) → IsRadial μ q d → IsRadial ν p e → IsRadial (μ.prod ν) (fun z => q z.1 + p z.2) (d + e) := by
   intro X Y _ _ μ ν _ _ q p d e hq hp hq0 hp0 h1 h2
   refine isRadial_of_sublevelLe fun c c1 c2 => ?_

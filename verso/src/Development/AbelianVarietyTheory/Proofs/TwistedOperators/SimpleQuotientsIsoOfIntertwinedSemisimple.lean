@@ -12,6 +12,57 @@ open GlobalTheory.SquareComm
 
 namespace GlobalTheory.RealQuot
 
+/- English proof (translation)
+Introduce `ι Fm Q Q' Pi _ _ _ _ _ _ ρ C ρ' C' σ β β₁ hβ hβ₁ hkβ hkβ₁ hβ₁0 hspan hQ hQ' hss`. Use `set R := rad ρ C with hRdef`. Use `set R' := rad ρ' C' with hR'def`. Establish `kerStab : ∀ {X : Type} [AddCommGroup X] [Module ℂ X] (τ : ι → Module.End ℂ X) (g : X →ₗ[ℂ] Pi), (∀ i, g ∘ₗ τ i = σ i ∘ₗ g) → IsStab τ (LinearMap.ker g)`. Introduce `X _ _ τ g hg i x hx`.
+
+Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[← LinearMap.comp_apply, hg i, LinearMap.comp_apply, hx, map_zero]`. Use `set U := LinearMap.range β₁ with hUdef`. Establish `hUs : IsStab σ U`. Introduce and unpack `i _ ⟨x, rfl⟩`.
+
+Conclude with `⟨ρ' i x, by rw [← LinearMap.comp_apply, hβ₁ i, LinearMap.comp_apply]⟩`. Establish `hUsimple : ∀ Wm : Submodule ℂ Pi, IsStab σ Wm → Wm ≤ U → Wm ≠ ⊥ → Wm = U`. Introduce `Wm hW hWU hW0`. Establish `hcs : IsStab ρ' (Wm.comap β₁)` using `fun i x hx => by show β₁ (ρ' i x) ∈ Wm`. Rewrite using `[← LinearMap.comp_apply, hβ₁ i, LinearMap.comp_apply]`.
+
+Conclude with `hW i _ hx`. Establish `hcR : R' ≤ Wm.comap β₁` using `fun x hx => by show β₁ x ∈ Wm`. Rewrite using `[LinearMap.mem_ker.1 (hkβ₁ hx)]`. Conclude with `Wm.zero_mem`. Break down `hQ' _ hcs hcR with h | h` into its components or cases.
+
+It suffices to derive a contradiction. Apply `hW0` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `w hw`. Take `⟨x, rfl⟩` from `hWU hw`.
+
+Establish `: x ∈ Wm.comap β₁` using `hw`. Rewrite `this` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).2 (LinearMap.mem_ker.1 (hkβ₁ this))`. Use `le_antisymm hWU ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Establish `: x ∈ Wm.comap β₁` using `h ▸ Submodule.mem_top`. Conclude with `this`. Take `⟨N', hN's, hc⟩` from `hss U hUs`. Set `P : Pi →ₗ[ℂ] Pi` to `U.subtype ∘ₗ Submodule.linearProjOfIsCompl U N' hc`. Establish `hPU : ∀ y ∈ U, P y = y` using `fun y hy => congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left hc ⟨y, hy⟩)`.
+
+Establish `hPN : ∀ y ∈ N', P y = 0` using `fun y hy => by`. Conclude with `(congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_right hc ⟨y, hy⟩) :)`. Establish `hPmem : ∀ y, P y ∈ U` using `fun y => (Submodule.linearProjOfIsCompl U N' hc y).2`. Establish `hdec : ∀ y : Pi, ∃ u ∈ U, ∃ n ∈ N', y = u + n`. Introduce `y`.
+
+Establish `: y ∈ U ⊔ N'` using `hc.sup_eq_top ▸ Submodule.mem_top`. Take `⟨u, hu, n, hn, h⟩` from `Submodule.mem_sup.1 this`. Conclude with `⟨u, hu, n, hn, h.symm⟩`. Establish `hPσ : ∀ i y, P (σ i y) = σ i (P y)`. Introduce `i y`.
+
+Take `⟨u, hu, n, hn, rfl⟩` from `hdec y`. Rewrite using `[map_add, map_add, map_add, hPU _ (hUs i u hu), hPN _ (hN's i n hn), hPU u hu, hPN n hn, add_zero, add_zero]`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f, P ∘ₗ β f ≠ 0 := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`.
+
+Establish `hle : ∀ f, LinearMap.range (β f) ≤ N'`. Introduce and unpack `f _ ⟨x, rfl⟩`. Take `⟨u, hu, n, hn, he⟩` from `hdec (β f x)`. Establish `h0 : P (β f x) = 0` using `by rw [← LinearMap.comp_apply, hall f, LinearMap.zero_apply]`. Rewrite `h0` using `[he, map_add, hPU u hu, hPN n hn, add_zero]`.
+
+Rewrite using `[he, h0, zero_add]`. Conclude with `hn`. Establish `hN'top : N' = ⊤` using `eq_top_iff.2 (hspan ▸ iSup_le hle)`. Establish `hU0 : U = ⊥`. Use `hc.inf_eq_bot` as an intermediate fact.
+
+Rewrite `this` using `[hN'top, inf_top_eq]`. Then use the resulting hypothesis. Apply `hβ₁0` to reduce the goal to its premises. Use extensionality with `x`. Establish `: β₁ x ∈ U` using `LinearMap.mem_range_self β₁ x`. Rewrite `this` using `[hU0, Submodule.mem_bot]`.
+
+Conclude with `this`. Use `set γ := P ∘ₗ β f with hγdef`. Establish `hγi : ∀ i, γ ∘ₗ ρ i = σ i ∘ₗ γ`. Introduce `i`. Use extensionality with `x`.
+
+Use `show P (β f (ρ i x)) = σ i (P (β f x))`. Establish `h` using `LinearMap.congr_fun (hβ f i) x`. Simplify using `only [LinearMap.comp_apply] at h`. Rewrite using `[h, hPσ]`. Establish `hRγ : R ≤ LinearMap.ker γ` using `fun x hx => by`.
+
+Rewrite using `[LinearMap.mem_ker, hγdef, LinearMap.comp_apply, LinearMap.mem_ker.1 (hkβ f hx), map_zero]`. Establish `hkerγ : LinearMap.ker γ = R`. Break down `hQ _ (kerStab ρ γ hγi) hRγ with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (LinearMap.ker_eq_top.1 h) hf`.
+
+Establish `hkerβ₁ : LinearMap.ker β₁ = R'`. Break down `hQ' _ (kerStab ρ' β₁ hβ₁) hkβ₁ with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (LinearMap.ker_eq_top.1 h) hβ₁0`. Establish `hrangeγ : LinearMap.range γ = U`.
+
+Apply `hUsimple` to reduce the goal to its premises. Introduce and unpack `i _ ⟨x, rfl⟩`. Conclude with `⟨ρ i x, by rw [← LinearMap.comp_apply, hγi i, LinearMap.comp_apply]⟩`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hPmem _`.
+
+Introduce `h`. Apply `hf` to reduce the goal to its premises. Use extensionality with `x`. Establish `: γ x ∈ LinearMap.range γ` using `LinearMap.mem_range_self γ x`. Rewrite `this` using `[h, Submodule.mem_bot]`.
+
+Conclude with `this`. Set `φ` to `R.liftQ γ hRγ`. Set `ψ` to `R'.liftQ β₁ hkβ₁`. Establish `hφi : Function.Injective φ` using `LinearMap.ker_eq_bot.1 (Submodule.ker_liftQ_eq_bot _ _ _ hkerγ.le)`. Establish `hψi : Function.Injective ψ` using `LinearMap.ker_eq_bot.1 (Submodule.ker_liftQ_eq_bot _ _ _ hkerβ₁.le)`.
+
+Establish `hrφ : LinearMap.range φ = LinearMap.range ψ`. Rewrite using `[Submodule.range_liftQ, Submodule.range_liftQ, hrangeγ]`. Set `e : (Q ⧸ R) ≃ₗ[ℂ] (Q' ⧸ R')` to `(LinearEquiv.ofInjective φ hφi).trans ((LinearEquiv.ofEq _ _ hrφ).trans (LinearEquiv.ofInjective ψ hψi).symm)`. Establish `he : ∀ x, ψ (e x) = φ x`. Introduce `x`.
+
+Establish `h1` using `LinearEquiv.ofInjective_apply (f := ψ) (h := hψi) ((LinearEquiv.ofInjective ψ hψi).symm ((LinearEquiv.ofEq _ _ hrφ) (LinearEquiv.ofInjective φ hφi x)))`. Rewrite `h1` using `[LinearEquiv.apply_symm_apply]`. Conclude with `h1.symm`. Use `⟨e, fun i => ?_⟩` and prove the remaining obligations. Apply `Submodule.linearMap_qext` to reduce the goal to its premises.
+
+Use extensionality with `q`. Apply `hψi` to reduce the goal to its premises. Simplify using `only [LinearMap.comp_apply, Submodule.mkQ_apply, LinearEquiv.coe_coe]`. Rewrite using `[he, radAct_mk]`. Take `⟨q', hq'⟩` from `Submodule.Quotient.mk_surjective R' (e (Submodule.Quotient.mk q))`.
+
+Rewrite using `[← hq', radAct_mk]`. Establish `h2` using `he (Submodule.Quotient.mk q)`. Rewrite `h2` using `[← hq']`. Simplify using `only [φ, ψ, Submodule.liftQ_apply] at h2 ⊢`. Establish `hb` using `LinearMap.congr_fun (hβ₁ i) q'`.
+
+Establish `hg` using `LinearMap.congr_fun (hγi i) q`. Simplify using `only [LinearMap.comp_apply] at hb hg`. Rewrite using `[hb, h2]`. Conclude with `hg`.
+-/
 theorem simpleQuot_iso_of_intertwined : ∀ (ι Fm Q Q' Pi : Type) [AddCommGroup Q] [Module ℂ Q] [AddCommGroup Q'] [Module ℂ Q'] [AddCommGroup Pi] [Module ℂ Pi]
   (ρ : ι → Module.End ℂ Q) (C : Submodule ℂ Q) (ρ' : ι → Module.End ℂ Q') (C' : Submodule ℂ Q') (σ : ι → Module.End ℂ Pi)
   (β : Fm → Q →ₗ[ℂ] Pi) (β₁ : Q' →ₗ[ℂ] Pi),

@@ -11,6 +11,9 @@ import Formalism.LagrangeIdealLifts.CocyclePolynomialDivision.CoeffSumXPowMulExp
 
 namespace Formalism.RepresentationBoundsCohomology.N1
 
+/- English proof (translation)
+The claim follows from `wach_top_statement_holds`.
+-/
 theorem wach_top_statement : WachProductBasisTheorem := wach_top_statement_holds
 
 end Formalism.RepresentationBoundsCohomology.N1

@@ -17,6 +17,11 @@ namespace GlobalTheory.CompanionTheory.Ar.PB.FibN.MdiscPoly
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hc : ∀ o : Option (Fin 3), Fintype.card {t // τ t = o} = Fintype.card {t // τ' t = o}`. Introduce `o`. Establish `h1` using `congrArg (fun f => f o) h`. Simplify using `only [Finsupp.finsetSum_apply, Finsupp.single_apply, Finset.sum_boole, Nat.cast_id] at h1`. Rewrite using `[Fintype.card_subtype, Fintype.card_subtype]`.
+
+Conclude with `h1`. Conclude with `⟨Equiv.ofFiberEquiv (fun o => Fintype.equivOfCardEq (hc o)), fun t => Equiv.ofFiberEquiv_map _ t⟩`.
+-/
 lemma exists_perm_of_sum_single {d : ℕ} {τ τ' : Fin d → Option (Fin 3)}
     (h : ∑ t, Finsupp.single (τ t) (1 : ℕ) = ∑ t, Finsupp.single (τ' t) (1 : ℕ)) :
     ∃ π : Equiv.Perm (Fin d), ∀ t, τ' (π t) = τ t := by
@@ -29,11 +34,17 @@ lemma exists_perm_of_sum_single {d : ℕ} {τ τ' : Fin d → Option (Fin 3)}
     exact h1
   exact ⟨Equiv.ofFiberEquiv (fun o => Fintype.equivOfCardEq (hc o)), fun t => Equiv.ofFiberEquiv_map _ t⟩
 
+/- English proof (translation)
+Conclude with `(monomial_sum_one (R := ℝ) Finset.univ fun t => Finsupp.single (τ t) 1).symm`.
+-/
 lemma prod_X_eq_monomial {d : ℕ} (τ : Fin d → Option (Fin 3)) :
     (∏ t, (X (τ t) : MvPolynomial (Option (Fin 3)) ℝ)) =
       monomial (∑ t, Finsupp.single (τ t) (1 : ℕ)) 1 := by
   exact (monomial_sum_one (R := ℝ) Finset.univ fun t => Finsupp.single (τ t) 1).symm
 
+/- English proof (translation)
+Simplify using `only [lin4, lin3, map_sum, map_mul, rename_X, rename_C, Fintype.sum_option, Option.elim_none, Option.elim_some]`. Rewrite using `[add_comm]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+-/
 lemma linear_form_add_eq_sum (n : Fin 3 → ℝ) (v : ℝ) :
     lin4 n + C v * X none =
       ∑ j : Option (Fin 3), C (Option.elim j v n) * (X j : MvPolynomial (Option (Fin 3)) ℝ) := by
@@ -43,6 +54,21 @@ lemma linear_form_add_eq_sum (n : Fin 3 → ℝ) (v : ℝ) :
   congr 1
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
+/- English proof (translation)
+Introduce `d T H`. Take `⟨Λ, hΛ, hsym⟩` from `(PositivityTheory.Xgp.t_fib_mdisc d).2`. Take `⟨M, hM⟩ : ∃ M : Option (Fin 3) → Matrix (Fin d) (Fin d) ℂ, M none = H ∧ ∀ i, M (some i) = T i` from `⟨fun j => Option.elim j H T, rfl, fun _ => rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g : (Option (Fin 3) →₀ ℕ) → ℂ, ∀ τ : Fin d → Option (Fin 3), g (∑ t, Finsupp.single (τ t) (1 : ℕ)) = (d.factorial : ℂ) * Λ (fun t => M (τ t)) := by`. Use `⟨fun m => if h : ∃ τ : Fin d → Option (Fin 3), ∑ t, Finsupp.single (τ t) (1 : ℕ) = m then (d.factorial : ℂ) * Λ (fun t => M (h.choose t)) else 0, fun τ => ?_⟩` and prove the remaining obligations.
+
+Establish `h : ∃ τ' : Fin d → Option (Fin 3), ∑ t, Finsupp.single (τ' t) (1 : ℕ) = ∑ t, Finsupp.single (τ t) (1 : ℕ)` using `⟨τ, rfl⟩`. Simplify using `only [dif_pos h]`. Take `⟨π, hπ⟩` from `exists_perm_of_sum_single h.choose_spec`. Establish `e : (fun t => M (h.choose t)) = (fun t => M (τ t)) ∘ π`. Use function extensionality and compare the values at `fun t => by simp only [Function.comp_apply, hπ]`.
+
+Rewrite using `[e, hsym]`. Use `⟨(basisMonomials (Option (Fin 3)) ℝ).constr ℝ g, fun c v => ?_⟩` and prove the remaining obligations. Establish `hL : ∀ (m : Option (Fin 3) →₀ ℕ) (x : ℝ), (basisMonomials (Option (Fin 3)) ℝ).constr ℝ g (monomial m x) = (x : ℂ) * g m`. Introduce `m x`. Establish `hx : (monomial m x : MvPolynomial (Option (Fin 3)) ℝ) = x • basisMonomials (Option (Fin 3)) ℝ m`.
+
+Simplify using `only [coe_basisMonomials, smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[hx, map_smul, Module.Basis.constr_basis, Complex.real_smul]`. Establish `hrow : ∀ t, (∑ i, ((c t i : ℝ) : ℂ) • T i) + ((v t : ℝ) : ℂ) • H = ∑ j : Option (Fin 3), ((Option.elim j (v t) (c t) : ℝ) : ℂ) • M j`. Introduce `t`. Rewrite using `[Fintype.sum_option]`.
+
+Simplify using `only [Option.elim_none, Option.elim_some, hM.1, hM.2]`. Conclude with `add_comm _ _`. Establish `hprod : (∏ t, (lin4 (c t) + C (v t) * X none) : MvPolynomial (Option (Fin 3)) ℝ) = ∑ r : Fin d → Option (Fin 3), monomial (∑ t, Finsupp.single (r t) (1 : ℕ)) (∏ t, Option.elim (r t) (v t) (c t))`. Simplify using `only [linear_form_add_eq_sum]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`.
+
+Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, ← map_prod (C : ℝ →+* MvPolynomial (Option (Fin 3)) ℝ), prod_X_eq_monomial, C_mul_monomial, mul_one]`. Simplify using `only [hrow]`. Rewrite using `[← hΛ, MultilinearMap.map_sum, hprod, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[MultilinearMap.map_smul_univ, hL, hg, smul_eq_mul, Complex.ofReal_prod]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_functional : ∀ (d : ℕ) (T : Fin 3 → Matrix (Fin d) (Fin d) ℂ) (H : Matrix (Fin d) (Fin d) ℂ),
     ∃ L : MvPolynomial (Option (Fin 3)) ℝ →ₗ[ℝ] ℂ, ∀ (c : Fin d → Fin 3 → ℝ) (v : Fin d → ℝ),
       (d.factorial : ℂ) * mdisc (fun t => (∑ i, ((c t i : ℝ) : ℂ) • T i) + ((v t : ℝ) : ℂ) • H) =

@@ -18,9 +18,17 @@ section aux
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Unfold `PBP.dzb`. Rewrite using `[h.fderiv_eq]`.
+-/
 theorem dzb_congr' {f g : ℂ → E} {τ : ℂ} (h : f =ᶠ[𝓝 τ] g) : PBP.dzb f τ = PBP.dzb g τ := by
   unfold PBP.dzb; rw [h.fderiv_eq]
 
+/- English proof (translation)
+Establish `h : (fun s => c • f s) = c • f` using `rfl`. Unfold `PBP.dzb`. Rewrite using `[h, fderiv_const_smul_field]`. Simplify using `only [Pi.smul_apply, ContinuousLinearMap.smul_apply, smul_add]`. Rewrite using `[smul_comm Complex.I c]`.
+
+Apply the tactic sequence `congr 1 <;> exact smul_comm _ _ _`.
+-/
 theorem dzb_smul' (c : ℂ) (f : ℂ → E) (τ : ℂ) : PBP.dzb (fun s => c • f s) τ = c • PBP.dzb f τ := by
   have h : (fun s => c • f s) = c • f := rfl
   unfold PBP.dzb
@@ -29,6 +37,11 @@ theorem dzb_smul' (c : ℂ) (f : ℂ → E) (τ : ℂ) : PBP.dzb (fun s => c •
   rw [smul_comm Complex.I c]
   congr 1 <;> exact smul_comm _ _ _
 
+/- English proof (translation)
+Unfold `qminor`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_intCast, map_list_prod, List.map_ofFn]`. Use `congr 2`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply, Tm, map_add, apply_ite φ, AlgHom.commutes, map_zero]`.
+-/
 theorem map_qminor' {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] (φ : A →ₐ[ℂ] B) {n t : ℕ}
     (Eu : Fin n → Fin n → A) (a b : Fin t → Fin n) (u : ℂ) :
     φ (qminor Eu a b u) = qminor (fun p q => φ (Eu p q)) a b u := by
@@ -41,6 +54,11 @@ theorem map_qminor' {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ 
   funext i
   simp only [Function.comp_apply, Tm, map_add, apply_ite φ, AlgHom.commutes, map_zero]
 
+/- English proof (translation)
+Unfold `C3.AAv`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun B _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[map_smul, map_qminor']`.
+
+Conclude with `map_zero φ`.
+-/
 theorem map_AAv {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] (φ : A →ₐ[ℂ] B) (k r : ℕ)
     (Eu : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A) (y : Fin r → Fin (2 * r + k + 1) → ℂ) (n : ℕ)
     (hn : n ≤ r) (ℓ : ℂ) : φ (C3.AAv k r Eu y n hn ℓ) = C3.AAv k r (fun p q => φ (Eu p q)) y n hn ℓ := by
@@ -51,6 +69,15 @@ theorem map_AAv {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] (
   · rw [map_smul, map_qminor']
   · exact map_zero φ
 
+/- English proof (translation)
+Establish `hr : (j + 1) + (r - (j + 1)) = r` using `by omega`. Establish `hz : Continuous fun τ' : ℂ => zfull Z τ'`. Unfold `zfull U.blk2`. Use `fun_prop`. Establish `hL : Continuous fun p : Matrix (Fin (j+1)) (Fin (j+1)) ℂ × Matrix (Fin (j+1)) (Fin (j+1)) ℂ => D.castM hr (U.blk3 (k` using `k) 0 0 (p.1 * G.wMat (j+1)) 0 γ 0 (G.wMat (j+1) * p.2) 0 0) := by`.
+
+Unfold `U.blk3`. Use `PBH.castM_cont (k := k) hr` as an intermediate fact. Use `fun_prop`. Establish `hdet : (zfull Z τ)ᴴ.det ≠ 0`. Rewrite using `[Matrix.det_conjTranspose, zfull_det]`.
+
+Conclude with `star_ne_zero.mpr (mul_ne_zero hZ hτ)`. Establish `h1 : ContinuousAt (Inv.inv : Matrix (Fin (j+1)) (Fin (j+1)) ℂ → _) (zfull Z τ)ᴴ`. Apply `continuousAt_matrix_inv` to reduce the goal to its premises. Rewrite using `[Ring.inverse_eq_inv']`. Conclude with `continuousAt_inv₀ hdet`.
+
+Establish `h2 : ContinuousAt (fun N : Matrix (Fin (j+1)) (Fin (j+1)) ℂ => Nᴴ⁻¹) (zfull Z τ)` using `ContinuousAt.comp (g := Inv.inv) (f := fun N : Matrix (Fin (j+1)) (Fin (j+1)) ℂ => Nᴴ) h1 continuous_id.matrix_conjTranspose.continuousAt`. Establish `hK : ContinuousAt (fun N : Matrix (Fin (j+1)) (Fin (j+1)) ℂ => D.castM hr (U.mMap k (j + 1) (r - (j + 1)) N γ)) (zfull Z τ)` using `hL.continuousAt.comp (f := fun N : Matrix (Fin (j+1)) (Fin (j+1)) ℂ => (Nᴴ⁻¹, N)) (h2.prodMk continuousAt_id)`. Conclude with `hK.comp (f := fun τ' => zfull Z τ') hz.continuousAt`.
+-/
 private theorem eventually_level_point_mem_open_lemma {k r j : ℕ} (hj : j + 1 ≤ r) {Z : Matrix (Fin j) (Fin j) ℂ} (hZ : Z.det ≠ 0)
     {τ : ℂ} (hτ : τ ≠ 0) (γ : B.Mat k (r - (j + 1))) :
     ContinuousAt (fun τ' => x0 k r j hj Z τ' γ) τ := by
@@ -79,6 +106,9 @@ private theorem eventually_level_point_mem_open_lemma {k r j : ℕ} (hj : j + 1 
       (h2.prodMk continuousAt_id)
   exact hK.comp (f := fun τ' => zfull Z τ') hz.continuousAt
 
+/- English proof (translation)
+Establish `hc` using `eventually_level_point_mem_open_lemma hj hZ hτ γ`. Conclude with `(eventually_ne_nhds hτ).and (hc.preimage_mem_nhds (hD.mem_nhds hx))`.
+-/
 theorem eventually_level_point_mem_open {k r j : ℕ} (hj : j + 1 ≤ r) {Z : Matrix (Fin j) (Fin j) ℂ} (hZ : Z.det ≠ 0) {τ : ℂ}
     (hτ : τ ≠ 0) (γ : B.Mat k (r - (j + 1))) {Dm : Set (Q.Mx k r)} (hD : IsOpen Dm)
     (hx : x0 k r j hj Z τ γ ∈ Dm) : ∀ᶠ τ' in 𝓝 τ, τ' ≠ 0 ∧ x0 k r j hj Z τ' γ ∈ Dm := by
@@ -87,6 +117,9 @@ theorem eventually_level_point_mem_open {k r j : ℕ} (hj : j + 1 ≤ r) {Z : Ma
 
 end aux
 
+/- English proof (translation)
+Unfold `PBG.E0 Eh hat`. Rewrite using `[mkEnd_apply, cut_of_mem _ hg]`. Establish `h1 : posL k r 0 (PBG.c0 p) = p` using `by ext; simp [posL, PBG.c0]`. Establish `h2 : posL k r 0 (PBG.c0 q) = q` using `by ext; simp [posL, PBG.c0]`. Rewrite using `[h1, h2]`.
+-/
 private theorem minus_positive_of_parts_lemma {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {Dm : Set (Mx k r)} (hD : IsOpen Dm) (p q : Fin (2 * r + k + 1)) (w : ↥(VS k r 0 Dm E)) {g : Mx k r}
     (hg : g ∈ Glev k r 0 ∩ Dm) :
@@ -97,12 +130,24 @@ private theorem minus_positive_of_parts_lemma {k r : ℕ} {E : Type} [NormedAddC
   have h2 : posL k r 0 (PBG.c0 q) = q := by ext; simp [posL, PBG.c0]
   rw [h1, h2]
 
+/- English proof (translation)
+Use `⟨hg, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Simplify using `at ha`.
+-/
 private theorem minus_positive_of_parts_lemma_2 {k r : ℕ} {g : Mx k r} (hg : g ∈ B.GV k r) :
     g ∈ Glev k r 0 := by
   refine ⟨hg, ?_⟩
   intro a ha
   simp at ha
 
+/- English proof (translation)
+Set `E' : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → S` to `fun p q => ⟨E0 p q, hE p q⟩`. Set `La' : S →ₗ[ℂ] M` to `La.comp S.val.toLinearMap`. Establish `hgl' : GlRel E'`. Introduce `a b c e`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `hgl a b c e` as an intermediate fact. Simplify using `only [E', Subalgebra.coe_sub, Subalgebra.coe_mul]`. Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hR' : C3.RightRuleFn k r z' E' La'`.
+
+Introduce `x p q hpq`. Conclude with `hR (x : B') p q hpq`. Establish `key` using `head_algebra_relations_vector S M k r m hm z' E' La' y W d ℓ hgl' hR' hW hd (fun b x => hS b (x : B') x.2) hy1 hy2`. Establish `hmap : ∀ n (hn : n ≤ r), (S.val (C3.AAv k r E' y n hn ℓ)) = C3.AAv k r E0 y n hn ℓ` using `fun n hn => map_AAv S.val k r E' y n hn ℓ`. Simplify using `only [La', LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_mul, map_add, AlgHom.commutes] at key`.
+
+Rewrite `key` using `[hmap, hmap, hmap]`. Rewrite using `[map_add (algebraMap ℂ B')]`. Conclude with `key`.
+-/
 private theorem minus_positive_of_parts_lemma_3 {k r m : ℕ} (hm : m + 2 ≤ r) (z' : Fin (2 * r + k + 1) → ℂ)
     {B' M : Type} [Ring B'] [Algebra ℂ B'] [AddCommGroup M] [Module ℂ M] (S : Subalgebra ℂ B')
     (E0 : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → B')
@@ -139,6 +184,53 @@ private theorem minus_positive_of_parts_lemma_3 {k r m : ℕ} (hm : m + 2 ≤ r)
   rw [map_add (algebraMap ℂ B')]
   exact key
 
+/- English proof (translation)
+Introduce `hNf hDm hStar hTor hFr k r j hj z z' E _ _ Dm Φ Z γ τ hj1 hH Y`. Take `⟨hz, hz', hDo, hDsub, ⟨hsm, hright, hleft⟩, hZ, hτ, hγ, hx⟩` from `hH`. Take `⟨m, rfl⟩ : ∃ m, j = m + 1` from `⟨j - 1, by omega⟩`. Unfold `Eq3`. Establish `hG : ∀ τ', τ' ≠ 0 → x0 k r (m + 1) hj Z τ' γ ∈ Dm → x0 k r (m + 1) hj Z τ' γ ∈ Glev k r 0 ∩ Dm` using `fun τ' h1 h2 => ⟨minus_positive_of_parts_lemma_2 (x0_GV hj hZ h1 hγ), h2⟩`.
+
+Establish `hv : ∀ (n : ℕ) (hn : n ≤ r) (e : Fin 2) (g : Mx k r), ¬ (e = 1 ∧ n = 0) → D.vLet k r z z' n hn (false, Y) e Φ g = ((starRingEnd ℂ) (Dmin k r z z' g ⟨n, by omega⟩))⁻¹ • C3.AAvop k r (n - e) (by omega) ((Y : ℂ) - ((2 * r + k : ℕ) : ℂ) / 2) Φ g`. Introduce `n hn e g hne`. Simplify using `only [D.vLet, if_neg hne]`. Both sides reduce to the same expression. Use `set ℓ : ℂ := (Y : ℂ) - ((2 * r + k : ℕ) : ℂ) / 2 with hℓ`.
+
+Use `set x := x0 k r (m + 1) hj Z τ γ with hxd`. Establish `hxG` using `hG τ hτ hx`. Use `set La := PBG.La hDo Φ hsm x with hLad`. Establish `hLa : ∀ n (hn : n ≤ r), C3.AAvop k r n hn ℓ Φ x = La (C3.AAv k r (PBG.E0 hDo) (PBG.y0 x) n hn ℓ)` using `fun n hn => (PBG.La_AAv hDo Φ hsm x hxG n hn ℓ).symm`. Take `⟨hD1, hD2⟩` from `hDm k r (m + 1) hj z z' Z τ γ hZ hτ hγ`.
+
+Use `set W : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ := Zᴴᵀ with hWd`. Use `set d : ℂ := (starRingEnd ℂ) τ with hdd`. Establish `hWdet : W.det = (starRingEnd ℂ) Z.det`. Rewrite using `[hWd, Matrix.det_transpose, Matrix.det_conjTranspose]`. Both sides reduce to the same expression.
+
+Establish `E1 : D.vLet k r z z' (m + 1 + 1) hj (false, Y) 0 Φ x = (W.det * d)⁻¹ • La (C3.AAv k r (PBG.E0 hDo) (PBG.y0 x) (m + 2) hj ℓ)`. Rewrite using `[hv _ _ _ _ (by simp), hD2, map_mul, ← hWdet, ← hLa]`. Use `congr 1`. Establish `E2 : D.vLet k r z z' (m + 1) (by omega) (false, Y) 0 Φ x = W.det⁻¹ • La (C3.AAv k r (PBG.E0 hDo) (PBG.y0 x) (m + 1) (by omega) ℓ)`. Rewrite using `[hv _ _ _ _ (by simp), hD1, ← hWdet, ← hLa]`.
+
+Use `congr 1`. Establish `E3 : D.vLet k r z z' (m + 1) (by omega) (false, Y) 1 Φ x = W.det⁻¹ • La (C3.AAv k r (PBG.E0 hDo) (PBG.y0 x) m (by omega) ℓ)`. Rewrite using `[hv _ _ _ _ (by simp), hD1, ← hWdet, ← hLa]`. Use `congr 1`. Establish `hv0 : ∀ g, D.vLet k r z z' (m + 1) (by omega) (false, Y) 0 Φ g = ((starRingEnd ℂ) (Dmin k r z z' g ⟨m + 1, by omega⟩))⁻¹ • C3.AAvop k r (m + 1) (by omega) ℓ Φ g`.
+
+Introduce `g`. Rewrite using `[hv _ _ _ _ (by simp)]`. Use `congr 1`. Use `set X := C3.AAv k r (PBG.E0 (E := E) hDo) (PBG.y0 x) (m + 1) (by omega) ℓ with hXd`. Use `set Ψ0 : Mx k r → E := ((X (PBG.vK hDo Φ hsm) : VS k r 0 Dm E) : Mx k r → E) with hΨ0`.
+
+Establish `hev : (fun τ' => D.vLet k r z z' (m + 1) (by omega) (false, Y) 0 Φ (x0 k r (m + 1) hj Z τ' γ)) =ᶠ[𝓝 τ] (fun τ' => W.det⁻¹ • Ψ0 (x0 k r (m + 1) hj Z τ' γ))` using `by filter_upwards [eventually_level_point_mem_open hj hZ hτ γ hDo hx] with τ' hτ'`. Take `⟨h1, h2⟩` from `hτ'`. Take `⟨hD1', -⟩` from `hDm k r (m + 1) hj z z' Z τ' γ hZ h1 hγ`. Rewrite using `[hv0, hD1', ← hWdet, ← PBG.La_AAv hDo Φ hsm _ (hG τ' h1 h2), (hFr _ k r (m + 1) hj (PBG.E0 hDo) Z τ τ' ℓ γ (PBG.level_zero_derivation_relation hDo) hZ hτ h1 hγ).1]`. Both sides reduce to the same expression.
+
+Establish `hΨsm : SmoothLev k r 0 Dm Ψ0` using `(X (PBG.vK hDo Φ hsm)).2.1`. Establish `hT` using `hTor E k r (m + 1) hj Dm Ψ0 Z τ γ hDo hΨsm hZ hτ hγ hx`. Use `set Ejj := PBG.E0 (E := E) hDo (esI k r ⟨m + 1, by omega⟩) (esI k r ⟨m + 1, by omega⟩) with hEjj`. Establish `hLaE : La (Ejj * X) = EH k r (esI k r ⟨m + 1, by omega⟩) (esI k r ⟨m + 1, by omega⟩) Ψ0 x`. Rewrite using `[← minus_positive_of_parts_lemma hDo _ _ _ hxG]`.
+
+Both sides reduce to the same expression. Establish `hcomm : Ejj * X = X * Ejj` using `(hFr _ k r (m + 1) hj (PBG.E0 hDo) Z τ τ ℓ γ (PBG.level_zero_derivation_relation hDo) hZ hτ hτ hγ).2`. Establish `E4 : d • PBP.dzb (fun τ' => D.vLet k r z z' (m + 1) (by omega) (false, Y) 0 Φ (x0 k r (m + 1) hj Z τ' γ)) τ = -(W.det⁻¹ • La (X * Ejj))`. Rewrite using `[dzb_congr' hev, dzb_smul', smul_comm, ← hcomm, hLaE, hT, smul_neg, neg_neg]`. Establish `hrule : ∀ g ∈ Glev k r 0 ∩ Dm, ∀ (p q : Fin (2 * r + k + 1)), C3.InNp k r p q → EH k r p q Φ g = C3.dpsiP k r z' p q • Φ g` using `fun g hg p q h => rule_of_eq E k r z' Φ g hz' (fun n hn => (hright g hg n hn).2) p q h`.
+
+Establish `hR` using `PBG.La_rule hDo z' Φ hsm hrule x`. Take `⟨S, hSm⟩ : ∃ S : Subalgebra ℂ (Module.End ℂ (VS k r 0 Dm E)), ∀ T, T ∈ S ↔ ∀ w : VS k r 0 Dm E, (∀ g ∈ Glev k r 0 ∩ Dm, ∀ a : Fin (m + 1) → ℂ, (w : Mx k r → E) (nL k r (m + 1) hj a * g) = psi k r z cStd (nL k r (m + 1) hj a) • (w : Mx k r → E) g) → (∀ g ∈ Glev k r 0 ∩ Dm, ∀ a : F …` from `⟨{ carrier := {T | ∀ w : VS k r 0 Dm E, (∀ g ∈ Glev k r 0 ∩ Dm, ∀ a : Fin (m + 1) → ℂ, (w : Mx k r → E) (nL k r (m + 1) hj a * g) = psi k r z cStd (nL k r (m + 1) hj a) • (w : Mx k r → E) g) → (∀ g ∈ Glev k r 0 ∩ Dm, ∀ a : Fin (m + 1) → ℂ, ((T w : VS k r 0 Dm E) : Mx k r → E) (nL …`. Simplify using `only [LinearMap.add_apply, Submodule.coe_add, Pi.add_apply, smul_add]`. Rewrite using `[h₁ w hw g hg a, h₂ w hw g hg a]`. Use the proof step `algebraMap_mem' := fun c w hw g hg a => by`.
+
+Simplify using `only [Module.algebraMap_end_apply, Submodule.coe_smul, Pi.smul_apply]`. Rewrite using `[hw g hg a, smul_comm] }, fun _ => Iff.rfl⟩`. Establish `hE : ∀ p q, PBG.E0 (E` using `E) hDo p q ∈ S := by`. Introduce `p q`. Rewrite using `[hSm]`.
+
+Introduce `w hw`. Conclude with `HeadLetterLemmas.derivative_keeps_character hj z hDo (fun g hg a => (hleft g hg a).1) p q w hw`. Establish `hK : ∀ g ∈ Glev k r 0 ∩ Dm, ∀ a : Fin (m + 1) → ℂ, ((PBG.vK hDo Φ hsm : VS k r 0 Dm E) : Mx k r → E) (nL k r (m + 1) hj a * g) = psi k r z cStd (nL k r (m + 1) hj a) • ((PBG.vK hDo Φ hsm : VS k r 0 Dm E) : Mx k r → E) g`. Introduce `g hg a`. Establish `hg' : nL k r (m + 1) hj a * g ∈ Glev k r 0 ∩ Dm` using `⟨Glev_mul (HeadLetterLemmas.nL_glev0 hj a) hg.1, (hleft g hg a).1⟩`.
+
+Use `show cut k r 0 Dm Φ _ = _ • cut k r 0 Dm Φ _`. Rewrite using `[cut_of_mem _ hg', cut_of_mem _ hg]`. Conclude with `(hleft g hg a).2`. Establish `hSt : ∀ (b : Fin (m + 1)) (T : Module.End ℂ (VS k r 0 Dm E)), T ∈ S → La (PBG.E0 hDo (esI k r ⟨↑b, by omega⟩) (esI k r ⟨m + 1, by omega⟩) * T) = (d * W⁻¹ b (Fin.last m)) • La T`. Introduce `b T hT`.
+
+Establish `hTK` using `(hSm T).1 hT _ hK`. Establish `hΨ : SmoothLev k r 0 Dm ((T (PBG.vK hDo Φ hsm) : VS k r 0 Dm E) : Mx k r → E)` using `(T (PBG.vK hDo Φ hsm)).2.1`. Establish `h1` using `hStar E k r (m + 1) hj z Dm ((T (PBG.vK hDo Φ hsm) : VS k r 0 Dm E) : Mx k r → E) Z τ γ hj1 hz hDo hΨ hZ hτ hγ hx (fun a => hTK x hxG a) b`. Establish `h2 : La (PBG.E0 hDo (esI k r ⟨↑b, by omega⟩) (esI k r ⟨m + 1, by omega⟩) * T) = EH k r (esI k r ⟨↑b, by omega⟩) (esI k r ⟨m + 1, by omega⟩) ((T (PBG.vK hDo Φ hsm) : VS k r 0 Dm E) : Mx k r → E) x`. Rewrite using `[← minus_positive_of_parts_lemma hDo _ _ _ hxG]`.
+
+Both sides reduce to the same expression. Establish `hWi : W⁻¹ b (Fin.last m) = (starRingEnd ℂ) (Z⁻¹ b (Fin.last m))`. Rewrite using `[hWd, ← Matrix.transpose_nonsing_inv, ← Matrix.conjTranspose_nonsing_inv]`. Both sides reduce to the same expression. Rewrite using `[h2, h1, hWi]`.
+
+Both sides reduce to the same expression. Establish `hN` using `(hNf k r (m + 1) hj Z τ γ hZ hτ hγ).2`. Establish `hy1 : ∀ (a : Fin (m + 1)) (q : Fin (2 * r + k + 1)), PBG.y0 x ⟨↑a, by omega⟩ q = if h : r + k < ↑q ∧ 2 * r + k - ↑q < m + 1 then W a ⟨2 * r + k - ↑q, h.2⟩ else 0`. Introduce `a q`. Rewrite using `[hN ⟨↑a, by omega⟩ q (by simp)]`.
+
+Distinguish the cases in `h : r + k < ↑q ∧ 2 * r + k - ↑q < m + 1`. Rewrite using `[dif_pos h, if_pos ⟨h.1, by omega⟩]`. Simplify using `only [C3.Zb, dif_pos a.2, dif_pos h.2, hWd]`. Both sides reduce to the same expression. Rewrite using `[dif_neg h] split_ifs with h'`.
+
+Establish `hb : 2 * r + k - ↑q = m + 1` using `by omega`. Simplify using `only [C3.Zb, dif_pos a.2, hb, lt_irrefl, dif_neg (not_false), star_zero]`. Both sides reduce to the same expression. Establish `hy2 : ∀ q : Fin (2 * r + k + 1), PBG.y0 x ⟨m + 1, by omega⟩ q = if ↑q = 2 * r + k - (m + 1) then d else 0`. Introduce `q`.
+
+Rewrite using `[hN ⟨m + 1, by omega⟩ q (by simp)]`. Distinguish the cases in `hq : (q : ℕ) = 2 * r + k - (m + 1)`. Rewrite using `[if_pos hq, if_pos ⟨by omega, by omega⟩]`. Establish `hb : 2 * r + k - ↑q = m + 1` using `by omega`. Simplify using `[C3.Zb, hb, hdd]`.
+
+Rewrite using `[if_neg hq] split_ifs with h'`. Establish `hb : 2 * r + k - ↑q < m + 1` using `by omega`. Simplify using `only [C3.Zb, lt_irrefl, dif_neg (not_false)]`. Rewrite using `[if_neg (by omega), star_zero]`. Both sides reduce to the same expression.
+
+Establish `hWne : W.det ≠ 0` using `by rw [hWdet]; exact (map_ne_zero _).mpr hZ`. Establish `hdne : d ≠ 0` using `(map_ne_zero _).mpr hτ`. Establish `key` using `minus_positive_of_parts_lemma_3 hj z' S (PBG.E0 hDo) hE (PBG.level_zero_derivation_relation hDo) La hR (PBG.y0 x) W d ℓ hWne hdne hSt hy1 hy2`. Establish `hc : ℓ + ((m + 1 : ℕ) : ℂ) = (Y : ℂ) - levelZeroKernel k r (m + 1)`. Simplify using `only [hℓ, levelZeroKernel]`.
+
+Rewrite using `[Nat.cast_sub (by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[E1, E2, E3, E4, key, mul_add, map_add, ← Algebra.commutes, ← Algebra.smul_def, map_smul, hc]`. Use `module`.
+-/
 theorem _root_.Formalism.FourierDecayAlt.P.minus_positive_of_parts : MinusPosOfParts := by
   intro hNf hDm hStar hTor hFr k r j hj z z' E _ _ Dm Φ Z γ τ hj1 hH Y
   obtain ⟨hz, hz', hDo, hDsub, ⟨hsm, hright, hleft⟩, hZ, hτ, hγ, hx⟩ := hH

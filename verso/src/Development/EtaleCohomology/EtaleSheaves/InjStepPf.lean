@@ -19,13 +19,22 @@ def EmptyH : Prop := Hyp → ∀ (q : ℕ) {X S : Scheme.{0}} (p : X ⟶ S) (U :
 
 variable {X S : Scheme.{0}}
 
+/- English proof (translation)
+Apply the tactic sequence `apply pullback.hom_ext <;> simp only [resO, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Scheme.homOfLE_homOfLE, Category.comp_id]`.
+-/
 theorem resO_comp (p : X ⟶ S) {V W U : S.Opens} (h1 : V ≤ W) (h2 : W ≤ U) :
     resO p h1 ≫ resO p h2 = resO p (h1.trans h2) := by
   apply pullback.hom_ext <;> simp only [resO, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Scheme.homOfLE_homOfLE, Category.comp_id]
 
+/- English proof (translation)
+Apply the tactic sequence `apply pullback.hom_ext <;> simp [resO]`.
+-/
 theorem resO_refl (p : X ⟶ S) (U : S.Opens) : resO p (le_refl U) = 𝟙 _ := by
   apply pullback.hom_ext <;> simp [resO]
 
+/- English proof (translation)
+Rewrite using `[← resO_comp p h1 h2, Functor.map_comp, pull_comp, hx, map_zero]`.
+-/
 theorem dies_mono {q : ℕ} {i n : ℤ} (p : X ⟶ S) {V W U : S.Opens} (h1 : V ≤ W) (h2 : W ≤ U)
     (x : Ht q (sch.obj (overO p U)) n i) (hx : pull _ (sch.map (resO p h2)) _ _ x = 0) :
     pull _ (sch.map (resO p (h1.trans h2))) _ _ x = 0 := by
@@ -42,22 +51,42 @@ def OverMV : Prop := MV → Hyp → ∀ (q : ℕ) {Y X S : Scheme.{0}} (f : Y �
       pull _ (sch.map (resO (f ≫ p) (inf_le_right : V ⊓ W ≤ W))) _ _ b) ∧
   ∀ w, δY (pull _ (sch.map (fO f p (V ⊓ W))) _ _ w) = pull _ (sch.map (fO f p (V ⊔ W))) _ _ (δX w)
 
+/- English proof (translation)
+Apply the tactic sequence `apply pullback.hom_ext <;> simp only [resO, fO, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id, Category.id_comp]`.
+-/
 theorem fO_res {Y : Scheme.{0}} (f : Y ⟶ X) (p : X ⟶ S) {V U : S.Opens} (h : V ≤ U) :
     resO (f ≫ p) h ≫ fO f p U = fO f p V ≫ resO p h := by
   apply pullback.hom_ext <;> simp only [resO, fO, pullback.map, Category.assoc, pullback.lift_fst, pullback.lift_snd,
     pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id, Category.id_comp]
 
+/- English proof (translation)
+Rewrite using `[← pull_comp, ← pull_comp, ← Functor.map_comp, ← Functor.map_comp, fO_res]`.
+-/
 theorem pull_fO_res {q : ℕ} {i n : ℤ} {Y : Scheme.{0}} (f : Y ⟶ X) (p : X ⟶ S) {V U : S.Opens} (h : V ≤ U)
     (x : Ht q (sch.obj (overO p U)) n i) :
     pull _ (sch.map (fO f p V)) _ _ (pull _ (sch.map (resO p h)) _ _ x) =
       pull _ (sch.map (resO (f ≫ p) h)) _ _ (pull _ (sch.map (fO f p U)) _ _ x) := by
   rw [← pull_comp, ← pull_comp, ← Functor.map_comp, ← Functor.map_comp, fO_res]
 
+/- English proof (translation)
+Rewrite using `[← pull_comp, ← Functor.map_comp, resO_comp]`.
+-/
 theorem pull_res_res {q : ℕ} {i n : ℤ} (p : X ⟶ S) {V W U : S.Opens} (h1 : V ≤ W) (h2 : W ≤ U)
     (x : Ht q (sch.obj (overO p U)) n i) :
     pull _ (sch.map (resO p h1)) _ _ (pull _ (sch.map (resO p h2)) _ _ x) = pull _ (sch.map (resO p (h1.trans h2))) _ _ x := by
   rw [← pull_comp, ← Functor.map_comp, resO_comp]
 
+/- English proof (translation)
+Introduce `hM hH q Y X S f p _ _ _ _ _ _ hq i n hb U V W hV hW hVc hWc x hx hdV hdW`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by ring⟩`. Establish `hb' : ∀ U : S.Opens, IsCompact (U : Set S) → Bij q i m f p U` using `by simpa using hb`. Take `⟨δX, δY, e1, e2, e3, e4⟩` from `hO hM hH q f p i m V W`. Use `set x' := pull _ (sch.map (resO p (sup_le hV hW))) _ _ x with hx'`.
+
+Establish `d1 : pull _ (sch.map (resO p (le_sup_left : V ≤ V ⊔ W))) _ _ x' = 0`. Rewrite using `[hx', pull_res_res]`. Conclude with `hdV`. Establish `d2 : pull _ (sch.map (resO p (le_sup_right : W ≤ V ⊔ W))) _ _ x' = 0`. Rewrite using `[hx', pull_res_res]`.
+
+Conclude with `hdW`. Take `⟨w, hw⟩` from `e1 x' d1 d2`. Establish `fx' : pull _ (sch.map (fO f p (V ⊔ W))) _ _ x' = 0`. Rewrite using `[hx', pull_fO_res, hx, map_zero]`. Establish `hδ : δY (pull _ (sch.map (fO f p (V ⊓ W))) _ _ w) = 0` using `by rw [e4, hw, fx']`.
+
+Take `⟨a', b', hab⟩` from `e3 _ hδ`. Take `⟨a, rfl⟩` from `(hb' V hVc).2 a'`. Take `⟨b, rfl⟩` from `(hb' W hWc).2 b'`. Establish `hI : IsCompact ((V ⊓ W : S.Opens) : Set S)`. Rewrite using `[TopologicalSpace.Opens.coe_inf]`.
+
+Conclude with `QuasiSeparatedSpace.inter_isCompact _ _ V.isOpen hVc W.isOpen hWc`. Establish `hw2 : w = pull _ (sch.map (resO p (inf_le_left : V ⊓ W ≤ V))) _ _ a - pull _ (sch.map (resO p (inf_le_right : V ⊓ W ≤ W))) _ _ b`. Apply `(hb' _ hI).1` to reduce the goal to its premises. Rewrite using `[hab, map_sub, pull_fO_res, pull_fO_res]`. Rewrite using `[← hw, hw2, e2]`.
+-/
 theorem TwoStep_of (hO : OverMV) : TwoStep := by
   intro hM hH q Y X S f p _ _ _ _ _ _ hq i n hb U V W hV hW hVc hWc x hx hdV hdW
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by ring⟩
@@ -84,6 +113,19 @@ theorem TwoStep_of (hO : OverMV) : TwoStep := by
     rw [hab, map_sub, pull_fO_res, pull_fO_res]
   rw [← hw, hw2, e2]
 
+/- English proof (translation)
+Introduce `hM hH q Y X S f p _ _ _ _ _ _ hq i n hg hb U hU`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Distinguish the cases in `hne : (U : Set S) = ∅`. Conclude with `hE hH q p U hne i n x`.
+
+Take `⟨s0, hs0⟩` from `Set.nonempty_iff_ne_empty.2 hne`. Establish `loc : ∀ s ∈ (U : Set S), ∃ (V : S.Opens) (h : V ≤ U), s ∈ V ∧ IsCompact (V : Set S) ∧ pull _ (sch.map (resO p h)) _ _ x = 0`. Introduce `s hs`. Take `⟨V, hVU, hsV, hd⟩` from `(hg s).1 U hs x hx`. Take `⟨V', hV'B, hsV', hV'V⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.1 S.isBasis_affineOpens) hsV`.
+
+Conclude with `⟨V', hV'V.trans hVU, hsV', IsAffineOpen.isCompact hV'B, dies_mono p hV'V hVU x hd⟩`. Set `P : Set S → Prop` to `fun T => ∃ (V : S.Opens) (h : V ≤ U), T ⊆ V ∧ IsCompact (V : Set S) ∧ pull _ (sch.map (resO p h)) _ _ x = 0`. Establish `hP : P (U : Set S)`. Use `hU.induction_on (p := P) ?_ ?_ ?_ ?_` and prove the remaining obligations. Take `⟨V, h, _, hc, hd⟩` from `loc s0 hs0`.
+
+Conclude with `⟨V, h, Set.empty_subset _, hc, hd⟩`. Introduce `s t hst ⟨V, h, htV, hc, hd⟩`. Conclude with `⟨V, h, hst.trans htV, hc, hd⟩`. Introduce `s t ⟨V, h, hsV, hc, hd⟩ ⟨W, h', htW, hc', hd'⟩`. Use `⟨V ⊔ W, sup_le h h', ?_, ?_, hT hM hH q f p hq i n hb U V W h h' hc hc' x hx hd hd'⟩` and prove the remaining obligations.
+
+Conclude with `Set.union_subset_union hsV htW`. Simplify using `using hc.union hc'`. Introduce `s hs`. Take `⟨V, h, hsV, hc, hd⟩` from `loc s hs`. Conclude with `⟨V, mem_nhdsWithin_of_mem_nhds (V.isOpen.mem_nhds hsV), V, h, subset_rfl, hc, hd⟩`.
+
+Take `⟨V, h, hUV, _, hd⟩` from `hP`. Establish `hVU : V = U` using `le_antisymm h hUV`. Substitute `hVU` using the available equality. Simplify `hd` using `[resO_refl, pull_id]`.
+-/
 theorem InjStep_of (hT : TwoStep) (hE : EmptyH) : InjStep := by
   intro hM hH q Y X S f p _ _ _ _ _ _ hq i n hg hb U hU
   rw [injective_iff_map_eq_zero]

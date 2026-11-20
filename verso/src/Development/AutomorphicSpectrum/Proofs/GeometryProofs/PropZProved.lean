@@ -11,6 +11,15 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat.PropZPf
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
+/- English proof (translation)
+Rewrite `hy` using `[hgq.2, Submodule.mem_span_singleton]`. Take `⟨r, rfl⟩` from `hy`. Establish `hr : ((r • tq : Ω)) = (r : Ω) * tq` using `rfl`. Rewrite `hd` using `[hr, smul_eq_mul]`. Establish `htq` using `hgq.1`.
+
+Establish `e1 : tp = tq * (1 + w * r)` using `by linear_combination hd`. Establish `hu : (1 + w * (r : Ω)) ≠ 0`. Introduce `h0`. Apply `htp` to reduce the goal to its premises. Rewrite using `[e1, h0, mul_zero]`.
+
+Establish `e2 : w ^ a / (σ / tp) ^ M = w ^ a / (σ / tq) ^ M * (1 + w * r) ^ M`. Rewrite using `[e1, div_pow, div_pow, mul_pow]`. Clear the denominators using the available nonvanishing facts. Establish `g` using `geom_sum_mul (1 + w * (r : Ω)) M`. Establish `e3 : (w ^ a / (σ / tp) ^ M - w ^ a / (σ / tq) ^ M) / w = w ^ a / (σ / tq) ^ M * (r : Ω) * ∑ i ∈ Finset.range M, (1 + w * (r : Ω)) ^ i`.
+
+Rewrite using `[e2, div_eq_iff hw0]`. Take the linear combination `(-(w ^ a / (σ / tq) ^ M)) * g`. Rewrite using `[e3]`. Use `mul_mem (mul_mem hhq r.2) (Subring.sum_mem _ fun i _ => pow_mem ?_ i)` and prove the remaining obligations. Conclude with `add_mem (one_mem _) (mul_mem hwq r.2)`.
+-/
 theorem div_sub_mem {L : Lat ξ Ω} {q : Cpt ξ} {w σ tp tq y : Ω} (a : ℤ) (M : ℕ) (hw0 : w ≠ 0)
     (hwq : w ∈ regAt ξ q) (hσ : σ ≠ 0) (hgq : L.IsGenAt q tq) (htp : tp ≠ 0)
     (hhq : w ^ a / (σ / tq) ^ M ∈ regAt ξ q) (hy : y ∈ L q) (hd : tp - tq = w • y) :
@@ -39,6 +48,25 @@ end GlobalTheory.CompanionTheory.Ar.Flat.PropZPf
 
 open GlobalTheory.CompanionTheory.Ar.Flat.PropZPf in
 
+/- English proof (translation)
+Introduce `X Ω _ ξ O _ _ _ _ s _ ϖ hϖ hinj hs hg hn hconn L σ hvb htriv hgen`. Take `⟨M, a, hM, hreg, p₀, hp₀, -, hord₀⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.exists_regular_section_generator X Ω ξ O s ϖ hϖ hinj hs hg hn hconn.nonempty L σ hvb hgen`. Establish `hw0 : algebraMap O Ω ϖ ≠ 0` using `fun e => hϖ.ne_zero (hinj (by rw [map_zero]; exact e))`. Establish `hwreg : ∀ p : Cpt ξ, algebraMap O Ω ϖ ∈ regAt ξ p` using `fun p => (GlobalTheory.CompanionTheory.Ar.Flat.ConstReg.regular_const X Ω ξ O s hs p ϖ).1`. Establish `hunit : ∀ (p : Cpt ξ) (o : O), unitAt ξ p (algebraMap O Ω o) ↔ o ∉ (s p.1).asIdeal` using `fun p o => (GlobalTheory.CompanionTheory.Ar.Flat.ConstReg.regular_const X Ω ξ O s hs p o).2 hg`.
+
+Establish `hgf : ∀ q : Cpt ξ, unitAt ξ q (algebraMap O Ω ϖ) → q ∈ genFibre O ξ`. Introduce `q hq o ho`. Rewrite using `[hunit]`. Introduce `hmem`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ho hϖ`.
+
+Establish `hP : (s q.1).asIdeal.IsPrime` using `(s q.1).isPrime`. Rewrite `hmem` using `[hu]`. Break down `hP.mem_or_mem hmem with h1 | h1` into its components or cases. Conclude with `hP.ne_top ((Ideal.eq_top_iff_one _).2 (by`. Use `Ideal.mul_mem_left _ ((u⁻¹ : Oˣ) : O) h1` as an intermediate fact.
+
+Rewrite using `[Units.inv_mul] at this))` and apply the resulting hypothesis. Conclude with `(hunit q ϖ).1 hq (hP.mem_of_pow_mem n h1)`. Establish `hσ : σ ≠ 0` using `hord₀.ne_zero hM.ne'`. Take `⟨t, ht⟩` from `htriv`. Establish `htq : ∀ q : Cpt ξ, ¬ unitAt ξ q (algebraMap O Ω ϖ) → L.IsGenAt q (t q)` using `fun q hq => by`.
+
+Take `⟨U, hU, H⟩` from `ht q hq`. Take `⟨h0, h1, -⟩` from `H q hU hq`. Conclude with `⟨h0, h1⟩`. Establish `hloc : ∀ p : Cpt ξ, ¬ unitAt ξ p (algebraMap O Ω ϖ) → ∃ U : X.Opens, p.1 ∈ U ∧ ∀ q : Cpt ξ, q.1 ∈ U → ¬ unitAt ξ q (algebraMap O Ω ϖ) → (fun p : Cpt ξ => algebraMap O Ω ϖ ^ a / (σ / t p) ^ M) p ∈ regAt ξ q ∧ ((fun p : Cpt ξ => algebraMap O Ω ϖ ^ a / (σ / t p) ^ M) p - (fun p : Cp …`. Introduce `p hp`.
+
+Take `⟨U, hU, H⟩` from `ht p hp`. Use `⟨U, hU, fun q hqU hq => ?_⟩` and prove the remaining obligations. Take `⟨h0, h1, y, hy, hd⟩` from `H q hqU hq`. Conclude with `⟨hreg q (t p) ⟨h0, h1⟩, div_sub_mem a M hw0 (hwreg q) hσ (htq q hq) h0 (hreg q (t q) (htq q hq)) hy hd⟩`. Establish `hu₀ : unitAt ξ p₀ ((fun p : Cpt ξ => algebraMap O Ω ϖ ^ a / (σ / t p) ^ M) p₀)`.
+
+Use `ZUnit.inv ((orderAt_iff_div (htq p₀ hp₀).1 (htq p₀ hp₀).2).1 hord₀)` as an intermediate fact. Rewrite `this` using `[inv_div]`. Then use the resulting hypothesis. Establish `key` using `GlobalTheory.T.connected_special_fibre_constant X Ω ξ O s ϖ hϖ hinj hs hg hconn (fun p : Cpt ξ => algebraMap O Ω ϖ ^ a / (σ / t p) ^ M) hloc ⟨p₀, hp₀, hu₀⟩`. Use `⟨M, a, hM, fun p => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hp : unitAt ξ p (algebraMap O Ω ϖ)`.
+
+Establish `hgp` using `hgen p (hgf p hp)`. Rewrite using `[orderAt_iff_div hgp.1 hgp.2, div_self hσ, one_pow, one_div]`. Use `ZUnit.inv ⟨zpow_ne_zero a hw0, ZLat.zpow_mem_regAt hp a, ?_⟩` and prove the remaining obligations. Rewrite using `[← zpow_neg]`. Conclude with `ZLat.zpow_mem_regAt hp (-a)`.
+
+Rewrite using `[orderAt_iff_div (htq p hp).1 (htq p hp).2]`. Establish `h1 : unitAt ξ p (algebraMap O Ω ϖ ^ a / (σ / t p) ^ M)` using `key p hp`. Use `ZUnit.inv h1` as an intermediate fact. Rewrite `this` using `[inv_div]`. Then use the resulting hypothesis.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.Flat.PropZ_holds : GlobalTheory.CompanionTheory.Ar.Flat.PropZ := by
   intro X Ω _ ξ O _ _ _ _ s _ ϖ hϖ hinj hs hg hn hconn L σ hvb htriv hgen
   obtain ⟨M, a, hM, hreg, p₀, hp₀, -, hord₀⟩ :=

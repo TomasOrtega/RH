@@ -6,6 +6,21 @@ namespace GlobalTheory.FibreMax
 
 attribute [local instance] Algebra.TensorProduct.rightAlgebra in
 
+/- English proof (translation)
+Establish `hloc` using `IsLocalization.tensorRight (S := A) (FractionRing k) (nonZeroDivisors k)`. Establish `hle : Algebra.algebraMapSubmonoid A (nonZeroDivisors k) ≤ nonZeroDivisors A` using `Submonoid.map_le_iff_le_comap.mpr fun x hx ↦ mem_nonZeroDivisors_of_ne_zero (by simpa using nonZeroDivisors.ne_zero hx)`. Establish `: IsDomain (FractionRing k ⊗[k] A)` using `IsLocalization.isDomain_of_le_nonZeroDivisors _ hle`. Take `⟨l, hl⟩` from `Order.le_krullDim_iff.1 hd.ge`. Set `f : PrimeSpectrum (FractionRing k ⊗[k] A) → PrimeSpectrum A` to `PrimeSpectrum.comap (algebraMap A (FractionRing k ⊗[k] A))`.
+
+Establish `hf : StrictMono f` using `Monotone.strictMono_of_injective (fun _ _ h ↦ Ideal.comap_mono h) (PrimeSpectrum.localization_comap_injective _ (Algebra.algebraMapSubmonoid A (nonZeroDivisors k)))`. Set `q` to `f l.last`. Establish `hq : ∀ c : k, c ≠ 0 → algebraMap k A c ∉ q.asIdeal`. Introduce `c hc h`. Establish `hu : IsUnit (algebraMap A (FractionRing k ⊗[k] A) (algebraMap k A c))` using `IsLocalization.map_units (FractionRing k ⊗[k] A) (⟨algebraMap k A c, c, mem_nonZeroDivisors_of_ne_zero hc, rfl⟩ : Algebra.algebraMapSubmonoid A (nonZeroDivisors k))`.
+
+Conclude with `l.last.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h hu)`. Take `⟨M, hM, hqM⟩` from `Ideal.exists_le_maximal q.asIdeal q.isPrime.ne_top`. Establish `hne : q.asIdeal ≠ M`. Introduce `heq`. Use `haveI := ReciprocityTheory.AnForm.R.IntegerToRational.isJacobsonRing_int`.
+
+Use `haveI : Algebra.FiniteType ℤ k := inferInstance`. Use `haveI : Algebra.FiniteType ℤ A := Algebra.FiniteType.trans (S := k) inferInstance inferInstance`. Use `letI := Ideal.Quotient.field M`. Use `haveI : Module.Finite ℤ (A ⧸ M) := finite_of_finite_type_of_isJacobsonRing ℤ (A ⧸ M)`. Establish `hinj : Function.Injective (algebraMap ℤ (A ⧸ M))`.
+
+Use `(injective_iff_map_eq_zero _).2 fun x hx ↦ ?_` and prove the remaining obligations. Establish `h1 : algebraMap ℤ (A ⧸ M) x = Ideal.Quotient.mk M (algebraMap k A (x : k))` using `by simp`. Rewrite `hx` using `[h1, Ideal.Quotient.eq_zero_iff_mem, ← heq]`. Assume the negation of the conclusion as `hx0`. Conclude with `hq (x : k) (Int.cast_ne_zero.2 hx0) hx`.
+
+Conclude with `Int.not_isField ((Algebra.IsIntegral.isField_iff_isField hinj).2 (Field.toIsField _))`. Set `Mp : PrimeSpectrum A` to `⟨M, hM.isPrime⟩`. Establish `hlt : (l.map f hf).last < Mp`. Express the relevant statement in the definitionally equal form `q < Mp`. Conclude with `lt_of_le_of_ne hqM fun h ↦ hne (congrArg PrimeSpectrum.asIdeal h)`.
+
+Set `L` to `(l.map f hf).snoc Mp hlt`. Establish `hlen : L.length = d + 1` using `by simp [L, hl]`. Use `⟨M, hM, ?_⟩` and prove the remaining obligations. Rewrite using `[show M = Mp.asIdeal from rfl, PrimeSpectrum.height_eq_orderHeight, ← hlen]`. Conclude with `Order.length_le_height (by simp [L])`.
+-/
 theorem exists_isMaximal_height_ge (k : Type) [CommRing k] [IsDomain k] [Module.Finite ℤ k]
     [CharZero k] (A : Type) [CommRing A] [IsDomain A] [Algebra k A] [Algebra.FiniteType k A]
     [FaithfulSMul k A] (d : ℕ) (hd : ringKrullDim (FractionRing k ⊗[k] A) = d) :

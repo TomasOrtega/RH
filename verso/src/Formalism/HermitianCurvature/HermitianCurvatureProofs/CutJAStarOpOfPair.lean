@@ -4,6 +4,9 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJASASecFinal
 
 namespace Formalism.FourierDecayAlt.P.CutMP.JA
 
+/- English proof (translation)
+The claim follows from `SA.jAStarOp_of_parts SA.model_adjoint_identity_holds self_adjoint_section_holds h SA.fundamental_quadratic_identity`.
+-/
 theorem jAStarOp_of_pairL (h : SA.SAPairL) : JAStarOp :=
   SA.jAStarOp_of_parts SA.model_adjoint_identity_holds self_adjoint_section_holds h SA.fundamental_quadratic_identity
 

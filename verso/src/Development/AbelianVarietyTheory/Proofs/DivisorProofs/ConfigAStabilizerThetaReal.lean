@@ -20,6 +20,11 @@ noncomputable section
 
 namespace GlobalTheory.XTermSupp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [Darboux.rho, schr, Pi.smul_apply, smul_eq_mul, d.form, ← mul_assoc, ← AddChar.map_add_eq_mul]`. Rewrite using `[add_right_comm x (d.e s).1]`. Use `congr 2`. Simplify using `only [add_dotProduct]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rho_comm {R : Type} [CommRing R] [Invertible (2 : R)] {W : Type} [AddCommGroup W] [Module R W] {B : W → W → R}
     {κ : Type} [Fintype κ] (d : Darboux B κ) (ψ : AddChar R ℂ) (s u : W) (φ : (κ → R) → ℂ) :
     d.rho ψ s (d.rho ψ u φ) = ψ (B s u) • d.rho ψ u (d.rho ψ s φ) := by
@@ -32,6 +37,15 @@ theorem rho_comm {R : Type} [CommRing R] [Invertible (2 : R)] {W : Type} [AddCom
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, g, hg, rfl⟩` from `hx`. Take `⟨M, hMo, hM⟩` from `GlobalTheory.WeilAdm.pureA_fixed_fin F ψ hψ κ g hg`. Use `filter_upwards [hMo.mem_nhds M.zero_mem] with m hm using hM m hm f`.
+
+Consider the case `zero => exact .of_forall fun m => by funext x; simp [schr]`. Consider the case `add x y _ _ hx hy => filter_upwards [hx, hy] with m e1 e2`. Use function extensionality and compare the values at `z`. Establish `hx1` using `congrFun e1 z`. Establish `hy1` using `congrFun e2 z`.
+
+Simplify using `only [schr, Pi.add_apply, mul_add] at hx1 hy1 ⊢`. Rewrite using `[hx1, hy1]`. Consider the case `smul c x _ hx => filter_upwards [hx] with m e1`. Use function extensionality and compare the values at `z`. Establish `hx1` using `congrFun e1 z`.
+
+Simplify using `only [schr, Pi.smul_apply, smul_eq_mul] at hx1 ⊢`. Rewrite using `[mul_left_comm, hx1]`.
+-/
 theorem schA_fixed (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ) {κ : Type} [Fintype κ] (Φ : (κ → AF F) → ℂ)
     (hΦ : Φ ∈ schA F κ) : ∀ᶠ m in 𝓝 (0 : (κ → Af F) × (κ → Af F)), schr ψ (GlobalTheory.WeilAdm.finE2 F m) Φ = Φ := by
   induction hΦ using Submodule.span_induction with
@@ -54,6 +68,13 @@ theorem schA_fixed (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ) {κ : Type} [
     simp only [schr, Pi.smul_apply, smul_eq_mul] at hx1 ⊢
     rw [mul_left_comm, hx1]
 
+/- English proof (translation)
+Set `m : Af F × T → (κ → Af F) × (κ → Af F)` to `fun p => (fun i => p.1 * ((g p.2).1 i).2, fun i => p.1 * ((g p.2).2 i).2)`. Establish `hs : Continuous fun z : AF F => (z.2 : Af F)` using `continuous_snd`. Establish `hm : Continuous m`. Use `Continuous.prodMk (continuous_pi fun i => continuous_fst.mul (hs.comp ?_)) (continuous_pi fun i => continuous_fst.mul (hs.comp ?_))` and prove the remaining obligations. Conclude with `(continuous_apply i).comp (continuous_fst.comp (hg.comp continuous_snd))`.
+
+Conclude with `(continuous_apply i).comp (continuous_snd.comp (hg.comp continuous_snd))`. Establish `e : ∀ a k, pairA F 0 a • g k = GlobalTheory.WeilAdm.finE2 F (m (a, k))` using `fun a k => Prod.ext (funext fun i => Prod.ext (zero_mul _) rfl) (funext fun i => Prod.ext (zero_mul _) rfl)`. Simplify using `only [e]`. Use `hC.eventually_forall_of_forall_eventually fun k _ => ?_` and prove the remaining obligations. Establish `h0 : m (0, k) = 0` using `Prod.ext (funext fun i => zero_mul _) (funext fun i => zero_mul _)`.
+
+Conclude with `(hm.tendsto' _ _ h0).eventually (schA_fixed ψ hψ Φ hΦ)`.
+-/
 theorem schA_fixed_smul (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ) {κ : Type} [Fintype κ] (Φ : (κ → AF F) → ℂ)
     (hΦ : Φ ∈ schA F κ) {T : Type} [TopologicalSpace T] {C : Set T} (hC : IsCompact C)
     (g : T → (κ → AF F) × (κ → AF F)) (hg : Continuous g) :
@@ -72,6 +93,13 @@ theorem schA_fixed_smul (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ) {κ : Ty
   have h0 : m (0, k) = 0 := Prod.ext (funext fun i => zero_mul _) (funext fun i => zero_mul _)
   exact (hm.tendsto' _ _ h0).eventually (schA_fixed ψ hψ Φ hΦ)
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `⟨(Module.finBasis F E).traceDual i, fun x => ?_⟩` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp [GlobalTheory.XTermMaj.crd]`. Consider the case `add x y hx hy => simp only [add_mul, map_add, hx, hy, GlobalTheory.XTermMaj.crd, Pi.add_apply]`.
+
+Consider the case `tmul r x`. Establish `h1` using `Module.Basis.traceDual_repr_apply (Module.finBasis F E).traceDual x i`. Rewrite `h1` using `[Module.Basis.traceDual_traceDual, Algebra.traceForm_apply]`. Establish `h2 : (r ⊗ₜ[F] x : AE F E) * inclR (F` using `F) (AF F) ((Module.finBasis F E).traceDual i) = r • ((1 : AF F) ⊗ₜ[F] (x * (Module.finBasis F E).traceDual i)) := by`. Simplify using `[inclR, TensorProduct.smul_tmul']`.
+
+Rewrite using `[h2, map_smul, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange, ← Algebra.trace_apply, ← h1]`. Simplify using `[GlobalTheory.XTermMaj.crd]`.
+-/
 theorem trace_mul_dual (i : Fin (Module.finrank F E)) : ∃ c : E, ∀ x : AE F E,
     Algebra.trace (AF F) (AE F E) (x * inclR (F := F) (AF F) c) = GlobalTheory.XTermMaj.crd F E x i := by
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -89,11 +117,19 @@ theorem trace_mul_dual (i : Fin (Module.finrank F E)) : ∃ c : E, ∀ x : AE F 
       ← h1]
     simp [GlobalTheory.XTermMaj.crd]
 
+/- English proof (translation)
+Establish `hc : ∀ x : E, cA σ (inclR (F` using `F) (AF F) x) = inclR (F := F) (AF F) (σ x) := fun x => rfl`. Simplify using `only [form, incV, incM, Matrix.map_apply, hc, dotProduct, Matrix.mulVec, Finset.mul_sum, map_sum, map_mul, mul_assoc]`.
+-/
 theorem form_inc {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E) :
     ∑ j, ∑ l, incV F x j * incM F J j l * cA σ (incV F y l) = inclR (F := F) (AF F) (form σ J x y) := by
   have hc : ∀ x : E, cA σ (inclR (F := F) (AF F) x) = inclR (F := F) (AF F) (σ x) := fun x => rfl
   simp only [form, incV, incM, Matrix.map_apply, hc, dotProduct, Matrix.mulVec, Finset.mul_sum, map_sum, map_mul, mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [hTens, Matrix.vecMulVec_apply, map_mul, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hTens_vv {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A)
     {α β : Type} [Fintype α] [Fintype β] (JA : Matrix α α A) (JB : Matrix β β A) (l t : A) (a a' : α → A) (x x' : β → A) :
     hTens c JA JB (l • Matrix.vecMulVec a x) (t • Matrix.vecMulVec a' x') =
@@ -109,10 +145,16 @@ theorem hTens_vv {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →
   refine Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])`.
+-/
 theorem invol (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   exact τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])
 
+/- English proof (translation)
+Simplify using `only [form, dotProduct, Matrix.mulVec, Finset.mul_sum, map_sum, map_mul, invol h, hJ, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_skew (h : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : ∀ i j, σ (J j i) = -J i j)
     (x y : Fin n → E) : form σ J y x = -σ (form σ J x y) := by
   simp only [form, dotProduct, Matrix.mulVec, Finset.mul_sum, map_sum, map_mul, invol h, hJ, ← Finset.sum_neg_distrib]
@@ -120,6 +162,13 @@ theorem form_skew (h : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} 
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : IsModuleTopology (AF F) (Matrix (Fin n) (Fin d) (AE F E)) := inferInstanceAs (IsModuleTopology (AF F) (Fin n → Fin d → AE F E))`. Establish `hm : Continuous fun g : UA σ X.J => mat g⁻¹` using `(Units.continuous_val.comp continuous_subtype_val).comp continuous_inv`. Establish `he : Continuous M.co.e` using `IsModuleTopology.continuous_of_linearMap M.co.e.toLinearMap`.
+
+Establish `hg : Continuous fun k : UA σ X.J => M.co.e (mat k⁻¹ * u * (mat h⁻¹)ᵀ)` using `he.comp ((hm.matrix_mul continuous_const).matrix_mul continuous_const)`. Use `filter_upwards [schA_fixed_smul ψ hψ Φ hΦ hC _ hg] with a ha k hk`. Establish `h1` using `(IsUWeilPair.isUSplitting hom).impl (k, h) (pairA F 0 a • (mat k⁻¹ * u * (mat h⁻¹)ᵀ)) Φ hΦ`. Establish `h2 : actAB (cA σ) (k, h) (pairA F 0 a • (mat k⁻¹ * u * (mat h⁻¹)ᵀ)) = pairA F 0 a • u` using `by show mat k * (pairA F 0 a • (mat k⁻¹ * u * (mat h⁻¹)ᵀ)) * (mat h)ᵀ = _`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, GlobalTheory.StabHaar.mat_mul_inv, Matrix.one_mul, Matrix.mul_assoc, ← Matrix.transpose_mul, GlobalTheory.StabHaar.mat_mul_inv, Matrix.transpose_one, Matrix.mul_one]`.
+
+Rewrite `h1` using `[h2]`. Rewrite using `[← h1, Darboux.rho, map_smul, ha k hk]`.
+-/
 theorem rho_om_fixed {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ)
     {χX χW : Chr F E} {om : Rep σ X W} (hom : M.IsWeil ψ χX χW om) {C : Set (UA σ X.J)} (hC : IsCompact C) (h : UA σ W.J)
     (Φ : Fn F n d) (hΦ : Φ ∈ schA F (Fin n × Fin d)) (u : Matrix (Fin n) (Fin d) (AE F E)) :
@@ -142,6 +191,9 @@ theorem rho_om_fixed {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X
   rw [h2] at h1
   rw [← h1, Darboux.rho, map_smul, ha k hk]
 
+/- English proof (translation)
+Establish `hc : ∀ x : E, cA σ (inclR (F` using `F) (AF F) x) = inclR (F := F) (AF F) (σ x) := fun x => rfl`. Rewrite using `[← smul_assoc, symp, shiftA, hTens_vv, form_inc, form_inc, hH, form_skew hcm hJ, hH', map_smul, hc, invol hcm, ← smul_eq_mul a, ← map_smul (Algebra.trace (AF F) (AE F E))]`. Use `congr 1`. Simplify using the standard rewrite rules.
+-/
 theorem symp_shiftA (hcm : IsCMExt F E σ) {n d n₁ d₁ : ℕ} {JX : Matrix (Fin n) (Fin n) E} {JW : Matrix (Fin d) (Fin d) E}
     (hJ : ∀ i j, σ (JW j i) = -JW i j) (H : Plane E n n₁) (H' : Plane E d d₁) (hH : form σ JX H.x H.y = 1)
     (hH' : form σ JW H'.x H'.y = 1) (l : (AE F E)ˣ) (a : AF F) (c : E) :
@@ -154,6 +206,17 @@ theorem symp_shiftA (hcm : IsCMExt F E σ) {n d n₁ d₁ : ℕ} {JX : Matrix (F
   congr 1
   simp
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B b a' G G₁ H H' hC K hK e he X om om' hT Φ hΦ h`. Establish `hstd` using `hT.base.std`. Establish `hΦ' : Φ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a'))`. Use `(Submodule.span_le.2 ?_ : PolData B G.M ≤ _) hΦ` and prove the remaining obligations. Introduce and unpack `Φ ⟨f, -, φ, hSB, hvac, rfl⟩`.
+
+Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ hSB ((hvac.and hT.geo.hM.std).mono fun v hv => hv.1.trans hv.2)`. Take `⟨C, hCc, hsub⟩` from `GlobalTheory.T.relatively_compact_stabilizer F E σ B (b + 2) G.V _ _ hT.base hT.geo.hV`. Use `choose c hc using trace_mul_dual (F := F) (E := E)`. Establish `hO` using `fun i => rho_om_fixed G.M B.ψ hstd.1 hT.weil hCc h Φ hΦ' (inclR (F := F) (AF F) (σ (c i)) • Matrix.vecMulVec (incV F H.y) (incV F H'.x))`. Take `⟨U, hU, hUm⟩` from `GlobalTheory.ScalarAnnih.exists_compact_annihilator_finiteAdeles_traceChar F B.ψ hstd.1 (GlobalTheory.PsiNontriv.isStd_fin_rat hstd) _ (Filter.eventually_all.2 hO)`.
+
+Use `⟨Set.pi Set.univ fun _ => U, isCompact_univ_pi fun _ => hU, fun k hk l hl => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Use `hl fun i _ => hUm _ fun a ha => ?_` and prove the remaining obligations. Establish `hfix` using `ha i k (hsub ((hK k).1 hk))`. Establish `hΨ : om (k, h) Φ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a'))` using `(IsUWeilPair.isUSplitting hT.weil).pres _ _ hΦ'`.
+
+Establish `h1` using `congrArg e (rho_comm G.M.co B.ψ (shiftA H H' l) (pairA F 0 a • inclR (F := F) (AF F) (σ (c i)) • Matrix.vecMulVec (incV F H.y) (incV F H'.x)) (om (k, h) Φ))`. Rewrite using `[hfix, map_smul, he.inv _ (Or.inl ⟨pairA F 0 a • inclR (F := F) (AF F) (σ (c i)) • incV F H.y, by`. Rewrite using `[Matrix.smul_vecMulVec, Matrix.smul_vecMulVec]⟩) _ (GlobalTheory.HeisSchA.rho_mem_schA G.M B.ψ hstd _ _ hΨ),`. Use `symp_shiftA hT.base.cm hT.geo.hW.skew H H' hC.hH.xy hC.hH'.xy, hc] at h1`. Establish `h2 : pairA F 0 a * GlobalTheory.XTermMaj.crd F E (l : AE F E) i = pairA F 0 (a * (GlobalTheory.XTermMaj.crd F E (l : AE F E) i).2)` using `Prod.ext (zero_mul _) rfl`.
+
+Rewrite `h1` using `[h2]`. Conclude with `(smul_left_injective ℂ hne (h1.symm.trans (one_smul ℂ _).symm))`.
+-/
 theorem finsupp : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
     ∀ (K : Subgroup (UA σ G.V.J)), IsStab B K →

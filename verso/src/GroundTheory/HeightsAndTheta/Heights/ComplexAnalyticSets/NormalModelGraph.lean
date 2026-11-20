@@ -6,6 +6,25 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 
 open MvPolynomial
 
+/- English proof (translation)
+Use `set B : MvPolynomial (Fin n) ℂ := ∏ i, b i with hB`. Use `set w : Fin n ⊕ Fin M.m → ℂ := Sum.elim x fun i => eval x (a i) / eval x (b i) with hw`. Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C c`. Use `⟨0, C c, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider the case `add p q hp hq`. Take `⟨N₁, r₁, h₁, e₁⟩` from `hp`. Take `⟨N₂, r₂, h₂, e₂⟩` from `hq`.
+
+Use `⟨N₁ + N₂, B ^ N₂ * r₁ + B ^ N₁ * r₂, ?_, ?_⟩` and prove the remaining obligations. Establish `hid : rename Sum.inl (B ^ (N₁ + N₂)) * (p + q) - rename Sum.inl (B ^ N₂ * r₁ + B ^ N₁ * r₂) = rename Sum.inl (B ^ N₂) * (rename Sum.inl (B ^ N₁) * p - rename Sum.inl r₁) + rename Sum.inl (B ^ N₁) * (rename Sum.inl (B ^ N₂) * q - rename Sum.inl r₂)`. Simplify using `only [map_mul, map_add, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hid]`.
+
+Conclude with `M.ideal.add_mem (M.ideal.mul_mem_left _ h₁) (M.ideal.mul_mem_left _ h₂)`. Rewrite using `[eval_add, eval_add, eval_mul, eval_mul, e₁, e₂, eval_pow, eval_pow]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X p s hp`. Take `⟨N, r, h, e⟩` from `hp`.
+
+Break down `s with j | i` into its components or cases. Use `⟨N, r * X j, ?_, ?_⟩` and prove the remaining obligations. Establish `hid : rename Sum.inl (B ^ N) * (p * X (Sum.inl j)) - rename Sum.inl (r * X j) = X (Sum.inl j) * (rename Sum.inl (B ^ N) * p - rename Sum.inl r)`. Simplify using `only [map_mul, rename_X]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hid]`. Conclude with `M.ideal.mul_mem_left _ h`. Rewrite using `[eval_mul, eval_mul, e, eval_X, eval_X]`. Simplify using `only [hw, Sum.elim_inl]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `set Cᵢ : MvPolynomial (Fin n) ℂ := ∏ j ∈ Finset.univ.erase i, b j with hC`. Establish `hBC : B = b i * Cᵢ` using `(Finset.mul_prod_erase Finset.univ b (Finset.mem_univ i)).symm`. Use `⟨N + 1, r * a i * Cᵢ, ?_, ?_⟩` and prove the remaining obligations. Establish `hid : rename Sum.inl (B ^ (N + 1)) * (p * X (Sum.inr i)) - rename Sum.inl (r * a i * Cᵢ) = rename Sum.inl Cᵢ * (rename Sum.inl (b i) * X (Sum.inr i)) * (rename Sum.inl (B ^ N) * p - rename Sum.inl r) + rename Sum.inl Cᵢ * rename Sum.inl r * (rename Sum.inl (b i) * X (Sum.inr i) - …`. Rewrite using `[pow_succ, hBC]`.
+
+Simplify using `only [map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hid]`. Conclude with `M.ideal.add_mem (M.ideal.mul_mem_left _ h) (M.ideal.mul_mem_left _ (hab i))`. Rewrite using `[eval_mul, eval_mul, eval_mul, eval_X, pow_succ, hBC]`.
+
+Establish `e' : eval x r = eval x (b i * Cᵢ) ^ N * eval w p` using `by rw [← hBC]; exact e`. Rewrite using `[e']`. Simplify using `only [hw, Sum.elim_inr, eval_mul]`. Clear denominators, using `[hb i]` for the nonvanishing conditions.
+-/
 theorem NormalModel.exists_clear_denominators {n : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
     (M : NormalModel J) (a b : Fin M.m → MvPolynomial (Fin n) ℂ)
     (hab : ∀ i, rename Sum.inl (b i) * X (Sum.inr i) - rename Sum.inl (a i) ∈ M.ideal)
@@ -66,6 +85,13 @@ theorem NormalModel.exists_clear_denominators {n : ℕ} {J : Ideal (MvPolynomial
         simp only [hw, Sum.elim_inr, eval_mul]
         field_simp [hb i]
 
+/- English proof (translation)
+Introduce `q hq`. Take `⟨N, r, h, e⟩` from `M.exists_clear_denominators a b hab x hb q`. Establish `hr : rename Sum.inl r ∈ M.ideal`. Use `M.ideal.sub_mem (M.ideal.mul_mem_left (rename Sum.inl ((∏ i, b i) ^ N)) hq) h` as an intermediate fact. Simplify using `using this`.
+
+Establish `hrJ : r ∈ J`. Rewrite using `[← M.comap_eq]`. Conclude with `hr`. Establish `hBx : eval x (∏ i, b i) ^ N ≠ 0`. Rewrite using `[map_prod]`.
+
+Conclude with `pow_ne_zero _ (Finset.prod_ne_zero_iff.2 fun i _ => hb i)`. Establish `h0 : eval x (∏ i, b i) ^ N * eval (Sum.elim x fun i => eval x (a i) / eval x (b i)) q = 0`. Rewrite using `[← e]`. Conclude with `hx r hrJ`. Conclude with `(mul_eq_zero.1 h0).resolve_left hBx`.
+-/
 theorem NormalModel.graph_mem_zeroSetIn {n : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
     (M : NormalModel J) (a b : Fin M.m → MvPolynomial (Fin n) ℂ)
     (hab : ∀ i, rename Sum.inl (b i) * X (Sum.inr i) - rename Sum.inl (a i) ∈ M.ideal)
@@ -87,6 +113,11 @@ theorem NormalModel.graph_mem_zeroSetIn {n : ℕ} {J : Ideal (MvPolynomial (Fin 
     exact hx r hrJ
   exact (mul_eq_zero.1 h0).resolve_left hBx
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Break down `s with j | i` into its components or cases. Both sides reduce to the same expression. Establish `h` using `hw _ (hab i)`. Simplify using `only [map_sub, map_mul, eval_rename, eval_X] at h`.
+
+Simplify using `only [Sum.elim_inr]`. Rewrite using `[eq_div_iff (hb i)]`. Establish `hc : (w ∘ Sum.inl) = firstCoords w` using `rfl`. Rewrite `h` using `[hc]`. Take the linear combination `h`.
+-/
 theorem NormalModel.eq_graph_of_mem_zeroSetIn {n : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)}
     (M : NormalModel J) (a b : Fin M.m → MvPolynomial (Fin n) ℂ)
     (hab : ∀ i, rename Sum.inl (b i) * X (Sum.inr i) - rename Sum.inl (a i) ∈ M.ideal)

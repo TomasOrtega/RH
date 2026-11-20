@@ -21,23 +21,38 @@ namespace UpperTheory.Ru.crystallineComparison
 
 open UpperTheory.Gal.crystallineComparison
 
+/- English proof (translation)
+The claim follows from `ACris.phi_periodT_eq_mul _`.
+-/
 private theorem phiTL {l : ℕ} [Fact l.Prime] : phiA l (tA l) = (l : Acris l) * tA l := ACris.phi_periodT_eq_mul _
 
+/- English proof (translation)
+Substitute `h1 h2 hE hY` using the available equality. Rewrite using `[← hs, ← hs, hX]`.
+-/
 private lemma eqAbs {A : Type} [CommRing A] {H : Type 1} [AddCommGroup H] [Module A H] (Φ : H → H) (ph : A → A)
     (hs : ∀ c x, Φ (c • x) = ph c • Φ x) {c1 c2 c1' c2' : A} {E E' Y Y' : H} (hX : c1 • E = c2 • Y)
     (h1 : ph c1 = c1') (h2 : ph c2 = c2') (hE : Φ E = E') (hY : Φ Y = Y') : c1' • E' = c2' • Y' := by
   subst h1 h2 hE hY
   rw [← hs, ← hs, hX]
 
+/- English proof (translation)
+Rewrite using `[h1, h2, mul_smul, mul_smul, h]`.
+-/
 private lemma scaleAbs {A : Type} [CommRing A] {H : Type 1} [AddCommGroup H] [Module A H] (d : A) {c1 c2 c1' c2' : A} {E Y : H}
     (h1 : c1' = d * c1) (h2 : c2' = d * c2) (h : c1 • E = c2 • Y) : c1' • E = c2' • Y := by
   rw [h1, h2, mul_smul, mul_smul, h]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih => rw [Function.iterate_succ_apply', ih, map_natCast]`.
+-/
 private lemma phi_iter_l {l : ℕ} [Fact l.Prime] (m : ℕ) : (phiA l)^[m] (l : Acris l) = (l : Acris l) := by
   induction m with
   | zero => rfl
   | succ m ih => rw [Function.iterate_succ_apply', ih, map_natCast]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[Function.iterate_succ_apply', ih, map_mul, map_pow, map_natCast, phiTL]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma phiA_iterate_tA_of_prime {l : ℕ} [Fact l.Prime] (m : ℕ) : (phiA l)^[m] (tA l) = (l : Acris l) ^ m * tA l := by
   induction m with
   | zero => simp
@@ -45,6 +60,11 @@ private lemma phiA_iterate_tA_of_prime {l : ℕ} [Fact l.Prime] (m : ℕ) : (phi
     rw [Function.iterate_succ_apply', ih, map_mul, map_pow, map_natCast, phiTL]
     ring
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih`. Establish `h1 : (phiH P n j)^[m + 1] (c • x) = phiH P n j ((phiH P n j)^[m] (c • x))` using `Function.iterate_succ_apply' _ _ _`. Establish `h2 : (phiH P n j)^[m + 1] x = phiH P n j ((phiH P n j)^[m] x)` using `Function.iterate_succ_apply' _ _ _`.
+
+Establish `h3 : (phiA l)^[m + 1] c = phiA l ((phiA l)^[m] c)` using `Function.iterate_succ_apply' _ _ _`. Use `h1.trans ((congrArg (phiH P n j) ih).trans ?_)` and prove the remaining obligations. Use `(((phiMor P n).pull j).map_smulₛₗ _ _).trans ?_` and prove the remaining obligations. Conclude with `(congrArg₂ (· • ·) h3 h2).symm`.
+-/
 private lemma phiH_iter_smul {l : ℕ} [Fact l.Prime] (P : PAlg l ⥤ Type) (n j m : ℕ) (c : Acris l) (x : MH P n j) :
     (phiH P n j)^[m] (c • x) = ((phiA l)^[m] c) • (phiH P n j)^[m] x := by
   induction m with
@@ -59,6 +79,11 @@ private lemma phiH_iter_smul {l : ℕ} [Fact l.Prime] (P : PAlg l ⥤ Type) (n j
 
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih`. Rewrite using `[Function.iterate_succ_apply', ih]`. Simplify using `only [evE, Function.iterate_succ_apply']`.
+
+Use `(map_sum ((phiMor M.P lev).pull j) _ _).trans (Finset.sum_congr rfl fun k _ => ?_)` and prove the remaining obligations. Use `(((phiMor M.P lev).pull j).map_smulₛₗ _ _).trans ?_` and prove the remaining obligations. Conclude with `congrArg (_ • ·) (he.phi M lev j _)`.
+-/
 private lemma phiH_evE {e : E.EtFam l K} (he : e.Good) (M : Model l K) (j lev : ℕ) {ι : Type} [Fintype ι] (v : ι → M.T j)
     (c : ι → Acris l) (m : ℕ) :
     (phiH M.P lev j)^[m] (evE e M j lev v c) = evE e M j lev v (fun k => (phiA l)^[m] (c k)) := by
@@ -71,6 +96,11 @@ private lemma phiH_evE {e : E.EtFam l K} (he : e.Good) (M : Model l K) (j lev : 
     refine (((phiMor M.P lev).pull j).map_smulₛₗ _ _).trans ?_
     exact congrArg (_ • ·) (he.phi M lev j _)
 
+/- English proof (translation)
+Substitute `hM hc` using the available equality. Establish `c1 : (phiA l)^[m] ((l : Acris l) ^ a * tA l ^ u) = (l : Acris l) ^ a * ((l : Acris l) ^ m * tA l) ^ u`. Rewrite using `[iterate_map_mul (phiA l), iterate_map_pow (phiA l), iterate_map_pow (phiA l), phi_iter_l, phiA_iterate_tA_of_prime]`. Establish `c2 : (phiA l)^[m] (tA l ^ (u + r)) = ((l : Acris l) ^ m * tA l) ^ (u + r)`. Rewrite using `[iterate_map_pow (phiA l), phiA_iterate_tA_of_prime]`.
+
+Establish `q1 : ((l : Acris l) ^ (a + (m + d) * u) * tA l ^ u) * (l : Acris l) ^ (d * r) = (l : Acris l) ^ (d * (u + r)) * ((l : Acris l) ^ a * ((l : Acris l) ^ m * tA l) ^ u)` using `by ring`. Establish `q2 : (l : Acris l) ^ ((m + d) * (u + r)) * tA l ^ (u + r) = (l : Acris l) ^ (d * (u + r)) * ((l : Acris l) ^ m * tA l) ^ (u + r)` using `by ring`. Conclude with `scaleAbs (H := MH M.P lev j) _ q1 q2 (eqAbs (H := MH M.P lev j) _ _ (phiH_iter_smul M.P lev j m) hX c1 c2 (phiH_evE he M j lev v c m) rfl)`.
+-/
 private lemma eqI {e : E.EtFam l K} (he : e.Good) (M : Model l K) (j lev : ℕ) {ι : Type} [Fintype ι] (v : ι → M.T j)
     (c c' : ι → Acris l) (Y : M.MH lev j) (a u r m d M0 : ℕ) (hM : m + d = M0)
     (hc : (fun k => (phiA l)^[m] (c k)) = c')
@@ -92,12 +122,18 @@ private lemma eqI {e : E.EtFam l K} (he : e.Good) (M : Model l K) (j lev : ℕ) 
 private def eLev (e : E.EtFam l K) (M : Model l K) (j lev : ℕ) : M.T j →+ M.MH lev j :=
   AddMonoidHom.mk' (fun x => e M lev j (x.lev lev)) fun x y => map_add (e M lev j) (x.lev lev) (y.lev lev)
 
+/- English proof (translation)
+Rewrite using `[← Nat.cast_smul_eq_nsmul A]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 private lemma natS {A : Type} [CommRing A] {H : Type 1} [AddCommGroup H] [Module A H] (n b : ℕ) (x : H) :
     (n ^ b : ℕ) • x = ((n : A) ^ b) • x := by
   rw [← Nat.cast_smul_eq_nsmul A]
   push_cast
   rfl
 
+/- English proof (translation)
+Establish `h'` using `congrArg Ψ h`. Rewrite `h'` using `[map_nsmul, map_nsmul, map_sum, hp]`. Simplify using `only [hq] at h'`. Rewrite `h'` using `[natS (A := A), natS (A := A)]`. Conclude with `h'`.
+-/
 private lemma h1A {A : Type} [CommRing A] {TW H : Type 1} [AddCommGroup TW] [AddCommGroup H] [Module A H] (Ψ : TW →+ H)
     {d l s b : ℕ} (p : TW) (q : Fin d → TW) (p' : H) (q' : Fin d → H)
     (h : (l ^ b : ℕ) • p = (l ^ (s + b) : ℕ) • ∑ a, q a) (hp : Ψ p = p') (hq : ∀ a, Ψ (q a) = q' a) :
@@ -108,10 +144,16 @@ private lemma h1A {A : Type} [CommRing A] {TW H : Type 1} [AddCommGroup TW] [Add
   rw [natS (A := A), natS (A := A)] at h'
   exact h'
 
+/- English proof (translation)
+The claim follows from `he.nat W M u hu lev j (y.lev lev)`.
+-/
 private lemma natE {e : E.EtFam l K} (he : e.Good) (W M : Model l K) (u : W.X ⟶ M.X) (hu : u ≫ M.p = W.p) (j lev : ℕ) (y : M.T j) :
     eLev e W j lev (Model.pullT u hu j y) = pullH (pxMap (okToOC l K) u hu) lev j (e M lev j (y.lev lev)) :=
   he.nat W M u hu lev j (y.lev lev)
 
+/- English proof (translation)
+Conclude with `h1A (A := Acris l) (H := MH W.P lev j) (eLev e W j lev) _ _ _ _ h (natE he W M π hπ j lev w) fun a => natE he W M (τ a) (hτ a) j lev y`.
+-/
 private lemma h1L {e : E.EtFam l K} (he : e.Good) (W M : Model l K) (π : W.X ⟶ M.X) (hπ : π ≫ M.p = W.p) (j lev s b : ℕ)
     {d : ℕ} (τ : Fin d → (W.X ⟶ M.X)) (hτ : ∀ a, τ a ≫ M.p = W.p) (w y : M.T j)
     (h : (l ^ b : ℕ) • Model.pullT π hπ j w = (l ^ (s + b) : ℕ) • ∑ a, Model.pullT (τ a) (hτ a) j y) :
@@ -120,6 +162,9 @@ private lemma h1L {e : E.EtFam l K} (he : e.Good) (W M : Model l K) (π : W.X �
   exact h1A (A := Acris l) (H := MH W.P lev j) (eLev e W j lev) _ _ _ _ h (natE he W M π hπ j lev w)
     fun a => natE he W M (τ a) (hτ a) j lev y
 
+/- English proof (translation)
+Establish `e1 : ∑ q, (κ * c q) • Ev q = κ • ∑ q, c q • Ev q`. Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun q _ => mul_smul _ _ _`. Rewrite using `[e1, smul_smul, hk, mul_smul, Nat.cast_smul_eq_nsmul]`. Conclude with `h`.
+-/
 private lemma finA {A : Type} [CommRing A] {H : Type 1} [AddCommGroup H] [Module A H] {Q : Type} [Fintype Q] (C : ℕ)
     (Ev : Q → H) (c : Q → A) (L tt κ : A) (hk : tt * κ = (C : A) * L)
     (h : C • (L • ∑ q, c q • Ev q) = 0) : tt • ∑ q, (κ * c q) • Ev q = 0 := by
@@ -130,6 +175,15 @@ private lemma finA {A : Type} [CommRing A] {H : Type 1} [AddCommGroup H] [Module
   exact h
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Establish `h2 : ∀ i : Fin (n + 1), (((l : Acris l) ^ (a + f * (n + N0) * u) * tA l ^ u) * (l : Acris l) ^ (f * (i : ℕ) * r)) • evE e M j lev v (fun k => (phiA l)^[f * (n - i + (N0 + N1))] (c k)) = ((l : Acris l) ^ (f * (n + N0) * (u + r)) * tA l ^ (u + r)) • (phiH M.P lev j)^[f * (n - i + N …`. Introduce `i`. Establish `hi : (i : ℕ) ≤ n` using `Nat.lt_succ_iff.1 i.2`. Establish `hM : f * (n - i + N0) + f * i = f * (n + N0)`. Rewrite using `[← mul_add]`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hI : (fun k => (phiA l)^[f * (n - i + (N0 + N1))] (c k)) = fun k => (phiA l)^[f * (n - i + N0)] ((phiA l)^[f * N1] (c k))`. Use function extensionality and compare the values at `k`. Rewrite using `[← Function.iterate_add_apply]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Conclude with `eqI he M j lev v (fun k => (phiA l)^[f * N1] (c k)) _ (Y lev) a u r (f * (n - i + N0)) (f * i) _ hM hI.symm (hX lev)`. Establish `S` using `UpperTheory.linear_combination_transfer_of_projector_relations (A := Acris l) (H := MH M.P lev j) (H' := MH W.P lev j) (J := Fin (n + 1)) (ι := ι) (I := fun i => Fin (d i)) (pullH (pxMap (okToOC l K) π hπ) lev j) (fun i x => pullH (pxMap (okToOC l K) (τ i x) (hτ i x)) lev j) (fun …`. Rewrite `S` using `[← map_smul]`.
+
+Establish `A1` using `hAvg lev _ S`. Use `finA (A := Acris l) (H := MH M.P lev j) C (fun q : Fin (n + 1) × ι => e M lev j ((w q.1 q.2).lev lev)) _ (((l : Acris l) ^ (a + f * (n + N0) * u) * tA l ^ u) * (l : Acris l) ^ b) _ _ ?_ A1` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma levZero {e : E.EtFam l K} (he : e.Good) (M W : Model l K) (π : W.X ⟶ M.X) (hπ : π ≫ M.p = W.p)
     (j n f N0 N1 r s b a u C : ℕ) {d : Fin (n + 1) → ℕ} (τ : ∀ i, Fin (d i) → (W.X ⟶ M.X)) (hτ : ∀ i x, τ i x ≫ M.p = W.p)
     {ι : Type} [Fintype ι] (v : ι → M.T j) (c : ι → Acris l) (w : Fin (n + 1) → ι → M.T j) (σ : Fin (n + 1) → ℤ)
@@ -176,6 +230,19 @@ end UpperTheory.Ru.crystallineComparison
 
 open CategoryTheory Limits AlgebraicGeometry GroundTheory.PAdicHodge CrystallineSemistableComparison TensorProduct UpperTheory.Gal.crystallineComparison UpperTheory.Ru.crystallineComparison in
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `l _ K _ _ ϖ hϖ e he M hsm hqc haff f n j hf T hr hPt A hA B hInj hAbs`. Take `⟨m, N1, g, F, ρ, hg0, hgf, hF, hρ, hAI⟩` from `hAbs`. Take `⟨D⟩` from `wEx l M.X (Fin (n + 1)) T`. Take `⟨N0, hZ⟩` from `wZero l f n (OK l K) ϖ hϖ UpperTheory.natCast_prime_ne_zero_and_not_isUnit_integers.1 UpperTheory.natCast_prime_ne_zero_and_not_isUnit_integers.2 M.X M.p hsm hqc haff hf T hr hPt (okToOC l K) g hg0 m F ρ hF hρ hgf D`. Take `⟨gp, hgp⟩` from `wTrans l (OK l K) M.X M.p (okToOC l K) (Fin (n + 1)) T D`.
+
+Use `⟨N0 + N1, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨ι, _, v, c, r, rfl⟩` from `UpperTheory.exists_crystalline_lattice_expansion B M j x`. Take `⟨a, u, X, hX⟩` from `hAI ι v c r hx`. Take `⟨s, b, w, hw1, hw2⟩` from `UpperTheory.hecke_correspondence_product M ⟨D.W, D.π ≫ M.p⟩ D.π rfl j n T hr A hA D.s D.hs (fun i X y hy => D.gen X y hy i) v`. Set `σ : Fin (n + 1) → ℤ` to `fun i => (-1) ^ (i : ℕ) * ((l ^ f : ℕ) : ℤ) ^ ((i : ℕ).choose 2)`.
+
+Establish `ha : (fun x : (Σ j : Fin (n + 1), Fin (T j).d) => (-1 : ℤ) ^ (x.1 : ℕ) * (((l ^ f) ^ ((x.1 : ℕ).choose 2) : ℕ) : ℤ)) = fun x => σ x.1`. Use function extensionality and compare the values at `x`. Simplify using `only [σ]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Rewrite `hZ` using `[ha]`. Establish `hS` using `siteAnn l (OK l K) M.X M.p g (PX (D.π ≫ M.p) (okToOC l K)) M.P ρ F f (Σ j : Fin (n + 1), Fin (T j).d) (fun x => σ x.1) (fun x => pxMap (okToOC l K) (D.s x.1 x.2 ≫ (T x.1).r) (by rw [Category.assoc, hr, ← Category.assoc, D.hs])) (fun x => n - x.1 + N0) hZ`. Establish `hV` using `levZero he M ⟨D.W, D.π ≫ M.p⟩ D.π rfl j n f N0 N1 r s b a u (Fintype.card (∀ i, Equiv.Perm (Fin (T i).d))) (d := fun i => (T i).d) (fun i x => D.s i x ≫ (T i).r) (fun i x => by`. Express the relevant statement in the definitionally equal form `(D.s i x ≫ (T i).r) ≫ M.p = D.π ≫ M.p`. Rewrite using `[Category.assoc, hr, ← Category.assoc, D.hs]) v c w σ`.
+
+Use the proof step `(fun lev => pullH ρ lev j (X lev))`. Use the proof step `(fun lev y hy => avgMH l _ _ _ _ _ hgp lev j y hy)`. Use the proof step `(fun lev => hS lev j (X lev) (hX lev).1) (fun lev => (hX lev).2) hw2`. Establish `h0` using `hInj (Fin (n + 1) × ι) (fun q => w q.1 q.2) _ u hV`. Establish `hκ : Fintype.card (∀ i, Equiv.Perm (Fin (T i).d)) * l ^ (a + f * (n + N0) * u) * l ^ b ≠ 0` using `mul_ne_zero (mul_ne_zero Fintype.card_ne_zero (pow_ne_zero _ (Fact.out : l.Prime).ne_zero)) (pow_ne_zero _ (Fact.out : l.Prime).ne_zero)`.
+
+Conclude with `UpperTheory.crystalline_expansion_relation_of_scaled_endomorphisms B M j f n (N0 + N1) r s _ hκ A v c w σ hw1 h0`.
+-/
 theorem UpperTheory.Ru.crystallineComparison.top : UpperTheory.Ru.crystallineComparison.Top := by
   intro l _ K _ _ ϖ hϖ e he M hsm hqc haff f n j hf T hr hPt A hA B hInj hAbs
   obtain ⟨m, N1, g, F, ρ, hg0, hgf, hF, hρ, hAI⟩ := hAbs

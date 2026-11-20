@@ -24,6 +24,21 @@ section Core
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
   {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Introduce `j hj1 hj2`. Establish `hjj : ((idxOf D j : Fin D.R.m) : ℕ) + 1 = j` using `by show min (j - 1) (D.R.m - 1) + 1 = j`. Use linear arithmetic over natural numbers and integers. Establish `hsg : ∀ c : D.what₂.LL, D.what₂.embLL c = sg0 D A3.A c` using `fun c => (congrArg (fun g : D.what₂.LL →+* ℂ => g c) (GlobalTheory.SeriesTie.ActProof.sg0_eq_embLL R)).symm`. Set `I : Set (ℕ × PlE D.host)` to `{t | 1 ≤ t.1 ∧ t.1 ≤ D.R.r ∧ IsSplitPl D.host t.2 ∧ t.2 ∉ Sb}`.
+
+Establish `ex : ∀ t : I, ∃ α Rr, HkDat R Sb (idxOf D j) t.1.1 t.1.2 α Rr` using `fun t => hhk (idxOf D j) t.1.1 t.1.2 t.2.1 t.2.2.1 t.2.2.2.1 t.2.2.2.2`. Use `choose α Rr hD using ex`. Set `T' : ℕ × PlE D.host → Module.End ℂ (Formalism.IndefR.Mult.MMap (R.MW (idxOf D j) (sg0 D A3.A)))` to `fun t => if h : t ∈ I then hkNorm R (idxOf D j) t.1 t.2 • Formalism.IndefR.Mult.heckeOn (R.MW (idxOf D j) (sg0 D A3.A)) (Rr ⟨t, h⟩) else 0`. Set `Part : D.what₂.FT → Submodule ℂ (Formalism.IndefR.Mult.MMap (R.MW (idxOf D j) (sg0 D A3.A)))` to `fun σ => (D.what₂.isot ((idxOf D j : ℕ) + 1) σ).map (GlobalTheory.EigRows.readW Y (idxOf D j))`. Set `s : Set D.what₂.FT` to `{σ | D.what₂.isot j σ ≠ ⊥ ∧ D.nd.goodRow σ}`.
+
+Establish `hT : ∀ t ∈ I, ∀ u : Fin (R.nW (idxOf D j)) → D.what₂.LL, iotaR R (idxOf D j) (hL j t.1 t.2 u) = T' t (iotaR R (idxOf D j) u)`. Introduce `t ht u`. Simplify using `only [T', dif_pos ht, LinearMap.smul_apply, iotaR_apply]`. Conclude with `hRd j t.1 t.2 (α ⟨t, ht⟩) (Rr ⟨t, ht⟩) hj1 hj2 (hD ⟨t, ht⟩) u`. Establish `hPa : ∀ σ ∈ s, ∀ t ∈ I, ∀ z ∈ Part σ, T' t z = sg0 D A3.A ((eig j σ t.1 t.2 : ↥D.LL0) : D.what₂.LL) • z`.
+
+Introduce and unpack `σ hσ t ht _ ⟨y, hy, rfl⟩`. Simplify using `only [T', dif_pos ht, LinearMap.smul_apply]`. Establish `h1` using `hEig (idxOf D j) σ t.1 t.2 (α ⟨t, ht⟩) (Rr ⟨t, ht⟩) (hD ⟨t, ht⟩) hσ.2 y hy`. Establish `h2 : eig ((idxOf D j : ℕ) + 1) σ t.1 t.2 = eig j σ t.1 t.2` using `by rw [hjj]`. Rewrite `h1` using `[h2, hsg]`.
+
+Conclude with `h1`. Establish `hGa : ∀ u, iotaR R (idxOf D j) u ∈ ⨆ σ ∈ s, Part σ → u ∈ goodL D (ratDatR R cG kKs hk) θ j`. Introduce `u hu`. Use `(htie j hj1 hj2 u).2 ?_` and prove the remaining obligations. Establish `hle : (⨆ σ ∈ s, Part σ) ≤ GlobalTheory.EigRows.goodW R.toRealDat F.lv2 (idxOf D j)` using `iSup₂_le fun σ _ => Submodule.map_le_iff_le_comap.2 fun y _ => readW_mem_goodW Y (idxOf D j) y`.
+
+Conclude with `hle hu`. Introduce `v hv`. Establish `hv' : iotaR R (idxOf D j) v ∈ ⨆ σ ∈ s, Part σ` using `goodW_le_parts Y hI hG (idxOf D j) j hjj ((htie j hj1 hj2 v).1 hv)`. Establish `hd` using `GlobalTheory.T.descent_joint_eigenvectors_complex_reading (sg0 D A3.A) (iotaR R (idxOf D j)) (goodL D (ratDatR R cG kKs hk) θ j) (fun u _ h0 => hinj (idxOf D j) (h0.trans (map_zero _).symm)) (fun t => hL j t.1 t.2) T' I hT Part s (fun σ t => ((eig j σ t.1 t.2 : ↥D.LL0) : D.what₂. …`. Establish `hle : (⨆ σ ∈ s, goodL D (ratDatR R cG kKs hk) θ j ⊓ ⨅ t ∈ I, Module.End.eigenspace (hL j t.1 t.2) ((eig j σ t.1 t.2 : ↥D.LL0) : D.what₂.LL)) ≤ ⨆ σ ∈ {σ | D.what₂.isot j σ ≠ ⊥ ∧ D.nd.goodRow σ}, goodL D (ratDatR R cG kKs hk) θ j ⊓ ⨅ (k : ℕ) (P : PlE D.host) (_ : 1 ≤ k ∧ k ≤ D.R.r …` using `iSup₂_mono fun σ _ => inf_le_inf_left _ (le_iInf fun k => le_iInf fun Pl => le_iInf fun h => iInf₂_le (f := fun t (_ : t ∈ I) => Module.End.eigenspace (hL j t.1 t.2) ((eig j σ t.1 t.2 : ↥D.LL0) : D.what₂.LL)) (k, Pl) h)`.
+
+Conclude with `hle hd`.
+-/
 theorem spanC_core (R : RealDat3 D A3 Ks) (F : Face3 D A3) {X0 : BaseLevelRowSide D} (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0)
     (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (kKs : Ks →+* ↥D.LL0)
     (hk : ∀ x : Ks, ((kKs x : ↥D.LL0) : D.what₂.LL) = algebraMap Ks D.what₂.LL x) (Sb : Finset (PlE D.host))
@@ -91,6 +106,9 @@ theorem spanC_core (R : RealDat3 D A3 Ks) (F : Face3 D A3) {X0 : BaseLevelRowSid
 
 end Core
 
+/- English proof (translation)
+Introduce `hL`. Use `(((GlobalTheory.T.good_line_iff_eigen_span hL).and (GlobalTheory.T.eigen_span_inclusion_injective hL)).and (GlobalTheory.T.exists_hecke_data_split_place hL)).trans (StepW.of_all fun K B f T w _ _ h => ?_)` and prove the remaining obligations. Take `⟨⟨htie, hinj⟩, hhk⟩` from `h`. Introduce `P x hLA hI hG θ hL' hθ hlv _ _ hRd eig hEig`. Conclude with `spanC_core x.m.z.R x.m.z.F x.r.Y x.m.z.cG (kKsOf x) (hkOf x) (SbD (Dof x)) θ hL' eig hI hG (htie P x hLA θ hθ hlv) (hinj P x hLA) (hhk P x hLA) hRd hEig`.
+-/
 theorem spanC_of_state : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, StepW Start fun K B f T w => ∀ (P : Pre2 K w) (x : St P), LA hL x →
     Rows.IsotInternal (Dof x).what₂ → GlobalTheory.EigRows.OccGood (Dof x) →
     ∀ (θ : ∀ kk : Fin 2, Multiplicative (ZMod ((Dof x).host.g kk)) →* (↥(Dof x).LL0)ˣ)

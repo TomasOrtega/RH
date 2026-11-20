@@ -10,6 +10,11 @@ open Formalism.GM Formalism.GM.M Formalism.GM.TM Formalism.GM.MeanGammaLemmas Fo
 section Lat
 variable {p : ℕ} [Fact p.Prime] {K : ℕ}
 
+/- English proof (translation)
+Establish `key : ∀ y ∈ FreeOf p (Fin.last K, ρ), initPart (Fin.last K, ρ) 0 y = y`. Introduce `y hy`. Unfold `initPart`. Use `conv_rhs => rw [y.as_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations.
+
+Establish `hm0 : m (Fin.last K, ρ) = 0` using `(MvPolynomial.mem_restrictSupport_iff ℚ_[p]).1 hy hm`. Rewrite using `[if_pos hm0]`. Use `⟨((p : ℚ_[p]) ^ n) • x, Submodule.smul_mem _ _ hY, ?_, key _ (Submodule.smul_mem _ _ hF)⟩` and prove the remaining obligations. Rewrite using `[show ((p : ℚ_[p]) ^ n) = algebraMap ℤ_[p] ℚ_[p] ((p : ℤ_[p]) ^ n) by simp, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ hi`.
+-/
 theorem sat_of_mem_y {r : ℕ} [NeZero r] (LL : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ) (M : Fin q → WithTop ℤ)
     (ρ : Fin r) (n : ℕ) (x : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) (hF : x ∈ FreeOf p (Fin.last K, ρ))
     (hY : x ∈ Y p LL J M) (hi : x ∈ IntPol p (Fin (K + 1) × Fin r)) :
@@ -26,6 +31,15 @@ theorem sat_of_mem_y {r : ℕ} [NeZero r] (LL : Letters (K + 1)) {q : ℕ} (J : 
   rw [show ((p : ℚ_[p]) ^ n) = algebraMap ℤ_[p] ℚ_[p] ((p : ℤ_[p]) ^ n) by simp, algebraMap_smul]
   exact Submodule.smul_mem _ _ hi
 
+/- English proof (translation)
+Unfold `YCond`. Apply `le_sSup` to reduce the goal to its premises. Use `⟨?_, fun c d x hx => Formalism.CountingSumsFrames.glAct_pol (p := p) LL j c d x hx⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[Pol, MvPolynomial.mem_restrictSupport_iff]`.
+
+Rewrite using `[MvPolynomial.mem_restrictSupport_iff]`. Introduce `m hm`. Establish `hd` using `hx hm`. Use `show ((wt LL j 0 m : ℤ) : WithTop ℤ) ≤ ((c : ℤ) : WithTop ℤ)`. Rewrite using `[WithTop.coe_le_coe]`.
+
+Use `le_trans ?_ hc` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : (m (i, 0) : ℤ) ≤ LL.deg i`. Rewrite using `[← hd i]`. Conclude with `Finset.single_le_sum (fun c _ => Nat.zero_le (m (i, c))) (Finset.mem_univ 0)` after adjusting the coercions.
+
+Apply the tactic sequence `split_ifs <;> omega`. Use `_ = (LL.total : ℤ) := by unfold Letters.total; push_cast; rfl`.
+-/
 theorem pol_le_ycond {r N : ℕ} [NeZero r] (LL : Letters N) (j : ℕ) (c : ℤ) (hc : (LL.total : ℤ) ≤ c) :
     Pol p r LL ≤ YCond p LL j ((c : ℤ) : WithTop ℤ) := by
   unfold YCond
@@ -46,6 +60,19 @@ theorem pol_le_ycond {r N : ℕ} [NeZero r] (LL : Letters N) (j : ℕ) (c : ℤ)
         split_ifs <;> omega
     _ = (LL.total : ℤ) := by unfold Letters.total; push_cast; rfl
 
+/- English proof (translation)
+Take `⟨G, hE, hcomp⟩` from `gl_action_exists p K s LL c hv`. Establish `L` using `latData LL J M c raising_divided_integral derivative_divided_integral hs hv k0 hk0 hc hmin hcd G hE hcomp`. Establish `hxW : x ∈ Wtot p LL J M (Fin.last s)` using `mem_wtot LL J M (LL.deg (Fin.last K)) x (by rw [setLast_self]; exact hx)`. Take `⟨f, hf, hsum⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ x).mp (wtot_le_iso LL J M c hs hv k0 hk0 hc hmin G hE hcomp hxW)`. Generalize the expression as in `hD : (s + 1).choose 2 * Nat.log p (4 * LL.total + (s + 1) - 1) = D`.
+
+Establish `hpiece : ∀ la, ((p : ℚ_[p]) ^ D) • (((p : ℚ_[p]) ^ D) • f la) ∈ M2 p LL J M (Fin.last s)`. Introduce `la`. Take `⟨Q, hQ1, hQ2, hQ3⟩` from `Formalism.InvariantFactorPaths.PW.Top.typeInt p _ (s + 1) G _ _ (4 * LL.total) L la`. Establish `hQx : Q x = f la`. Rewrite using `[← hsum, Finsupp.sum, map_sum]`.
+
+Distinguish the cases in `hla : la ∈ f.support`. Rewrite using `[Finset.sum_eq_single_of_mem la hla (fun mu _ hne => hQ2 mu hne _ (hf mu)), hQ1 _ (hf la)]`. Rewrite using `[Finset.sum_eq_zero (fun mu hmu => hQ2 mu (fun h => hla (h ▸ hmu)) _ (hf mu)), Finsupp.notMem_support_iff.mp hla]`. Establish `h1` using `hQ3 x hxi hxW`. Rewrite `h1` using `[hQx, hD]`.
+
+Establish `h2` using `Formalism.InvariantFactorPaths.PW.Top.weylInt p _ (s + 1) G _ _ (4 * LL.total) L la _ (Submodule.smul_mem _ _ (hf la)) h1`. Rewrite `h2` using `[hD]`. Conclude with `span_le_restrictedLattice raising_divided_integral derivative_divided_integral LL hv J M c k0 hk0 hc hmin G hE _ (fun h hh => restrictedLattice_of_deg_zero LL hv J M _ h (hw_deg_zero LL J M c G hE hcomp la h hh.1 hh.2.1) hh.2.2) h2`. Establish `hM2 : ((p : ℚ_[p]) ^ (2 * D)) • x ∈ M2 p LL J M (Fin.last s)`. Rewrite using `[two_mul, pow_add, ← smul_smul, ← hsum, Finsupp.sum, Finset.smul_sum, Finset.smul_sum]`.
+
+Conclude with `Submodule.sum_mem _ fun la _ => hpiece la`. Establish `hP : ((p : ℚ_[p]) ^ (2 * D)) • x ∈ Pol p (s + 1) (setLast LL (LL.deg (Fin.last K)))`. Rewrite using `[setLast_self]`. Conclude with `Submodule.smul_mem _ _ ((mem_xsp LL J M _ x).mp hx).1`. Establish `h3` using `restrictedLattice_exists_lift LL J M (Fin.last s) (LL.deg (Fin.last K)) _ hM2 hP`.
+
+Rewrite `h3` using `[setLast_self]`. Then use the resulting hypothesis.
+-/
 theorem sat_main {s : ℕ} (LL : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ) (M : Fin q → WithTop ℤ) (c : ℤ)
     (hs : 1 ≤ s) (hv : LL.vec (Fin.last K) = true) (k0 : Fin q) (hk0 : K + 1 ≤ J k0)
     (hc : M k0 = ((c : ℤ) : WithTop ℤ)) (hmin : ∀ k, K + 1 ≤ J k → M k0 ≤ M k) (hcd : c < LL.total)
@@ -88,6 +115,23 @@ theorem sat_main {s : ℕ} (LL : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ) 
 
 end Lat
 
+/- English proof (translation)
+Introduce `p _ K r _ LL q J M ρ hr hρ hv x hx hi`. Take `⟨s, rfl⟩ : ∃ s, r = s + 1` from `⟨r - 1, by omega⟩`. Establish `hρ' : ρ = Fin.last s` using `Fin.ext (by simp [hρ])`. Substitute `hρ'` using the available equality. Establish `hs : 1 ≤ s` using `by omega`.
+
+Distinguish the cases in `hex : ∃ k, K + 1 ≤ J k ∧ M k < ((LL.total : ℤ) : WithTop ℤ)`. Take `⟨k1, hk1, hk1M⟩` from `hex`. Take `⟨k0, hk0mem, hk0min⟩` from `Finset.exists_min_image (univ.filter fun k => K + 1 ≤ J k) M ⟨k1, Finset.mem_filter.2 ⟨Finset.mem_univ _, hk1⟩⟩`. Establish `hk0 : K + 1 ≤ J k0` using `(Finset.mem_filter.1 hk0mem).2`. Establish `hlt : M k0 < ((LL.total : ℤ) : WithTop ℤ)` using `lt_of_le_of_lt (hk0min k1 (Finset.mem_filter.2 ⟨Finset.mem_univ _, hk1⟩)) hk1M`.
+
+Take `⟨c, hc⟩` from `WithTop.ne_top_iff_exists.1 (ne_top_of_lt hlt)`. Use `sat_main LL J M c hs hv k0 hk0 hc.symm (fun k hk => hk0min k (Finset.mem_filter.2 ⟨Finset.mem_univ _, hk⟩)) ?_ x hx hi` and prove the remaining obligations. Rewrite `hlt` using `[← hc]`. Conclude with `hlt` after adjusting the coercions. Use `push_neg at hex`.
+
+Establish `hx1` using `Submodule.mem_inf.1 hx`. Establish `hP` using `(Submodule.mem_inf.1 hx1.1).1`. Establish `hF` using `(Submodule.mem_inf.1 hx1.1).2`. Establish `hK` using `(Submodule.mem_iInf _).1 hx1.2`. Establish `hxY : x ∈ Y p LL J M`.
+
+Use `Submodule.mem_inf.2 ⟨hP, (Submodule.mem_iInf _).2 fun k => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hJ : K + 1 ≤ J k`. Establish `hMk` using `hex k hJ`. Establish `h1` using `pol_le_ycond (p := p) (r := s + 1) LL (J k) (LL.total : ℤ) le_rfl hP`. Establish `hmono : YCond p (r` using `s + 1) LL (J k) (((LL.total : ℤ) : ℤ) : WithTop ℤ) ≤ YCond p (r := s + 1) LL (J k) (M k) := by`.
+
+Unfold `YCond`. Apply `sSup_le_sSup` to reduce the goal to its premises. Introduce and unpack `S ⟨hS1, hS2⟩`. Use `⟨hS1.trans ?_, hS2⟩` and prove the remaining obligations. Introduce `y hy`.
+
+Rewrite `hy`, the goal using `[MvPolynomial.mem_restrictSupport_iff]`. Introduce `m hm`. Conclude with `le_trans (hy hm) hMk`. Conclude with `hmono h1`. Use `hK k` as an intermediate fact.
+
+Rewrite `this` using `[if_neg hJ]`. Conclude with `this`. Conclude with `sat_of_mem_y LL J M (Fin.last s) _ x hF hxY hi`.
+-/
 theorem restricted_saturation_holds : ResSatLThm := by
   intro p _ K r _ LL q J M ρ hr hρ hv x hx hi
   obtain ⟨s, rfl⟩ : ∃ s, r = s + 1 := ⟨r - 1, by omega⟩

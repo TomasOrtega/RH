@@ -8,6 +8,11 @@ section Galois
 
 variable {R S : Type*} [CommRing R] [CommRing S] [Algebra R S] (σ : S →+* S)
 
+/- English proof (translation)
+Use `⟨fun x => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `hfix (x + σ x) (by rw [map_add, hσ, add_comm])`. Take `⟨n, hn⟩` from `hfix (x * σ x) (by rw [map_mul, hσ, mul_comm])`. Use `⟨Polynomial.X ^ 2 - Polynomial.C t * Polynomial.X + Polynomial.C n, ?_, ?_⟩` and prove the remaining obligations. Use `monicity!`.
+
+Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_mul, Polynomial.eval₂_X_pow, Polynomial.eval₂_C, Polynomial.eval₂_X, ht, hn]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isIntegral_of_involution (hσ : ∀ x, σ (σ x) = x)
     (hfix : ∀ x, σ x = x → x ∈ (algebraMap R S).range) : Algebra.IsIntegral R S := by
   refine ⟨fun x => ?_⟩
@@ -21,12 +26,18 @@ theorem isIntegral_of_involution (hσ : ∀ x, σ (σ x) = x)
 
 variable [IsLocalRing R]
 
+/- English proof (translation)
+Establish `h` using `eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (R := R) n)`. Rewrite `hr` using `[← h]`. Conclude with `hr`.
+-/
 theorem algebraMap_mem_of_isMaximal [Algebra.IsIntegral R S] (n : Ideal S) [n.IsMaximal]
     {r : R} (hr : r ∈ maximalIdeal R) : algebraMap R S r ∈ n := by
   have h := eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (R := R) n)
   rw [← h] at hr
   exact hr
 
+/- English proof (translation)
+Take `⟨r, rfl⟩` from `hfix x hx`. Distinguish the cases in `hr : IsUnit r`. Conclude with `Or.inl (hr.map _)`. Conclude with `Or.inr (Ideal.mem_map_of_mem _ hr)`.
+-/
 theorem isUnit_or_mem_of_fixed (hfix : ∀ x, σ x = x → x ∈ (algebraMap R S).range)
     {x : S} (hx : σ x = x) :
     IsUnit x ∨ x ∈ (maximalIdeal R).map (algebraMap R S) := by
@@ -35,6 +46,19 @@ theorem isUnit_or_mem_of_fixed (hfix : ∀ x, σ x = x → x ∈ (algebraMap R S
   · exact Or.inl (hr.map _)
   · exact Or.inr (Ideal.mem_map_of_mem _ hr)
 
+/- English proof (translation)
+Use `haveI := isIntegral_of_involution σ hσ hfix`. Break down `subsingleton_or_nontrivial S with hS | hS` into its components or cases. Conclude with `⟨0, isUnit_of_subsingleton _⟩`. Take `⟨n, hn⟩` from `Ideal.exists_maximal S`. Take `⟨ω, hω⟩` from `hgal`.
+
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `key : ∀ a, a + u * σ a ∈ n`. Introduce `a`. Establish `hz : σ ((a + u * σ a) * σ (a + u * σ a)) = (a + u * σ a) * σ (a + u * σ a)`.
+
+Rewrite using `[map_mul, hσ, mul_comm]`. Break down `isUnit_or_mem_of_fixed σ hfix hz with h | h` into its components or cases. Conclude with `absurd (isUnit_of_mul_isUnit_left h) (hcon a)`. Establish `h1 : (a + u * σ a) * σ (a + u * σ a) ∈ n` using `(Ideal.map_le_iff_le_comap (I := maximalIdeal R)).2 (fun r hr => algebraMap_mem_of_isMaximal n hr) h`. Establish `h2 : a + u * σ a = u * σ (a + u * σ a)`.
+
+Rewrite using `[map_add, map_mul, hσ]`. Take the linear combination `(-a) * hu`. Break down `hn.isPrime.mem_or_mem h1 with h3 | h3` into its components or cases. Conclude with `h3`. Rewrite using `[h2]`.
+
+Conclude with `n.mul_mem_left _ h3`. Establish `: ω - σ ω ∈ n`. Use `n.sub_mem (key ω) (n.mul_mem_left (σ ω) (key 1))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_one]`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `hn.ne_top (n.eq_top_of_isUnit_mem this hω)`.
+-/
 theorem exists_isUnit_add_mul (hσ : ∀ x, σ (σ x) = x)
     (hfix : ∀ x, σ x = x → x ∈ (algebraMap R S).range) (hgal : ∃ ω, IsUnit (ω - σ ω))
     {u : S} (hu : u * σ u = 1) : ∃ a, IsUnit (a + u * σ a) := by
@@ -68,6 +92,11 @@ theorem exists_isUnit_add_mul (hσ : ∀ x, σ (σ x) = x)
 
 omit [IsLocalRing R] [Algebra R S] [CommRing R] in
 
+/- English proof (translation)
+Take `⟨ω, hω⟩` from `hgal`. Take `⟨v, hv⟩` from `hω.exists_right_inv`. Establish `h2` using `congrArg σ hv`. Rewrite `h2` using `[map_mul, map_sub, hσ, map_one]`. Use `⟨ω * v, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul]`. Establish `: σ v = -v` using `by linear_combination (-σ v) * hv - v * h2`. Rewrite using `[this]`. Take the linear combination `hv`.
+-/
 theorem exists_add_eq_one (hσ : ∀ x, σ (σ x) = x) (hgal : ∃ ω, IsUnit (ω - σ ω)) :
     ∃ t, t + σ t = 1 := by
   obtain ⟨ω, hω⟩ := hgal
@@ -90,6 +119,23 @@ open TensorProduct Module
 
 variable {R S : Type*} [CommRing R] [CommRing S] [Algebra R S]
 
+/- English proof (translation)
+Use `haveI : Module.Finite R S := Module.finite_of_finrank_pos (by omega)`. Use `haveI : Nontrivial S := Module.nontrivial_of_finrank_pos (R := R) (by omega)`. Establish `aux : ∀ b : Basis (Fin 2) R S, IsUnit (b.repr 1 0) → ∃ B : Basis (Fin 2) R S, B 0 = 1`. Introduce `b hb`. Establish `h1 : (1 : S) = b.repr 1 0 • b 0 + b.repr 1 1 • b 1` using `by conv_lhs => rw [← b.sum_repr 1]`.
+
+Rewrite using `[Fin.sum_univ_two]`. Take `⟨w, hw⟩` from `hb.exists_left_inv`. Establish `hli : LinearIndependent R ![(1 : S), b 1]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`.
+
+Establish `h0` using `congrArg (fun x => b.repr x 0) hst`. Establish `h2` using `congrArg (fun x => b.repr x 1) hst`. Simplify using `at h0 h2`. Establish `hs : s = 0` using `by linear_combination w * h0 - s * hw`. Conclude with `⟨hs, by simpa [hs] using h2⟩`.
+
+Establish `hsp : ⊤ ≤ Submodule.span R (Set.range ![(1 : S), b 1])`. Rewrite using `[← b.span_eq, Submodule.span_le]`. Establish `m1 : (1 : S) ∈ Submodule.span R (Set.range ![(1 : S), b 1])` using `Submodule.subset_span ⟨0, rfl⟩`. Establish `m2 : b 1 ∈ Submodule.span R (Set.range ![(1 : S), b 1])` using `Submodule.subset_span ⟨1, rfl⟩`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Use `fin_cases i`. Establish `: b 0 = w • (1 - b.repr 1 1 • b 1)` using `by conv_rhs => rw [sub_eq_of_eq_add h1, smul_smul, hw, one_smul]`. Simplify using `only [Fin.zero_eta, SetLike.mem_coe]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.sub_mem _ m1 (Submodule.smul_mem _ _ m2))`.
+
+Conclude with `m2`. Conclude with `⟨Basis.mk hli hsp, by simp⟩`. Set `b` to `Module.finBasisOfFinrankEq R S hrank`. Distinguish the cases in `h0 : IsUnit (b.repr 1 0)`. Conclude with `aux b h0`.
+
+Distinguish the cases in `h1 : IsUnit (b.repr 1 1)`. Conclude with `aux (b.reindex (Equiv.swap 0 1)) (by simpa using h1)`. It suffices to derive a contradiction. Take `⟨n, hn⟩` from `Ideal.exists_maximal S`. Apply `hn.ne_top` to reduce the goal to its premises.
+
+Rewrite using `[Ideal.eq_top_iff_one, ← b.sum_repr 1, Fin.sum_univ_two, Algebra.smul_def, Algebra.smul_def]`. Conclude with `n.add_mem (n.mul_mem_right _ (algebraMap_mem_of_isMaximal n h0)) (n.mul_mem_right _ (algebraMap_mem_of_isMaximal n h1))`.
+-/
 theorem exists_basis_one [IsLocalRing R] [Module.Free R S] (hrank : finrank R S = 2) :
     ∃ B : Basis (Fin 2) R S, B 0 = 1 := by
   haveI : Module.Finite R S := Module.finite_of_finrank_pos (by omega)
@@ -135,27 +181,44 @@ theorem exists_basis_one [IsLocalRing R] [Module.Free R S] (hrank : finrank R S 
   exact n.add_mem (n.mul_mem_right _ (algebraMap_mem_of_isMaximal n h0))
     (n.mul_mem_right _ (algebraMap_mem_of_isMaximal n h1))
 
+/- English proof (translation)
+Use `conv_lhs => rw [← B.sum_repr x]`. Rewrite using `[Fin.sum_univ_two, hB, Algebra.smul_def, Algebra.smul_def, mul_one]`.
+-/
 theorem eq_coord (B : Basis (Fin 2) R S) (hB : B 0 = 1) (x : S) :
     x = algebraMap R S (B.repr x 0) + algebraMap R S (B.repr x 1) * B 1 := by
   conv_lhs => rw [← B.sum_repr x]
   rw [Fin.sum_univ_two, hB, Algebra.smul_def, Algebra.smul_def, mul_one]
 
+/- English proof (translation)
+Rewrite using `[← mul_one (algebraMap R S r), ← hB, ← Algebra.smul_def, ← Algebra.smul_def]`. Simplify using the standard rewrite rules.
+-/
 theorem repr_coord_zero (B : Basis (Fin 2) R S) (hB : B 0 = 1) (r s : R) :
     B.repr (algebraMap R S r + algebraMap R S s * B 1) 0 = r := by
   rw [← mul_one (algebraMap R S r), ← hB, ← Algebra.smul_def, ← Algebra.smul_def]
   simp
 
+/- English proof (translation)
+Rewrite using `[← mul_one (algebraMap R S r), ← hB, ← Algebra.smul_def, ← Algebra.smul_def]`. Simplify using the standard rewrite rules.
+-/
 theorem repr_coord_one (B : Basis (Fin 2) R S) (hB : B 0 = 1) (r s : R) :
     B.repr (algebraMap R S r + algebraMap R S s * B 1) 1 = s := by
   rw [← mul_one (algebraMap R S r), ← hB, ← Algebra.smul_def, ← Algebra.smul_def]
   simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rw [← repr_coord_zero B hB r s, h, repr_coord_zero B hB], by rw [← repr_coord_one B hB r s, h, repr_coord_one B hB]⟩`.
+-/
 theorem coord_inj (B : Basis (Fin 2) R S) (hB : B 0 = 1) {r s r' s' : R}
     (h : algebraMap R S r + algebraMap R S s * B 1 = algebraMap R S r' + algebraMap R S s' * B 1) :
     r = r' ∧ s = s' :=
   ⟨by rw [← repr_coord_zero B hB r s, h, repr_coord_zero B hB],
     by rw [← repr_coord_one B hB r s, h, repr_coord_one B hB]⟩
 
+/- English proof (translation)
+Rewrite using `[Algebra.trace_eq_matrix_trace B, Matrix.trace_fin_two, Algebra.leftMulMatrix_eq_repr_mul, Algebra.leftMulMatrix_eq_repr_mul, hB, mul_one, repr_coord_zero B hB]`. Establish `: (algebraMap R S r + algebraMap R S s * B 1) * B 1 = algebraMap R S (s * b) + algebraMap R S (r + s * a) * B 1`. Simplify using `only [map_add, map_mul]`. Take the linear combination `(algebraMap R S s) * hab`. Rewrite using `[this, repr_coord_one B hB]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trace_coord (B : Basis (Fin 2) R S) (hB : B 0 = 1) {a b : R}
     (hab : B 1 * B 1 = algebraMap R S b + algebraMap R S a * B 1) (r s : R) :
     Algebra.trace R S (algebraMap R S r + algebraMap R S s * B 1) = 2 * r + s * a := by
@@ -168,6 +231,9 @@ theorem trace_coord (B : Basis (Fin 2) R S) (hB : B 0 = 1) {a b : R}
   rw [this, repr_coord_one B hB]
   ring
 
+/- English proof (translation)
+Establish `: (algebraMap R S r + algebraMap R S s * B 1) * B 1 = algebraMap R S (s * b) + algebraMap R S (r + s * a) * B 1`. Simplify using `only [map_add, map_mul]`. Take the linear combination `(algebraMap R S s) * hab`. Rewrite using `[Algebra.norm_eq_matrix_det B, Matrix.det_fin_two, Algebra.leftMulMatrix_eq_repr_mul, Algebra.leftMulMatrix_eq_repr_mul, Algebra.leftMulMatrix_eq_repr_mul, Algebra.leftMulMatrix_eq_repr_mul, hB, mul_one, this, repr_coord_zero B hB, repr_coord_zero B hB, repr_coord_one B hB, repr_ …`.
+-/
 theorem norm_coord (B : Basis (Fin 2) R S) (hB : B 0 = 1) {a b : R}
     (hab : B 1 * B 1 = algebraMap R S b + algebraMap R S a * B 1) (r s : R) :
     Algebra.norm R (algebraMap R S r + algebraMap R S s * B 1)
@@ -181,6 +247,19 @@ theorem norm_coord (B : Basis (Fin 2) R S) (hB : B 0 = 1) {a b : R}
     Algebra.leftMulMatrix_eq_repr_mul, hB, mul_one, this, repr_coord_zero B hB,
     repr_coord_zero B hB, repr_coord_one B hB, repr_coord_one B hB]
 
+/- English proof (translation)
+Use `haveI : Module.Finite R S := Module.Finite.of_basis B`. Set `L : S ⊗[R] S →ₗ[R] S` to `LinearMap.mul' R S ∘ₗ LinearMap.lTensor S (Algebra.linearMap R S ∘ₗ B.coord 1)`. Establish `hL : ∀ x y, L (x ⊗ₜ y) = x * algebraMap R S (B.repr y 1)` using `fun x y => by simp [L]`. Establish `h1 : ∀ (s : S) z, L ((s ⊗ₜ 1) * z) = s * L z`. Introduce `s z`.
+
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => rw [Algebra.TensorProduct.tmul_mul_tmul, hL, hL, one_mul, mul_assoc]`. Consider the case `add x y hx hy => rw [mul_add, map_add, map_add, hx, hy, mul_add]`. Establish `h2 : ∀ z, Algebra.TensorProduct.lmul' R (S` using `S) z = L ((1 ⊗ₜ B 1) * z) + (B 1 - algebraMap R S a) * L z := by`.
+
+Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, hL, hL, one_mul, Algebra.TensorProduct.lmul'_apply_tmul]`.
+
+Establish `hy` using `eq_coord B hB y`. Establish `: B 1 * y = algebraMap R S (B.repr y 1 * b) + algebraMap R S (B.repr y 0 + B.repr y 1 * a) * B 1`. Simplify using `only [map_add, map_mul]`. Take the linear combination `(algebraMap R S (B.repr y 1)) * hab + B 1 * hy`. Rewrite using `[this, repr_coord_one B hB]`.
+
+Simplify using `only [map_add, map_mul]`. Take the linear combination `x * hy`. Consider the case `add x y hx hy => rw [mul_add, map_add, map_add, map_add, hx, hy]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `h2 (Algebra.FormallyUnramified.elem R S)`.
+
+Rewrite `h3` using `[Algebra.FormallyUnramified.lmul_elem, Algebra.FormallyUnramified.one_tmul_mul_elem, h1]`. Conclude with `IsUnit.of_mul_eq_one (L (Algebra.FormallyUnramified.elem R S)) (by linear_combination -h3)`.
+-/
 theorem isUnit_different [Algebra.FormallyUnramified R S] (B : Basis (Fin 2) R S) (hB : B 0 = 1)
     {a b : R} (hab : B 1 * B 1 = algebraMap R S b + algebraMap R S a * B 1) :
     IsUnit (2 * B 1 - algebraMap R S a) := by
@@ -215,6 +294,37 @@ theorem isUnit_different [Algebra.FormallyUnramified R S] (B : Basis (Fin 2) R S
   rw [Algebra.FormallyUnramified.lmul_elem, Algebra.FormallyUnramified.one_tmul_mul_elem, h1] at h3
   exact IsUnit.of_mul_eq_one (L (Algebra.FormallyUnramified.elem R S)) (by linear_combination -h3)
 
+/- English proof (translation)
+Use `haveI : Module.Finite R S := Module.Finite.of_basis B`. Use `haveI : Nontrivial S := ⟨⟨B 0, 0, B.ne_zero 0⟩⟩`. Establish `hD : IsUnit (a ^ 2 + 4 * b)`. Assume the negation of the conclusion as `hD`. Take `⟨n, hn⟩` from `Ideal.exists_maximal S`.
+
+Establish `h1` using `algebraMap_mem_of_isMaximal n (r := a ^ 2 + 4 * b) hD`. Establish `h2` using `(isUnit_different B hB hab).pow 2`. Use `hn.ne_top (n.eq_top_of_isUnit_mem h1 ?_)` and prove the remaining obligations. Use `h2 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_add, map_mul, map_pow, map_ofNat]`.
+
+Take the linear combination `(-4) * hab`. Take `⟨c, d, hcd⟩ : ∃ c d : R, σ (B 1) = algebraMap R S c + algebraMap R S d * B 1` from `⟨_, _, eq_coord B hB _⟩`. Establish `hd : IsUnit d`. Take `⟨r, s, hrs⟩ : ∃ r s : R, σ.symm (B 1) = algebraMap R S r + algebraMap R S s * B 1` from `⟨_, _, eq_coord B hB _⟩`. Establish `h1` using `congrArg σ hrs`.
+
+Rewrite `h1` using `[AlgEquiv.apply_symm_apply, map_add, map_mul, AlgEquiv.commutes, AlgEquiv.commutes, hcd]`. Establish `h2` using `coord_inj B hB (r := r + s * c) (s := d * s) (r' := 0) (s' := 1) (by`. Simplify using `only [map_add, map_mul, map_zero, map_one]`. Take the linear combination `-h1)`. Conclude with `IsUnit.of_mul_eq_one s h2.2`.
+
+Establish `h1` using `congrArg σ hab`. Rewrite `h1` using `[map_add, map_mul, map_mul, AlgEquiv.commutes, AlgEquiv.commutes, hcd]`. Take `⟨e1, e2⟩` from `coord_inj B hB (r := c ^ 2 + d ^ 2 * b) (s := d * (2 * c + d * a)) (r' := b + a * c) (s' := d * a) (by`. Simplify using `only [map_add, map_mul, map_pow, map_ofNat]`. Take the linear combination `h1 - (algebraMap R S d) ^ 2 * hab)`.
+
+Establish `e3 : 2 * c + d * a = a` using `hd.mul_left_cancel e2`. Establish `e4 : (1 - d) * (1 + d) = 0`. Apply `hD.mul_left_cancel` to reduce the goal to its premises. Take the linear combination `(-4) * e1 + (2 * c - a - d * a) * e3`. Establish `e5 : c * (c - a) = 0` using `by linear_combination e1 + b * e4`.
+
+Establish `hne : ¬ (c = 0 ∧ d = 1)`. Introduce and unpack `⟨rfl, rfl⟩`. Apply `hσ` to reduce the goal to its premises. Use extensionality with `x`. Rewrite using `[eq_coord B hB x]`.
+
+Simplify using `only [map_add, map_mul, AlgEquiv.commutes, hcd, AlgEquiv.one_apply]`. Simplify using the standard rewrite rules. Establish `h2a : IsUnit (2 : R) ∨ IsUnit a`. Break down `isUnit_or_isUnit_of_isUnit_add hD with h | h` into its components or cases. Conclude with `Or.inr (isUnit_pow_iff two_ne_zero |>.1 h)`.
+
+Use `Or.inl (isUnit_of_mul_isUnit_left (y := 2 * b) ?_)` and prove the remaining obligations. Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `main : c = a ∧ d = -1`. Distinguish the cases in `hd1 : IsUnit (1 - d)`.
+
+Establish `hd' : d = -1`. Establish `: 1 + d = 0` using `hd1.mul_left_cancel (by rw [e4, mul_zero])`. Take the linear combination `this`. Substitute `hd'` using the available equality. Establish `h2 : IsUnit (2 : R)` using `by convert hd1 using 1; ring`.
+
+Conclude with `⟨h2.mul_left_cancel (by linear_combination e3), rfl⟩`. Break down `h2a with h2 | ha` into its components or cases. It suffices to derive a contradiction. Establish `h3 : IsUnit (1 + d)`. Establish `: IsUnit ((1 - d) + (1 + d))` using `by convert h2 using 1; ring`.
+
+Conclude with `(isUnit_or_isUnit_of_isUnit_add this).resolve_left hd1`. Establish `hd' : d = 1`. Establish `: 1 - d = 0` using `h3.mul_right_cancel (by rw [e4, zero_mul])`. Take the linear combination `-this`. Substitute `hd'` using the available equality.
+
+Conclude with `hne ⟨h2.mul_left_cancel (by linear_combination e3), rfl⟩`. Establish `: IsUnit (c + (a - c))` using `by convert ha using 1; ring`. Break down `isUnit_or_isUnit_of_isUnit_add this with hc | hc` into its components or cases. Establish `hca : c = a`. Establish `: c - a = 0` using `hc.mul_left_cancel (by rw [e5, mul_zero])`.
+
+Take the linear combination `this`. Substitute `hca` using the available equality. Conclude with `⟨rfl, ha.mul_left_cancel (by linear_combination e3)⟩`. It suffices to derive a contradiction. Establish `hc0 : c = 0` using `hc.mul_left_cancel (by linear_combination -e5)`.
+
+Substitute `hc0` using the available equality. Conclude with `hne ⟨rfl, ha.mul_left_cancel (by linear_combination e3)⟩`. Rewrite using `[hcd, main.1, main.2]`. Simplify using `only [map_neg, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem apply_eq_of_ne_one [IsLocalRing R] [Algebra.FormallyUnramified R S]
     (B : Basis (Fin 2) R S) (hB : B 0 = 1)
     {a b : R} (hab : B 1 * B 1 = algebraMap R S b + algebraMap R S a * B 1)
@@ -306,6 +416,11 @@ open Module
 variable {R S : Type*} [CommRing R] [CommRing S] [Algebra R S] [IsLocalRing R]
   [Module.Free R S] [Algebra.FormallyUnramified R S]
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `exists_basis_one hrank`. Establish `hab` using `eq_coord B hB (B 1 * B 1)`. Establish `h` using `apply_eq_of_ne_one B hB hab σ hσ`. Rewrite using `[eq_coord B hB x, trace_coord B hB hab]`. Simplify using `only [map_add, map_mul, AlgEquiv.commutes, h, map_ofNat]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem add_apply_eq_trace (hrank : finrank R S = 2) (σ : S ≃ₐ[R] S) (hσ : σ ≠ 1) (x : S) :
     x + σ x = algebraMap R S (Algebra.trace R S x) := by
   obtain ⟨B, hB⟩ := exists_basis_one hrank
@@ -315,6 +430,9 @@ theorem add_apply_eq_trace (hrank : finrank R S = 2) (σ : S ≃ₐ[R] S) (hσ :
   simp only [map_add, map_mul, AlgEquiv.commutes, h, map_ofNat]
   ring
 
+/- English proof (translation)
+Establish `h` using `add_apply_eq_trace hrank σ hσ x`. Establish `h2` using `congrArg σ h`. Rewrite `h2` using `[map_add, AlgEquiv.commutes]`. Take the linear combination `h2 - h`.
+-/
 theorem apply_apply (hrank : finrank R S = 2) (σ : S ≃ₐ[R] S) (hσ : σ ≠ 1) (x : S) :
     σ (σ x) = x := by
   have h := add_apply_eq_trace hrank σ hσ x
@@ -322,6 +440,11 @@ theorem apply_apply (hrank : finrank R S = 2) (σ : S ≃ₐ[R] S) (hσ : σ ≠
   rw [map_add, AlgEquiv.commutes] at h2
   linear_combination h2 - h
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `exists_basis_one hrank`. Establish `hab` using `eq_coord B hB (B 1 * B 1)`. Use `⟨B 1, ?_⟩` and prove the remaining obligations. Rewrite using `[apply_eq_of_ne_one B hB hab σ hσ]`. Use `isUnit_different B hB hab using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_isUnit_sub (hrank : finrank R S = 2) (σ : S ≃ₐ[R] S) (hσ : σ ≠ 1) :
     ∃ ω, IsUnit (ω - σ ω) := by
   obtain ⟨B, hB⟩ := exists_basis_one hrank
@@ -331,6 +454,9 @@ theorem exists_isUnit_sub (hrank : finrank R S = 2) (σ : S ≃ₐ[R] S) (hσ : 
   convert isUnit_different B hB hab using 1
   ring
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `exists_add_eq_one (σ : S →+* S) (apply_apply hrank σ hσ) (exists_isUnit_sub hrank σ hσ)`. Use `⟨Algebra.trace R S (t * x), ?_⟩` and prove the remaining obligations. Rewrite using `[← add_apply_eq_trace hrank σ hσ, map_mul, hx]`. Simplify using `only [RingHom.coe_coe] at ht`. Take the linear combination `x * ht`.
+-/
 theorem mem_range_of_fixed (hrank : finrank R S = 2) (σ : S ≃ₐ[R] S) (hσ : σ ≠ 1) (x : S)
     (hx : σ x = x) : x ∈ (algebraMap R S).range := by
   obtain ⟨t, ht⟩ := exists_add_eq_one (σ : S →+* S) (apply_apply hrank σ hσ)
@@ -340,6 +466,23 @@ theorem mem_range_of_fixed (hrank : finrank R S = 2) (σ : S ≃ₐ[R] S) (hσ :
   simp only [RingHom.coe_coe] at ht
   linear_combination x * ht
 
+/- English proof (translation)
+Use `haveI : Nontrivial S := Module.nontrivial_of_finrank_pos (R := R) (by omega)`. Use `existsUnique_of_exists_of_unique ?_ fun σ τ hσ hτ => ?_` and prove the remaining obligations. Use `swap`. Use extensionality with `x`. Take the linear combination `add_apply_eq_trace hrank σ hσ x - add_apply_eq_trace hrank τ hτ x`.
+
+Take `⟨B, hB⟩` from `exists_basis_one hrank`. Take `⟨a, b, hab⟩ : ∃ a b, B 1 * B 1 = algebraMap R S b + algebraMap R S a * B 1` from `⟨_, _, eq_coord B hB _⟩`. Set `f : S →ₗ[R] S` to `Algebra.linearMap R S ∘ₗ Algebra.trace R S - LinearMap.id`. Establish `hf : ∀ r s, f (algebraMap R S r + algebraMap R S s * B 1) = algebraMap R S (r + s * a) + algebraMap R S (-s) * B 1`. Introduce `r s`.
+
+Simplify using `only [f, LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.id_apply, Algebra.linearMap_apply, trace_coord B hB hab]`. Simplify using `only [map_add, map_mul, map_neg, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : ∀ x, ∃ r s, x = algebraMap R S r + algebraMap R S s * B 1` using `fun x => ⟨_, _, eq_coord B hB _⟩`. Establish `hone : f 1 = 1` using `by simpa using hf 1 0`.
+
+Establish `hmul : ∀ x y, f (x * y) = f x * f y`. Introduce `x y`. Take `⟨r, s, rfl⟩` from `hc x`. Take `⟨r', s', rfl⟩` from `hc y`. Establish `: (algebraMap R S r + algebraMap R S s * B 1) * (algebraMap R S r' + algebraMap R S s' * B 1) = algebraMap R S (r * r' + s * s' * b) + algebraMap R S (r * s' + s * r' + s * s' * a) * B 1`.
+
+Simplify using `only [map_add, map_mul]`. Take the linear combination `(algebraMap R S s * algebraMap R S s') * hab`. Rewrite using `[this, hf, hf, hf]`. Simplify using `only [map_add, map_mul, map_neg]`. Take the linear combination `(-(algebraMap R S s * algebraMap R S s')) * hab`.
+
+Establish `hinv : ∀ x, f (f x) = x`. Introduce `x`. Take `⟨r, s, rfl⟩` from `hc x`. Rewrite using `[hf, hf]`. Simplify using `only [map_add, map_mul, map_neg]`.
+
+Expand and normalize the polynomial expressions, which then agree. Set `g : S →ₐ[R] S` to `AlgHom.ofLinearMap f hone hmul`. Use `⟨AlgEquiv.ofAlgHom g g (AlgHom.ext hinv) (AlgHom.ext hinv), fun h => ?_⟩` and prove the remaining obligations. Establish `h1 : f (B 1) = B 1` using `congrArg (fun σ : S ≃ₐ[R] S => σ (B 1)) h`. Establish `h2` using `hf 0 1`.
+
+Simplify using `only [map_zero, map_one, zero_add, one_mul, map_neg, h1] at h2`. Establish `h3` using `isUnit_different B hB hab`. Rewrite `h3` using `[show 2 * B 1 - algebraMap R S a = 0 by linear_combination h2]`. Conclude with `not_isUnit_zero h3`.
+-/
 theorem existsUnique_ne_one (hrank : finrank R S = 2) : ∃! σ : S ≃ₐ[R] S, σ ≠ 1 := by
   haveI : Nontrivial S := Module.nontrivial_of_finrank_pos (R := R) (by omega)
   refine existsUnique_of_exists_of_unique ?_ fun σ τ hσ hτ => ?_
@@ -387,6 +530,11 @@ theorem existsUnique_ne_one (hrank : finrank R S = 2) : ∃! σ : S ≃ₐ[R] S,
   rw [show 2 * B 1 - algebraMap R S a = 0 by linear_combination h2] at h3
   exact not_isUnit_zero h3
 
+/- English proof (translation)
+Use `haveI : Nontrivial S := Module.nontrivial_of_finrank_pos (R := R) (by omega)`. Take `⟨σ, hσ, -⟩` from `existsUnique_ne_one hrank`. Take `⟨t, ht⟩` from `exists_add_eq_one (σ : S →+* S) (apply_apply hrank σ hσ) (exists_isUnit_sub hrank σ hσ)`. Establish `h1 : Algebra.trace R S t = 1`. Apply `FaithfulSMul.algebraMap_injective R S` to reduce the goal to its premises.
+
+Rewrite using `[← add_apply_eq_trace hrank σ hσ, map_one]`. Conclude with `ht`. Introduce `r`. Conclude with `⟨r • t, by rw [map_smul, h1, smul_eq_mul, mul_one]⟩`.
+-/
 theorem trace_surjective (hrank : finrank R S = 2) :
     Function.Surjective (Algebra.trace R S) := by
   haveI : Nontrivial S := Module.nontrivial_of_finrank_pos (R := R) (by omega)
@@ -408,6 +556,9 @@ end Star
 
 end Unramified
 
+/- English proof (translation)
+Use `haveI : Algebra.FormallyUnramified R (Fin 2 → R) := (Algebra.FormallyUnramified.pi_iff (R := R) fun _ : Fin 2 => R).2 fun _ => inferInstance`. Use `haveI : Algebra.FormallyUnramified R (R × R) := Algebra.FormallyUnramified.of_equiv (AlgEquiv.ofRingEquiv (f := RingEquiv.piFinTwo fun _ : Fin 2 => R) fun _ => rfl)`. Conclude with `existsUnique_ne_one (by simp)`.
+-/
 example (R : Type) [CommRing R] [IsLocalRing R] : ∃! σ : (R × R) ≃ₐ[R] (R × R), σ ≠ 1 := by
   haveI : Algebra.FormallyUnramified R (Fin 2 → R) :=
     (Algebra.FormallyUnramified.pi_iff (R := R) fun _ : Fin 2 => R).2 fun _ => inferInstance

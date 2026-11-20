@@ -9,6 +9,21 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `L _ cL Q hQ D x hx P hP`. Set `α : ℂ →+* Q` to `cL.codRestrict Q hQ.const_mem`. Set `ρ : Q →+* P.ring` to `RingHom.codRestrict Q.subtype P.ring (fun q => hP.1 q q.2)`. Establish `hρ : ρ.comp α = P.const` using `RingHom.ext fun _ => Subtype.ext rfl`. Establish `e : dForm cL (fun i => (x i : L)) = P.toRat D (dForm P.const fun i => ρ (x i))`.
+
+Establish `h` using `TopForm.formMap_dForm (D := D) (α := P.const) (β := cL) P.ring.subtype rfl (fun i => ρ (x i))`. Use `Eq.trans ?_ h.symm` and prove the remaining obligations. Use `congr 1`. Set `S : Submonoid Q` to `{ carrier := {b | (b : L) ≠ 0 ∧ P.ord b = 0} mul_mem' := fun {a b} ha hb => by`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(a : L) * b ≠ 0`. Conclude with `mul_ne_zero ha.1 hb.1`. Express the relevant statement in the definitionally equal form `P.ord ((a : L) * b) = 0`. Rewrite using `[P.ord_mul ha.1 hb.1, ha.2, hb.2, add_zero]`. Use the proof step `one_mem' := ⟨one_ne_zero, P.ord_one⟩ }`.
+
+Use `letI := α.toAlgebra`. Use `letI := P.const.toAlgebra`. Use `letI := ρ.toAlgebra`. Use `haveI : IsScalarTower ℂ Q P.ring := IsScalarTower.of_algebraMap_eq' hρ.symm`. Use `haveI : IsLocalization S P.ring := { map_units := fun ⟨b, hb⟩ => by`.
+
+Establish `hinv : (b : L)⁻¹ ∈ P.ring`. Rewrite using `[← P.ord_nonneg_iff (inv_ne_zero hb.1), P.ord_inv, hb.2, neg_zero]`. Conclude with `IsUnit.of_mul_eq_one (⟨(b : L)⁻¹, hinv⟩ : P.ring) (Subtype.ext (mul_inv_cancel₀ hb.1))`. Use `surj := fun z => by`. Take `⟨a, ha, b, hb, hb0, hbo, e⟩` from `hP.2 z z.2`.
+
+Conclude with `⟨(⟨a, ha⟩, ⟨⟨b, hb⟩, hb0, hbo⟩), Subtype.ext e⟩`. Use `exists_of_eq := fun {a b} e => by`. Establish `h : (a : L) = b` using `congrArg (fun z : P.ring => (z : L)) e`. Conclude with `⟨1, by rw [Subtype.ext h]⟩ }`. Use `haveI : Algebra.FormallyEtale Q P.ring := .of_isLocalization S`.
+
+Establish `hG : IsFreeGen P.ring (TopForm.formMap D ρ hρ (dForm α x))` using `hx.of_isBaseChange (isBaseChange_exteriorPower (KaehlerDifferential.isBaseChange_of_formallyEtale ℂ Q P.ring) D)`. Rewrite `hG` using `[TopForm.formMap_dForm]`. Rewrite using `[e]`. Conclude with `P.formOrd_toRat hG`.
+-/
 theorem formOrd_dForm_of_isPrimeOf : ∀ {L : Type} [Field L] (cL : ℂ →+* L) (Q : Subring L) (hQ : IsLocModel cL Q) (D : ℕ) (x : Fin D → Q),
   IsFreeGen Q (dForm (cL.codRestrict Q hQ.const_mem) x) →
   ∀ P : Place cL, P.IsPrimeOf Q → P.formOrd (dForm cL (fun i => (x i : L))) = 0 := by

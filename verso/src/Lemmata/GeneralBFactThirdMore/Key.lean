@@ -2,6 +2,11 @@ import Mathlib
 
 namespace Bl.general_b_fact_third'
 
+/- English proof (translation)
+Take `⟨y, hy0, hy⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic c)).exists_integral_multiple`. Use `⟨y.natAbs, Int.natAbs_pos.mpr hy0, ?_⟩` and prove the remaining obligations. Take `h | h` from `Int.natAbs_eq y`. Rewrite `hy` using `[h, zsmul_eq_mul]`. Simplify using `using hy`.
+
+Rewrite `hy` using `[h, zsmul_eq_mul]`. Simplify using `using hy.neg`.
+-/
 private lemma key {E : Type} [Field E] [NumberField E] (c : E) :
     ∃ d : ℕ, 0 < d ∧ IsIntegral ℤ ((d : E) * c) := by
   obtain ⟨y, hy0, hy⟩ := ((IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic c)).exists_integral_multiple
@@ -12,6 +17,19 @@ private lemma key {E : Type} [Field E] [NumberField E] (c : E) :
   · rw [h, zsmul_eq_mul] at hy
     simpa using hy.neg
 
+/- English proof (translation)
+Introduce `E _ _ n L hL w`. Establish `hw : w ∈ Submodule.span E (L : Set (Fin n → E))`. Rewrite using `[hL]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hw using Submodule.span_induction with`.
+
+Consider the case `mem x hx => exact ⟨1, one_pos, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_pos, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, hax⟩` from `hx`. Take `⟨b, hb, hby⟩` from `hy`.
+
+Use `⟨a * b, Nat.mul_pos ha hb, ?_⟩` and prove the remaining obligations. Establish `e : (a * b) • (x + y) = b • (a • x) + a • (b • y)`. Rewrite using `[smul_add, smul_smul, smul_smul, mul_comm b a]`. Rewrite using `[e]`. Conclude with `L.add_mem (nsmul_mem hax b) (nsmul_mem hby a)`.
+
+Consider the case `smul c x _ hx`. Take `⟨a, ha, hax⟩` from `hx`. Take `⟨d, hd, hdc⟩` from `key c`. Use `⟨d * a, Nat.mul_pos hd ha, ?_⟩` and prove the remaining obligations. Establish `h1` using `L.smul_mem (⟨(d : E) * c, hdc⟩ : NumberField.RingOfIntegers E) hax`.
+
+Use `h1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i`. Rewrite using `[Pi.smul_apply, Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `_ = ((d : E) * c) * _`. Simplify using `[nsmul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem goal1 :
   ∀ {E : Type} [inst : Field.{0} E] [NumberField.{0} E] {n : Nat}
   (L : Submodule.{0, 0} (NumberField.RingOfIntegers.{0} E) (Fin n → E)),

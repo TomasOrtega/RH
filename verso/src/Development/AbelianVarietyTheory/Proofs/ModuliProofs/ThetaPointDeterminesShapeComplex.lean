@@ -13,6 +13,11 @@ open GlobalTheory.ZM
 
 namespace GlobalTheory.ZM
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `H`. Use `⟨h1, h2, fun p => ?_⟩` and prove the remaining obligations. Take `⟨V, hV, th, s1, α, τ, U, s2, w, u, a1, a2, a3, a4, a5, a6, a7, a8⟩` from `h3 p`. Take `⟨c', hc'⟩` from `hc.map V.ι.appTop.hom`. Use `⟨V, hV, th, s1, α, τ, U, s2, w, (c' * (show Γ(V.toScheme, ⊤)ˣ from u) : Γ(V.toScheme, ⊤)ˣ), a1, a2, a3, a4, a5, a6, a7, fun i => ?_⟩` and prove the remaining obligations.
+
+Establish `aux : ∀ (a : Γ(T.left, ⊤)) (u₀ : Γ(V.toScheme, ⊤)ˣ) (w₀ : Γ(V.toScheme, ⊤)), V.ι.appTop.hom a = u₀.val * w₀ → V.ι.appTop.hom (c * a) = (c' * u₀).val * w₀`. Introduce `a u₀ w₀ h`. Rewrite using `[map_mul, h, Units.val_mul, hc', _root_.mul_assoc]`. Conclude with `aux (v i) u (w i) (a8 i)`.
+-/
 theorem isThetaPt_unit_mul {S : Scheme.{0}} (P : Out.PolAV S) (k : ℕ) {T : Over S} {I : Type}
     (x : I → (T ⟶ P.A)) (v : I → Γ(T.left, ⊤)) (c : Γ(T.left, ⊤)) (hc : IsUnit c)
     (H : Out.IsThetaPt P k x v) : Out.IsThetaPt P k x (fun i => c * v i) := by
@@ -27,6 +32,9 @@ theorem isThetaPt_unit_mul {S : Scheme.{0}} (P : Out.PolAV S) (k : ℕ) {T : Ove
     rw [map_mul, h, Units.val_mul, hc', _root_.mul_assoc]
   exact aux (v i) u (w i) (a8 i)
 
+/- English proof (translation)
+Establish `h` using `isThetaPt_unit_mul t.pol N' (T := Over.mk x) _ _ _ (hc.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom) H`. Unfold `TObj.HasTh`. Use `h using 2 with a` and compare the differences between its conclusion and the goal. Conclude with `map_mul (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c (v a)`.
+-/
 theorem TObj.HasTh.unit_smul {o : Type} [CommRing o] {S : Scheme.{0}} {g N' : ℕ} {J : Type}
     {b : TBase o (N' ^ 2)} {s : S ⟶ Sp o} {t : TObj g (N' ^ 2) J b s} {R : Type} [CommRing R]
     {x : Sp R ⟶ S} {v : Ix g (N' ^ 2) → R} (H : t.HasTh x v) {c : R} (hc : IsUnit c) :
@@ -37,6 +45,17 @@ theorem TObj.HasTh.unit_smul {o : Type} [CommRing o] {S : Scheme.{0}} {g N' : �
   convert h using 2 with a
   exact map_mul (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c (v a)
 
+/- English proof (translation)
+Introduce `hL hL2 g J _ Mat κ n hn hodd`. Take `⟨j₀, H⟩` from `GlobalTheory.T.exists_theta_family_from_very_dense_points hL hL2 g J Mat κ n hn hodd`. Use `⟨j₀, fun j hj o _ b em t t' v c hc hs hs' hv hv' => ?_⟩` and prove the remaining obligations. Establish `hid : spMap (RingHom.id ℂ) = 𝟙 (Sp ℂ)` using `Spec.map_id (CommRingCat.of ℂ)`. Establish `hv'' : t'.HasTh (𝟙 _) v`.
+
+Establish `h` using `hv'.unit_smul (IsUnit.mk0 c⁻¹ (inv_ne_zero hc))`. Rewrite `h` using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Then use the resulting hypothesis. Establish `key : ∀ s : Sp ℂ ⟶ Sp o, s = spMap (RingHom.id ℂ) ≫ spMap em → ∀ t t' : TObj g ((n ^ j) ^ 2) J b s, t.Shape Mat κ → t'.Shape Mat κ → t.HasTh (𝟙 _) v → t'.HasTh (𝟙 _) v → TMap t' t (𝟙 _)`. Introduce `s hs t t' h1 h1' h2 h2'`. Substitute `hs` using the available equality.
+
+Establish `hvd : VeryDense (objPrimes b Mat κ em v)`. Introduce `q f hq hf`. Establish `hq0 : q = ⊥` using `(Ideal.eq_bot_or_top q).resolve_right hq.ne_top`. Substitute `hq0` using the available equality. Use `⟨⊥, ⟨ℂ, inferInstance, inferInstance, RingHom.id ℂ, t, ?_, h1, h2⟩, hq, le_rfl, hf⟩` and prove the remaining obligations.
+
+Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 (RingHom.id ℂ).injective`. Take `⟨t₀, -, h₀⟩` from `H j hj o b ℂ em v hvd`. Establish `m` using `h₀ ℂ (RingHom.id ℂ) t h1 h2`. Establish `m'` using `h₀ ℂ (RingHom.id ℂ) t' h1' h2'`. Use `((GlobalTheory.T.thetaLevelPullback_id_comp_cancel o g _ J b _ _ _ _ _ _ t₀ t t').2 _ (𝟙 _) m).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[Category.id_comp]` and apply the resulting hypothesis. Conclude with `key _ (by rw [hid, Category.id_comp]) t t' hs hs' hv hv''`.
+-/
 theorem tmap_of_hasTh_complex : Out.Laws → Out.Laws2 → ∀ (g : ℕ) (J : Type) [Finite J] (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (κ n : ℕ), n.Prime → Odd n → ∃ j₀ : ℕ, ∀ j ≥ j₀, ∀ (o : Type) [CommRing o] (b : TBase o ((n ^ j) ^ 2)) (em : o →+* ℂ) (t t' : TObj g ((n ^ j) ^ 2) J b (spMap em)) (v : Ix g ((n ^ j) ^ 2) → ℂ) (c : ℂ), c ≠ 0 → t.Shape Mat κ → t'.Shape Mat κ → t.HasTh (𝟙 _) v → t'.HasTh (𝟙 _) (c • v) → TMap t' t (𝟙 _) := by
   intro hL hL2 g J _ Mat κ n hn hodd
   obtain ⟨j₀, H⟩ := GlobalTheory.T.exists_theta_family_from_very_dense_points hL hL2 g J Mat κ n hn hodd

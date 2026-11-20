@@ -6,6 +6,23 @@ namespace GlobalTheory.TwistedCosetSum
 
 variable {X : Type} [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X]
 
+/- English proof (translation)
+Use `set S : Set X := (fun x => -c + x) ⁻¹' (U : Set X) with hS`. Establish `hmem : ∀ y, y ∈ S ↔ -c + y ∈ U` using `fun y => Iff.rfl`. Establish `hmeas : MeasurableSet S` using `(hU.preimage (continuous_const.add continuous_id)).measurableSet`. Establish `hvol : μ S = μ U` using `measure_preimage_add μ _ _`. Distinguish the cases in `h : ∀ u ∈ U, g (c + u) = g c`.
+
+Use `right`. Establish `: S.indicator g = S.indicator (fun _ => g c)`. Use `Set.indicator_congr fun y hy => ?_` and prove the remaining obligations. Use `h _ ((hmem y).1 hy)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_left]`. Then use the resulting hypothesis.
+
+Rewrite using `[this, integral_indicator_const _ hmeas]`. Simplify using `only [Measure.real, hvol, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree. Use `left push_neg at h`. Take `⟨u, hu, hne⟩` from `h`.
+
+Establish `hc0 : g c ≠ 0`. Introduce `h0`. Use `hg c u hu u hu` as an intermediate fact. Rewrite `this` using `[h0, mul_zero]`. Conclude with `hne (by rw [h0]; exact mul_self_eq_zero.1 this.symm)`.
+
+Establish `hshift : ∀ y, S.indicator g (u + y) * g c = g (c + u) * S.indicator g y`. Introduce `y`. Establish `hiff : u + y ∈ S ↔ y ∈ S`. Rewrite using `[hmem, hmem, add_left_comm]`. Conclude with `U.add_mem_cancel_left hu`.
+
+Distinguish the cases in `hy : y ∈ S`. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem (hiff.2 hy)]`. Use `hg c u hu _ ((hmem y).1 hy)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_left, show c + u + (-c + y) = u + y by abel]`. Conclude with `this`.
+
+Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem (fun h => hy (hiff.1 h)), zero_mul, mul_zero]`. Establish `h1 : (∫ y, S.indicator g y ∂μ) * g c = g (c + u) * ∫ y, S.indicator g y ∂μ` using `by conv_lhs => rw [← integral_add_left_eq_self (μ := μ) (S.indicator g) u]`. Rewrite using `[← integral_mul_const, ← integral_const_mul]`. Simplify using `only [hshift]`. Establish `h2 : (g (c + u) - g c) * ∫ y, S.indicator g y ∂μ = 0`.
+
+Rewrite using `[sub_mul, ← h1]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 hne)`.
+-/
 theorem coset_integral [MeasurableSpace X] [OpensMeasurableSpace X] [MeasurableAdd X] (μ : Measure X)
     [μ.IsAddLeftInvariant] (U : AddSubgroup X) (hU : IsOpen (U : Set X)) (g : X → ℂ)
     (hg : ∀ y, ∀ u ∈ U, ∀ u' ∈ U, g (y + u + u') * g y = g (y + u) * g (y + u')) (c : X) :
@@ -52,6 +69,21 @@ theorem coset_integral [MeasurableSpace X] [OpensMeasurableSpace X] [MeasurableA
       rw [sub_mul, ← h1]; ring
     exact (mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 hne)
 
+/- English proof (translation)
+Introduce `X _ _ _ _ _ _ μ _ U hU _ g hc hg`. Distinguish the cases in `hint : Integrable g μ`. Use `swap`. Conclude with `⟨∅, by rw [integral_undef hint]; simp⟩`. Use `haveI := GlobalTheory.LCIntegralField.discrete_quot U hU`.
+
+Establish `hfin : ((QuotientAddGroup.mk : X → X ⧸ U) '' tsupport g).Finite` using `(hc.isCompact.image QuotientAddGroup.continuous_mk).finite_of_discrete`. Use `set T := hfin.toFinset with hT`. Establish `hind : ∀ (c : X ⧸ U) y, (-(Quotient.out c) + y ∈ U ↔ c = (y : X ⧸ U))`. Introduce `c y`. Rewrite using `[← QuotientAddGroup.eq, QuotientAddGroup.out_eq']`.
+
+Establish `hdec : g = fun y => ∑ c ∈ T, ((fun x => -(Quotient.out c) + x) ⁻¹' (U : Set X)).indicator g y`. Use function extensionality and compare the values at `y`. Establish `key : ∀ c : X ⧸ U, ((fun x => -(Quotient.out c) + x) ⁻¹' (U : Set X)).indicator g y = if c = (y : X ⧸ U) then g y else 0`. Introduce `c`. Distinguish the cases in `h : c = (y : X ⧸ U)`.
+
+Rewrite using `[if_pos h, Set.indicator_of_mem (show y ∈ (fun x => -(Quotient.out c) + x) ⁻¹' (U : Set X) from (hind c y).2 h)]`. Rewrite using `[if_neg h, Set.indicator_of_notMem (show y ∉ (fun x => -(Quotient.out c) + x) ⁻¹' (U : Set X) from fun hm => h ((hind c y).1 hm))]`. Simplify using `only [key]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with hmem`.
+
+Both sides reduce to the same expression. Rewrite `hmem` using `[hT, Set.Finite.mem_toFinset]`. Conclude with `image_eq_zero_of_notMem_tsupport (fun hs => hmem ⟨y, hs, rfl⟩)`. Establish `hmeas : ∀ c : X ⧸ U, MeasurableSet ((fun x => -(Quotient.out c) + x) ⁻¹' (U : Set X))` using `fun c => (hU.preimage (continuous_const.add continuous_id)).measurableSet`. Establish `hsum : ∫ y, g y ∂μ = ∑ c ∈ T, ∫ y, ((fun x => -(Quotient.out c) + x) ⁻¹' (U : Set X)).indicator g y ∂μ`.
+
+Rewrite using `[← integral_finset_sum _ fun c _ => hint.indicator (hmeas c)]`. Conclude with `congrArg _ hdec`. Use `⟨(T.filter fun c => ∫ y, ((fun x => -(Quotient.out c) + x) ⁻¹' (U : Set X)).indicator g y ∂μ ≠ 0).image Quotient.out, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_image (fun a _ b _ h => Quotient.out_injective h), hsum, ← Finset.sum_filter_ne_zero, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun c hc => ?_` and prove the remaining obligations.
+
+Conclude with `(coset_integral μ U hU g hg (Quotient.out c)).resolve_left (Finset.mem_filter.1 hc).2`.
+-/
 theorem integral_eq_sum_twisted : ∀ {X : Type} [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X] [MeasurableSpace X] [OpensMeasurableSpace X]
     [MeasurableAdd X] (μ : Measure X) [μ.IsAddLeftInvariant] (U : AddSubgroup X), IsOpen (U : Set X) → μ (U : Set X) ≠ ⊤ →
     ∀ g : X → ℂ, HasCompactSupport g → (∀ y, ∀ u ∈ U, ∀ u' ∈ U, g (y + u + u') * g y = g (y + u) * g (y + u')) →

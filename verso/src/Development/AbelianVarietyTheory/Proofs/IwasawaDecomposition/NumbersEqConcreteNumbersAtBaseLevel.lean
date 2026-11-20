@@ -14,6 +14,19 @@ noncomputable section
 
 namespace GlobalTheory.Mem.ReadIndexNumerics
 
+/- English proof (translation)
+Establish `hPE : ∀ z, lPrj D A P0 ψ0 Zs i t *ᵥ (lZ0 D A P0 ψ0 Zs i t *ᵥ z) = z` using `fun z => by`. Rewrite using `[Matrix.mulVec_mulVec]`. Use `erw [hP.1]`. Conclude with `Matrix.one_mulVec z`. Establish `hth : Idx.thTj Xd (tup t) ((i : ℕ) + 1) = (Formalism.DivisionValues.matLat (S0.θ i t) ((A.side P0 ψ0 Zs).Tl i t)).map ((eW : (Fin (S0.dW i) → D.what₂.LL) →ₗ[D.what₂.LL] (Xd.MjH ((i : ℕ) + 1)).V).restrictScalars (𝓞 D.what₂.LL))`.
+
+Use extensionality with `y`. Establish `key : y ∈ Idx.thTj Xd (tup t) ((i : ℕ) + 1) ↔ ∃ x ∈ Idx.TjL D (tup t) ((i : ℕ) + 1), Xd.jM ((i : ℕ) + 1) y = D.what₂.thetaP (tup t) ((i : ℕ) + 1) (D.what₂.jMt (tup t) ((i : ℕ) + 1) x)` using `Iff.rfl`. Rewrite using `[key, hT]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, hxy⟩`.
+
+Take `⟨u, hu, rfl⟩` from `Submodule.mem_map.1 hx`. Take `⟨z, hz, rfl⟩` from `Submodule.mem_map.1 hu`. Use `Submodule.mem_map.2 ⟨S0.θ i t *ᵥ z, Submodule.mem_map.2 ⟨z, hz, rfl⟩, ?_⟩` and prove the remaining obligations. Apply `Idx.jM_inj Xd` to reduce the goal to its premises. Establish `h1` using `hθ (lZ0 D A P0 ψ0 Zs i t *ᵥ z)`.
+
+Use `erw [hPE] at h1`. Use `(hj _).trans ?_` and prove the remaining obligations. Rewrite using `[hxy]`. Conclude with `h1.symm`. Introduce `hy`.
+
+Take `⟨u, hu, rfl⟩` from `Submodule.mem_map.1 hy`. Take `⟨z, hz, rfl⟩` from `Submodule.mem_map.1 hu`. Use `⟨eMt i t (lZ0 D A P0 ψ0 Zs i t *ᵥ z), Submodule.mem_map.2 ⟨lZ0 D A P0 ψ0 Zs i t *ᵥ z, Submodule.mem_map.2 ⟨z, hz, rfl⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h1` using `hθ (lZ0 D A P0 ψ0 Zs i t *ᵥ z)`. Use `erw [hPE] at h1`.
+
+Use `(hj _).trans ?_` and prove the remaining obligations. Conclude with `h1.symm`. Unfold `Idx.IjIdx`. Rewrite using `[hth, hl, SkeletonIndexLemmas.lidx_map _ _ eW.injective]`. Both sides reduce to the same expression.
+-/
 theorem ijIdx_eq (D : D7) {G : Type} [Group G] [Fintype G] {Pl0 T : Type} (A : FamIn D.what₂.LL G Pl0 T D.R.m)
     (P0 : Subgroup G) (ψ0 : P0 →* D.what₂.LLˣ) (Zs : DefSub A.fam.amb) (tup : T → D.what₂.Tup)
     (eMt : ∀ (i : Fin D.R.m) (t : T), (Fin (lDim D A P0 ψ0 i t) → D.what₂.LL) ≃ₗ[D.what₂.LL] D.what₂.MtL (tup t) ((i : ℕ) + 1))
@@ -61,6 +74,17 @@ theorem ijIdx_eq (D : D7) {G : Type} [Group G] [Fintype G] {Pl0 T : Type} (A : F
   rw [hth, hl, SkeletonIndexLemmas.lidx_map _ _ eW.injective]
   rfl
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z Xd JM hP hH hM hI`. Take `⟨-, hθ⟩` from `GlobalTheory.T.liftCuspFormSpace_thetaMap_eq_data D G Pl0 I0 T A3 Ks R F cG X0 Y Z hP hH`. Establish `hZ0` using `GlobalTheory.T.zeroSubspace_spanned_by_dataZeroSubspace_lifts D G Pl0 I0 T A3 Ks R F cG X0 Y Z hP hH`. Establish `hok` using `hH.ok.ok2`. Establish `hB : ∀ i t, BlockHyp (A3.A.fam.L i t) (A3.A.fam.lvlA F.P0 F.ψ0) A3.A.fam.v0 1` using `fun i t => ⟨hok.conj, hok.irr, hok.lifts i t⟩`.
+
+Establish `hOP : ∀ i t, Formalism.DivisionValues.IsOrthProj (lH D A3.A F.P0 F.ψ0 i t) (lZ0 D A3.A F.P0 F.ψ0 (A3.fam3.toSub2 (zsOf R F)) i t) (lPrj D A3.A F.P0 F.ψ0 (A3.fam3.toSub2 (zsOf R F)) i t)` using `fun i t => BlockDat.lf_l_proj (Z := (A3.fam3.toSub2 (zsOf R F)).Zl i t) (hB i t)`. Establish `hT` using `fun i t => GlobalTheory.T.lattice_Tj_eq_image_of_coordinate_lattice D A3.A F.P0 F.ψ0 (A3.fam3.toSub2 (zsOf R F)) Y.tup Y.eMt i t (hOP i t) (Y.formsL i t) (Y.latL i t) (hZ0 i t) (fun x => by`. Establish `e : ∀ v, lPrj D A3.A F.P0 F.ψ0 (A3.fam3.toSub2 (zsOf R F)) i t *ᵥ (lZ0 D A3.A F.P0 F.ψ0 (A3.fam3.toSub2 (zsOf R F)) i t *ᵥ v) = v` using `fun v => by rw [Matrix.mulVec_mulVec]; erw [(hOP i t).1]; exact Matrix.one_mulVec v`. Establish `h2` using `hθ i t (lZ0 D A3.A F.P0 F.ψ0 (A3.fam3.toSub2 (zsOf R F)) i t *ᵥ (lPrj D A3.A F.P0 F.ψ0 (A3.fam3.toSub2 (zsOf R F)) i t *ᵥ x))`. Use `erw [e] at h2`.
+
+Conclude with `(hθ i t x).trans h2.symm)`. Use `⟨fun i t w => ?_, fun i t w => ?_, fun i w => ?_⟩` and prove the remaining obligations. Rewrite using `[hI.Ij_def _ _ _ (by omega) (by omega)]`. Conclude with `ijIdx_eq D A3.A F.P0 F.ψ0 (A3.fam3.toSub2 (zsOf R F)) Y.tup Y.eMt (A3.indefDown (s0Of R F)) Xd Z.jW i t (JM.eW i) (hOP i t) (hθ i t) (hM.j_eq i) (hM.hlat i).lat (hT i t) w`. Rewrite using `[hI.jw_def _ _ _ (by omega) (by omega)]`.
+
+Conclude with `GlobalTheory.T.lattice_jw_index_eq_concrete_lift_index D A3.A F.P0 F.ψ0 (A3.fam3.toSub2 (zsOf R F)) Y.tup Y.eMt i t (hOP i t) (Y.formsL i t) (BlockDat.lf_lE_form (hB i t)) (BlockDat.lf_Tl_isLattice (hB i t)).span_eq_top (hT i t) w`. Rewrite using `[Z.etaJ]`. Distinguish the cases in `h : D.plEq w ∈ R.twPl`. Rewrite using `[if_pos h, if_pos (show D.plEq w ∈ (A3.indefDown (s0Of R F)).Tw from h)]`. Both sides reduce to the same expression.
+
+Rewrite using `[if_neg h, if_neg (show D.plEq w ∉ (A3.indefDown (s0Of R F)).Tw from h)]`.
+-/
 theorem numTie_of_read : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : ReadL R F X0 Y) (Xd : DivX D) (JM : MjHIds D A3.A Xd (A3.indefDown (s0Of R F))), Pins R F cG → Holds R F → MjHTie D A3.A Xd (A3.indefDown (s0Of R F)) Z.jW JM → IdxDefs D Xd → NumTie D A3.A (A3.indefDown (s0Of R F)) Y.tup := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z Xd JM hP hH hM hI
   obtain ⟨-, hθ⟩ := GlobalTheory.T.liftCuspFormSpace_thetaMap_eq_data D G Pl0 I0 T A3 Ks R F cG X0 Y Z hP hH

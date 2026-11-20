@@ -14,6 +14,21 @@ open NumberField Formalism.MainNotions.ShortIntervalPrimes GlobalTheory.RayZeta 
 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel
 
+/- English proof (translation)
+Proceed by induction on `I using Finset.induction_on with`. Consider the case `empty`. Use `⟨Unit, inferInstance, fun _ => [], fun _ => w, fun _ => GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.GoodBdd.bddW_of_periodic r l w hl (fun i m => hw.1 m i), fun _ i _ => ⟨⟨fun m => hw.1 m i, fun m => hw.2 m i⟩, by simp⟩, fun _ i hi => absurd hi (by simp), fun g _ => by …` and prove the remaining obligations. Consider the case `insert a I ha ih`. Take `⟨Q, _, cs, u, hb, hg, hs, hid⟩` from `ih`.
+
+Use `choose u' h1 h2 h3 h4 h5 using fun q => GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.OneVar.abel_oneVar r l N a (u q) hl (hg q a ha).1 (hb q)`. Use `⟨Q × Fin (N + 1), inferInstance, fun p => List.replicate (p.2 : ℕ) a ++ cs p.1, fun p => u' p.1 p.2, fun p => h1 p.1 p.2, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨q, c⟩ k hk`. Establish `hka : k ≠ a` using `fun h => hk (h ▸ Finset.mem_insert_self _ _)`. Establish `hkI : k ∉ I` using `fun h => hk (Finset.mem_insert_of_mem h)`.
+
+Use `⟨h3 q c k hka (hg q k hkI).1, ?_⟩` and prove the remaining obligations. Simplify using `[List.count_append, List.count_replicate, (hg q k hkI).2, hka.symm]`. Introduce and unpack `⟨q, c⟩ k hk`. Distinguish the cases in `hka : k = a`. Substitute `hka` using the available equality.
+
+Establish `h0 : (cs q).count k = 0` using `(hg q k ha).2`. Break down `h2 q c with h | h` into its components or cases. Use `left`. Simplify using `[List.count_append, h0, h]`. Conclude with `Or.inr h`.
+
+Establish `hkI : k ∈ I` using `(Finset.mem_insert.1 hk).resolve_left hka`. Establish `hak : a ≠ k` using `fun h => hka h.symm`. Break down `hs q k hkI with h | h` into its components or cases. Use `left`. Simplify using `[List.count_append, List.count_replicate, hak, h]`.
+
+Conclude with `Or.inr (h4 q c k hka h)`. Introduce `g hgs`. Rewrite using `[hid g hgs, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[h5 q _ (GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel.summable_DL r (cs q) g hgs)]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [DL, List.foldr_append]`.
+-/
 theorem expansion_on_finset (r l N : ℕ) (w : (Fin r → ℕ) → ℚ) (hl : 0 < l) (hw : GoodWeight l w)
     (I : Finset (Fin r)) :
     ∃ (Q : Type) (_ : Fintype Q) (cs : Q → List (Fin r)) (u : Q → (Fin r → ℕ) → ℚ),
@@ -59,6 +74,9 @@ theorem expansion_on_finset (r l N : ℕ) (w : (Fin r → ℕ) → ℚ) (hl : 0 
       refine Finset.sum_congr rfl fun c _ => ?_
       simp only [DL, List.foldr_append]
 
+/- English proof (translation)
+Introduce `r l N w hl hw`. Take `⟨Q, iQ, cs, u, hb, -, hs, hid⟩` from `expansion_on_finset r l N w hl hw Finset.univ`. Conclude with `⟨Q, iQ, cs, u, hb, fun q i => hs q i (Finset.mem_univ i), hid⟩`.
+-/
 theorem expansion_all_variables : ∀ (r l N : ℕ) (w : (Fin r → ℕ) → ℚ), 0 < l → GoodWeight l w →
     ∃ (Q : Type) (_ : Fintype Q) (cs : Q → List (Fin r)) (u : Q → (Fin r → ℕ) → ℚ),
       (∀ q, BddW (u q)) ∧ (∀ q i, (cs q).count i = N ∨ ∀ m, m i ≠ 0 → u q m = 0) ∧

@@ -21,6 +21,49 @@ open GlobalTheory.Cartier
 
 namespace GlobalTheory.VertDivisor
 
+/- English proof (translation)
+Introduce `k _ X _ _ p D hX l _ z hz`. Establish `hl0 : (l : ℤ) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Establish `hcoh : Order.coheight z = 1`. Assume the negation of the conclusion as `h`. Rewrite `hz` using `[Scheme.ord_eq_zero_of_coheight_neq_one h]`.
+
+Conclude with `lt_irrefl _ hz`. Set `t : X ⟶ Sp ℤ` to `p ≫ spMap (Int.castRingHom k)`. Establish `hlz : (l : ℤ) ∈ (t z).asIdeal`. Assume the negation of the conclusion as `h`. Establish `e : t ⁻¹ᵁ PrimeSpectrum.basicOpen (l : ℤ) = X.basicOpen ((l : ℤ) : Γ(X, ⊤))`.
+
+Rewrite using `[← basicOpen_eq_of_affine (R := .of ℤ) (l : ℤ), Scheme.preimage_basicOpen_top, eq_intCast (Scheme.ΓSpecIso (.of ℤ)).inv.hom, map_intCast]`. Establish `hu : z ∈ X.basicOpen ((l : ℤ) : Γ(X, ⊤))` using `e ▸ (show z ∈ t ⁻¹ᵁ PrimeSpectrum.basicOpen (l : ℤ) from h)`. Establish `hU` using `(unitAt_fnOf_iff (TopologicalSpace.Opens.mem_top z) (TopologicalSpace.Opens.mem_top _) _).2 hu`. Rewrite `hU` using `[map_intCast, Int.cast_natCast]`. Rewrite `hz` using `[hU.ord_eq_zero]`.
+
+Conclude with `lt_irrefl _ hz`. Take `⟨Z, i, _, _, hiz⟩` from `exists_isClosedImmersion_genericPoint z`. Establish `hZl : ((l : ℤ) : Γ(Z, ⊤)) = 0`. Rewrite using `[← ArithBase.mem_asIdeal_iff (i ≫ t), Scheme.Hom.comp_apply, hiz]`. Conclude with `hlz`.
+
+Establish `: CharP Γ(Z, ⊤) l` using `(CharP.charP_iff_prime_eq_zero (Fact.out : l.Prime)).2 (by simpa using hZl)`. Use `⟨Z, i, inferInstance, inferInstance, ZMod.algebra _ l, hiz, ?_⟩` and prove the remaining obligations. Establish `hrange : Set.range i = closure {z}`. Establish `h₁` using `(genericPoint_spec Z).image i.continuous`. Rewrite `h₁` using `[Set.image_univ, i.isClosedEmbedding.isClosed_range.closure_eq, hiz]`.
+
+Conclude with `h₁.def.symm`. Rewrite using `[← topologicalKrullDim_eq_of_isEmbedding i.isClosedEmbedding.isEmbedding hrange]`. Establish `hgen : genericPoint X ∉ closure ({z} : Set X)`. Introduce `h`. Establish `e : z = genericPoint X` using `((genericPoint_specializes z).antisymm (specializes_iff_mem_closure.2 h)).eq.symm`.
+
+Rewrite `hcoh` using `[e, Order.coheight_eq_zero.2 (fun y _ => genericPoint_specializes y)]`. Conclude with `zero_ne_one hcoh`. Establish `hX1 : topologicalKrullDim (Set.univ : Set X) = (D + 1 : ℕ)` using `(topologicalKrullDim_eq_of_isEmbedding Topology.IsEmbedding.id Set.range_id).trans hX.dim_eq`. Establish `hup : topologicalKrullDim (closure ({z} : Set X)) + 1 ≤ (D + 1 : ℕ)` using `hX1 ▸ topologicalKrullDim_add_one_le isClosed_closure isClosed_univ fun x hx => ⟨genericPoint X, trivial, hgen, genericPoint_specializes x⟩`. Take `⟨N, jN, _, hjN⟩` from `hX.isProjOver`.
+
+Use `isProper_str k N` as an intermediate fact. Establish `: IsProper p` using `hjN ▸ inferInstance`. Establish `: IsFinite (spMap (Int.castRingHom k))` using `(IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 hX.finite)`. Establish `: LocallyOfFiniteType t` using `inferInstance`. Establish `: Flat t` using `hX.flat`.
+
+Take `⟨A, _, _, instA, _, _, j, _, ⟨a, ha⟩, hjt, hA⟩` from `exists_affine_chart_trdeg_eq t z`. Take `rfl : instA = Ring.toIntAlgebra A` from `Subsingleton.elim _ _`. Establish `: CharZero A` using `⟨fun m n h => Nat.cast_injective (R := ℤ) (FaithfulSMul.algebraMap_injective ℤ A (by simpa using h))⟩`. Take `⟨d, hd⟩` from `exists_trdeg_eq_natCast ℤ (A := A)`. Establish `hdimX : topologicalKrullDim X ≤ (d + 1 : ℕ)`.
+
+Use `topologicalKrullDim_le_of_forall_exists_isOpen fun x => ?_` and prove the remaining obligations. Take `⟨B, _, _, _, _, _, j', _, ⟨b, rfl⟩, -, hB⟩` from `exists_affine_chart_trdeg_eq t x`. Use `⟨Set.range j', j'.isOpenEmbedding.isOpen_range, ⟨b, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[topologicalKrullDim_eq_of_isEmbedding j'.isOpenEmbedding.isEmbedding rfl]`. Use `(PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim B).le.trans ?_` and prove the remaining obligations.
+
+Establish `hdB : Algebra.trdeg ℤ B = d` using `hB.trans (hA.symm.trans hd)`. Establish `hZ1 : ringKrullDim ℤ ≤ 1`. Conclude with `Ring.krullDimLE_iff.mp (inferInstance : Ring.KrullDimLE 1 ℤ)` after adjusting the coercions. Use `(IntModel.ringKrullDim_le_add (O := ℤ) ℚ).trans ?_` and prove the remaining obligations. Rewrite using `[ringKrullDim_genericFibre_eq ℤ ℚ hdB]`.
+
+Use `(add_le_add hZ1 (le_refl ((d : ℕ) : WithBot ℕ∞))).trans_eq ?_` and prove the remaining obligations. Use `push_cast`. Conclude with `add_comm _ _`. Establish `hDd : D ≤ d`. Use `hX.dim_eq.symm.trans_le hdimX` as an intermediate fact.
+
+Establish `: ((D + 1 : ℕ) : WithBot ℕ∞) ≤ ((d + 1 : ℕ) : WithBot ℕ∞)` using `this`. Conclude with `Nat.le_of_succ_le_succ (by exact_mod_cast this)`. Use `set q := a.asIdeal with hqdef`. Establish `hlq : (l : A) ∈ q`. Rewrite `hlz` using `[← ha, ← Scheme.Hom.comp_apply, hjt]`.
+
+Establish `h' : algebraMap ℤ A (l : ℤ) ∈ a.asIdeal` using `hlz`. Simplify using `using h'`. Establish `hmin : q ∈ (Ideal.span {(l : A)}).minimalPrimes`. Use `⟨⟨a.isPrime, (Ideal.span_singleton_le_iff_mem _).2 hlq⟩, fun q' hq' hle => ?_⟩` and prove the remaining obligations. Take `⟨hq'p, hlq'⟩` from `hq'`.
+
+Assume the negation of the conclusion as `hne`. Establish `hbot : (⊥ : Ideal A) ≠ q'`. Introduce `h0`. Establish `h1 : (l : A) ∈ q'` using `(Ideal.span_singleton_le_iff_mem _).1 hlq'`. Rewrite `h1` using `[← h0, Ideal.mem_bot]`.
+
+Conclude with `hl0 (FaithfulSMul.algebraMap_injective ℤ A (by simpa using h1))`. Set `b' : PrimeSpectrum A` to `⟨q', hq'p⟩`. Set `g : PrimeSpectrum A` to `⟨⊥, Ideal.isPrime_bot⟩`. Establish `hsp (u v : PrimeSpectrum A) : j u ⤳ j v ↔ u.asIdeal ≤ v.asIdeal` using `j.isOpenEmbedding.isInducing.specializes_iff.trans (PrimeSpectrum.le_iff_specializes u v).symm`. Establish `h₁ : z < j b'`.
+
+Rewrite using `[← ha]`. Conclude with `⟨(hsp b' a).2 hle, fun h => hne ((hsp a b').1 h)⟩`. Establish `h₂ : j b' < j g` using `⟨(hsp g b').2 bot_le, fun h => hbot (le_bot_iff.1 ((hsp b' g).1 h)).symm⟩`. Establish `h₃` using `Order.coheight_add_one_le h₁`. Establish `h₄` using `Order.coheight_add_one_le h₂`.
+
+Rewrite `h₃` using `[hcoh]`. Establish `h₅ : (1 : ℕ∞) + 1 ≤ 1` using `(add_le_add_left (le_add_self.trans h₄) 1).trans h₃`. Conclude with `absurd h₅ (by decide)`. Establish `: q.IsPrime` using `a.isPrime`. Establish `hq` using `GlobalTheory.T.krull_dim_quotient_minimal_prime_over_l A l q hmin d hd`.
+
+Establish `hlow : topologicalKrullDim (Set.range j ∩ closure {j a} : Set X) ≤ topologicalKrullDim (closure ({z} : Set X))`. Rewrite using `[ha]`. Conclude with `(Topology.IsEmbedding.inclusion Set.inter_subset_right).isInducing.topologicalKrullDim_le`. Rewrite `hlow` using `[topologicalKrullDim_range_inter_closure_eq j a, hq]`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e : ℕ, topologicalKrullDim (closure ({z} : Set X)) = e :=`.
+
+Establish `⟨e, he⟩` using `hX.exists_dim_eq i`. Use the proof step `⟨e, (topologicalKrullDim_eq_of_isEmbedding i.isClosedEmbedding.isEmbedding hrange).trans he⟩`. Rewrite `hlow`, `hup`, the goal using `[he]`. Establish `h1 : d ≤ e` using `by exact_mod_cast hlow`. Establish `h2 : e + 1 ≤ D + 1` using `by exact_mod_cast hup`.
+
+Establish `: e = D` using `by omega`. Rewrite using `[this]`.
+-/
 theorem exists_vertical_prime_divisor : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X]
     [IsLocallyNoetherian X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (l : ℕ) [Fact l.Prime] (z : X),
     0 < Scheme.ord ((l : X.functionField)) z → ∃ (Z : Scheme.{0}) (i : Z ⟶ X) (_ : IsClosedImmersion i)

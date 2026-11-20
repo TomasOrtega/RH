@@ -13,14 +13,29 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 def bb (n N : ℕ) : Fin N → Bool := fun i => decide (n ≤ (i : ℕ))
 
+/- English proof (translation)
+Simplify using `[bb]`.
+-/
 theorem bb_eq_true {n N : ℕ} (i : Fin N) : bb n N i = true ↔ n ≤ (i : ℕ) := by
   simp [bb]
 
+/- English proof (translation)
+Simplify using `[bb]`.
+-/
 theorem bb_eq_false {n N : ℕ} (i : Fin N) : bb n N i = false ↔ (i : ℕ) < n := by
   simp [bb]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Take `⟨hP, hD⟩` from `GroundTheory.Automorphic.Parabolic.mem_unipotentRadical.1 hg`. Distinguish the cases in `he : bb n N i = bb n N j`. Conclude with `hD i j he`. Establish `hji : (j : ℕ) < n ∧ n ≤ (i : ℕ)`. Distinguish the cases in `hi : n ≤ (i : ℕ)`.
+
+Use `⟨?_, hi⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hj`. Conclude with `he (((bb_eq_true i).2 hi).trans ((bb_eq_true j).2 (by omega)).symm)`. It suffices to derive a contradiction. Distinguish the cases in `hj : n ≤ (j : ℕ)`.
+
+Conclude with `hij ⟨by omega, hj⟩`. Conclude with `he (((bb_eq_false i).2 (by omega)).trans ((bb_eq_false j).2 (by omega)).symm)`. Establish `hlt : bb n N j < bb n N i`. Rewrite using `[(bb_eq_false j).2 hji.1, (bb_eq_true i).2 hji.2]`. Evaluate the decidable proposition.
+
+Establish `h0 : (g : Matrix (Fin N) (Fin N) k) i j = 0` using `hP hlt`. Rewrite using `[h0, one_apply_ne (fun e => by rw [e] at hji; omega)]`.
+-/
 theorem unip_entries {n N : ℕ} {g : GL (Fin N) k}
     (hg : g ∈ GroundTheory.Automorphic.Parabolic.unipotentRadical k N (bb n N)) (i j : Fin N)
     (hij : ¬ ((i : ℕ) < n ∧ n ≤ (j : ℕ))) :
@@ -44,6 +59,11 @@ theorem unip_entries {n N : ℕ} {g : GL (Fin N) k}
     rw [h0, one_apply_ne (fun e => by rw [e] at hji; omega)]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Introduce `g hg`. Establish `hE` using `unip_entries hg`. Use `Subgroup.mem_inf.2 ⟨(mem_unipB k).2 ⟨fun i j hji => ?_, fun i => ?_⟩, (GlobalTheory.CompanionTheory.BZMirStep.mem_colFix_iff _).2 fun i j hj => hE i j (by omega)⟩` and prove the remaining obligations. Use `Fin.lt_def.1 hji` as an intermediate fact. Rewrite using `[hE i j (by omega), one_apply_ne (ne_of_gt hji)]`.
+
+Rewrite using `[hE i i (by omega), one_apply_eq]`.
+-/
 theorem unip_le_derUnip {n N : ℕ} :
     GroundTheory.Automorphic.Parabolic.unipotentRadical k N (bb n N) ≤ derUnip k N n := by
   intro g hg
@@ -55,6 +75,11 @@ theorem unip_le_derUnip {n N : ℕ} :
   · rw [hE i i (by omega), one_apply_eq]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Establish `hE` using `unip_entries hu`. Use `show Circle.toUnits _ = 1`. Rewrite using `[Finset.sum_eq_zero, AddChar.map_zero_eq_one, map_one]`. Introduce `p hp`. Take `⟨h1, h2⟩` from `(Finset.mem_filter.1 hp).2`.
+
+Use `(hE p.1 p.2 (by omega)).trans (one_apply_ne fun e => ?_)` and prove the remaining obligations. Rewrite `h1` using `[e]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem derChar_unip {n N : ℕ} (ψ : AddChar k Circle) (u : derUnip k N n)
     (hu : (u : GL (Fin N) k) ∈ GroundTheory.Automorphic.Parabolic.unipotentRadical k N (bb n N)) :
     derChar k ψ N n u = 1 := by
@@ -68,6 +93,9 @@ theorem derChar_unip {n N : ℕ} (ψ : AddChar k Circle) (u : derUnip k N n)
   omega
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨⟨u, unip_le_derUnip hu⟩, w, by rw [derChar_unip ψ _ hu]; simp⟩`.
+-/
 theorem sub_mem_twKer {n N : ℕ} (ψ : AddChar k Circle) {V : Type} [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin N) k) V) (u : GL (Fin N) k)
     (hu : u ∈ GroundTheory.Automorphic.Parabolic.unipotentRadical k N (bb n N)) (w : V) :
@@ -77,6 +105,15 @@ theorem sub_mem_twKer {n N : ℕ} (ψ : AddChar k Circle) {V : Type} [AddCommGro
 def dd (n N : ℕ) (x : kˣ) : Fin N → k := fun i => if (i : ℕ) < n then (x : k) else 1
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨a, rfl⟩` from `(stdSum h).surjective i`. Take `⟨b, rfl⟩` from `(stdSum h).surjective j`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Rewrite using `[GlobalTheory.CompanionTheory.BZMirJac.emb_inl_inl]`.
+
+Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[dd, GeneralLinearGroup.scalar]`. Rewrite using `[diagonal_apply_ne _ (fun e => hab (Sum.inl_injective ((stdSum h).injective e)))]`. Simplify using `[GeneralLinearGroup.scalar, hab]`.
+
+Rewrite using `[GlobalTheory.CompanionTheory.BZMirJac.emb_inl_inr, diagonal_apply_ne _ (fun e => Sum.inl_ne_inr ((stdSum h).injective e))]`. Rewrite using `[GlobalTheory.CompanionTheory.BZMirJac.emb_inr_inl, diagonal_apply_ne _ (fun e => Sum.inr_ne_inl ((stdSum h).injective e))]`. Rewrite using `[GlobalTheory.CompanionTheory.BZMirJac.emb_inr_inr]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+
+Simplify using `[dd]`. Rewrite using `[diagonal_apply_ne _ (fun e => hab (Sum.inr_injective ((stdSum h).injective e)))]`. Simplify using `[hab]`.
+-/
 theorem emb_scalar {n t N : ℕ} (h : n + t = N) (x : kˣ) :
     ((emb₂ k (stdSum h) (GeneralLinearGroup.scalar (Fin n) x, 1) : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) =
       diagonal (dd n N x) := by
@@ -102,6 +139,9 @@ theorem emb_scalar {n t N : ℕ} (h : n + t = N) (x : kˣ) :
       simp [hab]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Rewrite using `[GroundTheory.Automorphic.Parabolic.mem_levi]`. Introduce `i j hij`. Establish `hne : i ≠ j` using `fun e => hij (e ▸ rfl)`. Use `show ((emb₂ k (stdSum h) (GeneralLinearGroup.scalar (Fin n) x, 1) : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) i j = 0`. Rewrite using `[emb_scalar, diagonal_apply_ne _ hne]`.
+-/
 theorem emb_scalar_mem_levi {n t N : ℕ} (h : n + t = N) (x : kˣ) :
     emb₂ k (stdSum h) (GeneralLinearGroup.scalar (Fin n) x, 1) ∈ GroundTheory.Automorphic.Parabolic.levi k N (bb n N) := by
   rw [GroundTheory.Automorphic.Parabolic.mem_levi]
@@ -112,6 +152,13 @@ theorem emb_scalar_mem_levi {n t N : ℕ} (h : n + t = N) (x : kˣ) :
   rw [emb_scalar, diagonal_apply_ne _ hne]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, emb_scalar]`. Use extensionality with `i j`. Rewrite using `[diagonal_mul, mul_diagonal]`. Distinguish the cases in `he : bb n N i = bb n N j`.
+
+Establish `hd : dd n N x i = dd n N x j`. Distinguish the cases in `hi : (i : ℕ) < n`. Establish `hj : (j : ℕ) < n` using `(bb_eq_false j).1 (he.symm.trans ((bb_eq_false i).2 hi))`. Simplify using `[dd, hi, hj]`. Establish `hj : ¬ (j : ℕ) < n` using `fun hj => hi ((bb_eq_false i).1 (he.trans ((bb_eq_false j).2 hj)))`.
+
+Simplify using `[dd, hi, hj]`. Rewrite using `[hd, mul_comm]`. Establish `h0 : (y : Matrix (Fin N) (Fin N) k) i j = 0` using `GroundTheory.Automorphic.Parabolic.mem_levi.1 hy i j he`. Rewrite using `[h0, mul_zero, zero_mul]`.
+-/
 theorem emb_scalar_comm {n t N : ℕ} (h : n + t = N) (x : kˣ) (y : GL (Fin N) k)
     (hy : y ∈ GroundTheory.Automorphic.Parabolic.levi k N (bb n N)) :
     emb₂ k (stdSum h) (GeneralLinearGroup.scalar (Fin n) x, 1) * y =
@@ -132,6 +179,21 @@ theorem emb_scalar_comm {n t N : ℕ} (h : n + t = N) (x : kˣ) (y : GL (Fin N) 
   · have h0 : (y : Matrix (Fin N) (Fin N) k) i j = 0 := GroundTheory.Automorphic.Parabolic.mem_levi.1 hy i j he
     rw [h0, mul_zero, zero_mul]
 
+/- English proof (translation)
+Take `⟨v, rfl⟩` from `hp a`. Establish `hF : GroundTheory.Automorphic.IsAdmissible π` using `(PositivityTheory.rg.gu.whit.isAdmissible_iff π).1 hπ`. Establish `hA` using `GroundTheory.Automorphic.Parabolic.isAdmissible_jacquetRep (β := bb n N) hF`. Set `J` to `GroundTheory.Automorphic.Parabolic.jacquetAction k N (bb n N) π`. Establish `hpu : ∀ u : GroundTheory.Automorphic.Parabolic.unipotentRadical k N (bb n N), p ∘ₗ (π.comp (GroundTheory.Automorphic.Parabolic.unipotentRadical k N (bb n N)).subtype) u = p`.
+
+Introduce `u`. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Use `show p (π u w) = p w`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `hk (sub_mem_twKer ψ π u u.2 w)`.
+
+Set `pb : GroundTheory.Automorphic.Parabolic.JacquetModule k N (bb n N) π →ₗ[ℂ] X` to `Representation.Coinvariants.lift _ p hpu`. Establish `hpb : ∀ w, pb (Representation.Coinvariants.mk _ w) = p w` using `fun w => Representation.Coinvariants.lift_mk _ p hpu w`. Set `w₀ : GroundTheory.Automorphic.Parabolic.JacquetModule k N (bb n N) π` to `Representation.Coinvariants.mk _ v`. Set `KM : ℕ → Subgroup (GroundTheory.Automorphic.Parabolic.levi k N (bb n N))` to `fun m => (GroundTheory.Automorphic.GLnLocal.congruenceSubgroup k N m).subgroupOf (GroundTheory.Automorphic.Parabolic.levi k N (bb n N))`. Take `⟨m, hm⟩` from `GroundTheory.Automorphic.Parabolic.exists_subgroupOf_congruenceSubgroup_subset (F := k) (n := N) (β := bb n N) ((hA.1 w₀).mem_nhds (one_mem (GroundTheory.Automorphic.stabilizerOf _ w₀)))`.
+
+Establish `hfix : w₀ ∈ GroundTheory.Automorphic.fixedVectors J (KM m)`. Establish `: w₀ ∈ GroundTheory.Automorphic.fixedVectors (GroundTheory.Automorphic.Parabolic.jacquetRep k N (bb n N) π) (KM m)` using `fun x hx => hm hx`. Rewrite `this` using `[GroundTheory.Automorphic.Parabolic.fixedVectors_jacquetRep_congruenceSubgroup]`. Then use the resulting hypothesis. Establish `hfin : FiniteDimensional ℂ (GroundTheory.Automorphic.fixedVectors J (KM m))`. Use `hA.2 (KM m) (GroundTheory.Automorphic.Parabolic.isCompact_subgroupOf_levi (GroundTheory.Automorphic.GLnLocal.isCompact_congruenceSubgroup k N m)) (GroundTheory.Automorphic.Parabolic.isOpen_subgroupOf_levi (GroundTheory.Automorphic.GLnLocal.isOpen_congruenceSubgroup k N m))` as an intermediate fact.
+
+Rewrite `this` using `[GroundTheory.Automorphic.Parabolic.fixedVectors_jacquetRep_congruenceSubgroup]`. Then use the resulting hypothesis. Use `⟨(GroundTheory.Automorphic.fixedVectors J (KM m)).map pb, inferInstance, ⟨w₀, hfix, hpb v⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `x _ ⟨y, hy, rfl⟩`. Take `⟨w, rfl⟩` from `Representation.Coinvariants.mk_surjective _ y`. Set `z : GroundTheory.Automorphic.Parabolic.levi k N (bb n N)` to `⟨_, emb_scalar_mem_levi h x⟩`.
+
+Use `⟨J z (Representation.Coinvariants.mk _ w), ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Establish `hc : g * z = z * g` using `Subtype.ext (emb_scalar_comm h x g g.2).symm`. Use `show J g (J z _) = J z _`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hc, map_mul, Module.End.mul_apply]`.
+
+Conclude with `congrArg _ (hy g hg)`. Use `show pb (Representation.Coinvariants.mk _ (π _ w)) = _`. Rewrite using `[hpb, hpb, hi]`.
+-/
 theorem lfin_of_quot {n t N : ℕ} (h : n + t = N) (ψ : AddChar k Circle) {V X : Type} [AddCommGroup V]
     [Module ℂ V] [AddCommGroup X] [Module ℂ X] (π : Representation ℂ (GL (Fin N) k) V)
     (hπ : GlobalTheory.PRep.IsAdmissible π) (ρ : Representation ℂ (GL (Fin n) k) X) (p : V →ₗ[ℂ] X)
@@ -184,6 +246,13 @@ theorem lfin_of_quot {n t N : ℕ} (h : n + t = N) (ψ : AddChar k Circle) {V X 
   · show pb (Representation.Coinvariants.mk _ (π _ w)) = _
     rw [hpb, hpb, hi]
 
+/- English proof (translation)
+Introduce `v`. Establish `hF : GroundTheory.Automorphic.IsAdmissible A.ρ` using `(PositivityTheory.rg.gu.whit.isAdmissible_iff A.ρ).1 hA`. Establish `hO : {g : GL (Fin n) k | A.ρ g v = v} ∈ nhds (1 : GL (Fin n) k)` using `(hA.1 v).mem_nhds (by simp)`. Take `⟨m, -, hm⟩` from `(GroundTheory.Automorphic.GLnLocal.hasBasis_nhds_one k n).mem_iff.1 hO`. Set `K` to `GroundTheory.Automorphic.GLnLocal.congruenceSubgroup k n m`.
+
+Establish `hfin : FiniteDimensional ℂ (GroundTheory.Automorphic.fixedVectors A.ρ K)` using `hF.2 K (GroundTheory.Automorphic.GLnLocal.isCompact_congruenceSubgroup k n m) (GroundTheory.Automorphic.GLnLocal.isOpen_congruenceSubgroup k n m)`. Use `⟨GroundTheory.Automorphic.fixedVectors A.ρ K, hfin, fun g hg => hm hg, ?_⟩` and prove the remaining obligations. Introduce `x u hu g hg`. Establish `hc : g * sc n x = sc n x * g`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[Units.val_mul, Units.val_mul]`. Use `show (g : Matrix (Fin n) (Fin n) k) * scalar (Fin n) (x : k) = scalar (Fin n) (x : k) * g`. Conclude with `((scalar_commute (x : k) (fun r => Commute.all _ r) (g : Matrix (Fin n) (Fin n) k))).symm.eq`. Use `show A.ρ g (A.ρ (sc n x) u) = A.ρ (sc n x) u`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hc, map_mul, Module.End.mul_apply, hu g hg]`.
+-/
 theorem lfin_self {n : ℕ} (A : GRep k n) (hA : GlobalTheory.PRep.IsAdmissible A.ρ) : LFin A := by
   intro v
   have hF : GroundTheory.Automorphic.IsAdmissible A.ρ := (PositivityTheory.rg.gu.whit.isAdmissible_iff A.ρ).1 hA
@@ -206,6 +275,13 @@ theorem lfin_self {n : ℕ} (A : GRep k n) (hA : GlobalTheory.PRep.IsAdmissible 
 
 variable (k)
 
+/- English proof (translation)
+Introduce `ψ _ n j π _ hA`. Consider the cases of `j with`. Consider the case `zero => exact lfin_self π hA`. Consider the case `succ j`. Introduce `a`.
+
+Take `⟨p, hp, hpk, hpi⟩` from `GlobalTheory.CompanionTheory.BZMirJac.iterPhi_quotient ψ n j (resM k π.ρ)`. Use `lfin_of_quot (rfl : n + (j + 1) = n + j + 1) ψ π.ρ hA (deriv k ψ j π.ρ) p hp ?_ ?_ a` and prove the remaining obligations. Introduce `w hw`. Establish `hw' : w ∈ LinearMap.ker p`. Rewrite using `[hpk, GlobalTheory.CompanionTheory.BZMirDer.twKer_resM_derUnipM]`.
+
+Conclude with `hw`. Conclude with `hw'`. Introduce `g v`. Rewrite using `[← GlobalTheory.CompanionTheory.BZMirJac.iotaM_eq_emb]`. Conclude with `hpi g v`.
+-/
 theorem lfDeriv : LFDeriv k := by
   intro ψ _ n j π _ hA
   cases j with

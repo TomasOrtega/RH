@@ -31,6 +31,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Sl.FrameZero
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (Algebra.linearMap (𝓞 L) (ComplexAt σ))`. Introduce `a b hab`. Establish `h1 : σ (a : L) = σ (b : L)` using `hab`. Conclude with `RingOfIntegers.coe_injective (σ.injective h1)`. Establish `hr` using `Module.Flat.rTensor_preserves_injective_linearMap (M := M) _ hinj`.
+
+Establish `h2 : (Algebra.linearMap (𝓞 L) (ComplexAt σ)).rTensor M ((1 : 𝓞 L) ⊗ₜ[𝓞 L] x) = (Algebra.linearMap (𝓞 L) (ComplexAt σ)).rTensor M 0`. Rewrite using `[LinearMap.rTensor_tmul, map_zero, Algebra.linearMap_apply, map_one, h]`. Establish `h3` using `hr h2`. Establish `h4` using `congrArg (TensorProduct.lid (𝓞 L) M) h3`. Simplify using `using h4`.
+-/
 theorem tmul_one_injective {L : Type} [Field L] [NumberField L] (σ : L →+* ℂ)
     (M : Type) [AddCommGroup M] [Module (𝓞 L) M] [Module.Projective (𝓞 L) M] (x : M)
     (h : (1 : ComplexAt σ) ⊗ₜ[𝓞 L] x = 0) : x = 0 := by
@@ -46,6 +51,11 @@ theorem tmul_one_injective {L : Type} [Field L] [NumberField L] (σ : L →+* �
   have h4 := congrArg (TensorProduct.lid (𝓞 L) M) h3
   simpa using h4
 
+/- English proof (translation)
+Apply `C.definite` to reduce the goal to its premises. Establish `him : (C.inner v v : ℂ).im = 0`. Establish `h1` using `C.conj_inner_symm v v`. Establish `h2` using `congrArg Complex.im h1`. Simplify using `only [Complex.conj_im] at h2`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Complex.ext h him`.
+-/
 theorem core_eq_zero {V : Type*} [AddCommGroup V] [Module ℂ V] (C : InnerProductSpace.Core ℂ V)
     (v : V) (h : (C.inner v v : ℂ).re = 0) : v = 0 := by
   apply C.definite
@@ -56,6 +66,11 @@ theorem core_eq_zero {V : Type*} [AddCommGroup V] [Module ℂ V] (C : InnerProdu
     linarith
   exact Complex.ext h him
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Apply `hx` to reduce the goal to its premises. Establish `hherm : a.herm 0 0 = 0` using `by simp [ArchFrame.herm]`. Rewrite `hlen` using `[hherm, Complex.zero_re, mul_zero]`. Establish `hl : D.len σ x = 0` using `by simpa using hlen`.
+
+Establish `hnn : 0 ≤ (((D.B.metric.form σ).inner ((1 : ComplexAt σ) ⊗ₜ[𝓞 L] x) ((1 : ComplexAt σ) ⊗ₜ[𝓞 L] x) : ℂ)).re` using `(D.B.metric.form σ).re_inner_nonneg _`. Establish `hle` using `Real.sqrt_eq_zero'.mp hl`. Conclude with `tmul_one_injective σ D.B.carrier x (core_eq_zero _ _ (le_antisymm hle hnn))`.
+-/
 theorem coord_ne_zero (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (L : Type)
     [Field L] [NumberField L] (D : PPData H L) (σ : L →+* ℂ) (a : D.Frame σ) (x : D.B.carrier)
     (c : Fin D.g → ℂ) (hlen : D.len σ x ^ 2 = Real.pi * (a.herm c c).re) (hx : x ≠ 0) : c ≠ 0 := by

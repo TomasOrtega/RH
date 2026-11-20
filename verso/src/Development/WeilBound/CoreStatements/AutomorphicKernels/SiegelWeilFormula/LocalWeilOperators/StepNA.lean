@@ -13,6 +13,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 section Alg
 
+/- English proof (translation)
+Establish `h1 : frᵀ * J * fr.map star = (ζ⁻¹ * s) • (1 : Matrix (Fin m) (Fin m) ℂ)`. Rewrite using `[mul_smul, ← hfr, smul_smul, inv_mul_cancel₀ hζ, one_smul]`. Establish `hmap : (fr * u.map star).map star = fr.map star * u`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, star_sum]`.
+
+Rewrite using `[hmap, Matrix.transpose_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul]`. Both sides reduce to the same expression.
+-/
 theorem gram_loc {m n : ℕ} (fr : Matrix (Fin m) (Fin m) ℂ) (J : Matrix (Fin m) (Fin m) ℂ) (ζ s : ℂ) (hζ : ζ ≠ 0)
     (hfr : ζ • (frᵀ * J * fr.map star) = s • 1) (u : Matrix (Fin m) (Fin n) ℂ) :
     (fr * u.map star)ᵀ * J * (fr * u.map star).map star = (ζ⁻¹ * s) • (uᴴ * u) := by
@@ -28,6 +33,11 @@ theorem gram_loc {m n : ℕ} (fr : Matrix (Fin m) (Fin m) ℂ) (J : Matrix (Fin 
         rw [h1, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul]
         rfl
 
+/- English proof (translation)
+Establish `h : star (A * B).trace = (A * B).trace`. Rewrite using `[← Matrix.trace_conjTranspose, Matrix.conjTranspose_mul, hA, hB, Matrix.trace_mul_comm]`. Establish `him : (A * B).trace.im = 0`. Establish `h'` using `congrArg Complex.im h`. Rewrite `h'` using `[Complex.star_def, Complex.conj_im]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Complex.ext (by simp) (by simp [him])`.
+-/
 theorem trace_herm_real {n : ℕ} (A B : Matrix (Fin n) (Fin n) ℂ) (hA : Aᴴ = A) (hB : Bᴴ = B) :
     (((A * B).trace.re : ℝ) : ℂ) = (A * B).trace := by
   have h : star (A * B).trace = (A * B).trace := by

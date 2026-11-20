@@ -7,6 +7,13 @@ noncomputable section
 
 namespace GlobalTheory.OrbFinAf
 
+/- English proof (translation)
+Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := ℤ) x`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hI : Ideal.span {b} ≠ (0 : Ideal ℤ)`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hb0`.
+
+Use `Filter.eventually_cofinite.2 ((Ideal.finite_factors hI).subset fun w hw => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hw ⊢`. Assume the negation of the conclusion as `hd`. Apply `hw` to reduce the goal to its premises. Establish `h1 : w.valuation ℚ (algebraMap ℤ ℚ b) = 1` using `le_antisymm (w.valuation_le_one b) (not_lt.1 fun h => hd ((w.valuation_lt_one_iff_dvd b).1 h))`.
+
+Rewrite using `[map_div₀, h1, div_one]`. Conclude with `w.valuation_le_one a`.
+-/
 theorem rat_valuation_le_one_eventually (x : ℚ) :
     ∀ᶠ w : HeightOneSpectrum ℤ in Filter.cofinite, w.valuation ℚ x ≤ 1 := by
   obtain ⟨a, b, hb, rfl⟩ := IsFractionRing.div_surjective (A := ℤ) x
@@ -24,6 +31,9 @@ theorem rat_valuation_le_one_eventually (x : ℚ) :
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Establish `h` using `(Function.Injective.tendsto_cofinite (f := fun v : AwayP p => v.1) Subtype.val_injective).eventually (rat_valuation_le_one_eventually x)`. Use `filter_upwards [h] with v hv`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v.1 x).trans_le hv`.
+-/
 theorem rat_mem_integers_eventually (x : ℚ) :
     ∀ᶠ v in (Filter.cofinite : Filter (AwayP p)), algebraMap ℚ (Qv v) x ∈ v.1.adicCompletionIntegers ℚ := by
   have h := (Function.Injective.tendsto_cofinite (f := fun v : AwayP p => v.1) Subtype.val_injective).eventually
@@ -43,9 +53,19 @@ def starLin (G : HTGroup p) (R : Type) [CommRing R] [Algebra ℚ R] : (R ⊗[ℚ
     | add x y hx hy =>
       rw [smul_add, map_add, MulOpposite.unop_add, hx, hy, map_add, MulOpposite.unop_add, smul_add]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem starLin_apply (G : HTGroup p) (R : Type) [CommRing R] [Algebra ℚ R] (a : R ⊗[ℚ] G.C) :
     starLin G R a = (starT G.star R a).unop := rfl
 
+/- English proof (translation)
+Introduce `p _ G`. Establish `hs : ∀ᶠ v in (Filter.cofinite : Filter (AwayP p)), ∀ ij : Fin (Module.finrank ℚ G.C) × Fin (Module.finrank ℚ G.C), algebraMap ℚ (Qv v) ((Module.finBasis ℚ G.C).repr (G.star (Module.finBasis ℚ G.C ij.2)).unop ij.1) ∈ v.1.adicCompletionIntegers ℚ` using `Filter.eventually_all.2 fun ij => rat_mem_integers_eventually _`. Use `filter_upwards [hs] with v hv a ha i`. Rewrite using `[← starLin_apply, ← (basV G v).sum_repr a, map_sum, map_sum, Finsupp.finset_sum_apply]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Use `mul_mem (ha j) ?_` and prove the remaining obligations. Establish `hb : basV G v j = (1 : Qv v) ⊗ₜ Module.finBasis ℚ G.C j`. Simplify using `[basV, Algebra.TensorProduct.basis_apply]`. Rewrite using `[hb, starLin_apply, starT_tmul, basV, Algebra.TensorProduct.basis_repr_tmul, one_smul, Finsupp.mapRange_apply]`.
+
+Conclude with `hv (i, j)`.
+-/
 theorem isIntV_star_eventually : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p),
     ∀ᶠ v in (Filter.cofinite : Filter (AwayP p)), ∀ a : Qv v ⊗[ℚ] G.C, IsIntV G v a →
       IsIntV G v (starT G.star (Qv v) a).unop := by

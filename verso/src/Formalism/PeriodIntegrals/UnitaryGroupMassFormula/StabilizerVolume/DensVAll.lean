@@ -6,6 +6,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.Exists
 
 namespace PI.VolStabS
 
+/- English proof (translation)
+The claim follows from `densV_of_gram (gramFilt_of (dxOpen_of secGram_holds))`.
+-/
 theorem densV_holds : DensV :=
   densV_of_gram (gramFilt_of (dxOpen_of secGram_holds))
 

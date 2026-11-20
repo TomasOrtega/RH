@@ -11,24 +11,45 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.BlockResolutionMixedBridge.proof`.
+-/
 theorem BlockResolutionMixedBridge.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BlockResolutionMixedBridge.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BlockResolutionMixedBridge.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.BlockResolutionMixedIntegral.proof BlockResolutionMixedBridge.full BlockResolutionInterpIntegral.full`.
+-/
 theorem BlockResolutionMixedIntegral.full : GroundTheory.Heights₂.Heights.HilbertSamuel.BlockResolutionMixedIntegral.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.BlockResolutionMixedIntegral.proof BlockResolutionMixedBridge.full BlockResolutionInterpIntegral.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionMixedBridge.proof`.
+-/
 theorem ResolutionMixedBridge.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionMixedBridge.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionMixedBridge.proof
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionMixedIntegral.proof ResolutionMixedBridge.full ResolutionInterpIntegral.full`.
+-/
 theorem ResolutionMixedIntegral.full : GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionMixedIntegral.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.ResolutionMixedIntegral.proof ResolutionMixedBridge.full ResolutionInterpIntegral.full
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.pullbackPushforward_holds.proof Closed.Inter.BlockGenFinite Closed.Inter.FibreIsolFinite`.
+-/
 theorem Closed.Inter.pullbackPushforward_holds : GroundTheory.Heights₂.Heights.Inter.pullbackPushforward_holds.Statement :=
   GroundTheory.Heights₂.Heights.Inter.pullbackPushforward_holds.proof Closed.Inter.BlockGenFinite Closed.Inter.FibreIsolFinite
 
+/- English proof (translation)
+The claim follows from `GroundTheory.Heights₂.Heights.Inter.pullbackDensity_holds.proof`.
+-/
 theorem Closed.Inter.pullbackDensity_holds : GroundTheory.Heights₂.Heights.Inter.pullbackDensity_holds.Statement :=
   GroundTheory.Heights₂.Heights.Inter.pullbackDensity_holds.proof
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.ChartRestriction.G.Geo.resBridge`.
+-/
 theorem Closed.ReciprocityTheory.ChartRestriction.G.Geo.ResBridge : ReciprocityTheory.ChartRestriction.G.Geo.ResBridgeStatement :=
   ReciprocityTheory.ChartRestriction.G.Geo.resBridge
 

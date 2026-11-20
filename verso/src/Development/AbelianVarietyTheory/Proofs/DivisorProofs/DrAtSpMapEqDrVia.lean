@@ -16,6 +16,11 @@ open GlobalTheory.Toroidal Formalism.L2.Geo
 
 namespace GlobalTheory.CovHt.Link
 
+/- English proof (translation)
+Substitute `e` using the available equality. Establish `: ψ' = ψ`. Use extensionality with `a`. Rewrite using `[← hψ]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this]`.
+-/
 theorem eq_of_stalkSpecializes {X : Scheme.{0}} {R α : Type} [CommRing R]
     (G : (b : X) → (X.presheaf.stalk b →+* R) → α) {b' b : X} (h : b' ⤳ b) (e : b' = b)
     (ψ' : X.presheaf.stalk b' →+* R) (ψ : X.presheaf.stalk b →+* R)
@@ -29,6 +34,11 @@ theorem eq_of_stalkSpecializes {X : Scheme.{0}} {R α : Type} [CommRing R]
 
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} (Φ : s.Flag) (k : s.Comp)
 
+/- English proof (translation)
+Establish `hb : below (spMap φ ≫ y) = below y` using `Res.below_comp y φ`. Establish `hs : below (spMap φ ≫ y) ⤳ below y` using `hb ▸ specializes_rfl`. Unfold `drAt drVia`. Use `congr 1`. Rewrite using `[Res.valAt_comp]`.
+
+Conclude with `congrArg (fun b => ‖φ (GlobalTheory.TrueGeo.valAt y (f * ((∏ z : Letter S.Dw, (((Φ.C k).gr_spec b).choose_spec.choose_spec.choose z.1 z.2) ^ expo S.Dw (drSym la) z : (Φ.C k).Y.Fnˣ) : (Φ.C k).Y.Fn)))‖) hb`. Conclude with `eq_of_stalkSpecializes (fun b (ψ : (Φ.C k).Y.X.presheaf.stalk b →+* ℂ_[p]) => Real.exp ((drSym la).sum fun a n => (n : ℝ) * lnStep s.T.Z.t (spMap ψ ≫ stalkPt (Φ.C k).Y b ≫ (Φ.C k).π ≫ genι s.T.Z) (fun τ i => spMap (dualMap ψ) ≫ ((Φ.C k).gr_spec b).choose_spec.choose.v τ i) p (a.1 …`.
+-/
 theorem drAt_spMap_comp (la : AllWt.Weight S.Dw) (p : ℕ) [Fact p.Prime] (K : Type) [Field K] (φ : K →+* ℂ_[p])
     (y : Sp K ⟶ (Φ.C k).Y.X) (f : (Φ.C k).Y.Fn) : drAt Φ k la p (spMap φ ≫ y) f = drVia Φ k la p y φ f := by
   have hb : below (spMap φ ≫ y) = below y := Res.below_comp y φ
@@ -45,6 +55,9 @@ theorem drAt_spMap_comp (la : AllWt.Weight S.Dw) (p : ℕ) [Fact p.Prime] (K : T
         (fun τ i => spMap (dualMap ψ) ≫ ((Φ.C k).gr_spec b).choose_spec.choose.v τ i) p (a.1 p) a.2.2))
       hs hb _ _ fun a => GlobalTheory.TorRef.stalkClosedPointTo_comp_spMap_specializes _ y φ hs a
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ Φ k la p _ K _ φ y f` and use `drAt_spMap_comp Φ k la p K φ y f`.
+-/
 example : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp) (la : AllWt.Weight S.Dw) (p : ℕ) [Fact p.Prime] (K : Type) [Field K] (φ : K →+* ℂ_[p]) (y : Sp K ⟶ (Φ.C k).Y.X) (f : (Φ.C k).Y.Fn), drAt Φ k la p (spMap φ ≫ y) f = drVia Φ k la p y φ f :=
   fun _ _ _ _ _ _ _ Φ k la p _ K _ φ y f => drAt_spMap_comp Φ k la p K φ y f
 

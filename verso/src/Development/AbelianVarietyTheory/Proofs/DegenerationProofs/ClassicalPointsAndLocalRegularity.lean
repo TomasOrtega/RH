@@ -18,6 +18,9 @@ open scoped CategoryTheory.Obj in
 open Classical in
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : _root_.GlobalTheory.ZH.RatModel o Ω) in
 
+/- English proof (translation)
+Use `haveI := M.lft`. Use `haveI : LocallyOfFiniteType (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap ℤ o)) := HasRingHomProperty.Spec_iff.mpr (RingHom.finiteType_algebraMap.mpr inferInstance)`. Use `infer_instance`.
+-/
 theorem _root_.GlobalTheory.ZH.RatModel.locallyOfFiniteType_int [Algebra.FiniteType ℤ o] :
     LocallyOfFiniteType (M.s ≫ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap ℤ o)) := by
   haveI := M.lft
@@ -30,6 +33,13 @@ open scoped CategoryTheory.Obj in
 open Classical in
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : _root_.GlobalTheory.ZH.RatModel o Ω) in
 
+/- English proof (translation)
+Rewrite using `[Flat.iff_flat_stalkMap]`. Introduce `x`. Use `haveI : CharZero (M.Z.presheaf.stalk x) := RingHom.charZero ((M.O x).val.toRingHom.comp (M.stalkEquiv x).toRingHom)`. Set `q : PrimeSpectrum ℤ` to `π x`. Use `haveI : q.asIdeal.IsPrime := q.isPrime`.
+
+Use `letI : Algebra ((Spec.structureSheaf ℤ).presheaf.stalk q) (M.Z.presheaf.stalk x) := (π.stalkMap x).hom.toAlgebra`. Establish `hflat : Module.Flat ℤ (M.Z.presheaf.stalk x)` using `inferInstance`. Establish `hT : @IsScalarTower ℤ ((Spec.structureSheaf ℤ).presheaf.stalk q) (M.Z.presheaf.stalk x) (StructureSheaf.stalkAlgebra ℤ q).toSMul this.toSMul (AddCommGroup.toIntModule _).toSMul`. Use `@IsScalarTower.mk ℤ ((Spec.structureSheaf ℤ).presheaf.stalk q) (M.Z.presheaf.stalk x) (StructureSheaf.stalkAlgebra ℤ q).toSMul this.toSMul (AddCommGroup.toIntModule _).toSMul (fun n s m => ?_)` and prove the remaining obligations. Establish `h1` using `@Algebra.smul_def' ℤ ((Spec.structureSheaf ℤ).presheaf.stalk q) _ _ (StructureSheaf.stalkAlgebra ℤ q) n s`.
+
+Establish `h2 : @algebraMap ℤ ((Spec.structureSheaf ℤ).presheaf.stalk q) _ _ (StructureSheaf.stalkAlgebra ℤ q) n = n` using `eq_intCast _ n`. Rewrite `h1` using `[h2]`. Use `erw [h1]`. Rewrite using `[mul_smul, Int.cast_smul_eq_zsmul]`. Conclude with `(@Module.flat_iff_of_isLocalization ℤ ((Spec.structureSheaf ℤ).presheaf.stalk q) _ _ (StructureSheaf.stalkAlgebra ℤ q) q.asIdeal.primeCompl (StructureSheaf.IsLocalization.to_stalk ℤ q) (M.Z.presheaf.stalk x) _ _ _ hT).mpr hflat`.
+-/
 theorem _root_.GlobalTheory.ZH.RatModel.flat_int [CharZero Ω] (π : M.Z ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp ℤ) : Flat π := by
   rw [Flat.iff_flat_stalkMap]
   intro x
@@ -68,6 +78,15 @@ open CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj Alg
 open scoped CategoryTheory.Obj in
 open Classical in
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ _ _ M U₀ hN`. Use `haveI := _root_.GlobalTheory.ZH.RatModel.locallyOfFiniteType_int M`. Use `haveI : Flat (M.s ≫ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap ℤ o)) := M.flat_int _`. Use `⟨fun U₁ _ hU₁ z hz => ⟨?_, ?_⟩, _root_.GlobalTheory.jacobsonSpace_of_locallyOfFiniteType_int (M.s ≫ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap ℤ o))⟩` and prove the remaining obligations. Take `⟨p, hp, y, h1, h2⟩` from `_root_.GlobalTheory.padicAlgCl_integral_points.1 M.Z (M.s ≫ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap ℤ o)) z hz U₁ hU₁`.
+
+Conclude with `⟨p, hp, y, h1, h2⟩`. Introduce `φ hφ hb`. Take `⟨f, rfl⟩` from `(_root_.GlobalTheory.ZH.RatModel.mem_ringOn_iff_exists hU₁).1 hφ`. Use `haveI := _root_.GlobalTheory.ZH.RatModel.isIntegrallyClosed_O hN z`. Use `haveI : IsIntegrallyClosed (M.Z.presheaf.stalk z) := IsIntegrallyClosed.of_equiv (M.stalkEquiv z).symm`.
+
+Take `⟨W, ψ, hzW, h⟩` from `_root_.GlobalTheory.regular_of_bounded_at_padicAlgCl_points.1 M.Z (M.s ≫ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (algebraMap ℤ o)) z hz inferInstance U₁ f hU₁ (fun p _ y hy hr => by`. Establish `hle` using `hb p y ⟨hy, hr⟩`. Rewrite using `[_root_.GlobalTheory.ZH.RatModel.val_valF hr] at hle)` and apply the resulting hypothesis. Rewrite using `[_root_.GlobalTheory.ZH.RatModel.mem_O]`. Use `⟨W, ψ, hzW, ?_⟩` and prove the remaining obligations.
+
+Establish `hne` using `M.nonempty_inf ⟨z, hzW⟩ hU₁`. Establish `hv` using `congrArg (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.valF M.pt _) h`. Rewrite `hv` using `[M.valF_resG _ hne, M.valF_resG _ hne]`. Then use the resulting hypothesis.
+-/
 theorem _root_.GlobalTheory.ZH.classical_points_and_local_regularity :
     ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [Algebra.FiniteType ℤ o] [CharZero Ω]
       (M : _root_.GlobalTheory.ZH.RatModel o Ω)

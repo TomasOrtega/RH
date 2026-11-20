@@ -14,17 +14,28 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {d : ColDat} (a : ColArgs d)
 
+/- English proof (translation)
+Use `Matrix.ext fun x y => ?_` and prove the remaining obligations. Use `show (d.sp.X i).hT ((d.sp.X i).frame x) ((d.sp.X i).frame y) = _`. Rewrite using `[hS.X_on i hi, Matrix.one_apply]`.
+-/
 theorem th_gram_eq (hS : SpStd d.toColBase) (i : ℕ) (hi : i ≤ d.R.m) : (d.sp.X i).gram = 1 := by
   refine Matrix.ext fun x y => ?_
   show (d.sp.X i).hT ((d.sp.X i).frame x) ((d.sp.X i).frame y) = _
   rw [hS.X_on i hi, Matrix.one_apply]
 
+/- English proof (translation)
+Use `Matrix.ext fun x y => ?_` and prove the remaining obligations. Use `show (d.sp.X 0).hT ((d.sp.X 0).frame _) ((d.sp.X 0).frame _) = _`. Rewrite using `[hS.X_on 0 (Nat.zero_le _), Matrix.one_apply]`. Simplify using `only [EmbeddingLike.apply_eq_iff_eq]`.
+-/
 theorem th_gram0_eq (hS : SpStd d.toColBase) : d.sp.gram0 = 1 := by
   refine Matrix.ext fun x y => ?_
   show (d.sp.X 0).hT ((d.sp.X 0).frame _) ((d.sp.X 0).frame _) = _
   rw [hS.X_on 0 (Nat.zero_le _), Matrix.one_apply]
   simp only [EmbeddingLike.apply_eq_iff_eq]
 
+/- English proof (translation)
+Unfold `Formalism.L2.Herm.crdLat ColDat.clsLat Formalism.L2.Forms.reL`. Rewrite using `[dif_pos hi, ← Submodule.map_comp]`. Use `congr 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`.
+
+Use function extensionality and compare the values at `j`. Use `show (d.sp.X i).frame.equivFun ((d.crd i hi).symm x) j = _`. Unfold `ColDat.crd`. Rewrite using `[LinearEquiv.trans_symm, LinearEquiv.trans_apply, LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+-/
 theorem th_crdLat_eq (u : d.what₂.Word) (i : ℕ) (hi : i ≤ d.R.m) (c : StCl (Pr := d.Pr) d.W d.lev u i) :
     Formalism.L2.Herm.crdLat (d.sp.X i) (d.clsLat u i c) = Formalism.L2.Forms.reL (d.sp.X_rank i hi).symm (d.repr u i c).1.L := by
   unfold Formalism.L2.Herm.crdLat ColDat.clsLat Formalism.L2.Forms.reL
@@ -38,6 +49,11 @@ theorem th_crdLat_eq (u : d.what₂.Word) (i : ℕ) (hi : i ≤ d.R.m) (c : StCl
   rw [LinearEquiv.trans_symm, LinearEquiv.trans_apply, LinearEquiv.apply_symm_apply]
   rfl
 
+/- English proof (translation)
+Unfold `Spaces.crdLat0 ColDat.clsLat Formalism.L2.Forms.reL`. Rewrite using `[dif_pos (Nat.zero_le _), ← Submodule.map_comp]`. Use `congr 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`.
+
+Use function extensionality and compare the values at `j`. Use `show d.sp.crd0 ((d.crd 0 (Nat.zero_le _)).symm x) j = _`. Unfold `ColDat.crd Spaces.crd0`. Rewrite using `[LinearEquiv.trans_symm, LinearEquiv.trans_apply, LinearEquiv.trans_apply, LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+-/
 theorem th_crdLat0_eq (u : d.what₂.Word) (c : StCl (Pr := d.Pr) d.W d.lev u 0) :
     d.sp.crdLat0 (d.clsLat u 0 c) = Formalism.L2.Forms.reL (Formalism.L2.Forms.rank_eq_first_level d.R).symm (d.repr u 0 c).1.L := by
   unfold Spaces.crdLat0 ColDat.clsLat Formalism.L2.Forms.reL
@@ -105,6 +121,9 @@ def hermCols (hS : SpStd d.toColBase) (hP : PtSurj d) (hK : LocalLevelIsKOneEver
   vT := fun u => tieEV d.sp.cm d.hX d.hPr u
   Fv := fun u v => tieFv d.sp.cm d.hX d.hPr u v
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i hi => ⟨(d.sp.X i).frame, hS.X_on i hi, hS.selfDual_span_frame_X i hi⟩, ⟨d.sp.X'.frame, hS.P_on, hS.selfDual_span_frame_auxiliary⟩⟩`.
+-/
 theorem stdTied (hS : SpStd d.toColBase) : CH.StdTied (d.colRec a) :=
   ⟨fun i hi => ⟨(d.sp.X i).frame, hS.X_on i hi, hS.selfDual_span_frame_X i hi⟩, ⟨d.sp.X'.frame, hS.P_on, hS.selfDual_span_frame_auxiliary⟩⟩
 

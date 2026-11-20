@@ -5,6 +5,9 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 
 namespace QH
 
+/- English proof (translation)
+Apply `MeasureTheory.Integrable.of_integral_ne_zero` to reduce the goal to its premises. Rewrite using `[integral_rpow_mul_exp_neg_mul_rpow (by norm_num) (by norm_num) hb]`. Use `Real.Gamma_pos_of_pos (by norm_num : (0 : ℝ) < (2 + 1) / (39 / 100))` as an intermediate fact. Check the signs of the components of the expression.
+-/
 private lemma thin_intH (b : ℝ) (hb : 0 < b) :
     MeasureTheory.IntegrableOn (fun v : ℝ => v ^ (2 : ℝ) * Real.exp (-b * v ^ (39 / 100 : ℝ)))
       (Set.Ioi 0) := by
@@ -13,6 +16,17 @@ private lemma thin_intH (b : ℝ) (hb : 0 < b) :
   have := Real.Gamma_pos_of_pos (by norm_num : (0 : ℝ) < (2 + 1) / (39 / 100))
   positivity
 
+/- English proof (translation)
+Establish `hv0 : 0 < v` using `by linarith`. Establish `hb1 : v ^ (61 / 100 : ℝ) ≤ v`. Use `Real.rpow_le_rpow_of_exponent_le hv (by norm_num : (61 / 100 : ℝ) ≤ 1)` as an intermediate fact. Rewrite `this` using `[Real.rpow_one]`. Then use the resulting hypothesis. Establish `hs : Real.sqrt v ≤ v ^ (61 / 100 : ℝ)`.
+
+Rewrite using `[Real.sqrt_eq_rpow]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hv (by norm_num)`. Establish `hprod : v ^ (39 / 100 : ℝ) * v ^ (61 / 100 : ℝ) = v`. Rewrite using `[← Real.rpow_add hv0]`. Evaluate the numerical expressions.
+
+Establish `hsq : (v + lam) ^ 2 ≤ 4 * v ^ (2 : ℝ)`. Rewrite using `[Real.rpow_two]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hs0 : 0 ≤ Real.sqrt v` using `Real.sqrt_nonneg v`. Establish `hg0 : 0 < v ^ (39 / 100 : ℝ)` using `by positivity`.
+
+Establish `hexp : Real.exp (-c * v / (lam + Real.sqrt v)) ≤ Real.exp (-(c / 2) * v ^ (39 / 100 : ℝ))`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `hden : 0 < lam + Real.sqrt v` using `by linarith`. Establish `key : c / 2 * v ^ (39 / 100 : ℝ) ≤ c * v / (lam + Real.sqrt v)`. Rewrite using `[le_div_iff₀ hden]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `e1 : -c * v / (lam + Real.sqrt v) = -(c * v / (lam + Real.sqrt v))` using `by ring`. Rewrite using `[e1]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma thin_ptw (c v lam : ℝ) (hc : 0 < c) (hv : 1 ≤ v) (hl0 : 0 < lam)
     (hl : lam ≤ v ^ (61 / 100 : ℝ)) :
     (v + lam) ^ 2 * Real.exp (-c * v / (lam + Real.sqrt v)) ≤
@@ -47,6 +61,45 @@ private lemma thin_ptw (c v lam : ℝ) (hc : 0 < c) (hv : 1 ≤ v) (hl0 : 0 < la
         mul_le_mul hsq hexp (Real.exp_pos _).le (by positivity)
     _ = _ := by ring
 
+/- English proof (translation)
+Use `set H : ℝ → ℝ := fun v => v ^ (2 : ℝ) * Real.exp (-(c / 4) * v ^ (39 / 100 : ℝ)) with hH`. Establish `hHint : MeasureTheory.IntegrableOn H (Set.Ioi 0)` using `thin_intH (c / 4) (by positivity)`. Use `set K : ℝ := ∫ v in Set.Ioi (0 : ℝ), H v with hK`. Establish `E1 : ∀ᶠ x : ℝ in Filter.atTop, 1 ≤ x` using `Filter.eventually_ge_atTop 1`. Establish `E2 : ∀ᶠ x : ℝ in Filter.atTop, 2 ≤ x ^ (ε / 3)` using `(tendsto_rpow_atTop (by positivity : 0 < ε / 3)).eventually_ge_atTop 2`.
+
+Establish `E3 : ∀ᶠ x : ℝ in Filter.atTop, ‖Real.log x‖ ≤ 1 / (2 * B + 1) * ‖x ^ (ε / 600)‖` using `(isLittleO_log_rpow_atTop (by positivity : 0 < ε / 600)).bound (by positivity)`. Establish `E4 : ∀ᶠ x : ℝ in Filter.atTop, 4 * K ≤ Real.exp (c / 16 * x ^ (13 * ε / 100))` using `(Real.tendsto_exp_atTop.comp ((tendsto_rpow_atTop (by positivity : 0 < 13 * ε / 100)).const_mul_atTop (by positivity : 0 < c / 16))).eventually_ge_atTop (4 * K)`. Take `⟨x₀, hx₀⟩` from `Filter.eventually_atTop.1 (E1.and (E2.and (E3.and E4)))`. Use `⟨c / 16, x₀, by positivity, fun x hx V lam hV hl1 hlam => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, h4⟩` from `hx₀ x hx`.
+
+Establish `hx0 : 0 < x` using `by linarith`. Use `set V0 : ℝ := x ^ (ε / 3) / 2 with hV0`. Establish `hV01 : 1 ≤ V0` using `by rw [hV0]; linarith`. Establish `hV00 : 0 < V0` using `by linarith`. Establish `hlog : 2 * B * Real.log x ^ 2 ≤ x ^ (ε / 300)`.
+
+Establish `e : x ^ (ε / 300) = x ^ (ε / 600) * x ^ (ε / 600)`. Rewrite using `[← Real.rpow_add hx0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hp : 0 ≤ x ^ (ε / 600)` using `by positivity`.
+
+Rewrite `h3` using `[Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg hp]`. Establish `h5 : Real.log x ^ 2 = |Real.log x| ^ 2` using `(sq_abs _).symm`. Rewrite using `[e, h5]`. Establish `h6 : (2 * B + 1) * |Real.log x| ≤ x ^ (ε / 600)`. Rewrite `h3` using `[one_div, inv_mul_eq_div, le_div_iff₀ (by positivity)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h7` using `abs_nonneg (Real.log x)`. Establish `h8 : ((2 * B + 1) * |Real.log x|) * ((2 * B + 1) * |Real.log x|) ≤ x ^ (ε / 600) * x ^ (ε / 600)` using `mul_self_le_mul_self (by positivity) h6`. Establish `h9 : 0 ≤ (4 * B ^ 2 + 2 * B + 1) * |Real.log x| ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `h2b : (2 : ℝ) ^ (61 / 100 : ℝ) ≤ 2`. Use `Real.rpow_le_rpow_of_exponent_le (by norm_num : (1 : ℝ) ≤ 2) (by norm_num : (61 / 100 : ℝ) ≤ 1)` as an intermediate fact. Rewrite `this` using `[Real.rpow_one]`. Then use the resulting hypothesis. Establish `h2g : (2 : ℝ) ^ (39 / 100 : ℝ) ≤ 2`. Use `Real.rpow_le_rpow_of_exponent_le (by norm_num : (1 : ℝ) ≤ 2) (by norm_num : (39 / 100 : ℝ) ≤ 1)` as an intermediate fact.
+
+Rewrite `this` using `[Real.rpow_one]`. Then use the resulting hypothesis. Establish `hlamV0 : lam ≤ V0 ^ (61 / 100 : ℝ)`. Establish `e : V0 ^ (61 / 100 : ℝ) = x ^ (ε / 5) * x ^ (ε / 300) / 2 ^ (61 / 100 : ℝ)`. Rewrite using `[hV0, Real.div_rpow (by positivity) (by norm_num), ← Real.rpow_mul hx0.le, ← Real.rpow_add hx0]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hp5 : 0 ≤ x ^ (ε / 5)` using `by positivity`. Establish `hnum : 0 ≤ x ^ (ε / 5) * x ^ (ε / 300)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Apply `div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_left hlog hp5) (by norm_num)` to reduce the goal to its premises.
+
+Use `_ ≤ x ^ (ε / 5) * x ^ (ε / 300) / 2 ^ (61 / 100 : ℝ) := div_le_div_of_nonneg_left hnum (by positivity) h2b`. Use `_ = V0 ^ (61 / 100 : ℝ) := e.symm`. Establish `hV0g : x ^ (13 * ε / 100) / 2 ≤ V0 ^ (39 / 100 : ℝ)`. Establish `e : V0 ^ (39 / 100 : ℝ) = x ^ (13 * ε / 100) / 2 ^ (39 / 100 : ℝ)`. Rewrite using `[hV0, Real.div_rpow (by positivity) (by norm_num), ← Real.rpow_mul hx0.le]`.
+
+Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hle : x ^ (13 * ε / 100) ≤ x ^ (13 * ε / 100)` using `le_rfl`. Combine the equalities or inequalities in the displayed calculation. Use `set A : ℝ := Real.exp (-(c / 8) * x ^ (13 * ε / 100)) with hA`.
+
+Use `set F : ℝ → ℝ := fun v => (v + lam) ^ 2 * Real.exp (-c * v / (lam + Real.sqrt v)) with hF`. Establish `hFnn : ∀ v, 0 ≤ F v` using `fun v => by rw [hF]; positivity`. Establish `hpt : ∀ v ∈ Set.Ioi V, F v ≤ A * 4 * H v`. Introduce `v hv`. Establish `hvV0 : V0 ≤ v` using `le_trans hV (le_of_lt hv)`.
+
+Establish `hv1 : 1 ≤ v` using `le_trans hV01 hvV0`. Establish `hv0 : 0 < v` using `by linarith`. Establish `hl : lam ≤ v ^ (61 / 100 : ℝ)` using `le_trans hlamV0 (Real.rpow_le_rpow hV00.le hvV0 (by norm_num))`. Establish `hg : x ^ (13 * ε / 100) / 2 ≤ v ^ (39 / 100 : ℝ)` using `le_trans hV0g (Real.rpow_le_rpow hV00.le hvV0 (by norm_num))`. Establish `hp` using `thin_ptw c v lam hc hv1 (by linarith) hl`.
+
+Establish `hsplit : Real.exp (-(c / 2) * v ^ (39 / 100 : ℝ)) ≤ A * Real.exp (-(c / 4) * v ^ (39 / 100 : ℝ))`. Rewrite using `[hA, ← Real.exp_add]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Establish `hv2 : 0 ≤ v ^ (2 : ℝ)` using `by positivity`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hsplit hv2) (by norm_num)` to reduce the goal to its premises. Use `_ = A * 4 * H v := by rw [hH]; ring`. Establish `hV0' : (0 : ℝ) ≤ V` using `le_trans hV00.le hV`. Establish `hsub : Set.Ioi V ⊆ Set.Ioi (0 : ℝ)` using `Set.Ioi_subset_Ioi hV0'`.
+
+Establish `hgint0 : MeasureTheory.IntegrableOn (fun v => A * 4 * H v) (Set.Ioi 0)` using `hHint.const_mul _`. Establish `hgint : MeasureTheory.IntegrableOn (fun v => A * 4 * H v) (Set.Ioi V)` using `hgint0.mono_set hsub`. Establish `hFmeas : Measurable F` using `by rw [hF]; fun_prop`. Establish `hFint : MeasureTheory.IntegrableOn F (Set.Ioi V)`. Use `MeasureTheory.Integrable.mono' hgint hFmeas.aestronglyMeasurable ?_` and prove the remaining obligations.
+
+Use `MeasureTheory.ae_restrict_of_forall_mem measurableSet_Ioi (fun v hv => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (hFnn v)]`. Conclude with `hpt v hv`. Use `⟨hFint, ?_⟩` and prove the remaining obligations. Establish `hApos : 0 < A` using `Real.exp_pos _`.
+
+Establish `hgnn : ∀ v ∈ Set.Ioi (0 : ℝ), 0 ≤ A * 4 * H v`. Introduce `v hv`. Establish `: 0 < v` using `hv`. Rewrite using `[hH]`. Check the signs of the components of the expression.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hA, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma thin_integral (ε c B : ℝ) (hε : 0 < ε) (hc : 0 < c) (hB : 0 < B) :
     ∃ c' x₀ : ℝ, 0 < c' ∧ ∀ x : ℝ, x₀ ≤ x → ∀ V lam : ℝ, x ^ (ε / 3) / 2 ≤ V → 1 ≤ lam →
     lam ≤ B * x ^ (ε / 5) * Real.log x ^ 2 →
@@ -166,6 +219,37 @@ private lemma thin_integral (ε c B : ℝ) (hε : 0 < ε) (hc : 0 < c) (hB : 0 <
     _ = Real.exp (-(c / 16) * x ^ (13 * ε / 100)) := by
         rw [hA, ← Real.exp_add]; congr 1; ring
 
+/- English proof (translation)
+Introduce `ε c C A c' hε hc hC hA hc'`. Take `⟨c1, x1, hc1, hT⟩` from `thin_integral ε c A hε hc hA`. Take `⟨x2, hN⟩` from `Filter.eventually_atTop.1 (((tendsto_rpow_atTop (by positivity : 0 < ε / 3)).eventually_ge_atTop 4).and (((tendsto_rpow_atTop (by positivity : 0 < ε / 200)).eventually_ge_atTop (2 * c' / c1)).and (Filter.eventually_gt_atTop 0)))`. Take `⟨x3, hx3⟩` from `Filter.eventually_atTop.1 ((Real.tendsto_exp_atTop.comp ((tendsto_rpow_atTop (by positivity : 0 < 13 * ε / 100)).const_mul_atTop (by positivity : 0 < c1 / 2))).eventually_ge_atTop C)`. Use `⟨max x1 (max x2 x3), fun x hx y lam psi0 hy hl1 hlam hpsi => ?_⟩` and prove the remaining obligations.
+
+Establish `hxx1 : x1 ≤ x` using `le_trans (le_max_left _ _) hx`. Establish `hxx2 : x2 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx`. Establish `hxx3 : x3 ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx`. Establish `hCx : C ≤ Real.exp (c1 / 2 * x ^ (13 * ε / 100))` using `hx3 x hxx3`. Establish `hy0 : 0 < y` using `lt_of_lt_of_le (by positivity) hy`.
+
+Use `set V : ℝ := Real.log y with hVdef`. Take `⟨ha, hb, hx0⟩` from `hN x hxx2`. Establish `hlog3 : Real.log 3 ≤ 2`. Use `Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 3)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hly : x ^ (ε / 3) - Real.log 3 ≤ Real.log y`. Use `Real.log_le_log (by positivity) hy` as an intermediate fact. Rewrite `this` using `[Real.log_div (Real.exp_pos _).ne' (by norm_num), Real.log_exp]`. Then use the resulting hypothesis. Establish `hV : x ^ (ε / 3) / 2 ≤ V` using `by linarith`. Establish `hfin : c' * x ^ (ε / 8) ≤ c1 / 2 * x ^ (13 * ε / 100)`.
+
+Establish `e : x ^ (13 * ε / 100) = x ^ (ε / 200) * x ^ (ε / 8)`. Rewrite using `[← Real.rpow_add hx0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : c' ≤ c1 / 2 * x ^ (ε / 200)`.
+
+Rewrite `hb` using `[div_le_iff₀ hc1]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[e, ← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right h1 (by positivity)`. Take `⟨hint, hbd⟩` from `hT x hxx1 V lam hV hl1 hlam`.
+
+Use `set F : ℝ → ℝ := fun v => (v + lam) ^ 2 * Real.exp (-c * v / (lam + Real.sqrt v)) with hF`. Use `set G : ℝ → ℝ := fun u => F (Real.log u) / u with hG`. Establish `himg : Real.exp '' Set.Ioi V = Set.Ioi y`. Use extensionality with `u`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨v, hv, rfl⟩`. Establish `: V < v` using `hv`. Use `show y < Real.exp v`. Rewrite using `[← Real.exp_log hy0]`. Conclude with `Real.exp_lt_exp.mpr this`.
+
+Introduce `hu`. Establish `hu' : y < u` using `hu`. Establish `hu0 : 0 < u` using `lt_trans hy0 hu'`. Conclude with `⟨Real.log u, Real.log_lt_log hy0 hu', Real.exp_log hu0⟩`. Establish `hderiv : ∀ v ∈ Set.Ioi V, HasDerivWithinAt Real.exp (Real.exp v) (Set.Ioi V) v` using `fun v _ => (Real.hasDerivAt_exp v).hasDerivWithinAt`.
+
+Establish `hinj : Set.InjOn Real.exp (Set.Ioi V)` using `Real.exp_injective.injOn`. Establish `hcomp : (fun v => |Real.exp v| • G (Real.exp v)) = F`. Use function extensionality and compare the values at `v`. Establish `hp` using `Real.exp_pos v`. Rewrite using `[hG]`.
+
+Simplify using `only [abs_of_pos hp, Real.log_exp, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Establish `hGint : MeasureTheory.IntegrableOn G (Set.Ioi y)`. Rewrite using `[← himg, MeasureTheory.integrableOn_image_iff_integrableOn_abs_deriv_smul measurableSet_Ioi hderiv hinj, hcomp]`. Conclude with `hint`.
+
+Establish `hGval : (∫ u in Set.Ioi y, G u) = ∫ v in Set.Ioi V, F v`. Rewrite using `[← himg, MeasureTheory.integral_image_eq_integral_abs_deriv_smul measurableSet_Ioi hderiv hinj, hcomp]`. Establish `hnorm : ‖∫ u in Set.Ioi y, psi0 u / (u : ℂ) ^ 2‖ ≤ C * ∫ u in Set.Ioi y, G u`. Combine the equalities or inequalities in the displayed calculation. Use `MeasureTheory.integral_mono_of_nonneg (Filter.Eventually.of_forall fun _ => norm_nonneg _) (hGint.const_mul C) (MeasureTheory.ae_restrict_of_forall_mem measurableSet_Ioi fun u hu => ?_)` and prove the remaining obligations.
+
+Establish `hu' : y < u` using `hu`. Establish `hu0 : 0 < u` using `lt_trans hy0 hu'`. Establish `h1` using `hpsi u hu'.le`. Use `show ‖psi0 u / (u : ℂ) ^ 2‖ ≤ C * G u`. Rewrite using `[norm_div, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hu0, div_le_iff₀ (by positivity)]`.
+
+Use `le_trans h1 (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[hG, hF]`. Clear the denominators using the available nonvanishing facts. Use `_ = C * ∫ u in Set.Ioi y, G u := MeasureTheory.integral_const_mul _ _`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hy0]`.
+
+Apply `mul_le_mul_of_nonneg_left _ hy0.le` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_add]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem int_thin :
     ∀ ε c C A c' : ℝ, 0 < ε → 0 < c → 0 < C → 0 < A → 0 < c' → ∃ x₀ : ℝ, ∀ x ≥ x₀, ∀ (y lam : ℝ) (φ : ℝ → ℂ),
       Real.exp (x ^ (ε / 3)) / 3 ≤ y → 1 ≤ lam → lam ≤ A * x ^ (ε / 5) * Real.log x ^ 2 →

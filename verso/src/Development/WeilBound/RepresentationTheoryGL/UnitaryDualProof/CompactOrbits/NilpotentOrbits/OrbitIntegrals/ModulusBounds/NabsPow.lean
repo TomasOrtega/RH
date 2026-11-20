@@ -11,20 +11,64 @@ namespace PositivityTheory.RgUd.T.Nil.Orb.BModbound
 
 open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Nil PositivityTheory.RgUd.T.Nil.Orb
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.SplitWeil.nabs, map_mul]`.
+-/
 theorem nabs_mul {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (a b : kˣ) : GlobalTheory.SplitWeil.nabs k (a * b) = GlobalTheory.SplitWeil.nabs k a * GlobalTheory.SplitWeil.nabs k b := by
   simp [GlobalTheory.SplitWeil.nabs, map_mul]
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.SplitWeil.nabs, map_pow]`.
+-/
 theorem nabs_pow {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (a : kˣ) (m : ℕ) : GlobalTheory.SplitWeil.nabs k (a ^ m) = GlobalTheory.SplitWeil.nabs k a ^ m := by
   simp [GlobalTheory.SplitWeil.nabs, map_pow]
 
+/- English proof (translation)
+The claim follows from `NNReal.coe_pos.2 distribHaarChar_pos`.
+-/
 theorem nabs_pos {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (a : kˣ) : 0 < GlobalTheory.SplitWeil.nabs k a :=
   NNReal.coe_pos.2 distribHaarChar_pos
 
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Introduce `n Z hCR hdB c hc p P w hp hnil hv hT hU`. Use `set x := p.1 - c with hx_def`. Establish `hcB : c ∈ Bz Z` using `fun a ha => hCR.1 a ha c hc`. Establish `hxB : x ∈ Bz Z`. Introduce `a ha`.
+
+Establish `h1 : a * p.1 = p.1 * a` using `hp a ha`. Establish `h2 : a * c = c * a` using `hcB a ha`. Rewrite using `[hx_def, mul_sub, sub_mul, h1, h2]`. Set `Dg : kˣ → GL (Fin n) k` to `fun t => P * ⟨diagonal (fun i => ((t ^ w i : kˣ) : k)), diagonal (fun i => (((t ^ w i)⁻¹ : kˣ) : k)), by rw [diagonal_mul_diagonal, ← diagonal_one]; congr 1; funext i; exact Units.mul_inv _, by rw [diagonal_mul_diagonal, ← diagonal_one]; congr 1; funext i; exact Units.inv_mul _⟩ …`. Establish `hDg : ∀ t, ((Dg t : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = ((P : Matrix (Fin n) (Fin n) k) * diagonal fun i => ((t ^ w i : kˣ) : k)) * ((P⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)` using `fun t => rfl`.
+
+Establish `hGz : ∀ t, Dg t ∈ Gz Z` using `fun t a ha => (hT t).1 a ha`. Establish `hgx : ∀ t : kˣ, ((Dg t : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * x * (((Dg t)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = (t : k) • x`. Introduce `t`. Establish `h2 : ((Dg t : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * x = (t : k) • (x * ((Dg t : GL (Fin n) k) : Matrix (Fin n) (Fin n) k))` using `(hT t).2.1`. Rewrite using `[h2, smul_mul_assoc, mul_assoc, Units.mul_inv, mul_one]`.
+
+Establish `hgv : ∀ t, ((Dg t : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) *ᵥ p.2 = p.2` using `fun t => (hT t).2.2`. Take `⟨m, hm⟩` from `wt P w (cAv Z x p.2) (fun t y hy => cAv_inv Z x p.2 (Dg t) (hGz t) t t.ne_zero (hgx t) (hgv t) y hy) (by`. Introduce `y hy`. Rewrite `hy` using `[cAv, Submodule.mem_map]`. Take `⟨a, ha, rfl⟩` from `hy`.
+
+Establish `ha1 : a ∈ Bz Z` using `ha.1`. Establish `ha2 : a * x = x * a` using `ha.2`. Establish `hac : a * c = c * a` using `(ha1 c hc).symm`. Establish `hap : a * p.1 = p.1 * a`. Establish `h3` using `ha2`.
+
+Rewrite `h3` using `[hx_def, mul_sub, sub_mul, hac]`. Conclude with `sub_left_inj.mp h3`. Take `⟨u, hu1, hu2⟩` from `hU a (fun z hz => ha1 z hz) hap`. Conclude with `⟨u, by simpa [mulVecR] using hu1, hu2⟩)`. Establish `hZA : Subalgebra.toSubmodule Z ≤ cA Z x` using `fun z hz => ⟨fun a ha => hCR.1 a ha z hz, hxB z hz⟩`.
+
+Establish `hAC : cA Z x ≤ Subalgebra.toSubmodule (Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k)))` using `fun a ha => (mem_C_iff Z a).mpr ha.1`. Establish `hfA` using `Submodule.finrank_mono hAC`. Rewrite `hfA` using `[Subalgebra.finrank_toSubmodule]`. Establish `hd0 : 0 < dB0 Z` using `hdB`. Unfold `dB0 at hd0`.
+
+Establish `hlt : finrank k (Subalgebra.toSubmodule Z) < finrank k (cA Z x)`. Distinguish the cases in `hx0 : x = 0`. Establish `hCA : Subalgebra.toSubmodule (Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))) ≤ cA Z x` using `fun a ha => ⟨(mem_C_iff Z a).mp ha, by simp [hx0]⟩`. Establish `h1` using `Submodule.finrank_mono hCA`. Rewrite `h1` using `[Subalgebra.finrank_toSubmodule]`.
+
+Rewrite using `[Subalgebra.finrank_toSubmodule]`. Use linear arithmetic over natural numbers and integers. Apply `Submodule.finrank_lt_finrank_of_lt` to reduce the goal to its premises. Use `lt_of_le_of_ne hZA ?_` and prove the remaining obligations. Introduce `heq`.
+
+Establish `hxA : x ∈ cA Z x` using `⟨hxB, rfl⟩`. Rewrite `hxA` using `[← heq]`. Establish `hxZ : x ∈ Z` using `hxA`. Use `haveI := hCR.2`. Establish `hnZ : IsNilpotent (⟨x, hxZ⟩ : Z)`.
+
+Take `⟨N, hN⟩` from `hnil`. Conclude with `⟨N, Subtype.ext (by simpa using hN)⟩`. Conclude with `hx0 (congrArg Subtype.val hnZ.eq_zero)`. Rewrite `hlt` using `[Subalgebra.finrank_toSubmodule]`. Use `set D := finrank k ↥(Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))) - finrank k ↥(cA Z x) with hD_def`.
+
+Establish `hD : D < dB0 Z`. Unfold `dB0`. Use linear arithmetic over natural numbers and integers. Establish `hDr : (D : ℝ) < (dB0 Z : ℝ)` using `by exact_mod_cast hD`. Use `⟨(D : ℝ) / 2 - m, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `: (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `t _`. Take `⟨K, L, u, hu, hK1, hK2, hK3, hL1, hL2, hL3, hL4, hmod⟩` from `modul_eq (fun V γ hγ φ X Y hX hY => ratio V γ hγ φ X Y hX hY) Z hCR c hc p hp (Dg t) (hGz t) t t.ne_zero (hgx t) (hgv t)`. Use `⟨K, L, Dg t, hK1, hK2, hK3, hL1, hL2, hL3, hL4, hDg t, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hmod]`. Establish `hsplit` using `det_split Z x p.2 (Dg t) (hGz t) t t.ne_zero (hgx t) (hgv t)`. Establish `hsq` using `det_sq Z hCR x hxB (Dg t) (hGz t) t t.ne_zero (hgx t)`. Establish `hw : LinearMap.det ((toLin' ((Dg t : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)).restrict (cAv_inv Z x p.2 (Dg t) (hGz t) t t.ne_zero (hgx t) (hgv t))) = (t : k) ^ m` using `hm t`. Rewrite `hsq` using `[hsplit, ← hu, hw]`.
+
+Establish `hunit : (u * t ^ m) ^ 2 = t ^ D` using `Units.ext (by push_cast; exact hsq)`. Establish `hn` using `congrArg (GlobalTheory.SplitWeil.nabs k) hunit`. Rewrite `hn` using `[nabs_pow, nabs_mul, nabs_pow, nabs_pow]`. Establish `hr` using `nabs_pos t`. Establish `hs` using `nabs_pos u`.
+
+Establish `key : GlobalTheory.SplitWeil.nabs k u * GlobalTheory.SplitWeil.nabs k t ^ m = GlobalTheory.SplitWeil.nabs k t ^ ((D : ℝ) / 2)`. Rewrite using `[← pow_left_inj₀ (by positivity) (by positivity) two_ne_zero, hn, ← Real.rpow_natCast (GlobalTheory.SplitWeil.nabs k t ^ ((D : ℝ) / 2)) 2, ← Real.rpow_mul hr.le, ← Real.rpow_natCast (GlobalTheory.SplitWeil.nabs k t) D]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Real.inv_rpow hr.le, Real.rpow_sub hr, Real.rpow_natCast, ← key]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem modBound [CharZero k] : ModBound (k := k) := by
   intro n Z hCR hdB c hc p P w hp hnil hv hT hU
   set x := p.1 - c with hx_def

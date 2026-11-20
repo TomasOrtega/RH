@@ -15,6 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.RecTie GlobalTheory.HeightCounting.Up.RealOfReading
 noncomputable section
 namespace GlobalTheory.HeightCounting.Up.TypesAt
+/- English proof (translation)
+Introduce `_ hL`. Use `EvG.imp evG_good fun K _ _ _ _ _ => ?_` and prove the remaining obligations. Use `⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, by simp, by simp, ?_⟩` and prove the remaining obligations. Introduce `B f T _ _ _ _ _ w Z Wt p0 t nch n xd c _ _ _`. Conclude with `typesTrue_rows t`.
+-/
 theorem inertialTypes_at_member_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t _ _ _ => TypesTrue (w.D Z).ntypes t.r.z.R.C.P t.r.z.R.C.W := by
   intro _ hL
   refine EvG.imp evG_good fun K _ _ _ _ _ => ?_
@@ -29,6 +32,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.RecTie GlobalTheory.HeightCounting.Up.RealOfReading
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.HeightCounting.Up.TypesAt.inertialTypes_at_member_alt | exact _root_.GlobalTheory.HeightCounting.Up.TypesAt.inertialTypes_at_member_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.TypesAt.inertialTypes_at_member_alt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.typesTrue_at_member_of_published_inputs : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t _ _ _ => TypesTrue (w.D Z).ntypes t.r.z.R.C.P t.r.z.R.C.W := by
   first | exact @_root_.GlobalTheory.HeightCounting.Up.TypesAt.inertialTypes_at_member_alt | exact _root_.GlobalTheory.HeightCounting.Up.TypesAt.inertialTypes_at_member_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.TypesAt.inertialTypes_at_member_alt <;> assumption)
 end

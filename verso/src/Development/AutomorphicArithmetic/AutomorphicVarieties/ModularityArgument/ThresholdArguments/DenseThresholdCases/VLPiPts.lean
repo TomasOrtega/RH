@@ -17,6 +17,13 @@ open UpperTheory.V.HV (Coef)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 attribute [local instance 2000] UpperTheory.V.W.coefLocal
+/- English proof (translation)
+Take `⟨t, ht⟩` from `t`. Express the relevant statement in the definitionally equal form `∀ y y' : Y, (y' : M) = φ y → (t y' : M) = φ (t y)`. Proceed by induction on `ht using Algebra.adjoin_induction with`. Consider the case `mem t ht`. Take `⟨i, hi⟩` from `ht`.
+
+Introduce `y y' e`. Rewrite using `[hi, hi, e]`. Conclude with `(LinearMap.congr_fun (h i).eq y).symm`. Consider the case `algebraMap a`. Introduce `y y' e`.
+
+Simplify using `[Module.algebraMap_end_apply, e]`. Consider the case `add s t _ _ hs ht`. Introduce `y y' e`. Simplify using `only [LinearMap.add_apply, Submodule.coe_add, map_add, hs y y' e, ht y y' e]`. Consider the case `mul s t _ _ hs ht => exact fun y y' e => hs _ _ (ht y y' e)`.
+-/
 private theorem piPts_hecke {A M ι : Type} [CommRing A] [AddCommGroup M] [Module A M] (Y : Submodule A M)
     (op : ι → Module.End A M) (φ : Module.End A M) (h : ∀ i, Commute φ (op i)) (t : heckeAlg Y op) :
     ∀ y y' : Y, (y' : M) = φ y → ((t : Module.End A Y) y' : M) = φ ((t : Module.End A Y) y) := by
@@ -35,6 +42,9 @@ private theorem piPts_hecke {A M ι : Type} [CommRing A] [AddCommGroup M] [Modul
     intro y y' e
     simp only [LinearMap.add_apply, Submodule.coe_add, map_add, hs y y' e, ht y y' e]
   | mul s t _ _ hs ht => exact fun y y' e => hs _ _ (ht y y' e)
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(W.GDet.repAlg ρ (Polynomial A) _).det = _`. Rewrite using `[map_sub, MonoidAlgebra.mapRingHom_single, Matrix.charpoly]`. Use `congr 1`. Use extensionality with `i j : 2`. Apply the tactic sequence `by_cases h : i = j <;> simp [W.GDet.repAlg, Matrix.charmatrix, h, Matrix.one_apply, Matrix.diagonal_apply]`.
+-/
 private theorem piPts_chi {n : ℕ} {A G : Type} [CommRing A] [Group G] (ρ : G →* Matrix (Fin n) (Fin n) A) (g : G) :
     (W.GDet.ofRep ρ).chi (MonoidAlgebra.single g 1) = (ρ g).charpoly := by
   change (W.GDet.repAlg ρ (Polynomial A) _).det = _
@@ -42,6 +52,11 @@ private theorem piPts_chi {n : ℕ} {A G : Type} [CommRing A] [Group G] (ρ : G 
   congr 1
   ext i j : 2
   by_cases h : i = j <;> simp [W.GDet.repAlg, Matrix.charmatrix, h, Matrix.one_apply, Matrix.diagonal_apply]
+/- English proof (translation)
+Set `S : N →+ V` to `AddMonoidHom.mk' s ha`. Distinguish the cases in `h : i ∈ (b.repr z).support`. Use `linearIndependent_iff'.1 hi (b.repr z).support (fun i => φ (b.repr z i)) ?_ i h` and prove the remaining obligations. Establish `: S z = S (Finsupp.linearCombination A b (b.repr z))` using `by rw [b.linearCombination_repr]`. Rewrite `this` using `[Finsupp.linearCombination_apply, Finsupp.sum, map_sum]`.
+
+Rewrite using `[← hz]`. Conclude with `(Finset.sum_congr rfl fun i _ => (hs _ _).symm).trans this.symm`. Rewrite using `[Finsupp.notMem_support_iff.1 h, map_zero]`.
+-/
 private theorem piPts_coord {A N V κ : Type} [CommRing A] [AddCommGroup N] [Module A N] [AddCommGroup V] [Module ℂ V]
     (b : Module.Basis κ A N) (φ : A →+* ℂ) (s : N → V) (ha : ∀ x y, s (x + y) = s x + s y)
     (hs : ∀ a x, s (a • x) = φ a • s x) (hi : LinearIndependent ℂ fun i => s (b i)) (z : N) (hz : s z = 0) (i : κ) :
@@ -54,6 +69,9 @@ private theorem piPts_coord {A N V κ : Type} [CommRing A] [AddCommGroup N] [Mod
     rw [← hz]
     exact (Finset.sum_congr rfl fun i _ => (hs _ _).symm).trans this.symm
   · rw [Finsupp.notMem_support_iff.1 h, map_zero]
+/- English proof (translation)
+Use `LinearMap.ext fun f => funext fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `X.ra τ u (X.rp A m b f) x = X.ra τ u f (x * (1, b))`. Rewrite using `[Frame.ra_apply, Frame.ra_apply]`. Express the relevant statement in the definitionally equal form `Matrix.mulVec _ (f _) = _`. Simplify using `[mul_assoc]`.
+-/
 private theorem piPts_rp {Γ Ga Gp : Type} [Group Γ] [Group Ga] [Group Gp] (X : Frame Γ Ga Gp) {A : Type} [CommRing A] {m : ℕ}
     (τ : X.Ub →* GL (Fin m) A) (u : X.Ub) (b : Gp) : Commute (X.ra τ u) (X.rp A m b) := by
   refine LinearMap.ext fun f => funext fun x => ?_
@@ -61,12 +79,18 @@ private theorem piPts_rp {Γ Ga Gp : Type} [Group Γ] [Group Ga] [Group Gp] (X :
   rw [Frame.ra_apply, Frame.ra_apply]
   change Matrix.mulVec _ (f _) = _
   simp [mul_assoc]
+/- English proof (translation)
+The claim follows from `W.GDet.ext fun _ _ _ _ => rfl`.
+-/
 private theorem piPts_mm {n : ℕ} {A B C G : Type} [CommRing A] [CommRing B] [CommRing C] [Group G] (D : W.GDet n A G)
     (f : A →+* B) (f' : B →+* C) : (D.map f).map f' = D.map (f'.comp f) :=
   W.GDet.ext fun _ _ _ _ => rfl
 section
 variable {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {l : ℕ} [Fact l.Prime] {n : ℕ}
   {c : Coef l} (H : HSet L Ω l n c)
+/- English proof (translation)
+Break down `i with ⟨w, j⟩ | ⟨v, j⟩` into its components or cases. Use `finsum_induction (fun t => Commute (H.X.ra (H.τA A) (H.sec (H.wq q) g)) t) (Commute.zero_right _) (fun _ _ => Commute.add_right) fun i => ?_` and prove the remaining obligations. Conclude with `(hH.sectionsCommuteAtSplit q w.1 w.2 g _).map (H.X.ra (H.τA A))`. Use `finsum_induction (fun t => Commute (H.X.ra (H.τA A) (H.sec (H.wq q) g)) t) (Commute.zero_right _) (fun _ _ => Commute.add_right) fun i => ?_` and prove the remaining obligations. Conclude with `piPts_rp H.X (H.τA A) _ _`.
+-/
 private theorem piPts_comm (hH : H.Ax) (A : Type) [CommRing A] [Algebra c.O A] (q : H.Q) (g : GLw n (H.wq q)) (i : H.Op) :
     Commute (H.X.ra (H.τA A) (H.sec (H.wq q) g)) (H.op A i) := by
   rcases i with ⟨w, j⟩ | ⟨v, j⟩
@@ -76,6 +100,9 @@ private theorem piPts_comm (hH : H.Ax) (A : Type) [CommRing A] [Algebra c.O A] (
   · refine finsum_induction (fun t => Commute (H.X.ra (H.τA A) (H.sec (H.wq q) g)) t) (Commute.zero_right _)
       (fun _ _ => Commute.add_right) fun i => ?_
     exact piPts_rp H.X (H.τA A) _ _
+/- English proof (translation)
+Take `⟨P, hP⟩` from `AlgebraTools.Det.bnRep (W.mat Y.r) (W.mat Y'.r) Y.ss Y'.ss fun g => by`. Rewrite using `[← piPts_chi, ← piPts_chi, h]`. Conclude with `_root_.UpperTheory.GalN.V.woConj'_alt (Y'.atQ q B hB rc hrc) (hH.Q_away q) (r' := Y.r.comp H.prj) P fun g => Units.ext (hP _)`.
+-/
 private theorem piPts_conj (hH : H.Ax) (ι : Qbar l ≃+* ℂ) (lam : Wt L l n) {d : ℕ}
     (ξ : GV n H.Sl →* GL (Fin d) ℂ) (Y Y' : H.PartAltAlt ι lam ξ)
     (h : W.GDet.ofRep (W.mat Y.r) = W.GDet.ofRep (W.mat Y'.r)) (q : H.Q) (B : ValuationSubring Ω) (hB : IsPlaceOver B (H.wq q))
@@ -84,6 +111,13 @@ private theorem piPts_conj (hH : H.Ax) (ι : Qbar l ≃+* ℂ) (lam : Wt L l n) 
   obtain ⟨P, hP⟩ := AlgebraTools.Det.bnRep (W.mat Y.r) (W.mat Y'.r) Y.ss Y'.ss fun g => by
     rw [← piPts_chi, ← piPts_chi, h]
   exact _root_.UpperTheory.GalN.V.woConj'_alt (Y'.atQ q B hB rc hrc) (hH.Q_away q) (r' := Y.r.comp H.prj) P fun g => Units.ext (hP _)
+/- English proof (translation)
+Take `⟨ρ, -, h1, h2, -⟩` from `piBasic L Ω l n c H hH A θ hθ a`. Establish `mono : ∀ K K' : H.Lev, (∀ q, K'.1 q ≤ K.1 q) → H.MK θ a K ≤ H.MK θ a K'` using `fun K K' h => by`. Rewrite using `[← h1, ← h1]`. Conclude with `Submodule.map_mono fun v hv u hu => hv u fun q hq => h q (hu q hq)`. Proceed by induction on `s using Finset.induction with`.
+
+Consider the case `empty => exact ⟨(h2 0).choose, by simp⟩`. Consider the case `insert f s _ ih`. Take `⟨K, hK⟩` from `ih`. Take `⟨K', hK'⟩` from `h2 f`. Set `K'' : H.Lev` to `⟨fun q => K.1 q ⊓ K'.1 q, fun q => ⟨(K.2 q).1.inter (K'.2 q).1, (K.2 q).2.inter_right ((K'.1 q).isClosed_of_isOpen (K'.2 q).1)⟩⟩`.
+
+Use `⟨K'', fun x hx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Conclude with `mono K' K'' (fun q => inf_le_right) hK'`. Conclude with `mono K K'' (fun q => inf_le_left) (hK x hx)`.
+-/
 private theorem piPts_dir (hH : H.Ax) (A : Type) [CommRing A] [Algebra c.O A] [Alg.IsCO c.O A] (θ : H.X.I.T →* Aˣ)
     (hθ : H.IsWt θ) (a : H.Op → c.O) (s : Finset (⨆ K, H.MK θ a K : Submodule A (H.X.Fn A H.m))) :
     ∃ K, ∀ f ∈ s, (f : H.X.Fn A H.m) ∈ H.MK θ a K := by
@@ -104,6 +138,33 @@ private theorem piPts_dir (hH : H.Ax) (A : Type) [CommRing A] [Algebra c.O A] [A
     · exact mono K' K'' (fun q => inf_le_right) hK'
     · exact mono K K'' (fun q => inf_le_left) (hK x hx)
 end
+/- English proof (translation)
+Establish `hT : ∀ t, ∃ T : V →ₗ[ℂ] V, ∀ f, T (s f) = s (α t f)` using `fun t => by`. Use `PiLin.exists_desc _ _ fun u hu => ?_` and prove the remaining obligations. Take `⟨K, hK⟩` from `dir (insert z u.support)`. Take `⟨act, a1, -⟩` from `lev K (hK z (Finset.mem_insert_self _ _))`. Establish `hm : ∀ f : u.support, mem K f` using `fun f => hK _ (Finset.mem_insert_of_mem f.2)`.
+
+Rewrite `hu`, the goal using `[Finsupp.linearCombination_apply, Finsupp.sum, ← Finset.sum_coe_sort]`. Establish `h0 : ∑ f : u.support, u f • (⟨s f, hEK K f (hm f)⟩ : EK K) = 0` using `Subtype.ext (by`. Rewrite using `[Submodule.coe_sum]`. Conclude with `hu)`. Establish `h3` using `congrArg (fun F => (act t F : V)) h0`.
+
+Simplify using `only [map_sum, map_smul, map_zero, Submodule.coe_sum, Submodule.coe_smul, Submodule.coe_zero] at h3`. Rewrite using `[← h3]`. Conclude with `Finset.sum_congr rfl fun f _ => by rw [a1 t f (hm f)]`. Use `choose T hT using hT`. Set `E` to `Submodule.span ℂ (Set.range s)`.
+
+Establish `hE : ∀ f, s f ∈ E` using `fun f => Submodule.subset_span ⟨f, rfl⟩`. Set `J` to `{j : I × X × Submodule ℂ V // j.2.2 ≤ Yp j.1 ⊓ E ∧ rel j.1 j.2.1 ∧ ∀ t, ∀ F ∈ j.2.2, T t F = χ j.2.1 t • F}`. Establish `hsup : E = ⨆ j : J, j.1.2.2`. Use `le_antisymm (Submodule.span_le.2 ?_) (iSup_le fun j => j.2.1.trans inf_le_right)` and prove the remaining obligations. Introduce and unpack `_ ⟨f, rfl⟩`.
+
+Take `⟨K, hK⟩` from `dir {z, f}`. Take `⟨act, a1, a3, a4⟩` from `lev K (hK z (by simp))`. Establish `hle : EK K ≤ E` using `(hEK' K).trans (Submodule.span_mono (Set.image_subset_range _ _))`. Establish `hsp : Submodule.span ℂ (s '' {f | mem K f}) ≤ EK K` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Conclude with `hEK K y hy)`. Establish `hact : ∀ t F (hF : F ∈ Submodule.span ℂ (s '' {f | mem K f})), T t F = act t ⟨F, hsp hF⟩` using `fun t F hF => by`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF`. Take `⟨y, hy, rfl⟩` from `hF`.
+
+Conclude with `(hT t y).trans (a1 t y hy).symm`. Consider the case `zero => exact (map_zero _).trans (congrArg Subtype.val (map_zero (act t))).symm`. Consider the case `add F F' hF hF' h h'`. Rewrite using `[map_add, h, h']`. Conclude with `(congrArg Subtype.val (map_add (act t) ⟨F, hsp hF⟩ ⟨F', hsp hF'⟩)).symm`.
+
+Consider the case `smul u F hF h`. Rewrite using `[map_smul, h]`. Conclude with `(congrArg Subtype.val (map_smul (act t) u ⟨F, hsp hF⟩)).symm`. Use `(show EK K ≤ ⨆ j : J, j.1.2.2 from ?_) (hEK K f (hK f (by simp)))` and prove the remaining obligations. Use `a3.trans (iSup_le fun i => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hY : Yp i ⊓ EK K = ⊥`. Rewrite using `[hY]`. Conclude with `bot_le`. Take `⟨x, b1, b2⟩` from `a4 i hY`. Conclude with `le_iSup (fun j : J => j.1.2.2) ⟨(i, x, Yp i ⊓ EK K), inf_le_inf_left _ hle, b1, fun t F hF => by`.
+
+Rewrite using `[hact t F (hEK' K hF.2), b2 t ⟨F, hF.2⟩ hF.1]`. Use the proof step `rfl⟩`. Take `⟨j0, Y, p, -, y1, y2, y3, y4, y5⟩` from `PiLin.exists_proj (J := J) T π E (fun g => show E ≤ E.comap (π g) from Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨f, rfl⟩`. Express the relevant statement in the definitionally equal form `π g (s f) ∈ E`.
+
+Rewrite using `[← h1]`. Conclude with `hE _))`. Use the proof step `(fun t g F hF => LinearMap.eqOn_span' (f := T t ∘ₗ π g) (g := π g ∘ₗ T t) (by`. Introduce and unpack `_ ⟨f, rfl⟩`. Simplify using `only [LinearMap.comp_apply]`.
+
+Rewrite using `[← h1, hT, hT, h2, h1]) hF)`. Use the proof step `(fun j => j.1.2.2) (fun j => χ j.1.2.1) (fun j => j.2.2.2) hsup (s z) (hE z) hz`. Use `⟨j0.1.1, j0.1.2.1, Y, p, j0.2.2.1, y1, y2, fun t f => ?_, fun g f => ?_, fun Z hZ => y5.trans (iSup_le fun j => ?_)⟩` and prove the remaining obligations. Rewrite using `[← hT, y3 t _ (hE f)]`. Rewrite using `[h1, y4 g _ (hE f)]`.
+
+Conclude with `(j.1.2.1.trans inf_le_left).trans (hZ _ _ j.1.2.2.1 j.2)`.
+-/
 private theorem piPts_abs {M V R G Lev X : Type} {I : Type 1} [AddCommGroup V] [Module ℂ V]
     (s : M → V) (z : M) (hz : s z ≠ 0) (α : R → M → M) (ρ : G → M → M) (π : G → V →ₗ[ℂ] V) (mem : Lev → M → Prop)
     (dir : ∀ u : Finset M, ∃ K, ∀ f ∈ u, mem K f) (EK : Lev → Submodule ℂ V) (hEK : ∀ K f, mem K f → s f ∈ EK K)
@@ -176,6 +237,33 @@ private theorem piPts_abs {M V R G Lev X : Type} {I : Type 1} [AddCommGroup V] [
   · rw [h1, y4 g _ (hE f)]
   · exact (j.1.2.1.trans inf_le_left).trans (hZ _ _ j.1.2.2.1 j.2)
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `Lit L Ω _ _ _ _ _ l _ n c H hH A _ _ _ θ hθ ι P hP lam hlam hden a _ ρ hρ R _ D α hα z hz`. Establish `dir` using `piPts_dir H hH A θ hθ a`. Establish `hcomm` using `hiComm L Ω l n c H hH A θ hθ`. Establish `hord : ∀ K, H.MK θ a K ≤ H.X.Ord (H.τA A) θ (H.lev K)` using `fun K => inf_le_left`. Take `⟨K0, hK0⟩` from `dir {z}`.
+
+Use `replace hK0 := hord K0 (hK0 z (Finset.mem_singleton_self z))`. Use `haveI := (hcomm K0).2.2.1`. Set `b` to `Module.Free.chooseBasis A (H.X.Ord (H.τA A) θ (H.lev K0))`. Choose the witnesses or unpack the hypotheses as in `⟨i0, hi0⟩ : ∃ i, b.repr ⟨z, hK0⟩ i ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+
+Use `push Not at hcon`. Establish `: (⟨z, hK0⟩ : H.X.Ord (H.τA A) θ (H.lev K0)) = 0` using `b.repr.injective (by rw [map_zero]; exact Finsupp.ext hcon)`. Conclude with `hz (Subtype.ext (congrArg Subtype.val this :))`. Choose the witnesses or unpack the hypotheses as in `⟨x0, hgood, hx0⟩ : ∃ x0 : A →ₐ[c.O] Qbar l, H.Good θ x0 lam ∧ x0 (b.repr ⟨z, hK0⟩ i0) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+
+Use `push Not at hcon`. Conclude with `hi0 (hden _ hcon)`. Take `⟨d, ξ, c0, sp, hsp⟩` from `spec L Ω l n c H hH A θ hθ ι x0 lam hgood.2.1`. Establish `hspz : sp z ≠ 0` using `fun h => hx0 <| ι.injective <| by`. Rewrite using `[map_zero]`.
+
+Conclude with `piPts_coord b (ι.toRingHom.comp x0.toRingHom) (fun f => sp f) (fun f f' => hsp.add K0 f f.2 f' f'.2) (fun u f => hsp.smul K0 f f.2 u) (hsp.indep K0 _ b) ⟨z, hK0⟩ h i0`. Set `s : (⨆ K, H.MK θ a K : Submodule A (H.X.Fn A H.m)) →+ (Fin H.m → H.X.Fn ℂ d)` to `AddMonoidHom.mk' (fun f => sp f) fun f f' => by`. Take `⟨K, hK⟩` from `dir {f, f'}`. Conclude with `hsp.add K f (hord K (hK f (by simp))) f' (hord K (hK f' (by simp)))`. Establish `hs : ∀ f, s f = sp f` using `fun _ => rfl`.
+
+Set `EK : H.Lev → Submodule ℂ (Fin H.m → H.X.Fn ℂ d)` to `fun K => Submodule.span ℂ (sp '' H.MK θ a K)`. Establish `hEK : ∀ K (f : (⨆ K, H.MK θ a K : Submodule A (H.X.Fn A H.m))), (f : H.X.Fn A H.m) ∈ H.MK θ a K → s f ∈ EK K` using `fun K f hf => Submodule.subset_span ⟨f, hf, rfl⟩`. Establish `lev : ∀ K, (z : H.X.Fn A H.m) ∈ H.MK θ a K → ∃ act : R → Module.End ℂ (EK K), (∀ t (f : (⨆ K, H.MK θ a K : Submodule A (H.X.Fn A H.m))) (hf : (f : H.X.Fn A H.m) ∈ H.MK θ a K), (act t ⟨s f, hEK K f hf⟩ : Fin H.m → H.X.Fn ℂ d) = s (α t f)) ∧ (∀ t q g (f : (⨆ K, H.MK θ a K : Submodu …`. Introduce `K hzK`. Use `haveI : Fact (CommOn (H.MK θ a K) (H.op A)) := ⟨((hcomm K).2.2.2 a).1⟩`.
+
+Take `⟨_, -⟩` from `hiAlg L Ω l n c H hH A θ hθ a K fun h => hz (Subtype.ext (by rwa [h] at hzK))`. Take `⟨f, ψ, huniv, hf⟩` from `hα K`. Take `⟨hE, act, a1, a2, -, -, a5⟩` from `_root_.UpperTheory.V.Hi.partAct0_alt Lit L Ω l n c H hH A θ hθ ι P hP x0 lam d ξ c0 sp hsp hlam a K (EK K) rfl`. Use `⟨fun t => act (f t), fun t y hy => ?_, fun t q g y hy hy' => Subtype.ext ?_, hE.resolve_right (not_not.2 hgood), fun Y hY => ?_⟩` and prove the remaining obligations. Conclude with `(a1 _ ⟨y, hy⟩ _ rfl).trans (congrArg sp (hf t ⟨y, hy⟩ y rfl).symm)`.
+
+Rewrite using `[hρ, hf t ⟨y, hy⟩ y rfl, hf t ⟨_, hy'⟩ _ rfl]`. Conclude with `piPts_hecke _ _ _ (piPts_comm H hH A q g) (f t) _ _ (hρ q g y)`. Take `⟨y, -, hy⟩` from `a5 hgood Y hY`. Take `⟨F, hF, hF0⟩` from `(Submodule.ne_bot_iff _).1 hY`. Use `⟨y.toRingHom.comp f, ?_, fun t F hF => hy _ F hF⟩` and prove the remaining obligations.
+
+Use `Eq.trans (piPts_mm D f _).symm (_root_.UpperTheory.V.Hi.core_eigen_of_weight_char_hecke_level Lit L Ω l n c H hH A θ hθ ι a K _ ψ huniv y lam d ξ Y F hF.1 hF0 fun w j => ?_).1` and prove the remaining obligations. Rewrite using `[← a2 _ ⟨F, hF.2⟩, hy _ ⟨F, hF.2⟩ hF.1]`. Both sides reduce to the same expression. Set `π0 : Representation ℂ (GV n H.wq) (Fin H.m → H.X.Fn ℂ d)` to `(H.X.raF d (H.τC ι)).comp (MonoidHom.noncommPiCoprod (fun q => H.sec (H.wq q)) fun q q' h => hH.Q_Q q q' h)`. Establish `hπ0 : ∀ q g, π0 (Pi.mulSingle q g) = H.atW ι d (H.wq q) g` using `fun q g => congrArg (H.X.raF d (H.τC ι)) (MonoidHom.noncommPiCoprod_mulSingle (fun q => H.sec (H.wq q)) q g)`.
+
+Establish `hsρ : ∀ g, (∀ f, s (ρ g f) = π0 g (s f)) ∧ ∀ t f, α t (ρ g f) = ρ g (α t f)` using `fun g => by`. Set `S : Submonoid (GV n H.wq)` to `{ carrier := {g | (∀ f, s (ρ g f) = π0 g (s f)) ∧ ∀ t f, α t (ρ g f) = ρ g (α t f)} one_mem' := by simp mul_mem' := fun {g g'} h h' => ⟨fun f => by simp only [map_mul, Module.End.mul_apply, h.1, h'.1], fun t f => by simp only [map_mul, Module.End.mul_apply, h.2, h'.2]⟩ }`. Use `Submonoid.pi_mem_of_mulSingle_mem (H := S) g fun q => ⟨fun f => ?_, fun t f => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `dir {f, ρ (Pi.mulSingle q (g q)) f}`. Rewrite using `[hs, hs, hπ0, hρ]`.
+
+Conclude with `hsp.act K K q _ f (hord K (hK f (by simp))) (by rw [← hρ]; exact hord K (hK _ (by simp)))`. Take `⟨K, hK⟩` from `dir {z, f, ρ (Pi.mulSingle q (g q)) f}`. Take `⟨-, -, a2, -⟩` from `lev K (hK z (by simp))`. Conclude with `a2 t q _ f (hK _ (by simp)) (hK _ (by simp))`. Take `⟨Y0, x, Y, p, y0, y1, y2, y3, y4, y5⟩` from `piPts_abs (I := H.PartAltAlt ι lam ξ) (X := R →+* Qbar l) s z hspz (fun t f => α t f) (fun g f => ρ g f) (fun g => π0 g) (fun K f => (f : H.X.Fn A H.m) ∈ H.MK θ a K) dir EK hEK (fun K => Submodule.span_mono fun _ ⟨y, hy, e⟩ => ⟨⟨y, Submodule.mem_iSup_of_mem K hy⟩, hy, e⟩) (fun Y …`.
+
+Take `⟨act, a1, -, a3, a4⟩` from `lev K hK`. Use `⟨act, a1, a3.le.trans (iSup_le fun Y => le_iSup (fun Y : H.PartAltAlt ι lam ξ => Y.Y ⊓ EK K) Y.1), fun Y hY => ?_⟩` and prove the remaining obligations. Take `⟨x, b1, b2⟩` from `a4 Y hY`. Conclude with `⟨x, b1, b2⟩`. Take `⟨Y', _, _, π', p', cq, k1, k2, k3⟩` from `UpperTheory.GalN.V.isoRefine UpperTheory.GalN.V.isoPick H.Q (fun q => GLw n (H.wq q)) Y {Y1 : H.PartAltAlt ι lam ξ // D.map x = W.GDet.ofRep (W.mat Y1.r)} (fun i q => i.1.σq q) (π0.subrepresentation Y y1) (fun q => UpperTheory.GalN.V.isoSub (GLw n (H.wq q)) Y _ {Y1 : H.PartAltAlt …`.
+
+Establish `hx : x1 = x` using `RingHom.ext fun t => ι.injective (congrFun b2 t)`. Conclude with `le_trans (Y1.isoQ q) (iSup_le fun f => le_iSup₂_of_le ⟨Y1, hx ▸ b1⟩ ⟨f.1, f.2.1⟩ le_rfl)) y.2) (p (s z)) y2`. Use `⟨x, Y0.r, Y', inferInstance, inferInstance, π', (p' ∘ₗ p).toAddMonoidHom.comp s, fun q => (cq q).1.σq q, k1, Y0.cont, y0, fun t y => ?_, fun g y => ?_, k3, fun q B hB rc hrc => piPts_conj H hH ι lam ξ Y0 (cq q).1 (y0.symm.trans (cq q).2) q B hB rc hrc⟩` and prove the remaining obligations. Conclude with `(congrArg p' (y3 t y)).trans (map_smul p' _ _)`. Conclude with `(congrArg p' (Subtype.ext (y4 g y))).trans (k2 g _)`.
+-/
 theorem UpperTheory.V.Hi.piPts_n_alt :
     _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (c : Coef l) (H : HSet L Ω l n c), H.Ax →
     ∀ (A : Type) [CommRing A] [Algebra c.O A] [Alg.IsCO c.O A] (θ : H.X.I.T →* Aˣ), H.IsWt θ →

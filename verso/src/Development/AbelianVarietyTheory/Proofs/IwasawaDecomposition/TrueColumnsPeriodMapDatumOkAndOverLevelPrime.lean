@@ -12,22 +12,34 @@ namespace GlobalTheory.Mem.Col2.PerLaw
 
 variable {B : Base} {X : PreX B.toPre} {I : TC B X}
 
+/- English proof (translation)
+Introduce `hm` and use `by have hPr := (base_fields_primes_ok B X).2.1 refine T_notMem_QE I.sel (I.tup a) u hPr h.sel_ok (h.T_mem u) P.1 P.2 ?_ rw [← hPr.piT_norm u] exact P.1.asIdeal.mul_mem_right _ hm`.
+-/
 theorem piT_notMem_Q (h : I.Ok) (u : B.Word) (a : I.ι) (P : I.Q a) : (B.primes X).piT u ∉ P.1.asIdeal := fun hm => by
   have hPr := (base_fields_primes_ok B X).2.1
   refine T_notMem_QE I.sel (I.tup a) u hPr h.sel_ok (h.T_mem u) P.1 P.2 ?_
   rw [← hPr.piT_norm u]
   exact P.1.asIdeal.mul_mem_right _ hm
 
+/- English proof (translation)
+The claim follows from `tilF_deco I.sel (I.tup a) (base_fields_primes_ok B X).2.1 u (piT_notMem_Q h u a) p.1.1`.
+-/
 theorem til_deco (h : I.Ok) (u : B.Word) (a : I.ι) (b : (I.perIn u a).S'.β) (p : (I.stX a).D b) :
     ((I.perIn u a).til b p).1.1.deco = DecoSet.tilH (N_m_succ B.R) ((B.primes X).piT u) p.1.1.deco :=
   tilF_deco I.sel (I.tup a) (base_fields_primes_ok B X).2.1 u (piT_notMem_Q h u a) p.1.1
 
+/- English proof (translation)
+Establish `hm` using `B.R.two_le_m`. Rewrite using `[← topLev_pref_m I.Ch I.sel (I.tup a) (I.cst a) I.Ps u]`. Conclude with `⟨fun h => h.2.2, fun h => ⟨fun e => by omega, fun e => by omega, h⟩⟩`.
+-/
 theorem pref_m (u : B.Word) (a : I.ι) (b : (I.stp0 u a B.R.m).β) (q : (I.stp0 u a B.R.m).D b) :
     I.pref u a B.R.m b q ↔ ∃ d, q.1.1 = tilF (Pr := B.primes X) (R := B.R) I.sel (I.tup a) u d := by
   have hm := B.R.two_le_m
   rw [← topLev_pref_m I.Ch I.sel (I.tup a) (I.cst a) I.Ps u]
   exact ⟨fun h => h.2.2, fun h => ⟨fun e => by omega, fun e => by omega, h⟩⟩
 
+/- English proof (translation)
+The claim follows from `stepY_ok (Ys.triv B.fields _) Unit (fun _ => rowTyG I.Ch I.Ps) (fun _ => levQX B.R I.sel (I.tup a)) (fun _ => True) (base_fields_primes_ok B X).1 (fun _ => levQX_finiteIndex I.sel (I.tup a)) (fun _ P g => (levQX_root (R := B.R) I.sel (I.tup a) P).imp fun _ hm => ⟨hm.1, hm.2 g⟩) f …`.
+-/
 theorem stX_ok (a : I.ι) : (I.stX a).Ok :=
   stepY_ok (Ys.triv B.fields _) Unit (fun _ => rowTyG I.Ch I.Ps) (fun _ => levQX B.R I.sel (I.tup a)) (fun _ => True)
     (base_fields_primes_ok B X).1 (fun _ => levQX_finiteIndex I.sel (I.tup a))
@@ -35,6 +47,9 @@ theorem stX_ok (a : I.ι) : (I.stX a).Ok :=
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+The claim follows from `stX_ok a til_smul _ g p := Subtype.ext (Prod.ext (tilF_extTop I.Ch I.sel (I.tup a) (I.cst a) I.Ps (base_fields_primes_ok B X).2.1 u (piT_notMem_Q h u a) g p.1.1) (Set.image_empty _).symm) ext_inj _ := extTop_injective I.Ch I.sel (I.tup a) (I.cst a) I.Ps gam_ini _ g x := (congrArg …`.
+-/
 theorem perIn_ok (h : I.Ok) (u : B.Word) (a : I.ι) : (I.perIn u a).Ok where
   step := stX_ok a
   til_smul _ g p := Subtype.ext (Prod.ext
@@ -70,6 +85,15 @@ theorem perIn_ok (h : I.Ok) (u : B.Word) (a : I.ι) : (I.perIn u a).Ok where
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Use `show star (star (((B.primes X).piT u : 𝓞 B.fields.E) : B.fields.E)) * star (((B.primes X).piT u : 𝓞 B.fields.E) : B.fields.E) = ((B.primes X).T u : B.fields.E)`. Rewrite using `[star_star]`. Establish `h` using `congrArg (algebraMap (𝓞 B.fields.E) B.fields.E) ((base_fields_primes_ok B X).2.1.piT_norm u)`. Rewrite `h` using `[map_mul, map_natCast]`. Conclude with `h`.
+
+Use `N_til b p x := by`. Establish `hPr` using `(base_fields_primes_ok B X).2.1`. Use `show x ∈ ((I.perIn u a).til b p).1.1.deco.1.N ↔ _`. Rewrite using `[til_deco h u a b p]`. Conclude with `tilH_N _ p.1.1.deco (conj_piT_notMem hPr u) (piT_notMem_vGs hPr u) x`.
+
+Use `f_til b p P x hx := by`. Establish `hPr` using `(base_fields_primes_ok B X).2.1`. Express the relevant statement in the definitionally equal form `x ∈ ((I.perIn u a).til b p).1.1.deco.1.N at hx`. Use `show ((I.perIn u a).til b p).1.1.deco.1.f P x = _`. Rewrite `hx`, the goal using `[til_deco h u a b p]`.
+
+Conclude with `tilH_f _ p.1.1.deco (conj_piT_notMem hPr u) (piT_notMem_vGs hPr u) P x hx`.
+-/
 theorem perIn_over (h : I.Ok) (u : B.Word) (a : I.ι) : (I.perIn u a).Over (I.atIn u a) where
   norm_tz := by
     show star (star (((B.primes X).piT u : 𝓞 B.fields.E) : B.fields.E)) *
@@ -90,6 +114,9 @@ theorem perIn_over (h : I.Ok) (u : B.Word) (a : I.ι) : (I.perIn u a).Over (I.at
     rw [til_deco h u a b p] at hx ⊢
     exact tilH_f _ p.1.1.deco (conj_piT_notMem hPr u) (piT_notMem_vGs hPr u) P x hx
 
+/- English proof (translation)
+Introduce `_ h u a` and use `⟨perIn_ok h u a, perIn_over h u a⟩`.
+-/
 theorem perIn_laws : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok →
     ∀ u a, (I.perIn u a).Ok ∧ (I.perIn u a).Over (I.atIn u a) :=
   fun _ h u a => ⟨perIn_ok h u a, perIn_over h u a⟩

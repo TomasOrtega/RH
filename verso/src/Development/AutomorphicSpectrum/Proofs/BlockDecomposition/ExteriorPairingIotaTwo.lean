@@ -15,6 +15,11 @@ section Lin
 variable {R V W V' W' : Type} [CommRing R] [AddCommGroup V] [Module R V] [AddCommGroup W] [Module R W]
   [AddCommGroup V'] [Module R V'] [AddCommGroup W'] [Module R W']
 
+/- English proof (translation)
+Set `e : (V × V) ≃ₗ[R] W` to `LinearEquiv.ofBijective (P.coprod Q) hb`. Establish `hP : ∀ x, e.symm (P x) = (x, 0)` using `fun x ↦ e.symm_apply_eq.2 (by`. Express the relevant statement in the definitionally equal form `P x = P x + Q 0`. Use the proof step `simp)`. Establish `hQ : ∀ x, e.symm (Q x) = (0, x)` using `fun x ↦ e.symm_apply_eq.2 (by`.
+
+Express the relevant statement in the definitionally equal form `Q x = P 0 + Q x`. Use the proof step `simp)`. Apply the tactic sequence `refine ⟨LinearMap.fst R V V ∘ₗ e.symm.toLinearMap, LinearMap.snd R V V ∘ₗ e.symm.toLinearMap, ?_, ?_, ?_, ?_⟩ <;>`. Apply the tactic sequence `intro x <;> simp [hP, hQ]`.
+-/
 theorem exists_retract (P Q : V →ₗ[R] W) (hb : Function.Bijective fun x : V × V ↦ P x.1 + Q x.2) :
     ∃ r s : W →ₗ[R] V, (∀ x, r (P x) = x) ∧ (∀ x, r (Q x) = 0) ∧ (∀ x, s (P x) = 0) ∧ ∀ x, s (Q x) = x := by
   let e : (V × V) ≃ₗ[R] W := LinearEquiv.ofBijective (P.coprod Q) hb
@@ -25,6 +30,11 @@ theorem exists_retract (P Q : V →ₗ[R] W) (hb : Function.Bijective fun x : V 
   refine ⟨LinearMap.fst R V V ∘ₗ e.symm.toLinearMap, LinearMap.snd R V V ∘ₗ e.symm.toLinearMap, ?_, ?_, ?_, ?_⟩ <;>
     intro x <;> simp [hP, hQ]
 
+/- English proof (translation)
+Take `⟨r, -, a1, a2, -, -⟩` from `exists_retract P₁ Q₁ h₁`. Take `⟨-, s, -, -, b1, b2⟩` from `exists_retract P₂ Q₂ h₂`. Establish `e1 : r ∘ₗ (P₁ + Q₁) = LinearMap.id` using `LinearMap.ext fun x ↦ by simp [a1, a2]`. Establish `e2 : s ∘ₗ (P₂ + Q₂) = LinearMap.id` using `LinearMap.ext fun x ↦ by simp [b1, b2]`. Establish `e3 : s ∘ₗ P₂ = 0` using `LinearMap.ext fun x ↦ by simp [b1]`.
+
+Establish `e4 : r ∘ₗ Q₁ = 0` using `LinearMap.ext fun x ↦ by simp [a2]`. Use `congrArg (TensorProduct.map r s) h` as an intermediate fact. Rewrite `this` using `[map_add, ← LinearMap.comp_apply, ← LinearMap.comp_apply, ← LinearMap.comp_apply, ← TensorProduct.map_comp, ← TensorProduct.map_comp, ← TensorProduct.map_comp, e1, e2, e3, e4, TensorProduct.map_id, TensorProduct.map_zero_right, TensorProduct.map_zero_left]`. Simplify using `using this`.
+-/
 theorem eq_zero_of_tprim (P₁ Q₁ : V →ₗ[R] W) (P₂ Q₂ : V' →ₗ[R] W')
     (h₁ : Function.Bijective fun x : V × V ↦ P₁ x.1 + Q₁ x.2)
     (h₂ : Function.Bijective fun x : V' × V' ↦ P₂ x.1 + Q₂ x.2) (z : V ⊗[R] V')
@@ -44,20 +54,35 @@ theorem eq_zero_of_tprim (P₁ Q₁ : V →ₗ[R] W) (P₂ Q₂ : V' →ₗ[R] W
 
 abbrev i2 (a b : V) : ⋀[R]^2 V := exteriorPower.ιMulti R 2 ![a, b]
 
+/- English proof (translation)
+The claim follows from `congrArg _ (by ext i; fin_cases i <;> rfl)`.
+-/
 theorem iota_multi_two_eta (v : Fin 2 → V) : exteriorPower.ιMulti R 2 v = i2 (R := R) (v 0) (v 1) :=
   congrArg _ (by ext i; fin_cases i <;> rfl)
 
+/- English proof (translation)
+The claim follows from `exteriorPower.linearMap_ext (AlternatingMap.ext fun v ↦ by simpa [iota_multi_two_eta] using h (v 0) (v 1))`.
+-/
 theorem ext2 {N : Type} [AddCommGroup N] [Module R N] {f g : ⋀[R]^2 V →ₗ[R] N}
     (h : ∀ a b, f (i2 a b) = g (i2 a b)) : f = g :=
   exteriorPower.linearMap_ext (AlternatingMap.ext fun v ↦ by
     simpa [iota_multi_two_eta] using h (v 0) (v 1))
 
+/- English proof (translation)
+Rewrite using `[exteriorPower.map_apply_ιMulti, iota_multi_two_eta]`. Both sides reduce to the same expression.
+-/
 theorem exterior_map_iota_two (f : V →ₗ[R] W) (a b : V) : exteriorPower.map 2 f (i2 (R := R) a b) = i2 (f a) (f b) := by
   rw [exteriorPower.map_apply_ιMulti, iota_multi_two_eta]; rfl
 
+/- English proof (translation)
+Apply the tactic sequence `ext i; fin_cases i <;> rfl`.
+-/
 theorem up0 (a b c : V) : Function.update ![a, b] 0 c = ![c, b] := by
   ext i; fin_cases i <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `ext i; fin_cases i <;> rfl`.
+-/
 theorem up1 (a b c : V) : Function.update ![a, b] 1 c = ![a, c] := by
   ext i; fin_cases i <;> rfl
 
@@ -76,11 +101,20 @@ def b2 : V →ₗ[R] V →ₗ[R] ⋀[R]^2 V :=
       have := (exteriorPower.ιMulti R 2 (M := V)).map_update_smul ![a, b] 1 c b
       rwa [up1, up1] at this)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem wedge_basis_apply (a b : V) : b2 (R := R) a b = i2 a b := rfl
 
+/- English proof (translation)
+The claim follows from `(exteriorPower.ιMulti R 2 (M := V)).map_eq_zero_of_eq ![a, a] (i := 0) (j := 1) rfl (by decide)`.
+-/
 theorem wedge_basis_self_zero (a : V) : b2 (R := R) a a = 0 :=
   (exteriorPower.ιMulti R 2 (M := V)).map_eq_zero_of_eq ![a, a] (i := 0) (j := 1) rfl (by decide)
 
+/- English proof (translation)
+Use `wedge_basis_self_zero (R := R) (a + b)` as an intermediate fact. Simplify using `only [map_add, LinearMap.add_apply, wedge_basis_self_zero, zero_add, add_zero] at this`. Conclude with `eq_neg_of_add_eq_zero_left this`.
+-/
 theorem wedge_basis_swap_neg (a b : V) : b2 (R := R) b a = -b2 (R := R) a b := by
   have := wedge_basis_self_zero (R := R) (a + b)
   simp only [map_add, LinearMap.add_apply, wedge_basis_self_zero, zero_add, add_zero] at this
@@ -89,9 +123,35 @@ theorem wedge_basis_swap_neg (a b : V) : b2 (R := R) b a = -b2 (R := R) a b := b
 def pair2 (l u : V →ₗ[R] R) : ⋀[R]^2 V →ₗ[R] R :=
   exteriorPower.alternatingMapLinearEquiv (Matrix.detRowAlternating.compLinearMap (LinearMap.pi ![l, u]))
 
+/- English proof (translation)
+The claim follows from `(exteriorPower.alternatingMapLinearEquiv_apply_ιMulti _ _).trans (Matrix.det_fin_two _)`.
+-/
 theorem exterior_pairing_iota_two (l u : V →ₗ[R] R) (a b : V) : pair2 l u (i2 a b) = l a * u b - u a * l b :=
   (exteriorPower.alternatingMapLinearEquiv_apply_ιMulti _ _).trans (Matrix.det_fin_two _)
 
+/- English proof (translation)
+Take `⟨n, f, hf⟩` from `Module.Finite.exists_fin' R V`. Take `⟨s, hs⟩` from `Module.projective_lifting_property f LinearMap.id hf`. Set `c : Fin n → V →ₗ[R] R` to `fun i ↦ LinearMap.proj i ∘ₗ s`. Set `e : Fin n → V` to `fun i ↦ f (Pi.single i 1)`. Establish `he : ∀ x, ∑ i, c i x • e i = x` using `fun x ↦ by`.
+
+Establish `h1 : f (s x) = x` using `LinearMap.congr_fun hs x`. Use `conv_rhs => rw [← h1, ← Finset.univ_sum_single (s x), map_sum]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[← map_smul]`. Use `congr 1`.
+
+Use extensionality with `j`. Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality. Simplify using `[c]`. Simplify using `[c, Pi.single_eq_of_ne hij]`.
+
+Set `Ψ : ⋀[R]^2 V →ₗ[R] ⋀[R]^2 V` to `∑ i, ∑ j, if i < j then (LinearMap.toSpanSingleton R _ (b2 (e i) (e j))) ∘ₗ pair2 (c i) (c j) else 0`. Establish `hΨ : Ψ = LinearMap.id` using `ext2 fun a b ↦ by`. Set `g : Fin n → Fin n → ⋀[R]^2 V` to `fun i j ↦ (c i a * c j b) • b2 (e i) (e j)`. Establish `hg0 : ∀ i, g i i = 0` using `fun i ↦ by simp [g, wedge_basis_self_zero]`. Establish `h1 : i2 a b = ∑ i, ∑ j, g i j` using `by conv_lhs => rw [← wedge_basis_apply, ← he a, ← he b]`.
+
+Simplify using `only [map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, Finset.smul_sum, g, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Establish `h2 : ∑ i, ∑ j, (if i < j then g j i else 0) = ∑ i, ∑ j, (if j < i then g i j else 0)` using `Finset.sum_comm`.
+
+Establish `h3 : Ψ (i2 a b) = ∑ i, ∑ j, ((if i < j then g i j else 0) + if i < j then g j i else 0)`. Simplify using `only [Ψ, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Use `split_ifs with hij`. Rewrite using `[LinearMap.comp_apply, exterior_pairing_iota_two, LinearMap.toSpanSingleton_apply]`.
+
+Simplify using `only [g]`. Rewrite using `[wedge_basis_swap_neg (e i) (e j)]`. Use `module`. Simplify using the standard rewrite rules. Rewrite using `[h3, LinearMap.id_apply, h1]`.
+
+Simplify using `only [Finset.sum_add_distrib]`. Rewrite using `[h2, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations.
+
+Break down `lt_trichotomy i j with hij | hij | hij` into its components or cases. Simplify using `[hij, hij.not_gt]`. Substitute `hij` using the available equality. Simplify using `[hg0]`. Simplify using `[hij, hij.not_gt]`.
+
+Use `LinearMap.congr_fun hΨ t` as an intermediate fact. Rewrite `this` using `[LinearMap.id_apply]`. Rewrite using `[← this]`. Simplify using `only [Ψ, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun i _ ↦ Finset.sum_eq_zero fun j _ ↦ ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `split_ifs <;> simp [h]`.
+-/
 theorem eq_zero_of_pair2 [Module.Finite R V] [Module.Projective R V] (t : ⋀[R]^2 V)
     (h : ∀ l u : V →ₗ[R] R, pair2 l u t = 0) : t = 0 := by
   obtain ⟨n, f, hf⟩ := Module.Finite.exists_fin' R V
@@ -147,6 +207,13 @@ theorem eq_zero_of_pair2 [Module.Finite R V] [Module.Projective R V] (t : ⋀[R]
   refine Finset.sum_eq_zero fun i _ ↦ Finset.sum_eq_zero fun j _ ↦ ?_
   split_ifs <;> simp [h]
 
+/- English proof (translation)
+Take `⟨r, s, a1, a2, b1, b2'⟩` from `exists_retract P Q hb`. Use `eq_zero_of_pair2 t fun l u ↦ ?_` and prove the remaining obligations. Establish `e1 : pair2 (l ∘ₗ r) (u ∘ₗ s) ∘ₗ exteriorPower.map 2 (P + Q) = pair2 l u` using `ext2 fun a b ↦ by`. Rewrite using `[LinearMap.comp_apply, exterior_map_iota_two, exterior_pairing_iota_two, exterior_pairing_iota_two]`. Simplify using `[a1, a2, b1, b2']`.
+
+Establish `e2 : pair2 (l ∘ₗ r) (u ∘ₗ s) ∘ₗ exteriorPower.map 2 P = 0` using `ext2 fun a b ↦ by`. Rewrite using `[LinearMap.comp_apply, exterior_map_iota_two, exterior_pairing_iota_two]`. Simplify using `[a1, a2, b1, b2']`. Establish `e3 : pair2 (l ∘ₗ r) (u ∘ₗ s) ∘ₗ exteriorPower.map 2 Q = 0` using `ext2 fun a b ↦ by`. Rewrite using `[LinearMap.comp_apply, exterior_map_iota_two, exterior_pairing_iota_two]`.
+
+Simplify using `[a1, a2, b1, b2']`. Use `congrArg (pair2 (l ∘ₗ r) (u ∘ₗ s)) h` as an intermediate fact. Rewrite `this` using `[map_add, ← LinearMap.comp_apply, ← LinearMap.comp_apply, ← LinearMap.comp_apply, e1, e2, e3]`. Simplify using `using this`.
+-/
 theorem eq_zero_of_prim [Module.Finite R V] [Module.Projective R V] (P Q : V →ₗ[R] W)
     (hb : Function.Bijective fun x : V × V ↦ P x.1 + Q x.2) (t : ⋀[R]^2 V)
     (h : exteriorPower.map 2 (P + Q) t = exteriorPower.map 2 P t + exteriorPower.map 2 Q t) : t = 0 := by
@@ -172,6 +239,11 @@ section Frame
 variable {R : Type} [CommRing R] {C E : Type} [Category.{0} C] [Category.{0} E]
   {F : C ⥤ CommAlgCat.{0} R} {G : E ⥤ CommAlgCat.{0} R}
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f ω`. Rewrite using `[TensorProduct.map_tmul, hG, hF, prodFirstProjection_smul]`. Both sides reduce to the same expression.
+
+Consider the case `add x y hx hy => simp only [map_add, Pi.add_apply, hx, hy]`.
+-/
 theorem mu_pull (m : CoefMap (RingHom.id R) F G)
     (muF : Z1 F ⊗[R] Glob1 F →ₗ[R] A1 F) (muG : Z1 G ⊗[R] Glob1 G →ₗ[R] A1 G)
     (hF : ∀ f ω T T' φ, muF (f ⊗ₜ ω) T T' φ = f.1 T T' φ • ω.1 T')
@@ -184,6 +256,9 @@ theorem mu_pull (m : CoefMap (RingHom.id R) F G)
     rw [TensorProduct.map_tmul, hG, hF, prodFirstProjection_smul]; rfl
   | add x y hx hy => simp only [map_add, Pi.add_apply, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f ω => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem rTensor_pull (m : CoefMap (RingHom.id R) F G) (t : Z1 F ⊗[R] Glob1 F) :
     (H1.mk G).rTensor (Glob1 G) (TensorProduct.map m.pullbackOneCocycle (pullGlob1 m) t) =
       TensorProduct.map m.pull1 (pullGlob1 m) ((H1.mk F).rTensor (Glob1 F) t) := by
@@ -192,6 +267,9 @@ theorem rTensor_pull (m : CoefMap (RingHom.id R) F G) (t : Z1 F ⊗[R] Glob1 F) 
   | tmul f ω => rfl
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `(H1.mk_eq_mk (F := G) (f := m.pullbackOneCocycle f) (f' := p.pullbackOneCocycle f + q.pullbackOneCocycle f)).1 (by`. Use `hm1 (H1.mk F f)` as an intermediate fact. Rewrite using `[CoefMap.pullCohomologyOne_class, CoefMap.pullCohomologyOne_class, CoefMap.pullCohomologyOne_class, ← map_add] at this)` and apply the resulting hypothesis. Conclude with `⟨g, fun T T' φ ↦ congrFun (congrFun (congrFun hg T) T') φ⟩`.
+-/
 theorem exists_prim_cochain (m p q : CoefMap (RingHom.id R) F G)
     (hm1 : ∀ c, m.pull1 c = p.pull1 c + q.pull1 c) (f : Z1 F) :
     ∃ g : C0 G, ∀ ⦃T T' : E⦄ (φ : T ⟶ T'), g T' - mp G φ (g T) =
@@ -201,6 +279,13 @@ theorem exists_prim_cochain (m p q : CoefMap (RingHom.id R) F G)
     rwa [CoefMap.pullCohomologyOne_class, CoefMap.pullCohomologyOne_class, CoefMap.pullCohomologyOne_class, ← map_add] at this)
   exact ⟨g, fun T T' φ ↦ congrFun (congrFun (congrFun hg T) T') φ⟩
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `exists_prim_cochain m p q hm1 f`. Establish `hz` using `hG3 (TensorProduct.map m.pullbackOneCocycle (pullGlob1 m) t - TensorProduct.map p.pullbackOneCocycle (pullGlob1 p) t - TensorProduct.map q.pullbackOneCocycle (pullGlob1 q) t) (fun T ↦ KaehlerDifferential.D R _ (g T)) (fun T T' φ ↦ by`. Establish `e` using `congrArg (KaehlerDifferential.D R (G.obj T')) (hg φ)`. Simplify using `only [map_sub, map_add] at e`. Simplify using `only [map_sub, Pi.sub_apply, mu_pull _ muF muG hF hG, ht, cechDeRhamCoefMapOneForms_D, p1_D]`.
+
+Rewrite using `[e]`. Simplify using `only [CoefMap.pullCocycleOne_apply]`. Use the proof step `abel)`. Rewrite `hz` using `[map_sub, map_sub, rTensor_pull, rTensor_pull, rTensor_pull]`. Establish `e1 : m.pull1 = p.pull1 + q.pull1` using `LinearMap.ext hm1`.
+
+Establish `e2 : pullGlob1 m = pullGlob1 p + pullGlob1 q` using `LinearMap.ext hmW`. Rewrite `hz` using `[e1, e2]`. Use `eq_zero_of_tprim p.pull1 q.pull1 (pullGlob1 p) (pullGlob1 q) hH hW _ ?_` and prove the remaining obligations. Rewrite `hz` using `[sub_sub, sub_eq_zero]`. Conclude with `hz`.
+-/
 theorem class_zero (m p q : CoefMap (RingHom.id R) F G)
     (hH : Function.Bijective fun x : H1 F × H1 F ↦ p.pull1 x.1 + q.pull1 x.2)
     (hW : Function.Bijective fun x : Glob1 F × Glob1 F ↦ pullGlob1 p x.1 + pullGlob1 q x.2)
@@ -238,8 +323,20 @@ def evT : C0 F ⊗[R] Glob1 F →ₗ[R] A0 F :=
     (fun a ω ω' ↦ funext fun T ↦ by simp)
     (fun r a ω ↦ funext fun T ↦ by simp [smul_comm r]))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evT_tmul (g : C0 F) (ω : Glob1 F) (T : C) : evT (g ⊗ₜ ω) T = g T • ω.1 T := rfl
 
+/- English proof (translation)
+Set `d' : C0 F →ₗ[R] Z1 F` to `(d0 F).codRestrict (Z1 F) (commAlgFunctorCoboundaryZero_mem_cocyclesOne F)`. Establish `hex : Function.Exact d' (H1.mk F)` using `fun y ↦ by`. Rewrite using `[H1.mk_eq_zero]`. Conclude with `⟨fun ⟨g, hg⟩ ↦ ⟨g, Subtype.ext hg⟩, fun ⟨g, hg⟩ ↦ ⟨g, congrArg Subtype.val hg⟩⟩`. Establish `key : ∀ (s : C0 F ⊗[R] Glob1 F) (T T' : C) (φ : T ⟶ T'), muF ((d').rTensor (Glob1 F) s) T T' φ = evT s T' - p1 F φ (evT s T)` using `fun s ↦ by`.
+
+Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => intro T T' φ`. Simplify using the standard rewrite rules. Consider the case `tmul g ω`. Introduce `T T' φ`.
+
+Rewrite using `[LinearMap.rTensor_tmul, hF, evT_tmul, evT_tmul, oneFormsMapOfFunctorMorphism_smul, ← ω.2 φ, ← sub_smul]`. Both sides reduce to the same expression. Consider the case `add x y hx hy`. Introduce `T T' φ`. Simplify using `only [map_add, Pi.add_apply, hx, hy]`.
+
+Normalize the expressions using the abelian group laws. Take `⟨s, rfl⟩` from `(rTensor_exact (Glob1 F) hex (H1.mk_surjective F) t).1 h0`. Conclude with `⟨evT s, key s⟩`.
+-/
 theorem exists_prim (muF : Z1 F ⊗[R] Glob1 F →ₗ[R] A1 F)
     (hF : ∀ f ω T T' φ, muF (f ⊗ₜ ω) T T' φ = f.1 T T' φ • ω.1 T')
     (t : Z1 F ⊗[R] Glob1 F) (h0 : (H1.mk F).rTensor (Glob1 F) t = 0) :
@@ -263,6 +360,9 @@ theorem exists_prim (muF : Z1 F ⊗[R] Glob1 F →ₗ[R] A1 F)
   obtain ⟨s, rfl⟩ := (rTensor_exact (Glob1 F) hex (H1.mk_surjective F) t).1 h0
   exact ⟨evT s, key s⟩
 
+/- English proof (translation)
+Establish `e : (LinearMap.proj T : W0 G 2 →ₗ[R] _) ∘ₗ νG ∘ₗ exteriorPower.map 2 (pullGlob1 m) = (qOm m 2 T) ∘ₗ (LinearMap.proj (m.G.obj T) : W0 F 2 →ₗ[R] _) ∘ₗ νF` using `ext2 fun a b ↦ by`. Simplify using `only [LinearMap.comp_apply, exterior_map_iota_two, LinearMap.proj_apply]`. Rewrite using `[hG, hF, qOm_wedge]`. Both sides reduce to the same expression. Conclude with `LinearMap.congr_fun e t`.
+-/
 theorem nu_pull (m : CoefMap (RingHom.id R) F G)
     (νF : ⋀[R]^2 (Glob1 F) →ₗ[R] W0 F 2) (νG : ⋀[R]^2 (Glob1 G) →ₗ[R] W0 G 2)
     (hF : ∀ a b T, νF (exteriorPower.ιMulti R 2 ![a, b]) T = wedge R _ (a.1 T) (b.1 T))
@@ -276,6 +376,17 @@ theorem nu_pull (m : CoefMap (RingHom.id R) F G)
     rfl
   exact LinearMap.congr_fun e t
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `exists_prim_cochain m p q hm1 f`. Establish `conn : ∀ (m' : CoefMap (RingHom.id R) F G) {T T' : E} (φ : T ⟶ T'), q1 m' T' (β _) = p1 G φ (q1 m' T (β _)) + KaehlerDifferential.D R _ ((m'.pullbackOneCocycle f).1 T T' φ)` using `fun m' T T' φ ↦ by`. Rewrite using `[hβ (m'.G.map φ), map_add, cechDeRhamCoefMapOneForms_naturality, cechDeRhamCoefMapOneForms_D]`. Both sides reduce to the same expression. Set `ga : A0 G` to `fun T ↦ q1 m T (β _) - q1 p T (β _) - q1 q T (β _) - KaehlerDifferential.D R _ (g T)`.
+
+Establish `hga : ga ∈ Glob1 G` using `fun T T' φ ↦ by`. Establish `e` using `congrArg (KaehlerDifferential.D R (G.obj T')) (hg φ)`. Simplify using `only [map_sub, map_add] at e`. Simplify using `only [ga, map_sub, p1_D]`. Rewrite using `[conn m φ, conn p φ, conn q φ, sub_eq_iff_eq_add.1 e]`.
+
+Normalize the expressions using the abelian group laws. Take `⟨⟨a, b⟩, hab⟩` from `hW.2 ⟨ga, hga⟩`. Establish `hcl : ∀ (a : Glob1 F) (T : C), dOne R _ (a.1 T) = 0` using `fun a ↦ by`. Establish `h : a ∈ Closed1 F` using `by rw [hC]; exact Submodule.mem_top`. Conclude with `h`.
+
+Establish `e : ga T = q1 p T (a.1 _) + q1 q T (b.1 _)` using `(congrFun (congrArg Subtype.val hab) T).symm`. Establish `e0 : dOne R _ (ga T) = 0`. Rewrite using `[e, map_add, ← qOm_dOne, ← qOm_dOne, hcl, hcl, map_zero, map_zero, add_zero]`. Simplify using `only [ga, map_sub, dOne_D, sub_zero, ← qOm_dOne] at e0`. Rewrite `e0` using `[sub_sub, sub_eq_zero]`.
+
+Conclude with `e0`.
+-/
 theorem two_prim (m p q : CoefMap (RingHom.id R) F G)
     (hW : Function.Bijective fun x : Glob1 F × Glob1 F ↦ pullGlob1 p x.1 + pullGlob1 q x.2)
     (hm1 : ∀ c, m.pull1 c = p.pull1 c + q.pull1 c) (hC : Closed1 F = ⊤) (f : Z1 F) (β : A0 F)
@@ -304,6 +415,13 @@ theorem two_prim (m p q : CoefMap (RingHom.id R) F G)
   rw [sub_sub, sub_eq_zero] at e0
   exact e0
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `hsurj (fun T ↦ dOne R _ (β T)) (fun T T' φ ↦ by`. Rewrite using `[hβ φ, map_add, dOne_D, add_zero, pOm_dOne])`. Establish `h1 : exteriorPower.map 2 (pullGlob1 m) t = exteriorPower.map 2 (pullGlob1 p) t + exteriorPower.map 2 (pullGlob1 q) t` using `hinj (by`. Rewrite using `[map_add]`. Use function extensionality and compare the values at `T`.
+
+Rewrite using `[Pi.add_apply, nu_pull m νF νG hF hG, nu_pull p νF νG hF hG, nu_pull q νF νG hF hG, ht]`. Conclude with `two_prim m p q hW hm1 hC f β hβ T)`. Establish `e2 : pullGlob1 m = pullGlob1 p + pullGlob1 q` using `LinearMap.ext hmW`. Rewrite `h1` using `[e2]`. Establish `ht0` using `eq_zero_of_prim (pullGlob1 p) (pullGlob1 q) hW t h1`.
+
+Use `congrFun ht T` as an intermediate fact. Rewrite `this` using `[ht0, map_zero]`. Conclude with `this.symm`.
+-/
 theorem closed_of_conn (m p q : CoefMap (RingHom.id R) F G) [Module.Finite R (Glob1 F)]
     [Module.Projective R (Glob1 F)]
     (hW : Function.Bijective fun x : Glob1 F × Glob1 F ↦ pullGlob1 p x.1 + pullGlob1 q x.2)
@@ -335,6 +453,17 @@ theorem closed_of_conn (m p q : CoefMap (RingHom.id R) F G) [Module.Finite R (Gl
 
 end Frame
 
+/- English proof (translation)
+Introduce `h1 h2 R _ C _ F hF hBi hC c`. Take `⟨E, _, G, m, p, q, hSG, hPG, hH, hW, hm1, hmW, -⟩` from `hBi`. Establish `hFG : Framed G`. Take `⟨-, -, hfin, hproj⟩` from `hF`. Set `e : (Glob1 F × Glob1 F) ≃ₗ[R] Glob1 G` to `LinearEquiv.ofBijective ((pullGlob1 p).coprod (pullGlob1 q)) hW`.
+
+Conclude with `⟨hSG, hPG, Module.Finite.equiv e, Module.Projective.of_equiv e⟩`. Take `⟨muF, hmF, hmS, -⟩` from `h1 R C F hF`. Take `⟨muG, hmG, -, hG3⟩` from `h1 R E G hFG`. Take `⟨νF, hνF, -, hsurj⟩` from `h2 R C F hF`. Take `⟨νG, hνG, hinj, -⟩` from `h2 R E G hFG`.
+
+Take `⟨f, rfl⟩` from `H1.mk_surjective F c`. Take `⟨t, ht⟩` from `hmS (fun T T' φ ↦ KaehlerDifferential.D R _ (f.1 T T' φ)) (fun T T' T'' φ ψ ↦ by`. Rewrite using `[Z1.comp f, map_add, p1_D])`. Establish `hz` using `class_zero m p q hH hW hm1 hmW muF muG hmF hmG hG3 f t (fun T T' φ ↦ congrFun (congrFun (congrFun ht T) T') φ)`. Take `⟨β, hβ⟩` from `exists_prim muF hmF t hz`.
+
+Establish `hconn : ∀ ⦃T T' : C⦄ (φ : T ⟶ T'), β T' = p1 F φ (β T) + KaehlerDifferential.D R _ (f.1 T T' φ)` using `fun T T' φ ↦ by`. Establish `e : KaehlerDifferential.D R _ (f.1 T T' φ) = β T' - p1 F φ (β T)` using `(congrFun (congrFun (congrFun ht T) T') φ).symm.trans (hβ T T' φ)`. Rewrite using `[e]`. Normalize the expressions using the abelian group laws. Use `haveI := hF.2.2.1`.
+
+Use `haveI := hF.2.2.2`. Establish `hcl` using `closed_of_conn m p q hW hm1 hmW hC νF νG hνF hνG hinj hsurj f β hconn`. Conclude with `⟨Hyp1.mk F ⟨(f.1, β), mem_cechDeRhamTotalCocyclesOne_iff.2 ⟨f.2, hconn, hcl⟩⟩, rfl⟩`.
+-/
 theorem lift_of_forms : OneFormCohSt → TwoFormCohSt → LiftSt := by
   intro h1 h2 R _ C _ F hF hBi hC c
   obtain ⟨E, _, G, m, p, q, hSG, hPG, hH, hW, hm1, hmW, -⟩ := hBi

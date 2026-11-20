@@ -14,6 +14,9 @@ namespace GlobalTheory.CondTieChoice
 
 open Formalism.MainNotions.BlochKatoReduction.Gen (nval)
 
+/- English proof (translation)
+Unfold `lenUnit Formalism.MainNotions.BlochKatoReduction.Gen.nval`. Rewrite using `[Formalism.NG.IdempotentNormalFormsLenFacts.length_quot_span, Formalism.NG.IdempotentNormalFormsLenFacts.length_quot_span]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem lenUnit_quot_eq {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (l : ℕ) (x : O) :
     ((lenUnit (O := O) l (O ⧸ Ideal.span {x}) : ℚ) : ℝ) = Formalism.MainNotions.BlochKatoReduction.Gen.nval O l x := by
   unfold lenUnit Formalism.MainNotions.BlochKatoReduction.Gen.nval
@@ -21,16 +24,33 @@ theorem lenUnit_quot_eq {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuatio
   push_cast
   rfl
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.BlochKatoReduction.Gen.nval`. Simplify using the standard rewrite rules.
+-/
 theorem normVal_zero {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (l : ℕ) :
     Formalism.MainNotions.BlochKatoReduction.Gen.nval O l 0 = 0 := by
   unfold Formalism.MainNotions.BlochKatoReduction.Gen.nval
   simp
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.BlochKatoReduction.Gen.nval`. Rewrite using `[IsDiscreteValuationRing.addVal_mul, IsDiscreteValuationRing.addVal_eq_zero_of_unit, zero_add]`.
+-/
 theorem normVal_unit_mul {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (l : ℕ) (v : Rˣ) (x : R) :
     Formalism.MainNotions.BlochKatoReduction.Gen.nval R l ((v : R) * x) = Formalism.MainNotions.BlochKatoReduction.Gen.nval R l x := by
   unfold Formalism.MainNotions.BlochKatoReduction.Gen.nval
   rw [IsDiscreteValuationRing.addVal_mul, IsDiscreteValuationRing.addVal_eq_zero_of_unit, zero_add]
 
+/- English proof (translation)
+Establish `hdvd : ((u : O) - 1) ∣ (((u ^ m : Oˣ) : O) - 1)`. Take `⟨n, rfl | rfl⟩` from `Int.eq_nat_or_neg m`. Rewrite using `[zpow_natCast, Units.val_pow_eq_pow_val, ← geom_sum_mul]`. Conclude with `Dvd.intro_left _ rfl`. Use `⟨-((u ^ n)⁻¹ : Oˣ) * ∑ i ∈ Finset.range n, (u : O) ^ i, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (((u ^ (-(n : ℤ)) : Oˣ) : O) - 1) = -(((u ^ n)⁻¹ : Oˣ) : O) * (((u ^ n : Oˣ) : O) - 1)`. Rewrite using `[zpow_neg, zpow_natCast, mul_sub, neg_mul, Units.inv_mul, mul_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, Units.val_pow_eq_pow_val, ← geom_sum_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hne : (((u ^ m : Oˣ) : O) - 1) ≠ 0`. Rewrite using `[sub_ne_zero]`. Introduce `h`. Conclude with `hm (Units.ext (by rw [h, Units.val_one]))`. Establish `hle` using `(IsDiscreteValuationRing.addVal_le_iff_dvd).2 hdvd`.
+
+Establish `hfin : IsDiscreteValuationRing.addVal O (((u ^ m : Oˣ) : O) - 1) ≠ ⊤`. Rewrite using `[Ne, IsDiscreteValuationRing.addVal_eq_top_iff]`. Conclude with `hne`. Unfold `Formalism.MainNotions.BlochKatoReduction.Gen.nval`. Apply `div_le_div_of_nonneg_right _ (Nat.cast_nonneg _)` to reduce the goal to its premises.
+
+Conclude with `ENat.toNat_le_toNat hle hfin` after adjusting the coercions.
+-/
 theorem normVal_sub_one_le_zpow {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (l : ℕ) (u : Oˣ)
     (m : ℤ) (hm : u ^ m ≠ 1) :
     Formalism.MainNotions.BlochKatoReduction.Gen.nval O l ((u : O) - 1) ≤ Formalism.MainNotions.BlochKatoReduction.Gen.nval O l (((u ^ m : Oˣ) : O) - 1) := by
@@ -60,6 +80,13 @@ section Tame
 
 variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂}
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.BlochKatoReduction.Gen.tameVal`. Distinguish the cases in `h1 : φ γ = 1`. Establish `hS : {x : ℝ | ∃ σ ∈ Ine (F` using `D.host.E) A, φ σ ≠ 1 ∧ x = Formalism.MainNotions.BlochKatoReduction.Gen.nval R l ((φ σ : R) - 1)} = ∅ := by`. Use extensionality with `x`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]`.
+
+Introduce and unpack `⟨σ, hσ, hne, -⟩`. Take `⟨m, hm⟩` from `hcyc σ hσ`. Conclude with `hne (by rw [hm, h1, one_zpow])`. Rewrite using `[hS, Real.sInf_empty, h1, Units.val_one, sub_self, normVal_zero]`. Use `le_csInf ⟨_, γ, hγ, h1, rfl⟩ ?_` and prove the remaining obligations.
+
+Introduce and unpack `x ⟨σ, hσ, hne, rfl⟩`. Take `⟨m, hm⟩` from `hcyc σ hσ`. Rewrite `hne`, the goal using `[hm]`. Conclude with `normVal_sub_one_le_zpow l (φ γ) m hne`.
+-/
 theorem normVal_le_tameVal {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (l : ℕ)
     (φ : Formalism.MainNotions.BlochKatoReduction.Gen.GE N →* Rˣ) (A : ValuationSubring N.Om) (γ : Formalism.MainNotions.BlochKatoReduction.Gen.GE N)
     (hγ : γ ∈ Ine (F := D.host.E) A) (hcyc : ∀ σ ∈ Ine (F := D.host.E) A, ∃ m : ℤ, φ σ = φ γ ^ m) :
@@ -79,6 +106,13 @@ theorem normVal_le_tameVal {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValua
     rw [hm] at hne ⊢
     exact normVal_sub_one_le_zpow l (φ γ) m hne
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.BlochKatoReduction.Gen.tameVal`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Set.mem_ofPred_eq, MonoidHom.inv_apply, ne_eq, inv_eq_one]`. Establish `key : ∀ u : Rˣ, Formalism.MainNotions.BlochKatoReduction.Gen.nval R l (((u⁻¹ : Rˣ) : R) - 1) = Formalism.MainNotions.BlochKatoReduction.Gen.nval R l ((u : R) - 1)`.
+
+Introduce `u`. Establish `h1 : (((u⁻¹ : Rˣ) : R) - 1) = ((-u⁻¹ : Rˣ) : R) * ((u : R) - 1)`. Rewrite using `[Units.val_neg, neg_mul, mul_sub, Units.inv_mul, mul_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, normVal_unit_mul]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨σ, hσ, hne, rfl⟩`. Conclude with `⟨σ, hσ, hne, key _⟩`. Introduce and unpack `⟨σ, hσ, hne, rfl⟩`. Conclude with `⟨σ, hσ, hne, (key _).symm⟩`.
+-/
 theorem tameVal_inv_eq {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (l : ℕ)
     (φ : Formalism.MainNotions.BlochKatoReduction.Gen.GE N →* Rˣ) (A : ValuationSubring N.Om) :
     Formalism.MainNotions.BlochKatoReduction.Gen.tameVal l φ⁻¹ A = Formalism.MainNotions.BlochKatoReduction.Gen.tameVal l φ A := by
@@ -100,6 +134,33 @@ theorem tameVal_inv_eq {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuation
 
 end Tame
 
+/- English proof (translation)
+Establish `mem : ∀ {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (e : LL →+* FractionRing R) (c : R), ((l : ℕ) : R) ≠ 0 → e x = algebraMap R _ c → ∀ p q : ℕ, (e (x ^ p * ((l : LL) ^ q)⁻¹) ∈ (algebraMap R (FractionRing R)).range ↔ ((l : ℕ) : R) ^ q ∣ c ^ p)`. Introduce `R _ _ _ e c hl0 hc p q`. Establish `hlK : (algebraMap R (FractionRing R)) (((l : ℕ) : R) ^ q) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 (pow_ne_zero q hl0)`. Establish `he : e (x ^ p * ((l : LL) ^ q)⁻¹) = algebraMap R (FractionRing R) (c ^ p) * (algebraMap R (FractionRing R) (((l : ℕ) : R) ^ q))⁻¹`. Rewrite using `[map_mul, map_pow, map_inv₀, map_pow, map_natCast, hc, map_pow, map_pow, map_natCast]`.
+
+Rewrite using `[he, RingHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨d, hd⟩`. Use `⟨d, IsFractionRing.injective R (FractionRing R) ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hd, mul_comm, mul_assoc, inv_mul_cancel₀ hlK, mul_one]`.
+
+Introduce and unpack `⟨d, hd⟩`. Use `⟨d, ?_⟩` and prove the remaining obligations. Rewrite using `[hd, map_mul, mul_comm, ← mul_assoc, inv_mul_cancel₀ hlK, one_mul]`. Establish `key : ∀ p q : ℕ, ((l : ℕ) : R1) ^ q ∣ a ^ p ↔ ((l : ℕ) : R2) ^ q ∣ b ^ p`. Introduce `p q`.
+
+Rewrite using `[← mem e1 a hl10 ha p q, ← mem e2 b hl20 hb p q, ← h1, ← h2]`. Distinguish the cases in `ha0 : a = 0`. Establish `hx : x = 0`. Establish `: e1 x = 0` using `by rw [ha, ha0, map_zero]`. Conclude with `(map_eq_zero_iff e1 e1.injective).1 this`.
+
+Establish `hb0 : b = 0`. Establish `: algebraMap R2 (FractionRing R2) b = 0` using `by rw [← hb, hx, map_zero]`. Conclude with `(map_eq_zero_iff _ (IsFractionRing.injective R2 (FractionRing R2))).1 this`. Rewrite using `[ha0, hb0, normVal_zero, normVal_zero]`. Establish `hb0 : b ≠ 0`.
+
+Introduce `hb0`. Apply `ha0` to reduce the goal to its premises. Establish `hx : x = 0`. Establish `: e2 x = 0` using `by rw [hb, hb0, map_zero]`. Conclude with `(map_eq_zero_iff e2 e2.injective).1 this`.
+
+Establish `: algebraMap R1 (FractionRing R1) a = 0` using `by rw [← ha, hx, map_zero]`. Conclude with `(map_eq_zero_iff _ (IsFractionRing.injective R1 (FractionRing R1))).1 this`. Take `⟨A1, hA1⟩ : ∃ n : ℕ, IsDiscreteValuationRing.addVal R1 ((l : ℕ) : R1) = n` from `ENat.ne_top_iff_exists.mp (by rw [Ne, IsDiscreteValuationRing.addVal_eq_top_iff]; exact hl10) |>.imp fun _ h => h.symm`. Take `⟨A2, hA2⟩ : ∃ n : ℕ, IsDiscreteValuationRing.addVal R2 ((l : ℕ) : R2) = n` from `ENat.ne_top_iff_exists.mp (by rw [Ne, IsDiscreteValuationRing.addVal_eq_top_iff]; exact hl20) |>.imp fun _ h => h.symm`. Take `⟨B1, hB1⟩ : ∃ n : ℕ, IsDiscreteValuationRing.addVal R1 a = n` from `ENat.ne_top_iff_exists.mp (by rw [Ne, IsDiscreteValuationRing.addVal_eq_top_iff]; exact ha0) |>.imp fun _ h => h.symm`.
+
+Take `⟨B2, hB2⟩ : ∃ n : ℕ, IsDiscreteValuationRing.addVal R2 b = n` from `ENat.ne_top_iff_exists.mp (by rw [Ne, IsDiscreteValuationRing.addVal_eq_top_iff]; exact hb0) |>.imp fun _ h => h.symm`. Establish `hdiv : ∀ {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (c : R) (A B : ℕ), IsDiscreteValuationRing.addVal R ((l : ℕ) : R) = A → IsDiscreteValuationRing.addVal R c = B → ∀ p q : ℕ, (((l : ℕ) : R) ^ q ∣ c ^ p ↔ q * A ≤ p * B)`. Introduce `R _ _ _ c A B hA hB p q`. Rewrite using `[← IsDiscreteValuationRing.addVal_le_iff_dvd, IsDiscreteValuationRing.addVal_pow, IsDiscreteValuationRing.addVal_pow, hA, hB, nsmul_eq_mul, nsmul_eq_mul]`. Conclude with `Iff.rfl` after adjusting the coercions.
+
+Establish `k2 : ∀ p q : ℕ, q * A1 ≤ p * B1 ↔ q * A2 ≤ p * B2`. Introduce `p q`. Rewrite using `[← hdiv a A1 B1 hA1 hB1, ← hdiv b A2 B2 hA2 hB2]`. Conclude with `key p q`. Establish `e1'` using `(k2 A1 B1).1 (by rw [mul_comm])`.
+
+Establish `e2'` using `(k2 A2 B2).2 (by rw [mul_comm])`. Establish `hA10 : A1 ≠ 0`. Introduce `h0`. Rewrite `hA1` using `[h0, Nat.cast_zero, IsDiscreteValuationRing.addVal_eq_zero_iff]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hl1 hA1`.
+
+Establish `hA20 : A2 ≠ 0`. Introduce `h0`. Rewrite `hA2` using `[h0, Nat.cast_zero, IsDiscreteValuationRing.addVal_eq_zero_iff]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hl2 hA2`. Establish `heq : B1 * A2 = B2 * A1`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `nval`. Rewrite using `[hA1, hB1, hA2, hB2, ENat.toNat_coe, ENat.toNat_coe, ENat.toNat_coe, ENat.toNat_coe, div_eq_div_iff (by exact_mod_cast hA10) (by exact_mod_cast hA20)]`.
+
+Conclude with `heq` after adjusting the coercions.
+-/
 theorem normVal_eq_of_places {LL : Type} [Field LL] (vw : AddValuation LL (WithTop ℤ))
     {R1 R2 : Type} [CommRing R1] [IsDomain R1] [IsDiscreteValuationRing R1]
     [CommRing R2] [IsDomain R2] [IsDiscreteValuationRing R2]
@@ -186,6 +247,9 @@ theorem normVal_eq_of_places {LL : Type} [Field LL] (vw : AddValuation LL (WithT
     div_eq_div_iff (by exact_mod_cast hA10) (by exact_mod_cast hA20)]
   exact_mod_cast heq
 
+/- English proof (translation)
+Establish `: Module.Finite (X.O i) (X.Ok i k')` using `X.Ok_fin i k'`. Take `⟨P, hP, hPc⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := X.Ok i k') (IsLocalRing.maximalIdeal (X.O i)) (by rw [(RingHom.injective_iff_ker_eq_bot _).1 (X.Ok_inj i k')]; exact bot_le)`. Rewrite using `[← IsLocalRing.eq_maximalIdeal hP, ← map_natCast (algebraMap (X.O i) (X.Ok i k')), ← Ideal.mem_comap, hPc]`. Conclude with `X.O_l i`.
+-/
 theorem l_mem_maximalIdeal {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
     (i : X.Tw) (k' : ℕ) :
     ((X.l i : ℕ) : X.Ok i k') ∈ IsLocalRing.maximalIdeal (X.Ok i k') := by
@@ -200,6 +264,15 @@ section Main
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hl : D.ntw.l (D.ntw.twOf i) = D.nd.l i` using `D.ntw.twOf_l i`. Establish `hvl : v ∉ placesOver D.host.E (D.nd.l i)` using `D.nd.SQ_l i v (Or.inr hv)`. Establish `hvS : v ∉ D.nd.S i` using `fun h => Finset.disjoint_left.mp (D.nd.SQ_disj i) h hv`. Use `D.ntw.twistCharacterFamily_unramified _ _ _ v (by rw [hl]; exact hvl) (fun k hk => ?_) (fun hp => ?_) _ (D.nd.plOm.2 v) _ (D.nd.locNd_chebotarevPlace_mem i v)` and prove the remaining obligations. Apply `hvS` to reduce the goal to its premises.
+
+Rewrite using `[D.nd.S_def]`. Use `⟨?_, hvl⟩` and prove the remaining obligations. Use `fin_cases k`. Conclude with `Or.inl hk`. Conclude with `Or.inr (Or.inl hk)`.
+
+Apply `hvS` to reduce the goal to its premises. Rewrite using `[D.nd.S_def]`. Use `⟨Or.inr (Or.inr ?_), hvl⟩` and prove the remaining obligations. Establish `h1 : v ∈ (D.ntw.pD (D.ntw.twOf i) : Set (HeightOneSpectrum (𝓞 D.host.E)))` using `hp`. Rewrite `h1` using `[D.ntw.pD_eq, hl]`.
+
+Conclude with `h1`.
+-/
 theorem firstTwistFactor_tameGenerator_eq_one (i : D.nd.Loc) (v : HeightOneSpectrum (𝓞 D.host.E)) (hv : v ∈ D.nd.Q i) :
     D.ntw.chi1 (D.ntw.twOf i) (D.nd.j i) (D.ntw.twSide i) (D.nd.gam0 i v) = 1 := by
   have hl : D.ntw.l (D.ntw.twOf i) = D.nd.l i := D.ntw.twOf_l i
@@ -220,6 +293,9 @@ theorem firstTwistFactor_tameGenerator_eq_one (i : D.nd.Loc) (v : HeightOneSpect
     rw [D.ntw.pD_eq, hl] at h1
     exact h1
 
+/- English proof (translation)
+Use `show ((D.nd.chi i 1 (D.nd.gam0 i v) : (D.nd.O i)ˣ) : D.nd.O i) = _`. Rewrite using `[D.ntw.chi_tw i, MonoidHom.mul_apply, MonoidHom.comp_apply, firstTwistFactor_tameGenerator_eq_one i v hv, map_one, one_mul]`.
+-/
 theorem zeta_eq_locChar (i : D.nd.Loc) (v : HeightOneSpectrum (𝓞 D.host.E)) (hv : v ∈ D.nd.Q i) :
     D.nd.zeta i v = ((D.ntw.psiL i (D.nd.gam0 i v) : (D.nd.O i)ˣ) : D.nd.O i) := by
   show ((D.nd.chi i 1 (D.nd.gam0 i v) : (D.nd.O i)ˣ) : D.nd.O i) = _
@@ -227,6 +303,25 @@ theorem zeta_eq_locChar (i : D.nd.Loc) (v : HeightOneSpectrum (𝓞 D.host.E)) (
 
 end Main
 
+/- English proof (translation)
+Introduce `D C hT i v hv`. Take `⟨ψ0, -, hW, hK⟩` from `hT.psi_eq`. Establish `hl' : D.ntw.l (C.twI (D.nd.w i)) = D.nd.l i` using `by rw [C.twI_l, D.nd.w_l]`. Establish `hl10 : ((D.nd.l i : ℕ) : D.nd.O i) ≠ 0` using `Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.l_ne_zero D.nd i`. Establish `hl1 : ((D.nd.l i : ℕ) : D.nd.O i) ∈ IsLocalRing.maximalIdeal (D.nd.O i)` using `(IsLocalRing.mem_maximalIdeal _).2 (mem_nonunits_iff.2 (Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.l_not_unit D.nd i))`.
+
+Establish `hl2k : ((D.nd.l i : ℕ) : D.ntw.Ok (C.twI (D.nd.w i)) (C.k' (D.nd.w i))) ∈ IsLocalRing.maximalIdeal (D.ntw.Ok (C.twI (D.nd.w i)) (C.k' (D.nd.w i)))`. Rewrite using `[← hl']`. Conclude with `l_mem_maximalIdeal (C.twI (D.nd.w i)) (C.k' (D.nd.w i))`. Use `haveI := C.Oe_loc (D.nd.w i)`. Use `haveI := C.Oe_fin (D.nd.w i)`.
+
+Establish `hl2 : ((D.nd.l i : ℕ) : C.Oe (D.nd.w i)) ∈ IsLocalRing.maximalIdeal (C.Oe (D.nd.w i))`. Rewrite using `[← map_natCast (algebraMap (D.ntw.Ok (C.twI (D.nd.w i)) (C.k' (D.nd.w i))) (C.Oe (D.nd.w i)))]`. Use `(IsLocalRing.mem_maximalIdeal _).2 fun hu => ?_` and prove the remaining obligations. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hl2k (isUnit_of_map_unit _ _ hu)`. Establish `hlO : ((D.nd.l i : ℕ) : D.ntw.O (C.twI (D.nd.w i))) ≠ 0`.
+
+Introduce `h0`. Establish `h1 : ((D.nd.l i : ℕ) : FractionRing (D.ntw.O (C.twI (D.nd.w i)))) = 0`. Rewrite using `[← map_natCast (algebraMap (D.ntw.O (C.twI (D.nd.w i))) (FractionRing (D.ntw.O (C.twI (D.nd.w i))))), h0, map_zero]`. Conclude with `(Nat.cast_ne_zero.2 (D.nd.lPrime i).out.ne_zero) h1`. Establish `hl20k : ((D.nd.l i : ℕ) : D.ntw.Ok (C.twI (D.nd.w i)) (C.k' (D.nd.w i))) ≠ 0`.
+
+Rewrite using `[← map_natCast (algebraMap (D.ntw.O (C.twI (D.nd.w i))) (D.ntw.Ok (C.twI (D.nd.w i)) (C.k' (D.nd.w i))))]`. Conclude with `(map_ne_zero_iff _ (D.ntw.Ok_inj _ _)).2 hlO`. Establish `hl20 : ((D.nd.l i : ℕ) : C.Oe (D.nd.w i)) ≠ 0`. Rewrite using `[← map_natCast (algebraMap (D.ntw.Ok (C.twI (D.nd.w i)) (C.k' (D.nd.w i))) (C.Oe (D.nd.w i)))]`. Conclude with `(map_ne_zero_iff _ (C.Oe_inj _)).2 hl20k`.
+
+Use `set γ := D.nd.gam0 i v with hγ`. Use `set φ := (C.psi' (D.nd.w i)).comp (D.ntw.art (C.twI (D.nd.w i)) (C.Q (D.nd.w i))) with hφ`. Establish `hx1 : D.nd.embK i (((ψ0 (D.nd.w i) γ : (D.what₂.LL)ˣ) : D.what₂.LL) - 1) = algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) (((D.ntw.psiL i γ : (D.nd.O i)ˣ) : D.nd.O i) - 1)`. Rewrite using `[map_sub, map_one, hK i γ, map_sub, map_one]`. Establish `hx2 : C.embW (D.nd.w i) (((ψ0 (D.nd.w i) γ : (D.what₂.LL)ˣ) : D.what₂.LL) - 1) = algebraMap (C.Oe (D.nd.w i)) (FractionRing (C.Oe (D.nd.w i))) (algebraMap (D.ntw.Ok (C.twI (D.nd.w i)) (C.k' (D.nd.w i))) (C.Oe (D.nd.w i)) (((φ γ : (D.ntw.Ok _ _)ˣ)) - 1))`.
+
+Rewrite using `[map_sub, map_one, hW (D.nd.w i) γ, map_sub (algebraMap (D.ntw.Ok (C.twI (D.nd.w i)) (C.k' (D.nd.w i))) (C.Oe (D.nd.w i))), map_one (algebraMap (D.ntw.Ok (C.twI (D.nd.w i)) (C.k' (D.nd.w i))) (C.Oe (D.nd.w i))), map_sub (algebraMap (C.Oe (D.nd.w i)) (FractionRing (C.Oe (D.nd.w i) …`. Both sides reduce to the same expression. Establish `htr0` using `normVal_eq_of_places (D.what₂.places.val (D.nd.w i)) (D.nd.embK i) (C.embW (D.nd.w i)) (D.nd.embK_w i) (C.embW_w (D.nd.w i)) (D.nd.l i) hl1 hl2 hl10 hl20 _ _ _ hx1 hx2`. Establish `htr` using `htr0.trans (Formalism.MainNotions.TwOe.nval_map (C.Oe_inj (D.nd.w i)) (D.nd.l i) _)`. Establish `htame : Formalism.MainNotions.BlochKatoReduction.Gen.tameVal (D.nd.l i) (KillingConditions.psiW C (D.nd.w i)) (D.nd.plOm.1 v) = Formalism.MainNotions.BlochKatoReduction.Gen.tameVal (D.nd.l i) φ (D.nd.plOm.1 v)`.
+
+Unfold `KillingConditions.psiW Formalism.MainNotions.BlochKatoReduction.Gen.psiAt`. Use `split_ifs`. Both sides reduce to the same expression. Establish `: (C.psi' (D.nd.w i))⁻¹.comp (D.ntw.art (C.twI (D.nd.w i)) (C.Q (D.nd.w i))) = φ⁻¹`. Use extensionality with `g`.
+
+Both sides reduce to the same expression. Rewrite using `[this, tameVal_inv_eq]`. Establish `hcyc : ∀ σ ∈ Ine (F` using `D.host.E) (D.nd.plOm.1 v), ∃ m : ℤ, φ σ = φ γ ^ m := fun σ hσ => GlobalTheory.TameCycChoice.tameCyc D C hT i v hv σ hσ`. Rewrite using `[lenUnit_quot_eq, zeta_eq_locChar i v hv, htr, hl', htame]`. Conclude with `normVal_le_tameVal (D.nd.l i) φ (D.nd.plOm.1 v) γ (D.nd.locNd_chebotarevPlace_mem i v) hcyc`.
+-/
 theorem conductor_le_tameVal : ∀ (D : D7) (C : NChoice D), NChTie D C → ∀ i : D.nd.Loc, ∀ v ∈ D.nd.Q i,
     ((lenUnit (O := D.nd.O i) (D.nd.l i) (D.nd.O i ⧸ Ideal.span {D.nd.zeta i v - 1}) : ℚ) : ℝ) ≤
       BlochKatoReduction.Gen.tameVal (D.ntw.l (C.twI (D.nd.w i))) (KillingConditions.psiW C (D.nd.w i)) (D.nd.plOm.1 v) := by

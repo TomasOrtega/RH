@@ -8,6 +8,9 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {r : ℕ}
 
+/- English proof (translation)
+Use `⟨fun h => h.2, fun h => ⟨⟨hR.1.ef, fun k x => ?_⟩, h⟩⟩` and prove the remaining obligations. Take `⟨Pm, h1, h2, h3, h4, -⟩` from `hun k x`. Conclude with `⟨Pm, h1, h2, h3, h4⟩`.
+-/
 theorem dictLat_iff {c : Coeff l} {σ : c.F →+* ℂ} {g : ℕ} (e : Fin g ≃ Σ τ : D.host.E →+* ℂ, Fin (Dw.mult τ))
     (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1))
     (M : GlobalTheory.FrameUnif.ModelsOf F r) (un : ∀ k, (M.X k).dom → FrPt Xo c (CAt σ))
@@ -24,6 +27,9 @@ theorem dictLat_iff {c : Coeff l} {σ : c.F →+* ℂ} {g : ℕ} (e : Fin g ≃ 
 
 variable {σ' : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (D.host.E →+* ℂ)} {F : FamilyUnif Xo σ' ty}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ, h1⟩`. Conclude with `⟨γ * δ, (GQ V).mul_mem hγ hδ, by simpa only [mul_assoc] using h1⟩`. Introduce and unpack `⟨γ, hγ, h1⟩`. Conclude with `⟨γ * δ⁻¹, (GQ V).mul_mem hγ ((GQ V).inv_mem hδ), by simpa only [mul_assoc, inv_mul_cancel_left] using h1⟩`.
+-/
 theorem markSpec_left (M : GlobalTheory.FrameUnif.ModelsOf F r) (V : HSp D) (hr : V.rank = r)
     (io : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E))
     (th : ∀ k, (M.X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
@@ -36,6 +42,11 @@ theorem markSpec_left (M : GlobalTheory.FrameUnif.ModelsOf F r) (V : HSp D) (hr 
   · rintro ⟨γ, hγ, h1⟩
     exact ⟨γ * δ⁻¹, (GQ V).mul_mem hγ ((GQ V).inv_mem hδ), by simpa only [mul_assoc, inv_mul_cancel_left] using h1⟩
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Simplify using `only [herm, gmW, Module.Basis.equivFun_symm_apply, map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ₂, map_smul]`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum, ← Finset.sum_neg_distrib]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `: (starRingEnd D.host.E) (y b) = cc (y b)` using `rfl`. Simplify using `only [this, smul_eq_mul]`. Simplify using `[HSpace.gram]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_gmW (V : HSp D) (hr : V.rank = r) (x y : Fin V.rank → D.host.E) :
     herm (gmW V hr) (x ∘ Fin.cast hr.symm) (y ∘ Fin.cast hr.symm) =
       -V.hT (V.frame.equivFun.symm y) (V.frame.equivFun.symm x) := by
@@ -50,6 +61,11 @@ theorem herm_gmW (V : HSp D) (hr : V.rank = r) (x y : Fin V.rank → D.host.E) :
   simp [HSpace.gram]
   ring
 
+/- English proof (translation)
+Establish `h1 : Dw.EF x y = -Dw.EF y x`. Establish `h` using `Dw.alt (x + y)`. Simplify using `only [map_add, LinearMap.add_apply, Dw.alt] at h`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[h1, Int.cast_neg, hR.2.2.2.1 y x, herm_gmW, ← map_neg]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem recOK_isom (M : GlobalTheory.FrameUnif.ModelsOf F r) (V : HSp D) (hr : V.rank = r)
     (io : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E))
     (th : ∀ k, (M.X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
@@ -64,6 +80,9 @@ theorem recOK_isom (M : GlobalTheory.FrameUnif.ModelsOf F r) (V : HSp D) (hr : V
   congr 1
   ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, fun x y => by rw [recOK_isom M V hr io th x₀ hR]; simp⟩`.
+-/
 theorem recOK_latIsom (M : GlobalTheory.FrameUnif.ModelsOf F r) (V : HSp D) (hr : V.rank = r)
     (io : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E))
     (th : ∀ k, (M.X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
@@ -71,12 +90,24 @@ theorem recOK_latIsom (M : GlobalTheory.FrameUnif.ModelsOf F r) (V : HSp D) (hr 
     LatIsom V Dw.EF io :=
   ⟨1, fun x y => by rw [recOK_isom M V hr io th x₀ hR]; simp⟩
 
+/- English proof (translation)
+The claim follows from `(hR.2.1 k).1`.
+-/
 theorem recOK_gram (M : GlobalTheory.FrameUnif.ModelsOf F r) (V : HSp D) (hr : V.rank = r)
     (io : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E))
     (th : ∀ k, (M.X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
     (x₀ : (D.host.E →+* ℂ) → Matrix (Fin r) (Fin r) ℂ) (hR : RecOK M V hr io th x₀) (k : Fin F.n) :
     (M.X k).Gm = gmW V hr := (hR.2.1 k).1
 
+/- English proof (translation)
+Establish `h0 : D.host.φ₀ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ)` using `D.host.φ₀_mem`. Establish `hd : (0 : ℝ) < Real.sqrt D.host.d`. Establish `: D.host.d % 16 = 7` using `D.host.hyp.2.2.2.1`. Apply `Real.sqrt_pos.2` to reduce the goal to its premises. Conclude with `(by omega : 0 < D.host.d)` after adjusting the coercions.
+
+Establish `hn : (0 : ℝ) < (Ideal.absNorm D.host.ccK : ℝ)`. Establish `: Ideal.absNorm D.host.ccK ≠ 0` using `fun h => D.host.ccK_ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions. Establish `: τ (-D.host.xi0) = ((-(1 / ((Ideal.absNorm D.host.ccK : ℝ) * Real.sqrt D.host.d)) : ℝ) : ℂ) * Complex.I`. Simplify using `only [Formalism.BasicNotions.Host.xi0, map_neg, map_div₀, map_one, map_mul, map_natCast, hτ, h0]`.
+
+Establish `h1 : ((Ideal.absNorm D.host.ccK : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `h2 : ((Real.sqrt D.host.d : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hd.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+
+Rewrite using `[this, Complex.mul_I_im, Complex.ofReal_re]`. Establish `: 0 < 1 / ((Ideal.absNorm D.host.ccK : ℝ) * Real.sqrt D.host.d)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem neg_baseElement_im_neg_baseEmbedding (D : D7) (τ : D.host.E →+* ℂ) (hτ : τ D.host.sqrtMinusD = D.host.φ₀ D.host.sqrtMinusD) :
     (τ (-D.host.xi0)).im < 0 := by
   have h0 : D.host.φ₀ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ) := D.host.φ₀_mem
@@ -98,6 +129,15 @@ theorem neg_baseElement_im_neg_baseEmbedding (D : D7) (τ : D.host.E →+* ℂ) 
   have : 0 < 1 / ((Ideal.absNorm D.host.ccK : ℝ) * Real.sqrt D.host.d) := by positivity
   linarith
 
+/- English proof (translation)
+Establish `hτ : ∀ x : D.host.E, τ (star x) = starRingEnd ℂ (τ x)` using `fun x => IsCMField.complexEmbedding_complexConj D.host.E τ x`. Establish `hre : ∀ a : Ainf D.host.F, starRingEnd ℂ (θ (a ⊗ₜ[D.host.F] (1 : D.host.E))) = θ (a ⊗ₜ[D.host.F] (1 : D.host.E))`. Introduce `a`. Use `DenseRange.induction_on (NumberField.InfiniteAdeleRing.denseRange_algebraMap D.host.F) a (isClosed_eq (Complex.continuous_conj.comp h.2) h.2) fun f => ?_` and prove the remaining obligations. Establish `e : (algebraMap D.host.F (Ainf D.host.F) f) ⊗ₜ[D.host.F] (1 : D.host.E) = (1 : Ainf D.host.F) ⊗ₜ[D.host.F] (algebraMap D.host.F D.host.E f)`.
+
+Conclude with `(Algebra.TensorProduct.includeLeft (R := D.host.F) (S := D.host.F) (A := Ainf D.host.F) (B := D.host.E)).commutes f |>.trans ((Algebra.TensorProduct.includeRight (R := D.host.F) (A := Ainf D.host.F) (B := D.host.E)).commutes f).symm`. Use `erw [e, h.1, ← hτ]`. Rewrite using `[(D.sp.cm.fixed _).2 ⟨f, rfl⟩]`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb, map_add, map_add]`. Consider the case `tmul a x`. Establish `e : ∀ y : D.host.E, a ⊗ₜ[D.host.F] y = (a ⊗ₜ[D.host.F] (1 : D.host.E)) * ((1 : Ainf D.host.F) ⊗ₜ[D.host.F] y)`. Introduce `y`. Simplify using the standard rewrite rules.
+
+Establish `e2 : sigR (Ainf D.host.F) D.sp.cm.sig (a ⊗ₜ[D.host.F] x) = a ⊗ₜ[D.host.F] (star x)` using `rfl`. Rewrite using `[e2, e (star x), e x, map_mul, map_mul, map_mul, hre, h.1, h.1, hτ]`.
+-/
 theorem th_conj {τ : D.host.E →+* ℂ} {θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ} (h : Formalism.MainNotions.StandardLattice.IsInfEmb τ θ)
     (z : Ainf D.host.F ⊗[D.host.F] D.host.E) :
     θ (sigR (Ainf D.host.F) D.sp.cm.sig z) = starRingEnd ℂ (θ z) := by
@@ -121,12 +161,18 @@ theorem th_conj {τ : D.host.E →+* ℂ} {θ : Ainf D.host.F ⊗[D.host.F] D.ho
     have e2 : sigR (Ainf D.host.F) D.sp.cm.sig (a ⊗ₜ[D.host.F] x) = a ⊗ₜ[D.host.F] (star x) := rfl
     rw [e2, e (star x), e x, map_mul, map_mul, map_mul, hre, h.1, h.1, hτ]
 
+/- English proof (translation)
+Use extensionality with `a b`. Conclude with `h _`.
+-/
 theorem cT_map {A : Type} [CommRing A] {n : Type} (s : A →+* A) (φ : A →+* ℂ)
     (h : ∀ z, φ (s z) = starRingEnd ℂ (φ z)) (M : Matrix n n A) :
     (Formalism.UG.cT s M).map φ = (M.map φ).conjTranspose := by
   ext a b
   exact h _
 
+/- English proof (translation)
+Substitute `hJ hM'` using the available equality. Rewrite using `[← cT_map s φ h, ← Matrix.map_mul, ← Matrix.map_mul, hM]`.
+-/
 theorem uni_map {A : Type} [CommRing A] {n : Type} [Fintype n] (s : A →+* A) (φ : A →+* ℂ)
     (h : ∀ z, φ (s z) = starRingEnd ℂ (φ z)) (M J : Matrix n n A) (hM : Formalism.UG.cT s M * J * M = J)
     (J' M' : Matrix n n ℂ) (hJ : J.map φ = J') (hM' : M' = M.map φ) : M'.conjTranspose * J' * M' = J' := by
@@ -134,6 +180,13 @@ theorem uni_map {A : Type} [CommRing A] {n : Type} [Fintype n] (s : A →+* A) (
   rw [← cT_map s φ h, ← Matrix.map_mul, ← Matrix.map_mul, hM]
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Establish `hg : Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) (matHom V g).1 * JR (AF D.host.F) V.gram * (matHom V g).1 = JR (AF D.host.F) V.gram` using `g.2`. Set `π : AF D.host.F ⊗[D.host.F] D.host.E →+* Ainf D.host.F ⊗[D.host.F] D.host.E` to `(Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom`. Establish `hπ : ∀ z, π (sigR (AF D.host.F) D.sp.cm.sig z) = sigR (Ainf D.host.F) D.sp.cm.sig (π z)`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp only [map_zero]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb, map_add, map_add]`. Consider the case `tmul a x => rfl`. Establish `hJ : (JR (AF D.host.F) V.gram).map (θ.comp π) = V.gram.map τ`. Use extensionality with `a b`.
+
+Conclude with `h.1 _`. Conclude with `uni_map (sigR (AF D.host.F) D.sp.cm.sig) (θ.comp π) (fun z => (congrArg θ (hπ z)).trans (th_conj h (π z))) _ _ hg _ _ hJ rfl`.
+-/
 theorem archM_unitary (V : HSp D) {τ : D.host.E →+* ℂ} {θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ}
     (h : Formalism.MainNotions.StandardLattice.IsInfEmb τ θ) (g : GA D V) :
     (archM V θ g).conjTranspose * V.gram.map τ * archM V θ g = V.gram.map τ := by
@@ -153,6 +206,9 @@ theorem archM_unitary (V : HSp D) {τ : D.host.E →+* ℂ} {θ : Ainf D.host.F 
   exact uni_map (sigR (AF D.host.F) D.sp.cm.sig) (θ.comp π) (fun z => (congrArg θ (hπ z)).trans (th_conj h (π z))) _ _ hg
     _ _ hJ rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [gram, hermC, col, Matrix.of_apply, Matrix.transpose_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.map_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_eq {E : Type} [Field E] [NumberField E] [IsCMField E] (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (x : Matrix (Fin r) (Fin r) ℂ) : gram τ G x = (x.conjTranspose * (G.map τ).transpose * x).transpose := by
   ext a b
@@ -164,6 +220,13 @@ theorem gram_eq {E : Type} [Field E] [NumberField E] [IsCMField E] (τ : E →+*
 
 variable {σ' : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (D.host.E →+* ℂ)} {F : FamilyUnif Xo σ' ty} in
 
+/- English proof (translation)
+Take `⟨γ, -, -, -, h3⟩` from `hp`. Rewrite using `[← hR.2.2.2.2.2 p.1 τ.1 τ.2, h3 τ, gram_eq, gram_eq, (hR.2.1 p.1).1]`. Establish `hu` using `archM_unitary V (hR.2.2.2.2.1 p.1 τ) (γ * h)`. Substitute `hr` using the available equality. Establish `e1 : ∀ A : Matrix (Fin V.rank) (Fin V.rank) ℂ, Matrix.reindex (finCongr rfl) (finCongr rfl) A = A` using `fun A => rfl`.
+
+Establish `e2 : ((-(Matrix.reindex (finCongr rfl) (finCongr rfl) V.gram).transpose).map τ.1).transpose = -(V.gram.map τ.1)`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2, Matrix.conjTranspose_mul]`. Use `congr 1`.
+
+Use `conv_rhs => rw [← hu]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`.
+-/
 theorem markSpec_orthonormal (M : GlobalTheory.FrameUnif.ModelsOf F r) (V : HSp D) (hr : V.rank = r)
     (io : Dw.La →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E))
     (th : ∀ k, (M.X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
@@ -184,6 +247,11 @@ theorem markSpec_orthonormal (M : GlobalTheory.FrameUnif.ModelsOf F r) (V : HSp 
 
 variable {σ' : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (D.host.E →+* ℂ)} {F : FamilyUnif Xo σ' ty} in
 
+/- English proof (translation)
+Set `k₀ : Fin F.n` to `⟨0, F.n_pos⟩`. Use `choose P _ hP using (M.X k₀).signature`. Use `⟨fun τ => if h : τ ∈ (M.X k₀).Ψ then P ⟨τ, h⟩ else 0, fun k τ hτ => ?_⟩` and prove the remaining obligations. Establish `h0 : τ ∈ (M.X k₀).Ψ` using `((hB.type k₀).2 τ).2 (((hB.type k).2 τ).1 hτ)`. Use `hP ⟨τ, h0⟩` as an intermediate fact.
+
+Rewrite `this` using `[(hW k₀).1, (hB.type k₀).1]`. Simplify using `only [dif_pos h0]`. Rewrite using `[(hW k).1, (hB.type k).1]`. Conclude with `this`.
+-/
 theorem exists_base_frame (M : GlobalTheory.FrameUnif.ModelsOf F r) (V : HSp D) (hr : V.rank = r)
     (hB : GlobalTheory.FrameUnif.ModelBase M) (hW : ∀ k, ModelW V hr (M.X k)) :
     ∃ x₀ : (D.host.E →+* ℂ) → Matrix (Fin r) (Fin r) ℂ, ∀ k, IsOrthogonalFrame (M.X k) x₀ := by

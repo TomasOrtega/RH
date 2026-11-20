@@ -19,6 +19,9 @@ namespace GlobalTheory.Mum.Two.KeyDvr
 open GlobalTheory.TorusExt GlobalTheory.UT.CoefBasic GlobalTheory.UT.EndTors
 attribute [local instance] gtGroup
 
+/- English proof (translation)
+Take `⟨hb₁, hv₁⟩` from `(isZero_iff o₁).1 h₁`. Take `⟨hb₂, hv₂⟩` from `(isZero_iff o₂).1 h₂`. Use `⟨by rw [hb₂, hb₁, MonObj.one_comp], fun χ u hu z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hv₂ _ z _ ((isPart_inr (M₁ := D₁.P.L) (M₂ := D₂.P.L)).good hJ), hv₁ _ z _ ((isPart_inl (M₁ := D₁.P.L) (M₂ := D₂.P.L)).good hJ), hb₁, _root_.one_mul]`. Conclude with `(hu.2 _ (TF (R := R) F).hom z J hJ).symm`.
+-/
 theorem act_zero₂ {R : Type} [CommRing R] [IsDomain R] {D₁ D₂ : DegPre R} (b : D₁.P.A ⟶ D₂.P.A) [IsMonHom b]
     (h : D₂.X →+ D₁.X) {F : Type} [Field F] [Algebra (FractionRing R) F] {o₁ : GtPtF D₁ F} {o₂ : GtPtF D₂ F}
     (h₁ : o₁.IsZero) (h₂ : o₂.IsZero) : Act D₁ D₂ b h o₁ o₂ := by
@@ -29,6 +32,11 @@ theorem act_zero₂ {R : Type} [CommRing R] [IsDomain R] {D₁ D₂ : DegPre R} 
     hv₁ _ z _ ((isPart_inl (M₁ := D₁.P.L) (M₂ := D₂.P.L)).good hJ), hb₁, _root_.one_mul]
   exact (hu.2 _ (TF (R := R) F).hom z J hJ).symm
 
+/- English proof (translation)
+Use `sumV_equiv v (Equiv.subtypeEquiv ((Equiv.addRight y).prodCongr (Equiv.addRight y')) fun p => ?_) (fun p => ?_) (H (α - h y - y'))` and prove the remaining obligations. Simplify using `only [Equiv.prodCongr_apply, Prod.map_fst, Prod.map_snd, Equiv.coe_addRight, map_add]`. Prove the components needed by the constructor for the conclusion. Introduce `e; rw [show α = α - h y - y' + h y + y' by abel, ← e]; abel`. Introduce `e`.
+
+Rewrite using `[← e]`. Normalize the expressions using the abelian group laws. Simplify using `only [Equiv.subtypeEquiv_apply, Equiv.prodCongr_apply, Prod.map_fst, Prod.map_snd, Equiv.coe_addRight, hB₁, hB₂, hC₁, hC₂]`.
+-/
 theorem sumV_shift₂ {F : Type} [Field F] (v : AddValuation F (WithTop ℚ)) {X X' : Type} [AddCommGroup X]
     [AddCommGroup X'] (h : X' →+ X) (y : X') (y' : X) {B₁ B₂ b₁ b₂ : X' → F} {C₁ C₂ c₁ c₂ : X → F}
     (hB₁ : ∀ α, B₁ (α + y) = b₁ α) (hB₂ : ∀ α, B₂ (α + y) = b₂ α)
@@ -45,6 +53,47 @@ theorem sumV_shift₂ {F : Type} [Field F] (v : AddValuation F (WithTop ℚ)) {X
   · simp only [Equiv.subtypeEquiv_apply, Equiv.prodCongr_apply, Prod.map_fst, Prod.map_snd, Equiv.coe_addRight,
       hB₁, hB₂, hC₁, hC₂]
 
+/- English proof (translation)
+Introduce `V _ _ _ _ hV ϖ hϖ F _ _ _ v hv D₁ D₂ A₁ A₂ G₁ G₂ _ _ _ _ hG₁ hG₂ U₁ U₂ a c b h hc hgen hlin hcoord hE k hk p x hx g' hg'`. Establish `hL : LL` using `GlobalTheory.firstFiveLaws`. Take `⟨-, h₁, h₂, h₃, h₄⟩` from `GlobalTheory.twistBaseChange_and_valuation_statements`. Establish `hA : AdmBase V (maximalIdeal V)` using `⟨inferInstance, inferInstance, inferInstance, hV⟩`. Use `choose Q hQ' using QForm.exists_QVal hϖ D₂`.
+
+Establish `hQ : QForm.IsQ D₂.toPre ϖ Q` using `hQ'`. Establish `hB` using `D₂.tau_bimult`. Use `hc` as an intermediate fact. Use `hlin.2.1` as an intermediate fact. Establish `CV` using `GlobalTheory.UT.CoefVal.main hL h₁ h₂ h₃ h₄ V hV ϖ hϖ D₂ Q hQ F v hv`.
+
+Establish `EV₁` using `GlobalTheory.UT.EvalZero.value_at_origin hL V _ hA D₁ A₁ G₁ hG₁ U₁ F`. Establish `EV₂` using `GlobalTheory.UT.EvalZero.value_at_origin hL V _ hA D₂ A₂ G₂ hG₂ U₂ F`. Establish `LU₁` using `GlobalTheory.T.uniformisation_torsion_maps_compatible_in_level hL V _ hA D₁ A₁ G₁ hG₁ U₁ F`. Establish `LU₂` using `GlobalTheory.T.uniformisation_torsion_maps_compatible_in_level hL V _ hA D₂ A₂ G₂ hG₂ U₂ F`. Establish `BJ₁` using `(expBijF_and_expandsF_lin hL V _ hA D₁ A₁ G₁ hG₁ U₁).1 F`.
+
+Establish `BJ₂` using `(expBijF_and_expandsF_lin hL V _ hA D₂ A₂ G₂ hG₂ U₂).1 F`. Establish `SV` using `fun Ix => AdicValSum.main V ϖ hϖ F v hv Ix`. Take `⟨f, f₁, f₂, f₃, -⟩` from `GlobalTheory.TorsionIso.torsion_eq hL V _ hA D₂ A₂ G₂ hG₂ U₂ F k hk`. Take `⟨ρ₁, hρ₁⟩` from `EV₁.1`. Take `⟨w₀₁, hN₁⟩` from `EV₁.2.1 ρ₁ hρ₁`.
+
+Take `⟨ρ₂, hρ₂⟩` from `EV₂.1`. Take `⟨w₀₂, hN₂⟩` from `EV₂.2.1 ρ₂ hρ₂`. Establish `hw₀₁` using `hN₁.1`. Establish `hw₀₂` using `hN₂.1`. Establish `hxk : x ^ k = 1` using `(hx w₀₁ hw₀₁).1`.
+
+Take `⟨p₀, hp₀⟩` from `f₂ (x ≫ c) (by rw [← MonObj.pow_comp, hxk, MonObj.one_comp])`. Take `⟨l', hl', -⟩` from `(CV g').1`. Take `⟨z, hz⟩` from `GlobalTheory.exists_rep_mod_shifted_form_small D₂.toPre.X Q (QForm.bHom hϖ D₂ hQ) (fun a₀ b₀ => by rw [QForm.bHom_apply, QForm.bOf]; ring) (QForm.two_Q_eq hϖ D₂ hQ) (fun a ha => QForm.Q_pos hϖ D₂ hQ ha) (k • l') k hk p₀.y`. Set `p₁ : QkPt D₂.toPre F k` to `qkMk hB (p₀.y + k • z) (p₀.g + iota hB F z) (by rw [nsmul_add, qk_nsmul hB, map_add, map_nsmul])`. Establish `hp₁ : QkToAkU U₂.toUnifPre F k p₁ (x ≫ c)` using `(f₁ _ _).2 (hp₀.symm.trans ((f₃ _ _).2 ((equiv_iff hB _ _).2 ⟨z, rfl, rfl⟩)))`.
+
+Set `d : GtPtF D₂.toPre F` to `g' - p₁.g`. Establish `hd : d.IsAdd p₁.g g'` using `(isAdd_iff_eq _ _ _).2 (sub_add_cancel _ _).symm`. Take `⟨l, hl, -⟩` from `(CV d).1`. Take `⟨l₁, hl₁, -⟩` from `(CV p₁.g).1`. Establish `ho : (0 : GtPtF D₂.toPre F).IsZero` using `(isZero_iff_eq _).2 rfl`.
+
+Establish `ho₁ : (0 : GtPtF D₁.toPre F).IsZero` using `(isZero_iff_eq _).2 rfl`. It suffices to establish `H : d.IsZero from ⟨p₁, (sub_eq_zero.1 ((isZero_iff_eq _).1 H)).symm, hp₁⟩`. Establish `gu : ∀ (g : GtPtF D₂.toPre F) (a b : D₂.toPre.X →+ ℚ), GtV hϖ hv g a → GtV hϖ hv g b → a = b` using `fun g a b ha hb => (CV g).1.unique ha hb`. Establish `k0 : (0 : ℚ) < k` using `by exact_mod_cast hk`. Use `GlobalTheory.T.smallTorusPoint_keeping_ratios_isZero hL h₁ h₂ h₃ h₄ V hV ϖ hϖ D₂ Q hQ F v hv k hk d 0 l ho hl (fun m => ?_) fun n j hn hj w₁ hw₁ => ?_` and prove the remaining obligations.
+
+Establish `e₁` using `gu g' l' (l + l₁) hl' ((CV d).2.2.2.1 p₁.g g' l l₁ hd hl hl₁)`. Establish `e₂` using `gu p₁.g l₁ ((k : ℚ)⁻¹ • (Int.castAddHom ℚ).comp (QForm.bHom hϖ D₂ hQ p₁.y)) hl₁ (by`. Use `(CV p₁.g).2.2.2.2.1 k hk p₁` as an intermediate fact. Use `this using 2 with χ` and compare the differences between its conclusion and the goal. Simplify using `[QForm.bHom_apply, div_eq_inv_mul])`.
+
+Establish `e₃` using `hz m`. Establish `e₄ : ((QForm.bHom hϖ D₂ hQ (p₀.y + k • z) m : ℤ) : ℚ) - (k • l') m = -(k * l m)`. Rewrite using `[e₁, e₂]`. Simplify using `only [AddMonoidHom.smul_apply, AddMonoidHom.add_apply, AddMonoidHom.comp_apply, Int.coe_castAddHom, smul_eq_mul, nsmul_eq_mul]`. Use `show _ - (k : ℚ) * (l m + (k : ℚ)⁻¹ * ((QForm.bHom hϖ D₂ hQ (p₀.y + k • z) m : ℤ) : ℚ)) = _`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite `e₃` using `[e₄, abs_neg, abs_mul, abs_of_pos k0]`. Conclude with `le_of_mul_le_mul_left e₃ k0`. Establish `up₂ : ∀ (r : QkPt D₂.toPre F k) (n N : ℕ), N = k * n → ∃ q : QkPt D₂.toPre F N, q.y = n • r.y ∧ q.g = r.g` using `fun r n N h => ⟨qkMk hB (n • r.y) r.g (by rw [h, mul_nsmul, qk_nsmul hB, map_nsmul]), rfl, rfl⟩`.
+
+Establish `hB₁` using `D₁.tau_bimult`. Establish `up₁ : ∀ (r : QkPt D₁.toPre F k) (n N : ℕ), N = k * n → ∃ q : QkPt D₁.toPre F N, q.y = n • r.y ∧ q.g = r.g` using `fun r n N h => ⟨qkMk hB₁ (n • r.y) r.g (by rw [h, mul_nsmul, qk_nsmul hB₁, map_nsmul]), rfl, rfl⟩`. Establish `hj1 : 1 ≤ j` using `hj ▸ Nat.mul_pos hk hn`. Take `⟨q₁, qy₁, qg₁⟩` from `up₂ p₁ n j hj`. Take `⟨w, hw⟩` from `(coef_basic V D₂.toPre F j d).1`.
+
+Take `⟨θ, hθ, ω, hω, K⟩` from `exists_pre_coef hL hA hG₂ U₂ hj1 q₁ (((LU₂ k n j hk hn hj p₁ q₁ _).1 qy₁ qg₁).1 hp₁) hw₀₂ (qg₁ ▸ hd) hw`. Use `⟨w, hw, fun S₁ S₂ hS => ?_⟩` and prove the remaining obligations. Take `⟨T₁, hT₁, -⟩` from `(BJ₂ j hj1 w₀₂ hw₀₂).2 S₁`. Take `⟨T₂, hT₂, -⟩` from `(BJ₂ j hj1 w₀₂ hw₀₂).2 S₂`. Take `⟨n', hn', CR⟩` from `GlobalTheory.T.exists_crossRelation_sections_ample_source_power V A₁ A₂ F c hc j k hk`.
+
+Take `⟨T₁', T₂', hC, hne⟩` from `CR T₁ T₂`. Establish `hj' : 1 ≤ k * n'` using `Nat.mul_pos hk hn'`. Take `⟨S₁', hT₁', -⟩` from `(BJ₁ _ hj' w₀₁ hw₀₁).1 T₁'`. Take `⟨S₂', hT₂', -⟩` from `(BJ₁ _ hj' w₀₁ hw₀₁).1 T₂'`. Take `⟨w₁', hw₁'⟩` from `(coef_basic V D₁.toPre F (k * n') 0).2.1 zero_b`.
+
+Take `⟨q, qy, qg⟩` from `up₁ p n' _ rfl`. Take `⟨θ', hθ', ω', hω', K'⟩` from `exists_pre_coef hL hA hG₁ U₁ hj' q (((LU₁ k n' _ hk hn' rfl p q _).1 qy qg).1 hx) hw₀₁ (g₀ := 0) (g₁ := p.g) ((isAdd_iff_eq _ _ _).2 (by rw [qg, zero_add])) hw₁'.1`. Take `⟨t₁, s₁, a₁, e₁, c₁⟩` from `K T₁ S₁ hT₁`. Take `⟨t₂, s₂, a₂, e₂, c₂⟩` from `K T₂ S₂ hT₂`. Take `⟨t₁', s₁', a₁', e₁', c₁'⟩` from `K' T₁' S₁' hT₁'`.
+
+Take `⟨t₂', s₂', a₂', e₂', c₂'⟩` from `K' T₂' S₂' hT₂'`. Establish `hC'` using `(GlobalTheory.T.thetaSectionCrossRelation_iff_of_thetaAction V A₁ A₂ F c hc j _ θ θ' (by rw [hθ, hθ']) _ _ _ _ _ _ _ _ a₁ a₂ a₁' a₂').2 hC`. Establish `nl₂ : ∀ (g : GtPtF D₂.toPre F) (i : ℕ), 1 ≤ i → ∀ (u : Frm D₂.toPre F i g.b) (s : Fam D₂.toPre F i), u.IsGen → NullV v (coef s g u)` using `fun g i hi u s hu => ((CV g).2.2.2.2.2.2 i hi u s hu).1`. Use `choose Q₁ hQ₁' using QForm.exists_QVal hϖ D₁`. Establish `hQ₁ : QForm.IsQ D₁.toPre ϖ Q₁` using `hQ₁'`.
+
+Establish `CV₁` using `GlobalTheory.UT.CoefVal.main hL h₁ h₂ h₃ h₄ V hV ϖ hϖ D₁ Q₁ hQ₁ F v hv`. Establish `nl₁ : ∀ (g : GtPtF D₁.toPre F) (i : ℕ), 1 ≤ i → ∀ (u : Frm D₁.toPre F i g.b) (s : Fam D₁.toPre F i), u.IsGen → NullV v (coef s g u)` using `fun g i hi u s hu => ((CV₁ g).2.2.2.2.2.2 i hi u s hu).1`. Establish `MX` using `GlobalTheory.T.crossRelation_hom_gives_expansionTerm_convolution_rel V _ hA D₁ D₂ A₁ A₂ G₁ G₂ hG₁ hG₂ U₁ U₂ a c b h hc hgen hlin hcoord F w₀₁ w₀₂ hw₀₁ hw₀₂`. Use `GlobalTheory.T.valuedConvolution_cancel_injective_latticeHom F v D₁.toPre.X D₂.toPre.X h hE (coef S₁ 0 w₁) (coef S₂ 0 w₁) (coef S₁ d w) (coef S₂ d w) (coef S₁' 0 w₁') (coef S₂' 0 w₁') (nl₂ _ _ hj1 _ _ hw₁.1) (nl₂ _ _ hj1 _ _ hw₁.1) (nl₂ _ _ hj1 _ _ hw) (nl₂ _ _ hj1 _ _ hw) (nl₁ _ …` and prove the remaining obligations. Take `⟨cc, hcc⟩` from `exists_value hρ₂ T₂`.
+
+Take `⟨cc', hcc'⟩` from `exists_value hρ₁ T₂'`. Establish `σ` using `(SV _ _ _ (EV₂.2.2 w₀₂ ρ₂ hN₂ j T₂ S₂ hT₂ 0 w₁ ho hw₁ cc hcc)).1`. Establish `σ'` using `(SV _ _ _ (EV₁.2.2 w₀₁ ρ₁ hN₁ _ T₂' S₂' hT₂' 0 w₁' ho₁ hw₁' cc' hcc')).1`. Rewrite `σ'` using `[h0]`. Take `rfl` from `eq_zero_of_sumV_zero v σ'`.
+
+Take `⟨y⟩` from `exists_pt (R := V) (F := F)`. Take `⟨J, hJ⟩` from `exists_good' (Z := (TFK (R := V) F).left) A₁.isLB y`. Use `hne (fun y J hJ h => hS ?_) y J hJ ((hcc' y J hJ).trans ?_)` and prove the remaining obligations. Establish `e : cstH (R` using `V) y cc = 0 := (cst_eq y cc).symm.trans ((Units.mul_left_eq_zero _).1 ((hcc y J hJ).symm.trans h))`. Take `rfl : cc = 0` from `cstH_inj y (e.trans (map_zero _).symm)`.
+
+Conclude with `σ`. Conclude with `mul_eq_zero_of_left ((cst_eq y 0).trans (map_zero _)) _`.
+-/
 theorem main : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V], IsAdicComplete (maximalIdeal V) V → ∀ (ϖ : V), Irreducible ϖ → ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing V) F] (v : AddValuation F (WithTop ℚ)), ValOver ϖ F v → ∀ (D₁ D₂ : DegData V (maximalIdeal V)) (A₁ A₂ : PolAV (Sp (FractionRing V))) (G₁ G₂ : Over (Sp V)) [GrpObj G₁] [IsCommMonObj G₁] [GrpObj G₂] [IsCommMonObj G₂], IsSemiAbelian G₁ → IsSemiAbelian G₂ → ∀ (U₁ : Unif (maximalIdeal V) D₁ A₁ G₁) (U₂ : Unif (maximalIdeal V) D₂ A₂ G₂) (a : G₁ ⟶ G₂) (c : A₁.A ⟶ A₂.A) (b : D₁.toPre.P.A ⟶ D₂.toPre.P.A) (h : D₂.toPre.X →+ D₁.toPre.X), IsMonHom c → Gen₀ U₁.toUnifPre U₂.toUnifPre a c → Lin U₁.toUnifPre U₂.toUnifPre a b h → Coord U₁.toUnifPre U₂.toUnifPre a b h → Function.Injective h → Key U₁.toUnifPre U₂.toUnifPre c b h F := by
   intro V _ _ _ _ hV ϖ hϖ F _ _ _ v hv D₁ D₂ A₁ A₂ G₁ G₂ _ _ _ _ hG₁ hG₂ U₁ U₂ a c b h hc hgen hlin hcoord hE
     k hk p x hx g' hg'

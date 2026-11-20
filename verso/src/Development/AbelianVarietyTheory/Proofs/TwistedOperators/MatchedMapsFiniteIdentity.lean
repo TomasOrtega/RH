@@ -30,6 +30,9 @@ open Filter GlobalTheory.WeilM GlobalTheory.AdelicU
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {a a' : ℕ}
 
+/- English proof (translation)
+Take `⟨T, -, m, m', f, φ, f', φ', -, hf', -, rfl, -⟩` from `h`. Use `Submodule.sum_mem _ fun j _ => Submodule.subset_span ⟨f' j, φ' j, (hf' j).1, (hf' j).2.1, ?_, rfl⟩` and prove the remaining obligations. Conclude with `Filter.eventually_cofinite.mpr (T.finite_toSet.subset fun v hv => by`. Assume the negation of the conclusion as `h'`. Conclude with `hv ((hf' j).2.2 v h'))`.
+-/
 theorem polMatch_mem_algD (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
     (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a') {Φ Φ'}
     (h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.PolMatch B G X R Rf Φ Φ') : Φ' ∈ algD G.M' B.ψ B.emb := by
@@ -39,6 +42,11 @@ theorem polMatch_mem_algD (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTenso
     by_contra h'
     exact hv ((hf' j).2.2 v h'))
 
+/- English proof (translation)
+Establish `hfin` using `Filter.eventually_cofinite.mp hv`. Use `⟨X.T ∪ S ∪ hfin.toFinset, fun x hx => Finset.mem_union_left _ (Finset.mem_union_left _ hx), 0, 1, Fin.elim0, Fin.elim0, fun _ => f, fun _ => φ, fun i => i.elim0, fun _ => ⟨hf, hφ, fun v hv' => ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h'`. Conclude with `hv' (Finset.mem_union_right _ (hfin.mem_toFinset.mpr h'))`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules. Rewrite using `[Finset.univ_eq_empty, Finset.sum_empty, Fin.sum_univ_one, hz _ fun x hx => Finset.mem_union_left _ (Finset.mem_union_right _ hx)]`.
+-/
 theorem polMatch_zero_pure (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
     (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a')
     (f : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin a' × Fin (a + a'))) (hf : f ∈ G.M'.Pol B.ψ B.emb)
@@ -58,6 +66,25 @@ theorem polMatch_zero_pure (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTens
   · rw [Finset.univ_eq_empty, Finset.sum_empty, Fin.sum_univ_one, hz _ fun x hx =>
       Finset.mem_union_left _ (Finset.mem_union_right _ hx)]
 
+/- English proof (translation)
+Take `⟨A, hA⟩` from `GlobalTheory.T.exists_archOperator_compact_unitaryW F E σ B a (a + a') G.V G.W G.M om _ _ hMt.triple.base hMt.triple.geo.hM hMt.triple.weil k hk`. Take `⟨A', hA'⟩` from `GlobalTheory.T.exists_archOperator_compact_unitaryW F E σ B a' (a + a') G.V' G.W G.M' om' _ _ hMt.triple.base hMt.triple.geo.hM' hMt.triple.weil' k hk`. Establish `hpure : ∀ f φ, (∀ v, φ v ∈ SB _) → (∀ᶠ v in cofinite, φ v = G.M.vac v) → om (1, k) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (A f) φ` using `fun f φ h1 h2 => hA f _ (GlobalTheory.T.restricted_finprod_pure_tensor_adelic_schwartz F _ φ h1 ((h2.and hMt.triple.geo.hM.std).mono fun v h => h.1.trans h.2) f)`. Establish `hpure' : ∀ f φ, (∀ v, φ v ∈ SB _) → (∀ᶠ v in cofinite, φ v = G.M'.vac v) → om' (1, k) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (A' f) φ` using `fun f φ h1 h2 => hA' f _ (GlobalTheory.T.restricted_finprod_pure_tensor_adelic_schwartz F _ φ h1 ((h2.and hMt.triple.geo.hM'.std).mono fun v h => h.1.trans h.2) f)`. Take `⟨T, hT, m, m', f, φ, f', φ', hf, hf', rfl, rfl, heq⟩` from `hPM`.
+
+Establish `hR` using `hMt.real`. Use `set P := G.M.Pol B.ψ B.emb with hP`. Set `pP : P →ₗ[ℂ] R.Pi` to `R.p ∘ₗ P.subtype`. Establish `hsurj : Function.Surjective pP`. Rewrite using `[← LinearMap.range_eq_top, LinearMap.range_comp, Submodule.range_subtype]`.
+
+Conclude with `hR.quot.onto`. Set `g : P →ₗ[ℂ] R.Pi` to `R.p ∘ₗ A ∘ₗ P.subtype`. Establish `hker : LinearMap.ker pP ≤ LinearMap.ker g`. Introduce `x hx`. Simplify using `only [LinearMap.mem_ker] at hx ⊢`.
+
+Use `hR.cpt k hk x.1 x.2 0 (zero_mem _) (A x.1) (A' 0) (hA x.1) (hA' 0) (by simpa [pP] using hx)` as an intermediate fact. Simplify `this` using `[g]`. Set `L : R.Pi →ₗ[ℂ] R.Pi` to `(LinearMap.ker pP).liftQ g hker ∘ₗ (pP.quotKerEquivOfSurjective hsurj).symm.toLinearMap`. Establish `hL : ∀ x ∈ P, L (R.p x) = R.p (A x)`. Introduce `x hx`.
+
+Establish `e : (pP.quotKerEquivOfSurjective hsurj).symm (R.p x) = Submodule.Quotient.mk ⟨x, hx⟩`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [L, LinearMap.comp_apply, LinearEquiv.coe_coe, e, Submodule.liftQ_apply]`. Both sides reduce to the same expression.
+
+Establish `hL' : ∀ x ∈ G.M'.Pol B.ψ B.emb, L (R.p' x) = R.p' (A' x)`. Introduce `x hx`. Take `⟨y, hy, hyx⟩` from `(Submodule.eq_top_iff'.mp hR.quot.onto (R.p' x))`. Rewrite using `[← hyx, hL y hy]`. Conclude with `hR.cpt k hk y hy x hx (A y) (A' x) (hA y) (hA' x) hyx`.
+
+Establish `hcof : ∀ {κ : Type} (ψs vac : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F v) → ℂ), (∀ v ∉ T, ψs v = vac v) → ∀ᶠ v in cofinite, ψs v = vac v` using `fun ψs vac h => Filter.eventually_cofinite.mpr (T.finite_toSet.subset fun v hv => by`. Assume the negation of the conclusion as `h'`. Conclude with `hv (h v h'))`. Use `⟨T, hT, m, m', fun i => A (f i), φ, fun j => A' (f' j), φ', fun i => ⟨GlobalTheory.T.polynomialFockSpace_stable_archimedeanMaximalCompact F E σ B a (a + a') G.V G.W G.M om _ _ hMt.triple.base hMt.triple.geo.hM hMt.triple.weil k hk (f i) (hf i).1 (A (f i)) (hA (f i)), (hf i).2.1, …` and prove the remaining obligations. Rewrite using `[map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => hpure (f i) (φ i) (hf i).2.1 (hcof _ _ (hf i).2.2)`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => hpure' (f' j) (φ' j) (hf' j).2.1 (hcof _ _ (hf' j).2.2)`. Use `congrArg (LinearMap.rTensor _ L) heq` as an intermediate fact. Simplify using `only [map_sum, LinearMap.rTensor_tmul] at this`.
+
+Simplify `this` using `only [hL _ (hf _).1, hL' _ (hf' _).1]`.
+-/
 theorem polMatch_kInf (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a')
     (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a') (hMt : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched B G X om om' R Rf)
@@ -119,11 +146,31 @@ theorem polMatch_kInf (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMod
     simp only [map_sum, LinearMap.rTensor_tmul] at this
     simpa only [hL _ (hf _).1, hL' _ (hf' _).1] using this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, sub_mul]`.
+-/
 theorem pure_sub {κ : Type} [Fintype κ] (f g : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ) (φ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F v) → ℂ) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f - g) φ = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ - GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g φ := by
   funext x
   simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, sub_mul]
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ a a' Bs Γ Xc om om' R Rf hM`. Take `⟨h0, hlin⟩` from `GlobalTheory.PolMatchLin.polMatch_linear Bs Γ Xc om om' R Rf hM.fin`. Set `N : Submodule ℂ ((Fin a' × Fin (a + a') → AF F) → ℂ)` to `{ carrier := {Φ | Φ ∈ algD Γ.M' Bs.ψ Bs.emb ∧ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.PolMatch Bs Γ Xc R Rf 0 Φ} add_mem' := fun {x y} hx hy => ⟨add_mem hx.1 hy.1, by simpa using hlin 0 0 x y 1 hx.2 hy.2⟩ zero_mem' := ⟨zero_mem _, h0⟩ smul_mem' := fun c x hx => ⟨ …`. Establish `hN : ∀ Φ, Φ ∈ N ↔ Φ ∈ algD Γ.M' Bs.ψ Bs.emb ∧ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.PolMatch Bs Γ Xc R Rf 0 Φ` using `fun _ => Iff.rfl`. Establish `hmem : ∀ Φ, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.PolMatch Bs Γ Xc R Rf 0 Φ → Φ ∈ N` using `fun Φ h => ⟨polMatch_mem_algD Bs Γ Xc R Rf h, h⟩`.
+
+Establish `hpa : ∀ f φ, f ∈ Γ.M'.Pol Bs.ψ Bs.emb → (∀ w, φ w ∈ SB _) → (∀ᶠ w in cofinite, φ w = Γ.M'.vac w) → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ ∈ algD Γ.M' Bs.ψ Bs.emb` using `fun f φ hf hφ hv => Submodule.subset_span ⟨f, φ, hf, hφ, hv, rfl⟩`. Take `⟨Φp, hΦp, hnot⟩` from `GlobalTheory.T.exists_algebraicDatum_not_matched_zero_by_localMaps Bs Γ Xc om om' R Rf hM`. Use `⟨N, hN, ⟨fun Φ h => h.1, ?_, ?_, ?_, ?_, ?_, ?_⟩, fun e => hnot ((hN Φp).mp (e ▸ hΦp)).2⟩` and prove the remaining obligations. Introduce `v f φ hf hφ hv hφv`. Establish `hz : Rf.p' v (φ v) = 0` using `hM.fin.inv' v hφv`.
+
+Use `hmem _ (polMatch_zero_pure Bs Γ Xc R Rf f hf φ hφ hv {v} fun T hT => ?_)` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_coord_zero _ (⟨v, hT (Finset.mem_singleton_self v)⟩ : T) hz, TensorProduct.tmul_zero]`. Introduce `γ hγ f hf f₁ hf₁ hact φ hφ hv`. Establish `hz : R.p' f₁ = 0` using `hM.real.quot'.lie γ hγ f hf f₁ hact`. Conclude with `hmem _ (polMatch_zero_pure Bs Γ Xc R Rf f₁ hf₁ φ hφ hv ∅ fun T _ => by rw [hz, TensorProduct.zero_tmul])`.
+
+Introduce `k hk f hf f₁ hf₁ hact φ hφ hv`. Establish `hz : R.p' (f₁ - f) = 0` using `by rw [map_sub, hM.real.quot'.cpt k hk f hf f₁ hact, sub_self]`. Rewrite using `[← pure_sub]`. Conclude with `hmem _ (polMatch_zero_pure Bs Γ Xc R Rf (f₁ - f) (sub_mem hf₁ hf) φ hφ hv ∅ fun T _ => by`. Rewrite using `[hz, TensorProduct.zero_tmul])`.
+
+Introduce `v h hh Φ hΦ`. Take `⟨T, hXT, hOn⟩` from `(GlobalTheory.ThK.PolynomialMatching.polMatch_iff Bs Γ Xc R Rf 0 Φ).mp hΦ.2`. Establish `hOn' : GlobalTheory.ThK.PolynomialMatching.PolMatchOn Bs Γ Xc R Rf (insert v T) 0 Φ`. Distinguish the cases in `hvT : v ∈ T`. Rewrite using `[Finset.insert_eq_of_mem hvT]` and apply the resulting hypothesis.
+
+Conclude with `GlobalTheory.ThK.PolynomialMatching.polMatchOn_insert F E σ Bs a a' Γ Xc R Rf v (hM.fin.sph v fun h' => hvT (hXT h')).1 T 0 Φ hOn`. Use `GlobalTheory.T.matched_maps_local_identity hP F E σ Bs a a' Γ Xc om om' R Rf hM (insert v T) v (Finset.mem_insert_self v T) h hh 0 Φ hOn'` as an intermediate fact. Rewrite `this` using `[map_zero]`. Conclude with `hmem _ ((GlobalTheory.ThK.PolynomialMatching.polMatch_iff Bs Γ Xc R Rf 0 _).mpr ⟨insert v T, hXT.trans (Finset.subset_insert v T), this⟩)`. Introduce `γ hγ Φ hΦ Φ₁ _ hd`.
+
+Use `hmem _ (GlobalTheory.T.matched_maps_orbit_identity hP Bs Γ Xc om om' R Rf hM γ hγ 0 Φ hΦ.2 0 Φ₁ (fun x => ?_) hd)` and prove the remaining obligations. Simplify using `only [map_zero, Pi.zero_apply]`. Conclude with `hasDerivAt_const 0 (0 : ℂ)`. Introduce `k hk Φ hΦ`. Use `polMatch_kInf Bs Γ Xc om om' R Rf hM k hk 0 Φ hΦ.2` as an intermediate fact.
+
+Rewrite `this` using `[map_zero]`. Conclude with `hmem _ this`.
+-/
 theorem kerD_isThetaSubG : GlobalTheory.FunPr.Hypotheses₂ → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {a a' : ℕ}
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Γ.V Γ.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Γ.V' Γ.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a')

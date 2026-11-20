@@ -11,6 +11,11 @@ namespace PI.Residue
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Rewrite using `[lat, mem_idealLattice]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Rewrite `hy` using `[SetLike.mem_coe, FractionalIdeal.coe_mk0, FractionalIdeal.mem_coeIdeal]`. Take `⟨a, ha, rfl⟩` from `hy`.
+
+Conclude with `⟨a, ha, rfl⟩`. Introduce and unpack `⟨a, ha, rfl⟩`. Use `⟨a, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, FractionalIdeal.coe_mk0, FractionalIdeal.mem_coeIdeal]`. Conclude with `⟨a, ha, rfl⟩`.
+-/
 theorem mem_lat {J : (Ideal (𝓞 K))⁰} {x : mixedSpace K} :
     x ∈ lat K J ↔ ∃ a : 𝓞 K, a ∈ (J : Ideal (𝓞 K)) ∧ mixedEmbedding K (a : K) = x := by
   rw [lat, mem_idealLattice]
@@ -24,6 +29,9 @@ theorem mem_lat {J : (Ideal (𝓞 K))⁰} {x : mixedSpace K} :
     rw [SetLike.mem_coe, FractionalIdeal.coe_mk0, FractionalIdeal.mem_coeIdeal]
     exact ⟨a, ha, rfl⟩
 
+/- English proof (translation)
+Take `⟨a, ha, rfl⟩` from `mem_lat.1 hx`. Use `mem_lat.2 ⟨u * a, Ideal.mul_mem_left _ _ ha, ?_⟩` and prove the remaining obligations. Rewrite using `[unitSMul_smul]`. Simplify using `[map_mul]`.
+-/
 theorem smul_mem_lat {J : (Ideal (𝓞 K))⁰} {x : mixedSpace K} (u : (𝓞 K)ˣ) (hx : x ∈ lat K J) :
     u • x ∈ lat K J := by
   obtain ⟨a, ha, rfl⟩ := mem_lat.1 hx
@@ -31,6 +39,9 @@ theorem smul_mem_lat {J : (Ideal (𝓞 K))⁰} {x : mixedSpace K} (u : (𝓞 K)�
   rw [unitSMul_smul]
   simp [map_mul]
 
+/- English proof (translation)
+Establish `h1 : MeasurableSet {y : mixedSpace K | 1 / 2 < mixedEmbedding.norm y}` using `(isOpen_lt continuous_const (mixedEmbedding.continuous_norm K)).measurableSet`. Establish `h2 : MeasurableSet {y : mixedSpace K | mixedEmbedding.norm y ≤ 1}` using `(isClosed_le (mixedEmbedding.continuous_norm K) continuous_const).measurableSet`. Conclude with `(measurableSet_fundamentalCone K).inter (h1.inter h2)`.
+-/
 theorem measurableSet_shell' : MeasurableSet (shell K) := by
   have h1 : MeasurableSet {y : mixedSpace K | 1 / 2 < mixedEmbedding.norm y} :=
     (isOpen_lt continuous_const (mixedEmbedding.continuous_norm K)).measurableSet
@@ -38,6 +49,9 @@ theorem measurableSet_shell' : MeasurableSet (shell K) := by
     (isClosed_le (mixedEmbedding.continuous_norm K) continuous_const).measurableSet
   exact (measurableSet_fundamentalCone K).inter (h1.inter h2)
 
+/- English proof (translation)
+Establish `: hit K ρ x = ⋂ w, {y | normAtPlace w y * normAtPlace w x < ρ}`. Use extensionality with `y`. Simplify using `[hit]`. Rewrite using `[this]`. Conclude with `MeasurableSet.iInter fun w => (isOpen_lt ((continuous_normAtPlace w).mul continuous_const) continuous_const).measurableSet`.
+-/
 theorem measurableSet_hit' (ρ : ℝ) (x : mixedSpace K) : MeasurableSet (hit K ρ x) := by
   have : hit K ρ x = ⋂ w, {y | normAtPlace w y * normAtPlace w x < ρ} := by
     ext y; simp [hit]
@@ -45,6 +59,9 @@ theorem measurableSet_hit' (ρ : ℝ) (x : mixedSpace K) : MeasurableSet (hit K 
   exact MeasurableSet.iInter fun w =>
     (isOpen_lt ((continuous_normAtPlace w).mul continuous_const) continuous_const).measurableSet
 
+/- English proof (translation)
+Simplify using `only [hit, Set.mem_ofPred_eq, unitSMul_smul, map_mul]`. Use `forall_congr' fun w => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, mul_assoc]`.
+-/
 theorem mem_hit_smul (ρ : ℝ) (u : (𝓞 K)ˣ) (x y : mixedSpace K) :
     y ∈ hit K ρ (u • x) ↔ u • y ∈ hit K ρ x := by
   simp only [hit, Set.mem_ofPred_eq, unitSMul_smul, map_mul]
@@ -55,6 +72,11 @@ def urep (g : (𝓞 K)ˣ ⧸ torsion K) : (𝓞 K)ˣ := Quotient.out g
 
 def Fv (ρ : ℝ) (x : mixedSpace K) : ℝ≥0∞ := volume (shell K ∩ hit K ρ x)
 
+/- English proof (translation)
+Establish `hnx : mixedEmbedding.norm x ≠ 0`. Take `⟨a, _, rfl⟩` from `mem_lat.1 hx`. Conclude with `fun h => hx0 ((norm_eq_zero_iff' ⟨_, rfl⟩).1 h)`. Take `⟨u, hu⟩` from `exists_unit_smul_mem hnx`. Take `⟨ζ, hζ⟩` from `QuotientGroup.mk_out_eq_mul (torsion K) u⁻¹`.
+
+Establish `hζ' : (ζ : (𝓞 K)ˣ)⁻¹ ∈ torsion K` using `inv_mem ζ.2`. Use `⟨(ζ : (𝓞 K)ˣ)⁻¹ • (u • x), ⟨torsion_smul_mem_of_mem hu hζ', smul_mem_lat _ (smul_mem_lat _ hx)⟩, QuotientGroup.mk u⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[urep, hζ, ← mul_smul, ← mul_smul]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_rep {J : (Ideal (𝓞 K))⁰} {x : mixedSpace K} (hx : x ∈ lat K J) (hx0 : x ≠ 0) :
     ∃ x1 ∈ idealSet K J, ∃ g : (𝓞 K)ˣ ⧸ torsion K, urep g • x1 = x := by
   have hnx : mixedEmbedding.norm x ≠ 0 := by
@@ -68,6 +90,19 @@ theorem exists_rep {J : (Ideal (𝓞 K))⁰} {x : mixedSpace K} (hx : x ∈ lat 
   rw [urep, hζ, ← mul_smul, ← mul_smul]
   simp
 
+/- English proof (translation)
+Set `A : (𝓞 K)ˣ ⧸ torsion K → Set (mixedSpace K)` to `fun g => (fun z : mixedSpace K => (urep g)⁻¹ • z) ⁻¹' shell K ∩ hit K ρ x1`. Establish `hAm : ∀ g, MeasurableSet (A g)` using `fun g => ((hUP K (urep g)⁻¹).measurable measurableSet_shell').inter (measurableSet_hit' _ _)`. Establish `hFA : ∀ g, Fv ρ (urep g • x1) = volume (A g)`. Introduce `g`. Establish `e : shell K ∩ hit K ρ (urep g • x1) = (fun y : mixedSpace K => urep g • y) ⁻¹' A g`.
+
+Use extensionality with `y`. Simplify using `only [A, Set.mem_inter_iff, Set.mem_preimage, mem_hit_smul, inv_smul_smul]`. Rewrite using `[Fv, e, (hUP K (urep g)).measure_preimage (hAm g).nullMeasurableSet]`. Establish `hdisj : Pairwise (Function.onFun Disjoint A)`. Introduce `g g' hgg`.
+
+Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce and unpack `z ⟨hz, _⟩ ⟨hz', _⟩`. Apply `hgg` to reduce the goal to its premises. Establish `h1 : (urep g)⁻¹ • z ∈ fundamentalCone K` using `hz.1`. Establish `h2 : (urep g')⁻¹ • z ∈ fundamentalCone K` using `hz'.1`.
+
+Establish `h3 : ((urep g')⁻¹ * urep g) • ((urep g)⁻¹ • z) ∈ fundamentalCone K`. Rewrite using `[← mul_smul]`. Simplify using `using h2`. Establish `h4` using `(unit_smul_mem_iff_mem_torsion h1 _).1 h3`. Establish `h5 : (QuotientGroup.mk (urep g') : (𝓞 K)ˣ ⧸ torsion K) = QuotientGroup.mk (urep g)` using `QuotientGroup.eq.2 h4`.
+
+Rewrite `h5` using `[urep, urep, QuotientGroup.out_eq', QuotientGroup.out_eq']`. Conclude with `h5.symm`. Combine the equalities or inequalities in the displayed calculation. Use `measure_mono (Set.iUnion_subset fun g => ?_)` and prove the remaining obligations. Introduce and unpack `z ⟨hz, hz'⟩`.
+
+Use `⟨?_, hz'⟩` and prove the remaining obligations. Establish `: 1 / 2 < mixedEmbedding.norm ((urep g)⁻¹ • z)` using `hz.2.1`. Rewrite `this` using `[norm_unit_smul]`. Then use the resulting hypothesis.
+-/
 theorem fib_le (hUP : UnitPreserving) (ρ : ℝ) (x1 : mixedSpace K) :
     ∑' g : (𝓞 K)ˣ ⧸ torsion K, Fv ρ (urep g • x1) ≤
       volume ({y | 1 / 2 < mixedEmbedding.norm y} ∩ hit K ρ x1) := by
@@ -104,6 +139,13 @@ theorem fib_le (hUP : UnitPreserving) (ρ : ℝ) (x1 : mixedSpace K) :
         have : 1 / 2 < mixedEmbedding.norm ((urep g)⁻¹ • z) := hz.2.1
         rwa [norm_unit_smul] at this
 
+/- English proof (translation)
+Establish `hex : ∀ x : {x : lat K J // x ≠ 0}, ∃ p : idealSet K J × ((𝓞 K)ˣ ⧸ torsion K), urep p.2 • (p.1 : mixedSpace K) = ((x : lat K J) : mixedSpace K)`. Introduce and unpack `⟨⟨x, hx⟩, hx0⟩`. Take `⟨x1, h1, g, hg⟩` from `exists_rep hx (fun h => hx0 (Subtype.ext h))`. Conclude with `⟨(⟨x1, h1⟩, g), hg⟩`. Use `choose p hp using hex`.
+
+Establish `hinj : Function.Injective p`. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hp x, ← hp y, hxy]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sum_ne_zero_le (J : (Ideal (𝓞 K))⁰) (F : mixedSpace K → ℝ≥0∞) :
     ∑' x : {x : lat K J // x ≠ 0}, F ((x : lat K J) : mixedSpace K) ≤
       ∑' p : idealSet K J × ((𝓞 K)ˣ ⧸ torsion K), F (urep p.2 • (p.1 : mixedSpace K)) := by
@@ -122,6 +164,11 @@ theorem sum_ne_zero_le (J : (Ideal (𝓞 K))⁰) (F : mixedSpace K → ℝ≥0�
     _ ≤ _ := ENNReal.tsum_comp_le_tsum_of_injective hinj
         (fun p : idealSet K J × ((𝓞 K)ˣ ⧸ torsion K) => F (urep p.2 • (p.1 : mixedSpace K)))
 
+/- English proof (translation)
+Rewrite using `[ENNReal.tsum_eq_add_tsum_ite 0]`. Express the relevant statement in the definitionally equal form `_ = f 0 + ∑' x : ↑{x : α | x ≠ 0}, f x`. Rewrite using `[tsum_subtype {x : α | x ≠ 0} f]`. Use `congr 1`. Use `tsum_congr fun x => ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `by_cases h : x = 0 <;> simp [h]`.
+-/
 theorem tsum_eq_zero_add_ne {α : Type*} [Zero α] (f : α → ℝ≥0∞) :
     ∑' x, f x = f 0 + ∑' x : {x : α // x ≠ 0}, f x := by
   rw [ENNReal.tsum_eq_add_tsum_ite 0]
@@ -131,9 +178,17 @@ theorem tsum_eq_zero_add_ne {α : Type*} [Zero α] (f : α → ℝ≥0∞) :
   refine tsum_congr fun x => ?_
   by_cases h : x = 0 <;> simp [h]
 
+/- English proof (translation)
+Rewrite using `[Fv]`. Conclude with `measure_mono Set.inter_subset_left`.
+-/
 theorem Fv_le (ρ : ℝ) (x : mixedSpace K) : Fv ρ x ≤ volume (shell K) := by
   rw [Fv]; exact measure_mono Set.inter_subset_left
 
+/- English proof (translation)
+Rewrite using `[tsum_eq_zero_add_ne (fun x : lat K J => Fv ρ (x : mixedSpace K))]`. Use `add_le_add (Fv_le ρ _) ?_` and prove the remaining obligations. Use `(sum_ne_zero_le J (Fv ρ)).trans ?_` and prove the remaining obligations. Rewrite using `[ENNReal.tsum_prod']`. Use `ENNReal.tsum_le_tsum fun x1 => ?_` and prove the remaining obligations.
+
+Simplify using `only`. Conclude with `fib_le hUP ρ (x1 : mixedSpace K)`.
+-/
 theorem lattice_sum_le_shell_volume (hUP : UnitPreserving) (J : (Ideal (𝓞 K))⁰) (ρ : ℝ) :
     ∑' x : lat K J, Fv ρ (x : mixedSpace K) ≤
       volume (shell K) +
@@ -147,6 +202,9 @@ theorem lattice_sum_le_shell_volume (hUP : UnitPreserving) (J : (Ideal (𝓞 K))
   dsimp only
   exact fib_le hUP ρ (x1 : mixedSpace K)
 
+/- English proof (translation)
+Introduce `_ _ _ J ρ _` and use `lattice_sum_le_shell_volume hUP J ρ`.
+-/
 theorem unfold_of (hUP : UnitPreserving) : Unfold :=
   fun _ _ _ J ρ _ => lattice_sum_le_shell_volume hUP J ρ
 

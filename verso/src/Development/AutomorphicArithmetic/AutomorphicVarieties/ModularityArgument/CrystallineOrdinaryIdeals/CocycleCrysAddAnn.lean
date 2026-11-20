@@ -11,6 +11,9 @@ namespace GlobalTheory.CrysAnn
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [actC, resCoef]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem actC_resCoef {G E B : Type} [Group G] [Field E] [Algebra ℚ_[l] E] [CommRing B] [Algebra ℚ_[l] B]
     [Algebra E B] [IsScalarTower ℚ_[l] E B] (φ : G →* GQ l) (ρ : Representation B G B) (g : G)
     (y : B ⊗[ℚ_[l]] Bcr l) : actC φ (resCoef E ρ) g y = actC φ ρ g y := by
@@ -32,6 +35,25 @@ end GlobalTheory.CrysAnn
 
 open GlobalTheory.CrysAnn in
 
+/- English proof (translation)
+Introduce `hP l _ G _ _ _ φ hφ E _ _ _ _ _ B _ _ _ _ _ _ _ _ _ _ π hπ χ hχc w hw hχI σ hσ c hc`. Use `haveI : ContinuousConstSMul E B := contConstSMul_alg E`. Use `haveI : Module.Finite E B := Module.Finite.of_restrictScalars_finite ℚ_[l] E B`. Use `set δ : B := if w = 1 then (χ σ : B) - (cycA l l B (φ σ) : B) else 1 with hδ`. Establish `hspan : Ideal.span (Set.range fun g => (χ g : B) - algebraMap E B (((cycA l l E).comp φ g : Eˣ) : E)) = Ideal.span {δ}`.
+
+Establish `h` using `GlobalTheory.T.span_character_sub_cyclotomic_eq_of_positive_weight φ hφ π hπ χ hχc w hw hχI σ hσ`. Establish `e : ∀ g, algebraMap E B (((cycA l l E).comp φ g : Eˣ) : E) = (cycA l l B (φ g) : B)` using `fun g => congrArg Units.val (algebraMap_cycA (E := E) (B := B) (φ g))`. Simplify using `only [e, h, hδ]`. Apply the tactic sequence `split_ifs <;> simp`. Set `I : Submodule B B` to `LinearMap.ker (LinearMap.lsmul B B δ)`.
+
+Use `letI : TopologicalSpace I := moduleTopology ℚ_[l] I`. Use `haveI : IsModuleTopology ℚ_[l] I := ⟨rfl⟩`. Use `haveI : IsTopologicalAddGroup I := IsModuleTopology.topologicalAddGroup ℚ_[l] I`. Use `haveI : ContinuousConstSMul E I := ⟨fun a => IsModuleTopology.continuous_of_linearMap ((LinearMap.lsmul E I a).restrictScalars ℚ_[l])⟩`. Use `haveI : FiniteDimensional ℚ_[l] I := Module.Finite.of_injective (I.subtype.restrictScalars ℚ_[l]) Subtype.val_injective`.
+
+Set `ρV : Representation E G B` to `resCoef E (chRep χ)`. Set `ρW : Representation E G I` to `smulRep I χ`. Establish `hV` using `GlobalTheory.T.positive_scalar_rep_of_character_positive_weight φ hφ π hπ χ hχc w hw hχI ρV (fun g x => rfl)`. Establish `hW` using `GlobalTheory.T.positive_scalar_rep_of_character_positive_weight φ hφ π hπ χ hχc w hw hχI ρW (fun g x => rfl)`. Establish `dV` using `GlobalTheory.T.finrank_dualInvariants_scalarRep_eq_finrank_ker_smul χ ((cycA l l E).comp φ) ρV (fun g x => rfl) δ hspan`.
+
+Establish `dW` using `GlobalTheory.T.finrank_dualInvariants_scalarRep_eq_finrank_ker_smul χ ((cycA l l E).comp φ) ρW (fun g x => rfl) δ hspan`. Establish `kW : LinearMap.ker ((LinearMap.lsmul B I δ).restrictScalars E) = ⊤`. Use extensionality with `x`. Simplify using `only [LinearMap.mem_ker, Submodule.mem_top, iff_true]`. Conclude with `Subtype.ext x.2`.
+
+Establish `hdim : finrank E ↥(H0dual ((cycA l l E).comp φ) ρW) = finrank E ↥(H0dual ((cycA l l E).comp φ) ρV)`. Rewrite using `[dV, dW, kW, finrank_top]`. Conclude with `(LinearEquiv.refl E I).finrank_eq`. Set `i : I →ₗ[E] B` to `I.subtype.restrictScalars E`. Take `⟨cW, -, hf⟩` from `GlobalTheory.T.cocycle_mem_crystalline_sup_subrep_of_positive hP φ hφ ρW ρV hW.1 hV.1 hW.2 hV.2 i Subtype.val_injective (fun g x => rfl) hdim c hc`.
+
+Establish `hz : w ≠ 1 → ∀ g, (cW g : B) = 0`. Introduce `h1 g`. Use `(cW g).2` as an intermediate fact. Simplify using `only [I, LinearMap.mem_ker, LinearMap.lsmul_apply, hδ, if_neg h1, one_smul] at this`. Conclude with `this`.
+
+Use `⟨fun g => (cW g : B), fun g => ?_, ?_, fun h2 => funext fun g => hz (by omega) g⟩` and prove the remaining obligations. Distinguish the cases in `h1 : w = 1`. Use `(cW g).2` as an intermediate fact. Simplify using `only [I, LinearMap.mem_ker, LinearMap.lsmul_apply, hδ, if_pos h1, smul_eq_mul] at this`. Conclude with `this`.
+
+Use `show _ * (cW g : B) = 0`. Rewrite using `[hz h1 g, mul_zero]`. Take `⟨⟨hc1, hc2⟩, x, hx⟩` from `hf`. Conclude with `⟨⟨hc1, hc2⟩, x, fun g => (hx g).trans (by rw [actC_resCoef])⟩`.
+-/
 theorem GlobalTheory.CrysAnn.cocycle_crys_add_ann : LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) {E : Type} [Field E] [Algebra ℚ_[l] E] [FiniteDimensional ℚ_[l] E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] ℚ_[l] E] {B : Type} [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [TopologicalSpace B] [IsModuleTopology ℚ_[l] B] [IsTopologicalRing B] [Algebra ℤ_[l] B] [IsScalarTower ℤ_[l] ℚ_[l] B] [Algebra E B] [IsScalarTower ℚ_[l] E B] (π : B →ₐ[E] E) (hπ : ∀ a, π a = 0 → IsNilpotent a) (χ : G →* Bˣ), Continuous (fun g => (χ g : B)) → ∀ w : ℤ, 1 ≤ w → (∀ g, φ g ∈ Iq l → χ g = cycA l l B (φ g) ^ w) → ∀ σ : G, ((Iq l).comap φ ⊔ Subgroup.zpowers σ).topologicalClosure = ⊤ → ∀ c ∈ Z1 (chRep χ), ∃ c' : G → B, (∀ g, ((χ σ : B) - (cycA l l B (φ σ) : B)) * c' g = 0) ∧ c - c' ∈ finiteCocycles φ (chRep χ) ∧ (2 ≤ w → c' = 0) := by
   intro hP l _ G _ _ _ φ hφ E _ _ _ _ _ B _ _ _ _ _ _ _ _ _ _ π hπ χ hχc w hw hχI σ hσ c hc
   haveI : ContinuousConstSMul E B := contConstSMul_alg E

@@ -10,6 +10,13 @@ open scoped Pointwise
 
 namespace GlobalTheory.ConjOverQuad
 
+/- English proof (translation)
+Take `⟨⟨W, hW, hWQ⟩⟩` from `(inferInstance : Nonempty (Q.primesOver (𝓞 L)))`. Establish `hpW : ((p : ℕ) : 𝓞 L) ∈ W`. Rewrite `hQ` using `[hWQ.over, Ideal.mem_under]`. Simplify using `using hQ`. Use `GlobalTheory.Mem.Chr.liesOver_span_of_natCast_mem hp _ hv` as an intermediate fact.
+
+Use `GlobalTheory.Mem.Chr.liesOver_span_of_natCast_mem hp _ hpW` as an intermediate fact. Take `⟨σ, hσ⟩` from `Ideal.exists_smul_eq_of_isGaloisGroup (Ideal.span {(p : ℤ)}) v W (L ≃ₐ[ℚ] L)`. Break down `hb σ with h1 | h1` into its components or cases. Use `left`. Rewrite using `[hWQ.over, ← hσ, GlobalTheory.Mem.Chr.under_smul_of_fix b σ h1]`.
+
+Use `right`. Establish `h2 : (σ * c) b = b`. Rewrite using `[AlgEquiv.mul_apply, hc, map_neg, h1, neg_neg]`. Establish `h4 : (σ * c) • c⁻¹ • v = W` using `by rw [mul_smul, smul_inv_smul, hσ]`. Rewrite using `[hWQ.over, ← h4, GlobalTheory.Mem.Chr.under_smul_of_fix b _ h2]`.
+-/
 theorem under_eq_or_smul_under_eq {L : Type} [Field L] [NumberField L] [IsGalois ℚ L] {p : ℕ} (hp : p.Prime) (b : L)
     (hb : ∀ σ : L ≃ₐ[ℚ] L, σ b = b ∨ σ b = -b) (c : L ≃ₐ[ℚ] L) (hc : c b = -b)
     (v : Ideal (𝓞 L)) [v.IsPrime] (hv : ((p : ℕ) : 𝓞 L) ∈ v)
@@ -35,6 +42,17 @@ theorem under_eq_or_smul_under_eq {L : Type} [Field L] [NumberField L] [IsGalois
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D P k w hw`. Establish `hG : IsGalois ℚ D.host.E` using `D.host.hostE_isGalois`. Establish `hsq` using `D.host.sqrtMinusD_sq`. Establish `hc` using `D.host.conj_sqrtMinusD`. Establish `hb : ∀ σ : D.host.E ≃ₐ[ℚ] D.host.E, σ D.host.sqrtMinusD = D.host.sqrtMinusD ∨ σ D.host.sqrtMinusD = -D.host.sqrtMinusD`.
+
+Introduce `σ`. Apply `sq_eq_sq_iff_eq_or_eq_neg.1` to reduce the goal to its premises. Rewrite using `[← map_pow, hsq, map_neg, map_natCast]`. Use `w.isPrime` as an intermediate fact. Establish `hQ` using `(P.pb k).isPrime`.
+
+Break down `@under_eq_or_smul_under_eq _ _ _ _ _ (D.host.g_prime k) D.host.sqrtMinusD hb D.host.conj hc w.asIdeal _ hw (P.pb k).asIdeal hQ (P.pb_over k) with h | h` into its components or cases. Conclude with `Or.inl (HeightOneSpectrum.ext h)`. Use `Or.inr ⟨Formalism.L2.Col.conjPrime₂ w, HeightOneSpectrum.ext ?_, (Formalism.L2.Col.conjIdeal_asIdeal w).symm⟩` and prove the remaining obligations. Establish `e : (Formalism.L2.Col.conjPrime₂ w).asIdeal = D.host.conj⁻¹ • w.asIdeal`. Use extensionality with `y`.
+
+Rewrite using `[Formalism.L2.Col.mem_conjP, Ideal.mem_inv_pointwise_smul_iff]`. Establish `: Formalism.L2.Col.cO D.host.E y = D.host.conj • y` using `RingOfIntegers.ext (bridge_star_holds D.R D.host (y : D.host.E))`. Rewrite using `[this]`. Use `show ((Formalism.L2.Col.conjPrime₂ w).asIdeal).under (𝓞 D.host.K) = _`. Rewrite using `[e]`.
+
+Conclude with `h`.
+-/
 theorem div_or_conj_div : ∀ (D : D7) (P : Formalism.L2.Host.PiBar D.host) (k : Fin 2) (w : HeightOneSpectrum (𝓞 D.host.E)), ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal → P.Div k w ∨ ∃ w' : HeightOneSpectrum (𝓞 D.host.E), P.Div k w' ∧ w'.asIdeal = Formalism.HermitianLatticesTheory.conjIdeal (K := D.host.E) w.asIdeal := by
   intro D P k w hw
   have hG : IsGalois ℚ D.host.E := D.host.hostE_isGalois

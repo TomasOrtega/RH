@@ -26,11 +26,25 @@ noncomputable def ofFactorialUnits {A : Type} [CommRing A] (h : ∀ n : ℕ, IsU
   mul_dpow {m} k _ hx := OfInvertibleFactorial.dpow_mul_of_add_lt (h _) (m + k).lt_succ_self hx
   dpow_comp hk hx := OfInvertibleFactorial.dpow_comp_of_mul_lt (h _) hk (lt_add_one _) hx
 
+/- English proof (translation)
+The claim follows from `OfInvertibleFactorial.dpow_eq_of_mem hx`.
+-/
 theorem ofFactorialUnits_dpow {A : Type} [CommRing A] (h : ∀ n : ℕ, IsUnit (n.factorial : A))
     (J : Ideal A) {n : ℕ} {x : A} (hx : x ∈ J) :
     (ofFactorialUnits h J).dpow n x = Ring.inverse (n.factorial : A) * x ^ n :=
   OfInvertibleFactorial.dpow_eq_of_mem hx
 
+/- English proof (translation)
+Use `haveI := Fact.mk hl`. Establish `hN : n.factorial ≠ 0` using `Nat.factorial_ne_zero n`. Establish `hfac` using `Nat.ordProj_mul_ordCompl_eq_self n.factorial l`. Establish `hcop` using `Nat.coprime_ordCompl hl hN`. Establish `hv : n.factorial.factorization l < n`.
+
+Rewrite using `[Nat.factorization_def _ hl]`. Conclude with `padicValNat_factorial_lt_of_ne_zero l hn`. Use `set v := n.factorial.factorization l`. Use `set u := n.factorial / l ^ v`. Establish `hu : IsUnit (u : O)`.
+
+Assume the negation of the conclusion as `hnu`. Establish `hum : (u : O) ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).mpr hnu`. Take `⟨a, b, hab⟩` from `(Nat.isCoprime_iff_coprime.mpr hcop).map (Int.castRingHom O)`. Simplify using `only [eq_intCast, Int.cast_natCast] at hab`. Establish `h1 : (1 : O) ∈ IsLocalRing.maximalIdeal O`.
+
+Rewrite using `[← hab]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hlm) (Ideal.mul_mem_left _ _ hum)`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).mpr h1)`. Take `⟨w, hw⟩` from `hu`. Use `⟨(↑w⁻¹ : O) * (l : O) ^ (n - 1 - v), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hfac]`. Use `push_cast`. Establish `e : (l : O) ^ v * (u : O) * ((↑w⁻¹ : O) * (l : O) ^ (n - 1 - v)) = (l : O) ^ v * (l : O) ^ (n - 1 - v) * ((u : O) * ↑w⁻¹)` using `by ring`. Rewrite using `[e, ← hw, Units.mul_inv, mul_one, ← pow_add, Nat.add_sub_cancel' (by omega)]`.
+-/
 theorem exists_factorial_mul_eq (l : ℕ) (hl : l.Prime) {O : Type} [CommRing O] [IsLocalRing O]
     (hlm : (l : O) ∈ IsLocalRing.maximalIdeal O) (n : ℕ) (hn : n ≠ 0) :
     ∃ q : O, (n.factorial : O) * q = (l : O) ^ (n - 1) := by
@@ -60,6 +74,19 @@ theorem exists_factorial_mul_eq (l : ℕ) (hl : l.Prime) {O : Type} [CommRing O]
       = (l : O) ^ v * (l : O) ^ (n - 1 - v) * ((u : O) * ↑w⁻¹) := by ring
   rw [e, ← hw, Units.mul_inv, mul_one, ← pow_add, Nat.add_sub_cancel' (by omega)]
 
+/- English proof (translation)
+Introduce `l hl O _ _ _ _ hlm R _ _ htf`. Set `S` to `natPosSubmonoid R`. Establish `hS : S ≤ nonZeroDivisors R`. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Conclude with `mem_nonZeroDivisors_iff_left.mpr fun x hx => htf k x hk hx`.
+
+Establish `hinj : Function.Injective (algebraMap R (Localization S))` using `IsLocalization.injective (Localization S) hS`. Establish `hunit : ∀ n : ℕ, IsUnit (n.factorial : Localization S)` using `fun n => by`. Use `IsLocalization.map_units (Localization S) (⟨(n.factorial : R), n.factorial, Nat.factorial_ne_zero n, rfl⟩ : S)` as an intermediate fact. Simplify using `using this`. Use `⟨DividedPowers.ofInjective (Ideal.span {(l : R)}) (Ideal.span {(l : Localization S)}) (algebraMap R (Localization S)) hinj (ofFactorialUnits hunit _) ?_ ?_, fun m y hy => DividedPowers.factorial_mul_dpow_eq_pow _ hy⟩` and prove the remaining obligations.
+
+Rewrite using `[Ideal.map_span, Set.image_singleton, map_natCast]`. Introduce `n x hx`. Take `⟨z, rfl⟩` from `Ideal.mem_span_singleton'.mp hx`. Establish `hmem : algebraMap R (Localization S) (z * l) ∈ Ideal.span {(l : Localization S)}`. Rewrite using `[map_mul, map_natCast]`.
+
+Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`. Rewrite using `[ofFactorialUnits_dpow hunit _ hmem]`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `⟨1, fun h => absurd rfl h, by simp⟩`. Take `⟨q, hq⟩` from `exists_factorial_mul_eq l hl hlm n hn.ne'`.
+
+Use `⟨algebraMap O R q * z ^ n * l, fun _ => Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_comm, Ring.inverse_mul_eq_iff_eq_mul _ _ _ (hunit n)]`. Establish `hq' : (n.factorial : R) * algebraMap O R q = (l : R) ^ (n - 1)`. Use `congrArg (algebraMap O R) hq` as an intermediate fact. Simplify using `using this`.
+
+Establish `key : (n.factorial : R) * (algebraMap O R q * z ^ n * l) = (z * l) ^ n`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hq', ← pow_succ, Nat.sub_add_cancel hn, mul_pow, mul_comm]`. Use `congrArg (algebraMap R (Localization S)) key` as an intermediate fact. Simplify using `using this.symm`.
+-/
 theorem exists_dividedPowers :
     ∀ (l : ℕ), l.Prime → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [CharZero O], (l : O) ∈ IsLocalRing.maximalIdeal O → ∀ (R : Type) [CommRing R] [Algebra O R],

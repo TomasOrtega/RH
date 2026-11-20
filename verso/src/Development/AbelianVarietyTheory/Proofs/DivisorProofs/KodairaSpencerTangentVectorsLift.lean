@@ -14,6 +14,15 @@ noncomputable section
 
 namespace GlobalTheory.FlagTan
 
+/- English proof (translation)
+Introduce `s _`. Set `q : PrimeSpectrum L` to `⟨⊥, Ideal.isPrime_bot⟩`. Establish `hp : (spMap φ) q = s`. Use `PrimeSpectrum.ext (Ideal.ext fun a => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ a ∈ (⊥ : Ideal L) ↔ a ∈ s.asIdeal`.
+
+Rewrite using `[Ideal.mem_bot, hφ]`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Use `s.2.mem_of_pow_mem 2 ?_` and prove the remaining obligations. Rewrite using `[show a ^ 2 = 0 by`.
+
+Rewrite using `[pow_two, show a = TrivSqZeroExt.inr a.snd from TrivSqZeroExt.ext ha rfl, TrivSqZeroExt.inr_mul_inr]]`. Conclude with `s.asIdeal.zero_mem`. Introduce `ha`. Assume the negation of the conclusion as `h0`. Conclude with `s.2.ne_top (s.asIdeal.eq_top_of_isUnit_mem ha (TrivSqZeroExt.isUnit_iff_isUnit_fst.2 (Ne.isUnit h0)))`.
+
+Establish `h₁ : (spMap φ ≫ x) q ∈ V` using `h (Set.mem_univ _)`. Conclude with `hp ▸ h₁`.
+-/
 theorem le_preimage_of_trivSqZeroExt {L M : Type} [Field L] [AddCommGroup M] [Module L M] [Module Lᵐᵒᵖ M]
     [IsCentralScalar L M] {T : Scheme.{0}} (φ : TrivSqZeroExt L M →+* L) (hφ : ∀ a, φ a = a.fst)
     (x : Sp (TrivSqZeroExt L M) ⟶ T) (V : T.Opens) (h : ⊤ ≤ (spMap φ ≫ x) ⁻¹ᵁ V) : ⊤ ≤ x ⁻¹ᵁ V := by
@@ -35,6 +44,21 @@ theorem le_preimage_of_trivSqZeroExt {L M : Type} [Field L] [AddCommGroup M] [Mo
   have h₁ : (spMap φ ≫ x) q ∈ V := h (Set.mem_univ _)
   exact hp ▸ h₁
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c K _ _ y hy ι _ x hx Mx hM x' hx' m h`. Take `⟨X, -, hXy, hX⟩` from `hy`. Establish `ex : ∀ a, x a = spMap (dir c (Mx a)).toRingHom ≫ X` using `fun a => ((hX _ (hx a)).2 _).1 (hM a)`. Use `((hX x' hx').2 _).2 ?_` and prove the remaining obligations. Take `⟨U, hU, hpU, -⟩` from `Opens.isBasis_iff_nbhd.1 Xo.X.isBasis_affineOpens (Opens.mem_top (y.x (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum K)))`.
+
+Establish `hyU : ⊤ ≤ y.x ⁻¹ᵁ U` using `fun s _ => by`. Establish `: s = (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum K)` using `Subsingleton.elim _ _`. Substitute `this` using the available equality. Conclude with `hpU`. Establish `hXU : ⊤ ≤ X ⁻¹ᵁ U` using `le_preimage_of_trivSqZeroExt (TrivSqZeroExt.fstHom c.F K (HIx Dw (psiSet H) → K)).toRingHom (fun _ => rfl) X U (by rw [hXy]; exact hyU)`.
+
+Establish `htan : ∀ z : Sp (DualNumber K) ⟶ Xo.X, IsTanX y z → ⊤ ≤ z ⁻¹ᵁ U` using `fun z hz => le_preimage_of_trivSqZeroExt (red c K).toRingHom (fun _ => rfl) z U (by rw [hz.2]; exact hyU)`. Establish `hev : ∀ (N : HIx Dw (psiSet H) → K) (z : Sp (DualNumber K) ⟶ Xo.X) (hz : z = spMap (dir c N).toRingHom ≫ X) (hzU : ⊤ ≤ z ⁻¹ᵁ U) (f : Γ(Xo.X, U)), evalPt z U hzU f = dir c N (evalPt X U hXU f)`. Introduce `N z hz hzU f`. Substitute `hz` using the available equality. Conclude with `evalPt_spMap_comp _ X U hXU hzU f`.
+
+Establish `hx'U` using `htan x' hx'`. Establish `hcU : ∀ a, ⊤ ≤ x a ⁻¹ᵁ U` using `fun a => htan _ (hx a)`. Use `set M'' : HIx Dw (psiSet H) → K := ∑ a, m a • Mx a`. Establish `hzU : ⊤ ≤ (spMap (dir c M'').toRingHom ≫ X) ⁻¹ᵁ U`. Introduce `s hs`.
+
+Conclude with `hXU (Set.mem_univ _)`. Use `ext_evalPt hU hx'U hzU (RingHom.ext fun f => ?_)` and prove the remaining obligations. Rewrite using `[hev M'' _ rfl hzU f]`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Establish `e1` using `evalPt_spMap_comp (red c K).toRingHom x' U hx'U (by rw [hx'.2]; exact hyU) f`.
+
+Establish `e2` using `evalPt_spMap_comp (TrivSqZeroExt.fstHom c.F K (HIx Dw (psiSet H) → K)).toRingHom X U hXU (by rw [hXy]; exact hyU) f`. Simplify using `only [hx'.2, hXy] at e1 e2`. Rewrite using `[fst_dir]`. Conclude with `e1.symm.trans e2`. Rewrite using `[h U f hx'U hcU, snd_dir]`.
+
+Simplify using `only [fun a => hev (Mx a) (x a) (ex a) (hcU a) f, snd_dir, M'', Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun k _ => by ring` and prove the remaining obligations.
+-/
 theorem IsKS.sum_of_der : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {K : Type} [Field K] [Algebra c.F K] {y : FrPt Xo c K} (hy : KSIso (psiSet H) y)
     {ι : Type} [Fintype ι] {x : ι → (Sp (DualNumber K) ⟶ Xo.X)} (hx : ∀ a, GlobalTheory.FlagTan.IsTanX y (x a))
     {Mx : ι → HIx Dw (psiSet H) → K} (hM : ∀ a, GlobalTheory.FlagTan.IsKS (psiSet H) y (x a) (Mx a))

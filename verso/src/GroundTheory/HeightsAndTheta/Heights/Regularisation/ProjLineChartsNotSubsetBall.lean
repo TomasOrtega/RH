@@ -14,6 +14,9 @@ local notation "RegChartDataA" => GroundTheory.Heights₂.Heights.Regular.RegCha
 
 noncomputable section
 
+/- English proof (translation)
+Establish `h : coordDiv S = ⋃ i ∈ S, (fun z : Fin D → ℂ => z i) ⁻¹' {0}`. Use extensionality with `z`. Simplify using `[coordDiv]`. Rewrite using `[h]`. Conclude with `isClosed_biUnion_finset fun i _ => isClosed_singleton.preimage (continuous_apply i)`.
+-/
 theorem isClosed_coordDiv {D : ℕ} (S : Finset (Fin D)) : IsClosed (coordDiv S) := by
   have h : coordDiv S = ⋃ i ∈ S, (fun z : Fin D → ℂ => z i) ⁻¹' {0} := by
     ext z
@@ -23,6 +26,9 @@ theorem isClosed_coordDiv {D : ℕ} (S : Finset (Fin D)) : IsClosed (coordDiv S)
 
 variable {D : ℕ} {X : Type*} [TopologicalSpace X] {A : FinHolAtlas D X}
 
+/- English proof (translation)
+Use `isOpen_iff_forall_mem_open.2 fun x hx => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `R.cover x`. Establish `hs : x ∈ (R.chart j).source` using `R.mid_subset_source j (R.inner_subset_mid j hj)`. Conclude with `⟨(R.chart j).source ∩ R.chart j ⁻¹' (coordDiv (R.S j))ᶜ, fun y hy => (R.mem_Yo j y hy.1).2 hy.2, (R.chart j).isOpen_inter_preimage (isClosed_coordDiv _).isOpen_compl, hs, (R.mem_Yo j x hs).1 hx⟩`.
+-/
 theorem isOpen_Yo_regular (R : RegChartDataA A) : IsOpen R.Yo := by
   refine isOpen_iff_forall_mem_open.2 fun x hx => ?_
   obtain ⟨j, hj⟩ := R.cover x
@@ -138,15 +144,32 @@ def toBoundedPsh [T2Space X] {R : RegCharts A} (P : BoundedThPsh R) (hW : ∀ j,
     rw [← R.restrChart_target j] at h
     exact h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofBoundedPsh_φ [CompactSpace X] (P : BoundedPshData A) (om : LocPot X)
     (om_pot : IsPotential A om) (om_pos : IsPosPot A om) :
     (ofBoundedPsh P om om_pot om_pos).φ = P.ph := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toBoundedPsh_ph [T2Space X] {R : RegCharts A} (P : BoundedThPsh R)
     (hW : ∀ j, R.W j ⊆ ball 0 1) : (P.toBoundedPsh hW).ph = P.φ := rfl
 
 end BoundedThPsh
 
+/- English proof (translation)
+Unfold `GroundTheory.Heights₂.Heights.Regular.RegChartData.smoothed molli`. Establish `hae : ∀ᵐ w : Fin D → ℂ, ∀ i ∈ R.S j, w i ≠ z i`. Rewrite using `[Filter.eventually_all_finset]`. Introduce `i _`. Rewrite using `[ae_iff]`.
+
+Simplify using `only [ne_eq, not_not]`. Conclude with `Measure.pi_eval_preimage_null (fun _ : Fin D => (volume : Measure ℂ)) (measure_singleton (z i))`. Use `integral_congr_ae (hae.mono fun w hw => ?_)` and prove the remaining obligations. Distinguish the cases in `hρ : ρ.scaled t w = 0`. Simplify using `[hρ]`.
+
+Establish `hw1 : ‖w‖ < t`. Establish `hs : t⁻¹ • w ∈ ball (0 : Fin D → ℂ) 1` using `ρ.support_subset fun h0 => hρ (by simp [Mollifier.scaled, h0])`. Rewrite `hs` using `[mem_ball_zero_iff, norm_smul, Real.norm_eq_abs, abs_inv, abs_of_pos ht]`. Rewrite `hs` using `[inv_mul_lt_iff₀ ht, mul_one]`. Then use the resulting hypothesis. Establish `hb : z - w ∈ ball z t`.
+
+Rewrite using `[mem_ball, dist_eq_norm, sub_sub_cancel_left, norm_neg]`. Conclude with `hw1`. Establish `hd : z - w ∉ coordDiv (R.S j)`. Introduce and unpack `⟨i, hi, h0⟩`. Conclude with `hw i hi (by rw [Pi.sub_apply, sub_eq_zero] at h0; exact h0.symm)`.
+
+Simplify using `only [GroundTheory.Heights₂.Heights.Regular.RegChartData.trunc, limsupExt, if_neg hd]`. Rewrite using `[max_eq_left (hK _ hb hd)]`.
+-/
 theorem smoothed_eq_molli (R : RegChartDataA A) (ρ : Mollifier D) (K t : ℝ) (j : Fin R.N)
     (z : Fin D → ℂ) (ht : 0 < t) (hK : ∀ y ∈ ball z t, y ∉ coordDiv (R.S j) → -K ≤ R.u j y) :
     R.smoothed ρ K t j z = molli ρ t (R.u j) z := by
@@ -174,6 +197,9 @@ theorem smoothed_eq_molli (R : RegChartDataA A) (ρ : Mollifier D) (K t : ℝ) (
   simp only [GroundTheory.Heights₂.Heights.Regular.RegChartData.trunc, limsupExt, if_neg hd]
   rw [max_eq_left (hK _ hb hd)]
 
+/- English proof (translation)
+Unfold `GroundTheory.Heights₂.Heights.Regular.RegChartData.phReg`. Rewrite using `[smoothed_eq_molli R ρ K t j _ ht hK]`. Both sides reduce to the same expression.
+-/
 theorem phReg_eq_phChart [CompactSpace X] (R : RegChartDataA A) (om : LocPot X)
     (om_pot : IsPotential A om) (om_pos : IsPosPot A om) (ρ : Mollifier D) (K t : ℝ) (j : Fin R.N)
     (x : X) (ht : 0 < t)
@@ -183,6 +209,9 @@ theorem phReg_eq_phChart [CompactSpace X] (R : RegChartDataA A) (om : LocPot X)
   rw [smoothed_eq_molli R ρ K t j _ ht hK]
   rfl
 
+/- English proof (translation)
+Unfold `GroundTheory.Heights₂.Heights.Regular.RegChartData.phReg`. Conclude with `congrArg (fun s => s - R.q j (R.ψ j x)) (smoothed_eq_molli (R.toRegular hW hf) ρ K t j (R.ψ j x) ht hK)`.
+-/
 theorem phChart_eq_phReg [T2Space X] (R : RegChartData A) (hW : ∀ j, R.W j ⊆ ball 0 1)
     (hf : ∀ j, ContDiffOn ℝ ∞ (R.f j) (R.W j)) (ρ : Mollifier D) (K t : ℝ) (j : Fin R.n) (x : X)
     (ht : 0 < t) (hK : ∀ y ∈ ball (R.ψ j x) t, y ∉ coordDiv (R.S j) → -K ≤ R.u R.φ j y) :
@@ -190,6 +219,13 @@ theorem phChart_eq_phReg [T2Space X] (R : RegChartData A) (hW : ∀ j, R.W j ⊆
   unfold GroundTheory.Heights₂.Heights.Regular.RegChartData.phReg
   exact congrArg (fun s => s - R.q j (R.ψ j x)) (smoothed_eq_molli (R.toRegular hW hf) ρ K t j (R.ψ j x) ht hK)
 
+/- English proof (translation)
+Use `set R' := RegChartData.ofRegular R om om_pot om_pos`. Establish `hV : ∀ j, R'.toRegCharts.V' j = R.mid j` using `RegCharts.ofPotentialCharts_V' R.toPotentialCharts om om_pot om_pos`. Take `⟨hc1, hc2⟩` from `(R'.cover x).choose_spec`. Establish `hc : x ∈ R.mid (R'.cover x).choose`. Rewrite using `[← hV]`.
+
+Conclude with `⟨hc1, subset_closure.trans (R'.closure_W''_subset _) hc2⟩`. Rewrite using `[GroundTheory.Heights₂.Heights.Regular.RegChartData.regularised, PotentialCharts.glue_eq_pad _ _ hε x hc]`. Unfold `RegCharts.glued RegCharts.regArg`. Use `congr 2`. Use function extensionality and compare the values at `j`.
+
+Use `split_ifs with h1 h2 h2`. Rewrite using `[hmol j h1]`. Conclude with `absurd ((hV j).symm ▸ h1) h2`. Conclude with `absurd ((hV j) ▸ h2) h1`. Rewrite using `[hmol _ hc]`.
+-/
 theorem regularised_eq_glued [CompactSpace X] (R : RegChartDataA A) (om : LocPot X)
     (om_pot : IsPotential A om) (om_pos : IsPosPot A om) (ρ : Mollifier D) (K : ℝ)
     (η : Fin R.N → X → ℝ) (C t : ℝ) (x : X) (hε : 0 ≤ errorWithLinear C t)
@@ -214,6 +250,13 @@ theorem regularised_eq_glued [CompactSpace X] (R : RegChartDataA A) (om : LocPot
   · exact absurd ((hV j) ▸ h2) h1
   · rw [hmol _ hc]
 
+/- English proof (translation)
+Take `⟨hc1, hc2⟩` from `(R.cover x).choose_spec`. Establish `hc : x ∈ (R.toRegular hW hf).mid (R.cover x).choose` using `⟨hc1, subset_closure.trans (R.closure_W''_subset _) hc2⟩`. Unfold `GroundTheory.Heights₂.Heights.Regular.RegChartData.regularised`. Rewrite using `[PotentialCharts.glue_eq_pad _ _ hε x hc]`. Unfold `RegCharts.glued RegCharts.regArg`.
+
+Use `congr 2`. Use function extensionality and compare the values at `j`. Use `split_ifs with h1 h2 h2`. Rewrite using `[hmol j h1]`. Conclude with `absurd h1 h2`.
+
+Conclude with `absurd h2 h1`. Rewrite using `[hmol _ hc]`.
+-/
 theorem glued_eq_regularised [T2Space X] (R : RegChartData A) (hW : ∀ j, R.W j ⊆ ball 0 1)
     (hf : ∀ j, ContDiffOn ℝ ∞ (R.f j) (R.W j)) (ρ : Mollifier D) (K : ℝ) (η : Fin R.n → X → ℝ)
     (C t : ℝ) (x : X) (hε : 0 ≤ errorWithLinear C t)
@@ -233,6 +276,11 @@ theorem glued_eq_regularised [T2Space X] (R : RegChartData A) (hW : ∀ j, R.W j
   · exact absurd h2 h1
   · rw [hmol _ hc]
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : (fun _ : Fin 1 => (1 : ℂ)) ∈ projLineCharts.W 0` using `by show _ ∈ ball (0 : Fin 1 → ℂ) 2`. Rewrite using `[mem_ball_zero_iff, pi_norm_const]`. Evaluate the numerical expressions. Establish `h2` using `h 0 h1`.
+
+Rewrite `h2` using `[mem_ball_zero_iff, pi_norm_const]`. Evaluate the numerical expressions using `at h2`.
+-/
 theorem projLineCharts_not_subset_ball : ¬ ∀ j, projLineCharts.W j ⊆ ball 0 1 := by
   intro h
   have h1 : (fun _ : Fin 1 => (1 : ℂ)) ∈ projLineCharts.W 0 := by
@@ -243,6 +291,11 @@ theorem projLineCharts_not_subset_ball : ¬ ∀ j, projLineCharts.W j ⊆ ball 0
   rw [mem_ball_zero_iff, pi_norm_const] at h2
   norm_num at h2
 
+/- English proof (translation)
+Establish `h : ∀ w : Fin 0 → ℂ, ρ.scaled t w * f (z - w) = ρ.toFun w * f z`. Introduce `w`. Rewrite using `[Subsingleton.elim (z - w) z]`. Simplify using `only [Mollifier.scaled, mul_zero, pow_zero, inv_one, one_mul]`. Rewrite using `[Subsingleton.elim (t⁻¹ • w) w]`.
+
+Unfold `molli`. Repeatedly rewrite using `[h]`. Rewrite using `[integral_mul_const, ρ.integral_eq_one, one_mul]`.
+-/
 theorem molli_fin_zero (ρ : Mollifier 0) (t : ℝ) (f : (Fin 0 → ℂ) → ℝ) (z : Fin 0 → ℂ) :
     molli ρ t f z = f z := by
   have h : ∀ w : Fin 0 → ℂ, ρ.scaled t w * f (z - w) = ρ.toFun w * f z := by
@@ -256,12 +309,21 @@ theorem molli_fin_zero (ρ : Mollifier 0) (t : ℝ) (f : (Fin 0 → ℂ) → ℝ
 
 def pointOm : LocPot Unit := LocPot.ofFun fun _ => 0
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.AnForm.M.isPotential_ofFun _ _ fun _ => contDiffOn_const`.
+-/
 theorem pointOm_pot : IsPotential pointAtlas pointOm :=
   ReciprocityTheory.AnForm.M.isPotential_ofFun _ _ fun _ => contDiffOn_const
 
+/- English proof (translation)
+Introduce `_ _ _ _ w hw` and use `absurd (Subsingleton.elim w 0) hw`.
+-/
 theorem pointOm_pos : IsPosPot pointAtlas pointOm :=
   fun _ _ _ _ w hw => absurd (Subsingleton.elim w 0) hw
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Simplify using `[GroundTheory.Heights₂.Heights.Regular.RegChartData.phReg, GroundTheory.Heights₂.Heights.Regular.RegChartData.smoothed, molli_fin_zero, GroundTheory.Heights₂.Heights.Regular.RegChartData.trunc, limsupExt, coordDiv, GroundTheory.Heights₂.Heights.Regular.RegChartData.u, PotentialCh …`. Simplify using `[RegCharts.phChart, molli_fin_zero, RegCharts.u, RegChartData.ofRegular, RegCharts.ofPotentialCharts, pointReg, pointCharts]`.
+-/
 theorem phReg_ne_phChart_point (ρ : Mollifier 0) (t : ℝ) :
     pointReg.phReg ρ (-1) t (0 : Fin 1) () = 1 ∧
       (RegChartData.ofRegular pointReg pointOm pointOm_pot pointOm_pos).phChart pointReg.ph ρ t (0 : Fin 1) () = 0 := by

@@ -6,6 +6,13 @@ namespace GlobalTheory.NatMulIntegerMultiple
 
 open NumberField
 
+/- English proof (translation)
+Establish `halg : IsAlgebraic ℤ k` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ K).mpr (Algebra.IsAlgebraic.isAlgebraic k)`. Take `⟨y, hy, hint⟩` from `halg.exists_integral_multiple`. Take `⟨n, rfl | rfl⟩` from `Int.eq_nat_or_neg y`. Use `⟨n, by rintro rfl; exact hy rfl, ⟨(n : K) * k, ?_⟩, rfl⟩` and prove the remaining obligations. Establish `: (n : K) * k = (n : ℤ) • k` using `by rw [zsmul_eq_mul]; push_cast; rfl`.
+
+Rewrite using `[this]`. Conclude with `hint`. Use `⟨n, by rintro rfl; exact hy rfl, ⟨(n : K) * k, ?_⟩, rfl⟩` and prove the remaining obligations. Establish `: (n : K) * k = -((-(n : ℤ)) • k)` using `by rw [zsmul_eq_mul]; push_cast; ring`. Rewrite using `[this]`.
+
+Conclude with `hint.neg`.
+-/
 theorem exists_nat_mul_eq_integer {K : Type*} [Field K] [NumberField K] (k : K) :
     ∃ n : ℕ, n ≠ 0 ∧ ∃ a : 𝓞 K, (n : K) * k = algebraMap (𝓞 K) K a := by
   have halg : IsAlgebraic ℤ k :=
@@ -19,6 +26,19 @@ theorem exists_nat_mul_eq_integer {K : Type*} [Field K] [NumberField K] (k : K) 
     have : (n : K) * k = -((-(n : ℤ)) • k) := by rw [zsmul_eq_mul]; push_cast; ring
     rw [this]; exact hint.neg
 
+/- English proof (translation)
+Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h => exact ⟨1, one_ne_zero, by simpa using h⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨m, hm, hmx⟩` from `hx`. Take `⟨n, hn, hny⟩` from `hy`. Use `⟨m * n, mul_ne_zero hm hn, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Establish `e1 : (m * n) • x = n • (m • x)` using `by rw [mul_nsmul]`.
+
+Establish `e2 : (m * n) • y = m • (n • y)` using `by rw [mul_comm, mul_nsmul]`. Rewrite using `[e1, e2]`. Conclude with `L.add_mem (L.nsmul_mem hmx n) (L.nsmul_mem hny m)`. Consider the case `smul c x _ hx`. Take `⟨n, hn, hnx⟩` from `hx`.
+
+Take `⟨m, hm, a, ha⟩` from `exists_nat_mul_eq_integer c`. Use `⟨m * n, mul_ne_zero hm hn, ?_⟩` and prove the remaining obligations. Establish `: (m * n) • (c • x) = a • (n • x)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Nat.cast_smul_eq_nsmul K (m * n), ← Nat.cast_smul_eq_nsmul K n, smul_smul, smul_smul]`.
+
+Use `push_cast`. Put the polynomial expressions in normal form. Use `_ = algebraMap (𝓞 K) K a • (n • x) := by rw [ha]`. Use `_ = a • (n • x) := algebraMap_smul K a (n • x)`. Rewrite using `[this]`.
+
+Conclude with `L.smul_mem a hnx`.
+-/
 theorem exists_nsmul_mem {K : Type*} {V : Type*} [Field K] [NumberField K] [AddCommGroup V]
     [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (L : Submodule (𝓞 K) V) :
     ∀ x ∈ Submodule.span K (L : Set V), ∃ n : ℕ, n ≠ 0 ∧ n • x ∈ L := by
@@ -47,6 +67,9 @@ theorem exists_nsmul_mem {K : Type*} {V : Type*} [Field K] [NumberField K] [AddC
         _ = a • (n • x) := algebraMap_smul K a (n • x)
     rw [this]; exact L.smul_mem a hnx
 
+/- English proof (translation)
+Introduce `L` and use `exists_nsmul_mem L`.
+-/
 theorem main : ∀ {K : Type u_1} {V : Type u_2} [inst : Field K] [NumberField K] [inst_2 : AddCommGroup V]
     [inst_3 : Module K V] [inst_4 : Module (NumberField.RingOfIntegers K) V]
     [IsScalarTower (NumberField.RingOfIntegers K) K V] (L : Submodule (NumberField.RingOfIntegers K) V),

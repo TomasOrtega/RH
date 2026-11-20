@@ -6,6 +6,9 @@ open GlobalTheory.QFam GlobalTheory.WpFam
 
 namespace GlobalTheory.WpFam
 
+/- English proof (translation)
+Establish `h` using `summable_prod_mul_pow (𝕜 := ℝ) e (r := ‖Q‖) (by simpa using hQ)`. Use `Summable.of_norm_bounded h fun x => ?_` and prove the remaining obligations. Simplify using `only [norm_mul, norm_pow, Complex.norm_natCast]`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem summable_lambert_prod (e : ℕ) (Q : ℂ) (c : ℕ → ℕ → ℂ) (hQ : ‖Q‖ < 1)
     (hc : ∀ d m, ‖c d m‖ ≤ 1) :
     Summable fun x : ℕ+ × ℕ+ =>
@@ -18,6 +21,15 @@ theorem summable_lambert_prod (e : ℕ) (Q : ℂ) (c : ℕ → ℕ → ℂ) (hQ 
         gcongr; exact hc _ _
     _ = _ := mul_one _
 
+/- English proof (translation)
+Introduce `e Q c hQ hc`. Establish `hs` using `summable_lambert_prod e Q c hQ hc`. Rewrite using `[← hs.tsum_prod]`. Establish `h1` using `sigmaAntidiagonalEquivProd.hasSum_iff.mpr hs.hasSum`. Establish `h2` using `h1.sigma (fun n => hasSum_fintype _)`.
+
+Use `(Function.Injective.hasSum_iff (g := PNat.val) PNat.coe_injective ?_).mp ?_` and prove the remaining obligations. Introduce `k hk`. Establish `: k = 0`. Assume the negation of the conclusion as `h`. Conclude with `hk ⟨⟨k, Nat.pos_of_ne_zero h⟩, rfl⟩`.
+
+Simplify using `[this]`. Use `HasSum.congr_fun h2 fun n => ?_` and prove the remaining obligations. Use `symm`. Establish `h3 : ∀ x : Nat.divisorsAntidiagonal (n : ℕ), ((fun x : ℕ+ × ℕ+ => ((x.2 : ℕ) : ℂ) ^ e * c x.1 x.2 * Q ^ ((x.1 : ℕ) * (x.2 : ℕ))) ∘ sigmaAntidiagonalEquivProd) ⟨n, x⟩ = (fun y : ℕ × ℕ => (y.2 : ℂ) ^ e * c y.1 y.2 * Q ^ (y.1 * y.2)) x.1` using `fun x => rfl`. Rewrite using `[Finset.sum_congr rfl (fun x _ => h3 x), Finset.sum_coe_sort (Nat.divisorsAntidiagonal (n : ℕ)) (fun y : ℕ × ℕ => (y.2 : ℂ) ^ e * c y.1 y.2 * Q ^ (y.1 * y.2)), Nat.sum_divisorsAntidiagonal' (fun a b : ℕ => (b : ℂ) ^ e * c a b * Q ^ (a * b))]`.
+
+Simplify using `only [Function.comp_apply, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun m hm => by`. Rewrite using `[Nat.div_mul_cancel (Nat.dvd_of_mem_divisors hm)]`.
+-/
 theorem hasSum_lambert : ∀ (e : ℕ) (Q : ℂ) (c : ℕ → ℕ → ℂ), ‖Q‖ < 1 → (∀ d m, ‖c d m‖ ≤ 1) → HasSum (fun k : ℕ => (∑ m ∈ k.divisors, (m : ℂ) ^ e * c (k / m) m) * Q ^ k) (∑' d : ℕ+, ∑' m : ℕ+, ((m : ℕ) : ℂ) ^ e * c d m * Q ^ ((d : ℕ) * (m : ℕ))) := by
   intro e Q c hQ hc
   have hs := summable_lambert_prod e Q c hQ hc

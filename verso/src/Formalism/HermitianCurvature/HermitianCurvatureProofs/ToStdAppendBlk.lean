@@ -9,6 +9,9 @@ noncomputable section
 
 open Classical
 
+/- English proof (translation)
+The claim follows from `| [], b => by simp [D.toStd, D.ptSize] | (s', t) :: rest, b => by have ih := toStd_append_blk r g s c rest (b + s') simp only [List.cons_append, D.toStd, ih, D.ptSize, List.map_cons, List.sum_cons, add_assoc]`.
+-/
 theorem toStd_append_blk (r : ℕ) (g : ℝ) (s : ℕ) (c : ℂ) : ∀ (h : C.LPt) (b : ℕ),
     D.toStd r g b (h ++ [(s, c)]) = D.toStd r g b h ++
       [(s, (((g / (2 * Real.pi)) ^ S6.nuBlock r ((b + D.ptSize h : ℕ) : ℤ) (s : ℤ) : ℝ) : ℂ) *
@@ -18,12 +21,22 @@ theorem toStd_append_blk (r : ℕ) (g : ℝ) (s : ℕ) (c : ℂ) : ∀ (h : C.LP
     have ih := toStd_append_blk r g s c rest (b + s')
     simp only [List.cons_append, D.toStd, ih, D.ptSize, List.map_cons, List.sum_cons, add_assoc]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem slv_congr {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] (T : D.LevTower k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (i : ℕ) (hi : i ≤ r)
     (w : List C.Letter) {P P' : C.LPt} (e : P = P') (hP : D.ptSize P = i) (hP' : D.ptSize P' = i) :
     KB.slv T F i hi w P hP = KB.slv T F i hi w P' hP' := by
   subst e; rfl
 
+/- English proof (translation)
+Establish `hinj : Set.InjOn (fun h : C.LPt => h ++ [blk]) Y` using `fun x _ y _ hxy => List.append_cancel_right hxy`. Rewrite `hk`, the goal using `[PBA.psd_iff_qf]`. Take `⟨hh, hq⟩` from `hk`. Use `⟨fun x hx y hy => hh _ (Finset.mem_image_of_mem _ hx) _ (Finset.mem_image_of_mem _ hy), fun c => ?_⟩` and prove the remaining obligations. Establish `e : PBA.qf Y (fun p q => k (p ++ [blk]) (q ++ [blk])) c = PBA.qf (Y.image fun h => h ++ [blk]) k (fun z => c z.dropLast)`.
+
+Unfold `PBA.qf`. Rewrite using `[Finset.sum_image hinj]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_image hinj]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `hq _`.
+-/
 theorem psd_shift {Y : Finset C.LPt} {k : C.LPt → C.LPt → ℂ} (blk : ℕ × ℂ)
     (hk : TB.PSDOn (Y.image fun h => h ++ [blk]) k) : TB.PSDOn Y fun p q => k (p ++ [blk]) (q ++ [blk]) := by
   have hinj : Set.InjOn (fun h : C.LPt => h ++ [blk]) Y := fun x _ y _ hxy => List.append_cancel_right hxy
@@ -49,17 +62,26 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
 def lamB (S : C.HidaSetting E Wp Wq) (b s : ℕ) : ℂ :=
   ((((S.g : ℝ) / (2 * Real.pi)) ^ S6.nuBlock S.G.r (b : ℤ) (s : ℤ) : ℝ) : ℂ) * Complex.I ^ (s - 1)
 
+/- English proof (translation)
+Unfold `stdS lamB`. Rewrite using `[toStd_append_blk, hH, show 1 + (b - 1) = b by omega]`.
+-/
 theorem stdS_blk (S : C.HidaSetting E Wp Wq) (b s : ℕ) (hb : 1 ≤ b) (H : C.LPt) (hH : D.ptSize H = b - 1) (t : ℂ) :
     stdS S (H ++ [(s, t)]) = stdS S H ++ [(s, lamB S b s * t)] := by
   unfold stdS lamB
   rw [toStd_append_blk, hH, show 1 + (b - 1) = b by omega]
 
+/- English proof (translation)
+Unfold `lamB`. Rewrite using `[norm_mul, norm_pow, Complex.norm_I, one_pow, mul_one, Complex.norm_real, Real.norm_of_nonneg]`. Conclude with `zpow_nonneg (by positivity) _`.
+-/
 theorem norm_lamB (S : C.HidaSetting E Wp Wq) (hg : (0 : ℝ) < S.g) (b s : ℕ) :
     ‖lamB S b s‖ = ((S.g : ℝ) / (2 * Real.pi)) ^ S6.nuBlock S.G.r (b : ℤ) (s : ℤ) := by
   unfold lamB
   rw [norm_mul, norm_pow, Complex.norm_I, one_pow, mul_one, Complex.norm_real, Real.norm_of_nonneg]
   exact zpow_nonneg (by positivity) _
 
+/- English proof (translation)
+Introduce `h`. Use `norm_lamB S hg b s` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `(zpow_pos (by positivity : (0 : ℝ) < (S.g : ℝ) / (2 * Real.pi)) _).ne this`.
+-/
 theorem lamB_ne (S : C.HidaSetting E Wp Wq) (hg : (0 : ℝ) < S.g) (b s : ℕ) : lamB S b s ≠ 0 := by
   intro h
   have := norm_lamB S hg b s
@@ -76,6 +98,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   {Cb Cc : ℝ} {S : C.HidaSetting E Wp Wq} {p : ∀ v, KB.Pl (D.parOf S v) (Wp (S.pl v)) (Wq (S.pl v))}
   {f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))} {χ : ℝ → ℝ} {A₀ : ℝ}
 
+/- English proof (translation)
+Establish `hgpos` using `g_pos_of_built hB`. Establish `e` using `stdS_blk S b s hb H hH t`. Establish `hX : D.IsLocPt (stdS S H ++ [(s, lamB S b s * t)]) j`. Rewrite using `[← e]`. Conclude with `(PBD.isLocPt_toStd_iff _ _ hgpos _ 1 j).2 hP`.
+
+Use `⟨hX, ?_⟩` and prove the remaining obligations. Rewrite using `[uB_pos S p F v ε j hj w _ hP]`. Use `congr 1`. Conclude with `slv_congr _ _ _ _ _ e _ _`.
+-/
 theorem uB_blk (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀)
     (F : ∀ v : Fin S.f, ℝ → B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) (v : Fin S.f) (ε : ℝ) (j : ℕ)
     (hj : j ≤ S.G.r) (w : List C.Letter) (b s : ℕ) (hb : 1 ≤ b) (H : C.LPt) (hH : D.ptSize H = b - 1) (t : ℂ)
@@ -92,6 +119,23 @@ theorem uB_blk (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀)
   congr 1
   exact slv_congr _ _ _ _ _ e _ _
 
+/- English proof (translation)
+Distinguish the cases in `hloc : D.IsLocPt (H ++ [(s, t)]) j ∧ D.IsLocPt (H' ++ [(s, t')]) j`. Take `⟨hP, hP'⟩` from `hloc`. Take `⟨hX, eX⟩` from `uB_blk hB F v ε j hj a b s hb H hH t hP`. Take `⟨hX', eX'⟩` from `uB_blk hB F v ε j hj a b s hb H' hH' t' hP'`. Establish `hdeg` using `hDL (Wp (S.pl v)) (Wq (S.pl v)) (D.parOf S v) (p v) (F v ε) j s hj a (stdS S H) (stdS S H') (lamB S b s * t) (lamB S b s * t') hX hX' K grid (hF v ε hε) hinj`.
+
+Rewrite `hdeg` using `[rr_eq_form (p v) (F v ε) j hj a _ _ hX hX']`. Use `set Dh : ℂ := (((√(nnS S (H ++ [(s, t)])) / bS S (H ++ [(s, t)]) : ℝ) : ℂ)) with hDh`. Use `set Dh' : ℂ := (((√(nnS S (H' ++ [(s, t')])) / bS S (H' ++ [(s, t')]) : ℝ) : ℂ)) with hDh'`. Take `⟨ε2, hε2, hs, hs'⟩` from `nv_pair (slv_nv (p v) (hF v ε hε) j hj a _ hX) (slv_nv (p v) (hF v ε hε) j hj a _ hX')`. Rewrite using `[eX, eX', form_smul_l (p v) j hj a _ _ _ hs (nv_smul _ hs'), form_smul_r (p v) j hj a _ _ _ hs hs']`.
+
+Establish `hL : ((-1) ^ (s - 1) * ((lamB S b s * t)⁻¹ - (lamB S b s * t')⁻¹)) ^ K * (Dh * (conj Dh' * (p v).form j hj a (KB.slv (p v).T (F v ε) j hj a _ hX.2) (KB.slv (p v).T (F v ε) j hj a _ hX'.2))) = Dh * conj Dh' * (((-1) ^ (s - 1) * ((lamB S b s * t)⁻¹ - (lamB S b s * t')⁻¹)) ^ K * (p …`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hL, hdeg, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Use `set ys := List.ofFn fun c => grid c (n c) with hys`.
+
+Take `⟨hXp, eXp⟩` from `uB_blk hB F v ε j hj (KB.plusW ys a) b s hb H hH t hP`. Take `⟨hXm, eXm⟩` from `uB_blk hB F v ε j hj (KB.minusW ys a) b s hb H' hH' t' hP'`. Take `⟨ε3, hε3, hp, hm⟩` from `nv_pair (slv_nv (p v) (hF v ε hε) j hj (KB.plusW ys a) _ hX) (slv_nv (p v) (hF v ε hε) j hj (KB.minusW ys a) _ hX')`. Rewrite using `[eXp, eXm, pj_smul (p v) j hj a ys _ _ _ _ hp hm]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h0 : ∀ w : List C.Letter, uB S p F v ε j hj w (H ++ [(s, t)]) = 0 ∨ uB S p F v ε j hj w (H' ++ [(s, t')]) = 0`. Introduce `w`. Distinguish the cases in `hh : D.IsLocPt (H ++ [(s, t)]) j`. Conclude with `Or.inr (uB_neg S p F v ε j hj w _ fun hh' => hloc ⟨hh, hh'⟩)`. Conclude with `Or.inl (uB_neg S p F v ε j hj w _ hh)`.
+
+Take `⟨ε1, hε1, hx, hx'⟩` from `nv_pair (uB_nv hB F hF v ε hε j hj a (H ++ [(s, t)])) (uB_nv hB F hF v ε hε j hj a (H' ++ [(s, t')]))`. Establish `lhs0 : (p v).form j hj a (uB S p F v ε j hj a (H ++ [(s, t)])) (uB S p F v ε j hj a (H' ++ [(s, t')])) = 0`. Break down `h0 a with h0 | h0` into its components or cases. Rewrite using `[h0, form_zero_l (p v) j hj a _ hx']`. Rewrite using `[h0, form_zero_r (p v) j hj a _ hx]`.
+
+Rewrite using `[lhs0, mul_zero]`. Use `symm`. Use `Finset.sum_eq_zero fun n _ => ?_` and prove the remaining obligations. Use `set ys := List.ofFn fun c => grid c (n c) with hys`. Take `⟨ε3, hε3, hp, hm⟩` from `nv_pair (uB_nv hB F hF v ε hε j hj (KB.plusW ys a) (H ++ [(s, t)])) (uB_nv hB F hF v ε hε j hj (KB.minusW ys a) (H' ++ [(s, t')]))`.
+
+Distinguish the cases in `hh : D.IsLocPt (H ++ [(s, t)]) j`. Rewrite using `[uB_neg S p F v ε j hj (KB.minusW ys a) _ fun hh' => hloc ⟨hh, hh'⟩, pj_zero_r (p v) j hj a ys _ hp, mul_zero]`. Rewrite using `[uB_neg S p F v ε j hj (KB.plusW ys a) _ hh, pj_zero_l (p v) j hj a ys _ hm, mul_zero]`.
+-/
 theorem deg_uB_lift (hDL : KB.DegLift) (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀)
     (F : ∀ v : Fin S.f, ℝ → B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v)))
     (hF : ∀ v ε, 0 < ε → KB.CptCoef (p v).T.base (F v ε)) (v : Fin S.f) (ε : ℝ) (hε : 0 < ε) (j : ℕ)

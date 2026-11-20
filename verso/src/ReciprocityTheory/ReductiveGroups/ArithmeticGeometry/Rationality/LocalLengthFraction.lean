@@ -13,6 +13,43 @@ instance isFractionRing_Rv : IsFractionRing (Rv K₁ w) K₁ :=
 variable {U : Type} [AddCommGroup U] [Module K₁ U] [FiniteDimensional K₁ U]
   [Module (Rv K₁ w) U] [IsScalarTower (Rv K₁ w) K₁ U]
 
+/- English proof (translation)
+Use `set N : Submodule (Rv K₁ w) Mw := (Submodule.span (Rv K₁ w) (P : Set U) ⊓ Mw).comap Mw.subtype with hN`. Use `set T : Submodule (Rv K₁ w) Mw := ((Submodule.span (Rv K₁ w) (P : Set U) ⊓ Mw) ⊔ Submodule.span (Rv K₁ w) (Set.range e)).comap Mw.subtype with hT`. Establish `hspanP : ∀ x : U, x ∈ Submodule.span (Rv K₁ w) (P : Set U) → x ∈ P` using `fun x hx => (Submodule.span_le (p := P.restrictScalars (Rv K₁ w))).mpr (fun y hy => hy) hx`. Establish `hmemN : ∀ y : Mw, y ∈ N ↔ (y : U) ∈ P`. Introduce `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `hspanP _ (Submodule.mem_inf.mp (Submodule.mem_comap.mp hy)).1`. Introduce `hy`. Conclude with `Submodule.mem_comap.mpr (Submodule.mem_inf.mpr ⟨Submodule.subset_span hy, y.2⟩)`.
+
+Set `cQ : Fin ρ → (Mw ⧸ N) →ₗ[Rv K₁ w] K₁` to `fun i => N.liftQ (((c i).restrictScalars (Rv K₁ w)).comp Mw.subtype) (by`. Introduce `y hy`. Rewrite using `[LinearMap.mem_ker]`. Conclude with `hcP i _ ((hmemN y).mp hy))`. Establish `hc' : ∀ i (q : Mw ⧸ N), cQ i q ≠ 0 → -β ≤ (ordAt w (cQ i q) : ℝ) + s i`.
+
+Introduce `i q hq`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective N q`. Conclude with `hint i y y.2 hq`. Set `e' : Fin ρ → Mw` to `fun j => ⟨e j, he j⟩`. Set `th : Fin ρ → Mw ⧸ N` to `fun j => N.mkQ (e' j)`.
+
+Establish `hdet' : (Matrix.of fun i j => cQ i (th j)).det ≠ 0` using `hdet`. Set `ι : (Mw ⧸ N) →ₗ[Rv K₁ w] (U ⧸ P)` to `N.liftQ ((P.mkQ.restrictScalars (Rv K₁ w)).comp Mw.subtype) (by`. Introduce `y hy`. Rewrite using `[LinearMap.mem_ker]`. Conclude with `(Submodule.Quotient.mk_eq_zero P (x := (y : U))).mpr ((hmemN y).mp hy))`.
+
+Establish `hι : Function.Injective ι`. Use `(injective_iff_map_eq_zero ι).mpr ?_` and prove the remaining obligations. Introduce `q hq`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective N q`. Conclude with `(Submodule.Quotient.mk_eq_zero N (x := y)).mpr ((hmemN y).mpr ((Submodule.Quotient.mk_eq_zero P (x := (y : U))).mp hq))`.
+
+Use `haveI : Module.Finite (Rv K₁ w) Mw := Module.Finite.iff_fg.mpr hMw`. Use `haveI : NoZeroSMulDivisors (Rv K₁ w) (Mw ⧸ N) := by`. Use `⟨fun {r q} hrq => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hr : r = 0`. Conclude with `Or.inl hr`.
+
+Use `right`. Apply `hι` to reduce the goal to its premises. Rewrite using `[map_zero]`. Establish `h1 : r • ι q = 0` using `by rw [← map_smul, hrq, map_zero]`. Establish `hr' : (r • (1 : K₁)) ≠ 0`.
+
+Rewrite using `[Subring.smul_def, smul_eq_mul, mul_one]`. Conclude with `fun h => hr (Subtype.ext h)`. Establish `h2 : (r • (1 : K₁)) • ι q = 0` using `by rw [smul_one_smul]; exact h1`. Conclude with `(smul_eq_zero.mp h2).resolve_left hr'`. Use `haveI : Module.Free (Rv K₁ w) (Mw ⧸ N) := Module.free_of_finite_type_torsion_free'`.
+
+Establish `hthli : LinearIndependent (Rv K₁ w) th`. Apply `LinearIndependent.of_comp (LinearMap.pi fun i => cQ i)` to reduce the goal to its premises. Establish `hK : LinearIndependent K₁ (fun j => Matrix.transpose (Matrix.of fun i j => c i (e j)) j)` using `Matrix.linearIndependent_cols_of_isUnit ((Matrix.isUnit_iff_isUnit_det _).mpr (isUnit_iff_ne_zero.mpr hdet))`. Conclude with `(LinearIndependent.iff_fractionRing (Rv K₁ w) K₁).mpr hK`. Establish `hle1 : ρ ≤ Module.finrank (Rv K₁ w) (Mw ⧸ N)`.
+
+Simplify using `using hthli.fintype_card_le_finrank`. Establish `hle2 : Module.finrank (Rv K₁ w) (Mw ⧸ N) ≤ ρ`. Set `b` to `Module.Free.chooseBasis (Rv K₁ w) (Mw ⧸ N)`. Establish `hli : LinearIndependent (Rv K₁ w) (ι ∘ b)` using `b.linearIndependent.map' ι (LinearMap.ker_eq_bot.mpr hι)`. Establish `hliK : LinearIndependent K₁ (ι ∘ b)` using `(LinearIndependent.iff_fractionRing (Rv K₁ w) K₁).mp hli`.
+
+Rewrite using `[Module.finrank_eq_card_chooseBasisIndex, ← hρ]`. Conclude with `hliK.fintype_card_le_finrank`. Establish `hb : Nonempty (Module.Basis (Fin ρ) (Rv K₁ w) (Mw ⧸ N))` using `⟨Module.finBasisOfFinrankEq _ _ (le_antisymm hle2 hle1)⟩`. Take `⟨n, hn, hle⟩` from `exists_length_quotient_span_le hL w (Mw ⧸ N) ρ hb cQ s β th hc' hdet'`. Establish `hmapE : (Submodule.span (Rv K₁ w) (Set.range e')).map Mw.subtype = Submodule.span (Rv K₁ w) (Set.range e)`.
+
+Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Establish `hmapTh : (Submodule.span (Rv K₁ w) (Set.range e')).map N.mkQ = Submodule.span (Rv K₁ w) (Set.range th)`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+
+Establish `hNT : N ≤ T` using `Submodule.comap_mono le_sup_left`. Establish `hspan : T.map N.mkQ = Submodule.span (Rv K₁ w) (Set.range th)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `y hy`.
+
+Rewrite using `[Submodule.mem_comap]`. Establish `hy' : (y : U) ∈ (Submodule.span (Rv K₁ w) (P : Set U) ⊓ Mw) ⊔ Submodule.span (Rv K₁ w) (Set.range e)` using `hy`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.mp hy'`. Rewrite `hb` using `[← hmapE]`. Take `⟨b', hb', rfl⟩` from `hb`.
+
+Establish `hyab : y = ⟨a, ha.2⟩ + b'` using `Subtype.ext (by simpa using hab.symm)`. Establish `h0 : N.mkQ ⟨a, ha.2⟩ = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `(hmemN _).mpr (hspanP a ha.1)`. Rewrite using `[hyab, map_add, h0, zero_add, ← hmapTh]`.
+
+Conclude with `Submodule.mem_map_of_mem hb'`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨e' j, Submodule.mem_comap.mpr (Submodule.mem_sup_right (Submodule.subset_span ⟨j, rfl⟩)), rfl⟩`. Set `E : ((Mw ⧸ N) ⧸ Submodule.span (Rv K₁ w) (Set.range th)) ≃ₗ[Rv K₁ w] (Mw ⧸ T)` to `(Submodule.quotEquivOfEq _ _ hspan.symm).trans (Submodule.quotientQuotientEquivQuotient N T hNT)`.
+
+Conclude with `⟨n, (LinearEquiv.length_eq E).symm.trans hn, hle⟩`.
+-/
 theorem local_len (hL : QuotLocalStatement) (P : Submodule K₁ U) (Mw : Submodule (Rv K₁ w) U)
     (hMw : Mw.FG) (hMspan : Submodule.span K₁ (Mw : Set U) = ⊤) {ρ : ℕ}
     (hρ : finrank K₁ (U ⧸ P) = ρ) (e : Fin ρ → U) (he : ∀ j, e j ∈ Mw)

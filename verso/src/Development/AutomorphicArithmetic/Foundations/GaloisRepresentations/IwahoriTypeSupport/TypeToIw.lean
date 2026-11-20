@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Iwaho
 
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL ValuativeRel Matrix UpperTheory.Gal.TypesAndIwahori
 
+/- English proof (translation)
+Take `⟨hp, hdet⟩` from `hF 𝓀[k] N s d hd (redK k (Fin N) ⟨g, hg⟩) (fun i j hij => by`. Rewrite using `[redK_eq_zero_iff]`. Conclude with `hlow i j hij)`. Use `⟨mem_levelPre.2 ⟨hg, hp⟩, fun a => ?_⟩` and prove the remaining obligations. Conclude with `hdet a`.
+-/
 private theorem typeToIw_key (hF : UpperTheory.Gal.TypesAndIwahori.FinTri) {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {N s : ℕ} (d : Fin s → ℕ) (hd : ∑ a, d a = N) {g : GL (Fin N) k}
     (hg : g ∈ KO k (Fin N)) (hlow : ∀ i j, j < i → valuation k ((g : Matrix (Fin N) (Fin N) k) i j) < 1) :
@@ -16,6 +19,27 @@ private theorem typeToIw_key (hF : UpperTheory.Gal.TypesAndIwahori.FinTri) {k : 
   refine ⟨mem_levelPre.2 ⟨hg, hp⟩, fun a => ?_⟩
   exact hdet a
 
+/- English proof (translation)
+Introduce `hF k _ _ _ _ N s d hd V _ _ π θ μ hμ v hv`. Rewrite `hv` using `[mem_typeSp]`. Prove the components needed by the constructor for the conclusion. Introduce `h hK hlow hdiag`. Take `⟨hpar, hdet⟩` from `typeToIw_key hF d hd hK hlow`.
+
+Establish `hv'` using `hv ⟨h, hpar⟩`. Establish `hone : ∀ a, GeneralLinearGroup.det (parahoricProj k (stdBlocks d hd) ⟨h, hpar⟩ a) = 1`. Introduce `a`. Use `ext`. Rewrite using `[hdet a, Units.val_one]`.
+
+Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `j _`. Establish `hx` using `(redK_eq_iff (k := k) ⟨h, hK⟩ (stdBlocks d hd ⟨a, j⟩) (stdBlocks d hd ⟨a, j⟩) 1).2 (by`. Simplify using `using hdiag (stdBlocks d hd ⟨a, j⟩))`. Simplify using `using hx`.
+
+Rewrite `hv'` using `[typeChar_apply]`. Simplify `hv'` using `[hone]`. Introduce `t ht`. Establish `hI` using `mem_iwahori.1 (diagT_mem_iwahori (k := k) ht)`. Take `⟨hpar, hdet⟩` from `typeToIw_key hF d hd hI.1 hI.2`.
+
+Establish `hv'` using `hv ⟨_, hpar⟩`. Rewrite `hv'` using `[typeChar_apply]`. Use `hv'.trans ?_` and prove the remaining obligations. Use `congr 2`. Establish `hu : ∀ i, ∃ u, unitIncl k u = t i` using `fun i => valuation_eq_one_iff.1 (ht i)`.
+
+Use `choose u hu using hu`. Establish `hdetu : ∀ a, GeneralLinearGroup.det (parahoricProj k (stdBlocks d hd) ⟨_, hpar⟩ a) = ∏ j : Fin (d a), unitRes k (u (stdBlocks d hd ⟨a, j⟩))`. Introduce `a`. Use `ext`. Rewrite using `[hdet a, Units.coe_prod]`.
+
+Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hx` using `(redK_eq_iff (k := k) ⟨_, hI.1⟩ (stdBlocks d hd ⟨a, j⟩) (stdBlocks d hd ⟨a, j⟩) (u (stdBlocks d hd ⟨a, j⟩) : 𝒪[k])).2 (by`. Establish `h1` using `congrArg Units.val (hu (stdBlocks d hd ⟨a, j⟩))`. Simplify using `only [val_diagT, diagonal_apply_eq]`. Rewrite using `[← h1]`.
+
+Simplify using `only [unitIncl, Units.coe_map, MonoidHom.coe_coe]`. Use `lt_of_eq_of_lt (congrArg (valuation k) (sub_eq_zero.2 rfl)) ?_` and prove the remaining obligations. Use the proof step `simp)`. Rewrite using `[hx]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[torusChar_apply]`. Repeatedly rewrite using `[hdetu, map_prod]`. Rewrite using `[← (stdBlocks d hd).prod_comp, Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun a _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hb : blockOf d hd (stdBlocks d hd ⟨a, j⟩) = a` using `by simp [blockOf]`.
+
+Rewrite using `[hb, ← hu]`. Conclude with `(hμ a _).symm`.
+-/
 theorem UpperTheory.Gal.TypesAndIwahori.typeToIw :
     UpperTheory.Gal.TypesAndIwahori.FinTri → UpperTheory.Gal.TypesAndIwahori.TypeToIw := by
   intro hF k _ _ _ _ N s d hd V _ _ π θ μ hμ v hv

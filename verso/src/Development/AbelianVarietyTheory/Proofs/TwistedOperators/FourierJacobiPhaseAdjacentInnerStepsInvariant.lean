@@ -9,6 +9,25 @@ open GlobalTheory.FunObj.FiniteSupport
 
 namespace GlobalTheory.TopLevelInv
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ Γ j hA x x' e e' hx he h0 hrow hcol`. Establish `hch : ∀ i : Fin (Γ.m - 1), i.val ≠ j → i.val ≠ j + 1 → ch (stepPt (x' i) (e' i)) = ch (stepPt (x i) (e i))`. Introduce `i h1 h2`. Rewrite using `[hx i h1 h2, he i h1 h2]`. Establish `hcv : ∀ i : Fin (Γ.m - 1), i.val ≠ j → i.val ≠ j + 1 → ∀ r, colVar x' e' i r = colVar x e i r`.
+
+Introduce `i h1 h2 r`. Simplify using `only [colVar]`. Rewrite using `[hx i h1 h2, he i h1 h2]`. Establish `hrv : ∀ n : ℕ, n ≠ j → n ≠ j + 1 → ∀ s, rowVar x' e' n s = rowVar x e n s`. Introduce `n h1 h2 s`.
+
+Unfold `rowVar`. Use `split_ifs with h`. Rewrite using `[hx n h1 h2, he ⟨n, h⟩ h1 h2]`. Rewrite using `[hx n h1 h2]`. Establish `hodd : Even (Γ.m - 2 - (j + 1)) ↔ Odd (Γ.m - 2 - j)`.
+
+Rewrite using `[show Γ.m - 2 - j = (Γ.m - 2 - (j + 1)) + 1 by omega, Nat.odd_add_one, Nat.not_odd_iff_even]`. Establish `hP1 : (if Even (Γ.m - 2 - (j + 1)) then ∑ r, rowVar x' e' (j + 1 + 1) r * colVar x' e' ⟨j + 1, by omega⟩ r else 0) = (if Even (Γ.m - 2 - (j + 1)) then ∑ r, rowVar x e (j + 1 + 1) r * colVar x e ⟨j + 1, by omega⟩ r else 0)` using `by split_ifs with hE`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[hrv (j + 1 + 1) (by omega) (by omega), hcol (hodd.1 hE) r]`. Both sides reduce to the same expression.
+
+Unfold `phase`. Rewrite using `[← sub_eq_zero, ← Finset.sum_sub_distrib, Fintype.sum_eq_add (⟨j, by omega⟩ : Fin (Γ.m - 1)) ⟨j + 1, by omega⟩ (by simp [Fin.ext_iff]) ?_]`. Establish `hch1` using `h0`. Simplify using `only [Fin.val_mk] at hP1 ⊢`. Rewrite using `[hP1]`.
+
+Take the linear combination `-h0`. Introduce and unpack `⟨i, hi⟩ ⟨h1, h2⟩`. Simplify using `only [ne_eq, Fin.ext_iff, Fin.val_mk] at h1 h2`. Rewrite using `[sub_eq_zero, hch ⟨i, hi⟩ h1 h2]`. Use `congr 1`.
+
+Distinguish the cases in `hij : i + 1 = j`. Substitute `hij split_ifs with hE` using the available equality. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[hcv ⟨i, hi⟩ h1 h2, hrow ?_ r]`. Rewrite `hE` using `[show Γ.m - 2 - i = (Γ.m - 2 - (i + 1)) + 1 by omega, Nat.even_add_one, Nat.not_even_iff_odd]`.
+
+Conclude with `hE`. Both sides reduce to the same expression. Use `split_ifs`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[hcv ⟨i, hi⟩ h1 h2 r, hrv (i + 1) hij (by omega) r]`.
+
+Both sides reduce to the same expression.
+-/
 theorem phase_eq_of_two_steps : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] {Γ : Grid k} (j : ℕ) (hA : j + 2 < Γ.m) (x x' : ColArgs Γ) (e e' : Vars Γ),
     (∀ i, i ≠ j → i ≠ j + 1 → x' i = x i) → (∀ i : Fin (Γ.m - 1), i.val ≠ j → i.val ≠ j + 1 → e' i = e i) →
     ch (stepPt (x' j) (e' ⟨j, by omega⟩)) + ch (stepPt (x' (j + 1)) (e' ⟨j + 1, by omega⟩)) +

@@ -15,6 +15,9 @@ namespace LiftBlockGraph
 
 variable {K : Type} {ι : K → Type} {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Introduce `c hc`. Take `⟨u, hu, hs⟩` from `h c hc`. Use `⟨fun j => u ((Fintype.equivFin ι').symm j), fun j => hu _, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs]`. Conclude with `Fintype.sum_equiv (Fintype.equivFin ι').symm _ _ (fun j => rfl)`.
+-/
 theorem generatesOn_liftCoords [Fintype K] {ι' : Type} [Fintype ι'] (y : (Σ k, ι k) → Ω) (n : K → ℤ) (x' : ι' → Ω)
     (h : KH.GeneratesOn y n x') : KH.GeneratesOn y n (liftCoords x') := by
   intro c hc
@@ -23,6 +26,9 @@ theorem generatesOn_liftCoords [Fintype K] {ι' : Type} [Fintype ι'] (y : (Σ k
   rw [← hs]
   exact Fintype.sum_equiv (Fintype.equivFin ι').symm _ _ (fun j => rfl)
 
+/- English proof (translation)
+Take `⟨u, -, hs⟩` from `h c hc`. Assume the negation of the conclusion as `h0`. Simplify using `only [not_exists, not_not] at h0`. Simplify using `[h0] at hs`.
+-/
 theorem exists_ne_zero_of_generatesOn [Fintype K] {r : ℕ} (y : (Σ k, ι k) → Ω) (n : K → ℤ) (v : Fin r → Ω)
     (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (h : KH.GeneratesOn y n v) : ∃ j, v j ≠ 0 := by
   obtain ⟨u, -, hs⟩ := h c hc
@@ -34,6 +40,11 @@ variable [CharZero Ω] [Fintype K] [∀ k, Fintype (ι k)]
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨p, rfl⟩` from `hx`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨p, ⟨p.1, c p.1⟩, rfl, rfl⟩`. Consider the case `algebraMap m`.
+
+Rewrite using `[eq_intCast]`. Conclude with `intCast_mem _ m`. Consider the case `add a b _ _ ha hb => exact add_mem ha hb`. Consider the case `mul a b _ _ ha hb => exact mul_mem ha hb`.
+-/
 theorem chartRingZ_le_blockFnField (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) {x : Ω} (hx : x ∈ chartRingZ y c) :
     x ∈ blockFnField y := by
   induction hx using Algebra.adjoin_induction with
@@ -46,6 +57,15 @@ theorem chartRingZ_le_blockFnField (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) {
   | add a b _ _ ha hb => exact add_mem ha hb
   | mul a b _ _ ha hb => exact mul_mem ha hb
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `IntermediateField.adjoin_le_iff.mpr ?_` and prove the remaining obligations. Introduce and unpack `t ⟨⟨pk, pi⟩, ⟨qk, qi⟩, hpq, rfl⟩`. Simplify using `only at hpq`. Substitute `hpq` using the available equality.
+
+Consider the cases of `pk with`. Consider the case `none => set P : Ω := ∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * n k)) with hP`. Establish `hP0 : P ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hc k)`. Establish `h1` using `chartRingZ_le_blockFnField y c (hv pi c hc)`. Establish `h2` using `chartRingZ_le_blockFnField y c (hv qi c hc)`.
+
+Establish `: v pi / v qi = (v pi * P) / (v qi * P)` using `(mul_div_mul_right _ _ hP0).symm`. Express the relevant statement in the definitionally equal form `v pi / v qi ∈ blockFnField y`. Rewrite using `[this]`. Conclude with `div_mem h1 h2`. Consider the case `some k`.
+
+Conclude with `IntermediateField.subset_adjoin _ _ ⟨⟨k, pi⟩, ⟨k, qi⟩, rfl, rfl⟩`. Use `IntermediateField.adjoin_le_iff.mpr ?_` and prove the remaining obligations. Introduce and unpack `t ⟨p, q, hpq, rfl⟩`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨⟨some p.1, p.2⟩, ⟨some q.1, q.2⟩, by simp [hpq], rfl⟩`.
+-/
 theorem blockFnField_addBlock (y : (Σ k, ι k) → Ω) (n : K → ℤ) {r : ℕ} (v : Fin r → Ω)
     (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (hv : ∀ j, v j ∈ chartLat y n 1) :
     blockFnField (addBlock y v) = blockFnField y := by
@@ -71,6 +91,11 @@ theorem blockFnField_addBlock (y : (Σ k, ι k) → Ω) (n : K → ℤ) {r : ℕ
     exact IntermediateField.subset_adjoin _ _
       ⟨⟨some p.1, p.2⟩, ⟨some q.1, q.2⟩, by simp [hpq], rfl⟩
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `CoordArithOfFnField.nonzero_of_relevant y hA.2.1.2.2`. Use `CoordArithOfFnField.proof K ι (Option K) (addIdx ι r) Ω y (addBlock y v) (D + 1) ⟨none⟩ ?_ (blockFnField_addBlock y n v c hc hv).symm hA` and prove the remaining obligations. Introduce and unpack `(_ | k)`. Take `⟨j, hj⟩` from `exists_ne_zero_of_generatesOn y n v c hc hg`. Conclude with `⟨j, hj⟩`.
+
+Conclude with `⟨c k, hc k⟩`.
+-/
 theorem isArithVar_addBlock {D : ℕ} (y : (Σ k, ι k) → Ω) (n : K → ℤ) {r : ℕ} (v : Fin r → Ω)
     (hA : IsArithVar (mCoordIdeal y) (D + 1)) (hv : ∀ j, v j ∈ chartLat y n 1) (hg : KH.GeneratesOn y n v) :
     IsArithVar (mCoordIdeal (addBlock y v)) (D + 1) := by
@@ -84,6 +109,19 @@ theorem isArithVar_addBlock {D : ℕ} (y : (Σ k, ι k) → Ω) (n : K → ℤ) 
 
 omit [CharZero Ω] in
 
+/- English proof (translation)
+Use `set φ : (Σ _ : Unit, ι') → (Σ k, addIdx ι (Fintype.card ι') k) := fun p => ⟨none, Fintype.equivFin ι' p.2⟩ with hφ`. Establish `hinj : Function.Injective φ`. Introduce and unpack `⟨⟨⟩, a⟩ ⟨⟨⟩, b⟩ h`. Take `⟨-, h2⟩` from `Sigma.mk.inj h`. Conclude with `congrArg (Sigma.mk ()) ((Fintype.equivFin ι').injective (eq_of_heq h2))`.
+
+Introduce `m hm k`. Rewrite `hm` using `[support_rename_of_injective hinj]`. Take `⟨m0, hm0, rfl⟩` from `Finset.mem_image.mp hm`. Consider the cases of `k with`. Consider the case `none`.
+
+Establish `hterm : ∀ i : Fin (Fintype.card ι'), (Finsupp.mapDomain φ m0) ⟨none, i⟩ = m0 ⟨(), (Fintype.equivFin ι').symm i⟩`. Introduce `i`. Establish `: (⟨none, i⟩ : Σ k, addIdx ι (Fintype.card ι') k) = φ ⟨(), (Fintype.equivFin ι').symm i⟩`. Simplify using `[hφ]`. Rewrite using `[this, Finsupp.mapDomain_apply hinj]`.
+
+Express the relevant statement in the definitionally equal form `∑ i : Fin (Fintype.card ι'), (Finsupp.mapDomain φ m0) ⟨none, i⟩ = _`. Simplify using `only [hterm]`. Rewrite using `[Fintype.sum_equiv (Fintype.equivFin ι').symm (fun i => m0 ⟨(), (Fintype.equivFin ι').symm i⟩) (fun j => m0 ⟨(), j⟩) (fun _ => rfl)]`. Use `hg m0 hm0 ()` as an intermediate fact. Simplify using `only [blockDeg, if_true]`.
+
+Rewrite using `[← this]`. Consider the case `some k`. Establish `hterm : ∀ i, (Finsupp.mapDomain φ m0) ⟨some k, i⟩ = 0`. Introduce `i`. Apply `Finsupp.mapDomain_of_notMem_range` to reduce the goal to its premises.
+
+Introduce and unpack `⟨p, hp⟩`. Simplify using `only [hφ] at hp`. Conclude with `absurd (congrArg Sigma.fst hp) (by simp)`. Simplify using `[hterm, blockDeg]`.
+-/
 theorem isMultiHomog_rename_none [DecidableEq K] {ι' : Type} [Fintype ι'] {g : MRing (fun _ : Unit => ι')} {e : Unit → ℕ}
     (hg : IsMultiHomog g e) :
     IsMultiHomog (rename (fun p : Σ _ : Unit, ι' =>
@@ -125,6 +163,13 @@ theorem isMultiHomog_rename_none [DecidableEq K] {ι' : Type} [Fintype ι'] {g :
 
 omit [CharZero Ω] in
 
+/- English proof (translation)
+Introduce `d g h hg hh hne`. Take `⟨e, g', h', hg', hh', hne', hs⟩` from `hb (aeval (addBlock y (liftCoords x')) g / aeval (addBlock y (liftCoords x')) h)`. Use `set φ : (Σ _ : Unit, ι') → (Σ k, addIdx ι (Fintype.card ι') k) := fun p => ⟨none, Fintype.equivFin ι' p.2⟩ with hφ`. Establish `hev : ∀ f : MRing (fun _ : Unit => ι'), aeval (addBlock y (liftCoords x')) (rename φ f) = aeval (fun p : Σ _ : Unit, ι' => x' p.2) f`. Introduce `f`.
+
+Establish `hc : addBlock y (liftCoords x') ∘ φ = fun p => x' p.2`. Use function extensionality and compare the values at `p`. Simplify using `[hφ, addBlock, liftCoords]`. Rewrite using `[aeval_rename, hc]`. Use `⟨e (), rename φ g', rename φ h', isMultiHomog_rename_none hg', isMultiHomog_rename_none hh', ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hev]`. Conclude with `hne'`. Rewrite using `[hev, hev, hs]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem blockBirational_addBlock [DecidableEq K] {ι' : Type} [Fintype ι'] (y : (Σ k, ι k) → Ω) (x' : ι' → Ω)
     (hb : Birational (fun p : Σ _ : Unit, ι' => x' p.2)) :
     BlockBirational (addBlock y (liftCoords x')) (none : Option K) := by
@@ -148,6 +193,9 @@ theorem blockBirational_addBlock [DecidableEq K] {ι' : Type} [Fintype ι'] (y :
 
 omit [CharZero Ω] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{1}, fun f hf => ⟨0, by rw [Set.mem_singleton_iff.mp hf]; exact Inter.AvoidRing.isMultiHomog_one⟩, Ideal.span_singleton_one.symm⟩`.
+-/
 theorem isMultiHomogIdeal_top : IsMultiHomogIdeal (⊤ : Ideal (MRing ι)) :=
   ⟨{1}, fun f hf => ⟨0, by rw [Set.mem_singleton_iff.mp hf]; exact Inter.AvoidRing.isMultiHomog_one⟩,
     Ideal.span_singleton_one.symm⟩

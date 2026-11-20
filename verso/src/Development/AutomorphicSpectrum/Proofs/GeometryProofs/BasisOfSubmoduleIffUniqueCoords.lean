@@ -11,6 +11,17 @@ open GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 
+/- English proof (translation)
+Introduce `K W _ _ _ S n b`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hli, hspan⟩`. Use `⟨fun i => hspan ▸ Submodule.subset_span ⟨i, rfl⟩, fun e he => ?_⟩` and prove the remaining obligations. Rewrite `he` using `[← hspan, Submodule.mem_span_range_iff_exists_fun]`.
+
+Take `⟨x, hx⟩` from `he`. Use `⟨x, hx.symm, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h0 : ∑ i, (y - x) i • b i = 0`. Simplify using `only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib, ← hy, hx, sub_self]`. Use function extensionality and compare the values at `i`.
+
+Conclude with `sub_eq_zero.mp (Fintype.linearIndependent_iff.mp hli _ h0 i)`. Introduce and unpack `⟨hb, huniq⟩`. Use `⟨Fintype.linearIndependent_iff.mpr fun g hg i => ?_, le_antisymm ?_ fun e he => ?_⟩` and prove the remaining obligations. Take `⟨x, _, hx⟩` from `huniq 0 S.zero_mem`. Establish `hg0 : g = x` using `hx g hg.symm`.
+
+Establish `h00 : (0 : Fin n → K) = x` using `hx 0 (by simp)`. Rewrite using `[hg0, ← h00]`. Both sides reduce to the same expression. Conclude with `Submodule.span_le.mpr (Set.range_subset_iff.mpr hb)`. Take `⟨x, hx, _⟩` from `huniq e he`.
+
+Rewrite using `[hx]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem basis_iff_unique_combinations : ∀ (K W : Type) [Field K] [AddCommGroup W] [Module K W] (S : Submodule K W) (n : ℕ) (b : Fin n → W),
     (LinearIndependent K b ∧ Submodule.span K (Set.range b) = S) ↔
       (∀ i, b i ∈ S) ∧ ∀ e ∈ S, ∃! x : Fin n → K, e = ∑ i, x i • b i := by

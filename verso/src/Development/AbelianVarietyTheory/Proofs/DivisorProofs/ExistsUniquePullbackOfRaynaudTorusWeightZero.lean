@@ -28,6 +28,25 @@ namespace GlobalTheory.Heat.Descend
 variable {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRing O] [StarRing O] [Module O Q.X]
   {oa : Q.OAct O}
 
+/- English proof (translation)
+Take `⟨c⟩` from `GlobalTheory.TorusModel.nonempty_gtCoord GlobalTheory.allSixLaws.1.globalFns Y.isGt ⊥ 0`. Use `c.q_hom` as an intermediate fact. Use `c.q_flat` as an intermediate fact. Use `c.q_surj` as an intermediate fact. Use `c.q_affine` as an intermediate fact.
+
+Set `F` to `fstG (⊥ : Ideal R) 0 Y.H`. Set `j` to `inv F.left`. Establish `hF : F.left ≫ Y.H.hom = (thickObj R ⊥ 0 Y.H).hom ≫ thick R ⊥ 0` using `Over.w F`. Set `ξ` to `Y.Φ Y.H (𝟙 _)`. Take `⟨x, hx⟩` from `GlobalTheory.TorusCoord.exists_point c (T := Y.H) (Y.H.hom ≫ inv (thick R ⊥ 0)) (by simp) ξ`.
+
+Take `⟨ξ', hξ'⟩` from `GlobalTheory.TorusCoord.exists_isPointOf c (T := Y.H) j (by`. Rewrite using `[← hF]`. Conclude with `IsIso.inv_hom_id_assoc _ _)`. Set `b : Y.H ⟶ Y.H` to `(Y.Φ Y.H).symm ξ'`. Establish `hb : Y.Φ Y.H b = ξ'` using `Equiv.apply_symm_apply _ _`.
+
+Set `a` to `x ≫ F.left`. Establish `ha : a ≫ Y.H.hom = Y.H.hom`. Rewrite using `[Category.assoc, hF]`. Conclude with `GlobalTheory.TorusCoord.IsPointOf.comp_hom c hx`. Set `a' : Y.H ⟶ Y.H` to `Over.homMk a ha`.
+
+Establish `haj : a ≫ j = x` using `by simp [a, j]`. Establish `e1 : b.left ≫ x = j`. Establish `h1 : GtPt.IsPull b.left ξ (Y.Φ Y.H (b ≫ 𝟙 _))` using `Y.rep.1 Y.H Y.H b (𝟙 _)`. Rewrite `h1` using `[Category.comp_id, hb]`. Conclude with `(GlobalTheory.TorusCoord.IsPointOf.pull c hx h1).unique_left c hξ'`.
+
+Establish `e1' : b.left ≫ a = 𝟙 _`. Rewrite using `[← Category.assoc, e1]`. Simplify using `[j]`. Establish `e2 : a' ≫ b = 𝟙 _`. Establish `h2 : GtPt.IsPull a (Y.Φ Y.H b) (Y.Φ Y.H (a' ≫ b))` using `Y.rep.1 Y.H Y.H a' b`.
+
+Rewrite `h2` using `[hb]`. Establish `h3` using `GlobalTheory.TorusCoord.IsPointOf.pull c hξ' h2`. Rewrite `h3` using `[haj]`. Conclude with `(Y.Φ Y.H).injective (h3.unique_right c hx)`. Establish `e2' : a ≫ b.left = 𝟙 _` using `congrArg (·.left) e2`.
+
+Establish `: IsIso a` using `⟨⟨b.left, e2', e1'⟩⟩`. Establish `hq : Y.q.left = a ≫ j ≫ c.q.left ≫ pullback.fst Q.P.A.hom (thick R ⊥ 0)`. Rewrite using `[← Category.assoc a j, haj, ← GlobalTheory.TorusCoord.pG_left]`. Conclude with `hx.1`. Rewrite using `[hq]`.
+
+Conclude with `⟨inferInstance, inferInstance, inferInstance⟩`.
+-/
 theorem q_props (Y : Ray oa) : Flat Y.q.left ∧ Surjective Y.q.left ∧ QuasiCompact Y.q.left := by
   obtain ⟨c⟩ := GlobalTheory.TorusModel.nonempty_gtCoord GlobalTheory.allSixLaws.1.globalFns Y.isGt ⊥ 0
   have := c.q_hom
@@ -76,11 +95,21 @@ def chrUnit {S : Type} [CommRing S] {φ : R →+* S} (τ : Over.mk (spMap φ) �
       rw [← map_mul, AddMonoidAlgebra.single_mul_single, add_neg_cancel, _root_.mul_one]
       exact map_one _)).unit
 
+/- English proof (translation)
+Simplify using `[unitOn, chrUnit]`.
+-/
 theorem unitOn_chrUnit {S : Type} [CommRing S] {φ : R →+* S}
     (τ : Over.mk (spMap φ) ⟶ splitTorus (Sp R) (GlobalTheory.RayEv.Chr Q)) (χ : GlobalTheory.RayEv.Chr Q) :
     (unitOn (chrUnit τ χ)).val = (coord τ).hom (AddMonoidAlgebra.single χ 1) := by
   simp [unitOn, chrUnit]
 
+/- English proof (translation)
+Introduce `χ y J hJ`. Establish `h1` using `((GlobalTheory.TorusModel.isAdd_iff _ _ _).1 (Y.rep.2 _ x (τ ≫ Y.i))).2 χ y J hJ`. Establish `C : IsCub (DVR.th Q (T` using `Over.mk (spMap φ)) y J) := isCub_cubV Q.cub hJ`. Rewrite `h1` using `[(Y.Φ_i τ).1, C.face₃, _root_.mul_one]`. Rewrite using `[mul_comm (τ ≫ Y.i) x]`.
+
+Use `show GlobalTheory.TorusModel.cv _ χ y J = _ * GlobalTheory.TorusModel.cv _ χ y J`. Rewrite using `[h1, mul_comm]`. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[(Y.Φ_i τ).2 χ y J hJ, ← gs_unit (𝟙 _) y ⊤ trivial]`.
+
+Conclude with `congrArg (gs (𝟙 _) y ⊤) (unitOn_chrUnit τ χ).symm`.
+-/
 theorem cv_translate (Y : Ray oa) {S : Type} [CommRing S] {φ : R →+* S}
     (τ : Over.mk (spMap φ) ⟶ splitTorus (Sp R) (GlobalTheory.RayEv.Chr Q)) (x : Over.mk (spMap φ) ⟶ Y.H) :
     ∀ χ y J, Good Q.P.L y J →
@@ -98,6 +127,15 @@ theorem cv_translate (Y : Ray oa) {S : Type} [CommRing S] {φ : R →+* S}
   rw [(Y.Φ_i τ).2 χ y J hJ, ← gs_unit (𝟙 _) y ⊤ trivial]
   exact congrArg (gs (𝟙 _) y ⊤) (unitOn_chrUnit τ χ).symm
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Use `GlobalTheory.Heat.Adjust.eq_zero_of_valR_points ⊤ _ fun S _ p hp => ?_` and prove the remaining obligations. Rewrite using `[WtAlg.valR_sub' p ⊤ hp, HolHom.valR_appLE p _ _ _ _ _ hp, HolHom.valR_appLE p _ _ _ _ _ hp, sub_eq_zero]`. Take `⟨φ', hφ'⟩` from `Spec.map_surjective (R := CommRingCat.of R) (S := CommRingCat.of S) (p ≫ Z.hom)`. Set `φ : R →+* S` to `φ'.hom`.
+
+Establish `hφ : p ≫ Z.hom = spMap φ` using `hφ'.symm`. Set `P : Over.mk (spMap φ) ⟶ Z` to `Over.homMk p hφ`. Establish `hqm : IsMonHom Y.q` using `Y.q_linear.isMonHom`. Establish `e : P ≫ ((t ≫ Y.i) * g) = ((P ≫ t) ≫ Y.i) * (P ≫ g)` using `by rw [MonObj.comp_mul, Category.assoc]`. Establish `hq : (P ≫ ((t ≫ Y.i) * g)) ≫ Y.q = (P ≫ g) ≫ Y.q`.
+
+Rewrite using `[e, MonObj.mul_comp, Category.assoc, Y.i_q, MonObj.comp_one, _root_.one_mul]`. Establish `hc : ∀ χ y J, Good Q.P.L y J → val ((Y.Φ _ (P ≫ ((t ≫ Y.i) * g))).s χ) (𝟙 _) y J = gm (𝟙 (Over.mk (spMap φ)).left) y ⊤ (unitOn (chrUnit (P ≫ t) χ)) * val ((Y.Φ _ (P ≫ g)).s χ) (𝟙 _) y J`. Rewrite using `[e]`. Conclude with `cv_translate Y (P ≫ t) (P ≫ g)`. Establish `key` using `hf S φ (P ≫ g) (P ≫ ((t ≫ Y.i) * g)) (chrUnit (P ≫ t)) _ _ rfl rfl (fun z _ => h₂ (Set.mem_univ (p z))) (fun z _ => h₁ (Set.mem_univ (p z))) hq hc`.
+
+Rewrite `key` using `[WtAlg.c_zero _ _ _ hc, Units.val_one, _root_.one_mul]`. Conclude with `key`.
+-/
 theorem invariant (Y : Ray oa) (V : Q.P.A.left.Opens) (f : Γ(Y.H.left, Y.q.left ⁻¹ᵁ V))
     (hf : IsWt Y 0 (Y.q.left ⁻¹ᵁ V) f) (Z : Over (Sp R)) (t : Z ⟶ splitTorus (Sp R) (GlobalTheory.RayEv.Chr Q)) (g : Z ⟶ Y.H)
     (h₁ : ⊤ ≤ ((t ≫ Y.i) * g).left ⁻¹ᵁ (Y.q.left ⁻¹ᵁ V)) (h₂ : ⊤ ≤ g.left ⁻¹ᵁ (Y.q.left ⁻¹ᵁ V)) :
@@ -126,6 +164,11 @@ end GlobalTheory.Heat.Descend
 
 namespace GlobalTheory.Heat
 
+/- English proof (translation)
+Introduce `R _ _ Q O _ _ _ oa Y V f hf`. Take `⟨h1, h2, h3⟩` from `Descend.q_props Y`. Establish `H` using `GlobalTheory.invariant_functions_descend (Sp R) Y.H Q.P.A _ Y.q Y.i Y.q_linear.isMonHom Y.i_linear.isMonHom h1 h2 h3 Y.isKernel V`. Establish `hp : ∀ f', pbT Y.q.left f' (Y.q.left ⁻¹ᵁ V) = (Y.q.left.app V).hom f'` using `fun f' => by`. Rewrite using `[GlobalTheory.KS.pbT_of_le _ le_rfl, Scheme.Hom.app_eq_appLE]`.
+
+Take `⟨a, ha⟩` from `H.2.2 f (fun Z t g h₁ h₂ => Descend.invariant Y V f hf Z t g h₁ h₂)`. Conclude with `⟨a, (hp a).trans ha, fun b hb => H.1 (((hp b).symm.trans hb).trans ha.symm)⟩`.
+-/
 theorem exists_unique_pbT_of_isWt_zero : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (O : Type) [CommRing O] [StarRing O] [Module O Q.X] (oa : Q.OAct O) (Y : Ray oa) (V : Q.P.A.left.Opens) (f : Γ(Y.H.left, Y.q.left ⁻¹ᵁ V)), IsWt Y 0 _ f → ∃! f' : Γ(Q.P.A.left, V), pbT Y.q.left f' (Y.q.left ⁻¹ᵁ V) = f := by
   intro R _ _ Q O _ _ _ oa Y V f hf
   obtain ⟨h1, h2, h3⟩ := Descend.q_props Y

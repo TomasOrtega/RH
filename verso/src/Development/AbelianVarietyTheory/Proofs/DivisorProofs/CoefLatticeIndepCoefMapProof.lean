@@ -17,6 +17,15 @@ set_option maxHeartbeats 1600000
 
 namespace GlobalTheory.CoefIndepProof
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hR i c0L hc h w hw`. Take `⟨gramR', c0R', c0L', hT', P, hP, rfl⟩` from `hw`. Take `⟨gramR, c0R, hT⟩` from `hc`. Take `⟨c, ⟨γ, k, e⟩, -⟩` from `(R.B.L i A.μ0).pres.reps (fin (Vc D i) h)`. Establish `hst : Formalism.UG.bc (swapAE D) ((k : Bridge.Gf (Vc D i)) : GL (Fin (Vc D i).rank) _) ∈ St (R.βV i)` using `Formalism.L2.DIV.parLev_St k.2.1`.
+
+Take `⟨γE, hγ, hl⟩` from `GlobalTheory.HLatMove.hLat_rat_mul_stab (Vc D i) (R.βV i) (R.ΛV i) (hR.lev.βV i) γ`. Rewrite `hP`, the goal using `[e, hl _ _ hst, Formalism.L2.Col.nabAtr_gmap, MulEquiv.apply_symm_apply]`. Take `⟨P', hP', rfl⟩` from `hP`. Take `⟨e', -, h2', -, h4', -⟩` from `hT'.coefL i A.μ0`. Take `⟨e1, -, h2, -, h4, -⟩` from `hT.coefL i A.μ0`.
+
+Rewrite `hP'` using `[← h4' c]`. Take `⟨y, hy, rfl⟩` from `hP'`. Use `⟨rhoVr (labLL D) (lamV D i) γE (e1 y), ⟨e1 y, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← h4 c]`. Conclude with `⟨y, hy, rfl⟩`.
+
+Establish `a1` using `(hT'.mapL i).1 γ γE hγ (e' y)`. Establish `a2` using `(hT.mapL i).1 γ γE hγ (e1 y)`. Express the relevant statement in the definitionally equal form `c0L' i (rhoVr (labLL D) (lamV D i) γE (e' y)) = c0L i (rhoVr (labLL D) (lamV D i) γE (e1 y))`. Rewrite using `[a1, ← h2', h2]`. Conclude with `a2.symm`.
+-/
 theorem coefIndep : GlobalTheory.BaseCmp.CoefIndep := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hR i c0L hc h w hw
   obtain ⟨gramR', c0R', c0L', hT', P, hP, rfl⟩ := hw

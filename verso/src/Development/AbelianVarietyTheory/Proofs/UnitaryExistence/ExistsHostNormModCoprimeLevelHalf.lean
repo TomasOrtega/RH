@@ -9,6 +9,29 @@ section Finite
 
 variable {R : Type*} [CommRing R] [Finite R]
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `hp.odd_of_ne_two hp2`. Establish `loc : ∀ m : MaximalSpectrum R, ∃ a b : R ⧸ m.asIdeal, a ^ 2 - Ideal.Quotient.mk _ D * b ^ 2 = Ideal.Quotient.mk _ ν`. Introduce `m`. Use `haveI := m.isMaximal`. Use `letI := Ideal.Quotient.field m.asIdeal`.
+
+Use `haveI : Finite (R ⧸ m.asIdeal) := Finite.of_surjective _ Ideal.Quotient.mk_surjective`. Use `letI : Fintype (R ⧸ m.asIdeal) := Fintype.ofFinite _`. Establish `hp0 : (p : R ⧸ m.asIdeal) = 0`. Use `congrArg (Ideal.Quotient.mk m.asIdeal) h0` as an intermediate fact. Simplify using `using this`.
+
+Establish `hchar : ringChar (R ⧸ m.asIdeal) ≠ 2`. Introduce `h`. Establish `h2 : ((2 : ℕ) : R ⧸ m.asIdeal) = 0` using `by rw [← h]; exact ringChar.Nat.cast_ringChar`. Rewrite `hp0` using `[hj]`. Move the coercions through the operations in `at hp0 h2`.
+
+Rewrite `hp0` using `[h2]`. Simplify using `at hp0`. Establish `hD' : Ideal.Quotient.mk m.asIdeal D ≠ 0` using `(hD.map _).ne_zero`. Take `⟨a, b, hab⟩` from `FiniteField.exists_root_sum_quadratic (f := (Polynomial.X ^ 2 : Polynomial (R ⧸ m.asIdeal))) (g := Polynomial.C (-Ideal.Quotient.mk m.asIdeal D) * Polynomial.X ^ 2 + Polynomial.C 0 * Polynomial.X + Polynomial.C (-Ideal.Quotient.mk m.asIdeal ν)) (Polynomial.degree_X_pow 2) (Polyno …`. Use `⟨a, b, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C] at hab`. Take the linear combination `hab`. Use `choose a b hab using loc`. Establish `hsurj : Function.Surjective (fun (x : R) (m : MaximalSpectrum R) => Ideal.Quotient.mk m.asIdeal x)` using `fun f => by`. Take `⟨x, hx⟩` from `Ideal.pi_quotient_surjective (I := fun m : MaximalSpectrum R => m.asIdeal) (fun m m' h => MaximalSpectrum.isCoprime_of_ne h) f`.
+
+Conclude with `⟨x, funext hx⟩`. Take `⟨x, hx⟩` from `hsurj a`. Take `⟨y, hy⟩` from `hsurj b`. Establish `hnil : IsNilpotent (x ^ 2 - D * y ^ 2 - ν)`. Rewrite using `[nilpotent_iff_mem_prime]`.
+
+Introduce `J hJ`. Establish `hm : J.IsMaximal` using `IsArtinianRing.isMaximal_of_isPrime J`. Use `hab ⟨J, hm⟩` as an intermediate fact. Rewrite `this` using `[← hx, ← hy]`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`.
+
+Simplify using `only [map_sub, map_mul, map_pow]`. Conclude with `sub_eq_zero.2 this`. Take `⟨μ, hμ⟩` from `hν.exists_right_inv`. Take `⟨k, hk⟩` from `hnil`. Use `set e := μ * (x ^ 2 - D * y ^ 2 - ν) with he`.
+
+Establish `hek : e ^ p ^ k = 0`. Take `⟨c, hc⟩` from `Nat.exists_eq_add_of_le (Nat.lt_pow_self (n := k) hp.one_lt).le`. Rewrite using `[hc, pow_add, he, mul_pow, hk]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨r, hr⟩` from `exists_add_pow_prime_pow_eq hp (1 : R) e k`.
+
+Rewrite `hr` using `[h0, hek]`. Take `⟨i, hi⟩` from `(hp.odd_of_ne_two hp2).pow (n := k)`. Rewrite `hr` using `[hi]`. Use `⟨x * (1 + e) ^ i, y * (1 + e) ^ i, ?_⟩` and prove the remaining obligations. Establish `h1 : x ^ 2 - D * y ^ 2 = ν * (1 + e)`.
+
+Rewrite using `[he]`. Take the linear combination `(-(x ^ 2 - D * y ^ 2 - ν)) * hμ`. Take the linear combination `((1 + e) ^ i) ^ 2 * h1 + ν * hr`.
+-/
 theorem exists_sq_sub_mul_sq {p : ℕ} (hp : p.Prime) (hp2 : p ≠ 2) (h0 : (p : R) = 0) {D ν : R}
     (hD : IsUnit D) (hν : IsUnit ν) : ∃ x y : R, x ^ 2 - D * y ^ 2 = ν := by
   obtain ⟨j, hj⟩ := hp.odd_of_ne_two hp2
@@ -75,6 +98,13 @@ theorem exists_sq_sub_mul_sq {p : ℕ} (hp : p.Prime) (hp2 : p ≠ 2) (h0 : (p :
     rw [he]; linear_combination (-(x ^ 2 - D * y ^ 2 - ν)) * hμ
   linear_combination ((1 + e) ^ i) ^ 2 * h1 + ν * hr
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij, h⟩ : ∃ i j : ℕ, i < j ∧ a ^ i = a ^ j := by`. Take `⟨i, j, hne, h⟩` from `Finite.exists_ne_map_eq_of_infinite (fun n : ℕ => a ^ n)`. Break down `lt_or_gt_of_ne hne with h' | h'` into its components or cases. Conclude with `⟨i, j, h', h⟩`. Conclude with `⟨j, i, h', h.symm⟩`.
+
+Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_lt hij`. Use `⟨k + 1, k.succ_pos, fun P hP ha => ?_⟩` and prove the remaining obligations. Establish `: a ^ i * (a ^ (k + 1) - 1) ∈ P`. Rewrite using `[show a ^ i * (a ^ (k + 1) - 1) = 0 by linear_combination -h]`. Conclude with `P.zero_mem`.
+
+Conclude with `(hP.mem_or_mem this).resolve_left fun h => ha (hP.mem_of_pow_mem _ h)`.
+-/
 theorem exists_pow_sub_one_mem (a : R) :
     ∃ k, 0 < k ∧ ∀ P : Ideal R, P.IsPrime → a ∉ P → a ^ k - 1 ∈ P := by
   obtain ⟨i, j, hij, h⟩ : ∃ i j : ℕ, i < j ∧ a ^ i = a ^ j := by
@@ -89,6 +119,23 @@ theorem exists_pow_sub_one_mem (a : R) :
     exact P.zero_mem
   exact (hP.mem_or_mem this).resolve_left fun h => ha (hP.mem_of_pow_mem _ h)
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset R, (∀ a ∈ s, σ a = -a) → ∃ δ, σ δ = -δ ∧ ∀ P : Ideal R, P.IsPrime → δ ∈ P → ∀ a ∈ s, a ∈ P`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact fun _ => ⟨0, by simp, by simp⟩`. Consider the case `insert b s _ ih`.
+
+Introduce `hs`. Take `⟨δ, hδ, hP⟩` from `ih fun a ha => hs a (Finset.mem_insert_of_mem ha)`. Establish `hb` using `hs b (Finset.mem_insert_self _ _)`. Take `⟨k, hk, hδk⟩` from `exists_pow_sub_one_mem (δ ^ 2)`. Use `⟨δ + (1 - (δ ^ 2) ^ k) * b, ?_, fun P hp h => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [map_add, map_mul, map_sub, map_pow, map_one, hδ, hb, neg_sq]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : δ ∈ P`. Assume the negation of the conclusion as `h1`. Establish `h2` using `hδk P hp fun h => h1 (hp.mem_of_pow_mem _ h)`.
+
+Use `h1 ?_` and prove the remaining obligations. Use `P.add_mem h (P.mul_mem_right b h2)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (δ ^ 2) ^ k ∈ P` using `P.pow_mem_of_mem (P.pow_mem_of_mem h1 2 two_pos) k hk`.
+
+Establish `h3 : b ∈ P`. Use `P.add_mem (P.sub_mem h h1) (P.mul_mem_right b h2)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Introduce `a ha`.
+
+Break down `Finset.mem_insert.1 ha with rfl | ha` into its components or cases. Conclude with `h3`. Conclude with `hP P hp h1 a ha`. Take `⟨δ, hδ, hP⟩` from `key (Set.toFinite {a | σ a = -a}).toFinset (by simp)`. Use `⟨δ, hδ, ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hu`. Take `⟨P, hmax, hmem⟩` from `exists_max_ideal_of_mem_nonunits hu`. Use `hmax.ne_top (top_le_iff.1 ?_)` and prove the remaining obligations. Rewrite using `[← htop, Ideal.span_le]`. Introduce `a ha`.
+
+Conclude with `hP P hmax.isPrime hmem a (by simpa using ha)`.
+-/
 theorem exists_isUnit_neg (σ : R →+* R) (htop : Ideal.span {a | σ a = -a} = ⊤) :
     ∃ δ, σ δ = -δ ∧ IsUnit δ := by
   classical
@@ -130,6 +177,15 @@ theorem exists_isUnit_neg (σ : R →+* R) (htop : Ideal.span {a | σ a = -a} = 
   intro a ha
   exact hP P hmax.isPrime hmem a (by simpa using ha)
 
+/- English proof (translation)
+Take `⟨δ, hδ, hu⟩` from `exists_isUnit_neg σ htop`. Establish `unit : ∀ (a : R) (ha : σ a = a), IsUnit a → IsUnit (⟨a, ha⟩ : σ.eqLocus (RingHom.id R))`. Introduce `a ha h`. Take `⟨b, hb⟩` from `h.exists_right_inv`. Establish `h2` using `congrArg σ hb`.
+
+Rewrite `h2` using `[map_mul, ha, map_one]`. Establish `h3 : σ b = b` using `by linear_combination b * h2 - σ b * hb`. Conclude with `IsUnit.of_mul_eq_one ⟨b, h3⟩ (Subtype.ext hb)`. Establish `hD : σ (δ ^ 2) = δ ^ 2` using `by rw [map_pow, hδ, neg_sq]`. Take `⟨⟨x, hx⟩, ⟨y, hy⟩, h⟩` from `exists_sq_sub_mul_sq hp hp2 (R := σ.eqLocus (RingHom.id R)) (Subtype.ext (by simpa using h0)) (unit _ hD (hu.pow 2)) (unit _ hfix hν)`.
+
+Establish `hx' : σ x = x` using `hx`. Establish `hy' : σ y = y` using `hy`. Establish `h' : x ^ 2 - δ ^ 2 * y ^ 2 = ν` using `congrArg Subtype.val h`. Use `⟨x + y * δ, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, hx', hy', hδ]`.
+
+Take the linear combination `h'`.
+-/
 theorem exists_norm_eq (σ : R →+* R) (htop : Ideal.span {a | σ a = -a} = ⊤) {p : ℕ} (hp : p.Prime)
     (hp2 : p ≠ 2) (h0 : (p : R) = 0) {ν : R} (hν : IsUnit ν) (hfix : σ ν = ν) :
     ∃ t, t * σ t = ν := by
@@ -160,6 +216,19 @@ open scoped TensorProduct
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E)
 
+/- English proof (translation)
+Use `haveI := H.unram`. Set `σ` to `IsCMField.ringOfIntegersComplexConj E`. Establish `hσ : ∀ a, σ a = H.bar a` using `fun a => by`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `(IsCMField.coe_ringOfIntegersComplexConj E a).trans (H.bar_eq a).symm`.
+
+Set `L : 𝓞 E ⊗[𝓞 (maximalRealSubfield E)] 𝓞 E →ₐ[𝓞 (maximalRealSubfield E)] 𝓞 E` to `Algebra.TensorProduct.lift (AlgHom.id _ _) (σ : 𝓞 E →ₐ[_] 𝓞 E) fun _ _ => Commute.all _ _`. Establish `hL : ∀ x y, L (x ⊗ₜ y) = x * H.bar y` using `fun x y => by simp [L, hσ]`. Establish `h1 : ∀ z, Algebra.TensorProduct.lmul' (𝓞 (maximalRealSubfield E)) (S` using `𝓞 E) z - L z ∈ Ideal.span (Set.range fun b : 𝓞 E => b - H.bar b) := by`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul x y`. Rewrite using `[hL, Algebra.TensorProduct.lmul'_apply_tmul, ← mul_sub]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨y, rfl⟩)`. Consider the case `add x y hx hy`.
+
+Rewrite using `[map_add, map_add]`. Use `Ideal.add_mem _ hx hy using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `congrArg L (Algebra.FormallyUnramified.one_tmul_mul_elem (R := 𝓞 (maximalRealSubfield E)) H.rt)`. Rewrite `h2` using `[map_mul, map_mul, hL, hL, bar_rt, map_one]`.
+
+Establish `h3 : L (Algebra.FormallyUnramified.elem (𝓞 (maximalRealSubfield E)) (𝓞 E)) = 0`. Apply `mul_left_cancel₀ (mul_ne_zero (two_ne_zero : (2 : 𝓞 E) ≠ 0) (rt_ne_zero H))` to reduce the goal to its premises. Take the linear combination `-h2`. Establish `h4` using `h1 (Algebra.FormallyUnramified.elem (𝓞 (maximalRealSubfield E)) (𝓞 E))`. Rewrite `h4` using `[h3, Algebra.FormallyUnramified.lmul_elem, sub_zero]`.
+
+Conclude with `(Ideal.eq_top_iff_one _).2 h4`.
+-/
 theorem span_sub_bar : Ideal.span (Set.range fun b : 𝓞 E => b - H.bar b) = ⊤ := by
   haveI := H.unram
   let σ := IsCMField.ringOfIntegersComplexConj E
@@ -191,6 +260,23 @@ theorem span_sub_bar : Ideal.span (Set.range fun b : 𝓞 E => b - H.bar b) = �
   rw [h3, Algebra.FormallyUnramified.lmul_elem, sub_zero] at h4
   exact (Ideal.eq_top_iff_one _).2 h4
 
+/- English proof (translation)
+Distinguish the cases in `hp2 : p = 2`. Substitute `hp2` using the available equality. Choose the witnesses or unpack the hypotheses as in `⟨k, rfl⟩ : Odd ν := by`. Rewrite using `[← Int.isCoprime_two_right]`. Simplify using `using hν`.
+
+Conclude with `⟨1, -k, by simp⟩`. Set `I : Ideal (𝓞 E)` to `Ideal.span {(p : 𝓞 E)}`. Establish `hI : I ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hp.ne_zero` after adjusting the coercions.
+
+Use `haveI : Finite (𝓞 E ⧸ I) := Ideal.finiteQuotientOfFreeOfNeBot I hI`. Set `σ : 𝓞 E ⧸ I →+* 𝓞 E ⧸ I` to `Ideal.quotientMap I (H.bar : 𝓞 E →+* 𝓞 E) (by`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ rfl`. Rewrite using `[SetLike.mem_coe, Ideal.mem_comap, map_natCast]`.
+
+Conclude with `Ideal.mem_span_singleton_self _)`. Establish `hσ : ∀ a, σ (Ideal.Quotient.mk I a) = Ideal.Quotient.mk I (H.bar a)` using `fun a => rfl`. Establish `htop : Ideal.span {a | σ a = -a} = ⊤`. Rewrite using `[eq_top_iff, ← Ideal.map_top (Ideal.Quotient.mk I), ← span_sub_bar H, Ideal.map_span]`. Use `Ideal.span_mono ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨_, ⟨b, rfl⟩, rfl⟩`. Express the relevant statement in the definitionally equal form `σ _ = _`. Rewrite using `[hσ, map_sub H.bar, bar_bar, ← map_neg, neg_sub]`. Establish `h0 : (p : 𝓞 E ⧸ I) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk I), Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `Ideal.mem_span_singleton_self _`. Establish `hu : IsUnit (ν : 𝓞 E ⧸ I)`. Take `⟨a, b, hab⟩` from `hν`. Use `congrArg (Int.cast : ℤ → 𝓞 E ⧸ I) hab` as an intermediate fact. Move the coercions through the operations in `at this`.
+
+Rewrite `this` using `[h0]`. Conclude with `IsUnit.of_mul_eq_one (a : 𝓞 E ⧸ I) (by linear_combination this)`. Take `⟨t, ht⟩` from `exists_norm_eq σ htop hp hp2 h0 hu (map_intCast σ ν)`. Take `⟨t, rfl⟩` from `Ideal.Quotient.mk_surjective t`. Use `⟨t, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, ← hσ, ht, map_intCast, sub_self]`.
+-/
 theorem exists_norm_mod_prime {p : ℕ} (hp : p.Prime) {ν : ℤ} (hν : IsCoprime ν (p : ℤ)) :
     ∃ t : 𝓞 E, (p : 𝓞 E) ∣ t * H.bar t - (ν : 𝓞 E) := by
   by_cases hp2 : p = 2
@@ -230,6 +316,21 @@ theorem exists_norm_mod_prime {p : ℕ} (hp : p.Prime) {ν : ℤ} (hν : IsCopri
   rw [← Ideal.mem_span_singleton, ← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, ← hσ, ht,
     map_intCast, sub_self]
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `ht`. Distinguish the cases in `hpm : p ∣ m`. Take `⟨c, hc⟩` from `hpm`. Establish `hc' : (m : 𝓞 E) = p * c` using `by exact_mod_cast hc`. Establish `hy' : H.bar y = y`.
+
+Establish `h` using `congrArg H.bar hy`. Rewrite `h` using `[map_sub, map_mul, bar_bar, map_intCast, map_mul, map_natCast]`. Apply `mul_left_cancel₀ (Nat.cast_ne_zero.2 hm : (m : 𝓞 E) ≠ 0)` to reduce the goal to its premises. Take the linear combination `hy - h`. Take `⟨a, b, hab⟩` from `hν`.
+
+Establish `hab'` using `congrArg (Int.cast : ℤ → 𝓞 E) hab`. Move the coercions through the operations in `at hab'`. Use `⟨t * (1 - m * y * a * H.w0), ⟨y * b - c * y * y * a + c * (y * a) ^ 2 * (H.w0 * (1 - H.w0)) * (t * H.bar t), ?_⟩, ⟨-(t * y * a * H.w0), by ring⟩⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_sub, map_one, map_natCast, map_intCast, hy', cmHost_bar_halfIntegerGenerator]`. Use `push_cast`.
+
+Take the linear combination `(1 - m * y * a) * hy - m * y * hab' + (m * (-(y * y * a) + (y * a) ^ 2 * (H.w0 * (1 - H.w0)) * (t * H.bar t))) * hc'`. Take `⟨s, z, hz⟩` from `exists_norm_mod_prime H hp hν`. Establish `hco : IsCoprime (m : 𝓞 E) (p : 𝓞 E)` using `((Nat.coprime_comm.1 (hp.coprime_iff_not_dvd.2 hpm)).isCoprime.map (Int.castRingHom (𝓞 E))).imp fun a ⟨b, h⟩ => ⟨b, by simpa using h⟩`. Take `⟨a, b, hab⟩` from `id hco`. Establish `cong : ∀ (k : ℕ) (u v : 𝓞 E), (k : 𝓞 E) ∣ u - v → (k : 𝓞 E) ∣ v * H.bar v - ν → (k : 𝓞 E) ∣ u * H.bar u - ν`.
+
+Introduce and unpack `k u v ⟨w, hw⟩ h`. Establish `h2` using `congrArg H.bar hw`. Rewrite `h2` using `[map_sub, map_mul, map_natCast]`. Use `dvd_add h (Dvd.intro (w * H.bar u + v * H.bar w) rfl : (k : 𝓞 E) ∣ _)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Take the linear combination `H.bar u * hw + v * h2`. Establish `d1 : (m : 𝓞 E) ∣ (b * p * t + a * m * s) - t` using `⟨a * (s - t), by linear_combination t * hab⟩`. Establish `d2 : (p : 𝓞 E) ∣ (b * p * t + a * m * s) - s` using `⟨b * (t - s), by linear_combination s * hab⟩`. Use `⟨b * p * t + a * m * s, ?_, d1⟩` and prove the remaining obligations. Use `push_cast`.
+
+Conclude with `hco.mul_dvd (cong _ _ _ d1 ⟨y, hy⟩) (cong _ _ _ d2 ⟨z, hz⟩)`.
+-/
 theorem exists_norm_mod_mul_prime {m p : ℕ} (hm : m ≠ 0) (hp : p.Prime) {ν : ℤ}
     (hν : IsCoprime ν (p : ℤ)) {t : 𝓞 E} (ht : (m : 𝓞 E) ∣ t * H.bar t - (ν : 𝓞 E)) :
     ∃ s : 𝓞 E, ((m * p : ℕ) : 𝓞 E) ∣ s * H.bar s - (ν : 𝓞 E) ∧ (m : 𝓞 E) ∣ s - t := by
@@ -272,6 +373,13 @@ theorem exists_norm_mod_mul_prime {m p : ℕ} (hm : m ≠ 0) (hp : p.Prime) {ν 
     push_cast
     exact hco.mul_dvd (cong _ _ _ d1 ⟨y, hy⟩) (cong _ _ _ d2 ⟨z, hz⟩)
 
+/- English proof (translation)
+Proceed by induction on `k using induction_on_primes with`. Consider the case `zero => exact absurd rfl hk`. Consider the case `one => exact fun _ t ht => ⟨t, by simpa using ht, by simp⟩`. Consider the case `prime_mul p k hp ih`. Introduce `m hm t ht`.
+
+Move the coercions through the operations in `at hν`. Take `⟨s, hs, hst⟩` from `exists_norm_mod_mul_prime H hm hp hν.of_mul_right_left ht`. Take `⟨u, hu, hus⟩` from `ih (right_ne_zero_of_mul hk) hν.of_mul_right_right (mul_ne_zero hm hp.ne_zero) hs`. Use `⟨u, by rwa [← mul_assoc], ?_⟩` and prove the remaining obligations. Move the coercions through the operations in `at hus`.
+
+Simplify using `using dvd_add (dvd_of_mul_right_dvd hus) hst`.
+-/
 theorem exists_norm_mod_mul {k : ℕ} (hk : k ≠ 0) {ν : ℤ} (hν : IsCoprime ν (k : ℤ)) :
     ∀ {m : ℕ}, m ≠ 0 → ∀ {t : 𝓞 E}, (m : 𝓞 E) ∣ t * H.bar t - (ν : 𝓞 E) →
       ∃ s : 𝓞 E, ((m * k : ℕ) : 𝓞 E) ∣ s * H.bar s - (ν : 𝓞 E) ∧ (m : 𝓞 E) ∣ s - t := by
@@ -288,6 +396,13 @@ theorem exists_norm_mod_mul {k : ℕ} (hk : k ≠ 0) {ν : ℤ} (hν : IsCoprime
     push_cast at hus
     simpa using dvd_add (dvd_of_mul_right_dvd hus) hst
 
+/- English proof (translation)
+Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 ((Ideal.eq_top_iff_one _).1 l.coprime)`. Establish `ha' : H.bar a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)` using `Ideal.mem_map_of_mem _ ha`. Establish `hb' : H.bar b ∈ l.Mb`. Take `⟨c, hc, rfl⟩` from `(Ideal.mem_map_iff_of_surjective (H.bar : 𝓞 E →+* 𝓞 E) H.bar.surjective).1 hb`. Simplify using `using hc`.
+
+Establish `hab'` using `congrArg H.bar hab`. Rewrite `hab'` using `[map_add, map_one]`. Use `⟨b + ν * a, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.mem_span_singleton, ← l.prod]`. Establish `h` using `Ideal.add_mem _ (Ideal.mul_mem_left _ (1 - (ν : 𝓞 E)) (Ideal.mul_mem_mul hb' hb)) (Ideal.mul_mem_left _ ((ν : 𝓞 E) ^ 2 - ν) (Ideal.mul_mem_mul ha ha'))`.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_add, map_mul, map_intCast]`. Take the linear combination `(ν : 𝓞 E) * (H.bar a + H.bar b) * hab + (ν : 𝓞 E) * hab'`. Use `l.Mb.mul_mem_left ((ν : 𝓞 E) - 1) ha using 1` and compare the differences between its conclusion and the goal. Take the linear combination `hab`.
+-/
 theorem exists_norm_mod_level (l : Level H) (ν : ℤ) :
     ∃ t : 𝓞 E, (l.M : 𝓞 E) ∣ t * H.bar t - (ν : 𝓞 E) ∧ t - 1 ∈ l.Mb := by
   obtain ⟨a, ha, b, hb, hab⟩ := Submodule.mem_sup.1 ((Ideal.eq_top_iff_one _).1 l.coprime)
@@ -308,6 +423,13 @@ theorem exists_norm_mod_level (l : Level H) (ν : ℤ) :
   · convert l.Mb.mul_mem_left ((ν : 𝓞 E) - 1) ha using 1
     linear_combination hab
 
+/- English proof (translation)
+Distinguish the cases in `hM : l.M ∣ n`. Take `⟨k, rfl⟩` from `hM`. Take `⟨t, ht, ht1⟩` from `exists_norm_mod_level H l ν`. Move the coercions through the operations in `at hν`. Take `⟨s, hs, c, hc⟩` from `exists_norm_mod_mul H (right_ne_zero_of_mul hn.ne') hν.of_mul_right_right (left_ne_zero_of_mul hn.ne') ht`.
+
+Use `⟨s, hs, fun _ => ?_⟩` and prove the remaining obligations. Establish `hMb : (l.M : 𝓞 E) ∈ l.Mb`. Establish `h` using `Ideal.mem_span_singleton_self (l.M : 𝓞 E)`. Rewrite `h` using `[← l.prod]`. Conclude with `(Ideal.mul_le_inf (I := l.Mb) h).1`.
+
+Use `l.Mb.add_mem ht1 (l.Mb.mul_mem_right c hMb) using 1` and compare the differences between its conclusion and the goal. Take the linear combination `hc`. Take `⟨s, hs, -⟩` from `exists_norm_mod_mul H hn.ne' hν (m := 1) one_ne_zero (t := 1) (by simp)`. Conclude with `⟨s, by simpa using hs, fun h => absurd h hM⟩`.
+-/
 theorem exists_norm_mod (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Level H)
     (n : ℕ) (ν : ℤ) (hn : 0 < n) (hν : IsCoprime ν (n : ℤ)) :
     ∃ t : 𝓞 E, (n : 𝓞 E) ∣ t * H.bar t - (ν : 𝓞 E) ∧ (l.M ∣ n → t - 1 ∈ l.Mb) := by

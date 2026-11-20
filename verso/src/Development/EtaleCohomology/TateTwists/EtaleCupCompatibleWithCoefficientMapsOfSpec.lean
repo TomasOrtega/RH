@@ -9,6 +9,9 @@ namespace LateralTheory.EtaleFoundations
 def EtaleCupCompatAlexanderWhitneyCocycleSpec : Prop :=
   ∀ (R : Type) [CommRing R] {I J K : Cx R} (μ : Pair I J K) {E : Spc} {n m k : ℤ} (hk : n + m = k), (∀ (α : Cocycle ((chains R).obj E) I n) (β : Cocycle ((chains R).obj E) J m), ∃ γ : Cocycle ((chains R).obj E) K k, μ.IsAW hk α.1 β.1 γ.1) ∧ ∀ (α : Cocycle ((chains R).obj E) I n) (β : Cocycle ((chains R).obj E) J m) (γ : Cocycle ((chains R).obj E) K k), μ.IsAW hk α.1 β.1 γ.1 → μ.cup E hk (CohomologyClass.mk α) (CohomologyClass.mk β) = CohomologyClass.mk γ
 
+/- English proof (translation)
+Unfold `ev`. Rewrite using `[Cochain.comp_v _ _ (add_zero n) (-(p : ℤ)) s s h (add_zero s), Cochain.ofHom_v]`. Both sides reduce to the same expression.
+-/
 theorem etale_cochain_comp_hom_evaluation_eq_map {R : Type} [CommRing R] {E : Spc} {I J : Cx R} {n : ℤ} (m : I ⟶ J)
     (α : Cochain ((chains R).obj E) I n) (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0})
     (x : Sx E p U) :
@@ -17,12 +20,22 @@ theorem etale_cochain_comp_hom_evaluation_eq_map {R : Type} [CommRing R] {E : Sp
   rw [Cochain.comp_v _ _ (add_zero n) (-(p : ℤ)) s s h (add_zero s), Cochain.ofHom_v]
   rfl
 
+/- English proof (translation)
+The claim follows from `etale_cochain_comp_hom_evaluation_eq_map m α.1 p s h U x`.
+-/
 theorem etale_cocycle_comp_hom_evaluation_eq_map {R : Type} [CommRing R] {E : Spc} {I J : Cx R} {n : ℤ} (m : I ⟶ J)
     (α : Cocycle ((chains R).obj E) I n) (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0})
     (x : Sx E p U) :
     ev (zcomp α (Cocycle.ofHom m) (add_zero n)).1 p s h U x = Sec.map (m.f s) (ev α.1 p s h U x) :=
   etale_cochain_comp_hom_evaluation_eq_map m α.1 p s h U x
 
+/- English proof (translation)
+Introduce `R _ I J K I' J' K' μ ν f g u hc E n m k hk a b`. Take `⟨α, rfl⟩` from `CohomologyClass.mk_surjective a`. Take `⟨β, rfl⟩` from `CohomologyClass.mk_surjective b`. Take `⟨γ, hγ⟩` from `(hspec R μ hk).1 α β`. Rewrite using `[(hspec R μ hk).2 α β γ hγ, cpost_mk, cpost_mk, cpost_mk]`.
+
+Use `symm`. Apply `(hspec R ν hk).2` to reduce the goal to its premises. Introduce `N w h U x`. Rewrite using `[etale_cocycle_comp_hom_evaluation_eq_map, hγ N w h U x]`. Simplify using `only [Sec.map]`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def, Units.smul_def, map_zsmul, etale_cocycle_comp_hom_evaluation_eq_map, etale_cocycle_comp_hom_evaluation_eq_map]`. Use `congr 1`. Conclude with `hc U _ _ w _ _ _`.
+-/
 theorem etale_cup_compatible_with_coefficient_maps_of_spec (hspec : EtaleCupCompatAlexanderWhitneyCocycleSpec) : EtaleCupProductNaturalInCoefficients := by
   intro R _ I J K I' J' K' μ ν f g u hc E n m k hk a b
   obtain ⟨α, rfl⟩ := CohomologyClass.mk_surjective a

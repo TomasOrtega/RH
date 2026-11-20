@@ -15,6 +15,9 @@ open GlobalTheory.EtC.ClsBasic GlobalTheory.EtC.HCElements
 
 variable {R : Type} [CommRing R] {F : Shv R}
 
+/- English proof (translation)
+Rewrite using `[chains_d (R := R) (disc.obj P) 0, Fin.sum_univ_two]`. Establish `h0 : (disc.obj P).δ (0 : Fin 2) = 𝟙 _` using `rfl`. Establish `h1 : (disc.obj P).δ (1 : Fin 2) = 𝟙 _` using `rfl`. Simplify using `[h0, h1]`.
+-/
 theorem const_d (P : PSh) : ((chains R).obj (disc.obj P)).d (-(((0 : ℕ) + 1 : ℕ) : ℤ)) (-((0 : ℕ) : ℤ)) = 0 := by
   rw [chains_d (R := R) (disc.obj P) 0, Fin.sum_univ_two]
   have h0 : (disc.obj P).δ (0 : Fin 2) = 𝟙 _ := rfl
@@ -31,6 +34,9 @@ def dcl (P : PSh) (m : ℤ) (t : (free R).obj P ⟶ (res R F).X m) (ht : t ≫ (
     H R (disc.obj P) F m :=
   CohomologyClass.mk (dcoc P m t ht)
 
+/- English proof (translation)
+Rewrite using `[dcl, dcl, dcl, ← CohomologyClass.mk_add]`. Use `congr 1`. Use `Cocycle.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Cochain.single _ m + Cochain.single _ m = Cochain.single _ m`. Rewrite using `[← single_add', Preadditive.comp_add]`.
+-/
 theorem dcl_add (P : PSh) (m : ℤ) (t t' : (free R).obj P ⟶ (res R F).X m) (ht ht') (h) :
     dcl P m t ht + dcl P m t' ht' = dcl P m (t + t') h := by
   rw [dcl, dcl, dcl, ← CohomologyClass.mk_add]
@@ -45,6 +51,13 @@ def closedSub (P : PSh) (m : ℤ) : AddSubgroup ((free R).obj P ⟶ (res R F).X 
 def dclHom (P : PSh) (m : ℤ) : closedSub (F := F) P m →+ H R (disc.obj P) F m :=
   AddMonoidHom.mk' (fun t => dcl P m t.1 t.2) (fun t t' => (dcl_add P m t.1 t'.1 t.2 t'.2 (t + t').2).symm)
 
+/- English proof (translation)
+Establish `hs : (∑ i ∈ S, c i • (⟨t i, ht i⟩ : closedSub (F` using `F) P m)) = ⟨∑ i ∈ S, c i • t i, h⟩ := by`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubgroup.val_finset_sum]`. Both sides reduce to the same expression. Establish `e : dclHom (F` using `F) P m (∑ i ∈ S, c i • (⟨t i, ht i⟩ : closedSub (F := F) P m)) = ∑ i ∈ S, c i • dcl P m (t i) (ht i) := by`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`. Both sides reduce to the same expression. Rewrite using `[← e, hs]`.
+
+Both sides reduce to the same expression.
+-/
 theorem dcl_sum_zsmul (P : PSh) (m : ℤ) {ι : Type} (S : Finset ι) (c : ι → ℤ) (t : ι → ((free R).obj P ⟶ (res R F).X m))
     (ht : ∀ i, t i ≫ (res R F).d m (m + 1) = 0) (h) :
     ∑ i ∈ S, c i • dcl P m (t i) (ht i) = dcl P m (∑ i ∈ S, c i • t i) h := by
@@ -69,6 +82,11 @@ open GlobalTheory.EtC.ClsBasic GlobalTheory.EtC.HCElements
 
 variable {R : Type} [CommRing R] {F : Shv R}
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp (Cocycle.ofHom ((chains R).map (disc.map f))) (dcoc P' m t ht) (zero_add m)) = _`. Use `congr 1`. Use `Cocycle.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Cochain.ofHom ((chains R).map (disc.map f))).comp (Cochain.single _ m) (zero_add m) = Cochain.single _ m`. Rewrite using `[ofHom_comp_single, ← Category.assoc, chainsXIso_nat (disc.map f) 0, Category.assoc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem pull_dcl {P P' : PSh} (f : P ⟶ P') (m : ℤ) (t : (free R).obj P' ⟶ (res R F).X m) (ht) (h) :
     pull R (disc.map f) F m (dcl P' m t ht) = dcl P m ((free R).map f ≫ t) h := by
   change CohomologyClass.mk (zcomp (Cocycle.ofHom ((chains R).map (disc.map f))) (dcoc P' m t ht) (zero_add m)) = _
@@ -78,6 +96,9 @@ theorem pull_dcl {P P' : PSh} (f : P ⟶ P') (m : ℤ) (t : (free R).obj P' ⟶ 
   rw [ofHom_comp_single, ← Category.assoc, chainsXIso_nat (disc.map f) 0, Category.assoc]
   rfl
 
+/- English proof (translation)
+Rewrite using `[dcl, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (m - 1) (by omega)]`. Use `⟨Cochain.single (p := -((0 : ℕ) : ℤ)) (q := m - 1) ((chainsXIso R (disc.obj P) 0).hom ≫ y) (m - 1), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = Cochain.single _ m`. Rewrite using `[Cochain.δ_single _ (m - 1) m (by omega) (-(((0 : ℕ) + 1 : ℕ) : ℤ)) m (by simp) (by omega), const_d]`. Simplify using the standard rewrite rules.
+-/
 theorem dcl_bd (P : PSh) (m : ℤ) (y : (free R).obj P ⟶ (res R F).X (m - 1)) (h) :
     dcl P m (y ≫ (res R F).d (m - 1) m) h = 0 := by
   rw [dcl, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (m - 1) (by omega)]
@@ -86,6 +107,11 @@ theorem dcl_bd (P : PSh) (m : ℤ) (y : (free R).obj P ⟶ (res R F).X (m - 1)) 
   rw [Cochain.δ_single _ (m - 1) m (by omega) (-(((0 : ℕ) + 1 : ℕ) : ℤ)) m (by simp) (by omega), const_d]
   simp
 
+/- English proof (translation)
+Rewrite `h0` using `[dcl, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (m - 1) (by omega)]`. Take `⟨β, hβ⟩` from `h0`. Establish `e` using `Cochain.congr_v hβ (-((0 : ℕ) : ℤ)) m (by simp)`. Rewrite `e` using `[δ_v (m - 1) m (by omega) β _ m _ (m - 1) (-((0 : ℕ) : ℤ) + 1) (by omega) rfl]`. Establish `hz : ((chains R).obj (disc.obj P)).d (-((0 : ℕ) : ℤ)) (-((0 : ℕ) : ℤ) + 1) = 0` using `(chains_X_isZero R _ _ (by simp)).eq_of_tgt _ _`.
+
+Rewrite `e` using `[hz, zero_comp, smul_zero, add_zero]`. Express the relevant statement in the definitionally equal form `_ = (Cochain.single _ m).v _ _ _ at e`. Rewrite `e` using `[Cochain.single_v]`. Use `⟨(chainsXIso R (disc.obj P) 0).inv ≫ β.v (-((0 : ℕ) : ℤ)) (m - 1) (by omega), ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, e, Iso.inv_hom_id_assoc]`.
+-/
 theorem dcl_eq_zero (P : PSh) (m : ℤ) (t : (free R).obj P ⟶ (res R F).X m) (ht) (h0 : dcl P m t ht = 0) :
     ∃ u : (free R).obj P ⟶ (res R F).X (m - 1), t = u ≫ (res R F).d (m - 1) m := by
   rw [dcl, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (m - 1) (by omega)] at h0
@@ -100,6 +126,11 @@ theorem dcl_eq_zero (P : PSh) (m : ℤ) (t : (free R).obj P ⟶ (res R F).X m) (
   refine ⟨(chainsXIso R (disc.obj P) 0).inv ≫ β.v (-((0 : ℕ) : ℤ)) (m - 1) (by omega), ?_⟩
   rw [Category.assoc, e, Iso.inv_hom_id_assoc]
 
+/- English proof (translation)
+Establish `hi : ∀ i : Fin (p + 2), ((free R).map (E.δ i) ≫ t) ≫ (res R F).d s (s + 1) = 0` using `fun i => by`. Rewrite using `[Category.assoc, ht, comp_zero]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [rowD, AddMonoidHom.finset_sum_apply, AddMonoidHom.smul_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[pull_dcl]`. Use `_ = dcl _ s (∑ i : Fin (p + 2), ((-1 : ℤ) ^ (i : ℕ)) • ((free R).map (E.δ i) ≫ t)) (by simp [Preadditive.sum_comp, hi]) := dcl_sum_zsmul _ s _ _ _ hi _`. Use `_ = _ := by`. Use `congr 1`. Simplify using `[Preadditive.sum_comp]`.
+-/
 theorem rowD_dcl (E : Spc) (s : ℤ) (p : ℕ) (t : (free R).obj (E.obj (op ⦋p⦌)) ⟶ (res R F).X s) (ht) (h) :
     rowD R E F s p (dcl _ s t ht) =
       dcl _ s ((∑ i : Fin (p + 2), (-1 : ℤ) ^ (i : ℕ) • (free R).map (E.δ i)) ≫ t) h := by
@@ -116,6 +147,13 @@ theorem rowD_dcl (E : Spc) (s : ℤ) (p : ℕ) (t : (free R).obj (E.obj (op ⦋p
         congr 1
         simp [Preadditive.sum_comp]
 
+/- English proof (translation)
+Take `⟨α, rfl, hα⟩` from `GlobalTheory.EtC.discRep R P (res R F) m w`. Establish `e` using `Cochain.congr_v (Cocycle.δ_eq_zero α (m + 1)) (-((0 : ℕ) : ℤ)) (m + 1) (by simp)`. Rewrite `e` using `[δ_v m (m + 1) rfl _ _ _ _ m (-((0 : ℕ) : ℤ) + 1) (by simp) rfl, (chains_X_isZero R _ (-((0 : ℕ) : ℤ) + 1) (by simp)).eq_of_tgt (((chains R).obj (disc.obj P)).d _ _) 0]`. Simplify using `only [zero_comp, smul_zero, add_zero, Cochain.zero_v] at e`. Use `⟨(chainsXIso R (disc.obj P) 0).inv ≫ α.1.v (-((0 : ℕ) : ℤ)) m (by simp), by rw [Category.assoc, e, comp_zero], ?_⟩` and prove the remaining obligations.
+
+Use `congr 1`. Use `Cocycle.ext (Cochain.ext _ _ fun p' q' hpq => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `α.1.v p' q' hpq = (Cochain.single _ m).v p' q' hpq`. Break down `lt_trichotomy p' (-((0 : ℕ) : ℤ)) with hp | hp | hp` into its components or cases. Take `⟨j, rfl⟩ : ∃ j : ℕ, p' = -(j : ℤ)` from `⟨(-p').toNat, by omega⟩`.
+
+Rewrite using `[hα j (by omega) q' hpq, Cochain.single_v_eq_zero _ _ _ _ _ (by omega)]`. Substitute `hp` using the available equality. Take `rfl : q' = m` from `by omega`. Rewrite using `[Cochain.single_v, Iso.hom_inv_id_assoc]`. Conclude with `(chains_X_isZero R _ p' (by omega)).eq_of_src _ _`.
+-/
 theorem dcl_surj (P : PSh) (m : ℤ) (w : H R (disc.obj P) F m) :
     ∃ (s : (free R).obj P ⟶ (res R F).X m) (hs : s ≫ (res R F).d m (m + 1) = 0), w = dcl P m s hs := by
   obtain ⟨α, rfl, hα⟩ := GlobalTheory.EtC.discRep R P (res R F) m w
@@ -143,16 +181,29 @@ open GlobalTheory.EtC.ClsBasic GlobalTheory.EtC.HCElements
 
 variable {R : Type} [CommRing R] {F : Shv R}
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem dcl_congr (P : PSh) (m : ℤ) {t t' : (free R).obj P ⟶ (res R F).X m} (e : t = t') (ht) (ht') :
     dcl P m t ht = dcl P m t' ht' := by
   subst e; rfl
 
+/- English proof (translation)
+Use `eq_sub_of_add_eq ?_` and prove the remaining obligations. Rewrite using `[dcl_add P m _ _ h ht' (by rw [sub_add_cancel]; exact ht)]`. Conclude with `dcl_congr P m (sub_add_cancel t t') _ _`.
+-/
 theorem dcl_sub (P : PSh) (m : ℤ) (t t' : (free R).obj P ⟶ (res R F).X m) (ht ht') (h) :
     dcl P m (t - t') h = dcl P m t ht - dcl P m t' ht' := by
   refine eq_sub_of_add_eq ?_
   rw [dcl_add P m _ _ h ht' (by rw [sub_add_cancel]; exact ht)]
   exact dcl_congr P m (sub_add_cancel t t') _ _
 
+/- English proof (translation)
+Set `c : Cocycle K L n` to `Cocycle.mk (δ (n - 1) n γ) (n + 1) (by omega) (δ_δ _ _ _ _)`. Use `⟨z - c, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[CohomologyClass.mk_sub, sub_eq_self, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`. Conclude with `⟨γ, rfl⟩`. Introduce `p q hpq hp`.
+
+Rewrite using `[Cocycle.coe_sub, Cochain.sub_v]`. Express the relevant statement in the definitionally equal form `z.1.v p q hpq - (δ (n - 1) n γ).v p q hpq = 0`. Break down `lt_or_eq_of_le (show -(k : ℤ) ≤ p by omega) with h | h` into its components or cases. Rewrite using `[hv p q hpq h, h1 p q hpq h, sub_zero]`. Substitute `h` using the available equality.
+
+Rewrite using `[h2, sub_self]`.
+-/
 theorem clear_step {K L : Cx R} {n : ℤ} (z : Cocycle K L n) (k : ℕ)
     (hv : ∀ p q (hpq : p + n = q), -(k : ℤ) < p → z.1.v p q hpq = 0) (γ : Cochain K L (n - 1))
     (h1 : ∀ p q (hpq : p + n = q), -(k : ℤ) < p → (δ (n - 1) n γ).v p q hpq = 0)
@@ -176,6 +227,43 @@ end GlobalTheory.EtC.RowVanish
 
 open GlobalTheory.EtC.RowVanish GlobalTheory.EtC.ClsBasic GlobalTheory.EtC.HCElements in
 
+/- English proof (translation)
+Introduce `R _ F E P g hg n x hx hrow`. Take `⟨-, hneg, -, -, -, hpos⟩` from `GlobalTheory.EtC.res_basic R F`. Establish `key : ∀ k : ℕ, k ≤ n + 1 → ∃ z : Cocycle ((chains R).obj E) (res R F) n, CohomologyClass.mk z = x ∧ ∀ p q (hpq : p + (n : ℤ) = q), -(k : ℤ) < p → z.1.v p q hpq = 0`. Introduce `k`. Proceed by induction on `k with`.
+
+Consider the case `zero`. Introduce `_`. Take `⟨z, rfl⟩` from `x.mk_surjective`. Conclude with `⟨z, rfl, fun p q hpq hp => (hpos E p (by omega)).eq_of_src _ _⟩`. Consider the case `succ k ih`.
+
+Introduce `hk`. Take `⟨z, hz, hv⟩` from `ih (by omega)`. Break down `k with _ | p` into its components or cases. Substitute `hz` using the available equality. Establish `hx' : CohomologyClass.mk (zcomp (Cocycle.ofHom ((chains R).map g)) z (zero_add _)) = 0` using `hx`.
+
+Rewrite `hx'` using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ ((n : ℤ) - 1) (by omega)]`. Take `⟨β, hβ⟩` from `hx'`. Establish `e` using `Cochain.congr_v hβ (-((0 : ℕ) : ℤ)) n (by simp)`. Rewrite `e` using `[δ_v ((n : ℤ) - 1) n (by omega) β _ n _ ((n : ℤ) - 1) (-((0 : ℕ) : ℤ) + 1) (by omega) rfl, (chains_X_isZero R _ (-((0 : ℕ) : ℤ) + 1) (by simp)).eq_of_tgt (((chains R).obj (disc.obj P)).d _ _) 0, zero_comp, smul_zero, add_zero]`. Express the relevant statement in the definitionally equal form `_ = ((Cochain.ofHom ((chains R).map g)).comp z.1 (zero_add _)).v _ _ _ at e`.
+
+Rewrite `e` using `[Cochain.zero_cochain_comp_v, Cochain.ofHom_v]`. Use `haveI : IsIso (((chains R).map g).f (-((0 : ℕ) : ℤ))) := by`. Establish `h` using `chainsXIso_nat (R := R) g 0`. Rewrite `h` using `[← Iso.eq_comp_inv]`. Rewrite using `[h]`.
+
+Use `infer_instance`. Set `γ : Cochain ((chains R).obj E) (res R F) ((n : ℤ) - 1)` to `Cochain.single (p := -((0 : ℕ) : ℤ)) (q := (n : ℤ) - 1) (inv (((chains R).map g).f (-((0 : ℕ) : ℤ))) ≫ β.v (-((0 : ℕ) : ℤ)) ((n : ℤ) - 1) (by omega)) ((n : ℤ) - 1)`. Use `clear_step z 0 hv γ (fun p q hpq hp => (hpos E p (by omega)).eq_of_src _ _) (fun q hpq => ?_)` and prove the remaining obligations. Take `rfl : q = (n : ℤ)` from `by omega`. Rewrite using `[δ_v ((n : ℤ) - 1) n (by omega) γ _ n hpq ((n : ℤ) - 1) (-((0 : ℕ) : ℤ) + 1) (by omega) rfl, (hpos E (-((0 : ℕ) : ℤ) + 1) (by simp)).eq_of_tgt (((chains R).obj E).d _ _) 0, zero_comp, smul_zero, add_zero, Cochain.single_v, Category.assoc, e, IsIso.inv_hom_id_assoc]`.
+
+Substitute `hz` using the available equality. Take `⟨S, hS⟩ : ∃ S : ℤ, S = (n : ℤ) - ((p + 1 : ℕ) : ℤ)` from `⟨_, rfl⟩`. Establish `hrowp` using `hrow p (by omega)`. Rewrite `hrowp` using `[← hS]`. Set `t : (free R).obj (E.obj (op ⦋p + 1⦌)) ⟶ (res R F).X S` to `(chainsXIso R E (p + 1)).inv ≫ z.1.v (-((p + 1 : ℕ) : ℤ)) S (by omega)`.
+
+Establish `ht : t ≫ (res R F).d S (S + 1) = 0`. Establish `e` using `Cochain.congr_v (Cocycle.δ_eq_zero z ((n : ℤ) + 1)) (-((p + 1 : ℕ) : ℤ)) (S + 1) (by omega)`. Rewrite `e` using `[δ_v (n : ℤ) ((n : ℤ) + 1) rfl _ _ _ _ S (-((p + 1 : ℕ) : ℤ) + 1) (by omega) rfl, hv (-((p + 1 : ℕ) : ℤ) + 1) _ _ (by omega), comp_zero, smul_zero, add_zero, Cochain.zero_v]`. Simplify using `only [t, Category.assoc, e, comp_zero]`. Set `D1 : (free R).obj (E.obj (op ⦋p + 1 + 1⦌)) ⟶ (free R).obj (E.obj (op ⦋p + 1⦌))` to `∑ i : Fin (p + 1 + 2), (-1 : ℤ) ^ (i : ℕ) • (free R).map (E.δ i)`.
+
+Establish `hb : D1 ≫ t = ((-(((n : ℤ) + 1).negOnePow : ℤ)) • ((chainsXIso R E (p + 1 + 1)).inv ≫ z.1.v (-((p + 1 + 1 : ℕ) : ℤ)) (S - 1) (by omega))) ≫ (res R F).d (S - 1) S`. Establish `e` using `Cochain.congr_v (Cocycle.δ_eq_zero z ((n : ℤ) + 1)) (-((p + 1 + 1 : ℕ) : ℤ)) S (by omega)`. Rewrite `e` using `[δ_v (n : ℤ) ((n : ℤ) + 1) rfl _ _ _ _ (S - 1) (-((p + 1 : ℕ) : ℤ)) (by omega) (by omega), chains_d E (p + 1), Cochain.zero_v, Units.smul_def]`. Establish `e2` using `eq_neg_of_add_eq_zero_right e`. Apply `(cancel_epi (chainsXIso R E (p + 1 + 1)).hom).1` to reduce the goal to its premises.
+
+Establish `e3` using `congrArg (fun f => (((n : ℤ) + 1).negOnePow : ℤ) • f) e2`. Simplify using `only [smul_smul, ← Units.val_mul, Int.units_mul_self, Units.val_one, one_smul] at e3`. Simplify using `only [D1, t, Preadditive.zsmul_comp, Preadditive.comp_zsmul, Category.assoc, Iso.hom_inv_id_assoc, smul_neg, neg_smul, Preadditive.neg_comp, Preadditive.comp_neg] at e3 ⊢`. Rewrite using `[← e3]`. Establish `hD1 : (D1 ≫ t) ≫ (res R F).d S (S + 1) = 0` using `by rw [Category.assoc, ht, comp_zero]`.
+
+Establish `hc0 : rowD R E F S (p + 1) (dcl _ S t ht) = 0`. Rewrite using `[rowD_dcl E S (p + 1) t ht hD1]`. Rewrite using `[dcl_congr _ S hb hD1 (by rw [← hb]; exact hD1)]`. Conclude with `dcl_bd _ S _ _`. Take `⟨w, hw⟩` from `hrowp _ hc0`.
+
+Take `⟨s, hs, rfl⟩` from `dcl_surj _ S w`. Set `D0 : (free R).obj (E.obj (op ⦋p + 1⦌)) ⟶ (free R).obj (E.obj (op ⦋p⦌))` to `∑ i : Fin (p + 2), (-1 : ℤ) ^ (i : ℕ) • (free R).map (E.δ i)`. Establish `hD0 : (D0 ≫ s) ≫ (res R F).d S (S + 1) = 0` using `by rw [Category.assoc, hs, comp_zero]`. Rewrite `hw` using `[rowD_dcl E S p s hs hD0]`. Establish `hdiff : dcl _ S (t - D0 ≫ s) (by rw [Preadditive.sub_comp, ht, hD0, sub_zero]) = 0`.
+
+Rewrite using `[dcl_sub _ S t (D0 ≫ s) ht hD0, ← hw, sub_self]`. Take `⟨u, hu⟩` from `dcl_eq_zero _ S _ _ hdiff`. Set `ε : ℤˣ` to `(n : ℤ).negOnePow`. Set `γ : Cochain ((chains R).obj E) (res R F) ((n : ℤ) - 1)` to `Cochain.single (p := -((p + 1 : ℕ) : ℤ)) (q := S - 1) ((chainsXIso R E (p + 1)).hom ≫ u) ((n : ℤ) - 1) + ε • Cochain.single (p := -((p : ℕ) : ℤ)) (q := S) ((chainsXIso R E p).hom ≫ s) ((n : ℤ) - 1)`. Establish `htz : z.1.v (-((p + 1 : ℕ) : ℤ)) S (by omega) = (chainsXIso R E (p + 1)).hom ≫ (u ≫ (res R F).d (S - 1) S + D0 ≫ s)`.
+
+Rewrite using `[← hu, sub_add_cancel]`. Simplify using `only [t, Iso.hom_inv_id_assoc]`. Use `clear_step z (p + 1) hv γ (fun p' q hpq hp' => ?_) (fun q hpq => ?_)` and prove the remaining obligations. Break down `eq_or_ne p' (-((p : ℕ) : ℤ)) with h | h` into its components or cases. Substitute `h` using the available equality.
+
+Take `rfl : q = S + 1` from `by omega`. Rewrite using `[δ_v ((n : ℤ) - 1) n (by omega) γ _ _ hpq S (-((p : ℕ) : ℤ) + 1) (by omega) rfl]`. Simplify using `(disch := omega) only [γ, Cochain.add_v, Cochain.units_smul_v, Cochain.single_v_eq_zero, Cochain.single_v, smul_zero, add_zero, zero_add, comp_zero]`. Rewrite using `[Units.smul_def, Preadditive.zsmul_comp, Category.assoc, hs, comp_zero, smul_zero]`. Rewrite using `[δ_v ((n : ℤ) - 1) n (by omega) γ _ _ hpq (q - 1) (p' + 1) (by omega) rfl]`.
+
+Simplify using `(disch := omega) only [γ, Cochain.add_v, Cochain.units_smul_v, Cochain.single_v_eq_zero, smul_zero, add_zero, zero_add, comp_zero, zero_comp]`. Establish `hq : S = q` using `by omega`. Substitute `hq` using the available equality. Rewrite using `[δ_v ((n : ℤ) - 1) n (by omega) γ _ _ hpq (S - 1) (-((p : ℕ) : ℤ)) (by omega) (by omega), chains_d E p]`. Simplify using `(disch := omega) only [γ, Cochain.add_v, Cochain.units_smul_v, Cochain.single_v_eq_zero, Cochain.single_v, smul_zero, add_zero, zero_add]`.
+
+Rewrite using `[htz, Units.smul_def, Units.smul_def, Preadditive.comp_zsmul, smul_smul, ← Units.val_mul, Int.units_mul_self, Units.val_one, one_smul]`. Simplify using `only [D0, Category.assoc, Iso.inv_hom_id_assoc, Preadditive.comp_add]`. Take `⟨z, hz, hv⟩` from `key (n + 1) le_rfl`. Establish `h0 : z = 0` using `Cocycle.ext (Cochain.ext _ _ fun p q hpq => by`. Distinguish the cases in `hp : -((n + 1 : ℕ) : ℤ) < p`.
+
+Conclude with `hv p q hpq hp`. Conclude with `(hneg q (by omega)).eq_of_tgt _ _)`. Rewrite using `[← hz, h0]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.EtC.vanish_of_rowExact : ∀ (R : Type) [CommRing R] (F : Shv R) (E : Spc) (P : PSh) (g : disc.obj P ⟶ E),
     IsIso (g.app (op ⦋0⦌)) →
     ∀ (n : ℕ) (x : H R E F n), pull R g F n x = 0 →

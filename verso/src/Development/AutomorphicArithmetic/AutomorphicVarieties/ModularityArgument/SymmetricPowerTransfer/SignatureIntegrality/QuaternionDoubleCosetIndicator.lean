@@ -33,8 +33,14 @@ def ev {τ a : K} (h : a * a = τ * a - 1) : Etau K τ →+* K where
 
 def evU {τ a : K} (h : a * a = τ * a - 1) : (Etau K τ)ˣ →* Kˣ := Units.map (ev h : Etau K τ →* K)
 
+/- English proof (translation)
+Simplify using `[add_mul]`.
+-/
 theorem root_left (a : Kˣ) : (a : K) * a = ((a : K) + (a⁻¹ : Kˣ)) * a - 1 := by simp [add_mul]
 
+/- English proof (translation)
+Simplify using `[add_mul]`.
+-/
 theorem root_right (a : Kˣ) : ((a⁻¹ : Kˣ) : K) * (a⁻¹ : Kˣ) = ((a : K) + (a⁻¹ : Kˣ)) * (a⁻¹ : Kˣ) - 1 := by simp [add_mul]
 
 end Alg

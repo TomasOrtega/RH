@@ -17,6 +17,11 @@ noncomputable section
 
 namespace GlobalTheory.FlagCell
 
+/- English proof (translation)
+Establish `hc : y ∈ ptsIn p σ (π ⁻¹ᵁ cE.U)` using `mem_ptsIn.2 (hW (mem_ptsIn.1 hy))`. Establish `hc' : PtsOver.map π w (spMap σ) y ∈ ptsIn q σ cE.U` using `hc`. Establish `key (b : Fin m) : (cE.pull h.isVB π).crd p σ (pullCol π cE.e hW M b) y = fun a => ev p σ W (M a b) y`. Use function extensionality and compare the values at `a`. Simplify using `only [pullCol, Chart.crd_sum, Chart.crd_smul, cE.crd_pull h.isVB π w _ hW hy hc, cE.crd_frame hc', Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+
+Rewrite using `[(h.pull π w).form_eq (cE.pull h.isVB π) hc _ _ hy, h.pull_G π w cE hc', key, key, chg_apply]`. Both sides reduce to the same expression.
+-/
 theorem form_pullCol {k : Type} [CommRing k] {B Y : Scheme.{0}} {q : B ⟶ Sp k} {p : Y ⟶ Sp k} (π : Y ⟶ B)
     (w : π ≫ q = p) {σ : k →+* ℂ} {E : B.Modules} {m : ℕ} (h : Met q σ E m) (cE : Chart E m) {W : Y.Opens}
     (hW : W ≤ π ⁻¹ᵁ cE.U) (M : Matrix (Fin m) (Fin m) Γ(Y, W)) {y : CxPts p σ} (hy : y ∈ ptsIn p σ W)
@@ -34,6 +39,13 @@ theorem form_pullCol {k : Type} [CommRing k] {B Y : Scheme.{0}} {q : B ⟶ Sp k}
   rw [(h.pull π w).form_eq (cE.pull h.isVB π) hc _ _ hy, h.pull_G π w cE hc', key, key, chg_apply]
   rfl
 
+/- English proof (translation)
+Take `⟨s, hs, es⟩` from `H i.castSucc`. Take `⟨s', hs', es'⟩` from `H i.succ`. Establish `e₁ (j : Fin i) : (fl.ι i.succ).app U ((fl.step i).app U (s j)) = v (Fin.castLE i.isLt.le j)`. Use `Eq.trans ?_ (es j)` and prove the remaining obligations. Rewrite using `[← fl.step_ι i]`.
+
+Both sides reduce to the same expression. Use `⟨s, fun j => s' (Fin.natAdd i j), hs, isFrame_cokernel_π (l := i) (m := 1) (fl.step i) hs' hs fun j => ?_, ?_⟩` and prove the remaining obligations. Conclude with `QCoh.injective_app_of_mono (fl.ι i.succ) U ((e₁ j).trans (es' (Fin.castAdd 1 j)).symm)`. Introduce and unpack `(j | j)`. Conclude with `e₁ j`.
+
+Use `(es' _).trans (congrArg v (Fin.ext ?_))` and prove the remaining obligations. Take `rfl : j = 0` from `Subsingleton.elim _ _`. Both sides reduce to the same expression.
+-/
 theorem Spans.exists_adaptedChart {X : Scheme.{0}} {F : X.Modules} {m : ℕ} {fl : Vert.Flag F m} {U : X.Opens}
     {v : Fin m → Γ(F, U)} (H : Spans fl U v) (i : Fin m) :
     ∃ (s : Fin i → Γ(fl.F i.castSucc, U)) (t : Fin 1 → Γ(fl.F i.succ, U)), IsFrame s ∧
@@ -54,6 +66,13 @@ theorem Spans.exists_adaptedChart {X : Scheme.{0}} {F : X.Modules} {m : ℕ} {fl
       obtain rfl : j = 0 := Subsingleton.elim _ _
       rfl
 
+/- English proof (translation)
+Introduce `k _ B Y q p π w ι _ r d e σ a E h fl cE c' W hW n H hs hn i`. Take `⟨s, t, h₁, h₂, h₃⟩` from `H.exists_adaptedChart i`. Use `⟨⟨W, s, t, h₁, h₂⟩, fun y hy => ⟨hs hy, ?_⟩⟩` and prove the remaining obligations. Establish `hM : uni (fib e (c'.e y) a) = Matrix.of fun j l => ev p σ W (uniR n j l) y`. Use extensionality with `j l`.
+
+Rewrite using `[← uniR_eq_uni, of_apply, uniR_apply, uniR_apply, ev_eq (hs hy)]`. Use `split_ifs`. Rewrite using `[hn y hy, ev_eq (hs hy)]`. Conclude with `(map_one _).symm`. Conclude with `(map_zero _).symm`.
+
+Use extensionality with `j l`. Rewrite using `[submatrix_apply, hM, ← form_pullCol π w (h.met σ) cE hW (uniR n) (hs hy), ← h₃, ← h₃]`. Conclude with `Met.form_restrict _ (fl.isSubbundle i.succ) (fl.isVB i.succ) _ _ (hs hy)`.
+-/
 theorem isCellFrame_of_spans : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (π : Y ⟶ B) (w : π ≫ q = p) (ι : Type) [Fintype ι] (r : ι → ℕ) (d : ℕ) (e : Fin (d + 1) ≃ Option (Σ a, Low (r a))) (σ : k →+* ℂ) (a : ι) (E : B.Modules) (h : VMetric q E (r a)) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) (r a)) (cE : Chart E (r a)) (c' : AlgChart p σ (d + 1)) (W : Y.Opens) (hW : W ≤ π ⁻¹ᵁ cE.U) (n : Low (r a) → Γ(Y, W)), GlobalTheory.FlagCell.Spans fl W (GlobalTheory.FlagCell.pullCol π cE.e hW (GlobalTheory.FlagCell.uniR n)) → c'.e.source ⊆ ptsIn p σ W → (∀ y ∈ c'.e.source, ∀ s, fib e (c'.e y) a s = ev p σ W (n s) y) → IsCellFrame e π w c' a h fl cE := by
   intro k _ B Y q p π w ι _ r d e σ a E h fl cE c' W hW n H hs hn i
   obtain ⟨s, t, h₁, h₂, h₃⟩ := H.exists_adaptedChart i

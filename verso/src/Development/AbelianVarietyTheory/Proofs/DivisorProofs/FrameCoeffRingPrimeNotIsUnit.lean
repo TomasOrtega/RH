@@ -3,6 +3,15 @@ open GlobalTheory.ExpFrame
 
 namespace GlobalTheory.ExpFrame
 
+/- English proof (translation)
+Introduce `l _ ι N F hF hu`. Take `⟨u, hu⟩` from `hu.exists_left_inv`. Take `⟨L, -, hL⟩` from `hF.ring.2`. Establish `hmem : F.emb u ∈ Set.range F.emb` using `⟨u, rfl⟩`. Rewrite `hmem` using `[hL]`.
+
+Establish `h1 : F.emb u * (l : PadicAlgCl l) = 1`. Use `congrArg F.emb hu` as an intermediate fact. Rewrite `this` using `[map_mul, map_natCast, map_one]`. Then use the resulting hypothesis. Establish `hl : ‖(l : PadicAlgCl l)‖ = (l : ℝ)⁻¹`. Establish `e : (l : PadicAlgCl l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])` using `by simp`.
+
+Rewrite using `[e, PadicAlgCl.norm_extends, Padic.norm_p]`. Establish `h2` using `congrArg norm h1`. Rewrite `h2` using `[norm_mul, norm_one, hl]`. Establish `hlgt : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hlpos : (0 : ℝ) < l` using `by linarith`.
+
+Establish `h3 : ‖F.emb u‖ * (l : ℝ)⁻¹ < 1`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem Frame.prime_not_isUnit : ∀ (l : ℕ) [Fact l.Prime] (ι : Type) (N : ℕ) (F : Frame l ι N), F.Ok → ¬ IsUnit ((l : ℕ) : F.O) := by
   intro l _ ι N F hF hu
   obtain ⟨u, hu⟩ := hu.exists_left_inv

@@ -28,23 +28,38 @@ variable {L : Type*} [Group L] [TopologicalSpace L] [IsTopologicalGroup L] [Loca
 
 def fixedEnd : End ℂ V := (fixedVectors τ H).subtype ∘ₗ fixedProj τ hτ hHc hHo
 
+/- English proof (translation)
+The claim follows from `fixedProj_apply_of_mem hτ hHc hHo hv`.
+-/
 theorem fixedEnd_apply_of_mem {v : V} (hv : v ∈ fixedVectors τ H) :
     fixedEnd hτ hHc hHo v = v :=
   fixedProj_apply_of_mem hτ hHc hHo hv
 
+/- English proof (translation)
+The claim follows from `(fixedProj τ hτ hHc hHo v).2`.
+-/
 theorem fixedEnd_mem (v : V) : fixedEnd hτ hHc hHo v ∈ fixedVectors τ H :=
   (fixedProj τ hτ hHc hHo v).2
 
+/- English proof (translation)
+Set `f : Representation.IntertwiningMap τ τ` to `⟨T, hT⟩`. Use `fixedProj_map hHc hHo hτ hτ f v` as an intermediate fact. Conclude with `congrArg Subtype.val this`.
+-/
 theorem fixedEnd_comm {T : End ℂ V} (hT : ∀ g, T * τ g = τ g * T) (v : V) :
     fixedEnd hτ hHc hHo (T v) = T (fixedEnd hτ hHc hHo v) := by
   let f : Representation.IntertwiningMap τ τ := ⟨T, hT⟩
   have := fixedProj_map hHc hHo hτ hτ f v
   exact congrArg Subtype.val this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun v => fixedEnd_apply_of_mem hτ hHc hHo (fixedEnd_mem hτ hHc hHo v), fun Y _ hy => fixedProj_mem hτ hHc hHo Y hy⟩`.
+-/
 theorem isWinProj_fixedEnd : IsWinProj τ (fixedEnd hτ hHc hHo) :=
   ⟨fun v => fixedEnd_apply_of_mem hτ hHc hHo (fixedEnd_mem hτ hHc hHo v),
     fun Y _ hy => fixedProj_mem hτ hHc hHo Y hy⟩
 
+/- English proof (translation)
+Use `le_antisymm ?_ fun v hv => ⟨v, fixedEnd_apply_of_mem hτ hHc hHo hv⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `fixedEnd_mem hτ hHc hHo v`.
+-/
 theorem range_fixedEnd : LinearMap.range (fixedEnd hτ hHc hHo) = fixedVectors τ H := by
   refine le_antisymm ?_ fun v hv => ⟨v, fixedEnd_apply_of_mem hτ hHc hHo hv⟩
   rintro _ ⟨v, rfl⟩
@@ -54,6 +69,9 @@ end FixedEnd
 
 variable {h : IsExpLieAlgebra G 𝔤} {K : Subgroup G} [CompactSpace K]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨M.locallyFinite, M.hasContinuousCoeff⟩`.
+-/
 theorem _root_.GroundTheory.Automorphic.IsExpLieAlgebra.GKModule.isKFinite {V : Type*} [AddCommGroup V]
     [Module ℂ V] (M : h.GKModule K V) : IsKFinite M.σ :=
   ⟨M.locallyFinite, M.hasContinuousCoeff⟩
@@ -74,6 +92,9 @@ variable {L : Type*} [Group L] [TopologicalSpace L] [IsTopologicalGroup L] [Loca
   [T2Space L] [TotallyDisconnectedSpace L] {V : Type u} [AddCommGroup V] [Module ℂ V]
   (Mx : GKLModule h K L V)
 
+/- English proof (translation)
+The claim follows from `Mx.gk.rep_comm (fun X => Mx.comm_ρ X g) (fun k => Mx.comm_σ k g) a`.
+-/
 theorem rep_comm (a : FreeMonoid (h.lieSubalgebra ⊕ K)) (g : L) :
     Mx.gk.rep a * Mx.τ g = Mx.τ g * Mx.gk.rep a :=
   Mx.gk.rep_comm (fun X => Mx.comm_ρ X g) (fun k => Mx.comm_σ k g) a
@@ -91,6 +112,25 @@ def IsAdmissible : Prop :=
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `hτ` using `hadm.1`. Establish `hσK` using `Mx.gk.isKFinite`. Establish `hVnt` using `nontrivial_of_irreducible hirr`. Take `⟨x₀, hx₀⟩` from `exists_ne (0 : V)`. Take `⟨H', hH'c, hH'sub⟩` from `exists_openSubgroup_isCompact_subset ((hτ x₀).mem_nhds (stabilizerOf Mx.τ x₀).one_mem)`.
+
+Use `set H : Subgroup L := H'.toSubgroup`. Establish `hHc : IsCompact (H : Set L)` using `hH'c`. Establish `hHo : IsOpen (H : Set L)` using `H'.isOpen`. Establish `hx₀H : x₀ ∈ fixedVectors Mx.τ H` using `fun g hg => hH'sub hg`. Establish `hVHK : ∀ k, ∀ y ∈ fixedVectors Mx.τ H, Mx.gk.σ k y ∈ fixedVectors Mx.τ H`.
+
+Introduce `k y hy g hg`. Rewrite using `[← Module.End.mul_apply, ← Mx.comm_σ, Module.End.mul_apply, hy g hg]`. Establish `hVH0 : fixedVectors Mx.τ H ≠ ⊥` using `fun hb => hx₀ (by`. Establish `: x₀ ∈ (⊥ : Submodule ℂ V)` using `hb ▸ hx₀H`. Simplify using `using this)`.
+
+Take `⟨c, hc, y, hyH, hy0, hyc⟩` from `exists_kProj_eq_self hσK hVHK hVH0`. Use `set e₁ := kProj hσK hc`. Use `set e₂ := fixedEnd hτ hHc hHo`. Establish `he₁ : IsWinProj Mx.gk.rep e₁` using `isWinProj_kProj hσK hc fun Y k y hy => Mx.gk.apply_σ_mem Y k hy`. Establish `he₂ : IsWinProj Mx.τ e₂` using `isWinProj_fixedEnd hτ hHc hHo`.
+
+Establish `he₁₂ : ∀ g, e₁ * Mx.τ g = Mx.τ g * e₁` using `fun g => LinearMap.ext fun v => kProj_comm hσK hc (fun k => (Mx.comm_σ k g).symm) v`. Establish `he₂₁ : ∀ a, e₂ * Mx.gk.rep a = Mx.gk.rep a * e₂` using `fun a => LinearMap.ext fun v => fixedEnd_comm hτ hHc hHo (fun g => Mx.rep_comm a g) v`. Establish `hee : e₁ * e₂ = e₂ * e₁` using `LinearMap.ext fun v => (kProj_comm hσK hc (T := e₂) (fun k => LinearMap.ext fun w => fixedEnd_comm hτ hHc hHo (fun g => Mx.comm_σ k g) w) v)`. Establish `hW : LinearMap.range (e₁ * e₂) ≤ LinearMap.range (kProj hσK hc ∘ₗ (fixedVectors Mx.τ H).subtype)`. Introduce and unpack `_ ⟨v, rfl⟩`.
+
+Conclude with `⟨fixedProj Mx.τ hτ hHc hHo v, rfl⟩`. Establish `hfin : FiniteDimensional ℂ (LinearMap.range (e₁ * e₂))`. Use `hadm.2 H hHc hHo c hc` as an intermediate fact. Conclude with `Submodule.finiteDimensional_of_le hW`. Establish `hne : LinearMap.range (e₁ * e₂) ≠ ⊥`.
+
+Introduce `hb`. Establish `: y ∈ LinearMap.range (e₁ * e₂)` using `⟨y, by show e₁ (e₂ y) = y`. Rewrite using `[fixedEnd_apply_of_mem hτ hHc hHo hyH, hyc]⟩`. Rewrite `this` using `[hb, Submodule.mem_bot]`. Conclude with `hy0 this`.
+
+Take `⟨N₁, N₂, hN₁W, hN₂W, hN₁0, hN₂0, -, hN₂st, hπ₁, hπ₂, hequiv⟩` from `exists_equiv_outerTensor (hcomm := Mx.rep_comm) hirr he₁ he₂ he₁₂ he₂₁ hee hne`. Establish `hWH : LinearMap.range (e₁ * e₂) ≤ fixedVectors Mx.τ H`. Introduce and unpack `_ ⟨v, rfl⟩`. Use `show e₁ (e₂ v) ∈ fixedVectors Mx.τ H`. Conclude with `kProj_mem hσK hc hVHK (fixedEnd_mem hτ hHc hHo v)`.
+
+Establish `hWc : LinearMap.range (e₁ * e₂) ≤ LinearMap.range (kProj hσK hc)`. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `⟨e₂ v, rfl⟩`. Conclude with `⟨H, hHc, hHo, c, hc, N₁, N₂, hN₁W.trans hWH, hN₂W.trans hWH, hN₂W.trans hWc, hN₁0, hN₂0, hN₂st, hπ₁, hπ₂, hequiv⟩`.
+-/
 theorem exists_equiv_outerTensor_gkl (hirr : Mx.IsIrreducible) (hadm : Mx.IsAdmissible) :
     ∃ (H : Subgroup L) (hHc : IsCompact (H : Set L)) (hHo : IsOpen (H : Set L))
       (c : Submodule (MonoidAlgebra ℂ K) Mx.gk.σ.asModule)

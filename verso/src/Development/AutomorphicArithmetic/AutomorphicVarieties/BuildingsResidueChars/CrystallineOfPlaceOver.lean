@@ -9,6 +9,9 @@ import Formalism.SharpRestriction.LevelLetterCocycles.JsetEmb
 import Formalism.SharpRestriction.LevelLetterCocycles.LevelKernelDetection.PfJumpsBdd
 open Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.ConjugateSelfDual ReciprocityTheory.Gal NumberField IsDedekindDomain TensorProduct Module GlobalTheory.WeilDeligne GlobalTheory.Pst Polynomial
 
+/- English proof (translation)
+Proceed by induction on `n generalizing x with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, hf]`.
+-/
 private theorem map_pow_of_commuting {R S M N : Type} [Semiring R] [Semiring S] [AddCommMonoid M] [AddCommMonoid N]
     [Module R M] [Module S N] (f : M → N) (a : Module.End R M) (b : Module.End S N)
     (hf : ∀ x, f (a x) = b (f x)) (n : ℕ) (x : M) : f ((a ^ n) x) = (b ^ n) (f x) := by
@@ -16,6 +19,9 @@ private theorem map_pow_of_commuting {R S M N : Type} [Semiring R] [Semiring S] 
   | zero => simp
   | succ n ih => rw [pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, hf]
 
+/- English proof (translation)
+Proceed by induction on `q using Polynomial.induction_on' with`. Consider the case `add p r hp hr`. Simplify using `only [Polynomial.map_add, map_add, LinearMap.add_apply, Submodule.coe_add, hp, hr]`. Consider the case `monomial n a`. Rewrite using `[Polynomial.map_monomial, aeval_monomial, aeval_monomial, Module.End.mul_apply, Module.End.mul_apply, Module.algebraMap_end_apply, Module.algebraMap_end_apply, Submodule.coe_smul, algebraMap_smul, map_pow_of_commuting (fun x : D => (x : M)) S T hf]`.
+-/
 private theorem aeval_restriction_commute {F L M : Type} [Field F] [Field L] [Algebra F L] [AddCommGroup M] [Module L M]
     [Module F M] [IsScalarTower F L M] (D : Submodule L M) (S : Module.End L D) (T : Module.End F M)
     (hf : ∀ x : D, ((S x : D) : M) = T x) (q : F[X]) (x : D) :
@@ -33,9 +39,17 @@ section SlopeTestRemainingChoices
 variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K LL : FinExt l} {V : Type} [AddCommGroup V] [Module ↥LL.1 V]
   [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V)
 
+/- English proof (translation)
+Simplify using `[Dcris, sub_eq_zero]`.
+-/
 private theorem mem_aux {x : V ⊗[ℚ_[l]] P.R.B} : x ∈ Dcris (P.PD K) ρ ↔ ∀ g, actVB (P.PD K) ρ g x = x := by
   simp [Dcris, sub_eq_zero]
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial V with hs | hn` into its components or cases. Use `haveI : Subsingleton (V ⊗[ℚ_[l]] P.R.B) := inferInstance infer_instance`. Use `haveI := (P.PD K).finK₀`. Apply `Module.finite_of_finrank_pos` to reduce the goal to its premises. Rewrite using `[hC]`.
+
+Conclude with `Nat.mul_pos Module.finrank_pos Module.finrank_pos`.
+-/
 private theorem pullback_fin_relation [FiniteDimensional ↥LL.1 V] (hC : IsCrys (P.PD K) ρ) :
     FiniteDimensional ↥LL.1 ↥(Dcris (P.PD K) ρ) := by
   rcases subsingleton_or_nontrivial V with hs | hn
@@ -46,6 +60,11 @@ private theorem pullback_fin_relation [FiniteDimensional ↥LL.1 V] (hC : IsCrys
     rw [hC]
     exact Nat.mul_pos Module.finrank_pos Module.finrank_pos
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx`, the goal using `[mem_aux]`. Introduce `g`. Establish `: ∀ y, actVB (P.PD K) ρ g (φVB (P.PD K) (LL` using `↥LL.1) (V := V) y) = φVB (P.PD K) (LL := ↥LL.1) (V := V) (actVB (P.PD K) ρ g y) := by`. Introduce `y`.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v c => simp [actVB, φVB, (P.PD K).φ_comm]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite using `[this, hx]`.
+-/
 private theorem frobenius_preserves_crystalline : ∀ x ∈ Dcris (P.PD K) ρ,
     φVB (P.PD K) (LL := ↥LL.1) (V := V) x ∈ Dcris (P.PD K) ρ := by
   intro x hx
@@ -60,6 +79,9 @@ private theorem frobenius_preserves_crystalline : ∀ x ∈ Dcris (P.PD K) ρ,
     | add x y hx hy => simp only [map_add, hx, hy]
   rw [this, hx]
 
+/- English proof (translation)
+Introduce `x hx`. Conclude with `(mem_Dpst P ρ).mpr ⟨K, fun g _ => by rw [stRep_crisIncl, (mem_aux P ρ).mp hx g]⟩`.
+-/
 private theorem crystalline_mem_potentially_semistable : ∀ x ∈ Dcris (P.PD K) ρ, crisIncl P ↥LL.1 V x ∈ Dpst P ρ := by
   intro x hx
   exact (mem_Dpst P ρ).mpr ⟨K, fun g _ => by rw [stRep_crisIncl, (mem_aux P ρ).mp hx g]⟩
@@ -67,18 +89,27 @@ private theorem crystalline_mem_potentially_semistable : ∀ x ∈ Dcris (P.PD K
 private noncomputable def crystallineInclusion : ↥(Dcris (P.PD K) ρ) →ₗ[↥LL.1] ↥(Dpst P ρ) :=
   (crisIncl P ↥LL.1 V).restrict (crystalline_mem_potentially_semistable P ρ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem coe_crystalline_inclusion (x : ↥(Dcris (P.PD K) ρ)) :
     ((crystallineInclusion P ρ x : ↥(Dpst P ρ)) : V ⊗[ℚ_[l]] Bst P) = crisIncl P ↥LL.1 V x := rfl
 
 private noncomputable def frobeniusRestriction : Module.End ↥LL.1 ↥(Dcris (P.PD K) ρ) :=
   (φVB (P.PD K) (LL := ↥LL.1) (V := V)).restrict (frobenius_preserves_crystalline P ρ)
 
+/- English proof (translation)
+The claim follows from `map_pow_of_commuting (fun x : ↥(Dcris (P.PD K) ρ) => x.1) (frobeniusRestriction P ρ) (φVB (P.PD K) (LL := ↥LL.1) (V := V) : Module.End ↥LL.1 (V ⊗[ℚ_[l]] P.R.B)) (fun _ => rfl) n x`.
+-/
 private theorem coe_frobenius_restriction_pow (n : ℕ) (x : ↥(Dcris (P.PD K) ρ)) :
     (((frobeniusRestriction P ρ ^ n) x : ↥(Dcris (P.PD K) ρ)) : V ⊗[ℚ_[l]] P.R.B) =
       ((φVB (P.PD K) (LL := ↥LL.1) (V := V) : Module.End ↥LL.1 (V ⊗[ℚ_[l]] P.R.B)) ^ n) x :=
   map_pow_of_commuting (fun x : ↥(Dcris (P.PD K) ρ) => x.1) (frobeniusRestriction P ρ)
     (φVB (P.PD K) (LL := ↥LL.1) (V := V) : Module.End ↥LL.1 (V ⊗[ℚ_[l]] P.R.B)) (fun _ => rfl) n x
 
+/- English proof (translation)
+The claim follows from `map_pow_of_commuting (fun x : ↥(Dcris (P.PD K) ρ) => x.1) (frobeniusRestriction P ρ) (φVB (P.PD K) (LL := ℚ_[l]) (V := V) : Module.End ℚ_[l] (V ⊗[ℚ_[l]] P.R.B)) (fun _ => rfl) n x`.
+-/
 private theorem coe_frobenius_restriction_pow_base (n : ℕ) (x : ↥(Dcris (P.PD K) ρ)) :
     (((frobeniusRestriction P ρ ^ n) x : ↥(Dcris (P.PD K) ρ)) : V ⊗[ℚ_[l]] P.R.B) =
       ((φVB (P.PD K) (LL := ℚ_[l]) (V := V) : Module.End ℚ_[l] (V ⊗[ℚ_[l]] P.R.B)) ^ n) x :=
@@ -88,9 +119,15 @@ private theorem coe_frobenius_restriction_pow_base (n : ℕ) (x : ↥(Dcris (P.P
 private noncomputable def crystallineToWeilDeligne (ι : Om l ≃+* ℂ) : ↥(Dcris (P.PD K) ρ) →+ WDSpace P ι ρ :=
   AddMonoidHom.mk' (fun x => wdMk P ι ρ (crystallineInclusion P ρ x)) fun x y => by rw [map_add, wdMk_add]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem crystalline_to_weil_deligne_apply (ι : Om l ≃+* ℂ) (x : ↥(Dcris (P.PD K) ρ)) :
     crystallineToWeilDeligne P ρ ι x = wdMk P ι ρ (crystallineInclusion P ρ x) := rfl
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← UpperTheory.weil_deligne_span_crystalline P ι ρ hV hC]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `z ⟨x, y, hx, hy, rfl⟩`. Conclude with `⟨⟨x, hx⟩, congrArg (wdMk P ι ρ) (Subtype.ext hy.symm)⟩`.
+-/
 private theorem span_crystalline_weil_deligne_top [FiniteDimensional ↥LL.1 V] (ι : Om l ≃+* ℂ) (hV : IsPst P ρ) (hC : IsCrys (P.PD K) ρ) :
     Submodule.span ℂ (Set.range (crystallineToWeilDeligne P ρ ι)) = ⊤ := by
   rw [eq_top_iff, ← UpperTheory.weil_deligne_span_crystalline P ι ρ hV hC]
@@ -98,6 +135,11 @@ private theorem span_crystalline_weil_deligne_top [FiniteDimensional ↥LL.1 V] 
   rintro z ⟨x, y, hx, hy, rfl⟩
   exact ⟨⟨x, hx⟩, congrArg (wdMk P ι ρ) (Subtype.ext hy.symm)⟩
 
+/- English proof (translation)
+Rewrite using `[eval₂_map]`. Establish `h1` using `congrArg ι.toRingHom hq`. Rewrite `h1` using `[map_zero, aeval_def, hom_eval₂]`. Establish `e1 : (ι.toRingHom.comp (algebraMap ↥LL.1 (Om l))).comp (algebraMap ℚ_[l] ↥LL.1) = ι.toRingHom.comp (algebraMap ℚ_[l] (Om l))`. Rewrite using `[IsScalarTower.algebraMap_eq ℚ_[l] ↥LL.1 (Om l)]`.
+
+Both sides reduce to the same expression. Rewrite using `[e1]`. Simplify using `using h1`.
+-/
 private theorem eval_root_transport (ι : Om l ≃+* ℂ) (b : ℂ) (q : ℚ_[l][X]) (hq : aeval (ι.symm b) q = 0) :
     (q.map (algebraMap ℚ_[l] ↥LL.1)).eval₂ (ι.toRingHom.comp (algebraMap ↥LL.1 (Om l))) b = 0 := by
   rw [eval₂_map]
@@ -109,10 +151,16 @@ private theorem eval_root_transport (ι : Om l ≃+* ℂ) (b : ℂ) (q : ℚ_[l]
   rw [e1]
   simpa using h1
 
+/- English proof (translation)
+The claim follows from `(congrArg (wdMk P ι ρ) ((crystallineInclusion P ρ).map_smul a x)).trans (wdMk_smul P ι ρ a _)`.
+-/
 private theorem crystalline_to_weil_deligne_smul (ι : Om l ≃+* ℂ) (a : ↥LL.1) (x : ↥(Dcris (P.PD K) ρ)) :
     crystallineToWeilDeligne P ρ ι (a • x) = (ι.toRingHom.comp (algebraMap ↥LL.1 (Om l))) a • crystallineToWeilDeligne P ρ ι x :=
   (congrArg (wdMk P ι ρ) ((crystallineInclusion P ρ).map_smul a x)).trans (wdMk_smul P ι ρ a _)
 
+/- English proof (translation)
+Take `⟨x, hx0, hx⟩` from `H`. Use `⟨x.1, x.2, fun h0 => hx0 (Subtype.ext h0), ?_⟩` and prove the remaining obligations. Conclude with `(aeval_restriction_commute (Dcris (P.PD K) ρ) (frobeniusRestriction P ρ ^ n) _ (coe_frobenius_restriction_pow_base P ρ n) q x).symm.trans (congrArg Subtype.val hx)`.
+-/
 private theorem fin_step (n : ℕ) (q : ℚ_[l][X])
     (H : ∃ x : ↥(Dcris (P.PD K) ρ), x ≠ 0 ∧ aeval (frobeniusRestriction P ρ ^ n) (q.map (algebraMap ℚ_[l] ↥LL.1)) x = 0) :
     ∃ x ∈ Dcris (P.PD K) ρ, x ≠ 0 ∧
@@ -124,6 +172,11 @@ private theorem fin_step (n : ℕ) (q : ℚ_[l][X])
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `l _ P ι E Ω _ _ _ _ _ A w O _ _ _ Bw h hj LL V _ _ _ _ _ ρ hV hC σ hσ b hb q hq`. Use `haveI := hV.finite`. Use `haveI := pullback_fin_relation P ρ hC`. Establish `hb' : b ∈ (wdRho P ι Bw h hj ρ σ).charpoly.roots`. Rewrite using `[← GlobalTheory.Pst.DpstMap.charPol_wdPst P ι Bw h hj ρ hV σ]`.
+
+Conclude with `hb`. Establish `hT : ∀ x, wdRho P ι Bw h hj ρ σ (crystallineToWeilDeligne P ρ ι x) = crystallineToWeilDeligne P ρ ι ((frobeniusRestriction P ρ ^ resDeg l w) x)` using `fun x => (wdRho_mk P ι Bw h hj ρ σ (crystallineInclusion P ρ x)).trans (congrArg (wdMk P ι ρ) (Subtype.ext ((UpperTheory.local_crystalline_of_induced P Bw h hj ρ σ hσ x.1 (crystallineInclusion P ρ x) x.2 (coe_crystalline_inclusion P ρ x)).trans ((coe_crystalline_inclusion P ρ _). …`. Conclude with `fin_step P ρ _ q (UpperTheory.exists_eigenvector_of_root (ι.toRingHom.comp (algebraMap ↥LL.1 (Om l))) (crystallineToWeilDeligne P ρ ι) (frobeniusRestriction P ρ ^ resDeg l w) (wdRho P ι Bw h hj ρ σ) (crystalline_to_weil_deligne_smul P ρ ι) (span_crystalline_weil_deligne_top P ρ ι …`.
+-/
 theorem UpperTheory.crystalline_of_place_over :
     ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om l ≃+* ℂ) {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω (Dec (F := E) A) O) (h : IsPlaceOver A w) (hj : Induces Bw) {LL : FinExt l} {V : Type} [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V] [FiniteDimensional ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK Bw.Kw) V), IsPst P ρ → IsCrys (P.PD Bw.Kw) ρ → ∀ σ : ↥(Weil h), deg σ = -1 → ∀ b ∈ (wdPst P ι Bw h hj ρ).eig σ, ∀ q : ℚ_[l][X], aeval (ι.symm b) q = 0 → ∃ x ∈ Dcris (P.PD Bw.Kw) ρ, x ≠ 0 ∧ aeval ((φVB (P.PD Bw.Kw) (LL := ℚ_[l]) (V := V) : Module.End ℚ_[l] (V ⊗[ℚ_[l]] P.R.B)) ^ resDeg l w) q x = 0 := by
   intro l _ P ι E Ω _ _ _ _ _ A w O _ _ _ Bw h hj LL V _ _ _ _ _ ρ hV hC σ hσ b hb q hq

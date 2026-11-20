@@ -13,6 +13,9 @@ open GlobalTheory.DeRham (spOver spOver_comp)
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SemiAbKer.kernel_props | exact GlobalTheory.SemiAbKer.kernel_props | (intros; apply GlobalTheory.SemiAbKer.kernel_props <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.torsion_kernel_finite_presentation : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (N : ℕ), N ≠ 0 →
     IsSeparated (pullback.fst ((𝟙 G) ^ N : G ⟶ G).left η[G].left ≫ G.hom) ∧
       LocallyOfFinitePresentation (pullback.fst ((𝟙 G) ^ N : G ⟶ G).left η[G].left ≫ G.hom) ∧

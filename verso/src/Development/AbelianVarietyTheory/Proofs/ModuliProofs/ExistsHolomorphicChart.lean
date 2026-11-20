@@ -18,6 +18,13 @@ namespace GlobalTheory.SubfieldChart
 
 open Filter Topology in
 
+/- English proof (translation)
+Rewrite `hN` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, hI, t, ht, hsub⟩` from `hN`. Take `⟨n, r, hr⟩` from `hI.fin_param`. Establish `h1 : Set.pi Set.univ (fun i => t (r i)) ∈ 𝓝 (fun i => e (r i))` using `set_pi_mem_nhds Set.finite_univ fun i _ => ht (r i)`. Take `⟨ε, hε, hb⟩` from `Metric.mem_nhds_iff.1 h1`.
+
+Use `⟨n, r, ε, hε, fun u hu => hsub fun a ha => ?_⟩` and prove the remaining obligations. Rewrite `ha` using `[← hr.2]`. Take `⟨i, rfl⟩` from `ha`. Use `hb (a := fun i => u (r i)) ?_ i trivial` and prove the remaining obligations. Rewrite using `[Metric.mem_ball, dist_pi_lt_iff hε]`.
+
+Introduce `j`. Rewrite using `[dist_eq_norm]`. Conclude with `hu j`.
+-/
 theorem exists_finite_test {A : Type} {e : A → ℂ} {N : Set (A → ℂ)} (hN : N ∈ 𝓝 e) :
     ∃ (n : ℕ) (r : Fin n → A) (ε : ℝ), 0 < ε ∧ ∀ u : A → ℂ, (∀ i, ‖u (r i) - e (r i)‖ < ε) → u ∈ N := by
   rw [nhds_pi, Filter.mem_pi] at hN
@@ -45,19 +52,36 @@ def extPt (x : A →ₐ[k] ℂ) : ℂ ⊗[k] A →ₐ[ℂ] ℂ :=
 def resPt (z : ℂ ⊗[k] A →ₐ[ℂ] ℂ) : A →ₐ[k] ℂ :=
   (z.restrictScalars k).comp Algebra.TensorProduct.includeRight
 
+/- English proof (translation)
+Simplify using `[extPt]`.
+-/
 theorem extPt_tmul (x : A →ₐ[k] ℂ) (c : ℂ) (a : A) : extPt x (c ⊗ₜ a) = c * x a := by
   simp [extPt]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resPt_apply (z : ℂ ⊗[k] A →ₐ[ℂ] ℂ) (a : A) : resPt z a = z (1 ⊗ₜ a) := rfl
 
+/- English proof (translation)
+Use extensionality with `a`. Rewrite using `[resPt_apply, extPt_tmul, _root_.one_mul]`.
+-/
 theorem resPt_extPt (x : A →ₐ[k] ℂ) : resPt (extPt x) = x := by
   ext a
   rw [resPt_apply, extPt_tmul, _root_.one_mul]
 
+/- English proof (translation)
+Use extensionality with `a`. Simplify using `[extPt_tmul, resPt_apply]`.
+-/
 theorem extPt_resPt (z : ℂ ⊗[k] A →ₐ[ℂ] ℂ) : extPt (resPt z) = z := by
   ext a
   simp [extPt_tmul, resPt_apply]
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨fun _ => 0, continuous_const, fun x => by simp⟩`. Consider the case `tmul c a => exact ⟨fun u => c * u a, by fun_prop, fun x => (extPt_tmul x c a).symm⟩`. Consider the case `add s t hs ht`. Take `⟨F, hF, hF'⟩` from `hs`.
+
+Take `⟨G, hG, hG'⟩` from `ht`. Conclude with `⟨fun u => F u + G u, hF.add hG, fun x => by simp [hF', hG']⟩`.
+-/
 theorem exists_continuous_extPt (t : ℂ ⊗[k] A) :
     ∃ F : (A → ℂ) → ℂ, Continuous F ∧ ∀ x : A →ₐ[k] ℂ, F x = extPt x t := by
   induction t using TensorProduct.induction_on with
@@ -68,6 +92,19 @@ theorem exists_continuous_extPt (t : ℂ ⊗[k] A) :
     obtain ⟨G, hG, hG'⟩ := ht
     exact ⟨fun u => F u + G u, hF.add hG, fun x => by simp [hF', hG']⟩
 
+/- English proof (translation)
+Establish `hc : (algebraMap ℂ (ℂ ⊗[k] A)).IsStandardSmoothOfRelativeDimension d` using `(RingHom.isStandardSmoothOfRelativeDimension_algebraMap d).2 inferInstance`. Take `⟨φ, hφc, hφ, hφ0⟩` from `HolChart.exists_etale_coords_vanishing _ hc (extPt e).toRingHom (fun a => (extPt e).commutes a)`. Set `_ : Algebra (MvPolynomial (Fin d) ℂ) (ℂ ⊗[k] A)` to `φ.toAlgebra`. Establish `_ : IsScalarTower ℂ (MvPolynomial (Fin d) ℂ) (ℂ ⊗[k] A)` using `IsScalarTower.of_algebraMap_eq' hφc.symm`. Establish `_ : Algebra.Etale (MvPolynomial (Fin d) ℂ) (ℂ ⊗[k] A)` using `hφ`.
+
+Take `⟨W, σ, n, f, ε, hW, hW0, hσ0, hε, hσd, hσt, hσs⟩` from `exists_holomorphic_section_of_etale d (ℂ ⊗[k] A) (extPt e) hφ0`. Use `choose F hF hF' using fun j => exists_continuous_extPt (f j)`. Establish `hN : {u : A → ℂ | ∀ j, ‖F j u - extPt e (f j)‖ < ε} ∈ nhds (e : A → ℂ)`. Use `IsOpen.mem_nhds ?_ fun j => ?_` and prove the remaining obligations. Rewrite using `[Set.setOf_forall]`.
+
+Conclude with `isOpen_iInter_of_finite fun j => isOpen_lt (((hF j).sub continuous_const).norm) continuous_const`. Rewrite using `[hF', sub_self, norm_zero]`. Conclude with `hε`. Take `⟨m, r, δ, hδ, hr⟩` from `exists_finite_test hN`. Use `⟨W, fun w => resPt (σ w), m, r, δ, hW, hW0, ?_, hδ, fun a => hσd (1 ⊗ₜ a), ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show resPt (σ 0) = e`. Rewrite using `[hσ0, resPt_extPt]`. Introduce `w hw w' hw' h`. Establish `h1 : σ w = σ w'`. Rewrite using `[← extPt_resPt (σ w), ← extPt_resPt (σ w')]`.
+
+Conclude with `congrArg extPt h`. Use function extensionality and compare the values at `i`. Rewrite using `[← hσt w hw i, h1, hσt w' hw' i]`. Introduce `x hx`. Take `⟨w, hw, h⟩` from `hσs (extPt x) fun j => by`.
+
+Rewrite using `[← hF']`. Conclude with `hr x hx j`. Conclude with `⟨w, hw, (resPt_extPt x).symm.trans (congrArg resPt h)⟩`.
+-/
 theorem exists_chart_algebra (d : ℕ) [Algebra.IsStandardSmoothOfRelativeDimension d k A]
     (e : A →ₐ[k] ℂ) :
     ∃ (W : Set (Fin d → ℂ)) (p : (Fin d → ℂ) → (A →ₐ[k] ℂ)) (n : ℕ) (r : Fin n → A) (ε : ℝ),
@@ -107,6 +144,27 @@ theorem exists_chart_algebra (d : ℕ) [Algebra.IsStandardSmoothOfRelativeDimens
 
 end Ring
 
+/- English proof (translation)
+Introduce `k _ σ X s d y₀ hX hy₀`. Take `⟨U₀, -, U, hU, hp, hle, hsm⟩` from `hX.exists_isStandardSmoothOfRelativeDimension (y₀ (default : PrimeSpectrum ℂ))`. Establish `hU₀ : U₀ = ⊤`. Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations. Establish `h1 : s (y₀ (default : PrimeSpectrum ℂ)) ∈ U₀` using `hle hp`.
+
+Establish `h2 : y = s (y₀ (default : PrimeSpectrum ℂ))` using `Subsingleton.elim (α := PrimeSpectrum k) _ _`. Rewrite using `[h2]`. Conclude with `h1`. Substitute `hU₀` using the available equality. Set `c : k →+* Γ(X, U)` to `(s.appLE ⊤ U hle).hom.comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom`.
+
+Establish `hc : c.IsStandardSmoothOfRelativeDimension d` using `RingHom.isStandardSmoothOfRelativeDimension_respectsIso.2 (s.appLE ⊤ U hle).hom (Scheme.ΓSpecIso (CommRingCat.of k)).symm.commRingCatIsoToRingEquiv hsm`. Set `_ : Algebra k ℂ` to `σ.toAlgebra`. Set `_ : Algebra k Γ(X, U)` to `c.toAlgebra`. Establish `_ : Algebra.IsStandardSmoothOfRelativeDimension d k Γ(X, U)` using `hc`. Set `pt : (Γ(X, U) →+* ℂ) → (Sp ℂ ⟶ X)` to `fun e => Spec.map (CommRingCat.ofHom e : Γ(X, U) ⟶ CommRingCat.of ℂ) ≫ hU.fromSpec`.
+
+Establish `hptU : ∀ e, ⊤ ≤ pt e ⁻¹ᵁ U` using `fun e p _ => hU.range_fromSpec.le ⟨_, rfl⟩`. Establish `hptv : ∀ e f, valAt' (pt e) U f = e f` using `fun e f => by`. Rewrite using `[valAt', dif_pos (hptU e)]`. Conclude with `congrArg (fun ψ => ψ.hom f) (AffinePointValues.appLE_specMap_fromSpec hU (CommRingCat.ofHom e) (hptU e))`. Establish `hpts : ∀ e, pt e ≫ s = spMap (e.comp c)` using `fun e => by`.
+
+Simplify using `only [pt]`. Rewrite using `[Category.assoc, AffinePointValues.fromSpec_comp hU s hle, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hsurj : ∀ x : Sp ℂ ⟶ X, x ≫ s = spMap σ → ⊤ ≤ x ⁻¹ᵁ U → ∃ e : Γ(X, U) →ₐ[k] ℂ, pt e.toRingHom = x`. Introduce `x hxs hx`.
+
+Set `e : Γ(X, U) →+* ℂ` to `(x.appLE U ⊤ hx ≫ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).hom).hom`. Establish `he : pt e = x` using `AffinePointValues.specMap_appLE_fromSpec hU (R := CommRingCat.of ℂ) x hx`. Establish `h1 : spMap (e.comp c) = spMap σ` using `by rw [← hpts, he, hxs]`. Establish `h2 : e.comp c = σ` using `congrArg CommRingCat.Hom.hom (Spec.map_injective h1)`. Conclude with `⟨{ e with commutes' := fun a => RingHom.congr_fun h2 a }, he⟩`.
+
+Establish `hyU : ⊤ ≤ y₀ ⁻¹ᵁ U` using `((valAt'_rules X y₀).1 U).2 hp`. Take `⟨e, rfl⟩` from `hsurj y₀ hy₀ hyU`. Take `⟨W, p, n, r, ε, hW, hW0, hp0, hε, hpd, hpi, hps⟩` from `exists_chart_algebra d e`. Use `⟨W, fun w => pt (p w).toRingHom, U, fun _ => 0, n, r, hW, hW0, by simp only [hp0], fun b _ => ?_, fun V f => ?_, fun w hw w' hw' h => hpi hw hw' ?_, hyU, ε, hε, fun x hxs hx hxe => ?_⟩` and prove the remaining obligations. Rewrite using `[hpts]`.
+
+Use `congr 2`. Conclude with `RingHom.ext fun a => (p b).commutes a`. Conclude with `HolChart.hol_of_affine valAt'_rules hU hW (fun w => pt (p w).toRingHom) (fun w _ => hptU _) (fun a => (hpd a).congr fun w _ => hptv _ a) V f`. Use `AlgHom.ext fun a => ?_` and prove the remaining obligations. Establish `h1` using `hptv (p w).toRingHom a`.
+
+Establish `h' : pt (p w).toRingHom = pt (p w').toRingHom` using `h`. Rewrite `h1` using `[h', hptv]`. Conclude with `h1.symm`. Take `⟨e', rfl⟩` from `hsurj x hxs hx`. Take `⟨w, hw, h⟩` from `hps e' fun i => by`.
+
+Use `hxe i` as an intermediate fact. Rewrite `this` using `[hptv, hptv]`. Conclude with `this`. Conclude with `⟨w, hw, by rw [h]⟩`.
+-/
 theorem exists_holomorphic_chart :
     ∀ (k : Type) [Field k] (σ : k →+* ℂ) (X : Scheme.{0}) (s : X ⟶ Sp k) (d : ℕ) (y₀ : Sp ℂ ⟶ X), SmoothOfRelativeDimension d s → y₀ ≫ s = spMap σ → ∃ (B : Set (Fin d → ℂ)) (y : (Fin d → ℂ) → (Sp ℂ ⟶ X)) (U : X.Opens) (f : Fin d → Γ(X, U)) (n : ℕ) (r : Fin n → Γ(X, U)), IsOpen B ∧ (0 : Fin d → ℂ) ∈ B ∧ y 0 = y₀ ∧ (∀ b ∈ B, y b ≫ s = spMap σ) ∧ IsHolTo B y ∧ Set.InjOn y B ∧ ⊤ ≤ y₀ ⁻¹ᵁ U ∧ ∃ ε : ℝ, 0 < ε ∧ ∀ x : Sp ℂ ⟶ X, x ≫ s = spMap σ → ⊤ ≤ x ⁻¹ᵁ U → (∀ i, ‖valAt' x U (r i) - valAt' y₀ U (r i)‖ < ε) → x ∈ y '' B := by
   intro k _ σ X s d y₀ hX hy₀

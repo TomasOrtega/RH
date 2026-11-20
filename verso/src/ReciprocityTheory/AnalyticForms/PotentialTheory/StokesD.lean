@@ -13,6 +13,9 @@ section Leibniz
 
 variable {D : ℕ}
 
+/- English proof (translation)
+Establish `h : HasFDerivAt (cplx f) (Complex.ofRealCLM.comp L) y`. Unfold `cplx`. Conclude with `Complex.ofRealCLM.hasFDerivAt.comp y hf`. Rewrite using `[h.fderiv]`. Simplify using the standard rewrite rules.
+-/
 theorem st_fderiv_cplx {f : (Fin D → ℂ) → ℝ} {y : Fin D → ℂ} {L : (Fin D → ℂ) →L[ℝ] ℝ}
     (hf : HasFDerivAt f L y) (d : Fin D → ℂ) :
     fderiv ℝ (cplx f) y d = ((L d : ℝ) : ℂ) := by
@@ -22,18 +25,35 @@ theorem st_fderiv_cplx {f : (Fin D → ℂ) → ℝ} {y : Fin D → ℂ} {L : (F
   rw [h.fderiv]
   simp
 
+/- English proof (translation)
+Simplify using `only [dz, st_fderiv_cplx hf]`.
+-/
 theorem st_dz_cplx {f : (Fin D → ℂ) → ℝ} {y : Fin D → ℂ} {L : (Fin D → ℂ) →L[ℝ] ℝ}
     (hf : HasFDerivAt f L y) (j : Fin D) :
     dz j (cplx f) y = (((L (Pi.single j 1) : ℝ) : ℂ) -
       Complex.I * ((L (Complex.I • Pi.single j 1) : ℝ) : ℂ)) / 2 := by
   simp only [dz, st_fderiv_cplx hf]
 
+/- English proof (translation)
+Simplify using `only [dzb, st_fderiv_cplx hf]`.
+-/
 theorem st_dzb_cplx {f : (Fin D → ℂ) → ℝ} {y : Fin D → ℂ} {L : (Fin D → ℂ) →L[ℝ] ℝ}
     (hf : HasFDerivAt f L y) (j : Fin D) :
     dzb j (cplx f) y = (((L (Pi.single j 1) : ℝ) : ℂ) +
       Complex.I * ((L (Complex.I • Pi.single j 1) : ℝ) : ℂ)) / 2 := by
   simp only [dzb, st_fderiv_cplx hf]
 
+/- English proof (translation)
+Establish `hLa` using `ha.hasFDerivAt`. Establish `hLb` using `hb.hasFDerivAt`. Establish `hc' : HasFDerivAt c (a y • fderiv ℝ b y + b y • fderiv ℝ a y) y` using `(hLa.mul hLb).congr_of_eventuallyEq hc`. Establish `hbb : HasFDerivAt (fun z => 1 / 2 * (b z * b z)) ((1 / 2 : ℝ) • (b y • fderiv ℝ b y + b y • fderiv ℝ b y)) y` using `(hLb.mul hLb).const_mul (1 / 2)`. Establish `e1 : ∀ j, dz j (cplx c) y = (a y : ℂ) * dz j (cplx b) y + (b y : ℂ) * dz j (cplx a) y`.
+
+Introduce `j`. Rewrite using `[st_dz_cplx hc', st_dz_cplx hLb, st_dz_cplx hLa]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, Complex.ofReal_add, Complex.ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∀ k, dzb k (cplx (fun z => 1 / 2 * (b z * b z))) y = (b y : ℂ) * dzb k (cplx b) y`.
+
+Introduce `k`. Rewrite using `[st_dzb_cplx hbb, st_dzb_cplx hLb]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, Complex.ofReal_add, Complex.ofReal_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hmat : gradMat c b y = (a y : ℂ) • gradMat b b y + gradMat a (fun z => 1 / 2 * (b z * b z)) y`. Use extensionality with `j k`. Simplify using `only [gradMat, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, e1, e2]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [gradDens]`.
+
+Rewrite using `[hmat, mdisc_cons_eq_sum, mdisc_cons_eq_sum, mdisc_cons_eq_sum]`. Establish `hs : ∑ j, ∑ k, ((a y : ℂ) • gradMat b b y + gradMat a (fun z => 1 / 2 * (b z * b z)) y) j k * mixedCof (fun i => hessC (φ i) y) j k = (a y : ℂ) * ∑ j, ∑ k, gradMat b b y j k * mixedCof (fun i => hessC (φ i) y) j k + ∑ j, ∑ k, gradMat a (fun z => 1 / 2 * (b z * b z)) y j k * mixed …`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, add_mul, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc]`. Rewrite using `[hs, Complex.add_re, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem st_gradDens_leibniz {n : ℕ} (φ : Fin n → (Fin (n + 1) → ℂ) → ℝ)
     (a b c : (Fin (n + 1) → ℂ) → ℝ) (y : Fin (n + 1) → ℂ) (ha : DifferentiableAt ℝ a y)
     (hb : DifferentiableAt ℝ b y) (hc : c =ᶠ[𝓝 y] fun z => a z * b z) :
@@ -85,6 +105,17 @@ variable [CompactSpace X] [T2Space X] (A : FinHolAtlas (e + 1) X) (Φ : Fin e �
 
 include hΦ hGo hG hGU in
 
+/- English proof (translation)
+Establish `h3 : (3 : WithTop ℕ∞) ≤ ∞` using `by first`. Consider the case `exact_mod_cast (le_top : (3 : ℕ∞) ≤ ⊤)`. Consider the case `exact WithTop.coe_le_coe.mpr le_top`. Consider the case `norm_num`. Consider the case `simp`.
+
+Establish `hUo : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' G)` using `(A.chart j).isOpen_inter_preimage_symm hGo`. Establish `hKc : IsCompact (tsupport ψ)` using `(isClosed_tsupport ψ).isCompact`. Establish `hK : IsCompact ((A.chart j) '' tsupport ψ)` using `hKc.image_of_continuousOn ((A.chart j).continuousOn.mono (hψG.trans hG))`. Establish `hsupp : Function.support ((A.chart j).target.indicator (ψ ∘ (A.chart j).symm)) ⊆ (A.chart j) '' tsupport ψ`. Introduce `y hy`.
+
+Take `⟨ht, hs⟩` from `Set.indicator_apply_ne_zero.mp hy`. Conclude with `⟨(A.chart j).symm y, subset_tsupport _ hs, (A.chart j).right_inv ht⟩`. Establish `htsK : tsupport ((A.chart j).target.indicator (ψ ∘ (A.chart j).symm)) ⊆ (A.chart j) '' tsupport ψ` using `closure_minimal hsupp hK.isClosed`. Establish `hKU : (A.chart j) '' tsupport ψ ⊆ (A.chart j).target ∩ (A.chart j).symm ⁻¹' G`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Establish `hxs` using `hG (hψG hx)`. Use `⟨(A.chart j).map_source hxs, ?_⟩` and prove the remaining obligations. Use `show (A.chart j).symm (A.chart j x) ∈ G`. Rewrite using `[(A.chart j).left_inv hxs]`. Conclude with `hψG hx`.
+
+Use `⟨hUo, ?_, ?_, htsK.trans hKU, ?_, fun i => ?_⟩` and prove the remaining obligations. Conclude with `(((hψ j).mono fun y hy => ⟨hy.1, Set.mem_univ _⟩).congr fun y hy => Set.indicator_of_mem hy.1 _).of_le h3`. Conclude with `hK.of_isClosed_subset (isClosed_tsupport _) htsK`. Conclude with `((hw j).mono fun y hy => ⟨hy.1, Set.mem_univ _⟩).of_le h3`. Conclude with `(((hΦ i).1 (x0 i) j).mono fun y hy => ⟨hy.1, hGU i hy.2⟩).of_le h3`.
+-/
 theorem st_partsHyp_piece (w ψ : X → ℝ) (hw : A.Smooth w) (hψ : A.Smooth ψ)
     (hψG : tsupport ψ ⊆ G) :
     PartsHyp (fun i => (Φ i).φ (x0 i) ∘ (A.chart j).symm)
@@ -124,6 +155,23 @@ theorem st_partsHyp_piece (w ψ : X → ℝ) (hw : A.Smooth w) (hψ : A.Smooth �
 
 include hΦ hGo hG hGU in
 
+/- English proof (translation)
+Establish `h1 : (1 : WithTop ℕ∞) ≤ ∞` using `by first`. Consider the case `exact_mod_cast (le_top : (1 : ℕ∞) ≤ ⊤)`. Consider the case `exact WithTop.coe_le_coe.mpr le_top`. Consider the case `norm_num`. Consider the case `simp`.
+
+Establish `hUo : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' G)` using `(A.chart j).isOpen_inter_preimage_symm hGo`. Establish `hUm` using `hUo.measurableSet`. Establish `hθv : A.Smooth (fun x => θ x * v x)` using `st_smooth_mul A hθ hv`. Establish `hθvG : tsupport (fun x => θ x * v x) ⊆ G` using `(tsupport_mul_subset_left).trans hθG`. Establish `hvv : A.Smooth (fun x => v x * v x)` using `st_smooth_mul A hv hv`.
+
+Establish `hv2 : A.Smooth (fun x => 1 / 2 * (v x * v x))` using `(smoothOnAlg A Set.univ Set.univ _ _ (1 / 2) hvv hvv subset_rfl).2`. Establish `hL` using `st_left_piece (A := A) (Φ := Φ) (j := j) (G := G) (x0 := x0) (hΦ := hΦ) (hGo := hGo) (hG := hG) (hGU := hGU) v (fun x => θ x * v x) hv hθv hθvG`. Establish `hR` using `st_left_piece (A := A) (Φ := Φ) (j := j) (G := G) (x0 := x0) (hΦ := hΦ) (hGo := hGo) (hG := hG) (hGU := hGU) (fun x => 1 / 2 * (v x * v x)) θ hv2 hθ hθG`. Establish `P1` using `hP e (fun i => (Φ i).φ (x0 i) ∘ (A.chart j).symm) ((A.chart j).target.indicator ((fun x => θ x * v x) ∘ (A.chart j).symm)) (v ∘ (A.chart j).symm) ((A.chart j).target ∩ (A.chart j).symm ⁻¹' G) (st_partsHyp_piece A Φ hΦ j G hGo hG x0 hGU v (fun x => θ x * v x) hv hθv hθvG)`. Establish `P2` using `hP e (fun i => (Φ i).φ (x0 i) ∘ (A.chart j).symm) ((A.chart j).target.indicator (θ ∘ (A.chart j).symm)) ((fun x => 1 / 2 * (v x * v x)) ∘ (A.chart j).symm) ((A.chart j).target ∩ (A.chart j).symm ⁻¹' G) (st_partsHyp_piece A Φ hΦ j G hGo hG x0 hGU (fun x => 1 / 2 * (v x * v x)) θ h …`.
+
+Establish `e1 : mInt A (Fin.cons (LocPot.ofFun v) Φ) (fun x => θ x * v x) = -gradInt (fun i => (Φ i).φ (x0 i) ∘ (A.chart j).symm) ((A.chart j).target.indicator ((fun x => θ x * v x) ∘ (A.chart j).symm)) (v ∘ (A.chart j).symm) ((A.chart j).target ∩ (A.chart j).symm ⁻¹' G)` using `hL.trans P1.2.2.2.1`. Establish `e2 : mInt A (Fin.cons (LocPot.ofFun fun x => 1 / 2 * (v x * v x)) Φ) θ = -gradInt (fun i => (Φ i).φ (x0 i) ∘ (A.chart j).symm) ((A.chart j).target.indicator (θ ∘ (A.chart j).symm)) ((fun x => 1 / 2 * (v x * v x)) ∘ (A.chart j).symm) ((A.chart j).target ∩ (A.chart j).symm ⁻¹' G)` using `hR.trans P2.2.2.2.1`. Establish `hdiff : ∀ (f : X → ℝ), A.Smooth f → ∀ y ∈ (A.chart j).target, DifferentiableAt ℝ (f ∘ (A.chart j).symm) y`. Introduce `f hf y hy`. Establish `hm : (A.chart j).target ∩ (A.chart j).symm ⁻¹' Set.univ ∈ 𝓝 y` using `Filter.inter_mem ((A.chart j).open_target.mem_nhds hy) (by simp)`.
+
+Conclude with `((hf j).contDiffAt hm).differentiableAt (by simp)`. Establish `hlb : ∀ y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' G, gradDens (fun i => (Φ i).φ (x0 i) ∘ (A.chart j).symm) ((A.chart j).target.indicator ((fun x => θ x * v x) ∘ (A.chart j).symm)) (v ∘ (A.chart j).symm) y = (A.chart j).target.indicator (θ ∘ (A.chart j).symm) y * gradDens (fun …`. Introduce `y hy`. Establish `hnt : (A.chart j).target ∈ 𝓝 y` using `(A.chart j).open_target.mem_nhds hy.1`. Establish `ha : DifferentiableAt ℝ ((A.chart j).target.indicator (θ ∘ (A.chart j).symm)) y`.
+
+Use `(hdiff θ hθ y hy.1).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hnt] with z hz`. Conclude with `Set.indicator_of_mem hz _`. Establish `hc : (A.chart j).target.indicator ((fun x => θ x * v x) ∘ (A.chart j).symm) =ᶠ[𝓝 y] fun z => (A.chart j).target.indicator (θ ∘ (A.chart j).symm) z * (v ∘ (A.chart j).symm) z` using `by filter_upwards [hnt] with z hz`. Simplify using `[Set.indicator_of_mem hz]`.
+
+Conclude with `st_gradDens_leibniz _ _ _ _ y ha (hdiff v hv y hy.1) hc`. Establish `hT1 : ∫ y in (A.chart j).target ∩ (A.chart j).symm ⁻¹' G, (A.chart j).target.indicator (θ ∘ (A.chart j).symm) y * gradDens (fun i => (Φ i).φ (x0 i) ∘ (A.chart j).symm) (v ∘ (A.chart j).symm) (v ∘ (A.chart j).symm) y = gradInt (fun i => (Φ i).φ (x0 i) ∘ (A.chart j).symm) ((A.chart …`. Rewrite using `[gradInt, gradInt, ← integral_sub P1.2.2.1 P2.2.2.1]`. Use `setIntegral_congr_fun hUm fun y hy => ?_` and prove the remaining obligations. Rewrite using `[hlb y hy]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, hT1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem st_nonpos_piece (hP : PartsStatement) (v θ : X → ℝ) (hv : A.Smooth v)
     (hθ : A.Smooth θ) (hθG : tsupport θ ⊆ G) :
     mInt A (Fin.cons (LocPot.ofFun v) Φ) (fun x => θ x * v x) =
@@ -211,6 +259,17 @@ theorem st_nonpos_piece (hP : PartsStatement) (v θ : X → ℝ) (hv : A.Smooth 
 
 end Piece
 
+/- English proof (translation)
+Establish `hL : ∀ j y, locDens A (Fin.cons (LocPot.ofFun fun _ => c) Φ) j y = locDens A (Fin.cons ((LocPot.ofFun fun _ => c).rsmul 0) Φ) j y`. Introduce `j y`. Establish `hf : ∀ c' : ℝ, fderiv ℝ (fderiv ℝ (fun _ : Fin (e + 1) → ℂ => c')) y = 0`. Introduce `c'`. Establish `h0 : fderiv ℝ (fun _ : Fin (e + 1) → ℂ => c') = fun _ => 0`.
+
+Use function extensionality and compare the values at `fun x => fderiv_const_apply c'`. Rewrite using `[h0]`. Conclude with `fderiv_const_apply _`. Establish `hz : ∀ c' : ℝ, hessC (fun _ : Fin (e + 1) → ℂ => c') y = 0`. Introduce `c'`.
+
+Use function extensionality and compare the values at `a b`. Simplify using `only [hessC, hf c']`. Simplify using the standard rewrite rules. Simplify using `only [locDens, maDens]`. Use `congr 3`.
+
+Use function extensionality and compare the values at `k`. Use `Fin.cases ?_ (fun i => ?_) k` and prove the remaining obligations. Simplify using `only [Fin.cons_zero, LocPot.ofFun, LocPot.rsmul, zero_mul]`. Rewrite using `[hz c, hz 0]`. Simplify using the standard rewrite rules.
+
+Establish `h` using `mIntRsmul A 0 (LocPot.ofFun fun _ => c) Φ (isPotential_ofFun A _ fun j => contDiffOn_const) hΦ g`. Rewrite `h` using `[zero_mul]`. Rewrite using `[← h]`. Simplify using `only [mInt, integralWith, hL]`.
+-/
 private theorem mInt_cons_const_eq_zero (A : FinHolAtlas (e + 1) X) (Φ : Fin e → LocPot X)
     (hΦ : ∀ i, IsPotential A (Φ i)) (c : ℝ) (g : X → ℝ) :
     mInt A (Fin.cons (LocPot.ofFun fun _ => c) Φ) g = 0 := by
@@ -241,12 +300,22 @@ private theorem mInt_cons_const_eq_zero (A : FinHolAtlas (e + 1) X) (Φ : Fin e 
   rw [← h]
   simp only [mInt, integralWith, hL]
 
+/- English proof (translation)
+Introduce `e X _ _ _ A w hw Φ hΦ`. Establish `h1 : A.Smooth (fun _ : X => (1 : ℝ))` using `fun j => contDiffOn_const`. Rewrite using `[st_byPartsSymm_of hP A (fun _ => 1) w h1 hw Φ hΦ]`. Conclude with `mInt_cons_const_eq_zero A Φ hΦ 1 w`.
+-/
 theorem st_stokes_of (hP : PartsStatement) : StokesStatement := by
   intro e X _ _ _ A w hw Φ hΦ
   have h1 : A.Smooth (fun _ : X => (1 : ℝ)) := fun j => contDiffOn_const
   rw [st_byPartsSymm_of hP A (fun _ => 1) w h1 hw Φ hΦ]
   exact mInt_cons_const_eq_zero A Φ hΦ 1 w
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `h` using `mIntLinear A Ψ hΨ (-1) (fun _ => 0) (fun _ => 0) (mIntegrableCont A Ψ hΨ _ continuous_const) (mIntegrableCont A Ψ hΨ _ continuous_const)`. Simplify using `only [mul_zero, add_zero] at h`. Simplify using `only [Finset.sum_empty]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `insert a s ha ih`. Establish `h` using `mIntLinear A Ψ hΨ 1 (f a) (fun x => ∑ m ∈ s, f m x) (mIntegrableCont A Ψ hΨ _ (hf a)) (mIntegrableCont A Ψ hΨ _ (continuous_finset_sum _ fun m _ => hf m))`. Simplify using `only [one_mul] at h`. Simplify using `only [Finset.sum_insert ha]`.
+
+Rewrite using `[h, ih]`.
+-/
 private theorem mInt_finset_sum [CompactSpace X] [T2Space X] {d : ℕ} (A : FinHolAtlas d X)
     (Ψ : Fin d → LocPot X) (hΨ : ∀ i, IsPotential A (Ψ i)) {M : ℕ} (f : Fin M → X → ℝ)
     (hf : ∀ m, Continuous (f m)) (s : Finset (Fin M)) :
@@ -267,6 +336,23 @@ private theorem mInt_finset_sum [CompactSpace X] [T2Space X] {d : ℕ} (A : FinH
     simp only [Finset.sum_insert ha]
     rw [h, ih]
 
+/- English proof (translation)
+Introduce `e X _ _ _ A v hv Φ hΦ hpsh`. Establish `h2 : (2 : WithTop ℕ∞) ≤ ∞` using `by first`. Consider the case `exact_mod_cast (le_top : (2 : ℕ∞) ≤ ⊤)`. Consider the case `exact WithTop.coe_le_coe.mpr le_top`. Consider the case `norm_num`.
+
+Consider the case `simp`. Take `⟨M, θ, G, j, x0, hθs, hθ0, hθ1, hθG, hGo, hGs, hGU⟩` from `st_exists_good_partition A Φ`. Establish `hvc` using `st_smooth_continuous A hv`. Establish `hvv : A.Smooth (fun x => v x * v x)` using `st_smooth_mul A hv hv`. Establish `hv2 : A.Smooth (fun x => 1 / 2 * (v x * v x))` using `(smoothOnAlg A Set.univ Set.univ _ _ (1 / 2) hvv hvv subset_rfl).2`.
+
+Establish `hΦ' : ∀ i, IsPotential A ((Fin.cons (LocPot.ofFun v) Φ : Fin (e + 1) → LocPot X) i)`. Introduce `i`. Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations. Simplify using `using isPotential_ofFun A v hv`. Simplify using `using hΦ k`.
+
+Establish `hΦ2 : ∀ i, IsPotential A ((Fin.cons (LocPot.ofFun fun x => 1 / 2 * (v x * v x)) Φ : Fin (e + 1) → LocPot X) i)`. Introduce `i`. Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations. Simplify using `using isPotential_ofFun A _ hv2`. Simplify using `using hΦ k`.
+
+Establish `hsplit : mInt A (Fin.cons (LocPot.ofFun v) Φ) v = ∑ m, mInt A (Fin.cons (LocPot.ofFun v) Φ) (fun x => θ m x * v x)`. Establish `hv' : v = fun x => ∑ m, θ m x * v x` using `funext fun x => by rw [← Finset.sum_mul, hθ1, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use `_ = _ := mInt_finset_sum A _ hΦ' (fun m x => θ m x * v x) (fun m => (st_smooth_continuous A (hθs m)).mul hvc) Finset.univ`.
+
+Establish `hpiece` using `fun m => st_nonpos_piece A Φ hΦ (j m) (G m) (hGo m) (hGs m) (x0 m) (hGU m) hP v (θ m) hv (hθs m) (hθG m)`. Establish `hsum2 : ∑ m, mInt A (Fin.cons (LocPot.ofFun fun x => 1 / 2 * (v x * v x)) Φ) (θ m) = 0`. Rewrite using `[← mInt_finset_sum A _ hΦ2 θ (fun m => st_smooth_continuous A (hθs m)) Finset.univ]`. Establish `h1 : (fun x => ∑ m, θ m x) = fun _ => 1` using `funext hθ1`. Rewrite using `[h1]`.
+
+Conclude with `st_stokes_of hP A _ hv2 Φ hΦ`. Establish `hnn : ∀ m, 0 ≤ ∫ y in (A.chart (j m)).target ∩ (A.chart (j m)).symm ⁻¹' G m, (A.chart (j m)).target.indicator (θ m ∘ (A.chart (j m)).symm) y * gradDens (fun i => (Φ i).φ (x0 m i) ∘ (A.chart (j m)).symm) (v ∘ (A.chart (j m)).symm) (v ∘ (A.chart (j m)).symm) y`. Introduce `m`. Establish `hUo : IsOpen ((A.chart (j m)).target ∩ (A.chart (j m)).symm ⁻¹' G m)` using `(A.chart (j m)).isOpen_inter_preimage_symm (hGo m)`. Use `setIntegral_nonneg hUo.measurableSet fun y hy => mul_nonneg ?_ ?_` and prove the remaining obligations.
+
+Conclude with `Set.indicator_nonneg (fun z _ => hθ0 m _) y`. Conclude with `hN e _ _ _ hUo (fun i => (((hΦ i).1 (x0 m i) (j m)).mono fun z hz => ⟨hz.1, hGU m i hz.2⟩).of_le h2) (fun i z hz ξ => hpsh i (x0 m i) (j m) z ⟨hz.1, hGU m i hz.2⟩ ξ) y hy`. Rewrite using `[hsplit, Finset.sum_congr rfl fun m _ => hpiece m, Finset.sum_add_distrib, hsum2, add_zero, Finset.sum_neg_distrib]`. Conclude with `neg_nonpos.mpr (Finset.sum_nonneg fun m _ => hnn m)`.
+-/
 theorem st_byPartsNonpos_of (hP : PartsStatement) (hN : GradDensNonnegStatement) :
     ByPartsNonposStatement := by
   intro e X _ _ _ A v hv Φ hΦ hpsh
@@ -323,6 +409,19 @@ theorem st_byPartsNonpos_of (hP : PartsStatement) (hN : GradDensNonnegStatement)
     Finset.sum_neg_distrib]
   exact neg_nonpos.mpr (Finset.sum_nonneg fun m _ => hnn m)
 
+/- English proof (translation)
+Use `set Ψ' := Function.update Ψ i0 (Ψ i0 + LocPot.ofFun u) with hΨ'`. Set `σ : Equiv.Perm (Fin (n + 1))` to `Equiv.swap 0 i0`. Establish `hne : ∀ i : Fin n, σ i.succ ≠ i0`. Introduce `i h`. Establish `h2` using `congrArg σ h`.
+
+Simplify using `only [σ, Equiv.swap_apply_self, Equiv.swap_apply_right] at h2`. Conclude with `Fin.succ_ne_zero i h2`. Use `set Φ' : Fin n → LocPot X := fun i => Ψ (σ i.succ) with hΦ'`. Establish `h1 : Ψ' ∘ σ = Fin.cons (Ψ i0 + LocPot.ofFun u) Φ'`. Use function extensionality and compare the values at `k`.
+
+Use `Fin.cases ?_ (fun i => ?_) k` and prove the remaining obligations. Simplify using `[σ, Ψ']`. Simplify using `only [Function.comp, Fin.cons_succ, Φ', Ψ']`. Rewrite using `[Function.update_of_ne (hne i)]`. Establish `h2 : Ψ ∘ σ = Fin.cons (Ψ i0) Φ'`.
+
+Use function extensionality and compare the values at `k`. Use `Fin.cases ?_ (fun i => ?_) k` and prove the remaining obligations. Simplify using `[σ]`. Simplify using `[Φ']`. Establish `hPot' : ∀ i, IsPotential A (Φ' i)` using `fun i => hΨ _`.
+
+Establish `hu'` using `isPotential_ofFun A u hu`. Establish `hint : ∀ Q : LocPot X, IsPotential A Q → MIntegrable A (Fin.cons Q Φ') (fun _ => 1)`. Introduce `Q hQ`. Use `mIntegrableCont A _ ?_ _ continuous_const` and prove the remaining obligations. Introduce `k`.
+
+Use `Fin.cases ?_ (fun i => ?_) k` and prove the remaining obligations. Simplify using `using hQ`. Simplify using `using hPot' i`. Rewrite using `[← mIntSymm A Ψ' σ, h1, mIntAdd A _ _ Φ' (hΨ i0) hu' hPot' _ (hint _ (hΨ i0)) (hint _ hu'), st_stokes_of hP A u hu Φ' hPot', add_zero, ← h2, mIntSymm]`.
+-/
 theorem st_mass_step (hP : PartsStatement) [CompactSpace X] [T2Space X] {n : ℕ}
     (A : FinHolAtlas (n + 1) X) (Ψ : Fin (n + 1) → LocPot X) (hΨ : ∀ i, IsPotential A (Ψ i))
     (i0 : Fin (n + 1)) (u : X → ℝ) (hu : A.Smooth u) :
@@ -360,6 +459,19 @@ theorem st_mass_step (hP : PartsStatement) [CompactSpace X] [T2Space X] {n : ℕ
   rw [← mIntSymm A Ψ' σ, h1, mIntAdd A _ _ Φ' (hΨ i0) hu' hPot' _ (hint _ (hΨ i0)) (hint _ hu'),
     st_stokes_of hP A u hu Φ' hPot', add_zero, ← h2, mIntSymm]
 
+/- English proof (translation)
+Introduce `e X _ _ _ A Φ u hΦ hu`. Consider the cases of `e with`. Consider the case `zero`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Conclude with `i.elim0`. Consider the case `succ n => classical`. Establish `key : ∀ s : Finset (Fin (n + 1)), mInt A (fun i => if i ∈ s then Φ i + LocPot.ofFun (u i) else Φ i) (fun _ => 1) = mInt A Φ (fun _ => 1)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Establish `hpot : ∀ i, IsPotential A (if i ∈ s then Φ i + LocPot.ofFun (u i) else Φ i)`. Introduce `i`. Use `split_ifs`.
+
+Conclude with `isPotentialAdd A _ _ (hΦ i) (isPotential_ofFun A _ (hu i))`. Conclude with `hΦ i`. Establish `hupd : (fun i => if i ∈ insert a s then Φ i + LocPot.ofFun (u i) else Φ i) = Function.update (fun i => if i ∈ s then Φ i + LocPot.ofFun (u i) else Φ i) a (Φ a + LocPot.ofFun (u a))`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = a`.
+
+Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hi, Finset.mem_insert]`. Establish `hstep` using `st_mass_step hP A (fun i => if i ∈ s then Φ i + LocPot.ofFun (u i) else Φ i) hpot a (u a) (hu a)`. Simplify using `only [ha, if_false] at hstep`.
+
+Rewrite using `[hupd, hstep, ih]`. Simplify using `using key Finset.univ`.
+-/
 theorem st_massIndep_of (hP : PartsStatement) : MassIndepStatement := by
   intro e X _ _ _ A Φ u hΦ hu
   cases e with

@@ -23,6 +23,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `GlobalTheory.AdeleBaseChange.map_surjective (toAd_spec D) (⟨f, hf⟩ : FiniteAdeleRing (𝓞 D.host.E) D.host.E)`. Take `⟨b, hb⟩` from `GlobalTheory.AdeleBaseChange.map_surjective (toAd_spec D) (⟨g, hg⟩ : FiniteAdeleRing (𝓞 D.host.E) D.host.E)`. Establish `h1 : ∀ Q, cpt (D` using `D) Q a = f Q := fun Q => by`. Express the relevant statement in the definitionally equal form `toAd D a Q = _`. Rewrite using `[ha]`.
+
+Both sides reduce to the same expression. Establish `h2 : ∀ Q, cpt (D` using `D) Q b = g Q := fun Q => by`. Express the relevant statement in the definitionally equal form `toAd D b Q = _`. Rewrite using `[hb]`. Both sides reduce to the same expression.
+
+Establish `e : a * b = 1` using `cpt_ext fun Q => by rw [map_mul, h1, h2, hfg, map_one]`. Conclude with `⟨⟨a, b, e, by rw [mul_comm]; exact e⟩, h1⟩`.
+-/
 theorem exists_unit_cpt (f g : ∀ Q : Pl D.host.E, Kw Q) (hfg : ∀ Q, f Q * g Q = 1)
     (hf : ∀ᶠ Q : Pl D.host.E in Filter.cofinite, f Q ∈ Q.adicCompletionIntegers D.host.E)
     (hg : ∀ᶠ Q : Pl D.host.E in Filter.cofinite, g Q ∈ Q.adicCompletionIntegers D.host.E) :
@@ -42,10 +49,16 @@ theorem exists_unit_cpt (f g : ∀ Q : Pl D.host.E, Kw Q) (hfg : ∀ Q, f Q * g 
   have e : a * b = 1 := cpt_ext fun Q => by rw [map_mul, h1, h2, hfg, map_one]
   exact ⟨⟨a, b, e, by rw [mul_comm]; exact e⟩, h1⟩
 
+/- English proof (translation)
+The claim follows from `congrArg (fun z : FiniteAdeleRing (𝓞 D.host.E) D.host.E => z Q) (GlobalTheory.AdeleBaseChange.map_tmul_one (toAd_spec D) u)`.
+-/
 theorem cpt_tmul_one (Q : Pl D.host.E) (u : D.host.E) :
     cpt (D := D) Q (u ⊗ₜ[D.host.F] (1 : Formalism.L2.Herm.Af D.host.F)) = algebraMap D.host.E (Kw Q) u :=
   congrArg (fun z : FiniteAdeleRing (𝓞 D.host.E) D.host.E => z Q) (GlobalTheory.AdeleBaseChange.map_tmul_one (toAd_spec D) u)
 
+/- English proof (translation)
+Rewrite using `[mem_OA_iff, GlobalTheory.Idele.mem_iff_valuation_le hI]`. Use `forall_congr' fun Q => ?_` and prove the remaining obligations. Establish `hne : Valued.v (cpt (D` using `D) Q y.1) ≠ 0 := by rw [hy]; exact WithZero.exp_ne_zero`. Establish `e3 : Valued.v (cpt (D` using `D) Q (y⁻¹).1) = (Valued.v (cpt (D := D) Q y.1))⁻¹ := eq_inv_of_mul_eq_one_left (by rw [← map_mul, ← map_mul, Units.inv_mul, map_one, map_one])`. Rewrite using `[map_mul, cpt_tmul_one, HeightOneSpectrum.mem_adicCompletionIntegers, map_mul, show Valued.v (algebraMap D.host.E (Kw Q) u) = Q.valuation D.host.E u from HeightOneSpectrum.valuedAdicCompletion_eq_valuation' Q u, ← hy, e3, ← div_eq_inv_mul, div_le_one₀ (zero_lt_iff.2 hne)]`.
+-/
 theorem idele_inv_mul_mem_iff {I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E} (hI : I ≠ 0) (y : (Lev.EAf D)ˣ)
     (hy : ∀ Q, Valued.v (cpt (D := D) Q y.1) = WithZero.exp (-FractionalIdeal.count D.host.E Q I)) (u : D.host.E) :
     (y⁻¹).1 * (u ⊗ₜ[D.host.F] (1 : Formalism.L2.Herm.Af D.host.F)) ∈ OA D ↔ u ∈ I := by
@@ -58,6 +71,13 @@ theorem idele_inv_mul_mem_iff {I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E} 
     show Valued.v (algebraMap D.host.E (Kw Q) u) = Q.valuation D.host.E u from
       HeightOneSpectrum.valuedAdicCompletion_eq_valuation' Q u, ← hy, e3, ← div_eq_inv_mul, div_le_one₀ (zero_lt_iff.2 hne)]
 
+/- English proof (translation)
+Establish `h1` using `congrArg (fun x => (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat B A d.ι) * B.gram) *ᵥ x) h`. Simplify using `only [mulVec_add, mulVec_mulVec, mulVec_zero] at h1`. Rewrite `h1` using `[GlobalTheory.AutFunCounterexample.gram_pull B A d.ι d.isom, d.perp, zero_mulVec, add_zero]`. Establish `hy : y = 0` using `eq_zero_of_mulVec_eq_zero (GlobalTheory.AutFunCounterexample.gram_det_ne A) h1`. Substitute `hy` using the available equality.
+
+Rewrite `h` using `[mulVec_zero, zero_add]`. Establish `h2` using `congrArg (fun x => (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) d.a * B.gram) *ᵥ x) h`. Simplify using `only [mulVec_mulVec, mulVec_zero] at h2`. Rewrite `h2` using `[d.gram]`. Use `⟨rfl, funext fun p => ?_⟩` and prove the remaining obligations.
+
+Establish `h3` using `congrFun h2 p.rev`. Rewrite `h3` using `[GlobalTheory.ChiGrid.SumDual.antiDiagonalEpsilonGram_mulVec, Fin.rev_rev]`. Establish `h4 : (if p.rev = p then ε else 1) ≠ 0` using `by split_ifs; exacts [hε, one_ne_zero]`. Conclude with `(mul_eq_zero.1 h3).resolve_left h4`.
+-/
 theorem auxiliaryVectorDecomposition_eq_zero {A B : HSp D} {c : ℕ} {ε : D.host.E} (hε : ε ≠ 0) (d : HermitianOrthogonalExtensionData A B c ε)
     (y : Fin A.rank → D.host.E) (u : Fin c → D.host.E)
     (h : frameMat B A d.ι *ᵥ y + d.a *ᵥ u = 0) : y = 0 ∧ u = 0 := by
@@ -79,6 +99,47 @@ theorem auxiliaryVectorDecomposition_eq_zero {A B : HSp D} {c : ℕ} {ε : D.hos
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Use `set σ := frame d.rank with hσ`. Take `⟨C, hC⟩ : ∃ C : Matrix (Fin B.rank) (Fin A.rank ⊕ Fin c) D.host.E, C = Matrix.fromCols (frameMat B A d.ι) d.a` from `⟨_, rfl⟩`. Establish `hCv : ∀ v, C *ᵥ v = frameMat B A d.ι *ᵥ (v ∘ Sum.inl) + d.a *ᵥ (v ∘ Sum.inr)` using `fun v => by`. Rewrite using `[hC, fromCols_mulVec]`. Establish `hCinj : Function.Injective C.mulVec` using `fun v v' h => by`.
+
+Establish `h0 : C *ᵥ (v - v') = 0` using `by rw [mulVec_sub, h, sub_self]`. Rewrite `h0` using `[hCv]`. Take `⟨h1, h2⟩` from `auxiliaryVectorDecomposition_eq_zero hε d _ _ h0`. Use `sub_eq_zero.1 (funext fun s => ?_)` and prove the remaining obligations. Break down `s with k | p` into its components or cases.
+
+Conclude with `congrFun h1 k`. Conclude with `congrFun h2 p`. Take `⟨Cr, hCrdef⟩ : ∃ Cr : Matrix (Fin B.rank) (Fin B.rank) D.host.E, Cr = C.submatrix id σ.symm` from `⟨_, rfl⟩`. Establish `hCrv : ∀ z, Cr *ᵥ z = C *ᵥ (z ∘ σ)` using `fun z => by`. Rewrite using `[hCrdef, submatrix_mulVec_equiv]`.
+
+Both sides reduce to the same expression. Establish `hCr : IsUnit Cr`. Rewrite using `[← mulVec_injective_iff_isUnit]`. Introduce `v v' h`. Rewrite `h` using `[hCrv, hCrv]`.
+
+Use `hCinj h` as an intermediate fact. Use function extensionality and compare the values at `i`. Simplify using `using congrFun this (σ.symm i)`. Take `⟨U, hU⟩` from `hCr`. Set `ι : D.host.E →+* Lev.EAf D` to `Formalism.UG.inclE (F := D.host.F) (E := D.host.E) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)`.
+
+Establish `hιc : ∀ w x, cpt (D` using `D) w (ι x) = algebraMap D.host.E (Kw w) x := fun w x => cpt_tmul_one w x`. Set `Ua : GL (Fin B.rank) (Lev.EAf D)` to `Units.map (RingHom.mapMatrix ι).toMonoidHom U`. Establish `hUa : Ua.val = Cr.map ι` using `by rw [← hU]; rfl`. Set `Bl : GL (Fin A.rank ⊕ Fin c) (Lev.EAf D)` to `⟨fromBlocks β.1 0 0 (diagonal fun p => (y p).1), fromBlocks (β⁻¹).1 0 0 (diagonal fun p => ((y p)⁻¹).1), by rw [fromBlocks_multiply, diagonal_mul_diagonal]; simp, by rw [fromBlocks_multiply, diagonal_mul_diagonal]; simp⟩`. Set `Bl' : GL (Fin B.rank) (Lev.EAf D)` to `⟨Bl.val.submatrix σ.symm σ.symm, (Bl⁻¹).val.submatrix σ.symm σ.symm, by rw [Matrix.submatrix_mul_equiv, Units.mul_inv, Matrix.submatrix_one_equiv], by rw [Matrix.submatrix_mul_equiv, Units.inv_mul, Matrix.submatrix_one_equiv]⟩`.
+
+Establish `hBl' : Bl'.val = Bl.val.submatrix σ.symm σ.symm` using `rfl`. Establish `hBl'i : (Bl'⁻¹).val = (fromBlocks (β⁻¹).1 0 0 (diagonal fun p => ((y p)⁻¹).1)).submatrix σ.symm σ.symm` using `rfl`. Use `⟨Ua * Bl', ?_, fun w => ?_⟩` and prove the remaining obligations. Establish `hΛ'` using `eq_lat hβ hΛ`. Establish `e3 : ∀ v : Fin B.rank → Lev.EAf D, (fromBlocks (β⁻¹).1 0 0 (diagonal fun p => ((y p)⁻¹).1)).submatrix σ.symm σ.symm *ᵥ v = (Sum.elim ((β⁻¹).1 *ᵥ (v ∘ σ ∘ Sum.inl)) (fun p => ((y p)⁻¹).1 * v (σ (Sum.inr p)))) ∘ σ.symm` using `fun v => by`.
+
+Rewrite using `[submatrix_mulVec_equiv, fromBlocks_mulVec]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases h : σ.symm i with k | p <;> simp [h, mulVec_diagonal, Function.comp_def]`. Establish `key : GlobalTheory.NormSum.AdLattice.lat (Ua * Bl') = d.lat Λ 𝔟`. Use extensionality with `x`.
+
+Take `⟨z, rfl⟩ : ∃ z, Cr *ᵥ z = x` from `⟨((U⁻¹ : (Matrix _ _ D.host.E)ˣ) : Matrix _ _ D.host.E) *ᵥ x, by`. Rewrite using `[mulVec_mulVec, ← hU, Units.mul_inv, one_mulVec]⟩`. Establish `hL : Cr *ᵥ z ∈ GlobalTheory.NormSum.AdLattice.lat (Ua * Bl') ↔ z ∘ σ ∘ Sum.inl ∈ Λ ∧ ∀ p, z (σ (Sum.inr p)) ∈ 𝔟 p`. Rewrite using `[← GlobalTheory.NormSum.AdLattice.mem_lat_rat Ua Bl' Cr hUa z, GlobalTheory.NormSum.AdLattice.mem_lat, hBl'i, e3]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use `⟨?_, fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[hΛ', GlobalTheory.NormSum.AdLattice.mem_lat]`. Introduce `k`. Use `h (σ (Sum.inl k))` as an intermediate fact.
+
+Simplify using `only [Function.comp_apply, Equiv.symm_apply_apply, Sum.elim_inl] at this`. Conclude with `this`. Use `h (σ (Sum.inr p))` as an intermediate fact. Simplify using `only [Function.comp_apply, Equiv.symm_apply_apply, Sum.elim_inr] at this`. Conclude with `(idele_inv_mul_mem_iff (h𝔟 p) (y p) (hy p) _).1 this`.
+
+Introduce and unpack `⟨h1, h2⟩ i`. Rewrite `h1` using `[hΛ', GlobalTheory.NormSum.AdLattice.mem_lat]`. Break down `h : σ.symm i with k | p` into its components or cases. Simplify using `only [Function.comp_apply, h, Sum.elim_inl]`. Conclude with `h1 k`.
+
+Simplify using `only [Function.comp_apply, h, Sum.elim_inr]`. Conclude with `(idele_inv_mul_mem_iff (h𝔟 p) (y p) (hy p) _).2 (h2 p)`. Establish `hx : Cr *ᵥ z = frameMat B A d.ι *ᵥ (z ∘ σ ∘ Sum.inl) + d.a *ᵥ (z ∘ σ ∘ Sum.inr)`. Rewrite using `[hCrv, hCv]`. Both sides reduce to the same expression.
+
+Use `hL.trans ?_` and prove the remaining obligations. Use `show _ ↔ ∃ y ∈ Λ, ∃ u : Fin c → D.host.E, (∀ p, u p ∈ 𝔟 p) ∧ Cr *ᵥ z = frameMat B A d.ι *ᵥ y + d.a *ᵥ u`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨_, h1, _, h2, hx⟩`.
+
+Introduce and unpack `⟨y0, hy0, u, hu, hxu⟩`. Establish `e4 : z ∘ σ = Sum.elim y0 u` using `hCinj (by rw [← hCrv, hCv, hxu]; rfl)`. Use `⟨?_, fun p => ?_⟩` and prove the remaining obligations. Establish `: z ∘ σ ∘ Sum.inl = y0` using `by rw [← Function.comp_assoc, e4]; rfl`. Rewrite using `[this]`.
+
+Conclude with `hy0`. Establish `: z (σ (Sum.inr p)) = u p` using `congrFun e4 (Sum.inr p)`. Rewrite using `[this]`. Conclude with `hu p`. Rewrite using `[← key]`.
+
+Conclude with `isFrame_lat _`. Use `show ((Ua * Bl').val.map (cpt (D := D) w)).submatrix id (frame d.rank) = _`. Rewrite using `[Units.val_mul, hUa, hBl', hCrdef, ← Matrix.submatrix_map, Matrix.submatrix_mul_equiv, ← Matrix.submatrix_map, Matrix.submatrix_submatrix]`. Rewrite using `[← hσ]`. Simplify using `only [Function.comp_id, Equiv.symm_comp_self, Matrix.submatrix_id_id]`.
+
+Establish `key : ∀ (M : Matrix (Fin B.rank) (Fin A.rank ⊕ Fin c) (Lev.EAf D)) (N : Matrix (Fin A.rank ⊕ Fin c) (Fin A.rank ⊕ Fin c) (Lev.EAf D)), (M * N).map (cpt (D` using `D) w) = M.map (cpt (D := D) w) * N.map (cpt (D := D) w) := fun M N => Matrix.ext fun i j => by simp only [Matrix.map_apply, Matrix.mul_apply, map_sum, map_mul]`. Establish `hm2 : (C.map ι).map (cpt (D` using `D) w) = C.map (algebraMap D.host.E (Kw w)) := Matrix.ext fun i j => hιc w (C i j)`. Establish `e2 : Bl.val.map (cpt (D` using `D) w) = fromBlocks ((β.val).map (cpt (D := D) w)) 0 0 (diagonal fun p => cpt (D := D) w (y p).1) := by show (fromBlocks β.1 0 0 (diagonal fun p => (y p).1)).map (cpt (D := D) w) = _`. Rewrite using `[Matrix.fromBlocks_map, Matrix.diagonal_map (map_zero _)]`. Simplify using the standard rewrite rules.
+
+Establish `e1 : C.map (algebraMap D.host.E (Kw w)) = Matrix.fromCols ((frameMat B A d.ι).map (algebraMap D.host.E (Kw w))) (d.a.map (algebraMap D.host.E (Kw w)))`. Rewrite using `[hC]`. Apply the tactic sequence `exact Matrix.ext fun i s => by rcases s with k | p <;> rfl`. Rewrite using `[key, hm2, e2, e1, fromCols_mul_fromBlocks]`. Simplify using `only [Matrix.mul_zero, add_zero, zero_add]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_sumFrame {A B : HSp D} {c : ℕ} {ε : D.host.E} (hε : ε ≠ 0) (d : HermitianOrthogonalExtensionData A B c ε)
     {Λ : Submodule (𝓞 D.host.E) (Fin A.rank → D.host.E)} (hΛ : Submodule.IsLattice D.host.E Λ)
     {β : GL (Fin A.rank) (Lev.EAf D)} (hβ : IsFrame β Λ) {𝔟 : Fin c → FractionalIdeal (𝓞 D.host.E)⁰ D.host.E}
@@ -199,6 +260,17 @@ theorem exists_sumFrame {A B : HSp D} {c : ℕ} {ε : D.host.E} (hε : ε ≠ 0)
     simp only [Matrix.mul_zero, add_zero, zero_add]
     rfl
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `GlobalTheory.Idele.exists_idealOf_eq hI`. Establish `hvt : ∀ Q, Valued.v ((t : FiniteAdeleRing (𝓞 D.host.E) D.host.E) Q) = WithZero.exp (-FractionalIdeal.count D.host.E Q I)` using `fun Q => by`. Rewrite using `[GlobalTheory.Idele.valued_idele, ← ht, GlobalTheory.Idele.count_idealOf]`. Establish `hu0 : ∀ Q ∈ S, u Q ≠ 0` using `fun Q hQ h => by`. Use `hu Q hQ` as an intermediate fact.
+
+Rewrite `this` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero this.symm`. Take `⟨y, hy⟩` from `exists_unit_cpt (D := D) (fun Q => if Q ∈ S then u Q else (t : FiniteAdeleRing (𝓞 D.host.E) D.host.E) Q) (fun Q => if Q ∈ S then (u Q)⁻¹ else ((t⁻¹ : (FiniteAdeleRing (𝓞 D.host.E) D.host.E)ˣ) : FiniteAdeleRing (𝓞 D.host.E) D.host.E) Q) (fun Q => by`. Distinguish the cases in `hQ : Q ∈ S`. Simplify using `only [if_pos hQ]`.
+
+Conclude with `mul_inv_cancel₀ (hu0 Q hQ)`. Simplify using `only [if_neg hQ]`. Conclude with `GlobalTheory.Idele.idele_apply_mul_inv t Q)`. Use the proof step `(by filter_upwards [hS.compl_mem_cofinite, (t : FiniteAdeleRing (𝓞 D.host.E) D.host.E).2] with Q h1 h2`. Rewrite using `[if_neg h1]`.
+
+Conclude with `h2)`. Use the proof step `(by filter_upwards [hS.compl_mem_cofinite, ((t⁻¹ : (FiniteAdeleRing (𝓞 D.host.E) D.host.E)ˣ) : FiniteAdeleRing (𝓞 D.host.E) D.host.E).2] with Q h1 h2`. Rewrite using `[if_neg h1]`. Conclude with `h2)`. Use `⟨y, fun Q => ?_, fun Q hQ => by rw [hy, if_pos hQ]⟩` and prove the remaining obligations.
+
+Rewrite using `[hy]`. Use `split_ifs with hQ`. Conclude with `hu Q hQ`. Conclude with `hvt Q`.
+-/
 theorem exists_gen {I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E} (hI : I ≠ 0) {S : Set (Pl D.host.E)} (hS : S.Finite)
     (u : ∀ Q, Kw Q) (hu : ∀ Q ∈ S, Valued.v (u Q) = WithZero.exp (-FractionalIdeal.count D.host.E Q I)) :
     ∃ y : (Lev.EAf D)ˣ, (∀ Q, Valued.v (cpt (D := D) Q y.1) = WithZero.exp (-FractionalIdeal.count D.host.E Q I)) ∧
@@ -237,6 +309,9 @@ theorem exists_gen {I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E} (hI : I ≠
   · exact hu Q hQ
   · exact hvt Q
 
+/- English proof (translation)
+Rewrite using `[stairId, FractionalIdeal.count_mul _ _ (pow_ne_zero _ h) (inv_ne_zero (pow_ne_zero _ h')), FractionalIdeal.count_inv, FractionalIdeal.count_pow, FractionalIdeal.count_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem count_stairId {𝔞 𝔞' : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E} (h : 𝔞 ≠ 0) (h' : 𝔞' ≠ 0) (c : ℕ) (p : Fin c)
     (w : Pl D.host.E) : FractionalIdeal.count D.host.E w (stairId 𝔞 𝔞' c p) =
       ((c - p.1 : ℕ) : ℤ) * FractionalIdeal.count D.host.E w 𝔞 -
@@ -245,6 +320,9 @@ theorem count_stairId {𝔞 𝔞' : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E}
     FractionalIdeal.count_inv, FractionalIdeal.count_pow, FractionalIdeal.count_pow]
   ring
 
+/- English proof (translation)
+Introduce `hJ`. Take `⟨t, ht0, ht⟩` from `FractionalIdeal.exists_ne_zero_mem_isInteger hI`. Establish `h1 : star (algebraMap (𝓞 D.host.E) D.host.E t) ∈ J` using `(h _).2 (by rwa [star_star])`. Rewrite `h1` using `[hJ, FractionalIdeal.mem_zero_iff, star_eq_zero]`. Conclude with `ht0 (by simpa using h1)`.
+-/
 theorem ne_zero_of_conj {I J : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E} (hI : I ≠ 0) (h : ∀ x, x ∈ J ↔ star x ∈ I) :
     J ≠ 0 := by
   intro hJ
@@ -253,6 +331,13 @@ theorem ne_zero_of_conj {I J : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E} (hI 
   rw [hJ, FractionalIdeal.mem_zero_iff, star_eq_zero] at h1
   exact ht0 (by simpa using h1)
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `GlobalTheory.IdemSupport.delta_of_isIdemAt (comp_toAd D) he`. Establish `h2` using `GlobalTheory.IdemSupport.delta_conj (comp_toAd D) h1`. Rewrite `h2` using `[h]`. Establish `h3 : ((toAd D).comp (toEAf D) (e * cA D e)) w = 0`.
+
+Rewrite using `[he.1.2.1, map_zero]`. Both sides reduce to the same expression. Rewrite `h3` using `[map_mul]`. Express the relevant statement in the definitionally equal form `((toAd D).comp (toEAf D) e) w * ((toAd D).comp (toEAf D) (cA D e)) w = 0 at h3`. Rewrite `h3` using `[h1.2.1, h2.2.1, one_mul]`.
+
+Conclude with `one_ne_zero h3`.
+-/
 theorem conjPrime_ne_of_isIdempotentAt {w : Pl D.host.E} {e : AE D} (he : Formalism.L2.NTheta.IsIdemAt e w) :
     GlobalTheory.IdemSupport.cP w ≠ w := by
   intro h
@@ -267,6 +352,11 @@ theorem conjPrime_ne_of_isIdempotentAt {w : Pl D.host.E} {e : AE D} (he : Formal
   rw [h1.2.1, h2.2.1, one_mul] at h3
   exact one_ne_zero h3
 
+/- English proof (translation)
+Use `HeightOneSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Establish `hc : ∀ y : 𝓞 D.host.E, Formalism.DivisionValues.cO D.host.E (GlobalTheory.IdemSupport.cO D y) = y` using `fun y => RingOfIntegers.ext (by rw [Formalism.DivisionValues.ValuationRepresentative.cO_apply, GlobalTheory.IdemSupport.cO_coe, star_star])`. Establish `hc' : ∀ y : 𝓞 D.host.E, GlobalTheory.IdemSupport.cO D (Formalism.DivisionValues.cO D.host.E y) = y` using `fun y => RingOfIntegers.ext (by rw [GlobalTheory.IdemSupport.cO_coe, Formalism.DivisionValues.ValuationRepresentative.cO_apply, star_star])`. Express the relevant statement in the definitionally equal form `x ∈ Ideal.map (Formalism.DivisionValues.cO D.host.E) w.asIdeal ↔ x ∈ (GlobalTheory.IdemSupport.cP w).asIdeal`. Rewrite using `[Ideal.mem_map_of_equiv, GlobalTheory.IdemSupport.mem_cP]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Rewrite using `[hc']` and apply the resulting hypothesis. Introduce `hx`. Conclude with `⟨_, hx, hc x⟩`.
+-/
 theorem conjPl_eq_cP (w : Pl D.host.E) : Formalism.DivisionValues.conjPl w = GlobalTheory.IdemSupport.cP w := by
   refine HeightOneSpectrum.ext (Ideal.ext fun x => ?_)
   have hc : ∀ y : 𝓞 D.host.E, Formalism.DivisionValues.cO D.host.E (GlobalTheory.IdemSupport.cO D y) = y := fun y =>
@@ -283,6 +373,17 @@ theorem conjPl_eq_cP (w : Pl D.host.E) : Formalism.DivisionValues.conjPl w = Glo
 
 variable {T : Type} {L : LevCh D T} {sc : Consts}
 
+/- English proof (translation)
+Establish `hprod : ((G.pl.modul sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) = ∏ v ∈ G.pl.S0, ((G.pl.w v).asIdeal : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ^ G.pl.depth sc v`. Rewrite using `[Places.modul, ← FractionalIdeal.coeIdealHom_apply, map_prod]`. Simplify using `only [map_pow, FractionalIdeal.coeIdealHom_apply]`. Establish `hne : ∀ v, ((G.pl.w v).asIdeal : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0` using `fun v => by`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]`.
+
+Conclude with `(G.pl.w v).ne_bot`. Rewrite using `[hprod, FractionalIdeal.count_prod _ _ _ _ fun v _ => pow_ne_zero _ (hne v)]`. Establish `key : ∀ v, FractionalIdeal.count D.host.E w (((G.pl.w v).asIdeal : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ^ G.pl.depth sc v) = if G.pl.w v = w then (G.pl.depth sc v : ℤ) else 0` using `fun v => by`. Rewrite using `[FractionalIdeal.count_pow]`. Use `split_ifs with h`.
+
+Rewrite using `[h, FractionalIdeal.count_self, mul_one]`. Rewrite using `[FractionalIdeal.count_maximal_coprime _ _ h, mul_zero]`. Simplify using `only [key]`. Rewrite using `[cosExp]`. Use `split_ifs with hw`.
+
+Take `⟨v, hv, rfl⟩ : ∃ v ∈ G.pl.S0, G.pl.w v = w` from `by simpa [Places.W0] using hw`. Rewrite using `[Finset.sum_eq_single_of_mem v hv fun v' hv' hne' => if_neg fun h => hne' ?_, if_pos rfl, G.pl.under_w hv]`. Rewrite using `[← G.pl.under_w hv, ← G.pl.under_w hv', h]`. Use `Finset.sum_eq_zero fun v hv => if_neg fun h => hw ?_` and prove the remaining obligations. Rewrite using `[← h]`.
+
+Simplify `⟨v, hv, rfl⟩` using `[Places.W0]`.
+-/
 theorem count_modul (G : GridData L sc) (w : Pl D.host.E) :
     FractionalIdeal.count D.host.E w ((G.pl.modul sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) =
       cosExp G w := by
@@ -311,6 +412,21 @@ theorem count_modul (G : GridData L sc) (w : Pl D.host.E) :
     rw [← h]
     simpa [Places.W0] using ⟨v, hv, rfl⟩
 
+/- English proof (translation)
+Establish `hs : ∀ x : D.host.E, star x = D.host.conj x` using `bridge_star_holds D.R D.host`. Establish `e1 : ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) = ((Ideal.map (Formalism.DivisionValues.cO D.host.E) (G.pl.modul sc) : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Establish `h1` using `(GlobalTheory.ChiGrid.StairConj.mem_coe_iff D (G.pl.modul sc) (D.host.conj x)).2 (by rwa [Formalism.L2.Pj.conj_conj])`. Take `⟨z, hz, hzx⟩` from `(FractionalIdeal.mem_coeIdeal _).1 h1`. Use `(FractionalIdeal.mem_coeIdeal _).2 ⟨Formalism.DivisionValues.cO D.host.E z, (Ideal.mem_map_of_equiv _ _).2 ⟨z, hz, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show algebraMap (𝓞 D.host.E) D.host.E (Formalism.DivisionValues.cO D.host.E z) = x`. Rewrite using `[← RingOfIntegers.coe_eq_algebraMap, Formalism.DivisionValues.ValuationRepresentative.cO_apply, RingOfIntegers.coe_eq_algebraMap, hzx, hs, Formalism.L2.Pj.conj_conj]`.
+
+Introduce `hx`. Take `⟨y, hy, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hx`. Take `⟨z, hz, rfl⟩` from `(Ideal.mem_map_of_equiv _ _).1 hy`. Establish `h1 : D.host.conj (algebraMap (𝓞 D.host.E) D.host.E (Formalism.DivisionValues.cO D.host.E z)) ∈ ((G.pl.modul sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)`. Rewrite using `[← hs, ← RingOfIntegers.coe_eq_algebraMap, Formalism.DivisionValues.ValuationRepresentative.cO_apply, star_star]`.
+
+Conclude with `(FractionalIdeal.mem_coeIdeal _).2 ⟨z, hz, rfl⟩`. Establish `h2` using `(GlobalTheory.ChiGrid.StairConj.mem_coe_iff D _ _).1 h1`. Rewrite `h2` using `[Formalism.L2.Pj.conj_conj]`. Then use the resulting hypothesis. Establish `h2` using `Formalism.DivisionValues.ValuationRepresentative.count_map (Formalism.DivisionValues.conjPl w) (G.pl.modul sc) (G.pl.modul_ne_bot sc)`. Rewrite `h2` using `[Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl]`.
+
+Rewrite using `[e1, h2, count_modul, conjPl_eq_cP, cosExp, if_neg, Nat.cast_zero]`. Introduce `hc`. Take `⟨v, hv, hvw⟩ : ∃ v ∈ G.pl.S0, G.pl.w v = GlobalTheory.IdemSupport.cP w` from `by simpa [Places.W0] using hc`. Establish `hu : v = w.under (𝓞 D.host.F)`. Rewrite using `[← G.pl.under_w hv, hvw, GlobalTheory.IdemSupport.under_cP]`.
+
+Break down `Good.locPl_cases hw with ⟨-, hw2⟩ | ⟨hw1, -, -⟩` into its components or cases. Take `⟨e, he⟩` from `G.pl.w_split v hv`. Apply `conjPrime_ne_of_isIdempotentAt he` to reduce the goal to its premises. Establish `e : G.pl.w v = w` using `by rw [hu]; exact hw2.symm`. Rewrite `hvw`, the goal using `[e]`.
+
+Conclude with `hvw.symm`. Conclude with `hw1 (hu ▸ hv)`.
+-/
 theorem count_modulBar (G : GridData L sc) {t : T} {w : Pl D.host.E} (hw : w ∈ locPl G t) :
     FractionalIdeal.count D.host.E w ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) =
       0 := by
@@ -355,11 +471,19 @@ def rowId (G : GridData L sc) : ∀ j, Fin (D.R.m - 1 - j) → FractionalIdeal (
   | 0 => stairId (G.pl.stA sc) (G.pl.stAbar sc) (D.R.m - 1)
   | j + 1 => stairId D.host.AA D.host.AAbar (D.R.m - 1 - (j + 1))
 
+/- English proof (translation)
+The claim follows from `| 0, h => (G.sp.colLat D.R.m h le_rfl).symm | j + 1, h => (G.sp.rowLat j h).symm`.
+-/
 theorem rowLat_eq (G : GridData L sc) : ∀ j (hj : j < D.R.m),
     (G.rowDec j hj).lat (G.Λ (.top j)) (rowId G j) = G.Λ (.grid D.R.m j)
   | 0, h => (G.sp.colLat D.R.m h le_rfl).symm
   | j + 1, h => (G.sp.rowLat j h).symm
 
+/- English proof (translation)
+Establish `h1` using `(GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D).1`. Establish `h2` using `(GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D).2 T L G.pl sc`. Establish `key : ∀ {𝔞 𝔞' : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E}, 𝔞 ≠ 0 → (∀ x, x ∈ 𝔞' ↔ star x ∈ 𝔞) → ∀ c p, stairId 𝔞 𝔞' c p ≠ 0` using `fun h h' c p => mul_ne_zero (pow_ne_zero _ h) (inv_ne_zero (pow_ne_zero _ (ne_zero_of_conj h h')))`. Introduce `j p`. Consider the cases of `j with`.
+
+Consider the case `zero => exact key h2.1 h2.2 _ p`. Consider the case `succ j => exact key h1.1 h1.2 _ p`.
+-/
 theorem rowId_ne_zero (G : GridData L sc) : ∀ j p, rowId G j p ≠ 0 := by
   have h1 := (GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D).1
   have h2 := (GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D).2 T L G.pl sc
@@ -371,6 +495,17 @@ theorem rowId_ne_zero (G : GridData L sc) : ∀ j p, rowId G j p ≠ 0 := by
   | zero => exact key h2.1 h2.2 _ p
   | succ j => exact key h1.1 h1.2 _ p
 
+/- English proof (translation)
+Establish `h1` using `(GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D).1`. Establish `h2` using `(GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D).2 T L G.pl sc`. Establish `hmo : ((G.pl.modul sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]`. Conclude with `G.pl.modul_ne_bot sc`.
+
+Establish `hmb : ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0`. Introduce `h`. Establish `h4` using `h2.1`. Rewrite `h4` using `[Places.stA, h, _root_.inv_zero, mul_zero]`. Conclude with `h4 rfl`.
+
+Consider the cases of `j with`. Consider the case `zero`. Rewrite using `[if_pos rfl]`. Express the relevant statement in the definitionally equal form `FractionalIdeal.count D.host.E w (stairId (G.pl.stA sc) (G.pl.stAbar sc) (D.R.m - 1) p) = _`. Rewrite using `[count_stairId h2.1 (ne_zero_of_conj h2.1 h2.2), Places.stA, Places.stAbar, FractionalIdeal.count_mul _ _ h1.1 (inv_ne_zero hmb), FractionalIdeal.count_mul _ _ (ne_zero_of_conj h1.1 h1.2) (inv_ne_zero hmo), FractionalIdeal.count_inv, FractionalIdeal.count_inv, count_modulBar G hw …`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Consider the case `succ j`. Rewrite using `[if_neg (Nat.succ_ne_zero j)]`. Express the relevant statement in the definitionally equal form `FractionalIdeal.count D.host.E w (stairId D.host.AA D.host.AAbar _ p) = _`.
+
+Rewrite using `[count_stairId h1.1 (ne_zero_of_conj h1.1 h1.2), hA.1, hA.2]`. Simplify using the standard rewrite rules.
+-/
 theorem count_rowId (G : GridData L sc) {t : T} {w : Pl D.host.E} (hw : w ∈ locPl G t)
     (hA : FractionalIdeal.count D.host.E w D.host.AA = 0 ∧ FractionalIdeal.count D.host.E w D.host.AAbar = 0) (j : ℕ)
     (p : Fin (D.R.m - 1 - j)) :
@@ -399,6 +534,11 @@ theorem count_rowId (G : GridData L sc) {t : T} {w : Pl D.host.E} (hw : w ∈ lo
     rw [count_stairId h1.1 (ne_zero_of_conj h1.1 h1.2), hA.1, hA.2]
     simp
 
+/- English proof (translation)
+Establish `hu : Valued.v (unifAt w : Kw w) = WithZero.exp (-1 : ℤ)` using `unif_spec w`. Establish `hs : Valued.v (frameSign (Kw w) c p) = 1`. Unfold `frameSign`. Use `split_ifs`. Rewrite using `[Valuation.map_neg, map_one]`.
+
+Conclude with `map_one _`. Rewrite using `[map_mul, hs, one_mul, map_pow, hu, ← WithZero.exp_nsmul]`. Use `congr 1`. Simplify using the standard rewrite rules.
+-/
 theorem valued_frameSign (w : Pl D.host.E) (c : ℕ) (p : Fin c) (k : ℕ) :
     Valued.v (frameSign (Kw w) c p * (unifAt w : Kw w) ^ k) = WithZero.exp (-(k : ℤ)) := by
   have hu : Valued.v (unifAt w : Kw w) = WithZero.exp (-1 : ℤ) := unif_spec w
@@ -415,6 +555,41 @@ variable {G : GridData L sc} (W : G.Weil)
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `hm : 1 ≤ D.R.m` using `by have := D.R.two_le_m; omega`. Establish `hS : ∀ t ∈ U, ∀ w ∈ locPl G t, w ∈ ⋃ t ∈ U, (locPl G t : Set (Pl D.host.E))` using `fun t ht w hw => Set.mem_iUnion₂.2 ⟨t, ht, hw⟩`. Establish `hlatTop : ∀ j, j ≤ D.R.m → Submodule.IsLattice D.host.E (G.Λ (.top j))` using `fun j hj => (G.isV (X := .top j) hj fun _ e => by cases e).sd.1`. Establish `hb : ∀ j, ∃ β : GL (Fin (G.V (.top j)).rank) (Lev.EAf D), j ≤ D.R.m → IsFrame β (G.Λ (.top j))` using `fun j => by`. Distinguish the cases in `hj : j ≤ D.R.m`.
+
+Take `⟨β, hβ⟩` from `GlobalTheory.AdelicFrame.exists_isFrame D.host.F _ (hlatTop j hj).fg (hlatTop j hj).span_eq_top`. Conclude with `⟨β, fun _ => hβ⟩`. Conclude with `⟨1, fun h => absurd h hj⟩`. Use `choose b0 hb0 using hb`. Establish `hrow : ∀ j (hj : j < D.R.m), ∃ β' : GL (Fin (G.V (.grid D.R.m j)).rank) (Lev.EAf D), IsFrame β' (G.Λ (.grid D.R.m j)) ∧ ∀ w ∈ ⋃ t ∈ U, (locPl G t : Set (Pl D.host.E)), IsSumFrame (G.rowDec j hj) w (b0 j) β' fun p => frameSign _ _ p * (unifAt w : Kw w) ^ if j = 0 then cosExp G w * …`.
+
+Introduce `j hj`. Establish `hy : ∀ p : Fin (D.R.m - 1 - j), ∃ y : (Lev.EAf D)ˣ, (∀ Q, Valued.v (cpt (D` using `D) Q y.1) = WithZero.exp (-FractionalIdeal.count D.host.E Q (rowId G j p))) ∧ ∀ Q ∈ ⋃ t ∈ U, (locPl G t : Set (Pl D.host.E)), cpt (D := D) Q y.1 = frameSign (Kw Q) (D.R.m - 1 - j) p * (unifAt Q : Kw Q) ^ if j = 0 then cosExp G Q * (p.1 + 1) else 0 := fun p => exists_gen (rowId_ne …`. Take `⟨t, ht, hQt⟩` from `Set.mem_iUnion₂.1 hQ`. Rewrite using `[valued_frameSign, count_rowId G hQt (hAA t ht Q hQt)]`. Use `choose y hy1 hy2 using hy`.
+
+Take `⟨β', h1, h2⟩` from `exists_sumFrame (by norm_num : (-1 : D.host.E) ≠ 0) (G.rowDec j hj) (hlatTop j hj.le) (hb0 j hj.le) (rowId_ne_zero G j) y hy1`. Use `⟨β', rowLat_eq G j hj ▸ h1, fun w hw => ?_⟩` and prove the remaining obligations. Establish `e : (fun p => cpt (D` using `D) w (y p).1) = fun p => frameSign (Kw w) (D.R.m - 1 - j) p * (unifAt w : Kw w) ^ if j = 0 then cosExp G w * (p.1 + 1) else 0 :=`. Use function extensionality and compare the values at `fun p => hy2 p w hw`. Use `h2 w` as an intermediate fact.
+
+Rewrite `this` using `[e]`. Conclude with `this`. Establish `hF : ∀ i j, ∃ f : GL (Fin (G.V (.grid i j)).rank) (Lev.EAf D), (1 ≤ i → i ≤ D.R.m → j ≤ D.R.m → IsFrame f (G.Λ (.grid i j))) ∧ ∀ (hi : i = D.R.m) (hj : j < D.R.m), ∀ w ∈ ⋃ t ∈ U, (locPl G t : Set (Pl D.host.E)), IsSumFrame (G.rowDec j hj) w (b0 j) (hi ▸ f) fun p => frameSign _ _ …`. Introduce `i j`. Distinguish the cases in `hij : i = D.R.m ∧ j < D.R.m`.
+
+Take `⟨rfl, hj⟩` from `hij`. Take `⟨β', h1, h2⟩` from `hrow j hj`. Conclude with `⟨β', fun _ _ _ => h1, fun _ _ => h2⟩`. Distinguish the cases in `hr : 1 ≤ i ∧ i ≤ D.R.m ∧ j ≤ D.R.m`. Establish `hl` using `(G.isV (X := .grid i j) ⟨hr.2.1, hr.2.2⟩ fun j' e => by`.
+
+Consider the cases of `e`. Conclude with `absurd hr.1 (by norm_num)).sd.1`. Take `⟨β, hβ⟩` from `GlobalTheory.AdelicFrame.exists_isFrame D.host.F _ hl.fg hl.span_eq_top`. Conclude with `⟨β, fun _ _ _ => hβ, fun hi hj => absurd ⟨hi, hj⟩ hij⟩`. Conclude with `⟨1, fun a b c => absurd ⟨a, b, c⟩ hr, fun hi hj => absurd ⟨hi, hj⟩ hij⟩`.
+
+Use `choose F hF1 hF2 using hF`. Set `B : Frames G` to `⟨fun i j => match i with`. Consider the case `0 => 1`. Consider the case `k + 1 => F (k + 1) j, fun i j h1 h2 h3 => by`. Use `match i, h1 with`.
+
+Consider the case `k + 1, _ => exact hF1 (k + 1) j (by omega) h2 h3⟩`. Establish `hB : ∀ i j, 1 ≤ i → B.β i j = F i j` using `fun i j hi => by match i, hi with`. Consider the case `k + 1, _ => rfl`. Establish `hlatm : Submodule.IsLattice D.host.E (G.Λ (.grid D.R.m D.R.m))` using `(G.isV (X := .grid D.R.m D.R.m) ⟨le_rfl, le_rfl⟩ fun j' e => by injection e with e1 e2 omega).sd.1`. Take `⟨βl, hl1, hl2⟩` from `exists_sumFrame (one_ne_zero : (1 : D.host.E) ≠ 0) G.sp.topDec hlatm (hF1 D.R.m D.R.m hm le_rfl le_rfl) (fun _ => one_ne_zero) (fun _ => 1) (fun _ Q => by rw [Units.val_one, map_one, map_one, FractionalIdeal.count_one, neg_zero, WithZero.exp_zero])`.
+
+Establish `hl1' : IsFrame βl (G.Λ (.top D.R.m))`. Express the relevant statement in the definitionally equal form `IsFrame βl (xOf (G.sp.P D.R.m) G.sp.Xs D.R.m).lat`. Rewrite using `[G.sp.topLat]`. Conclude with `hl1`. Establish `hl2' : ∀ w, IsSumFrame G.sp.topDec w (F D.R.m D.R.m) βl 1` using `fun w => by`.
+
+Use `hl2 w` as an intermediate fact. Establish `e : (fun _ : Fin 1 => cpt (D` using `D) w ((1 : (Lev.EAf D)ˣ) : Lev.EAf D)) = 1 := funext fun _ => by`. Rewrite using `[Units.val_one, map_one]`. Both sides reduce to the same expression. Rewrite `this` using `[e]`.
+
+Conclude with `this`. Take `⟨tA, htA⟩` from `GlobalTheory.Idele.exists_idealOf_eq (GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D).1.1`. Establish `hfinA : {w : Pl D.host.E | FractionalIdeal.count D.host.E w D.host.AA ≠ 0}.Finite`. Use `GlobalTheory.Idele.ord_vw_eventually_zero tA` as an intermediate fact. Rewrite `this` using `[Filter.eventually_cofinite]`.
+
+Use `this.subset fun w hw => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hw ⊢`. Rewrite using `[← GlobalTheory.Idele.count_idealOf, htA]` and apply the resulting hypothesis. Use `haveI : Nonempty (Pl D.host.E) := ⟨G.pl.w G.pl.v0⟩`. Set `rep : Pl D.host.F → Pl D.host.E` to `fun v => Classical.epsilon fun w' => w' ∈ hfinA.toFinset ∧ w'.under (𝓞 D.host.F) = v`.
+
+Use `⟨⟨B, Function.update b0 D.R.m βl, fun j hj => ?_, fun t ht w hw j hj => ?_, fun t ht w hw => ?_, N, Z, hfinA.toFinset.filter fun w => w = rep (w.under (𝓞 D.host.F)), fun w hw => ?_, fun w hw => ?_⟩⟩` and prove the remaining obligations. Break down `eq_or_ne j D.R.m with rfl | hj'` into its components or cases. Rewrite using `[Function.update_self]`. Conclude with `hl1'`. Rewrite using `[Function.update_of_ne hj']`.
+
+Conclude with `hb0 j hj`. Rewrite using `[Function.update_of_ne hj.ne, hB D.R.m j hm]`. Conclude with `hF2 D.R.m j rfl hj w (hS t ht w hw)`. Rewrite using `[Function.update_self, hB D.R.m D.R.m hm]`. Conclude with `hl2' w`.
+
+Use `left`. Use `(Finset.mem_filter.1 hw).1` as an intermediate fact. Simplify using `using this`. Establish `hspec` using `Classical.epsilon_spec (p := fun w' => w' ∈ hfinA.toFinset ∧ w'.under (𝓞 D.host.F) = w.under (𝓞 D.host.F)) ⟨w, by simpa using hw, rfl⟩`. Use `⟨rep (w.under (𝓞 D.host.F)), ⟨Finset.mem_filter.2 ⟨hspec.1, ?_⟩, hspec.2⟩, fun w'' h => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `_ = rep _`. Rewrite using `[hspec.2]`. Take `⟨h1, h2⟩` from `h`. Rewrite using `[(Finset.mem_filter.1 h1).2, h2]`.
+-/
 theorem gridChoice_nonempty {U : Set T} (N : Std G U) (Z : Normal W N)
     (hfin : (⋃ t ∈ U, (locPl G t : Set (Pl D.host.E))).Finite)
     (hAA : ∀ t ∈ U, ∀ w ∈ locPl G t,
@@ -531,6 +706,15 @@ theorem gridChoice_nonempty {U : Set T} (N : Std G U) (Z : Normal W N)
     · obtain ⟨h1, h2⟩ := h
       rw [(Finset.mem_filter.1 h1).2, h2]
 
+/- English proof (translation)
+Establish `hs : ∀ x : D.host.E, star x = D.host.conj x` using `bridge_star_holds D.R D.host`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `h1` using `(GlobalTheory.ChiGrid.StairConj.mem_coe_iff D J (D.host.conj x)).2 (by rwa [Formalism.L2.Pj.conj_conj])`.
+
+Take `⟨z, hz, hzx⟩` from `(FractionalIdeal.mem_coeIdeal _).1 h1`. Use `(FractionalIdeal.mem_coeIdeal _).2 ⟨Formalism.DivisionValues.cO D.host.E z, (Ideal.mem_map_of_equiv _ _).2 ⟨z, hz, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show algebraMap (𝓞 D.host.E) D.host.E (Formalism.DivisionValues.cO D.host.E z) = x`. Rewrite using `[← RingOfIntegers.coe_eq_algebraMap, Formalism.DivisionValues.ValuationRepresentative.cO_apply, RingOfIntegers.coe_eq_algebraMap, hzx, hs, Formalism.L2.Pj.conj_conj]`. Introduce `hx`.
+
+Take `⟨y, hy, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hx`. Take `⟨z, hz, rfl⟩` from `(Ideal.mem_map_of_equiv _ _).1 hy`. Establish `h1 : D.host.conj (algebraMap (𝓞 D.host.E) D.host.E (Formalism.DivisionValues.cO D.host.E z)) ∈ ((J : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)`. Rewrite using `[← hs, ← RingOfIntegers.coe_eq_algebraMap, Formalism.DivisionValues.ValuationRepresentative.cO_apply, star_star]`. Conclude with `(FractionalIdeal.mem_coeIdeal _).2 ⟨z, hz, rfl⟩`.
+
+Establish `h2` using `(GlobalTheory.ChiGrid.StairConj.mem_coe_iff D _ _).1 h1`. Rewrite `h2` using `[Formalism.L2.Pj.conj_conj]`. Then use the resulting hypothesis.
+-/
 theorem coeIdeal_conj_smul (J : Ideal (𝓞 D.host.E)) :
     ((D.host.conj • J : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) =
       ((Ideal.map (Formalism.DivisionValues.cO D.host.E) J : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) := by
@@ -554,6 +738,9 @@ theorem coeIdeal_conj_smul (J : Ideal (𝓞 D.host.E)) :
     have h2 := (GlobalTheory.ChiGrid.StairConj.mem_coe_iff D _ _).1 h1
     rwa [Formalism.L2.Pj.conj_conj] at h2
 
+/- English proof (translation)
+Establish `h2` using `Formalism.DivisionValues.ValuationRepresentative.count_map (Formalism.DivisionValues.conjPl w) J hJ`. Rewrite `h2` using `[Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl]`. Rewrite using `[coeIdeal_conj_smul, h2, conjPl_eq_cP]`.
+-/
 theorem count_conj_smul (J : Ideal (𝓞 D.host.E)) (hJ : J ≠ ⊥) (w : Pl D.host.E) :
     FractionalIdeal.count D.host.E w ((D.host.conj • J : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) =
       FractionalIdeal.count D.host.E (GlobalTheory.IdemSupport.cP w) ((J : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) := by
@@ -561,6 +748,15 @@ theorem count_conj_smul (J : Ideal (𝓞 D.host.E)) (hJ : J ≠ ⊥) (w : Pl D.h
   rw [Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl] at h2
   rw [coeIdeal_conj_smul, h2, conjPl_eq_cP]
 
+/- English proof (translation)
+Establish `hc : D.host.ccE ≠ ⊥` using `GlobalTheory.HalfCompare.ccE_ne_bot D`. Establish `hb : D.host.𝔟 ≠ ⊥` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.MLI.bb_ne_bot D`. Establish `hne : ∀ J : Ideal (𝓞 D.host.E), J ≠ ⊥ → ((D.host.conj • J : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0` using `fun J hJ => by`. Rewrite using `[coeIdeal_conj_smul, Ne, FractionalIdeal.coeIdeal_eq_zero, Ideal.map_eq_bot_iff_of_injective (Formalism.DivisionValues.cO D.host.E).injective]`. Conclude with `hJ`.
+
+Establish `hne' : ∀ J : Ideal (𝓞 D.host.E), J ≠ ⊥ → ((J : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0` using `fun J hJ => by rw [Ne, FractionalIdeal.coeIdeal_eq_zero]; exact hJ`. Establish `hw' : ((GlobalTheory.HalfCompare.badInt D : ℕ) : 𝓞 D.host.E) ∉ (GlobalTheory.IdemSupport.cP w).asIdeal`. Rewrite using `[GlobalTheory.StdFrames.natCast_mem_cP]` and apply the resulting hypothesis. Establish `h1 : FractionalIdeal.count D.host.E w D.host.AA = 0` using `GlobalTheory.HalfCompare.primeToAA_of_not_mem hw`. Establish `h2 : FractionalIdeal.count D.host.E (GlobalTheory.IdemSupport.cP w) D.host.AA = 0` using `GlobalTheory.HalfCompare.primeToAA_of_not_mem hw'`.
+
+Use `⟨h1, ?_⟩` and prove the remaining obligations. Unfold `Formalism.BasicNotions.Host.AA Formalism.BasicNotions.Host.AA0 at h2`. Unfold `Formalism.BasicNotions.Host.AAbar`. Rewrite `h2` using `[FractionalIdeal.count_mul _ _ (hne' _ hc) (inv_ne_zero (hne' _ hb)), FractionalIdeal.count_inv]`. Rewrite using `[FractionalIdeal.count_mul _ _ (hne _ hc) (inv_ne_zero (hne _ hb)), FractionalIdeal.count_inv, count_conj_smul _ hc, count_conj_smul _ hb]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem count_AA_AAbar (w : Pl D.host.E) (hw : ((GlobalTheory.HalfCompare.badInt D : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal) :
     FractionalIdeal.count D.host.E w D.host.AA = 0 ∧ FractionalIdeal.count D.host.E w D.host.AAbar = 0 := by
   have hc : D.host.ccE ≠ ⊥ := GlobalTheory.HalfCompare.ccE_ne_bot D
@@ -585,6 +781,9 @@ theorem count_AA_AAbar (w : Pl D.host.E) (hw : ((GlobalTheory.HalfCompare.badInt
     count_conj_smul _ hc, count_conj_smul _ hb]
   omega
 
+/- English proof (translation)
+Take `⟨N⟩` from `exists_std G μ₀ hL U hU`. Take `⟨Z⟩` from `normal_nonempty W μ₀ hL U N`. Conclude with `gridChoice_nonempty W N Z (hU.biUnion fun t _ => (locPl G t).finite_toSet) fun t ht w hw => count_AA_AAbar w (Good.badInt_notMem hL hde (hc t ht) hw)`.
+-/
 theorem gridChoice_nonempty_of {μ₀ : T} (hL : L.Is μ₀) {U : Set T} (hU : U.Finite)
     (hde : Nat.Coprime D.host.pde (D.host.QS * D.host.q) ∧ Nat.Coprime D.host.pde' (D.host.QS * D.host.q))
     (hc : ∀ t ∈ U, ∀ P ∈ L.Q t, ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal) :
@@ -602,6 +801,21 @@ open GlobalTheory.ChiGrid Formalism.L2.DIV
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Substitute `h` using the available equality. Take `⟨hcard, c, hc, hmem, hw⟩` from `hS`. Establish `hsub : Finset.univ.image c ⊆ GlobalTheory.SignedHC.entries S` using `fun x hx => by`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hx`. Take `⟨s, hs⟩` from `hmem i`.
+
+Conclude with `Finset.mem_image.2 ⟨(c i, s), hs, rfl⟩`. Establish `hci : (Finset.univ.image c).card = N`. Rewrite using `[Finset.card_image_of_injective _ hc.injective]`. Simplify using the standard rewrite rules. Establish `hcardE : (GlobalTheory.SignedHC.entries S).card = N`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← hcard]`. Conclude with `Finset.card_image_le`. Rewrite using `[← hci]`. Conclude with `Finset.card_le_card hsub`.
+
+Establish `heq : Finset.univ.image c = GlobalTheory.SignedHC.entries S` using `Finset.eq_of_subset_of_card_le hsub (by rw [hcardE, hci])`. Establish `hcos : GlobalTheory.SignedHC.InCoset (((N : ℚ) - 1) / 2) (GlobalTheory.SignedHC.entries S)` using `fun x hx => by`. Rewrite `hx` using `[← heq]`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hx`. Use `⟨lam.w i - (i : ℕ), ?_⟩` and prove the remaining obligations.
+
+Use `hw i` as an intermediate fact. Unfold `Formalism.BasicNotions.rhoVec at this`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `wtOf_cast hcardE hcos a`.
+
+Establish `h2 : GlobalTheory.SignedHC.descEnum (GlobalTheory.SignedHC.entries S) hcardE = c` using `GlobalTheory.SignedHC.descEnum_unique hcardE hc fun i => heq ▸ Finset.mem_image_of_mem c (Finset.mem_univ i)`. Establish `h3 : (((wtOf N (GlobalTheory.SignedHC.entries S)).w a : ℤ) : ℚ) = (lam.w a : ℚ)`. Rewrite using `[h1, GlobalTheory.SignedHC.highestWeight, h2, hw a]`. Unfold `Formalism.BasicNotions.rhoVec`. Expand and normalize the polynomial expressions, which then agree.
+
+Express the relevant statement in the definitionally equal form `(wtOf N (GlobalTheory.SignedHC.entries S)).w a = lam.w a`. Conclude with `h3` after adjusting the coercions.
+-/
 theorem wtOf_entries_eq {N n : ℕ} (h : N = n) {lam : DomWeight N} {S : Formalism.BasicNotions.TH.SPar}
     (hS : Formalism.IndefR.Bridge.IsWtOfPar lam S) (a : Fin N) :
     (wtOf n (GlobalTheory.SignedHC.entries S)).w (Fin.cast h a) = lam.w a := by
@@ -639,6 +853,15 @@ theorem wtOf_entries_eq {N n : ℕ} (h : N = n) {lam : DomWeight N} {S : Formali
   change (wtOf N (GlobalTheory.SignedHC.entries S)).w a = lam.w a
   exact_mod_cast h3
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `e : lam' = lam` using `funext fun τ => by`. Use `hw τ` as an intermediate fact. Generalize the expression as in `lam' τ = a at this`. Generalize the expression as in `lam τ = b at this`.
+
+Consider the cases of `a`. Consider the cases of `b`. Reduce the equality to equality of the corresponding arguments. Use function extensionality and compare the values at `i`. Conclude with `this i`.
+
+Substitute `e` using the available equality. Use `⟨LinearMap.id, fun v => ?_⟩` and prove the remaining obligations. Establish `: (Prod.map id (Prod.map (Fin.cast rfl) (Fin.cast rfl)) : ι × Fin N × Fin N → ι × Fin N × Fin N) = id`. Use function extensionality and compare the values at `x`. Both sides reduce to the same expression.
+
+Rewrite using `[this, MvPolynomial.rename_id_apply]`. Both sides reduce to the same expression.
+-/
 theorem exists_castVV {ι : Type} [Fintype ι] {N n : ℕ} (h : N = n) (lam : ι → DomWeight N) (lam' : ι → DomWeight n)
     (hw : ∀ τ a, (lam' τ).w (Fin.cast h a) = (lam τ).w a) :
     ∃ φ : VV ℂ lam →ₗ[ℂ] VV ℂ lam', ∀ v,
@@ -665,6 +888,11 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn 
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {sc : Consts}
   {G : GridData R.toLevCh sc} (W : G.Weil)
 
+/- English proof (translation)
+Take `⟨gram, c₀, c₁, ht⟩` from `htie`. Take `⟨e, he⟩` from `GlobalTheory.CoefReal.exists_scalarExt D.what₂.embLL _ c₀ ht.mapR.2.1 ht.mapR.2.2`. Establish `hw : ∀ τ a, (listedWt G (.grid 0 D.R.m) τ).w (Fin.cast (rank_zero_m G) a) = (Formalism.IndefR.Bridge.lamRdef (Ptw D) τ).w a` using `fun τ a => by`. Express the relevant statement in the definitionally equal form `(wtOf _ (GlobalTheory.SignedHC.entries (parV D sc.cGap 0 D.R.m τ))).w _ = _`. Rewrite using `[parV_zero D sc.cGap le_rfl τ]`.
+
+Conclude with `wtOf_entries_eq (rank_zero_m G) (hF τ) a`. Take `⟨φ, hφ⟩` from `exists_castVV (rank_zero_m G) _ _ hw`. Conclude with `⟨{ toGridChoice := S, co := φ ∘ₗ e.symm.toLinearMap, co_is := ⟨gram, c₀, c₁, ht, fun v => by show (φ (e.symm (c₀ v))).1 = _`. Rewrite using `[← he, LinearEquiv.symm_apply_apply, hφ, GlobalTheory.CoefModel.mapVV_coe]⟩ }⟩`.
+-/
 theorem sumChoice_nonempty {U : Set T} (S : GridChoice W U) (htie : R.fam_tie)
     (hF : Formalism.IndefR.Bridge.LamRForced (Ptw D)) : Nonempty (SumChoice W U) := by
   obtain ⟨gram, c₀, c₁, ht⟩ := htie

@@ -24,6 +24,9 @@ open GroundTheory.Arith.SchemeCoh GroundTheory.Arith.SchemeCoh.ProjSpace
 namespace GlobalTheory.CompanionTheory.MPDict
 open GlobalTheory.ArithmeticHeightTower ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 
+/- English proof (translation)
+Use `haveI h0 : CharZero Γ(Y, ⊤) := hvar.charZero`. Establish `hinj : Function.Injective ((Y.residue (genericPoint Y)).hom.comp (Y.presheaf.germ ⊤ (genericPoint Y) trivial).hom)` using `(Y.residue (genericPoint Y)).hom.injective.comp (germ_injective_of_isIntegral Y _ _)`. Use `haveI h1 : CharZero (Y.residueField (genericPoint Y)) := charZero_of_injective_ringHom hinj`. Conclude with `(RingHom.charZero_iff (j.residueFieldMap (genericPoint Y)).hom.injective).2 h1`.
+-/
 theorem charZero_genericPt {n' m : ℕ} {n : Fin (m + 1) → ℕ} {Y : Scheme.{0}} [IsIntegral Y]
     {j : Y ⟶ MP ℤ (m + 1) (consN n' n)} {e : ℕ} (hvar : GlobalTheory.IsArithVar (j ≫ qpStr n' m n) e) :
     CharZero ((MP ℤ (m + 1) (consN n' n)).residueField (j (genericPoint Y))) := by
@@ -34,12 +37,18 @@ theorem charZero_genericPt {n' m : ℕ} {n : Fin (m + 1) → ℕ} {Y : Scheme.{0
   haveI h1 : CharZero (Y.residueField (genericPoint Y)) := charZero_of_injective_ringHom hinj
   exact (RingHom.charZero_iff (j.residueFieldMap (genericPoint Y)).hom.injective).2 h1
 
+/- English proof (translation)
+Set `F : MP ℤ (m + 1) (consN n' n) ⟶ MP ℤ m n` to `qpSnd n' m n`. Conclude with `(RingHom.charZero_iff (F.residueFieldMap x).hom.injective).2 hx`.
+-/
 theorem charZero_image (n' m : ℕ) (n : Fin (m + 1) → ℕ) (x : MP ℤ (m + 1) (consN n' n))
     [hx : CharZero ((MP ℤ (m + 1) (consN n' n)).residueField x)] :
     CharZero ((MP ℤ m n).residueField (qpSnd n' m n x)) := by
   let F : MP ℤ (m + 1) (consN n' n) ⟶ MP ℤ m n := qpSnd n' m n
   exact (RingHom.charZero_iff (F.residueFieldMap x).hom.injective).2 hx
 
+/- English proof (translation)
+Establish `hrange : Set.range j = closure {j (genericPoint Y)}`. Establish `h₁` using `(genericPoint_spec Y).image j.continuous`. Rewrite `h₁` using `[Set.image_univ, j.isClosedEmbedding.isClosed_range.closure_eq]`. Conclude with `h₁.def.symm`. Conclude with `(topologicalKrullDim_eq_of_isEmbedding j.isClosedEmbedding.isEmbedding hrange).trans hvar.dim_eq`.
+-/
 theorem dim_closure_genericPt {n' m : ℕ} {n : Fin (m + 1) → ℕ} {Y : Scheme.{0}} [IsIntegral Y]
     {j : Y ⟶ MP ℤ (m + 1) (consN n' n)} [IsClosedImmersion j] {e : ℕ}
     (hvar : GlobalTheory.IsArithVar (j ≫ qpStr n' m n) e) :

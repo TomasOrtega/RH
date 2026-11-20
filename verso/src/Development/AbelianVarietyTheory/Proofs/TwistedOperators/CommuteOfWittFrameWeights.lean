@@ -23,17 +23,30 @@ open Matrix
 
 variable {D : D7} {V : HSp D}
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.Cusp.ratAct]`. Rewrite using `[show (a * b).1.1 = a.1.1 * b.1.1 from rfl, Matrix.toLin_mul V.frame V.frame V.frame]`. Both sides reduce to the same expression.
+-/
 theorem ratAct_mul' (a b : GF V) (v : V.V) :
     GlobalTheory.Cusp.ratAct D.sp.cm V (a * b) v = GlobalTheory.Cusp.ratAct D.sp.cm V a (GlobalTheory.Cusp.ratAct D.sp.cm V b v) := by
   simp only [GlobalTheory.Cusp.ratAct]
   rw [show (a * b).1.1 = a.1.1 * b.1.1 from rfl, Matrix.toLin_mul V.frame V.frame V.frame]
   rfl
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.Cusp.ratAct]`. Rewrite using `[show (1 : GF V).1.1 = 1 from rfl, Matrix.toLin_one]`. Both sides reduce to the same expression.
+-/
 theorem ratAct_one' (v : V.V) : GlobalTheory.Cusp.ratAct D.sp.cm V 1 v = v := by
   simp only [GlobalTheory.Cusp.ratAct]
   rw [show (1 : GF V).1.1 = 1 from rfl, Matrix.toLin_one]
   rfl
 
+/- English proof (translation)
+Establish `hγ : Formalism.UG.cT (↑D.sp.cm.sig) γ.1.1 * V.gram * γ.1.1 = V.gram` using `γ.2`. Establish `hc : Formalism.UG.cT (↑D.sp.cm.sig) γ.1.1 = Matrix.conjTranspose γ.1.1`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite `hγ` using `[hc]`.
+
+Establish `hr : ∀ w, V.frame.repr (GlobalTheory.Cusp.ratAct D.sp.cm V γ w) = γ.1.1 *ᵥ V.frame.repr w` using `fun w => by`. Rewrite using `[← LinearMap.toMatrix_mulVec_repr V.frame V.frame, GlobalTheory.Cusp.ratAct, LinearMap.toMatrix_toLin]`. Establish `hform : ∀ x y : Fin V.rank → D.host.E, ∑ i, ∑ j, star (x i) * V.gram i j * y j = star x ⬝ᵥ (V.gram *ᵥ y)`. Introduce `x y`. Simplify using `[dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+
+Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.hT_coord, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.hT_coord, hr, hr, hform, hform, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hγ]`.
+-/
 theorem hT_ratAct (γ : GF V) (a b : V.V) :
     V.hT (GlobalTheory.Cusp.ratAct D.sp.cm V γ a) (GlobalTheory.Cusp.ratAct D.sp.cm V γ b) = V.hT a b := by
   have hγ : Formalism.UG.cT (↑D.sp.cm.sig) γ.1.1 * V.gram * γ.1.1 = V.gram := γ.2
@@ -49,6 +62,11 @@ theorem hT_ratAct (γ : GF V) (a b : V.V) :
   rw [GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.hT_coord, GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.hT_coord, hr, hr, hform, hform, Matrix.star_mulVec,
     ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hγ]
 
+/- English proof (translation)
+Use `⟨Φ.ef i j, ?_, Φ.ee i j, Φ.ff i j⟩` and prove the remaining obligations. Rewrite using `[← V.herm.eq (Φ.f i) (Φ.e j)]`. Establish `h : V.hT (Φ.f i) (Φ.e j) = if j = i then 1 else 0` using `Φ.ef j i`. Rewrite using `[h]`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (Ne.symm hij), if_neg hij, map_zero]`.
+-/
 theorem hT_frame (Φ : WittFrame V) (i j : Fin (wittIndex V)) :
     V.hT (Φ.f j) (Φ.e i) = (if i = j then 1 else 0) ∧ V.hT (Φ.e j) (Φ.f i) = (if i = j then 1 else 0) ∧
     V.hT (Φ.e j) (Φ.e i) = 0 ∧ V.hT (Φ.f j) (Φ.f i) = 0 := by
@@ -64,6 +82,55 @@ end GlobalTheory.Cusp.WeightCommute
 
 open GlobalTheory.Cusp.WeightCommute in
 
+/- English proof (translation)
+Introduce `D V Φ u γ g t h1 h2 h3 h4 h5 h6 h7`. Take `⟨xv, hxv⟩ : ∃ xv : Fin (wittIndex V) → V.V, ∀ i, xv i = if u i = 1 then Φ.e i else Φ.f i` from `⟨_, fun _ => rfl⟩`. Take `⟨yv, hyv⟩ : ∃ yv : Fin (wittIndex V) → V.V, ∀ i, yv i = if u i = 1 then Φ.f i else Φ.e i` from `⟨_, fun _ => rfl⟩`. Take `⟨S, hS⟩ : ∃ S : Finset (Fin (wittIndex V)), ∀ i, i ∈ S ↔ u i ≠ 0` from `⟨Finset.univ.filter (fun i => u i ≠ 0), fun i => by simp⟩`. Establish `hsgn : ∀ s : SignType, s ≠ 0 → s = 1 ∨ s = -1` using `by decide`.
+
+Establish `hne : (-1 : SignType) ≠ 1` using `by decide`. Establish `hs : ∀ i ∈ S, u i = 1 ∨ u i = -1` using `fun i hi => hsgn _ ((hS i).1 hi)`. Establish `key` using `hT_frame Φ`. Establish `neq : ∀ i j, u i = 1 → u j = -1 → i ≠ j`. Introduce and unpack `i j a b rfl`.
+
+Rewrite `b` using `[a]`. Conclude with `hne b.symm`. Establish `mx : ∀ i ∈ S, xv i ∈ Φ.sub u`. Introduce `i hi`. Rewrite using `[WittFrame.sub]`.
+
+Break down `hs i hi with a | a` into its components or cases. Rewrite using `[hxv, if_pos a]`. Conclude with `Submodule.subset_span (Or.inl ⟨i, a, rfl⟩)`. Rewrite using `[hxv, if_neg (by rw [a]; exact hne)]; exact Submodule.subset_span (Or.inr ⟨i, a, rfl⟩)`. Establish `my : ∀ i ∈ S, yv i ∈ Φ.sub (-u)`.
+
+Introduce `i hi`. Rewrite using `[WittFrame.sub]`. Break down `hs i hi with a | a` into its components or cases. Rewrite using `[hyv, if_pos a]`. Conclude with `Submodule.subset_span (Or.inr ⟨i, show -(u i) = -1 by rw [a], rfl⟩)`.
+
+Rewrite using `[hyv, if_neg (by rw [a]; exact hne)]`. Conclude with `Submodule.subset_span (Or.inl ⟨i, show -(u i) = 1 by rw [a]; rfl, rfl⟩)`. Establish `genX : ∀ z, (∀ i ∈ S, V.hT (xv i) z = 0) → ∀ w ∈ Φ.sub u, V.hT w z = 0`. Introduce `z hz w hw`. Establish `hle : Φ.sub u ≤ LinearMap.ker (V.hT.flip z)`.
+
+Rewrite using `[WittFrame.sub, Submodule.span_le]`. Introduce and unpack `_ (⟨i, hi, rfl⟩ | ⟨i, hi, rfl⟩)`. Establish `hiS : i ∈ S` using `(hS i).2 (by rw [show u i = 1 from hi]; decide)`. Use `hz i hiS` as an intermediate fact. Rewrite `this` using `[hxv, if_pos (show u i = 1 from hi)]`.
+
+Conclude with `this`. Establish `hiS : i ∈ S` using `(hS i).2 (by rw [show u i = -1 from hi]; decide)`. Use `hz i hiS` as an intermediate fact. Rewrite `this` using `[hxv, if_neg (by rw [show u i = -1 from hi]; exact hne)]`. Conclude with `this`.
+
+Conclude with `hle hw`. Establish `genY : ∀ z, (∀ i ∈ S, V.hT (yv i) z = 0) → ∀ w ∈ Φ.sub (-u), V.hT w z = 0`. Introduce `z hz w hw`. Establish `hle : Φ.sub (-u) ≤ LinearMap.ker (V.hT.flip z)`. Rewrite using `[WittFrame.sub, Submodule.span_le]`.
+
+Introduce and unpack `_ (⟨i, hi, rfl⟩ | ⟨i, hi, rfl⟩)`. Establish `a : u i = -1` using `neg_eq_iff_eq_neg.1 (show -(u i) = 1 from hi)`. Establish `hiS : i ∈ S` using `(hS i).2 (by rw [a]; decide)`. Use `hz i hiS` as an intermediate fact. Rewrite `this` using `[hyv, if_neg (by rw [a]; exact hne)]`.
+
+Conclude with `this`. Establish `a : u i = 1`. Establish `h' : -(u i) = -1` using `hi`. Simplify using `using h'`. Establish `hiS : i ∈ S` using `(hS i).2 (by rw [a]; decide)`.
+
+Use `hz i hiS` as an intermediate fact. Rewrite `this` using `[hyv, if_pos a]`. Conclude with `this`. Conclude with `hle hw`. Establish `pxx : ∀ i ∈ S, ∀ j ∈ S, V.hT (xv j) (xv i) = 0`.
+
+Introduce `i hi j hj`. Apply the tactic sequence `rcases hs i hi with a | a <;> rcases hs j hj with b | b <;> simp only [hxv, a, b, if_true, if_neg hne]`. Conclude with `(key i j).2.2.1`. Rewrite using `[(key i j).1, if_neg (neq i j a b)]`. Rewrite using `[(key i j).2.1, if_neg (neq j i b a).symm]`.
+
+Conclude with `(key i j).2.2.2`. Establish `pyy : ∀ i ∈ S, ∀ j ∈ S, V.hT (yv j) (yv i) = 0`. Introduce `i hi j hj`. Apply the tactic sequence `rcases hs i hi with a | a <;> rcases hs j hj with b | b <;> simp only [hyv, a, b, if_true, if_neg hne]`. Conclude with `(key i j).2.2.2`.
+
+Rewrite using `[(key i j).2.1, if_neg (neq i j a b)]`. Rewrite using `[(key i j).1, if_neg (neq j i b a).symm]`. Conclude with `(key i j).2.2.1`. Establish `pyx : ∀ i ∈ S, ∀ j ∈ S, V.hT (yv j) (xv i) = if i = j then 1 else 0`. Introduce `i hi j hj`.
+
+Apply the tactic sequence `rcases hs i hi with a | a <;> rcases hs j hj with b | b <;> simp only [hxv, hyv, a, b, if_true, if_neg hne]`. Conclude with `(key i j).1`. Rewrite using `[(key i j).2.2.1, if_neg (neq i j a b)]`. Rewrite using `[(key i j).2.2.2, if_neg (neq j i b a).symm]`. Conclude with `(key i j).2.1`.
+
+Establish `pxy : ∀ i ∈ S, ∀ j ∈ S, V.hT (xv j) (yv i) = if i = j then 1 else 0`. Introduce `i hi j hj`. Apply the tactic sequence `rcases hs i hi with a | a <;> rcases hs j hj with b | b <;> simp only [hxv, hyv, a, b, if_true, if_neg hne]`. Conclude with `(key i j).2.1`. Rewrite using `[(key i j).2.2.2, if_neg (neq i j a b)]`.
+
+Rewrite using `[(key i j).2.2.1, if_neg (neq j i b a).symm]`. Conclude with `(key i j).1`. Establish `decomp : ∀ v : V.V, ∃ x ∈ Φ.sub u, ∃ y ∈ Φ.sub (-u), ∃ z, (∀ w ∈ Φ.sub u, V.hT w z = 0) ∧ (∀ w ∈ Φ.sub (-u), V.hT w z = 0) ∧ v = x + y + z`. Introduce `v`. Use `⟨∑ i ∈ S, V.hT (yv i) v • xv i, Submodule.sum_mem _ (fun i hi => Submodule.smul_mem _ _ (mx i hi)), ∑ i ∈ S, V.hT (xv i) v • yv i, Submodule.sum_mem _ (fun i hi => Submodule.smul_mem _ _ (my i hi)), v - (∑ i ∈ S, V.hT (yv i) v • xv i) - ∑ i ∈ S, V.hT (xv i) v • yv i, genX _ ?_, g …` and prove the remaining obligations.
+
+Introduce `j hj`. Rewrite using `[map_sub, map_sub, map_sum, map_sum, Finset.sum_eq_zero (fun i hi => by rw [map_smul, pxx i hi j hj, smul_zero]), Finset.sum_eq_single j (fun i hi hij => by rw [map_smul, pxy i hi j hj, if_neg hij, smul_zero]) (fun h => absurd hj h), map_smul, pxy j hj j hj, if_pos rfl, smul_eq_m …`. Simplify using the standard rewrite rules. Introduce `j hj`. Rewrite using `[map_sub, map_sub, map_sum, map_sum, Finset.sum_eq_single j (fun i hi hij => by rw [map_smul, pyx i hi j hj, if_neg hij, smul_zero]) (fun h => absurd hj h), Finset.sum_eq_zero (fun i hi => by rw [map_smul, pyy i hi j hj, smul_zero]), map_smul, pyx j hj j hj, if_pos rfl, smul_eq_m …`.
+
+Simplify using the standard rewrite rules. Establish `inv_app : ∀ w, GlobalTheory.Cusp.ratAct D.sp.cm V γ (GlobalTheory.Cusp.ratAct D.sp.cm V γ⁻¹ w) = w`. Introduce `w`. Rewrite using `[← ratAct_mul', mul_inv_cancel, ratAct_one']`. Establish `zX : ∀ z, (∀ w ∈ Φ.sub u, V.hT w z = 0) → ∀ w ∈ Φ.sub u, V.hT w (GlobalTheory.Cusp.ratAct D.sp.cm V γ z) = 0`.
+
+Introduce `z hz w hw`. Rewrite using `[← inv_app w, hT_ratAct]`. Conclude with `hz _ (h3 w hw)`. Establish `zY : ∀ z, (∀ w ∈ Φ.sub (-u), V.hT w z = 0) → ∀ w ∈ Φ.sub (-u), V.hT w (GlobalTheory.Cusp.ratAct D.sp.cm V γ z) = 0`. Introduce `z hz w hw`.
+
+Rewrite using `[← inv_app w, hT_ratAct]`. Conclude with `hz _ (h4 w hw)`. Establish `hmat : (g * γ).1.1 = (γ * g).1.1`. Apply `(Matrix.toLin V.frame V.frame).injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `v`. Use `show GlobalTheory.Cusp.ratAct D.sp.cm V (g * γ) v = GlobalTheory.Cusp.ratAct D.sp.cm V (γ * g) v`. Rewrite using `[ratAct_mul', ratAct_mul']`. Take `⟨x, hx, y, hy, z, hzX, hzY, rfl⟩` from `decomp v`. Simplify using `only [map_add]`.
+
+Rewrite using `[h5 _ (h1 x hx), h6 _ (h2 y hy), h7 _ (zX z hzX) (zY z hzY), h5 x hx, h6 y hy, h7 z hzX hzY, map_smul, map_smul]`. Conclude with `Subtype.ext (Units.ext hmat)`.
+-/
 theorem GlobalTheory.Cusp.WeightCommute.commute_of_weights : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (u : SV (wittIndex V)) (γ g : GF V) (t : D.host.E), (∀ x ∈ Φ.sub u, GlobalTheory.Cusp.ratAct D.sp.cm V γ x ∈ Φ.sub u) → (∀ x ∈ Φ.sub (-u), GlobalTheory.Cusp.ratAct D.sp.cm V γ x ∈ Φ.sub (-u)) → (∀ x ∈ Φ.sub u, GlobalTheory.Cusp.ratAct D.sp.cm V γ⁻¹ x ∈ Φ.sub u) → (∀ x ∈ Φ.sub (-u), GlobalTheory.Cusp.ratAct D.sp.cm V γ⁻¹ x ∈ Φ.sub (-u)) → (∀ x ∈ Φ.sub u, GlobalTheory.Cusp.ratAct D.sp.cm V g x = t • x) → (∀ x ∈ Φ.sub (-u), GlobalTheory.Cusp.ratAct D.sp.cm V g x = t⁻¹ • x) → (∀ z, (∀ x ∈ Φ.sub u, V.hT x z = 0) → (∀ x ∈ Φ.sub (-u), V.hT x z = 0) → GlobalTheory.Cusp.ratAct D.sp.cm V g z = z) → g * γ = γ * g := by
   intro D V Φ u γ g t h1 h2 h3 h4 h5 h6 h7
   classical

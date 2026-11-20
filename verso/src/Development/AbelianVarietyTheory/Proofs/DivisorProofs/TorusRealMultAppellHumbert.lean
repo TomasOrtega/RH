@@ -18,6 +18,33 @@ noncomputable section
 
 open GlobalTheory.TorusRM GlobalTheory.RosatiAH GlobalTheory.AppellHumbertTrivial in
 
+/- English proof (translation)
+Introduce `F _ _ _ 𝔠 X c _ u e hu h χ hAH U H χ' hexU hFU`. Use `set Hm : Matrix (Fin (Module.finrank ℚ F)) (Fin (Module.finrank ℚ F)) ℂ := Matrix.diagonal fun j ↦ (h j : ℂ) with hHm`. Take `⟨U0, hU0⟩` from `GlobalTheory.T.product_abelian_uniformization X.A X.ab (X.diag c) _ u`. Establish `hAb2` using `AbelianSchemeGerms.isAbelianScheme_tensor X.A X.A X.ab X.ab`. Take `⟨U2, H2, χ2, hex2', hF2⟩` from `GlobalTheory.T.exists_appell_humbert_line_bundle (X.A ⊗ X.A) hAb2 _ _ U0 (X.P ((2 : 𝓞 F) • c)) (X.isLB _)`.
+
+Establish `hex2 : ∀ x y, U2.ex (Fin.append x y) = lift (u.ex x) (u.ex y)` using `fun x y => by rw [hex2']; exact hU0 x y`. Establish `hswap : ∀ {c' : 𝔠.elt} (U : HolUnif (X.A ⊗ X.A) (X.P c') (Module.finrank ℚ F + Module.finrank ℚ F)), (∀ x y, U.ex (Fin.append x y) = lift (u.ex x) (u.ex y)) → ∀ v, U.ex (fswap _ v) = U.ex v ≫ lift (snd X.A X.A) (fst X.A X.A)`. Introduce `c' U hex v`. Rewrite using `[eq_append v, fswap_append, hex, hex]`. Simplify using the standard rewrite rules.
+
+Establish `hS : ∀ {c' : 𝔠.elt} (U : HolUnif (X.A ⊗ X.A) (X.P c') (Module.finrank ℚ F + Module.finrank ℚ F)) H χ', (∀ x y, U.ex (Fin.append x y) = lift (u.ex x) (u.ex y)) → IsFactorAH U H χ' → ∀ x y x' y', hermForm H (Fin.append x y) (Fin.append x' y') = hermForm H (Fin.append y x) (Fin.appe …`. Introduce `c' U H χ' hex hF x y x' y'`. Use `hermForm_eq_of_lbIso_pull (X.A ⊗ X.A) (X.A ⊗ X.A) (X.P c') (X.P c') (X.isLB c') (X.isLB c') _ _ U U H χ' H χ' hF hF (lift (snd X.A X.A) (fst X.A X.A)) (fswap _) (hswap U hex) (X.symm c') (Fin.append x y) (Fin.append x' y')` as an intermediate fact. Rewrite `this` using `[fswap_append, fswap_append]`. Then use the resulting hypothesis. Establish `h2F : (((2 : 𝓞 F)) : F) = 2` using `by norm_cast`.
+
+Establish `h2 : (dmul fun j => ((e j (((2 : 𝓞 F) : F)) : ℝ) : ℂ)) = (2 : ℂ) • LinearMap.id`. Use `LinearMap.ext fun z => funext fun k => ?_` and prove the remaining obligations. Simplify using `only [dmul_apply, h2F, map_ofNat, LinearMap.smul_apply, LinearMap.id_apply, Pi.smul_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hmul2 : ∀ v, U.ex (fmul (dmul fun j => ((e j (((2 : 𝓞 F) : F)) : ℝ) : ℂ)) v) = U2.ex v ≫ lift (fst X.A X.A) (snd X.A X.A ≫ X.rm.act (2 : 𝓞 F))`. Introduce `v`. Rewrite using `[eq_append v, fmul_append, hex2, hexU, dmul_apply, hu]`. Simplify using the standard rewrite rules. Establish `hM2 : ∀ x y x' y', hermForm H2 (Fin.append x y) (Fin.append x' y') = hermForm H (Fin.append x ((2 : ℂ) • y)) (Fin.append x' ((2 : ℂ) • y'))`.
+
+Introduce `x y x' y'`. Use `hermForm_eq_of_lbIso_pull (X.A ⊗ X.A) (X.A ⊗ X.A) (X.P ((2 : 𝓞 F) • c)) (X.P c) (X.isLB _) (X.isLB c) _ _ U2 U H2 χ2 H χ' hF2 hFU (lift (fst X.A X.A) (snd X.A X.A ≫ X.rm.act (2 : 𝓞 F))) (fmul (dmul fun j => ((e j (((2 : 𝓞 F) : F)) : ℝ) : ℂ))) hmul2 (X.smul (2 : 𝓞 F) c) (Fin.appen …` as an intermediate fact. Rewrite `this` using `[fmul_append, fmul_append, h2]`. Then use the resulting hypothesis. Establish `hSc` using `hS U H χ' hexU hFU`. Establish `hS2` using `hS U2 H2 χ2 hex2 hF2`.
+
+Establish `hA : ∀ x x', hermForm H (Fin.append x 0) (Fin.append x' 0) = 0`. Introduce `x x'`. Establish `e1` using `hM2 x 0 x' 0`. Establish `e2` using `hS2 x 0 x' 0`. Establish `e3` using `hM2 0 x 0 x'`.
+
+Establish `e4` using `hSc x 0 x' 0`. Simplify using `only [smul_zero] at e1`. Establish `e5 : Fin.append (0 : Fin (Module.finrank ℚ F) → ℂ) ((2 : ℂ) • x) = (2 : ℂ) • Fin.append 0 x`. Rewrite using `[← append_smul, smul_zero]`. Establish `e6 : Fin.append (0 : Fin (Module.finrank ℚ F) → ℂ) ((2 : ℂ) • x') = (2 : ℂ) • Fin.append 0 x'`.
+
+Rewrite using `[← append_smul, smul_zero]`. Rewrite `e3` using `[e5, e6, hermForm_smul_left, hermForm_smul_right]`. Establish `hs : (star (2 : ℂ)) = 2` using `by simp`. Rewrite `e3` using `[hs]`. Establish `: hermForm H (Fin.append x 0) (Fin.append x' 0) = 4 * hermForm H (Fin.append x 0) (Fin.append x' 0)`.
+
+Combine the equalities or inequalities in the displayed calculation. Take the linear combination `(-1/3 : ℂ) * this`. Establish `hA2 : ∀ y y', hermForm H (Fin.append 0 y) (Fin.append 0 y') = 0`. Introduce `y y'`. Rewrite using `[← hSc y 0 y' 0]`.
+
+Conclude with `hA y y'`. Establish `hBC : ∀ x y', hermForm H (Fin.append 0 x) (Fin.append y' 0) = hermForm H (Fin.append x 0) (Fin.append 0 y')` using `fun x y' => (hSc x 0 0 y').symm`. Establish `hdiag : ∀ z, U.ex (fdiag _ z) = u.ex z ≫ lift (𝟙 X.A) (𝟙 X.A)`. Introduce `z`. Rewrite using `[fdiag_apply, hexU]`.
+
+Simplify using the standard rewrite rules. Establish `hdLB : (X.diag c).IsLB` using `LB.isLB_pull (X.isLB c) _`. Establish `hD` using `hermForm_eq_of_lbIso_pull X.A (X.A ⊗ X.A) (X.diag c) (X.P c) hdLB (X.isLB c) _ _ u U Hm χ H χ' (isFactorAH_of_isAH hAH) hFU (lift (𝟙 X.A) (𝟙 X.A)) (fdiag _) hdiag (by unfold Obj.diag; exact GlobalTheory.lbIso_refl hdLB)`. Establish `hB : ∀ z w, hermForm Hm z w = 2 * hermForm H (Fin.append z 0) (Fin.append 0 w)`. Introduce `z w`.
+
+Rewrite using `[hD, fdiag_apply, fdiag_apply, herm_append H z z w w, hA, hA2, hBC]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x y x' y'`. Rewrite using `[hB, hB, herm_append H x y x' y', hA, hA2, hBC]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.RosatiAH.hermForm_prod_halfDiag : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F)
     (X : Obj F 𝔠 (Sp ℂ)) (c : 𝔠.elt), IsTotPos (c : F) →
     ∀ (u : HolUnif X.A (X.diag c) (Module.finrank ℚ F)) (e : Fin (Module.finrank ℚ F) ≃ (F →+* ℝ)),

@@ -80,6 +80,9 @@ def Cg (w : Point D.host.E (D.R.rS + 1)) (hA : Agree δ M p) (L U : Formalism.L2
     (hU : IsUpUni U) : Subgroup (GG p) :=
   (CPL M δ u u' w hA L U hL hU).map (StP M δ u u' w p).subtype
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.Pf.IndexCocycleOrbits.IdxRatio`. Rewrite using `[Subgroup.relIndex_map_map_of_injective _ _ S.subtype_injective, Subgroup.relIndex_map_map_of_injective _ _ S.subtype_injective]`.
+-/
 theorem idxRatio_map {G : Type} [Group G] (S : Subgroup G) (A C : Subgroup S) :
     Formalism.L2.SG.Pf.IndexCocycleOrbits.IdxRatio A C = Formalism.L2.SG.Pf.IndexCocycleOrbits.IdxRatio (A.map S.subtype) (C.map S.subtype) := by
   unfold Formalism.L2.SG.Pf.IndexCocycleOrbits.IdxRatio

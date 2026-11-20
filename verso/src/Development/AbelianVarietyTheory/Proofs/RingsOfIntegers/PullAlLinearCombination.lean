@@ -23,12 +23,26 @@ namespace GlobalTheory.PullComb
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {D : DegData V (maximalIdeal V)}
   {F : Type} [Field F] [Algebra (FractionRing V) F] {O : Type} [Ring O] [StarRing O] [Module O D.toPre.X]
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left]`. Unfold `aF`. Rewrite using `[lift_fst]`.
+-/
 theorem aF_fst (oa : D.toPre.OAct O) (a : O) :
     (aF D F oa a).left ≫ (fst (TF (R := V) F) D.toPre.P.A).left = (fst (TF (R := V) F) D.toPre.P.A).left := by
   rw [← Over.comp_left]
   unfold aF
   rw [lift_fst]
 
+/- English proof (translation)
+Establish `hβ : Function.Surjective (β_ (TF (R` using `V) F) D.toPre.P.A).hom.left.appTop.hom := by`. Introduce `x`. Use `⟨(β_ (TF (R := V) F) D.toPre.P.A).inv.left.appTop.hom x, ?_⟩` and prove the remaining obligations. Establish `hid : (β_ (TF (R` using `V) F) D.toPre.P.A).hom.left ≫ (β_ (TF (R := V) F) D.toPre.P.A).inv.left = 𝟙 _ := by`. Rewrite using `[← Over.comp_left, Iso.hom_inv_id, Over.id_left]`.
+
+Establish `hx` using `congrArg (fun g => g.appTop.hom x) hid`. Use `first`. Consider the case `simpa [Scheme.Hom.appTop] using hx`. Consider the case `(simp only [Scheme.Hom.comp_appTop, Scheme.Hom.id_appTop, CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_id, RingHom.id_apply] at hx; exact hx)`. Establish `hp : Function.Surjective (fst (TF (R` using `V) F) D.toPre.P.A).left.appTop.hom := by`.
+
+Establish `h1` using `surj_comp hβ (surj_snd hG D.toPre.P.isAb (TF (R := V) F))`. Rewrite `h1` using `[← Over.comp_left, braiding_hom_snd]`. Then use the resulting hypothesis. Establish `he : (DegPre.zF D.toPre F).left ≫ (fst (TF (R` using `V) F) D.toPre.P.A).left = 𝟙 _ := by`. Rewrite using `[← Over.comp_left]`. Unfold `DegPre.zF`.
+
+Rewrite using `[lift_fst, Over.id_left]`. Use `gen_unique D.toPre.P.isLB _ _ he hp hu hu' ?_ Z r z J hJ` and prove the remaining obligations. Introduce `y J' hJ'`. Establish `e1` using `val_pull hJ' u (DegPre.zF D.toPre F).left (𝟙 _)`. Establish `e2` using `val_pull hJ' u' (DegPre.zF D.toPre F).left (𝟙 _)`.
+
+Rewrite `e1`, `e2` using `[Category.id_comp]`. Rewrite using `[← e1, ← e2, val_corr hJ' c, val_corr hJ' c']`.
+-/
 theorem gen_val (hG : GlobalFnsSt) (oa : D.toPre.OAct O) (a : O) (k N : ℕ) (χ : D.toPre.X)
     {u u' : LB.Gen (LB.LinComb D.toPre.P.L (pullφ D F oa a χ) (pullε k N))} (hu : u.IsGen) (hu' : u'.IsGen)
     {K : Type} [Fintype K] {φ : K → ((TF (R := V) F).left ⟶ D.toPre.P.A.left)} {ε : K → ℤ}
@@ -60,6 +74,9 @@ theorem gen_val (hG : GlobalFnsSt) (oa : D.toPre.OAct O) (a : O) (k N : ℕ) (χ
   rw [Category.id_comp] at e1 e2
   rw [← e1, ← e2, val_corr hJ' c, val_corr hJ' c']
 
+/- English proof (translation)
+Unfold `sval`. Conclude with `(congrArg (gs r z _) (ReciprocityTheory.ChartRestriction.G.DVR.add_f s s' α _)).trans (gs_add _ _ _ (hJ.mem _ r) _ _)`.
+-/
 private lemma sval_add_of_good {k : ℕ} (s s' : Fam D.toPre F k) (α : D.toPre.X) {Z : Scheme.{0}}
     (r : Z ⟶ (DegPre.BF D.toPre F).left) (z : Z) {J : (Z ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι}
     (hJ : Good D.toPre.P.L z J) :
@@ -67,6 +84,13 @@ private lemma sval_add_of_good {k : ℕ} (s s' : Fam D.toPre F k) (α : D.toPre.
   unfold sval
   exact (congrArg (gs r z _) (ReciprocityTheory.ChartRestriction.G.DVR.add_f s s' α _)).trans (gs_add _ _ _ (hJ.mem _ r) _ _)
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `h`. Take `⟨h1', h2'⟩` from `h'`. Use `⟨fun χ => ?_, fun β hβ j => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hc, hr⟩` from `h1 χ`. Take `⟨u', hu', hc', hr'⟩` from `h1' χ`.
+
+Use `⟨u, hu, hc, ?_⟩` and prove the remaining obligations. Use `(secRel_iff D.toPre.P.isLB _ _ _ _ _ _ _ _ _ u).2 ?_` and prove the remaining obligations. Introduce `y J hJ`. Establish `e1` using `(secRel_iff D.toPre.P.isLB _ _ _ _ _ _ _ _ _ u).1 hr _ (𝟙 _) y J hJ`. Establish `e2` using `(secRel_iff D.toPre.P.isLB _ _ _ _ _ _ _ _ _ u').1 hr' _ (𝟙 _) y J hJ`.
+
+Establish `e3` using `gen_val hG oa a k N χ hu' hu hc' hc _ (𝟙 _) y J hJ`. Rewrite using `[sval_add_of_good _ _ _ _ _ hJ, sval_add_of_good _ _ _ _ _ hJ, e1, e2, e3, add_mul]`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.DVR.add_f, h2 β hβ j, h2' β hβ j, add_zero]`.
+-/
 theorem pull_add (hG : GlobalFnsSt) (oa : D.toPre.OAct O) (a : O) (k N : ℕ) {s s' : Fam D.toPre F k}
     {t t' : Fam D.toPre F (k * N)} (h : PullAl D F oa a k N s t) (h' : PullAl D F oa a k N s' t') :
     PullAl D F oa a k N (s + s') (t + t') := by
@@ -84,6 +108,9 @@ theorem pull_add (hG : GlobalFnsSt) (oa : D.toPre.OAct O) (a : O) (k N : ℕ) {s
     rw [sval_add_of_good _ _ _ _ _ hJ, sval_add_of_good _ _ _ _ _ hJ, e1, e2, e3, add_mul]
   · rw [ReciprocityTheory.ChartRestriction.G.DVR.add_f, h2 β hβ j, h2' β hβ j, add_zero]
 
+/- English proof (translation)
+Unfold `sval`. Use `(congrArg (gs r z _) (ReciprocityTheory.ChartRestriction.G.DVR.smul_f ζ s α _)).trans ?_` and prove the remaining obligations. Use `(gs_mul _ _ _ (hJ.mem _ r) _ _).trans ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `gs_res r z le_top (hJ.mem _ r) _`.
+-/
 private lemma sval_smul_eq_gs_gF_mul_of_good {k : ℕ} (ζ : F) (s : Fam D.toPre F k) (α : D.toPre.X) {Z : Scheme.{0}}
     (r : Z ⟶ (DegPre.BF D.toPre F).left) (z : Z) {J : (Z ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι}
     (hJ : Good D.toPre.P.L z J) :
@@ -94,6 +121,9 @@ private lemma sval_smul_eq_gs_gF_mul_of_good {k : ℕ} (ζ : F) (s : Fam D.toPre
   congr 1
   exact gs_res r z le_top (hJ.mem _ r) _
 
+/- English proof (translation)
+Establish `k1 : ∀ f : (DegPre.BF D.toPre F).left ⟶ (DegPre.BF D.toPre F).left, gs f y ⊤ (gF D.toPre F ζ) = gs (f ≫ (fst (TF (R` using `V) F) D.toPre.P.A).left) y ⊤ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom ζ) := fun f => gs_pull f _ y ⊤ (by simp) _`. Rewrite using `[k1, k1, Category.assoc, aF_fst]`.
+-/
 private lemma gs_aF_gF_eq_gs_gF (oa : D.toPre.OAct O) (a : O) (ζ : F) (y : (DegPre.BF D.toPre F).left) :
     gs (𝟙 _ ≫ (aF D F oa a).left) y ⊤ (gF D.toPre F ζ) = gs (𝟙 _) y ⊤ (gF D.toPre F ζ) := by
   have k1 : ∀ f : (DegPre.BF D.toPre F).left ⟶ (DegPre.BF D.toPre F).left,
@@ -102,6 +132,11 @@ private lemma gs_aF_gF_eq_gs_gF (oa : D.toPre.OAct O) (a : O) (ζ : F) (y : (Deg
     fun f => gs_pull f _ y ⊤ (by simp) _
   rw [k1, k1, Category.assoc, aF_fst]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `h`. Use `⟨fun χ => ?_, fun β hβ j => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hc, hr⟩` from `h1 χ`. Use `⟨u, hu, hc, (secRel_iff D.toPre.P.isLB _ _ _ _ _ _ _ _ _ u).2 ?_⟩` and prove the remaining obligations. Introduce `y J hJ`.
+
+Establish `e1` using `(secRel_iff D.toPre.P.isLB _ _ _ _ _ _ _ _ _ u).1 hr _ (𝟙 _) y J hJ`. Rewrite using `[sval_smul_eq_gs_gF_mul_of_good _ _ _ _ _ hJ, sval_smul_eq_gs_gF_mul_of_good _ _ _ _ _ hJ, e1, gs_aF_gF_eq_gs_gF, _root_.mul_assoc]`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.DVR.smul_f, h2 β hβ j, mul_zero]`.
+-/
 theorem pull_smul (oa : D.toPre.OAct O) (a : O) (k N : ℕ) (ζ : F) {s : Fam D.toPre F k}
     {t : Fam D.toPre F (k * N)} (h : PullAl D F oa a k N s t) : PullAl D F oa a k N (ζ • s) (ζ • t) := by
   obtain ⟨h1, h2⟩ := h
@@ -113,6 +148,13 @@ theorem pull_smul (oa : D.toPre.OAct O) (a : O) (k N : ℕ) (ζ : F) {s : Fam D.
     rw [sval_smul_eq_gs_gF_mul_of_good _ _ _ _ _ hJ, sval_smul_eq_gs_gF_mul_of_good _ _ _ _ _ hJ, e1, gs_aF_gF_eq_gs_gF, _root_.mul_assoc]
   · rw [ReciprocityTheory.ChartRestriction.G.DVR.smul_f, h2 β hβ j, mul_zero]
 
+/- English proof (translation)
+Introduce `hG V _ _ _ D F _ _ O _ _ _ oa a k N n hn c s s' hs`. Establish `key : ∀ S : Finset (Fin n), S.Nonempty → PullAl D F oa a k N (∑ l ∈ S, c l • s l) (∑ l ∈ S, c l • s' l)`. Introduce `S hS`. Proceed by induction on `hS using Finset.Nonempty.cons_induction with`. Consider the case `singleton l`.
+
+Rewrite using `[Finset.sum_singleton, Finset.sum_singleton]`. Conclude with `pull_smul oa a k N (c l) (hs l)`. Consider the case `cons l S hl hS ih`. Rewrite using `[Finset.sum_cons, Finset.sum_cons]`. Conclude with `pull_add hG oa a k N (pull_smul oa a k N (c l) (hs l)) ih`.
+
+Conclude with `key Finset.univ ⟨⟨0, hn⟩, Finset.mem_univ _⟩`.
+-/
 theorem main : GlobalFnsSt → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (D : DegData V (maximalIdeal V)) (F : Type) [Field F] [Algebra (FractionRing V) F] (O : Type) [Ring O] [StarRing O] [Module O D.toPre.X] (oa : D.toPre.OAct O) (a : O) (k N n : ℕ), 0 < n → ∀ (c : Fin n → F) (s : Fin n → Fam D.toPre F k) (s' : Fin n → Fam D.toPre F (k * N)), (∀ l, PullAl D F oa a k N (s l) (s' l)) → PullAl D F oa a k N (∑ l, c l • s l) (∑ l, c l • s' l) := by
   intro hG V _ _ _ D F _ _ O _ _ _ oa a k N n hn c s s' hs
   have key : ∀ S : Finset (Fin n), S.Nonempty →

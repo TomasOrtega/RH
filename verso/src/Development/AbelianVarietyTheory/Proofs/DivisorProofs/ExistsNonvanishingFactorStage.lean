@@ -14,6 +14,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 namespace GlobalTheory.SqCompare
 
+/- English proof (translation)
+Take `⟨F₁, h₁⟩` from `h₁`. Take `⟨F₂, h₂⟩` from `h₂`. Take `⟨F₃, h₃⟩` from `h₃`. Use `⟨max F₁ (max F₂ F₃), fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C₁, x₁, k₁⟩` from `h₁ ε CF (le_trans (le_max_left _ _) hCF)`.
+
+Take `⟨C₂, x₂, k₂⟩` from `h₂ ε CF (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hCF)`. Take `⟨C₃, x₃, k₃⟩` from `h₃ ε CF (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hCF)`. Use `⟨max C₁ (max C₂ C₃), max x₁ (max x₂ x₃), fun C hC D large₂ he hx hR T Lc μ₀ hL G => H G μ₀ C _ _ ?_ ?_ ?_⟩` and prove the remaining obligations. Conclude with `k₁ C (le_trans (le_max_left _ _) hC) D large₂ he (le_trans (le_max_left _ _) hx) hR T Lc μ₀ hL G`. Conclude with `k₂ C (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hC) D large₂ he (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx) hR T Lc μ₀ hL G`.
+
+Conclude with `k₃ C (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hC) D large₂ he (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx) hR T Lc μ₀ hL G`.
+-/
 theorem gBig_three {Q₁ Q₂ Q₃ Q : GP} (h₁ : GBig Q₁) (h₂ : GBig Q₂) (h₃ : GBig Q₃)
     (H : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) (μ₀ : T) (C x b : ℝ),
       Q₁ G μ₀ C x b → Q₂ G μ₀ C x b → Q₃ G μ₀ C x b → Q G μ₀ C x b) : GBig Q := by
@@ -31,6 +38,15 @@ theorem gBig_three {Q₁ Q₂ Q₃ Q : GP} (h₁ : GBig Q₁) (h₂ : GBig Q₂)
   · exact k₃ C (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hC) D large₂ he
       (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx) hR T Lc μ₀ hL G
 
+/- English proof (translation)
+Introduce `hP hK hM`. Use `gBig_three (GlobalTheory.T.real_matching_tied_regularization_constant hP hK hM) (GlobalTheory.T.square_constant_proportional_regular hP hK hM) (GlobalTheory.T.stage_factor_nonvanishing_scalars hP hK hM) ?_` and prove the remaining obligations. Introduce `D T Lc sc G μ₀ C x b hex hreal hcmp W S hstd hN ρ i j X lam hT hX hl`. Take `⟨ρ₀, hvX, hvT, htied, hreg⟩` from `hex W S.B ρ`. Take `⟨l, hl0, hl1⟩` from `hreal W S.B ρ ρ₀ hvX hvT i j`.
+
+Take `⟨κ, hκ, hc⟩` from `hcmp W S hstd hN ρ₀ htied i j X lam hT hX hl`. Use `⟨fun t => l * κ t, fun t => ?_, fun t c' _ hc' => ?_⟩` and prove the remaining obligations. Take `⟨h0, ζ, hζ, he⟩` from `hκ t`. Use `⟨mul_ne_zero hl0 h0, ζ, hζ, ?_⟩` and prove the remaining obligations. Use `show l * κ t = _ * (l * κ μ₀)`.
+
+Rewrite using `[he]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨c₀, h₀⟩` from `hreg i j t`. Establish `h1` using `(hl1 t c' c₀ hc' h₀).2`. Establish `h2` using `hc t c₀ h₀`.
+
+Use `show c' = l * κ t * lam t`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem square_compare : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) → NumbersIn D.what₂.embLL S μ₀ → ∀ (ρ : RealMatch W) (i j : Fin D.R.m) (X : TriG G i j) (lam : T → ℂ),
     TopGrid W i j X → IsStageC W i j (pp D j) (qq D j) X → Factor X W.ψ W.θ lam →

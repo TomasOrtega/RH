@@ -14,6 +14,11 @@ namespace GlobalTheory.ZH.TestBasis
 
 open FreeNear
 
+/- English proof (translation)
+Use `⟨Sum.elim (fun i => f (Pi.single (.inr i) 1)) (fun i => -f (Pi.single (.inl i) 1)), fun y => ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← Finset.univ_sum_single y, map_sum, Fintype.sum_sum_type, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h : ∀ j, f (Pi.single j (y j)) = y j * f (Pi.single j 1)` using `fun j => by`. Rewrite using `[← smul_eq_mul, ← map_smul, ← Pi.single_smul, smul_eq_mul, _root_.mul_one]`.
+
+Rewrite using `[h, h]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_eStd_eq_linear (g n : ℕ) (f : (Fin g ⊕ Fin g → ZMod n) →ₗ[ZMod n] ZMod n) :
     ∃ b, ∀ y, eStd g n b y = f y := by
   refine ⟨Sum.elim (fun i => f (Pi.single (.inr i) 1)) (fun i => -f (Pi.single (.inl i) 1)),
@@ -29,6 +34,13 @@ theorem exists_eStd_eq_linear (g n : ℕ) (f : (Fin g ⊕ Fin g → ZMod n) →�
 
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω)
 
+/- English proof (translation)
+Use `le_antisymm (fun x hx => ?_) fun x hx y hy => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hxH`. Set `H' : Submodule (ZMod (S.r * S.N)) S.Gam` to `AddSubgroup.toZModSubmodule _ H`. Take `⟨f, hf⟩` from `ZModPerp.exists_dual_ne_zero (n := S.r * S.N) (q := H'.mkQ x) (fun h0 => hxH ((Submodule.Quotient.mk_eq_zero H').mp h0))`. Take `⟨b, hb⟩` from `exists_eStd_eq_linear _ _ (f ∘ₗ H'.mkQ)`.
+
+Establish `hb' : b ∈ S.perp H` using `fun y hy => by`. Rewrite using `[hb, LinearMap.comp_apply, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero H').mpr hy, map_zero]`. Establish `h1 : eStd S.g _ x b = 0` using `hx b hb'`. Rewrite `h1` using `[Weights.eStd_swap, neg_eq_zero, hb]`. Conclude with `hf h1`.
+
+Rewrite using `[Weights.eStd_swap, hy x hx, neg_zero]`.
+-/
 theorem perp_perp (H : AddSubgroup S.Gam) : S.perp (S.perp H) = H := by
   refine le_antisymm (fun x hx => ?_) fun x hx y hy => ?_
   · by_contra hxH
@@ -46,6 +58,13 @@ theorem perp_perp (H : AddSubgroup S.Gam) : S.perp (S.perp H) = H := by
 
 variable {S} {p : ℕ} [Fact p.Prime] {y₀ : S.R →+* PadicAlgCl p} (τ : S.Test p y₀)
 
+/- English proof (translation)
+Use `choose w hw using fun x => QuotientAddGroup.mk_surjective (τ.yy x)`. Establish `h1` using `((test_weights o Ω S p y₀ τ).2 _ τ.isoFree le_rfl w (fun x => (hw x).symm) τ.yy.ker (by rw [perp_perp, AddSubgroup.closure_eq]) α).1 (fun t h₂ _ => by rw [h]; rfl)`. Establish `h2 : AddSubgroup.closure (w '' τ.yy.ker ∪ Set.range fun v₀ : τ.X => S.N • v₀) ≤ (nsmulAddMonoidHom S.N : τ.X →+ τ.X).range`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ (⟨x, hx, rfl⟩ | ⟨v, rfl⟩)`.
+
+Establish `h3` using `hw x`. Rewrite `h3` using `[AddMonoidHom.mem_ker.1 hx, QuotientAddGroup.eq_zero_iff]`. Take `⟨u, hu⟩` from `h3`. Conclude with `⟨S.r • u, by rw [← hu]; exact (mul_nsmul u S.r S.N).symm⟩`. Conclude with `⟨v, rfl⟩`.
+
+Take `⟨v, hv⟩` from `h2 h1`. Conclude with `⟨v, hv.symm⟩`.
+-/
 theorem exists_nsmul_of_wt_eq_zero [ArithBase o Ω] (α : τ.X) (h : τ.wt α = 0) : ∃ v, α = S.N • v := by
   choose w hw using fun x => QuotientAddGroup.mk_surjective (τ.yy x)
   have h1 := ((test_weights o Ω S p y₀ τ).2 _ τ.isoFree le_rfl w (fun x => (hw x).symm) τ.yy.ker
@@ -62,12 +81,20 @@ theorem exists_nsmul_of_wt_eq_zero [ArithBase o Ω] (α : τ.X) (h : τ.wt α = 
   obtain ⟨v, hv⟩ := h2 h1
   exact ⟨v, hv.symm⟩
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `exists_nsmul_of_wt_eq_zero τ (β - α) (by rw [map_sub, h, sub_self])`. Use `hα v` as an intermediate fact. Rewrite `this` using `[← hv, add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem q_le_of_wt_eq [ArithBase o Ω] {α β : τ.X} (hα : ∀ v₀, τ.q α ≤ τ.q (α + S.N • v₀))
     (h : τ.wt β = τ.wt α) : τ.q α ≤ τ.q β := by
   obtain ⟨v, hv⟩ := exists_nsmul_of_wt_eq_zero τ (β - α) (by rw [map_sub, h, sub_self])
   have := hα v
   rwa [← hv, add_sub_cancel] at this
 
+/- English proof (translation)
+Take `⟨k, hk, h⟩` from `τ.eq α hα`. Take `⟨x, hx⟩` from `τ.δ_max.1`. Use `⟨y₀ ⟨S.th x, S.th_mem x⟩ / y₀ ⟨_, hk⟩, ?_⟩` and prove the remaining obligations. Establish `hx' : ‖y₀ ⟨S.th x, S.th_mem x⟩‖ = τ.δ` using `hx`. Rewrite using `[norm_div, hx', h, Real.exp_neg]`.
+
+Use `τ.δ_pos.ne'` as an intermediate fact. Use `(Real.exp_pos (τ.q α / S.N)).ne'` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_norm_eq_exp {α : τ.X} (hα : ∀ v₀, τ.q α ≤ τ.q (α + S.N • v₀)) :
     ∃ l : PadicAlgCl p, ‖l‖ = Real.exp (τ.q α / S.N) := by
   obtain ⟨k, hk, h⟩ := τ.eq α hα
@@ -79,6 +106,11 @@ theorem exists_norm_eq_exp {α : τ.X} (hα : ∀ v₀, τ.q α ≤ τ.q (α + S
   have := (Real.exp_pos (τ.q α / S.N)).ne'
   field_simp
 
+/- English proof (translation)
+Use `by_contra! h0`. Take `⟨k, hk, h⟩` from `τ.eq α hα`. Use `Fintype.ofFinite (S.perp τ.yy.ker)` as an intermediate fact. Establish `h1 : (⟨_, hk⟩ : S.R) = ∑ t : S.perp τ.yy.ker, algebraMap o S.R (S.ζ ^ (k.2 t).val) * ∑ j, algebraMap o S.R (S.proj _ (τ.wt α) j k.1) * ⟨S.ev t j, S.ev_mem t j⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `only [ThetaSys.FF, finsum_eq_sum_of_fintype, AddSubmonoidClass.coe_finsetSum, MulMemClass.coe_mul]`. Both sides reduce to the same expression. Rewrite `h` using `[h1]`. Simplify using `only [map_sum, map_mul, h0, zero_mul, Finset.sum_const_zero, mul_zero, norm_zero] at h`. Conclude with `(mul_pos τ.δ_pos (Real.exp_pos _)).ne h`.
+-/
 theorem exists_proj_ne_zero {α : τ.X} (hα : ∀ v₀, τ.q α ≤ τ.q (α + S.N • v₀)) :
     ∃ j i, y₀ (algebraMap o S.R (S.proj _ (τ.wt α) j i)) ≠ 0 := by
   by_contra! h0
@@ -99,6 +131,33 @@ namespace GlobalTheory.ZH
 
 open FreeNear TestBasis in
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ hA S p _ y₀ τ hint`. Establish `: IsDomain o` using `hA.inj.isDomain`. Use `finite_char S (S.perp τ.yy.ker)` as an intermediate fact. Use `Fintype.ofFinite (S.perp τ.yy.ker →+ ZMod S.N)` as an intermediate fact. Take `⟨hmul, hsum⟩` from `proj_orthogonal S _ τ.isoFree`.
+
+Set `φ : o →+* OO p` to `(y₀.comp (algebraMap o S.R)).codRestrict (OO p) fun a => (mem_OO_iff _).2 (hint a)`. Take `⟨κ, col, hdet, hspan⟩` from `exists_basis_adapted_to_idempotents (OO p) S.J (S.perp τ.yy.ker →+ ZMod S.N) (fun c => φ.mapMatrix (S.proj _ c)) (fun c c' => by`. Rewrite using `[← map_mul, hmul]`. Apply the tactic sequence `split_ifs <;> simp)`. Use the proof step `(by rw [← map_sum, hsum, map_one])`.
+
+Use `choose a ha hwa using (test_weights o Ω S p y₀ τ).1`. Use `choose f hf using fun c => exists_norm_eq_exp τ (ha c)`. Use `⟨Matrix.of fun i j => y₀ (algebraMap o S.R (S.proj _ (κ i) j (col i))), fun i => f (κ i), fun i => a (κ i), fun i j => hint _, ?_, fun i => ha _, fun i => hf _, fun c => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (((Matrix.of fun i j => φ.mapMatrix (S.proj _ (κ i)) j (col i)).det : OO p) : PadicAlgCl p) = (Matrix.of fun i j => y₀ (algebraMap o S.R (S.proj _ (κ i) j (col i)))).det` using `RingHom.map_det (OO p).subtype _`. Rewrite using `[← h1]`.
+
+Conclude with `le_antisymm ((mem_OO_iff _).1 (Subtype.prop _)) (not_lt.1 fun h => (not_isUnit_OO_iff _).2 h hdet)`. Use `by_contra! h`. Take `⟨j, i, hji⟩` from `exists_proj_ne_zero τ (ha c)`. Rewrite `hji` using `[hwa]`. Establish `h1` using `(hspan c).le (Submodule.subset_span ⟨i, rfl⟩)`.
+
+Establish `h2 : {v : S.J → OO p | ∃ i, κ i = c ∧ v = fun j => φ.mapMatrix (S.proj _ c) j (col i)} = ∅` using `Set.eq_empty_of_forall_notMem fun _ ⟨i, hi, _⟩ => h i ((hwa _).trans hi)`. Rewrite `h1` using `[h2, Submodule.span_empty, Submodule.mem_bot]`. Conclude with `hji (congrArg Subtype.val (congrFun h1 j))`. Rewrite using `[hwa]`. Use function extensionality and compare the values at `j`.
+
+Establish `h1` using `congrArg (fun a => y₀ (algebraMap o S.R a)) (congrFun (congrFun (hmul (κ i) (κ i)) j) (col i))`. Simplify using `only [if_true, Matrix.mul_apply, map_sum, map_mul] at h1`. Conclude with `h1`. Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨α, l, i, hα, hl, rfl⟩`.
+
+Generalize the expression as in `hc : τ.wt α = c`. Establish `h1 : ∀ w ∈ Submodule.span (OO p) {v : S.J → OO p | ∃ i, κ i = c ∧ v = fun j => φ.mapMatrix (S.proj _ c) j (col i)}, (fun j => f c * (w j : PadicAlgCl p)) ∈ Submodule.span (OO p) (Set.range fun i j => f (κ i) * y₀ (algebraMap o S.R (S.proj _ (κ i) j (col i))))`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem _ h'`.
+
+Take `⟨i', rfl, rfl⟩` from `h'`. Conclude with `Submodule.subset_span ⟨i', rfl⟩`. Consider the case `zero`. Establish `: (fun j => f c * (((0 : S.J → OO p) j : OO p) : PadicAlgCl p)) = 0` using `funext fun j => by simp`. Rewrite using `[this]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `add a a' _ _ ha ha'`. Use `Submodule.add_mem _ ha ha' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Simplify using `[mul_add]`.
+
+Consider the case `smul s a _ ha`. Use `Submodule.smul_mem _ s ha using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `f c * ((s : PadicAlgCl p) * a j) = (s : PadicAlgCl p) * (f c * a j)`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h2` using `h1 _ ((hspan c).le (Submodule.subset_span ⟨i, rfl⟩))`. Establish `hpos : 0 < ‖f c‖` using `hf c ▸ Real.exp_pos _`. Establish `h0 : f c ≠ 0` using `norm_pos_iff.1 hpos`. Establish `hq : l / f c ∈ OO p`. Rewrite using `[mem_OO_iff, norm_div, div_le_one hpos, hf]`.
+
+Use `hl.trans (Real.exp_le_exp.2 (div_le_div_of_nonneg_right ?_ (Nat.cast_nonneg _)))` and prove the remaining obligations. Conclude with `q_le_of_wt_eq τ hα ((hwa c).trans hc.symm)`. Establish `h3 : (fun j => l * y₀ (algebraMap o S.R (S.proj _ c j i))) = (⟨_, hq⟩ : OO p) • fun j => f c * y₀ (algebraMap o S.R (S.proj _ c j i))`. Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `_ = l / f c * (f c * y₀ (algebraMap o S.R (S.proj _ c j i)))`.
+
+Rewrite using `[← _root_.mul_assoc, div_mul_cancel₀ _ h0]`. Rewrite using `[h3]`. Conclude with `Submodule.smul_mem _ _ h2`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨a (κ i), f (κ i), col i, ha _, (hf _).le, by rw [hwa]; rfl⟩`.
+-/
 theorem exists_adapted_basis_testLattice : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (τ : S.Test p y₀), (∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1) → ∃ (B : Matrix S.J S.J (PadicAlgCl p)) (l : S.J → PadicAlgCl p) (α : S.J → τ.X), (∀ i j, ‖B i j‖ ≤ 1) ∧ ‖B.det‖ = 1 ∧ (∀ i v₀, τ.q (α i) ≤ τ.q (α i + S.N • v₀)) ∧ (∀ i, ‖l i‖ = Real.exp (τ.q (α i) / S.N)) ∧ (∀ c, ∃ i, τ.wt (α i) = c) ∧ (∀ i, ((S.proj _ (τ.wt (α i))).map fun a => y₀ (algebraMap o S.R a)).mulVec (B i) = B i) ∧ τ.E = Submodule.span (OO p) (Set.range fun i j => l i * B i j) := by
   intro o Ω _ _ _ hA S p _ y₀ τ hint
   have : IsDomain o := hA.inj.isDomain

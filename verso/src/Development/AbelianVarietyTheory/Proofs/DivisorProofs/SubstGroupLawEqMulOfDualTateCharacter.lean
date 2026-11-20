@@ -13,6 +13,13 @@ open TensorProduct
 
 namespace GlobalTheory.QLog.Chart
 
+/- English proof (translation)
+Introduce `p _ O _ _ _ G d c χ u hu`. Use `set D := subst c.μ u - inL u * inR u with hD`. Establish `hev : ∀ n, c.ev₂ n D = 0`. Introduce `n`. Take `⟨h1, h2, h3, -⟩` from `ev₂_eval p O G d c n u`.
+
+Rewrite using `[hD, map_sub, map_mul, h1, h2, h3, hu n, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one, (isGroupLikeElem_charElem χ n).comul_eq_tmul_self, sub_self]`. Rewrite using `[← sub_eq_zero, ← hD]`. Use extensionality with `α`. Rewrite using `[map_zero]`. Use `IsHausdorff.haus (IsAdicComplete.toIsHausdorff (I := Ideal.span {(p : O)})) _ fun m => ?_` and prove the remaining obligations.
+
+Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton, sub_zero]`. Take `⟨n, hn⟩` from `c.ker m (α.degree + 1)`. Conclude with `T.dvd_coeff_of_ker_sum_of_dvd_coeff_ker p O (G.A n) (G.A n) (Fin d) (Fin d) (c.x n) (c.x n) (c.ev n) (c.ev n) (c.ev₂ n) m (α.degree + 1) (c.isEval n) (c.isEval n) (c.isEval₂ n) (c.surj n) (c.surj n) hn hn D (hev n) α (Nat.lt_succ_self _)`.
+-/
 theorem subst_μ_eq_inL_mul_inR : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d)
     (χ : G.dual.Tate) (u : MvPowerSeries (Fin d) O), (∀ n, c.ev n u = charElem χ n) →

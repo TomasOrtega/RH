@@ -17,6 +17,11 @@ section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {A : Arith E} {n p : ℕ} [Fact p.Prime] {S : Setup A n p} (F : Frame S)
 
+/- English proof (translation)
+Take `⟨z, hz, rfl⟩` from `hy`. Rewrite `hz` using `[Ideal.map_span, ← Set.range_comp, Ideal.mem_span_range_iff_exists_fun]`. Take `⟨c, rfl⟩` from `hz`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+-/
 theorem inId_span {ι : Type} [Fintype ι] (w : Plc E) (b : ι → 𝓞 E) (y : w.adicCompletion E) (hy : InId w (Ideal.span (Set.range b)) y) :
     ∃ z : ι → w.adicCompletionIntegers E, y = ∑ j, algebraMap (𝓞 E) (w.adicCompletion E) (b j) * (z j : w.adicCompletion E) := by
   obtain ⟨z, hz, rfl⟩ := hy
@@ -26,25 +31,55 @@ theorem inId_span {ι : Type} [Fintype ι] (w : Plc E) (b : ι → 𝓞 E) (y : 
   rw [AddSubmonoidClass.coe_finset_sum]
   exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
+/- English proof (translation)
+Take `⟨z, hz, rfl⟩` from `h`. Take `⟨z', hz', rfl⟩` from `h'`. Conclude with `⟨z + z', add_mem hz hz', rfl⟩`.
+-/
 theorem InId.add {w : Plc E} {𝔟 : Ideal (𝓞 E)} {y y' : w.adicCompletion E} (h : InId w 𝔟 y) (h' : InId w 𝔟 y') : InId w 𝔟 (y + y') := by
   obtain ⟨z, hz, rfl⟩ := h
   obtain ⟨z', hz', rfl⟩ := h'
   exact ⟨z + z', add_mem hz hz', rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, zero_mem _, rfl⟩`.
+-/
 theorem InId.zero (w : Plc E) (𝔟 : Ideal (𝓞 E)) : InId w 𝔟 0 := ⟨0, zero_mem _, rfl⟩
 
+/- English proof (translation)
+Take `⟨z, hz, rfl⟩` from `h`. Conclude with `⟨z * ⟨y', h'⟩, Ideal.mul_mem_right _ _ hz, rfl⟩`.
+-/
 theorem InId.mul {w : Plc E} {𝔟 : Ideal (𝓞 E)} {y y' : w.adicCompletion E} (h : InId w 𝔟 y) (h' : y' ∈ w.adicCompletionIntegers E) :
     InId w 𝔟 (y * y') := by
   obtain ⟨z, hz, rfl⟩ := h
   exact ⟨z * ⟨y', h'⟩, Ideal.mul_mem_right _ _ hz, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction y (InId w 𝔟) (fun _ _ => InId.add) (InId.zero w 𝔟) fun i _ => h i`.
+-/
 theorem InId.sum {ι : Type} {w : Plc E} {𝔟 : Ideal (𝓞 E)} (s : Finset ι) {y : ι → w.adicCompletion E} (h : ∀ i, InId w 𝔟 (y i)) :
     InId w 𝔟 (∑ i ∈ s, y i) :=
   Finset.sum_induction y (InId w 𝔟) (fun _ _ => InId.add) (InId.zero w 𝔟) fun i _ => h i
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, Ideal.mem_map_of_mem _ hx, rfl⟩`.
+-/
 theorem InId.of_mem (w : Plc E) {𝔟 : Ideal (𝓞 E)} {x : 𝓞 E} (hx : x ∈ 𝔟) : InId w 𝔟 (algebraMap (𝓞 E) (w.adicCompletion E) x) :=
   ⟨_, Ideal.mem_map_of_mem _ hx, rfl⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hv w hw i`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨x, hx, u, hu, rfl⟩` from `hz`.
+
+Rewrite using `[F.vec_mul w hw x u]`. Conclude with `(InId.of_mem w hx).mul ((F.vec_hat u).1 hu w hw i)`. Consider the case `zero => rw [map_zero]`. Conclude with `InId.zero w 𝔟`. Consider the case `add a b _ _ ha hb => rw [map_add]`.
+
+Conclude with `ha.add hb`. Consider the case `neg a _ ha`. Rewrite using `[map_neg]`. Simplify using `using ha.mul (neg_mem (one_mem _))`. Introduce `h`.
+
+Take `⟨r, b, hb⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 (IsNoetherian.noetherian 𝔟)`. Establish `hb' : Ideal.span (Set.range b) = 𝔟` using `hb`. Establish `key : ∀ (w : Plc E) (i : Fin n), ∃ z : Fin r → w.adicCompletionIntegers E, (p : 𝓞 E) ∉ w.asIdeal → F.vec w v i = ∑ j, algebraMap (𝓞 E) (w.adicCompletion E) (b j) * (z j : w.adicCompletion E)` using `fun w i => by`. Distinguish the cases in `hw : (p : 𝓞 E) ∈ w.asIdeal`. Conclude with `⟨0, fun h' => absurd hw h'⟩`.
+
+Take `⟨z, hz⟩` from `inId_span w b _ (hb' ▸ h w hw i)`. Conclude with `⟨z, fun _ => hz⟩`. Use `choose z hz using key`. Use `choose u hu using fun j : Fin r => F.vec_surj (fun w i => (z w i j : w.adicCompletion E)) fun w i => (z w i j).2`. Establish `e : v = ∑ j, mulF S.D (b j) (u j)`.
+
+Use `sub_eq_zero.1 (F.vec_inj _ fun w hw => ?_)` and prove the remaining obligations. Rewrite using `[map_sub, map_sum, sub_eq_zero]`. Use function extensionality and compare the values at `i`. Rewrite using `[hz w i hw, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [F.vec_mul w hw (b j) (u j), hu j w hw]; rfl`.
+
+Rewrite using `[e]`. Use `sum_mem fun j _ => AddSubgroup.subset_closure ⟨b j, hb' ▸ Ideal.subset_span ⟨j, rfl⟩, u j, (F.vec_hat _).2 fun w hw i => ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[hu j w hw]`. Conclude with `(z w i j).2`.
+-/
 theorem mem_idHat_iff (𝔟 : Ideal (𝓞 E)) (v) :
     v ∈ idHat S.D 𝔟 ↔ ∀ w : Plc E, (p : 𝓞 E) ∉ w.asIdeal → ∀ i, InId w 𝔟 (F.vec w v i) := by
   constructor
@@ -81,6 +116,11 @@ theorem mem_idHat_iff (𝔟 : Ideal (𝓞 E)) (v) :
     rw [hu j w hw]
     exact (z w i j).2
 
+/- English proof (translation)
+Establish `hi : ∀ (w : Plc E) i, (Pi.single k 1 : Fin n → w.adicCompletion E) i ∈ w.adicCompletionIntegers E` using `fun w i => by`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`. Take `⟨v, hv⟩` from `F.vec_surj (fun w => Pi.single k 1) hi`.
+
+Conclude with `⟨v, (F.vec_hat v).2 fun w hw i => by rw [hv w hw]; exact hi w i, hv⟩`.
+-/
 theorem basis_vec (k : Fin n) : ∃ v ∈ LaHat S.D, ∀ w : Plc E, (p : 𝓞 E) ∉ w.asIdeal → F.vec w v = Pi.single k 1 := by
   have hi : ∀ (w : Plc E) i, (Pi.single k 1 : Fin n → w.adicCompletion E) i ∈ w.adicCompletionIntegers E := fun w i => by
     rw [Pi.single_apply]; split_ifs
@@ -88,6 +128,13 @@ theorem basis_vec (k : Fin n) : ∃ v ∈ LaHat S.D, ∀ w : Plc E, (p : 𝓞 E)
   obtain ⟨v, hv⟩ := F.vec_surj (fun w => Pi.single k 1) hi
   exact ⟨v, (F.vec_hat v).2 fun w hw i => by rw [hv w hw]; exact hi w i, hv⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h w hw i k`. Take `⟨v, hv, e⟩` from `basis_vec F k`. Use `(F.vec_hat _).1 (h v hv) w hw i` as an intermediate fact. Rewrite `this` using `[map_nsmul, F.vec_act w hw, e w hw]`.
+
+Simplify `this` using `[Frame.cmp]`. Introduce `h v hv`. Use `(F.vec_hat _).2 fun w hw i => ?_` and prove the remaining obligations. Rewrite using `[map_nsmul, F.vec_act w hw]`. Use `show c • ∑ k, F.cmp w g i k * F.vec w v k ∈ _`.
+
+Rewrite using `[nsmul_eq_mul, Finset.mul_sum]`. Conclude with `sum_mem fun k _ => by rw [← mul_assoc]; exact mul_mem (h w hw i k) ((F.vec_hat v).1 hv w hw k)`.
+-/
 theorem nsmul_integ_iff (g : GUf E n) (c : ℕ) : (∀ v ∈ LaHat S.D, c • S.L.actG (F.j g) v ∈ LaHat S.D) ↔
     ∀ w : Plc E, (p : 𝓞 E) ∉ w.asIdeal → ∀ i k, (c : w.adicCompletion E) * F.cmp w g i k ∈ w.adicCompletionIntegers E := by
   constructor
@@ -103,10 +150,16 @@ theorem nsmul_integ_iff (g : GUf E n) (c : ℕ) : (∀ v ∈ LaHat S.D, c • S.
     rw [nsmul_eq_mul, Finset.mul_sum]
     exact sum_mem fun k _ => by rw [← mul_assoc]; exact mul_mem (h w hw i k) ((F.vec_hat v).1 hv w hw k)
 
+/- English proof (translation)
+Simplify `nsmul_integ_iff F g 1` using `only [Integ, one_smul, Nat.cast_one, one_mul]`.
+-/
 theorem integ_iff (g : GUf E n) :
     Integ S.L (F.j g) ↔ ∀ w : Plc E, (p : 𝓞 E) ∉ w.asIdeal → ∀ i k, F.cmp w g i k ∈ w.adicCompletionIntegers E := by
   simpa only [Integ, one_smul, Nat.cast_one, one_mul] using nsmul_integ_iff F g 1
 
+/- English proof (translation)
+Unfold `Frame.cmp`. Rewrite using `[map_inv]`. Use `congr 1`. Use `group`.
+-/
 theorem cmp_inv (w : Plc E) (g : GUf E n) : F.cmp w g⁻¹ = ((F.a w * comp w g * (F.a w)⁻¹)⁻¹).val := by
   unfold Frame.cmp
   rw [map_inv]
@@ -115,6 +168,21 @@ theorem cmp_inv (w : Plc E) (g : GUf E n) : F.cmp w g⁻¹ = ((F.a w * comp w g 
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ _ A n p _ S F g`. Establish `hmul : ∀ (g h : S.G.GAf) v, S.L.actG (g * h) v = S.L.actG g (S.L.actG h v)` using `fun g h v => by`. Rewrite using `[map_mul, Module.End.mul_apply]`. Use `⟨integ_iff F g, ?_, fun 𝔟 _ => ?_, fun c => ?_⟩` and prove the remaining obligations. Establish `h1 : F.j g ∈ S.L.KN 1 ↔ Integ S.L (F.j g) ∧ Integ S.L (F.j g⁻¹)`.
+
+Rewrite using `[map_inv]`. Use `⟨fun h => ⟨integ_of_mem h, integ_of_mem (inv_mem h)⟩, fun h => ?_⟩` and prove the remaining obligations. Establish `key : ∀ g, Integ S.L g → S.L.CongOne 1 g` using `fun g hg v hv => ⟨S.L.actG g v - v, sub_mem (hg v hv) hv, by simp⟩`. Conclude with `⟨key _ h.1, key _ h.2⟩`. Rewrite using `[h1, integ_iff, integ_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h w hw`. Conclude with `(GlobalTheory.BCT.GlobLev.mem_KGL_iff_val w _).2 ⟨h.1 w hw, cmp_inv F w g ▸ h.2 w hw⟩`. Introduce `h`. Use `⟨fun w hw => ((GlobalTheory.BCT.GlobLev.mem_KGL_iff_val w _).1 (h w hw)).1, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[cmp_inv]`. Conclude with `((GlobalTheory.BCT.GlobLev.mem_KGL_iff_val w _).1 (h w hw)).2`. Establish `hv : ∀ w : Plc E, (p : 𝓞 E) ∉ w.asIdeal → ∀ v, F.vec w (S.L.actG (F.j g) v - v) = (F.cmp w g - 1) *ᵥ F.vec w v` using `fun w hw v => by`. Rewrite using `[map_sub, F.vec_act w hw, Matrix.sub_mulVec, Matrix.one_mulVec]`. Both sides reduce to the same expression.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h w hw i k`. Take `⟨v, hv', e⟩` from `basis_vec F k`. Use `(mem_idHat_iff F 𝔟 _).1 (h v hv') w hw i` as an intermediate fact. Rewrite `this` using `[hv w hw, e w hw]`.
+
+Simplify using `using this`. Introduce `h v hv'`. Use `(mem_idHat_iff F 𝔟 _).2 fun w hw i => ?_` and prove the remaining obligations. Rewrite using `[hv w hw]`. Conclude with `InId.sum Finset.univ fun k => (h w hw i k).mul ((F.vec_hat v).1 hv' w hw k)`.
+
+Rewrite using `[← nsmul_integ_iff]`. Use `forall₂_congr fun v _ => ⟨?_, fun h => ⟨_, h, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨v', hv', e⟩`. Rewrite using `[← map_nsmul, ← e, ← hmul, ← map_mul, inv_mul_cancel, map_one, map_one, Module.End.one_apply]` and apply the resulting hypothesis. Rewrite using `[map_nsmul, ← hmul, ← map_mul, mul_inv_cancel, map_one, map_one, Module.End.one_apply]`.
+-/
 theorem dict_holds : Dict := by
   intro E _ _ _ A n p _ S F g
   have hmul : ∀ (g h : S.G.GAf) v, S.L.actG (g * h) v = S.L.actG g (S.L.actG h v) := fun g h v => by

@@ -9,6 +9,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.PlaceTensor
 
+/- English proof (translation)
+Break down `p with v | τ` into its components or cases. Rewrite using `[GlobalTheory.LocWeil.PlaceIdem.idem_inl]`. Both sides reduce to the same expression. Rewrite using `[GlobalTheory.LocWeil.PlaceIdem.idem_inr]`. Simplify using `only [idem, GlobalTheory.LocWeil.PlaceIdem.eInf]`.
+
+Use `congr 2`.
+-/
 theorem idem_eq_locIdem (D : D7) (p : Place D) : idem D p = GlobalTheory.LocWeil.idem D p := by
   rcases p with v | τ
   · rw [GlobalTheory.LocWeil.PlaceIdem.idem_inl]
@@ -17,6 +22,17 @@ theorem idem_eq_locIdem (D : D7) (p : Place D) : idem D p = GlobalTheory.LocWeil
     simp only [idem, GlobalTheory.LocWeil.PlaceIdem.eInf]
     congr 2
 
+/- English proof (translation)
+Introduce `D`. Establish `hE : ∀ p, idem D p = GlobalTheory.LocWeil.idem D p` using `idem_eq_locIdem D`. Take `⟨hOrth, hTheta, hFinInf, hSum, -, -⟩` from `GlobalTheory.LocWeil.PlaceIdem.idem_props D`. Simplify using `only [hE]`. Use `⟨fun p => GlobalTheory.LocWeil.idem_mul_self p, fun p q hpq => hOrth p q hpq, fun p => GlobalTheory.LocWeil.cA_idem p, ?_, hFinInf, hSum, ?_⟩` and prove the remaining obligations.
+
+Introduce `v`. Rewrite using `[GlobalTheory.LocWeil.PlaceIdem.idem_inl, GlobalTheory.LocWeil.PlaceIdem.infPart_algebraMap, GlobalTheory.LocWeil.PlaceIdem.finPart_algebraMap]`. Use `⟨?_, ?_, ⟨singleV D.host.F v 1, rfl, GlobalTheory.LocWeil.PlaceIdem.evalV_single_same _ v, fun v' h => GlobalTheory.LocWeil.PlaceIdem.evalV_single_ne _ h⟩⟩` and prove the remaining obligations. Conclude with `TensorProduct.zero_tmul _ _`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises.
+
+Use `⟨singleV D.host.F v 1, ?_, 1, ?_⟩` and prove the remaining obligations. Simplify using `only [intAf, Set.mem_setOf_eq]`. Introduce `u`. Break down `eq_or_ne u v with rfl | h` into its components or cases. Rewrite using `[GlobalTheory.LocWeil.PlaceIdem.evalV_single_same]`.
+
+Conclude with `one_mem _`. Rewrite using `[GlobalTheory.LocWeil.PlaceIdem.evalV_single_ne _ h]`. Conclude with `zero_mem _`. Both sides reduce to the same expression. Introduce `θ hθ τ`.
+
+Use `⟨?_, fun τ' h => ?_⟩` and prove the remaining obligations. Rewrite using `[hTheta θ hθ τ τ, if_pos rfl]`. Rewrite using `[hTheta θ hθ τ' τ, if_neg (Ne.symm h)]`.
+-/
 theorem idem_spec : ∀ D : D7, (∀ p, idem D p * idem D p = idem D p) ∧ (∀ p q, p ≠ q → idem D p * idem D q = 0) ∧ (∀ p, cA D (idem D p) = idem D p) ∧ (∀ v : FinPl D, infPart D (idem D (.inl v)) = 0 ∧ finPart D (idem D (.inl v)) ∈ intAE D ∧ IsPlaceIdem D v (pairA D.host.F 0 (singleV D.host.F v 1))) ∧ (∀ τ : D.what₂.Tau, finPart D (idem D (.inr τ)) = 0) ∧ infPart D (∑ τ : D.what₂.Tau, idem D (.inr τ)) = 1 ∧ ∀ θ : InfFam D, IsInfFam θ → ∀ τ : D.what₂.Tau, θ τ (infPart D (idem D (.inr τ))) = 1 ∧ ∀ τ' : D.what₂.Tau, τ' ≠ τ → θ τ (infPart D (idem D (.inr τ'))) = 0 := by
   intro D
   have hE : ∀ p, idem D p = GlobalTheory.LocWeil.idem D p := idem_eq_locIdem D

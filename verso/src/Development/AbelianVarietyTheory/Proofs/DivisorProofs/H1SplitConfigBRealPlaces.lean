@@ -23,11 +23,17 @@ section Helpers
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Introduce `u _`. Simplify using `[mat]`.
+-/
 theorem one_mem_UAt_loc {n : ℕ} (Y : Spc F E n) {R : Type} [Zero R] (ev : AF F → R) :
     (1 : UA σ Y.J) ∈ UAt σ Y ev := by
   intro u _
   simp [mat]
 
+/- English proof (translation)
+Introduce `u hu`. Establish `e : mat (g * h) - 1 = (mat g - 1) * mat h + (mat h - 1)`. Simplify using `only [mat, Subgroup.coe_mul, Units.val_mul]`. Use `noncomm_ring`. Rewrite using `[e, smul_add, ← Matrix.smul_mul, hg u hu, hh u hu, Matrix.zero_mul, add_zero]`.
+-/
 theorem mul_mem_UAt_loc {n : ℕ} {Y : Spc F E n} {R : Type} [Zero R] {ev : AF F → R} {g h : UA σ Y.J}
     (hg : g ∈ UAt σ Y ev) (hh : h ∈ UAt σ Y ev) : g * h ∈ UAt σ Y ev := by
   intro u hu
@@ -35,6 +41,13 @@ theorem mul_mem_UAt_loc {n : ℕ} {Y : Spc F E n} {R : Type} [Zero R] {ev : AF F
     simp only [mat, Subgroup.coe_mul, Units.val_mul]; noncomm_ring
   rw [e, smul_add, ← Matrix.smul_mul, hg u hu, hh u hu, Matrix.zero_mul, add_zero]
 
+/- English proof (translation)
+Introduce `r hr`. Establish `e : ∀ ψ : (κ → Fv F v) → ℂ, tens (evFin F v) (c • ψ) r = c • tens (evFin F v) ψ r`. Introduce `ψ`. Use function extensionality and compare the values at `x`. Simplify using `[tens, mul_assoc]`.
+
+Rewrite using `[e, e]`. Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Simplify using the standard rewrite rules. Establish `hr' : Rest (evFin F v) φ r` using `⟨hr.1, by`.
+
+Use `(schA F κ).smul_mem c⁻¹ hr.2` as an intermediate fact. Rewrite using `[e, smul_smul, inv_mul_cancel₀ hc, one_smul] at this⟩` and apply the resulting hypothesis. Rewrite using `[map_smul, h r hr']`.
+-/
 theorem acts_smul_loc {κ : Type} [Fintype κ] {v : Pl F} (T : Module.End ℂ ((κ → AF F) → ℂ))
     {φ φ₁ : (κ → Fv F v) → ℂ} (h : Acts (evFin F v) T φ φ₁) (c : ℂ) :
     Acts (evFin F v) T (c • φ) (c • φ₁) := by
@@ -51,6 +64,39 @@ theorem acts_smul_loc {κ : Type} [Fintype κ] {v : Pl F} (T : Module.End ℂ ((
 
 end Helpers
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ v hv`. Establish `hvT : v ∉ X.T` using `fun h => hv.1 (B.τ ⟨v, hM.triple.chars.sub h⟩)`. Establish `hvac : G.M.vac v ∈ SB _` using `(hM.triple.geo.hM.vac v).1`. Establish `hvac₁ : G₁.M.vac v ∈ SB _` using `(hM₁.triple.geo.hM.vac v).1`. Establish `hpvac : Rf.p v (G.M.vac v) ≠ 0` using `(hM.fin.sph v hvT).2`.
+
+Establish `hK` using `GlobalTheory.T.compact_fixes_vacuum_nonsplit F E σ B _ _ G X om om' hM.triple v hv hvT`. Establish `hIw` using `GlobalTheory.T.iwasawa_decomp_nonsplit_place F E σ B _ _ G.W G₁.W H' _ _ _ _ _ _ hM.triple.base hM.triple.geo.hW hM₁.triple.geo.hW hC.hH' v hv`. Establish `hLv` using `GlobalTheory.T.levi_maximal_compact_exists F E σ B _ _ G.W G₁.W H' _ _ _ _ _ _ hM.triple.base hM.triple.geo.hW hM₁.triple.geo.hW hC.hH' v`. Establish `hSph` using `GlobalTheory.T.local_theta_nonsplit_invariant hKP F E σ B _ _ G₁ X om₁ om₁' R₁ Rf₁ hM₁ v hv`. Establish `hEx : ∀ h₁ ∈ UAt σ G₁.W (evFin F v), ∀ φ ∈ SB (Fin a × Fin (a + b) → Fv F v), ∃ φ₁ ∈ SB (Fin a × Fin (a + b) → Fv F v), Acts (evFin F v) (om₁ (1, h₁)) φ φ₁`.
+
+Introduce `h₁ hh₁ φ hφ`. Take `⟨φ₁, ⟨h1, h2⟩, -⟩` from `((GlobalTheory.T.theta_action_exists hKP.base) _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ (GlobalTheory.ThK.Inhab.pairV hM₁.triple) v).1 1 (one_mem_UAt_loc _ _) h₁ hh₁ φ hφ`. Conclude with `⟨φ₁, h1, h2⟩`. Establish `step1 : ∀ A : Rf.Pi v →ₗ[ℂ] (UA σ G.W.J → Rf₁.Pi v), IsIndMap v om om₁ (Rf.p v) (Rf₁.p v) H' X.β ((a : ℝ) / 2) A → ∃ c : ℂ, A (Rf.p v (G.M.vac v)) 1 = Rf₁.p v (c • G₁.M.vac v)`. Introduce `A hA`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ, hφe⟩ : ∃ φ ∈ SB (Fin a × Fin (a + b) → Fv F v), Rf₁.p v φ = A (Rf.p v (G.M.vac v)) 1 := by`. Establish `: A (Rf.p v (G.M.vac v)) 1 ∈ (SB _).map (Rf₁.p v)` using `by rw [hM₁.fin.onto v]; trivial`. Simplify using `using this`. Take `⟨c, hc⟩` from `hSph φ hφ (by`. Introduce `k₁ hk₁ φ₁ hφ₁ hact`.
+
+Take `⟨m, hm, hlev⟩` from `hLv k₁ hk₁`. Establish `e1` using `hA.levi 1 k₁ m hlev hm.1 hk₁.1 φ hφ φ₁ hφ₁ hact (Rf.p v (G.M.vac v)) 1 (one_mem_UAt_loc _ _) hφe.symm`. Establish `e2` using `hA.right m hm.1 _ hvac _ hvac (hK m hm) 1 (one_mem_UAt_loc _ _)`. Simplify using `only [mul_one, one_mul, map_one, Circle.coe_one, NNReal.coe_one, Real.one_rpow, Complex.ofReal_one, one_smul] at e1 e2`. Rewrite using `[← e1, ← e2, hφe])`.
+
+Conclude with `⟨c, by rw [← hφe, hc, map_smul]⟩`. Establish `step2 : ∀ h ∈ UAt σ G.W (evFin F v), ∃ w : Rf₁.Pi v, ∀ A : Rf.Pi v →ₗ[ℂ] (UA σ G.W.J → Rf₁.Pi v), IsIndMap v om om₁ (Rf.p v) (Rf₁.p v) H' X.β ((a : ℝ) / 2) A → ∀ c : ℂ, A (Rf.p v (G.M.vac v)) 1 = Rf₁.p v (c • G₁.M.vac v) → A (Rf.p v (G.M.vac v)) h = c • w`. Introduce `h hh`. Take `⟨n, m, k, t, h₁, hn, hnv, hmv, hh₁, hlev, hk, rfl⟩` from `hIw h hh`. Take `⟨φ₁, hφ₁, hact⟩` from `hEx h₁ hh₁ _ hvac₁`.
+
+Use `⟨((X.β t : ℂ) * (((absE F E t : ℝ) ^ ((a : ℝ) / 2) : ℝ) : ℂ)) • Rf₁.p v φ₁, ?_⟩` and prove the remaining obligations. Introduce `A hA c hc`. Establish `hmk : m * k ∈ UAt σ G.W (evFin F v)` using `mul_mem_UAt_loc hmv hk.1`. Establish `e0 : A (Rf.p v (G.M.vac v)) k = Rf₁.p v (c • G₁.M.vac v)`. Use `hA.right k hk.1 _ hvac _ hvac (hK k hk) 1 (one_mem_UAt_loc _ _)` as an intermediate fact.
+
+Rewrite `this` using `[one_mul]`. Rewrite using `[← this, hc]`. Establish `e1` using `hA.levi t h₁ m hlev hmv hh₁ (c • G₁.M.vac v) (Submodule.smul_mem _ c hvac₁) (c • φ₁) (Submodule.smul_mem _ c hφ₁) (acts_smul_loc _ hact c) _ k hk.1 e0`. Establish `e2` using `hA.unip n hn hnv (Rf.p v (G.M.vac v)) (m * k) hmk`. Rewrite using `[mul_assoc, e2, e1, map_smul, smul_comm]`.
+
+Establish `key : ∀ (A₁ A₂ : Rf.Pi v →ₗ[ℂ] (UA σ G.W.J → Rf₁.Pi v)), IsIndMap v om om₁ (Rf.p v) (Rf₁.p v) H' X.β ((a : ℝ) / 2) A₁ → IsIndMap v om om₁ (Rf.p v) (Rf₁.p v) H' X.β ((a : ℝ) / 2) A₂ → ∀ c₀ : ℂ, (∀ h ∈ UAt σ G.W (evFin F v), A₂ (Rf.p v (G.M.vac v)) h = c₀ • A₁ (Rf.p v (G.M.vac v)) …`. Introduce `A₁ A₂ hA₁ hA₂ c₀ h0`. Set `P : Rf.Pi v → Prop` to `fun x => ∀ h ∈ UAt σ G.W (evFin F v), A₂ x h = c₀ • A₁ x h`. Set `N : Submodule ℂ (Rf.Pi v)` to `{ carrier := {x | P x} add_mem' := by`. Introduce `x y hx hy h hh`.
+
+Simplify using `only [map_add, Pi.add_apply, hx h hh, hy h hh, smul_add]`. Use the proof step `zero_mem' := by`. Introduce `h hh`. Simplify using the standard rewrite rules. Use the proof step `smul_mem' := by`.
+
+Introduce `r x hx h hh`. Simplify using `only [map_smul, Pi.smul_apply, hx h hh, smul_comm r c₀] }`. Establish `hmemN : ∀ x, x ∈ N ↔ P x` using `fun x => Iff.rfl`. Establish `hN` using `hM.fin.irred v N (by`. Introduce `g hg φ hφ φ₁ hφ₁ hact hmem`.
+
+Rewrite `hmem`, the goal using `[hmemN]`. Introduce `h hh`. Rewrite using `[hA₂.right g hg φ hφ φ₁ hφ₁ hact h hh, hA₁.right g hg φ hφ φ₁ hφ₁ hact h hh]`. Conclude with `hmem (h * g) (mul_mem_UAt_loc hh hg))`. Break down `hN with hN | hN` into its components or cases.
+
+Conclude with `absurd ((hmemN _).2 h0) (by rw [hN]; simpa using hpvac)`. Introduce `x; exact (hmemN x).1 (by rw [hN]; trivial)`. Introduce `A A' hA hA'`. Take `⟨c, hc⟩` from `step1 A hA`. Take `⟨c', hc'⟩` from `step1 A' hA'`.
+
+Distinguish the cases in `h0 : c = 0`. Use `left`. Introduce `x h hh`. Use `key A A hA hA 0 (by` as an intermediate fact. Introduce `h hh`.
+
+Take `⟨w, hw⟩` from `step2 h hh`. Rewrite using `[hw A hA c hc, h0]`. Use the proof step `simp) x h hh`. Simplify using `using this`. Use `right`.
+
+Use `⟨c' / c, key A A' hA hA' (c' / c) ?_⟩` and prove the remaining obligations. Introduce `h hh`. Take `⟨w, hw⟩` from `step2 h hh`. Rewrite using `[hw A hA c hc, hw A' hA' c' hc', smul_smul, div_mul_cancel₀ _ h0]`.
+-/
 theorem indLineFin_beta_inert : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b)
     (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

@@ -16,6 +16,17 @@ variable {K : Type} [NormedField K] [CompleteSpace K] {V F : Type} [CommRing V] 
 
 include hϖ ht0 in
 
+/- English proof (translation)
+Establish `h2 : (HahnSeries.ofPowerSeries ℤ F (PowerSeries.C (R` using `F) (a ϖ) * PowerSeries.X)) ^ N = HahnSeries.single (N : ℤ) (a ϖ ^ N) := by`. Rewrite using `[← map_pow, mul_pow, ← map_pow PowerSeries.C, map_mul, HahnSeries.ofPowerSeries_C, HahnSeries.ofPowerSeries_X_pow, HahnSeries.C_apply, HahnSeries.single_mul_single]`. Simplify using the standard rewrite rules. Establish `h4 : a ϖ ^ N ≠ 0` using `pow_ne_zero _ hϖ`. Establish `hc : ∀ n : ℤ, q.coeff n = if n + N < 0 then 0 else (a ϖ ^ N)⁻¹ * a (PowerSeries.coeff (n + N).natAbs g)` using `fun n => by`.
+
+Establish `h3` using `congrArg (fun g : LaurentSeries F => g.coeff (n + N)) h`. Simplify using `only [h2, HahnSeries.coeff_mul_single_add] at h3`. Rewrite `h3` using `[PowerSeries.coeff_coe, PowerSeries.coeff_map]`. Use `split_ifs at h3 ⊢`. Conclude with `(mul_eq_zero.1 h3).resolve_right h4`.
+
+Rewrite using `[← h3]`. Clear the denominators using the available nonvanishing facts. Establish `hinj : Function.Injective fun k : ℕ => (k : ℤ) - N` using `fun k l hkl => by simpa using hkl`. Rewrite using `[← hinj.hasSum_iff]`. Use `Eq.mpr (congrArg (HasSum · _) (funext fun k => ?_)) ((hasSum_discEval (ι.comp a) hi ht g).mul_left (((ι (a ϖ) * t) ^ N)⁻¹))` and prove the remaining obligations.
+
+Rewrite using `[Function.comp_apply, hc, sub_add_cancel, if_neg (by omega), Int.natAbs_natCast, zpow_sub₀ ht0, zpow_natCast, zpow_natCast, map_mul, map_inv₀, map_pow, RingHom.comp_apply, mul_pow, mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Introduce `n hn`. Rewrite using `[hc, if_pos, map_zero, zero_mul]`. Assume the negation of the conclusion as `h0`.
+
+Conclude with `hn ⟨(n + N).toNat, by simp only; omega⟩`.
+-/
 theorem hasSum_laurent_of_mul_eq {q : LaurentSeries F} {g : PowerSeries V} {N : ℕ}
     (h : q * (HahnSeries.ofPowerSeries ℤ F (PowerSeries.C (R := F) (a ϖ) * PowerSeries.X)) ^ N =
       HahnSeries.ofPowerSeries ℤ F (PowerSeries.map a g)) :
@@ -51,6 +62,15 @@ theorem hasSum_laurent_of_mul_eq {q : LaurentSeries F} {g : PowerSeries V} {N : 
 
 include hϖ ht0 in
 
+/- English proof (translation)
+Establish `hμ : ∀ μ, P.coeff μ * (HahnSeries.ofPowerSeries ℤ F (PowerSeries.C (R` using `F) (a ϖ) * PowerSeries.X)) ^ N = HahnSeries.ofPowerSeries ℤ F (PowerSeries.map a (G.coeff μ)) := fun μ => by`. Use `congrArg (MvPolynomial.coeff μ) h` as an intermediate fact. Rewrite `this` using `[← map_pow, mul_comm, MvPolynomial.coeff_C_mul, mul_comm, MvPolynomial.coeff_map]`. Then use the resulting hypothesis. Use `set s := P.support ∪ G.support`. Establish `hP : ∀ k : ℤ, GlobalTheory.ArcQ.lcoeffPoly P k = ∑ μ ∈ s, MvPolynomial.monomial μ ((P.coeff μ).coeff k)` using `fun k => Finset.sum_subset Finset.subset_union_left fun μ _ hμ => by`.
+
+Simplify using `[MvPolynomial.notMem_support_iff.1 hμ]`. Establish `hG : MvPolynomial.eval₂ (discEval (ι.comp a) hi ht) Y G = ∑ μ ∈ s, discEval (ι.comp a) hi ht (G.coeff μ) * ∏ k ∈ μ.support, Y k ^ μ k`. Rewrite using `[MvPolynomial.eval₂_eq]`. Conclude with `Finset.sum_subset Finset.subset_union_right fun μ _ hμ => by`. Simplify using `[MvPolynomial.notMem_support_iff.1 hμ]`.
+
+Rewrite using `[hG, Finset.mul_sum]`. Repeatedly rewrite using `[← mul_assoc]`. Use `Eq.mpr (congrArg (HasSum · _) (funext fun m => ?_)) (hasSum_sum fun μ (_ : μ ∈ s) => (hasSum_laurent_of_mul_eq a ι hi hϖ ht0 ht (hμ μ)).mul_right (∏ k ∈ μ.support, Y k ^ μ k))` and prove the remaining obligations. Rewrite using `[hP, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[MvPolynomial.map_monomial, MvPolynomial.eval_monomial, Finsupp.prod]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasSum_lcoeffPoly {σ : Type} (Y : σ → K) {P : MvPolynomial σ (LaurentSeries F)}
     {G : MvPolynomial σ (PowerSeries V)} {N : ℕ}
     (h : P * MvPolynomial.C
@@ -89,6 +109,21 @@ end General
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits NumberField IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.L2.Pj.QAt GlobalTheory.ArcQ GlobalTheory.Frames
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Tv ϖ K _ _ _ ιT hϖ hi t Y ht0 ht hY`. Establish `ht0' : t ≠ 0` using `norm_pos_iff.1 ht0`. Establish `hϖ' : algebraMap Tv.V Tv.Fr ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective Tv.V Tv.Fr)).2 hϖ`. Establish `hϖ'' : ιT (algebraMap Tv.V Tv.Fr ϖ) ≠ 0` using `(map_ne_zero ιT).2 hϖ'`. Establish `hi' : ∀ v, ‖(ιT.comp (algebraMap Tv.V Tv.Fr)) v‖ ≤ 1` using `hi`.
+
+Set `g : MvPolynomial (ArcLt Dw) (PowerSeries Tv.V) →+* K` to `MvPolynomial.eval₂Hom (discEval _ hi' ht) Y`. Establish `hgC : ∀ p, g (MvPolynomial.C p) = discEval _ hi' ht p` using `fun p => MvPolynomial.eval₂Hom_C _ _ _`. Establish `hgX : ∀ x, g (MvPolynomial.X x) = Y x` using `fun x => MvPolynomial.eval₂Hom_X' _ _ _`. Establish `hϖX : discEval _ hi' ht (PowerSeries.C (R` using `Tv.V) ϖ * PowerSeries.X) = ιT (algebraMap Tv.V Tv.Fr ϖ) * t := by`. Rewrite using `[map_mul, discEval_C, discEval_X, RingHom.comp_apply]`.
+
+Establish `hu : IsUnit (g (MvPolynomial.C (PowerSeries.C ϖ * PowerSeries.X) * arcDetR Dw Tv.V))`. Rewrite using `[isUnit_iff_ne_zero, map_mul, hgC, hϖX]`. Use `mul_ne_zero (mul_ne_zero hϖ'' ht0') ?_` and prove the remaining obligations. Use `hY using 1` and compare the differences between its conclusion and the goal. Rewrite using `[arcDetR, map_prod]`.
+
+Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i k`. Conclude with `hgX _`.
+
+Set `ev : ArcSR Dw Tv.V ϖ →+* K` to `IsLocalization.Away.lift _ hu`. Establish `hev : ∀ G, ev (algebraMap _ (ArcSR Dw Tv.V ϖ) G) = g G` using `fun G => IsLocalization.Away.lift_eq _ hu G`. Establish `hevι : ∀ p, ev (arcιR Dw Tv.V ϖ p) = discEval _ hi' ht p` using `fun p => (hev _).trans (hgC p)`. Use `⟨ev, fun p => ?_, fun x => (hev _).trans (hgX x), fun f N G P hf hP => ?_⟩` and prove the remaining obligations. Rewrite using `[hevι, ← (hasSum_discEval _ hi' ht p).tsum_eq]`.
+
+Both sides reduce to the same expression. Establish `hs` using `hasSum_lcoeffPoly _ ιT hi' hϖ' ht0' ht Y hP`. Use `⟨by simpa using hs.summable.tendsto_cofinite_zero.norm, ?_⟩` and prove the remaining obligations. Rewrite using `[hs.tsum_eq]`. Establish `h1` using `congrArg ev hf`.
+
+Rewrite `h1` using `[map_mul, map_pow, hevι, hϖX, hev]`. Establish `h2 : (ιT (algebraMap Tv.V Tv.Fr ϖ) * t) ^ N ≠ 0` using `pow_ne_zero _ (mul_ne_zero hϖ'' ht0')`. Rewrite using `[eq_inv_mul_iff_mul_eq₀ h2, mul_comm]`. Conclude with `h1`.
+-/
 theorem exists_eval : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (Tv : CDVR) (ϖ : Tv.V) (K : Type) [NormedField K] [IsUltrametricDist K] [CompleteSpace K] (ιT : Tv.Fr →+* K), ϖ ≠ 0 → (∀ v : Tv.V, ‖ιT (algebraMap Tv.V Tv.Fr v)‖ ≤ 1) → ∀ (t : K) (Y : ArcLt Dw → K), 0 < ‖t‖ → ‖t‖ < 1 → (∏ τ : E →+* ℂ, (Matrix.of fun i k : Fin (Dw.mult τ) => Y ⟨τ, i, k⟩).det) ≠ 0 → ∃ ev : ArcSR Dw Tv.V ϖ →+* K, (∀ p : PowerSeries Tv.V, ev (arcιR Dw Tv.V ϖ p) = ∑' k : ℕ, ιT (algebraMap Tv.V Tv.Fr (PowerSeries.coeff k p)) * t ^ k) ∧ (∀ x, ev (arcXR Dw Tv.V ϖ x) = Y x) ∧ ∀ (f : ArcSR Dw Tv.V ϖ) (N : ℕ) (G : MvPolynomial (ArcLt Dw) (PowerSeries Tv.V)) (P : MvPolynomial (ArcLt Dw) (LaurentSeries Tv.Fr)), f * arcιR Dw Tv.V ϖ (PowerSeries.C (R := Tv.V) ϖ * PowerSeries.X) ^ N = algebraMap _ (ArcSR Dw Tv.V ϖ) G → P * MvPolynomial.C (HahnSeries.ofPowerSeries ℤ Tv.Fr (PowerSeries.C (R := Tv.Fr) (algebraMap Tv.V Tv.Fr ϖ) * PowerSeries.X)) ^ N = MvPolynomial.map ((HahnSeries.ofPowerSeries ℤ Tv.Fr).comp (PowerSeries.map (algebraMap Tv.V Tv.Fr))) G → Filter.Tendsto (fun k : ℤ => ‖MvPolynomial.eval Y (MvPolynomial.map ιT (lcoeffPoly P k)) * t ^ k‖) Filter.cofinite (nhds 0) ∧ ev f = ∑' k : ℤ, MvPolynomial.eval Y (MvPolynomial.map ιT (lcoeffPoly P k)) * t ^ k := by
   intro E _ _ _ H Dw Tv ϖ K _ _ _ ιT hϖ hi t Y ht0 ht hY
   have ht0' : t ≠ 0 := norm_pos_iff.1 ht0

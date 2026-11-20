@@ -17,40 +17,66 @@ local notation "jK" => algebraMap (𝓞 K) K
 
 def cmb (b : Basis κ K V) (c : κ → 𝓞 K) : spanO b := (bO b).equivFun.symm c
 
+/- English proof (translation)
+Rewrite using `[cmb, Basis.equivFun_symm_apply, Submodule.coe_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [Submodule.coe_smul, bO_apply]`.
+-/
 theorem coe_cmb (b : Basis κ K V) (c : κ → 𝓞 K) : (cmb b c : V) = ∑ l, c l • b l := by
   rw [cmb, Basis.equivFun_symm_apply, Submodule.coe_sum]
   exact Finset.sum_congr rfl fun l _ => by rw [Submodule.coe_smul, bO_apply]
 
+/- English proof (translation)
+The claim follows from `(bO b).equivFun.apply_symm_apply c`.
+-/
 theorem crd_cmb (b : Basis κ K V) (c : κ → 𝓞 K) : crd b (cmb b c) = c :=
   (bO b).equivFun.apply_symm_apply c
 
+/- English proof (translation)
+The claim follows from `(bO b).equivFun.symm_apply_apply y`.
+-/
 theorem cmb_crd (b : Basis κ K V) (y : spanO b) : cmb b (crd b y) = y :=
   (bO b).equivFun.symm_apply_apply y
 
 def inA (𝔭 : Ideal (𝓞 F)) [𝔭.IsPrime] (b : Basis κ K V) : spanO b →ₗ[𝓞 K] ↥(locF 𝔭 (spanO b)) :=
   Submodule.inclusion (le_locF 𝔭 (spanO b))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_inA (𝔭 : Ideal (𝓞 F)) [𝔭.IsPrime] (b : Basis κ K V) (y : spanO b) : (inA 𝔭 b y : V) = y := rfl
 
 abbrev QA (𝔭 : Ideal (𝓞 F)) (b : Basis κ K V) (k : ℕ) : Type :=
   ↥(locF 𝔭 (spanO b)) ⧸ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥(locF 𝔭 (spanO b)))
 
+/- English proof (translation)
+Rewrite using `[Submodule.Quotient.eq, Submodule.mem_smul_top_iff]`. Both sides reduce to the same expression.
+-/
 theorem mk_eq_iff {𝔭 : Ideal (𝓞 F)} (b : Basis κ K V) (k : ℕ) (x y : ↥(locF 𝔭 (spanO b))) :
     (Submodule.Quotient.mk x : QA 𝔭 b k) = Submodule.Quotient.mk y ↔
       (x : V) - y ∈ (extP K 𝔭 ^ k • locF 𝔭 (spanO b) : Submodule (𝓞 K) V) := by
   rw [Submodule.Quotient.eq, Submodule.mem_smul_top_iff]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem quotLocF_mk' {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) [𝔭.IsPrime] (b : Basis κ K V) (k : ℕ)
     (y : spanO b) : quotLocF h𝔭 (spanO b) k (Submodule.Quotient.mk y) = Submodule.Quotient.mk (inA 𝔭 b y) :=
   rfl
 
+/- English proof (translation)
+Take `⟨q₀, rfl⟩` from `(quotLocF h𝔭 (spanO b) k).surjective q`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ q₀`. Conclude with `⟨crd b y, by rw [cmb_crd, quotLocF_mk']⟩`.
+-/
 theorem exists_cmb {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) [𝔭.IsPrime] (b : Basis κ K V) (k : ℕ)
     (q : QA 𝔭 b k) : ∃ c : κ → 𝓞 K, q = Submodule.Quotient.mk (inA 𝔭 b (cmb b c)) := by
   obtain ⟨q₀, rfl⟩ := (quotLocF h𝔭 (spanO b) k).surjective q
   obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ q₀
   exact ⟨crd b y, by rw [cmb_crd, quotLocF_mk']⟩
 
+/- English proof (translation)
+Apply `(bO b).equivFun.injective` to reduce the goal to its premises. Use `show crd b _ = crd b _`. Rewrite using `[crd_cmb]`. Establish `: crd b (∑ i, c i • cmb b (Pi.single i 1)) = ∑ i, c i • crd b (cmb b (Pi.single i 1))`. Unfold `crd`.
+
+Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => map_smul _ _ _`. Rewrite using `[this]`. Use function extensionality and compare the values at `l`. Simplify using `[crd_cmb, Pi.single_apply]`.
+-/
 theorem cmb_eq_sum (b : Basis κ K V) (c : κ → 𝓞 K) : cmb b c = ∑ i, c i • cmb b (Pi.single i 1) := by
   apply (bO b).equivFun.injective
   show crd b _ = crd b _
@@ -63,6 +89,13 @@ theorem cmb_eq_sum (b : Basis κ K V) (c : κ → 𝓞 K) : cmb b c = ∑ i, c i
   funext l
   simp [crd_cmb, Pi.single_apply]
 
+/- English proof (translation)
+Establish `h1 : cmb b (Y *ᵥ c) = ∑ i, c i • cmb b fun l => Y l i`. Apply `(bO b).equivFun.injective` to reduce the goal to its premises. Use `show crd b _ = crd b _`. Establish `: crd b (∑ i, c i • cmb b fun l => Y l i) = ∑ i, c i • crd b (cmb b fun l => Y l i)`. Unfold `crd`.
+
+Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => map_smul _ _ _`. Rewrite using `[this, crd_cmb]`. Use function extensionality and compare the values at `l`. Simplify using `[crd_cmb, mulVec, dotProduct, mul_comm]`.
+
+Rewrite using `[h1, cmb_eq_sum b c]`. Simplify using `only [← Submodule.mkQ_apply] at hXY ⊢`. Simplify using `only [map_sum, map_smul, hXY]`.
+-/
 theorem end_apply_cmb {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] (b : Basis κ K V) (k : ℕ)
     (X : Module.End (𝓞 K) (QA 𝔭 b k)) (Y : Matrix κ κ (𝓞 K))
     (hXY : ∀ i, X (Submodule.Quotient.mk (inA 𝔭 b (cmb b (Pi.single i 1)))) =
@@ -82,6 +115,11 @@ theorem end_apply_cmb {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] (b : Basis κ K V) 
   simp only [← Submodule.mkQ_apply] at hXY ⊢
   simp only [map_sum, map_smul, hXY]
 
+/- English proof (translation)
+Rewrite using `[coe_cmb, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `l _ hl`. Rewrite using `[Pi.single_eq_of_ne hl, zero_smul]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem coe_cmb_single (b : Basis κ K V) (i : κ) : (cmb b (Pi.single i 1) : V) = b i := by
   rw [coe_cmb, Finset.sum_eq_single i]
   · simp
@@ -94,10 +132,16 @@ def eL {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (b : Basis κ K V) (k : 
     Module.End (𝓞 K) (QA 𝔭 b k) ≃ Matrix κ κ (𝓞 K ⧸ extP K 𝔭 ^ k) :=
   (quotLocF h𝔭 (spanO b) k).symm.conj.toEquiv.trans (eM b (extP K 𝔭 ^ k))
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[bO_apply, coe_cmb_single]`.
+-/
 theorem bO_eq_cmb (b : Basis κ K V) (i : κ) : bO b i = cmb b (Pi.single i 1) := by
   apply Subtype.ext
   rw [bO_apply, coe_cmb_single]
 
+/- English proof (translation)
+Establish `h1` using `eM_mulVec b (extP K 𝔭 ^ k) ((quotLocF h𝔭 (spanO b) k).symm.conj X) (Submodule.Quotient.mk (bO b i))`. Rewrite `h1` using `[qE_bO, mulVec_single_one, LinearEquiv.conj_apply_apply, LinearEquiv.symm_symm, bO_eq_cmb, quotLocF_mk']`. Conclude with `h1`.
+-/
 theorem eL_col {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) [𝔭.IsPrime] (b : Basis κ K V) (k : ℕ)
     (X : Module.End (𝓞 K) (QA 𝔭 b k)) (i : κ) :
     (fun l => eL h𝔭 b k X l i) = qE b (extP K 𝔭 ^ k) ((quotLocF h𝔭 (spanO b) k).symm
@@ -108,6 +152,13 @@ theorem eL_col {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) [𝔭.IsPrime] (
     quotLocF_mk'] at h1
   exact h1
 
+/- English proof (translation)
+Establish `key : ∀ i, (fun l => Ideal.Quotient.mk (extP K 𝔭 ^ k) (Y l i)) = qE b (extP K 𝔭 ^ k) ((quotLocF h𝔭 (spanO b) k).symm (Submodule.Quotient.mk (inA 𝔭 b (cmb b fun l => Y l i))))`. Introduce `i`. Rewrite using `[← quotLocF_mk' h𝔭, LinearEquiv.symm_apply_apply, qE_mk, crd_cmb]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`.
+
+Establish `h1` using `eL_col h𝔭 b k X i`. Rewrite `h1` using `[h]`. Establish `h2 : (fun l => (Y.map (Ideal.Quotient.mk (extP K 𝔭 ^ k))) l i) = fun l => Ideal.Quotient.mk (extP K 𝔭 ^ k) (Y l i)` using `rfl`. Rewrite `h1` using `[h2, key i]`. Conclude with `((quotLocF h𝔭 (spanO b) k).symm.injective ((qE b (extP K 𝔭 ^ k)).injective h1)).symm`.
+
+Introduce `h`. Use extensionality with `l i`. Establish `h1` using `eL_col h𝔭 b k X i`. Rewrite `h1` using `[h i, ← key i]`. Conclude with `congrFun h1 l`.
+-/
 theorem eL_eq_iff {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) [𝔭.IsPrime] (b : Basis κ K V) (k : ℕ)
     (X : Module.End (𝓞 K) (QA 𝔭 b k)) (Y : Matrix κ κ (𝓞 K)) :
     eL h𝔭 b k X = Y.map (Ideal.Quotient.mk (extP K 𝔭 ^ k)) ↔

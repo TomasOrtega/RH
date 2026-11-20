@@ -6,6 +6,17 @@ open MeasureTheory
 
 namespace Formalism.L2.SG.NGCut.SplitEmbedding
 
+/- English proof (translation)
+Establish `h1` using `measurePreserving_piEquivPiSubtypeProd μ (fun q => ¬ S q)`. Use `set e := MeasurableEquiv.piEquivPiSubtypeProd α (fun q => ¬ S q) with he`. Establish `hfwd : ∀ g : ∀ q, α q, e g = (fun i : {q // ¬ S q} => g i.1, fun i : {q // ¬ ¬ S q} => g i.1)` using `fun _ => rfl`. Establish `hsymm : ∀ (x : ∀ i : {q // ¬ S q}, α i) (y : ∀ i : {q // ¬ ¬ S q}, α i) (q : P), e.symm (x, y) q = if h : ¬ S q then x ⟨q, h⟩ else y ⟨q, h⟩` using `fun _ _ _ => rfl`. Set `v : (∀ i : {q // ¬ S q}, α i) → ∀ i : {q // ¬ ¬ S q}, α i` to `fun x i => d i.1 (e.symm (x, 0))`.
+
+Establish `hvdef : ∀ x i, v x i = d i.1 (e.symm (x, 0))` using `fun _ _ => rfl`. Establish `hv : Measurable v`. Use `measurable_pi_lambda _ (fun i => ?_)` and prove the remaining obligations. Conclude with `(hd i.1).comp (e.symm.measurable.comp (measurable_id.prodMk measurable_const))`. Establish `hgm : Measurable (Function.uncurry fun (x : ∀ i : {q // ¬ S q}, α i) (y : ∀ i : {q // ¬ ¬ S q}, α i) => fun i => y i + v x i)`.
+
+Use `measurable_pi_lambda _ (fun i => ?_)` and prove the remaining obligations. Conclude with `Measurable.add ((measurable_pi_apply i).comp measurable_snd) ((measurable_pi_apply i).comp (hv.comp measurable_fst))`. Establish `hgae : ∀ᵐ x ∂(Measure.pi fun i : {q // ¬ S q} => μ i), Measure.map (fun y : ∀ i : {q // ¬ ¬ S q}, α i => fun i => y i + v x i) (Measure.pi fun i : {q // ¬ ¬ S q} => μ i) = Measure.pi fun i : {q // ¬ ¬ S q} => μ i` using `ae_of_all _ fun x => (measurePreserving_pi (hf := fun i => measurePreserving_add_right (μ i.1) (v x i))).map_eq`. Establish `h2` using `MeasurePreserving.skew_product (MeasurePreserving.id _) hgm hgae`. Establish `h3` using `MeasurePreserving.symm _ h1`.
+
+Establish `key : (fun g q => if S q then g q + d q g else g q) = (⇑e.symm ∘ (fun z : (∀ i : {q // ¬ S q}, α i) × (∀ i : {q // ¬ ¬ S q}, α i) => (id z.1, fun i => z.2 i + v z.1 i))) ∘ ⇑e`. Use function extensionality and compare the values at `g q`. Distinguish the cases in `hq : S q`. Establish `hd' : d q (e.symm ((fun i : {q // ¬ S q} => g i.1), 0)) = d q g` using `hind q hq _ _ (fun q' hq' => by simp [hsymm, hq'])`. Simplify using `[hfwd, hsymm, hq, hvdef, hd']`.
+
+Simplify using `[hfwd, hsymm, hq]`. Rewrite using `[key]`. Conclude with `(h3.comp h2).comp h1`.
+-/
 private theorem measurePreserving_pi_shear_of_indep {P : Type} [Fintype P]
     {α : P → Type} [∀ p, AddGroup (α p)] [∀ p, MeasurableSpace (α p)] [∀ p, MeasurableAdd₂ (α p)]
     (μ : ∀ p, Measure (α p)) [∀ p, SigmaFinite (μ p)] [∀ p, (μ p).IsAddRightInvariant]
@@ -49,6 +60,19 @@ private theorem measurePreserving_pi_shear_of_indep {P : Type} [Fintype P]
   rw [key]
   exact (h3.comp h2).comp h1
 
+/- English proof (translation)
+Introduce `n P _ _ _ α _ _ _ μ _ _ h c hc hdep`. Establish `hstep : ∀ k : ℕ, MeasurePreserving (fun (g : ∀ q, α q) p => if h p < k then g p + c p g else g p) (Measure.pi μ) (Measure.pi μ)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`.
+
+Establish `h0 : (fun (g : ∀ q, α q) p => if h p < 0 then g p + c p g else g p) = id`. Use function extensionality and compare the values at `g p`. Simplify using the standard rewrite rules. Rewrite using `[h0]`. Conclude with `MeasurePreserving.id _`.
+
+Consider the case `succ k ih`. Establish `hL` using `measurePreserving_pi_shear_of_indep μ (fun q => h q = k) c hc (fun p hp x x' hx => hdep p x x' (fun q hq => hx q (by omega)))`. Establish `heq : (fun (g : ∀ q, α q) p => if h p < k + 1 then g p + c p g else g p) = (fun (g : ∀ q, α q) p => if h p < k then g p + c p g else g p) ∘ (fun (g : ∀ q, α q) q => if h q = k then g q + c q g else g q)`. Use function extensionality and compare the values at `g p`. Simplify using `only [Function.comp_apply]`.
+
+Break down `lt_trichotomy (h p) k with hp | hp | hp` into its components or cases. Establish `hc' : c p (fun q => if h q = k then g q + c q g else g q) = c p g` using `hdep p _ _ (fun q hq => by simp [show h q ≠ k by omega])`. Simplify using `[hp, show h p < k + 1 by omega, show h p ≠ k by omega, hc']`. Simplify using `[hp]`. Simplify using `[show ¬ h p < k + 1 by omega, show ¬ h p < k by omega, show h p ≠ k by omega]`.
+
+Rewrite using `[heq]`. Conclude with `ih.comp hL`. Establish `hfull : (fun (g : ∀ q, α q) p => g p + c p g) = (fun (g : ∀ q, α q) p => if h p < Finset.univ.sup h + 1 then g p + c p g else g p)`. Use function extensionality and compare the values at `g p`. Establish `hle : h p ≤ Finset.univ.sup h` using `Finset.le_sup (Finset.mem_univ p)`.
+
+Simplify using `[show h p < Finset.univ.sup h + 1 by omega]`. Rewrite using `[hfull]`. Conclude with `hstep _`.
+-/
 theorem shear_mp : ∀ (n : ℕ) (P : Type) [Fintype P] [DecidableEq P], Fintype.card P = n →
     ∀ (α : P → Type) [∀ p, AddGroup (α p)] [∀ p, MeasurableSpace (α p)] [∀ p, MeasurableAdd₂ (α p)]
       (μ : ∀ p, Measure (α p)) [∀ p, SigmaFinite (μ p)] [∀ p, (μ p).IsAddRightInvariant]

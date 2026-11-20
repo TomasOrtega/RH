@@ -20,6 +20,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PtExt
 
+/- English proof (translation)
+Introduce `p _ R _ N hN A _ hA G t c x hx h0`. Establish `: IsCommMonObj A` using `hA.comm`. Take `⟨d, z, w, hz, -, rfl⟩` from `hx`. Establish `hq : ((p ^ N : ℕ) : R) = 0` using `by rw [Nat.cast_pow]; exact hN`. Establish `hmk : (Submodule.Quotient.mk z : G.VecExt) = 0` using `h0`.
+
+Take `⟨B, hB⟩` from `(Submodule.Quotient.mk_eq_zero _).1 hmk`. Establish `hcob : d.coc N = cobOne R (G.A N) (B.1 N)`. Rewrite using `[← hz N, ← hB]`. Both sides reduce to the same expression. Establish `hchiN : chi (p ^ N) d.g (G.A N) (t.y N) = 0`.
+
+Rewrite using `[← Dat.diagSum_coc R A p G t c d N hN, hcob]`. Conclude with `diagSum_cobOne_eq_zero p R G N hN (B.1 N)`. Establish `hchi : ∀ (D : Type) [CommRing D] [Algebra R D] (y : Pt A D), y ^ (p ^ N) = 1 → chi (p ^ N) d.g D y = 0`. Introduce `D _ _ y hy`. Take `⟨φ, rfl⟩` from `t.surj N D y hy`.
+
+Establish `h1 : t.y N ^ (p ^ N) = 1` using `t.y_pow N`. Establish `hn` using `chi_natural (p ^ N) R hq A (fv d.f) d.g d.add (G.A N) D φ (t.y N)`. Rewrite `hn` using `[h1, hchiN, map_zero, sub_zero, sub_self]`. Conclude with `hn`. Establish `hcoc` using `(fv_isCoc_and_ev_eq R A d.f).1`.
+
+Establish `hsym` using `isSymCoc_of_isAdd R A hA (fv d.f) d.g d.add`. Establish `hpos : 0 < p ^ N` using `pow_pos (Fact.out : p.Prime).pos N`. Take `⟨k, hk⟩` from `Descent.exists_isCob (p ^ N) R hq A (fv d.f) d.g hcoc d.add hsym hchi (fun D _ _ y ↦ PtCover.exists_faithfullyFlat_pow_eq R A hA (p ^ N) hpos D y)`. Establish `hF` using `(mem_hodgeFiltration_iff_pointwiseCoboundary R A d.f).2 ⟨k, hk⟩`. Rewrite `hF` using `[d.cl]`.
+
+Conclude with `hF`.
+-/
 theorem mem_F1prim_of_rigToExt_eq_zero_of_pow_eq_zero : ∀ (p : ℕ) [Fact p.Prime]  (R : Type) [CommRing R] (N : ℕ),
     (p : R) ^ N = 0 → ∀ (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → ∀ (G : PDivGroup p R)
     (t : G.TorsionTower A) (c : primDR A) (x : G.RigExt), IsCan t c x → G.rigToExt x = 0 → c ∈ PrimitiveSubmodule A := by

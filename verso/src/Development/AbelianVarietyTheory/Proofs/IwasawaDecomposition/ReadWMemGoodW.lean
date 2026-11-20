@@ -22,11 +22,17 @@ def iotaR (R : RealDat3 D A3 Ks) (i : Fin D.R.m) :
     (Fin (R.nW i) → D.what₂.LL) →ₛₗ[sg0 D A3.A] Formalism.IndefR.Mult.MMap (R.MW i (sg0 D A3.A)) :=
   (R.HW i (sg0 D A3.A)).e.comp ((R.FW i).j (sg0 D A3.A))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iotaR_apply (R : RealDat3 D A3 Ks) (i : Fin D.R.m) (v : Fin (R.nW i) → D.what₂.LL) :
     iotaR R i v = (R.HW i (sg0 D A3.A)).e ((R.FW i).j (sg0 D A3.A) v) := rfl
 
 variable {R : RealDat D A3.A Ks} {F : Face D A3.A} {X0 : BaseLevelRowSide D}
 
+/- English proof (translation)
+Take `⟨a, ha, e⟩` from `Submodule.mem_map.1 (Y.IL.jMj i y).2`. Establish `h' : a = GlobalTheory.EigRows.readW Y i y` using `(PiTensorProduct.lift : Formalism.IndefR.Mult.MMap (R.MW i (sg0 D A3.A)) ≃ₗ[ℂ] _).injective (e.trans (GlobalTheory.EigRows.lift_readW Y i y).symm)`. Conclude with `h' ▸ ha`.
+-/
 theorem readW_mem_goodW (Y : Read (A3 := A3) R F X0) (i : Fin D.R.m) (y : D.what₂.Mj ((i : ℕ) + 1)) :
     GlobalTheory.EigRows.readW Y i y ∈ GlobalTheory.EigRows.goodW R F i := by
   obtain ⟨a, ha, e⟩ := Submodule.mem_map.1 (Y.IL.jMj i y).2
@@ -35,6 +41,13 @@ theorem readW_mem_goodW (Y : Read (A3 := A3) R F X0) (i : Fin D.R.m) (y : D.what
       (e.trans (GlobalTheory.EigRows.lift_readW Y i y).symm)
   exact h' ▸ ha
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Introduce `z hz`. Take `⟨y, rfl⟩` from `GlobalTheory.EigRows.exists_readW Y i hz`. Establish `hy : y ∈ ⨆ σ, D.what₂.isot ((i : ℕ) + 1) σ`. Rewrite using `[(hI _ (Nat.le_add_left 1 i) i.2).submodule_iSup_eq_top]`.
+
+Discharge the goal by the elementary cases of `trivial`. Establish `key : (⨆ σ, D.what₂.isot ((i : ℕ) + 1) σ) ≤ (⨆ σ ∈ {σ | D.what₂.isot ((i : ℕ) + 1) σ ≠ ⊥ ∧ D.nd.goodRow σ}, (D.what₂.isot ((i : ℕ) + 1) σ).map (GlobalTheory.EigRows.readW Y i)).comap (GlobalTheory.EigRows.readW Y i)`. Use `iSup_le fun σ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : D.what₂.isot ((i : ℕ) + 1) σ = ⊥`. Rewrite using `[h0]`.
+
+Conclude with `bot_le`. Introduce `u hu`. Conclude with `Submodule.mem_comap.2 (Submodule.mem_iSup_of_mem σ (Submodule.mem_iSup_of_mem (show σ ∈ {σ | D.what₂.isot ((i : ℕ) + 1) σ ≠ ⊥ ∧ D.nd.goodRow σ} from ⟨h0, hG _ (Nat.le_add_left 1 i) i.2 σ h0⟩) (Submodule.mem_map_of_mem hu)))`. Conclude with `key hy`.
+-/
 theorem goodW_le_parts (Y : Read (A3 := A3) R F X0) (hI : Rows.IsotInternal D.what₂) (hG : GlobalTheory.EigRows.OccGood D)
     (i : Fin D.R.m) (n : ℕ) (hn : (i : ℕ) + 1 = n) :
     GlobalTheory.EigRows.goodW R F i ≤ ⨆ σ ∈ {σ | D.what₂.isot n σ ≠ ⊥ ∧ D.nd.goodRow σ},

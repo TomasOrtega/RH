@@ -4,6 +4,27 @@ open GlobalTheory.Cong
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `key : ∀ (s γ γ' : G), γ ∈ Γ → γ' ∈ Γ → ∀ c c' : C, γ * s * c = γ' * s * c' → lam c = lam c'`. Introduce `s γ γ' hγ hγ' c c' e`. Establish `e2 : (γ'⁻¹ * γ) * s = s * ((c' * c⁻¹ : C) : G)`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `h s _ (Γ.mul_mem (Γ.inv_mem hγ') hγ) _ e2` as an intermediate fact. Rewrite `this` using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `this.symm`. Set `S : Setoid G` to `{ r := fun a b => ∃ γ ∈ Γ, ∃ c : C, b = γ * a * c iseqv := by`. Use `⟨fun a => ⟨1, Γ.one_mem, 1, by simp⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `a b ⟨γ, hγ, c, rfl⟩`. Conclude with `⟨γ⁻¹, Γ.inv_mem hγ, c⁻¹, by push_cast; group⟩`. Introduce and unpack `a b d ⟨γ, hγ, c, rfl⟩ ⟨γ', hγ', c', rfl⟩`. Conclude with `⟨γ' * γ, Γ.mul_mem hγ' hγ, c * c', by push_cast; group⟩ }`. Set `rep : G → G` to `fun g => (Quotient.mk S g).out`.
+
+Establish `hrep : ∀ g, ∃ c : C, ∃ γ ∈ Γ, g = γ * rep g * c`. Introduce `g`. Take `⟨γ, hγ, c, e⟩` from `Quotient.mk_out (s := S) g`. Conclude with `⟨c, γ, hγ, e⟩`. Establish `rep_eq : ∀ a b, S.r a b → rep a = rep b`.
+
+Introduce `a b hab`. Simplify using `only [rep]`. Rewrite using `[Quotient.sound hab]`. Set `cf : G → C` to `fun g => Classical.choose (hrep g)`. Establish `hcf : ∀ g, ∃ γ ∈ Γ, g = γ * rep g * cf g` using `fun g => Classical.choose_spec (hrep g)`.
+
+Use `⟨fun g => Multiplicative.toAdd (lam (cf g)), ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ g`. Simplify using `only`. Use `congr 1`. Establish `hr : rep (γ * g) = rep g` using `(rep_eq _ _ ⟨γ, hγ, 1, by simp⟩).symm`.
+
+Take `⟨γ1, hγ1, e1⟩` from `hcf (γ * g)`. Take `⟨γ2, hγ2, e2⟩` from `hcf g`. Rewrite `e1` using `[hr]`. Apply `key (rep g) (γ⁻¹ * γ1) γ2 (Γ.mul_mem (Γ.inv_mem hγ) hγ1) hγ2` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce `g c`. Simplify using `only`. Rewrite using `[← toAdd_mul]`. Use `congr 1`. Establish `hr : rep (g * c) = rep g` using `(rep_eq _ _ ⟨1, Γ.one_mem, c, by simp⟩).symm`.
+
+Take `⟨γ1, hγ1, e1⟩` from `hcf (g * c)`. Take `⟨γ2, hγ2, e2⟩` from `hcf g`. Rewrite `e1` using `[hr]`. Use `key (rep g) γ1 γ2 hγ1 hγ2 (cf (g * c) * c⁻¹) (cf g) (by` as an intermediate fact. Use `push_cast`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite `this` using `[map_mul, map_inv]`. Rewrite using `[← this]`. Use `group`.
+-/
 theorem exists_leftInv_rightEquivariant (G A : Type) [Group G] [AddCommGroup A] (Γ C : Subgroup G)
     (lam : C →* Multiplicative A)
     (h : ∀ g : G, ∀ γ ∈ Γ, ∀ c : C, γ * g = g * c → lam c = 1) :
@@ -68,6 +89,9 @@ theorem exists_leftInv_rightEquivariant (G A : Type) [Group G] [AddCommGroup A] 
     rw [map_mul, map_inv] at this
     rw [← this]; group
 
+/- English proof (translation)
+The claim follows from `exists_leftInv_rightEquivariant`.
+-/
 example : ∀ (G A : Type) [Group G] [AddCommGroup A] (Γ C : Subgroup G) (lam : C →* Multiplicative A), (∀ g : G, ∀ γ ∈ Γ, ∀ c : C, γ * g = g * c → lam c = 1) → ∃ ℓ : G → A, (∀ γ ∈ Γ, ∀ g, ℓ (γ * g) = ℓ g) ∧ ∀ g (c : C), ℓ (g * c) = ℓ g + Multiplicative.toAdd (lam c) := exists_leftInv_rightEquivariant
 
 end GlobalTheory

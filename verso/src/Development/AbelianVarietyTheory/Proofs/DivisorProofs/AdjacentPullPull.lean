@@ -28,36 +28,63 @@ def Same (f : A ⟶ E) (g : B ⟶ E) : Prop := ∃ e : A ≅ B, e.hom ≫ g = f
 
 variable {f : A ⟶ E} {g : B ⟶ E} {f' : A' ⟶ E}
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `h`. Take `⟨v, rfl⟩` from `h'`. Conclude with `⟨u ≫ v, Category.assoc ..⟩`.
+-/
 theorem Le.trans (h : Le f g) (h' : Le g f') : Le f f' := by
   obtain ⟨u, rfl⟩ := h
   obtain ⟨v, rfl⟩ := h'
   exact ⟨u ≫ v, Category.assoc ..⟩
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `h`. Conclude with `⟨F.map u, (F.map_comp ..).symm⟩`.
+-/
 theorem Le.map (h : Le f g) (F : C ⥤ C') : Le (F.map f) (F.map g) := by
   obtain ⟨u, rfl⟩ := h
   exact ⟨F.map u, (F.map_comp ..).symm⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Iso.refl _, Category.id_comp _⟩`.
+-/
 theorem Same.refl (f : A ⟶ E) : Same f f := ⟨Iso.refl _, Category.id_comp _⟩
 
+/- English proof (translation)
+Take `⟨e, rfl⟩` from `h`. Conclude with `⟨e.symm, e.inv_hom_id_assoc _⟩`.
+-/
 theorem Same.symm (h : Same f g) : Same g f := by
   obtain ⟨e, rfl⟩ := h
   exact ⟨e.symm, e.inv_hom_id_assoc _⟩
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `h`. Take `⟨v, rfl⟩` from `h'`. Conclude with `⟨u ≪≫ v, Category.assoc ..⟩`.
+-/
 theorem Same.trans (h : Same f g) (h' : Same g f') : Same f f' := by
   obtain ⟨u, rfl⟩ := h
   obtain ⟨v, rfl⟩ := h'
   exact ⟨u ≪≫ v, Category.assoc ..⟩
 
+/- English proof (translation)
+The claim follows from `h.elim fun e he => ⟨e.hom, he⟩`.
+-/
 theorem Same.le (h : Same f g) : Le f g := h.elim fun e he => ⟨e.hom, he⟩
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `h`. Conclude with `⟨F.mapIso u, (F.map_comp ..).symm⟩`.
+-/
 theorem Same.map (h : Same f g) (F : C ⥤ C') : Same (F.map f) (F.map g) := by
   obtain ⟨u, rfl⟩ := h
   exact ⟨F.mapIso u, (F.map_comp ..).symm⟩
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `h`. Conclude with `⟨u, (Category.assoc ..).symm⟩`.
+-/
 theorem Same.comp (h : Same f g) (t : E ⟶ E') : Same (f ≫ t) (g ≫ t) := by
   obtain ⟨u, rfl⟩ := h
   exact ⟨u, (Category.assoc ..).symm⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨e.app A, (e.hom.naturality f).symm⟩`.
+-/
 theorem same_natIso {F G : C ⥤ C'} (e : F ≅ G) (f : A ⟶ E) :
     Same (F.map f ≫ (e.app E).hom) (G.map f) :=
   ⟨e.app A, (e.hom.naturality f).symm⟩
@@ -68,6 +95,9 @@ section Bundles
 
 variable {X Y Z : Scheme.{0}} {A B E E' H : X.Modules} {r : ℕ}
 
+/- English proof (translation)
+Use `hu.mono` as an intermediate fact. Use `hg.mono` as an intermediate fact. Take `⟨s, hs⟩` from `hu.isVB_cokernel`. Take `⟨t, ht⟩` from `hg.isVB_cokernel`. Conclude with `⟨inferInstance, _, (VBExt.isVB_and_cls_det_of_shortExact X _ _ _ (Vert.shortExact_cokernel_comp u g) hs ht).1⟩`.
+-/
 theorem isSubbundle_comp {u : A ⟶ B} {g : B ⟶ E} (hu : IsSubbundle u) (hg : IsSubbundle g) :
     IsSubbundle (u ≫ g) := by
   have := hu.mono
@@ -77,12 +107,18 @@ theorem isSubbundle_comp {u : A ⟶ B} {g : B ⟶ E} (hu : IsSubbundle u) (hg : 
   exact ⟨inferInstance, _, (VBExt.isVB_and_cls_det_of_shortExact X _ _ _
     (Vert.shortExact_cokernel_comp u g) hs ht).1⟩
 
+/- English proof (translation)
+Take `⟨_, s, hs⟩` from `hg`. Conclude with `⟨s, hE.rank_unique (VBExt.isVB_and_cls_det_of_shortExact X (.mk g (cokernel.π _) (cokernel.condition _)) b s { exact := ShortComplex.exact_cokernel _ } hB hs).1, hs⟩`.
+-/
 theorem isVB_cokernel [Nonempty X] {g : B ⟶ E} {b : ℕ} (hg : IsSubbundle g) (hB : IsVB B b)
     (hE : IsVB E r) : ∃ s, r = b + s ∧ IsVB (cokernel g) s := by
   obtain ⟨_, s, hs⟩ := hg
   exact ⟨s, hE.rank_unique (VBExt.isVB_and_cls_det_of_shortExact X (.mk g (cokernel.π _)
     (cokernel.condition _)) b s { exact := ShortComplex.exact_cokernel _ } hB hs).1, hs⟩
 
+/- English proof (translation)
+Use `hg.mono` as an intermediate fact. Take `⟨s, e, hs⟩` from `isVB_cokernel hu hA hE`. Take `⟨t, e', ht⟩` from `isVB_cokernel hg hB hE`. Take `rfl : s = 1 + t` from `by omega`. Conclude with `VB.isVB_X₁_of_shortExact X _ 1 _ (Vert.shortExact_cokernel_comp u g) hs ht`.
+-/
 theorem isVB_cokernel_one [Nonempty X] {u : A ⟶ B} {g : B ⟶ E} {a : ℕ} (hu : IsSubbundle (u ≫ g))
     (hg : IsSubbundle g) (hA : IsVB A a) (hB : IsVB B (a + 1)) (hE : IsVB E r) :
     IsVB (cokernel u) 1 := by
@@ -94,26 +130,53 @@ theorem isVB_cokernel_one [Nonempty X] {u : A ⟶ B} {g : B ⟶ E} {a : ℕ} (hu
 
 abbrev Joined (fl fl' : Flag E r) : Prop := Relation.ReflTransGen Flag.Adjacent fl fl'
 
+/- English proof (translation)
+The claim follows from `h.lift (fun a : Flag E r => a.pull ρ) fun _ _ ⟨j, hj⟩ => ⟨j, fun i hi => Same.map (hj i hi) (Scheme.Modules.pullback ρ)⟩`.
+-/
 theorem Joined.pull {fl fl' : Flag E r} (h : Joined fl fl') (ρ : Y ⟶ X) :
     Joined (fl.pull ρ) (fl'.pull ρ) :=
   h.lift (fun a : Flag E r => a.pull ρ) fun _ _ ⟨j, hj⟩ =>
     ⟨j, fun i hi => Same.map (hj i hi) (Scheme.Modules.pullback ρ)⟩
 
+/- English proof (translation)
+The claim follows from `h.lift (fun a : Flag E r => a.ofIso e) fun _ _ ⟨j, hj⟩ => ⟨j, fun i hi => Same.comp (hj i hi) e.hom⟩`.
+-/
 theorem Joined.ofIso {fl fl' : Flag E r} (h : Joined fl fl') (e : E ≅ E') :
     Joined (fl.ofIso e) (fl'.ofIso e) :=
   h.lift (fun a : Flag E r => a.ofIso e) fun _ _ ⟨j, hj⟩ =>
     ⟨j, fun i hi => Same.comp (hj i hi) e.hom⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun i _ => same_natIso (Scheme.Modules.pullbackComp τ ρ) (fl.ι i)⟩`.
+-/
 theorem adjacent_pull_pull (fl : Flag E r) (ρ : Y ⟶ X) (τ : Z ⟶ Y) :
     (((fl.pull ρ).pull τ).ofIso ((Scheme.Modules.pullbackComp τ ρ).app E)).Adjacent
       (fl.pull (τ ≫ ρ)) :=
   ⟨0, fun i _ => same_natIso (Scheme.Modules.pullbackComp τ ρ) (fl.ι i)⟩
 
+/- English proof (translation)
+The claim follows from `((h.ofIso _).tail (adjacent_pull_pull fl' ρ τ)).head (adjacent_pull_pull fl ρ τ).symm`.
+-/
 theorem Joined.pull_comp {fl fl' : Flag E r} {ρ : Y ⟶ X} {τ : Z ⟶ Y}
     (h : Joined ((fl.pull ρ).pull τ) ((fl'.pull ρ).pull τ)) :
     Joined (fl.pull (τ ≫ ρ)) (fl'.pull (τ ≫ ρ)) :=
   ((h.ofIso _).tail (adjacent_pull_pull fl' ρ τ)).head (adjacent_pull_pull fl ρ τ).symm
 
+/- English proof (translation)
+Set `G : Fin (r + 1) → Σ A : X.Modules, (A ⟶ E)` to `Function.update (fun i => ⟨fl.F i, fl.ι i⟩) j ⟨H, κ⟩`. Establish `e₁ : G j = ⟨H, κ⟩` using `Function.update_self ..`. Establish `e₂ (i) (hi : i ≠ j) : G i = ⟨fl.F i, fl.ι i⟩` using `Function.update_of_ne hi ..`. Establish `hsub (i) : IsSubbundle (G i).2`. Distinguish the cases in `hi : i = j`.
+
+Rewrite using `[hi, e₁]`. Conclude with `hs`. Rewrite using `[e₂ i hi]`. Conclude with `fl.isSubbundle i`. Establish `hvb (i) : IsVB (G i).1 i`.
+
+Distinguish the cases in `hi : i = j`. Rewrite using `[hi, e₁]`. Conclude with `hv`. Rewrite using `[e₂ i hi]`. Conclude with `fl.isVB i`.
+
+Establish `hstep (i : Fin r) : Le (G i.castSucc).2 (G i.succ).2`. Distinguish the cases in `hi : i.castSucc = j`. Rewrite using `[e₂ i.succ (hi ▸ i.castSucc_lt_succ.ne'), hi, e₁]`. Conclude with `h₂ i hi`. Distinguish the cases in `hi' : i.succ = j`.
+
+Rewrite using `[e₂ _ hi, hi', e₁]`. Conclude with `h₁ i hi'`. Rewrite using `[e₂ _ hi, e₂ _ hi']`. Conclude with `⟨fl.step i, fl.step_ι i⟩`. Use `choose step step_ι using hstep`.
+
+Establish `hiso : IsIso (G (Fin.last r)).2`. Rewrite using `[e₂ _ hl.symm]`. Conclude with `fl.isIso_last`. Use `⟨⟨fun i => (G i).1, fun i => (G i).2, hsub, hvb, step, step_ι, hiso⟩, ?_, fun i hi => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Same (G j).2 κ`.
+
+Rewrite using `[e₁]`. Conclude with `.refl _`. Express the relevant statement in the definitionally equal form `Same (G i).2 _`. Rewrite using `[e₂ i hi]`. Conclude with `.refl _`.
+-/
 theorem exists_update (fl : Flag E r) (j : Fin (r + 1)) {κ : H ⟶ E} (hs : IsSubbundle κ)
     (hv : IsVB H j) (hl : j ≠ Fin.last r)
     (h₁ : ∀ i : Fin r, i.succ = j → Le (fl.ι i.castSucc) κ)
@@ -156,9 +219,15 @@ variable {k : Type} [CommRing k] {D : ℕ} {X Y Z : Scheme.{0}} [IsIntegral X] [
 def IsCov (p : X ⟶ Sp k) (D : ℕ) (ρ : Y ⟶ X) : Prop :=
   IsArithVar (ρ ≫ p) D ∧ ρ (genericPoint Y) = genericPoint X ∧ ρ.residueDegree (genericPoint Y) ≠ 0
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Category.id_comp p).symm ▸ h, rfl, (Scheme.Hom.residueDegree_id _).trans_ne one_ne_zero⟩`.
+-/
 theorem IsCov.id (h : IsArithVar p D) : IsCov p D (𝟙 X) :=
   ⟨(Category.id_comp p).symm ▸ h, rfl, (Scheme.Hom.residueDegree_id _).trans_ne one_ne_zero⟩
 
+/- English proof (translation)
+Use `⟨(Category.assoc τ ρ p).symm ▸ h'.1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.comp_apply, h'.2.1, h.2.1]`. Rewrite using `[CurveDegreesCompare.residueDegree_comp, h'.2.1]`. Conclude with `mul_ne_zero h.2.2 h'.2.2`.
+-/
 theorem IsCov.comp {ρ : Y ⟶ X} {τ : Z ⟶ Y} (h : IsCov p D ρ) (h' : IsCov (ρ ≫ p) D τ) :
     IsCov p D (τ ≫ ρ) := by
   refine ⟨(Category.assoc τ ρ p).symm ▸ h'.1, ?_, ?_⟩
@@ -166,6 +235,9 @@ theorem IsCov.comp {ρ : Y ⟶ X} {τ : Z ⟶ Y} (h : IsCov p D ρ) (h' : IsCov 
   · rw [CurveDegreesCompare.residueDegree_comp, h'.2.1]
     exact mul_ne_zero h.2.2 h'.2.2
 
+/- English proof (translation)
+Use `hE.isFiniteQC` as an intermediate fact. Use `hL.isFiniteQC` as an intermediate fact. Take `⟨Y, ρ, _, h₁, h₂, h₃, h₄⟩` from `BlowArith.exists_isArithVar_effCartier k X p D hX (QCoh.annihilatorSheaf (cokernel φ)) fun h => VB.genericPoint_notMem_support_cokernel_of_ne_zero X E L φ hL hφ ((QCoh.coe_support_annihilatorSheaf _).le h)`. Conclude with `⟨Y, ρ, inferInstance, ⟨h₁, h₂, h₃⟩, VB.isSubbundle_kernel_of_locally_principal Y _ _ _ n (hE.pullback ρ) (hL.pullback ρ) (VB.exists_image_principal_of_effCartier X Y ρ E L φ _ hE hL h₄)⟩`.
+-/
 theorem exists_cov_kernel (hX : IsArithVar p D) (φ : E ⟶ L) {n : ℕ} (hE : IsVB E (n + 1))
     (hL : IsVB L 1) (hφ : φ ≠ 0) : ∃ (Y : Scheme.{0}) (ρ : Y ⟶ X) (_ : IsIntegral Y), IsCov p D ρ ∧
       IsSubbundle (kernel.ι ((Scheme.Modules.pullback ρ).map φ)) ∧
@@ -177,6 +249,15 @@ theorem exists_cov_kernel (hX : IsArithVar p D) (φ : E ⟶ L) {n : ℕ} (hE : I
   exact ⟨Y, ρ, inferInstance, ⟨h₁, h₂, h₃⟩, VB.isSubbundle_kernel_of_locally_principal Y _ _ _ n (hE.pullback ρ) (hL.pullback ρ)
     (VB.exists_image_principal_of_effCartier X Y ρ E L φ _ hE hL h₄)⟩
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `hle`. Use `hs.mono` as an intermediate fact. Establish `: Mono u` using `mono_of_mono u (fl.ι _)`. Establish `hL` using `isVB_cokernel_one hs (fl.isSubbundle _) hv (fl.isVB _) fl.isVB_self`. Set `s : fl.F ⟨n + 1, by omega⟩ ⟶ fl.F ⟨n + 2, by omega⟩` to `fl.step ⟨n + 1, hn⟩`.
+
+Establish `hs' : s ≫ fl.ι _ = fl.ι _` using `fl.step_ι ⟨n + 1, hn⟩`. Distinguish the cases in `hφ : s ≫ cokernel.π u = 0`. Establish `h₀ : Le (fl.ι ⟨n, by omega⟩) (fl.ι ⟨n + 1, by omega⟩)` using `⟨fl.step ⟨n, by omega⟩, fl.step_ι ⟨n, by omega⟩⟩`. Establish `h₁ : Le (fl.ι ⟨n + 1, by omega⟩) (u ≫ fl.ι _)` using `⟨Abelian.monoLift u s hφ, by rw [Abelian.monoLift_comp_assoc, hs']⟩`. Conclude with `⟨X, 𝟙 X, inferInstance, .id hX, _, (fl.pull _).ι ⟨n, by omega⟩, (fl.pull _).isSubbundle _, (fl.pull _).isVB _, h₀.map _, (h₀.trans h₁).map _⟩`.
+
+Take `⟨Y, ρ, _, hρ, h₁, h₂⟩` from `exists_cov_kernel hX _ (fl.isVB ⟨n + 1, by omega⟩) hL hφ`. Use `⟨Y, ρ, inferInstance, hρ, _, kernel.ι _ ≫ (fl.pull ρ).ι ⟨n + 1, by omega⟩, isSubbundle_comp h₁ ((fl.pull ρ).isSubbundle _), h₂, ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `: Mono ((Scheme.Modules.pullback ρ).map u)` using `(SubPull.isSubbundle_pullback X Y ρ _ _ u _ hv ⟨inferInstance, 1, hL⟩).mono`. Establish `h₃ : (kernel.ι ((Scheme.Modules.pullback ρ).map (s ≫ cokernel.π u)) ≫ (Scheme.Modules.pullback ρ).map s) ≫ cokernel.π ((Scheme.Modules.pullback ρ).map u) = 0`. Rewrite using `[← cancel_mono (cokernelComparison u (Scheme.Modules.pullback ρ)), Category.assoc, π_comp_cokernelComparison, Category.assoc, ← Functor.map_comp, kernel.condition, zero_comp]`.
+
+Use `⟨Abelian.monoLift _ _ h₃, ?_⟩` and prove the remaining obligations. Use `(congrArg (_ ≫ ·) (Functor.map_comp _ u _)).trans ((Abelian.monoLift_comp_assoc _ _ h₃ _).trans ((Category.assoc ..).trans ?_))` and prove the remaining obligations. Rewrite using `[← Functor.map_comp, hs']`. Both sides reduce to the same expression.
+-/
 theorem exists_common (hX : IsArithVar p D) (fl : Flag E r) {n : ℕ} (hn : n + 1 < r) {κ : H ⟶ E}
     (hs : IsSubbundle κ) (hv : IsVB H (n + 1)) (hle : Le κ (fl.ι ⟨n + 2, by omega⟩)) :
     ∃ (Y : Scheme.{0}) (ρ : Y ⟶ X) (_ : IsIntegral Y), IsCov p D ρ ∧
@@ -216,6 +297,9 @@ def Moves (p : X ⟶ Sp k) (D : ℕ) (fl : Flag E r) (n : Fin (r + 1)) (κ : H �
       Same (g.ι n) ((Scheme.Modules.pullback ρ).map κ) ∧
       ∀ i, n < i → Same (g.ι i) ((fl.pull ρ).ι i)
 
+/- English proof (translation)
+Take `⟨Z, τ, _, hτ, g, h₁, h₂, h₃⟩` from `h`. Conclude with `⟨Z, τ ≫ ρ, inferInstance, hρ.comp hτ, g.ofIso ((Scheme.Modules.pullbackComp τ ρ).app E), (h₁.ofIso _).head (adjacent_pull_pull fl ρ τ).symm, (h₂.comp _).trans (same_natIso (Scheme.Modules.pullbackComp τ ρ) κ), fun i hi => ((h₃ i hi).comp _).trans (same_natIso (Scheme.Modules.pull …`.
+-/
 theorem Moves.of_pull {fl : Flag E r} {n : Fin (r + 1)} {κ : H ⟶ E} {ρ : Y ⟶ X} (hρ : IsCov p D ρ)
     (h : Moves (ρ ≫ p) D (fl.pull ρ) n ((Scheme.Modules.pullback ρ).map κ)) : Moves p D fl n κ := by
   obtain ⟨Z, τ, _, hτ, g, h₁, h₂, h₃⟩ := h
@@ -224,6 +308,15 @@ theorem Moves.of_pull {fl : Flag E r} {n : Fin (r + 1)} {κ : H ⟶ E} {ρ : Y �
     (h₂.comp _).trans (same_natIso (Scheme.Modules.pullbackComp τ ρ) κ), fun i hi =>
       ((h₃ i hi).comp _).trans (same_natIso (Scheme.Modules.pullbackComp τ ρ) (fl.ι i))⟩
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `X _ p E H hX fl hn κ _ hv _`. Establish `h₀` using `isVB_zero_iff.1 ((fl.pull (𝟙 X)).isVB ⟨0, by omega⟩)`. Conclude with `⟨X, 𝟙 X, inferInstance, .id hX, _, .refl, ⟨h₀.iso (isVB_zero_iff.1 (hv.pullback _)), h₀.eq_of_src _ _⟩, fun _ _ => .refl _⟩`.
+
+Consider the case `succ n ih`. Introduce `X _ p E H hX fl hn κ hs hv hle`. Take `⟨Y, ρ, _, hρ, K, μ, h₁, h₂, h₃, h₄⟩` from `exists_common hX fl hn hs hv hle`. Use `.of_pull hρ ?_` and prove the remaining obligations. Take `⟨Z, τ, _, hτ, g, k₁, k₂, k₃⟩` from `ih hρ.1 (fl.pull ρ) (by omega) μ h₁ h₂ h₃`.
+
+Take `⟨g', l₁, l₂⟩` from `exists_update g ⟨n + 1, by omega⟩ (SubPull.isSubbundle_pullback _ _ τ _ _ _ _ (hv.pullback ρ) (SubPull.isSubbundle_pullback _ _ ρ _ _ κ _ hv hs)) ((hv.pullback ρ).pullback τ) (fun e => hn.ne (congrArg Fin.val e)) (fun i hi => by`. Take `rfl : i = ⟨n, Nat.lt_of_succ_lt hn⟩` from `Fin.ext (Nat.succ_injective (congrArg Fin.val hi))`. Conclude with `k₂.le.trans (h₄.map _))`. Use the proof step `(fun i hi => by`. Take `rfl : i = ⟨n + 1, hn⟩` from `Fin.ext (congrArg Fin.val hi :)`.
+
+Conclude with `((hle.map _).map _).trans (k₃ ⟨n + 2, by omega⟩ (Fin.mk_lt_mk.2 (by omega))).symm.le)`. Conclude with `⟨Z, τ, inferInstance, hτ, g', k₁.tail ⟨_, fun i hi => (l₂ i hi).symm⟩, l₁, fun i hi => (l₂ i hi.ne').trans (k₃ i (lt_trans (Fin.mk_lt_mk.2 n.lt_succ_self) hi))⟩`.
+-/
 theorem moves (n : ℕ) : ∀ {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {E H : X.Modules},
     IsArithVar p D → ∀ (fl : Flag E r) (hn : n < r) (κ : H ⟶ E), IsSubbundle κ → IsVB H n →
       Le κ (fl.ι ⟨n + 1, by omega⟩) → Moves p D fl ⟨n, by omega⟩ κ := by
@@ -252,6 +345,13 @@ theorem moves (n : ℕ) : ∀ {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {
     exact ⟨Z, τ, inferInstance, hτ, g', k₁.tail ⟨_, fun i hi => (l₂ i hi).symm⟩, l₁, fun i hi =>
       (l₂ i hi.ne').trans (k₃ i (lt_trans (Fin.mk_lt_mk.2 n.lt_succ_self) hi))⟩
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `X _ p E hX _ fl fl' h`. Conclude with `⟨X, 𝟙 X, inferInstance, .id hX, Joined.pull (.single ⟨0, fun i _ => h i (Nat.zero_le _)⟩) _⟩`. Consider the case `succ n ih`.
+
+Introduce `X _ p E hX hn fl fl' h`. Take `⟨Y, ρ, _, hρ, g, h₁, h₂, h₃⟩` from `moves n hX fl hn (fl'.ι ⟨n, by omega⟩) (fl'.isSubbundle _) (fl'.isVB _) (Le.trans ⟨fl'.step ⟨n, hn⟩, fl'.step_ι ⟨n, hn⟩⟩ (h ⟨n + 1, by omega⟩ le_rfl).symm.le)`. Take `⟨Z, τ, _, hτ, k₁⟩` from `ih hρ.1 (by omega) g (fl'.pull ρ) fun i hi => by`. Break down `hi.eq_or_lt with e | e` into its components or cases. Take `rfl : i = ⟨n, Nat.lt_succ_of_lt hn⟩` from `Fin.ext e.symm`.
+
+Conclude with `h₂`. Conclude with `(h₃ i e).trans ((h i e).map _)`. Conclude with `⟨Z, τ ≫ ρ, inferInstance, hρ.comp hτ, Joined.pull_comp ((h₁.pull τ).trans k₁)⟩`.
+-/
 theorem joined_of_same (n : ℕ) : ∀ {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {E : X.Modules},
     IsArithVar p D → n ≤ r → ∀ fl fl' : Flag E r,
       (∀ i : Fin (r + 1), n ≤ i → Same (fl.ι i) (fl'.ι i)) →
@@ -274,6 +374,9 @@ theorem joined_of_same (n : ℕ) : ∀ {X : Scheme.{0}} [IsIntegral X] {p : X �
       · exact (h₃ i e).trans ((h i e).map _)
     exact ⟨Z, τ ≫ ρ, inferInstance, hρ.comp hτ, Joined.pull_comp ((h₁.pull τ).trans k₁)⟩
 
+/- English proof (translation)
+The claim follows from `joined_of_same r hX le_rfl fl fl' fun i hi => by obtain rfl : i = Fin.last r := Fin.last_le_iff.1 hi exact ⟨asIso (fl.ι _) ≪≫ (asIso (fl'.ι _)).symm, by simp⟩`.
+-/
 theorem exists_cov_joined (hX : IsArithVar p D) (fl fl' : Flag E r) :
     ∃ (Y : Scheme.{0}) (ρ : Y ⟶ X) (_ : IsIntegral Y), IsCov p D ρ ∧
       Joined (fl.pull ρ) (fl'.pull ρ) :=
@@ -283,6 +386,9 @@ theorem exists_cov_joined (hX : IsArithVar p D) (fl fl' : Flag E r) :
 
 end Covers
 
+/- English proof (translation)
+Proceed by induction on `h using Relation.ReflTransGen.head_induction_on with`. Consider the case `refl => exact ⟨0, fun _ => b, rfl, rfl, finZeroElim⟩`. Consider the case `@head a c hac _ ih`. Take `⟨m, g, rfl, h₂, h₃⟩` from `ih`. Conclude with `⟨m + 1, Fin.cons a g, rfl, h₂, Fin.cases hac h₃⟩`.
+-/
 theorem exists_seq {α : Type*} {R : α → α → Prop} {a b : α} (h : Relation.ReflTransGen R a b) :
     ∃ (m : ℕ) (g : Fin (m + 1) → α), g 0 = a ∧ g (Fin.last m) = b ∧
       ∀ j : Fin m, R (g j.castSucc) (g j.succ) := by
@@ -292,6 +398,11 @@ theorem exists_seq {α : Type*} {R : α → α → Prop} {a b : α} (h : Relatio
     obtain ⟨m, g, rfl, h₂, h₃⟩ := ih
     exact ⟨m + 1, Fin.cons a g, rfl, h₂, Fin.cases hac h₃⟩
 
+/- English proof (translation)
+Introduce `hA k _ X p _ hR hX E r h H fl fl'`. Take `⟨Y, ρ, _, hρ, hj⟩` from `exists_cov_joined hX fl fl'`. Take `⟨C'⟩` from `hR Y (ρ ≫ p) hρ.1`. Establish `hC : IsCov p 1 (C'.ρ ≫ ρ)` using `hρ.comp ⟨C'.reg.toIsArithVar, C'.generic, C'.finite⟩`. Take `⟨m, g, h₀, h₁, h₂⟩` from `exists_seq (hj.pull C'.ρ).pull_comp`.
+
+Use `⟨⟨C'.Y, C'.ρ ≫ ρ, (Category.assoc C'.ρ ρ p).symm ▸ C'.reg, hC.2.1, hC.2.2⟩, m, g, fun a => ?_, fun a => ?_, h₂⟩` and prove the remaining obligations. Rewrite using `[h₀]`. Conclude with `FlagPull.isFlagCh2_flag_pull hA k X p _ _ hX hC.1 _ rfl hC.2.1 hC.2.2 E r h H fl a`. Rewrite using `[h₁]`. Conclude with `FlagPull.isFlagCh2_flag_pull hA k X p _ _ hX hC.1 _ rfl hC.2.1 hC.2.2 E r h H fl' a`.
+-/
 theorem exists_chain : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X], (∀ (Y : Scheme.{0}) (q : Y ⟶ Sp k) [IsIntegral Y], IsArithVar q 1 → Nonempty (RegCover q)) → IsArithVar p 1 → ∀ (E : X.Modules) (r : ℕ) (h : VMetric p E r) (H : h.IsCInf) (fl fl' : Vert.Flag E r), ∃ (C : RegCover p) (m : ℕ) (g : Fin (m + 1) → Vert.Flag ((Scheme.Modules.pullback C.ρ).obj E) r), (∀ a : ℝ, VMetric.IsFlagCh2 H fl a ↔ VMetric.IsFlagCh2 (H.pull C.ρ rfl) (g 0) (C.deg * a)) ∧ (∀ a : ℝ, VMetric.IsFlagCh2 H fl' a ↔ VMetric.IsFlagCh2 (H.pull C.ρ rfl) (g (Fin.last m)) (C.deg * a)) ∧ ∀ j : Fin m, (g j.castSucc).Adjacent (g j.succ) := by
   intro hA k _ X p _ hR hX E r h H fl fl'
   obtain ⟨Y, ρ, _, hρ, hj⟩ := exists_cov_joined hX fl fl'

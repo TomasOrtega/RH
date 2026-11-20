@@ -9,6 +9,21 @@ open NumberField Module Formalism.BasicNotions Formalism.MainNotions.S Formalism
 
 namespace PI.UnitaryGroupMassFormula.BetaLUniq
 
+/- English proof (translation)
+Introduce `E _ _ _ S Λ r T T' F F' F'' β₁ β₂ k hΛ hLF hLF'' hdim n' n'' hs1 hs2 x hx`. Establish `hHp : finrank E (Hp Λ F F') + (2 * r + 2) = finrank E S.V`. Use `finrank_orth_add S (UUE Λ F F')` as an intermediate fact. Rewrite `this` using `[n'.1]`. Conclude with `this`.
+
+Establish `hle : ∀ β, Th Λ F F' F'' β ≤ Hp Λ F F'`. Introduce `β y hy`. Take `⟨p, hp, rfl⟩` from `Submodule.mem_map.mp hy`. Simplify using `only [ThPairs, Submodule.mem_inf, Submodule.mem_prod] at hp`. Conclude with `hp.1.1.1`.
+
+Establish `hTh : ∀ β, s0 Λ F F' F'' β k = 1 → Th Λ F F' F'' β = Hp Λ F F'`. Introduce `β hs`. Apply `Submodule.eq_of_le_of_finrank_le (hle β)` to reduce the goal to its premises. Simplify using `only [s0] at hs`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hx1 : x ∈ Th Λ F F' F'' β₁` using `by rw [hTh β₁ hs1]; exact hx`. Establish `hx2 : x ∈ Th Λ F F' F'' β₂` using `by rw [hTh β₂ hs2]; exact hx`. Take `⟨p, hp, hp1⟩` from `Submodule.mem_map.mp hx1`. Take `⟨q, hq, hq1⟩` from `Submodule.mem_map.mp hx2`. Simplify using `only [ThPairs, Submodule.mem_inf, Submodule.mem_prod, Submodule.mem_comap, LinearMap.sub_apply, LinearMap.fst_apply, LinearMap.snd_apply, LinearMap.comp_apply, LinearEquiv.coe_coe] at hp hq hp1 hq1`.
+
+Substitute `hp1` using the available equality. Establish `e : p.2 = q.2`. Establish `hin : p.2 - q.2 ∈ UUE Λ F F'' ⊓ orth S (UUE Λ F F'')`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply `Xsp_le_UUE S Λ hΛ F F''` to reduce the goal to its premises.
+
+Establish `: p.2 - q.2 = (q.1 - q.2) - (p.1 - p.2)` using `by rw [hq1]; abel`. Rewrite using `[this]`. Conclude with `(Xsp F).sub_mem hq.1.2 hp.1.2`. Conclude with `(orth S (UUE Λ F F'')).sub_mem hp.1.1.2 hq.1.1.2`. Rewrite `hin` using `[n''.2]`.
+
+Conclude with `sub_eq_zero.mp ((Submodule.mem_bot E).mp hin)`. Establish `: β₂ p.1 - β₁ p.1 = (β₂ q.1 - q.2) - (β₁ p.1 - p.2)` using `by rw [hq1, e]; abel`. Rewrite using `[this]`. Conclude with `(Xsp F'').sub_mem hq.2 hp.2`.
+-/
 theorem agreeOnH : AgreeOnH := by
   intro E _ _ _ S Λ r T T' F F' F'' β₁ β₂ k hΛ hLF hLF'' hdim n' n'' hs1 hs2 x hx
   have hHp : finrank E (Hp Λ F F') + (2 * r + 2) = finrank E S.V := by

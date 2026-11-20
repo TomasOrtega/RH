@@ -12,6 +12,9 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.LocalPullGen
 
+/- English proof (translation)
+Introduce `R _ _ X L hL p`. Conclude with `ReciprocityTheory.ChartRestriction.G.DVR.exists_gen_of_local (V := R) L hL (K := PUnit) (fun _ => p) (fun _ => 1)`.
+-/
 theorem main : ∀ (R : Type) [CommRing R] [IsLocalRing R] (X : Scheme.{0}) (L : LB X), L.IsLB →
     ∀ p : (𝟙_ (Over (Sp R))).left ⟶ X, ∃ ρ : LB.Gen (L.pull p), ρ.IsGen := by
   intro R _ _ X L hL p

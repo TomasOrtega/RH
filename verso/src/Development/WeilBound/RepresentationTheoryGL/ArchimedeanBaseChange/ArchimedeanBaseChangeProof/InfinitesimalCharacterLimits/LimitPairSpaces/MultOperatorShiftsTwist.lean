@@ -14,6 +14,11 @@ open PositivityTheory.Rg.BcB.SpectralAccumulation PositivityTheory.Rg.BcB.E
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `leaf V z`. Break down `h with ⟨_, rfl, _⟩ | ⟨_, hV⟩` into its components or cases. Conclude with `fun _ _ _ => Submodule.mem_top`. Conclude with `hV.stable`.
+
+Consider the case `node t₁ t₂ ih₁ ih₂ => exact ⟨ih₁ h.1, ih₂ h.2⟩`.
+-/
 theorem allLeaves_stable_of_disc {N : ℕ} (t : Tr E N) (h : t.Disc) : t.AllLeaves fun _ V => IsStable V := by
   induction t with
   | leaf V z =>
@@ -22,6 +27,11 @@ theorem allLeaves_stable_of_disc {N : ℕ} (t : Tr E N) (h : t.Disc) : t.AllLeav
     · exact hV.stable
   | node t₁ t₂ ih₁ ih₂ => exact ⟨ih₁ h.1, ih₂ h.2⟩
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `leaf V z`. Break down `h with h | ⟨h1, h2, _⟩` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr ⟨h1, h2⟩`.
+
+Consider the case `node t₁ t₂ ih₁ ih₂ => exact ⟨ih₁ h.1, ih₂ h.2⟩`.
+-/
 theorem disc_of_good {N : ℕ} (t : Tr E N) (h : t.Good) : t.Disc := by
   induction t with
   | leaf V z =>
@@ -30,18 +40,27 @@ theorem disc_of_good {N : ℕ} (t : Tr E N) (h : t.Good) : t.Disc := by
     · exact Or.inr ⟨h1, h2⟩
   | node t₁ t₂ ih₁ ih₂ => exact ⟨ih₁ h.1, ih₂ h.2⟩
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `leaf V z => exact Iff.rfl`. Consider the case `node t₁ t₂ ih₁ ih₂ => exact and_congr ih₁ ih₂`.
+-/
 theorem allLeaves_strip {N : ℕ} (t : Tr E N) (P : ∀ M : ℕ, Submodule ℂ (Sm E M) → Prop) :
     t.strip.AllLeaves P ↔ t.AllLeaves P := by
   induction t with
   | leaf V z => exact Iff.rfl
   | node t₁ t₂ ih₁ ih₂ => exact and_congr ih₁ ih₂
 
+/- English proof (translation)
+Proceed by induction on `t generalizing α with`. Consider the case `leaf V z => exact Iff.rfl`. Consider the case `node t₁ t₂ ih₁ ih₂ => exact and_congr (ih₁ _) (ih₂ _)`.
+-/
 theorem allLeaves_addTw {N : ℕ} (t : Tr E N) (α : ℕ → ℂ) (P : ∀ M : ℕ, Submodule ℂ (Sm E M) → Prop) :
     (t.addTw α).AllLeaves P ↔ t.AllLeaves P := by
   induction t generalizing α with
   | leaf V z => exact Iff.rfl
   | node t₁ t₂ ih₁ ih₂ => exact and_congr (ih₁ _) (ih₂ _)
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `leaf V z => rfl`. Consider the case `node t₁ t₂ ih₁ ih₂`. Express the relevant statement in the definitionally equal form `(t₁.strip.twists ++ t₂.strip.twists).length = (t₁.twists ++ t₂.twists).length`. Rewrite using `[List.length_append, List.length_append, ih₁, ih₂]`.
+-/
 theorem strip_twists_length {N : ℕ} (t : Tr E N) : t.strip.twists.length = t.twists.length := by
   induction t with
   | leaf V z => rfl
@@ -49,6 +68,11 @@ theorem strip_twists_length {N : ℕ} (t : Tr E N) : t.strip.twists.length = t.t
     change (t₁.strip.twists ++ t₂.strip.twists).length = (t₁.twists ++ t₂.twists).length
     rw [List.length_append, List.length_append, ih₁, ih₂]
 
+/- English proof (translation)
+Proceed by induction on `t generalizing α α' with`. Consider the case `leaf V z`. Express the relevant statement in the definitionally equal form `Tr.leaf V (z + α 0) = Tr.leaf V (z + α' 0)`. Rewrite using `[h 0 (by simp [Tr.twists])]`. Consider the case `node t₁ t₂ ih₁ ih₂`.
+
+Establish `hl : (Tr.node t₁ t₂).twists.length = t₁.twists.length + t₂.twists.length`. Express the relevant statement in the definitionally equal form `(t₁.twists ++ t₂.twists).length = _`. Rewrite using `[List.length_append]`. Express the relevant statement in the definitionally equal form `Tr.node (t₁.addTw α) (t₂.addTw fun i => α (i + t₁.twists.length)) = Tr.node (t₁.addTw α') (t₂.addTw fun i => α' (i + t₁.twists.length))`. Rewrite using `[ih₁ (fun i hi => h i (by omega)), ih₂ (fun i hi => h (i + t₁.twists.length) (by omega))]`.
+-/
 theorem addTw_congr {N : ℕ} (t : Tr E N) {α α' : ℕ → ℂ} (h : ∀ i < t.twists.length, α i = α' i) :
     t.addTw α = t.addTw α' := by
   induction t generalizing α α' with
@@ -63,6 +87,13 @@ theorem addTw_congr {N : ℕ} (t : Tr E N) {α α' : ℕ → ℂ} (h : ∀ i < t
       Tr.node (t₁.addTw α') (t₂.addTw fun i => α' (i + t₁.twists.length))
     rw [ih₁ (fun i hi => h i (by omega)), ih₂ (fun i hi => h (i + t₁.twists.length) (by omega))]
 
+/- English proof (translation)
+Proceed by induction on `t with`. Consider the case `leaf V z`. Express the relevant statement in the definitionally equal form `Tr.leaf V z = Tr.leaf V (0 + z)`. Rewrite using `[zero_add]`. Consider the case `node t₁ t₂ ih₁ ih₂`.
+
+Express the relevant statement in the definitionally equal form `Tr.node t₁ t₂ = Tr.node (t₁.strip.addTw fun i => (t₁.twists ++ t₂.twists).getD i 0) (t₂.strip.addTw fun i => (t₁.twists ++ t₂.twists).getD (i + t₁.strip.twists.length) 0)`. Establish `e₁ : t₁.strip.addTw (fun i => (t₁.twists ++ t₂.twists).getD i 0) = t₁.strip.addTw fun i => t₁.twists.getD i 0`. Use `addTw_congr _ fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[strip_twists_length]`. Conclude with `List.getD_append _ _ _ _ hi`.
+
+Establish `e₂ : t₂.strip.addTw (fun i => (t₁.twists ++ t₂.twists).getD (i + t₁.strip.twists.length) 0) = t₂.strip.addTw fun i => t₂.twists.getD i 0`. Use `addTw_congr _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[strip_twists_length, List.getD_append_right _ _ _ _ (by omega), Nat.add_sub_cancel]`. Rewrite using `[e₁, e₂, ← ih₁, ← ih₂]`.
+-/
 theorem eq_addTw {N : ℕ} (t : Tr E N) : t = t.strip.addTw fun i => t.twists.getD i 0 := by
   induction t with
   | leaf V z =>
@@ -91,9 +122,15 @@ def mulOp {N : ℕ} (f : GA E N → ℂ) (hf : f ∈ Sm E N) : Sm E N →ₗ[ℂ
     show f x * (c * φ.1 x) = c * (f x * φ.1 x)
     ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulOp_val {N : ℕ} (f : GA E N → ℂ) (hf : f ∈ Sm E N) (φ : Sm E N) :
     (mulOp f hf φ).1 = fun x => f x * φ.1 x := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun x => by show f x * (mulChi N χ ψ).1 x = (mulChi N χ (mulOp f hf ψ)).1 x rw [mulChi_apply, mulChi_apply] show f x * (ψ.1 x * _) = (f x * ψ.1 x) * _ ring)`.
+-/
 theorem mulOp_mulChi {N : ℕ} (f : GA E N → ℂ) (hf : f ∈ Sm E N) (χ : HChar E) (ψ : Sm E N) :
     mulOp f hf (mulChi N χ ψ) = mulChi N χ (mulOp f hf ψ) := Subtype.ext (funext fun x => by
   show f x * (mulChi N χ ψ).1 x = (mulChi N χ (mulOp f hf ψ)).1 x
@@ -101,11 +138,19 @@ theorem mulOp_mulChi {N : ℕ} (f : GA E N → ℂ) (hf : f ∈ Sm E N) (χ : HC
   show f x * (ψ.1 x * _) = (f x * ψ.1 x) * _
   ring)
 
+/- English proof (translation)
+Take `⟨q, hc, hx⟩` from `exists_decI (r := r) (s := s) x`. Rewrite using `[hx, ← mul_assoc, ← mul_assoc, ← InducedTensorMap.D.unip_add', mult_node _ _ _ _ _ _ hc, mult_node _ _ _ _ _ _ hc]`.
+-/
 theorem mult_node_unip {r s : ℕ} (t₁ : Tr E r) (t₂ : Tr E s) (γ : ℕ → ℂ) (u : BlockIx (r + s) r → Ad E)
     (x : GA E (r + s)) : mult (Tr.node t₁ t₂) γ (unip u * x) = mult (Tr.node t₁ t₂) γ x := by
   obtain ⟨q, hc, hx⟩ := exists_decI (r := r) (s := s) x
   rw [hx, ← mul_assoc, ← mul_assoc, ← InducedTensorMap.D.unip_add', mult_node _ _ _ _ _ _ hc, mult_node _ _ _ _ _ _ hc]
 
+/- English proof (translation)
+Use `ga_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[pInf_finGL, IwaAd.map_unip]`. Establish `h0 : (fun p => pInf E (sFin E (x p))) = 0` using `funext fun p => map_zero (infEq E).symm`. Rewrite using `[h0, InducedTensorMap.unip_zero]`. Rewrite using `[pFin_finGL, IwaAd.map_unip]`.
+
+Both sides reduce to the same expression.
+-/
 theorem finGL_unip' {r s : ℕ} (x : BlockIx (r + s) r → Af E) :
     finGL E (r + s) (unip x) = unip fun p => sFin E (x p) := by
   refine ga_ext ?_ ?_
@@ -115,6 +160,13 @@ theorem finGL_unip' {r s : ℕ} (x : BlockIx (r + s) r → Af E) :
   · rw [pFin_finGL, IwaAd.map_unip]
     rfl
 
+/- English proof (translation)
+Take `⟨xf, mf, c, hc, hg⟩` from `IwaFin.exists_unip_lev_integral E r s g`. Use `⟨mf, c, hc, fun m => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `InducedTensorMap.lev_mul_unip m fun p => sFin E (xf p)`. Use `⟨v, ?_⟩` and prove the remaining obligations. Establish `h1 : infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) g = (unip fun p => sFin E (xf p)) * lev (Ad E) r s (finGL E r mf.1, finGL E s mf.2) * InducedTensorMap.cf (r + s) k c`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, infGL_comm, mul_assoc]`. Use `_ = _ := by`. Rewrite using `[map_mul, finGL_unip', Slice1.lev_finGL]`. Both sides reduce to the same expression.
+
+Rewrite using `[h1, ← mul_assoc, ← mul_assoc, hv, mul_assoc (unip v), ← map_mul]`. Both sides reduce to the same expression.
+-/
 theorem lev_mul_cf_int {r s : ℕ} (k : Kinf E (r + s)) (g : GL (Fin (r + s)) (Af E)) :
     ∃ (mf : GL (Fin r) (Af E) × GL (Fin s) (Af E)) (c : GL (Fin (r + s)) (Af E)), c ∈ Cint E (r + s) ∧
       ∀ m : GA E r × GA E s, ∃ v : BlockIx (r + s) r → Ad E,
@@ -139,9 +191,49 @@ theorem lev_mul_cf_int {r s : ℕ} (k : Kinf E (r + s)) (g : GL (Fin (r + s)) (A
   rw [h1, ← mul_assoc, ← mul_assoc, hv, mul_assoc (unip v), ← map_mul]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem act_fin_apply' {N : ℕ} (g : GL (Fin N) (Af E)) (φ : Sm E N) (x : GA E N) :
     (act (.fin g) φ).1 x = φ.1 (x * finGL E N g) := rfl
 
+/- English proof (translation)
+Proceed by induction on `b with`. Consider the case `leaf V z`. Introduce `α β _`. Introduce and unpack `_ ⟨ψ, hψ, rfl⟩`. Use `⟨ψ, hψ, Subtype.ext (funext fun x => ?_)⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `((mulChi _ (Model.absC E (z + β 0))) ψ).1 x = mult (Tr.leaf V z) (fun i => β i - α i) x * ((mulChi _ (Model.absC E (z + α 0))) ψ).1 x`. Rewrite using `[mult_leaf, mulChi_apply, mulChi_apply, ExponentTwist.chiDet_absC_val, ExponentTwist.chiDet_absC_val, ExponentTwist.chiDet_absC_val]`. Establish `e : ∀ L : ℂ, Complex.exp ((z + β 0) * L) = Complex.exp ((β 0 - α 0) * L) * Complex.exp ((z + α 0) * L)` using `fun L => by`. Rewrite using `[← Complex.exp_add]`. Put the polynomial expressions in normal form.
+
+Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `@node r s t₁ t₂ ih₁ ih₂`. Introduce `α β hb φ hφ`. Take `⟨hb₁, hb₂⟩` from `hb`.
+
+Use `set L := t₁.twists.length with hL`. Use `set α' : ℕ → ℂ := fun i => α (i + L) with hα'`. Use `set β' : ℕ → ℂ := fun i => β (i + L) with hβ'`. Establish `hU₁ : IsStable (t₁.addTw α).space` using `Trees.isStable_space _ ((allLeaves_addTw _ _ _).2 hb₁)`. Establish `hU₁' : IsStable (t₁.addTw β).space` using `Trees.isStable_space _ ((allLeaves_addTw _ _ _).2 hb₁)`.
+
+Establish `hU₂ : IsStable (t₂.addTw α').space` using `Trees.isStable_space _ ((allLeaves_addTw _ _ _).2 hb₂)`. Establish `hU₂' : IsStable (t₂.addTw β').space` using `Trees.isStable_space _ ((allLeaves_addTw _ _ _).2 hb₂)`. Establish `hA : ∀ (z : ℂ) (h : GL (Fin r) (Af E)), ∀ ψ ∈ tw (t₁.addTw α).space z, ∃ χ ∈ tw (t₁.addTw β).space z, χ.1 = fun m => mult t₁ (fun i => β i - α i) (m * finGL E r h) * ψ.1 m`. Introduce `z h ψ hψ`. Establish `h1 : act (.fin h⁻¹) ψ ∈ tw (t₁.addTw α).space z` using `ParabolicProjection.isStable_tw hU₁ z _ _ hψ`.
+
+Take `⟨ρ, hρ, hρe⟩` from `h1`. Establish `h2 : mulOp (mult t₁ fun i => β i - α i) (mult_mem_Sm t₁ _) (act (.fin h⁻¹) ψ) ∈ tw (t₁.addTw β).space z`. Rewrite using `[← hρe]`. Use `show mulOp _ _ ((mulChi r (Model.absC E z)) ρ) ∈ _`. Rewrite using `[mulOp_mulChi]`.
+
+Conclude with `⟨_, ih₁ α β hb₁ ρ hρ, rfl⟩`. Use `⟨act (.fin h) (mulOp (mult t₁ fun i => β i - α i) (mult_mem_Sm t₁ _) (act (.fin h⁻¹) ψ)), ParabolicProjection.isStable_tw hU₁' z _ _ h2, funext fun m => ?_⟩` and prove the remaining obligations. Simplify using `only [act_fin_apply', mulOp_val]`. Rewrite using `[mul_assoc m, ← map_mul, mul_inv_cancel, map_one, mul_one]`. Establish `hB : ∀ (z : ℂ) (h : GL (Fin s) (Af E)), ∀ ψ ∈ tw (t₂.addTw α').space z, ∃ χ ∈ tw (t₂.addTw β').space z, χ.1 = fun m => mult t₂ (fun i => β' i - α' i) (m * finGL E s h) * ψ.1 m`.
+
+Introduce `z h ψ hψ`. Establish `h1 : act (.fin h⁻¹) ψ ∈ tw (t₂.addTw α').space z` using `ParabolicProjection.isStable_tw hU₂ z _ _ hψ`. Take `⟨ρ, hρ, hρe⟩` from `h1`. Establish `h2 : mulOp (mult t₂ fun i => β' i - α' i) (mult_mem_Sm t₂ _) (act (.fin h⁻¹) ψ) ∈ tw (t₂.addTw β').space z`. Rewrite using `[← hρe]`.
+
+Use `show mulOp _ _ ((mulChi s (Model.absC E z)) ρ) ∈ _`. Rewrite using `[mulOp_mulChi]`. Conclude with `⟨_, ih₂ α' β' hb₂ ρ hρ, rfl⟩`. Use `⟨act (.fin h) (mulOp (mult t₂ fun i => β' i - α' i) (mult_mem_Sm t₂ _) (act (.fin h⁻¹) ψ)), ParabolicProjection.isStable_tw hU₂' z _ _ h2, funext fun m => ?_⟩` and prove the remaining obligations. Simplify using `only [act_fin_apply', mulOp_val]`.
+
+Rewrite using `[mul_assoc m, ← map_mul, mul_inv_cancel, map_one, mul_one]`. Use `set Φ := mult (Tr.node t₁ t₂) fun i => β i - α i with hΦ`. Establish `hΦS : Φ ∈ Sm E (r + s)` using `mult_mem_Sm _ _`. Express the relevant statement in the definitionally equal form `φ ∈ Submodule.span ℂ _ at hφ`. Express the relevant statement in the definitionally equal form `_ ∈ Submodule.span ℂ _`.
+
+Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem φ h`. Take `⟨⟨hu, hsl⟩, hK⟩` from `h`. Use `Submodule.subset_span ⟨⟨fun x g => ?_, fun k g => ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Φ (unip x * g) * φ.1 (unip x * g) = Φ g * φ.1 g`.
+
+Rewrite using `[hΦ, mult_node_unip, hu x g]`. Take `⟨mf, c, hc, hdec⟩` from `lev_mul_cf_int (r := r) (s := s) k g`. Take `⟨n, ψ₁, ψ₂, h₁, h₂, e⟩` from `InducedTensorMap.tensor_pair_finite_sum (hsl k g)`. Use `choose χ₁ hχ₁ eχ₁ using fun i => hA _ mf.1 (ψ₁ i) (h₁ i)`. Use `choose χ₂ hχ₂ eχ₂ using fun i => hB _ mf.2 (ψ₂ i) (h₂ i)`.
+
+Establish `key` using `ParabolicProjection.sum_mem_tens2 (V₁ := tw (t₁.addTw β).space ((s : ℂ) / 2)) (V₂ := tw (t₂.addTw β').space (-(r : ℂ) / 2)) hχ₁ hχ₂`. Use `key using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Take `⟨v, hv⟩` from `hdec m`. Establish `e2` using `congrFun e m`.
+
+Apply the tactic sequence `try simp only at e2`. Express the relevant statement in the definitionally equal form `Φ (lev (Ad E) r s m * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) g)) * φ.1 (lev (Ad E) r s m * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) g)) = _`. Rewrite using `[e2, hv, hΦ, mult_node _ _ _ _ _ _ hc, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[eχ₁ i, eχ₂ i]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hK' : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => cptRep E (r + s) k φ))` using `hK`. Express the relevant statement in the definitionally equal form `FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => cptRep E (r + s) k (mulOp Φ hΦS φ)))`. Establish `e : (Set.range fun k => cptRep E (r + s) k (mulOp Φ hΦS φ)) = (mulOp Φ hΦS) '' Set.range fun k => cptRep E (r + s) k φ`. Rewrite using `[← Set.range_comp]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `k`. Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Φ (x * infGL E (r + s) (Unitary.toUnits k)) * φ.1 (x * infGL E (r + s) (Unitary.toUnits k)) = Φ x * φ.1 (x * infGL E (r + s) (Unitary.toUnits k))`. Establish `e1 : x * infGL E (r + s) (Unitary.toUnits k) = x * InducedTensorMap.cf (r + s) k 1`.
+
+Simplify using `[InducedTensorMap.cf]`. Rewrite using `[e1, hΦ, mult_rinv _ _ _ _ (one_mem _)]`. Rewrite using `[e, Submodule.span_image]`. Use `infer_instance`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c ha`.
+-/
 theorem mult_operator_shifts_twist {N : ℕ} (b : Tr E N) : ∀ (α β : ℕ → ℂ), (b.AllLeaves fun _ V => IsStable V) →
     ∀ φ ∈ (b.addTw α).space, mulOp (mult b fun i => β i - α i) (mult_mem_Sm b _) φ ∈ (b.addTw β).space := by
   induction b with
@@ -246,6 +338,9 @@ theorem mult_operator_shifts_twist {N : ℕ} (b : Tr E N) : ∀ (α β : ℕ →
     | add a b _ _ ha hb => rw [map_add]; exact Submodule.add_mem _ ha hb
     | smul c a _ ha => rw [map_smul]; exact Submodule.smul_mem _ c ha
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, mult_operator_shifts_twist b α β hb φ hφ, rfl⟩`.
+-/
 theorem flat {N : ℕ} (b : Tr E N) (hb : b.AllLeaves fun _ V => IsStable V) (α β : ℕ → ℂ) (φ : Sm E N)
     (hφ : φ ∈ (b.addTw α).space) :
     ∃ ψ ∈ (b.addTw β).space, ψ.1 = fun x => mult b (fun i => β i - α i) x * φ.1 x :=

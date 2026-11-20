@@ -9,6 +9,11 @@ open scoped ComplexConjugate Real
 
 namespace GlobalTheory.Phase
 
+/- English proof (translation)
+Take `⟨hd, hs, -⟩` from `GlobalTheory.T.symplecticSiegelAction_mem_upperHalfSpace_and_cocycle ι σ hσ _ I_mem_siegel`. Use `GlobalTheory.T.eq_of_siegelThetaSeriesRational_eq κ ι ψ ψ' hψ hψ' _ hs fun ζ => ?_` and prove the remaining obligations. Establish `e1` using `h _ I_mem_siegel fun k => ζ k ᵥ* spDen σ (I • 1)`. Establish `e2` using `h' _ I_mem_siegel fun k => ζ k ᵥ* spDen σ (I • 1)`. Establish `e` using `e1.trans e2.symm`.
+
+Simplify `e` using `only [Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ (Ne.isUnit hd), Matrix.vecMul_one]`.
+-/
 theorem transS_unique {κ ι : Type} [Fintype κ] [Fintype ι] [DecidableEq ι]
     {σ : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ} (hσ : σ ∈ Matrix.symplecticGroup ι ℚ)
     {φ ψ ψ' : Matrix κ ι ℚ → ℂ} (hψ : IsSB ψ) (hψ' : IsSB ψ') (h : TransS σ φ ψ)
@@ -21,6 +26,11 @@ theorem transS_unique {κ ι : Type} [Fintype κ] [Fintype ι] [DecidableEq ι]
   simpa only [Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ (Ne.isUnit hd),
     Matrix.vecMul_one] using e
 
+/- English proof (translation)
+Introduce `κ ι _ _ _ ⟨p, hp⟩ φ ψ ⟨R, hR, h⟩ hψ ht y`. Establish `e` using `transS_unique (SymplecticGroup.J_mem ι ℚ) hψ ⟨R, hR, FourierJ.ft_level hR h _⟩ ht (FourierJ.trans_J hp hR h)`. Use `⟨I ^ (Fintype.card ι * p), y, ⟨4, by norm_num, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, pow_mul]`. Simplify using `[Complex.I_pow_four]`.
+
+Rewrite using `[e]`. Simplify using `only [FourierJ.ft, FourierJ.pr, FourierJ.ech, chr]`.
+-/
 theorem val_trans_J : ∀ (κ ι : Type) [Fintype κ] [Fintype ι] [DecidableEq ι],
     Even (Fintype.card κ) → ∀ φ ψ : Matrix κ ι ℚ → ℂ, IsSB φ → IsSB ψ →
       TransS (Matrix.J ι ℚ) φ ψ → ∀ y, ∃ (u : ℂ) (y' : Matrix κ ι ℚ),

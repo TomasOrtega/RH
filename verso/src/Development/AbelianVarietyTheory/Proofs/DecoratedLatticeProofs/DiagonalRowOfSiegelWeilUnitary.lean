@@ -47,6 +47,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Core.Rk
 
+/- English proof (translation)
+Establish `hDeg` using `GlobalTheory.T.degenerateTerms_and_collisionBounds_uniform_widths`. Establish `hOne` using `GlobalTheory.T.corankOnePairsFamilyBounds_of_siegelWeil hSW 3`. Conclude with `GlobalTheory.Core.Rk.diagonalRow_bound_from_windowWidthThree GlobalTheory.wuDecayOfGap (hDeg.1 3) (hDeg.2 3) hOne.1 hOne.2`.
+-/
 theorem rowDiag_of_siegelWeilUnitary
     (hSW : HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent) :
     GlobalTheory.Core.Rk.RowDiag (fun D L C' => GlobalTheory.Core.Rk.IsScaleWithBoundedGamma D L C' ∧ ∀ u, GlobalTheory.Core.Rk.RankMu D u) := by

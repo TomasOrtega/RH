@@ -15,6 +15,11 @@ open MaximalIdealCongruence
 
 variable {C : Type} [Field C] {d : ℕ} {I : Fin 2 → Type} [∀ g, Fintype (I g)] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Apply `MvPowerSeries.ext` to reduce the goal to its premises. Introduce `μ`. Rewrite using `[map_sum]`. Simplify using `only [MvPowerSeries.coeff_smul]`. Use `show -∑ i, (∑ q, m q * u q i) * _ = ∑ q, m q * -∑ i, u q i * _`.
+
+Simplify using `only [Finset.sum_mul, mul_neg, Finset.mul_sum, Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun q _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sg_lin (X : RawChart C d I κ) {ι : Type} [Fintype ι] (m : ι → C) (u : ι → κ → C) :
     X.sg (fun i => ∑ q, m q * u q i) = ∑ q, m q • X.sg (u q) := by
   apply MvPowerSeries.ext
@@ -28,12 +33,22 @@ theorem sg_lin (X : RawChart C d I κ) {ι : Type} [Fintype ι] (m : ι → C) (
   refine Finset.sum_congr rfl fun q _ => Finset.sum_congr rfl fun i _ => ?_
   ring
 
+/- English proof (translation)
+Establish `hS : MvPowerSeries.HasSubst γ` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hγ`. Unfold `alongCv`. Simplify using `only [← MvPowerSeries.substAlgHom_apply hS, map_sum, map_smul]`.
+-/
 theorem alongCv_lin {γ : κ → PowerSeries C} (hγ : ∀ i, PowerSeries.constantCoeff (γ i) = 0) {ι : Type} [Fintype ι]
     (m : ι → C) (f : ι → MvPowerSeries κ C) : alongCv γ (∑ q, m q • f q) = ∑ q, m q • alongCv γ (f q) := by
   have hS : MvPowerSeries.HasSubst γ := MvPowerSeries.hasSubst_of_constantCoeff_zero hγ
   unfold alongCv
   simp only [← MvPowerSeries.substAlgHom_apply hS, map_sum, map_smul]
 
+/- English proof (translation)
+Establish `hS : PowerSeries.HasSubst ((PowerSeries.X : PowerSeries C) ^ (l ^ 2))` using `PowerSeries.HasSubst.of_constantCoeff_zero' (by simp [hl.ne'])`. Unfold `phi`. Rewrite using `[sg_lin, alongCv_lin hγ, alongCv_lin hδ]`. Simplify using `only [smul_sub, Finset.sum_sub_distrib, Finset.smul_sum]`. Use `congr 1`.
+
+Simplify using `only [← PowerSeries.coe_substAlgHom hS, map_sum, map_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Use extensionality with `n`. Simplify using `only [PowerSeries.coeff_rescale, PowerSeries.coeff_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phi_lin (X : RawChart C d I κ) (l : ℕ) (hl : 0 < l) (ζ : C) {γ δ : κ → PowerSeries C}
     (hγ : ∀ i, PowerSeries.constantCoeff (γ i) = 0)
     (hδ : ∀ i, PowerSeries.constantCoeff (δ i) = 0) {ι : Type} [Fintype ι] (m : ι → C) (u : ι → κ → C) :
@@ -53,16 +68,35 @@ theorem phi_lin (X : RawChart C d I κ) (l : ℕ) (hl : 0 < l) (ζ : C) {γ δ :
     simp only [PowerSeries.coeff_rescale, PowerSeries.coeff_smul, smul_eq_mul]
     ring
 
+/- English proof (translation)
+Unfold `VF.MM at h`. Unfold `VF.Ge`. Conclude with `le_of_lt h` after adjusting the coercions.
+-/
 theorem ge_of_mm {V : VF C} {a : C} (h : V.MM a) : V.Ge 0 a := by
   unfold VF.MM at h
   unfold VF.Ge
   exact_mod_cast le_of_lt h
 
+/- English proof (translation)
+Rewrite using `[← geom_sum₂_mul]`. Conclude with `mm_mul_ge' (VF.Ge.sum fun i _ => by simpa using (ha.pow i).mul (hb.pow (n - 1 - i))) h`.
+-/
 theorem mm_pow_sub {V : VF C} {a b : C} (ha : V.Ge 0 a) (hb : V.Ge 0 b) (h : V.MM (a - b)) (n : ℕ) :
     V.MM (a ^ n - b ^ n) := by
   rw [← geom_sum₂_mul]
   exact mm_mul_ge' (VF.Ge.sum fun i _ => by simpa using (ha.pow i).mul (hb.pow (n - 1 - i))) h
 
+/- English proof (translation)
+Introduce `_ g a _`. Establish `: NeZero (V.l : C)` using `⟨VF.l_ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot C V.l`. Establish `hl0 : 0 < V.l` using `V.l_prime.pos`. Use `choose z ε m hz hε hrel hz1 hε1 hm using hB ζ hζ g`.
+
+Use `⟨fun q' q => m q q', fun w x hg hV => ?_⟩` and prove the remaining obligations. Take `⟨γ, δ, hγ, hδ, hrel', hmm, hq⟩` from `hA ζ hζ g a w x hg hV`. Use `⟨fun q' => (V.l : C) * x 2 (Sum.inr q'), fun q hne => ?_, fun q => ?_⟩` and prove the remaining obligations. Establish `h2` using `hg.1.2.2 2 (Sum.inr q) (by show X.ty (1 - g) q ≠ a + ((2 : ℕ) : ZMod d)`. Simplify using `using hne)`.
+
+Use `show (V.l : C) * x 2 (Sum.inr q) = 0`. Rewrite using `[h2, mul_zero]`. Establish `h1` using `hC ζ hζ γ δ (z q) (ε q) hγ hδ (hz q) (hε q) hrel' (hrel q) hmm`. Rewrite `h1` using `[funext (hz1 q), funext (hε1 q), phi_lin X V.l hl0 ζ (fun i => (hγ i).1) (fun i => (hδ i).1), map_sum]`. Simplify using `only [PowerSeries.coeff_smul, smul_eq_mul] at h1`.
+
+Take `⟨hc0, hcA, _⟩` from `hq q`. Establish `hAint : V.Ge 0 (PowerSeries.coeff V.l (phi X V.l ζ γ δ (X.u (1 - g) q)))`. Use `(ge_of_mm hcA).add hc0` as an intermediate fact. Simplify using `using this`. Establish `h3` using `mm_pow_sub hAint hc0 hcA V.l`.
+
+Establish `h4 : V.MM (∑ q', m q q' * (PowerSeries.coeff (V.l ^ 2) (phi X V.l ζ γ δ (X.u (1 - g) q')) - (V.l : C) * x 2 (Sum.inr q')))` using `mm_sum _ _ fun q' _ => mm_mul_ge' (hm q q') (hq q').2.2`. Establish `e : (RawChart.cart (H g)).c0' x q ^ V.l - ∑ q', (V.l : C) * x 2 (Sum.inr q') * m q q' = -(PowerSeries.coeff V.l (phi X V.l ζ γ δ (X.u (1 - g) q)) ^ V.l - (RawChart.cart (H g)).c0' x q ^ V.l) + ((PowerSeries.coeff V.l (phi X V.l ζ γ δ (X.u (1 - g) q)) ^ V.l - ∑ q', m q q' * PowerS …`. Simplify using `only [mul_sub, Finset.sum_sub_distrib]`. Establish `: ∑ q', (V.l : C) * x 2 (Sum.inr q') * m q q' = ∑ q', m q q' * ((V.l : C) * x 2 (Sum.inr q'))` using `Finset.sum_congr rfl fun q' _ => by ring`. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mm_add (mm_neg h3) (mm_add h1 h4)`.
+-/
 theorem coeffIdentity_plainChart_of_three [IsAlgClosed C] [CharZero C] (X : RawChart C d I κ) (V : VF C) (H : ∀ g, X.CartHyp V g)
     (hA : StepA X V H) (hB : StepB X V) (hC : LemC X V) : IndependenceBoundPlain.PlainCoefficientIdentity X H := by
   intro _ g a _
@@ -109,11 +143,17 @@ section Self
 variable {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ} {d : ℕ} [NeZero d]
   {I0 : Type} [Fintype I0]
 
+/- English proof (translation)
+Use `show MvPowerSeries.coeff e (∑ col, hCol col Y.h) = 0`. Conclude with `van_sum Finset.univ _ (fun col _ => van_hCol col 1 Y.h (gauge_axes Y 1)) e he`.
+-/
 theorem FBChart.rawSelf_axis1 (Y : FBChart C V O dd) (p : SelfData Y d I0) (e : Fin 2 × (Fin 2 × Fin dd) →₀ ℕ)
     (he : ∀ s ∈ e.support, s.1 ≠ 1) : MvPowerSeries.coeff e (Y.rawSelf p).h = 0 := by
   show MvPowerSeries.coeff e (∑ col, hCol col Y.h) = 0
   exact van_sum Finset.univ _ (fun col _ => van_hCol col 1 Y.h (gauge_axes Y 1)) e he
 
+/- English proof (translation)
+The claim follows from `Y.self_chart_log_constantCoeff p exlg := Y.rawSelf_exlg p lin := Y.rawSelf_lin p axis0 := Y.rawSelf_axis0 p axis1 := Y.rawSelf_axis1 p uint := Y.rawSelf_u_integral p hmis := hStabSelf_holds C V O dd Y d I0 p`.
+-/
 theorem FBChart.rawSelf_basic (Y : FBChart C V O dd) (p : SelfData Y d I0) : SelfConjCharts.Basic (Y.rawSelf p) V where
   lg0 := Y.self_chart_log_constantCoeff p
   exlg := Y.rawSelf_exlg p
@@ -125,6 +165,9 @@ theorem FBChart.rawSelf_basic (Y : FBChart C V O dd) (p : SelfData Y d I0) : Sel
 
 end Self
 
+/- English proof (translation)
+Introduce `C _ _ V O _ _ dd Y d _ I0 _ p _ H`. Use `Y.algClosed` as an intermediate fact. Establish `hb` using `Y.rawSelf_basic p`. Conclude with `SelfConjCharts.coeffIdentity_plainChart_of_three (Y.rawSelf p) V H (hA C V d _ _ _ hb H) (hB C V d _ _ _ hb H) (hC C V d _ _ _ hb (hD C V O dd Y d I0 p))`.
+-/
 theorem coeffIdentity_selfConj_of_four (hA : GoodCurveClosed) (hB : OtherGroupCurvesClosed) (hC : MixedCoefficientClosed) (hD : BiadditiveOnColumns) : CoefficientIdentitySelfConjugate := by
   intro C _ _ V O _ _ dd Y d _ I0 _ p _ H
   have := Y.algClosed

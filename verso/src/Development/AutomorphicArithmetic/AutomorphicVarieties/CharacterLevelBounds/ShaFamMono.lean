@@ -17,11 +17,20 @@ def Psi (e : ℕ) (ψ : G k Ω →* Oˣ) : G k Ω →* Oˣ := chiO k Ω l O ^ (e
 abbrev rho (e : ℕ) (ψ : G k Ω →* Oˣ) : Representation O (G k Ω) (QO l O) :=
   twist₂ l (ψ⁻¹ * chiO k Ω l O ^ (-(e : ℤ)))
 
+/- English proof (translation)
+Rewrite using `[Psi, mul_inv_rev, zpow_neg]`.
+-/
 theorem Psi_inv (e : ℕ) (ψ : G k Ω →* Oˣ) : (Psi l e ψ)⁻¹ = ψ⁻¹ * chiO k Ω l O ^ (-(e : ℤ)) := by
   rw [Psi, mul_inv_rev, zpow_neg]
 
+/- English proof (translation)
+Rewrite using `[Psi_inv]`.
+-/
 theorem rho_eq (e : ℕ) (ψ : G k Ω →* Oˣ) : rho l e ψ = twist₂ l (Psi l e ψ)⁻¹ := by rw [Psi_inv]
 
+/- English proof (translation)
+Simplify using `only [rho, twist₂, scalRep, MonoidHom.coe_mk, OneHom.coe_mk, LinearMap.smul_apply, LinearMap.id_coe, id_eq, smul_smul, ← Units.val_mul, MonoidHom.mul_apply, MonoidHom.inv_apply, mul_inv_cancel_left]`.
+-/
 theorem tw_apply (e : ℕ) (ψ : G k Ω →* Oˣ) (g : G k Ω) (m : QO l O) :
     twist₂ l (chiO k Ω l O ^ (-(e : ℤ))) g m = ((ψ g : Oˣ) : O) • rho l e ψ g m := by
   simp only [rho, twist₂, scalRep, MonoidHom.coe_mk, OneHom.coe_mk, LinearMap.smul_apply, LinearMap.id_coe, id_eq,
@@ -39,6 +48,13 @@ def eigL (e : ℕ) (U : Subgroup (G k Ω)) [U.Normal] (ψ : G k Ω →* Oˣ) : �
   Module.length O (shaEig (twist₂ l (chiO k Ω l O ^ (-(e : ℤ)))) l U ⊤ (ψ.comp (⊤ : Subgroup (G k Ω)).subtype))
 
 omit [Fact l.Prime] in
+/- English proof (translation)
+Introduce `U hU`. Simplify using `only [shaFam, Set.mem_setOf_eq] at hU ⊢`. Break down `hU with ⟨A, hA, rfl⟩ | ⟨A, rfl⟩` into its components or cases. Use `left`. Use `⟨A, ?_, rfl⟩` and prove the remaining obligations.
+
+Take `⟨c, rfl⟩` from `h`. Establish `hc : A.valuation (c : Ω) ≤ 1` using `(A.valuation_le_one_iff _).mpr (natCast_mem A c)`. Use `push_cast`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `right`. Conclude with `⟨A, rfl⟩`.
+-/
 theorem shaFam_mono {m n : ℕ} (h : m ∣ n) : shaFam k Ω m ⊆ shaFam k Ω n := by
   intro U hU
   simp only [shaFam, Set.mem_setOf_eq] at hU ⊢
@@ -55,6 +71,11 @@ theorem shaFam_mono {m n : ℕ} (h : m ∣ n) : shaFam k Ω m ⊆ shaFam k Ω n 
   · right
     exact ⟨A, rfl⟩
 
+/- English proof (translation)
+Establish `hle : ShaU (rho l e ψ) n ⊤ ≤ ShaU (rho l e ψ) m ⊤`. Introduce `x hx`. Simplify using `only [ShaU, LocSel, Submodule.mem_iInf] at hx ⊢`. Introduce `D hD`. Conclude with `hx D (shaFam_mono h hD)`.
+
+Conclude with `Module.length_le_of_injective (Submodule.inclusion hle) (Submodule.inclusion_injective hle)`.
+-/
 theorem VS_anti {m n : ℕ} (h : m ∣ n) (e : ℕ) (ψ : G k Ω →* Oˣ) : VS l n e ψ ≤ VS l m e ψ := by
   have hle : ShaU (rho l e ψ) n ⊤ ≤ ShaU (rho l e ψ) m ⊤ := by
     intro x hx
@@ -63,6 +84,9 @@ theorem VS_anti {m n : ℕ} (h : m ∣ n) (e : ℕ) (ψ : G k Ω →* Oˣ) : VS 
     exact hx D (shaFam_mono h hD)
   exact Module.length_le_of_injective (Submodule.inclusion hle) (Submodule.inclusion_injective hle)
 
+/- English proof (translation)
+Conclude with `VS_anti l (Dvd.intro N rfl) e ψ`.
+-/
 theorem V'_le_V (N e : ℕ) (ψ : G k Ω →* Oˣ) : V' l N e ψ ≤ V l e ψ := by
   exact VS_anti l (Dvd.intro N rfl) e ψ
 
@@ -75,13 +99,22 @@ variable (O) in
 def SumLe (f : ℕ → ℕ∞) (t : ℕ) (B : ℝ) : Prop :=
   (∀ e : ℕ, 0 < e → e < t → f e ≠ ⊤) ∧ ∑ e ∈ Finset.Ico 1 t, nrm l O (f e) ≤ B
 
+/- English proof (translation)
+Unfold `nrm`. Check the signs of the components of the expression.
+-/
 theorem nrm_nonneg (a : ℕ∞) : 0 ≤ nrm l O a := by
   unfold nrm
   positivity
 
+/- English proof (translation)
+The claim follows from `div_le_div_of_nonneg_right (by exact_mod_cast ENat.toNat_le_toNat h hb) (Nat.cast_nonneg _)`.
+-/
 theorem nrm_mono {a b : ℕ∞} (h : a ≤ b) (hb : b ≠ ⊤) : nrm l O a ≤ nrm l O b :=
   div_le_div_of_nonneg_right (by exact_mod_cast ENat.toNat_le_toNat h hb) (Nat.cast_nonneg _)
 
+/- English proof (translation)
+Use `⟨fun e h1 h2 => ne_top_of_le_ne_top (h.1 e h1 h2) (hf e h1 h2), le_trans ?_ h.2⟩` and prove the remaining obligations. Use `Finset.sum_le_sum fun e he => ?_` and prove the remaining obligations. Rewrite `he` using `[Finset.mem_Ico]`. Conclude with `nrm_mono l (hf e he.1 he.2) (h.1 e he.1 he.2)`.
+-/
 theorem SumLe.mono {f g : ℕ → ℕ∞} {t : ℕ} {B : ℝ} (h : SumLe l O g t B) (hf : ∀ e, 0 < e → e < t → f e ≤ g e) :
     SumLe l O f t B := by
   refine ⟨fun e h1 h2 => ne_top_of_le_ne_top (h.1 e h1 h2) (hf e h1 h2), le_trans ?_ h.2⟩
@@ -99,6 +132,9 @@ section Dir
 variable (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algebra k Ω] [IsAlgClosure k Ω]
 
 include k in
+/- English proof (translation)
+Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed k`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap k Ω).injective`. Establish `: NeZero ((N : ℕ) : Ω)` using `⟨Nat.cast_ne_zero.mpr (NeZero.ne N)⟩`. Conclude with `HasEnoughRootsOfUnity.natCard_rootsOfUnity Ω N`.
+-/
 theorem card_roots (N : ℕ) [NeZero N] : Nat.card (rootsOfUnity N Ω) = N := by
   have : IsAlgClosed Ω := IsAlgClosure.isAlgClosed k
   have : CharZero Ω := charZero_of_injective_algebraMap (algebraMap k Ω).injective
@@ -109,6 +145,11 @@ def cls (N : ℕ) [NeZero N] : G k Ω →* (ZMod N)ˣ :=
   (modularCyclotomicCharacter Ω (card_roots k Ω N)).comp (MulSemiringAction.toRingAut (G k Ω) Ω)
 
 variable {k Ω} in
+/- English proof (translation)
+Establish `h0 : ζ ≠ 0`. Introduce and unpack `rfl`. Simplify using `[zero_pow (NeZero.ne N)] at hζ`. Establish `hu : Units.mk0 ζ h0 ∈ rootsOfUnity N Ω`. Rewrite using `[mem_rootsOfUnity]`.
+
+Use `ext`. Simplify using `[hζ]`. Use `modularCyclotomicCharacter.spec Ω (card_roots k Ω N) (MulSemiringAction.toRingAut (G k Ω) Ω σ) hu` as an intermediate fact. Simplify `this` using `[cls]`.
+-/
 theorem cls_spec (N : ℕ) [NeZero N] (σ : G k Ω) (ζ : Ω) (hζ : ζ ^ N = 1) : σ ζ = ζ ^ ((cls k Ω N σ : (ZMod N)ˣ) : ZMod N).val := by
   have h0 : ζ ≠ 0 := by
     rintro rfl
@@ -149,11 +190,17 @@ def loss (l N n e : ℕ) : ℕ := (n + n ^ 2) * LDataCardLeFinrank.nuBound l N e
 
 end OverQ
 
+/- English proof (translation)
+Use `haveI : IsCyclotomicExtension {N} ℚ (CyclotomicField N ℚ) := CyclotomicField.isCyclotomicExtension N ℚ`. Conclude with `⟨Algebra.ofId _ _, _, IsCyclotomicExtension.zeta_spec N ℚ (CyclotomicField N ℚ), fun τ _ _ => ⟨fun _ => trivial, fun _ x => τ.commutes x⟩⟩`.
+-/
 example (N : ℕ) [NeZero N] : HasLevel ℚ N ⊤ := by
   haveI : IsCyclotomicExtension {N} ℚ (CyclotomicField N ℚ) := CyclotomicField.isCyclotomicExtension N ℚ
   exact ⟨Algebra.ofId _ _, _, IsCyclotomicExtension.zeta_spec N ℚ (CyclotomicField N ℚ), fun τ _ _ =>
     ⟨fun _ => trivial, fun _ x => τ.commutes x⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun u _ => by ext; simp, by rw [MulChar.one_apply (by simp)]; norm_num⟩`.
+-/
 example : (1 : DirichletCharacter ℤ 5) ∈ evenSet ℤ (⊤ : Subgroup (ZMod 5)ˣ) 2 :=
   ⟨fun u _ => by ext; simp, by rw [MulChar.one_apply (by simp)]; norm_num⟩
 

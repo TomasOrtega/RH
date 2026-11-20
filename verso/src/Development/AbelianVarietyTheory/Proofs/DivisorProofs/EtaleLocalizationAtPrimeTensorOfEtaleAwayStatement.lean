@@ -11,6 +11,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleLocalizationAt
 open IsLocalRing Polynomial
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | (exact @GlobalTheory.etale_localization_atPrime_tensor_of_etale_away) | (exact GlobalTheory.etale_localization_atPrime_tensor_of_etale_away) | (intros; apply GlobalTheory.etale_localization_atPrime_tensor_of_etale_away <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.etale_localization_atPrime_tensor_of_etale_away' : ∀ (R C : Type) [CommRing R] [CommRing C] [Algebra R C] (b : R),
     Algebra.Etale R (Localization.Away (algebraMap R C b)) →
     ∀ (P : Ideal R) [P.IsPrime], b ∉ P →

@@ -9,6 +9,9 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Opposite Limits GroundThe
 
 namespace GlobalTheory.CompanionTheory.CechLerayPull
 
+/- English proof (translation)
+The claim follows from `| 0, G, G', _, _, φ, x => GlobalTheory.T.cech_h0_pull_compat f V hV U hU τ hτ φ x | 1, G, G', hG, hG', φ, x => by obtain ⟨α, rfl⟩ := GlobalTheory.CompanionTheory.CechLift.exists_injectiveSequence_lift f φ exact GlobalTheory.T.cech_connecting_pull_natural f V hV U hU τ hτ (S := in …`.
+-/
 theorem cechHEquiv_pull {X Y : TopCat.{0}} (f : X ⟶ Y) {BY : Opens Y → Prop}
     {GoodY : ∀ {κ : Type}, Opens Y → (κ → Opens Y) → Prop} {BX : Opens X → Prop}
     {GoodX : ∀ {κ : Type}, Opens X → (κ → Opens X) → Prop} (hCY : IsCoverSystem BY GoodY) (hCX : IsCoverSystem BX GoodX)

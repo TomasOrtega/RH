@@ -42,8 +42,18 @@ def rho : End A →+ Module.End (WittVector p k) (T.M G) :=
     rw [TorsionTower.map_mul]
     exact hfun.2.2.1 _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rho_apply (g : End A) : rho T t g = T.map (t.map t (Hom.hom g)) := rfl
 
+/- English proof (translation)
+Establish `hfun` using `base_functor_props p (fun _ _ _ => True) T.base k G G G trivial trivial trivial`. Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero, pow_zero, rho_apply]`. Use `show T.map (t.map t (𝟙 A.X)) = _`.
+
+Rewrite using `[TorsionTower.map_id]`. Conclude with `hfun.1`. Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ', ← ih, rho_apply, rho_apply, rho_apply]`. Use `show T.map (t.map t (Hom.hom f ≫ Hom.hom (f ^ n))) = _`.
+
+Rewrite using `[TorsionTower.map_comp t t t]`. Conclude with `hfun.2.1 _ _`.
+-/
 theorem rho_pow (f : End A) (n : ℕ) : rho T t (f ^ n) = rho T t f ^ n := by
   have hfun := base_functor_props p (fun _ _ _ => True) T.base k G G G trivial trivial trivial
   induction n with
@@ -58,6 +68,9 @@ theorem rho_pow (f : End A) (n : ℕ) : rho T t (f ^ n) = rho T t f ^ n := by
     rw [TorsionTower.map_comp t t t]
     exact hfun.2.1 _ _
 
+/- English proof (translation)
+Proceed by induction on `R using Polynomial.induction_on' with`. Consider the case `add a b ha hb => rw [map_add, map_add, map_add, ha, hb]`. Consider the case `monomial n a`. Rewrite using `[Polynomial.aeval_monomial, Polynomial.aeval_monomial, eq_intCast (algebraMap ℤ (End A)), eq_intCast (algebraMap ℤ (Module.End (WittVector p k) (T.M G))), ← zsmul_eq_mul, ← zsmul_eq_mul, map_zsmul, rho_pow]`.
+-/
 theorem rho_aeval (f : End A) (R : Polynomial ℤ) :
     rho T t (Polynomial.aeval f R) = Polynomial.aeval (rho T t f) R := by
   induction R using Polynomial.induction_on' with
@@ -68,6 +81,25 @@ theorem rho_aeval (f : End A) (R : Polynomial ℤ) :
 
 end Rho
 
+/- English proof (translation)
+Introduce `p _ T k _ _ _ A G t _ _ f`. Establish `hfun` using `base_functor_props p (fun _ _ _ => True) T.base k G G G trivial trivial trivial`. Establish `hFc : ∀ (g : End A) (x : T.M G), T.map (t.map t (Hom.hom g)) (T.F G x) = T.F G (T.map (t.map t (Hom.hom g)) x)` using `fun g x => hfun.2.2.2.2.2.2.1 _ x`. Establish `hFinj : Function.Injective (T.F G)` using `(GlobalTheory.T.dieudonneTheory_V_eq_verschiebung_injective p T k G).1`. Set `ψ : ℤ_[p] →+* WittVector p k` to `(WittVector.map (ZMod.castHom (dvd_refl p) k)).comp (WittVector.equiv p).symm.toRingHom`.
+
+Establish `hψ : Function.Injective ψ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `hx0`. Rewrite `hx` using `[PadicInt.unitCoeff_spec hx0, map_mul, map_pow, map_natCast]`.
+
+Establish `hu : IsUnit (ψ (PadicInt.unitCoeff hx0 : ℤ_[p]))` using `(Units.isUnit _).map ψ`. Establish `hpn : ((p : WittVector p k)) ^ x.valuation ≠ 0` using `pow_ne_zero _ (WittVector.p_nonzero p k)`. Conclude with `hpn ((hu.mul_right_eq_zero).1 hx)`. Establish `hrank : Module.finrank (WittVector p k) (T.M G) = 2 * A.dim` using `hfun.2.2.2.2.2.2.2.1.trans ((GlobalTheory.T.exists_torsionTower_and_height_eq_two_dim p k A).2 G t)`. Take `⟨P, hPm, hP⟩` from `GlobalTheory.T.exists_padicInt_charpoly_commute_frobeniusSemilinear p k (T.M G) (T.F G) ψ (T.map (t.map t (Hom.hom f))) hFinj (hFc f)`.
+
+Take `⟨⟨hQm, hQdeg, -⟩, -⟩` from `GlobalTheory.T.abelianVarietyEndCharpoly_spec k A f`. Establish `hPdeg : P.natDegree = 2 * A.dim`. Rewrite using `[← hPm.natDegree_map ψ, hP, LinearMap.charpoly_natDegree, hrank]`. Establish `key : P.map (algebraMap ℤ_[p] ℚ_[p]) = (charpoly f).map (Int.castRingHom ℚ_[p])`. Use `GlobalTheory.T.eq_of_norm_prod_aeval_eq' p _ _ (hPm.map _) (hQm.map _) ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[hPm.natDegree_map, hQm.natDegree_map, hPdeg, hQdeg]`. Introduce `R`. Take `⟨PR, -, hPR⟩` from `GlobalTheory.T.exists_padicInt_charpoly_commute_frobeniusSemilinear p k (T.M G) (T.F G) ψ (T.map (t.map t (Hom.hom (Polynomial.aeval f R)))) hFinj (hFc _)`. Use `set d : ℤ_[p] := (-1) ^ Module.finrank (WittVector p k) (T.M G) * PR.coeff 0 with hd_def`. Establish `hd : LinearMap.det (T.map (t.map t (Hom.hom (Polynomial.aeval f R)))) = ψ d`.
+
+Rewrite using `[LinearMap.det_eq_sign_charpoly_coeff, ← hPR, Polynomial.coeff_map, hd_def, map_mul, map_pow, map_neg, map_one]`. Establish `habs` using `GlobalTheory.Dieu.AbsDet.norm_det_eq_norm_deg p T k A G t ψ (Polynomial.aeval f R) d hd`. Establish `hd' : LinearMap.det (Polynomial.aeval (T.map (t.map t (Hom.hom f))) R) = ψ d`. Rewrite using `[← hd]`. Conclude with `congrArg LinearMap.det (rho_aeval T t f R).symm`.
+
+Rewrite using `[GlobalTheory.T.prod_aeval_padicRoots_charpoly_eq_det p (WittVector p k) (T.M G) ψ _ P R d hψ hP hd']`. Establish `hQ : (charpoly f).map (Int.castRingHom ℚ_[p]) = ((charpoly f).map (Int.castRingHom ℚ)).map (algebraMap ℚ ℚ_[p])`. Apply the tactic sequence `rw [Polynomial.map_map]; congr 1 <;> exact RingHom.ext_int _ _`. Establish `h2` using `GlobalTheory.T.deg_aeval_end_eq_prod_aroots k A f (PadicAlgCl p) R`. Rewrite using `[hQ, Polynomial.aroots_map]`.
+
+Use `erw [← h2]`. Rewrite using `[PadicAlgCl.norm_extends, map_natCast, ← map_natCast (algebraMap ℚ_[p] (PadicAlgCl p)), PadicAlgCl.norm_extends]`. Rewrite using `[PadicInt.padic_norm_e_of_padicInt, habs]`. Rewrite using `[← PadicInt.padic_norm_e_of_padicInt]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Establish `hP' : P = (charpoly f).map (Int.castRingHom ℤ_[p])`. Apply `Polynomial.map_injective (algebraMap ℤ_[p] ℚ_[p]) (IsFractionRing.injective ℤ_[p] ℚ_[p])` to reduce the goal to its premises. Apply the tactic sequence `rw [key, Polynomial.map_map]; congr 1 <;> exact RingHom.ext_int _ _`. Apply the tactic sequence `rw [← hP, hP', Polynomial.map_map]; congr 1 <;> exact RingHom.ext_int _ _`.
+-/
 theorem charpoly_map_eq : ∀ (p : ℕ) [Fact p.Prime] (T : Theory p) (k : Type) [Field k] [CharP k p] [PerfectRing k p] (A : AbVar k) (G : PDivGroup p k) (t : G.TorsionTower A.X) [Module.Free (WittVector p k) (T.M G)] [Module.Finite (WittVector p k) (T.M G)] (f : End A), (T.map (t.map t (Hom.hom f))).charpoly = (charpoly f).map (Int.castRingHom (WittVector p k)) := by
   intro p _ T k _ _ _ A G t _ _ f
   have hfun := base_functor_props p (fun _ _ _ => True) T.base k G G G trivial trivial trivial

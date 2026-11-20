@@ -11,6 +11,13 @@ variable {K : Type} [NormedField K] [IsUltrametricDist K] [CharZero K] {l : ℕ}
 
 variable {lam₁ lam₂ : PowerSeries K} {Φ₁ Φ₂ : MvPowerSeries (Fin 2) K} {A₁ A₂ g : PowerSeries K}
 
+/- English proof (translation)
+Establish `hs : HasSubst a` using `HasSubst.of_constantCoeff_zero ha`. Establish `hX : X ∣ a` using `X_dvd_iff.mpr ha`. Rewrite using `[PowerSeries.coeff_subst' hs, finsum_eq_single _ 1]`. Simplify using `[smul_eq_mul]`. Introduce `d hd`.
+
+Break down `Nat.lt_or_gt_of_ne hd with h | h` into its components or cases. Establish `: d = 0` using `by omega`. Substitute `this` using the available equality. Simplify using the standard rewrite rules. Establish `h2 : X ^ d ∣ a ^ d` using `pow_dvd_pow_of_dvd hX d`.
+
+Establish `h3` using `X_pow_dvd_iff.mp h2 1 h`. Simplify using `[h3]`.
+-/
 theorem homE_coeff_one_subst {R : Type} [CommRing R] (f a : PowerSeries R) (ha : constantCoeff a = 0) :
     coeff 1 (f.subst a) = coeff 1 f * coeff 1 a := by
   have hs : HasSubst a := HasSubst.of_constantCoeff_zero ha
@@ -26,6 +33,13 @@ theorem homE_coeff_one_subst {R : Type} [CommRing R] (f a : PowerSeries R) (ha :
       have h3 := X_pow_dvd_iff.mp h2 1 h
       simp [h3]
 
+/- English proof (translation)
+Establish `ha : HasSubst (MvPowerSeries.X i : MvPowerSeries ι S)` using `HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X i)`. Rewrite using `[PowerSeries.coeff_subst ha]`. Simplify using `only [MvPowerSeries.X_pow_eq, MvPowerSeries.coeff_monomial, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Use `split_ifs with h`. Rewrite using `[finsum_eq_single _ (e i)]`.
+
+Rewrite using `[if_pos h]`. Introduce `d hd`. Rewrite using `[if_neg]`. Introduce `he`. Conclude with `hd (by rw [he, Finsupp.single_eq_same])`.
+
+Rewrite using `[finsum_eq_zero_of_forall_eq_zero]`. Introduce `d`. Rewrite using `[if_neg]`. Introduce `he`. Conclude with `h (by rw [he, Finsupp.single_eq_same])`.
+-/
 private theorem mvPowerSeries_coeff_subst_X_eq_ite_single {S : Type} [CommRing S] {ι : Type} [DecidableEq ι] (i : ι) (f : PowerSeries S)
     (e : ι →₀ ℕ) :
     MvPowerSeries.coeff e (f.subst (MvPowerSeries.X i : MvPowerSeries ι S)) =
@@ -48,6 +62,13 @@ private theorem mvPowerSeries_coeff_subst_X_eq_ite_single {S : Type} [CommRing S
     intro he
     exact h (by rw [he, Finsupp.single_eq_same])
 
+/- English proof (translation)
+Unfold `IntegralPS at ha`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `Finset.sum_induction _ (fun y => ‖y‖ ≤ ‖x‖) (fun u v hu hv => (IsUltrametricDist.norm_add_le_max u v).trans (max_le hu hv)) (by simp) fun p hp => ?_` and prove the remaining obligations. Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Unfold `atX atY`.
+
+Rewrite using `[mvPowerSeries_coeff_subst_X_eq_ite_single, mvPowerSeries_coeff_subst_X_eq_ite_single]`. Use `split_ifs with h1 h2`. Establish `e1` using `congrArg (fun f => f 1) hp`. Simplify using `only [Finsupp.add_apply] at e1`. Rewrite `e1` using `[h1]`.
+
+Simplify using `at e1`. Rewrite using `[norm_mul, e1]`. Combine the equalities or inequalities in the displayed calculation. Apply the tactic sequence `all_goals simp`.
+-/
 theorem homE_norm_coeff_atX_mul_atY {x : K} (a b : PowerSeries K) (ha : IntegralPS a)
     (hb : ‖coeff 1 b‖ ≤ ‖x‖) (n : ℕ) :
     ‖MvPowerSeries.coeff (Finsupp.single 0 n + Finsupp.single 1 1) (atX a * atY b)‖ ≤ ‖x‖ := by
@@ -70,6 +91,11 @@ theorem homE_norm_coeff_atX_mul_atY {x : K} (a b : PowerSeries K) (ha : Integral
       _ = ‖x‖ := one_mul _
   all_goals simp
 
+/- English proof (translation)
+Break down `j with _ | _ | j` into its components or cases. Simplify using the standard rewrite rules. Simplify using `using h0`. Establish `hX : X ∣ g` using `X_dvd_iff.mpr hg0`. Establish `h2` using `pow_dvd_pow_of_dvd hX (j + 1 + 1)`.
+
+Rewrite using `[X_pow_dvd_iff.mp h2 1 (by omega), norm_zero]`. Conclude with `norm_nonneg _`.
+-/
 theorem homE_norm_coeff_one_pow {x : K} (hg0 : constantCoeff g = 0) (h0 : ‖coeff 1 g‖ ≤ ‖x‖) (j : ℕ) :
     ‖coeff 1 (g ^ j)‖ ≤ ‖x‖ := by
   rcases j with _ | _ | j
@@ -80,6 +106,13 @@ theorem homE_norm_coeff_one_pow {x : K} (hg0 : constantCoeff g = 0) (h0 : ‖coe
     rw [X_pow_dvd_iff.mp h2 1 (by omega), norm_zero]
     exact norm_nonneg _
 
+/- English proof (translation)
+Introduce `n`. Establish `hX : PowerSeries.HasSubst (MvPowerSeries.X (0 : Fin 2) : MvPowerSeries (Fin 2) K)` using `PowerSeries.HasSubst.X 0`. Establish `hY : PowerSeries.HasSubst (MvPowerSeries.X (1 : Fin 2) : MvPowerSeries (Fin 2) K)` using `PowerSeries.HasSubst.X 1`. Establish `hP' : MvPowerSeries.HasSubst ![atX g, atY g]`. Use `MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => ?_` and prove the remaining obligations.
+
+Use `fin_cases i`. Conclude with `PowerSeries.constantCoeff_subst_eq_zero (by simp) g hg0`. Conclude with `PowerSeries.constantCoeff_subst_eq_zero (by simp) g hg0`. Rewrite using `[d2, coeff_mk, MvPowerSeries.coeff_subst hP']`. Use `Formalism.LT.LTL.norm_finsum_le' (norm_nonneg _) fun m => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_eq_mul, norm_mul, Finsupp.prod_fintype _ _ (by simp), Fin.prod_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one]`. Rewrite using `[atX, atY, ← PowerSeries.subst_pow hX, ← PowerSeries.subst_pow hY]`. Use `homE_norm_coeff_atX_mul_atY (g ^ m 0) (g ^ m 1) (integralPS_pow hg _) (homE_norm_coeff_one_pow hg0 h0 _) n` as an intermediate fact. Conclude with `(mul_le_mul (hΦ₂ m) this (norm_nonneg _) zero_le_one).trans_eq (one_mul _)`.
+-/
 theorem divBy_partialYAtZero_subst_atX_atY {x : K} (hΦ₂ : IntegralMv Φ₂) (hg0 : constantCoeff g = 0)
     (hg : IntegralPS g) (h0 : ‖coeff 1 g‖ ≤ ‖x‖) :
     DivBy x (d2 (Φ₂.subst ![atX g, atY g])) := by
@@ -102,6 +135,15 @@ theorem divBy_partialYAtZero_subst_atX_atY {x : K} (hΦ₂ : IntegralMv Φ₂) (
     (homE_norm_coeff_one_pow hg0 h0 _) n
   exact (mul_le_mul (hΦ₂ m) this (norm_nonneg _) zero_le_one).trans_eq (one_mul _)
 
+/- English proof (translation)
+Establish `h1` using `divBy_partialYAtZero hg.add`. Rewrite `h1` using `[partialYAtZero_sub, h₁.coeffY_subst]`. Establish `h2` using `divBy_partialYAtZero_subst_atX_atY (x := (l : K)) h₂.Φint hg.g0 hg.gInt h0`. Establish `h3 : DivBy (l : K) (derivative K g * d2 Φ₁)`. Unfold `DivBy at h1 h2 ⊢`.
+
+Introduce `n`. Establish `h4` using `IsUltrametricDist.norm_add_le_max (coeff n (derivative K g * d2 Φ₁ - d2 (Φ₂.subst ![atX g, atY g]))) (coeff n (d2 (Φ₂.subst ![atX g, atY g])))`. Rewrite `h4` using `[← map_add, sub_add_cancel]`. Conclude with `h4.trans (max_le (h1 n) (h2 n))`. Establish `e : derivative K g = derivative K lam₁ * (derivative K g * d2 Φ₁)`.
+
+Take the linear combination `(-derivative K g) * h₁.deriv_mul`. Rewrite using `[e]`. Establish `hl` using `h₁.deriv_integral`. Unfold `DivBy at h3 ⊢`. Unfold `IntegralPS at hl`.
+
+Introduce `n`. Rewrite using `[coeff_mul]`. Use `Finset.sum_induction _ (fun y => ‖y‖ ≤ ‖(l : K)‖) (fun a b ha hb => (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)) (by simp) fun p _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem hom_deriv (hl1 : ‖(l : K)‖ ≤ 1) (h₁ : LawD lam₁ Φ₁) (h₂ : LawD lam₂ Φ₂)
     (hg : HomCls l Φ₁ A₁ Φ₂ A₂ g) (h0 : ‖coeff 1 g‖ ≤ ‖(l : K)‖) :
     DivBy (l : K) (derivative K g) := by
@@ -131,6 +173,11 @@ theorem hom_deriv (hl1 : ‖(l : K)‖ ≤ 1) (h₁ : LawD lam₁ Φ₁) (h₂ :
   calc _ ≤ 1 * ‖(l : K)‖ := mul_le_mul (hl _) (h3 _) (norm_nonneg _) zero_le_one
     _ = ‖(l : K)‖ := one_mul _
 
+/- English proof (translation)
+Establish `h0` using `hg.eig`. Unfold `DivBy at h0`. Establish `h1` using `h0 1`. Establish `e : coeff 1 g * coeff 1 A₁ - coeff 1 A₂ * coeff 1 g = coeff 1 g * (coeff 1 A₁ - coeff 1 A₂)` using `by ring`. Rewrite `h1` using `[map_sub, homE_coeff_one_subst _ _ hA₁, homE_coeff_one_subst _ _ hg.g0, e, norm_mul, h, mul_one]`.
+
+Conclude with `h1`.
+-/
 theorem hom_eigen (hA₁ : constantCoeff A₁ = 0) (hA₂ : constantCoeff A₂ = 0)
     (hg : HomCls l Φ₁ A₁ Φ₂ A₂ g) (h : ‖coeff 1 A₁ - coeff 1 A₂‖ = 1) :
     ‖coeff 1 g‖ ≤ ‖(l : K)‖ := by
@@ -143,6 +190,17 @@ theorem hom_eigen (hA₁ : constantCoeff A₁ = 0) (hA₂ : constantCoeff A₂ =
     mul_one] at h1
   exact h1
 
+/- English proof (translation)
+Establish `hl0 : l ≠ 0` using `hF.prime.ne_zero`. Establish `hσ0 : MvPowerSeries.constantCoeff (MvPowerSeries.map σ P) = 0`. Rewrite using `[MvPowerSeries.constantCoeff_map, hP0, map_zero]`. Establish `hs : PowerSeries.HasSubst (MvPowerSeries.map σ P)` using `PowerSeries.HasSubst.of_constantCoeff_zero hσ0`. Establish `hPs : PowerSeries.HasSubst P` using `PowerSeries.HasSubst.of_constantCoeff_zero hP0`.
+
+Rewrite using `[PowerSeries.expand_subst l hl0 hs g₁]`. Establish `hfr` using `Formalism.LT.FrobCongr_valid K l l hl0 σ hF.funEqSetting ι P hP`. Establish `T1 : DivByMv (l : K) (g₁.subst (MvPowerSeries.expand l hl0 (MvPowerSeries.map σ P)) - g₁.subst (P ^ l))`. Use `divByMv_subst_congr hF.norm_l.le hg₁ ?_ ?_ ?_ (integralMv_pow hP l) ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.constantCoeff_expand, hσ0]`.
+
+Rewrite using `[map_pow, hP0, zero_pow hl0]`. Conclude with `(integralMv_iff_divBy_one _).2 ((divByMv_expand_iff 1 l hl0 _).2 ((integralMv_iff_divBy_one _).1 (hF.integralMv_map hP)))`. Rewrite using `[← neg_sub]`. Conclude with `divByMv_neg hfr`. Establish `T2 : g₁.subst (P ^ l) = PowerSeries.subst P (g₁.subst ((X : PowerSeries K) ^ l) : PowerSeries K)`.
+
+Rewrite using `[PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.X_pow hl0) hPs, PowerSeries.subst_pow hPs, PowerSeries.subst_X hPs]`. Establish `T3 : DivByMv (l : K) (PowerSeries.subst P (g₁.subst ((X : PowerSeries K) ^ l) : PowerSeries K) - g.subst P)`. Rewrite using `[← PowerSeries.subst_sub hPs]`. Use `divByMv_subst ?_ hP0 hP` and prove the remaining obligations. Rewrite using `[← neg_sub]`.
+
+Conclude with `divBy_neg hc`. Rewrite `T1` using `[T2]`. Use `divByMv_add T1 T3` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem homE_expand_subst_map_congr {ι : Type} (hF : FrobField K l σ) {g₁ : PowerSeries K}
     (hg₁ : IntegralPS g₁) (hc : DivBy (l : K) (g - g₁.subst ((X : PowerSeries K) ^ l)))
     (P : MvPowerSeries ι K) (hP0 : MvPowerSeries.constantCoeff P = 0) (hP : IntegralMv P) :
@@ -175,11 +233,19 @@ theorem homE_expand_subst_map_congr {ι : Type} (hF : FrobField K l σ) {g₁ : 
   have := divByMv_add T1 T3
   rwa [sub_add_sub_cancel] at this
 
+/- English proof (translation)
+Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Apply the tactic sequence `fin_cases i <;> simp [atX, atY, mvPowerSeries_coeff_subst_X_eq_ite_single, hf0]`.
+-/
 theorem homE_vec_const {f : PowerSeries K} (hf0 : constantCoeff f = 0) (i : Fin 2) :
     MvPowerSeries.constantCoeff (![atX f, atY f] i) = 0 := by
   rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]
   fin_cases i <;> simp [atX, atY, mvPowerSeries_coeff_subst_X_eq_ite_single, hf0]
 
+/- English proof (translation)
+Unfold `IntegralPS at hf`. Unfold `IntegralMv`. Introduce `e`. Apply the tactic sequence `fin_cases i <;> simp only [Fin.zero_eta, Fin.mk_one, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, atX, atY, mvPowerSeries_coeff_subst_X_eq_ite_single]`. Apply the tactic sequence `all_goals split_ifs`.
+
+Apply the tactic sequence `all_goals first | exact hf _ | simp`.
+-/
 theorem homE_vec_integral {f : PowerSeries K} (hf : IntegralPS f) (i : Fin 2) :
     IntegralMv (![atX f, atY f] i) := by
   unfold IntegralPS at hf
@@ -190,6 +256,11 @@ theorem homE_vec_integral {f : PowerSeries K} (hf : IntegralPS f) (i : Fin 2) :
   all_goals split_ifs
   all_goals first | exact hf _ | simp
 
+/- English proof (translation)
+Unfold `DivBy at hfh`. Unfold `DivByMv`. Introduce `e`. Apply the tactic sequence `fin_cases i <;> simp only [Fin.zero_eta, Fin.mk_one, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, atX, atY, map_sub, mvPowerSeries_coeff_subst_X_eq_ite_single]`. Apply the tactic sequence `all_goals split_ifs`.
+
+Apply the tactic sequence `all_goals first | (rw [← map_sub]; exact hfh _) | simp`.
+-/
 theorem homE_vec_divBy {x : K} {f h : PowerSeries K} (hfh : DivBy x (f - h)) (i : Fin 2) :
     DivByMv x (![atX f, atY f] i - ![atX h, atY h] i) := by
   unfold DivBy at hfh
@@ -200,6 +271,9 @@ theorem homE_vec_divBy {x : K} {f h : PowerSeries K} (hfh : DivBy x (f - h)) (i 
   all_goals split_ifs
   all_goals first | (rw [← map_sub]; exact hfh _) | simp
 
+/- English proof (translation)
+Rewrite using `[PowerSeries.expand_subst l hl0 (PowerSeries.HasSubst.X i), MvPowerSeries.expand_X, PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.X_pow hl0) (PowerSeries.HasSubst.X i), PowerSeries.subst_pow (PowerSeries.HasSubst.X i), PowerSeries.subst_X (PowerSeries.HasSubst.X i)]`.
+-/
 theorem homE_expand_subst_X (hl0 : l ≠ 0) (f : PowerSeries K) (i : Fin 2) :
     MvPowerSeries.expand l hl0 (f.subst (MvPowerSeries.X i : MvPowerSeries (Fin 2) K)) =
       PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries (Fin 2) K)
@@ -208,6 +282,23 @@ theorem homE_expand_subst_X (hl0 : l ≠ 0) (f : PowerSeries K) (i : Fin 2) :
     PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.X_pow hl0) (PowerSeries.HasSubst.X i),
     PowerSeries.subst_pow (PowerSeries.HasSubst.X i), PowerSeries.subst_X (PowerSeries.HasSubst.X i)]
 
+/- English proof (translation)
+Establish `hl0 : l ≠ 0` using `hF.prime.ne_zero`. Establish `hc` using `(desc_congr hF.prime hF.norm_l g hg').1`. Use `⟨hc, ?_⟩` and prove the remaining obligations. Establish `hg₁0 : constantCoeff (desc l g) = 0` using `by rw [desc_const, hg.g0]`. Establish `hg₁ : IntegralPS (desc l g)` using `desc_integral hg.gInt`.
+
+Generalize the expression as in `desc l g = g₁ at hc hg₁0 hg₁ ⊢`. Take `⟨E, hE⟩ : ∃ E : PowerSeries K, E = g₁.subst ((X : PowerSeries K) ^ l)` from `⟨_, rfl⟩`. Establish `hE0 : constantCoeff E = 0`. Rewrite using `[hE]; exact PowerSeries.constantCoeff_subst_eq_zero (by rw [map_pow]; exact (congrArg (· ^ l) (constantCoeff_X (R := K))).trans (zero_pow hl0)) g₁ hg₁0`. Establish `hEint : IntegralPS E`.
+
+Rewrite using `[hE]`. Conclude with `(integralPS_iff_divBy_one _).2 ((divBy_expand_iff 1 l hl0 g₁).2 ((integralPS_iff_divBy_one _).1 hg₁))`. Establish `hc' : DivBy (l : K) (g - E)` using `by rw [hE]; exact hc`. Use `⟨hg₁0, hg₁, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← divByMv_expand_iff (l : K) l hl0, map_sub]`.
+
+Establish `T` using `homE_expand_subst_map_congr hF hg₁ hc Φ₁ hΦ₁0 hΦ₁`. Establish `hv : MvPowerSeries.HasSubst ![atX g₁, atY g₁]` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (homE_vec_const hg₁0)`. Establish `hex : MvPowerSeries.expand l hl0 (Φ₂.subst ![atX g₁, atY g₁]) = Φ₂.subst ![atX E, atY E]`. Rewrite using `[MvPowerSeries.expand_subst l hl0 hv]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Use `fin_cases i`. Use `show MvPowerSeries.expand l hl0 (atX g₁) = atX E`. Rewrite using `[atX, atX, homE_expand_subst_X hl0, hE]`. Use `show MvPowerSeries.expand l hl0 (atY g₁) = atY E`.
+
+Rewrite using `[atY, atY, homE_expand_subst_X hl0, hE]`. Establish `T5 : DivByMv (l : K) (Φ₂.subst ![atX g, atY g] - Φ₂.subst ![atX E, atY E])` using `divByMv_subst2_congr hF.norm_l.le hΦ₂ (homE_vec_const hg.g0) (homE_vec_const hE0) (homE_vec_integral hg.gInt) (homE_vec_integral hEint) (homE_vec_divBy hc')`. Rewrite using `[hex]`. Use `divByMv_add (divByMv_add T hg.add) T5` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel, sub_add_sub_cancel]`. Then use the resulting hypothesis.
+
+Rewrite using `[divBy_iff_mv, ← divByMv_expand_iff (l : K) l hl0, map_sub]`. Establish `T` using `homE_expand_subst_map_congr (ι := Unit) hF hg₁ hc A₁ hA₁0 ((integralPS_iff_mv _).1 hA₁)`. Establish `hex : MvPowerSeries.expand l hl0 (A₂.subst g₁) = A₂.subst E`. Rewrite using `[PowerSeries.expand_subst l hl0 (PowerSeries.HasSubst.of_constantCoeff_zero' hg₁0), hE]`. Use `congr 1`.
+
+Conclude with `PowerSeries.expand_apply l hl0 g₁`. Establish `T5 : DivByMv (l : K) (A₂.subst g - A₂.subst E)` using `divByMv_subst_congr (ι := Unit) hF.norm_l.le hA₂ hg.g0 hE0 ((integralPS_iff_mv _).1 hg.gInt) ((integralPS_iff_mv _).1 hEint) ((divBy_iff_mv _ _).1 hc')`. Rewrite using `[hex]`. Use `divByMv_add (divByMv_add T ((divBy_iff_mv _ _).1 hg.eig)) T5` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel, sub_add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem hom_desc (hF : FrobField K l σ) (hΦ₁0 : MvPowerSeries.constantCoeff Φ₁ = 0)
     (hΦ₁ : IntegralMv Φ₁) (hΦ₂0 : MvPowerSeries.constantCoeff Φ₂ = 0) (hΦ₂ : IntegralMv Φ₂)
     (hA₁0 : constantCoeff A₁ = 0) (hA₁ : IntegralPS A₁) (hA₂0 : constantCoeff A₂ = 0)

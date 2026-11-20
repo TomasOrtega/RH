@@ -45,6 +45,9 @@ def ysOf {kKs : Ks →+* ↥D.LL0} {hk : ∀ x : Ks, ((kKs x : ↥D.LL0) : D.wha
     rw [one_smul]; exact (Bs.bsup i j b h1 h2 x).2 hx⟩
   act := Bs.act
 
+/- English proof (translation)
+The claim follows from `SideTies.fiOf_heq _ _ _ _ x`.
+-/
 theorem ysOf_fi {kKs : Ks →+* ↥D.LL0} {hk : ∀ x : Ks, ((kKs x : ↥D.LL0) : D.what₂.LL) = algebraMap Ks D.what₂.LL x}
     {cf Rw low Pq hL eig θ} (Bs : SideB D cf Rw low Pq (ratDatR R cG kKs hk) hL eig θ) (i x) : HEq (((ysOf Bs).fi i).e x) x :=
   SideTies.fiOf_heq _ _ _ _ x
@@ -93,6 +96,9 @@ variable {YS : NExpRealS R cG S} {v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL 
 
 abbrev ex : NExp D.R D.host D.what₂ D.LL0 D.nd D.ntw := keepEx D p.Dat p.th p.lev p.thPsi p.h1 p.thU p.thP p.MtLat p.h2 p.h3
 
+/- English proof (translation)
+Introduce `i j b M d h1 h2`. Take `⟨n, rfl⟩` from `Nat.exists_eq_add_of_le' h1`. Conclude with `(p.tie i ⟨n, h2⟩ b).thU_empty M d`.
+-/
 theorem hU : ∀ i j b M (d : p.Dat i j b), 1 ≤ j → j ≤ D.R.m →
     p.thU i j b ∅ M d = p.th i j b d ⊗ₜ[D.ntw.O i] (1 : AddMonoidAlgebra (D.ntw.O i) (DelQM D.host (D.ntw.l i) ∅ M)) := by
   intro i j b M d h1 h2

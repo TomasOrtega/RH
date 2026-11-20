@@ -28,6 +28,13 @@ end Published
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Establish `hc : ∀ x : E, cc x = star x` using `fun _ => rfl`. Use `⟨LinearMap.mk₂'ₛₗ _ _ (herm G) ?_ ?_ ?_ ?_, fun _ _ => rfl⟩` and prove the remaining obligations. Introduce `x x' y`. Simplify using `[herm, add_mul, Finset.sum_add_distrib]`. Introduce `c x y`.
+
+Simplify using `[herm, Finset.mul_sum, mul_assoc]`. Introduce `x y y'`. Simplify using `[herm, hc, mul_add, Finset.sum_add_distrib]`. Introduce `c x y`. Simplify using `only [herm, hc, Pi.smul_apply, smul_eq_mul, star_mul', starRingEnd_apply, Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem exists_sesquilinear_eq_herm (G : Matrix (Fin r) (Fin r) E) :
     ∃ h : (Fin r → E) →ₗ[E] (Fin r → E) →ₗ⋆[E] E, ∀ x y, h x y = herm G x y := by
   have hc : ∀ x : E, cc x = star x := fun _ => rfl
@@ -39,6 +46,23 @@ theorem exists_sesquilinear_eq_herm (G : Matrix (Fin r) (Fin r) E) :
     simp only [herm, hc, Pi.smul_apply, smul_eq_mul, star_mul', starRingEnd_apply, Finset.mul_sum]
     exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Establish `hc : ∀ x : E, cc x = star x` using `fun _ => rfl`. Establish `hN' : (N : E) ≠ 0` using `by exact_mod_cast hN`. Take `⟨h, hh⟩` from `exists_sesquilinear_eq_herm G`. Establish `hs : ∀ x y, h y x = star (h x y)` using `fun x y => by`. Simplify using `only [hh, herm, star_sum, star_mul', ← hc (G _ _), hG, hc, star_star]`.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Establish `hnd : ∀ y, (∀ x, h y x = 0) → y = 0` using `fun y hy => by`. Use `Matrix.eq_zero_of_vecMul_eq_zero hdet (funext fun b => ?_)` and prove the remaining obligations. Use `hy (Pi.single b 1)` as an intermediate fact.
+
+Rewrite `this` using `[hh, herm, Finset.sum_comm, Finset.sum_eq_single b]`. Simplify `this` using `[hc, Matrix.vecMul, dotProduct]`. Introduce `b' _ hb`. Simplify using `[hc, hb]`. Simplify using the standard rewrite rules.
+
+Establish `hm : (Ideal.absNorm 𝔪 : ℤ) ≠ 0`. Conclude with `fun h0 => h𝔪 (Ideal.absNorm_eq_zero_iff.1 h0)` after adjusting the coercions. Take `⟨S, hS, H⟩` from `HermClass.exists_finite_classes ((N : E) • h) (fun x y => by simp [hs x y]) (fun y hy => hnd y fun x => by simpa [hN'] using hy x) (mul_ne_zero hN hN) hm (fun a => (Λ a).restrictScalars ℤ) t (fun a => by`. Establish `: Module.Finite (𝓞 E) (Λ a)` using `Module.Finite.iff_fg.2 (hΛ a).1`. Conclude with `Module.Finite.iff_fg.1 (Module.Finite.trans (R := ℤ) (𝓞 E) (Λ a)))`.
+
+Use the proof step `(fun a => (hΛ a).2) (fun a c hc x hx => (Λ a).smul_mem (⟨c, hc⟩ : 𝓞 E) hx)`. Use the proof step `(fun a x hx y hy => by simpa [hh] using hint a x hx y hy)`. Use the proof step `(fun a x hx => by`. Rewrite using `[Int.cast_mul, mul_smul]`. Conclude with `hdual a _ fun y hy => by simpa [← hh] using hx y hy) ht`.
+
+Use `⟨S, hS, fun a => ?_⟩` and prove the remaining obligations. Take `⟨s, hsS, γ, h1, h2, h3⟩` from `H a`. Set `g : GL (Fin r) E` to `⟨LinearMap.toMatrix' γ.toLinearMap, LinearMap.toMatrix' γ.symm.toLinearMap, by rw [← LinearMap.toMatrix'_comp]; simp, by rw [← LinearMap.toMatrix'_comp]; simp⟩`. Establish `hg : ∀ x, (g : Matrix (Fin r) (Fin r) E) *ᵥ x = γ x` using `fun x => LinearMap.toMatrix'_mulVec γ.toLinearMap x`. Use `⟨s, hsS, g, fun x y => ?_, fun x => ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Simplify `h1 x y` using `[hg, hh, hN']`. Rewrite using `[hg]`. Conclude with `h2 x`. Take `⟨y, hy, he⟩` from `h3 i`. Rewrite using `[hg, he, natCast_zsmul, ← Nat.cast_smul_eq_nsmul (𝓞 E)]`.
+
+Conclude with `Submodule.smul_mem_smul (Ideal.absNorm_mem 𝔪) hy`.
+-/
 theorem exists_finite_unitary_classes (G : Matrix (Fin r) (Fin r) E)
     (hG : ∀ a b, cc (G a b) = G b a) (hdet : G.det ≠ 0) {N : ℤ} (hN : N ≠ 0)
     {𝔪 : Ideal (𝓞 E)} (h𝔪 : 𝔪 ≠ ⊥) {α : Type*} {ι : Type*} [Finite ι]
@@ -93,6 +117,15 @@ theorem exists_finite_unitary_classes (G : Matrix (Fin r) (Fin r) E)
     rw [hg, he, natCast_zsmul, ← Nat.cast_smul_eq_nsmul (𝓞 E)]
     exact Submodule.smul_mem_smul (Ideal.absNorm_mem 𝔪) hy
 
+/- English proof (translation)
+Take `⟨h, hh⟩` from `exists_sesquilinear_eq_herm G`. Take `⟨e, he0, he⟩` from `FractionalIdeal.exists_ne_zero_mem_isInteger hc`. Take `⟨d, hd0, hd⟩` from `c.isFractional`. Establish `he0' : algebraMap (𝓞 E) E e ≠ 0` using `fun h0 => he0 (RingOfIntegers.ext h0)`. Establish `hd0' : algebraMap (𝓞 E) E d ≠ 0` using `fun h0 => nonZeroDivisors.ne_zero hd0 (RingOfIntegers.ext h0)`.
+
+Take `⟨N, hN, hNi⟩` from `HermClass.exists_int_mul_isIntegral E (Set.toFinite {(algebraMap (𝓞 E) E e)⁻¹, (algebraMap (𝓞 E) E d)⁻¹})`. Use `⟨N, hN, fun Λ hΛ => ⟨fun x hx y hy => ?_, fun x hx => ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `(hNi _ (Or.inl rfl)).mul ((hΛ _).2 (Submodule.smul_mem_smul he hx) y hy)`. Rewrite `h1` using `[← hh, map_smul, LinearMap.smul_apply, smul_eq_mul, hh, mul_assoc, inv_mul_cancel_left₀ he0']`. Then use the resulting hypothesis. Use `Submodule.smul_induction_on (p := fun x => (N : E) • x ∈ Λ) ((hΛ x).1 hx) (fun a ha z hz => ?_) (fun x y hx hy => by rw [smul_add]; exact add_mem hx hy)` and prove the remaining obligations.
+
+Take `⟨b, hb⟩` from `hd a ha`. Establish `h0 : IsIntegral ℤ (algebraMap (𝓞 E) E b)` using `b.isIntegral_coe`. Establish `h1` using `(hNi _ (Or.inr rfl)).mul h0`. Rewrite `h1` using `[hb, Algebra.smul_def, mul_assoc, inv_mul_cancel_left₀ hd0']`. Rewrite using `[smul_smul]`.
+
+Conclude with `Λ.smul_mem (⟨_, h1⟩ : 𝓞 E) hz`.
+-/
 theorem exists_int_bound_of_dual_eq_smul (G : Matrix (Fin r) (Fin r) E)
     {c : FractionalIdeal (𝓞 E)⁰ E} (hc : c ≠ 0) :
     ∃ N : ℤ, N ≠ 0 ∧ ∀ Λ : Submodule (𝓞 E) (Fin r → E),
@@ -120,6 +153,11 @@ theorem exists_int_bound_of_dual_eq_smul (G : Matrix (Fin r) (Fin r) E)
     rw [smul_smul]
     exact Λ.smul_mem (⟨_, h1⟩ : 𝓞 E) hz
 
+/- English proof (translation)
+Introduce `E _ _ _ r G hG hdet c hc 𝔪 h𝔪 ι _ 𝓛 h𝓛`. Take `⟨N, hN, H⟩` from `exists_int_bound_of_dual_eq_smul G hc`. Take `⟨S, hS, HS⟩` from `exists_finite_unitary_classes G hG hdet hN h𝔪 (fun p : 𝓛 => p.1.1) (fun p => p.1.2) (fun p => (h𝓛 p p.2).1) (fun p => (H _ (h𝓛 p p.2).2.1).1) (fun p => (H _ (h𝓛 p p.2).2.1).2) (fun p => (h𝓛 p p.2).2.2)`. Use `⟨Subtype.val '' S, by rintro _ ⟨p, -, rfl⟩; exact p.2, hS.image _, fun p hp => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, h⟩` from `HS ⟨p, hp⟩`.
+
+Conclude with `⟨s, ⟨s, hs, rfl⟩, h⟩`.
+-/
 theorem Published.finitenessOfHermitianClasses_holds : Published.FinitenessOfHermitianClasses := by
   intro E _ _ _ r G hG hdet c hc 𝔪 h𝔪 ι _ 𝓛 h𝓛
   obtain ⟨N, hN, H⟩ := exists_int_bound_of_dual_eq_smul G hc

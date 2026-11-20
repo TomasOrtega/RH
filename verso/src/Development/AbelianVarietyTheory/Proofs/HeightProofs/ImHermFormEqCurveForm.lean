@@ -76,6 +76,11 @@ abbrev polPull {k : Type} [CommRing k] (P : Out.PolAV (Sp k)) {Y : Scheme.{0}} (
     obtain ⟨w, hw⟩ := PolBaseChange.lbIso_refl (pull_isLB P.isLB (pullback.fst P.A.hom f))
     exact kTriv_pull (isGrpPullback_pullback P.A f) P.isLB (pull_isLB P.isLB _) ((isGen_iff w).1 hw) P.ktriv
 
+/- English proof (translation)
+Use `ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective (CommRingCat.ofHom σ) hσ` as an intermediate fact. Use `ExtUnique.over_hom_ext_of_isPullback (IsPullback.of_hasPullback B.hom (spMap σ)) ?_` and prove the remaining obligations. Establish `: IsReduced (pullback B.hom (spMap σ))` using `isReduced_of_smooth_complex _ (pullback.snd B.hom (spMap σ)) inferInstance`. Use `ComplexPoints.hom_ext_of_points (pullback.snd B.hom (spMap σ)) G.hom (by simp) fun x hx => ?_` and prove the remaining obligations. Establish `e` using `congrArg (fun z => z.left) (h (Over.homMk (x ≫ pullback.fst _ _) (by show (x ≫ _) ≫ _ = spMap σ`.
+
+Rewrite using `[Category.assoc, pullback.condition, reassoc_of% hx])))`. Conclude with `(Category.assoc _ _ _).symm.trans (e.trans (Category.assoc _ _ _))`.
+-/
 theorem hom_ext_of_complexPoints {R : Type} [CommRing R] (σ : R →+* ℂ) (hσ : Function.Injective σ)
     {B G : Over (Sp R)} [Smooth B.hom] [IsSeparated G.hom] {a b : B ⟶ G}
     (h : ∀ p : Over.mk (spMap σ) ⟶ B, p ≫ a = p ≫ b) : a = b := by

@@ -17,14 +17,25 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `show ((1 : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ = mat x τ`. Rewrite using `[Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`.
+-/
 private theorem lact_one_torus_haar_measure (X : Data E r) (x : Frame X.Ψ r) : lact (1 : GL (Fin r) E) x = x := by
   funext τ
   show ((1 : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ = mat x τ
   rw [Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem levi_eq (X : Data E r) (x0 : Frame X.Ψ r) (φ : Frame X.Ψ r → ℝ) (z : V (nd X))
     (ξ : Fin (nd X) → ℂ) : levi X x0 φ z ξ = leviM X φ x0 z ξ := rfl
 
+/- English proof (translation)
+Unfold `hf`. Use `mul_pos (IsotropicThreshold.c_pos X τ) (X.maj_pos hx τ ?_)` and prove the remaining obligations. Introduce `h0`. Apply `hξ` to reduce the goal to its premises. Use function extensionality and compare the values at `a`.
+
+Establish `h1` using `congrFun h0 a`. Simplify `h1` using `[Data.emb]`.
+-/
 theorem hf_pos (X : Data E r) {ξ : Fin r → E} (hξ : ξ ≠ 0) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) :
     0 < hf X ξ x τ := by
   unfold hf
@@ -35,15 +46,30 @@ theorem hf_pos (X : Data E r) {ξ : Fin r → E} (hξ : ξ ≠ 0) {x : Frame X.�
   have h1 := congrFun h0 a
   simpa [Data.emb] using h1
 
+/- English proof (translation)
+Rewrite using `[tt_eq X ξ x τ, one_le_div (hf_pos X hξ hx τ)]`.
+-/
 theorem guard_iff (X : Data E r) {ξ : Fin r → E} (hξ : ξ ≠ 0) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) :
     hf X ξ x τ ≤ 1 ↔ 1 ≤ X.tt ξ x τ := by
   rw [tt_eq X ξ x τ, one_le_div (hf_pos X hξ hx τ)]
 
+/- English proof (translation)
+Apply `Real.log_nonneg` to reduce the goal to its premises. Establish `h1 : 0 ≤ 1 / X.la1 x` using `div_nonneg zero_le_one (Real.sqrt_nonneg _)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem logTerm_nonneg (X : Data E r) (x : Frame X.Ψ r) : 0 ≤ Real.log (1 + 1 / X.la1 x) := by
   apply Real.log_nonneg
   have h1 : 0 ≤ 1 / X.la1 x := div_nonneg zero_le_one (Real.sqrt_nonneg _)
   linarith
 
+/- English proof (translation)
+Take `⟨δ0, hδ0, hiso⟩` from `IsotropicThreshold.iso_threshold X`. Use `⟨min (δ0 / 2) (1 / 2), lt_min (by linarith) (by norm_num), fun x hx hpos hsmall => ?_⟩` and prove the remaining obligations. Establish `hmin1` using `min_le_left (δ0 / 2) (1 / 2)`. Establish `hmin2` using `min_le_right (δ0 / 2) (1 / 2)`. Establish `hne : {t | ∃ v ∈ X.Λ, v ≠ 0 ∧ t = ∑ τ, X.c τ * X.maj x τ (Data.emb τ.1 v)}.Nonempty`.
+
+Assume the negation of the conclusion as `hemp`. Rewrite `hemp` using `[Set.not_nonempty_iff_eq_empty]`. Establish `h0 : X.firstMinimumSq x = 0` using `by rw [Data.firstMinimumSq, hemp, Real.sInf_empty]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨t, ⟨v, hvΛ, hv0, rfl⟩, hlt⟩` from `exists_lt_of_csInf_lt hne (show X.firstMinimumSq x < 2 * X.firstMinimumSq x by linarith)`.
+
+Establish `hsum_lt : ∑ τ, X.c τ * X.maj x τ (Data.emb τ.1 v) < δ0` using `by linarith`. Establish `hherm` using `hiso x hx v hvΛ hsum_lt`. Establish `hterm : ∀ τ, hf X v x τ ≤ ∑ τ', X.c τ' * X.maj x τ' (Data.emb τ'.1 v)` using `fun τ => Finset.single_le_sum (f := fun τ' => X.c τ' * X.maj x τ' (Data.emb τ'.1 v)) (fun τ' _ => (hf_pos X hv0 hx τ').le) (Finset.mem_univ τ)`. Use `⟨v, ⟨hvΛ, hherm, hv0⟩, fun τ => ?_, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[← guard_iff X hv0 hx τ]`.
+
+Combine the linear relations using `[hterm τ]`. Rewrite using `[tt_eq X v x τ]`. Conclude with `one_div_le_one_div_of_le (hf_pos X hv0 hx τ) (by linarith [hterm τ])`.
+-/
 theorem exists_short (X : Data E r) : ∃ ε : ℝ, 0 < ε ∧ ∀ x ∈ X.dom, 0 < X.firstMinimumSq x → X.firstMinimumSq x < ε →
     ∃ v, X.IsIso v ∧ (∀ τ, 1 ≤ X.tt v x τ) ∧ ∀ τ, 1 / (2 * X.firstMinimumSq x) ≤ X.tt v x τ := by
   obtain ⟨δ0, hδ0, hiso⟩ := IsotropicThreshold.iso_threshold X
@@ -68,6 +94,27 @@ theorem exists_short (X : Data E r) : ∃ ε : ℝ, 0 < ε ∧ ∀ x ∈ X.dom, 
   · rw [tt_eq X v x τ]
     exact one_div_le_one_div_of_le (hf_pos X hv0 hx τ) (by linarith [hterm τ])
 
+/- English proof (translation)
+Take `⟨⟨C1, A1, h1⟩, h2⟩` from `h`. Take `⟨C2, A2, h2'⟩` from `h2 (1 / 4) (by norm_num) (by norm_num)`. Take `⟨ε, hε, hshort⟩` from `exists_short X`. Establish `hM : 0 ≤ |A1| + |K| + |A2|` using `by positivity`. Establish `hpa : 0 < 8 * Real.pi * a` using `by positivity`.
+
+Use `⟨max (C1 + (|A1| + |K| + |A2|) / Real.sqrt ε) (C2 + (|A1| + |K| + |A2|) ^ 2 / (8 * Real.pi * a)), fun x hx => ?_⟩` and prove the remaining obligations. Establish `hL0` using `logTerm_nonneg X x`. Establish `hy0 : 0 ≤ 1 / X.la1 x` using `div_nonneg zero_le_one (Real.sqrt_nonneg _)`. Establish `hLy : Real.log (1 + 1 / X.la1 x) ≤ 1 / X.la1 x`. Establish `h3` using `Real.log_le_sub_one_of_pos (show 0 < 1 + 1 / X.la1 x by linarith)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hK` using `mul_le_mul_of_nonneg_right (le_abs_self K) hL0`. Establish `hA1` using `mul_le_mul_of_nonneg_right (le_abs_self A1) hL0`. Establish `hA2` using `mul_le_mul_of_nonneg_right (le_abs_self A2) hL0`. Establish `hA1'` using `mul_nonneg (abs_nonneg A1) hL0`.
+
+Establish `hA2'` using `mul_nonneg (abs_nonneg A2) hL0`. Distinguish the cases in `hs : 0 < X.firstMinimumSq x ∧ X.firstMinimumSq x < ε`. Take `⟨v, hv, hv1, hv2⟩` from `hshort x hx hs.1 hs.2`. Establish `hb` using `h2' x hx v hv hv1`. Use `nonempty_cmType X` as an intermediate fact.
+
+Establish `hinf : 1 / (2 * X.firstMinimumSq x) ≤ ⨅ τ, X.tt v x τ` using `le_ciInf hv2`. Establish `hla : X.la1 x ^ 2 = X.firstMinimumSq x` using `Real.sq_sqrt hs.1.le`. Establish `hyy : 1 / (2 * X.firstMinimumSq x) = (1 / X.la1 x) ^ 2 / 2`. Rewrite using `[div_pow, one_pow, hla]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `hinf` using `[hyy]`. Establish `hcoef : (0 : ℝ) ≤ 8 * Real.pi * (1 - 2 * (1 / 4)) * a` using `by nlinarith [Real.pi_pos]`. Establish `hI` using `mul_le_mul_of_nonneg_left hinf hcoef`. Establish `hMy` using `mul_le_mul_of_nonneg_left hLy hM`. Establish `hq : (|A1| + |K| + |A2|) * (1 / X.la1 x) - 2 * Real.pi * a * (1 / X.la1 x) ^ 2 ≤ (|A1| + |K| + |A2|) ^ 2 / (8 * Real.pi * a)`.
+
+Rewrite using `[le_div_iff₀ hpa]`. Use polynomial arithmetic with `[sq_nonneg (4 * Real.pi * a * (1 / X.la1 x) - (|A1| + |K| + |A2|))]`. Use `le_trans ?_ (le_max_right _ _)` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hLe : Real.log (1 + 1 / X.la1 x) ≤ 1 / Real.sqrt ε`.
+
+Break down `le_or_gt (X.firstMinimumSq x) 0 with h0 | h0` into its components or cases. Establish `hz : X.la1 x = 0` using `Real.sqrt_eq_zero'.2 h0`. Rewrite using `[hz, div_zero, add_zero, Real.log_one]`. Check the signs of the components of the expression. Establish `hge : ε ≤ X.firstMinimumSq x`.
+
+Assume the negation of the conclusion as `hlt`. Conclude with `hs ⟨h0, not_le.1 hlt⟩`. Conclude with `hLy.trans (one_div_le_one_div_of_le (Real.sqrt_pos.2 hε) (Real.sqrt_le_sqrt hge))`. Establish `hb` using `h1 x hx`. Establish `hMe` using `mul_le_mul_of_nonneg_left hLe hM`.
+
+Establish `he : (|A1| + |K| + |A2|) * (1 / Real.sqrt ε) = (|A1| + |K| + |A2|) / Real.sqrt ε` using `by ring`. Use `le_trans ?_ (le_max_left _ _)` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem bdd_add_log (X : Data E r) {ps : Frame X.Ψ r → ℝ} {a : ℝ} (h : cfwM X ps a) (ha : 0 < a)
     (K : ℝ) : ∃ B : ℝ, ∀ x ∈ X.dom, ps x + K * Real.log (1 + 1 / X.la1 x) ≤ B := by
   obtain ⟨⟨C1, A1, h1⟩, h2⟩ := h
@@ -120,6 +167,9 @@ theorem bdd_add_log (X : Data E r) {ps : Frame X.Ψ r → ℝ} {a : ℝ} (h : cf
     refine le_trans ?_ (le_max_left _ _)
     linarith
 
+/- English proof (translation)
+Take `⟨A, h1, C, h2⟩` from `h`. Use `⟨⟨C, A, h2⟩, fun η hη _ => ?_⟩` and prove the remaining obligations. Take `⟨C', hC'⟩` from `h1 η hη`. Conclude with `⟨C', A, fun x hx ξ hξ htt => hC' x hx ξ hξ fun τ => (guard_iff X hξ.2.2 hx τ).2 (htt τ)⟩`.
+-/
 theorem cfwM_of_extraBounds (X : Data E r) {ps : Frame X.Ψ r → ℝ} {a : ℝ} (h : ExtraBounds X ps a) :
     cfwM X ps a := by
   obtain ⟨A, h1, C, h2⟩ := h
@@ -127,6 +177,23 @@ theorem cfwM_of_extraBounds (X : Data E r) {ps : Frame X.Ψ r → ℝ} {a : ℝ}
   obtain ⟨C', hC'⟩ := h1 η hη
   exact ⟨C', A, fun x hx ξ hξ htt => hC' x hx ξ hξ fun τ => (guard_iff X hξ.2.2 hx τ).2 (htt τ)⟩
 
+/- English proof (translation)
+Break down `ha.eq_or_lt with ha0 | hapos` into its components or cases. Substitute `ha0` using the available equality. Take `⟨⟨C, A, hC⟩, -⟩` from `h`. Use `⟨A, fun η _ => ⟨C, fun x hx ξ _ _ => ?_⟩, C, hC⟩` and prove the remaining obligations. Establish `h1` using `hC x hx`.
+
+Simplify using `only [mul_zero, zero_mul, sub_zero]`. Conclude with `h1`. Take `⟨B0, hB0⟩` from `bdd_add_log X h hapos 0`. Use `nonempty_cmType X` as an intermediate fact. Use `⟨0, fun η hη => ?_, B0, fun x hx => by linarith [hB0 x hx]⟩` and prove the remaining obligations.
+
+Break down `lt_or_ge η (1 / 2) with hη2 | hη2` into its components or cases. Take `⟨C', A', hC'⟩` from `h.2 (η / 2) (by linarith) (by linarith)`. Take `⟨θ, hθ⟩ : ∃ θ : ℝ, θ = (1 - 2 * η) / (1 - η)` from `⟨_, rfl⟩`. Establish `h1η : 0 < 1 - η` using `by linarith`. Establish `hθ0 : 0 < θ` using `by rw [hθ]; exact div_pos (by linarith) h1η`.
+
+Establish `hθ1 : θ < 1` using `by rw [hθ, div_lt_one h1η]; linarith`. Establish `hθη : θ * (1 - η) = 1 - 2 * η` using `by rw [hθ]; field_simp`. Take `⟨K, hK⟩ : ∃ K : ℝ, (1 - θ) * K = θ * |A'|` from `⟨θ * |A'| / (1 - θ), by field_simp [(sub_pos.2 hθ1).ne']⟩`. Take `⟨BK, hBK⟩` from `bdd_add_log X h hapos K`. Use `⟨θ * C' + (1 - θ) * BK, fun x hx ξ hξ hg => ?_⟩` and prove the remaining obligations.
+
+Establish `htt : ∀ τ, 1 ≤ X.tt ξ x τ` using `fun τ => (guard_iff X hξ.2.2 hx τ).1 (hg τ)`. Establish `hL0` using `logTerm_nonneg X x`. Establish `e1` using `mul_le_mul_of_nonneg_left (hC' x hx ξ hξ htt) hθ0.le`. Establish `e2` using `mul_le_mul_of_nonneg_left (hBK x hx) (sub_pos.2 hθ1).le`. Establish `hKL : (1 - θ) * K * Real.log (1 + 1 / X.la1 x) = θ * |A'| * Real.log (1 + 1 / X.la1 x)` using `by rw [hK]`.
+
+Establish `hA : θ * A' * Real.log (1 + 1 / X.la1 x) ≤ θ * |A'| * Real.log (1 + 1 / X.la1 x)` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left (le_abs_self A') hθ0.le) hL0`. Establish `h3 : θ * (8 * Real.pi * (1 - 2 * (η / 2)) * a * ⨅ τ, X.tt ξ x τ) = 8 * Real.pi * (1 - 2 * η) * a * ⨅ τ, X.tt ξ x τ`. Rewrite using `[← hθη]`. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `⟨B0, fun x hx ξ hξ hg => ?_⟩` and prove the remaining obligations. Establish `htt : ∀ τ, 1 ≤ X.tt ξ x τ` using `fun τ => (guard_iff X hξ.2.2 hx τ).1 (hg τ)`. Establish `hI : 1 ≤ ⨅ τ, X.tt ξ x τ` using `le_ciInf htt`. Establish `h2` using `hB0 x hx`. Establish `hpI : 0 ≤ 8 * Real.pi * a * ⨅ τ, X.tt ξ x τ` using `mul_nonneg (by positivity) (by linarith)`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem extraBounds_of_cfwM (X : Data E r) {ps : Frame X.Ψ r → ℝ} {a : ℝ} (ha : 0 ≤ a)
     (h : cfwM X ps a) : ExtraBounds X ps a := by
   rcases ha.eq_or_lt with ha0 | hapos
@@ -170,9 +237,15 @@ theorem extraBounds_of_cfwM (X : Data E r) {ps : Frame X.Ψ r → ℝ} {a : ℝ}
         mul_nonneg (by positivity) (by linarith)
       nlinarith
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => cfwM_of_extraBounds X h, extraBounds_of_cfwM X ha⟩`.
+-/
 theorem extraBounds_iff (X : Data E r) (ps : Frame X.Ψ r → ℝ) {a : ℝ} (ha : 0 ≤ a) :
     ExtraBounds X ps a ↔ cfwM X ps a := ⟨fun h => cfwM_of_extraBounds X h, extraBounds_of_cfwM X ha⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `show ((γ * γ' : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * ((γ' : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ)`. Rewrite using `[Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]`.
+-/
 private theorem lact_lact_eq_lact_mul (X : Data E r) (γ γ' : GL (Fin r) E) (x : Frame X.Ψ r) :
     lact (γ * γ') x = lact γ (lact γ' x) := by
   funext τ
@@ -180,6 +253,9 @@ private theorem lact_lact_eq_lact_mul (X : Data E r) (γ γ' : GL (Fin r) E) (x 
     (γ : Matrix (Fin r) (Fin r) E).map τ.1 * ((γ' : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ)
   rw [Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `show ((γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ) * mat b τ = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * (mat x τ * mat b τ)`. Rewrite using `[Matrix.mul_assoc]`.
+-/
 private theorem rmul_lact_comm' (X : Data E r) (γ : GL (Fin r) E) (x b : Frame X.Ψ r) :
     rmul (lact γ x) b = lact γ (rmul x b) := by
   funext τ
@@ -187,12 +263,18 @@ private theorem rmul_lact_comm' (X : Data E r) (γ : GL (Fin r) E) (x b : Frame 
     (γ : Matrix (Fin r) (Fin r) E).map τ.1 * (mat x τ * mat b τ)
   rw [Matrix.mul_assoc]
 
+/- English proof (translation)
+Take `⟨γ, hγ, b, hb, rfl⟩` from `h`. Use `⟨γ⁻¹, inv_mem hγ, ExtFPf.invF X b, ExtFPf.invF_mem X hb, ?_⟩` and prove the remaining obligations. Rewrite using `[rmul_lact_comm', ← lact_lact_eq_lact_mul, inv_mul_cancel, lact_one_torus_haar_measure, ExtFPf.rmul_assoc, ExtFPf.rmul_invF X hb, ExtFPf.rmul_oneF]`.
+-/
 theorem samePt_symm (X : Data E r) {x y : Frame X.Ψ r} (h : SamePt X x y) : SamePt X y x := by
   obtain ⟨γ, hγ, b, hb, rfl⟩ := h
   refine ⟨γ⁻¹, inv_mem hγ, ExtFPf.invF X b, ExtFPf.invF_mem X hb, ?_⟩
   rw [rmul_lact_comm', ← lact_lact_eq_lact_mul, inv_mul_cancel, lact_one_torus_haar_measure, ExtFPf.rmul_assoc,
     ExtFPf.rmul_invF X hb, ExtFPf.rmul_oneF]
 
+/- English proof (translation)
+Take `⟨γ, hγ, b, hb, rfl⟩` from `h`. Take `⟨γ', hγ', b', hb', rfl⟩` from `h'`. Use `⟨γ' * γ, mul_mem hγ' hγ, rmul b b', ExtFPf.mul_mem X hb hb', ?_⟩` and prove the remaining obligations. Rewrite using `[rmul_lact_comm', ExtFPf.rmul_assoc, lact_lact_eq_lact_mul]`.
+-/
 theorem samePt_trans (X : Data E r) {x y z : Frame X.Ψ r} (h : SamePt X x y) (h' : SamePt X y z) :
     SamePt X x z := by
   obtain ⟨γ, hγ, b, hb, rfl⟩ := h
@@ -200,6 +282,9 @@ theorem samePt_trans (X : Data E r) {x y z : Frame X.Ψ r} (h : SamePt X x y) (h
   refine ⟨γ' * γ, mul_mem hγ' hγ, rmul b b', ExtFPf.mul_mem X hb hb', ?_⟩
   rw [rmul_lact_comm', ExtFPf.rmul_assoc, lact_lact_eq_lact_mul]
 
+/- English proof (translation)
+Use `continuous_pi fun τ => ?_` and prove the remaining obligations. Use `show Continuous fun x : Frame X.Ψ r => ((γ : Matrix (Fin r) (Fin r) E).map τ.1 * (mat x τ * mat b τ) : Matrix (Fin r) (Fin r) ℂ)`. Conclude with `continuous_const.matrix_mul ((continuous_apply τ).matrix_mul continuous_const)`.
+-/
 theorem continuous_act (X : Data E r) (γ : GL (Fin r) E) (b : Frame X.Ψ r) :
     Continuous fun x : Frame X.Ψ r => lact γ (rmul x b) := by
   refine continuous_pi fun τ => ?_
@@ -207,6 +292,19 @@ theorem continuous_act (X : Data E r) (γ : GL (Fin r) E) (b : Frame X.Ψ r) :
     ((γ : Matrix (Fin r) (Fin r) E).map τ.1 * (mat x τ * mat b τ) : Matrix (Fin r) (Fin r) ℂ)
   exact continuous_const.matrix_mul ((continuous_apply τ).matrix_mul continuous_const)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `H U hU hPU hsat`. Take `⟨C, hC⟩` from `H U hU hPU`. Use `⟨C, fun x hx hxU => hC x hx fun u hu _ hux => hxU ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, b, hb, rfl⟩` from `hux`.
+
+Conclude with `hsat u hu γ hγ b hb`. Introduce `H U hU hPU`. Establish `hopen : IsOpen {y | ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, lact γ (rmul y b) ∈ U}`. Establish `e : {y | ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, lact γ (rmul y b) ∈ U} = ⋃ γ ∈ X.Γ, ⋃ b ∈ Bor X.Ψ r, (fun y => lact γ (rmul y b)) ⁻¹' U`. Use extensionality with `y`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `isOpen_biUnion fun γ _ => isOpen_biUnion fun b _ => hU.preimage (continuous_act X γ b)`. Establish `hmem : ∀ k, P k ∈ {y | ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, lact γ (rmul y b) ∈ U}` using `fun k => ⟨1, one_mem _, ExtFPf.oneF X, ExtFPf.oneF_mem X, by`. Rewrite using `[ExtFPf.rmul_oneF, lact_one_torus_haar_measure]`.
+
+Conclude with `hPU k⟩`. Establish `hsat : ∀ x ∈ {y | ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, lact γ (rmul y b) ∈ U}, ∀ γ ∈ X.Γ, ∀ b ∈ Bor X.Ψ r, lact γ (rmul x b) ∈ {y | ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, lact γ (rmul y b) ∈ U}`. Introduce and unpack `y ⟨γ0, hγ0, b0, hb0, hy⟩ γ hγ b hb`. Establish `hs1 : SamePt X y (lact γ (rmul y b))` using `⟨γ, hγ, b, hb, rfl⟩`. Establish `hs2 : SamePt X y (lact γ0 (rmul y b0))` using `⟨γ0, hγ0, b0, hb0, rfl⟩`.
+
+Take `⟨γ', hγ', b', hb', e⟩` from `samePt_trans X (samePt_symm X hs1) hs2`. Conclude with `⟨γ', hγ', b', hb', by rw [← e]; exact hy⟩`. Take `⟨K, hK⟩` from `H _ hopen hmem hsat`. Use `⟨K, fun x hx hxU => hK x hx ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨γ, hγ, b, hb, hu⟩`.
+
+Establish `hs : SamePt X x (lact γ (rmul x b))` using `⟨γ, hγ, b, hb, rfl⟩`. Conclude with `hxU _ hu (OntoS.dom_lact X hγ (OntoS.dom_rmul X hx hb)) (samePt_symm X hs)`.
+-/
 theorem offNbhd_iff (X : Data E r) {ι : Type} {P : ι → Frame X.Ψ r} (hP : ∀ k, P k ∈ X.dom)
     (Φ : ℝ → Frame X.Ψ r → Prop) :
     (∀ U : Set (Frame X.Ψ r), IsOpen U → (∀ k, P k ∈ U) → ∃ C : ℝ, ∀ x ∈ X.dom,
@@ -244,6 +342,11 @@ theorem offNbhd_iff (X : Data E r) {ι : Type} {P : ι → Frame X.Ψ r} (hP : �
     have hs : SamePt X x (lact γ (rmul x b)) := ⟨γ, hγ, b, hb, rfl⟩
     exact hxU _ hu (OntoS.dom_lact X hγ (OntoS.dom_rmul X hx hb)) (samePt_symm X hs)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨C, hC⟩`. Use `⟨C ^ 2, fun x hx hpx => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨K, hK⟩`.
+
+Use `⟨√(max K 0), fun x hx hpx => ?_⟩` and prove the remaining obligations. Rewrite using `[← Real.sqrt_mul (le_max_right K 0)]`. Conclude with `Real.sqrt_le_sqrt ((hK x hx hpx).trans (mul_le_mul_of_nonneg_right (le_max_left K 0) (hg x)))`.
+-/
 theorem sqrt_le_iff {α : Type} (D : Set α) (p : α → Prop) {f g : α → ℝ} (hf : ∀ x, 0 ≤ f x)
     (hg : ∀ x, 0 ≤ g x) :
     (∃ C : ℝ, ∀ x ∈ D, p x → √(f x) ≤ C * √(g x)) ↔ ∃ K : ℝ, ∀ x ∈ D, p x → f x ≤ K * g x := by
@@ -258,9 +361,15 @@ theorem sqrt_le_iff {α : Type} (D : Set α) (p : α → Prop) {f g : α → ℝ
     rw [← Real.sqrt_mul (le_max_right K 0)]
     exact Real.sqrt_le_sqrt ((hK x hx hpx).trans (mul_le_mul_of_nonneg_right (le_max_left K 0) (hg x)))
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => sq_nonneg _`.
+-/
 theorem sumSq_nonneg (X : Data E r) (L : Wt X.Ψ r) {ι : Type} [Fintype ι] (g : ι → Frame X.Ψ r → ℂ)
     (x : Frame X.Ψ r) : 0 ≤ ∑ j, X.pnorm L (g j) x ^ 2 := Finset.sum_nonneg fun _ _ => sq_nonneg _
 
+/- English proof (translation)
+Use `(offNbhd_iff X hP (fun C x => famNorm X L w x ≤ C * famNorm X L s x)).trans ?_` and prove the remaining obligations. Use `forall_congr' fun U => forall_congr' fun _ => forall_congr' fun _ => forall_congr' fun _ => ?_` and prove the remaining obligations. Conclude with `sqrt_le_iff X.dom (fun x => x ∉ U) (fun x => sumSq_nonneg X L w x) (fun x => sumSq_nonneg X L s x)`.
+-/
 theorem wLeS_iff (X : Data E r) (L : Wt X.Ψ r) {N : ℕ} (w : Fin N → Frame X.Ψ r → ℂ)
     (s : Fin (nd X) → Frame X.Ψ r → ℂ) {δ : ℕ} {P : Fin δ → Frame X.Ψ r} (hP : ∀ k, P k ∈ X.dom) :
     (∀ U : Set (Frame X.Ψ r), IsOpen U → (∀ k, P k ∈ U) → ∃ C : ℝ, ∀ x ∈ X.dom,
@@ -272,6 +381,11 @@ theorem wLeS_iff (X : Data E r) (L : Wt X.Ψ r) {N : ℕ} (w : Fin N → Frame X
   refine forall_congr' fun U => forall_congr' fun _ => forall_congr' fun _ => forall_congr' fun _ => ?_
   exact sqrt_le_iff X.dom (fun x => x ∉ U) (fun x => sumSq_nonneg X L w x) (fun x => sumSq_nonneg X L s x)
 
+/- English proof (translation)
+Establish `e : ∀ x, famNorm X L (fun o : Option (Fin (nd X)) => o.elim w0 s) x = √(X.pnorm L w0 x ^ 2 + ∑ k, X.pnorm L (s k) x ^ 2)` using `fun x => by`. Simplify using `[famNorm, Fintype.sum_option]`. Establish `h` using `sqrt_le_iff X.dom (fun _ => True) (f := fun x => ∑ k, X.pnorm L (w k) x ^ 2) (g := fun x => X.pnorm L w0 x ^ 2 + ∑ k, X.pnorm L (s k) x ^ 2) (fun x => sumSq_nonneg X L w x) (fun x => add_nonneg (sq_nonneg _) (sumSq_nonneg X L s x))`. Simplify using `only [true_implies] at h`. Simplify using `only [e]`.
+
+Conclude with `h`.
+-/
 theorem wLe_iff (X : Data E r) (L : Wt X.Ψ r) {N : ℕ} (w : Fin N → Frame X.Ψ r → ℂ)
     (w0 : Frame X.Ψ r → ℂ) (s : Fin (nd X) → Frame X.Ψ r → ℂ) :
     (∃ C : ℝ, ∀ x ∈ X.dom,
@@ -288,6 +402,15 @@ theorem wLe_iff (X : Data E r) (L : Wt X.Ψ r) {N : ℕ} (w : Fin N → Frame X.
   simp only [e]
   exact h
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨T, hT⟩`. Rewrite using `[hT.fderiv]`. Conclude with `(LinearEquiv.isUnit_det' T.toLinearEquiv).ne_zero`. Introduce `h`.
+
+Establish `hd : DifferentiableAt ℂ f 0`. Assume the negation of the conclusion as `hnd`. Rewrite `h` using `[fderiv_zero_of_not_differentiableAt hnd]`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality.
+
+Establish `hc : f = fun _ => f 0` using `funext fun v => congrArg f (PiLp.ext fun i => Fin.elim0 i)`. Rewrite `hnd` using `[hc]`. Conclude with `hnd (differentiableAt_const _)`. Apply `h` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `LinearMap.det ((0 : V n →L[ℂ] V n) : V n →ₗ[ℂ] V n) = 0`.
+
+Rewrite using `[ContinuousLinearMap.toLinearMap_zero, LinearMap.det_zero, finrank_euclideanSpace_fin, zero_pow hn.ne']`. Use `⟨(fderiv ℂ f 0).toContinuousLinearEquivOfDetNeZero h, ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.coe_toContinuousLinearEquivOfDetNeZero]`. Conclude with `hd.hasFDerivAt`.
+-/
 theorem coord_iff {n : ℕ} (f : V n → V n) :
     (∃ T : V n ≃L[ℂ] V n, HasFDerivAt f (T : V n →L[ℂ] V n) 0) ↔ (fderiv ℂ f 0).det ≠ 0 := by
   constructor
@@ -311,6 +434,11 @@ theorem coord_iff {n : ℕ} (f : V n → V n) :
     rw [ContinuousLinearMap.coe_toContinuousLinearEquivOfDetNeZero]
     exact hd.hasFDerivAt
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h`. Use `⟨∑ j, ‖c j‖ ^ 2, fun x hx => ?_⟩` and prove the remaining obligations. Establish `key : X.pnorm L f x ≤ ∑ j, ‖c j‖ * X.pnorm L (w j) x`. Rewrite using `[BoundedSectionAlgebra.pnorm_eq, hc x hx]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[BoundedSectionAlgebra.pnorm_eq]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem comb_le (X : Data E r) (L : Wt X.Ψ r) {N : ℕ} {w : Fin N → Frame X.Ψ r → ℂ}
     {f : Frame X.Ψ r → ℂ} (h : IsComb X w f) :
     ∃ K : ℝ, ∀ x ∈ X.dom, X.pnorm L f x ^ 2 ≤ K * ∑ k, X.pnorm L (w k) x ^ 2 := by
@@ -330,6 +458,13 @@ theorem comb_le (X : Data E r) (L : Wt X.Ψ r) {N : ℕ} {w : Fin N → Frame X.
         pow_le_pow_left₀ (BoundedSectionAlgebra.pnorm_nonneg X L f x) key 2
     _ ≤ (∑ j, ‖c j‖ ^ 2) * ∑ j, X.pnorm L (w j) x ^ 2 := Finset.sum_mul_sq_le_sq_mul_sq _ _ _
 
+/- English proof (translation)
+Take `⟨⟨⟨⟨hd, hb, hγ⟩, C, hC⟩, h0⟩, h1⟩` from `hg`. Establish `hsec : X.IsSec L f` using `⟨hd.congr h, fun x hx b hb' => by`. Rewrite using `[h _ (OntoS.dom_rmul X hx hb'), h x hx, hb x hx b hb'], fun γ hγ' x hx => by`. Rewrite using `[h _ (OntoS.dom_lact X hγ' hx), h x hx, hγ γ hγ' x hx]⟩`. Use `⟨⟨⟨hsec, C, fun x hx => ?_⟩, fun ξ hξ x hx => ?_⟩, fun ξ hξ ν hν x hx => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[BoundedSectionAlgebra.pnorm_eq, h x hx, ← BoundedSectionAlgebra.pnorm_eq]`. Conclude with `hC x hx`. Rewrite using `[GlobalTheory.FJCheck.fj_congr X L hξ 0 h hx]`. Conclude with `h0 ξ hξ x hx`. Rewrite using `[GlobalTheory.FJCheck.fj_congr X L hξ ν h hx]`.
+
+Conclude with `h1 ξ hξ ν hν x hx`.
+-/
 theorem mem_SSgt_congr (X : Data E r) {L : Wt X.Ψ r} {a : ℝ} {f g : Frame X.Ψ r → ℂ}
     (h : ∀ x ∈ X.dom, f x = g x) (hg : g ∈ X.SSgt L a) : f ∈ X.SSgt L a := by
   obtain ⟨⟨⟨⟨hd, hb, hγ⟩, C, hC⟩, h0⟩, h1⟩ := hg
@@ -345,11 +480,17 @@ theorem mem_SSgt_congr (X : Data E r) {L : Wt X.Ψ r} {a : ℝ} {f g : Frame X.�
   · rw [GlobalTheory.FJCheck.fj_congr X L hξ ν h hx]
     exact h1 ξ hξ ν hν x hx
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨BoundedSectionAlgebra.bdd_zero X L, fun ξ _ x _ => BoundedSectionAlgebra.fj_zero X L ξ x 0⟩, fun ξ _ ν _ x _ => BoundedSectionAlgebra.fj_zero X L ξ x ν⟩`.
+-/
 private theorem zero_mem_SSgt (X : Data E r) (L : Wt X.Ψ r) (a : ℝ) :
     (0 : Frame X.Ψ r → ℂ) ∈ X.SSgt L a :=
   ⟨⟨BoundedSectionAlgebra.bdd_zero X L, fun ξ _ x _ => BoundedSectionAlgebra.fj_zero X L ξ x 0⟩,
     fun ξ _ ν _ x _ => BoundedSectionAlgebra.fj_zero X L ξ x ν⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨BoundedSectionAlgebra.bdd_add X hP.1.1 hQ.1.1, fun ξ hξ x hx => by rw [BoundedSectionAlgebra.fj_add X hP.1.1 hQ.1.1 hξ hx, hP.1.2 ξ hξ x hx, hQ.1.2 ξ hξ x hx, add_zero]⟩, fun ξ hξ ν hν x hx => by rw [BoundedSectionAlgebra.fj_add X hP.1.1 hQ.1.1 hξ hx, hP.2 ξ hξ ν hν x hx, hQ.2 …`.
+-/
 private theorem add_mem_SSgt (X : Data E r) {L : Wt X.Ψ r} {a : ℝ} {P Q : Frame X.Ψ r → ℂ}
     (hP : P ∈ X.SSgt L a) (hQ : Q ∈ X.SSgt L a) : P + Q ∈ X.SSgt L a :=
   ⟨⟨BoundedSectionAlgebra.bdd_add X hP.1.1 hQ.1.1, fun ξ hξ x hx => by
@@ -357,12 +498,18 @@ private theorem add_mem_SSgt (X : Data E r) {L : Wt X.Ψ r} {a : ℝ} {P Q : Fra
     fun ξ hξ ν hν x hx => by
       rw [BoundedSectionAlgebra.fj_add X hP.1.1 hQ.1.1 hξ hx, hP.2 ξ hξ ν hν x hx, hQ.2 ξ hξ ν hν x hx, add_zero]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨BoundedSectionAlgebra.bdd_smul X z hP.1.1, fun ξ hξ x hx => by rw [BoundedSectionAlgebra.fj_smul, hP.1.2 ξ hξ x hx, mul_zero]⟩, fun ξ hξ ν hν x hx => by rw [BoundedSectionAlgebra.fj_smul, hP.2 ξ hξ ν hν x hx, mul_zero]⟩`.
+-/
 private theorem smul_mem_SSgt (X : Data E r) {L : Wt X.Ψ r} {a : ℝ} (z : ℂ) {P : Frame X.Ψ r → ℂ}
     (hP : P ∈ X.SSgt L a) : z • P ∈ X.SSgt L a :=
   ⟨⟨BoundedSectionAlgebra.bdd_smul X z hP.1.1, fun ξ hξ x hx => by
       rw [BoundedSectionAlgebra.fj_smul, hP.1.2 ξ hξ x hx, mul_zero]⟩,
     fun ξ hξ ν hν x hx => by rw [BoundedSectionAlgebra.fj_smul, hP.2 ξ hξ ν hν x hx, mul_zero]⟩
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h`. Establish `hsum : (∑ j, c j • w j) ∈ X.SSgt L a` using `Finset.sum_induction _ (· ∈ X.SSgt L a) (fun P Q hP hQ => add_mem_SSgt X hP hQ) (zero_mem_SSgt X L a) fun j _ => smul_mem_SSgt X (c j) (hw j)`. Use `mem_SSgt_congr X (fun x hx => ?_) hsum` and prove the remaining obligations. Rewrite using `[hc x hx]`. Simplify using `[Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem comb_mem_SSgt (X : Data E r) {L : Wt X.Ψ r} {a : ℝ} {N : ℕ} {w : Fin N → Frame X.Ψ r → ℂ}
     (hw : ∀ k, w k ∈ X.SSgt L a) {f : Frame X.Ψ r → ℂ} (h : IsComb X w f) : f ∈ X.SSgt L a := by
   obtain ⟨c, hc⟩ := h

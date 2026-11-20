@@ -14,6 +14,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.BaseChangeAffine
 
+/- English proof (translation)
+Use `set R := Subring.closure (Set.range i.hom ∪ Set.range j.hom)`. Set `l : B ⟶ CommRingCat.of R` to `CommRingCat.ofHom (i.hom.codRestrict R fun b => Subring.subset_closure (Or.inl ⟨b, rfl⟩))`. Set `r : C ⟶ CommRingCat.of R` to `CommRingCat.ofHom (j.hom.codRestrict R fun c => Subring.subset_closure (Or.inr ⟨c, rfl⟩))`. Establish `w : f ≫ l = g ≫ r`. Use extensionality with `a`.
+
+Use `congrArg (fun q : A ⟶ P => q.hom a) h.w` as an intermediate fact. Simplify `this` using `[l, r]`. Set `s : CommRingCat.of R ⟶ P` to `CommRingCat.ofHom R.subtype`. Establish `hid : h.desc l r w ≫ s = 𝟙 P`. Apply `h.hom_ext` to reduce the goal to its premises.
+
+Use extensionality with `b`. Simplify using `[l, s]`. Use extensionality with `c`. Simplify using `[r, s]`. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations.
+
+Establish `hx : (((h.desc l r w).hom x : R) : P) = x`. Use `congrArg (fun q : P ⟶ P => q.hom x) hid` as an intermediate fact. Simplify `this` using `[s]`. Rewrite using `[← hx]`. Conclude with `((h.desc l r w).hom x).2`.
+-/
 theorem closure_range_union_eq_top_of_isPushout {A B C P : CommRingCat.{0}} {f : A ⟶ B} {g : A ⟶ C}
     {i : B ⟶ P} {j : C ⟶ P} (h : IsPushout f g i j) :
     Subring.closure (Set.range i.hom ∪ Set.range j.hom) = ⊤ := by
@@ -38,6 +47,11 @@ theorem closure_range_union_eq_top_of_isPushout {A B C P : CommRingCat.{0}} {f :
   rw [← hx]
   exact ((h.desc l r w).hom x).2
 
+/- English proof (translation)
+Introduce `Z Z' X X' p p' φ g H U U' hU' O hO`. Establish `: IsAffine U.1.toScheme` using `U.2`. Establish `: IsAffine U'.1.toScheme` using `U'.2`. Establish `: IsAffine O.1.toScheme` using `O.2`. Establish `hpb` using `Scheme.Hom.isPullback_resLE H (US := U.1) (UT := U'.1) (UX := O.1) (UY := φ ⁻¹ᵁ O.1 ⊓ p' ⁻¹ᵁ U'.1) hU' hO rfl`.
+
+Use `⟨.of_isIso hpb.isoPullback.hom, ?_⟩` and prove the remaining obligations. Establish `po` using `(isIso_pushoutSection_iff H hU' hO (UY := φ ⁻¹ᵁ O.1 ⊓ p' ⁻¹ᵁ U'.1) rfl).1 (isIso_pushoutSection_of_isAffineOpen H hU' hO rfl U.2 U'.2 O.2)`. Conclude with `closure_range_union_eq_top_of_isPushout po`.
+-/
 theorem affine_and_closure_eq_top : ∀ (Z Z' X X' : Scheme.{0}) (p : Z ⟶ X) (p' : Z' ⟶ X') (φ : Z' ⟶ Z) (g : X' ⟶ X), IsPullback φ p' p g → ∀ (U : X.affineOpens) (U' : X'.affineOpens), U'.1 ≤ g ⁻¹ᵁ U.1 → ∀ (O : Z.affineOpens), O.1 ≤ p ⁻¹ᵁ U.1 → IsAffineOpen (φ ⁻¹ᵁ O.1 ⊓ p' ⁻¹ᵁ U'.1) ∧ Subring.closure (Set.range (φ.appLE O.1 (φ ⁻¹ᵁ O.1 ⊓ p' ⁻¹ᵁ U'.1) inf_le_left).hom ∪ Set.range (p'.appLE U'.1 (φ ⁻¹ᵁ O.1 ⊓ p' ⁻¹ᵁ U'.1) inf_le_right).hom) = ⊤ := by
   intro Z Z' X X' p p' φ g H U U' hU' O hO
   have : IsAffine U.1.toScheme := U.2

@@ -33,6 +33,11 @@ variable {m N : ℕ}
 
 include hT in
 
+/- English proof (translation)
+Use `(hT e.toIntertwiningMap (quotMk (⊤ : Subrepresentation τ')) e.toLinearEquiv.injective fun y => ?_).1` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `_`. Take `⟨v, hv⟩` from `e.toLinearEquiv.surjective y`. Conclude with `⟨v, hv⟩`.
+
+Introduce `_`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (show y ∈ (⊤ : Subrepresentation τ').toSubmodule from trivial)`.
+-/
 theorem Tm_equiv_injective {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {τ : Representation ℂ (GL (Fin m) k) V} {τ' : Representation ℂ (GL (Fin m) k) W} (e : τ.Equiv τ') :
     Function.Injective (Tm e.toIntertwiningMap) := by
@@ -52,6 +57,9 @@ def codSub {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGrou
     change f (ρ g v) = σ g (f v)
     rw [f.isIntertwining])⟩
 
+/- English proof (translation)
+Introduce `a b hab` and use `hf (congrArg Subtype.val hab)`.
+-/
 theorem codSub_injective {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (f : ρ.IntertwiningMap σ) (S : Subrepresentation σ)
     (h : ∀ v, f v ∈ S.toSubmodule) (hf : Function.Injective f) : Function.Injective (codSub f S h) :=
@@ -59,6 +67,31 @@ theorem codSub_injective {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V
 
 include hT in
 
+/- English proof (translation)
+Take `⟨-, hwf⟩` from `(GlobalTheory.SmGL.hasFiniteLength_iff_wellFounded P).1 hP`. Proceed by induction on `S using WellFoundedLT.induction with`. Consider the case `_ S ih`. Take `⟨f, hf⟩` from `hx`. Establish `hSsub : IsSubquotient S.toRepresentation P` using `IsSubquotient.of_injective (subIncl S) (subIncl_injective S)`.
+
+Establish `hSs : IsSmooth S.toRepresentation` using `hSsub.isSmooth hs`. Establish `hSf : HasFiniteLength S.toRepresentation` using `GlobalTheory.ProdLength.hasFiniteLength_of_injective (subIncl S) (subIncl_injective S) hP`. Use `haveI := x.rep.irr`. Use `haveI : Nontrivial x.rep.V := GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible x.rep.irr`. Distinguish the cases in `hnt : Nontrivial S.toSubmodule`.
+
+Use `swap`. It suffices to derive a contradiction. Rewrite `hnt` using `[not_nontrivial_iff_subsingleton]`. Set `I` to `Representation.IntertwiningMap.id S.toRepresentation`. Establish `hI : Function.Exact I I` using `fun y => ⟨fun _ => ⟨y, rfl⟩, fun _ => Subsingleton.elim _ _⟩`.
+
+Take `⟨hinj, hex⟩` from `hT I I (fun a b h => h) hI`. Use `set F := Tm I`. Establish `h0 : ∀ w : (T S.toRepresentation).V, w = 0` using `fun w => hinj (hinj (((hex (F w)).2 ⟨w, rfl⟩).trans ((congrArg F (map_zero F)).trans (map_zero F)).symm))`. Take `⟨v, hv⟩` from `exists_ne (0 : x.rep.V)`. Conclude with `hv (hf ((h0 (f v)).trans (h0 (f 0)).symm))`.
+
+Take `⟨C, hC⟩` from `GlobalTheory.T.finite_length_exists_coatom S.toRepresentation hSf hnt`. Set `q` to `Tm (quotMk C)`. Distinguish the cases in `h0 : ∀ v, q (f v) = 0`. Establish `hexC : Function.Exact (subIncl C) (quotMk C)` using `fun y => by show C.toSubmodule.mkQ y = 0 ↔ _`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `⟨fun h => ⟨⟨y, h⟩, rfl⟩, by rintro ⟨z, rfl⟩; exact z.2⟩`. Take `⟨hιinj, hexT⟩` from `hT (subIncl C) (quotMk C) (subIncl_injective C) hexC`. Use `set ι := Tm (subIncl C)`. Establish `hmem : ∀ v, f v ∈ ι.range.toSubmodule` using `fun v => by`. Take `⟨u, hu⟩` from `(hexT (f v)).1 (h0 v)`.
+
+Conclude with `⟨u, hu⟩`. Set `f1` to `(rangeEquiv ι hιinj).symm.toIntertwiningMap.comp (codSub f ι.range hmem)`. Establish `hf1 : Function.Injective f1` using `(rangeEquiv ι hιinj).symm.toLinearEquiv.injective.comp (codSub_injective f ι.range hmem hf)`. Set `j` to `(subIncl S).comp (subIncl C)`. Establish `hj : Function.Injective j` using `(subIncl_injective S).comp (subIncl_injective C)`.
+
+Set `e'` to `rangeEquiv j hj`. Establish `hlt : j.range < S`. Use `lt_of_le_of_ne (fun v hv => ?_) fun e => hC.1 (eq_top_iff.2 fun y _ => ?_)` and prove the remaining obligations. Take `⟨c, rfl⟩` from `hv`. Conclude with `(c : S.toSubmodule).2`.
+
+Establish `hy : (y : V) ∈ j.range` using `e.ge y.2`. Take `⟨c, hc⟩` from `hy`. Establish `hcy : (c : S.toSubmodule) = y` using `Subtype.ext hc`. Rewrite using `[← hcy]`. Conclude with `c.2`.
+
+Conclude with `ih _ hlt ⟨(Tm e'.toIntertwiningMap).comp f1, (Tm_equiv_injective T Tm hT e').comp hf1⟩`. Set `F` to `q.comp f`. Establish `hker : F.ker = ⊥` using `(eq_bot_or_eq_top F.ker).resolve_right fun e => h0 fun v => by`. Establish `hv : v ∈ F.ker` using `e ▸ trivial`. Conclude with `hv`.
+
+Establish `hFinj : Function.Injective F` using `fun a b hab => by`. Establish `hm : a - b ∈ F.ker` using `by show F (a - b) = 0`. Rewrite using `[map_sub, hab, sub_self]`. Rewrite `hm` using `[hker]`. Conclude with `sub_eq_zero.1 ((Submodule.mem_bot ℂ).1 hm)`.
+
+Establish `hsq` using `GlobalTheory.CosocleOfContra.isSmooth_quot hSs C`. Establish `hirr` using `GlobalTheory.CosocleOfContra.isIrreducible_quot hC`. Set `e` to `IrrGL.equivOf (quot C) hsq hirr`. Use `⟨(IrrGL.of (quot C) hsq hirr).2, ?_, (Tm e.toIntertwiningMap).comp F, (Tm_equiv_injective T Tm hT e).comp hFinj⟩` and prove the remaining obligations. Conclude with `(IsSubquotient.of_surjective e.toIntertwiningMap e.toLinearEquiv.surjective).trans ((IsSubquotient.of_surjective (quotMk C) C.toSubmodule.mkQ_surjective).trans hSsub)`.
+-/
 theorem mid_sub {V : Type} [AddCommGroup V] [Module ℂ V] {P : Representation ℂ (GL (Fin m) k) V}
     (hP : HasFiniteLength P) (hs : IsSmooth P) (x : IrrCl (GL (Fin N) k)) (S : Subrepresentation P)
     (hx : ∃ f : x.rep.ρ.IntertwiningMap (T S.toRepresentation).ρ, Function.Injective f) :
@@ -137,6 +170,9 @@ theorem mid_sub {V : Type} [AddCommGroup V] [Module ℂ V] {P : Representation �
 
 include hT in
 
+/- English proof (translation)
+Set `I` to `Representation.IntertwiningMap.id P`. Set `e` to `rangeEquiv I (fun a b h => h)`. Conclude with `mid_sub T Tm hT hP hs x I.range ⟨(Tm e.toIntertwiningMap).comp f, (Tm_equiv_injective T Tm hT e).comp hf⟩`.
+-/
 theorem mid_gen {V : Type} [AddCommGroup V] [Module ℂ V] {P : Representation ℂ (GL (Fin m) k) V}
     (hP : HasFiniteLength P) (hs : IsSmooth P) (x : IrrCl (GL (Fin N) k))
     (f : x.rep.ρ.IntertwiningMap (T P).ρ) (hf : Function.Injective f) :

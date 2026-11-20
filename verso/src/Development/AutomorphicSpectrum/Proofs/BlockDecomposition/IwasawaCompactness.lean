@@ -14,6 +14,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.ThTot
 
+/- English proof (translation)
+Introduce `D n C hC`. Establish `hCK : IsCompact (C * (K D n : Set (G D n))⁻¹)` using `hC.mul isCompact_K.inv`. Establish `hQ : IsCompact ((↑) ⁻¹' (C * (K D n : Set (G D n))⁻¹) : Set (P D n))` using `(isClosed_P (D := D) (n := n)).isClosedEmbedding_subtypeVal.isCompact_preimage hCK`. Establish `hL` using `hQ.image (continuous_leviBlock (D := D) (n := n))`. Use `set L := leviBlock (D := D) (n := n) '' ((↑) ⁻¹' (C * (K D n : Set (G D n))⁻¹) : Set (P D n)) with hLdef`.
+
+Establish `hR : Continuous fun a : GL (Fin n) (AE D) => (absA D (Matrix.GeneralLinearGroup.det a) : ℝ)` using `NNReal.continuous_coe.comp (continuous_absE.comp continuous_detGL)`. Take `⟨R, hRb⟩` from `(hL.image hR).bddAbove`. Use `⟨Units.val '' L, (fun a : GL (Fin n) (AE D) => (a⁻¹).1) '' L, R, hL.image Units.continuous_val, hL.image Units.continuous_coe_inv, fun h hh => ?_⟩` and prove the remaining obligations. Take `⟨q, hq, k, hk, rfl⟩` from `Iwasawa.exists_mul D n h`. Establish `hmem : leviBlock (D` using `D) (n := n) ⟨q, hq⟩ ∈ L := ⟨⟨q, hq⟩, ⟨q * k, hh, k⁻¹, Set.inv_mem_inv.2 hk, by simp⟩, rfl⟩`.
+
+Take `⟨m, t, b, e, hm, ht⟩` from `exists_levi_unip hq (leviBlock (D := D) (n := n) ⟨q, hq⟩) rfl`. Conclude with `⟨m, t, k, _, b, hk, by rw [e], hm, ht, ⟨_, hmem, rfl⟩, ⟨_, hmem, rfl⟩, hRb ⟨_, hmem, rfl⟩⟩`.
+-/
 theorem iwaCpt : IwaCpt := by
   intro D n C hC
   have hCK : IsCompact (C * (K D n : Set (G D n))⁻¹) := hC.mul isCompact_K.inv

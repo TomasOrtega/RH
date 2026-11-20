@@ -15,6 +15,27 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.NormDict
 
+/- English proof (translation)
+Introduce `D cc δ t0 Q P X hX hb g hg`. Establish `hW` using `hX.2.weil`. Establish `hθ` using `hX.2.inf`. Take `⟨η, e1, e2, e3, e4⟩` from `GlobalTheory.T.exists_unramifiedHeckeChar_halfExponent_restrict_quadratic D`. Establish `cart : ∀ (V : HSp D), V.gram = 1 → ∀ τ, IsCartanInv (gramAt D V τ) 1` using `fun V hV τ => by`.
+
+Establish `: gramAt D V τ = 1` using `by rw [gramAt, hV, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[this]`. Conclude with `⟨by simp, by simp, by simpa using Matrix.PosDef.one⟩`. Establish `hmt1 : Formalism.L2.Theta.mt X.B 1 = 1` using `by simp [Formalism.L2.Theta.mt]`. Establish `hc1 : ∀ τ, compAt X.θ τ (Formalism.L2.Theta.mt X.B 1) = 1` using `fun τ => by`.
+
+Rewrite using `[hmt1, compAt, Matrix.map_one _ (by simp) (by simp)]`. Establish `hA0 : ∀ τ, (gramAt D X.A τ).det ≠ 0` using `fun τ => by`. Rewrite using `[gramAt, hX.1.gramA, Matrix.map_one _ (map_zero _) (map_one _), Matrix.det_one]`. Conclude with `one_ne_zero`. Take `⟨x, hx, hxv⟩` from `GlobalTheory.VacuumCharacter.exists_root hθ X.A hA0 g hg`.
+
+Establish `hy : IsDetRoot X.B 1 1` using `by simp [IsDetRoot]`. Rewrite using `[GlobalTheory.T.weilDatum_realPlaces_fockVacuum_character D X.ψ hW.std X.A X.B X.θ hθ X.χA X.χB X.om η ⟨e1, e4, e3, e2⟩ hW (fun _ => 1) (fun _ => 1) (cart X.A hX.1.gramA) (cart X.B hX.1.gramB) g hg 1 (one_mem _) (fun τ => by rw [one_mul, mul_one]) (fun τ => by rw [one_mul, mul_on …`. Use `congr 1`. Set `c : D.what₂.Tau → ℤ` to `fun τ => -((P.n τ : ℤ) + P.d)`. Establish `hν : ∀ τ, HasInfExp D (X.χB * (η ^ X.B.rank)⁻¹) τ ((c τ : ℤ) : ℚ)`.
+
+Introduce `τ`. Use `GlobalTheory.VacuumCharacter.hasInfExp_twist (hb τ) (e2 τ) X.B.rank` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[X.rkB]`. Simplify using `only [c]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Circle.coe_mul, Circle.coe_inv, hxv _ c hν, map_one, Circle.coe_one, mul_one, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Take `⟨p, hp, hd⟩` from `GlobalTheory.VacuumCharacter.detPlus_one (n := X.A.rank) (1 : Matrix (Fin X.B.rank) (Fin X.B.rank) ℂ) (by simp)`.
+
+Take `⟨d1, -⟩` from `hd (compAt X.θ τ (Formalism.L2.Theta.mt X.A g⁻¹)) (compAt X.θ τ (Formalism.L2.Theta.mt X.B 1)) (by rw [one_mul, mul_one])`. Establish `hpd : p = P.d`. Establish `: (p : ℂ) = X.B.rank`. Rewrite `hp` using `[Matrix.trace_one, Fintype.card_fin]`. Take the linear combination `-hp / 2`.
+
+Conclude with `this.trans (congrArg (Nat.cast) X.rkB)` after adjusting the coercions. Establish `e1' : ((1 / 2 : ℂ) • (1 + 1 : Matrix (Fin X.B.rank) (Fin X.B.rank) ℂ) * 1 + (1 / 2 : ℂ) • (1 - 1)) = 1`. Rewrite using `[mul_one]`. Use `module`. Establish `inv : (compAt X.θ τ (Formalism.L2.Theta.mt X.A g)).det * (compAt X.θ τ (Formalism.L2.Theta.mt X.A g⁻¹)).det = 1`.
+
+Rewrite using `[GlobalTheory.VacuumCharacter.det_compAt, GlobalTheory.VacuumCharacter.det_compAt, ← map_mul, ← map_mul, ← Matrix.det_mul]`. Unfold `Formalism.L2.Theta.mt`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, Matrix.det_one, map_one, map_one]`. Establish `g0` using `left_ne_zero_of_mul_eq_one inv`. Rewrite using `[d1, hc1, e1', Matrix.det_one, one_pow, one_mul, hpd, eq_inv_of_mul_eq_one_right inv]`.
+
+Simplify using `only [c]`. Rewrite using `[zpow_neg, inv_inv, zpow_add₀ g0, zpow_natCast, zpow_natCast, inv_pow]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem vacuum_smul_realA : ∀ {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ t0 : ℂ} {Q : ℕ} (P : Pair D cc δ t0 Q) (X : Data P), IsDict P X →
     (∀ τ, HasInfExp D X.χB τ (-((P.n τ : ℚ) + (P.d : ℚ) / 2))) →
     ∀ g ∈ GinfC X.A, X.om (g, 1) X.vac = (∏ τ, (compAt X.θ τ (Formalism.L2.Theta.mt X.A g)).det ^ P.n τ) • X.vac := by

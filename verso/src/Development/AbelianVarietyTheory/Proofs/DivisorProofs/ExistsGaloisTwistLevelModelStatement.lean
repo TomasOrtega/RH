@@ -8,6 +8,9 @@ open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions.DV Formalism.Ma
 open CategoryTheory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ShFam.GalCarry.carry | exact GlobalTheory.ShFam.GalCarry.carry | (intros; apply GlobalTheory.ShFam.GalCarry.carry <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_galois_twist_level_model : Hypotheses2 → HypothesesH → ∀ (D : D7) (O : Setup D), O.Core → ∀ h ∈ D.R.Psi,
     (∀ g ∈ D.R.Psi,
       ∃ (σ : 𝓞 D.host.E ≃+* 𝓞 D.host.E) (r : (O.S.Xo O.κ.l).XF O.κ.c ≅ (O.S.Xo O.κ.l).XF O.κ.c),

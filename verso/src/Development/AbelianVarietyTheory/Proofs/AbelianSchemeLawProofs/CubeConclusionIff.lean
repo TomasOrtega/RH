@@ -22,6 +22,13 @@ section General
 
 variable {X Y Z : Scheme.{0}}
 
+/- English proof (translation)
+Introduce `i j`. Apply `Pdiv.PullbackComparison.unit_ext` to reduce the goal to its premises. Introduce `x hx`. Take `⟨q, hq⟩` from `exists_chart hA x`. Establish `e1` using `congrArg (Pdiv.PullbackComparison.gU x (⟨hx.1, hq⟩ : x ∈ B.U i ⊓ A.U q)) (h (i, q))`.
+
+Establish `e2` using `congrArg (Pdiv.PullbackComparison.gU x (⟨hx.2, hq⟩ : x ∈ B.U j ⊓ A.U q)) (h (j, q))`. Establish `e3` using `Transport.gU_iso w hw i j q q x ⟨hq, hx.1⟩ ⟨hq, hx.2⟩`. Simplify using `only [id] at e1 e2`. Use `erw [map_mul, Pdiv.PullbackComparison.gU_res, Pdiv.PullbackComparison.gU_res] at e1 e2`. Use `erw [Transport.gU_self hA x hq] at e3`.
+
+Use `erw [map_mul, Pdiv.PullbackComparison.gU_res, Pdiv.PullbackComparison.gU_res, e1, e2, e3]`. Simplify using `only [inv_one, _root_.mul_one]`. Conclude with `_root_.mul_assoc _ _ _`.
+-/
 theorem isGen_of_maps {A B : LB X} (hA : A.IsLB) {w : LB.Iso A B} (hw : w.IsGen) {a : LB.Gen A}
     {b : LB.Gen B} (h : LB.Gen.Maps w a b) : b.IsGen := by
   intro i j
@@ -40,6 +47,13 @@ theorem isGen_of_maps {A B : LB X} (hA : A.IsLB) {w : LB.Iso A B} (hw : w.IsGen)
 
 def idIso (L : LB X) : LB.Iso L L := ⟨fun p => L.g p.1 p.2⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨p₁, p₂⟩ ⟨q₁, q₂⟩`. Apply `Pdiv.PullbackComparison.unit_ext` to reduce the goal to its premises. Introduce `x hx`. Establish `h11 : x ∈ L.U p₁` using `hx.1.1`. Establish `h12 : x ∈ L.U p₂` using `hx.1.2`.
+
+Establish `h21 : x ∈ L.U q₁` using `hx.2.1`. Establish `h22 : x ∈ L.U q₂` using `hx.2.2`. Rewrite using `[map_mul, Pdiv.PullbackComparison.gU_res, Pdiv.PullbackComparison.gU_res]`. Use `erw [Transport.gU_div L L (p₁, p₂) (q₁, q₂) x hx.1 hx.2]`. Establish `c1` using `Transport.gU_cocycle hL x h11 h21 h22`.
+
+Establish `c2` using `Transport.gU_cocycle hL x h11 h12 h22`. Use `show Pdiv.PullbackComparison.gU x (⟨h11, h12⟩ : x ∈ L.U p₁ ⊓ L.U p₂) (L.g p₁ p₂) = Pdiv.PullbackComparison.gU x (⟨h11, h21⟩ : x ∈ L.U p₁ ⊓ L.U q₁) (L.g p₁ q₁) * (Pdiv.PullbackComparison.gU x (⟨h12, h22⟩ : x ∈ L.U p₂ ⊓ L.U q₂) (L.g p₂ q₂))⁻¹ * Pdiv.PullbackComparison.gU x (⟨h21, h …`. Rewrite using `[eq_mul_inv_of_mul_eq c2, ← c1, mul_right_comm]`.
+-/
 theorem idIso_isGen {L : LB X} (hL : L.IsLB) : (idIso L).IsGen := by
   rintro ⟨p₁, p₂⟩ ⟨q₁, q₂⟩
   apply Pdiv.PullbackComparison.unit_ext
@@ -63,6 +77,9 @@ variable {A B : LB X}
 def gw (w : LB.Iso A B) (f : Y ⟶ X) (y : Y) (p : B.ι) (q : A.ι) : (Y.presheaf.stalk y)ˣ :=
   gm f y (B.U p ⊓ A.U q) (w.s (p, q))
 
+/- English proof (translation)
+Use `(map_prod _ _ _).trans (Finset.prod_congr rfl fun a _ => (map_zpow _ _ _).trans (congrArg (· ^ ε a) ?_))` and prove the remaining obligations. Establish `hm : (φ a) (r z) ∈ B.U (p a) ⊓ A.U (q a)` using `⟨LB.wchart_le B φ p a hz.1, LB.wchart_le A φ q a hz.2⟩`. Conclude with `(gm_res r z _ hz _).trans (gm_pull r (φ a) z (B.U (p a) ⊓ A.U (q a)) hm _)`.
+-/
 theorem gm_linCombIso (w : LB.Iso A B) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (p : K → B.ι) (q : K → A.ι) (r : Z ⟶ Y) (z : Z)
     (hz : r z ∈ LB.wchart B φ p ⊓ LB.wchart A φ q) :
@@ -81,6 +98,13 @@ def PM (w : LB.Iso A B) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K �
     gm r z (LB.wchart B φ p) (b.s p) =
       (∏ k, gw w (r ≫ φ k) z (p k) (q k) ^ ε k) * gm r z (LB.wchart A φ q) (a.s q)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `H Z r z p q hp hq`. Establish `hm : r z ∈ LB.wchart B φ p ⊓ LB.wchart A φ q` using `⟨hp, hq⟩`. Use `congrArg (gm r z (LB.wchart B φ p ⊓ LB.wchart A φ q)) (H (p, q))` as an intermediate fact. Rewrite using `[← gm_linCombIso w φ ε p q r z hm]`.
+
+Conclude with `(gm_res r z _ hm _).symm.trans (this.trans ((map_mul _ _ _).trans (congrArg _ (gm_res r z _ hm _))))`. Introduce and unpack `H ⟨p, q⟩`. Apply `unit_ext` to reduce the goal to its premises. Introduce `x hx`. Use `H _ (𝟙 Y) x p q hx.1 hx.2` as an intermediate fact.
+
+Rewrite `this` using `[← gm_linCombIso w φ ε p q (𝟙 Y) x hx]`. Conclude with `(gm_res _ x _ hx _).trans (this.trans ((map_mul _ _ _).trans (congrArg _ (gm_res _ x _ hx _))).symm)`.
+-/
 theorem maps_iff_pm (w : LB.Iso A B) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (a : LB.Gen (LB.LinComb A φ ε)) (b : LB.Gen (LB.LinComb B φ ε)) :
     LB.Gen.Maps (LB.linCombIso w φ ε) a b ↔ PM w φ ε a b := by
@@ -101,6 +125,11 @@ theorem maps_iff_pm (w : LB.Iso A B) {K : Type} [Fintype K] (φ : K → (Y ⟶ X
 
 variable {w : LB.Iso A B} {K K' : Type} [Fintype K] [Fintype K']
 
+/- English proof (translation)
+Introduce `T r z p q hp hq`. Establish `hp' : h (r z) ∈ LB.wchart B φ p` using `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hp k`. Establish `hq' : h (r z) ∈ LB.wchart A φ q` using `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hq k`. Establish `e` using `H T (r ≫ h) z p q hp' hq'`. Simplify using `only [Category.assoc] at e`.
+
+Use `((gm_res r z _ hp _).trans (gm_pull r h z _ hp' _)).trans (e.trans (congrArg _ ?_))` and prove the remaining obligations. Conclude with `((gm_res r z _ hq _).trans (gm_pull r h z _ hq' _)).symm`.
+-/
 theorem PM.pullGen {φ : K → (Y ⟶ X)} {ε : K → ℤ} {a : LB.Gen (LB.LinComb A φ ε)}
     {b : LB.Gen (LB.LinComb B φ ε)} (H : PM w φ ε a b) (h : Z ⟶ Y) :
     PM w (fun k => h ≫ φ k) ε (LB.pullGen A φ ε a h) (LB.pullGen B φ ε b h) := by
@@ -112,6 +141,11 @@ theorem PM.pullGen {φ : K → (Y ⟶ X)} {ε : K → ℤ} {a : LB.Gen (LB.LinCo
   refine ((gm_res r z _ hp _).trans (gm_pull r h z _ hp' _)).trans (e.trans (congrArg _ ?_))
   exact ((gm_res r z _ hq _).trans (gm_pull r h z _ hq' _)).symm
 
+/- English proof (translation)
+Introduce `T r z p q hp hq`. Establish `e` using `H T r z (p ∘ Sum.inl) (q ∘ Sum.inl) (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hp (Sum.inl k)) (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hq (Sum.inl k))`. Establish `e'` using `H' T r z (p ∘ Sum.inr) (q ∘ Sum.inr) (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hp (Sum.inr k)) (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hq (Sum.inr k))`. Use `((map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_res r z _ hp _).trans e) ((gm_res r z _ hp _).trans e'))).trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_sum_type, _root_.mul_mul_mul_comm]`.
+
+Conclude with `congrArg _ ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z _ hq _) (gm_res r z _ hq _))).symm`.
+-/
 theorem PM.mulGen {φ : K → (Y ⟶ X)} {ε : K → ℤ} {a : LB.Gen (LB.LinComb A φ ε)}
     {b : LB.Gen (LB.LinComb B φ ε)} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
     {a' : LB.Gen (LB.LinComb A φ' ε')} {b' : LB.Gen (LB.LinComb B φ' ε')} (H : PM w φ ε a b)
@@ -131,6 +165,9 @@ theorem PM.mulGen {φ : K → (Y ⟶ X)} {ε : K → ℤ} {a : LB.Gen (LB.LinCom
   exact congrArg _ ((map_mul _ _ _).trans
     (congrArg₂ (· * ·) (gm_res r z _ hq _) (gm_res r z _ hq _))).symm
 
+/- English proof (translation)
+Introduce `T r z p q _ _`. Use `(map_one _).trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_empty, _root_.one_mul]`. Conclude with `(map_one _).symm`.
+-/
 theorem PM.oneGen (w : LB.Iso A B) :
     PM (Y := Y) w (K := PEmpty) PEmpty.elim PEmpty.elim (LB.oneGen A) (LB.oneGen B) := by
   intro T r z p q _ _
@@ -138,6 +175,19 @@ theorem PM.oneGen (w : LB.Iso A B) :
   rw [Fintype.prod_empty, _root_.one_mul]
   exact (map_one _).symm
 
+/- English proof (translation)
+Introduce `j j' cj cj' cjj`. Apply `unit_ext` to reduce the goal to its premises. Introduce `y hy`. Take `⟨idx, hidx⟩` from `Out.TLinPf.idx_exists A hA y`. Establish `m : y ∈ LB.wchart A φ (fun k => idx (φ k))` using `Set.mem_iInter.2 fun k => hidx _`.
+
+Establish `m' : y ∈ LB.wchart A φ' (fun k => idx (φ' k))` using `Set.mem_iInter.2 fun k => hidx _`. Establish `e` using `H Y (𝟙 Y) y j _ hy.1 m`. Establish `e'` using `H' Y (𝟙 Y) y j' _ hy.2 m'`. Use `(gm_res _ y _ hy _).trans (e.trans (Eq.trans ?_ ((gm_res _ y _ hy _).trans e').symm))` and prove the remaining obligations. Establish `hmm : (𝟙 Y : Y ⟶ Y) y ∈ LB.wchart A φ (fun k => idx (φ k)) ⊓ LB.wchart A φ' (fun k => idx (φ' k))` using `⟨m, m'⟩`.
+
+Establish `hmid` using `congrArg (gm (𝟙 Y) y _) (hc (fun k => idx (φ k)) (fun k => idx (φ' k)) (fun _ _ e => congrArg idx e) (fun _ _ e => congrArg idx e) (fun _ _ e => congrArg idx e))`. Use `congrArg₂ (· * ·) ?_ ((gm_res _ y _ hmm _).symm.trans (hmid.trans (gm_res _ y _ hmm _)))` and prove the remaining obligations. Set `F : (Y ⟶ X) → (Y.presheaf.stalk y)ˣ` to `fun ζ => if hz : ∃ k, φ k = ζ then gw w ζ y (j hz.choose) (idx ζ) else if hz' : ∃ k', φ' k' = ζ then gw w ζ y (j' hz'.choose) (idx ζ) else 1`. Establish `hF : ∀ k, gw w (𝟙 Y ≫ φ k) y (j k) (idx (φ k)) = F (φ k)`. Introduce `k`.
+
+Establish `hz : ∃ k', φ k' = φ k` using `⟨k, rfl⟩`. Use `show _ = (if hz : ∃ k', φ k' = φ k then _ else _)`. Rewrite using `[dif_pos hz, cj _ _ hz.choose_spec, Category.id_comp]`. Establish `hF' : ∀ k, gw w (𝟙 Y ≫ φ' k) y (j' k) (idx (φ' k)) = F (φ' k)`. Introduce `k`.
+
+Use `show _ = (if hz : ∃ k', φ k' = φ' k then _ else if hz' : ∃ k', φ' k' = φ' k then _ else _)`. Distinguish the cases in `hz : ∃ k', φ k' = φ' k`. Rewrite using `[dif_pos hz, cjj _ _ hz.choose_spec, Category.id_comp]`. Establish `hz' : ∃ k', φ' k' = φ' k` using `⟨k, rfl⟩`. Rewrite using `[dif_neg hz, dif_pos hz', cj' _ _ hz'.choose_spec, Category.id_comp]`.
+
+Simplify using `only [hF, hF']`. Conclude with `Out.Canon.prod_sameSum φ ε φ' ε' hS F`.
+-/
 theorem corr_of_pm (hA : A.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} {a : LB.Gen (LB.LinComb A φ ε)}
     {b : LB.Gen (LB.LinComb B φ ε)} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ}
     {a' : LB.Gen (LB.LinComb A φ' ε')} {b' : LB.Gen (LB.LinComb B φ' ε')} (H : PM w φ ε a b)
@@ -197,12 +247,18 @@ def transportCubical {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {
     cocycle := corr_of_pm L.isLB ((H.pullGen _).mulGen (H.pullGen _))
       ((H.pullGen _).mulGen (H.pullGen _)) (Out.CubePf.cocycle_sameSum G) c.cocycle }
 
+/- English proof (translation)
+Introduce `p` and use `ht p.1 p.2`.
+-/
 theorem idIso_maps {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X))
     (ε : K → ℤ) (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) :
     LB.Gen.Maps (LB.linCombIso (idIso L) φ ε) t t := fun p => ht p.1 p.2
 
 variable {S S' : Scheme.{0}}
 
+/- English proof (translation)
+Use `⟨fun ⟨c', w, hw, _, ht⟩ => ?_, fun ⟨c', _, h⟩ => ⟨c', h⟩⟩` and prove the remaining obligations. Set `c'' : CubicalStr G' (m.rigLB L hL hr)` to `transportCubical (L := m.rigLB L hL hr) (M := m.rigLB L hL hr) w hw c' (m.thetaPull L.L c.t) ht`. Conclude with `⟨c'', rfl, idIso _, idIso_isGen hL, idIso_maps _ _ _ _ hr, idIso_maps (L.L.pull m.F) (thφ G' (x3 G')) thε _ c''.isGen⟩`.
+-/
 theorem cubical_clause_iff {G' : Over S'} {G : Over S} [GrpObj G'] [IsCommMonObj G'] [GrpObj G]
     [IsCommMonObj G] (m : CubeMap G' G) (L : RigLB G) (c : CubicalStr G L)
     (hL : (L.L.pull m.F).IsLB) (hr : (m.rigPull L.L L.rig).IsGen) :
@@ -215,6 +271,9 @@ theorem cubical_clause_iff {G' : Over S'} {G : Over S} [GrpObj G'] [IsCommMonObj
   exact ⟨c'', rfl, idIso _, idIso_isGen hL, idIso_maps _ _ _ _ hr,
     idIso_maps (L.L.pull m.F) (thφ G' (x3 G')) thε _ c''.isGen⟩
 
+/- English proof (translation)
+Use `exists_congr fun hL => exists_congr fun hr => ?_` and prove the remaining obligations. Rewrite using `[cubical_clause_iff]`. Conclude with `⟨fun ⟨⟨c', h1, h2⟩, h3⟩ => ⟨c', h1, h2, h3⟩, fun ⟨c', h1, h2, h3⟩ => ⟨⟨c', h1, h2⟩, h3⟩⟩`.
+-/
 theorem cube_conclusion_iff {G' : Over S'} {G : Over S} [GrpObj G'] [IsCommMonObj G'] [GrpObj G]
     [IsCommMonObj G] (m : CubeMap G' G) (L : RigLB G) (c : CubicalStr G L) :
     (∃ (hL : (L.L.pull m.F).IsLB) (hr : (m.rigPull L.L L.rig).IsGen),

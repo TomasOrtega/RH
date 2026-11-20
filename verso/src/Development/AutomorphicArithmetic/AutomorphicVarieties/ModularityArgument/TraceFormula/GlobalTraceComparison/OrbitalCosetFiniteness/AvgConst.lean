@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 namespace UpperTheory.V.Z.Tf.GlobalTraceComparison.Th
 
+/- English proof (translation)
+Establish `hS : GlobalTheory.BCT.rStab (fun _ : H => c) = ⊤`. Use extensionality with `k`. Simplify using `[GlobalTheory.BCT.rStab]`. Unfold `GlobalTheory.BCT.avg`. Rewrite using `[hS]`.
+
+Use `haveI : Subsingleton (H ⧸ (⊤ : Subgroup H)) := QuotientGroup.subsingleton_quotient_top`. Use `haveI : Unique (H ⧸ (⊤ : Subgroup H)) := Unique.mk' _`. Simplify using `[finsum_unique]`.
+-/
 private lemma avg_const {H : Type} [Group H] (c : ℂ) : GlobalTheory.BCT.avg (fun _ : H => c) = c := by
   have hS : GlobalTheory.BCT.rStab (fun _ : H => c) = ⊤ := by
     ext k
@@ -12,6 +17,11 @@ private lemma avg_const {H : Type} [Group H] (c : ℂ) : GlobalTheory.BCT.avg (f
   haveI : Unique (H ⧸ (⊤ : Subgroup H)) := Unique.mk' _
   simp [finsum_unique]
 
+/- English proof (translation)
+Establish `hc : (fun k : K => h ((x * k)⁻¹ * δ * θ (x * k))) = fun _ : K => h (x⁻¹ * δ * θ x)`. Use function extensionality and compare the values at `k`. Establish `e : (x * (k : G))⁻¹ * δ * θ (x * k) = (k : G)⁻¹ * ((x⁻¹ * δ * θ x) * θ k)`. Simplify using `only [map_mul, mul_inv_rev, mul_assoc]`. Rewrite using `[e, (hh _ (K.inv_mem k.2) _).1, (hh _ (hθ _ k.2) _).2]`.
+
+Rewrite using `[hc, avg_const]`.
+-/
 private lemma avg_orbit {G : Type} [Group G] (K : Subgroup G) (θ : G →* G) (hθ : ∀ k ∈ K, θ k ∈ K)
     (δ x : G) (h : G → ℂ) (hh : ∀ k ∈ K, ∀ y, h (k * y) = h y ∧ h (y * k) = h y) :
     GlobalTheory.BCT.avg (fun k : K => h ((x * k)⁻¹ * δ * θ (x * k))) = h (x⁻¹ * δ * θ x) := by
@@ -24,6 +34,15 @@ private lemma avg_orbit {G : Type} [Group G] (K : Subgroup G) (θ : G →* G) (h
 
 end UpperTheory.V.Z.Tf.GlobalTraceComparison.Th
 
+/- English proof (translation)
+Introduce `G _ _ _ K _ _ θ hθ δ hfin f g c hf hg`. Set `W : DoubleCoset.Quotient (GlobalTheory.BCT.twCent θ δ : Set G) (K : Set G) → ℂ` to `fun q => (((GlobalTheory.BCT.twCent θ δ ⊓ K.map (MulAut.conj (Quotient.out q)).toMonoidHom).relIndex (GlobalTheory.BCT.cptPart (GlobalTheory.BCT.twCent θ δ)) : ℕ) : ℂ)`. Set `y : DoubleCoset.Quotient (GlobalTheory.BCT.twCent θ δ : Set G) (K : Set G) → G` to `fun q => (Quotient.out q)⁻¹ * δ * θ (Quotient.out q)`. Establish `form : ∀ h : G → ℂ, (∀ k ∈ K, ∀ z, h (k * z) = h z ∧ h (z * k) = h z) → GlobalTheory.BCT.twOrb θ K δ h = ∑ᶠ q, W q * h (y q)`. Introduce `h hh`.
+
+Unfold `GlobalTheory.BCT.twOrb`. Conclude with `finsum_congr fun q => by rw [avg_orbit K θ hθ δ _ h hh]`. Establish `fin : ∀ h : G → ℂ, GlobalTheory.BCT.IsHecke K h → (Function.support fun q => W q * h (y q)).Finite`. Introduce `h hh`. Use `(hfin _ hh.1.isCompact).subset fun q hq => ?_` and prove the remaining obligations.
+
+Conclude with `subset_tsupport h (right_ne_zero_of_mul hq)`. Establish `inv : ∀ k ∈ K, ∀ z, (fun u => f u + c * g u) (k * z) = (fun u => f u + c * g u) z ∧ (fun u => f u + c * g u) (z * k) = (fun u => f u + c * g u) z`. Introduce `k hk z`. Simplify using `only [(hf.2 k hk z).1, (hf.2 k hk z).2, (hg.2 k hk z).1, (hg.2 k hk z).2, and_self]`. Establish `fin' : (Function.support fun q => c * (W q * g (y q))).Finite` using `(fin g hg).subset fun q hq => right_ne_zero_of_mul hq`.
+
+Rewrite using `[form _ inv, form f hf.2, form g hg.2, mul_finsum _ c, ← finsum_add_distrib (fin f hf) fin']`. Conclude with `finsum_congr fun q => by ring`.
+-/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Th.twLin :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Th.TwLin := by
   intro G _ _ _ K _ _ θ hθ δ hfin f g c hf hg

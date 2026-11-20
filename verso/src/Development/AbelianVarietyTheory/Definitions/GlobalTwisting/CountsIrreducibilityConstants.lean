@@ -34,6 +34,9 @@ abbrev WithChN (𝒞 : FamClass) : FamClass :=
 
 abbrev D3 (C0 : ℝ) (𝒜 : FamClass) : FamClass := Des (WithChN 𝒜) C0
 
+/- English proof (translation)
+The claim follows from `h.1.1.1.1`.
+-/
 theorem d3_a {C0 : ℝ} {𝒜 : FamClass} {eps : ℝ} {Fm : FamP eps} (h : D3 C0 𝒜 Fm) : 𝒜 Fm := h.1.1.1.1
 
 def TupUsedF {eps : ℝ} (Fm : FamP eps) : Prop :=

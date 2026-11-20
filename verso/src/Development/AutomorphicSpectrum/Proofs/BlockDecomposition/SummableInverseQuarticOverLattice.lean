@@ -11,6 +11,11 @@ namespace GlobalTheory.CompanionTheory.LatticeSum
 open NumberField.mixedEmbedding
 open scoped Classical
 
+/- English proof (translation)
+Establish `h1` using `InfinitePlace.card_add_two_mul_card_eq_rank K`. Establish `h3` using `IsTotallyComplex.nrRealPlaces_eq_zero K`. Establish `h4 : Fintype.card (InfinitePlace K) = 1`. Rewrite using `[InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, h3]`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `Fintype.card_le_one_iff.1 h4.le w w'`.
+-/
 theorem infinitePlace_eq (K : Type) [Field K] [NumberField K] (h2 : Module.finrank ℚ K = 2)
     (hc : IsTotallyComplex K) (w w' : InfinitePlace K) : w = w' := by
   have h1 := InfinitePlace.card_add_two_mul_card_eq_rank K
@@ -20,6 +25,11 @@ theorem infinitePlace_eq (K : Type) [Field K] [NumberField K] (h2 : Module.finra
     omega
   exact Fintype.card_le_one_iff.1 h4.le w w'
 
+/- English proof (translation)
+Rewrite using `[norm_eq_sup'_normAtPlace]`. Unfold `embC`. Rewrite using `[InfinitePlace.norm_embedding_eq]`. Apply `le_antisymm` to reduce the goal to its premises. Use `Finset.sup'_le _ _ fun w _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[normAtPlace_apply, infinitePlace_eq K h2 hc w (Classical.arbitrary _)]`. Use `le_trans (le_of_eq (normAtPlace_apply _ x).symm) ?_` and prove the remaining obligations. Conclude with `Finset.le_sup' (fun w => normAtPlace w (mixedEmbedding K x)) (Finset.mem_univ _)`.
+-/
 theorem norm_mixedEmbedding (K : Type) [Field K] [NumberField K] (h2 : Module.finrank ℚ K = 2)
     (hc : IsTotallyComplex K) (x : K) : ‖mixedEmbedding K x‖ = ‖embC K x‖ := by
   rw [norm_eq_sup'_normAtPlace]
@@ -31,12 +41,32 @@ theorem norm_mixedEmbedding (K : Type) [Field K] [NumberField K] (h2 : Module.fi
   · refine le_trans (le_of_eq (normAtPlace_apply _ x).symm) ?_
     exact Finset.le_sup' (fun w => normAtPlace w (mixedEmbedding K x)) (Finset.mem_univ _)
 
+/- English proof (translation)
+Rewrite using `[finrank_span_eq_card ((latticeBasis K).linearIndependent.restrict_scalars (R := ℤ) (by simpa using Int.cast_injective))]`. Rewrite using `[← Module.finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank]`.
+-/
 theorem finrank_span_latticeBasis (K : Type) [Field K] [NumberField K] :
     Module.finrank ℤ (Submodule.span ℤ (Set.range (latticeBasis K))) = Module.finrank ℚ K := by
   rw [finrank_span_eq_card ((latticeBasis K).linearIndependent.restrict_scalars (R := ℤ)
     (by simpa using Int.cast_injective))]
   rw [← Module.finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank]
 
+/- English proof (translation)
+Introduce `K _ _ h2 hc N hN`. Establish `hrank : Module.finrank ℤ (Submodule.span ℤ (Set.range (latticeBasis K))) < 4`. Rewrite using `[finrank_span_latticeBasis, h2]`. Use linear arithmetic over natural numbers and integers. Establish `hs` using `ZLattice.summable_norm_pow_inv (Submodule.span ℤ (Set.range (latticeBasis K))) 4 hrank`.
+
+Establish `hmem : ∀ ξ : {ξ : K // ∃ a : 𝓞 K, (N : K) * ξ = a}, mixedEmbedding K ((N : K) * ξ.1) ∈ Submodule.span ℤ (Set.range (latticeBasis K))`. Introduce and unpack `⟨ξ, a, ha⟩`. Rewrite using `[ha]`. Conclude with `(mem_span_latticeBasis K).mpr ⟨a, rfl⟩`. Set `f : {ξ : K // ∃ a : 𝓞 K, (N : K) * ξ = a} → Submodule.span ℤ (Set.range (latticeBasis K))` to `fun ξ => ⟨_, hmem ξ⟩`.
+
+Establish `hN' : (N : K) ≠ 0` using `Nat.cast_ne_zero.mpr hN`. Establish `hinj : Function.Injective f`. Introduce `ξ η h`. Establish `h1 : mixedEmbedding K ((N : K) * ξ.1) = mixedEmbedding K ((N : K) * η.1)` using `congrArg Subtype.val h`. Conclude with `Subtype.ext (mul_left_cancel₀ hN' (mixedEmbedding_injective K h1))`.
+
+Establish `h0 : Summable fun z : Submodule.span ℤ (Set.range (latticeBasis K)) => (if z = 0 then (1 : ℝ) else 0)` using `(hasSum_ite_eq _ (1 : ℝ)).summable`. Use `Summable.of_nonneg_of_le (fun _ => by positivity) (fun ξ => ?_) (((hs.mul_left ((N : ℝ) ^ 4)).add h0).comp_injective hinj)` and prove the remaining obligations. Establish `hNpos : (0 : ℝ) < N` using `by exact_mod_cast Nat.pos_of_ne_zero hN`. Establish `hnorm : ‖f ξ‖ = N * ‖embC K ξ.1‖`. Express the relevant statement in the definitionally equal form `‖mixedEmbedding K ((N : K) * ξ.1)‖ = _`.
+
+Rewrite using `[norm_mixedEmbedding K h2 hc]`. Unfold `embC`. Simplify using the standard rewrite rules. Simplify using `only [Function.comp_apply]`. Distinguish the cases in `hz : f ξ = 0`.
+
+Rewrite using `[if_pos hz]`. Establish `h1 : ((1 + ‖embC K ξ.1‖) ^ 4)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (one_le_pow₀ (by linarith [norm_nonneg (embC K ξ.1)]))`. Establish `h3 : 0 ≤ (N : ℝ) ^ 4 * ‖f ξ‖⁻¹ ^ 4` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[if_neg hz, add_zero, hnorm]`.
+
+Establish `ht : 0 < ‖embC K ξ.1‖`. Establish `: 0 < ‖f ξ‖` using `norm_pos_iff.mpr hz`. Rewrite `this` using `[hnorm]`. Conclude with `(mul_pos_iff_of_pos_left hNpos).mp this`. Establish `he : (N : ℝ) ^ 4 * ((N : ℝ) * ‖embC K ξ.1‖)⁻¹ ^ 4 = (‖embC K ξ.1‖ ^ 4)⁻¹`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[he]`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem summable_inv_one_add_norm_pow_four :
     ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → IsTotallyComplex K → ∀ N : ℕ, N ≠ 0 →
   Summable (fun ξ : {ξ : K // ∃ a : 𝓞 K, (N : K) * ξ = a} => ((1 + ‖embC K ξ.1‖) ^ 4)⁻¹) := by

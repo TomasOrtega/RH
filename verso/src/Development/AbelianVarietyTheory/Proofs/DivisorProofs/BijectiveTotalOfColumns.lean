@@ -32,6 +32,15 @@ variable {GA GB : ℤ → ℤ → Type*} [∀ p n, AddCommGroup (GA p n)] [∀ p
   {dB : ∀ n m, B n →+ B m} {gB : ∀ p n m, GB p n →+ GB p m} {FB : ℤ → ∀ n, AddSubgroup (B n)}
   {rB : ∀ p n m, n + p = m → (B n →+ GB p m)}
 
+/- English proof (translation)
+Establish `key : ∀ n m (h : n + p = m), ∀ x ∈ FA p n, ∀ x' ∈ FA p n, rA p n m h x = rA p n m h x' → rB p n m h (Φ n x) = rB p n m h (Φ n x')`. Introduce `n m h x hx x' hx' e`. Establish `h1 : x - x' ∈ FA p n` using `sub_mem hx hx'`. Establish `h2` using `(hA.ker p n m h _ h1).1 (by rw [map_sub, e, sub_self])`. Establish `h3` using `(hB.ker p n m h _ (hF _ _ _ h1)).2 (hF _ _ _ h2)`.
+
+Rewrite `h3` using `[map_sub, map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Use `choose s hs hs' using fun m => hA.surj p (m - p) m (by omega)`. Set `Ψ : ∀ m, GA p m →+ GB p m` to `fun m => AddMonoidHom.mk' (fun y => rB p (m - p) m (by omega) (Φ _ (s m y))) (fun y y' => by`. Rewrite using `[← map_add, ← map_add]`. Conclude with `key _ _ _ _ (hs _ _) _ (add_mem (hs _ _) (hs _ _)) (by rw [map_add, hs', hs', hs']))`.
+
+Establish `h1 : ∀ n m (h : n + p = m), ∀ x ∈ FA p n, Ψ m (rA p n m h x) = rB p n m h (Φ n x)`. Introduce `n m h x hx`. Take `rfl : n = m - p` from `by omega`. Conclude with `key _ _ _ _ (hs _ _) _ hx (hs' _ _)`. Use `⟨Ψ, h1, fun n m hnm y => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x, hx, rfl⟩` from `hA.surj p (n - p) n (by omega) y`. Rewrite using `[← hA.rd p (n - p) (m - p) n m _ (by omega) (by omega) x hx, h1 _ _ _ _ (hA.dF _ _ _ (by omega) _ hx), hd _ _ (by omega), hB.rd p (n - p) (m - p) n m (by omega) _ (by omega) _ (hF _ _ _ hx), h1 _ _ _ _ hx]`.
+-/
 theorem exists_graded (hA : IsFilt dA gA FA rA) (hB : IsFilt dB gB FB rB) (Φ : ∀ n, A n →+ B n)
     (hd : ∀ n m, n + 1 = m → ∀ x, Φ m (dA n m x) = dB n m (Φ n x))
     (hF : ∀ p n, ∀ x ∈ FA p n, Φ n x ∈ FB p n) (p : ℤ) :
@@ -59,6 +68,19 @@ theorem exists_graded (hA : IsFilt dA gA FA rA) (hB : IsFilt dB gB FB rB) (Φ : 
   rw [← hA.rd p (n - p) (m - p) n m _ (by omega) (by omega) x hx, h1 _ _ _ _ (hA.dF _ _ _ (by omega) _ hx),
     hd _ _ (by omega), hB.rd p (n - p) (m - p) n m (by omega) _ (by omega) _ (hF _ _ _ hx), h1 _ _ _ _ hx]
 
+/- English proof (translation)
+Introduce `n₀ n₁ n₂ n₃ h₀ h₁ h₂`. Take `⟨N, hN⟩` from `hA.bot n₂`. Take `⟨N', hN'⟩` from `hB.bot n₁`. Establish `main : ∀ p, min (min N N') 0 ≤ p → p ≤ 0 → ∀ x ∈ FA p n₂, ∀ y ∈ FB p n₁, dA n₂ n₃ x = 0 → Φ n₂ x = dB n₁ n₂ y → ∃ (v : A n₁) (w : B n₀), x = dA n₁ n₂ v ∧ y = Φ n₁ v + dB n₀ n₁ w`. Introduce `p hp`.
+
+Proceed by induction on `p, hp using Int.le_induction with`. Consider the case `base`. Introduce `_ x hx y hy _ _`. Use `⟨0, 0, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using hN x (hA.mono _ _ _ (by omega) hx)`.
+
+Simplify using `using hN' y (hB.mono _ _ _ (by omega) hy)`. Consider the case `succ p _ ih`. Introduce `hp0 x hx y hy hdx hxy`. Take `⟨v', w', hv, hw⟩` from `hc (p + 1) hp0 (n₀ + (p + 1)) (n₁ + (p + 1)) (n₂ + (p + 1)) (n₃ + (p + 1)) (by omega) (by omega) (by omega) (rA _ _ _ rfl x) (rB _ _ _ rfl y) (by rw [← hA.rd _ _ n₃ _ _ rfl rfl h₂ x hx, hdx, map_zero]) (by rw [hΨ _ _ _ _ _ hx, hxy, hB.rd _ _ _ _ _ rfl rfl h₁ y hy])`. Take `⟨v, hvF, rfl⟩` from `hA.surj _ n₁ _ rfl v'`.
+
+Take `⟨w, hwF, rfl⟩` from `hB.surj _ n₀ _ rfl w'`. Establish `hx' : x - dA n₁ n₂ v ∈ FA p n₂`. Use `(hA.ker _ _ _ rfl _ (sub_mem hx (hA.dF _ _ _ h₁ _ hvF))).1 (by rw [map_sub, hA.rd _ _ _ _ _ rfl rfl h₁ v hvF, ← hv, sub_self])` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Then use the resulting hypothesis. Establish `hy' : y - (Φ n₁ v + dB n₀ n₁ w) ∈ FB p n₁`.
+
+Use `(hB.ker _ _ _ rfl _ (sub_mem hy (add_mem (hF _ _ _ hvF) (hB.dF _ _ _ h₀ _ hwF)))).1 (by rw [map_sub, map_add, hB.rd _ _ _ _ _ rfl rfl h₀ w hwF, ← hΨ _ _ _ _ _ hvF, ← hw, sub_self])` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Then use the resulting hypothesis. Take `⟨v₂, w₂, e₁, e₂⟩` from `ih (by omega) _ hx' _ hy' (by rw [map_sub, hdx, hA.dd, sub_self]) (by rw [map_sub, map_sub, map_add, hB.dd, add_zero, hxy, hd _ _ h₁])`. Use `⟨v + v₂, w + w₂, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, ← e₁]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[map_add, map_add, add_add_add_comm, ← e₂]`. Normalize the expressions using the abelian group laws. Introduce `x y`. Conclude with `main 0 (min_le_right _ _) le_rfl x (hA.top _ _) y (hB.top _ _)`.
+-/
 theorem coneAcyclic_of_graded (hA : IsFilt dA gA FA rA) (hB : IsFilt dB gB FB rB) (Φ : ∀ n, A n →+ B n)
     (hd : ∀ n m, n + 1 = m → ∀ x, Φ m (dA n m x) = dB n m (Φ n x))
     (hF : ∀ p n, ∀ x ∈ FA p n, Φ n x ∈ FB p n) (Ψ : ∀ p m, GA p m →+ GB p m)
@@ -117,11 +139,25 @@ def dPi {J : Type*} (K : CochainComplex C ℤ) (I : J → CochainComplex C ℤ) 
 variable {J : Type*} {K K' I' : CochainComplex C ℤ} {I : J → CochainComplex C ℤ} {e : J → ℤ}
   (Φ : ∀ n, (∀ j, Cochain K (I j) (n - e j)) →+ Cochain K' I' n)
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ m h]`. Both sides reduce to the same expression.
+-/
 theorem mk_eq_mk_iff {n : ℤ} (a b : Cocycle K' I' n) (m : ℤ) (h : m + 1 = n) :
     CohomologyClass.mk a = CohomologyClass.mk b ↔ ∃ w : Cochain K' I' m, δ m n w = a.1 - b.1 := by
   rw [← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ m h]
   rfl
 
+/- English proof (translation)
+Establish `hz : ∀ a : ∀ j, Cocycle K (I j) (n - e j), δ n (n + 1) (Φ n (fun j => (a j).1)) = 0`. Introduce `a`. Rewrite using `[← hd _ _ rfl, ← map_zero (Φ (n + 1))]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Conclude with `Cocycle.δ_eq_zero (a j) _`. Prove the components needed by the constructor for the conclusion. Introduce `x x' h choose a ha using fun j => CohomologyClass.mk_surjective (x j) choose a' ha' using fun j => CohomologyClass.mk_surjective (x' j)`. Take `rfl : (fun j => CohomologyClass.mk (a j)) = x` from `funext ha`. Take `rfl : (fun j => CohomologyClass.mk (a' j)) = x'` from `funext ha'`.
+
+Rewrite `h` using `[hφ a (Cocycle.mk _ _ rfl (hz a)) rfl, hφ a' (Cocycle.mk _ _ rfl (hz a')) rfl, mk_eq_mk_iff _ _ (n - 1) (by omega)]`. Take `⟨w, hw⟩` from `h`. Take `⟨v, -, hv, -⟩` from `hc (n - 2) (n - 1) n (n + 1) (by omega) (by omega) rfl ((fun j => (a j).1) - fun j => (a' j).1) w (funext fun j => Cocycle.δ_eq_zero (a j - a' j) _) (by rw [map_sub]; exact hw.symm)`. Use function extensionality and compare the values at `j`. Rewrite using `[mk_eq_mk_iff _ _ (n - 1 - e j) (by omega)]`.
+
+Conclude with `⟨v j, (congrFun hv j).symm⟩`. Introduce `y`. Take `⟨b, rfl⟩` from `CohomologyClass.mk_surjective y`. Take `⟨v, w, hv, hw⟩` from `hc (n - 1) n (n + 1) (n + 2) (by omega) rfl (by omega) 0 b.1 (map_zero _) (by rw [map_zero]; exact (Cocycle.δ_eq_zero b _).symm)`. Set `a : ∀ j, Cocycle K (I j) (n - e j)` to `fun j => Cocycle.mk (v j) (n + 1 - e j) (by omega) (congrFun hv j).symm`.
+
+Use `⟨fun j => CohomologyClass.mk (a j), ?_⟩` and prove the remaining obligations. Rewrite using `[hφ a (Cocycle.mk _ _ rfl (hz a)) rfl, eq_comm, mk_eq_mk_iff _ _ (n - 1) (by omega)]`. Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_sub_iff_add_eq', hw]`. Both sides reduce to the same expression.
+-/
 theorem bijective_of_coneAcyclic
     (hd : ∀ n m, n + 1 = m → ∀ α, Φ m (fun j => δ _ _ (α j)) = δ n m (Φ n α))
     (hc : ConeAcyclic (dPi K I e) (dC K' I') Φ) (n : ℤ)
@@ -160,6 +196,17 @@ theorem bijective_of_coneAcyclic
     rw [eq_sub_iff_add_eq', hw]
     rfl
 
+/- English proof (translation)
+Introduce `n₀ n₁ n₂ n₃ h₀ h₁ h₂ x y hx hxy`. Establish `hxy' : Φ n₂ x = δ n₁ n₂ y` using `hxy`. Set `a : ∀ j, Cocycle K (I j) (n₂ - e j)` to `fun j => Cocycle.mk (x j) (n₃ - e j) (by omega) (congrFun hx j)`. Establish `h1 : (fun j => CohomologyClass.mk (a j)) = fun j => CohomologyClass.mk (0 : Cocycle K (I j) (n₂ - e j))`. Apply `(hb n₂).1` to reduce the goal to its premises.
+
+Rewrite using `[hφ n₂ a (Cocycle.mk (δ n₁ n₂ y) n₃ h₂ (δ_δ _ _ _ _)) hxy'.symm, hφ n₂ (fun _ => 0) 0 (map_zero (Φ n₂)).symm, mk_eq_mk_iff _ _ n₁ h₁]`. Conclude with `⟨y, (sub_zero _).symm⟩`. Use `choose v hv using fun j => (mk_eq_mk_iff _ _ (n₁ - e j) (by omega)).1 (congrFun h1 j)`. Establish `hv' : (fun j => δ _ _ (v j)) = x` using `funext fun j => (hv j).trans (sub_zero _)`. Set `b : Cocycle K' I' n₁` to `Cocycle.mk (y - Φ n₁ v) n₂ h₁ (by rw [δ_sub, ← hd _ _ h₁, hv', hxy', sub_self])`.
+
+Take `⟨c, hc⟩` from `(hb n₁).2 (CohomologyClass.mk b)`. Use `choose a' ha' using fun j => CohomologyClass.mk_surjective (c j)`. Take `rfl : (fun j => CohomologyClass.mk (a' j)) = c` from `funext ha'`. Establish `h0 : (fun j => δ (n₁ - e j) (n₂ - e j) (a' j).1) = 0` using `funext fun j => Cocycle.δ_eq_zero (a' j) _`. Rewrite `hc` using `[hφ n₁ a' (Cocycle.mk _ n₂ h₁ (by rw [← hd _ _ h₁, h0, map_zero])) rfl, eq_comm, mk_eq_mk_iff _ _ n₀ h₀]`.
+
+Take `⟨w, hw⟩` from `hc`. Use `⟨v + fun j => (a' j).1, w, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`. Conclude with `(by rw [← hv']; exact ((congrArg₂ (· + ·) rfl h0).trans (add_zero _)).symm)`. Establish `hw' : δ n₀ n₁ w = y - Φ n₁ v - Φ n₁ fun j => (a' j).1` using `hw`.
+
+Express the relevant statement in the definitionally equal form `y = _ + δ n₀ n₁ w`. Rewrite using `[hw', map_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem coneAcyclic_of_bijective
     (hd : ∀ n m, n + 1 = m → ∀ α, Φ m (fun j => δ _ _ (α j)) = δ n m (Φ n α))
     (φ : ∀ n, (∀ j, CohomologyClass K (I j) (n - e j)) → CohomologyClass K' I' n)
@@ -220,12 +267,18 @@ def restr (p n m : ℤ) (h : n + p = m) : Cochain K I n →+ Cochain (Col p) I m
   AddMonoidHom.mk' (fun α => Cochain.mk fun k q hq => ι p k (p + k) rfl ≫ α.v (p + k) q (by omega))
     (fun α β => by ext k q hq; simp)
 
+/- English proof (translation)
+Substitute `ht` using the available equality. Both sides reduce to the same expression.
+-/
 theorem restr_v (p n m : ℤ) (h : n + p = m) (α : Cochain K I n) (k t q : ℤ) (ht : p + k = t) (hq : k + m = q)
     (hq' : t + n = q) : (restr ι I p n m h α).v k q hq = ι p k t ht ≫ α.v t q hq' := by
   subst ht; rfl
 
 variable {ι}
 
+/- English proof (translation)
+Use extensionality with `k q hq`. Rewrite using `[restr_v ι I p m m' hm _ k (p + k) q rfl hq (by omega), δ_v n m h α (p + k) q _ (q - 1) (p + k + 1) rfl rfl, δ_v n' m' (by omega) _ k q hq (q - 1) (k + 1) rfl rfl, restr_v ι I p n n' hn _ k (p + k) (q - 1) rfl _ (by omega), restr_v ι I p n n' hn _ (k + 1) (p + k + 1) q (by omega) …`.
+-/
 theorem IsColumns.ι_δ (hK : IsColumns K Col ι) {p n m n' m' : ℤ} (hn : n + p = n') (hm : m + p = m') (h : n + 1 = m)
     {α : Cochain K I n} {p₀ : ℤ} (hp : p₀ ≤ p) (hα : α ∈ van ι I p₀ n) :
     restr ι I p m m' hm (δ n m α) = δ n' m' (restr ι I p n n' hn α) := by
@@ -239,6 +292,11 @@ theorem IsColumns.ι_δ (hK : IsColumns K Col ι) {p n m n' m' : ℤ} (hn : n + 
     hK.diff p k (p + k) (k + 1) (p + k + 1) rfl (by omega) rfl _ (fun c l h'' hc => hα c l _ h'' _ _ (by omega)),
     smul_smul, ← Int.negOnePow_add, hm, Category.assoc]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hα c hc`. Use extensionality with `k q hq`. Conclude with `hα c k _ _ _ _ hc`. Introduce `hα c k t h q hq hc`.
+
+Rewrite using `[← restr_v ι I c n (n + c) rfl α k t q h (by omega) hq, hα c hc, Cochain.zero_v]`.
+-/
 theorem mem_van_iff {p n : ℤ} (α : Cochain K I n) :
     α ∈ van ι I p n ↔ ∀ c, p < c → restr ι I c n (n + c) rfl α = 0 := by
   constructor
@@ -248,6 +306,9 @@ theorem mem_van_iff {p n : ℤ} (α : Cochain K I n) :
   · intro hα c k t h q hq hc
     rw [← restr_v ι I c n (n + c) rfl α k t q h (by omega) hq, hα c hc, Cochain.zero_v]
 
+/- English proof (translation)
+The claim follows from `δ_δ _ _ _ _ dF p n m h α hα := by rw [mem_van_iff] intro c hc change restr ι I c m (m + c) rfl (δ n m α) = 0 rw [hK.ι_δ I rfl rfl h hc.le hα, (mem_van_iff I α).1 hα c hc, δ_zero] rd p n m n' m' hn hm h α hα := hK.ι_δ I hn hm h le_rfl hα mono p q n hpq α hα c k t h s hs hc := hα c …`.
+-/
 theorem IsColumns.isFilt (hK : IsColumns K Col ι) [I.IsStrictlyGE 0] :
     IsFilt (dC K I) (fun p => dC (Col p) I) (van ι I) (restr ι I) where
   dd n m k x := δ_δ _ _ _ _
@@ -295,6 +356,9 @@ def restrPi (p n m : ℤ) (h : n + p = m) :
 
 variable {ι}
 
+/- English proof (translation)
+The claim follows from `funext fun _ => δ_δ _ _ _ _ dF p n m h α hα j hj := (hK.isFilt (Ij j)).dF p _ _ (by omega) _ (hα j hj) rd p n m n' m' hn hm h α hα := funext fun j => (hK.isFilt (Ij j)).rd p _ _ _ _ (by omega) (by omega) (by omega) _ (hα j trivial) mono p q n hpq α hα j hj := (hK.isFilt (Ij j)).m …`.
+-/
 theorem IsColumns.isFilt_pi (hK : IsColumns K Col ι) [Finite J] [∀ j, (Ij j).IsStrictlyGE 0] :
     IsFilt (dPi K Ij e) (fun p => dPi (Col p) Ij e) (vanPi ι Ij e) (restrPi ι Ij e) where
   dd n m k x := funext fun _ => δ_δ _ _ _ _
@@ -315,6 +379,11 @@ theorem IsColumns.isFilt_pi (hK : IsColumns K Col ι) [Finite J] [∀ j, (Ij j).
     exact ⟨M, fun α hα => funext fun j =>
       hN j _ ((hK.isFilt (Ij j)).mono _ _ _ (hM ⟨j, rfl⟩) (hα j trivial))⟩
 
+/- English proof (translation)
+Establish `hA` using `hL.isFilt_pi Ij e`. Establish `hB` using `hT.isFilt I`. Establish `hF' : ∀ p n, ∀ α ∈ vanPi ιL Ij e p n, Φ n α ∈ van ιT I p n` using `fun p n α hα => hF p n α fun j => hα j trivial`. Use `choose Ψ hΨ hΨd using exists_graded hA hB Φ hd hF'`. Use `bijective_of_coneAcyclic Φ hd (coneAcyclic_of_graded hA hB Φ hd hF' Ψ hΨ fun p hp => ?_) n φ hφ` and prove the remaining obligations.
+
+Take `⟨ψ, hb, hψ⟩` from `hG p hp`. Use `coneAcyclic_of_bijective (Ψ p) (hΨd p) ψ (fun m a b hab => ?_) hb` and prove the remaining obligations. Take `⟨α, hα, hαa⟩` from `hA.surj p (m - p) m (by omega) (fun j => (a j).1)`. Use `hψ (m - p) m (by omega) α (fun j => hα j trivial) a b (fun j => (congrFun hαa j).symm) ?_` and prove the remaining obligations. Rewrite using `[hab, ← hαa, hΨ p _ _ _ α hα]`.
+-/
 theorem bijective_of_columns {L T : CochainComplex C ℤ} {CL CT : ℤ → CochainComplex C ℤ}
     {ιL : ∀ p k t, p + k = t → ((CL p).X k ⟶ L.X t)} {ιT : ∀ p k t, p + k = t → ((CT p).X k ⟶ T.X t)}
     (hL : IsColumns L CL ιL) (hT : IsColumns T CT ιT) {J : Type*} [Finite J] (Ij : J → CochainComplex C ℤ)
@@ -342,6 +411,9 @@ theorem bijective_of_columns {L T : CochainComplex C ℤ} {CL CT : ℤ → Cocha
   refine hψ (m - p) m (by omega) α (fun j => hα j trivial) a b (fun j => (congrFun hαa j).symm) ?_
   rw [hab, ← hαa, hΨ p _ _ _ α hα]
 
+/- English proof (translation)
+The claim follows from `HomologicalComplex₂.total.hom_ext _ fun p k h => by rw [comp_zero]; exact hf p k h desc p k t h Y g := by refine ⟨D.totalDesc fun c l h' => if hc : c = p then eqToHom (by obtain rfl : l = k := by have : c + l = t := h' omega rw [hc]) ≫ g else 0, ?_, fun c l h' hc => ?_⟩ · rw [Hom …`.
+-/
 theorem isColumns_total (D : HomologicalComplex₂ C (ComplexShape.up ℤ) (ComplexShape.up ℤ))
     [D.HasTotal (ComplexShape.up ℤ)] (hD : ∀ p k, 0 < p ∨ 0 < k → IsZero ((D.X p).X k)) :
     IsColumns (D.total (ComplexShape.up ℤ)) D.X (fun p k t h => D.ιTotal (ComplexShape.up ℤ) p k t h) where
@@ -371,20 +443,40 @@ def ιTerm (L : CochainComplex C ℤ) (p k t : ℤ) (h : p + k = t) :
   if hk : k = 0 then (HomologicalComplex.singleObjXIsoOfEq (ComplexShape.up ℤ) 0 (L.X p) k hk).hom ≫
     (L.XIsoOfEq (show p = t by omega)).hom else 0
 
+/- English proof (translation)
+Rewrite using `[ιTerm, dif_pos rfl]`. Conclude with `Category.comp_id _`.
+-/
 theorem ιTerm_zero (L : CochainComplex C ℤ) (p : ℤ) (h : p + 0 = p) :
     ιTerm L p 0 p h = (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 (L.X p)).hom := by
   rw [ιTerm, dif_pos rfl]
   exact Category.comp_id _
 
+/- English proof (translation)
+Rewrite `hf` using `[ιTerm_zero]`. Conclude with `(((HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 (L.X p)).inv_hom_id_assoc f).symm.trans (congrArg (fun g => (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 (L.X p)).inv ≫ g) hf)).trans comp_zero`.
+-/
 theorem eq_zero_of_ιTerm {L : CochainComplex C ℤ} {p : ℤ} {h : p + 0 = p} {Y : C} {f : L.X p ⟶ Y}
     (hf : ιTerm L p 0 p h ≫ f = 0) : f = 0 := by
   rw [ιTerm_zero] at hf
   exact (((HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 (L.X p)).inv_hom_id_assoc f).symm.trans
     (congrArg (fun g => (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 (L.X p)).inv ≫ g) hf)).trans comp_zero
 
+/- English proof (translation)
+The claim follows from `dif_neg hk`.
+-/
 theorem ιTerm_ne (L : CochainComplex C ℤ) (p k t : ℤ) (h : p + k = t) (hk : k ≠ 0) : ιTerm L p k t h = 0 :=
   dif_neg hk
 
+/- English proof (translation)
+Use `hf t 0 (add_zero t)` as an intermediate fact. Conclude with `eq_zero_of_ιTerm this`. Use `desc p k t h Y g := by`. Distinguish the cases in `hk : k = 0`. Substitute `hk` using the available equality.
+
+Take `rfl : t = p` from `by omega`. Use `⟨(HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 (L.X t)).inv ≫ g, ?_, fun c l h' hc => ?_⟩` and prove the remaining obligations. Rewrite using `[ιTerm_zero]`. Conclude with `Iso.hom_inv_id_assoc _ _`. Rewrite using `[ιTerm_ne _ _ _ _ _ (by omega), zero_comp]`.
+
+Conclude with `⟨0, (HomologicalComplex.isZero_single_obj_X (ComplexShape.up ℤ) 0 (L.X p) k hk).eq_of_src _ _, fun _ _ _ _ => comp_zero⟩`. Use `diff p k t k' t' h h' hk Y f hf := by`. Establish `h1 : ((CochainComplex.singleFunctor C 0).obj (L.X p)).d k k' = 0` using `rfl`. Rewrite using `[h1, zero_comp, smul_zero]`. Distinguish the cases in `hk0 : k = 0`.
+
+Use `hf t' 0 (add_zero t') (by omega)` as an intermediate fact. Rewrite using `[eq_zero_of_ιTerm this, comp_zero, comp_zero]`. Rewrite using `[ιTerm_ne _ _ _ _ _ hk0, zero_comp]`. Use `isZero p k h := by`. Distinguish the cases in `hk : k = 0`.
+
+Conclude with `(L.isZero_of_isStrictlyLE 0 p (by omega)).of_iso (HomologicalComplex.singleObjXIsoOfEq (ComplexShape.up ℤ) 0 (L.X p) k hk)`. Conclude with `HomologicalComplex.isZero_single_obj_X (ComplexShape.up ℤ) 0 (L.X p) k hk`.
+-/
 theorem isColumns_terms (L : CochainComplex C ℤ) [L.IsStrictlyLE 0] :
     IsColumns L (fun p => (CochainComplex.singleFunctor C 0).obj (L.X p)) (ιTerm L) where
   ext t Y f hf := by
@@ -417,6 +509,13 @@ end Columns
 section Sheaves
 open GlobalTheory.EtC
 
+/- English proof (translation)
+Introduce `R _ D _ hD L _ J _ Ij _ I _ e Φ hd hF hG n φ hφ`. Establish `hv : ∀ (p n : ℤ) (K : Cx R) (α : Cochain L K n), α ∈ van (ιTerm L) K p n → ∀ c q hq, p < c → α.v c q hq = 0`. Introduce `p n K α hα c q hq hc`. Use `hα c 0 c (add_zero c) q hq hc` as an intermediate fact. Conclude with `eq_zero_of_ιTerm this`.
+
+Use `bijective_of_columns (isColumns_terms L) (isColumns_total D hD) Ij I e Φ hd (fun p n α hα => hF p n α fun j => hv p _ _ _ (hα j)) (fun p hp => ?_) n φ hφ` and prove the remaining obligations. Take `⟨ψ, hb, hψ⟩` from `hG p hp`. Use `⟨ψ, hb, fun n m h α hα a b ha hb => hψ n m h α (fun j => hv p _ _ _ (hα j)) a b (fun j q hq hq' => ?_) (fun k t ht q hq hq' => ?_)⟩` and prove the remaining obligations. Rewrite using `[ha j, restr_v _ _ p _ _ _ _ 0 p q (add_zero p) hq hq', ιTerm_zero]`. Conclude with `Iso.inv_hom_id_assoc _ _`.
+
+Rewrite using `[hb, restr_v _ _ p _ _ _ _ k t q ht hq hq']`.
+-/
 theorem bijective_total_of_terms : ∀ (R : Type) [CommRing R] (D : HomologicalComplex₂ (Shv R) (ComplexShape.up ℤ) (ComplexShape.up ℤ))
     [D.HasTotal (ComplexShape.up ℤ)], (∀ p k, 0 < p ∨ 0 < k → IsZero ((D.X p).X k)) →
     ∀ (L : Cx R) [L.IsStrictlyLE 0] {J : Type} [Finite J] (Ij : J → Cx R) [∀ j, (Ij j).IsStrictlyGE 0]

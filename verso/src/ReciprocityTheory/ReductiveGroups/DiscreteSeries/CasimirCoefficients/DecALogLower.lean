@@ -18,6 +18,15 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hY`. Establish `hJJ : Jm ε * Jm ε = 1`. Unfold `Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hH : Yᴴ = Y`. Unfold `inG at h1`. Establish `h3 : Yᴴ * Jm ε = Y * Jm ε`.
+
+Rewrite using `[h2]`. Conclude with `eq_neg_of_add_eq_zero_left h1`. Combine the equalities or inequalities in the displayed calculation. Establish `hA : Y.IsHermitian` using `hH`. Use `⟨hA.eigenvectorUnitary, hA.eigenvalues, (hA.eigenvectorUnitary).2, ?_⟩` and prove the remaining obligations.
+
+Use `first`. Consider the case `exact hA.spectral_theorem`. Consider the case `simpa [Matrix.star_eq_conjTranspose] using hA.spectral_theorem`. Consider the case `(conv_lhs => rw [hA.spectral_theorem])`. Both sides reduce to the same expression.
+-/
 lemma decA_spec {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inP ε Y) :
     ∃ (U : Matrix (Fin n) (Fin n) ℂ) (y : Fin n → ℝ), U ∈ Matrix.unitaryGroup (Fin n) ℂ ∧
       Y = U * Matrix.diagonal (fun j => (y j : ℂ)) * Uᴴ := by
@@ -43,6 +52,13 @@ lemma decA_spec {Y : Matrix (Fin n) (Fin n) ℂ} (hY : inP ε Y) :
     | simpa [Matrix.star_eq_conjTranspose] using hA.spectral_theorem
     | (conv_lhs => rw [hA.spectral_theorem]); rfl
 
+/- English proof (translation)
+Establish `hinv : U⁻¹ = Uᴴ`. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `Matrix.inv_eq_left_inv (Matrix.mem_unitaryGroup_iff'.mp hU)`. Establish `hu : IsUnit U` using `(Matrix.isUnit_iff_isUnit_det U).mpr (isUnit_iff_ne_zero.mpr (left_ne_zero_of_mul_eq_one (b := (star U).det) (by rw [← Matrix.det_mul, Matrix.mem_unitaryGroup_iff.mp hU, Matrix.det_one])))`. Establish `hd : NormedSpace.exp (fun j => ((y j : ℝ) : ℂ)) = fun j => ((Real.exp (y j) : ℝ) : ℂ)`.
+
+Use function extensionality and compare the values at `j`. Use `first`. Consider the case `(rw [Pi.exp_apply]; simp [← Complex.exp_eq_exp_ℂ, Complex.ofReal_exp])`. Consider the case `(simp [Pi.exp_def, ← Complex.exp_eq_exp_ℂ, Complex.ofReal_exp])`. Consider the case `(simp [NormedSpace.exp_pi, ← Complex.exp_eq_exp_ℂ, Complex.ofReal_exp])`.
+
+Rewrite using `[← hinv, Matrix.exp_conj U _ hu, Matrix.exp_diagonal, hd]`.
+-/
 lemma decA_exp {U : Matrix (Fin n) (Fin n) ℂ} (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ) (y : Fin n → ℝ) :
     NormedSpace.exp (U * Matrix.diagonal (fun j => (y j : ℂ)) * Uᴴ) =
       U * Matrix.diagonal (fun j => ((Real.exp (y j) : ℝ) : ℂ)) * Uᴴ := by
@@ -60,6 +76,9 @@ lemma decA_exp {U : Matrix (Fin n) (Fin n) ℂ} (hU : U ∈ Matrix.unitaryGroup 
       | (simp [NormedSpace.exp_pi, ← Complex.exp_eq_exp_ℂ, Complex.ofReal_exp])
   rw [← hinv, Matrix.exp_conj U _ hu, Matrix.exp_diagonal, hd]
 
+/- English proof (translation)
+Rewrite using `[lead_unitary_diag _ i hi, Complex.re_sum]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[show (∏ j ∈ J.1, ((Real.exp (y j) : ℝ) : ℂ)) = ((∏ j ∈ J.1, Real.exp (y j) : ℝ) : ℂ) by push_cast; rfl, ← Complex.ofReal_mul, Complex.ofReal_re, ← Real.exp_sum]`. Both sides reduce to the same expression.
+-/
 lemma decA_lead_re {U : Matrix (Fin n) (Fin n) ℂ} (y : Fin n → ℝ) (i : ℕ) (hi : i ≤ n) :
     (lead i (U * Matrix.diagonal (fun j => ((Real.exp (y j) : ℝ) : ℂ)) * Uᴴ)).re =
       ∑ J : {J : Finset (Fin n) // J.card = i}, dmW U hi J * Real.exp (∑ j ∈ J.1, y j) := by
@@ -69,6 +88,11 @@ lemma decA_lead_re {U : Matrix (Fin n) (Fin n) ℂ} (y : Fin n → ℝ) (i : ℕ
     ← Complex.ofReal_mul, Complex.ofReal_re, ← Real.exp_sum]
   rfl
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `dec_moments hU hY hYp m hm`. Establish `hE : NormedSpace.exp Y = U * Matrix.diagonal (fun j => ((Real.exp (y j) : ℝ) : ℂ)) * Uᴴ`. Rewrite using `[hY]`. Conclude with `decA_exp hU y`. Rewrite using `[hE, decA_lead_re y m hm, ← h3]`.
+
+Establish `hq' : (0 : ℝ) < 2 * q0 ε`. Establish `: (1 : ℝ) ≤ q0 ε` using `by exact_mod_cast hq`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hR : 0 < Real.sqrt (2 * q0 ε) * Real.sqrt (hs Y)` using `mul_pos (Real.sqrt_pos.mpr hq') (Real.sqrt_pos.mpr hpos)`. Conclude with `logSumExp_lower (fun J => dmW U hm J) (fun J => ∑ j ∈ J.1, y j) (fun J => by unfold dmW; positivity) h1 h2 hR h4`.
+-/
 lemma decA_log_lower {Y U : Matrix (Fin n) (Fin n) ℂ} {y : Fin n → ℝ} (hYp : inP ε Y)
     (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ) (hY : Y = U * Matrix.diagonal (fun j => (y j : ℂ)) * Uᴴ)
     (hq : 1 ≤ q0 ε) (hpos : 0 < hs Y) (m : ℕ) (hm : m ≤ n) :
@@ -87,6 +111,23 @@ lemma decA_log_lower {Y U : Matrix (Fin n) (Fin n) ℂ} {y : Fin n → ℝ} (hYp
   exact logSumExp_lower (fun J => dmW U hm J) (fun J => ∑ j ∈ J.1, y j) (fun J => by unfold dmW; positivity)
     h1 h2 hR h4
 
+/- English proof (translation)
+Take `⟨_, h2⟩` from `hYp`. Establish `hJJ : Jm ε * Jm ε = 1`. Unfold `Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> simp`. Establish `htr : Matrix.trace Y = 0`. Establish `e1 : Matrix.trace Y = Matrix.trace (Jm ε * (Y * Jm ε))`. Rewrite using `[← Matrix.trace_mul_comm (Y * Jm ε) (Jm ε), Matrix.mul_assoc, hJJ, Matrix.mul_one]`.
+
+Rewrite `e1` using `[h2, Matrix.mul_neg, ← Matrix.mul_assoc, hJJ, Matrix.one_mul, Matrix.trace_neg]`. Establish `e2 : (2 : ℂ) * Matrix.trace Y = 0` using `by linear_combination e1`. Simplify using `using e2`. Establish `hUU : Uᴴ * U = 1`. Rewrite using `[← Matrix.star_eq_conjTranspose]`.
+
+Conclude with `Matrix.mem_unitaryGroup_iff'.mp hU`. Establish `hsum : ∑ j, y j = 0`. Establish `e3 : Matrix.trace Y = ((∑ j, y j : ℝ) : ℂ)`. Rewrite using `[hY, Matrix.trace_mul_comm, ← Matrix.mul_assoc, hUU, Matrix.one_mul, Matrix.trace_diagonal]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Rewrite `e3` using `[htr]`. Conclude with `e3.symm` after adjusting the coercions. Rewrite using `[hY, decA_exp hU y, decA_lead_re y n le_rfl]`. Establish `huniq : ∀ J : {J : Finset (Fin n) // J.card = n}, J = ⟨Finset.univ, by simp⟩` using `fun J => Subtype.ext (Finset.eq_univ_of_card _ (by simpa using J.2))`.
+
+Rewrite using `[Fintype.sum_eq_single ⟨Finset.univ, by simp⟩ (fun J hJ => absurd (huniq J) hJ)]`. Rewrite using `[hsum, Real.exp_zero, mul_one]`. Unfold `dmW`. Establish `hid : ((Finset.univ : Finset (Fin n)).orderEmbOfFin (by simp) : Fin n → Fin n) = id` using `(Finset.orderEmbOfFin_unique (by simp) (fun x => Finset.mem_univ x) strictMono_id).symm`. Establish `hsub : U.submatrix (Fin.castLE (le_refl n)) ((Finset.univ : Finset (Fin n)).orderEmbOfFin (by simp)) = U`.
+
+Use extensionality with `i j`. Rewrite using `[Matrix.submatrix_apply, show Fin.castLE (le_refl n) i = i from Fin.ext rfl, show ((Finset.univ : Finset (Fin n)).orderEmbOfFin (by simp) : Fin n → Fin n) j = j from congrFun hid j]`. Rewrite using `[hsub]`. Establish `hdet : star U.det * U.det = 1`. Rewrite using `[← Matrix.det_conjTranspose, ← Matrix.det_mul, hUU, Matrix.det_one]`.
+
+Establish `h5 : ((‖U.det‖ ^ 2 : ℝ) : ℂ) = 1`. Rewrite using `[← hdet, Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression. Conclude with `h5` after adjusting the coercions.
+-/
 lemma decA_lead_last {Y U : Matrix (Fin n) (Fin n) ℂ} {y : Fin n → ℝ} (hYp : inP ε Y)
     (hU : U ∈ Matrix.unitaryGroup (Fin n) ℂ) (hY : Y = U * Matrix.diagonal (fun j => (y j : ℂ)) * Uᴴ) :
     (lead n (NormedSpace.exp Y)).re = 1 := by
@@ -135,6 +176,11 @@ lemma decA_lead_last {Y U : Matrix (Fin n) (Fin n) ℂ} {y : Fin n → ℝ} (hYp
     rfl
   exact_mod_cast h5
 
+/- English proof (translation)
+Unfold `hs`. Rewrite using `[Matrix.trace]`. Use `push_cast`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.diag_apply, Matrix.mul_apply]`.
+
+Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 lemma decA_hs_trace (A : Matrix (Fin n) (Fin n) ℂ) : ((hs A : ℝ) : ℂ) = Matrix.trace (A * Aᴴ) := by
   unfold hs
   rw [Matrix.trace]
@@ -146,6 +192,11 @@ lemma decA_hs_trace (A : Matrix (Fin n) (Fin n) ℂ) : ((hs A : ℝ) : ℂ) = Ma
   push_cast
   rfl
 
+/- English proof (translation)
+Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[decA_hs_trace, decA_hs_trace, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc K Kᴴ, hK, Matrix.one_mul]`.
+
+Use `_ = Matrix.trace ((X * Xᴴ) * K * Kᴴ) := Matrix.trace_mul_comm _ _`. Use `_ = Matrix.trace (X * Xᴴ) := by rw [Matrix.mul_assoc, hK, Matrix.mul_one]`.
+-/
 lemma decA_hs_conj {K : Matrix (Fin n) (Fin n) ℂ} (hK : K * Kᴴ = 1) (X : Matrix (Fin n) (Fin n) ℂ) :
     hs (Kᴴ * X * K) = hs X := by
   apply Complex.ofReal_injective

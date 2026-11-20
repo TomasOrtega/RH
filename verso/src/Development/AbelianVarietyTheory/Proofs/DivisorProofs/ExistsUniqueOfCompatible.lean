@@ -7,10 +7,16 @@ noncomputable section
 
 namespace GlobalTheory.Limits
 
+/- English proof (translation)
+Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+-/
 theorem smod_pow_iff {R : Type} [CommRing R] (a x y : R) (m : ℕ) :
     x ≡ y [SMOD (Ideal.span {a} ^ m • ⊤ : Submodule R R)] ↔ a ^ m ∣ x - y := by
   rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]
 
+/- English proof (translation)
+Proceed by induction on `k, hnk using Nat.le_induction with`. Consider the case `base => exact h`. Consider the case `succ k _ ih => exact ih (by rw [← hr k x, ← hr k y, h])`.
+-/
 theorem eval_eq_of_le {O σ : Type} [CommRing O] (A : ℕ → Type) [∀ n, CommRing (A n)]
     [∀ n, Algebra O (A n)] (r : ∀ n, A (n + 1) →ₐ[O] A n) (E : ∀ n, MvPowerSeries σ O →ₐ[O] A n)
     (hr : ∀ n f, r n (E (n + 1) f) = E n f) {n k : ℕ} (hnk : n ≤ k) (x y : MvPowerSeries σ O)
@@ -19,6 +25,39 @@ theorem eval_eq_of_le {O σ : Type} [CommRing O] (A : ℕ → Type) [∀ n, Comm
   | base => exact h
   | succ k _ ih => exact ih (by rw [← hr k x, ← hr k y, h])
 
+/- English proof (translation)
+Introduce `p O σ _ _ _ A _ _ _ r y E hev hr hker`. Establish `hausO : IsHausdorff (Ideal.span {(p : O)}) O` using `inferInstance`. Establish `precO : IsPrecomplete (Ideal.span {(p : O)}) O` using `inferInstance`. Establish `hle : ∀ {n k : ℕ}, n ≤ k → ∀ x y, E k x = E k y → E n x = E n y` using `fun hnk => eval_eq_of_le A r E hr hnk`. Use `⟨fun f hf => ?_, fun hsurj a ha => ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `α`. Use `hausO.haus _ fun m => (smod_pow_iff _ _ _ _).2 ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `hker m (α.degree + 1)`. Simplify using `using hn f (hf n) α (Nat.lt_succ_self _)`. Use `choose nk hnk using fun m => hker m m choose g hg using fun n => hsurj n (a n) set ν : ℕ → ℕ := fun m => m + ∑ j ∈ Finset.range (m + 1), nk j with hν`.
+
+Establish `hνmono : Monotone ν` using `fun m m' hmm' => by`. Simplify using `only [hν]`. Conclude with `Nat.add_le_add hmm' (Finset.sum_le_sum_of_subset (Finset.range_mono (Nat.succ_le_succ hmm')))`. Establish `hνk : ∀ m, nk m ≤ ν m` using `fun m => by`. Simplify using `only [hν]`.
+
+Conclude with `le_add_left (Finset.single_le_sum (f := nk) (fun _ _ => Nat.zero_le _) (Finset.mem_range.2 (Nat.lt_succ_self m)))`. Establish `hνm : ∀ m, m ≤ ν m` using `fun m => by simp only [hν]; exact Nat.le_add_right _ _`. Establish `hga : ∀ n k, n ≤ k → E n (g k) = a n`. Introduce `n k hnk`. Proceed by induction on `k, hnk using Nat.le_induction with`.
+
+Consider the case `base => exact hg n`. Consider the case `succ k hk ih`. Rewrite using `[← ih]`. Use `hle hk _ _ ?_` and prove the remaining obligations. Rewrite using `[← hr k, hg (k + 1), ha k, hg k]`.
+
+Establish `hKν : ∀ m k, ν m ≤ k → ∀ x, E k x = 0 → ∀ α : σ →₀ ℕ, α.degree < m → (p : O) ^ m ∣ coeff α x`. Introduce `m k hk x hx α hα`. Use `hnk m x ?_ α hα` and prove the remaining obligations. Use `hle ((hνk m).trans hk) x 0 (by rw [hx, map_zero])` as an intermediate fact. Rewrite `this` using `[map_zero]`. Then use the resulting hypothesis.
+
+Use `set h : ℕ → MvPowerSeries σ O := fun m => g (ν m) with hh`. Establish `hD : ∀ m m', m ≤ m' → ∀ α : σ →₀ ℕ, α.degree < m → (p : O) ^ m ∣ coeff α (h m') - coeff α (h m)`. Introduce `m m' hmm' α hα`. Rewrite using `[← map_sub]`. Use `hKν m (ν m) le_rfl _ ?_ α hα` and prove the remaining obligations.
+
+Rewrite using `[map_sub, hh, hga _ _ (hνmono hmm'), hga _ _ le_rfl, sub_self]`. Establish `hL : ∀ α : σ →₀ ℕ, ∃ L : O, ∀ j, (p : O) ^ j ∣ coeff α (h (j + (α.degree + 1))) - L`. Introduce `α`. Take `⟨L, hL⟩` from `precO.prec (f := fun j => coeff α (h (j + (α.degree + 1)))) (by`. Introduce `j j' hjj'`.
+
+Rewrite using `[smod_pow_iff]`. Use `hD (j + (α.degree + 1)) (j' + (α.degree + 1)) (by omega) α (by omega)` as an intermediate fact. Rewrite using `[← neg_sub, dvd_neg]`. Conclude with `(pow_dvd_pow _ (by omega)).trans this)`. Conclude with `⟨L, fun j => (smod_pow_iff _ _ _ _).1 (hL j)⟩`.
+
+Use `choose L hLs using hL`. Set `f : MvPowerSeries σ O` to `fun α => L α`. Establish `hf : ∀ m M (α : σ →₀ ℕ), m ≤ M → α.degree < M → (p : O) ^ m ∣ coeff α f - coeff α (h M)`. Introduce `m M α hmM hα`. Establish `h1` using `hLs α M`.
+
+Establish `h2` using `hD M (M + (α.degree + 1)) (by omega) α hα`. Establish `: coeff α f - coeff α (h M) = (coeff α (h (M + (α.degree + 1))) - coeff α (h M)) - (coeff α (h (M + (α.degree + 1))) - L α)` using `by show L α - _ = _; ring`. Rewrite using `[this]`. Conclude with `(pow_dvd_pow _ hmM).trans (dvd_sub h2 h1)`. Use `⟨f, fun n => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← sub_eq_zero]`. Use `IsHausdorff.haus (I := Ideal.span {(p : A n)}) inferInstance _ fun m => ?_` and prove the remaining obligations. Rewrite using `[smod_pow_iff, sub_zero]`. Take `⟨N₀, hN₀⟩` from `(hev n).2 m`. Use `set M := max (max m N₀) n with hM`.
+
+Establish `hEM : E n (h M) = a n` using `hga _ _ ((le_max_right _ _).trans (hνm M))`. Establish `hdiv : ∀ α : σ →₀ ℕ, α.degree < N₀ → (p : O) ^ m ∣ coeff α (f - h M)`. Introduce `α hα`. Rewrite using `[map_sub]`. Conclude with `hf m M α (by omega) (by omega)`.
+
+Set `Q : MvPowerSeries σ O` to `fun α => if hα : α.degree < N₀ then Classical.choose (hdiv α hα) else 0`. Establish `hR : ∀ α : σ →₀ ℕ, α.degree < N₀ → coeff α (f - h M - (p : O) ^ m • Q) = 0`. Introduce `α hα`. Rewrite using `[map_sub, coeff_smul]`. Use `show coeff α (f - h M) - (p : O) ^ m * (if hα : α.degree < N₀ then _ else 0) = 0`.
+
+Rewrite using `[dif_pos hα, ← Classical.choose_spec (hdiv α hα), sub_self]`. Establish `hsplit : E n f - a n = (p : A n) ^ m * E n Q + E n (f - h M - (p : O) ^ m • Q)`. Rewrite using `[map_sub, map_sub, map_smul, hEM, Algebra.smul_def, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit]`.
+
+Conclude with `dvd_add (dvd_mul_right _ _) (hN₀ _ hR)`.
+-/
 theorem exists_unique_of_compatible : ∀ (p : ℕ) (O σ : Type) [CommRing O] [IsAdicComplete (Ideal.span {(p : O)}) O] [Fintype σ] (A : ℕ → Type) [∀ n, CommRing (A n)] [∀ n, Algebra O (A n)] [∀ n, IsHausdorff (Ideal.span {(p : A n)}) (A n)] (r : ∀ n, A (n + 1) →ₐ[O] A n) (y : ∀ n, σ → A n) (E : ∀ n, MvPowerSeries σ O →ₐ[O] A n), (∀ n, IsEval p (y n) (E n)) → (∀ n f, r n (E (n + 1) f) = E n f) → (∀ m N : ℕ, ∃ n, ∀ f, E n f = 0 → ∀ α : σ →₀ ℕ, α.degree < N → (p : O) ^ m ∣ coeff α f) → (∀ f, (∀ n, E n f = 0) → f = 0) ∧ ((∀ n, Function.Surjective (E n)) → ∀ a : ∀ n, A n, (∀ n, r n (a (n + 1)) = a n) → ∃ f, ∀ n, E n f = a n) := by
   intro p O σ _ _ _ A _ _ _ r y E hev hr hker
   have hausO : IsHausdorff (Ideal.span {(p : O)}) O := inferInstance

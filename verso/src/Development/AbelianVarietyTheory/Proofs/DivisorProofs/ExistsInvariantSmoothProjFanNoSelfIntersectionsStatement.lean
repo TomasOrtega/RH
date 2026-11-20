@@ -9,5 +9,8 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PolDeg.exists_inv_smooth_fan_noSelfInt | exact GlobalTheory.PolDeg.exists_inv_smooth_fan_noSelfInt | (intros; apply GlobalTheory.PolDeg.exists_inv_smooth_fan_noSelfInt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_invariant_smoothProjFan_noSelfIntersections : ∀ g : ℕ, ∃ φ : InvFun ℤ, IsPolFan (id : ℤ → ℤ) g φ ∧ NoSelfInt (id : ℤ → ℤ) g φ := by
   first | exact @GlobalTheory.PolDeg.exists_inv_smooth_fan_noSelfInt | exact GlobalTheory.PolDeg.exists_inv_smooth_fan_noSelfInt | (intros; apply GlobalTheory.PolDeg.exists_inv_smooth_fan_noSelfInt <;> assumption)

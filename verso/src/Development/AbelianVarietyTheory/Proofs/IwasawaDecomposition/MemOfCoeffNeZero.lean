@@ -12,6 +12,17 @@ namespace ConeMeet
 variable {O : Type} [CommRing O] {bar : O → O} {φ : InvFun O} {X : Type} [AddCommGroup X] [Module O X]
   [Module.Finite O X] {m m' : ℕ}
 
+/- English proof (translation)
+Take `⟨N, ℓ, hN, h1, h2, h3⟩` from `hγ'.strict`. Establish `hsum : ∑ i, a i * (ℓ (β i) : ℝ) = ∑ j, b j * (ℓ (γ' j) : ℝ)`. Use `sum_mul_eq_zero_of_sum_toReal (X := X) (j := LinearMap.id) (fun _ _ h => h) ℓ (β := Sum.elim β γ') (c := Sum.elim a (-b)) (by` as an intermediate fact. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, LinearMap.id_apply, Pi.neg_apply, neg_smul, Finset.sum_neg_distrib, hrel, add_neg_cancel])`.
+
+Rewrite `this` using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, LinearMap.id_apply, Pi.neg_apply, neg_mul, Finset.sum_neg_distrib] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hφ : ∑ i, a i * φ.evalZ (β i) = ∑ j, b j * φ.evalZ (γ' j)`. Rewrite using `[← hlin, hrel]`.
+
+Conclude with `(linearOn_iff φ γ').1 hγ'.linear b hb`. Establish `hterm : ∑ i, a i * ((ℓ (β i) : ℝ) - N * φ.evalZ (β i)) = 0`. Simplify using `only [mul_sub, Finset.sum_sub_distrib]`. Rewrite using `[hsum, show ∑ i, a i * (N * φ.evalZ (β i)) = N * ∑ i, a i * φ.evalZ (β i) by`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun _ _ => by ring, hφ, Finset.mul_sum, sub_eq_zero]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => by rw [h1]; ring`. Establish `hnn : ∀ i ∈ Finset.univ, 0 ≤ a i * ((ℓ (β i) : ℝ) - N * φ.evalZ (β i))` using `fun i _ => mul_nonneg (ha i) (sub_nonneg.2 (h2 _ (hβ i) (hβp i)))`. Introduce `i hi`. Establish `h0` using `(Finset.sum_eq_zero_iff_of_nonneg hnn).1 hterm i (Finset.mem_univ _)`. Establish `he : (N : ℝ) * φ.evalZ (β i) = ℓ (β i)`.
+
+Break down `mul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `absurd h hi`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h3 _ (hβ i) (hβp i) he`.
+-/
 theorem inCone {n : ℕ} {γ' : Fin m' → LinearMap.BilinForm ℤ X} (hγ' : IsCone bar φ γ')
     {β : Fin n → LinearMap.BilinForm ℤ X} (hβ : ∀ i, β i ∈ balForms bar X) (hβp : ∀ i y, 0 ≤ β i y y)
     {a : Fin n → ℝ} {b : Fin m' → ℝ} (ha : ∀ i, 0 ≤ a i) (hb : ∀ j, 0 ≤ b j)
@@ -45,10 +56,40 @@ theorem inCone {n : ℕ} {γ' : Fin m' → LinearMap.BilinForm ℤ X} (hγ' : Is
     · linarith
   exact h3 _ (hβ i) (hβp i) he
 
+/- English proof (translation)
+Simplify using `[map_sum, map_nsmul]`.
+-/
 theorem apply_sum_nsmul {L : Type} [AddCommGroup L] (F : L →ₗ[ℤ] ℤ) {p : ℕ} (n : Fin p → ℕ) (v : Fin p → L) :
     F (∑ j, n j • v j) = ∑ j, (n j : ℤ) * F (v j) := by
   simp [map_sum, map_nsmul]
 
+/- English proof (translation)
+Set `g : Fin m → balForms bar X` to `fun l => ⟨γ l, hγ.mem l⟩`. Set `g' : Fin m' → balForms bar X` to `fun l => ⟨γ' l, hγ'.mem l⟩`. Take `⟨f, hf⟩` from `hγ.basis.exists_dual`. Take `⟨f', hf'⟩` from `hγ'.basis.exists_dual`. Establish `hf : ∀ a b, f a (g b) = if a = b then 1 else 0` using `hf`.
+
+Establish `hf' : ∀ a b, f' a (g' b) = if a = b then 1 else 0` using `hf'`. Establish `H1 : k • g i = ∑ j, d j • g' j` using `Subtype.ext (by simpa [g, g', Submodule.coe_sum] using hkd)`. Establish `H2 : ∀ j, d j ≠ 0 → ∃ (kj : ℕ) (e : Fin m → ℕ), 0 < kj ∧ kj • g' j = ∑ l, e l • g l` using `fun j hj => by`. Take `⟨kj, e, hkj, he⟩` from `hback j hj`. Conclude with `⟨kj, e, hkj, Subtype.ext (by simpa [g, g', Submodule.coe_sum] using he)⟩`.
+
+Establish `coord : ∀ j, d j ≠ 0 → ∃ (kj : ℕ) (e : Fin m → ℕ), 0 < kj ∧ kj • g' j = ∑ l, e l • g l ∧ ∀ l, (kj : ℤ) * f l (g' j) = e l` using `fun j hj => by`. Take `⟨kj, e, hkj, he⟩` from `H2 j hj`. Use `⟨kj, e, hkj, he, fun l => ?_⟩` and prove the remaining obligations. Establish `t` using `congrArg (f l) he`. Rewrite `t` using `[map_nsmul, apply_sum_nsmul]`.
+
+Simplify `t` using `[hf]`. Establish `Z : ∀ l, l ≠ i → ∀ j, d j ≠ 0 → f l (g' j) = 0`. Introduce `l hl`. Establish `s` using `congrArg (f l) H1`. Rewrite `s` using `[map_nsmul, apply_sum_nsmul, hf, if_neg hl, smul_zero]`.
+
+Establish `hnn : ∀ j ∈ Finset.univ, 0 ≤ (d j : ℤ) * f l (g' j)` using `fun j _ => by`. Distinguish the cases in `hd : d j = 0`. Simplify using `[hd]`. Take `⟨kj, e, hkj, -, he⟩` from `coord j hd`. Establish `: 0 ≤ (kj : ℤ) * f l (g' j)` using `(he l).symm ▸ Int.natCast_nonneg _`.
+
+Conclude with `mul_nonneg (Int.natCast_nonneg _) ((mul_nonneg_iff_of_pos_left (by exact_mod_cast hkj)).1 this)`. Introduce `j hd`. Use `(Finset.sum_eq_zero_iff_of_nonneg hnn).1 s.symm j (Finset.mem_univ _)` as an intermediate fact. Conclude with `(mul_eq_zero.1 this).resolve_left (by exact_mod_cast hd)`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, d j ≠ 0 := by`.
+
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `: k • g i = 0` using `by rw [H1]; simp [hc]`. Establish `s` using `congrArg (f i) this`. Rewrite `s` using `[map_nsmul, hf, if_pos rfl, map_zero]`.
+
+Simplify using `at s`. Use linear arithmetic over natural numbers and integers. Take `⟨kj, e, hkj, he, hc⟩` from `coord j hj`. Establish `hel : ∀ l, l ≠ i → e l = 0` using `fun l hl => by`. Use `hc l` as an intermediate fact.
+
+Rewrite `this` using `[Z l hl j hj, mul_zero]`. Conclude with `this.symm` after adjusting the coercions. Establish `he' : kj • g' j = e i • g i`. Rewrite using `[he, Finset.sum_eq_single i (fun l _ hl => by rw [hel l hl, zero_smul]) (by simp)]`. Establish `t` using `congrArg (f' j) he'`.
+
+Rewrite `t` using `[map_nsmul, map_nsmul, hf', if_pos rfl]`. Simplify using `only [nsmul_eq_mul, mul_one] at t`. Establish `hx` using `hc i`. Establish `hx0 : 0 ≤ f i (g' j)` using `(mul_nonneg_iff_of_pos_left (by exact_mod_cast hkj)).1 (hx ▸ Int.natCast_nonneg _)`. Establish `hxy : f i (g' j) * f' j (g i) = 1`.
+
+Establish `: (kj : ℤ) * (f i (g' j) * f' j (g i)) = kj * 1`. Rewrite using `[← mul_assoc, hx, mul_one]`. Conclude with `t.symm` after adjusting the coercions. Conclude with `mul_left_cancel₀ (by exact_mod_cast hkj.ne') this`. Establish `hx1 : f i (g' j) = 1` using `Int.eq_one_of_mul_eq_one_right hx0 hxy`.
+
+Establish `hei : e i = kj` using `by rw [hx1, mul_one] at hx; exact_mod_cast hx.symm`. Rewrite `he'` using `[hei]`. Use `⟨j, LinearMap.ext₂ fun a b => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun₂ (congrArg Subtype.val he') a b` as an intermediate fact. Simplify using `[g, g'] at this`.
+
+Break down `this with h | h` into its components or cases. Conclude with `h.symm`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ray {γ : Fin m → LinearMap.BilinForm ℤ X} {γ' : Fin m' → LinearMap.BilinForm ℤ X} (hγ : IsCone bar φ γ)
     (hγ' : IsCone bar φ γ') {i : Fin m} {k : ℕ} {d : Fin m' → ℕ} (hk : 0 < k) (hkd : k • γ i = ∑ j, d j • γ' j)
     (hback : ∀ j, d j ≠ 0 → ∃ (kj : ℕ) (e : Fin m → ℕ), 0 < kj ∧ kj • γ' j = ∑ l, e l • γ l) :
@@ -119,6 +160,11 @@ theorem ray {γ : Fin m → LinearMap.BilinForm ℤ X} {γ' : Fin m' → LinearM
   · exact h.symm
   · omega
 
+/- English proof (translation)
+Take `⟨k, d, hk, hkd⟩` from `inCone hγ' hγ.mem hγ.nonneg hc hc' ((linearOn_iff φ γ).1 hγ.linear c hc) hrel i hi`. Use `ray hγ hγ' hk hkd fun j hj => ?_` and prove the remaining obligations. Apply the tactic sequence `refine inCone (a := fun j => (d j : ℝ)) (b := Pi.single i (k : ℝ)) hγ hγ'.mem hγ'.nonneg (fun j => Nat.cast_nonneg _) (fun l => by by_cases h : l = i <;> simp [h]) ((linearOn_iff φ γ').1 hγ'.linear _ fun j => Nat.cast_nonneg _) ?_ j (by exact_mod_cast hj)`. Use `LinearMap.ext₂ fun a b => ?_` and prove the remaining obligations. Use `LinearMap.congr_fun₂ hkd a b` as an intermediate fact.
+
+Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply, toReal_apply, nsmul_eq_mul] at this ⊢`. Simplify using `only [Pi.single_apply, ite_smul, zero_smul, LinearMap.smul_apply, toReal_apply, smul_eq_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, Nat.cast_ite, Nat.cast_zero, ite_mul, zero_mul]`. Conclude with `this.symm` after adjusting the coercions.
+-/
 theorem mem_of_coeff_ne_zero {γ : Fin m → LinearMap.BilinForm ℤ X} {γ' : Fin m' → LinearMap.BilinForm ℤ X}
     (hγ : IsCone bar φ γ) (hγ' : IsCone bar φ γ') {c : Fin m → ℝ} {c' : Fin m' → ℝ} (hc : ∀ i, 0 ≤ c i)
     (hc' : ∀ j, 0 ≤ c' j) (hrel : ∑ i, c i • toReal (γ i) = ∑ j, c' j • toReal (γ' j)) (i : Fin m) (hi : c i ≠ 0) :
@@ -140,6 +186,19 @@ end ConeMeet
 
 open ConeMeet in
 
+/- English proof (translation)
+Introduce `O _ bar φ X _ _ _ m m' γ γ' c c' hγ hγ' hc hc' hrel i hi`. Take `⟨j, hj⟩` from `mem_of_coeff_ne_zero hγ hγ' hc hc' hrel i hi`. Use `⟨j, hj, ?_⟩` and prove the remaining obligations. Set `g : Fin m → balForms bar X` to `fun l => ⟨γ l, hγ.mem l⟩`. Set `g' : Fin m' → balForms bar X` to `fun l => ⟨γ' l, hγ'.mem l⟩`.
+
+Take `⟨f', hf'⟩` from `hγ'.basis.exists_dual`. Establish `hf' : ∀ a b, f' a (g' b) = if a = b then 1 else 0` using `hf'`. Establish `s` using `sum_mul_eq_zero_of_sum_toReal (X := X) (j := (balForms bar X).subtype) Subtype.val_injective (f' j) (β := Sum.elim g g') (c := Sum.elim c (-c')) (by`. Rewrite using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Submodule.subtype_apply, Pi.neg_apply, neg_smul, Finset.sum_neg_distrib, g, g', hrel, add_neg_cancel])`.
+
+Rewrite `s` using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Pi.neg_apply, neg_mul, Finset.sum_neg_distrib, hf', Int.cast_ite, Int.cast_one, Int.cast_zero, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true] at s`. Establish `h1 : ∑ l, c l * (f' j (g l) : ℝ) = c i`. Rewrite using `[Finset.sum_eq_single i]`. Establish `: g i = g' j` using `Subtype.ext hj`.
+
+Rewrite using `[this, hf', if_pos rfl, Int.cast_one, mul_one]`. Introduce `l _ hl`. Distinguish the cases in `hcl : c l = 0`. Rewrite using `[hcl, zero_mul]`. Take `⟨p, hp⟩` from `mem_of_coeff_ne_zero hγ hγ' hc hc' hrel l hcl`.
+
+Establish `: g l = g' p` using `Subtype.ext hp`. Rewrite using `[this, hf', if_neg, Int.cast_zero, mul_zero]`. Introduce and unpack `rfl`. Conclude with `hl (hγ.injective (hp.trans hj.symm))`. Simplify using the standard rewrite rules.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem cone_meet : ∀ (O : Type) [CommRing O] (bar : O → O) (φ : InvFun O) (X : Type) [AddCommGroup X] [Module O X]
     [Module.Finite O X] (m m' : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X) (γ' : Fin m' → LinearMap.BilinForm ℤ X)
     (c : Fin m → ℝ) (c' : Fin m' → ℝ), IsCone bar φ γ → IsCone bar φ γ' → (∀ i, 0 ≤ c i) → (∀ j, 0 ≤ c' j) →

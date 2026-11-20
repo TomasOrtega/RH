@@ -12,6 +12,17 @@ noncomputable section
 
 namespace GlobalTheory.WeakClosed
 
+/- English proof (translation)
+Introduce `l _ K LL T d b`. Use `haveI := LL.2`. Use `haveI : Module.Free ℤ_[l] ↥(OL LL) := (GlobalTheory.Per.integers_completeDVR l LL).elim fun _ h => h.2.2.2.1`. Use `haveI : Module.Finite ℤ_[l] ↥(OL LL) := (GlobalTheory.Per.integers_completeDVR l LL).elim fun _ h => h.2.2.2.2.1`. Establish `hc : ∀ c : ℤ_[l], algebraMap ↥(OL LL) ↥LL.1 (algebraMap ℤ_[l] ↥(OL LL) c) = algebraMap ℚ_[l] ↥LL.1 (algebraMap ℤ_[l] ℚ_[l] c)` using `fun c => (IsScalarTower.algebraMap_apply ℤ_[l] ↥(OL LL) ↥LL.1 c).symm.trans (IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] ↥LL.1 c)`.
+
+Use `letI := zlMod T`. Use `haveI := zlTower T`. Use `letI := twTop T b`. Use `letI tC : TopologicalSpace (Cb l) := cbTop l`. Use `letI tW : TopologicalSpace (WCb l) := wTop l`.
+
+Establish `hemb : Topology.IsInducing (algebraMap ℤ_[l] ℚ_[l])` using `Topology.IsInducing.subtypeVal`. Establish `hb : ∀ i, Continuous fun t : ↥T.L.T => b.repr t i`. Introduce `i`. Take `⟨φ, hφ⟩` from `GlobalTheory.Cyc.exists_form_lat hc T b i`. Establish `h1 : Continuous φ` using `GlobalTheory.Cyc.continuous_form_of_moduleTopology (L := ↥LL.1) φ`.
+
+Conclude with `hemb.continuous_iff.2 ((h1.comp continuous_subtype_val).congr hφ)`. Establish `hW : Continuous (algebraMap ℤ_[l] (WCb l))` using `GlobalTheory.WeakTop.continuous_padicInt_witt _`. Establish `h1 : ∀ (t : ↥T.L.T) i, GlobalTheory.WeakTop.coords (WCb l) ↥(OL LL) b ((1 : RW LL) ⊗ₜ[↥(OL LL)] t) i = algebraMap ℤ_[l] (WCb l) (b.repr t i)`. Introduce `t i`. Rewrite using `[Algebra.TensorProduct.one_def, GlobalTheory.WeakTop.coords_tmul, one_smul, Algebra.algebraMap_eq_smul_one]`.
+
+Use `continuous_induced_rng.2 (continuous_pi fun i => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, h1]`. Conclude with `hW.comp (hb i)`.
+-/
 theorem continuous_one_tmul : ∀ {l : ℕ} [Fact l.Prime] {K LL : FinExt l} (T : Lt K LL) {d : ℕ}
     (b : LatB T d), letI := twTop T b; Continuous fun t : ↥T.L.T => (1 : RW LL) ⊗ₜ[↥(OL LL)] t := by
   intro l _ K LL T d b

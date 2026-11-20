@@ -19,24 +19,42 @@ variable {E : Type} [Field E] (s : E →+* E)
 
 def adj {a b : Type} (A : Matrix a b E) : Matrix b a E := (A.map s)ᵀ
 
+/- English proof (translation)
+Simplify using `only [adj, Matrix.map_mul, Matrix.transpose_mul]`.
+-/
 theorem adj_mul {a b c : Type} [Fintype b] (A : Matrix a b E) (B : Matrix b c E) :
     adj s (A * B) = adj s B * adj s A := by
   simp only [adj, Matrix.map_mul, Matrix.transpose_mul]
 
+/- English proof (translation)
+Simplify using `only [adj, Matrix.map_one _ (map_zero s) (map_one s), Matrix.transpose_one]`.
+-/
 theorem adj_one {a : Type} [DecidableEq a] : adj s (1 : Matrix a a E) = 1 := by
   simp only [adj, Matrix.map_one _ (map_zero s) (map_one s), Matrix.transpose_one]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[adj]`.
+-/
 theorem adj_sub {a b : Type} (A B : Matrix a b E) : adj s (A - B) = adj s A - adj s B := by
   ext i j; simp [adj]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[adj]`.
+-/
 theorem adj_smul {a b : Type} (c : E) (A : Matrix a b E) : adj s (c • A) = s c • adj s A := by
   ext i j; simp [adj]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[adj, hs]`.
+-/
 theorem adj_adj (hs : ∀ x, s (s x) = x) {a b : Type} (A : Matrix a b E) : adj s (adj s A) = A := by
   ext i j; simp [adj, hs]
 
 variable {n m : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
+/- English proof (translation)
+Establish `hi : Function.Injective X.mulVec` using `Matrix.mulVec_injective_iff.2 hX`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' X) (LinearMap.ker_eq_bot.2 hi)`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Use `congrArg LinearMap.toMatrix' hg` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id]`. Then use the resulting hypothesis.
+-/
 theorem exists_left_inv {X : Matrix (Fin n) (Fin m) E} (hX : LinearIndependent E Xᵀ) :
     ∃ L : Matrix (Fin m) (Fin n) E, L * X = 1 := by
   have hi : Function.Injective X.mulVec := Matrix.mulVec_injective_iff.2 hX
@@ -45,6 +63,13 @@ theorem exists_left_inv {X : Matrix (Fin n) (Fin m) E} (hX : LinearIndependent E
   have := congrArg LinearMap.toMatrix' hg
   rwa [LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id] at this
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `exists_left_inv hX`. Establish `flip : ∀ Z : Matrix (Fin n) (Fin m) E, adj s X * J * Z = 1 → adj s Z * J * X = 1` using `fun Z hZ => by`. Use `congrArg (adj s) hZ` as an intermediate fact. Rewrite `this` using `[adj_mul, adj_mul, adj_adj s hs, hJ, adj_one, ← Matrix.mul_assoc]`. Then use the resulting hypothesis. Take `⟨Z, hZ⟩ : ∃ Z : Matrix (Fin n) (Fin m) E, adj s X * J * Z = 1` from `⟨J⁻¹ * adj s L, by`.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hd.isUnit, ← adj_mul, hL, adj_one]⟩`. Take `⟨G, hG⟩ : ∃ G, G = adj s Z * J * Z` from `⟨_, rfl⟩`. Establish `h1 : adj s X * J * (Z - (2 : E)⁻¹ • (X * G)) = 1`. Rewrite using `[Matrix.mul_sub, Matrix.mul_smul, ← Matrix.mul_assoc, h0, hZ, Matrix.zero_mul, smul_zero, sub_zero]`. Use `⟨_, h1, flip _ h1, ?_⟩` and prove the remaining obligations.
+
+Establish `hGG : adj s G = G`. Rewrite using `[hG, adj_mul, adj_mul, adj_adj s hs, hJ, Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_sub, Matrix.mul_smul, ← Matrix.mul_assoc _ X G, flip _ h1, Matrix.one_mul, adj_sub, adj_smul, adj_mul, hGG, Matrix.sub_mul, Matrix.sub_mul, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_assoc G, Matrix.mul_assoc G, hZ, Matrix.mul_one, ← hG, map_inv₀, map_ofNat, sub_sub …`.
+-/
 theorem exists_dual [CharZero E] (hs : ∀ x, s (s x) = x) (hJ : adj s J = J) (hd : J.det ≠ 0)
     {X : Matrix (Fin n) (Fin m) E} (hX : LinearIndependent E Xᵀ) (h0 : adj s X * J * X = 0) :
     ∃ Y : Matrix (Fin n) (Fin m) E, adj s X * J * Y = 1 ∧ adj s Y * J * X = 1 ∧ adj s Y * J * Y = 0 := by
@@ -64,10 +89,16 @@ theorem exists_dual [CharZero E] (hs : ∀ x, s (s x) = x) (hJ : adj s J = J) (h
     Matrix.sub_mul, Matrix.sub_mul, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_assoc G, Matrix.mul_assoc G, hZ,
     Matrix.mul_one, ← hG, map_inv₀, map_ofNat, sub_sub, ← add_smul, show (2 : E)⁻¹ + 2⁻¹ = 1 by norm_num, one_smul, sub_self]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_apply]`. Both sides reduce to the same expression.
+-/
 theorem gram_apply {a b : Type} (A : Matrix (Fin n) a E) (B : Matrix (Fin n) b E) (i : a) (j : b) :
     (adj s A * J * B) i j = (fun k => s (Aᵀ i k)) ⬝ᵥ J *ᵥ (Bᵀ j) := by
   rw [Matrix.mul_assoc, Matrix.mul_apply]; rfl
 
+/- English proof (translation)
+Establish `e : ∀ i j, s (J j i) = J i j` using `fun i j => congrFun (congrFun hJ i) j`. Simplify using `only [dotProduct, Matrix.mulVec, map_sum, map_mul, hs, e, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem form_symm (hs : ∀ x, s (s x) = x) (hJ : adj s J = J) (x y : Fin n → E) :
     s ((fun k => s (x k)) ⬝ᵥ J *ᵥ y) = (fun k => s (y k)) ⬝ᵥ J *ᵥ x := by
   have e : ∀ i j, s (J j i) = J i j := fun i j => congrFun (congrFun hJ i) j
@@ -78,15 +109,47 @@ theorem form_symm (hs : ∀ x, s (s x) = x) (hJ : adj s J = J) (x y : Fin n → 
 def app (X : Matrix (Fin n) (Fin m) E) (z : Fin n → E) : Matrix (Fin n) (Fin (m + 1)) E :=
   (Matrix.of (Fin.snoc (α := fun _ => Fin n → E) Xᵀ z))ᵀ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem app_transpose (X : Matrix (Fin n) (Fin m) E) (z : Fin n → E) :
     (app X z)ᵀ = Fin.snoc (α := fun _ => Fin n → E) Xᵀ z := rfl
 
+/- English proof (translation)
+The claim follows from `Fin.snoc_last (α := fun _ => Fin n → E) z Xᵀ`.
+-/
 theorem app_last (X : Matrix (Fin n) (Fin m) E) (z : Fin n → E) : (app X z)ᵀ (Fin.last m) = z :=
   Fin.snoc_last (α := fun _ => Fin n → E) z Xᵀ
 
+/- English proof (translation)
+The claim follows from `Fin.snoc_castSucc (α := fun _ => Fin n → E) z Xᵀ i`.
+-/
 theorem app_cast (X : Matrix (Fin n) (Fin m) E) (z : Fin n → E) (i : Fin m) : (app X z)ᵀ i.castSucc = Xᵀ i :=
   Fin.snoc_castSucc (α := fun _ => Fin n → E) z Xᵀ i
 
+/- English proof (translation)
+Establish `step : ∀ (m : ℕ) (C Y : Matrix (Fin n) (Fin m) E) (z : Fin n → E), LinearIndependent E Cᵀ → adj s C * J * C = 0 → adj s Y * J * C = 1 → (adj s C * J) *ᵥ z = 0 → (adj s Y * J) *ᵥ z = 0 → (fun k => s (z k)) ⬝ᵥ J *ᵥ z = 0 → z ≠ 0 → LinearIndependent E (app C z)ᵀ ∧ adj s (app C z) * …`. Introduce `m C Y z hC h0 h1 a b c hz`. Prove the components needed by the constructor for the conclusion. Rewrite using `[app_transpose]`. Use `linearIndependent_finSnoc.2 ⟨hC, fun hm => hz ?_⟩` and prove the remaining obligations.
+
+Take `⟨u, hu⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hm`. Establish `e : C *ᵥ u = z`. Rewrite using `[← hu]`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, mul_comm]`.
+
+Rewrite `b` using `[← e, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Rewrite using `[← e, b, Matrix.mulVec_zero]`. Establish `a' : ∀ i, (fun k => s (Cᵀ i k)) ⬝ᵥ J *ᵥ z = 0` using `fun i => by`. Use `congrFun a i` as an intermediate fact. Rewrite `this` using `[← Matrix.mulVec_mulVec]`.
+
+Conclude with `this`. Use extensionality with `i j`. Rewrite using `[gram_apply, Matrix.zero_apply]`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`.
+
+Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => rw [app_last]`. Conclude with `c`. Consider the case `cast j`. Rewrite using `[app_last, app_cast, ← form_symm s hs hJ, a', map_zero]`.
+
+Consider the case `cast i`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => rw [app_last, app_cast]`. Conclude with `a' i`. Consider the case `cast j`.
+
+Rewrite using `[app_cast, app_cast, ← gram_apply, h0, Matrix.zero_apply]`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `m C hm hC h0`. Take `⟨Y, h1, h2, h3⟩` from `exists_dual s hs hJ hd hC h0`.
+
+Use `⟨m, le_rfl, C, Y, h0, h3, h1, fun z a b c => ?_, rfl⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hz`. Use `(step m C Y z hC h0 h2 a b c hz).1.fintype_card_le_finrank` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+
+Consider the case `succ k ih`. Introduce `m C hm hC h0`. Take `⟨Y, h1, h2, h3⟩` from `exists_dual s hs hJ hd hC h0`. Distinguish the cases in `H : ∀ z : Fin n → E, (adj s C * J) *ᵥ z = 0 → (adj s Y * J) *ᵥ z = 0 → (fun k => s (z k)) ⬝ᵥ J *ᵥ z = 0 → z = 0`. Conclude with `⟨m, le_rfl, C, Y, h0, h3, h1, H, rfl⟩`.
+
+Use `push Not at H`. Take `⟨z, a, b, c, hz⟩` from `H`. Take `⟨p, q⟩` from `step m C Y z hC h0 h2 a b c hz`. Take `⟨m', hm', X, Y', x1, x2, x3, x4, x5⟩` from `ih (m + 1) (app C z) (by omega) p q`. Use `⟨m', by omega, X, Y', x1, x2, x3, x4, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i j`. Use `congrFun (congrFun x5 i) j.castSucc` as an intermediate fact. Establish `e : app C z i j.castSucc = C i j` using `congrFun (app_cast C z j) i`. Conclude with `this.trans e`.
+-/
 theorem exists_ext [CharZero E] (hs : ∀ x, s (s x) = x) (hJ : adj s J = J) (hd : J.det ≠ 0) (k : ℕ) :
     ∀ (m : ℕ) (C : Matrix (Fin n) (Fin m) E), n ≤ m + k → LinearIndependent E Cᵀ → adj s C * J * C = 0 →
       ∃ (m' : ℕ) (hm : m ≤ m') (X Y : Matrix (Fin n) (Fin m') E), adj s X * J * X = 0 ∧ adj s Y * J * Y = 0 ∧
@@ -148,6 +211,11 @@ theorem exists_ext [CharZero E] (hs : ∀ x, s (s x) = x) (hJ : adj s J = J) (hd
 
 end General
 
+/- English proof (translation)
+Establish `hs : ∀ x, (σ : E →+* E) ((σ : E →+* E) x) = x` using `fun x => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Use `h.2.2.2 τ` as an intermediate fact. Simplify using `only [RingHom.coe_coe]`.
+
+Rewrite using `[this, this, star_star]`. Take `⟨m, hm, X, Y, x1, x2, x3, x4, x5⟩` from `exists_ext (σ : E →+* E) (J := J) hs (Matrix.ext fun i j => hJ.1 i j) hJ.2 n (r + 1) C (by omega) hC h0`. Use `⟨m, hm, X, Y, ⟨x1, x2, x3, fun z a b c => x4 z a b ?_⟩, x5⟩` and prove the remaining obligations. Simplify using `only [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.hE, Formalism.UG.hform] at c`. Simplify `c` using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+-/
 theorem exists_wittFrame_initCols (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ) (n : ℕ) (J : Matrix (Fin n) (Fin n) E)
     (hJ : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsHermND σ J) (r : ℕ) (C : Matrix (Fin n) (Fin (r + 1)) E)

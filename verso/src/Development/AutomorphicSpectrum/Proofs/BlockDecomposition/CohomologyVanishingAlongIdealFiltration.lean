@@ -23,12 +23,21 @@ abbrev val {j : ℕ} (x : Q A j) (s : ComposableArrows C j) : A.obj (s.obj (Fin.
 
 def Vals (a : IdF A) {j : ℕ} (x : Q A j) : Prop := ∀ s, val x s ∈ a.S (s.obj (Fin.last j))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dQ_apply {j : ℕ} (x : Q A j) (s : ComposableArrows C (j + 1)) :
     val (dQ A j x) s = ∑ i : Fin (j + 2), (-1 : ℤ) ^ (i : ℕ) • (A.map (toLast i s)).hom (val x (face i s)) := rfl
 
+/- English proof (translation)
+Introduce `s` and use `(a.S _).sub_mem (hx s) (hy s)`.
+-/
 theorem Vals.sub {a : IdF A} {j : ℕ} {x y : Q A j} (hx : Vals a x) (hy : Vals a y) : Vals a (x - y) :=
   fun s => (a.S _).sub_mem (hx s) (hy s)
 
+/- English proof (translation)
+Introduce `s` and use `by rw [dQ_apply] exact Submodule.sum_mem _ fun i _ => (a.S _).toAddSubgroup.zsmul_mem (a.map_mem _ (hx _)) _`.
+-/
 theorem Vals.dQ {a : IdF A} {j : ℕ} {x : Q A j} (hx : Vals a x) : Vals a (dQ A j x) := fun s => by
   rw [dQ_apply]
   exact Submodule.sum_mem _ fun i _ => (a.S _).toAddSubgroup.zsmul_mem (a.map_mem _ (hx _)) _
@@ -36,9 +45,17 @@ theorem Vals.dQ {a : IdF A} {j : ℕ} {x : Q A j} (hx : Vals a x) : Vals a (dQ A
 def cl (a b : IdF A) {j : ℕ} (x : Q A j) (hx : Vals a x) : CH.Cn (sq a b) j :=
   fun s => sqMk a b (val x s) (hx s)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cl_val (a b : IdF A) {j : ℕ} (x : Q A j) (hx : Vals a x) (s : ComposableArrows C j) :
     (show sqM a b _ from cl a b x hx s).1 = Ideal.Quotient.mk _ (val x s) := rfl
 
+/- English proof (translation)
+Establish `h : ∀ s : ComposableArrows C j, ∃ x : A.obj (s.obj (Fin.last j)), ∃ hx : x ∈ a.S _, sqMk a b x hx = f s`. Introduce `s`. Take `⟨y, hy, e⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 (show sqM a b _ from f s).2`. Conclude with `⟨y, hy, Subtype.ext e⟩`. Use `choose x hx e using h`.
+
+Conclude with `⟨x, hx, funext e⟩`.
+-/
 theorem cl_surj (a b : IdF A) {j : ℕ} (f : CH.Cn (sq a b) j) : ∃ (x : Q A j) (hx : Vals a x), cl a b x hx = f := by
   have h : ∀ s : ComposableArrows C j, ∃ x : A.obj (s.obj (Fin.last j)), ∃ hx : x ∈ a.S _, sqMk a b x hx = f s := by
     intro s
@@ -47,10 +64,18 @@ theorem cl_surj (a b : IdF A) {j : ℕ} (f : CH.Cn (sq a b) j) : ∃ (x : Q A j)
   choose x hx e using h
   exact ⟨x, hx, funext e⟩
 
+/- English proof (translation)
+Introduce `s` and use `by have h1 := congrArg (fun g : CH.Cn (sq a b) j => (show sqM a b _ from g s).1) h exact Ideal.Quotient.eq_zero_iff_mem.1 h1`.
+-/
 theorem cl_eq_zero (a b : IdF A) {j : ℕ} {x : Q A j} {hx : Vals a x} (h : cl a b x hx = 0) : Vals b x := fun s => by
   have h1 := congrArg (fun g : CH.Cn (sq a b) j => (show sqM a b _ from g s).1) h
   exact Ideal.Quotient.eq_zero_iff_mem.1 h1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Subtype.val (∑ i : Fin (j + 2), (-1 : ℤ) ^ (i : ℕ) • (sqMap a b (toLast i s)) (sqMk a b (val x (face i s)) (hx _)) : sqM a b _) = Ideal.Quotient.mk _ (∑ i : Fin (j + 2), (-1 : ℤ) ^ (i : ℕ) • (A.map (toLast i s)).hom (val x (face i s)))`. Rewrite using `[map_sum, Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zsmul]`. Both sides reduce to the same expression.
+-/
 theorem d_cl (a b : IdF A) {j : ℕ} (x : Q A j) (hx : Vals a x) :
     CH.d (sq a b) j (cl a b x hx) = cl a b (dQ A j x) hx.dQ := by
   funext s
@@ -62,12 +87,20 @@ theorem d_cl (a b : IdF A) {j : ℕ} (x : Q A j) (hx : Vals a x) :
   rw [map_zsmul]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `map_sub (Ideal.Quotient.mk _) _ _`.
+-/
 theorem cl_sub (a b : IdF A) {j : ℕ} {x y : Q A j} (hx : Vals a x) (hy : Vals a y) :
     cl a b (x - y) (hx.sub hy) = cl a b x hx - cl a b y hy := by
   funext s
   apply Subtype.ext
   exact map_sub (Ideal.Quotient.mk _) _ _
 
+/- English proof (translation)
+Rewrite using `[d_cl]`. Use function extensionality and compare the values at `s`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (val (dQ A j z) s) = 0`. Rewrite using `[hd]`.
+
+Conclude with `map_zero (Ideal.Quotient.mk _)`.
+-/
 theorem d_cl_zero (a b : IdF A) {j : ℕ} {z : Q A j} (hz : Vals a z) (hd : dQ A j z = 0) :
     CH.d (sq a b) j (cl a b z hz) = 0 := by
   rw [d_cl]
@@ -77,12 +110,20 @@ theorem d_cl_zero (a b : IdF A) {j : ℕ} {z : Q A j} (hz : Vals a z) (hd : dQ A
   rw [hd]
   exact map_zero (Ideal.Quotient.mk _)
 
+/- English proof (translation)
+Establish `hc` using `d_cl_zero a b hz hd`. Establish `h0 : (CH.cx (sq a b)).cls (cl a b z hz) hc = 0` using `Subsingleton.elim _ _`. Conclude with `cl_eq_zero a b ((CechClassBoundaries.class_zero_eq_zero_iff _ _).1 h0)`.
+-/
 theorem step_zero (a b : IdF A) (h : Subsingleton (CH.H (sq a b) 0)) {z : Q A 0} (hz : Vals a z)
     (hd : dQ A 0 z = 0) : Vals b z := by
   have hc := d_cl_zero a b hz hd
   have h0 : (CH.cx (sq a b)).cls (cl a b z hz) hc = 0 := Subsingleton.elim _ _
   exact cl_eq_zero a b ((CechClassBoundaries.class_zero_eq_zero_iff _ _).1 h0)
 
+/- English proof (translation)
+Establish `hc` using `d_cl_zero a b hz hd`. Establish `h0 : (CH.cx (sq a b)).cls (cl a b z hz) hc = 0` using `Subsingleton.elim _ _`. Take `⟨f, hf⟩` from `(CechClassBoundaries.mem_Bs _).1 ((CechClassBoundaries.cls_eq_zero _ _).1 h0)`. Take `⟨y, hy, rfl⟩` from `cl_surj a b f`. Use `⟨y, hy, cl_eq_zero a b (hx := hz.sub hy.dQ) ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[cl_sub a b hz hy.dQ, ← d_cl a b y hy]`. Conclude with `sub_eq_zero.2 hf.symm`.
+-/
 theorem step_succ (a b : IdF A) {n : ℕ} (h : Subsingleton (CH.H (sq a b) (n + 1))) {z : Q A (n + 1)} (hz : Vals a z)
     (hd : dQ A (n + 1) z = 0) : ∃ y : Q A n, Vals a y ∧ Vals b (z - dQ A n y) := by
   have hc := d_cl_zero a b hz hd
@@ -95,6 +136,13 @@ theorem step_succ (a b : IdF A) {n : ℕ} (h : Subsingleton (CH.H (sq a b) (n + 
 
 abbrev St (a : ℕ → IdF A) (n k : ℕ) : Type 1 := {z : Q A (n + 1) // Vals (a k) z ∧ dQ A (n + 1) z = 0}
 
+/- English proof (translation)
+Establish `hs : ∀ (k : ℕ) (w : St a n k), ∃ y : Q A n, Vals (a k) y ∧ Vals (a (k + 1)) (w.1 - dQ A n y)` using `fun k w => step_succ _ _ (h k) w.2.1 w.2.2`. Use `choose f hf hg using hs`. Set `w : ∀ k, St a n k` to `fun k => Nat.rec ⟨z, hz, hd⟩ (fun k wk => ⟨wk.1 - dQ A n (f k wk), hg k wk, by`. Establish `e : dQ A (n + 1) (dQ A n (f k wk)) = 0` using `CH.d_d _ _ _`. Rewrite using `[map_sub, wk.2.2, e, sub_zero]⟩) k`.
+
+Use `⟨fun k => f k (w k), fun k => hf k (w k), fun k => ?_⟩` and prove the remaining obligations. Establish `e : ∀ k, (w k).1 = z - dQ A n (∑ i ∈ Finset.range k, f i (w i))`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp [w]`.
+
+Consider the case `succ k ih`. Rewrite using `[Finset.sum_range_succ, map_add, ← sub_sub, ← ih]`. Rewrite using `[← e]`. Conclude with `(w k).2.1`.
+-/
 theorem exists_seq (a : ℕ → IdF A) {n : ℕ} (h : ∀ k, Subsingleton (CH.H (sq (a k) (a (k + 1))) (n + 1)))
     {z : Q A (n + 1)} (hz : Vals (a 0) z) (hd : dQ A (n + 1) z = 0) :
     ∃ y : ℕ → Q A n, (∀ k, Vals (a k) (y k)) ∧
@@ -115,6 +163,27 @@ theorem exists_seq (a : ℕ → IdF A) {n : ℕ} (h : ∀ k, Subsingleton (CH.H 
   rw [← e]
   exact (w k).2.1
 
+/- English proof (translation)
+Establish `hle : ∀ {k m : ℕ}, k ≤ m → ∀ T, (a m).S T ≤ (a k).S T`. Introduce `k m hkm T`. Proceed by induction on `m, hkm using Nat.le_induction with`. Consider the case `base => exact le_rfl`. Consider the case `succ m _ ih => exact (ha m T).trans ih`.
+
+Use `choose K hK using he`. Establish `hbot : ∀ (T : C) {m : ℕ}, K T ≤ m → (a m).S T = ⊥` using `fun T m hm => le_bot_iff.1 ((hle hm T).trans (hK T).le)`. Take `⟨y, hy, hz'⟩` from `exists_seq a h hz hd`. Set `P : ℕ → Q A n` to `fun N => ∑ i ∈ Finset.range N, y i`. Establish `hP : ∀ (s : ComposableArrows C n) {N : ℕ}, K (s.obj (Fin.last n)) ≤ N → val (P N) s = val (P (K (s.obj (Fin.last n)))) s`.
+
+Introduce `s N hN`. Proceed by induction on `N, hN using Nat.le_induction with`. Consider the case `base => rfl`. Consider the case `succ m hm ih`. Establish `h0 : val (y m) s = 0`.
+
+Use `hy m s` as an intermediate fact. Rewrite `this` using `[hbot _ hm, Ideal.mem_bot]`. Then use the resulting hypothesis. Establish `e : val (P (m + 1)) s = val (P m) s + val (y m) s`. Simplify using `only [P, Finset.sum_range_succ]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, h0, add_zero, ih]`. Set `Y : Q A n` to `fun s => val (P (K (s.obj (Fin.last n)))) s`. Establish `hP0 : ∀ N, Vals (a 0) (P N)`. Introduce `N`. Proceed by induction on `N with`.
+
+Consider the case `zero => intro s`. Simplify using `only [P, Finset.range_zero, Finset.sum_empty]`. Conclude with `(a 0 |>.S _).zero_mem`. Consider the case `succ m ih`. Introduce `s`.
+
+Establish `e : val (P (m + 1)) s = val (P m) s + val (y m) s`. Simplify using `only [P, Finset.sum_range_succ]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(a 0 |>.S _).add_mem (ih s) (hle (Nat.zero_le m) _ (hy m s))`.
+
+Use `⟨Y, fun s => hP0 _ s, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Set `N : ℕ` to `max (K (s.obj (Fin.last (n + 1)))) (Finset.univ.sup fun i : Fin (n + 2) => K ((face i s).obj (Fin.last n)))`. Establish `h1 : val (z - dQ A n (P N)) s = 0`. Use `hz' N s` as an intermediate fact.
+
+Rewrite `this` using `[hbot _ (le_max_left _ _), Ideal.mem_bot]`. Then use the resulting hypothesis. Establish `h2 : val (dQ A n (P N)) s = val (dQ A n Y) s`. Rewrite using `[dQ_apply, dQ_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hP (face i s) ((Finset.le_sup (f := fun i : Fin (n + 2) => K ((face i s).obj (Fin.last n))) (Finset.mem_univ i)).trans (le_max_right _ _))]`.
+
+Establish `h3 : val z s = val (dQ A n (P N)) s` using `sub_eq_zero.1 h1`. Conclude with `h3.trans h2`.
+-/
 theorem exists_primitive (a : ℕ → IdF A) (ha : ∀ k T, (a (k + 1)).S T ≤ (a k).S T) (he : ∀ T, ∃ k, (a k).S T = ⊥)
     {n : ℕ} (h : ∀ k, Subsingleton (CH.H (sq (a k) (a (k + 1))) (n + 1)))
     {z : Q A (n + 1)} (hz : Vals (a 0) z) (hd : dQ A (n + 1) z = 0) :
@@ -172,6 +241,21 @@ end GlobalTheory.CompanionTheory.TowerEnd
 
 open GlobalTheory.CompanionTheory.TowerEnd in
 
+/- English proof (translation)
+Introduce `ha he h j`. Establish `key : ∀ x : CH.H (sq (a 0) (IdF.bot A)) j, x = 0`. Introduce `x`. Take `⟨f, hf, rfl⟩` from `CechClassBoundaries.clsSurj x`. Take `⟨z, hz, rfl⟩` from `cl_surj _ _ f`.
+
+Establish `hd : dQ A j z = 0`. Rewrite `hf` using `[d_cl]`. Use function extensionality and compare the values at `s`. Conclude with `cl_eq_zero _ _ hf s`. Consider the cases of `j with`.
+
+Consider the case `zero`. Establish `hall : ∀ k, Vals (a k) z`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact hz`.
+
+Consider the case `succ k ih => exact step_zero _ _ (h k 0) ih hd`. Establish `h0 : cl (a 0) (IdF.bot A) z hz = 0`. Use function extensionality and compare the values at `s`. Take `⟨k, hk⟩` from `he (s.obj (Fin.last 0))`. Establish `h1` using `hall k s`.
+
+Rewrite `h1` using `[hk, Ideal.mem_bot]`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (val z s) = 0`. Rewrite using `[h1]`. Conclude with `map_zero (Ideal.Quotient.mk _)`.
+
+Conclude with `(CechClassBoundaries.class_zero_eq_zero_iff _ _).2 h0`. Consider the case `succ n`. Take `⟨Y, hY, e⟩` from `exists_primitive a ha he (fun k => h k (n + 1)) hz hd`. Use `(CechClassBoundaries.cls_eq_zero _ _).2 ((CechClassBoundaries.mem_Bs _).2 ⟨cl _ _ Y hY, ?_⟩)` and prove the remaining obligations. Rewrite using `[d_cl]`.
+
+Substitute `e` using the available equality. Both sides reduce to the same expression. Conclude with `⟨fun x y => (key x).trans (key y).symm⟩`.
+-/
 theorem GlobalTheory.CompanionTheory.TowerEnd.vanish {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {A : C ⥤ CommAlgCat.{0} R} (a : ℕ → IdF A) :
     (∀ k T, (a (k + 1)).S T ≤ (a k).S T) → (∀ T, ∃ k, (a k).S T = ⊥) →
     (∀ k j, Subsingleton (CH.H (sq (a k) (a (k + 1))) j)) → ∀ j, Subsingleton (CH.H (sq (a 0) (IdF.bot A)) j) := by

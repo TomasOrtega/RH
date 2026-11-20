@@ -2,6 +2,21 @@ import Mathlib
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.FixedSubgroup
 import Development.AbelianVarietyTheory.Definitions.Foundations.SmoothPartStable
 
+/- English proof (translation)
+Set `f : G → W` to `fun g => if hg : ∃ h : H, (h : G)⁻¹ * g ∈ K then σ hg.choose w else 0`. Establish `pos : ∀ (g : G) (h : H), (h : G)⁻¹ * g ∈ K → f g = σ h w`. Introduce `g h hh`. Establish `hg : ∃ h : H, (h : G)⁻¹ * g ∈ K` using `⟨h, hh⟩`. Establish `h1` using `hg.choose_spec`.
+
+Establish `h2 : ((h⁻¹ * hg.choose : H) : G) ∈ K`. Use `K.mul_mem hh (K.inv_mem h1)` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Establish `h3` using `hw _ h2`. Establish `h4 : f g = σ hg.choose w` using `dif_pos hg`.
+
+Rewrite using `[h4]`. Use `conv_rhs => rw [← h3]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`. Establish `neg : ∀ g : G, (¬ ∃ h : H, (h : G)⁻¹ * g ∈ K) → f g = 0` using `fun g hg => dif_neg hg`. Use `⟨f, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[pos 1 1 (by simp)]`. Simplify using the standard rewrite rules. Introduce `h g`. Distinguish the cases in `hg : ∃ h : H, (h : G)⁻¹ * g ∈ K`. Take `⟨a, ha⟩` from `hg`.
+
+Rewrite using `[pos g a ha, pos (h * g) (h * a) (by simpa [mul_assoc] using ha), map_mul, Module.End.mul_apply]`. Rewrite using `[neg g hg, map_zero]`. Use `neg _ ?_` and prove the remaining obligations. Introduce and unpack `⟨a, ha⟩`. Conclude with `hg ⟨h⁻¹ * a, by simpa [mul_assoc] using ha⟩`.
+
+Introduce `k hk g`. Distinguish the cases in `hg : ∃ h : H, (h : G)⁻¹ * g ∈ K`. Take `⟨a, ha⟩` from `hg`. Rewrite using `[pos g a ha, pos (g * k) a (by rw [← mul_assoc]; exact K.mul_mem ha hk)]`. Rewrite using `[neg g hg]`.
+
+Use `neg _ ?_` and prove the remaining obligations. Introduce and unpack `⟨a, ha⟩`. Use `hg ⟨a, ?_⟩` and prove the remaining obligations. Use `K.mul_mem ha (K.inv_mem hk)` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+-/
 private theorem UpperTheory.Reformulated.B.Gr28.exists_fun
     {G W : Type} [Group G] [AddCommGroup W] [_root_.Module ℂ W]
     (H K : Subgroup G) (σ : Representation ℂ (↥H) W) (w : W)
@@ -46,6 +61,17 @@ private theorem UpperTheory.Reformulated.B.Gr28.exists_fun
       have := K.mul_mem ha (K.inv_mem hk)
       simpa [mul_assoc] using this
 
+/- English proof (translation)
+Introduce `G W _ _ _ _ _ H K σ hK w hw`. Take `⟨f, h1, h2, h3⟩` from `UpperTheory.Reformulated.B.Gr28.exists_fun H K σ w hw`. Set `F : GlobalTheory.PRep.indSpace H σ` to `⟨f, h2⟩`. Establish `hF : ∀ k ∈ K, GlobalTheory.PRep.ind H σ k F = F`. Introduce `k hk`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Conclude with `h3 k hk g`. Establish `hs : F ∈ GlobalTheory.PRep.smoothPart (GlobalTheory.PRep.ind H σ)`. Set `T : Subgroup G` to `{ carrier := {g | GlobalTheory.PRep.ind H σ g F = F} mul_mem' := by`.
+
+Introduce `x y hx hy`. Simplify using `only [Set.mem_setOf_eq, map_mul, Module.End.mul_apply] at *`. Rewrite using `[hy, hx]`. Use the proof step `one_mem' := by simp`. Use the proof step `inv_mem' := by`.
+
+Introduce `x hx`. Simplify using `only [Set.mem_setOf_eq] at *`. Use `conv_lhs => rw [← hx]`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using `}`.
+
+Conclude with `Subgroup.isOpen_mono (H₁ := K) (H₂ := T) hF hK`. Use `⟨⟨F, hs⟩, h1, ?_⟩` and prove the remaining obligations. Introduce `k hk`. Conclude with `Subtype.ext (hF k hk)`.
+-/
 theorem UpperTheory.Reformulated.B.Gr28.indVec :
     ∀ {G W : Type} [inst : Group G] [inst_1 : TopologicalSpace G] [inst_2 : IsTopologicalGroup G] [inst_3 : AddCommGroup W]
       [inst_4 : _root_.Module ℂ W] (H K : Subgroup G) (σ : Representation ℂ (↥H) W),

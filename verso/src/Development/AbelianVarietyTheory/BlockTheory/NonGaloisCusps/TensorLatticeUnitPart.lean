@@ -17,6 +17,9 @@ def extBil (b : M →ₗ[O] M' →ₗ[O] M'') (u : R ⊗[O] M) (w : R ⊗[O] M')
   TensorProduct.map (LinearMap.mul' O R) (TensorProduct.lift b)
     (TensorProduct.tensorTensorTensorComm O R M R M' (u ⊗ₜ[O] w))
 
+/- English proof (translation)
+Simplify using `[extBil]`.
+-/
 theorem extBil_tmul (b : M →ₗ[O] M' →ₗ[O] M'') (r r' : R) (x : M) (y : M') :
     extBil R b (r ⊗ₜ[O] x) (r' ⊗ₜ[O] y) = (r * r') ⊗ₜ[O] b x y := by
   simp [extBil]
@@ -24,6 +27,9 @@ theorem extBil_tmul (b : M →ₗ[O] M' →ₗ[O] M'') (r r' : R) (x : M) (y : M
 def extForm (b : M →ₗ[O] M' →ₗ[O] O) (u : R ⊗[O] M) (w : R ⊗[O] M') : R :=
   TensorProduct.rid O R (extBil R b u w)
 
+/- English proof (translation)
+Simplify using `[extForm, extBil_tmul]`.
+-/
 theorem extForm_tmul (b : M →ₗ[O] M' →ₗ[O] O) (r r' : R) (x : M) (y : M') :
     extForm R b (r ⊗ₜ[O] x) (r' ⊗ₜ[O] y) = b x y • (r * r') := by
   simp [extForm, extBil_tmul]
@@ -58,6 +64,9 @@ def UnitAt (E : EtTie W RA RW inclR φR gR πA) : Prop :=
       W.φD W.one e = e ∧ (∀ g : W.Gam, W.γD W.one g e = e) ∧
       W.N W.one = Submodule.span (LetA O n) {e}
 
+/- English proof (translation)
+Take `⟨_, e₀, h, _⟩` from `E.one_e`. Conclude with `⟨e₀, h⟩`.
+-/
 example (E : EtTie W RA RW inclR φR gR πA) : ∃ e₀ : ↥W.one.L.T, Submodule.span O {e₀} = ⊤ := by
   obtain ⟨_, e₀, h, _⟩ := E.one_e
   exact ⟨e₀, h⟩

@@ -11,5 +11,8 @@ open GlobalTheory.VB
 open GlobalTheory.IndefiniteRowSideFullHecke.GenericFiniteMaps
 open GlobalTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ProjFml.projection_formula | exact GlobalTheory.ProjFml.projection_formula | (intros; apply GlobalTheory.ProjFml.projection_formula <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.pushforward_twist_hom_dual_iso : ∀ (X Y : Scheme.{0}) (ρ : Y ⟶ X) (E : X.Modules) (r : ℕ), IsVB E r → ∀ (M : LB Y), M.IsLB → Nonempty ((Scheme.Modules.pushforward ρ).obj (twist ((Scheme.Modules.pullback ρ).obj E) M) ≅ homMod (dual E) ((Scheme.Modules.pushforward ρ).obj (twist (structureModule Y) M))) ∧ Nonempty ((Scheme.Modules.pushforward ρ).obj (twist ((Scheme.Modules.pullback ρ).obj (dual E)) M) ≅ homMod E ((Scheme.Modules.pushforward ρ).obj (twist (structureModule Y) M))) := by
   first | exact @GlobalTheory.ProjFml.projection_formula | exact GlobalTheory.ProjFml.projection_formula | (intros; apply GlobalTheory.ProjFml.projection_formula <;> assumption)

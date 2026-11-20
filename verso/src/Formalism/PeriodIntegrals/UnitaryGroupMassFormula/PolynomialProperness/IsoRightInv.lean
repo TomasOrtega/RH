@@ -11,6 +11,9 @@ namespace CoreW
 
 variable {n : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Simplify using `only [herm, Matrix.mulVec_sub, Matrix.mulVec_smul, star_sub, star_smul, dotProduct_sub, sub_dotProduct, dotProduct_smul, smul_dotProduct, smul_eq_mul, Complex.star_def, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_expand (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = H) (c : ℝ) (a b : Fin n → ℂ) :
     herm H ((c : ℂ) • a - b) ((c : ℂ) • a - b) =
       (c : ℂ) * ((c : ℂ) * herm H a a) - (c : ℂ) * herm H a b - ((c : ℂ) * herm H b a - herm H b b) := by
@@ -19,6 +22,9 @@ theorem herm_expand (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = H) (c : ℝ) (
     Complex.conj_ofReal]
   ring
 
+/- English proof (translation)
+Rewrite `hpos` using `[herm_expand H hH c v y, hvy, hyv]`. Simplify using `only [Complex.sub_re, Complex.re_ofReal_mul, Complex.ofReal_re] at hpos`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem key_ineq (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = H) (c : ℝ) (hc : 0 < c)
     (v y : Fin n → ℂ) (hvy : herm H v y = ((nsq v : ℝ) : ℂ)) (hyv : herm H y v = ((nsq v : ℝ) : ℂ))
     (hyy : (herm H y y).re ≤ c * nsq v) (hpos : 0 ≤ (herm H ((c : ℂ) • v - y) ((c : ℂ) • v - y)).re) :
@@ -27,6 +33,9 @@ theorem key_ineq (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = H) (c : ℝ) (hc 
   simp only [Complex.sub_re, Complex.re_ofReal_mul, Complex.ofReal_re] at hpos
   nlinarith
 
+/- English proof (translation)
+Establish `h : H * sᴴ * H * s = 1`. Rewrite using `[mul_assoc, mul_assoc, ← mul_assoc sᴴ, hs, hHH]`. Rewrite using `[← Matrix.inv_eq_left_inv h]`. Conclude with `Matrix.mul_nonsing_inv s (Matrix.isUnit_det_of_left_inverse h)`.
+-/
 theorem iso_right_inv (H s : Matrix (Fin n) (Fin n) ℂ) (hHH : H * H = 1) (hs : sᴴ * H * s = H) :
     s * (H * sᴴ * H) = 1 := by
   have h : H * sᴴ * H * s = 1 := by
@@ -34,6 +43,11 @@ theorem iso_right_inv (H s : Matrix (Fin n) (Fin n) ℂ) (hHH : H * H = 1) (hs :
   rw [← Matrix.inv_eq_left_inv h]
   exact Matrix.mul_nonsing_inv s (Matrix.isUnit_det_of_left_inverse h)
 
+/- English proof (translation)
+Establish `hsx : s *ᵥ ((H * sᴴ * H) *ᵥ w) = w`. Rewrite using `[Matrix.mulVec_mulVec, iso_right_inv H s hHH hs, Matrix.one_mulVec]`. Establish `h1 : ∀ i, herm H ((H * sᴴ * H) *ᵥ w) (m i) = 0` using `fun i => by`. Rewrite using `[← herm_iso H s hs, hsx]`. Conclude with `hw i`.
+
+Establish `h2` using `hpsd _ h1`. Rewrite `h2` using `[← herm_iso H s hs, hsx]`. Then use the resulting hypothesis.
+-/
 theorem psd_image (H s : Matrix (Fin n) (Fin n) ℂ) (hHH : H * H = 1) (hs : sᴴ * H * s = H)
     (m : ι → Fin n → ℂ) (hpsd : ∀ x, (∀ i, herm H x (m i) = 0) → 0 ≤ (herm H x x).re)
     (w : Fin n → ℂ) (hw : ∀ i, herm H w (s *ᵥ m i) = 0) : 0 ≤ (herm H w w).re := by
@@ -45,12 +59,36 @@ theorem psd_image (H s : Matrix (Fin n) (Fin n) ℂ) (hHH : H * H = 1) (hs : s�
   have h2 := hpsd _ h1
   rwa [← herm_iso H s hs, hsx] at h2
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [gramOf, Matrix.of_apply]`. Conclude with `herm_iso H s hs (m j) (m i)`.
+-/
 theorem gram_image (H s : Matrix (Fin n) (Fin n) ℂ) (hs : sᴴ * H * s = H) (m : ι → Fin n → ℂ) :
     gramOf H (fun i => s *ᵥ m i) = gramOf H m := by
   ext i j
   simp only [gramOf, Matrix.of_apply]
   exact herm_iso H s hs (m j) (m i)
 
+/- English proof (translation)
+Take `⟨A, hA⟩ : ∃ A : ℝ, A = ∑ j, ∑ k, ‖Γi j k‖` from `⟨_, rfl⟩`. Rewrite using `[← hA]`. Establish `hA0 : 0 ≤ A`. Rewrite using `[hA]`. Conclude with `Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun k _ => norm_nonneg _`.
+
+Take `⟨c, hcdef⟩ : ∃ c : ℝ, c = 1 + (Fintype.card ι : ℝ) * A * (R * R)` from `⟨_, rfl⟩`. Rewrite using `[← hcdef]`. Establish `hc : 0 < c`. Use `mul_nonneg (mul_nonneg (Nat.cast_nonneg (Fintype.card ι)) hA0) (mul_self_nonneg R)` as an intermediate fact. Rewrite using `[hcdef]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨y, hy⟩ : ∃ y, y = H *ᵥ v` from `⟨_, rfl⟩`. Take `⟨y', hy'⟩ : ∃ y', y' = y - proj H Γi q y` from `⟨_, rfl⟩`. Establish `hy'q : ∀ j, herm H y' (q j) = 0` using `fun j => by`. Rewrite using `[hy']`.
+
+Conclude with `proj_orth H Γi q hG y j`. Establish `hvy : herm H v y' = ((nsq v : ℝ) : ℂ)`. Rewrite using `[hy', herm_sub_right H hH, herm_proj_right H hH Γi q y v hv, sub_zero, hy, herm_H_self H hH hHH]`. Establish `hyv : herm H y' v = ((nsq v : ℝ) : ℂ)`. Rewrite using `[← herm_conj H hH, hvy, Complex.conj_ofReal]`.
+
+Establish `e1 : herm H y' (y - proj H Γi q y) = herm H y' y`. Rewrite using `[herm_sub_right H hH, herm_proj_right H hH Γi q y y' hy'q, sub_zero]`. Rewrite `e1` using `[← hy']`. Establish `hey : eN y = eN v`. Rewrite using `[hy]`.
+
+Conclude with `eN_H H hH hHH v`. Establish `hpb` using `proj_bound H hH hHH Γi q R hR hq y`. Rewrite `hpb` using `[← hA, hey]`. Establish `hey' : eN y' ≤ eN v * c`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hy']`. Conclude with `eN_sub _ _`. Use `_ ≤ eN v + (Fintype.card ι : ℝ) * (A * (eN v * R)) * R := by`. Rewrite using `[hey]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `_ = eN v * c := by`. Rewrite using `[hcdef]`. Expand and normalize the polynomial expressions, which then agree. Establish `hyy : (herm H y' y').re ≤ c * nsq v`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hey]`. Conclude with `mul_le_mul_of_nonneg_right hey' (eN_nonneg _)`. Use `_ = c * nsq v := by`. Rewrite using `[← eN_sq]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hpos : 0 ≤ (herm H ((c : ℂ) • v - y') ((c : ℂ) • v - y')).re`. Apply `hpsd` to reduce the goal to its premises. Introduce `i`. Rewrite using `[herm_sub_left H, herm_smul_left H, hv i, hy'q i, mul_zero, sub_zero]`. Conclude with `key_ineq H hH c hc v y' hvy hyv hyy hpos`.
+-/
 theorem orth_bound (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = H) (hHH : H * H = 1)
     (Γi : Matrix ι ι ℂ) (q : ι → Fin n → ℂ) (hG : gramOf H q * Γi = 1) (R : ℝ) (hR : 0 ≤ R)
     (hq : ∀ k, eN (q k) ≤ R) (hpsd : ∀ w, (∀ i, herm H w (q i) = 0) → 0 ≤ (herm H w w).re)
@@ -111,6 +149,13 @@ theorem orth_bound (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = H) (hHH : H * H
     rw [herm_sub_left H, herm_smul_left H, hv i, hy'q i, mul_zero, sub_zero]
   exact key_ineq H hH c hc v y' hvy hyv hyy hpos
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Establish `h1 : D ^ 2 * R0 ^ 2 * K * X ≤ D ^ 2 * R0 ^ 2 * (1 + K) ^ 2 * X`. Establish `hk : K ≤ (1 + K) ^ 2` using `by nlinarith`. Establish `hp : 0 ≤ D ^ 2 * R0 ^ 2 * X` using `mul_nonneg (mul_nonneg (sq_nonneg D) (sq_nonneg R0)) hX`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `h2 : (1 + D * K) * (E ^ 2 * X) ≤ (1 + D) * E ^ 2 * (1 + K) ^ 2 * X`. Establish `hk : 1 + D * K ≤ (1 + D) * (1 + K) ^ 2`. Use polynomial arithmetic with `[mul_nonneg hD0 hK, sq_nonneg K, mul_nonneg hD0 (sq_nonneg K)]`. Establish `hp : 0 ≤ E ^ 2 * X` using `mul_nonneg (sq_nonneg E) hX`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem final_alg (D R0 E K c X a b : ℝ) (hD0 : 0 ≤ D) (hK : 0 ≤ K) (hX : 0 ≤ X)
     (hc : c = 1 + D * K) (ha : a ≤ D ^ 2 * R0 ^ 2 * K * X) (hb : b ≤ c * (E ^ 2 * X)) :
     2 * a + 2 * b ≤ (2 * D ^ 2 * R0 ^ 2 + 2 * (1 + D) * E ^ 2) * (1 + K) ^ 2 * X := by
@@ -130,6 +175,53 @@ end CoreW
 
 open CoreW
 
+/- English proof (translation)
+Introduce `n H ι _ _ m hH hHH hdet hpsd`. Take `⟨Γi, hΓi⟩ : ∃ Γi, Γi = (gramOf H m)⁻¹` from `⟨_, rfl⟩`. Establish `hG : gramOf H m * Γi = 1`. Rewrite using `[hΓi]`. Conclude with `Matrix.mul_nonsing_inv _ hdet`.
+
+Take `⟨A, hA⟩ : ∃ A : ℝ, A = ∑ j, ∑ k, ‖Γi j k‖` from `⟨_, rfl⟩`. Establish `hA0 : 0 ≤ A`. Rewrite using `[hA]`. Conclude with `Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun k _ => norm_nonneg _`. Take `⟨D, hD⟩ : ∃ D : ℝ, D = (Fintype.card ι : ℝ) * A` from `⟨_, rfl⟩`.
+
+Establish `hD0 : 0 ≤ D`. Rewrite using `[hD]`. Conclude with `mul_nonneg (Nat.cast_nonneg _) hA0`. Establish `hAD : A ≤ D`. Break down `Nat.eq_zero_or_pos (Fintype.card ι) with h0 | h0` into its components or cases.
+
+Use `haveI : IsEmpty ι := Fintype.card_eq_zero_iff.mp h0`. Establish `hA' : A = 0`. Rewrite using `[hA]`. Simplify using the standard rewrite rules. Rewrite using `[hA']`.
+
+Conclude with `hD0`. Establish `h1 : (1 : ℝ) ≤ (Fintype.card ι : ℝ)` using `by exact_mod_cast h0`. Rewrite using `[hD]`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨R0, hR0⟩ : ∃ R0 : ℝ, R0 = ∑ k, eN (m k)` from `⟨_, rfl⟩`.
+
+Establish `hR00 : 0 ≤ R0`. Rewrite using `[hR0]`. Conclude with `Finset.sum_nonneg fun k _ => eN_nonneg _`. Establish `hmR : ∀ k, eN (m k) ≤ R0` using `fun k => by`. Rewrite using `[hR0]`.
+
+Conclude with `Finset.single_le_sum (f := fun k => eN (m k)) (fun k _ => eN_nonneg _) (Finset.mem_univ k)`. Take `⟨E, hE⟩ : ∃ E : ℝ, E = 1 + (Fintype.card ι : ℝ) * A * (R0 * R0)` from `⟨_, rfl⟩`. Establish `hE0 : 0 ≤ E`. Use `mul_nonneg (mul_nonneg (Nat.cast_nonneg (Fintype.card ι)) hA0) (mul_self_nonneg R0)` as an intermediate fact. Rewrite using `[hE]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨2 * D ^ 2 * R0 ^ 2 + 2 * (1 + D) * E ^ 2, fun s hs K hK hsm x => ?_⟩` and prove the remaining obligations. Take `⟨p, hp⟩ : ∃ p, p = proj H Γi m x` from `⟨_, rfl⟩`. Take `⟨xo, hxo⟩ : ∃ xo, xo = x - p` from `⟨_, rfl⟩`. Establish `hxo_orth : ∀ j, herm H xo (m j) = 0` using `fun j => by`.
+
+Rewrite using `[hxo, hp]`. Conclude with `proj_orth H Γi m hG x j`. Establish `hsx : s *ᵥ x = s *ᵥ p + s *ᵥ xo`. Rewrite using `[hxo, Matrix.mulVec_sub]`. Normalize the expressions using the abelian group laws.
+
+Establish `hX : 0 ≤ nsq x`. Rewrite using `[← eN_sq]`. Check the signs of the components of the expression. Establish `hcoef : ∑ i, ‖coef H Γi m x i‖ ≤ A * (eN x * R0)`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left ((herm_le H hH hHH x (m k)).trans (mul_le_mul_of_nonneg_left (hmR k) (eN_nonneg x))) (norm_nonneg _)`. Use `_ = A * (eN x * R0) := by`. Rewrite using `[hA, Finset.sum_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => (Finset.sum_mul _ _ _).symm`. Establish `hsK : ∀ k, eN (s *ᵥ m k) ≤ Real.sqrt K` using `fun k => (le_abs_self _).trans (Real.abs_le_sqrt (by rw [eN_sq]; exact hsm k))`. Establish `hsp : eN (s *ᵥ p) ≤ A * (eN x * R0) * Real.sqrt K`. Establish `e : s *ᵥ p = ∑ i, coef H Γi m x i • (s *ᵥ m i)`. Rewrite using `[hp, proj, Matrix.mulVec_sum]`.
+
+Simplify using `only [Matrix.mulVec_smul]`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[eN_smul]`. Conclude with `mul_le_mul_of_nonneg_left (hsK i) (norm_nonneg _)`.
+
+Use `_ = (∑ i, ‖coef H Γi m x i‖) * Real.sqrt K := (Finset.sum_mul _ _ _).symm`. Use `_ ≤ A * (eN x * R0) * Real.sqrt K := mul_le_mul_of_nonneg_right hcoef (Real.sqrt_nonneg _)`. Establish `ha : nsq (s *ᵥ p) ≤ D ^ 2 * R0 ^ 2 * K * nsq x`. Rewrite using `[← eN_sq, ← eN_sq x]`. Establish `h1 : eN (s *ᵥ p) ^ 2 ≤ (A * (eN x * R0) * Real.sqrt K) ^ 2` using `pow_le_pow_left₀ (eN_nonneg _) hsp 2`.
+
+Establish `h2 : (A * (eN x * R0) * Real.sqrt K) ^ 2 = A ^ 2 * R0 ^ 2 * K * eN x ^ 2`. Rewrite using `[mul_pow, mul_pow, mul_pow, Real.sq_sqrt hK]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : A ^ 2 ≤ D ^ 2` using `pow_le_pow_left₀ hA0 hAD 2`. Establish `h4 : 0 ≤ R0 ^ 2 * K * eN x ^ 2` using `mul_nonneg (mul_nonneg (sq_nonneg _) hK) (sq_nonneg _)`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hGs : gramOf H (fun i => s *ᵥ m i) * Γi = 1`. Rewrite using `[gram_image H s hs m]`. Conclude with `hG`. Establish `hpsd' : ∀ w, (∀ i, herm H w ((fun i => s *ᵥ m i) i) = 0) → 0 ≤ (herm H w w).re` using `fun w hw => psd_image H s hHH hs m hpsd w hw`.
+
+Establish `hv : ∀ j, herm H (s *ᵥ xo) ((fun i => s *ᵥ m i) j) = 0` using `fun j => by show herm H (s *ᵥ xo) (s *ᵥ m j) = 0`. Rewrite using `[herm_iso H s hs]`. Conclude with `hxo_orth j`. Establish `hob` using `orth_bound H hH hHH Γi (fun i => s *ᵥ m i) hGs (Real.sqrt K) (Real.sqrt_nonneg _) hsK hpsd' (s *ᵥ xo) hv`. Rewrite `hob` using `[Real.mul_self_sqrt hK, herm_iso H s hs, ← hA, ← hD]`.
+
+Establish `hpb` using `proj_bound H hH hHH Γi m R0 hR00 hmR x`. Rewrite `hpb` using `[← hA, ← hp]`. Establish `hxoN : eN xo ≤ E * eN x`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hxo]`.
+
+Conclude with `eN_sub _ _`. Use `_ ≤ eN x + (Fintype.card ι : ℝ) * (A * (eN x * R0)) * R0 := by linarith`. Use `_ = E * eN x := by`. Rewrite using `[hE]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hre : (herm H xo xo).re ≤ E ^ 2 * nsq x`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← eN_sq x]`. Expand and normalize the polynomial expressions, which then agree. Establish `hb : nsq (s *ᵥ xo) ≤ (1 + D * K) * (E ^ 2 * nsq x)`.
+
+Establish `hc0 : 0 ≤ 1 + D * K`. Use `mul_nonneg hD0 hK` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hob.trans (mul_le_mul_of_nonneg_left hre hc0)`. Establish `hsum : nsq (s *ᵥ x) ≤ 2 * nsq (s *ᵥ p) + 2 * nsq (s *ᵥ xo)`.
+
+Rewrite using `[hsx, ← eN_sq, ← eN_sq (s *ᵥ p), ← eN_sq (s *ᵥ xo)]`. Establish `h1` using `eN_add (s *ᵥ p) (s *ᵥ xo)`. Establish `h2` using `eN_nonneg (s *ᵥ p + s *ᵥ xo)`. Use polynomial arithmetic with `[sq_nonneg (eN (s *ᵥ p) - eN (s *ᵥ xo)), eN_nonneg (s *ᵥ p), eN_nonneg (s *ᵥ xo)]`. Establish `hfin` using `final_alg D R0 E K (1 + D * K) (nsq x) (nsq (s *ᵥ p)) (nsq (s *ᵥ xo)) hD0 hK hX`.
+
+Use `rfl ha hb`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem isoCore : IsoCore := by
   intro n H ι _ _ m hH hHH hdet hpsd
   obtain ⟨Γi, hΓi⟩ : ∃ Γi, Γi = (gramOf H m)⁻¹ := ⟨_, rfl⟩

@@ -15,6 +15,9 @@ def InO (c : Coef l) (Z : Matrix (Fin n) (Fin n) (Qbar l)) : Prop := ∀ i j, Z 
 def cj {G K : Type} [Group G] [CommRing K] (Q : GL (Fin n) K) (ρ : G →* GL (Fin n) K) : G →* GL (Fin n) K :=
   (MulAut.conj Q⁻¹).toMonoidHom.comp ρ
 
+/- English proof (translation)
+Use `show Q⁻¹ * ρ g * Q⁻¹⁻¹ = Q⁻¹ * ρ g * Q`. Rewrite using `[inv_inv]`.
+-/
 theorem cj_apply {G K : Type} [Group G] [CommRing K] (Q : GL (Fin n) K) (ρ : G →* GL (Fin n) K) (g : G) :
     cj Q ρ g = Q⁻¹ * ρ g * Q := by
   show Q⁻¹ * ρ g * Q⁻¹⁻¹ = Q⁻¹ * ρ g * Q

@@ -17,6 +17,11 @@ open Formalism.RepresentationBoundsCohomology.ringDataObjects (RingData RingDef)
 
 section Gen
 
+/- English proof (translation)
+Take `⟨m, xs, hxs⟩` from `KLift.fin_sel Ψ hinj`. Use `⟨m, xx ∘ xs, LinearMap.pi fun a => Ψ (xs a), fun v w hvw => ?_, fun g v => funext fun a => heq _ g v⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use `hxs _ fun a => ?_` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero]`.
+
+Conclude with `congrFun hvw a`.
+-/
 theorem sub_of_fam {LL : Type} [Field LL] {G : Type} [Group G] {V : Type} [AddCommGroup V] [Module LL V]
     [FiniteDimensional LL V] {ρ : Representation LL G V} {ιx : Type} {k : ℕ}
     {Ms : ιx → G → Matrix (Fin k) (Fin k) LL} {I : Type} (xx : I → ιx)
@@ -29,6 +34,9 @@ theorem sub_of_fam {LL : Type} [Field LL] {G : Type} [Group G] {V : Type} [AddCo
   rw [map_sub, sub_eq_zero]
   exact congrFun hvw a
 
+/- English proof (translation)
+Take `⟨m, xs, φ, hφ, heq⟩` from `h`. Conclude with `KLift.cont_of_inj xs φ hφ heq hMs v`.
+-/
 theorem orb_of_sub {LL : Type} [Field LL] [TopologicalSpace LL] [IsTopologicalRing LL] {G : Type} [Group G]
     [TopologicalSpace G] {V : Type} [AddCommGroup V] [Module LL V] [TopologicalSpace V] [IsModuleTopology LL V]
     [ContinuousAdd V] [ContinuousSMul LL V]
@@ -44,6 +52,13 @@ section Fin
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {X' d : Type} [Fintype d] [DecidableEq d]
   {R' : Subalgebra O (X' → Matrix d d (FractionRing O))}
 
+/- English proof (translation)
+Use `haveI h1 : NoZeroSMulDivisors O (FractionRing O) := ⟨fun {c x} h => by`. Rewrite `h` using `[Algebra.smul_def]`. Break down `mul_eq_zero.1 h with hc | hx` into its components or cases. Conclude with `Or.inl ((IsFractionRing.injective O (FractionRing O)) (by rw [hc, map_zero]))`. Conclude with `Or.inr hx⟩`.
+
+Use `haveI h2a : NoZeroSMulDivisors O (d → FractionRing O) := Pi.noZeroSMulDivisors _`. Use `haveI h2 : NoZeroSMulDivisors O (Matrix d d (FractionRing O)) := Pi.noZeroSMulDivisors _`. Use `haveI h3 : NoZeroSMulDivisors O (X' → Matrix d d (FractionRing O)) := Pi.noZeroSMulDivisors _`. Use `haveI h4 : NoZeroSMulDivisors O R' := ⟨fun {c x} h => by`. Establish `h' : c • (x : X' → Matrix d d (FractionRing O)) = 0` using `congrArg Subtype.val h`.
+
+Break down `smul_eq_zero.1 h' with hc | hx` into its components or cases. Conclude with `Or.inl hc`. Conclude with `Or.inr (Subtype.ext hx)⟩`. Conclude with `Module.free_of_finite_type_torsion_free'`.
+-/
 theorem r_free [Module.Finite O R'] : Module.Free O R' := by
   haveI h1 : NoZeroSMulDivisors O (FractionRing O) := ⟨fun {c x} h => by
     rw [Algebra.smul_def] at h
@@ -60,9 +75,21 @@ theorem r_free [Module.Finite O R'] : Module.Free O R' := by
     · exact Or.inr (Subtype.ext hx)⟩
   exact Module.free_of_finite_type_torsion_free'
 
+/- English proof (translation)
+Conclude with `Module.Finite.of_injective (FirstSummandSubmodule O e₁).subtype Subtype.val_injective`.
+-/
 theorem idempotent_part_finite [Module.Finite O R'] (e₁ : R') : Module.Finite O (FirstSummandSubmodule O e₁) := by
   exact Module.Finite.of_injective (FirstSummandSubmodule O e₁).subtype Subtype.val_injective
 
+/- English proof (translation)
+Use `haveI := idempotent_part_finite (O := O) (R' := R') e₁`. Use `haveI h1 : NoZeroSMulDivisors O (FractionRing O) := ⟨fun {c x} h => by`. Rewrite `h` using `[Algebra.smul_def]`. Break down `mul_eq_zero.1 h with hc | hx` into its components or cases. Conclude with `Or.inl ((IsFractionRing.injective O (FractionRing O)) (by rw [hc, map_zero]))`.
+
+Conclude with `Or.inr hx⟩`. Use `haveI h2a : NoZeroSMulDivisors O (d → FractionRing O) := Pi.noZeroSMulDivisors _`. Use `haveI h2 : NoZeroSMulDivisors O (Matrix d d (FractionRing O)) := Pi.noZeroSMulDivisors _`. Use `haveI h3 : NoZeroSMulDivisors O (X' → Matrix d d (FractionRing O)) := Pi.noZeroSMulDivisors _`. Use `haveI h4 : NoZeroSMulDivisors O R' := ⟨fun {c x} h => by`.
+
+Establish `h' : c • (x : X' → Matrix d d (FractionRing O)) = 0` using `congrArg Subtype.val h`. Break down `smul_eq_zero.1 h' with hc | hx` into its components or cases. Conclude with `Or.inl hc`. Conclude with `Or.inr (Subtype.ext hx)⟩`. Use `haveI h5 : NoZeroSMulDivisors O (FirstSummandSubmodule O e₁) := ⟨fun {c x} h => by`.
+
+Establish `h' : c • (x : R') = 0` using `congrArg Subtype.val h`. Break down `smul_eq_zero.1 h' with hc | hx` into its components or cases. Conclude with `Or.inl hc`. Conclude with `Or.inr (Subtype.ext hx)⟩`. Conclude with `Module.free_of_finite_type_torsion_free'`.
+-/
 theorem idempotent_part_free [Module.Finite O R'] (e₁ : R') : Module.Free O (FirstSummandSubmodule O e₁) := by
   haveI := idempotent_part_finite (O := O) (R' := R') e₁
   haveI h1 : NoZeroSMulDivisors O (FractionRing O) := ⟨fun {c x} h => by
@@ -100,10 +127,16 @@ def kap1 : FirstSummandSubmodule (D.nd.O i) Dd.e₁ →ₗ[D.nd.O i]
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Introduce `a b h`. Conclude with `Subtype.ext (Subtype.ext h)`.
+-/
 theorem lattice_inclusion_injective : Function.Injective (kap1 i Dd) := by
   intro a b h
   exact Subtype.ext (Subtype.ext h)
 
+/- English proof (translation)
+Use `show (((((epsU D.nd i g : (D.nd.O i)ˣ) : D.nd.O i) • (((Dd.χ g : (Dd.T')ˣ) : Dd.T') • ((p : Dd.R') * Dd.r g⁻¹)) : Dd.R')) : Dd.X' → Matrix (Fin D.R.nV) (Fin D.R.nV) (FractionRing (D.nd.O i))) x' = _`. Rewrite using `[Subalgebra.coe_smul, Pi.smul_apply, hsm, hχ, Subalgebra.coe_mul, Pi.mul_apply, hr', map_mul, mul_smul, ← algebraMap_smul (FractionRing (D.nd.O i)) ((epsU D.nd i g : (D.nd.O i)ˣ) : D.nd.O i), smul_comm]`. Both sides reduce to the same expression.
+-/
 theorem idempotent_part_representation_at
     (hr' : ∀ g x', ((Dd.r g : Dd.R') : Dd.X' → Matrix (Fin D.R.nV) (Fin D.R.nV) (FractionRing (D.nd.O i))) x' =
       (rO D.nd i r (Dd.p x') g).map (algebraMap (D.nd.O i) (FractionRing (D.nd.O i))))
@@ -122,6 +155,9 @@ theorem idempotent_part_representation_at
     ← algebraMap_smul (FractionRing (D.nd.O i)) ((epsU D.nd i g : (D.nd.O i)ˣ) : D.nd.O i), smul_comm]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← KLift.heO_br i dc hn]`. Both sides reduce to the same expression.
+-/
 theorem locC_apply {n : ℕ} (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i)) {k : ℕ}
     (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (g : Br.G D.nbr i _ hn) (a b : Fin k) :
     TruncatedSeriesCountingIdentities.locC (TruncatedSeriesCountingIdentities.CoefExt.self i _ hn) M g a b = eK (D.nbr i _ hn) (algebraMap (D.nd.O i) (FractionRing (D.nd.O i))
@@ -132,6 +168,27 @@ theorem locC_apply {n : ℕ} (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l
 set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Use `set ρP := resRep (firstSummandRep (D.nd.O i) Dd.r Dd.χ Dd.e₁ (epsU D.nd i)) (Γn i dc n) with hρP`. Use `set e := eK (D.nbr i _ hn)`. Set `Λ` to `liftK (V := Dd.X' → Matrix (Fin D.R.nV) (Fin D.R.nV) (FractionRing (D.nd.O i))) (kap1 i Dd)`. Establish `hΛs : ∀ m (s : nonZeroDivisors (D.nd.O i)), (s : D.nd.O i) • Λ (LocalizedModule.mk m s) = kap1 i Dd m`. Introduce `m s`.
+
+Rewrite using `[← map_smul, KLift.smul_mk, liftK_mkK]`. Establish `hΛi : ∀ v, Λ v = 0 → v = 0`. Introduce `v hv`. Proceed by induction on `v using LocalizedModule.induction_on with`. Consider the case `h m s`.
+
+Establish `h1` using `hΛs m s`. Rewrite `h1` using `[hv, smul_zero]`. Rewrite using `[lattice_inclusion_injective i Dd (h1.symm.trans (map_zero (kap1 i Dd)).symm), LocalizedModule.zero_mk]`. Establish `hΛe : ∀ (γ : ↥(Γn i dc n)) v x', Λ (locRep ρP γ v) x' = algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) ((chiU D.nd i 1 (γ : GE D.nd) : D.nd.O i) * ((epsU D.nd i (γ : GE D.nd) : (D.nd.O i)ˣ) : D.nd.O i)) • (Λ v x' * (rO D.nd i r (Dd.p x') (γ : GE D.nd)⁻¹).map (algebraMap (D.nd.O …`. Introduce `γ v x'`.
+
+Proceed by induction on `v using LocalizedModule.induction_on with`. Consider the case `h m s`. Establish `h0 : locRep ρP γ (LocalizedModule.mk m s) = LocalizedModule.mk (ρP γ m) s` using `LocalizedModule.map_mk _ _ _ _`. Rewrite using `[h0]`. Apply `KLift.smul_cancel s` to reduce the goal to its premises.
+
+Establish `h1` using `congrFun (hΛs (ρP γ m) s) x'`. Establish `h2` using `congrFun (hΛs m s) x'`. Rewrite `h1`, `h2` using `[Pi.smul_apply]`. Rewrite using `[h1, smul_comm, ← Matrix.smul_mul, h2]`. Conclude with `idempotent_part_representation_at i r Dd hr' hsm hχ (γ : GE D.nd) m x'`.
+
+Set `Ψ : Dd.X' × Fin D.R.nV → TrV e (MK (O` to `D.nd.O i) (FirstSummandSubmodule (D.nd.O i) Dd.e₁)) →ₗ[Br.LLw (D.nbr i _ hn)] (Fin D.R.nV → Br.LLw (D.nbr i _ hn)) := fun q => { toFun := fun v j => e ((Λ (KLift.untr e v)) q.1 q.2 j) map_add' := fun v w => funext fun j => by show e ((Λ (KLift.untr e v + KLift.untr e w)) q.1 q.2 …`. Rewrite using `[map_add]`. Simplify using `[map_add]`. Use the proof step `map_smul' := fun c v => funext fun j => by show e ((Λ (e.symm c • KLift.untr e v)) q.1 q.2 j) = c * e ((Λ (KLift.untr e v)) q.1 q.2 j)`. Rewrite using `[smulK]`.
+
+Simplify using `[Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, map_mul] }`. Use `haveI : FiniteDimensional (Br.LLw (D.nbr i _ hn)) (TrV e (MK (O := D.nd.O i) (FirstSummandSubmodule (D.nd.O i) Dd.e₁))) := KLift.finDim_of_lat (Ow := Br.Ow (D.nbr i _ hn)) (Qp := ℚ_[D.nd.l i]) (KLift.latOf e (D.nbr i _ hn).eO mkK (Br.iota D.nbr i _ hn) (KLift.heO_br i dc hn) (loc …`. Use `sub_of_fam (fun q => Dd.p q.1) Ψ (fun v hv => ?_) (fun q g v => ?_)` and prove the remaining obligations. Establish `h0 : Λ (KLift.untr e v) = 0`. Use function extensionality and compare the values at `x'`.
+
+Use extensionality with `a b`. Use `congrFun (hv (x', a)) b` as an intermediate fact. Simplify `this` using `[Ψ]`. Conclude with `hΛi _ h0`. Use function extensionality and compare the values at `j`.
+
+Establish `key : ∀ γ : ↥(Γn i dc n), (γ : GE D.nd) = ((Br.iota D.nbr i _ hn g : Gw D.nd (K.plOf i dc n)) : GE D.nd) → e ((Λ (locRep ρP γ (KLift.untr e v))) q.1 q.2 j) = (TruncatedSeriesCountingIdentities.locC (TruncatedSeriesCountingIdentities.CoefExt.self i _ hn) (rDuO D.nd i r (Dd.p q.1)) …`. Introduce `γ hγ`. Rewrite using `[hΛe, hγ]`. Simplify using `only [Matrix.mulVec, dotProduct, locC_apply i dc hn, Matrix.smul_apply, Matrix.mul_apply, smul_eq_mul, Finset.mul_sum, map_sum, map_mul, Matrix.map_apply, rDuO, twistM, dualM, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.transpose_apply, Ψ, LinearMap.coe_mk, AddHom.coe_mk]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [MonoidHom.mul_apply, Units.val_mul, map_mul]`. Rewrite using `[show eK (D.nbr i _ hn) = e from rfl]`. Establish `hc : ∀ x y z w : Br.LLw (D.nbr i _ hn), x * y * (z * w) = x * y * w * z` using `fun x y z w => by ring`. Conclude with `hc _ _ _ _`. Conclude with `key (Br.iota D.nbr i _ hn g) rfl`.
+-/
 theorem rowSub_at
     (hr' : ∀ g x', ((Dd.r g : Dd.R') : Dd.X' → Matrix (Fin D.R.nV) (Fin D.R.nV) (FractionRing (D.nd.O i))) x' =
       (rO D.nd i r (Dd.p x') g).map (algebraMap (D.nd.O i) (FractionRing (D.nd.O i))))

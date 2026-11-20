@@ -11,13 +11,22 @@ open NumberField
 
 namespace Formalism.FourierDecayAlt.P.CutMP.En
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem foldCV_nil (k r : ℕ) {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (s : ℂ) (H : B.Mat k r → E) :
     foldCV k r s [] H = H := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem foldCV_cons (k r : ℕ) {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (s : ℂ) (x : C.Letter)
     (a : List C.Letter) (H : B.Mat k r → E) :
     foldCV k r s (x :: a) H = s • Q.CV k r (x.2 : ℂ) (foldCV k r s a H) := rfl
 
+/- English proof (translation)
+The claim follows from `| [] => hJ | x :: a => hcl _ (foldCV_mem hcl hJ s a) x.2 s`.
+-/
 theorem foldCV_mem {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] {z z' : Fin (2 * r + k + 1) → ℂ} {π : Q.Mx k r → (Wp →L[ℂ] Wp)}
     {π' : Q.Mx k r → (Wq →L[ℂ] Wq)} {Dm : Set (Q.Mx k r)}
@@ -27,6 +36,9 @@ theorem foldCV_mem {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProd
   | [] => hJ
   | x :: a => hcl _ (foldCV_mem hcl hJ s a) x.2 s
 
+/- English proof (translation)
+Take `⟨hU, hD, hG⟩` from `hg`. Use `⟨⟨hU, fun a ha => absurd ha (Nat.not_lt_zero _)⟩, hG, fun a => hD _ ?_⟩` and prove the remaining obligations. Use `show (a : ℕ) + 1 ≤ r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem om_sub {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {g : B.Mat k r} (hg : g ∈ JF.Om k r z z') :
     g ∈ Q.Glev k r 0 ∩ {g | 0 < Formalism.QuantumDeterminants.Gf k r z z' g ∧
       ∀ a : Fin r, Formalism.QuantumDeterminants.Dmin k r z z' g ⟨(a : ℕ) + 1, by omega⟩ ≠ 0} := by
@@ -35,6 +47,27 @@ theorem om_sub {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {g : B.Mat k r} 
   show (a : ℕ) + 1 ≤ r
   omega
 
+/- English proof (translation)
+Use `⟨100, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e hFr hcl ε hε hJF a hadm`. Establish `hB'` using `hB`. Take `⟨⟨_, _, _, hbuilt, _, _, _, _, _, _, _, _, _⟩, _, _, _⟩` from `hB'`. Take `⟨_, hv⟩` from `hbuilt`.
+
+Take `⟨_, _, _, hplace, _, _⟩` from `hv v`. Establish `hlen : a.length ≤ S.Ntop` using `hL E Wp Wq S v a hadm`. Use `set Db := (T v).base with hDb`. Use `set s : ℂ := M.sgn (D.parOf S v) (S.l + 1) with hs`. Use `set F := D.cutF Db χ (f v) ε with hF`.
+
+Use `set J₁ := foldCV S.G.k S.G.r s a.reverse (B.JF Db F) with hJ₁`. Establish `hJ₁m : J₁ ∈ Q.FFl S.G.k S.G.r Db.z Db.z' Db.π Db.π' 0 (OmP S T v)` using `foldCV_mem hcl hJF s _`. Establish `hOpen : IsOpen (OmP S T v)` using `(isDom_omP Db.z_mem Db.z'_mem).1`. Establish `hae : ∀ᵐ p ∂(volume : Measure ((Fin S.G.r → ℂ) × ℂ)), bcWeight S.G.k S.G.r (Tz S.G.k S.G.r Db.z) (Tz S.G.k S.G.r Db.z') p = 0 ∨ B.JF Db (foldCV S.G.k S.G.r s a F) (B.gq Db p) = J₁ (B.gq Db p)`. Establish `h0` using `ae_imp_of_ae_restrict (Formalism.FourierDecayAlt.P.B7.ae_mem_good_set_restrict Db)`.
+
+Use `filter_upwards [h0] with p hp`. Distinguish the cases in `hq : p ∈ B.Qset Db`. Use `right`. Establish `hg` using `Formalism.FourierDecayAlt.P.big_cell_domain S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)) Db p (hp hq)`. Rewrite using `[hBF E Wp Wq S T f χ ν' m₀ top A₀ hB v hcl ε hε hJF a hlen _ hg]`.
+
+Conclude with `(hR _ _ _ _ _ _ _ _ _ hOpen hcl _ hJF s a _ (om_sub hg)).symm`. Use `left`. Conclude with `le_antisymm (not_lt.1 hq) (Formalism.FourierDecayAlt.P.JCTx2.bcWeight_nonneg' _ _ p)`. Establish `hN1 : jNormSq S.G.k S.G.r (Tz S.G.k S.G.r Db.z) (Tz S.G.k S.G.r Db.z') (fun q => B.hsVec (J₁ (B.gq Db q))) ≠ ⊤`. Establish `h` using `hL2 E Wp Wq S T f χ ν' m₀ top A₀ hB v ε hε a hlen`.
+
+Unfold `B.normSq at h`. Unfold `jNormSq at h ⊢`. Rewrite `h` using `[lintegral_congr_ae (hae.mono fun p hp => ?_)]`. Then use the resulting hypothesis. Break down `hp with hp | hp` into its components or cases. Rewrite using `[show bcWeight S.G.k S.G.r (Tz S.G.k S.G.r (T v).base.z) (Tz S.G.k S.G.r (T v).base.z') p = 0 from hp]`.
+
+Simplify using the standard rewrite rules. Use `show ENNReal.ofReal (_ * ‖B.hsVec (B.JF Db (foldCV S.G.k S.G.r s a F) (B.gq Db p))‖ ^ 2) = _`. Rewrite using `[hp]`. Establish `hN2 : jNormSq S.G.k S.G.r (Tz S.G.k S.G.r Db.z) (Tz S.G.k S.G.r Db.z') (fun q => B.hsVec (B.JF Db F (B.gq Db q))) ≠ ⊤` using `hL2 E Wp Wq S T f χ ν' m₀ top A₀ hB v ε hε [] (Nat.zero_le _)`. Establish `hBeq` using `hBe E Wp Wq S T v hplace e hFr J₁ hJ₁m (B.JF Db F) hJF hN1 hN2`.
+
+Unfold `C7.principalHermitianLattice B.beta`. Use `show _ = MA.ipA (D.parOf S v) (trJ S T v e J₁) (trJ S T v e (B.JF Db F))`. Rewrite using `[← hBeq]`. Unfold `betaBig`. Use `integral_congr_ae (hae.mono fun p hp => ?_)` and prove the remaining obligations.
+
+Break down `hp with hp | hp` into its components or cases. Use `show ((bcWeight S.G.k S.G.r (Tz S.G.k S.G.r Db.z) (Tz S.G.k S.G.r Db.z') p : ℝ) : ℂ) * _ = ((bcWeight S.G.k S.G.r (Tz S.G.k S.G.r Db.z) (Tz S.G.k S.G.r Db.z') p : ℝ) : ℂ) * _`. Rewrite using `[hp]`. Simplify using the standard rewrite rules. Use `show ((bcWeight S.G.k S.G.r (Tz S.G.k S.G.r Db.z) (Tz S.G.k S.G.r Db.z') p : ℝ) : ℂ) * inner ℂ (B.hsVec (B.JF Db F (B.gq Db p))) (B.hsVec (B.JF Db (foldCV S.G.k S.G.r s a F) (B.gq Db p))) = ((bcWeight S.G.k S.G.r (Tz S.G.k S.G.r Db.z) (Tz S.G.k S.G.r Db.z') p : ℝ) : ℂ) * inner ℂ …`.
+
+Rewrite using `[hp]`.
+-/
 theorem energyTr_of_parts (hR : FoldRev) (hL : AdmLen) (hBF : BesselFoldBuilt) (hL2 : L2BoundAtTowerPlace) (hBe : BetaFrame) :
     EnergyTr := by
   refine ⟨100, ?_⟩

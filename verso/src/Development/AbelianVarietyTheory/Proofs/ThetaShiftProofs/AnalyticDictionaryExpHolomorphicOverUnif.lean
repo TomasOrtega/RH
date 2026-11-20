@@ -16,6 +16,11 @@ section Lift
 
 variable [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ]
 
+/- English proof (translation)
+Establish `h : (show Sp ℂ ⟶ Sp ℂ from (toUnit (Out.TF (R` using `ℂ) ℂ)).left) = Out.jFK (R := ℂ) ℂ ≫ Out.jK ℂ := by`. Use `Over.w (toUnit (Out.TF (R := ℂ) ℂ))` as an intermediate fact. Conclude with `(Category.comp_id _).symm.trans this`. Use `h.trans ((Spec.map_comp _ _).symm.trans ?_)` and prove the remaining obligations. Use `Eq.trans (congrArg Spec.map ?_) (Spec.map_id _)` and prove the remaining obligations.
+
+Use extensionality with `x`. Conclude with `(IsScalarTower.algebraMap_apply ℂ (FractionRing ℂ) ℂ x).symm`.
+-/
 theorem gtHol_toUnit_left :
     (show Sp ℂ ⟶ Sp ℂ from (toUnit (Out.TF (R := ℂ) ℂ)).left) = 𝟙 (Sp ℂ) := by
   have h : (show Sp ℂ ⟶ Sp ℂ from (toUnit (Out.TF (R := ℂ) ℂ)).left) =
@@ -27,6 +32,15 @@ theorem gtHol_toUnit_left :
   ext x
   exact (IsScalarTower.algebraMap_apply ℂ (FractionRing ℂ) ℂ x).symm
 
+/- English proof (translation)
+Establish `e : ∀ w, (show Sp ℂ ⟶ _ from (toUnit (Out.TF (R` using `ℂ) ℂ) ≫ u.ex w).left) = (u.ex w).left := fun w => (congrArg (fun q : Sp ℂ ⟶ Sp ℂ => q ≫ (u.ex w).left) gtHol_toUnit_left).trans (Category.id_comp _)`. Establish `hp' : p = toUnit _ ≫ u.ex z` using `Over.OverMorphism.ext (hp.trans (e z).symm)`. Establish `h0 : u.ex 0 = η[D₀.P.A]`. Rewrite using `[(u.ker 0).2 u.Λ.zero_mem, Hom.one_def]`. Simplify using the standard rewrite rules.
+
+Introduce `k`. Use `(Category.id_comp _).trans ?_` and prove the remaining obligations. Use `fin_cases k`. Use `Eq.trans ?_ (e (c + z))` and prove the remaining obligations. Use `congrArg (fun m : Out.TF (R := ℂ) ℂ ⟶ D₀.P.A => m.left) ?_` and prove the remaining obligations.
+
+Rewrite using `[u.ex_add, MonObj.comp_mul, hc, ← hp']`. Both sides reduce to the same expression. Use `Eq.trans ?_ (e c)` and prove the remaining obligations. Rewrite using `[hc]`. Both sides reduce to the same expression.
+
+Conclude with `hp`. Use `Eq.trans ?_ (e 0)` and prove the remaining obligations. Rewrite using `[h0]`. Both sides reduce to the same expression.
+-/
 theorem gtHol_isLift (D₀ : Out.DegPre ℂ) {g : ℕ} (u : HolUnif D₀.P.A D₀.P.L g) (p : Out.TF (R := ℂ) ℂ ⟶ D₀.P.A)
     (χ : D₀.X) (c z : Fin g → ℂ) (hc : u.ex c = D₀.c χ) (hp : (show Sp ℂ ⟶ _ from p.left) = (u.ex z).left) :
     FrameValue.IsLift u (Out.DegPre.gtφ D₀ ℂ p χ) (show Sp ℂ ⟶ _ from 𝟙 (Sp ℂ)) ![c + z, c, z, 0] := by
@@ -53,6 +67,19 @@ theorem gtHol_isLift (D₀ : Out.DegPre ℂ) {g : ℕ} (u : HolUnif D₀.P.A D�
 
 end Lift
 
+/- English proof (translation)
+Introduce `E _ _ _ H _ D l c O _ β _ _ b a Λ`. Establish `hl : ∀ (z : Λ.A.V) (x : a.D₀.X), FrameValue.IsLift Λ.u (Out.DegPre.gtφ a.D₀ ℂ (Λ.ex0 z).b x) (show Sp ℂ ⟶ _ from 𝟙 (Sp ℂ)) ![Λ.A.ct (Λ.ε.symm x) + z.2, Λ.A.ct (Λ.ε.symm x), z.2, 0]` using `fun z x => gtHol_isLift a.D₀ Λ.u _ x _ _ (by rw [Λ.ct, LinearEquiv.apply_symm_apply]) (Λ.ex0_b z)`. Establish `hv : ∀ x j z, ⊤ ≤ LB.wchart a.D₀.P.L (Out.DegPre.gtφ a.D₀ ℂ (Λ.ex0 z).b x) j → chiVal (Λ.ex0 z) x j = eTwoPi (z.1 (Λ.ε.symm x)) * FrameValue.frameProd Λ.u Out.DegPre.gtε ![Λ.A.ct (Λ.ε.symm x) + z.2, Λ.A.ct (Λ.ε.symm x), z.2, 0] j`. Introduce `x j z hj`. Establish `h₁` using `FrameValue.valAt'_gen a.D₀.P.isLB ((Λ.ex0 z).isGen x) (hl z x) (j := j) hj`.
+
+Take `⟨y, rfl⟩` from `Λ.ε.surjective x`. Rewrite `h₁`, the goal using `[LinearEquiv.symm_apply_apply]`. Rewrite `h₁` using `[Λ.arcDict_expZero_section]`. Conclude with `h₁`. Use `⟨fun U f => ?_, fun x j => ⟨?_, hv x j⟩⟩` and prove the remaining obligations.
+
+Take `⟨ho, hd⟩` from `Λ.u.hol U f`. Simplify using `only [Λ.ex0_b, Set.mem_univ, true_and]`. Conclude with `⟨ho.preimage continuous_snd, hd.comp differentiable_snd.differentiableOn (fun _ h => h)⟩`. Use `DifferentiableOn.congr ?_ (hv x j)` and prove the remaining obligations. Use `DifferentiableOn.fun_mul ?_ ?_` and prove the remaining obligations.
+
+Establish `: Differentiable ℂ (fun z : Λ.A.V => z.1 (Λ.ε.symm x))` using `(Λ.A.evalCLM (Λ.ε.symm x)).differentiable.comp differentiable_fst`. Conclude with `((this.const_mul _).cexp).differentiableOn`. Introduce `z₀ hz₀`. Use `DifferentiableAt.differentiableWithinAt ?_` and prove the remaining obligations. Establish `hd : ∀ k, Differentiable ℂ fun z : Λ.A.V => (![Λ.A.ct (Λ.ε.symm x) + z.2, Λ.A.ct (Λ.ε.symm x), z.2, 0] : Fin 4 → Fin Λ.A.gB → ℂ) k` using `fun k => by fin_cases k`.
+
+Conclude with `differentiable_snd.const_add _`. Conclude with `differentiable_const _`. Conclude with `differentiable_snd`. Conclude with `differentiable_const _`. Establish `h : ∀ k, DifferentiableAt ℂ (fun z : Λ.A.V => Λ.u.fr (j k) ((![Λ.A.ct (Λ.ε.symm x) + z.2, Λ.A.ct (Λ.ε.symm x), z.2, 0] : Fin 4 → Fin Λ.A.gB → ℂ) k) ^ Out.DegPre.gtε k) z₀` using `fun k => by`.
+
+Establish `hk` using `((hl z₀ x).le_iff j).1 hz₀ k`. Use `DifferentiableAt.zpow ?_ (Or.inl (Λ.u.fr_ne _ _ hk))` and prove the remaining obligations. Conclude with `((Λ.u.fr_hol (j k)).differentiableAt ((Λ.u.hol _ 0).1.mem_nhds hk)).comp z₀ (hd k z₀)`. Conclude with `(HasFDerivAt.finsetProd (u := Finset.univ) fun k _ => (h k).hasFDerivAt).differentiableAt`.
+-/
 theorem analyticDictionaryExp_holomorphic_over_unif : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (b : O →+* ℂ) (a : ArcIn D l β ℂ b) (Λ : GtAn a), IsHolTo Set.univ (fun z => (show Sp ℂ ⟶ _ from (Λ.ex0 z).b.left)) ∧ ∀ x j, DifferentiableOn ℂ (fun z => chiVal (Λ.ex0 z) x j) {z | ⊤ ≤ LB.wchart a.D₀.P.L (Out.DegPre.gtφ a.D₀ ℂ (Λ.ex0 z).b x) j} ∧ ∀ z, ⊤ ≤ LB.wchart a.D₀.P.L (Out.DegPre.gtφ a.D₀ ℂ (Λ.ex0 z).b x) j → chiVal (Λ.ex0 z) x j = eTwoPi (z.1 (Λ.ε.symm x)) * FrameValue.frameProd Λ.u Out.DegPre.gtε ![Λ.A.ct (Λ.ε.symm x) + z.2, Λ.A.ct (Λ.ε.symm x), z.2, 0] j := by
   intro E _ _ _ H _ D l c O _ β _ _ b a Λ
   have hl : ∀ (z : Λ.A.V) (x : a.D₀.X), FrameValue.IsLift Λ.u (Out.DegPre.gtφ a.D₀ ℂ (Λ.ex0 z).b x)

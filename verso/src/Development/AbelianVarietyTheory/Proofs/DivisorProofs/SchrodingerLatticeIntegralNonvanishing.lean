@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.LagrFormNZ
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (Fintype.linearCombination F a)` using `linearIndependent_iff_injective_fintypeLinearCombination.mp ha`. Take `⟨L, hL⟩` from `LinearMap.exists_leftInverse_of_injective (Fintype.linearCombination F a) (LinearMap.ker_eq_bot.2 hinj)`. Use `⟨LinearMap.toMatrix' L, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.toMatrix'_mulVec]`. Use `LinearMap.congr_fun hL (Pi.single j 1)` as an intermediate fact.
+
+Simplify `this` using `[Fintype.linearCombination_apply_single]`.
+-/
 theorem exists_leftInv {F : Type} [Field F] {κ : Type} [Fintype κ] {r : ℕ} (a : Fin r → κ → F)
     (ha : LinearIndependent F a) : ∃ C : Matrix (Fin r) κ F, ∀ j, C *ᵥ a j = Pi.single j 1 := by
   have hinj : Function.Injective (Fintype.linearCombination F a) :=
@@ -27,6 +32,13 @@ theorem exists_leftInv {F : Type} [Field F] {κ : Type} [Fintype κ] {r : ℕ} (
   have := LinearMap.congr_fun hL (Pi.single j 1)
   simpa [Fintype.linearCombination_apply_single] using this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `h1 : ∀ j, (C.map (algebraMap F (AF F)) *ᵥ fun k => algebraMap F (AF F) (a j k)) i = algebraMap F (AF F) ((Pi.single j (1 : F) : Fin r → F) i)` using `fun j => by`. Rewrite using `[← hC j, RingHom.map_mulVec]`. Both sides reduce to the same expression. Rewrite using `[Matrix.mulVec_sum, Finset.sum_apply]`.
+
+Simplify using `only [Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, h1]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Pi.single_apply, Ne.symm hj]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem mulVec_sum_eq {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] {r : ℕ} (a : Fin r → κ → F)
     (C : Matrix (Fin r) κ F) (hC : ∀ j, C *ᵥ a j = Pi.single j 1) (x : Fin r → AF F) :
     C.map (algebraMap F (AF F)) *ᵥ (∑ j, x j • fun k => algebraMap F (AF F) (a j k)) = x := by
@@ -45,6 +57,61 @@ end GlobalTheory.LagrFormNZ
 
 namespace GlobalTheory.LagrFormNZ
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ κ _ r u hu μ hμ`. Use `letI : MeasurableSpace (Fin r → AF F) := borel _`. Use `haveI : BorelSpace (Fin r → AF F) := ⟨rfl⟩`. Use `haveI := hμ`. Take `⟨C, hC⟩` from `exists_leftInv (fun j => (u j).1) hu`.
+
+Use `set U : Fin r → (κ → AF F) × (κ → AF F) := fun j => ((fun k => algebraMap F (AF F) ((u j).1 k)), (fun k => algebraMap F (AF F) ((u j).2 k))) with hU`. Use `set Cm : Matrix (Fin r) κ (AF F) := C.map (algebraMap F (AF F)) with hCm`. Establish `hfst : ∀ x : Fin r → AF F, (∑ j, x j • U j).1 = ∑ j, x j • fun k => algebraMap F (AF F) ((u j).1 k)`. Introduce `x`. Simplify using `[U, Prod.fst_sum]`.
+
+Establish `hleft : ∀ x : Fin r → AF F, Cm *ᵥ (∑ j, x j • U j).1 = x` using `fun x => by`. Rewrite using `[hfst]`. Conclude with `mulVec_sum_eq (fun j => (u j).1) C hC x`. Establish `hXc : Continuous fun x : Fin r → AF F => ∑ j, x j • U j` using `continuous_finset_sum _ fun j _ => (continuous_apply j).smul continuous_const`. Use `set H : (Fin r → AF F) → ℂ := fun x => ψ (0 ⬝ᵥ (∑ j, x j • U j).2 + ⅟(2 : AF F) * ((∑ j, x j • U j).1 ⬝ᵥ (∑ j, x j • U j).2)) with hH`.
+
+Establish `hHc : Continuous H` using `hψ.1.comp ((continuous_const.dotProduct (continuous_snd.comp hXc)).add (continuous_const.mul ((continuous_fst.comp hXc).dotProduct (continuous_snd.comp hXc))))`. Use `set G : (κ → AF F) → ℂ := fun y => H (Cm *ᵥ y) with hGdef`. Establish `hGc : Continuous G` using `hHc.comp (Continuous.matrix_mulVec continuous_const continuous_id)`. Establish `hG0 : G 0 = 1` using `by simp [G, H]`. Establish `hV : {y | 0 < (G y).re} ∈ 𝓝 (0 : κ → AF F)` using `(isOpen_lt continuous_const (Complex.continuous_re.comp hGc)).mem_nhds (by simp [hG0])`.
+
+Use `set e := GlobalTheory.ArchimedeanL2.splitEquiv F κ with he`. Establish `he0 : e.symm (0, 0) = 0` using `map_zero e.symm`. Establish `hW : e.symm ⁻¹' {y | 0 < (G y).re} ∈ 𝓝 ((0 : κ → mixedEmbedding.mixedSpace F), (0 : κ → Af F))`. Establish `hV' : {y | 0 < (G y).re} ∈ 𝓝 (e.symm (0, 0))` using `by rw [he0]; exact hV`. Conclude with `e.symm.continuous.tendsto (0, 0) hV'`.
+
+Take `⟨U1, hU1, U2, hU2, hsub⟩` from `mem_nhds_prod_iff.1 hW`. Take `⟨δ, hδ, hball⟩` from `Metric.mem_nhds_iff.1 hU1`. Take `⟨c, hc0, hcs⟩` from `GlobalTheory.EvAdm.exists_scaledInt_subset_of_mem_nhds F κ U2 hU2`. Set `b : ContDiffBump (0 : κ → mixedEmbedding.mixedSpace F)` to `⟨δ / 2, δ, half_pos hδ, half_lt_self hδ⟩`. Establish `h1 : HasCompactSupport (fun x => ((b x : ℝ) : ℂ))` using `b.hasCompactSupport.comp_left (g := fun r : ℝ => (r : ℂ)) (by simp)`.
+
+Set `f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ` to `h1.toSchwartzMap (Complex.ofRealCLM.contDiff.comp b.contDiff)`. Establish `hf : ∀ x, f x = ((b x : ℝ) : ℂ)` using `fun x => rfl`. Use `set S : Set (κ → Af F) := {y | y - 0 ∈ GlobalTheory.EvAdm.scaledInt F κ c} with hS`. Use `set g : (κ → Af F) → ℂ := S.indicator (fun _ => (1 : ℂ)) with hg`. Establish `hgSB : g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)` using `GlobalTheory.EvAdm.indicator_coset_scaledInt_mem_SB F κ c hc0 0`.
+
+Use `set φ := pureA F f g with hφ`. Establish `hφmem : φ ∈ schA F κ` using `Submodule.subset_span ⟨f, g, hgSB, rfl⟩`. Establish `hφe : ∀ y, φ y = f (e y).1 * g (e y).2` using `fun y => rfl`. Use `⟨φ, hφmem, ?_⟩` and prove the remaining obligations. Establish `hφcases : ∀ y, φ y = ((b (e y).1 : ℝ) : ℂ) ∧ (e y).2 ∈ S ∨ φ y = 0 ∧ (e y).2 ∉ S`.
+
+Introduce `y`. Rewrite using `[hφe, hf]`. Distinguish the cases in `hq : (e y).2 ∈ S`. Use `left`. Simplify using `[g, Set.indicator_of_mem hq, hq]`.
+
+Use `right`. Simplify using `[g, Set.indicator_of_notMem hq, hq]`. Establish `hφim : ∀ y, (φ y).im = 0` using `fun y => by`. Apply the tactic sequence `rcases hφcases y with ⟨h, _⟩ | ⟨h, _⟩ <;> simp [h]`. Establish `hφre : ∀ y, 0 ≤ (φ y).re` using `fun y => by`.
+
+Apply the tactic sequence `rcases hφcases y with ⟨h, _⟩ | ⟨h, _⟩ <;> simp [h, b.nonneg]`. Establish `hφmemK : ∀ y, φ y ≠ 0 → (e y).1 ∈ Metric.ball (0 : κ → mixedEmbedding.mixedSpace F) δ ∧ (e y).2 ∈ (GlobalTheory.EvAdm.scaledInt F κ c : Set (κ → Af F))`. Introduce `y hy`. Break down `hφcases y with ⟨h, hq⟩ | ⟨h, _⟩` into its components or cases. Use `⟨?_, by simpa [S] using hq⟩` and prove the remaining obligations.
+
+Establish `: b (e y).1 ≠ 0`. Introduce `h0`. Apply `hy` to reduce the goal to its premises. Rewrite using `[h, h0]`. Simplify using the standard rewrite rules.
+
+Establish `hs : (e y).1 ∈ Function.support b` using `this`. Rewrite `hs` using `[b.support_eq]`. Conclude with `hs`. Conclude with `absurd h hy`. Establish `hφV : ∀ y, φ y ≠ 0 → 0 < (G y).re`.
+
+Introduce `y hy`. Take `⟨h1, h2⟩` from `hφmemK y hy`. Establish `: e y ∈ U1 ×ˢ U2` using `⟨hball h1, hcs h2⟩`. Use `hsub this` as an intermediate fact. Simplify using `using this`.
+
+Establish `hφ0 : φ 0 = 1`. Establish `e0 : e 0 = (0, 0)` using `map_zero e`. Rewrite using `[hφe, e0, hf]`. Establish `hb : b 0 = 1` using `b.one_of_mem_closedBall (Metric.mem_closedBall_self (half_pos hδ).le)`. Establish `h0S : (0 : κ → Af F) ∈ S` using `by simp [S]`.
+
+Simplify using `[g, Set.indicator_of_mem h0S, hb]`. Establish `hφc : Continuous φ`. Establish `hg : Continuous g` using `hgSB.1.continuous`. Conclude with `(f.continuous.comp (continuous_fst.comp e.continuous)).mul (hg.comp (continuous_snd.comp e.continuous))`. Use `set I : (Fin r → AF F) → ℂ := fun x => schr ψ (∑ j, x j • U j) φ 0 with hIdef`.
+
+Establish `hI : ∀ x, I x = G (∑ j, x j • U j).1 * φ (∑ j, x j • U j).1`. Introduce `x`. Use `show ψ _ * φ (0 + _) = H (Cm *ᵥ _) * _`. Rewrite using `[hleft, zero_add]`. Establish `hIc : Continuous I`.
+
+Establish `: I = fun x => G (∑ j, x j • U j).1 * φ (∑ j, x j • U j).1` using `funext hI`. Rewrite using `[this]`. Conclude with `(hGc.comp (continuous_fst.comp hXc)).mul (hφc.comp (continuous_fst.comp hXc))`. Use `set K : Set ((κ → mixedEmbedding.mixedSpace F) × (κ → Af F)) := Metric.closedBall 0 δ ×ˢ (GlobalTheory.EvAdm.scaledInt F κ c : Set (κ → Af F)) with hK`. Establish `hKc : IsCompact K` using `(isCompact_closedBall _ _).prod (GlobalTheory.EvAdm.isCompact_scaledInt_of_ne_zero hc0)`.
+
+Establish `hKcl : IsClosed K` using `Metric.isClosed_closedBall.prod ((GlobalTheory.EvAdm.scaledInt F κ c).isClosed_of_isOpen (GlobalTheory.EvAdm.isOpen_scaledInt c))`. Use `set T : Set (Fin r → AF F) := {x | e (∑ j, x j • U j).1 ∈ K} with hT`. Establish `hTcl : IsClosed T` using `hKcl.preimage (e.continuous.comp (continuous_fst.comp hXc))`. Establish `hTsub : T ⊆ (fun p => Cm *ᵥ e.symm p) '' K`. Introduce `x hx`.
+
+Conclude with `⟨_, hx, by simp only [e.symm_apply_apply, hleft]⟩`. Establish `hes : Continuous (e.symm : _ → _)` using `e.symm.continuous`. Establish `hcm : Continuous fun p => Cm *ᵥ e.symm p` using `Continuous.matrix_mulVec continuous_const hes`. Establish `hTc : IsCompact T` using `(hKc.image hcm).of_isClosed_subset hTcl hTsub`. Establish `hsupp : Function.support I ⊆ T`.
+
+Introduce `x hx`. Establish `hne : φ (∑ j, x j • U j).1 ≠ 0`. Introduce `h0`. Apply `hx` to reduce the goal to its premises. Rewrite using `[hI, h0, mul_zero]`.
+
+Take `⟨h1, h2⟩` from `hφmemK _ hne`. Conclude with `⟨Metric.ball_subset_closedBall h1, h2⟩`. Establish `hIcs : HasCompactSupport I` using `hTc.of_isClosed_subset (isClosed_tsupport I) (closure_minimal hsupp hTcl)`. Establish `hIint : Integrable I μ` using `hIc.integrable_of_hasCompactSupport hIcs`. Establish `hre : ∀ x, (I x).re = (G (∑ j, x j • U j).1).re * (φ (∑ j, x j • U j).1).re`.
+
+Introduce `x`. Rewrite using `[hI, Complex.mul_re, hφim, mul_zero, sub_zero]`. Establish `hnn : 0 ≤ fun x => (I x).re`. Introduce `x`. Use `show 0 ≤ (I x).re`.
+
+Rewrite using `[hre]`. Distinguish the cases in `h0 : φ (∑ j, x j • U j).1 = 0`. Simplify using `[h0]`. Conclude with `mul_nonneg (hφV _ h0).le (hφre _)`. Establish `hI0 : (I 0).re = 1`.
+
+Rewrite using `[hre]`. Establish `: (∑ j, (0 : Fin r → AF F) j • U j).1 = 0` using `by simp`. Rewrite using `[this, hG0, hφ0]`. Simplify using the standard rewrite rules. Establish `hpos : 0 < ∫ x, (I x).re ∂μ`.
+
+Rewrite using `[integral_pos_iff_support_of_nonneg hnn hIint.re]`. Conclude with `(Complex.continuous_re.comp hIc).isOpen_support.measure_pos μ ⟨0, by simp [Function.mem_support, hI0]⟩`. Introduce `hzero`. Use `integral_re hIint` as an intermediate fact. Express the relevant statement in the definitionally equal form `∫ x, (I x).re ∂μ = (∫ x, I x ∂μ).re at this`.
+
+Rewrite `this` using `[show (∫ x, I x ∂μ) = 0 from hzero, Complex.zero_re]`. Conclude with `hpos.ne' this`.
+-/
 theorem lagrForm_ne_zero : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ]
     (r : ℕ) (u : Fin r → (κ → F) × (κ → F)), LinearIndependent F (fun j => (u j).1) →
     ∀ μ : @Measure (Fin r → AF F) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →

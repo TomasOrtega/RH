@@ -14,6 +14,9 @@ universe w
 
 namespace CrystallineSemistableComparison.Om.Glob
 
+/- English proof (translation)
+The claim follows from `@h`.
+-/
 theorem glob_iso (h : ∀ (K : Type) [Field K] [CharZero K],
     ∃ e : ∀ {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [Smooth q] (U : Cov q) (a j : ℕ),
       HT.Hdg q a (a + j) ≃ₗ[K] (formCos q U.U a).cx.H j,

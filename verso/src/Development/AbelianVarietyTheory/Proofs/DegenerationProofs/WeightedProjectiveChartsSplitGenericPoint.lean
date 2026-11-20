@@ -15,6 +15,11 @@ open GlobalTheory.ZJ
 noncomputable section
 namespace GlobalTheory.ZJ.GenericSplit
 
+/- English proof (translation)
+Substitute `hf` using the available equality. Establish `w : ψ ≫ G.hom = (H'.hom ≫ f) ≫ t` using `by rw [hψ.1.w, Category.assoc]`. Take `⟨l, h₁, h₂⟩ : ∃ l : H'.left ⟶ H.left, l ≫ φ = ψ ∧ l ≫ H.hom = H'.hom ≫ f` from `⟨hφ.1.lift _ _ w, hφ.1.lift_fst _ _ w, hφ.1.lift_snd _ _ w⟩`. Substitute `h₁` using the available equality. Establish `hl : IsGrpPullback H' H f l` using `hφ.cancel hψ h₂`.
+
+Establish `: IsAffineHom l` using `MorphismProperty.of_isPullback (P := @IsAffineHom) hl.1.flip inferInstance`. Conclude with `SplitPull.pull_pull_and_split_pull.2 K K' H H' f l hl (C.pull φ) d c h`.
+-/
 theorem split_transport {S : Scheme.{0}} {G : Over S} [GrpObj G] (C : Charts G.left) {d : ℕ} (c : Fin d → C.Cl)
     {K K' : Type} [Field K] [Field K'] {H : Over (Sp K)} [GrpObj H] {H' : Over (Sp K')} [GrpObj H']
     {t : Sp K ⟶ S} {t' : Sp K' ⟶ S} (f : Sp K' ⟶ Sp K) (hf : f ≫ t = t') {φ : H.left ⟶ G.left}
@@ -29,6 +34,11 @@ theorem split_transport {S : Scheme.{0}} {G : Over S} [GrpObj G] (C : Charts G.l
   have : IsAffineHom l := MorphismProperty.of_isPullback (P := @IsAffineHom) hl.1.flip inferInstance
   exact SplitPull.pull_pull_and_split_pull.2 K K' H H' f l hl (C.pull φ) d c h
 
+/- English proof (translation)
+Establish `hx : x ∈ C.W a ⊓ C.W a'` using `⟨ha, X.basicOpen_le _ h⟩`. Establish `e : ∀ (V : X.Opens) (k : C.W a ⊓ C.W a' ≤ V) (u : Γ(X, V)), X.basicOpen (resG X k u) = (C.W a ⊓ C.W a') ⊓ X.basicOpen u` using `fun V k u => X.basicOpen_res u (homOfLE k).op`. Establish `h₁ : x ∈ X.basicOpen (resG X (inf_le_left : C.W a ⊓ C.W a' ≤ C.W a) (C.r a j))`. Rewrite using `[C.trans a a' j, Scheme.basicOpen_mul, e, e, ← C.inter]`. Conclude with `⟨⟨hx, hx⟩, hx, h⟩`.
+
+Rewrite `h₁` using `[e]`. Conclude with `h₁.2`.
+-/
 theorem mem_basicOpen_of_mem {X : Scheme.{0}} (C : Charts X) (a a' : {i // C.wt i = C.c₀}) (j : C.I) (x : X)
     (ha : x ∈ C.W a) (h : x ∈ X.basicOpen (C.r a' j)) : x ∈ X.basicOpen (C.r a j) := by
   have hx : x ∈ C.W a ⊓ C.W a' := ⟨ha, X.basicOpen_le _ h⟩
@@ -40,6 +50,19 @@ theorem mem_basicOpen_of_mem {X : Scheme.{0}} (C : Charts X) (a a' : {i // C.wt 
   rw [e] at h₁
   exact h₁.2
 
+/- English proof (translation)
+Set `e : Sp R ⟶ G.left` to `eSec G`. Take `⟨a, ha⟩ : ∃ a, e (⊥ : PrimeSpectrum R) ∈ C.W a` from `TopologicalSpace.Opens.mem_iSup.1 (C.cover.ge (Set.mem_univ _))`. Take `⟨x, hxa, hx⟩` from `hd.inter_open_nonempty _ (e ⁻¹ᵁ C.W a).isOpen ⟨_, ha⟩`. Take `⟨K, _, t, _, ht, -, i, hT⟩` from `hs x hx`. Establish `hp` using `isGrpPullback_pullback G t`.
+
+Establish `he : (eSec ((Over.pullback t).obj G) : Sp K ⟶ _) ≫ pullback.fst G.hom t = t ≫ e` using `eSec_comp_of_isGrpPullback hp`. Set `y : Sp K` to `(⊥ : PrimeSpectrum K)`. Establish `hy : t y = x` using `ht.le ⟨y, rfl⟩`. Establish `hj : ∀ n, ∃ j, C.wt j = c n ∧ e x ∈ G.left.basicOpen (C.r a j)`. Introduce `n`.
+
+Take `⟨a', j, hj, hm⟩` from `hT.bpf n (eSec ((Over.pullback t).obj G) y)`. Use `⟨j, hj, mem_basicOpen_of_mem C a a' j _ hxa ?_⟩` and prove the remaining obligations. Establish `hm' : eSec ((Over.pullback t).obj G) y ∈ pullback.fst G.hom t ⁻¹ᵁ G.left.basicOpen (C.r a' j)`. Rewrite using `[Scheme.preimage_basicOpen]`. Conclude with `hm`.
+
+Establish `h2 : ((eSec ((Over.pullback t).obj G) : Sp K ⟶ _) ≫ pullback.fst G.hom t) y ∈ G.left.basicOpen (C.r a' j)` using `hm'`. Rewrite `h2` using `[he]`. Rewrite using `[← hy]`. Conclude with `h2`. Use `choose j hj hjx using hj`.
+
+Set `U : Set (PrimeSpectrum R)` to `(e ⁻¹ᵁ C.W a : Set (Sp R)) ∩ ⋂ n, (e ⁻¹ᵁ G.left.basicOpen (C.r a (j n)) : Set (Sp R))`. Establish `hU : IsOpen U` using `(e ⁻¹ᵁ C.W a).isOpen.inter (isOpen_iInter_of_finite fun n => (e ⁻¹ᵁ _).isOpen)`. Establish `hxU : x ∈ U` using `⟨hxa, Set.mem_iInter.2 hjx⟩`. Take `⟨_, ⟨b, rfl⟩, hb, hbU⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open hxU hU`. Use `⟨a, j, b, ?_, hj, fun z hz => ⟨(hbU hz).1, fun n => Set.mem_iInter.1 (hbU hz).2 n⟩⟩` and prove the remaining obligations.
+
+Introduce and unpack `rfl`. Conclude with `hb (Ideal.zero_mem _)`.
+-/
 theorem exists_open {R : Type} [CommRing R] [IsDomain R] (G : Over (Sp R)) [GrpObj G] (C : Charts G.left) {d : ℕ}
     (c : Fin d → C.Cl) (Sg : Set (Sp R)) (hd : Dense Sg) (hs : C.SplitOn c Sg) :
     ∃ (a : {i // C.wt i = C.c₀}) (j : Fin d → C.I) (b : R), b ≠ 0 ∧ (∀ n, C.wt (j n) = c n) ∧
@@ -76,6 +99,33 @@ theorem exists_open {R : Type} [CommRing R] [IsDomain R] (G : Over (Sp R)) [GrpO
   rintro rfl
   exact hb (Ideal.zero_mem _)
 
+/- English proof (translation)
+Introduce `R _ _ _ G _ _ _ _ _ C d c Sg _ hd hs`. Take `⟨a, j, b, hb, hj, hU⟩` from `exists_open G C c Sg hd hs`. Set `R'` to `Localization.Away b`. Establish `hle : Submonoid.powers b ≤ nonZeroDivisors R` using `powers_le_nonZeroDivisors_of_noZeroDivisors hb`. Use `haveI : IsDomain R' := IsLocalization.isDomain_localization hle`.
+
+Use `haveI : IsNoetherianRing R' := IsLocalization.isNoetherianRing (Submonoid.powers b) R' inferInstance`. Set `u : Sp R' ⟶ Sp R` to `spMap (algebraMap R R')`. Use `haveI : IsOpenImmersion u := IsOpenImmersion.of_isLocalization b`. Establish `hu : Set.range u = (PrimeSpectrum.basicOpen b : Set (PrimeSpectrum R))` using `PrimeSpectrum.localization_away_comap_range R' b`. Set `G' : Over (Sp R')` to `(Over.pullback u).obj G`.
+
+Set `π : G'.left ⟶ G.left` to `pullback.fst G.hom u`. Establish `hp : IsGrpPullback G' G u π` using `isGrpPullback_pullback G u`. Use `haveI : IsAffineHom π := MorphismProperty.of_isPullback (P := @IsAffineHom) hp.1.flip inferInstance`. Use `haveI : Smooth G'.hom := inferInstanceAs (Smooth (pullback.snd G.hom u))`. Use `haveI : IsSeparated G'.hom := inferInstanceAs (IsSeparated (pullback.snd G.hom u))`.
+
+Use `haveI : QuasiCompact G'.hom := inferInstanceAs (QuasiCompact (pullback.snd G.hom u))`. Establish `hd' : Dense (u ⁻¹' Sg)` using `hd.preimage u.isOpenEmbedding.isOpenMap`. Establish `hs' : (C.pull π).SplitOn c (u ⁻¹' Sg)`. Introduce `x hx`. Take `⟨K, _, t, _, ht, hsp⟩` from `hs _ hx`.
+
+Establish `hr : Set.range t ⊆ Set.range u`. Rewrite using `[ht]`. Introduce and unpack `_ rfl`. Conclude with `⟨x, rfl⟩`. Take `⟨t', ht'⟩ : ∃ t', t' ≫ u = t` from `⟨_, IsOpenImmersion.lift_fac u t hr⟩`.
+
+Use `haveI : IsAffineHom (pullback.fst G'.hom t') := MorphismProperty.of_isPullback (P := @IsAffineHom) (IsPullback.of_hasPullback _ _).flip inferInstance`. Use `⟨K, inferInstance, t', this, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ y, t' y = x` using `fun y => u.isOpenEmbedding.injective (by`. Establish `: t y = u x` using `ht.le ⟨y, rfl⟩`. Rewrite using `[← this, ← ht']`.
+
+Use the proof step `rfl)`. Use extensionality with `z`. Conclude with `⟨fun ⟨y, hy⟩ => hy ▸ h1 y, fun hz => ⟨(⊥ : PrimeSpectrum K), (h1 _).trans hz.symm⟩⟩`. Conclude with `split_transport C c (𝟙 _) (by rw [Category.id_comp, ht']) (isGrpPullback_pullback G t) ((isGrpPullback_pullback G' t').comp hp) hsp`. Establish `he : ∀ x : Sp R', π (eSec G' x) = eSec G (u x)` using `fun x => congrArg (fun q => q x) (eSec_comp_of_isGrpPullback hp)`.
+
+Establish `hb' : ∀ x : Sp R', b ∉ (u x).asIdeal` using `fun x => hu.le ⟨x, rfl⟩`. Establish `hB : (C.pull π).Based c a j`. Use `⟨fun x _ => ?_, fun n => ⟨hj n, fun x _ => ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `π (eSec G' x) ∈ C.W a`. Rewrite using `[he]`.
+
+Conclude with `(hU _ (hb' x)).1`. Express the relevant statement in the definitionally equal form `eSec G' x ∈ G'.left.basicOpen ((π.app (C.W a)).hom (C.r a (j n)))`. Rewrite using `[← Scheme.preimage_basicOpen]`. Express the relevant statement in the definitionally equal form `π (eSec G' x) ∈ G.left.basicOpen (C.r a (j n))`. Rewrite using `[he]`.
+
+Conclude with `(hU _ (hb' x)).2 n`. Use `haveI : IsAffineHom (pullback.fst G'.hom (Out.jK R')) := MorphismProperty.of_isPullback (P := @IsAffineHom) (IsPullback.of_hasPullback _ _).flip inferInstance`. Establish `h` using `GlobalTheory.T.split_generic_of_based_weightedCharts R' G' (C.pull π) d c _ hd' hs' a j hB`. Establish `hun : IsUnit (algebraMap R (FractionRing R) b)` using `IsLocalization.map_units (FractionRing R) (⟨b, mem_nonZeroDivisors_of_ne_zero hb⟩ : nonZeroDivisors R)`. Set `g : R' →+* FractionRing R` to `IsLocalization.Away.lift b hun`.
+
+Establish `hg : Function.Injective g`. Use `(IsLocalization.lift_injective_iff _).2 fun x y => ?_` and prove the remaining obligations. Rewrite using `[(IsLocalization.injective R' hle).eq_iff, (IsFractionRing.injective R (FractionRing R)).eq_iff]`. Set `g' : FractionRing R' →+* FractionRing R` to `IsFractionRing.lift hg`. Use `split_transport C c (spMap g') ?_ ((isGrpPullback_pullback G' (Out.jK R')).comp hp) (isGrpPullback_pullback G (Out.jK R)) h` and prove the remaining obligations.
+
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `g' (algebraMap R' _ (algebraMap R R' x)) = algebraMap R _ x`. Rewrite using `[IsFractionRing.lift_algebraMap]`.
+
+Conclude with `IsLocalization.Away.lift_eq b hun x`.
+-/
 theorem split_generic : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] [IsSeparated G.hom] [QuasiCompact G.hom] (C : Charts G.left) (d : ℕ) (c : Fin d → C.Cl) (Sg : Set (Sp R)) [IsAffineHom (pullback.fst G.hom (Out.jK R))], Dense Sg → C.SplitOn c Sg → Charts.Split (H := ((Over.pullback (Out.jK R)).obj G)) (C.pull (pullback.fst G.hom (Out.jK R))) c := by
   intro R _ _ _ G _ _ _ _ _ C d c Sg _ hd hs
   obtain ⟨a, j, b, hb, hj, hU⟩ := exists_open G C c Sg hd hs

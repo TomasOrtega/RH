@@ -18,12 +18,18 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Rewrite using `[Category.assoc, c.comp_struct]`.
+-/
 private theorem etaleChart_restrictOpens_map_comp_affineSpaceFinToSpec {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} {m : ℕ} (c : EtaleChart p U m)
     (V : U.toScheme.Opens) :
     (V.ι ≫ c.map) ≫ affineSpaceFinToSpec k m = V.ι ≫ (U.ι ≫ p) := by
   rw [Category.assoc, c.comp_struct]
 
+/- English proof (translation)
+Establish `: AlgebraicGeometry.Etale c.map` using `c.isEtale`. Use `infer_instance`.
+-/
 private theorem etaleChart_restrictOpens_map_etale {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} {m : ℕ} (c : EtaleChart p U m)
     (V : U.toScheme.Opens) :
@@ -39,11 +45,17 @@ def EtaleChart.restrictOpens {X : Scheme.{u}} {k : Type u} [Field k]
   isEtale := etaleChart_restrictOpens_map_etale c V
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem EtaleChart.restrictOpens_map {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} {m : ℕ} (c : EtaleChart p U m)
     (V : U.toScheme.Opens) :
     (c.restrictOpens V).map = V.ι ≫ c.map := rfl
 
+/- English proof (translation)
+Simplify using `only [restrictIdeal_eq_comap_ι, EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, EtaleChart.restrictOpens_map, Scheme.IdealSheafData.comap_comp]`.
+-/
 theorem EtaleChart.restrictIdeal_coordIdeal {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} {m : ℕ} (c : EtaleChart p U m)
     (V : U.toScheme.Opens) (T : Finset (Fin m)) :
@@ -51,6 +63,9 @@ theorem EtaleChart.restrictIdeal_coordIdeal {X : Scheme.{u}} {k : Type u} [Field
   simp only [restrictIdeal_eq_comap_ι, EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, EtaleChart.restrictOpens_map,
     Scheme.IdealSheafData.comap_comp]
 
+/- English proof (translation)
+The claim follows from `EtaleChart.ideal_eq_span_coord (c.restrictOpens V) hV (c.coordIdeal T) T (c.restrictIdeal_coordIdeal V T)`.
+-/
 theorem EtaleChart.coordIdeal_ideal_eq_span {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} {m : ℕ} (c : EtaleChart p U m)
     {V : U.toScheme.Opens} (hV : IsAffineOpen V) (T : Finset (Fin m)) :
@@ -58,12 +73,22 @@ theorem EtaleChart.coordIdeal_ideal_eq_span {X : Scheme.{u}} {k : Type u} [Field
   EtaleChart.ideal_eq_span_coord (c.restrictOpens V) hV (c.coordIdeal T) T
     (c.restrictIdeal_coordIdeal V T)
 
+/- English proof (translation)
+Rewrite using `[c.coordIdeal_ideal_eq_span hV {i}, Finset.coe_singleton, Set.image_singleton]`.
+-/
 theorem EtaleChart.coordIdeal_singleton_ideal_eq_span {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} {m : ℕ} (c : EtaleChart p U m)
     {V : U.toScheme.Opens} (hV : IsAffineOpen V) (i : Fin m) :
     (c.coordIdeal {i}).ideal ⟨V, hV⟩ = Ideal.span {(c.restrictOpens V).coord i} := by
   rw [c.coordIdeal_ideal_eq_span hV {i}, Finset.coe_singleton, Set.image_singleton]
 
+/- English proof (translation)
+Establish `key : ∀ V : U.toScheme.affineOpens, (saturation (c.coordIdeal {s}) (c.coordIdeal {j} * c.coordIdeal {s})).ideal V = (c.coordIdeal {j}).ideal V`. Introduce `V`. Establish `ht : (c.coordIdeal {s}).ideal V = Ideal.span {(c.restrictOpens V.1).coord s}` using `c.coordIdeal_singleton_ideal_eq_span V.2 s`. Establish `hu : (c.coordIdeal {j}).ideal V = Ideal.span {(c.restrictOpens V.1).coord j}` using `c.coordIdeal_singleton_ideal_eq_span V.2 j`. Establish `hfactor : (c.coordIdeal {j} * c.coordIdeal {s}).ideal V = Ideal.span {(c.restrictOpens V.1).coord s} * (c.coordIdeal {j}).ideal V`.
+
+Rewrite using `[Scheme.IdealSheafData.ideal_mul, Pi.mul_apply, ht]`. Conclude with `mul_comm _ _`. Establish `hJ : ∀ g : Γ(U.toScheme, V.1), (c.restrictOpens V.1).coord s * g ∈ (c.coordIdeal {j}).ideal V → g ∈ (c.coordIdeal {j}).ideal V`. Introduce `g hg`. Rewrite `hg`, the goal using `[hu]`.
+
+Conclude with `mem_span_coord_of_coord_mul_mem V.2 (c.restrictOpens V.1) hjs g hg`. Conclude with `saturation_ideal_eq_of_eq_mul _ _ V _ ht _ hfactor hJ`. Conclude with `Scheme.IdealSheafData.ext (funext key)`.
+-/
 theorem EtaleChart.saturation_mul_coordIdeal {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} {m : ℕ} (c : EtaleChart p U m)
     (j s : Fin m) (hjs : j ≠ s)
@@ -91,6 +116,11 @@ theorem EtaleChart.saturation_mul_coordIdeal {X : Scheme.{u}} {k : Type u} [Fiel
     exact saturation_ideal_eq_of_eq_mul _ _ V _ ht _ hfactor hJ
   exact Scheme.IdealSheafData.ext (funext key)
 
+/- English proof (translation)
+Establish `key : ∀ V : U.toScheme.affineOpens, (saturation (c.coordIdeal {s}) (c.coordIdeal {s})).ideal V = ⊤`. Introduce `V`. Establish `ht : (c.coordIdeal {s}).ideal V = Ideal.span {(c.restrictOpens V.1).coord s}` using `c.coordIdeal_singleton_ideal_eq_span V.2 s`. Conclude with `saturation_ideal_eq_top_of_span_pow_le (c.coordIdeal {s}) (c.coordIdeal {s}) V ((c.restrictOpens V.1).coord s) ht 1 (by simp [ht])`. Use extensionality with `V`.
+
+Simplify using `[key V, Scheme.IdealSheafData.ideal_top, Pi.top_apply]`.
+-/
 theorem EtaleChart.saturation_coordIdeal_self {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} {m : ℕ} (c : EtaleChart p U m) (s : Fin m)
     [QuasiCompact (saturationι (c.coordIdeal {s}) (c.coordIdeal {s}))] :
@@ -105,6 +135,13 @@ theorem EtaleChart.saturation_coordIdeal_self {X : Scheme.{u}} {k : Type u} [Fie
   ext V
   simp [key V, Scheme.IdealSheafData.ideal_top, Pi.top_apply]
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `x hx`. Simplify using `using hx`.
+
+Consider the case `succ n ih`. Introduce `x hx`. Use `mem_span_coord_of_coord_mul_mem hU c hjs x (ih (c.coord s * x) ?_)` and prove the remaining obligations. Establish `h : c.coord s ^ n * (c.coord s * x) = c.coord s ^ (n + 1) * x` using `by ring`. Rewrite using `[h]`.
+
+Conclude with `hx`.
+-/
 private theorem mem_span_coord_of_coord_pow_mul_mem {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} {m : ℕ}
     (hU : IsAffineOpen U) (c : EtaleChart p U m) {j s : Fin m} (hjs : j ≠ s) :
@@ -122,6 +159,11 @@ private theorem mem_span_coord_of_coord_pow_mul_mem {X : Scheme.{u}} {k : Type u
       rw [h]
       exact hx
 
+/- English proof (translation)
+Use extensionality with `V f`. Establish `hVs : (c.coordIdeal {s}).ideal V = Ideal.span {(c.restrictOpens V.1).coord s}` using `c.coordIdeal_singleton_ideal_eq_span V.2 s`. Establish `hVj : (c.coordIdeal {j}).ideal V = Ideal.span {(c.restrictOpens V.1).coord j}` using `c.coordIdeal_singleton_ideal_eq_span V.2 j`. Rewrite using `[mem_saturation_ideal_iff (c.coordIdeal {s}) (c.coordIdeal {j}) V ((c.restrictOpens V.1).coord s) hVs f, hVj]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨n, hn⟩`. Conclude with `mem_span_coord_of_coord_pow_mul_mem V.2 (c.restrictOpens V.1) hjs n f hn`. Introduce `hf`. Conclude with `⟨0, by simpa using hf⟩`.
+-/
 theorem EtaleChart.saturation_coordIdeal_of_ne {X : Scheme.{u}} {k : Type u} [Field k]
     {p : X ⟶ Spec (CommRingCat.of k)} {U : X.Opens} {m : ℕ} (c : EtaleChart p U m)
     (j s : Fin m) (hjs : j ≠ s)
@@ -146,6 +188,11 @@ variable {X X₁ : Scheme.{u}} {k : Type u} [Field k]
   {p : X ⟶ Spec (CommRingCat.of k)} {π : X₁ ⟶ X} {U : X.Opens} {m : ℕ}
   {c : EtaleChart p U m} {S : Finset (Fin m)} {s : Fin m}
 
+/- English proof (translation)
+Establish `hqc : QuasiCompact (saturationι (Z.comap π) (D.comap π))` using `inferInstanceAs (QuasiCompact (strictTransformι π Z D))`. Establish `hE : restrictIdeal (Z.comap π) B.domain = B.chart.coordIdeal {s}`. Establish `h` using `B.restrictIdeal_exceptionalIdeal Z hs hZ`. Rewrite `h` using `[Blowup.exceptionalIdeal_eq_comap]`. Then use the resulting hypothesis. Establish `hDrestrict : restrictIdeal (D.comap π) B.domain = B.chart.coordIdeal {j} * B.chart.coordIdeal {s}` using `B.restrictIdeal_comap_coordIdeal_of_mem D j hj hjs hD`.
+
+Establish `hq` using `quasiCompact_saturationι_restrictIdeal (Z.comap π) (D.comap π) B.domain`. Rewrite `hq` using `[hE, hDrestrict]`. Use `hq` as an intermediate fact. Rewrite using `[strictTransform_eq_saturation, restrictIdeal_saturation (Z.comap π) (D.comap π) B.domain, hE, hDrestrict]`. Conclude with `B.chart.saturation_mul_coordIdeal j s hjs`.
+-/
 theorem restrictIdeal_strictTransform_of_mem_of_ne (B : BlowupChart π c S s)
     (Z D : X.IdealSheafData) [QuasiCompact (strictTransformι π Z D)]
     (hs : s ∈ S) (hZ : restrictIdeal Z U = c.coordIdeal S)
@@ -167,6 +214,11 @@ theorem restrictIdeal_strictTransform_of_mem_of_ne (B : BlowupChart π c S s)
     hE, hDrestrict]
   exact B.chart.saturation_mul_coordIdeal j s hjs
 
+/- English proof (translation)
+Establish `hqc : QuasiCompact (saturationι (Z.comap π) (D.comap π))` using `inferInstanceAs (QuasiCompact (strictTransformι π Z D))`. Establish `hE : restrictIdeal (Z.comap π) B.domain = B.chart.coordIdeal {s}`. Establish `h` using `B.restrictIdeal_exceptionalIdeal Z hs hZ`. Rewrite `h` using `[Blowup.exceptionalIdeal_eq_comap]`. Then use the resulting hypothesis. Establish `hDrestrict : restrictIdeal (D.comap π) B.domain = B.chart.coordIdeal {s}` using `B.restrictIdeal_comap_coordIdeal_self D hD`.
+
+Establish `hq` using `quasiCompact_saturationι_restrictIdeal (Z.comap π) (D.comap π) B.domain`. Rewrite `hq` using `[hE, hDrestrict]`. Use `hq` as an intermediate fact. Rewrite using `[strictTransform_eq_saturation, restrictIdeal_saturation (Z.comap π) (D.comap π) B.domain, hE, hDrestrict]`. Conclude with `B.chart.saturation_coordIdeal_self s`.
+-/
 theorem restrictIdeal_strictTransform_coordIdeal_self (B : BlowupChart π c S s)
     (Z D : X.IdealSheafData) [QuasiCompact (strictTransformι π Z D)]
     (hs : s ∈ S) (hZ : restrictIdeal Z U = c.coordIdeal S)
@@ -186,6 +238,13 @@ theorem restrictIdeal_strictTransform_coordIdeal_self (B : BlowupChart π c S s)
     hE, hDrestrict]
   exact B.chart.saturation_coordIdeal_self s
 
+/- English proof (translation)
+Establish `hqc : QuasiCompact (saturationι (Z.comap π) (D.comap π))` using `inferInstanceAs (QuasiCompact (strictTransformι π Z D))`. Establish `hjs : j ≠ s`. Introduce and unpack `rfl`. Conclude with `hj hs`. Establish `hE : restrictIdeal (Z.comap π) B.domain = B.chart.coordIdeal {s}`.
+
+Establish `h` using `B.restrictIdeal_exceptionalIdeal Z hs hZ`. Rewrite `h` using `[Blowup.exceptionalIdeal_eq_comap]`. Then use the resulting hypothesis. Establish `hDrestrict : restrictIdeal (D.comap π) B.domain = B.chart.coordIdeal {j}` using `B.restrictIdeal_comap_coordIdeal_of_not_mem D j hj hD`. Establish `hq` using `quasiCompact_saturationι_restrictIdeal (Z.comap π) (D.comap π) B.domain`. Rewrite `hq` using `[hE, hDrestrict]`.
+
+Use `hq` as an intermediate fact. Rewrite using `[strictTransform_eq_saturation, restrictIdeal_saturation (Z.comap π) (D.comap π) B.domain, hE, hDrestrict]`. Conclude with `B.chart.saturation_coordIdeal_of_ne j s hjs`.
+-/
 theorem restrictIdeal_strictTransform_coordIdeal_of_notMem (B : BlowupChart π c S s)
     (Z D : X.IdealSheafData) [QuasiCompact (strictTransformι π Z D)]
     (hs : s ∈ S) (hZ : restrictIdeal Z U = c.coordIdeal S)
@@ -209,6 +268,11 @@ theorem restrictIdeal_strictTransform_coordIdeal_of_notMem (B : BlowupChart π c
     hE, hDrestrict]
   exact B.chart.saturation_coordIdeal_of_ne j s hjs
 
+/- English proof (translation)
+Distinguish the cases in `hj : j = s`. Rewrite using `[if_pos hj]`. Establish `hD' : restrictIdeal D U = c.coordIdeal {s}` using `by rw [hD, hj]`. Conclude with `B.restrictIdeal_strictTransform_coordIdeal_self Z D hs hZ hD'`. Rewrite using `[if_neg hj]`.
+
+Distinguish the cases in `hjS : j ∈ S`. Conclude with `B.restrictIdeal_strictTransform_of_mem_of_ne Z D hs hZ j hjS hj hD`. Conclude with `B.restrictIdeal_strictTransform_coordIdeal_of_notMem Z D hs hZ j hjS hD`.
+-/
 theorem restrictIdeal_strictTransform_coordIdeal (B : BlowupChart π c S s)
     (Z D : X.IdealSheafData) [QuasiCompact (strictTransformι π Z D)]
     (hs : s ∈ S) (hZ : restrictIdeal Z U = c.coordIdeal S)
@@ -224,6 +288,11 @@ theorem restrictIdeal_strictTransform_coordIdeal (B : BlowupChart π c S s)
     · exact B.restrictIdeal_strictTransform_of_mem_of_ne Z D hs hZ j hjS hj hD
     · exact B.restrictIdeal_strictTransform_coordIdeal_of_notMem Z D hs hZ j hjS hD
 
+/- English proof (translation)
+Establish `h1 : restrictIdeal (D.comap π) B.domain = ⊤` using `B.restrictIdeal_comap_top D hD`. Establish `h2 : D.comap π ≤ Blowup.strictTransform π Z D` using `comap_le_strictTransform π Z D`. Establish `h3 : restrictIdeal (D.comap π) B.domain ≤ restrictIdeal (Blowup.strictTransform π Z D) B.domain`. Rewrite using `[restrictIdeal_eq_comap_ι, restrictIdeal_eq_comap_ι]`. Conclude with `Scheme.IdealSheafData.comap_mono (Scheme.Opens.ι B.domain) h2`.
+
+Rewrite `h3` using `[h1]`. Conclude with `le_antisymm le_top h3`.
+-/
 theorem restrictIdeal_strictTransform_of_eq_top (B : BlowupChart π c S s)
     (Z D : X.IdealSheafData) (hD : restrictIdeal D U = ⊤) :
     restrictIdeal (Blowup.strictTransform π Z D) B.domain = ⊤ := by

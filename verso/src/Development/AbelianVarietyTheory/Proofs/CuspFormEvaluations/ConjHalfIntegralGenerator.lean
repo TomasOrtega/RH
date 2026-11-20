@@ -13,6 +13,11 @@ namespace GlobalTheory.CMConjugationOfSquareRoot
 open NumberField Complex
 open scoped ComplexConjugate
 
+/- English proof (translation)
+Establish `hre` using `congrArg Complex.re h`. Establish `him` using `congrArg Complex.im h`. Simplify using `[pow_two] at hre him`. Establish `hre0 : z.re = 0`. Break down `mul_eq_zero.mp (show z.re * z.im = 0 by linarith) with h0 | h0` into its components or cases.
+
+Conclude with `h0`. Rewrite `hre` using `[h0]`. Use polynomial arithmetic with `[mul_self_nonneg z.re]`. Apply the tactic sequence `apply Complex.ext <;> simp [hre0]`.
+-/
 theorem conj_eq_neg_of_sq_eq_neg {z : ℂ} {d : ℝ} (hd : 0 < d) (h : z ^ 2 = -(d : ℂ)) :
     conj z = -z := by
   have hre := congrArg Complex.re h
@@ -26,6 +31,11 @@ theorem conj_eq_neg_of_sq_eq_neg {z : ℂ} {d : ℝ} (hd : 0 < d) (h : z ^ 2 = -
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj, map_neg]`. Apply `conj_eq_neg_of_sq_eq_neg (d := (H.d : ℝ)) (by exact_mod_cast H.d_prime.pos)` to reduce the goal to its premises. Establish `h` using `congrArg (fun x : 𝓞 E => φ (x : E)) H.rt_sq`.
+
+Simplify using `using h`.
+-/
 theorem complexConj_rt (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) :
     IsCMField.complexConj E ((H.rt : 𝓞 E) : E) = -((H.rt : 𝓞 E) : E) := by
   obtain ⟨φ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -35,6 +45,13 @@ theorem complexConj_rt (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
   have h := congrArg (fun x : 𝓞 E => φ (x : E)) H.rt_sq
   simpa using h
 
+/- English proof (translation)
+Establish `h2 : (2 : E) * (H.w0 : E) = 1 + (H.rt : E)`. Use `congrArg (fun x : 𝓞 E => (x : E)) H.two_weight_eq_one_add_root` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `h3 : (2 : E) * IsCMField.complexConj E (H.w0 : E) = 1 - (H.rt : E)`.
+
+Use `congrArg (IsCMField.complexConj E) h2` as an intermediate fact. Rewrite `this` using `[map_mul, map_add, map_one, complexConj_rt]`. Establish `h22 : IsCMField.complexConj E (2 : E) = 2` using `map_ofNat _ 2`. Rewrite `this` using `[h22]`. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Unfold `ReciprocityTheory.ChartRestriction.G.FD.cc`. Apply `mul_left_cancel₀ (two_ne_zero : (2 : E) ≠ 0)` to reduce the goal to its premises. Rewrite using `[h3, mul_sub, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem conj_halfIntegralGenerator (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) :
     ReciprocityTheory.ChartRestriction.G.FD.cc ((H.w0 : 𝓞 E) : E) = (1 : E) - ((H.w0 : 𝓞 E) : E) := by
   have h2 : (2 : E) * (H.w0 : E) = 1 + (H.rt : E) := by
@@ -51,6 +68,9 @@ theorem conj_halfIntegralGenerator (H : ReciprocityTheory.ChartRestriction.G.Geo
   apply mul_left_cancel₀ (two_ne_zero : (2 : E) ≠ 0)
   rw [h3, mul_sub, h2]; ring
 
+/- English proof (translation)
+Introduce `H` and use `conj_halfIntegralGenerator H`.
+-/
 theorem main : ∀ {E : Type} [inst : Field E] [inst_1 : NumberField E] [inst_2 : NumberField.IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E), ReciprocityTheory.ChartRestriction.G.FD.cc (↑(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host.w0 H) : E) = (1 : E) - (↑(ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host.w0 H) : E) := fun H => conj_halfIntegralGenerator H
 
 end GlobalTheory.CMConjugationOfSquareRoot

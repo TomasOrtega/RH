@@ -6,6 +6,17 @@ open scoped Matrix
 
 namespace GlobalTheory.Ord2
 
+/- English proof (translation)
+Introduce `l _ Ω _ _ S W c hO hN hW`. Establish `hred : ∀ m : ResPlane c, Continuous fun s : G ℚ Ω => resAct c W hO s m`. Introduce `m`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `s`.
+
+Use `tendsto_nhds_of_eventually_eq ?_` and prove the remaining obligations. Use `filter_upwards [locConst_mod_pow l Ω c W hW hO 1 s] with t ht`. Establish `hw : wRed c W t = wRed c W s`. Use extensionality with `i j`. Take `⟨o, ho, e⟩` from `ht i j`.
+
+Establish `hd : mat W t i j - mat W s i j ∈ c.O` using `c.O.sub_mem (hO t i j) (hO s i j)`. Establish `h0 : redL c (mat W t i j - mat W s i j) = 0` using `(redL_eq_zero_iff c hd).2 ⟨o, ho, by rw [e, pow_one]⟩`. Rewrite `h0` using `[redL_sub c (hO t i j) (hO s i j)]`. Conclude with `sub_eq_zero.1 h0`. Rewrite using `[resAct_apply, resAct_apply, hw]`.
+
+Establish `hq : ∀ m : ResPlane c, Continuous fun g : GS Ω (S : Set Pl) => resRep c W hO S hN g m`. Introduce `m`. Rewrite using `[(QuotientGroup.isQuotientMap_mk (NS Ω (S : Set Pl))).continuous_iff]`. Conclude with `hred m`. Use `show Continuous fun p : GS Ω (S : Set Pl) × ResPlane c => (resRep c W hO S hN p.1) p.2`.
+
+Conclude with `continuous_prod_of_discrete_right.2 hq`.
+-/
 theorem resRep_contAction : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (S : Finset Pl) (W : R2 Ω l) (c : Coef l) (hO : ∀ s i j, mat W s i j ∈ c.O) (hN : ∀ a ∈ (toGS Ω (S : Set Pl)).ker, W a = 1), Continuous W → ContAction (resRep c W hO S hN) := by
   intro l _ Ω _ _ S W c hO hN hW
 

@@ -21,6 +21,17 @@ open GlobalTheory.CompanionTheory.SiegelND.Integ.Weyl GlobalTheory.CompanionTheo
 
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Count
 
+/- English proof (translation)
+Introduce `G _ _ _ μ _ L S hS hSL ι _ f hf hdis`. Set `T : ι → Set G` to `fun i => (fun x => -f i + x) ⁻¹' S`. Establish `hT : ∀ i, MeasurableSet (T i)` using `fun i => (measurable_const_add (-f i)) hS`. Establish `hμ : ∀ i, μ (T i) = μ S` using `fun i => measure_preimage_add μ (-f i) S`. Establish `hd : Set.PairwiseDisjoint (↑(Finset.univ : Finset ι)) T`.
+
+Introduce `i _ j _ hij`. Use `Set.disjoint_left.mpr ?_` and prove the remaining obligations. Introduce `x hi hj`. Use `hij (hdis i j (-f i + x) (-f j + x) hi hj ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Establish `hsub : (⋃ i ∈ (Finset.univ : Finset ι), T i) ⊆ (L : Set G)`. Introduce `x hx`. Simplify using `only [Set.mem_iUnion] at hx`. Take `⟨i, _, hi⟩` from `hx`. Establish `h1 : -f i + x ∈ L` using `hSL hi`.
+
+Establish `h2 : f i + (-f i + x) ∈ L` using `L.add_mem (hf i) h1`. Simplify using `using h2`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[hμ, Finset.card_univ]`. Use `_ = μ (⋃ i ∈ (Finset.univ : Finset ι), T i) := (measure_biUnion_finset hd (fun i _ => hT i)).symm`.
+
+Use `_ ≤ μ (L : Set G) := measure_mono hsub`.
+-/
 theorem card_mul_measure_le_of_disjoint_translates :
     ∀ (G : Type) [AddCommGroup G] [MeasurableSpace G] [MeasurableAdd G] (μ : Measure G)
     [μ.IsAddLeftInvariant] (L : AddSubgroup G) (S : Set G), MeasurableSet S → S ⊆ L →

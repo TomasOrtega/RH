@@ -15,10 +15,16 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Use `haveI : Nonempty (Fin r) := ⟨⟨0, hr⟩⟩`. Simplify using `[Data.spread]`.
+-/
 theorem spread_zero (X : Data E r) (hr : 0 < r) (τ : X.Ψ) : X.spread (fun _ _ => 0) τ = 0 := by
   haveI : Nonempty (Fin r) := ⟨⟨0, hr⟩⟩
   simp [Data.spread]
 
+/- English proof (translation)
+Unfold `nd`. Rewrite using `[Fintype.card_prod, Fintype.card_coe]`. Use `Nat.mul_le_mul_left _ ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem nd_le (X : Data E r) : nd X ≤ X.Ψ.card * (r * r) := by
   unfold nd
   rw [Fintype.card_prod, Fintype.card_coe]
@@ -27,6 +33,13 @@ theorem nd_le (X : Data E r) : nd X ≤ X.Ψ.card * (r * r) := by
         Fintype.card_subtype_le _
     _ = r * r := by simp
 
+/- English proof (translation)
+Use `set a := f * r with ha`. Establish `ha1 : 1 ≤ a` using `Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by omega) (by omega))`. Establish `hra : r ≤ a` using `by rw [ha]; exact Nat.le_mul_of_pos_left r (by omega)`. Establish `hfa : f ≤ a` using `by rw [ha]; exact Nat.le_mul_of_pos_right f (by omega)`. Establish `hna : n ≤ a * a` using `hn.trans (by rw [ha, ← Nat.mul_assoc]; exact Nat.mul_le_mul_left _ hra)`.
+
+Establish `h1 : 2 * n * (200 * r ^ 3 * f) ≤ 400 * a ^ 8`. Establish `e : 2 * n * (200 * r ^ 3 * f) ≤ 400 * ((a * a) * (a ^ 3 * a))`. Use `Nat.mul_le_mul hna (Nat.mul_le_mul (Nat.pow_le_pow_left hra 3) hfa)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use `e.trans (Nat.mul_le_mul_left _ ?_)` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h2 : n * n ≤ a ^ 8`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : 1 ≤ a ^ 8` using `Nat.one_le_pow _ _ ha1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem nat_bound (f r n : ℕ) (hf : 1 ≤ f) (hr : 1 ≤ r) (hn : n ≤ f * (r * r)) :
     2 * n * (200 * r ^ 3 * f) + n * n + 1 ≤ 402 * (f * r) ^ 8 := by
   set a := f * r with ha
@@ -48,6 +61,21 @@ theorem nat_bound (f r n : ℕ) (hf : 1 ≤ f) (hr : 1 ≤ r) (hn : n ≤ f * (r
   have h3 : 1 ≤ a ^ 8 := Nat.one_le_pow _ _ ha1
   omega
 
+/- English proof (translation)
+Use `set K : ℝ := 200 * (r : ℝ) ^ 3 * f with hK`. Establish `hf' : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hr' : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hK1 : 1 ≤ K`. Establish `: (1 : ℝ) ≤ (r : ℝ) ^ 3` using `one_le_pow₀ hr'`.
+
+Rewrite using `[hK]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hKpos : 0 < K` using `by linarith`. Establish `hδ : Real.exp (-K) ≤ 1 / K`. Rewrite using `[Real.exp_neg, one_div]`.
+
+Conclude with `inv_anti₀ hKpos (by linarith [Real.add_one_le_exp K])`. Establish `hδn : Real.exp (-(2 * n * K)) ≤ (1 / K) ^ (2 * n)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_nat_mul]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (1 / K) ^ (2 * n) := pow_le_pow_left₀ (Real.exp_pos _).le hδ _`. Establish `hpi : (1 : ℝ) ≤ Real.pi ^ n` using `one_le_pow₀ (by linarith [Real.pi_gt_three])`. Establish `hfac : (n.factorial : ℝ) ≤ Real.exp ((n : ℝ) * n)`.
+
+Establish `h1 : (n.factorial : ℝ) ≤ (n : ℝ) ^ n` using `by exact_mod_cast Nat.factorial_le_pow n`. Establish `h2 : (n : ℝ) ^ n ≤ Real.exp n ^ n` using `pow_le_pow_left₀ (Nat.cast_nonneg _) (by linarith [Real.add_one_le_exp (n : ℝ)]) _`. Rewrite `h2` using `[← Real.exp_nat_mul]`. Conclude with `h1.trans h2`. Establish `hfpos : (0 : ℝ) < n.factorial` using `by exact_mod_cast Nat.factorial_pos n`.
+
+Establish `hN` using `nat_bound f r n hf hr hn`. Establish `hNR : 2 * (n : ℝ) * K + n * n + 1 ≤ 402 * ((f : ℝ) * r) ^ 8`. Rewrite using `[hK]`. Conclude with `hN` after adjusting the coercions. Establish `hmain : Real.exp (-(402 * ((f : ℝ) * r) ^ 8)) ≤ Real.exp (-(1 / 10)) * (Real.exp (-(2 * n * K)) / Real.exp ((n : ℝ) * n))`.
+
+Rewrite using `[← Real.exp_sub, ← Real.exp_add]`. Conclude with `Real.exp_le_exp.2 (by linarith)`. Use `hmain.trans (mul_le_mul_of_nonneg_left ?_ (Real.exp_pos _).le)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_mul_of_one_le_left (by positivity) hpi`.
+-/
 theorem real_bound (f r n : ℕ) (hf : 1 ≤ f) (hr : 1 ≤ r) (hn : n ≤ f * (r * r)) :
     Real.exp (-(402 * ((f : ℝ) * r) ^ 8)) ≤ Real.exp (-(1 / 10)) *
       (Real.pi ^ n * (1 / (200 * (r : ℝ) ^ 3 * f)) ^ (2 * n) / n.factorial) := by
@@ -88,6 +116,23 @@ theorem real_bound (f r n : ℕ) (hf : 1 ≤ f) (hr : 1 ≤ r) (hn : n ≤ f * (
         gcongr
         exact le_mul_of_one_le_left (by positivity) hpi
 
+/- English proof (translation)
+Use `⟨402, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ r X x hp0 hpr hx`. Establish `hr : 0 < r` using `lt_of_le_of_lt (Nat.zero_le _) hpr`. Use `set la : Wt X.Ψ r := fun _ _ => 0 with hla`. Use `set w : ℝ := ∑ τ, X.spread la τ with hw`.
+
+Establish `hw0 : w = 0` using `Finset.sum_eq_zero fun τ _ => spread_zero X hr τ`. Establish `hcard : ((X.Ψ.card : ℕ) : ℝ) = fdeg E`. Rewrite using `[← Fintype.card_coe, QuadraticCoefficientForms.card_Psi X]`. Establish `hf1 : (1 : ℝ) ≤ (X.Ψ.card : ℝ)` using `by rw [hcard]; exact one_le_field_half_degree`. Establish `hf1n : 1 ≤ X.Ψ.card` using `by exact_mod_cast hf1`.
+
+Establish `hr1 : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Use `set δ := GlobalTheory.LevGeo.chartRad E r w with hδ`. Establish `hδeq : δ = 1 / (200 * (r : ℝ) ^ 3 * (X.Ψ.card : ℝ))`. Rewrite using `[hδ, GlobalTheory.LevGeo.chartRad, hw0, zero_add, hcard]`. Establish `hδpos : 0 < δ` using `by rw [hδeq]; positivity`.
+
+Establish `hδle : δ ≤ 1 / (100 * (r : ℝ) ^ 2)`. Rewrite using `[hδeq]`. Use `one_div_le_one_div_of_le (by positivity) ?_` and prove the remaining obligations. Establish `h3 : (r : ℝ) ^ 2 ≤ (r : ℝ) ^ 3` using `pow_le_pow_right₀ hr1 (by norm_num)`. Establish `h4 : (r : ℝ) ^ 3 ≤ (r : ℝ) ^ 3 * (X.Ψ.card : ℝ)` using `le_mul_of_one_le_right (by positivity) hf1`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hnear : ∀ z : V (nd X), ‖z‖ ≤ δ → cpt X x z ∈ X.dom ∧ Real.exp (-(1 / 20)) ≤ X.nfac la (cpt X x z) ^ 2 ∧ Real.exp (-(1 / 10)) ≤ densF X x z` using `fun z hz => GlobalTheory.ChartNearOne.chart_near_one E r X la w x hr hx le_rfl z hz`. Establish `hsubO : Metric.ball (0 : V (nd X)) δ ⊆ OmF X x` using `fun z hz => (hnear z (le_of_lt (mem_ball_zero_iff.1 hz))).1`. Establish `hsub : Metric.ball (0 : V (nd X)) δ ⊆ Metric.ball 0 (1 / (100 * (r : ℝ) ^ 2)) ∩ OmF X x` using `fun z hz => ⟨Metric.ball_subset_ball hδle hz, hsubO hz⟩`. Use `le_trans ?_ (measure_mono hsub)` and prove the remaining obligations.
+
+Establish `hm : muF X x (Metric.ball 0 δ) = ∫⁻ z in Metric.ball (0 : V (nd X)) δ, ENNReal.ofReal (densF X x z)`. Rewrite using `[muF, withDensity_apply _ measurableSet_ball, Measure.restrict_restrict measurableSet_ball, Set.inter_eq_left.2 hsubO]`. Rewrite using `[hm]`. Establish `hn` using `nd_le X`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[GlobalTheory.volume_ball_euclideanSpace_complex 0 hδpos, Fintype.card_fin, ← ENNReal.ofReal_mul (Real.exp_pos _).le]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[hδeq]`. Conclude with `real_bound X.Ψ.card r (nd X) hf1n hr hn`. Use `_ = ∫⁻ z in Metric.ball (0 : V (nd X)) δ, ENNReal.ofReal (Real.exp (-(1 / 10))) := by`.
+
+Rewrite using `[setLIntegral_const, mul_comm]`. Use `_ ≤ _ := setLIntegral_mono' measurableSet_ball fun z hz => ENNReal.ofReal_le_ofReal (hnear z (le_of_lt (mem_ball_zero_iff.1 hz))).2.2`.
+-/
 theorem ballvol : ∃ C : ℝ, 0 ≤ C ∧ ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ)
     (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) (x : ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r), 0 < X.p0 → X.p0 < r →
     ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X x →

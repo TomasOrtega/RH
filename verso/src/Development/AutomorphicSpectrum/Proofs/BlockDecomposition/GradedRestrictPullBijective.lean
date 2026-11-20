@@ -10,12 +10,20 @@ namespace GlobalTheory.CompanionTheory.OmLoc
 
 open Pb
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem mor_mk_congr {R R' : Type} [CommRing R] [CommRing R'] {C C' : Type 1} [Category.{0} C] [Category.{0} C']
     {F : C ⥤ ModuleCat.{0} R} {F' : C' ⥤ ModuleCat.{0} R'} {σ : R →+* R'} (G : C' ⥤ C)
     (τ τ' : (T : C') → F.obj (G.obj T) →ₛₗ[σ] F'.obj T) (n n') (h : τ = τ') :
     (⟨G, τ, n⟩ : CH.Mor F F' σ) = ⟨G, τ', n'⟩ := by
   subst h; rfl
 
+/- English proof (translation)
+Use `mor_mk_congr _ _ _ _ _ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `T`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `x`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+
+Both sides reduce to the same expression.
+-/
 theorem sq_incl_eq {b : Base} {L : b.Fun} {Q Q' : ObjectProperty (Thick L)} (h : Q' ≤ Q) (r r' : ℤ) :
     (incl h).sq (incl_fil h r) (incl_fil h r') =
       (CH.Mor.restrict (sq (sFil Q r) (sFil Q r')) (ObjectProperty.ιOfLE h) :) := by
@@ -26,6 +34,11 @@ theorem sq_incl_eq {b : Base} {L : b.Fun} {Q Q' : ObjectProperty (Thick L)} (h :
   obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x
   rfl
 
+/- English proof (translation)
+Establish `e : CH.Mor.restrict (sq (thFil L r) (thFil L r')) Q3.ι = (CH.Mor.restrict (sq (thFil L r) (thFil L r')) Q1.ι).comp (F'` using `sq (sFil Q1 r) (sFil Q1 r')) (σ' := RingHom.id _) (σ'' := RingHom.id _) (((incl h12).sq (incl_fil h12 r) (incl_fil h12 r')).comp (σ'' := RingHom.id _) ((incl h23).sq (incl_fil h23 r) (incl_fil h23 r'))) := by`. Rewrite using `[sq_incl_eq, sq_incl_eq]`. Both sides reduce to the same expression. Establish `f : ⇑((CH.Mor.restrict (sq (thFil L r) (thFil L r')) Q3.ι).pull n) = ⇑(((incl h23).sq (incl_fil h23 r) (incl_fil h23 r')).pull n) ∘ ⇑(((incl h12).sq (incl_fil h12 r) (incl_fil h12 r')).pull n) ∘ ⇑((CH.Mor.restrict (sq (thFil L r) (thFil L r')) Q1.ι).pull n)`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[e]`. Conclude with `(P.pull_comp _ _ n x).1.trans ((P.pull_comp _ _ n _).1)`. Rewrite using `[f]`. Conclude with `b3.comp (b2.comp b1)`.
+-/
 theorem chain {b : Base} {L : b.Fun} (r r' : ℤ) (Q1 Q2 Q3 : ObjectProperty (Thick L)) (h12 : Q2 ≤ Q1) (h23 : Q3 ≤ Q2) (n : ℕ)
     (b1 : Function.Bijective ((CH.Mor.restrict (sq (thFil L r) (thFil L r')) Q1.ι).pull n))
     (b2 : Function.Bijective (((incl h12).sq (incl_fil h12 r) (incl_fil h12 r')).pull n))
@@ -47,6 +60,9 @@ theorem chain {b : Base} {L : b.Fun} (r r' : ℤ) (Q1 Q2 Q3 : ObjectProperty (Th
   rw [f]
   exact b3.comp (b2.comp b1)
 
+/- English proof (translation)
+Introduce `K _ X q 𝒱 h𝒱 a s has n`. Establish `hI : ∀ T : Thick (nlFun (dividedPowersBot K) 0 X q (Ideal.Quotient.mk ⊥)), InU ⊤ T` using `fun T => le_of_eq rfl`. Establish `h12 : St (γ` using `dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) (TF 1 s) {⊤} ≤ St ⊤ {⊤} := fun T hT => ⟨trivial, hT.2⟩`. Establish `h23 : St (γ` using `dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) (TF 1 s) 𝒱 ≤ St (TF 1 s) {⊤} := fun T hT => ⟨hT.1, ⊤, rfl, hI T⟩`. Conclude with `chain (L := nlFun (dividedPowersBot K) 0 X q (Ideal.Quotient.mk ⊥)) (a : ℤ) ((a : ℤ) + 1) _ _ _ h12 h23 n (GlobalTheory.CompanionTheory.OmRes.restrict_pull_bijective_of_forall _ _ (fun T => ⟨trivial, ⊤, rfl, hI T⟩) n) (Pb.refl ⊤ 1 s (Or.inl ⟨rfl, rfl⟩) {⊤} h12 (a : ℤ) ((a : ℤ) + …`.
+-/
 theorem grT_restrict_bijective : ∀ {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (𝒱 : Set X.Opens), sSup 𝒱 = ⊤ →
     ∀ (a s : ℕ), a < s → ∀ n : ℕ, Function.Bijective ((CH.Mor.restrict (HT.grT (smFun X q) a) (Pb.KS q s 𝒱).ι).pull n) := by
   intro K _ X q 𝒱 h𝒱 a s has n

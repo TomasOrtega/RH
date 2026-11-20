@@ -10,6 +10,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.EndoPt
 
+/- English proof (translation)
+Set `F : (T ⟶ G') → (Over.mk (T.hom ≫ g) ⟶ G)` to `fun x => Over.homMk (x.left ≫ φ) (by`. Express the relevant statement in the definitionally equal form `(x.left ≫ φ) ≫ G.hom = T.hom ≫ g`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w x])`. Establish `hF : ∀ x, (F x).left = x.left ≫ φ` using `fun x => rfl`. Establish `inj : Function.Injective F` using `fun x y e => by`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `h.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[← hF, ← hF, e]`. Rewrite using `[Over.w x, Over.w y]`. Establish `sur : Function.Surjective F` using `fun z => by`.
+
+Establish `w : z.left ≫ G.hom = T.hom ≫ g` using `Over.w z`. Use `⟨Over.homMk (h.1.lift z.left T.hom w) (h.1.lift_snd _ _ w), ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `h.1.lift_fst _ _ w`. Use `⟨{ Equiv.ofBijective F ⟨inj, sur⟩ with map_mul' := fun x y => ?_ }, hF⟩` and prove the remaining obligations.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `(h.2 T x y (F x) (F y) rfl rfl).symm`.
+-/
 theorem exists_mulEquiv_points {S S' : Scheme.{0}} {g : S' ⟶ S} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G']
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G g φ) (T : Over S') :
     ∃ E : (T ⟶ G') ≃* (Over.mk (T.hom ≫ g) ⟶ G), ∀ x, (E x).left = x.left ≫ φ := by
@@ -32,6 +41,9 @@ theorem exists_mulEquiv_points {S S' : Scheme.{0}} {g : S' ⟶ S} {G : Over S} {
   apply Over.OverMorphism.ext
   exact (h.2 T x y (F x) (F y) rfl rfl).symm
 
+/- English proof (translation)
+Take `⟨E, hE⟩` from `exists_mulEquiv_points h T`. Use `⟨E.symm (E x ≫ f), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hE, MulEquiv.apply_symm_apply, Over.comp_left, hE, Category.assoc]`. Rewrite using `[← map_pow, ← MonObj.pow_comp, ← map_pow, hx, map_one, MonObj.one_comp, map_one]`.
+-/
 theorem exists_point_of_isMonHom {S S' : Scheme.{0}} {g : S' ⟶ S} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G']
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G g φ) (f : G ⟶ G) [IsMonHom f] (m : ℕ) {T : Over S'}
     (x : T ⟶ G') (hx : x ^ m = 1) :
@@ -41,6 +53,9 @@ theorem exists_point_of_isMonHom {S S' : Scheme.{0}} {g : S' ⟶ S} {G : Over S}
   · rw [← hE, MulEquiv.apply_symm_apply, Over.comp_left, hE, Category.assoc]
   · rw [← map_pow, ← MonObj.pow_comp, ← map_pow, hx, map_one, MonObj.one_comp, map_one]
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ S ρ p _ y₀ u f hf m x hx`. Conclude with `exists_point_of_isMonHom u.cart f m x hx`.
+-/
 theorem exists_endo_point : ∀ {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (f : ρ.P.A ⟶ ρ.P.A), IsMonHom f → ∀ (m : ℕ) (x : TFK (R := u.V) (PadicAlgCl p) ⟶ u.A.A), x ^ m = 1 → ∃ x₂ : TFK (R := u.V) (PadicAlgCl p) ⟶ u.A.A, x₂.left ≫ u.φ = x.left ≫ u.φ ≫ f.left ∧ x₂ ^ m = 1 := by
   intro o Ω _ _ _ S ρ p _ y₀ u f hf m x hx
   exact exists_point_of_isMonHom u.cart f m x hx

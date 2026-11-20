@@ -17,6 +17,11 @@ open GlobalTheory.CompanionTheory.GL2Factorization
 noncomputable section
 namespace GlobalTheory.CompanionTheory.GL2Factorization.DualIw
 
+/- English proof (translation)
+Establish `hd : (!![h.val 0 0, h.val 0 1, 0; h.val 1 0, h.val 1 1, 0; 0, 0, 1] : Matrix (Fin 3) (Fin 3) ℝ).det ≠ 0`. Establish `h1 : (!![h.val 0 0, h.val 0 1, 0; h.val 1 0, h.val 1 1, 0; 0, 0, 1] : Matrix (Fin 3) (Fin 3) ℝ).det = (h.val).det`. Simplify using `[Matrix.det_succ_row_zero, Fin.sum_univ_succ, Matrix.det_fin_two, Fin.succAbove]`. Rewrite using `[h1]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 h.isUnit).ne_zero`.
+
+Rewrite using `[GL2LocalData.emR, dif_pos hd]`. Both sides reduce to the same expression.
+-/
 theorem emR_coe (h : GL (Fin 2) ℝ) : (GL2LocalData.emR h).val =
     !![h.val 0 0, h.val 0 1, 0; h.val 1 0, h.val 1 1, 0; 0, 0, 1] := by
   have hd : (!![h.val 0 0, h.val 0 1, 0; h.val 1 0, h.val 1 1, 0; 0, 0, 1] :
@@ -29,18 +34,29 @@ theorem emR_coe (h : GL (Fin 2) ℝ) : (GL2LocalData.emR h).val =
   rw [GL2LocalData.emR, dif_pos hd]
   rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, emR_coe, emR_coe, emR_coe, Units.val_mul]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, Fin.sum_univ_three]`.
+-/
 theorem emR_mul (g h : GL (Fin 2) ℝ) : GL2LocalData.emR (g * h) = GL2LocalData.emR g * GL2LocalData.emR h := by
   apply Units.ext
   rw [Units.val_mul, emR_coe, emR_coe, emR_coe, Units.val_mul]
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, Fin.sum_univ_three]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `show ((g * h)⁻¹ : GL (Fin n) ℝ).val.transpose = (g⁻¹ : GL (Fin n) ℝ).val.transpose * (h⁻¹ : GL (Fin n) ℝ).val.transpose`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, Matrix.transpose_mul]`.
+-/
 theorem tinvR_mul {n : ℕ} (g h : GL (Fin n) ℝ) : GL2LocalData.tinvR (g * h) = GL2LocalData.tinvR g * GL2LocalData.tinvR h := by
   apply Units.ext
   show ((g * h)⁻¹ : GL (Fin n) ℝ).val.transpose =
     (g⁻¹ : GL (Fin n) ℝ).val.transpose * (h⁻¹ : GL (Fin n) ℝ).val.transpose
   rw [_root_.mul_inv_rev, Units.val_mul, Matrix.transpose_mul]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `show (g⁻¹ : GL (Fin n) ℝ).val.transpose = g.val`. Establish `h : (g⁻¹ : GL (Fin n) ℝ).val = g.valᵀ`. Establish `h1 : (g⁻¹ : GL (Fin n) ℝ).val * g.val = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel]`.
+
+Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hg, Matrix.mul_one]`. Use `_ = g.valᵀ := by rw [← Matrix.mul_assoc, h1, Matrix.one_mul]`. Rewrite using `[h, Matrix.transpose_transpose]`.
+-/
 theorem tinvR_of_orthogonal {n : ℕ} (g : GL (Fin n) ℝ) (hg : g.val * g.valᵀ = 1) :
     GL2LocalData.tinvR g = g := by
   apply Units.ext
@@ -53,6 +69,11 @@ theorem tinvR_of_orthogonal {n : ℕ} (g : GL (Fin n) ℝ) (hg : g.val * g.val�
       _ = g.valᵀ := by rw [← Matrix.mul_assoc, h1, Matrix.one_mul]
   rw [h, Matrix.transpose_transpose]
 
+/- English proof (translation)
+Establish `e : ∀ i j, (k.val * k.valᵀ) i j = (1 : Matrix (Fin 2) (Fin 2) ℝ) i j` using `fun i j => by rw [hk]`. Establish `e00` using `e 0 0`. Establish `e01` using `e 0 1`. Establish `e10` using `e 1 0`. Establish `e11` using `e 1 1`.
+
+Simplify using `[Matrix.mul_apply, Fin.sum_univ_two] at e00 e01 e10 e11`. Rewrite using `[emR_coe]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_three, e00, e01, e10, e11]`.
+-/
 theorem emR_orthogonal (k : GL (Fin 2) ℝ) (hk : k.val * k.valᵀ = 1) :
     (GL2LocalData.emR k).val * (GL2LocalData.emR k).valᵀ = 1 := by
   have e : ∀ i j, (k.val * k.valᵀ) i j = (1 : Matrix (Fin 2) (Fin 2) ℝ) i j := fun i j => by rw [hk]
@@ -66,6 +87,9 @@ theorem emR_orthogonal (k : GL (Fin 2) ℝ) (hk : k.val * k.valᵀ = 1) :
   fin_cases i <;> fin_cases j <;>
     simp [Matrix.mul_apply, Fin.sum_univ_three, e00, e01, e10, e11]
 
+/- English proof (translation)
+Establish `hw : GL2LocalData.w3R.val * GL2LocalData.w3R.valᵀ = 1` using `by show (!![0, 0, 1; 0, 1, 0; 1, 0, 0] : Matrix (Fin 3) (Fin 3) ℝ) * (!![0, 0, 1; 0, 1, 0; 1, 0, 0] : Matrix (Fin 3) (Fin 3) ℝ)ᵀ = 1`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three]`. Use `show (GL2LocalData.w3R * GL2LocalData.emR k).val * (GL2LocalData.w3R * GL2LocalData.emR k).valᵀ = 1`. Rewrite using `[Units.val_mul, Matrix.transpose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (GL2LocalData.emR k).val, emR_orthogonal k hk, Matrix.one_mul, hw]`.
+-/
 theorem weyl3_mul_embedding_mem_orthogonal (k : GL (Fin 2) ℝ) (hk : k.val * k.valᵀ = 1) : GL2LocalData.w3R * GL2LocalData.emR k ∈ O3 := by
   have hw : GL2LocalData.w3R.val * GL2LocalData.w3R.valᵀ = 1 := by
     show (!![0, 0, 1; 0, 1, 0; 1, 0, 0] : Matrix (Fin 3) (Fin 3) ℝ) *
@@ -76,12 +100,22 @@ theorem weyl3_mul_embedding_mem_orthogonal (k : GL (Fin 2) ℝ) (hk : k.val * k.
   rw [Units.val_mul, Matrix.transpose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (GL2LocalData.emR k).val,
     emR_orthogonal k hk, Matrix.one_mul, hw]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg, Matrix.mul_apply, Fin.sum_univ_three]`.
+-/
 theorem dg_mul_dg (a b c d e f : ℝˣ) :
     (dg a b c : GL (Fin 3) ℝ) * dg d e f = dg (a * d) (b * e) (c * f) := by
   apply Units.ext
   ext i j
   fin_cases i <;> fin_cases j <;> simp [dg, Matrix.mul_apply, Fin.sum_univ_three]
 
+/- English proof (translation)
+Establish `hinv : (GL2LocalData.emR (dg2 x y))⁻¹ = GL2LocalData.emR (dg2 x⁻¹ y⁻¹)`. Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[← emR_mul]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[emR_coe]`.
+
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2]`. Apply `Units.ext` to reduce the goal to its premises. Establish `h : (GL2LocalData.tinvR (GL2LocalData.emR (dg2 x y))).val = (GL2LocalData.emR (dg2 x⁻¹ y⁻¹)).val.transpose` using `by show ((GL2LocalData.emR (dg2 x y))⁻¹ : GL (Fin 3) ℝ).val.transpose = _`. Rewrite using `[hinv]`.
+
+Rewrite using `[Units.val_mul, Units.val_mul, h, emR_coe]`. Use `show (!![0, 0, 1; 0, 1, 0; 1, 0, 0] : Matrix (Fin 3) (Fin 3) ℝ) * _ = (!![((1 : ℝˣ) : ℝ), 0, 0; 0, ((y⁻¹ : ℝˣ) : ℝ), 0; 0, 0, ((x⁻¹ : ℝˣ) : ℝ)] : Matrix (Fin 3) (Fin 3) ℝ) * !![0, 0, 1; 0, 1, 0; 1, 0, 0]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three, dg2]`.
+-/
 theorem weyl3_transposeInv_embedding_diagonal (x y : ℝˣ) :
     GL2LocalData.w3R * GL2LocalData.tinvR (GL2LocalData.emR (dg2 x y)) = dg 1 y⁻¹ x⁻¹ * GL2LocalData.w3R := by
   have hinv : (GL2LocalData.emR (dg2 x y))⁻¹ = GL2LocalData.emR (dg2 x⁻¹ y⁻¹) := by
@@ -102,6 +136,9 @@ theorem weyl3_transposeInv_embedding_diagonal (x y : ℝˣ) :
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three, dg2]
 
+/- English proof (translation)
+Introduce `a b k hk`. Use `⟨GL2LocalData.w3R * GL2LocalData.emR k, weyl3_mul_embedding_mem_orthogonal k hk, ?_⟩` and prove the remaining obligations. Establish `h3 : (a * b)⁻¹ * (b * a) = 1` using `by rw [mul_comm b a, inv_mul_cancel]`. Establish `h4 : (a * b)⁻¹ * a = b⁻¹` using `by rw [_root_.mul_inv_rev, mul_assoc, inv_mul_cancel, mul_one]`. Rewrite using `[emR_mul, tinvR_mul, tinvR_of_orthogonal _ (emR_orthogonal k hk), ← mul_assoc, weyl3_transposeInv_embedding_diagonal, ← mul_assoc, dg_mul_dg, h3, h4, mul_one, mul_assoc]`.
+-/
 theorem dual_coords : ∀ (a b : ℝˣ) (k : GL (Fin 2) ℝ), k.val * k.valᵀ = 1 → ∃ o ∈ O3,
     GL2LocalData.w3R * GL2LocalData.tinvR (GL2LocalData.emR (dg2 (a * b) b * k)) =
       dg (a * b)⁻¹ (a * b)⁻¹ (a * b)⁻¹ * (dg (b * a) a 1 * o) := by

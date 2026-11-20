@@ -15,6 +15,13 @@ open ValuativeRel
 
 namespace GlobalTheory.CosetBF
 
+/- English proof (translation)
+Introduce `D hQ T L μ0 hL sc G W M hM F hF ρ h v hv g hg u a ha hoff`. Consider the cases of `ρ with`. Consider the case `zero`. Conclude with `⟨1, one_mem _, one_mem _, fun i j => j.elim0⟩`. Consider the case `succ σ`.
+
+Take `⟨k, _, _, _, _, p, β, ι, ι', s, t, hpv, hidem, hlat, hι, hι', hdisj, hX, hΦ, hA⟩` from `GlobalTheory.T.split_local_frame_odd_level D hQ T L μ0 hL sc G W M hM F hF σ h v hv`. Take `⟨ha1, ha2⟩` from `hA a ha`. Substitute `hpv` using the available equality. Take `⟨k₀, hk₀, hoff'⟩` from `GlobalTheory.T.splitPlace_tuples_one_orbit_mod_uniformizer_power D k p _ σ β (xZero (F.dJ (σ + 1) h)) ι ι' s t (G.pl.depth sc p.v) (G.pl.depth_pos sc _) hι hι' (fun a b hab => absurd hab (hdisj a b)) hX hΦ g hg u a ha1 ha2 hoff`. Establish `hsd : IsSelfDualC (G.V (.grid (2 * (σ + 1) + 1) 0)) (G.Λ (.grid (2 * (σ + 1) + 1) 0))` using `(G.sp.V_is (2 * (σ + 1) + 1) 0 (by omega) (by omega) (Nat.zero_le _)).sd`.
+
+Use `⟨β.gl _, GlobalTheory.T.framedCongruenceElement_mem_principalCongruence D hQ T L μ0 hL sc G W M hM (.grid (2 * (σ + 1) + 1) 0) hsd p.v hv k p rfl hidem _ β hlat k₀ hk₀, ?_, hoff'⟩` and prove the remaining obligations. Conclude with `((GlobalTheory.FrameAt.frame_facts D k p _ _ β).1 _).2 ⟨_, rfl⟩`.
+-/
 theorem besselOrbit_at_badPlace_eq_congruenceTranslate : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∀ v ∈ G.pl.S0, ∀ g ∈ grpAt (G.V (.grid (2 * ρ + 1) 0)) (· = v), ∀ (u : UX D ρ), ∀ a ∈ (pcBF W F ρ h).A₁, MxOff (· = v) (mt (G.V (.grid (2 * ρ + 1) 0)) g⁻¹ ⬝ (xZero (F.dJ ρ h) ⬝ u.1.1) - xZero (F.dJ ρ h) - a) → ∃ k ∈ lev G (.grid (2 * ρ + 1) 0), k ∈ grpAt (G.V (.grid (2 * ρ + 1) 0)) (· = v) ∧ MxOff (· = v) (mt (G.V (.grid (2 * ρ + 1) 0)) k ⬝ xZero (F.dJ ρ h) - mt (G.V (.grid (2 * ρ + 1) 0)) g⁻¹ ⬝ (xZero (F.dJ ρ h) ⬝ u.1.1)) := by
   intro D hQ T L μ0 hL sc G W M hM F hF ρ h v hv g hg u a ha hoff
   cases ρ with

@@ -32,6 +32,11 @@ open GlobalTheory.RawLift
 
 namespace GlobalTheory.RawLift
 
+/- English proof (translation)
+Unfold `InnerPos`. Introduce `th hth c`. Establish `h'` using `h th hth c`. Take `⟨l, hl, hx⟩` from `h'`. Establish `key` using `(GlobalTheory.adjoint_injective_surjective_and_positive_scalar _ _ th).2 (part R i S c) l hl hx`.
+
+Take `⟨l', hl', hx', -⟩` from `key`. Conclude with `⟨l', hl', hx'⟩`.
+-/
 theorem innerPos_of_innerNe {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type}
     {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
     (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (S : Finset (HeightOneSpectrum (𝓞 D.host.F)))
@@ -44,6 +49,13 @@ theorem innerPos_of_innerNe {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : T
   obtain ⟨l', hl', hx', -⟩ := key
   exact ⟨l', hl', hx'⟩
 
+/- English proof (translation)
+Introduce `hC D G _ _ Pl0 T A Ks _ _ _ R F hL hF hR`. Establish `lp : ∀ i, LevProd R i` using `GlobalTheory.LevelProduct.levProd_of_laws D G Pl0 T A Ks R F hL hF`. Establish `tr : ∀ i, TransLaws R i` using `GlobalTheory.RawLiftTrans.transLaws hC D G Pl0 T A Ks R F hL hF`. Establish `lf : ∀ i t, LevFix R i t` using `GlobalTheory.RawLift.LevelFix.levFix D G Pl0 T A Ks R F hL hF`. Establish `vn : ∀ i t, VecNe R i t` using `vecNe D G Pl0 T A Ks R F hL hF`.
+
+Establish `fs : ∀ i t, FinSum R i t` using `fun i t => GlobalTheory.RawLift.finSum_of_rallis hC D G Pl0 T A Ks R F hL hF hR i t (GlobalTheory.T.downwardLift_adjoint_eq_upwardThetaIntegral hC D G Pl0 T A Ks R F hL hF i t) (lf i t) (GlobalTheory.RawLift.FactorInf.factInf D G Pl0 T A Ks R F hL hF i t) (GlobalTheory.RawLift.Re …`. Establish `fm : ∀ i t, FinMult R i t` using `GlobalTheory.RawLift.LocalFactor.finMult D G Pl0 T A Ks R F hL hF`. Establish `bs : ∀ i t, BadSupp R i t` using `GlobalTheory.T.localCoeff_vanishes_offLevel_badPlaces D G Pl0 T A Ks R F hL hF`. Establish `ls : ∀ i t, LocSmall R i t` using `fun i t => GlobalTheory.RawLift.Small.locSmall D G Pl0 T A Ks R F hL hF i t (bs i t) (GlobalTheory.RawLift.GoodModulus.goodMod D G Pl0 T A Ks R F hL hF i t) (GlobalTheory.IndexCount.indexSum_holds D G Pl0 T A Ks R F hL hF i)`. Establish `up : ∀ i t, UpInj R i t` using `fun i t => GlobalTheory.UpInj.upInj_holds D G Pl0 T A Ks R F hL hF i t (fs i t) (fm i t) (lf i t) (vn i t) (ls i t) (lp i) (tr i)`.
+
+Use `⟨GlobalTheory.rawLift_onto_of_upInj D G Pl0 T A Ks R F hL hF (GlobalTheory.RatSpanProof.ratSpan_of_laws D G Pl0 T A Ks R F hL hF) (fun i => up i A.μ0), fun i t => ⟨up i t, ?_, GlobalTheory.PartsSpanProof.partsSpan hC D G Pl0 T A Ks R F hL hF i ∅⟩⟩` and prove the remaining obligations. Conclude with `innerPos_of_innerNe R i t ∅ (GlobalTheory.RawLift.innerNe_spherical D G Pl0 T A Ks R F hL hF i t (fs i t) (fm i t) (lf i t) (vn i t) (ls i t) (bs i t) (lp i) (tr i))`.
+-/
 theorem rawLift_main : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type)
     (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
     (R : RealDat D A Ks) (F : Face D A), Laws R F → R.FullP → RallisConv D →

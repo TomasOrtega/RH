@@ -17,6 +17,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Rec.PeriodComp
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Set `s₀ : Sp (Om Z)` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (Om Z))`. Use `Set.disjoint_left.1 (CompSplitPfD.cspD_comp_disj Xo c C.Z Z hne) ?_ (GlobalTheory.AllWt.liesOn_genFr h Z s₀)` and prove the remaining obligations. Rewrite using `[GlobalTheory.UnifComp.ptF_frBor ht, GlobalTheory.UnifComp.ptF_frMap hz, Scheme.Hom.comp_apply]`. Conclude with `GlobalTheory.UnifComp.liesOn_chart C _`.
+-/
 theorem chart_comp_eq {h : GenFrEx Xo c} {Z : Comp Xo c} (C : GlobalTheory.Reg.FChart h) (ψ : C.R →ₐ[c.F] Om Z)
     (z : FrPt Xo c (Om Z)) (t : Ix Dw → (Om Z)ˣ) (hz : FrMap ψ C.y z) (ht : FrBor t z (genFr h Z)) :
     C.Z = Z := by
@@ -26,6 +29,15 @@ theorem chart_comp_eq {h : GenFrEx Xo c} {Z : Comp Xo c} (C : GlobalTheory.Reg.F
   rw [GlobalTheory.UnifComp.ptF_frBor ht, GlobalTheory.UnifComp.ptF_frMap hz, Scheme.Hom.comp_apply]
   exact GlobalTheory.UnifComp.liesOn_chart C _
 
+/- English proof (translation)
+Take `⟨hL, -, -, hA⟩` from `GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c`. Take `⟨-, hmul, hinv, -⟩` from `GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c (CAt σ)`. Take `⟨C, ψ, z, t, hz, ht⟩` from `hA h (Om Z) (genFr h Z)`. Establish `hCZ : C.Z = Z` using `chart_comp_eq C ψ z t hz ht`. Use `haveI := C.sm`.
+
+Establish `hread : ∀ (k : U.Comp) (x : (U.X k).dom), (∃ (φ : Om Z →ₐ[c.F] CAt σ) (y' : FrPt Xo c (CAt σ)) (t : Ix Dw → (CAt σ)ˣ), FrMap φ (genFr h Z) y' ∧ FrBor t (U.un k x) y') → ∃ f, GlobalTheory.GeomConn.ReadOn (Formalism.L2.PjFree.Unf.ofPj U) C.y f k`. Introduce and unpack `k x ⟨φ, y', t', hy', ht'⟩`. Take `⟨w, hw⟩` from `hL.bc _ _ φ z`. Conclude with `⟨_, φ.comp ψ, w, x, _, fun _ => rfl, PullbackSections.frMap_trans _ _ hz hw, hmul _ _ _ _ _ ht' (hinv _ _ _ (GlobalTheory.SupGeneric.frBor_of_frMap φ ht hw hy'))⟩`. Take `⟨f, hf⟩` from `hread k x hk`.
+
+Take `⟨f', hf'⟩` from `hread k' x' hk'`. Use `GlobalTheory.GeomConn.ReadOn.eq_of_isPreconnected (U := Formalism.L2.PjFree.Unf.ofPj U) hσ hU ?_ hf hf'` and prove the remaining obligations. Establish `hac' : ∀ a : Om C.Z, IsAlgebraic c.F a → a ∈ (algebraMap c.F (Om C.Z)).range`. Rewrite using `[hCZ]`. Conclude with `hac`.
+
+Conclude with `GlobalTheory.GeomConn.isPreconnected_points_over C.R.val Subtype.val_injective hac' σ`.
+-/
 theorem comp_eq_of_algClosedAt (U : Unf Xo c σ r) (hσ : GoodEmb c σ) (hU : IsUnf U) (h : GenFrEx Xo c)
     (Z : Comp Xo c) (hac : ∀ a : Om Z, IsAlgebraic c.F a → a ∈ (algebraMap c.F (Om Z)).range)
     (k k' : U.Comp) (x : (U.X k).dom) (x' : (U.X k').dom)
@@ -54,6 +66,27 @@ theorem comp_eq_of_algClosedAt (U : Unf Xo c σ r) (hσ : GoodEmb c σ) (hU : Is
 
 end GlobalTheory.CompanionTheory.Ar.Rec.PeriodComp
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Z r U h1 hU hac`. Establish `hσ : GoodEmb c c.F.val.toRingHom` using `rfl`. Take `⟨-, -, hcov, -, -, g, e, F, ik, φ, hEF, hP⟩` from `id hU`. Establish `hty : IsTypeFn H D.p D.q (fun j => relab c c.F.val.toRingHom (e j).1)` using `(GlobalTheory.Relab.relab_good E H l c _ hσ).2.2.2 D g e`. Establish `hinj` using `(GlobalTheory.CompBij.ik_bijective E H D l Xo c _ r U h1 hσ hU g e F ik φ hEF fun k x => (hP k x).imp fun _ h => ⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1⟩).1`.
+
+Take `⟨-, -, hG, -⟩` from `GlobalTheory.Reg.evLaws_genFr_atlas E H D l Xo c`. Use `choose q hq using GlobalTheory.UnifComp.exists_liesOn (Formalism.L2.PjFree.Unf.ofPj U) hU`. Take `⟨k, hk⟩` from `GlobalTheory.CompModel.exists_model (Formalism.L2.PjFree.Unf.ofPj U) hU hG Z`. Establish `hqk : q k = Z` using `GlobalTheory.UnifComp.eq_of_carries hk (hq k)`. Establish `huniq : ∀ k', q k' = Z → k' = k`.
+
+Introduce `k' hk'`. Take `⟨Z', hZ'⟩` from `GlobalTheory.CompModel.exists_comp (Formalism.L2.PjFree.Unf.ofPj U) hσ hU hG k'`. Take `rfl : Z' = Z` from `(GlobalTheory.UnifComp.eq_of_carries hZ' (hq k')).symm.trans hk'`. Take `⟨P, w, x, t, hw, ht⟩` from `hk`. Take `⟨P', w', x', t', hw', ht'⟩` from `hZ'`.
+
+Conclude with `GlobalTheory.CompanionTheory.Ar.Rec.PeriodComp.comp_eq_of_algClosedAt U hσ hU hG Z' hac k' k x' x ⟨P', w', t', hw', ht'⟩ ⟨P, w, t, hw, ht⟩`. Establish `hfr : ∀ y : Sp ℂ ⟶ Xo.XF c, y ≫ pullback.snd _ _ = spMap (algebraMap c.F ℂ) → ∃ (k' : U.Comp) (x : (U.X k').dom) (t : Ix D → (CAt c.F.val.toRingHom)ˣ) (z : FrPt Xo c (CAt c.F.val.toRingHom)), FrBor t (U.un k' x) z ∧ z.x = under y ∧ GlobalTheory.AllWt.ptF z = y`. Introduce `y hy`. Establish `hover : under y ≫ Xo.s = sOf c ℂ` using `by show (y ≫ pullback.fst _ _) ≫ Xo.s = _`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hy, sOf, ← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Take `⟨z, hz⟩` from `Formalism.L2.Pj.exists_frPt_local (Xo := Xo) (c := c) (L := ℂ) GlobalTheory.firstFiveLaws.2.1.secTwist (under y) hover`. Take `⟨k', x, t, hb⟩` from `hcov z`. Use `⟨k', x, t, z, hb, hz, ?_⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Conclude with `(pullback.lift_fst _ _ _).trans hz`. Conclude with `(pullback.lift_snd _ _ _).trans hy.symm`. Use `⟨g, _, F, ik k, hty, fun y hy => ⟨fun hZ => ?_, fun ⟨P, hP', hPy⟩ => ?_⟩⟩` and prove the remaining obligations. Take `⟨k', x, t, z, hb, hzx, hzy⟩` from `hfr y hy`. Establish `hk' : q k' = Z`.
+
+Assume the negation of the conclusion as `hne`. Set `s₀ : Sp ℂ` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum ℂ)`. Use `Set.disjoint_left.1 (CompSplitPfD.cspD_comp_disj Xo c _ _ hne) ?_ (hZ ⟨s₀, rfl⟩)` and prove the remaining obligations. Use `hq k' x s₀` as an intermediate fact. Express the relevant statement in the definitionally equal form `GlobalTheory.AllWt.ptF (U.un k' x) s₀ ∈ _ at this`.
+
+Rewrite `this` using `[← GlobalTheory.UnifComp.ptF_frBor hb, hzy]`. Then use the resulting hypothesis. Take `rfl` from `huniq k' hk'`. Take `⟨Pm, -, hPm, hx, -⟩` from `hP k' x`. Conclude with `⟨Pm, hPm, hzx.symm.trans (hb.1.trans hx)⟩`. Take `⟨k', x, t, z, hb, hzx, hzy⟩` from `hfr y hy`.
+
+Take `⟨Pm, -, hPm, hx, -⟩` from `hP k' x`. Establish `e1 : ik k' = ik k` using `F.disj _ _ Pm P hPm hP' (hx.symm.trans (hb.1.symm.trans (hzx.trans hPy)))`. Take `rfl` from `hinj e1`. Introduce and unpack `_ ⟨s, rfl⟩`. Rewrite using `[← hqk, ← hzy, GlobalTheory.UnifComp.ptF_frBor hb]`.
+
+Conclude with `hq k' x s`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.Rec.PeriodComp.comp_iff_period : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Z : Comp Xo c) (r : ℕ) (U : Unf Xo c c.F.val.toRingHom r), 1 ≤ r → IsUnf U → (∀ b : Om Z, IsAlgebraic c.F b → b ∈ (algebraMap c.F (Om Z)).range) → ∃ (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n), IsTypeFn H D.p D.q ty ∧ ∀ y : Sp ℂ ⟶ Xo.XF c, y ≫ pullback.snd _ _ = spMap (algebraMap c.F ℂ) → (Set.range y ⊆ (Z : Set (Xo.XF c)) ↔ ∃ P, IsPeriod (FU.Di i) ty P ∧ under y = FU.u i P) := by
   intro E _ _ _ H D l Xo c Z r U h1 hU hac
   have hσ : GoodEmb c c.F.val.toRingHom := rfl

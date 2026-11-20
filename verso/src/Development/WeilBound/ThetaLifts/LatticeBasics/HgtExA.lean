@@ -21,10 +21,36 @@ variable (F) in
 def eF : AF F := LinearMap.inr F (Ainf F) (Af F) 1
 
 omit [NumberField E] in
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(a * 1) ⊗ₜ[F] x = _`. Rewrite using `[mul_one]`.
+-/
 theorem smul_incl (a : AF F) (x : E) : a • inclR (F := F) (AF F) x = a ⊗ₜ[F] x := by
   change (a * 1) ⊗ₜ[F] x = _
   rw [mul_one]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, ha', x, hx, rfl⟩` from `hy`.
+
+Use `⟨?_, fun v => ?_⟩` and prove the remaining obligations. Establish `: a.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff.1 ha`. Rewrite using `[smul_smul]`. Use `congr 1`. Conclude with `Prod.ext ((zero_mul _).trans this.symm) (one_mul _)`.
+
+Use `tmul_mem_latLoc (ha' v) hx using 1` and compare the differences between its conclusion and the goal. Conclude with `funext fun i => congrArg (compFin F E v) (smul_incl a (x i))`. Consider the case `zero => exact ⟨smul_zero _, fun v => by`. Use `zero_mem (latLoc F Y.L v) using 1` and compare the differences between its conclusion and the goal. Conclude with `funext fun i => map_zero _⟩`.
+
+Consider the case `add y z _ _ hy hz => exact ⟨by rw [smul_add, hy.1, hz.1], fun v => by`. Use `add_mem (hy.2 v) (hz.2 v) using 1` and compare the differences between its conclusion and the goal. Conclude with `funext fun i => map_add _ _ _⟩`. Consider the case `neg y _ hy => exact ⟨by rw [smul_neg, hy.1], fun v => by`. Use `neg_mem (hy.2 v) using 1` and compare the differences between its conclusion and the goal.
+
+Conclude with `funext fun i => map_neg _ _⟩`. Introduce and unpack `⟨h1, h2⟩`. Set `π` to `Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)`. Set `ι : Af F ⊗[F] E →ₗ[F] AE F E` to `TensorProduct.map (LinearMap.inr F (Ainf F) (Af F)) LinearMap.id`. Establish `e1 : ∀ y, ι (π y) = eF F • y` using `fun y => by`.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, smul_add, hx, hy]`. Consider the case `tmul a x => exact congrArg (· ⊗ₜ[F] x) (Prod.ext (zero_mul _).symm (one_mul _).symm)`. Establish `e2 : ∀ v y, Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v) (AlgHom.id F E) (π y) = compFin F E v y` using `fun v y => by`.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x => rfl`. Establish `e3 : ∀ y ∈ Formalism.MainNotions.StandardLattice.latHat F E (Y.L : Set (Fin n → E)), ι ∘ y ∈ latHat Y` using `fun y hy => by`.
+
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, hx, rfl⟩` from `hy`. Conclude with `AddSubgroup.subset_closure ⟨LinearMap.inr F (Ainf F) (Af F) a, map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F), ha, x, hx, funext fun i => (smul_incl _ _).symm⟩`. Consider the case `zero`.
+
+Use `zero_mem (latHat Y) using 1` and compare the differences between its conclusion and the goal. Conclude with `funext fun i => map_zero _`. Consider the case `add y z _ _ hy hz`. Use `add_mem hy hz using 1` and compare the differences between its conclusion and the goal. Conclude with `funext fun i => map_add _ _ _`.
+
+Consider the case `neg y _ hy`. Use `neg_mem hy using 1` and compare the differences between its conclusion and the goal. Conclude with `funext fun i => map_neg _ _`. Use `e3 (π ∘ z) ((mem_latHat_iff hL _).2 fun v => by` and compare the differences between its conclusion and the goal. Use `h2 v using 1` and compare the differences between its conclusion and the goal.
+
+Conclude with `funext fun i => e2 v _) using 1`. Conclude with `funext fun i => (congrFun h1 i).symm.trans (e1 _).symm`.
+-/
 theorem mem_latHat (hL : Y.L.FG) (z : Fin n → AE F E) :
     z ∈ latHat Y ↔ eF F • z = z ∧ ∀ v, compFin F E v ∘ z ∈ latLoc F Y.L v := by
   constructor
@@ -82,6 +108,9 @@ theorem mem_latHat (hL : Y.L.FG) (z : Fin n → AE F E) :
     exact funext fun i => (congrFun h1 i).symm.trans (e1 _).symm
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `funext fun z => by induction z using TensorProduct.induction_on with | zero => simp | add x y hx hy => simp only [map_add, hx, hy] | tmul a x => rfl`.
+-/
 theorem cA_eq : ⇑(cA (F := F) σ) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ := funext fun z => by
   induction z using TensorProduct.induction_on with
   | zero => simp
@@ -89,6 +118,9 @@ theorem cA_eq : ⇑(cA (F := F) σ) = Formalism.MainNotions.GlobalTheoryTheory.G
   | tmul a x => rfl
 
 omit [NumberField E] in
+/- English proof (translation)
+Establish `e : (JR (F` using `F) (AF F) (ξ • Y.Jᵀ))ᵀ = inclR (F := F) (AF F) ξ • incM F Y.J := Matrix.ext fun i j => map_mul (inclR (F := F) (AF F)) _ _`. Express the relevant statement in the definitionally equal form `cT _ x.1 * JR _ _ * x.1 = JR _ _ ↔ (x.1.submatrix _ _)ᵀ * _ * (x.1.submatrix _ _).map _ = _`. Rewrite using `[JR_dblGram, iso_iff, e, dbl_smul, Matrix.mul_smul, Matrix.smul_mul, (hξ.isUnit.map _).smul_left_cancel, cA_eq]`. Both sides reduce to the same expression.
+-/
 theorem mem_HR {ξ : E} (hξ : ξ ≠ 0) (x : GL (Fin (n + n)) (AE F E)) :
     x ∈ HR (AF F) σ (dblGram finSumFinEquiv (ξ • Y.Jᵀ)) ↔ reGL finSumFinEquiv.symm x ∈ UG (cA σ) (dbl (incM F Y.J)) := by
   have e : (JR (F := F) (AF F) (ξ • Y.Jᵀ))ᵀ = inclR (F := F) (AF F) ξ • incM F Y.J :=
@@ -104,6 +136,9 @@ def back {ξ : E} (hξ : ξ ≠ 0) : GAd σ (dblGram finSumFinEquiv (ξ • Y.J�
     Subtype.ext (Units.ext (Matrix.submatrix_mul_equiv _ _ _ finSumFinEquiv _).symm)
 
 omit [NumberField E] in
+/- English proof (translation)
+Introduce `x` and use `by have e : reGL finSumFinEquiv.symm (reGL finSumFinEquiv x.1) = x.1 := Units.ext (by simp [reGL]) exact ⟨⟨reGL finSumFinEquiv x.1, (mem_HR hξ _).2 (e.symm ▸ x.2)⟩, Subtype.ext e⟩`.
+-/
 theorem back_surj {ξ : E} (hξ : ξ ≠ 0) : Function.Surjective (back σ Y hξ) := fun x => by
   have e : reGL finSumFinEquiv.symm (reGL finSumFinEquiv x.1) = x.1 := Units.ext (by simp [reGL])
   exact ⟨⟨reGL finSumFinEquiv x.1, (mem_HR hξ _).2 (e.symm ▸ x.2)⟩, Subtype.ext e⟩
@@ -111,6 +146,9 @@ theorem back_surj {ξ : E} (hξ : ξ ≠ 0) : Function.Surjective (back σ Y hξ
 def Keeps (k : G2 σ Y) : Prop := ∀ z z', z ∈ latHat Y → z' ∈ latHat Y →
   (mat2 k *ᵥ Sum.elim z z') ∘ Sum.inl ∈ latHat Y ∧ (mat2 k *ᵥ Sum.elim z z') ∘ Sum.inr ∈ latHat Y
 
+/- English proof (translation)
+Introduce `z z' hz hz'` and use `by rw [mem_latHat hL] at hz hz' ⊢ rw [mem_latHat hL] have e0 : eF F • (mat2 (back σ Y hξ k) *ᵥ Sum.elim z z') = mat2 (back σ Y hξ k) *ᵥ Sum.elim z z' := by rw [← Matrix.mulVec_smul] congr 1 funext i rcases i with i | i exacts [congrFun hz.1 i, congrFun hz'.1 i] have e1 : mat2 (ba …`.
+-/
 theorem keeps_back (hL : Y.L.FG) {ξ : E} (hξ : ξ ≠ 0) {k : GAd σ (dblGram finSumFinEquiv (ξ • Y.Jᵀ))}
     (hk : ∀ v, proj σ _ v k ∈ GlobalTheory.Doubling.KFin σ _ Y.L v) : Keeps (back σ Y hξ k) := fun z z' hz hz' => by
   rw [mem_latHat hL] at hz hz' ⊢
@@ -157,18 +195,37 @@ def stab2 (B : Base F E) : Subgroup (G2 σ Y) where
     by rw [inv_inv]; exact ha.2.1⟩
 
 omit [NumberField E] in
+/- English proof (translation)
+Introduce `k` and use `and_congr Iff.rfl ⟨fun h z z' hz hz' k' hk' => by rcases hk' with rfl | rfl exacts [h.1 z z' hz hz', h.2 z z' hz hz'], fun h => ⟨fun z z' hz hz' => h z z' hz hz' _ (.inl rfl), fun z z' hz hz' => h z z' hz hz' _ (.inr rfl)⟩⟩`.
+-/
 theorem isStab2_stab2 (B : Base F E) : IsStab2 B (stab2 σ Y B) := fun k =>
   and_congr Iff.rfl ⟨fun h z z' hz hz' k' hk' => by
     rcases hk' with rfl | rfl
     exacts [h.1 z z' hz hz', h.2 z z' hz hz'],
     fun h => ⟨fun z z' hz hz' => h z z' hz hz' _ (.inl rfl), fun z z' hz hz' => h z z' hz hz' _ (.inr rfl)⟩⟩
 
+/- English proof (translation)
+Use `Matrix.mulVec_injective_iff_isUnit.1 ((injective_iff_map_eq_zero M.mulVecLin).2 fun y hy => by_contra fun h0 => ?_)` and prove the remaining obligations. Use `h.2.2 (star y) (by simpa using h0)` as an intermediate fact. Rewrite `this` using `[star_star, show M *ᵥ y = 0 from hy]`. Simplify using `at this`.
+-/
 theorem isUnit_of_cartan {M θ : Matrix (Fin n) (Fin n) ℂ} (h : IsCartan M θ) : IsUnit M := by
   refine Matrix.mulVec_injective_iff_isUnit.1 ((injective_iff_map_eq_zero M.mulVecLin).2 fun y hy => by_contra fun h0 => ?_)
   have := h.2.2 (star y) (by simpa using h0)
   rw [star_star, show M *ᵥ y = 0 from hy] at this
   simp at this
 
+/- English proof (translation)
+Establish `hc` using `hB.cm`. Break down `hY with h | h` into its components or cases. Use `⟨1, one_ne_zero, fun i j => by simpa using h.herm j i, fun w => ⟨_, 1, ?_, h.cartan w, one_ne_zero, ?_⟩⟩` and prove the remaining obligations. Conclude with `Matrix.ext fun i j => (hc.2.2.2 _ _).symm.trans (congrArg _ (h.herm i j))`. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules. Take `⟨x, hx⟩ : ∃ x, x - σ x ≠ 0` from `by by_contra! e`. Use `hc.2.1` as an intermediate fact. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex (InfinitePlace.mk τ)) (InfinitePlace.isReal_mk_iff.2 (ComplexEmbedding.isReal_iff.2 (RingHom.ext fun y => (hc.2.2.2 τ y).symm.trans (congrArg τ (sub_eq_zero.1 (e y)).symm))))`.
+
+Establish `hs : σ (x - σ x) = -(x - σ x)` using `by rw [map_sub, cm_conj_conj hc, neg_sub]`. Use `⟨_, hx, fun i j => ?_, fun w => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `σ (_ * Y.J i j) = _ * Y.J j i`. Rewrite using `[map_mul, hs, h.skew, neg_mul_neg]`. Establish `h1` using `hc.2.2.2 (B.emb w).1 (x - σ x)`.
+
+Rewrite `h1` using `[hs, map_neg]`. Establish `h2 : (B.emb w).1 (x - σ x) = ((B.emb w).1 (x - σ x)).im * Complex.I`. Use `congrArg Complex.re h1` as an intermediate fact. Simplify using `only [Complex.neg_re, Complex.star_def, Complex.conj_re] at this`. Conclude with `Complex.ext (by simp only [Complex.mul_I_re, Complex.ofReal_im]; linarith) (by simp)`.
+
+Use `⟨_, ((B.emb w).1 (x - σ x)).im, Matrix.ext fun i j => ?_, h.cartan w, fun e => hx ?_, Matrix.ext fun i j => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `star (Complex.I * (B.emb w).1 (Y.J j i)) = Complex.I * (B.emb w).1 (Y.J i j)`. Rewrite using `[star_mul', ← hc.2.2.2, h.skew]`. Simplify using the standard rewrite rules. Rewrite `h2` using `[e]`.
+
+Conclude with `(map_eq_zero _).1 (h2.trans (by simp))`. Express the relevant statement in the definitionally equal form `(B.emb w).1 (_ * Y.J j i) = _ * (Complex.I * (B.emb w).1 (Y.J j i))`. Rewrite using `[map_mul, ← mul_assoc, ← h2]`.
+-/
 theorem exists_scal {B : Base F E} (hB : B.IsGood σ) {r s : ℕ} (hY : Y.IsHerm σ B r s ∨ Y.IsSkew σ B r s) :
     ∃ ξ : E, ξ ≠ 0 ∧ (∀ i j, σ ((ξ • Y.Jᵀ) j i) = (ξ • Y.Jᵀ) i j) ∧ ∀ w, ∃ (M : Matrix (Fin n) (Fin n) ℂ) (r : ℝ), Mᴴ = M ∧
       IsCartan M (Y.θ w) ∧ r ≠ 0 ∧ (ξ • Y.Jᵀ).map (B.emb w).1 = (r : ℂ) • Mᵀ := by
@@ -202,6 +259,9 @@ theorem exists_scal {B : Base F E} (hB : B.IsGood σ) {r s : ℕ} (hY : Y.IsHerm
       · change (B.emb w).1 (_ * Y.J j i) = _ * (Complex.I * (B.emb w).1 (Y.J j i))
         rw [map_mul, ← mul_assoc, ← h2]
 
+/- English proof (translation)
+Introduce `h0` and use `by obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance have e : (Y.J.map (B.emb w).1).det = 0 := by rw [← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero] rcases hY with h | h · exact ((Matrix.isUnit_iff_isUnit_det _).1 (isUnit_of_cartan (h.cartan w))).ne_zero e · e …`.
+-/
 theorem det_ne {B : Base F E} {r s : ℕ} (hY : Y.IsHerm σ B r s ∨ Y.IsSkew σ B r s) : Y.J.det ≠ 0 := fun h0 => by
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance
   have e : (Y.J.map (B.emb w).1).det = 0 := by rw [← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]
@@ -209,6 +269,9 @@ theorem det_ne {B : Base F E} {r s : ℕ} (hY : Y.IsHerm σ B r s ∨ Y.IsSkew �
   · exact ((Matrix.isUnit_iff_isUnit_det _).1 (isUnit_of_cartan (h.cartan w))).ne_zero e
   · exact ((Matrix.isUnit_iff_isUnit_det _).1 (isUnit_of_cartan (h.cartan w))).ne_zero (by rw [Matrix.det_smul, e, mul_zero])
 
+/- English proof (translation)
+Use `conv_lhs => rw [← Matrix.fromBlocks_toBlocks M, diagCols, Matrix.fromBlocks_mul_fromRows, Matrix.fromRows_mul]`. Simplify using `only [Matrix.mul_one, Matrix.one_mul, Matrix.fromRows_ext_iff]`. Conclude with `⟨fun h => ⟨h.2.trans h.1.symm, h.1⟩, fun h => ⟨h.2, h.1.trans h.2⟩⟩`.
+-/
 theorem par_iff {S β : Type} [CommRing S] [Fintype β] [DecidableEq β] (M : Matrix (β ⊕ β) (β ⊕ β) S) (t : Matrix β β S) :
     M * diagCols (E := S) β = diagCols (E := S) β * t ↔ KeepsDiag (Equiv.refl _) M ∧ leviMat (Equiv.refl _) M = t := by
   conv_lhs => rw [← Matrix.fromBlocks_toBlocks M, diagCols, Matrix.fromBlocks_mul_fromRows, Matrix.fromRows_mul]
@@ -216,10 +279,16 @@ theorem par_iff {S β : Type} [CommRing S] [Fintype β] [DecidableEq β] (M : Ma
   exact ⟨fun h => ⟨h.2.trans h.1.symm, h.1⟩, fun h => ⟨h.2, h.1.trans h.2⟩⟩
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `par_iff (mat2 p) t.1`.
+-/
 theorem isPar_iff {p : G2 σ Y} {t : GL (Fin n) (AE F E)} :
     IsPar p t ↔ KeepsDiag (Equiv.refl _) (mat2 p) ∧ leviMat (Equiv.refl _) (mat2 p) = t := par_iff (mat2 p) t.1
 
 omit [NumberField E] in
+/- English proof (translation)
+Establish `h : ∀ M : Matrix (Fin (n + n)) (Fin (n + n)) (AE F E), KeepsDiag finSumFinEquiv M → KeepsDiag (Equiv.refl _) (M.submatrix finSumFinEquiv finSumFinEquiv)` using `fun _ h => h`. Rewrite `hp`, the goal using `[mem_siegelOf]`. Conclude with `h _ hp`.
+-/
 theorem back_mem_par {ξ : E} (hξ : ξ ≠ 0) {p : GAd σ (dblGram finSumFinEquiv (ξ • Y.Jᵀ))} (hp : p ∈ siegelH (AF F) σ _) :
     back σ Y hξ p ∈ siegelOf (Equiv.refl (Fin n ⊕ Fin n)) (UG (cA σ) (dbl (incM F Y.J))).subtype := by
   have h : ∀ M : Matrix (Fin (n + n)) (Fin (n + n)) (AE F E), KeepsDiag finSumFinEquiv M →
@@ -228,6 +297,9 @@ theorem back_mem_par {ξ : E} (hξ : ξ ≠ 0) {p : GAd σ (dblGram finSumFinEqu
   exact h _ hp
 
 omit [NumberField E] in
+/- English proof (translation)
+Establish `e : (mat2 (back σ Y hξ k)).map (piInf τ) = ((matHom _ σ _ (projArch σ _ w k)).1.map (infEmb τ)).submatrix finSumFinEquiv finSumFinEquiv` using `Matrix.ext fun _ _ => rfl`. Rewrite using `[e, ← submatrix_blkMat finSumFinEquiv, Commute, SemiconjBy, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, h.eq]`.
+-/
 theorem back_comm {ξ : E} (hξ : ξ ≠ 0) {k : GAd σ (dblGram finSumFinEquiv (ξ • Y.Jᵀ))} {w : InfinitePlace F} (τ : EmbOver E w)
     {θ : Matrix (Fin n) (Fin n) ℂ} (h : Commute ((matHom _ σ _ (projArch σ _ w k)).1.map (infEmb τ)) (blkMat finSumFinEquiv θ (-θ))) :
     Commute ((mat2 (back σ Y hξ k)).map (piInf τ)) (Matrix.fromBlocks θ 0 0 (-θ)) := by
@@ -235,6 +307,13 @@ theorem back_comm {ξ : E} (hξ : ξ ≠ 0) {k : GAd σ (dblGram finSumFinEquiv 
     ((matHom _ σ _ (projArch σ _ w k)).1.map (infEmb τ)).submatrix finSumFinEquiv finSumFinEquiv := Matrix.ext fun _ _ => rfl
   rw [e, ← submatrix_blkMat finSumFinEquiv, Commute, SemiconjBy, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, h.eq]
 
+/- English proof (translation)
+Establish `hL : Y.L.IsLattice E` using `hY.elim (·.lat) (·.lat)`. Take `⟨ξ, hξ, hh, hw⟩` from `exists_scal hB hY`. Use `choose M r h1 h2 h3 h4 using hw`. Use `choose b hb hb' using fun w => exists_arch hB.cm (B.emb w) (h1 w) (isUnit_of_cartan (h2 w)) (h2 w) (h3 w) (h4 w)`. Take `⟨a, -, ha⟩` from `Frames.exists_isLatticeFrame_of_arch Y.L b`.
+
+Take `rfl : b = fun w => bc (compInf F E w) a` from `(funext ha).symm`. Take `⟨g, rfl⟩` from `back_surj hξ x`. Take `⟨p, k, hk, rfl⟩` from `HasIwasawa.adelic (a := a) (hasIwasawa_fin' hB hY (det_ne hY) hξ hh) hb g`. Establish `k2` using `keeps_back hL.fg hξ (mem_KAd.1 (inv_mem hk)).1`. Rewrite `k2` using `[map_inv]`.
+
+Conclude with `⟨⟨_, back_mem_par hξ p.2⟩, back σ Y hξ k, ⟨fun w => back_comm hξ _ ((hb' w _).1 ((mem_KAd.1 hk).2 w)), keeps_back hL.fg hξ (mem_KAd.1 hk).1, k2⟩, map_mul _ _ _⟩`.
+-/
 theorem iwasawa2 {B : Base F E} (hB : B.IsGood σ) {r s : ℕ} (hY : Y.IsHerm σ B r s ∨ Y.IsSkew σ B r s) (x : G2 σ Y) :
     ∃ p : siegelOf (Equiv.refl (Fin n ⊕ Fin n)) (UG (cA σ) (dbl (incM F Y.J))).subtype, ∃ k ∈ stab2 σ Y B, x = p * k := by
   have hL : Y.L.IsLattice E := hY.elim (·.lat) (·.lat)
@@ -259,6 +338,13 @@ def emb2 : UA σ Y.J × UA σ Y.J →* G2 σ Y :=
     have h2 : (mat x.2)ᵀ * incM F Y.J * (mat x.2).map (cA σ) = incM F Y.J := x.2.2
     simp [dbl, Matrix.fromBlocks_transpose, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply, h1, h2]
 
+/- English proof (translation)
+Use `isTopologicalRing_tens (F := F) (E := E) (R := AF F)` as an intermediate fact. Use `t2Space_adeleRing' (F := F)` as an intermediate fact. Use `t2Space_tensorProduct_finiteExtension (F := F) (E := E) (R := AF F)` as an intermediate fact. Establish `hI` using `iwasawaOf_of_isCompact (ν := absE F E) continuous_subtype_val continuous_absE hK (iwasawa2 hB hY)`. Use `⟨⟨_, fun x => hgtOf (Equiv.refl _) (UG (cA σ) (dbl (incM F Y.J))).subtype (absE F E) (stab2 σ Y B) x, isStab2_stab2 B, ⟨fun x => ?_, fun p t hp k hk => ?_⟩, NNReal.continuous_coe.comp (hI.continuous_hgtOf continuous_subtype_val continuous_absE hK), fun x => hgtOf_pos x⟩, emb2 σ Y …` and prove the remaining obligations.
+
+Take `⟨p, h⟩` from `iwasawa2 hB hY x`. Conclude with `⟨p, leviOf _ _ p, isPar_iff.2 ⟨mem_siegelOf.1 p.2, rfl⟩, h⟩`. Take `⟨h1, h2⟩` from `isPar_iff.1 hp`. Use `hI.hgtOf_mul ⟨p, mem_siegelOf.2 h1⟩ hk` as an intermediate fact. Rewrite using `[show t = leviOf (Equiv.refl _) (UG (cA σ) (dbl (incM F Y.J))).subtype ⟨p, mem_siegelOf.2 h1⟩ from Units.ext h2.symm]`.
+
+Conclude with `congrArg NNReal.toReal this`.
+-/
 theorem hgtEx_core {B : Base F E} (hB : B.IsGood σ) {r s : ℕ} (hY : Y.IsHerm σ B r s ∨ Y.IsSkew σ B r s)
     (hK : IsCompact (stab2 σ Y B : Set (G2 σ Y))) :
     (∃ K a, IsStab2 (σ := σ) (Y := Y) B K ∧ IsHgt K a ∧ Continuous a ∧ ∀ x, 0 < a x) ∧

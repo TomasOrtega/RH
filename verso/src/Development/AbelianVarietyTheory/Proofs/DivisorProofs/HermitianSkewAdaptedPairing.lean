@@ -20,6 +20,9 @@ namespace GlobalTheory.ArchSchB.LeviPair
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form, dotProduct, Matrix.mulVec, map_sum, map_mul, hinv, hherm, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm (f := fun a b => σ (v a) * (J b a * x b))]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_swap_herm {σ : E →ₐ[F] E} (hinv : ∀ t, σ (σ t) = t) {d : ℕ} {J : Matrix (Fin d) (Fin d) E}
     (hherm : ∀ i j, σ (J j i) = J i j) (x v : Fin d → E) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form σ J x v = σ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form σ J v x) := by
@@ -29,6 +32,9 @@ theorem form_swap_herm {σ : E →ₐ[F] E} (hinv : ∀ t, σ (σ t) = t) {d : �
   refine Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.vecMulVec_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vecMulVec_mulVec' {A : Type} [CommRing A] {m n : Type} [Fintype n] (p : m → A) (q w : n → A) :
     Matrix.vecMulVec p q *ᵥ w = (q ⬝ᵥ w) • p := by
   ext i
@@ -36,6 +42,9 @@ theorem vecMulVec_mulVec' {A : Type} [CommRing A] {m n : Type} [Fintype n] (p : 
   refine Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_sum_eq_dot {A : Type} [CommRing A] {m n : Type} [Fintype m] [Fintype n] (x : Matrix m n A)
     (U : m → A) (V : n → A) : ∑ i, ∑ j, x i j * U i * V j = U ⬝ᵥ (x *ᵥ V) := by
   simp only [dotProduct, Matrix.mulVec, Finset.mul_sum]
@@ -46,6 +55,29 @@ end GlobalTheory.ArchSchB.LeviPair
 
 open GlobalTheory.ArchSchB.LeviPair in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ H H' r s r' s' i₀ i₁ j₀ j₁ hB hX hW hH hH' α c₁ c₂ c Z`. Establish `hinv : ∀ t, σ (σ t) = t` using `fun t => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hB.cm.2.2.2, hB.cm.2.2.2, star_star]`.
+
+Establish `hcol : ∀ {a b : ℕ} (M : Matrix (Fin a) (Fin b) E) (m : Fin b), M *ᵥ Pi.single m 1 = fun j => M j m`. Introduce `a b M m`. Use extensionality with `j`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Use `set c' : Fin n₁ → AE F E := fun k => cA σ (c k) with hc'`.
+
+Use `set A : Fin d → AE F E := incV F (W.J *ᵥ fun l => σ (H'.x l)) with hAdef`. Use `set U : Fin n → AE F E := incM F (X.J * H.ι.map σ) *ᵥ c' with hUdef`. Establish `hA' : ∀ j, ∑ l, incM F W.J j l * cA σ (incV F H'.x l) = A j`. Introduce `j`. Simplify using `only [hAdef, incV, incM, Matrix.map_apply, OrthPlane.cA_inclR, Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+
+Establish `hU' : ∀ i, ∑ k, incM F X.J i k * cA σ ((incM F H.ι *ᵥ c) k) = U i`. Introduce `i`. Simplify using `only [hUdef, hc', incM, Matrix.mulVec, dotProduct, Matrix.map_apply, Matrix.mul_apply, map_sum, map_mul, OrthPlane.cA_inclR, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hdotA : ∀ v : Fin d → E, incV F v ⬝ᵥ A = inclR (F` using `F) (AF F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form σ W.J v H'.x) := by`. Introduce `v`. Simplify using `only [hAdef, incV, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form, Matrix.mulVec, dotProduct, map_sum, map_mul]`. Establish `hx0 : ∀ m, ∑ i, H.x i * (X.J * H.ι.map σ) i m = 0`.
+
+Introduce `m`. Establish `h` using `(hH.orth (Pi.single m 1)).1`. Rewrite `h` using `[hcol]`. Establish `h' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form σ X.J H.x (fun j => H.ι j m) = 0`. Rewrite using `[form_swap_herm hinv hX.herm, h, map_zero]`.
+
+Simplify `h'` using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form, dotProduct, Matrix.mulVec, Matrix.mul_apply, Matrix.map_apply]`. Establish `h1 : U ⬝ᵥ incV F H.x = 0`. Rewrite using `[dotProduct_comm, hUdef, Matrix.dotProduct_mulVec]`. Establish `: incV F H.x ᵥ* incM F (X.J * H.ι.map σ) = 0`. Use extensionality with `m`.
+
+Use `congrArg (inclR (F := F) (AF F)) (hx0 m)` as an intermediate fact. Simplify `this` using `only [Matrix.vecMul, dotProduct, incV, incM, Matrix.map_apply, map_sum, map_mul, map_zero, Pi.zero_apply]`. Rewrite using `[this, zero_dotProduct]`. Establish `h2 : incV F H'.x ⬝ᵥ A = 0` using `by rw [hdotA, hH'.xx, map_zero]`. Establish `h3 : (incM F H'.ι)ᵀ *ᵥ A = 0`.
+
+Use extensionality with `m`. Express the relevant statement in the definitionally equal form `incV F (fun j => H'.ι j m) ⬝ᵥ A = 0`. Rewrite using `[hdotA, ← hcol, (hH'.orth _).1, map_zero]`. Establish `h4 : incV F H'.y ⬝ᵥ A = -1`. Rewrite using `[hdotA, OrthPlane.form_swap hinv hW.skew, hH'.xy, map_one, map_neg, map_one]`.
+
+Establish `hg : (incM F H.ι)ᵀ * incM F (X.J * H.ι.map σ) = incM F X₁.J`. Rewrite using `[← hH.gram, Matrix.mul_assoc]`. Simplify using `only [incM, Matrix.transpose_map, Matrix.map_mul]`. Establish `h5 : U ⬝ᵥ (incM F H.ι *ᵥ c₂) = c₂ ⬝ᵥ (incM F X₁.J *ᵥ c')`. Rewrite using `[dotProduct_comm, hUdef, ← Matrix.vecMul_transpose, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, hg, ← Matrix.dotProduct_mulVec]`.
+
+Unfold `symp`. Rewrite using `[TensForm.hTens_vmv_right]`. Simplify using `only [hA', hU']`. Rewrite using `[sum_sum_eq_dot, Matrix.add_mulVec, Matrix.add_mulVec, Matrix.add_mulVec, vecMulVec_mulVec', vecMulVec_mulVec', vecMulVec_mulVec', ← Matrix.mulVec_mulVec, h2, h3, h4]`. Simplify using `only [Matrix.mulVec_zero, zero_smul, add_zero, dotProduct_add, dotProduct_smul, smul_eq_mul, h1, mul_zero, zero_add, dotProduct_zero, neg_smul, one_smul, dotProduct_neg, h5, neg_one_mul, neg_neg]`.
+-/
 theorem GlobalTheory.ArchSchB.symp_levi_pair_eq_trace : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E)
     {n d n₁ d₁ : ℕ} (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (H : Plane E n n₁) (H' : Plane E d d₁)
     (r s r' s' i₀ i₁ j₀ j₁ : ℕ),

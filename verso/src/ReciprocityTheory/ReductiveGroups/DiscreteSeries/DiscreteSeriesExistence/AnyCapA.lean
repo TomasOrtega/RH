@@ -10,6 +10,9 @@ namespace ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => simpa using hx`. Consider the case `cons p w ih`. Simplify using `only [List.map_cons, List.prod_cons, Module.End.mul_apply]`. Conclude with `ICD.gen_stable ih p.1 p.2`.
+-/
 theorem anyCap_word_mem {M : Type*} [AddCommGroup M] [Module ℂ M] {E : Fin n → Fin n → Module.End ℂ M}
     {V : Submodule ℂ M} (w : List (Fin n × Fin n)) {x : M} (hx : x ∈ genSub E V) :
     (w.map fun p => E p.1 p.2).prod x ∈ genSub E V := by
@@ -19,6 +22,17 @@ theorem anyCap_word_mem {M : Type*} [AddCommGroup M] [Module ℂ M] {E : Fin n �
     simp only [List.map_cons, List.prod_cons, Module.End.mul_apply]
     exact ICD.gen_stable ih p.1 p.2
 
+/- English proof (translation)
+Take `⟨l, hl⟩` from `qdet_eq_sum_words E u`. Use `⟨(l.map fun c => (starRingEnd ℂ c.1 * (c.2.map fun p => adjSign ε p.1 p.2).prod) • ((c.2.reverse.map Prod.swap).map fun p => E p.1 p.2).prod).sum, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx clear hl`. Proceed by induction on `l with`. Consider the case `nil => simp`.
+
+Consider the case `cons c l ih`. Simplify using `only [List.map_cons, List.sum_cons, LinearMap.add_apply, LinearMap.smul_apply]`. Conclude with `add_mem (Submodule.smul_mem _ _ (anyCap_word_mem _ hx)) ih`. Introduce `x y`. Rewrite using `[hl]`.
+
+Use `clear hl`. Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons c l ih`. Simplify using `only [List.map_cons, List.sum_cons, LinearMap.add_apply, LinearMap.smul_apply, inner_add_left, inner_add_right, inner_smul_left, inner_smul_right]`.
+
+Rewrite using `[ih]`. Use `congr 1`. Establish `h` using `eword_adjoint hU c.2 y x`. Establish `h' : inner ℂ x ((c.2.map fun p => E p.1 p.2).prod y) = starRingEnd ℂ (c.2.map fun p => adjSign ε p.1 p.2).prod * inner ℂ (((c.2.reverse.map Prod.swap).map fun p => E p.1 p.2).prod x) y`. Rewrite using `[← inner_conj_symm, h, map_mul, inner_conj_symm]`.
+
+Rewrite using `[h', map_mul, starRingEnd_self_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem anyCap_adj {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin n → Bool}
     {E : Fin n → Fin n → Module.End ℂ M} (hU : IsInfUnitary ε E) (V : Submodule ℂ M) (u : ℂ) :
     ∃ C : Module.End ℂ M, (∀ x ∈ genSub E V, C x ∈ genSub E V) ∧

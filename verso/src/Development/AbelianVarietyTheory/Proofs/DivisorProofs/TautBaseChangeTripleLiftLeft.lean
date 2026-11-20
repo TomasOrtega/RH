@@ -21,6 +21,9 @@ namespace GlobalTheory.PolDeg.TautEx
 instance isDomain_mvPowerSeries (N : ℕ) (W : Type) [CommRing W] [IsDomain W] : IsDomain (MvPowerSeries (Fin N) W) :=
   NoZeroDivisors.to_isDomain _
 
+/- English proof (translation)
+Simplify using `using Over.w (toUnit X)`.
+-/
 theorem toUnit_left {S : Scheme.{0}} (X : Over S) : (toUnit X).left = X.hom := by
   simpa using Over.w (toUnit X)
 
@@ -30,10 +33,18 @@ variable {Y : Scheme.{0}} {M : LB Y}
 
 def mulU (u : Γ(Y, ⊤)ˣ) (t : LB.Gen M) : LB.Gen M := ⟨fun j => res le_top u * t.s j⟩
 
+/- English proof (translation)
+The claim follows from `(map_mul _ _ _).trans (congrArg (· * _) (gm_res (𝟙 Y) y _ h _))`.
+-/
 theorem gm_mulU (u : Γ(Y, ⊤)ˣ) (t : LB.Gen M) {y : Y} {i : M.ι} (h : y ∈ M.U i) :
     gm (𝟙 Y) y (M.U i) ((mulU u t).s i) = gm (𝟙 Y) y ⊤ u * gm (𝟙 Y) y (M.U i) (t.s i) :=
   (map_mul _ _ _).trans (congrArg (· * _) (gm_res (𝟙 Y) y _ h _))
 
+/- English proof (translation)
+Introduce `i j`. Use `unit_ext fun x hx => ?_` and prove the remaining obligations. Establish `e` using `congrArg (gm (𝟙 Y) x _) (ht i j)`. Rewrite `e` using `[gm_res (𝟙 Y) x inf_le_left hx, map_mul, gm_res (𝟙 Y) x inf_le_right hx]`. Rewrite using `[gm_res (𝟙 Y) x inf_le_left hx, map_mul, gm_res (𝟙 Y) x inf_le_right hx, gm_mulU u t hx.1, gm_mulU u t hx.2, e]`.
+
+Conclude with `mul_left_comm _ _ _`.
+-/
 theorem isGen_mulU (u : Γ(Y, ⊤)ˣ) {t : LB.Gen M} (ht : t.IsGen) : (mulU u t).IsGen := by
   intro i j
   refine unit_ext fun x hx => ?_
@@ -44,6 +55,9 @@ theorem isGen_mulU (u : Γ(Y, ⊤)ˣ) {t : LB.Gen M} (ht : t.IsGen) : (mulU u t)
 
 variable {X Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
 
+/- English proof (translation)
+The claim follows from `(map_mul _ _ _).trans (congrArg (· * _) (gm_res r z _ (hJ.mem φ r) _))`.
+-/
 theorem val_mulU (u : Γ(Y, ⊤)ˣ) (t : LB.Gen (LB.LinComb L φ ε)) (r : Z ⟶ Y) (z : Z) (J : (Z ⟶ X) → L.ι)
     (hJ : Good L z J) : val (mulU u t) r z J = gm r z ⊤ u * val t r z J :=
   (map_mul _ _ _).trans (congrArg (· * _) (gm_res r z _ (hJ.mem φ r) _))
@@ -58,14 +72,23 @@ abbrev fC : Sp (MvPowerSeries (Fin N) W) ⟶ Sp W := spMap MvPowerSeries.C
 
 abbrev Bp : Over (Sp (MvPowerSeries (Fin N) W)) := (Over.pullback (fC (W := W) N)).obj T.B
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.isAbelianScheme_pullback_obj _ _ T.isAb`.
+-/
 theorem isAb_Bp : IsAbelianScheme (Bp T N) := GlobalTheory.isAbelianScheme_pullback_obj _ _ T.isAb
 
 instance : IsCommMonObj (Bp T N) := (isAb_Bp T N).comm
 
+/- English proof (translation)
+The claim follows from `isGrpPullback_pullback T.B _`.
+-/
 theorem cart : IsGrpPullback (Bp T N) T.B (fC N) (pullback.fst T.B.hom (fC N)) := isGrpPullback_pullback T.B _
 
 abbrev cm : CubeMap (Bp T N) T.B := cubeMapOf (cart T N)
 
+/- English proof (translation)
+The claim follows from `proved_CubePullSt _ _ T.B (Bp T N) (cm T N) T.M T.cub`.
+-/
 theorem pullSt : ∃ (hL : (T.M.L.pull (cm T N).F).IsLB) (hr : ((cm T N).rigPull T.M.L T.M.rig).IsGen),
     (∃ c' : CubicalStr (Bp T N) ((cm T N).rigLB T.M hL hr), (cm T N).IsPullCubical c' T.cub) ∧
       (T.M.IsSymmetric → ((cm T N).rigLB T.M hL hr).IsSymmetric) :=
@@ -75,7 +98,13 @@ abbrev Mp : RigLB (Bp T N) := (cm T N).rigLB T.M (pullSt T N).fst (pullSt T N).s
 
 abbrev cubP : CubicalStr (Bp T N) (Mp T N) := CubePf.cubical (cm T N) T.M T.cub _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : (Mp T N).L = T.M.L.pull (pullback.fst T.B.hom (fC N)) := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : (cubP T N).t = (cm T N).thetaPull T.M.L T.cub.t := rfl
 
 end Base
@@ -87,9 +116,15 @@ variable {o W : Type} [CommRing o] [CommRing W] [IsDomain W] [IsLocalRing W] (T 
 abbrev push (Tt : Over (Sp (MvPowerSeries (Fin N) W))) :
     (Tt ⟶ Bp T N) →* (Over.mk (Tt.hom ≫ fC N) ⟶ T.B) := pushHom (cart T N) Tt
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem push_left {Tt : Over (Sp (MvPowerSeries (Fin N) W))} (x : Tt ⟶ Bp T N) :
     (push T N Tt x).left = x.left ≫ pullback.fst T.B.hom (fC N) := rfl
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `(cart T N).1.hom_ext` to reduce the goal to its premises. Conclude with `congrArg (fun q => q.left) h`. Rewrite using `[Over.w x, Over.w y]`.
+-/
 theorem push_inj {Tt : Over (Sp (MvPowerSeries (Fin N) W))} {x y : Tt ⟶ Bp T N} (h : push T N Tt x = push T N Tt y) :
     x = y := by
   apply Over.OverMorphism.ext
@@ -100,23 +135,38 @@ theorem push_inj {Tt : Over (Sp (MvPowerSeries (Fin N) W))} {x y : Tt ⟶ Bp T N
 def pullPt {Tt : Over (Sp (MvPowerSeries (Fin N) W))} (q : Over.mk (Tt.hom ≫ fC N) ⟶ T.B) : Tt ⟶ Bp T N :=
   Over.homMk ((cart T N).1.lift q.left Tt.hom (Over.w q)) ((cart T N).1.lift_snd _ _ _)
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext ((cart T N).1.lift_fst _ _ _)`.
+-/
 theorem push_pullPt {Tt : Over (Sp (MvPowerSeries (Fin N) W))} (q : Over.mk (Tt.hom ≫ fC N) ⟶ T.B) :
     push T N Tt (pullPt T N q) = q :=
   Over.OverMorphism.ext ((cart T N).1.lift_fst _ _ _)
 
 def cp (a : Fin T.r → ℤ) : 𝟙_ (Over (Sp (MvPowerSeries (Fin N) W))) ⟶ Bp T N := pullPt T N (toUnit _ ≫ T.c₀ a)
 
+/- English proof (translation)
+The claim follows from `push_pullPt T N _`.
+-/
 theorem push_cp (a : Fin T.r → ℤ) : push T N _ (cp T N a) = toUnit _ ≫ T.c₀ a := push_pullPt T N _
 
+/- English proof (translation)
+The claim follows from `push_inj T N (by rw [map_mul, push_cp, push_cp, push_cp, T.c₀_add, MonObj.comp_mul])`.
+-/
 theorem cp_add (a a' : Fin T.r → ℤ) : cp T N (a + a') = cp T N a * cp T N a' :=
   push_inj T N (by rw [map_mul, push_cp, push_cp, push_cp, T.c₀_add, MonObj.comp_mul])
 
+/- English proof (translation)
+Use `congrArg (fun q => q.left) h` as an intermediate fact. Simplify using `only [Over.comp_left, toUnit_left] at this`. Conclude with `this`.
+-/
 theorem left_of_push {Tt : Over (Sp (MvPowerSeries (Fin N) W))} {z : Tt ⟶ Bp T N} {z₀ : 𝟙_ (Over (Sp W)) ⟶ T.B}
     (h : push T N Tt z = toUnit _ ≫ z₀) : z.left ≫ pullback.fst T.B.hom (fC N) = (Tt.hom ≫ fC N) ≫ z₀.left := by
   have := congrArg (fun q => q.left) h
   simp only [Over.comp_left, toUnit_left] at this
   exact this
 
+/- English proof (translation)
+Use `fin_cases k`. Conclude with `left_of_push T N (by rw [map_mul, hx, hy, MonObj.comp_mul])`. Conclude with `left_of_push T N hx`. Conclude with `left_of_push T N hy`. Conclude with `left_of_push T N (by rw [map_one, MonObj.comp_one])`.
+-/
 theorem lam_comm {Tt : Over (Sp (MvPowerSeries (Fin N) W))} {x y : Tt ⟶ Bp T N} {x₀ y₀ : 𝟙_ (Over (Sp W)) ⟶ T.B}
     (hx : push T N Tt x = toUnit _ ≫ x₀) (hy : push T N Tt y = toUnit _ ≫ y₀) (k : Fin 4) :
     lamPts x y k ≫ pullback.fst T.B.hom (fC N) = (Tt.hom ≫ fC N) ≫ lamPts x₀ y₀ k := by
@@ -126,6 +176,9 @@ theorem lam_comm {Tt : Over (Sp (MvPowerSeries (Fin N) W))} {x y : Tt ⟶ Bp T N
   · exact left_of_push T N hy
   · exact left_of_push T N (by rw [map_one, MonObj.comp_one])
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `left_of_push T N hx` as an intermediate fact. Rewrite using `[push_left, Over.comp_left, Over.comp_left, toUnit_left, Category.assoc, this, ← Category.assoc, ← Category.assoc, Over.w U]`. Both sides reduce to the same expression.
+-/
 theorem push_pre {Tt Tt' : Over (Sp (MvPowerSeries (Fin N) W))} (U : Tt' ⟶ Tt) {x : Tt ⟶ Bp T N}
     {x₀ : 𝟙_ (Over (Sp W)) ⟶ T.B} (hx : push T N Tt x = toUnit _ ≫ x₀) : push T N Tt' (U ≫ x) = toUnit _ ≫ x₀ := by
   apply Over.OverMorphism.ext
@@ -134,10 +187,16 @@ theorem push_pre {Tt Tt' : Over (Sp (MvPowerSeries (Fin N) W))} (U : Tt' ⟶ Tt)
     Over.w U]
   rfl
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases k <;> simp [lamPts]`.
+-/
 theorem lamPts_w {S : Scheme.{0}} {G Tt : Over S} [GrpObj G] (x y : Tt ⟶ G) (k : Fin 4) :
     lamPts x y k ≫ G.hom = Tt.hom := by
   fin_cases k <;> simp [lamPts]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unit_hom (S : Scheme.{0}) : (𝟙_ (Over S)).hom = 𝟙 S := rfl
 
 end Pts
@@ -146,6 +205,11 @@ section Periods
 
 variable (W : Type) [CommRing W] [IsDomain W] (N : ℕ)
 
+/- English proof (translation)
+Unfold `Taut.coordT`. Use `split_ifs`. Introduce `h`. Use `congrArg (MvPowerSeries.coeff (Finsupp.single k 1)) h` as an intermediate fact. Simplify using `at this`.
+
+Introduce `h`. Use `congrArg MvPowerSeries.constantCoeff h` as an intermediate fact. Simplify using `at this`.
+-/
 theorem coordT_ne_zero (m : ℕ) (k : Fin N) : Taut.coordT W m N k ≠ 0 := by
   unfold Taut.coordT
   split_ifs
@@ -162,14 +226,23 @@ def kU (m n r : ℕ) (ε : Fin N → LinearMap.BilinForm ℤ (Fin r → ℤ)) (a
     fun h => coordT_ne_zero W N m k (IsFractionRing.injective _ (FractionRing (MvPowerSeries (Fin N) W))
       (h.trans (map_zero _).symm))) ^ ((n : ℤ) * ε k a b)
 
+/- English proof (translation)
+Simplify using `[kU, Taut.perFactor]`.
+-/
 theorem kU_val (m n r : ℕ) (ε : Fin N → LinearMap.BilinForm ℤ (Fin r → ℤ)) (a b : Fin r → ℤ) :
     (kU W N m n r ε a b : FractionRing (MvPowerSeries (Fin N) W)) = Taut.perFactor W m N n r ε a b := by
   simp [kU, Taut.perFactor]
 
+/- English proof (translation)
+Simplify using `only [kU, hε _ a b]`.
+-/
 theorem kU_symm (m n r : ℕ) (ε : Fin N → LinearMap.BilinForm ℤ (Fin r → ℤ)) (hε : ∀ k a b, ε k a b = ε k b a)
     (a b : Fin r → ℤ) : kU W N m n r ε a b = kU W N m n r ε b a := by
   simp only [kU, hε _ a b]
 
+/- English proof (translation)
+Simplify using `only [kU, ← Finset.prod_mul_distrib, ← zpow_add, map_add, LinearMap.add_apply, mul_add]`.
+-/
 theorem kU_add (m n r : ℕ) (ε : Fin N → LinearMap.BilinForm ℤ (Fin r → ℤ)) (a a' b : Fin r → ℤ) :
     kU W N m n r ε (a + a') b = kU W N m n r ε a b * kU W N m n r ε a' b := by
   simp only [kU, ← Finset.prod_mul_distrib, ← zpow_add, map_add, LinearMap.add_apply, mul_add]
@@ -187,6 +260,9 @@ def Jd {Tt : Over (Sp (MvPowerSeries (Fin N) W))} (z : Tt.left) (J : (Tt.left �
   if hχ : χ ≫ T.B.hom = Tt.hom ≫ fC N then J ((cart T N).1.lift χ Tt.hom hχ) PUnit.unit
   else (exists_chart T.M.isLB (χ z)).choose
 
+/- English proof (translation)
+Establish `hχ : (ψ ≫ pullback.fst T.B.hom (fC N)) ≫ T.B.hom = Tt.hom ≫ fC N`. Rewrite using `[Category.assoc, (cart T N).1.w, ← Category.assoc, hψ]`. Rewrite using `[Jd, dif_pos hχ]`. Use `congr 1`. Conclude with `(cart T N).1.hom_ext ((cart T N).1.lift_fst _ _ _) (((cart T N).1.lift_snd _ _ _).trans hψ.symm)`.
+-/
 theorem Jd_eq {Tt : Over (Sp (MvPowerSeries (Fin N) W))} (z : Tt.left) (J : (Tt.left ⟶ (Bp T N).left) → PUnit → T.M.L.ι)
     (ψ : Tt.left ⟶ (Bp T N).left) (hψ : ψ ≫ (Bp T N).hom = Tt.hom) :
     Jd T N z J (ψ ≫ pullback.fst T.B.hom (fC N)) = J ψ PUnit.unit := by
@@ -196,6 +272,11 @@ theorem Jd_eq {Tt : Over (Sp (MvPowerSeries (Fin N) W))} (z : Tt.left) (J : (Tt.
   congr 1
   exact (cart T N).1.hom_ext ((cart T N).1.lift_fst _ _ _) (((cart T N).1.lift_snd _ _ _).trans hψ.symm)
 
+/- English proof (translation)
+Introduce `χ`. Distinguish the cases in `hχ : χ ≫ T.B.hom = Tt.hom ≫ fC N`. Use `mem_pull.1 (hJ ((cart T N).1.lift χ Tt.hom hχ))` as an intermediate fact. Rewrite using `[Jd, dif_pos hχ]`. Establish `h2 : ((cart T N).1.lift χ Tt.hom hχ ≫ pullback.fst T.B.hom (fC N)) z ∈ T.M.L.U (J ((cart T N).1.lift χ Tt.hom hχ) PUnit.unit)` using `this`.
+
+Rewrite `h2` using `[(cart T N).1.lift_fst χ Tt.hom hχ]`. Conclude with `h2`. Rewrite using `[Jd, dif_neg hχ]`. Conclude with `(exists_chart T.M.isLB (χ z)).choose_spec`.
+-/
 theorem Jd_good {Tt : Over (Sp (MvPowerSeries (Fin N) W))} {z : Tt.left} {J : (Tt.left ⟶ (Bp T N).left) → PUnit → T.M.L.ι}
     (hJ : Good (Mp T N).L z J) : Good T.M.L z (Jd T N z J) := by
   intro χ
@@ -209,6 +290,9 @@ theorem Jd_good {Tt : Over (Sp (MvPowerSeries (Fin N) W))} {z : Tt.left} {J : (T
   · rw [Jd, dif_neg hχ]
     exact (exists_chart T.M.isLB (χ z)).choose_spec
 
+/- English proof (translation)
+Establish `hz` using `hJ.mem ψ r`. Use `((gm_res r z _ hz _).trans (gm_pull r h z _ (GeneratorPullback.pullAlong_le T.M.L _ h φ ψ hψ _ hz) _)).trans ?_` and prove the remaining obligations. Use `(val_of t (r ≫ h) z (Jd T N z J) _ fun k => ?_).symm` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hψ k, ← Category.assoc, Jd_eq T N z J _ (by rw [Category.assoc, hw k])]`.
+-/
 theorem val_pullAlong {Tt : Over (Sp (MvPowerSeries (Fin N) W))} {Y₀ Y : Scheme.{0}} {K : Type} [Fintype K]
     (h : Y ⟶ Y₀) (φ : K → (Y₀ ⟶ T.B.left)) (ε : K → ℤ) (ψ : K → (Y ⟶ (Bp T N).left))
     (hψ : ∀ k, ψ k ≫ pullback.fst T.B.hom (fC N) = h ≫ φ k) (t : LB.Gen (LB.LinComb T.M.L φ ε)) (r : Tt.left ⟶ Y)
@@ -227,18 +311,30 @@ section Tau
 variable {o W : Type} [CommRing o] [CommRing W] [IsDomain W] [IsLocalRing W] (T : TautBase o W) (N m n : ℕ)
   (ε : Fin N → LinearMap.BilinForm ℤ (Fin T.r → ℤ))
 
+/- English proof (translation)
+The claim follows from `map_mul _ _ _`.
+-/
 theorem unitOn_mul {R : Type} [CommRing R] (u v : Rˣ) : unitOn (u * v) = unitOn u * unitOn v := map_mul _ _ _
 
+/- English proof (translation)
+Simplify using `[x3]`.
+-/
 theorem triple_lift_comp_projections {S : Scheme.{0}} {G Tt : Over S} (x y w : Tt ⟶ G) :
     lift x (lift y w) ≫ x3 G 0 = x ∧ lift x (lift y w) ≫ x3 G 1 = y ∧ lift x (lift y w) ≫ x3 G 2 = w := by
   simp [x3]
 
+/- English proof (translation)
+Rewrite using `[mul_assoc (g₁ * g₂), e, _root_.mul_mul_mul_comm]`.
+-/
 theorem alg_step {G : Type} [CommGroup G] {g₁ g₂ v c a b : G} (e : v * c = a * b) :
     g₁ * g₂ * v * c = g₁ * a * (g₂ * b) := by
   rw [mul_assoc (g₁ * g₂), e, _root_.mul_mul_mul_comm]
 
 abbrev cK (a : Fin T.r → ℤ) : TK (MvPowerSeries (Fin N) W) ⟶ Bp T N := toUnit _ ≫ cp T N a
 
+/- English proof (translation)
+The claim follows from `push_pre T N _ (push_cp T N a)`.
+-/
 theorem push_cK (a : Fin T.r → ℤ) : push T N _ (cK T N a) = toUnit _ ≫ T.c₀ a := push_pre T N _ (push_cp T N a)
 
 def tauP (a b : Fin T.r → ℤ) : LB.Gen (LB.LinComb (Mp T N).L (lamPts (cK T N a) (cK T N b)) negε) :=
@@ -250,9 +346,15 @@ def uP (a b : Fin T.r → ℤ) : LB.Gen (LB.LinComb (Mp T N).L (lamPts (cp T N a
   GeneratorPullback.pullAlong T.M.L (pullback.fst T.B.hom (fC N)) ((𝟙_ (Over (Sp (MvPowerSeries (Fin N) W)))).hom ≫ fC N)
     (lamPts (T.c₀ a) (T.c₀ b)) negε _ (lam_comm T N (push_cp T N a) (push_cp T N b)) (T.τ₀ a b)
 
+/- English proof (translation)
+The claim follows from `isGen_mulU _ (LBxP.isGen_pullAlong T.M.L _ _ _ _ _ _ (T.τ₀ a b) (T.τ₀_gen a b))`.
+-/
 theorem isGen_tauP (a b : Fin T.r → ℤ) : (tauP T N m n ε a b).IsGen :=
   isGen_mulU _ (LBxP.isGen_pullAlong T.M.L _ _ _ _ _ _ (T.τ₀ a b) (T.τ₀_gen a b))
 
+/- English proof (translation)
+Establish `h₂` using `val_pullAlong T N ((TK (MvPowerSeries (Fin N) W)).hom ≫ fC N) (lamPts (T.c₀ a) (T.c₀ b)) negε (lamPts (cK T N a) (cK T N b)) (lam_comm T N (push_cK T N a) (push_cK T N b)) (T.τ₀ a b) (𝟙 _) (fun k => by rw [Category.id_comp]; exact lamPts_w _ _ k) hJ`. Rewrite `h₂` using `[Category.id_comp]`. Conclude with `(val_mulU (L := (Mp T N).L) (unitOn (kU W N m n T.r ε a b)) _ (𝟙 _) z J hJ).trans (congrArg _ h₂)`.
+-/
 theorem val_tauP (a b : Fin T.r → ℤ) {z : (TK (MvPowerSeries (Fin N) W)).left}
     {J : ((TK (MvPowerSeries (Fin N) W)).left ⟶ (Bp T N).left) → PUnit → T.M.L.ι} (hJ : Good (Mp T N).L z J) :
     val (tauP T N m n ε a b) (𝟙 _) z J = gm (𝟙 _) z ⊤ (unitOn (kU W N m n T.r ε a b)) *
@@ -263,12 +365,22 @@ theorem val_tauP (a b : Fin T.r → ℤ) {z : (TK (MvPowerSeries (Fin N) W)).lef
   rw [Category.id_comp] at h₂
   exact (val_mulU (L := (Mp T N).L) (unitOn (kU W N m n T.r ε a b)) _ (𝟙 _) z J hJ).trans (congrArg _ h₂)
 
+/- English proof (translation)
+Rewrite using `[val_tauP T N m n ε a b hJ, val_tauP T N m n ε b a hJ, kU_symm W N m n T.r ε hε a b, val_corr (Jd_good T N hJ) (corr_of_val T.M.isLB (T.τ₀_symm a b))]`.
+-/
 theorem tau_comm₂ (hε : ∀ k a b, ε k a b = ε k b a) (a b : Fin T.r → ℤ) {z : (TK (MvPowerSeries (Fin N) W)).left}
     {J : ((TK (MvPowerSeries (Fin N) W)).left ⟶ (Bp T N).left) → PUnit → T.M.L.ι} (hJ : Good (Mp T N).L z J) :
     val (tauP T N m n ε a b) (𝟙 _) z J = val (tauP T N m n ε b a) (𝟙 _) z J := by
   rw [val_tauP T N m n ε a b hJ, val_tauP T N m n ε b a hJ, kU_symm W N m n T.r ε hε a b,
     val_corr (Jd_good T N hJ) (corr_of_val T.M.isLB (T.τ₀_symm a b))]
 
+/- English proof (translation)
+Apply `hom_ext_triple` to reduce the goal to its premises. Introduce `i`. Establish `hL : (lift (cK T N a) (lift (cK T N a') (cK T N b))).left ≫ (x3 (Bp T N) i).left = (lift (cK T N a) (lift (cK T N a') (cK T N b)) ≫ x3 (Bp T N) i).left` using `rfl`. Establish `hR : (lift (T.c₀ a) (lift (T.c₀ a') (T.c₀ b))).left ≫ (x3 T.B i).left = (lift (T.c₀ a) (lift (T.c₀ a') (T.c₀ b)) ≫ x3 T.B i).left` using `rfl`. Rewrite using `[Category.assoc, cubeMap_comp_proj_three, ← Category.assoc, hL, Category.assoc ((TK (MvPowerSeries (Fin N) W)).hom ≫ fC N), hR]`.
+
+Take `⟨e₀, e₁, e₂⟩` from `triple_lift_comp_projections (cK T N a) (cK T N a') (cK T N b)`. Take `⟨f₀, f₁, f₂⟩` from `triple_lift_comp_projections (T.c₀ a) (T.c₀ a') (T.c₀ b)`. Use `match i with`. Consider the case `0 => rw [e₀, f₀]`. Conclude with `left_of_push T N (push_cK T N a)`.
+
+Consider the case `1 => rw [e₁, f₁]`. Conclude with `left_of_push T N (push_cK T N a')`. Consider the case `2 => rw [e₂, f₂]`. Conclude with `left_of_push T N (push_cK T N b)`.
+-/
 theorem tautBaseChange_tripleLift_left (a a' b : Fin T.r → ℤ) :
     (lift (cK T N a) (lift (cK T N a') (cK T N b))).left ≫ (cm T N).F3 =
       ((TK (MvPowerSeries (Fin N) W)).hom ≫ fC N) ≫ (lift (T.c₀ a) (lift (T.c₀ a') (T.c₀ b))).left := by
@@ -286,6 +398,11 @@ theorem tautBaseChange_tripleLift_left (a a' b : Fin T.r → ℤ) :
   | 1 => rw [e₁, f₁]; exact left_of_push T N (push_cK T N a')
   | 2 => rw [e₂, f₂]; exact left_of_push T N (push_cK T N b)
 
+/- English proof (translation)
+Establish `hc : cubV (cubP T N) z J (cK T N a) (cK T N a') (cK T N b) = val T.cub.t (((TK (MvPowerSeries (Fin N) W)).hom ≫ fC N) ≫ (lift (T.c₀ a) (lift (T.c₀ a') (T.c₀ b))).left) z (Jd T N z J)`. Use `(val_pullAlong T N (cm T N).F3 (thφ T.B (x3 T.B)) thε (thφ (Bp T N) (x3 (Bp T N))) (fun I => (cm T N).psum_comm I.down) T.cub.t (lift (cK T N a) (lift (cK T N a') (cK T N b))).left (fun I => ?_) hJ).trans ?_` and prove the remaining obligations. Use `show _ ≫ (psum _ _ _).left ≫ _ = _`. Rewrite using `[Over.w, Over.w]`. Conclude with `congrArg (fun r => val T.cub.t r z (Jd T N z J)) (tautBaseChange_tripleLift_left T N a a' b)`.
+
+Establish `corr` using `corr_of_val T.M.isLB (t := LB.mulGen T.M.L _ _ _ _ (T.τ₀ (a + a') b) (LB.pullGen T.M.L (thφ T.B (x3 T.B)) thε T.cub.t (lift (T.c₀ a) (lift (T.c₀ a') (T.c₀ b))).left)) (t' := LB.mulGen T.M.L _ _ _ _ (T.τ₀ a b) (T.τ₀ a' b)) (fun y J' hJ' => (val_mul hJ' _ _ _).trans (Eq.trans (cong …`. Establish `hJd` using `Jd_good T N hJ`. Establish `e : val (T.τ₀ (a + a') b) ((TK (MvPowerSeries (Fin N) W)).hom ≫ fC N) z (Jd T N z J) * val T.cub.t (((TK (MvPowerSeries (Fin N) W)).hom ≫ fC N) ≫ (lift (T.c₀ a) (lift (T.c₀ a') (T.c₀ b))).left) z (Jd T N z J) = val (T.τ₀ a b) ((TK (MvPowerSeries (Fin N) W)).hom ≫ fC N) z (Jd T N …` using `(congrArg (_ * ·) (val_pull hJd _ _ _).symm).trans ((val_mul hJd _ _ _).symm.trans ((val_corr hJd corr _).trans (val_mul hJd _ _ _)))`. Rewrite using `[val_tauP T N m n ε _ _ hJ, val_tauP T N m n ε _ _ hJ, val_tauP T N m n ε _ _ hJ, hc, kU_add, unitOn_mul, map_mul]`. Conclude with `alg_step e`.
+-/
 theorem tau_add_left_mul_cube (a a' b : Fin T.r → ℤ) {z : (TK (MvPowerSeries (Fin N) W)).left}
     {J : ((TK (MvPowerSeries (Fin N) W)).left ⟶ (Bp T N).left) → PUnit → T.M.L.ι} (hJ : Good (Mp T N).L z J) :
     val (tauP T N m n ε (a + a') b) (𝟙 _) z J * cubV (cubP T N) z J (cK T N a) (cK T N a') (cK T N b) =
@@ -323,6 +440,9 @@ section Main
 variable {o W : Type} [CommRing o] [CommRing W] [IsDomain W] [IsLocalRing W] (T : TautBase o W) (N m n : ℕ)
   (ε : Fin N → LinearMap.BilinForm ℤ (Fin T.r → ℤ))
 
+/- English proof (translation)
+The claim follows from `(isGen_iff _).1 (CubePf.idIsoL_isGen (Mp T N).isLB)`.
+-/
 theorem pGen_Mp : PGen (L := T.M.L) (F := pullback.fst T.B.hom (fC N)) (CubePf.idIsoL (Mp T N).L) :=
   (isGen_iff _).1 (CubePf.idIsoL_isGen (Mp T N).isLB)
 

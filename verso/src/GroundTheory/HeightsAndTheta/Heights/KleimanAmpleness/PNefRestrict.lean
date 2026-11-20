@@ -15,6 +15,9 @@ section Helpers
 
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ} {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+Establish `hf : List.finRange 1 = [0]` using `rfl`. Use `split_ifs with h`. Simplify using `[tensorSub, hf, h, twistSys_zero_twist]`. Simplify using `[tensorSub, hf, h]`.
+-/
 theorem tensorSub_single (L : SubSystem S x Ω) (T : Finset (Fin 1)) :
     tensorSub ![L] T = if (0 : Fin 1) ∈ T then L else twistSys S x 0 := by
   have hf : List.finRange 1 = [0] := rfl
@@ -24,6 +27,15 @@ theorem tensorSub_single (L : SubSystem S x Ω) (T : Finset (Fin 1)) :
 
 end Helpers
 
+/- English proof (translation)
+Introduce `k _ Ω _ _ N x K' _ _ y hxy hle M M' r hr hnef pp _ hpp`. Establish `hx : IsSubvar x pp 1` using `⟨hpp.isPrime, hpp.homog, hle.trans hpp.le, hpp.relevant, hpp.dim⟩`. Take `⟨r₀, hr₀⟩` from `hRT.1 k Ω N x K' y hxy hle 0`. Establish `hM` using `hRL k Ω N x K' y hxy hle pp 1 hpp M M' r hr`. Establish `hO` using `hRL k Ω N x K' y hxy hle pp 1 hpp (twistBundle k x 0) (twistBundle k y 0) r₀ hr₀`.
+
+Establish `heq : interSum pp ![M'.toSubSystem] =ᶠ[atTop] interSum pp ![M.toSubSystem]` using `by filter_upwards [hM, hO] with c hMc hOc`. Unfold `interSum`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Rewrite using `[tensorSub_single, tensorSub_single]`. Use `split_ifs`.
+
+Rewrite using `[hMc]`. Conclude with `congrArg _ hOc`. Establish `hnum : interNum pp ![M'.toSubSystem] = interNum pp ![M.toSubSystem]`. Unfold `interNum limUnder`. Rewrite using `[Filter.map_congr heq]`.
+
+Rewrite using `[hnum]`. Conclude with `hnef pp bot_le hx`.
+-/
 theorem NefRestrict.proof (hRT : RestrictTwist.Statement.{u, w})
     (hRL : RestrLenRestrict.Statement.{u, w}) : NefRestrict.Statement.{u, w} := by
   intro k _ Ω _ _ N x K' _ _ y hxy hle M M' r hr hnef pp _ hpp

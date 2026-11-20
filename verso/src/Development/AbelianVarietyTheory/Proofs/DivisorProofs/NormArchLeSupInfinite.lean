@@ -10,18 +10,36 @@ open scoped Classical
 
 namespace GlobalTheory.ThetaDecay
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem archAt_eq_ext (F : Type) [Field F] [NumberField F] (w : InfinitePlace F) (a : AF F) :
     archAt F w a = InfinitePlace.Completion.extensionEmbedding w (a.1 w) := rfl
 
+/- English proof (translation)
+Rewrite using `[archAt_eq_ext, evI, InfiniteAdeleRing.ringEquiv_mixedSpace_apply, InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply]`.
+-/
 theorem evI_fst (F : Type) [Field F] [NumberField F] (a : AF F) (v : {w : InfinitePlace F // w.IsReal}) :
     ((evI F a).1 v : ℂ) = archAt F v.1 a := by
   rw [archAt_eq_ext, evI, InfiniteAdeleRing.ringEquiv_mixedSpace_apply,
     InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply]
 
+/- English proof (translation)
+Rewrite using `[archAt_eq_ext, evI, InfiniteAdeleRing.ringEquiv_mixedSpace_apply]`.
+-/
 theorem evI_snd (F : Type) [Field F] [NumberField F] (a : AF F) (v : {w : InfinitePlace F // w.IsComplex}) :
     (evI F a).2 v = archAt F v.1 a := by
   rw [archAt_eq_ext, evI, InfiniteAdeleRing.ringEquiv_mixedSpace_apply]
 
+/- English proof (translation)
+Introduce `F _ _ a`. Use `⟨fun w => ?_, fun B hB h => ?_⟩` and prove the remaining obligations. Break down `w.isReal_or_isComplex with hw | hw` into its components or cases. Establish `e` using `evI_fst F a ⟨w, hw⟩`. Establish `: ‖archAt F w a‖ = ‖(evI F a).1 ⟨w, hw⟩‖`.
+
+Rewrite using `[← e, Complex.norm_real]`. Rewrite using `[this]`. Conclude with `(norm_le_pi_norm _ _).trans (norm_fst_le _)`. Establish `e` using `evI_snd F a ⟨w, hw⟩`. Establish `: ‖archAt F w a‖ = ‖(evI F a).2 ⟨w, hw⟩‖` using `by rw [e]`.
+
+Rewrite using `[this]`. Conclude with `(norm_le_pi_norm _ _).trans (norm_snd_le _)`. Rewrite using `[Prod.norm_def, max_le_iff]`. Use `⟨(pi_norm_le_iff_of_nonneg hB).2 fun v => ?_, (pi_norm_le_iff_of_nonneg hB).2 fun v => ?_⟩` and prove the remaining obligations. Use `h v.1` as an intermediate fact.
+
+Rewrite `this` using `[← evI_fst F a v, Complex.norm_real]`. Conclude with `this`. Use `h v.1` as an intermediate fact. Rewrite `this` using `[← evI_snd F a v]`. Conclude with `this`.
+-/
 theorem norm_evI_sup : ∀ (F : Type) [Field F] [NumberField F] (a : AF F),
     (∀ w, ‖archAt F w a‖ ≤ ‖evI F a‖) ∧ ∀ B : ℝ, 0 ≤ B → (∀ w, ‖archAt F w a‖ ≤ B) → ‖evI F a‖ ≤ B := by
   intro F _ _ a

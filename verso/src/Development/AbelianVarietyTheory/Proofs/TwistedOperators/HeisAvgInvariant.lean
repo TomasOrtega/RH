@@ -9,6 +9,19 @@ noncomputable section
 
 namespace GlobalTheory.FinDecomp
 
+/- English proof (translation)
+Introduce `D ψ S T Λ m lam hlam _ g hg b hb`. Establish `hsm : ∀ (x : WO S T) (c : ℂ) (f : WO S T → ℂ), heisO ψ S T x (c • f) = c • heisO ψ S T x f`. Introduce `x c f`. Use function extensionality and compare the values at `w`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hsumlin : ∀ (x : WO S T) (F : Qm m Λ → WO S T → ℂ), heisO ψ S T x (∑ q, F q) = ∑ q, heisO ψ S T x (F q)`. Introduce `x F`. Use function extensionality and compare the values at `w`. Simplify using `only [heisO, Finset.sum_apply, Finset.mul_sum]`.
+
+Establish `hmul : ∀ x ∈ Λ, ∀ y ∈ Λ, lam x • heisO ψ S T x (lam y • heisO ψ S T y g) = lam (x + y) • heisO ψ S T (x + y) g`. Introduce `x hx y hy`. Rewrite using `[hsm, GlobalTheory.FinTranslate.heisO_heisO, smul_smul, smul_smul, hlam x hx y hy]`. Establish `key : ∀ q : Qm m Λ, lam b • heisO ψ S T b (lam (repm q) • heisO ψ S T (repm q) g) = lam (repm ((QuotientAddGroup.mk (⟨b, hb⟩ : Λ) : Qm m Λ) + q)) • heisO ψ S T (repm ((QuotientAddGroup.mk (⟨b, hb⟩ : Λ) : Qm m Λ) + q)) g`. Introduce `q`.
+
+Establish `hbq : b + repm q ∈ Λ` using `Λ.add_mem hb (repm_mem q)`. Rewrite using `[hmul b hb _ (repm_mem q)]`. Establish `hmk : (QuotientAddGroup.mk (⟨b + repm q, hbq⟩ : Λ) : Qm m Λ) = (QuotientAddGroup.mk (⟨b, hb⟩ : Λ) : Qm m Λ) + q` using `by conv_rhs => rw [← mk_repm q]`. Both sides reduce to the same expression. Establish `h1` using `repm_mk_sub (m := m) hbq`.
+
+Rewrite `h1` using `[hmk]`. Take `⟨l, hl, hl'⟩` from `mem_mLat.1 h1`. Establish `he : repm ((QuotientAddGroup.mk (⟨b, hb⟩ : Λ) : Qm m Λ) + q) = (b + repm q) + m • l`. Rewrite using `[hl']`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[he, ← hmul _ hbq _ (Λ.nsmul_mem hl m), hg l hl]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsumlin, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun q _ => key q`. Use `_ = _ := Equiv.sum_comp (Equiv.addLeft (QuotientAddGroup.mk (⟨b, hb⟩ : Λ) : Qm m Λ)) (fun q => lam (repm q) • heisO ψ S T (repm q) g)`.
+-/
 theorem heisAvg_invariant : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (Λ : AddSubgroup (WO S T)) (m : ℕ)
     (lam : WO S T → ℂ), (∀ x ∈ Λ, ∀ y ∈ Λ, lam (x + y) = lam x * lam y * ψ (symplOH S T x y)) →
     ∀ [Fintype (Qm m Λ)] (g : WO S T → ℂ), (∀ l ∈ Λ, lam (m • l) • heisO ψ S T (m • l) g = g) →

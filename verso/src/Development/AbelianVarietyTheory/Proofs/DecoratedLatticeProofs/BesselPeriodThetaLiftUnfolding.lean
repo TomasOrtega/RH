@@ -49,6 +49,17 @@ def orthZero (S : HSp D) : OrthDec S S (zeroSp D) where
   orth := by ext i; exact Fin.elim0 (show Fin 0 from i)
   rank_add := rfl
 
+/- English proof (translation)
+Introduce `D hD ψ ρ B J s φ G Φ hφ hG hΦ`. Take `⟨om', hom'⟩` from `(hD ψ B.V J.W s.χV s.χW s.om s.weil).1 B.V₀ ρ B.d`. Take `⟨hcont, hinv, -, hval⟩` from `GlobalTheory.T.unfoldedBesselJacobiKernel_laws D ψ ρ B J s om' hom' φ G Φ hφ hG hΦ`. Take `⟨hΓc, hΓd, hfd⟩` from `GlobalTheory.T.rational_unitary_subgroup_countable_discrete_fundDomain D J.W (GQ J.W ⊓ jacGrp J.d) inf_le_left`. Use `haveI := s.vW.haar`.
+
+Take `⟨𝓑, h𝓑⟩` from `hfd s.vW.μ s.vW.haar`. Take `⟨hint, hper⟩` from `hfub D hD ψ ρ B J s φ G Φ hφ hG hΦ 𝓑 h𝓑`. Take `⟨-, -, -, -, hemb, hrat⟩` from `GlobalTheory.T.unfolding_base_point_fourierJacobi_group D J.W J.W₀ ρ J.d`. Take `⟨-, -, -, -, hconj, hinj, -⟩` from `GlobalTheory.MixPer.flag_jacobi_structure D J.W J.W₀ ρ J.d`. Establish `hclN` using `(GlobalTheory.T.flag_subgroups_closed_normal_cocompact' D J.W J.W₀ ρ J.d).1`.
+
+Take `⟨⟨hRcl, hRhaar⟩, -⟩` from `GlobalTheory.T.fourierJacobi_bessel_groups_closed_haar_product D J.W J.W₀ J.W₀ (zeroSp D) ρ J.d (orthZero J.W₀) J.vN.ν J.vN.𝓝 J.vN.unit`. Take `⟨hνh, h𝓝, -⟩` from `J.vN.unit`. Establish `hμR : (semiMeas (flagN J.d) J.d.emb0 J.v0.μ J.vN.ν).IsHaarMeasure` using `hRhaar J.v0.μ J.v0.haar`. Take `⟨𝓡, h𝓡, hsem⟩` from `GlobalTheory.T.semidirect_haar_measure_fundamental_domain D J.W J.W₀ (flagN J.d) J.d.emb0 hemb hclN hconj hinj hrat J.v0 J.vN.ν J.vN.𝓝 hνh h𝓝 hμR`. Establish `hK : Measurable (kerBF s φ G Φ)` using `hcont.measurable`.
+
+Establish `hmeas : ∀ h, Measurable fun g => kerBF s φ G Φ (g * h)` using `fun h => (hcont.comp (continuous_mul_right h)).measurable`. Establish `key` using `GlobalTheory.T.integral_quotient_eq_mean_intermediate_subgroup (GA D J.W) s.vW.μ (jacGrp J.d) (GQ J.W ⊓ jacGrp J.d) inf_le_right hRcl hΓc hΓd J.μR hμR 𝓡 𝓑 h𝓡 h𝓑 (kerBF s φ G Φ) hK hinv hint (fun h => ((hsem (fun g => kerBF s φ G Φ (g * h)) (hmeas h)).1).2 (hcpt D ρ J _ hcont hinv …`. Establish `hfun : (fun h => ∫ r in 𝓡, kerBF s φ G Φ ((r : GA D J.W) * h) ∂J.μR) = fun h => J.perAll ψ B s.om₀ φ (rTrans h G) (flatBF s (s.om (1, h) Φ))`. Use function extensionality and compare the values at `h`. Use `((hsem (fun g => kerBF s φ G Φ (g * h)) (hmeas h)).2 (hcpt D ρ J _ hcont hinv h)).trans ?_` and prove the remaining obligations.
+
+Simplify using `only [JacLev.perAll, fjAll]`. Use `congrArg _ (funext fun h' => congrArg _ (funext fun n => ?_))` and prove the remaining obligations. Conclude with `hval h h' n`. Rewrite `key` using `[hfun, ← hper]`. Conclude with `key`.
+-/
 theorem unfBF_of_parts
     (hcpt : ∀ (D : D7) (ρ : ℕ) (J : JacLev D ρ) (K : GA D J.W → ℂ), Continuous K →
       (∀ γ ∈ GQ J.W ⊓ jacGrp J.d, ∀ h, K (γ * h) = K h) →
@@ -91,6 +102,9 @@ theorem unfBF_of_parts
   rw [hfun, ← hper] at key
   exact key
 
+/- English proof (translation)
+The claim follows from `unfBF_of_parts GlobalTheory.T.fourierJacobi_invariant_function_integrable GlobalTheory.T.besselPeriod_thetaLift_eq_integral_kernel`.
+-/
 theorem unfBF : ∀ D : D7, Descent D → UnfBF D :=
   unfBF_of_parts GlobalTheory.T.fourierJacobi_invariant_function_integrable GlobalTheory.T.besselPeriod_thetaLift_eq_integral_kernel
 

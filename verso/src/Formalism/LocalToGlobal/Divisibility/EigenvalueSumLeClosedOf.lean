@@ -43,10 +43,16 @@ def ZscFix3 (A3 : FamIn3 K G Pl0 I0 Ty T m) (P0 : Subgroup G) (ψ0 : P0 →* Kˣ
   let z := ZscOfNum3 A3 P0 ψ0 Nd eJz Nc Zs
   { z with l6m := fun j => z.l6m j - Cf * z.l6u, l6u := 0 }
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => rfl, fun _ => rfl, fun _ => rfl, fun _ => rfl, fun _ => rfl, fun _ => rfl, fun _ => rfl⟩`.
+-/
 theorem closedScale3_fix (A3 : FamIn3 K G Pl0 I0 Ty T m) (P0 : Subgroup G) (ψ0 : P0 →* Kˣ) (Nd : NumDatum)
     (eJz : A3.fam3.base3.J ≃ Fin Nd.R.m) (Nc Cf : ℝ) : ClosedScale3 A3 Nd eJz Nc (ZscFix3 A3 P0 ψ0 Nd eJz Nc Cf) :=
   ⟨fun _ _ => rfl, fun _ => rfl, fun _ => rfl, fun _ => rfl, fun _ => rfl, fun _ => rfl, fun _ => rfl⟩
 
+/- English proof (translation)
+Use `show (∑ ρ : RPl Nd.R, Nd.logHook ((eJz j).1 + 1) ρ) - Cf * ((Nd.R.f : ℝ) * (Nd.R.nV : ℝ) ^ 2 * Nd.Lp) - C * 0 = _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem levelSix_fixed_eq (A3 : FamIn3 K G Pl0 I0 Ty T m) (P0 : Subgroup G) (ψ0 : P0 →* Kˣ) (Nd : NumDatum)
     (eJz : A3.fam3.base3.J ≃ Fin Nd.R.m) (Nc Cf : ℝ) (Zs : DefSub A3.fam3.amb3) (C : ℝ) (j : A3.fam3.base3.J) :
     (ZscFix3 A3 P0 ψ0 Nd eJz Nc Cf Zs).l6m j - C * (ZscFix3 A3 P0 ψ0 Nd eJz Nc Cf Zs).l6u =
@@ -64,19 +70,31 @@ variable {A3 : FamIn3 K G Pl0 I0 Ty T m} {Nd : NumDatum} {eJz : A3.fam3.base3.J 
 variable (hZ : ClosedScale3 A3 Nd eJz Nc Zsc)
   (eJ : A3.fam3.base3.J ≃ Fin Nd.R.m) (δ : Code Nd) (Tl : ℕ) (lam0 C0 ce Ch Sw C1 : ℝ) (H : Nd.NumFacts δ Nc lam0 C0 ce Ch Sw C1)
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem twentyEight_le_constant (h : 28 ≤ C0) : 28 ≤ (RecNums.ofNum Nd eJ δ Tl Nc lam0 C0 ce Ch Sw C1 H).C0 := h
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem logCard_le_lambda (h : Real.log (Fintype.card G) ≤ lam0) :
     Real.log (Fintype.card G) ≤ (RecNums.ofNum Nd eJ δ Tl Nc lam0 C0 ce Ch Sw C1 H).lam0 := h
 
 include hZ in
 
+/- English proof (translation)
+Use `show (Zsc Zs).la ≤ lam0`. Rewrite using `[hZ.la]`. Conclude with `h`.
+-/
 theorem logCardGroup_le_lambda (Zs : DefSub A3.fam3.amb3) (C CH : ℝ) (h : Real.log (Fintype.card G) ≤ lam0) :
     ((Zsc Zs).num C CH).la ≤ (RecNums.ofNum Nd eJ δ Tl Nc lam0 C0 ce Ch Sw C1 H).lam0 := by
   show (Zsc Zs).la ≤ lam0
   rw [hZ.la]
   exact h
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Nd.sum_lifts (fun l => (∑ ρ : RPl Nd.R, Nd.logHook l ρ) - Ch * ((Nd.R.f : ℝ) * (Nd.R.nV : ℝ) ^ 2 * Nd.Lp)) eJz]`. Use `Finset.sum_congr rfl fun l _ => by ring` and prove the remaining obligations. Use `_ ≤ ∑ j, ((Zsc Zs).num C CH).l6 j := Finset.sum_le_sum fun j _ => hl6 j`.
+-/
 theorem eigenvalue_sum_le_closed_of (Zs : DefSub A3.fam3.amb3) (C CH : ℝ)
     (hl6 : ∀ j, (∑ ρ : RPl Nd.R, Nd.logHook ((eJz j).1 + 1) ρ) - Ch * ((Nd.R.f : ℝ) * (Nd.R.nV : ℝ) ^ 2 * Nd.Lp) ≤
       (Zsc Zs).l6m j - C * (Zsc Zs).l6u) :
@@ -91,6 +109,11 @@ theorem eigenvalue_sum_le_closed_of (Zs : DefSub A3.fam3.amb3) (C CH : ℝ)
 
 include hZ in
 
+/- English proof (translation)
+Establish `hl : ∀ (e : A3.fam3.base3.J ≃ Fin Nd.R.m), ∑ j, ∑ ρ : RPl Nd.R, ((((Nd.R.k : ℝ) + (((e j).1 + 1 : ℕ) : ℝ) - 1) - ((Nd.R.m : ℝ) - (((e j).1 + 1 : ℕ) : ℝ))) * Nd.w ((e j).1 + 1) ρ * Nd.logOm) = ∑ l ∈ Nd.lifts, ∑ ρ : RPl Nd.R, (((Nd.R.k : ℝ) + (l : ℝ) - 1) - ((Nd.R.m : ℝ) - (l : ℝ)) …` using `fun e => Nd.sum_lifts (fun l => ∑ ρ : RPl Nd.R, (((Nd.R.k : ℝ) + (l : ℝ) - 1) - ((Nd.R.m : ℝ) - (l : ℝ))) * Nd.w l ρ * Nd.logOm) e`. Establish `hc : (Fintype.card A3.fam3.base3.J : ℝ) = (Nd.R.m : ℝ)` using `by rw [Fintype.card_congr eJ, Fintype.card_fin]`. Use `show ∑ j, ((Zsc Zs).l3m j + C * (Zsc Zs).l3u) ≤ _`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hc]`. Establish `e1 : ∑ j, (Zsc Zs).l3m j = ∑ l ∈ Nd.lifts, ∑ ρ : RPl Nd.R, (((Nd.R.k : ℝ) + (l : ℝ) - 1) - ((Nd.R.m : ℝ) - (l : ℝ))) * Nd.w l ρ * Nd.logOm`.
+
+Rewrite using `[← hl eJz]`. Conclude with `Finset.sum_congr rfl fun j _ => hZ.l3m Zs j`. Establish `e2 : ∑ j, ∑ ρ, (RecNums.ofNum Nd eJ δ Tl Nc lam0 C0 ce Ch Sw C1 H).pq j * (RecNums.ofNum Nd eJ δ Tl Nc lam0 C0 ce Ch Sw C1 H).w j ρ * (RecNums.ofNum Nd eJ δ Tl Nc lam0 C0 ce Ch Sw C1 H).logOm = ∑ l ∈ Nd.lifts, ∑ ρ : RPl Nd.R, (((Nd.R.k : ℝ) + (l : ℝ) - 1) - ((Nd.R.m : ℝ) - (l : ℝ …` using `hl eJ`. Rewrite using `[e1, e2]`.
+-/
 theorem levelThree_bound_closed (Zs : DefSub A3.fam3.amb3) (C CH : ℝ) :
     ∑ j, ((Zsc Zs).num C CH).l3 j ≤
       (∑ j, ∑ ρ, (RecNums.ofNum Nd eJ δ Tl Nc lam0 C0 ce Ch Sw C1 H).pq j *
@@ -116,6 +139,9 @@ theorem levelThree_bound_closed (Zs : DefSub A3.fam3.amb3) (C CH : ℝ) :
 
 include hZ in
 
+/- English proof (translation)
+Use `show 0 ≤ (Zsc Zs).de`. Rewrite using `[hZ.de]`. Check the signs of the components of the expression.
+-/
 theorem delta_nonneg (Zs : DefSub A3.fam3.amb3) (C CH : ℝ) : 0 ≤ ((Zsc Zs).num C CH).de := by
   show 0 ≤ (Zsc Zs).de
   rw [hZ.de]
@@ -123,6 +149,11 @@ theorem delta_nonneg (Zs : DefSub A3.fam3.amb3) (C CH : ℝ) : 0 ≤ ((Zsc Zs).n
 
 include hZ in
 
+/- English proof (translation)
+Use `show 3 * (Zsc Zs).de * Q ≤ 1`. Rewrite using `[hZ.de]`. Establish `hg0 : (0 : ℝ) < ((min (Nd.g 0) (Nd.g 1) : ℕ) : ℝ)`. Establish `h0` using `(Nd.g_prime 0).pos`. Establish `h1` using `(Nd.g_prime 1).pos`.
+
+Conclude with `(lt_min h0 h1)` after adjusting the coercions. Rewrite using `[show 3 * (8 * (Nd.R.f : ℝ) * (Nd.R.r : ℝ) / ((min (Nd.g 0) (Nd.g 1) : ℕ) : ℝ)) * Q = (24 * (Nd.R.f : ℝ) * (Nd.R.r : ℝ) * Q) / ((min (Nd.g 0) (Nd.g 1) : ℕ) : ℝ) by ring]`. Rewrite using `[div_le_one hg0]`. Conclude with `hg`.
+-/
 theorem delta_mul_Q_le_one (Zs : DefSub A3.fam3.amb3) (C CH Q : ℝ)
     (hg : 24 * (Nd.R.f : ℝ) * (Nd.R.r : ℝ) * Q ≤ ((min (Nd.g 0) (Nd.g 1) : ℕ) : ℝ)) :
     3 * ((Zsc Zs).num C CH).de * Q ≤ 1 := by
@@ -146,8 +177,14 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {Df0
 
 def QOfR (B : ℝ) (N : IndefNum Bs) : ℝ := max 1 (B + N.hh + 28 * N.la)
 
+/- English proof (translation)
+The claim follows from `le_max_left _ _`.
+-/
 theorem one_le_Q (B : ℝ) (N : IndefNum Bs) : 1 ≤ QOfR B N := le_max_left _ _
 
+/- English proof (translation)
+Use `le_trans ?_ (le_max_right _ _)` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem Q_ge_bound_add (P : IndefCoreR Df0 Df1 Dc Sp N) (LG E3 : ℝ) (E2 : Bs.J → ℝ) (B : ℝ) (hB : boundBR P LG E3 E2 ≤ B) :
     boundBR P LG E3 E2 + N.hh + 28 * N.la ≤ QOfR B N := by
   refine le_trans ?_ (le_max_right _ _)
@@ -161,12 +198,24 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] 
 variable {A3 : FamIn3 K G Pl0 I0 Ty T m} (Nd : NumDatum) {eJz : A3.fam3.base3.J ≃ Fin Nd.R.m} (Nc : ℝ)
   {Zsc : DefSub A3.fam3.amb3 → IndefScale A3.fam3.base3}
 
+/- English proof (translation)
+Unfold `NumDatum.unitE`. Establish `hx : 1 ≤ Nd.sc.x ^ Nd.sc.eps` using `Real.one_le_rpow Nd.sc.one_lt_alt.le Nd.sc.eps_pos.le`. Establish `hB` using `Nd.one_le_B0`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem one_le_unitE {Nc : ℝ} (hNc : 0 ≤ Nc) : 1 ≤ Nd.unitE Nc := by
   unfold NumDatum.unitE
   have hx : 1 ≤ Nd.sc.x ^ Nd.sc.eps := Real.one_le_rpow Nd.sc.one_lt_alt.le Nd.sc.eps_pos.le
   have hB := Nd.one_le_B0
   nlinarith
 
+/- English proof (translation)
+Establish `key` using `errB_of_units (Zsc Zs) C CH (RecNums.ofNum Nd eJ δ Tl Nc lam0 C0 ce Ch Sw C1 H) (lgDef (RecNums.ofNum Nd eJ δ Tl Nc lam0 C0 ce Ch Sw C1 H) s) 1 (etaSumBound bd dg s) C cG (c13 + cD) 1 hC (le_of_eq (hZ.E1u Zs)) ?_ ?_ ?_ ?_ hce`. Conclude with `key`. Use `show C * (Zsc Zs).l3u ≤ C * Nd.unitE Nc`. Rewrite using `[hZ.l3u Zs]`. Use `mul_le_mul_of_nonneg_left ?_ hC` and prove the remaining obligations.
+
+Establish `hll` using `Nd.logLog_le H.logx`. Establish `hB` using `Nd.loss_bound_nonneg`. Establish `hx : 0 ≤ Nd.sc.x ^ Nd.sc.eps` using `Real.rpow_nonneg Nd.x_pos.le _`. Establish `h1 : Nd.B0 * Real.log (Real.log Nd.sc.x) ≤ Nd.B0 * Nd.sc.x ^ Nd.sc.eps` using `mul_le_mul_of_nonneg_left hll hB`. Establish `h2 : 0 ≤ Nd.sc.x ^ Nd.sc.eps * Nc` using `mul_nonneg hx H.Nc0`.
+
+Unfold `NumDatum.unitE`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `hLam`. Introduce `j show bd j + Real.log (dg : ℝ) + Real.log (s : ℝ) ≤ (c13 + cD) * Nd.unitE Nc`. Use `hbd j` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `show (1 : ℝ) ≤ 1 * ((Nd.R.m : ℝ) * Nd.unitE Nc)`. Rewrite using `[one_mul]`. Conclude with `Nd.one_le_m_unitE H.Nc0`.
+-/
 theorem error_bound_closed_numbers (hZ : ClosedScale3 A3 Nd eJz Nc Zsc) (eJ : A3.fam3.base3.J ≃ Fin Nd.R.m) (δ : Code Nd) (Tl : ℕ)
     (lam0 C0 ce Ch Sw C1 : ℝ) (H : Nd.NumFacts δ Nc lam0 C0 ce Ch Sw C1) (Zs : DefSub A3.fam3.amb3) (C CH : ℝ) (hC : 0 ≤ C) (bd : A3.fam3.base3.J → ℝ) (dg s : ℕ)
     (c13 cG cD : ℝ) (hbd : ∀ j, bd j ≤ c13 * Nd.unitE Nc)
@@ -207,6 +256,9 @@ open Formalism.MainNotions
 
 variable {D : D7} (L : SizeData₂ D) (Del h0 : ℕ)
 
+/- English proof (translation)
+Unfold `divSize NumDatum.unitE`. Establish `e : L.B0 = (ofRecord D L Del h0).B0` using `rfl`. Rewrite using `[e]`. Use `show Ce * L.sc.x ^ L.sc.eps * ((ofRecord D L Del h0).B0 + L.Nc) = Ce * ((ofRecord D L Del h0).sc.x ^ (ofRecord D L Del h0).sc.eps * ((ofRecord D L Del h0).B0 + L.Nc))`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem divSize_eq_unitE (Ce : ℝ) : divSize L Ce = Ce * (ofRecord D L Del h0).unitE L.Nc := by
   unfold divSize NumDatum.unitE
   have e : L.B0 = (ofRecord D L Del h0).B0 := rfl
@@ -221,6 +273,9 @@ section Bundle
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty T : Type} {m : ℕ}
 
+/- English proof (translation)
+The claim follows from `eigenvalue_sum_le_closed_of eJ δ Tl lam0 C0 ce Ch Sw C1 H Pk.Zs C CH hl6 hG0 := logCard_le_lambda (A3 := A3) eJ δ Tl lam0 C0 ce Ch Sw C1 H hG l3 := ⟨(Nd.R.m : ℝ) * (C * (Zsc Pk.Zs).l3u), levelThree_bound_closed hZ eJ δ Tl lam0 C0 ce Ch Sw C1 H Pk.Zs C CH, error_bound_closed_numbe …`.
+-/
 theorem arithAt_scale3 (A3 : FamIn3 K G Pl0 I0 Ty T m) (s : ℕ) (P0 : Subgroup G) (ψ0 : P0 →* Kˣ) (P1 : Subgroup G)
     (ψ1 : P1 →* Kˣ) (Dc : ∀ Zs : DefSub A3.fam3.amb3, DefCols (A3.side3 P1 ψ1 Zs))
     (Sp : ∀ Zs : DefSub A3.fam3.amb3, SPer (Dc Zs)) (Nd : NumDatum) (eJz : A3.fam3.base3.J ≃ Fin Nd.R.m) (Nc : ℝ)
@@ -248,6 +303,9 @@ theorem arithAt_scale3 (A3 : FamIn3 K G Pl0 I0 Ty T m) (s : ℕ) (P0 : Subgroup 
   la_le := logCardGroup_le_lambda hZ eJ δ Tl lam0 C0 ce Ch Sw C1 H Pk.Zs C CH hG
   constant_ge_twenty_eight := twentyEight_le_constant (A3 := A3) eJ δ Tl lam0 C0 ce Ch Sw C1 H h28
 
+/- English proof (translation)
+The claim follows from `arithAt_scale3 A3 s P0 ψ0 P1 ψ1 Dc Sp Nd eJz Nc _ (closedScale3_fix A3 P0 ψ0 Nd eJz Nc Ch) cf C CH Pk eJ δ Tl lam0 C0 ce Ch Sw C1 H bd dg (fun j => le_of_eq (levelSix_fixed_eq A3 P0 ψ0 Nd eJz Nc Ch Pk.Zs C j).symm) hC0 h28 hG c13 cG cD hbd hLam hdg hce B hB hg`.
+-/
 theorem arithmetic_fixed_scale (A3 : FamIn3 K G Pl0 I0 Ty T m) (s : ℕ) (P0 : Subgroup G) (ψ0 : P0 →* Kˣ) (P1 : Subgroup G)
     (ψ1 : P1 →* Kˣ) (Dc : ∀ Zs : DefSub A3.fam3.amb3, DefCols (A3.side3 P1 ψ1 Zs))
     (Sp : ∀ Zs : DefSub A3.fam3.amb3, SPer (Dc Zs)) (Nd : NumDatum) (eJz : A3.fam3.base3.J ≃ Fin Nd.R.m) (Nc : ℝ)
@@ -277,6 +335,11 @@ open Formalism.MainNotions
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty T : Type} {m : ℕ}
 variable {D : D7} (L : SizeData₂ D) (Del h0 : ℕ)
 
+/- English proof (translation)
+Establish `hb1 : 1 ≤ L.sc.b` using `(ofRecord D L Del h0).one_le_b`. Establish `hb0 : 0 ≤ L.sc.b` using `by linarith`. Unfold `QOfR`. Use `max_le (by nlinarith) ?_` and prove the remaining obligations. Use `show B + (Zsc Zs).x ^ CH * (Zsc Zs).b + 28 * (Zsc Zs).la ≤ 3 * L.sc.b ^ 2`.
+
+Rewrite using `[hZ.x, hZ.b, hZ.la]`. Express the relevant statement in the definitionally equal form `B + L.sc.x ^ CH * L.sc.b + 28 * Real.log (Fintype.card G) ≤ 3 * L.sc.b ^ 2`. Use `mul_le_mul_of_nonneg_right hCH hb0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem QOfR_le_record {A3 : FamIn3 K G Pl0 I0 Ty T m} {eJz : A3.fam3.base3.J ≃ Fin (ofRecord D L Del h0).R.m} {Nc : ℝ}
     {Zsc : DefSub A3.fam3.amb3 → IndefScale A3.fam3.base3} (hZ : ClosedScale3 A3 (ofRecord D L Del h0) eJz Nc Zsc)
     (Zs : DefSub A3.fam3.amb3) (C CH B : ℝ)
@@ -292,6 +355,15 @@ theorem QOfR_le_record {A3 : FamIn3 K G Pl0 I0 Ty T m} {eJz : A3.fam3.base3.J �
   have := mul_le_mul_of_nonneg_right hCH hb0
   nlinarith
 
+/- English proof (translation)
+Establish `hb1 : 1 ≤ L.sc.b` using `(ofRecord D L Del h0).one_le_b`. Establish `hQ` using `QOfR_le_record L Del h0 hZ Zs C CH B hB hCH hG`. Establish `hQ1 : 1 ≤ QOfR B ((Zsc Zs).num C CH)` using `one_le_Q _ _`. Establish `hfr0 : 0 ≤ 24 * (D.R.f : ℝ) * (D.R.r : ℝ)` using `by positivity`. Establish `hk : (1 : ℝ) ≤ (D.R.k : ℝ)`.
+
+Establish `h2 : 2 ≤ D.R.k` using `(ofRecord D L Del h0).k_two`. Conclude with `(show 1 ≤ D.R.k by omega)` after adjusting the coercions. Establish `h8 : L.sc.b ^ 8 ≤ ((D.R.k : ℝ) * L.sc.b) ^ 8`. Apply `pow_le_pow_left₀ (by linarith)` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hmain : 24 * (D.R.f : ℝ) * (D.R.r : ℝ) * QOfR B ((Zsc Zs).num C CH) ≤ L.sc.b ^ 8`. Combine the equalities or inequalities in the displayed calculation. Establish `hg : ∀ i : Fin 2, L.sc.b ^ 8 ≤ (D.host.g i : ℝ)` using `fun i => h8.trans (hSG i i).1`. Use `show 24 * (D.R.f : ℝ) * (D.R.r : ℝ) * QOfR B ((Zsc Zs).num C CH) ≤ (((min (D.host.g 0) (D.host.g 1)) : ℕ) : ℝ)`. Rewrite using `[Nat.cast_min]`.
+
+Conclude with `le_min (hmain.trans (hg 0)) (hmain.trans (hg 1))`.
+-/
 theorem hg_of_sizeG (hSG : SizeG L) {A3 : FamIn3 K G Pl0 I0 Ty T m} {eJz : A3.fam3.base3.J ≃ Fin (ofRecord D L Del h0).R.m}
     {Nc : ℝ} {Zsc : DefSub A3.fam3.amb3 → IndefScale A3.fam3.base3} (hZ : ClosedScale3 A3 (ofRecord D L Del h0) eJz Nc Zsc)
     (Zs : DefSub A3.fam3.amb3) (C CH B : ℝ)
@@ -329,6 +401,11 @@ section FTieRec
 
 variable {D : D7} (L : SizeData₂ D) (Del h0 : ℕ) {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty T : Type} {m : ℕ}
 
+/- English proof (translation)
+Establish `hj : j ∈ SizeData₂.lifts D`. Unfold `SizeData₂.lifts`. Conclude with `Finset.mem_Icc.2 ⟨h1, h2⟩`. Rewrite using `[hFD j hj (D.plEq.symm y), ofRecord_Fval D L Del h0 hK h1 h2]`. Unfold `NumDatum.Fj`.
+
+Rewrite using `[← Formalism.L2.G.ServJoint.plc_plEq D (D.plEq.symm y), Equiv.apply_symm_apply]`.
+-/
 theorem Fj_ofRecord_eq (hK : DV.KapDef D) (hFD : L.FDef) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m)
     (y : HeightOneSpectrum (𝓞 D.what₂.LL)) : (ofRecord D L Del h0).Fj j y = L.F j (D.plEq.symm y) := by
   have hj : j ∈ SizeData₂.lifts D := by
@@ -338,6 +415,9 @@ theorem Fj_ofRecord_eq (hK : DV.KapDef D) (hFD : L.FDef) {j : ℕ} (h1 : 1 ≤ j
   unfold NumDatum.Fj
   rw [← Formalism.L2.G.ServJoint.plc_plEq D (D.plEq.symm y), Equiv.apply_symm_apply]
 
+/- English proof (translation)
+Introduce `y j`. Use `show (Zsc Zs).F0 y j = _`. Rewrite using `[hF0 Zs y j]`. Conclude with `Fj_ofRecord_eq L Del h0 hK hFD (by omega) (eJz j).2 y`.
+-/
 theorem fTie_rec (hK : DV.KapDef D) (hFD : L.FDef) {A3 : FamIn3 D.what₂.LL G Pl0 I0 Ty T m}
     (eJz : A3.fam3.base3.J ≃ Fin D.R.m) (Zsc : DefSub A3.fam3.amb3 → IndefScale A3.fam3.base3)
     (hF0 : ∀ Zs y j, (Zsc Zs).F0 y j = (ofRecord D L Del h0).Fj ((eJz j).1 + 1) y) (Zs : DefSub A3.fam3.amb3) (C CH : ℝ) :
@@ -347,6 +427,9 @@ theorem fTie_rec (hK : DV.KapDef D) (hFD : L.FDef) {A3 : FamIn3 D.what₂.LL G P
   rw [hF0 Zs y j]
   exact Fj_ofRecord_eq L Del h0 hK hFD (by omega) (eJz j).2 y
 
+/- English proof (translation)
+The claim follows from `fTie_rec L Del h0 hK hFD eJz _ (fun _ _ _ => rfl) Zs C CH`.
+-/
 theorem fixedScale_tied (hK : DV.KapDef D) (hFD : L.FDef) (A3 : FamIn3 D.what₂.LL G Pl0 I0 Ty T m) (P0 : Subgroup G)
     (ψ0 : P0 →* D.what₂.LLˣ) (eJz : A3.fam3.base3.J ≃ Fin D.R.m) (Nc Cf : ℝ) (Zs : DefSub A3.fam3.amb3) (C CH : ℝ) :
     FTie L ((ZscFix3 A3 P0 ψ0 (ofRecord D L Del h0) eJz Nc Cf Zs).num C CH) eJz :=
@@ -366,6 +449,13 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.Mai
 open Formalism.MainNotions.DIV.Proofs.HHParts (one_le_szPol f_le k_le m_le t_le N_le L_le one_le_b a_nonneg b'_nonneg one_le_X' n_pos
   k_one w''_nonneg w''_le eta_le)
 
+/- English proof (translation)
+Establish `hx0 : 0 < x` using `by linarith`. Rewrite using `[Real.rpow_def_of_pos hx0]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `hl` using `Real.log_le_rpow_div hx0.le (half_pos he)`. Establish `hT0 : 0 ≤ x ^ (e / 2)` using `Real.rpow_nonneg hx0.le _`.
+
+Establish `hxe : x ^ e = x ^ (e / 2) * x ^ (e / 2)` using `by rw [← Real.rpow_add hx0]; ring_nf`. Rewrite using `[hxe]`. Establish `h1 : Real.log x * c ≤ x ^ (e / 2) / (e / 2) * c` using `mul_le_mul_of_nonneg_right hl hc`. Establish `h2 : x ^ (e / 2) / (e / 2) * c = (2 * c / e) * x ^ (e / 2)` using `by field_simp`. Establish `h3 : (2 * c / e) * x ^ (e / 2) ≤ x ^ (e / 2) * x ^ (e / 2)` using `mul_le_mul_of_nonneg_right hT hT0`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rpow_le_exp_of {x c e : ℝ} (hx : 1 ≤ x) (he : 0 < e) (hc : 0 ≤ c) (hT : 2 * c / e ≤ x ^ (e / 2)) :
     x ^ c ≤ Real.exp (x ^ e) := by
   have hx0 : 0 < x := by linarith
@@ -380,6 +470,9 @@ theorem rpow_le_exp_of {x c e : ℝ} (hx : 1 ≤ x) (he : 0 < e) (hc : 0 ≤ c) 
   have h3 : (2 * c / e) * x ^ (e / 2) ≤ x ^ (e / 2) * x ^ (e / 2) := mul_le_mul_of_nonneg_right hT hT0
   linarith
 
+/- English proof (translation)
+Establish `h` using `Real.log_le_rpow_div (by linarith : (0 : ℝ) ≤ x) (half_pos he)`. Establish `: x ^ (e / 2) / (e / 2) = 2 / e * x ^ (e / 2)` using `by field_simp`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem log_le_half {x e : ℝ} (hx : 1 ≤ x) (he : 0 < e) : Real.log x ≤ 2 / e * x ^ (e / 2) := by
   have h := Real.log_le_rpow_div (by linarith : (0 : ℝ) ≤ x) (half_pos he)
   have : x ^ (e / 2) / (e / 2) = 2 / e * x ^ (e / 2) := by field_simp
@@ -392,12 +485,32 @@ def BigX : Prop :=
 
 variable {L}
 
+/- English proof (translation)
+The claim follows from `L.sc.one_lt_alt.le`.
+-/
 theorem x_one : 1 ≤ L.sc.x := L.sc.one_lt_alt.le
+/- English proof (translation)
+The claim follows from `lt_trans one_pos L.sc.one_lt_alt`.
+-/
 theorem x_pos' : 0 < L.sc.x := lt_trans one_pos L.sc.one_lt_alt
 
+/- English proof (translation)
+The claim follows from `Real.rpow_le_rpow_of_exponent_le x_one (by linarith [L.sc.eps_pos])`.
+-/
 theorem rpow_sixth_le_half : L.sc.x ^ (L.sc.eps / 6) ≤ L.sc.x ^ (L.sc.eps / 2) :=
   Real.rpow_le_rpow_of_exponent_le x_one (by linarith [L.sc.eps_pos])
 
+/- English proof (translation)
+Establish `hx9 : 9 ≤ L.sc.x` using `by linarith [hB.1]`. Establish `hP` using `Formalism.MainNotions.DIV.Proofs.szPol_le_rpow hS hx9`. Establish `hP1` using `one_le_szPol L`. Use `set Q := max L.Ct 5 + 3 with hQ`. Establish `hQ0 : 0 ≤ Q` using `by have := le_max_right L.Ct 5; linarith`.
+
+Establish `h1 : szPol L ^ e ≤ (L.sc.x ^ Q) ^ e` using `pow_le_pow_left₀ (by linarith) hP e`. Establish `h2 : (L.sc.x ^ Q) ^ e = L.sc.x ^ (Q * e)` using `by rw [← Real.rpow_natCast, ← Real.rpow_mul x_pos'.le]`. Establish `h3 : L.sc.x ^ (Q * e) ≤ L.sc.x ^ (8 * Q)`. Apply `Real.rpow_le_rpow_of_exponent_le x_one` to reduce the goal to its premises. Establish `: (e : ℝ) ≤ 8` using `by exact_mod_cast he`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `heps` using `L.sc.eps_pos`. Establish `h4 : L.sc.x ^ (8 * Q) ≤ Real.exp (L.sc.x ^ (L.sc.eps / 3))`. Apply `rpow_le_exp_of x_one (by linarith) (by linarith)` to reduce the goal to its premises. Establish `e1 : 2 * (8 * Q) / (L.sc.eps / 3) = 48 * Q / L.sc.eps` using `by field_simp; ring`.
+
+Establish `e2 : L.sc.eps / 3 / 2 = L.sc.eps / 6` using `by ring`. Rewrite using `[e1, e2]`. Establish `: 0 ≤ 6 / L.sc.eps` using `by positivity`. Combine the linear relations using `[hB.2]`. Unfold `Scale.X'`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem P_le_X' (hS : SizesAt L) (hB : BigX L) {e : ℕ} (he : e ≤ 8) : szPol L ^ e ≤ L.sc.X' := by
   have hx9 : 9 ≤ L.sc.x := by linarith [hB.1]
   have hP := Formalism.MainNotions.DIV.Proofs.szPol_le_rpow hS hx9
@@ -421,14 +534,29 @@ theorem P_le_X' (hS : SizesAt L) (hB : BigX L) {e : ℕ} (he : e ≤ 8) : szPol 
   unfold Scale.X'
   linarith
 
+/- English proof (translation)
+Unfold `Scale.X' Scale.b Scale.L`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Conclude with `Real.rpow_le_rpow_of_exponent_le x_one (by linarith [L.sc.eps_pos])`.
+-/
 theorem X'_le_b : L.sc.X' ≤ L.sc.b := by
   unfold Scale.X' Scale.b Scale.L
   apply Real.exp_le_exp.mpr
   exact Real.rpow_le_rpow_of_exponent_le x_one (by linarith [L.sc.eps_pos])
 
+/- English proof (translation)
+The claim follows from `(P_le_X' hS hB he).trans X'_le_b`.
+-/
 theorem P_le_b (hS : SizesAt L) (hB : BigX L) {e : ℕ} (he : e ≤ 8) : szPol L ^ e ≤ L.sc.b :=
   (P_le_X' hS hB he).trans X'_le_b
 
+/- English proof (translation)
+Establish `heps` using `L.sc.eps_pos`. Establish `hl` using `log_le_half (x_one (L := L)) heps`. Use `set T := L.sc.x ^ (L.sc.eps / 2) with hT`. Establish `hT1 : 2 / L.sc.eps ≤ T`. Establish `h` using `hB.2`.
+
+Establish `: 0 ≤ 48 * (max L.Ct 5 + 3) / L.sc.eps`. Use `le_max_right L.Ct 5` as an intermediate fact. Apply `div_nonneg (by linarith) heps.le` to reduce the goal to its premises. Establish `: 2 / L.sc.eps ≤ 6 / L.sc.eps` using `div_le_div_of_nonneg_right (by norm_num) heps.le`. Combine the linear relations using `[rpow_sixth_le_half (L := L)]`.
+
+Establish `hT0 : 0 ≤ T` using `Real.rpow_nonneg x_pos'.le _`. Establish `hLT : L.sc.L = T * T` using `by show L.sc.x ^ L.sc.eps = _`. Rewrite using `[hT, ← Real.rpow_add x_pos']`. Put the polynomial expressions in normal form. Rewrite using `[hLT]`.
+
+Use `mul_le_mul_of_nonneg_right hT1 hT0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem logx_le_L (hB : BigX L) : Real.log L.sc.x ≤ L.sc.L := by
   have heps := L.sc.eps_pos
   have hl := log_le_half (x_one (L := L)) heps
@@ -450,6 +578,9 @@ theorem logx_le_L (hB : BigX L) : Real.log L.sc.x ≤ L.sc.L := by
 
 variable (L) (Del h0 : ℕ)
 
+/- English proof (translation)
+Use `show ((D.R.N D.R.m : ℕ) : ℝ) ^ 2 ≤ L.sc.b`. Establish `h` using `N_le L`. Establish `h0 : (0 : ℝ) ≤ ((D.R.N D.R.m : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Conclude with `(pow_le_pow_left₀ h0 h 2).trans (P_le_b hS hB (by norm_num))`.
+-/
 theorem rank_sq_le_b (hS : SizesAt L) (hB : BigX L) :
     ((ofRecord D L Del h0).Nm : ℝ) ^ 2 ≤ (ofRecord D L Del h0).sc.b := by
   show ((D.R.N D.R.m : ℕ) : ℝ) ^ 2 ≤ L.sc.b
@@ -457,6 +588,13 @@ theorem rank_sq_le_b (hS : SizesAt L) (hB : BigX L) :
   have h0 : (0 : ℝ) ≤ ((D.R.N D.R.m : ℕ) : ℝ) := Nat.cast_nonneg _
   exact (pow_le_pow_left₀ h0 h 2).trans (P_le_b hS hB (by norm_num))
 
+/- English proof (translation)
+Use `show (D.R.m : ℝ) ^ 3 * ((D.R.N D.R.m : ℕ) : ℝ) ^ 2 * L.sc.L ≤ L.sc.b`. Establish `hm` using `m_le L`. Establish `hN` using `N_le L`. Establish `hL` using `L_le L`. Establish `hm0 : (0 : ℝ) ≤ D.R.m` using `Nat.cast_nonneg _`.
+
+Establish `hN0 : (0 : ℝ) ≤ ((D.R.N D.R.m : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `hL0 : 0 ≤ L.sc.L` using `(Formalism.MainNotions.DIV.Proofs.HHParts.sc_L_pos L).le`. Establish `hP0 : (0 : ℝ) ≤ szPol L` using `by linarith [one_le_szPol L]`. Establish `hP3 : (0 : ℝ) ≤ szPol L ^ 3` using `pow_nonneg hP0 3`. Establish `hP32 : (0 : ℝ) ≤ szPol L ^ 3 * szPol L ^ 2` using `by positivity`.
+
+Establish `h1 : (D.R.m : ℝ) ^ 3 * ((D.R.N D.R.m : ℕ) : ℝ) ^ 2 * L.sc.L ≤ szPol L ^ 3 * szPol L ^ 2 * szPol L` using `by gcongr`. Establish `h2 : szPol L ^ 3 * szPol L ^ 2 * szPol L = szPol L ^ 6` using `by ring`. Combine the linear relations using `[P_le_b hS hB (e := 6) (by norm_num)]`.
+-/
 theorem cube_rank_sq_le_b (hS : SizesAt L) (hB : BigX L) :
     ((ofRecord D L Del h0).R.m : ℝ) ^ 3 * ((ofRecord D L Del h0).Nm : ℝ) ^ 2 * (ofRecord D L Del h0).sc.L ≤
       (ofRecord D L Del h0).sc.b := by
@@ -473,6 +611,11 @@ theorem cube_rank_sq_le_b (hS : SizesAt L) (hB : BigX L) :
   have h2 : szPol L ^ 3 * szPol L ^ 2 * szPol L = szPol L ^ 6 := by ring
   linarith [P_le_b hS hB (e := 6) (by norm_num)]
 
+/- English proof (translation)
+Use `show (D.R.k : ℝ) * ((D.R.N D.R.m : ℕ) : ℝ) ≤ L.sc.b`. Establish `hk` using `k_le L`. Establish `hN` using `N_le L`. Establish `hk0 : (0 : ℝ) ≤ D.R.k` using `Nat.cast_nonneg _`. Establish `hN0 : (0 : ℝ) ≤ ((D.R.N D.R.m : ℕ) : ℝ)` using `Nat.cast_nonneg _`.
+
+Establish `hP0 : (0 : ℝ) ≤ szPol L` using `by linarith [one_le_szPol L]`. Establish `h1 : (D.R.k : ℝ) * ((D.R.N D.R.m : ℕ) : ℝ) ≤ szPol L * szPol L` using `by gcongr`. Establish `h2` using `P_le_b hS hB (e := 2) (by norm_num)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem nf_kN (hS : SizesAt L) (hB : BigX L) :
     ((ofRecord D L Del h0).R.k : ℝ) * ((ofRecord D L Del h0).Nm : ℝ) ≤ (ofRecord D L Del h0).sc.b := by
   show (D.R.k : ℝ) * ((D.R.N D.R.m : ℕ) : ℝ) ≤ L.sc.b
@@ -484,6 +627,11 @@ theorem nf_kN (hS : SizesAt L) (hB : BigX L) :
   have h2 := P_le_b hS hB (e := 2) (by norm_num)
   nlinarith
 
+/- English proof (translation)
+Use `show L.sc.b' * ((D.R.N D.R.m : ℕ) : ℝ) ≤ L.sc.a`. Establish `hN` using `N_le L`. Establish `hX` using `P_le_X' hS hB (e := 1) (by norm_num)`. Rewrite `hX` using `[pow_one]`. Establish `hX1` using `one_le_X' L`.
+
+Establish `ha` using `a_nonneg L`. Unfold `Scale.b'`. Rewrite using `[div_mul_eq_mul_div, div_le_iff₀ (by linarith)]`. Conclude with `mul_le_mul_of_nonneg_left (hN.trans hX) ha`.
+-/
 theorem nf_bN (hS : SizesAt L) (hB : BigX L) :
     (ofRecord D L Del h0).sc.b' * ((ofRecord D L Del h0).Nm : ℝ) ≤ (ofRecord D L Del h0).sc.a := by
   show L.sc.b' * ((D.R.N D.R.m : ℕ) : ℝ) ≤ L.sc.a
@@ -496,6 +644,13 @@ theorem nf_bN (hS : SizesAt L) (hB : BigX L) :
   rw [div_mul_eq_mul_div, div_le_iff₀ (by linarith)]
   exact mul_le_mul_of_nonneg_left (hN.trans hX) ha
 
+/- English proof (translation)
+Use `show (D.R.m : ℝ) * (D.R.k : ℝ) * L.sc.b' ≤ L.sc.a`. Establish `hm` using `m_le L`. Establish `hk` using `k_le L`. Establish `hm0 : (0 : ℝ) ≤ D.R.m` using `Nat.cast_nonneg _`. Establish `hk0 : (0 : ℝ) ≤ D.R.k` using `Nat.cast_nonneg _`.
+
+Establish `hX` using `P_le_X' hS hB (e := 2) (by norm_num)`. Establish `hX1` using `one_le_X' L`. Establish `ha` using `a_nonneg L`. Establish `h1 : (D.R.m : ℝ) * (D.R.k : ℝ) ≤ L.sc.X'`. Establish `hP0 : (0 : ℝ) ≤ szPol L` using `by linarith [one_le_szPol L]`.
+
+Establish `: (D.R.m : ℝ) * (D.R.k : ℝ) ≤ szPol L * szPol L` using `by gcongr`. Use the polynomial consequences of the given equalities and inequalities. Unfold `Scale.b'`. Rewrite using `[mul_div_assoc', div_le_iff₀ (by linarith)]`. Conclude with `mul_le_mul_of_nonneg_right h1 ha |>.trans_eq (mul_comm _ _)`.
+-/
 theorem nf_mkb (hS : SizesAt L) (hB : BigX L) :
     ((ofRecord D L Del h0).R.m : ℝ) * ((ofRecord D L Del h0).R.k : ℝ) * (ofRecord D L Del h0).sc.b' ≤
       (ofRecord D L Del h0).sc.a := by
@@ -514,6 +669,13 @@ theorem nf_mkb (hS : SizesAt L) (hB : BigX L) :
   rw [mul_div_assoc', div_le_iff₀ (by linarith)]
   exact mul_le_mul_of_nonneg_right h1 ha |>.trans_eq (mul_comm _ _)
 
+/- English proof (translation)
+Use `show ((D.R.N D.R.m : ℕ) : ℝ) * L.sc.w'' D.R.n ≤ L.sc.b`. Establish `hN` using `N_le L`. Establish `hX` using `P_le_X' hS hB (e := 1) (by norm_num)`. Rewrite `hX` using `[pow_one]`. Establish `hX1` using `one_le_X' L`.
+
+Establish `hn` using `n_pos hS.1`. Establish `hx` using `x_pos' (L := L)`. Establish `hb` using `one_le_b L`. Establish `hw : L.sc.w'' D.R.n = L.sc.b / (L.sc.X' * D.R.n)`. Unfold `Scale.w'' Scale.b' Scale.a`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[hw, mul_div_assoc', div_le_iff₀ (by positivity)]`. Establish `h1 : ((D.R.N D.R.m : ℕ) : ℝ) ≤ L.sc.X' * D.R.n` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem nf_Nw (hS : SizesAt L) (hB : BigX L) :
     ((ofRecord D L Del h0).Nm : ℝ) * (ofRecord D L Del h0).sc.w'' (ofRecord D L Del h0).R.n ≤ (ofRecord D L Del h0).sc.b := by
   show ((D.R.N D.R.m : ℕ) : ℝ) * L.sc.w'' D.R.n ≤ L.sc.b
@@ -531,6 +693,11 @@ theorem nf_Nw (hS : SizesAt L) (hB : BigX L) :
   have h1 : ((D.R.N D.R.m : ℕ) : ℝ) ≤ L.sc.X' * D.R.n := by nlinarith
   nlinarith
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hDl, -⟩` from `hS`. Establish `e : (ofRecord D L Del h0).Sc = L.Sc`. Rewrite using `[L.Sc_eq]`. Use `show (D.R.k : ℝ) * (4 * (Del : ℝ)) = (D.R.k : ℝ) * (4 * ((D.s.Del : ℚ) : ℝ))`. Rewrite using `[hDel]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hDl.2.2.2.1`.
+-/
 theorem nf_kS (hS : SizesAt L) (hDel : D.s.Del = (Del : ℚ)) :
     ((ofRecord D L Del h0).R.k : ℝ) * (ofRecord D L Del h0).Sc ≤ (ofRecord D L Del h0).sc.w'' (ofRecord D L Del h0).R.n := by
   obtain ⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hDl, -⟩ := hS
@@ -541,6 +708,9 @@ theorem nf_kS (hS : SizesAt L) (hDel : D.s.Del = (Del : ℚ)) :
   rw [e]
   exact hDl.2.2.2.1
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, hE, -⟩` from `hS`. Establish `e : (ofRecord D L Del h0).eta = L.etaSz` using `by rw [hh0]; rfl`. Rewrite using `[e]`. Conclude with `hE.2.2.2.2.1`.
+-/
 theorem nf_blkW (hS : SizesAt L) (hh0 : L.etaSz = (D.R.m : ℝ) * (h0 : ℝ)) :
     ((ofRecord D L Del h0).R.m : ℝ) * (((ofRecord D L Del h0).R.t : ℝ) + 1) * (ofRecord D L Del h0).eta ≤
       (ofRecord D L Del h0).sc.w'' (ofRecord D L Del h0).R.n := by
@@ -549,16 +719,28 @@ theorem nf_blkW (hS : SizesAt L) (hh0 : L.etaSz = (D.R.m : ℝ) * (h0 : ℝ)) :
   rw [e]
   exact hE.2.2.2.2.1
 
+/- English proof (translation)
+Unfold `SizeData₂.Nc budgetNc rankBudget bSize`. Use `x_pos' (L := L)` as an intermediate fact. Check the signs of the components of the expression.
+-/
 theorem cloudConstant_nonneg : 0 ≤ L.Nc := by
   unfold SizeData₂.Nc budgetNc rankBudget bSize
   have := x_pos' (L := L)
   positivity
 
+/- English proof (translation)
+The claim follows from `Real.log_nonneg (by exact_mod_cast Fintype.card_pos)`.
+-/
 theorem logCardGroup_nonneg (G : Type) [Group G] [Fintype G] : 0 ≤ Real.log (Fintype.card G : ℝ) :=
   Real.log_nonneg (by exact_mod_cast Fintype.card_pos)
 
+/- English proof (translation)
+The claim follows from `logx_le_L hB`.
+-/
 theorem nf_logx (hB : BigX L) : Real.log (ofRecord D L Del h0).sc.x ≤ (ofRecord D L Del h0).sc.L := logx_le_L hB
 
+/- English proof (translation)
+Establish `hrt : D.R.r + 5 ≤ D.R.t`. Use `D.R.rank_add_five_le` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Conclude with `(by omega : 5 ≤ D.R.t)` after adjusting the coercions.
+-/
 theorem t_five : (5 : ℝ) ≤ D.R.t := by
   have hrt : D.R.r + 5 ≤ D.R.t := by
     have := D.R.rank_add_five_le
@@ -566,6 +748,9 @@ theorem t_five : (5 : ℝ) ≤ D.R.t := by
     omega
   exact_mod_cast (by omega : 5 ≤ D.R.t)
 
+/- English proof (translation)
+Establish `hrt : D.R.r + 5 ≤ D.R.t`. Use `D.R.rank_add_five_le` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Conclude with `(by omega : D.R.r ≤ D.R.t)` after adjusting the coercions.
+-/
 theorem r_le_alt_alt : (D.R.r : ℝ) ≤ D.R.t := by
   have hrt : D.R.r + 5 ≤ D.R.t := by
     have := D.R.rank_add_five_le
@@ -573,6 +758,23 @@ theorem r_le_alt_alt : (D.R.r : ℝ) ≤ D.R.t := by
     omega
   exact_mod_cast (by omega : D.R.r ≤ D.R.t)
 
+/- English proof (translation)
+Establish `hN` using `hS.1`. Take `⟨-, -, hK, hKR, -, -, -, -, -, -, -, -, -, hE, -⟩` from `hS`. Establish `e : (ofRecord D L Del h0).eta = L.etaSz` using `by rw [hh0]; rfl`. Rewrite using `[e, (ofRecord D L Del h0).Nm_cast]`. Use `show (D.R.m : ℝ) * L.etaSz * ((D.R.k : ℝ) + (D.R.m : ℝ) * ((D.R.t : ℝ) + 1)) * L.sc.L ≤ L.sc.b`.
+
+Establish `hmL : (D.R.m : ℝ) ^ 2 * L.sc.L ≤ D.R.k` using `hKR.2.2.2.2.1`. Establish `hm1 : (1 : ℝ) ≤ D.R.m` using `by exact_mod_cast (by have := D.R.two_le_m; omega : 1 ≤ D.R.m)`. Establish `hL1 : 1 ≤ L.sc.L` using `le_of_lt (Formalism.L2.DIV.NumDatum.one_lt_L (ofRecord D L Del h0))`. Establish `hmk : (D.R.m : ℝ) ≤ D.R.k` using `by nlinarith`. Establish `hLk : L.sc.L ≤ D.R.k`.
+
+Establish `hm2 : (1 : ℝ) ≤ (D.R.m : ℝ) ^ 2` using `by nlinarith`. Establish `: L.sc.L ≤ (D.R.m : ℝ) ^ 2 * L.sc.L` using `by nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ht` using `t_five (D := D)`. Establish `hk1` using `k_one hK`.
+
+Establish `hn` using `n_pos hN`. Establish `hf : (1 : ℝ) ≤ D.R.f` using `by rw [Formalism.MainNotions.DIV.Proofs.HHParts.f_eq]; linarith`. Establish `hE0 : 0 ≤ L.etaSz` using `L.etaSz_pos.le`. Establish `hEb : L.etaSz ≤ L.sc.b / ((D.R.t : ℝ) ^ 3 * D.R.f * (D.R.k : ℝ) ^ 3)` using `hE.2.1`. Establish `hM : 0 < (D.R.t : ℝ) ^ 3 * D.R.f * (D.R.k : ℝ) ^ 3` using `by positivity`.
+
+Establish `hEM : L.etaSz * ((D.R.t : ℝ) ^ 3 * D.R.f * (D.R.k : ℝ) ^ 3) ≤ L.sc.b`. Rewrite `hEb` using `[le_div_iff₀ hM]`. Then use the resulting hypothesis. Establish `hNk : (D.R.k : ℝ) + (D.R.m : ℝ) * ((D.R.t : ℝ) + 1) ≤ 3 * D.R.k * D.R.t` using `by nlinarith`. Establish `hk0 : (0 : ℝ) ≤ D.R.k` using `by linarith`. Establish `hA : (D.R.m : ℝ) * ((D.R.k : ℝ) + (D.R.m : ℝ) * ((D.R.t : ℝ) + 1)) * L.sc.L ≤ (D.R.k : ℝ) * (3 * D.R.k * D.R.t) * D.R.k`.
+
+Establish `h0 : (0 : ℝ) ≤ (D.R.k : ℝ) + (D.R.m : ℝ) * ((D.R.t : ℝ) + 1)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `hB3 : (D.R.k : ℝ) * (3 * D.R.k * D.R.t) * D.R.k ≤ (D.R.t : ℝ) ^ 3 * D.R.f * (D.R.k : ℝ) ^ 3`. Establish `ht2 : (3 : ℝ) ≤ (D.R.t : ℝ) ^ 2` using `by nlinarith`. Establish `ht3 : 3 * (D.R.t : ℝ) ≤ (D.R.t : ℝ) ^ 3`.
+
+Establish `e : (D.R.t : ℝ) ^ 3 = (D.R.t : ℝ) ^ 2 * D.R.t` using `by ring`. Rewrite using `[e]`. Use the polynomial consequences of the given equalities and inequalities. Establish `ht30 : (0 : ℝ) ≤ (D.R.t : ℝ) ^ 3` using `by positivity`. Establish `h3 : 3 * (D.R.t : ℝ) ≤ (D.R.t : ℝ) ^ 3 * D.R.f` using `by nlinarith`.
+
+Establish `hk3 : (0 : ℝ) ≤ (D.R.k : ℝ) ^ 3` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `hC` using `hA.trans hB3`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem nf_eta (hS : SizesAt L) (hh0 : L.etaSz = (D.R.m : ℝ) * (h0 : ℝ)) :
     ((ofRecord D L Del h0).R.m : ℝ) * (ofRecord D L Del h0).eta * ((ofRecord D L Del h0).Nm : ℝ) *
       (ofRecord D L Del h0).sc.L ≤ (ofRecord D L Del h0).sc.b := by
@@ -622,6 +824,11 @@ theorem nf_eta (hS : SizesAt L) (hh0 : L.etaSz = (D.R.m : ℝ) * (h0 : ℝ)) :
     _ ≤ L.etaSz * ((D.R.t : ℝ) ^ 3 * D.R.f * (D.R.k : ℝ) ^ 3) := mul_le_mul_of_nonneg_left hC hE0
     _ ≤ L.sc.b := hEM
 
+/- English proof (translation)
+Establish `heps` using `L.sc.eps_pos`. Establish `h` using `hB.2`. Establish `: 0 ≤ 48 * (max L.Ct 5 + 3) / L.sc.eps`. Use `le_max_right L.Ct 5` as an intermediate fact. Apply `div_nonneg (by linarith) heps.le` to reduce the goal to its premises.
+
+Combine the linear relations using `[rpow_sixth_le_half (L := L)]`.
+-/
 theorem T_big (hB : BigX L) : 6 / L.sc.eps + 2 ≤ L.sc.x ^ (L.sc.eps / 2) := by
   have heps := L.sc.eps_pos
   have h := hB.2
@@ -630,10 +837,30 @@ theorem T_big (hB : BigX L) : 6 / L.sc.eps + 2 ≤ L.sc.x ^ (L.sc.eps / 2) := by
     apply div_nonneg (by linarith) heps.le
   linarith [rpow_sixth_le_half (L := L)]
 
+/- English proof (translation)
+Use `show L.sc.x ^ L.sc.eps = _`. Rewrite using `[← Real.rpow_add x_pos']`. Put the polynomial expressions in normal form.
+-/
 theorem L_eq_TT : L.sc.L = L.sc.x ^ (L.sc.eps / 2) * L.sc.x ^ (L.sc.eps / 2) := by
   show L.sc.x ^ L.sc.eps = _
   rw [← Real.rpow_add x_pos']; ring_nf
 
+/- English proof (translation)
+Rewrite using `[ofRecord_rd D L Del h0]`. Use `show Real.log D.host.rdE ≤ L.sc.L`. Establish `hN` using `hS.1`. Establish `hQD : SizeQD L` using `hS.2.2.2.2.2.2.1`. Establish `hq` using `Formalism.MainNotions.DIV.Proofs.HHParts.q_pos hQD`.
+
+Establish `hd` using `Formalism.MainNotions.DIV.Proofs.HHParts.d_pos hQD`. Take `⟨-, -, hq2, -, hd2, -, hr1, hr2⟩` from `hQD`. Establish `hn` using `n_pos hN`. Establish `heps` using `L.sc.eps_pos`. Establish `heps'` using `L.sc.eps_lt`.
+
+Establish `hx1` using `x_one (L := L)`. Establish `hx0` using `x_pos' (L := L)`. Use `set T := L.sc.x ^ (L.sc.eps / 2) with hT`. Establish `hT1 : 1 ≤ T` using `Real.one_le_rpow hx1 (by linarith)`. Establish `hTb` using `T_big L hB`.
+
+Establish `hQ3 : (D.host.QS : ℝ) / 2 ≤ 2 * L.sc.x ^ (3 : ℝ)`. Establish `hQ` using `L.QS_tie`. Establish `hθ : 0 ≤ L.sc.x ^ (L.sc.eps / 100)` using `Real.rpow_nonneg hx0.le _`. Establish `hn3 : (D.R.n : ℝ) * L.sc.x ^ (L.sc.eps / 100) ≤ L.sc.x ^ (3 : ℝ)`. Use `(mul_le_mul_of_nonneg_right hN.2 hθ).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← Real.rpow_add hx0]`. Use `Real.rpow_le_rpow_of_exponent_le hx1 ?_` and prove the remaining obligations. Unfold `szTh`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hx3 : 0 < L.sc.x ^ (3 : ℝ)` using `Real.rpow_pos_of_pos hx0 _`. Establish `h1 : Real.log D.host.rdE ≤ Real.log 2 + 3 * Real.log L.sc.x + (Real.log D.host.q + Real.log D.host.d) / 2`. Establish `hr3 : D.host.rdE ≤ 2 * L.sc.x ^ (3 : ℝ) * Real.sqrt ((D.host.q : ℝ) * D.host.d)` using `hr2.trans (mul_le_mul_of_nonneg_right hQ3 (Real.sqrt_nonneg _))`. Use `(Real.log_le_log (by linarith) hr3).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_mul (by norm_num) (by positivity), Real.log_sqrt (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_rpow hx0]`.
+
+Establish `hqT : Real.log D.host.q ≤ T` using `hq2.trans (Real.rpow_le_rpow_of_exponent_le hx1 (by unfold szTh; linarith))`. Establish `hdT : Real.log D.host.d ≤ T` using `hd2.trans (Real.rpow_le_rpow_of_exponent_le hx1 (by unfold szTh; linarith))`. Establish `hlx` using `log_le_half hx1 heps`. Establish `hl2 : Real.log 2 ≤ 1` using `by have := Real.log_two_lt_d9; linarith`. Rewrite using `[L_eq_TT L]`.
+
+Establish `hk : 6 / L.sc.eps * T + T + 1 ≤ T * T` using `by nlinarith`. Establish `e3 : 3 * (2 / L.sc.eps * T) = 6 / L.sc.eps * T` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem nf_logrd (hS : SizesAt L) (hB : BigX L) :
     Real.log (ofRecord D L Del h0).rd ≤ (ofRecord D L Del h0).sc.L := by
   rw [ofRecord_rd D L Del h0]
@@ -679,6 +906,21 @@ theorem nf_logrd (hS : SizesAt L) (hB : BigX L) :
   have e3 : 3 * (2 / L.sc.eps * T) = 6 / L.sc.eps * T := by ring
   linarith
 
+/- English proof (translation)
+Rewrite using `[ofRecord_logOm D L Del h0, ofRecord_La D L Del h0]`. Take `⟨-, -, -, -, -, -, hQD, -⟩` from `hS`. Take `⟨-, -, -, -, -, hdl, hr1, -⟩` from `hQD`. Establish `hx0` using `x_pos' (L := L)`. Establish `hb0 : 0 < L.sc.b` using `by have := one_le_b L; linarith`.
+
+Establish `hr0 : 0 < D.host.rdE` using `by linarith`. Establish `hlr : 0 ≤ Real.log D.host.rdE` using `Real.log_nonneg hr1`. Establish `hLa : L.La = Real.log L.sc.x + L.sc.L + Real.log D.host.rdE`. Unfold `SizeData₂.La Scale.a`. Rewrite using `[Real.log_mul (by positivity) hr0.ne', Real.log_mul hx0.ne' hb0.ne']`.
+
+Unfold `Scale.b`. Rewrite using `[Real.log_exp]`. Establish `hOm : L.logOm = Real.eulerMascheroniConstant + (Real.log Real.pi + Real.log 2 - Real.log D.host.rdE) - L.logDerivativeAtOne`. Unfold `SizeData₂.logOm Host.v`. Rewrite using `[div_div_eq_mul_div, Real.log_div (by positivity) hr0.ne', Real.log_mul Real.pi_pos.ne' (by norm_num)]`.
+
+Rewrite using `[hLa, hOm]`. Establish `hg1` using `Real.eulerMascheroniConstant_lt_two_thirds`. Establish `hg0 : 0 ≤ Real.eulerMascheroniConstant` using `by have := Real.one_half_lt_eulerMascheroniConstant; linarith`. Establish `hpi : Real.log Real.pi ≤ 2 * Real.log 2`. Rewrite using `[← Real.log_rpow (by norm_num : (0:ℝ) < 2)]`.
+
+Conclude with `Real.log_le_log Real.pi_pos (by have := Real.pi_lt_four; norm_num; linarith)`. Establish `hpi0 : 0 ≤ Real.log Real.pi` using `Real.log_nonneg (by linarith [Real.pi_gt_three])`. Establish `hl2` using `Real.log_two_gt_d9`. Establish `hl20 : 0 ≤ Real.log 2` using `by linarith`. Establish `hx16 : 4 * Real.log 2 ≤ Real.log L.sc.x`.
+
+Establish `: Real.log 16 ≤ Real.log L.sc.x` using `Real.log_le_log (by norm_num) hB.1`. Establish `e : Real.log 16 = 4 * Real.log 2`. Rewrite using `[show (16 : ℝ) = 2 ^ 4 by norm_num, Real.log_pow]; norm_num`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdl'` using `abs_le.1 hdl`.
+
+Establish `hLx : L.sc.x ^ L.sc.eps = L.sc.L` using `rfl`. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> nlinarith [hdl'.1, hdl'.2]`.
+-/
 theorem nf_Om (hS : SizesAt L) (hB : BigX L) : |(ofRecord D L Del h0).logOm| ≤ (ofRecord D L Del h0).La := by
   rw [ofRecord_logOm D L Del h0, ofRecord_La D L Del h0]
   obtain ⟨-, -, -, -, -, -, hQD, -⟩ := hS
@@ -714,6 +956,25 @@ theorem nf_Om (hS : SizesAt L) (hB : BigX L) : |(ofRecord D L Del h0).logOm| ≤
   rw [abs_le]
   constructor <;> nlinarith [hdl'.1, hdl'.2]
 
+/- English proof (translation)
+Use `show (D.R.m : ℝ) * Real.log (Fintype.card G : ℝ) ≤ L.sc.b`. Establish `hS'` using `hS`. Establish `hK` using `hS.2.2.1`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hSG, -⟩` from `hS`. Establish `hg0 : (0 : ℝ) < D.host.g 0` using `by exact_mod_cast (D.host.g_prime 0).pos`.
+
+Establish `hlam : Real.log (Fintype.card G : ℝ) ≤ 2 * (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * Real.log (2 * (D.host.g 0 : ℝ))`. Establish `h` using `GZeroLogBound D (D.host.g 0 : ℝ) (fun i => (hSG i 0).2.1)`. Rewrite using `[hc]`. Conclude with `h`. Establish `hL1 : 1 ≤ L.sc.L` using `le_of_lt (Formalism.L2.DIV.NumDatum.one_lt_L (ofRecord D L Del h0))`.
+
+Establish `hth` using `Formalism.MainNotions.DIV.Proofs.HHParts.xth_le (L := L)`. Establish `hlg : Real.log (2 * (D.host.g 0 : ℝ)) ≤ 2 * L.sc.L ^ 2`. Rewrite using `[Real.log_mul (by norm_num) hg0.ne']`. Establish `h1` using `(hSG 0 0).2.2`. Establish `h2 : L.sc.x ^ szTh L * L.sc.L ≤ L.sc.L * L.sc.L` using `mul_le_mul_of_nonneg_right hth (by linarith)`.
+
+Establish `h3` using `Real.log_two_lt_d9`. Use the polynomial consequences of the given equalities and inequalities. Establish `hP1` using `one_le_szPol L`. Establish `hP0 : (0 : ℝ) ≤ szPol L` using `by linarith`. Establish `hm` using `m_le L`.
+
+Establish `hf` using `f_le L`. Establish `hL` using `L_le L`. Establish `hr : (D.R.r : ℝ) ≤ szPol L` using `(r_le_alt_alt (D := D)).trans (t_le L)`. Establish `hm0 : (0 : ℝ) ≤ D.R.m` using `Nat.cast_nonneg _`. Establish `hf0 : (0 : ℝ) ≤ D.R.f` using `Nat.cast_nonneg _`.
+
+Establish `hr0 : (0 : ℝ) ≤ D.R.r` using `Nat.cast_nonneg _`. Establish `hL0 : (0 : ℝ) ≤ L.sc.L` using `by linarith`. Establish `hP4 : 16 ≤ szPol L` using `hB.1.trans (Formalism.MainNotions.DIV.Proofs.HHParts.x_le L hK)`. Establish `hlog0 : 0 ≤ Real.log (Fintype.card G : ℝ)` using `Real.log_nonneg (by exact_mod_cast Fintype.card_pos)`. Establish `h1 : (D.R.m : ℝ) * Real.log (Fintype.card G : ℝ) ≤ (D.R.m : ℝ) * (2 * (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * (2 * L.sc.L ^ 2))`.
+
+Apply `mul_le_mul_of_nonneg_left _ hm0` to reduce the goal to its premises. Conclude with `hlam.trans (mul_le_mul_of_nonneg_left hlg (by positivity))`. Establish `h2 : (D.R.m : ℝ) * (2 * (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * (2 * L.sc.L ^ 2)) ≤ 4 * (szPol L * (szPol L * szPol L ^ 2 * szPol L ^ 2))`. Establish `e : (D.R.m : ℝ) * (2 * (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * (2 * L.sc.L ^ 2)) = 4 * ((D.R.m : ℝ) * ((D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * L.sc.L ^ 2))` using `by ring`. Rewrite using `[e]`.
+
+Use `gcongr`. Establish `h3 : 4 * (szPol L * (szPol L * szPol L ^ 2 * szPol L ^ 2)) ≤ szPol L ^ 7`. Establish `e : szPol L ^ 7 = szPol L * (szPol L * (szPol L * szPol L ^ 2 * szPol L ^ 2))` using `by ring`. Rewrite using `[e]`. Establish `: (0 : ℝ) ≤ szPol L * (szPol L * szPol L ^ 2 * szPol L ^ 2)` using `by positivity`.
+
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear relations using `[P_le_b hS' hB (e := 7) (by norm_num)]`.
+-/
 theorem nf_lam (G : Type) [Group G] [Fintype G] (hS : SizesAt L) (hB : BigX L) (hc : Fintype.card G = D.what₂.restRowsFiniteGroupCard) :
     ((ofRecord D L Del h0).R.m : ℝ) * Real.log (Fintype.card G : ℝ) ≤ (ofRecord D L Del h0).sc.b := by
   show (D.R.m : ℝ) * Real.log (Fintype.card G : ℝ) ≤ L.sc.b
@@ -761,6 +1022,15 @@ theorem nf_lam (G : Type) [Group G] [Fintype G] (hS : SizesAt L) (hB : BigX L) (
     nlinarith
   linarith [P_le_b hS' hB (e := 7) (by norm_num)]
 
+/- English proof (translation)
+Establish `hN` using `hS.1`. Take `⟨-, -, hK, -, -, -, -, -, -, -, -, -, -, hE, -⟩` from `hS`. Establish `ht` using `t_five (D := D)`. Establish `hk1` using `k_one hK`. Establish `hn` using `n_pos hN`.
+
+Establish `hf : (1 : ℝ) ≤ D.R.f` using `by rw [Formalism.MainNotions.DIV.Proofs.HHParts.f_eq]; linarith`. Establish `hb` using `one_le_b L`. Establish `hM : (2 : ℝ) ≤ (D.R.t : ℝ) ^ 3 * D.R.f * (D.R.k : ℝ) ^ 3`. Establish `h1 : (1 : ℝ) ≤ (D.R.k : ℝ) ^ 3` using `one_le_pow₀ hk1`. Establish `h2 : (2 : ℝ) ≤ (D.R.t : ℝ) ^ 3`.
+
+Use `pow_le_pow_left₀ (by norm_num : (0:ℝ) ≤ 2) (show (2:ℝ) ≤ D.R.t by linarith) 3` as an intermediate fact. Evaluate the numerical expressions using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : (2 : ℝ) ≤ (D.R.t : ℝ) ^ 3 * D.R.f` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use `hE.2.1.trans ?_` and prove the remaining obligations. Conclude with `div_le_div_of_nonneg_left (by linarith) (by norm_num) hM`.
+-/
 theorem eta_half (hS : SizesAt L) : L.etaSz ≤ L.sc.b / 2 := by
   have hN := hS.1
   obtain ⟨-, -, hK, -, -, -, -, -, -, -, -, -, -, hE, -⟩ := hS
@@ -780,6 +1050,13 @@ theorem eta_half (hS : SizesAt L) : L.etaSz ≤ L.sc.b / 2 := by
   refine hE.2.1.trans ?_
   exact div_le_div_of_nonneg_left (by linarith) (by norm_num) hM
 
+/- English proof (translation)
+Establish `hK` using `hS.2.2.1`. Establish `hxP` using `Formalism.MainNotions.DIV.Proofs.HHParts.x_le L hK`. Establish `hP16 : 16 ≤ szPol L` using `hB.1.trans hxP`. Establish `hX` using `P_le_X' hS hB (e := 2) (by norm_num)`. Establish `hX1` using `one_le_X' L`.
+
+Establish `hx0` using `x_pos' (L := L)`. Establish `hb` using `one_le_b L`. Establish `h4x : 4 * L.sc.x ≤ L.sc.X'` using `by nlinarith`. Unfold `Scale.b' Scale.a`. Rewrite using `[div_le_div_iff₀ (by linarith) (by norm_num)]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem b'_quarter (hS : SizesAt L) (hB : BigX L) : L.sc.b' ≤ L.sc.b / 4 := by
   have hK := hS.2.2.1
   have hxP := Formalism.MainNotions.DIV.Proofs.HHParts.x_le L hK
@@ -793,6 +1070,29 @@ theorem b'_quarter (hS : SizesAt L) (hB : BigX L) : L.sc.b' ≤ L.sc.b / 4 := by
   rw [div_le_div_iff₀ (by linarith) (by norm_num)]
   nlinarith
 
+/- English proof (translation)
+Introduce `j h1 h2 z`. Rewrite using `[ofRecord_w D L Del h0 h1 z]`. Use `show wj D j (tauPl D z) ≤ 2 * L.sc.b`. Establish `hN` using `hS.1`. Establish `hK` using `hS.2.2.1`.
+
+Establish `hRho : SizeRho L` using `hS.2.2.2.2.2.2.2.2.2.1`. Establish `hBot : SizeBot L` using `hS.2.2.2.2.2.2.2.2.2.2.1`. Establish `hLa : SizeLa L` using `hS.2.2.2.2.2.2.2.2.1`. Establish `hEh` using `eta_half L hS`. Establish `hb'q` using `b'_quarter L hS hB`.
+
+Establish `hb` using `one_le_b L`. Establish `hb'0` using `b'_nonneg L`. Establish `hx0` using `x_pos' (L := L)`. Establish `hXb` using `X'_le_b (L := L)`. Establish `hxP` using `Formalism.MainNotions.DIV.Proofs.HHParts.x_le L hK`.
+
+Establish `hX` using `P_le_X' hS hB (e := 1) (by norm_num)`. Rewrite `hX` using `[pow_one]`. Establish `hb16 : 16 ≤ L.sc.b` using `by linarith [hB.1]`. Establish `h2' : j ≤ D.R.m` using `h2`. Use `set τ := tauPl D z`.
+
+Break down `Formalism.MainNotions.DIV.Proofs.HHParts.top_or τ with ⟨t, ht⟩ | hnt` into its components or cases. Take `⟨-, w2⟩` from `L.win_top j h1 h2' τ t ht`. Establish `hbt` using `hBot t`. Establish `hk0 : (0 : ℝ) < D.R.k` using `by linarith [k_one hK]`. Establish `hLaG` using `Formalism.MainNotions.DIV.Proofs.HHParts.LaG_pos hLa`.
+
+Establish `hNst : 0 ≤ szNst L`. Unfold `szNst Scale.delta1`. Use `x_pos' (L := L)` as an intermediate fact. Check the signs of the components of the expression. Establish `hxe : 0 ≤ L.sc.x ^ L.sc.eps` using `Real.rpow_nonneg hx0.le _`.
+
+Establish `hq : szNst L * L.sc.x ^ L.sc.eps * L.LaG / D.R.k ≤ 1`. Establish `h2t : 0 ≤ L.sc.x ^ szTh L * Real.log L.sc.x * L.LaG / D.R.k`. Use `Real.log_nonneg (x_one (L := L))` as an intermediate fact. Use `Real.rpow_nonneg hx0.le (szTh L)` as an intermediate fact. Check the signs of the components of the expression.
+
+Establish `hxm2 : L.sc.x ^ (-2 : ℝ) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos (x_one (L := L)) (by norm_num)`. Establish `hR` using `hRho`. Unfold `SizeRho at hR`. Establish `e : 4 * szNst L * L.sc.x ^ L.sc.eps * L.LaG / D.R.k = 4 * (szNst L * L.sc.x ^ L.sc.eps * L.LaG / D.R.k)` using `by ring`. Rewrite `hR` using `[e]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbt2 : (L.bT t : ℝ) ≤ 2 * L.sc.b'`. Establish `e : szNst L * L.sc.x ^ L.sc.eps * L.LaG * L.sc.b' / D.R.k = (szNst L * L.sc.x ^ L.sc.eps * L.LaG / D.R.k) * L.sc.b'` using `by ring`. Rewrite `hbt` using `[e]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hbx : L.sc.b' / L.sc.x ≤ L.sc.b'` using `div_le_self hb'0 (x_one (L := L))`. Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `hth : (D.eTau τ : D.R.GG) ∈ D.host.thickPlaces`. Take `⟨-, w2⟩` from `L.win_thick j h1 h2' τ hth`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hthin : D.host.IsThin (D.eTau τ : D.R.GG)` using `⟨(D.eTau τ).2, hnt, hth⟩`. Take `⟨-, w2⟩` from `L.win_thin j h1 h2' τ hthin`. Establish `hw` using `w''_le (L := L) hN`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem size_le_two_b (hS : SizesAt L) (hB : BigX L) :
     ∀ j, 1 ≤ j → j ≤ (ofRecord D L Del h0).R.m → ∀ z, (ofRecord D L Del h0).w j z ≤ 2 * (ofRecord D L Del h0).sc.b := by
   intro j h1 h2 z
@@ -851,6 +1151,13 @@ theorem size_le_two_b (hS : SizesAt L) (hB : BigX L) :
       have hw := w''_le (L := L) hN
       linarith
 
+/- English proof (translation)
+Use `⟨hx16, ?_⟩` and prove the remaining obligations. Establish `heps` using `L.sc.eps_pos`. Use `set c := 48 * (max L.Ct 5 + 3) / L.sc.eps + 6 / L.sc.eps + 2 with hc`. Establish `hc0 : 0 ≤ c`. Use `le_max_right L.Ct 5` as an intermediate fact.
+
+Establish `: 0 ≤ 48 * (max L.Ct 5 + 3) / L.sc.eps` using `div_nonneg (by linarith) heps.le`. Establish `: 0 ≤ 6 / L.sc.eps` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : (c ^ (6 / L.sc.eps)) ^ (L.sc.eps / 6) ≤ L.sc.x ^ (L.sc.eps / 6)` using `Real.rpow_le_rpow (Real.rpow_nonneg hc0 _) hx (by positivity)`. Establish `h2 : (c ^ (6 / L.sc.eps)) ^ (L.sc.eps / 6) = c`.
+
+Rewrite using `[← Real.rpow_mul hc0, show 6 / L.sc.eps * (L.sc.eps / 6) = 1 by field_simp, Real.rpow_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem bigX_of (hx16 : 16 ≤ L.sc.x)
     (hx : (48 * (max L.Ct 5 + 3) / L.sc.eps + 6 / L.sc.eps + 2) ^ (6 / L.sc.eps) ≤ L.sc.x) : BigX L := by
   refine ⟨hx16, ?_⟩
@@ -879,6 +1186,15 @@ open Formalism.BasicNotions Formalism.L2.DIV Formalism.MainNotions.G
 
 variable {D : D7} (L : SizeData₂ D) (Del h0 : ℕ)
 
+/- English proof (translation)
+Establish `e : ((D.eTau (tauPl D z) : D.R.Psi) : D.R.GG) = plGG D z`. Unfold `tauPl`. Rewrite using `[Equiv.apply_symm_apply]`. Rewrite using `[e]`. Unfold `Host.topPlaces`.
+
+Rewrite using `[Finset.mem_image]`. Take `⟨β, t⟩` from `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t', ht', h⟩`. Consider the cases of `β`.
+
+Establish `h2 : D.R.tau1 t' = D.R.tau1 t` using `h`. Establish `h3 : t' = t` using `D.R.toFrame.tau1_injective h2`. Conclude with `⟨rfl, h3 ▸ ht'⟩`. Conclude with `absurd (show D.R.tau1 t' = D.R.tau2 t from h) (D.R.toFrame.ramifiedTau1_ne_ramifiedTau2 t' t)`. Introduce and unpack `⟨h1, h2⟩`.
+
+Establish `h1' : β = false` using `h1`. Substitute `h1'` using the available equality. Conclude with `⟨t, h2, rfl⟩`.
+-/
 theorem tauPl_top_iff (z : Bool × HH D) :
     ((D.eTau (tauPl D z) : D.R.Psi) : D.R.GG) ∈ D.host.topPlaces ↔
       (z.1 = false ∧ z.2 ∈ D.host.TT) := by
@@ -902,6 +1218,13 @@ theorem tauPl_top_iff (z : Bool × HH D) :
     subst h1'
     exact ⟨t, h2, rfl⟩
 
+/- English proof (translation)
+Introduce `z i h`. Rewrite using `[ofRecord_uW D L Del h0 hDel u z, ofRecord_uW D L Del h0 hDel u z]`. Establish `hi : i < D.R.k - 1` using `by have : i + 1 < D.R.k := h; omega`. Establish `hs : (ofRecord D L Del h0).sigPar z i = (D.hc (tauPl D z)).v ⟨i, hi⟩`. Unfold `NumDatum.sigPar`.
+
+Rewrite using `[dif_pos hi]`. Rewrite using `[hs]`. Establish `hv : (D.hcW u (tauPl D z)).v = (D.hc (tauPl D z)).v` using `D.hcW_v u _`. Establish `h1` using `(D.hcW u (tauPl D z)).u_gt_v ⟨i, hi⟩`. Establish `h2` using `(D.hcW u (tauPl D z)).v_gt_u ⟨i, hi⟩`.
+
+Rewrite `h1`, `h2` using `[hv]`. Conclude with `⟨h1, h2⟩`.
+-/
 theorem nf_inter_rec (hDel : D.s.Del = (Del : ℚ)) (u : D.what₂.Word) :
     ∀ z (i : ℕ) (h : i + 1 < (ofRecord D L Del h0).R.k),
       (ofRecord D L Del h0).sigPar z i < (ofRecord D L Del h0).uW (letterOf D L Del h0 u) z ⟨i, by omega⟩ ∧
@@ -923,22 +1246,42 @@ def swRec : ℝ := (1 + |L.Cc|) * L.Sc
 
 def constantOneChoice : ℝ := 2 * (1 + |L.Cc|)
 
+/- English proof (translation)
+Unfold `NumDatum.Sc`. Rewrite using `[L.Sc_eq, hDel]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem Sc_rec (hDel : D.s.Del = (Del : ℚ)) : (ofRecord D L Del h0).Sc = L.Sc := by
   unfold NumDatum.Sc
   rw [L.Sc_eq, hDel]
   push_cast
   rfl
 
+/- English proof (translation)
+Unfold `constantOneChoice`. Use `abs_nonneg L.Cc` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem nf_C1two_rec : 2 ≤ constantOneChoice L := by
   unfold constantOneChoice
   have := abs_nonneg L.Cc
   linarith
 
+/- English proof (translation)
+Rewrite using `[Sc_rec L Del h0 hDel]`. Unfold `swRec constantOneChoice`. Use polynomial arithmetic with `[L.Sc_pos]`.
+-/
 theorem nf_C1S_rec (hDel : D.s.Del = (Del : ℚ)) : 2 * swRec L ≤ constantOneChoice L * (ofRecord D L Del h0).Sc := by
   rw [Sc_rec L Del h0 hDel]
   unfold swRec constantOneChoice
   nlinarith [L.Sc_pos]
 
+/- English proof (translation)
+Introduce `z hz`. Establish `hk : 5 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; have := D.R.two_le_m; omega`. Establish `hnt : ((D.eTau (tauPl D z) : D.R.Psi) : D.R.GG) ∉ D.host.topPlaces` using `fun h => hz ((tauPl_top_iff z).1 h)`. Use `set τ := tauPl D z with hτ`. Establish `hext` using `P5.uk_extreme τ (by omega) hnt`.
+
+Establish `hv` using `(L.cloud_v τ ⟨D.R.k - 2, by omega⟩).1`. Establish `hv0` using `(L.cloud_v τ ⟨0, by omega⟩).2`. Establish `hg` using `(L.cloud_gap τ (by omega) hnt).2`. Prove the components needed by the constructor for the conclusion. Use `show 0 ≤ (D.hc τ).u ⟨D.R.k - 1, by omega⟩ + ((D.R.k : ℚ) - 1) / 2`.
+
+Rewrite using `[hext]`. Establish `hv' : (0 : ℚ) ≤ (D.hc τ).v ⟨D.R.k - 2, by omega⟩` using `by exact_mod_cast hv`. Establish `hk' : (5 : ℚ) ≤ D.R.k` using `by exact_mod_cast hk`. Combine the linear equalities and inequalities to obtain the conclusion. Use `show ((((D.hc τ).u ⟨0, by omega⟩ - ((D.R.k : ℚ) - 1) / 2 : ℚ)) : ℝ) ≤ swRec L`.
+
+Unfold `swRec`. Move the coercions through the operations in `at hg ⊢`. Establish `hk' : (5 : ℝ) ≤ D.R.k` using `by exact_mod_cast hk`. Establish `hS` using `L.Sc_pos`. Establish `hC : L.Cc * L.Sc ≤ |L.Cc| * L.Sc` using `mul_le_mul_of_nonneg_right (le_abs_self _) hS.le`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem nf_off_rec (P5 : ParameterChoice' D L) :
     ∀ z : RPl (ofRecord D L Del h0).R, ¬ (z.1 = false ∧ z.2 ∈ (ofRecord D L Del h0).TT) →
       0 ≤ ((ofRecord D L Del h0).hc z).u ⟨(ofRecord D L Del h0).R.k - 1, by have := (ofRecord D L Del h0).R.m_add_three_le_k; omega⟩ +
@@ -968,6 +1311,27 @@ theorem nf_off_rec (P5 : ParameterChoice' D L) :
     have hC : L.Cc * L.Sc ≤ |L.Cc| * L.Sc := mul_le_mul_of_nonneg_right (le_abs_self _) hS.le
     nlinarith
 
+/- English proof (translation)
+Introduce `t ht`. Establish `hk : 5 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; have := D.R.two_le_m; omega`. Establish `hk0 : 0 < D.R.k` using `by omega`. Use `set τ := tauPl D (false, t) with hτ`. Establish `htop : (D.eTau τ : D.R.GG) = D.R.tau1 (⟨t, ht⟩ : D.host.TT)`.
+
+Rewrite using `[hτ]`. Unfold `tauPl`. Rewrite using `[Equiv.apply_symm_apply]`. Both sides reduce to the same expression. Establish `hu` using `L.top_u τ ⟨t, ht⟩ hk0 htop`.
+
+Establish `hv` using `(L.cloud_v τ ⟨D.R.k - 2, by omega⟩).1`. Establish `hv0` using `(L.cloud_v τ ⟨0, by omega⟩).2`. Establish `ha` using `(L.aT_win ⟨t, ht⟩).1`. Establish `hb` using `L.bT_ge ⟨t, ht⟩`. Establish `ha0 : 0 ≤ L.sc.a` using `le_of_lt (mul_pos (lt_trans zero_lt_one L.sc.one_lt_alt) (Real.exp_pos _))`.
+
+Establish `hb0 : 0 ≤ L.sc.b'` using `div_nonneg ha0 (Real.exp_pos _).le`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e` using `ofRecord_aT D L Del h0 ⟨t, ht⟩`. Establish `: (0 : ℝ) ≤ (((ofRecord D L Del h0).aT t : ℚ) : ℝ)` using `by rw [e]; linarith`. Conclude with `this` after adjusting the coercions.
+
+Establish `: (0 : ℝ) ≤ (((ofRecord D L Del h0).bT t : ℚ) : ℝ)`. Unfold `NumDatum.bT`. Use `push_cast`. Establish `hu2 : ((((ofRecord D L Del h0).hc (false, t)).u ⟨(ofRecord D L Del h0).R.k - 1, by show D.R.k - 1 < D.R.k; omega⟩ : ℚ) : ℝ) = -(L.bT ⟨t, ht⟩ : ℝ) - ((D.R.k : ℝ) - 1) / 2` using `hu.2`. Rewrite using `[hu2]`.
+
+Use `show (0 : ℝ) ≤ -(-(L.bT ⟨t, ht⟩ : ℝ) - ((D.R.k : ℝ) - 1) / 2) - ((D.R.k : ℝ) - 1) / 2`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `this` after adjusting the coercions. Establish `hs : (ofRecord D L Del h0).sigPar (false, t) ((ofRecord D L Del h0).R.k - 2) = (D.hc τ).v ⟨D.R.k - 2, by omega⟩`. Unfold `NumDatum.sigPar`.
+
+Rewrite using `[dif_pos (show (ofRecord D L Del h0).R.k - 2 < (ofRecord D L Del h0).R.k - 1 by show D.R.k - 2 < D.R.k - 1; omega)]`. Rewrite using `[hs]`. Establish `hv' : (0 : ℚ) ≤ (D.hc τ).v ⟨D.R.k - 2, by omega⟩` using `by exact_mod_cast hv`. Establish `hk' : (5 : ℚ) ≤ D.R.k` using `by exact_mod_cast hk`. Use `show 0 ≤ (D.hc τ).v ⟨D.R.k - 2, by omega⟩ + ((D.R.k : ℚ) - 2) / 2`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs : (ofRecord D L Del h0).sigPar (false, t) 0 = (D.hc τ).v ⟨0, by omega⟩`. Unfold `NumDatum.sigPar`. Rewrite using `[dif_pos (show 0 < (ofRecord D L Del h0).R.k - 1 by show 0 < D.R.k - 1; omega)]`. Rewrite using `[hs]`.
+
+Unfold `swRec`. Use `push_cast`. Establish `hk' : (5 : ℝ) ≤ D.R.k` using `by exact_mod_cast hk`. Establish `hS` using `L.Sc_pos`. Establish `: 0 ≤ |L.Cc| * L.Sc` using `mul_nonneg (abs_nonneg _) hS.le`.
+
+Use `show (((D.hc τ).v ⟨0, by omega⟩ : ℚ) : ℝ) - ((D.R.k : ℝ) - 2) / 2 ≤ (1 + |L.Cc|) * L.Sc`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem nf_top_rec :
     ∀ t ∈ (ofRecord D L Del h0).TT, 0 ≤ (ofRecord D L Del h0).aT t ∧ 0 ≤ (ofRecord D L Del h0).bT t ∧
       0 ≤ (ofRecord D L Del h0).sigPar (false, t) ((ofRecord D L Del h0).R.k - 2) +
@@ -1027,6 +1391,21 @@ section Blocks
 
 variable (N : NumDatum)
 
+/- English proof (translation)
+Use `set q := (i - N.R.k) / (N.R.t + 1) with hqdef`. Use `set r := (i - N.R.k) % (N.R.t + 1) with hrdef`. Establish `hdm : (N.R.t + 1) * q + r = i - N.R.k` using `Nat.div_add_mod (i - N.R.k) (N.R.t + 1)`. Establish `hN : N.R.N (j - 1) = N.R.k + (j - 1) * (N.R.t + 1)` using `rfl`. Establish `hlt : i - N.R.k < (j - 1) * (N.R.t + 1)` using `by omega`.
+
+Establish `hq : q < j - 1`. Rewrite using `[hqdef]`. Conclude with `(Nat.div_lt_iff_lt_mul (by omega)).2 hlt`. Use `⟨q, hq, ?_⟩` and prove the remaining obligations. Unfold `NumDatum.nu NumDatum.srcPar NumDatum.eQ`.
+
+Rewrite using `[dif_neg (show ¬ i < N.R.k by omega), dif_pos (show q < N.R.m by omega), dif_pos (show 1 ≤ j ∧ j ≤ N.R.m from ⟨hj1, hjm⟩)]`. Establish `hr : r < N.R.t + 1` using `Nat.mod_lt _ (by omega)`. Establish `hi' : (i : ℚ) = N.R.k + q * ((N.R.t : ℚ) + 1) + r`. Establish `: i = N.R.k + (N.R.t + 1) * q + r` using `by omega`. Rewrite using `[this]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hNj : (N.R.N j : ℚ) = N.R.k + j * ((N.R.t : ℚ) + 1)` using `by show ((N.R.k + j * (N.R.t + 1) : ℕ) : ℚ) = _`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hNj1 : (N.R.N (j - 1) : ℚ) = N.R.k + ((j : ℚ) - 1) * ((N.R.t : ℚ) + 1)`. Rewrite using `[hN]`. Move the coercions through the operations in `[Nat.cast_sub hj1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hjq : (((j - 1 - q : ℕ)) : ℚ) = (j : ℚ) - 1 - q`.
+
+Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub hj1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hrr : (((r + 1 : ℕ)) : ℚ) = (r : ℚ) + 1` using `by push_cast; ring`. Rewrite using `[hjq, hNj, hNj1, hi']`.
+
+Rewrite `*` using `[← hrdef]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nu_blk_eq (δ : Code N) (j : ℕ) (hj1 : 1 ≤ j) (hjm : j ≤ N.R.m) (z : RPl N.R) (i : ℕ) (hik : N.R.k ≤ i)
     (hi : i < N.R.N (j - 1)) :
     ∃ (q : ℕ) (hq : q < j - 1), N.nu δ j z i = (N.hc z).e ⟨j - 1, by omega⟩ - (N.hc z).e ⟨q, by omega⟩ -
@@ -1067,6 +1446,13 @@ theorem nu_blk_eq (δ : Code N) (j : ℕ) (hj1 : 1 ≤ j) (hjm : j ≤ N.R.m) (z
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intro a hb`. Simplify using the standard rewrite rules. Consider the case `succ d ih`.
+
+Introduce `a hb`. Establish `h1` using `ih a (by omega)`. Establish `h2` using `h.gap_be ⟨a + d + 1, hb⟩`. Establish `h3` using `h.gap_eb ⟨a + d, by omega⟩ (by show a + d + 1 < N.R.m; omega)`. Establish `e1 : (⟨a + (d + 1), hb⟩ : Fin N.R.m) = ⟨a + d + 1, hb⟩` using `Fin.ext (by simp; omega)`.
+
+Rewrite using `[e1]`. Use `push_cast`. Establish `e2 : (⟨(⟨a + d, by omega⟩ : Fin N.R.m).1 + 1, (show a + d + 1 < N.R.m by omega)⟩ : Fin N.R.m) = ⟨a + d + 1, hb⟩` using `Fin.ext rfl`. Rewrite `h3` using `[e2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem e_gap (h : HCParam N.R) : ∀ (d a : ℕ) (hb : a + d < N.R.m),
     ((d : ℚ)) * ((N.R.t : ℚ) + 3) ≤ h.e ⟨a + d, hb⟩ - h.e ⟨a, by omega⟩ := by
   intro d
@@ -1087,6 +1473,19 @@ theorem e_gap (h : HCParam N.R) : ∀ (d a : ℕ) (hb : a + d < N.R.m),
 
 end Blocks
 
+/- English proof (translation)
+Introduce `j hj1 hjm z`. Establish `hbound : ∀ i ∈ Finset.Ico N.R.k (N.R.N (j - 1)), (((N.nu δ j z i : ℚ)) : ℝ) ≤ η`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_Ico]`. Take `⟨q, hq, e⟩` from `nu_blk_eq N δ j hj1 hjm z i hi.1 hi.2`.
+
+Rewrite using `[e]`. Establish `hb` using `hbe z ⟨q, by omega⟩ ⟨j - 1, by omega⟩`. Establish `hgap` using `(N.hc z).gap_be ⟨q, by omega⟩`. Establish `hgap' : ((((N.hc z).e ⟨q, by omega⟩ - (N.hc z).b ⟨q, by omega⟩ : ℚ)) : ℝ) ≥ ((N.R.t : ℝ) + 3) / 2`. Establish `h2 : ((((N.R.t : ℚ) + 3) / 2 : ℚ) : ℝ) ≤ (((N.hc z).e ⟨q, by omega⟩ - (N.hc z).b ⟨q, by omega⟩ : ℚ) : ℝ)`.
+
+Conclude with `hgap` after adjusting the coercions. Move the coercions through the operations in `at h2 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ht' : (0 : ℝ) ≤ (((j - 1 - q : ℕ)) : ℝ) * ((N.R.t : ℝ) + 1)` using `by positivity`. Establish `ht0 : (0 : ℝ) ≤ N.R.t` using `Nat.cast_nonneg _`.
+
+Move the coercions through the operations in `at hb hgap' ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(Finset.sum_le_sum hbound).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Nat.card_Ico, nsmul_eq_mul]`. Establish `hN : N.R.N (j - 1) - N.R.k = (j - 1) * (N.R.t + 1)` using `by show N.R.k + (j - 1) * (N.R.t + 1) - N.R.k = _`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hN]`. Move the coercions through the operations in `[Nat.cast_sub hj1]`. Establish `hjm' : (j : ℝ) ≤ (N.R.m : ℝ)` using `by exact_mod_cast hjm`. Establish `ht0 : (0 : ℝ) ≤ N.R.t` using `Nat.cast_nonneg _`.
+
+Establish `: ((j : ℝ) - 1) * ((N.R.t : ℝ) + 1) ≤ (N.R.m : ℝ) * ((N.R.t : ℝ) + 1)` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem blk_of (N : NumDatum) (δ : Code N) (η : ℝ) (hη : 0 ≤ η)
     (hbe : ∀ z (a c : Fin N.R.m), ((((N.hc z).e c - (N.hc z).b a : ℚ)) : ℝ) ≤ η) :
     ∀ j, 1 ≤ j → j ≤ N.R.m → ∀ z,
@@ -1120,6 +1519,11 @@ theorem blk_of (N : NumDatum) (δ : Code N) (η : ℝ) (hη : 0 ≤ η)
   have : ((j : ℝ) - 1) * ((N.R.t : ℝ) + 1) ≤ (N.R.m : ℝ) * ((N.R.t : ℝ) + 1) := by nlinarith
   nlinarith
 
+/- English proof (translation)
+Establish `heta : (ofRecord D L Del h0).eta = L.etaSz` using `by rw [hh0]; rfl`. Use `blk_of (ofRecord D L Del h0) (letterOf D L Del h0 u) (ofRecord D L Del h0).eta (by rw [heta]; exact L.etaSz_pos.le) ?_` and prove the remaining obligations. Introduce `z a c`. Rewrite using `[heta]`. Use `(abs_le.1 (L.be_close (tauPl D z) a c)).1` as an intermediate fact.
+
+Use `show ((((D.hc (tauPl D z)).e c - (D.hc (tauPl D z)).b a : ℚ)) : ℝ) ≤ L.etaSz`. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem nf_blk_rec (hh0 : L.etaSz = (D.R.m : ℝ) * (h0 : ℝ)) (u : D.what₂.Word) :
     ∀ j, 1 ≤ j → j ≤ (ofRecord D L Del h0).R.m → ∀ z,
       (∑ i ∈ Finset.Ico (ofRecord D L Del h0).R.k ((ofRecord D L Del h0).R.N (j - 1)),
@@ -1137,6 +1541,9 @@ theorem nf_blk_rec (hh0 : L.etaSz = (D.R.m : ℝ) * (h0 : ℝ)) (u : D.what₂.W
 
 section Sizes
 
+/- English proof (translation)
+Distinguish the cases in `h1 : (D.eTau τ : D.R.GG) ∈ D.host.topPlaces`. Conclude with `Or.inl h1`. Distinguish the cases in `h2 : (D.eTau τ : D.R.GG) ∈ D.host.thickPlaces`. Conclude with `Or.inr (Or.inl ⟨h1, h2⟩)`. Conclude with `Or.inr (Or.inr ⟨(D.eTau τ).2, h1, h2⟩)`.
+-/
 theorem place_cases (τ : D.what₂.Tau) :
     (D.eTau τ : D.R.GG) ∈ D.host.topPlaces ∨
       ((D.eTau τ : D.R.GG) ∉ D.host.topPlaces ∧ (D.eTau τ : D.R.GG) ∈ D.host.thickPlaces) ∨
@@ -1147,16 +1554,30 @@ theorem place_cases (τ : D.what₂.Tau) :
   · exact Or.inr (Or.inl ⟨h1, h2⟩)
   exact Or.inr (Or.inr ⟨(D.eTau τ).2, h1, h2⟩)
 
+/- English proof (translation)
+The claim follows from `le_of_lt (mul_pos (lt_trans zero_lt_one L.sc.one_lt_alt) (Real.exp_pos _))`.
+-/
 theorem a_nonneg_rec : 0 ≤ L.sc.a := le_of_lt (mul_pos (lt_trans zero_lt_one L.sc.one_lt_alt) (Real.exp_pos _))
 
+/- English proof (translation)
+The claim follows from `div_nonneg (a_nonneg_rec L) (Real.exp_pos _).le`.
+-/
 theorem b'_nonneg_rec : 0 ≤ L.sc.b' := div_nonneg (a_nonneg_rec L) (Real.exp_pos _).le
 
+/- English proof (translation)
+Unfold `Host.topPlaces at h`. Take `⟨t, ht, e⟩` from `Finset.mem_image.1 h`. Conclude with `⟨⟨t, ht⟩, e.symm⟩`.
+-/
 theorem top_of_mem (τ : D.what₂.Tau) (h : (D.eTau τ : D.R.GG) ∈ D.host.topPlaces) :
     ∃ t : D.host.TT, (D.eTau τ : D.R.GG) = D.R.tau1 t := by
   unfold Host.topPlaces at h
   obtain ⟨t, ht, e⟩ := Finset.mem_image.1 h
   exact ⟨⟨t, ht⟩, e.symm⟩
 
+/- English proof (translation)
+Introduce `j hj1 hjm τ`. Break down `place_cases τ with h | h | h` into its components or cases. Take `⟨t, ht⟩` from `top_of_mem τ h`. Establish `hw` using `(L.win_top j hj1 hjm τ t ht).1`. Establish `hbt` using `L.bT_ge t`.
+
+Establish `: 0 ≤ L.sc.b' / L.sc.x` using `div_nonneg (b'_nonneg_rec L) (by linarith [L.sc.one_lt_alt])`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear relations using `[(L.win_thick j hj1 hjm τ h.2).1]`. Combine the linear relations using `[(L.win_thin j hj1 hjm τ h).1]`.
+-/
 theorem wj_ge_rec (X : ℝ) (hb : X ≤ L.sc.b) (hw : X ≤ L.sc.w'' D.R.n) (hb' : X ≤ L.sc.b') :
     ∀ j, 1 ≤ j → j ≤ D.R.m → ∀ τ, X ≤ wj D j τ := by
   intro j hj1 hjm τ
@@ -1169,6 +1590,13 @@ theorem wj_ge_rec (X : ℝ) (hb : X ≤ L.sc.b) (hw : X ≤ L.sc.w'' D.R.n) (hb'
   · linarith [(L.win_thick j hj1 hjm τ h.2).1]
   · linarith [(L.win_thin j hj1 hjm τ h).1]
 
+/- English proof (translation)
+Introduce `j hj1 hjm z`. Rewrite using `[ofRecord_w D L Del h0 hj1 z]`. Establish `h` using `wj_ge_rec L _ hb hw hb' j hj1 hjm (tauPl D z)`. Use `le_trans ?_ h` and prove the remaining obligations. Use `show _ ≤ ((D.R.k + D.R.m * (D.R.t + 1) : ℕ) : ℝ)`.
+
+Use `push_cast`. Establish `hjm' : (j : ℝ) ≤ D.R.m` using `by exact_mod_cast hjm`. Establish `hj1' : (1 : ℝ) ≤ j` using `by exact_mod_cast hj1`. Establish `ht : (0 : ℝ) ≤ D.R.t` using `Nat.cast_nonneg _`. Establish `hk : (0 : ℝ) ≤ D.R.k` using `Nat.cast_nonneg _`.
+
+Use `show ((D.R.k : ℝ) + (2 * (j : ℝ) - 1) * ((D.R.t : ℝ) + 1)) / 2 ≤ _`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem nf_sw_rec (hb : ((ofRecord D L Del h0).Nm : ℝ) ≤ L.sc.b) (hw : ((ofRecord D L Del h0).Nm : ℝ) ≤ L.sc.w'' D.R.n)
     (hb' : ((ofRecord D L Del h0).Nm : ℝ) ≤ L.sc.b') :
     ∀ j, 1 ≤ j → j ≤ (ofRecord D L Del h0).R.m → ∀ z,
@@ -1187,6 +1615,41 @@ theorem nf_sw_rec (hb : ((ofRecord D L Del h0).Nm : ℝ) ≤ L.sc.b) (hw : ((ofR
   show ((D.R.k : ℝ) + (2 * (j : ℝ) - 1) * ((D.R.t : ℝ) + 1)) / 2 ≤ _
   nlinarith
 
+/- English proof (translation)
+Introduce `j hj1 hjm z i hi`. Distinguish the cases in `hik : (ofRecord D L Del h0).R.k ≤ i`. Take `⟨q, hq, e⟩` from `nu_blk_eq (ofRecord D L Del h0) (letterOf D L Del h0 u) j hj1 hjm z i hik hi`. Rewrite using `[e]`. Establish `hg` using `e_gap (ofRecord D L Del h0) ((ofRecord D L Del h0).hc z) (j - 1 - q) q (by omega)`.
+
+Establish `e1 : (⟨q + (j - 1 - q), by omega⟩ : Fin (ofRecord D L Del h0).R.m) = ⟨j - 1, by omega⟩` using `Fin.ext (by simp; omega)`. Rewrite `hg` using `[e1]`. Establish `: (0 : ℚ) ≤ (((j - 1 - q : ℕ)) : ℚ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hik` using `[not_le]`.
+
+Establish `hik2 : i < D.R.k` using `hik`. Establish `hjm2 : j ≤ D.R.m` using `hjm`. Establish `hk : 5 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; have := D.R.two_le_m; omega`. Use `set τ := tauPl D z with hτ`. Establish `hx1 : 1 < L.sc.x` using `L.sc.one_lt_alt`.
+
+Establish `hb'0` using `b'_nonneg_rec L`. Establish `hbx : L.sc.b' / L.sc.x ≤ L.sc.b'` using `div_le_self hb'0 hx1.le`. Establish `hbx0 : 0 ≤ L.sc.b' / L.sc.x` using `div_nonneg hb'0 (by linarith)`. Establish `hkR : (5 : ℝ) ≤ D.R.k` using `by exact_mod_cast hk`. Establish `hnu : (((ofRecord D L Del h0).nu (letterOf D L Del h0 u) j z i : ℚ) : ℝ) = (((D.hcW u τ).u ⟨i, hik⟩ : ℚ) : ℝ) + wj D j τ - (((D.R.N (j - 1) : ℝ) + D.R.N j - 1 - 2 * (i : ℝ)) / 2)`.
+
+Establish `hw'` using `ofRecord_w D L Del h0 hj1 z`. Unfold `NumDatum.nu NumDatum.srcPar`. Rewrite using `[dif_pos hik, ofRecord_uW D L Del h0 hDel u z]`. Unfold `NumDatum.w at hw'`. Use `push_cast`.
+
+Rewrite using `[hw']`. Both sides reduce to the same expression. Establish `hNs : ((D.R.N (j - 1) : ℝ) + D.R.N j - 1 - 2 * (i : ℝ)) / 2 ≤ ((ofRecord D L Del h0).Nm : ℝ) - 1 / 2`. Establish `h1 : D.R.N (j - 1) ≤ D.R.N D.R.m` using `Nat.add_le_add_left (Nat.mul_le_mul_right (D.R.t + 1) (show j - 1 ≤ D.R.m by omega)) D.R.k`. Establish `h2 : D.R.N j ≤ D.R.N D.R.m` using `Nat.add_le_add_left (Nat.mul_le_mul_right (D.R.t + 1) hjm2) D.R.k`.
+
+Establish `h1' : (D.R.N (j - 1) : ℝ) ≤ D.R.N D.R.m` using `by exact_mod_cast h1`. Establish `h2' : (D.R.N j : ℝ) ≤ D.R.N D.R.m` using `by exact_mod_cast h2`. Establish `hi0 : (0 : ℝ) ≤ i` using `Nat.cast_nonneg _`. Use `show _ ≤ (D.R.N D.R.m : ℝ) - 1 / 2`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `key : ((ofRecord D L Del h0).Nm : ℝ) ≤ (((D.hcW u τ).u ⟨i, hik⟩ : ℚ) : ℝ) + wj D j τ`. Establish `hu_int : i < D.R.k - 1 → (0 : ℝ) ≤ (((D.hcW u τ).u ⟨i, hik⟩ : ℚ) : ℝ)`. Introduce `hi1`. Distinguish the cases in `hi0 : i = 0`. Substitute `hi0` using the available equality.
+
+Establish `e` using `D.hcW_first u τ (by omega)`. Establish `h1` using `(D.hc τ).u_gt_v ⟨0, by omega⟩`. Establish `h2` using `(L.cloud_v τ ⟨0, by omega⟩).1`. Rewrite using `[e]`. Establish `: (0 : ℚ) ≤ (D.hc τ).v ⟨0, by omega⟩` using `by exact_mod_cast h2`.
+
+Establish `: (0 : ℚ) ≤ (D.hc τ).u ⟨0, by omega⟩` using `le_of_lt (lt_of_le_of_lt this h1)`. Conclude with `this` after adjusting the coercions. Conclude with `(L.cloud_u u τ ⟨i, hik⟩ (by show 1 ≤ i; omega) (by show i + 1 < D.R.k; omega)).1`. Break down `place_cases τ with htop | hthick` into its components or cases. Take `⟨t, ht⟩` from `top_of_mem τ htop`.
+
+Establish `hwt` using `(L.win_top j hj1 hjm τ t ht).1`. Establish `hbt` using `L.bT_ge t`. Distinguish the cases in `hil : i = D.R.k - 1`. Substitute `hil` using the available equality. Establish `e` using `D.hcW_last u τ (by omega)`.
+
+Establish `hu` using `(L.top_u τ t (by omega) ht).2`. Establish `e2 : (⟨D.R.k - 1, hik⟩ : Fin D.R.k) = ⟨D.R.k - 1, by omega⟩` using `rfl`. Rewrite using `[e2, e, hu]`. Use `show (D.R.N D.R.m : ℝ) ≤ _`. Establish `: ((ofRecord D L Del h0).Nm : ℝ) = D.R.N D.R.m` using `rfl`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h0u` using `hu_int (by omega)`. Establish `: ((ofRecord D L Del h0).Nm : ℝ) = D.R.N D.R.m` using `rfl`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hoff : (D.eTau τ : D.R.GG) ∉ D.host.topPlaces ∧ wj D j τ ≥ ((ofRecord D L Del h0).Nm : ℝ) + 1`.
+
+Break down `hthick with hth | hth` into its components or cases. Conclude with `⟨hth.1, by linarith [(L.win_thick j hj1 hjm τ hth.2).1]⟩`. Conclude with `⟨hth.2.1, by linarith [(L.win_thin j hj1 hjm τ hth).1]⟩`. Distinguish the cases in `hil : i = D.R.k - 1`. Substitute `hil` using the available equality.
+
+Establish `e` using `D.hcW_last u τ (by omega)`. Establish `hext` using `P5.uk_extreme τ (by omega) hoff.1`. Establish `hv` using `(L.cloud_v τ ⟨D.R.k - 2, by omega⟩).1`. Establish `e2 : (⟨D.R.k - 1, hik⟩ : Fin D.R.k) = ⟨D.R.k - 1, by omega⟩` using `rfl`. Rewrite using `[e2, e, hext]`.
+
+Use `push_cast`. Combine the linear relations using `[hoff.2]`. Establish `h0u` using `hu_int (by omega)`. Combine the linear relations using `[hoff.2]`. Use `key` as an intermediate fact.
+
+Establish `hfin : (0 : ℝ) ≤ (((ofRecord D L Del h0).nu (letterOf D L Del h0 u) j z i : ℚ) : ℝ)`. Rewrite using `[hnu]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hfin` after adjusting the coercions.
+-/
 theorem nu_nonneg_from_bounds (hDel : D.s.Del = (Del : ℚ)) (P5 : ParameterChoice' D L) (u : D.what₂.Word)
     (hb : ((ofRecord D L Del h0).Nm : ℝ) + 1 ≤ L.sc.b) (hw : ((ofRecord D L Del h0).Nm : ℝ) + 1 ≤ L.sc.w'' D.R.n)
     (hb' : ((ofRecord D L Del h0).Nm : ℝ) + D.R.k ≤ L.sc.b' / L.sc.x) :
@@ -1286,12 +1749,24 @@ end Sizes
 
 section Top
 
+/- English proof (translation)
+Establish `h : (4 * N.R.ord : ℝ) ≤ N.rd ^ 2` using `N.H.der.rd_sq_ge`. Establish `ho : (1 : ℝ) ≤ N.R.ord` using `by exact_mod_cast N.R.ord_pos`. Establish `h0 : 0 ≤ N.rd` using `Real.rpow_nonneg (abs_nonneg _) _`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem two_le_rd (N : NumDatum) : 2 ≤ N.rd := by
   have h : (4 * N.R.ord : ℝ) ≤ N.rd ^ 2 := N.H.der.rd_sq_ge
   have ho : (1 : ℝ) ≤ N.R.ord := by exact_mod_cast N.R.ord_pos
   have h0 : 0 ≤ N.rd := Real.rpow_nonneg (abs_nonneg _) _
   nlinarith
 
+/- English proof (translation)
+Establish `hk : (1 : ℝ) ≤ D.R.k`. Use `D.R.m_add_three_le_k` as an intermediate fact. Conclude with `(show 1 ≤ D.R.k by omega)` after adjusting the coercions. Establish `hS` using `L.Sc_pos`. Establish `h1 : L.Sc ≤ (D.R.k : ℝ) * L.Sc` using `by nlinarith`.
+
+Establish `hx1 : 1 < L.sc.x` using `L.sc.one_lt_alt`. Establish `hb0 : 0 < L.sc.b` using `Real.exp_pos _`. Establish `hn : (1 : ℝ) ≤ D.R.n`. Establish `: 1 ≤ D.R.n` using `D.R.ord_pos`. Conclude with `this` after adjusting the coercions.
+
+Establish `hX : 1 ≤ L.sc.X'` using `Real.one_le_exp (Real.rpow_nonneg (by linarith) _)`. Establish `hw : L.sc.w'' D.R.n ≤ L.sc.b`. Unfold `Scale.w'' Scale.b' Scale.a`. Establish `hxn : 0 < L.sc.x * D.R.n` using `by positivity`. Rewrite using `[div_div, div_le_iff₀ (by positivity)]`.
+
+Establish `: L.sc.x * L.sc.b ≤ L.sc.x * L.sc.b * (L.sc.X' * D.R.n)`. Establish `h1 : 1 ≤ L.sc.X' * D.R.n` using `by nlinarith`. Conclude with `le_mul_of_one_le_right (by positivity) h1`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear relations using `[P5.kS_le]`.
+-/
 theorem Sc_le_b (P5 : ParameterChoice' D L) : L.Sc ≤ L.sc.b := by
   have hk : (1 : ℝ) ≤ D.R.k := by
     have := D.R.m_add_three_le_k
@@ -1314,6 +1789,13 @@ theorem Sc_le_b (P5 : ParameterChoice' D L) : L.Sc ≤ L.sc.b := by
     nlinarith
   linarith [P5.kS_le]
 
+/- English proof (translation)
+Introduce `j hj1 hjm z`. Establish `h1` using `hw2b j hj1 hjm z`. Establish `hS` using `Sc_le_b L P5`. Establish `hS0` using `L.Sc_pos`. Establish `hrd` using `two_le_rd (ofRecord D L Del h0)`.
+
+Establish `hb0 : 0 < L.sc.b` using `Real.exp_pos _`. Establish `ha : (ofRecord D L Del h0).sc.a = L.sc.x * L.sc.b` using `rfl`. Establish `hbb : (ofRecord D L Del h0).sc.b = L.sc.b` using `rfl`. Rewrite using `[ha]`. Rewrite `h1` using `[hbb]`.
+
+Unfold `swRec`. Establish `hc : (1 + |L.Cc|) * L.Sc ≤ (1 + |L.Cc|) * L.sc.b` using `mul_le_mul_of_nonneg_left hS (by positivity)`. Establish `hxb : (3 + |L.Cc|) * L.sc.b ≤ L.sc.x * L.sc.b` using `mul_le_mul_of_nonneg_right hx hb0.le`. Establish `hxb0 : 0 ≤ L.sc.x * L.sc.b` using `by nlinarith [L.sc.one_lt_alt]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem nf_rowsA_rec (P5 : ParameterChoice' D L) (hx : 3 + |L.Cc| ≤ L.sc.x)
     (hw2b : ∀ j, 1 ≤ j → j ≤ (ofRecord D L Del h0).R.m → ∀ z, (ofRecord D L Del h0).w j z ≤ 2 * (ofRecord D L Del h0).sc.b) :
     ∀ j, 1 ≤ j → j ≤ (ofRecord D L Del h0).R.m → ∀ z,
@@ -1334,6 +1816,19 @@ theorem nf_rowsA_rec (P5 : ParameterChoice' D L) (hx : 3 + |L.Cc| ≤ L.sc.x)
   have hxb0 : 0 ≤ L.sc.x * L.sc.b := by nlinarith [L.sc.one_lt_alt]
   nlinarith
 
+/- English proof (translation)
+Introduce `j hj1 hjm t ht`. Establish `h1` using `hw2b j hj1 hjm (false, t)`. Rewrite using `[ofRecord_aT D L Del h0 ⟨t, ht⟩]`. Establish `haw` using `(L.aT_win ⟨t, ht⟩).2`. Establish `hrd` using `two_le_rd (ofRecord D L Del h0)`.
+
+Establish `hb0 : 0 < L.sc.b` using `Real.exp_pos _`. Establish `hx0 : 0 < L.sc.x` using `by linarith`. Establish `ha : (ofRecord D L Del h0).sc.a = L.sc.x * L.sc.b` using `rfl`. Establish `hbb : (ofRecord D L Del h0).sc.b = L.sc.b` using `rfl`. Rewrite `h1` using `[hbb]`.
+
+Rewrite using `[ha]`. Establish `hk : (1 : ℝ) ≤ D.R.k`. Use `D.R.m_add_three_le_k` as an intermediate fact. Conclude with `(show 1 ≤ D.R.k by omega)` after adjusting the coercions. Establish `hxA : L.sc.x ≤ L.sc.x ^ (Scale.A / 2)`.
+
+Establish `: L.sc.x = L.sc.x ^ (1 : ℝ)` using `(Real.rpow_one _).symm`. Use `conv_lhs => rw [this]`. Conclude with `Real.rpow_le_rpow_of_exponent_le (by linarith) (by unfold Scale.A; norm_num)`. Establish `hden : L.sc.x ≤ (D.R.k : ℝ) * L.sc.x ^ (Scale.A / 2)` using `by nlinarith`. Establish `hfrac : L.sc.a / ((D.R.k : ℝ) * L.sc.x ^ (Scale.A / 2)) ≤ L.sc.b`.
+
+Rewrite using `[div_le_iff₀ (by linarith)]`. Use `show L.sc.x * L.sc.b ≤ L.sc.b * ((D.R.k : ℝ) * L.sc.x ^ (Scale.A / 2))`. Use the polynomial consequences of the given equalities and inequalities. Establish `hxb : 3 * L.sc.b ≤ L.sc.x * L.sc.b` using `mul_le_mul_of_nonneg_right hx hb0.le`. Establish `ha' : L.sc.a = L.sc.x * L.sc.b` using `rfl`.
+
+Rewrite `haw`, `hfrac` using `[ha']`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem nf_topsA_rec (hx : 3 ≤ L.sc.x)
     (hw2b : ∀ j, 1 ≤ j → j ≤ (ofRecord D L Del h0).R.m → ∀ z, (ofRecord D L Del h0).w j z ≤ 2 * (ofRecord D L Del h0).sc.b) :
     ∀ j, 1 ≤ j → j ≤ (ofRecord D L Del h0).R.m → ∀ t ∈ (ofRecord D L Del h0).TT,
@@ -1371,6 +1866,11 @@ end Top
 
 section Discharge
 
+/- English proof (translation)
+Establish `hx0 : 0 < L.sc.x` using `lt_trans zero_lt_one L.sc.one_lt_alt`. Establish `hn : (1 : ℝ) ≤ D.R.n`. Establish `: 1 ≤ D.R.n` using `D.R.ord_pos`. Conclude with `this` after adjusting the coercions. Unfold `Scale.w''`.
+
+Rewrite using `[← div_div]`. Conclude with `div_le_self (div_nonneg (b'_nonneg_rec L) hx0.le) hn`.
+-/
 theorem w''_le_b'x : L.sc.w'' D.R.n ≤ L.sc.b' / L.sc.x := by
   have hx0 : 0 < L.sc.x := lt_trans zero_lt_one L.sc.one_lt_alt
   have hn : (1 : ℝ) ≤ D.R.n := by
@@ -1380,8 +1880,18 @@ theorem w''_le_b'x : L.sc.w'' D.R.n ≤ L.sc.b' / L.sc.x := by
   rw [← div_div]
   exact div_le_self (div_nonneg (b'_nonneg_rec L) hx0.le) hn
 
+/- English proof (translation)
+The claim follows from `div_le_self (b'_nonneg_rec L) L.sc.one_lt_alt.le`.
+-/
 theorem b'x_le_b' : L.sc.b' / L.sc.x ≤ L.sc.b' := div_le_self (b'_nonneg_rec L) L.sc.one_lt_alt.le
 
+/- English proof (translation)
+Establish `hx1 : 1 < L.sc.x` using `L.sc.one_lt_alt`. Establish `hb0 : 0 < L.sc.b` using `Real.exp_pos _`. Establish `hn : (1 : ℝ) ≤ D.R.n`. Establish `: 1 ≤ D.R.n` using `D.R.ord_pos`. Conclude with `this` after adjusting the coercions.
+
+Establish `hX : 1 ≤ L.sc.X'` using `Real.one_le_exp (Real.rpow_nonneg (by linarith) _)`. Unfold `Scale.w'' Scale.b' Scale.a`. Establish `hxn : 0 < L.sc.x * D.R.n` using `by positivity`. Rewrite using `[div_div, div_le_iff₀ (by positivity)]`. Establish `: L.sc.x * L.sc.b ≤ L.sc.x * L.sc.b * (L.sc.X' * D.R.n)`.
+
+Establish `h1 : 1 ≤ L.sc.X' * D.R.n` using `by nlinarith`. Conclude with `le_mul_of_one_le_right (by positivity) h1`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem w''_le_b : L.sc.w'' D.R.n ≤ L.sc.b := by
   have hx1 : 1 < L.sc.x := L.sc.one_lt_alt
   have hb0 : 0 < L.sc.b := Real.exp_pos _
@@ -1397,6 +1907,23 @@ theorem w''_le_b : L.sc.w'' D.R.n ≤ L.sc.b := by
     exact le_mul_of_one_le_right (by positivity) h1
   nlinarith
 
+/- English proof (translation)
+Establish `hD1 : (1 : ℝ) ≤ Del`. Establish `h` using `D.s.Del_pos`. Rewrite `h` using `[hDel]`. Establish `: 0 < Del` using `by exact_mod_cast h`. Conclude with `this` after adjusting the coercions.
+
+Establish `hSc : L.Sc = (D.R.k : ℝ) * (4 * (Del : ℝ))`. Rewrite using `[L.Sc_eq, hDel]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hk5 : (5 : ℝ) ≤ D.R.k`.
+
+Use `D.R.m_add_three_le_k` as an intermediate fact. Use `D.R.two_le_m` as an intermediate fact. Conclude with `(show 5 ≤ D.R.k by omega)` after adjusting the coercions. Establish `ht : (11 : ℝ) ≤ D.R.t`. Use `D.R.rank_add_five_le` as an intermediate fact.
+
+Use `D.R.m_add_three_le_k` as an intermediate fact. Use `D.R.two_le_m` as an intermediate fact. Conclude with `(show 11 ≤ D.R.t by omega)` after adjusting the coercions. Establish `hm : (0 : ℝ) ≤ D.R.m` using `Nat.cast_nonneg _`. Establish `hkS` using `P5.kS_le`.
+
+Establish `hmt` using `P5.mteta`. Establish `hte` using `P5.t_le_eta`. Rewrite `hkS` using `[hSc]`. Establish `hNm : ((ofRecord D L Del h0).Nm : ℝ) = D.R.k + D.R.m * ((D.R.t : ℝ) + 1)` using `by show ((D.R.k + D.R.m * (D.R.t + 1) : ℕ) : ℝ) = _`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hNm]`. Establish `h1 : 20 * (D.R.k : ℝ) ≤ L.sc.w'' D.R.n`. Establish `e1 : (D.R.k : ℝ) * 4 ≤ (D.R.k : ℝ) * (4 * (Del : ℝ))` using `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`. Establish `e2 : (D.R.k : ℝ) * ((D.R.k : ℝ) * 4) ≤ (D.R.k : ℝ) * ((D.R.k : ℝ) * (4 * (Del : ℝ)))` using `mul_le_mul_of_nonneg_left e1 (by linarith)`.
+
+Establish `e3 : 20 * (D.R.k : ℝ) ≤ (D.R.k : ℝ) * ((D.R.k : ℝ) * 4)` using `by nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : 11 * ((D.R.m : ℝ) * ((D.R.t : ℝ) + 1)) ≤ L.sc.w'' D.R.n`. Establish `: (D.R.m : ℝ) * ((D.R.t : ℝ) + 1) * 11 ≤ (D.R.m : ℝ) * ((D.R.t : ℝ) + 1) * L.etaSz` using `mul_le_mul_of_nonneg_left (by linarith) (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem Nm_le_w'' (hDel : D.s.Del = (Del : ℚ)) (P5 : ParameterChoice' D L) :
     ((ofRecord D L Del h0).Nm : ℝ) + D.R.k + 1 ≤ L.sc.w'' D.R.n := by
   have hD1 : (1 : ℝ) ≤ Del := by
@@ -1436,6 +1963,9 @@ theorem Nm_le_w'' (hDel : D.s.Del = (Del : ℚ)) (P5 : ParameterChoice' D L) :
     linarith
   nlinarith
 
+/- English proof (translation)
+Establish `h` using `Nm_le_w'' L Del h0 hDel P5`. Establish `hk : (0 : ℝ) ≤ D.R.k` using `Nat.cast_nonneg _`. Establish `hw` using `w''_le_b L`. Establish `hw'` using `(w''_le_b'x L).trans (b'x_le_b' L)`. Conclude with `nf_sw_rec L Del h0 (by linarith) (by linarith) (by linarith)`.
+-/
 theorem nf_sw_rec' (hDel : D.s.Del = (Del : ℚ)) (P5 : ParameterChoice' D L) :
     ∀ j, 1 ≤ j → j ≤ (ofRecord D L Del h0).R.m → ∀ z,
       (((ofRecord D L Del h0).R.k : ℝ) + (2 * (j : ℝ) - 1) * (((ofRecord D L Del h0).R.t : ℝ) + 1)) / 2 ≤
@@ -1446,6 +1976,9 @@ theorem nf_sw_rec' (hDel : D.s.Del = (Del : ℚ)) (P5 : ParameterChoice' D L) :
   have hw' := (w''_le_b'x L).trans (b'x_le_b' L)
   exact nf_sw_rec L Del h0 (by linarith) (by linarith) (by linarith)
 
+/- English proof (translation)
+Establish `h` using `Nm_le_w'' L Del h0 hDel P5`. Establish `hk : (0 : ℝ) ≤ D.R.k` using `Nat.cast_nonneg _`. Establish `hw` using `w''_le_b L`. Establish `hw'` using `w''_le_b'x L`. Conclude with `nu_nonneg_from_bounds L Del h0 hDel P5 u (by linarith) (by linarith) (by linarith)`.
+-/
 theorem nu_nonneg_from_conditions (hDel : D.s.Del = (Del : ℚ)) (P5 : ParameterChoice' D L) (u : D.what₂.Word) :
     ∀ j, 1 ≤ j → j ≤ (ofRecord D L Del h0).R.m → ∀ z, ∀ i < (ofRecord D L Del h0).R.N (j - 1),
       0 ≤ (ofRecord D L Del h0).nu (letterOf D L Del h0 u) j z i := by
@@ -1459,6 +1992,9 @@ end Discharge
 
 section Assemble
 
+/- English proof (translation)
+The claim follows from `logrd logx := logx Nc0 := Nc0 w2b := w2b Om := Om lam := lam lam0 := hlam0 n2 := n2 n3 := n3 eta := eta kN := kN kS := kS blkW := blkW Nw := Nw bN := bN mkb := mkb c1 := c1 c2 := c2 c3 := c3 c4 := c4 c5 := c5 C1two := nf_C1two_rec L constant_weight_sum_bound := nf_C1S_rec L Del h …`.
+-/
 theorem numFacts_rows (hDel : D.s.Del = (Del : ℚ)) (hh0 : L.etaSz = (D.R.m : ℝ) * (h0 : ℝ)) (P5 : ParameterChoice' D L)
     (u : D.what₂.Word) (hx : 3 + |L.Cc| ≤ L.sc.x) (Nc lam0 C0 ce Ch : ℝ)
     (logrd : Real.log (ofRecord D L Del h0).rd ≤ (ofRecord D L Del h0).sc.L)
@@ -1536,10 +2072,18 @@ open Formalism.MainNotions.DIV.Proofs Formalism.MainNotions.DIV.Proofs.HHParts
 
 variable {D : D7} (L : SizeData₂ D) (Del h0 : ℕ)
 
+/- English proof (translation)
+Unfold `NumDatum.Lp Formalism.BasicNotions.DV.Lprime`. Rewrite using `[ofRecord_rd]`.
+-/
 theorem Lp_rec : (ofRecord D L Del h0).Lp = Formalism.BasicNotions.DV.Lprime D L := by
   unfold NumDatum.Lp Formalism.BasicNotions.DV.Lprime
   rw [ofRecord_rd]
 
+/- English proof (translation)
+Take `⟨Y, hY1, -, hY3, hY4⟩` from `P5.g_Y`. Establish `hb` using `one_le_b L`. Establish `hk3` using `D.R.m_add_three_le_k`. Establish `hk : (1 : ℝ) ≤ D.R.k` using `by exact_mod_cast (show 1 ≤ D.R.k by omega)`. Establish `hkb : 1 ≤ (D.R.k : ℝ) * L.sc.b` using `by nlinarith`.
+
+Establish `hY0 : 1 ≤ Y` using `le_trans (one_le_pow₀ hkb) hY1`. Establish `hg` using `(hY4 i).2`. Establish `hg0 : 0 < (D.host.g i : ℝ)` using `lt_of_lt_of_le (by linarith) (hY4 i).1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem log_g_le (P5 : ParameterChoice' D L) (i : Fin 2) :
     Real.log (D.host.g i : ℝ) ≤ Real.log 2 + P5.CYL * L.sc.L := by
   obtain ⟨Y, hY1, -, hY3, hY4⟩ := P5.g_Y
@@ -1554,6 +2098,25 @@ theorem log_g_le (P5 : ParameterChoice' D L) (i : Fin 2) :
     _ = Real.log 2 + Real.log Y := Real.log_mul (by norm_num) (by linarith)
     _ ≤ Real.log 2 + P5.CYL * L.sc.L := by linarith
 
+/- English proof (translation)
+Rewrite using `[Lp_rec, ofRecord_La]`. Establish `hN : SizeN L` using `hS.1`. Establish `hK : SizeK L` using `hS.2.2.1`. Establish `hQD : SizeQD L` using `hS.2.2.2.2.2.2.1`. Establish `hr : 1 ≤ D.host.rdE` using `hQD.2.2.2.2.2.2.1`.
+
+Establish `hb` using `one_le_b L`. Establish `hv` using `nV_one hK`. Establish `hx0 : 0 < L.sc.x` using `sc_x_pos L`. Establish `hx1 : 1 < L.sc.x` using `L.sc.one_lt_alt`. Establish `hL1 : 1 < L.sc.L` using `Real.one_lt_rpow hx1 L.sc.eps_pos`.
+
+Establish `hY` using `P5.CYL_pos`. Establish `hg : ∀ i : Fin 2, 0 < (D.host.g i : ℝ)` using `fun i => by`. Take `⟨Y, hY1, -, -, hY4⟩` from `P5.g_Y`. Establish `hk3` using `D.R.m_add_three_le_k`. Establish `hk : (1 : ℝ) ≤ D.R.k` using `by exact_mod_cast (show 1 ≤ D.R.k by omega)`.
+
+Establish `hkb : 1 ≤ (D.R.k : ℝ) * L.sc.b` using `by nlinarith`. Establish `hY0 : 1 ≤ Y` using `le_trans (one_le_pow₀ hkb) hY1`. Conclude with `lt_of_lt_of_le (by linarith) (hY4 i).1`. Establish `g0` using `log_g_le L P5 0`. Establish `g1` using `log_g_le L P5 1`.
+
+Use `set c : ℝ := max L.Ct 5 + 3 with hc`. Establish `hc8 : 8 ≤ c` using `by have := le_max_right L.Ct 5; linarith`. Establish `hnv : Real.log (D.R.nV : ℝ) ≤ c * Real.log L.sc.x`. Establish `h1 : (D.R.nV : ℝ) ≤ L.sc.x ^ c` using `(nV_le L).trans (szPol_le_rpow hS hx)`. Establish `h2` using `Real.log_le_log (by linarith) h1`.
+
+Rewrite `h2` using `[Real.log_rpow hx0]`. Then use the resulting hypothesis. Establish `lb : Real.log L.sc.b = L.sc.L` using `by unfold Scale.b; exact Real.log_exp _`. Establish `hb0 : 0 < L.sc.b` using `by linarith`. Establish `hr0 : 0 < D.host.rdE` using `by linarith`. Establish `hv0 : 0 < (D.R.nV : ℝ)` using `by linarith`.
+
+Establish `E1 : Formalism.BasicNotions.DV.Lprime D L = L.sc.L + Real.log D.host.rdE + Real.log (D.host.g 0 : ℝ) + Real.log (D.host.g 1 : ℝ) + Real.log (D.R.nV : ℝ)`. Unfold `Formalism.BasicNotions.DV.Lprime`. Rewrite using `[Real.log_mul (mul_pos (mul_pos hb0 hr0) (mul_pos (hg 0) (hg 1))).ne' hv0.ne', Real.log_mul (mul_pos hb0 hr0).ne' (mul_pos (hg 0) (hg 1)).ne', Real.log_mul hb0.ne' hr0.ne', Real.log_mul (hg 0).ne' (hg 1).ne', lb]`. Expand and normalize the polynomial expressions, which then agree. Establish `E2 : L.La = Real.log L.sc.x + L.sc.L + Real.log D.host.rdE`.
+
+Unfold `SizeData₂.La Scale.a`. Rewrite using `[Real.log_mul (mul_pos hx0 hb0).ne' hr0.ne', Real.log_mul hx0.ne' hb0.ne', lb]`. Rewrite using `[E1, E2]`. Establish `lx : 0 ≤ Real.log L.sc.x` using `Real.log_nonneg hx1.le`. Establish `lr : 0 ≤ Real.log D.host.rdE` using `Real.log_nonneg hr`.
+
+Establish `l2 : Real.log 2 < 1` using `by have := Real.log_two_lt_d9; linarith`. Establish `e1 : P5.CYL * L.sc.L ≤ P5.CYL * (Real.log L.sc.x + L.sc.L + Real.log D.host.rdE)` using `mul_le_mul_of_nonneg_left (by linarith) hY.le`. Establish `e2 : c * Real.log L.sc.x ≤ c * (Real.log L.sc.x + L.sc.L + Real.log D.host.rdE)` using `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem Lp_le_La (P5 : ParameterChoice' D L) (hS : SizesAt L) (hx : 9 ≤ L.sc.x) :
     (ofRecord D L Del h0).Lp ≤ (3 + 2 * P5.CYL + (max L.Ct 5 + 3)) * (ofRecord D L Del h0).La := by
   rw [Lp_rec, ofRecord_La]
@@ -1607,6 +2170,9 @@ theorem Lp_le_La (P5 : ParameterChoice' D L) (hS : SizesAt L) (hx : 9 ≤ L.sc.x
     mul_le_mul_of_nonneg_left (by linarith) (by linarith)
   nlinarith
 
+/- English proof (translation)
+Establish `h1` using `Lp_le_La L Del h0 P5 hS hx`. Establish `hLa : 0 ≤ (ofRecord D L Del h0).La`. Rewrite using `[ofRecord_La]`. Conclude with `(La_bounds hS.1 hS.2.2.1 hS.2.2.2.2.2.2.1).1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem constant_mul_Lp_le (P5 : ParameterChoice' D L) (hS : SizesAt L) (hx : 9 ≤ L.sc.x) (Ch C0 : ℝ) (hCh : 0 ≤ Ch)
     (hC0 : Ch * (3 + 2 * P5.CYL + (max L.Ct 5 + 3)) ≤ C0) :
     Ch * (ofRecord D L Del h0).Lp ≤ C0 * (ofRecord D L Del h0).La := by
@@ -1618,6 +2184,11 @@ theorem constant_mul_Lp_le (P5 : ParameterChoice' D L) (hS : SizesAt L) (hx : 9 
     _ = (Ch * (3 + 2 * P5.CYL + (max L.Ct 5 + 3))) * (ofRecord D L Del h0).La := by ring
     _ ≤ C0 * (ofRecord D L Del h0).La := mul_le_mul_of_nonneg_right hC0 hLa
 
+/- English proof (translation)
+Establish `h1 : 1 ≤ C0` using `(le_max_left _ _).trans hC0`. Establish `h2 : Ch * (3 + 2 * P5.CYL + (max L.Ct 5 + 3)) ≤ C0` using `(le_max_right _ _).trans hC0`. Establish `hY` using `P5.CYL_pos`. Establish `hc : 1 ≤ 3 + 2 * P5.CYL + (max L.Ct 5 + 3)` using `by have := le_max_right L.Ct 5; linarith`. Use `⟨h1, hce, hCh, ?_, constant_mul_Lp_le L Del h0 P5 hS hx Ch C0 hCh h2⟩` and prove the remaining obligations.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem nf_consts_rec (P5 : ParameterChoice' D L) (hS : SizesAt L) (hx : 9 ≤ L.sc.x) (Ch C0 ce : ℝ) (hCh : 0 ≤ Ch)
     (hC0 : max 1 (Ch * (3 + 2 * P5.CYL + (max L.Ct 5 + 3))) ≤ C0) (hce : C0 ≤ ce) :
     1 ≤ C0 ∧ C0 ≤ ce ∧ 0 ≤ Ch ∧ Ch ≤ C0 ∧ Ch * (ofRecord D L Del h0).Lp ≤ C0 * (ofRecord D L Del h0).La := by
@@ -1628,6 +2199,17 @@ theorem nf_consts_rec (P5 : ParameterChoice' D L) (hS : SizesAt L) (hx : 9 ≤ L
   refine ⟨h1, hce, hCh, ?_, constant_mul_Lp_le L Del h0 P5 hS hx Ch C0 hCh h2⟩
   nlinarith
 
+/- English proof (translation)
+Use `set N := ⌈(e + 1) / eps⌉₊ with hNdef`. Establish `hx0 : 0 < x` using `by linarith`. Establish `hN : e + 1 ≤ eps * (N : ℝ)`. Use `Nat.le_ceil ((e + 1) / eps)` as an intermediate fact. Rewrite `this` using `[← hNdef, div_le_iff₀ heps]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hF : (0 : ℝ) < (Nat.factorial N : ℝ)` using `by exact_mod_cast Nat.factorial_pos N`. Establish `hxe : 0 ≤ x ^ e` using `Real.rpow_nonneg hx0.le _`. Establish `h1 : (x ^ eps) ^ N / (Nat.factorial N : ℝ) ≤ Real.exp (x ^ eps)` using `Real.pow_div_factorial_le_exp _ (Real.rpow_nonneg hx0.le _) N`. Establish `h2 : (x ^ eps) ^ N = x ^ (eps * (N : ℝ))`.
+
+Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hx0.le]`. Establish `h3 : x ^ (e + 1) ≤ x ^ (eps * (N : ℝ))` using `Real.rpow_le_rpow_of_exponent_le hx1 hN`. Establish `h4 : x ^ (e + 1) = x * x ^ e` using `by rw [Real.rpow_add hx0, Real.rpow_one, mul_comm]`. Distinguish the cases in `hc : c ≤ 0`. Establish `: c * x ^ e ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg hc hxe`.
+
+Combine the linear relations using `[Real.exp_pos (x ^ eps)]`. Use `replace hc : 0 < c := lt_of_not_ge hc`. Establish `h5 : c * x ^ e * (Nat.factorial N : ℝ) ≤ x * x ^ e`. Use `mul_le_mul_of_nonneg_right hxc hxe` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `h6 : c * x ^ e ≤ x ^ (e + 1) / (Nat.factorial N : ℝ)`. Rewrite using `[le_div_iff₀ hF, h4]`. Conclude with `h5`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mul_rpow_le_exp_rpow {x eps c e : ℝ} (hx1 : 1 ≤ x) (heps : 0 < eps) (he : 0 ≤ e)
     (hxc : c * (Nat.factorial ⌈(e + 1) / eps⌉₊ : ℝ) ≤ x) : c * x ^ e ≤ Real.exp (x ^ eps) := by
   set N := ⌈(e + 1) / eps⌉₊ with hNdef
@@ -1658,6 +2240,9 @@ theorem mul_rpow_le_exp_rpow {x eps c e : ℝ} (hx1 : 1 ≤ x) (heps : 0 < eps) 
       _ = (x ^ eps) ^ N / (Nat.factorial N : ℝ) := by rw [h2]
       _ ≤ Real.exp (x ^ eps) := h1
 
+/- English proof (translation)
+The claim follows from `mul_rpow_le_exp_rpow L.sc.one_lt_alt.le L.sc.eps_pos he hxc`.
+-/
 theorem mul_rpow_le_b {c e : ℝ} (he : 0 ≤ e)
     (hxc : c * (Nat.factorial ⌈(e + 1) / L.sc.eps⌉₊ : ℝ) ≤ L.sc.x) : c * L.sc.x ^ e ≤ L.sc.b :=
   mul_rpow_le_exp_rpow L.sc.one_lt_alt.le L.sc.eps_pos he hxc
@@ -1666,6 +2251,17 @@ section Bound
 
 variable {J Pl : Type} [Fintype J] [Fintype Pl] [DecidableEq Pl]
 
+/- English proof (translation)
+Establish `hLa : 0 ≤ R.La` using `(abs_nonneg _).trans R.p23`. Establish `hk` using `R.p16`. Establish `hm` using `R.p14`. Establish `hb : 0 ≤ R.b` using `by rw [R.p4]; exact (Real.exp_pos _).le`. Use `set X := (R.k + R.m) * (2 * R.b) * R.La with hX`.
+
+Establish `hX0 : 0 ≤ X` using `by rw [hX]; have : 0 ≤ R.k + R.m := by linarith`. Check the signs of the components of the expression. Establish `hterm : ∀ j ρ, R.pq j * R.w j ρ * R.logOm ≤ X`. Introduce `j ρ`. Establish `hpq : |R.pq j| ≤ R.k + R.m`.
+
+Use `R.p22 j` as an intermediate fact. Establish `h1 : |R.pq j| ≤ |R.pq j - R.k| + |R.k|`. Use `abs_add_le (R.pq j - R.k) R.k` as an intermediate fact. Simplify using `using this`. Rewrite `h1` using `[abs_of_nonneg (by linarith : (0:ℝ) ≤ R.k)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hw0, hw1⟩` from `R.p21 j ρ`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul (mul_le_mul hpq hw1 hw0 (by linarith)) R.p23 (abs_nonneg _)` to reduce the goal to its premises. Establish `: 0 ≤ R.k + R.m` using `by linarith`.
+
+Check the signs of the components of the expression. Establish `hρ : ∀ j, ∑ ρ, R.pq j * R.w j ρ * R.logOm ≤ R.f * X`. Introduce `j`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem main_le_RN (R : RecNums J Pl) :
     (∑ j, ∑ ρ, R.pq j * R.w j ρ * R.logOm) ≤ R.m * (R.f * ((R.k + R.m) * (2 * R.b) * R.La)) := by
   have hLa : 0 ≤ R.La := (abs_nonneg _).trans R.p23
@@ -1707,6 +2303,9 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] 
 variable {A3 : FamIn3 K G Pl0 I0 Ty T m} {Nd : NumDatum} {eJz : A3.fam3.base3.J ≃ Fin Nd.R.m} {Nc : ℝ}
   {Zsc : DefSub A3.fam3.amb3 → IndefScale A3.fam3.base3}
 
+/- English proof (translation)
+Establish `h1` using `levelThree_bound_closed hZ eJ δ Tl lam0 C0 ce Ch Sw C1 H Zs C CH`. Establish `h2` using `error_bound_closed_numbers Nd Nc hZ eJ δ Tl lam0 C0 ce Ch Sw C1 H Zs C CH hC bd dg s c13 cG cD hbd hLam hdg hce`. Unfold `boundBR`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem boundBR_le_closed (hZ : ClosedScale3 A3 Nd eJz Nc Zsc) (eJ : A3.fam3.base3.J ≃ Fin Nd.R.m) (δ : Code Nd) (Tl : ℕ)
     (lam0 C0 ce Ch Sw C1 : ℝ) (H : Nd.NumFacts δ Nc lam0 C0 ce Ch Sw C1) (Zs : DefSub A3.fam3.amb3) (C CH : ℝ)
     {Df0 Df1 : DefSide A3.fam3.base3} {Dc : DefCols Df1} {Sp : SPer Dc}
@@ -1728,6 +2327,11 @@ end BoundBR
 
 section Sizes
 
+/- English proof (translation)
+Establish `h1` using `bPol_le hS K 9 hx1`. Establish `he : (0 : ℝ) ≤ ((9 : ℕ) : ℝ) * (max L.Ct 5 + 3) + 1`. Use `le_max_right L.Ct 5` as an intermediate fact. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `h2` using `mul_rpow_le_b L (c := 1) (e := ((9 : ℕ) : ℝ) * (max L.Ct 5 + 3) + 1) he (by push_cast; simpa using hx2)`. Establish `hb` using `one_le_b L`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem polyBound_mul_b_le_sq (hS : SizesAt L) (K : ℝ) (hx1 : max 9 K ≤ L.sc.x)
     (hx2 : (Nat.factorial ⌈((9 : ℝ) * (max L.Ct 5 + 3) + 1 + 1) / L.sc.eps⌉₊ : ℝ) ≤ L.sc.x) :
     K * szPol L ^ 9 * L.sc.b ≤ L.sc.b ^ 2 := by
@@ -1740,6 +2344,23 @@ theorem polyBound_mul_b_le_sq (hS : SizesAt L) (K : ℝ) (hx1 : max 9 K ≤ L.sc
     _ ≤ L.sc.b * L.sc.b := mul_le_mul_of_nonneg_right (by simpa using h2) (by linarith)
     _ = L.sc.b ^ 2 := (sq _).symm
 
+/- English proof (translation)
+Establish `hx0` using `sc_x_pos L`. Establish `hL0` using `(sc_L_pos L).le`. Establish `hb` using `one_le_b L`. Establish `hn : (1 : ℝ) ≤ D.R.n` using `by exact_mod_cast (show 1 ≤ D.R.n from D.R.ord_pos)`. Establish `hT : (D.host.T2.card : ℝ) ≤ D.R.n`.
+
+Establish `: D.host.T2 ⊆ Finset.range D.R.n` using `fun u hu => Finset.mem_range.2 (by`. Establish `h1` using `D.host.second_set_range u hu`. Establish `h2` using `D.host.two_le_Lw`. Establish `h3 : D.R.n0 ≤ D.R.n` using `D.R.cyclic_order_le_exponent`. Use the proof step `nlinarith)`.
+
+Conclude with `(by simpa using Finset.card_le_card this)` after adjusting the coercions. Establish `hxe : L.sc.x ^ (-L.sc.eps) = (L.sc.L)⁻¹`. Rewrite using `[Real.rpow_neg hx0.le]`. Both sides reduce to the same expression. Establish `hLp : 0 < L.sc.L` using `sc_L_pos L`.
+
+Establish `eNc : L.Nc = (D.host.T2.card : ℝ) * D.R.k * L.sc.b * L.sc.L ^ 2 / ((D.R.n : ℝ) ^ 2)`. Unfold `SizeData₂.Nc budgetNc rankBudget bSize`. Rewrite using `[hxe]`. Establish `: L.sc.x ^ L.sc.eps = L.sc.L` using `rfl`. Rewrite using `[this]`.
+
+Establish `hb' : Real.exp L.sc.L = L.sc.b` using `rfl`. Rewrite using `[hb']`. Clear the denominators using the available nonvanishing facts. Rewrite using `[eNc, div_le_iff₀ (by positivity)]`. Establish `hk` using `k_le L`.
+
+Establish `hLP` using `L_le L`. Establish `hP` using `one_le_szPol L`. Establish `hk0 : (0 : ℝ) ≤ D.R.k` using `Nat.cast_nonneg _`. Establish `hT0 : (0 : ℝ) ≤ D.host.T2.card` using `Nat.cast_nonneg _`. Establish `e1 : (D.host.T2.card : ℝ) * D.R.k * L.sc.b * L.sc.L ^ 2 ≤ (D.R.n : ℝ) * (szPol L * L.sc.b * szPol L ^ 2)`.
+
+Establish `a1 : (D.host.T2.card : ℝ) * D.R.k ≤ (D.R.n : ℝ) * szPol L` using `mul_le_mul hT hk hk0 (by linarith)`. Establish `a2 : (D.host.T2.card : ℝ) * D.R.k * L.sc.b ≤ (D.R.n : ℝ) * szPol L * L.sc.b` using `mul_le_mul_of_nonneg_right a1 (by linarith)`. Establish `a3 : L.sc.L ^ 2 ≤ szPol L ^ 2` using `pow_le_pow_left₀ hL0 hLP 2`. Establish `a4 : (D.host.T2.card : ℝ) * D.R.k * L.sc.b * L.sc.L ^ 2 ≤ (D.R.n : ℝ) * szPol L * L.sc.b * szPol L ^ 2` using `mul_le_mul a2 a3 (by positivity) (by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `e2 : (D.R.n : ℝ) * (szPol L * L.sc.b * szPol L ^ 2) ≤ szPol L ^ 3 * L.sc.b * (D.R.n : ℝ) ^ 2`. Establish `: (D.R.n : ℝ) ≤ (D.R.n : ℝ) ^ 2` using `by nlinarith`. Establish `h3 : 0 ≤ szPol L ^ 3 * L.sc.b` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem Nc_le_rec : L.Nc ≤ szPol L ^ 3 * L.sc.b := by
   have hx0 := sc_x_pos L
   have hL0 := (sc_L_pos L).le
@@ -1784,6 +2405,13 @@ theorem Nc_le_rec : L.Nc ≤ szPol L ^ 3 * L.sc.b := by
     nlinarith
   linarith
 
+/- English proof (translation)
+Establish `e : L.B0 = (D.R.f : ℝ) * D.R.m * L.sc.b * L.sc.L` using `rfl`. Rewrite using `[e]`. Establish `hf` using `f_le L`. Establish `hm` using `m_le L`. Establish `hL` using `L_le L`.
+
+Establish `hb` using `one_le_b L`. Establish `h0 : (0:ℝ) ≤ D.R.f` using `Nat.cast_nonneg _`. Establish `h1 : (0:ℝ) ≤ D.R.m` using `Nat.cast_nonneg _`. Establish `hL0` using `(sc_L_pos L).le`. Establish `: (D.R.f : ℝ) * D.R.m * L.sc.L ≤ szPol L * szPol L * szPol L` using `mul_le_mul (mul_le_mul hf hm h1 (by linarith [one_le_szPol L])) hL hL0 (by nlinarith [one_le_szPol L])`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem initialBound_le_cube : L.B0 ≤ szPol L ^ 3 * L.sc.b := by
   have e : L.B0 = (D.R.f : ℝ) * D.R.m * L.sc.b * L.sc.L := rfl
   rw [e]
@@ -1796,6 +2424,13 @@ theorem initialBound_le_cube : L.B0 ≤ szPol L ^ 3 * L.sc.b := by
     mul_le_mul (mul_le_mul hf hm h1 (by linarith [one_le_szPol L])) hL hL0 (by nlinarith [one_le_szPol L])
   nlinarith
 
+/- English proof (translation)
+Establish `e : (ofRecord D L Del h0).unitE L.Nc = L.sc.L * (L.B0 + L.Nc)` using `rfl`. Rewrite using `[e]`. Establish `h1` using `initialBound_le_cube L`. Establish `h2` using `Nc_le_rec L`. Establish `hL` using `L_le L`.
+
+Establish `hL0` using `(sc_L_pos L).le`. Establish `hb` using `one_le_b L`. Establish `hP` using `one_le_szPol L`. Establish `hB0 : 0 ≤ L.B0 + L.Nc`. Establish `: 0 ≤ L.B0` using `by unfold SizeData₂.B0 sizeBudget bSize; have := (sc_x_pos L); positivity`.
+
+Use `Nc_nonneg L` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem unitE_le_rec : (ofRecord D L Del h0).unitE L.Nc ≤ 2 * szPol L ^ 4 * L.sc.b := by
   have e : (ofRecord D L Del h0).unitE L.Nc = L.sc.L * (L.B0 + L.Nc) := rfl
   rw [e]
@@ -1817,6 +2452,15 @@ section Q
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty T : Type} {m : ℕ}
 
+/- English proof (translation)
+Use `(main_le_RN _).trans ?_` and prove the remaining obligations. Use `show (D.R.m : ℝ) * ((D.R.f : ℝ) * (((D.R.k : ℝ) + D.R.m) * (2 * L.sc.b) * (ofRecord D L Del h0).La)) ≤ _`. Rewrite using `[ofRecord_La]`. Establish `hf` using `f_le L`. Establish `hm` using `m_le L`.
+
+Establish `hk` using `k_le L`. Take `⟨hLa0, hLa⟩` from `La_bounds hS.1 hS.2.2.1 hS.2.2.2.2.2.2.1`. Establish `hb` using `one_le_b L`. Establish `hP` using `one_le_szPol L`. Establish `h0 : (0:ℝ) ≤ D.R.f` using `Nat.cast_nonneg _`.
+
+Establish `h1 : (0:ℝ) ≤ D.R.m` using `Nat.cast_nonneg _`. Establish `h2 : (0:ℝ) ≤ D.R.k` using `Nat.cast_nonneg _`. Establish `a1 : ((D.R.k : ℝ) + D.R.m) * (2 * L.sc.b) * L.La ≤ (2 * szPol L) * (2 * L.sc.b) * (4 * szPol L)` using `mul_le_mul (mul_le_mul_of_nonneg_right (by linarith) (by linarith)) hLa hLa0 (by positivity)`. Establish `a2 : (D.R.f : ℝ) * (((D.R.k : ℝ) + D.R.m) * (2 * L.sc.b) * L.La) ≤ szPol L * ((2 * szPol L) * (2 * L.sc.b) * (4 * szPol L))` using `mul_le_mul hf a1 (by positivity) (by positivity)`. Establish `a3 : (D.R.m : ℝ) * ((D.R.f : ℝ) * (((D.R.k : ℝ) + D.R.m) * (2 * L.sc.b) * L.La)) ≤ szPol L * (szPol L * ((2 * szPol L) * (2 * L.sc.b) * (4 * szPol L)))` using `mul_le_mul hm a2 (by positivity) (by positivity)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem main_rec (hS : SizesAt L) {J : Type} [Fintype J] (eJ : J ≃ Fin (ofRecord D L Del h0).R.m)
     (δ : Code (ofRecord D L Del h0)) (Tl : ℕ) (Nc lam0 C0 ce Ch Sw C1 : ℝ)
     (H : (ofRecord D L Del h0).NumFacts δ Nc lam0 C0 ce Ch Sw C1) :
@@ -1842,6 +2486,13 @@ theorem main_rec (hS : SizesAt L) {J : Type} [Fintype J] (eJ : J ≃ Fin (ofReco
   calc _ ≤ szPol L * (szPol L * ((2 * szPol L) * (2 * L.sc.b) * (4 * szPol L))) := a3
     _ = 16 * szPol L ^ 4 * L.sc.b := by ring
 
+/- English proof (translation)
+Rewrite using `[RecNums.ofNum_errB]`. Establish `hu` using `unitE_le_rec L Del h0`. Establish `hu0 : 0 ≤ (ofRecord D L Del h0).unitE L.Nc`. Use `one_le_unitE (ofRecord D L Del h0) (Nc_nonneg L)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hm` using `m_le L`. Establish `h1 : (0:ℝ) ≤ D.R.m` using `Nat.cast_nonneg _`. Establish `e : (ofRecord D L Del h0).sc.x ^ (ofRecord D L Del h0).sc.eps * ((ofRecord D L Del h0).B0 + L.Nc) = (ofRecord D L Del h0).unitE L.Nc` using `rfl`. Use `show ce * (D.R.m : ℝ) * ((ofRecord D L Del h0).sc.x ^ (ofRecord D L Del h0).sc.eps * ((ofRecord D L Del h0).B0 + L.Nc)) ≤ _`. Rewrite using `[e]`.
+
+Establish `a : (D.R.m : ℝ) * (ofRecord D L Del h0).unitE L.Nc ≤ szPol L * (2 * szPol L ^ 4 * L.sc.b)` using `mul_le_mul hm hu hu0 (by linarith [one_le_szPol L])`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem errB_rec {J : Type} [Fintype J] (eJ : J ≃ Fin (ofRecord D L Del h0).R.m)
     (δ : Code (ofRecord D L Del h0)) (Tl : ℕ) (lam0 C0 ce Ch Sw C1 : ℝ)
     (H : (ofRecord D L Del h0).NumFacts δ L.Nc lam0 C0 ce Ch Sw C1) (hce : 0 ≤ ce) :
@@ -1862,6 +2513,11 @@ theorem errB_rec {J : Type} [Fintype J] (eJ : J ≃ Fin (ofRecord D L Del h0).R.
     _ ≤ ce * (szPol L * (2 * szPol L ^ 4 * L.sc.b)) := mul_le_mul_of_nonneg_left a hce
     _ = 2 * ce * szPol L ^ 5 * L.sc.b := by ring
 
+/- English proof (translation)
+Establish `h` using `Formalism.L2.DIV.Cons.log_card_le_unitE (G := G) L hS.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 hS.2.2.2.2.2.1 0 0 L.Nc (Nc_nonneg L) hc`. Establish `hu` using `unitE_le_rec L 0 0`. Establish `hm` using `m_le L`. Establish `hu0 : 0 ≤ (ofRecord D L 0 0).unitE L.Nc`. Use `one_le_unitE (ofRecord D L 0 0) (Nc_nonneg L)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `a : (D.R.m : ℝ) * (ofRecord D L 0 0).unitE L.Nc ≤ szPol L * (2 * szPol L ^ 4 * L.sc.b)` using `mul_le_mul hm hu hu0 (by linarith [one_le_szPol L])`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem logG_rec (hS : SizesAt L) (hc : Fintype.card G = D.what₂.restRowsFiniteGroupCard) :
     Real.log (Fintype.card G : ℝ) ≤ 4 * szPol L ^ 5 * L.sc.b := by
   have h := Formalism.L2.DIV.Cons.log_card_le_unitE (G := G) L hS.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 hS.2.2.2.2.2.1
@@ -1882,6 +2538,25 @@ section QAll
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty T : Type} {m : ℕ}
 
+/- English proof (translation)
+Establish `hSG : SizeG L` using `hS.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hP` using `one_le_szPol L`. Establish `hb` using `one_le_b L`. Establish `hP9b : 0 ≤ szPol L ^ 9 * L.sc.b`. Establish `: 0 ≤ szPol L ^ 9` using `pow_nonneg (by linarith) 9`.
+
+Use the polynomial consequences of the given equalities and inequalities. Use `set K0 : ℝ := 272 + 2 * ce with hK0`. Establish `hKb` using `polyBound_mul_b_le_sq L hS K0 hx1 hx2`. Establish `hmain` using `main_rec L Del h0 hS eJ δ Tl L.Nc lam0 C0 ce Ch Sw C1 H`. Establish `hFo' : L.Fo ≤ 256 * szPol L ^ 9 * L.sc.b` using `Formalism.MainNotions.DIV.HookProducts.HookProductWeightBounds.fo_le_pol hFD hS (Formalism.MainNotions.G.Joints.Lit.mertens_bound _)`.
+
+Establish `herr` using `errB_rec L Del h0 eJ δ Tl lam0 C0 ce Ch Sw C1 H hce0`. Establish `p4 : szPol L ^ 4 * L.sc.b ≤ szPol L ^ 9 * L.sc.b` using `poly_pow_mul_b_le_ninth (by norm_num)`. Establish `p5 : szPol L ^ 5 * L.sc.b ≤ szPol L ^ 9 * L.sc.b` using `poly_pow_mul_b_le_ninth (by norm_num)`. Use `⟨_, boundBR_le_closed hZ eJ δ Tl lam0 C0 ce Ch Sw C1 H Zs C CH P hC bd dg s c13 cG cD hbd hLam hdg hce, ?_⟩` and prove the remaining obligations. Use `hg_of_sizeG L Del h0 hSG hZ Zs C CH _ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[hFo]`. Establish `e1 : 16 * szPol L ^ 4 * L.sc.b ≤ 16 * (szPol L ^ 9 * L.sc.b)` using `by nlinarith`. Establish `e2 : 2 * ce * szPol L ^ 5 * L.sc.b ≤ 2 * ce * (szPol L ^ 9 * L.sc.b)`. Use `mul_le_mul_of_nonneg_left p5 (by linarith : 0 ≤ 2 * ce); nlinarith` as an intermediate fact. Establish `e3 : K0 * szPol L ^ 9 * L.sc.b = (272 + 2 * ce) * (szPol L ^ 9 * L.sc.b)` using `by rw [hK0]; ring`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `h1 : L.sc.x ^ CH ≤ L.sc.x ^ (max CH 0)` using `Real.rpow_le_rpow_of_exponent_le L.sc.one_lt_alt.le (le_max_left _ _)`. Establish `h2` using `mul_rpow_le_b L (c := 1) (e := max CH 0) (le_max_right _ _) (by simpa using hx3)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h` using `logG_rec L hS hcard`.
+
+Establish `e3 : K0 * szPol L ^ 9 * L.sc.b = (272 + 2 * ce) * (szPol L ^ 9 * L.sc.b)` using `by rw [hK0]; ring`. Use the polynomial consequences of the given equalities and inequalities. Establish `hf` using `f_le L`. Establish `ht` using `t_le L`. Establish `hrt : D.R.r + 5 ≤ D.R.t`.
+
+Use `D.R.rank_add_five_le` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `hr : (D.R.r : ℝ) ≤ szPol L` using `le_trans (by exact_mod_cast (by omega : D.R.r ≤ D.R.t)) ht`. Establish `h0f : (0:ℝ) ≤ D.R.f` using `Nat.cast_nonneg _`.
+
+Establish `h0r : (0:ℝ) ≤ D.R.r` using `Nat.cast_nonneg _`. Establish `a1 : (D.R.f : ℝ) * D.R.r ≤ szPol L * szPol L` using `mul_le_mul hf hr h0r (by linarith)`. Establish `p2 : szPol L ^ 2 * L.sc.b ≤ szPol L ^ 9 * L.sc.b` using `poly_pow_mul_b_le_ninth (by norm_num)`. Establish `a2 : szPol L * szPol L ≤ szPol L ^ 2 * L.sc.b` using `by nlinarith`. Establish `e3 : K0 * szPol L ^ 9 * L.sc.b = (272 + 2 * ce) * (szPol L ^ 9 * L.sc.b)` using `by rw [hK0]; ring`.
+
+Establish `hb2 : L.sc.b ^ 2 ≤ L.sc.b ^ 6` using `pow_le_pow_right₀ hb (by norm_num)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem q_rec (hS : SizesAt L) (hFD : L.FDef)
     {A3 : FamIn3 K G Pl0 I0 Ty T m} {eJz : A3.fam3.base3.J ≃ Fin (ofRecord D L Del h0).R.m}
     {Zsc : DefSub A3.fam3.amb3 → IndefScale A3.fam3.base3} (hZ : ClosedScale3 A3 (ofRecord D L Del h0) eJz L.Nc Zsc)
@@ -1966,6 +2641,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV
 
 variable {D : D7} (L : SizeData₂ D) (Del h0 : ℕ)
 
+/- English proof (translation)
+Take `⟨c1, c2, c3, c4, c5⟩` from `nf_consts_rec L Del h0 P5 hS hx9 Ch C0 ce hCh hC0 hce`. Conclude with `numFacts_rows L Del h0 hDel hh0 P5 u hx3 L.Nc (Real.log (Fintype.card G)) C0 ce Ch (nf_logrd L Del h0 hS hB) (nf_logx L Del h0 hB) (cloudConstant_nonneg L) (size_le_two_b L Del h0 hS hB) (nf_Om L Del h0 hS hB) (nf_lam L Del h0 G hS hB hc) (logCardGroup_nonneg G) (rank_sq_le_b L D …`.
+-/
 theorem numFacts_rec (hS : SizesAt L) (hB : BigX L) (hDel : D.s.Del = (Del : ℚ)) (hh0 : L.etaSz = (D.R.m : ℝ) * (h0 : ℝ))
     (P5 : ParameterChoice' D L) (u : D.what₂.Word) (hx3 : 3 + |L.Cc| ≤ L.sc.x) (hx9 : 9 ≤ L.sc.x)
     (G : Type) [Group G] [Fintype G] (hc : Fintype.card G = D.what₂.restRowsFiniteGroupCard) (C0 ce Ch : ℝ) (hCh : 0 ≤ Ch)
@@ -1991,6 +2669,11 @@ open NumberField IsDedekindDomain
 
 variable {D : D7} (L : SizeData₂ D) (Del h0 : ℕ)
 
+/- English proof (translation)
+Establish `hx9 : 9 ≤ L.sc.x` using `(le_max_left _ _).trans hx`. Establish `H` using `numFacts_rec L Del h0 hS hB hDel hh0 P5 u hx3 hx9 G hc C0 ce Ch hCh hC0 hC1 hce0`. Establish `hZ` using `closedScale3_fix A3 P0 ψ0 (ofRecord D L Del h0) eJz L.Nc Ch`. Establish `hbd : ∀ j : Fin m, (fun _ : Fin m => divSize L Ce) j ≤ Ce * (ofRecord D L Del h0).unitE L.Nc` using `fun _ => le_of_eq (divSize_eq_unitE L Del h0 Ce)`. Establish `hLam : Real.log (Fintype.card G) + Real.log ((1 : ℕ) : ℝ) ≤ 2 * (((ofRecord D L Del h0).R.m : ℝ) * (ofRecord D L Del h0).unitE L.Nc)` using `Formalism.L2.DIV.Cons.lamSizeAt_record_one (G := G) L hS.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 hS.2.2.2.2.2.1 Del h0 L.Nc (cloudConstant_nonneg L) hc`.
+
+Establish `hce' : C + 2 + C + (Ce + cD) + 1 ≤ ce` using `hce`. Establish `hce0' : 0 ≤ ce` using `by linarith`. Establish `hFo : 2 * FoOfR Pk.core = L.Fo` using `two_FoOfR_eq_Fo L Pk.core eJz (fixedScale_tied L Del h0 hK hFD A3 P0 ψ0 eJz L.Nc Ch Pk.Zs C CH)`. Take `⟨B, hBB, hg⟩` from `q_rec L Del h0 hS hFD hZ eJz (letterOf D L Del h0 u) ((D.mem u).A.T) (Real.log (Fintype.card G)) C0 ce Ch (swRec L) (constantOneChoice L) H Pk.Zs C CH Pk.core hFo hC (fun _ => divSize L Ce) dg 1 Ce 2 cD hbd hLam hdg hce' hc hce0' hx hx1 hx2`. Conclude with `arithmetic_fixed_scale A3 1 P0 ψ0 P1 ψ1 Dc Sp (ofRecord D L Del h0) eJz L.Nc cf C CH eJz (letterOf D L Del h0 u) ((D.mem u).A.T) (Real.log (Fintype.card G)) C0 ce Ch (swRec L) (constantOneChoice L) H Pk (fun _ => divSize L Ce) dg hC h28 le_rfl Ce 2 cD hbd hLam hdg hce' B hBB hg`.
+-/
 theorem arithAt_rec (hS : SizesAt L) (hB : BigX L) (hDel : D.s.Del = (Del : ℚ)) (hh0 : L.etaSz = (D.R.m : ℝ) * (h0 : ℝ))
     (P5 : ParameterChoice' D L) (hFD : L.FDef) (hK : DV.KapDef D) (u : D.what₂.Word) (hx3 : 3 + |L.Cc| ≤ L.sc.x)
     {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty T : Type} {m : ℕ} (A3 : FamIn3 D.what₂.LL G Pl0 I0 Ty T m)

@@ -14,6 +14,11 @@ namespace GlobalTheory.AdjSrcZero
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
+/- English proof (translation)
+Take `⟨⟨hAA, hbar⟩, -⟩` from `GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D`. Introduce `h0`. Apply `hAA` to reduce the goal to its premises. Rewrite `h0`, the goal using `[FractionalIdeal.eq_zero_iff]`. Introduce `x hx`.
+
+Establish `h1 : star x ∈ D.host.AAbar` using `(hbar _).2 (by rwa [star_star])`. Establish `h2` using `h0 _ h1`. Simplify using `using congrArg star h2`.
+-/
 theorem AAbar_ne_zero (D : D7) : D.host.AAbar ≠ 0 := by
   obtain ⟨⟨hAA, hbar⟩, -⟩ := GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D
   intro h0
@@ -24,6 +29,9 @@ theorem AAbar_ne_zero (D : D7) : D.host.AAbar ≠ 0 := by
   have h2 := h0 _ h1
   simpa using congrArg star h2
 
+/- English proof (translation)
+Establish `hA` using `AAbar_ne_zero D`. Simplify using `only [zero_add, pow_one, Places.stA, Places.stAbar, shiftId, mul_inv, inv_inv]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem AAbar_mul_st (G : GridData L sc) :
     D.host.AAbar * (G.pl.stA sc ^ (0 + 1) * (G.pl.stAbar sc ^ (0 + 1))⁻¹) = D.host.AA * shiftId G := by
   have hA := AAbar_ne_zero D
@@ -33,6 +41,17 @@ theorem AAbar_mul_st (G : GridData L sc) :
         ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)⁻¹)) := by ring
     _ = _ := by rw [mul_inv_cancel₀ hA, one_mul]
 
+/- English proof (translation)
+Introduce `D T L sc G n Λ₀ a ha s hs`. Take `⟨⟨-, hbar⟩, -⟩` from `GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D`. Establish `key : ∀ b ∈ D.host.AA * shiftId G, ∀ y ∈ Λ₀, b • y ∈ Submodule.span (𝓞 D.host.E) {y | ∃ a' ∈ D.host.AA, ∃ s' ∈ idLat (shiftId G) Λ₀, y = a' • s'}`. Introduce `b hb y hy`. Use `FractionalIdeal.mul_induction_on (C := fun b => b • y ∈ Submodule.span (𝓞 D.host.E) {y | ∃ a' ∈ D.host.AA, ∃ s' ∈ idLat (shiftId G) Λ₀, y = a' • s'}) hb ?_ ?_` and prove the remaining obligations.
+
+Introduce `i hi j hj`. Use `Submodule.subset_span ⟨i, hi, j • y, Submodule.subset_span ⟨j, hj, y, hy, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul]`. Introduce `x z hx hz`. Rewrite using `[add_smul]`.
+
+Conclude with `add_mem hx hz`. Establish `hsa : star a ∈ D.host.AAbar` using `(hbar _).2 (by rwa [star_star])`. Unfold `idLat at hs`. Use `Submodule.span_induction (p := fun z _ => star a • z ∈ Submodule.span (𝓞 D.host.E) {y | ∃ a' ∈ D.host.AA, ∃ s' ∈ idLat (shiftId G) Λ₀, y = a' • s'}) ?_ ?_ ?_ ?_ hs` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, y, hy, rfl⟩`.
+
+Rewrite using `[smul_smul]`. Conclude with `key _ (AAbar_mul_st G ▸ FractionalIdeal.mul_mem_mul hsa hi) y hy`. Simplify using the standard rewrite rules. Introduce `x z _ _ hx hz`. Rewrite using `[smul_add]`.
+
+Conclude with `add_mem hx hz`. Introduce `c x _ hx`. Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem star_smul_mem_span : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) {n : ℕ}
     (Λ₀ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)), ∀ a ∈ D.host.AA,
     ∀ s ∈ idLat (G.pl.stA sc ^ (0 + 1) * (G.pl.stAbar sc ^ (0 + 1))⁻¹) Λ₀,

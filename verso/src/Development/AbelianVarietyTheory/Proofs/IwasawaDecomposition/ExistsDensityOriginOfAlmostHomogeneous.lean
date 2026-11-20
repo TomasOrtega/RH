@@ -11,6 +11,9 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensiona
 open MeasureTheory Filter Topology Matrix in
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
   [MeasurableSpace V] [BorelSpace V] in
+/- English proof (translation)
+Rewrite using `[Measure.addHaar_closedBall_mul_of_pos l x hs r, Measure.addHaar_closedBall l 0 hr.le, Measure.addHaar_ball_of_pos l 0 hr]`.
+-/
 theorem _root_.GlobalTheory.densHom_scale (l : Measure V) [l.IsAddHaarMeasure] (x : V) {s r : ℝ}
     (hs : 0 < s) (hr : 0 < r) :
     l (Metric.closedBall x (s * r)) =
@@ -21,6 +24,9 @@ theorem _root_.GlobalTheory.densHom_scale (l : Measure V) [l.IsAddHaarMeasure] (
 open MeasureTheory Filter Topology Matrix in
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
   [MeasurableSpace V] [BorelSpace V] in
+/- English proof (translation)
+Use `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ ?_ ?_` and prove the remaining obligations. Establish `h : Tendsto (fun r : ℝ => s * r) (𝓝 0) (𝓝 (s * 0))` using `tendsto_const_nhds.mul tendsto_id`. Rewrite `h` using `[mul_zero]`. Conclude with `h.mono_left nhdsWithin_le_nhds`. Use `filter_upwards [self_mem_nhdsWithin] with r hr using mul_pos hs hr`.
+-/
 theorem _root_.GlobalTheory.densHom_tendsto_mul {s : ℝ} (hs : 0 < s) :
     Tendsto (fun r : ℝ => s * r) (𝓝[>] 0) (𝓝[>] 0) := by
   refine tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ ?_ ?_
@@ -34,6 +40,9 @@ end
 open MeasureTheory Filter Topology Matrix in
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
   [MeasurableSpace V] [BorelSpace V] in
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.densHom_scale l x hs hr, ← mul_div_assoc, ENNReal.mul_div_mul_left _ _ (ENNReal.ofReal_pos.2 (pow_pos hs _)).ne' ENNReal.ofReal_ne_top]`.
+-/
 private theorem closedBall_smul_div_ball_eq_ofReal_pow_mul (l ν : Measure V) [l.IsAddHaarMeasure] (x : V)
     {s r : ℝ} (hs : 0 < s) (hr : 0 < r) :
     ν (Metric.closedBall x (s * r)) / l (Metric.ball 0 r) =
@@ -45,6 +54,9 @@ private theorem closedBall_smul_div_ball_eq_ofReal_pow_mul (l ν : Measure V) [l
 open MeasureTheory Filter Topology Matrix in
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
   [MeasurableSpace V] [BorelSpace V] in
+/- English proof (translation)
+Establish `htend : Tendsto (fun r => ENNReal.ofReal (s ^ Module.finrank ℝ V) * (ν (Metric.closedBall x (s * r)) / l (Metric.closedBall x (s * r)))) (𝓝[>] 0) (𝓝 (ENNReal.ofReal (s ^ Module.finrank ℝ V) * D))` using `ENNReal.Tendsto.const_mul (hD.comp (_root_.GlobalTheory.densHom_tendsto_mul hs)) (Or.inr ENNReal.ofReal_ne_top)`. Use `(le_of_eq htend.liminf_eq.symm).trans (Filter.liminf_le_liminf ?_)` and prove the remaining obligations. Use `filter_upwards [h, self_mem_nhdsWithin] with r hr (hr0 : 0 < r)`. Rewrite using `[← closedBall_smul_div_ball_eq_ofReal_pow_mul l ν x hs hr0]`. Conclude with `ENNReal.div_le_div_right hr _`.
+-/
 private theorem ofReal_pow_mul_le_liminf_ball_ratio (l ν : Measure V) [l.IsAddHaarMeasure] {x : V} {s : ℝ}
     (hs : 0 < s) {D : ENNReal}
     (hD : Tendsto (fun r => ν (Metric.closedBall x r) / l (Metric.closedBall x r)) (𝓝[>] 0) (𝓝 D))
@@ -64,6 +76,9 @@ private theorem ofReal_pow_mul_le_liminf_ball_ratio (l ν : Measure V) [l.IsAddH
 open MeasureTheory Filter Topology Matrix in
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
   [MeasurableSpace V] [BorelSpace V] in
+/- English proof (translation)
+Establish `htend : Tendsto (fun r => ENNReal.ofReal (s ^ Module.finrank ℝ V) * (ν (Metric.closedBall x (s * r)) / l (Metric.closedBall x (s * r)))) (𝓝[>] 0) (𝓝 (ENNReal.ofReal (s ^ Module.finrank ℝ V) * D))` using `ENNReal.Tendsto.const_mul (hD.comp (_root_.GlobalTheory.densHom_tendsto_mul hs)) (Or.inr ENNReal.ofReal_ne_top)`. Use `(Filter.limsup_le_limsup ?_).trans (le_of_eq htend.limsup_eq)` and prove the remaining obligations. Use `filter_upwards [h, self_mem_nhdsWithin] with r hr (hr0 : 0 < r)`. Rewrite using `[← closedBall_smul_div_ball_eq_ofReal_pow_mul l ν x hs hr0]`. Conclude with `ENNReal.div_le_div_right hr _`.
+-/
 private theorem limsup_ball_ratio_le_ofReal_pow_mul (l ν : Measure V) [l.IsAddHaarMeasure] {x : V} {s : ℝ}
     (hs : 0 < s) {D : ENNReal}
     (hD : Tendsto (fun r => ν (Metric.closedBall x r) / l (Metric.closedBall x r)) (𝓝[>] 0) (𝓝 D))
@@ -82,6 +97,31 @@ private theorem limsup_ball_ratio_le_ofReal_pow_mul (l ν : Measure V) [l.IsAddH
 
 open MeasureTheory Filter Topology Matrix in
 
+/- English proof (translation)
+Introduce `V _ _ _ _ _ l ν _ _ hpos halmost`. Use `set ρ := fun r : ℝ => ν (Metric.ball 0 r) / l (Metric.ball 0 r) with hρ`. Establish `key : ∀ ε : ℝ, 0 < ε → ε < 1 / 2 → ∃ D : ENNReal, D < ⊤ ∧ ENNReal.ofReal ((1 - 2 * ε) ^ Module.finrank ℝ V) * D ≤ liminf ρ (𝓝[>] 0) ∧ limsup ρ (𝓝[>] 0) ≤ ENNReal.ofReal ((1 + ε) ^ Module.finrank ℝ V) * D`. Introduce `ε hε hε2`. Take `⟨δ, hδ, hx⟩` from `halmost ε hε (by linarith)`.
+
+Take `⟨x, hxmem, hxD, hxfin⟩` from `Measure.exists_mem_of_measure_ne_zero_of_ae (Metric.measure_ball_pos l (0 : V) hδ).ne' (ae_restrict_of_ae ((Besicovitch.ae_tendsto_rnDeriv ν l).and (Measure.rnDeriv_lt_top ν l)))`. Establish `hxr` using `hx x (mem_ball_zero_iff.1 hxmem)`. Use `⟨_, hxfin, ofReal_pow_mul_le_liminf_ball_ratio l ν (by linarith) hxD ?_, limsup_ball_ratio_le_ofReal_pow_mul l ν (by linarith) hxD ?_⟩` and prove the remaining obligations. Use `filter_upwards [hxr, self_mem_nhdsWithin] with r hr (hr0 : 0 < r)`. Conclude with `(measure_mono (Metric.closedBall_subset_ball (by nlinarith))).trans hr.1`.
+
+Use `filter_upwards [hxr] with r hr`. Conclude with `hr.2.trans (measure_mono Metric.ball_subset_closedBall)`. Establish `hML : liminf ρ (𝓝[>] 0) ≤ limsup ρ (𝓝[>] 0)` using `liminf_le_limsup`. Establish `hLtop : limsup ρ (𝓝[>] 0) < ⊤`. Take `⟨D, hD, -, hup⟩` from `key (1 / 4) (by norm_num) (by norm_num)`.
+
+Conclude with `hup.trans_lt (ENNReal.mul_lt_top ENNReal.ofReal_lt_top hD)`. Establish `hLM : limsup ρ (𝓝[>] 0) ≤ liminf ρ (𝓝[>] 0)`. Establish `hK : Tendsto (fun ε : ℝ => ((1 + ε) ^ Module.finrank ℝ V / (1 - 2 * ε) ^ Module.finrank ℝ V)) (𝓝 0) (𝓝 1)`. Establish `hc : ContinuousAt (fun ε : ℝ => ((1 + ε) ^ Module.finrank ℝ V / (1 - 2 * ε) ^ Module.finrank ℝ V)) 0` using `ContinuousAt.div (by fun_prop) (by fun_prop) (by simp)`. Simplify using `using hc.tendsto`.
+
+Establish `hT : Tendsto (fun ε : ℝ => ENNReal.ofReal ((1 + ε) ^ Module.finrank ℝ V / (1 - 2 * ε) ^ Module.finrank ℝ V) * liminf ρ (𝓝[>] 0)) (𝓝[>] 0) (𝓝 (liminf ρ (𝓝[>] 0)))`. Establish `h1` using `ENNReal.Tendsto.mul_const (b := liminf ρ (𝓝[>] 0)) (ENNReal.tendsto_ofReal hK) (Or.inr (hML.trans_lt hLtop).ne)`. Simplify using `using h1.mono_left nhdsWithin_le_nhds`. Use `ge_of_tendsto hT ?_` and prove the remaining obligations. Use `filter_upwards [Ioo_mem_nhdsGT (show (0 : ℝ) < 1 / 2 by norm_num)] with ε hε`.
+
+Take `⟨D, -, hlow, hup⟩` from `key ε hε.1 hε.2`. Establish `hb : 0 < (1 - 2 * ε) ^ Module.finrank ℝ V` using `pow_pos (by linarith [hε.2]) _`. Use `hup.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul (div_nonneg (pow_nonneg (by linarith [hε.1]) _) hb.le), div_mul_cancel₀ _ hb.ne']`.
+
+Use `_ ≤ _ := by gcongr`. Establish `htend : Tendsto ρ (𝓝[>] 0) (𝓝 (limsup ρ (𝓝[>] 0)))` using `tendsto_of_liminf_eq_limsup (le_antisymm hML hLM) rfl`. Use `⟨limsup ρ (𝓝[>] 0), ?_, hLtop.ne, htend⟩` and prove the remaining obligations. Introduce `hL0`. Rewrite `htend` using `[hL0]`.
+
+Take `⟨δ, hδ, hx⟩` from `halmost (1 / 2) (by norm_num) (by norm_num)`. Establish `hs_le : ∀ t : NNReal, 0 < t → ν (Metric.ball 0 δ) ≤ t * l (Metric.ball 0 δ)`. Introduce `t ht`. Establish `hle` using `VitaliFamily.measure_le_of_frequently_le (Besicovitch.vitaliFamily ν) (t • l) (Measure.AbsolutelyContinuous.refl ν) (Metric.ball (0 : V) δ) ?_`. Rewrite `hle` using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`.
+
+Conclude with `hle`. Introduce `x hxs`. Apply `((Besicovitch.tendsto_filterAt ν x).comp (_root_.GlobalTheory.densHom_tendsto_mul (show (0 : ℝ) < 1 / 4 by norm_num))).frequently` to reduce the goal to its premises. Use `Filter.Eventually.frequently ?_` and prove the remaining obligations. Establish `hpos' : (0 : ENNReal) < t * ENNReal.ofReal ((1 / 4) ^ Module.finrank ℝ V)` using `ENNReal.mul_pos (by exact_mod_cast ht.ne') (ENNReal.ofReal_pos.2 (by positivity)).ne'`.
+
+Use `filter_upwards [(tendsto_order.1 htend).2 _ hpos', hx x (mem_ball_zero_iff.1 hxs), self_mem_nhdsWithin] with r hr hxr (hr0 : 0 < r)`. Use `show ν (Metric.closedBall x (1 / 4 * r)) ≤ (t • l) (Metric.closedBall x (1 / 4 * r))`. Establish `hlt : ν (Metric.ball 0 r) < t * ENNReal.ofReal ((1 / 4) ^ Module.finrank ℝ V) * l (Metric.ball 0 r)` using `(ENNReal.div_lt_iff (Or.inl (Metric.measure_ball_pos l 0 hr0).ne') (Or.inl measure_ball_lt_top.ne)).1 hr`. Rewrite `hlt` using `[mul_assoc, ← _root_.GlobalTheory.densHom_scale l x (by norm_num) hr0]`. Establish `hsub : Metric.closedBall x (1 / 4 * r) ⊆ Metric.ball x ((1 - 1 / 2) * r)` using `Metric.closedBall_subset_ball (by linarith)`.
+
+Rewrite using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Conclude with `((measure_mono hsub).trans hxr.1).trans hlt.le`. Establish `hzero : ν (Metric.ball 0 δ) = 0`. Establish `hT : Tendsto (fun t : NNReal => (t : ENNReal) * l (Metric.ball 0 δ)) (𝓝[>] 0) (𝓝 0)`. Establish `h1` using `ENNReal.Tendsto.mul_const (b := l (Metric.ball 0 δ)) (ENNReal.tendsto_coe.2 (tendsto_id (x := 𝓝 (0 : NNReal)))) (Or.inr measure_ball_lt_top.ne)`.
+
+Simplify using `using h1.mono_left nhdsWithin_le_nhds`. Conclude with `le_antisymm (ge_of_tendsto hT (eventually_nhdsWithin_of_forall fun t ht => hs_le t ht)) bot_le`. Conclude with `hpos δ hδ hzero`.
+-/
 theorem _root_.GlobalTheory.exists_density_origin_of_almost_homogeneous : ∀ (V : Type) [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (l ν : Measure V)
     [l.IsAddHaarMeasure] [IsLocallyFiniteMeasure ν], (∀ r : ℝ, 0 < r → ν (Metric.ball 0 r) ≠ 0) →

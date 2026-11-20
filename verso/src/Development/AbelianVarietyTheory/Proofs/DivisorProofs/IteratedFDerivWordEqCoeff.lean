@@ -7,6 +7,19 @@ open Filter Topology
 
 namespace GlobalTheory.PeriodFamily
 
+/- English proof (translation)
+Set `ℓ : MvPolynomial I ℂ →ₗ[ℂ] D` to `(MvPolynomial.basisMonomials I ℂ).constr ℂ G`. Establish `hℓ : ∀ m, ℓ (MvPolynomial.monomial m 1) = G m` using `fun m => by`. Use `(MvPolynomial.basisMonomials I ℂ).constr_basis ℂ G m` as an intermediate fact. Rewrite `this` using `[MvPolynomial.coe_basisMonomials]`. Then use the resulting hypothesis. Establish `h1 : (∑ i, (MvPolynomial.X i : MvPolynomial I ℂ)) ^ k = ∑ s : Fin k → I, MvPolynomial.monomial (∑ a, Finsupp.single (s a) 1) 1`.
+
+Rewrite using `[Fintype.sum_pow]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.monomial_sum_one]`. Both sides reduce to the same expression. Establish `h2 : (∑ i, (MvPolynomial.X i : MvPolynomial I ℂ)) ^ k = ∑ m ∈ Finset.finsuppAntidiag (Finset.univ : Finset I) k, (Nat.multinomial Finset.univ m : ℂ) • MvPolynomial.monomial m 1`.
+
+Rewrite using `[Finset.sum_pow_eq_sum_piAntidiag]`. Use `symm`. Use `Finset.sum_nbij' (fun m => (m : I → ℕ)) (fun m => Finsupp.equivFunOnFinite.symm m) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `m hm`. Simplify using `using hm`.
+
+Introduce `m hm`. Simplify using `using hm`. Introduce `m _`. Simplify using the standard rewrite rules. Introduce `m _`.
+
+Simplify using the standard rewrite rules. Introduce `m _`. Rewrite using `[MvPolynomial.monomial_eq, Finsupp.prod_fintype _ _ (by simp), Nat.cast_smul_eq_nsmul, nsmul_eq_mul]`. Simplify using the standard rewrite rules. Establish `h` using `congrArg ℓ (h1.symm.trans h2)`.
+
+Simplify `h` using `only [map_sum, map_smul, hℓ]`.
+-/
 theorem sum_words_eq_sum_multinomial {I : Type} [Fintype I] [DecidableEq I] {D : Type}
     [AddCommGroup D] [Module ℂ D] (k : ℕ) (G : (I →₀ ℕ) → D) :
     ∑ s : Fin k → I, G (∑ a, Finsupp.single (s a) 1) =
@@ -44,6 +57,11 @@ theorem sum_words_eq_sum_multinomial {I : Type} [Fintype I] [DecidableEq I] {D :
   have h := congrArg ℓ (h1.symm.trans h2)
   simpa only [map_sum, map_smul, hℓ] using h
 
+/- English proof (translation)
+Establish `hl : ((List.ofFn s : List I) : Multiset I) = Finsupp.toMultiset (∑ a, Finsupp.single (s a) 1 : I →₀ ℕ)`. Rewrite using `[map_sum]`. Simplify using `only [Finsupp.toMultiset_single, one_smul]`. Rewrite using `[← Fin.univ_val_map, Finset.sum_eq_multiset_sum, ← Multiset.sum_map_singleton (Multiset.map s _), Multiset.map_map]`. Both sides reduce to the same expression.
+
+Rewrite using `[GlobalTheory.taylor_eq_taylorDir, GlobalTheory.coeff_taylorDir_eq_lineDerivList _ hf hl, List.map_ofFn, GlobalTheory.lineDerivList_ofFn hf, mul_inv_cancel_left₀ (GlobalTheory.cast_prod_factorial_ne_zero _)]`. Both sides reduce to the same expression.
+-/
 theorem iteratedFDeriv_word_eq_coeff {I : Type} [Fintype I] [DecidableEq I] {k : ℕ}
     {f : (I → ℂ) → ℂ} (hf : AnalyticAt ℂ f 0) (s : Fin k → I) :
     iteratedFDeriv ℂ k f 0 (fun a => Pi.single (s a) 1) =
@@ -60,6 +78,15 @@ theorem iteratedFDeriv_word_eq_coeff {I : Type} [Fintype I] [DecidableEq I] {k :
     GlobalTheory.lineDerivList_ofFn hf, mul_inv_cancel_left₀ (GlobalTheory.cast_prod_factorial_ne_zero _)]
   rfl
 
+/- English proof (translation)
+Introduce `I _ _ D _ _ N t f hf`. Unfold `GlobalTheory.PeriodFamily.taylor`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hp : ∀ s : Fin k → I, ∏ a, t (s a) = ∏ i, t i ^ (∑ a, Finsupp.single (s a) 1 : I →₀ ℕ) i` using `fun s => by`. Simplify using `only [Finsupp.finsetSum_apply, ← Finset.prod_pow_eq_pow_sum]`.
+
+Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `[Finsupp.single_apply]`. Simplify using `only [iteratedFDeriv_word_eq_coeff hf, hp]`. Rewrite using `[sum_words_eq_sum_multinomial k fun m : I →₀ ℕ => ((k.factorial : ℂ)⁻¹ * (((∏ i, (m i).factorial : ℕ) : ℂ) * MvPowerSeries.coeff m (GlobalTheory.taylor f))) • ∏ i, t i ^ m i]`.
+
+Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hk : ∑ i, m i = k` using `(Finset.mem_finsuppAntidiag.1 hm).1`. Establish `hs : ((∏ i, (m i).factorial : ℕ) : ℂ) * (Nat.multinomial Finset.univ m : ℂ) = (k.factorial : ℂ)`. Rewrite using `[← Nat.cast_mul, Nat.multinomial_spec, hk]`. Establish `h0 : (k.factorial : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 k.factorial_ne_zero`.
+
+Rewrite using `[smul_smul]`. Use `congr 1`. Rewrite using `[← mul_assoc, ← mul_assoc, mul_right_comm _ _ ((∏ i, (m i).factorial : ℕ) : ℂ), mul_comm (Nat.multinomial _ _ : ℂ), hs, mul_inv_cancel₀ h0, one_mul]`.
+-/
 theorem taylor_eq_sum_coeff_taylor : ∀ {I : Type} [Fintype I] [DecidableEq I] {D : Type}
     [CommRing D] [Algebra ℂ D] (N : ℕ) (t : I → D) (f : (I → ℂ) → ℂ), AnalyticAt ℂ f 0 →
     GlobalTheory.PeriodFamily.taylor N t f = ∑ k ∈ Finset.range (N + 1),

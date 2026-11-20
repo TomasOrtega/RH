@@ -12,6 +12,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp.FamEx.PointUnique
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
+/- English proof (translation)
+Establish `key : ∀ (t : Spec (CommRingCat.of R) ⟶ X) (ht : t (IsLocalRing.closedPoint R) ∈ U), t = Spec.map (X.presheaf.germ U _ ht ≫ Scheme.stalkClosedPointTo t) ≫ hU.fromSpec`. Introduce `t ht`. Rewrite using `[Spec.map_comp, Category.assoc, ← IsAffineOpen.fromSpecStalk, hU.fromSpecStalk_eq_fromSpecStalk ht]`. Conclude with `(Scheme.Spec_stalkClosedPointTo_fromSpecStalk t).symm`. Rewrite using `[key z h, key z' h', e]`.
+-/
 theorem eq_of_germ_comp {R : Type} [CommRing R] [IsLocalRing R] {z z' : Spec (CommRingCat.of R) ⟶ X}
     {U : X.Opens} (hU : IsAffineOpen U) (h : z (IsLocalRing.closedPoint R) ∈ U)
     (h' : z' (IsLocalRing.closedPoint R) ∈ U)
@@ -24,10 +27,16 @@ theorem eq_of_germ_comp {R : Type} [CommRing R] [IsLocalRing R] {z z' : Spec (Co
     exact (Scheme.Spec_stalkClosedPointTo_fromSpecStalk t).symm
   rw [key z h, key z' h', e]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hz, (n : X.presheaf.stalk (centre z)), map_intCast _ n, map_intCast _ n⟩`.
+-/
 theorem val_int {R : Type} [CommRing R] [IsLocalRing R] {z : Spec (CommRingCat.of R) ⟶ X}
     (hz : genPt ξ ⤳ centre z) (n : ℤ) : ValAt ξ z (n : Ω) (n : R) :=
   ⟨hz, (n : X.presheaf.stalk (centre z)), map_intCast _ n, map_intCast _ n⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using RootHt.ArchB.val_one hz`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.prod_insert hi]`. Conclude with `RootHt.ArchB.val_mul (h i (Finset.mem_insert_self i s)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem val_prod {R : Type} [CommRing R] [IsLocalRing R] {z : Spec (CommRingCat.of R) ⟶ X}
     (hz : genPt ξ ⤳ centre z) {A : Type} (s : Finset A) (f : A → Ω) (g : A → R)
     (h : ∀ i ∈ s, ValAt ξ z (f i) (g i)) : ValAt ξ z (∏ i ∈ s, f i) (∏ i ∈ s, g i) := by
@@ -43,6 +52,31 @@ end GlobalTheory.CompanionTheory.Ar.Cusp.FamEx.PointUnique
 
 open GlobalTheory.CompanionTheory.Ar.Cusp.FamEx.PointUnique in
 
+/- English proof (translation)
+Introduce `X Ω _ ξ K _ J y T _ hall z z' w hz hz'`. Establish `hξ` using `T.gen`. Establish `h` using `hall (centre z)`. Establish `h'` using `hall (centre z')`. Use `choose c hc using hz.1`.
+
+Establish `hc0 : ∀ k, w ⟨k, c k⟩ ≠ 0` using `fun k => (hc k).ne_zero`. Establish `in1` using `RootHt.ArchB.in_chart (c := c) h hz hc0`. Establish `in2` using `RootHt.ArchB.in_chart (c := c) h' hz' hc0`. Take `⟨x, hx⟩ : ∃ x : ((k : K) → J k) → Ω, x = fun c' => ∏ k, y ⟨k, c' k⟩` from `⟨_, rfl⟩`. Rewrite `T`, `in1`, `in2` using `[← hx]`.
+
+Establish `hxc : x c ≠ 0` using `in1.1`. Take `⟨U, hU, hUm⟩` from `T.affine c hxc`. Establish `hzU : centre z ∈ U` using `(hUm _).2 ⟨h, in1⟩`. Establish `hzU' : centre z' ∈ U` using `(hUm _).2 ⟨h', in2⟩`. Establish `hval : ∀ (t : Spec (CommRingCat.of ℂ) ⟶ X), CoordsAt ξ y t w → ∀ (k : K) (i : J k), ValAt ξ t (y ⟨k, i⟩ / y ⟨k, c k⟩) (w ⟨k, i⟩ / w ⟨k, c k⟩)`.
+
+Introduce `t ht k i`. Take `⟨-, h2⟩` from `ht.2 k (c k) (hc k)`. Take `⟨r, hr, e⟩` from `h2 i`. Rewrite using `[e, mul_div_assoc, div_self (hc0 k), _root_.mul_one]`. Conclude with `hr`.
+
+Establish `hrat : ∀ j : (k : K) → J k, x j / x c = ∏ k, y ⟨k, j k⟩ / y ⟨k, c k⟩` using `fun j => by`. Rewrite using `[hx]`. Conclude with `(Finset.prod_div_distrib _ _).symm`. Establish `key : ∀ a ∈ Algebra.adjoin ℤ (Set.range fun j => x j / x c), ∃ r : ℂ, ValAt ξ z a r ∧ ValAt ξ z' a r`. Introduce `a ha`.
+
+Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem a ha`. Take `⟨j, rfl⟩` from `ha`. Use `⟨∏ k, w ⟨k, j k⟩ / w ⟨k, c k⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [hrat]`.
+
+Conclude with `val_prod h _ _ _ fun k _ => hval z hz k (j k)`. Simplify using `only [hrat]`. Conclude with `val_prod h' _ _ _ fun k _ => hval z' hz' k (j k)`. Consider the case `algebraMap n`. Use `⟨(n : ℂ), ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `using val_int h n`. Simplify using `using val_int h' n`. Consider the case `add a b _ _ ha hb`. Take `⟨r, h1, h2⟩` from `ha`. Take `⟨s, h3, h4⟩` from `hb`.
+
+Conclude with `⟨r + s, RootHt.ArchB.val_add h1 h3, RootHt.ArchB.val_add h2 h4⟩`. Consider the case `mul a b _ _ ha hb`. Take `⟨r, h1, h2⟩` from `ha`. Take `⟨s, h3, h4⟩` from `hb`. Conclude with `⟨r * s, RootHt.ArchB.val_mul h1 h3, RootHt.ArchB.val_mul h2 h4⟩`.
+
+Use `eq_of_germ_comp hU hzU hzU' ?_` and prove the remaining obligations. Use extensionality with `s`. Establish `hgm : ∀ (p q : Cpt ξ) (hp : p.1 ∈ U) (hq : q.1 ∈ U), genMap ξ p (X.presheaf.germ U p.1 hp s) = genMap ξ q (X.presheaf.germ U q.1 hq s)` using `fun p q hp hq => GlobalTheory.CompanionTheory.Ar.genMap_germ_eq_genMap_germ ξ U p q hp hq s`. Establish `ha : genMap ξ ⟨centre z, h⟩ (X.presheaf.germ U (centre z) hzU s) ∈ Algebra.adjoin ℤ (Set.range fun j => x j / x c)`. Use `(T.ring c hxc _).2 fun p hp => ?_` and prove the remaining obligations.
+
+Establish `hpU : p.1 ∈ U` using `(hUm _).2 ⟨p.2, hp⟩`. Rewrite using `[hgm ⟨centre z, h⟩ p hzU hpU]`. Conclude with `⟨_, rfl⟩`. Take `⟨r, h1, h2⟩` from `key _ ha`. Establish `e1 : ValAt ξ z (genMap ξ ⟨centre z, h⟩ (X.presheaf.germ U (centre z) hzU s)) ((Scheme.stalkClosedPointTo z).hom (X.presheaf.germ U (centre z) hzU s))` using `⟨h, _, rfl, rfl⟩`.
+
+Establish `e2 : ValAt ξ z' (genMap ξ ⟨centre z, h⟩ (X.presheaf.germ U (centre z) hzU s)) ((Scheme.stalkClosedPointTo z').hom (X.presheaf.germ U (centre z') hzU' s))` using `⟨h', _, (hgm ⟨centre z', h'⟩ ⟨centre z, h⟩ hzU' hzU), rfl⟩`. Conclude with `(RootHt.ArchB.val_unique hξ e1 h1).trans (RootHt.ArchB.val_unique hξ h2 e2)`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.Cusp.FamEx.point_eq_of_coordsAt : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (K : Type) [Fintype K] (J : K → Type) (y : (Σ k, J k) → Ω), CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X → (∀ q : X, genPt ξ ⤳ q) → ∀ (z z' : Spec (CommRingCat.of ℂ) ⟶ X) (w : (Σ k, J k) → ℂ), CoordsAt ξ y z w → CoordsAt ξ y z' w → z = z' := by
   intro X Ω _ ξ K _ J y T _ hall z z' w hz hz'
   have hξ := T.gen

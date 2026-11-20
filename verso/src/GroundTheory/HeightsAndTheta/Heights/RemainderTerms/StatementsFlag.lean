@@ -19,10 +19,16 @@ def IsBlockAlternating (f N : ℕ) (P : RootRing f N) : Prop :=
 def IsBlockSymmetric (f N : ℕ) (P : RootRing f N) : Prop :=
   ∀ w : Fin f → Equiv.Perm (Fin N), blockPermute f N w P = P
 
+/- English proof (translation)
+Introduce `w` and use `Flag.blockPermute_blockVandermonde f N w`.
+-/
 theorem isBlockAlternating_blockVandermonde (f N : ℕ) :
     IsBlockAlternating f N (blockVandermonde f N) :=
   fun w => Flag.blockPermute_blockVandermonde f N w
 
+/- English proof (translation)
+Introduce `w` and use `Flag.blockPermute_antisymmetrize f N w H`.
+-/
 theorem isBlockAlternating_antisymmetrize (f N : ℕ) (H : RootRing f N) :
     IsBlockAlternating f N (antisymmetrize f N H) :=
   fun w => Flag.blockPermute_antisymmetrize f N w H

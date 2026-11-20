@@ -12,5 +12,8 @@ open GlobalTheory.CxForm (IsRegVar hermMat eval₂ bas relCot dRel IsRelAcyclic)
 open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ExactIntegral.integral_eq_of_isExact_curve | exact GlobalTheory.ExactIntegral.integral_eq_of_isExact_curve | (intros; apply GlobalTheory.ExactIntegral.integral_eq_of_isExact_curve <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.integral_eq_of_exact_real_form_curve : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (h : IsRegVar p 1) (σ : k →+* ℂ) (α β : (h.atlas σ).Fld), (h.atlas σ).IsRealForm 1 α → (h.atlas σ).IsExact (α - β) → (h.atlas σ).integral α = (h.atlas σ).integral β := by
   first | exact @GlobalTheory.ExactIntegral.integral_eq_of_isExact_curve | exact GlobalTheory.ExactIntegral.integral_eq_of_isExact_curve | (intros; apply GlobalTheory.ExactIntegral.integral_eq_of_isExact_curve <;> assumption)

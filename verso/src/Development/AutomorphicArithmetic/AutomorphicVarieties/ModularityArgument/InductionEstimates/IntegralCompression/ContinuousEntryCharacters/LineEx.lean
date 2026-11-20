@@ -17,6 +17,19 @@ open GroundTheory.Automorphic.CuspidalSpectrum GroundTheory.Automorphic.ArchWhit
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA
 open scoped ComplexConjugate Classical InnerProductSpace
 
+/- English proof (translation)
+Introduce `K _ _ _ ι _ C μ₂ _ τ₁ τ₂ hP μ e n q n' q' x hμ hE h₁ h₂ S hS₁ hS₂`. Take `⟨U₁, φ₁, hU₁, hφ₁, hR₁, hB₁, hA₁, hF₁⟩` from `vecEx K ι C μ₂ τ₁ hP.irr₁ n q h₁ S hS₁`. Take `⟨U₂, φ₂, hU₂, hφ₂, hR₂, hB₂, hA₂, hF₂⟩` from `vecEx K ι C μ₂ τ₂ hP.irr₂ n' q' h₂ S hS₂`. Take `⟨-, -, hId, -⟩` from `piLaws K ι C μ₂`. Establish `hfd : ∀ (p : archCompact K 2 → ℂ) (V : ∀ w : Pl K, Subgroup (Gw 2 w)) (φ : G1 K 2 → ℂ), IdemA C.κ₂ p → Lev V → Continuous φ → FixA C.κ₂ p φ → FixF (levOn S V) φ → FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k : KG K 2 => fun m => φ (m * k)))`.
+
+Introduce `p V φ hp hV hc ha hf`. Take `⟨hco, hle⟩` from `(IwahoriBlocks.levLaws (K := K) 2 S).1 V hV`. Take `⟨D, hD, -⟩` from `typeOf K 2 C.κ₂ p hp (levOn S V) hle hco.2`. Conclude with `UpperTheory.finiteDimensional_span_maximalCompact_translates_of_fix D φ hc ((hD.fix φ hc).2 ⟨ha, hf⟩)`. Take `⟨U, ρ, Ψ, c, hU, hρ, hρi, hΨ, hN, hΨA, hΨF, hc, hval⟩` from `UpperTheory.exists_level_and_KTypeVector_for_leviInduction K ι C μ e n q n' q' x hμ hE S U₁ U₂ hU₁ hU₂`.
+
+Take `⟨f, hfc, hfb, hfu, hfr, hfs, hform⟩` from `UpperTheory.exists_cuspidal_section_from_levi_average μ₂ τ₁ τ₂ hP.irr₁ hP.irr₂ ρ hρ hρi Ψ hΨ hN φ₁ φ₂ hR₁.cont hR₂.cont hB₁ hB₂ hR₁.rep hR₂.rep (hfd _ U₁ φ₁ (hId n q) hU₁ hR₁.cont hA₁ hF₁) (hfd _ U₂ φ₂ (hId n' q') hU₂ hR₂.cont hA₂ hF₂)`. Take `⟨hfixA, hfixF⟩` from `UpperTheory.leviInducedSection_fixed_by_archIdempotent_and_level ρ hρ Ψ hΨ φ₁ φ₂ hR₁.cont hR₂.cont hB₁ hB₂ f hform`. Take `⟨hIdem, -⟩` from `lineVal K ι C μ₂ τ₁ τ₂ hP μ e n q n' q' x hμ hE`. Take `⟨hco, hle⟩` from `(IwahoriBlocks.levLaws (K := K) (2 + 2) S).1 U hU`. Establish `fA` using `hfixA _ _ hIdem hΨA`.
+
+Establish `fF` using `hfixF _ hle hΨF`. Take `⟨D, hD, -⟩` from `typeOf K (2 + 2) (C.κ₄ μ) (C.e e) hIdem (levOn S U) hle hco.2`. Establish `hDf : D.Fix f` using `(hD.fix f hfc).2 ⟨fA, fF⟩`. Use `⟨U, f, hU, ?_, (secCrit μ₂ τ₁ τ₂ D hP.irr₁ hP.irr₂ f hDf).2 ⟨hfc, hfb, hfu, hfr, hfs⟩, fA, fF⟩` and prove the remaining obligations. Introduce `h0`.
+
+Take `⟨m₁, hm₁⟩` from `Function.ne_iff.1 hφ₁`. Take `⟨m₂, hm₂⟩` from `Function.ne_iff.1 hφ₂`. Take `⟨-, -, -, -, -, -, hkA, -⟩` from `UpperTheory.maximalCompact_unique_arch_finite_decomposition (K := K) (2 + 2)`. Establish `hv` using `hform 0 m₁ m₂ 0 _ (hkA ((C.Φ (2 + 2)).symm x))`. Rewrite `hv` using `[hval φ₁ φ₂ hR₁.cont hR₂.cont hA₁ hA₂ hF₁ hF₂ m₁ m₂, h0]`.
+
+Establish `: (c : ℂ) * φ₁ m₁ * φ₂ m₂ ≠ 0` using `mul_ne_zero (mul_ne_zero (by exact_mod_cast hc.ne') hm₁) hm₂`. Conclude with `this hv.symm`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.EA.lineEx :
     ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (ι : Type) [Fintype ι] (C : Co K ι) (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure] (τ₁ τ₂ : Submodule ℂ (L2 μ₂)), Pair μ₂ τ₁ τ₂ →
       ∀ (μ : Measure U4) (e : ι → U4 → ℂ) n q n' q' (x : ι → U4), Haar4 μ → ExtP μ e n q n' q' x →

@@ -13,6 +13,9 @@ open GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Published
 
 namespace GlobalTheory.EigWhole
 
+/- English proof (translation)
+The claim follows from `ramModel_of_hypotheses`.
+-/
 theorem ramModel_constLattices : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB → PrismaticDieudonnePerfd →
     RamModel :=
   ramModel_of_hypotheses

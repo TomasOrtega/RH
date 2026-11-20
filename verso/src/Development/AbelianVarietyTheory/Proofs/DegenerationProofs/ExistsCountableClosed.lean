@@ -19,6 +19,11 @@ noncomputable section
 namespace GlobalTheory.FieldPull
 open GlobalTheory.ArcPull GlobalTheory.PsiEvenPull
 
+/- English proof (translation)
+Set `K₁ : Subfield K` to `Subfield.closure ((K₀ : Set K) ∪ Set.range a)`. Establish `hc : ((K₀ : Set K) ∪ Set.range a).Countable` using `(Set.to_countable _).union (Set.countable_range a)`. Establish `c₁ : Cardinal.mk K₁ ≤ Cardinal.aleph0` using `(Subfield.cardinalMk_closure_le_max _).trans (max_le (Cardinal.mk_le_aleph0_iff.2 hc.to_subtype) le_rfl)`. Establish `h : K₀ ≤ K₁` using `fun x hx => Subfield.subset_closure (Or.inl hx)`. Set `β : AlgebraicClosure K₁ →ₐ[K₁] K` to `IsAlgClosed.lift`.
+
+Use `⟨AlgebraicClosure K₁, inferInstance, inferInstance, ?_, (algebraMap K₁ _).comp (Subfield.inclusion h), β.toRingHom, RingHom.ext fun x => β.commutes _, fun x => ⟨algebraMap K₁ _ ⟨a x, Subfield.subset_closure (Or.inr ⟨x, rfl⟩)⟩, β.commutes _⟩⟩` and prove the remaining obligations. Conclude with `Cardinal.mk_le_aleph0_iff.1 ((Algebra.IsAlgebraic.cardinalMk_le_max K₁ _).trans (max_le c₁ le_rfl))`.
+-/
 theorem exists_countable_closed {K : Type} [Field K] [IsAlgClosed K] (K₀ : Subfield K) [Countable K₀] {X : Type}
     [Countable X] (a : X → K) : ∃ (F₁ : Type) (_ : Field F₁) (_ : IsAlgClosed F₁) (_ : Countable F₁) (α : K₀ →+* F₁)
       (β : F₁ →+* K), β.comp α = K₀.subtype ∧ ∀ x, a x ∈ Set.range β := by
@@ -33,6 +38,19 @@ theorem exists_countable_closed {K : Type} [Field K] [IsAlgClosed K] (K₀ : Sub
       ⟨algebraMap K₁ _ ⟨a x, Subfield.subset_closure (Or.inr ⟨x, rfl⟩)⟩, β.commutes _⟩⟩
   exact Cardinal.mk_le_aleph0_iff.1 ((Algebra.IsAlgebraic.cardinalMk_le_max K₁ _).trans (max_le c₁ le_rfl))
 
+/- English proof (translation)
+Take `⟨n, gen, hgen⟩` from `Module.Finite.exists_fin (R := ℤ) (M := O)`. Take `⟨m, b, hb⟩` from `Module.Finite.exists_fin (R := ℤ) (M := D.X)`. Establish `hgen' : Subring.closure (Set.range gen) = ⊤` using `top_le_iff.1 fun x _ => by`. Establish `hx : x ∈ Submodule.span ℤ (Set.range gen)` using `hgen ▸ Submodule.mem_top`. Rewrite `hx` using `[← Submodule.mem_toAddSubgroup, Submodule.span_int_eq_addSubgroupClosure]`.
+
+Conclude with `(AddSubgroup.closure_le (Subring.closure (Set.range gen)).toAddSubgroup).2 Subring.subset_closure hx`. Establish `hb' : AddSubgroup.closure (Set.range b) = ⊤`. Rewrite using `[← Submodule.span_int_eq_addSubgroupClosure, hb]`. Both sides reduce to the same expression. Take `⟨K₀, P₀, Φ, a₀, x₀, hc, gp, hw, ha, hx⟩` from `GlobalTheory.T.polAV_descends_to_countable_subfield' K D.P (Fin n) (Fin m) (fun j => o.act (gen j)) (fun k => D.c (b k))`.
+
+Take `⟨o₀, ho₀⟩` from `GlobalTheory.T.polarisedRingAction_descend_of_generators O _ gen hgen' K₀ K _ P₀ D.P Φ gp hw o a₀ ha`. Take `⟨c₀, hc₀, hc₁⟩` from `GlobalTheory.T.additive_points_descend_field_extension K₀ K _ P₀ D.P Φ gp D.X _ b hb' D.c D.c_add x₀ hx`. Take `⟨D₀, ψ, hψ, h₀, rfl, e⟩` from `GlobalTheory.T.exists_degenerationPreData_over_subfield hL K₀ K _ D P₀ Φ gp hw c₀ hc₀ hc₁`. Take `rfl` from `eq_of_heq e`. Take `⟨a, Ha⟩` from `GlobalTheory.T.exists_ratio_descends_degenerationPsiFamily K D ψ hψ`.
+
+Establish `: Countable D.X` using `Finsupp.Countable.of_moduleFinite (R := ℤ)`. Take `⟨F₁, _, _, _, α, β, hαβ, hβ⟩` from `exists_countable_closed K₀ a`. Take `⟨D', h₁, -, -⟩` from `DegPull.exists_isPullDeg hL.polBaseChange K₀ F₁ α D₀ ⊤ (nonempty_psiOn_field D₀) trivial`. Generalize the expression as in `K₀.subtype = i at h₀ ho₀ hαβ`. Substitute `hαβ` using the available equality.
+
+Take `⟨h₂, e₂⟩` from `GlobalTheory.T.exists_pullDeg_cancel_tower_of_fields K₀ F₁ K α β D₀ D' _ h₁ h₀`. Take `⟨ψ₁, hψ₁, hD, e₃⟩` from `Ha F₁ β D' h₂ hβ`. Take `⟨o₁, ho₁⟩` from `polOActPull _ _ _ D₀.P D'.P _ (pull_grp h₁) (LBIso.symm ⟨h₁.w, h₁.w_gen⟩) O o₀`. Use `⟨F₁, inferInstance, inferInstance, inferInstance, β, _, hD, o₁, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[e₃]`.
+
+Use `(pull_grp h₁).1.hom_ext ?_ ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) e₂).trans ((ho₀ c).trans ((congrArg (· ≫ _) e₂.symm).trans ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (ho₁ c).symm).trans (Category.assoc _ _ _).symm)))))`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) (pull_grp h₂).1.w).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) (Over.w (o.act c))).trans ((pull_grp h₂).1.w.symm.trans ((congrArg (_ ≫ ·) (Over.w (o₁.act c)).symm).trans (Category.assoc _ _ _).symm)))))`.
+-/
 theorem exists_pre (hL : Laws) {K : Type} [Field K] [IsAlgClosed K] {O : Type} [CommRing O] [StarRing O]
     [Module.Finite ℤ O] (D : DegPre K) (o : D.P.OAct O) :
     ∃ (F₁ : Type) (_ : Field F₁) (_ : IsAlgClosed F₁) (_ : Countable F₁) (β : F₁ →+* K) (D₁ : DegPre F₁)
@@ -69,6 +87,11 @@ theorem exists_pre (hL : Laws) {K : Type} [Field K] [IsAlgClosed K] {O : Type} [
       ((congrArg (· ≫ _) (Over.w (o.act c))).trans ((pull_grp h₂).1.w.symm.trans
         ((congrArg (_ ≫ ·) (Over.w (o₁.act c)).symm).trans (Category.assoc _ _ _).symm)))))
 
+/- English proof (translation)
+Take `⟨F₁, _, _, _, β, D₁, hD, o₁, ho⟩` from `exists_pre hL D oa.onB`. Use `letI : Module O D₁.X := hD.xe.symm.module O`. Establish `hx : ∀ (a : O) y, hD.xe (a • y) = a • hD.xe y` using `fun a y => by show _ = hD.xe (a • hD.xe.symm (hD.xe y))`. Rewrite using `[AddEquiv.symm_apply_apply]`. Take `⟨oa₁, rfl⟩` from `GlobalTheory.T.exists_orderAction_descent_field_extension hL.globalFns F₁ K β D₁ D hD O o₁ oa hx ho`.
+
+Take `⟨h₁, h₂⟩` from `GlobalTheory.T.psiEven_tauBimult_descend_of_injective hL.globalFns F₁ K β β.injective D₁ D hD`. Conclude with `⟨F₁, inferInstance, inferInstance, inferInstance, β, D₁, hD, inferInstance, oa₁, hx, ho, h₁, h₂, GlobalTheory.T.psi_relation_descends_field_extension hL.globalFns F₁ K β D₁ D hD O oa₁ oa hx ho⟩`.
+-/
 theorem exists_data (hL : Laws) {K : Type} [Field K] [IsAlgClosed K] {O : Type} [CommRing O] [StarRing O]
     [Module.Finite ℤ O] (D : DegPre K) [Module O D.X] (oa : D.OAct O) :
     ∃ (F₁ : Type) (_ : Field F₁) (_ : IsAlgClosed F₁) (_ : Countable F₁) (β : F₁ →+* K) (D₁ : DegPre F₁)

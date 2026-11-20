@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianSchemeDeRham
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.deRhamVectorExtensionIso_of_hodgeDeRham GlobalTheory.T.abelianScheme_deRham_locallyFree_hodgeDegenerates`.
+-/
 theorem deRhamVectorExtension : GlobalTheory.Published.DeRhamVectorExtension :=
   GlobalTheory.T.deRhamVectorExtensionIso_of_hodgeDeRham GlobalTheory.T.abelianScheme_deRham_locallyFree_hodgeDegenerates
 

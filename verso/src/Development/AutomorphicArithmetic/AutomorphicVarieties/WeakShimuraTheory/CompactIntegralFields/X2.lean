@@ -11,6 +11,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Introduce `P hFW Ω _ _ _ l _ c D T hT _`. Establish `hD : D.Good` using `hT.2.elim (fun h => h.1.1) fun h => h.1.1`. Take `⟨ho, hc, hl⟩` from `kerOverRationals_open_commutator_layer D hD T.F`. Take `⟨r, hr⟩` from `exists_iwasawaRank_bound_of_ferreroWashington hFW Ω l (kerQ D T.F) hD.l_odd ho hc inf_le_right`. Establish `hN : (kerQ D T.F).Normal` using `⟨fun x hx g => by`.
+
+Establish `h : g * x * g⁻¹ * x⁻¹ ∈ kerQ D T.F` using `hc (Subgroup.commutator_mem_commutator (Subgroup.mem_top g) (Subgroup.mem_top x))`. Simplify using `using mul_mem h hx⟩`. Take `⟨g, hg⟩` from `exists_uniform_bound_ncard_placesDividing Ω l (kerQ D T.F) (prodS D) hN ho (residualKernel_properties D hD T).2.2.2.2.2.2.1.1`. Use `⟨r + 2 + 2 * g, fun T' m _ hm k _ a ha => ?_⟩` and prove the remaining obligations. Take `⟨e, hle⟩` from `hl m T'.F hm`.
+
+Establish `hg'` using `hg T'.F hle`. Establish `hK : UpperTheory.V.Two.XRk l 1 T'.Kr r` using `(residualKernel_properties D hD T').2.2.2.2.2.2.2.2 r (e ▸ hr (m + 1))`. Take `⟨b1, b2⟩` from `rank_localCocycleSpaces_le P D hD T' g hg'`. Take `⟨b3, b4, b5⟩` from `rank_cocycleSpaces_le_of_towerIwasawaRank P D hD T' r g hg' hK`. Establish `ea : a = (Ideal.Quotient.lift (maximalIdeal c.O) a ha : ResidueField c.O →+* k).comp (residue c.O)` using `RingHom.ext fun _ => rfl`.
+
+Rewrite using `[ea]`. Use `cocycleBounds_of_ringHom_comp _ (ResidueField c.O) k _ _ _ _ ⟨b1.trans (by omega), fun w _ => (b3 w).trans (Nat.cast_le.2 (by omega)), fun w hw => (b4 w hw).trans (Nat.cast_le.2 (by omega)), fun w _ => (b5 w).trans (add_le_add le_rfl (Nat.cast_le.2 (by omega))), fun w _ => (b2 w) …` and prove the remaining obligations.
+-/
 theorem UpperTheory.V.Ws.x2 :
     CohomologyHyp → UpperTheory.V.Published.FerreroWashington → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D), T.Fit → TameL l T.F → ∃ C : ℕ, ∀ (T' : Tower D) (m : ℕ), T.Le T' → IsLayer l m T.F T'.F →
       ∀ (k : Type) [Field k] (a : c.O →+* k), (∀ x ∈ maximalIdeal c.O, a x = 0) → (T'.fr ∅).Bounds a T'.d C := by

@@ -12,6 +12,25 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 
 noncomputable section
 
+/- English proof (translation)
+Use `hP` as an intermediate fact. Establish `hL` using `LocRingLocal.proof LocRingFrac.proof`. Use `set φ := algebraMap (MRing ι ⧸ P) (FractionRing (MRing ι ⧸ P)) with hφ`. Establish `hne : ∀ {f : MRing ι}, f ∉ P → φ (Ideal.Quotient.mk P f) ≠ 0` using `fun hf h => hf <| by`. Rewrite `h` using `[hφ, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Then use the resulting hypothesis.
+
+Establish `hunit : ∀ {y : FractionRing (MRing ι ⧸ P)} (hy : y ∈ locRing P W) (hy' : y ∈ locRing P W'), IsUnit (⟨y, hy'⟩ : locRing P W') → IsUnit (⟨y, hy⟩ : locRing P W)`. Introduce `y hy hy' hu`. Take `⟨b, hb⟩` from `isUnit_iff_exists_inv.mp hu`. Establish `hb' : y * (b : FractionRing (MRing ι ⧸ P)) = 1`. Use `congrArg Subtype.val hb` as an intermediate fact.
+
+Rewrite `this` using `[Subring.coe_mul, Subring.coe_one, Subtype.coe_mk]`. Then use the resulting hypothesis. Establish `hbW : (b : FractionRing (MRing ι ⧸ P)) ∈ locRing P W` using `by rw [heq]; exact b.2`. Use `IsUnit.of_mul_eq_one (⟨b, hbW⟩ : locRing P W) (Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[Subring.coe_mul, Subring.coe_one, Subtype.coe_mk, Subtype.coe_mk, hb']`. Use `choose i hi using hW.2.2`.
+
+Use `choose j hj using hW'.2.2`. Establish `hjW : ∀ k, (X ⟨k, j k⟩ : MRing ι) ∉ W`. Introduce `k`. Establish `hiP : (X ⟨k, i k⟩ : MRing ι) ∉ P` using `fun h => hi k (hPW h)`. Establish `hjP : (X ⟨k, j k⟩ : MRing ι) ∉ P` using `fun h => hj k (hPW' h)`.
+
+Establish `h1 : φ (Ideal.Quotient.mk P (X ⟨k, i k⟩)) / φ (Ideal.Quotient.mk P (X ⟨k, j k⟩)) ∈ locRing P W` using `heq ▸ frac_mem_locRing hPW' (AvoidRing.isMultiHomog_X k (i k)) (AvoidRing.isMultiHomog_X k (j k)) (hj k) (div_mul_cancel₀ _ (hne hjP))`. Establish `h2 : φ (Ideal.Quotient.mk P (X ⟨k, j k⟩)) / φ (Ideal.Quotient.mk P (X ⟨k, i k⟩)) ∈ locRing P W` using `frac_mem_locRing hPW (AvoidRing.isMultiHomog_X k (j k)) (AvoidRing.isMultiHomog_X k (i k)) (hi k) (div_mul_cancel₀ _ (hne hiP))`. Establish `hu : IsUnit (⟨_, h2⟩ : locRing P W)`. Use `IsUnit.of_mul_eq_one (⟨_, h1⟩ : locRing P W) (Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[Subring.coe_mul, Subring.coe_one, Subtype.coe_mk, Subtype.coe_mk]`.
+
+Use `hne hiP` as an intermediate fact. Use `hne hjP` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Conclude with `((hL K ι P W hP hW.1 hPW).2 _ _ _ _ (AvoidRing.isMultiHomog_X k (j k)) (AvoidRing.isMultiHomog_X k (i k)) (hi k) (div_mul_cancel₀ _ (hne hiP))).mp hu`. Take `⟨S, hS, hWS⟩` from `hW.2.1`.
+
+Rewrite using `[hWS, Ideal.span_le]`. Introduce `f hf`. Take `⟨a, ha⟩` from `hS f hf`. Establish `hfW : f ∈ W` using `hWS ▸ Ideal.subset_span hf`. Assume the negation of the conclusion as `hfW'`.
+
+Establish `htW` using `AvoidRing.coordProd_not_mem hW.1 j hjW a`. Establish `htW'` using `AvoidRing.coordProd_not_mem hW'.1 j hj a`. Establish `ht` using `AvoidRing.isMultiHomog_coordProd (R := ℤ) (ι := ι) j a`. Establish `hy` using `div_mul_cancel₀ (φ (Ideal.Quotient.mk P f)) (hne fun h => htW (hPW h))`. Establish `hyW` using `frac_mem_locRing hPW ha ht htW hy`.
+
+Establish `hyW'` using `frac_mem_locRing hPW' ha ht htW' hy`. Establish `hu' : IsUnit (⟨_, hyW'⟩ : locRing P W')` using `((hL K ι P W' hP hW'.1 hPW').2 _ f _ a ha ht htW' hy).mpr hfW'`. Conclude with `((hL K ι P W hP hW.1 hPW).2 _ f _ a ha ht htW hy).mp (hunit hyW hyW' hu') hfW`.
+-/
 theorem LocRingInj.le_of_locRing_eq {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {P W W' : Ideal (MRing ι)} (hP : P.IsPrime) (hW : IsMultiProjPrime W) (hW' : IsMultiProjPrime W')
     (hPW : P ≤ W) (hPW' : P ≤ W') (heq : locRing P W = locRing P W') : W ≤ W' := by
@@ -70,6 +89,9 @@ theorem LocRingInj.le_of_locRing_eq {K : Type} [Fintype K] {ι : K → Type} [�
     ((hL K ι P W' hP hW'.1 hPW').2 _ f _ a ha ht htW' hy).mpr hfW'
   exact ((hL K ι P W hP hW.1 hPW).2 _ f _ a ha ht htW hy).mp (hunit hyW hyW' hu') hfW
 
+/- English proof (translation)
+Introduce `K _ ι _ P W W' hP hW hW' hPW hPW' heq`. Conclude with `le_antisymm (LocRingInj.le_of_locRing_eq hP hW hW' hPW hPW' heq) (LocRingInj.le_of_locRing_eq hP hW' hW hPW' hPW heq.symm)`.
+-/
 theorem LocRingInj.proof : LocRingInj.Statement := by
   intro K _ ι _ P W W' hP hW hW' hPW hPW' heq
   exact le_antisymm (LocRingInj.le_of_locRing_eq hP hW hW' hPW hPW' heq)

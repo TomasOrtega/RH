@@ -16,6 +16,25 @@ def coefL (R : UA E n →* Module.End ℂ X) (F : UA E n → X) : Module.Dual �
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ n X _ _ _ R F hfin hcont hinf hrat hsm ℓ`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `continuous_iff_continuousAt.2 fun g0 => ?_` and prove the remaining obligations. Establish `hc : Continuous fun g : UA E n => ℓ (R g⁻¹ (F g0))` using `(hcont (F g0) ℓ).comp continuous_inv`. Use `hc.continuousAt.congr ?_` and prove the remaining obligations.
+
+Establish `ht : Filter.Tendsto (fun g : UA E n => g0⁻¹ * g) (𝓝 g0) (𝓝 1)`. Establish `: Continuous fun g : UA E n => g0⁻¹ * g` using `continuous_const.mul continuous_id`. Simplify `this.tendsto g0` using `only [inv_mul_cancel]`. Use `filter_upwards [ht.eventually hsm] with g hg`. Establish `e` using `hg g0`.
+
+Rewrite `e` using `[mul_inv_cancel_left]`. Express the relevant statement in the definitionally equal form `ℓ (R g⁻¹ (F g0)) = ℓ (R g⁻¹ (F g))`. Rewrite using `[e]`. Introduce `γ hγ g`. Express the relevant statement in the definitionally equal form `ℓ (R (γ * g)⁻¹ (F (γ * g))) = ℓ (R g⁻¹ (F g))`.
+
+Rewrite using `[hrat γ hγ g, _root_.mul_inv_rev, map_mul, Module.End.mul_apply, ← Module.End.mul_apply (R γ⁻¹), ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Set `φ : UA E n → ℂ` to `fun g => ℓ (R g⁻¹ (F g))`. Set `H : Subgroup (finU E n)` to `{ carrier := {k | RU E n (k : UA E n) φ = φ} mul_mem' := fun {a b} ha hb => by`. Express the relevant statement in the definitionally equal form `RU E n ((a : UA E n) * b) _ = _`. Rewrite using `[← GlobalTheory.DefU.RU_RU, hb, ha]`.
+
+Use the proof step `one_mem' := by`. Express the relevant statement in the definitionally equal form `RU E n 1 _ = _`. Rewrite using `[map_one]`. Both sides reduce to the same expression. Use the proof step `inv_mem' := fun {a} ha => by`.
+
+Express the relevant statement in the definitionally equal form `RU E n ((a : UA E n)⁻¹) _ = _`. Use `conv_lhs => rw [← ha]`. Express the relevant statement in the definitionally equal form `RU E n ((a : UA E n)⁻¹) (RU E n (a : UA E n) _) = _`. Rewrite using `[GlobalTheory.DefU.RU_RU, inv_mul_cancel, map_one]`. Use `rfl }`.
+
+Establish `hnb : {k : finU E n | ∀ g, F (g * (k : UA E n)) = F g} ∈ 𝓝 (1 : finU E n)` using `(continuous_subtype_val.tendsto (1 : finU E n)).eventually hsm`. Use `H.isOpen_of_mem_nhds (g := 1) (Filter.mem_of_superset hnb fun k hk => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `RU E n (k : UA E n) φ = φ`. Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `ℓ (R (g * (k : UA E n))⁻¹ (F (g * k))) = ℓ (R g⁻¹ (F g))`.
+
+Rewrite using `[hk g, _root_.mul_inv_rev, map_mul, hfin _ ((finU E n).inv_mem k.2), one_mul]`. Use `Submodule.finiteDimensional_of_le (S₂ := LinearMap.range (coefL R F)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Use `⟨ℓ ∘ₗ R (k : UA E n)⁻¹, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
+
+Express the relevant statement in the definitionally equal form `ℓ (R (k : UA E n)⁻¹ (R g⁻¹ (F g))) = ℓ (R (g * (k : UA E n))⁻¹ (F (g * k)))`. Rewrite using `[hinf _ k.2 g, _root_.mul_inv_rev, map_mul, Module.End.mul_apply]`.
+-/
 theorem isAutFormU_coef : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (X : Type) [AddCommGroup X]
     [Module ℂ X] [FiniteDimensional ℂ X] (R : UA E n →* Module.End ℂ X) (F : UA E n → X),
     (∀ k ∈ finU E n, R k = 1) → (∀ (u : X) (ℓ : Module.Dual ℂ X), Continuous fun g => ℓ (R g u)) →

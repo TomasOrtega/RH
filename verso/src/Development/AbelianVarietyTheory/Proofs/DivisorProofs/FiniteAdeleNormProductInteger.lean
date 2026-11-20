@@ -7,6 +7,9 @@ namespace GlobalTheory.LocalNormProd
 
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Establish `h0 : (Valued.v x : WithZero (Multiplicative ℤ)) ≠ 0` using `(Valuation.ne_zero_iff _).mpr hx`. Use `⟨Multiplicative.toAdd (WithZero.unzero h0), ?_⟩` and prove the remaining obligations. Rewrite using `[← WithZeroMulInt.toNNReal_neg_apply (NumberField.HeightOneSpectrum.absNorm_ne_zero v) h0]`. Conclude with `NNReal.eq (NumberField.FinitePlace.norm_def v x)`.
+-/
 theorem exists_nnnorm_eq_zpow (x : Fv F v) (hx : x ≠ 0) :
     ∃ n : ℤ, ‖x‖₊ = (Ideal.absNorm v.asIdeal : ℝ≥0) ^ n := by
   have h0 : (Valued.v x : WithZero (Multiplicative ℤ)) ≠ 0 := (Valuation.ne_zero_iff _).mpr hx
@@ -14,6 +17,9 @@ theorem exists_nnnorm_eq_zpow (x : Fv F v) (hx : x ≠ 0) :
   rw [← WithZeroMulInt.toNNReal_neg_apply (NumberField.HeightOneSpectrum.absNorm_ne_zero v) h0]
   exact NNReal.eq (NumberField.FinitePlace.norm_def v x)
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `exists_nnnorm_eq_zpow v x hx`. Establish `hq` using `NumberField.HeightOneSpectrum.one_lt_absNorm_nnreal v`. Rewrite `h1` using `[hn, zpow_le_one_iff_right₀ hq]`. Use `⟨(-n).toNat, ?_⟩` and prove the remaining obligations. Rewrite using `[hn, ← zpow_natCast, ← zpow_neg, Int.toNat_of_nonneg (by omega), neg_neg]`.
+-/
 theorem exists_nnnorm_eq_inv_pow (x : Fv F v) (hx : x ≠ 0) (h1 : ‖x‖₊ ≤ 1) :
     ∃ e : ℕ, ‖x‖₊ = ((Ideal.absNorm v.asIdeal : ℝ≥0) ^ e)⁻¹ := by
   obtain ⟨n, hn⟩ := exists_nnnorm_eq_zpow v x hx
@@ -22,14 +28,27 @@ theorem exists_nnnorm_eq_inv_pow (x : Fv F v) (hx : x ≠ 0) (h1 : ‖x‖₊ �
   refine ⟨(-n).toNat, ?_⟩
   rw [hn, ← zpow_natCast, ← zpow_neg, Int.toNat_of_nonneg (by omega), neg_neg]
 
+/- English proof (translation)
+Simplify using `only [map_natCast]`.
+-/
 theorem natCast_eq_embedding (n : ℕ) :
     (n : Fv F v) = NumberField.FinitePlace.embedding v (algebraMap (𝓞 F) F (n : 𝓞 F)) := by
   simp only [map_natCast]
 
+/- English proof (translation)
+Rewrite using `[natCast_eq_embedding]`. Conclude with `NumberField.FinitePlace.norm_le_one F v _`.
+-/
 theorem nnnorm_natCast_le_one (n : ℕ) : ‖(n : Fv F v)‖₊ ≤ 1 := by
   rw [natCast_eq_embedding]
   exact NumberField.FinitePlace.norm_le_one F v _
 
+/- English proof (translation)
+Establish `hq` using `NumberField.HeightOneSpectrum.one_lt_absNorm_nnreal v`. Establish `hlt : ‖((Ideal.absNorm v.asIdeal : ℕ) : Fv F v)‖₊ < 1`. Rewrite using `[natCast_eq_embedding]`. Conclude with `(NumberField.FinitePlace.norm_lt_one_iff_mem F v _).mpr (Ideal.absNorm_mem _)`. Distinguish the cases in `hx : ((Ideal.absNorm v.asIdeal : ℕ) : Fv F v) = 0`.
+
+Rewrite using `[hx]`. Simplify using the standard rewrite rules. Take `⟨n, hn⟩` from `exists_nnnorm_eq_zpow v _ hx`. Rewrite `hlt` using `[hn, zpow_lt_one_iff_right₀ hq]`. Rewrite using `[hn, ← zpow_neg_one]`.
+
+Conclude with `zpow_le_zpow_right₀ hq.le (by omega)`.
+-/
 theorem nnnorm_absNorm_le :
     ‖((Ideal.absNorm v.asIdeal : ℕ) : Fv F v)‖₊ ≤ (Ideal.absNorm v.asIdeal : ℝ≥0)⁻¹ := by
   have hq := NumberField.HeightOneSpectrum.one_lt_absNorm_nnreal v
@@ -49,6 +68,13 @@ namespace GlobalTheory
 
 open LocalNormProd in
 
+/- English proof (translation)
+Introduce `F _ _ c h0 h1 hfin`. Use `choose e he using fun v => exists_nnnorm_eq_inv_pow v (c v) (h0 v) (h1 v)`. Use `⟨∏ v ∈ hfin.toFinset, Ideal.absNorm v.asIdeal ^ e v, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_pos fun v _ => pow_pos (zero_lt_one.trans (NumberField.HeightOneSpectrum.one_lt_absNorm v)) _`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ (s := hfin.toFinset) (by simp)]`.
+
+Use `push_cast`. Rewrite using `[← Finset.prod_inv_distrib]`. Conclude with `Finset.prod_congr rfl fun v _ => he v`. Introduce `v`. Distinguish the cases in `hv : v ∈ hfin.toFinset`.
+
+Rewrite using `[← Finset.mul_prod_erase _ _ hv, Nat.cast_mul, nnnorm_mul, he v, Nat.cast_pow, nnnorm_pow, ← inv_pow]`. Conclude with `(mul_le_of_le_one_right' (nnnorm_natCast_le_one v _)).trans (pow_le_pow_left' (nnnorm_absNorm_le v) _)`. Establish `: ‖c v‖₊ = 1` using `by simpa using hv`. Rewrite using `[this]`. Conclude with `nnnorm_natCast_le_one v _`.
+-/
 theorem exists_nat_finprod_nnnorm_eq_inv :
     ∀ (F : Type) [Field F] [NumberField F] (c : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v), (∀ v, c v ≠ 0) → (∀ v, ‖c v‖₊ ≤ 1) →
     (Function.mulSupport fun v => ‖c v‖₊).Finite →

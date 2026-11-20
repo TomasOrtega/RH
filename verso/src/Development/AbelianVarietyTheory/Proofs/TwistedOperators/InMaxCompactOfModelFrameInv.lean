@@ -19,6 +19,19 @@ open Classical
 
 open Matrix in
 
+/- English proof (translation)
+Take `⟨hU, hK1, hK2⟩` from `h`. Use `set P := M.fr τ with hPdef`. Establish `hP : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Use `set u := P * g * P⁻¹ with hu`. Establish `huu : IsUnit u.det` using `Matrix.UnitaryGroup.det_isUnit ⟨u, hK1⟩`.
+
+Establish `hg : IsUnit g.det`. Establish `hdet : u.det = P.det * g.det * P⁻¹.det` using `by simp [hu, Matrix.det_mul]`. Rewrite `huu` using `[hdet]`. Conclude with `isUnit_of_mul_isUnit_right (isUnit_of_mul_isUnit_left huu)`. Establish `hinv : P * g⁻¹ * P⁻¹ = u⁻¹`.
+
+Rewrite using `[hu, Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hP, Matrix.mul_assoc]`. Establish `hsu : star u * u = 1` using `Unitary.star_mul_self_of_mem hK1`. Establish `hustar : u⁻¹ = star u` using `Matrix.inv_eq_left_inv hsu`. Establish `h1 : u⁻¹ * u = 1` using `Matrix.nonsing_inv_mul _ huu`. Establish `h2 : u * u⁻¹ = 1` using `Matrix.mul_nonsing_inv _ huu`.
+
+Use `⟨⟨?_, ?_, ?_⟩, Matrix.nonsing_inv_nonsing_inv _ hg⟩` and prove the remaining obligations. Establish `hU' : gᴴ * gramAt D V τ * g = gramAt D V τ` using `hU show (g⁻¹)ᴴ * gramAt D V τ * g⁻¹ = gramAt D V τ`. Establish `hgg : g * g⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hg`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = gramAt D V τ := by rw [hgg]; simp`. Use `show P * g⁻¹ * P⁻¹ ∈ _`. Rewrite using `[hinv, hustar]`. Conclude with `Unitary.star_mem hK1`. Use `show P * g⁻¹ * P⁻¹ * _ = _ * (P * g⁻¹ * P⁻¹)`.
+
+Rewrite using `[hinv]`. Use `clear_value u`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem GlobalTheory.CuspGK.inK_inv {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : Formalism.IndefR.Mult.DSModel V S)
     (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) (h : GlobalTheory.CuspGK.InK M τ g) :
     GlobalTheory.CuspGK.InK M τ g⁻¹ ∧ g⁻¹⁻¹ = g := by

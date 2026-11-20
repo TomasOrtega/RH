@@ -18,15 +18,26 @@ def HasGen (F : (Y ⟶ X) →₀ ℤ) : Prop :=
 
 variable {L}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨K, inferInstance, φ, ε, rfl, g, hg⟩`.
+-/
 lemma HasGen.of_gen {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ} (g : LB.Gen (LB.LinComb L φ ε))
     (hg : g.IsGen) : HasGen L (fsum φ ε) := ⟨K, inferInstance, φ, ε, rfl, g, hg⟩
 
+/- English proof (translation)
+Take `⟨K, _, φ, ε, hfs, g, hg⟩` from `h`. Take `⟨t', ht', -⟩` from `gen_transport (L := L) hL ((sameSum_iff_fsum φ ε φ' ε').2 (hfs.trans hF.symm)) g hg`. Conclude with `⟨t', ht'⟩`.
+-/
 lemma HasGen.gen (hL : L.IsLB) {F : (Y ⟶ X) →₀ ℤ} (h : HasGen L F) {K' : Type} [Fintype K']
     (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ) (hF : fsum φ' ε' = F) : ∃ g : LB.Gen (LB.LinComb L φ' ε'), g.IsGen := by
   obtain ⟨K, _, φ, ε, hfs, g, hg⟩ := h
   obtain ⟨t', ht', -⟩ := gen_transport (L := L) hL ((sameSum_iff_fsum φ ε φ' ε').2 (hfs.trans hF.symm)) g hg
   exact ⟨t', ht'⟩
 
+/- English proof (translation)
+Use `⟨Empty, inferInstance, Empty.elim, Empty.elim, ?_, ⟨fun _ => 1⟩, ?_⟩` and prove the remaining obligations. Simplify using `[fsum]`. Introduce `i j`. Establish `hg1 : (LB.LinComb L (Empty.elim : Empty → (Y ⟶ X)) Empty.elim).g i j = 1` using `by first`. Consider the case `(dsimp only [LB.LinComb]; exact Fintype.prod_empty _)`.
+
+Consider the case `(unfold LB.LinComb; exact Fintype.prod_empty _)`. Consider the case `(simp [LB.LinComb]; rfl)`. Simplify using `only`. Rewrite using `[MonoidHom.map_one, MonoidHom.map_one, hg1, one_mul]`.
+-/
 lemma HasGen.zero : HasGen L (0 : (Y ⟶ X) →₀ ℤ) := by
   refine ⟨Empty, inferInstance, Empty.elim, Empty.elim, ?_, ⟨fun _ => 1⟩, ?_⟩
   · simp [fsum]
@@ -39,6 +50,21 @@ lemma HasGen.zero : HasGen L (0 : (Y ⟶ X) →₀ ℤ) := by
     dsimp only
     rw [MonoidHom.map_one, MonoidHom.map_one, hg1, one_mul]
 
+/- English proof (translation)
+Establish `res_res : ∀ {Z : Scheme.{0}} {U V W : Z.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (x : Γ(Z, U)ˣ), res h2 (res h1 x) = res (h2.trans h1) x`. Introduce `Z U V W h1 h2 x`. Use `ext`. Use `first`. Consider the case `(simp only [res, Units.coe_map, MonoidHom.coe_coe]`.
+
+Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]`. Use the proof step `rfl)`. Consider the case `(simp [res, ← Functor.map_comp_apply])`. Consider the case `(simp [res]; rfl)`. Take `⟨K, _, φ, ε, rfl, g, hg⟩` from `hF`.
+
+Take `⟨K', _, φ', ε', rfl, g', hg'⟩` from `hG`. Establish `hl : ∀ i : K ⊕ K' → L.ι, LB.wchart L (Sum.elim φ φ') i ≤ LB.wchart L φ (i ∘ Sum.inl)`. Introduce `i x hx`. Conclude with `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hx (Sum.inl k)`. Establish `hr : ∀ i : K ⊕ K' → L.ι, LB.wchart L (Sum.elim φ φ') i ≤ LB.wchart L φ' (i ∘ Sum.inr)`.
+
+Introduce `i x hx`. Conclude with `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hx (Sum.inr k)`. Use `⟨K ⊕ K', inferInstance, Sum.elim φ φ', Sum.elim ε ε', ?_, ⟨fun i => res (hl i) (g.s (i ∘ Sum.inl)) * res (hr i) (g'.s (i ∘ Sum.inr))⟩, ?_⟩` and prove the remaining obligations. Simplify using `[fsum, Fintype.sum_sum_type]`. Introduce `i j`.
+
+Establish `hW : LB.wchart L (Sum.elim φ φ') i ⊓ LB.wchart L (Sum.elim φ φ') j ≤ LB.wchart L φ (i ∘ Sum.inl) ⊓ LB.wchart L φ (j ∘ Sum.inl)` using `inf_le_inf (hl i) (hl j)`. Establish `hW' : LB.wchart L (Sum.elim φ φ') i ⊓ LB.wchart L (Sum.elim φ φ') j ≤ LB.wchart L φ' (i ∘ Sum.inr) ⊓ LB.wchart L φ' (j ∘ Sum.inr)` using `inf_le_inf (hr i) (hr j)`. Establish `hGs : (LB.LinComb L (Sum.elim φ φ') (Sum.elim ε ε')).g i j = res hW ((LB.LinComb L φ ε).g (i ∘ Sum.inl) (j ∘ Sum.inl)) * res hW' ((LB.LinComb L φ' ε').g (i ∘ Sum.inr) (j ∘ Sum.inr))` using `by first`. Consider the case `(simp only [LB.LinComb, Fintype.prod_sum_type, map_prod, map_zpow, res_res]; rfl)`. Consider the case `(simp [LB.LinComb, Fintype.prod_sum_type, map_prod, map_zpow]`.
+
+Apply the tactic sequence `congr 1 <;> refine Finset.prod_congr rfl fun k _ => ?_ <;> erw [res_res] <;> try rfl)`. Consider the case `(simp [LB.LinComb, Fintype.prod_sum_type, map_prod, map_zpow]`. Apply the tactic sequence `congr 1 <;> refine Finset.prod_congr rfl fun k _ => ?_ <;> rw [res_res])`. Establish `e1` using `congrArg (res hW) (hg (i ∘ Sum.inl) (j ∘ Sum.inl))`. Establish `e2` using `congrArg (res hW') (hg' (i ∘ Sum.inr) (j ∘ Sum.inr))`.
+
+Use `erw [map_mul, res_res, res_res] at e1 e2`. Simplify using `only`. Rewrite using `[hGs]`. Use `erw [map_mul, map_mul, res_res, res_res, res_res, res_res, e1, e2]`. Conclude with `mul_mul_mul_comm _ _ _ _`.
+-/
 lemma HasGen.add {F G : (Y ⟶ X) →₀ ℤ} (hF : HasGen L F) (hG : HasGen L G) : HasGen L (F + G) := by
   have res_res : ∀ {Z : Scheme.{0}} {U V W : Z.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (x : Γ(Z, U)ˣ),
       res h2 (res h1 x) = res (h2.trans h1) x := by
@@ -83,6 +109,13 @@ lemma HasGen.add {F G : (Y ⟶ X) →₀ ℤ} (hF : HasGen L F) (hG : HasGen L G
     erw [map_mul, map_mul, res_res, res_res, res_res, res_res, e1, e2]
     exact mul_mul_mul_comm _ _ _ _
 
+/- English proof (translation)
+Take `⟨K, _, φ, ε, rfl, g, hg⟩` from `hF`. Use `⟨K, inferInstance, φ, fun k => -ε k, ?_, ⟨fun i => (g.s i)⁻¹⟩, ?_⟩` and prove the remaining obligations. Simplify using `[fsum, Finsupp.single_neg, Finset.sum_neg_distrib]`. Introduce `i j`. Establish `hgg : (LB.LinComb L φ (fun k => -ε k)).g i j = ((LB.LinComb L φ ε).g i j)⁻¹` using `by first`.
+
+Consider the case `(simp only [LB.LinComb, zpow_neg, Finset.prod_inv_distrib]; rfl)`. Consider the case `(simp [LB.LinComb, zpow_neg, Finset.prod_inv_distrib]; rfl)`. Consider the case `(unfold LB.LinComb; simp [zpow_neg, Finset.prod_inv_distrib])`. Establish `hij` using `hg i j`. Simplify using `only`.
+
+Rewrite using `[hgg]`. Conclude with `(MonoidHom.map_inv _ _).trans <| (congrArg (fun x => x⁻¹) hij).trans <| (mul_inv _ _).trans <| congrArg (fun y => ((LB.LinComb L φ ε).g i j)⁻¹ * y) (MonoidHom.map_inv _ _).symm`.
+-/
 lemma HasGen.neg {F : (Y ⟶ X) →₀ ℤ} (hF : HasGen L F) : HasGen L (-F) := by
   obtain ⟨K, _, φ, ε, rfl, g, hg⟩ := hF
   refine ⟨K, inferInstance, φ, fun k => -ε k, ?_, ⟨fun i => (g.s i)⁻¹⟩, ?_⟩
@@ -100,17 +133,29 @@ lemma HasGen.neg {F : (Y ⟶ X) →₀ ℤ} (hF : HasGen L F) : HasGen L (-F) :=
       (mul_inv _ _).trans <|
         congrArg (fun y => ((LB.LinComb L φ ε).g i j)⁻¹ * y) (MonoidHom.map_inv _ _).symm
 
+/- English proof (translation)
+Simplify `hF.add hG.neg` using `[sub_eq_add_neg]`.
+-/
 lemma HasGen.sub {F G : (Y ⟶ X) →₀ ℤ} (hF : HasGen L F) (hG : HasGen L G) : HasGen L (F - G) := by
   simpa [sub_eq_add_neg] using hF.add hG.neg
 
+/- English proof (translation)
+The claim follows from `| 0 => by rw [zero_smul]; exact HasGen.zero | n + 1 => by rw [add_smul, one_smul]; exact (hF.nsmul n).add hF`.
+-/
 lemma HasGen.nsmul {F : (Y ⟶ X) →₀ ℤ} (hF : HasGen L F) : ∀ n : ℕ, HasGen L (n • F)
   | 0 => by rw [zero_smul]; exact HasGen.zero
   | n + 1 => by rw [add_smul, one_smul]; exact (hF.nsmul n).add hF
 
+/- English proof (translation)
+The claim follows from `| (n : ℕ) => by rw [natCast_zsmul]; exact hF.nsmul n | Int.negSucc n => by rw [negSucc_zsmul]; exact (hF.nsmul (n + 1)).neg`.
+-/
 lemma HasGen.zsmul {F : (Y ⟶ X) →₀ ℤ} (hF : HasGen L F) : ∀ n : ℤ, HasGen L (n • F)
   | (n : ℕ) => by rw [natCast_zsmul]; exact hF.nsmul n
   | Int.negSucc n => by rw [negSucc_zsmul]; exact (hF.nsmul (n + 1)).neg
 
+/- English proof (translation)
+Take `⟨K, _, φ, ε, rfl, g, hg⟩` from `hF`. Conclude with `⟨K, inferInstance, fun k => h ≫ φ k, ε, fsum_comp φ ε h, LB.pullGen L φ ε g h, pullGen_isGen_of_isGen (L := L) φ ε g hg h⟩`.
+-/
 lemma HasGen.pull {F : (Y ⟶ X) →₀ ℤ} (hF : HasGen L F) (h : Z ⟶ Y) :
     HasGen L (Finsupp.mapDomain (fun ψ => h ≫ ψ) F) := by
   obtain ⟨K, _, φ, ε, rfl, g, hg⟩ := hF

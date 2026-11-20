@@ -7,6 +7,9 @@ noncomputable section
 
 namespace Formalism.HN
 
+/- English proof (translation)
+Rewrite using `[← real_inner_self_eq_norm_sq]`. Repeatedly rewrite using `[sum_inner, inner_sum]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single v (fun w _ hw => h v w (Ne.symm hw)) (by simp), real_inner_self_eq_norm_sq]`.
+-/
 theorem gramBlock_norm_sum_sq {P F : Type*} [Fintype P] [NormedAddCommGroup F]
     [InnerProductSpace ℝ F] (y : P → F) (h : ∀ v w, v ≠ w → inner ℝ (y v) (y w) = 0) :
     ‖∑ v, y v‖ ^ 2 = ∑ v, ‖y v‖ ^ 2 := by
@@ -17,6 +20,9 @@ theorem gramBlock_norm_sum_sq {P F : Type*} [Fintype P] [NormedAddCommGroup F]
   rw [Finset.sum_eq_single v (fun w _ hw => h v w (Ne.symm hw)) (by simp),
     real_inner_self_eq_norm_sq]
 
+/- English proof (translation)
+Use extensionality with `j l`. Simplify using `only [Matrix.gram_apply, Matrix.mul_apply, Matrix.transpose_apply, map_sum, map_smul, sum_inner, inner_sum, real_inner_smul_left, real_inner_smul_right, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem gramBlock_gram_comb {ι E F : Type*} [Fintype ι] [NormedAddCommGroup E]
     [InnerProductSpace ℝ E] [NormedAddCommGroup F] [InnerProductSpace ℝ F]
     (g : E →ₗ[ℝ] F) (f : ι → E) (M : Matrix ι ι ℝ) :
@@ -26,6 +32,13 @@ theorem gramBlock_gram_comb {ι E F : Type*} [Fintype ι] [NormedAddCommGroup E]
     sum_inner, inner_sum, real_inner_smul_left, real_inner_smul_right, Finset.sum_mul]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Establish `hP` using `Matrix.posSemidef_gram ℝ w`. Rewrite using `[hP.isHermitian.det_eq_prod_eigenvalues]`. Apply `Finset.prod_le_one` to reduce the goal to its premises. Introduce `i _`. Simplify using `using hP.eigenvalues_nonneg i`.
+
+Introduce `i _`. Establish `hv : ∑ a, (hP.isHermitian.eigenvectorBasis i).ofLp a ^ 2 = 1`. Establish `h1` using `PiLp.norm_sq_eq_of_L2 (fun _ : κ => ℝ) (hP.isHermitian.eigenvectorBasis i)`. Rewrite `h1` using `[hP.isHermitian.eigenvectorBasis.orthonormal.1 i]`. Simplify `h1.symm` using `[Real.norm_eq_abs, sq_abs]`.
+
+Establish `h2` using `hP.isHermitian.eigenvalues_eq i`. Rewrite `h2` using `[Matrix.star_dotProduct_gram_mulVec, RCLike.re_to_real, real_inner_self_eq_norm_sq]`. Simplify using `only [RCLike.ofReal_real_eq_id, id]`. Rewrite using `[h2, ← hv]`. Conclude with `hw _`.
+-/
 private theorem det_gram_le_one_of_norm_sum_sq_le {κ F : Type*} [Fintype κ] [DecidableEq κ]
     [NormedAddCommGroup F] [InnerProductSpace ℝ F] (w : κ → F)
     (hw : ∀ x : κ → ℝ, ‖∑ a, x a • w a‖ ^ 2 ≤ ∑ a, x a ^ 2) :
@@ -46,6 +59,65 @@ private theorem det_gram_le_one_of_norm_sum_sq_le {κ F : Type*} [Fintype κ] [D
     rw [h2, ← hv]
     exact hw _
 
+/- English proof (translation)
+Introduce `P E E' ι _ _ _ _ _ _ _ _ _ _ Ev Ev' T c W u hEv hEv' hc hT hW hu hspan`. Set `k : P → ℕ` to `fun v => Module.finrank ℝ (W ⊓ Ev v : Submodule ℝ E)`. Set `B : ∀ v, OrthonormalBasis (Fin (k v)) ℝ (W ⊓ Ev v : Submodule ℝ E)` to `fun v => stdOrthonormalBasis ℝ _`. Set `f : (Σ v, Fin (k v)) → E` to `fun a => (B a.1 a.2 : E)`. Establish `hfW : ∀ a, f a ∈ W ⊓ Ev a.1` using `fun a => (B a.1 a.2).2`.
+
+Establish `hfon : Orthonormal ℝ f`. Rewrite using `[orthonormal_iff_ite]`. Introduce and unpack `⟨v, i⟩ ⟨w, j⟩`. Distinguish the cases in `hvw : v = w`. Substitute `hvw` using the available equality.
+
+Establish `h1` using `orthonormal_iff_ite.1 (B v).orthonormal i j`. Rewrite `h1` using `[Submodule.coe_inner]`. Simplify using `only [f]`. Rewrite using `[h1]`. Distinguish the cases in `hij : i = j`.
+
+Simplify using `[hij]`. Simplify using `[hij]`. Rewrite using `[if_neg (fun h => hvw (congrArg Sigma.fst h))]`. Conclude with `hEv v w hvw _ (hfW ⟨v, i⟩).2 _ (hfW ⟨w, j⟩).2`. Establish `hspanf : Submodule.span ℝ (Set.range f) = W`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `(hfW a).1`. Use `conv_lhs => rw [hW]`.
+
+Use `iSup_le fun v => ?_` and prove the remaining obligations. Introduce `x hx`. Establish `key : ((∑ i, inner ℝ (B v i) (⟨x, hx⟩ : (W ⊓ Ev v : Submodule ℝ E)) • B v i : (W ⊓ Ev v : Submodule ℝ E)) : E) = x`. Rewrite using `[(B v).sum_repr']`. Rewrite using `[← key, Submodule.coe_sum]`.
+
+Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨v, i⟩, rfl⟩)`. Establish `hcard : Fintype.card (Σ v, Fin (k v)) = Fintype.card ι`. Establish `h1` using `finrank_span_eq_card hfon.linearIndependent`.
+
+Establish `h2` using `finrank_span_eq_card hu`. Rewrite `h1` using `[hspanf]`. Rewrite `h2` using `[hspan]`. Use linear arithmetic over natural numbers and integers. Set `e` to `Fintype.equivOfCardEq hcard`.
+
+Set `f' : ι → E` to `f ∘ e.symm`. Establish `hf'on : Orthonormal ℝ f'` using `hfon.comp _ e.symm.injective`. Establish `hspan' : Submodule.span ℝ (Set.range f') = W`. Rewrite using `[Set.range_comp, e.symm.surjective.range_eq, Set.image_univ]`. Conclude with `hspanf`.
+
+Establish `hex : ∀ j, ∃ a : ι → ℝ, ∑ i, a i • f' i = u j`. Introduce `j`. Establish `: u j ∈ Submodule.span ℝ (Set.range f')`. Rewrite using `[hspan', ← hspan]`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`.
+
+Conclude with `(Submodule.mem_span_range_iff_exists_fun ℝ).1 this`. Use `choose a ha using hex`. Set `M : Matrix ι ι ℝ` to `fun i j => a j i`. Establish `huM : u = fun j => ∑ i, M i j • f' i` using `funext fun j => (ha j).symm`. Establish `hG1 : Matrix.gram ℝ f' = 1`.
+
+Use extensionality with `i j`. Rewrite using `[Matrix.gram_apply, orthonormal_iff_ite.1 hf'on, Matrix.one_apply]`. Establish `hGu : (Matrix.gram ℝ u).det = M.det ^ 2`. Establish `h1` using `gramBlock_gram_comb (LinearMap.id : E →ₗ[ℝ] E) f' M`. Simplify using `only [LinearMap.id_apply] at h1`.
+
+Simplify using `only [huM]`. Rewrite using `[h1, hG1, Matrix.mul_one, Matrix.det_mul, Matrix.det_transpose]`. Expand and normalize the polynomial expressions, which then agree. Establish `hGT : (Matrix.gram ℝ (fun i => T (u i))).det = M.det ^ 2 * (Matrix.gram ℝ (fun i => T (f' i))).det`. Simplify using `only [huM]`.
+
+Rewrite using `[gramBlock_gram_comb T f' M, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose]`. Expand and normalize the polynomial expressions, which then agree. Establish `hreidx : (Matrix.gram ℝ (fun i => T (f' i))).det = (Matrix.gram ℝ (fun a => T (f a))).det`. Establish `h1 : Matrix.gram ℝ (fun i => T (f' i)) = (Matrix.gram ℝ (fun a => T (f a))).submatrix e.symm e.symm`. Use extensionality with `i j`.
+
+Both sides reduce to the same expression. Rewrite using `[h1, Matrix.det_submatrix_equiv_self]`. Establish `hTf : ∀ a, T (f a) ∈ Ev' a.1 ∧ ‖T (f a)‖ ≤ c a.1`. Introduce `a`. Establish `h1` using `hT a.1 (f a) (hfW a).2`.
+
+Rewrite `h1` using `[hfon.1 a, mul_one]`. Conclude with `h1`. Establish `hprod : ∏ v, c v ^ (2 * Module.finrank ℝ (W ⊓ Ev v : Submodule ℝ E)) = ∏ a : (Σ v, Fin (k v)), c a.1 ^ 2`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
+
+Simplify using `[Finset.prod_const, ← pow_mul, k]`. Establish `hA : (Matrix.gram ℝ (fun a => T (f a))).det ≤ ∏ a : (Σ v, Fin (k v)), c a.1 ^ 2`. Distinguish the cases in `h0 : ∃ a : (Σ v, Fin (k v)), c a.1 = 0`. Take `⟨a, ha0⟩` from `h0`. Establish `hz : T (f a) = 0`.
+
+Establish `h1` using `(hTf a).2`. Rewrite `h1` using `[ha0]`. Conclude with `norm_le_zero_iff.1 h1`. Rewrite using `[Matrix.det_eq_zero_of_row_eq_zero a (fun j => by rw [Matrix.gram_apply, hz, inner_zero_left])]`. Conclude with `Finset.prod_nonneg fun _ _ => sq_nonneg _`.
+
+Use `push_neg at h0`. Establish `hpos : ∀ a : (Σ v, Fin (k v)), 0 < c a.1` using `fun a => lt_of_le_of_ne (hc a.1) (h0 a).symm`. Set `w : (Σ v, Fin (k v)) → E'` to `fun a => (c a.1)⁻¹ • T (f a)`. Establish `hgram : Matrix.gram ℝ (fun a => T (f a)) = Matrix.diagonal (fun a => c a.1) * Matrix.gram ℝ w * Matrix.diagonal (fun a => c a.1)`. Use extensionality with `a b`.
+
+Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.gram_apply, w, real_inner_smul_left, real_inner_smul_right]`. Clear denominators, using `[(hpos a).ne', (hpos b).ne']` for the nonvanishing conditions. Establish `hnorm : ∀ x : (Σ v, Fin (k v)) → ℝ, ‖∑ a, x a • w a‖ ^ 2 ≤ ∑ a, x a ^ 2`. Introduce `x`. Set `z : P → E` to `fun v => ∑ i, x ⟨v, i⟩ • f ⟨v, i⟩`.
+
+Set `y : P → E'` to `fun v => (c v)⁻¹ • T (z v)`. Establish `hsum : ∑ a, x a • w a = ∑ v, y v`. Rewrite using `[Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `only [y, z, w, map_sum, map_smul, Finset.smul_sum, smul_smul, mul_comm]`.
+
+Establish `hzE : ∀ v, z v ∈ Ev v` using `fun v => Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hfW ⟨v, i⟩).2`. Establish `hyE : ∀ v, y v ∈ Ev' v` using `fun v => Submodule.smul_mem _ _ (hT v _ (hzE v)).1`. Establish `hyz : ∀ v, ‖y v‖ ≤ ‖z v‖`. Introduce `v`. Break down `(hc v).eq_or_lt with h | h` into its components or cases.
+
+Simplify using `[y, ← h]`. Establish `hv` using `(hT v _ (hzE v)).2`. Simplify using `only [y]`. Rewrite using `[norm_smul, Real.norm_eq_abs, abs_inv, abs_of_pos h]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hzsum : ∑ v, z v = ∑ a, x a • f a`. Rewrite using `[Fintype.sum_sigma]`. Rewrite using `[hsum, gramBlock_norm_sum_sq y (fun v w hvw => hEv' v w hvw _ (hyE v) _ (hyE w))]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hzsum, ← real_inner_self_eq_norm_sq, hfon.inner_sum x x Finset.univ]`.
+
+Simplify using `[sq]`. Establish `hle : (Matrix.gram ℝ w).det ≤ 1` using `det_gram_le_one_of_norm_sum_sq_le w hnorm`. Establish `hP0 : 0 ≤ ∏ a : (Σ v, Fin (k v)), c a.1` using `Finset.prod_nonneg fun a _ => (hpos a).le`. Rewrite using `[hgram, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_one, ← Finset.prod_mul_distrib]`. Simplify using `[sq]`. Use `⟨?_, fun hiso => ?_⟩` and prove the remaining obligations. Rewrite using `[hGT, hGu, hreidx, hprod, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right hA (sq_nonneg _)`.
+
+Establish `hdiag : Matrix.gram ℝ (fun a => T (f a)) = Matrix.diagonal (fun a => c a.1 ^ 2)`. Use extensionality with `a b`. Rewrite using `[Matrix.gram_apply, Matrix.diagonal_apply]`. Distinguish the cases in `hab : a.1 = b.1`. Take `⟨v, i⟩` from `a`.
+
+Take `⟨w, j⟩` from `b`. Simplify using `only at hab`. Substitute `hab` using the available equality. Rewrite using `[hiso v _ (hfW ⟨v, i⟩).2 _ (hfW ⟨v, j⟩).2, orthonormal_iff_ite.1 hfon]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Rewrite using `[if_neg (fun h => hab (congrArg Sigma.fst h))]`. Conclude with `hEv' _ _ hab _ (hTf a).1 _ (hTf b).1`. Rewrite using `[hGT, hGu, hreidx, hdiag, Matrix.det_diagonal, hprod]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_block_determinant : GramBlock := by
   intro P E E' ι _ _ _ _ _ _ _ _ _ _ Ev Ev' T c W u hEv hEv' hc hT hW hu hspan
   classical

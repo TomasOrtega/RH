@@ -17,6 +17,17 @@ namespace GlobalTheory.XCharBF.DiagCoord
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨y, -, v, hv, rfl⟩` from `ht`. Establish `hG : B.gramᴴ = B.gram` using `Matrix.ext fun i j => (B.herm.eq (B.frame j) (B.frame i) : star (B.gram j i) = B.gram i j)`. Establish `hperp : d.aᴴ * B.gram * frameMat B A d.ι = 0`. Establish `h1` using `congrArg Matrix.conjTranspose d.perp`. Establish `e : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat B A d.ι) = (frameMat B A d.ι)ᴴ` using `rfl`.
+
+Rewrite `h1` using `[e, conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, hG, conjTranspose_zero]`. Rewrite using `[← h1, Matrix.mul_assoc]`. Establish `hgram : d.aᴴ * B.gram * d.a = antiDiagonalSignGramMatrix c ε` using `d.gram`. Rewrite using `[mulVec_add, mulVec_mulVec, mulVec_mulVec, hperp, hgram, zero_mulVec, zero_add]`. Rewrite using `[mulVec, dotProduct, Finset.sum_eq_single r.rev]`.
+
+Establish `: antiDiagonalSignGramMatrix c ε r r.rev = 1`. Use `r.2` as an intermediate fact. Simplify using `only [antiDiagonalSignGramMatrix, Fin.val_rev]`. Rewrite using `[if_pos (by omega), if_neg (fun h => hr (by rw [Fin.ext_iff, Fin.val_rev] at h; omega))]`. Rewrite using `[this, one_mul]`.
+
+Conclude with `hv _`. Introduce `q _ hq`. Establish `: antiDiagonalSignGramMatrix c ε r q = 0`. Use `r.2` as an intermediate fact. Use `q.2` as an intermediate fact.
+
+Simplify using `only [antiDiagonalSignGramMatrix]`. Rewrite using `[if_neg (fun h => hq (by rw [Fin.ext_iff, Fin.val_rev]; omega))]`. Rewrite using `[this, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem auxiliaryCoordinate_mem_staircaseIdeal {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensionData A B c ε)
     (Λ : Submodule (𝓞 D.host.E) (Fin A.rank → D.host.E)) (𝔟 : Fin c → FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)
     {t : Fin B.rank → D.host.E} (ht : t ∈ d.lat Λ 𝔟) (r : Fin c) (hr : r.1 + r.1 + 1 ≠ c) :
@@ -44,6 +55,9 @@ theorem auxiliaryCoordinate_mem_staircaseIdeal {A B : HSp D} {c : ℕ} {ε : D.h
     rw [this, zero_mul]
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Simplify using `only [colsOf, mulVec, dotProduct, Matrix.mul_apply, conjTranspose_apply, star_sum, star_mul', star_star, hG, Matrix.neg_apply, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_neg_distrib]`. Use `conv_rhs => rw [Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem negPair_colsOf {n c k : ℕ} (G : Matrix (Fin n) (Fin n) D.host.E) (hG : ∀ i j, star (G j i) = G i j)
     (a : Matrix (Fin n) (Fin c) D.host.E) (f : Fin k → Fin c) (w : Fin k → D.host.E) (s : Fin n → D.host.E) (p : Fin k) :
     ∑ j, (∑ l, star (s l) * (-G) l j) * colsOf a f w j p = -(w p * star (((aᴴ * G) *ᵥ s) (f p))) := by
@@ -52,12 +66,18 @@ theorem negPair_colsOf {n c k : ℕ} (G : Matrix (Fin n) (Fin n) D.host.E) (hG :
   conv_rhs => rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, Matrix.of_apply, mulVec, dotProduct, Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem entry_rankOne {m n k l : ℕ} (q : Matrix (Fin k) (Fin m) D.host.E) (e : Matrix (Fin n) (Fin l) D.host.E) (a : D.host.E)
     (t : Fin m → D.host.E) (g : Fin n → D.host.E) (p : Fin k) (p' : Fin l) :
     (q * Matrix.of (fun i j => a * t i * g j) * e) p p' = a * (q *ᵥ t) p * ∑ j, g j * e j p' := by
   simp only [Matrix.mul_apply, Matrix.of_apply, mulVec, dotProduct, Finset.mul_sum, Finset.sum_mul]
   exact Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Establish `hinc : ∀ x, incA D x = (1 : AF D.host.F) ⊗ₜ[D.host.F] x` using `fun _ => rfl`. Simplify using `only [Matrix.mul_apply, rat, Matrix.map_apply, Matrix.of_apply, hinc, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one, ← TensorProduct.tmul_sum]`.
+-/
 theorem rat_tmul_entry {m n k l : ℕ} (q : Matrix (Fin k) (Fin m) D.host.E) (C : Matrix (Fin m) (Fin n) D.host.E)
     (e : Matrix (Fin n) (Fin l) D.host.E) (X : AF D.host.F) (p : Fin k) (p' : Fin l) :
     (rat q ⬝ (Matrix.of fun i j => X ⊗ₜ[D.host.F] C i j : Mx D m n) ⬝ rat e) p p' = X ⊗ₜ[D.host.F] (q * C * e) p p' := by
@@ -65,6 +85,9 @@ theorem rat_tmul_entry {m n k l : ℕ} (q : Matrix (Fin k) (Fin m) D.host.E) (C 
   simp only [Matrix.mul_apply, rat, Matrix.map_apply, Matrix.of_apply, hinc, Algebra.TensorProduct.tmul_mul_tmul, one_mul,
     mul_one, ← TensorProduct.tmul_sum]
 
+/- English proof (translation)
+Unfold `stairId`. Rewrite using `[show c₂ - q₂.1 = c₁ - q₁.1 by omega, hq, pow_succ 𝔞' (q₁.1 + 1)]`. Establish `h1 : 𝔞 ^ (c₁ - q₁.1) ≠ 0` using `pow_ne_zero _ h𝔞`. Establish `h2 : 𝔞' ^ (q₁.1 + 1) ≠ 0` using `pow_ne_zero _ h𝔞'`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem stairId_mul_inv_succ (𝔞 𝔞' : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) (h𝔞 : 𝔞 ≠ 0) (h𝔞' : 𝔞' ≠ 0) {c₁ c₂ : ℕ}
     (q₁ : Fin c₁) (q₂ : Fin c₂) (hc : c₂ = c₁ + 1) (hq : q₂.1 = q₁.1 + 1) :
     stairId 𝔞 𝔞' c₁ q₁ * (stairId 𝔞 𝔞' c₂ q₂)⁻¹ = 𝔞' := by
@@ -74,6 +97,9 @@ theorem stairId_mul_inv_succ (𝔞 𝔞' : FractionalIdeal (𝓞 D.host.E)⁰ D.
   have h2 : 𝔞' ^ (q₁.1 + 1) ≠ 0 := pow_ne_zero _ h𝔞'
   field_simp
 
+/- English proof (translation)
+Simplify using `only [colsOf, Matrix.mul_apply, conjTranspose_apply, star_mul', Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem colsOf_gram {n c k : ℕ} (G : Matrix (Fin n) (Fin n) D.host.E) (a : Matrix (Fin n) (Fin c) D.host.E) (f g : Fin k → Fin c)
     (w w' : Fin k → D.host.E) (p q : Fin k) :
     ((colsOf a f w)ᴴ * G * colsOf a g w') p q = star (w p) * w' q * (aᴴ * G * a) (f p) (g q) := by
@@ -82,6 +108,33 @@ theorem colsOf_gram {n c k : ℕ} (G : Matrix (Fin n) (Fin n) D.host.E) (a : Mat
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D T L sc G F hF ρ h u hu p`. Take `⟨hcJ, heJ, -⟩` from `hF.hJ ρ h`. Take `⟨hcB, heB, sB, he'B⟩` from `hF.hB ρ h`. Use `set aJ := G.colDec (2 * ρ + 1) (by omega) (by omega) with haJ`. Use `set aB := G.colDec (2 * ρ + 2) (by omega) h with haB`.
+
+Take `⟨hAA, -⟩` from `(GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D).1`. Take `⟨hA, hconj⟩` from `(GlobalTheory.ChiGrid.StairConj.conj_AA_and_stA D).2 T L G.pl sc`. Establish `hAb : G.pl.stAbar sc ≠ 0`. Introduce `h0`. Apply `hA` to reduce the goal to its premises.
+
+Rewrite `h0`, the goal using `[FractionalIdeal.eq_zero_iff]`. Introduce `y hy`. Establish `h1 : star y ∈ G.pl.stAbar sc` using `(hconj _).2 (by rwa [star_star])`. Establish `h2` using `h0 _ h1`. Rewrite `h2` using `[star_eq_zero]`. Then use the resulting hypothesis.
+
+Establish `hJ : ∀ t ∈ G.Λ (.grid (2 * ρ + 1) 0), ((F.dJ ρ h).qY *ᵥ t) p = star ((-D.host.xi0) ^ (p.1 + 1)) * ((aJ.aᴴ * (G.V (.grid (2 * ρ + 1) 0)).gram) *ᵥ t) (Fin.castLE (by omega) p)`. Introduce `t _`. Simplify using `only [HypDec.qY, heJ, mulVec, dotProduct, Matrix.mul_apply, conjTranspose_apply, colsOf, star_mul', Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Establish `hJmem : ∀ t ∈ G.Λ (.grid (2 * ρ + 1) 0), ((aJ.aᴴ * (G.V (.grid (2 * ρ + 1) 0)).gram) *ᵥ t) (Fin.castLE (by omega) p) ∈ stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * ρ + 1 - 1) (Fin.castLE (by omega) p).rev`. Introduce `t ht`.
+
+Establish `ht' : t ∈ aJ.lat (G.sp.P (2 * ρ + 1)).lat (stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * ρ + 1 - 1))`. Rewrite using `[haJ, ← G.sp.colLat (2 * ρ + 1) (by omega) (by omega)]; exact ht`. Conclude with `auxiliaryCoordinate_mem_staircaseIdeal aJ _ _ ht' _ (by simp only [Fin.val_castLE]; omega)`. Establish `hBmem : ∀ s ∈ G.Λ (.grid (2 * ρ + 2) 0), star (((aB.aᴴ * (G.V (.grid (2 * ρ + 2) 0)).gram) *ᵥ s) (Fin.castLE (by omega) p : Fin (2 * ρ + 2 - 1)).rev) ∈ (stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * ρ + 2 - 1) (Fin.castLE (by omega) p : Fin (2 * ρ + 2 - 1)).rev)⁻¹`. Introduce `s hs`.
+
+Establish `hs' : s ∈ aB.lat (G.sp.P (2 * ρ + 2)).lat (stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * ρ + 2 - 1))`. Rewrite using `[haB, ← G.sp.colLat (2 * ρ + 2) (by omega) h]; exact hs`. Establish `h1` using `auxiliaryCoordinate_mem_staircaseIdeal aB _ _ hs' (Fin.castLE (by omega) p : Fin (2 * ρ + 2 - 1)).rev (by simp only [Fin.val_rev, Fin.val_castLE]; omega)`. Conclude with `((GlobalTheory.ChiGrid.stairId_ne_zero_and_mem_rev_iff D _ _ hA hconj _ _).2 _).1 h1`. Establish `hsc : star ((-D.host.xi0) ^ (p.1 + 1)) * sB p = 1`.
+
+Establish `h1` using `congrFun (congrFun (F.dB ρ h).e'e p) p`. Rewrite `h1` using `[he'B, heB, colsOf_gram, Matrix.one_apply_eq]`. Establish `h2 : (aB.aᴴ * (G.V (.grid (2 * ρ + 2) 0)).gram * aB.a) (Fin.castLE (by omega) p : Fin (2 * ρ + 2 - 1)).rev (Fin.castLE (by omega) p) = 1`. Rewrite using `[show aB.aᴴ * (G.V (.grid (2 * ρ + 2) 0)).gram * aB.a = antiDiagonalSignGramMatrix (2 * ρ + 2 - 1) (-1) from aB.gram]`. Simplify using `only [antiDiagonalSignGramMatrix, Fin.val_rev, Fin.val_castLE]`.
+
+Rewrite using `[if_pos (by omega), if_neg (fun e => by rw [Fin.ext_iff, Fin.val_rev, Fin.val_castLE] at e; omega)]`. Rewrite `h1` using `[h2, mul_one]`. Establish `h3` using `congrArg star h1`. Rewrite `h3` using `[star_mul', star_star, star_one]`. Rewrite using `[mul_comm]`.
+
+Conclude with `h3`. Establish `hGB : ∀ i j, star ((G.V (.grid (2 * ρ + 2) 0)).gram j i) = (G.V (.grid (2 * ρ + 2) 0)).gram i j` using `fun i j => (G.V (.grid (2 * ρ + 2) 0)).herm.eq ((G.V (.grid (2 * ρ + 2) 0)).frame j) ((G.V (.grid (2 * ρ + 2) 0)).frame i)`. Establish `keyE : ∀ a ∈ D.host.AA, ∀ s ∈ G.Λ (.grid (2 * ρ + 2) 0), ∀ t ∈ G.Λ (.grid (2 * ρ + 1) 0), ((F.dJ ρ h).qY * Matrix.of (fun i j => a * t i * ∑ k, star (s k) * (negSp (G.V (.grid (2 * ρ + 2) 0))).gram k j) * (F.dB ρ h).e') p p ∈ D.host.AA * G.pl.stAbar sc`. Introduce `a ha s hs t ht`. Rewrite using `[entry_rankOne _ _ a t (fun j => ∑ k, star (s k) * (negSp (G.V (.grid (2 * ρ + 2) 0))).gram k j), hJ t ht, he'B, negSp_gram, negPair_colsOf _ hGB]`.
+
+Establish `e : a * (star ((-D.host.xi0) ^ (p.1 + 1)) * ((aJ.aᴴ * (G.V (.grid (2 * ρ + 1) 0)).gram) *ᵥ t) (Fin.castLE (by omega) p)) * -(sB p * star (((aB.aᴴ * (G.V (.grid (2 * ρ + 2) 0)).gram) *ᵥ s) (Fin.castLE (by omega) p : Fin (2 * ρ + 2 - 1)).rev)) = -(a * (((aJ.aᴴ * (G.V (.grid (2 * ρ …`. Take the linear combination `(-(a * ((aJ.aᴴ * (G.V (.grid (2 * ρ + 1) 0)).gram) *ᵥ t) (Fin.castLE (by omega) p) * star (((aB.aᴴ * (G.V (.grid (2 * ρ + 2) 0)).gram) *ᵥ s) (Fin.castLE (by omega) p : Fin (2 * ρ + 2 - 1)).rev))) * hsc`. Rewrite using `[e]`. Use `Submodule.neg_mem _ (FractionalIdeal.mul_mem_mul ha ?_)` and prove the remaining obligations. Rewrite using `[← stairId_mul_inv_succ (G.pl.stA sc) (G.pl.stAbar sc) hA hAb (Fin.castLE (by omega) p : Fin (2 * ρ + 1 - 1)).rev (Fin.castLE (by omega) p : Fin (2 * ρ + 2 - 1)).rev (by omega) (by simp only [Fin.val_rev, Fin.val_castLE]; omega)]`.
+
+Conclude with `FractionalIdeal.mul_mem_mul (hJmem t ht) (hBmem s hs)`. Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, -, a, ha, s, hs, t, ht, rfl⟩` from `hw`. Apply the tactic sequence `have key : ((F.dJ ρ h).pY ⬝ (Matrix.of fun i j => (pairA D.host.F 0 α) ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * (negSp (G.V (.grid (2 * ρ + 2) 0))).gram k j)) ⬝ (F.dB ρ h).jY) p p = (pairA D.host.F 0 α) ⊗ₜ[D.host.F] ((F.dJ ρ h).qY * Matrix.of (fun i j => a * t i * ∑ k, star (s k …`.
+
+Rewrite using `[key]`. Conclude with `tmul_mem_complId hα (keyE a ha s hs t ht)`. Consider the case `zero => simp only [Matrix.mul_zero, Matrix.zero_mul, Matrix.zero_apply]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.mul_add, Matrix.add_mul, Matrix.add_apply]`.
+
+Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [Matrix.mul_neg, Matrix.neg_mul, Matrix.neg_apply]`. Conclude with `neg_mem hx`.
+-/
 theorem diag_mem_complId : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {F : Frames G}, Std F →
     ∀ (ρ : ℕ) (h : 2 * ρ + 2 ≤ D.R.m) (u : WO (negSp (G.V (.grid (2 * ρ + 2) 0))) (G.V (.grid (2 * ρ + 1) 0))),
     u ∈ latO _ _ (G.Λ (.grid (2 * ρ + 2) 0) : Set _) (G.Λ (.grid (2 * ρ + 1) 0) : Set _) (fun _ => True) →

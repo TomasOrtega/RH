@@ -12,6 +12,17 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Loc
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ _ _ _ N hN V _ _ _ π d X _ _ ρ e`. Substitute `hN` using the available equality. Establish `hK : twKer π (unipRad k e) 1 = ⊥`. Use `le_bot_iff.1 (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `w ⟨n, v, rfl⟩`.
+
+Establish `h1 : (n : GL (Fin 0) k) = 1` using `Subsingleton.elim _ _`. Simplify using `[h1]`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Establish `hx : (Submodule.Quotient.mk v : Jacquet π (unipRad k e)) ≠ 0`. Rewrite using `[Ne, Submodule.Quotient.mk_eq_zero, hK, Submodule.mem_bot]`.
+
+Conclude with `hv`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : Module.Dual ℂ (Jacquet π (unipRad k e)), φ (Submodule.Quotient.mk v) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hx ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 h)`.
+
+Set `L : Jacquet π (unipRad k e) →ₗ[ℂ] PiTensorProduct ℂ X` to `(PiTensorProduct.isEmptyEquiv (Fin 0)).symm.toLinearMap ∘ₗ φ`. Use `IsSubquotient.of_surjective ⟨L, fun g => ?_⟩ ?_` and prove the remaining obligations. Establish `hg : g = 1` using `Subsingleton.elim _ _`. Substitute `hg` using the available equality. Rewrite using `[map_one, map_one]`.
+
+Both sides reduce to the same expression. Establish `hsurj : Function.Surjective φ` using `fun c => ⟨(c / φ (Submodule.Quotient.mk v)) • Submodule.Quotient.mk v, by simp [hφ]⟩`. Conclude with `(PiTensorProduct.isEmptyEquiv (Fin 0)).symm.surjective.comp hsurj`.
+-/
 theorem piTensor_isSubquotient_jac_degZero : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (N : ℕ), N = 0 → ∀ (V : Type) [AddCommGroup V] [Module ℂ V] [Nontrivial V]
     (π : Representation ℂ (GL (Fin N) k) V) (d : Fin 0 → ℕ) (X : Fin 0 → Type) [∀ a, AddCommGroup (X a)]

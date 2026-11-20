@@ -6,6 +6,11 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.PB GlobalTh
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.FMX.Frm
 
+/- English proof (translation)
+Establish `hsub : ∀ p : Fin r → Fin n, (C.submatrix p id).det = ∑ σ : Equiv.Perm (Fin r), ((Equiv.Perm.sign σ : ℤ) : Ω) * ∏ i, C (p i) (σ i)`. Introduce `p`. Rewrite using `[← Matrix.det_transpose, Matrix.det_apply']`. Both sides reduce to the same expression. Rewrite using `[← Matrix.det_transpose, Matrix.transpose_mul, Matrix.det_apply']`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Finset.prod_univ_sum, Fintype.piFinset_univ, Finset.mul_sum, hsub]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem det_mul_eq_sum_prod_det_submatrix {Ω : Type} [Field Ω] {n r : ℕ}
     (B : Matrix (Fin r) (Fin n) Ω) (C : Matrix (Fin n) (Fin r) Ω) :
     (B * C).det = ∑ p : Fin r → Fin n, (∏ i, B i (p i)) * (C.submatrix p id).det := by
@@ -22,6 +27,9 @@ private theorem det_mul_eq_sum_prod_det_submatrix {Ω : Type} [Field Ω] {n r : 
   rw [Finset.prod_mul_distrib]
   ring
 
+/- English proof (translation)
+Establish `h1 : A.submatrix J id * T = a • C.submatrix J id`. Use extensionality with `i j`. Establish `h` using `congrFun (congrFun hAT (J i)) j`. Simplify `h` using `[Matrix.mul_apply]`. Rewrite using `[← Matrix.det_mul, h1, Matrix.det_smul, Fintype.card_fin]`.
+-/
 private theorem det_submatrix_mul_det_eq_pow_mul {Ω : Type} [Field Ω] {n r : ℕ}
     (A C : Matrix (Fin n) (Fin r) Ω) (T : Matrix (Fin r) (Fin r) Ω) (a : Ω) (hAT : A * T = a • C)
     (J : Fin r → Fin n) :
@@ -32,6 +40,21 @@ private theorem det_submatrix_mul_det_eq_pow_mul {Ω : Type} [Field Ω] {n r : �
     simpa [Matrix.mul_apply] using h
   rw [← Matrix.det_mul, h1, Matrix.det_smul, Fintype.card_fin]
 
+/- English proof (translation)
+Introduce `Ω _ n r R A C B T a hAT ha hT hBC hC hB J₀ hz hr`. Establish `hrel : ∀ J : Fin r → Fin n, (A.submatrix J id).det * T.det = a ^ r * (C.submatrix J id).det` using `det_submatrix_mul_det_eq_pow_mul A C T a hAT`. Establish `har : a ^ r ≠ 0` using `pow_ne_zero r ha`. Establish `hC0 : (C.submatrix J₀ id).det ≠ 0`. Introduce `h0`.
+
+Establish `h` using `hrel J₀`. Rewrite `h` using `[h0, mul_zero]`. Conclude with `mul_ne_zero hz hT h`. Establish `hCR : (C.submatrix J₀ id).det ∈ R`. Set `M : Matrix (Fin r) (Fin r) R` to `Matrix.of fun i j => ⟨C (J₀ i) j, hC _ _⟩`.
+
+Establish `hM : R.subtype.mapMatrix M = C.submatrix J₀ id`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[← hM, ← RingHom.map_det]`. Conclude with `SetLike.coe_mem M.det`.
+
+Establish `hratio : ∀ J : Fin r → Fin n, (C.submatrix J id).det = (C.submatrix J₀ id).det * ((A.submatrix J id).det / (A.submatrix J₀ id).det)`. Introduce `J`. Apply `mul_left_cancel₀ har` to reduce the goal to its premises. Rewrite using `[← hrel J, show a ^ r * ((C.submatrix J₀ id).det * ((A.submatrix J id).det / (A.submatrix J₀ id).det)) = (a ^ r * (C.submatrix J₀ id).det) * ((A.submatrix J id).det / (A.submatrix J₀ id).det) by ring, ← hrel J₀]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hs` using `det_mul_eq_sum_prod_det_submatrix B C`. Rewrite `hs` using `[hBC, Matrix.det_one]`. Establish `hs2 : (C.submatrix J₀ id).det * ∑ p : Fin r → Fin n, (∏ i, B i (p i)) * ((A.submatrix p id).det / (A.submatrix J₀ id).det) = 1`. Use `Eq.trans ?_ hs.symm` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[hratio p]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨hC0, hCR, ?_, hrel J₀⟩` and prove the remaining obligations. Rewrite using `[inv_eq_of_mul_eq_one_right hs2]`.
+
+Conclude with `sum_mem fun p _ => mul_mem (prod_mem fun i _ => hB _ _) (hr p)`.
+-/
 theorem minor_isUnit_of_leftInverse : ∀ {Ω : Type} [Field Ω] {n r : ℕ} (R : Subring Ω) (A C : Matrix (Fin n) (Fin r) Ω)
     (B : Matrix (Fin r) (Fin n) Ω) (T : Matrix (Fin r) (Fin r) Ω) (a : Ω) (hAT : A * T = a • C) (ha : a ≠ 0)
     (hT : T.det ≠ 0) (hBC : B * C = 1) (hC : ∀ j l, C j l ∈ R) (hB : ∀ l j, B l j ∈ R) (J₀ : Fin r → Fin n)

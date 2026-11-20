@@ -16,6 +16,9 @@ variable {κ : Type} [Fintype κ] [DecidableEq κ]
 local notation "ι" => algebraMap (𝓞 F) (𝓞 K)
 local notation "jK" => algebraMap (𝓞 K) K
 
+/- English proof (translation)
+Use `choose l hl using fun a => hS.arch (f a)`. Use `⟨∑ a, l a, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ a), add_comm, pow_add, mul_assoc]`. Conclude with `S.mul_mem (pow_mem hS _) (hl a)`.
+-/
 theorem exists_arch {S : Subring K} {ϖ : K} (hS : IsLocUnif S ϖ) {α : Type*} [Fintype α] (f : α → K) :
     ∃ l : ℕ, ∀ a, ϖ ^ l * f a ∈ S := by
   classical
@@ -24,6 +27,21 @@ theorem exists_arch {S : Subring K} {ϖ : K} (hS : IsLocUnif S ϖ) {α : Type*} 
   rw [← Finset.add_sum_erase _ _ (Finset.mem_univ a), add_comm, pow_add, mul_assoc]
   exact S.mul_mem (pow_mem hS _) (hl a)
 
+/- English proof (translation)
+Use `h𝔭.isPrime` as an intermediate fact. Take `⟨π₀, s₀, hu⟩` from `exists_isUnif0 h𝔭`. Establish `hS` using `isLocUnif hK hF h𝔭 hu`. Establish `hdet : IsUnit (gramK h b).det` using `isUnit_iff_ne_zero.2 (gramK_det_ne_zero hd b)`. Take `⟨l, hl⟩` from `exists_arch hS (fun p : κ × κ => (gramK h b)⁻¹ p.1 p.2)`.
+
+Use `⟨l, fun x hx t ht => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_locF_iff_repr]`. Introduce `i`. Establish `hv : ∀ j, (gramK h b *ᵥ b.equivFun x) j ∈ SP K 𝔭`. Introduce `j`.
+
+Establish `h1` using `hx (b j) (le_locF 𝔭 _ (Submodule.subset_span ⟨j, rfl⟩))`. Rewrite `h1` using `[← mem_SP_iff_locF, form_repr h b]`. Establish `hb1 : b.equivFun (b j) = Pi.single j 1`. Use function extensionality and compare the values at `j'`. Rewrite using `[Basis.equivFun_self, Pi.single_apply]`.
+
+Simplify using `only [eq_comm]`. Establish `hb2 : star (Pi.single j (1 : K) : κ → K) = Pi.single j 1`. Use function extensionality and compare the values at `l`. Distinguish the cases in `hl : l = j`. Substitute `hl` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[hl]`. Rewrite `h1` using `[hb1, hb2, single_one_dotProduct]`. Then use the resulting hypothesis. Establish `hx' : b.equivFun x = (gramK h b)⁻¹ *ᵥ (gramK h b *ᵥ b.equivFun x)`. Rewrite using `[mulVec_mulVec, Matrix.nonsing_inv_mul _ hdet, one_mulVec]`.
+
+Take `⟨s, hs, hts⟩` from `(mem_noncompactPart_iff hu l _).1 (inP_jK (K := K) (ι_mem_pow ht))`. Rewrite using `[← algebraMap_smul K, map_smul, Pi.smul_apply, smul_eq_mul, hx', hts]`. Establish `e1 : jK (ι π₀) ^ l * s * ((gramK h b)⁻¹ *ᵥ (gramK h b *ᵥ b.equivFun x)) i = s * ∑ j, (jK (ι π₀) ^ l * (gramK h b)⁻¹ i j) * (gramK h b *ᵥ b.equivFun x) j` using `by conv_lhs => rw [mulVec, dotProduct]`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+
+Rewrite using `[e1]`. Conclude with `(SP K 𝔭).mul_mem hs ((SP K 𝔭).sum_mem fun j _ => (SP K 𝔭).mul_mem (hl (i, j)) (hv j))`.
+-/
 theorem exists_isE (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hd : ∀ x, h x x = 0 → x = 0) (b : Basis κ K V) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) :
     ∃ e, IsE h (locF 𝔭 (spanO b)) 𝔭 e := by
@@ -61,11 +79,17 @@ theorem exists_isE (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : Is
   rw [e1]
   exact (SP K 𝔭).mul_mem hs ((SP K 𝔭).sum_mem fun j _ => (SP K 𝔭).mul_mem (hl (i, j)) (hv j))
 
+/- English proof (translation)
+The claim follows from `Nat.sInf_mem (s := {e | IsE h (locF 𝔭 (spanO b)) 𝔭 e}) (exists_isE hK hF hd b h𝔭)`.
+-/
 theorem isE_eA (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hd : ∀ x, h x x = 0 → x = 0) (b : Basis κ K V) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) :
     IsE h (locF 𝔭 (spanO b)) 𝔭 (eA h (locF 𝔭 (spanO b)) 𝔭) :=
   Nat.sInf_mem (s := {e | IsE h (locF 𝔭 (spanO b)) 𝔭 e}) (exists_isE hK hF hd b h𝔭)
 
+/- English proof (translation)
+Rewrite using `[sigmaCount_basis h b hH h𝔭]`. Use `finite_quot (K := K) h𝔭 j` as an intermediate fact. Establish `: Nonempty {Y : Matrix κ κ (𝓞 K ⧸ extP K 𝔭 ^ j) // Hq H 𝔭 j * Y + Yᴴ * Hq H 𝔭 j = 0}` using `⟨⟨0, by simp⟩⟩`. Conclude with `Nat.card_pos`.
+-/
 theorem sigmaCount_pos_basis [Fact (IsFixF K F)] (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Basis κ K V)
     {H : Matrix κ κ (𝓞 K)} (hH : ∀ i j, jK (H i j) = h (b i) (b j)) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) (j : ℕ) : 0 < sigmaCount h (locF 𝔭 (spanO b)) 𝔭 j := by

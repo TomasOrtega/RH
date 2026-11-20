@@ -15,6 +15,17 @@ noncomputable section
 
 namespace GlobalTheory.BotFrames
 
+/- English proof (translation)
+Introduce `D T L sc G W S _ μ₀ hL hN i j A A' WW X Y hX hY`. Use `choose g g' h x x' y hE using fun t => GlobalTheory.T.exists_supported_unitaries_moving_bottomTriples W i j A A' WW X Y hX hY t`. Establish `hC` using `fun t => GlobalTheory.T.definite_bottom_triple_basis_change_factor_mem_field W S μ₀ hL hN i j A A' WW Y hY t (g t) (g' t) (h t) (x t) (x' t) (y t) (hE t).1.1 (hE t).1.2.1 (hE t).1.2.2 (hE t).2.1.1 (hE t).2.1.2.1 (hE t).2.1.2.2 (hE t).2.2.1.1 (hE t).2.2.1.2.1 (hE t).2.2.1.2.2`. Use `choose z hz using hC`. Establish `κne : ∀ t, ((splitFacO (GlobalTheory.BotFrames.botBeta G i j) (GlobalTheory.BotFrames.botBeta G i j / GlobalTheory.BotFrames.botAlpha L i j t) (x t) (y t) : Circle) : ℂ) ≠ 0` using `fun t => Circle.coe_ne_zero _`.
+
+Establish `κne' : ∀ t, ((splitFacO (GlobalTheory.BotFrames.botAlpha L i j t) (GlobalTheory.BotFrames.botAlpha L i j t / GlobalTheory.BotFrames.botBeta G i j) (x' t) (y t) : Circle) : ℂ) ≠ 0` using `fun t => Circle.coe_ne_zero _`. Establish `sA` using `GlobalTheory.BotFrames.isStd_s_eq hX.std hY.std`. Establish `sA'` using `GlobalTheory.BotFrames.isStd_s_eq hX.std' hY.std'`. Establish `sW` using `GlobalTheory.BotFrames.isStd_s_eq hX.stdW hY.stdW`. Establish `lA` using `GlobalTheory.BotFrames.isStd_lat_eq hX.std hY.std`.
+
+Establish `lA'` using `GlobalTheory.BotFrames.isStd_lat_eq hX.std' hY.std'`. Establish `lW` using `GlobalTheory.BotFrames.isStd_lat_eq hX.stdW hY.stdW`. Use `⟨GlobalTheory.BotFrames.reRig Y X.rA X.rA' X.rW (fun t => ((splitFacO (GlobalTheory.BotFrames.botBeta G i j) (GlobalTheory.BotFrames.botBeta G i j / GlobalTheory.BotFrames.botAlpha L i j t) (x t) (y t) : Circle) : ℂ) • Y.ω t ((g t)⁻¹, (h t)⁻¹) (Y.f t)) (fun t => ((splitFacO (Glob …` and prove the remaining obligations. Establish `hi` using `hY.is`. Use `⟨hi.rank, hX.is.rigA, hX.is.rigA', hX.is.rigW, hi.weil, hi.weil', ?_, ?_, hi.idem, hi.expo, fun t => GlobalTheory.T.standardPairFirstMember_movedDatum_splittingScale W i j A A' WW X Y hX hY t (g t) (h t) (x t) (y t) (hE t).1.1 (hE t).1.2.1 (hE t).1.2.2 (hE t).2.2.1.1 (hE t).2.2.1 …` and prove the remaining obligations.
+
+Use `show IsVacO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.Λ X.rW.Λ Y.vac`. Rewrite using `[sA, sW, lA, lW]`. Conclude with `hi.isVac`. Use `show IsVacO W.ψ W.θ A' WW X.rA'.s X.rW.s X.rA'.Λ X.rW.Λ Y.vac'`. Rewrite using `[sA', sW, lA', lW]`.
+
+Conclude with `hi.isVac'`. Use `⟨fun t => (z t)⁻¹, ?_⟩` and prove the remaining obligations. Establish `hD` using `GlobalTheory.T.definiteBottomTriple_weilMove_rightTranslate W i j A A' WW X Y hX hY g g' h _ _ κne κne' (fun t => ⟨(hE t).1.1, (hE t).1.2.1⟩) (fun t => ⟨(hE t).2.1.1, (hE t).2.1.2.1⟩) (fun t => ⟨(hE t).2.2.1.1, (hE t).2.2.1.2.1⟩) c hc`. Use `hD using 2 with t` and compare the differences between its conclusion and the goal. Rewrite using `[map_units_inv, hz t, inv_div]`.
+-/
 theorem frames_transfer : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (S : GridChoice W Set.univ),
     IsStdChar D W.ψ (-1) → ∀ μ₀ : T, L.Is μ₀ → NumbersIn D.what₂.embLL S μ₀ → ∀ (i j : Fin D.R.m) (A A' WW : HSp D)
     (X Y : Tri T A A' WW), IsBottomTri W i j X → IsBottomTri W i j Y →

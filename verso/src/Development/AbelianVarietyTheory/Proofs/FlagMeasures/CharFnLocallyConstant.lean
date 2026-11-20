@@ -17,6 +17,15 @@ noncomputable def charFn (K : Subgroup G) (χ : K →* Circle) (c : ℝ) : G →
 
 variable (K : Subgroup G) (χ : K →* Circle) (c : ℝ)
 
+/- English proof (translation)
+Establish `h : ∑ i, ∑ j, (if q i = q j then star (a i) * a j else 0) = ∑ t ∈ Finset.univ.image q, star (∑ i, if q i = t then a i else 0) * (∑ j, if q j = t then a j else 0)`. Simplify using `only [star_sum, Finset.sum_mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `symm`. Rewrite using `[Finset.sum_comm]`.
+
+Rewrite using `[Finset.sum_comm (s := Finset.univ) (t := Finset.univ) (f := fun j i => if q i = q j then star (a i) * a j else 0)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (q i)]`.
+
+Distinguish the cases in `hij : q i = q j`. Simplify using `[hij]`. Simplify using `[hij, Ne.symm hij]`. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`.
+
+Introduce `hb`. Conclude with `absurd (Finset.mem_image_of_mem q (Finset.mem_univ i)) hb`. Rewrite using `[h]`. Conclude with `Finset.sum_nonneg fun t _ => star_mul_self_nonneg _`.
+-/
 theorem sum_fiber_nonneg {ι Q : Type} [Fintype ι] [DecidableEq Q] (q : ι → Q) (a : ι → ℂ) :
     0 ≤ ∑ i, ∑ j, (if q i = q j then star (a i) * a j else 0) := by
   have h : ∑ i, ∑ j, (if q i = q j then star (a i) * a j else 0) =

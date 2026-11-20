@@ -20,6 +20,17 @@ namespace GlobalTheory.CompanionTheory.LeafFixedPointPlaceNorm
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 variable {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ}
+/- English proof (translation)
+Introduce `hS hF hA`. Take `⟨c1, hF⟩` from `hF`. Take `⟨c2, hA⟩` from `hA`. Use `⟨max c1 c2, fun CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C1, hF⟩` from `hF CF ((le_max_left _ _).trans hCF)`.
+
+Take `⟨C2, hA⟩` from `hA CF ((le_max_right _ _).trans hCF)`. Use `hS.imp fun {eps} Fm _ _ a _ => ⟨max (max C1 C2) (max CF 0), fun C hC => ?_⟩` and prove the remaining obligations. Take `⟨x₁, a⟩` from `a`. Establish `hC1 : C1 ≤ C` using `((le_max_left _ _).trans (le_max_left _ _)).trans hC`. Establish `hC2 : C2 ≤ C` using `((le_max_right _ _).trans (le_max_left _ _)).trans hC`.
+
+Establish `hCF' : CF ≤ C` using `((le_max_left _ _).trans (le_max_right _ _)).trans hC`. Establish `hC0 : 0 ≤ C` using `((le_max_right _ _).trans (le_max_right _ _)).trans hC`. Take `⟨x₂, hF⟩` from `hF eps C hC1`. Take `⟨x₃, hA⟩` from `hA eps C hC2`. Use `⟨max x₁ (max x₂ x₃), fun x hx hle i p hp d hd => ?_⟩` and prove the remaining obligations.
+
+Take `⟨-, b, hT⟩` from `hd`. Establish `hx₁ : x₁ ≤ x` using `(le_max_left _ _).trans hle`. Establish `hx₂ : x₂ ≤ (Fm.L x i).sc.x` using `((le_max_left _ _).trans ((le_max_right _ _).trans hle)).trans (Fm.L_x x i hx).ge`. Establish `hx₃ : x₃ ≤ (Fm.L x i).sc.x` using `((le_max_right _ _).trans ((le_max_right _ _).trans hle)).trans (Fm.L_x x i hx).ge`. Establish `hset` using `a x hx hx₁ i p hp hT.ok.eser`.
+
+Conclude with `leaf_at hT hC0 hCF' (hF _ (Fm.L x i) (Fm.L_eps x i) hx₂ _ _ _ _ _ _ _ hset b.ch hT.ok.is b.atScale hT.ok.field) (hA _ (Fm.L x i) (Fm.L_eps x i) hx₃ _ _ _ _ _ _ _ hset b.ch hT.ok.is b.atScale hT.ok.field)`.
+-/
 theorem fp_tie_alt : _root_.GlobalTheory.BigTop.Fun.SettingAtPoint → FinK → AwayK → _root_.GlobalTheory.BigTop.Fun.LeafFixedPoint @Comparison₂ := by
   intro hS hF hA
   obtain ⟨c1, hF⟩ := hF
@@ -50,6 +61,9 @@ end
 end LeafFixedPointPairing
 section
 open GlobalTheory.BigTop GlobalTheory.BigTop.Fun GlobalTheory.SumSize
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.LeafFixedPointPairing.GlobalTheory.CompanionTheory.LeafFixedPointPlaceNorm.fp_tie_alt | exact _root_.LeafFixedPointPairing.GlobalTheory.CompanionTheory.LeafFixedPointPlaceNorm.fp_tie_alt | (intros; apply _root_.LeafFixedPointPairing.GlobalTheory.CompanionThe …`.
+-/
 theorem _root_.GlobalTheory.Adopt.leafFixedPoint_of_finK_awayK : _root_.GlobalTheory.BigTop.Fun.SettingAtPoint → FinK → AwayK → _root_.GlobalTheory.BigTop.Fun.LeafFixedPoint @Comparison₂ := by
   first | exact @_root_.LeafFixedPointPairing.GlobalTheory.CompanionTheory.LeafFixedPointPlaceNorm.fp_tie_alt | exact _root_.LeafFixedPointPairing.GlobalTheory.CompanionTheory.LeafFixedPointPlaceNorm.fp_tie_alt | (intros; apply _root_.LeafFixedPointPairing.GlobalTheory.CompanionTheory.LeafFixedPointPlaceNorm.fp_tie_alt <;> assumption)
 end

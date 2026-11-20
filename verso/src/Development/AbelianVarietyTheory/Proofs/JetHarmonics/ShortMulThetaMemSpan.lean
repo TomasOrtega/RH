@@ -33,6 +33,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 
 abbrev ConjQ (Dw : Datum H) (l : Level H) : Type := Dw.La ⧸ (Mfr l • ⊤ : Submodule (𝓞 E) Dw.La)
 
+/- English proof (translation)
+Use `haveI := Dw.fin`. Use `haveI := Dw.proj`. Use `haveI : Finite (𝓞 E ⧸ I) := Ideal.finiteQuotientOfFreeOfNeBot _ hI`. Rewrite using `[natCard_quot_smul_top_of_projective, Dw.rank, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+-/
 theorem card_quot (Dw : Datum H) {I : Ideal (𝓞 E)} (hI : I ≠ ⊥) :
     Nat.card (Dw.La ⧸ (I • ⊤ : Submodule (𝓞 E) Dw.La)) = Ideal.absNorm I ^ (Dw.p + Dw.q) := by
   haveI := Dw.fin
@@ -40,6 +43,11 @@ theorem card_quot (Dw : Datum H) {I : Ideal (𝓞 E)} (hI : I ≠ ⊥) :
   haveI : Finite (𝓞 E ⧸ I) := Ideal.finiteQuotientOfFreeOfNeBot _ hI
   rw [natCard_quot_smul_top_of_projective, Dw.rank, Ideal.absNorm_apply, Submodule.cardQuot_apply]
 
+/- English proof (translation)
+Establish `hM : (l.M : 𝓞 E) ≠ 0`. Use `l.three_le` as an intermediate fact. Conclude with `(by omega : l.M ≠ 0)` after adjusting the coercions. Establish `h : l.Mb * Mfr l ≠ ⊥`. Rewrite using `[Mfr, l.prod, Ne, Ideal.span_singleton_eq_bot]`.
+
+Conclude with `hM`. Conclude with `⟨fun e => h (by rw [e, Ideal.bot_mul]), fun e => h (by rw [e, Ideal.mul_bot])⟩`.
+-/
 theorem mb_ne_bot (l : Level H) : l.Mb ≠ ⊥ ∧ Mfr l ≠ ⊥ := by
   have hM : (l.M : 𝓞 E) ≠ 0 := by
     have := l.three_le
@@ -48,6 +56,9 @@ theorem mb_ne_bot (l : Level H) : l.Mb ≠ ⊥ ∧ Mfr l ≠ ⊥ := by
     rw [Mfr, l.prod, Ne, Ideal.span_singleton_eq_bot]; exact hM
   exact ⟨fun e => h (by rw [e, Ideal.bot_mul]), fun e => h (by rw [e, Ideal.mul_bot])⟩
 
+/- English proof (translation)
+The claim follows from `Nat.finite_of_card_ne_zero (by rw [card_quot Dw (mb_ne_bot l).2] exact pow_ne_zero _ (fun h => (mb_ne_bot l).2 (Ideal.absNorm_eq_zero_iff.1 h)))`.
+-/
 theorem finite_conjQ (Dw : Datum H) (l : Level H) : Finite (ConjQ Dw l) :=
   Nat.finite_of_card_ne_zero (by
     rw [card_quot Dw (mb_ne_bot l).2]
@@ -55,6 +66,9 @@ theorem finite_conjQ (Dw : Datum H) (l : Level H) : Finite (ConjQ Dw l) :=
 
 variable {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Establish `hI : d.I ≠ ⊥` using `fun e => (mb_ne_bot d.l₂).1 (by rw [hd.2.2.2.1, e, Ideal.mul_bot])`. Establish `h1 : Ideal.absNorm (Mfr l) = Ideal.absNorm l.Mb`. Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `(Nat.card_congr (Ideal.quotientEquiv l.Mb _ H.bar rfl).toEquiv).symm`. Rewrite using `[card_quot Dw (mb_ne_bot d.l₂).1, card_quot Dw (mb_ne_bot l).2, card_quot Dw hI, hd.2.2.2.1, map_mul, mul_pow, h1]`.
+-/
 theorem card_cover {n : ℕ} (d : DeltaDat Xo c n) (hd : d.IsLev) :
     Nat.card (LevQ Dw d.l₂) = Nat.card (ConjQ Dw l) * Nat.card (LaI Xo c d) := by
   have hI : d.I ≠ ⊥ := fun e => (mb_ne_bot d.l₂).1 (by rw [hd.2.2.2.1, e, Ideal.mul_bot])
@@ -63,6 +77,15 @@ theorem card_cover {n : ℕ} (d : DeltaDat Xo c n) (hd : d.IsLev) :
     exact (Nat.card_congr (Ideal.quotientEquiv l.Mb _ H.bar rfl).toEquiv).symm
   rw [card_quot Dw (mb_ne_bot d.l₂).1, card_quot Dw (mb_ne_bot l).2, card_quot Dw hI, hd.2.2.2.1, map_mul, mul_pow, h1]
 
+/- English proof (translation)
+Establish `hM : l.M ≠ 0` using `by have := l.three_le; omega`. Establish `h2` using `d.l₂.prod`. Rewrite `h2` using `[hd.2.2.2.1, hd.2.1, Ideal.map_mul, mul_mul_mul_comm, l.prod, Nat.cast_mul, ← Ideal.span_singleton_mul_span_singleton]`. Establish `h3` using `mul_left_cancel₀ (by`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`.
+
+Conclude with `hM) h2` after adjusting the coercions. Establish `h4 : (d.pd : 𝓞 E) ∈ d.I`. Establish `: Ideal.span {(d.pd : 𝓞 E)} ≤ d.I` using `h3 ▸ Ideal.mul_le_left`. Conclude with `this (Ideal.subset_span rfl)`. Establish `h5 : (l.M : 𝓞 E) ∈ l.Mb`.
+
+Establish `: Ideal.span {(l.M : 𝓞 E)} ≤ l.Mb` using `l.prod ▸ Ideal.mul_le_left`. Conclude with `this (Ideal.subset_span rfl)`. Use `⟨h4, ?_⟩` and prove the remaining obligations. Take `⟨u, v, huv⟩` from `Nat.Coprime.cast (R := 𝓞 E) hd.2.2.1`. Rewrite using `[Ideal.eq_top_iff_one, ← huv, add_comm]`.
+
+Conclude with `Submodule.add_mem_sup (Ideal.mul_mem_left _ _ h5) (Ideal.mul_mem_left _ _ h4)`.
+-/
 theorem pd_mem {n : ℕ} (d : DeltaDat Xo c n) (hd : d.IsLev) : (d.pd : 𝓞 E) ∈ d.I ∧ l.Mb ⊔ d.I = ⊤ := by
   have hM : l.M ≠ 0 := by have := l.three_le; omega
   have h2 := d.l₂.prod
@@ -82,6 +105,15 @@ theorem pd_mem {n : ℕ} (d : DeltaDat Xo c n) (hd : d.IsLev) : (d.pd : 𝓞 E) 
   rw [Ideal.eq_top_iff_one, ← huv, add_comm]
   exact Submodule.add_mem_sup (Ideal.mul_mem_left _ _ h5) (Ideal.mul_mem_left _ _ h4)
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `pd_mem d hd`. Establish `hq : Submodule.Quotient.mk (levRep q) = q` using `Classical.choose_spec (Submodule.Quotient.mk_surjective _ q)`. Establish `hp : (d.pd : 𝓞 E) • x ∈ (d.I • ⊤ : Submodule (𝓞 E) Dw.La)` using `Submodule.smul_mem_smul h1 trivial`. Use `conv_lhs => rw [← hq, Submodule.Quotient.eq, hd.2.2.2.1]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use `⟨?_, Submodule.smul_mono_left Ideal.mul_le_left h⟩` and prove the remaining obligations. Simplify using `using add_mem (Submodule.smul_mono_left Ideal.mul_le_right h) hp`. Introduce and unpack `⟨ha, hb⟩`. Establish `hc` using `sub_mem ha hp`.
+
+Generalize the expression as in `levRep q - (d.pd : 𝓞 E) • x = v at hb hc`. Take `⟨a, ha, b, hb', hab⟩` from `Submodule.mem_sup.1 (h2 ▸ Submodule.mem_top : (1 : 𝓞 E) ∈ l.Mb ⊔ d.I)`. Establish `e : v = a • v + b • v` using `by rw [← add_smul, hab, one_smul]`. Rewrite using `[e]`. Use `add_mem ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul ha hc`. Rewrite using `[mul_comm, Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul hb' hb`.
+-/
 theorem eq_mk_iff {n : ℕ} (d : DeltaDat Xo c n) (hd : d.IsLev) (x : Dw.La) (q : LevQ Dw d.l₂) :
     q = Submodule.Quotient.mk ((d.pd : 𝓞 E) • x) ↔ levRep q ∈ (d.I • ⊤ : Submodule (𝓞 E) Dw.La) ∧
       levRep q - (d.pd : 𝓞 E) • x ∈ (l.Mb • ⊤ : Submodule (𝓞 E) Dw.La) := by
@@ -103,6 +135,13 @@ theorem eq_mk_iff {n : ℕ} (d : DeltaDat Xo c n) (hd : d.IsLev) (x : Dw.La) (q 
     · rw [Submodule.mul_smul]; exact Submodule.smul_mem_smul ha hc
     · rw [mul_comm, Submodule.mul_smul]; exact Submodule.smul_mem_smul hb' hb
 
+/- English proof (translation)
+Establish `hM : 0 < l.M` using `by have := l.three_le; omega`. Establish `hz` using `LevelPairing.zetaM_prim c`. Establish `h0 : zetaM c ≠ 0` using `hz.ne_zero hM.ne'`. Establish `h1 : ∀ x : Fin m → ConjQ Dw l, zetaM c ^ (-pairL (l` using `l) (fun b => qRep (x b)) u) * zetaM c ^ pairL (l := l) (fun b => qRep (x b)) v = ∏ b, zetaM c ^ Dw.EF (qRep (x b)) (cSep l • (v b - u b)) := fun x => by`. Rewrite using `[← zpow_add₀ h0, ← MoreColumns.zpow_sum h0]`.
+
+Use `congr 1`. Simplify using `only [pairL, smul_sub, map_sub, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∀ w : Dw.La, ∑ a : ConjQ Dw l, zetaM c ^ Dw.EF (qRep a) (cSep l • w) = if w ∈ (l.Mb • ⊤ : Submodule (𝓞 E) Dw.La) then (Nat.card (ConjQ Dw l) : c.F) else 0` using `fun w => @MoreColumns.char_sum E _ _ _ H Dw l.M hM l.Mb l.prod l.coprime c.F _ _ hz inst w`. Simplify using `only [h1]`.
+
+Rewrite using `[← Fintype.piFinset_univ, ← Finset.prod_univ_sum (fun _ => Finset.univ) (fun b (a : ConjQ Dw l) => zetaM c ^ Dw.EF (qRep a) (cSep l • (v b - u b)))]`. Simplify using `only [h2]`. Rewrite using `[Finset.prod_ite_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_char [inst : Fintype (ConjQ Dw l)] (c : Coeff l) {m : ℕ} (u v : Fin m → Dw.La) :
     ∑ x : Fin m → ConjQ Dw l, zetaM c ^ (-pairL (l := l) (fun b => qRep (x b)) u) *
         zetaM c ^ pairL (l := l) (fun b => qRep (x b)) v =
@@ -127,6 +166,9 @@ theorem sum_char [inst : Fintype (ConjQ Dw l)] (c : Coeff l) {m : ℕ} (u v : Fi
   rw [Finset.prod_ite_zero]
   simp
 
+/- English proof (translation)
+Rewrite using `[sum_char, Nat.card_fun, Nat.card_eq_fintype_card (α := Fin m), Fintype.card_fin, card_cover d hd]`. Simplify using `only [funext_iff, eq_mk_iff d hd, forall_and]`. Apply the tactic sequence `by_cases h1 : ∀ b, levRep (q b) ∈ (d.I • ⊤ : Submodule (𝓞 E) Dw.La) <;>`. Apply the tactic sequence `by_cases h2 : ∀ b, levRep (q b) - (d.pd : 𝓞 E) • x b ∈ (l.Mb • ⊤ : Submodule (𝓞 E) Dw.La) <;>`. Simplify using `[h1, h2, mul_pow]`.
+-/
 theorem sum_new_columns [Fintype (ConjQ Dw l)] {n : ℕ} (d : DeltaDat Xo c n) (hd : d.IsLev) {m : ℕ} (x : Fin m → Dw.La)
     (q : Fin m → LevQ Dw d.l₂) :
     (∑ x' : Fin m → ConjQ Dw l, zetaM c ^ (-pairL (l := l) (fun b => qRep (x' b)) (fun b => (d.pd : 𝓞 E) • x b)) *
@@ -139,6 +181,11 @@ theorem sum_new_columns [Fintype (ConjQ Dw l)] {n : ℕ} (d : DeltaDat Xo c n) (
     by_cases h2 : ∀ b, levRep (q b) - (d.pd : 𝓞 E) • x b ∈ (l.Mb • ⊤ : Submodule (𝓞 E) Dw.La) <;>
     simp [h1, h2, mul_pow]
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite Q`. Simplify using `only [finsum_eq_sum_of_fintype, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, ← mul_assoc (algebraMap K S t), ← map_mul, ← hw, map_sum, Finset.sum_mul, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem weighted_sum {K S ι Q : Type} [Field K] [CommRing S] [Algebra K S] [Fintype ι] [Finite Q] (cf : ι → K)
     (w : ι → Q → K) (w₀ : Q → K) (t : K) (hw : ∀ q, ∑ i, cf i * w i q = t * w₀ q) (A : S) (B : Q → S) :
     ∑ i, algebraMap K S (cf i) * (A * ∑ᶠ q, algebraMap K S (w i q) * B q) =
@@ -151,6 +198,11 @@ theorem weighted_sum {K S ι Q : Type} [Field K] [CommRing S] [Algebra K S] [Fin
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [map_mul]; ring
 
+/- English proof (translation)
+Use `haveI := ShortValue.finite_levelQuotient Dw l`. Take `⟨S', _, _, φ, y', z, tp, F, h1, h2, h3, h4, h5, h6, h7⟩` from `hv`. Establish `hinj : Function.Injective φ` using `h1.injective`. Apply `hinj` to reduce the goal to its premises. Establish `key` using `fun i => (GlobalTheory.shortThetaValue_existsUnique_natural GlobalTheory.abelianSchemeLaws_all.1 hC E H Dw l Xo c nab hn n Λ N hU hT hL a P hP.1 (w i) β).2 S S' φ y y' h2 (u i) _ (hu i) ⟨S', _, _, AlgHom.id c.F S', y', z, tp, F, RingHom.FaithfullyFlat.of_bijective Function.biject …`.
+
+Rewrite using `[map_sum, map_mul, h7]`. Simplify using `only [map_mul φ, AlgHom.commutes, key]`. Conclude with `weighted_sum cf w w₀ t hw _ _`.
+-/
 theorem shortVal_sum (hC : ChartIndepSt2) [StarRing (𝓞 E)] {nab : NabV Xo c} (hn : IsNab Xo c nab) {n : ℕ}
     {Λ : GenLat E n} {N : ℕ} (hU : Λ.Unimod) (hT : Λ.TrivAt l.M) (hL : Λ.LevOK N l.M) {a : (E →+* ℂ) × ℕ → ℕ}
     {P : MvPolynomial (LtN Dw n) c.F} (hP : P ∈ harmL c Λ a) {ι : Type} [Fintype ι] (cf : ι → c.F)
@@ -171,6 +223,11 @@ theorem shortVal_sum (hC : ChartIndepSt2) [StarRing (𝓞 E)] {nab : NabV Xo c} 
   simp only [map_mul φ, AlgHom.commutes, key]
   exact weighted_sum cf w w₀ t hw _ _
 
+/- English proof (translation)
+Unfold `AdmX at hx ⊢`. Use `eq_top_iff.2 (hx.ge.trans (sup_le_sup_right (Submodule.span_mono ?_) _))` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Use `⟨Fin.castAdd m b, ?_, Fin.append_left _ _ _⟩` and prove the remaining obligations. Break down `hb with hb | hb` into its components or cases.
+
+Establish `h1 : n = nV` using `of_decide_eq_true hb`. Conclude with `Or.inl (decide_eq_true (by have := h h1; omega))`. Conclude with `Or.inr hb`.
+-/
 theorem admissibleColumns_append {n m nV : ℕ} (h : n = nV → m = 0) (x0 : Fin n → Dw.La) (x : Fin m → Dw.La)
     (hx : AdmX (l := l) (decide (n = nV)) x0) : AdmX (l := l) (decide (n + m = nV)) (Fin.append x0 x) := by
   unfold AdmX at hx ⊢
@@ -182,10 +239,16 @@ theorem admissibleColumns_append {n m nV : ℕ} (h : n = nV → m = 0) (x0 : Fin
     exact Or.inl (decide_eq_true (by have := h h1; omega))
   · exact Or.inr hb
 
+/- English proof (translation)
+Take `⟨k, hk, h⟩` from `h`. Conclude with `⟨k, hk.coprime_dvd_right hab, h⟩`.
+-/
 theorem trivAt_of_dvd {n a b : ℕ} {Λ : GenLat E n} (h : Λ.TrivAt b) (hab : a ∣ b) : Λ.TrivAt a := by
   obtain ⟨k, hk, h⟩ := h
   exact ⟨k, hk.coprime_dvd_right hab, h⟩
 
+/- English proof (translation)
+Unfold `betaH`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem isBeta_betaH {n : ℕ} {Λ : GenLat E n}
     (h : ∃ β : c.F, β ≠ 0 ∧ BetaIs (Dw := Dw) c Λ β ∧ BetaAbs (Dw := Dw) c Λ β) :
     IsBeta Dw c Λ (betaH (Dw := Dw) c Λ) := by
@@ -193,23 +256,39 @@ theorem isBeta_betaH {n : ℕ} {Λ : GenLat E n}
   rw [dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+Simplify using `only [blockPoly, map_mul, MvPolynomial.map_rename]`.
+-/
 theorem map_blockPoly {K K' : Type} [Field K] [Field K'] (f : K →+* K') {n m : ℕ} (P : MvPolynomial (LtN Dw n) K)
     (Q : MvPolynomial (LtN Dw m) K) :
     MvPolynomial.map f (blockPoly P Q) = blockPoly (MvPolynomial.map f P) (MvPolynomial.map f Q) := by
   simp only [blockPoly, map_mul, MvPolynomial.map_rename]
 
+/- English proof (translation)
+Take `⟨k, hk, e⟩` from `isOfFinOrder_iff_pow_eq_one.1 h`. Use `IsIntegral.of_pow hk ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, e, one_zpow]`. Conclude with `isIntegral_one`.
+-/
 theorem isIntegral_zpow {K : Type} [Field K] {ζ : K} (h : IsOfFinOrder ζ) (t : ℤ) : IsIntegral ℤ (ζ ^ t) := by
   obtain ⟨k, hk, e⟩ := isOfFinOrder_iff_pow_eq_one.1 h
   refine IsIntegral.of_pow hk ?_
   rw [← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, e, one_zpow]
   exact isIntegral_one
 
+/- English proof (translation)
+Take `@⟨@⟨@⟨⟨f⟩, _⟩, _⟩, _⟩` from `s`. Take `@⟨@⟨@⟨⟨g⟩, _⟩, _⟩, _⟩` from `t`. Take `rfl : f = g` from `funext h`. Both sides reduce to the same expression.
+-/
 theorem starRing_eq {R : Type} [CommRing R] (s t : StarRing R) (h : ∀ a, s.star a = t.star a) : s = t := by
   obtain @⟨@⟨@⟨⟨f⟩, _⟩, _⟩, _⟩ := s
   obtain @⟨@⟨@⟨⟨g⟩, _⟩, _⟩, _⟩ := t
   obtain rfl : f = g := funext h
   rfl
 
+/- English proof (translation)
+Establish `hM : 0 < l.M` using `by have := l.three_le; omega`. Establish `h0 : zetaM c ≠ 0` using `(LevelPairing.zetaM_prim c).ne_zero hM.ne'`. Establish `h1 : ∀ y : Fin m → Dw.La, zetaM c ^ pairL (l` using `l) (Fin.append x0 y) (fun b => levRep (q b)) = zetaM c ^ pairL (l := l) x0 (fun b => levRep (q (Fin.castAdd m b))) * zetaM c ^ pairL (l := l) y (fun b => levRep (q (Fin.natAdd n b))) := fun y => by`. Rewrite using `[← zpow_add₀ h0]`. Use `congr 1`.
+
+Simplify using `[pairL, Fin.sum_univ_add]`. Establish `h2` using `congrArg d.eF (sum_new_columns d hd x (fun b => q (Fin.natAdd n b)))`. Rewrite `h2` using `[apply_ite d.eF, map_natCast, map_zero]`. Unfold `blockDat`. Use `Eq.trans ?_ (congrArg (fun t => d.eF ζ * (d.w x0 (fun i => q (Fin.castAdd m i)) * t)) (h2.trans (by congr)))` and prove the remaining obligations.
+
+Simplify using `only [h1, hφ, DeltaDat.w, ← map_mul, ← map_sum]`. Use `congr 1`. Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x' _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_data [Fintype (ConjQ Dw l)] {n m : ℕ} (d : DeltaDat Xo c n) (hd : d.IsLev)
     (φ' : (Fin (n + m) → LevQ Dw d.l₂) → c.F) (ζ : c.F)
     (hφ : ∀ q : Fin (n + m) → LevQ Dw d.l₂, φ' q = ζ * d.φδ (fun b => q (Fin.castAdd m b)) *
@@ -240,6 +319,33 @@ theorem sum_data [Fintype (ConjQ Dw l)] {n m : ℕ} (d : DeltaDat Xo c n) (hd : 
   refine Finset.sum_congr rfl fun x' _ => ?_
   ring
 
+/- English proof (translation)
+Use `haveI := finite_conjQ Dw l`. Use `haveI := Fintype.ofFinite (ConjQ Dw l)`. Establish `hLaws` using `GlobalTheory.abelianSchemeLaws_all.1`. Establish `hM : 0 < l.M` using `by have := l.three_le; omega`. Establish `hfs` using `GlobalTheory.thetaRule_mem_sec hLaws hC E H Dw l Xo c nab hn a' m f hf`.
+
+Take `⟨hgs, Λ, N, x0, P', hU, hb, hT₂, hL₂, hx0, hP', hgr⟩` from `hg`. Take `⟨x, P, hP, hfr⟩` from `hf`. Establish `hdv : l.M ∣ d.l₂.M` using `hd.1.1`. Establish `hPL : P ∈ harmL c (unitLat E m) a'` using `(StdHarm.harmL_std c m a').ge hP`. Establish `hA : LatAdm l bad Λ` using `⟨hU, hb, trivAt_of_dvd hT₂ hdv⟩`.
+
+Establish `hA₂ : LatAdm d.l₂ bad Λ` using `⟨hU, hb, hT₂⟩`. Establish `hu₂ : (unitLat E m).LevOK N d.l₂.M` using `⟨hL₂.1, hL₂.2.1, by simpa [GenLat.Ln, unitLat] using Submodule.smul_le_right⟩`. Establish `hQ` using `((GlobalTheory.shortSeries_blockProduct hC E H Dw l Xo c nab hn bad n m Λ _ hA (Survey.BaseClassMove.latAdm_unit l bad m) N ⟨hL₂.1, hdv.trans hL₂.2.1, hL₂.2.2⟩ ⟨hu₂.1, hdv.trans hu₂.2.1, hu₂.2.2⟩).2 a a' P' P hP' hPL).1`. Take `⟨⟨hB, hBL⟩, hprod⟩` from `GlobalTheory.shortSeries_blockProduct hC E H Dw d.l₂ d.Xo₂ d.c₂ d.nab₂ hn₂ bad n m Λ _ hA₂ (Survey.BaseClassMove.latAdm_unit d.l₂ bad m) N hL₂ hu₂`. Establish `b₁` using `isBeta_betaH (hβ n Λ hU hb)`.
+
+Establish `b₂` using `isBeta_betaH (hβ _ _ hB.1 hB.2.1)`. Take `⟨ζ', hζ', eβ⟩` from `((BetaOfSum.blockBeta E H Dw l c bad).1 n m Λ _ hA (Survey.BaseClassMove.latAdm_unit l bad m) _ 1 _ b₁ (Survey.BaseClassMove.isBeta_unit c m)).1 b₂`. Establish `hadm` using `fun x' : Fin m → ConjQ Dw l => admissibleColumns_append hV x0 (fun b => qRep (x' b)) hx0`. Use `choose F hFs hFr using fun x' : Fin m → ConjQ Dw l => (hT (blockLat Λ (unitLat E m)) N _ _ hB.1 hB.2.1 hB.2.2 hBL (hadm x') hQ).2`. Establish `hζ0 : ζ ≠ 0` using `hζ.isUnit.ne_zero`.
+
+Set `cf : (Fin m → ConjQ Dw l) → c.F` to `fun x' => zetaM c ^ (-pairL (l := l) (fun b => qRep (x' b)) (fun b => (d.pd : 𝓞 E) • x b))`. Establish `hcf : ∀ x', IsIntegral ℤ (ζ' * ζ⁻¹ * cf x')` using `fun x' => ((by simpa using isIntegral_zpow hζ' 1 : IsIntegral ℤ ζ').mul (by simpa using isIntegral_zpow hζ (-1) : IsIntegral ℤ ζ⁻¹)).mul (isIntegral_zpow (isOfFinOrder_iff_pow_eq_one.2 ⟨l.M, hM, (LevelPairing.zetaM_prim c).pow_eq_one⟩) _)`. Establish `main : g * f = ∑ x', (ζ' * ζ⁻¹ * cf x') • F x'`. Use `ClassSumUnique.sec_eq_of_geometric (sec_mul Xo c a a' n m hgs hfs) (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hFs i)) fun k _ _ _ y => ?_` and prove the remaining obligations. Use `letI iA : Algebra d.c₂.F k := ((algebraMap c.F k).comp (d.eF.symm : d.c₂.F →+* c.F)).toAlgebra`.
+
+Establish `hk : ∀ t : c.F, algebraMap d.c₂.F k (d.eF t) = algebraMap c.F k t` using `fun t => by show algebraMap c.F k (d.eF.symm (d.eF t)) = _`. Rewrite using `[AlgEquiv.symm_apply_apply]`. Take `⟨y₂, hy⟩` from `hd.2.2.2.2.2.2.1 k hk y`. Take `⟨v₁, hv₁, e₁⟩` from `hgr k hk y y₂ hy`. Use `choose u hu eu using fun x' => @hFr x' k _ _ _ iA hk y y₂ hy`.
+
+Establish `hP₁` using `((PlaceInt.eF_transfer E H Dw l Xo c n d Λ).2.1 a P' hP').1`. Establish `hP₂ : MvPolynomial.map (d.eF : c.F →+* d.c₂.F) P ∈ harmL d.c₂ (unitLat E m) a'` using `((PlaceInt.eF_transfer E H Dw l Xo c m (withCoeff d fun _ => 0) (unitLat E m)).2.1 a' P hPL).1`. Take `⟨v₂, hv₂, -⟩` from `(GlobalTheory.shortThetaValue_existsUnique_natural hLaws hC E H Dw d.l₂ d.Xo₂ d.c₂ d.nab₂ hn₂ m (unitLat E m) N (Survey.BaseClassMove.latAdm_unit d.l₂ bad m).1 (Survey.BaseClassMove.latAdm_unit d.l₂ bad m).2.2 hu₂ a' _ hP₂.1 (fun q : Fin m → LevQ Dw d.l₂ => if q = fun b => Submod …`. Establish `e₂ : v₂ = evR Xo c f y` using `GlobalTheory.T.standardCover_shortValue_eq_thetaValue hC E H Dw l Xo c nab n d hd hn hn₂ m N a' x P _ hu₂ hP (fun b => (eq_mk_iff d hd (x b) _).1 rfl) k hk y y₂ hy v₂ _ hv₂ ((GlobalTheory.thetaRule_exists_and_eval hC E H Dw l Xo c nab hn a' m x P hP).2 f hfr k y)`. Establish `n₁ : d.eF (betaH (Dw` using `Dw) c Λ) ≠ 0 := (map_ne_zero _).2 b₁.1`.
+
+Establish `n₂ : d.eF (betaH (Dw` using `Dw) c (blockLat Λ (unitLat E m))) ≠ 0 := (map_ne_zero _).2 b₂.1`. Take `⟨hQ₂, hval⟩` from `hprod a a' _ _ hP₁ hP₂`. Establish `hv` using `(hval _ _ k y₂ _ _ _ ((Survey.BaseClassMove.shortValAt_beta _ _ _ _ _ _ n₁ _ _ _ _).1 hv₁) hv₂).2 rfl`. Establish `hlin` using `shortVal_sum hC hn₂ hB.1 hB.2.2 hBL hQ₂ (fun x' => d.eF (cf x')) (fun x' q => d.eF (zetaM c ^ pairL (l := l) (Fin.append x0 fun b => qRep (x' b)) (fun b => levRep (q b)) * φ' q)) _ (d.eF ζ) (sum_data d hd φ' ζ hφ x0 x) 1 y₂ _ (fun x' => algebraMap d.c₂.F k (d.eF (betaH (Dw := Dw) …`. Rewrite using `[← map_blockPoly]`.
+
+Conclude with `(Survey.BaseClassMove.shortValAt_beta _ _ _ _ _ _ n₂ _ _ _ _).1 (hu x'))`. Simplify using `only [hk] at hlin`. Set `L` to `evalL (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) y`. Establish `hL : ∀ f, L f = evR Xo c f y` using `fun _ => rfl`. Establish `hm : evR Xo c (g * f) y = evR Xo c g y * evR Xo c f y` using `evalAt_mul _ _ g f y`.
+
+Establish `eu' : ∀ x', evR Xo c (F x') y = evR d.Xo₂ d.c₂ d.cδ y₂ * u x'` using `eu`. Rewrite using `[hm, ← hL (∑ x', _), map_sum, e₁, ← e₂]`. Simplify using `only [map_smul]`. Simplify using `only [hL, eu', Algebra.smul_def]`. Establish `n₃ : algebraMap c.F k (betaH (Dw` using `Dw) c Λ) ≠ 0 := (map_ne_zero _).2 b₁.1`.
+
+Establish `n₄ : algebraMap c.F k ζ ≠ 0` using `(map_ne_zero _).2 hζ0`. Use `mul_left_cancel₀ (mul_ne_zero n₄ n₃) ?_` and prove the remaining obligations. Establish `e₃ : ∀ x', algebraMap c.F k ζ * algebraMap c.F k (betaH (Dw` using `Dw) c Λ) * (algebraMap c.F k (ζ' * ζ⁻¹ * cf x') * (evR d.Xo₂ d.c₂ d.cδ y₂ * u x')) = evR d.Xo₂ d.c₂ d.cδ y₂ * (algebraMap c.F k (cf x') * (algebraMap c.F k (betaH (Dw := Dw) c (blockLat Λ (unitLat E m))) * u x')) := by`. Introduce `x'`. Rewrite using `[eβ]`.
+
+Simplify using `only [map_mul, map_inv₀, map_one]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_congr rfl fun x' _ => e₃ x']`. Rewrite using `[← Finset.mul_sum, hlin]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[main]`. Use `Submodule.sum_mem _ fun x' _ => ?_` and prove the remaining obligations. Conclude with `(Submodule.span (𝓞 c.F) _).smul_mem (⟨_, hcf x'⟩ : 𝓞 c.F) (Submodule.subset_span ⟨hFs x', _, N, _, _, hB.1, hB.2.1, hB.2.2, hBL, hadm x', hQ, hFr x'⟩)`.
+-/
 theorem mul_mem_span (hC : ChartIndepSt2) [StarRing (𝓞 E)] {nab : NabV Xo c} (hn : IsNab Xo c nab) {n m : ℕ}
     (d : DeltaDat Xo c n) (hd : d.IsLev) (hn₂ : IsNab d.Xo₂ d.c₂ d.nab₂) (φ' : (Fin (n + m) → LevQ Dw d.l₂) → c.F)
     (ζ : c.F) (hζ : IsOfFinOrder ζ)
@@ -350,6 +456,23 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Datum Level Moduli Coeff SABM
 open GlobalTheory.FormTies
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `hC D T h j hj hS h1 hA w wL hr hV g hg f hf`. Take `⟨s, hn⟩` from `h.nabPin j hj`. Take `⟨s₂, hn₂⟩` from `hS.dNab j hj w.n`. Take `rfl : s = s₂` from `starRing_eq _ _ fun a => (hn.1 a).trans (hn₂.1 a).symm`. Establish `hpq : (T.Q.Dw j).p + (T.Q.Dw j).q = D.R.r`.
+
+Take `⟨hp, hq, -⟩` from `h.pins.2.2.2 j hj`. Establish `h1` using `hj.1`. Establish `h2` using `hj.2`. Establish `h3` using `D.R.m_add_three_le_k`. Rewrite using `[hp, hq]`.
+
+Simplify using `only [Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers. Establish `hr1 : 1 ≤ D.R.r`. Establish `h3` using `D.R.m_add_three_le_k`. Simplify using `only [Ranks.r]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hd` using `hS.dLev j hj w.n`. Distinguish the cases in `hpt : ∃ (k : Type) (_ : Field k) (_ : IsAlgClosed k) (_ : Algebra T.Q.c.F k), Nonempty (FrPt (T.Q.Xo j) T.Q.c k)`. Use `swap`. Establish `e : g * f = 0` using `GlobalTheory.ClassSumUnique.sec_eq_of_geometric (sec_mul _ _ _ _ _ _ hg.1 (GlobalTheory.thetaRule_mem_sec GlobalTheory.abelianSchemeLaws_all.1 hC _ _ _ _ _ _ _ hn _ _ f hf)) (Submodule.zero_mem _) fun k _ _ _ y => absurd ⟨k, _, ‹_›, _, ⟨y⟩⟩ hpt`.
+
+Rewrite using `[e]`. Conclude with `Submodule.zero_mem _`. Take `⟨k, _, _, _, ⟨y⟩⟩` from `hpt`. Take `⟨φ', e⟩` from `h1.eq_withCoeff w.n (w.n + wL.n)`. Take `⟨φ₀, e₀⟩` from `h1 w.n`.
+
+Establish `hA' : (T.dδ j w.n).l₂.A = 1` using `by rw [e₀]; exact hA`. Take `⟨ph, ψ, x₀, -, hp, ht⟩` from `hS.dPhi j hj w.n hr`. Establish `h2` using `hS.dPhi j hj (w.n + wL.n) (hr.trans (Nat.le_add_right _ _))`. Establish `h3` using `hS.shTot j hj _ (w.n + wL.n) (dom_wtA (WeightAlgebra.wadd w wL))`. Express the relevant statement in the definitionally equal form `g * f ∈ Submodule.span (𝓞 T.Q.c.F) (shortGen (T.Q.Xo j) T.Q.c (T.nab j) (badN D) D.R.nV (wtA (WeightAlgebra.wadd w wL)) (w.n + wL.n) (T.dδ j (w.n + wL.n)))`.
+
+Rewrite `h2`, `h3`, the goal using `[e]`. Rewrite `h3`, the goal using `[wtA_wadd]`. Take `⟨ph', ψ', x₀', -, hp', ht'⟩` from `h2`. Use `letI : Algebra (T.dδ j w.n).c₂.F k := ((algebraMap T.Q.c.F k).comp ((T.dδ j w.n).eF.symm : (T.dδ j w.n).c₂.F →+* T.Q.c.F)).toAlgebra`. Take `⟨y₂, -⟩` from `hd.2.2.2.2.2.2.1 k (fun t => by show algebraMap T.Q.c.F k ((T.dδ j w.n).eF.symm ((T.dδ j w.n).eF t)) = _`.
+
+Rewrite using `[AlgEquiv.symm_apply_apply]) y`. Take `rfl : ψ = ψ'` from `GlobalTheory.CoverCharacter.psi_unique _ _ _ _ _ _ _ (T.dδ j w.n) (hpq ▸ hr1) hd hA' k ⟨y₂⟩ ψ ψ' ht ht'`. Take `⟨ζ, hζ, hφ⟩` from `GlobalTheory.MoreColumns.coeff_more_columns _ _ _ _ _ _ _ _ (T.dδ j w.n) φ' hd (hpq ▸ hr) ψ ph x₀ ph' x₀' hp hp'`. Conclude with `mul_mem_span hC hn (T.dδ j w.n) hd hn₂ φ' ζ hζ hφ (badN D) D.R.nV hV (fun k Λ => hS.beta j hj k (h.kPsi j hj) Λ) _ _ h3 hg hf`.
+-/
 theorem short_mul_theta_mem_span : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (T : Top D) (_h : LawsP T) (j : ℕ) (_hj : InR D j), LawsSh T → OneCover T j → (T.dδ j 0).l₂.A = 1 → ∀ (w wL : WeightFamilies.Wt D j), D.R.r ≤ w.n → (w.n = D.R.nV → wL.n = 0) → ∀ g ∈ T.sh j w, ∀ f ∈ T.th j wL, g * f ∈ Submodule.span (𝓞 T.Q.c.F) (T.sh j (WeightAlgebra.wadd w wL)) := by
   intro hC D T h j hj hS h1 hA w wL hr hV g hg f hf
   obtain ⟨s, hn⟩ := h.nabPin j hj

@@ -29,13 +29,22 @@ def primeMap (τ : E ≃+* E) (P : HeightOneSpectrum (𝓞 E)) : HeightOneSpectr
     rw [Submodule.mem_bot, map_eq_zero_iff _ (RingOfIntegers.mapRingEquiv τ).injective] at h2
     rw [Submodule.mem_bot]; exact h2
 
+/- English proof (translation)
+The claim follows from `Ideal.mem_comap`.
+-/
 theorem mem_primeMap (τ : E ≃+* E) (P : HeightOneSpectrum (𝓞 E)) (a : 𝓞 E) :
     a ∈ (primeMap τ P).asIdeal ↔ RingOfIntegers.mapRingEquiv τ.symm a ∈ P.asIdeal :=
   Ideal.mem_comap
 
+/- English proof (translation)
+Simplify using `[ord, FractionalIdeal.count_zero]`.
+-/
 theorem ord_zero (P : HeightOneSpectrum (𝓞 E)) : ord P (0 : E) = 0 := by
   simp [ord, FractionalIdeal.count_zero]
 
+/- English proof (translation)
+Unfold `ord`. Rewrite using `[← FractionalIdeal.spanSingleton_mul_spanSingleton]`. Conclude with `FractionalIdeal.count_mul E P (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hx) (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hy)`.
+-/
 theorem ord_mul (P : HeightOneSpectrum (𝓞 E)) {x y : E} (hx : x ≠ 0) (hy : y ≠ 0) :
     ord P (x * y) = ord P x + ord P y := by
   unfold ord
@@ -43,17 +52,31 @@ theorem ord_mul (P : HeightOneSpectrum (𝓞 E)) {x y : E} (hx : x ≠ 0) (hy : 
   exact FractionalIdeal.count_mul E P (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hx)
     (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hy)
 
+/- English proof (translation)
+Unfold `ord`. Rewrite using `[← FractionalIdeal.spanSingleton_inv, FractionalIdeal.count_inv]`.
+-/
 theorem ord_inv (P : HeightOneSpectrum (𝓞 E)) (x : E) : ord P x⁻¹ = - ord P x := by
   unfold ord
   rw [← FractionalIdeal.spanSingleton_inv, FractionalIdeal.count_inv]
 
+/- English proof (translation)
+Rewrite using `[div_eq_mul_inv, ord_mul P hx (inv_ne_zero hy), ord_inv, sub_eq_add_neg]`.
+-/
 theorem ord_div (P : HeightOneSpectrum (𝓞 E)) {x y : E} (hx : x ≠ 0) (hy : y ≠ 0) :
     ord P (x / y) = ord P x - ord P y := by
   rw [div_eq_mul_inv, ord_mul P hx (inv_ne_zero hy), ord_inv, sub_eq_add_neg]
 
+/- English proof (translation)
+Simplify using `[ord, FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]`.
+-/
 theorem ord_one (P : HeightOneSpectrum (𝓞 E)) : ord P (1 : E) = 0 := by
   simp [ord, FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]
 
+/- English proof (translation)
+Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using `[ord_zero]`. Conclude with `GlobalTheory.OrdTransport.count_spanSingleton_ringEquiv (𝓞 E) E (RingOfIntegers.mapRingEquiv τ) τ (fun a => rfl) P (primeMap τ P) (fun a => by`. Rewrite using `[mem_primeMap]`. Establish `: RingOfIntegers.mapRingEquiv τ.symm (RingOfIntegers.mapRingEquiv τ a) = a` using `RingOfIntegers.ext (by change τ.symm (τ (a : E)) = (a : E); exact τ.symm_apply_apply _)`.
+
+Rewrite using `[this]) x hx`.
+-/
 theorem ord_primeMap (τ : E ≃+* E) (P : HeightOneSpectrum (𝓞 E)) (x : E) :
     ord (primeMap τ P) (τ x) = ord P x := by
   rcases eq_or_ne x 0 with rfl | hx
@@ -66,6 +89,11 @@ theorem ord_primeMap (τ : E ≃+* E) (P : HeightOneSpectrum (𝓞 E)) (x : E) :
         RingOfIntegers.ext (by change τ.symm (τ (a : E)) = (a : E); exact τ.symm_apply_apply _)
       rw [this]) x hx
 
+/- English proof (translation)
+Use extensionality with `a`. Rewrite using `[mem_primeMap, mem_primeMap]`. Establish `: RingOfIntegers.mapRingEquiv τ.symm (RingOfIntegers.mapRingEquiv τ.symm a) = a`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `τ.symm (τ.symm (a : E)) = (a : E)`.
+
+Rewrite using `[RingEquiv.symm_apply_eq, RingEquiv.symm_apply_eq, hτ]`. Rewrite using `[this]`.
+-/
 theorem primeMap_primeMap (τ : E ≃+* E) (hτ : ∀ x, τ (τ x) = x) (P : HeightOneSpectrum (𝓞 E)) :
     primeMap τ (primeMap τ P) = P := by
   ext a

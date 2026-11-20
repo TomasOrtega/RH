@@ -10,6 +10,17 @@ namespace ReciprocityTheory.ChartRestriction.TR.Weyl
 
 open ReciprocityTheory.ChartRestriction.DS.S7
 
+/- English proof (translation)
+Introduce `N Λ _ T k t hk`. Take `⟨σ, hσk, hU, hK⟩` from `ReciprocityTheory.ChartRestriction.DS.HW.KType.exists_rep T`. Take `⟨lam, hlam, e, he⟩` from `ReciprocityTheory.ChartRestriction.DS.HW.model_equiv N (fun a => (Λ a : ℝ)) T.V σ ⊤ hU hK`. Establish `hw : lam.w = Λ`. Use function extensionality and compare the values at `a`.
+
+Conclude with `(hlam a).symm` after adjusting the coercions. Set `g : GL (Fin N) ℂ` to `ReciprocityTheory.ChartRestriction.DS.HW.torepUnit _ k.2`. Establish `hg : (g : Matrix (Fin N) (Fin N) ℂ) = Matrix.diagonal t` using `hk`. Take `⟨f, hf, htr⟩` from `hS N lam g t hg`. Set `e' : T.V ≃ₗ[ℂ] Formalism.BasicNotions.nablaSq ℂ N lam` to `Submodule.topEquiv.symm.trans e`.
+
+Establish `hconj : f = e'.conj ((T.op k : T.V →L[ℂ] T.V) : T.V →ₗ[ℂ] T.V)`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hz` using `he g k.2 (e.symm y)`.
+
+Rewrite `hz` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[hf y, ← hz, ← hσk k]`. Both sides reduce to the same expression. Establish `hk' : kChar T k = LinearMap.trace ℂ _ f`. Rewrite using `[hconj, LinearMap.trace_conj']`.
+
+Both sides reduce to the same expression. Rewrite using `[hk', htr, hw]`.
+-/
 theorem uChar_of (hS : SqCharStatement) : UCharStatement := by
   intro N Λ _ T k t hk
   obtain ⟨σ, hσk, hU, hK⟩ := ReciprocityTheory.ChartRestriction.DS.HW.KType.exists_rep T

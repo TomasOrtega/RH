@@ -12,6 +12,11 @@ namespace GlobalTheory.ExpAtTypePrimes
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.G NumberField IsDedekindDomain GlobalTheory.IndefiniteRowSideFullHecke.PeriodLowerBounds
 
+/- English proof (translation)
+Unfold `ColumnChain.col`. Generalize the expression as in `R.m = n`. Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih`.
+
+Use function extensionality and compare the values at `j`. Simplify using `only [Formalism.ThetaLiftIndependence.chainOpM, Formalism.ThetaLiftIndependence.kerOpM, ih, Pi.smul_apply, map_smul, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => smul_comm _ _ _`.
+-/
 theorem col_smul {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R} (C : ColumnChain R ι hc) (a : ℂ)
     (φ : C.cls 0 → C.Y 0 → ℂ) : C.col (a • φ) = a • C.col φ := by
   unfold ColumnChain.col
@@ -23,6 +28,9 @@ theorem col_smul {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R} (C
     simp only [Formalism.ThetaLiftIndependence.chainOpM, Formalism.ThetaLiftIndependence.kerOpM, ih, Pi.smul_apply, map_smul, Finset.smul_sum]
     exact Finset.sum_congr rfl fun i _ => smul_comm _ _ _
 
+/- English proof (translation)
+Distinguish the cases in `hμ : μ = D.what₂.mu0`. Substitute `hμ` using the available equality. Simplify using `only [D.perCol_base_eq_PtilCol, PeriodMap.PtilCol, PeriodMap.Ptil, map_smul, Submodule.coe_smul, col_smul, LinearMap.smul_apply, smul_eq_mul]`. Simplify using `only [D.perCol_tie u μ hμ, PeriodMap.PtilCol, PeriodMap.Ptil, map_smul, Submodule.coe_smul, col_smul, LinearMap.smul_apply, smul_eq_mul]`.
+-/
 theorem perCol_smul (D : D7) (u : D.what₂.Word) (μ : D.what₂.Tup) (a : ℂ) (φ : D.what₂.Mu u) (F : D.what₂.Amb μ) :
     D.what₂.perCol u μ (a • φ) F = a * D.what₂.perCol u μ φ F := by
   by_cases hμ : μ = D.what₂.mu0
@@ -32,11 +40,17 @@ theorem perCol_smul (D : D7) (u : D.what₂.Word) (μ : D.what₂.Tup) (a : ℂ)
   · simp only [D.perCol_tie u μ hμ, PeriodMap.PtilCol, PeriodMap.Ptil, map_smul, Submodule.coe_smul, col_smul,
       LinearMap.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+The claim follows from `let ⟨y, hy, hv⟩ := h ⟨y, hy, hv.imp id fun h1 => hs.trans h1⟩`.
+-/
 theorem perGe_mono {D : D7} {u : D.what₂.Word} {μ : D.what₂.Tup} {w : D.what₂.places.Pl} {φ : (D.div.Nu u).V}
     {F : D.what₂.Amb μ} {s s' : ℝ} (hs : s' ≤ s) (h : PerGe_vw D u μ w φ F s) : PerGe_vw D u μ w φ F s' :=
   let ⟨y, hy, hv⟩ := h
   ⟨y, hy, hv.imp id fun h1 => hs.trans h1⟩
 
+/- English proof (translation)
+Establish `h : w.valuation K (algebraMap (𝓞 K) K a) = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `HeightOneSpectrum.intValuation_eq_one_iff.2 ha`. Simplify using `[vAdd, h]`.
+-/
 theorem vAdd_of_notMem {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) {a : 𝓞 K}
     (ha : a ∉ w.asIdeal) : vAdd w (algebraMap (𝓞 K) K a) = 0 := by
   have h : w.valuation K (algebraMap (𝓞 K) K a) = 1 := by
@@ -44,6 +58,17 @@ theorem vAdd_of_notMem {K : Type} [Field K] [NumberField K] (w : HeightOneSpectr
     exact HeightOneSpectrum.intValuation_eq_one_iff.2 ha
   simp [vAdd, h]
 
+/- English proof (translation)
+Take `⟨y, hy, hv⟩` from `h`. Use `set a' : D.what₂.LL := algebraMap (𝓞 D.what₂.LL) D.what₂.LL a with ha'`. Establish `ha0 : a' ≠ 0`. Introduce `h0`. Establish `: a = 0` using `(FaithfulSMul.algebraMap_injective (𝓞 D.what₂.LL) D.what₂.LL) (by rw [map_zero]; exact h0)`.
+
+Conclude with `ha (this ▸ Ideal.zero_mem _)`. Establish `e : a • φ = a' • φ` using `(algebraMap_smul D.what₂.LL a φ).symm`. Rewrite `hy` using `[e, LinearMap.map_smulₛₗ, perCol_smul]`. Establish `hc : D.what₂.embLL a' ≠ 0` using `(map_ne_zero _).2 ha0`. Use `⟨y / a', ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_div₀, hy]`. Clear the denominators using the available nonvanishing facts. Distinguish the cases in `hy0 : y = 0`. Use `left`. Simplify using `[hy0]`.
+
+Use `right`. Establish `h1` using `hv.resolve_left hy0`. Establish `h2 : vAdd (D.plEq w) y = vAdd (D.plEq w) (y / a')`. Establish `h3 : y = a' * (y / a')` using `by field_simp`. Establish `h4` using `WeilJacquetShalikaLaw.vAdd_mul' (D.plEq w) ha0 (div_ne_zero hy0 ha0)`.
+
+Rewrite `h4` using `[← h3, ha', vAdd_of_notMem _ ha, zero_add]`. Conclude with `h4`. Rewrite using `[← h2]` and apply the resulting hypothesis.
+-/
 theorem perGe_of_smul {D : D7} {u : D.what₂.Word} {μ : D.what₂.Tup} {w : D.what₂.places.Pl} {φ : (D.div.Nu u).V}
     {F : D.what₂.Amb μ} {s : ℝ} {a : 𝓞 D.what₂.LL} (ha : a ∉ (D.plEq w).asIdeal)
     (h : PerGe_vw D u μ w (a • φ) F s) : PerGe_vw D u μ w φ F s := by
@@ -69,21 +94,33 @@ theorem perGe_of_smul {D : D7} {u : D.what₂.Word} {μ : D.what₂.Tup} {w : D.
         exact h4
       rwa [← h2]
 
+/- English proof (translation)
+Introduce `i w hw u μ hμ φ hφ F hF` and use `perGe_mono (mul_le_mul_of_nonneg_left (hE i w hw u) (Nat.cast_nonneg _)) (hP i w hw u (hw ▸ T_ne_g X u i) μ hμ φ hφ F hF)`.
+-/
 theorem linkRam_of {D : D7} {L : SizeData₂ D} {X : ErrX D} {C1 : ℝ} (hE : ExpLe L X C1) (hP : PeriodBound L X C1) :
     LinkRam L := fun i w hw u μ hμ φ hφ F hF =>
   perGe_mono (mul_le_mul_of_nonneg_left (hE i w hw u) (Nat.cast_nonneg _))
     (hP i w hw u (hw ▸ T_ne_g X u i) μ hμ φ hφ F hF)
 
+/- English proof (translation)
+Introduce `i w hw u φ hφ F hF`. Take `⟨a, ha, hm⟩` from `hN.1 u w (hw ▸ T_ne_g X u i) φ hφ`. Rewrite `hm` using `[pow_zero, Ideal.one_eq_top, Submodule.top_smul]`. Conclude with `perGe_of_smul ha (hR i w hw u _ (WeilJacquetShalikaLaw.used_muAt D w) _ hm F hF)`.
+-/
 theorem linkNu_of {D : D7} {L : SizeData₂ D} (X : ErrX D) (hR : LinkRam L) (hN : DV.NuDef D L) : LinkNu L := by
   intro i w hw u φ hφ F hF
   obtain ⟨a, ha, hm⟩ := hN.1 u w (hw ▸ T_ne_g X u i) φ hφ
   rw [pow_zero, Ideal.one_eq_top, Submodule.top_smul] at hm
   exact perGe_of_smul ha (hR i w hw u _ (WeilJacquetShalikaLaw.used_muAt D w) _ hm F hF)
 
+/- English proof (translation)
+Introduce `_ _ X _ _ _ _ hF hE hC` and use `have h1 := expLe_of hF hE hC ⟨h1, fun hP => ⟨linkRam_of h1 hP, linkNu_of X (linkRam_of h1 hP)⟩⟩`.
+-/
 theorem stmt : GlobalTheory.IndefiniteRowSideFullHecke.PeriodLowerBounds.Stmt := fun _ _ X _ _ _ _ hF hE hC =>
   have h1 := expLe_of hF hE hC
   ⟨h1, fun hP => ⟨linkRam_of h1 hP, linkNu_of X (linkRam_of h1 hP)⟩⟩
 
+/- English proof (translation)
+Use `forall_congr' fun i => forall_congr' fun w => forall_congr' fun _ => forall_congr' fun u => forall_congr' fun _ => forall_congr' fun μ => forall_congr' fun _ => forall_congr' fun φ => forall_congr' fun _ => forall_congr' fun F => forall_congr' fun _ => exists_congr fun y => and_c …` and prove the remaining obligations. Establish `he : (0 : ℝ) < (D.what₂.places.ramIdx w : ℝ)` using `by exact_mod_cast D.what₂.places.ramIdx_pos w`. Unfold `LiftErrorLocal.vG`. Rewrite using `[le_div_iff₀ he, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem periodBound_iff {D : D7} (L : SizeData₂ D) (X : ErrX D) (C1 : ℝ) :
     PeriodBound L X C1 ↔ ∀ (i : Fin 2) (w : LiftErrorLocal.Pl D), LiftErrorLocal.Over D i w → ∀ u : D.what₂.Word,
       D.what₂.places.resChar w ≠ (D.mem u).A.T → ∀ μ : D.what₂.Tup, DV.Used D μ → GlobalTheory.IndefiniteRowSideFullHecke.ColumnAvoidanceConditions.Bound D L X C1 i w u μ := by
@@ -95,6 +132,9 @@ theorem periodBound_iff {D : D7} (L : SizeData₂ D) (X : ErrX D) (C1 : ℝ) :
   rw [le_div_iff₀ he, mul_comm]
   rfl
 
+/- English proof (translation)
+The claim follows from `stmtFam_of stmt Fm C1`.
+-/
 theorem stmtFam {eps : ℝ} (Fm : FamP eps) (C1 : ℝ) : FamilyErrorExponentBound Fm C1 := stmtFam_of stmt Fm C1
 
 end GlobalTheory.ExpAtTypePrimes

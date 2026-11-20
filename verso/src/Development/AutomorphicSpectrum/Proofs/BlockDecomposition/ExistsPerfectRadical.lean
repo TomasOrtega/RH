@@ -2,6 +2,21 @@ import Mathlib
 
 namespace GlobalTheory.CompanionTheory.PerfClos
 
+/- English proof (translation)
+Distinguish the cases in `htop : I.radical = ⊤`. Use `haveI : Subsingleton (S ⧸ I.radical) := Ideal.Quotient.subsingleton_iff.mpr htop`. Use `⟨S ⧸ I.radical, inferInstance, Ideal.Quotient.mk I.radical, Subsingleton.elim _ _, ⟨fun a b _ => Subsingleton.elim a b, fun b => ⟨b, Subsingleton.elim _ _⟩⟩, fun t => ?_, fun x => Ideal.Quotient.eq_zero_iff_mem⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective t`. Conclude with `⟨0, x, by simp⟩`.
+
+Use `haveI : Nontrivial (S ⧸ I.radical) := Ideal.Quotient.nontrivial_iff.mpr htop`. Establish `hpQ : ((p : ℕ) : S ⧸ I.radical) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk I.radical), hp, map_zero]`. Use `haveI : CharP (S ⧸ I.radical) p := by first`. Consider the case `exact (CharP.charP_iff_prime_eq_zero (Fact.out : p.Prime)).mpr hpQ`.
+
+Consider the case `exact ringChar.of_eq (CharP.ringChar_of_prime_eq_zero (Fact.out : p.Prime) hpQ)`. Use `haveI : ExpChar (S ⧸ I.radical) p := ExpChar.prime (Fact.out : p.Prime)`. Use `haveI : IsReduced (S ⧸ I.radical) := (Ideal.isRadical_iff_quotient_reduced _).mp (Ideal.radical_isRadical I)`. Use `⟨PerfectClosure (S ⧸ I.radical) p, inferInstance, (PerfectClosure.of (S ⧸ I.radical) p).comp (Ideal.Quotient.mk I.radical), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `CharP.cast_eq_zero _ p`.
+
+Use `first`. Consider the case `exact PerfectRing.bijective_frobenius (R := PerfectClosure (S ⧸ I.radical) p) (p := p)`. Consider the case `(convert PerfectRing.bijective_frobenius (R := PerfectClosure (S ⧸ I.radical) p) (p := p) using 1`. Use function extensionality and compare the values at `t`. Conclude with `(frobenius_def _ _ t).symm)`.
+
+Introduce `t`. Take `⟨n, y, hy⟩` from `IsPRadical.pow_mem (i := PerfectClosure.of (S ⧸ I.radical) p) (p := p) t`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `⟨n, x, hy.symm⟩`. Introduce `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hk : Ideal.Quotient.mk I.radical x ∈ RingHom.ker (PerfectClosure.of (S ⧸ I.radical) p)` using `h`. Take `⟨n, hn⟩` from `mem_pNilradical.mp (IsPRadical.ker_le (i := PerfectClosure.of (S ⧸ I.radical) p) (p := p) hk)`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp (IsReduced.eq_zero _ ⟨_, hn⟩)`.
+
+Introduce `h`. Simplify using `[Ideal.Quotient.eq_zero_iff_mem.mpr h]`.
+-/
 theorem exists_perfect_radical (p : ℕ) [Fact p.Prime] (S : Type) [CommRing S] (I : Ideal S)
     (hp : (p : S) = 0) :
     ∃ (T : Type) (_ : CommRing T) (i : S →+* T), (p : T) = 0 ∧

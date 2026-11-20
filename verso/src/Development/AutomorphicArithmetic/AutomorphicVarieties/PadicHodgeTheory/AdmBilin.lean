@@ -17,9 +17,15 @@ variable {G Q : Type} (F : Type) {B : Type} [Field Q] [Field F] [CommRing B] [Al
 private def sig (ρ : G → V →ₗ[Q] V) (g : G) : B ⊗[Q] V →ₗ[Q] B ⊗[Q] V :=
   TensorProduct.map (a g).toLinearMap (ρ g)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem sig_tmul (ρ : G → V →ₗ[Q] V) (g : G) (b : B) (v : V) :
     sig a ρ g (b ⊗ₜ[Q] v) = a g b ⊗ₜ[Q] ρ g v := rfl
 
+/- English proof (translation)
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c v => simp [sig_tmul, TensorProduct.smul_tmul']`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+-/
 private theorem sig_smul (ρ : G → V →ₗ[Q] V) (g : G) (b : B) (w : B ⊗[Q] V) :
     sig a ρ g (b • w) = a g b • sig a ρ g w := by
   induction w using TensorProduct.induction_on with
@@ -33,6 +39,13 @@ private def DD (ρ : G → V →ₗ[Q] V) : Submodule F (B ⊗[Q] V) where
   add_mem' := fun hx hy g => by rw [map_add, hx g, hy g]
   smul_mem' := fun c x hx g => by rw [← algebraMap_smul B, sig_smul, ha, hx g]
 
+/- English proof (translation)
+Establish `hc : ∀ g w, TensorProduct.comm Q B V (sig a ρ g w) = TensorProduct.map (ρ g) (a g).toLinearMap (TensorProduct.comm Q B V w)`. Introduce `g w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c v => simp [sig_tmul]`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Set `e : ↥(DD F a ha ρ) ≃ₗ[Q] ↥D` to `{ toFun := fun x => ⟨TensorProduct.comm Q B V x, (hD _).2 fun g => by rw [← hc, x.2 g]⟩ invFun := fun y => ⟨(TensorProduct.comm Q B V).symm y, fun g => by`. Apply `(TensorProduct.comm Q B V).injective` to reduce the goal to its premises. Rewrite using `[hc, LinearEquiv.apply_symm_apply, (hD _).1 y.2 g]⟩`. Use the proof step `map_add' := fun x y => Subtype.ext (map_add _ _ _)`.
+
+Use the proof step `map_smul' := fun c x => Subtype.ext (map_smul (TensorProduct.comm Q B V) c _)`. Use `left_inv := fun x => Subtype.ext ((TensorProduct.comm Q B V).symm_apply_apply _)`. Use `right_inv := fun y => Subtype.ext ((TensorProduct.comm Q B V).apply_symm_apply _) }`. Rewrite using `[Module.finrank_mul_finrank, e.finrank_eq]`.
+-/
 private theorem finrank_swap (ρ : G → V →ₗ[Q] V) (D : Submodule Q (V ⊗[Q] B))
     (hD : ∀ x, x ∈ D ↔ ∀ g, TensorProduct.map (ρ g) (a g).toLinearMap x = x) :
     finrank Q ↥D = finrank Q F * finrank F ↥(DD F a ha ρ) := by
@@ -54,6 +67,21 @@ private theorem finrank_swap (ρ : G → V →ₗ[Q] V) (D : Submodule Q (V ⊗[
       right_inv := fun y => Subtype.ext ((TensorProduct.comm Q B V).apply_symm_apply _) }
   rw [Module.finrank_mul_finrank, e.finrank_eq]
 
+/- English proof (translation)
+Set `m : B ⊗[Q] V →ₗ[B] B ⊗[Q] V' →ₗ[B] B ⊗[Q] W` to `(TensorProduct.mk B (B ⊗[Q] V) (B ⊗[Q] V')).compr₂ ((TensorProduct.lift b).baseChange B ∘ₗ (AlgebraTensorModule.distribBaseChange Q B V V').symm.toLinearMap)`. Establish `hm : ∀ c c' v v', m (c ⊗ₜ v) (c' ⊗ₜ v') = (c * c') ⊗ₜ b v v'`. Introduce `c c' v v'`. Simplify using `[m]`. Establish `hG : ∀ g x y, sig a π g (m x y) = m (sig a ρ g x) (sig a ρ' g y)`.
+
+Introduce `g x y`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [map_add, LinearMap.add_apply, hx, hx']`. Consider the case `tmul c v`.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [map_add, hx, hx']`. Consider the case `tmul c' v' => simp only [sig_tmul, hm, map_mul, hb]`. Use `set S := Submodule.span B (DD F a ha π : Set (B ⊗[Q] W))`.
+
+Establish `key : ∀ x y, m x y ∈ S`. Introduce `x y`. Establish `h1 : Submodule.map₂ m (Submodule.span B (DD F a ha ρ : Set (B ⊗[Q] V))) (Submodule.span B (DD F a ha ρ' : Set (B ⊗[Q] V'))) ≤ S`. Rewrite using `[Submodule.map₂_span_span]`. Use `Submodule.span_mono ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, hx, y, hy, rfl⟩ g`. Rewrite using `[hG, hx g, hy g]`. Conclude with `h1 (Submodule.apply_mem_map₂ m (h ▸ Submodule.mem_top) (h' ▸ Submodule.mem_top))`. Use `GlobalTheory.RegularRing.eq_top_of_tmul _ fun c w => ?_` and prove the remaining obligations. Establish `hw : w ∈ Submodule.span Q (Set.range fun p : V × V' => b p.1 p.2)` using `hs ▸ Submodule.mem_top`.
+
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨p, rfl⟩` from `hx`. Use `key (c ⊗ₜ p.1) (1 ⊗ₜ p.2)` as an intermediate fact. Rewrite `this` using `[hm, mul_one]`. Then use the resulting hypothesis.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [tmul_add]`. Conclude with `S.add_mem hx hy`. Consider the case `smul q x _ hx => rw [tmul_smul, ← algebraMap_smul B]`. Conclude with `S.smul_mem _ hx`.
+-/
 private theorem span_bilin (ρ : G → V →ₗ[Q] V) (ρ' : G → V' →ₗ[Q] V') (π : G → W →ₗ[Q] W)
     (b : V →ₗ[Q] V' →ₗ[Q] W) (hb : ∀ g x y, b (ρ g x) (ρ' g y) = π g (b x y))
     (hs : Submodule.span Q (Set.range fun p : V × V' => b p.1 p.2) = ⊤)
@@ -102,6 +130,9 @@ variable [IsDomain B]
   (hu : ∀ b : B, b ≠ 0 → (∀ g, ∃ x : Q, a g b = algebraMap Q B x * b) → IsUnit b)
 
 include hf in
+/- English proof (translation)
+Establish `h1 : LinearIndependent F fun i => (d i : B ⊗[Q] V)` using `hd.map' (DD F a ha ρ).subtype (DD F a ha ρ).ker_subtype`. Rewrite using `[linearIndependent_iff_finset_linearIndependent]`. Introduce `s`. Conclude with `GlobalTheory.RegularRing.linearIndepOn_of_invariant (fun g b => a g b) (fun g => (sig a ρ g).toAddMonoidHom) (sig_smul a ρ) hf _ (fun g i => (d i).2 g) s (h1.linearIndepOn _)`.
+-/
 private theorem indepB (ρ : G → V →ₗ[Q] V) {ι : Type} (d : ι → ↥(DD F a ha ρ))
     (hd : LinearIndependent F d) : LinearIndependent B fun i => (d i : B ⊗[Q] V) := by
   have h1 : LinearIndependent F fun i => (d i : B ⊗[Q] V) :=
@@ -112,6 +143,11 @@ private theorem indepB (ρ : G → V →ₗ[Q] V) {ι : Type} (d : ι → ↥(DD
     (sig_smul a ρ) hf _ (fun g i => (d i).2 g) s (h1.linearIndepOn _)
 
 include hf in
+/- English proof (translation)
+Establish `hr : Module.rank F ↥(DD F a ha ρ) ≤ finrank Q V`. Use `rank_le fun s hs => ?_` and prove the remaining obligations. Simplify using `using LinearIndependent.fintype_card_le_finrank (indepB F a ha hf ρ _ hs)`. Use `haveI : Module.Finite F ↥(DD F a ha ρ) := by`. Rewrite using `[← Module.rank_lt_aleph0_iff]`.
+
+Conclude with `lt_of_le_of_lt hr Cardinal.natCast_lt_aleph0`. Conclude with `⟨inferInstance, finrank_le_of_rank_le hr⟩`.
+-/
 private theorem finite_le [FiniteDimensional Q V] (ρ : G → V →ₗ[Q] V) :
     Module.Finite F ↥(DD F a ha ρ) ∧ finrank F ↥(DD F a ha ρ) ≤ finrank Q V := by
   have hr : Module.rank F ↥(DD F a ha ρ) ≤ finrank Q V := by
@@ -123,6 +159,25 @@ private theorem finite_le [FiniteDimensional Q V] (ρ : G → V →ₗ[Q] V) :
   exact ⟨inferInstance, finrank_le_of_rank_le hr⟩
 
 include hu in
+/- English proof (translation)
+Set `v` to `Module.finBasis Q V`. Set `e` to `Algebra.TensorProduct.basis B v`. Set `A` to `e.toMatrix d`. Establish `hA : A.det ≠ 0`. Introduce `h0`.
+
+Take `⟨c, hc, hc0⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Apply `hc` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `Fintype.linearIndependent_iff.1 hi c ?_ i` and prove the remaining obligations. Apply `e.repr.injective` to reduce the goal to its premises.
+
+Use extensionality with `j`. Use `congrFun hc0 j` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, A, Basis.toMatrix_apply, Pi.zero_apply] at this`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, map_zero, Finsupp.zero_apply]`. Rewrite using `[← this]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Establish `hrep : ∀ g (w : B ⊗[Q] V) k, e.repr (sig a ρ g w) k = ∑ j, algebraMap Q B (v.repr (ρ g (v j)) k) * a g (e.repr w j)`. Introduce `g w k`. Use `conv_lhs => rw [← e.sum_repr w]`. Simplify using `only [map_sum, sig_smul, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Use `congr 1`. Simplify using `[e, sig_tmul, Algebra.algebraMap_eq_smul_one]`. Establish `hdet : IsUnit A.det`.
+
+Use `hu _ hA fun g => ?_` and prove the remaining obligations. Set `M : Matrix (Fin (finrank Q V)) (Fin (finrank Q V)) Q` to `fun k j => v.repr (ρ g (v j)) k`. Establish `h1 : A = (algebraMap Q B).mapMatrix M * (a g : B →+* B).mapMatrix A`. Use extensionality with `k i`. Rewrite using `[Matrix.mul_apply]`.
+
+Express the relevant statement in the definitionally equal form `e.repr (d i) k = _`. Use `conv_lhs => rw [← hd g i, hrep]`. Both sides reduce to the same expression. Establish `h2` using `congrArg Matrix.det h1`. Rewrite `h2` using `[Matrix.det_mul, ← RingHom.map_det, ← RingHom.map_det]`.
+
+Establish `h3 : M.det ≠ 0` using `fun h => hA (by rw [h2, h, map_zero, zero_mul])`. Use `⟨M.det⁻¹, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [h2]`. Rewrite using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ h3, map_one, one_mul]`. Both sides reduce to the same expression.
+
+Conclude with `((Basis.is_basis_iff_det e).2 hdet).2`.
+-/
 private theorem span_eq_top_of_invariant [FiniteDimensional Q V] (ρ : G → V →ₗ[Q] V)
     (d : Fin (finrank Q V) → B ⊗[Q] V) (hd : ∀ g i, sig a ρ g (d i) = d i)
     (hi : LinearIndependent B d) : Submodule.span B (Set.range d) = ⊤ := by
@@ -173,6 +228,13 @@ private theorem span_eq_top_of_invariant [FiniteDimensional Q V] (ρ : G → V �
   exact ((Basis.is_basis_iff_det e).2 hdet).2
 
 include hf hu in
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `finite_le F a ha hf ρ`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Set `e` to `Module.finBasisOfFinrankEq F _ h`. Rewrite using `[eq_top_iff, ← span_eq_top_of_invariant a hu ρ (fun i => e i) (fun g i => (e i).2 g) (indepB F a ha hf ρ e e.linearIndependent)]`.
+
+Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(e i).2`. Introduce `h`. Use `le_antisymm h2 ?_` and prove the remaining obligations.
+
+Establish `hs : Function.Surjective ((DD F a ha ρ).subtype.liftBaseChange B)`. Rewrite using `[← LinearMap.range_eq_top, LinearMap.range_liftBaseChange, Submodule.range_subtype, h]`. Simplify using `using LinearMap.finrank_le_finrank_of_surjective hs`.
+-/
 private theorem admissible_iff_span_top [FiniteDimensional Q V] (ρ : G → V →ₗ[Q] V) :
     finrank F ↥(DD F a ha ρ) = finrank Q V ↔ Submodule.span B (DD F a ha ρ : Set (B ⊗[Q] V)) = ⊤ := by
   obtain ⟨h1, h2⟩ := finite_le F a ha hf ρ
@@ -191,6 +253,9 @@ private theorem admissible_iff_span_top [FiniteDimensional Q V] (ρ : G → V �
     simpa using LinearMap.finrank_le_finrank_of_surjective hs
 
 include ha hf hu in
+/- English proof (translation)
+Establish `h0 : 0 < finrank Q F` using `finrank_pos`. Rewrite `h` using `[finrank_swap F a ha ρ D hD]`. Rewrite `h'` using `[finrank_swap F a ha ρ' D' hD']`. Rewrite using `[finrank_swap F a ha π E hE, (admissible_iff_span_top F a ha hf hu π).2 (span_bilin F a ha ρ ρ' π b hb hs ((admissible_iff_span_top F a ha hf hu ρ).1 (Nat.eq_of_mul_eq_mul_left h0 h)) ((admissible_iff_span_top F a ha hf hu ρ').1 (Nat.eq_of_mul_eq_mul_left h0 h')))]`.
+-/
 private theorem admissible_bilinear_image [FiniteDimensional Q F] [FiniteDimensional Q V] [FiniteDimensional Q V']
     [FiniteDimensional Q W] (ρ : G → V →ₗ[Q] V) (ρ' : G → V' →ₗ[Q] V') (π : G → W →ₗ[Q] W)
     (b : V →ₗ[Q] V' →ₗ[Q] W) (hb : ∀ g x y, b (ρ g x) (ρ' g y) = π g (b x y))
@@ -211,6 +276,25 @@ end UpperTheory.V.Loc.AdmBilin
 
 end
 
+/- English proof (translation)
+Introduce `l _ G _ _ _ φ hφ A _ _ V _ _ _ _ _ _ _ _ _ V' _ _ _ _ _ _ _ _ _ W _ _ _ _ _ _ _ _ _ ρ ρ' π _ _ _ b hb hs`. Take `⟨K, e, -, -, he, -, hK, hK0⟩` from `UpperTheory.V.Loc.openField φ hφ`. Take `⟨T⟩` from `tiedP l`. Take `⟨C, hfit⟩` from `GlobalTheory.MemLoc.FitsEx.exists_fits l (PP l) (AIP l) T`. Establish `hφe : ∀ g, φ g = (e g : GQ l)` using `fun g => by rw [← he]; rfl`.
+
+Establish `eB : ∀ g z, (PP l).actQ (φ g) z = ((PP l).PD K).actB (e g) z` using `fun g z => by`. Rewrite using `[hφe, (PP l).PD_actB]`. Establish `eD : ∀ g z, (PP l).actQdR (φ g) z = ((PP l).PD K).actdR (e g) z` using `fun g z => by`. Rewrite using `[hφe, (PP l).PD_actdR]`. Use `((PP l).PD K).finK₀` as an intermediate fact.
+
+Use `((PP l).PD K).finK` as an intermediate fact. Establish `hF : IsField (Bdr l)` using `GlobalTheory.RegularRing.isField_of_tied T`. Prove the components needed by the constructor for the conclusion. Introduce `h h'`. Establish `: IsDomain (Bcr l)` using `GlobalTheory.RegularRing.isDomain_of_tied T K`.
+
+Unfold `IsCr at h h' ⊢`. Rewrite `h`, `h'`, the goal using `[hK0]`. Use `AdmBilin.admissible_bilinear_image ↥(K0 K) (fun g => ((PP l).actQ (φ g) : Bcr l →ₐ[ℚ_[l]] Bcr l)) (fun g c => ?_) (fun x y hx hxy => ?_) (fun x hx hxy => ?_) (resCoef ℚ_[l] ρ) (resCoef ℚ_[l] ρ') (resCoef ℚ_[l] π) b hb hs _ (fun x => ?_) _ (fun x => ?_) _ (fun x => ?_) h h'` and prove the remaining obligations. Conclude with `(eB g _).trans (AlgEquiv.commutes _ c)`. Use `GlobalTheory.RegularRing.fracInv hfit (GlobalTheory.T.algClosure_tensor_bcris_to_bdR_injective l C) K x y hx fun g => ?_` and prove the remaining obligations.
+
+Take `⟨g, rfl⟩` from `e.surjective g`. Rewrite using `[← eB, ← eB]`. Conclude with `hxy g`. Use `GlobalTheory.RegularRing.lineUnit hfit (GlobalTheory.T.bcris_regular_of_tensorInj l C (GlobalTheory.T.algClosure_tensor_bcris_to_bdR_injective l C)) K x hx fun g => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `e.surjective g`.
+
+Rewrite using `[← eB]`. Conclude with `hxy g`. Use `all_goals`. Simplify using `only [Dcr, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Both sides reduce to the same expression.
+
+Introduce `h h'`. Establish `: IsDomain (Bdr l)` using `hF.isDomain`. Unfold `IsDr at h h' ⊢`. Rewrite `h`, `h'`, the goal using `[hK]`. Use `AdmBilin.admissible_bilinear_image ↥K.1 (fun g => ((PP l).actQdR (φ g) : Bdr l →ₐ[ℚ_[l]] Bdr l)) (fun g c => ?_) (fun x y hx hxy => ?_) (fun x hx _ => ?_) (resCoef ℚ_[l] ρ) (resCoef ℚ_[l] ρ') (resCoef ℚ_[l] π) b hb hs _ (fun x => ?_) _ (fun x => ?_) _ (fun x => ?_) h h'` and prove the remaining obligations.
+
+Conclude with `(eD g _).trans (AlgEquiv.commutes _ c)`. Use `GlobalTheory.Per.FontaineBound.frac_dR ((PP l).PD K) hF x y hx fun g => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `e.surjective g`. Rewrite using `[← eD, ← eD]`. Conclude with `hxy g`.
+
+Take `⟨u, hu⟩` from `hF.mul_inv_cancel hx`. Conclude with `IsUnit.of_mul_eq_one u hu`. Use `all_goals`. Simplify using `only [Ddr, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Loc.admissible_of_bilinear_openSubgroup_galois :
     ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) {A : Type} [CommRing A] [Algebra ℚ_[l] A] {V : Type} [AddCommGroup V] [Module A V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] A V] [FiniteDimensional ℚ_[l] V] [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] [IsTopologicalAddGroup V] [ContinuousConstSMul A V] {V' : Type} [AddCommGroup V'] [Module A V'] [Module ℚ_[l] V'] [IsScalarTower ℚ_[l] A V'] [FiniteDimensional ℚ_[l] V'] [TopologicalSpace V'] [IsModuleTopology ℚ_[l] V'] [IsTopologicalAddGroup V'] [ContinuousConstSMul A V'] {W : Type} [AddCommGroup W] [Module A W] [Module ℚ_[l] W] [IsScalarTower ℚ_[l] A W] [FiniteDimensional ℚ_[l] W] [TopologicalSpace W] [IsModuleTopology ℚ_[l] W] [IsTopologicalAddGroup W] [ContinuousConstSMul A W] (ρ : Representation A G V) (ρ' : Representation A G V') (π : Representation A G W), ContAction ρ → ContAction ρ' → ContAction π → ∀ b : V →ₗ[ℚ_[l]] V' →ₗ[ℚ_[l]] W, (∀ g x y, b (ρ g x) (ρ' g y) = π g (b x y)) → Submodule.span ℚ_[l] (Set.range fun p : V × V' => b p.1 p.2) = ⊤ → (IsCr φ ρ → IsCr φ ρ' → IsCr φ π) ∧ (IsDr φ ρ → IsDr φ ρ' → IsDr φ π) := by
   intro l _ G _ _ _ φ hφ A _ _ V _ _ _ _ _ _ _ _ _ V' _ _ _ _ _ _ _ _ _ W _ _ _ _ _ _ _ _ _ ρ ρ' π _ _ _ b hb hs

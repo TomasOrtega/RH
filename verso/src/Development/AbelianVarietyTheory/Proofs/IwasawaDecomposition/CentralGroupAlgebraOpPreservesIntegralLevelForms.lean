@@ -12,6 +12,11 @@ namespace GlobalTheory.CentralLevelOp
 
 open Formalism.DivisionValues Formalism.L2.DIV
 
+/- English proof (translation)
+Introduce `K _ _ _ v0 h0 S hH G _ _ r hr P ψ a hc hz x hx`. Establish `hE` using `(level_operator_spec K v0 h0 S hH G r hr P ψ a (hc _)).1`. Express the relevant statement in the definitionally equal form `(S.lvlE r P ψ).mulVec x ∈ S.nabLat at hx`. Express the relevant statement in the definitionally equal form `(S.lvlE r P ψ).mulVec ((S.lvlOp r P ψ a).mulVec x) ∈ S.nabLat`. Rewrite using `[Matrix.mulVec_mulVec, hE, ← Matrix.mulVec_mulVec, CSD.gaMat, Matrix.sum_mulVec]`.
+
+Use `Submodule.sum_mem _ fun t _ => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `hz t`. Rewrite using `[Matrix.smul_mulVec, hn, Int.cast_smul_eq_zsmul]`. Conclude with `Submodule.smul_of_tower_mem _ n ((action_preserves_lattice K S G r hr t).1 _ hx)`.
+-/
 theorem lvlOp_mem_lvlNab : ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (v0 : NumberField.InfinitePlace K), Formalism.DivisionValues.IsConjAt v0 →
     ∀ (S : Formalism.L2.DIV.CSD K), (S.H.map v0.embedding).PosDef →
     ∀ (G : Type) [Group G] [Fintype G] (r : Representation K G S.Forms), S.ActGood r →

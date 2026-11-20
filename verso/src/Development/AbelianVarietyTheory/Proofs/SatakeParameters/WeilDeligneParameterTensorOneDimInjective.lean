@@ -10,6 +10,11 @@ namespace GlobalTheory.WeilDeligne.TwistInj
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Establish `hd : LinearMap.det f = f (Pi.single 0 1) 0` using `by conv_lhs => rw [← Matrix.toLin'_toMatrix' f]`. Rewrite using `[LinearMap.det_toLin', Matrix.det_fin_one, LinearMap.toMatrix'_apply]`. Establish `hv : v = v 0 • (Pi.single 0 1 : Fin 1 → ℂ)`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+
+Simplify using the standard rewrite rules. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Rewrite using `[hv, map_smul, hd]`. Simplify using `[mul_comm]`.
+-/
 theorem apply_eq_det_smul (f : Module.End ℂ (Fin 1 → ℂ)) (v : Fin 1 → ℂ) :
     f v = LinearMap.det f • v := by
   have hd : LinearMap.det f = f (Pi.single 0 1) 0 := by
@@ -24,13 +29,24 @@ theorem apply_eq_det_smul (f : Module.End ℂ (Fin 1 → ℂ)) (v : Fin 1 → �
 def chr (c : WDRep h (Fin 1 → ℂ)) : Weil h →* ℂˣ :=
   (Units.map (LinearMap.det : Module.End ℂ (Fin 1 → ℂ) →* ℂ)).comp c.ρ.asGroupHom
 
+/- English proof (translation)
+Simplify using `[chr, Representation.asGroupHom_apply]`.
+-/
 theorem coe_chr (c : WDRep h (Fin 1 → ℂ)) (σ : Weil h) :
     (chr c σ : ℂ) = LinearMap.det (c.ρ σ) := by
   simp [chr, Representation.asGroupHom_apply]
 
+/- English proof (translation)
+The claim follows from `c.smooth.of_le fun σ hσ => Units.ext (by rw [coe_chr, hσ, map_one]; rfl)`.
+-/
 theorem isSmooth_chr (c : WDRep h (Fin 1 → ℂ)) : IsSmooth (chr c) :=
   c.smooth.of_le fun σ hσ => Units.ext (by rw [coe_chr, hσ, map_one]; rfl)
 
+/- English proof (translation)
+Establish `hz : LinearMap.det (0 : Module.End ℂ (Fin 1 → ℂ)) = 0`. Use `congrFun (apply_eq_det_smul 0 (fun _ => 1)) 0` as an intermediate fact. Simplify using `using this.symm`. Take `⟨k, hk⟩` from `c.nilpotent`. Establish `h0 : LinearMap.det c.N = 0`.
+
+Establish `: LinearMap.det c.N ^ k = 0` using `by rw [← map_pow, hk, hz]`. Conclude with `pow_eq_zero_iff'.mp this |>.1`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[apply_eq_det_smul, h0, zero_smul]`. Both sides reduce to the same expression.
+-/
 theorem N_eq_zero (c : WDRep h (Fin 1 → ℂ)) : c.N = 0 := by
   have hz : LinearMap.det (0 : Module.End ℂ (Fin 1 → ℂ)) = 0 := by
     have := congrFun (apply_eq_det_smul 0 (fun _ => 1)) 0
@@ -43,6 +59,13 @@ theorem N_eq_zero (c : WDRep h (Fin 1 → ℂ)) : c.N = 0 := by
   rw [apply_eq_det_smul, h0, zero_smul]
   rfl
 
+/- English proof (translation)
+Use `⟨(TensorProduct.congr (LinearEquiv.refl ℂ V) (LinearEquiv.funUnique (Fin 1) ℂ ℂ)).trans (TensorProduct.rid ℂ V), fun σ v => ?_, fun v => ?_⟩` and prove the remaining obligations. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y`. Simplify using `only [WDRep.tensor_ρ, TensorProduct.map_tmul, LinearEquiv.trans_apply, TensorProduct.congr_tmul, LinearEquiv.refl_apply, LinearEquiv.funUnique_apply, TensorProduct.rid_tmul, WDRep.twist_ρ, LinearMap.smul_apply, map_smul, coe_chr]`.
+
+Rewrite using `[apply_eq_det_smul (c.ρ σ) y, smul_smul]`. Simplify using `[Function.eval, mul_comm]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul x y`. Simplify using `[N_eq_zero c, Function.eval]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem tensor_iso_twist {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (a : WDRep h V) (c : WDRep h (Fin 1 → ℂ)) :
     (a.tensor c).Iso (a.twist (chr c) (isSmooth_chr c)) := by
@@ -63,6 +86,9 @@ theorem tensor_iso_twist {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDime
       simp [N_eq_zero c, Function.eval]
     | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Take `⟨e, h1, h2⟩` from `hab`. Use `⟨e, fun σ v => ?_, h2⟩` and prove the remaining obligations. Use `h1 σ v` as an intermediate fact. Simplify using `only [WDRep.twist_ρ, LinearMap.smul_apply, map_smul] at this`. Conclude with `smul_right_injective V' (Units.ne_zero (χ σ)) this`.
+-/
 theorem iso_of_twist {V V' : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     [AddCommGroup V'] [Module ℂ V'] [FiniteDimensional ℂ V']
     {a : WDRep h V} {b : WDRep h V'} (χ : Weil h →* ℂˣ) (hχ : IsSmooth χ)
@@ -77,6 +103,13 @@ end GlobalTheory.WeilDeligne.TwistInj
 
 open GlobalTheory.WeilDeligne.TwistInj in
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h a b c hc hab`. Proceed by induction on `a using WD.ind with`. Consider the case `hP n a`. Proceed by induction on `b using WD.ind with`. Consider the case `hP m b`.
+
+Proceed by induction on `c using WD.ind with`. Consider the case `hP k c`. Rewrite `hc` using `[WD.lpDim_mk, Module.finrank_fin_fun]`. Substitute `hc` using the available equality. Rewrite `hab` using `[WD.lpChar_mk, WD.lpChar_mk, WD.mk_eq_mk]`.
+
+Conclude with `WD.sound (iso_of_twist (chr c) (isSmooth_chr c) (((tensor_iso_twist a c).symm.trans hab).trans (tensor_iso_twist b c)))`.
+-/
 theorem GlobalTheory.WeilDeligne.lpChar_left_injective_of_lpDim_one : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (a b c : WD h), c.lpDim = 1 → a.lpChar c = b.lpChar c → a = b := by
   intro E Ω _ _ _ _ _ A w h a b c hc hab
   induction a using WD.ind with

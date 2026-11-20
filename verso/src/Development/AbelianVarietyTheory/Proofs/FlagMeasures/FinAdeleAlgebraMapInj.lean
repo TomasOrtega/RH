@@ -7,6 +7,19 @@ open scoped InnerProductSpace TensorProduct
 
 namespace GlobalTheory.ClassDict
 
+/- English proof (translation)
+Establish `key : ∀ a b : P, (Quotient.mk'' a : ClassSet (R.subgroupOf P) (U.subgroupOf P)) = Quotient.mk'' b ↔ ∃ x ∈ R.subgroupOf P, ∃ y ∈ U.subgroupOf P, b = x * a * y` using `fun a b => DoubleCoset.eq _ _ a b`. Establish `fwd : ∀ (c : C) (γ : Γ) (κ : K), h = ιf γ * Φ.symm (yc c * h0⁻¹) * (κ : Gf) → (Quotient.mk'' (yc c) : ClassSet (R.subgroupOf P) (U.subgroupOf P)) = Quotient.mk'' (Φ h * h0)`. Introduce `c γ κ hc`. Rewrite using `[key]`. Use `⟨Φ (ιf γ), ?_, h0⁻¹ * Φ κ * h0, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Subgroup.mem_subgroupOf]`. Conclude with `h1 γ`. Rewrite using `[Subgroup.mem_subgroupOf]`. Conclude with `(hK κ).1 κ.2`. Simplify using `only [hc, map_mul, MulEquiv.apply_symm_apply, mul_assoc]`.
+
+Take `⟨c, hc⟩` from `hb.2 (Quotient.mk'' (Φ h * h0))`. Use `⟨c, ?_, ?_⟩` and prove the remaining obligations. Take `⟨x, hx, y, hy, hxy⟩` from `(key _ _).1 hc`. Rewrite `hx`, `hy` using `[Subgroup.mem_subgroupOf]`. Take `⟨γ, hγ⟩` from `h2 _ hx`.
+
+Establish `hκ : Φ.symm (h0 * y * h0⁻¹) ∈ K`. Rewrite using `[hK, MulEquiv.apply_symm_apply]`. Establish `e : h0⁻¹ * (h0 * y * h0⁻¹) * h0 = y` using `by group`. Rewrite using `[e]`. Conclude with `hy`.
+
+Use `⟨γ, ⟨_, hκ⟩, ?_⟩` and prove the remaining obligations. Apply `Φ.injective` to reduce the goal to its premises. Establish `hγ' : Φ (ιf γ) = x` using `Subtype.ext hγ`. Establish `hΦ : Φ h = x * yc c * y * h0⁻¹`. Rewrite using `[← hxy]`.
+
+Use `group`. Simplify using `only [map_mul, MulEquiv.apply_symm_apply, hγ', hΦ]`. Use `group`. Introduce and unpack `c' ⟨γ, κ, hc'⟩`. Conclude with `hb.1 ((fwd c' γ κ hc').trans hc.symm)`.
+-/
 theorem exu_rep {G Γ Gf : Type} [Group G] [Group Γ] [Group Gf] (P R U : Subgroup G) (ιf : Γ →* Gf)
     (K : Subgroup Gf) (Φ : Gf ≃* P) (h0 : P)
     (hK : ∀ h : Gf, h ∈ K ↔ ((h0⁻¹ * Φ h * h0 : P) : G) ∈ U)
@@ -48,6 +61,13 @@ theorem exu_rep {G Γ Gf : Type} [Group G] [Group Γ] [Group Gf] (P R U : Subgro
   · rintro c' ⟨γ, κ, hc'⟩
     exact hb.1 ((fwd c' γ κ hc').trans hc.symm)
 
+/- English proof (translation)
+Take `⟨u, hu, hyu⟩` from `Subgroup.mem_map.1 hγ`. Establish `e : ((Φ (ιf γ) : P) : G) = (y : G) * u * (y : G)⁻¹`. Rewrite using `[← hyu]`. Simplify using `[MulAut.conj_apply]`. Establish `hmem : (Φ.symm (y * h0⁻¹))⁻¹ * ιf γ * Φ.symm (y * h0⁻¹) ∈ K`.
+
+Rewrite using `[hK]`. Use `hu using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_mul, map_inv, MulEquiv.apply_symm_apply]`. Use `push_cast`. Rewrite using `[e]`.
+
+Use `group`. Rewrite using `[hn _ _ hmem]`. Simplify using the standard rewrite rules.
+-/
 theorem stab_triv {G Γ Gf : Type} [Group G] [Group Γ] [Group Gf] (P U : Subgroup G) (ιf : Γ →* Gf)
     (K : Subgroup Gf) (Φ : Gf ≃* P) (h0 : P)
     (hK : ∀ h : Gf, h ∈ K ↔ ((h0⁻¹ * Φ h * h0 : P) : G) ∈ U)
@@ -67,6 +87,9 @@ theorem stab_triv {G Γ Gf : Type} [Group G] [Group Γ] [Group Gf] (P U : Subgro
   rw [hn _ _ hmem]
   simp
 
+/- English proof (translation)
+Introduce `a b h`. Apply `Units.ext` to reduce the goal to its premises. Establish `h'` using `congrArg Units.val h`. Use function extensionality and compare the values at `i j`. Conclude with `hφ (congrFun (congrFun h' i) j)`.
+-/
 theorem bc_inj_of_inj {A B : Type} [CommRing A] [CommRing B] {k : ℕ} {φ : A →+* B}
     (hφ : Function.Injective φ) : Function.Injective (bc (n := Fin k) φ) := by
   intro a b h
@@ -75,6 +98,11 @@ theorem bc_inj_of_inj {A B : Type} [CommRing A] [CommRing B] {k : ℕ} {φ : A �
   funext i j
   exact hφ (congrFun (congrFun h' i) j)
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `Ideal.exists_maximal (𝓞 F)`. Set `v : HeightOneSpectrum (𝓞 F)` to `⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField F)⟩`. Establish `: Nontrivial (FiniteAdeleRing (𝓞 F) F)`. Use `⟨⟨0, 1, fun h => ?_⟩⟩` and prove the remaining obligations. Establish `h'` using `congrArg (fun x : FiniteAdeleRing (𝓞 F) F => x v) h`.
+
+Rewrite `h'` using `[← map_zero (algebraMap F (FiniteAdeleRing (𝓞 F) F)), ← map_one (algebraMap F (FiniteAdeleRing (𝓞 F) F))]`. Simplify using `only [FiniteAdeleRing.algebraMap_apply] at h'`. Rewrite `h'` using `[HeightOneSpectrum.adicCompletion.coe_zero, HeightOneSpectrum.adicCompletion.coe_one]`. Conclude with `zero_ne_one h'`. Conclude with `(algebraMap F _).injective`.
+-/
 theorem finAdele_algebraMap_inj (F : Type) [Field F] [NumberField F] :
     Function.Injective (algebraMap F (FiniteAdeleRing (𝓞 F) F)) := by
   obtain ⟨M, hM⟩ := Ideal.exists_maximal (𝓞 F)
@@ -90,6 +118,15 @@ theorem finAdele_algebraMap_inj (F : Type) [Field F] [NumberField F] :
     exact zero_ne_one h'
   exact (algebraMap F _).injective
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J T f bad S Γ Gf _ _ ιf K Φ h0 hK h1 h2 C yc hb`. Establish `hR1 : ∀ γ : Γ, (Φ (ιf γ)).1 ∈ ratPts σ J (FiniteAdeleRing (𝓞 F) F)`. Introduce `γ`. Take `⟨g, hg, hgγ⟩` from `h1 γ`. Rewrite using `[hgγ]`.
+
+Unfold `ratPts`. Conclude with `Subgroup.mem_map_of_mem _ hg`. Establish `hR2 : ∀ r ∈ ratPts σ J (FiniteAdeleRing (𝓞 F) F), ∃ γ : Γ, (Φ (ιf γ)).1 = r`. Introduce `r hr`. Unfold `ratPts at hr`.
+
+Take `⟨g, hg, rfl⟩` from `Subgroup.mem_map.1 hr`. Conclude with `h2 g hg`. Use `⟨fun h => exu_rep _ _ S.U ιf K Φ h0 hK hR1 hR2 yc hb h, fun hn c g hg hgU => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ⟩` from `h2 g hg`. Establish `hs` using `stab_triv _ S.U ιf K Φ h0 hK hn (yc c) γ (by rw [hγ]; exact hgU)`.
+
+Rewrite `hs` using `[hγ]`. Establish `hinj : Function.Injective (inclE (F` using `F) (E := E) (FiniteAdeleRing (𝓞 F) F)) := by`. Introduce `a b hab`. Conclude with `Algebra.TensorProduct.includeLeft_injective (S := F) (finAdele_algebraMap_inj F) hab`. Conclude with `bc_inj_of_inj hinj (hs.trans (map_one _).symm)`.
+-/
 theorem classReps_dictionary : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (T f : ℕ) (bad : Set (HeightOneSpectrum (𝓞 F))) (S : StepLevel F E σ J T f bad) (Γ Gf : Type) [Group Γ] [Group Gf] (ιf : Γ →* Gf) (K : Subgroup Gf) (Φ : Gf ≃* UPts σ J (FiniteAdeleRing (𝓞 F) F)) (h0 : UPts σ J (FiniteAdeleRing (𝓞 F) F)), (∀ h : Gf, h ∈ K ↔ ((h0⁻¹ * Φ h * h0 : UPts σ J (FiniteAdeleRing (𝓞 F) F)) : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) ∈ S.U) → (∀ γ : Γ, ∃ g : GL (Fin n) E, g ∈ UJ (σ : E →+* E) J ∧ (Φ (ιf γ)).1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) g) → (∀ g : GL (Fin n) E, g ∈ UJ (σ : E →+* E) J → ∃ γ : Γ, (Φ (ιf γ)).1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) g) → ∀ (C : Type) (yc : C → UPts σ J (FiniteAdeleRing (𝓞 F) F)), Function.Bijective (fun c => (Quotient.mk'' (yc c) : Cls S)) → (∀ h : Gf, ∃! c : C, ∃ (γ : Γ) (κ : K), h = ιf γ * Φ.symm (yc c * h0⁻¹) * (κ : Gf)) ∧ ((∀ (x : Gf) (γ : Γ), x⁻¹ * ιf γ * x ∈ K → γ = 1) → ∀ (c : C) (g : GL (Fin n) E), g ∈ UJ (σ : E →+* E) J → bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) g ∈ S.U.map (MulAut.conj (yc c).1).toMonoidHom → g = 1) := by
   intro F E _ _ _ _ _ σ n J T f bad S Γ Gf _ _ ιf K Φ h0 hK h1 h2 C yc hb
   have hR1 : ∀ γ : Γ, (Φ (ιf γ)).1 ∈ ratPts σ J (FiniteAdeleRing (𝓞 F) F) := by

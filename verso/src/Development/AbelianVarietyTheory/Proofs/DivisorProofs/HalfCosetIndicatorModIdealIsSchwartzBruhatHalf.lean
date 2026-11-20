@@ -19,6 +19,21 @@ set_option synthInstance.maxHeartbeats 400000
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D S T LS LT hS hT a hinf I hI x _`. Take `⟨k₁, hk₁, h₁⟩` from `GlobalTheory.PlaceVec.exists_nsmul_latO_int (S := S) (T := T) hS.fg hT.fg`. Take `⟨k₄, hk₄, h₄⟩` from `GlobalTheory.PlaceVec.exists_nsmul_int_mem_latO hS hT (S := S) (T := T)`. Take `⟨d, hd, hx⟩` from `GlobalTheory.PlaceVec.exists_common_nsmul (Formalism.L2.Herm.intAf D.host.F D.host.E).toAddSubgroup (fun p : Fin T.rank × Fin S.rank => toEAf D (x p.1 p.2)) fun p => GlobalTheory.PlaceVec.exists_nsmul_mem_int _`. Take `⟨n₀, hn₀, hnI⟩ : ∃ n₀ : ℕ, 0 < n₀ ∧ ((n₀ : ℕ) : 𝓞 D.host.E) ∈ I` from `⟨_, Nat.pos_of_ne_zero fun h => hI (Ideal.absNorm_eq_zero_iff.1 h), Ideal.absNorm_mem I⟩`.
+
+Establish `hsupp : ∀ t, cosetFn a I x t ≠ 0 → IsHalf a t ∧ ∀ i j, GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I (toEAf D (t i j - x i j))` using `fun t ht => by`. Unfold `cosetFn at ht`. Assume the negation of the conclusion as `h`. Conclude with `ht (if_neg h)`. Use `⟨fun t ht => (hsupp t ht).1, n₀ * k₁ * (k₄ * d), by positivity, fun u hu hh t => ?_, fun t ht => ?_⟩` and prove the remaining obligations.
+
+Establish `hw : ∀ i j, ((k₄ * d) • (k₁ • u.map (toEAf D))) i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E` using `fun i j => nsmul_mem (h₁ u hu i j) _`. Establish `hsh : ∀ i j, toEAf D ((t + (n₀ * k₁ * (k₄ * d)) • u : WO S T) i j - x i j) = toEAf D (t i j - x i j) + (n₀ : EAf D) * ((k₄ * d) • (k₁ • u.map (toEAf D))) i j` using `fun i j => by`. Rewrite using `[Matrix.add_apply, Matrix.smul_apply, Matrix.smul_apply, Matrix.smul_apply, Matrix.map_apply, RingHom.map_sub, RingHom.map_sub, RingHom.map_add, map_nsmul, nsmul_eq_mul, nsmul_eq_mul, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hH : IsHalf a (t + (n₀ * k₁ * (k₄ * d)) • u) ↔ IsHalf a t`. Rewrite using `[GlobalTheory.PlaceModel.isHalf_iff S T, GlobalTheory.PlaceModel.isHalf_iff S T]`. Conclude with `AddSubgroup.add_mem_cancel_right _ (nsmul_mem ((GlobalTheory.PlaceModel.isHalf_iff S T).1 hh) _)`. Establish `hC : (∀ i j, GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I (toEAf D ((t + (n₀ * k₁ * (k₄ * d)) • u : WO S T) i j - x i j))) ↔ ∀ i j, GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I (toEAf D (t i j - x i j))` using `⟨fun H i j => StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.inId_shift hnI (neg_mem (hw i j)) (by rw [hsh, mul_neg, add_neg_cancel_right]) (H i j), fun H i j => StandardFirstTheta.GlobalTheory.CompanionTheory.StdFstTheta.inId_shift hnI (hw i j) (hsh i j) (H i j)⟩`. Unfold `cosetFn`.
+
+Distinguish the cases in `hc : IsHalf a t ∧ ∀ i j, GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.InId I (toEAf D (t i j - x i j))`. Rewrite using `[if_pos hc, if_pos ⟨hH.2 hc.1, hC.2 hc.2⟩]`. Rewrite using `[if_neg hc, if_neg fun h' => hc ⟨hH.1 h'.1, hC.1 h'.2⟩]`. Take `⟨hth, htc⟩` from `hsupp t ht`. Establish `hint : IsIntM ((d • t).map (toEAf D))` using `fun i j => by`.
+
+Establish `e : ((d • t).map (toEAf D)) i j = d • toEAf D (t i j - x i j) + d • toEAf D (x i j)`. Rewrite using `[GlobalTheory.PlaceVec.map_toEAf_nsmul, Matrix.smul_apply, Matrix.map_apply, ← smul_add, RingHom.map_sub, sub_add_cancel]`. Rewrite using `[e]`. Conclude with `add_mem (nsmul_mem (htc i j).1 d) (show d • toEAf D (x i j) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E from hx (i, j))`. Establish `hinf' : (d • t).map (infPart D) = 0` using `GlobalTheory.PlaceVec.half_infPart hinf (nsmul_mem ((GlobalTheory.PlaceModel.isHalf_iff S T).1 hth) d)`.
+
+Establish `h` using `nsmul_mem (h₄ (d • t) hinf' hint) (n₀ * k₁)`. Rewrite `h` using `[smul_smul, smul_smul]`. Rewrite using `[← mul_assoc (n₀ * k₁)]` and apply the resulting hypothesis.
+-/
 theorem cosetFn_isSBHalf : ∀ {D : D7} (S T : HSp D) (LS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E))
     (LT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)),
     Submodule.IsLattice D.host.E LS → Submodule.IsLattice D.host.E LT → ∀ (a : Formalism.L2.Theta.AE D), infPart D a = 0 →

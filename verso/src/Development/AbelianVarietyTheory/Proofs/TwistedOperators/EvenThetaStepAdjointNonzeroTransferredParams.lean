@@ -25,6 +25,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.EvenOnto
 
+/- English proof (translation)
+Establish `hs : ∀ i, s.pet (PiLocalization₂.val y w) (PiLocalization₂.val (ys i) (ws i)) = ip y (ys i) * ipD w (ws i)` using `fun i => h.schur y (ys i) w (ws i)`. Rewrite using `[← Finset.sum_congr rfl (fun i _ => hs i)]`. Simplify using `only [PiLocalization₂.pet, Lift.pet, Finset.sum_apply, map_sum, Finset.mul_sum]`. Conclude with `integral_finset_sum _ (fun i _ => h.integ y (ys i) w (ws i))`.
+-/
 theorem pet_val_sum {D : D7} {c : Com D} {s : PiLocalization₂ D} {ipD : SmT s.M →ₗ[ℂ] SmT s.M →ₗ⋆[ℂ] ℂ}
     {ip : s.CC c →ₗ[ℂ] s.CC c →ₗ⋆[ℂ] ℂ} (h : IsMet c s ipD ip) (y : s.CC c) (w : SmT s.M) (n : ℕ)
     (ys : Fin n → s.CC c) (ws : Fin n → SmT s.M) :
@@ -35,6 +38,15 @@ theorem pet_val_sum {D : D7} {c : Com D} {s : PiLocalization₂ D} {ipD : SmT s.
   simp only [PiLocalization₂.pet, Lift.pet, Finset.sum_apply, map_sum, Finset.mul_sum]
   exact integral_finset_sum _ (fun i _ => h.integ y (ys i) w (ws i))
 
+/- English proof (translation)
+Introduce `D hFin hPV hSpan hAdj hPar hNe`. Introduce `c hc k hk s s' hs hs' p hp ipD ip ipD' ip' hM hM' u B hB hL`. Establish `hk' : k + 1 ≤ c.m` using `hk`. Use `haveI : FiniteDimensional ℂ (s'.CC c) := hFin c hc (k + 1) hk' s' hs'`. Take `⟨x, hx, -⟩` from `GlobalTheory.hermitian_adjoint_exists_unique (s.CC c) (s'.CC c) ip ip' hM'.herm hM'.pos p.io u`.
+
+Take `⟨φ, v, hv, hF⟩` from `hNe c hc k hk s s' hs hs' p hp u B hB hL`. Establish `key` using `GlobalTheory.ChainOnto.value_of_adjoint_of_mem_span (GA D s'.V) (SmT s'.M) (s'.CC c) (s'.CC c).subtype s'.KF ipD' ip' s'.pet hM'.hermD hM'.posD hM'.herm hM'.pos (fun y w n ys ws => pet_val_sum hM' y w n ys ws) x (p.up φ (PiLocalization₂.val u v)) (fun w => ipD (p.It φ w) v) (hSpa …`. Rewrite using `[hx y]`. Conclude with `(hAdj c hc k hk s s' hs hs' p hp u y φ v hv w hw).trans (hM.schur _ _ _ _)) hF`. Take `⟨-, w₀, -, hFx⟩` from `key`.
+
+Establish `hPF` using `hPar c hc k hk s s' hs hs' p hp u B φ hB v hv hF`. Establish `hFx' : p.up φ (PiLocalization₂.val u v) = PiLocalization₂.val x w₀` using `hFx`. Use `⟨x, hx, hPV c hc (k + 1) hk' s' hs' x w₀ _ ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[← hFx']`. Conclude with `hF`.
+
+Rewrite using `[← hFx']`. Conclude with `hPF`.
+-/
 theorem stepUp : ∀ D : D7, FinDim D → ParOfVal D → UpSpan D → UpAdj D → UpPar D → UpNe D → StepUp D := by
   intro D hFin hPV hSpan hAdj hPar hNe
   intro c hc k hk s s' hs hs' p hp ipD ip ipD' ip' hM hM' u B hB hL

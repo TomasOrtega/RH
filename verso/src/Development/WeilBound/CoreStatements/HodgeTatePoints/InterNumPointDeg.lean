@@ -21,16 +21,28 @@ open GroundTheory.Heights₂.Heights.Kleiman
 
 universe u w
 
+/- English proof (translation)
+The claim follows from `SurjectiveClosed.proof Extension.proof IdealTwistFamily.proof (TildeVanish.proof SerreVanish.full)`.
+-/
 theorem surjectiveClosed : SurjectiveClosed.Statement.{u, w} :=
   SurjectiveClosed.proof Extension.proof IdealTwistFamily.proof (TildeVanish.proof SerreVanish.full)
 
+/- English proof (translation)
+The claim follows from `FiniteSections.proof Extension.proof (TildeTail.proof SerreTail.full)`.
+-/
 theorem finiteSections : FiniteSections.Statement.{u, w} :=
   FiniteSections.proof Extension.proof (TildeTail.proof SerreTail.full)
 
+/- English proof (translation)
+The claim follows from `InterNumCut.proof (CycleSplit.Filt.proof (CycleSplit.Filt.Step.proof surjectiveClosed finiteSections)) (CutRestrLenExact.proof surjectiveClosed finiteSections) h`.
+-/
 theorem intersectionNumberCut_of_mixedTwistShift (h : MixedTwistShift.Statement.{u, w}) : InterNumCut.Statement.{u, w} :=
   InterNumCut.proof (CycleSplit.Filt.proof (CycleSplit.Filt.Step.proof surjectiveClosed finiteSections))
     (CutRestrLenExact.proof surjectiveClosed finiteSections) h
 
+/- English proof (translation)
+The claim follows from `InterNumPointDeg.proof (InterNumRestrict.proof (RestrLenRestrict.proof surjectiveClosed PrimeFiltration.RestrictQuot.proof))`.
+-/
 theorem interNumPointDeg : InterNumPointDeg.Statement.{u, w} :=
   InterNumPointDeg.proof (InterNumRestrict.proof
     (RestrLenRestrict.proof surjectiveClosed PrimeFiltration.RestrictQuot.proof))

@@ -11,6 +11,9 @@ private noncomputable def tr (B : Type) [AddCommGroup B] [Module Q B] (e : V ≃
 
 variable {B B' : Type} [AddCommGroup B] [Module Q B] [AddCommGroup B'] [Module Q B'] (e : V ≃ₗ[A] V')
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v c => simp [tr, h]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 private theorem tr_map {f : V →ₗ[A] V} {f' : V' →ₗ[A] V'} (h : ∀ x, e (f x) = f' (e x)) (b : B →ₗ[Q] B')
     (x : V ⊗[Q] B) :
     tr B' e (AlgebraTensorModule.map f b x) = AlgebraTensorModule.map f' b (tr B e x) := by
@@ -19,6 +22,9 @@ private theorem tr_map {f : V →ₗ[A] V} {f' : V' →ₗ[A] V'} (h : ∀ x, e 
   | tmul v c => simp [tr, h]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Rewrite using `[LinearMap.mem_range, LinearMap.mem_range, (tr B e).surjective.exists]`. Use `exists_congr fun y => ?_` and prove the remaining obligations. Rewrite using `[← tr_map e (f := LinearMap.id) (fun _ => rfl), (tr B' e).injective.eq_iff]`.
+-/
 private theorem tr_range (b : B →ₗ[Q] B') (x : V ⊗[Q] B') :
     tr B' e x ∈ LinearMap.range (AlgebraTensorModule.map (LinearMap.id : V' →ₗ[A] V') b) ↔
       x ∈ LinearMap.range (AlgebraTensorModule.map (LinearMap.id : V →ₗ[A] V) b) := by
@@ -26,6 +32,11 @@ private theorem tr_range (b : B →ₗ[Q] B') (x : V ⊗[Q] B') :
   refine exists_congr fun y => ?_
   rw [← tr_map e (f := LinearMap.id) (fun _ => rfl), (tr B' e).injective.eq_iff]
 
+/- English proof (translation)
+Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add c d hc hd => simp only [map_add, LinearMap.add_apply, hc, hd]`. Consider the case `tmul a k`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul v c => simp [tr]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 private theorem tr_smul {K : Type} [AddCommGroup K] [Module Q K] (s : K →ₗ[Q] Module.End Q B) (c : A ⊗[Q] K)
     (x : V ⊗[Q] B) :
     tr B e (((TensorProduct.homTensorHomMap (RingHom.id Q) V B V B).comp
@@ -49,6 +60,9 @@ variable {l : ℕ} [Fact l.Prime] {A V V' : Type} [CommRing A] [Algebra ℚ_[l] 
   [Module ℚ_[l] V] [IsScalarTower ℚ_[l] A V] [AddCommGroup V'] [Module A V'] [Module ℚ_[l] V']
   [IsScalarTower ℚ_[l] A V'] (e : V ≃ₗ[A] V')
 
+/- English proof (translation)
+Simplify using `only [Dcr, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Use `forall_congr' fun g => ?_` and prove the remaining obligations. Rewrite using `[actC, actC, ← tr_map e (h g), (tr _ e).injective.eq_iff]`.
+-/
 private theorem tr_Dcr {G : Type} [Group G] (φ : G →* GQ l) {ρ : Representation A G V} {ρ' : Representation A G V'}
     (h : ∀ g x, e (ρ g x) = ρ' g (e x)) (x : V ⊗[ℚ_[l]] Bcr l) :
     tr (Bcr l) e x ∈ Dcr φ ρ' ↔ x ∈ Dcr φ ρ := by
@@ -56,6 +70,9 @@ private theorem tr_Dcr {G : Type} [Group G] (φ : G →* GQ l) {ρ : Representat
   refine forall_congr' fun g => ?_
   rw [actC, actC, ← tr_map e (h g), (tr _ e).injective.eq_iff]
 
+/- English proof (translation)
+Rewrite using `[FilD, FilD, Submodule.mem_inf, Submodule.mem_inf]`. Use `and_congr ?_ (tr_range e _ x)` and prove the remaining obligations. Simplify using `only [Ddr, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Use `forall_congr' fun g => ?_` and prove the remaining obligations. Rewrite using `[UpperTheory.V.Loc.actD, UpperTheory.V.Loc.actD, ← tr_map e (h g), (tr _ e).injective.eq_iff]`.
+-/
 private theorem tr_FilD {G : Type} [Group G] (φ : G →* GQ l) {ρ : Representation A G V} {ρ' : Representation A G V'}
     (h : ∀ g x, e (ρ g x) = ρ' g (e x)) (i : ℤ) (x : V ⊗[ℚ_[l]] Bdr l) :
     tr (Bdr l) e x ∈ FilD φ ρ' i ↔ x ∈ FilD φ ρ i := by
@@ -65,12 +82,23 @@ private theorem tr_FilD {G : Type} [Group G] (φ : G →* GQ l) {ρ : Representa
   refine forall_congr' fun g => ?_
   rw [UpperTheory.V.Loc.actD, UpperTheory.V.Loc.actD, ← tr_map e (h g), (tr _ e).injective.eq_iff]
 
+/- English proof (translation)
+The claim follows from `tr_smul e _ c x`.
+-/
 private theorem tr_smulD (K : FinExt l) (c : A ⊗[ℚ_[l]] ↥K.1) (x : V ⊗[ℚ_[l]] Bdr l) :
     tr (Bdr l) e (smulD V K c x) = smulD V' K c (tr (Bdr l) e x) := tr_smul e _ c x
 
+/- English proof (translation)
+The claim follows from `tr_smul e _ c x`.
+-/
 private theorem tr_smulC (K : FinExt l) (c : A ⊗[ℚ_[l]] ↥(K0 K)) (x : V ⊗[ℚ_[l]] Bcr l) :
     tr (Bcr l) e (smulC V K c x) = smulC V' K c (tr (Bcr l) e x) := tr_smul e _ c x
 
+/- English proof (translation)
+Unfold `Crys IsCrys at hc ⊢`. Rewrite using `[← (e.restrictScalars ℚ_[l]).finrank_eq, ← hc]`. Use `symm`. Use `((tr (Bcr l) (e.restrictScalars ℚ_[l])).ofSubmodules _ _ ?_).finrank_eq` and prove the remaining obligations. Use extensionality with `x`.
+
+Take `⟨y, rfl⟩` from `(tr (Bcr l) (e.restrictScalars ℚ_[l])).surjective x`. Rewrite using `[Submodule.mem_map_equiv, LinearEquiv.symm_apply_apply]`. Simplify using `only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Use `forall_congr' fun g => ?_` and prove the remaining obligations. Rewrite using `[actVB, actVB, ← tr_map (e.restrictScalars ℚ_[l]) (f := resCoef ℚ_[l] ρ g) (f' := resCoef ℚ_[l] ρ' g) (h g), (tr _ _).injective.eq_iff]`.
+-/
 private theorem crys_equiv (K : FinExt l) {ρ : Representation A ↥(GK K) V} {ρ' : Representation A ↥(GK K) V'}
     (h : ∀ g x, e (ρ g x) = ρ' g (e x)) (hc : Crys K ρ) : Crys K ρ' := by
   unfold Crys IsCrys at hc ⊢
@@ -85,6 +113,15 @@ private theorem crys_equiv (K : FinExt l) {ρ : Representation A ↥(GK K) V} {�
   rw [actVB, actVB, ← tr_map (e.restrictScalars ℚ_[l]) (f := resCoef ℚ_[l] ρ g)
     (f' := resCoef ℚ_[l] ρ' g) (h g), (tr _ _).injective.eq_iff]
 
+/- English proof (translation)
+Take `⟨hH, L, hL, hn, hc, x, hx, hu, ht⟩` from `H`. Establish `h' : ∀ g x, e ((ρ.comp (incl hL) : Representation A _ V) g x) = (ρ'.comp (incl hL) : Representation A _ V') g (e x)` using `fun g x => h _ x`. Use `⟨fun i => ?_, L, hL, hn, crys_equiv e L h' hc, fun a => tr _ e (x a), fun a => (tr_Dcr e _ h' _).2 (hx a), fun y hy => ?_, fun γ hγ M hM => ht γ hγ M fun b => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, hv⟩` from `hH i`. Use `⟨fun a => tr _ e (z a), fun a => (tr_FilD e _ h i _).2 (hz a), fun y hy => ?_⟩` and prove the remaining obligations.
+
+Take `⟨y, rfl⟩` from `(tr (Bdr l) e).surjective y`. Use `(existsUnique_congr fun c => ?_).1 (hv y ((tr_FilD e _ h i _).1 hy))` and prove the remaining obligations. Rewrite using `[← tr_FilD e _ h, map_sub, map_sum]`. Simplify using `only [tr_smulD]`. Take `⟨y, rfl⟩` from `(tr (Bcr l) e).surjective y`.
+
+Use `(existsUnique_congr fun c => ?_).1 (hu y ((tr_Dcr e _ h' _).1 hy))` and prove the remaining obligations. Rewrite using `[← (tr (Bcr l) e).injective.eq_iff, map_sum]`. Simplify using `only [tr_smulC]`. Apply `(tr (Bcr l) e).injective` to reduce the goal to its premises. Rewrite using `[map_sum, actC, tr_map e (h γ)]`.
+
+Simplify using `only [tr_smulC]`. Conclude with `hM b`.
+-/
 theorem UpperTheory.V.Loc.potCrysType_equiv (K : FinExt l) {ρ : Representation A ↥(GK K) V}
     {ρ' : Representation A ↥(GK K) V'} (h : ∀ g x, e (ρ g x) = ρ' g (e x)) {n : ℕ} {m : ℤ → ℕ} {t : ↥(GK K) → A}
     (H : PotCrysType K ρ n m t) : PotCrysType K ρ' n m t := by
@@ -110,6 +147,11 @@ theorem UpperTheory.V.Loc.potCrysType_equiv (K : FinExt l) {ρ : Representation 
 
 end Per
 
+/- English proof (translation)
+Take `⟨ρ, hρ, H⟩` from `H`. Use `⟨conjGL h ρ, fun g => ?_, potCrysType_equiv (Matrix.toLinearEquiv' (h : Matrix (Fin 3) (Fin 3) B) h.invertible) _ (fun g x => ?_) H⟩` and prove the remaining obligations. Establish `h1 : (r g).right = 1` using `(hm g).trans ((D.η_ker g).2 g.2)`. Establish `h2 : conjBy h r g = GG.ofGL h * r g * GG.ofGL h⁻¹` using `by rw [map_inv]; rfl`. Rewrite using `[h2, SemidirectProduct.mul_left, SemidirectProduct.mul_left, SemidirectProduct.mul_right, SemidirectProduct.left_inl, SemidirectProduct.left_inl, SemidirectProduct.right_inl, h1, mul_one, sgnAct_one, sgnAct_one, ← hρ]`.
+
+Both sides reduce to the same expression. Simplify using `[colRep, conjGL, Matrix.toLinearEquiv', Matrix.mul_assoc]`.
+-/
 theorem UpperTheory.V.Loc.Dat3.IsType.conj {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O]
     {D : Dat3 l O} {B : Type} [CommRing B] [Algebra O B] [Algebra ℚ_[l] B] {r : GQ l →* GG 3 B}
     (hm : HasMult D.η r) (h : GL (Fin 3) B) (H : D.IsType r) : D.IsType (conjBy h r) := by

@@ -22,6 +22,11 @@ variable (bas bas' : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ)
 def ratPt : (Fin g ⊕ Fin g → ℚ) →ₗ[ℚ] (Fin r → E) :=
   Fintype.linearCombination ℚ fun s => (bas (Pi.single s 1) : Fin r → E)
 
+/- English proof (translation)
+Establish `hm : m = ∑ s, m s • (Pi.single s 1 : Fin g ⊕ Fin g → ℤ)`. Use extensionality with `t`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [hm]`. Rewrite using `[map_sum]`.
+
+Use `push_cast`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem coe_bas_eq_sum (m : Fin g ⊕ Fin g → ℤ) :
     (bas m : Fin r → E) = ∑ s, m s • (bas (Pi.single s 1) : Fin r → E) := by
   have hm : m = ∑ s, m s • (Pi.single s 1 : Fin g ⊕ Fin g → ℤ) := by
@@ -34,6 +39,27 @@ theorem coe_bas_eq_sum (m : Fin g ⊕ Fin g → ℤ) :
   push_cast
   rfl
 
+/- English proof (translation)
+Use `set v : Fin g ⊕ Fin g → (Fin r → E) := fun s => (bas (Pi.single s 1) : Fin r → E) with hv`. Establish `hΛ : ∀ l ∈ X.Λ, l ∈ Submodule.span ℚ (Set.range v)`. Introduce `l hl`. Establish `h` using `coe_bas_eq_sum bas (bas.symm ⟨l, hl⟩)`. Rewrite `h` using `[LinearEquiv.apply_symm_apply]`.
+
+Establish `key : ((⟨l, hl⟩ : X.Λ) : Fin r → E) ∈ Submodule.span ℚ (Set.range v)`. Rewrite using `[h]`. Conclude with `Submodule.sum_mem _ fun s _ => zsmul_mem (Submodule.subset_span (Set.mem_range_self s)) _`. Conclude with `key`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : LinearIndependent ℤ v`. Establish `hb` using `((Pi.basisFun ℤ (Fin g ⊕ Fin g)).map bas).linearIndependent`. Establish `h2` using `hb.map' (X.Λ.subtype.restrictScalars ℤ) (LinearMap.ker_eq_bot.mpr Subtype.val_injective)`. Establish `hfun : v = ⇑(X.Λ.subtype.restrictScalars ℤ) ∘ ⇑((Pi.basisFun ℤ (Fin g ⊕ Fin g)).map bas)`. Use extensionality with `s`.
+
+Simplify using `[v]`. Rewrite using `[hfun]`. Conclude with `h2`. Establish `h3 : LinearIndependent ℚ v` using `(LinearIndependent.iff_fractionRing ℤ ℚ).mp h1`. Conclude with `linearIndependent_iff_injective_fintypeLinearCombination.mp h3`.
+
+Rewrite using `[← LinearMap.range_eq_top] show LinearMap.range (Fintype.linearCombination ℚ v) = ⊤`. Rewrite using `[Fintype.range_linearCombination]`. Establish `hsmul : ∀ (e : E) (w : Fin r → E), w ∈ Submodule.span ℚ (Set.range v) → e • w ∈ Submodule.span ℚ (Set.range v)`. Introduce `e w hw`. Take `⟨d, o, hd, hdo⟩` from `(IsFractionRing.isAlgebraic_iff ℤ ℚ E |>.mpr (.of_finite ℚ e)).exists_nsmul_eq (𝓞 E)`.
+
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨s, rfl⟩` from `hy`. Establish `h1 : o • v s ∈ X.Λ` using `X.Λ.smul_mem o (bas (Pi.single s 1)).2`. Establish `h2 : (o • v s : Fin r → E) = ((d : ℚ) • e) • v s`.
+
+Rewrite using `[Nat.cast_smul_eq_nsmul ℚ, hdo, algebraMap_smul]`. Establish `h3 : e • v s = ((d : ℚ)⁻¹) • (o • v s)`. Rewrite using `[h2, smul_assoc, smul_smul, inv_mul_cancel₀ (by exact_mod_cast hd), one_smul]`. Rewrite using `[h3]`. Conclude with `Submodule.smul_mem _ _ (hΛ _ h1)`.
+
+Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [smul_add]`. Conclude with `add_mem hy hz`. Consider the case `smul q y _ hy => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ q hy`.
+
+Set `S : Submodule E (Fin r → E)` to `{ toAddSubmonoid := (Submodule.span ℚ (Set.range v)).toAddSubmonoid smul_mem' := fun e w hw => hsmul e w hw }`. Establish `hS : S = ⊤`. Rewrite using `[eq_top_iff, ← X.Λ_span, Submodule.span_le]`. Introduce `l hl`. Conclude with `hΛ l hl`.
+
+Rewrite using `[eq_top_iff]`. Introduce `w _`. Establish `hw : w ∈ S` using `hS ▸ Submodule.mem_top`. Conclude with `hw`.
+-/
 theorem ratPt_bijective : Function.Bijective (ratPt bas) := by
   set v : Fin g ⊕ Fin g → (Fin r → E) := fun s => (bas (Pi.single s 1) : Fin r → E) with hv
   have hΛ : ∀ l ∈ X.Λ, l ∈ Submodule.span ℚ (Set.range v) := by
@@ -106,6 +132,13 @@ section Series
 
 variable {idx} {bas bas' : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} {q0 : ℕ} (hr : X.p0 + q0 = r) {n : ℕ}
 
+/- English proof (translation)
+Establish `hF : (fun z : Fin n → Fin g → ℂ => ∏ k, canFn X bas' idx (a' k) (b' k) x (z k)) = fun z => (∏ k, c k) * ∏ k, canFn X bas idx (a k) (b k) x (z k)`. Use function extensionality and compare the values at `z`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => h k (z k)`. Establish `hd : Differentiable ℂ (fun z : Fin n → Fin g → ℂ => ∏ k, canFn X bas idx (a k) (b k) x (z k))`.
+
+Establish `he : (fun z : Fin n → Fin g → ℂ => ∏ k, canFn X bas idx (a k) (b k) x (z k)) = ∏ k, fun z : Fin n → Fin g → ℂ => canFn X bas idx (a k) (b k) x (z k)`. Use function extensionality and compare the values at `z`. Simplify using `[Finset.prod_apply]`. Rewrite using `[he]`. Conclude with `Finset.prod_induction _ (fun f => Differentiable ℂ f) (fun f1 f2 h1 h2 => h1.mul h2) (differentiable_const 1) fun k _ => (canFn_entire idx hs hx (a k) (b k)).comp (differentiable_apply k)`.
+
+Rewrite using `[hF]`. Conclude with `GlobalTheory.CanTh.polyDeriv_const_mul P _ isOpen_univ hd.differentiableOn _ (Set.mem_univ _)`.
+-/
 theorem polyDeriv_prod_canFn_eq_mul (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom)
     {a b a' b' : Fin n → Fin g → ℝ} {c : Fin n → ℂ}
     (h : ∀ k z, canFn X bas' idx (a' k) (b' k) x z = c k * canFn X bas idx (a k) (b k) x z)
@@ -133,6 +166,13 @@ theorem polyDeriv_prod_canFn_eq_mul (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx 
 variable (hs : IsSympl X bas) (hs' : IsSympl X bas') (hn : Even n)
 include hs hs' hn
 
+/- English proof (translation)
+Take `⟨μ, hμ, hμz⟩` from `h x hx`. Establish `hc : ∀ k z, canFn X bas' idx (a₀' + u' k ∘ Sum.inr) (b₀' + u' k ∘ Sum.inl) x z = (translConst b₀ (u k ∘ Sum.inr) (u k ∘ Sum.inl) / translConst b₀' (u' k ∘ Sum.inr) (u' k ∘ Sum.inl) * μ) * canFn X bas idx (a₀ + u k ∘ Sum.inr) (b₀ + u k ∘ Sum.inl) x z` using `fun k z => canFn_translate_eq_mul hs hs' hx hμz (hu k) z`. Establish `halg : ∀ {A B D : ℂ} (t : Fin n → ℂ), μ ^ 2 * A = κ * B → A ^ (n / 2) * ((∏ k, (t k * μ)) * D) = κ ^ (n / 2) * (∏ k, t k) * (B ^ (n / 2) * D)`. Introduce `A B D t hAB`. Take `⟨m, rfl⟩` from `hn`.
+
+Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, show (m + m) / 2 = m by omega]`. Establish `key : (μ ^ 2 * A) ^ m = (κ * B) ^ m` using `by rw [hAB]`. Take the linear combination `(∏ k, t k) * D * key`. Simplify using `only [thFr]`. Rewrite using `[polyDeriv_prod_canFn_eq_mul hr hs hx hc P]`.
+
+Conclude with `halg _ hμ`.
+-/
 theorem IsProportional.thFr_eq {κ : ℂ} {a₀ b₀ a₀' b₀' : Fin g → ℝ}
     (h : IsProportional X idx κ bas a₀ b₀ bas' a₀' b₀') {u u' : Fin n → Fin g ⊕ Fin g → ℝ}
     (hu : ∀ k, IsSamePt X bas bas' (u k) (u' k)) (P : Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n))
@@ -161,6 +201,9 @@ theorem IsProportional.thFr_eq {κ : ℂ} {a₀ b₀ a₀' b₀' : Fin g → ℝ
 
 omit hs hs' hn in
 
+/- English proof (translation)
+Rewrite using `[norm_mul, norm_pow, hκ, one_pow, one_mul, norm_prod]`. Conclude with `Finset.prod_eq_one fun k _ => by`. Rewrite using `[norm_div, GlobalTheory.CanTh.norm_translConst, GlobalTheory.CanTh.norm_translConst, div_one]`.
+-/
 theorem norm_pow_mul_prod_translConst {κ : ℂ} (hκ : ‖κ‖ = 1) (j : ℕ) (b b' : Fin g → ℝ)
     (s t s' t' : Fin n → Fin g → ℝ) :
     ‖κ ^ j * ∏ k, translConst b (s k) (t k) / translConst b' (s' k) (t' k)‖ = 1 := by
@@ -170,6 +213,17 @@ theorem norm_pow_mul_prod_translConst {κ : ℂ} (hκ : ‖κ‖ = 1) (j : ℕ) 
 
 variable (idx) in
 
+/- English proof (translation)
+Take `⟨k, k', hk⟩` from `exists_isProportional idx hs' hs`. Take `⟨κ, hκ, hprop⟩` from `hk 0 0 (Matrix.mulVec_zero _).symm`. Use `set w' : Fin n → Fin g ⊕ Fin g → ℝ := fun j => Sum.elim (b j - fun i => (k' i : ℝ) / 2) (a j - fun i => (k i : ℝ) / 2) with hw'`. Use `set w : Fin n → Fin g ⊕ Fin g → ℝ := fun j => (chgMat X bas' bas).map (Int.cast : ℤ → ℝ) *ᵥ w' j with hw`. Establish `hu : ∀ j, IsSamePt X bas' bas (w j) (w' j)` using `fun j => rfl`.
+
+Use `⟨fun j => (0 : Fin g ⊕ Fin g → ℝ) ∘ Sum.inr + w j ∘ Sum.inr, fun j => (0 : Fin g ⊕ Fin g → ℝ) ∘ Sum.inl + w j ∘ Sum.inl, κ ^ (n / 2) * ∏ j, translConst ((0 : Fin g ⊕ Fin g → ℝ) ∘ Sum.inl) (w j ∘ Sum.inr) (w j ∘ Sum.inl) / translConst ((fun i => (k' i : ℝ) / 2) + (0 : Fin g ⊕ Fin …` and prove the remaining obligations. Introduce `ha hb`. Establish `hw'r : ∀ j s, w' j s ∈ Set.range (Rat.cast : ℚ → ℝ)`. Introduce `j s`. Break down `s with i | i` into its components or cases.
+
+Take `⟨q, hq⟩` from `hb j i`. Conclude with `⟨q - (k' i : ℚ) / 2, by simp [hw', hq]⟩`. Take `⟨q, hq⟩` from `ha j i`. Conclude with `⟨q - (k i : ℚ) / 2, by simp [hw', hq]⟩`. Establish `hwr : ∀ j s, w j s ∈ Set.range (Rat.cast : ℚ → ℝ)`.
+
+Introduce `j s`. Use `choose q hq using hw'r j`. Use `⟨((chgMat X bas' bas).map (Int.cast : ℤ → ℚ) *ᵥ q) s, ?_⟩` and prove the remaining obligations. Simplify using `[hw, Matrix.mulVec, dotProduct, hq]`. Conclude with `⟨fun j i => by simpa using hwr j (Sum.inr i), fun j i => by simpa using hwr j (Sum.inl i)⟩`.
+
+Introduce `P x hx`. Establish `h` using `IsProportional.thFr_eq hr hs' hs hn hprop hu P hx`. Apply the tactic sequence `convert h using 2 <;> funext j <;> simp [hw']`.
+-/
 theorem exists_thFr_eq_mul (a b : Fin n → Fin g → ℝ) :
     ∃ (a' b' : Fin n → Fin g → ℝ) (c : ℂ), ‖c‖ = 1 ∧
       ((∀ k i, a k i ∈ Set.range (Rat.cast : ℚ → ℝ)) → (∀ k i, b k i ∈ Set.range (Rat.cast : ℚ → ℝ)) →

@@ -11,22 +11,34 @@ open IsLocalRing Polynomial WeierstrassCurve.Affine GroundTheory.Arith.Abelian
 
 section Transport
 
+/- English proof (translation)
+Substitute `h₁` using the available equality. Substitute `h₂` using the available equality. Both sides reduce to the same expression.
+-/
 theorem pointCongr_pointCongr {F : Type*} [Field F] [DecidableEq F]
     {V₁ V₂ V₃ : WeierstrassCurve F} (h₁ : V₁ = V₂) (h₂ : V₂ = V₃) (P : V₁.toAffine.Point) :
     pointCongr h₂ (pointCongr h₁ P) = pointCongr (h₁.trans h₂) P := by
   subst h₁; subst h₂; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem pointMapRing_pointCongr {F L : Type*} [Field F] [Field L] [DecidableEq F] [DecidableEq L]
     (f : F →+* L) {V₁ V₂ : WeierstrassCurve F} (h : V₁ = V₂) (P : V₁.toAffine.Point) :
     pointMapRing f V₂ (pointCongr h P) =
       pointCongr (congrArg (fun V => V.map f) h) (pointMapRing f V₁ P) := by
   subst h; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem pointMapRing_congr {F L : Type*} [Field F] [Field L] [DecidableEq F] [DecidableEq L]
     {f g : F →+* L} (h : f = g) (V : WeierstrassCurve F) (P : V.toAffine.Point) :
     pointMapRing f V P = pointCongr (by rw [h]) (pointMapRing g V P) := by
   subst h; rfl
 
+/- English proof (translation)
+Break down `P with _ | ⟨x, y, h⟩` into its components or cases. Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem pointMapRing_pointMapRing {F L L' : Type*} [Field F] [Field L] [Field L'] [DecidableEq F]
     [DecidableEq L] [DecidableEq L'] (f : F →+* L) (g : L →+* L') (V : WeierstrassCurve F)
     (P : V.toAffine.Point) :
@@ -35,6 +47,11 @@ theorem pointMapRing_pointMapRing {F L L' : Type*} [Field F] [Field L] [Field L'
   · rfl
   · rfl
 
+/- English proof (translation)
+Break down `P with _ | ⟨x, y, h⟩` into its components or cases. Conclude with `(map_zero (pointCongr _)).symm`. Rewrite using `[Point.map_some]`. Take `⟨h', e⟩` from `pointMapRing_some σ.toRingHom (V.baseChange F₁) h`. Rewrite using `[e, pointCongr_some, Point.some.injEq]`.
+
+Conclude with `⟨rfl, rfl⟩`.
+-/
 theorem map_eq_pointCongr_pointMapRing {R F₁ F₂ : Type*} [CommRing R] [Field F₁] [Field F₂]
     [Algebra R F₁] [Algebra R F₂] [DecidableEq F₁] [DecidableEq F₂] (V : WeierstrassCurve R)
     (σ : F₁ →ₐ[R] F₂) (P : (V.baseChange F₁).toAffine.Point) :
@@ -48,6 +65,9 @@ theorem map_eq_pointCongr_pointMapRing {R F₁ F₂ : Type*} [CommRing R] [Field
     rw [e, pointCongr_some, Point.some.injEq]
     exact ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem reducePoint_pointCongr {𝒪 : Type*} [CommRing 𝒪] [IsDomain 𝒪] [IsDiscreteValuationRing 𝒪]
     (K : Type*) [Field K] [Algebra 𝒪 K] [DecidableEq K] [DecidableEq (ResidueField 𝒪)]
     {V₁ V₂ : WeierstrassCurve 𝒪} (h : V₁ = V₂) (P : (curveK K V₁).Point) :
@@ -68,6 +88,9 @@ variable {𝒪 : Type*} [CommRing 𝒪] [IsDomain 𝒪] [IsDiscreteValuationRing
 omit [IsDomain 𝒪] [IsDiscreteValuationRing 𝒪] [IsFractionRing 𝒪 K] [IsDomain Λ]
   [IsDiscreteValuationRing Λ] [IsLocalHom j] [IsFractionRing Λ M] [DecidableEq M]
   [DecidableEq (ResidueField Λ)] in
+/- English proof (translation)
+Use `show W'.map ((algebraMap K M).comp (algebraMap 𝒪 K)) = W'.map ((algebraMap Λ M).comp j)`. Use `congr 1`. Conclude with `RingHom.ext hjM`.
+-/
 theorem map_baseChange_eq_map_of
     (hjM : ∀ c : 𝒪, algebraMap K M (algebraMap 𝒪 K c) = algebraMap Λ M (j c)) :
     (W'.baseChange K).baseChange M = (W'.map j).map (algebraMap Λ M) := by
@@ -78,6 +101,9 @@ theorem map_baseChange_eq_map_of
 variable {x y : Λ} (hxy : (W.map j).toAffine.Equation x y)
   (hx : Function.Injective (eval₂RingHom (ResidueField.map j) (residue Λ x)))
 
+/- English proof (translation)
+Use `show W'.map (((fieldEvalRed W j hxy hx).comp (algebraMap (ResidueField 𝒪) _)).comp (residue 𝒪)) = W'.map ((residue Λ).comp j)`. Use `congr 1`. Use `RingHom.ext fun c => ?_` and prove the remaining obligations. Simplify using `[fieldEvalRed_algebraMap, ResidueField.map_residue]`.
+-/
 theorem map_fieldEvalRed_eq :
     ((W'.map (residue 𝒪)).baseChange (W.map (residue 𝒪)).toAffine.FunctionField).map
       (fieldEvalRed W j hxy hx) = (W'.map j).map (residue Λ) := by
@@ -89,6 +115,17 @@ theorem map_fieldEvalRed_eq :
 
 variable [W'.IsElliptic]
 
+/- English proof (translation)
+Use `haveI : DecidableEq (ResidueField (gaussRing W)) := Classical.decEq _`. Use `set σ := genEval (W.baseChange K) _ hRg`. Establish `hσ : σ.toRingHom.comp (algebraMap (gaussRing W) (W.baseChange K).toAffine.FunctionField) = (algebraMap Λ M).comp (gaussLift W j hxy hx)`. Apply `comp_algebraMap_gaussLift` to reduce the goal to its premises. Introduce `c show σ (algebraMap 𝒪 _ c) = _`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply 𝒪 K, σ.commutes, hjM]`. Conclude with `genEval_genX _ _ hRg`. Conclude with `genEval_genY _ _ hRg`. Establish `c0 : (gaussCurve W W').map (gaussLift W j hxy hx) = W'.map j` using `by show W'.map ((gaussLift W j hxy hx).comp (algebraMap 𝒪 (gaussRing W))) = W'.map j`. Conclude with `congrArg W'.map (RingHom.ext (gaussLift_algebraMap_base W j hxy hx))`.
+
+Use `set Q₀ := pointCongr (gaussCurve_map_functionField K W W').symm Q with hQ₀`. Establish `hQ : Q = pointCongr (gaussCurve_map_functionField K W W') Q₀`. Rewrite using `[hQ₀, pointCongr_pointCongr]`. Both sides reduce to the same expression. Establish `key` using `reducePoint_pointMapRing (W.baseChange K).toAffine.FunctionField M hσ (gaussCurve W W') Q₀`.
+
+Establish `lhs : pointCongr (map_baseChange_eq_map_of K W' j M hjM) (Point.map σ Q) = pointCongr (congrArg (fun V => V.map (algebraMap Λ M)) c0) (pointCongr (map_curveK_eq _ M hσ (gaussCurve W W')) (pointMapRing σ.toRingHom _ Q₀))`. Rewrite using `[map_eq_pointCongr_pointMapRing, hQ, pointMapRing_pointCongr, pointCongr_pointCongr, pointCongr_pointCongr, pointCongr_pointCongr]`. Rewrite using `[lhs, reducePoint_pointCongr, key, pointMapRing_congr (residueField_map_gaussLift W j hxy hx), ← pointMapRing_pointMapRing]`. Simplify using `only [reduceFF, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, reductionHom_apply]`. Rewrite using `[pointMapRing_pointCongr]`.
+
+Use `erw [pointCongr_pointCongr, pointCongr_pointCongr, pointCongr_pointCongr]`. Both sides reduce to the same expression. Conclude with `c0`.
+-/
 theorem reducePoint_genEval
     (hjM : ∀ c : 𝒪, algebraMap K M (algebraMap 𝒪 K c) = algebraMap Λ M (j c))
     (hR : ((W.baseChange K).baseChange M).toAffine.Nonsingular (algebraMap Λ M x)

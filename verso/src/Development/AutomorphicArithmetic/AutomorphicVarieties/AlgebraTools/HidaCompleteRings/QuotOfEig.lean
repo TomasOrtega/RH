@@ -4,6 +4,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.HidaC
 
 open UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite TensorProduct
 
+/- English proof (translation)
+Introduce `K Y ι _ _ _ _ A hA x y hy hAy`. Establish `hc : ∀ i j, Commute (A i).dualMap (A j).dualMap`. Introduce `i j`. Use `show (A i).dualMap * (A j).dualMap = (A j).dualMap * (A i).dualMap`. Use `LinearMap.ext fun ψ => LinearMap.ext fun z => ?_` and prove the remaining obligations.
+
+Establish `h` using `LinearMap.congr_fun (hA j i).eq z`. Simplify using `only [Module.End.mul_apply] at h`. Simplify using `only [Module.End.mul_apply, LinearMap.dualMap_apply]`. Rewrite using `[h]`. Establish `hne : Module.Dual.eval K Y y ≠ 0`.
+
+Introduce `h0`. Apply `hy` to reduce the goal to its premises. Use `(Module.forall_dual_apply_eq_zero_iff K y).mp ?_` and prove the remaining obligations. Introduce `ψ`. Conclude with `LinearMap.congr_fun h0 ψ`.
+
+Take `⟨ψ, hψ, hψA⟩` from `eigOfQuot (fun i => (A i).dualMap) hc x (Module.Dual.eval K Y y) hne (by`. Introduce `i ψ`. Simplify using `[LinearMap.dualMap_apply, hAy])`. Use `⟨ψ, hψ, fun i z => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun (hψA i) z` as an intermediate fact.
+
+Simplify `this` using `[LinearMap.dualMap_apply]`.
+-/
 theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.quotOfEig :
     ∀ {K Y ι : Type*} [Field K] [AddCommGroup Y] [Module K Y] [FiniteDimensional K Y] (A : ι → Module.End K Y), (∀ i j, Commute (A i) (A j)) → ∀ (x : ι → K) (y : Y), y ≠ 0 → (∀ i, A i y = x i • y) → ∃ φ : Module.Dual K Y, φ ≠ 0 ∧ ∀ i z, φ (A i z) = x i * φ z := by
   intro K Y ι _ _ _ _ A hA x y hy hAy

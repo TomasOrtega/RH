@@ -11,6 +11,9 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.QCoh Gl
 
 namespace GlobalTheory.FieldPair
 
+/- English proof (translation)
+Introduce `X _ p hP x hx`. Use `haveI : LocallyOfFiniteType p := GlobalTheory.isProjOver_locallyOfFiniteType ℂ X p hP`. Conclude with `ratRes_locRing_of_isClosed X p x hx`.
+-/
 theorem ratRes_locRing_of_isClosed_of_isProjOver : ∀ (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp ℂ), IsProjOver p → ∀ x : X,
     IsClosed ({x} : Set X) → RatRes (Cartier.constFn p) (locRing x) := by
   intro X _ p hP x hx

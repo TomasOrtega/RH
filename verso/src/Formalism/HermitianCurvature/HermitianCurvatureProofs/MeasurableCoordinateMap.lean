@@ -17,6 +17,9 @@ section meas
 variable (S : B.RealPlaceData k r Wp Wq) (w : Equiv.Perm (Fin (r + 1)))
   (e : ((C2.Lstidx w → ℂ) × (C2.LPidx w → ℂ)) ≃ᵐ (G.UT (r + 1) → ℂ))
 
+/- English proof (translation)
+Establish `he : Measurable fun p : (C2.Lstidx w → ℂ) × RR k r w => e (p.1, p.2.1.2.1)` using `e.measurable.comp (measurable_fst.prodMk measurable_snd.fst.snd.fst)`. Establish `h1 : MeasM fun p : (C2.Lstidx w → ℂ) × RR k r w => C2.tauM k r S.z (G.upper (e (p.1, p.2.1.2.1))) * Matrix.of p.2.1.2.2` using `measM_mul (measM_tau _ (OF.measM_upper he)) measurable_snd.fst.snd.snd`. Establish `h2 : MeasM fun p : (C2.Lstidx w → ℂ) × RR k r w => C2.tauM k r S.z' (G.upper p.2.2.2.1) * Matrix.of p.2.2.2.2` using `measM_mul (measM_tau _ (OF.measM_upper measurable_snd.snd.snd.fst)) measurable_snd.snd.snd.snd`. Conclude with `(measurable_snd.fst.fst.prodMk h1).prodMk (measurable_snd.snd.fst.prodMk h2)`.
+-/
 theorem meas_Xi : Measurable fun p : (C2.Lstidx w → ℂ) × RR k r w => Xi S w e p.1 p.2 := by
   have he : Measurable fun p : (C2.Lstidx w → ℂ) × RR k r w => e (p.1, p.2.1.2.1) :=
     e.measurable.comp (measurable_fst.prodMk measurable_snd.fst.snd.fst)
@@ -28,6 +31,9 @@ theorem meas_Xi : Measurable fun p : (C2.Lstidx w → ℂ) × RR k r w => Xi S w
     measM_mul (measM_tau _ (OF.measM_upper measurable_snd.snd.snd.fst)) measurable_snd.snd.snd.snd
   exact (measurable_snd.fst.fst.prodMk h1).prodMk (measurable_snd.snd.fst.prodMk h2)
 
+/- English proof (translation)
+Establish `h1 : MeasM fun q : RR k r w => C2.tauM k r S.z (lowP w q.1.2.1)ᴴ * Matrix.of q.1.2.2` using `measM_mul (measM_tau _ (measM_star (OF.measM_lowP w measurable_fst.snd.fst))) measurable_fst.snd.snd`. Establish `h2 : MeasM fun q : RR k r w => C2.tauM k r S.z' (G.upper q.2.2.1) * Matrix.of q.2.2.2` using `measM_mul (measM_tau _ (OF.measM_upper measurable_snd.snd.fst)) measurable_snd.snd.snd`. Conclude with `(measurable_fst.fst.prodMk h1).prodMk (measurable_snd.fst.prodMk h2)`.
+-/
 theorem measurable_coordinate_map : Measurable fun q : RR k r w => Xi0 S w q := by
   have h1 : MeasM fun q : RR k r w => C2.tauM k r S.z (lowP w q.1.2.1)ᴴ * Matrix.of q.1.2.2 :=
     measM_mul (measM_tau _ (measM_star (OF.measM_lowP w measurable_fst.snd.fst))) measurable_fst.snd.snd
@@ -39,6 +45,19 @@ variable {μ0 μ0' : Measure (Mt k r)} (hμ0 : B.IsHaarOn (C2.N0set k r S.z) μ0
   (hμ0' : B.IsHaarOn (C2.N0set k r S.z') μ0')
 
 include hμ0 hμ0' in
+/- English proof (translation)
+Use `haveI : IsFiniteMeasureOnCompacts S.μW := ⟨fun K hK => S.haarW.finite_compact K hK⟩`. Use `haveI : IsFiniteMeasureOnCompacts S.μW' := ⟨fun K hK => S.haarW'.finite_compact K hK⟩`. Use `haveI : IsFiniteMeasureOnCompacts μ0 := ⟨fun K hK => hμ0.finite_compact K hK⟩`. Use `haveI : IsFiniteMeasureOnCompacts μ0' := ⟨fun K hK => hμ0'.finite_compact K hK⟩`. Use `haveI t1 : SFinite S.μW := inferInstance`.
+
+Use `haveI t2 : SFinite μ0 := inferInstance`. Use `haveI t5 : SFinite S.μW' := inferInstance`. Use `haveI t6 : SFinite μ0' := inferInstance`. Establish `hW : ∀ᵐ a ∂S.μW, Matrix.of a ∈ UWset k r S.z` using `ae_iff.2 S.haarW.conc`. Establish `hW' : ∀ᵐ a ∂S.μW', Matrix.of a ∈ UWset k r S.z'` using `ae_iff.2 S.haarW'.conc`.
+
+Establish `hN : ∀ᵐ a ∂μ0, Matrix.of a ∈ C2.N0set k r S.z` using `ae_iff.2 hμ0.conc`. Establish `hN' : ∀ᵐ a ∂μ0', Matrix.of a ∈ C2.N0set k r S.z'` using `ae_iff.2 hμ0'.conc`. Establish `a1 : ∀ᵐ q ∂(nuR S w μ0 μ0'), Matrix.of q.1.1 ∈ UWset k r S.z`. Establish `b1 : ∀ᵐ p ∂(S.μW.prod ((volume : Measure (C2.LPidx w → ℂ)).prod μ0)), Matrix.of p.1 ∈ UWset k r S.z` using `Measure.quasiMeasurePreserving_fst.ae (p := fun a : Mt k r => Matrix.of a ∈ UWset k r S.z) hW`. Conclude with `Measure.quasiMeasurePreserving_fst.ae (p := fun p : Mt k r × ((C2.LPidx w → ℂ) × Mt k r) => Matrix.of p.1 ∈ UWset k r S.z) b1`.
+
+Establish `a2 : ∀ᵐ q ∂(nuR S w μ0 μ0'), Matrix.of q.1.2.2 ∈ C2.N0set k r S.z`. Establish `b1 : ∀ᵐ p ∂((volume : Measure (C2.LPidx w → ℂ)).prod μ0), Matrix.of p.2 ∈ C2.N0set k r S.z` using `Measure.quasiMeasurePreserving_snd.ae (p := fun a : Mt k r => Matrix.of a ∈ C2.N0set k r S.z) hN`. Establish `b2 : ∀ᵐ p ∂(S.μW.prod ((volume : Measure (C2.LPidx w → ℂ)).prod μ0)), Matrix.of p.2.2 ∈ C2.N0set k r S.z` using `Measure.quasiMeasurePreserving_snd.ae (p := fun p : (C2.LPidx w → ℂ) × Mt k r => Matrix.of p.2 ∈ C2.N0set k r S.z) b1`. Conclude with `Measure.quasiMeasurePreserving_fst.ae (p := fun p : Mt k r × ((C2.LPidx w → ℂ) × Mt k r) => Matrix.of p.2.2 ∈ C2.N0set k r S.z) b2`. Establish `a3 : ∀ᵐ q ∂(nuR S w μ0 μ0'), Matrix.of q.2.1 ∈ UWset k r S.z'`.
+
+Establish `b1 : ∀ᵐ p ∂(S.μW'.prod ((volume : Measure (G.UT (r + 1) → ℂ)).prod μ0')), Matrix.of p.1 ∈ UWset k r S.z'` using `Measure.quasiMeasurePreserving_fst.ae (p := fun a : Mt k r => Matrix.of a ∈ UWset k r S.z') hW'`. Conclude with `Measure.quasiMeasurePreserving_snd.ae (p := fun p : Mt k r × ((G.UT (r + 1) → ℂ) × Mt k r) => Matrix.of p.1 ∈ UWset k r S.z') b1`. Establish `a4 : ∀ᵐ q ∂(nuR S w μ0 μ0'), Matrix.of q.2.2.2 ∈ C2.N0set k r S.z'`. Establish `b1 : ∀ᵐ p ∂((volume : Measure (G.UT (r + 1) → ℂ)).prod μ0'), Matrix.of p.2 ∈ C2.N0set k r S.z'` using `Measure.quasiMeasurePreserving_snd.ae (p := fun a : Mt k r => Matrix.of a ∈ C2.N0set k r S.z') hN'`. Establish `b2 : ∀ᵐ p ∂(S.μW'.prod ((volume : Measure (G.UT (r + 1) → ℂ)).prod μ0')), Matrix.of p.2.2 ∈ C2.N0set k r S.z'` using `Measure.quasiMeasurePreserving_snd.ae (p := fun p : (G.UT (r + 1) → ℂ) × Mt k r => Matrix.of p.2 ∈ C2.N0set k r S.z') b1`.
+
+Conclude with `Measure.quasiMeasurePreserving_snd.ae (p := fun p : Mt k r × ((G.UT (r + 1) → ℂ) × Mt k r) => Matrix.of p.2.2 ∈ C2.N0set k r S.z') b2`. Use `filter_upwards [a1, a2, a3, a4] with q h1 h2 h3 h4`. Conclude with `⟨h1, h2, h3, h4⟩`.
+-/
 theorem ae_good : ∀ᵐ q ∂(nuR S w μ0 μ0'), Matrix.of q.1.1 ∈ UWset k r S.z ∧ Matrix.of q.1.2.2 ∈ C2.N0set k r S.z ∧
     Matrix.of q.2.1 ∈ UWset k r S.z' ∧ Matrix.of q.2.2.2 ∈ C2.N0set k r S.z' := by
   haveI : IsFiniteMeasureOnCompacts S.μW := ⟨fun K hK => S.haarW.finite_compact K hK⟩
@@ -91,11 +110,17 @@ theorem ae_good : ∀ᵐ q ∂(nuR S w μ0 μ0'), Matrix.of q.1.1 ∈ UWset k r 
 
 end meas
 
+/- English proof (translation)
+Use extensionality with `s _`. Rewrite using `[Measure.smul_apply, Measure.smul_apply]`. Both sides reduce to the same expression.
+-/
 theorem nn_smul {α : Type*} [MeasurableSpace α] (c : NNReal) (μ : Measure α) : c • μ = ((c : ENNReal) • μ) := by
   ext s _
   rw [Measure.smul_apply, Measure.smul_apply]
   rfl
 
+/- English proof (translation)
+Establish `hy : MeasM fun y : Mt k r => Matrix.of y` using `measurable_id`. Unfold `C6.actR`. Conclude with `(measurable_const.prodMk (measM_mul hy (measM_const _))).prodMk (measurable_const.prodMk (measM_mul (measM_mul (measM_mul (measM_const _) hy) (measM_const _)) (measM_const _)))`.
+-/
 theorem meas_actR (γ : B.Mat k r) (p : B.SS k r) :
     Measurable fun y : Mt k r => C6.actR γ (Matrix.of y) p := by
   have hy : MeasM fun y : Mt k r => Matrix.of y := measurable_id
@@ -118,6 +143,33 @@ variable (S : B.RealPlaceData k r Wp Wq) {γ : B.Mat k r} (hγ : γ ∈ B.GV k r
   (hμ0' : B.IsHaarOn (C2.N0set k r S.z') μ0')
 
 include hγ hd hZw hpos hrel he in
+/- English proof (translation)
+Establish `key : ∀ {ρ : B.Mat k r}, ρ ∈ C6.Rset γ → ∀ (p : B.SS k r), WeylGroupFacts.col k r (Matrix.of p.1.2) → WeylGroupFacts.col k r (Matrix.of p.2.2) → D.orbIntegrand S γ F (C6.actR γ ρ p) = D.orbIntegrand S γ F p`. Introduce `ρ hρ p h1 h2`. Establish `hψ` using `hrel.2 ρ hρ`. Take `⟨hρN, hρ'N⟩` from `hρ`. Establish `cρ` using `((WeylGroupFacts.nset_iff _).1 hρN).2`.
+
+Establish `cρ'` using `((WeylGroupFacts.nset_iff _).1 hρ'N).2`. Establish `iρ : ρ⁻¹ * ρ = 1` using `PI.PolynomialProperness.GN.inv_mul ((WeylGroupFacts.nset_iff _).1 hρN).1`. Establish `iγ : γ * γ⁻¹ = 1` using `Matrix.mul_nonsing_inv γ (Matrix.isUnit_det_of_left_inverse (PI.PolynomialProperness.GN.inv_mul hγ))`. Establish `e1` using `WeylGroupFacts.ell_mul S.z S.z_mem cρ h1`. Establish `e2` using `WeylGroupFacts.ell_mul S.z' S.z'_mem cρ' h2`.
+
+Establish `hs : (Matrix.of p.1.1)⁻¹ * (ρ * Matrix.of p.1.2)⁻¹ * γ * (γ⁻¹ * ρ * γ * Matrix.of p.2.2) * Matrix.of p.2.1 = (Matrix.of p.1.1)⁻¹ * (Matrix.of p.1.2)⁻¹ * γ * Matrix.of p.2.2 * Matrix.of p.2.1`. Rewrite using `[Matrix.mul_inv_rev]`. Combine the equalities or inequalities in the displayed calculation. Establish `hxi : B.xiTau S (1, 1) (C6.actR γ ρ p) = B.xiTau S (1, 1) p`. Unfold `B.xiTau C6.actR`.
+
+Simplify using `only [Equiv.apply_symm_apply]`. Unfold `B.lam`. Rewrite using `[e1, e2]`. Unfold `psi at hψ`. Use `set a := (cStd * ell k r S.z ρ).re`.
+
+Use `set b := (cStd * ell k r S.z' (γ⁻¹ * ρ * γ)).re`. Establish `hx : ((1 : ℝ) * (cStd * (ell k r S.z ρ + ell k r S.z (Matrix.of p.1.2))).re - (1 : ℝ) * (cStd * (ell k r S.z' (γ⁻¹ * ρ * γ) + ell k r S.z' (Matrix.of p.2.2))).re : ℝ) = (a - b) + ((1 : ℝ) * (cStd * ell k r S.z (Matrix.of p.1.2)).re - (1 : ℝ) * (cStd * ell k r S.z' (Matrix.of p.2. …`. Simplify using `only [a, b, mul_add, Complex.add_re]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hx, Complex.ofReal_add, mul_add, Complex.exp_add, Complex.ofReal_sub, mul_sub, Complex.exp_sub, hψ, div_self (Complex.exp_ne_zero _), one_mul]`.
+
+Establish `hrh : B.rho S (C6.actR γ ρ p) F γ = B.rho S p F γ`. Unfold `B.rho B.sgs C6.actR`. Simplify using `only [Equiv.apply_symm_apply, hs]`. Unfold `D.orbIntegrand`. Rewrite using `[hxi, hrh]`.
+
+Establish `hX : Xi S w e x q = C6.actR γ (rhoX S γ w x) (Xi0 S w (Tx S γ w e x q))`. Apply the tactic sequence `apply Xi_eq <;> assumption`. Choose the witnesses or unpack the hypotheses as in `⟨hρR, -⟩ : rhoX S γ w x ∈ C6.Rset γ ∧ C2.uMap k r S.z (rhoX S γ w x) = (lowS w x)ᴴ := by`. Apply the tactic sequence `apply rhoX_spec <;> assumption`. Establish `hρN` using `hρR.1`.
+
+Establish `hρ'N` using `hρR.2`. Establish `iρ : (rhoX S γ w x)⁻¹ * rhoX S γ w x = 1` using `PI.PolynomialProperness.GN.inv_mul ((WeylGroupFacts.nset_iff _).1 hρN).1`. Establish `iρ' : (γ⁻¹ * rhoX S γ w x * γ)⁻¹ * (γ⁻¹ * rhoX S γ w x * γ) = 1` using `PI.PolynomialProperness.GN.inv_mul ((WeylGroupFacts.nset_iff _).1 hρ'N).1`. Establish `cρi` using `WeylGroupFacts.col_of_left_inv ((WeylGroupFacts.nset_iff _).1 hρN).2 iρ`. Establish `cρi'` using `WeylGroupFacts.col_of_left_inv ((WeylGroupFacts.nset_iff _).1 hρ'N).2 iρ'`.
+
+Establish `hz : C2.StdZ k r S.z` using `⟨S.z_mem, S.T_pos⟩`. Establish `hz' : C2.StdZ k r S.z'` using `⟨S.z'_mem, S.T'_pos⟩`. Use `set P := Xi0 S w (Tx S γ w e x q) with hP`. Establish `E1 : rhoX S γ w x * Matrix.of P.1.2 = C2.tauM k r S.z (G.upper (e (x, q.1.2.1))) * Matrix.of q.1.2.2`. Use `congrArg (fun s : B.SS k r => Matrix.of s.1.2) hX` as an intermediate fact.
+
+Simplify `this.symm` using `[Xi, C6.actR]`. Establish `E2 : (γ⁻¹ * rhoX S γ w x * γ) * Matrix.of P.2.2 = C2.tauM k r S.z' (G.upper q.2.2.1) * Matrix.of q.2.2.2`. Use `congrArg (fun s : B.SS k r => Matrix.of s.2.2) hX` as an intermediate fact. Simplify `this.symm` using `[Xi, C6.actR]`. Establish `c1 : WeylGroupFacts.col k r (Matrix.of P.1.2)`.
+
+Establish `h : Matrix.of P.1.2 = (rhoX S γ w x)⁻¹ * (rhoX S γ w x * Matrix.of P.1.2)`. Rewrite using `[← Matrix.mul_assoc, iρ, Matrix.one_mul]`. Rewrite using `[h, E1]`. Conclude with `WeylGroupFacts.col_mul cρi (WeylGroupFacts.col_mul ((WeylGroupFacts.nset_iff _).1 (A.tau_N hz (HC.upper_mem _))).2 ((WeylGroupFacts.nset_iff _).1 hq1).2)`. Establish `c2 : WeylGroupFacts.col k r (Matrix.of P.2.2)`.
+
+Establish `h : Matrix.of P.2.2 = (γ⁻¹ * rhoX S γ w x * γ)⁻¹ * ((γ⁻¹ * rhoX S γ w x * γ) * Matrix.of P.2.2)`. Rewrite using `[← Matrix.mul_assoc, iρ', Matrix.one_mul]`. Rewrite using `[h, E2]`. Conclude with `WeylGroupFacts.col_mul cρi' (WeylGroupFacts.col_mul ((WeylGroupFacts.nset_iff _).1 (A.tau_N hz' (HC.upper_mem _))).2 ((WeylGroupFacts.nset_iff _).1 hq2).2)`. Rewrite using `[hX]`.
+
+Use `show θ (C6.actR γ (rhoX S γ w x) P) • D.orbIntegrand S γ F (C6.actR γ (rhoX S γ w x) P) = θ (C6.actR γ (rhoX S γ w x) P) • D.orbIntegrand S γ F P`. Rewrite using `[key hρR P c1 c2]`.
+-/
 theorem comp_eq (θ : B.SS k r → ℝ) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (x : C2.Lstidx w → ℂ) (q : RR k r w)
     (hq1 : Matrix.of q.1.2.2 ∈ Nset k r) (hq2 : Matrix.of q.2.2.2 ∈ Nset k r) :
     θ (Xi S w e x q) • D.orbIntegrand S γ F (Xi S w e x q) = Hf S γ w θ F (Tt S γ w e (x, q)) := by
@@ -199,6 +251,33 @@ theorem comp_eq (θ : B.SS k r → ℝ) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (x
   rw [key hρR P c1 c2]
 
 include hγ hd hZw hpos hrel hemp he hμ0 hμ0' in
+/- English proof (translation)
+Use `haveI : IsFiniteMeasureOnCompacts S.μW := ⟨fun K hK => S.haarW.finite_compact K hK⟩`. Use `haveI : IsFiniteMeasureOnCompacts S.μW' := ⟨fun K hK => S.haarW'.finite_compact K hK⟩`. Use `haveI : IsFiniteMeasureOnCompacts μ0 := ⟨fun K hK => hμ0.finite_compact K hK⟩`. Use `haveI : IsFiniteMeasureOnCompacts μ0' := ⟨fun K hK => hμ0'.finite_compact K hK⟩`. Use `haveI t1 : SFinite S.μW := inferInstance`.
+
+Use `haveI t2 : SFinite μ0 := inferInstance`. Use `haveI t5 : SFinite S.μW' := inferInstance`. Use `haveI t6 : SFinite μ0' := inferInstance`. Use `haveI t7 : SFinite (nuR S w μ0 μ0') := by unfold nuR; infer_instance`. Establish `hz : C2.StdZ k r S.z` using `⟨S.z_mem, S.T_pos⟩`.
+
+Establish `hz' : C2.StdZ k r S.z'` using `⟨S.z'_mem, S.T'_pos⟩`. Establish `nmul : ∀ a b : B.Mat k r, a ∈ Nset k r → b ∈ Nset k r → a * b ∈ Nset k r`. Introduce `a b ha hb`. Rewrite `ha`, `hb`, the goal using `[WeylGroupFacts.nset_iff]`. Use `⟨?_, WeylGroupFacts.col_mul ha.2 hb.2⟩` and prove the remaining obligations.
+
+Establish `h1 : aᴴ * Hpk k r * a = Hpk k r` using `ha.1`. Establish `h2 : bᴴ * Hpk k r * b = Hpk k r` using `hb.1`. Use `show (a * b)ᴴ * Hpk k r * (a * b) = Hpk k r`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hrho : ∀ x : C2.Lstidx w → ℂ, D.rhoOfU S γ (Matrix.conjTranspose (C2.lowOf (fun q => q.1) x)) = rhoX S γ w x` using `fun x => rfl`. Establish `hSS` using `ME.muSS_eq S w e hemp μ0 μ0' hμ0 hμ0' c1 c2 hN1 hN2`. Establish `hc : ((c1 * c2 : NNReal) : ENNReal) ≠ 0`. Rewrite using `[ENNReal.coe_ne_zero]`. Conclude with `mul_ne_zero hc1.ne' hc2.ne'`.
+
+Rewrite `hint` using `[hSS, nn_smul]`. Rewrite using `[hSS, nn_smul]`. Establish `hint1` using `(integrable_smul_measure hc ENNReal.coe_ne_top).1 hint`. Establish `hXm : AEMeasurable (fun p : (C2.Lstidx w → ℂ) × RR k r w => Xi S w e p.1 p.2) ((volume : Measure (C2.Lstidx w → ℂ)).prod (nuR S w μ0 μ0'))` using `(meas_Xi S w e).aemeasurable`. Establish `hint2` using `(integrable_map_measure hint1.aestronglyMeasurable hXm).1 hint1`.
+
+Establish `hgood : ∀ᵐ p ∂((volume : Measure (C2.Lstidx w → ℂ)).prod (nuR S w μ0 μ0')), θ (Xi S w e p.1 p.2) • D.orbIntegrand S γ F (Xi S w e p.1 p.2) = Hf S γ w θ F (Tt S γ w e p)`. Establish `h` using `(Measure.quasiMeasurePreserving_snd (μ := (volume : Measure (C2.Lstidx w → ℂ))) (ν := nuR S w μ0 μ0')).ae (p := fun q : RR k r w => Matrix.of q.1.1 ∈ UWset k r S.z ∧ Matrix.of q.1.2.2 ∈ C2.N0set k r S.z ∧ Matrix.of q.2.1 ∈ UWset k r S.z' ∧ Matrix.of q.2.2.2 ∈ C2.N0set k r S.z') ( …`. Use `filter_upwards [h] with p hp`. Conclude with `comp_eq S hγ hd hZw hpos hrel e he θ F p.1 p.2 hp.2.1.1 hp.2.2.2.1`. Establish `hint3 : Integrable (fun p => Hf S γ w θ F (Tt S γ w e p)) ((volume : Measure (C2.Lstidx w → ℂ)).prod (nuR S w μ0 μ0'))` using `hint2.congr hgood`.
+
+Establish `hmp : MeasurePreserving (Tt S γ w e) ((volume : Measure (C2.Lstidx w → ℂ)).prod (nuR S w μ0 μ0')) ((volume : Measure (C2.Lstidx w → ℂ)).prod (nuR S w μ0 μ0'))`. Apply the tactic sequence `apply OF.mp_Tt <;> assumption`. Establish `hemb : MeasurableEmbedding (Tt S γ w e)`. Apply the tactic sequence `apply OF.emb_Tt <;> assumption`. Establish `hint4 : Integrable (Hf S γ w θ F) ((volume : Measure (C2.Lstidx w → ℂ)).prod (nuR S w μ0 μ0'))` using `(hmp.integrable_comp_emb hemb).1 hint3`.
+
+Establish `hI1 : ∫ p, θ (Xi S w e p.1 p.2) • D.orbIntegrand S γ F (Xi S w e p.1 p.2) ∂((volume : Measure (C2.Lstidx w → ℂ)).prod (nuR S w μ0 μ0')) = ∫ p, Hf S γ w θ F p ∂((volume : Measure (C2.Lstidx w → ℂ)).prod (nuR S w μ0 μ0'))`. Rewrite using `[integral_congr_ae hgood]`. Conclude with `hmp.integral_comp hemb _`. Establish `hcut : ∀ P : B.SS k r, S.inSS P → ∫ x, θ (C6.actR γ (rhoX S γ w x) P) ∂(volume : Measure (C2.Lstidx w → ℂ)) = 1`. Introduce `P hP`.
+
+Establish `h1` using `hθ.2.2 P hP`. Establish `hφ : Measurable fun x : C2.Lstidx w → ℂ => (Matrix.of.symm (D.rhoOfU S γ (Matrix.conjTranspose (C2.lowOf (fun q => q.1) x))) : Mt k r)`. Simplify using `only [hrho]`. Establish `hm : MeasM fun t : C2.Lstidx w → ℂ => rhoX S γ w (id t)`. Apply the tactic sequence `apply OF.measM_rhoX <;> first | exact measurable_id | assumption`.
+
+Conclude with `hm`. Unfold `D.muR at h1`. Rewrite `h1` using `[integral_map (f := fun y : Mt k r => θ (C6.actR γ (Matrix.of y) P)) hφ.aemeasurable (hθ.1.comp (meas_actR γ P)).aestronglyMeasurable]`. Simplify `h1` using `only [hrho, Equiv.apply_symm_apply]`. Establish `hSSae : ∀ᵐ q ∂(nuR S w μ0 μ0'), S.inSS (Xi0 S w q)` using `by filter_upwards [ae_good S w hμ0 hμ0'] with q hq`.
+
+Use `⟨hq.1, ?_, hq.2.2.1, ?_⟩` and prove the remaining obligations. Conclude with `nmul _ _ (A.tau_N hz (lowPH_UT _)) hq.2.1.1`. Conclude with `nmul _ _ (A.tau_N hz' (HC.upper_mem _)) hq.2.2.2.1`. Establish `hfib : ∀ᵐ q ∂(nuR S w μ0 μ0'), ∫ x, Hf S γ w θ F (x, q) ∂(volume : Measure (C2.Lstidx w → ℂ)) = D.orbIntegrand S γ F (Xi0 S w q)` using `by filter_upwards [hSSae] with q hq show ∫ x, θ (C6.actR γ (rhoX S γ w x) (Xi0 S w q)) • D.orbIntegrand S γ F (Xi0 S w q) ∂(volume : Measure (C2.Lstidx w → ℂ)) = D.orbIntegrand S γ F (Xi0 S w q)`. Rewrite using `[integral_smul_const, hcut _ hq, one_smul]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `hint4.integral_prod_right.congr hfib`. Rewrite using `[integral_smul_measure, integral_map hXm hint1.aestronglyMeasurable, hI1, integral_prod_symm _ hint4, integral_congr_ae hfib, ENNReal.coe_toReal]`.
+-/
 theorem orb_int [CompleteSpace Wp] {c1 c2 : NNReal} (hc1 : 0 < c1) (hc2 : 0 < c2)
     (hN1 : S.μN = c1 • ((volume : Measure (G.UT (r + 1) → ℂ)).prod μ0).map
       (fun p => Matrix.of.symm (C2.tauM k r S.z (G.upper p.1) * Matrix.of p.2)))

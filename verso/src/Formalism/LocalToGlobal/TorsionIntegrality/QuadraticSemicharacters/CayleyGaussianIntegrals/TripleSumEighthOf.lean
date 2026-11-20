@@ -48,6 +48,11 @@ abbrev Quo (Λ₁ Λ₂ Λ₃ : AddSubgroup V) : Type :=
 def phi (H : Sesq V) (α : V → ℂ) (Λ₁ Λ₂ Λ₃ : AddSubgroup V) (c : Quo Λ₁ Λ₂ Λ₃) : ℂ :=
   psiT H α (Quotient.out c : pairs Λ₁ Λ₂ Λ₃).1.1 (Quotient.out c : pairs Λ₁ Λ₂ Λ₃).1.2
 
+/- English proof (translation)
+Take `⟨h, hh⟩` from `QuotientAddGroup.mk_out_eq_add ((triv Λ₁ Λ₂ Λ₃).addSubgroupOf (pairs Λ₁ Λ₂ Λ₃)) p`. Establish `hm : (h.1.1 : V × V) ∈ triv Λ₁ Λ₂ Λ₃` using `AddSubgroup.mem_addSubgroupOf.1 h.2`. Take `⟨p1, p2, p3⟩` from `p.2`. Establish `key` using `h4 p.1.1 p1 p.1.2 p2 p3 0 (Λ₁ ⊓ Λ₃).zero_mem _ hm.2 _ hm.1`. Unfold `phi`.
+
+Rewrite using `[hh, ← key]`. Use `congr 1`. Simplify using the standard rewrite rules. Simplify using `only [AddSubgroup.coe_add, Prod.snd_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem phi_mk {H : Sesq V} {α : V → ℂ} {Λ₁ Λ₂ Λ₃ : AddSubgroup V}
     (h4 : ∀ z ∈ Λ₃, ∀ y ∈ Λ₂, z + y ∈ Λ₁ → ∀ u' ∈ Λ₁ ⊓ Λ₃, ∀ u ∈ Λ₁ ⊓ Λ₂, ∀ t ∈ Λ₂ ⊓ Λ₃,
       psiT H α (z + u' + t) (y + u - t) = psiT H α z y) (p : pairs Λ₁ Λ₂ Λ₃) :
@@ -65,22 +70,34 @@ theorem phi_mk {H : Sesq V} {α : V → ℂ} {Λ₁ Λ₂ Λ₃ : AddSubgroup V}
 def idx (Λ₁ : AddSubgroup V) (S₂ S₃ : Finset V) : Finset (V × V) := by
   classical exact (S₃ ×ˢ S₂).filter fun p => p.1 + p.2 ∈ Λ₁
 
+/- English proof (translation)
+Simplify using `[idx, and_assoc]`.
+-/
 theorem mem_idx {Λ₁ : AddSubgroup V} {S₂ S₃ : Finset V} {p : V × V} :
     p ∈ idx Λ₁ S₂ S₃ ↔ p.1 ∈ S₃ ∧ p.2 ∈ S₂ ∧ p.1 + p.2 ∈ Λ₁ := by
   classical
   simp [idx, and_assoc]
 
+/- English proof (translation)
+Unfold `tripleSum idx`. Rewrite using `[Finset.sum_filter, Finset.sum_product]`.
+-/
 theorem tripleSum_eq (H : Sesq V) (α : V → ℂ) (Λ₁ : AddSubgroup V) (S₂ S₃ : Finset V) :
     tripleSum H α Λ₁ S₂ S₃ = ∑ p ∈ idx Λ₁ S₂ S₃, psiT H α p.1 p.2 := by
   classical
   unfold tripleSum idx
   rw [Finset.sum_filter, Finset.sum_product]
 
+/- English proof (translation)
+Take `⟨a, b, c⟩` from `mem_idx.1 hp`. Conclude with `⟨hS₃.1 _ a, hS₂.1 _ b, c⟩`.
+-/
 theorem idx_pairs {Λ₁ Λ₂ Λ₃ : AddSubgroup V} {S₂ S₃ : Finset V} (hS₂ : IsReps Λ₁ Λ₂ S₂)
     (hS₃ : IsReps Λ₂ Λ₃ S₃) {p : V × V} (hp : p ∈ idx Λ₁ S₂ S₃) : p ∈ pairs Λ₁ Λ₂ Λ₃ := by
   obtain ⟨a, b, c⟩ := mem_idx.1 hp
   exact ⟨hS₃.1 _ a, hS₂.1 _ b, c⟩
 
+/- English proof (translation)
+Rewrite using `[eq_comm, QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Establish `: ((-q + p : pairs Λ₁ Λ₂ Λ₃) : V × V) = p.1 - q.1`. Simplify using `only [AddSubgroup.coe_add, AddSubgroup.coe_neg]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`.
+-/
 theorem mk_eq_iff {Λ₁ Λ₂ Λ₃ : AddSubgroup V} (p q : pairs Λ₁ Λ₂ Λ₃) :
     (QuotientAddGroup.mk p : Quo Λ₁ Λ₂ Λ₃) = QuotientAddGroup.mk q ↔ p.1 - q.1 ∈ triv Λ₁ Λ₂ Λ₃ := by
   rw [eq_comm, QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]
@@ -88,6 +105,11 @@ theorem mk_eq_iff {Λ₁ Λ₂ Λ₃ : AddSubgroup V} (p q : pairs Λ₁ Λ₂ �
     simp only [AddSubgroup.coe_add, AddSubgroup.coe_neg]; abel
   rw [this]
 
+/- English proof (translation)
+Take `⟨a, b, _⟩` from `mem_idx.1 hp`. Take `⟨a', b', _⟩` from `mem_idx.1 hq`. Take `⟨h1, h2⟩` from `h`. Establish `e1 : p.1 = q.1` using `hS₃.2.1 _ a _ a' h1.1`. Establish `e2 : p.2 = q.2`.
+
+Use `hS₂.2.1 _ b _ b' ?_` and prove the remaining obligations. Use `h2.1` as an intermediate fact. Simplify `this` using `[e1]`. Conclude with `Prod.ext e1 e2`.
+-/
 theorem idx_inj {Λ₁ Λ₂ Λ₃ : AddSubgroup V} {S₂ S₃ : Finset V} (hS₂ : IsReps Λ₁ Λ₂ S₂)
     (hS₃ : IsReps Λ₂ Λ₃ S₃) {p q : V × V} (hp : p ∈ idx Λ₁ S₂ S₃) (hq : q ∈ idx Λ₁ S₂ S₃)
     (h : p - q ∈ triv Λ₁ Λ₂ Λ₃) : p = q := by
@@ -101,6 +123,17 @@ theorem idx_inj {Λ₁ Λ₂ Λ₃ : AddSubgroup V} {S₂ S₃ : Finset V} (hS�
     simpa [e1] using this
   exact Prod.ext e1 e2
 
+/- English proof (translation)
+Take `⟨p1, p2, p3⟩` from `hp`. Take `⟨s, hs, hst⟩` from `hS₃.2.2 p.1 p1`. Establish `ht3 : p.1 - s ∈ Λ₃` using `Λ₃.sub_mem p1 (hS₃.1 _ hs)`. Take `⟨s₂, hs₂, hsu⟩` from `hS₂.2.2 (p.2 + (p.1 - s)) (Λ₂.add_mem p2 hst)`. Establish `hu2 : p.2 + (p.1 - s) - s₂ ∈ Λ₂` using `Λ₂.sub_mem (Λ₂.add_mem p2 hst) (hS₂.1 _ hs₂)`.
+
+Establish `hsum : s + s₂ ∈ Λ₁`. Use `Λ₁.sub_mem p3 hsu` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Use `⟨(s, s₂), mem_idx.2 ⟨hs, hs₂, hsum⟩, ⟨?_, ?_⟩, ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Use `Λ₂.neg_mem hst` as an intermediate fact. Simplify using `using this`. Use `Λ₃.neg_mem ht3` as an intermediate fact. Simplify using `using this`. Use `show (s - p.1) + (s₂ - p.2) ∈ Λ₁`.
+
+Establish `e : (s - p.1) + (s₂ - p.2) = -(p.2 + (p.1 - s) - s₂)` using `by abel`. Rewrite using `[e]`. Conclude with `Λ₁.neg_mem hsu`. Use `show (s - p.1) + (s₂ - p.2) ∈ Λ₂`. Establish `e : (s - p.1) + (s₂ - p.2) = -(p.2 + (p.1 - s) - s₂)` using `by abel`.
+
+Rewrite using `[e]`. Conclude with `Λ₂.neg_mem hu2`.
+-/
 theorem idx_surj {Λ₁ Λ₂ Λ₃ : AddSubgroup V} {S₂ S₃ : Finset V} (hS₂ : IsReps Λ₁ Λ₂ S₂)
     (hS₃ : IsReps Λ₂ Λ₃ S₃) {p : V × V} (hp : p ∈ pairs Λ₁ Λ₂ Λ₃) :
     ∃ q ∈ idx Λ₁ S₂ S₃, q - p ∈ triv Λ₁ Λ₂ Λ₃ := by
@@ -124,6 +157,11 @@ theorem idx_surj {Λ₁ Λ₂ Λ₃ : AddSubgroup V} {S₂ S₃ : Finset V} (hS�
     have e : (s - p.1) + (s₂ - p.2) = -(p.2 + (p.1 - s) - s₂) := by abel
     rw [e]; exact Λ₂.neg_mem hu2
 
+/- English proof (translation)
+Use `Finite.of_surjective (fun q : idx Λ₁ S₂ S₃ => (QuotientAddGroup.mk ⟨q.1, idx_pairs hS₂ hS₃ q.2⟩ : Quo Λ₁ Λ₂ Λ₃)) ?_` and prove the remaining obligations. Introduce `c`. Proceed by induction on `c using QuotientAddGroup.induction_on with`. Consider the case `H p`. Take `⟨q, hq, hqp⟩` from `idx_surj hS₂ hS₃ p.2`.
+
+Conclude with `⟨⟨q, hq⟩, (mk_eq_iff _ _).2 hqp⟩`.
+-/
 theorem quo_finite {Λ₁ Λ₂ Λ₃ : AddSubgroup V} {S₂ S₃ : Finset V} (hS₂ : IsReps Λ₁ Λ₂ S₂)
     (hS₃ : IsReps Λ₂ Λ₃ S₃) : Finite (Quo Λ₁ Λ₂ Λ₃) := by
   refine Finite.of_surjective
@@ -134,6 +172,13 @@ theorem quo_finite {Λ₁ Λ₂ Λ₃ : AddSubgroup V} {S₂ S₃ : Finset V} (h
     obtain ⟨q, hq, hqp⟩ := idx_surj hS₂ hS₃ p.2
     exact ⟨⟨q, hq⟩, (mk_eq_iff _ _).2 hqp⟩
 
+/- English proof (translation)
+Rewrite using `[tripleSum_eq]`. Use `Finset.sum_bij (fun q hq => (QuotientAddGroup.mk ⟨q, idx_pairs hS₂ hS₃ hq⟩ : Quo Λ₁ Λ₂ Λ₃)) (fun _ _ => Finset.mem_univ _) ?_ ?_ ?_` and prove the remaining obligations. Introduce `p hp q hq h`. Conclude with `idx_inj hS₂ hS₃ hp hq ((mk_eq_iff _ _).1 h)`. Introduce `c _`.
+
+Proceed by induction on `c using QuotientAddGroup.induction_on with`. Consider the case `H p`. Take `⟨q, hq, hqp⟩` from `idx_surj hS₂ hS₃ p.2`. Conclude with `⟨q, hq, (mk_eq_iff _ _).2 hqp⟩`. Introduce `q hq`.
+
+Rewrite using `[phi_mk h4]`.
+-/
 theorem sum_phi {H : Sesq V} {α : V → ℂ} {Λ₁ Λ₂ Λ₃ : AddSubgroup V}
     (h4 : ∀ z ∈ Λ₃, ∀ y ∈ Λ₂, z + y ∈ Λ₁ → ∀ u' ∈ Λ₁ ⊓ Λ₃, ∀ u ∈ Λ₁ ⊓ Λ₂, ∀ t ∈ Λ₂ ⊓ Λ₃,
       psiT H α (z + u' + t) (y + u - t) = psiT H α z y)
@@ -157,6 +202,25 @@ end Tri
 
 open Tri
 
+/- English proof (translation)
+Introduce `V _ _ H α Λ₁ Λ₂ Λ₃ hT S₂ S₃ hS₂ hS₃ hne`. Take `⟨h1, h2, h3, h4⟩` from `hP V H α Λ₁ Λ₂ Λ₃ hT`. Establish `: Finite (Quo Λ₁ Λ₂ Λ₃)` using `quo_finite hS₂ hS₃`. Set `_ : Fintype (Quo Λ₁ Λ₂ Λ₃)` to `Fintype.ofFinite _`. Rewrite `hne`, the goal using `[sum_phi h4 hS₂ hS₃]`.
+
+Establish `hφne : ∀ c, phi H α Λ₁ Λ₂ Λ₃ c ≠ 0`. Introduce `c`. Proceed by induction on `c using QuotientAddGroup.induction_on with`. Consider the case `H p`. Rewrite using `[phi_mk h4]`.
+
+Introduce `h0`. Use `h3 _ p.2.1 _ p.2.2.1 p.2.2.2` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this`. Establish `hb : ∀ p q : pairs Λ₁ Λ₂ Λ₃, phi H α Λ₁ Λ₂ Λ₃ (QuotientAddGroup.mk p + QuotientAddGroup.mk q) / (phi H α Λ₁ Λ₂ Λ₃ (QuotientAddGroup.mk p) * phi H α Λ₁ Λ₂ Λ₃ (QuotientAddGroup.mk q)) = Complex.exp (2 * (Real.pi : ℂ) * Complex.I * (altE H p.1.2 q.1.1 : ℂ))`.
+
+Introduce `p q`. Establish `hp` using `hφne (QuotientAddGroup.mk p)`. Establish `hq` using `hφne (QuotientAddGroup.mk q)`. Rewrite using `[div_eq_iff (mul_ne_zero hp hq), ← QuotientAddGroup.mk_add, phi_mk h4, phi_mk h4, phi_mk h4]`. Use `h1 _ p.2.1 _ p.2.2.1 p.2.2.2 _ q.2.1 _ q.2.2.1 q.2.2.2` as an intermediate fact.
+
+Simplify using `only [AddSubgroup.coe_add, Prod.fst_add, Prod.snd_add]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Use `hG (Quo Λ₁ Λ₂ Λ₃) (phi H α Λ₁ Λ₂ Λ₃) (fun c c' => phi H α Λ₁ Λ₂ Λ₃ (c + c') / (phi H α Λ₁ Λ₂ Λ₃ c * phi H α Λ₁ Λ₂ Λ₃ c')) ⟨?_, ?_, ?_, hφne⟩ hne` and prove the remaining obligations. Introduce `x y`.
+
+Rewrite using `[mul_div_cancel₀ _ (mul_ne_zero (hφne x) (hφne y))]`. Introduce `x y z`. Proceed by induction on `x using QuotientAddGroup.induction_on with`. Consider the case `H p`. Proceed by induction on `y using QuotientAddGroup.induction_on with`.
+
+Consider the case `H q`. Proceed by induction on `z using QuotientAddGroup.induction_on with`. Consider the case `H r`. Rewrite using `[← QuotientAddGroup.mk_add, hb, hb, hb, ← Complex.exp_add]`. Use `congr 1`.
+
+Simplify using `only [AddSubgroup.coe_add, Prod.snd_add, Inv.altE_add_left]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `k x`. Proceed by induction on `x using QuotientAddGroup.induction_on with`.
+
+Consider the case `H p`. Rewrite using `[← QuotientAddGroup.mk_nsmul, phi_mk h4, phi_mk h4]`. Conclude with `h2 _ p.2.1 _ p.2.2.1 p.2.2.2 k`.
+-/
 theorem TripleSumEighth_of (hP : PsiQuadratic) (hG : GaussDegenerate) : TripleSumEighth := by
   intro V _ _ H α Λ₁ Λ₂ Λ₃ hT S₂ S₃ hS₂ hS₃ hne
   obtain ⟨h1, h2, h3, h4⟩ := hP V H α Λ₁ Λ₂ Λ₃ hT
@@ -204,10 +268,38 @@ theorem TripleSumEighth_of (hP : PsiQuadratic) (hG : GaussDegenerate) : TripleSu
       rw [← QuotientAddGroup.mk_nsmul, phi_mk h4, phi_mk h4]
       exact h2 _ p.2.1 _ p.2.2.1 p.2.2.2 k
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.herm, h.sd₁, h.sd₃, h.sd₂, h.sc₁, h.sc₃, h.sc₂, h.i₁₃, h.i₃₁, h.i₁₂, h.i₂₁, h.i₃₂, h.i₂₃⟩`.
+-/
 theorem TripleData.swap {V : Type} [AddCommGroup V] [Module ℂ V] {H : Sesq V} {α : V → ℂ}
     {Λ₁ Λ₂ Λ₃ : AddSubgroup V} (h : TripleData H α Λ₁ Λ₂ Λ₃) : TripleData H α Λ₁ Λ₃ Λ₂ :=
   ⟨h.herm, h.sd₁, h.sd₃, h.sd₂, h.sc₁, h.sc₃, h.sc₂, h.i₁₃, h.i₃₁, h.i₁₂, h.i₂₁, h.i₃₂, h.i₂₃⟩
 
+/- English proof (translation)
+Introduce `V _ _ H α Λ₁ Λ₂ Λ₃ hT ⟨F, hFf, hF0⟩ S₂ S₃ hS₂ hS₃`. Take `⟨S₃', hS₃'⟩` from `(repsExist V Λ₁ Λ₃ hT.i₁₃).1`. Take `⟨S₂', hS₂'⟩` from `(repsExist V Λ₃ Λ₂ hT.i₃₂).1`. Establish `hμ' : tripleMu H α Λ₁ Λ₃ Λ₂ S₃' S₂' = conj (tripleMu H α Λ₁ Λ₂ Λ₃ S₂ S₃)` using `hC V H α Λ₁ Λ₂ Λ₃ hT S₂ S₃ S₂' S₃' hS₂ hS₃ hS₃' hS₂'`. Take `⟨μ, hμ⟩ : ∃ μ, μ = tripleMu H α Λ₁ Λ₂ Λ₃ S₂ S₃` from `⟨_, rfl⟩`.
+
+Rewrite `hμ'`, the goal using `[← hμ]`. Take `⟨G, hG⟩ : ∃ G, G = inter H α Λ₁ Λ₂ F` from `⟨_, rfl⟩`. Establish `hGf : G ∈ fixedBy H α Λ₂`. Rewrite using `[hG]`. Conclude with `interFixed V H hT.herm Λ₁ Λ₂ α hT.sc₂ hT.i₁₂ F hFf`.
+
+Establish `hG0 : G ≠ 0`. Introduce `h0`. Apply `hF0` to reduce the goal to its premises. Use function extensionality and compare the values at `z`. Use `interInv V H hT.herm Λ₁ Λ₂ α hT.sd₁ hT.sd₂ hT.sc₁ hT.sc₂ hT.i₁₂ hT.i₂₁ F hFf z` as an intermediate fact.
+
+Rewrite `this` using `[← hG, h0, Inv.inter_zero]`. Conclude with `this.symm`. Establish `e1 : inter H α Λ₂ Λ₃ G = μ • inter H α Λ₁ Λ₃ F`. Use function extensionality and compare the values at `v`. Rewrite using `[hG, hμ]`.
+
+Conclude with `hF V H α Λ₁ Λ₂ Λ₃ hT S₂ S₃ hS₂ hS₃ F hFf v`. Establish `e2 : inter H α Λ₃ Λ₂ (inter H α Λ₁ Λ₃ F) = conj μ • G`. Use function extensionality and compare the values at `v`. Use `hF V H α Λ₁ Λ₃ Λ₂ hT.swap S₃' S₂' hS₃' hS₂' F hFf v` as an intermediate fact. Rewrite `this` using `[hμ', ← hG]`.
+
+Conclude with `this`. Establish `e3 : G = (μ * conj μ) • G`. Use function extensionality and compare the values at `v`. Use `interInv V H hT.herm Λ₂ Λ₃ α hT.sd₂ hT.sd₃ hT.sc₂ hT.sc₃ hT.i₂₃ hT.i₃₂ G hGf v` as an intermediate fact. Rewrite `this` using `[e1, Inv.inter_smul, e2, smul_smul]`.
+
+Conclude with `this.symm`. Establish `hmm : μ * conj μ = 1`. Take `⟨v, hv⟩` from `Function.ne_iff.1 hG0`. Establish `h` using `congrFun e3 v`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h`.
+
+Establish `hv' : G v ≠ 0` using `hv`. Conclude with `mul_right_cancel₀ hv' (by rw [one_mul]; exact h.symm)`. Establish `hnorm : ‖μ‖ = 1`. Rewrite `hmm` using `[Complex.mul_conj]`. Establish `h : Complex.normSq μ = 1` using `by exact_mod_cast hmm`.
+
+Rewrite `h` using `[Complex.normSq_eq_norm_sq]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg μ) two_ne_zero).1 h`. Establish `hts : tripleSum H α Λ₁ S₂ S₃ ≠ 0`. Introduce `h`. Rewrite `hnorm` using `[hμ, tripleMu, h, mul_zero, norm_zero]`.
+
+Conclude with `zero_ne_one hnorm`. Take `⟨r, hr, hr8⟩` from `hS V H α Λ₁ Λ₂ Λ₃ hT S₂ S₃ hS₂ hS₃ hts`. Take `⟨c, hc⟩ : ∃ c : ℝ, c = Real.sqrt (relIdx Λ₁ Λ₃) / (Real.sqrt (relIdx Λ₁ Λ₂) * Real.sqrt (relIdx Λ₂ Λ₃))` from `⟨_, rfl⟩`. Establish `h8 : μ ^ 8 = ((c ^ 8 * r : ℝ) : ℂ)`. Rewrite using `[hμ, tripleMu, ← hc, mul_pow, hr8]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hpos : 0 ≤ c ^ 8 * r` using `mul_nonneg (by positivity) hr.le`. Establish `h1 : ‖μ ^ 8‖ = 1` using `by rw [norm_pow, hnorm, one_pow]`. Rewrite `h1` using `[h8, Complex.norm_real, Real.norm_of_nonneg hpos]`.
+
+Rewrite using `[h8, h1]`. Simplify using the standard rewrite rules.
+-/
 theorem TripleEighth_of (hF : TripleFormula) (hS : TripleSumEighth) (hC : TripleConj) : TripleEighth := by
   intro V _ _ H α Λ₁ Λ₂ Λ₃ hT ⟨F, hFf, hF0⟩ S₂ S₃ hS₂ hS₃
   obtain ⟨S₃', hS₃'⟩ := (repsExist V Λ₁ Λ₃ hT.i₁₃).1

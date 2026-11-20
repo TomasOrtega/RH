@@ -28,11 +28,17 @@ instance : MulSemiringAction (L ≃ₐ[K] L) 𝔸[L] :=
 omit [NumberField K] in
 
 @[simp]
+/- English proof (translation)
+The claim follows from `adeleRingEquiv_algebraMap _ l @[simp]`.
+-/
 theorem smul_algebraMap (σ : L ≃ₐ[K] L) (l : L) :
     σ • algebraMap L 𝔸[L] l = algebraMap L 𝔸[L] (σ l) :=
   adeleRingEquiv_algebraMap _ l
 
 @[simp]
+/- English proof (translation)
+The claim follows from `adeleRingEquiv_adeleMap σ a`.
+-/
 theorem smul_adeleMap (σ : L ≃ₐ[K] L) (a : 𝔸[K]) : σ • adeleMap K L a = adeleMap K L a :=
   adeleRingEquiv_adeleMap σ a
 
@@ -43,6 +49,9 @@ instance : ContinuousSMul (L ≃ₐ[K] L) 𝔸[L] where
   continuous_smul := continuous_prod_of_discrete_left.2 fun σ ↦ continuous_const_smul σ
 
 @[simp]
+/- English proof (translation)
+The claim follows from `norm_adeleRingEquiv σ y`.
+-/
 theorem norm_smul (σ : L ≃ₐ[K] L) (y : 𝔸[L]) : Algebra.norm 𝔸[K] (σ • y) = Algebra.norm 𝔸[K] y :=
   norm_adeleRingEquiv σ y
 
@@ -52,6 +61,13 @@ variable [IsGalois K L]
 
 open Classical in
 
+/- English proof (translation)
+Use `set D := Matrix.of fun σ τ : L ≃ₐ[K] L ↦ σ (b τ)`. Establish `hT : D.transpose * D = (Algebra.traceMatrix K b).map (algebraMap K L)`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, Algebra.traceMatrix_apply, Algebra.traceForm_apply, D]`. Rewrite using `[trace_eq_sum_automorphisms]`.
+
+Conclude with `Finset.sum_congr rfl fun σ _ ↦ (map_mul σ _ _).symm`. Establish `hdet : D.det * D.det = algebraMap K L (Algebra.discr K b)`. Rewrite using `[Algebra.discr_def, RingHom.map_det, RingHom.mapMatrix_apply, ← hT, Matrix.det_mul, Matrix.det_transpose]`. Use `isUnit_iff_ne_zero.2 fun h ↦ Algebra.discr_not_zero_of_basis K b ?_` and prove the remaining obligations. Rewrite `hdet` using `[h, zero_mul]`.
+
+Conclude with `(FaithfulSMul.algebraMap_injective K L) (hdet.symm.trans (map_zero _).symm)`.
+-/
 theorem isUnit_det_conjugates (b : Module.Basis (L ≃ₐ[K] L) K L) :
     IsUnit (Matrix.of fun σ τ : L ≃ₐ[K] L ↦ σ (b τ)).det := by
   classical
@@ -69,6 +85,17 @@ theorem isUnit_det_conjugates (b : Module.Basis (L ≃ₐ[K] L) K L) :
   rw [h, zero_mul] at hdet
   exact (FaithfulSMul.algebraMap_injective K L) (hdet.symm.trans (map_zero _).symm)
 
+/- English proof (translation)
+Establish `hcard : Fintype.card (L ≃ₐ[K] L) = Module.finrank K L`. Rewrite using `[Fintype.card_eq_nat_card]`. Conclude with `IsGalois.card_aut_eq_finrank K L`. Set `b : Module.Basis (L ≃ₐ[K] L) K L` to `(Module.finBasis K L).reindex (Fintype.equivFinOfCardEq hcard).symm`. Set `B` to `adeleBasis b`.
+
+Set `M` to `Algebra.leftMulMatrix B y`. Set `D : Matrix (L ≃ₐ[K] L) (L ≃ₐ[K] L) L` to `Matrix.of fun σ τ ↦ σ (b τ)`. Establish `hM : ∀ ρ τ, M ρ τ = B.repr (y * B τ) ρ` using `fun ρ τ ↦ Algebra.leftMulMatrix_eq_repr_mul B y ρ τ`. Establish `hy : ∀ τ, y * algebraMap L 𝔸[L] (b τ) = ∑ ρ, adeleMap K L (M ρ τ) * algebraMap L 𝔸[L] (b ρ)`. Introduce `τ`.
+
+Use `conv_lhs => rw [← B.sum_repr (y * algebraMap L 𝔸[L] (b τ))]`. Use `Finset.sum_congr rfl fun ρ _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, algebraMap_adeleRing, adeleBasis_apply, hM, adeleBasis_apply]`. Establish `key : Matrix.diagonal (fun σ : L ≃ₐ[K] L ↦ σ • y) * D.map (algebraMap L 𝔸[L]) = D.map (algebraMap L 𝔸[L]) * M.map (adeleMap K L)`. Use extensionality with `σ τ`.
+
+Rewrite using `[Matrix.diagonal_mul, Matrix.mul_apply]`. Establish `h` using `congrArg (σ • ·) (hy τ)`. Simplify using `only [smul_mul', Finset.smul_sum, smul_algebraMap, smul_adeleMap] at h`. Simplify using `only [Matrix.map_apply, Matrix.of_apply, D, h]`. Conclude with `Finset.sum_congr rfl fun ρ _ ↦ mul_comm _ _`.
+
+Establish `hdet` using `congrArg Matrix.det key`. Rewrite `hdet` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, ← RingHom.mapMatrix_apply, ← RingHom.mapMatrix_apply, ← RingHom.map_det, ← RingHom.map_det]`. Rewrite using `[Algebra.norm_eq_matrix_det B]`. Rewrite `hdet` using `[mul_comm]`. Conclude with `(((isUnit_det_conjugates b).map (algebraMap L 𝔸[L])).mul_left_cancel hdet).symm`.
+-/
 theorem adeleMap_norm (y : 𝔸[L]) :
     adeleMap K L (Algebra.norm 𝔸[K] y) = ∏ σ : L ≃ₐ[K] L, σ • y := by
   classical
@@ -102,6 +129,13 @@ theorem adeleMap_norm (y : 𝔸[L]) :
   rw [mul_comm] at hdet
   exact (((isUnit_det_conjugates b).map (algebraMap L 𝔸[L])).mul_left_cancel hdet).symm
 
+/- English proof (translation)
+Set `b` to `Module.finBasis K L`. Set `B` to `adeleBasis b`. Use `⟨∑ i, B.repr y i * algebraMap K 𝔸[K] (Algebra.trace K L (b i)), ?_⟩` and prove the remaining obligations. Establish `hy : y = ∑ i, adeleMap K L (B.repr y i) * algebraMap L 𝔸[L] (b i)` using `by conv_lhs => rw [← B.sum_repr y]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations.
+
+Rewrite using `[Algebra.smul_def, algebraMap_adeleRing, adeleBasis_apply]`. Use `conv_rhs => rw [hy]`. Simplify using `only [Finset.smul_sum, smul_mul', smul_adeleMap, smul_algebraMap]`. Rewrite using `[Finset.sum_comm, map_sum]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.mul_sum, ← map_sum, ← trace_eq_sum_automorphisms, map_mul, adeleMap_algebraMap]`.
+-/
 theorem exists_adeleMap_eq_sum_smul (y : 𝔸[L]) :
     ∃ a : 𝔸[K], adeleMap K L a = ∑ σ : L ≃ₐ[K] L, σ • y := by
   classical
@@ -119,6 +153,11 @@ theorem exists_adeleMap_eq_sum_smul (y : 𝔸[L]) :
   rw [← Finset.mul_sum, ← map_sum, ← trace_eq_sum_automorphisms, map_mul,
     adeleMap_algebraMap]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨a, ha⟩` from `exists_adeleMap_eq_sum_smul (K := K) y`. Simplify using `only [hy, Finset.sum_const, Finset.card_univ] at ha`. Use `set n := Fintype.card (L ≃ₐ[K] L)`.
+
+Establish `hn : (n : K) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Use `⟨algebraMap K 𝔸[K] (n : K)⁻¹ * a, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ha, adeleMap_algebraMap, nsmul_eq_mul, ← mul_assoc, show (n : 𝔸[L]) = algebraMap L 𝔸[L] (algebraMap K L (n : K)) by simp, ← map_mul, ← map_mul, inv_mul_cancel₀ hn, map_one, map_one, one_mul]`. Introduce and unpack `⟨a, rfl⟩ σ`. Conclude with `smul_adeleMap σ a`.
+-/
 theorem forall_smul_eq_iff_mem_range (y : 𝔸[L]) :
     (∀ σ : L ≃ₐ[K] L, σ • y = y) ↔ y ∈ (adeleMap K L).range := by
   constructor
@@ -143,12 +182,18 @@ instance : MulDistribMulAction (L ≃ₐ[K] L) (IdeleGroup L) :=
 
 omit [NumberField K] in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_smul_idele (σ : L ≃ₐ[K] L) (x : IdeleGroup L) :
     ((σ • x : IdeleGroup L) : 𝔸[L]) = σ • (x : 𝔸[L]) :=
   rfl
 
 omit [NumberField K] in
 
+/- English proof (translation)
+The claim follows from `Units.ext rfl`.
+-/
 theorem smul_idele_eq_ideleEquiv (σ : L ≃ₐ[K] L) (x : IdeleGroup L) :
     σ • x = ideleEquiv (σ : L ≃+* L) x :=
   Units.ext rfl
@@ -166,16 +211,25 @@ instance : ContinuousSMul (L ≃ₐ[K] L) (IdeleGroup L) where
 omit [NumberField K] in
 
 @[simp]
+/- English proof (translation)
+The claim follows from `Units.ext (smul_algebraMap σ (l : L)) @[simp]`.
+-/
 theorem smul_diagonal (σ : L ≃ₐ[K] L) (l : Lˣ) :
     σ • IdeleGroup.diagonal L l = IdeleGroup.diagonal L (σ • l) :=
   Units.ext (smul_algebraMap σ (l : L))
 
 @[simp]
+/- English proof (translation)
+The claim follows from `Units.ext (smul_adeleMap σ (x : 𝔸[K])) @[simp]`.
+-/
 theorem smul_ideleEmbedding (σ : L ≃ₐ[K] L) (x : IdeleGroup K) :
     σ • ideleEmbedding K L x = ideleEmbedding K L x :=
   Units.ext (smul_adeleMap σ (x : 𝔸[K]))
 
 @[simp]
+/- English proof (translation)
+The claim follows from `Units.ext (norm_smul σ (x : 𝔸[L]))`.
+-/
 theorem ideleNorm_smul (σ : L ≃ₐ[K] L) (x : IdeleGroup L) :
     ideleNorm K L (σ • x) = ideleNorm K L x :=
   Units.ext (norm_smul σ (x : 𝔸[L]))
@@ -184,10 +238,18 @@ section Galois
 
 variable [IsGalois K L]
 
+/- English proof (translation)
+The claim follows from `Units.ext (by rw [coe_ideleEmbedding, coe_ideleNorm, adeleMap_norm, Units.coe_prod]; rfl)`.
+-/
 theorem ideleEmbedding_ideleNorm (x : IdeleGroup L) :
     ideleEmbedding K L (ideleNorm K L x) = ∏ σ : L ≃ₐ[K] L, σ • x :=
   Units.ext (by rw [coe_ideleEmbedding, coe_ideleNorm, adeleMap_norm, Units.coe_prod]; rfl)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨a, ha⟩` from `(forall_smul_eq_iff_mem_range (K := K) (x : 𝔸[L])).1 fun σ ↦ congrArg Units.val (hx σ)`. Take `⟨a', ha'⟩` from `(forall_smul_eq_iff_mem_range (K := K) ((x⁻¹ : IdeleGroup L) : 𝔸[L])).1 fun σ ↦ congrArg Units.val (show σ • x⁻¹ = x⁻¹ by rw [smul_inv', hx σ])`. Establish `h1 : a * a' = 1` using `adeleMap_injective (K := K) (L := L) (by`.
+
+Rewrite using `[map_mul, ha, ha', Units.mul_inv, map_one])`. Use `⟨⟨a, a', h1, by rw [mul_comm, h1]⟩, Units.ext ?_⟩` and prove the remaining obligations. Conclude with `ha`. Introduce and unpack `⟨y, rfl⟩ σ`. Conclude with `smul_ideleEmbedding σ y`.
+-/
 theorem forall_smul_eq_iff_mem_range_ideleEmbedding (x : IdeleGroup L) :
     (∀ σ : L ≃ₐ[K] L, σ • x = x) ↔ x ∈ (ideleEmbedding K L).range := by
   constructor
@@ -203,6 +265,9 @@ theorem forall_smul_eq_iff_mem_range_ideleEmbedding (x : IdeleGroup L) :
   · rintro ⟨y, rfl⟩ σ
     exact smul_ideleEmbedding σ y
 
+/- English proof (translation)
+Use extensionality with `x`. Conclude with `forall_smul_eq_iff_mem_range_ideleEmbedding x`.
+-/
 theorem fixedPoints_subgroup_idele :
     FixedPoints.subgroup (L ≃ₐ[K] L) (IdeleGroup L) = (ideleEmbedding K L).range := by
   ext x
@@ -237,6 +302,9 @@ instance : MulDistribMulAction (L ≃ₐ[K] L) (IdeleClassGroup L) :=
 omit [NumberField K] in
 
 @[simp]
+/- English proof (translation)
+Rewrite using `[smul_idele_eq_ideleEquiv]`. Both sides reduce to the same expression.
+-/
 theorem smul_mk (σ : L ≃ₐ[K] L) (x : IdeleGroup L) :
     σ • IdeleClassGroup.mk L x = IdeleClassGroup.mk L (σ • x) := by
   rw [smul_idele_eq_ideleEquiv]
@@ -249,12 +317,18 @@ instance : ContinuousSMul (L ≃ₐ[K] L) (IdeleClassGroup L) where
   continuous_smul := continuous_prod_of_discrete_left.2 fun σ ↦ continuous_const_smul σ
 
 @[simp]
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `IdeleClassGroup.mk_surjective K c`. Rewrite using `[ideleClassMap_mk, smul_mk, smul_ideleEmbedding]`. Use the proof step `@[simp]`.
+-/
 theorem smul_ideleClassMap (σ : L ≃ₐ[K] L) (c : IdeleClassGroup K) :
     σ • ideleClassMap K L c = ideleClassMap K L c := by
   obtain ⟨x, rfl⟩ := IdeleClassGroup.mk_surjective K c
   rw [ideleClassMap_mk, smul_mk, smul_ideleEmbedding]
 
 @[simp]
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `IdeleClassGroup.mk_surjective L c`. Rewrite using `[smul_mk, ideleClassNorm_mk, ideleClassNorm_mk, ideleNorm_smul]`.
+-/
 theorem ideleClassNorm_smul (σ : L ≃ₐ[K] L) (c : IdeleClassGroup L) :
     ideleClassNorm K L (σ • c) = ideleClassNorm K L c := by
   obtain ⟨x, rfl⟩ := IdeleClassGroup.mk_surjective L c
@@ -264,11 +338,25 @@ section Galois
 
 variable [IsGalois K L]
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `IdeleClassGroup.mk_surjective L c`. Simplify using `only [ideleClassNorm_mk, ideleClassMap_mk, ideleEmbedding_ideleNorm, smul_mk, map_prod]`.
+-/
 theorem ideleClassMap_ideleClassNorm (c : IdeleClassGroup L) :
     ideleClassMap K L (ideleClassNorm K L c) = ∏ σ : L ≃ₐ[K] L, σ • c := by
   obtain ⟨x, rfl⟩ := IdeleClassGroup.mk_surjective L c
   simp only [ideleClassNorm_mk, ideleClassMap_mk, ideleEmbedding_ideleNorm, smul_mk, map_prod]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hc`. Take `⟨x, rfl⟩` from `IdeleClassGroup.mk_surjective L c`. Establish `h1 : ∀ σ : L ≃ₐ[K] L, ∃ a : Lˣ, σ • x = x * IdeleGroup.diagonal L a`. Introduce `σ`.
+
+Establish `h` using `hc σ`. Rewrite `h` using `[smul_mk]`. Take `⟨a, ha⟩` from `QuotientGroup.eq.1 h.symm`. Conclude with `⟨a, by rw [ha, mul_inv_cancel_left]⟩`. Use `choose a ha using h1`.
+
+Establish `hcoc : groupCohomology.IsMulCocycle₁ a`. Introduce `σ τ`. Apply `IdeleGroup.diagonal_injective L` to reduce the goal to its premises. Apply `mul_left_cancel (a := x)` to reduce the goal to its premises. Rewrite using `[← ha, mul_smul, ha τ, smul_mul', ha σ, smul_diagonal, map_mul, mul_assoc, mul_comm (IdeleGroup.diagonal L (a σ))]`.
+
+Take `⟨β, hβ⟩` from `groupCohomology.isMulCoboundary₁_of_isMulCocycle₁_of_aut_to_units a hcoc`. Establish `hfix : ∀ σ : L ≃ₐ[K] L, σ • (x * (IdeleGroup.diagonal L β)⁻¹) = x * (IdeleGroup.diagonal L β)⁻¹`. Introduce `σ`. Rewrite using `[smul_mul', smul_inv', ha σ, smul_diagonal, ← hβ σ, map_div, div_eq_mul_inv, mul_assoc x, mul_inv_cancel_comm]`. Take `⟨z, hz⟩` from `(forall_smul_eq_iff_mem_range_ideleEmbedding _).1 hfix`.
+
+Use `⟨IdeleClassGroup.mk K z, ?_⟩` and prove the remaining obligations. Rewrite using `[ideleClassMap_mk, hz, map_mul, map_inv, IdeleClassGroup.mk_diagonal, inv_one]`. Conclude with `mul_one (IdeleClassGroup.mk L x)`. Introduce and unpack `⟨d, rfl⟩ σ`. Conclude with `smul_ideleClassMap σ d`.
+-/
 theorem forall_smul_eq_iff_mem_range_ideleClassMap (c : IdeleClassGroup L) :
     (∀ σ : L ≃ₐ[K] L, σ • c = c) ↔ c ∈ (ideleClassMap K L).range := by
   constructor

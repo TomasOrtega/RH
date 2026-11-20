@@ -15,16 +15,25 @@ section
 variable {G : Type} [Group G] [TopologicalSpace G] {K : Type} [NormedAddCommGroup K]
   [InnerProductSpace ℂ K]
 
+/- English proof (translation)
+Set `f : K →ₗᵢ[ℂ] K` to `{ toLinearMap := (π k : K →ₗ[ℂ] K), norm_map' := hπ.2.2.1 k }`. Conclude with `f.inner_map_map u v`.
+-/
 theorem urep_inner {π : G → (K →L[ℂ] K)} (hπ : IsURep π) (k : G) (u v : K) :
     ⟪π k u, π k v⟫_ℂ = ⟪u, v⟫_ℂ := by
   let f : K →ₗᵢ[ℂ] K := { toLinearMap := (π k : K →ₗ[ℂ] K), norm_map' := hπ.2.2.1 k }
   exact f.inner_map_map u v
 
+/- English proof (translation)
+Rewrite using `[hπ.2.1 a b]`. Both sides reduce to the same expression.
+-/
 theorem urep_mul_apply {π : G → (K →L[ℂ] K)} (hπ : IsURep π) (a b : G) (v : K) :
     π (a * b) v = π a (π b v) := by
   rw [hπ.2.1 a b]
   rfl
 
+/- English proof (translation)
+Establish `h1 : π k (π k⁻¹ v) = v`. Rewrite using `[← urep_mul_apply hπ, mul_inv_cancel, hπ.1, ContinuousLinearMap.one_apply]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem urep_adj {π : G → (K →L[ℂ] K)} (hπ : IsURep π) (k : G) (u v : K) :
     ⟪π k u, v⟫_ℂ = ⟪u, π k⁻¹ v⟫_ℂ := by
   have h1 : π k (π k⁻¹ v) = v := by
@@ -34,6 +43,27 @@ theorem urep_adj {π : G → (K →L[ℂ] K)} (hπ : IsURep π) (k : G) (u v : K
 
 end
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ μ _ _ _ ph m hph hconv K _ _ π T hπ hT a`. Use extensionality with `y`. Use `ext_inner_left ℂ (fun x => ?_)` and prove the remaining obligations. Set `F : G → ℂ` to `fun k => ⟪x, π k y⟫_ℂ`. Establish `hFc : Continuous F` using `continuous_const.inner (hπ.2.2.2 y)`.
+
+Establish `hFb : ∀ k, ‖F k‖ ≤ ‖x‖ * ‖y‖` using `fun k => (norm_inner_le_norm x (π k y)).trans_eq (by rw [hπ.2.2.1])`. Establish `step1 : ∀ g, ⟪x, π g (π a (T y))⟫_ℂ = ∫ h, ph h * F (g * (a * h)) ∂μ`. Introduce `g`. Rewrite using `[← urep_mul_apply hπ, ← inv_inv (g * a), ← urep_adj hπ, hT]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations.
+
+Simplify using `only [F]`. Rewrite using `[urep_adj hπ, inv_inv, ← urep_mul_apply hπ, mul_assoc]`. Set `A : G × G → ℂ` to `fun z => ph z.1 * ph z.2 * F (z.1 * (a * z.2))`. Establish `hA : Integrable A (μ.prod μ)`. Establish `h1 : Integrable (fun z : G × G => ph z.1 * ph z.2) (μ.prod μ)` using `hph.mul_prod hph`.
+
+Establish `hm : AEStronglyMeasurable (fun z : G × G => F (z.1 * (a * z.2))) (μ.prod μ)` using `(hFc.comp (continuous_fst.mul (continuous_const.mul continuous_snd))).aestronglyMeasurable`. Conclude with `h1.mul_bdd hm (Filter.Eventually.of_forall fun z => hFb _)`. Establish `e1 : ∫ g, ph g * ∫ h, ph h * F (g * (a * h)) ∂μ ∂μ = ∫ z, A z ∂(μ.prod μ)`. Rewrite using `[integral_prod _ hA]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations.
+
+Simplify using `only [A]`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Simplify using `only`. Expand and normalize the polynomial expressions, which then agree.
+
+Set `Ψ : G × G → G × G` to `fun z => (z.1, z.1 * (a * z.2))`. Establish `hΨ : MeasurePreserving Ψ (μ.prod μ) (μ.prod μ)` using `(measurePreserving_prod_mul μ μ).comp ((MeasurePreserving.id μ).prod (measurePreserving_mul_left μ a))`. Establish `hΨe : MeasurableEmbedding Ψ` using `((MeasurableEquiv.prodCongr (MeasurableEquiv.refl G) (MeasurableEquiv.mulLeft a)).trans (MeasurableEquiv.shearMulRight G)).measurableEmbedding`. Set `B : G × G → ℂ` to `fun z => ph z.1 * ph (a⁻¹ * z.1⁻¹ * z.2) * F z.2`. Establish `hBA : B ∘ Ψ = A`.
+
+Use function extensionality and compare the values at `z`. Simplify using `only [B, Ψ, A, Function.comp]`. Establish `: a⁻¹ * z.1⁻¹ * (z.1 * (a * z.2)) = z.2` using `by group`. Rewrite using `[this]`. Establish `hB : Integrable B (μ.prod μ)` using `(hΨ.integrable_comp_emb hΨe).1 (hBA ▸ hA)`.
+
+Establish `e2 : ∫ z, A z ∂(μ.prod μ) = ∫ z, B z ∂(μ.prod μ)`. Rewrite using `[← hBA]`. Conclude with `hΨ.integral_comp hΨe B`. Use `show ⟪x, T (π a (T y))⟫_ℂ = ⟪x, (m a • T) y⟫_ℂ`. Rewrite using `[ContinuousLinearMap.smul_apply, inner_smul_right, hT x (π a (T y)), hT x y]`.
+
+Repeatedly rewrite using `[step1]`. Rewrite using `[e1, e2, integral_prod_symm B hB, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Simplify using `only [B, F]`. Rewrite using `[integral_mul_const, (hconv.2.2 a h).2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sand : Defs.SandStep := by
   intro G _ _ _ _ _ _ μ _ _ _ ph m hph hconv K _ _ π T hπ hT a
   ext y

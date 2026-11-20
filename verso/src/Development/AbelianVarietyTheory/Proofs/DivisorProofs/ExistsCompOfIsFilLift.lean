@@ -28,6 +28,9 @@ section Crystal
 
 variable {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] {g : ℕ}
 
+/- English proof (translation)
+The claim follows from `fun r ↦ ⟨TrivSqZeroExt.inl r, rfl⟩`.
+-/
 theorem fst_surj : Function.Surjective (fstHom R R R).toRingHom := fun r ↦ ⟨TrivSqZeroExt.inl r, rfl⟩
 
 def Comp (d : Crys (epsDP R) (DeRham.epsRed R) A) (f k : HdR A) : Prop :=
@@ -35,26 +38,44 @@ def Comp (d : Crys (epsDP R) (DeRham.epsRed R) A) (f k : HdR A) : Prop :=
 
 variable {d d' : Crys (epsDP R) (DeRham.epsRed R) A} {f f' k k' : HdR A}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨LinearMap.ext fun c ↦ by simpa using congrArg TrivSqZeroExt.fst ((h c).symm.trans (h' c)), LinearMap.ext fun c ↦ by simpa using congrArg TrivSqZeroExt.snd ((h c).symm.trans (h' c))⟩`.
+-/
 theorem Comp.unique (h : Comp d f k) (h' : Comp d f' k') : f = f' ∧ k = k' :=
   ⟨LinearMap.ext fun c ↦ by simpa using congrArg TrivSqZeroExt.fst ((h c).symm.trans (h' c)),
     LinearMap.ext fun c ↦ by simpa using congrArg TrivSqZeroExt.snd ((h c).symm.trans (h' c))⟩
 
+/- English proof (translation)
+The claim follows from `fun _ ↦ by rw [LinearMap.zero_apply, LinearMap.zero_apply] simp`.
+-/
 theorem comp_zero : Comp (0 : Crys (epsDP R) (DeRham.epsRed R) A) 0 0 := fun _ ↦ by
   rw [LinearMap.zero_apply, LinearMap.zero_apply]
   simp
 
+/- English proof (translation)
+The claim follows from `fun c ↦ by rw [LinearMap.add_apply, h, h'] ext <;> simp`.
+-/
 theorem Comp.add (h : Comp d f k) (h' : Comp d' f' k') : Comp (d + d') (f + f') (k + k') := fun c ↦ by
   rw [LinearMap.add_apply, h, h']
   ext <;> simp
 
+/- English proof (translation)
+The claim follows from `fun c ↦ by rw [LinearMap.smul_apply, h] ext <;> simp [mul_comm]`.
+-/
 theorem Comp.smul (h : Comp d f k) (r : DualNumber R) : Comp (r • d) (r.fst • f) (r.fst • k + r.snd • f) :=
   fun c ↦ by
   rw [LinearMap.smul_apply, h]
   ext <;> simp [mul_comm]
 
+/- English proof (translation)
+The claim follows from `JetIsotropic.ext_of_isBC hm fun c ↦ (h c).trans (h' c).symm`.
+-/
 theorem Comp.ext (hm : (constMor A).IsBC) (h : Comp d f k) (h' : Comp d' f k) : d = d' :=
   JetIsotropic.ext_of_isBC hm fun c ↦ (h c).trans (h' c).symm
 
+/- English proof (translation)
+Introduce `c ↦ by obtain ⟨z, rfl⟩ := hm.2 c induction z with | zero` and use `simp only [map_zero] | add x y hx hy => simp only [map_add, hx, hy] | tmul r c => rw [liftSemi_tmul, LinearMap.map_smul, h, LinearMap.map_smulₛₗ, redMor_constMor, LinearMap.map_smul] simp`.
+-/
 theorem Comp.corr (hm : (constMor A).IsBC) (h : Comp d f k) : (redMor A).Corr d f := fun c ↦ by
   obtain ⟨z, rfl⟩ := hm.2 c
   induction z with
@@ -64,6 +85,9 @@ theorem Comp.corr (hm : (constMor A).IsBC) (h : Comp d f k) : (redMor A).Corr d 
     rw [liftSemi_tmul, LinearMap.map_smul, h, LinearMap.map_smulₛₗ, redMor_constMor, LinearMap.map_smul]
     simp
 
+/- English proof (translation)
+The claim follows from `fun c ↦ by have kk := (homMor (dp0 R) (𝟙 _) u).comp (constMor A) have hM := homMor (epsDP R) (DeRham.epsRed R) u have e1 := GrpMor.pull_pull (constMor A) hM kk (fun _ ↦ rfl) (by simp) c have e2 := GrpMor.pull_pull (homMor (dp0 R) (𝟙 _) u) (constMor A) kk (fun _ ↦ rfl) rfl c rw [p …`.
+-/
 theorem Comp.push (h : Comp d f k) (u : A ⟶ A) [IsMonHom u] :
     Comp (push (epsDP R) (DeRham.epsRed R) u d) (push (dp0 R) (𝟙 _) u f) (push (dp0 R) (𝟙 _) u k) := fun c ↦ by
   have kk := (homMor (dp0 R) (𝟙 _) u).comp (constMor A)

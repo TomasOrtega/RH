@@ -13,6 +13,11 @@ section Sup
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {Comp : Type}
   (X : Comp → Data E r) (la : ∀ c, ReciprocityTheory.ChartRestriction.G.FD.Wt (X c).Ψ r)
 
+/- English proof (translation)
+Unfold `supE`. Use `iSup_le fun p => ?_` and prove the remaining obligations. Establish `h1 : (X p.1).pnorm (la p.1) ((P + Q) p.1) p.2 ≤ (X p.1).pnorm (la p.1) (P p.1) p.2 + (X p.1).pnorm (la p.1) (Q p.1) p.2`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.Data.pnorm`. Rewrite using `[← add_mul]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (norm_add_le _ _) (by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem supE_add_le (P Q : FDSec X) : supE X la (P + Q) ≤ supE X la P + supE X la Q := by
   unfold supE
   refine iSup_le fun p => ?_
@@ -30,6 +35,11 @@ theorem supE_add_le (P Q : FDSec X) : supE X la (P + Q) ≤ supE X la P + supE X
         add_le_add (le_iSup (fun p : FPt X => ENNReal.ofReal ((X p.1).pnorm (la p.1) (P p.1) p.2)) p)
           (le_iSup (fun p : FPt X => ENNReal.ofReal ((X p.1).pnorm (la p.1) (Q p.1) p.2)) p)
 
+/- English proof (translation)
+Unfold `supE`. Rewrite using `[ENNReal.mul_iSup]`. Use `iSup_congr fun p => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (norm_nonneg _)]`. Use `congr 1`.
+
+Unfold `ReciprocityTheory.ChartRestriction.G.FD.Data.pnorm`. Use `show ‖a * P p.1 p.2‖ * _ = ‖a‖ * (‖P p.1 p.2‖ * _)`. Rewrite using `[norm_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem supE_smul (a : ℂ) (P : FDSec X) : supE X la (a • P) = ENNReal.ofReal ‖a‖ * supE X la P := by
   unfold supE
   rw [ENNReal.mul_iSup]
@@ -41,6 +51,13 @@ theorem supE_smul (a : ℂ) (P : FDSec X) : supE X la (a • P) = ENNReal.ofReal
   rw [norm_mul]
   ring
 
+/- English proof (translation)
+Unfold `holSub at h`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem P hP`. Establish `hb : ∀ c, ∃ C : ℝ, ∀ x ∈ (X c).dom, (X c).pnorm (la c) (P c) x ≤ C` using `fun c => (hP c).1.2`. Use `choose C hC using hb`.
+
+Use `ne_top_of_le_ne_top (ENNReal.ofReal_ne_top (r := ∑ c, |C c|)) (iSup_le fun p => ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Consider the case `zero`. Use `ne_top_of_le_ne_top ENNReal.zero_ne_top (iSup_le fun p => ?_)` and prove the remaining obligations. Simplify using `[ReciprocityTheory.ChartRestriction.G.FD.Data.pnorm]`.
+
+Consider the case `add P Q _ _ hP hQ`. Conclude with `ne_top_of_le_ne_top (ENNReal.add_ne_top.mpr ⟨hP, hQ⟩) (supE_add_le X la P Q)`. Consider the case `smul a P _ hP`. Rewrite using `[supE_smul]`. Conclude with `ENNReal.mul_ne_top ENNReal.ofReal_ne_top hP`.
+-/
 theorem supE_ne_top [Fintype Comp] {P : FDSec X} (h : P ∈ holSub X la) : supE X la P ≠ ⊤ := by
   unfold holSub at h
   induction h using Submodule.span_induction with
@@ -70,10 +87,24 @@ open Classical in
 
 def goodOf (σ : c.F →+* ℂ) : c.F →+* ℂ := if GoodEmb c σ then σ else (starRingEnd ℂ).comp σ
 
+/- English proof (translation)
+Unfold `goodOf`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem norm_goodOf (σ : c.F →+* ℂ) (x : c.F) : ‖goodOf c σ x‖ = ‖σ x‖ := by
   unfold goodOf
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `goodOf`. Use `split_ifs with h`. Conclude with `h`. Unfold `GoodEmb at h ⊢ set β := (σ.comp (IntermediateField.inclusion c.le).toRingHom) (baseKA l).ρ with hβ`. Establish `hβsq : β ^ 2 = H.rt0 ^ 2`.
+
+Rewrite using `[H.sqrt_neg_disc_sq, hβ, ← map_pow, (baseKA l).ρ_sq, map_neg, map_natCast]`. Establish `hneg : β = -H.rt0`. Establish `hm : (β - H.rt0) * (β + H.rt0) = 0`. Rewrite using `[show (β - H.rt0) * (β + H.rt0) = β ^ 2 - H.rt0 ^ 2 by ring, hβsq, sub_self]`. Break down `mul_eq_zero.mp hm with h1 | h1` into its components or cases.
+
+Conclude with `absurd (sub_eq_zero.mp h1) h`. Conclude with `eq_neg_of_add_eq_zero_left h1`. Establish `hd : (2 : ℝ) ≤ H.d` using `by exact_mod_cast H.d_prime.two_le`. Establish `h2` using `congrArg Complex.re H.sqrt_neg_disc_sq`. Establish `h3` using `congrArg Complex.im H.sqrt_neg_disc_sq`.
+
+Simplify using `only [sq, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.natCast_re, Complex.natCast_im, neg_zero] at h2 h3`. Establish `hre : H.rt0.re = 0`. Break down `mul_eq_zero.mp (show H.rt0.re * H.rt0.im = 0 by nlinarith) with h4 | h4` into its components or cases. Conclude with `h4`. Rewrite `h2` using `[h4]`.
+
+It suffices to derive a contradiction. Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`. Use `show starRingEnd ℂ β = H.rt0`. Rewrite using `[hneg, map_neg]`. Apply the tactic sequence `apply Complex.ext <;> simp [hre]`.
+-/
 theorem goodEmb_goodOf (σ : c.F →+* ℂ) : GoodEmb c (goodOf c σ) := by
   unfold goodOf
   split_ifs with h
@@ -103,6 +134,9 @@ theorem goodEmb_goodOf (σ : c.F →+* ℂ) : GoodEmb c (goodOf c σ) := by
     rw [hneg, map_neg]
     apply Complex.ext <;> simp [hre]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `h`. Conclude with `⟨by simpa only [norm_goodOf] using h1, by simpa only [norm_goodOf] using h2, by simpa only [norm_goodOf] using h3, by simpa only [norm_goodOf] using h4⟩`.
+-/
 theorem IsNormOn.of_goodOf {C : Submodule c.F (Rul Xo c)} {σ : c.F →+* ℂ} {N : Rul Xo c → ℝ}
     (h : IsNormOn C (goodOf c σ) N) : IsNormOn C σ N := by
   obtain ⟨h1, h2, h3, h4⟩ := h
@@ -112,6 +146,9 @@ theorem IsNormOn.of_goodOf {C : Submodule c.F (Rul Xo c)} {σ : c.F →+* ℂ} {
 def lieFac (Dw : Datum H) (x : ℝ) (a : (E →+* ℂ) × ℕ → ℕ) : ℝ :=
   Real.exp (-((∑ τ : E →+* ℂ, ∑ i : Fin (Dw.mult τ), (a (τ, i) : ℝ)) / 2) * Real.log (2 * Real.pi * x))
 
+/- English proof (translation)
+The claim follows from `Real.exp_pos _`.
+-/
 theorem lieFac_pos (Dw : Datum H) (x : ℝ) (a : (E →+* ℂ) × ℕ → ℕ) : 0 < lieFac Dw x a := Real.exp_pos _
 
 def supC (x : ℝ) (σ : c.F →+* ℂ) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (f : Rul Xo c) : ℝ :=
@@ -122,6 +159,9 @@ def SupDef : Prop :=
 
 variable {Xo c U}
 
+/- English proof (translation)
+Establish `h1` using `(Submodule.mem_inf.mp hf).2`. Establish `h2` using `Submodule.mem_iInf _ |>.mp h1 σ`. Establish `h3` using `Submodule.mem_iInf _ |>.mp h2 hσ`. Conclude with `supE_ne_top (U σ).X (laU (U σ) a n) (Submodule.mem_comap.mp h3)`.
+-/
 theorem supE_cusp_ne_top {a n} {σ : c.F →+* ℂ} (hσ : GoodEmb c σ) {f : Rul Xo c} (hf : f ∈ cusp Xo c U a n) :
     supE (U σ).X (laU (U σ) a n) (rdU (U σ) f) ≠ ⊤ := by
   have h1 := (Submodule.mem_inf.mp hf).2
@@ -129,6 +169,9 @@ theorem supE_cusp_ne_top {a n} {σ : c.F →+* ℂ} (hσ : GoodEmb c σ) {f : Ru
   have h3 := Submodule.mem_iInf _ |>.mp h2 hσ
   exact supE_ne_top (U σ).X (laU (U σ) a n) (Submodule.mem_comap.mp h3)
 
+/- English proof (translation)
+The claim follows from `mul_nonneg (lieFac_pos _ _ _).le (supN_nonneg _ _ _) defin f hf h0 := h a n hd σ hσ f hf ((mul_eq_zero.mp h0).resolve_left (lieFac_pos _ _ _).ne') smul y f _ := by unfold supC supN rw [map_smulₛₗ, supE_smul, ENNReal.toReal_mul, ENNReal.toReal_ofReal (norm_nonneg _)] ring add f hf …`.
+-/
 theorem isNormOn_supC (x : ℝ) (h : SupDef Xo c U) {a n} (hd : Dom a n) {σ : c.F →+* ℂ} (hσ : GoodEmb c σ) :
     IsNormOn (cusp Xo c U a n) σ (supC Xo c U x σ a n) where
   nonneg f _ := mul_nonneg (lieFac_pos _ _ _).le (supN_nonneg _ _ _)
@@ -163,6 +206,13 @@ def L2DefiniteCuspForms (h : CuspL2 U σ V dict mu) : Prop :=
 
 variable {U σ V dict mu}
 
+/- English proof (translation)
+Rewrite using `[l2C, dif_pos hf]`. Conclude with `mul_nonneg (lieFac_pos _ _ _).le (l2Norm_nonneg_bis _ _ _ _ _ _ _)`. Use `defin f hf h0 := by`. Rewrite `h0` using `[l2C, dif_pos hf]`. Conclude with `congrArg Subtype.val (h1 a n hd ⟨f, hf⟩ ((mul_eq_zero.mp h0).resolve_left (lieFac_pos _ _ _).ne'))`.
+
+Use `smul x f hf := by`. Rewrite using `[l2C, l2C, dif_pos hf, dif_pos (Submodule.smul_mem _ x hf)]`. Use `l2Norm_smul_alt V σ (rdC U σ a n) dict mu (h a n hd) x ⟨f, hf⟩` as an intermediate fact. Conclude with `(congrArg (lieFac Dw x₀ a * ·) this).trans (by ring)`. Use `add f hf g hg := by`.
+
+Rewrite using `[l2C, l2C, l2C, dif_pos hf, dif_pos hg, dif_pos (Submodule.add_mem _ hf hg), ← mul_add]`. Conclude with `mul_le_mul_of_nonneg_left (L2Norm_add_le V σ (rdC U σ a n) dict mu (h a n hd) ⟨f, hf⟩ ⟨g, hg⟩) (lieFac_pos _ _ _).le`.
+-/
 theorem isNormOn_l2C (x₀ : ℝ) {h : CuspL2 U σ V dict mu} (h1 : L2DefiniteCuspForms U σ V dict mu h) {a n} (hd : Dom a n) :
     IsNormOn (cusp Xo c U a n) σ (l2C U σ V dict mu x₀ a n (h a n hd)) where
   nonneg f hf := by
@@ -179,6 +229,9 @@ theorem isNormOn_l2C (x₀ : ℝ) {h : CuspL2 U σ V dict mu} (h1 : L2DefiniteCu
     exact mul_le_mul_of_nonneg_left (L2Norm_add_le V σ (rdC U σ a n) dict mu (h a n hd) ⟨f, hf⟩ ⟨g, hg⟩)
       (lieFac_pos _ _ _).le
 
+/- English proof (translation)
+Introduce `f hf`. Unfold `l2C supC`. Rewrite using `[dif_pos hf]`. Use `mul_le_mul_of_nonneg_left ?_ (lieFac_pos Dw x a).le` and prove the remaining obligations. Conclude with `L2Norm_le_sup_norm (V := V) (la := laU (U σ) a n) (rd := rdC U σ a n) (dict := dict) (mu := mu) (h := h) (hd := hd) (hm := hm) (f := ⟨f, hf⟩) (hfin := supE_cusp_ne_top hσ hf)`.
+-/
 theorem l2C_le_supC (x : ℝ) (hσ : GoodEmb c σ) {a n} (h : JMemL2 V σ (rdC U σ a n) dict mu)
     (hd : ∀ g, (dict g).2 ∈ ((U σ).X (dict g).1).dom) (hm : MuUnit V dict mu) :
     ∀ f ∈ cusp Xo c U a n, l2C U σ V dict mu x a n h f ≤ supC Xo c U x σ a n f := by
@@ -189,6 +242,9 @@ theorem l2C_le_supC (x : ℝ) (hσ : GoodEmb c σ) {a n} (h : JMemL2 V σ (rdC U
   exact L2Norm_le_sup_norm (V := V) (la := laU (U σ) a n) (rd := rdC U σ a n) (dict := dict) (mu := mu) (h := h)
     (hd := hd) (hm := hm) (f := ⟨f, hf⟩) (hfin := supE_cusp_ne_top hσ hf)
 
+/- English proof (translation)
+Take `⟨-, -, -, -, hsec, -⟩` from `hU`. Establish `hf : (f : Rul Xo c) ∈ sec Xo c a n` using `(Submodule.mem_inf.mp f.2).1`. Conclude with `(hsec a n hd f hf k).1.continuousOn`.
+-/
 theorem rdC_continuousOn (hU : IsUnf (U σ)) {a n} (hd : Dom a n) (f : cusp Xo c U a n) (k : (U σ).Comp) :
     ContinuousOn (rdC U σ a n f k) ((U σ).X k).dom := by
   obtain ⟨-, -, -, -, hsec, -⟩ := hU

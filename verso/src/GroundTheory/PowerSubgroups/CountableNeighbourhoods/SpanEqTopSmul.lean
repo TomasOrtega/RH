@@ -4,6 +4,19 @@ namespace GroundTheory.Variant₂.N1
 
 open NumberField
 
+/- English proof (translation)
+Establish `hv : v ∈ Submodule.span K (Λ : Set (Fin n → K))` using `hΛ ▸ Submodule.mem_top`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨a, ha, hax⟩` from `hx`. Take `⟨b, hb, hby⟩` from `hy`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `Λ.add_mem ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm, mul_smul]`. Conclude with `Λ.smul_mem b hax`. Rewrite using `[mul_smul]`. Conclude with `Λ.smul_mem a hby`. Consider the case `smul c x _ hx`.
+
+Take `⟨a, ha, hax⟩` from `hx`. Take `⟨r, s, hs, rfl⟩` from `IsFractionRing.div_surjective (𝓞 K) c`. Establish `hs0 : s ≠ 0` using `nonZeroDivisors.ne_zero hs`. Establish `hsK : algebraMap (𝓞 K) K s ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr hs0`. Use `⟨s * a, mul_ne_zero hs0 ha, ?_⟩` and prove the remaining obligations.
+
+Establish `e : (s * a) • ((algebraMap (𝓞 K) K r / algebraMap (𝓞 K) K s) • x) = r • (a • x)`. Rewrite using `[← algebraMap_smul K (s * a), ← algebraMap_smul K r, ← algebraMap_smul K a, smul_smul, smul_smul, map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+
+Conclude with `Λ.smul_mem r hax`.
+-/
 theorem exists_smul_mem_of_span_eq_top_alt {K : Type*} [Field K] [NumberField K] {n : ℕ}
     (Λ : Submodule (𝓞 K) (Fin n → K))
     (hΛ : Submodule.span K (Λ : Set (Fin n → K)) = ⊤) (v : Fin n → K) :

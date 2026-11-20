@@ -16,6 +16,11 @@ def genAct (τ : ι) : MvPolynomial (ι × Fin n × Fin n) ℂ →ₐ[ℂ]
     MvPolynomial (ι × Fin n × Fin n) (MvPolynomial (Fin n × Fin n) ℂ) :=
   aeval fun v => if v.1 = τ then ∑ c : Fin n, C (X (v.2.1, c)) * X (τ, c, v.2.2) else X v
 
+/- English proof (translation)
+Take `⟨τ', r, s⟩` from `v`. Distinguish the cases in `hv : τ' = τ`. Substitute `hv` using the available equality. Simplify using `only [genAct, famAct, aeval_X, if_true, Function.update_self, map_sum, map_mul, map_C, map_X, eval_X]`. Simplify using `only [genAct, famAct, aeval_X, if_neg hv, Function.update_of_ne hv, map_X]`.
+
+Rewrite using `[Finset.sum_eq_single r (fun c _ hc => by rw [Matrix.one_apply_ne (Ne.symm hc), map_zero, zero_mul]) (by simp), Matrix.one_apply_eq, map_one, one_mul]`.
+-/
 lemma map_genAct_X (τ : ι) (g : Matrix (Fin n) (Fin n) ℂ) (v : ι × Fin n × Fin n) :
     map (eval fun x => g x.1 x.2) (genAct τ (X v)) = famAct (Function.update (fun _ => 1) τ g) (X v) := by
   obtain ⟨τ', r, s⟩ := v
@@ -27,6 +32,9 @@ lemma map_genAct_X (τ : ι) (g : Matrix (Fin n) (Fin n) ℂ) (v : ι × Fin n �
     rw [Finset.sum_eq_single r (fun c _ hc => by rw [Matrix.one_apply_ne (Ne.symm hc), map_zero, zero_mul])
       (by simp), Matrix.one_apply_eq, map_one, one_mul]
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp [genAct, famAct]`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, map_add]`. Consider the case `mul_X p v hp => rw [map_mul, map_mul, hp, map_mul, map_genAct_X]`.
+-/
 lemma map_genAct (τ : ι) (g : Matrix (Fin n) (Fin n) ℂ) (P : MvPolynomial (ι × Fin n × Fin n) ℂ) :
     map (eval fun x => g x.1 x.2) (genAct τ P) = famAct (Function.update (fun _ => 1) τ g) P := by
   induction P using MvPolynomial.induction_on with
@@ -39,6 +47,11 @@ def pushφ (φ : Module.Dual ℂ (MvPolynomial (ι × Fin n × Fin n) ℂ))
     MvPolynomial (Fin n × Fin n) ℂ :=
   ∑ m ∈ Q.support, φ (monomial m 1) • Q.coeff m
 
+/- English proof (translation)
+Use `conv_rhs => rw [Q.as_sum]`. Rewrite using `[pushφ, map_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_monomial, smul_eval]`. Establish `: (monomial m (eval x (Q.coeff m)) : MvPolynomial (ι × Fin n × Fin n) ℂ) = eval x (Q.coeff m) • monomial m 1`.
+
+Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[this, map_smul, smul_eq_mul, mul_comm]`.
+-/
 lemma eval_pushφ (φ : Module.Dual ℂ (MvPolynomial (ι × Fin n × Fin n) ℂ)) (x : Fin n × Fin n → ℂ)
     (Q : MvPolynomial (ι × Fin n × Fin n) (MvPolynomial (Fin n × Fin n) ℂ)) :
     eval x (pushφ φ Q) = φ (map (eval x) Q) := by
@@ -53,12 +66,22 @@ lemma eval_pushφ (φ : Module.Dual ℂ (MvPolynomial (ι × Fin n × Fin n) ℂ
 def elem (a b : Fin n) (t : ℂ) : Matrix (Fin n) (Fin n) ℂ :=
   1 + replicateCol (Fin 1) (Pi.single b t) * replicateRow (Fin 1) (Pi.single a (1 : ℂ))
 
+/- English proof (translation)
+Simplify using `only [elem, Matrix.add_apply, Matrix.one_apply, Matrix.mul_apply, replicateCol_apply, replicateRow_apply, Finset.univ_unique, Finset.sum_singleton, Pi.single_apply]`. Apply the tactic sequence `by_cases h1 : r = b <;> by_cases h2 : c = a <;> simp [h1, h2]`.
+-/
 lemma elem_apply (a b : Fin n) (t : ℂ) (r c : Fin n) :
     elem a b t r c = (if r = c then 1 else 0) + (if r = b ∧ c = a then t else 0) := by
   simp only [elem, Matrix.add_apply, Matrix.one_apply, Matrix.mul_apply, replicateCol_apply,
     replicateRow_apply, Finset.univ_unique, Finset.sum_singleton, Pi.single_apply]
   by_cases h1 : r = b <;> by_cases h2 : c = a <;> simp [h1, h2]
 
+/- English proof (translation)
+Take `⟨τ', r, s⟩` from `v`. Distinguish the cases in `hv : τ' = τ`. Substitute `hv` using the available equality. Simplify using `only [famAct, aeval_X, Function.update_self, elem_apply, map_add, add_mul, Finset.sum_add_distrib]`. Rewrite using `[Finset.sum_eq_single r (fun c _ hc => by rw [if_neg (Ne.symm hc), map_zero, zero_mul]) (by simp), if_pos rfl, map_one, one_mul]`.
+
+Simplify using `only [bigGen, aeval_X, true_and, Polynomial.eval_add, Polynomial.eval_C]`. Distinguish the cases in `hb : r = b`. Substitute `hb` using the available equality. Rewrite using `[Finset.sum_eq_single a (fun c _ hc => by rw [if_neg (by tauto), map_zero, zero_mul]) (by simp), if_pos ⟨rfl, rfl⟩, if_pos rfl, Polynomial.eval_mul, Polynomial.eval_X, Polynomial.eval_C]`. Rewrite using `[Finset.sum_eq_zero (fun c _ => by rw [if_neg (by tauto), map_zero, zero_mul]), if_neg hb, Polynomial.eval_zero]`.
+
+Simplify using `only [famAct, bigGen, aeval_X, Function.update_of_ne hv, hv, false_and, if_false, add_zero, Polynomial.eval_C]`. Rewrite using `[Finset.sum_eq_single r (fun c _ hc => by rw [Matrix.one_apply_ne (Ne.symm hc), map_zero, zero_mul]) (by simp), Matrix.one_apply_eq, map_one, one_mul]`.
+-/
 lemma famAct_elem_X (τ : ι) (a b : Fin n) (t : ℂ) (v : ι × Fin n × Fin n) :
     famAct (Function.update (fun _ => 1) τ (elem a b t)) (X v) = (bigGen τ a b (X v)).eval (C t) := by
   obtain ⟨τ', r, s⟩ := v
@@ -79,6 +102,9 @@ lemma famAct_elem_X (τ : ι) (a b : Fin n) (t : ℂ) (v : ι × Fin n × Fin n)
     rw [Finset.sum_eq_single r (fun c _ hc => by rw [Matrix.one_apply_ne (Ne.symm hc), map_zero, zero_mul])
       (by simp), Matrix.one_apply_eq, map_one, one_mul]
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C c => simp [famAct, bigGen]`. Consider the case `add p q hp hq => rw [map_add, hp, hq, map_add, Polynomial.eval_add]`. Consider the case `mul_X p v hp => rw [map_mul, hp, map_mul, Polynomial.eval_mul, famAct_elem_X]`.
+-/
 lemma famAct_elem (τ : ι) (a b : Fin n) (t : ℂ) (P : MvPolynomial (ι × Fin n × Fin n) ℂ) :
     famAct (Function.update (fun _ => 1) τ (elem a b t)) P = (bigGen τ a b P).eval (C t) := by
   induction P using MvPolynomial.induction_on with
@@ -86,6 +112,15 @@ lemma famAct_elem (τ : ι) (a b : Fin n) (t : ℂ) (P : MvPolynomial (ι × Fin
   | add p q hp hq => rw [map_add, hp, hq, map_add, Polynomial.eval_add]
   | mul_X p v hp => rw [map_mul, hp, map_mul, Polynomial.eval_mul, famAct_elem_X]
 
+/- English proof (translation)
+Establish `h : 1 + elem a b (m : ℂ) = (2 : ℂ) • (1 + replicateCol (Fin 1) (Pi.single b ((m : ℂ) / 2)) * replicateRow (Fin 1) (Pi.single a (1 : ℂ)))`. Use extensionality with `r c`. Rewrite using `[Matrix.add_apply, elem_apply, Matrix.smul_apply, Matrix.add_apply, Matrix.one_apply]`. Simplify using `only [Matrix.mul_apply, replicateCol_apply, replicateRow_apply, Finset.univ_unique, Finset.sum_singleton, Pi.single_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> (try subst_vars) <;> (try simp_all) <;> ring`.
+
+Establish `hR` using `Matrix.det_one_add_replicateCol_mul_replicateRow (ι := Fin 1) (Pi.single b ((m : ℂ) / 2)) (Pi.single a (1 : ℂ))`. Rewrite using `[h, det_smul]`. Use `erw [hR]`. Rewrite using `[isUnit_iff_ne_zero]`. Use `mul_ne_zero (pow_ne_zero _ two_ne_zero) ?_` and prove the remaining obligations.
+
+Simplify using `only [dotProduct, Pi.single_apply]`. Rewrite using `[Finset.sum_eq_single a (fun i _ hi => by simp [hi]) (by simp)]`. Introduce `h0`. Use `congrArg Complex.re h0` as an intermediate fact. Distinguish the cases in `hab : a = b`.
+
+Substitute `hab` using the available equality. Simplify using `at this`. Establish `: (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[hab] at this`.
+-/
 lemma isUnit_one_add_elem (a b : Fin n) (m : ℕ) : IsUnit (1 + elem a b (m : ℂ)).det := by
   have h : 1 + elem a b (m : ℂ) =
       (2 : ℂ) • (1 + replicateCol (Fin 1) (Pi.single b ((m : ℂ) / 2)) * replicateRow (Fin 1) (Pi.single a (1 : ℂ))) := by
@@ -111,6 +146,29 @@ lemma isUnit_one_add_elem (a b : Fin n) (m : ℕ) : IsUnit (1 + elem a b (m : �
     linarith
   · simp [hab] at this
 
+/- English proof (translation)
+Introduce `hDens ι _ _ n G hGd M hM τ a b k P hP`. Assume the negation of the conclusion as `hnot`. Take `⟨φ, hφP, hφM⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hnot inferInstance`. Establish `hφ0 : ∀ Q ∈ M, φ Q = 0`. Introduce `Q hQ`.
+
+Establish `: φ Q ∈ M.map φ` using `Submodule.mem_map_of_mem hQ`. Rewrite `this` using `[hφM]`. Conclude with `(Submodule.mem_bot ℂ).mp this`. Use `set p := pushφ φ (genAct τ P) with hp`. Establish `hval : ∀ g : Matrix (Fin n) (Fin n) ℂ, eval (fun x => g x.1 x.2) p = φ (famAct (Function.update (fun _ => 1) τ g) P)`.
+
+Introduce `g`. Rewrite using `[hp, eval_pushφ, map_genAct]`. Establish `hU : ∀ g : Matrix (Fin n) (Fin n) ℂ, gᴴ * G τ * g = G τ → eval (fun x => g x.1 x.2) p = 0`. Introduce `g hg`. Rewrite using `[hval]`.
+
+Apply `hφ0` to reduce the goal to its premises. Apply `hM _ _ P hP` to reduce the goal to its premises. Introduce `σ`. Distinguish the cases in `hσ : σ = τ`. Substitute `hσ` using the available equality.
+
+Simplify using `using hg`. Simplify using `[hσ]`. Establish `hall : ∀ g : Matrix (Fin n) (Fin n) ℂ, IsUnit (1 + g).det → eval (fun x => g x.1 x.2) p = 0`. Break down `hGd τ with hpd | hpd` into its components or cases. Conclude with `hDens n (G τ) hpd p hU`.
+
+Use `hDens n (-G τ) hpd p fun g hg => hU g ?_` and prove the remaining obligations. Use `congrArg Neg.neg hg` as an intermediate fact. Simplify `this` using `[Matrix.mul_neg, Matrix.neg_mul]`. Use `set q := bigGen τ a b P with hq`. Use `set r : Polynomial ℂ := q.sum fun j c => Polynomial.monomial j (φ c) with hr`.
+
+Establish `hr_eval : ∀ t : ℂ, r.eval t = φ (q.eval (C t))`. Introduce `t`. Rewrite using `[hr, Polynomial.sum_def, Polynomial.eval_finset_sum, Polynomial.eval_eq_sum (p := q), Polynomial.sum_def, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.eval_monomial, ← map_pow, mul_comm (q.coeff j), MvPolynomial.C_mul', map_smul, smul_eq_mul, mul_comm]`.
+
+Establish `hr0 : r = 0`. Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Apply `Set.infinite_of_injective_forall_mem (f := fun m : ℕ => (m : ℂ)) Nat.cast_injective` to reduce the goal to its premises. Introduce `m`. Use `show r.eval (m : ℂ) = 0`.
+
+Rewrite using `[hr_eval, ← famAct_elem, ← hval]`. Conclude with `hall _ (isUnit_one_add_elem a b m)`. Establish `hcoeff : r.coeff k = φ (bigDiv τ a b k P)`. Rewrite using `[hr, Polynomial.sum_def, Polynomial.finsetSum_coeff]`. Simplify using `only [Polynomial.coeff_monomial]`.
+
+Rewrite using `[Finset.sum_eq_single k (fun j _ hj => if_neg hj) (fun hk => by`. Rewrite using `[if_pos rfl, Polynomial.notMem_support_iff.mp hk, map_zero])]`. Rewrite using `[if_pos rfl]`. Both sides reduce to the same expression. Apply `hφP` to reduce the goal to its premises.
+
+Rewrite using `[← hcoeff, hr0, Polynomial.coeff_zero]`.
+-/
 theorem divisor_closed_holds : DivClosedOf := by
   intro hDens ι _ _ n G hGd M hM τ a b k P hP
   by_contra hnot

@@ -8,6 +8,21 @@ open Finset MvPolynomial
 
 namespace UpperTheory.Gal.Schur
 
+/- English proof (translation)
+Introduce `hT hM`. Prove the components needed by the constructor for the conclusion. Introduce `R _ _ n lam g y`. Simplify using `only [hT R]`. Establish `h` using `hM R n (Matrix.of fun a j => g j ^ shift lam a) (fun a => y ^ shift lam a) (fun _ => 1)`.
+
+Simplify using `only [Matrix.of_apply, prod_const_one, mul_one] at h`. Combine the equalities or inequalities in the displayed calculation. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Unfold `altn`. Use `congr 1`.
+
+Use extensionality with `a j`. Simplify using `only [Matrix.of_apply, scaleAt]`. Apply the tactic sequence `split_ifs <;> simp [mul_pow]`. Use `_ = _ := by`. Rewrite using `[h]`.
+
+Simplify using `only [altn, shift]`. Expand and normalize the polynomial expressions, which then agree. Introduce `R _ _ n lam g y`. Simplify using `only [hT R]`. Establish `h` using `hM R n (Matrix.of fun a j => g j ^ shift lam a) (fun _ => 1) (fun a => y ^ shift lam a)`.
+
+Simplify using `only [Matrix.of_apply, one_mul, prod_pow_eq_pow_sum] at h`. Combine the equalities or inequalities in the displayed calculation. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Unfold `altn`. Use `congr 1`.
+
+Use extensionality with `a j`. Simplify using `only [Matrix.of_apply, scaleOff]`. Apply the tactic sequence `split_ifs <;> simp [mul_pow]`. Use `_ = _ := by`. Rewrite using `[h]`.
+
+Simplify using `only [altn, shift]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem schurYClr_of : Comparison₂ → MixDet → SchurYClr ∧ SchurYOffClr := by
   intro hT hM
   constructor

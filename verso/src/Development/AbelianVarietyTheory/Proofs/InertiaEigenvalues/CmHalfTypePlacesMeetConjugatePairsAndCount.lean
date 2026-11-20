@@ -10,6 +10,17 @@ open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.Mai
 
 namespace GlobalTheory.SplitCount
 
+/- English proof (translation)
+Establish `: IsGaloisGroup Gal(E/ℚ) ℤ (𝓞 E)` using `IsGaloisGroup.of_isFractionRing _ _ _ ℚ E`. Establish `hp : (Ideal.span {(l : ℤ)}).IsPrime` using `(PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hl).irreducible).isPrime`. Establish `hinj : Function.Injective (HeightOneSpectrum.asIdeal : HeightOneSpectrum (𝓞 E) → _)` using `fun _ _ h => HeightOneSpectrum.ext h`. Establish `him : HeightOneSpectrum.asIdeal '' placesOver E l = (Ideal.span {(l : ℤ)}).primesOver (𝓞 E)`. Use extensionality with `P`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `⟨v.isPrime, GlobalTheory.HubLoc.liesOver_of_mem hl hv⟩`. Introduce and unpack `⟨hP, hlo⟩`. Establish `hm : ((l : ℕ) : 𝓞 E) ∈ P`.
+
+Establish `: (l : ℤ) ∈ P.under ℤ`. Rewrite using `[← hlo.over]`. Conclude with `Ideal.mem_span_singleton_self _`. Simplify `this` using `[Ideal.under, Ideal.mem_comap]`. Use `⟨⟨P, hP, ?_⟩, hm, rfl⟩` and prove the remaining obligations.
+
+Introduce and unpack `rfl`. Conclude with `hl.ne_zero (by simpa using hm)`. Use `⟨Set.Finite.of_finite_image (him ▸ Algebra.QuasiFinite.finite_primesOver _) hinj.injOn, fun w hw => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.HubLoc.liesOver_of_mem hl hw` as an intermediate fact. Use `w.isPrime` as an intermediate fact.
+
+Establish `h` using `Ideal.ncard_primesOver_mul_ramificationIdxIn_mul_inertiaDegIn (Ideal.span {(l : ℤ)}) (𝓞 E) Gal(E/ℚ)`. Rewrite `h` using `[Ideal.ramificationIdxIn_eq_ramificationIdx (Ideal.span {(l : ℤ)}) w.asIdeal Gal(E/ℚ), Ideal.inertiaDegIn_eq_inertiaDeg (Ideal.span {(l : ℤ)}) w.asIdeal Gal(E/ℚ), ← him, Set.ncard_image_of_injective _ hinj, IsGalois.card_aut_eq_finrank]`. Rewrite using `[← h, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem locDeg_mul_ncard (E : Type) [Field E] [NumberField E] [IsGalois ℚ E] {l : ℕ} (hl : l.Prime) :
     (placesOver E l).Finite ∧
       ∀ w ∈ placesOver E l, locDeg E w * (placesOver E l).ncard = Module.finrank ℚ E := by
@@ -44,6 +55,9 @@ theorem locDeg_mul_ncard (E : Type) [Field E] [NumberField E] [IsGalois ℚ E] {
 section Host
 variable {R : Ranks} (H : Host R)
 
+/- English proof (translation)
+Take `⟨φ⟩ : Nonempty (H.E →+* ℂ)` from `inferInstance`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[GlobalTheory.SplitRowProbe.conj_sqrt, GlobalTheory.SplitRowProbe.conj_sqrt, starRingEnd_self_apply]`.
+-/
 theorem conj_conj (x : H.E) : H.conj (H.conj x) = x := by
   obtain ⟨φ⟩ : Nonempty (H.E →+* ℂ) := inferInstance
   apply φ.injective
@@ -51,31 +65,68 @@ theorem conj_conj (x : H.E) : H.conj (H.conj x) = x := by
 
 def cInt : 𝓞 H.E ≃+* 𝓞 H.E := RingOfIntegers.mapRingEquiv H.conj.toRingEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cInt_coe (x : 𝓞 H.E) : (cInt H x : H.E) = H.conj (x : H.E) := rfl
 
+/- English proof (translation)
+The claim follows from `RingOfIntegers.ext (by rw [cInt_coe, cInt_coe, conj_conj])`.
+-/
 theorem cInt_cInt (x : 𝓞 H.E) : cInt H (cInt H x) = x :=
   RingOfIntegers.ext (by rw [cInt_coe, cInt_coe, conj_conj])
 
 def cPl (w : HeightOneSpectrum (𝓞 H.E)) : HeightOneSpectrum (𝓞 H.E) :=
   HeightOneSpectrum.comap (cInt H).toRingHom (cInt H).surjective w
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_cPl (w : HeightOneSpectrum (𝓞 H.E)) (x : 𝓞 H.E) :
     x ∈ (cPl H w).asIdeal ↔ cInt H x ∈ w.asIdeal := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `HeightOneSpectrum.ext (Ideal.ext fun x => by rw [mem_cPl, mem_cPl, cInt_cInt])`.
+-/
 theorem cPl_cPl (w : HeightOneSpectrum (𝓞 H.E)) : cPl H (cPl H w) = w :=
   HeightOneSpectrum.ext (Ideal.ext fun x => by rw [mem_cPl, mem_cPl, cInt_cInt])
 
+/- English proof (translation)
+Introduce `x y h`. Establish `: y = cInt H x` using `RingOfIntegers.ext h`. Rewrite using `[this, mem_cPl, cInt_cInt]`.
+-/
 theorem isConjPl_cPl (w : HeightOneSpectrum (𝓞 H.E)) : IsConjPl H w (cPl H w) := by
   intro x y h
   have : y = cInt H x := RingOfIntegers.ext h
   rw [this, mem_cPl, cInt_cInt]
 
+/- English proof (translation)
+The claim follows from `(h (l : 𝓞 H.E) (l : 𝓞 H.E) (by simp)).1 hw`.
+-/
 theorem mem_placesOver_of_conj {l : ℕ} {w w' : HeightOneSpectrum (𝓞 H.E)} (hw : w ∈ placesOver H.E l)
     (h : IsConjPl H w w') : w' ∈ placesOver H.E l :=
   (h (l : 𝓞 H.E) (l : 𝓞 H.E) (by simp)).1 hw
 
 end Host
 
+/- English proof (translation)
+Introduce `D i hl s`. Establish `hx : ∀ w ∈ placesOver D.host.E (D.nd.l i), ∀ w', IsConjPl D.host w w' → Xor' (w ∈ columns (N` using `D.nd) D.nbr i s) (w' ∈ columns (N := D.nd) D.nbr i s) := by`. Introduce `w hw w' h`. Establish `hw'` using `mem_placesOver_of_conj D.host hw h`. Establish `n1` using `GlobalTheory.SplitRowProbe.not_both_columns D i w hw`.
+
+Establish `n2` using `GlobalTheory.SplitRowProbe.not_both_columns D i w' hw'`. Apply the tactic sequence `rcases GlobalTheory.T.splitPrime_place_cmType_conjugate D i hl w w' hw hw' h with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;> cases s`. Conclude with `Or.inr ⟨⟨hw', h2⟩, fun ⟨_, h3⟩ => n1 ⟨h1, h3⟩⟩`. Conclude with `Or.inl ⟨⟨hw, h1⟩, fun ⟨_, h3⟩ => n2 ⟨h3, h2⟩⟩`. Conclude with `Or.inl ⟨⟨hw, h1⟩, fun ⟨_, h3⟩ => n2 ⟨h2, h3⟩⟩`.
+
+Conclude with `Or.inr ⟨⟨hw', h2⟩, fun ⟨_, h3⟩ => n1 ⟨h3, h1⟩⟩`. Establish `hgal` using `D.host.hostE_isGalois`. Take `⟨hfin, hdeg⟩` from `locDeg_mul_ncard D.host.E hl.1`. Use `set C := columns (N := D.nd) D.nbr i s with hC`. Establish `hsub : C ⊆ placesOver D.host.E (D.nd.l i)` using `fun w ⟨hw, _⟩ => hw`.
+
+Establish `hCf : C.Finite` using `hfin.subset hsub`. Use `⟨hx, hCf, fun w hw => ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (cPl D.host)` using `Function.LeftInverse.injective (cPl_cPl D.host)`. Establish `hun : placesOver D.host.E (D.nd.l i) = C ∪ cPl D.host '' C`. Use extensionality with `v`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hv`. Break down `hx v hv _ (isConjPl_cPl D.host v) with h | h` into its components or cases. Conclude with `Or.inl h.1`. Conclude with `Or.inr ⟨_, h.1, cPl_cPl D.host v⟩`.
+
+Introduce and unpack `(hv | ⟨u, hu, rfl⟩)`. Conclude with `hsub hv`. Conclude with `mem_placesOver_of_conj D.host (hsub hu) (isConjPl_cPl D.host u)`. Establish `hdis : Disjoint C (cPl D.host '' C)`. Rewrite using `[Set.disjoint_left]`.
+
+Introduce and unpack `_ hv ⟨u, hu, rfl⟩`. Break down `hx u (hsub hu) _ (isConjPl_cPl D.host u) with h | h` into its components or cases. Conclude with `h.2 hv`. Conclude with `h.2 hu`. Establish `hfr : Module.finrank ℚ D.host.E = 2 * D.R.f`.
+
+Rewrite using `[D.host.finrank_cmField]`. Unfold `Ranks.f Ranks.n`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `hdeg w hw`. Rewrite `h` using `[hun, Set.ncard_union_eq hdis hCf (hCf.image _), Set.ncard_image_of_injective _ hinj, hfr]`.
+
+Establish `h2 : 2 * (locDeg D.host.E w * C.ncard) = 2 * D.R.f` using `by rw [← h]; ring`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem columns_count : ∀ (D : D7) (i : D.nd.Loc), SplitRowPrime D.host (D.nd.l i) → ∀ s : Bool, (∀ w ∈ placesOver D.host.E (D.nd.l i), ∀ w', IsConjPl D.host w w' → Xor' (w ∈ columns (N := D.nd) D.nbr i s) (w' ∈ columns (N := D.nd) D.nbr i s)) ∧ (columns (N := D.nd) D.nbr i s).Finite ∧ ∀ w ∈ placesOver D.host.E (D.nd.l i), locDeg D.host.E w * (columns (N := D.nd) D.nbr i s).ncard = D.R.f := by
   intro D i hl s
   have hx : ∀ w ∈ placesOver D.host.E (D.nd.l i), ∀ w', IsConjPl D.host w w' →

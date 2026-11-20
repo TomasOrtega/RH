@@ -16,6 +16,25 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨_, A, hA⟩` from `isProper_and_exists_isAmpleLB_of_isProjOver hX`. Establish `hD : DiffVanish (d + 1) (chiPic k F)` using `diffVanish_chiPic_of_isProjOver (algebraMap_eq_strHom k X) F hX hd`. Establish `key : ∀ S : Finset (Fin d), ∀ Q : Fin d → LB X, (∀ i ∈ S, IsNef k (Q i)) → (∀ i ∉ S, IsAmpleLB (Q i)) → 0 ≤ interNum k F Q`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`.
+
+Consider the case `empty => exact fun Q _ h ↦ GlobalTheory.T.lineBundleIntersectionNumber_nonneg_of_ample k X hX d F hd Q fun i ↦ h i (by simp)`. Consider the case `insert i S hi ih`. Introduce `Q hn ha`. Establish `hi' : IsNef k (Q i)` using `hn i (Finset.mem_insert_self _ _)`. Establish `hL : ∀ j, (Q j).IsLB` using `fun j ↦ by`.
+
+Distinguish the cases in `h : j ∈ insert i S`. Conclude with `(hn j h).isLB`. Conclude with `(ha j h).isLB`. Establish `h1 : ∀ B : LB X, IsAmpleLB B → 0 ≤ interNum k F (Function.update Q i B)`. Introduce `B hB`.
+
+Use `ih _ (fun j hj ↦ ?_) (fun j hj ↦ ?_)` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (by rintro rfl; exact hi hj)]`. Conclude with `hn j (Finset.mem_insert_of_mem hj)`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+
+Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne h]`. Conclude with `ha j (by simp [h, hj])`. Establish `h2 : ∀ m : ℕ, ∃ B : LB X, IsAmpleLB B ∧ interNum k F (Function.update Q i B) = interNum k F (Function.update Q i A) + m * interNum k F Q`. Introduce `m`.
+
+Proceed by induction on `m with`. Consider the case `zero => exact ⟨A, hA, by simp⟩`. Consider the case `succ m ihm`. Take `⟨B, hB, e⟩` from `ihm`. Use `⟨tens B (Q i), hAN _ _ hB hi', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hD.interNum_update_tens (by simp) hL i hB.isLB (hL i), e, Function.update_eq_self]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Assume the negation of the conclusion as `hneg`. Take `⟨B, hB, e⟩` from `h2 ((interNum k F (Function.update Q i A)).toNat + 1)`.
+
+Establish `h3` using `h1 B hB`. Establish `h4` using `h1 A hA`. Rewrite `h3` using `[e]`. Move the coercions through the operations in `at h3`. Rewrite `h3` using `[Int.toNat_of_nonneg h4]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Conclude with `key Finset.univ P (fun i _ ↦ hP i) (fun i h ↦ absurd (Finset.mem_univ i) h)`.
+-/
 theorem interNum_nonneg_of_isNef_of_ample_tens_nef (k : Type) [Field k] [Infinite k]
     (X : Scheme.{0}) [Algebra k Γ(X, ⊤)] (hX : IsProjOver (strHom k X))
     (hAN : ∀ A N : LB X, IsAmpleLB A → IsNef k N → IsAmpleLB (tens A N))

@@ -21,10 +21,30 @@ open GlobalTheory.RawLift
 
 namespace GlobalTheory.BadSuppPf
 
+/- English proof (translation)
+Rewrite using `[D.sp.W_rank _ (Nat.le_add_left _ _) i.2]`. Conclude with `r_le_V i`.
+-/
 theorem rank_le (D : D7) (i : Fin D.R.m) : (Wc D i).rank ≤ (Vc D i).rank := by
   rw [D.sp.W_rank _ (Nat.le_add_left _ _) i.2]
   exact r_le_V i
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hL hF i t μ 𝓕 hμ P hP e f hPf k hk hnot`. Establish `hv` using `hL.thP.vP i t`. Establish `hθ` using `GlobalTheory.VecTheta.isThetaFunO_thPVec hv`. Take `⟨-, e', he', hth⟩` from `hv`. Take `⟨cV, hBV⟩` from `hL.lev.βV i`.
+
+Take `⟨cW, hBW⟩` from `hL.lev.βW i`. Rewrite `hBV`, `hBW` using `[one_pow]`. Establish `hsdV` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.lev.βV i)`. Establish `hsdW` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.lev.βW i)`. Establish `hdat : (fun x : WO (Vc D i) (Wc D i) => if IsHalf (cA D e') x ∧ IsIntM (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) x) then omegaK R.Pg (fun PP => redM PP (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) x)) * omegaQ (R.Q t) (Wc D i).rank (R.xiR t) (-1) (fun PP => redM PP (frMapAdj …`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.FinZeta.levDatum, GlobalTheory.Survey.LevelVectorSizeBounds.omegaG_triv R i]`. Rewrite `hth` using `[hdat]`. Take `⟨hkf, hk1⟩` from `GlobalTheory.SuppLocal.suppF_local D (Wc D i) P e f k hPf hk`. Establish `hZ : ∀ PP, PP ∈ R.Pg ∪ R.Q t ↔ PP ∈ (R.datWp i R.triv).Pg ∨ PP ∈ R.Q t` using `fun PP => Finset.mem_union`.
+
+Establish `hsb` using `GlobalTheory.FinZeta.isSBHalf_levDatum D (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) (R.βV i) (R.βW i) (R.datWp i R.triv) (R.Q t) (R.xiR t) (R.Pg ∪ R.Q t) e' hsdV hsdW hBV.1 hBW.1 he'`. Establish `horth` using `GlobalTheory.ThetaOrth.orth D R.ψ (Vc D i) (Wc D i) _ _ (R.ωP i t) (hF i t).datum (R.ΛV i) (R.ΛW i) hsdV hsdW (R.Pg ∪ R.Q t) e' he' (R.vacP i) _ (R.vP i t) hsb hth hθ μ 𝓕 hμ k hkf (fun x hx => by`. Assume the negation of the conclusion as `hx'`. Take `⟨k', hk', hag⟩` from `GlobalTheory.T.mem_level_of_levelDatum_ne_zero_translate D (Vc D i) (Wc D i) (R.ΛW i) (R.βV i) (R.βW i) (R.datWp i R.triv) (R.Q t) (R.xiR t) (R.Pg ∪ R.Q t) e' hsdW hBW.1 (rank_le D i) rfl he' hZ k hkf x hx hx'`. Apply `hnot` to reduce the goal to its premises.
+
+Establish `hlo` using `(GlobalTheory.FinZeta.LevelOff.level_offS D (Wc D i) (R.βW i) (R.ΛW i) (R.datWp i R.triv) ((R.Pg ∪ R.Q t).image (fun PP => PP.under (𝓞 D.host.F))) hBW (fun PP hPP => Finset.mem_image_of_mem _ (by`. Break down `hPP with h | h` into its components or cases. Conclude with `Finset.mem_union_left _ h`. Conclude with `absurd h (Finset.notMem_empty _)))).2.1 k hkf`. Use `hlo.2 ⟨⟨k', hk', fun v hvS => ?_⟩, fun v hvS => ?_⟩` and prove the remaining obligations.
+
+Take `⟨PP, hPP, rfl⟩` from `Finset.mem_image.1 hvS`. Conclude with `hag PP hPP`. Establish `hne : v ≠ P.under (𝓞 D.host.F)` using `fun h => hvS (h ▸ Finset.mem_image_of_mem _ (hP.elim (fun h => Finset.mem_union_left _ h) (fun h => Finset.mem_union_right _ h)))`. Rewrite using `[hk1 v hne]`. Conclude with `Subgroup.one_mem _)`.
+
+Establish `h0 : thetaIP μ 𝓕 (R.ωP i t (1, k) (R.vP i t)) (R.vP i t) = 0`. Establish `h1 : Formalism.IndefR.Lift.pet μ 𝓕 (R.ωP i t (1, k) (R.vP i t)) (R.vP i t) = 0` using `horth`. Unfold `Formalism.IndefR.Lift.pet at h1`. Unfold `thetaIP`. Establish `h2 : (fun w => star (R.ωP i t (1, k) (R.vP i t) w) * R.vP i t w) = fun w => starRingEnd ℂ (R.ωP i t (1, k) (R.vP i t) w * starRingEnd ℂ (R.vP i t w))`.
+
+Use function extensionality and compare the values at `w`. Simplify using `[mul_comm]`. Rewrite using `[h2, integral_conj, h1, map_zero]`. Unfold `coef`. Rewrite using `[h0, zero_div]`.
+-/
 theorem badSupp : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → R.FullP → ∀ i t, BadSupp R i t := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hL hF i t μ 𝓕 hμ P hP e f hPf k hk hnot
   classical

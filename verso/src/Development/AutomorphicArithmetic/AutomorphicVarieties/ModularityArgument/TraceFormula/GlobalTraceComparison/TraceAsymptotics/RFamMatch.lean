@@ -13,6 +13,13 @@ namespace UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Take `⟨K', ho, hle, hc, hk⟩` from `hg`. Use `⟨K'.subgroupOf (UL n w), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_subgroupOf]`. Conclude with `ho.preimage continuous_subtype_val`. Introduce `x hx`.
+
+Conclude with `hle hx`. Establish `hU : ((UL n w : Subgroup (GLw n w)) : Set (GLw n w)) = Set.univ`. Simplify using `[UL, hs]`. Establish `hcl : IsClosed ((UL n w : Subgroup (GLw n w)) : Set (GLw n w))`. Rewrite using `[hU]`.
+
+Conclude with `isClosed_univ`. Conclude with `hc.comp_isClosedEmbedding hcl.isClosedEmbedding_subtypeVal`. Introduce `k hk' x`. Conclude with `⟨(hk k.1 hk' x.1).1, (hk k.1 hk' x.1).2⟩`.
+-/
 private theorem lc_val {n : ℕ} {w : Pl E} (hs : IsSplitAt w) {g : GLw n w → ℂ} (hg : Lc (KGL w n) g) :
     Lc (KL n w) (fun x : UL n w => g x.1) := by
   obtain ⟨K', ho, hle, hc, hk⟩ := hg
@@ -29,6 +36,9 @@ private theorem lc_val {n : ℕ} {w : Pl E} (hs : IsSplitAt w) {g : GLw n w → 
   · intro k hk' x
     exact ⟨(hk k.1 hk' x.1).1, (hk k.1 hk' x.1).2⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `hx : x ∈ (KL n w : Set (UL n w)) ↔ x.1 ∈ (KGL w n : Set (GLw n w))` using `Iff.rfl`. Simplify using `only [fn1, Ex.fn, Set.indicator_apply, hx]`. Both sides reduce to the same expression.
+-/
 private theorem unit_eq (n : ℕ) (w : Pl E) :
     (KL n w : Set (UL n w)).indicator 1 = fun x : UL n w => fn1 n w Ex.one x.1 := by
   funext x
@@ -36,6 +46,15 @@ private theorem unit_eq (n : ℕ) (w : Pl E) :
   simp only [fn1, Ex.fn, Set.indicator_apply, hx]
   rfl
 
+/- English proof (translation)
+Take `⟨K', ho, hle, hc, hk⟩` from `hφ`. Use `⟨K'.comap (MonoidHom.inl _ _), K'.comap (MonoidHom.inr _ _), ⟨?_, ?_, ?_⟩, ⟨?_, ?_, ?_⟩, hc, ?_⟩` and prove the remaining obligations. Conclude with `ho.preimage (continuous_id.prodMk continuous_const)`. Introduce `x hx`. Conclude with `(hle hx).1`.
+
+Introduce `k hk'`. Simplify `hk'` using `[thL, hs]`. Conclude with `ho.preimage (continuous_const.prodMk continuous_id)`. Introduce `x hx`. Conclude with `(hle hx).2`.
+
+Introduce `k hk'`. Simplify `hk'` using `[thL, hs]`. Introduce and unpack `⟨k₁, k₂⟩ ⟨h₁, h₂⟩ x`. Establish `hm : ((k₁, k₂) : GLw a w × GLw b w) ∈ K'`. Use `K'.mul_mem h₁ h₂` as an intermediate fact.
+
+Simplify using `using this`. Conclude with `hk _ hm x`.
+-/
 private theorem split_level {a b : ℕ} {w : Pl E} (hs : IsSplitAt w) {φ : GLw a w × GLw b w → ℂ}
     (hφ : Lc (K2 a b w) φ) : ∃ (K₁ : Subgroup (GLw a w)) (K₂ : Subgroup (GLw b w)),
       IsLevel (thL a w) (KGL w a) K₁ ∧ IsLevel (thL b w) (KGL w b) K₂ ∧ IsHecke (K₁.prod K₂) φ := by
@@ -57,10 +76,16 @@ private theorem split_level {a b : ℕ} {w : Pl E} (hs : IsSplitAt w) {φ : GLw 
       simpa using this
     exact hk _ hm x
 
+/- English proof (translation)
+Simplify using `only [inv, un, Multiset.map_add, Multiset.map_map, Function.comp_def, hm, mul_inv, inv_pow, inv_inv]`.
+-/
 private theorem inv_un {μ : HChar E} {w : Pl E} (hm : μ.val (cPl w) = (μ.val w)⁻¹) (a b : ℕ)
     (B₁ B₂ : Multiset ℂˣ) : inv (un μ a b (cPl w) B₁ B₂) = un μ a b w (inv B₁) (inv B₂) := by
   simp only [inv, un, Multiset.map_add, Multiset.map_map, Function.comp_def, hm, mul_inv, inv_pow, inv_inv]
 
+/- English proof (translation)
+Introduce `Q₁ Q₂ h₁ h₂ h₃ h₄ h₅ h₆ h₇`. Use `H Q₁ Q₂ h₁ h₂ h₃ h₄ h₅ h₆ h₇` as an intermediate fact. Rewrite using `[this]`. Simplify using `only [delta, if_neg hs]`.
+-/
 private theorem match_inert {n a b : ℕ} {w : Pl E} (hs : ¬ IsSplitAt w) (μ : (w.adicCompletion E)ˣ →* ℂˣ)
     {f : UL n w → ℂ} {φ : GLw a w × GLw b w → ℂ} (H : Match n a b w 1 f φ) : Match n a b w μ f φ := by
   intro Q₁ Q₂ h₁ h₂ h₃ h₄ h₅ h₆ h₇
@@ -68,6 +93,45 @@ private theorem match_inert {n a b : ℕ} {w : Pl E} (hs : ¬ IsSplitAt w) (μ :
   rw [this]
   simp only [delta, if_neg hs]
 
+/- English proof (translation)
+Introduce `hUm hSp hPl hAct hH2 hCt hMu E _ _ _ hUnr n μ ε hμ S hS Z hZ hZμ f hf a b h`. Take `⟨-, hPl2, -, hPl4⟩` from `hPl E`. Establish `hOff : ∀ w ∈ S, IsSplitAt w → w ∉ Z → Off Z w` using `fun w hw hs hwZ => ⟨hwZ, fun hc => ((hPl2 w).2.1 hs) (((hPl4 S hS) w).2 hw (hZ _ hc).1)⟩`. Establish `hT0 : ∀ w : Pl E, ∃ t : Fin (n + 1) → Ex (Fin (a + 1) × Fin (b + 1)), IsSplitAt w → μ.UnrAt w → (∀ e, (ctMu h w (μ.loc w) fun x : UL n w => fn1 n w e x.1) = fn2 a b w (e.bind t)) ∧ ∀ e B₁ B₂, B₁.card = a → B₂.card = b → ev2 a b w (e.bind t) B₁ B₂ = ev1 n w e (un μ a b w B₁ B₂)`. Introduce `w`.
+
+Distinguish the cases in `hc : IsSplitAt w ∧ μ.UnrAt w`. Take `⟨t, ht⟩` from `hCt E w hc.1 μ hc.2 n a b h`. Conclude with `⟨t, fun _ _ => ht⟩`. Conclude with `⟨fun _ => Ex.one, fun h1 h2 => absurd ⟨h1, h2⟩ hc⟩`. Use `choose t ht using hT0`.
+
+Establish `hLcZ : ∀ w ∈ Z, Lc (KL n w) (fun x : UL n w => f w x.1)` using `fun w hw => lc_val (hZ w hw).2 (hf w hw)`. Establish `hCtLc : ∀ w ∈ Z, Lc (K2 a b w) (ct0 μ h f w)` using `fun w hw => (hSp E w (hZ w hw).2 n a b h μ _ (hLcZ w hw)).1`. Use `⟨hCtLc, t, ?_⟩` and prove the remaining obligations. Introduce `T hT hTZ e₁ e₂`. Establish `hTnZ : ∀ w ∈ T, w ∉ Z` using `fun w hw hz => Finset.disjoint_left.1 hTZ hw hz`.
+
+Establish `hbasic` using `fun (m : ℕ) (w : Pl E) => GlobalTheory.BCT.ThBasic.twist_basic E hUnr m w`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `B₁ B₂ hB`. Simplify using `only [val, val1]`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations.
+
+Establish `hs` using `(hT w hw).2`. Establish `hO` using `hOff w (hT w hw).1 hs (hTnZ w hw)`. Establish `hu` using `hZμ w hO`. Establish `hO' : Off Z (cPl w)` using `⟨hO.2, by rw [(hPl2 w).1]; exact hO.1⟩`. Establish `hm` using `hMu E μ ε hμ w hs hu`.
+
+Establish `c1` using `(ht w hs hu).2 (e₁ w) (B₁ w) (B₂ w) (hB w hO).1 (hB w hO).2`. Establish `c2` using `(ht w hs hu).2 (e₂ w) (inv (B₁ (cPl w))) (inv (B₂ (cPl w))) (by simp [inv, (hB _ hO').1]) (by simp [inv, (hB _ hO').2])`. Rewrite using `[c1, c2, inv_un hm]`. Introduce `k`. Establish `hfam : ∀ w ∈ S, fam Z T (ct0 μ h f) (fun w => (e₁ w).bind (t w)) (fun w => (e₂ w).bind (t w)) k w = if IsSplitAt w then ctMu h w (μ.loc w) (famU Z T f e₁ e₂ k w) else (K2 a b w : Set _).indicator 1`.
+
+Introduce `w hw`. Distinguish the cases in `hs : IsSplitAt w`. Rewrite using `[if_pos hs]`. Distinguish the cases in `hz : w ∈ Z`. Simplify using `only [fam, famU, if_pos hz]`.
+
+Both sides reduce to the same expression. Establish `hu` using `hZμ w (hOff w hw hs hz)`. Distinguish the cases in `hwT : w ∈ T`. Simplify using `only [fam, famU, if_neg hz, if_pos hwT]`. Rewrite using `[(ht w hs hu).1 (((e₁ w).pow k).mul ((e₂ w).pow k))]`.
+
+Simplify using `only [Ex.bind, Ex.bind_pow]`. Simplify using `only [fam, famU, if_neg hz, if_neg hwT]`. Rewrite using `[unit_eq, (ht w hs hu).1 Ex.one]`. Simplify using `only [fn2, Ex.bind, Ex.fn]`. Establish `hz : w ∉ Z` using `fun hz => hs (hZ w hz).2`.
+
+Establish `hwT : w ∉ T` using `fun hz => hs (hT w hz).2`. Simplify using `only [fam, if_neg hz, if_neg hwT, if_neg hs]`. Establish `hLcU : ∀ w, IsSplitAt w → Lc (KL n w) (famU Z T f e₁ e₂ k w)`. Introduce `w hs`. Establish `hK : ∀ e, Lc (KGL w n) (fn1 n w e)` using `fun e => ⟨KGL w n, (hbasic n w).2.2.2.2.1, le_rfl, (hAct E n w e).1⟩`.
+
+Distinguish the cases in `hz : w ∈ Z`. Simplify using `only [famU, if_pos hz]`. Conclude with `hLcZ w hz`. Distinguish the cases in `hwT : w ∈ T`. Simplify using `only [famU, if_neg hz, if_pos hwT]`.
+
+Conclude with `lc_val hs (hK _)`. Simplify using `only [famU, if_neg hz, if_neg hwT]`. Rewrite using `[unit_eq]`. Conclude with `lc_val hs (hK _)`. Establish `hlev : ∀ w : Pl E, ∃ (K₁ : Subgroup (GLw a w)) (K₂ : Subgroup (GLw b w)), IsLevel (thL a w) (KGL w a) K₁ ∧ IsLevel (thL b w) (KGL w b) K₂ ∧ IsHecke (K₁.prod K₂) (fam Z T (ct0 μ h f) (fun w => (e₁ w).bind (t w)) (fun w => (e₂ w).bind (t w)) k w) ∧ (w ∉ Z → K₁ = KGL w a ∧ K₂ = KGL …`.
+
+Introduce `w`. Distinguish the cases in `hz : w ∈ Z`. Take `⟨K₁, K₂, h₁, h₂, h₃⟩` from `split_level (hZ w hz).2 (hCtLc w hz)`. Use `⟨K₁, K₂, h₁, h₂, ?_, fun hn => absurd hz hn⟩` and prove the remaining obligations. Simplify using `only [fam, if_pos hz]`.
+
+Conclude with `h₃`. Use `⟨KGL w a, KGL w b, ⟨(hbasic a w).2.2.2.2.1, le_rfl, (hbasic a w).2.2.1⟩, ⟨(hbasic b w).2.2.2.2.1, le_rfl, (hbasic b w).2.2.1⟩, ?_, fun _ => ⟨rfl, rfl⟩⟩` and prove the remaining obligations. Distinguish the cases in `hwT : w ∈ T`. Simplify using `only [fam, if_neg hz, if_pos hwT]`. Conclude with `hH2 E a b w _`.
+
+Simplify using `only [fam, if_neg hz, if_neg hwT]`. Conclude with `hH2 E a b w Ex.one`. Use `choose K₁ K₂ hk1 hk2 hk3 hk4 using hlev`. Establish `hev : ∀ᶠ w : Pl E in cofinite, w ∉ Z` using `Filter.eventually_cofinite.2 (Z.finite_toSet.subset fun w hw => by simpa using hw)`. Establish `hev2 : ∀ᶠ w : Pl E in cofinite, w ∉ Z ∧ w ∉ T` using `Filter.eventually_cofinite.2 ((Z ∪ T).finite_toSet.subset fun w hw => by`.
+
+Assume the negation of the conclusion as `hc`. Simplify using `only [Finset.coe_union, Set.mem_union, Finset.mem_coe, not_or] at hc`. Conclude with `hw hc)`. Use `⟨⟨K₁, K₂, ⟨hk1, hev.mono fun w hw => (hk4 w hw).1⟩, ⟨hk2, hev.mono fun w hw => (hk4 w hw).2⟩, hk3, hev2.mono fun w hw => ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [fam, if_neg hw.1, if_neg hw.2]`.
+
+Introduce `w hw`. Use `⟨?_, hfam w hw⟩` and prove the remaining obligations. Rewrite using `[hfam w hw]`. Distinguish the cases in `hs : IsSplitAt w`. Rewrite using `[if_pos hs]`.
+
+Conclude with `(hSp E w hs n a b h μ _ (hLcU w hs)).2`. Rewrite using `[if_neg hs]`. Establish `hz : w ∉ Z` using `fun hz => hs (hZ w hz).2`. Establish `hwT : w ∉ T` using `fun hz => hs (hT w hz).2`. Establish `hU : famU Z T f e₁ e₂ k w = (KL n w : Set (UL n w)).indicator 1`.
+
+Simplify using `only [famU, if_neg hz, if_neg hwT]`. Rewrite using `[hU]`. Conclude with `match_inert hs _ (hUm E hUnr w hs n a b h)`.
+-/
 theorem rFamMatch : RFamMatch := by
   intro hUm hSp hPl hAct hH2 hCt hMu E _ _ _ hUnr n μ ε hμ S hS Z hZ hZμ f hf a b h
   obtain ⟨-, hPl2, -, hPl4⟩ := hPl E

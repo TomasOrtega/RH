@@ -4,6 +4,25 @@ namespace GlobalTheory
 
 open Module.End
 
+/- English proof (translation)
+Establish `htop : (⨆ χ : I → ℂ, ⨅ i, eigenspace (T i) (χ i)) = ⊤` using `LinearMap.IsSymmetric.iSup_iInf_eq_top_of_commute hT (fun a b _ => hc a b)`. Establish `hO` using `LinearMap.IsSymmetric.orthogonalFamily_iInf_eigenspaces hT`. Establish `key : ∀ (χ : I → ℂ) (y : ↥(⨅ i, eigenspace (T i) (χ i))), ∃ c : ℝ, 0 < c ∧ ∀ z, inner ℂ (j z) (u y) = (c : ℂ) * inner ℂ z (y : E)`. Introduce `χ y`. Apply `hu (fun i => (χ i).re) (y : E)` to reduce the goal to its premises.
+
+Introduce `i`. Establish `hmem : (y : E) ∈ eigenspace (T i) (χ i)` using `(Submodule.mem_iInf _).mp y.2 i`. Establish `hy : T i y = χ i • (y : E)` using `mem_eigenspace_iff.mp hmem`. Distinguish the cases in `h0 : (y : E) = 0`. Simplify using `[h0]`.
+
+Establish `hr` using `(hT i).conj_eigenvalue_eq_self (hasEigenvalue_of_hasEigenvector ⟨hmem, h0⟩)`. Establish `hre : ((χ i).re : ℂ) = χ i` using `Complex.conj_eq_iff_re.mp hr`. Rewrite using `[hy, hre]`. Establish `hx' : x ∈ ⨆ χ : I → ℂ, ⨅ i, eigenspace (T i) (χ i)`. Rewrite using `[htop]`.
+
+Conclude with `Submodule.mem_top`. Take `⟨s, hs⟩` from `Submodule.mem_iSup_iff_exists_finset.mp hx'`. Take `⟨μ, hμ⟩` from `(Submodule.mem_iSup_finset_iff_exists_sum _ x).mp hs`. Use `choose c hc0 hcx using key`. Establish `hself : ∀ χ ∈ s, inner ℂ x (μ χ : E) = ((‖(μ χ : E)‖ ^ 2 : ℝ) : ℂ)`.
+
+Introduce `χ hχ`. Rewrite using `[← hμ, sum_inner, Finset.sum_eq_single χ]`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Introduce `ψ _ hψ`. Simplify using `using hO hψ (μ ψ) (μ χ)`. Introduce `h`. Conclude with `absurd hχ h`. Establish `hux : u x = ∑ χ ∈ s, u (μ χ : E)` using `by rw [← hμ, map_sum]`.
+
+Establish `hval : inner ℂ (j x) (u x) = ((∑ χ ∈ s, c χ (μ χ) * ‖(μ χ : E)‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[hux, inner_sum, Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun χ hχ => ?_` and prove the remaining obligations. Rewrite using `[hcx, hself χ hχ, Complex.ofReal_mul]`. Rewrite using `[hval, Complex.ofReal_im, Complex.ofReal_re]`.
+
+Use `⟨rfl, ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨χ, hχ, hne⟩ : ∃ χ ∈ s, (μ χ : E) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Apply `hx` to reduce the goal to its premises. Rewrite using `[← hμ]`.
+
+Conclude with `Finset.sum_eq_zero fun χ hχ => by_contra fun h => hcon ⟨χ, hχ, h⟩`. Conclude with `Finset.sum_pos' (fun ψ _ => mul_nonneg (hc0 _ _).le (sq_nonneg _)) ⟨χ, hχ, mul_pos (hc0 _ _) (pow_pos (norm_pos_iff.mpr hne) 2)⟩`.
+-/
 theorem pos_of_pos_mul_inner_on_joint_eigenvectors_finiteDimensional {E H I : Type*} [NormedAddCommGroup E]
     [InnerProductSpace ℂ E] [FiniteDimensional ℂ E] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (T : I → E →ₗ[ℂ] E) (hT : ∀ i, (T i).IsSymmetric) (hc : ∀ i j, Commute (T i) (T j))
@@ -54,6 +73,25 @@ theorem pos_of_pos_mul_inner_on_joint_eigenvectors_finiteDimensional {E H I : Ty
   exact Finset.sum_pos' (fun ψ _ => mul_nonneg (hc0 _ _).le (sq_nonneg _))
     ⟨χ, hχ, mul_pos (hc0 _ _) (pow_pos (norm_pos_iff.mpr hne) 2)⟩
 
+/- English proof (translation)
+Introduce `V _ _ H _ _ ι hι W hW I T hTW hsym hcomm u hu x hxW hx0`. Set `e : W ≃ₗ[ℂ] W.map ι` to `Submodule.equivMapOfInjective ι hι W`. Establish `: FiniteDimensional ℂ (W.map ι)` using `e.finiteDimensional`. Set `T' : I → (W.map ι) →ₗ[ℂ] (W.map ι)` to `fun i => e.toLinearMap ∘ₗ (T i).restrict (hTW i) ∘ₗ e.symm.toLinearMap`. Establish `hesymm : ∀ z : W.map ι, ι (e.symm z : V) = (z : H)` using `fun z => congrArg Subtype.val (e.apply_symm_apply z)`.
+
+Establish `hTe : ∀ i (z : W.map ι), (e.symm (T' i z) : V) = T i (e.symm z)`. Introduce `i z`. Simplify using `[T']`. Establish `hT'coe : ∀ i (z : W.map ι), (T' i z : H) = ι (T i (e.symm z))`. Introduce `i z`.
+
+Rewrite using `[← hesymm (T' i z), hTe]`. Establish `hsym' : ∀ i, (T' i).IsSymmetric`. Introduce `i a b`. Express the relevant statement in the definitionally equal form `inner ℂ (T' i a : H) (b : H) = inner ℂ (a : H) (T' i b : H)`. Rewrite using `[hT'coe, hT'coe, ← hesymm a, ← hesymm b]`.
+
+Conclude with `hsym i _ _`. Establish `hc' : ∀ i k, Commute (T' i) (T' k)`. Introduce `i k`. Use `LinearMap.ext fun z => e.symm.injective (Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply]`.
+
+Simplify using `only [hTe]`. Conclude with `LinearMap.congr_fun (hcomm i k) _`. Set `u' : (W.map ι) →ₗ[ℂ] H` to `u ∘ₗ W.subtype ∘ₗ e.symm.toLinearMap`. Establish `hu' : ∀ (m : I → ℝ) (y : W.map ι), (∀ i, T' i y = (m i : ℂ) • y) → ∃ c : ℝ, 0 < c ∧ ∀ z, inner ℂ ((W.map ι).subtype z) (u' y) = (c : ℂ) * inner ℂ z y`. Introduce `m y hy`.
+
+Establish `hy' : ∀ i, T i (e.symm y) = (m i : ℂ) • (e.symm y : V)`. Introduce `i`. Rewrite using `[← hTe, hy i, map_smul, Submodule.coe_smul]`. Take `⟨c, hc, hcx⟩` from `hu m (e.symm y) (e.symm y).2 hy'`. Use `⟨c, hc, fun z => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `hcx (e.symm z) (e.symm z).2`. Rewrite `h` using `[hesymm z, hesymm y]`. Conclude with `h`. Establish `hne : e ⟨x, hxW⟩ ≠ 0`. Introduce `h`.
+
+Apply `hx0` to reduce the goal to its premises. Establish `h2 : ((e ⟨x, hxW⟩ : W.map ι) : H) = 0` using `by rw [h]; rfl`. Conclude with `hι ((show ι x = 0 from h2).trans (map_zero ι).symm)`. Establish `hmain` using `pos_of_pos_mul_inner_on_joint_eigenvectors_finiteDimensional T' hsym' hc' (W.map ι).subtype u' hu' (e ⟨x, hxW⟩) hne`. Establish `h1 : (W.map ι).subtype (e ⟨x, hxW⟩) = ι x` using `rfl`.
+
+Establish `h2 : u' (e ⟨x, hxW⟩) = u x` using `by simp [u']`. Rewrite `hmain` using `[h1, h2]`. Conclude with `hmain`.
+-/
 theorem pos_of_pos_mul_inner_on_joint_eigenvectors :
     ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (ι : V →ₗ[ℂ] H), Function.Injective ι → ∀ (W : Submodule ℂ V), FiniteDimensional ℂ W → ∀ (I : Type) (T : I → Module.End ℂ V), (∀ i, ∀ w ∈ W, T i w ∈ W) → (∀ i x y, inner ℂ (ι (T i x)) (ι y) = inner ℂ (ι x) (ι (T i y))) → (∀ i j, T i * T j = T j * T i) → ∀ (u : V →ₗ[ℂ] H), (∀ (m : I → ℝ), ∀ y ∈ W, (∀ i, T i y = (m i : ℂ) • y) → ∃ c : ℝ, 0 < c ∧ ∀ x ∈ W, inner ℂ (ι x) (u y) = (c : ℂ) * inner ℂ (ι x) (ι y)) → ∀ x ∈ W, x ≠ 0 → (inner ℂ (ι x) (u x)).im = 0 ∧ 0 < (inner ℂ (ι x) (u x)).re := by
   intro V _ _ H _ _ ι hι W hW I T hTW hsym hcomm u hu x hxW hx0

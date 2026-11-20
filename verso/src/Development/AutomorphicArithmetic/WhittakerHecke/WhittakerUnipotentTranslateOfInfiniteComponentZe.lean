@@ -9,6 +9,19 @@ open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
+/- English proof (translation)
+Introduce `E _ _ _ D φ _ hL x hx y X`. Establish `hfst : (AdeleBaseChange.adeleMap ℚ E x).1 = 0`. Take `⟨c1, c2⟩` from `x`. Take `rfl : c1 = 0` from `hx`. Conclude with `map_zero (GroundTheory.Global.InfinitePlace.infiniteAdeleRingMap (K := ℚ) (L := E))`.
+
+Establish `h0 : pInf E (D.mkE 0 x) = 0`. Establish `h1 : (D.mkE 0 x).1 = 0`. Establish `e : D.mkE 0 x = AdeleBaseChange.adeleMap ℚ E x * rt D.θ`. Simplify using `only [Dat.mkE, map_zero, zero_add]`. Rewrite using `[e]`.
+
+Express the relevant statement in the definitionally equal form `(AdeleBaseChange.adeleMap ℚ E x).1 * _ = 0`. Rewrite using `[hfst, zero_mul]`. Express the relevant statement in the definitionally equal form `(infEq E).symm (D.mkE 0 x).1 = 0`. Rewrite using `[h1]`. Conclude with `map_zero _`.
+
+Establish `hk : GeneralLinearGroup.map (pInf E) (Xg.nu D x) = 1`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pInf E ((!![1, D.mkE 0 x; 0, 1] : Matrix (Fin 2) (Fin 2) (A E)) i j) = (1 : Matrix (Fin 2) (Fin 2) (Cinf E)) i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [h0]`. Establish `hc : infGL E 2 X * Xg.nu D x = Xg.nu D x * infGL E 2 X`.
+
+Establish `e` using `infGL_mul_finGL (Xg.nu D x)`. Rewrite `e` using `[hk, map_one, one_mul]`. Rewrite using `[← e]`. Conclude with `infGL_comm X _`. Rewrite using `[Nz.Wo_right, mul_assoc, hc, ← mul_assoc, Xg.nu, Nz.em_conj, mul_assoc, Nz.Wo_shift D hL]`.
+
+Both sides reduce to the same expression.
+-/
 theorem UpperTheory.whittaker_unipotent_translate_of_infinite_component_zero :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (D : Dat ℚ E) (φ : GL (Fin 2) (A E) → ℂ), Continuous φ → (∀ γ g, φ (ratGL E 2 γ * g) = φ g) → ∀ x : A ℚ, x.1 = 0 → ∀ (y : (A ℚ)ˣ) (X : GL (Fin 2) (Cinf E)), Wo D (fun g => φ (g * nu D x)) (em E (aE y) * infGL E 2 X) = ψ (-((y : A ℚ) * x)) * Wo D φ (em E (aE y) * infGL E 2 X) := by
   intro E _ _ _ D φ _ hL x hx y X

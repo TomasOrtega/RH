@@ -7,6 +7,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.SymChar
 
+/- English proof (translation)
+Introduce `D X kv hg b j`. Establish `hW : ∀ i, ZMod' X.B.I X.B.g (hA X.B.I (X.e0 b) (GlobalTheory.Mem.SymFrame.epsW X (D.naut.plGw kv.1 kv.2) i))`. Introduce `i`. Unfold `GlobalTheory.Mem.SymFrame.epsW`. Use `split_ifs`.
+
+Conclude with `((X.weightVectorsIntegral _).2.2 b).1`. Conclude with `((X.weightVectorsIntegral _).2.2 b).2.2.1`. Use `wInt_of_zmod X kv.1 hg ?_` and prove the remaining obligations. Establish `hb` using `b.2`. Unfold `GlobalTheory.Mem.SymFrame.symVec GlobalTheory.SeeConjRead.flagV`.
+
+Distinguish the cases in `h1 : j.1 < D.R.rS`. Rewrite using `[dif_pos h1, if_neg (by omega), sub_zero]; exact (X.gramIntegral _ _).1`. Rewrite using `[dif_neg h1]`. Distinguish the cases in `h2 : j.1 < D.R.rS + D.R.k`. Rewrite using `[dif_pos h2, if_neg (by omega), sub_zero]; exact hW _`.
+
+Rewrite using `[dif_neg h2]`. Distinguish the cases in `h4 : j.1 = D.R.rS + D.R.k`. Rewrite using `[dif_pos h4, if_neg (by omega), sub_zero]; exact (X.formsAtZero.2 b).1`. Rewrite using `[dif_neg h4]`. Distinguish the cases in `h3 : j.1 < 2 * D.R.rS + D.R.k + 1`.
+
+Rewrite using `[dif_pos h3]`. Establish `h` using `(X.gramIntegral b ⟨2 * D.R.rS + D.R.k - j.1, by omega⟩).2.2`. Distinguish the cases in `e : j.1 = 2 * D.R.rS + D.R.k - b.1`. Rewrite using `[if_pos e]`. Rewrite `h` using `[if_pos (Fin.ext (by simp only; omega))]`. Then use the resulting hypothesis.
+
+Rewrite using `[if_neg e]`. Rewrite `h` using `[if_neg (fun h' => e (by have := congrArg Fin.val h'; simp only at this; omega))]`. Then use the resulting hypothesis. Rewrite using `[dif_neg h3, if_neg (by omega), sub_zero, hA_zero_right']`. Conclude with `⟨0, zero_mem _, by simp⟩`.
+-/
 theorem hA_e0_symVec : ∀ (D : D7) (X : HidaSetting D) (kv : Σ k : Fin 2, D.nd.PlG k), ((D.host.g kv.1 : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw kv.1 kv.2).asIdeal → ∀ (b : Fin D.R.rS) (j : Fin D.R.r), hA X.B.I (X.e0 b) (GlobalTheory.Mem.SymFrame.symVec X (D.naut.plGw kv.1 kv.2) j) - (if j.val = 2 * D.R.rS + D.R.k - b.val then 1 else 0) ∈ GlobalTheory.Mem.SymChar.wInt X (D.naut.plGw kv.1 kv.2) := by
   intro D X kv hg b j
   have hW : ∀ i, ZMod' X.B.I X.B.g (hA X.B.I (X.e0 b) (GlobalTheory.Mem.SymFrame.epsW X (D.naut.plGw kv.1 kv.2) i)) := by

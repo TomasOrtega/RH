@@ -20,6 +20,11 @@ variable {E Ω : Type} [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algeb
 private def bad (l : ℕ) {a : ℕ} (π : CuspSub E a) (w₀ : HeightOneSpectrum (𝓞 E)) : Set (HeightOneSpectrum (𝓞 E)) :=
   {w | w = w₀ ∨ ((l : ℕ) : 𝓞 E) ∈ w.asIdeal ∨ ¬ ∃ B, (CG.mk π).HasSat w B}
 
+/- English proof (translation)
+Establish `h1` using `Filter.eventually_cofinite.1 (GlobalTheory.CongEx.eventually_not_mem_l E l)`. Establish `h2` using `Filter.eventually_cofinite.1 (GlobalTheory.CuspRep.UnrSat.eventually_hasSatGL_locRep GlobalTheory.automorphicFormsFiniteGL E a π)`. Use `((Set.finite_singleton w₀).union (h1.union h2)).subset ?_` and prove the remaining obligations. Introduce and unpack `w (h | h | h)`. Conclude with `Or.inl h`.
+
+Conclude with `Or.inr (Or.inl (not_not.2 h))`. Conclude with `Or.inr (Or.inr h)`.
+-/
 private theorem bad_finite {a : ℕ} (π : CuspSub E a) (w₀ : HeightOneSpectrum (𝓞 E)) : (bad l π w₀).Finite := by
   have h1 := Filter.eventually_cofinite.1 (GlobalTheory.CongEx.eventually_not_mem_l E l)
   have h2 := Filter.eventually_cofinite.1 (GlobalTheory.CuspRep.UnrSat.eventually_hasSatGL_locRep GlobalTheory.automorphicFormsFiniteGL E a π)
@@ -29,6 +34,9 @@ private theorem bad_finite {a : ℕ} (π : CuspSub E a) (w₀ : HeightOneSpectru
   · exact Or.inr (Or.inl (not_not.2 h))
   · exact Or.inr (Or.inr h)
 
+/- English proof (translation)
+Use `⟨fun A hA g hg => ?_, ?_, h3⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.ExSplitCM.mem_range_res_iff]`. Conclude with `fun x hx => h1 w₀ (Or.inl rfl) A hA g hg ⟨x, hx⟩`. Take `⟨w, hw, hT⟩` from `hR E Ω _ Q h2`. Conclude with `⟨w, hw, not_not.1 fun h => hT (Or.inr (Or.inr h))⟩`.
+-/
 private theorem serves (hR : RamUnr) {a : ℕ} (π : CuspSub E a) (ι : Qbar l ≃+* ℂ) (w₀ : HeightOneSpectrum (𝓞 E)) (Q : QCM E Ω)
     (h1 : ∀ t ∈ bad l π w₀, ∀ A : ValuationSubring Ω, IsPlaceOver A t → ∀ g ∈ Dec (F := E) A, Fixes ↥Q.K g)
     (h2 : RamOff (bad l π w₀) Q)
@@ -43,6 +51,23 @@ private theorem serves (hR : RamUnr) {a : ℕ} (π : CuspSub E a) (ι : Qbar l �
 
 end
 
+/- English proof (translation)
+Introduce `hJ hG hL hcore`. Establish `top : ∀ (E Y Ω : Type) [Field E] [NumberField E] [Field Y] [NumberField Y] [IsCMField Y] [Field Ω] [Algebra E Y] [Algebra Y Ω] [IsAlgClosure Y Ω] (δ : Y), RealStep E Ω δ → ∀ (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ), (∀ (M : Type) [Field M] [NumberField M] [IsCMField M] [Algebra …`. Introduce `E Y Ω _ _ _ _ _ _ _ _ _ δ hδ l _ ι h3 a ha π hπ`. Use `hS hL Y Ω l ι a ha π fun w₀ => ?_` and prove the remaining obligations. Establish `hinf : {Q : QCM Y Ω | Step2 (bad l π w₀) Q}.Infinite`.
+
+Use `infOf Y Ω _ fun S hS => ?_` and prove the remaining obligations. Take `⟨Q, ⟨a1, a2, a3, a4, u, hu, a5⟩, hI, d, hd, hU⟩` from `hQ E Y Ω δ hδ (bad l π w₀ ∪ S) ((bad_finite π w₀).union hS)`. Conclude with `⟨Q, ⟨⟨a1, a2, fun t ht => a3 t (Or.inl ht), fun w hw => ⟨fun h => (a4 w hw).1 (Or.inl h), (a4 w hw).2⟩, u, fun h => hu (Or.inl h), a5⟩, hI, d, hd, fun w hw => hU w (Or.inl hw)⟩, u, fun h => hu (Or.inr h), a5⟩`. Use `hinf.mono ?_` and prove the remaining obligations. Introduce and unpack `Q ⟨h1, hI, d, hd, hU⟩`.
+
+Use `serves hR π ι w₀ Q h1.2.2.1 h1.2.2.2.2 fun P hP => ?_` and prove the remaining obligations. Establish `hl : ∀ w : HeightOneSpectrum (𝓞 ↥Q.K), ((l : ℕ) : 𝓞 ↥Q.K) ∈ w.asIdeal → w.under (𝓞 Y) ∈ bad l π w₀` using `fun w hw => Or.inr (Or.inl ((GlobalTheory.CMFam.natCast_mem_under w l).2 hw))`. Take `⟨w, hw, hap⟩` from `h3 ↥Q.K`. Establish `hF : GlobalTheory.Row9.FieldOK l ↥Q.K` using `⟨h1.1, h1.2.1, allUnr_holds Y Ω _ Q h1, fun u hu => (hU u (hl u hu)).1, w 0, w 1, w 2, hw 0, hw 1, hw 2, hap 0 1 (by decide), hap 0 2 (by decide), hap 1 2 (by decide)⟩`. Establish `hsq : SqAt d l` using `(hU _ (hl _ (hw 0))).2 l Fact.out (hw 0)`.
+
+Establish `hPs` using `hC hJ hG Y ↥Q.K l a ha π P hP hπ`. Establish `hgood : Good l P`. Use `⟨h1.1, h1.2.1, fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨b1, b2, -⟩` from `h1.2.2.2.1 u hu`. Use `⟨fun h => b1 (hl u h), b2, ?_⟩` and prove the remaining obligations.
+
+Take `⟨B, hB⟩ : ∃ B, (CG.mk π).HasSat (u.under (𝓞 Y)) B` from `not_not.1 fun h => b1 (Or.inr (Or.inr h))`. Conclude with `⟨_, hP.sat u _ B (GlobalTheory.RealGal.AttRes.normV_eq_pow u) hB⟩`. Conclude with `⟨UsPl d, hcore ↥Q.K Ω l ι hF hI d hd hsq a ha P ⟨hPs.1, hPs.2.1, hgood, rfl⟩, hO ↥Q.K d hd, fun u hu => hU u (Or.inl hu)⟩`. Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π hπ`. Take `⟨t, ht⟩` from `GlobalTheory.CongEx.exists_place_over E l`.
+
+Use `hS hL E Ω l ι a ha π fun w₀ => (infinitely_many_real_quadratic_steps E Ω _ (bad_finite (l := l) π w₀)).mono fun Q₁ s₁ => ?_` and prove the remaining obligations. Use `serves hR π ι w₀ Q₁ s₁.2.1 s₁.2.2 fun P₁ hP₁ => ⟨fun _ => True, ?_, by simp, fun _ _ => trivial⟩` and prove the remaining obligations. Establish `h₁` using `hC hJ hG E ↥Q₁.K l a ha π P₁ hP₁ hπ`. Use `hS hL ↥Q₁.K Ω l ι a ha P₁ fun w₁ => (infinitely_many_real_quadratic_steps ↥Q₁.K Ω _ (bad_finite (l := l) P₁ w₁)).mono fun Q₂ s₂ => ?_` and prove the remaining obligations. Use `serves hR P₁ ι w₁ Q₂ s₂.2.1 s₂.2.2 fun P₂ hP₂ => ⟨fun _ => True, ?_, by simp, fun _ _ => trivial⟩` and prove the remaining obligations.
+
+Establish `h₂` using `hC hJ hG ↥Q₁.K ↥Q₂.K l a ha P₁ P₂ hP₂ h₁`. Take `⟨δ, hδ, -⟩` from `s₂.1`. Use `top ↥Q₁.K ↥Q₂.K Ω δ hδ l ι (fun M _ _ _ _ => ?_) a ha P₂ h₂` and prove the remaining obligations. Take `⟨w, hw, hap⟩` from `threeApart_holds E Ω _ Q₁ s₁ _ Q₂ s₂ t (Or.inr (Or.inl ht)) (fun u hu => Or.inr (Or.inl ((GlobalTheory.CMFam.natCast_mem_under (E := E) u l).1 (hu ▸ ht)))) M`. Use `⟨w, fun i => ?_, hap⟩` and prove the remaining obligations.
+
+Rewrite using `[← GlobalTheory.CMFam.natCast_mem_under (E := ↥Q₂.K), ← GlobalTheory.CMFam.natCast_mem_under (E := ↥Q₁.K), ← GlobalTheory.CMFam.natCast_mem_under (E := E), hw i]`. Conclude with `ht`.
+-/
 theorem joinUp_of' (hS : StepDown) (hC : CsdLift) (hR : RamUnr) (hO : OneUs) (hQ : Quad2Ex) : JoinUp := by
   intro hJ hG hL hcore
   have top : ∀ (E Y Ω : Type) [Field E] [NumberField E] [Field Y] [NumberField Y] [IsCMField Y] [Field Ω] [Algebra E Y]

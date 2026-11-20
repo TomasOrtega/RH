@@ -7,6 +7,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.KJStdInt
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n k hk`. Use `letI : StarRing E := starRingOfComm`. Establish `hm : ∀ z : Fin n → E ⊗[F] Formalism.L2.Herm.Af F, z ∈ Formalism.L2.Herm.hatL (F` using `F) (Formalism.L2.Col.stdLat E n) ↔ ∀ i, z i ∈ Formalism.L2.Herm.intAf F E := fun z => Formalism.L2.Col.mem_latS_std z`. Establish `hs : ∀ j : Fin n, (Pi.single j 1 : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) ∈ Formalism.L2.Herm.hatL (F` using `F) (Formalism.L2.Col.stdLat E n) := by`. Introduce `j`.
+
+Use `(hm _).2 fun i => ?_` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `Subring.one_mem _`.
+
+Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `Subring.zero_mem _`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Establish `h1 : (k⁻¹).1 *ᵥ (k.1 *ᵥ (Pi.single j 1 : Fin n → E ⊗[F] Formalism.L2.Herm.Af F)) ∈ Formalism.L2.Herm.hatL (F` using `F) (Formalism.L2.Col.stdLat E n) := by`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+
+Conclude with `hs j`. Establish `h2` using `(hm _).1 ((hk _).2 h1) i`. Rewrite `h2` using `[Matrix.mulVec_single_one]`. Then use the resulting hypothesis. Establish `h2` using `(hm _).1 ((hk _).1 (hs j)) i`. Rewrite `h2` using `[Matrix.mulVec_single_one]`. Then use the resulting hypothesis.
+-/
 theorem carries_std_integral : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (k : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)), Formalism.L2.Herm.Carries k (Formalism.L2.Col.stdLat E n) (Formalism.L2.Col.stdLat E n) → (∀ i j, k.1 i j ∈ Formalism.L2.Herm.intAf F E) ∧ ∀ i j, (k⁻¹).1 i j ∈ Formalism.L2.Herm.intAf F E := by
   intro F E _ _ _ _ _ n k hk
   letI : StarRing E := starRingOfComm

@@ -5,6 +5,9 @@ namespace PositivityTheory.RgEis.Sp.Hd
 
 open PositivityTheory.RgEis.Hd
 
+/- English proof (translation)
+The claim follows from `Sp.siegelEisensteinContinuation_of dict dictInf secLaw (wallLaw_of secLaw) (cmGood_of stdGood dict dictInf) grpTop bdetLaw extLaw (parLaw_of bdetLaw extLaw grpTop) PositivityTheory.RgEis.Hd.sgAll`.
+-/
 theorem siegelEisensteinContinuation : GlobalTheory.Published.SiegelEisensteinContinuation :=
   Sp.siegelEisensteinContinuation_of dict dictInf secLaw (wallLaw_of secLaw) (cmGood_of stdGood dict dictInf) grpTop bdetLaw
     extLaw (parLaw_of bdetLaw extLaw grpTop) PositivityTheory.RgEis.Hd.sgAll

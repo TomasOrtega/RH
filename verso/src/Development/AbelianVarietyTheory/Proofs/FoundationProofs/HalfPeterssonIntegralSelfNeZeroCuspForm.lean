@@ -12,6 +12,15 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
 namespace GlobalTheory.EisM.PetPos
 
+/- English proof (translation)
+Establish `h0 : (volume.comap UpperHalfPlane.coe : Measure ℍ).IsOpenPosMeasure` using `Measure.IsOpenPosMeasure.comap _ UpperHalfPlane.isOpenEmbedding_coe`. Establish `hm : Continuous fun z : ℍ => (NNReal.mk z.im z.im_pos.le : NNReal)` using `UpperHalfPlane.continuous_im.subtype_mk _`. Establish `hc : Continuous fun z : ℍ => ((1 / NNReal.mk z.im z.im_pos.le : NNReal) ^ 2 : NNReal)` using `(continuous_const.div₀ hm (fun x => NNReal.ne_iff.mp x.im_ne_zero)).pow 2`. Use `⟨fun U hU hne => ?_⟩` and prove the remaining obligations. Rewrite using `[UpperHalfPlane.volume_def, withDensity_apply _ hU.measurableSet]`.
+
+Use `ne_of_gt ?_` and prove the remaining obligations. Establish `hmeas : Measurable fun z : ℍ => (((1 / NNReal.mk z.im z.im_pos.le : NNReal) ^ 2 : NNReal) : ENNReal)` using `(ENNReal.continuous_coe.comp hc).measurable`. Rewrite using `[setLIntegral_pos_iff hmeas]`. Establish `hsupp : Function.support (fun z : ℍ => (((1 / NNReal.mk z.im z.im_pos.le : NNReal) ^ 2 : NNReal) : ENNReal)) = Set.univ`. Use extensionality with `z`.
+
+Simplify using `[z.im_ne_zero]`. Introduce `h`. Establish `h'` using `congrArg Subtype.val h`. Simplify using `[z.im_ne_zero] at h'`. Rewrite using `[hsupp, Set.univ_inter]`.
+
+Conclude with `hU.measure_pos _ hne`.
+-/
 theorem volume_isOpenPosMeasure : (volume : Measure ℍ).IsOpenPosMeasure := by
   have h0 : (volume.comap UpperHalfPlane.coe : Measure ℍ).IsOpenPosMeasure :=
     Measure.IsOpenPosMeasure.comap _ UpperHalfPlane.isOpenEmbedding_coe
@@ -36,6 +45,15 @@ theorem volume_isOpenPosMeasure : (volume : Measure ℍ).IsOpenPosMeasure := by
   rw [hsupp, Set.univ_inter]
   exact hU.measure_pos _ hne
 
+/- English proof (translation)
+Establish `hdet : (γ 0 0 : ℤ) * γ 1 1 - γ 0 1 * γ 1 0 = 1`. Establish `h` using `Matrix.SpecialLinearGroup.det_coe γ`. Rewrite `h` using `[Matrix.det_fin_two]`. Then use the resulting hypothesis. Establish `hc : ((γ 1 0 : ℤ) : ZMod N) = 0`. Rewrite using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+
+Conclude with `dvd_trans (Int.natCast_dvd_natCast.mpr hNL) hγ`. Establish `h1 : ((γ 1 1 : ℤ) : ZMod N) * ((γ 0 0 : ℤ) : ZMod N) = 1`. Establish `h` using `congrArg (Int.cast : ℤ → ZMod N) hdet`. Move the coercions through the operations in `at h`. Rewrite `h` using `[hc, mul_zero, sub_zero]`.
+
+Rewrite using `[mul_comm]`. Conclude with `h`. Take `⟨u, hu⟩` from `IsUnit.of_mul_eq_one _ h1`. Use `show ‖ε ((γ 1 1 : ℤ) : ZMod N)‖ = 1`. Rewrite using `[← hu]`.
+
+Conclude with `DirichletCharacter.unit_norm_eq_one ε u`.
+-/
 theorem norm_ch_eq_one {L N : ℕ} (ε : DirichletCharacter ℂ N) (hNL : N ∣ L) (γ : SL(2, ℤ))
     (hγ : (L : ℤ) ∣ γ 1 0) : ‖ch ε (γ 1 1)‖ = 1 := by
   have hdet : (γ 0 0 : ℤ) * γ 1 1 - γ 0 1 * γ 1 0 = 1 := by
@@ -55,6 +73,11 @@ theorem norm_ch_eq_one {L N : ℕ} (ε : DirichletCharacter ℂ N) (hNL : N ∣ 
   rw [← hu]
   exact DirichletCharacter.unit_norm_eq_one ε u
 
+/- English proof (translation)
+Establish `hD : ((γ 1 0 : ℤ) : ℂ) * (τ : ℂ) + ((γ 1 1 : ℤ) : ℂ) ≠ 0`. Rewrite using `[← ModularGroup.denom_apply]`. Conclude with `UpperHalfPlane.denom_ne_zero _ _`. Establish `hpos : 0 < ‖((γ 1 0 : ℤ) : ℂ) * (τ : ℂ) + ((γ 1 1 : ℤ) : ℂ)‖` using `norm_pos_iff.mpr hD`. Rewrite using `[hf γ hγ τ, ModularGroup.im_smul_eq_div_normSq, ModularGroup.denom_apply, norm_mul, norm_mul, norm_ch_eq_one ε hNL γ hγ, one_mul, norm_pow, div_pow, Complex.normSq_eq_norm_sq]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_sq_mul_im_pow_smul {k L N : ℕ} (ε : DirichletCharacter ℂ N) (hNL : N ∣ L) {f : ℍ → ℂ}
     (hf : Inv k L (ch ε) f) (γ : SL(2, ℤ)) (hγ : (L : ℤ) ∣ γ 1 0) (τ : ℍ) :
     ‖f (γ • τ)‖ ^ 2 * (γ • τ).im ^ k = ‖f τ‖ ^ 2 * τ.im ^ k := by
@@ -67,6 +90,33 @@ theorem norm_sq_mul_im_pow_smul {k L N : ℕ} (ε : DirichletCharacter ℂ N) (h
   field_simp
   ring
 
+/- English proof (translation)
+Introduce `k L N ε ρ h hk hL hN hW hCF hh`. Use `haveI : (volume : Measure ℍ).IsOpenPosMeasure := volume_isOpenPosMeasure`. Use `haveI : Countable (Matrix (Fin 2) (Fin 2) ℤ) := inferInstanceAs (Countable (Fin 2 → Fin 2 → ℤ))`. Use `haveI : Countable SL(2, ℤ) := inferInstanceAs (Countable {A : Matrix (Fin 2) (Fin 2) ℤ // A.det = 1})`. Establish `hP : PolyB h` using `hCF.1.1`.
+
+Establish `hInv : Inv k L (ch ε) (qs h)` using `hCF.1.2`. Establish `hqc : Continuous (qs h)` using `(GlobalTheory.T.qExpansion_polyGrowth_summable_continuous h hP).2`. Use `set Φ : ℍ → ℝ := fun τ => ‖qs h τ‖ ^ 2 * τ.im ^ k with hΦ`. Use `set G : ℍ → ℝ := fun τ => ρ τ * Φ τ with hG`. Establish `hΦc : Continuous Φ` using `(hqc.norm.pow 2).mul (UpperHalfPlane.continuous_im.pow k)`.
+
+Establish `hGnn : 0 ≤ G` using `fun τ => mul_nonneg (hW.nonneg τ) (by positivity)`. Establish `heq : (fun τ : ℍ => (ρ τ : ℂ) * (conj (qs h τ) * qs h τ * (τ.im : ℂ) ^ k)) = fun τ => ((G τ : ℝ) : ℂ)`. Use function extensionality and compare the values at `τ`. Rewrite using `[Complex.conj_mul']`. Simplify using `only [hG, hΦ]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hint` using `GlobalTheory.T.integrable_petersson_integrand_moderateGrowth k L L N ε h ρ (qs h) hk hL hN hW hCF hqc.aestronglyMeasurable (GlobalTheory.T.hasModerateGrowth_qExpansion_of_coeffPolynomialGrowth h hP)`. Rewrite `hint` using `[heq]`. Establish `hGi : Integrable G`.
+
+Use `hint.re` as an intermediate fact. Simplify using `using this`. Introduce `hzero`. Establish `hpet : pet k ρ (qs h) (qs h) = ((∫ τ, G τ : ℝ) : ℂ)`. Unfold `pet`.
+
+Rewrite using `[heq, integral_complex_ofReal]`. Rewrite `hzero` using `[hpet, Complex.ofReal_eq_zero, integral_eq_zero_iff_of_nonneg hGnn hGi]`. Establish `hmp : ∀ γ : SL(2, ℤ), MeasurePreserving (fun z : ℍ => γ • z) volume volume`. Introduce `γ`. Establish `hm` using `measurePreserving_smul ((γ : GL (Fin 2) ℝ)) (volume : Measure ℍ)`.
+
+Use `hm using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Simplify using the standard rewrite rules. Establish `hall : ∀ᵐ τ ∂(volume : Measure ℍ), ∀ γ : Gamma0 L, G ((γ : SL(2, ℤ)) • τ) = 0`. Rewrite using `[ae_all_iff]`.
+
+Introduce `γ`. Establish `h1` using `(hmp (γ : SL(2, ℤ))).quasiMeasurePreserving.ae_eq_comp hzero`. Use `filter_upwards [h1] with τ hτ`. Simplify using `using hτ`. Establish `hΦ0 : Φ =ᵐ[volume] 0` using `by filter_upwards [hall] with τ hτ`.
+
+Establish `hterm : ∀ γ : Gamma0 L, Φ τ * ρ ((γ : SL(2, ℤ)) • τ) = 0`. Introduce `γ`. Establish `hγL : (L : ℤ) ∣ (γ : SL(2, ℤ)) 1 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mp (CongruenceSubgroup.Gamma0_mem.mp γ.2)`. Establish `hinv` using `norm_sq_mul_im_pow_smul ε hN hInv (γ : SL(2, ℤ)) hγL τ`. Establish `h2` using `hτ γ`.
+
+Simplify using `only [hG, hΦ] at h2 ⊢`. Rewrite `h2` using `[hinv]`. Rewrite using `[mul_comm]`. Conclude with `h2`. Establish `hs` using `(hW.sum τ).mul_left (Φ τ)`.
+
+Simplify using `only [hterm, mul_one] at hs`. Conclude with `hs.unique hasSum_zero`. Establish `hΦz : Φ = 0` using `(Continuous.ae_eq_iff_eq volume hΦc continuous_const).mp hΦ0`. Apply `hh` to reduce the goal to its premises. Establish `hq0 : qs h = qs 0`.
+
+Use function extensionality and compare the values at `τ`. Establish `h3` using `congrFun hΦz τ`. Simplify using `only [hΦ, Pi.zero_apply] at h3`. Establish `him : τ.im ^ k ≠ 0` using `pow_ne_zero _ τ.im_ne_zero`. Establish `h4 : ‖qs h τ‖ ^ 2 = 0` using `(mul_eq_zero.mp h3).resolve_right him`.
+
+Establish `h5 : qs h τ = 0` using `by simpa using h4`. Rewrite using `[h5]`. Simplify using `[qs]`. Conclude with `GlobalTheory.T.qExpansionFunction_injective_of_polynomialGrowth h 0 hP ⟨0, 0, fun n => by simp⟩ hq0`.
+-/
 theorem pet_self_ne_zero : ∀ (k L N : ℕ) (ε : DirichletCharacter ℂ N) (ρ : ℍ → ℝ) (h : ℕ → ℂ), 1 ≤ k → 0 < L → N ∣ L →
     Wt L ρ → CF k L (ch ε) h → h ≠ 0 → pet k ρ (qs h) (qs h) ≠ 0 := by
   intro k L N ε ρ h hk hL hN hW hCF hh

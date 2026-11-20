@@ -6,6 +6,13 @@ open IsLocalRing
 
 namespace GlobalTheory.IntersectionSymm
 
+/- English proof (translation)
+Set `P : PrimeSpectrum R` to `⟨p, hp⟩`. Use `haveI : Nonempty (PrimeSpectrum R) := ⟨P⟩`. Establish `h1 : PrimeSpectrum.zeroLocus (p : Set R) = Set.Ici P`. Use extensionality with `x`. Simplify using `only [PrimeSpectrum.mem_zeroLocus, Set.mem_Ici]`.
+
+Both sides reduce to the same expression. Establish `h2 : ringKrullDim (R ⧸ p) = (Order.coheight P : ℕ∞)`. Rewrite using `[ringKrullDim_quotient, h1, Order.coheight_eq_krullDim_Ici]`. Establish `h3 : p.height = Order.height P` using `PrimeSpectrum.height_eq_orderHeight P`. Rewrite using `[h2, h3, ← WithBot.coe_add]`.
+
+Express the relevant statement in the definitionally equal form `_ ≤ Order.krullDim (PrimeSpectrum R)`. Rewrite using `[Order.krullDim_eq_iSup_height_add_coheight_of_nonempty, WithBot.coe_le_coe]`. Conclude with `le_iSup (fun x : PrimeSpectrum R => Order.height x + Order.coheight x) P`.
+-/
 theorem height_add_dim_quotient_le {R : Type} [CommRing R] (p : Ideal R) [hp : p.IsPrime] :
     ((p.height : ℕ∞) : WithBot ℕ∞) + ringKrullDim (R ⧸ p) ≤ ringKrullDim R := by
   let P : PrimeSpectrum R := ⟨p, hp⟩
@@ -22,6 +29,15 @@ theorem height_add_dim_quotient_le {R : Type} [CommRing R] (p : Ideal R) [hp : p
   rw [Order.krullDim_eq_iSup_height_add_coheight_of_nonempty, WithBot.coe_le_coe]
   exact le_iSup (fun x : PrimeSpectrum R => Order.height x + Order.coheight x) P
 
+/- English proof (translation)
+Proceed by induction on `d using WithBot.recBotCoe with`. Consider the case `bot => exact absurd bot_le h2`. Consider the case `coe e`. Establish `h1' : h + e ≤ 2`. Rewrite `h1` using `[← WithBot.coe_add, ← WithBot.coe_ofNat, WithBot.coe_le_coe]`.
+
+Conclude with `h1`. Establish `h2' : ¬ e ≤ 0` using `fun h => h2 (by exact_mod_cast h)`. Proceed by induction on `e using ENat.recTopCoe with`. Consider the case `top => simp at h1'`. Consider the case `coe n`.
+
+Proceed by induction on `h using ENat.recTopCoe with`. Consider the case `top => simp at h1'`. Consider the case `coe m`. Establish `a1 : m + n ≤ 2` using `by exact_mod_cast h1'`. Establish `a2 : ¬ n ≤ 0` using `fun h => h2' (by exact_mod_cast h)`.
+
+Use `⟨by exact_mod_cast (show m ≤ 1 by omega), fun hm => ?_⟩` and prove the remaining obligations. Establish `: m = 1` using `by exact_mod_cast hm`. Establish `: n = 1` using `by omega`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+-/
 theorem arith (h : ℕ∞) (d : WithBot ℕ∞) (h1 : (h : WithBot ℕ∞) + d ≤ 2) (h2 : ¬ d ≤ 0) :
     h ≤ 1 ∧ (h = 1 → d = 1) := by
   induction d using WithBot.recBotCoe with
@@ -43,12 +59,20 @@ theorem arith (h : ℕ∞) (d : WithBot ℕ∞) (h1 : (h : WithBot ℕ∞) + d �
         have : n = 1 := by omega
         subst this; rfl
 
+/- English proof (translation)
+Introduce `h`. Use `haveI : Ring.KrullDimLE 0 (A ⧸ p) := Ring.krullDimLE_iff.2 (by exact_mod_cast h)`. Conclude with `hne (Ideal.Quotient.maximal_of_isField _ Ring.KrullDimLE.isField_of_isDomain)`.
+-/
 theorem not_dim_quotient_le_zero {A : Type} [CommRing A] (p : Ideal A) [p.IsPrime]
     (hne : ¬ p.IsMaximal) : ¬ ringKrullDim (A ⧸ p) ≤ 0 := by
   intro h
   haveI : Ring.KrullDimLE 0 (A ⧸ p) := Ring.krullDimLE_iff.2 (by exact_mod_cast h)
   exact hne (Ideal.Quotient.maximal_of_isField _ Ring.KrullDimLE.isField_of_isDomain)
 
+/- English proof (translation)
+Establish `h1` using `height_add_dim_quotient_le p`. Rewrite `h1` using `[hA]`. Establish `hne : ¬ p.IsMaximal`. Introduce `hm`. Use `maximalIdeal_height_eq_ringKrullDim (R := A)` as an intermediate fact.
+
+Rewrite `this` using `[← IsLocalRing.eq_maximalIdeal hm, hp, hA]`. Conclude with `absurd this (by decide)`. Conclude with `(arith _ _ h1 (not_dim_quotient_le_zero p hne)).2 hp`.
+-/
 theorem dim_quotient_eq_one {A : Type} [CommRing A] [IsLocalRing A]
     (hA : ringKrullDim A = 2) (p : Ideal A) [p.IsPrime] (hp : p.height = 1) :
     ringKrullDim (A ⧸ p) = 1 := by
@@ -61,6 +85,13 @@ theorem dim_quotient_eq_one {A : Type} [CommRing A] [IsLocalRing A]
     exact absurd this (by decide)
   exact (arith _ _ h1 (not_dim_quotient_le_zero p hne)).2 hp
 
+/- English proof (translation)
+Distinguish the cases in `hm : p = maximalIdeal A`. Conclude with `Or.inr hm`. Use `left`. Establish `hne : ¬ p.IsMaximal` using `fun h => hm (IsLocalRing.eq_maximalIdeal h)`. Establish `h1` using `height_add_dim_quotient_le p`.
+
+Rewrite `h1` using `[hA]`. Establish `hle` using `(arith _ _ h1 (not_dim_quotient_le_zero p hne)).1`. Establish `hz : p.height ≠ 0`. Introduce `hz`. Rewrite `hz` using `[Ideal.height_eq_zero_iff]`.
+
+Conclude with `h0 (le_bot_iff.1 (hz.2 ⟨Ideal.bot_prime, bot_le⟩ bot_le))`. Conclude with `le_antisymm hle (ENat.one_le_iff_ne_zero.2 hz)`.
+-/
 theorem height_one_or_eq_max {A : Type} [CommRing A] [IsDomain A] [IsLocalRing A]
     (hA : ringKrullDim A = 2) (p : Ideal A) [hp : p.IsPrime] (h0 : p ≠ ⊥) :
     p.height = 1 ∨ p = maximalIdeal A := by
@@ -81,6 +112,11 @@ end GlobalTheory.IntersectionSymm
 
 namespace GlobalTheory.IntersectionSymm
 
+/- English proof (translation)
+Set `f` to `Algebra.linearMap A (Localization.AtPrime p)`. Set `M' : Submodule A A` to `Ideal.span {a}`. Set `g` to `M'.toLocalizedQuotient' (Localization.AtPrime p) p.primeCompl f`. Set `e0` to `IsLocalizedModule.iso p.primeCompl g`. Set `e` to `e0.extendScalarsOfIsLocalization p.primeCompl (Localization.AtPrime p)`.
+
+Rewrite using `[e.length_eq]`. Establish `h : Submodule.localized' (Localization.AtPrime p) p.primeCompl f M' = Ideal.span {algebraMap A (Localization.AtPrime p) a}`. Rewrite using `[Ideal.localized'_eq_map, Ideal.map_span, Set.image_singleton]`. Rewrite using `[h]`.
+-/
 theorem length_localized_quotient {A : Type} [CommRing A] (p : Ideal A) [p.IsPrime] (a : A) :
     Module.length (Localization.AtPrime p) (LocalizedModule p.primeCompl (A ⧸ Ideal.span {a})) =
       Module.length (Localization.AtPrime p)
@@ -96,6 +132,9 @@ theorem length_localized_quotient {A : Type} [CommRing A] (p : Ideal A) [p.IsPri
     rw [Ideal.localized'_eq_map, Ideal.map_span, Set.image_singleton]
   rw [h]
 
+/- English proof (translation)
+Rewrite using `[← (DoubleQuot.quotQuotEquivQuotSupₐ A p (Ideal.span {b})).toLinearEquiv.length_eq, Ideal.map_span, Set.image_singleton, Ideal.Quotient.mkₐ_eq_mk]`. Conclude with `Module.length_eq_of_surjective (S := A) (R := A ⧸ p) Ideal.Quotient.mk_surjective`.
+-/
 theorem length_quotient_sup {A : Type} [CommRing A] (p : Ideal A) (b : A) :
     Module.length A (A ⧸ (p ⊔ Ideal.span {b})) =
       Module.length (A ⧸ p) ((A ⧸ p) ⧸ Ideal.span {Ideal.Quotient.mk p b}) := by
@@ -103,6 +142,11 @@ theorem length_quotient_sup {A : Type} [CommRing A] (p : Ideal A) (b : A) :
     Ideal.map_span, Set.image_singleton, Ideal.Quotient.mkₐ_eq_mk]
   exact Module.length_eq_of_surjective (S := A) (R := A ⧸ p) Ideal.Quotient.mk_surjective
 
+/- English proof (translation)
+Use `haveI : Ring.KrullDimLE 1 (Localization.AtPrime p) := by`. Rewrite using `[Ring.krullDimLE_iff, IsLocalization.AtPrime.ringKrullDim_eq_height p, hp]`. Both sides reduce to the same expression. Rewrite using `[Module.length_ne_top_iff]`. Apply `isFiniteLength_quotient_span_singleton` to reduce the goal to its premises.
+
+Apply `mem_nonZeroDivisors_of_ne_zero` to reduce the goal to its premises. Conclude with `IsLocalization.to_map_ne_zero_of_mem_nonZeroDivisors _ (Ideal.primeCompl_le_nonZeroDivisors p) (mem_nonZeroDivisors_of_ne_zero ha)`.
+-/
 theorem length_localized_ne_top {A : Type} [CommRing A] [IsDomain A] [IsNoetherianRing A]
     (p : Ideal A) [p.IsPrime] (hp : p.height = 1) (a : A) (ha : a ≠ 0) :
     Module.length (Localization.AtPrime p)
@@ -116,6 +160,11 @@ theorem length_localized_ne_top {A : Type} [CommRing A] [IsDomain A] [IsNoetheri
   exact IsLocalization.to_map_ne_zero_of_mem_nonZeroDivisors _
     (Ideal.primeCompl_le_nonZeroDivisors p) (mem_nonZeroDivisors_of_ne_zero ha)
 
+/- English proof (translation)
+Use `haveI : Ring.KrullDimLE 1 (A ⧸ p) := by`. Rewrite using `[Ring.krullDimLE_iff, hd]`. Both sides reduce to the same expression. Rewrite using `[Module.length_ne_top_iff]`. Apply `isFiniteLength_quotient_span_singleton` to reduce the goal to its premises.
+
+Apply `mem_nonZeroDivisors_of_ne_zero` to reduce the goal to its premises. Rewrite using `[ne_eq, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis.
+-/
 theorem length_quotient_ne_top {A : Type} [CommRing A] [IsNoetherianRing A]
     (p : Ideal A) [p.IsPrime] (hd : ringKrullDim (A ⧸ p) = 1) (b : A) (hb : b ∉ p) :
     Module.length (A ⧸ p) ((A ⧸ p) ⧸ Ideal.span {Ideal.Quotient.mk p b}) ≠ ⊤ := by
@@ -131,6 +180,11 @@ end GlobalTheory.IntersectionSymm
 
 namespace GlobalTheory.IntersectionSymm
 
+/- English proof (translation)
+Introduce `p hp`. Rewrite `hp` using `[Module.mem_support_iff_of_finite, Ideal.annihilator_quotient]`. Establish `hap : a ∈ p.asIdeal` using `hp (Ideal.subset_span rfl)`. Establish `h0 : p.asIdeal ≠ ⊥` using `fun h => ha (by rw [h] at hap; exact (Submodule.mem_bot A).1 hap)`. Break down `height_one_or_eq_max hA p.asIdeal h0 with h | h` into its components or cases.
+
+Conclude with `Or.inl ((hP p).2 ⟨h, hap⟩)`. Conclude with `Or.inr h`.
+-/
 theorem support_cases {A : Type} [CommRing A] [IsDomain A] [IsLocalRing A]
     (hA : ringKrullDim A = 2) (a : A) (ha : a ≠ 0) (P : Finset (PrimeSpectrum A))
     (hP : ∀ p, p ∈ P ↔ p.asIdeal.height = 1 ∧ a ∈ p.asIdeal) :
@@ -143,6 +197,11 @@ theorem support_cases {A : Type} [CommRing A] [IsDomain A] [IsLocalRing A]
   · exact Or.inl ((hP p).2 ⟨h, hap⟩)
   · exact Or.inr h
 
+/- English proof (translation)
+Establish `hmem : ∀ p ∈ P, p.asIdeal.height = 1 ∧ a ∈ p.asIdeal ∧ b ∉ p.asIdeal`. Introduce `p hp`. Take `⟨h1, h2⟩` from `(hP p).1 hp`. Conclude with `⟨h1, h2, fun hb => Finset.disjoint_left.1 hdis hp ((hQ p).2 ⟨h1, hb⟩)⟩`. Establish `key` using `GlobalTheory.T.length_coker_lsmul_eq_length_ker_add_sum' A b P (fun p hp => ⟨dim_quotient_eq_one hA p.asIdeal (hmem p hp).1, (hmem p hp).2.2⟩) (A ⧸ Ideal.span {a}) (support_cases hA a ha P hP)`.
+
+Use `⟨key.1, key.2.trans ?_⟩` and prove the remaining obligations. Use `congr 1`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[length_localized_quotient, length_quotient_sup]`.
+-/
 theorem side {A : Type} [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsLocalRing A]
     (hA : ringKrullDim A = 2) (a b : A) (ha : a ≠ 0) (P Q : Finset (PrimeSpectrum A))
     (hP : ∀ p, p ∈ P ↔ p.asIdeal.height = 1 ∧ a ∈ p.asIdeal)
@@ -167,6 +226,9 @@ theorem side {A : Type} [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsLocalR
   refine Finset.sum_congr rfl fun p _ => ?_
   rw [length_localized_quotient, length_quotient_sup]
 
+/- English proof (translation)
+Introduce `p hp`. Take `⟨h1, _⟩` from `(hP p).1 hp`. Establish `hb : b ∉ p.asIdeal` using `fun hb => Finset.disjoint_left.1 hdis hp ((hQ p).2 ⟨h1, hb⟩)`. Conclude with `WithTop.mul_ne_top (length_localized_ne_top p.asIdeal h1 a ha) (length_quotient_ne_top p.asIdeal (dim_quotient_eq_one hA p.asIdeal h1) b hb)`.
+-/
 theorem terms_ne_top {A : Type} [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsLocalRing A]
     (hA : ringKrullDim A = 2) (a b : A) (ha : a ≠ 0) (P Q : Finset (PrimeSpectrum A))
     (hP : ∀ p, p ∈ P ↔ p.asIdeal.height = 1 ∧ a ∈ p.asIdeal)
@@ -181,11 +243,19 @@ theorem terms_ne_top {A : Type} [CommRing A] [IsDomain A] [IsNoetherianRing A] [
   exact WithTop.mul_ne_top (length_localized_ne_top p.asIdeal h1 a ha)
     (length_quotient_ne_top p.asIdeal (dim_quotient_eq_one hA p.asIdeal h1) b hb)
 
+/- English proof (translation)
+Rewrite using `[ENat.toNat_sum h]`. Conclude with `Finset.sum_congr rfl fun i _ => (ENat.toNat_mul _ _).symm`.
+-/
 theorem toNat_sum_mul {ι : Type} (S : Finset ι) (f g : ι → ℕ∞) (h : ∀ i ∈ S, f i * g i ≠ ⊤) :
     ∑ i ∈ S, (f i).toNat * (g i).toNat = (∑ i ∈ S, f i * g i).toNat := by
   rw [ENat.toNat_sum h]
   exact Finset.sum_congr rfl fun i _ => (ENat.toNat_mul _ _).symm
 
+/- English proof (translation)
+Introduce `A _ _ _ _ hA a b ha hb P Q hP hQ hdis`. Take `⟨hK, hC⟩` from `side hA a b ha P Q hP hQ hdis`. Take `⟨_, hC'⟩` from `side hA b a hb Q P hQ hP hdis.symm`. Take `⟨hk, hc⟩` from `GlobalTheory.T.length_ker_coker_lsmul_quotient_span_swap A a b ha hb`. Establish `hS` using `hC.symm.trans (hc.trans hC')`.
+
+Rewrite `hS` using `[← hk]`. Establish `hS'` using `WithTop.add_left_cancel hK hS`. Use `(toNat_sum_mul P _ _ (terms_ne_top hA a b ha P Q hP hQ hdis)).trans ((congrArg ENat.toNat hS').trans (toNat_sum_mul Q _ _ (terms_ne_top hA b a hb Q P hQ hP hdis.symm)).symm)` and prove the remaining obligations.
+-/
 theorem intersection_symm : ∀ (A : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsLocalRing A], ringKrullDim A = 2 → ∀ (a b : A), a ≠ 0 → b ≠ 0 → ∀ (P Q : Finset (PrimeSpectrum A)), (∀ p, p ∈ P ↔ p.asIdeal.height = 1 ∧ a ∈ p.asIdeal) → (∀ p, p ∈ Q ↔ p.asIdeal.height = 1 ∧ b ∈ p.asIdeal) → Disjoint P Q → ∑ p ∈ P, (Module.length (Localization.AtPrime p.asIdeal) (Localization.AtPrime p.asIdeal ⧸ Ideal.span {algebraMap A (Localization.AtPrime p.asIdeal) a})).toNat * (Module.length (A ⧸ p.asIdeal) ((A ⧸ p.asIdeal) ⧸ Ideal.span {Ideal.Quotient.mk p.asIdeal b})).toNat = ∑ p ∈ Q, (Module.length (Localization.AtPrime p.asIdeal) (Localization.AtPrime p.asIdeal ⧸ Ideal.span {algebraMap A (Localization.AtPrime p.asIdeal) b})).toNat * (Module.length (A ⧸ p.asIdeal) ((A ⧸ p.asIdeal) ⧸ Ideal.span {Ideal.Quotient.mk p.asIdeal a})).toNat := by
   intro A _ _ _ _ hA a b ha hb P Q hP hQ hdis
   obtain ⟨hK, hC⟩ := side hA a b ha P Q hP hQ hdis

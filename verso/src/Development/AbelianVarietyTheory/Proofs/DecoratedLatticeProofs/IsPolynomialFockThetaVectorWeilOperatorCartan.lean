@@ -19,6 +19,9 @@ namespace GlobalTheory.FockMove
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
   {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.OrientedHeis.theta_add (GlobalTheory.OrientedHeis.theta_dRho hθ hψ τ z hf) (GlobalTheory.OrientedHeis.theta_smul _ (GlobalTheory.OrientedHeis.theta_dRho hθ hψ τ _ hf))`.
+-/
 theorem theta_annih (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) (τ : D.what₂.Tau)
     (J : Matrix (Fin T.rank) (Fin S.rank) ℂ → Matrix (Fin T.rank) (Fin S.rank) ℂ)
     (z : Matrix (Fin T.rank) (Fin S.rank) ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
@@ -26,6 +29,9 @@ theorem theta_annih (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) (τ : D.what
   GlobalTheory.OrientedHeis.theta_add (GlobalTheory.OrientedHeis.theta_dRho hθ hψ τ z hf)
     (GlobalTheory.OrientedHeis.theta_smul _ (GlobalTheory.OrientedHeis.theta_dRho hθ hψ τ _ hf))
 
+/- English proof (translation)
+Unfold `annih`. Rewrite using `[map_add, map_smul, GlobalTheory.WeilVacMove.om_dRho hW hθ g h τ _ hf, GlobalTheory.WeilVacMove.om_dRho hW hθ g h τ _ hf, GlobalTheory.WeilVacMove.cplxO_move θ τ g h hS hT]`.
+-/
 theorem om_annih (hW : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ) (g : GA D S) (h : GA D T) (τ : D.what₂.Tau)
     {sS sS' : Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT sT' : Matrix (Fin T.rank) (Fin T.rank) ℂ}
     (hS : sS' * compAt θ τ (mt S g) = compAt θ τ (mt S g) * sS)
@@ -37,6 +43,9 @@ theorem om_annih (hW : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ) (g : 
   rw [map_add, map_smul, GlobalTheory.WeilVacMove.om_dRho hW hθ g h τ _ hf, GlobalTheory.WeilVacMove.om_dRho hW hθ g h τ _ hf,
     GlobalTheory.WeilVacMove.cplxO_move θ τ g h hS hT]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact ⟨hf, rfl⟩`. Consider the case `cons p l ih`. Rewrite using `[List.map_cons, List.foldr_cons, List.foldr_cons, ← ih.2]`. Conclude with `⟨theta_annih hθ hW.std p.1 _ p.2 ih.1, om_annih hW hθ g h p.1 (hS p.1) (hT p.1) p.2 ih.1⟩`.
+-/
 theorem om_foldr (hW : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ) (g : GA D S) (h : GA D T)
     {sS sS' : RealMat S} {sT sT' : RealMat T}
     (hS : ∀ τ, sS' τ * compAt θ τ (mt S g) = compAt θ τ (mt S g) * sS τ)
@@ -56,6 +65,15 @@ end GlobalTheory.FockMove
 
 namespace GlobalTheory.FockMove
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT om hW θ hθ sS sS' sT g hS f hf`. Take `⟨hth, N, hN⟩` from `hf`. Establish `hT : ∀ τ, sT τ * compAt θ τ (mt T 1) = compAt θ τ (mt T 1) * sT τ`. Introduce `τ`. Rewrite using `[GlobalTheory.WeilVacMove.mt_one, GlobalTheory.WeilVacMove.compAt_one, Matrix.mul_one, Matrix.one_mul]`.
+
+Use `⟨hW.om_pres _ _ hth, N, fun l hl => ?_⟩` and prove the remaining obligations. Set `l₀ : List (D.what₂.Tau × Matrix (Fin T.rank) (Fin S.rank) ℂ)` to `l.map fun p => (p.1, compAt θ p.1 (mt T (1 : GA D T)⁻¹) * p.2 * compAt θ p.1 (mt S g))`. Establish `e : (l₀.map fun p => (p.1, compAt θ p.1 (mt T (1 : GA D T)) * p.2 * compAt θ p.1 (mt S g⁻¹))) = l`. Simplify using `only [l₀, List.map_map]`. Use `conv_rhs => rw [← List.map_id l]`.
+
+Use `List.map_congr_left fun p _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, id]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, GlobalTheory.WeilVacMove.compAt_mt_mul_inv, Matrix.one_mul, Matrix.mul_assoc, GlobalTheory.WeilVacMove.compAt_mt_mul_inv, Matrix.mul_one]`. Establish `key` using `(om_foldr hW hθ g 1 hS hT hth l₀).2`. Rewrite `key` using `[e]`.
+
+Rewrite using `[← key, hN l₀ (by simp [l₀, hl]), map_zero]`.
+-/
 theorem isFockVec_om : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → ∀ θ : InfFam D, IsInfFam θ → ∀ (sS sS' : RealMat S) (sT : RealMat T) (g : GA D S), (∀ τ, sS' τ * compAt θ τ (mt S g) = compAt θ τ (mt S g) * sS τ) → ∀ f, IsFockVec ψ θ S T sS sT f → IsFockVec ψ θ S T sS' sT (om (g, 1) f) := by
   intro D ψ S T χS χT om hW θ hθ sS sS' sT g hS f hf
   obtain ⟨hth, N, hN⟩ := hf

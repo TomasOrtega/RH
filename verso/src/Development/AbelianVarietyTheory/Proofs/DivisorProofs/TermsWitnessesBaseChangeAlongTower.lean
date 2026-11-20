@@ -20,11 +20,17 @@ namespace GlobalTheory.GSep.TermsTrans
 
 open GlobalTheory.TermsMove GlobalTheory.FieldBaseChange GlobalTheory.TorsionExt GlobalTheory.ArcPull
 
+/- English proof (translation)
+Use `show Spec.map (CommRingCat.ofHom (algebraMap (FractionRing V) (FractionRing V))) = _`. Rewrite using `[Algebra.algebraMap_self]`. Conclude with `Spec.map_id _`.
+-/
 theorem tfk_hom (V : Type) [CommRing V] [IsDomain V] : (TFK (R := V) (FractionRing V)).hom = 𝟙 _ := by
   show Spec.map (CommRingCat.ofHom (algebraMap (FractionRing V) (FractionRing V))) = _
   rw [Algebra.algebraMap_self]
   exact Spec.map_id _
 
+/- English proof (translation)
+Establish `hm : g (r z) ∈ (L.pull F).U (fun _ => j) ⊓ L'.U k` using `⟨mem_pull.2 hj, hk⟩`. Conclude with `(gs_unit (r ≫ g) z _ hm _).symm.trans ((LiftTest.gs_comp r g z _ hm _).trans (congrArg _ (gs_unit g (r z) _ hm _)))`.
+-/
 theorem gw_stalk {X X' Y Z : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} (w : LB.Iso L' (L.pull F)) (r : Z ⟶ Y)
     (g : Y ⟶ X') (z : Z) {j : L.ι} {k : L'.ι} (hj : F (g (r z)) ∈ L.U j) (hk : g (r z) ∈ L'.U k) :
     (Geo.Tor.gw w (r ≫ g) z j k).val = (r.stalkMap z).hom (Geo.Tor.gw w g (r z) j k).val := by
@@ -32,6 +38,17 @@ theorem gw_stalk {X X' Y Z : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} 
   exact (gs_unit (r ≫ g) z _ hm _).symm.trans ((LiftTest.gs_comp r g z _ hm _).trans
     (congrArg _ (gs_unit g (r z) _ hm _)))
 
+/- English proof (translation)
+Establish `gp` using `𝔪.cart`. Establish `hτ : (spMap 𝔪.yK : (TFK (R` using `V) (FractionRing V)).left ⟶ (baseOver (Sp X₁.S.R)).left) ≫ (baseOver (Sp X₁.S.R)).hom = (TFK (R := V) (FractionRing V)).hom ≫ spMap 𝔪.yK := by`. Rewrite using `[tfk_hom]`. Simplify using the standard rewrite rules. Take `⟨th, hth⟩` from `GlobalTheory.ThetaPtMove.exists_secRel (T := TFK (R := V) (FractionRing V)) (T₀ := baseOver (Sp X₁.S.R)) (τ := spMap 𝔪.yK) gp hτ (w := 𝔪.wl) 𝔪.wl_gen X₁.ρ.P.isLB 𝔪.A.isLB (a := 1) X₁.ρ.th₁`.
+
+Use `⟨th, fun a => ?_⟩` and prove the remaining obligations. Establish `H : GlobalTheory.ThetaPtMove.GenThrough 𝔪.wl _ _ _ (fr a) (X₁.ρ.fr a) (show (TFK (R` using `V) (FractionRing V)).left ⟶ (baseOver (Sp X₁.S.R)).left from spMap 𝔪.yK) := by`. Introduce `Z r z J J' hJ hJ'`. Establish `e` using `congrArg (fun u => (r.stalkMap z).hom (Units.val u)) (hfr a (r z) _ _ (LevelExpansion.good_comp r hJ) (LevelExpansion.good_comp r hJ'))`. Rewrite using `[Fin.prod_univ_one, zpow_one]`.
+
+Use `Units.ext ((LevelExpansion.val_comp _ r _ hJ).trans (e.symm.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) ?_ ?_))))` and prove the remaining obligations. Use `(gw_stalk 𝔪.wl r (x a).left z (hJ (r ≫ (x a).left ≫ 𝔪.φ)) (hJ' (r ≫ (x a).left))).symm.trans ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc]`. Both sides reduce to the same expression. Conclude with `(LevelExpansion.val_comp _ r (𝟙 _) hJ').symm.trans (by rw [Category.comp_id])`.
+
+Establish `hv` using `GlobalTheory.ThetaPtMove.isValueAt_move (T := TFK (R := V) (FractionRing V)) (T₀ := baseOver (Sp X₁.S.R)) (τ := spMap 𝔪.yK) gp hτ (w := 𝔪.wl) X₁.ρ.P.isLB 𝔪.A.isLB (a := 1) (x := x a) (x₀ := X₁.ρ.pt a) (hx a).symm (ρ₀ := X₁.ρ.fr a) (ρ := fr a) H (s₀ := X₁.ρ.th₁) (s := th) hth (X₁. …`. Introduce `z J hJ`. Establish `e` using `GlobalTheory.FrameMove.sval_valueAt hv (𝟙 _) hJ`. Rewrite `e` using `[Category.id_comp]`. Use `e.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.FrameMove.val_powFrame, Nat.cast_one, zpow_one]`. Use `congr 1`. Conclude with `(gs_pull (𝟙 _) (spMap 𝔪.yK) z ⊤ trivial _).trans ((congrArg (fun q => gs q z ⊤ _) (Category.id_comp _)).trans (GlobalTheory.FrameMove.gs_spMap 𝔪.yK z _))`.
+-/
 theorem exists_theta {I : Type} {X₁ : GSet} {z₁ : X₁.M.Z} {act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} {V : Type} [CommRing V]
     [IsDomain V] [IsLocalRing V] {ev : X₁.M.Z.presheaf.stalk z₁ →+* V} {X : Type} [AddCommGroup X] {t : X → V}
     {δ : I → X → X} (𝔪 : GMem X₁ z₁ act V ev X t δ) (x : X₁.S.Gam → (TFK (R := V) (FractionRing V) ⟶ 𝔪.A.A))
@@ -72,6 +89,15 @@ theorem exists_theta {I : Type} {X₁ : GSet} {z₁ : X₁.M.Z} {act : I → (X�
   exact (gs_pull (𝟙 _) (spMap 𝔪.yK) z ⊤ trivial _).trans
     ((congrArg (fun q => gs q z ⊤ _) (Category.id_comp _)).trans (GlobalTheory.FrameMove.gs_spMap 𝔪.yK z _))
 
+/- English proof (translation)
+Establish `hG : GlobalFnsSt` using `GlobalTheory.abelianSchemeLaws_all.1.globalFns`. Take `⟨κ, κ', hκ⟩` from `exists_isFibreIso hD hF`. Establish `hg₂ : jFK (R` using `R') (FractionRing R') ≫ spMap (algebraMap (FractionRing R) (FractionRing R')) = jFK (R := R) (FractionRing R') := by`. Rewrite using `[show jFK (R := R') (FractionRing R') = 𝟙 _ from tfk_hom R']`. Conclude with `Category.id_comp _`.
+
+Take `⟨w₀', hw₀', Ω, h₁, h₂, H⟩` from `exists_expand hG hbc hU hF hg₂ gΦ hv hΦ hw₀ hκ`. Take `⟨th', s', E', up, fup⟩` from `(H 1 le_rfl).1 _ _ (expandsF_pull (F := FractionRing R') U.toUnifPre hG hE)`. Establish `frup : ∀ {x : TFK (R` using `R) (FractionRing R) ⟶ A.A} {fr : FrAt x} {x' : TFK (R := R') (FractionRing R') ⟶ A'.A} {fr' : FrAt x'} {ρ : (FractionRing R')ˣ}, FrPull v (algebraMap _ _) x' fr' x fr ρ → FrUp v fr' (frExt (FractionRing R') fr) ρ := fun {x fr x' fr' ρ} h z J J' hJ hJ' => by`. Use `(h z J J' hJ hJ').trans (congrArg₂ (· * ·) rfl (congrArg Units.val ?_))` and prove the remaining obligations. Conclude with `((val_frExt fr (𝟙 _) hJ).trans (by rw [Category.id_comp])).symm`.
+
+Use `⟨w₀', th', s', hw₀', E', fun x fr x' fr' ρ c hx hp hc => ?_, fun g w ρ hw => ?_⟩` and prove the remaining obligations. Use `valAt_pull h₁ h₂ up (x := fieldMap (R := R) (FractionRing R) (FractionRing R') ≫ x) hx (frup hp) (valAt_ext hc)` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Take `⟨g₁, w₁, hw₁, t₁, c₁, l₁⟩` from `exists_ext (F := FractionRing R') hG U hw₀ g hw`. Take `⟨g', w', hw', t₂, c₂, l₂⟩` from `exists_point hG hI hF hκ h₁ h₂ (fun k hk => (H k hk).2) g₁ hw₁ ρ`.
+
+Use `⟨g', w', hw', fun n h => t₂ n (t₁ n h), fun α => (c₂ _ _ fup α).trans (c₁ s _), fun x fr x' fr' gen hx hp hl => ?_⟩` and prove the remaining obligations. Establish `a` using `l₁ x fr gen hl`. Establish `b : (frExt (FractionRing R') fr).IsGen` using `pullGen_isGen _ _ _ _ gen _`. Conclude with `l₂ x' fr' (fieldMap (R := R) (FractionRing R) (FractionRing R') ≫ x) (frExt (FractionRing R') fr) b hx (frup hp) a`.
+-/
 theorem exists_moved {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {φ : R →+* R'}
     [Algebra (FractionRing R) (FractionRing R')] {I : Ideal R} {I' : Ideal R'} {D : DegData R I} {D' : DegData R' I'}
     {hD : IsPullDeg φ D.toPre D'.toPre} {A : PolAV (Sp (FractionRing R))} {A' : PolAV (Sp (FractionRing R'))}
@@ -124,6 +150,23 @@ theorem exists_moved {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDo
   have b : (frExt (FractionRing R') fr).IsGen := pullGen_isGen _ _ _ _ gen _
   exact l₂ x' fr' (fieldMap (R := R) (FractionRing R) (FractionRing R') ≫ x) (frExt (FractionRing R') fr) b hx (frup hp) a
 
+/- English proof (translation)
+Introduce `I X₁ act 𝔗 z₁ z₂ _ x₀ hdiv V _ _ _ ev X _ t δ 𝔪 C lab x fr th w₀ s g' w hx hfr hth hw₀ hE hc V' _ _ _ io f hf hinj hfin ev₂ 𝔪₂ ψ hD bc _ hy gψ wψ hwψ hφ hbc hU hxe hgen x₂ fr₂ hx₂ hfr₂ ρ hρ`. Use `letI : Algebra (FractionRing V) (FractionRing V') := f.toAlgebra`. Establish `hG : GlobalFnsSt` using `GlobalTheory.abelianSchemeLaws_all.1.globalFns`. Establish `hI : (maximalIdeal V).map io ≤ maximalIdeal V'`. Use `RingHom.IsIntegral.isLocalHom hfin.to_isIntegral hinj` as an intermediate fact.
+
+Conclude with `Ideal.map_le_iff_le_comap.2 fun v hv => map_nonunit io v hv`. Take `⟨w₀₂, th', s', hw₀₂, E', hval, hpt⟩` from `exists_moved (v := wψ) hI hbc hU hf gψ.1 hwψ hgen hw₀ hE`. Establish `hxx : ∀ b, (x₂ (𝔗.lam b)).left ≫ ψ = spMap f ≫ (x b).left` using `fun b => by`. Use `𝔪.cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Establish `e : spMap 𝔪₂.yK ≫ spMap 𝔗.om = spMap f ≫ spMap 𝔪.yK` using `(Spec.map_comp (CommRingCat.ofHom 𝔗.om) (CommRingCat.ofHom 𝔪₂.yK)).symm.trans ((congrArg spMap hy).trans (Spec.map_comp (CommRingCat.ofHom 𝔪.yK) (CommRingCat.ofHom f)))`.
+
+Rewrite using `[Category.assoc, ← hφ, ← Category.assoc, hx₂, Category.assoc, Category.assoc, hx]`. Conclude with `(congrArg (_ ≫ ·) (𝔗.lam_pt b)).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) e).trans (Category.assoc _ _ _)))`. Rewrite using `[Category.assoc, gψ.1.w, ← Category.assoc, Over.w (x₂ (𝔗.lam b)), Category.assoc, Over.w (x b), tfk_hom, tfk_hom]`. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`. Establish `hv'` using `fun b => hval _ _ _ _ (ρ b) _ (hxx b) (hρ b) (hth b)`.
+
+Establish `hne : (show AbSec 𝔪₂.A (FractionRing V') 1 from th') ≠ 0` using `fun h => by`. Establish `h₀` using `hv' x₀`. Rewrite `h₀` using `[show th' = _ from h]`. Conclude with `mul_ne_zero ((map_ne_zero_iff f f.injective).2 (GlobalTheory.GSep.GMem.yK_th_ne_zero I X₁ z₁ act V ev X t δ 𝔪 x₀ hdiv)) (Units.ne_zero _) (valAt_unique h₀ (valAt_zero _ _))`. Take `⟨th₂, hth₂⟩` from `exists_theta 𝔪₂ x₂ fr₂ hx₂ fun a => (hfr₂ a).2`.
+
+Take `⟨K, hK⟩` from `exists_eq_smul hne th₂`. Use `choose g₂ w₂ hw₂ ht₂ hc₂ hl₂ using fun c => hpt (g' c) (w c) (ρ (lab c)) (hc c).2.1`. Take `⟨e, he⟩` from `exists_linearEquiv_expandsF hG 𝔪₂.U (FractionRing V') (k := 1) le_rfl w₀₂ hw₀₂`. Use `⟨th₂, w₀₂, K • s', g₂, w₂, K, hth₂, hw₀₂, (he _ _).2 ?_, fun c => ⟨?_, hw₂ c, ?_⟩, fun mu c => ?_, fun b => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg e hK).trans ((map_smul e K _).trans (congrArg (K • ·) ((he _ _).1 E')))`.
+
+Use `letI := @TorusExt.gtGroup`. Take `⟨o, o₁, o₂⟩` from `ht₂ c _ (hc c).1`. Rewrite `o₁` using `[TorusExt.isNsmul_iff_eq]`. Rewrite `o₂` using `[TorusExt.isZero_iff_eq]`. Use `⟨0, (TorusExt.isNsmul_iff_eq _ _ _).2 ?_, (TorusExt.isZero_iff_eq _).2 rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[𝔗.lev, mul_nsmul, ← o₁, o₂, nsmul_zero]`. Conclude with `hl₂ c _ _ _ _ (hfr _).1 (hxx _) (hρ _) (hc c).2.2`. Rewrite using `[coef_smul (hw₂ c), _root_.mul_assoc, hc₂, hxe]`. Both sides reduce to the same expression. Establish `a` using `valAt_lin (hv' b) (valAt_zero _ _) K`.
+
+Rewrite `a` using `[add_zero, add_zero, ← hK]`. Rewrite using `[valAt_unique (hth₂ _) a, _root_.mul_assoc, Units.inv_mul_cancel_right]`. Both sides reduce to the same expression.
+-/
 theorem terms_witnesses_baseChange : ∀ {I : Type} (X₁ : GlobalTheory.GSep.GSet) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (𝔗 : GlobalTheory.GSep.Tower X₁ act) (z₁ : X₁.M.Z)
     (z₂ : 𝔗.X₂.M.Z), 𝔗.p z₂ = z₁ → ∀ x₀ : X₁.S.Gam, X₁.M.Div X₁.S.th x₀ z₁ →
     ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X]

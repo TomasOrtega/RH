@@ -4,6 +4,21 @@ namespace GlobalTheory
 
 open Complex
 
+/- English proof (translation)
+Introduce `E _ _ _ _ p hp Z x h`. Use `haveI := hp.continuousSMul`. Use `haveI : LocallyConvexSpace ℝ E := hp.toLocallyConvexSpace`. Assume the negation of the conclusion as `hx`. Rewrite `hx` using `[← Z.topologicalClosure_coe]`.
+
+Take `⟨f, u, hfx, hf⟩` from `RCLike.geometric_hahn_banach_point_closed (𝕜 := ℂ) ((Z.topologicalClosure.restrictScalars ℝ).convex) Z.isClosed_topologicalClosure hx`. Simplify using `only [RCLike.re_to_complex] at hfx hf`. Establish `hre : ∀ w ∈ Z, (f w).re = 0`. Introduce `w hw`. Assume the negation of the conclusion as `hne`.
+
+Use `set t : ℝ := (u - 1) / (f w).re`. Establish `hmem : ((t : ℂ) • w) ∈ Z.topologicalClosure` using `Z.le_topologicalClosure (Z.smul_mem _ hw)`. Establish `h1` using `hf _ hmem`. Rewrite `h1` using `[map_smul, smul_eq_mul, Complex.re_ofReal_mul]`. Establish `: t * (f w).re = u - 1`.
+
+Simplify using `only [t]`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hvan : ∀ z ∈ Z, f z = 0`. Introduce `z hz`.
+
+Establish `h1` using `hre z hz`. Establish `h2` using `hre (Complex.I • z) (Z.smul_mem _ hz)`. Rewrite `h2` using `[map_smul, smul_eq_mul, Complex.mul_re, Complex.I_re, Complex.I_im]`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `using h1`.
+
+Simplify using `at h2`. Simplify using `using h2`. Establish `h0` using `hf 0 (Z.topologicalClosure.zero_mem)`. Establish `hfx0` using `h f hvan`. Rewrite `h0` using `[map_zero]`.
+
+Rewrite `hfx` using `[hfx0]`. Simplify using `at h0 hfx`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem mem_closure_of_forall_dual_vanish :
     ∀ {E : Type} [AddCommGroup E] [Module ℂ E] [UniformSpace E] [IsUniformAddGroup E]
     {p : ℕ → Seminorm ℂ E}, WithSeminorms p → ∀ (Z : Submodule ℂ E) (x : E),

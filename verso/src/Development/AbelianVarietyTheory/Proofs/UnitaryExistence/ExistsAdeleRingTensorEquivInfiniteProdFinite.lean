@@ -6,6 +6,37 @@ open scoped TensorProduct Topology Matrix
 
 namespace GlobalTheory.AdSplit
 
+/- English proof (translation)
+Use `letI : TopologicalSpace ((A × B) ⊗[F] E) := moduleTopology (A × B) ((A × B) ⊗[F] E)`. Use `letI : TopologicalSpace (B ⊗[F] E) := moduleTopology B (B ⊗[F] E)`. Use `letI : TopologicalSpace (A ⊗[F] E) := moduleTopology A (A ⊗[F] E)`. Use `haveI : IsModuleTopology (A × B) ((A × B) ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsModuleTopology B (B ⊗[F] E) := ⟨rfl⟩`.
+
+Use `haveI : IsModuleTopology A (A ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousAdd ((A × B) ⊗[F] E) := IsModuleTopology.toContinuousAdd (A × B) _`. Use `haveI : ContinuousAdd (A ⊗[F] E) := IsModuleTopology.toContinuousAdd A _`. Use `haveI : ContinuousAdd (B ⊗[F] E) := IsModuleTopology.toContinuousAdd B _`. Set `p` to `Algebra.TensorProduct.map (AlgHom.fst F A B) (AlgHom.id F E)`.
+
+Set `q` to `Algebra.TensorProduct.map (AlgHom.snd F A B) (AlgHom.id F E)`. Set `l` to `TensorProduct.prodLeft F F A B E`. Establish `hl : ∀ z, l z = (p z, q z)`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp [Prod.ext_iff]`. Consider the case `tmul a x => obtain ⟨a, b⟩ := a`. Simplify using `[l, p, q]`. Consider the case `add x y hx hy => simp [hx, hy]`. Set `e : ((A × B) ⊗[F] E) ≃+* (A ⊗[F] E) × (B ⊗[F] E)` to `{ l.toAddEquiv with map_mul' := fun x y => by`.
+
+Express the relevant statement in the definitionally equal form `l (x * y) = l x * l y`. Simplify using `[hl] }`. Establish `he : ∀ z, e z = (p z, q z)` using `hl`. Set `i : A ⊗[F] E →ₗ[F] (A × B) ⊗[F] E` to `LinearMap.rTensor E (LinearMap.inl F A B)`. Set `j : B ⊗[F] E →ₗ[F] (A × B) ⊗[F] E` to `LinearMap.rTensor E (LinearMap.inr F A B)`.
+
+Establish `hp : Continuous p`. Set `φ : (A × B) ⊗[F] E →ₛₗ[RingHom.fst A B] A ⊗[F] E` to `{ toFun := p map_add' := map_add p map_smul' := fun r z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp [p, TensorProduct.smul_tmul']`.
+
+Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy] }`. Conclude with `IsModuleTopology.continuous_of_linearMapₛₗ continuous_fst φ`. Establish `hq : Continuous q`. Set `φ : (A × B) ⊗[F] E →ₛₗ[RingHom.snd A B] B ⊗[F] E` to `{ toFun := q map_add' := map_add q map_smul' := fun r z => by`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul a x => simp [q, TensorProduct.smul_tmul']`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy] }`. Conclude with `IsModuleTopology.continuous_of_linearMapₛₗ continuous_snd φ`. Establish `hi : Continuous i`.
+
+Set `φ : A ⊗[F] E →ₑ+[MonoidHom.inl A B] (A × B) ⊗[F] E` to `{ toFun := i map_zero' := map_zero i map_add' := map_add i map_smul' := fun r z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp [i, TensorProduct.smul_tmul']`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy] }`.
+
+Conclude with `IsModuleTopology.continuous_of_distribMulActionHomₑ (continuous_id.prodMk continuous_const) φ`. Establish `hj : Continuous j`. Set `φ : B ⊗[F] E →ₑ+[MonoidHom.inr A B] (A × B) ⊗[F] E` to `{ toFun := j map_zero' := map_zero j map_add' := map_add j map_smul' := fun r z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul a x => simp [j, TensorProduct.smul_tmul']`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy] }`. Conclude with `IsModuleTopology.continuous_of_distribMulActionHomₑ (continuous_const.prodMk continuous_id) φ`. Establish `hpi : ∀ x, p (i x) = x ∧ q (i x) = 0`. Introduce `x`.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp [i, p, q]`. Consider the case `add x y hx hy => simp [hx.1, hx.2, hy.1, hy.2]`. Establish `hpj : ∀ x, p (j x) = 0 ∧ q (j x) = x`.
+
+Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp [j, p, q]`. Consider the case `add x y hx hy => simp [hx.1, hx.2, hy.1, hy.2]`.
+
+Use `⟨e, fun z => by rw [he]; exact ⟨rfl, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `: (e : _ → _) = fun z => (p z, q z)` using `funext he`. Rewrite using `[this]`. Conclude with `hp.prodMk hq`. Establish `: (e.symm : _ → _) = fun w => i w.1 + j w.2`.
+
+Use function extensionality and compare the values at `w`. Rewrite using `[RingEquiv.symm_apply_eq, he]`. Simplify using `[(hpi _).1, (hpi _).2, (hpj _).1, (hpj _).2]`. Rewrite using `[this]`. Conclude with `(hi.comp continuous_fst).add (hj.comp continuous_snd)`.
+-/
 theorem exists_prod_equiv (F E A B : Type) [CommRing F] [CommRing E] [Algebra F E]
     [CommRing A] [Algebra F A] [TopologicalSpace A] [IsTopologicalRing A]
     [CommRing B] [Algebra F B] [TopologicalSpace B] [IsTopologicalRing B] :
@@ -109,6 +140,9 @@ theorem exists_prod_equiv (F E A B : Type) [CommRing F] [CommRing E] [Algebra F 
     rw [this]
     exact (hi.comp continuous_fst).add (hj.comp continuous_snd)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _`. Conclude with `exists_prod_equiv F E (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)`.
+-/
 theorem exists_adele_equiv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] , letI : TopologicalSpace (AdeleRing (𝓞 F) F ⊗[F] E) := moduleTopology (AdeleRing (𝓞 F) F) (AdeleRing (𝓞 F) F ⊗[F] E); letI : TopologicalSpace (FiniteAdeleRing (𝓞 F) F ⊗[F] E) := moduleTopology (FiniteAdeleRing (𝓞 F) F) (FiniteAdeleRing (𝓞 F) F ⊗[F] E); letI : TopologicalSpace (InfiniteAdeleRing F ⊗[F] E) := moduleTopology (InfiniteAdeleRing F) (InfiniteAdeleRing F ⊗[F] E); ∃ e : (AdeleRing (𝓞 F) F ⊗[F] E) ≃+* (InfiniteAdeleRing F ⊗[F] E) × (FiniteAdeleRing (𝓞 F) F ⊗[F] E), (∀ z, (e z).1 = Algebra.TensorProduct.map (AlgHom.fst F (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)) (AlgHom.id F E) z ∧ (e z).2 = Algebra.TensorProduct.map (AlgHom.snd F (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)) (AlgHom.id F E) z) ∧ Continuous e ∧ Continuous e.symm := by
   intro F E _ _ _ _ _
   exact exists_prod_equiv F E (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)

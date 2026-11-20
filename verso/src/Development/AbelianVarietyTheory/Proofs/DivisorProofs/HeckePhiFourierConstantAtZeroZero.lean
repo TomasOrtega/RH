@@ -8,16 +8,27 @@ open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization GlobalTheory.Hec
 
 namespace GlobalTheory.HeckeTwo
 
+/- English proof (translation)
+Introduce `h`. Use `congrArg Complex.im h` as an intermediate fact. Simplify using `at this`.
+-/
 lemma ofReal_add_I_ne_zero (t : ℝ) : (t : ℂ) + I ≠ 0 := by
   intro h
   have := congrArg Complex.im h
   simp at this
 
+/- English proof (translation)
+Rewrite using `[norm_pow, norm_inv, inv_pow, Complex.sq_norm, Complex.normSq_apply]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma norm_inv_ofReal_add_I_sq (t : ℝ) : ‖((t : ℂ) + I)⁻¹ ^ 2‖ = (1 + t ^ 2)⁻¹ := by
   rw [norm_pow, norm_inv, inv_pow, Complex.sq_norm, Complex.normSq_apply]
   simp
   ring
 
+/- English proof (translation)
+Establish `hb : Filter.Tendsto (fun t : ℝ => ((t : ℂ) + I)) Filter.atTop (Bornology.cobounded ℂ)`. Rewrite using `[← tendsto_norm_atTop_iff_cobounded]`. Use `Filter.tendsto_atTop_mono (fun t => ?_) Filter.tendsto_abs_atTop_atTop` and prove the remaining obligations. Use `Complex.abs_re_le_norm ((t : ℂ) + I)` as an intermediate fact. Simplify using `using this`.
+
+Conclude with `Filter.Tendsto.comp Filter.tendsto_inv₀_cobounded hb`.
+-/
 lemma tendsto_inv_ofReal_add_I_atTop :
     Filter.Tendsto (fun t : ℝ => ((t : ℂ) + I)⁻¹) Filter.atTop (nhds 0) := by
   have hb : Filter.Tendsto (fun t : ℝ => ((t : ℂ) + I)) Filter.atTop (Bornology.cobounded ℂ) := by
@@ -27,6 +38,11 @@ lemma tendsto_inv_ofReal_add_I_atTop :
     simpa using this
   exact Filter.Tendsto.comp Filter.tendsto_inv₀_cobounded hb
 
+/- English proof (translation)
+Establish `hb : Filter.Tendsto (fun t : ℝ => ((t : ℂ) + I)) Filter.atBot (Bornology.cobounded ℂ)`. Rewrite using `[← tendsto_norm_atTop_iff_cobounded]`. Use `Filter.tendsto_atTop_mono (fun t => ?_) Filter.tendsto_abs_atBot_atTop` and prove the remaining obligations. Use `Complex.abs_re_le_norm ((t : ℂ) + I)` as an intermediate fact. Simplify using `using this`.
+
+Conclude with `Filter.Tendsto.comp Filter.tendsto_inv₀_cobounded hb`.
+-/
 lemma tendsto_inv_ofReal_add_I_atBot :
     Filter.Tendsto (fun t : ℝ => ((t : ℂ) + I)⁻¹) Filter.atBot (nhds 0) := by
   have hb : Filter.Tendsto (fun t : ℝ => ((t : ℂ) + I)) Filter.atBot (Bornology.cobounded ℂ) := by
@@ -36,6 +52,11 @@ lemma tendsto_inv_ofReal_add_I_atBot :
     simpa using this
   exact Filter.Tendsto.comp Filter.tendsto_inv₀_cobounded hb
 
+/- English proof (translation)
+Establish `h1 : HasDerivAt (fun w : ℂ => w + I) 1 (t : ℂ)` using `(hasDerivAt_id _).add_const I`. Establish `h2` using `(h1.inv (ofReal_add_I_ne_zero t)).neg`. Establish `h3` using `h2.comp_ofReal`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`.
+
+Simplify using the standard rewrite rules. Rewrite using `[inv_pow]`. Clear the denominators using the available nonvanishing facts.
+-/
 lemma hasDerivAt_neg_inv_ofReal_add_I (t : ℝ) :
     HasDerivAt (fun s : ℝ => -((s : ℂ) + I)⁻¹) (((t : ℂ) + I)⁻¹ ^ 2) t := by
   have h1 : HasDerivAt (fun w : ℂ => w + I) 1 (t : ℂ) := (hasDerivAt_id _).add_const I
@@ -47,6 +68,11 @@ lemma hasDerivAt_neg_inv_ofReal_add_I (t : ℝ) :
   · rw [inv_pow]
     field_simp
 
+/- English proof (translation)
+Establish `hint : MeasureTheory.Integrable (fun t : ℝ => ((t : ℂ) + I)⁻¹ ^ 2)`. Use `integrable_inv_one_add_sq.mono' ?_ ?_` and prove the remaining obligations. Conclude with `(((continuous_ofReal.add continuous_const).inv₀ ofReal_add_I_ne_zero).pow 2).aestronglyMeasurable`. Conclude with `Filter.Eventually.of_forall (fun t => (norm_inv_ofReal_add_I_sq t).le)`. Rewrite using `[MeasureTheory.integral_of_hasDerivAt_of_tendsto hasDerivAt_neg_inv_ofReal_add_I hint (by simpa using tendsto_inv_ofReal_add_I_atBot.neg) (by simpa using tendsto_inv_ofReal_add_I_atTop.neg)]`.
+
+Simplify using the standard rewrite rules.
+-/
 lemma integral_inv_ofReal_add_I_sq : ∫ t : ℝ, ((t : ℂ) + I)⁻¹ ^ 2 = 0 := by
   have hint : MeasureTheory.Integrable (fun t : ℝ => ((t : ℂ) + I)⁻¹ ^ 2) := by
     refine integrable_inv_one_add_sq.mono' ?_ ?_
@@ -57,6 +83,9 @@ lemma integral_inv_ofReal_add_I_sq : ∫ t : ℝ, ((t : ℂ) + I)⁻¹ ^ 2 = 0 :
     (by simpa using tendsto_inv_ofReal_add_I_atTop.neg)]
   simp
 
+/- English proof (translation)
+Unfold `cConst hTrans phi`. Simplify using `only [mul_zero, neg_zero, Complex.cpow_zero, mul_one, Complex.ofReal_zero, zero_mul, Complex.exp_zero, Complex.ofReal_one, one_mul]`. Conclude with `integral_inv_ofReal_add_I_sq`.
+-/
 theorem cConst_zero : cConst 0 = 0 := by
   unfold cConst hTrans phi
   simp only [mul_zero, neg_zero, Complex.cpow_zero, mul_one, Complex.ofReal_zero, zero_mul, Complex.exp_zero, Complex.ofReal_one, one_mul]

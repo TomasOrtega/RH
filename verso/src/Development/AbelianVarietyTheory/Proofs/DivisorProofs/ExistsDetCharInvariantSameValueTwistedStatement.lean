@@ -19,6 +19,9 @@ open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MinorFrame.exists_mem_inv_eq_of_twisted | exact GlobalTheory.MinorFrame.exists_mem_inv_eq_of_twisted | (intros; apply GlobalTheory.MinorFrame.exists_mem_inv_eq_of_twisted <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_detCharInvariant_same_value_twisted : ∀ {ι : Type} [Fintype ι] (a d : ℕ) (n : ι → ℕ) (Pr : Type) [AddCommGroup Pr] [Module ℂ Pr]
     (q : GlobalTheory.MinorFrame.Pol ι d a →ₗ[ℂ] Pr),
     (∀ (g : ι → Matrix.unitaryGroup (Fin a) ℂ) (P : GlobalTheory.MinorFrame.Pol ι d a),

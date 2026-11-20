@@ -34,9 +34,15 @@ variable {Γ N} {φ ψ : G → ℂ} {μ : Measure N} {𝓕 : Set N}
 omit [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
   [DiscreteTopology Γ] [LocallyCompactSpace N] in
 
+/- English proof (translation)
+Introduce `γ hγ n` and use `by simp only [Subgroup.coe_mul, mul_assoc]; exact hφ _ hγ _`.
+-/
 theorem leftInv_integrand (hφ : LeftInv Γ φ) (x : G) : LeftInv (Γ.subgroupOf N) fun n : N => φ (n * x) :=
   fun γ hγ n => by simp only [Subgroup.coe_mul, mul_assoc]; exact hφ _ hγ _
 
+/- English proof (translation)
+Establish `h0 : ((Measure.haarScalarFactor μ Measure.haar : NNReal) : ℝ≥0∞) ≠ 0` using `ENNReal.coe_ne_zero.2 (Measure.haarScalarFactor_pos_of_isHaarMeasure μ Measure.haar).ne'`. Use `conv_rhs => rw [Measure.isMulLeftInvariant_eq_smul μ Measure.haar]`. Rewrite using `[ENNReal.smul_def, quotMeasure_smul, smul_smul, Measure.smul_apply, smul_eq_mul, ENNReal.mul_inv (Or.inl h0) (Or.inl ENNReal.coe_ne_top), mul_right_comm, ENNReal.inv_mul_cancel h0 ENNReal.coe_ne_top, one_mul, probMeasure]`.
+-/
 theorem probMeasure_eq (μ : Measure N) [μ.IsHaarMeasure] :
     probMeasure Γ N = (quotMeasure (Γ.subgroupOf N) μ univ)⁻¹ • quotMeasure (Γ.subgroupOf N) μ := by
   have h0 : ((Measure.haarScalarFactor μ Measure.haar : NNReal) : ℝ≥0∞) ≠ 0 :=
@@ -46,23 +52,40 @@ theorem probMeasure_eq (μ : Measure N) [μ.IsHaarMeasure] :
     ENNReal.mul_inv (Or.inl h0) (Or.inl ENNReal.coe_ne_top), mul_right_comm, ENNReal.inv_mul_cancel h0 ENNReal.coe_ne_top,
     one_mul, probMeasure]
 
+/- English proof (translation)
+Rewrite using `[constTermOn, probMeasure_eq μ, integral_smul_measure, quotMeasure_univ h, integral_quotMeasure h, ENNReal.toReal_inv, measureReal_def]`. Conclude with `congrArg _ (integral_congr_ae (.of_forall (leftInv_integrand hφ x).descend_mk))`.
+-/
 theorem constTermOn_eq [μ.IsHaarMeasure] (h : IsFundamentalDomain (Γ.subgroupOf N) 𝓕 μ) (hφ : LeftInv Γ φ) (x : G) :
     constTermOn Γ N φ x = (μ.real 𝓕)⁻¹ • ∫ n in 𝓕, φ (n * x) ∂μ := by
   rw [constTermOn, probMeasure_eq μ, integral_smul_measure, quotMeasure_univ h, integral_quotMeasure h,
     ENNReal.toReal_inv, measureReal_def]
   exact congrArg _ (integral_congr_ae (.of_forall (leftInv_integrand hφ x).descend_mk))
 
+/- English proof (translation)
+Simplify using `[constTermOn_eq h hφ, measureReal_def, h1]`.
+-/
 theorem constTermOn_eq_of_measure_eq_one [μ.IsHaarMeasure] (h : IsFundamentalDomain (Γ.subgroupOf N) 𝓕 μ)
     (h1 : μ 𝓕 = 1) (hφ : LeftInv Γ φ) (x : G) : constTermOn Γ N φ x = ∫ n in 𝓕, φ (n * x) ∂μ := by
   simp [constTermOn_eq h hφ, measureReal_def, h1]
 
+/- English proof (translation)
+Simplify using `only [constTermOn, mul_assoc]`.
+-/
 theorem constTermOn_mul_right (φ : G → ℂ) (x g : G) :
     constTermOn Γ N (fun y => φ (y * g)) x = constTermOn Γ N φ (x * g) := by
   simp only [constTermOn, mul_assoc]
 
+/- English proof (translation)
+The claim follows from `integral_const_mul c _`.
+-/
 theorem constTermOn_smul (c : ℂ) (φ : G → ℂ) (x : G) : constTermOn Γ N (c • φ) x = c * constTermOn Γ N φ x :=
   integral_const_mul c _
 
+/- English proof (translation)
+Set `e : N ≃ₜ* N` to `{ toFun := fun n => ⟨γ * n * γ⁻¹, (hN _).1 n.2⟩ invFun := fun n => ⟨γ⁻¹ * n * γ, (hN _).2 (by simp [mul_assoc])⟩ left_inv := fun n => by simp [mul_assoc] right_inv := fun n => by simp [mul_assoc] map_mul' := fun a b => by simp [mul_assoc] continuous_toFun := by fun_prop continuou …`. Set `m` to `e.toHomeomorph.toMeasurableEquiv`. Establish `h` using `isFundamentalDomain_stdDom (Γ.subgroupOf N) (Measure.haar.map e)`. Establish `hp : MeasurePreserving m Measure.haar (Measure.haar.map e)` using `⟨m.measurable, rfl⟩`. Establish `h' : IsFundamentalDomain (Γ.subgroupOf N) (m ⁻¹' stdDom (Γ.subgroupOf N)) Measure.haar` using `h.preimage_of_equiv hp.quasiMeasurePreserving (e := fun δ => ⟨e.symm δ, mul_mem (mul_mem (inv_mem hγ) δ.2) hγ⟩) ⟨fun a b hab => Subtype.ext (e.symm.injective (congrArg Subtype.val hab)), fun δ => ⟨⟨e δ, mul_mem (mul_mem hγ δ.2) (inv_mem hγ)⟩, Subtype.ext (e.symm_apply_apply _)⟩⟩ …`.
+
+Rewrite using `[constTermOn_eq h hφ, constTermOn_eq h' hφ, ← hp.setIntegral_preimage_emb m.measurableEmbedding, measureReal_def, measureReal_def, hp.measure_preimage h.nullMeasurableSet]`. Use `congrArg _ (integral_congr_ae (.of_forall fun n => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ (γ * n * γ⁻¹ * (γ * x)) = φ (n * x)`. Rewrite using `[mul_assoc, inv_mul_cancel_left, mul_assoc, hφ γ hγ]`.
+-/
 theorem constTermOn_mul_left_of_normalizer (hφ : LeftInv Γ φ) {γ : G} (hγ : γ ∈ Γ)
     (hN : ∀ n, n ∈ N ↔ γ * n * γ⁻¹ ∈ N) (x : G) : constTermOn Γ N φ (γ * x) = constTermOn Γ N φ x := by
   let e : N ≃ₜ* N :=
@@ -95,6 +118,9 @@ include hc
 
 omit [LocallyCompactSpace N] in
 
+/- English proof (translation)
+The claim follows from `let ⟨K, hK, hs⟩ := hc GlobalTheory.integrableOn_fundamentalDomain_of_cocompact N _ K hK hs μ inferInstance 𝓕 h _ (by fun_prop) (leftInv_integrand hφ x)`.
+-/
 theorem integrableOn [μ.IsHaarMeasure] (h : IsFundamentalDomain (Γ.subgroupOf N) 𝓕 μ) (hφ : LeftInv Γ φ)
     (hφc : Continuous φ) (x : G) : IntegrableOn (fun n : N => φ (n * x)) 𝓕 μ :=
   let ⟨K, hK, hs⟩ := hc
@@ -103,14 +129,23 @@ theorem integrableOn [μ.IsHaarMeasure] (h : IsFundamentalDomain (Γ.subgroupOf 
 
 omit [LocallyCompactSpace N] in
 
+/- English proof (translation)
+The claim follows from `((integrableOn_const_iff (C := (1 : ℂ))).1 (hc.integrableOn h (φ := fun _ => 1) (fun _ _ _ => rfl) continuous_const 1)).elim (by simp) LT.lt.ne`.
+-/
 theorem measure_ne_top [μ.IsHaarMeasure] (h : IsFundamentalDomain (Γ.subgroupOf N) 𝓕 μ) : μ 𝓕 ≠ ⊤ :=
   ((integrableOn_const_iff (C := (1 : ℂ))).1
     (hc.integrableOn h (φ := fun _ => 1) (fun _ _ _ => rfl) continuous_const 1)).elim (by simp) LT.lt.ne
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ENNReal.inv_mul_cancel (NeZero.ne _) (by rw [quotMeasure_univ (isFundamentalDomain_stdDom _ _)]; exact hc.measure_ne_top (isFundamentalDomain_stdDom _ _))⟩`.
+-/
 theorem isProbabilityMeasure : IsProbabilityMeasure (probMeasure Γ N) :=
   ⟨ENNReal.inv_mul_cancel (NeZero.ne _) (by
     rw [quotMeasure_univ (isFundamentalDomain_stdDom _ _)]; exact hc.measure_ne_top (isFundamentalDomain_stdDom _ _))⟩
 
+/- English proof (translation)
+Establish `h` using `isFundamentalDomain_stdDom (Γ.subgroupOf N) Measure.haar`. Use `Integrable.smul_measure (memLp_one_iff_integrable.1 ((memLp_quotMeasure_iff h).2 ?_)) (ENNReal.inv_ne_top.2 (NeZero.ne _))` and prove the remaining obligations. Rewrite using `[show lift _ (fun q : Quot (Γ.subgroupOf N) => φ ((q.out : N) * x)) = _ from (leftInv_integrand (N := N) hφ x).lift_descend]`. Conclude with `memLp_one_iff_integrable.2 (hc.integrableOn h hφ hφc x)`.
+-/
 theorem integrable (hφ : LeftInv Γ φ) (hφc : Continuous φ) (x : G) :
     Integrable (fun q : Quot (Γ.subgroupOf N) => φ ((q.out : N) * x)) (probMeasure Γ N) := by
   have h := isFundamentalDomain_stdDom (Γ.subgroupOf N) Measure.haar
@@ -120,19 +155,31 @@ theorem integrable (hφ : LeftInv Γ φ) (hφc : Continuous φ) (x : G) :
     (leftInv_integrand (N := N) hφ x).lift_descend]
   exact memLp_one_iff_integrable.2 (hc.integrableOn h hφ hφc x)
 
+/- English proof (translation)
+Use `hc.isProbabilityMeasure` as an intermediate fact. Simplify using `[constTermOn]`.
+-/
 theorem constTermOn_const (c : ℂ) (x : G) : constTermOn Γ N (fun _ => c) x = c := by
   have := hc.isProbabilityMeasure
   simp [constTermOn]
 
+/- English proof (translation)
+The claim follows from `integral_add (hc.integrable hφ hφc x) (hc.integrable hψ hψc x)`.
+-/
 theorem constTermOn_add (hφ : LeftInv Γ φ) (hφc : Continuous φ) (hψ : LeftInv Γ ψ) (hψc : Continuous ψ) (x : G) :
     constTermOn Γ N (φ + ψ) x = constTermOn Γ N φ x + constTermOn Γ N ψ x :=
   integral_add (hc.integrable hφ hφc x) (hc.integrable hψ hψc x)
 
+/- English proof (translation)
+The claim follows from `(constTermOn_eq h hφ x).symm ▸ smul_eq_zero_iff_right (inv_ne_zero (ENNReal.toReal_ne_zero.2 ⟨h.measure_ne_zero (NeZero.ne μ), hc.measure_ne_top h⟩))`.
+-/
 theorem constTermOn_eq_zero_iff [μ.IsHaarMeasure] (h : IsFundamentalDomain (Γ.subgroupOf N) 𝓕 μ) (hφ : LeftInv Γ φ)
     (x : G) : constTermOn Γ N φ x = 0 ↔ ∫ n in 𝓕, φ (n * x) ∂μ = 0 :=
   (constTermOn_eq h hφ x).symm ▸ smul_eq_zero_iff_right (inv_ne_zero
     (ENNReal.toReal_ne_zero.2 ⟨h.measure_ne_zero (NeZero.ne μ), hc.measure_ne_top h⟩))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun g => by have h := isFundamentalDomain_stdDom (Γ.subgroupOf N) μ have e := Measure.isMulLeftInvariant_eq_smul (μ.map (· * g)) μ have h' : IsFundamentalDomain (Γ.subgroupOf N) ((· * g) ⁻¹' stdDom (Γ.subgroupOf N)) μ := h.preimage_of_equiv ⟨measurable_mul_const g, e ▸ Measure.s …`.
+-/
 theorem isMulRightInvariant (μ : Measure N) [μ.IsHaarMeasure] : μ.IsMulRightInvariant := ⟨fun g => by
   have h := isFundamentalDomain_stdDom (Γ.subgroupOf N) μ
   have e := Measure.isMulLeftInvariant_eq_smul (μ.map (· * g)) μ
@@ -144,6 +191,11 @@ theorem isMulRightInvariant (μ : Measure N) [μ.IsHaarMeasure] : μ.IsMulRightI
     smul_eq_mul, ENNReal.mul_eq_right (h.measure_ne_zero (NeZero.ne μ)) (hc.measure_ne_top h), ENNReal.coe_eq_one] at h1
   rw [e, h1, one_smul]⟩
 
+/- English proof (translation)
+Use `hc.isMulRightInvariant Measure.haar` as an intermediate fact. Establish `h` using `isFundamentalDomain_stdDom (Γ.subgroupOf N) Measure.haar`. Establish `hp` using `measurePreserving_mul_right (Measure.haar : Measure N) ⟨n, hn⟩`. Establish `h'` using `h.preimage_of_equiv hp.quasiMeasurePreserving Function.bijective_id fun γ x => mul_assoc _ _ _`. Rewrite using `[constTermOn_eq h' hφ, constTermOn_eq h hφ, ← hp.setIntegral_preimage_emb (measurableEmbedding_mulRight _) _ (stdDom _), measureReal_def, measureReal_def, hp.measure_preimage h.nullMeasurableSet]`.
+
+Simplify using `only [Subgroup.coe_mul, mul_assoc]`.
+-/
 theorem constTermOn_mul_left (hφ : LeftInv Γ φ) {n : G} (hn : n ∈ N) (x : G) :
     constTermOn Γ N φ (n * x) = constTermOn Γ N φ x := by
   have := hc.isMulRightInvariant Measure.haar
@@ -154,6 +206,11 @@ theorem constTermOn_mul_left (hφ : LeftInv Γ φ) {n : G} (hn : n ∈ N) (x : G
     (stdDom _), measureReal_def, measureReal_def, hp.measure_preimage h.nullMeasurableSet]
   simp only [Subgroup.coe_mul, mul_assoc]
 
+/- English proof (translation)
+Use `hc.isProbabilityMeasure` as an intermediate fact. Take `⟨K, hK, hs⟩` from `id hc`. Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations. Take `⟨U, hU, hx⟩` from `exists_compact_mem_nhds x`. Take `⟨C, hC⟩` from `(hK.prod hU).exists_bound_of_continuousOn (f := fun p : N × G => φ (p.1 * p.2)) (by fun_prop)`.
+
+Use `continuousAt_of_dominated (bound := fun _ => C) (.of_forall fun y => (hc.integrable hφ hφc y).1) (Filter.Eventually.mono hx fun y hy => .of_forall fun q => ?_) (integrable_const C) (.of_forall fun q => by fun_prop)` and prove the remaining obligations. Take `⟨γ, hγ, hk⟩` from `hs q.out`. Conclude with `(congrArg norm (leftInv_integrand hφ y γ hγ q.out)).ge.trans (hC (_, y) ⟨hk, hy⟩)`.
+-/
 theorem continuous_constTermOn [LocallyCompactSpace G] (hφ : LeftInv Γ φ) (hφc : Continuous φ) :
     Continuous (constTermOn Γ N φ) := by
   have := hc.isProbabilityMeasure

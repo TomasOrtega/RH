@@ -6,6 +6,9 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.monic_dvd_integral_factor_bezout | exact GlobalTheory.monic_dvd_integral_factor_bezout | (intros; apply GlobalTheory.monic_dvd_integral_factor_bezout <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.dvd_integral_monic_coprime_derivative_bezout_factor : ∀ (E : Type) [Field E] [NumberField E] (w : Pl E) (P₀ : (w.adicCompletionIntegers E)[X]), P₀.Monic →
     IsCoprime P₀ (derivative P₀) → ∀ Q₁ : (w.adicCompletion E)[X],
     Q₁ ∣ P₀.map (algebraMap (w.adicCompletionIntegers E) (w.adicCompletion E)) →

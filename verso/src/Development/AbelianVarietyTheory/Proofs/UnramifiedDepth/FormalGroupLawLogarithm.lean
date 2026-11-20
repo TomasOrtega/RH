@@ -22,17 +22,34 @@ def oneVar (k : Type) [CommRing k] (d : ℕ) : Fin 1 × Fin d → MvPowerSeries 
 
 variable {k : Type} [CommRing k] {d : ℕ}
 
+/- English proof (translation)
+Simplify using `[twoVars]`.
+-/
 theorem cc_twoVars (q : Fin 2 × Fin d) : constantCoeff (twoVars k d q) = 0 := by simp [twoVars]
 
+/- English proof (translation)
+Simplify using `[oneVar]`.
+-/
 theorem cc_oneVar (q : Fin 1 × Fin d) : constantCoeff (oneVar k d q) = 0 := by simp [oneVar]
 
+/- English proof (translation)
+The claim follows from `hasSubst_of_constantCoeff_zero cc_twoVars`.
+-/
 theorem hs_twoVars : HasSubst (twoVars k d) := hasSubst_of_constantCoeff_zero cc_twoVars
 
+/- English proof (translation)
+The claim follows from `hasSubst_of_constantCoeff_zero cc_oneVar`.
+-/
 theorem hs_oneVar : HasSubst (oneVar k d) := hasSubst_of_constantCoeff_zero cc_oneVar
 
 def sndEmb (d : ℕ) : Fin 1 × Fin d ↪ Fin d :=
   ⟨Prod.snd, fun _ _ h => Prod.ext (Subsingleton.elim _ _) h⟩
 
+/- English proof (translation)
+Establish `h1 : subst (oneVar k d) f = rename (sndEmb d) f`. Rewrite using `[rename_eq_subst]`. Both sides reduce to the same expression. Establish `h2 : Finsupp.single b 1 = Finsupp.embDomain (sndEmb d) (Finsupp.single ((0 : Fin 1), b) 1)`. Rewrite using `[Finsupp.embDomain_single]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1, h2, coeff_embDomain_rename]`.
+-/
 theorem coeff_single_oneVar (f : PS k 1 d) (b : Fin d) :
     coeff (Finsupp.single b 1) (subst (oneVar k d) f) = coeff (Finsupp.single ((0 : Fin 1), b) 1) f := by
   have h1 : subst (oneVar k d) f = rename (sndEmb d) f := by
@@ -41,6 +58,13 @@ theorem coeff_single_oneVar (f : PS k 1 d) (b : Fin d) :
     rw [Finsupp.embDomain_single]; rfl
   rw [h1, h2, coeff_embDomain_rename]
 
+/- English proof (translation)
+Establish `hTs : HasSubst T` using `hasSubst_of_constantCoeff_zero hT`. Establish `h1 : HasSubst (fun i => (subst T (a i) : MvPowerSeries τ k))` using `hasSubst_of_constantCoeff_zero fun i => constantCoeff_subst_eq_zero hTs hT (ha i)`. Establish `h2 : HasSubst (fun p : Fin 1 × Fin d => (![a] : Fin 1 → Pt k n d) p.1 p.2)` using `hasSubst_of_constantCoeff_zero fun p => by`. Take `⟨j, i⟩` from `p`. Use `fin_cases j`.
+
+Conclude with `ha i`. Unfold `ev`. Rewrite using `[subst_comp_subst_apply hs_oneVar h1, subst_comp_subst_apply h2 hTs]`. Use `congr 1`. Use function extensionality and compare the values at `p`.
+
+Take `⟨j, i⟩` from `p`. Use `fin_cases j`. Simplify using `only [oneVar]`. Rewrite using `[subst_X h1]`. Both sides reduce to the same expression.
+-/
 theorem subst_oneVar {n : ℕ} {τ : Type} [Finite τ] (T : Fin n × Fin d → MvPowerSeries τ k)
     (hT : ∀ q, constantCoeff (T q) = 0) (a : Pt k n d) (ha : ∀ i, constantCoeff (a i) = 0)
     (f : PS k 1 d) :
@@ -62,6 +86,11 @@ theorem subst_oneVar {n : ℕ} {τ : Type} [Finite τ] (T : Fin n × Fin d → M
   rw [subst_X h1]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c`. Use `show ev (n := 2) ![pt k d 0, pt k d 1] (G.F c) = G.F c`. Establish `e : (fun p : Fin 2 × Fin d => (![pt k (n` using `2) d 0, pt k d 1] : Fin 2 → Pt k 2 d) p.1 p.2) = X := by`. Use function extensionality and compare the values at `p`. Take `⟨j, i⟩` from `p`.
+
+Apply the tactic sequence `fin_cases j <;> rfl`. Unfold `ev`. Rewrite using `[e, subst_self]`. Both sides reduce to the same expression.
+-/
 theorem add_pt (G : FGLaw k d) : G.add (pt k (n := 2) d 0) (pt k d 1) = G.F := by
   funext c
   show ev (n := 2) ![pt k d 0, pt k d 1] (G.F c) = G.F c
@@ -73,6 +102,19 @@ theorem add_pt (G : FGLaw k d) : G.add (pt k (n := 2) d 0) (pt k d 1) = G.F := b
   rw [e, subst_self]
   rfl
 
+/- English proof (translation)
+Introduce `C _ _ v R _ _ hR d G`. Use `set G' : FGLaw C d := GlobalTheory.FBMap.mapLaw (algebraMap R C) G with hG'`. Take `⟨ℓ, h0, h1, hadd⟩` from `GlobalTheory.FormalLog.logSt C d G'`. Rewrite `hadd` using `[add_pt]`. Use `⟨{ lg := fun a => subst (oneVar C d) (ℓ a) lg_const := fun a => constantCoeff_subst_eq_zero hs_oneVar cc_oneVar (h0 a) lg_lin := fun a b => ?_ F := fun a => subst (twoVars C d) (G'.F a) F_int := fun a α => ?_ F_const := fun a => constantCoeff_subst_eq_zero hs_twoVars cc_twoVars ( …` and prove the remaining obligations.
+
+Rewrite using `[coeff_single_oneVar]`. Use `congrFun (congrFun h1 a) b` as an intermediate fact. Rewrite `this` using `[Matrix.one_apply]`. Conclude with `this`. Establish `e : subst (twoVars C d) (G'.F a) = MvPowerSeries.map (algebraMap R C) (subst (twoVars R d) (G.F a))`.
+
+Rewrite using `[MvPowerSeries.map_subst hs_twoVars]`. Use `congr 1`. Use function extensionality and compare the values at `q`. Simplify using `[twoVars]`. Rewrite using `[e, coeff_map]`.
+
+Conclude with `hR _`. Establish `hp : ∀ (j : Fin 2) i, constantCoeff (pt C (n` using `2) d j i) = 0 := fun j i => by simp [pt]`. Establish `e0 : (fun b => (X (Sum.inl b) : MvPowerSeries (Fin d ⊕ Fin d) C)) = fun i => subst (twoVars C d) (pt C (n` using `2) d 0 i) := by`. Use function extensionality and compare the values at `i`. Rewrite using `[pt, subst_X hs_twoVars]`.
+
+Simplify using `[twoVars]`. Establish `e1 : (fun b => (X (Sum.inr b) : MvPowerSeries (Fin d ⊕ Fin d) C)) = fun i => subst (twoVars C d) (pt C (n` using `2) d 1 i) := by`. Use function extensionality and compare the values at `i`. Rewrite using `[pt, subst_X hs_twoVars]`. Simplify using `[twoVars]`.
+
+Rewrite using `[e0, e1, subst_oneVar _ cc_twoVars _ G'.const, subst_oneVar _ cc_twoVars _ (hp 0), subst_oneVar _ cc_twoVars _ (hp 1), ← subst_add hs_twoVars]`. Use `congr 1`. Conclude with `congrFun hadd a`.
+-/
 theorem exists_logFGL :
   (∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (R : Type) [CommRing R] [Algebra R C], (∀ r : R, IsIntV v (algebraMap R C r)) →
     ∀ (d : ℕ) (G : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.FGLaw R d), ∃ L : LogFGL v d, ∀ a,

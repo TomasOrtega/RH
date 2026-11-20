@@ -21,6 +21,11 @@ variable {g : ℕ} [Fact g.Prime]
 def conjAlg {G : Type} (a : MonoidAlgebra ℂ G) : MonoidAlgebra ℂ G :=
   MonoidAlgebra.ofCoeff (a.coeff.mapRange (starRingEnd ℂ) (map_zero _))
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Rewrite using `[hx, GalSer.phi_zero, inv_zero]`. Apply `GalSer.teich_injective L` to reduce the goal to its premises. Rewrite using `[GalSer.teich_phi]`. Establish `h1 : ‖L.teich x‖ = 1` using `(L.teich.isOfFinOrder (GalSer.finOrder hx)).norm_eq_one`.
+
+Establish `h2 : L.teich x⁻¹ = (L.teich x)⁻¹` using `eq_inv_of_mul_eq_one_left (by rw [← map_mul, inv_mul_cancel₀ hx, map_one])`. Rewrite using `[h2, Complex.inv_eq_conj h1]`. Both sides reduce to the same expression.
+-/
 theorem phi_conj (L : LabelDatum g) (x : Fbar g) : GalSer.phi L (starRingAut : ℂ ≃+* ℂ) x = x⁻¹ := by
   by_cases hx : x = 0
   · rw [hx, GalSer.phi_zero, inv_zero]
@@ -32,6 +37,13 @@ theorem phi_conj (L : LabelDatum g) (x : Fbar g) : GalSer.phi L (starRingAut : �
   rw [h2, Complex.inv_eq_conj h1]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp [reverse]`. Consider the case `cons a s ih`. Rewrite `hs` using `[Multiset.mem_cons, not_or]`. Establish `ha : a ≠ 0` using `fun h => hs.1 h.symm`.
+
+Establish `hX : (X : K[X]).reverse = 1` using `by simp [reverse]`. Establish `e : (X - C a : K[X]).reverse = C (-a) * (X - C a⁻¹)`. Rewrite using `[sub_eq_add_neg, ← C_neg, reverse_add_C, natDegree_X, hX, mul_sub, ← C_mul, neg_mul, mul_inv_cancel₀ ha]`. Simplify using `[add_comm]`. Establish `hm : (s.map fun x => X - C x).prod ≠ 0` using `(monic_multiset_prod_of_monic _ _ fun x _ => monic_X_sub_C x).ne_zero`.
+
+Rewrite using `[Multiset.map_cons, Multiset.prod_cons, reverse_mul_of_domain, e, roots_mul, roots_C_mul _ (neg_ne_zero.2 ha), roots_X_sub_C, ih hs.2, Multiset.map_cons, Multiset.singleton_add]`. Conclude with `mul_ne_zero (mul_ne_zero (C_ne_zero.2 (neg_ne_zero.2 ha)) (X_sub_C_ne_zero _)) (by rwa [Ne, reverse_eq_zero])`.
+-/
 theorem roots_reverse {K : Type} [Field K] (s : Multiset K) (hs : (0 : K) ∉ s) :
     ((s.map fun x => X - C x).prod.reverse).roots = s.map (·⁻¹) := by
   induction s using Multiset.induction_on with
@@ -51,6 +63,13 @@ theorem roots_reverse {K : Type} [Field K] (s : Multiset K) (hs : (0 : K) ∉ s)
     exact mul_ne_zero (mul_ne_zero (C_ne_zero.2 (neg_ne_zero.2 ha)) (X_sub_C_ne_zero _))
       (by rwa [Ne, reverse_eq_zero])
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Monic, leadingCoeff_mul, leadingCoeff_C, reverse_leadingCoeff, trailingCoeff_eq_coeff_zero h0, inv_mul_cancel₀ h0]`. Establish `hz : (0 : Fbar g) ∉ rootsBar f` using `fun h => by`. Rewrite `h` using `[GalSer.mem_rootsBar hm.ne_zero, ← coeff_zero_eq_aeval_zero']`. Conclude with `h0 ((map_eq_zero _).1 h)`.
+
+Establish `e : f.reverse.map (algebraMap (ZMod g) (Fbar g)) = (f.map (algebraMap (ZMod g) (Fbar g))).reverse`. Rewrite using `[reverse, reverse, reflect_map, natDegree_map]`. Establish `hf` using `(IsAlgClosed.splits (f.map (algebraMap (ZMod g) (Fbar g)))).eq_prod_roots_of_monic (hm.map _)`. Rewrite using `[rootsBar, Polynomial.map_mul, map_C, roots_C_mul _ (by simpa using h0), e, hf]`. Simplify using `only [phi_conj]`.
+
+Conclude with `roots_reverse _ hz`.
+-/
 theorem rel_dual (L : LabelDatum g) {f : (ZMod g)[X]} (hm : f.Monic) (h0 : f.coeff 0 ≠ 0) :
     GalSer.Rel L (starRingAut : ℂ ≃+* ℂ) f (C (f.coeff 0)⁻¹ * f.reverse) := by
   refine ⟨?_, ?_⟩

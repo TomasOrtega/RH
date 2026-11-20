@@ -17,16 +17,25 @@ variable {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
     {ι' : Type} [Fintype ι'] {hc : ι' → HCParam R} {C : ColumnChain R ι' hc} {A : ColumnsAtT R C}
     {clsLat : ∀ i, C.cls i → Submodule (𝓞 E) (sp.X i).V} {p : ℕ} {G : GAtP p}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem levTieOf_yG {L L' : ColLevel R F E sp gp C A clsLat} (h : L' = L) (t : Formalism.L2.Herm.GLevTie L G) :
     (levTieOf h t).yG = t.yG := by
   subst h
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem levTieOf_gamI {L L' : ColLevel R F E sp gp C A clsLat} (h : L' = L) (t : Formalism.L2.Herm.GLevTie L G) :
     (levTieOf h t).gamI = t.gamI := by
   subst h
   rfl
 
+/- English proof (translation)
+Use `show (MulAut.conj y⁻¹) (bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) (gamMat σE J Up y γ)) = _`. Rewrite using `[MulAut.conj_apply, inv_inv]`.
+-/
 theorem gamToUp_val {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {k : ℕ}
     (σE : E →ₐ[F] E) (J : Matrix (Fin k) (Fin k) E) (Up : Subgroup (GL (Fin k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)))
     (y : GL (Fin k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (γ : gamC σE J Up y) :
@@ -56,6 +65,11 @@ variable (D : D7) (sc : Scale) (Ce : ℝ)
 
 set_option maxHeartbeats 8000000 in
 
+/- English proof (translation)
+Introduce `u w hg i γ κ hκ`. Use `chi_rec (hermitianLevelZeroOfRecursion D sc Ce Lc I ψ hd H0 hL) T u w hg B _ (Lc u) (hL u) (ψ u w hg) ?_ (hψ u w hg) i γ κ hκ` and prove the remaining obligations. Introduce `i γ a ha`. Establish `e1 : ((hermitianLevelZeroOfRecursion D sc Ce Lc I ψ hd H0 hL).g u w hg).yG = (levTieG D sc Ce Lc (packC D Lc I ψ) hd u w hg).yG` using `levTieOf_yG (hL u) _`. Establish `e2 : ((hermitianLevelZeroOfRecursion D sc Ce Lc I ψ hd H0 hL).g u w hg).gamI = (levTieG D sc Ce Lc (packC D Lc I ψ) hd u w hg).gamI` using `levTieOf_gamI (hL u) _`.
+
+Rewrite `ha` using `[e1, e2]`. Establish `e3 : a = gamToUp D.sp.cm.sig D.sp.gram0 (Formalism.L2.Herm.awayFrom₂ (Lc u) (D.what₂.places.resChar w)) (repP (Lc u) (D.what₂.places.resChar w) i : GL (Fin D.R.k) _) γ` using `Subtype.ext (ha.trans (gamToUp_val _ _ _ _ γ).symm)`. Rewrite using `[e3]`. Both sides reduce to the same expression.
+-/
 theorem chi_C (H0 : Formalism.L2.Herm.Herm0 (recC D sc Ce Lc I ψ hd)) (hL : ∀ u, H0.lev0 u = Lc u)
     (T : ∀ u : D.what₂.Word, Forms0 (recC D sc Ce Lc I ψ hd) u)
     (B : GL (Fin D.R.k) D.host.E) (hBs : Cmp.StdB (recC D sc Ce Lc I ψ hd) B)

@@ -7,6 +7,21 @@ namespace Formalism.RepresentationBoundsCohomology.N2
 
 open Polynomial
 
+/- English proof (translation)
+Use `set a := (H + (ℓ - 2)) / (ℓ - 1) with ha`. Establish `hp` using `(Fact.out : ℓ.Prime)`. Establish `hℓ3 : 3 ≤ ℓ` using `by have := hp.two_le; omega`. Establish `hv : (ℓ - 1) * padicValNat ℓ a.factorial ≤ a`. Rewrite using `[sub_one_mul_padicValNat_factorial]`.
+
+Conclude with `Nat.sub_le _ _`. Establish `haH : (ℓ - 1) * a ≤ H + (ℓ - 2)` using `Nat.mul_div_le (H + (ℓ - 2)) (ℓ - 1)`. Establish `hcast : ((ℓ - 1 : ℕ) : ℝ) = (ℓ : ℝ) - 1` using `by rw [Nat.cast_sub (by omega), Nat.cast_one]`. Establish `hcast2 : ((ℓ - 2 : ℕ) : ℝ) = (ℓ : ℝ) - 2` using `by rw [Nat.cast_sub (by omega)]; norm_num`. Establish `hvR : ((ℓ : ℝ) - 1) * (padicValNat ℓ a.factorial : ℝ) ≤ a`.
+
+Rewrite using `[← hcast]`. Conclude with `hv` after adjusting the coercions. Establish `haR : ((ℓ : ℝ) - 1) * (a : ℝ) ≤ (H : ℝ) + ((ℓ : ℝ) - 1) - 1`. Establish `h0 : ((ℓ - 1 : ℕ) : ℝ) * (a : ℝ) ≤ (H : ℝ) + ((ℓ - 2 : ℕ) : ℝ)` using `by exact_mod_cast haH`. Rewrite `h0` using `[hcast, hcast2]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL : (0 : ℝ) < (ℓ : ℝ) - 1`. Establish `: (3 : ℝ) ≤ ℓ` using `by exact_mod_cast hℓ3`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlog : 0 ≤ Real.logb ℓ ((H : ℝ) + 1)` using `Real.logb_nonneg (by exact_mod_cast hp.one_lt) (by linarith [(Nat.cast_nonneg H : (0 : ℝ) ≤ H)])`.
+
+Establish `key : ((ℓ : ℝ) - 1) ^ 2 * ((a : ℝ) + (padicValNat ℓ a.factorial : ℝ)) ≤ (H : ℝ) * ℓ + ((ℓ : ℝ) - 1) ^ 2 - 1`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hvR hL.le, mul_le_mul_of_nonneg_left haR (by linarith : (0 : ℝ) ≤ ℓ)]`. Establish `hL2 : 0 < ((ℓ : ℝ) - 1) ^ 2` using `by positivity`. Establish `h1 : (a : ℝ) + (padicValNat ℓ a.factorial : ℝ) ≤ ((H : ℝ) * ℓ + ((ℓ : ℝ) - 1) ^ 2 - 1) / ((ℓ : ℝ) - 1) ^ 2`. Rewrite using `[le_div_iff₀ hL2]`.
+
+Combine the linear relations using `[key]`. Establish `h2 : ((H : ℝ) * ℓ + ((ℓ : ℝ) - 1) ^ 2 - 1) / ((ℓ : ℝ) - 1) ^ 2 ≤ (H : ℝ) * ℓ / ((ℓ : ℝ) - 1) ^ 2 + 1`. Rewrite using `[div_le_iff₀ hL2, add_mul, div_mul_cancel₀ _ hL2.ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `eWA`.
+
+Apply `Nat.le_floor` to reduce the goal to its premises. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem aH_le_eWA (ℓ : ℕ) [Fact ℓ.Prime] (hℓ : ℓ ≠ 2) (H : ℕ) :
     (H + (ℓ - 2)) / (ℓ - 1) + padicValNat ℓ ((H + (ℓ - 2)) / (ℓ - 1)).factorial ≤ eWA ℓ H := by
   set a := (H + (ℓ - 2)) / (ℓ - 1) with ha
@@ -44,6 +59,41 @@ theorem aH_le_eWA (ℓ : ℕ) [Fact ℓ.Prime] (hℓ : ℓ ≠ 2) (H : ℕ) :
   push_cast
   linarith
 
+/- English proof (translation)
+Establish `hπ : Prime (ℓ : ℤ_[ℓ])` using `PadicInt.prime_p`. Establish `hp` using `(Fact.out : ℓ.Prime)`. Establish `hodd : Odd ℓ` using `hp.odd_of_ne_two hℓ`. Establish `hnd_unit : ∀ w : ℤ_[ℓ], IsUnit w → ¬ (ℓ : ℤ_[ℓ]) ∣ w` using `fun w hw hd => hπ.not_unit (isUnit_of_dvd_unit hd hw)`. Establish `hunit_of : ∀ w : ℤ_[ℓ], ¬ (ℓ : ℤ_[ℓ]) ∣ w → IsUnit w`.
+
+Introduce `w hw`. Assume the negation of the conclusion as `hnu`. Apply `hw` to reduce the goal to its premises. Establish `hm : w ∈ IsLocalRing.maximalIdeal ℤ_[ℓ]` using `(IsLocalRing.mem_maximalIdeal w).2 (mem_nonunits_iff.2 hnu)`. Rewrite `hm` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton]`.
+
+Conclude with `hm`. Establish `hne : (u : ℤ_[ℓ]) - 1 ≠ 0`. Introduce `h0`. Rewrite `hv` using `[h0, PadicInt.valuation_zero]`. Conclude with `absurd hv (by norm_num)`.
+
+Establish `hspec` using `PadicInt.unitCoeff_spec hne`. Rewrite `hspec` using `[hv, pow_one]`. Establish `hdiv1 : (ℓ : ℤ_[ℓ]) ∣ (u : ℤ_[ℓ]) - 1`. Rewrite using `[hspec]`. Conclude with `dvd_mul_left _ _`.
+
+Establish `hA : emultiplicity (ℓ : ℤ_[ℓ]) ((u : ℤ_[ℓ]) - 1) = ((1 : ℕ) : ℕ∞)`. Rewrite using `[emultiplicity_eq_coe]`. Use `⟨by rw [pow_one]; exact hdiv1, fun h2 => ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[hspec, pow_succ, pow_one]`. Conclude with `hnd_unit _ (Units.isUnit _) ((mul_dvd_mul_iff_right hπ.ne_zero).1 h2)`.
+
+Establish `hnu : ¬ (ℓ : ℤ_[ℓ]) ∣ (u : ℤ_[ℓ])` using `hnd_unit _ u.isUnit`. Establish `hnat : ∀ m : ℕ, ¬ ℓ ∣ m → ¬ (ℓ : ℤ_[ℓ]) ∣ (m : ℤ_[ℓ])`. Introduce `m hm hd`. Establish `hcop : Nat.Coprime ℓ m` using `(Nat.coprime_comm.1 ((Nat.Prime.coprime_iff_not_dvd hp).2 hm).symm)`. Establish `hg : Int.gcd (ℓ : ℤ) (m : ℤ) = 1`.
+
+Use `Int.gcd_natCast_natCast ℓ m` as an intermediate fact. Rewrite using `[this]`. Conclude with `hcop`. Establish `hz : (1 : ℤ) = ℓ * Int.gcdA ℓ m + m * Int.gcdB ℓ m`. Rewrite using `[← Int.gcd_eq_gcd_ab, hg]`.
+
+Both sides reduce to the same expression. Establish `h1` using `congrArg (Int.cast : ℤ → ℤ_[ℓ]) hz`. Move the coercions through the operations in `at h1`. Apply `hπ.not_unit` to reduce the goal to its premises. Apply `isUnit_of_dvd_one` to reduce the goal to its premises.
+
+Rewrite using `[h1]`. Conclude with `dvd_add (dvd_mul_right _ _) (dvd_mul_of_dvd_left hd _)`. Establish `hB : ∀ i : ℕ, 1 ≤ i → emultiplicity (ℓ : ℤ_[ℓ]) ((u : ℤ_[ℓ]) ^ i - 1) = ((1 + padicValNat ℓ i : ℕ) : ℕ∞)`. Introduce `i hi`. Take `⟨k, m, hm, hkm⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (n := i) (by omega) ℓ hp.ne_one`.
+
+Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Conclude with `hm (dvd_zero ℓ)`. Establish `hval : padicValNat ℓ i = k`. Rewrite using `[hkm, padicValNat.mul (pow_ne_zero _ hp.ne_zero) hm0, padicValNat.prime_pow, padicValNat.eq_zero_of_not_dvd hm, add_zero]`.
+
+Establish `hdivk : (ℓ : ℤ_[ℓ]) ∣ (u : ℤ_[ℓ]) ^ (ℓ ^ k) - 1`. Use `sub_dvd_pow_sub_pow (u : ℤ_[ℓ]) 1 (ℓ ^ k)` as an intermediate fact. Rewrite `this` using `[one_pow]`. Conclude with `dvd_trans hdiv1 this`. Establish `hnuk : ¬ (ℓ : ℤ_[ℓ]) ∣ (u : ℤ_[ℓ]) ^ (ℓ ^ k)` using `hnd_unit _ (u.isUnit.pow _)`.
+
+Establish `e1` using `emultiplicity_pow_sub_pow_of_prime hπ (x := (u : ℤ_[ℓ]) ^ (ℓ ^ k)) (y := 1) (by simpa using hdivk) hnuk (n := m) (hnat m hm)`. Establish `e2` using `emultiplicity_pow_prime_pow_sub_pow_prime_pow (y := (1 : ℤ_[ℓ])) (by simpa using hπ) hodd (by simpa using hdiv1) hnu k`. Establish `e3 : (u : ℤ_[ℓ]) ^ i - 1 = ((u : ℤ_[ℓ]) ^ (ℓ ^ k)) ^ m - 1 ^ m`. Rewrite using `[hkm, pow_mul, one_pow]`. Rewrite `e2` using `[one_pow]`.
+
+Rewrite using `[hval, e3, e1, e2, hA]`. Use `norm_cast`. Establish `hF : ∀ i : ℕ, 1 ≤ i → (1 - (u : ℤ_[ℓ]) ^ i) ∣ (ℓ : ℤ_[ℓ]) ^ (1 + padicValNat ℓ i)`. Introduce `i hi`. Establish `hE : emultiplicity (ℓ : ℤ_[ℓ]) (1 - (u : ℤ_[ℓ]) ^ i) = ((1 + padicValNat ℓ i : ℕ) : ℕ∞)`.
+
+Rewrite using `[← neg_sub, emultiplicity_neg, hB i hi]`. Take `⟨hd, hnd⟩` from `(emultiplicity_eq_coe.1 hE)`. Take `⟨w, hw⟩` from `hd`. Establish `hwu : IsUnit w`. Apply `hunit_of` to reduce the goal to its premises.
+
+Introduce and unpack `⟨c, rfl⟩`. Apply `hnd` to reduce the goal to its premises. Rewrite using `[hw, pow_succ]`. Conclude with `mul_dvd_mul_left _ (dvd_mul_right _ _)`. Use `⟨(hwu.unit⁻¹ : ℤ_[ℓ]ˣ), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hw, mul_assoc, IsUnit.mul_val_inv, mul_one]`. Proceed by induction on `a with`. Consider the case `zero => simp`. Consider the case `succ a ih`. Rewrite using `[Finset.prod_Icc_succ_top (by omega), Nat.factorial_succ, padicValNat.mul (by omega) (Nat.factorial_ne_zero a)]`.
+
+Establish `e : a + 1 + (padicValNat ℓ (a + 1) + padicValNat ℓ a.factorial) = (a + padicValNat ℓ a.factorial) + (1 + padicValNat ℓ (a + 1))` using `by ring`. Rewrite using `[e, pow_add (ℓ : ℤ_[ℓ]) (a + padicValNat ℓ a.factorial) (1 + padicValNat ℓ (a + 1))]`. Conclude with `mul_dvd_mul ih (hF (a + 1) (by omega))`.
+-/
 theorem prod_sub_one_dvd (ℓ : ℕ) [Fact ℓ.Prime] (hℓ : ℓ ≠ 2) (u : ℤ_[ℓ]ˣ)
     (hv : PadicInt.valuation ((u : ℤ_[ℓ]) - 1) = 1) (a : ℕ) :
     (∏ i ∈ Finset.Icc 1 a, (1 - (u : ℤ_[ℓ]) ^ i)) ∣ (ℓ : ℤ_[ℓ]) ^ (a + padicValNat ℓ a.factorial) := by
@@ -137,6 +187,15 @@ theorem prod_sub_one_dvd (ℓ : ℕ) [Fact ℓ.Prime] (hℓ : ℓ ≠ 2) (u : �
     rw [e, pow_add (ℓ : ℤ_[ℓ]) (a + padicValNat ℓ a.factorial) (1 + padicValNat ℓ (a + 1))]
     exact mul_dvd_mul ih (hF (a + 1) (by omega))
 
+/- English proof (translation)
+Introduce `ℓ _ hℓ A _ _ G D _ _ _ _ P H hv hK`. Use `set a := (H + (ℓ - 2)) / (ℓ - 1) with ha`. Establish `h1` using `mem_span_of_frobenius_mem_span ℓ A G D P a 0 (Nat.zero_le _) hK`. Establish `hdvd : (∏ k ∈ Finset.Ioc 0 a, ((G.u : ℤ_[ℓ]) ^ k - 1)) ∣ (ℓ : ℤ_[ℓ]) ^ (a + padicValNat ℓ a.factorial)`. Establish `h2` using `prod_sub_one_dvd ℓ hℓ G.u hv a`.
+
+Establish `e : ∏ k ∈ Finset.Ioc 0 a, ((G.u : ℤ_[ℓ]) ^ k - 1) = (-1) ^ a * ∏ i ∈ Finset.Icc 1 a, (1 - (G.u : ℤ_[ℓ]) ^ i)`. Establish `hI : Finset.Ioc 0 a = Finset.Icc 1 a`. Use extensionality with `i`. Simplify using `only [Finset.mem_Ioc, Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[hI]`. Establish `hneg : ∀ i ∈ Finset.Icc 1 a, ((G.u : ℤ_[ℓ]) ^ i - 1) = -(1 - (G.u : ℤ_[ℓ]) ^ i)` using `fun i _ => by ring`. Rewrite using `[Finset.prod_congr rfl hneg, Finset.prod_neg, Nat.card_Icc, Nat.add_sub_cancel]`. Rewrite using `[e]`. Conclude with `(isUnit_neg_one.pow a).mul_left_dvd.2 h2`.
+
+Establish `h3` using `P.kills_pow_of_dvd hdvd h1`. Simplify using `only [pow_zero, mul_one] at h3`. Conclude with `⟨h3, P.kills_of_dvd (pow_dvd_pow _ (aH_le_eWA ℓ hℓ H)) h3⟩`.
+-/
 theorem unit_lemma_case_a_level_zero : StatWA0 := by
   intro ℓ _ hℓ A _ _ G D _ _ _ _ P H hv hK
   set a := (H + (ℓ - 2)) / (ℓ - 1) with ha

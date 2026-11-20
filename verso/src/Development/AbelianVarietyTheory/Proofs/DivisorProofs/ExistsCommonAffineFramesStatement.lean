@@ -8,6 +8,9 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.ArLieBase
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CommonFrames.exists_common_affine_frames | exact GlobalTheory.CommonFrames.exists_common_affine_frames | (intros; apply GlobalTheory.CommonFrames.exists_common_affine_frames <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_common_affine_frames' : ∀ (X : Scheme.{0}) (M M' : X.Modules) (r : ℕ), IsVB M r → IsVB M' r → ∀ x : X, ∃ (V : X.Opens)
     (f : Fin r → Γ(M, V)) (f' : Fin r → Γ(M', V)), VB.IsFrame f ∧ VB.IsFrame f' ∧ IsAffineOpen V ∧ x ∈ V := by
   first | exact @GlobalTheory.CommonFrames.exists_common_affine_frames | exact GlobalTheory.CommonFrames.exists_common_affine_frames | (intros; apply GlobalTheory.CommonFrames.exists_common_affine_frames <;> assumption)

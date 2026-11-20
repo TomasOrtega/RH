@@ -27,6 +27,51 @@ open scoped InnerProductSpace
 open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.L2.SG.AmpOrbPf
 
 namespace GlobalTheory.CarrierGap
+/- English proof (translation)
+Take `⟨h, hg, hok, hcell⟩` from `hGap hH τ lam' hl`. Use `set L := toBessel D τ w w' θ W lam' A hW hA hT hT' with hL`. Use `set w0 : A.H := (((‖A.v0‖⁻¹ : ℝ) : ℂ) • A.v0) with hw0def`. Take `⟨l, l', hl1, hl1', hOP⟩` from `Formalism.L2.SG.AmpOrbPf.BM.ls_pair hI hAt hW hA hT hT' hg hok`. Establish `hw0 : PI.UpqRep.IsLowUnitH D.R.k D.R.rS (epsSH D.R) lam' A.σ w0` using `lowest_K_type_unit hA`.
+
+Establish `hKS : PI.KFinSmooth` using `hI.2.2.1`. Establish `hG : IsHaarOn (UH (Hpk D.R.k D.R.rS)) W.μG` using `hW.2.2.2.2.2.2.1`. Establish `hDDs : ∀ x ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp A.σ w0, x ∈ PI.UpqRep.smoothVecs (k` using `D.R.k) (r := D.R.rS) A.σ := Formalism.FourierDecayAlt.P.DDSmoothness.DD_smooth hKS hA.1 hA.2.1 hw0`. Take `⟨⟨x, hx, y, hy, hxy⟩, ⟨x', hx', y', hy', hxy'⟩⟩` from `hNV hH τ w w' hTT θ W hW lam' hl A hA hT hT' w0 hw0`. Establish `hlx : l x ≠ 0`.
+
+Introduce `h0`. Apply `hxy` to reduce the goal to its premises. Establish `e : Formalism.FourierDecayAlt.ThreeDimData.be W.z L.c W.π A.σ W.μW L.μN x y = (innerSL ℂ (l y)).smulRight (l x)` using `hOP.1.2.2.2.2.2.1 x hx y hy`. Rewrite using `[e, h0]`. Use `ext`.
+
+Simplify using the standard rewrite rules. Establish `hlx' : l' x' ≠ 0`. Introduce `h0`. Apply `hxy'` to reduce the goal to its premises. Establish `e : Formalism.FourierDecayAlt.ThreeDimData.be W.z' L.c W.π' A.σ W.μW' L.μN x' y' = (innerSL ℂ (l' y')).smulRight (l' x')` using `hOP.1.2.2.2.2.2.2 x' hx' y' hy'`.
+
+Rewrite using `[e, h0]`. Use `ext`. Simplify using the standard rewrite rules. Establish `hB : PI.BesselMapUniq.IsBesselMapSm (k` using `D.R.k) (r := D.R.rS) W.z (PI.BesselMapUniq.psiGen D.R.k D.R.rS W.z (fun _ => L.c)) A.σ W.π A.B := by`. Rewrite using `[psiGen_const]`.
+
+Conclude with `(Formalism.MainNotions.BridgeCS3d.isBesselMapSm_iff _ _ _ _ _).1 hA.2.2.1`. Establish `hB' : PI.BesselMapUniq.IsBesselMapSm (k` using `D.R.k) (r := D.R.rS) W.z' (PI.BesselMapUniq.psiGen D.R.k D.R.rS W.z' (fun _ => L.c)) A.σ W.π' A.B' := by`. Rewrite using `[psiGen_const]`. Conclude with `(Formalism.MainNotions.BridgeCS3d.isBesselMapSm_iff _ _ _ _ _).1 hA.2.2.2.1`. Establish `hlG : PI.BesselMapUniq.IsBesselMapSm (k` using `D.R.k) (r := D.R.rS) W.z (PI.BesselMapUniq.psiGen D.R.k D.R.rS W.z (fun _ => L.c)) A.σ W.π l := by`.
+
+Rewrite using `[psiGen_const]`. Conclude with `hl1`. Establish `hlG' : PI.BesselMapUniq.IsBesselMapSm (k` using `D.R.k) (r := D.R.rS) W.z' (PI.BesselMapUniq.psiGen D.R.k D.R.rS W.z' (fun _ => L.c)) A.σ W.π' l' := by`. Rewrite using `[psiGen_const]`. Conclude with `hl1'`.
+
+Take `⟨c0, hc0⟩` from `CompanionTheory.Lime.BM.aIsL hJ hg hok hA.1 hA.2.1 L.hz.1 L.hz.2 (fun _ => c_ne_zero D) L.hπ hB hlG ⟨x, hDDs x hx, hlx⟩`. Take `⟨c0', hc0'⟩` from `CompanionTheory.Lime.BM.aIsL hJ hg hok hA.1 hA.2.1 L.hz'.1 L.hz'.2 (fun _ => c_ne_zero D) L.hπ' hB' hlG' ⟨x', hDDs x' hx', hlx'⟩`. Establish `has : a ∈ PI.UpqRep.smoothVecs (k` using `D.R.k) (r := D.R.rS) A.σ := hKS _ _ _ _ _ A.σ hA.1 hA.2.1 a hka`. Establish `hbs : b ∈ PI.UpqRep.smoothVecs (k` using `D.R.k) (r := D.R.rS) A.σ := hKS _ _ _ _ _ A.σ hA.1 hA.2.1 b hkb`. Establish `hBa : A.B a = c0 • l a` using `hc0 a has`.
+
+Establish `hBb : A.B' b = c0' • l' b` using `hc0' b hbs`. Rewrite `hn` using `[hBa, hBb, inner_smul_left, inner_smul_right]`. Establish `hc0ne : c0 ≠ 0`. Introduce `h0`. Apply `hn` to reduce the goal to its premises.
+
+Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `hc0ne' : c0' ≠ 0`. Introduce `h0`. Apply `hn` to reduce the goal to its premises.
+
+Rewrite using `[h0]`. Simplify using the standard rewrite rules. Use `set s : ℂ := ⟪l a, ξ⟫_ℂ * ⟪ξ', l' b⟫_ℂ with hs`. Establish `hs0 : s ≠ 0`. Introduce `h0`.
+
+Apply `hn` to reduce the goal to its premises. Establish `: (starRingEnd ℂ) c0 * ⟪l a, ξ⟫_ℂ * (c0' * ⟪ξ', l' b⟫_ℂ) = (starRingEnd ℂ) c0 * c0' * s`. Rewrite using `[hs]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, h0, mul_zero]`.
+
+Use `set t : ℂ := ((‖A.v0‖ : ℝ) : ℂ) with ht`. Establish `hv0ne : A.v0 ≠ 0` using `hA.2.2.2.2.2.1`. Establish `hv0 : A.v0 = t • w0`. Rewrite using `[hw0def, ht, smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ (norm_ne_zero_iff.mpr hv0ne), Complex.ofReal_one, one_smul]`. Establish `hw0s : w0 ∈ PI.UpqRep.smoothVecs (k` using `D.R.k) (r := D.R.rS) A.σ := Formalism.FourierDecayAlt.P.DDSmoothness.smooth_smul _ hA.2.2.2.2.1`.
+
+Establish `hΦ : ∀ g ∈ UH (Hpk D.R.k D.R.rS), A.Φ g = (c0 * t) • l (A.σ g w0)`. Introduce `g hg'`. Use `show A.B (A.σ g A.v0) = _`. Rewrite using `[hv0]`. Conclude with `orbit_mul hA.2.1 c0 hc0 hl1.2.1 hw0s t hg'`.
+
+Establish `hΦ' : ∀ g ∈ UH (Hpk D.R.k D.R.rS), A.Φ' g = (c0' * t) • l' (A.σ g w0)`. Introduce `g hg'`. Use `show A.B' (A.σ g A.v0) = _`. Rewrite using `[hv0]`. Conclude with `orbit_mul hA.2.1 c0' hc0' hl1'.2.1 hw0s t hg'`.
+
+Establish `ht0 : t ≠ 0`. Rewrite using `[ht]`. Conclude with `(norm_ne_zero_iff.mpr hv0ne)` after adjusting the coercions. Establish `hcN : (A.cN : ℂ) ≠ 0` using `by exact_mod_cast (ne_of_gt hA.2.2.2.2.2.2.2.1)`. Use `set K1 : ℂ := ((A.cN : ℂ)⁻¹) * (c0 * t) * (starRingEnd ℂ) (c0' * t) with hK1`.
+
+Establish `hK10 : K1 ≠ 0`. Rewrite using `[hK1]`. Use `mul_ne_zero (mul_ne_zero (inv_ne_zero hcN) (mul_ne_zero hc0ne ht0)) ?_` and prove the remaining obligations. Conclude with `(map_ne_zero _).mpr (mul_ne_zero hc0ne' ht0)`. Establish `hw1 : ‖w0‖ = 1`.
+
+Rewrite using `[hw0def, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_norm]`. Conclude with `inv_mul_cancel₀ (norm_ne_zero_iff.mpr hv0ne)`. Use `set dg : ℂ := (PI.BesselPeriodGGP.fdegH W.μG A.σ w0 : ℂ) with hdg`. Establish `hdg0 : dg ≠ 0`. Rewrite using `[hdg]`.
+
+Conclude with `(ne_of_gt (Formalism.L2.S.Pv.AmpOrbCoef.fdegH_pos hA.1 hA.2.1 hG hw1))` after adjusting the coercions. Use `⟨dg * s * K1⁻¹, mul_ne_zero (mul_ne_zero hdg0 hs0) (inv_ne_zero hK10), ?_⟩` and prove the remaining obligations. Introduce `γ μR νR ν hCD`. Take `⟨hγ, hGf, hMono, hRel, hRH, hOQ, hqR⟩` from `hCD`. Establish `hCD' : Formalism.MainNotions.S.Pv.AmpDD.CellData L W.μG γ μR νR ν` using `⟨hγ, hGf, hMono, hRel, hRH, hOQ, hqR⟩`.
+
+Take `⟨bb, hb0, hbm, hbi⟩` from `hCC _ _ L h W.μG γ μR νR ν ENNReal.ofReal_ne_top hok hcell hCD' hMono`. Establish `hAmp` using `hAKF hI _ _ L h W.μG w0 l l' hOP γ μR νR ν hCD' bb hb0 hbm hbi a b hka hkb ξ ξ'`. Establish `hae` using `ae_UH_conj hγ hG hRH hqR`. Establish `hJ1 : A.J νR γ = K1 • ampJ νR 1 (fun g => l (A.σ g w0)) (fun g => l' (A.σ g w0)) γ` using `ampJ_mul νR A.cN A.Φ _ A.Φ' _ (c0 * t) (c0' * t) γ hγ hΦ hΦ' hae`. Establish `hAmp' : s • ampJ νR 1 (fun g => l (A.σ g w0)) (fun g => l' (A.σ g w0)) γ = dg⁻¹ • OrbInt L (Formalism.MainNotions.S.Pv.AmpDD.coefF L a b ξ ξ') γ ν` using `hAmp`.
+
+Establish `e1 : OrbInt L (Formalism.MainNotions.S.Pv.AmpDD.coefF L a b ξ ξ') γ ν = dg • (s • ampJ νR 1 (fun g => l (A.σ g w0)) (fun g => l' (A.σ g w0)) γ)`. Rewrite using `[hAmp']`. Conclude with `(smul_inv_smul₀ hdg0 _).symm`. Establish `e2 : ampJ νR 1 (fun g => l (A.σ g w0)) (fun g => l' (A.σ g w0)) γ = K1⁻¹ • A.J νR γ`. Rewrite using `[hJ1, smul_smul, inv_mul_cancel₀ hK10, one_smul]`.
+
+Rewrite using `[e1, e2]`. Simplify using `only [smul_smul, mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem ampVec_genG (hJ : CompanionTheory.Lime.BM.UniqGap) (hI : CompanionTheory.D.Upq.BesselFunctionalConstruction.Inputs) (hAt : CompanionTheory.Lime.BM.AtFormAdmOne) (hAKF : Formalism.MainNotions.S.Pv.AmpDD.BM.AmpKF)
     (hCC : Formalism.MainNotions.S.Pv.AmpDD.CellConv) {D : D7} {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT C0 Cn : ℝ}
     (hGap : Formalism.MainNotions.S.Pv.AmpDD.GapOfHyp0 D large₂ C' Cl Cg cb Cu cT CT C0 Cn)
@@ -147,6 +192,11 @@ theorem ampVec_genG (hJ : CompanionTheory.Lime.BM.UniqGap) (hI : CompanionTheory
   rfl
 
 variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] in
+/- English proof (translation)
+Take `⟨hka, hkb, hn1, -⟩` from `hpin`. Establish `hn : ⟪(Formalism.L2.SG.LocWSOf.locS hB u u' τ).B a, ξ⟫_ℂ * ⟪ξ', (Formalism.L2.SG.LocWSOf.locS hB u u' τ).B' b⟫_ℂ ≠ 0` using `by show ⟪Formalism.L2.SG.LocWSOf.bOf hB u τ a, ξ⟫_ℂ * ⟪ξ', Formalism.L2.SG.LocWSOf.sclOf hB u u' τ • Formalism.L2.SG.LocWSOf.bOf hB u' τ b⟫_ℂ ≠ 0`. Rewrite using `[inner_smul_right]`. Establish `e : ⟪Formalism.L2.SG.LocWSOf.bOf hB u τ a, ξ⟫_ℂ * (Formalism.L2.SG.LocWSOf.sclOf hB u u' τ * ⟪ξ', Formalism.L2.SG.LocWSOf.bOf hB u' τ b⟫_ℂ) = Formalism.L2.SG.LocWSOf.sclOf hB u u' τ * (⟪Formalism.L2.SG.LocWSOf.bOf hB u τ a, ξ⟫_ℂ * ⟪ξ', Formalism.L2.SG.LocWSOf.bOf hB u' τ b⟫_ℂ)` using `by ring`. Rewrite using `[e, hn1, mul_one]`.
+
+Conclude with `hscl`. Establish `hl : l1dist (lamD D τ) (lamD D τ) ≤ (0 : ℝ) * D.R.k * (D.R.m : ℝ) ^ 3`. Simplify using `[l1dist]`. Conclude with `ampVec_genG hJ CompanionTheory.Lime.BM.inputs (CompanionTheory.Lime.BM.atFormAdmOne hJ) Formalism.MainNotions.S.Pv.AmpDDPf.BM.amplitude_K_finite Formalism.MainNotions.S.Pv.AmpDDPf.cell_convergence (Formalism.MainNotions.S.Pv.AmpDDPf.gap_of_hypotheses D large₂ C' Cl Cg cb Cu cT CT …`.
+-/
 theorem ampVec_carrierG (hJ : CompanionTheory.Lime.BM.UniqGap) {D : D7} (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT C0 : ℝ}
     (hCl : 1000 ≤ Cl) (hH : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0)
     {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {θ : ℝ} {C : Formalism.L2.SG.LocWSOf.Choice X θ} (hB : Formalism.L2.SG.LocWSOf.WuBessel C)
@@ -209,6 +259,9 @@ def ccOneG (hJ : CompanionTheory.Lime.BM.UniqGap) (large₂ : SizeData₂ D) {C'
 
 open Formalism.L2.SG.Pf.Carrier Formalism.L2.SG.Pf.CarrierT Formalism.L2.SG.Pf.BaseOf in
 variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] in
+/- English proof (translation)
+Take `⟨h0, h1, -⟩` from `(muN_eq_haarLie D.R.k D.R.rS).choose_spec`. Conclude with `lamPl_ne _ _ _ D θ _ hcO hscl (ampVec_carrierG hJ large₂ hCl hH0 hB u u' τ hTT hW hA hT hT' a b ξ ξ' 1 hpin1 hscl).choose_spec.1 h0 h1 (Formalism.L2.SG.AmpOrbPf.kapN_ne_zero hW)`.
+-/
 theorem ccOne_neG (hJ : CompanionTheory.Lime.BM.UniqGap) (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT C0 : ℝ}
     (hCl : 1000 ≤ Cl) (hH0 : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (u u' : D.what₂.Word) (τ : D.what₂.Tau)
     (hTT : HypTT D u u') (hW : GoodW D τ u u' θ (locW C u u' τ)) (hA : GoodS D (lamD D τ) (locS hB u u' τ))
@@ -222,6 +275,15 @@ theorem ccOne_neG (hJ : CompanionTheory.Lime.BM.UniqGap) (large₂ : SizeData₂
 
 open Formalism.L2.SG.Pf.Carrier Formalism.L2.SG.Pf.CarrierT Formalism.L2.SG.Pf.BaseOf in
 variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] in
+/- English proof (translation)
+Use `set cc := ccOneG C hB hJ large₂ hCl hH0 u u' τ hTT hW hA hT hT' a b ξ ξ' hpin1 hscl with hcc`. Establish `hc0 : cc ≠ 0` using `ccOne_neG C hB hJ large₂ hCl hH0 u u' τ hTT hW hA hT hT' a b ξ ξ' hpin1 hscl hcO`. Establish `hκ` using `(ampVec_carrierG hJ large₂ hCl hH0 hB u u' τ hTT hW hA hT hT' a b ξ ξ' 1 hpin1 hscl).choose_spec`. Take `⟨h0, h1, hN⟩` from `(muN_eq_haarLie D.R.k D.R.rS).choose_spec`. Establish `hCut` using `cutAt_holds C u u' τ a b ξ ξ' cc A₀ hA₀ hCC`.
+
+Take `⟨hGv, hMono, hRel, hH, hQ⟩` from `id hP`. Establish `hLz` using `(toBessel D τ u u' θ (locW C u u' τ) (lamD D τ) (locS hB u u' τ) hW hA hT hT').hz`. Establish `hLz'` using `(toBessel D τ u u' θ (locW C u u' τ) (lamD D τ) (locS hB u u' τ) hW hA hT hT').hz'`. Establish `hWc` using `muWc_eq C u τ hLz.1 hLz.2`. Establish `hWc'` using `muWc_eq C u' τ hLz'.1 hLz'.2`.
+
+Establish `hH'` using `haarTr_holds C u u' τ γ μRv hH`. Take `⟨νB, hq⟩` from `orbQuot_exists (toBessel D τ u u' θ (locW C u u' τ) (lamD D τ) (locS hB u u' τ) hW hA hT hT') (gB_mem C u τ γ) hH'`. Establish `hcell : Formalism.MainNotions.S.Pv.AmpDD.CellData (toBessel D τ u u' θ (locW C u u' τ) (lamD D τ) (locS hB u u' τ) hW hA hT hT') (locW C u u' τ).μG (gB C τ γ) (muRB C τ μRv) (ν.map (Formalism.L2.SG.Pf.LocJEq.Smap C τ γ)) νB` using `⟨gB_mem C u τ γ, gf_B C u u' τ γ hGv, mono_B C u u' τ γ hMono, relStab_of_relevant C hB u u' τ hW hA hT hT' γ hRel, hH', hq, quotTr_holds C u u' τ γ μRv ν hH hQ⟩`. Establish `hpinAt` using `pinAt C hB u u' τ hW hA hT hT' a b ξ ξ' cc hc0 _ hκ.1 hκ.2 _ h0 h1 hN hWc hWc' hcO hscl γ μRv ν νB hcell (Formalism.L2.SG.Pf.LocJEq.integrand_aesm C hB u u' τ γ ν) (hCut γ μRv ν hP)`. Rewrite using `[hpinAt]`.
+
+Establish `e : lamPl (cOf hB u τ) (sclOf hB u u' τ) (ampVec_carrierG hJ large₂ hCl hH0 hB u u' τ hTT hW hA hT hT' a b ξ ξ' 1 hpin1 hscl).choose D θ (muN_eq_haarLie D.R.k D.R.rS).choose * cc⁻¹ = 1`. Rewrite using `[hcc]`. Conclude with `mul_inv_cancel₀ hc0`. Rewrite using `[e, one_smul]`.
+-/
 theorem pinAt_oneG (hJ : CompanionTheory.Lime.BM.UniqGap) (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT C0 : ℝ}
     (hCl : 1000 ≤ Cl) (hH0 : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (u u' : D.what₂.Word) (τ : D.what₂.Tau)
     (hTT : HypTT D u u') (hW : GoodW D τ u u' θ (locW C u u' τ)) (hA : GoodS D (lamD D τ) (locS hB u u' τ))
@@ -282,6 +344,9 @@ variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {θ : ℝ} (C 
 namespace GlobalTheory.CarrierGap
 open Formalism.L2.SG.Pf.Carrier Formalism.L2.SG.Pf.CarrierT Formalism.L2.SG.Pf.BaseOf in
 variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] in
+/- English proof (translation)
+Use `pinCov_carrierInTc X C u u' e he hv CA de de' l grid grid1 a b ξ ξ' _ c ν' m₀ Θ TP A₀ Mo ?_` and prove the remaining obligations. Introduce `j γ μRv ν hH`. Establish `hP` using `pinHyp_at X C u u' e he hv CA de de' l grid grid1 a b ξ ξ' _ c ν' m₀ Θ TP A₀ Mo j γ μRv ν hH`. Conclude with `pinAt_oneG C hB hJ large₂ hCl hH0 u u' (e (plE D j)) hTT (hW j) (hA j) hT hT' (a j) (b j) (ξ j) (ξ' j) (hpin1 j) (hscl j) (hcO j) Ac hAc (hCC j) γ μRv ν hP`.
+-/
 theorem pinCov_ccOneG (hJ : CompanionTheory.Lime.BM.UniqGap) (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT C0 : ℝ}
     (hCl : 1000 ≤ Cl) (hH0 : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0)
     (u u' : D.what₂.Word) (e : NumberField.InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
@@ -332,6 +397,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CarrierGap
 set_option maxHeartbeats 4000000 in
 variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] in
+/- English proof (translation)
+Substitute `hcc` using the available equality. Use `⟨fun j => (hpin1 j).1, fun j => (hpin1 j).2.1, fun Θ TP A₀ => ?_⟩` and prove the remaining obligations. Conclude with `pinCov_ccOneG C hB hJ large₂ hCl hH0 u u' e he hv CA de de' l (gridT e l) (grid1T e l) a b ξ ξ' hTT hW hA hT hT' hpin1 hscl hcO cutStd (nuE X C u' e i0') (m0E X C u u' e) Θ TP A₀ (modelsOf _) Ac hAc (fun j => Formalism.L2.SG.Pf.CoefCCT.fcT_inCC C e u u' a b ξ ξ' (fun j => ccOneG …`.
+-/
 theorem xLeafAt_of_pinsG {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) {θ : ℝ} (C : Choice X θ) (hB : WuBessel C)
     (hJ : CompanionTheory.Lime.BM.UniqGap) (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT C0 : ℝ}
     (hCl : 1000 ≤ Cl) (hH0 : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0)
@@ -382,6 +450,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar instCM
 
 namespace GlobalTheory.CarrierGap
 variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] in
+/- English proof (translation)
+Introduce `CA C0 CG CDel cT Cb' Cg cb Cw cTf CT C0f C' Cl D L T u u' e τ Cp Th' i0 i0' νq X0 sd C Th F0 what₂ vR Q hne hcb hcT hTies hC' hClp hk18 hH0 hPl hSz hi hPt hNu`. Take `⟨θ, Ch, hB, a, b, ξ, ξ', hTT, hT, hT', hW, hA, hpin1, hscl, hcO⟩` from `hP CA C0 CG CDel cT Cb' Cg cb Cw cTf CT C0f C' Cl D L T u u' e τ Cp Th' i0 i0' νq hne hcb hcT hTies hC' hClp hk18 hH0 hPl hSz hi hPt hNu`. Establish `hCl : (1000 : ℝ) ≤ Cl` using `by have := abs_nonneg (Formalism.FourierDecayAlt.P.orbital_integral_converges.choose); linarith`. Establish `hS0` using `hH0.1`. Establish `hrS : 2 * D.R.rS + 2 = D.R.m` using `Ranks.rS_two D.R`.
+
+Establish `hr : D.R.r = 2 * D.R.rS + D.R.k + 1` using `by unfold Ranks.r; omega`. Establish `hkL` using `Formalism.MainNotions.BridgeLemma.szh_k_le hS0 (by linarith) τ`. Establish `hk5 : (5 : ℝ) ≤ (D.R.k : ℝ)` using `by exact_mod_cast Formalism.MainNotions.BridgeLemma.five_le_k D`. Establish `hL : (1 / 2 : ℝ) ≤ L.sc.L`. Assume the negation of the conclusion as `hcn`.
+
+Use `push Not at hcn`. Establish `h1 : Real.exp (2 * L.sc.L) < Real.exp 1` using `Real.exp_lt_exp.mpr (by linarith)`. Establish `h2 : Real.exp 1 < 3` using `by have := Real.exp_one_lt_d9; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hf : 2 ≤ D.R.f`.
+
+Unfold `Ranks.f Ranks.n; have := And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity); omega`. Establish `hfR : (2 : ℝ) ≤ (D.R.f : ℝ)` using `by exact_mod_cast hf`. Establish `hf5 : (32 : ℝ) ≤ (D.R.f : ℝ) ^ 5`. Establish `: (2 : ℝ) ^ 5 ≤ (D.R.f : ℝ) ^ 5` using `pow_le_pow_left₀ (by norm_num) hfR 5`. Evaluate the numerical expressions using `at this`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hrr : ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) = (D.R.r : ℝ)` using `by rw [hr]`. Establish `hn1 : (1 : ℝ) ≤ (D.R.r : ℝ)` using `by rw [hr]; push_cast; have : (0 : ℝ) ≤ (D.R.rS : ℝ) := Nat.cast_nonneg _; linarith`. Establish `hn19 : 0 ≤ (D.R.r : ℝ) ^ 19` using `by positivity`. Establish `hh16 : 16 * Cl * (D.R.r : ℝ) ^ 19 ≤ Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * L.sc.L`.
+
+Establish `e1 : Cl * (D.R.r : ℝ) ^ 19 * 32 ≤ Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5` using `mul_le_mul_of_nonneg_left hf5 (by positivity)`. Establish `e2 : Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * (1 / 2) ≤ Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * L.sc.L` using `mul_le_mul_of_nonneg_left hL (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hn1801 : 1801 ≤ 2 * D.R.rS + D.R.k + 1` using `by omega`. Establish `hok : Formalism.FourierDecayAlt.ThreeDimData.GapOK D.R.k D.R.rS (Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * L.sc.L)`.
+
+Use `gapOK_mono (Formalism.L2.SG.Pf.WuDec.gapOK_of_big D.R.k D.R.rS (by omega) hn1801) ?_` and prove the remaining obligations. Rewrite using `[hrr]`. Establish `h1 : 1 * (D.R.r : ℝ) ^ 19 ≤ Cl * (D.R.r : ℝ) ^ 19` using `mul_le_mul_of_nonneg_right (by linarith) hn19`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hAch` using `le_of_le_of_eq (ac_le (Formalism.FourierDecayAlt.P.orbital_integral_converges.choose) Cl L.sc.L D.R.rS D.R.k D.R.f hClp hf hL) (by rw [hrr])`.
+
+Use `⟨θ, Ch, a, b, ξ, ξ', fun j => ccOneG Ch hB hJ L hCl hH0 u u' (e (plE D j)) hTT (hW j) (hA j) hT hT' (a j) (b j) (ξ j) (ξ' j) (hpin1 j) (hscl j), ?_⟩` and prove the remaining obligations. Conclude with `xLeafAt_of_pinsG T.X Ch hB hJ L hCl hH0 u u' e hPl (host_v D) CA (deOf D τ u) (deOf D τ u') (lOf D (deOf D τ u) (deOf D τ u')) i0 i0' 1 (T.Y.FN u) (T.Y.FN u') νq _ a b ξ ξ' hTT hW hA hT hT' hpin1 hscl hcO (fun _ => Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * L.sc.L) (fun j => Forma …`.
+-/
 theorem xLeavesP_of_pinsPG (hJ : CompanionTheory.Lime.BM.UniqGap) (hP : XPinsP) : XLeavesP := by
   intro CA C0 CG CDel cT Cb' Cg cb Cw cTf CT C0f C' Cl D L T u u' e τ Cp Th' i0 i0' νq X0 sd C Th F0 what₂ vR Q hne hcb hcT hTies hC' hClp
     hk18 hH0 hPl hSz hi hPt hNu
@@ -430,6 +515,19 @@ theorem xLeavesP_of_pinsPG (hJ : CompanionTheory.Lime.BM.UniqGap) (hP : XPinsP) 
     (fun j => Formalism.MainNotions.BridgeLemma.szh_gap hS0 _) (fun _ => hok) _ (le_max_left _ _) (le_max_right _ _) (fun _ => hAch) _ rfl
 
 variable [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] in
+/- English proof (translation)
+Introduce `CA C0 CG CDel cT Cb' Cg cb Cw cTf CT C0f C' Cl D L T u u' e τ Cp Th' i0 i0' νq hne hcb hcT hTies hC' hClp hk18 hH0 hPl hSz hi hPt hNu`. Use `haveI : Nonempty D.what₂.Word := ⟨u⟩`. Establish `hCl : (1000 : ℝ) ≤ Cl` using `by have := abs_nonneg (Formalism.FourierDecayAlt.P.orbital_integral_converges.choose); linarith`. Establish `hG : Formalism.L2.SG.ConcreteSettingExists.GapHyp D` using `Formalism.L2.SG.ThmSOwn.gap_hypothesis_of_hypotheses hH0.1 (by linarith) hC'`. Take `⟨Ch⟩` from `Formalism.L2.SG.Pf.choiceExists T.X 1 one_pos`.
+
+Establish `hB : WuBessel Ch` using `Formalism.L2.SG.Pf.wuBesselOfLoc_all Ch hG Formalism.MainNotions.BridgeCS3dBOW.besselOfW_holds (Formalism.L2.SG.Pf.LocF.locFactor_holds hG Ch) (fun τ => Formalism.L2.SG.Pf.dsTr Ch τ) (fun τ => Formalism.L2.SG.Pf.haarTr Ch τ) (fun u τ => Formalism.L2.SG.Pf.colsTypeTr Ch u τ)`. Establish `hLF` using `Formalism.L2.SG.Pf.LocF.locFactor_holds hG Ch`. Establish `hc : ∀ (w : D.what₂.Word) (t : D.what₂.Tau), 0 < cOf hB w t` using `fun w t => Formalism.L2.SG.Pf.AmpWin.cOf_pos hB (Formalism.L2.SG.Pf.GoodS.l2SG_phiOf_ne_zero_and_lt_infty Ch hLF hB w t).1 (Formalism.L2.SG.Pf.GoodS.l2SG_phiOf_ne_zero_and_lt_infty Ch hLF hB w t).2`. Establish `hscl : ∀ t, sclOf hB u u' t ≠ 0`. Introduce `t`.
+
+Establish `h1` using `Formalism.L2.SG.Pf.GoodS.l2SG_phiOf_ne_zero_and_lt_infty Ch hLF hB u' t`. Establish `hl : 0 < (l2SG (Ch.nuS u' t) (phiOf hB u' t)).toReal` using `ENNReal.toReal_pos h1.1 h1.2.ne`. Establish `hd : 0 < Module.finrank ℂ (T.X.Vloc u' (vOf T.X t))`. Break down `Nat.eq_zero_or_pos (Module.finrank ℂ (T.X.Vloc u' (vOf T.X t))) with h | h` into its components or cases. It suffices to derive a contradiction.
+
+Establish `: Subsingleton (T.X.Vloc u' (vOf T.X t))` using `Module.finrank_zero_iff.1 h`. Apply `h1.1` to reduce the goal to its premises. Unfold `l2SG`. Simplify using `[Subsingleton.elim (phiOf hB u' t _) 0]`. Conclude with `h`.
+
+Unfold `sclOf`. Establish `hpos : 0 < cOf hB u t * (Module.finrank ℂ (T.X.Vloc u' (vOf T.X t)) : ℝ) / (l2SG (Ch.nuS u' t) (phiOf hB u' t)).toReal` using `div_pos (mul_pos (hc u t) (by exact_mod_cast hd)) hl`. Conclude with `(Real.sqrt_pos.mpr hpos).ne'` after adjusting the coercions. Establish `ha : ∀ j : Fin (nfE D), ∃ a : T.X.B.H (vOf T.X (e (plE D j))), PI.UpqRep.IsKFinHpk (k` using `D.R.k) (r := D.R.rS) (sigB T.X (Ch.Q (e (plE D j))) (Ch.Qi (e (plE D j))) (e (plE D j))) a ∧ bOf hB u (e (plE D j)) a ≠ 0 := fun j => hNZ D T.X 1 Ch hB u (e (plE D j)) hG`. Establish `hb : ∀ j : Fin (nfE D), ∃ b : T.X.B.H (vOf T.X (e (plE D j))), PI.UpqRep.IsKFinHpk (k` using `D.R.k) (r := D.R.rS) (sigB T.X (Ch.Q (e (plE D j))) (Ch.Qi (e (plE D j))) (e (plE D j))) b ∧ bOf hB u' (e (plE D j)) b ≠ 0 := fun j => hNZ D T.X 1 Ch hB u' (e (plE D j)) hG`.
+
+Use `choose a ha using ha`. Use `choose b hb using hb`. Use `⟨1, Ch, hB, a, b, fun j => (((‖bOf hB u (e (plE D j)) (a j)‖ ^ 2 : ℝ) : ℂ))⁻¹ • bOf hB u (e (plE D j)) (a j), fun j => (((‖bOf hB u' (e (plE D j)) (b j)‖ ^ 2 : ℝ) : ℂ))⁻¹ • bOf hB u' (e (plE D j)) (b j), Formalism.MainNotions.SchurRelationsDiscreteSeries.hypTT_all u u', Nat.cast_ …` and prove the remaining obligations. Rewrite using `[inner_normalize_right (ha j).2, inner_normalize_left (hb j).2, one_mul]`.
+-/
 theorem xPinsP_ofG (hJ : CompanionTheory.Lime.BM.UniqGap) (hNZ : KFinNZ) : XPinsP := by
   intro CA C0 CG CDel cT Cb' Cg cb Cw cTf CT C0f C' Cl D L T u u' e τ Cp Th' i0 i0' νq hne hcb hcT hTies hC' hClp hk18
     hH0 hPl hSz hi hPt hNu
@@ -491,6 +589,47 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar instCM
 
 namespace GlobalTheory.CarrierGap
 variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] [Fact Formalism.L2.SG.Pf.CarrierT.CoefCapAll] [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] in
+/- English proof (translation)
+Introduce `Cg cb Cw cTf CT C0f hcb hcT`. Use `⟨29, 1000 + |Formalism.FourierDecayAlt.P.orbital_integral_converges.choose|, ?_⟩` and prove the remaining obligations. Introduce `C' Cl hC' hClp D L T u u' i0 i0' νq hTies hne hSt hCT hi hNu hPt hH0`. Use `haveI : Nonempty D.what₂.Word := ⟨u⟩`. Establish `hCl : (1000 : ℝ) ≤ Cl` using `by have := abs_nonneg (Formalism.FourierDecayAlt.P.orbital_integral_converges.choose); linarith`.
+
+Establish `hS0` using `hH0.1`. Establish `hk18` using `rootLatticeThresholds_k_of_fact hS0 hC'`. Establish `hG : Formalism.L2.SG.ConcreteSettingExists.GapHyp D` using `Formalism.L2.SG.ThmSOwn.gap_hypothesis_of_hypotheses hS0 (by linarith) hC'`. Take `⟨Ch⟩` from `Formalism.L2.SG.Pf.choiceExists T.X 1 one_pos`. Establish `hB : WuBessel Ch` using `Formalism.L2.SG.Pf.wuBesselOfLoc_all Ch hG Formalism.MainNotions.BridgeCS3dBOW.besselOfW_holds (Formalism.L2.SG.Pf.LocF.locFactor_holds hG Ch) (fun τ => Formalism.L2.SG.Pf.dsTr Ch τ) (fun τ => Formalism.L2.SG.Pf.haarTr Ch τ) (fun u τ => Formalism.L2.SG.Pf.colsTypeTr Ch u τ)`.
+
+Establish `hLF` using `Formalism.L2.SG.Pf.LocF.locFactor_holds hG Ch`. Use `set e : InfinitePlace D.host.E ≃ D.what₂.Tau := (Formalism.L2.Geo.Rec.StarEmbeddingNorm.ePl D).symm with he_def`. Establish `he : PlaceTie T.X e` using `fun x => Formalism.L2.SG.Pf.Carrier.placeTie_ePl T.X x`. Establish `hc : ∀ (w : D.what₂.Word) (t : D.what₂.Tau), 0 < cOf hB w t` using `fun w t => Formalism.L2.SG.Pf.AmpWin.cOf_pos hB (Formalism.L2.SG.Pf.GoodS.l2SG_phiOf_ne_zero_and_lt_infty Ch hLF hB w t).1 (Formalism.L2.SG.Pf.GoodS.l2SG_phiOf_ne_zero_and_lt_infty Ch hLF hB w t).2`. Establish `hscl : ∀ t, sclOf hB u u' t ≠ 0`.
+
+Introduce `t`. Establish `h1` using `Formalism.L2.SG.Pf.GoodS.l2SG_phiOf_ne_zero_and_lt_infty Ch hLF hB u' t`. Establish `hl : 0 < (l2SG (Ch.nuS u' t) (phiOf hB u' t)).toReal` using `ENNReal.toReal_pos h1.1 h1.2.ne`. Establish `hd : 0 < Module.finrank ℂ (T.X.Vloc u' (vOf T.X t))`. Break down `Nat.eq_zero_or_pos (Module.finrank ℂ (T.X.Vloc u' (vOf T.X t))) with h | h` into its components or cases.
+
+It suffices to derive a contradiction. Establish `: Subsingleton (T.X.Vloc u' (vOf T.X t))` using `Module.finrank_zero_iff.1 h`. Apply `h1.1` to reduce the goal to its premises. Unfold `l2SG`. Simplify using `[Subsingleton.elim (phiOf hB u' t _) 0]`.
+
+Conclude with `h`. Unfold `sclOf`. Establish `hpos : 0 < cOf hB u t * (Module.finrank ℂ (T.X.Vloc u' (vOf T.X t)) : ℝ) / (l2SG (Ch.nuS u' t) (phiOf hB u' t)).toReal` using `div_pos (mul_pos (hc u t) (by exact_mod_cast hd)) hl`. Conclude with `(Real.sqrt_pos.mpr hpos).ne'` after adjusting the coercions. Establish `ha : ∀ j : Fin (nfE D), ∃ a : T.X.B.H (vOf T.X (e (plE D j))), PI.UpqRep.IsKFinHpk (k` using `D.R.k) (r := D.R.rS) (sigB T.X (Ch.Q (e (plE D j))) (Ch.Qi (e (plE D j))) (e (plE D j))) a ∧ bOf hB u (e (plE D j)) a ≠ 0 := fun j => hNZ D T.X 1 Ch hB u (e (plE D j)) hG`.
+
+Establish `hb : ∀ j : Fin (nfE D), ∃ b : T.X.B.H (vOf T.X (e (plE D j))), PI.UpqRep.IsKFinHpk (k` using `D.R.k) (r := D.R.rS) (sigB T.X (Ch.Q (e (plE D j))) (Ch.Qi (e (plE D j))) (e (plE D j))) b ∧ bOf hB u' (e (plE D j)) b ≠ 0 := fun j => hNZ D T.X 1 Ch hB u' (e (plE D j)) hG`. Use `choose a ha using ha`. Use `choose b hb using hb`. Use `set ξ : ∀ j : Fin (nfE D), T.X.Vloc u (tauE T.X e j) := fun j => (((‖bOf hB u (e (plE D j)) (a j)‖ ^ 2 : ℝ) : ℂ))⁻¹ • bOf hB u (e (plE D j)) (a j) with hξ`. Use `set ξ' : ∀ j : Fin (nfE D), T.X.Vloc u' (tauE T.X e j) := fun j => (((‖bOf hB u' (e (plE D j)) (b j)‖ ^ 2 : ℝ) : ℂ))⁻¹ • bOf hB u' (e (plE D j)) (b j) with hξ'`.
+
+Establish `hpin1 : ∀ j, CoefPin hB u u' (e (plE D j)) (a j) (b j) (ξ j) (ξ' j) 1` using `fun j => ⟨(ha j).1, (hb j).1, by rw [hξ, hξ']; simp only []; rw [inner_normalize_right (ha j).2, inner_normalize_left (hb j).2, one_mul], one_ne_zero⟩`. Establish `hTT` using `Formalism.MainNotions.SchurRelationsDiscreteSeries.hypTT_all (D := D) u u'`. Establish `hT : 0 < Tr D u` using `Nat.cast_pos.2 (D.mem u).A.T_prime.pos`. Establish `hT' : 0 < Tr D u'` using `Nat.cast_pos.2 (D.mem u').A.T_prime.pos`. Establish `hW` using `fun j => Formalism.L2.SG.Pf.AmpWinRX.goodW_all Ch u u' (e (plE D j))`.
+
+Establish `hA` using `fun j => goodS_of hB u u' (e (plE D j)) (Formalism.L2.SG.Pf.goodSRest_all hG hTies.dsig_tie hB u u' (e (plE D j)))`. Establish `hcO : ∀ j, cOf hB u (e (plE D j)) ≠ 0` using `fun j => (hc u _).ne'`. Establish `hfpos : 0 < D.R.f`. Unfold `Ranks.f Ranks.n; have := And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity); omega`. Use `haveI : Nonempty D.what₂.Tau := Fintype.card_pos_iff.1 (by rw [Formalism.MainNotions.BridgeLemma.szf_card_Tau]; exact hfpos)`.
+
+Take `⟨τ⟩` from `(inferInstance : Nonempty D.what₂.Tau)`. Establish `hrS : 2 * D.R.rS + 2 = D.R.m` using `Ranks.rS_two D.R`. Establish `hr : D.R.r = 2 * D.R.rS + D.R.k + 1` using `by unfold Ranks.r; omega`. Establish `hkL` using `Formalism.MainNotions.BridgeLemma.szh_k_le hS0 (by linarith) τ`. Establish `hk5 : (5 : ℝ) ≤ (D.R.k : ℝ)` using `by exact_mod_cast Formalism.MainNotions.BridgeLemma.five_le_k D`.
+
+Establish `hL : (1 / 2 : ℝ) ≤ L.sc.L`. Assume the negation of the conclusion as `hcn`. Use `push Not at hcn`. Establish `h1 : Real.exp (2 * L.sc.L) < Real.exp 1` using `Real.exp_lt_exp.mpr (by linarith)`. Establish `h2 : Real.exp 1 < 3` using `by have := Real.exp_one_lt_d9; linarith`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hf : 2 ≤ D.R.f`. Unfold `Ranks.f Ranks.n; have := And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity); omega`. Establish `hfR : (2 : ℝ) ≤ (D.R.f : ℝ)` using `by exact_mod_cast hf`. Establish `hf5 : (32 : ℝ) ≤ (D.R.f : ℝ) ^ 5`.
+
+Establish `: (2 : ℝ) ^ 5 ≤ (D.R.f : ℝ) ^ 5` using `pow_le_pow_left₀ (by norm_num) hfR 5`. Evaluate the numerical expressions using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hrr : ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) = (D.R.r : ℝ)` using `by rw [hr]`. Establish `hn1 : (1 : ℝ) ≤ (D.R.r : ℝ)` using `by rw [hr]; push_cast; have : (0 : ℝ) ≤ (D.R.rS : ℝ) := Nat.cast_nonneg _; linarith`.
+
+Establish `hn19 : 0 ≤ (D.R.r : ℝ) ^ 19` using `by positivity`. Establish `hh16 : 16 * Cl * (D.R.r : ℝ) ^ 19 ≤ Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * L.sc.L`. Establish `e1 : Cl * (D.R.r : ℝ) ^ 19 * 32 ≤ Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5` using `mul_le_mul_of_nonneg_left hf5 (by positivity)`. Establish `e2 : Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * (1 / 2) ≤ Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * L.sc.L` using `mul_le_mul_of_nonneg_left hL (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hn1801 : 1801 ≤ 2 * D.R.rS + D.R.k + 1` using `by omega`. Establish `hok : Formalism.FourierDecayAlt.ThreeDimData.GapOK D.R.k D.R.rS (Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * L.sc.L)`. Use `gapOK_mono (Formalism.L2.SG.Pf.WuDec.gapOK_of_big D.R.k D.R.rS (by omega) hn1801) ?_` and prove the remaining obligations. Rewrite using `[hrr]`. Establish `h1 : 1 * (D.R.r : ℝ) ^ 19 ≤ Cl * (D.R.r : ℝ) ^ 19` using `mul_le_mul_of_nonneg_right (by linarith) hn19`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hAch` using `le_of_le_of_eq (ac_le (Formalism.FourierDecayAlt.P.orbital_integral_converges.choose) Cl L.sc.L D.R.rS D.R.k D.R.f hClp hf hL) (by rw [hrr])`. Establish `h5` using `Formalism.MainNotions.BridgeLemma.last_shifted_parameter_eq hH0.2.1`. Establish `hDel : (D.s.Del : ℝ) ≠ 0`. Use `(Formalism.MainNotions.BridgeLemma.cfg_ok hH0.2.1 hS0 τ).hDel` as an intermediate fact.
+
+Conclude with `ne_of_gt (lt_of_lt_of_le one_pos this)`. Use `set de := deOf D τ u with hde_def`. Use `set de' := deOf D τ u' with hde'_def`. Establish `hde` using `Formalism.L2.SG.Pf.SzHypOf.deOf_eq D h5 hDel τ u`. Establish `hde'` using `Formalism.L2.SG.Pf.SzHypOf.deOf_eq D h5 hDel τ u'`.
+
+Establish `hN` using `parNumsE_of (D := D) u u' e de de' h5 hde hde'`. Establish `hty` using `typesE_of T.X Ch capacity_from_hermitian_char u u' e de de' h5 hde hde'`. Use `set TP := tpOf T.X Ch Formalism.FourierDecayAlt.P.type_projectors_exist u u' e de de' i0' hN hty with hTPdef`. Use `set Θ0 : ∀ j : Fin (nfE D), Formalism.FourierDecayAlt.Top.TopLift D.R.k D.R.rS (T.X.Vloc u (tauE T.X e j)) (T.X.Vloc u' (tauE T.X e j)) := fun _ => liftId with hΘ0`. Use `set cc : Fin (nfE D) → ℂ := fun j => ccOneG Ch hB hJ L hCl hH0 u u' (e (plE D j)) hTT (hW j) (hA j) hT hT' (a j) (b j) (ξ j) (ξ' j) (hpin1 j) (hscl (e (plE D j))) with hcc_def`.
+
+Establish `hleaf` using `xLeafAt_of_pinsG T.X Ch hB hJ L hCl hH0 u u' e he (host_v D) 0 de de' 0 i0 i0' 1 ∅ ∅ νq 0 a b ξ ξ' hTT hW hA hT hT' hpin1 (fun j => hscl (e (plE D j))) hcO (fun _ => Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * L.sc.L) (fun j => Formalism.MainNotions.S.Inh.amp_isHCParam_lamD D _) (f …`. Establish `hpin` using `hleaf.2.2 Θ0 TP 0`. Establish `hh0 : (0 : ℝ) ≤ Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * L.sc.L / 2`. Establish `: (0 : ℝ) ≤ L.sc.L` using `by linarith`. Check the signs of the components of the expression.
+
+Establish `hcc : CoefCC (ITc T.X Ch u u' e he (host_v D) 0 de de' 0 (gridT e 0) (grid1T e 0) (fcT T.X Ch e u u' a b ξ ξ' cc) cutStd i0' Θ0 TP 0)` using `Formalism.L2.SG.Pf.CoefCCT.coefCC_carrierInTc Ch u u' e he (host_v D) 0 de de' 0 (gridT e 0) (grid1T e 0) a b ξ ξ' cc cutStd (nuE T.X Ch u' e i0') (m0E T.X Ch u u' e) Θ0 TP 0 (fun _ => Cl * (D.R.r : ℝ) ^ 19 * (D.R.f : ℝ) ^ 5 * L.sc.L) (fun _ => Formalism.MainNotions.S.Inh.amp_isH …`. Establish `hcap` using `coefCap_ITc T.X Ch hS0 hCl hk18 u u' e he (host_v D) 0 de de' 0 (gridT e 0) (grid1T e 0) a b ξ ξ' cc cutStd i0' Θ0 TP 0 (fun j => (hb j).1)`. Establish `hBuilt` using `isBuilt_carrierInT T.X Ch u u' e he (host_v D) 0 de de' 0 (gridT e 0) (grid1T e 0) (fcT T.X Ch e u u' a b ξ ξ' cc) cutStd (nuE T.X Ch u' e i0') (m0E T.X Ch u u' e) Θ0 TP 0 hN hty (frames_carrierInT T.X Ch u u' e he (host_v D) 0 de de' 0 (gridT e 0) (grid1T e 0) (fcT T.X Ch e u u' …`. Establish `hJT` using `jointTensor_compact_test T.X Ch u u' e he (host_v D) 0 de de' 0 (gridT e 0) (grid1T e 0) (fcT T.X Ch e u u' a b ξ ξ' cc) cutStd i0 i0' hi Θ0 TP 0 1 νq hNu hpin one_pos hBuilt`. Conclude with `vIndepAt_of_tensorAt T.X u u' _ _ _ _ _ _ _ _ 1 i0 i0' νq hJT`.
+-/
 theorem vIndepAtAllP_ofG (hJ : CompanionTheory.Lime.BM.UniqGap) (hNZ : KFinNZ) : Formalism.L2.SG.PoincareAmplitudeLowerBounds.VIndepAtAllP := by
   intro Cg cb Cw cTf CT C0f hcb hcT
   refine ⟨29, 1000 + |Formalism.FourierDecayAlt.P.orbital_integral_converges.choose|, ?_⟩
@@ -630,6 +769,11 @@ open Formalism.L2.SG.SpectralTiesReal Formalism.L2.SG.PoincareAmplitudeLowerBoun
 
 namespace GlobalTheory.CarrierGap
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] [Fact Formalism.L2.SG.SplitPrimeNormLemmas.BesselNVGap] [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] [Fact Formalism.L2.SG.Pf.CarrierXAll.KFinDense] [Fact PI.AprimeInfW.GaugeVolUD] [Fact Formalism.L2.SG.Pf.WB.RhsWLim] [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] [Fact Formalism.L2.SG.Pf.CarrierT.CoefCapAll] in
+/- English proof (translation)
+Establish `hFC : FormulaC` using `Formalism.L2.SG.Pf.Cnt.formulaCT_holds`. Establish `kD` using `Formalism.L2.SG.Pf.CarrierXAll.kFinDense_holds`. Establish `rVA : VIndepAtAllP` using `vIndepAtAllP_ofG wMU (Formalism.L2.SG.Pf.CarrierXAll.kFinNZ_of kD)`. Establish `rVP : Formalism.L2.SG.VolPin.VolumeOddGeneric` using `Formalism.L2.SG.Closed.volume_determined`. Establish `hWu : Formalism.L2.SG.Pf.WuDecayOfGap` using `Formalism.L2.SG.Pf.wuDecayOfGap_of_uniqGap wMU`.
+
+Establish `hDI` using `Formalism.L2.SG.Pf.Cnt.densInputT_holds`. Establish `hLM : ∀ D : D7, Formalism.L2.SG.DataInst.LocalModelAt D` using `Formalism.L2.SG.Pf.localModelAt_holds`. Conclude with `⟨hLM, hDI, fun D => rowsInputP_of_dataCut (Formalism.L2.SG.DataCut.rowsInputP_of_normProd (Formalism.L2.SG.Closed.NormProd_holds D) (Formalism.L2.SG.Pf.Coef.rowsDatumP_of_deep (Formalism.L2.SG.Closed.CutLeavesDeep_outright D))), hNG, Formalism.L2.SG.Closed.KppOffC_holds, hCar, kE …`.
+-/
 theorem theoremS_leaves_of_carrierG
     (hCar : CarrierP)
     (hNG : Formalism.L2.SG.RowsPos.RowNGP)
@@ -662,6 +806,9 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formalism.L2.SG.ThmSOwn
 namespace GlobalTheory.CarrierGap
 
+/- English proof (translation)
+Take `⟨hPA, hMP, hBB⟩` from `GlobalTheory.carrierNeedsFromD`. Take `⟨Cb, hL⟩` from `Formalism.L2.SG.Pf.CarrierXAll.liftAt3_exists`. Conclude with `Formalism.L2.SG.SpectralTiesReal.carrierP_of_compact_model hPA Formalism.FourierDecayAlt.P.lemma_model hMP hBB Cb (Formalism.L2.SG.Pf.CarrierXAll.carrierXSideP_of_leaves Cb hL (xLeavesP_of_pinsPG CompanionTheory.Lime.BM.uniqGap_holds (xPinsP_ofG CompanionTheory.Lime.BM.uniqGap_ho …`.
+-/
 theorem carrierP : Formalism.L2.SG.PoincareAmplitudeLowerBounds.CarrierP := by
   obtain ⟨hPA, hMP, hBB⟩ := GlobalTheory.carrierNeedsFromD
   obtain ⟨Cb, hL⟩ := Formalism.L2.SG.Pf.CarrierXAll.liftAt3_exists
@@ -670,6 +817,11 @@ theorem carrierP : Formalism.L2.SG.PoincareAmplitudeLowerBounds.CarrierP := by
       (xPinsP_ofG CompanionTheory.Lime.BM.uniqGap_holds
         (Formalism.L2.SG.Pf.CarrierXAll.kFinNZ_of Formalism.L2.SG.Pf.CarrierXAll.kFinDense_holds))))
 
+/- English proof (translation)
+Introduce `hSW hNG hRF 𝒞 sel hLoc hRk hLp`. Establish `hWu : Formalism.L2.SG.Pf.WuDecayOfGap` using `CompanionTheory.Lime.BM.wuDecayOfGap_holds'`. Establish `hTF` using `Formalism.L2.SG.Pf.SzHypFam.hTF_of_ranks 3 hRk`. Establish `hOK` using `selOK_of 3 (Formalism.L2.SG.Pf.finXC_of hWu hRF) hWu sel hLoc hTF`. Establish `hS : TheoremSDistinctWords` using `theoremS_distinct_of_closed (Formalism.L2.SG.TheoremSConclusion.theoremS_of_conj (theoremS_leaves_of_carrierG carrierP hNG hRF CompanionTheory.Lime.BM.uniqGap_holds hSW))`.
+
+Conclude with `offDiagonalK0_of_rows 3 hS (by norm_num) sel hOK (Formalism.L2.SG.Pf.SzHypOf.sizesRowS_of 3 sel (Formalism.L2.SG.Pf.SzHypFam.hRw_of_ranks 3 hRk) (Formalism.L2.SG.Pf.ThresholdLevels.thrRow_holds 3)) (Formalism.L2.SG.Pf.SzHypFam.aSz 3) (Formalism.L2.SG.Pf.SzHypFam.hA_of_ranks 3 (by …`.
+-/
 theorem offDiag : PI.VolStabS.MassDataS.SWXS → Formalism.L2.SG.RowsPos.RowNGP → Formalism.L2.SG.RowsDef.RowsFinDim → ∀ (𝒞 : FamClass) (sel : SSel 𝒞), (∀ {eps : ℝ} (Fm : FamP eps) (hc : 𝒞 Fm) x (hx : Fm.x1 < x) (h0 : (sel Fm hc).1 ≤ x) (i : Fm.Ix x), Formalism.L2.SG.Pf.LocCP.LocTied (Fm.D x i)) → Formalism.L2.SG.Pf.SzHypFam.RanksRow 3 𝒞 → LoopRowS 3 𝒞 sel → Closed 𝒞 fun Fm _ => ∀ hc : 𝒞 Fm, TheoremSSelected Fm 3 (sel Fm hc) := by
   intro hSW hNG hRF 𝒞 sel hLoc hRk hLp
   have hWu : Formalism.L2.SG.Pf.WuDecayOfGap := CompanionTheory.Lime.BM.wuDecayOfGap_holds'

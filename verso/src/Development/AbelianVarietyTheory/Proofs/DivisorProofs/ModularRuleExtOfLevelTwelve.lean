@@ -9,6 +9,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.RealMult
 
+/- English proof (translation)
+Introduce `F _ _ _ 𝔠 R₀ _ k s t H`. Apply `Rule.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `R _ _ X h δ`. Establish `h2 : IsUnit ((2 : ℕ) : R)` using `isUnit_of_dvd_unit ⟨((3 : ℕ) : R), by rw [← Nat.cast_mul]⟩ h`. Establish `h12 : IsUnit ((12 : ℕ) : R)`.
+
+Establish `: ((12 : ℕ) : R) = ((6 : ℕ) : R) * ((2 : ℕ) : R)` using `by rw [← Nat.cast_mul]`. Rewrite using `[this]`. Conclude with `h.mul h2`. Take `⟨R', _, σ, X', φ, hff, hpull, hlev⟩` from `GlobalTheory.RealMult.exists_faithfullyFlat_level F 𝔠 12 (by norm_num) R h12 X`. Use `letI : Algebra R₀ R' := (σ.comp (algebraMap R₀ R)).toAlgebra`.
+
+Set `σa : R →ₐ[R₀] R'` to `{ σ with commutes' := fun _ ↦ rfl }`. Establish `h' : IsUnit ((6 : ℕ) : R')`. Use `h.map σ` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨δ', hδ', -⟩` from `hpull.existsUnique_detGen σ δ`.
+
+Establish `e1` using `s.baseChange R R' σa X h X' h' φ δ δ' hpull hδ'`. Establish `e2` using `t.baseChange R R' σa X h X' h' φ δ δ' hpull hδ'`. Establish `e3` using `H R' X' h' hlev δ'`. Apply `hff.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `σa (s.val R X h δ) = σa (t.val R X h δ)`.
+
+Rewrite using `[← e1, ← e2, e3]`.
+-/
 theorem Rule.eq_of_eq_on_level_twelve : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (R₀ : Type) [CommRing R₀] (k : ℕ)
     (s t : Rule (unitObj 𝔠 6) R₀ k),
     (∀ (R : Type) [CommRing R] [Algebra R₀ R] (X : Obj F 𝔠 (Sp R)) (h : IsUnit ((6 : ℕ) : R)), Nonempty (X.Level 12) →

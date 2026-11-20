@@ -2,6 +2,9 @@ import Mathlib
 import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups.BaseRepGL3NormalisedOfPsiEqOne
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsTerMore
 
+/- English proof (translation)
+Introduce `Γ k _ _ n U a a' hirr h hconj`. Use `UpperTheory.Reformulated.B.G5.matIrr_conj h (fun g hg => ?_) hirr` and prove the remaining obligations. Rewrite using `[hconj g hg, mul_assoc, mul_assoc, Units.inv_mul, mul_one, ← mul_assoc, Units.inv_mul, one_mul]`.
+-/
 theorem UpperTheory.Reformulated.B.StationaryPhaseModel.matIrr_conj :
     ∀ {Γ k : Type} [inst : Group Γ] [inst_1 : Field k] {n : ℕ} {U : Subgroup Γ} {a a' : Γ → Matrix (Fin n) (Fin n) k},
       UpperTheory.V.U3.MatIrr U a →

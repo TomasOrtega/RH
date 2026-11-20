@@ -27,6 +27,29 @@ noncomputable section
 
 namespace GlobalTheory.FunObj
 
+/- English proof (translation)
+Introduce `D T L sc G μ₀ hL t i j _hst`. Use `⟨G.pl.S0, (L.Q t).image (fun P => P.under (𝓞 D.host.F)) \ G.pl.S0, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Break down `Finset.mem_union.1 hv with hv | hv` into its components or cases. Establish `hw : G.pl.w v ∈ locPl G t` using `Finset.mem_union_left _ (Finset.mem_image_of_mem _ hv)`.
+
+Establish `e` using `G.pl.under_w hv`. Conclude with `⟨⟨_, hw, e⟩, e ▸ GlobalTheory.T.gridLocalTensorPlaces_over_split_places hL t _ hw⟩`. Take `⟨P, hP, e⟩` from `Finset.mem_image.1 (Finset.mem_sdiff.1 hv).1`. Establish `hw : P ∈ locPl G t` using `Finset.mem_union_right _ hP`. Conclude with `⟨⟨P, hw, e⟩, e ▸ GlobalTheory.T.gridLocalTensorPlaces_over_split_places hL t _ hw⟩`.
+
+Introduce `B hsub hv₁ hsp hα hβ`. Establish `h2 : Module.finrank D.host.F D.host.E = 2` using `D.sp.cm.deg2`. Take `⟨rα, rβ⟩` from `GlobalTheory.T.thetaGrid_alpha_beta_restrict_quadratic_pow_rank hL t i j`. Use `⟨?_, ?_, GlobalTheory.T.restrictsToQuadraticSignPow_of_restrictsToQuadraticCharPow _ _ h2 _ _ rα, GlobalTheory.T.restrictsToQuadraticSignPow_of_restrictsToQuadraticCharPow _ _ h2 _ _ rβ, hα, hβ, ?_, hsub, ?_, ?_, ?_, ⟨hv₁, hsp⟩⟩` and prove the remaining obligations. Establish `hm` using `(hL.mu0 j).1`.
+
+Establish `hx` using `(hL.xi t).1`. Establish `he` using `hL.eta.1`. Use `⟨(hm.1.mul hx.1).mul (he.1.pow _), fun x => ?_⟩` and prove the remaining obligations. Establish `e1` using `hm.2 x`. Establish `e2` using `hx.2 x`.
+
+Establish `e3` using `he.2 x`. Use `show L.mu0 ((j : ℕ) + 1) _ * L.xi t _ * (L.eta ^ _) _ = 1`. Rewrite using `[MonoidHom.pow_apply]`. Rewrite using `[e1, e2, e3]`. Simplify using the standard rewrite rules.
+
+Establish `hc` using `(G.ch.chi_eq (D.R.m - (i : ℕ)) (by omega) (by omega)).1`. Establish `he` using `hL.eta.1`. Use `⟨hc.1.mul (he.1.pow _), fun x => ?_⟩` and prove the remaining obligations. Establish `e1` using `hc.2 x`. Establish `e3` using `he.2 x`.
+
+Use `show G.ch.chi (D.R.m - (i : ℕ)) _ * (L.eta ^ _) _ = 1`. Rewrite using `[MonoidHom.pow_apply, e1, e3]`. Simplify using the standard rewrite rules. Conclude with `Finset.disjoint_sdiff`. Introduce `w hw`.
+
+Break down `Finset.mem_union.1 hw with hw | hw` into its components or cases. Break down `(G.pl.mem_S0_of_sum_eq).1 hw with h | h` into its components or cases. Conclude with `GlobalTheory.T.not_unrAt_of_under_eq_v0 hL t i j w h`. Conclude with `GlobalTheory.T.alpha_div_beta_ramified_first hL t i j w h`. Take `⟨h1, h2⟩` from `Finset.mem_sdiff.1 hw`.
+
+Take `⟨P, hP, e⟩` from `Finset.mem_image.1 h1`. Conclude with `GlobalTheory.T.alpha_div_beta_ramified_at_level hL t i j w P hP e h2`. Introduce `w hw`. Establish `hw' : w.under (𝓞 D.host.F) ∉ G.pl.S0 ∪ ((L.Q t).image (fun P => P.under (𝓞 D.host.F)) \ G.pl.S0)` using `hw`. Use `GlobalTheory.T.alpha_unramified_outside hL t i j w (fun h => hw' (Finset.mem_union_left _ h)) fun P hP e => hw' ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h : w.under (𝓞 D.host.F) ∈ G.pl.S0`. Conclude with `Finset.mem_union_left _ h`. Conclude with `Finset.mem_union_right _ (Finset.mem_sdiff.2 ⟨Finset.mem_image.2 ⟨P, hP, e⟩, h⟩)`. Introduce `w hw`. Establish `hw' : w.under (𝓞 D.host.F) ∉ G.pl.S0 ∪ ((L.Q t).image (fun P => P.under (𝓞 D.host.F)) \ G.pl.S0)` using `hw`.
+
+Conclude with `GlobalTheory.T.beta_unramified_outside hL i j w (fun h => hw' (Finset.mem_union_left _ h))`.
+-/
 theorem squareChars_isGood : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (_hL : L.Is μ₀) (t : T)
     (i j : Fin D.R.m), SquareStanding G t → ∃ S₀ Q : Finset (HeightOneSpectrum (𝓞 D.host.F)),
       (∀ v ∈ S₀ ∪ Q, (∃ w ∈ locPl G t, w.under (𝓞 D.host.F) = v) ∧

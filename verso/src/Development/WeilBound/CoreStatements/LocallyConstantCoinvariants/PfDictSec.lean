@@ -20,6 +20,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {v : Pl F}
 
+/- English proof (translation)
+Use `letI : MeasurableSpace (AdeleRing (𝓞 F) F) := GroundTheory.Global.measurableSpace_adeleRing F`. Use `haveI : BorelSpace (AdeleRing (𝓞 F) F) := inferInstance`. Establish `: (GroundTheory.Global.adeleMeasure F).Regular`. Take `⟨K⟩` from `(inferInstance : Nonempty (TopologicalSpace.PositiveCompacts (AdeleRing (𝓞 F) F)))`. Conclude with `Measure.regular_of_isAddLeftInvariant K.isCompact K.interior_nonempty K.isCompact.measure_lt_top.ne`.
+
+Establish `h0` using `(GroundTheory.Global.IdeleGroup.ideleModule F u).2`. Establish `key : distribHaarChar (AdeleRing (𝓞 F) F) u = NNReal.mk _ h0.le`. Use `distribHaarChar_eq_of_measure_smul_eq_mul (μ := GroundTheory.Global.adeleMeasure F) (s := GroundTheory.Global.fundamentalSet F) ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[GroundTheory.Global.adeleMeasure_fundamentalSet]`. Conclude with `one_ne_zero`.
+
+Rewrite using `[GroundTheory.Global.adeleMeasure_fundamentalSet]`. Conclude with `ENNReal.one_ne_top`. Rewrite using `[← ENNReal.ofReal_eq_coe_nnreal h0.le]`. Conclude with `GroundTheory.Global.adeleMeasure_smul (K := F) u (GroundTheory.Global.fundamentalSet F)`. Conclude with `congrArg NNReal.toReal key`.
+-/
 theorem modu_eq (u : (AF F)ˣ) : ((distribHaarChar (AF F) u : NNReal) : ℝ) = GroundTheory.Global.IdeleGroup.ideleModule F u := by
   letI : MeasurableSpace (AdeleRing (𝓞 F) F) := GroundTheory.Global.measurableSpace_adeleRing F
   haveI : BorelSpace (AdeleRing (𝓞 F) F) := inferInstance
@@ -36,6 +43,15 @@ theorem modu_eq (u : (AF F)ˣ) : ((distribHaarChar (AF F) u : NNReal) : ℝ) = G
       exact GroundTheory.Global.adeleMeasure_smul (K := F) u (GroundTheory.Global.fundamentalSet F)
   exact congrArg NNReal.toReal key
 
+/- English proof (translation)
+Rewrite using `[modu_eq, GroundTheory.Global.IdeleGroup.ideleModule_apply]`. Establish `h1 : ∀ w, (u : AF F).1 w = 1` using `fun w => by`. Rewrite using `[h]`. Express the relevant statement in the definitionally equal form `(1 : Ainf F) w - (0 : Ainf F) w + (0 : Ainf F) w = 1`. Rewrite using `[sub_add_cancel]`.
+
+Both sides reduce to the same expression. Establish `h2 : ∀ w, (u : AF F).2 w = 1 - Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w (singleFin v 1) + Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w (singleFin v x)` using `fun w => by rw [h]; rfl`. Establish `h3 : GroundTheory.Global.IdeleGroup.infiniteModule u = 1` using `Finset.prod_eq_one fun w _ => by`. Express the relevant statement in the definitionally equal form `‖(u : AF F).1 w‖ ^ _ = 1`. Rewrite using `[h1, norm_one, one_pow]`.
+
+Establish `h4 : GroundTheory.Global.IdeleGroup.finiteModule u = ‖(x : Fv F v)‖`. Express the relevant statement in the definitionally equal form `∏ᶠ w, ‖(u : AF F).2 w‖ = _`. Rewrite using `[finprod_eq_single _ v fun w hw => by rw [h2, evalV_singleFin_ne hw, evalV_singleFin_ne hw, sub_add_cancel, norm_one], h2, evalV_singleFin_self, evalV_singleFin_self, sub_self, zero_add]`. Rewrite using `[h3, h4, one_mul, GlobalTheory.SplitWeil.nabs]`. Use `GlobalTheory.CompanionTheory.SW.ProdFormula.distribHaarChar_eq_nnnorm v (x : Fv F v) x.ne_zero` as an intermediate fact.
+
+Rewrite `this` using `[Units.mk0_val]`. Conclude with `(congrArg NNReal.toReal this).symm`.
+-/
 theorem modu_single (u : (AF F)ˣ) (x : (Fv F v)ˣ) (h : (u : AF F) = 1 - sgl v 1 + sgl v x) :
     ((distribHaarChar (AF F) u : NNReal) : ℝ) = GlobalTheory.SplitWeil.nabs (Fv F v) x := by
   rw [modu_eq, GroundTheory.Global.IdeleGroup.ideleModule_apply]
@@ -58,10 +74,22 @@ theorem modu_single (u : (AF F)ˣ) (x : (Fv F v)ˣ) (h : (u : AF F) = 1 - sgl v 
   rw [Units.mk0_val] at this
   exact (congrArg NNReal.toReal this).symm
 
+/- English proof (translation)
+Use `(at_iff _).1 h` as an intermediate fact. Rewrite using `[← sub_eq_zero, ← smul_sub, sub_smul, one_smul, this, sub_self]`.
+-/
 theorem off_of_at {z : AE F E} (h : At (evFin F v) (z - 1)) : (1 - ep v) • z = (1 - ep v) • (1 : AE F E) := by
   have := (at_iff _).1 h
   rw [← sub_eq_zero, ← smul_sub, sub_smul, one_smul, this, sub_self]
 
+/- English proof (translation)
+Establish `hi : Function.Injective (algebraMap (AF F) (AE F E))` using `Algebra.TensorProduct.includeLeft_injective (S := F) (algebraMap F E).injective`. Apply `hi` to reduce the goal to its premises. Rewrite using `[GlobalTheory.Doubling.algebraMap_norm_eq h]`. Express the relevant statement in the definitionally equal form `z * cA σ z = _`. Establish `e : ∀ a : AF F, algebraMap (AF F) (AE F E) a = a • (1 : AE F E)` using `fun a => Algebra.algebraMap_eq_smul_one a`.
+
+Establish `es : ∀ a, sgl v a = ep v * sgl v a` using `fun a => by`. Rewrite using `[ep_mul]`. Conclude with `congrArg (sgl v) (evalV_singleFin_self v a).symm`. Establish `ev : ∀ a, evFin F v (sgl v a) = a` using `evalV_singleFin_self v`. Establish `o` using `off_of_at hz`.
+
+Use `AE_ext h t ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← smul_mul_assoc, o, smul_mul_assoc, one_mul, ← map_smul, o, map_smul, map_one, e, smul_smul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = (1 - ep v) * (1 - ep v + sgl v x)`. Rewrite using `[es x]`.
+
+Take the linear combination `(1 - sgl v x) * (-ep_ep (v := v))`. Rewrite using `[map_mul, piW_cA, h1, h2, e, piW_smul, map_add, map_sub, ev, ev, map_one, map_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, piW_cA, comp_conj_conj h, h1, h2, e, piW_smul, map_add, map_sub, ev, ev, map_one, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_eq (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) {z : AE F E} {x : Fv F v} (hz : At (evFin F v) (z - 1))
     (h1 : piW t z = x) (h2 : piW (t.comp σ) z = 1) : Algebra.norm (AF F) z = 1 - sgl v 1 + sgl v x := by
   have hi : Function.Injective (algebraMap (AF F) (AE F E)) := Algebra.TensorProduct.includeLeft_injective (S := F) (algebraMap F E).injective
@@ -85,6 +113,15 @@ theorem norm_eq (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) {z : AE F E} {x : 
   · rw [map_mul, piW_cA, comp_conj_conj h, h1, h2, e, piW_smul, map_add, map_sub, ev, ev, map_one, map_one]
     ring
 
+/- English proof (translation)
+Set `y : (Fv F v ⊗[F] E)ˣ` to `Units.map (compFin F E v).toMonoidHom z`. Establish `e1 : z = GlobalTheory.Doubling.ideleAt F E v y` using `Units.ext (by`. Express the relevant statement in the definitionally equal form `(z : AE F E) = 1 - tensAt E v 1 + tensAt E v (compFin F E v z)`. Establish `o` using `off_of_at hz`. Rewrite using `[← ep_smul, ← map_one (compFin F E v), ← ep_smul]`.
+
+Rewrite `o` using `[sub_smul, sub_smul, one_smul, one_smul]`. Rewrite using `[← o, sub_add_cancel])`. Rewrite using `[e1, ideleAt_eq_prod_locIdele]`. Establish `hm : splitPrime t ∈ (Formalism.L2.Host.finite_aboveF (L` using `E) F v).toFinset := (Formalism.L2.Host.finite_aboveF (L := E) F v).mem_toFinset.2 (splitPrime_under t)`. Rewrite using `[Finset.prod_eq_single_of_mem ⟨splitPrime t, hm⟩ (Finset.mem_attach _ _)]`.
+
+Use `congr 1`. Conclude with `Units.ext ((ConjPlace.toCompl_eq h _ rfl _).trans (congrArg _ h1))`. Introduce and unpack `⟨w, hw⟩ - hb`. Establish `hne : w ≠ splitPrime t` using `fun e => hb (Subtype.ext e)`. Establish `hw'` using `(Formalism.L2.Host.finite_aboveF (L := E) F v).mem_toFinset.1 hw`.
+
+Take `⟨ρ, hρ, -⟩` from `existsUnique_splitPrime_eq h hne hw' (splitPrime_under t)`. Take `rfl : ρ = t.comp σ` from `(eq_or_eq_comp_conj h t ρ).resolve_left fun k => hne (hρ.symm.trans (k ▸ rfl))`. Rewrite using `[← map_one (locIdele F w)]`. Use `congr 1`. Conclude with `Units.ext ((ConjPlace.toCompl_eq h _ hρ _).trans ((congrArg _ h2).trans (map_one _)))`.
+-/
 theorem eq_locIdele (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) {z : (AE F E)ˣ} {x : (Fv F v)ˣ} (hz : At (evFin F v) ((z : AE F E) - 1))
     (h1 : piW t z = x) (h2 : piW (t.comp σ) z = 1) :
     z = locIdele F (splitPrime t) (Units.map (complMap (splitPrime_under t)).toMonoidHom x) := by
@@ -111,6 +148,11 @@ theorem eq_locIdele (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) {z : (AE F E)�
     congr 1
     exact Units.ext ((ConjPlace.toCompl_eq h _ hρ _).trans ((congrArg _ h2).trans (map_one _)))
 
+/- English proof (translation)
+Set `μ : (Fv F v)ˣ →* Circle` to `(χ.comp (locIdele F (splitPrime t))).comp (Units.map (complMap (splitPrime_under t)).toMonoidHom)`. Establish `hμ : Continuous μ` using `(hχ.comp (continuous_locIdele _)).comp (Continuous.units_map _ (SplitChart.continuous_complMap (splitPrime_under t)))`. Use `⟨fun x => Circle.norm_coe (μ x), Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_⟩` and prove the remaining obligations. Use `filter_upwards [eventually_char_eq_one μ hμ] with x hx`. Express the relevant statement in the definitionally equal form `Circle.toUnits (μ x) = 1`.
+
+Rewrite using `[hx.1, map_one]`.
+-/
 theorem usm_chrW (t : E →ₐ[F] Fv F v) {χ : Chr F E} (hχ : Continuous χ) : USm (chrW χ t) := by
   let μ : (Fv F v)ˣ →* Circle := (χ.comp (locIdele F (splitPrime t))).comp (Units.map (complMap (splitPrime_under t)).toMonoidHom)
   have hμ : Continuous μ := (hχ.comp (continuous_locIdele _)).comp
@@ -120,6 +162,19 @@ theorem usm_chrW (t : E →ₐ[F] Fv F v) {χ : Chr F E} (hχ : Continuous χ) :
   change Circle.toUnits (μ x) = 1
   rw [hx.1, map_one]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h v t`. Use `⟨⟨fun x => tensAt E v ((splitAlgEquiv h t).symm x), ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩, fun χ hχ => usm_chrW t hχ.1⟩` and prove the remaining obligations. Introduce `x`. Rewrite using `[at_iff, ep_smul, compFin_tensAt]`. Introduce `x`.
+
+Express the relevant statement in the definitionally equal form `splitProj t (compFin F E v (tensAt E v _)) = _`. Rewrite using `[compFin_tensAt, splitProj_symm]`. Introduce `x`. Express the relevant statement in the definitionally equal form `splitProj (t.comp σ) (compFin F E v (tensAt E v _)) = _`. Rewrite using `[compFin_tensAt, splitProj_comp_symm]`.
+
+Introduce `z hz h1 h2`. Use `AE_ext h t ?_ (h1.trans (map_zero _).symm) (h2.trans (map_zero _).symm)` and prove the remaining obligations. Rewrite using `[sub_smul, one_smul, (at_iff _).1 hz, sub_self, smul_zero]`. Introduce `z`. Conclude with `⟨piW_cA t z, by rw [piW_cA, comp_conj_conj h]⟩`.
+
+Introduce `z hz u hu`. Rewrite using `[← map_smul, hz u hu, map_zero]`. Conclude with `fun a z => ⟨piW_smul _ a z, piW_smul _ a z⟩`. Conclude with `fun x => ⟨piW_inc _ x, piW_inc _ x⟩`. Introduce `z hz`.
+
+Rewrite using `[← ev_trace h t, ← (at_iff _).1 hz, map_smul, smul_eq_mul, ep_mul]`. Conclude with `congrArg (sgl v) (evalV_singleFin_self v _).symm`. Introduce `z x hz h1 h2`. Use `⟨fun χ => ?_, modu_single _ x (norm_eq h t hz h1 h2)⟩` and prove the remaining obligations. Rewrite using `[eq_locIdele h t hz h1 h2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem section_statement : SecSt := by
   intro F E _ _ _ _ _ σ h v t
   refine ⟨⟨fun x => tensAt E v ((splitAlgEquiv h t).symm x), ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩,

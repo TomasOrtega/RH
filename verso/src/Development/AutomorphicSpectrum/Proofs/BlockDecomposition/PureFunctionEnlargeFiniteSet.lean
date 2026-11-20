@@ -11,10 +11,16 @@ namespace GlobalTheory.CompanionTheory.BasePsi.Integrals
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+The claim follows from `(measurePreserving_piUnique (fun _ : Unit => μ)).integral_comp' (f := MeasurableEquiv.piUnique _) h`.
+-/
 theorem integral_pi_unit {X : Type} [MeasurableSpace X] (μ : Measure X) [SigmaFinite μ] (h : X → ℝ) :
     ∫ y : Unit → X, h (y ()) ∂(Measure.pi fun _ : Unit => μ) = ∫ x, h x ∂μ :=
   (measurePreserving_piUnique (fun _ : Unit => μ)).integral_comp' (f := MeasurableEquiv.piUnique _) h
 
+/- English proof (translation)
+Set `e : R ≃ₜ R` to `{ toEquiv := Units.mulLeft b continuous_toFun := show Continuous fun x => (b : R) * x from continuous_const.mul continuous_id continuous_invFun := show Continuous fun x => ((b⁻¹ : Rˣ) : R) * x from continuous_const.mul continuous_id }`. Conclude with `(e.measurableEmbedding.integral_map (μ := μ) f).symm`.
+-/
 theorem integral_comp_unit_mul {R : Type} [Ring R] [TopologicalSpace R] [IsTopologicalRing R]
     [MeasurableSpace R] [BorelSpace R] (b : Rˣ) (μ : Measure R) (f : R → ℝ) :
     ∫ y, f ((b : R) * y) ∂μ = ∫ y, f y ∂(μ.map fun y => (b : R) * y) := by
@@ -35,15 +41,24 @@ def unitInf (a : (AF F)ˣ) : (Ainf F)ˣ where
     have h : (((a⁻¹ : (AF F)ˣ) : AF F) * (a : AF F)).1 = 1 := by simp; rfl
     exact h
 
+/- English proof (translation)
+Use `infer_instance`.
+-/
 theorem sigmaFinite_inf (li : Measure (Ainf F)) (h : li.IsAddHaarMeasure) : SigmaFinite li := by
   infer_instance
 
+/- English proof (translation)
+Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Use `haveI := PI.UnitaryGroupMassFormula.LocJacTyp.BM.secondCountable_Fv v`. Use `infer_instance`.
+-/
 theorem sigmaFinite_fin (v : HeightOneSpectrum (𝓞 F)) (l : Measure (Fv F v)) (h : l.IsAddHaarMeasure) :
     SigmaFinite l := by
   haveI : BorelSpace (Fv F v) := ⟨rfl⟩
   haveI := PI.UnitaryGroupMassFormula.LocJacTyp.BM.secondCountable_Fv v
   infer_instance
 
+/- English proof (translation)
+Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Establish `hn : 0 ≤ ‖((b⁻¹ : (Ainf F)ˣ) : Ainf F)‖`. Rewrite using `[InfiniteAdeleRing.norm_def]`. Conclude with `Finset.prod_nonneg fun w _ => pow_nonneg (norm_nonneg _) _`. Rewrite using `[integral_comp_unit_mul b li G, GlobalTheory.CompanionTheory.SW.ProdFormula.map_mul_left_infinite ⟨rfl⟩ b li h, integral_smul_measure, ENNReal.toReal_ofReal hn, smul_eq_mul]`.
+-/
 theorem integral_mul_inf (li : Measure (Ainf F)) (h : li.IsAddHaarMeasure) (b : (Ainf F)ˣ)
     (G : Ainf F → ℝ) :
     ∫ y, G ((b : Ainf F) * y) ∂li = ‖((b⁻¹ : (Ainf F)ˣ) : Ainf F)‖ * ∫ y, G y ∂li := by
@@ -54,6 +69,9 @@ theorem integral_mul_inf (li : Measure (Ainf F)) (h : li.IsAddHaarMeasure) (b : 
   rw [integral_comp_unit_mul b li G, GlobalTheory.CompanionTheory.SW.ProdFormula.map_mul_left_infinite ⟨rfl⟩ b li h,
     integral_smul_measure, ENNReal.toReal_ofReal hn, smul_eq_mul]
 
+/- English proof (translation)
+Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Establish `h1` using `integral_comp_unit_mul (Units.mk0 c hc) l f`. Simplify using `only [Units.val_mk0] at h1`. Rewrite using `[h1, GlobalTheory.CompanionTheory.SW.ProdFormula.map_mul_left_finite v c hc l h, integral_smul_nnreal_measure, NNReal.smul_def, smul_eq_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem integral_mul_fin (v : HeightOneSpectrum (𝓞 F)) (l : Measure (Fv F v))
     (h : l.IsAddHaarMeasure) (c : Fv F v) (hc : c ≠ 0) (f : Fv F v → ℝ) :
     ∫ y, f (c * y) ∂l = ‖c‖⁻¹ * ∫ y, f y ∂l := by
@@ -64,6 +82,11 @@ theorem integral_mul_fin (v : HeightOneSpectrum (𝓞 F)) (l : Measure (Fv F v))
     NNReal.smul_def, smul_eq_mul]
   simp
 
+/- English proof (translation)
+Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Establish `hO : MeasurableSet (v.adicCompletionIntegers F : Set (Fv F v))` using `(Valued.isOpen_valuationSubring _).measurableSet`. Establish `h0` using `integral_mul_fin v l h.1 c hc (fun s => if s ∈ v.adicCompletionIntegers F then (1 : ℝ) else 0)`. Establish `h1 : (fun s : Fv F v => if s ∈ v.adicCompletionIntegers F then (1 : ℝ) else 0) = (v.adicCompletionIntegers F : Set (Fv F v)).indicator 1`. Use extensionality with `s`.
+
+Simplify using `[Set.indicator]`. Establish `h2 : ∫ s, (if s ∈ v.adicCompletionIntegers F then (1 : ℝ) else 0) ∂l = 1`. Rewrite using `[h1, integral_indicator_one hO, Measure.real, h.2]`. Simplify using the standard rewrite rules. Rewrite using `[h0, h2, mul_one]`.
+-/
 theorem integral_ind (v : HeightOneSpectrum (𝓞 F)) (l : Measure (Fv F v)) (h : IsStdV v l)
     (c : Fv F v) (hc : c ≠ 0) :
     ∫ y, (if c * y ∈ v.adicCompletionIntegers F then (1 : ℝ) else 0) ∂l = ‖c‖⁻¹ := by
@@ -81,6 +104,11 @@ theorem integral_ind (v : HeightOneSpectrum (𝓞 F)) (l : Measure (Fv F v)) (h 
     simp
   rw [h0, h2, mul_one]
 
+/- English proof (translation)
+Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[InfiniteAdeleRing.norm_def, ← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_pow, ← norm_mul]`. Establish `h` using `IdeleGroup.infinite_mul_inv a w`.
+
+Establish `h' : ((a⁻¹ : (AF F)ˣ) : AF F).1 w * (a : AF F).1 w = 1` using `by rw [mul_comm]; exact h`. Establish `: (((unitInf a)⁻¹ : (Ainf F)ˣ) : Ainf F) w = ((a⁻¹ : (AF F)ˣ) : AF F).1 w` using `rfl`. Rewrite using `[this, h', norm_one, one_pow]`.
+-/
 theorem norm_unitInf_inv (a : (AF F)ˣ) :
     ‖(((unitInf a)⁻¹ : (Ainf F)ˣ) : Ainf F)‖ =
       (∏ w : InfinitePlace F, ‖(a : AF F).1 w‖ ^ w.mult)⁻¹ := by
@@ -93,6 +121,9 @@ theorem norm_unitInf_inv (a : (AF F)ˣ) :
   have : (((unitInf a)⁻¹ : (Ainf F)ˣ) : Ainf F) w = ((a⁻¹ : (AF F)ˣ) : AF F).1 w := rfl
   rw [this, h', norm_one, one_pow]
 
+/- English proof (translation)
+Rewrite using `[md, IdeleGroup.ideleModule_eq]`. Use `congr 1`. Use `finprod_eq_prod_of_mulSupport_subset _ fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hT`. Conclude with `hv (IdeleGroup.norm_eq_one_of_mul_eq_one (IdeleGroup.finite_mul_inv a v) (hoff v hT).1 (hoff v hT).2)`.
+-/
 theorem md_eq_of_off (a : (AF F)ˣ) (T : Finset (HeightOneSpectrum (𝓞 F)))
     (hoff : ∀ v, v ∉ T → (a : AF F).2 v ∈ v.adicCompletionIntegers F ∧
       ((a⁻¹ : (AF F)ˣ) : AF F).2 v ∈ v.adicCompletionIntegers F) :
@@ -104,6 +135,17 @@ theorem md_eq_of_off (a : (AF F)ˣ) (T : Finset (HeightOneSpectrum (𝓞 F)))
   exact hv (IdeleGroup.norm_eq_one_of_mul_eq_one (IdeleGroup.finite_mul_inv a v)
     (hoff v hT).1 (hoff v hT).2)
 
+/- English proof (translation)
+Introduce `F _ _ li lam hli hlam S T G g a hST hoff`. Use `haveI := sigmaFinite_inf li hli.1`. Establish `hI : ∫ y, phiA G a y ∂(Measure.pi fun _ : Unit => li) = ‖(((unitInf a)⁻¹ : (Ainf F)ˣ) : Ainf F)‖ * ∫ y, G y ∂li` using `(integral_pi_unit li (fun x => G ((a : AF F).1 * x))).trans (integral_mul_inf li hli.1 (unitInf a) G)`. Establish `hv : ∀ v, (a : AF F).2 v ≠ 0` using `IdeleGroup.finite_ne_zero a`. Establish `hP : ∀ v ∈ T, ∫ y, psiA S g a v y ∂(Measure.pi fun _ : Unit => lam v) = ‖(a : AF F).2 v‖⁻¹ * (if v ∈ S then ∫ s, g v s ∂(lam v) else 1)`.
+
+Introduce `v _`. Use `haveI := sigmaFinite_fin v (lam v) (hlam v).1`. Distinguish the cases in `hS : v ∈ S`. Establish `h1` using `integral_pi_unit (lam v) (fun x => g v ((a : AF F).2 v * x))`. Establish `h2` using `integral_mul_fin v (lam v) (hlam v).1 _ (hv v) (g v)`.
+
+Simplify using `only [psiA, hS, if_true]`. Rewrite using `[h1, h2]`. Establish `h1` using `integral_pi_unit (lam v) (fun x => if (a : AF F).2 v * x ∈ v.adicCompletionIntegers F then (1 : ℝ) else 0)`. Establish `h2` using `integral_ind v (lam v) (hlam v) _ (hv v)`. Simplify using `only [psiA, hS, if_false]`.
+
+Rewrite using `[h1, h2, mul_one]`. Establish `hS' : ∏ v ∈ T, (if v ∈ S then ∫ s, g v s ∂(lam v) else 1) = ∏ v ∈ S, ∫ s, g v s ∂(lam v)`. Use `symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hI, Finset.prod_congr rfl hP, Finset.prod_mul_distrib, hS', md_eq_of_off a T hoff, norm_unitInf_inv, mul_inv, Finset.prod_inv_distrib]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integrals_translates : ∀ (F : Type) [Field F] [NumberField F] (li : Measure (Ainf F)) (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)),
     IsStdInf li → (∀ v, IsStdV v (lam v)) → ∀ (S T : Finset (HeightOneSpectrum (𝓞 F))) (G : Ainf F → ℝ)
     (g : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ) (a : (AF F)ˣ), S ⊆ T →

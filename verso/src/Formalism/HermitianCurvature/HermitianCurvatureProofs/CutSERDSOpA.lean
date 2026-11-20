@@ -48,6 +48,9 @@ def RDSALoc : Prop :=
     (∀ c ∈ OmX r, f c = f' c) → ∀ c ∈ OmX r,
       (Q.vAB r y r).1 f c = (Q.vAB r y r).1 f' c ∧ (CutMP.vABm r y r).1 f c = (CutMP.vABm r y r).1 f' c
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hLoc r E y (fun c' => Φ c' g) (fun c' => Ψ c' g) (fun c' hc' => hΦΨ c' hc') c hc`. Simplify using `only [CutMP.dMul, Q.crd, Q.cmp, if_true]`. Conclude with `⟨by rw [h1], by rw [h2]⟩`.
+-/
 theorem rds_dMul_loc {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (hLoc : RDSALoc) (y : ℂ)
     (Φ Ψ : Fn k r E) (g : Mx k r) (hΦΨ : ∀ c ∈ OmX r, Φ c g = Ψ c g) (c : Fin r → ℂ) (hc : c ∈ OmX r) :
     CutMP.dMul (CutMP.drF r) (Q.crd (Q.cmp (Q.vAB r y r) 0) Φ) c g =
@@ -58,6 +61,11 @@ theorem rds_dMul_loc {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace 
   simp only [CutMP.dMul, Q.crd, Q.cmp, if_true]
   exact ⟨by rw [h1], by rw [h2]⟩
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD _ _ hz hz' hπ hπ' _ Y _ _ _ _`. Substitute `hz hz' hπ hπ'` using the available equality. Take `⟨hPl, -, hL, -⟩` from `hD`. Take `⟨Θ, Θv, ⟨o, κ, hpo⟩, hpv, hc, hcv, hres⟩` from `hG Wp Wq P D hPl Y`. Use `⟨Θ, hP P.k P.r Wp Wq D o κ Θ hpo hc, ?_⟩` and prove the remaining obligations.
+
+Introduce `J hJ Φ hΦ x hx`. Establish `e` using `congrFun (congrFun (hR Wp Wq P D.z D.z' D.π D.π' X L hL Y Φ).1 x.1) x.2`. Use `((hres J hJ x hx).1).trans (Eq.trans ?_ e.symm)` and prove the remaining obligations. Take `⟨hc1, hg1, hG1⟩` from `hx`. Conclude with `(rds_dMul_loc hLoc Y _ _ x.2 (fun c' hc' => (hΦ (c', x.2) ⟨hc', hg1, hG1⟩).symm) x.1 hc1).1`.
+-/
 theorem rDSOpA_of_parts (hP : RDSPolyProp) (hG : RDSAGrp) (hR : RDSARad) (hLoc : RDSALoc) : RDSOpA := by
   intro Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD _ _ hz hz' hπ hπ' _ Y _ _ _ _
   subst hz hz' hπ hπ'
@@ -71,6 +79,11 @@ theorem rDSOpA_of_parts (hP : RDSPolyProp) (hG : RDSAGrp) (hR : RDSARad) (hLoc :
   exact (rds_dMul_loc hLoc Y _ _ x.2
     (fun c' hc' => (hΦ (c', x.2) ⟨hc', hg1, hG1⟩).symm) x.1 hc1).1
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD _ _ hz hz' hπ hπ' _ Y _ _ _ _`. Substitute `hz hz' hπ hπ'` using the available equality. Take `⟨hPl, -, hL, -⟩` from `hD`. Take `⟨Θ, Θv, hpa, ⟨o, κ, hpo⟩, hca, hc, hres⟩` from `hG Wp Wq P D hPl (Y + 1)`. Use `⟨Θv, hP P.k P.r Wp Wq D o κ Θv hpo hc, ?_⟩` and prove the remaining obligations.
+
+Introduce `J hJ Φ hΦ x hx`. Establish `e` using `congrFun (congrFun (hR Wp Wq P D.z D.z' D.π D.π' X L hL (Y + 1) Φ).2 x.1) x.2`. Use `((hres J hJ x hx).2).trans (Eq.trans ?_ e.symm)` and prove the remaining obligations. Take `⟨hc1, hg1, hG1⟩` from `hx`. Conclude with `(rds_dMul_loc hLoc (Y + 1) _ _ x.2 (fun c' hc' => (hΦ (c', x.2) ⟨hc', hg1, hG1⟩).symm) x.1 hc1).2`.
+-/
 theorem rDSOpAv_of_parts (hP : RDSPolyProp) (hG : RDSAGrp) (hR : RDSARad) (hLoc : RDSALoc) : RDSOpAv := by
   intro Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 D hD _ _ hz hz' hπ hπ' _ Y _ _ _ _
   subst hz hz' hπ hπ'

@@ -22,6 +22,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
   GlobalTheory.FunObj.borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TwistedCosetSum.integral_eq_sum_twisted | exact GlobalTheory.TwistedCosetSum.integral_eq_sum_twisted | (intros; apply GlobalTheory.TwistedCosetSum.integral_eq_sum_twisted <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.integral_eq_volume_sum_characterTwistedCosets : ∀ {X : Type} [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X] [MeasurableSpace X] [OpensMeasurableSpace X]
     [MeasurableAdd X] (μ : Measure X) [μ.IsAddLeftInvariant] (U : AddSubgroup X), IsOpen (U : Set X) → μ (U : Set X) ≠ ⊤ →
     ∀ g : X → ℂ, HasCompactSupport g → (∀ y, ∀ u ∈ U, ∀ u' ∈ U, g (y + u + u') * g y = g (y + u) * g (y + u')) →

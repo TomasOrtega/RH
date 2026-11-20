@@ -24,6 +24,15 @@ namespace GlobalTheory.LevelCover
 
 variable {S : Scheme.{0}}
 
+/- English proof (translation)
+Use `hG.comm` as an intermediate fact. Take `⟨-, hfin, het⟩` from `GrpTangent.finiteEtale_mulN_torsion G hn`. Take `⟨a, ha, -⟩` from `LatticeTorsion.existsUnique_torsion G n x hx`. Take `⟨b, hb, -⟩` from `LatticeTorsion.existsUnique_torsion G n y hy`. Establish `hab : a.left ≫ (torsion G n).hom = b.left ≫ (torsion G n).hom` using `by rw [Over.w, Over.w]`.
+
+Establish `o` using `isOpenImmersion_equalizer_ι_of_unramified _ hab`. Establish `c` using `isClosedImmersion_equalizer_ι_of_isSeparated _ hab`. Use `⟨(equalizer.ι a.left b.left).opensRange, (equalizer.ι a.left b.left).isClosedEmbedding.isClosed_range, fun T' h => ⟨fun e => ?_, fun e => ?_⟩⟩` and prove the remaining obligations. Use `range_subset_range_equalizer_ι _ ?_` and prove the remaining obligations. Establish `hh : (h ≫ x) ^ n = 1` using `by rw [← MonObj.comp_pow, hx, MonObj.comp_one]`.
+
+Use `(LatticeTorsion.existsUnique_torsion G n (h ≫ x) hh).unique (y₁ := h ≫ a) (y₂ := h ≫ b) (by rw [Category.assoc, ha]) (by rw [Category.assoc, hb, e])` as an intermediate fact. Conclude with `congrArg (·.left) this`. Establish `: h ≫ a = h ≫ b`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Over.comp_left, ← IsOpenImmersion.lift_fac (equalizer.ι a.left b.left) h.left e, Category.assoc, Category.assoc, equalizer.condition]`.
+
+Rewrite using `[← ha, ← hb, ← Category.assoc, this, Category.assoc]`.
+-/
 theorem exists_clopen_eq (G : Over S) [GrpObj G] (hG : IsAbelianScheme G) (n : ℕ) (hn : IsUnit (n : Γ(S, ⊤)))
     {T : Over S} (x y : T ⟶ G) (hx : x ^ n = 1) (hy : y ^ n = 1) :
     ∃ U : T.left.Opens, IsClosed (U : Set T.left) ∧
@@ -56,10 +65,36 @@ def Good (P : Out.PolAV S) (g N' : ℕ) (c : Γ(S, ⊤)ˣ) (Q : Fin (2 * g) → 
     ∀ i j, Out.WeilIs P.A P.L (N' ^ 2 : ℕ) (p i) (p j)
       (Units.map T.hom.appTop.hom.toMonoidHom c ^ Out.stdSymp g i j)
 
+/- English proof (translation)
+The claim follows from `Units.ext (by rw [Scheme.Hom.comp_appTop]; rfl)`.
+-/
 theorem units_map_comp {X Y Z : Scheme.{0}} (f : X ⟶ Y) (h : Y ⟶ Z) (c : Γ(Z, ⊤)ˣ) :
     Units.map f.appTop.hom.toMonoidHom (Units.map h.appTop.hom.toMonoidHom c) =
       Units.map (f ≫ h).appTop.hom.toMonoidHom c := Units.ext (by rw [Scheme.Hom.comp_appTop]; rfl)
 
+/- English proof (translation)
+Use `P.isAb.comm` as an intermediate fact. Take `⟨-, hfin, het⟩` from `GrpTangent.finiteEtale_mulN_torsion P.A (hG := P.isAb) hu`. Set `Z` to `Out.powObj (torsion P.A (N' ^ 2)) (2 * g)`. Establish `zf : IsFinite Z.hom` using `LatticeTorsion.prop_powObj @IsFinite _ hfin _`. Establish `ze : Etale Z.hom` using `LatticeTorsion.prop_powObj @Etale _ het _`.
+
+Set `x : Fin (2 * g) → (Z ⟶ P.A)` to `fun i => Out.powPr (torsion P.A (N' ^ 2)) i ≫ torsion.ι P.A (N' ^ 2)`. Establish `hx : ∀ i, x i ^ (N' ^ 2) = 1` using `fun i => by`. Rewrite using `[← MonObj.comp_pow, LatticeTorsion.torsionι_pow_eq_one, MonObj.comp_one]`. Establish `hx' : ∀ {T : Over S} (h : T ⟶ Z) i, (h ≫ x i) ^ (N' ^ 2) = 1` using `fun h i => by`. Rewrite using `[← MonObj.comp_pow, hx, MonObj.comp_one]`.
+
+Establish `uZ : IsUnit ((N' ^ 2 : ℕ) : Γ(Z.left, ⊤))` using `by simpa using hu.map Z.hom.appTop.hom`. Use `choose U hU hU' using fun i => exists_clopen_eq P.A P.isAb (N' ^ 2) hu (x i ^ N') (toBaseOver Z ≫ Q i) (by rw [← pow_mul, Nat.mul_comm, pow_mul, hx, one_pow]) (by rw [← MonObj.comp_pow, sq, pow_mul, hQ, one_pow, MonObj.comp_one])`. Use `choose V hV hV' using fun i j => exists_clopen_weilIs_iff hL S P (N' ^ 2) Z (x i) (x j) (Units.map Z.hom.appTop.hom.toMonoidHom c ^ Out.stdSymp g i j) (pow_pos hN 2) uZ (hx i) (hx j) (by rw [← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, ← map_pow, hc, map_one, one …`. Establish `cl : IsClopen ((⋂ i, (U i : Set Z.left)) ∩ ⋂ i, ⋂ j, (V i j : Set Z.left))` using `(isClopen_iInter_of_finite fun i => ⟨hU i, (U i).isOpen⟩).inter (isClopen_iInter_of_finite fun i => isClopen_iInter_of_finite fun j => ⟨hV i j, (V i j).isOpen⟩)`. Set `W : Z.left.Opens` to `⟨_, cl.isOpen⟩`.
+
+Establish `key : ∀ (T : Over S) (h : T ⟶ Z), Good P g N' c Q T (fun i => h ≫ x i) ↔ Set.range h.left ⊆ W`. Introduce `T h`. Establish `e₁ : h ≫ toBaseOver Z = toBaseOver T` using `Over.OverMorphism.ext (Over.w h)`. Establish `e₂ : ∀ m : ℤ, Units.map h.left.appTop.hom.toMonoidHom (Units.map Z.hom.appTop.hom.toMonoidHom c ^ m) = Units.map T.hom.appTop.hom.toMonoidHom c ^ m` using `fun m => by`. Rewrite using `[map_zpow, units_map_comp, Over.w]`.
+
+Use `Iff.trans (and_iff_right (hx' h)) ?_` and prove the remaining obligations. Use `show _ ↔ _ ⊆ (⋂ i, (U i : Set Z.left)) ∩ ⋂ i, ⋂ j, (V i j : Set Z.left)`. Rewrite using `[Set.subset_inter_iff, Set.subset_iInter_iff, Set.subset_iInter_iff]`. Use `and_congr (forall_congr' fun i => ?_) (forall_congr' fun i => ?_)` and prove the remaining obligations. Rewrite using `[← hU', MonObj.comp_pow, ← e₁, Category.assoc]`.
+
+Rewrite using `[Set.subset_iInter_iff]`. Use `forall_congr' fun j => ?_` and prove the remaining obligations. Rewrite using `[← hV', e₂]`. Establish `ci : IsClosedImmersion W.ι` using `.of_isPreimmersion _ (by rw [Scheme.Opens.range_ι]; exact cl.isClosed)`. Set `w : Over.mk (W.ι ≫ Z.hom) ⟶ Z` to `Over.homMk W.ι rfl`.
+
+Use `⟨Over.mk (W.ι ≫ Z.hom), fun i => w ≫ x i, inferInstanceAs (IsFinite (W.ι ≫ Z.hom)), inferInstanceAs (Etale (W.ι ≫ Z.hom)), fun T h => ?_, fun T p' hp => ?_⟩` and prove the remaining obligations. Simplify using `only [← Category.assoc]`. Use `(key T (h ≫ w)).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`. Conclude with `(h.left t).2`.
+
+Use `choose y hy hyu using fun i => LatticeTorsion.existsUnique_torsion P.A (N' ^ 2) (p' i) (hp.1 i)`. Set `h : T ⟶ Z` to `(Out.powIsLimit (torsion P.A (N' ^ 2)) (2 * g)).lift (Fan.mk T y)`. Establish `hh : ∀ i, h ≫ Out.powPr (torsion P.A (N' ^ 2)) i = y i` using `fun i => (Out.powIsLimit (torsion P.A (N' ^ 2)) (2 * g)).fac (Fan.mk T y) ⟨i⟩`. Establish `hp' : ∀ i, h ≫ x i = p' i` using `fun i => by rw [← hy i, ← hh i, Category.assoc]`. Establish `hr : Set.range h.left ⊆ Set.range W.ι`.
+
+Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `(key T h).1 (by rw [funext hp']; exact hp)`. Set `k : T ⟶ Over.mk (W.ι ≫ Z.hom)` to `Over.homMk (IsOpenImmersion.lift W.ι h.left hr) (by show _ ≫ W.ι ≫ Z.hom = _`. Rewrite using `[← Category.assoc, IsOpenImmersion.lift_fac, Over.w])`. Establish `hk : k ≫ w = h` using `Over.OverMorphism.ext (IsOpenImmersion.lift_fac _ _ _)`.
+
+Use `⟨k, fun i => by rw [← Category.assoc, hk, hp'], fun k' hk' => ?_⟩` and prove the remaining obligations. Establish `: k' ≫ w = h`. Use `(Out.powIsLimit (torsion P.A (N' ^ 2)) (2 * g)).hom_ext fun ⟨i⟩ => ?_` and prove the remaining obligations. Use `(hyu i _ ?_).trans (hh i).symm` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((Category.assoc _ _ _).trans (hk' i))`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← cancel_mono W.ι]`. Conclude with `congrArg (·.left) (this.trans hk.symm)`.
+-/
 theorem exists_rep (hL : Out.Laws) (P : Out.PolAV S) (g N' : ℕ) (c : Γ(S, ⊤)ˣ)
     (Q : Fin (2 * g) → (Out.baseOver S ⟶ P.A)) (hN : 0 < N') (hu : IsUnit ((N' ^ 2 : ℕ) : Γ(S, ⊤)))
     (hc : c ^ (N' ^ 2) = 1) (hQ : ∀ i, Q i ^ N' = 1) :
@@ -130,6 +165,11 @@ theorem exists_rep (hL : Out.Laws) (P : Out.PolAV S) (g N' : ℕ) (c : Γ(S, ⊤
     rw [← cancel_mono W.ι]
     exact congrArg (·.left) (this.trans hk.symm)
 
+/- English proof (translation)
+Establish `: IsAffine Z.left` using `isAffine_of_isAffineHom Z.hom`. Set `φ : CommRingCat.of R ⟶ Γ(Z.left, ⊤)` to `Spec.preimage (Z.left.isoSpec.inv ≫ Z.hom)`. Establish `hφ : Spec.map φ = Z.left.isoSpec.inv ≫ Z.hom` using `Spec.map_preimage _`. Establish `h₁ : φ.hom.Finite` using `by rw [← IsFinite.SpecMap_iff, hφ]; infer_instance`. Establish `h₂ : φ.hom.Etale`.
+
+Rewrite using `[← HasRingHomProperty.Spec_iff (P := @Etale), hφ]`. Use `infer_instance`. Use `letI := φ.hom.toAlgebra`. Conclude with `⟨Γ(Z.left, ⊤), inferInstance, inferInstance, Z.left.isoSpec.symm, h₁, h₂, hφ.symm⟩`.
+-/
 theorem exists_spec {R : Type} [CommRing R] (Z : Over (Sp R)) [IsFinite Z.hom] [Etale Z.hom] :
     ∃ (R₁ : Type) (_ : CommRing R₁) (_ : Algebra R R₁) (e : Sp R₁ ≅ Z.left),
       Module.Finite R R₁ ∧ Algebra.Etale R R₁ ∧ e.hom ≫ Z.hom = spMap (algebraMap R R₁) := by
@@ -142,6 +182,13 @@ theorem exists_spec {R : Type} [CommRing R] (Z : Over (Sp R)) [IsFinite Z.hom] [
   letI := φ.hom.toAlgebra
   exact ⟨Γ(Z.left, ⊤), inferInstance, inferInstance, Z.left.isoSpec.symm, h₁, h₂, hφ.symm⟩
 
+/- English proof (translation)
+Use `P.isAb.comm` as an intermediate fact. Establish `pw : ∀ (x : Out.baseOver S' ⟶ G') (m : ℕ), pushPt h.1.w x ^ m = pushPt h.1.w (x ^ m)` using `fun x m => (map_pow (pushHom h _) x m).symm`. Establish `e : (Out.baseOver S').hom ≫ f = f` using `Category.id_comp _`. Use `and_congr (forall_congr' fun i => ?_) (and_congr (forall_congr' fun i => ?_) (forall_congr' fun i => forall_congr' fun j => ?_))` and prove the remaining obligations. Rewrite using `[pw]`.
+
+Establish `o : pushPt h.1.w (1 : Out.baseOver S' ⟶ G') = 1` using `map_one (pushHom h _)`. Conclude with `⟨fun e => SymBaseChange.pushPt_injective h (e.trans o.symm), fun e => by rw [e, o]⟩`. Rewrite using `[pw]`. Establish `e' : ((Out.baseOver S').hom ≫ f) ≫ (Q i).left = f ≫ (Q i).left` using `by rw [e]`. Conclude with `⟨fun a => (congrArg (·.left) a).trans e', fun a => Over.OverMorphism.ext (a.trans e'.symm)⟩`.
+
+Rewrite using `[weilIs_grpPullback_of_comm S S' P.A G' f φ P.L L' P.isLB hL' h hb (Out.baseOver S') _ (pt i) (pt j) (pushPt h.1.w (pt i)) (pushPt h.1.w (pt j)) _ rfl rfl]`. Establish `e' : Units.map ((Out.baseOver S').hom ≫ f).appTop.hom.toMonoidHom c = Units.map f.appTop.hom.toMonoidHom c` using `by rw [e]`. Conclude with `iff_of_eq (congrArg (fun u => Out.WeilIs P.A P.L (N' ^ 2 : ℕ) _ _ (u ^ Out.stdSymp g i j)) e')`.
+-/
 theorem good_push_iff {S' : Scheme.{0}} (P : Out.PolAV S) (g N' : ℕ) (c : Γ(S, ⊤)ˣ)
     (Q : Fin (2 * g) → (Out.baseOver S ⟶ P.A)) {G' : Over S'} [GrpObj G'] {f : S' ⟶ S} {φ : G'.left ⟶ P.A.left}
     (h : IsGrpPullback G' P.A f φ) {L' : LB G'.left} (hL' : L'.IsLB) (hb : LBIso L' (P.L.pull φ))
@@ -168,14 +215,31 @@ theorem good_push_iff {S' : Scheme.{0}} (P : Out.PolAV S) (g N' : ℕ) (c : Γ(S
       Units.map f.appTop.hom.toMonoidHom c := by rw [e]
     exact iff_of_eq (congrArg (fun u => Out.WeilIs P.A P.L (N' ^ 2 : ℕ) _ _ (u ^ Out.stdSymp g i j)) e')
 
+/- English proof (translation)
+The claim follows from `(units_map_comp f s _).symm`.
+-/
 theorem unitS_comp {o : Type} [CommRing o] {S' : Scheme.{0}} (f : S' ⟶ S) (s : S ⟶ Sp o) (u : oˣ) :
     unitS (f ≫ s) u = Units.map f.appTop.hom.toMonoidHom (unitS s u) :=
   (units_map_comp f s _).symm
 
+/- English proof (translation)
+The claim follows from `Units.ext (congrArg (fun k => k.hom (u : o)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom β))).symm`.
+-/
 theorem unitS_spMap {o R : Type} [CommRing o] [CommRing R] (β : o →+* R) (u : oˣ) :
     unitS (spMap β) u = unitOn (Units.map β.toMonoidHom u) :=
   Units.ext (congrArg (fun k => k.hom (u : o)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom β))).symm
 
+/- English proof (translation)
+Use `P.isAb.comm` as an intermediate fact. Establish `: NeZero k` using `⟨hk⟩`. Establish `cm : ∀ a a' : Over.mk x ⟶ P.A, Commute a a'` using `fun a a' => _root_.mul_comm a a'`. Set `u : Over.mk x ⟶ Out.baseOver S` to `Over.homMk x (by simp)`. Establish `tor : ∀ i, (u ≫ pt i) ^ k = 1` using `fun i => by rw [← MonObj.comp_pow, ht, MonObj.comp_one]`.
+
+Take `⟨β, hβ⟩ : ∃ β : o →+* K, spMap β = x ≫ s` from `⟨(Spec.preimage (x ≫ s)).hom, Spec.map_preimage _⟩`. Establish `hK : (k : K) ≠ 0` using `by simpa using (b.unit.map β).ne_zero`. Establish `prim : IsPrimitiveRoot (Units.map x.appTop.hom.toMonoidHom (unitS s b.ζ)) k`. Rewrite using `[← unitS_comp, ← hβ, unitS_spMap, ← IsPrimitiveRoot.coe_units_iff]`. Conclude with `(b.prim K β).map_of_injective (f := (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom) (Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.symm.injective`.
+
+Take `⟨hu, hm, -⟩` from `hL.weil S P k (Over.mk x)`. Establish `ind` using `LevelOfPairing.injective_comb (R := fun a b u => Out.WeilIs P.A P.L k a b u) cm hu hm prim _ tor (fun i j => (map_zpow (Units.map x.appTop.hom.toMonoidHom) (unitS s b.ζ) _) ▸ CommPairing.weilIs_pull hL.globalFns P.isAb P.isLB u (hp i j))`. Take `⟨c, hc⟩` from `LevelOfPairing.surjective_comb cm hk _ tor (hg ▸ (hL.mulN S P k (Nat.one_le_iff_ne_zero.2 hk)).2.2.2.2 K x hK) ind y hy`. Establish `v : ∀ i, (((c i : ℕ) : ZMod k)).val = c i` using `fun i => ZMod.val_cast_of_lt (c i).2`. Use `⟨fun i => ((c i : ℕ) : ZMod k), ?_, fun c' hc' => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [v]`. Conclude with `hc`. Use `ind (fun i => ⟨(c' i).val, ZMod.val_lt _⟩) c (hc'.trans hc.symm)` as an intermediate fact. Use function extensionality and compare the values at `i`. Rewrite using `[← this]`.
+
+Conclude with `(ZMod.natCast_zmod_val _).symm`.
+-/
 theorem existsUnique_comb (hL : Out.Laws) [IsLocallyNoetherian S] {o : Type} [CommRing o] {k : ℕ} (hk : k ≠ 0)
     (b : TBase o k) (s : S ⟶ Sp o) (P : Out.PolAV S) {g : ℕ} (hg : P.g = g)
     (pt : Fin (2 * g) → (Out.baseOver S ⟶ P.A)) (ht : ∀ i, pt i ^ k = 1)
@@ -209,6 +273,9 @@ theorem existsUnique_comb (hL : Out.Laws) [IsLocallyNoetherian S] {o : Type} [Co
     rw [← this]
     exact (ZMod.natCast_zmod_val _).symm
 
+/- English proof (translation)
+The claim follows from `c.trans h₂ (pull_isLB hL _) (pull_isLB h₁ _) (LBIso.chartPull (chartPullSame L (fun _ : PUnit => ψ) (fun _ => ψ₁) (fun _ => 1) φ fun _ => e.symm) (chartPullPull L₁ φ φ rfl) a.symm)`.
+-/
 theorem lbIso_cancel {X Y Z : Scheme.{0}} {L : LB X} {L₁ : LB Y} {L₂ : LB Z} (hL : L.IsLB) (h₁ : L₁.IsLB)
     (h₂ : L₂.IsLB) {ψ₁ : Y ⟶ X} {φ : Z ⟶ Y} {ψ : Z ⟶ X} (e : φ ≫ ψ₁ = ψ) (a : LBIso L₁ (L.pull ψ₁))
     (c : LBIso L₂ (L.pull ψ)) : LBIso L₂ (L₁.pull φ) :=
@@ -222,6 +289,31 @@ namespace GlobalTheory
 
 open LevelCover in
 
+/- English proof (translation)
+Introduce `hL _ o _ g N' J b R _ _ β P act Q hN hζ ⟨hg, hact, hQ, _⟩`. Establish `hu : IsUnit ((N' ^ 2 : ℕ) : Γ(Sp R, ⊤))`. Simplify using `using (b.unit.map β).map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom`. Establish `hc : unitS (spMap β) b.ζ ^ (N' ^ 2) = 1`. Establish `: Units.map β.toMonoidHom b.ζ ^ (N' ^ 2) = 1` using `Units.ext hζ`.
+
+Rewrite using `[unitS_spMap, unitOn, ← map_pow, this, map_one]`. Take `⟨Z, p, zf, ze, good, rep⟩` from `exists_rep hL P g N' (unitS (spMap β) b.ζ) Q hN hu hc hQ`. Take `⟨R₁, _, _, e, fin, et, he⟩` from `exists_spec Z`. Establish `: IsNoetherianRing R₁` using `IsNoetherianRing.of_finite R R₁`. Take `⟨P₁, ψ₁, hψ, hg₁, hm, w, hw⟩` from `hL.polBaseChange _ _ (spMap (algebraMap R R₁)) P`.
+
+Establish `hp : IsGrpPullback P₁.A P.A (spMap (algebraMap R R₁)) ψ₁` using `⟨hψ, fun T x y x₀ y₀ hx hy => by`. Rewrite using `[(Over.OverMorphism.ext hx : x₀ = Out.toBase hψ.w x), (Over.OverMorphism.ext hy : y₀ = Out.toBase hψ.w y), ← hm]`. Use the proof step `rfl⟩`. Establish `hb : LBIso P₁.L (P.L.pull ψ₁)` using `LBIso.symm ⟨w, hw⟩`. Set `pt : Fin (2 * g) → (Out.baseOver (Sp R₁) ⟶ P₁.A)` to `fun i => Over.homMk (hψ.lift (e.hom ≫ (p i).left) (𝟙 _) (by rw [Category.assoc, Over.w, he, Category.id_comp])) (hψ.lift_snd _ _ _)`.
+
+Establish `hpt : ∀ i, (pt i).left ≫ ψ₁ = e.hom ≫ (p i).left` using `fun i => hψ.lift_fst _ _ _`. Set `h₁ : Over.mk ((Out.baseOver (Sp R₁)).hom ≫ spMap (algebraMap R R₁)) ⟶ Z` to `Over.homMk e.hom (he.trans (Category.id_comp _).symm)`. Establish `g₁` using `good _ h₁`. Rewrite using `[show (fun i => h₁ ≫ p i) = fun i => pushPt hp.1.w (pt i) from`. Use function extensionality and compare the values at `fun i => Over.OverMorphism.ext (hpt i).symm, good_push_iff P g N' _ Q hp P₁.isLB hb,`.
+
+Use the proof step `← unitS_comp] at g₁`. Take `⟨tor, lab, pair⟩` from `g₁`. Use `choose act₁ hom₁ ha₁ using fun j => @SymBaseChange.exists_endo _ _ _ _ _ _ _ _ hp (act j) (hact j)`. Establish `ha : ∀ j, (act₁ j).left ≫ ψ₁ = ψ₁ ≫ (act j).left` using `fun j => by`. Use `congrArg (·.left) (ha₁ j (𝟙 _))` as an intermediate fact.
+
+Simplify `this` using `[pushPt]`. Set `t₁ : TObj g (N' ^ 2) J b (spMap (algebraMap R R₁) ≫ spMap β)` to `{ A := P₁.A, ab := P₁.isAb, dim := by rw [← hg, ← hg₁]; exact P₁.smoothDim L := P₁.L, isLB := P₁.isLB, rigid := P₁.rigid, sym := P₁.sym, ample := P₁.ample, ktriv := P₁.ktriv pt := pt, torsion := tor bij := existsUnique_comb hL (pow_pos hN 2).ne' b _ P₁ (hg₁.trans hg) pt tor pair …`. Use `⟨R₁, inferInstance, inferInstance, t₁, ψ₁, fin, et, ⟨hp, hb, ha, lab⟩, fun R' _ y t' ψ ⟨hp', hb', ha', lab'⟩ => ?_⟩` and prove the remaining obligations. Take `⟨h, hh, hu⟩` from `rep _ _ ((good_push_iff P g N' (unitS (spMap β) b.ζ) Q hp' t'.isLB hb' t'.pt).2 ⟨t'.torsion, lab', fun i j => by rw [← unitS_comp]; exact t'.pairing i j⟩)`. Take `⟨y₁, hy₁⟩ : ∃ y₁ : R₁ →+* R', spMap y₁ = h.left ≫ e.inv` from `⟨(Spec.preimage (h.left ≫ e.inv)).hom, Spec.map_preimage _⟩`.
+
+Establish `sc : ∀ z : R₁ →+* R', spMap (z.comp (algebraMap R R₁)) = spMap z ≫ spMap (algebraMap R R₁)` using `fun z => Spec.map_comp (CommRingCat.ofHom (algebraMap R R₁)) (CommRingCat.ofHom z)`. Establish `inj : ∀ {A : Type} [CommRing A] {z z' : A →+* R'}, spMap z = spMap z' → z = z'` using `fun e => congrArg (·.hom) (Spec.map_injective e)`. Establish `base : spMap y₁ ≫ spMap (algebraMap R R₁) = spMap y`. Rewrite using `[hy₁, ← he, Category.assoc, e.inv_hom_id_assoc, Over.w h]`. Conclude with `Category.id_comp _`.
+
+Establish `pts : ∀ i, (t'.pt i).left ≫ ψ = spMap y₁ ≫ (pt i).left ≫ ψ₁` using `fun i => by`. Rewrite using `[hpt, hy₁, Category.assoc, e.inv_hom_id_assoc]`. Conclude with `(congrArg (·.left) (hh i)).symm`. Set `φ : t'.A.left ⟶ P₁.A.left` to `hψ.lift ψ (t'.A.hom ≫ spMap y₁) (by rw [hp'.1.w, Category.assoc, base])`. Establish `φ₁ : φ ≫ ψ₁ = ψ` using `hψ.lift_fst _ _ _`.
+
+Establish `φ₂ : φ ≫ P₁.A.hom = t'.A.hom ≫ spMap y₁` using `hψ.lift_snd _ _ _`. Use `⟨y₁, ⟨inj ((sc _).trans base), pts, φ, hp.cancel (hp'.congr base.symm φ₁.symm) φ₂, lbIso_cancel P.isLB P₁.isLB t'.isLB φ₁ hb hb', fun i => hψ.hom_ext ?_ ?_, fun j => hψ.hom_ext ?_ ?_⟩, fun y₂ ⟨b₂, p₂, _⟩ => inj ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, φ₁, pts, Category.assoc]`. Use `show (_ ≫ φ) ≫ _ = (_ ≫ (pt i).left) ≫ _`. Rewrite using `[Category.assoc, φ₂, ← Category.assoc, Over.w, Category.assoc, Over.w]`.
+
+Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`. Use `show (_ ≫ φ) ≫ _ = (φ ≫ (act₁ j).left) ≫ _`. Rewrite using `[Category.assoc, φ₁, ha', Category.assoc, ha, ← Category.assoc, φ₁]`. Use `show (_ ≫ φ) ≫ _ = (φ ≫ (act₁ j).left) ≫ _`. Rewrite using `[Category.assoc, φ₂, ← Category.assoc, Over.w, Category.assoc, Over.w, φ₂]`.
+
+Set `h₂ : Over.mk ((Out.baseOver (Sp R')).hom ≫ spMap y) ⟶ Z` to `Over.homMk (spMap y₂ ≫ e.hom) (by show (_ ≫ _) ≫ _ = 𝟙 _ ≫ _`. Rewrite using `[Category.assoc, he, ← sc, b₂, Category.id_comp])`. Establish `: h₂ = h` using `hu h₂ fun i => Over.OverMorphism.ext (by show (spMap y₂ ≫ e.hom) ≫ _ = (t'.pt i).left ≫ ψ`. Rewrite using `[p₂, Category.assoc, ← hpt])`. Rewrite using `[hy₁, ← this]`.
+
+Use `show _ = (spMap y₂ ≫ e.hom) ≫ e.inv`. Rewrite using `[Category.assoc, e.hom_inv_id, Category.comp_id]`.
+-/
 theorem exists_finiteEtale_level_cover_of_pow_eq_one : Out.Laws → Out.Laws2 → ∀ (o : Type) [CommRing o] (g N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) (R : Type) [CommRing R] [IsNoetherianRing R] (β : o →+* R) (P : Out.PolAV (Sp R)) (act : J → (P.A ⟶ P.A)) (Q : Fin (2 * g) → (Out.baseOver (Sp R) ⟶ P.A)), 0 < N' → β b.ζ ^ (N' ^ 2) = 1 → (P.g = g ∧ (∀ i, IsMonHom (act i)) ∧ (∀ i, Q i ^ N' = 1) ∧ (∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ Sp R) (y : Over.mk x ⟶ P.A), y ^ N' = 1 → ∃! c : Ix g N', Out.linComb (fun i => (Over.homMk x (by simp) : Over.mk x ⟶ Out.baseOver (Sp R)) ≫ Q i) (fun i => (c i).val) = y)) → ∃ (R₁ : Type) (_ : CommRing R₁) (_ : Algebra R R₁) (t₁ : TObj g (N' ^ 2) J b (spMap (algebraMap R R₁) ≫ spMap β)) (ψ₁ : t₁.A.left ⟶ P.A.left), Module.Finite R R₁ ∧ Algebra.Etale R R₁ ∧ (IsGrpPullback t₁.A P.A (spMap (algebraMap R R₁)) ψ₁ ∧ LBIso t₁.L (P.L.pull ψ₁) ∧ (∀ i, (t₁.act i).left ≫ ψ₁ = ψ₁ ≫ (act i).left) ∧ ∀ i, (t₁.pt i ^ N').left ≫ ψ₁ = (spMap (algebraMap R R₁)) ≫ (Q i).left) ∧ ∀ (R' : Type) [CommRing R'] (y : R →+* R') (t' : TObj g (N' ^ 2) J b (spMap y ≫ spMap β)) (ψ : t'.A.left ⟶ P.A.left), (IsGrpPullback t'.A P.A (spMap y) ψ ∧ LBIso t'.L (P.L.pull ψ) ∧ (∀ i, (t'.act i).left ≫ ψ = ψ ≫ (act i).left) ∧ ∀ i, (t'.pt i ^ N').left ≫ ψ = (spMap y) ≫ (Q i).left) → ∃! y₁ : R₁ →+* R', y₁.comp (algebraMap R R₁) = y ∧ (∀ i, (t'.pt i).left ≫ ψ = spMap y₁ ≫ (t₁.pt i).left ≫ ψ₁) ∧ TMap t' t₁ (spMap y₁) := by
   intro hL _ o _ g N' J b R _ _ β P act Q hN hζ ⟨hg, hact, hQ, _⟩
   have hu : IsUnit ((N' ^ 2 : ℕ) : Γ(Sp R, ⊤)) := by
@@ -299,6 +391,11 @@ theorem exists_finiteEtale_level_cover_of_pow_eq_one : Out.Laws → Out.Laws2 �
     show _ = (spMap y₂ ≫ e.hom) ≫ e.inv
     rw [Category.assoc, e.hom_inv_id, Category.comp_id]
 
+/- English proof (translation)
+Introduce `hL hL₂ o _ g N' J b R _ _ _ β P act Q hN`. Use `exists_finiteEtale_level_cover_of_pow_eq_one hL hL₂ o g N' J b R β P act Q hN ?_` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use `IsNilpotent.eq_zero (nilpotent_iff_mem_prime.2 fun q hq => ?_)` and prove the remaining obligations. Set `π : R →+* FractionRing (R ⧸ q)` to `(algebraMap (R ⧸ q) _).comp (Ideal.Quotient.mk q)`.
+
+Establish `h : π (β b.ζ ^ (N' ^ 2) - 1) = 0`. Rewrite using `[map_sub, map_pow, map_one, sub_eq_zero]`. Conclude with `(b.prim _ (π.comp β)).pow_eq_one`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 ((IsFractionRing.to_map_eq_zero_iff (K := FractionRing (R ⧸ q))).1 h)`.
+-/
 theorem exists_finiteEtale_level_cover : Out.Laws → Out.Laws2 → ∀ (o : Type) [CommRing o] (g N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) (R : Type) [CommRing R] [IsNoetherianRing R] [IsReduced R] (β : o →+* R) (P : Out.PolAV (Sp R)) (act : J → (P.A ⟶ P.A)) (Q : Fin (2 * g) → (Out.baseOver (Sp R) ⟶ P.A)), 0 < N' → (P.g = g ∧ (∀ i, IsMonHom (act i)) ∧ (∀ i, Q i ^ N' = 1) ∧ (∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ Sp R) (y : Over.mk x ⟶ P.A), y ^ N' = 1 → ∃! c : Ix g N', Out.linComb (fun i => (Over.homMk x (by simp) : Over.mk x ⟶ Out.baseOver (Sp R)) ≫ Q i) (fun i => (c i).val) = y)) → ∃ (R₁ : Type) (_ : CommRing R₁) (_ : Algebra R R₁) (t₁ : TObj g (N' ^ 2) J b (spMap (algebraMap R R₁) ≫ spMap β)) (ψ₁ : t₁.A.left ⟶ P.A.left), Module.Finite R R₁ ∧ Algebra.Etale R R₁ ∧ (IsGrpPullback t₁.A P.A (spMap (algebraMap R R₁)) ψ₁ ∧ LBIso t₁.L (P.L.pull ψ₁) ∧ (∀ i, (t₁.act i).left ≫ ψ₁ = ψ₁ ≫ (act i).left) ∧ ∀ i, (t₁.pt i ^ N').left ≫ ψ₁ = (spMap (algebraMap R R₁)) ≫ (Q i).left) ∧ ∀ (R' : Type) [CommRing R'] (y : R →+* R') (t' : TObj g (N' ^ 2) J b (spMap y ≫ spMap β)) (ψ : t'.A.left ⟶ P.A.left), (IsGrpPullback t'.A P.A (spMap y) ψ ∧ LBIso t'.L (P.L.pull ψ) ∧ (∀ i, (t'.act i).left ≫ ψ = ψ ≫ (act i).left) ∧ ∀ i, (t'.pt i ^ N').left ≫ ψ = (spMap y) ≫ (Q i).left) → ∃! y₁ : R₁ →+* R', y₁.comp (algebraMap R R₁) = y ∧ (∀ i, (t'.pt i).left ≫ ψ = spMap y₁ ≫ (t₁.pt i).left ≫ ψ₁) ∧ TMap t' t₁ (spMap y₁) := by
   intro hL hL₂ o _ g N' J b R _ _ _ β P act Q hN
   refine exists_finiteEtale_level_cover_of_pow_eq_one hL hL₂ o g N' J b R β P act Q hN ?_

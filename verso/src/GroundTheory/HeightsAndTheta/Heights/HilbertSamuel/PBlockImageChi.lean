@@ -22,10 +22,16 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintyp
 def blockSubst (k₀ : K) (N : Matrix (ι k₀) (Ix (Fin r)) ℤ) : (Σ k, ι k) → MvPolynomial (Ix (Fin r)) ℤ :=
   fun p => if h : p.1 = k₀ then ∑ j, C (N (h ▸ p.2) j) * X j else 0
 
+/- English proof (translation)
+Simplify using `[blockSubst]`.
+-/
 theorem blockSubst_block (k₀ : K) (N : Matrix (ι k₀) (Ix (Fin r)) ℤ) (i : ι k₀) :
     blockSubst k₀ N ⟨k₀, i⟩ = ∑ j, C (N i j) * X j := by
   simp [blockSubst]
 
+/- English proof (translation)
+Unfold `blockSubst`. Use `split_ifs`. Conclude with `IsHomogeneous.sum _ _ _ fun j _ => (isHomogeneous_X ℤ j).C_mul _`. Conclude with `isHomogeneous_zero _ _ _`.
+-/
 theorem isHomogeneous_blockSubst (k₀ : K) (N : Matrix (ι k₀) (Ix (Fin r)) ℤ) (p : Σ k, ι k) :
     (blockSubst k₀ N p).IsHomogeneous 1 := by
   unfold blockSubst
@@ -40,6 +46,9 @@ def fwdQ (k₀ : K) (N : Matrix (ι k₀) (Ix (Fin r)) ℤ) :
     MvPolynomial (Σ k, ι k) ℚ →ₐ[ℚ] MvPolynomial (Ix (Fin r)) ℚ :=
   bind₁ fun p => map (Int.castRingHom ℚ) (blockSubst k₀ N p)
 
+/- English proof (translation)
+Rewrite using `[fwd, fwdQ, map_bind₁]`.
+-/
 theorem fwdQ_map (k₀ : K) (N : Matrix (ι k₀) (Ix (Fin r)) ℤ) (f : MRing ι) :
     fwdQ k₀ N (map (Int.castRingHom ℚ) f) = map (Int.castRingHom ℚ) (fwd k₀ N f) := by
   rw [fwd, fwdQ, map_bind₁]
@@ -51,10 +60,16 @@ def backQ (k₀ : K) (M : Matrix (Ix (Fin r)) (ι k₀) ℤ) :
     MvPolynomial (Ix (Fin r)) ℚ →ₐ[ℚ] MvPolynomial (Σ k, ι k) ℚ :=
   bind₁ fun j => map (Int.castRingHom ℚ) (blockForms k₀ M j)
 
+/- English proof (translation)
+Rewrite using `[back, backQ, map_bind₁]`.
+-/
 theorem backQ_map (k₀ : K) (M : Matrix (Ix (Fin r)) (ι k₀) ℤ) (g : MvPolynomial (Ix (Fin r)) ℤ) :
     backQ k₀ M (map (Int.castRingHom ℚ) g) = map (Int.castRingHom ℚ) (back k₀ M g) := by
   rw [back, backQ, map_bind₁]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `h` using `hf c (mem_support_iff.mpr hc) p.1`. Rewrite `h` using `[blockDeg, if_neg hne, Finset.sum_eq_zero_iff]`. Conclude with `(Finsupp.mem_support_iff.mp hp) (h p.2 (Finset.mem_univ _))`.
+-/
 theorem fst_eq_of_mem_support {f : MRing ι} {k₀ : K} {n : ℕ} (hf : IsMultiHomog f (blockDeg k₀ n))
     {c : (Σ k, ι k) →₀ ℕ} (hc : coeff c f ≠ 0) {p : Σ k, ι k} (hp : p ∈ c.support) : p.1 = k₀ := by
   by_contra hne
@@ -62,6 +77,9 @@ theorem fst_eq_of_mem_support {f : MRing ι} {k₀ : K} {n : ℕ} (hf : IsMultiH
   rw [blockDeg, if_neg hne, Finset.sum_eq_zero_iff] at h
   exact (Finsupp.mem_support_iff.mp hp) (h p.2 (Finset.mem_univ _))
 
+/- English proof (translation)
+Introduce `c hc`. Establish `h` using `hf c (mem_support_iff.mpr hc)`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Fintype.sum_sigma]`. Simplify using `only [Pi.one_apply, smul_eq_mul, mul_one, h, blockDeg, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+-/
 theorem isHomogeneous_of_blockDeg {f : MRing ι} {k₀ : K} {n : ℕ} (hf : IsMultiHomog f (blockDeg k₀ n)) :
     f.IsHomogeneous n := by
   intro c hc
@@ -69,6 +87,9 @@ theorem isHomogeneous_of_blockDeg {f : MRing ι} {k₀ : K} {n : ℕ} (hf : IsMu
   rw [Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Fintype.sum_sigma]
   simp only [Pi.one_apply, smul_eq_mul, mul_one, h, blockDeg, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Use `(isHomogeneous_of_blockDeg hf).aeval (blockSubst k₀ N) (isHomogeneous_blockSubst k₀ N)` as an intermediate fact. Rewrite `this` using `[one_mul, aeval_eq_bind₁]`. Conclude with `this`.
+-/
 theorem isHomogeneous_fwd (k₀ : K) (N : Matrix (ι k₀) (Ix (Fin r)) ℤ) {f : MRing ι} {n : ℕ}
     (hf : IsMultiHomog f (blockDeg k₀ n)) : (fwd k₀ N f).IsHomogeneous n := by
   have := (isHomogeneous_of_blockDeg hf).aeval (blockSubst k₀ N) (isHomogeneous_blockSubst k₀ N)
@@ -77,6 +98,9 @@ theorem isHomogeneous_fwd (k₀ : K) (N : Matrix (ι k₀) (Ix (Fin r)) ℤ) {f 
 
 def wB : (Σ k, ι k) → (K → ℕ) := fun p => Pi.single p.1 1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply, Fintype.sum_sigma, Finset.sum_eq_single k (fun k' _ hk' => ?_) (by simp)]`. Simplify using `[wB]`. Simplify using `[wB, Ne.symm hk']`.
+-/
 theorem weight_wB (c : (Σ k, ι k) →₀ ℕ) : Finsupp.weight wB c = fun k => ∑ i, c ⟨k, i⟩ := by
   funext k
   rw [Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply, Fintype.sum_sigma,
@@ -84,6 +108,11 @@ theorem weight_wB (c : (Σ k, ι k) →₀ ℕ) : Finsupp.weight wB c = fun k =>
   · simp [wB]
   · simp [wB, Ne.symm hk']
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h c hc`. Rewrite using `[weight_wB]`. Use function extensionality and compare the values at `k`. Conclude with `h c (mem_support_iff.mpr hc) k`.
+
+Introduce `h c hc k`. Use `h (mem_support_iff.mp hc)` as an intermediate fact. Rewrite `this` using `[weight_wB]`. Conclude with `congrFun this k`.
+-/
 theorem isMultiHomog_iff_wB (f : MRing ι) (a : K → ℕ) :
     IsMultiHomog f a ↔ IsWeightedHomogeneous wB f a := by
   constructor
@@ -96,6 +125,15 @@ theorem isMultiHomog_iff_wB (f : MRing ι) (a : K → ℕ) :
     rw [weight_wB] at this
     exact congrFun this k
 
+/- English proof (translation)
+Establish `hbf : ∀ j, IsWeightedHomogeneous wB (blockForms k₀ M j) (Pi.single k₀ 1)` using `fun j => IsWeightedHomogeneous.sum _ _ _ fun i _ => (isWeightedHomogeneous_X ℤ wB (⟨k₀, i⟩ : Σ k, ι k)).C_mul _`. Rewrite using `[isMultiHomog_iff_wB, show blockDeg k₀ n = n • Pi.single k₀ 1 by`. Apply the tactic sequence `funext k; by_cases hk : k = k₀ <;> simp [blockDeg, hk]]`. Rewrite using `[back, ← aeval_eq_bind₁, aeval_def]`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises.
+
+Introduce `d hd`. Rewrite using `[← zero_add (n • Pi.single k₀ 1)]`. Apply `IsWeightedHomogeneous.mul (by rw [MvPolynomial.algebraMap_eq]; exact isWeightedHomogeneous_C _ _)` to reduce the goal to its premises. Rewrite `hd` using `[Finsupp.mem_support_iff]`. Establish `hn : ∑ j ∈ d.support, d j = n`.
+
+Use `hg hd` as an intermediate fact. Rewrite `this` using `[Finsupp.weight_apply]`. Simplify `this` using `[Finsupp.sum]`. Establish `hp` using `IsWeightedHomogeneous.prod d.support (fun j => blockForms k₀ M j ^ d j) (fun j => d j • Pi.single k₀ 1) fun j _ => (hbf j).pow (d j)`. Rewrite `hp` using `[← Finset.sum_smul, hn]`.
+
+Conclude with `hp`.
+-/
 theorem isMultiHomog_back (k₀ : K) (M : Matrix (Ix (Fin r)) (ι k₀) ℤ) {g : MvPolynomial (Ix (Fin r)) ℤ} {n : ℕ}
     (hg : g.IsHomogeneous n) : IsMultiHomog (back k₀ M g) (blockDeg k₀ n) := by
   have hbf : ∀ j, IsWeightedHomogeneous wB (blockForms k₀ M j) (Pi.single k₀ 1) := fun j =>
@@ -124,11 +162,19 @@ section Values
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)] {r : ℕ}
   {Ω : Type} [Field Ω] [CharZero Ω]
 
+/- English proof (translation)
+Establish `: Int.castRingHom ℚ = algebraMap ℤ ℚ` using `RingHom.ext_int _ _`. Rewrite using `[this, aeval_map_algebraMap]`.
+-/
 theorem aeval_mapQ {J : Type} (v : J → Ω) (f : MvPolynomial J ℤ) :
     aeval v (map (Int.castRingHom ℚ) f) = aeval v f := by
   have : Int.castRingHom ℚ = algebraMap ℤ ℚ := RingHom.ext_int _ _
   rw [this, aeval_map_algebraMap]
 
+/- English proof (translation)
+Establish `e : ∀ g : MRing ι, eval (fun _ : K => (1 : Ω)) (mConeMap y g) = aeval y g`. Introduce `g`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp [mConeMap]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, hp, hq]`.
+
+Consider the case `mul_X p i hp => rw [map_mul, map_mul, map_mul, hp]`. Simplify using `[mConeMap]`. Rewrite `hg` using `[mCoordIdeal, RingHom.mem_ker]`. Rewrite using `[← e, hg, map_zero]`.
+-/
 theorem aeval_eq_zero_of_mem {y : (Σ k, ι k) → Ω} {g : MRing ι} (hg : g ∈ mCoordIdeal y) : aeval y g = 0 := by
   have e : ∀ g : MRing ι, eval (fun _ : K => (1 : Ω)) (mConeMap y g) = aeval y g := by
     intro g
@@ -142,6 +188,13 @@ theorem aeval_eq_zero_of_mem {y : (Σ k, ι k) → Ω} {g : MRing ι} (hg : g �
 variable {y : (Σ k, ι k) → Ω} {k₀ : K} {M : Matrix (Ix (Fin r)) (ι k₀) ℤ} {N : Matrix (ι k₀) (Ix (Fin r)) ℤ}
   {x : Ix (Fin r) → Ω}
 
+/- English proof (translation)
+Rewrite using `[← Ideal.Quotient.eq]`. Establish `e1 : back k₀ M (fwd k₀ N f) = bind₁ (fun p => back k₀ M (blockSubst k₀ N p)) f`. Simplify using `only [back, fwd, bind₁_bind₁]`. Establish `e2 : f = bind₁ X f` using `by rw [bind₁_X_left]; rfl`. Rewrite using `[e1]`.
+
+Use `conv_rhs => rw [e2]`. Rewrite using `[hom_bind₁, hom_bind₁, coe_eval₂Hom, coe_eval₂Hom]`. Use `eval₂_congr _ _ _ fun {p} {c} hp hc => ?_` and prove the remaining obligations. Take `⟨k, i⟩` from `p`. Establish `hk : k = k₀` using `fst_eq_of_mem_support hf hc hp`.
+
+Substitute `hk` using the available equality. Establish `e3 : back k M (∑ j, C (N i j) * X j) = ∑ j, C (N i j) * blockForms k M j`. Simplify using `[back]`. Rewrite using `[blockSubst_block, e3]`. Conclude with `(Ideal.Quotient.eq.mpr (BlockImageTop.sub_mem_mCoordIdeal h i)).symm`.
+-/
 theorem back_fwd_sub_mem (h : IsBlockImage y k₀ M N x) {f : MRing ι} {n : ℕ}
     (hf : IsMultiHomog f (blockDeg k₀ n)) : back k₀ M (fwd k₀ N f) - f ∈ mCoordIdeal y := by
   rw [← Ideal.Quotient.eq]
@@ -160,17 +213,30 @@ theorem back_fwd_sub_mem (h : IsBlockImage y k₀ M N x) {f : MRing ι} {n : ℕ
   rw [blockSubst_block, e3]
   exact (Ideal.Quotient.eq.mpr (BlockImageTop.sub_mem_mCoordIdeal h i)).symm
 
+/- English proof (translation)
+Establish `hx : (fun j => aeval y (blockForms k₀ M j)) = x` using `funext fun j => by simp [blockForms, h.1 j]`. Rewrite using `[back, aeval_bind₁, hx]`.
+-/
 theorem aeval_back (h : IsBlockImage y k₀ M N x) (g : MvPolynomial (Ix (Fin r)) ℤ) :
     aeval y (back k₀ M g) = aeval x g := by
   have hx : (fun j => aeval y (blockForms k₀ M j)) = x := funext fun j => by simp [blockForms, h.1 j]
   rw [back, aeval_bind₁, hx]
 
+/- English proof (translation)
+Establish `h0` using `aeval_eq_zero_of_mem (back_fwd_sub_mem h hf)`. Rewrite `h0` using `[map_sub, sub_eq_zero, aeval_back h]`. Conclude with `h0`.
+-/
 theorem aeval_fwd (h : IsBlockImage y k₀ M N x) {f : MRing ι} {n : ℕ} (hf : IsMultiHomog f (blockDeg k₀ n)) :
     aeval x (fwd k₀ N f) = aeval y f := by
   have h0 := aeval_eq_zero_of_mem (back_fwd_sub_mem h hf)
   rw [map_sub, sub_eq_zero, aeval_back h] at h0
   exact h0
 
+/- English proof (translation)
+Establish `e : ∀ g : MvPolynomial (Ix (Fin r)) ℤ, eval (blockMapC k₀ M z) (map (Int.castRingHom ℂ) g) = eval z (map (Int.castRingHom ℂ) (back k₀ M g))`. Introduce `g`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp [back]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, map_add, map_add, hp, hq]`.
+
+Consider the case `mul_X p j hp`. Rewrite using `[map_mul, map_mul, map_mul, map_mul, map_mul, hp]`. Simplify using `[back, blockForms, blockMapC]`. Rewrite using `[e]`. Establish `h0` using `hz.2 _ (back_fwd_sub_mem h hf)`.
+
+Rewrite `h0` using `[map_sub, map_sub, sub_eq_zero]`. Conclude with `h0`.
+-/
 theorem eval_fwd (h : IsBlockImage y k₀ M N x) {f : MRing ι} {n : ℕ} (hf : IsMultiHomog f (blockDeg k₀ n))
     {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal y)) :
     eval (blockMapC k₀ M z) (map (Int.castRingHom ℂ) (fwd k₀ N f)) = eval z (map (Int.castRingHom ℂ) f) := by
@@ -188,6 +254,13 @@ theorem eval_fwd (h : IsBlockImage y k₀ M N x) {f : MRing ι} {n : ℕ} (hf : 
   rw [map_sub, map_sub, sub_eq_zero] at h0
   exact h0
 
+/- English proof (translation)
+Unfold `secM`. Use `congr 1`. Establish `hset : {s | ∃ g : MRing ι, IsMultiHomog g (blockDeg k₀ n) ∧ aeval y g = s} = ((sec ℤ x n : Submodule ℤ Ω) : Set Ω)`. Use extensionality with `s`. Simplify using `only [Set.mem_ofPred_eq, sec, Submodule.map_coe, Set.mem_image, SetLike.mem_coe, mem_homogeneousSubmodule, AlgHom.toLinearMap_apply]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `⟨fwd k₀ N g, isHomogeneous_fwd k₀ N hg, aeval_fwd h hg⟩`. Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `⟨back k₀ M g, isMultiHomog_back k₀ M hg, aeval_back h g⟩`.
+
+Rewrite using `[hset, Submodule.span_eq]`.
+-/
 theorem secM_eq (h : IsBlockImage y k₀ M N x) (n : ℕ) :
     secM y (blockDeg k₀ n) = (sec ℤ x n).toAddSubgroup := by
   unfold secM
@@ -204,6 +277,13 @@ theorem secM_eq (h : IsBlockImage y k₀ M N x) (n : ℕ) :
       exact ⟨back k₀ M g, isMultiHomog_back k₀ M hg, aeval_back h g⟩
   rw [hset, Submodule.span_eq]
 
+/- English proof (translation)
+Establish `hv : (fun j => aeval x (fwdQ k₀ N (b j))) = fun j => aeval y (b j)`. Use function extensionality and compare the values at `j`. Take `⟨f, hf, hbf⟩` from `hb.1 j`. Rewrite using `[hbf, fwdQ_map, aeval_mapQ, aeval_mapQ, aeval_fwd h hf]`. Use `⟨fun j => ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Take `⟨f, hf, hbf⟩` from `hb.1 j`. Conclude with `⟨fwd k₀ N f, isHomogeneous_fwd k₀ N hf, by show fwdQ k₀ N (b j) = _; rw [hbf, fwdQ_map]⟩`. Use `show LinearIndependent ℤ fun j => aeval x (fwdQ k₀ N (b j))`. Rewrite using `[hv]`. Conclude with `hb.2.1`.
+
+Use `show Submodule.span ℤ (Set.range fun j => aeval x (fwdQ k₀ N (b j))) = sec ℤ x n`. Rewrite using `[hv]`. Apply `Submodule.toAddSubgroup_injective` to reduce the goal to its premises. Rewrite using `[hb.2.2, secM_eq h]`.
+-/
 theorem isSecBasis_fwd (h : IsBlockImage y k₀ M N x) {n s : ℕ} {b : Fin s → MvPolynomial (Σ k, ι k) ℚ}
     (hb : IsSecBasisM y k₀ n b) : IsSecBasis x n fun j => fwdQ k₀ N (b j) := by
   have hv : (fun j => aeval x (fwdQ k₀ N (b j))) = fun j => aeval y (b j) := by
@@ -221,6 +301,13 @@ theorem isSecBasis_fwd (h : IsBlockImage y k₀ M N x) {n s : ℕ} {b : Fin s �
     apply Submodule.toAddSubgroup_injective
     rw [hb.2.2, secM_eq h]
 
+/- English proof (translation)
+Establish `hv : (fun j => aeval y (backQ k₀ M (b j))) = fun j => aeval x (b j)`. Use function extensionality and compare the values at `j`. Take `⟨f, hf, hbf⟩` from `hb.1 j`. Rewrite using `[hbf, backQ_map, aeval_mapQ, aeval_mapQ, aeval_back h]`. Use `⟨fun j => ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Take `⟨f, hf, hbf⟩` from `hb.1 j`. Conclude with `⟨back k₀ M f, isMultiHomog_back k₀ M hf, by show backQ k₀ M (b j) = _; rw [hbf, backQ_map]⟩`. Use `show LinearIndependent ℤ fun j => aeval y (backQ k₀ M (b j))`. Rewrite using `[hv]`. Conclude with `hb.2.1`.
+
+Use `show (Submodule.span ℤ (Set.range fun j => aeval y (backQ k₀ M (b j)))).toAddSubgroup = _`. Rewrite using `[hv, hb.2.2, secM_eq h]`.
+-/
 theorem isSecBasisM_back (h : IsBlockImage y k₀ M N x) {n s : ℕ} {b : Fin s → MvPolynomial (Ix (Fin r)) ℚ}
     (hb : IsSecBasis x n b) : IsSecBasisM y k₀ n fun j => backQ k₀ M (b j) := by
   have hv : (fun j => aeval y (backQ k₀ M (b j))) = fun j => aeval x (b j) := by
@@ -242,12 +329,18 @@ section Points
 
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Use `⟨fun k => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz.1 k`. Conclude with `⟨i, by simpa [conjPt] using hi⟩`. Rewrite using `[ResSym.eval_conjPt_map_int, hz.2 f hf, map_zero]`.
+-/
 theorem conjPt_mem_mcPts {P : Ideal (MRing ι)} {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts P) : conjPt z ∈ mcPts P := by
   refine ⟨fun k => ?_, fun f hf => ?_⟩
   · obtain ⟨i, hi⟩ := hz.1 k
     exact ⟨i, by simpa [conjPt] using hi⟩
   · rw [ResSym.eval_conjPt_map_int, hz.2 f hf, map_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[blockMapC, conjPt, map_sum]`.
+-/
 theorem blockMapC_conjPt (k₀ : K) {J : Type} [Fintype J] (M : Matrix J (ι k₀) ℤ) (z : (Σ k, ι k) → ℂ) :
     blockMapC k₀ M (conjPt z) = conjPt (blockMapC k₀ M z) := by
   funext j
@@ -259,6 +352,29 @@ section Gram
 
 variable {D : ℕ} {Ω : Type} [Field Ω] [CharZero Ω]
 
+/- English proof (translation)
+Establish `hT : ∀ {c c' : Fin s → MvPolynomial (Ix κ) ℚ}, IsSecBasis d.x n c → IsSecBasis d.x n c' → ∃ A : Matrix (Fin s) (Fin s) ℤ, resGram d n c' = A.map (Int.cast : ℤ → ℝ) * resGram d n c * (A.map (Int.cast : ℤ → ℝ)).transpose`. Introduce `c c' hc hc'`. Establish `hmem : ∀ k, ∃ a : Fin s → ℤ, ∑ l, a l • aeval d.x (c l) = aeval d.x (c' k)`. Introduce `k`. Use `(Submodule.mem_span_range_iff_exists_fun ℤ).mp ?_` and prove the remaining obligations.
+
+Rewrite using `[hc.2.2, ← hc'.2.2]`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Use `choose A hA using hmem`. Use `⟨Matrix.of A, ?_⟩` and prove the remaining obligations. Establish `e` using `ResChiIndex.resGram_change d hc.1 c' ((Matrix.of A).map (Int.cast : ℤ → ℚ)) fun k z hz => by choose f hf hbf using hc.1`.
+
+Take `⟨f', hf', hbf'⟩` from `hc'.1 k`. Set `q : MvPolynomial (Ix κ) ℤ` to `f' - ∑ l, C (A k l) * f l`. Establish `hq : q.IsHomogeneous n`. Use `hf'.sub (IsHomogeneous.sum _ _ _ fun l _ => ?_)` and prove the remaining obligations. Simplify using `using (isHomogeneous_C (Ix κ) (A k l)).mul (hf l)`.
+
+Establish `hq0 : aeval d.x q = 0`. Simplify using `only [q, map_sub, map_sum, map_mul, eq_intCast]`. Rewrite using `[← aeval_map_int, ← hbf', ← hA k]`. Simplify using `[zsmul_eq_mul, hbf, aeval_map_int, map_intCast]`. Establish `h0` using `secFun_eq_zero_of_pts hq hq0 hz`.
+
+Rewrite `h0` using `[secFun_map_int]`. Simplify using `only [Matrix.map_apply, Matrix.of_apply, Rat.cast_intCast, hbf', hbf, secFun_map_int]`. Simplify `h0` using `[q, sub_eq_zero]`. Establish `hm : ((Matrix.of A).map (Int.cast : ℤ → ℚ)).map (Rat.cast : ℚ → ℝ) = (Matrix.of A).map (Int.cast : ℤ → ℝ)`. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e, hm]`. Take `⟨A, hA⟩` from `hT hb hb'`. Take `⟨B, hB⟩` from `hT hb' hb`. Establish `hdA : (A.map (Int.cast : ℤ → ℝ)).det = (A.det : ℝ)` using `((Int.castRingHom ℝ).map_det A).symm`.
+
+Establish `hdB : (B.map (Int.cast : ℤ → ℝ)).det = (B.det : ℝ)` using `((Int.castRingHom ℝ).map_det B).symm`. Establish `d1 : (resGram d n b').det = (A.det : ℝ) ^ 2 * (resGram d n b).det`. Rewrite using `[hA, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hdA]`. Expand and normalize the polynomial expressions, which then agree. Establish `d2 : (resGram d n b).det = (B.det : ℝ) ^ 2 * (resGram d n b').det`.
+
+Rewrite using `[hB, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hdB]`. Expand and normalize the polynomial expressions, which then agree. Establish `hG : (resGram d n b).det ≠ 0`. Rewrite using `[ResSym.det_resGram d hb.1]`. Conclude with `(Complex.pos_iff.mp (ResSym.posDef_gram d hb).det_pos).1.ne'`.
+
+Establish `h3 : ((A.det * B.det : ℤ) : ℝ) ^ 2 = 1`. Use `mul_right_cancel₀ hG ?_` and prove the remaining obligations. Rewrite using `[one_mul]`. Use `conv_rhs => rw [d2, d1]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h4 : A.det ^ 2 * B.det ^ 2 = 1`. Rewrite using `[← mul_pow]`. Conclude with `h3` after adjusting the coercions. Establish `h5 : (A.det : ℝ) ^ 2 = 1`.
+
+Conclude with `Int.eq_one_of_mul_eq_one_right (sq_nonneg _) h4` after adjusting the coercions. Rewrite using `[d1, h5, one_mul]`.
+-/
 theorem det_resGram_eq {κ : Type} [Fintype κ] (d : HSMDatum D Ω κ) {n s : ℕ}
     {b b' : Fin s → MvPolynomial (Ix κ) ℚ} (hb : IsSecBasis d.x n b) (hb' : IsSecBasis d.x n b') :
     (resGram d n b').det = (resGram d n b).det := by
@@ -319,6 +435,11 @@ theorem det_resGram_eq {κ : Type} [Fintype κ] (d : HSMDatum D Ω κ) {n s : �
     exact_mod_cast Int.eq_one_of_mul_eq_one_right (sq_nonneg _) h4
   rw [d1, h5, one_mul]
 
+/- English proof (translation)
+Establish `h : ∃ p : (Σ r : ℕ, Fin r → MvPolynomial (Ix κ) ℚ), IsSecBasis d.x n p.2` using `⟨⟨s, b⟩, hb⟩`. Unfold `resChi`. Rewrite using `[dif_pos h]`. Establish `hp` using `h.choose_spec`. Generalize the expression as in `h.choose = p at hp ⊢`.
+
+Take `⟨s', b'⟩` from `p`. Establish `hp' : IsSecBasis d.x n b'` using `hp`. Establish `hs : s' = s` using `hp'.card_eq.trans hb.card_eq.symm`. Substitute `hs` using the available equality. Rewrite using `[det_resGram_eq d hb hp']`.
+-/
 theorem resChi_eq_of_basis {κ : Type} [Fintype κ] (d : HSMDatum D Ω κ) {n s : ℕ}
     {b : Fin s → MvPolynomial (Ix κ) ℚ} (hb : IsSecBasis d.x n b) :
     resChi d n = -(1 / 2) * Real.log (resGram d n b).det := by
@@ -335,6 +456,25 @@ theorem resChi_eq_of_basis {κ : Type} [Fintype κ] (d : HSMDatum D Ω κ) {n s 
 
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)] {r : ℕ}
 
+/- English proof (translation)
+Use `set bt : Fin s → MvPolynomial (Ix (Fin r)) ℚ := fun j => fwdQ d₀.k₀ N (b j) with hbt_def`. Establish `hbt : ∀ j, ∃ f : MvPolynomial (Ix (Fin r)) ℤ, f.IsHomogeneous n ∧ bt j = map (Int.castRingHom ℚ) f`. Introduce `j`. Take `⟨f, hf, hbf⟩` from `hb j`. Conclude with `⟨fwd d₀.k₀ N f, isHomogeneous_fwd d₀.k₀ N hf, by rw [hbt_def]; simp only; rw [hbf, fwdQ_map]⟩`.
+
+Establish `hval : ∀ j, ∀ z ∈ mcPts (mCoordIdeal d₀.y), eval (blockMapC d₀.k₀ M z) (map (algebraMap ℚ ℂ) (bt j)) = eval z (map (algebraMap ℚ ℂ) (b j))`. Introduce `j z hz`. Take `⟨f, hf, hbf⟩` from `hb j`. Establish `e1` using `secFun_map_int (fwd d₀.k₀ N f) (blockMapC d₀.k₀ M z)`. Establish `e2` using `secFun_map_int f z`.
+
+Unfold `secFun at e1 e2`. Rewrite using `[hbt_def]`. Simplify using `only`. Rewrite using `[hbf, fwdQ_map, e1, e2]`. Conclude with `eval_fwd hIm hf hz`.
+
+Establish `hpt : ∀ z ∈ mcPts (mCoordIdeal d₀.y), ∀ k l, pairValH d₀.A n (b k) (b l) z = pairVal d'.m n (bt k) (bt l) (blockMapC d₀.k₀ M z)`. Introduce `z hz k l`. Simplify using `only [pairValH, pairVal]`. Rewrite using `[hval k z hz, hval l z hz, hmet z hz]`. Establish `hpv : ∀ k l, pairVal d'.m n (bt k) (bt l) = fun w => starRingEnd ℂ (starRingEnd ℂ (secFun (bt k) w) * secFun (bt l) w * (wgt d'.m n w : ℂ))` using `fun k l => funext (ResSym.pairVal_eq_conj d'.m n (bt k) (bt l))`.
+
+Establish `hcont : ∀ k l, ContinuousOn (pairVal d'.m n (bt k) (bt l)) {0}ᶜ` using `fun k l => by`. Rewrite using `[hpv]`. Conclude with `Complex.continuous_conj.comp_continuousOn (ResSym.continuousOn_gramFun d'.smooth n (bt k) (bt l))`. Establish `hdeg : ∀ k l, ∀ (c : ℂ) w, c ≠ 0 → pairVal d'.m n (bt k) (bt l) (c • w) = pairVal d'.m n (bt k) (bt l) w` using `fun k l c w hc => by`. Rewrite using `[hpv]`.
+
+Simplify using `only`. Rewrite using `[ResSym.gramFun_smul (hbt k) (hbt l) c w hc]`. Establish `hcont' : ∀ k l, ContinuousOn (fun w => pairVal d'.m n (bt k) (bt l) (conjPt w)) {0}ᶜ` using `fun k l => (hcont k l).comp continuous_conjPt.continuousOn fun w hw => ResSym.conjPt_ne_zero hw`. Establish `hdeg' : ∀ k l, ∀ (c : ℂ) w, c ≠ 0 → pairVal d'.m n (bt k) (bt l) (conjPt (c • w)) = pairVal d'.m n (bt k) (bt l) (conjPt w)` using `fun k l c w hc => by`. Rewrite using `[ResSym.conjPt_smul]`.
+
+Conclude with `hdeg k l _ _ ((map_ne_zero _).mpr hc)`. Establish `hmem : ∀ a, blockPt d₀ a ∈ mcPts (mCoordIdeal d₀.y)` using `fun a => d₀.R.mem a a (d₀.R.mem_U a)`. Use extensionality with `k l`. Establish `h1 : ∫ a, pairVal d'.m n (bt k) (bt l) (resPt d' a) ∂d'.dV = ∫ a, pairValH d₀.A n (b k) (b l) (blockPt d₀ a) ∂d₀.dV`. Use `(hint _ (hcont k l) (hdeg k l)).trans ?_` and prove the remaining obligations.
+
+Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun a => (hpt _ (hmem a) k l).symm)`. Establish `h2 : ∫ a, pairVal d'.m n (bt k) (bt l) (conjPt (resPt d' a)) ∂d'.dV = ∫ a, pairValH d₀.A n (b k) (b l) (conjPt (blockPt d₀ a)) ∂d₀.dV`. Use `(hint (fun w => pairVal d'.m n (bt k) (bt l) (conjPt w)) (hcont' k l) (hdeg' k l)).trans ?_` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[← blockMapC_conjPt]`. Conclude with `(hpt _ (conjPt_mem_mcPts (hmem a)) k l).symm`. Simplify using `only [blockGram, resGram]`. Rewrite using `[h1, h2]`.
+-/
 theorem blockGram_eq (d₀ : HSMBlockDatum D K ι Ω) (M : Matrix (Ix (Fin r)) (ι d₀.k₀) ℤ)
     (N : Matrix (ι d₀.k₀) (Ix (Fin r)) ℤ) (d' : HSMDatum D Ω (Fin r)) (hIm : IsBlockImage d₀.y d₀.k₀ M N d'.x)
     (hmet : ∀ z ∈ mcPts (mCoordIdeal d₀.y), d₀.A.h z = d'.m.ρ (blockMapC d₀.k₀ M z))
@@ -402,6 +542,11 @@ end Gram
 
 end BlockImageChi
 
+/- English proof (translation)
+Introduce `D K _ _ ι _ Ω _ _ d₀ r M N d' hIm hmet hint n`. Distinguish the cases in `h : ∃ p : (Σ s : ℕ, Fin s → MvPolynomial (Σ k, ι k) ℚ), IsSecBasisM d₀.y d₀.k₀ n p.2`. Establish `hb` using `h.choose_spec`. Unfold `blockChi`. Rewrite using `[dif_pos h, BlockImageChi.blockGram_eq d₀ M N d' hIm hmet hint n _ hb.1, BlockImageChi.resChi_eq_of_basis d' (BlockImageChi.isSecBasis_fwd hIm hb)]`.
+
+Establish `h' : ¬ ∃ p : (Σ s : ℕ, Fin s → MvPolynomial (Ix (Fin r)) ℚ), IsSecBasis d'.x n p.2`. Introduce and unpack `⟨p, hp⟩`. Conclude with `h ⟨⟨p.1, fun j => BlockImageChi.backQ d₀.k₀ M (p.2 j)⟩, BlockImageChi.isSecBasisM_back hIm hp⟩`. Unfold `blockChi resChi`. Rewrite using `[dif_neg h, dif_neg h']`.
+-/
 theorem BlockImageChi.proof : BlockImageChi.Statement := by
   intro D K _ _ ι _ Ω _ _ d₀ r M N d' hIm hmet hint n
   by_cases h : ∃ p : (Σ s : ℕ, Fin s → MvPolynomial (Σ k, ι k) ℚ), IsSecBasisM d₀.y d₀.k₀ n p.2

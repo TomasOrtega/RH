@@ -28,13 +28,22 @@ def toR : GL (Fin 2) ℚ →* GL (Fin 2) ℝ := Matrix.GeneralLinearGroup.map (R
 
 def toF : GL (Fin 2) ℚ →* GL (Fin 2) (Af ℚ) := Matrix.GeneralLinearGroup.map (algebraMap ℚ (Af ℚ))
 
+/- English proof (translation)
+Use `congrArg (TR.infGL ℚ 2) (Units.ext (Matrix.ext fun i j => funext fun v => ?_))` and prove the remaining obligations. Rewrite using `[Subsingleton.elim v Rat.infinitePlace]`. Both sides reduce to the same expression.
+-/
 theorem upR_ev (h : GL (Fin 2) (TR.Rinf ℚ)) : upR (Matrix.GeneralLinearGroup.map ev h) = TR.infGL ℚ 2 h := by
   refine congrArg (TR.infGL ℚ 2) (Units.ext (Matrix.ext fun i j => funext fun v => ?_))
   rw [Subsingleton.elim v Rat.infinitePlace]
   rfl
 
+/- English proof (translation)
+The claim follows from `TR.infGL_comm _ _`.
+-/
 theorem upR_comm (h : GL (Fin 2) ℝ) (u : GL (Fin 2) (Af ℚ)) : upR h * finGL ℚ 2 u = finGL ℚ 2 u * upR h := TR.infGL_comm _ _
 
+/- English proof (translation)
+Rewrite using `[← TR.infGL_mul_finGL (ratGL ℚ 2 γ)]`. Use `congr 1`. Use `congrArg (TR.infGL ℚ 2) (Units.ext (Matrix.ext fun i j => ?_))` and prove the remaining obligations. Conclude with `DFunLike.congr_fun (Subsingleton.elim ((TR.pInf ℚ).comp (algebraMap ℚ (Ad ℚ))) ((algebraMap ℝ (TR.Rinf ℚ)).comp (Rat.castHom ℝ))) (γ i j)`.
+-/
 theorem ratGL_eq (γ : GL (Fin 2) ℚ) : ratGL ℚ 2 γ = upR (toR γ) * finGL ℚ 2 (toF γ) := by
   rw [← TR.infGL_mul_finGL (ratGL ℚ 2 γ)]
   congr 1
@@ -57,8 +66,14 @@ structure IsDirOf {M : ℕ} (χ : DirichletCharacter ℂ M) (ω : HChar ℚ) : P
   pos : ∀ t : (TR.Rinf ℚ)ˣ, (∀ v, 0 < t.val v) → ω.1 (TR.infId ℚ t) = 1
   unit : ∀ u, IsZU u → ∀ d : ℤ, (∃ y ∈ Ohat ℚ, (u : Af ℚ) - d = M * y) → ((ω.1 (finId ℚ u) : ℂˣ) : ℂ) * χ (d : ZMod M) = 1
 
+/- English proof (translation)
+Introduce `_ _ _ _` and use `by simp [nsl]`.
+-/
 example : IsLift 0 1 1 1 := fun _ _ _ _ => by simp [nsl]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => rfl, fun _ _ _ _ => by rw [MulChar.one_apply (isUnit_of_subsingleton _), mul_one]; rfl⟩`.
+-/
 example : IsDirOf (1 : DirichletCharacter ℂ 1) 1 :=
   ⟨fun _ _ => rfl, fun _ _ _ _ => by rw [MulChar.one_apply (isUnit_of_subsingleton _), mul_one]; rfl⟩
 

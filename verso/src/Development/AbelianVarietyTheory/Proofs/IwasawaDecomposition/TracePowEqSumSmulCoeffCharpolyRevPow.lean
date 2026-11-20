@@ -12,6 +12,11 @@ namespace GlobalTheory
 
 namespace LogTrace
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg, add_pow, finset_sum_coeff]`. Rewrite using `[← Finset.sum_subset (Finset.range_subset_range.2 (by omega : s + 1 ≤ n + 1))]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[show f ^ k * (-1) ^ (s - k) * ((s.choose k : ℕ) : S[X]) = C ((-1 : S) ^ (s - k) * (s.choose k : S)) * f ^ k by simp [map_mul, map_pow, map_neg]; ring]`. Rewrite using `[coeff_C_mul, Algebra.smul_def]`.
+
+Simplify using the standard rewrite rules. Introduce `k hk hk'`. Simplify using `only [Finset.mem_range] at hk hk'`. Rewrite using `[Nat.choose_eq_zero_of_lt (by omega)]`. Simplify using the standard rewrite rules.
+-/
 theorem coeff_sub_one_pow {S : Type} [CommRing S] [Algebra ℝ S] (f : S[X]) (s n : ℕ) (hs : s ≤ n) :
     ((f - 1) ^ s).coeff n =
       ∑ k ∈ Finset.range (n + 1), ((-1 : ℝ) ^ (s - k) * (s.choose k : ℝ)) • (f ^ k).coeff n := by
@@ -27,6 +32,9 @@ theorem coeff_sub_one_pow {S : Type} [CommRing S] [Algebra ℝ S] (f : S[X]) (s 
     rw [Nat.choose_eq_zero_of_lt (by omega)]
     simp
 
+/- English proof (translation)
+Rewrite using `[coeff_zero_eq_eval_zero, Matrix.eval_charpolyRev]`.
+-/
 theorem coeff_zero_charpolyRev {R : Type} [CommRing R] {N : ℕ} (M : Matrix (Fin N) (Fin N) R) :
     M.charpolyRev.coeff 0 = 1 := by
   rw [coeff_zero_eq_eval_zero, Matrix.eval_charpolyRev]
@@ -34,12 +42,20 @@ theorem coeff_zero_charpolyRev {R : Type} [CommRing R] {N : ℕ} (M : Matrix (Fi
 def newtonPoly {R : Type} [CommRing R] {N : ℕ} (M : Matrix (Fin N) (Fin N) R) (m : ℕ) : R[X] :=
   ∑ i ∈ Finset.range (m + 1), C (-(M ^ (i + 1)).trace) * X ^ i
 
+/- English proof (translation)
+Simplify using `only [newtonPoly, finset_sum_coeff, coeff_C_mul_X_pow]`. Rewrite using `[Finset.sum_ite_eq]`. Simplify using `[Finset.mem_range, Nat.lt_succ_of_le hk]`.
+-/
 theorem coeff_newtonPoly {R : Type} [CommRing R] {N : ℕ} (M : Matrix (Fin N) (Fin N) R) (m k : ℕ)
     (hk : k ≤ m) : (newtonPoly M m).coeff k = -(M ^ (k + 1)).trace := by
   simp only [newtonPoly, finset_sum_coeff, coeff_C_mul_X_pow]
   rw [Finset.sum_ite_eq]
   simp [Finset.mem_range, Nat.lt_succ_of_le hk]
 
+/- English proof (translation)
+Rewrite using `[X_pow_dvd_iff]`. Introduce `d hd`. Establish `hN` using `GlobalTheory.natCast_mul_coeff_charpolyRev M (d + 1)`. Rewrite using `[coeff_sub, coeff_derivative, coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]`. Rewrite using `[Finset.sum_congr rfl (fun k hk => by`.
+
+Rewrite using `[coeff_newtonPoly M m k (by simp only [Finset.mem_range] at hk; omega)])]`. Simplify using `only [Nat.add_sub_cancel, neg_mul, Finset.sum_neg_distrib] at hN ⊢`. Move the coercions through the operations in `at hN`. Take the linear combination `hN`.
+-/
 theorem X_pow_dvd_derivative_sub {R : Type} [CommRing R] {N : ℕ} (M : Matrix (Fin N) (Fin N) R) (m : ℕ) :
     (X : R[X]) ^ (m + 1) ∣ derivative M.charpolyRev - newtonPoly M m * M.charpolyRev := by
   rw [X_pow_dvd_iff]
@@ -55,6 +71,13 @@ theorem X_pow_dvd_derivative_sub {R : Type} [CommRing R] {N : ℕ} (M : Matrix (
 def logTrunc {S : Type} [CommRing S] [Algebra ℝ S] (m : ℕ) (f : S[X]) : S[X] :=
   ∑ s ∈ Finset.range (m + 1), C (algebraMap ℝ S ((-1) ^ s / ((s : ℝ) + 1))) * (f - 1) ^ (s + 1)
 
+/- English proof (translation)
+Establish `hs : ∀ s : ℕ, C (algebraMap ℝ S ((-1) ^ s / ((s : ℝ) + 1))) * C ((s : S) + 1) = (-1) ^ s`. Introduce `s`. Rewrite using `[← C_mul, show ((s : S) + 1) = algebraMap ℝ S ((s : ℝ) + 1) by simp, ← map_mul, div_mul_cancel₀ _ (by positivity)]`. Simplify using the standard rewrite rules. Establish `hD : derivative (logTrunc m f) = (∑ s ∈ Finset.range (m + 1), (-(f - 1)) ^ s) * derivative f`.
+
+Simplify using `only [logTrunc, derivative_sum, derivative_C_mul, derivative_pow_succ, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[derivative_sub, derivative_one, sub_zero, neg_pow (f - 1) s]`. Take the linear combination `((f - 1) ^ s * derivative f) * hs s`. Establish `hg` using `mul_neg_geom_sum (-(f - 1)) (m + 1)`.
+
+Rewrite using `[hD]`. Take the linear combination `(derivative f) * hg`.
+-/
 theorem mul_derivative_logTrunc {S : Type} [CommRing S] [Algebra ℝ S] (m : ℕ) (f : S[X]) :
     f * derivative (logTrunc m f) = derivative f * (1 - (-(f - 1)) ^ (m + 1)) := by
   have hs : ∀ s : ℕ, C (algebraMap ℝ S ((-1) ^ s / ((s : ℝ) + 1))) * C ((s : S) + 1) = (-1) ^ s := by
@@ -71,6 +94,15 @@ theorem mul_derivative_logTrunc {S : Type} [CommRing S] [Algebra ℝ S] (m : ℕ
   rw [hD]
   linear_combination (derivative f) * hg
 
+/- English proof (translation)
+Use `set f := Matrix.charpolyRev (-L) with hf`. Establish `hX : (X : S[X]) ∣ f - 1`. Rewrite using `[X_dvd_iff, coeff_sub, coeff_one_zero, hf, coeff_zero_charpolyRev, sub_self]`. Establish `h1` using `X_pow_dvd_derivative_sub (-L) m`. Rewrite `h1` using `[← hf]`.
+
+Establish `h2 : (X : S[X]) ^ (m + 1) ∣ derivative f * (-(f - 1)) ^ (m + 1)` using `Dvd.dvd.mul_left (pow_dvd_pow_of_dvd (dvd_neg.2 hX) (m + 1)) _`. Establish `h3 : (X : S[X]) ^ (m + 1) ∣ f * (derivative (logTrunc m f) - newtonPoly (-L) m)`. Establish `e : f * (derivative (logTrunc m f) - newtonPoly (-L) m) = (derivative f - newtonPoly (-L) m * f) - derivative f * (-(f - 1)) ^ (m + 1)`. Take the linear combination `mul_derivative_logTrunc m f`. Rewrite using `[e]`.
+
+Conclude with `dvd_sub h1 h2`. Establish `hcop : IsCoprime (X : S[X]) f`. Take `⟨h, hh⟩` from `hX`. Conclude with `⟨-h, 1, by linear_combination hh⟩`. Establish `h4` using `(X_pow_dvd_iff.1 (hcop.pow_left.dvd_of_dvd_mul_left h3)) m (by omega)`.
+
+Rewrite `h4` using `[coeff_sub, coeff_derivative, coeff_newtonPoly (-L) m m le_rfl]`. Establish `ht : ((-L) ^ (m + 1)).trace = -((-1) ^ m * (L ^ (m + 1)).trace)`. Rewrite using `[show -L = (-1 : S) • L by simp, _root_.smul_pow, Matrix.trace_smul, smul_eq_mul, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `h4 - ht`.
+-/
 theorem coeff_logTrunc_charpolyRev {S : Type} [CommRing S] [Algebra ℝ S] {N : ℕ}
     (L : Matrix (Fin N) (Fin N) S) (m : ℕ) :
     ((m : S) + 1) * (logTrunc m (Matrix.charpolyRev (-L))).coeff (m + 1) =
@@ -102,6 +134,17 @@ end LogTrace
 
 open LogTrace in
 
+/- English proof (translation)
+Introduce `n hn`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Use `⟨fun k => ∑ s ∈ Finset.range (m + 1), ((-1 : ℝ) ^ m * ((m : ℝ) + 1) * ((-1) ^ s / ((s : ℝ) + 1))) * ((-1 : ℝ) ^ (s + 1 - k) * ((s + 1).choose k : ℝ)), ?_⟩` and prove the remaining obligations. Introduce `S _ _ N L`. Establish `key` using `coeff_logTrunc_charpolyRev L m`.
+
+Use `set f := Matrix.charpolyRev (-L)`. Establish `hsq : ((-1 : S) ^ m) ^ 2 = 1`. Rewrite using `[← pow_mul, mul_comm, pow_mul]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `_ = ∑ s ∈ Finset.range (m + 1), ((-1 : ℝ) ^ m * ((m : ℝ) + 1) * ((-1) ^ s / ((s : ℝ) + 1))) • ((f - 1) ^ (s + 1)).coeff (m + 1) := by`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Rewrite using `[coeff_sub_one_pow f (s + 1) (m + 1) (by simp only [Finset.mem_range] at hs; omega)]`.
+
+Use `_ = ((-1 : ℝ) ^ m * ((m : ℝ) + 1)) • (logTrunc m f).coeff (m + 1) := by`. Simplify using `only [logTrunc, finset_sum_coeff, coeff_C_mul, Finset.smul_sum, ← Algebra.smul_def, smul_smul]`. Use `_ = (L ^ (m + 1)).trace := by`. Rewrite using `[Algebra.smul_def]`. Simplify using `only [map_mul, map_pow, map_neg, map_one, map_add, map_natCast]`.
+
+Take the linear combination `(-1 : S) ^ m * key + (L ^ (m + 1)).trace * hsq`.
+-/
 theorem trace_pow_eq_sum_smul_coeff_charpolyRev_pow :
     ∀ n : ℕ, 1 ≤ n → ∃ c : ℕ → ℝ, ∀ (S : Type) [CommRing S] [Algebra ℝ S] (N : ℕ)
       (L : Matrix (Fin N) (Fin N) S),

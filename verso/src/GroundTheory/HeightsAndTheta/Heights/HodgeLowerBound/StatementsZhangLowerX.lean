@@ -16,6 +16,9 @@ def ZhangLowerX.Statement : Prop :=
     (∀ W, IsArithVar W 1 → P ≤ W → e ≤ IndefiniteRowSideFullHecke.HeightsSet.height (II K ι) A W) →
     ((n + 1 : ℕ) : ℝ) * e * geomDeg P A n ≤ II K ι P (n + 1) (fun _ => A)
 
+/- English proof (translation)
+The claim follows from `HilbertSamuel.G5.hyps_inhabited`.
+-/
 theorem ZhangLowerX.hyps_inhabited :
     IsArithVar (mCoordIdeal (ι := ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.GlobalTheory (Fin 2)) HilbertSamuel.ProjLine.y) (1 + 1) ∧
       ⊥ ≤ mCoordIdeal (ι := ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.GlobalTheory (Fin 2)) HilbertSamuel.ProjLine.y ∧

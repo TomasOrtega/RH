@@ -21,6 +21,9 @@ section
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {p : ℕ} [Fact p.Prime]
   [CharZero O] [CharP (ResidueField O) p] {B : GlobalTheory.Vert.Model O}
 
+/- English proof (translation)
+Take `⟨hp, ⟨a⟩⟩` from `h`. Take `⟨hp', ⟨b⟩⟩` from `h'`. Take `⟨e⟩` from `e`. Conclude with `⟨a ≪≫ (Scheme.Modules.pushforward _).mapIso ((Scheme.Modules.pullback _).mapIso e) ≪≫ b.symm⟩`.
+-/
 theorem nonempty_iso_of_isFrob {F F' G G' : B.X.Modules} (h : IsFrob p F G) (h' : IsFrob p F' G')
     (e : Nonempty (F ≅ F')) : Nonempty (G ≅ G') := by
   obtain ⟨hp, ⟨a⟩⟩ := h
@@ -28,6 +31,9 @@ theorem nonempty_iso_of_isFrob {F F' G G' : B.X.Modules} (h : IsFrob p F G) (h' 
   obtain ⟨e⟩ := e
   exact ⟨a ≪≫ (Scheme.Modules.pushforward _).mapIso ((Scheme.Modules.pullback _).mapIso e) ≪≫ b.symm⟩
 
+/- English proof (translation)
+Establish `hE : IsExt T.mod T.mod T.mod` using `⟨ShortComplex.mk (0 : T.mod ⟶ T.mod) (0 : T.mod ⟶ T.mod) (by simp), { exact := ShortComplex.exact_of_isZero_X₂ _ hT, mono_f := hT.mono _, epi_g := hT.epi _ }, ⟨Iso.refl _⟩, ⟨Iso.refl _⟩, ⟨Iso.refl _⟩⟩`. Establish `h` using `congrArg (· - T.ck p k) (GlobalTheory.T.ck_additive_extension O p B hB T T T hE k)`. Simplify using `using h.symm`.
+-/
 theorem ck_eq_zero_of_isZero (hB : GlobalTheory.IsNormalScheme B.X) (T : Pres B) (hT : IsZero T.mod) (k : ℕ) :
     T.ck p k = 0 := by
   have hE : IsExt T.mod T.mod T.mod :=
@@ -37,6 +43,15 @@ theorem ck_eq_zero_of_isZero (hB : GlobalTheory.IsNormalScheme B.X) (T : Pres B)
   have h := congrArg (· - T.ck p k) (GlobalTheory.T.ck_additive_extension O p B hB T T T hE k)
   simpa using h.symm
 
+/- English proof (translation)
+Establish `key : ∀ j : ℕ, (hj : j ≤ r) → (T ⟨j, by omega⟩).ck p k = ∑ i : Fin r, if (i : ℕ) < j then (U i).ck p k else 0`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro _`. Simplify using `using ck_eq_zero_of_isZero hB (T 0) h0 k`.
+
+Consider the case `succ j ih`. Introduce `hj`. Establish `h` using `GlobalTheory.T.ck_additive_extension O p B hB _ _ _ (hE ⟨j, by omega⟩) k`. Simplify using `only [Fin.succ_mk, Fin.castSucc_mk] at h`. Rewrite using `[h, ih (by omega)]`.
+
+Establish `hs : (∑ i : Fin r, if (i : ℕ) < j + 1 then (U i).ck p k else 0) = (∑ i : Fin r, if (i : ℕ) < j then (U i).ck p k else 0) + ∑ i : Fin r, if (⟨j, by omega⟩ : Fin r) = i then (U i).ck p k else 0`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | omega | simp`.
+
+Rewrite using `[hs, Finset.sum_ite_eq]`. Simplify using the standard rewrite rules. Use `(key r le_rfl).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem ck_last_eq_sum (hB : GlobalTheory.IsNormalScheme B.X) (r : ℕ) (T : Fin (r + 1) → Pres B) (U : Fin r → Pres B)
     (h0 : IsZero (T 0).mod) (hE : ∀ i : Fin r, IsExt (T i.castSucc).mod (T i.succ).mod (U i).mod) (k : ℕ) :
     (T (Fin.last r)).ck p k = ∑ i, (U i).ck p k := by
@@ -64,6 +79,11 @@ theorem ck_last_eq_sum (hB : GlobalTheory.IsNormalScheme B.X) (r : ℕ) (T : Fin
 
 end
 
+/- English proof (translation)
+Introduce `O _ _ _ p _ _ _ B hB P P' g hg hK hF hFP k`. Take `⟨Qs, Rs, h0, ⟨eQ⟩, hr, hKQ, hKR, hE⟩` from `GlobalTheory.T.presentation_flag_filtration_exists O p B hB P g hK hFP`. Take `⟨Ss, Rs', h0', hFS, hFR, hE'⟩` from `GlobalTheory.T.filtration_chern_class_additive O p B hB g hg P.r Qs Rs h0 hr hKQ hKR hE`. Take `⟨eS⟩` from `nonempty_iso_of_isFrob (hFS (Fin.last _)) hF ⟨eQ⟩`. Rewrite using `[GlobalTheory.T.ck_presentation_invariant O p B hB P' (Ss (Fin.last _)) ⟨eS.symm⟩ k, GlobalTheory.T.ck_presentation_invariant O p B hB P (Qs (Fin.last _)) ⟨eQ.symm⟩ k, ck_last_eq_sum hB _ Ss Rs' h0' hE' k, ck_last_eq_sum hB _ Qs Rs h0 hE k, Finset.smul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => GlobalTheory.T.frobenius_chern_class_scaling O p B hB (Rs i) (Rs' i) g hg (hr i) (hKR i) (hFR i) k`.
+-/
 theorem ck_frob_of_flagPair : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → ∀ (P P' : Pres B) (g : Γ(B.X, ⊤)), IsRootOfP p g p → Kills g P.mod → IsFrob p P.mod P'.mod → (haveI := P.iso; Nonempty (GlobalTheory.Vert.Model.FlagPair (GlobalTheory.Vert.Model.GenIso.ofHom P.ψ) P.r)) → ∀ k : ℕ, P'.ck p k = ((p : ℚ) ^ k) • P.ck p k := by
   intro O _ _ _ p _ _ _ B hB P P' g hg hK hF hFP k
   obtain ⟨Qs, Rs, h0, ⟨eQ⟩, hr, hKQ, hKR, hE⟩ := GlobalTheory.T.presentation_flag_filtration_exists O p B hB P g hK hFP

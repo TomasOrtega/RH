@@ -19,6 +19,19 @@ open GlobalTheory GlobalTheory.CM
 noncomputable section
 namespace GlobalTheory.CM
 
+/- English proof (translation)
+Introduce `laws E _ _ _ H R _ _ ω C D ε h hK hpos`. Take `⟨h₀, -, huniq, hbar, hE, -, -, n, x, y, hxy⟩` from `GlobalTheory.T.exists_unique_cmHermitianLatticeForm E H D ε`. Take `rfl` from `huniq h hK`. Take `⟨-, -, ⟨br, hbr, hw, hbb⟩, -, -, hM⟩` from `OK_isDedekindDomain_and_projective E H`. Take `⟨hfin, hproj, -⟩` from `hM D.La D.fin D.proj`.
+
+Set `t` to `Serre.isTensor D.La C.act`. Choose the witnesses or unpack the hypotheses as in `⟨c, τ, hc⟩ : ∃ (c : OAct (𝓞 E) (Serre.tensorObj D.La C.act)) (τ : Serre.IsTensor _ (Serre.comapAct c (algebraMap (OK H) (𝓞 E))) C.P.A C.act D.La), ∀ (s : 𝓞 E) a, τ.tmul (s • a) = τ.tmul a ≫ c.act s := by`. Establish `key : ∀ b', b' = Serre.tensorAct D.La C.act → ∃ τ : Serre.IsTensor _ b' C.P.A C.act D.La, ∀ a, τ.tmul a = t.tmul a`. Introduce and unpack `_ rfl`. Conclude with `⟨t, fun _ => rfl⟩`.
+
+Take `⟨τ, hτ⟩` from `key _ (t.comapAct_algAct (𝓞 E))`. Conclude with `⟨t.algAct (𝓞 E), τ, fun s a => by rw [hτ, hτ, t.tmul_algAct]⟩`. Establish `hA : IsAbelianScheme (Serre.tensorObj D.La C.act)` using `τ.isAbelianScheme C.P.isAb`. Take `⟨rig, hrig⟩` from `C.P.rigid`. Take `⟨cubP⟩` from `(laws.cube _ C.P ⟨C.P.L, rig, C.P.isLB, hrig⟩ rfl).1`.
+
+Establish `hθP : ∃ t : LB.Gen (Theta C.P.A C.P.L), t.IsGen` using `⟨cubP.t, cubP.isGen⟩`. Take `⟨N, hN, -, hθ, hp⟩` from `GlobalTheory.TensorBundle.exists_tensor_bundle _ (OK H) C.P.A _ C.act _ D.La τ br (wK H) C.P.L h₀ hfin hproj hw hbb (fun a b => Subtype.ext ((hbar a b).trans (hbr _).symm)) C.P.isLB hθP (fun a => C.adj a (br a) (hbr a))`. Take `⟨PP, cub, sym, -, hΛ, prim, adj⟩` from `GlobalTheory.PrimNorm.exists_primitive_normalisation laws.globalFns E H _ _ c N hA hN hθ fun s => by`. Use `GlobalTheory.LamCalc.lamEq_of_tmul _ (OK H) C.P.A _ C.act _ D.La τ _ _ D.La τ _ _ N N (c.act s) (𝟙 _) (𝟙 _) (c.act (H.bar s)) hN hN hθ hθ (c.hom _) inferInstance inferInstance (c.hom _) fun m m' => by` as an intermediate fact. Rewrite using `[← hc, ← hc, Category.comp_id, Category.comp_id]`.
+
+Establish `a` using `hp (s • m) m'`. Rewrite `a` using `[hE]`. Conclude with `LBIso.trans (DVR.linComb_isLB _ hN _ _) (DVR.linComb_isLB _ C.P.isLB _ _) (DVR.linComb_isLB _ hN _ _) a (hp m (H.bar s • m')).symm`. Simplify `this` using `only [LamEq, Category.comp_id]`. Establish `hp' : ∀ m m', LamEq PP.L (τ.tmul m) (τ.tmul m') C.P.L (C.act.act (h₀ m m')) (𝟙 C.P.A)` using `fun m m' => LBIso.trans (DVR.linComb_isLB _ PP.isLB _ _) (DVR.linComb_isLB _ hN _ _) (DVR.linComb_isLB _ C.P.isLB _ _) (hΛ.chartPull (GlobalTheory.PrimNorm.chartSquare PP.L (lift (fst C.P.A C.P.A ≫ τ.tmul m) (snd C.P.A C.P.A ≫ τ.tmul m')) (lift_fst _ _).symm (lift_snd _ _).symm) …`.
+
+Establish `hθ' : ∃ t : LB.Gen (Theta _ PP.L), t.IsGen` using `⟨cub.t, cub.isGen⟩`. Set `s : SAB H (Sp R)` to `{ G := Serre.tensorObj D.La C.act, semi := GlobalTheory.isSemiAbelian_of_isAbelianScheme _ hA, act := c, PP := PP, cub := cub, sym := sym, adj := adj, prim := prim }`. Conclude with `⟨⟨s, hA, _, GlobalTheory.T.cmTensor_smoothOfRelativeDimension E H R ω C D _ _ ⟨τ⟩, ObjDim.sym, GlobalTheory.T.relAmple_lineBundle_of_positive_hermitian_cm_form laws E H R ω C D ε _ _ _ τ PP.L hK hpos PP.isLB hθ' prim hp', GlobalTheory.PerfectTensorKernel.kTriv_of_perfect _ (OK H) …`.
+-/
 theorem exists_isTen : Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsNoetherianRing R] (ω : R) (C : Ell H R ω) (D : Datum H) (ε : ℤˣ) (h : D.La → D.La → OK H), IsKForm D ε h → (∀ x : D.La, x ≠ 0 → 0 < (ε : ℤ) * D.EF (H.w0 • x) x) → ∃ T : PAT H (Sp R), Nonempty (IsTen C D h T) ∧ T.g = Module.finrank ℚ E / 2 * (D.p + D.q) := by
   intro laws E _ _ _ H R _ _ ω C D ε h hK hpos
   obtain ⟨h₀, -, huniq, hbar, hE, -, -, n, x, y, hxy⟩ := GlobalTheory.T.exists_unique_cmHermitianLatticeForm E H D ε

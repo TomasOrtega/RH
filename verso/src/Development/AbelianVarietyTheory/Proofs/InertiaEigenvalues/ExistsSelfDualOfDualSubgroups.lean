@@ -10,6 +10,21 @@ variable {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup
 open MeasureTheory Filter Topology Pointwise in
 variable {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V] in
 
+/- English proof (translation)
+Establish `hf' : IsLocallyConstant f ∧ HasCompactSupport f` using `hf`. Take `⟨hlc, hcs⟩` from `hf'`. Establish `hK : IsCompact (tsupport f)` using `hcs`. Establish `hfin : (f '' tsupport f).Finite` using `by haveI : CompactSpace (tsupport f) := isCompact_iff_compactSpace.mp hK`. Establish `hloc : IsLocallyConstant (f ∘ ((↑) : tsupport f → V))` using `hlc.comp_continuous continuous_subtype_val`.
+
+Use `hloc.range_finite` as an intermediate fact. Rewrite `this` using `[Set.range_comp, Subtype.range_coe]`. Then use the resulting hypothesis. Establish `hW : ∀ c : ℂ, ∃ W ∈ 𝓝 (0 : V), c ≠ 0 → {x | f x = c} + W ⊆ {x | f x = c}`. Introduce `c`. Distinguish the cases in `hc : c = 0`.
+
+Conclude with `⟨Set.univ, univ_mem, fun h => (h hc).elim⟩`. Establish `hsub : {x | f x = c} ⊆ tsupport f`. Introduce `x hx`. Apply `subset_tsupport f` to reduce the goal to its premises. Rewrite using `[Function.mem_support, show f x = c from hx]`.
+
+Conclude with `hc`. Take `⟨W, hW0, hWs⟩` from `compact_open_separated_add_right (hK.of_isClosed_subset (hlc.isClosed_fiber c) hsub) (hlc.isOpen_fiber c) subset_rfl`. Conclude with `⟨W, hW0, fun _ => hWs⟩`. Use `choose W hW0 hWsub using hW`. Use `⟨⋂ c ∈ f '' tsupport f, W c, (biInter_mem hfin).2 fun c _ => hW0 c, ?_⟩` and prove the remaining obligations.
+
+Establish `key : ∀ x m, m ∈ ⋂ c ∈ f '' tsupport f, W c → f x ≠ 0 → f (x + m) = f x`. Introduce `x m hm hx`. Establish `hxK : x ∈ tsupport f` using `subset_tsupport f (Function.mem_support.2 hx)`. Establish `hmW : m ∈ W (f x)` using `Set.mem_iInter₂.1 hm (f x) ⟨x, hxK, rfl⟩`. Conclude with `hWsub (f x) hx (Set.add_mem_add (show x ∈ {y | f y = f x} from rfl) hmW)`.
+
+Introduce `M hM x m hmM`. Distinguish the cases in `hx : f x = 0`. Assume the negation of the conclusion as `hne`. Establish `h1` using `key (x + m) (-m) (hM (neg_mem hmM)) (fun h => hne (h.trans hx.symm))`. Rewrite `h1` using `[add_neg_cancel_right]`.
+
+Conclude with `hne h1.symm`. Conclude with `key x m (hM hmM) hx`.
+-/
 theorem _root_.GlobalTheory.JR.AbsInv.exists_nhds_invariant {f : V → ℂ}
     (hf : _root_.GlobalTheory.JR.IsTest f) :
     ∃ U ∈ 𝓝 (0 : V), ∀ M : AddSubgroup V, (M : Set V) ⊆ U → ∀ x, ∀ m ∈ M, f (x + m) = f x := by
@@ -55,6 +70,11 @@ open MeasureTheory Filter Topology Pointwise in
 variable {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V] in
 variable [MeasurableSpace V] [BorelSpace V] in
 
+/- English proof (translation)
+Establish `h1 : ∫ x, g x ∂μ = c * ∫ x, g x ∂μ`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (1 - c) * ∫ x, g x ∂μ = 0`. Rewrite using `[sub_mul, one_mul]`. Conclude with `sub_eq_zero.2 h1`.
+
+Conclude with `(mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 hc.symm)`.
+-/
 theorem _root_.GlobalTheory.JR.AbsInv.integral_eq_zero_of_translate (μ : Measure V) [μ.IsAddHaarMeasure] (g : V → ℂ) (m : V) (c : ℂ)
     (hc : c ≠ 1) (h : ∀ x, g (x + m) = c * g x) : ∫ x, g x ∂μ = 0 := by
   have h1 : ∫ x, g x ∂μ = c * ∫ x, g x ∂μ := by
@@ -72,6 +92,11 @@ open MeasureTheory Filter Topology Pointwise in
 variable {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V] in
 variable [MeasurableSpace V] [BorelSpace V] in
 variable [T2Space V] [LocallyCompactSpace V] [SecondCountableTopology V] in
+/- English proof (translation)
+Establish `hex : ∃ m ∈ M, B m y ≠ 1`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hy ((hN y).2 h)`. Take `⟨m, hm, hBm⟩` from `hex`.
+
+Unfold `_root_.GlobalTheory.JR.fourB`. Apply `_root_.GlobalTheory.JR.AbsInv.integral_eq_zero_of_translate μ _ m (B m y) hBm` to reduce the goal to its premises. Introduce `x`. Rewrite using `[hi x m hm, ha]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem fourB_eq_zero_of_not_mem_annihilator (μ : Measure V)
     [μ.IsAddHaarMeasure] (B : V → V → ℂ) (ha : ∀ x x' y, B (x + x') y = B x y * B x' y)
     (M N : AddSubgroup V) (hN : ∀ y, y ∈ N ↔ ∀ x ∈ M, B x y = 1) (f : V → ℂ)
@@ -92,6 +117,17 @@ open MeasureTheory Filter Topology Pointwise in
 variable {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V] in
 variable [MeasurableSpace V] [BorelSpace V] in
 variable [T2Space V] [LocallyCompactSpace V] [SecondCountableTopology V] in
+/- English proof (translation)
+Distinguish the cases in `hw : w ∈ (M : Set V)`. Rewrite using `[Set.indicator_of_mem hw]`. Establish `hfun : (N : Set V).indicator (fun y => B w y) = (N : Set V).indicator (fun _ => (1 : ℂ))`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ (N : Set V)`.
+
+Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem hy]`. Conclude with `(hM w).1 hw y hy`. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hy]`. Rewrite using `[hfun, integral_indicator_const _ hNo.measurableSet, Complex.real_smul, mul_one]`. Rewrite using `[Set.indicator_of_notMem hw]`.
+
+Establish `hex : ∃ n ∈ N, B w n ≠ 1`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hw ((hM w).2 h)`. Take `⟨n, hn, hBn⟩` from `hex`.
+
+Apply `_root_.GlobalTheory.JR.AbsInv.integral_eq_zero_of_translate μ _ n (B w n) hBn` to reduce the goal to its premises. Introduce `y`. Distinguish the cases in `hy : y ∈ (N : Set V)`. Establish `hyn : y + n ∈ (N : Set V)` using `N.add_mem hy hn`. Rewrite using `[Set.indicator_of_mem hyn, Set.indicator_of_mem hy, hs w (y + n), ha, hs y w, hs n w, mul_comm]`.
+
+Establish `hyn : y + n ∉ (N : Set V)` using `fun h => hy (by simpa using N.sub_mem h hn)`. Rewrite using `[Set.indicator_of_notMem hyn, Set.indicator_of_notMem hy, mul_zero]`.
+-/
 private theorem integral_indicator_bicharacter_eq_indicator (μ : Measure V) [μ.IsAddHaarMeasure]
     (B : V → V → ℂ) (hs : ∀ x y, B x y = B y x) (ha : ∀ x x' y, B (x + x') y = B x y * B x' y)
     (M N : AddSubgroup V) (hNo : IsOpen (N : Set V)) (hM : ∀ x, x ∈ M ↔ ∀ y ∈ N, B x y = 1)
@@ -127,6 +163,29 @@ variable {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup
 variable [MeasurableSpace V] [BorelSpace V] in
 variable [T2Space V] [LocallyCompactSpace V] [SecondCountableTopology V] in
 
+/- English proof (translation)
+Establish `hNclo : IsClopen (N : Set V)` using `⟨N.isClosed_of_isOpen hNo, hNo⟩`. Set `P : V → V → ℂ` to `fun x y => (N : Set V).indicator (fun _ => (1 : ℂ)) y * (f x * B x y) * B y z`. Establish `hPy : ∀ y, ∫ x, P x y ∂μ = _root_.GlobalTheory.JR.fourB μ B f y * B y z`. Introduce `y`. Simplify using `only [P]`.
+
+Rewrite using `[integral_mul_const, integral_const_mul]`. Use `congr 1`. Distinguish the cases in `hy : y ∈ (N : Set V)`. Rewrite using `[Set.indicator_of_mem hy, one_mul]`. Both sides reduce to the same expression.
+
+Rewrite using `[Set.indicator_of_notMem hy, zero_mul, fourB_eq_zero_of_not_mem_annihilator μ B ha M N hN f hi y hy]`. Establish `hPx : ∀ x, ∫ y, P x y ∂μ = f x * (M : Set V).indicator (fun _ => ((μ.real N : ℝ) : ℂ)) (x + z)`. Introduce `x`. Rewrite using `[← integral_indicator_bicharacter_eq_indicator μ B hs ha M N hNo hM (x + z), ← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+
+Simplify using `only [P]`. Distinguish the cases in `hy : y ∈ (N : Set V)`. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem hy, ha, hs y z]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hy]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hPint : Integrable (Function.uncurry P) (μ.prod μ)`. Apply `Continuous.integrable_of_hasCompactSupport` to reduce the goal to its premises. Establish `h1 : Continuous fun q : V × V => (N : Set V).indicator (fun _ => (1 : ℂ)) q.2` using `(hNclo.continuous_indicator continuous_const).comp continuous_snd`. Establish `h2 : Continuous fun q : V × V => B q.2 z` using `hB.comp (continuous_snd.prodMk continuous_const)`.
+
+Conclude with `(h1.mul ((hf.comp continuous_fst).mul hB)).mul h2`. Apply `HasCompactSupport.intro (hfc.isCompact.prod hNc)` to reduce the goal to its premises. Introduce and unpack `⟨x, y⟩ hq`. Simplify using `only [Set.mem_prod, not_and_or] at hq`. Simplify using `only [Function.uncurry_apply_pair, P]`.
+
+Break down `hq with hx | hy` into its components or cases. Rewrite using `[image_eq_zero_of_notMem_tsupport hx]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Set.indicator_of_notMem hy]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hpre : MeasurableSet ((fun x => x + z) ⁻¹' (M : Set V))` using `(hMo.preimage (continuous_add_right z)).measurableSet`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only`. Distinguish the cases in `hx : x + z ∈ (M : Set V)`.
+
+Establish `hfx : f x = f (-z)`. Establish `e : -z + (x + z) = x` using `by abel`. Use `hi (-z) (x + z) hx` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem (show x ∈ (fun x => x + z) ⁻¹' (M : Set V) from hx), hfx, mul_comm]`.
+
+Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem (show x ∉ (fun x => x + z) ⁻¹' (M : Set V) from hx), mul_zero]`. Use `_ = ((μ.real M * μ.real N : ℝ) : ℂ) * f (-z) := by`. Rewrite using `[integral_indicator_const _ hpre, Complex.real_smul]`. Simplify using `only [measureReal_def, measure_preimage_add_right]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.JR.AbsInv.fourB_fourB (μ : Measure V) [μ.IsAddHaarMeasure] (B : V → V → ℂ)
     (hB : Continuous (fun p : V × V => B p.1 p.2)) (hs : ∀ x y, B x y = B y x)
     (ha : ∀ x x' y, B (x + x') y = B x y * B x' y) (M N : AddSubgroup V)
@@ -203,6 +262,15 @@ open MeasureTheory Filter Topology Pointwise in
 variable {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V] in
 variable [MeasurableSpace V] [BorelSpace V] in
 variable [T2Space V] [LocallyCompactSpace V] [SecondCountableTopology V] in
+/- English proof (translation)
+Establish `hMclo : IsClopen (M : Set V)` using `⟨M.isClosed_of_isOpen hMo, hMo⟩`. Establish `hf : Continuous ((M : Set V).indicator (fun _ => (1 : ℂ)))` using `hMclo.continuous_indicator continuous_const`. Establish `hfc : HasCompactSupport ((M : Set V).indicator (fun _ => (1 : ℂ)))` using `HasCompactSupport.intro hMc (fun x hx => Set.indicator_of_notMem hx _)`. Establish `hinv : ∀ L : AddSubgroup V, (L : Set V) ⊆ M → ∀ x, ∀ m ∈ L, (M : Set V).indicator (fun _ => (1 : ℂ)) (x + m) = (M : Set V).indicator (fun _ => (1 : ℂ)) x`. Introduce `L hL x m hm`.
+
+Establish `hmM : m ∈ M` using `hL hm`. Distinguish the cases in `hx : x ∈ (M : Set V)`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem (M.add_mem hx hmM)]`. Establish `hxm : x + m ∉ (M : Set V)` using `fun h => hx (by simpa using M.sub_mem h hmM)`. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem hxm]`.
+
+Establish `h1` using `_root_.GlobalTheory.JR.AbsInv.fourB_fourB μ B hB hs ha M N hMo hNo hNc hN hM _ hf hfc (hinv M subset_rfl) 0`. Establish `h2` using `_root_.GlobalTheory.JR.AbsInv.fourB_fourB μ B hB hs ha M' N' hM'o hN'o hN'c hN' hM' _ hf hfc (hinv M' hle) 0`. Establish `h0 : (M : Set V).indicator (fun _ => (1 : ℂ)) (-0) = 1`. Rewrite using `[neg_zero, Set.indicator_of_mem (M.zero_mem)]`. Rewrite `h1`, `h2` using `[h0, mul_one]`.
+
+Conclude with `h2.symm.trans h1` after adjusting the coercions.
+-/
 private theorem measureReal_mul_eq_of_dual_pairs_subset (μ : Measure V) [μ.IsAddHaarMeasure]
     (B : V → V → ℂ) (hB : Continuous (fun p : V × V => B p.1 p.2)) (hs : ∀ x y, B x y = B y x)
     (ha : ∀ x x' y, B (x + x') y = B x y * B x' y) (M N M' N' : AddSubgroup V)
@@ -240,6 +308,21 @@ variable {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup
 variable [MeasurableSpace V] [BorelSpace V] in
 variable [T2Space V] [LocallyCompactSpace V] [SecondCountableTopology V] in
 
+/- English proof (translation)
+Take `⟨M₀, N₀, -, hM₀o, hM₀c, hN₀o, hN₀c, hN₀, hM₀⟩` from `H Set.univ univ_mem`. Take `⟨ν, hν⟩ : ∃ ν : Measure V, ν.IsAddHaarMeasure` from `⟨Measure.addHaar, inferInstance⟩`. Establish `hpos : 0 < ν.real M₀ * ν.real N₀`. Apply `mul_pos` to reduce the goal to its premises. Conclude with `ENNReal.toReal_pos (hM₀o.measure_pos ν ⟨0, M₀.zero_mem⟩).ne' hM₀c.measure_lt_top.ne`.
+
+Conclude with `ENNReal.toReal_pos (hN₀o.measure_pos ν ⟨0, N₀.zero_mem⟩).ne' hN₀c.measure_lt_top.ne`. Take `⟨r, hr⟩ : ∃ r : ℝ, r = Real.sqrt (ν.real M₀ * ν.real N₀)` from `⟨_, rfl⟩`. Establish `hr0 : 0 < r` using `hr ▸ Real.sqrt_pos.2 hpos`. Establish `hrr : r * r = ν.real M₀ * ν.real N₀`. Rewrite using `[hr]`.
+
+Conclude with `Real.mul_self_sqrt hpos.le`. Take `⟨c, hc⟩ : ∃ c : ENNReal, c = ENNReal.ofReal r⁻¹` from `⟨_, rfl⟩`. Establish `hc0 : c ≠ 0`. Rewrite using `[hc, Ne, ENNReal.ofReal_eq_zero, not_le]`. Conclude with `inv_pos.2 hr0`.
+
+Establish `hct : c ≠ ⊤` using `hc ▸ ENNReal.ofReal_ne_top`. Use `haveI : (c • ν).IsAddHaarMeasure := Measure.IsAddHaarMeasure.smul ν hc0 hct`. Establish `hreal : ∀ A : Set V, (c • ν).real A = r⁻¹ * ν.real A`. Introduce `A`. Rewrite using `[measureReal_def, Measure.smul_apply, smul_eq_mul, ENNReal.toReal_mul, hc, ENNReal.toReal_ofReal (inv_nonneg.2 hr0.le), measureReal_def]`.
+
+Establish `hone : (c • ν).real M₀ * (c • ν).real N₀ = 1`. Rewrite using `[hreal, hreal]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨c • ν, ?_⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.JR.SelfDual`.
+
+Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Introduce `f hf y`. Establish `hf' : IsLocallyConstant f ∧ HasCompactSupport f` using `hf`. Take `⟨U, hU, hUinv⟩` from `_root_.GlobalTheory.JR.AbsInv.exists_nhds_invariant hf`. Take `⟨M, N, hMU, hMo, hMc, hNo, hNc, hN, hM⟩` from `H (U ∩ M₀) (inter_mem hU (hM₀o.mem_nhds M₀.zero_mem))`.
+
+Establish `hMN : (c • ν).real M * (c • ν).real N = 1` using `(measureReal_mul_eq_of_dual_pairs_subset (c • ν) B hB hs ha M₀ N₀ M N hM₀o hM₀c hN₀o hN₀c hN₀ hM₀ hMo hNo hNc hN hM (fun x hx => (hMU hx).2)).trans hone`. Rewrite using `[_root_.GlobalTheory.JR.AbsInv.fourB_fourB (c • ν) B hB hs ha M N hMo hNo hNc hN hM f hf'.1.continuous hf'.2 (hUinv M (fun x hx => (hMU hx).1)) y, hMN]`. Simplify using the standard rewrite rules.
+-/
 theorem _root_.GlobalTheory.JR.AbsInv.exists_selfDual (B : V → V → ℂ)
     (hB : Continuous (fun p : V × V => B p.1 p.2)) (hs : ∀ x y, B x y = B y x)
     (ha : ∀ x x' y, B (x + x') y = B x y * B x' y)
@@ -293,6 +376,9 @@ variable {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup
 variable [MeasurableSpace V] [BorelSpace V] in
 variable [T2Space V] [LocallyCompactSpace V] [SecondCountableTopology V] in
 
+/- English proof (translation)
+Introduce `V _ _ _ _ _ _ _ _ B hB hs ha _ H`. Conclude with `_root_.GlobalTheory.JR.AbsInv.exists_selfDual B hB hs ha H`.
+-/
 theorem _root_.GlobalTheory.JR.exists_selfDual_of_dual_subgroups : ∀ (V : Type) [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V] [T2Space V] [LocallyCompactSpace V] [SecondCountableTopology V] [MeasurableSpace V] [BorelSpace V] (B : V → V → ℂ), Continuous (fun p : V × V => B p.1 p.2) → (∀ x y, B x y = B y x) → (∀ x x' y, B (x + x') y = B x y * B x' y) → (∀ y, B 0 y = 1) → (∀ U ∈ 𝓝 (0 : V), ∃ M N : AddSubgroup V, (M : Set V) ⊆ U ∧ IsOpen (M : Set V) ∧ IsCompact (M : Set V) ∧ IsOpen (N : Set V) ∧ IsCompact (N : Set V) ∧ (∀ y, y ∈ N ↔ ∀ x ∈ M, B x y = 1) ∧ (∀ x, x ∈ M ↔ ∀ y ∈ N, B x y = 1)) → ∃ μ : MeasureTheory.Measure V, _root_.GlobalTheory.JR.SelfDual μ B := by
   intro V _ _ _ _ _ _ _ _ B hB hs ha _ H
   exact _root_.GlobalTheory.JR.AbsInv.exists_selfDual B hB hs ha H

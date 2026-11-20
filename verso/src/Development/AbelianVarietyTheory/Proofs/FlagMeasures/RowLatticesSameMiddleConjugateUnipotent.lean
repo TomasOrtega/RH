@@ -16,10 +16,18 @@ section Generic
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.BasicNotions.HSpace E} {r : ℕ} {T : E}
 
+/- English proof (translation)
+Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker]`.
+-/
 theorem rowsLift_mem_orth {U : Submodule E S.V} {x : S.V} :
     x ∈ orth S U ↔ ∀ y ∈ U, S.hT y x = 0 := by
   simp only [orth, Submodule.mem_iInf, LinearMap.mem_ker]
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hle : Submodule.span E (v '' s) ≤ LinearMap.eqLocus (n : S.V →ₗ[E] S.V) LinearMap.id`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, -, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_eqLocus]`.
+
+Simplify using `using hn a`. Establish `h` using `hle hx`. Rewrite `h` using `[LinearMap.mem_eqLocus]`. Simplify using `using h`.
+-/
 theorem rowsLift_fix_span {ι : Type} (v : ι → S.V) (s : Set ι) (n : S.V ≃ₗ[E] S.V)
     (hn : ∀ a, n (v a) = v a) : ∀ x ∈ Submodule.span E (v '' s), n x = x := by
   intro x hx
@@ -32,6 +40,11 @@ theorem rowsLift_fix_span {ι : Type} (v : ι → S.V) (s : Set ι) (n : S.V ≃
   rw [LinearMap.mem_eqLocus] at h
   simpa using h
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [Submodule.mem_map, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Rewrite using `[hn x hx]` and apply the resulting hypothesis.
+
+Introduce `hy`. Conclude with `⟨y, hy, hn y hy⟩`.
+-/
 theorem rowsLift_map_eq (U : Submodule E S.V) (n : S.V ≃ₗ[E] S.V) (hn : ∀ x ∈ U, n x = x) :
     U.map (n : S.V →ₗ[E] S.V) = U := by
   ext y
@@ -42,6 +55,11 @@ theorem rowsLift_map_eq (U : Submodule E S.V) (n : S.V ≃ₗ[E] S.V) (hn : ∀ 
   · intro hy
     exact ⟨y, hy, hn y hy⟩
 
+/- English proof (translation)
+Establish `hi' : ∀ a b, S.hT (n a) (n b) = S.hT a b` using `hi`. Rewrite using `[rowsLift_mem_orth, rowsLift_mem_orth]`. Use `forall₂_congr fun y hy => ?_` and prove the remaining obligations. Establish `h` using `hi' y x`. Rewrite `h` using `[hn y hy]`.
+
+Rewrite using `[h]`.
+-/
 theorem rowsLift_orth_iff (U : Submodule E S.V) (n : S.V ≃ₗ[E] S.V) (hi : n ∈ Formalism.HermitianLatticesTheory.isom S.hT)
     (hn : ∀ x ∈ U, n x = x) (x : S.V) : n x ∈ orth S U ↔ x ∈ orth S U := by
   have hi' : ∀ a b, S.hT (n a) (n b) = S.hT a b := hi
@@ -51,6 +69,17 @@ theorem rowsLift_orth_iff (U : Submodule E S.V) (n : S.V ≃ₗ[E] S.V) (hi : n 
   rw [hn y hy] at h
   rw [h]
 
+/- English proof (translation)
+Use extensionality with `y`. Unfold `Lsub Lrep`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨hy1, hyO⟩` from `Submodule.mem_inf.mp hy`.
+
+Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hy1`. Take `⟨ha1, haO⟩` from `Submodule.mem_inf.mp ha`. Take `⟨l, hl, rfl⟩` from `Submodule.mem_map.mp ha1`. Establish `hlO : l ∈ orth S (Xsp F)` using `(rowsLift_orth_iff _ n hi hn l).mp haO`. Establish `hd : n l - l ∈ Xsp F` using `hq l hlO`.
+
+Use `Submodule.mem_inf.mpr ⟨Submodule.mem_sup.mpr ⟨l, Submodule.mem_inf.mpr ⟨hl, hlO⟩, (n l - l) + b, (toO S (Xsp F)).add_mem hd hb, ?_⟩, hyO⟩` and prove the remaining obligations. Use `show l + (n l - l + b) = n l + b`. Normalize the expressions using the abelian group laws. Introduce `hy`. Take `⟨hy1, hyO⟩` from `Submodule.mem_inf.mp hy`.
+
+Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hy1`. Take `⟨hl, haO⟩` from `Submodule.mem_inf.mp ha`. Establish `hnO : n a ∈ orth S (Xsp F)` using `(rowsLift_orth_iff _ n hi hn a).mpr haO`. Establish `hd : n a - a ∈ Xsp F` using `hq a haO`. Use `Submodule.mem_inf.mpr ⟨Submodule.mem_sup.mpr ⟨n a, Submodule.mem_inf.mpr ⟨Submodule.mem_map.mpr ⟨a, hl, rfl⟩, hnO⟩, b - (n a - a), (toO S (Xsp F)).sub_mem hb hd, ?_⟩, hyO⟩` and prove the remaining obligations.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem rowsLift_Lsub_gmap (F : LFlag S r T) (Λ : Submodule (𝓞 E) S.V) (n : S.V ≃ₗ[E] S.V)
     (hi : n ∈ Formalism.HermitianLatticesTheory.isom S.hT) (hn : ∀ x ∈ Xsp F, n x = x)
     (hq : ∀ x ∈ orth S (Xsp F), n x - x ∈ Xsp F) :
@@ -80,6 +109,11 @@ theorem rowsLift_Lsub_gmap (F : LFlag S r T) (Λ : Submodule (𝓞 E) S.V) (n : 
         (toO S (Xsp F)).sub_mem hb hd, ?_⟩, hyO⟩
     abel
 
+/- English proof (translation)
+Introduce `y hy`. Establish `h1 : y ∈ (A ⊓ toO S W) ⊔ toO S X` using `Submodule.mem_sup_left hy`. Rewrite `h1` using `[h]`. Take `⟨b, hb, x, hx, rfl⟩` from `Submodule.mem_sup.mp h1`. Establish `hxW : x ∈ W`.
+
+Establish `h2 : b + x - b ∈ W` using `W.sub_mem (Submodule.mem_inf.mp hy).2 (Submodule.mem_inf.mp hb).2`. Simplify using `using h2`. Rewrite using `[hXW x hx hxW, add_zero]`. Conclude with `hb`.
+-/
 theorem rowsLift_cancel (X W : Submodule E S.V) (hXW : ∀ x ∈ X, x ∈ W → x = 0)
     (A B : Submodule (𝓞 E) S.V) (h : (A ⊓ toO S W) ⊔ toO S X = (B ⊓ toO S W) ⊔ toO S X) :
     A ⊓ toO S W ≤ B ⊓ toO S W := by
@@ -95,6 +129,13 @@ theorem rowsLift_cancel (X W : Submodule E S.V) (hXW : ∀ x ∈ X, x ∈ W → 
 
 end Generic
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun D.host.E).mp hx`. Establish `hW' : (∑ i, c i • D.sp.hypE i) ∈ orth (hS D) (Submodule.span D.host.E (Set.range D.sp.hypE ∪ Set.range D.sp.hypF))` using `hW`. Establish `hc : ∀ j, c j = 0`. Introduce `j`. Establish `h1 : (hS D).hT (D.sp.hypF j) (∑ i, c i • D.sp.hypE i) = 0` using `(rowsLift_mem_orth.mp hW') _ (Submodule.subset_span (Or.inr ⟨j, rfl⟩))`.
+
+Establish `hs : ∀ i, (hS D).hT (D.sp.hypF j) (D.sp.hypE i) = if i = j then 1 else 0`. Introduce `i`. Rewrite using `[← (hS D).herm.eq (D.sp.hypE i) (D.sp.hypF j), D.sp.hyp_ef]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite `h1` using `[map_sum]`.
+
+Simplify `h1` using `[hs]`. Simplify using `[hc]`.
+-/
 theorem rowsLift_X_inf_Wb (D : D7) (x : (hS D).V)
     (hx : x ∈ Submodule.span D.host.E (Set.range D.sp.hypE)) (hW : x ∈ Wb D) : x = 0 := by
   obtain ⟨c, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun D.host.E).mp hx
@@ -112,6 +153,13 @@ theorem rowsLift_X_inf_Wb (D : D7) (x : (hS D).V)
     simpa [hs] using h1
   simp [hc]
 
+/- English proof (translation)
+Take `⟨-, hfr, -⟩` from `hn`. Establish `he : ∀ a, n (F0.e a) = F0.e a`. Introduce `a`. Establish `h` using `hfr (Fin.castSucc a)`. Simplify `h` using `[frame, FlagG.fvec, lf]`.
+
+Establish `hz : n F0.z = F0.z`. Establish `h` using `hfr (Fin.last _)`. Simplify `h` using `[frame, FlagG.fvec, lf]`. Use `⟨he, hz, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+
+Rewrite `hx` using `[FlagG.X, ← Set.image_univ]`. Conclude with `rowsLift_fix_span F0.e Set.univ n he x hx`.
+-/
 theorem rowsLift_fixX {D : D7} {T : D.host.E} {F0 : FlagG (VS D) D.R.rS T}
     {n : (hS D).V ≃ₗ[D.host.E] (hS D).V} (hn : FixFr D (lf D F0) n) :
     (∀ a, n (F0.e a) = F0.e a) ∧ n F0.z = F0.z ∧ ∀ x ∈ F0.X, n x = x := by
@@ -128,6 +176,29 @@ theorem rowsLift_fixX {D : D7} {T : D.host.E} {F0 : FlagG (VS D) D.R.rS T}
   rw [FlagG.X, ← Set.image_univ] at hx
   exact rowsLift_fix_span F0.e Set.univ n he x hx
 
+/- English proof (translation)
+Introduce `D u _ hT3 _ F0 he hz Λ₁ Λ₂ h₁ h₂ hL`. Establish `hT1 : 1 ≤ Tu D u` using `by omega`. Establish `hB : IsBase D u F0` using `⟨he, hz⟩`. Take `⟨n₁, hf₁, hs₁, hr₁⟩` from `GlobalTheory.T.exists_frameFixing_isometry_split_rowLattice D u F0 Λ₁ hB h₁ hT1`. Take `⟨n₂, hf₂, hs₂, hr₂⟩` from `GlobalTheory.T.exists_frameFixing_isometry_split_rowLattice D u F0 Λ₂ hB h₂ hT1`.
+
+Establish `hfx₁` using `rowsLift_fixX hf₁`. Establish `hfx₂` using `rowsLift_fixX hf₂`. Establish `hLs : ∀ (n : (hS D).V ≃ₗ[D.host.E] (hS D).V) (Λ : LatV D), FixFr D (lf D F0) n → Lsub (Formalism.HermitianLatticesTheory.gmap n Λ) (lf D F0) = Lsub Λ (lf D F0)`. Introduce `n Λ hf`. Establish `hX` using `(rowsLift_fixX hf).2.2`.
+
+Take `⟨hi, -, hq⟩` from `hf`. Conclude with `rowsLift_Lsub_gmap (lf D F0) Λ n hi hX hq`. Establish `hW : ∀ Λ : LatV D, IsRowLat D F0 Λ → IsSplit D F0 Λ → Lsub Λ (lf D F0) = (Λ ⊓ toO (hS D) (Wb D)) ⊔ toO (hS D) F0.X` using `fun Λ hr hs => ((GlobalTheory.T.splitRowLattice_middle_iff_gluedLattice D u F0 Λ hT1 hB hr).1 hs).2`. Establish `heq : (Formalism.HermitianLatticesTheory.gmap n₁ Λ₁ ⊓ toO (hS D) (Wb D)) ⊔ toO (hS D) F0.X = (Formalism.HermitianLatticesTheory.gmap n₂ Λ₂ ⊓ toO (hS D) (Wb D)) ⊔ toO (hS D) F0.X` using `(hW _ hr₁ hs₁).symm.trans (((hLs n₁ Λ₁ hf₁).trans (hL.trans (hLs n₂ Λ₂ hf₂).symm)).trans (hW _ hr₂ hs₂))`. Establish `hXW : ∀ x ∈ F0.X, x ∈ Wb D → x = 0` using `fun x hx hw => rowsLift_X_inf_Wb D x (by rw [← he]; exact hx) hw`.
+
+Establish `hM : Formalism.HermitianLatticesTheory.gmap n₁ Λ₁ ⊓ toO (hS D) (Wb D) = Formalism.HermitianLatticesTheory.gmap n₂ Λ₂ ⊓ toO (hS D) (Wb D)` using `le_antisymm (rowsLift_cancel _ _ hXW _ _ heq) (rowsLift_cancel _ _ hXW _ _ heq.symm)`. Establish `e₁ : Formalism.HermitianLatticesTheory.gmap n₁ Λ₁ = XS D F0 ⊔ (Formalism.HermitianLatticesTheory.gmap n₁ Λ₁ ⊓ toO (hS D) (Wb D)) ⊔ YS D` using `hs₁`. Establish `e₂ : Formalism.HermitianLatticesTheory.gmap n₂ Λ₂ = XS D F0 ⊔ (Formalism.HermitianLatticesTheory.gmap n₂ Λ₂ ⊓ toO (hS D) (Wb D)) ⊔ YS D` using `hs₂`. Establish `hMM : Formalism.HermitianLatticesTheory.gmap n₁ Λ₁ = Formalism.HermitianLatticesTheory.gmap n₂ Λ₂`. Rewrite using `[e₁, e₂, hM]`.
+
+Establish `hfix : ∀ v, n₁ v = v → n₂ v = v → (n₁.trans n₂.symm) v = v`. Introduce `v h1 h2`. Rewrite using `[LinearEquiv.trans_apply, h1, LinearEquiv.symm_apply_eq, h2]`. Take `⟨hi₁, -, hq₁⟩` from `hf₁`. Take `⟨hi₂, -, hq₂⟩` from `hf₂`.
+
+Establish `hmem : n₁.trans n₂.symm ∈ stabF D F0`. Simplify using `only [stabF, Set.mem_setOf_eq]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Formalism.HermitianLatticesTheory.isom _).mul_mem ((Formalism.HermitianLatticesTheory.isom _).inv_mem hi₂) hi₁`. Introduce `j`.
+
+Conclude with `rowsLift_map_eq (F0.Xa j) (n₁.trans n₂.symm) (fun x hx => rowsLift_fix_span F0.e _ _ (fun a => hfix _ (hfx₁.1 a) (hfx₂.1 a)) x hx)`. Conclude with `hfix _ hfx₁.2.1 hfx₂.2.1`. Use `⟨n₁.trans n₂.symm, hmem, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hy : n₁ x ∈ orth (hS D) F0.X` using `(rowsLift_orth_iff F0.X n₁ hi₁ hfx₁.2.2 x).mpr hx`.
+
+Take `⟨w, hw⟩ : ∃ w, w = n₂.symm (n₁ x)` from `⟨_, rfl⟩`. Establish `hnw : n₂ w = n₁ x` using `by rw [hw, LinearEquiv.apply_symm_apply]`. Establish `hwO : w ∈ orth (hS D) F0.X` using `(rowsLift_orth_iff F0.X n₂ hi₂ hfx₂.2.2 w).mp (by rw [hnw]; exact hy)`. Establish `h1 : n₁ x - x ∈ F0.X` using `hq₁ x hx`. Establish `h2 : n₂ w - w ∈ F0.X` using `hq₂ w hwO`.
+
+Rewrite `h2` using `[hnw]`. Establish `h3 : (n₁.trans n₂.symm) x - x = (n₁ x - x) - (n₁ x - w)`. Rewrite using `[LinearEquiv.trans_apply, ← hw]`. Normalize the expressions using the abelian group laws. Rewrite using `[h3]`.
+
+Conclude with `F0.X.sub_mem h1 h2`. Establish `hcomp : Formalism.HermitianLatticesTheory.gmap (n₁.trans n₂.symm) Λ₁ = Formalism.HermitianLatticesTheory.gmap n₂.symm (Formalism.HermitianLatticesTheory.gmap n₁ Λ₁)`. Use extensionality with `y`. Simplify using `[Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map]`. Establish `hback : Formalism.HermitianLatticesTheory.gmap n₂.symm (Formalism.HermitianLatticesTheory.gmap n₂ Λ₂) = Λ₂`.
+
+Use extensionality with `y`. Simplify using `[Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map]`. Rewrite using `[hcomp, hMM, hback]`.
+-/
 theorem rowsLift : ∀ (D : D7) (u : D.what₂.Word), (Tu D u).Prime → 3 ≤ Tu D u → SplitsCompletely (E := D.host.E) (Tu D u) → ∀ F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E), F0.e = D.sp.hypE → F0.z = D.zmOf u → ∀ Λ₁ Λ₂ : LatV D, IsRowLat D F0 Λ₁ → IsRowLat D F0 Λ₂ → Lsub Λ₁ (lf D F0) = Lsub Λ₂ (lf D F0) → ∃ n ∈ stabF D F0, (∀ x ∈ orth (hS D) F0.X, n x - x ∈ F0.X) ∧ Formalism.HermitianLatticesTheory.gmap n Λ₁ = Λ₂ := by
   intro D u _ hT3 _ F0 he hz Λ₁ Λ₂ h₁ h₂ hL
   have hT1 : 1 ≤ Tu D u := by omega

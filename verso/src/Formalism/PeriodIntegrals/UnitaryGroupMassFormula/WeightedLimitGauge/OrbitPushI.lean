@@ -18,6 +18,11 @@ open PI.RhsWLim PI.RhsWLim.W.MB
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Use `i.isLt` as an intermediate fact. Distinguish the cases in `h : i.val < r`. Conclude with `⟨⟨i.val, h⟩, Or.inl rfl⟩`. Use `⟨⟨2 * r + k - i.val, by omega⟩, Or.inr ?_⟩` and prove the remaining obligations. Apply `Fin.ext` to reduce the goal to its premises.
+
+Simplify using `only [esI]`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma op_not_mid_cases (i : Fin (2 * r + k + 1)) (hi : ¬ mid k r i) : ∃ a : Fin r, i = eI k r a ∨ i = esI k r a := by
   have := i.isLt
   by_cases h : i.val < r
@@ -27,6 +32,11 @@ lemma op_not_mid_cases (i : Fin (2 * r + k + 1)) (hi : ¬ mid k r i) : ∃ a : F
     simp only [esI]
     omega
 
+/- English proof (translation)
+Use extensionality with `l`. Rewrite using `[mulVec_bvec, bvec_apply]`. Use `a.isLt` as an intermediate fact. Use `l.isLt` as an intermediate fact. Unfold `Hpk`.
+
+Simplify using `only [eI, esI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 lemma op_hpk_e (a : Fin r) : Hpk k r *ᵥ bvec (eI k r a) = bvec (esI k r a) := by
   ext l
   rw [mulVec_bvec, bvec_apply]
@@ -36,6 +46,11 @@ lemma op_hpk_e (a : Fin r) : Hpk k r *ᵥ bvec (eI k r a) = bvec (esI k r a) := 
   simp only [eI, esI, Fin.ext_iff]
   split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Use extensionality with `l`. Rewrite using `[mulVec_bvec, bvec_apply]`. Use `a.isLt` as an intermediate fact. Use `l.isLt` as an intermediate fact. Unfold `Hpk`.
+
+Simplify using `only [eI, esI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 lemma op_hpk_es (a : Fin r) : Hpk k r *ᵥ bvec (esI k r a) = bvec (eI k r a) := by
   ext l
   rw [mulVec_bvec, bvec_apply]
@@ -45,6 +60,9 @@ lemma op_hpk_es (a : Fin r) : Hpk k r *ᵥ bvec (esI k r a) = bvec (eI k r a) :=
   simp only [eI, esI, Fin.ext_iff]
   split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma op_fix_dual {g : Mat k r} (hg : g ∈ UH (Hpk k r)) {f : Fin (2 * r + k + 1) → ℂ} (hf : g *ᵥ f = f) :
     gᴴ *ᵥ (Hpk k r *ᵥ f) = Hpk k r *ᵥ f := by
   have hg' : gᴴ * Hpk k r * g = Hpk k r := hg
@@ -52,12 +70,24 @@ lemma op_fix_dual {g : Mat k r} (hg : g ∈ UH (Hpk k r)) {f : Fin (2 * r + k + 
     _ = (gᴴ * Hpk k r * g) *ᵥ f := by simp only [Matrix.mulVec_mulVec, Matrix.mul_assoc]
     _ = Hpk k r *ᵥ f := by rw [hg']
 
+/- English proof (translation)
+Take `⟨a, rfl | rfl⟩` from `op_not_mid_cases i hi`. Rewrite using `[← mulVec_bvec g (eI k r a) l, (hg.2 a).1, bvec_apply]`. Rewrite using `[← mulVec_bvec g (esI k r a) l, (hg.2 a).2, bvec_apply]`.
+-/
 lemma op_uwb_col {g : Mat k r} (hg : g ∈ UWb k r) (i l : Fin (2 * r + k + 1)) (hi : ¬ mid k r i) :
     g l i = if l = i then 1 else 0 := by
   obtain ⟨a, rfl | rfl⟩ := op_not_mid_cases i hi
   · rw [← mulVec_bvec g (eI k r a) l, (hg.2 a).1, bvec_apply]
   · rw [← mulVec_bvec g (esI k r a) l, (hg.2 a).2, bvec_apply]
 
+/- English proof (translation)
+Establish `key : ∀ j : Fin (2 * r + k + 1), gᴴ *ᵥ bvec j = bvec j → g j l = if j = l then 1 else 0`. Introduce `j hj`. Establish `h` using `congrFun hj l`. Rewrite `h` using `[mulVec_bvec, bvec_apply, Matrix.conjTranspose_apply]`. Establish `h2` using `congrArg star h`.
+
+Rewrite `h2` using `[star_star]`. Rewrite using `[h2]`. Distinguish the cases in `e : l = j`. Rewrite using `[if_pos e, if_pos e.symm, star_one]`. Rewrite using `[if_neg e, if_neg (fun e' => e e'.symm), star_zero]`.
+
+Take `⟨a, rfl | rfl⟩` from `op_not_mid_cases i hi`. Apply `key` to reduce the goal to its premises. Use `op_fix_dual hg.1 (hg.2 a).2` as an intermediate fact. Rewrite `this` using `[op_hpk_es]`. Then use the resulting hypothesis. Apply `key` to reduce the goal to its premises.
+
+Use `op_fix_dual hg.1 (hg.2 a).1` as an intermediate fact. Rewrite `this` using `[op_hpk_e]`. Then use the resulting hypothesis.
+-/
 lemma op_uwb_row {g : Mat k r} (hg : g ∈ UWb k r) (i l : Fin (2 * r + k + 1)) (hi : ¬ mid k r i) :
     g i l = if i = l then 1 else 0 := by
   have key : ∀ j : Fin (2 * r + k + 1), gᴴ *ᵥ bvec j = bvec j → g j l = if j = l then 1 else 0 := by
@@ -78,6 +108,11 @@ lemma op_uwb_row {g : Mat k r} (hg : g ∈ UWb k r) (i l : Fin (2 * r + k + 1)) 
     have := op_fix_dual hg.1 (hg.2 a).1
     rwa [op_hpk_e] at this
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `hj : mid k r j`. Distinguish the cases in `hi : mid k r i`. Rewrite using `[emb_mid _ i j hi hj, Matrix.submatrix_apply, wI_midx, wI_midx]`. Rewrite using `[emb_out_row _ i j hi, op_uwb_row hg i j hi]`.
+
+Rewrite using `[emb_out_col _ i j hj, op_uwb_col hg j i hj]`.
+-/
 lemma op_uwb_eq_emb {g : Mat k r} (hg : g ∈ UWb k r) : g = embWb k r (g.submatrix (wI k r) (wI k r)) := by
   ext i j
   by_cases hj : mid k r j
@@ -107,6 +142,11 @@ def ConeForm : Prop :=
   ∀ (k : ℕ) (T' : ℝ), 0 < T' → ∃ κ : ℝ≥0∞, κ ≠ 0 ∧ κ ≠ ⊤ ∧
     ∀ E, MeasurableSet E → hypM k T' E = κ * volume (coneSh k T' E)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Unfold `toW ofW`. Distinguish the cases in `h : j.val < k`. Rewrite using `[dif_pos h]`. Use `congr 1`.
+
+Rewrite using `[dif_neg h]`. Establish `: j = Fin.last k` using `Fin.ext (by have := j.isLt; simp only [Fin.val_last]; omega)`. Rewrite using `[this]`.
+-/
 lemma toW_ofW (v : Fin (k + 1) → ℂ) : toW k (ofW k v) = v := by
   funext j
   unfold toW ofW
@@ -117,21 +157,33 @@ lemma toW_ofW (v : Fin (k + 1) → ℂ) : toW k (ofW k v) = v := by
     have : j = Fin.last k := Fin.ext (by have := j.isLt; simp only [Fin.val_last]; omega)
     rw [this]
 
+/- English proof (translation)
+Unfold `toW ofW`. Use extensionality with `i`. Simplify using `only [Fin.val_castSucc, i.isLt, dif_pos]`. Simplify using `only [Fin.val_last, lt_irrefl, dif_neg, not_false_eq_true]`.
+-/
 lemma ofW_toW (p : (Fin k → ℂ) × ℂ) : ofW k (toW k p) = p := by
   unfold toW ofW
   ext i
   · simp only [Fin.val_castSucc, i.isLt, dif_pos]
   · simp only [Fin.val_last, lt_irrefl, dif_neg, not_false_eq_true]
 
+/- English proof (translation)
+Unfold `blkAct`. Rewrite using `[toW_ofW, Matrix.mulVec_mulVec]`.
+-/
 lemma blkAct_mul (μ ν : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (p : (Fin k → ℂ) × ℂ) :
     blkAct k μ (blkAct k ν p) = blkAct k (μ * ν) p := by
   unfold blkAct
   rw [toW_ofW, Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Unfold `blkAct`. Rewrite using `[Matrix.one_mulVec, ofW_toW]`.
+-/
 lemma blkAct_one (p : (Fin k → ℂ) × ℂ) : blkAct k 1 p = p := by
   unfold blkAct
   rw [Matrix.one_mulVec, ofW_toW]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Unfold `toW`. Distinguish the cases in `h : j.val < k`. Simplify using `only [dif_pos h, Prod.smul_fst, Pi.smul_apply]`. Simplify using `only [dif_neg h, Prod.smul_snd, Pi.smul_apply]`.
+-/
 lemma toW_smul (t : ℝ) (p : (Fin k → ℂ) × ℂ) : toW k (t • p) = t • toW k p := by
   funext j
   unfold toW
@@ -139,12 +191,22 @@ lemma toW_smul (t : ℝ) (p : (Fin k → ℂ) × ℂ) : toW k (t • p) = t • 
   · simp only [dif_pos h, Prod.smul_fst, Pi.smul_apply]
   · simp only [dif_neg h, Prod.smul_snd, Pi.smul_apply]
 
+/- English proof (translation)
+Unfold `blkAct`. Rewrite using `[toW_smul, Matrix.mulVec_smul]`. Both sides reduce to the same expression.
+-/
 lemma blkAct_smul (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (t : ℝ) (p : (Fin k → ℂ) × ℂ) :
     blkAct k μ (t • p) = t • blkAct k μ p := by
   unfold blkAct
   rw [toW_smul, Matrix.mulVec_smul]
   rfl
 
+/- English proof (translation)
+Use `continuous_pi fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : j.val < k`. Establish `: (fun p : (Fin k → ℂ) × ℂ => toW k p j) = fun p => p.1 ⟨j.val, h⟩`. Use function extensionality and compare the values at `p`. Unfold `toW`.
+
+Rewrite using `[dif_pos h]`. Rewrite using `[this]`. Conclude with `(continuous_apply _).comp continuous_fst`. Establish `: (fun p : (Fin k → ℂ) × ℂ => toW k p j) = fun p => p.2`. Use function extensionality and compare the values at `p`.
+
+Unfold `toW`. Rewrite using `[dif_neg h]`. Rewrite using `[this]`. Conclude with `continuous_snd`.
+-/
 lemma continuous_toW : Continuous (toW k) := by
   refine continuous_pi fun j => ?_
   by_cases h : j.val < k
@@ -157,11 +219,19 @@ lemma continuous_toW : Continuous (toW k) := by
     rw [this]
     exact continuous_snd
 
+/- English proof (translation)
+Establish `hc : Continuous fun p => μ *ᵥ toW k p` using `Continuous.matrix_mulVec continuous_const continuous_toW`. Conclude with `(continuous_pi fun i => (continuous_apply (Fin.castSucc i)).comp hc).prodMk ((continuous_apply (Fin.last k)).comp hc)`.
+-/
 lemma continuous_blkAct (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) : Continuous (blkAct k μ) := by
   have hc : Continuous fun p => μ *ᵥ toW k p := Continuous.matrix_mulVec continuous_const continuous_toW
   exact (continuous_pi fun i => (continuous_apply (Fin.castSucc i)).comp hc).prodMk
     ((continuous_apply (Fin.last k)).comp hc)
 
+/- English proof (translation)
+Unfold `Hb`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 lemma hb_sq : Hb k * Hb k = 1 := by
   unfold Hb
   rw [Matrix.diagonal_mul_diagonal]
@@ -170,11 +240,21 @@ lemma hb_sq : Hb k * Hb k = 1 := by
   funext j
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma hb_inv_mul {μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hμ : μᴴ * Hb k * μ = Hb k) :
     (Hb k * μᴴ * Hb k) * μ = 1 := by
   calc (Hb k * μᴴ * Hb k) * μ = Hb k * (μᴴ * Hb k * μ) := by simp only [Matrix.mul_assoc]
     _ = 1 := by rw [hμ, hb_sq]
 
+/- English proof (translation)
+Unfold `qf`. Rewrite using `[dotProduct]`. Simplify using `only [Hb, Matrix.mulVec_diagonal, Pi.star_apply]`. Rewrite using `[Fin.sum_univ_castSucc]`. Establish `h1 : ∀ i : Fin k, toW k p (Fin.castSucc i) = p.1 i` using `fun i => by`.
+
+Unfold `toW; rw [dif_pos (by simp)]; rfl`. Establish `h2 : toW k p (Fin.last k) = p.2`. Unfold `toW; rw [dif_neg (by simp)]`. Establish `hz : ∀ z : ℂ, star z * z = (Complex.normSq z : ℂ)` using `fun z => by`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`.
+
+Both sides reduce to the same expression. Simplify using `only [h1, h2, Fin.castSucc_ne_last, if_false, if_true, one_mul, neg_one_mul, mul_neg, hz]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma qf_eq (p : (Fin k → ℂ) × ℂ) : (qf k p : ℂ) = star (toW k p) ⬝ᵥ (Hb k *ᵥ toW k p) := by
   unfold qf
   rw [dotProduct]
@@ -190,6 +270,9 @@ lemma qf_eq (p : (Fin k → ℂ) × ℂ) : (qf k p : ℂ) = star (toW k p) ⬝�
   push_cast
   ring
 
+/- English proof (translation)
+Establish `h : (qf k (blkAct k μ p) : ℂ) = (qf k p : ℂ)`. Rewrite using `[qf_eq, qf_eq]`. Unfold `blkAct`. Rewrite using `[toW_ofW, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hμ]`. Conclude with `h` after adjusting the coercions.
+-/
 lemma qf_blkAct {μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hμ : μᴴ * Hb k * μ = Hb k) (p : (Fin k → ℂ) × ℂ) :
     qf k (blkAct k μ p) = qf k p := by
   have h : (qf k (blkAct k μ p) : ℂ) = (qf k p : ℂ) := by
@@ -198,8 +281,22 @@ lemma qf_blkAct {μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hμ : μᴴ * Hb 
     rw [toW_ofW, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hμ]
   exact_mod_cast h
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 lemma hypS_iff (T' : ℝ) (p : (Fin k → ℂ) × ℂ) : p ∈ hypS k T' ↔ qf k p = -T' := Iff.rfl
 
+/- English proof (translation)
+Establish `key : ∀ j : Fin (k + 1), (embWb k r μ *ᵥ opVec k r p) (wI k r j) = (μ *ᵥ toW k p) j`. Introduce `j`. Establish `hv : ∀ m : Fin (k + 1), opVec k r p (wI k r m) = toW k p m`. Introduce `m`. Use `m.isLt` as an intermediate fact.
+
+Unfold `opVec toW wI`. Distinguish the cases in `h : m.val < k`. Rewrite using `[dif_pos (by simp only; omega), dif_pos h]`. Conclude with `congrArg p.1 (Fin.ext (by simp))`. Rewrite using `[dif_neg (by simp only; omega), dif_neg h, if_pos (by simp only; omega)]`.
+
+Use `show ∑ i, embWb k r μ (wI k r j) i * opVec k r p i = ∑ m, μ j m * toW k p m`. Rewrite using `[sum_wb]`. Conclude with `Finset.sum_congr rfl fun m _ => by rw [embWb_wI, hv]`. Introduce `i hi`. Establish `: opVec k r p i = 0`.
+
+Unfold `opVec`. Rewrite using `[dif_neg (by omega), if_neg (by omega)]`. Rewrite using `[this, mul_zero]`. Unfold `opAct opCo blkAct ofW`. Use extensionality with `i`.
+
+Conclude with `key _`. Conclude with `key _`.
+-/
 lemma opAct_emb (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (p : (Fin k → ℂ) × ℂ) :
     opAct k r (embWb k r μ) p = blkAct k μ p := by
   have key : ∀ j : Fin (k + 1), (embWb k r μ *ᵥ opVec k r p) (wI k r j) = (μ *ᵥ toW k p) j := by
@@ -225,6 +322,9 @@ lemma opAct_emb (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (p : (Fin k → �
   · exact key _
   · exact key _
 
+/- English proof (translation)
+Use `⟨s.submatrix (wI k r) (wI k r), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← emb_mem (r := r), ← op_uwb_eq_emb hs]`. Conclude with `hs.1`. Use function extensionality and compare the values at `p conv_lhs => rw [op_uwb_eq_emb hs]`. Conclude with `opAct_emb _ p`.
+-/
 lemma opAct_uwb {s : Mat k r} (hs : s ∈ UWb k r) :
     ∃ μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ, μᴴ * Hb k * μ = Hb k ∧ opAct k r s = blkAct k μ := by
   refine ⟨s.submatrix (wI k r) (wI k r), ?_, ?_⟩
@@ -234,6 +334,23 @@ lemma opAct_uwb {s : Mat k r} (hs : s ∈ UWb k r) :
     conv_lhs => rw [op_uwb_eq_emb hs]
     exact opAct_emb _ p
 
+/- English proof (translation)
+Introduce `k r T' hk hT' s hs`. Take `⟨μ, hμ, hse⟩` from `opAct_uwb hs`. Rewrite using `[hse]`. Use `set ν := Hb k * μᴴ * Hb k with hν`. Establish `hνμ : ν * μ = 1` using `hb_inv_mul hμ`.
+
+Establish `hμν : μ * ν = 1` using `mul_eq_one_comm.1 hνμ`. Set `e : ((Fin k → ℂ) × ℂ) ≃ᵐ ((Fin k → ℂ) × ℂ)` to `{ toFun := blkAct k μ invFun := blkAct k ν left_inv := fun p => by simp only [blkAct_mul, hνμ, blkAct_one] right_inv := fun p => by simp only [blkAct_mul, hμν, blkAct_one] measurable_toFun := (continuous_blkAct μ).measurable measurable_invFun := (continuous_blkAct ν).measurable }`. Take `⟨κ, -, -, hκ⟩` from `hC k T' hT'`. Establish `hset : ∀ E, coneSh k T' (blkAct k μ ⁻¹' E) = blkAct k μ ⁻¹' coneSh k T' E`. Introduce `E`.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨v, t⟩, ⟨⟨hvE, hvS⟩, ht⟩, rfl⟩`. Use `⟨(blkAct k μ v, t), ⟨⟨hvE, ?_⟩, ht⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hypS_iff, qf_blkAct hμ]`.
+
+Conclude with `hvS`. Conclude with `(blkAct_smul μ t v).symm`. Introduce and unpack `⟨⟨w, t⟩, ⟨⟨hwE, hwS⟩, ht⟩, hx⟩`. Establish `hw : blkAct k μ (blkAct k ν w) = w` using `by rw [blkAct_mul, hμν, blkAct_one]`. Use `⟨(blkAct k ν w, t), ⟨⟨?_, ?_⟩, ht⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show blkAct k μ (blkAct k ν w) ∈ E`. Rewrite using `[hw]`. Conclude with `hwE`. Rewrite using `[hypS_iff, ← qf_blkAct hμ, hw]`. Conclude with `hwS`.
+
+Establish `h1 : blkAct k μ (t • blkAct k ν w) = blkAct k μ x`. Rewrite using `[blkAct_smul, hw]`. Conclude with `hx`. Establish `h2` using `congrArg (blkAct k ν) h1`. Simplify using `only [blkAct_mul, hνμ, blkAct_one] at h2`.
+
+Conclude with `h2`. Use extensionality with `E hE`. Rewrite using `[Measure.map_apply (continuous_blkAct μ).measurable hE, hκ _ ((continuous_blkAct μ).measurable hE), hκ _ hE, hset]`. Use `congr 1`. Use `MeasurableEquiv.map_apply e (μ := (volume : Measure ((Fin k → ℂ) × ℂ))) (coneSh k T' E)` as an intermediate fact.
+
+Establish `hmap : (volume : Measure ((Fin k → ℂ) × ℂ)).map e = volume` using `hL k μ hμ`. Rewrite `this` using `[hmap]`. Conclude with `this.symm`.
+-/
 theorem hypInv_of (hL : LebInvB) (hC : ConeForm) : HypInv := by
   intro k r T' hk hT' s hs
   obtain ⟨μ, hμ, hse⟩ := opAct_uwb hs

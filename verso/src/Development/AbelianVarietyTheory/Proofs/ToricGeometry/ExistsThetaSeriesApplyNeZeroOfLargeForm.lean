@@ -13,6 +13,13 @@ section General
 
 variable {E : Type*} [NormedAddCommGroup E]
 
+/- English proof (translation)
+Establish `h` using `tendsto_tsum_of_dominated_convergence (𝓕 := atTop) (f := fun (a : ℝ) (l : L) => if l = 0 then (0 : ℝ) else Real.exp (-a * ‖(l : E)‖ ^ 2)) (g := fun _ => 0) (summable_lattice_exp_neg_mul_norm_sq L one_pos) (fun l => ?_) ?_`. Rewrite `h` using `[tsum_zero]`. Take `⟨a, h1, h2⟩` from `((eventually_gt_atTop (0 : ℝ)).and (h.eventually (gt_mem_nhds one_pos))).exists`. Conclude with `⟨a, h1, h2⟩`. Distinguish the cases in `hl : l = 0`.
+
+Simplify using `[hl]`. Simplify using `only [hl, if_false]`. Establish `hn : 0 < ‖(l : E)‖ ^ 2` using `pow_pos (norm_pos_iff.2 (by simpa using hl)) 2`. Conclude with `Real.tendsto_exp_atBot.comp (tendsto_neg_atTop_atBot.atBot_mul_const hn)`. Use `filter_upwards [eventually_ge_atTop (1 : ℝ)] with a ha l split_ifs`.
+
+Simplify using `using (Real.exp_pos _).le`. Rewrite using `[Real.norm_of_nonneg (Real.exp_pos _).le, Real.exp_le_exp]`. Use polynomial arithmetic with `[sq_nonneg ‖(l : E)‖]`.
+-/
 theorem exists_tsum_gauss_lt_one [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     (L : Submodule ℤ E) [DiscreteTopology L] [DecidableEq L] :
     ∃ a : ℝ, 0 < a ∧ ∑' l : L, (if l = 0 then 0 else Real.exp (-a * ‖(l : E)‖ ^ 2)) < 1 := by
@@ -39,6 +46,13 @@ def term (L : Submodule ℤ E) (H : E → E → ℂ) (χ : L → ℂ) (z₀ : E)
 
 variable {L : Submodule ℤ E} {H : E → E → ℂ} {χ : L → ℂ}
 
+/- English proof (translation)
+Establish `hne : ∀ l, χ l ≠ 0` using `fun l h => by simpa [h] using h1 l`. Unfold `term`. Rewrite using `[hχ, mul_inv, mul_inv, ← Complex.exp_neg, Submodule.coe_add, ← add_assoc]`. Establish `e : (Real.pi * H (z + l + m) z₀ - (Real.pi * H (z + l) m + Real.pi / 2 * H m m) : ℂ) = (Real.pi * H z l + Real.pi / 2 * H l l) + (-(Real.pi * I * (H l m).im)) + (Real.pi * H (z + l + m) z₀ - (Real.pi * H z (l + m) + Real.pi / 2 * H (l + m) (l + m)))`. Rewrite using `[hl z l m, hr, hl l m, hr, hr, hs l m]`.
+
+Use `Complex.sub_conj (H l m)` as an intermediate fact. Move the coercions through the operations in `at this`. Take the linear combination `(-(Real.pi : ℂ) / 2) * this`. Rewrite using `[e, Complex.exp_add, Complex.exp_add]`. Use `hne l` as an intermediate fact.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem term_add (hl : ∀ x y w, H (x + y) w = H x w + H y w)
     (hr : ∀ x y w, H w (x + y) = H w x + H w y) (hs : ∀ x y, H y x = (starRingEnd ℂ) (H x y))
     (h1 : ∀ l, ‖χ l‖ = 1)
@@ -61,6 +75,11 @@ theorem term_add (hl : ∀ x y w, H (x + y) w = H x w + H y w)
   have := hne l
   field_simp
 
+/- English proof (translation)
+Unfold `term`. Rewrite using `[norm_mul, norm_inv, h1, inv_one, one_mul, Complex.norm_exp, ← Real.exp_add]`. Use `congr 1`. Take `⟨u, rfl⟩ : ∃ u, z = u + z₀` from `⟨z - z₀, by simp⟩`. Rewrite using `[add_sub_cancel_right]`.
+
+Establish `hs' : ∀ x y, (H y x).re = (H x y).re` using `fun x y => by rw [hs]; simp`. Establish `e : (Real.pi / 2 : ℂ) = ((Real.pi / 2 : ℝ) : ℂ)` using `by push_cast; ring`. Simplify using `only [e, hl, hr, add_re, sub_re, re_ofReal_mul]`. Rewrite using `[hs' u z₀, hs' u l, hs' z₀ l]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_term (hl : ∀ x y w, H (x + y) w = H x w + H y w)
     (hr : ∀ x y w, H w (x + y) = H w x + H w y) (hs : ∀ x y, H y x = (starRingEnd ℂ) (H x y))
     (h1 : ∀ l, ‖χ l‖ = 1) (z₀ : E) (l : L) (z : E) :
@@ -77,6 +96,25 @@ theorem norm_term (hl : ∀ x y w, H (x + y) w = H x w + H y w)
   rw [hs' u z₀, hs' u l, hs' z₀ l]
   ring
 
+/- English proof (translation)
+Establish `hle : ∀ (l : L) z, ‖term L H χ z₀ l z‖ ≤ Real.exp (π / 2 * ((H z z).re + (H z₀ z₀).re)) * Real.exp (-a * ‖(l : E) + (z - z₀)‖ ^ 2)` using `fun l z => by`. Rewrite using `[norm_term hl hr hs h1]`. Use `mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 ?_) (Real.exp_pos _).le` and prove the remaining obligations. Combine the linear relations using `[hH (l + (z - z₀))]`. Use `⟨fun z => ∑' l : L, term L H χ z₀ l z, ?_, ?_, fun l z => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← differentiableOn_univ]`. Use `SCV.differentiableOn_tsum_of_locally_normal isOpen_univ (fun l => ?_) (fun x _ => ?_)` and prove the remaining obligations. Establish `h2 : Differentiable ℂ fun z : E => H (z + l) z₀` using `(hd z₀).comp (differentiable_id.add_const _)`. Establish `h3` using `hd l`. Unfold `term`.
+
+Use `Differentiable.differentiableOn ?_` and prove the remaining obligations. Use `fun_prop`. Establish `hx : ∀ᶠ z in 𝓝 x, (H z z).re < (H x x).re + 1 ∧ ‖z - z₀‖ < ‖x - z₀‖ + 1` using `(hc.continuousAt.eventually (gt_mem_nhds (lt_add_one _))).and ((show Continuous fun z : E => ‖z - z₀‖ by fun_prop).continuousAt.eventually (gt_mem_nhds (lt_add_one _)))`. Use `⟨_, hx, _, ((summable_lattice_exp_neg_mul_norm_sq L (half_pos ha)).mul_left (Real.exp (a * (‖x - z₀‖ + 1) ^ 2))).mul_left (Real.exp (π / 2 * ((H x x).re + 1 + (H z₀ z₀).re))), fun l z hz => (hle l z).trans ?_⟩` and prove the remaining obligations. Use `mul_le_mul ?_ (exp_neg_mul_norm_add_sq_le ha.le _ hz.2.le) (Real.exp_pos _).le (Real.exp_pos _).le` and prove the remaining obligations.
+
+Use `gcongr`. Conclude with `hz.1.le`. Use `set A := Real.exp (π / 2 * ((H z₀ z₀).re + (H z₀ z₀).re)) with hA`. Establish `hA0 : 0 < A` using `Real.exp_pos _`. Establish `hle' : ∀ l : L, ‖term L H χ z₀ l z₀‖ ≤ A * Real.exp (-a * ‖(l : E)‖ ^ 2)` using `fun l => by`.
+
+Simplify using `using hle l z₀`. Establish `hg` using `summable_lattice_exp_neg_mul_norm_sq L ha`. Establish `hS : Summable fun l : L => term L H χ z₀ l z₀` using `.of_norm_bounded (hg.mul_left A) hle'`. Establish `h00 : H 0 0 = 0` using `by simpa using hl 0 0 0`. Establish `h0 : ‖term L H χ z₀ 0 z₀‖ = A`.
+
+Rewrite using `[norm_term hl hr hs h1]`. Simplify using `[h00, hA]`. Apply the tactic sequence `have hg' : Summable fun l : L => if l = 0 then 0 else Real.exp (-a * ‖(l : E)‖ ^ 2) := .of_nonneg_of_le (fun l => by split_ifs <;> positivity) (fun l => by split_ifs <;> [positivity; rfl]) hg`. Establish `h2 : ‖∑' l : L, if l = 0 then 0 else term L H χ z₀ l z₀‖ ≤ A * ∑' l : L, (if l = 0 then 0 else Real.exp (-a * ‖(l : E)‖ ^ 2))`. Use `tsum_of_norm_bounded (hg'.hasSum.mul_left A) fun l => ?_` and prove the remaining obligations.
+
+Use `split_ifs`. Simplify using the standard rewrite rules. Conclude with `hle' l`. Introduce `h`. Use `beta_reduce at h`.
+
+Rewrite `h` using `[hS.tsum_eq_add_tsum_ite 0, add_eq_zero_iff_eq_neg]`. Rewrite `h0` using `[h, norm_neg]`. Use the polynomial consequences of the given equalities and inequalities. Use `beta_reduce`. Rewrite using `[← (Equiv.addLeft l).tsum_eq fun m => term L H χ z₀ m z, ← tsum_mul_left]`.
+
+Conclude with `tsum_congr fun m => term_add hl hr hs h1 hχ z₀ l m z`.
+-/
 theorem exists_theta [NormedSpace ℂ E] [FiniteDimensional ℂ E] [DiscreteTopology L]
     [DecidableEq L] (hl : ∀ x y w, H (x + y) w = H x w + H y w)
     (hr : ∀ x y w, H w (x + y) = H w x + H w y) (hs : ∀ x y, H y x = (starRingEnd ℂ) (H x y))
@@ -144,11 +182,21 @@ end General
 
 variable {g : ℕ}
 
+/- English proof (translation)
+Simplify using `only [dotProduct, mulVec]`. Use `fun_prop`.
+-/
 theorem continuous_form (M : Matrix (Fin g) (Fin g) ℂ) :
     Continuous fun z : Fin g → ℂ => (z ⬝ᵥ M.mulVec (star z)).re := by
   simp only [dotProduct, mulVec]
   fun_prop
 
+/- English proof (translation)
+Take `⟨c, hc, h⟩` from `(isCompact_sphere (0 : Fin g → ℂ) 1).exists_forall_le' (continuous_form M).continuousOn (a := 0) fun z hz => hM z (by`. Introduce and unpack `rfl`. Simplify using `at hz)`. Use `⟨c, hc, fun z => ?_⟩` and prove the remaining obligations. Break down `eq_or_ne z 0 with rfl | hz` into its components or cases.
+
+Simplify using the standard rewrite rules. Establish `hn : 0 < ‖z‖` using `norm_pos_iff.2 hz`. Take `⟨u, hu, hzu⟩ : ∃ u : Fin g → ℂ, ‖u‖ = 1 ∧ z = (‖z‖ : ℝ) • u` from `⟨‖z‖⁻¹ • z, by rw [norm_smul]; simp [hn.ne'], by simp [smul_smul, hn.ne']⟩`. Establish `h2` using `h u (by simpa using hu)`. Generalize the expression as in `‖z‖ = r at hn hzu`.
+
+Substitute `hzu` using the available equality. Rewrite using `[star_smul, star_trivial, mulVec_smul, smul_dotProduct, dotProduct_smul, smul_re, smul_re, smul_eq_mul, smul_eq_mul]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h2 (sq_nonneg r)]`.
+-/
 theorem exists_coercive (M : Matrix (Fin g) (Fin g) ℂ)
     (hM : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ M.mulVec (star z)).re) :
     ∃ c : ℝ, 0 < c ∧ ∀ z : Fin g → ℂ, c * ‖z‖ ^ 2 ≤ (z ⬝ᵥ M.mulVec (star z)).re := by
@@ -169,6 +217,11 @@ theorem exists_coercive (M : Matrix (Fin g) (Fin g) ℂ)
     smul_eq_mul, smul_eq_mul]
   nlinarith [mul_le_mul_of_nonneg_left h2 (sq_nonneg r)]
 
+/- English proof (translation)
+Simplify using `only [dotProduct, mulVec, Finset.mul_sum, map_sum, map_mul, Pi.star_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `hM.apply j i` as an intermediate fact. Simplify using `only [RCLike.star_def] at this ⊢`.
+
+Rewrite using `[← this, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_symm {M : Matrix (Fin g) (Fin g) ℂ} (hM : M.IsHermitian) (x y : Fin g → ℂ) :
     y ⬝ᵥ M.mulVec (star x) = (starRingEnd ℂ) (x ⬝ᵥ M.mulVec (star y)) := by
   simp only [dotProduct, mulVec, Finset.mul_sum, map_sum, map_mul, Pi.star_apply]
@@ -179,6 +232,13 @@ theorem form_symm {M : Matrix (Fin g) (Fin g) ℂ} (hM : M.IsHermitian) (x y : F
   rw [← this, Complex.conj_conj]
   ring
 
+/- English proof (translation)
+Introduce `g Λ hΛ _ H₀ hH₀`. Take `⟨a, ha, hsum⟩` from `exists_tsum_gauss_lt_one Λ`. Take `⟨c, hc, hco⟩` from `exists_coercive H₀ hH₀`. Use `⟨a / c, fun Hm χ hH hρ h1 hχ z₀ => ?_⟩` and prove the remaining obligations. Use `exists_theta (H := fun x y => x ⬝ᵥ Hm.mulVec (star y)) (fun x y w => add_dotProduct ..) (fun x y w => by rw [star_add, mulVec_add, dotProduct_add]) (form_symm hH) (fun w => ?_) (continuous_form Hm) ha hsum (fun z => ?_) h1 hχ z₀` and prove the remaining obligations.
+
+Simplify using `only [dotProduct] fun_prop`. Establish `h2 : a * ‖z‖ ^ 2 ≤ (z ⬝ᵥ Hm.mulVec (star z)).re`. Use `le_trans ?_ (hρ z)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : 0 ≤ a * ‖z‖ ^ 2` using `by positivity`.
+
+Use polynomial arithmetic with `[Real.two_le_pi]`.
+-/
 theorem exists_theta_apply_ne_zero :
     (∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)), DiscreteTopology Λ → Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤ → ∀ H₀ : Matrix (Fin g) (Fin g) ℂ, (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ H₀.mulVec (star z)).re) → ∃ ρ : ℝ, ∀ (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : Λ → ℂ), Hm.IsHermitian → (∀ z : Fin g → ℂ, ρ * (z ⬝ᵥ H₀.mulVec (star z)).re ≤ (z ⬝ᵥ Hm.mulVec (star z)).re) → (∀ l, ‖χ l‖ = 1) → (∀ l m : Λ, χ (l + m) = χ l * χ m * cexp (Real.pi * I * ((l : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (m : Fin g → ℂ))).im)) → ∀ z₀, ∃ θ : (Fin g → ℂ) → ℂ, Differentiable ℂ θ ∧ θ z₀ ≠ 0 ∧ ∀ (l : Λ) z, θ (z + l) = (χ l * cexp (Real.pi * (z ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ))) + Real.pi / 2 * ((l : Fin g → ℂ) ⬝ᵥ Hm.mulVec (star (l : Fin g → ℂ))))) * θ z) := by
   classical

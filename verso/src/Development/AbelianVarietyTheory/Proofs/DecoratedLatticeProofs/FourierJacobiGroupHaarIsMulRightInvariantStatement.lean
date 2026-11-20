@@ -9,5 +9,8 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Un
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.JacUnimod.jacGrp_rightInv | exact GlobalTheory.JacUnimod.jacGrp_rightInv | (intros; apply GlobalTheory.JacUnimod.jacGrp_rightInv <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.fourierJacobiGroup_haar_isMulRightInvariant : ∀ (D : D7) (V V₀ : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ) (μ : Measure (jacGrp d)), μ.IsHaarMeasure → μ.IsMulRightInvariant := by
   first | exact @GlobalTheory.JacUnimod.jacGrp_rightInv | exact GlobalTheory.JacUnimod.jacGrp_rightInv | (intros; apply GlobalTheory.JacUnimod.jacGrp_rightInv <;> assumption)

@@ -2,6 +2,19 @@ import Mathlib
 
 namespace GlobalTheory.FrobeniusProduct
 
+/- English proof (translation)
+Establish `hsm : ∀ J : Ideal A, J • (⊤ : Submodule A A) = J` using `fun J => by simp`. Use `choose N hN using hs`. Establish `tele : ∀ r a b, (∀ k ≥ a, s (k + 1) - s k ∈ I ^ r) → a ≤ b → s b - s a ∈ I ^ r`. Introduce `r a b h hab`. Proceed by induction on `b, hab using Nat.le_induction with`.
+
+Consider the case `base => simp`. Consider the case `succ b hab ih`. Use `(I ^ r).add_mem (h b hab) ih` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+
+Use `set N' : ℕ → ℕ := fun r => ∑ j ∈ Finset.range (r + 1), N j with hN'`. Establish `hN'ge : ∀ r, N r ≤ N' r` using `fun r => Finset.single_le_sum (f := N) (fun j _ => Nat.zero_le _) (Finset.self_mem_range_succ r)`. Establish `hN'mono : Monotone N'` using `fun a b hab => Finset.sum_le_sum_of_subset (Finset.range_mono (Nat.succ_le_succ hab))`. Take `⟨L, hL⟩` from `IsPrecomplete.prec (I := I) (M := A) inferInstance (f := fun r => s (N' r)) (by`. Introduce `m n hmn`.
+
+Rewrite using `[SModEq.sub_mem, hsm]`. Use `tele m (N' m) (N' n) (fun k hk => hN m k (le_trans (hN'ge m) hk)) (hN'mono hmn)` as an intermediate fact. Use `(I ^ m).neg_mem this` as an intermediate fact. Simplify using `using this)`. Use `⟨L, fun r => ⟨N' r, fun m hm => ?_⟩⟩` and prove the remaining obligations.
+
+Establish `h1` using `tele r (N' r) m (fun k hk => hN r k (le_trans (hN'ge r) hk)) hm`. Establish `h2 : s (N' r) - L ∈ I ^ r`. Use `hL r` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem, hsm]`. Conclude with `this`.
+
+Use `(I ^ r).add_mem h1 h2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_adic_limit {A : Type} [CommRing A] (I : Ideal A) [IsPrecomplete I A]
     (s : ℕ → A) (hs : ∀ r : ℕ, ∃ N : ℕ, ∀ m ≥ N, s (m + 1) - s m ∈ I ^ r) :
     ∃ L : A, ∀ r : ℕ, ∃ N : ℕ, ∀ m ≥ N, s m - L ∈ I ^ r := by
@@ -37,6 +50,35 @@ theorem exists_adic_limit {A : Type} [CommRing A] (I : Ideal A) [IsPrecomplete I
   convert this using 1
   ring
 
+/- English proof (translation)
+Introduce `A _ p hc φ u hu hconv n hn`. Use `haveI := hc`. Use `set I : Ideal A := Ideal.span {(p : A)} with hI`. Establish `hsm : ∀ J : Ideal A, J • (⊤ : Submodule A A) = J` using `fun J => by simp`. Take `⟨w, hw⟩ : ∃ w : ℕ → A, w = fun k => (⇑φ)^[n * k + (n - 1)] u` from `⟨_, rfl⟩`.
+
+Take `⟨s, hs⟩ : ∃ s : ℕ → A, s = fun N => ∏ k ∈ Finset.range N, w k` from `⟨_, rfl⟩`. Establish `hwconv : ∀ r, ∃ M, ∀ k ≥ M, w k - 1 ∈ I ^ r` using `fun r => by`. Take `⟨M, hM⟩` from `hconv r`. Conclude with `⟨M, fun k hk => by rw [hw]; exact hM _ (by nlinarith)⟩`. Establish `hcauchy : ∀ r, ∃ N, ∀ m ≥ N, s (m + 1) - s m ∈ I ^ r`.
+
+Introduce `r`. Take `⟨M, hM⟩` from `hwconv r`. Use `⟨M, fun m hm => ?_⟩` and prove the remaining obligations. Establish `e : s (m + 1) - s m = s m * (w m - 1)`. Simplify using `only [hs, Finset.prod_range_succ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_left _ _ (hM m hm)`. Take `⟨c, hc'⟩` from `exists_adic_limit I s hcauchy`. Establish `haus : ∀ x : A, (∀ r : ℕ, x ∈ I ^ r) → x = 0` using `fun x hx => IsHausdorff.haus (I := I) (M := A) inferInstance x (fun r => by rw [SModEq.zero, hsm]; exact hx r)`.
+
+Establish `hmap : ∀ k (x : A) r, x ∈ I ^ r → (⇑φ)^[k] x ∈ I ^ r`. Introduce `k x r hx`. Use `Ideal.mem_map_of_mem (φ ^ k) hx` as an intermediate fact. Rewrite `this` using `[Ideal.map_pow, hI, Ideal.map_span, Set.image_singleton, map_natCast, RingHom.coe_pow]`. Then use the resulting hypothesis. Establish `hsub : ∀ x y : A, (⇑φ)^[n] (x - y) = (⇑φ)^[n] x - (⇑φ)^[n] y`.
+
+Introduce `x y`. Rewrite using `[← RingHom.coe_pow]`. Conclude with `map_sub _ _ _`. Establish `key : ∀ N, (⇑φ)^[n] (s N) * (⇑φ)^[n - 1] u = s (N + 1)`. Introduce `N`.
+
+Simplify using `only [hs, Finset.prod_range_succ']`. Rewrite using `[← RingHom.coe_pow, map_prod]`. Use `congr 1`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `k _`.
+
+Simplify using `only [RingHom.coe_pow, hw]`. Rewrite using `[← Function.iterate_add_apply]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hw]`.
+
+Establish `hwunit : ∀ k, IsUnit (w k)` using `fun k => by`. Rewrite using `[hw]`. Use `show IsUnit ((⇑φ)^[n * k + (n - 1)] u)`. Rewrite using `[← RingHom.coe_pow]`. Conclude with `hu.map _`.
+
+Use `⟨c, ?_, ?_⟩` and prove the remaining obligations. Take `⟨N, hN⟩` from `hc' 1`. Establish `h1 : s N - c ∈ I` using `by simpa using hN N le_rfl`. Establish `hsN : IsUnit (s N)`. Rewrite using `[hs]`.
+
+Conclude with `Finset.prod_induction _ IsUnit (fun a b ha hb => ha.mul hb) isUnit_one (fun k _ => hwunit k)`. Take `⟨v, hv⟩` from `hsN`. Establish `hy : -(s N - c) ∈ (⊥ : Ideal A).jacobson` using `IsAdicComplete.le_jacobson_bot I (I.neg_mem h1)`. Establish `hu'` using `(Ideal.mem_jacobson_bot.mp hy) (↑v⁻¹ : A)`. Establish `heq : c = (-(s N - c) * (↑v⁻¹ : A) + 1) * ↑v`.
+
+Rewrite using `[add_mul, mul_assoc, Units.inv_mul, mul_one, one_mul, hv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Conclude with `hu'.mul v.isUnit`. Use `sub_eq_zero.mp (haus _ fun r => ?_)` and prove the remaining obligations.
+
+Take `⟨N, hN⟩` from `hc' r`. Establish `e : (⇑φ)^[n] c * (⇑φ)^[n - 1] u - c = -((⇑φ)^[n] (s N - c) * (⇑φ)^[n - 1] u) + (s (N + 1) - c)`. Rewrite using `[← key N, hsub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `(I ^ r).add_mem ((I ^ r).neg_mem (Ideal.mul_mem_right _ _ (hmap n _ r (hN N le_rfl)))) (hN (N + 1) (by omega))`.
+-/
 theorem exists_unit_iterate_mul_eq :
     ∀ (A : Type) [CommRing A] (p : ℕ), IsAdicComplete (Ideal.span {(p : A)}) A →
       ∀ (φ : A →+* A) (u : A), IsUnit u →

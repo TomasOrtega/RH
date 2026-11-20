@@ -2,6 +2,11 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `hp _ hg`. Establish `ho : orderOf (g⁻¹ * c * g) = orderOf c`. Use `(MulAut.conj g⁻¹).orderOf_eq c` as an intermediate fact. Simplify using `using this`. Establish `hcop : Nat.Coprime (p ^ k) (orderOf (g⁻¹ * c * g))`.
+
+Rewrite using `[ho]`. Conclude with `Nat.Coprime.pow_left k hc.symm`. Take `⟨m, hm⟩` from `exists_pow_eq_self_of_coprime hcop`. Rewrite using `[← hm]`. Conclude with `Subgroup.pow_mem _ hk m`.
+-/
 theorem conj_mem_zpowers_of_mem_of_pRegular {G : Type} [Group G] (c : G) (p : ℕ) (H : Subgroup G)
     (hc : Nat.Coprime (orderOf c) p)
     (hp : ∀ h ∈ H, ∃ k : ℕ, h ^ p ^ k ∈ Subgroup.zpowers c) (g : G)
@@ -17,6 +22,23 @@ theorem conj_mem_zpowers_of_mem_of_pRegular {G : Type} [Group G] (c : G) (p : �
   rw [← hm]
   exact Subgroup.pow_mem _ hk m
 
+/- English proof (translation)
+Introduce `G _ _ c p H N hc hH hp hN`. Establish `key : ∀ g : G, c • (g : G ⧸ H) = (g : G ⧸ H) ↔ g ∈ N`. Introduce `g`. Establish `h1 : c • (g : G ⧸ H) = (g : G ⧸ H) ↔ g⁻¹ * c * g ∈ H`. Rewrite using `[eq_comm, MulAction.Quotient.smul_mk, smul_eq_mul, QuotientGroup.eq, mul_assoc]`.
+
+Rewrite using `[h1]`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `hy` using `conj_mem_zpowers_of_mem_of_pRegular c p H hc hp g hg`. Rewrite using `[← N.inv_mem_iff, hN]`.
+
+Introduce and unpack `d ⟨n, rfl⟩`. Establish `h2` using `Subgroup.zpow_mem _ hy n`. Establish `h3 : (g⁻¹ * c * g) ^ n = g⁻¹ * c ^ n * g⁻¹⁻¹`. Rewrite using `[← conj_zpow, inv_inv]`. Rewrite `h2` using `[h3]`.
+
+Conclude with `h2`. Introduce `hg`. Use `(hN _).1 (N.inv_mem hg) c (Subgroup.mem_zpowers c)` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Conclude with `hH this`.
+
+Set `f : N ⧸ H.subgroupOf N → MulAction.fixedBy (G ⧸ H) c` to `Quotient.lift (fun n : N => ⟨((n : G) : G ⧸ H), (key n).2 n.2⟩) (by`. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h : a⁻¹ * b ∈ H.subgroupOf N` using `QuotientGroup.leftRel_apply.1 hab`. Conclude with `QuotientGroup.eq.2 (by simpa [Subgroup.mem_subgroupOf] using h))`.
+
+Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `x y`. Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H a`.
+
+Proceed by induction on `y using QuotientGroup.induction_on with`. Consider the case `H b`. Introduce `hab`. Establish `h : ((a : G) : G ⧸ H) = ((b : G) : G ⧸ H)` using `congrArg Subtype.val hab`. Rewrite `h`, the goal using `[QuotientGroup.eq]`.
+
+Simplify `h` using `[Subgroup.mem_subgroupOf]`. Introduce and unpack `⟨x, hx⟩`. Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H g => exact ⟨((⟨g, (key g).1 hx⟩ : N) : N ⧸ H.subgroupOf N), rfl⟩`. Conclude with `(Nat.card_eq_of_bijective f hf).symm`.
+-/
 theorem card_fixedBy_quotient_eq_relIndex_of_pRegular :
     ∀ (G : Type) [Group G] [Finite G] (c : G) (p : ℕ) (H N : Subgroup G), Nat.Coprime (orderOf c) p → Subgroup.zpowers c ≤ H → (∀ h ∈ H, ∃ k : ℕ, h ^ p ^ k ∈ Subgroup.zpowers c) → (∀ g : G, g ∈ N ↔ ∀ d ∈ Subgroup.zpowers c, g * d * g⁻¹ ∈ Subgroup.zpowers c) → Nat.card (MulAction.fixedBy (G ⧸ H) c) = H.relIndex N := by
   intro G _ _ c p H N hc hH hp hN

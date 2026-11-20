@@ -14,6 +14,9 @@ open CategoryTheory AlgebraicGeometry Limits GlobalTheory.LogCris DividedPowers
 namespace CrystallineSemistableComparison.Pb.Kap
 
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
+/- English proof (translation)
+Take `rfl : z = fun n => cupS M n i j (x n) (y n)` from `funext hc`. Establish `H : h φ = ∑ s, ∑ s', f (b.coord s) * g (b'.coord s') * algebraMap K L.B (φ (cupR M i j (b s) (b' s')))` using `GlobalTheory.T.realization_cup_product (chainOf hL M s hQ rH) hG (cupOf hL M s hQ rH) hP x y f g h hx hy hz b b' φ`. Simplify using `only [cupR_eq] at H`. Conclude with `H`.
+-/
 theorem cup_genA {m : ℕ} {L : Lev (per l K) m} (hL : L.Good) (M : Model l K) (s : ℕ)
     (hQ : ∀ T, QB L M s T → QA L M s (((nmB M hL).mor 0).obj T))
     (rH : ∀ n j, M.Hc false n j →ₛₗ[L.lam] HM (QA L M s) none ((l : L.A) ^ n) j) (hG : (chainOf hL M s hQ rH).Good)

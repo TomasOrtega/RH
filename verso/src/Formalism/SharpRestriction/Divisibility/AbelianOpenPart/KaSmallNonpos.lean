@@ -13,6 +13,9 @@ open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions
 def ofGaps {p : ℕ} (g : Fin p → ℕ) (i : Fin p) : ℕ :=
   ∑ k ∈ Finset.univ.filter (fun k => i ≤ k), g k
 
+/- English proof (translation)
+Introduce `a b hab`. Apply `Finset.sum_le_sum_of_subset` to reduce the goal to its premises. Introduce `k hk`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hk ⊢`. Conclude with `le_trans hab hk`.
+-/
 theorem ofGaps_anti {p : ℕ} (g : Fin p → ℕ) : Antitone (ofGaps g) := by
   intro a b hab
   apply Finset.sum_le_sum_of_subset
@@ -20,6 +23,11 @@ theorem ofGaps_anti {p : ℕ} (g : Fin p → ℕ) : Antitone (ofGaps g) := by
   simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hk ⊢
   exact le_trans hab hk
 
+/- English proof (translation)
+Unfold `ofGaps`. Establish `hs : Finset.univ.filter (fun k : Fin p => i ≤ k) = insert i (Finset.univ.filter (fun k : Fin p => (⟨i.1 + 1, h⟩ : Fin p) ≤ k))`. Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Fin.le_def, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[hs, Finset.sum_insert]`. Simplify using `[Fin.le_def]`.
+-/
 theorem ofGaps_succ {p : ℕ} (g : Fin p → ℕ) (i : Fin p) (h : i.1 + 1 < p) :
     ofGaps g i = g i + ofGaps g ⟨i.1 + 1, h⟩ := by
   unfold ofGaps
@@ -32,6 +40,11 @@ theorem ofGaps_succ {p : ℕ} (g : Fin p → ℕ) (i : Fin p) (h : i.1 + 1 < p) 
   rw [hs, Finset.sum_insert]
   simp [Fin.le_def]
 
+/- English proof (translation)
+Unfold `ofGaps`. Establish `hs : Finset.univ.filter (fun k : Fin p => i ≤ k) = {i}`. Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton, Fin.le_def, Fin.ext_iff]`. Use `k.2` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hs, Finset.sum_singleton]`.
+-/
 theorem ofGaps_last {p : ℕ} (g : Fin p → ℕ) (i : Fin p) (h : ¬ i.1 + 1 < p) : ofGaps g i = g i := by
   unfold ofGaps
   have hs : Finset.univ.filter (fun k : Fin p => i ≤ k) = {i} := by
@@ -42,6 +55,11 @@ theorem ofGaps_last {p : ℕ} (g : Fin p → ℕ) (i : Fin p) (h : ¬ i.1 + 1 < 
     omega
   rw [hs, Finset.sum_singleton]
 
+/- English proof (translation)
+Unfold `WeightAlgebra.gapZ`. Use `split_ifs with h`. Rewrite using `[ofGaps_succ g i h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[ofGaps_last g i h]`.
+-/
 theorem gapZ_ofGaps {p : ℕ} (g : Fin p → ℕ) (i : Fin p) : WeightAlgebra.gapZ (ofGaps g) i = g i := by
   unfold WeightAlgebra.gapZ
   split_ifs with h
@@ -50,6 +68,27 @@ theorem gapZ_ofGaps {p : ℕ} (g : Fin p → ℕ) (i : Fin p) : WeightAlgebra.ga
     ring
   · rw [ofGaps_last g i h]
 
+/- English proof (translation)
+Establish `hk : D.R.m + 3 ≤ D.R.k` using `D.R.m_add_three_le_k`. Unfold `DV.sigPar`. Distinguish the cases in `h1 : i + 1 < D.R.k - 1`. Establish `h0 : i < D.R.k - 1` using `by omega`. Rewrite using `[dif_pos h1, dif_pos h0]`.
+
+Establish `a1 : (D.hc τ).v ⟨i + 1, h1⟩ < (D.hc τ).u ⟨i + 1, by omega⟩` using `(D.hc τ).u_gt_v ⟨i + 1, h1⟩`. Establish `a2 : (D.hc τ).u ⟨i + 1, by omega⟩ < (D.hc τ).v ⟨i, h0⟩` using `(D.hc τ).v_gt_u ⟨i, h0⟩`. Establish `a3 : (D.hc τ).v ⟨i + 1, h1⟩ < (D.hc τ).v ⟨i, h0⟩` using `lt_trans a1 a2`. Take `⟨x, hx⟩` from `(D.hc τ).v_int ⟨i + 1, h1⟩`. Take `⟨y, hy⟩` from `(D.hc τ).v_int ⟨i, h0⟩`.
+
+Rewrite `a3`, the goal using `[hx, hy]`. Establish `a4 : x < y` using `by exact_mod_cast a3`. Establish `a5 : x + 1 ≤ y` using `by omega`. Conclude with `a5` after adjusting the coercions. Rewrite using `[dif_neg h1]`.
+
+Distinguish the cases in `h0 : i < D.R.k - 1`. Rewrite using `[dif_pos h0]`. Establish `hm : 0 < D.R.m` using `by omega`. Establish `hb : i + 1 - (D.R.k - 1) < D.R.m` using `by omega`. Rewrite using `[dif_pos hb]`.
+
+Establish `e1 : (⟨i + 1 - (D.R.k - 1), hb⟩ : Fin D.R.m) = ⟨0, hm⟩` using `Fin.ext (by show i + 1 - (D.R.k - 1) = 0; omega)`. Establish `e2 : (⟨i + 1, by omega⟩ : Fin D.R.k) = ⟨D.R.k - 1, by omega⟩` using `Fin.ext (by show i + 1 = D.R.k - 1; omega)`. Establish `a2 : (D.hc τ).u ⟨i + 1, by omega⟩ < (D.hc τ).v ⟨i, h0⟩` using `(D.hc τ).v_gt_u ⟨i, h0⟩`. Establish `a3 : -(D.hc τ).b ⟨0, hm⟩ < (D.hc τ).u ⟨D.R.k - 1, by omega⟩` using `(D.hc τ).u_last_gt (by omega) hm`. Rewrite `a2` using `[e2]`.
+
+Establish `key : -(D.hc τ).b ⟨0, hm⟩ < (D.hc τ).v ⟨i, h0⟩` using `lt_trans a3 a2`. Rewrite using `[e1]`. Take `⟨y, hy⟩` from `(D.hc τ).v_int ⟨i, h0⟩`. Take `⟨z, hz⟩` from `(D.hc τ).b_int ⟨0, hm⟩`. Rewrite `key`, the goal using `[hy, hz]`.
+
+Establish `a4 : -z < y` using `by exact_mod_cast key`. Establish `a5 : -z + 1 ≤ y` using `by omega`. Conclude with `a5` after adjusting the coercions. Rewrite using `[dif_neg h0]`. Establish `hb1 : i + 1 - (D.R.k - 1) < D.R.m` using `by omega`.
+
+Establish `hb2 : i - (D.R.k - 1) < D.R.m` using `by omega`. Establish `hl : i - (D.R.k - 1) + 1 < D.R.m` using `by omega`. Rewrite using `[dif_pos hb1, dif_pos hb2]`. Establish `g1` using `(D.hc τ).gap_be ⟨i - (D.R.k - 1), hb2⟩`. Establish `g2 : ((D.R.t : ℚ) + 3) / 2 ≤ (D.hc τ).b ⟨i + 1 - (D.R.k - 1), hb1⟩ - (D.hc τ).e ⟨i - (D.R.k - 1), hb2⟩`.
+
+Establish `g3` using `(D.hc τ).gap_eb ⟨i - (D.R.k - 1), hb2⟩ hl`. Establish `e3 : (⟨i + 1 - (D.R.k - 1), hb1⟩ : Fin D.R.m) = ⟨i - (D.R.k - 1) + 1, hl⟩` using `Fin.ext (by show i + 1 - (D.R.k - 1) = i - (D.R.k - 1) + 1; omega)`. Rewrite using `[e3]`. Conclude with `g3`. Establish `ht : (0 : ℚ) ≤ D.R.t` using `Nat.cast_nonneg _`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma sigPar_succ_add_one_le_sigPar (D : D7) (τ : D.what₂.Tau) (i : ℕ) (hi : i + 1 < D.R.k - 1 + D.R.m) :
     DV.sigPar D τ (i + 1) + 1 ≤ DV.sigPar D τ i := by
   have hk : D.R.m + 3 ≤ D.R.k := D.R.m_add_three_le_k
@@ -104,6 +143,9 @@ private lemma sigPar_succ_add_one_le_sigPar (D : D7) (τ : D.what₂.Tau) (i : �
       have ht : (0 : ℚ) ≤ D.R.t := Nat.cast_nonneg _
       linarith
 
+/- English proof (translation)
+Establish `h` using `sigPar_succ_add_one_le_sigPar D τ i hi`. Unfold `DV.aPlusQ`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma aPlusQ_succ_le_aPlusQ (D : D7) (j : ℕ) (τ : D.what₂.Tau) (i : ℕ)
     (hi : i + 1 < D.R.k - 1 + D.R.m) : DV.aPlusQ D j τ (i + 1) ≤ DV.aPlusQ D j τ i := by
   have h := sigPar_succ_add_one_le_sigPar D τ i hi
@@ -111,6 +153,17 @@ private lemma aPlusQ_succ_le_aPlusQ (D : D7) (j : ℕ) (τ : D.what₂.Tau) (i :
   push_cast
   linarith
 
+/- English proof (translation)
+Establish `hk : D.R.m + 3 ≤ D.R.k` using `D.R.m_add_three_le_k`. Establish `hs : (D.R.sigW j).1 = D.R.k + j - 1` using `rfl`. Establish `hq : ∀ i : Fin (D.R.sigW j).1, (D.what₂.kaBig j τ i : ℚ) = DV.aPlusQ D j τ i` using `fun i => (hK j h1 h2 τ).1 i`. Establish `step : ∀ d a : ℕ, a + d < (D.R.sigW j).1 → DV.aPlusQ D j τ (a + d) ≤ DV.aPlusQ D j τ a`. Introduce `d`.
+
+Proceed by induction on `d with`. Consider the case `zero => intro a _`. Simplify using the standard rewrite rules. Consider the case `succ d ih`. Introduce `a ha`.
+
+Establish `h3` using `aPlusQ_succ_le_aPlusQ D j τ (a + d) (by omega)`. Establish `h4` using `ih a (by omega)`. Rewrite using `[← add_assoc]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a b hab`.
+
+Establish `hab' : a.1 ≤ b.1` using `Fin.le_def.1 hab`. Establish `hq' : (D.what₂.kaBig j τ b : ℚ) ≤ D.what₂.kaBig j τ a`. Rewrite using `[hq a, hq b]`. Establish `h5` using `step (b.1 - a.1) a.1 (by have := b.2; omega)`. Establish `e : a.1 + (b.1 - a.1) = b.1` using `by omega`.
+
+Rewrite `h5` using `[e]`. Conclude with `h5`. Conclude with `hq'` after adjusting the coercions.
+-/
 theorem kaBig_anti (D : D7) (hK : DV.KapDef D) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (τ : D.what₂.Tau) :
     Antitone (D.what₂.kaBig j τ) := by
   have hk : D.R.m + 3 ≤ D.R.k := D.R.m_add_three_le_k
@@ -137,6 +190,21 @@ theorem kaBig_anti (D : D7) (hK : DV.KapDef D) {j : ℕ} (h1 : 1 ≤ j) (h2 : j 
     exact h5
   exact_mod_cast hq'
 
+/- English proof (translation)
+Establish `hk : D.R.m + 3 ≤ D.R.k` using `D.R.m_add_three_le_k`. Establish `hs : (D.R.sigW j).1 = D.R.k + j - 1` using `rfl`. Establish `hi` using `i.2`. Establish `hlt : D.R.k + j - 2 < (D.R.sigW j).1` using `by omega`. Establish `h3` using `kaBig_anti D hK h1 h2 τ (show i ≤ (⟨D.R.k + j - 2, hlt⟩ : Fin (D.R.sigW j).1) from Fin.le_def.2 (by show i.1 ≤ D.R.k + j - 2; omega))`.
+
+Establish `hq` using `(hK j h1 h2 τ).1 ⟨D.R.k + j - 2, hlt⟩`. It suffices to establish `hsuf : (0 : ℚ) ≤ D.what₂.kaBig j τ ⟨D.R.k + j - 2, hlt⟩ by`. Establish `h4 : (0 : ℤ) ≤ D.what₂.kaBig j τ ⟨D.R.k + j - 2, hlt⟩` using `by exact_mod_cast hsuf`. Conclude with `le_trans h4 h3`. Rewrite using `[hq]`.
+
+Use `show (0 : ℚ) ≤ DV.aPlusQ D j τ (D.R.k + j - 2)`. Establish `hm1 : j - 1 < D.R.m` using `by omega`. Establish `g` using `(D.hc τ).gap_be ⟨j - 1, hm1⟩`. Establish `hsig : DV.sigPar D τ (D.R.k + j - 2) = -(D.hc τ).b ⟨j - 1, hm1⟩`. Unfold `DV.sigPar`.
+
+Establish `c1 : ¬ (D.R.k + j - 2 < D.R.k - 1)` using `by omega`. Establish `c2 : D.R.k + j - 2 - (D.R.k - 1) < D.R.m` using `by omega`. Rewrite using `[dif_neg c1, dif_pos c2]`. Establish `e : (⟨D.R.k + j - 2 - (D.R.k - 1), c2⟩ : Fin D.R.m) = ⟨j - 1, hm1⟩` using `Fin.ext (by show D.R.k + j - 2 - (D.R.k - 1) = j - 1; omega)`. Rewrite using `[e]`.
+
+Establish `he : DV.eQ D j τ = (D.hc τ).e ⟨j - 1, hm1⟩`. Unfold `DV.eQ`. Rewrite using `[dif_pos ⟨h1, h2⟩]`. Establish `e1 : ((D.R.k + j - 2 : ℕ) : ℚ) = (D.R.k : ℚ) + j - 2`. Rewrite using `[Nat.cast_sub (by omega)]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (D.R.nV : ℚ) = (D.R.k : ℚ) + D.R.m - 1 + D.R.t` using `by show ((D.R.k + D.R.m - 1 + D.R.t : ℕ) : ℚ) = _`. Rewrite using `[Nat.cast_add, Nat.cast_sub (by omega)]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Unfold `DV.aPlusQ`. Rewrite using `[hsig, he, e1, e2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem kaBig_nonneg (D : D7) (hK : DV.KapDef D) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (τ : D.what₂.Tau)
     (i : Fin (D.R.sigW j).1) : 0 ≤ D.what₂.kaBig j τ i := by
   have hk : D.R.m + 3 ≤ D.R.k := D.R.m_add_three_le_k
@@ -178,6 +246,13 @@ theorem kaBig_nonneg (D : D7) (hK : DV.KapDef D) {j : ℕ} (h1 : 1 ≤ j) (h2 : 
   rw [hsig, he, e1, e2]
   linarith
 
+/- English proof (translation)
+Establish `h0 : j + c < D.R.m` using `by omega`. Establish `h1 : j + (c + 1) < D.R.m` using `by omega`. Establish `g1` using `(D.hc τ).gap_be ⟨j + c, h0⟩`. Establish `g2 : ((D.R.t : ℚ) + 3) / 2 ≤ (D.hc τ).b ⟨j + (c + 1), h1⟩ - (D.hc τ).e ⟨j + c, h0⟩`. Establish `g3` using `(D.hc τ).gap_eb ⟨j + c, h0⟩ (by show j + c + 1 < D.R.m; omega)`.
+
+Establish `e3 : (⟨j + (c + 1), h1⟩ : Fin D.R.m) = ⟨j + c + 1, by omega⟩` using `Fin.ext (by show j + (c + 1) = j + c + 1; omega)`. Rewrite using `[e3]`. Conclude with `g3`. Establish `ht : (0 : ℚ) ≤ D.R.t` using `Nat.cast_nonneg _`. Unfold `DV.aMinusQ`.
+
+Rewrite using `[dif_pos h0, dif_pos h1]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma aMinusQ_le_aMinusQ_succ (D : D7) (j : ℕ) (τ : D.what₂.Tau) (c : ℕ)
     (hc : j + c + 1 < D.R.m) : DV.aMinusQ D j τ c ≤ DV.aMinusQ D j τ (c + 1) := by
   have h0 : j + c < D.R.m := by omega
@@ -195,6 +270,17 @@ private lemma aMinusQ_le_aMinusQ_succ (D : D7) (j : ℕ) (τ : D.what₂.Tau) (c
   push_cast
   linarith
 
+/- English proof (translation)
+Establish `hs : (D.R.sigW j).2 = D.R.m - j` using `rfl`. Establish `hq : ∀ c : Fin (D.R.sigW j).2, (D.what₂.kaSmall j τ c : ℚ) = -DV.aMinusQ D j τ c` using `fun c => (hK j h1 h2 τ).2 c`. Establish `step : ∀ d a : ℕ, a + d < (D.R.sigW j).2 → DV.aMinusQ D j τ a ≤ DV.aMinusQ D j τ (a + d)`. Introduce `d`. Proceed by induction on `d with`.
+
+Consider the case `zero => intro a _`. Simplify using the standard rewrite rules. Consider the case `succ d ih`. Introduce `a ha`. Establish `h3` using `aMinusQ_le_aMinusQ_succ D j τ (a + d) (by omega)`.
+
+Establish `h4` using `ih a (by omega)`. Rewrite using `[← add_assoc]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a b hab`. Establish `hab' : a.1 ≤ b.1` using `Fin.le_def.1 hab`.
+
+Establish `hq' : (D.what₂.kaSmall j τ b : ℚ) ≤ D.what₂.kaSmall j τ a`. Rewrite using `[hq a, hq b]`. Establish `h5` using `step (b.1 - a.1) a.1 (by have := b.2; omega)`. Establish `e : a.1 + (b.1 - a.1) = b.1` using `by omega`. Rewrite `h5` using `[e]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hq'` after adjusting the coercions.
+-/
 theorem kaSmall_anti (D : D7) (hK : DV.KapDef D) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (τ : D.what₂.Tau) :
     Antitone (D.what₂.kaSmall j τ) := by
   have hs : (D.R.sigW j).2 = D.R.m - j := rfl
@@ -220,6 +306,19 @@ theorem kaSmall_anti (D : D7) (hK : DV.KapDef D) {j : ℕ} (h1 : 1 ≤ j) (h2 : 
     linarith
   exact_mod_cast hq'
 
+/- English proof (translation)
+Establish `hs : (D.R.sigW j).2 = D.R.m - j` using `rfl`. Establish `hc` using `c.2`. Establish `h0 : 0 < (D.R.sigW j).2` using `by omega`. Establish `h3` using `kaSmall_anti D hK h1 h2 τ (show (⟨0, h0⟩ : Fin (D.R.sigW j).2) ≤ c from Fin.le_def.2 (Nat.zero_le _))`. Establish `hq` using `(hK j h1 h2 τ).2 ⟨0, h0⟩`.
+
+It suffices to establish `hsuf : (D.what₂.kaSmall j τ ⟨0, h0⟩ : ℚ) ≤ 0 by`. Establish `h4 : D.what₂.kaSmall j τ ⟨0, h0⟩ ≤ 0` using `by exact_mod_cast hsuf`. Conclude with `le_trans h3 h4`. Rewrite using `[hq]`. Use `show -DV.aMinusQ D j τ 0 ≤ 0`.
+
+Establish `hj : j < D.R.m` using `by omega`. Establish `hj1 : j - 1 < D.R.m` using `by omega`. Establish `g : ((D.R.t : ℚ) + 3) / 2 ≤ (D.hc τ).b ⟨j + 0, by omega⟩ - (D.hc τ).e ⟨j - 1, hj1⟩`. Establish `g3` using `(D.hc τ).gap_eb ⟨j - 1, hj1⟩ (by show j - 1 + 1 < D.R.m; omega)`. Establish `e3 : (⟨j + 0, by omega⟩ : Fin D.R.m) = ⟨j - 1 + 1, by omega⟩` using `Fin.ext (by show j + 0 = j - 1 + 1; omega)`.
+
+Rewrite using `[e3]`. Conclude with `g3`. Establish `he : DV.eQ D j τ = (D.hc τ).e ⟨j - 1, hj1⟩`. Unfold `DV.eQ`. Rewrite using `[dif_pos ⟨h1, h2⟩]`.
+
+Establish `hpos : DV.aMinusQ D j τ 0 = (D.hc τ).b ⟨j + 0, by omega⟩ - (D.hc τ).e ⟨j - 1, hj1⟩ - ((D.R.t : ℚ) + 1) / 2`. Unfold `DV.aMinusQ`. Rewrite using `[dif_pos (show j + 0 < D.R.m by omega), he]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem kaSmall_nonpos (D : D7) (hK : DV.KapDef D) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (τ : D.what₂.Tau)
     (c : Fin (D.R.sigW j).2) : D.what₂.kaSmall j τ c ≤ 0 := by
   have hs : (D.R.sigW j).2 = D.R.m - j := rfl
@@ -253,6 +352,11 @@ theorem kaSmall_nonpos (D : D7) (hK : DV.KapDef D) {j : ℕ} (h1 : 1 ≤ j) (h2 
   rw [hpos]
   linarith
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `T.nW_dvd`. Establish `h1` using `T.split`. Establish `h2` using `T.nP_eq`. Use `⟨4 * D.R.f * D.R.r + 2 + T.TO * (4 * c), ?_⟩` and prove the remaining obligations. Use `show D.R.r + D.R.t = _`.
+
+Rewrite using `[h1, h2, hc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem even_nV {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) : Even D.R.nV := by
   obtain ⟨c, hc⟩ := T.nW_dvd
   have h1 := T.split
@@ -262,10 +366,16 @@ theorem even_nV {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : Par
   rw [h1, h2, hc]
   ring
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `T.nW_dvd`. Conclude with `⟨4 * c, by omega⟩`.
+-/
 theorem even_nW {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) : Even T.nWn := by
   obtain ⟨c, hc⟩ := T.nW_dvd
   exact ⟨4 * c, by omega⟩
 
+/- English proof (translation)
+Rewrite using `[T.nP_eq]`. Conclude with `⟨4 * D.R.f * D.R.r + 2, by ring⟩`.
+-/
 theorem even_nP {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L} (T : ParamsT D L P) : Even T.nP := by
   rw [T.nP_eq]
   exact ⟨4 * D.R.f * D.R.r + 2, by ring⟩
@@ -281,12 +391,18 @@ def kaWt (D : D7) (hK : DV.KapDef D) (hn : Even D.R.nV) (j : ℕ) : WeightFamili
       n_even := hn }
   else WeightAlgebra.wscalar D j D.R.nV hn
 
+/- English proof (translation)
+Unfold `kaWt`. Rewrite using `[dif_pos ⟨h1, h2⟩]`. Conclude with `Int.toNat_of_nonneg (kaBig_nonneg D hK h1 h2 τ i)`.
+-/
 theorem kaWt_big (D : D7) (hK : DV.KapDef D) (hn : Even D.R.nV) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m)
     (τ : D.what₂.Tau) (i : Fin (D.R.sigW j).1) : ((kaWt D hK hn j).aP τ i : ℤ) = D.what₂.kaBig j τ i := by
   unfold kaWt
   rw [dif_pos ⟨h1, h2⟩]
   exact Int.toNat_of_nonneg (kaBig_nonneg D hK h1 h2 τ i)
 
+/- English proof (translation)
+Unfold `kaWt`. Rewrite using `[dif_pos ⟨h1, h2⟩]`. Conclude with `Int.toNat_of_nonneg (neg_nonneg.2 (kaSmall_nonpos D hK h1 h2 τ (Fin.rev c)))`.
+-/
 theorem kaWt_small (D : D7) (hK : DV.KapDef D) (hn : Even D.R.nV) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m)
     (τ : D.what₂.Tau) (c : Fin (D.R.sigW j).2) :
     ((kaWt D hK hn j).aM τ c : ℤ) = -D.what₂.kaSmall j τ (Fin.rev c) := by
@@ -294,6 +410,9 @@ theorem kaWt_small (D : D7) (hK : DV.KapDef D) (hn : Even D.R.nV) (j : ℕ) (h1 
   rw [dif_pos ⟨h1, h2⟩]
   exact Int.toNat_of_nonneg (neg_nonneg.2 (kaSmall_nonpos D hK h1 h2 τ (Fin.rev c)))
 
+/- English proof (translation)
+Unfold `kaWt`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem kaWt_n (D : D7) (hK : DV.KapDef D) (hn : Even D.R.nV) (j : ℕ) : (kaWt D hK hn j).n = D.R.nV := by
   unfold kaWt
   split_ifs <;> rfl

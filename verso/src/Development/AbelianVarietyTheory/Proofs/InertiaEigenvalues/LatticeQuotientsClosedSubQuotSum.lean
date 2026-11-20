@@ -34,6 +34,19 @@ def subLattice [IsDomain O] [IsPrincipalIdealRing O] (T : LocLat G Qp LL O) (lam
     have h2 := Submodule.smul_mem _ (algebraMap O LL lam)⁻¹ (Submodule.subset_span (R := LL) h1)
     rwa [← algebraMap_smul LL lam y, inv_smul_smul₀ hl] at h2
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `f.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 hi)`. Establish `hr' : ∀ x, r (f x) = x` using `fun x => LinearMap.congr_fun hr x`. Set `P : Submodule O ↥T.L.T` to `(LinearMap.range (f.restrictScalars O)).comap q`. Establish `hP : ∀ g, ∀ x ∈ P, latRep T.L g x ∈ P`. Introduce and unpack `g x ⟨a, ha⟩`.
+
+Use `⟨A.ρ g a, ?_⟩` and prove the remaining obligations. Establish `ha' : f a = q x` using `ha`. Express the relevant statement in the definitionally equal form `f (A.ρ g a) = q _`. Rewrite using `[hf, ha', hq.2]`. Establish `hlam : ∀ x, lam • x ∈ P`.
+
+Introduce `x`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, map_smul, ← algebraMap_smul k lam, hk, zero_smul]`. Set `L` to `subLattice T lam hl P hP hlam`. Establish `hle : L.T ≤ T.L.T`.
+
+Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `x.2`. Use `⟨withLat T L, (r.restrictScalars O).comp (q.comp (Submodule.inclusion hle)), ?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Take `⟨x, hx⟩` from `hq.1 (f a)`.
+
+Use `⟨⟨x.1, x, ⟨a, hx.symm⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `r (q x) = a`. Rewrite using `[hx, hr']`. Introduce and unpack `g ⟨_, x, ⟨a, ha⟩, rfl⟩`. Establish `ha' : f a = q x` using `ha`.
+
+Express the relevant statement in the definitionally equal form `r (q (latRep T.L g x)) = A.ρ g (r (q x))`. Rewrite using `[hq.2, ← ha', ← hf, hr', hr']`.
+-/
 theorem onto_sub [IsDomain O] [IsPrincipalIdealRing O] (lam : O) (hl : algebraMap O LL lam ≠ 0)
     (hk : algebraMap O k lam = 0) (A B : Ob k G) (f : (Fin A.m → k) →ₗ[k] (Fin B.m → k)) (hf : IsHom A B f)
     (hi : Function.Injective f) (T : LocLat G Qp LL O) (q : ↥T.L.T →ₗ[O] (Fin B.m → k)) (hq : Onto T B q) :
@@ -66,6 +79,9 @@ theorem onto_sub [IsDomain O] [IsPrincipalIdealRing O] (lam : O) (hl : algebraMa
     change r (q (latRep T.L g x)) = A.ρ g (r (q x))
     rw [hq.2, ← ha', ← hf, hr', hr']
 
+/- English proof (translation)
+Use `⟨hs.comp hq.1, fun g x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (q _) = B.ρ g (f (q x))`. Rewrite using `[hq.2, hf]`.
+-/
 theorem onto_quot (A B : Ob k G) (f : (Fin A.m → k) →ₗ[k] (Fin B.m → k)) (hf : IsHom A B f)
     (hs : Function.Surjective f) (T : LocLat G Qp LL O) (q : ↥T.L.T →ₗ[O] (Fin A.m → k)) (hq : Onto T A q) :
     Onto T B ((f.restrictScalars O).comp q) := by
@@ -73,6 +89,9 @@ theorem onto_quot (A B : Ob k G) (f : (Fin A.m → k) →ₗ[k] (Fin B.m → k))
   change f (q _) = B.ρ g (f (q x))
   rw [hq.2, hf]
 
+/- English proof (translation)
+Use `⟨hs.comp ((hq.1.prodMap hq'.1).comp (StdAdm.prodLatEquiv T T').surjective), fun g x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `i (q (latRep T.L g (StdAdm.prodLatEquiv T T' x).1)) + j (q' (latRep T'.L g (StdAdm.prodLatEquiv T T' x).2)) = C.ρ g (i (q (StdAdm.prodLatEquiv T T' x).1) + j (q' (StdAdm.prodLatEquiv T T' x).2))`. Rewrite using `[hq.2, hq'.2, hi, hj, map_add]`.
+-/
 theorem onto_sum (A B C : Ob k G) (i : (Fin A.m → k) →ₗ[k] (Fin C.m → k)) (j : (Fin B.m → k) →ₗ[k] (Fin C.m → k))
     (hi : IsHom A C i) (hj : IsHom B C j) (hs : Function.Surjective (i.coprod j))
     (T : LocLat G Qp LL O) (q : ↥T.L.T →ₗ[O] (Fin A.m → k)) (hq : Onto T A q)
@@ -84,6 +103,15 @@ theorem onto_sum (A B C : Ob k G) (i : (Fin A.m → k) →ₗ[k] (Fin C.m → k)
     C.ρ g (i (q (StdAdm.prodLatEquiv T T' x).1) + j (q' (StdAdm.prodLatEquiv T T' x).2))
   rw [hq.2, hq'.2, hi, hj, map_add]
 
+/- English proof (translation)
+Use `T.L.free` as an intermediate fact. Establish `hb : Function.Bijective (LinearMap.toSpanSingleton O ↥T.L.T e₀)`. Use `⟨smul_left_injective O h0, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.range_eq_top, ← LinearMap.span_singleton_eq_range, hsp]`. Set `e` to `LinearEquiv.ofBijective _ hb`.
+
+Establish `he : e 1 = e₀` using `one_smul O e₀`. Use `⟨(LinearMap.pi fun _ => Algebra.linearMap O k).comp e.symm.toLinearMap, ⟨?_, fun g x => ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `y`. Take `⟨c, hc⟩` from `hs (y 0)`. Use `⟨e c, funext fun i => ?_⟩` and prove the remaining obligations.
+
+Take `rfl : i = 0` from `Subsingleton.elim _ _`. Express the relevant statement in the definitionally equal form `algebraMap O k (e.symm (e c)) = y 0`. Rewrite using `[e.symm_apply_apply, hc]`. Establish `h1 : latRep T.L g x = x` using `Subtype.ext (hρ g x)`. Rewrite using `[h1]`.
+
+Conclude with `(one_smul k _).symm`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `algebraMap O k (e.symm e₀) = 1`. Rewrite using `[← he, e.symm_apply_apply, map_one]`.
+-/
 theorem onto_one [IsDomain O] (hs : Function.Surjective (algebraMap O k)) (T : LocLat G Qp LL O) (e₀ : ↥T.L.T)
     (hρ : ∀ g x, T.ρ g x = x) (h0 : e₀ ≠ 0) (hsp : Submodule.span O {e₀} = ⊤) :
     ∃ q : ↥T.L.T →ₗ[O] (Fin 1 → k), Onto T (chr 1 : Ob k G) q ∧ q e₀ = fun _ => 1 := by
@@ -107,6 +135,11 @@ theorem onto_one [IsDomain O] (hs : Function.Surjective (algebraMap O k)) (T : L
     change algebraMap O k (e.symm e₀) = 1
     rw [← he, e.symm_apply_apply, map_one]
 
+/- English proof (translation)
+Introduce `G _ _ Qp LL O _ _ _ _ _ _ _ _ k _ _ lam hl hk hs _`. Use `⟨?_, ?_, ?_, onto_one hs⟩` and prove the remaining obligations. Introduce and unpack `A B f hf hi ⟨T, q, hq⟩`. Conclude with `onto_sub lam hl hk A B f hf hi T q hq`. Introduce and unpack `A B f hf hi ⟨T, q, hq⟩`.
+
+Conclude with `⟨T, _, onto_quot A B f hf hi T q hq⟩`. Introduce and unpack `A B C i j hi hj h ⟨T, q, hq⟩ ⟨T', q', hq'⟩`. Conclude with `⟨_, _, onto_sum A B C i j hi hj h T q hq T' q' hq'⟩`.
+-/
 theorem lattice_quotients : ∀ {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp] [Field LL] [Algebra Qp LL] [CommRing O] [IsDomain O] [IsPrincipalIdealRing O] [Algebra O LL] [TopologicalSpace LL] {k : Type} [Field k] [Algebra O k] (lam : O), algebraMap O LL lam ≠ 0 → algebraMap O k lam = 0 → Function.Surjective (algebraMap O k) → (∀ x, algebraMap O k x = 0 → lam ∣ x) → (∀ (A B : Ob k G) f, IsHom A B f → Function.Injective f → (∃ (T : LocLat G Qp LL O) (q : ↥T.L.T →ₗ[O] (Fin B.m → k)), Onto T B q) → ∃ (T : LocLat G Qp LL O) (q : ↥T.L.T →ₗ[O] (Fin A.m → k)), Onto T A q) ∧ (∀ (A B : Ob k G) f, IsHom A B f → Function.Surjective f → (∃ (T : LocLat G Qp LL O) (q : ↥T.L.T →ₗ[O] (Fin A.m → k)), Onto T A q) → ∃ (T : LocLat G Qp LL O) (q : ↥T.L.T →ₗ[O] (Fin B.m → k)), Onto T B q) ∧ (∀ (A B C : Ob k G) i j, IsHom A C i → IsHom B C j → Function.Surjective (i.coprod j) → (∃ (T : LocLat G Qp LL O) (q : ↥T.L.T →ₗ[O] (Fin A.m → k)), Onto T A q) → (∃ (T : LocLat G Qp LL O) (q : ↥T.L.T →ₗ[O] (Fin B.m → k)), Onto T B q) → ∃ (T : LocLat G Qp LL O) (q : ↥T.L.T →ₗ[O] (Fin C.m → k)), Onto T C q) ∧ ∀ (T : LocLat G Qp LL O) (e₀ : ↥T.L.T), (∀ g x, T.ρ g x = x) → e₀ ≠ 0 → Submodule.span O {e₀} = ⊤ → ∃ q : ↥T.L.T →ₗ[O] (Fin 1 → k), Onto T (chr 1 : Ob k G) q ∧ q e₀ = fun _ => 1 := by
   intro G _ _ Qp LL O _ _ _ _ _ _ _ _ k _ _ lam hl hk hs _
   refine ⟨?_, ?_, ?_, onto_one hs⟩

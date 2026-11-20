@@ -27,9 +27,23 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
   {M : Model F E} {V : Type} [AddCommGroup V] [Module E V]
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_map`.
+-/
 lemma mem_img (g : V ≃ₗ[E] V) (Λ : Submodule M.L.O V) (x : V) :
     x ∈ img g Λ ↔ ∃ y ∈ Λ, g y = x := Submodule.mem_map
 
+/- English proof (translation)
+Take `⟨hfg, hsp, hmem⟩` from `hΛ`. Use `⟨hfg.map _, ?_, ?_⟩` and prove the remaining obligations. Establish `hc : ((img g Λ : Submodule M.L.O V) : Set V) = (g : V → V) '' (Λ : Set V)` using `Submodule.map_coe _ _`. Establish `hsi` using `Submodule.span_image (R := E) (s := (Λ : Set V)) (g : V →ₗ[E] V)`. Simplify using `only [LinearEquiv.coe_coe] at hsi`.
+
+Rewrite using `[hc, hsi, hsp, Submodule.map_top]`. Conclude with `LinearMap.range_eq_top.2 g.surjective`. Introduce `x`. Establish `key : ∀ z, z ∈ img g Λ ↔ g.symm z ∈ Λ` using `fun z => by`. Rewrite using `[mem_img]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`. Introduce `h; exact ⟨_, h, by simp⟩`. Rewrite using `[key, hmem]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Take `⟨y0, hy0, rfl⟩` from `(mem_img g Λ y).1 hy`. Use `h y0 hy0` as an intermediate fact. Rewrite `this` using `[← hg (g.symm x) y0, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+
+Introduce `h y hy`. Use `h (g y) ((mem_img g Λ _).2 ⟨y, hy, rfl⟩)` as an intermediate fact. Rewrite using `[← hg (g.symm x) y, LinearEquiv.apply_symm_apply]` and apply the resulting hypothesis.
+-/
 lemma img_selfDual (H : HermSp M V) {g : V ≃ₗ[E] V} (hg : IsUnitary H g)
     {Λ : Submodule M.L.O V} (hΛ : H.IsSelfDual Λ) : H.IsSelfDual (img g Λ) := by
   obtain ⟨hfg, hsp, hmem⟩ := hΛ
@@ -55,6 +69,13 @@ lemma img_selfDual (H : HermSp M V) {g : V ≃ₗ[E] V} (hg : IsUnitary H g)
       have := h (g y) ((mem_img g Λ _).2 ⟨y, hy, rfl⟩)
       rwa [← hg (g.symm x) y, LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Take `⟨⟨hin, hli, hsp⟩, hiso, hzz, hT, hT0⟩` from `hf`. Use `⟨⟨fun a => (mem_img g Λ _).2 ⟨f a, hin a, rfl⟩, hli.map' (g : V →ₗ[E] V) g.ker, ?_⟩, fun a b hab => by rw [hg]; exact hiso a b hab, by rw [hg]; exact hzz, hT, hT0⟩` and prove the remaining obligations. Introduce `x hx hxs`. Take `⟨y, hy, rfl⟩` from `(mem_img g Λ x).1 hx`. Establish `hr : Set.range (fun b => g (f b)) = (g : V → V) '' Set.range f` using `(Set.range_comp _ _).symm ▸ rfl`.
+
+Rewrite `hxs`, the goal using `[hr]`. Establish `hys : y ∈ Submodule.span E (Set.range f)`. Use `Submodule.apply_mem_span_image_of_mem_span (g.symm : V →ₗ[E] V) hxs` as an intermediate fact. Simplify `this` using `[Set.image_image]`. Use `Submodule.apply_mem_span_image_of_mem_span ((g : V →ₗ[E] V).restrictScalars M.L.O) (hsp y hy hys)` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 lemma img_frame (H : HermSp M V) {g : V ≃ₗ[E] V} (hg : IsUnitary H g)
     {Λ : Submodule M.L.O V} {r : ℕ} {f : Fin (r + 1) → V} {T : F} (hf : H.IsFrame Λ r f T) :
     H.IsFrame (img g Λ) r (fun b => g (f b)) T := by
@@ -71,6 +92,15 @@ lemma img_frame (H : HermSp M V) {g : V ≃ₗ[E] V} (hg : IsUnitary H g)
   have := Submodule.apply_mem_span_image_of_mem_span ((g : V →ₗ[E] V).restrictScalars M.L.O) (hsp y hy hys)
   simpa using this
 
+/- English proof (translation)
+Establish `hg' : ∀ x y, H.h (g x) (g y) = H.h x y` using `hg`. Establish `hZ : H.Zhat (move g t).f (move g t).f' = H.Zhat t.f t.f'`. Use extensionality with `a b`. Simplify using `[HermSp.Zhat, move, hg']`. Take `⟨h1, h2, h3, h4, h5, h6⟩` from `ht`.
+
+Use `⟨img_selfDual H hg h1, img_frame H hg h2, img_frame H hg h3, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify `h4` using `[HermSp.Dl, hZ]`. Use `show H.Gdet (move g t).f (move g t).f' t.T t.T' ≠ 0`. Simplify `h5` using `[HermSp.Gdet, HermSp.Dl, hZ]`. Introduce `g0 hs`.
+
+Take `⟨hu, hc, hadm⟩` from `h6 g0 hs`. Use `⟨hu, hc, fun b => ?_⟩` and prove the remaining obligations. Establish `hb` using `hadm b`. Use `show g (t.f' b) - g (t.f b) ∈ H.smulLat _ (img g t.abelian₂)`. Rewrite using `[← map_sub]`.
+
+Use `Submodule.apply_mem_span_image_of_mem_span ((g : V →ₗ[E] V).restrictScalars M.L.O) hb` as an intermediate fact. Use `Submodule.span_mono ?_ this` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `⟨g y, (mem_img g t.abelian₂ _).2 ⟨y, hy, rfl⟩, by simp⟩`.
+-/
 lemma isTerm_move (H : HermSp M V) {g : V ≃ₗ[E] V} (hg : IsUnitary H g) {r : ℕ} {t : Term V M r}
     (ht : H.IsTerm t) : H.IsTerm (move g t) := by
   have hg' : ∀ x y, H.h (g x) (g y) = H.h x y := hg
@@ -92,11 +122,25 @@ lemma isTerm_move (H : HermSp M V) {g : V ≃ₗ[E] V} (hg : IsUnitary H g) {r :
     rintro _ ⟨_, ⟨y, hy, rfl⟩, rfl⟩
     exact ⟨g y, (mem_img g t.abelian₂ _).2 ⟨y, hy, rfl⟩, by simp⟩
 
+/- English proof (translation)
+Unfold `HermSp.MMfam`. Apply the tactic sequence `rcases M.split with _ | g0 <;> rcases i with a | a <;> simp [move, map_sub, map_smul]`.
+-/
 lemma mmfam_move (H : HermSp M V) (g : V ≃ₗ[E] V) {r : ℕ} (t : Term V M r) (i : Fin (r + 1) ⊕ Fin (r + 1)) :
     H.MMfam (move g t) i = g (H.MMfam t i) := by
   unfold HermSp.MMfam
   rcases M.split with _ | g0 <;> rcases i with a | a <;> simp [move, map_sub, map_smul]
 
+/- English proof (translation)
+Establish `hr : Set.range (H.MMfam (move g t)) = (g : V → V) '' Set.range (H.MMfam t)`. Rewrite using `[← Set.range_comp]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `mmfam_move H g t i`.
+
+Establish `kE : ∀ x, g x ∈ Submodule.span E ((g : V → V) '' Set.range (H.MMfam t)) ↔ x ∈ Submodule.span E (Set.range (H.MMfam t))` using `fun x => by`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify `Submodule.apply_mem_span_image_of_mem_span (g.symm : V →ₗ[E] V) h` using `[Set.image_image]`. Introduce `h`.
+
+Simplify using `using Submodule.apply_mem_span_image_of_mem_span (g : V →ₗ[E] V) h`. Establish `kO : ∀ x, g x ∈ Submodule.span M.L.O ((g : V → V) '' Set.range (H.MMfam t)) ↔ x ∈ Submodule.span M.L.O (Set.range (H.MMfam t))` using `fun x => by`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify `Submodule.apply_mem_span_image_of_mem_span ((g.symm : V →ₗ[E] V).restrictScalars M.L.O) h` using `[Set.image_image]`.
+
+Introduce `h`. Simplify using `using Submodule.apply_mem_span_image_of_mem_span ((g : V →ₗ[E] V).restrictScalars M.L.O) h`. Unfold `BBne`. Rewrite using `[hr]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨v, hv, h1, h2⟩`. Take `⟨y, hy, rfl⟩` from `(mem_img g t.abelian₂ v).1 hv`. Conclude with `⟨y, hy, (kE y).1 h1, fun h => h2 ((kO y).2 h)⟩`. Introduce and unpack `⟨y, hy, h1, h2⟩`. Conclude with `⟨g y, (mem_img g t.abelian₂ _).2 ⟨y, hy, rfl⟩, (kE y).2 h1, fun h => h2 ((kO y).1 h)⟩`.
+-/
 lemma bbne_move (H : HermSp M V) (g : V ≃ₗ[E] V) {r : ℕ} (t : Term V M r) :
     BBne (H := H) (move g t) ↔ BBne (H := H) t := by
   have hr : Set.range (H.MMfam (move g t)) = (g : V → V) '' Set.range (H.MMfam t) := by
@@ -125,6 +169,11 @@ lemma bbne_move (H : HermSp M V) (g : V ≃ₗ[E] V) {r : ℕ} (t : Term V M r) 
   · rintro ⟨y, hy, h1, h2⟩
     exact ⟨g y, (mem_img g t.abelian₂ _).2 ⟨y, hy, rfl⟩, (kE y).2 h1, fun h => h2 ((kO y).1 h)⟩
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[h i]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `: v i = s i • w i` using `by rw [h i, smul_smul, hs i, one_smul]`. Rewrite using `[SetLike.mem_coe, this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 lemma span_sign {R W ι : Type} [CommRing R] [AddCommGroup W] [Module R W] (s : ι → R) (hs : ∀ i, s i * s i = 1)
     (v w : ι → W) (h : ∀ i, w i = s i • v i) :
     Submodule.span R (Set.range w) = Submodule.span R (Set.range v) := by
@@ -139,6 +188,15 @@ lemma span_sign {R W ι : Type} [CommRing R] [AddCommGroup W] [Module R W] (s : 
     rw [SetLike.mem_coe, this]
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+Establish `hσ2 : ∀ i, Sum.elim s s' i * Sum.elim s s' i = 1`. Introduce and unpack `(a | a)`. Conclude with `hs a`. Conclude with `hs' a`. Establish `hfam : ∀ i, H.MMfam t' i = ((Sum.elim s s' i : M.L.O) : E) • H.MMfam t i`.
+
+Unfold `HermSp.MMfam`. Break down `hsp : M.split with _ | g0` into its components or cases. Introduce and unpack `(a | a)`. Simplify using `[hf]`. Simplify using `[hf']`.
+
+Establish `e` using `hss g0 hsp`. Introduce and unpack `(a | a)`. Simplify using `[hf]`. Simplify using `only [Sum.elim_inr, hf', hf, e]`. Rewrite using `[← smul_sub, smul_comm]`.
+
+Establish `hE` using `span_sign (R := E) (fun i => ((Sum.elim s s' i : M.L.O) : E)) (fun i => by have := congrArg Subtype.val (hσ2 i); simpa using this) (H.MMfam t) (H.MMfam t') hfam`. Establish `hO` using `span_sign (R := M.L.O) (Sum.elim s s') hσ2 (H.MMfam t) (H.MMfam t') hfam`. Unfold `BBne`. Rewrite using `[hE, hO, hL]`.
+-/
 lemma bbne_sign (H : HermSp M V) {r : ℕ} (t t' : Term V M r) (s s' : Fin (r + 1) → M.L.O)
     (hs : ∀ a, s a * s a = 1) (hs' : ∀ a, s' a * s' a = 1) (hL : t'.abelian₂ = t.abelian₂)
     (hf : ∀ a, t'.f a = (s a : E) • t.f a) (hf' : ∀ a, t'.f' a = (s' a : E) • t.f' a)
@@ -165,6 +223,13 @@ lemma bbne_sign (H : HermSp M V) {r : ℕ} (t t' : Term V M r) (s s' : Fin (r + 
   unfold BBne
   rw [hE, hO, hL]
 
+/- English proof (translation)
+Take `⟨hA0, hA1⟩` from `hA`. Take `⟨hB0, hB1⟩` from `hB`. Use `⟨fun a b hba => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations.
+
+Break down `lt_or_ge c a with hca | hac` into its components or cases. Rewrite using `[hA0 a c hca, zero_mul]`. Rewrite using `[hB0 c b (lt_of_lt_of_le hba hac), mul_zero]`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single a, hA1, hB1, one_mul]`. Introduce `c _ hca`.
+
+Break down `lt_or_gt_of_ne hca with h | h` into its components or cases. Rewrite using `[hA0 a c h, zero_mul]`. Rewrite using `[hB0 c a h, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+-/
 lemma uni_mul {K : Type} [CommRing K] {n : ℕ} {A B : Matrix (Fin n) (Fin n) K} (hA : Uni A) (hB : Uni B) :
     Uni (A * B) := by
   obtain ⟨hA0, hA1⟩ := hA
@@ -182,6 +247,13 @@ lemma uni_mul {K : Type} [CommRing K] {n : ℕ} {A B : Matrix (Fin n) (Fin n) K}
       · rw [hB0 c a h, mul_zero]
     · intro h; exact absurd (Finset.mem_univ a) h
 
+/- English proof (translation)
+Take `⟨A, hA, hfg⟩` from `h1`. Take `⟨B, hB, hgh⟩` from `h2`. Use `⟨A * B, uni_mul hA hB, fun c => ?_⟩` and prove the remaining obligations. Establish `e1 : ∀ b, g b = ∑ a, A a b • f a` using `hfg`. Establish `e2 : h c = ∑ b, B b c • g b` using `hgh c`.
+
+Rewrite using `[e2]`. Repeatedly rewrite using `[e1, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_smul]`.
+
+Conclude with `Finset.sum_congr rfl fun b _ => by rw [mul_comm]`.
+-/
 lemma tri_trans {K W : Type} [CommRing K] [AddCommGroup W] [Module K W] {n : ℕ} {f g h : Fin n → W}
     (h1 : Tri K f g) (h2 : Tri K g h) : Tri K f h := by
   obtain ⟨A, hA, hfg⟩ := h1
@@ -196,6 +268,11 @@ lemma tri_trans {K W : Type} [CommRing K] [AddCommGroup W] [Module K W] {n : ℕ
   rw [Matrix.mul_apply, Finset.sum_smul]
   exact Finset.sum_congr rfl fun b _ => by rw [mul_comm]
 
+/- English proof (translation)
+Take `⟨A, hA, hfh⟩` from `h1`. Use `⟨A, hA, fun b => ?_⟩` and prove the remaining obligations. Establish `e : h b = ∑ a, A a b • f a` using `hfh b`. Use `show g (h b) = ∑ a, A a b • g (f a)`. Rewrite using `[e, map_sum]`.
+
+Repeatedly rewrite using `[map_smul]`.
+-/
 lemma tri_map {K W : Type} [CommRing K] [AddCommGroup W] [Module K W] {n : ℕ} {f h : Fin n → W}
     (g : W ≃ₗ[K] W) (h1 : Tri K f h) : Tri K (fun a => g (f a)) (fun a => g (h a)) := by
   obtain ⟨A, hA, hfh⟩ := h1
@@ -215,11 +292,29 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `show F.fl.fvec i.castSucc = F.fl.e i`. Simplify using `only [FlagG.fvec, Fin.snoc_castSucc]`.
+-/
 theorem frame_castSucc {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (i : Fin D.R.rS) :
     frame F i.castSucc = F.fl.e i := by
   show F.fl.fvec i.castSucc = F.fl.e i
   simp only [FlagG.fvec, Fin.snoc_castSucc]
 
+/- English proof (translation)
+Establish `hcs : ∀ i : Fin D.R.rS, frame G i.castSucc = G.fl.e i` using `fun i => frame_castSucc G i`. Establish `h0 : ∀ a : Fin (D.R.rS + 1), ∃ l ∈ Finsupp.supported D.host.E D.host.E {i : Fin D.R.rS | i.val < a.val}, ∑ i, l i • G.fl.e i = g (frame F a) - frame G a`. Introduce `a`. Establish `ha` using `h a`. Simplify using `only [Xflag, FlagG.Xa] at ha`.
+
+Take `⟨l, hl, hsum⟩` from `(Finsupp.mem_span_image_iff_linearCombination (R := D.host.E)).1 ha`. Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Rewrite using `[← hsum, Finsupp.linearCombination_apply, Finsupp.sum_fintype]`. Introduce `i`. Simplify using the standard rewrite rules.
+
+Use `choose l hl hsum using h0`. Use `⟨fun a b => (if a = b then 1 else 0) + Fin.lastCases 0 (fun i => l b i) a, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `a b hba`. Establish `hne : a ≠ b` using `fun e => lt_irrefl _ (e ▸ hba)`. Use `beta_reduce`.
+
+Rewrite using `[if_neg hne, zero_add]`. Break down `Fin.eq_castSucc_or_eq_last a with ⟨i, rfl⟩ | rfl` into its components or cases. Rewrite using `[Fin.lastCases_castSucc]`. Conclude with `(Finsupp.mem_supported' _ _).1 (hl b) i (by simp only [Set.mem_ofPred_eq, not_lt]; exact le_of_lt (by simpa [Fin.lt_def] using hba))`. Rewrite using `[Fin.lastCases_last]`.
+
+Introduce `a beta_reduce`. Rewrite using `[if_pos rfl]`. Break down `Fin.eq_castSucc_or_eq_last a with ⟨i, rfl⟩ | rfl` into its components or cases. Rewrite using `[Fin.lastCases_castSucc, (Finsupp.mem_supported' _ _).1 (hl i.castSucc) i (by simp), add_zero]`. Rewrite using `[Fin.lastCases_last, add_zero]`.
+
+Introduce `b`. Rewrite using `[Formalism.L2.SG.Saturated.frame_mapL]`. Simplify using `only [add_smul, Finset.sum_add_distrib, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [Fin.lastCases_castSucc, Fin.lastCases_last, zero_smul, add_zero, hcs]`.
+
+Rewrite using `[hsum b]`. Normalize the expressions using the abelian group laws.
+-/
 theorem tri_of_adapt {T : D.host.E} (g : GV D) (F G : LFlag (VS D) D.R.rS T) (hg : g ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
     (h : ∀ a : Fin (D.R.rS + 1), g (frame F a) - frame G a ∈ Xflag G a.val) :
     GlobalTheory.LocOver.Tri D.host.E (frame G) (frame (Formalism.L2.SG.Saturated.mapL g hg F)) := by
@@ -259,6 +354,11 @@ theorem tri_of_adapt {T : D.host.E} (g : GV D) (F G : LFlag (VS D) D.R.rS T) (hg
     rw [hsum b]
     abel
 
+/- English proof (translation)
+Take `⟨hg, hadp⟩` from `h`. Take `⟨A, hA, hC⟩` from `tri_of_adapt g F G hg hadp`. Take `⟨Ap, hAp, -⟩` from `GlobalTheory.LocOver.tri_scaled D Z (frame G) (frame (Formalism.L2.SG.Saturated.mapL g hg F)) A hA hC`. Take `⟨hU, hC'⟩` from `hAp p`. Establish `hx : ∀ x, g' (baseChange₂ D p x) = baseChange₂ D p (g x)` using `hg'`.
+
+Establish `e : GlobalTheory.LocOver.scaled Z p (frame (Formalism.L2.SG.Saturated.mapL g hg F)) = fun a => g' (GlobalTheory.LocOver.scaled Z p (frame F) a)`. Use function extensionality and compare the values at `a`. Simplify using `only [GlobalTheory.LocOver.scaled, Formalism.L2.SG.Saturated.frame_mapL, map_smul, hx]`. Conclude with `⟨Ap p, hU, e ▸ hC'⟩`.
+-/
 theorem tri_loc (Z : LocDat D) (p : PlF D) {T : D.host.E} (g : GV D) (F G : LFlag (VS D) D.R.rS T)
     (h : Adapt g F G) (g' : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p) (hg' : GlobalTheory.LocOver.Ext p g g') :
     GlobalTheory.LocOver.Tri (D.s.atP p).Ep (GlobalTheory.LocOver.scaled Z p (frame G))
@@ -274,6 +374,15 @@ theorem tri_loc (Z : LocDat D) (p : PlF D) {T : D.host.E} (g : GV D) (F G : LFla
     simp only [GlobalTheory.LocOver.scaled, Formalism.L2.SG.Saturated.frame_mapL, map_smul, hx]
   exact ⟨Ap p, hU, e ▸ hC'⟩
 
+/- English proof (translation)
+Establish `hmem : ∀ x : (D.s.atP p).Ep, x * x = 1 → x ∈ (Z.M p).L.O` using `fun x hx => by`. Rewrite using `[(Z.M p).L.O_def]`. Conclude with `IsIntegral.of_pow two_pos (by rw [sq, hx]; exact isIntegral_one)`. Establish `hsplit : ∀ g, (Z.M p).split = some g → ∀ b, sgnP' D p b = sgnP D p b`. Introduce `g hg b`.
+
+Establish `ag` using `Z.agree p`. Unfold `Agree at ag`. Take `⟨-, -, -, -, -, hm⟩` from `ag`. Rewrite `hm` using `[hg]`. Unfold `sgnP'`.
+
+Break down `hs : (D.s.atP p).split with _ | sg` into its components or cases. Rewrite `hm` using `[hs]`. Conclude with `(hm : False).elim`. Both sides reduce to the same expression. Set `s : Fin (D.R.rS + 1) → (Z.M p).L.O` to `fun a => ⟨sgnP D p a, hmem _ (localSign_sq p a)⟩`.
+
+Set `s' : Fin (D.R.rS + 1) → (Z.M p).L.O` to `fun a => ⟨sgnP' D p a, hmem _ (sgnP'_sq p a)⟩`. Unfold `locBBne`. Conclude with `bbne_sign (locH Z p) (locTerm Z p Λ F F' Tn T'n) (GlobalTheory.LocOver.locU Z p Λ F F' Tn T'n) s s' (fun a => Subtype.ext (localSign_sq p a)) (fun a => Subtype.ext (sgnP'_sq p a)) rfl (fun a => congrFun (GlobalTheory.LocOver.locU_f_eq Z p Λ F F' Tn T'n) a) (fun a => congrFun (Glo …`.
+-/
 theorem locBBne_iff (Z : LocDat D) (p : PlF D) (Λ : LV D) {T T' : D.host.E}
     (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T') (Tn T'n : ℕ) :
     LocNG.BBne (H := locH Z p) (GlobalTheory.LocOver.locU Z p Λ F F' Tn T'n) ↔ locBBne Z p Λ F F' Tn T'n := by
@@ -299,6 +408,15 @@ theorem locBBne_iff (Z : LocDat D) (p : PlF D) (Λ : LV D) {T T' : D.host.E}
     (fun a => congrFun (GlobalTheory.LocOver.locU_f'_eq Z p Λ F F' Tn T'n) a)
     (fun g hg => funext fun b => Subtype.ext (hsplit g hg b))
 
+/- English proof (translation)
+Establish `hG` using `genIffLocBB_of Z (Formalism.L2.SG.Pf.bbTie_holds D Z) u u' (Formalism.L2.SG.Pf.big_block_function_holds D u u') (fun F0 Λ F' => Formalism.L2.SG.Pf.m_plus_independent _ _ _ _)`. Establish `hR : IsRowLat D (X.Fu u) t.lam` using `(Y.rowsOK u).1 _ t.mem`. Establish `hf : ∀ p (x y : Formalism.L2.SG.TermDef.Carrier (Formalism.L2.SG.TermDef.PD D t.lam (lf D (X.Fu u)) u')), Formalism.L2.SG.TermDef.Rel t.lam (lf D (X.Fu u)) (Formalism.L2.SG.TermDef.PD D t.lam (lf D (X.Fu u)) u') x y → locBBne Z p t.lam (lf D (X.Fu u)) x.1 (Tu D u) (Tu D u') = loc …`. Introduce `p x y hxy`. Apply `propext` to reduce the goal to its premises.
+
+Establish `e1` using `Formalism.L2.SG.Pf.bbTie_holds D Z u u' (X.Fu u) t.lam x.1 hR x.2 (Formalism.L2.SG.Pf.m_plus_independent _ _ _ _) p`. Establish `e2` using `Formalism.L2.SG.Pf.bbTie_holds D Z u u' (X.Fu u) t.lam y.1 hR y.2 (Formalism.L2.SG.Pf.m_plus_independent _ _ _ _) p`. Use `e1.symm.trans (Iff.trans ?_ e2)` and prove the remaining obligations. Unfold `Formalism.L2.SG.Saturated.BBneF`. Conclude with `exists_congr fun P => and_congr_right fun _ => Formalism.L2.SG.Pf.big_block_function_holds D u u' (X.Fu u) t.lam hR P x y hxy`.
+
+Unfold `GTerm.generic GTerm.frame`. Rewrite using `[hG (X.Fu u) (Y.what₂ u) (Y.rowsOK u) (GTerm.toTerm t)]`. Unfold `GTerm.toTerm`. Use `forall_congr' fun p => not_congr ?_` and prove the remaining obligations. Unfold `locBBneT`.
+
+Conclude with `(Formalism.L2.SG.TermDef.const_of_mk (fun x : Formalism.L2.SG.TermDef.Carrier (Formalism.L2.SG.TermDef.PD D t.lam (lf D (X.Fu u)) u') => locBBne Z p t.lam (lf D (X.Fu u)) x.1 (Tu D u) (Tu D u')) (hf p) (Quot.out_eq _)).to_iff`.
+-/
 theorem generic_iff_frame {X : HidaSetting D} {Y : Full X} {u u' : D.what₂.Word} (Z : LocDat D) (t : TauC Y u u') :
     t.generic ↔ ∀ p, ¬ locBBne Z p t.lam (lf D (X.Fu u)) t.frame (Tu D u) (Tu D u') := by
   have hG := genIffLocBB_of Z (Formalism.L2.SG.Pf.bbTie_holds D Z) u u' (Formalism.L2.SG.Pf.big_block_function_holds D u u')
@@ -327,12 +445,30 @@ theorem generic_iff_frame {X : HidaSetting D} {Y : Full X} {u u' : D.what₂.Wor
     (fun x : Formalism.L2.SG.TermDef.Carrier (Formalism.L2.SG.TermDef.PD D t.lam (lf D (X.Fu u)) u') =>
       locBBne Z p t.lam (lf D (X.Fu u)) x.1 (Tu D u) (Tu D u')) (hf p) (Quot.out_eq _)).to_iff
 
+/- English proof (translation)
+Rewrite using `[finrank_Vp]`. Establish `h1` using `Ranks.r_eq (R := D.R)`. Establish `h2` using `Ranks.rS_two (R := D.R)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rank_loc (p : PlF D) : Module.finrank (D.s.atP p).Ep (Vp D p) = D.R.k + 2 * D.R.rS + 1 := by
   rw [finrank_Vp]
   have h1 := Ranks.r_eq (R := D.R)
   have h2 := Ranks.rS_two (R := D.R)
   omega
 
+/- English proof (translation)
+Introduce `D X Y u u' F F' w hZw hGv Z FP hB hRel t Λ hTG`. Establish `hC` using `GlobalTheory.T.term_at_base_point_of_frames D X Y u u' F F' w hZw hGv t Λ hTG`. Establish `hPD : Formalism.L2.SG.TermDef.PD D t.lam (lf D (X.Fu u)) u' (GTerm.frame t)` using `(Quot.out t.cls).2.2.2.2`. Establish `hR : IsRowLat D (X.Fu u) t.lam` using `(Y.rowsOK u).1 _ t.mem`. Establish `hgf` using `(Formalism.L2.SG.Closed.TermFun_holds D u u' (X.Fu u) t.lam hR).1`.
+
+Establish `hG0 : Gval (lf D (X.Fu u)) (GTerm.frame t) ≠ 0`. Establish `e` using `Formalism.L2.SG.TermDef.Gt_mk hgf ⟨GTerm.frame t, hPD⟩`. Introduce `h0`. Conclude with `hC.1 (e.trans h0)`. Take `⟨g, hA1, hA2, hΛ⟩` from `hTG`.
+
+Rewrite using `[generic_iff_frame Z t]`. Use `forall_congr' fun p => ?_` and prove the remaining obligations. Apply the tactic sequence `obtain ⟨gp, hext, hunit, -, himg, -⟩ := GlobalTheory.T.rational_isometry_extends_local_isometry D Z p g hA1.1`. Take `⟨hU, htriU⟩` from `GlobalTheory.LocOver.locU_isTerm D Z u u' (X.Fu u) t.lam hR (GTerm.frame t) hPD hG0 p`. Establish `hOK : (Z.M p).OK` using `(Z.agree p).1`.
+
+Take `⟨hfA, hfB, hTA, hTB⟩` from `hB p`. Use `set τ0 := GlobalTheory.LocOver.move gp (GlobalTheory.LocOver.locU Z p t.lam (lf D (X.Fu u)) (GTerm.frame t) (Tu D u) (Tu D u'))`. Establish `hτ0T : (locH Z p).IsTerm τ0` using `isTerm_move (locH Z p) hunit hU`. Establish `htA : GlobalTheory.LocOver.Tri (D.s.atP p).Ep (FP p).A.f τ0.f`. Rewrite using `[hfA]`.
+
+Conclude with `tri_loc Z p g (lf D (X.Fu u)) F hA1 gp hext`. Establish `htB : GlobalTheory.LocOver.Tri (D.s.atP p).Ep (FP p).B.f τ0.f'`. Rewrite using `[hfB]`. Conclude with `tri_trans (tri_loc Z p g (GTerm.frame t) F' hA2 gp hext) (tri_map gp htriU)`. Take `⟨d0, hd0⟩` from `GlobalTheory.T.exists_datum_of_two_congruent_frames (Z.M p) hOK (locH Z p) D.R.rS (FP p) τ0 hτ0T hTA.symm hTB.symm htA htB`.
+
+Establish `hLam : τ0.abelian₂ = lattice₂ D Z.M p Λ`. Rewrite using `[hΛ]`. Conclude with `himg t.lam`. Rewrite using `[← locBBne_iff, ← bbne_move (locH Z p) gp (GlobalTheory.LocOver.locU Z p t.lam (lf D (X.Fu u)) (GTerm.frame t) (Tu D u) (Tu D u'))]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hn d τ hτ hτL h`. Conclude with `hn ((GlobalTheory.T.localTerm_defect_eq_of_lattice_eq (Z.M p) hOK (locH Z p) D.R.rS D.R.k (FP p) (rank_loc p) (hRel p) d d0 τ τ0 hτ hd0 (hτL.trans hLam.symm)).1 h)`. Introduce `h`. Conclude with `h d0 τ0 hd0 hLam`.
+-/
 theorem generic_iff_local : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (w : Point D.host.E (D.R.rS + 1)), ZhatOM (ZhatL F F') = ptMat w → Gval F F' ≠ 0 → ∀ (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS), Based Z FP (Tu D u) (Tu D u') F F' → (∀ p, (FP p).RelG (LocNG.theta (Z.M p))) → ∀ (t : TauC Y u u') (Λ : LV D), TG F F' t Λ → (t.generic ↔ ∀ p d τ, LocNG.IsTermOver (FP p) d τ → τ.abelian₂ = lattice₂ D Z.M p Λ → ¬ LocNG.BBne (H := locH Z p) τ) := by
   intro D X Y u u' F F' w hZw hGv Z FP hB hRel t Λ hTG
   have hC := GlobalTheory.T.term_at_base_point_of_frames D X Y u u' F F' w hZw hGv t Λ hTG

@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ClassGroupTorsionPr
 import Mathlib
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.exists_pow_eq_span_singleton_of_intCast_mem | exact GlobalTheory.exists_pow_eq_span_singleton_of_intCast_mem | (intros; apply GlobalTheory.exists_pow_eq_span_singleton_of_intCast_mem <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.class_group_torsion_principal_power : ∀ (A K : Type) [CommRing A] [IsDomain A] [Module.Finite ℤ A]
     [Field K] [Algebra A K] [IsFractionRing A K] (M : ℤ), M ≠ 0 →
     (∀ I J : Submodule A K, I * J = 1 →

@@ -18,6 +18,9 @@ def bInv (D : Formalism.BasicNotions.D7) (cc : Ideal (𝓞 D.host.K)) (r : D.hos
 def lsB (D : Formalism.BasicNotions.D7) (cc : Ideal (𝓞 D.host.K)) (r : D.host.E) (a : ℕ) : GlobalTheory.InertSign.Lat D a :=
   Submodule.pi Set.univ fun _ => bInv D cc r
 
+/- English proof (translation)
+Simplify using `[lsB, Submodule.mem_pi]`.
+-/
 theorem mem_lsB {D : Formalism.BasicNotions.D7} {cc : Ideal (𝓞 D.host.K)} {r : D.host.E} {a : ℕ} {y : Fin a → D.host.E} :
     y ∈ lsB D cc r a ↔ ∀ i, y i ∈ bInv D cc r := by
   simp [lsB, Submodule.mem_pi]

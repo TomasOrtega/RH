@@ -17,6 +17,9 @@ namespace GlobalTheory.CompanionTheory.IwaAd
 
 open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory.GramSchwartzFunctions.BC PositivityTheory.PfSWUS
 
+/- English proof (translation)
+The claim follows from `{ cm := h.cm, herm := h.herm, hT := h.hT, det := h.det, chr := h.chr, places := h.places, frames := h.frames, haar := h.haar, co := h.co, std := h.std, pure := h.pure, prod := h.prod, sdW := h.sdW, sdH := h.sdH }`.
+-/
 theorem data_zero_of_data {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {M n d : ℕ} {J : Matrix (Fin M) (Fin M) E} {T : Matrix (Fin n) (Fin n) E}
     {bs : Module.Basis (Fin d) F E} {ψ} {ι : Type} [Fintype ι] {θ l ε fr g P lam L₁ L₂ Φ Φf Φv μ ν}
@@ -26,6 +29,15 @@ theorem data_zero_of_data {F E : Type} [Field F] [NumberField F] [Field E] [Numb
     frames := h.frames, haar := h.haar, co := h.co, std := h.std, pure := h.pure, prod := h.prod,
     sdW := h.sdW, sdH := h.sdH }
 
+/- English proof (translation)
+Introduce `hGen hDict hAn D n V ψ χ θ μ ω H l s ν Φ hS hR lam 𝓖 nb hC w hw β hβ a k hk`. Take `⟨N, φs, vals, ⟨t, ht⟩, hv, hm⟩` from `hDict D n V ψ χ θ μ ω H l s ν Φ hS hR lam 𝓖 nb hC w hw β hβ a k hk`. Take `⟨⟨𝓕, h𝓕⟩, -⟩` from `GlobalTheory.Mem.Vol.fundamentalDomain_adelicUnitary D.host.F D.host.E D.sp.cm.sig V.rank V.gram ν hS.hν`. Establish `key : ∀ j, HolValueAt (whitT ψ V μ lam nb w H (φs j) (adj a.1 * β.1.map (incA D) * a.1) k) (s0 V n) (vals j)`. Introduce `j`.
+
+Take `⟨d, bs, θG, lG, εG, frG, gG, PG, lamG, L₁, L₂, ΦG, Φf, Φv, μG, νG, ψG, hDat, C, ⟨t', ht'⟩, hval⟩` from `hm j`. Establish `h` using `hGen _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ (data_zero_of_data hDat) hDat.lt (hAn D n V hR) False.elim ⟨t', fun z hz => (ht' z hz).1⟩ ν 𝓕 hS.hν h𝓕`. Establish `e : ((V.rank : ℂ) - n) / 2 = s0 V n`. Simplify using `only [s0]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hval ν 𝓕 hS.hν h𝓕]`. Rewrite `h` using `[one_mul]`. Establish `h2` using `(holValueAt_const C _).mul h`. Rewrite `h2` using `[e]`. Conclude with `h2.congr ⟨t', fun z hz => ((ht' z hz).2).symm⟩`.
+
+Rewrite using `[hv]`. Conclude with `(holValueAt_finset_sum Finset.univ fun j _ => key j).congr ⟨t, fun z hz => (ht z hz).symm⟩`.
+-/
 theorem whitKAOfGenLt : PositivityTheory.PfSWUS.WhitKAOfGenLt := by
   intro hGen hDict hAn D n V ψ χ θ μ ω H l s ν Φ hS hR lam 𝓖 nb hC w hw β hβ a k hk
   obtain ⟨N, φs, vals, ⟨t, ht⟩, hv, hm⟩ := hDict D n V ψ χ θ μ ω H l s ν Φ hS hR lam 𝓖 nb hC w hw β hβ a k hk

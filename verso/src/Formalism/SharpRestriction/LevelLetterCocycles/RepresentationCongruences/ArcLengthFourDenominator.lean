@@ -20,6 +20,45 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 variable [FiniteDimensional Qp LL]
 
+/- English proof (translation)
+Take `⟨hp11, hset, h20w, h20η, -, -⟩` from `hB`. Take `⟨-, -, hη, -, -, hsz, -⟩` from `hset`. Establish `hl3 : (arcOf b w S η up size).len c = 3` using `hlen`. Establish `hlen' : sInf {d : ℕ | 1 ≤ d ∧ ¬ TruncatedSeriesCountingBounds.Thick b η size (c - (d : ZMod n) + 1)} = 3` using `hlen`. Establish `hne : ({d : ℕ | 1 ≤ d ∧ ¬ TruncatedSeriesCountingBounds.Thick b η size (c - (d : ZMod n) + 1)} : Set ℕ).Nonempty`.
+
+Assume the negation of the conclusion as `hemp`. Rewrite `hemp` using `[Set.not_nonempty_iff_eq_empty]`. Rewrite `hlen'` using `[hemp, Nat.sInf_empty]`. Use linear arithmetic over natural numbers and integers. Establish `hT2 : ¬ TruncatedSeriesCountingBounds.Thick b η size (c - 2)`.
+
+Establish `hm` using `Nat.sInf_mem hne`. Rewrite `hm` using `[hlen']`. Establish `hm' : 1 ≤ 3 ∧ ¬ TruncatedSeriesCountingBounds.Thick b η size (c - ((3 : ℕ) : ZMod n) + 1)` using `hm`. Establish `e : c - ((3 : ℕ) : ZMod n) + 1 = c - 2` using `by push_cast; ring`. Rewrite `hm'` using `[e]`.
+
+Conclude with `hm'.2`. Establish `hT0 : TruncatedSeriesCountingBounds.Thick b η size c`. Assume the negation of the conclusion as `hnt`. Establish `hmem : (1 : ℕ) ∈ {d : ℕ | 1 ≤ d ∧ ¬ TruncatedSeriesCountingBounds.Thick b η size (c - (d : ZMod n) + 1)}`. Use `⟨le_refl 1, ?_⟩` and prove the remaining obligations.
+
+Simplify using `using hnt`. Establish `hle` using `Nat.sInf_le hmem`. Rewrite `hle` using `[hlen']`. Use linear arithmetic over natural numbers and integers. Establish `hT1 : TruncatedSeriesCountingBounds.Thick b η size (c - 1)`.
+
+Assume the negation of the conclusion as `hnt`. Establish `hmem : (2 : ℕ) ∈ {d : ℕ | 1 ≤ d ∧ ¬ TruncatedSeriesCountingBounds.Thick b η size (c - (d : ZMod n) + 1)}`. Use `⟨by norm_num, ?_⟩` and prove the remaining obligations. Establish `e : c - ((2 : ℕ) : ZMod n) + 1 = c - 1` using `by push_cast; ring`. Rewrite using `[e]`.
+
+Conclude with `hnt`. Establish `hle` using `Nat.sInf_le hmem`. Rewrite `hle` using `[hlen']`. Use linear arithmetic over natural numbers and integers. Establish `hu1 : up (c - 1) = false`.
+
+Establish `h` using `(halt (c - 2)).1`. Rewrite `h` using `[show c - 2 + 1 = c - 1 by ring, hU]`. Simplify using `using h`. Establish `hu0 : up c = true`. Establish `h` using `(halt (c - 1)).1`.
+
+Rewrite `h` using `[sub_add_cancel, hu1]`. Simplify using `using h`. Establish `hh : TruncatedSeriesCountingBounds.hB b w S η size = b + η + S`. Unfold `TruncatedSeriesCountingBounds.hB`. Rewrite using `[if_pos ⟨c, hT0⟩]`.
+
+Take `⟨s₁, hs1, hs1le, hsB, hnot⟩` from `exists_s1_bound_choice PD.p b w S η (size c) (size (c - 1)) (size (c - 2)) hp11 (Formalism.MainNotions.N.Ln17.Sg PD.p b w S η size) (by unfold Formalism.MainNotions.N.Ln17.Sg; rw [hh]) hsm h20w h20η (by have := hη (c - 2); omega) (hsz (c - 2) hT2) hT1.1 hT0.2`. Use `⟨s₁, hs1le, ?_⟩` and prove the remaining obligations. Take `⟨Br⟩` from `exists_phiBridge W hcase hP9 T₂ hW₂.1 hO hinj`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hps : ∀ s, ps W s = (fun _ => Br.ι (Br.P.p s) : LetA O n)`.
+
+Introduce `s`. Proceed by induction on `s with`. Consider the case `zero`. Use function extensionality and compare the values at `i`. Simplify using `[ps, qA, LocWach.π₀, lA, PhiData.p, Br.ι_X]`.
+
+Consider the case `succ s ih`. Establish `e : ps W (s + 1) = W.φA (ps W s)`. Simplify using `only [ps, pow_succ', AlgHom.mul_apply]`. Rewrite using `[e, ih]`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[LocWach.φA, letφ, PhiData.p, Function.iterate_succ_apply', Br.ι_φ]`. Establish `hpsc : ∀ s, Br.ι (Br.P.p s) = ps W s c` using `fun s => by rw [hps s]`. Establish `hX : Br.ι PowerSeries.X = ps W 0 c` using `hpsc 0`. Establish `hCι : ∀ a : O, Br.ι (PowerSeries.C a) = PowerSeries.C a` using `fun a => Br.ι.commutes a`. Establish `hN : nnDen W (arcOf b w S η up size) c = ps W 0 ^ size c * ps W 2 ^ size (c - 2)`.
+
+Unfold `nnDen prodTy`. Rewrite using `[hl3]`. Simplify using `[Finset.prod_range_succ, arcOf, hu0, hu1, hU]`. Establish `hf1 : InFr W c 1 (nnDen W (arcOf b w S η up size) c) f`. Unfold `InFF at hf`.
+
+Conclude with `hf.1`. Take `⟨u₀, hu₀, h0⟩` from `hf1`. Take `⟨u, hu, h1⟩` from `hx`. Establish `key : algebraMap (LetA O n) W.EE (letE c * (((PD.p : ℕ) : LetA O n) ^ κ * u₀ - nnDen W (arcOf b w S η up size) c * algebraMap O (LetA O n) x - ps W 1 ^ (size (c - 1) + S) * u)) = 0`. Establish `hx' : algebraMap O W.EE x = algebraMap (LetA O n) W.EE (algebraMap O (LetA O n) x)` using `IsScalarTower.algebraMap_apply O (LetA O n) W.EE x`.
+
+Establish `hl : lE W κ = ((PD.p : ℕ) : W.EE) ^ κ` using `rfl`. Rewrite `h1` using `[hx', hl]`. Simplify using `only [map_sub, map_mul, map_pow, map_natCast, map_one] at h0 h1 ⊢`. Take the linear combination `h1 - ((PD.p : ℕ) : W.EE) ^ κ * h0`. Establish `key2 : letE c * (((PD.p : ℕ) : LetA O n) ^ κ * u₀ - nnDen W (arcOf b w S η up size) c * algebraMap O (LetA O n) x - ps W 1 ^ (size (c - 1) + S) * u) = 0` using `W.EE_inj (key.trans (map_zero _).symm)`.
+
+Establish `key3` using `congrFun key2 c`. Rewrite `key3` using `[hN]`. Simplify using `only [letE, Pi.mul_apply, Pi.sub_apply, Pi.pow_apply, Pi.natCast_apply, Pi.zero_apply, Pi.single_eq_same, one_mul, Pi.algebraMap_apply] at key3`. Establish `hAC : algebraMap O (PowerSeries O) x = PowerSeries.C x` using `rfl`. Apply the tactic sequence `try rw [hAC] at key3`.
+
+Use `haveI : Fact (Nat.Prime PD.p) := ⟨PD.hp⟩`. Take `⟨U₁, hU₁⟩` from `Br.range u₀ hu₀ c`. Take `⟨U₂, hU₂⟩` from `Br.range u hu c`. Use `den_of_rel Br.P hϖ (D := Br.P.p 2 ^ size (c - 2) * PowerSeries.X ^ size c) (U₁ := U₁) (U₂ := U₂) (B := size (c - 1) + S) (s₁ := s₁) ?_ ?_` and prove the remaining obligations. Apply `Br.inj` to reduce the goal to its premises.
+
+Simplify using `only [map_mul, map_sub, map_pow, map_one, mul_one, hCι, map_natCast]`. Rewrite using `[hX, hpsc 2, hpsc 1, ← hU₁, ← hU₂]`. Take the linear combination `-key3`. Introduce `hmem`. Conclude with `hnot (content_bound_level_ideal (P := Br.P) hϖ (size (c - 2)) (size c) (size (c - 1) + S) s₁ (by have := hη (c - 2); omega) hs1 hsB hmem)`.
+-/
 theorem arc_length_four_denominator [NeZero n] [Fintype (K →ₐ[Qp] LL)] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (W : LocWach PD LL O v n) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {b w S η m : ℕ} {up : ZMod n → Bool}
     {size Mi hi : ZMod n → ℕ} (hB : HypB PD W T₁ T₂ F b w S η m up size Mi hi)

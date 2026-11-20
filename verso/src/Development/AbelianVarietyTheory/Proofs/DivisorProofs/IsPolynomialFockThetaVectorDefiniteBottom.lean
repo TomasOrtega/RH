@@ -27,6 +27,13 @@ noncomputable section
 
 namespace GlobalTheory.BottomIPData
 
+/- English proof (translation)
+Use `⟨0, fun ε CF _ => ⟨0, 0, fun C _ D large₂ _ _ _ T Lc μ₀ _ G => ?_⟩⟩` and prove the remaining obligations. Introduce `W i j A A' WW X hX t P`. Establish `h` using `isBottomTri_is hX`. Establish `hψ : IsStdChar D W.ψ (-1)` using `h.isVac.1`. Establish `hθ : IsInfFam W.θ` using `h.isVac.2.inf`.
+
+Establish `cS : ∀ τ, IsCartanInv (gramAt D (GlobalTheory.Grid.neg A) τ) (-X.rA.s τ)` using `fun τ => GlobalTheory.Grid.isCartanInv_sgn true A τ (h.rigA.2.2 τ).1`. Establish `cT : ∀ τ, IsCartanInv (gramAt D WW τ) (X.rW.s τ)` using `fun τ => (h.rigW.2.2 τ).1`. Establish `hf : IsThetaFunO W.ψ (GlobalTheory.Grid.neg A) WW (X.f t)` using `GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt hψ hθ (h.fst t) h.isVac.2.theta`. Establish `ho` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum (h.idem t)`. Establish `hv : ∀ τ, IsFockVacAt (heisO W.ψ (GlobalTheory.Grid.neg A) WW) W.θ τ (cplxO (-X.rA.s τ) (X.rW.s τ)) (X.f t)` using `fun τ => GlobalTheory.DatumFock.isFockVacAt_of_isThetaAt hψ.1.1 hθ ho.infPart_eq ho.conj.infPart_eq (h.fst t) h.isVac.2.theta hf (h.isVac.2.fock τ)`.
+
+Conclude with `GlobalTheory.FockSph.isFockVec_pureTensorO hψ hθ cS cT X.rA.B X.rW.B hf hv P`.
+-/
 theorem isFockVec_bottom : GBig fun {D} T Lc _ G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m) (A A' WW : HSp D) (X : Tri T A A' WW),
   IsBottomTri W i j X → ∀ t : T, ∀ P : PolF D WW.rank A.rank, IsFockVec W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW.s (pureTensorO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (X.f t) P) := by
   refine ⟨0, fun ε CF _ => ⟨0, 0, fun C _ D large₂ _ _ _ T Lc μ₀ _ G => ?_⟩⟩

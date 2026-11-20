@@ -17,10 +17,18 @@ section Bialg
 variable {R K A B : Type} [CommRing R] [CommRing K] [Algebra R K] [CommRing A] [Bialgebra R A]
   [CommRing B] [Bialgebra R B]
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.includeRight_injective (R := R) (A := K) (B := A) hK h`.
+-/
 theorem one_tmul_injective [Module.Flat R A] (hK : Function.Injective (algebraMap R K)) {a b : A}
     (h : (1 : K) ⊗ₜ[R] a = (1 : K) ⊗ₜ[R] b) : a = b :=
   Algebra.TensorProduct.includeRight_injective (R := R) (A := K) (B := A) hK h
 
+/- English proof (translation)
+Establish `e : ∀ c : A ⊗[R] A, (toBaseChange R K A).two c = TensorProduct.AlgebraTensorModule.distribBaseChange R K A A ((1 : K) ⊗ₜ[R] c)` using `fun c => by`. Proceed by induction on `c with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [TensorProduct.tmul_add, map_add, hx, hy]`. Consider the case `tmul a b => simp`.
+
+Introduce `x y h`. Rewrite `h` using `[e, e]`. Conclude with `Algebra.TensorProduct.includeRight_injective (R := R) (A := K) (B := A ⊗[R] A) hK ((TensorProduct.AlgebraTensorModule.distribBaseChange R K A A).injective h)`.
+-/
 theorem two_injective [Module.Flat R A] (hK : Function.Injective (algebraMap R K)) :
     Function.Injective (toBaseChange R K A).two := by
   have e : ∀ c : A ⊗[R] A, (toBaseChange R K A).two c =
@@ -34,6 +42,19 @@ theorem two_injective [Module.Flat R A] (hK : Function.Injective (algebraMap R K
   exact Algebra.TensorProduct.includeRight_injective (R := R) (A := K) (B := A ⊗[R] A) hK
     ((TensorProduct.AlgebraTensorModule.distribBaseChange R K A A).injective h)
 
+/- English proof (translation)
+Use `choose g hg using hf`. Establish `hs : ∀ (r : R) (b : B), g (r • b) = r • g b` using `fun r b => one_tmul_injective hK (by`. Rewrite using `[← hg, TensorProduct.tmul_smul, TensorProduct.tmul_smul, ← hg, ← algebraMap_smul K r, ← algebraMap_smul K r, map_smul])`. Establish `h1 : g 1 = 1` using `one_tmul_injective hK ((hg 1).symm.trans (map_one f))`. Set `g₁ : B →+* A` to `{ toFun := g map_one' := h1 map_mul' := fun a b => one_tmul_injective hK (by`.
+
+Establish `h` using `map_mul f ((1 : K) ⊗ₜ[R] a) ((1 : K) ⊗ₜ[R] b)`. Rewrite `h` using `[hg a, hg b, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, _root_.mul_one, hg]`. Conclude with `h)`. Use the proof step `map_zero' := by simpa using hs 0 0`. Use the proof step `map_add' := fun a b => one_tmul_injective hK (by`.
+
+Rewrite using `[← hg, TensorProduct.tmul_add, TensorProduct.tmul_add, map_add, hg, hg]) }`. Set `F` to `(SemiBialgHom.ofBialgHom f).comp (toBaseChange R K B)`. Establish `hF : ∀ b, F b = toBaseChange R K A (g b)` using `hg`. Set `g₂ : SemiBialgHom (RingHom.id R) B A` to `{ toRingHom := g₁ smul_map := hs counit_map := fun b => hK (by`. Establish `h` using `F.counit_map b`.
+
+Rewrite `h` using `[hF, (toBaseChange R K A).counit_map]`. Conclude with `h)`. Use `comul_map := fun b => two_injective hK (by`. Rewrite using `[SemiBialgHom.two_comul]`. Use `((congrArg _ (hF b).symm).trans (F.two_comul b).symm).trans ?_` and prove the remaining obligations.
+
+Generalize the expression as in `comul (R := R) b = c`. Proceed by induction on `c with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a b`.
+
+Simplify using `only [TensorProduct.map_tmul, SemiBialgHom.lin_apply, hF]`. Use the proof step `rfl) }`. Conclude with `⟨g₂.toBialgHom, hg⟩`.
+-/
 theorem exists_bialgHom [Module.Flat R A] (hK : Function.Injective (algebraMap R K))
     (f : K ⊗[R] B →ₐc[K] K ⊗[R] A)
     (hf : ∀ b : B, ∃ a : A, f ((1 : K) ⊗ₜ[R] b) = (1 : K) ⊗ₜ[R] a) :
@@ -77,6 +98,11 @@ theorem exists_bialgHom [Module.Flat R A] (hK : Function.Injective (algebraMap R
 
 end Bialg
 
+/- English proof (translation)
+Establish `hK` using `IsFractionRing.injective R K`. Use `choose g hg using fun n => exists_bialgHom (A := GG.A n) (B := HH.A n) hK (f.app n) (hf n)`. Use `⟨⟨g, fun n => BialgHom.ext fun b => one_tmul_injective hK ?_⟩, baseChange_hom_ext fun n b => (hg n b).symm⟩` and prove the remaining obligations. Establish `h` using `res_app f n ((1 : K) ⊗ₜ[R] b)`. Rewrite `h` using `[hg]`.
+
+Conclude with `h.trans (hg n _)`.
+-/
 theorem exists_baseChangeMap_eq (p : ℕ) (R K : Type) [CommRing R] [IsDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] (GG HH : PDivGroup p R) (f : GG.baseChange K ⟶ HH.baseChange K)
     (hf : ∀ (n : ℕ) (b : HH.A n), ∃ a : GG.A n, f.app n ((1 : K) ⊗ₜ[R] b) = (1 : K) ⊗ₜ[R] a) :

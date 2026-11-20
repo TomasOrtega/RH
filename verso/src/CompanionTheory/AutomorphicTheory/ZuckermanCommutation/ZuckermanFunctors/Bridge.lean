@@ -9,11 +9,19 @@ namespace CompanionTheory.Zuck
 
 open BranchingSupport Formalism.FourierDecayAlt.ThreeDimData
 
+/- English proof (translation)
+Unfold `n1`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_le_sum fun i _ => Int.natAbs_add_le _ _`.
+-/
 theorem n1_add_le' {n : ℕ} (x y : Fin n → ℤ) : n1 (x + y) ≤ n1 x + n1 y := by
   unfold n1
   rw [← Finset.sum_add_distrib]
   exact Finset.sum_le_sum fun i _ => Int.natAbs_add_le _ _
 
+/- English proof (translation)
+Unfold `n1`. Rewrite using `[Finset.sum_eq_single s]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem n1_single_eq_natAbs {n : ℕ} (s : Fin n) (m : ℤ) : n1 (Pi.single s m) = m.natAbs := by
   unfold n1
   rw [Finset.sum_eq_single s]
@@ -21,12 +29,38 @@ theorem n1_single_eq_natAbs {n : ℕ} (s : Fin n) (m : ℤ) : n1 (Pi.single s m)
   · intro b _ hb; simp [hb]
   · simp
 
+/- English proof (translation)
+Unfold `n1 eZ`. Establish `: ∀ i : Fin n, (if i ∈ I then (1 : ℤ) else 0).natAbs = if i ∈ I then 1 else 0`. Apply the tactic sequence `intro i; split_ifs <;> rfl`. Simplify using `[this]`.
+-/
 theorem n1_eZ_eq_card_finset {n : ℕ} (I : Finset (Fin n)) : n1 (eZ I) = I.card := by
   unfold n1 eZ
   have : ∀ i : Fin n, (if i ∈ I then (1 : ℤ) else 0).natAbs = if i ∈ I then 1 else 0 := by
     intro i; split_ifs <;> rfl
   simp [this]
 
+/- English proof (translation)
+Introduce `k r ε lam q0 R hF ν`. Establish `hn1 : (1 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ 2 * r + k + 1)`. Establish `h2 : ((2 * r + k + 1 : ℕ) : ℝ) ^ 2 ≤ ((2 * r + k + 1 : ℕ) : ℝ) ^ 3` using `pow_le_pow_right₀ hn1 (by norm_num)`. Establish `h3 : ((2 * r + k + 1 : ℕ) : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ) ^ 3` using `le_self_pow₀ hn1 (by norm_num)`. Establish `h4` using `ht (2 * r + k + 1) (by omega) ε`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `l hl`. Distinguish the cases in `hln : l ≤ 2 * r + k + 1`. Establish `hR` using `hF ν (by omega)`. Take `⟨h, hg, hok⟩` from `hR.gap`.
+
+Establish `hl' : (l : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ)` using `by exact_mod_cast hln`. Use `(hZ k r ε _ (R ν) h hok.1 ⟨hR.hc, hR.ds⟩ hg).1 l _ (by linarith [hok.2.1]) (fun a c hac => ?_) fun I => ?_` and prove the remaining obligations. Establish `h5` using `(hF (ν + Pi.single c (l : ℤ)) (by`. Use `n1_add_le' ν (Pi.single c (l : ℤ))` as an intermediate fact. Rewrite `this` using `[n1_single_eq_natAbs, Int.natAbs_natCast]`.
+
+Use the proof step `omega)).hc.1 hac`. Simplify using `only [Pi.add_apply, Pi.single_eq_same, Pi.single_eq_of_ne hac.ne, add_zero, Int.cast_add, Int.cast_natCast] at h5`. Take `⟨x, hx⟩` from `hR.hc.2 a`. Take `⟨y, hy⟩` from `hR.hc.2 c`. Establish `h6 : (l : ℝ) < (x : ℝ) - y` using `by linarith`.
+
+Establish `h7 : (l : ℤ) + 1 ≤ x - y` using `by exact_mod_cast h6`. Establish `h8 : (l : ℝ) + 1 ≤ (x : ℝ) - y` using `by exact_mod_cast h7`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h5` using `hF (ν + eZ I.1) (by`. Use `n1_add_le' ν (eZ I.1)` as an intermediate fact.
+
+Rewrite `this` using `[n1_eZ_eq_card_finset, I.2]`. Use the proof step `omega)`. Establish `e : (fun a => lam a + (((ν + eZ I.1) a : ℤ) : ℝ)) = addSet (fun a => lam a + (ν a : ℝ)) I.1`. Use function extensionality and compare the values at `a`. Simplify using `only [addSet, eZ, Pi.add_apply]`.
+
+Apply the tactic sequence `split_ifs <;> push_cast <;> ring`. Rewrite `h5` using `[e]`. Conclude with `⟨h5.hc, h5.ds⟩`. Establish `: IsEmpty (Sub (2 * r + k + 1) l)` using `⟨fun I => hln (by`. Rewrite using `[← I.2]`.
+
+Conclude with `(Finset.card_le_univ _).trans_eq (Fintype.card_fin _))⟩`. Conclude with `⟨fun I => isEmptyElim I, fun I => isEmptyElim I, fun I => isEmptyElim I, fun I => isEmptyElim I, fun I => isEmptyElim I, fun I => isEmptyElim I, fun _ _ I => isEmptyElim I, fun I => isEmptyElim I, fun I => isEmptyElim I⟩`. Introduce `hl`. Establish `hR` using `hF ν (by omega)`. Take `⟨h, hg, hok⟩` from `hR.gap`.
+
+Use `(hZ k r ε _ (R ν) h hok.1 ⟨hR.hc, hR.ds⟩ hg).2 _ (by linarith [hok.2.1]) fun s => ?_` and prove the remaining obligations. Establish `h5` using `hF (ν - Pi.single s 1) (by`. Use `n1_add_le' ν (Pi.single s (-1))` as an intermediate fact. Rewrite `this` using `[n1_single_eq_natAbs, Pi.single_neg, ← sub_eq_add_neg]`. Conclude with `this.trans hl)`.
+
+Establish `e : (fun a => lam a + (((ν - Pi.single s 1 : Fin (2 * r + k + 1) → ℤ) a : ℤ) : ℝ)) = (fun a => lam a + (ν a : ℝ)) - Pi.single s 1`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.sub_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`. Rewrite `h5` using `[e]`.
+
+Conclude with `⟨h5.hc, h5.ds⟩`.
+-/
 theorem zuckG_of_sm {t : ∀ n : ℕ, (Fin n → Bool) → ℝ} (ht : ∀ n, 1 ≤ n → ∀ ε, t n ε ≤ 43 * (n : ℝ) ^ 3)
     (hZ : ZuckSm t) : BranchingSupport.ZuckG := by
   intro k r ε lam q0 R hF ν

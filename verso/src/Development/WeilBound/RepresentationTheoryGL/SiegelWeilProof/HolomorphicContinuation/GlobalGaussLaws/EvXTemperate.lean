@@ -8,6 +8,21 @@ open MvPolynomial
 
 namespace PositivityTheory.Rg.Sw.Glob
 
+/- English proof (translation)
+Establish `hcoord : ∀ (a : Fin m) (i : Fin n), Function.HasTemperateGrowth (fun u : Fin m → Fin n → ℂ => u a i)`. Introduce `a i`. Conclude with `((ContinuousLinearMap.proj i : (Fin n → ℂ) →L[ℝ] ℂ).comp (ContinuousLinearMap.proj a : (Fin m → Fin n → ℂ) →L[ℝ] (Fin n → ℂ))).hasTemperateGrowth`. Establish `hconj : ∀ (a : Fin m) (i : Fin n), Function.HasTemperateGrowth (fun u : Fin m → Fin n → ℂ => star (u a i))`. Introduce `a i`.
+
+Establish `h` using `(Complex.conjCLE.toContinuousLinearMap.comp ((ContinuousLinearMap.proj i : (Fin n → ℂ) →L[ℝ] ℂ).comp (ContinuousLinearMap.proj a : (Fin m → Fin n → ℂ) →L[ℝ] (Fin n → ℂ)))).hasTemperateGrowth`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Simplify using `[Complex.conjCLE_apply]`. Use `MvPolynomial.induction_on (motive := fun Q : PX m n => Function.HasTemperateGrowth (fun u : Fin m → Fin n → ℂ => evX Q u)) P ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `a`. Use `Function.HasTemperateGrowth.const (E := Fin m → Fin n → ℂ) a using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Simplify using `[evX]`. Introduce `p q hp hq`.
+
+Use `hp.add hq using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Simplify using `[evX]`. Introduce `p k hp`. Take `⟨a, i, b⟩` from `k`.
+
+Consider the cases of `b`. Establish `e : (fun u : Fin m → Fin n → ℂ => evX (p * X (a, i, false)) u) = (fun u => evX p u) * (fun u => u a i)`. Use function extensionality and compare the values at `u`. Simplify using `[evX]`. Rewrite using `[e]`.
+
+Conclude with `hp.mul (hcoord a i)`. Establish `e : (fun u : Fin m → Fin n → ℂ => evX (p * X (a, i, true)) u) = (fun u => evX p u) * (fun u => star (u a i))`. Use function extensionality and compare the values at `u`. Simplify using `[evX]`. Rewrite using `[e]`.
+
+Conclude with `hp.mul (hconj a i)`.
+-/
 theorem evX_temperate {m n : ℕ} (P : PX m n) :
     Function.HasTemperateGrowth (fun u : Fin m → Fin n → ℂ => evX P u) := by
   have hcoord : ∀ (a : Fin m) (i : Fin n),
@@ -51,6 +66,13 @@ theorem evX_temperate {m n : ℕ} (P : PX m n) :
       rw [e]
       exact hp.mul (hconj a i)
 
+/- English proof (translation)
+Establish `hre : ∀ (a : Fin m) (i : Fin n), Function.HasTemperateGrowth (fun u : Fin m → Fin n → ℂ => (u a i).re)` using `fun a i => (Complex.reCLM.comp ((ContinuousLinearMap.proj i : (Fin n → ℂ) →L[ℝ] ℂ).comp (ContinuousLinearMap.proj a : (Fin m → Fin n → ℂ) →L[ℝ] (Fin n → ℂ)))).hasTemperateGrowth`. Establish `him : ∀ (a : Fin m) (i : Fin n), Function.HasTemperateGrowth (fun u : Fin m → Fin n → ℂ => (u a i).im)` using `fun a i => (Complex.imCLM.comp ((ContinuousLinearMap.proj i : (Fin n → ℂ) →L[ℝ] ℂ).comp (ContinuousLinearMap.proj a : (Fin m → Fin n → ℂ) →L[ℝ] (Fin n → ℂ)))).hasTemperateGrowth`. Establish `hsq : ∀ (a : Fin m) (i : Fin n), Function.HasTemperateGrowth (fun u : Fin m → Fin n → ℂ => ‖u a i‖ ^ 2)`. Introduce `a i`. Establish `e : (fun u : Fin m → Fin n → ℂ => ‖u a i‖ ^ 2) = fun u : Fin m → Fin n → ℂ => (u a i).re * (u a i).re + (u a i).im * (u a i).im`.
+
+Use function extensionality and compare the values at `u`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Rewrite using `[e]`. Conclude with `((hre a i).mul (hre a i)).add ((him a i).mul (him a i))`. Establish `hin : ∀ a : Fin m, Function.HasTemperateGrowth (fun u : Fin m → Fin n → ℂ => ∑ i : Fin n, ‖u a i‖ ^ 2)` using `fun a => Function.HasTemperateGrowth.sum fun i _ => hsq a i`.
+
+Establish `hsum : Function.HasTemperateGrowth (fun u : Fin m → Fin n → ℂ => ∑ a : Fin m, ∑ i : Fin n, ‖u a i‖ ^ 2)` using `Function.HasTemperateGrowth.sum fun a _ => hin a`. Conclude with `(Function.HasTemperateGrowth.const c).mul hsum`.
+-/
 private theorem hasTemperateGrowth_const_mul_sum_norm_sq {m n : ℕ} (c : ℝ) :
     Function.HasTemperateGrowth
       (fun u : Fin m → Fin n → ℂ => c * ∑ a : Fin m, ∑ i : Fin n, ‖u a i‖ ^ 2) := by
@@ -79,6 +101,15 @@ private theorem hasTemperateGrowth_const_mul_sum_norm_sq {m n : ℕ} (c : ℝ) :
     Function.HasTemperateGrowth.sum fun a _ => hin a
   exact (Function.HasTemperateGrowth.const c).mul hsum
 
+/- English proof (translation)
+Rewrite using `[norm_iteratedFDeriv_eq_norm_iteratedDeriv]`. Establish `hit : iteratedDeriv i (fun s : ℝ => Complex.exp (-(s : ℂ))) = fun s : ℝ => (-1 : ℂ) ^ i * Complex.exp (-(s : ℂ))`. Proceed by induction on `i with`. Consider the case `zero`. Use function extensionality and compare the values at `s`.
+
+Simplify using the standard rewrite rules. Consider the case `succ i ih`. Rewrite using `[iteratedDeriv_succ, ih]`. Use function extensionality and compare the values at `s`. Establish `h0 : HasDerivAt (fun s : ℝ => (s : ℂ)) 1 s`.
+
+Simplify using `using (hasDerivAt_id s).ofReal_comp`. Establish `hd : HasDerivAt (fun s : ℝ => -(s : ℂ)) (-1) s` using `h0.neg`. Establish `he` using `(hd.cexp).const_mul ((-1 : ℂ) ^ i)`. Rewrite using `[he.deriv]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hit]`. Simplify using `[Complex.norm_exp]`.
+-/
 private theorem norm_iteratedFDeriv_cexp_neg_eq_exp_neg (i : ℕ) (t : ℝ) :
     ‖iteratedFDeriv ℝ i (fun s : ℝ => Complex.exp (-(s : ℂ))) t‖ = Real.exp (-t) := by
   rw [norm_iteratedFDeriv_eq_norm_iteratedDeriv]
@@ -100,6 +131,15 @@ private theorem norm_iteratedFDeriv_cexp_neg_eq_exp_neg (i : ℕ) (t : ℝ) :
   rw [hit]
   simp [Complex.norm_exp]
 
+/- English proof (translation)
+Use `⟨2 ^ j * (1 + j.factorial / c ^ j), fun r hr => ?_⟩` and prove the remaining obligations. Establish `hy : 0 ≤ c * r ^ 2` using `by positivity`. Establish `hexp` using `Real.pow_div_factorial_le_exp (c * r ^ 2) hy j`. Establish `hE : 0 < Real.exp (c * r ^ 2)` using `Real.exp_pos _`. Establish `hcj : 0 < c ^ j` using `pow_pos hc j`.
+
+Establish `h2j : (0 : ℝ) < 2 ^ j` using `pow_pos two_pos j`. Establish `hr2j : 0 ≤ (r ^ 2) ^ j` using `by positivity`. Establish `h1 : (1 + r) ^ j ≤ 2 ^ j * (1 + (r ^ 2) ^ j)`. Break down `le_total r 1 with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (r ^ 2) ^ j * Real.exp (-(c * r ^ 2)) ≤ j.factorial / c ^ j`. Rewrite `hexp` using `[mul_pow, div_le_iff₀ (by positivity)]`. Rewrite using `[Real.exp_neg, ← div_eq_mul_inv, div_le_div_iff₀ hE hcj]`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `h3 : Real.exp (-(c * r ^ 2)) ≤ 1`. Rewrite using `[Real.exp_le_one_iff]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem exists_bound_one_add_pow_mul_exp_neg_sq (c : ℝ) (hc : 0 < c) (j : ℕ) :
     ∃ M : ℝ, ∀ r : ℝ, 0 ≤ r → (1 + r) ^ j * Real.exp (-(c * r ^ 2)) ≤ M := by
   refine ⟨2 ^ j * (1 + j.factorial / c ^ j), fun r hr => ?_⟩
@@ -129,6 +169,25 @@ private theorem exists_bound_one_add_pow_mul_exp_neg_sq (c : ℝ) (hc : 0 < c) (
     _ ≤ 2 ^ j * (1 + j.factorial / c ^ j) :=
         mul_le_mul_of_nonneg_left (add_le_add h3 h2) h2j.le
 
+/- English proof (translation)
+Establish `hqT` using `hasTemperateGrowth_const_mul_sum_norm_sq (m := m) (n := n) c`. Establish `hhC : ContDiff ℝ (⊤ : ℕ∞) (fun s : ℝ => Complex.exp (-(s : ℂ)))` using `Complex.contDiff_exp.comp (Complex.ofRealCLM.contDiff.neg)`. Establish `hgs : (gs c : (Fin m → Fin n → ℂ) → ℂ) = (fun s : ℝ => Complex.exp (-(s : ℂ))) ∘ (fun u : Fin m → Fin n → ℂ => c * ∑ a : Fin m, ∑ i : Fin n, ‖u a i‖ ^ 2)`. Use function extensionality and compare the values at `u`. Simplify using `[gs]`.
+
+Establish `hlow : ∀ u : Fin m → Fin n → ℂ, ‖u‖ ^ 2 ≤ ∑ a : Fin m, ∑ i : Fin n, ‖u a i‖ ^ 2`. Introduce `u`. Establish `hS0 : 0 ≤ ∑ a : Fin m, ∑ i : Fin n, ‖u a i‖ ^ 2` using `by positivity`. Establish `hb : ‖u‖ ≤ Real.sqrt (∑ a : Fin m, ∑ i : Fin n, ‖u a i‖ ^ 2)`. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun a => ?_` and prove the remaining obligations.
+
+Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun i => ?_` and prove the remaining obligations. Establish `h1 : ‖u a i‖ ^ 2 ≤ ∑ a : Fin m, ∑ i : Fin n, ‖u a i‖ ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `Real.abs_le_sqrt h1`. Rewrite `h2` using `[abs_of_nonneg (norm_nonneg _)]`. Then use the resulting hypothesis.
+
+Combine the equalities or inequalities in the displayed calculation. Use `⟨⟨gs c, ?_, ?_⟩, fun u => rfl⟩` and prove the remaining obligations. Rewrite using `[hgs]`. Conclude with `hhC.comp hqT.1`. Introduce `k N`.
+
+Take `⟨K, C, hC0, hC⟩` from `hqT.norm_iteratedFDeriv_le_uniform N`. Take `⟨M, hM⟩` from `exists_bound_one_add_pow_mul_exp_neg_sq c hc (k + K * N)`. Use `⟨N.factorial * (C + 1) ^ N * M, fun u => ?_⟩` and prove the remaining obligations. Establish `hu0` using `norm_nonneg u`. Establish `hD1 : 1 ≤ (C + 1) * (1 + ‖u‖) ^ K` using `one_le_mul_of_one_le_of_one_le (by linarith) (one_le_pow₀ (by linarith))`.
+
+Establish `hD : ∀ i : ℕ, 1 ≤ i → i ≤ N → ‖iteratedFDeriv ℝ i (fun u : Fin m → Fin n → ℂ => c * ∑ a : Fin m, ∑ i : Fin n, ‖u a i‖ ^ 2) u‖ ≤ ((C + 1) * (1 + ‖u‖) ^ K) ^ i`. Introduce `i hi1 hiN`. Combine the equalities or inequalities in the displayed calculation. Establish `key` using `norm_iteratedFDeriv_comp_le (𝕜 := ℝ) (n := N) hhC hqT.1 (by exact_mod_cast le_top) u (C := Real.exp (-(c * ∑ a : Fin m, ∑ i : Fin n, ‖u a i‖ ^ 2))) (fun i _ => (norm_iteratedFDeriv_cexp_neg_eq_exp_neg i _).le) hD`. Establish `hexp_le : Real.exp (-(c * ∑ a : Fin m, ∑ i : Fin n, ‖u a i‖ ^ 2)) ≤ Real.exp (-(c * ‖u‖ ^ 2))`.
+
+Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Use `mul_le_mul_of_nonneg_left (hlow u) hc.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpow : ‖u‖ ^ k ≤ (1 + ‖u‖) ^ k` using `pow_le_pow_left₀ hu0 (by linarith) k`. Rewrite using `[hgs]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul hpow (key.trans ?_) (norm_nonneg _) (by positivity)` and prove the remaining obligations. Use `gcongr`. Use `_ = N.factorial * (C + 1) ^ N * ((1 + ‖u‖) ^ (k + K * N) * Real.exp (-(c * ‖u‖ ^ 2))) := by`. Rewrite using `[mul_pow, ← pow_mul, pow_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ N.factorial * (C + 1) ^ N * M := by gcongr`. Conclude with `hM _ hu0`.
+-/
 theorem gs_sch {m n : ℕ} (c : ℝ) (hc : 0 < c) :
     ∃ S : SchwartzMap (Fin m → Fin n → ℂ) ℂ, ∀ u, S u = gs c u := by
   have hqT := hasTemperateGrowth_const_mul_sum_norm_sq (m := m) (n := n) c
@@ -199,6 +258,11 @@ theorem gs_sch {m n : ℕ} (c : ℝ) (hc : 0 < c) :
           gcongr
           exact hM _ hu0
 
+/- English proof (translation)
+Introduce `m n c hc P`. Take `⟨S, hS⟩` from `gs_sch (m := m) (n := n) c hc`. Use `⟨SchwartzMap.smulLeftCLM ℂ (fun u => evX P u) S, ?_⟩` and prove the remaining obligations. Rewrite using `[SchwartzMap.smulLeftCLM_apply (evX_temperate P)]`. Use function extensionality and compare the values at `u`.
+
+Simplify using `[fP, hS, smul_eq_mul]`.
+-/
 theorem schFP : SchFP := by
   intro m n c hc P
   obtain ⟨S, hS⟩ := gs_sch (m := m) (n := n) c hc

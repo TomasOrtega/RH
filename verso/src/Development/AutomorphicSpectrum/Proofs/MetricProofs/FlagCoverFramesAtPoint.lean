@@ -23,11 +23,20 @@ variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {S : Set E} {z : 
 def LocAn (S : Set E) (z : E) (φ : E → ℂ) : Prop :=
   ∃ f : E → ℂ, AnalyticAt ℂ f z ∧ ∀ᶠ w in 𝓝[S] z, φ w = f w
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨φ, h, Eventually.of_forall fun _ => rfl⟩`.
+-/
 theorem LocAn.of_analyticAt {φ : E → ℂ} (h : AnalyticAt ℂ φ z) : LocAn S z φ :=
   ⟨φ, h, Eventually.of_forall fun _ => rfl⟩
 
+/- English proof (translation)
+The claim follows from `.of_analyticAt analyticAt_const`.
+-/
 theorem LocAn.const (c : ℂ) : LocAn S z fun _ => c := .of_analyticAt analyticAt_const
 
+/- English proof (translation)
+Take `⟨f, hf, e⟩` from `h`. Take `⟨g, hg, e'⟩` from `h'`. Use `⟨fun w => f w + g w, hf.add hg, ?_⟩` and prove the remaining obligations. Use `filter_upwards [e, e'] with w a b`. Rewrite using `[a, b]`.
+-/
 theorem LocAn.add {φ ψ : E → ℂ} (h : LocAn S z φ) (h' : LocAn S z ψ) : LocAn S z fun w => φ w + ψ w := by
   obtain ⟨f, hf, e⟩ := h
   obtain ⟨g, hg, e'⟩ := h'
@@ -35,6 +44,9 @@ theorem LocAn.add {φ ψ : E → ℂ} (h : LocAn S z φ) (h' : LocAn S z ψ) : L
   filter_upwards [e, e'] with w a b
   rw [a, b]
 
+/- English proof (translation)
+Take `⟨f, hf, e⟩` from `h`. Take `⟨g, hg, e'⟩` from `h'`. Use `⟨fun w => f w * g w, hf.mul hg, ?_⟩` and prove the remaining obligations. Use `filter_upwards [e, e'] with w a b`. Rewrite using `[a, b]`.
+-/
 theorem LocAn.mul {φ ψ : E → ℂ} (h : LocAn S z φ) (h' : LocAn S z ψ) : LocAn S z fun w => φ w * ψ w := by
   obtain ⟨f, hf, e⟩ := h
   obtain ⟨g, hg, e'⟩ := h'
@@ -42,6 +54,9 @@ theorem LocAn.mul {φ ψ : E → ℂ} (h : LocAn S z φ) (h' : LocAn S z ψ) : L
   filter_upwards [e, e'] with w a b
   rw [a, b]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using LocAn.const (S := S) (z := z) 0`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a s)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem LocAn.sum {σ : Type} (s : Finset σ) {φ : σ → E → ℂ} (h : ∀ i ∈ s, LocAn S z (φ i)) :
     LocAn S z fun w => ∑ i ∈ s, φ i w := by
   induction s using Finset.induction_on with
@@ -50,6 +65,9 @@ theorem LocAn.sum {σ : Type} (s : Finset σ) {φ : σ → E → ℂ} (h : ∀ i
     simp only [Finset.sum_insert ha]
     exact (h a (Finset.mem_insert_self a s)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using LocAn.const (S := S) (z := z) 1`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a s)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem LocAn.prod {σ : Type} (s : Finset σ) {φ : σ → E → ℂ} (h : ∀ i ∈ s, LocAn S z (φ i)) :
     LocAn S z fun w => ∏ i ∈ s, φ i w := by
   induction s using Finset.induction_on with
@@ -58,11 +76,17 @@ theorem LocAn.prod {σ : Type} (s : Finset σ) {φ : σ → E → ℂ} (h : ∀ 
     simp only [Finset.prod_insert ha]
     exact (h a (Finset.mem_insert_self a s)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Simplify using `only [Matrix.det_apply']`. Conclude with `LocAn.sum _ fun σ _ => (LocAn.const _).mul (LocAn.prod _ fun i _ => h _ _)`.
+-/
 theorem LocAn.det {n : ℕ} {A : E → Matrix (Fin n) (Fin n) ℂ} (h : ∀ a b, LocAn S z fun w => A w a b) :
     LocAn S z fun w => (A w).det := by
   simp only [Matrix.det_apply']
   exact LocAn.sum _ fun σ _ => (LocAn.const _).mul (LocAn.prod _ fun i _ => h _ _)
 
+/- English proof (translation)
+Unfold `minorIJ`. Use `split_ifs with e`. Conclude with `LocAn.det fun a b => h _ _`. Conclude with `LocAn.const 0`.
+-/
 theorem LocAn.minor {N : ℕ} {A : E → Matrix (Fin N) (Fin N) ℂ} (h : ∀ a b, LocAn S z fun w => A w a b)
     (I J : Finset (Fin N)) : LocAn S z fun w => minorIJ (A w) I J := by
   unfold minorIJ
@@ -77,6 +101,11 @@ section Val
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {S : Set E} {z : E}
   {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Establish `h0 : mConeMap b f = 0` using `hf`. Establish `e : ∀ f : MRing ι, eval (fun _ => (1 : ℂ)) (mConeMap b f) = eval b (map (Int.castRingHom ℂ) f)`. Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [mConeMap]`.
+
+Consider the case `add p q hp hq => simp [map_add, hp, hq]`. Consider the case `mul_X p q hp`. Establish `e1 : eval (fun _ => (1 : ℂ)) (mConeMap b (X q)) = b q` using `by simp [mConeMap]`. Rewrite using `[map_mul, map_mul, hp, e1, map_mul, map_mul, map_X, eval_X]`. Rewrite using `[← e, h0, map_zero]`.
+-/
 theorem eval_eq_zero_of_mem {b : (Σ k, ι k) → ℂ} {f : MRing ι} (hf : f ∈ mCoordIdeal b) :
     eval b (map (Int.castRingHom ℂ) f) = 0 := by
   have h0 : mConeMap b f = 0 := hf
@@ -90,14 +119,27 @@ theorem eval_eq_zero_of_mem {b : (Σ k, ι k) → ℂ} {f : MRing ι} (hf : f �
       rw [map_mul, map_mul, hp, e1, map_mul, map_mul, map_X, eval_X]
   rw [← e, h0, map_zero]
 
+/- English proof (translation)
+Introduce `h` and use `hf (eval_eq_zero_of_mem h)`.
+-/
 theorem notMem_of_eval_ne_zero {b : (Σ k, ι k) → ℂ} {f : MRing ι} (hf : eval b (map (Int.castRingHom ℂ) f) ≠ 0) :
     f ∉ mCoordIdeal b := fun h => hf (eval_eq_zero_of_mem h)
 
+/- English proof (translation)
+Introduce `e` and use `h (by show mConeMap b (X q) = 0 rw [mConeMap, aeval_X, e, map_zero, zero_mul])`.
+-/
 theorem coord_ne_zero_of_notMem {b : (Σ k, ι k) → ℂ} {q : Σ k, ι k} (h : (X q : MRing ι) ∉ mCoordIdeal b) :
     b q ≠ 0 := fun e => h (by
   show mConeMap b (X q) = 0
   rw [mConeMap, aeval_X, e, map_zero, zero_mul])
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simpa using analyticAt_const`. Consider the case `add p q hp hq`. Establish `e : (fun w => eval (b w) (map (Int.castRingHom ℂ) (p + q))) = fun w => eval (b w) (map (Int.castRingHom ℂ) p) + eval (b w) (map (Int.castRingHom ℂ) q)`. Use function extensionality and compare the values at `w`.
+
+Rewrite using `[map_add, map_add]`. Rewrite using `[e]`. Conclude with `hp.add hq`. Consider the case `mul_X p q hp`. Establish `e : (fun w => eval (b w) (map (Int.castRingHom ℂ) (p * X q))) = fun w => eval (b w) (map (Int.castRingHom ℂ) p) * b w q`.
+
+Use function extensionality and compare the values at `w`. Rewrite using `[map_mul, map_mul, map_X, eval_X]`. Rewrite using `[e]`. Conclude with `hp.mul (hb q)`.
+-/
 theorem analyticAt_eval {σ : Type} {b : E → σ → ℂ} (hb : ∀ q, AnalyticAt ℂ (fun w => b w q) z)
     (p : MvPolynomial σ ℤ) : AnalyticAt ℂ (fun w => eval (b w) (map (Int.castRingHom ℂ) p)) z := by
   induction p using MvPolynomial.induction_on with
@@ -113,12 +155,20 @@ theorem analyticAt_eval {σ : Type} {b : E → σ → ℂ} (hb : ∀ q, Analytic
       funext w; rw [map_mul, map_mul, map_X, eval_X]
     rw [e]; exact hp.mul (hb q)
 
+/- English proof (translation)
+Take `⟨d, g, h, hg, hh, hn, heq⟩` from `hs`. Use `filter_upwards [(analyticAt_eval hb h).continuousAt.eventually_ne (ValRing.eval_ne_zero_of_notMem hh hn)] with w hw`. Conclude with `⟨d, g, h, hg, hh, notMem_of_eval_ne_zero hw, heq⟩`.
+-/
 theorem regAt_eventually {x : (Σ k, ι k) → Ω} {b : E → (Σ k, ι k) → ℂ} (hb : ∀ q, AnalyticAt ℂ (fun w => b w q) z)
     {s : Ω} (hs : RegAt x (mCoordIdeal (b z)) s) : ∀ᶠ w in 𝓝 z, RegAt x (mCoordIdeal (b w)) s := by
   obtain ⟨d, g, h, hg, hh, hn, heq⟩ := hs
   filter_upwards [(analyticAt_eval hb h).continuousAt.eventually_ne (ValRing.eval_ne_zero_of_notMem hh hn)] with w hw
   exact ⟨d, g, h, hg, hh, notMem_of_eval_ne_zero hw, heq⟩
 
+/- English proof (translation)
+Take `⟨d, g, h, hg, hh, hn, heq⟩` from `hs`. Establish `h0` using `ValRing.eval_ne_zero_of_notMem hh hn`. Establish `hx` using `ValRing.aeval_ne_zero_of_notMem (hpt z hz) hh hn`. Use `⟨fun w => eval (b w) (map (Int.castRingHom ℂ) g) / eval (b w) (map (Int.castRingHom ℂ) h), (analyticAt_eval hb g).div (analyticAt_eval hb h) h0, ?_⟩` and prove the remaining obligations. Use `filter_upwards [nhdsWithin_le_nhds ((analyticAt_eval hb h).continuousAt.eventually_ne h0), self_mem_nhdsWithin] with w hw hwS`.
+
+Conclude with `valAt_eq (hpt w hwS) ⟨d, g, h, hg, hh, hx, heq, hw, rfl⟩`.
+-/
 theorem locAn_valAt {x : (Σ k, ι k) → Ω} {b : E → (Σ k, ι k) → ℂ} (hb : ∀ q, AnalyticAt ℂ (fun w => b w q) z)
     (hpt : ∀ w ∈ S, b w ∈ mcPts (mCoordIdeal x)) (hz : z ∈ S) {s : Ω} (hs : RegAt x (mCoordIdeal (b z)) s) :
     LocAn S z fun w => valAt x s (b w) := by
@@ -139,6 +189,13 @@ variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {z : E}
   {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : Type} [Field Φ] {y : (Σ k, ι k) → Φ}
   {Ψ : Type} [Finite Ψ] {N j : ℕ}
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `hg`. Establish `A : ∀ᶠ w in 𝓝 z, ∀ k, (X ⟨k, F.c k⟩ : MRing (baseIdx ι M.blk)) ∉ mCoordIdeal (b w)`. Use `eventually_all.2 fun k => ?_` and prove the remaining obligations. Use `filter_upwards [(hb ⟨k, F.c k⟩).continuousAt.eventually_ne (coord_ne_zero_of_notMem (h1 k))] with w hw`. Use `notMem_of_eval_ne_zero ?_` and prove the remaining obligations.
+
+Simplify using `using hw`. Establish `B : ∀ᶠ w in 𝓝 z, ∀ q I, RegAt M.x (mCoordIdeal (b w)) (F.u q I) ∧ RegAt M.x (mCoordIdeal (b w)) (F.u' I q)` using `eventually_all.2 fun q => eventually_all.2 fun I => (regAt_eventually hb (h2 q I).1).and (regAt_eventually hb (h2 q I).2)`. Establish `C : ∀ᶠ w in 𝓝 z, ∀ p, M.blk p = none → F.υ p ≠ 0 ∧ RegAt M.x (mCoordIdeal (b w)) (F.υ p) ∧ RegAt M.x (mCoordIdeal (b w)) (F.υ p)⁻¹`. Use `eventually_all.2 fun p => ?_` and prove the remaining obligations. Distinguish the cases in `hp : M.blk p = none`.
+
+Use `filter_upwards [regAt_eventually hb (h3 p hp).2.1, regAt_eventually hb (h3 p hp).2.2] with w a c`. Conclude with `fun _ => ⟨(h3 p hp).1, a, c⟩`. Conclude with `Eventually.of_forall fun _ h => absurd h hp`. Use `filter_upwards [A, B, C] with w a c d`. Conclude with `⟨a, c, d⟩`.
+-/
 theorem goodAt_eventually (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk)
     {b : E → (Σ k, baseIdx ι M.blk k) → ℂ} (hb : ∀ q, AnalyticAt ℂ (fun w => b w q) z)
     (hg : M.GoodAt F (mCoordIdeal (b z))) : ∀ᶠ w in 𝓝 z, M.GoodAt F (mCoordIdeal (b w)) := by
@@ -169,10 +226,24 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : 
   {Ψ : Type} {N j : ℕ} {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)] {Φ' : Type} [Field Φ']
   {y' : (Σ k, ι' k) → Φ'}
 
+/- English proof (translation)
+The claim follows from `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : (Σ k, ι' k) => ℂ) q).analyticAt z`.
+-/
 theorem analyticAt_coord (z : (Σ k, ι' k) → ℂ) (q : Σ k, ι' k) :
     AnalyticAt ℂ (fun w : (Σ k, ι' k) → ℂ => w q) z :=
   (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : (Σ k, ι' k) => ℂ) q).analyticAt z
 
+/- English proof (translation)
+Establish `hb : ∀ q, AnalyticAt ℂ (fun w => basePart M'.blk w q) z` using `fun q => analyticAt_coord z _`. Establish `hbv : ∀ q, AnalyticAt ℂ (fun w => (basePart M'.blk w ∘ Cv.v) q) z` using `fun q => hb _`. Take `⟨k, m⟩` from `q`. Distinguish the cases in `hk : ∀ p, M.blk p ≠ some k`. Use `.of_analyticAt ?_` and prove the remaining obligations.
+
+Establish `e : (fun w => img Cv F' F w ⟨k, m⟩) = fun w => basePart M'.blk w (Cv.v ⟨⟨k, hk⟩, m⟩)`. Use function extensionality and compare the values at `w`. Conclude with `congrFun (img_base Cv F' F w) ⟨⟨k, hk⟩, m⟩`. Rewrite using `[e]`. Conclude with `hb _`.
+
+Take `⟨p, hp⟩ : ∃ p, M.blk p = some k` from `by simpa using hk`. Take `⟨k', hp'⟩` from `exists_blk_cover M' hp`. Simplify using `only [img_step Cv F' F _ hp hp' m]`. Unfold `stepCoord`. Use `LocAn.sum _ fun I _ => (locAn_valAt hbv hp2 hz (hg.2.1 _ I).1).mul (LocAn.sum _ fun I' _ => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hI : IsStepRows N j p.2 I'`. Simplify using `only [if_pos hI]`. Use `(LocAn.minor (fun a c => ?_) I I').mul (LocAn.sum _ fun m' _ => (locAn_valAt hb hp1 hz (hg'.2.1 _ I').2).mul (.of_analyticAt (analyticAt_coord z _)))` and prove the remaining obligations. Conclude with `locAn_valAt hb hp1 hz (Cv.agree _ (hp1 z hz) F' F hF' hF hg' hg p.1 a c).1`. Simplify using `only [if_neg hI]`.
+
+Conclude with `LocAn.const 0`.
+-/
 theorem locAn_img {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : FlagCover M' M)
     {z : (Σ k, ι' k) → ℂ} {F' : FrameData ι' Ψ N M'.Ω M'.blk} {F : FrameData ι Ψ N M.Ω M.blk}
     (hz : z ∈ mcPts (mCoordIdeal y'))
@@ -207,6 +278,13 @@ theorem locAn_img {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : Flag
 
 end Img
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv z F' F hz hF' hF hg' hg`. Establish `hp1` using `(GlobalTheory.T.flag_model_base_projection_points K' ι' Φ' y' Ψ N j M').1`. Establish `hp2 : ∀ w ∈ mcPts (mCoordIdeal y'), basePart M'.blk w ∘ Cv.v ∈ mcPts (mCoordIdeal M.x)` using `fun w hw => (GlobalTheory.T.flag_cover_base_point_in_points K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv _ (hp1 w hw)).1`. Establish `hb : ∀ q, AnalyticAt ℂ (fun w => basePart M'.blk w q) z` using `fun q => analyticAt_coord z _`. Establish `hbv : ∀ q, AnalyticAt ℂ (fun w => (basePart M'.blk w ∘ Cv.v) q) z` using `fun q => hb _`.
+
+Use `choose f hf hev using locAn_img Cv hz hp1 hp2 hF' hF hg' hg`. Establish `e1 : ∀ᶠ w in 𝓝 z, AnalyticAt ℂ (fun w q => f q w) w` using `(analyticAt_pi_iff.2 hf).eventually_analyticAt`. Establish `e2 : ∀ᶠ w in 𝓝 z, w ∈ mcPts (mCoordIdeal y') → ∀ q, img Cv F' F w q = f q w` using `eventually_nhdsWithin_iff.1 (eventually_all.2 hev)`. Take `⟨V, hV, hVo, hzV⟩` from `eventually_nhds_iff.1 (e1.and (e2.and ((goodAt_eventually M' F' hb hg').and (goodAt_eventually M F hbv hg))))`. Use `⟨V, fun w q => f q w, hVo, hzV, fun w hw => (hV w hw).1, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Take `⟨-, a, c, d⟩` from `hV w hw.1`. Conclude with `⟨c, d, funext fun q => (a hw.2 q).symm⟩`.
+-/
 theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (Φ' : Type) [Field Φ'] (y' : (Σ k, ι' k) → Φ') (M' : FlagModel y' Ψ N j) (Cv : FlagCover M' M) (z : (Σ k, ι' k) → ℂ) (F' : FrameData ι' Ψ N M'.Ω M'.blk) (F : FrameData ι Ψ N M.Ω M.blk), z ∈ mcPts (mCoordIdeal y') → M'.IsFrame F' → M.IsFrame F → M'.GoodAt F' (mCoordIdeal (basePart M'.blk z)) → M.GoodAt F (mCoordIdeal (basePart M'.blk z ∘ Cv.v)) → ∃ (V : Set ((Σ k, ι' k) → ℂ)) (f : ((Σ k, ι' k) → ℂ) → (Σ k, ι k) → ℂ), IsOpen V ∧ z ∈ V ∧ AnalyticOnNhd ℂ f V ∧ ∀ z' ∈ V ∩ mcPts (mCoordIdeal y'), M'.GoodAt F' (mCoordIdeal (basePart M'.blk z')) ∧ M.GoodAt F (mCoordIdeal (basePart M'.blk z' ∘ Cv.v)) ∧ f z' = CovMap.LocImg.img Cv F' F z' := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv z F' F hz hF' hF hg' hg
   have hp1 := (GlobalTheory.T.flag_model_base_projection_points K' ι' Φ' y' Ψ N j M').1

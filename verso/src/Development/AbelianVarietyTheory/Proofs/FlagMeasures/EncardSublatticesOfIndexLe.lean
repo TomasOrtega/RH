@@ -7,6 +7,19 @@ open scoped ENNReal Classical
 
 namespace GlobalTheory.Mass
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ h _ _ _ M hM i hi`. Establish `: Module.Finite (𝓞 K) M` using `Module.Finite.iff_fg.mpr hM.fg`. Establish `: Module.IsTorsionFree (𝓞 K) V` using `Module.IsTorsionFree.trans_faithfulSMul (𝓞 K) K V`. Establish `: Module.IsTorsionFree (𝓞 K) M` using `inferInstance`. Establish `: Module.Flat (𝓞 K) M` using `inferInstance`.
+
+Establish `: Module.FinitePresentation (𝓞 K) M` using `Module.finitePresentation_of_finite _ _`. Establish `: Module.Projective (𝓞 K) M` using `Module.Flat.projective_of_finitePresentation`. Establish `hr : Module.finrank (𝓞 K) M ≤ Module.finrank K V`. Establish `h1 : Module.rank (𝓞 K) M ≤ Module.rank K V`. Rewrite using `[IsLocalization.rank_eq K (nonZeroDivisors (𝓞 K)) le_rfl]`.
+
+Conclude with `Submodule.rank_le M`. Conclude with `Cardinal.toNat_le_toNat h1 (Module.rank_lt_aleph0 K V)`. Take `⟨hfin, hle⟩` from `Formalism.HermitianLatticeCounting.Final.LatticeSumBounds.c2a K M (Module.finrank K V) i hi hr`. Establish `hinj : Set.InjOn (fun N : Submodule (𝓞 K) V => N.comap M.subtype) {N : Submodule (𝓞 K) V | N ≤ M ∧ idxN M N = i}`. Introduce `N hN N' hN' e`.
+
+Use `congrArg (Submodule.map M.subtype) e` as an intermediate fact. Simplify `this` using `[Submodule.map_comap_subtype, inf_eq_right.mpr hN.1, inf_eq_right.mpr hN'.1]`. Establish `hmaps : Set.MapsTo (fun N : Submodule (𝓞 K) V => N.comap M.subtype) {N : Submodule (𝓞 K) V | N ≤ M ∧ idxN M N = i} {N : Submodule (𝓞 K) M | N.toAddSubgroup.index = i}`. Introduce `N hN`. Conclude with `hN.2`.
+
+Establish `h2` using `Set.encard_le_encard_of_injOn hmaps hinj`. Rewrite `h2` using `[← hfin.cast_ncard_eq]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `h2` after adjusting the coercions. Use `_ = ENNReal.ofReal ({N : Submodule (𝓞 K) M | N.toAddSubgroup.index = i}.ncard : ℝ) := by`.
+
+Simplify using the standard rewrite rules. Use `_ ≤ _ := ENNReal.ofReal_le_ofReal hle`.
+-/
 theorem sublattice_count : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K), IsCMUnram K → h.IsSymm → h.Nondegenerate → ∀ (M : Submodule (𝓞 K) V), Submodule.IsLattice K M → ∀ i : ℕ, 1 ≤ i → (({N : Submodule (𝓞 K) V | N ≤ M ∧ idxN M N = i}.encard : ℕ∞) : ℝ≥0∞) ≤ ENNReal.ofReal ((i : ℝ) ^ ((Module.finrank K V : ℝ) + Real.logb 2 (Module.finrank ℚ K))) := by
   intro K V _ _ _ _ _ _ _ _ h _ _ _ M hM i hi
   have : Module.Finite (𝓞 K) M := Module.Finite.iff_fg.mpr hM.fg

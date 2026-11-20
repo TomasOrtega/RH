@@ -16,6 +16,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 
 namespace GlobalTheory.CovTop.WtShape
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `h`. Establish `hz : (0 : ℤ) ≤ z`. Establish `: (1 : ℤ) ≤ z` using `by exact_mod_cast h1`. Use linear arithmetic over natural numbers and integers. Take `⟨n, rfl⟩` from `Int.eq_ofNat_of_zero_le hz`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem toNat_floor_cast {x : ℚ} (h : ∃ z : ℤ, x = z) (h1 : 1 ≤ x) : ((⌊x⌋.toNat : ℕ) : ℚ) = x := by
   obtain ⟨z, rfl⟩ := h
   have hz : (0 : ℤ) ≤ z := by
@@ -24,13 +29,24 @@ theorem toNat_floor_cast {x : ℚ} (h : ∃ z : ℤ, x = z) (h1 : 1 ≤ x) : ((�
   obtain ⟨n, rfl⟩ := Int.eq_ofNat_of_zero_le hz
   simp
 
+/- English proof (translation)
+Unfold `DV.eQ`. Rewrite using `[dif_pos ⟨Nat.le_add_left _ _, i.2⟩]`. Both sides reduce to the same expression.
+-/
 theorem eQ_succ (D : D7) (i : Fin D.R.m) (t : D.what₂.Tau) : DV.eQ D ((i : ℕ) + 1) t = (D.hc t).e i := by
   unfold DV.eQ
   rw [dif_pos ⟨Nat.le_add_left _ _, i.2⟩]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lamAt_eq (D : D7) (t : D.what₂.Tau) (n : ℕ) : Formalism.L2.NTheta.lamAt (D.hc t) n = DV.sigPar D t n := rfl
 
+/- English proof (translation)
+Establish `e : DV.aPlusQ D ((i : ℕ) + 1) t n = DV.sigPar D t n + (D.hc t).e i - (((D.R.k + i : ℕ) : ℚ) - (n + 1)) - ((D.R.t : ℚ) + 1) / 2`. Rewrite using `[DV.aPlusQ_eq, eQ_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `GlobalTheory.BlockRows.one_le_aPlusQ D ((i : ℕ) + 1) (Nat.le_add_left _ _) i.2 t ⟨n, hn⟩`.
+
+Establish `h2` using `DV.aPlusQ_int D ((i : ℕ) + 1) t n`. Unfold `aPl`. Rewrite using `[if_pos hn, lamAt_eq, ← e, toNat_floor_cast h2 h1, e]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aPl_cast (D : D7) (i : Fin D.R.m) (t : D.what₂.Tau) (n : ℕ) (hn : n < D.R.k + i) :
     (aPl D i (D.R.k + i) t n : ℚ) =
       DV.sigPar D t n + (D.hc t).e i - (((D.R.k : ℚ) + i) - (n + 1)) - ((D.R.t : ℚ) + 1) / 2 := by
@@ -43,6 +59,15 @@ theorem aPl_cast (D : D7) (i : Fin D.R.m) (t : D.what₂.Tau) (n : ℕ) (hn : n 
   rw [if_pos hn, lamAt_eq, ← e, toNat_floor_cast h2 h1, e]
   push_cast; ring
 
+/- English proof (translation)
+Establish `hk` using `D.R.m_add_three_le_k`. Establish `e0 : D.R.m - ((i : ℕ) + 1) - (D.R.m - ((i : ℕ) + 1) - 1 - c) = c + 1` using `by omega`. Establish `e1 : DV.sigPar D t (D.R.k + i + c) = -(D.hc t).b ⟨(i : ℕ) + 1 + c, hc⟩`. Unfold `DV.sigPar`. Rewrite using `[dif_neg (by omega), dif_pos (by omega)]`.
+
+Use `congr 3`. Use linear arithmetic over natural numbers and integers. Establish `e : DV.aMinusQ D ((i : ℕ) + 1) t c = -((D.hc t).e i + DV.sigPar D t (D.R.k + i + c) + ((c + 1 : ℕ) : ℚ) + ((D.R.t : ℚ) - 1) / 2)`. Unfold `DV.aMinusQ`. Rewrite using `[dif_pos hc, eQ_succ, e1]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `GlobalTheory.BlockRows.one_le_aMinusQ D ((i : ℕ) + 1) (Nat.le_add_left _ _) t c hc`. Establish `h2` using `DV.aMinusQ_int D ((i : ℕ) + 1) t c`. Unfold `aMi`.
+
+Rewrite using `[if_pos (by omega), e0, lamAt_eq, show D.R.k + i + (c + 1) - 1 = D.R.k + i + c by omega, ← e, toNat_floor_cast h2 h1, e]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aMi_cast (D : D7) (i : Fin D.R.m) (t : D.what₂.Tau) (c : ℕ) (hc : (i : ℕ) + 1 + c < D.R.m) :
     (aMi D i (D.R.k + i) (D.R.m - ((i : ℕ) + 1)) t (D.R.m - ((i : ℕ) + 1) - 1 - c) : ℚ) =
       -((D.hc t).e i + DV.sigPar D t (D.R.k + i + c) + (c + 1) + ((D.R.t : ℚ) - 1) / 2) := by
@@ -64,6 +89,11 @@ theorem aMi_cast (D : D7) (i : Fin D.R.m) (t : D.what₂.Tau) (c : ℕ) (hc : (i
     toNat_floor_cast h2 h1, e]
   push_cast; ring
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `R.k_even`. Take `⟨b, hb⟩` from `R.m_even`. Take `⟨c, hc⟩` from `R.t_odd`. Establish `hm` using `R.two_le_m`. Establish `h1 : R.r + R.t = 2 * (R.nV / 2)` using `by unfold Ranks.nV Ranks.r; omega`.
+
+Establish `h2 : (R.r : ℚ) + R.t = 2 * ((R.nV / 2 : ℕ) : ℚ)` using `by exact_mod_cast h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem nV_half (R : Ranks) : ((R.nV / 2 : ℕ) : ℚ) = ((R.r : ℚ) + R.t) / 2 := by
   obtain ⟨a, ha⟩ := R.k_even
   obtain ⟨b, hb⟩ := R.m_even
@@ -81,19 +111,37 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Nat.le_add_left _ _, i.2⟩`.
+-/
 theorem inR : InR D ((i : ℕ) + 1) := ⟨Nat.le_add_left _ _, i.2⟩
 
+/- English proof (translation)
+The claim follows from `(p.fw.laws.pins.2.2.2 _ (inR i)).1`.
+-/
 theorem dat_p : (dat p i).p = D.R.k + i := (p.fw.laws.pins.2.2.2 _ (inR i)).1
 
+/- English proof (translation)
+The claim follows from `(p.fw.laws.pins.2.2.2 _ (inR i)).2.1`.
+-/
 theorem dat_q : (dat p i).q = D.R.m - ((i : ℕ) + 1) := (p.fw.laws.pins.2.2.2 _ (inR i)).2.1
 
+/- English proof (translation)
+Use `i.2` as an intermediate fact. Rewrite using `[dat_p, dat_q]`. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem dat_rank : (dat p i).p + (dat p i).q = D.R.r := by
   have := i.2
   rw [dat_p, dat_q]; unfold Ranks.r; omega
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.exists_tau_of_inPsi p.T.Q p.fw.laws.pins.1 τ.1 τ.2`.
+-/
 theorem exists_tau (τ : Psi p.T.Q.H) : ∃ t, τ.1 = DV.tauEmb D t :=
   ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.exists_tau_of_inPsi p.T.Q p.fw.laws.pins.1 τ.1 τ.2
 
+/- English proof (translation)
+Establish `hp` using `p.fw.laws.pins.1`. Establish `hb : Function.Bijective (fun t : D.what₂.Tau => (⟨DV.tauEmb D t, hp.2.2.2 t⟩ : Psi p.T.Q.H))` using `⟨fun s t e => GlobalTheory.WeightExponents.tauEmb_injective D (congrArg Subtype.val e), fun τ => by`. Take `⟨t, ht⟩` from `exists_tau p τ`. Conclude with `⟨t, Subtype.ext ht.symm⟩⟩`. Rewrite using `[← Nat.card_eq_of_bijective _ hb, Nat.card_eq_fintype_card, D.what₂.card_Tau]`.
+-/
 theorem card_psi : Nat.card (Psi p.T.Q.H) = D.R.f := by
   have hp := p.fw.laws.pins.1
   have hb : Function.Bijective (fun t : D.what₂.Tau => (⟨DV.tauEmb D t, hp.2.2.2 t⟩ : Psi p.T.Q.H)) :=
@@ -102,18 +150,40 @@ theorem card_psi : Nat.card (Psi p.T.Q.H) = D.R.f := by
       exact ⟨t, Subtype.ext ht.symm⟩⟩
   rw [← Nat.card_eq_of_bijective _ hb, Nat.card_eq_fintype_card, D.what₂.card_Tau]
 
+/- English proof (translation)
+Unfold `dimFlag Formalism.DegreeFormula.dimFl`. Rewrite using `[dat_rank, ← Nat.card_eq_fintype_card, card_psi, Nat.choose_two_right]`.
+-/
 theorem dim_eq : dimFlag (dat p i) = D.R.f * D.R.r.choose 2 := by
   unfold dimFlag Formalism.DegreeFormula.dimFl
   rw [dat_rank, ← Nat.card_eq_fintype_card, card_psi, Nat.choose_two_right]
 
+/- English proof (translation)
+Establish `hne : Nonempty D.what₂.Tau` using `Fintype.card_pos_iff.1 (by`. Rewrite using `[D.what₂.card_Tau]; unfold Ranks.f Ranks.n; have := And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity); omega)`. Take `⟨t⟩` from `hne`. Conclude with `(p.fw.kap i t).2.2`.
+-/
 theorem cols_eq : (p.κ i).n = D.R.nV := by
   have hne : Nonempty D.what₂.Tau := Fintype.card_pos_iff.1 (by
     rw [D.what₂.card_Tau]; unfold Ranks.f Ranks.n; have := And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity); omega)
   obtain ⟨t⟩ := hne
   exact (p.fw.kap i t).2.2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unit_eq : unitE p = (D.R.f : ℝ) * D.R.m * L.sc.b * L.sc.L * Real.log (Real.log L.sc.x) := rfl
 
+/- English proof (translation)
+Establish `hp` using `p.fw.laws.pins.1`. Establish `hs : (Wc D i).sig (TH.tauE D t) = D.R.sigW ((i : ℕ) + 1)` using `D.sp.W_sigval _ (inR i).1 (inR i).2 _`. Take `⟨k1, k2, -⟩` from `p.fw.kap i t`. Rewrite `k1`, `k2` using `[hs]`. Establish `s1 : (D.R.sigW ((i : ℕ) + 1)).1 = D.R.k + i` using `rfl`.
+
+Establish `s2 : (D.R.sigW ((i : ℕ) + 1)).2 = D.R.m - ((i : ℕ) + 1)` using `rfl`. Establish `hn` using `n.2`. Establish `e1` using `dat_p p i`. Establish `e2` using `dat_q p i`. Establish `hh` using `nV_half D.R`.
+
+Unfold `laOf weightOf ent`. Rewrite using `[cols_eq, ht]`. Use `beta_reduce`. Distinguish the cases in `h : (n : ℕ) < D.R.k + i`. Rewrite using `[if_pos (by omega), if_pos h, GlobalTheory.WeightExponents.wtA_tauEmb hp, ext0, dif_pos (show (n : ℕ) < (D.R.sigW ((i : ℕ) + 1)).1 from h), k1]`.
+
+Use `aPl_cast D i t n h` as an intermediate fact. Simplify using `only [Int.cast_add, Int.cast_natCast, s1]`. Rewrite using `[this, hh]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨c, hc⟩ : ∃ c, (n : ℕ) = D.R.k + i + c` from `⟨n - (D.R.k + i), by omega⟩`.
+
+Establish `e3 : (dat p i).q - 1 - ((n : ℕ) - (dat p i).p) = D.R.m - ((i : ℕ) + 1) - 1 - c` using `by omega`. Rewrite using `[if_neg (by omega), if_neg h, e3, conjEmb, GlobalTheory.WeightExponents.conjEmb_eq, GlobalTheory.WeightExponents.wtA_conj hp, ext0, dif_pos (show D.R.m - ((i : ℕ) + 1) - 1 - c < (D.R.sigW ((i : ℕ) + 1)).2 by omega), k2]`. Use `aMi_cast D i t c (by omega)` as an intermediate fact. Simplify using `only [Int.cast_sub, Int.cast_neg, Int.cast_natCast, s1, s2]`. Rewrite using `[this, hh, hc]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem laOf_read (τ : Psi p.T.Q.H) (t : D.what₂.Tau) (ht : τ.1 = DV.tauEmb D t) (n : Fin ((dat p i).p + (dat p i).q)) :
     (laOf (dat p i) (wtA (p.κ i)) (p.κ i).n τ n : ℚ) = ent D i t n := by
   have hp := p.fw.laws.pins.1

@@ -12,10 +12,16 @@ open scoped ComplexConjugate
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.cc]`. Conclude with `IsCMField.complexEmbedding_complexConj E τ x`.
+-/
 lemma emb_cc' (τ : E →+* ℂ) (x : E) : τ (cc x) = conj (τ x) := by
   simp only [ReciprocityTheory.ChartRestriction.G.FD.cc]
   exact IsCMField.complexEmbedding_complexConj E τ x
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.gram, ReciprocityTheory.ChartRestriction.G.FD.hermC, ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+-/
 lemma gram_eq {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x : Matrix (Fin r) (Fin r) ℂ) :
     gram τ G x = xᵀ * G.map τ * x.map (starRingEnd ℂ) := by
   ext a b
@@ -23,6 +29,11 @@ lemma gram_eq {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x : M
     Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hij` using `h (Pi.single i 1) (Pi.single j 1)`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.herm, ReciprocityTheory.ChartRestriction.G.FD.cc, Pi.single_apply, map_one, map_zero, mul_one, one_mul, mul_zero, zero_mul, ite_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, Matrix.mulVec, dotProduct, apply_ite] at hij`. Rewrite using `[← hij]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul, ReciprocityTheory.ChartRestriction.G.FD.cc]`.
+
+Rewrite using `[Finset.sum_comm]`.
+-/
 lemma gm_eq {r : ℕ} (G G' : Matrix (Fin r) (Fin r) E) (γ : Matrix (Fin r) (Fin r) E)
     (h : ∀ v w, herm G (γ.mulVec v) (γ.mulVec w) = herm G' v w) :
     G' = γᵀ * G * γ.map cc := by
@@ -37,11 +48,19 @@ lemma gm_eq {r : ℕ} (G G' : Matrix (Fin r) (Fin r) E) (γ : Matrix (Fin r) (Fi
   rw [Finset.sum_comm]
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero τ).2 ((Matrix.isUnit_iff_isUnit_det _).1 γ.isUnit).ne_zero`.
+-/
 lemma det_map_ne {r : ℕ} (τ : E →+* ℂ) (γ : GL (Fin r) E) :
     ((γ : Matrix (Fin r) (Fin r) E).map τ).det ≠ 0 := by
   rw [← RingHom.mapMatrix_apply, ← RingHom.map_det]
   exact (map_ne_zero τ).2 ((Matrix.isUnit_iff_isUnit_det _).1 γ.isUnit).ne_zero
 
+/- English proof (translation)
+Establish `h1 : (γ.map τ * M).map (starRingEnd ℂ) = (γ.map cc).map τ * M.map (starRingEnd ℂ)`. Rewrite using `[Matrix.map_mul]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, emb_cc']`.
+
+Establish `h2 : (γᵀ * G * γ.map cc).map τ = (γ.map τ)ᵀ * G.map τ * (γ.map cc).map τ`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]`. Rewrite using `[gram_eq, gram_eq, gm_eq G G' γ h, h2, h1, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 lemma gram_mul {r : ℕ} (G G' : Matrix (Fin r) (Fin r) E) (γ : Matrix (Fin r) (Fin r) E)
     (h : ∀ v w, herm G (γ.mulVec v) (γ.mulVec w) = herm G' v w) (τ : E →+* ℂ)
     (M : Matrix (Fin r) (Fin r) ℂ) : gram τ G (γ.map τ * M) = gram τ G' M := by
@@ -55,6 +74,13 @@ lemma gram_mul {r : ℕ} (G G' : Matrix (Fin r) (Fin r) E) (γ : Matrix (Fin r) 
   rw [gram_eq, gram_eq, gm_eq G G' γ h, h2, h1, Matrix.transpose_mul]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Introduce `E _ _ _ r X X' γ hp hΨ hh x x' hx hmat`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.Data.dom, ReciprocityTheory.ChartRestriction.G.FD.GG, Set.mem_ofPred_eq] at hx ⊢`. Introduce `τ`. Establish `h₂ : τ.1 ∈ X'.Ψ` using `(hΨ τ.1).1 τ.2`. Take `⟨hdet, hpos⟩` from `hx ⟨τ.1, h₂⟩`.
+
+Establish `hm` using `hmat τ.1 h₂ τ.2`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hm, Matrix.det_mul]`. Conclude with `mul_ne_zero (det_map_ne τ.1 γ) hdet`. Establish `hd : dmin X.Gm x' τ i = dmin X'.Gm x ⟨τ.1, h₂⟩ i`.
+
+Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.dmin]`. Rewrite using `[hm, gram_mul X.Gm X'.Gm (γ : Matrix (Fin r) (Fin r) E) hh]`. Rewrite using `[hd, hp]`. Conclude with `hpos i`.
+-/
 theorem mem_dom_of_isometry :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X X' : ReciprocityTheory.ChartRestriction.G.FD.Data E r) (γ : GL (Fin r) E), X.p0 = X'.p0 → (∀ τ, τ ∈ X.Ψ ↔ τ ∈ X'.Ψ) → (∀ v w, herm X.Gm ((γ : Matrix (Fin r) (Fin r) E).mulVec v) ((γ : Matrix (Fin r) (Fin r) E).mulVec w) = herm X'.Gm v w) → ∀ (x : Frame X'.Ψ r) (x' : Frame X.Ψ r), x ∈ X'.dom → (∀ (τ : E →+* ℂ) (h₂ : τ ∈ X'.Ψ) (h₁ : τ ∈ X.Ψ), mat x' ⟨τ, h₁⟩ = (γ : Matrix (Fin r) (Fin r) E).map τ * mat x ⟨τ, h₂⟩) → x' ∈ X.dom := by
   intro E _ _ _ r X X' γ hp hΨ hh x x' hx hmat

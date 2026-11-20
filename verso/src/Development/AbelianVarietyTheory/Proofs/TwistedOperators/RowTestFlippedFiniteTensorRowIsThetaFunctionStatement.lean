@@ -9,5 +9,8 @@ open IsDedekindDomain NumberField MeasureTheory Matrix GlobalTheory.ChiGrid Glob
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.RowUnf GlobalTheory.RowChain GlobalTheory.SeeSaw GlobalTheory.RowVal GlobalTheory.RowReal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlipRowTheta.row_isThetaFunO | exact GlobalTheory.FlipRowTheta.row_isThetaFunO | (intros; apply GlobalTheory.FlipRowTheta.row_isThetaFunO <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.rowTest_flippedFiniteTensor_row_isThetaFunction : Big fun ch => ∀ t Φ τ, IsFlipFin t ch.S.B ch.rm Φ τ → ∀ d ∈ τ.support, ∀ i, IsThetaFunO ch.W.ψ _ _ (d.1 i) := by
   first | exact @GlobalTheory.FlipRowTheta.row_isThetaFunO | exact GlobalTheory.FlipRowTheta.row_isThetaFunO | (intros; apply GlobalTheory.FlipRowTheta.row_isThetaFunO <;> assumption)

@@ -10,6 +10,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace PositivityTheory.UnitarySelfGeneration
 
+/- English proof (translation)
+Establish `key : ∀ y, genMap (ξ' ≫ e.hom) ⟨e.hom q.1, h⟩ y = genMap ξ' q (e.hom.stalkMap q.1 y)`. Introduce `y`. Simplify using `only [genMap, CommRingCat.comp_apply]`. Rewrite using `[Scheme.stalkClosedPointTo_comp]`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply]`.
+
+Conclude with `congrArg (Scheme.stalkClosedPointTo ξ').hom (Scheme.Hom.stalkSpecializes_stalkMap_apply e.hom _ _ q.2 y)`. Establish `hs : Function.Surjective (e.hom.stalkMap q.1)` using `(ConcreteCategory.bijective_of_isIso (e.hom.stalkMap q.1)).2`. Use extensionality with `t`. Simplify using `only [regAt, RingHom.mem_range]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, rfl⟩`. Take `⟨z, rfl⟩` from `hs y`. Conclude with `⟨z, key z⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨_, (key y).symm⟩`.
+-/
 theorem flagiso_reg {X X' : Scheme.{0}} {Ω : Type} [Field Ω] (ξ' : Sp Ω ⟶ X') (e : X' ≅ X) (q : Cpt ξ')
     (h : genPt (ξ' ≫ e.hom) ⤳ e.hom q.1) : regAt ξ' q = regAt (ξ' ≫ e.hom) ⟨e.hom q.1, h⟩ := by
   have key : ∀ y, genMap (ξ' ≫ e.hom) ⟨e.hom q.1, h⟩ y = genMap ξ' q (e.hom.stalkMap q.1 y) := by
@@ -30,6 +37,11 @@ theorem flagiso_reg {X X' : Scheme.{0}} {Ω : Type} [Field Ω] (ξ' : Sp Ω ⟶ 
   · rintro ⟨y, rfl⟩
     exact ⟨_, (key y).symm⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `hsp` using `Submodule.span_image (R := R') (φ.toLinearMap.restrictScalars R') (s := s)`. Express the relevant statement in the definitionally equal form `Submodule.span R' (φ '' s) = _ at hsp`. Rewrite using `[hsp, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨w, hw, hwv⟩`. Establish `hwv' : w = v` using `φ.injective hwv`. Conclude with `hwv' ▸ hw`. Introduce `hv`. Conclude with `⟨v, hv, rfl⟩`.
+-/
 theorem flagiso_span {Ω V V' : Type} [Field Ω] [AddCommGroup V] [Module Ω V] [AddCommGroup V'] [Module Ω V']
     (φ : V ≃ₗ[Ω] V') (R R' : Subring Ω) (h : R' = R) (s : Set V) (v : V) :
     φ v ∈ Submodule.span R' (φ '' s) ↔ v ∈ Submodule.span R s := by
@@ -44,12 +56,44 @@ theorem flagiso_span {Ω V V' : Type} [Field Ω] [AddCommGroup V] [Module Ω V] 
   · intro hv
     exact ⟨v, hv, rfl⟩
 
+/- English proof (translation)
+Simplify using `only [flagStep, Submodule.map_span, Set.image_image]`. Both sides reduce to the same expression.
+-/
 theorem flagiso_step {Ω V V' : Type} [Field Ω] [AddCommGroup V] [Module Ω V] [AddCommGroup V'] [Module Ω V']
     (φ : V ≃ₗ[Ω] V') {r : ℕ} (b : Fin r → V) (i : ℕ) :
     flagStep Ω (fun k => φ (b k)) i = (flagStep Ω b i).map φ.toLinearMap := by
   simp only [flagStep, Submodule.map_span, Set.image_image]
   rfl
 
+/- English proof (translation)
+Introduce `X X' Ω _ ξ ξ' e V V' _ _ _ _ φ L L' r b hξ hL`. Substitute `hξ` using the available equality. Establish `hi : ∀ x : X', e.inv (e.hom x) = x` using `fun x => by simp`. Establish `hj : ∀ y : X, e.hom (e.inv y) = y` using `fun y => by simp`. Establish `hfwd : ∀ x : X', genPt ξ' ⤳ x → genPt (ξ' ≫ e.hom) ⤳ e.hom x` using `fun x hx => e.hom.base.hom.map_specializes hx`.
+
+Establish `hbwd : ∀ y : X, genPt (ξ' ≫ e.hom) ⤳ y → genPt ξ' ⤳ e.inv y`. Introduce `y hy`. Establish `h1` using `e.inv.base.hom.map_specializes hy`. Establish `h2 : e.inv (genPt (ξ' ≫ e.hom)) = genPt ξ'` using `hi _`. Rewrite using `[← h2]`.
+
+Conclude with `h1`. Establish `hframe : ∀ (q : Cpt ξ') (p : Cpt (ξ' ≫ e.hom)), e.hom q.1 = p.1 → ∀ c : Fin r → V, (L.IsFrameAt c p ↔ L'.IsFrameAt (fun k => φ (c k)) q)`. Introduce and unpack `q ⟨p, hp⟩ hqp c`. Simplify using `only at hqp`. Substitute `hqp` using the available equality.
+
+Establish `hR` using `flagiso_reg ξ' e q hp`. Establish `hli : LinearIndependent Ω (fun k => φ (c k)) ↔ LinearIndependent Ω c` using `LinearMap.linearIndependent_iff φ.toLinearMap φ.ker`. Establish `hset : φ '' Set.range c = Set.range (fun k => φ (c k))` using `(Set.range_comp φ c).symm`. Simplify using `only [Lat.IsFrameAt, SetLike.ext_iff]`. Rewrite using `[hli]`.
+
+Apply `and_congr_right` to reduce the goal to its premises. Introduce `_`. Prove the components needed by the constructor for the conclusion. Introduce `H w`. Take `⟨v, rfl⟩` from `φ.surjective w`.
+
+Rewrite using `[← hset, flagiso_span φ _ _ hR, ← H v, hL q hp v]`. Introduce `H v`. Rewrite using `[hL q hp v, H (φ v), ← hset, flagiso_span φ _ _ hR]`. Establish `hstep : ∀ (c : Fin r → V) (i : ℕ), (flagStep Ω c i = flagStep Ω b i ↔ flagStep Ω (fun k => φ (c k)) i = flagStep Ω (fun k => φ (b k)) i)`. Introduce `c i`.
+
+Rewrite using `[flagiso_step, flagiso_step]`. Conclude with `(Submodule.map_injective_of_injective φ.injective).eq_iff.symm`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `H q' -`. Take `⟨U, hU, c, hc, hfr⟩` from `H ⟨e.hom q'.1, hfwd _ q'.2⟩ trivial`.
+
+Use `⟨e.hom ⁻¹ᵁ U, hU, fun k => φ (c k), fun i => (hstep c i).1 (hc i), ?_⟩` and prove the remaining obligations. Introduce `q₁ _ hq₁`. Conclude with `(hframe q₁ ⟨e.hom q₁.1, hfwd _ q₁.2⟩ rfl c).1 (hfr _ trivial hq₁)`. Introduce and unpack `H p -`. Take `⟨U', hU', c', hc', hfr'⟩` from `H ⟨e.inv p.1, hbwd _ p.2⟩ trivial`.
+
+Use `⟨e.inv ⁻¹ᵁ U', hU', fun k => φ.symm (c' k), fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hstep]`. Simplify using `using hc' i`. Introduce `q _ hq`. Apply `(hframe ⟨e.inv q.1, hbwd _ q.2⟩ q (hj q.1) (fun k => φ.symm (c' k))).2` to reduce the goal to its premises.
+
+Simplify using `using hfr' ⟨e.inv q.1, hbwd _ q.2⟩ trivial hq`. Introduce `i q h`. Establish `hR` using `flagiso_reg ξ' e q h`. Establish `hS : {t : Ω | ∃ w ∈ L' q, w - t • φ (b i) ∈ flagStep Ω (fun k => φ (b k)) i} = {t : Ω | ∃ v ∈ L ⟨e.hom q.1, h⟩, v - t • b i ∈ flagStep Ω b i}`. Use extensionality with `t`.
+
+Simplify using `only [Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, hwt⟩`. Take `⟨v, rfl⟩` from `φ.surjective w`. Use `⟨v, (hL q h v).2 hw, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hwt` using `[flagiso_step]`. Take `⟨y, hy, hyv⟩` from `Submodule.mem_map.1 hwt`. Establish `hyv' : y = v - t • b i` using `φ.injective (by simpa using hyv)`. Conclude with `hyv' ▸ hy`. Introduce and unpack `⟨v, hv, hvt⟩`.
+
+Use `⟨φ v, (hL q h v).1 hv, ?_⟩` and prove the remaining obligations. Rewrite using `[flagiso_step]`. Establish `hm` using `Submodule.mem_map_of_mem (f := φ.toLinearMap) hvt`. Simplify using `using hm`. Establish `key : ∀ (R₁ R₂ : Subring Ω), R₁ = R₂ → ∀ S : Set Ω, (Submodule.span R₁ S : Set Ω) = Submodule.span R₂ S`.
+
+Introduce and unpack `_ _ rfl _`. Both sides reduce to the same expression. Simplify using `only [Lat.gr]`. Rewrite using `[hS]`. Conclude with `key _ _ hR _`.
+-/
 theorem flag_bundle_iff_under_isomorphism : ∀ (X X' : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (ξ' : Sp Ω ⟶ X') (e : X' ≅ X) (V V' : Type) [AddCommGroup V] [Module Ω V] [AddCommGroup V'] [Module Ω V'] (φ : V ≃ₗ[Ω] V') (L : Lat ξ V) (L' : Lat ξ' V') (r : ℕ) (b : Fin r → V), ξ' ≫ e.hom = ξ → (∀ (q : Cpt ξ') (h : genPt ξ ⤳ e.hom q.1) (v : V), v ∈ L ⟨e.hom q.1, h⟩ ↔ φ v ∈ L' q) → (L.IsFlagVBOn Set.univ b ↔ L'.IsFlagVBOn Set.univ (fun i => φ (b i))) ∧ ∀ (i : Fin r) (q : Cpt ξ') (h : genPt ξ ⤳ e.hom q.1), (L'.gr (fun i => φ (b i)) i q : Set Ω) = L.gr b i ⟨e.hom q.1, h⟩ := by
   intro X X' Ω _ ξ ξ' e V V' _ _ _ _ φ L L' r b hξ hL
   subst hξ

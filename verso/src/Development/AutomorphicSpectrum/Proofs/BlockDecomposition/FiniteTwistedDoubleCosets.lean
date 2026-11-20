@@ -11,6 +11,11 @@ open scoped Classical
 
 namespace GlobalTheory.CompanionTheory.LocHypSplit
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `compact_covered_by_mul_left_translates hD (show (interior (K' : Set G)).Nonempty from ⟨1, hK'.interior_eq.symm ▸ K'.one_mem⟩)`. Use `(s.finite_toSet.image fun g => DoubleCoset.mk T K' g⁻¹).subset ?_` and prove the remaining obligations. Introduce `q hq`. Take `⟨t, ht, d, hd, hx⟩` from `hP _ hq`. Use `hs hd` as an intermediate fact.
+
+Simplify using `only [Set.mem_iUnion, Set.mem_preimage, SetLike.mem_coe] at this`. Take `⟨g, hg, hgd⟩` from `this`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Rewrite using `[← DoubleCoset.out_eq' T K' q, DoubleCoset.eq]`. Conclude with `⟨t, ht, g * d, hgd, by simp [hx, mul_assoc]⟩`.
+-/
 theorem finite_of_subset_mul {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (T K' : Subgroup G)
     (hK' : IsOpen (K' : Set G)) (D : Set G) (hD : IsCompact D)
     (P : G → Prop) (hP : ∀ x, P x → ∃ t ∈ T, ∃ d ∈ D, x = t * d) :
@@ -29,6 +34,29 @@ theorem finite_of_subset_mul {G : Type} [Group G] [TopologicalSpace G] [IsTopolo
 
 open scoped Pointwise in
 
+/- English proof (translation)
+Introduce `H _ _ _ σ K d d' f C₁ C₂ hσc hσ hKo hKc _ hC₁ hC₂ hf hfin`. Establish `hC : IsCompact (C₁ * σ '' C₂)` using `hC₁.mul (hC₂.image hσc)`. Establish `hSf` using `hfin _ hC`. Use `set S := {q : DoubleCoset.Quotient (twCent (MonoidHom.id H) (d * σ d') : Set H) (K : Set H) | ∃ k ∈ K, (Quotient.out q * k)⁻¹ * (d * σ d') * MonoidHom.id H (Quotient.out q * k) ∈ C₁ * σ '' C₂} with hS`. Establish `hR : IsCompact ((fun q => Quotient.out q) '' S : Set H)` using `(hSf.image _).isCompact`.
+
+Use `set A : Set H := ((fun q => Quotient.out q) '' S : Set H) * (K : Set H) with hAdef`. Establish `hA : IsCompact A` using `hR.mul hKc`. Use `set B : Set H := σ '' ((fun a => d⁻¹ * a) '' A * C₁) with hBdef`. Establish `hB : IsCompact B` using `((hA.image (continuous_const.mul continuous_id)).mul hC₁).image hσc`. Establish `hKKo : IsOpen ((K.prod K : Subgroup (H × H)) : Set (H × H))`.
+
+Rewrite using `[Subgroup.coe_prod]`. Conclude with `hKo.prod hKo`. Establish `hKKc : IsCompact ((K.prod K : Subgroup (H × H)) : Set (H × H))`. Rewrite using `[Subgroup.coe_prod]`. Conclude with `hKc.prod hKc`.
+
+Establish `hD : IsCompact ((fun p : (H × H) × (H × H) => p.1 * p.2⁻¹) '' ((A ×ˢ B) ×ˢ ((K.prod K : Subgroup (H × H)) : Set (H × H))))` using `((hA.prod hB).prod hKKc).image (continuous_fst.mul continuous_snd.inv)`. Establish `key : ∀ y₁ y₂ : H, y₁⁻¹ * d * σ y₂ ∈ C₁ → y₂⁻¹ * d' * σ y₁ ∈ C₂ → ∃ t ∈ twCent (swTw σ) (d, d'), ∃ a ∈ A, ∃ b ∈ B, ((y₁, y₂) : H × H) = t * (a, b)`. Introduce `y₁ y₂ h₁ h₂`. Establish `hN : y₁⁻¹ * (d * σ d') * y₁ ∈ C₁ * σ '' C₂`. Use `Set.mem_mul.2 ⟨_, h₁, _, ⟨_, h₂, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [map_mul, map_inv, hσ]`. Use `group`. Take `⟨h, k, hh, hk, e⟩` from `DoubleCoset.mk_out_eq_mul (twCent (MonoidHom.id H) (d * σ d')) K y₁`. Establish `ez : Quotient.out (DoubleCoset.mk (twCent (MonoidHom.id H) (d * σ d')) K y₁) * k⁻¹ = h * y₁`. Rewrite using `[e, mul_inv_cancel_right]`.
+
+Establish `hh' : h * (d * σ d') = d * σ d' * h` using `hh`. Establish `hq : DoubleCoset.mk (twCent (MonoidHom.id H) (d * σ d')) K y₁ ∈ S`. Use `⟨k⁻¹, inv_mem hk, ?_⟩` and prove the remaining obligations. Rewrite using `[ez, MonoidHom.id_apply]`. Establish `: (h * y₁)⁻¹ * (d * σ d') * (h * y₁) = y₁⁻¹ * (d * σ d') * y₁`.
+
+Rewrite using `[_root_.mul_inv_rev, mul_assoc, ← mul_assoc (d * σ d') h y₁, ← hh']`. Use `group`. Rewrite using `[this]`. Conclude with `hN`. Establish `hw : h * y₁ ∈ A`.
+
+Rewrite using `[← ez]`. Conclude with `Set.mem_mul.2 ⟨_, ⟨_, hq, rfl⟩, _, inv_mem hk, rfl⟩`. Establish `ht` using `(mem_twCent_swTw σ hσ d d' (h⁻¹, d' * σ h⁻¹ * d'⁻¹)).2 ⟨inv_mem hh, rfl⟩`. Use `set t₂ := d' * σ h⁻¹ * d'⁻¹ with ht₂`. Establish `e₁ : h⁻¹ * d = d * σ t₂` using `congrArg Prod.fst ht`.
+
+Establish `e₂ : d⁻¹ * h * d = (σ t₂)⁻¹`. Establish `: σ t₂ = d⁻¹ * (h⁻¹ * d)` using `by rw [e₁]; group`. Rewrite using `[this]`. Use `group`. Use `⟨(h⁻¹, t₂), ht, h * y₁, hw, t₂⁻¹ * y₂, ⟨(d⁻¹ * (h * y₁)) * (y₁⁻¹ * d * σ y₂), Set.mem_mul.2 ⟨_, ⟨_, hw, rfl⟩, _, h₁, rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `: d⁻¹ * (h * y₁) * (y₁⁻¹ * d * σ y₂) = (d⁻¹ * h * d) * σ y₂` using `by group`. Rewrite using `[this, e₂, map_mul, map_inv, hσ, hσ]`. Apply the tactic sequence `ext <;> simp`. Use `finite_of_subset_mul (twCent (swTw σ) (d, d')) (K.prod K) hKKo _ hD (fun x => ∃ k ∈ K.prod K, f ((x * k)⁻¹ * (d, d') * swTw σ (x * k)) ≠ 0) ?_` and prove the remaining obligations. Introduce and unpack `x ⟨k, hk, hx⟩`.
+
+Take `⟨t, ht, a, ha, b, hb, e⟩` from `key (x * k).1 (x * k).2 (hf _ hx).1 (hf _ hx).2`. Establish `e' : x * k = t * (a, b)` using `e`. Use `⟨t, ht, (a, b) * k⁻¹, ⟨(((a, b)), k), ⟨⟨ha, hb⟩, hk⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← e', mul_inv_cancel_right]`.
+-/
 theorem finite_doubleCosets_split : ∀ {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] (σ : H →* H) (K : Subgroup H) (d d' : H) (f : H × H → ℂ)
   (C₁ C₂ : Set H), Continuous σ → (∀ g, σ (σ g) = g) → IsOpen (K : Set H) → IsCompact (K : Set H) → (∀ k ∈ K, σ k ∈ K) →
   IsCompact C₁ → IsCompact C₂ → (∀ y, f y ≠ 0 → y.1 ∈ C₁ ∧ y.2 ∈ C₂) →

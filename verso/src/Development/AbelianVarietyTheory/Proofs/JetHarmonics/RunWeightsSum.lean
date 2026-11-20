@@ -13,6 +13,13 @@ open scoped TensorProduct
 
 namespace GlobalTheory.RunDepth
 
+/- English proof (translation)
+Introduce `D L Pm Tp hK j hj`. Establish `hP : (fR Tp hK j).n = Tp.nP` using `rfl`. Establish `hW : (lR Tp hK j).n = Tp.nWn` using `rfl`. Use `⟨GlobalTheory.RunWeightTest.isF'_fWt _ _ _ _ _ _, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hP, hW, ← Tp.split]`.
+
+Conclude with `kaWt_n D hK _ j`. Rewrite using `[GlobalTheory.DepthBoundTest.dimY_eq_flag hj, ← Tp.Dp_eq]`. Use `Tp.TO_40` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hP, Tp.nP_eq]`.
+
+Establish `hf : 1 ≤ D.R.f` using `by unfold Ranks.f Ranks.n; have := And.intro (Nat.one_le_two_pow (n := D.R.e)) (show 0 < D.R.ord by positivity); omega`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem run_weights_sum : ∀ (D : D7) (L : SizeData₂ D) (Pm : ParameterChoice' D L) (Tp : ParamsT D L Pm) (hK : DV.KapDef D) (j : ℕ), InR D j → WeightAlgebra.IsF' (kaR Tp hK j) (lR Tp hK j) (fR Tp hK j) Tp.TO (fR Tp hK j).n ∧ (kaR Tp hK j).n = (fR Tp hK j).n + Tp.TO * (lR Tp hK j).n ∧ WeightFamilies.dimY D j ≤ Tp.TO ∧ D.R.r ≤ (fR Tp hK j).n := by
   intro D L Pm Tp hK j hj
   have hP : (fR Tp hK j).n = Tp.nP := rfl

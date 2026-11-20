@@ -26,6 +26,11 @@ def ColsPos {B : Base} (C : Cols B) : Prop :=
       starRingEnd ℂ ((C.fm u).ipC 0 y x) = (C.fm u).ipC 0 x y) ∧
     ∀ x ∈ (C.mem u).A.Mu0, x ≠ 0 → 0 < ((C.fm u).ipC 0 x x).re
 
+/- English proof (translation)
+Use `letI := B.host.cmStar`. Introduce `h`. Establish `hs : Function.Surjective (algebraMap B.host.F B.host.E)` using `fun a => (B.sp.cm.fixed a).1 (AlgHom.congr_fun h a)`. Establish `h2` using `B.sp.cm.deg2`. Establish `h1 : Module.finrank B.host.F B.host.E = 1`.
+
+Rewrite using `[← (LinearEquiv.ofBijective (Algebra.linearMap B.host.F B.host.E) ⟨(algebraMap B.host.F B.host.E).injective, hs⟩).finrank_eq, Module.finrank_self]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem conjF_ne (B : Pre) : B.conjF ≠ AlgHom.id B.host.F B.host.E := by
   letI := B.host.cmStar
   intro h
@@ -37,6 +42,15 @@ theorem conjF_ne (B : Pre) : B.conjF ≠ AlgHom.id B.host.F B.host.E := by
       ⟨(algebraMap B.host.F B.host.E).injective, hs⟩).finrank_eq, Module.finrank_self]
   omega
 
+/- English proof (translation)
+Establish `hpz : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.1 hp`. Establish `hmax : (Ideal.span {(p : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible hpz.irreducible`. Establish `hne : Ideal.span {(p : ℤ)} ≠ ⊥` using `by simpa using hp.ne_zero`. Rewrite using `[← Set.ncard_image_of_injective (placesOver E p) (f := fun v => v.asIdeal) (fun _ _ h => HeightOneSpectrum.ext h)]`. Use `congr 1`.
+
+Use extensionality with `P`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hP, hl⟩`. Use `⟨⟨P, hP, Ideal.ne_bot_of_liesOver_of_ne_bot hne P⟩, ?_, rfl⟩` and prove the remaining obligations. Use `(Ideal.mem_of_liesOver P (Ideal.span {(p : ℤ)}) (p : ℤ)).1 (Ideal.mem_span_singleton_self _)` as an intermediate fact.
+
+Simplify `this` using `[placesOver]`. Introduce and unpack `⟨v, hv, rfl⟩`. Use `⟨v.isPrime, ⟨hmax.eq_of_le ?_ ?_⟩⟩` and prove the remaining obligations. Conclude with `Ideal.comap_ne_top _ v.isPrime.ne_top`. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.mem_comap]`.
+
+Simplify `hv` using `[placesOver]`.
+-/
 theorem ncard_primesOver (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : p.Prime) :
     ((Ideal.span {(p : ℤ)}).primesOver (𝓞 E)).ncard = (placesOver E p).ncard := by
   have hpz : Prime (p : ℤ) := Nat.prime_iff_prime_int.1 hp
@@ -57,6 +71,11 @@ theorem ncard_primesOver (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : p.
     · rw [Ideal.span_singleton_le_iff_mem, Ideal.mem_comap]
       simpa [placesOver] using hv
 
+/- English proof (translation)
+Use `letI := B.host.cmStar`. Take `⟨L, hL⟩` from `GlobalTheory.LocalData.exists_locAt B.host.F B.host.E B.conjF B.sp.cm.deg2 p`. Distinguish the cases in `h : resChar p ∈ ({B.host.g 0, B.host.g 1} : Finset ℕ)`. Establish `hk : ∃ k, resChar p = B.host.g k`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at h`.
+
+Apply the tactic sequence `rcases h with h | h <;> exact ⟨_, h⟩`. Take `⟨k, hk⟩` from `hk`. Take `⟨S⟩` from `GlobalTheory.LocSplit.nonempty_splitAt B.host.F B.host.E B.conjF B.sp.cm.deg2 (conjF_ne B) p L (by rw [hk, ncard_primesOver _ _ (B.host.g_prime k), B.g_split])`. Conclude with `⟨{ L with split := some S }, by simpa using h⟩`. Conclude with `⟨L, by simp [hL, h]⟩`.
+-/
 theorem exists_atP (B : Pre) (p : HeightOneSpectrum (𝓞 B.host.F)) :
     ∃ L : LocAt B.host.F B.host.E B.conjF p,
       (L.split.isSome ↔ resChar p ∈ ({B.host.g 0, B.host.g 1} : Finset ℕ)) := by
@@ -101,6 +120,11 @@ def colEq {B : Base} (C : Cols B) (u : B.Word) : ColSp C u ≃ₗ[ℂ] (C.mem u)
     rw [show (C.fm u).ipC 0 (colEq C u x).1 (colEq C u x).1 = 0 from hx] at this
     simp at this
 
+/- English proof (translation)
+Set `e : EuclideanSpace ℂ (Fin a) →ₗᵢ[ℂ] EuclideanSpace ℂ (Fin b)` to `LinearMap.isometryOfOrthonormal ((EuclideanSpace.basisFun (Fin a) ℂ).toBasis.constr ℂ (fun i => EuclideanSpace.basisFun (Fin b) ℂ (Fin.castLE hab i))) (v := (EuclideanSpace.basisFun (Fin a) ℂ).toBasis) (EuclideanSpace.basisFun (Fin a) ℂ).orthonormal (by`. Use `(EuclideanSpace.basisFun (Fin b) ℂ).orthonormal.comp _ (Fin.castLE_injective hab)` as an intermediate fact. Establish `he : ⇑((EuclideanSpace.basisFun (Fin a) ℂ).toBasis.constr ℂ (fun i => EuclideanSpace.basisFun (Fin b) ℂ (Fin.castLE hab i))) ∘ ⇑(EuclideanSpace.basisFun (Fin a) ℂ).toBasis = ⇑(EuclideanSpace.basisFun (Fin b) ℂ) ∘ Fin.castLE hab`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp, Module.Basis.constr_basis]`.
+
+Rewrite using `[he]`. Conclude with `this)`. Set `c : EuclideanSpace ℂ (Fin a) →ₗᵢ⋆[ℂ] EuclideanSpace ℂ (Fin a)` to `{ toFun := fun x => WithLp.toLp 2 (fun i => star (x i)) map_add' := fun x y => by ext i; simp map_smul' := fun r x => by ext i; simp norm_map' := fun x => by simp [EuclideanSpace.norm_eq] }`. Conclude with `⟨(e.comp c).comp onb.repr.toLinearIsometry⟩`.
+-/
 theorem exists_conjIsom (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] {a b : ℕ}
     (onb : OrthonormalBasis (Fin a) ℂ V) (hab : a ≤ b) : Nonempty (V →ₗᵢ⋆[ℂ] EuclideanSpace ℂ (Fin b)) := by
   classical
@@ -125,6 +149,11 @@ theorem exists_conjIsom (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ
       norm_map' := fun x => by simp [EuclideanSpace.norm_eq] }
   exact ⟨(e.comp c).comp onb.repr.toLinearIsometry⟩
 
+/- English proof (translation)
+Take `⟨Del, letter, hD, hl, hg, hu⟩` from `h1`. Use `choose L hL using exists_atP B.toPre`. Take `⟨j⟩` from `exists_conjIsom W.EE W.onb h3`. Use `letI nN : ∀ u, NormedAddCommGroup (ColSp C u) := fun u => (core C h2 u).toNormedAddCommGroup`. Use `letI nI : ∀ u, InnerProductSpace ℂ (ColSp C u) := fun u => InnerProductSpace.ofCore (core C h2 u).toCore`.
+
+Use `⟨{ dsig := d dsig_pos := hd s := { cdScale := fun _ _ => 1 cdScale_pos := fun _ _ => one_pos Del := Del Del_pos := hD cloud_gap := hg letter := letter letter_inj := hl u_letter := hu HH := EuclideanSpace ℂ (Fin W.Dall) Cu := ColSp C cuN := nN cuI := nI cuF := fun u => (C.mem u).A …` and prove the remaining obligations.
+-/
 theorem exists_sStage {B : Base} {C : Cols B} (W : RowsRest B C) (h1 : CodeWords B.toPre) (h2 : ColsPos C)
     (h3 : W.Drows ≤ W.Dall) (d : Tau B.R → ℝ) (hd : ∀ ρ, 0 < d ρ)
     (P : ∀ u, (C.mem u).A.Mu0 →ₗ[ℂ] EuclideanSpace ℂ (Fin W.Dall)) :
@@ -185,9 +214,19 @@ theorem exists_sStage {B : Base} {C : Cols B} (W : RowsRest B C) (h1 : CodeWords
     s_Cu_isom := fun _ _ _ => rfl
     sEE := j }, rfl, fun _ _ => ⟨()⟩, LinearIsometryEquiv.refl ℂ _, fun _ _ => rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨S.s.Del, S.s.letter, S.s.Del_pos, S.s.letter_inj, S.s.cloud_gap, S.s.u_letter⟩`.
+-/
 theorem codeWords_of {B : Base} {C : Cols B} {W : RowsRest B C} (S : SStage B C W) : CodeWords B.toPre :=
   ⟨S.s.Del, S.s.letter, S.s.Del_pos, S.s.letter_inj, S.s.cloud_gap, S.s.u_letter⟩
 
+/- English proof (translation)
+Introduce `u`. Use `⟨fun x hx y hy => ?_, fun x hx h0 => ?_⟩` and prove the remaining obligations. Establish `a` using `S.s_Cu_isom u ((S.s_Cu u).symm ⟨x, hx⟩) ((S.s_Cu u).symm ⟨y, hy⟩)`. Establish `b` using `S.s_Cu_isom u ((S.s_Cu u).symm ⟨y, hy⟩) ((S.s_Cu u).symm ⟨x, hx⟩)`. Simplify using `only [LinearEquiv.apply_symm_apply] at a b`.
+
+Rewrite using `[← a, ← b, inner_conj_symm]`. Establish `a` using `S.s_Cu_isom u ((S.s_Cu u).symm ⟨x, hx⟩) ((S.s_Cu u).symm ⟨x, hx⟩)`. Simplify using `only [LinearEquiv.apply_symm_apply] at a`. Rewrite using `[← a]`. Use `re_inner_self_pos (𝕜 := ℂ) |>.2 ?_` and prove the remaining obligations.
+
+Introduce `h`. Conclude with `h0 (congrArg Subtype.val ((S.s_Cu u).symm.map_eq_zero_iff.1 h))`.
+-/
 theorem colsPos_of {B : Base} {C : Cols B} {W : RowsRest B C} (S : SStage B C W) : ColsPos C := by
   intro u
   refine ⟨fun x hx y hy => ?_, fun x hx h0 => ?_⟩
@@ -202,6 +241,13 @@ theorem colsPos_of {B : Base} {C : Cols B} {W : RowsRest B C} (S : SStage B C W)
     intro h
     exact h0 (congrArg Subtype.val ((S.s_Cu u).symm.map_eq_zero_iff.1 h))
 
+/- English proof (translation)
+Establish `hli : Orthonormal ℂ (fun i => S.sEE (W.onb i))`. Use `⟨fun i => by rw [S.sEE.norm_map]; exact W.onb.orthonormal.1 i, fun i k hik => ?_⟩` and prove the remaining obligations. Establish `h0 : inner ℂ (W.onb i) (W.onb k) = 0` using `W.onb.orthonormal.2 hik`. Establish `key : ∀ z : ℂ, ‖S.sEE (W.onb i) + starRingEnd ℂ z • S.sEE (W.onb k)‖ = ‖W.onb i + z • W.onb k‖` using `fun z => by`. Rewrite using `[← S.sEE.norm_map, map_add, map_smulₛₗ]`.
+
+Establish `k1` using `congrArg (· ^ 2) (key 1)`. Establish `k2` using `congrArg (· ^ 2) (key Complex.I)`. Simplify using `only [@norm_add_sq ℂ, inner_smul_right, h0, norm_smul, S.sEE.norm_map] at k1 k2`. Simplify using `at k1 k2`. Conclude with `Complex.ext k1 k2`.
+
+Use `hli.linearIndependent.fintype_card_le_finrank` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin, S.s_HH]`. Then use the resulting hypothesis.
+-/
 theorem rows_le_of {B : Base} {C : Cols B} {W : RowsRest B C} (S : SStage B C W) : W.Drows ≤ W.Dall := by
   have hli : Orthonormal ℂ (fun i => S.sEE (W.onb i)) := by
     refine ⟨fun i => by rw [S.sEE.norm_map]; exact W.onb.orthonormal.1 i, fun i k hik => ?_⟩
@@ -216,12 +262,20 @@ theorem rows_le_of {B : Base} {C : Cols B} {W : RowsRest B C} (S : SStage B C W)
   have := hli.linearIndependent.fintype_card_le_finrank
   rwa [Fintype.card_fin, S.s_HH] at this
 
+/- English proof (translation)
+Use `⟨fun ⟨S⟩ => ⟨codeWords_of S, colsPos_of S, rows_le_of S⟩, fun ⟨h1, h2, h3⟩ => ?_⟩` and prove the remaining obligations. Take `⟨S, -⟩` from `exists_sStage W h1 h2 h3 (fun _ => 1) (fun _ => one_pos) (fun _ => 0)`. Conclude with `⟨S⟩`.
+-/
 theorem nonempty_iff {B : Base} {C : Cols B} (W : RowsRest B C) :
     Nonempty (SStage B C W) ↔ CodeWords B.toPre ∧ ColsPos C ∧ W.Drows ≤ W.Dall := by
   refine ⟨fun ⟨S⟩ => ⟨codeWords_of S, colsPos_of S, rows_le_of S⟩, fun ⟨h1, h2, h3⟩ => ?_⟩
   obtain ⟨S, -⟩ := exists_sStage W h1 h2 h3 (fun _ => 1) (fun _ => one_pos) (fun _ => 0)
   exact ⟨S⟩
 
+/- English proof (translation)
+Use `⟨fun S => ?_⟩` and prove the remaining obligations. Establish `a` using `S.s.cloud_gap w τ l h`. Establish `b` using `S.s.u_letter w τ l (by omega)`. Establish `c` using `S.s.Del_pos`. Rewrite `b` using `[hu]`.
+
+Apply the tactic sequence `split_ifs at b <;> linarith`.
+-/
 theorem low_end_empty {B : Base} {C : Cols B} (W : RowsRest B C) (w : B.Word) (τ : Tau B.R) (l : ℕ)
     (h : l + 1 < B.R.k - 1) (hG : 2 ≤ (B.hcW w τ).v ⟨l, by omega⟩ - (B.hcW w τ).v ⟨l + 1, h⟩)
     (hu : (B.hcW w τ).u ⟨l + 1, by omega⟩ = (B.hcW w τ).v ⟨l + 1, h⟩ + 1 / 2) : IsEmpty (SStage B C W) := by
@@ -232,6 +286,19 @@ theorem low_end_empty {B : Base} {C : Cols B} (W : RowsRest B C) (w : B.Word) (�
   rw [hu] at b
   split_ifs at b <;> linarith
 
+/- English proof (translation)
+Establish `hk` using `R.m_add_three_le_k`. Establish `hm` using `R.two_le_m`. Establish `hD' : (1 : ℚ) ≤ Del` using `by exact_mod_cast hD`. Establish `ht : (0 : ℚ) ≤ R.t` using `by positivity`. Set `dl : (Fin (R.k - 2) → Bool) → ℕ → ℤ` to `fun c i => if h : 1 ≤ i ∧ i - 1 < R.k - 2 then (if c ⟨i - 1, h.2⟩ then Del else 0) else 0`.
+
+Establish `dl0 : ∀ c i, (0 : ℚ) ≤ dl c i ∧ (dl c i : ℚ) ≤ Del` using `fun c i => by`. Apply the tactic sequence `simp only [dl]; split_ifs <;> simp`. Use `⟨fun c => { u := fun i => 4 * Del * ((R.k : ℚ) - i.1) - 1 / 2 - dl c i.1 v := fun i => 4 * Del * ((R.k : ℚ) - 1 - i.1) b := fun j => 2 * (R.t + 3) * j.1 e := fun j => 2 * (R.t + 3) * j.1 + (R.t + 3) u_gt_v := fun i => by have := dl0 c i.1; simp only; nlinarith [this.2] v_gt_u := …` and prove the remaining obligations. Use `dl0 c (R.k - 1)` as an intermediate fact. Simplify using `only`.
+
+Rewrite using `[Nat.cast_sub (by omega)]`. Use `push_cast`. Use polynomial arithmetic with `[this.2]`. Use `gap_be := fun j => by linarith`. Use `gap_eb := fun j h => by simp only; push_cast; linarith`.
+
+Use `e_int := fun j => ⟨2 * (R.t + 3) * j.1 + (R.t + 3), by push_cast; ring⟩`. Use `u_half := fun i => ⟨4 * Del * ((R.k : ℤ) - i.1) - 1 - dl c i.1, by push_cast; ring⟩`. Use `v_int := fun i => ⟨4 * Del * ((R.k : ℤ) - 1 - i.1), by push_cast; ring⟩`. Use `b_int := fun j => ⟨2 * (R.t + 3) * j.1, by push_cast; ring⟩ },`. Use `fun _ _ => ⟨rfl, rfl, rfl⟩, fun c c' h => ⟨by simp [dl], ?_⟩, fun c l h => by simp only; push_cast; ring,`.
+
+Use `fun c l h => ?_⟩`. Establish `: ¬ (1 ≤ R.k - 1 ∧ R.k - 1 - 1 < R.k - 2)` using `by omega`. Simplify using `only [dl, dif_neg this]`. Establish `: 1 ≤ l + 1 ∧ l + 1 - 1 < R.k - 2` using `by omega`. Simplify using `only [dl, dif_pos this, Nat.add_sub_cancel]`.
+
+Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+-/
 theorem exists_codeParams (R : Ranks) (Del : ℕ) (hD : 1 ≤ Del) :
     ∃ P : (Fin (R.k - 2) → Bool) → HCParam R,
       (∀ c c', (P c).v = (P c').v ∧ (P c).b = (P c').b ∧ (P c).e = (P c').e) ∧
@@ -274,6 +341,9 @@ theorem exists_codeParams (R : Ranks) (Del : ℕ) (hD : 1 ≤ Del) :
     simp only [dl, dif_pos this, Nat.add_sub_cancel]
     split_ifs <;> push_cast <;> ring
 
+/- English proof (translation)
+Take `⟨P, h1, h2, h3, h4⟩` from `exists_codeParams B.R 1 le_rfl`. Use `⟨{ B with Word := Fin (B.R.k - 2) → Bool wordFin := inferInstance u₀ := fun _ => false hc := fun _ => P (fun _ => false) hcW := fun c _ => P c hcW_base := rfl hcW_v := fun _ _ => (h1 _ _).1 hcW_b := fun _ _ => (h1 _ _).2.1 hcW_e := fun _ _ => (h1 _ _).2.2 hcW_first := fun _ _ h = …` and prove the remaining obligations.
+-/
 theorem exists_pre_codeWords (B : Pre) :
     ∃ B' : Pre, B'.R = B.R ∧ HEq B'.host B.host ∧ CodeWords B' ∧ Fintype.card B'.Word = 2 ^ (B.R.k - 2) := by
   obtain ⟨P, h1, h2, h3, h4⟩ := exists_codeParams B.R 1 le_rfl
@@ -302,6 +372,13 @@ theorem exists_pre_codeWords (B : Pre) :
     T_win := fun _ => B.T_win _ }, rfl, HEq.rfl,
     ⟨((1 : ℕ) : ℚ), id, by norm_num, Function.injective_id, fun w _ => h3 w, fun w _ => h4 w⟩, by simp⟩
 
+/- English proof (translation)
+Introduce `u`. Use `⟨fun x _ y _ => ?_, fun x _ h0 => ?_⟩` and prove the remaining obligations. Use `erw [RowsRestModel.tcols_ipC, RowsRestModel.tcols_ipC]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun c _ => by simp [mul_comm]`.
+
+Use `erw [RowsRestModel.tcols_ipC]`. Rewrite using `[Complex.re_sum]`. Take `⟨c, hc⟩` from `Function.ne_iff.1 h0`. Establish `hc' : x c () ≠ 0` using `fun h => hc (funext fun _ => h)`. Use `Finset.sum_pos' (fun c _ => by rw [Complex.conj_mul']; norm_cast; positivity) ⟨c, Finset.mem_univ _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Complex.conj_mul']`. Use `norm_cast`. Check the signs of the components of the expression.
+-/
 theorem colsPos_tcols {B : Base} (C : Cols B) : ColsPos (RowsRestModel.tcols C) := by
   intro u
   refine ⟨fun x _ y _ => ?_, fun x _ h0 => ?_⟩
@@ -315,6 +392,19 @@ theorem colsPos_tcols {B : Base} (C : Cols B) : ColsPos (RowsRestModel.tcols C) 
     refine Finset.sum_pos' (fun c _ => by rw [Complex.conj_mul']; norm_cast; positivity) ⟨c, Finset.mem_univ _, ?_⟩
     rw [Complex.conj_mul']; norm_cast; positivity
 
+/- English proof (translation)
+Take `⟨P₀, -⟩` from `GlobalTheory.Mem.exists_pre`. Take `⟨P, hR, -, hP, hc⟩` from `exists_pre_codeWords P₀`. Take `⟨B, rfl, -⟩` from `GlobalTheory.Mem.BaseField.exists_base P ∅ ∅ ∅ (by simp) (by simp) (by simp)`. Set `C` to `RowsRestModel.tcols (ColsModel.cols B)`. Set `W : RowsRest B C` to `RowsRestModel.model (RowsRestModel.tcols_fits _) n 1 1`.
+
+Establish `hnt : ∀ u, Nontrivial (C.mem u).A.Mu0` using `fun u => by classical haveI : Fact (B.T u).Prime := ⟨B.T_prime u⟩`. Establish `h : (C.mem u).A.Mram ≠ ⊥` using `GlobalTheory.MemberTorsor.mram_ne_bot B.R (Tau B.R) (B.hcW u) (B.T u) (card_Tau B.host) (RowsRestModel.two_lt_alt B.toPre u)`. Conclude with `Submodule.nontrivial_iff_ne_bot.2 fun h0 => h (le_bot_iff.1 ((inf_le_left : (C.mem u).A.Mram ≤ (C.mem u).A.Mu0).trans h0.le))`. Establish `hD : W.Dall = 2 * n` using `rfl`. Establish `hP' : ∀ u, ∃ (f : (C.mem u).A.Mu0 →ₗ[ℂ] EuclideanSpace ℂ (Fin W.Dall)) (x : (C.mem u).A.Mu0), f x ≠ 0`.
+
+Introduce `u`. Take `⟨x, hx⟩` from `exists_ne (0 : (C.mem u).A.Mu0)`. Take `⟨φ, hφ⟩` from `Module.Projective.exists_dual_ne_zero ℂ hx`. Set `v : EuclideanSpace ℂ (Fin W.Dall)` to `EuclideanSpace.single ⟨0, by omega⟩ 1`. Establish `hv : v ≠ 0`.
+
+Introduce `h`. Use `congrArg norm h` as an intermediate fact. Simplify using `[v] at this`. Conclude with `⟨φ.smulRight v, x, by simpa using ⟨hφ, hv⟩⟩`. Use `choose f x hfx using hP'`.
+
+Take `⟨S, -, hT, e, he⟩` from `exists_sStage W hP (colsPos_tcols _) (by show n ≤ 2 * n; omega) (fun _ => 1) (fun _ => one_pos) f`. Establish `hk` using `B.R.m_add_three_le_k`. Establish `hm` using `B.R.two_le_m`. Use `⟨B, C, W, S, by rw [hc, ← hR], by omega, rfl, S.s_HH, fun u => (S.s_Cu u).toEquiv.nontrivial, fun u h0 => hfx u ?_, hT⟩` and prove the remaining obligations. Use `he u ((S.s_Cu u).symm (x u))` as an intermediate fact.
+
+Rewrite `this` using `[h0, LinearEquiv.apply_symm_apply]`. Simplify using `using this.symm`.
+-/
 theorem exists_sStage_unconditional (n : ℕ) (hn : 0 < n) :
     ∃ (B : Base) (C : Cols B) (W : RowsRest B C) (S : SStage B C W),
       Fintype.card B.Word = 2 ^ (B.R.k - 2) ∧ 3 ≤ B.R.k - 2 ∧ W.Drows = n ∧ Module.finrank ℂ S.s.HH = 2 * n ∧
@@ -353,9 +443,15 @@ theorem exists_sStage_unconditional (n : ℕ) (hn : 0 < n) :
   rw [h0, LinearEquiv.apply_symm_apply] at this
   simpa using this.symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun S => absurd (rows_le_of S) (by omega)⟩`.
+-/
 theorem isEmpty_of_lt {B : Base} {C : Cols B} (W : RowsRest B C) (h : W.Dall < W.Drows) : IsEmpty (SStage B C W) :=
   ⟨fun S => absurd (rows_le_of S) (by omega)⟩
 
+/- English proof (translation)
+Establish `a : (W.Drows : ℝ) ≤ W.Dall` using `by exact_mod_cast rows_le_of S`. Establish `b : (0 : ℝ) < W.Dall` using `by exact_mod_cast h`. Rewrite `a` using `[W.D_eq]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem delp_nonneg {B : Base} {C : Cols B} {W : RowsRest B C} (S : SStage B C W) (h : 0 < W.Dall) : 0 ≤ W.delp := by
   have a : (W.Drows : ℝ) ≤ W.Dall := by exact_mod_cast rows_le_of S
   have b : (0 : ℝ) < W.Dall := by exact_mod_cast h

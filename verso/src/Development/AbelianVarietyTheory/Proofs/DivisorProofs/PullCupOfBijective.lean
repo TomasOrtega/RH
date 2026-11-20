@@ -15,6 +15,9 @@ open GlobalTheory.CatCoh
 
 universe u v u' v' u'' v''
 
+/- English proof (translation)
+Establish `back : ∀ x, n.pull1 ((LinearEquiv.ofBijective n.pull1 h1).symm x) = x` using `fun x => (LinearEquiv.ofBijective n.pull1 h1).apply_symm_apply x`. Apply `(LinearEquiv.ofBijective n.pull2 h2).injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, LinearEquiv.ofBijective_apply, n.pullCohomologyTwo_cup, back, back, m.pullCohomologyTwo_cup]`.
+-/
 theorem pull_cup_of_bijective {R R' : Type} [CommRing R] [CommRing R']
     {C : Type u} [Category.{v} C] {C' : Type u'} [Category.{v'} C'] {C'' : Type u''} [Category.{v''} C'']
     {σ : R →+* R'} {F : C ⥤ CommAlgCat.{0} R} {F' : C' ⥤ CommAlgCat.{0} R'}
@@ -32,12 +35,30 @@ variable {R R' : Type} [CommRing R] [CommRing R'] {X X' : AlgebraicGeometry.Sche
   {s : X ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp R} {s' : X' ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp R'} {σ : R →+* R'}
   {φ : X' ⟶ X}
 
+/- English proof (translation)
+Unfold `GlobalTheory.AbCoh.pullHO2 GlobalTheory.CechDR.pullHO1 GlobalTheory.CechDR.pairResEquivO`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Conclude with `pull_cup_of_bijective _ _ _ _ a b`.
+-/
 theorem pullHO2_cup (h : φ ≫ s = s' ≫ ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap σ) (a b : GlobalTheory.CechDR.HO1 s) :
     GlobalTheory.AbCoh.pullHO2 h (cup _ a b) = cup _ (GlobalTheory.CechDR.pullHO1 h a) (GlobalTheory.CechDR.pullHO1 h b) := by
   unfold GlobalTheory.AbCoh.pullHO2 GlobalTheory.CechDR.pullHO1 GlobalTheory.CechDR.pairResEquivO
   simp only [LinearMap.comp_apply, LinearEquiv.coe_coe]
   exact pull_cup_of_bijective _ _ _ _ a b
 
+/- English proof (translation)
+Introduce `R R' _ _ X X' s s' σ φ h hsurj hwedge`. Take `⟨e, he⟩` from `hwedge`. Establish `key : ∀ x, ∀ r : R', ∃ z, GlobalTheory.AbCoh.pullHO2 h z = e (r • x)`. Introduce `x`. Establish `hx : x ∈ Submodule.span R' (Set.range (exteriorPower.ιMulti R' 2))`.
+
+Rewrite using `[exteriorPower.ιMulti_span]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨v, rfl⟩` from `hy`.
+
+Introduce `r`. Take `⟨a, ha⟩` from `hsurj (r • v 0)`. Take `⟨b, hb⟩` from `hsurj (v 1)`. Use `⟨cup _ a b, ?_⟩` and prove the remaining obligations. Establish `hv : r • exteriorPower.ιMulti R' 2 v = exteriorPower.ιMulti R' 2 ![r • v 0, v 1]`.
+
+Establish `hupd : (![r • v 0, v 1] : Fin 2 → _) = Function.update v 0 (r • v 0)`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp`. Rewrite using `[hupd, AlternatingMap.map_update_smul, Function.update_eq_self]`. Rewrite using `[pullHO2_cup, ha, hb, hv, he]`.
+
+Consider the case `zero`. Introduce `r`. Conclude with `⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Introduce `r`.
+
+Take `⟨z₁, h₁⟩` from `hx r`. Take `⟨z₂, h₂⟩` from `hy r`. Conclude with `⟨z₁ + z₂, by rw [map_add, h₁, h₂, smul_add, map_add]⟩`. Consider the case `smul c x _ hx`. Introduce `r`.
+
+Take `⟨z, hz⟩` from `hx (r * c)`. Conclude with `⟨z, by rw [hz, smul_smul]⟩`. Introduce `y`. Take `⟨z, hz⟩` from `key (e.symm y) 1`. Conclude with `⟨z, by rw [hz, one_smul, LinearEquiv.apply_symm_apply]⟩`.
+-/
 theorem main : ∀ (R R' : Type) [inst : CommRing R] [inst_1 : CommRing R'] (X X' : AlgebraicGeometry.Scheme) (s : X ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp R) (s' : X' ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp R') (σ : R →+* R') (φ : X' ⟶ X) (h : CategoryTheory.CategoryStruct.comp φ s = CategoryTheory.CategoryStruct.comp s' (ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap σ)), Function.Surjective (⇑(GlobalTheory.CechDR.pullHO1 h) : GlobalTheory.CechDR.HO1 s → GlobalTheory.CechDR.HO1 s') → GlobalTheory.AbCoh.WedgeO (GlobalTheory.CechDR.OAff s') → Function.Surjective (⇑(GlobalTheory.AbCoh.pullHO2 h) : GlobalTheory.AbCoh.HO2 s → GlobalTheory.AbCoh.HO2 s') := by
   intro R R' _ _ X X' s s' σ φ h hsurj hwedge
   obtain ⟨e, he⟩ := hwedge

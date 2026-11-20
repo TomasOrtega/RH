@@ -81,6 +81,37 @@ def LatCofin : Prop :=
     (b : Module.Basis (Fin d) F E) (b' : Module.Basis (Fin d') F E),
     ∀ᶠ v in Filter.cofinite, latV (M := M) (n := a) b v = latV b' v
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ μinf hμi νinf hνi μv hμv νv hνv fibInf hfi fibV hfv hmult`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Establish `cF` using `hF F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet`. Take `⟨hsfI, hintI⟩` from `cF.1 μinf νinf fibInf hfi`. Establish `hFv` using `fun v => cF.2 v (μv v) (νv v) (fibV v) (hfv v)`.
+
+Establish `hSB : ∀ v (Φ : (Fin a → Fin M → Fv F v ⊗[F] E) → ℂ), IsSB Φ → Integrable Φ (fibV v (hermOf (Fv F v) σ (gramE σ J X0) hT))` using `fun v Φ h => (hFv v).2 Φ h.1.continuous h.2`. Set `b` to `Module.finBasis F E`. Break down `hTl F E σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet fibV _ b hSB (hmult _ b) with ⟨v0, hv0⟩ | hconv` into its components or cases. Use `⟨0, by simp, fun d' b' Φ Φinf Φf Φv _ _ hp _ => ⟨integrable_zero_measure, ?_⟩⟩` and prove the remaining obligations. Establish `h0 : HasProd (fun v => ∫ X, Φv v X ∂(fibV v (hermOf (Fv F v) σ (gramE σ J X0) hT))) 0` using `hasProd_zero_of_exists_eq_zero ⟨v0, hv0 _ (hp.1 v0)⟩`.
+
+Rewrite using `[integral_zero_measure, h0.tprod_eq, mul_zero]`. Set `W : HeightOneSpectrum (𝓞 F) → Type` to `fun v => Fin a → Fin M → Fv F v ⊗[F] E`. Set `m : ∀ v, Measure (W v)` to `fun v => fibV v (hermOf (Fv F v) σ (gramE σ J X0) hT)`. Establish `: ∀ v, SigmaFinite (m v)` using `fun v => (hFv v).1`. Use `hsfI` as an intermediate fact.
+
+Establish `hLm : ∀ v, MeasurableSet (latV (M` using `M) (n := a) b v) := fun v => (PositiveNearLattice.isClopen_latV b v a M).isOpen.measurableSet`. Establish `hLf : ∀ v, m v (latV b v) ≠ ⊤` using `fun v => by`. Establish `h` using `hSB v _ (PositiveNearLattice.isSB_latV b v a M)`. Rewrite `h` using `[integrable_indicator_iff (hLm v)]`. Conclude with `(((integrableOn_const_iff (C := (1 : ℂ))).1 h).resolve_left (by simp)).ne`.
+
+Take `⟨ρ, hρsf, hρgood, hρmarg, hρint⟩` from `hA (HeightOneSpectrum (𝓞 F)) W m (fun v => latV b v) hLm hLf hconv`. Use `hρsf` as an intermediate fact. Take `⟨Γ, hΓm, hΓ⟩` from `hG F E M a _ b`. Establish `cG` using `hGr F E σ M J a (gramE σ J X0)`. Set `P : Measure ((Fin a → Fin M → Ainf F ⊗[F] E) × ∀ v, W v)` to `(fibInf (hermOf (Ainf F) σ (gramE σ J X0) hT)).prod ρ`.
+
+Establish `hgood : P (Set.univ ×ˢ {x : ∀ v, W v | ¬ ∀ᶠ v in Filter.cofinite, x v ∈ latV b v}) = 0`. Rewrite using `[Measure.prod_prod, hρgood, mul_zero]`. Use `⟨P.map Γ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_apply hΓm cG.1]`. Establish `h1 : (fibInf (hermOf (Ainf F) σ (gramE σ J X0) hT)) {y | gramR (Ainf F) σ J y = (gramE σ J X0).map (inclR (Ainf F))}ᶜ = 0` using `measure_mono_null (Set.compl_subset_compl.2 Set.inter_subset_left) (hfi.1 _)`.
+
+Establish `h2 : ∀ v, m v {x | gramR (Fv F v) σ J x = (gramE σ J X0).map (inclR (Fv F v))}ᶜ = 0` using `fun v => measure_mono_null (Set.compl_subset_compl.2 Set.inter_subset_left) ((hfv v).1 _)`. Establish `hbad : Γ ⁻¹' {X | gramR (AF F) σ J X ≠ (gramE σ J X0).map (inclR (AF F))} ⊆ ({y | gramR (Ainf F) σ J y = (gramE σ J X0).map (inclR (Ainf F))}ᶜ ×ˢ Set.univ) ∪ ((Set.univ ×ˢ {x : ∀ v, W v | ¬ ∀ᶠ v in Filter.cofinite, x v ∈ latV b v}) ∪ ⋃ v, Set.univ ×ˢ {x : ∀ v, W v | x v ∉ {x | gr …`. Introduce `p hp`. Assume the negation of the conclusion as `hn`. Establish `hi : gramR (Ainf F) σ J p.1 = (gramE σ J X0).map (inclR (Ainf F))`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hn (Or.inl ⟨h, Set.mem_univ _⟩)`. Establish `hg : ∀ᶠ v in Filter.cofinite, p.2 v ∈ latV b v`. Assume the negation of the conclusion as `h`. Conclude with `hn (Or.inr (Or.inl ⟨Set.mem_univ _, h⟩))`.
+
+Establish `hv : ∀ v, gramR (Fv F v) σ J (p.2 v) = (gramE σ J X0).map (inclR (Fv F v))`. Introduce `v`. Assume the negation of the conclusion as `h`. Conclude with `hn (Or.inr (Or.inr (Set.mem_iUnion.2 ⟨v, Set.mem_univ _, h⟩)))`. Take `⟨e1, e2⟩` from `hΓ p hg`.
+
+Apply `hp` to reduce the goal to its premises. Apply `cG.2.2.2 (Γ p)` to reduce the goal to its premises. Rewrite using `[e1]`. Conclude with `hi`. Introduce `v`.
+
+Rewrite using `[e2 v]`. Conclude with `hv v`. Use `measure_mono_null hbad (measure_union_null ?_ (measure_union_null hgood (measure_iUnion_null fun v => ?_)))` and prove the remaining obligations. Rewrite using `[Measure.prod_prod, h1, zero_mul]`. Rewrite using `[Measure.prod_prod, hρmarg v _ (cG.2.2.1 v) (h2 v), mul_zero]`.
+
+Introduce `d' b' Φ Φinf Φf Φv hc1 hc2 hp hpr`. Establish `hΦm : Measurable Φ` using `TopoMeas.measurable_adm Φ ⟨d', b', Φinf, Φf, Φv, hc1, hc2, hp, hpr⟩`. Establish `hf : ∀ v, Integrable (Φv v) (m v)` using `fun v => hSB v _ (hp.1 v)`. Establish `hfc : ∀ᶠ v in Filter.cofinite, Φv v = (latV b v).indicator 1` using `(hp.2.1.and (hL F E a M d' _ b' b)).mono fun v h => h.1.trans (by rw [h.2])`. Take `⟨hIρ, hHP⟩` from `hρint Φv hf hfc`.
+
+Establish `hae' : ∀ᵐ p ∂P, ∀ᶠ v in Filter.cofinite, p.2 v ∈ latV b v`. Rewrite using `[ae_iff]`. Conclude with `measure_mono_null (fun p hp => Set.mem_prod.2 ⟨Set.mem_univ _, hp⟩) hgood`. Establish `hae : (fun p => Φ (Γ p)) =ᵐ[P] fun p => Φinf p.1 * ∏ᶠ v, Φv v (p.2 v)` using `by filter_upwards [hae'] with p hp'`. Take `⟨e1, e2⟩` from `hΓ p hp'`.
+
+Rewrite using `[hpr (Γ p), hp.2.2 (projFin (Γ p)), e1]`. Use `congr 1`. Conclude with `finprod_congr fun v => by rw [e2 v]`. Establish `hPI : Integrable (fun p : _ × (∀ v, W v) => Φinf p.1 * ∏ᶠ v, Φv v (p.2 v)) P` using `(hintI Φinf hc1 hc2).mul_prod hIρ`. Use `⟨(integrable_map_measure hΦm.aestronglyMeasurable hΓm.aemeasurable).2 (hPI.congr hae.symm), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[integral_map hΓm.aemeasurable hΦm.aestronglyMeasurable, integral_congr_ae hae, integral_prod_mul (fun y => Φinf y) (fun x : ∀ v, W v => ∏ᶠ v, Φv v (x v)), ← hHP.tprod_eq]`.
+-/
 theorem restrProd_of (hA : RPAbs) (hF : RPFib) (hG : RPGlue) (hGr : RPGram) (hTl : RPTail)
     (hL : LatCofin) : RestrProd := by
   intro F E _ _ _ _ _ σ hCM M J hJ ha hc a ha1 ha2 X0 hT hdet ψ hψ μinf hμi νinf hνi μv hμv νv hνv

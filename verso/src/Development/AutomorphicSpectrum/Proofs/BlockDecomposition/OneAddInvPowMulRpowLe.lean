@@ -17,6 +17,23 @@ noncomputable section
 
 variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Take `⟨k, hk⟩ : ∃ k : ℕ, 2 * σ + 2 < k` from `exists_nat_gt _`. Use `⟨Fintype.card (InfinitePlace K) * k, fun L A hA ↦ ?_⟩` and prove the remaining obligations. Use `(integrable_zetaBound hσ hk L).mono' (((continuous_adeleWeight L A).comp Units.continuous_val).mul (continuous_ideleModule_val.rpow_const fun _ ↦ Or.inr (by linarith))).aestronglyMeasurable (Eventually.of_forall fun x ↦ ?_)` and prove the remaining obligations. Establish `hpow : 0 ≤ (ideleModule K x : ℝ) ^ σ` using `Real.rpow_nonneg (ideleModule K x).2.le σ`. Rewrite using `[Real.norm_of_nonneg (mul_nonneg (adeleWeight_nonneg _ _ _) hpow)]`.
+
+Use `set a := toInfinite K x`. Use `set b := toFinite K x`. Establish `hI` using `infiniteZetaBound_nonneg σ k a`. Distinguish the cases in `hb : (b : FiniteAdeleRing (𝓞 K) K) ∈ idealFiniteAdeles L`. Establish `hfz : finiteZetaBound L σ b = finiteModule (ofFinite b) ^ σ`.
+
+Rewrite using `[finiteZetaBound, if_pos hb]`. Establish `hb' : (x : 𝔸[K]).2 ∈ idealFiniteAdeles L` using `hb`. Establish `hw : adeleWeight L A (x : 𝔸[K]) = ((1 + ‖homeomorphMixedSpace K (x : 𝔸[K]).1‖) ^ A)⁻¹`. Unfold `adeleWeight`. Rewrite using `[if_pos hb']`.
+
+Rewrite using `[hfz, ideleModule_rpow_eq, hw]`. Use `set y := homeomorphMixedSpace K (x : 𝔸[K]).1`. Establish `hy0 : 0 ≤ ‖y‖` using `norm_nonneg _`. Establish `hF : 0 ≤ finiteModule (ofFinite b) ^ σ`. Use `finiteModule_pos (ofFinite b)` as an intermediate fact.
+
+Check the signs of the components of the expression. Establish `hP : 0 ≤ ∏ w, ‖(a : InfiniteAdeleRing K) w‖ ^ ((w.mult : ℝ) * σ)` using `Finset.prod_nonneg fun w _ ↦ by positivity`. Establish `hq : ∏ w, (1 + ‖(a : InfiniteAdeleRing K) w‖) ^ k ≤ (1 + ‖y‖) ^ A`. Combine the equalities or inequalities in the displayed calculation. Establish `h : ‖(a : InfiniteAdeleRing K) w‖ ≤ ‖y‖` using `norm_le_norm_homeomorphMixedSpace (x : 𝔸[K]).1 w`.
+
+Use the proof step `linarith) k`. Use `_ = (1 + ‖y‖) ^ (Fintype.card (InfinitePlace K) * k) := by`. Rewrite using `[Finset.prod_const, Finset.card_univ, ← pow_mul, mul_comm]`. Use `_ ≤ (1 + ‖y‖) ^ A := pow_le_pow_right₀ (by linarith) hA`. Establish `hq0 : 0 < ∏ w, (1 + ‖(a : InfiniteAdeleRing K) w‖) ^ k` using `Finset.prod_pos fun w _ ↦ by positivity`.
+
+Establish `hinf : infiniteZetaBound σ k a = (∏ w, ‖(a : InfiniteAdeleRing K) w‖ ^ ((w.mult : ℝ) * σ)) / ∏ w, (1 + ‖(a : InfiniteAdeleRing K) w‖) ^ k`. Rewrite using `[infiniteZetaBound, Finset.prod_div_distrib]`. Rewrite using `[hinf]`. Combine the equalities or inequalities in the displayed calculation. Establish `hb' : (x : 𝔸[K]).2 ∉ idealFiniteAdeles L` using `hb`.
+
+Establish `hw : adeleWeight L A (x : 𝔸[K]) = 0`. Unfold `adeleWeight`. Rewrite using `[if_neg hb']`. Rewrite using `[hw, zero_mul]`. Conclude with `mul_nonneg hI (finiteZetaBound_nonneg _ _ _)`.
+-/
 theorem integrable_weight {σ : ℝ} (hσ : 1 < σ) : ∃ A₀ : ℕ, ∀ (L : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (A : ℕ), A₀ ≤ A →
     Integrable (fun t : IdeleGroup K ↦ adeleWeight L A (t : 𝔸[K]) * (ideleModule K t : ℝ) ^ σ)
       (ideleMeasure K) := by
@@ -78,22 +95,34 @@ theorem integrable_weight {σ : ℝ} (hσ : 1 < σ) : ∃ A₀ : ℕ, ∀ (L : (
     rw [hw, zero_mul]
     exact mul_nonneg hI (finiteZetaBound_nonneg _ _ _)
 
+/- English proof (translation)
+Establish `h : Continuous fun h : GL ι 𝔸[K] ↦ ((h⁻¹ : GL ι 𝔸[K]) : Matrix ι ι 𝔸[K])` using `Units.continuous_val.comp continuous_inv`. Conclude with `h.matrix_elem i j`.
+-/
 theorem continuous_inv_entry (i j : ι) :
     Continuous fun h : GL ι 𝔸[K] ↦ ((h⁻¹ : GL ι 𝔸[K]) : Matrix ι ι 𝔸[K]) i j := by
   have h : Continuous fun h : GL ι 𝔸[K] ↦ ((h⁻¹ : GL ι 𝔸[K]) : Matrix ι ι 𝔸[K]) :=
     Units.continuous_val.comp continuous_inv
   exact h.matrix_elem i j
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+-/
 theorem inv_mulVec_mulVec (m : GL ι 𝔸[K]) (y : ι → 𝔸[K]) :
     ((m⁻¹ : GL ι 𝔸[K]) : Matrix ι ι 𝔸[K]) *ᵥ ((m : Matrix ι ι 𝔸[K]) *ᵥ y) = y := by
   rw [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
 
+/- English proof (translation)
+Use `show Adele2.finRingHom (∑ j, M i j * z j) = _`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ ↦ map_mul _ _ _`.
+-/
 theorem fin_mulVec (M : Matrix ι ι 𝔸[K]) (z : ι → 𝔸[K]) (i : ι) :
     ((M *ᵥ z) i).2 = ∑ j, Adele2.finRingHom (M i j) * (z j).2 := by
   show Adele2.finRingHom (∑ j, M i j * z j) = _
   rw [map_sum]
   exact Finset.sum_congr rfl fun j _ ↦ map_mul _ _ _
 
+/- English proof (translation)
+Use `show Adele2.infRingHom (∑ j, M i j * z j) = _`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ ↦ map_mul _ _ _`.
+-/
 theorem inf_mulVec (M : Matrix ι ι 𝔸[K]) (z : ι → 𝔸[K]) (i : ι) :
     homeomorphMixedSpace K ((M *ᵥ z) i).1 =
       ∑ j, Adele2.infRingHom (M i j) * homeomorphMixedSpace K (z j).1 := by
@@ -101,6 +130,33 @@ theorem inf_mulVec (M : Matrix ι ι 𝔸[K]) (z : ι → 𝔸[K]) (i : ι) :
   rw [map_sum]
   exact Finset.sum_congr rfl fun j _ ↦ map_mul _ _ _
 
+/- English proof (translation)
+Use `set B : Set (ι → 𝔸ᶠ[K]) := Set.pi Set.univ fun i ↦ b i +ᵥ (idealFiniteAdeles I : Set 𝔸ᶠ[K])`. Establish `hB : IsCompact B` using `isCompact_univ_pi fun i ↦ (isCompact_idealFiniteAdeles I).vadd (b i)`. Set `T : GL ι 𝔸[K] × (ι → 𝔸ᶠ[K]) → ι → 𝔸ᶠ[K]` to `fun p i ↦ ∑ j, Adele2.finRingHom (((p.1⁻¹ : GL ι 𝔸[K]) : Matrix ι ι 𝔸[K]) i j) * p.2 j`. Establish `hfc : Continuous (Adele2.finRingHom (K` using `K)) := continuous_snd`. Establish `hic : Continuous (Adele2.infRingHom (K` using `K)) := (homeomorphMixedSpace K).continuous.comp continuous_fst`.
+
+Apply the tactic sequence `have hT : Continuous T := continuous_pi fun i ↦ continuous_finset_sum _ fun j _ ↦ (hfc.comp ((continuous_inv_entry i j).comp continuous_fst)).mul ((continuous_apply j).comp continuous_snd)`. Use `set S : Set 𝔸ᶠ[K] := ⋃ i : ι, (fun x : ι → 𝔸ᶠ[K] ↦ x i) '' (T '' (C ×ˢ B))`. Establish `hS : IsCompact S` using `isCompact_iUnion fun i ↦ ((hC.prod hB).image hT).image (continuous_apply i)`. Take `⟨L, hL⟩` from `exists_subset_idealFiniteAdeles hS`. Establish `hfin : ∀ m ∈ C, ∀ y : ι → 𝔸[K], (∀ i, GJMatrix.finPartPi ((m : Matrix ι ι 𝔸[K]) *ᵥ y) i - b i ∈ idealFiniteAdeles I) → ∀ i, (y i).2 ∈ idealFiniteAdeles L`.
+
+Introduce `m hm y hy i`. Use `hL (Set.mem_iUnion.2 ⟨i, _, ⟨(m, GJMatrix.finPartPi ((m : Matrix ι ι 𝔸[K]) *ᵥ y)), ⟨hm, fun j _ ↦ mem_vadd_idealFiniteAdeles.2 (hy j)⟩, rfl⟩, ?_⟩)` and prove the remaining obligations. Establish `h` using `fin_mulVec ((m⁻¹ : GL ι 𝔸[K]) : Matrix ι ι 𝔸[K]) ((m : Matrix ι ι 𝔸[K]) *ᵥ y) i`. Rewrite `h` using `[inv_mulVec_mulVec]`. Conclude with `h.symm`.
+
+Set `c : GL ι 𝔸[K] → ℝ` to `fun h ↦ ∑ i, ∑ j, ‖Adele2.infRingHom (((h⁻¹ : GL ι 𝔸[K]) : Matrix ι ι 𝔸[K]) i j)‖`. Apply the tactic sequence `have hc : Continuous c := continuous_finset_sum _ fun i _ ↦ continuous_finset_sum _ fun j _ ↦ (hic.comp (continuous_inv_entry i j)).norm`. Take `⟨D, hD⟩` from `hC.exists_bound_of_continuousOn hc.continuousOn`. Use `set D' := max D 1`. Establish `hD1 : 1 ≤ D'` using `le_max_right _ _`.
+
+Establish `hD0 : 0 < D'` using `zero_lt_one.trans_le hD1`. Use `set N := Fintype.card ι`. Take `⟨P, hP, hφ⟩` from `GroundTheory.Global.exists_norm_le_inv_one_add_pow φ (N * A)`. Use `⟨P * D' ^ (N * A), L, by positivity, fun m hm y ↦ ?_⟩` and prove the remaining obligations. Establish `hR0 : 0 ≤ P * D' ^ (N * A) * ∏ i, adeleWeight L A (y i)` using `mul_nonneg (by positivity) (Finset.prod_nonneg fun _ _ ↦ adeleWeight_nonneg _ _ _)`.
+
+Use `set Y := (m : Matrix ι ι 𝔸[K]) *ᵥ y`. Simplify using `only [GJMatrix.schwartzBruhatTensorPi, GJMatrix.finiteTensor, cosetIndicator_apply, Finset.prod_boole, Finset.mem_univ, true_implies]`. Distinguish the cases in `hm' : ∀ i, GJMatrix.finPartPi Y i - b i ∈ idealFiniteAdeles I`. Rewrite using `[if_pos hm', mul_one]`. Establish `hy` using `hfin m hm y hm'`.
+
+Use `set z := GJMatrix.infPartPi Y`. Establish `hcD : c m ≤ D'` using `(le_abs_self _).trans (((Real.norm_eq_abs _).symm.trans_le (hD m hm)).trans (le_max_left _ _))`. Establish `hyz : ∀ i, ‖homeomorphMixedSpace K (y i).1‖ ≤ D' * ‖z‖`. Introduce `i`. Establish `h` using `inf_mulVec ((m⁻¹ : GL ι 𝔸[K]) : Matrix ι ι 𝔸[K]) Y i`.
+
+Rewrite `h` using `[inv_mulVec_mulVec]`. Rewrite using `[h]`. Establish `h1 : ∀ j, ‖Adele2.infRingHom (((m⁻¹ : GL ι 𝔸[K]) : Matrix ι ι 𝔸[K]) i j) * homeomorphMixedSpace K (Y j).1‖ ≤ ‖Adele2.infRingHom (((m⁻¹ : GL ι 𝔸[K]) : Matrix ι ι 𝔸[K]) i j)‖ * ‖z‖` using `fun j ↦ (norm_mul_le _ _).trans (mul_le_mul_of_nonneg_left (norm_le_pi_norm z j) (norm_nonneg _))`. Establish `h2 : ∑ j, ‖Adele2.infRingHom (((m⁻¹ : GL ι 𝔸[K]) : Matrix ι ι 𝔸[K]) i j)‖ ≤ c m` using `Finset.single_le_sum (f := fun i ↦ ∑ j, ‖Adele2.infRingHom (((m⁻¹ : GL ι 𝔸[K]) : Matrix ι ι 𝔸[K]) i j)‖) (fun _ _ ↦ Finset.sum_nonneg fun _ _ ↦ norm_nonneg _) (Finset.mem_univ i)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.sum_mul]`. Use `_ ≤ D' * ‖z‖ := mul_le_mul_of_nonneg_right (h2.trans hcD) (norm_nonneg _)`. Use `set t := D' * (1 + ‖z‖)`. Establish `ht : 0 < t` using `by positivity`. Establish `hw : ∀ i, (t ^ A)⁻¹ ≤ adeleWeight L A (y i)`.
+
+Introduce `i`. Establish `h0` using `norm_nonneg (homeomorphMixedSpace K (y i).1)`. Establish `hle : 1 + ‖homeomorphMixedSpace K (y i).1‖ ≤ t`. Establish `: t = D' + D' * ‖z‖` using `by simp only [t]; ring`. Combine the linear relations using `[hyz i]`.
+
+Unfold `adeleWeight`. Rewrite using `[if_pos (hy i)]`. Conclude with `inv_anti₀ (by positivity) (pow_le_pow_left₀ (by positivity) hle A)`. Establish `hprod : (t ^ (N * A))⁻¹ ≤ ∏ i, adeleWeight L A (y i)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.prod_const, Finset.card_univ, inv_pow, ← pow_mul, mul_comm]`. Use `_ ≤ _ := Finset.prod_le_prod (fun _ _ ↦ by positivity) fun i _ ↦ hw i`. Combine the equalities or inequalities in the displayed calculation. Establish `hz : (1 + ‖z‖) ^ (N * A) ≠ 0` using `by positivity`. Establish `hD : D' ^ (N * A) ≠ 0` using `by positivity`.
+
+Simplify using `only [t, mul_pow]`. Clear the denominators using the available nonvanishing facts. Use `_ ≤ P * D' ^ (N * A) * ∏ i, adeleWeight L A (y i) := mul_le_mul_of_nonneg_left hprod (by positivity)`. Rewrite using `[if_neg hm', mul_zero, norm_zero]`. Conclude with `hR0`.
+-/
 theorem majorant_tensor (φ : 𝓢(ι → mixedSpace K, ℂ)) (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ)
     (b : ι → 𝔸ᶠ[K]) {C : Set (GL ι 𝔸[K])} (hC : IsCompact C) (A : ℕ) :
     ∃ (M : ℝ) (L : (FractionalIdeal (𝓞 K)⁰ K)ˣ), 0 ≤ M ∧ ∀ m ∈ C, ∀ y : ι → 𝔸[K],
@@ -198,6 +254,15 @@ theorem majorant_tensor (φ : 𝓢(ι → mixedSpace K, ℂ)) (I : (FractionalId
   · rw [if_neg hm', mul_zero, norm_zero]
     exact hR0
 
+/- English proof (translation)
+Rewrite `hΨ` using `[GJMatrix.schwartzBruhatPi_eq_cosetSpanPi]`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, I, b, rfl⟩` from `hG`. Conclude with `majorant_tensor φ I b hC A`.
+
+Consider the case `zero`. Conclude with `⟨0, 1, le_rfl, fun _ _ _ ↦ by simp⟩`. Consider the case `add G H _ _ hG hH`. Take `⟨M₁, L₁, h₁, hb₁⟩` from `hG`. Take `⟨M₂, L₂, h₂, hb₂⟩` from `hH`.
+
+Use `set L := fractionalIdealSupUnit L₁ L₂`. Establish `hmono : ∀ {L' : (FractionalIdeal (𝓞 K)⁰ K)ˣ}, (L' : FractionalIdeal (𝓞 K)⁰ K) ≤ L → ∀ y : ι → 𝔸[K], ∏ i, adeleWeight L' A (y i) ≤ ∏ i, adeleWeight L A (y i)` using `fun h y ↦ Finset.prod_le_prod (fun _ _ ↦ adeleWeight_nonneg _ _ _) fun i _ ↦ adeleWeight_mono h A _`. Use `⟨M₁ + M₂, L, add_nonneg h₁ h₂, fun m hm y ↦ ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Consider the case `smul r G _ hG`.
+
+Take `⟨M, L, hM, hb⟩` from `hG`. Use `⟨‖r‖ * M, L, by positivity, fun m hm y ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hb m hm y) (norm_nonneg r)`.
+-/
 theorem exists_majorant {Ψ : (ι → 𝔸[K]) → ℂ} (hΨ : Ψ ∈ GJMatrix.schwartzBruhatPi K ι)
     {C : Set (GL ι 𝔸[K])} (hC : IsCompact C) (A : ℕ) :
     ∃ (M : ℝ) (L : (FractionalIdeal (𝓞 K)⁰ K)ˣ), 0 ≤ M ∧ ∀ m ∈ C, ∀ y : ι → 𝔸[K],
@@ -231,6 +296,9 @@ theorem exists_majorant {Ψ : (ι → 𝔸[K]) → ℂ} (hΨ : Ψ ∈ GJMatrix.s
     rw [Pi.smul_apply, smul_eq_mul, norm_mul, mul_assoc]
     exact mul_le_mul_of_nonneg_left (hb m hm y) (norm_nonneg r)
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.DYga2.main μ hA hd`.
+-/
 theorem packing {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure] {A : ℕ}
     (hA : Module.finrank ℝ E < A) (hd : 0 < Module.finrank ℝ E) :
@@ -239,6 +307,13 @@ theorem packing {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDi
       ∑ y ∈ F, ((1 + ‖y‖) ^ A)⁻¹ ≤ c * (1 + η⁻¹) :=
   _root_.UpperTheory.Reformulated.B.DYga2.main μ hA hd
 
+/- English proof (translation)
+Take `⟨d, hd0, hd⟩` from `exists_mul_mem_integralFiniteAdeles_of_isCompact (isCompact_idealFiniteAdeles L)`. Establish `hdK : algebraMap (𝓞 K) K d ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr hd0`. Use `set u : Kˣ := Units.mk0 _ hdK`. Establish `hu : 0 < finiteModule (diagonal K u)` using `finiteModule_pos _`. Use `⟨(finiteModule (diagonal K u))⁻¹, by positivity, fun τ hτ ↦ ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : finiteModule (diagonal K u * τ) ≤ 1`. Rewrite using `[finiteModule, finprod_eq_prod _ (finite_mulSupport_norm _)]`. Use `Finset.prod_le_one (fun _ _ ↦ norm_nonneg _) fun v _ ↦ ?_` and prove the remaining obligations. Establish `h2` using `hd _ hτ v`. Establish `h3 : ((diagonal K u * τ : IdeleGroup K) : 𝔸[K]).2 v ∈ v.adicCompletionIntegers K`.
+
+Simplify `h2` using `[coe_diagonal, u]`. Conclude with `(Valued.toNormedField.norm_le_one_iff).2 ((HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 K) K v).1 h3)`. Rewrite `h1` using `[finiteModule_mul]`. Rewrite using `[← one_div, le_div_iff₀' hu]`. Conclude with `h1`.
+-/
 theorem exists_finiteModule_le (L : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     ∃ c : ℝ, 0 < c ∧ ∀ τ : IdeleGroup K, (τ : 𝔸[K]).2 ∈ idealFiniteAdeles L → finiteModule τ ≤ c := by
   obtain ⟨d, hd0, hd⟩ := exists_mul_mem_integralFiniteAdeles_of_isCompact (isCompact_idealFiniteAdeles L)
@@ -258,6 +333,17 @@ theorem exists_finiteModule_le (L : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
   rw [← one_div, le_div_iff₀' hu]
   exact h1
 
+/- English proof (translation)
+Use `set u : Kˣ := Units.mk0 (a - a') (sub_ne_zero.2 hne)`. Use `set τ : IdeleGroup K := t * diagonal K u`. Establish `hτ : (τ : 𝔸[K]) = (t : 𝔸[K]) * algebraMap K 𝔸[K] a - (t : 𝔸[K]) * algebraMap K 𝔸[K] a'`. Simplify using `[τ, u, coe_diagonal, mul_sub, map_sub]`. Establish `hmem : (τ : 𝔸[K]).2 ∈ idealFiniteAdeles L`.
+
+Rewrite using `[hτ]`. Conclude with `sub_mem ha ha'`. Establish `hmod : (ideleModule K τ : ℝ) = (ideleModule K t : ℝ)`. Simplify using `[τ, ideleModule_diagonal]`. Use `set Z := ‖homeomorphMixedSpace K ((t : 𝔸[K]) * algebraMap K 𝔸[K] a).1 - homeomorphMixedSpace K ((t : 𝔸[K]) * algebraMap K 𝔸[K] a').1‖`.
+
+Establish `hZ : ‖homeomorphMixedSpace K (τ : 𝔸[K]).1‖ = Z`. Establish `: homeomorphMixedSpace K (τ : 𝔸[K]).1 = homeomorphMixedSpace K ((t : 𝔸[K]) * algebraMap K 𝔸[K] a).1 - homeomorphMixedSpace K ((t : 𝔸[K]) * algebraMap K 𝔸[K] a').1`. Rewrite using `[hτ]`. Conclude with `map_sub (Adele2.infRingHom (K := K)) _ _`. Rewrite using `[this]`.
+
+Establish `hinf : infiniteModule τ ≤ Z ^ Module.finrank ℚ K`. Rewrite using `[infiniteModule, ← InfinitePlace.sum_mult_eq, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_le_prod (fun _ _ ↦ by positivity) fun w _ ↦ pow_le_pow_left₀ (norm_nonneg _) ?_ _` and prove the remaining obligations. Rewrite using `[← hZ]`. Conclude with `norm_le_norm_homeomorphMixedSpace _ w`.
+
+Rewrite using `[div_le_iff₀ hc0, ← hmod, ideleModule_apply]`. Conclude with `mul_le_mul hinf (hc τ hmem) (finiteModule_pos τ).le (by positivity)`.
+-/
 theorem sep_adele {L : (FractionalIdeal (𝓞 K)⁰ K)ˣ} {c : ℝ} (hc0 : 0 < c)
     (hc : ∀ τ : IdeleGroup K, (τ : 𝔸[K]).2 ∈ idealFiniteAdeles L → finiteModule τ ≤ c)
     (t : IdeleGroup K) {a a' : K} (ha : ((t : 𝔸[K]) * algebraMap K 𝔸[K] a).2 ∈ idealFiniteAdeles L)
@@ -291,6 +377,25 @@ theorem sep_adele {L : (FractionalIdeal (𝓞 K)⁰ K)ˣ} {c : ℝ} (hc0 : 0 < c
   rw [div_le_iff₀ hc0, ← hmod, ideleModule_apply]
   exact mul_le_mul hinf (hc τ hmem) (finiteModule_pos τ).le (by positivity)
 
+/- English proof (translation)
+Establish `hfr : Module.finrank ℝ (mixedSpace K) = Module.finrank ℚ K` using `mixedEmbedding.finrank K`. Establish `hd : 0 < Module.finrank ℚ K` using `Module.finrank_pos`. Take `⟨P, hP, hpack⟩` from `packing (E := mixedSpace K) (volume : Measure (mixedSpace K)) (A := A) (by rw [hfr]; exact hA) (by rw [hfr]; exact hd)`. Take `⟨c₁, hc₁, hfin⟩` from `exists_finiteModule_le L`. Use `⟨P * max 1 c₁, by positivity, fun t ↦ ?_⟩` and prove the remaining obligations.
+
+Use `set s : ℝ := (ideleModule K t : ℝ)`. Establish `hs : 0 < s` using `(ideleModule K t).2`. Use `set f : K → ℝ := fun a ↦ adeleWeight L A ((t : 𝔸[K]) * algebraMap K 𝔸[K] a)`. Use `set Y : K → mixedSpace K := fun a ↦ homeomorphMixedSpace K ((t : 𝔸[K]) * algebraMap K 𝔸[K] a).1`. Establish `hf0 : ∀ a, 0 ≤ f a` using `fun a ↦ adeleWeight_nonneg _ _ _`.
+
+Establish `hbound : ∀ F : Finset K, ∑ a ∈ F, f a ≤ P * max 1 c₁ * (1 + s⁻¹)`. Introduce `F`. Use `set F' := F.filter fun a ↦ ((t : 𝔸[K]) * algebraMap K 𝔸[K] a).2 ∈ idealFiniteAdeles L`. Establish `hF' : ∀ a ∈ F', ((t : 𝔸[K]) * algebraMap K 𝔸[K] a).2 ∈ idealFiniteAdeles L` using `fun a ha ↦ (Finset.mem_filter.1 ha).2`. Establish `hsep : ∀ a ∈ F', ∀ a' ∈ F', a ≠ a' → s / c₁ ≤ ‖Y a - Y a'‖ ^ Module.finrank ℚ K` using `fun a ha a' ha' hne ↦ sep_adele hc₁ hfin t (hF' a ha) (hF' a' ha') hne`.
+
+Establish `hη : 0 < s / c₁` using `by positivity`. Establish `hinj : Set.InjOn Y F'`. Introduce `a ha a' ha' h`. Assume the negation of the conclusion as `hne`. Use `hsep a ha a' ha' hne` as an intermediate fact.
+
+Rewrite `this` using `[h, sub_self, norm_zero, zero_pow hd.ne']`. Conclude with `absurd this (not_le.2 hη)`. Establish `h1 : ∑ a ∈ F, f a = ∑ y ∈ F'.image Y, ((1 + ‖y‖) ^ A)⁻¹`. Rewrite using `[Finset.sum_image hinj, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun a _ ↦ ?_` and prove the remaining obligations.
+
+Simplify using `only [f, Y, adeleWeight]`. Establish `h2` using `hpack (s / c₁) hη (F'.image Y) (by`. Introduce `y hy y' hy' hne`. Take `⟨a, ha, rfl⟩` from `Finset.mem_image.1 hy`. Take `⟨a', ha', rfl⟩` from `Finset.mem_image.1 hy'`.
+
+Rewrite using `[hfr]`. Conclude with `hsep a ha a' ha' fun h ↦ hne (by rw [h]))`. Rewrite using `[h1]`. Use `h2.trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`.
+
+Use `mul_le_mul_of_nonneg_left ?_ hP` and prove the remaining obligations. Establish `h3 : (s / c₁)⁻¹ = c₁ * s⁻¹` using `by field_simp`. Rewrite using `[h3]`. Establish `h4 : 1 ≤ max 1 c₁` using `le_max_left _ _`. Establish `h5 : c₁ ≤ max 1 c₁` using `le_max_right _ _`.
+
+Establish `h6 : 0 ≤ s⁻¹` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `hsum : Summable f` using `summable_of_sum_le hf0 hbound`. Conclude with `⟨hsum, hsum.tsum_le_of_sum_le hbound⟩`.
+-/
 theorem theta_bound (L : (FractionalIdeal (𝓞 K)⁰ K)ˣ) {A : ℕ} (hA : Module.finrank ℚ K < A) :
     ∃ c : ℝ, 0 ≤ c ∧ ∀ t : IdeleGroup K,
       Summable (fun a : K ↦ adeleWeight L A ((t : 𝔸[K]) * algebraMap K 𝔸[K] a)) ∧
@@ -344,12 +449,22 @@ theorem theta_bound (L : (FractionalIdeal (𝓞 K)⁰ K)ˣ) {A : ℕ} (hA : Modu
   have hsum : Summable f := summable_of_sum_le hf0 hbound
   exact ⟨hsum, hsum.tsum_le_of_sum_le hbound⟩
 
+/- English proof (translation)
+Break down `le_or_gt 1 s with h | h` into its components or cases. Conclude with `(Real.rpow_le_rpow_of_exponent_le h hxb).trans (le_add_of_nonneg_left (by positivity))`. Conclude with `(Real.rpow_le_rpow_of_exponent_ge hs h.le hax).trans (le_add_of_nonneg_right (by positivity))`.
+-/
 theorem rpow_le_add {s a x b : ℝ} (hs : 0 < s) (hax : a ≤ x) (hxb : x ≤ b) :
     s ^ x ≤ s ^ a + s ^ b := by
   rcases le_or_gt 1 s with h | h
   · exact (Real.rpow_le_rpow_of_exponent_le h hxb).trans (le_add_of_nonneg_left (by positivity))
   · exact (Real.rpow_le_rpow_of_exponent_ge hs h.le hax).trans (le_add_of_nonneg_right (by positivity))
 
+/- English proof (translation)
+Establish `hx : 0 < s ^ x` using `by positivity`. Establish `hy : 0 < s ^ (x - n)` using `by positivity`. Break down `le_or_gt 1 s with h | h` into its components or cases. Establish `h1 : 1 + s⁻¹ ≤ 2`. Use `inv_le_one_of_one_le₀ h` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : 1 + s⁻¹ ≤ 2 * s⁻¹`. Use `(one_le_inv₀ hs).2 h.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h2 : s ^ (x - n) = (s⁻¹) ^ n * s ^ x`. Rewrite using `[Real.rpow_sub hs, Real.rpow_natCast, inv_pow]`. Clear the denominators using the available nonvanishing facts. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem one_add_inv_pow_mul_rpow_le {s : ℝ} (hs : 0 < s) (x : ℝ) (n : ℕ) :
     (1 + s⁻¹) ^ n * s ^ x ≤ 2 ^ n * (s ^ x + s ^ (x - n)) := by
   have hx : 0 < s ^ x := by positivity
@@ -370,6 +485,21 @@ theorem one_add_inv_pow_mul_rpow_le {s : ℝ} (hs : 0 < s) (x : ℝ) (n : ℕ) :
       _ = 2 ^ n * s ^ (x - n) := by rw [h2, mul_pow]; ring
       _ ≤ 2 ^ n * (s ^ x + s ^ (x - n)) := by gcongr; linarith
 
+/- English proof (translation)
+Use `set S : Finset K := F.biUnion fun ν ↦ Finset.univ.image ν`. Use `set E := {j : ι // j ≠ i}`. Use `set res : (ι → K) → E → K := fun ν j ↦ ν j`. Establish `hinj : Set.InjOn res F`. Introduce `ν hν μ hμ h`.
+
+Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Rewrite using `[hj, hF ν hν, hF μ hμ]`. Conclude with `congrFun h ⟨j, hj⟩`. Establish `hsplit : ∀ ν ∈ F, ∏ j, f (ν j) = f 1 * ∏ j : E, f (res ν j)`.
+
+Introduce `ν hν`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ i), hF ν hν]`. Use `congr 1`. Use `(Finset.prod_subtype (Finset.univ.erase i) (fun j ↦ ?_) _)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Establish `hT : ∑ a ∈ S, f a ≤ ∑' a, f a` using `hs.sum_le_tsum _ fun a _ ↦ hf a`. Establish `hS0 : 0 ≤ ∑ a ∈ S, f a` using `Finset.sum_nonneg fun a _ ↦ hf a`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl hsplit`.
+
+Use `_ = f 1 * ∑ p ∈ F.image res, ∏ j : E, f (p j) := by`. Rewrite using `[Finset.sum_image hinj]`. Use `_ ≤ f 1 * ∑ p ∈ Fintype.piFinset fun _ : E ↦ S, ∏ j : E, f (p j) := by`. Use `mul_le_mul_of_nonneg_left (Finset.sum_le_sum_of_subset_of_nonneg ?_ fun p _ _ ↦ Finset.prod_nonneg fun j _ ↦ hf _) (hf 1)` and prove the remaining obligations. Introduce `p hp`.
+
+Take `⟨ν, hν, rfl⟩` from `Finset.mem_image.1 hp`. Use `Fintype.mem_piFinset.2 fun j ↦ Finset.mem_biUnion.2 ⟨ν, hν, ?_⟩` and prove the remaining obligations. Conclude with `Finset.mem_image_of_mem _ (Finset.mem_univ _)`. Use `_ = f 1 * (∑ a ∈ S, f a) ^ (Fintype.card ι - 1) := by`. Rewrite using `[← Finset.prod_univ_sum, Finset.prod_const, Finset.card_univ]`.
+
+Use `congr 2`. Simplify using `[E, Fintype.card_subtype_compl]`. Use `_ ≤ f 1 * (∑' a, f a) ^ (Fintype.card ι - 1) := by gcongr; exact hf 1`.
+-/
 theorem sum_prod_le {f : K → ℝ} (hf : ∀ a, 0 ≤ f a) (hs : Summable f) {i : ι} (F : Finset (ι → K))
     (hF : ∀ ν ∈ F, ν i = 1) :
     ∑ ν ∈ F, ∏ j, f (ν j) ≤ f 1 * (∑' a, f a) ^ (Fintype.card ι - 1) := by
@@ -411,12 +541,21 @@ theorem sum_prod_le {f : K → ℝ} (hf : ∀ a, 0 ≤ f a) (hs : Summable f) {i
 def tw (L : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (A : ℕ) (t : IdeleGroup K) (a : K) : ℝ :=
   adeleWeight L A ((t : 𝔸[K]) * algebraMap K 𝔸[K] a)
 
+/- English proof (translation)
+The claim follows from `adeleWeight_nonneg _ _ _`.
+-/
 theorem tw_nonneg (L : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (A : ℕ) (t : IdeleGroup K) (a : K) :
     0 ≤ tw L A t a := adeleWeight_nonneg _ _ _
 
+/- English proof (translation)
+The claim follows from `adeleWeight_le_one _ _ _`.
+-/
 theorem tw_le_one (L : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (A : ℕ) (t : IdeleGroup K) (a : K) :
     tw L A t a ≤ 1 := adeleWeight_le_one _ _ _
 
+/- English proof (translation)
+The claim follows from `(continuous_adeleWeight L A).comp (Units.continuous_val.mul continuous_const)`.
+-/
 theorem continuous_tw (L : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (A : ℕ) (a : K) :
     Continuous fun t : IdeleGroup K ↦ tw L A t a :=
   (continuous_adeleWeight L A).comp (Units.continuous_val.mul continuous_const)
@@ -427,28 +566,48 @@ def lineFn (L : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (A : ℕ) (x : ℝ) (ν : ι 
 def lineInt (L : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (A : ℕ) (x : ℝ) (ν : ι → K) : ℝ :=
   ∫ t, lineFn L A x ν t ∂ideleMeasure K
 
+/- English proof (translation)
+The claim follows from `mul_nonneg (Finset.prod_nonneg fun _ _ ↦ tw_nonneg _ _ _ _) (Real.rpow_nonneg (ideleModule K t).2.le _)`.
+-/
 theorem lineFn_nonneg (L : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (A : ℕ) (x : ℝ) (ν : ι → K) (t : IdeleGroup K) :
     0 ≤ lineFn L A x ν t :=
   mul_nonneg (Finset.prod_nonneg fun _ _ ↦ tw_nonneg _ _ _ _) (Real.rpow_nonneg (ideleModule K t).2.le _)
 
+/- English proof (translation)
+The claim follows from `integral_nonneg fun t ↦ lineFn_nonneg L A x ν t`.
+-/
 theorem lineInt_nonneg (L : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (A : ℕ) (x : ℝ) (ν : ι → K) :
     0 ≤ lineInt L A x ν := integral_nonneg fun t ↦ lineFn_nonneg L A x ν t
 
+/- English proof (translation)
+The claim follows from `(continuous_finset_prod _ fun j _ ↦ continuous_tw L A (ν j)).mul (continuous_ideleModule_val.rpow_const fun _ ↦ Or.inr hx)`.
+-/
 theorem continuous_lineFn (L : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (A : ℕ) {x : ℝ} (hx : 0 ≤ x) (ν : ι → K) :
     Continuous (lineFn L A x ν) :=
   (continuous_finset_prod _ fun j _ ↦ continuous_tw L A (ν j)).mul
     (continuous_ideleModule_val.rpow_const fun _ ↦ Or.inr hx)
 
+/- English proof (translation)
+Simplify using `only [lineFn, tw, map_mul, Units.val_mul, coe_diagonal, ideleModule_diagonal, mul_one, mul_assoc]`.
+-/
 theorem lineFn_mul_diagonal (L : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (A : ℕ) (x : ℝ) (ν : ι → K) (c : Kˣ)
     (t : IdeleGroup K) :
     lineFn L A x ν (t * diagonal K c) = lineFn L A x (fun j ↦ (c : K) * ν j) t := by
   simp only [lineFn, tw, map_mul, Units.val_mul, coe_diagonal, ideleModule_diagonal, mul_one, mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [lineInt, ← lineFn_mul_diagonal]`. Conclude with `integral_mul_right_eq_self (lineFn L A x ν) (diagonal K c)`.
+-/
 theorem lineInt_smul (L : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (A : ℕ) (x : ℝ) (ν : ι → K) (c : Kˣ) :
     lineInt L A x (fun j ↦ (c : K) * ν j) = lineInt L A x ν := by
   simp only [lineInt, ← lineFn_mul_diagonal]
   exact integral_mul_right_eq_self (lineFn L A x ν) (diagonal K c)
 
+/- English proof (translation)
+Use `hI.mono' (continuous_lineFn L A hx ν).aestronglyMeasurable (Eventually.of_forall fun t ↦ ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (lineFn_nonneg L A x ν t)]`. Use `mul_le_mul_of_nonneg_right ?_ (Real.rpow_nonneg (ideleModule K t).2.le _)` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ i), hν]`. Establish `h1 : tw L A t 1 = adeleWeight L A (t : 𝔸[K])` using `by simp [tw]`.
+
+Rewrite using `[h1]`. Conclude with `mul_le_of_le_one_right (adeleWeight_nonneg _ _ _) (Finset.prod_le_one (fun _ _ ↦ tw_nonneg _ _ _ _) fun _ _ ↦ tw_le_one _ _ _ _)`.
+-/
 theorem integrable_lineFn {L : (FractionalIdeal (𝓞 K)⁰ K)ˣ} {A : ℕ} {x : ℝ} (hx : 0 ≤ x)
     (hI : Integrable (fun t : IdeleGroup K ↦ adeleWeight L A (t : 𝔸[K]) * (ideleModule K t : ℝ) ^ x)
       (ideleMeasure K)) {ν : ι → K} {i : ι} (hν : ν i = 1) :
@@ -462,6 +621,19 @@ theorem integrable_lineFn {L : (FractionalIdeal (𝓞 K)⁰ K)ˣ} {A : ℕ} {x :
   exact mul_le_of_le_one_right (adeleWeight_nonneg _ _ _)
     (Finset.prod_le_one (fun _ _ ↦ tw_nonneg _ _ _ _) fun _ _ ↦ tw_le_one _ _ _ _)
 
+/- English proof (translation)
+Use `set n := Fintype.card ι - 1`. Use `set B : IdeleGroup K → ℝ := fun t ↦ c ^ n * 2 ^ n * (adeleWeight L A (t : 𝔸[K]) * (ideleModule K t : ℝ) ^ x + adeleWeight L A (t : 𝔸[K]) * (ideleModule K t : ℝ) ^ (x - (n : ℝ)))`. Establish `hB : Integrable B (ideleMeasure K)` using `(hI₁.add hI₂).const_mul _`. Use `summable_of_sum_le (c := ∫ t, B t ∂ideleMeasure K) (fun ν ↦ by split_ifs; exacts [lineInt_nonneg _ _ _ _, le_rfl]) fun F ↦ ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter]`.
+
+Use `set F' := F.filter fun ν ↦ ν i = 1`. Establish `hF' : ∀ ν ∈ F', ν i = 1` using `fun ν hν ↦ (Finset.mem_filter.1 hν).2`. Establish `hint : ∀ ν ∈ F', Integrable (lineFn L A x ν) (ideleMeasure K)` using `fun ν hν ↦ integrable_lineFn (by linarith) hI₁ (hF' ν hν)`. Simplify using `only [lineInt]`. Rewrite using `[← integral_finset_sum _ hint]`.
+
+Use `integral_mono (integrable_finset_sum _ hint) hB fun t ↦ ?_` and prove the remaining obligations. Take `⟨hs, ht⟩` from `hθ t`. Use `set s : ℝ := (ideleModule K t : ℝ)`. Establish `hs0 : 0 < s` using `(ideleModule K t).2`. Establish `h1 : tw L A t 1 = adeleWeight L A (t : 𝔸[K])` using `by simp [tw]`.
+
+Establish `hw0` using `adeleWeight_nonneg L A (t : 𝔸[K])`. Establish `h2` using `sum_prod_le (fun a ↦ tw_nonneg L A t a) hs F' hF'`. Rewrite `h2` using `[h1]`. Establish `hsx : 0 ≤ s ^ x` using `by positivity`. Establish `hT0 : 0 ≤ ∑' a : K, tw L A t a` using `tsum_nonneg fun a ↦ tw_nonneg L A t a`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]`. Both sides reduce to the same expression. Use `_ ≤ (adeleWeight L A (t : 𝔸[K]) * (∑' a : K, tw L A t a) ^ n) * s ^ x := by gcongr`. Use `_ ≤ (adeleWeight L A (t : 𝔸[K]) * (c * (1 + s⁻¹)) ^ n) * s ^ x := by gcongr`.
+
+Use `_ = c ^ n * adeleWeight L A (t : 𝔸[K]) * ((1 + s⁻¹) ^ n * s ^ x) := by rw [mul_pow]; ring`. Use `_ ≤ c ^ n * adeleWeight L A (t : 𝔸[K]) * (2 ^ n * (s ^ x + s ^ (x - n))) := mul_le_mul_of_nonneg_left (one_add_inv_pow_mul_rpow_le hs0 x n) (mul_nonneg (pow_nonneg hc n) hw0)`. Use `_ = B t := by simp only [B]; ring`.
+-/
 theorem summable_lineInt {L : (FractionalIdeal (𝓞 K)⁰ K)ˣ} {A : ℕ} {x c : ℝ} (hx : 1 < x) (hc : 0 ≤ c)
     (hI₁ : Integrable (fun t : IdeleGroup K ↦ adeleWeight L A (t : 𝔸[K]) * (ideleModule K t : ℝ) ^ x)
       (ideleMeasure K))
@@ -503,6 +675,15 @@ theorem summable_lineInt {L : (FractionalIdeal (𝓞 K)⁰ K)ˣ} {A : ℕ} {x c 
         mul_le_mul_of_nonneg_left (one_add_inv_pow_mul_rpow_le hs0 x n) (mul_nonneg (pow_nonneg hc n) hw0)
     _ = B t := by simp only [B]; ring
 
+/- English proof (translation)
+Distinguish the cases in `hab : a ≤ b`. Take `⟨A₁, h₁⟩` from `integrable_weight (K := K) ha`. Take `⟨A₂, h₂⟩` from `integrable_weight (K := K) (ha.trans_le hab)`. Use `set A := max A₁ A₂`. Take `⟨M, L, hM, hb⟩` from `exists_majorant hΨ hC A`.
+
+Use `⟨fun t ↦ M * (adeleWeight L A (t : 𝔸[K]) * (ideleModule K t : ℝ) ^ a + adeleWeight L A (t : 𝔸[K]) * (ideleModule K t : ℝ) ^ b), ((h₁ L A (le_max_left _ _)).add (h₂ L A (le_max_right _ _))).const_mul M, ?_⟩` and prove the remaining obligations. Introduce `x hax hxb m hm t`. Establish `hs0 : 0 < (ideleModule K t : ℝ)` using `(ideleModule K t).2`. Establish `hsm : (t : 𝔸[K]) • ((m : Matrix ι ι 𝔸[K]) *ᵥ Pi.single i₀ 1) = (m : Matrix ι ι 𝔸[K]) *ᵥ ((t : 𝔸[K]) • Pi.single i₀ 1)` using `(Matrix.mulVec_smul _ _ _).symm`. Establish `hprod : ∏ i, adeleWeight L A (((t : 𝔸[K]) • (Pi.single i₀ 1 : ι → 𝔸[K])) i) = adeleWeight L A (t : 𝔸[K])`.
+
+Rewrite using `[Fintype.prod_eq_single i₀ fun i hi ↦ by simp [Pi.single_eq_of_ne hi]]`. Simplify using the standard rewrite rules. Establish `h3` using `hb m hm ((t : 𝔸[K]) • Pi.single i₀ 1)`. Rewrite `h3` using `[hprod, ← hsm]`. Establish `hw0` using `adeleWeight_nonneg L A (t : 𝔸[K])`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `rpow_le_add hs0 hax hxb`. Use `_ = _ := by ring`. Conclude with `⟨0, integrable_zero _ _ _, fun x hax hxb ↦ absurd (hax.trans hxb) hab⟩`.
+-/
 theorem clause_one {Ψ : (ι → 𝔸[K]) → ℂ} (hΨ : Ψ ∈ GJMatrix.schwartzBruhatPi K ι) (i₀ : ι) (a b : ℝ)
     (C : Set (GL ι 𝔸[K])) (ha : 1 < a) (hC : IsCompact C) :
     ∃ f : IdeleGroup K → ℝ, Integrable f (ideleMeasure K) ∧ ∀ x : ℝ, a ≤ x → x ≤ b → ∀ m ∈ C,
@@ -535,6 +716,33 @@ theorem clause_one {Ψ : (ι → 𝔸[K]) → ℂ} (hΨ : Ψ ∈ GJMatrix.schwar
       _ = _ := by ring
   · exact ⟨0, integrable_zero _ _ _, fun x hax hxb ↦ absurd (hax.trans hxb) hab⟩
 
+/- English proof (translation)
+Establish `hx1 : 1 < x` using `(le_max_left _ _).trans_lt hx`. Establish `hxN : (Fintype.card ι : ℝ) < x` using `(le_max_right _ _).trans_lt hx`. Use `set n := Fintype.card ι - 1`. Establish `hx2 : 1 < x - (n : ℝ)`. Break down `Nat.eq_zero_or_pos (Fintype.card ι) with h0 | h0` into its components or cases.
+
+Establish `: n = 0` using `by simp [n, h0]`. Simplify `hx1` using `[this]`. Establish `: (n : ℝ) = (Fintype.card ι : ℝ) - 1`. Simplify using `only [n]`. Rewrite using `[Nat.cast_sub h0]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨A₁, h₁⟩` from `integrable_weight (K := K) hx1`. Take `⟨A₂, h₂⟩` from `integrable_weight (K := K) hx2`.
+
+Use `set A := max (max A₁ A₂) (Module.finrank ℚ K + 1)`. Establish `hA₁ : A₁ ≤ A` using `(le_max_left _ _).trans (le_max_left _ _)`. Establish `hA₂ : A₂ ≤ A` using `(le_max_right _ _).trans (le_max_left _ _)`. Establish `hAd : Module.finrank ℚ K < A` using `Nat.lt_of_succ_le (le_max_right _ _)`. Take `⟨M, L, hM, hb⟩` from `exists_majorant hΨ hC A`.
+
+Take `⟨c, hc, hθ⟩` from `theta_bound L hAd`. Establish `hsum` using `summable_lineInt (ι := ι) hx1 hc (h₁ L A hA₁) (h₂ L A hA₂) hθ`. Establish `hex : ∀ l : Projectivization K (ι → K), ∃ i, l.rep i ≠ 0` using `fun l ↦ by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+
+Conclude with `l.rep_nonzero (funext h)`. Use `choose ix hix using hex`. Use `set ν : Projectivization K (ι → K) → ι → K := fun l j ↦ (l.rep (ix l))⁻¹ * l.rep j`. Establish `hν1 : ∀ l, ν l (ix l) = 1` using `fun l ↦ inv_mul_cancel₀ (hix l)`. Establish `hinj : Function.Injective ν`.
+
+Introduce `l l' h`. Rewrite using `[← l.mk_rep, ← l'.mk_rep, Projectivization.mk_eq_mk_iff']`. Use `⟨(l.rep (ix l)) * (l'.rep (ix l'))⁻¹, funext fun j ↦ ?_⟩` and prove the remaining obligations. Use `congrFun h j` as an intermediate fact. Simplify using `only [ν] at this`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[mul_assoc, ← this, ← mul_assoc, mul_inv_cancel₀ (hix l), one_mul]`. Use `⟨fun l ↦ M * ∑ i, if ν l i = 1 then lineInt L A x (ν l) else 0, (summable_sum fun i _ ↦ (hsum i).comp_injective hinj).mul_left M, ?_⟩` and prove the remaining obligations. Introduce `m hm l`. Establish `hlin : lineInt L A x (ν l) = lineInt L A x l.rep` using `lineInt_smul L A x l.rep (Units.mk0 _ (inv_ne_zero (hix l)))`.
+
+Establish `hle : lineInt L A x (ν l) ≤ ∑ i, if ν l i = 1 then lineInt L A x (ν l) else 0`. Use `Finset.single_le_sum (f := fun i ↦ if ν l i = 1 then lineInt L A x (ν l) else 0) (fun i _ ↦ by split_ifs; exacts [lineInt_nonneg _ _ _ _, le_rfl]) (Finset.mem_univ (ix l))` as an intermediate fact. Simplify `this` using `only [hν1, if_true]`. Establish `hintν : Integrable (lineFn L A x (ν l)) (ideleMeasure K)` using `integrable_lineFn (by linarith) (h₁ L A hA₁) (hν1 l)`. Establish `hintr : Integrable (lineFn L A x l.rep) (ideleMeasure K)`.
+
+Establish `h` using `hintν.comp_mul_right (diagonal K (Units.mk0 _ (hix l)))`. Use `h.congr (Eventually.of_forall fun t ↦ ?_)` and prove the remaining obligations. Simplify using `only [lineFn_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Simplify using `only [ν, Units.val_mk0]`. Rewrite using `[← mul_assoc, mul_inv_cancel₀ (hix l), one_mul]`. Use `le_trans ?_ (mul_le_mul_of_nonneg_left hle hM)` and prove the remaining obligations. Rewrite using `[hlin, lineInt, ← integral_const_mul]`. Use `integral_mono_of_nonneg (Eventually.of_forall fun t ↦ by` and prove the remaining obligations.
+
+Conclude with `mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (ideleModule K t).2.le _)) (hintr.const_mul M)`. Use the proof step `(Eventually.of_forall fun t ↦ ?_)`. Establish `hsm : (t : 𝔸[K]) • ((m : Matrix ι ι 𝔸[K]) *ᵥ ratV l.rep) = (m : Matrix ι ι 𝔸[K]) *ᵥ ((t : 𝔸[K]) • ratV l.rep)` using `(Matrix.mulVec_smul _ _ _).symm`. Establish `h3` using `hb m hm ((t : 𝔸[K]) • ratV l.rep)`. Rewrite `h3` using `[← hsm]`.
+
+Establish `hs0 : 0 ≤ (ideleModule K t : ℝ) ^ x` using `Real.rpow_nonneg (ideleModule K t).2.le _`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [lineFn, tw, mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem clause_two {Ψ : (ι → 𝔸[K]) → ℂ} (hΨ : Ψ ∈ GJMatrix.schwartzBruhatPi K ι) (x : ℝ)
     (C : Set (GL ι 𝔸[K])) (hx : max 1 (Fintype.card ι : ℝ) < x) (hC : IsCompact C) :
     ∃ u : Projectivization K (ι → K) → ℝ, Summable u ∧ ∀ m ∈ C, ∀ l,
@@ -612,6 +820,9 @@ theorem clause_two {Ψ : (ι → 𝔸[K]) → ℂ} (hΨ : Ψ ∈ GJMatrix.schwar
         simp only [lineFn, tw, mul_assoc]
         rfl
 
+/- English proof (translation)
+The claim follows from `fun _ _ _ _ _ _ _ hΨ ↦ ⟨fun i₀ a b C ha hC ↦ clause_one hΨ i₀ a b C ha hC, fun x C hx hC ↦ clause_two hΨ x C hx hC⟩`.
+-/
 theorem epConv : EpConv := fun _ _ _ _ _ _ _ hΨ ↦
   ⟨fun i₀ a b C ha hC ↦ clause_one hΨ i₀ a b C ha hC, fun x C hx hC ↦ clause_two hΨ x C hx hC⟩
 

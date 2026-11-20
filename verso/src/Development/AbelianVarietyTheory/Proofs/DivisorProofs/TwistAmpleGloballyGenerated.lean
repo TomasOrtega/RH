@@ -14,6 +14,13 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 
 namespace GlobalTheory.ProjVar
 
+/- English proof (translation)
+Introduce `Y L hL`. Take `⟨s, hs⟩` from `exists_veryAmpleBy_O1 Y`. Establish `hH : ((ProjSpace.O1 ℂ Y.N).pull Y.ι).IsLB` using `pull_isLB (ProjSpace.O1_isLB ℂ Y.N) _`. Generalize the expression as in `(ProjSpace.O1 ℂ Y.N).pull Y.ι = H at s hs hH`. Take `⟨t₀, ht⟩` from `GlobalTheory.TwistGen.twist_generated ℂ Y.X Y.str H _ s hH hs L hL`.
+
+Use `⟨t₀.toNat, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨n, u, hu⟩` from `ht m (by omega)`. Establish `hP : (lbPow H m).IsLB` using `DVR.linComb_isLB H hH _ _`. Establish `hT : (CechPic.tens L (lbPow H m)).IsLB` using `isLB_tens hL hP`. Establish `e : cls (AbLaw.tw L H m) (AbLaw.isLB_tw hL hH _) = cls L hL - cls (AbLaw.pw H (-(m : ℤ))) (AbLaw.isLB_pw hH _)` using `cls_div hL (AbLaw.isLB_pw hH _) (AbLaw.isLB_tw hL hH _)`.
+
+Establish `e' : cls (AbLaw.tw L H m) (AbLaw.isLB_tw hL hH _) = cls _ hT`. Rewrite using `[e, GlobalTheory.AmpleStabFinite.cls_pw hH, cls_tens hL hP, cls_lbPow hH, neg_zsmul, natCast_zsmul, sub_neg_eq_add]`. Take `⟨v, hv⟩` from `exists_generating_secs_of_cls_eq _ _ _ _ hT e' _ u hu`. Conclude with `⟨_, v, hv⟩`.
+-/
 theorem exists_generating_secs_tens_lbPow_O1 : ∀ (Y : Var ℂ) (L : LB Y.X), L.IsLB → ∃ m₀ : ℕ, ∀ m : ℕ, m₀ ≤ m → ∃ (n : ℕ) (u : Fin n → (CechPic.tens L (lbPow ((ProjSpace.O1 ℂ Y.N).pull Y.ι) m)).Sec), ⨆ i, nonzeroLocus (u i) = ⊤ := by
   intro Y L hL
   obtain ⟨s, hs⟩ := exists_veryAmpleBy_O1 Y

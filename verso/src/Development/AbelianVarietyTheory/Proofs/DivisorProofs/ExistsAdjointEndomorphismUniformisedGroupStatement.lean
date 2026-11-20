@@ -9,5 +9,8 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mum.GroupAdjoint.exists_adjoint_on_group | exact GlobalTheory.Mum.GroupAdjoint.exists_adjoint_on_group | (intros; apply GlobalTheory.Mum.GroupAdjoint.exists_adjoint_on_group <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_adjoint_endomorphism_uniformised_group : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ g : G ⟶ G, IsMonHom g → ∃ g' : G ⟶ G, IsMonHom g' ∧ LBIso (cubeLB G ![fst G G ≫ g, snd G G] U.LG.L) (cubeLB G ![fst G G, snd G G ≫ g'] U.LG.L) := by
   first | exact @GlobalTheory.Mum.GroupAdjoint.exists_adjoint_on_group | exact GlobalTheory.Mum.GroupAdjoint.exists_adjoint_on_group | (intros; apply GlobalTheory.Mum.GroupAdjoint.exists_adjoint_on_group <;> assumption)

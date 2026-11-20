@@ -13,6 +13,17 @@ namespace GlobalTheory.RallisEuler
 
 open GlobalTheory.LFun in
 
+/- English proof (translation)
+Introduce `D χ Sf n hU`. Use `⟨(n : ℝ) / 2 + 1, fun s hs => ?_⟩` and prove the remaining obligations. Establish `hs' : (n : ℝ) / 2 + 1 < s.re` using `hs`. Use `set T := above D.host.E (Sf : Set (FinPl D)) with hT`. Establish `hc : ∀ i ∈ Finset.range n, HasProd (fun w : {w // w ∉ T} => locL (charFam χ⁻¹) w.1 (s + (n : ℂ) / 2 - i)) (charL χ⁻¹ (Sf : Set (FinPl D)) (s + (n : ℂ) / 2 - i))`.
+
+Introduce `i hi`. Establish `hi' : (i : ℝ) + 1 ≤ n` using `by exact_mod_cast Finset.mem_range.1 hi`. Use `(converges_charFam T χ⁻¹ ?_).hasProd` and prove the remaining obligations. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hp` using `hasProd_prod hc`. Use `show (∏ i ∈ Finset.range n, charL χ⁻¹ (Sf : Set (FinPl D)) (s + (n : ℂ) / 2 - i)) = LSD D Sf (GlobalTheory.BottomRallis.trivPar n) χ (s + 1 / 2)`. Rewrite using `[← hp.tprod_eq]`. Unfold `LSD LSTw LS eulerProd`. Use `tprod_congr fun w => ?_` and prove the remaining obligations.
+
+Establish `hw : UnrAt χ⁻¹ w.1` using `(hU w.1 w.2).inv`. Rewrite using `[GlobalTheory.BottomRallis.trivPar, twist_segFam, locL_segFam']`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[locL, locL, charFam_of_unrAt hw, val_inv]`. Use `congr 2`.
+
+Simplify using the standard rewrite rules. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trivPar_euler : ∀ {D : D7} (χ : (AE D)ˣ →* Circle) (Sf : Finset (FinPl D)) (n : ℕ), GlobalTheory.LFun.UnrOff χ (Sf : Set (FinPl D)) → EqRight (fun s => ∏ i ∈ Finset.range n, GlobalTheory.LFun.charL χ⁻¹ (Sf : Set (FinPl D)) (s + (n : ℂ) / 2 - i)) (fun s => GlobalTheory.LFun.LSD D Sf (GlobalTheory.BottomRallis.trivPar n) χ (s + 1 / 2)) := by
   intro D χ Sf n hU
   refine ⟨(n : ℝ) / 2 + 1, fun s hs => ?_⟩

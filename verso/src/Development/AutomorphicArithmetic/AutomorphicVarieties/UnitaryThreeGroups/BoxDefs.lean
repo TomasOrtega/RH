@@ -21,14 +21,23 @@ def form6 (O : Type) [CommRing O] : FormData O wt6 where
   hw a b h := by
     rcases a with a | a <;> rcases b with b | b <;> fin_cases a <;> fin_cases b <;> simp [Jmat] at h <;> first | rfl | exact absurd rfl h
 
+/- English proof (translation)
+Simplify using `[FormData.JR, form6, Matrix.fromBlocks_map, Jmat_map]`.
+-/
 theorem blockPairingForm_JR (O R : Type) [CommRing O] [CommRing R] [Algebra O R] :
     (form6 O).JR R = Matrix.fromBlocks 0 (Jmat R 3) (Jmat R 3) 0 := by
   simp [FormData.JR, form6, Matrix.fromBlocks_map, Jmat_map]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem emb_apply {m : ℕ} {R : Type*} [CommRing R] (x : GG m R) :
     emb x = if x.right = 1 then Matrix.fromBlocks x.mat 0 0 (theta x.left : GL (Fin m) R)
       else Matrix.fromBlocks 0 x.mat (theta x.left : GL (Fin m) R) 0 := rfl
 
+/- English proof (translation)
+Establish `h : (theta (GG.map f x).left : Matrix (Fin m) (Fin m) S) = (theta x.left : Matrix (Fin m) (Fin m) R).map f` using `(congrArg Units.val (map_theta f x.left)).symm`. Rewrite using `[emb_apply, emb_apply, h, GG.map_mat, GG.map_right]`. Apply the tactic sequence `split_ifs <;> simp [Matrix.fromBlocks_map]`.
+-/
 theorem emb_map' {m : ℕ} {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S) (x : GG m R) :
     emb (GG.map f x) = (emb x).map f := by
   have h : (theta (GG.map f x).left : Matrix (Fin m) (Fin m) S) = (theta x.left : Matrix (Fin m) (Fin m) R).map f :=
@@ -36,17 +45,28 @@ theorem emb_map' {m : ℕ} {R S : Type*} [CommRing R] [CommRing S] (f : R →+* 
   rw [emb_apply, emb_apply, h, GG.map_mat, GG.map_right]
   split_ifs <;> simp [Matrix.fromBlocks_map]
 
+/- English proof (translation)
+Rewrite using `[emb_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem mat_eq_emb' {m : ℕ} {R : Type*} [CommRing R] (x : GG m R) (a b : Fin m) :
     x.mat a b = emb x (.inl a) (.inl b) + emb x (.inl a) (.inr b) := by
   rw [emb_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `SemidirectProduct.ext (Units.ext ?_) h` and prove the remaining obligations. Use extensionality with `a b`. Conclude with `(mat_eq_emb' x a b).trans (e ▸ (mat_eq_emb' y a b).symm)`.
+-/
 theorem eq_of_emb {m : ℕ} {R : Type*} [CommRing R] {x y : GG m R} (h : x.right = y.right) (e : emb x = emb y) :
     x = y := by
   refine SemidirectProduct.ext (Units.ext ?_) h
   ext a b
   exact (mat_eq_emb' x a b).trans (e ▸ (mat_eq_emb' y a b).symm)
 
+/- English proof (translation)
+Establish `h1 : x.matᵀ * Jmat R 3 * (theta x.left : GL (Fin 3) R) = Jmat R 3`. Rewrite using `[theta_val, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_assoc _ (Jmat R 3) (Jmat R 3), Jmat_mul_Jmat, Matrix.mul_one, GG.mat, ← Matrix.transpose_mul]`. Simplify using the standard rewrite rules. Establish `h2 : ((theta x.left : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R)ᵀ * Jmat R 3 * x.mat = Jmat R 3`. Use `congrArg Matrix.transpose h1` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Jmat_transpose, ← Matrix.mul_assoc]`. Then use the resulting hypothesis. Rewrite using `[blockPairingForm_JR, emb_apply]`. Apply the tactic sequence `split_ifs <;> simp [Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, h1, h2]`.
+-/
 theorem emb_form (O : Type) [CommRing O] {R : Type} [CommRing R] [Algebra O R] (x : GG 3 R) :
     (emb x)ᵀ * (form6 O).JR R * emb x = (form6 O).JR R := by
   have h1 : x.matᵀ * Jmat R 3 * (theta x.left : GL (Fin 3) R) = Jmat R 3 := by
@@ -60,11 +80,17 @@ theorem emb_form (O : Type) [CommRing O] {R : Type} [CommRing R] [Algebra O R] (
   rw [blockPairingForm_JR, emb_apply]
   split_ifs <;> simp [Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, h1, h2]
 
+/- English proof (translation)
+Rewrite `h` using `[emb_apply]`. Apply the tactic sequence `split_ifs at h ⊢ <;> rcases a with a | a <;> rcases b with b | b <;> simp at h ⊢`.
+-/
 theorem emb_blk {m : ℕ} {R : Type*} [CommRing R] (x : GG m R) (a b : Fin m ⊕ Fin m) (h : emb x a b ≠ 0) :
     a.isLeft = if x.right = 1 then b.isLeft else !b.isLeft := by
   rw [emb_apply] at h
   split_ifs at h ⊢ <;> rcases a with a | a <;> rcases b with b | b <;> simp at h ⊢
 
+/- English proof (translation)
+Rewrite using `[emb_apply, GG.mat, unitaryThreeReflection_left, theta_tor, tor_val]`. Apply the tactic sequence `split_ifs <;> rcases a with a | a <;> rcases b with b | b <;> first`. Consider the case `rfl`. Consider the case `exact Matrix.diagonal_apply_ne (i := a) (j := b) (fun i => ((Ψ g ^ wt1 i : Rˣ) : R)) (by rintro rfl; exact h rfl)`.
+-/
 theorem unitaryGroupEmbedding_baseLift_eq_zero_of_wt_ne {G R : Type} [Group G] [CommRing R] (η : G →* ℤˣ) (Ψ : G →* Rˣ) (g : G)
     (a b : Fin 3 ⊕ Fin 3) (h : wt6 a ≠ wt6 b) : emb (r0 η Ψ g) a b = 0 := by
   rw [emb_apply, GG.mat, unitaryThreeReflection_left, theta_tor, tor_val]
@@ -79,6 +105,9 @@ def sgnPerm : ℤˣ →* Equiv.Perm Bool where
   map_mul' s t := by
     rcases Int.units_eq_one_or s with rfl | rfl <;> rcases Int.units_eq_one_or t with rfl | rfl <;> decide
 
+/- English proof (translation)
+Use `⟨fun g => ⟨1, by rw [one_smul]; exact emb_form O _⟩, ⟨sgnPerm.comp η, fun g a b h => ?_⟩, fun g a b h => unitaryGroupEmbedding_baseLift_eq_zero_of_wt_ne η Ψ g a b h⟩` and prove the remaining obligations. Use `emb_blk _ a b h` as an intermediate fact. Use `show a.isLeft = (if η g = 1 then 1 else Function.Involutive.toPerm not Bool.not_not : Equiv.Perm Bool) b.isLeft`. Rewrite using `[this, unitaryThreeReflection_right]`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem blockPairingForm_normalises_baseLift (O : Type) [CommRing O] {G R : Type} [Group G] [CommRing R] [Algebra O R] (η : G →* ℤˣ)
     (Ψ : G →* Rˣ) : (form6 O).Normalises (emb.comp (r0 η Ψ)) := by
   refine ⟨fun g => ⟨1, by rw [one_smul]; exact emb_form O _⟩, ⟨sgnPerm.comp η, fun g a b h => ?_⟩,
@@ -91,6 +120,11 @@ theorem blockPairingForm_normalises_baseLift (O : Type) [CommRing O] {G R : Type
 variable {O : Type} [CommRing O] [IsLocalRing O] {Γ : Type} [Group Γ] [TopologicalSpace Γ] {η : Γ →* ℤˣ}
   {Ψ : Γ →* Oˣ} {R : Type} [CommRing R] [Algebra O R] [IsCO O R]
 
+/- English proof (translation)
+Use `SemidirectProduct.ext (Units.ext ?_) rfl` and prove the remaining obligations. Use `show (tor O (Ψ g) : Matrix (Fin 3) (Fin 3) O).map (residue O) = tor _ (barChar O Ψ g)`. Rewrite using `[tor_val, tor_val, Matrix.diagonal_map (map_zero _)]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Conclude with `congrArg Units.val (map_zpow (Units.map (residue O).toMonoidHom) (Ψ g) (wt1 i))`.
+-/
 theorem baseLift_map_residue {G : Type} [Group G] (η : G →* ℤˣ) (Ψ : G →* Oˣ) (g : G) :
     GG.map (residue O) (r0 η Ψ g) = rbar O η Ψ g := by
   refine SemidirectProduct.ext (Units.ext ?_) rfl
@@ -100,6 +134,11 @@ theorem baseLift_map_residue {G : Type} [Group G] (η : G →* ℤˣ) (Ψ : G �
   funext i
   exact congrArg Units.val (map_zpow (Units.map (residue O).toMonoidHom) (Ψ g) (wt1 i))
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `h1` using `(IsLocallyConstant.iff_eventually_eq _).1 hη x`. Establish `h2 : ∀ᶠ y in nhds x, ∀ a b, Ideal.Quotient.mk (maximalIdeal R ^ n) ((r.hom y).mat a b) = Ideal.Quotient.mk (maximalIdeal R ^ n) ((r.hom x).mat a b)` using `Filter.eventually_all.2 fun a => Filter.eventually_all.2 fun b => (IsLocallyConstant.iff_eventually_eq _).1 (r.cont a b n) x`. Use `filter_upwards [h1, h2] with y e1 e2`.
+
+Use `SemidirectProduct.ext (Units.ext ?_) ((r.hasMult y).trans (e1.trans (r.hasMult x).symm))` and prove the remaining obligations. Use extensionality with `a b`. Conclude with `e2 a b`.
+-/
 theorem GLift.locConst (hη : IsLocallyConstant η) (r : GLift O η Ψ R) (n : ℕ) :
     IsLocallyConstant fun g => GG.map (Ideal.Quotient.mk (maximalIdeal R ^ n)) (r.hom g) := by
   rw [IsLocallyConstant.iff_eventually_eq]

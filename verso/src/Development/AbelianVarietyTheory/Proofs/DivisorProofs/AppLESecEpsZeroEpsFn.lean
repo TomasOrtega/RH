@@ -12,6 +12,11 @@ namespace GlobalTheory.LieVB
 
 variable {O : Type} [CommRing O]
 
+/- English proof (translation)
+Introduce `t`. Establish `hs : Function.Surjective (TrivSqZeroExt.fstHom O O O).toRingHom` using `fun a => ⟨TrivSqZeroExt.inl a, rfl⟩`. Establish `ht : (t : PrimeSpectrum (DualNumber O)) ∈ Set.range (PrimeSpectrum.comap (TrivSqZeroExt.fstHom O O O).toRingHom)`. Rewrite using `[range_comap_of_surjective _ _ hs]`. Introduce `a ha`.
+
+Establish `ha : a.fst = 0` using `ha`. Apply the tactic sequence `have h : a * a = 0 := by ext <;> simp [ha]`. Use `(t : PrimeSpectrum (DualNumber O)).isPrime` as an intermediate fact. Conclude with `(this.mem_or_mem (h ▸ Ideal.zero_mem _)).elim id id`. Conclude with `ht`.
+-/
 theorem surjective_sec_epsZero : Function.Surjective (sec (epsZero O)) := by
   intro t
   have hs : Function.Surjective (TrivSqZeroExt.fstHom O O O).toRingHom :=
@@ -26,6 +31,9 @@ theorem surjective_sec_epsZero : Function.Surjective (sec (epsZero O)) := by
     exact (this.mem_or_mem (h ▸ Ideal.zero_mem _)).elim id id
   exact ht
 
+/- English proof (translation)
+Establish `e : (sec (epsZero O)).appLE ⊤ ⊤ (le_preimage_top _ _) (epsFn O) = 0` using `congr($(Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (TrivSqZeroExt.fstHom O O O).toRingHom)) DualNumber.eps).symm.trans (map_zero (Scheme.ΓSpecIso (.of O)).inv.hom)`. Rewrite using `[GlobalTheory.DualPull.appLE_resG, ← GlobalTheory.DualPull.resG_appLE _ le_top (le_preimage_top _ _), e, map_zero]`.
+-/
 theorem appLE_sec_epsZero_epsFn {V : (Sp O).Opens} {T : (specO O (DualNumber O)).left.Opens}
     (h : V ≤ sec (epsZero O) ⁻¹ᵁ T) :
     (sec (epsZero O)).appLE T V h (resG _ le_top (epsFn O)) = 0 := by
@@ -38,9 +46,17 @@ theorem appLE_sec_epsZero_epsFn {V : (Sp O).Opens} {T : (specO O (DualNumber O))
 
 variable {G : Over (Sp O)} [GrpObj G]
 
+/- English proof (translation)
+The claim follows from `congrArg (·.left) (epsZero_comp x)`.
+-/
 theorem sec_epsZero_comp (x : LieG G) : sec (epsZero O) ≫ x.1.left = unitSec G :=
   congrArg (·.left) (epsZero_comp x)
 
+/- English proof (translation)
+Introduce `t ht`. Take `⟨s, rfl⟩` from `surjective_sec_epsZero t`. Establish `h₁ : s ∈ (sec (epsZero O) ≫ (specO O (DualNumber O)).hom) ⁻¹ᵁ U` using `ht`. Rewrite `h₁` using `[sec_hom]`. Establish `h₂` using `h h₁`.
+
+Rewrite `h₂` using `[← sec_epsZero_comp x]`. Conclude with `h₂`.
+-/
 theorem preimage_le_of_lieG (x : LieG G) {U : (Sp O).Opens} {W : G.left.Opens}
     (h : U ≤ unitSec G ⁻¹ᵁ W) : (specO O (DualNumber O)).hom ⁻¹ᵁ U ≤ x.1.left ⁻¹ᵁ W := by
   intro t ht
@@ -51,6 +67,11 @@ theorem preimage_le_of_lieG (x : LieG G) {U : (Sp O).Opens} {W : G.left.Opens}
   rw [← sec_epsZero_comp x] at h₂
   exact h₂
 
+/- English proof (translation)
+Take `⟨⟨a, b⟩, e⟩` from `(GlobalTheory.T.dualNumberSpec_affineOpen_functions_bijective O U hU).2 (x.1.left.appLE W _ (preimage_le_of_lieG x h) f)`. Establish `hV : U ≤ sec (epsZero O) ⁻¹ᵁ (specO O (DualNumber O)).hom ⁻¹ᵁ U` using `(le_preimage_of_comp (sec_hom (epsZero O))).2 le_rfl`. Establish `hb` using `dualApp_tangent_dUnit x h f hV le_rfl (preimage_le_of_lieG x h) a b e.symm`. Establish `ha : (unitSec G).appLE W U h f = a`. Establish `e'` using `congrArg ((sec (epsZero O)).appLE _ U hV) e`.
+
+Simplify using `only [map_add, map_mul] at e'`. Rewrite `e'` using `[appLE_sec_epsZero_epsFn, mul_zero, add_zero, appLE_base (sec_hom _) _ _ le_rfl, GlobalTheory.LB.resG_self, appLE_appLE (sec_epsZero_comp x) _ _ h]`. Conclude with `e'.symm`. Rewrite using `[ha, hb]`. Conclude with `e.symm`.
+-/
 theorem appLE_lieG (x : LieG G) {U : (Sp O).Opens} (hU : IsAffineOpen U) {W : G.left.Opens}
     (h : U ≤ unitSec G ⁻¹ᵁ W) (f : Γ(G.left, W)) :
     x.1.left.appLE W _ (preimage_le_of_lieG x h) f =
@@ -70,6 +91,11 @@ theorem appLE_lieG (x : LieG G) {U : (Sp O).Opens} (hU : IsAffineOpen U) {W : G.
   rw [ha, hb]
   exact e.symm
 
+/- English proof (translation)
+Introduce `x y hxy`. Use `Subtype.ext (Over.OverMorphism.ext (Scheme.hom_ext_of_forall _ _ fun t => ?_))` and prove the remaining obligations. Take `⟨U, W, hU, -, c⟩` from `exists_isChart (sec_hom (MonObj.one (X := G))) (V := ⊤) (x := (specO O (DualNumber O)).hom t) trivial`. Establish `hT : IsAffineOpen ((specO O (DualNumber O)).hom ⁻¹ᵁ U)` using `c.affine_base.preimage _`. Establish `e : x.1.left.appLE W _ (preimage_le_of_lieG x c.le) = y.1.left.appLE W _ (preimage_le_of_lieG y c.le)`.
+
+Use extensionality with `f`. Conclude with `(appLE_lieG x c.affine_base c.le f).trans (hxy ▸ (appLE_lieG y c.affine_base c.le f).symm)`. Use `⟨(specO O (DualNumber O)).hom ⁻¹ᵁ U, hU, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_epi hT.isoSpec.inv, ← Category.assoc, ← Category.assoc, hT.isoSpec_inv_ι, ← c.affine.SpecMap_appLE_fromSpec _ hT (preimage_le_of_lieG x c.le), ← c.affine.SpecMap_appLE_fromSpec _ hT (preimage_le_of_lieG y c.le), e]`.
+-/
 theorem tangent_injective (O : Type) [CommRing O] (G : Over (Sp O)) [GrpObj G] :
     Function.Injective (tangent : LieG G → Γ(Lie G, ⊤)) := by
   intro x y hxy

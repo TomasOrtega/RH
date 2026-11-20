@@ -10,6 +10,17 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `D S Λ β hΛ hβ v τ b hb`. Establish `hJ` using `GlobalTheory.Doubling.isHermND_gram S`. Establish `hL` using `GlobalTheory.Core.Rk.IwSplit.isSelfDualAt_of_isSelfDualC hΛ v`. Establish `h1` using `GlobalTheory.FlipMatch.RowChart.isSplitBasis_conj τ (GlobalTheory.FlipMatch.RowChart.isFrameAt_loc hβ (splitPrime τ))`. Establish `e : ∀ t : D.host.E →ₐ[D.host.F] Fv D.host.F v, splitLat (t.comp D.sp.cm.sig) (GlobalTheory.TripleSpaceW.conjSub Λ) = splitLat t Λ` using `fun t => by`.
+
+Use `le_antisymm (GlobalTheory.FlipMatch.RowChart.splitLat_le fun x hx => ⟨star x, hx, fun i => rfl⟩) (GlobalTheory.FlipMatch.RowChart.splitLat_le fun x hx => ⟨star x, ?_, fun i => ?_⟩)` and prove the remaining obligations. Rewrite using `[GlobalTheory.TripleSpaceW.mem_conjSub, star_star]`. Conclude with `hx`. Express the relevant statement in the definitionally equal form `t (x i) = t (star (star (x i)))`. Rewrite using `[star_star]`.
+
+Establish `e2` using `e (τ.comp D.sp.cm.sig)`. Rewrite `e2` using `[comp_conj_conj (isCMExt_host D)]`. Use `set β' := GeneralLinearGroup.map (complEquiv τ (splitPrime_under τ)).symm.toRingHom (loc (splitPrime τ) β) with hβ'`. Establish `hv : β'.val = β.val.map (GlobalTheory.BotMatch.evW τ)` using `rfl`. Establish `h2 : IsSplitBasis τ Λ β'` using `fun u => by rw [← e τ]; exact h1 u`.
+
+Establish `h3 : IsSplitBasis (τ.comp D.sp.cm.sig) Λ b` using `fun u => by rw [← e2]; exact hb u`. Take `⟨g₀, hg₀⟩ : ∃ g₀ : GL (Fin S.rank) (Fv D.host.F v), g₀.val = b.valᵀ * S.gram.map τ * β'.val` from `⟨dualConj 1 b⁻¹ * splitGram hJ τ * β', by`. Rewrite using `[Units.val_mul, Units.val_mul, dualConj_one_val, inv_inv, splitGram_val]⟩`. Take `⟨k1, k2⟩` from `GlobalTheory.FlipMatch.RowChart.pairing_int (isCMExt_host D) hJ hL h2 h3 hg₀`. Use `⟨dualConj 1 g₀⁻¹, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← (GLint_eq_KO_and_princ_eq_KOne v S.rank).1, mem_GLint_iff, ← map_inv, dualConj_one_val, dualConj_one_val, inv_inv]`. Conclude with `⟨fun i j => k1 j i, fun i j => k2 j i⟩`. Rewrite using `[dualConj_one_val, inv_inv, hg₀, hv, transpose_mul, transpose_mul, transpose_transpose, Matrix.mul_assoc]`.
+-/
 theorem UpperTheory.exists_maxCompact_eq_frame_gram_splitBasis :
     ∀ (D : D7) (S : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (β : GL (Fin S.rank) (Lev.EAf D)),
         IsSelfDualC S Λ → Formalism.L2.DIV.IsFrame β Λ → ∀ (v : Pl D.host.F) (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v)

@@ -14,6 +14,11 @@ namespace GlobalTheory.HeightUnique
 open CategoryTheory AlgebraicGeometry NumberField MvPolynomial in
 set_option autoImplicit false in
 
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.ChowHt.linSubst`. Rewrite using `[← AlgHom.comp_apply]`. Use `congr 1`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`.
+
+Simplify using `only [AlgHom.comp_apply, aeval_X, map_sum, map_mul, aeval_C, algebraMap_eq, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem _root_.GlobalTheory.HeightUnique.linSubst_linSubst {R : Type} [CommRing R] {B N n m : ℕ} (M : Matrix (Fin N) (Fin n) R)
     (P : Matrix (Fin n) (Fin m) R) (f : MvPolynomial (Fin B × Fin N) R) :
     _root_.GlobalTheory.ChowHt.linSubst P (_root_.GlobalTheory.ChowHt.linSubst M f) = _root_.GlobalTheory.ChowHt.linSubst (M * P) f := by
@@ -29,6 +34,9 @@ theorem _root_.GlobalTheory.HeightUnique.linSubst_linSubst {R : Type} [CommRing 
 open CategoryTheory AlgebraicGeometry NumberField MvPolynomial in
 set_option autoImplicit false in
 
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.ChowHt.linSubst`. Establish `hX : (fun p : Fin B × Fin N => ∑ k, C ((1 : Matrix (Fin N) (Fin N) R) p.2 k) * X (p.1, k)) = X`. Use function extensionality and compare the values at `p`. Simplify using `[Matrix.one_apply, apply_ite C, ite_mul]`. Rewrite using `[hX, aeval_X_left_apply]`.
+-/
 theorem _root_.GlobalTheory.HeightUnique.linSubst_one {R : Type} [CommRing R] {B N : ℕ} (f : MvPolynomial (Fin B × Fin N) R) :
     _root_.GlobalTheory.ChowHt.linSubst (1 : Matrix (Fin N) (Fin N) R) f = f := by
   unfold _root_.GlobalTheory.ChowHt.linSubst
@@ -40,6 +48,11 @@ theorem _root_.GlobalTheory.HeightUnique.linSubst_one {R : Type} [CommRing R] {B
 open CategoryTheory AlgebraicGeometry NumberField MvPolynomial in
 set_option autoImplicit false in
 
+/- English proof (translation)
+Introduce `h0`. Apply `hf` to reduce the goal to its premises. Establish `key` using `_root_.GlobalTheory.HeightUnique.linSubst_linSubst M P f`. Rewrite `key` using `[h0, h, _root_.GlobalTheory.HeightUnique.linSubst_one]`. Rewrite using `[← key]`.
+
+Simplify using `[_root_.GlobalTheory.ChowHt.linSubst]`.
+-/
 theorem _root_.GlobalTheory.HeightUnique.linSubst_ne_zero {R : Type} [CommRing R] {B N n : ℕ} {M : Matrix (Fin N) (Fin n) R}
     {P : Matrix (Fin n) (Fin N) R} (h : M * P = 1) {f : MvPolynomial (Fin B × Fin N) R} (hf : f ≠ 0) :
     _root_.GlobalTheory.ChowHt.linSubst M f ≠ 0 := by
@@ -53,6 +66,9 @@ theorem _root_.GlobalTheory.HeightUnique.linSubst_ne_zero {R : Type} [CommRing R
 open CategoryTheory AlgebraicGeometry NumberField MvPolynomial in
 set_option autoImplicit false in
 
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.ChowHt.linSubst]`.
+-/
 theorem _root_.GlobalTheory.HeightUnique.linSubst_C_mul {R : Type} [CommRing R] {B N n : ℕ} (M : Matrix (Fin N) (Fin n) R) (c : R)
     (f : MvPolynomial (Fin B × Fin N) R) :
     _root_.GlobalTheory.ChowHt.linSubst M (C c * f) = C c * _root_.GlobalTheory.ChowHt.linSubst M f := by
@@ -61,6 +77,9 @@ theorem _root_.GlobalTheory.HeightUnique.linSubst_C_mul {R : Type} [CommRing R] 
 open CategoryTheory AlgebraicGeometry NumberField MvPolynomial in
 set_option autoImplicit false in
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `LinearMap.exists_rightInverse_of_surjective w.mulVecLin (by rw [Matrix.range_mulVecLin, hw])`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Establish `key` using `congrArg LinearMap.toMatrix' hg`. Establish `hw' : LinearMap.toMatrix' w.mulVecLin = w` using `(LinearEquiv.eq_symm_apply LinearMap.toMatrix').mp rfl`. Rewrite `key` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_id, hw']`. Then use the resulting hypothesis.
+-/
 theorem _root_.GlobalTheory.HeightUnique.exists_right_inv {F : Type} [Field F] {N n : ℕ} {w : Matrix (Fin N) (Fin n) F}
     (hw : Submodule.span F (Set.range w.col) = ⊤) : ∃ P : Matrix (Fin n) (Fin N) F, w * P = 1 := by
   obtain ⟨g, hg⟩ := LinearMap.exists_rightInverse_of_surjective w.mulVecLin
@@ -72,6 +91,9 @@ theorem _root_.GlobalTheory.HeightUnique.exists_right_inv {F : Type} [Field F] {
 
 open CategoryTheory AlgebraicGeometry NumberField MvPolynomial in
 set_option autoImplicit false in
+/- English proof (translation)
+Rewrite using `[f.as_sum, map_sum]`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises. Introduce `d hd`. Rewrite using `[aeval_monomial, algebraMap_eq, ← hf (mem_support_iff.mp hd), Finsupp.weight_apply, ← zero_add (d.sum fun i c => c • w i)]`. Conclude with `(isWeightedHomogeneous_C w' _).mul (IsWeightedHomogeneous.prod _ _ _ fun i _ => (hg i).pow (d i))`.
+-/
 private lemma isWeightedHomogeneous_aeval_of_isWeightedHomogeneous {R M σ τ : Type*} [CommSemiring R] [AddCommMonoid M]
     {w : σ → M} {w' : τ → M} {g : σ → MvPolynomial τ R} (hg : ∀ i, IsWeightedHomogeneous w' (g i) (w i))
     {f : MvPolynomial σ R} {m : M} (hf : IsWeightedHomogeneous w f m) :
@@ -87,6 +109,11 @@ private lemma isWeightedHomogeneous_aeval_of_isWeightedHomogeneous {R M σ τ : 
 open CategoryTheory AlgebraicGeometry NumberField MvPolynomial in
 set_option autoImplicit false in
 
+/- English proof (translation)
+Rewrite `hf`, the goal using `[_root_.GlobalTheory.ChowHt.isMultiHomogeneous_iff_block]`. Unfold `_root_.GlobalTheory.Chow.IsBlockHomogeneous at hf ⊢`. Unfold `_root_.GlobalTheory.ChowHt.linSubst`. Use `isWeightedHomogeneous_aeval_of_isWeightedHomogeneous (fun p => ?_) hf` and prove the remaining obligations. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises.
+
+Introduce `k _`. Establish `hw : _root_.GlobalTheory.Chow.blockWeight p = _root_.GlobalTheory.Chow.blockWeight ((p.1, k) : Fin B × Fin n)`. Simplify using `[_root_.GlobalTheory.Chow.blockWeight]`. Rewrite using `[hw, ← zero_add (_root_.GlobalTheory.Chow.blockWeight ((p.1, k) : Fin B × Fin n))]`. Conclude with `(isWeightedHomogeneous_C _ _).mul (isWeightedHomogeneous_X _ _ _)`.
+-/
 theorem _root_.GlobalTheory.HeightUnique.linSubst_homog {R : Type} [Field R] {B N n : ℕ} (M : Matrix (Fin N) (Fin n) R)
     {a : Fin B → ℕ} {f : MvPolynomial (Fin B × Fin N) R} (hf : _root_.ReciprocityTheory.MultiplicativeHeights.IsMultiHomogeneous a f) :
     _root_.ReciprocityTheory.MultiplicativeHeights.IsMultiHomogeneous a (_root_.GlobalTheory.ChowHt.linSubst M f) := by
@@ -104,6 +131,11 @@ theorem _root_.GlobalTheory.HeightUnique.linSubst_homog {R : Type} [Field R] {B 
 open CategoryTheory AlgebraicGeometry NumberField MvPolynomial in
 set_option autoImplicit false in
 
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.MultiplicativeHeights.gaussAbs`. Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[C_apply, support_monomial, if_neg hc]`.
+
+Simplify using `[Real.coe_toNNReal _ (apply_nonneg w c)]`.
+-/
 theorem _root_.GlobalTheory.HeightUnique.gaussAbs_C {K σ : Type} [Field K] [NumberField K] (w : FinitePlace K) (c : K) :
     _root_.ReciprocityTheory.MultiplicativeHeights.gaussAbs w (C c : MvPolynomial σ K) = w c := by
   classical
@@ -116,6 +148,11 @@ theorem _root_.GlobalTheory.HeightUnique.gaussAbs_C {K σ : Type} [Field K] [Num
 
 open CategoryTheory AlgebraicGeometry NumberField MvPolynomial in
 set_option autoImplicit false in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.MultiplicativeHeights.gaussAbs`. Establish `hs : (C c * g).support = g.support`. Use extensionality with `s`. Simplify using `[coeff_C_mul, hc]`. Rewrite using `[hs]`.
+
+Repeatedly rewrite using `[coeff_C_mul, map_mul, Real.toNNReal_mul (apply_nonneg w c)]`. Rewrite using `[← NNReal.mul_finset_sup, NNReal.coe_mul, Real.coe_toNNReal _ (apply_nonneg w c)]`.
+-/
 private lemma gaussAbs_C_mul_of_ne_zero {K σ : Type} [Field K] [NumberField K] (w : FinitePlace K) {c : K}
     (hc : c ≠ 0) (g : MvPolynomial σ K) : _root_.ReciprocityTheory.MultiplicativeHeights.gaussAbs w (C c * g) = w c * _root_.ReciprocityTheory.MultiplicativeHeights.gaussAbs w g := by
   unfold _root_.ReciprocityTheory.MultiplicativeHeights.gaussAbs
@@ -128,6 +165,9 @@ private lemma gaussAbs_C_mul_of_ne_zero {K σ : Type} [Field K] [NumberField K] 
 
 open CategoryTheory AlgebraicGeometry NumberField MvPolynomial in
 set_option autoImplicit false in
+/- English proof (translation)
+Take `⟨s, hs⟩` from `exists_coeff_ne_zero hg`. Unfold `_root_.ReciprocityTheory.MultiplicativeHeights.gaussAbs`. Establish `h1 : (w (coeff s g)).toNNReal ≤ g.support.sup fun t => (w (coeff t g)).toNNReal` using `Finset.le_sup (f := fun t => (w (coeff t g)).toNNReal) (mem_support_iff.mpr hs)`. Establish `h2 : 0 < w (coeff s g)` using `w.pos_iff.mpr hs`. Conclude with `lt_of_lt_of_le (Real.toNNReal_pos.mpr h2) h1` after adjusting the coercions.
+-/
 private lemma gaussAbs_pos_of_ne_zero {K σ : Type} [Field K] [NumberField K] (w : FinitePlace K)
     {g : MvPolynomial σ K} (hg : g ≠ 0) : 0 < _root_.ReciprocityTheory.MultiplicativeHeights.gaussAbs w g := by
   obtain ⟨s, hs⟩ := exists_coeff_ne_zero hg
@@ -139,6 +179,9 @@ private lemma gaussAbs_pos_of_ne_zero {K σ : Type} [Field K] [NumberField K] (w
 
 open CategoryTheory AlgebraicGeometry NumberField MvPolynomial in
 set_option autoImplicit false in
+/- English proof (translation)
+Rewrite using `[_root_.ReciprocityTheory.MultiplicativeHeights.sum_log_norm_embedding_eq c hc, ← Real.log_finprod (fun v => v.pos_iff.mpr hc), FinitePlace.prod_eq_inv_abs_norm hc]`. Use `push_cast`. Rewrite using `[Real.log_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma finsum_log_finitePlace_add_sum_log_norm_embedding {K : Type} [Field K] [NumberField K] {c : K}
     (hc : c ≠ 0) : ∑ᶠ v : FinitePlace K, Real.log (v c) + ∑ σ : K →+* ℂ, Real.log ‖σ c‖ = 0 := by
   rw [_root_.ReciprocityTheory.MultiplicativeHeights.sum_log_norm_embedding_eq c hc, ← Real.log_finprod (fun v => v.pos_iff.mpr hc), FinitePlace.prod_eq_inv_abs_norm hc]
@@ -149,6 +192,19 @@ private lemma finsum_log_finitePlace_add_sum_log_norm_embedding {K : Type} [Fiel
 open CategoryTheory AlgebraicGeometry NumberField MvPolynomial in
 set_option autoImplicit false in
 
+/- English proof (translation)
+Take `⟨P, hP⟩` from `_root_.GlobalTheory.HeightUnique.exists_right_inv hw`. Establish `hLf : _root_.GlobalTheory.ChowHt.linSubst w f ≠ 0` using `_root_.GlobalTheory.HeightUnique.linSubst_ne_zero hP hf`. Establish `hfin : ∀ v : FinitePlace F, Real.log (_root_.ReciprocityTheory.MultiplicativeHeights.gaussAbs v (_root_.GlobalTheory.ChowHt.linSubst w (C c * f))) = Real.log (v c) + Real.log (_root_.ReciprocityTheory.MultiplicativeHeights.gaussAbs v (_root_.GlobalTheory.ChowHt.linSubst w f))`. Introduce `v`. Rewrite using `[_root_.GlobalTheory.HeightUnique.linSubst_C_mul, gaussAbs_C_mul_of_ne_zero v hc, Real.log_mul (v.pos_iff.mpr hc).ne' (gaussAbs_pos_of_ne_zero v hLf).ne']`.
+
+Establish `harch : ∀ σ : F →+* ℂ, _root_.ReciprocityTheory.MultiplicativeHeights.blockSphereMean B N (_root_.GlobalTheory.ChowHt.linSubst (A σ) (map σ (C c * f))) = Real.log ‖σ c‖ + _root_.ReciprocityTheory.MultiplicativeHeights.blockSphereMean B N (_root_.GlobalTheory.ChowHt.linSubst (A σ) …`. Introduce `σ`. Establish `hQ : A σ * (A σ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr (hA σ))`. Establish `hmf : map σ f ≠ 0` using `fun h0 => hf (map_injective σ σ.injective (by rw [h0, map_zero]))`. Establish `hg` using `_root_.GlobalTheory.HeightUnique.linSubst_ne_zero hQ hmf`.
+
+Establish `hgh` using `_root_.GlobalTheory.HeightUnique.linSubst_homog (A σ) (_root_.ReciprocityTheory.MultiplicativeHeights.isMultiHomogeneous_map_ring a f ha σ)`. Establish `hσc : σ c ≠ 0` using `(map_ne_zero σ).mpr hc`. Establish `hC : (C (σ c) : MvPolynomial (Fin B × Fin N) ℂ) ≠ 0` using `by simpa using hσc`. Establish `hCh : _root_.ReciprocityTheory.MultiplicativeHeights.IsMultiHomogeneous (fun _ => 0) (C (σ c) : MvPolynomial (Fin B × Fin N) ℂ)` using `(_root_.ReciprocityTheory.MultiplicativeHeights.isMultiHomogeneous_iff_forall_weighted_lh0BlockWt _ _).mpr fun _ => isWeightedHomogeneous_C _ _`. Rewrite using `[map_mul, map_C, _root_.GlobalTheory.HeightUnique.linSubst_C_mul, _root_.ReciprocityTheory.MultiplicativeHeights.sphere_mean_mul_multihomogeneous _root_.ReciprocityTheory.MultiplicativeHeights.Closed.sphereLogIntegrable B N (fun _ => 0) a _ _ hC hg hCh hgh]`.
+
+Use `congr 1`. Use `haveI := _root_.ReciprocityTheory.MultiplicativeHeights.blockSphereMeasure_isProbability (B := B) hN`. Unfold `_root_.ReciprocityTheory.MultiplicativeHeights.blockSphereMean`. Simplify using `[eval_C]`. Establish `hsuppc : (Function.support fun v : FinitePlace F => Real.log (v c)).Finite`.
+
+Simplify `_root_.ReciprocityTheory.MultiplicativeHeights.gauss_abs_log_support_finite (C c : MvPolynomial Unit F) (by simpa using hc)` using `[_root_.GlobalTheory.HeightUnique.gaussAbs_C]`. Unfold `_root_.GlobalTheory.ChowHt.formHeight`. Use `congr 1`. Repeatedly rewrite using `[hfin, harch]`. Rewrite using `[finsum_add_distrib hsuppc (_root_.ReciprocityTheory.MultiplicativeHeights.gauss_abs_log_support_finite _ hLf)]`.
+
+Simplify using `only [Finset.sum_add_distrib]`. Combine the linear relations using `[finsum_log_finitePlace_add_sum_log_norm_embedding hc]`.
+-/
 theorem _root_.GlobalTheory.HeightUnique.formHeight_C_mul {F : Type} [Field F] [NumberField F] {B N n : ℕ} (hN : 0 < N) (δ : ℕ)
     {w : Matrix (Fin N) (Fin n) F} (hw : Submodule.span F (Set.range w.col) = ⊤)
     {A : (F →+* ℂ) → Matrix (Fin N) (Fin N) ℂ} (hA : ∀ σ, (A σ).det ≠ 0) {a : Fin B → ℕ}

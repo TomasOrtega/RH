@@ -26,11 +26,25 @@ noncomputable section
 
 namespace GlobalTheory.AffineDense
 
+/- English proof (translation)
+Rewrite using `[minimalPrimes, Ideal.sInf_minimalPrimes]`. Conclude with `nilradical_eq_zero R`.
+-/
 theorem sInf_minimalPrimes_eq_bot (R : Type) [CommRing R] [IsReduced R] :
     sInf (minimalPrimes R) = ⊥ := by
   rw [minimalPrimes, Ideal.sInf_minimalPrimes]
   exact nilradical_eq_zero R
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `(minimalPrimes.finite_of_isNoetherianRing R).exists_finset_coe`. Establish `hsub : (P : Set R) ⊆ ⋃ i ∈ (↑t : Set (Ideal R)), ((fun I : Ideal R => I) i : Set R)`. Introduce `a ha`. Establish `hnz : a ∉ nonZeroDivisors R` using `fun h => Set.disjoint_left.1 hP ha h`. Rewrite `hnz` using `[mem_nonZeroDivisors_iff]`.
+
+Use `push_neg at hnz`. Choose the witnesses or unpack the hypotheses as in `⟨b, hba, hb⟩ : ∃ b, b * a = 0 ∧ b ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨x, hx, hx0⟩` from `hnz (fun x hx => h x (by rw [mul_comm]; exact hx))`.
+
+Conclude with `hx0 (h x hx)`. Establish `hb' : b ∉ sInf (minimalPrimes R)`. Rewrite using `[sInf_minimalPrimes_eq_bot]`. Conclude with `hb`. Rewrite `hb'` using `[Ideal.mem_sInf]`.
+
+Use `push_neg at hb'`. Take `⟨q, hq, hbq⟩` from `hb'`. Establish `hqp : q.IsPrime` using `Ideal.minimalPrimes_isPrime hq`. Establish `haq : a ∈ q` using `(hqp.mem_or_mem (hba ▸ q.zero_mem)).resolve_left hbq`. Simplify using `only [Set.mem_iUnion]`.
+
+Conclude with `⟨q, by rw [ht]; exact hq, haq⟩`. Take `⟨q, hqt, hPq⟩` from `(Ideal.subset_union_prime ⊥ ⊥ (fun i hi _ _ => by`. Establish `: i ∈ minimalPrimes R` using `by rw [← ht]; exact hi`. Conclude with `Ideal.minimalPrimes_isPrime this)).1 hsub`. Conclude with `⟨q, by rw [← ht]; exact hqt, hPq⟩`.
+-/
 theorem exists_minimal_ge_of_disjoint {R : Type} [CommRing R] [IsReduced R] [IsNoetherianRing R]
     (P : Ideal R) (hP : Disjoint (P : Set R) (nonZeroDivisors R)) :
     ∃ q ∈ minimalPrimes R, P ≤ q := by
@@ -59,6 +73,15 @@ theorem exists_minimal_ge_of_disjoint {R : Type} [CommRing R] [IsReduced R] [IsN
     exact Ideal.minimalPrimes_isPrime this)).1 hsub
   exact ⟨q, by rw [← ht]; exact hqt, hPq⟩
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `(minimalPrimes.finite_of_isNoetherianRing R).exists_finset_coe`. Establish `hqp : q.IsPrime` using `Ideal.minimalPrimes_isPrime hq`. Establish `hnle : ¬ (t.erase q).inf (fun I : Ideal R => I) ≤ q`. Rewrite using `[hqp.inf_le']`. Introduce and unpack `⟨i, hi, hiq⟩`.
+
+Establish `him : i ∈ minimalPrimes R` using `by rw [← ht]; exact Finset.mem_of_mem_erase hi`. Establish `: q ≤ i` using `hq.2 ⟨Ideal.minimalPrimes_isPrime him, bot_le⟩ hiq`. Conclude with `Finset.ne_of_mem_erase hi (le_antisymm hiq this)`. Take `⟨s, hs, hsq⟩` from `Set.not_subset.1 hnle`. Use `⟨s, hsq, fun a ha => ?_⟩` and prove the remaining obligations.
+
+Establish `: s * a ∈ sInf (minimalPrimes R)`. Rewrite using `[Ideal.mem_sInf]`. Introduce `I hI`. Distinguish the cases in `hIq : I = q`. Substitute `hIq` using the available equality.
+
+Conclude with `I.mul_mem_left s ha`. Establish `hIt : I ∈ t.erase q` using `Finset.mem_erase.2 ⟨hIq, by rw [← Finset.mem_coe, ht]; exact hI⟩`. Conclude with `I.mul_mem_right a (Finset.inf_le (f := fun I : Ideal R => I) hIt hs)`. Rewrite `this` using `[sInf_minimalPrimes_eq_bot]`. Conclude with `this`.
+-/
 theorem exists_annihilator_of_minimal {R : Type} [CommRing R] [IsReduced R] [IsNoetherianRing R]
     (q : Ideal R) (hq : q ∈ minimalPrimes R) : ∃ s ∉ q, ∀ a ∈ q, s * a = 0 := by
   classical
@@ -82,6 +105,11 @@ theorem exists_annihilator_of_minimal {R : Type} [CommRing R] [IsReduced R] [IsN
   rw [sInf_minimalPrimes_eq_bot] at this
   exact this
 
+/- English proof (translation)
+Take `⟨q, hq, hPq⟩` from `exists_minimal_ge_of_disjoint P.asIdeal hP`. Take `⟨s, hsq, hs⟩` from `exists_annihilator_of_minimal q hq`. Set `Q : PrimeSpectrum R` to `⟨q, Ideal.minimalPrimes_isPrime hq⟩`. Take `⟨Q', hQ', hQ'D⟩` from `hD.inter_open_nonempty (PrimeSpectrum.basicOpen s : Set (PrimeSpectrum R)) (PrimeSpectrum.basicOpen s).isOpen ⟨Q, hsq⟩`. Establish `hle : Q ≤ Q'`.
+
+Introduce `a ha`. Establish `h0 : s * a ∈ Q'.asIdeal` using `by rw [hs a ha]; exact Q'.asIdeal.zero_mem`. Conclude with `(Q'.isPrime.mem_or_mem h0).resolve_left hQ'`. Establish `hQD : Q ∈ D` using `((PrimeSpectrum.le_iff_specializes Q Q').1 hle).mem_open hDo hQ'D`. Conclude with `((PrimeSpectrum.le_iff_specializes P Q).1 hPq).mem_open hDo hQD`.
+-/
 theorem mem_of_dense_of_disjoint {R : Type} [CommRing R] [IsReduced R] [IsNoetherianRing R]
     (D : Set (PrimeSpectrum R)) (hDo : IsOpen D) (hD : Dense D) (P : PrimeSpectrum R)
     (hP : Disjoint (P.asIdeal : Set R) (nonZeroDivisors R)) : P ∈ D := by
@@ -101,6 +129,13 @@ end GlobalTheory.AffineDense
 
 open GlobalTheory.AffineDense in
 
+/- English proof (translation)
+Introduce `X _ _ U hU W hW`. Use `haveI : IsNoetherianRing Γ(X, W) := IsLocallyNoetherian.component_noetherian ⟨W, hW⟩`. Use `⟨Localization (nonZeroDivisors Γ(X, W)), inferInstance, algebraMap _ _, IsLocalization.injective _ le_rfl, ?_⟩` and prove the remaining obligations. Introduce `x _`. Establish `hD : Dense ((hW.fromSpec ⁻¹ᵁ U : (Spec Γ(X, W)).Opens) : Set (Spec Γ(X, W)))` using `hU.preimage hW.fromSpec.isOpenEmbedding.isOpenMap`.
+
+Establish `key` using `mem_of_dense_of_disjoint (R := Γ(X, W)) _ (hW.fromSpec ⁻¹ᵁ U).isOpen hD ((spMap (algebraMap Γ(X, W) (Localization (nonZeroDivisors Γ(X, W))))).base x) ?_`. Conclude with `key`. Rewrite using `[Set.disjoint_left]`. Introduce `a ha hnzd`. Establish `hu : IsUnit (algebraMap Γ(X, W) (Localization (nonZeroDivisors Γ(X, W))) a)` using `IsLocalization.map_units _ (⟨a, hnzd⟩ : nonZeroDivisors Γ(X, W))`.
+
+Conclude with `x.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ ha hu)`.
+-/
 theorem GlobalTheory.affineOpen_injects_to_dense : ∀ (X : Scheme.{0}) [IsReduced X] [IsLocallyNoetherian X] (U : X.Opens), Dense (U : Set X) → ∀ (W : X.Opens) (hW : IsAffineOpen W), ∃ (K : Type) (_ : CommRing K) (ρ : Γ(X, W) →+* K), Function.Injective ρ ∧ ⊤ ≤ (spMap ρ ≫ (show Sp Γ(X, W) ⟶ X from hW.fromSpec)) ⁻¹ᵁ U := by
   intro X _ _ U hU W hW
   haveI : IsNoetherianRing Γ(X, W) := IsLocallyNoetherian.component_noetherian ⟨W, hW⟩

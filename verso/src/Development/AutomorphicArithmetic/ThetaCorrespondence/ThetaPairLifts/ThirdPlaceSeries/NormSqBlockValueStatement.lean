@@ -13,6 +13,9 @@ open Formalism.CohomologicalDescent.ShortWeightBounds (Wts)
 open GlobalTheory.ExpFrame GlobalTheory.ExpTie GlobalTheory.UnitaryBC GlobalTheory.CuspRep GlobalTheory.SmGL GlobalTheory.FrameAut
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.FrameAut.norm_sq_blockValue_alt | exact _root_.GlobalTheory.FrameAut.norm_sq_blockValue_alt | (intros; apply _root_.GlobalTheory.FrameAut.norm_sq_blockValue_alt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.norm_sq_emb_block_eq_q_pow_of_small_at : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
     {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz), _root_.GlobalTheory.BigTop.PtAt.PointConditions' p → More p →
     ∀ (j : Fin D.R.m) (P : Par) (W : Wts D.what₂.Tau), Dict L j P W → NumOk P W →

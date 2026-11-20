@@ -12,6 +12,13 @@ open UpperTheory.Gal.crystallineComparison (heckePol rootPol)
 open UpperTheory.Gal.Int.Div (CrysAt PhiKilled HTRichEx JumpsOcc VBase)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Use `⟨fun hx => ?_, hv x⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Take `⟨y, i, hi, e⟩` from `v.isMaximal.exists_inv hn`. Establish `hy : ‖τ (y : E)‖ ≤ 1` using `GlobalTheory.CongW.PlaceEmb.norm_le_one_of_isIntegral_int ((NumberField.RingOfIntegers.isIntegral_coe y).map τ.toIntAlgHom)`. Establish `h1 : τ (y : E) * τ (x : E) + τ (i : E) = 1`.
+
+Use `congrArg (fun z : 𝓞 E => τ (z : E)) e` as an intermediate fact. Simplify using `using this`. Establish `h2 : ‖τ (y : E) * τ (x : E)‖ < 1`. Rewrite using `[norm_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left (norm_nonneg _) hy) hx`.
+
+Establish `h3` using `IsUltrametricDist.norm_add_le_max (τ (y : E) * τ (x : E)) (τ (i : E))`. Rewrite `h3` using `[h1, norm_one]`. Conclude with `absurd h3 (not_le.2 (max_lt h2 (hv i hi)))`.
+-/
 private theorem norm_lt_one_iff_mem {E : Type} [Field E] [NumberField E] {l : ℕ} [Fact l.Prime] (τ : E →+* Om l)
     (v : HeightOneSpectrum (𝓞 E)) (hv : ∀ x ∈ v.asIdeal, ‖τ (x : E)‖ < 1) (x : 𝓞 E) :
     ‖τ (x : E)‖ < 1 ↔ x ∈ v.asIdeal := by
@@ -30,6 +37,9 @@ private theorem norm_lt_one_iff_mem {E : Type} [Field E] [NumberField E] {l : �
   rw [h1, norm_one] at h3
   exact absurd h3 (not_le.2 (max_lt h2 (hv i hi)))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{ carrier := {x | ‖j x‖ ≤ 1} mul_mem' := fun {a b} ha hb => by simp only [Set.mem_setOf_eq, map_mul, norm_mul] at *; exact mul_le_one₀ ha (norm_nonneg _) hb one_mem' := by simp add_mem' := fun {a b} ha hb => by simp only [Set.mem_setOf_eq, map_add] at * exact (IsUltrametricDist. …`.
+-/
 private theorem exists_place {Ω : Type} [Field Ω] {l : ℕ} [Fact l.Prime] (j : Ω →+* Om l) :
     ∃ A : ValuationSubring Ω, ∀ x, x ∈ A ↔ ‖j x‖ ≤ 1 :=
   ⟨{ carrier := {x | ‖j x‖ ≤ 1}
@@ -47,6 +57,17 @@ private theorem exists_place {Ω : Type} [Field Ω] {l : ℕ} [Fact l.Prime] (j 
        · exact Or.inl h
        · exact Or.inr (inv_le_one_of_one_le₀ h) }, fun _ => Iff.rfl⟩
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ _ l _ ι a dd U ρ v hv hlac hJ`. Take `⟨τc, hover, lam, hw, hl⟩` from `hlac`. Take `⟨P, AI, hT⟩` from `GlobalTheory.MemLoc.exists_locPrime_tied l`. Set `τ₀ : E →+* Om l` to `ι.symm.toRingHom.comp τc`. Establish `hτ₀ : ι.toRingHom.comp τ₀ = τc`.
+
+Use extensionality with `x`. Simplify using `[τ₀]`. Establish `hsmall : ∀ x ∈ v.asIdeal, ‖τ₀ (x : E)‖ < 1` using `hover`. Use `letI : Algebra E (Om l) := τ₀.toAlgebra`. Use `haveI : Algebra.IsAlgebraic E Ω := IsAlgClosure.isAlgebraic`.
+
+Set `jA : Ω →ₐ[E] Om l` to `IsAlgClosed.lift`. Set `j : Ω →+* Om l` to `jA.toRingHom`. Establish `hjτ : ∀ x : E, j (algebraMap E Ω x) = τ₀ x` using `fun x => jA.commutes x`. Take `⟨A, hA⟩` from `exists_place j`. Take `⟨L, Bw, hBj, -, -⟩` from `GlobalTheory.PhtCompare.exists_bridge (E := E) (A := A) j hA`.
+
+Establish `hBw : Induces Bw` using `fun x => by rw [hBj]; exact hA x`. Establish `hP : IsPlaceOver A v` using `fun x => by`. Rewrite using `[hBw.valuation_lt_one_iff, hBj, hjτ]`. Conclude with `norm_lt_one_iff_mem τ₀ v hsmall x`. Establish `hi : IsInduced Bw τ₀ (AlgHom.id ℚ_[l] ↥Bw.Kw.1)` using `fun x => by show τ₀ x = Bw.j (algebraMap E Ω x)`.
+
+Rewrite using `[hBj, hjτ]`. Take `⟨J', hJ', hsub⟩` from `hJ P AI hT A hP _ Bw hBw τ₀ Bw.Kw (AlgHom.id ℚ_[l] ↥Bw.Kw.1) hi lam (wtJumps lam).val (by rw [hτ₀]; exact hw) (wtJumps_val lam)`. Conclude with `⟨P, AI, hT, v, A, hv, hP, _, inferInstance, inferInstance, inferInstance, Bw, hBw, τ₀, J', hJ', wtJumps lam, card_wtJumps lam, fun j hj => hsub j hj, hl⟩`.
+-/
 theorem UpperTheory.Gal.Int.Geo.richOf :
     UpperTheory.Gal.Int.Geo.RichOf := by
   intro E Ω _ _ _ _ _ _ l _ ι a dd U ρ v hv hlac hJ

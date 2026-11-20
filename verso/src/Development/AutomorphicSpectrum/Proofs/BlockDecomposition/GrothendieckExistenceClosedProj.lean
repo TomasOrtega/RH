@@ -11,6 +11,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry ReciprocityTheory.Ch
 
 namespace GlobalTheory.CompanionTheory.GE
 
+/- English proof (translation)
+Introduce `R _ _ I hI N P Cs i β hi hβ`. Take `⟨hbase, hsat, hanti, hcompat⟩` from `GlobalTheory.T.thickening_vanishing_ideal_system R I N Cs i β hi hβ`. Take `⟨n₀, hlift⟩` from `GlobalTheory.T.homogeneous_ideal_filtration_saturated R I N (fun e => vanIdeal (i e ≫ thickι R I N e)) (fun e => vanIdeal_homog _) hbase hsat hcompat`. Take `⟨J, hJ, h⟩` from `GlobalTheory.T.homogeneous_lift_adic_filtration R I hI N (fun e => vanIdeal (i e ≫ thickι R I N e)) (fun e => vanIdeal_homog _) hbase hanti n₀ hlift`. Conclude with `GlobalTheory.T.homogeneous_ideal_le_thickening R I N Cs i β hi hβ J hJ (fun e => (h e).1) (fun e => (h e).2)`.
+-/
 theorem geClosedProj : GEClosedProj := by
   intro R _ _ I hI N P Cs i β hi hβ
   obtain ⟨hbase, hsat, hanti, hcompat⟩ := GlobalTheory.T.thickening_vanishing_ideal_system R I N Cs i β hi hβ

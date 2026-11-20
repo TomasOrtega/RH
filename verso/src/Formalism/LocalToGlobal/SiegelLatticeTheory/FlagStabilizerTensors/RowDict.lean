@@ -37,6 +37,9 @@ def conjL : Lp ℂ 2 μ ≃ₗᵢ⋆[ℂ] Lp ℂ 2 μ where
     show ‖star f‖ = ‖f‖
     rw [Lp.norm_def, Lp.norm_def, eLpNorm_congr_ae (Lp.coeFn_star f), eLpNorm_star]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjL_apply (f : Lp ℂ 2 μ) : conjL μ f = star f := rfl
 
 end Conj
@@ -103,6 +106,9 @@ def goodSub (G : GoodOp X) : Submodule ℂ (L2X X) :=
 def EEC (G : GoodOp X) : Submodule ℂ (L2X X) :=
   (goodSub X G).comap (conjL (muX X)).toLinearEquiv.toLinearMap
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_EEC (G : GoodOp X) (F : L2X X) : F ∈ EEC X G ↔ star F ∈ goodSub X G := Iff.rfl
 
 def conjHH (G : GoodOp X) : EEC X G →ₗᵢ⋆[ℂ] HHX X where
@@ -117,6 +123,9 @@ def conjHH (G : GoodOp X) : EEC X G →ₗᵢ⋆[ℂ] HHX X where
     show ‖star (F : L2X X)‖ = ‖(F : L2X X)‖
     exact (conjL (muX X)).norm_map _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjHH_apply (G : GoodOp X) (F : EEC X G) : ((conjHH X G F : HHX X) : L2X X) = star (F : L2X X) := rfl
 
 end Rows
@@ -134,17 +143,33 @@ variable {D : D7} (X : HidaSetting D)
 def RowDictTie (G : GoodOp X) (ι : D.s.HH ≃ₗᵢ[ℂ] HHX X) : Prop :=
   IsConjOnto (fun F : D.what₂.EE => ι (D.sEE F)) (conjHH X G)
 
+/- English proof (translation)
+The claim follows from `LinearEquiv.finiteDimensional ι.toLinearEquiv`.
+-/
 theorem finiteDimensional_HHX (ι : D.s.HH ≃ₗᵢ[ℂ] HHX X) : FiniteDimensional ℂ (HHX X) := LinearEquiv.finiteDimensional ι.toLinearEquiv
 
+/- English proof (translation)
+Rewrite using `[← D.s_HH]`. Conclude with `ι.toLinearEquiv.finrank_eq`.
+-/
 theorem dall_eq (ι : D.s.HH ≃ₗᵢ[ℂ] HHX X) : D.what₂.Dall = Module.finrank ℂ (HHX X) := by
   rw [← D.s_HH]
   exact ι.toLinearEquiv.finrank_eq
 
+/- English proof (translation)
+Take `⟨j, -⟩` from `h`. Rewrite using `[← j.toLinearEquiv.finrank_eq, Module.finrank_eq_card_basis D.what₂.onb.toBasis, Fintype.card_fin]`.
+-/
 theorem drows_eq {G : GoodOp X} {ι : D.s.HH ≃ₗᵢ[ℂ] HHX X} (h : RowDictTie X G ι) :
     D.what₂.Drows = Module.finrank ℂ (EEC X G) := by
   obtain ⟨j, -⟩ := h
   rw [← j.toLinearEquiv.finrank_eq, Module.finrank_eq_card_basis D.what₂.onb.toBasis, Fintype.card_fin]
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `h`. Establish `hj' : ∀ F, ι (D.sEE F) = conjHH X G (j F)` using `hj`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hmem : star (y : L2X X) ∈ EEC X G`.
+
+Rewrite using `[mem_EEC, star_star]`. Conclude with `hy`. Use `⟨j.symm ⟨star (y : L2X X), hmem⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hj', LinearIsometryEquiv.apply_symm_apply]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[conjHH_apply]`. Conclude with `star_star _`. Introduce and unpack `⟨F, rfl⟩`. Rewrite using `[hj', conjHH_apply]`. Conclude with `(mem_EEC X G _).1 (j F).2`.
+-/
 theorem range_sEE {G : GoodOp X} {ι : D.s.HH ≃ₗᵢ[ℂ] HHX X} (h : RowDictTie X G ι) (y : HHX X) :
     (y : L2X X) ∈ goodSub X G ↔ ∃ F : D.what₂.EE, ι (D.sEE F) = y := by
   obtain ⟨j, hj⟩ := h
@@ -167,6 +192,11 @@ def EEB (G : GoodOp X) : Submodule ℂ (L2X X) :=
 
 def RgReal (G : GoodOp X) : Prop := ∀ φ : L2X X, star (G.Rg φ) = G.Rg (star φ)
 
+/- English proof (translation)
+Use extensionality with `F`. Rewrite using `[mem_EEC]`. Simplify using `only [EEB, goodSub, Submodule.mem_inf, Submodule.mem_comap, LinearMap.mem_ker]`. Use `and_congr Iff.rfl ?_` and prove the remaining obligations. Simplify using `only [LinearMap.sub_apply, LinearMap.id_apply, ContinuousLinearMap.coe_coe, sub_eq_zero]`.
+
+Rewrite using `[← h]`. Conclude with `star_inj`.
+-/
 theorem eec_eq_eeb (G : GoodOp X) (h : RgReal X G) : EEC X G = EEB X G := by
   ext F
   rw [mem_EEC]
@@ -176,6 +206,9 @@ theorem eec_eq_eeb (G : GoodOp X) (h : RgReal X G) : EEC X G = EEB X G := by
   rw [← h]
   exact star_inj
 
+/- English proof (translation)
+Rewrite using `[dall_eq X ι]`. Conclude with `(Formalism.L2.SG.RowsDef.RowsAut.D_eq_finrank_HH hB X.B _ hU hIrr hF hw hint X.Rph X.Rph_spec).1`.
+-/
 theorem D_eq_of (hB : Formalism.L2.SG.RowsDef.RowsBij) (ι : D.s.HH ≃ₗᵢ[ℂ] HHX X)
     (hU : ∀ v, IsURepOn (UJset (X.B.I.ε v)) (X.B.σ v)) (hIrr : ∀ v, IsIrredOn (UJset (X.B.I.ε v)) (X.B.σ v))
     (hF : ∀ v, IsFdeg (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v) (fdegOf (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v) (X.B.w v)))
@@ -186,6 +219,9 @@ theorem D_eq_of (hB : Formalism.L2.SG.RowsDef.RowsBij) (ι : D.s.HH ≃ₗᵢ[�
   rw [dall_eq X ι]
   exact (Formalism.L2.SG.RowsDef.RowsAut.D_eq_finrank_HH hB X.B _ hU hIrr hF hw hint X.Rph X.Rph_spec).1
 
+/- English proof (translation)
+The claim follows from `D_eq_of X Formalism.L2.SG.Closed.RowsBij_holds ι hU hIrr hF hw hint`.
+-/
 theorem D_eq_holds (ι : D.s.HH ≃ₗᵢ[ℂ] HHX X)
     (hU : ∀ v, IsURepOn (UJset (X.B.I.ε v)) (X.B.σ v)) (hIrr : ∀ v, IsIrredOn (UJset (X.B.I.ε v)) (X.B.σ v))
     (hF : ∀ v, IsFdeg (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v) (fdegOf (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v) (X.B.w v)))
@@ -199,6 +235,9 @@ def DstarAgree : Prop :=
   Formalism.MainNotions.StandardLattice.DstarD D =
     X.B.I.Dstar (∏ v, fdegOf (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v) (X.B.w v)) X.B.μf X.B.fund X.B.e
 
+/- English proof (translation)
+Rewrite using `[hT.Dstar_eq, DstarAgree, eq_comm]`.
+-/
 theorem dstar_iff (hT : AutTie D X.B X.pl) : D.what₂.Dstar = Formalism.MainNotions.StandardLattice.DstarD D ↔ DstarAgree X := by
   rw [hT.Dstar_eq, DstarAgree, eq_comm]
 

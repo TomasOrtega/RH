@@ -18,5 +18,8 @@ open Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir GlobalTheory.
 open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BZPsiPG.FibKer.SmSum.smInt_sum_coset | exact GlobalTheory.CompanionTheory.BZPsiPG.FibKer.SmSum.smInt_sum_coset | (intros; apply GlobalTheory.CompanionTheory.BZPsiPG.FibKer.SmSum.smInt_sum_coset <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.integral_coset_indicator_sum : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (t : ℕ) {Z : Type} [AddCommGroup Z] [Module ℂ Z] [MeasurableSpace (Fin t → k)] [BorelSpace (Fin t → k)] (μ : MeasureTheory.Measure (Fin t → k)) [μ.IsAddHaarMeasure] (c : k), c ≠ 0 → ∀ (A : Finset (Fin t → k)) (z : (Fin t → k) → Z), smInt μ (fun v => ∑ a ∈ A, (cosetSet t c a).indicator (fun _ => z a) v) = (((μ (cosetSet t c 0)).toReal : ℝ) : ℂ) • ∑ a ∈ A, z a := by
   first | exact @GlobalTheory.CompanionTheory.BZPsiPG.FibKer.SmSum.smInt_sum_coset | exact GlobalTheory.CompanionTheory.BZPsiPG.FibKer.SmSum.smInt_sum_coset | (intros; apply GlobalTheory.CompanionTheory.BZPsiPG.FibKer.SmSum.smInt_sum_coset <;> assumption)

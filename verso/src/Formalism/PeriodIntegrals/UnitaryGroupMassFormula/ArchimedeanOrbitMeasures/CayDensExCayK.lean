@@ -39,6 +39,11 @@ def CayleyDens : Prop :=
   ∃ D ∈ 𝓝 (0 : lieU P Q), MeasurableSet D ∧ ∃ f : lieU P Q → ℝ≥0∞, Measurable f ∧
     Tendsto f (𝓝 0) (𝓝 c) ∧ (m.restrict (cayS D)).map (cayInv P Q) = (lam.restrict D).withDensity f
 
+/- English proof (translation)
+Use extensionality with `g`. Simplify using `only [cayS, Set.mem_inter_iff, Set.mem_setOf_eq, Set.mem_preimage, Set.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨X, hX, hg⟩`. Conclude with `⟨⟨X, hg⟩, by rw [hI P Q g X hg]; exact hX⟩`.
+
+Introduce and unpack `⟨⟨X, hg⟩, hV⟩`. Conclude with `⟨X, by rw [← hI P Q g X hg]; exact hV, hg⟩`.
+-/
 theorem cayS_eq (hI : CayInvIff) (P Q : ℕ) (V : Set (lieU P Q)) :
     cayS V = cayS Set.univ ∩ cayInv P Q ⁻¹' V := by
   ext g
@@ -49,6 +54,23 @@ theorem cayS_eq (hI : CayInvIff) (P Q : ℕ) (V : Set (lieU P Q)) :
   · rintro ⟨⟨X, hg⟩, hV⟩
     exact ⟨X, by rw [← hI P Q g X hg]; exact hV, hg⟩
 
+/- English proof (translation)
+Introduce `P Q m hm c hc0 hcT lam hlam hlim ε hε`. Take `⟨D, hD0, hDm, f, hf, hft, hmap⟩` from `hD P Q m hm c hc0 hcT lam hlam hlim`. Establish `hε0 : ((ε : ℝ≥0∞)) ≠ 0` using `by exact_mod_cast hε.ne'`. Establish `h1ε : (1 + (ε : ℝ≥0∞)) ≠ ⊤` using `by simp`. Use `set N : Set ℝ≥0∞ := {y | y < (1 + (ε : ℝ≥0∞)) * c} ∩ {y | c < (1 + (ε : ℝ≥0∞)) * y} with hN`.
+
+Establish `hNo : IsOpen N`. Use `isOpen_lt continuous_id continuous_const |>.inter ?_` and prove the remaining obligations. Conclude with `isOpen_lt continuous_const (ENNReal.continuous_const_mul h1ε)`. Establish `hlt : c < (1 + (ε : ℝ≥0∞)) * c`. Rewrite using `[add_mul, one_mul]`.
+
+Conclude with `ENNReal.lt_add_right hcT (mul_ne_zero hε0 hc0)`. Establish `hcN : c ∈ N` using `⟨hlt, hlt⟩`. Use `set V : Set (lieU P Q) := D ∩ f ⁻¹' N with hV`. Establish `hVm : MeasurableSet V` using `hDm.inter (hf hNo.measurableSet)`. Establish `hV0 : V ∈ 𝓝 (0 : lieU P Q)` using `Filter.inter_mem hD0 (hft (hNo.mem_nhds hcN))`.
+
+Establish `hVD : V ⊆ D` using `Set.inter_subset_left`. Use `⟨V, hV0, hVm, ?_, cayInv P Q, hM P Q, ?_, f, hf, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cayS_eq hI]`. Conclude with `(hU P Q).inter (hM P Q hVm)`. Introduce `g X hX`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨⟨X, hX, h⟩, hI P Q g X h⟩`. Introduce and unpack `⟨⟨X', hX', h'⟩, hg⟩`. Rewrite `hg` using `[hI P Q g X' h']`.
+
+Rewrite using `[← hg]`. Conclude with `h'`. Introduce `X hX`. Conclude with `⟨hX.2.1.le, hX.2.2.le⟩`. Establish `e1 : cayS V = cayInv P Q ⁻¹' V ∩ cayS D`.
+
+Rewrite using `[cayS_eq hI, cayS_eq hI P Q D, Set.inter_comm]`. Use extensionality with `g`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `⟨h1, h2, hVD h1⟩`. Introduce and unpack `⟨h1, h2, -⟩`. Conclude with `⟨h1, h2⟩`. Rewrite using `[e1, ← Measure.restrict_restrict (hM P Q hVm), ← Measure.restrict_map (hM P Q) hVm, hmap, restrict_withDensity hVm, Measure.restrict_restrict hVm, Set.inter_eq_left.2 hVD]`.
+-/
 theorem cayleyLoc_of (hM : CayInvMeas) (hI : CayInvIff) (hU : CaySUnivMeas) (hD : CayleyDens) :
     CayleyLoc := by
   intro P Q m hm c hc0 hcT lam hlam hlim ε hε

@@ -10,6 +10,11 @@ open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions F
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Proceed by induction on `k generalizing x with`. Consider the case `zero => exact ⟨x, rfl⟩`. Consider the case `succ k ih`. Take `⟨y, hy⟩` from `(X.G.P.setting v).frob x`. Take `⟨z, hz⟩` from `ih (x ^ p + (p : X.G.P.W v) * y)`.
+
+Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ]`. Use `show (X.G.P.σ v ^ k) ((X.G.P.σ v) (algebraMap _ _ x)) = _`. Rewrite using `[hy, hz]`.
+-/
 theorem frob_pow_int (X : Sys p) (v : X.Pl) (k : ℕ) (x : X.G.P.W v) :
     ∃ y : X.G.P.W v, (X.G.P.σ v ^ k) (algebraMap _ _ x) = algebraMap _ _ y := by
   induction k generalizing x with
@@ -22,6 +27,11 @@ theorem frob_pow_int (X : Sys p) (v : X.Pl) (k : ℕ) (x : X.G.P.W v) :
     show (X.G.P.σ v ^ k) ((X.G.P.σ v) (algebraMap _ _ x)) = _
     rw [hy, hz]
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `frob_pow_int X v s.val x`. Establish `h` using `E.int (X.G.P.j v y)`. Unfold `twG`. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom]`. Rewrite using `[hy, (X.G.P.setting v).ι_comp]`.
+
+Conclude with `h`.
+-/
 theorem norm_twG_int_le (X : Sys p) (E : CEmb X.G) (v : X.Pl) (s : Fin (X.G.P.n' v)) (x : X.G.P.W v) :
     ‖twG X E v s (algebraMap _ _ x)‖ ≤ 1 := by
   obtain ⟨y, hy⟩ := frob_pow_int X v s.val x
@@ -31,6 +41,11 @@ theorem norm_twG_int_le (X : Sys p) (E : CEmb X.G) (v : X.Pl) (s : Fin (X.G.P.n'
   rw [hy, (X.G.P.setting v).ι_comp]
   exact h
 
+/- English proof (translation)
+Establish `h1` using `norm_twG_int_le X E v s (u : X.G.P.W v)`. Establish `h2` using `norm_twG_int_le X E v s ((u⁻¹ : (X.G.P.W v)ˣ) : X.G.P.W v)`. Establish `h3 : twG X E v s (algebraMap _ _ (u : X.G.P.W v)) * twG X E v s (algebraMap _ _ ((u⁻¹ : (X.G.P.W v)ˣ) : X.G.P.W v)) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Establish `h4` using `congrArg norm h3`.
+
+Rewrite `h4` using `[norm_mul, norm_one]`. Use polynomial arithmetic with `[norm_nonneg (twG X E v s (algebraMap _ _ (u : X.G.P.W v))), norm_nonneg (twG X E v s (algebraMap _ _ ((u⁻¹ : (X.G.P.W v)ˣ) : X.G.P.W v)))]`.
+-/
 theorem norm_twG_unit (X : Sys p) (E : CEmb X.G) (v : X.Pl) (s : Fin (X.G.P.n' v)) (u : (X.G.P.W v)ˣ) :
     ‖twG X E v s (algebraMap _ _ (u : X.G.P.W v))‖ = 1 := by
   have h1 := norm_twG_int_le X E v s (u : X.G.P.W v)
@@ -42,6 +57,9 @@ theorem norm_twG_unit (X : Sys p) (E : CEmb X.G) (v : X.Pl) (s : Fin (X.G.P.n' v
   nlinarith [norm_nonneg (twG X E v s (algebraMap _ _ (u : X.G.P.W v))),
     norm_nonneg (twG X E v s (algebraMap _ _ ((u⁻¹ : (X.G.P.W v)ˣ) : X.G.P.W v)))]
 
+/- English proof (translation)
+Use `haveI := (X.G.P.setting v).frac_alt`. Establish `hp` using `(X.G.P.setting v).p_unif`. Take `⟨n, u, rfl⟩` from `exists_eq_unit_mul_zpow₂ hp hy`. Rewrite using `[ordP_eq hp n u, map_mul, map_zpow₀, map_natCast, norm_mul, norm_twG_unit, one_mul, norm_zpow]`.
+-/
 theorem norm_twG (X : Sys p) (E : CEmb X.G) (v : X.Pl) (s : Fin (X.G.P.n' v)) {y : X.G.P.Qq v} (hy : y ≠ 0) :
     ‖twG X E v s y‖ = ‖(p : ℂ_[p])‖ ^ ordP (X.G.P.W v) p y := by
   haveI := (X.G.P.setting v).frac_alt
@@ -49,12 +67,30 @@ theorem norm_twG (X : Sys p) (E : CEmb X.G) (v : X.Pl) (s : Fin (X.G.P.n' v)) {y
   obtain ⟨n, u, rfl⟩ := exists_eq_unit_mul_zpow₂ hp hy
   rw [ordP_eq hp n u, map_mul, map_zpow₀, map_natCast, norm_mul, norm_twG_unit, one_mul, norm_zpow]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => simp`. Consider the case `cons a s ha ih => rw [Finset.sum_cons, Finset.prod_cons, zpow_add₀ hr, ih]`.
+-/
 theorem zpow_sum_fin {ι : Type*} (s : Finset ι) (r : ℝ) (hr : r ≠ 0) (f : ι → ℤ) :
     r ^ (∑ i ∈ s, f i) = ∏ i ∈ s, r ^ f i := by
   induction s using Finset.cons_induction with
   | empty => simp
   | cons a s ha ih => rw [Finset.sum_cons, Finset.prod_cons, zpow_add₀ hr, ih]
 
+/- English proof (translation)
+Introduce `D p _ X E pos lam ρ hL e z hz`. Establish `hp0 : ‖(p : ℂ_[p])‖ ≠ 0` using `norm_ne_zero_iff.2 (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`. Establish `hmem : ∀ τ, TaylorLogMetric.embT D τ z ∈ TaylorLogMetric.Qbar` using `fun τ => (mem_algebraicClosure_iff).2 ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) z).algHom (TaylorLogMetric.embT D τ).toRatAlgHom)`. Establish `hprod : (∏ τ : D.what₂.Tau, TaylorLogMetric.embT D τ z ^ e τ) ∈ TaylorLogMetric.Qbar` using `prod_mem fun τ _ => zpow_mem (hmem τ) _`. Establish `h1 : TaylorLogMetric.lamC lam (∏ τ : D.what₂.Tau, TaylorLogMetric.embT D τ z ^ e τ) = ∏ τ, TaylorLogMetric.lamC lam (TaylorLogMetric.embT D τ z) ^ e τ`.
+
+Establish `e1 : (⟨∏ τ : D.what₂.Tau, TaylorLogMetric.embT D τ z ^ e τ, hprod⟩ : TaylorLogMetric.Qbar) = ∏ τ, (⟨TaylorLogMetric.embT D τ z, hmem τ⟩ : TaylorLogMetric.Qbar) ^ e τ`. Apply `Subtype.ext` to reduce the goal to its premises. Use `push_cast`. Both sides reduce to the same expression. Unfold `TaylorLogMetric.lamC`.
+
+Rewrite using `[dif_pos hprod, e1, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[dif_pos (hmem τ), map_zpow₀]`. Establish `hρ : ∀ v, ρ v z * ρ v (D.host.conj z) = 1` using `fun v => by rw [← map_mul, hz, map_one]`. Establish `hρ0 : ∀ v, ρ v z ≠ 0` using `fun v h => by have := hρ v; rw [h, zero_mul] at this; exact zero_ne_one this`.
+
+Establish `hf : ∀ v s, ‖TaylorLogMetric.lamC lam (TaylorLogMetric.embT D (pos ⟨v, s⟩) z)‖ ^ e (pos ⟨v, s⟩) = ‖(p : ℂ_[p])‖ ^ ((if IsOddPos s then -1 else 1) * e (pos ⟨v, s⟩) * ordP (X.G.P.W v) p (ρ v z))`. Introduce `v s`. Distinguish the cases in `hs : IsOddPos s`. Rewrite using `[LamPos.odd X E pos lam ρ hL v s hs, if_pos hs, eq_inv_of_mul_eq_one_right (hρ v), map_inv₀, norm_inv, norm_twG X E v s (hρ0 v), inv_zpow', ← zpow_mul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[LamPos.even X E pos lam ρ hL v s hs, if_neg hs, norm_twG X E v s (hρ0 v), ← zpow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, norm_prod]`.
+
+Repeatedly rewrite using `[norm_zpow]`. Rewrite using `[← Equiv.prod_comp pos, Fintype.prod_sigma]`. Repeatedly rewrite using `[hf, Finset.sum_mul]`. Rewrite using `[zpow_sum_fin _ _ hp0]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[zpow_sum_fin _ _ hp0]`.
+-/
 theorem norm_lamC_type_normOne : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (X : Sys p) (E : CEmb X.G)
     (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) (ρ : ∀ v : X.Pl, D.host.E →+* X.G.P.Qq v),
     LamPos X E pos lam ρ → ∀ (e : D.what₂.Tau → ℤ) (z : D.host.E), z * D.host.conj z = 1 →

@@ -267,6 +267,11 @@ def v5 : HeightOneSpectrum (𝓞 ℚ) := placeOf 5 (by norm_num)
 
 def v3 : HeightOneSpectrum (𝓞 ℚ) := placeOf 3 (by norm_num)
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : Rat.ringOfIntegersEquiv.symm ((3 : ℕ) : ℤ) ∈ v3.asIdeal`. Express the relevant statement in the definitionally equal form `_ ∈ Ideal.comap _ _`. Rewrite using `[Ideal.mem_comap, RingEquiv.coe_toRingHom, RingEquiv.apply_symm_apply]`. Conclude with `Ideal.mem_span_singleton_self ((3 : ℕ) : ℤ)`.
+
+Rewrite `h1` using `[h]`. Express the relevant statement in the definitionally equal form `_ ∈ Ideal.comap _ _ at h1`. Rewrite `h1` using `[Ideal.mem_comap, RingEquiv.coe_toRingHom, RingEquiv.apply_symm_apply, Ideal.mem_span_singleton]`. Evaluate the numerical expressions using `at h1`.
+-/
 theorem place_three_ne_place_five : v3 ≠ v5 := by
   intro h
   have h1 : Rat.ringOfIntegersEquiv.symm ((3 : ℕ) : ℤ) ∈ v3.asIdeal := by
@@ -280,11 +285,20 @@ theorem place_three_ne_place_five : v3 ≠ v5 := by
 
 def gI : GaussQ := ⟨0, 1⟩
 
+/- English proof (translation)
+Apply the tactic sequence `rw [conj_gaussQ]; ext <;> simp [gI]`.
+-/
 theorem conj_gI : conj ℚ GaussQ gI = -gI := by
   rw [conj_gaussQ]; ext <;> simp [gI]
 
+/- English proof (translation)
+The claim follows from `QuadraticAlgebra.finrank_eq_two _ _`.
+-/
 theorem gauss_finrank : Module.finrank ℚ GaussQ = 2 := QuadraticAlgebra.finrank_eq_two _ _
 
+/- English proof (translation)
+Introduce `h`. Use `congrArg (fun φ : GaussQ ≃ₐ[ℚ] GaussQ => (φ gI).im) h` as an intermediate fact. Rewrite `this` using `[conj_gI, AlgEquiv.one_apply]`. Simplify using `only [QuadraticAlgebra.im_neg, gI] at this`. Evaluate the numerical expressions using `at this`.
+-/
 theorem gauss_conj_ne_one : conj ℚ GaussQ ≠ 1 := by
   intro h
   have := congrArg (fun φ : GaussQ ≃ₐ[ℚ] GaussQ => (φ gI).im) h
@@ -292,9 +306,15 @@ theorem gauss_conj_ne_one : conj ℚ GaussQ ≠ 1 := by
   simp only [QuadraticAlgebra.im_neg, gI] at this
   norm_num at this
 
+/- English proof (translation)
+The claim follows from `conj_conj x`.
+-/
 theorem gauss_invol (x : GaussQ) : (conj ℚ GaussQ).toRingHom ((conj ℚ GaussQ).toRingHom x) = x :=
   conj_conj x
 
+/- English proof (translation)
+The claim follows from `two_ne_zero`.
+-/
 theorem gauss_two_ne_zero : (2 : GaussQ) ≠ 0 := two_ne_zero
 
 def hypPlane : Matrix (Fin 2) (Fin 2) GaussQ := !![0, 1; 1, 0]
@@ -303,26 +323,50 @@ def e0 : Fin 2 → GaussQ := ![1, 0]
 
 def f0 : Fin 2 → GaussQ := ![0, 1]
 
+/- English proof (translation)
+Apply the tactic sequence `refine Matrix.ext fun i j => ?_; fin_cases i <;> fin_cases j <;> simp [hypPlane]`.
+-/
 theorem hypPlane_herm : hypPlaneᵀ = hypPlane.map (conj ℚ GaussQ) := by
   refine Matrix.ext fun i j => ?_; fin_cases i <;> fin_cases j <;> simp [hypPlane]
 
+/- English proof (translation)
+The claim follows from `hypPlane_herm`.
+-/
 theorem hypPlane_herm' : hypPlaneᵀ = hypPlane.map (conj ℚ GaussQ).toRingHom := hypPlane_herm
 
+/- English proof (translation)
+Simplify using `[hypPlane, det_fin_two]`.
+-/
 theorem hypPlane_unit : IsUnit hypPlane.det := by
   simp [hypPlane, det_fin_two]
 
+/- English proof (translation)
+Introduce `h`. Use `congrFun h 0` as an intermediate fact. Simplify using `[e0] at this`.
+-/
 theorem isotropic_vector_ne_zero : e0 ≠ 0 := by
   intro h; have := congrFun h 0; simp [e0] at this
 
+/- English proof (translation)
+Simplify using `[hf, hypPlane, e0, Fin.sum_univ_two]`.
+-/
 theorem hf_e0e0 : hf (conj ℚ GaussQ).toRingHom hypPlane e0 e0 = 0 := by
   simp [hf, hypPlane, e0, Fin.sum_univ_two]
 
+/- English proof (translation)
+Simplify using `[hf, hypPlane, f0, Fin.sum_univ_two]`.
+-/
 theorem hf_f0f0 : hf (conj ℚ GaussQ).toRingHom hypPlane f0 f0 = 0 := by
   simp [hf, hypPlane, f0, Fin.sum_univ_two]
 
+/- English proof (translation)
+Simplify using `[hf, hypPlane, e0, f0, Fin.sum_univ_two]`.
+-/
 theorem hf_e0f0 : hf (conj ℚ GaussQ).toRingHom hypPlane e0 f0 = 1 := by
   simp [hf, hypPlane, e0, f0, Fin.sum_univ_two]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨e0, isotropic_vector_ne_zero, hf_e0e0⟩`.
+-/
 theorem gauss_isotropic : ∃ e : Fin 2 → GaussQ, e ≠ 0 ∧ hf (conj ℚ GaussQ).toRingHom hypPlane e e = 0 :=
   ⟨e0, isotropic_vector_ne_zero, hf_e0e0⟩
 
@@ -330,10 +374,16 @@ theorem gauss_isotropic : ∃ e : Fin 2 → GaussQ, e ≠ 0 ∧ hf (conj ℚ Gau
 
 attribute [local instance] topAE
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl⟩`.
+-/
 theorem isModuleTopology_AE : IsModuleTopology (FiniteAdeleRing (𝓞 ℚ) ℚ) (AE ℚ GaussQ) := ⟨rfl⟩
 
 attribute [local instance] isModuleTopology_AE
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [sigV, Algebra.TensorProduct.map_tmul, conj_conj]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem sigV_invol (v : HeightOneSpectrum (𝓞 ℚ)) (x : Kv GaussQ v) :
     sigV (conj ℚ GaussQ) v (sigV (conj ℚ GaussQ) v x) = x := by
   induction x using TensorProduct.induction_on with
@@ -341,51 +391,90 @@ theorem sigV_invol (v : HeightOneSpectrum (𝓞 ℚ)) (x : Kv GaussQ v) :
   | tmul a b => simp [sigV, Algebra.TensorProduct.map_tmul, conj_conj]
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [sigA, Algebra.TensorProduct.map_tmul, conj_conj]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem sigA_invol (x : AE ℚ GaussQ) : sigA (conj ℚ GaussQ) (sigA (conj ℚ GaussQ) x) = x := by
   induction x using TensorProduct.induction_on with
   | zero => simp
   | tmul a b => simp [sigA, Algebra.TensorProduct.map_tmul, conj_conj]
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Simplify using `[sigV, inclV, Algebra.TensorProduct.map_tmul]`.
+-/
 theorem sigV_inclV (v : HeightOneSpectrum (𝓞 ℚ)) (x : GaussQ) :
     sigV (conj ℚ GaussQ) v (inclV GaussQ v x) = inclV GaussQ v (conj ℚ GaussQ x) := by
   simp [sigV, inclV, Algebra.TensorProduct.map_tmul]
 
+/- English proof (translation)
+Simplify using `[sigA, inclA, Algebra.TensorProduct.map_tmul]`.
+-/
 theorem sigA_inclA (x : GaussQ) :
     sigA (conj ℚ GaussQ) (inclA ℚ GaussQ x) = inclA ℚ GaussQ (conj ℚ GaussQ x) := by
   simp [sigA, inclA, Algebra.TensorProduct.map_tmul]
 
+/- English proof (translation)
+Rewrite using `[sigV_inclV, conj_gI]`.
+-/
 theorem localConjugation_ne_id_at_five : sigV (conj ℚ GaussQ) v5 (inclV GaussQ v5 gI) = inclV GaussQ v5 (-gI) := by
   rw [sigV_inclV, conj_gI]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem compAt_tmul (a : FiniteAdeleRing (𝓞 ℚ) ℚ) (y : GaussQ) :
     compAt GaussQ v5 (a ⊗ₜ[ℚ] y) = a v5 ⊗ₜ[ℚ] y := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem singleV_tmul (x : v5.adicCompletion ℚ) (y : GaussQ) :
     singleV GaussQ v5 (x ⊗ₜ[ℚ] y) = singleF ℚ v5 x ⊗ₜ[ℚ] y := rfl
 
 open Classical in
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Pi.single v5 x v5 = x`. Simplify using the standard rewrite rules.
+-/
 theorem singleAdele_at_same_place (x : v5.adicCompletion ℚ) : singleF ℚ v5 x v5 = x := by
   change Pi.single v5 x v5 = x
   simp
 
 open Classical in
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Pi.single v5 x v3 = 0`. Simplify using `[place_three_ne_place_five]`.
+-/
 theorem singleAdele_at_other_place (x : v5.adicCompletion ℚ) : singleF ℚ v5 x v3 = 0 := by
   change Pi.single v5 x v3 = 0
   simp [place_three_ne_place_five]
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨1, one_mem _, 1, by simp [Algebra.TensorProduct.one_def]⟩`.
+-/
 theorem one_mem_intAt : (1 : Kv GaussQ v5) ∈ intAt GaussQ v5 :=
   AddSubgroup.subset_closure ⟨1, one_mem _, 1, by simp [Algebra.TensorProduct.one_def]⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[trunc, restrictTo]`.
+-/
 theorem trunc_empty (x : Matrix (Fin 2) (Fin 2) (AE ℚ GaussQ)) : trunc GaussQ ∅ x = 1 := by
   ext i j; simp [trunc, restrictTo]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[embed]`.
+-/
 theorem embed_one_at_five : embed GaussQ v5 (1 : Matrix (Fin 2) (Fin 2) (Kv GaussQ v5)) = 1 := by
   ext i j; simp [embed]
 
+/- English proof (translation)
+The claim follows from `subset_closure ⟨1, one_mem_SU, by simp⟩`.
+-/
 theorem one_mem_Cl : (1 : Matrix (Fin 2) (Fin 2) (AE ℚ GaussQ)) ∈ Cl (conj ℚ GaussQ) hypPlane :=
   subset_closure ⟨1, one_mem_SU, by simp⟩
 
+/- English proof (translation)
+Simplify using `only [perpProj]`. Rewrite using `[hf_e0f0, hf_e0e0]`. Simplify using the standard rewrite rules.
+-/
 theorem perpProjection_isotropic_self : perpProj (conj ℚ GaussQ).toRingHom hypPlane e0 f0 e0 = 0 := by
   simp only [perpProj]
   rw [hf_e0f0, hf_e0e0]
@@ -395,6 +484,9 @@ def g5 : Matrix (Fin 2) (Fin 2) (Kv GaussQ v5) :=
   eich (sigV (conj ℚ GaussQ) v5).toRingHom (hypPlane.map (inclV GaussQ v5)) (inclV GaussQ v5 ∘ e0) 0
     (inclV GaussQ v5 gI)
 
+/- English proof (translation)
+Use `⟨0, inclV GaussQ v5 gI, hf_zero_left _ _ _, hf_zero_left _ _ _, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[hf_zero_left]`. Express the relevant statement in the definitionally equal form `inclV GaussQ v5 gI + sigV (conj ℚ GaussQ) v5 (inclV GaussQ v5 gI) + 0 = 0`. Rewrite using `[localConjugation_ne_id_at_five, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem unipotent_mem_eichlerAlong :
     g5 ∈ eichAlong (sigV (conj ℚ GaussQ) v5).toRingHom (hypPlane.map (inclV GaussQ v5))
       (inclV GaussQ v5 ∘ e0) (inclV GaussQ v5 ∘ f0) := by
@@ -403,14 +495,23 @@ theorem unipotent_mem_eichlerAlong :
   change inclV GaussQ v5 gI + sigV (conj ℚ GaussQ) v5 (inclV GaussQ v5 gI) + 0 = 0
   rw [localConjugation_ne_id_at_five, map_neg]; ring
 
+/- English proof (translation)
+The claim follows from `Or.inl unipotent_mem_eichlerAlong`.
+-/
 theorem unipotent_mem_eichlerSet :
     g5 ∈ eichSet (sigV (conj ℚ GaussQ) v5).toRingHom (hypPlane.map (inclV GaussQ v5))
       (inclV GaussQ v5 ∘ e0) (inclV GaussQ v5 ∘ f0) := Or.inl unipotent_mem_eichlerAlong
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [hypPlane]`.
+-/
 theorem hyperbolicPlane_hermitian_at_five : (hypPlane.map (inclV GaussQ v5))ᵀ =
     (hypPlane.map (inclV GaussQ v5)).map (sigV (conj ℚ GaussQ) v5).toRingHom := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [hypPlane]
 
+/- English proof (translation)
+The claim follows from `eichAlong_sub (fun x => sigV_invol v5 x) hyperbolicPlane_hermitian_at_five (by simp [hf, hypPlane, e0, Fin.sum_univ_two]) unipotent_mem_eichlerAlong`.
+-/
 theorem unipotent_mem_specialUnitary : g5 ∈ SU (sigV (conj ℚ GaussQ) v5).toRingHom (hypPlane.map (inclV GaussQ v5)) :=
   eichAlong_sub (fun x => sigV_invol v5 x) hyperbolicPlane_hermitian_at_five
     (by simp [hf, hypPlane, e0, Fin.sum_univ_two]) unipotent_mem_eichlerAlong
@@ -419,16 +520,27 @@ def gA : Matrix (Fin 2) (Fin 2) (AE ℚ GaussQ) :=
   eich (sigA (conj ℚ GaussQ)) (hypPlane.map (inclA ℚ GaussQ)) (inclA ℚ GaussQ ∘ e0) 0
     (inclA ℚ GaussQ gI)
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [hypPlane]`.
+-/
 theorem hypPlane_herm_A : (hypPlane.map (inclA ℚ GaussQ))ᵀ =
     (hypPlane.map (inclA ℚ GaussQ)).map (sigA (conj ℚ GaussQ)) := by
   ext i j; fin_cases i <;> fin_cases j <;> simp [hypPlane]
 
+/- English proof (translation)
+Use `eichAlong_sub (f := inclA ℚ GaussQ ∘ f0) (fun x => sigA_invol x) hypPlane_herm_A (by simp [hf, hypPlane, e0, Fin.sum_univ_two]) ⟨0, inclA ℚ GaussQ gI, hf_zero_left _ _ _, hf_zero_left _ _ _, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[hf_zero_left, sigA_inclA, conj_gI, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gA_mem_SU : gA ∈ SU (sigA (conj ℚ GaussQ)) (hypPlane.map (inclA ℚ GaussQ)) := by
   refine eichAlong_sub (f := inclA ℚ GaussQ ∘ f0) (fun x => sigA_invol x) hypPlane_herm_A
     (by simp [hf, hypPlane, e0, Fin.sum_univ_two]) ⟨0, inclA ℚ GaussQ gI, hf_zero_left _ _ _,
       hf_zero_left _ _ _, ?_, rfl⟩
   rw [hf_zero_left, sigA_inclA, conj_gI, map_neg]; ring
 
+/- English proof (translation)
+Take `⟨hdet, hu⟩` from `ha`. Establish `hunit : IsUnit a.det` using `by rw [hdet]; exact isUnit_one`. Establish `hmap : a.map σ * a⁻¹.map σ = 1`. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ hunit, Matrix.map_one _ (map_zero σ) (map_one σ)]`. Use `⟨by rw [Matrix.det_nonsing_inv, hdet, Ring.inverse_one], ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J := by rw [Matrix.mul_nonsing_inv _ hunit, hmap]; simp`.
+-/
 theorem inv_mem_SU {R : Type*} [CommRing R] (σ : R →+* R) {N : ℕ} (J : Matrix (Fin N) (Fin N) R)
     {a : Matrix (Fin N) (Fin N) R} (ha : a ∈ SU σ J) : a⁻¹ ∈ SU σ J := by
   obtain ⟨hdet, hu⟩ := ha
@@ -441,22 +553,34 @@ theorem inv_mem_SU {R : Type*} [CommRing R] (σ : R →+* R) {N : ℕ} (J : Matr
         rw [Matrix.transpose_mul]; simp only [Matrix.mul_assoc]
     _ = J := by rw [Matrix.mul_nonsing_inv _ hunit, hmap]; simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨gauss_invol, gauss_two_ne_zero, hypPlane_herm', hypPlane_unit, isotropic_vector_ne_zero, hf_e0e0⟩`.
+-/
 theorem HypPairExists.hyps :
     (∀ x, (conj ℚ GaussQ).toRingHom ((conj ℚ GaussQ).toRingHom x) = x) ∧ (2 : GaussQ) ≠ 0 ∧
       hypPlaneᵀ = hypPlane.map (conj ℚ GaussQ).toRingHom ∧ IsUnit hypPlane.det ∧ e0 ≠ 0 ∧
       hf (conj ℚ GaussQ).toRingHom hypPlane e0 e0 = 0 :=
   ⟨gauss_invol, gauss_two_ne_zero, hypPlane_herm', hypPlane_unit, isotropic_vector_ne_zero, hf_e0e0⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨gauss_finrank, gauss_conj_ne_one, isModuleTopology_AE⟩`.
+-/
 theorem AETopologicalRing.hyps :
     Module.finrank ℚ GaussQ = 2 ∧ conj ℚ GaussQ ≠ 1 ∧
       IsModuleTopology (FiniteAdeleRing (𝓞 ℚ) ℚ) (AE ℚ GaussQ) :=
   ⟨gauss_finrank, gauss_conj_ne_one, isModuleTopology_AE⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨gauss_finrank, gauss_conj_ne_one, isModuleTopology_AE⟩`.
+-/
 theorem EDenseInAE.hyps :
     Module.finrank ℚ GaussQ = 2 ∧ conj ℚ GaussQ ≠ 1 ∧
       IsModuleTopology (FiniteAdeleRing (𝓞 ℚ) ℚ) (AE ℚ GaussQ) :=
   ⟨gauss_finrank, gauss_conj_ne_one, isModuleTopology_AE⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨gauss_invol, hypPlane_herm', hf_e0e0, hf_f0f0, hf_e0f0, gauss_finrank, gauss_conj_ne_one, isModuleTopology_AE⟩`.
+-/
 theorem OrthProjection.hyps :
     (∀ x, (conj ℚ GaussQ).toRingHom ((conj ℚ GaussQ).toRingHom x) = x) ∧
       hypPlaneᵀ = hypPlane.map (conj ℚ GaussQ).toRingHom ∧
@@ -467,6 +591,9 @@ theorem OrthProjection.hyps :
   ⟨gauss_invol, hypPlane_herm', hf_e0e0, hf_f0f0, hf_e0f0, gauss_finrank, gauss_conj_ne_one,
     isModuleTopology_AE⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨gauss_finrank, gauss_conj_ne_one, hypPlane_herm, hf_e0e0, hf_f0f0, hf_e0f0, isModuleTopology_AE⟩`.
+-/
 theorem EichlerDense.hyps :
     Module.finrank ℚ GaussQ = 2 ∧ conj ℚ GaussQ ≠ 1 ∧ hypPlaneᵀ = hypPlane.map (conj ℚ GaussQ) ∧
       hf (conj ℚ GaussQ).toRingHom hypPlane e0 e0 = 0 ∧ hf (conj ℚ GaussQ).toRingHom hypPlane f0 f0 = 0 ∧
@@ -474,6 +601,9 @@ theorem EichlerDense.hyps :
       IsModuleTopology (FiniteAdeleRing (𝓞 ℚ) ℚ) (AE ℚ GaussQ) :=
   ⟨gauss_finrank, gauss_conj_ne_one, hypPlane_herm, hf_e0e0, hf_f0f0, hf_e0f0, isModuleTopology_AE⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨gauss_finrank, gauss_conj_ne_one, hypPlane_herm, hypPlane_unit, hf_e0e0, hf_f0f0, hf_e0f0, isModuleTopology_AE⟩`.
+-/
 theorem ClosureIsSubmonoid.hyps :
     Module.finrank ℚ GaussQ = 2 ∧ conj ℚ GaussQ ≠ 1 ∧ hypPlaneᵀ = hypPlane.map (conj ℚ GaussQ) ∧
       IsUnit hypPlane.det ∧
@@ -483,16 +613,25 @@ theorem ClosureIsSubmonoid.hyps :
   ⟨gauss_finrank, gauss_conj_ne_one, hypPlane_herm, hypPlane_unit, hf_e0e0, hf_f0f0, hf_e0f0,
     isModuleTopology_AE⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨gauss_finrank, gauss_conj_ne_one, ⟨v5⟩⟩`.
+-/
 theorem LocalRingHypotheses.hyps :
     Module.finrank ℚ GaussQ = 2 ∧ conj ℚ GaussQ ≠ 1 ∧ Nonempty (HeightOneSpectrum (𝓞 ℚ)) :=
   ⟨gauss_finrank, gauss_conj_ne_one, ⟨v5⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨gauss_finrank, gauss_conj_ne_one, place_three_ne_place_five, unipotent_mem_specialUnitary, gA_mem_SU⟩`.
+-/
 theorem PlaceMaps.hyps :
     Module.finrank ℚ GaussQ = 2 ∧ conj ℚ GaussQ ≠ 1 ∧ v3 ≠ v5 ∧
       g5 ∈ SU (sigV (conj ℚ GaussQ) v5).toRingHom (hypPlane.map (inclV GaussQ v5)) ∧
       gA ∈ SU (sigA (conj ℚ GaussQ)) (hypPlane.map (inclA ℚ GaussQ)) :=
   ⟨gauss_finrank, gauss_conj_ne_one, place_three_ne_place_five, unipotent_mem_specialUnitary, gA_mem_SU⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨gauss_finrank, gauss_conj_ne_one, hypPlane_herm, hf_e0e0, hf_f0f0, hf_e0f0, unipotent_mem_eichlerSet⟩`.
+-/
 theorem EichlerAtPlace.hyps :
     Module.finrank ℚ GaussQ = 2 ∧ conj ℚ GaussQ ≠ 1 ∧ hypPlaneᵀ = hypPlane.map (conj ℚ GaussQ) ∧
       hf (conj ℚ GaussQ).toRingHom hypPlane e0 e0 = 0 ∧ hf (conj ℚ GaussQ).toRingHom hypPlane f0 f0 = 0 ∧
@@ -501,6 +640,9 @@ theorem EichlerAtPlace.hyps :
         (inclV GaussQ v5 ∘ e0) (inclV GaussQ v5 ∘ f0) :=
   ⟨gauss_finrank, gauss_conj_ne_one, hypPlane_herm, hf_e0e0, hf_f0f0, hf_e0f0, unipotent_mem_eichlerSet⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨gauss_finrank, gauss_conj_ne_one, hypPlane_herm, hypPlane_unit, gauss_isotropic, isModuleTopology_AE, unipotent_mem_specialUnitary⟩`.
+-/
 theorem LocalInClosure.hyps :
     Module.finrank ℚ GaussQ = 2 ∧ conj ℚ GaussQ ≠ 1 ∧ hypPlaneᵀ = hypPlane.map (conj ℚ GaussQ) ∧
       IsUnit hypPlane.det ∧
@@ -510,12 +652,18 @@ theorem LocalInClosure.hyps :
   ⟨gauss_finrank, gauss_conj_ne_one, hypPlane_herm, hypPlane_unit, gauss_isotropic,
     isModuleTopology_AE, unipotent_mem_specialUnitary⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨gauss_finrank, gauss_conj_ne_one, isModuleTopology_AE, Filter.univ_mem⟩`.
+-/
 theorem AENeighbourhoods.hyps :
     Module.finrank ℚ GaussQ = 2 ∧ conj ℚ GaussQ ≠ 1 ∧
       IsModuleTopology (FiniteAdeleRing (𝓞 ℚ) ℚ) (AE ℚ GaussQ) ∧
       (Set.univ : Set (Matrix (Fin 2) (Fin 2) (AE ℚ GaussQ))) ∈ 𝓝 0 :=
   ⟨gauss_finrank, gauss_conj_ne_one, isModuleTopology_AE, Filter.univ_mem⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨gauss_finrank, gauss_conj_ne_one, hypPlane_herm, hypPlane_unit, gauss_isotropic, isModuleTopology_AE, List.nodup_singleton _, fun v => by simp, gA_mem_SU⟩`.
+-/
 theorem Truncation.hyps :
     Module.finrank ℚ GaussQ = 2 ∧ conj ℚ GaussQ ≠ 1 ∧ hypPlaneᵀ = hypPlane.map (conj ℚ GaussQ) ∧
       IsUnit hypPlane.det ∧
@@ -526,6 +674,9 @@ theorem Truncation.hyps :
   ⟨gauss_finrank, gauss_conj_ne_one, hypPlane_herm, hypPlane_unit, gauss_isotropic,
     isModuleTopology_AE, List.nodup_singleton _, fun v => by simp, gA_mem_SU⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨gauss_finrank, gauss_conj_ne_one, hypPlane_herm, hypPlane_unit, gauss_isotropic, isModuleTopology_AE, gA_mem_SU⟩`.
+-/
 theorem SAHolds.hyps :
     Module.finrank ℚ GaussQ = 2 ∧ conj ℚ GaussQ ≠ 1 ∧ hypPlaneᵀ = hypPlane.map (conj ℚ GaussQ) ∧
       IsUnit hypPlane.det ∧
@@ -535,6 +686,9 @@ theorem SAHolds.hyps :
   ⟨gauss_finrank, gauss_conj_ne_one, hypPlane_herm, hypPlane_unit, gauss_isotropic,
     isModuleTopology_AE, gA_mem_SU⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨gauss_finrank, gauss_conj_ne_one, hypPlane_herm, hypPlane_unit, gauss_isotropic, isModuleTopology_AE, le_rfl, one_mem_SU, fun _ ha _ hb => mul_mem_SU ha hb, fun _ ha => inv_mem_SU _ _ ha, ⟨Set.univ, isOpen_univ, Set.univ_inter _⟩, gA_mem_SU⟩`.
+-/
 theorem SAOpenHolds.hyps :
     let Kg := SU (sigA (conj ℚ GaussQ)) (hypPlane.map (inclA ℚ GaussQ))
     Module.finrank ℚ GaussQ = 2 ∧ conj ℚ GaussQ ≠ 1 ∧ hypPlaneᵀ = hypPlane.map (conj ℚ GaussQ) ∧

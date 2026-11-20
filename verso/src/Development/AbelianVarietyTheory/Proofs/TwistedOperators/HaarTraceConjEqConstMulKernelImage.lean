@@ -5,6 +5,11 @@ open scoped Pointwise ENNReal
 
 namespace GlobalTheory.RowFubini
 
+/- English proof (translation)
+Unfold `Subgroup.relIndex Subgroup.index`. Use `Nat.card_congr (Equiv.ofBijective (Subgroup.quotientSubgroupOfEmbeddingOfLE H hst) ⟨(Subgroup.quotientSubgroupOfEmbeddingOfLE H hst).injective, ?_⟩)` and prove the remaining obligations. Introduce `q`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g`.
+
+Take `⟨a, ha, hg⟩` from `hcov g g.2`. Use `⟨QuotientGroup.mk ⟨a, ha⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.quotientSubgroupOfEmbeddingOfLE_apply_mk, QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using `using hg`.
+-/
 theorem relIndex_eq_of_le_of_cover {G : Type*} [Group G] (H s t : Subgroup G) (hst : s ≤ t)
     (hcov : ∀ g ∈ t, ∃ a ∈ s, a⁻¹ * g ∈ H) : H.relIndex s = H.relIndex t := by
   unfold Subgroup.relIndex Subgroup.index
@@ -19,6 +24,17 @@ theorem relIndex_eq_of_le_of_cover {G : Type*} [Group G] (H s t : Subgroup G) (h
       Subgroup.mem_subgroupOf]
     simpa using hg
 
+/- English proof (translation)
+Use `set S := (B ⊔ π.ker) ⊓ A with hS`. Establish `hBS : B ≤ S` using `le_inf le_sup_left hBA`. Establish `hSA : S ≤ A` using `inf_le_right`. Establish `h1 : B.relIndex A = B.relIndex S * S.relIndex A` using `(Subgroup.relIndex_mul_relIndex B S A hBS hSA).symm`. Establish `h2 : S.relIndex A = (B.map π).relIndex (A.map π)`.
+
+Rewrite using `[Subgroup.relIndex_map_map, hS, Subgroup.inf_relIndex_right]`. Use `relIndex_eq_of_le_of_cover _ _ _ le_sup_left ?_` and prove the remaining obligations. Introduce `g hg`. Rewrite `hg` using `[← SetLike.mem_coe, Subgroup.mul_normal]`. Take `⟨a, ha, n, hn, rfl⟩` from `hg`.
+
+Conclude with `⟨a, ha, by simpa using (le_sup_right : π.ker ≤ B ⊔ π.ker) hn⟩`. Establish `h3 : B.relIndex S = B.relIndex (A ⊓ π.ker)`. Use `(relIndex_eq_of_le_of_cover _ _ _ ?_ ?_).symm` and prove the remaining obligations. Conclude with `le_inf (inf_le_right.trans le_sup_right) inf_le_left`. Introduce `g hg`.
+
+Establish `hgA : g ∈ A` using `hg.2`. Establish `hg1 : g ∈ π.ker ⊔ B` using `sup_comm B π.ker ▸ hg.1`. Rewrite `hg1` using `[← SetLike.mem_coe, Subgroup.normal_mul]`. Take `⟨m, hm, b, hb, rfl⟩` from `hg1`. Use `⟨m, ⟨?_, hm⟩, by simpa using hb⟩` and prove the remaining obligations.
+
+Establish `: m = (m * b) * b⁻¹` using `by group`. Rewrite using `[this]`. Conclude with `A.mul_mem hgA (A.inv_mem (hBA hb))`. Rewrite using `[h1, h2, h3]`.
+-/
 theorem relIndex_split {G Y : Type*} [Group G] [Group Y] (π : G →* Y) (A B : Subgroup G)
     (hBA : B ≤ A) :
     B.relIndex A = B.relIndex (A ⊓ π.ker) * (B.map π).relIndex (A.map π) := by
@@ -57,6 +73,9 @@ section Meas
 variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
   [BorelSpace G]
 
+/- English proof (translation)
+Establish `: CompactSpace L` using `isCompact_iff_compactSpace.mp hL`. Establish `ho : IsOpen ((H.subgroupOf L : Subgroup L) : Set L)` using `hH.preimage continuous_subtype_val`. Establish `: Finite (L ⧸ H.subgroupOf L)` using `Subgroup.quotient_finite_of_isOpen _ ho`. Conclude with `Subgroup.finiteIndex_of_finite_quotient`.
+-/
 theorem finiteIndex_subgroupOf (H L : Subgroup G) (hH : IsOpen (H : Set G))
     (hL : IsCompact (L : Set G)) : (H.subgroupOf L).FiniteIndex := by
   have : CompactSpace L := isCompact_iff_compactSpace.mp hL
@@ -65,6 +84,19 @@ theorem finiteIndex_subgroupOf (H L : Subgroup G) (hH : IsOpen (H : Set G))
   have : Finite (L ⧸ H.subgroupOf L) := Subgroup.quotient_finite_of_isOpen _ ho
   exact Subgroup.finiteIndex_of_finite_quotient
 
+/- English proof (translation)
+Use `finiteIndex_subgroupOf H L hH hL` as an intermediate fact. Take `⟨s, hs, -⟩` from `(H.subgroupOf L).exists_isComplement_left 1`. Establish `hs' : Finite s` using `hs.finite_left_iff.mpr inferInstance`. Establish `hU : (⋃ a : s, (a.val : L) • (H : Set G)) = (L : Set G)`. Use extensionality with `x`.
+
+Simplify using `only [Set.mem_iUnion, Set.mem_smul_set, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, h, hh, rfl⟩`. Conclude with `L.mul_mem a.val.2 (hHL hh)`. Introduce `hx`.
+
+Take `⟨⟨b, h⟩, hbh, -⟩` from `hs.existsUnique ⟨x, hx⟩`. Use `⟨b, (h.val : G), Subgroup.mem_subgroupOf.mp h.2, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hbh` as an intermediate fact. Conclude with `this`. Establish `hdisj : Pairwise (Function.onFun Disjoint fun a : s => (a.val : L) • (H : Set G))`.
+
+Introduce `a b hab`. Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce and unpack `x ⟨h1, hh1, rfl⟩ ⟨h2, hh2, he⟩`. Apply `hab` to reduce the goal to its premises. Establish `hh1' : (⟨h1, hHL hh1⟩ : L) ∈ H.subgroupOf L` using `Subgroup.mem_subgroupOf.mpr hh1`.
+
+Establish `hh2' : (⟨h2, hHL hh2⟩ : L) ∈ H.subgroupOf L` using `Subgroup.mem_subgroupOf.mpr hh2`. Establish `e : (a.val : L) * ⟨h1, hHL hh1⟩ = (b.val : L) * ⟨h2, hHL hh2⟩` using `Subtype.ext he.symm`. Use `(hs.existsUnique ((a.val : L) * ⟨h1, hHL hh1⟩)).unique (y₁ := (a, ⟨_, hh1'⟩)) (y₂ := (b, ⟨_, hh2'⟩)) rfl e.symm` as an intermediate fact. Conclude with `congrArg Prod.fst this`. Establish `hHm : MeasurableSet (H : Set G)` using `hH.measurableSet`.
+
+Use `symm`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[measure_smul, hs.encard_left, Subgroup.relIndex]`. Use `_ = μ (⋃ a : s, (a.val : L) • (H : Set G)) := (measure_iUnion hdisj fun a => hHm.const_smul _).symm`. Use `_ = μ L := by rw [hU]`.
+-/
 theorem measure_eq_relIndex_mul (μ : Measure G) [μ.IsMulLeftInvariant] (H L : Subgroup G)
     (hHL : H ≤ L) (hH : IsOpen (H : Set G)) (hL : IsCompact (L : Set G)) :
     μ L = (H.relIndex L : ℝ≥0∞) * μ H := by
@@ -101,6 +133,9 @@ theorem measure_eq_relIndex_mul (μ : Measure G) [μ.IsMulLeftInvariant] (H L : 
         (measure_iUnion hdisj fun a => hHm.const_smul _).symm
     _ = μ L := by rw [hU]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hH.measure_pos μ ⟨1, H.one_mem⟩, hc.measure_lt_top⟩`.
+-/
 theorem measure_pos_lt_top (μ : Measure G) [μ.IsHaarMeasure] (H : Subgroup G)
     (hH : IsOpen (H : Set G)) (hc : IsCompact (H : Set G)) : 0 < μ H ∧ μ H < ∞ :=
   ⟨hH.measure_pos μ ⟨1, H.one_mem⟩, hc.measure_lt_top⟩
@@ -115,12 +150,20 @@ section Top
 
 variable {X : Type*} [Group X] [TopologicalSpace X] [IsTopologicalGroup X]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hQo.preimage continuous_subtype_val, hR.isClosedEmbedding_subtypeVal.isCompact_preimage hQc⟩`.
+-/
 theorem comap_open_compact (R Q : Subgroup X) (hR : IsClosed (R : Set X))
     (hQo : IsOpen (Q : Set X)) (hQc : IsCompact (Q : Set X)) :
     IsOpen ((Q.comap R.subtype : Subgroup R) : Set R) ∧
       IsCompact ((Q.comap R.subtype : Subgroup R) : Set R) :=
   ⟨hQo.preimage continuous_subtype_val, hR.isClosedEmbedding_subtypeVal.isCompact_preimage hQc⟩
 
+/- English proof (translation)
+Use `⟨Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_, ?_⟩` and prove the remaining obligations. Use `Filter.mem_of_superset ((hAo.preimage hσ).mem_nhds ?_) ?_` and prove the remaining obligations. Simplify using `[A.one_mem]`. Introduce `y hy`. Conclude with `Subgroup.mem_map.mpr ⟨σ y, hy, hsec y⟩`.
+
+Rewrite using `[Subgroup.coe_map]`. Conclude with `hAc.image hπ`.
+-/
 theorem map_open_compact {Y : Type*} [Group Y] [TopologicalSpace Y] [IsTopologicalGroup Y]
     (A : Subgroup X) (π : X →* Y) (σ : Y →* X) (hπ : Continuous π) (hσ : Continuous σ)
     (hsec : ∀ y, π (σ y) = y) (hAo : IsOpen (A : Set X)) (hAc : IsCompact (A : Set X)) :
@@ -136,9 +179,17 @@ theorem map_open_compact {Y : Type*} [Group Y] [TopologicalSpace Y] [IsTopologic
 def conjSub (K : Subgroup X) (b : X) : Subgroup X := K.comap (MulAut.conj b⁻¹).toMonoidHom
 
 omit [TopologicalSpace X] [IsTopologicalGroup X] in
+/- English proof (translation)
+Simplify using `[conjSub]`.
+-/
 theorem mem_conjSub (K : Subgroup X) (b x : X) : x ∈ conjSub K b ↔ b⁻¹ * x * b ∈ K := by
   simp [conjSub]
 
+/- English proof (translation)
+Set `h : X ≃ₜ X` to `(Homeomorph.mulLeft b⁻¹).trans (Homeomorph.mulRight b)`. Establish `e : (conjSub K b : Set X) = h ⁻¹' (K : Set X)`. Use extensionality with `x`. Simplify using `[h, mem_conjSub]`. Rewrite using `[e]`.
+
+Conclude with `⟨hKo.preimage h.continuous, h.isCompact_preimage.mpr hKc⟩`.
+-/
 theorem conjSub_open_compact (K : Subgroup X) (b : X) (hKo : IsOpen (K : Set X))
     (hKc : IsCompact (K : Set X)) :
     IsOpen (conjSub K b : Set X) ∧ IsCompact (conjSub K b : Set X) := by
@@ -154,6 +205,19 @@ end GlobalTheory.RowFubini
 
 namespace GlobalTheory.RowFubini
 
+/- English proof (translation)
+Take `⟨a1o, a1c⟩` from `comap_open_compact R Q₁ hR h1o h1c`. Take `⟨a2o, a2c⟩` from `comap_open_compact R Q₂ hR h2o h2c`. Take `⟨n1o, -⟩` from `comap_open_compact N Q₁ hN h1o h1c`. Take `⟨-, n2c⟩` from `comap_open_compact N Q₂ hN h2o h2c`. Take `⟨p1o, -⟩` from `map_open_compact _ π σ hπ hσ hsec a1o a1c`.
+
+Take `⟨-, p2c⟩` from `map_open_compact _ π σ hπ hσ hsec a2o a2c`. Establish `hA : Q₁.comap R.subtype ≤ Q₂.comap R.subtype` using `Subgroup.comap_mono h12`. Establish `ea` using `measure_eq_relIndex_mul ρ _ _ hA a1o a2c`. Establish `en` using `measure_eq_relIndex_mul la _ _ (Subgroup.comap_mono h12) n1o n2c`. Establish `ep` using `measure_eq_relIndex_mul ν _ _ (Subgroup.map_mono hA) p1o p2c`.
+
+Establish `hmap : (Q₂.comap N.subtype).map (Subgroup.inclusion hNR) = Q₂.comap R.subtype ⊓ π.ker`. Use extensionality with `r`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn, rfl⟩`. Conclude with `⟨hn, (hker _).2 n.2⟩`.
+
+Introduce and unpack `⟨hq, hk⟩`. Conclude with `⟨⟨r.1, (hker r).1 hk⟩, hq, rfl⟩`. Establish `hidx : (Q₁.comap R.subtype).relIndex (Q₂.comap R.subtype ⊓ π.ker) = (Q₁.comap N.subtype).relIndex (Q₂.comap N.subtype)`. Rewrite using `[← hmap, ← Subgroup.relIndex_comap]`. Both sides reduce to the same expression.
+
+Establish `hs` using `relIndex_split π _ _ hA`. Rewrite `hs` using `[hidx]`. Simplify using `only [measureReal_def, ← ENNReal.toReal_mul]`. Rewrite using `[ea, en, ep, hs]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cross_identity {X Y : Type*} [Group X] [TopologicalSpace X] [IsTopologicalGroup X]
     [MeasurableSpace X] [BorelSpace X]
     [Group Y] [TopologicalSpace Y] [IsTopologicalGroup Y] [MeasurableSpace Y] [BorelSpace Y]
@@ -198,6 +262,23 @@ theorem cross_identity {X Y : Type*} [Group X] [TopologicalSpace X] [IsTopologic
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `X Y _ _ _ _ _ _ _ _ _ _ R N K π σ hR hN hNR hKo hKc hπ hσ hsec hker ρ hρ`. Take `⟨aKo, aKc⟩` from `comap_open_compact R K hR hKo hKc`. Take `⟨nKo, nKc⟩` from `comap_open_compact N K hN hKo hKc`. Take `⟨pKo, pKc⟩` from `map_open_compact _ π σ hπ hσ hsec aKo aKc`. Set `la : Measure N` to `Measure.haarMeasure ⟨⟨_, nKc⟩, by show (interior ((K.comap N.subtype : Subgroup N) : Set N)).Nonempty`.
+
+Rewrite using `[nKo.interior_eq]`. Conclude with `⟨1, Subgroup.one_mem _⟩⟩`. Set `ν : Measure Y` to `Measure.haarMeasure ⟨⟨_, pKc⟩, by show (interior (((K.comap R.subtype).map π : Subgroup Y) : Set Y)).Nonempty`. Rewrite using `[pKo.interior_eq]`. Conclude with `⟨1, Subgroup.one_mem _⟩⟩`.
+
+Establish `hla : la.IsHaarMeasure` using `Measure.isHaarMeasure_haarMeasure _`. Establish `hν : ν.IsHaarMeasure` using `Measure.isHaarMeasure_haarMeasure _`. Establish `pos : ∀ Q : Subgroup X, IsOpen (Q : Set X) → IsCompact (Q : Set X) → 0 < ρ.real (Q.comap R.subtype) ∧ 0 < la.real (Q.comap N.subtype) ∧ 0 < ν.real ((Q.comap R.subtype).map π)`. Introduce `Q ho hc`. Take `⟨ao, ac⟩` from `comap_open_compact R Q hR ho hc`.
+
+Take `⟨no, nc⟩` from `comap_open_compact N Q hN ho hc`. Take `⟨po, pc⟩` from `map_open_compact _ π σ hπ hσ hsec ao ac`. Take `⟨a1, a2⟩` from `measure_pos_lt_top ρ _ ao ac`. Take `⟨n1, n2⟩` from `measure_pos_lt_top la _ no nc`. Take `⟨p1, p2⟩` from `measure_pos_lt_top ν _ po pc`.
+
+Conclude with `⟨ENNReal.toReal_pos a1.ne' a2.ne, ENNReal.toReal_pos n1.ne' n2.ne, ENNReal.toReal_pos p1.ne' p2.ne⟩`. Take `⟨aK, nK, pK⟩` from `pos K hKo hKc`. Use `⟨ρ.real (K.comap R.subtype) / (la.real (K.comap N.subtype) * ν.real ((K.comap R.subtype).map π)), la, ν, div_pos aK (mul_pos nK pK), hla, hν, fun b => ?_⟩` and prove the remaining obligations. Take `⟨hCo, hCc⟩` from `conjSub_open_compact K b hKo hKc`. Establish `hDo : IsOpen ((conjSub K b ⊓ K : Subgroup X) : Set X)` using `hCo.inter hKo`.
+
+Establish `hDc : IsCompact ((conjSub K b ⊓ K : Subgroup X) : Set X)` using `hCc.inter_right (K.isClosed_of_isOpen hKo)`. Take `⟨-, nD, pD⟩` from `pos _ hDo hDc`. Establish `e1` using `cross_identity R N π σ hR hN hNR hπ hσ hsec hker ρ la ν _ _ inf_le_left hDo hDc hCo hCc`. Establish `e2` using `cross_identity R N π σ hR hN hNR hπ hσ hsec hker ρ la ν _ _ inf_le_right hDo hDc hKo hKc`. Establish `sR : {r : R | b⁻¹ * r.1 * b ∈ K} = ((conjSub K b).comap R.subtype : Subgroup R)`.
+
+Use extensionality with `r`. Conclude with `(mem_conjSub K b r.1).symm`. Establish `sN : {n : N | b⁻¹ * n.1 * b ∈ K} = ((conjSub K b).comap N.subtype : Subgroup N)`. Use extensionality with `n`. Conclude with `(mem_conjSub K b n.1).symm`.
+
+Rewrite using `[sR, sN, ← Subgroup.coe_map, div_mul_eq_mul_div, div_mul_eq_mul_div, eq_div_iff (mul_pos nK pK).ne']`. Apply `mul_right_cancel₀ (mul_pos nD pD).ne'` to reduce the goal to its premises. Take the linear combination `(la.real (K.comap N.subtype) * ν.real ((K.comap R.subtype).map π)) * e1 - (la.real ((conjSub K b).comap N.subtype) * ν.real (((conjSub K b).comap R.subtype).map π)) * e2`.
+-/
 theorem haar_trace_conj_eq : ∀ {X Y : Type} [Group X] [TopologicalSpace X] [IsTopologicalGroup X] [MeasurableSpace X] [BorelSpace X]
     [Group Y] [TopologicalSpace Y] [IsTopologicalGroup Y] [MeasurableSpace Y] [BorelSpace Y]
     (R N K : Subgroup X) (π : R →* Y) (σ : Y →* R),

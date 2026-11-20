@@ -21,6 +21,15 @@ open Formalism.MainNotions.StandardLattice Matrix GlobalTheory.WeilParts GlobalT
 
 namespace GlobalTheory.SplitWeilDict
 
+/- English proof (translation)
+Introduce `D ψ hψ S T χS χT om hW ΛS ΛT w lam Om hL hlam g hg h hh`. Take `⟨o, ho⟩` from `exists_extend (thetaSub ψ S T) Om`. Establish `ho' : ∀ p f (hf : IsThetaFunO ψ S T f), o p f = (Om p ⟨f, hf⟩ : WO S T → ℂ)` using `fun p f hf => ho p ⟨f, hf⟩`. Establish `hpres : ∀ p f, IsThetaFunO ψ S T f → IsThetaFunO ψ S T (o p f)` using `fun p f hf => by`. Rewrite using `[ho' p f hf]`.
+
+Conclude with `(Om p ⟨f, hf⟩).2`. Establish `hheis : ∀ (g' : GA D S) (k' : GA D T), g' ∈ GfC S → k' ∈ GfC T → ∀ u f, IsThetaFunO ψ S T f → o (g', k') (heisO ψ S T u f) = heisO ψ S T (actO S T g' k' u) (o (g', k') f)`. Introduce `g' k' hg' hk' u f hf`. Take `⟨f', h1, h2⟩` from `hL.Heisenberg₂ hψ hg' hk' u ⟨f, hf⟩`. Rewrite using `[ho' _ f hf, ← h2, ← h1]`.
+
+Conclude with `ho _ f'`. Take `⟨c, hc, H⟩` from `GlobalTheory.ThetaSchur.schur D ψ hψ S T (om (g, h) * o (g⁻¹, h⁻¹)) (fun f hf => hW.om_pres _ _ (hpres _ _ hf)) (fun u f hf => by`. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, hheis _ _ (inv_mem hg) (inv_mem hh) u f hf, hW.om_heis _ _ _ _ (hpres _ _ hf), GlobalTheory.FinWeilForm.actO_actO_inv])`. Use the proof step `(fun μ 𝓕 hμ h𝓕 f hf => by`. Rewrite using `[Module.End.mul_apply, hW.om_unit μ 𝓕 hμ h𝓕 _ _ (hpres _ _ hf), ho' _ f hf, hL.unit hlam μ 𝓕 hμ h𝓕 _ ⟨f, hf⟩])`.
+
+Use `⟨c, hc, fun f hf => ?_⟩` and prove the remaining obligations. Establish `h1` using `H _ (hpres (g, h) f hf)`. Rewrite `h1` using `[Module.End.mul_apply, ← Module.End.mul_apply (o _), ← map_mul, show ((g⁻¹, h⁻¹) * (g, h) : GA D S × GA D T) = 1 from inv_mul_cancel (g, h), map_one, Module.End.one_apply]`. Rewrite using `[h1, ho' _ f hf]`.
+-/
 theorem lemB : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle)
     (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om →
     ∀ (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E))
@@ -55,6 +64,17 @@ theorem lemB : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D 
     Module.End.one_apply] at h1
   rw [h1, ho' _ f hf]
 
+/- English proof (translation)
+Introduce `D ψ hψ S T χS χT om hW ΛS ΛT hS hT w lam Om hL hB ε hε`. Set `P : GA D S × GA D T →* GA D S × GA D T` to `(proj hε S).prodMap (proj hε T)`. Establish `hPc : Continuous P` using `(continuous_proj hε).prodMap (continuous_proj hε)`. Establish `hs : ∀ p : GA D S × GA D T, ∃ c : ℂ, ‖c‖ = 1 ∧ ∀ f (hf : IsThetaFunO ψ S T f), om (P p) f = c • (Om (P p) ⟨f, hf⟩ : WO S T → ℂ)` using `fun p => hB _ (proj_mem_GfC hε p.1) _ (proj_mem_GfC hε p.2)`. Use `choose c hc h using hs`.
+
+Take `⟨f, f0, hf⟩` from `GlobalTheory.FinWeilForm.exists_theta hψ S T`. Establish `hne : ∀ p, (Om p ⟨f, hf⟩ : WO S T → ℂ) ≠ 0` using `fun p h0 => f0 (by`. Establish `h1 : Om p ⟨f, hf⟩ = 0` using `Subtype.ext h0`. Establish `h2` using `congrArg (Om p⁻¹) h1`. Rewrite `h2` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, map_zero, Module.End.one_apply]`.
+
+Conclude with `congrArg Subtype.val h2)`. Use `⟨MonoidHom.mk' (fun p => ⟨c p, mem_sphere_zero_iff_norm.2 (hc p)⟩) fun p q => Circle.ext ?_, ?_, fun p f hf => h p f hf⟩` and prove the remaining obligations. Use `show c (p * q) = c p * c q`. Use `smul_left_injective ℂ (hne (P (p * q))) ?_` and prove the remaining obligations. Use `show c (p * q) • (Om (P (p * q)) ⟨f, hf⟩ : WO S T → ℂ) = (c p * c q) • (Om (P (p * q)) ⟨f, hf⟩ : WO S T → ℂ)`.
+
+Rewrite using `[← h _ f hf, map_mul P, map_mul om, Module.End.mul_apply, h q f hf, map_smul, h p _ (Om (P q) ⟨f, hf⟩).2, smul_smul, map_mul Om, Module.End.mul_apply, mul_comm (c q)]`. Use `Continuous.subtype_mk (continuous_iff_continuousAt.2 fun q => ?_) _` and prove the remaining obligations. Take `⟨u, hu⟩` from `Function.ne_iff.1 (hne (P q))`. Establish `a1 : Continuous fun p => om (P p) f u` using `(hW.om_cont f hf u).comp hPc`. Establish `a2 : Continuous fun p => (Om (P p) ⟨f, hf⟩ : WO S T → ℂ) u` using `(hL.cont hS hT ⟨f, hf⟩ u).comp hPc`.
+
+Use `((a1.continuousAt).div a2.continuousAt hu).congr ?_` and prove the remaining obligations. Use `filter_upwards [a2.continuousAt.eventually_ne hu] with p hp`. Use `show om (P p) f u / (Om (P p) ⟨f, hf⟩ : WO S T → ℂ) u = c p`. Rewrite using `[h p f hf, Pi.smul_apply, smul_eq_mul, mul_div_cancel_right₀ _ hp]`.
+-/
 theorem lemC : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle)
     (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om →
     ∀ (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)),
@@ -96,6 +116,13 @@ theorem lemC : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D 
     show om (P p) f u / (Om (P p) ⟨f, hf⟩ : WO S T → ℂ) u = c p
     rw [h p f hf, Pi.smul_apply, smul_eq_mul, mul_div_cancel_right₀ _ hp]
 
+/- English proof (translation)
+Introduce `D ψ hψ S T χS χT om hW ΛS ΛT w lam Om hL hsq e he g h hg hh x y hx hy c hc H`. Take `⟨r, hr, a⟩` from `hW.om_split e he g h hg hh x y hx hy`. Take `⟨r', hr', b⟩` from `hL.split hsq he hg hh`. Take `⟨ℓ, hℓ, f₁, hf₁, h0⟩` from `GlobalTheory.HalfCoinv.exists_invariant_form D ψ hψ S T e he`. Establish `k` using `a ℓ hℓ f₁ hf₁`.
+
+Rewrite `k` using `[H f₁ hf₁, map_smul, b ℓ hℓ ⟨f₁, hf₁⟩, smul_eq_mul]`. Establish `k1 : (c * (r' : ℂ)) * ℓ f₁ = ((r : ℂ) * (splitFacO χS χT x y : ℂ)) * ℓ f₁`. Rewrite using `[mul_assoc]`. Conclude with `k`. Establish `k2` using `mul_right_cancel₀ h0 k1`.
+
+Establish `k3` using `congrArg norm k2`. Rewrite `k3` using `[norm_mul, norm_mul, hc, Circle.norm_coe, one_mul, mul_one, Complex.norm_real, Complex.norm_real, Real.norm_of_nonneg hr.le, Real.norm_of_nonneg hr'.le]`. Rewrite `k2` using `[k3, mul_comm]`. Conclude with `mul_left_cancel₀ (Complex.ofReal_ne_zero.2 hr.ne') k2`.
+-/
 theorem lemD : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle)
     (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om →
     ∀ (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E))
@@ -121,6 +148,31 @@ theorem lemD : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D 
   rw [k3, mul_comm] at k2
   exact mul_left_cancel₀ (Complex.ofReal_ne_zero.2 hr.ne') k2
 
+/- English proof (translation)
+Introduce `D ψ hψ S T χS χT om hW ΛS ΛT hS hT lam hlam hsq w Om hL ε hε g₀ h₀ hg₀ hh₀ x₀ y₀ hx₀ hy₀ f₀`. Establish `hB` using `lemB D ψ hψ S T χS χT om hW ΛS ΛT w lam Om hL hlam`. Take `⟨ν, hνc, hν⟩` from `lemC D ψ hψ S T χS χT om hW ΛS ΛT hS hT w lam Om hL hB ε hε`. Take `⟨c, c1, c2, c3, c4, c5⟩` from `GlobalTheory.FinWeilForm.exists_half_character hε S χT _ hW.hecT hW.resT`. Take `⟨d, d1, d2, d3, d4, d5⟩` from `GlobalTheory.FinWeilForm.exists_half_character hε T χS _ hW.hecS hW.resS`.
+
+Take `⟨f₁, f1, hf₁⟩` from `GlobalTheory.FinWeilForm.exists_theta hψ S T`. Establish `hone : ∀ p : GA D S × GA D T, proj hε S p.1 = 1 → proj hε T p.2 = 1 → ν p = 1` using `fun p a b => by`. Establish `e` using `hν p f₁ hf₁`. Rewrite `e` using `[a, b, show ((1 : GA D S), (1 : GA D T)) = 1 from rfl, map_one, map_one, Module.End.one_apply, Module.End.one_apply]`. Conclude with `Circle.ext (smul_left_injective ℂ f1 (e.symm.trans (one_smul ℂ f₁).symm))`.
+
+Establish `hsp : ∀ e, IsSplitIdem D e → ∀ (g : GA D S) (h : GA D T), SuppAt e S g → SuppAt e T h → ∀ x y, IsDetAt e S g x → IsDetAt e T h y → ν (g, h) = splitFacO χS χT x y` using `fun e he g h hg hh x y hx hy => by`. Establish `e1 : ∀ f (hf : IsThetaFunO ψ S T f), om (g, h) f = (ν (g, h) : ℂ) • (Om (g, h) ⟨f, hf⟩ : WO S T → ℂ)` using `fun f hf => by`. Use `hν (g, h) f hf` as an intermediate fact. Simplify using `only at this`. Rewrite `this` using `[proj_of_split hε he hg, proj_of_split hε he hh]`. Then use the resulting hypothesis.
+
+Conclude with `Circle.ext (lemD D ψ hψ S T χS χT om hW ΛS ΛT w lam Om hL hsq e he g h hg hh x y hx hy _ (Circle.norm_coe _) e1)`. Establish `s1 : ∀ (V : HSp D) (a : AE D) i j, a * (Formalism.L2.Theta.mt V 1 - 1) i j = (Formalism.L2.Theta.mt V 1 - 1) i j` using `fun V a i j => by rw [GlobalTheory.IdemSupport.mt_one, sub_self, Matrix.zero_apply, mul_zero]`. Establish `d1' : ∀ (V : HSp D) (e : AE D), IsDetAt e V 1 1` using `fun V e => by show ((1 : (AE D)ˣ) : AE D) = e * (Formalism.L2.Theta.mt V 1).det + (1 - e)`. Rewrite using `[GlobalTheory.IdemSupport.mt_one, Matrix.det_one, Units.val_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Set `μ : GA D S × GA D T →* Circle` to `ν * (c.comp (MonoidHom.fst _ _)) * (d.comp (MonoidHom.snd _ _))⁻¹`. Establish `hμ : ∀ p, μ p = ν p * c p.1 * (d p.2)⁻¹` using `fun p => rfl`. Establish `hμc : Continuous μ` using `by show Continuous fun p : GA D S × GA D T => ν p * c p.1 * (d p.2)⁻¹`. Conclude with `(hνc.mul (c1.comp continuous_fst)).mul (d1.comp continuous_snd).inv`. Establish `hl` using `GlobalTheory.LocalGlobalChar.eq_one_of_local D S (μ.comp (MonoidHom.inl _ _)) (hμc.comp (Continuous.prodMk_left 1)) (fun g hg => by show μ (g, 1) = 1`.
+
+Rewrite using `[hμ, hone (g, 1) (proj_of_real hε hg) (map_one _), c2 g hg]`. Use the proof step `simp)`. Use the proof step `(fun e he g hg => by show μ (g, 1) = 1`. Take `⟨x, hx⟩` from `GlobalTheory.FinWeilForm.exists_isDetAt he S g`. Rewrite using `[hμ, hsp e he g 1 hg (s1 T _) x 1 hx (d1' T e), c4 e he g hg x hx, splitFacO]`.
+
+Use the proof step `simp)`. Use the proof step `(fun v η hv g hg => by show μ (g, 1) = 1`. Rewrite using `[hμ, hone (g, 1) (proj_of_nonSplit hε hv hg) (map_one _), c3 v η hv g hg]`. Use the proof step `simp)`. Establish `hr` using `GlobalTheory.LocalGlobalChar.eq_one_of_local D T (μ.comp (MonoidHom.inr _ _)) (hμc.comp (Continuous.prodMk_right 1)) (fun h hh => by show μ (1, h) = 1`.
+
+Rewrite using `[hμ, hone (1, h) (map_one _) (proj_of_real hε hh), d2 h hh]`. Use the proof step `simp)`. Use the proof step `(fun e he h hh => by show μ (1, h) = 1`. Take `⟨y, hy⟩` from `GlobalTheory.FinWeilForm.exists_isDetAt he T h`. Rewrite using `[hμ, hsp e he 1 h (s1 S _) hh 1 y (d1' S e) hy, d4 e he h hh y hy, splitFacO]`.
+
+Use the proof step `simp)`. Use the proof step `(fun v η hv h hh => by show μ (1, h) = 1`. Rewrite using `[hμ, hone (1, h) (map_one _) (proj_of_nonSplit hε hv hh), d3 v η hv h hh]`. Use the proof step `simp)`. Establish `hall : ∀ p, μ p = 1` using `fun p => by`.
+
+Establish `: p = (p.1, 1) * (1, p.2)` using `Prod.ext (mul_one _).symm (one_mul _).symm`. Rewrite using `[this, map_mul, show μ (p.1, 1) = 1 from hl p.1, show μ (1, p.2) = 1 from hr p.2, mul_one]`. Establish `hνp : ν (g₀, h₀) = splitFacO χS χT x₀ y₀`. Establish `h1` using `hall (g₀, h₀)`. Rewrite `h1` using `[hμ, mul_inv_eq_one]`.
+
+Rewrite using `[splitFacO, ← c5 g₀ x₀ hx₀, ← d5 h₀ y₀ hy₀, ← h1]`. Use `show ν (g₀, h₀) = (c g₀)⁻¹ * (ν (g₀, h₀) * c g₀)`. Rewrite using `[mul_comm, mul_inv_cancel_right]`. Establish `e` using `hν (g₀, h₀) f₀.1 f₀.2`. Simplify using `only at e`.
+
+Rewrite `e` using `[proj_of_suppAt hε hg₀, proj_of_suppAt hε hh₀, hνp]`. Conclude with `e`.
+-/
 theorem splitWeil_eq : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle)
   (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om →
   ∀ (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)),

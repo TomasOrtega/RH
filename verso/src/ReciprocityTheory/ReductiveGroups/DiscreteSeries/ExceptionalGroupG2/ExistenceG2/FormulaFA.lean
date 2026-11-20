@@ -48,6 +48,15 @@ section Psi
 variable {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)} {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)}
   {v₀ : T.V}
 
+/- English proof (translation)
+Establish `hσ` using `rreg_isURepOn ε`. Establish `h0` using `rigid_multOne hgap hσ (isDerivedOn_smE hσ) (datumV_isKIrrHW hP hv₀) (datumV_casimir hP v₀) (datumV_kStable hP v₀) (B ∘ₗ ffaJinvL hP hv₀) ?hj (fun v => hrange _) ?horth`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Set `xv : datumV ε Ψ v₀` to `⟨⟨uniformisationL2 ε Ψ v₀ v, datumEmbedding_mem_smooth hP v₀ v⟩, (mem_datumV_iff hP v₀ _).2 ⟨v, rfl⟩⟩`. Establish `hxv : ffaJinvL hP hv₀ xv = v` using `uniformisationL2_injective hP hv₀ (ffaJinv_spec hP xv)`.
+
+Use `LinearMap.congr_fun h0 xv` as an intermediate fact. Rewrite `this` using `[LinearMap.comp_apply, hxv]`. Rewrite using `[this, LinearMap.zero_apply, LinearMap.zero_apply]`. Introduce `k hk v w hvw`. Take `⟨k', rfl⟩` from `ffa_Kset hk`.
+
+Establish `e : ffaJinvL hP hv₀ w = T.op k' (ffaJinvL hP hv₀ v)` using `uniformisationL2_injective hP hv₀ (by`. Rewrite using `[← rightRegular_datumEmbedding hP]`. Use `show uniformisationL2 ε Ψ v₀ (ffaJinv hP w) = rreg ε _ (uniformisationL2 ε Ψ v₀ (ffaJinv hP v))`. Rewrite using `[ffaJinv_spec, ffaJinv_spec]`. Conclude with `hvw)`.
+
+Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, e, hB]`. Introduce `v v' show inner ℂ (B (ffaJinv hP v')) _ = 0`. Rewrite using `[← ffaJinv_spec hP v]`. Conclude with `horth _ _`.
+-/
 theorem ffa_kmap_zero (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0)
     (B : T.V →ₗ[ℂ] L2 ε) (hB : ∀ (k : S7.KG ε) (v : T.V), B (T.op k v) = rreg ε (S7.toMK k) (B v))
     (hrange : ∀ v, B v ∈ Hlam ε Ψ v₀)

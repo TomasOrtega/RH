@@ -5,6 +5,13 @@ open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.
 
 namespace GlobalTheory.ProjBlowup
 
+/- English proof (translation)
+Establish `hu : IsUnit (d.app A.1 s)`. Use `T.toRingedSpace.isUnit_of_isUnit_germ _ _ fun t ht => ?_` and prove the remaining obligations. Use `(T.mem_basicOpen _ t ht).1 ?_` and prove the remaining obligations. Rewrite using `[← Scheme.preimage_basicOpen]`. Establish `h` using `hd t`.
+
+Rewrite `h` using `[Scheme.IdealSheafData.mem_support_iff_of_mem (U := A) ht, hs, Scheme.zeroLocus_span, Scheme.zeroLocus_singleton]`. Conclude with `not_not.1 h`. Rewrite using `[mem_nonZeroDivisors_iff_right]`. Introduce `x hx`. Apply `d.app_injective A.1` to reduce the goal to its premises.
+
+Establish `h` using `congrArg (d.app A.1) hx`. Rewrite `h` using `[map_mul, map_zero]`. Rewrite using `[map_zero]`. Conclude with `hu.mul_left_eq_zero.1 h`.
+-/
 theorem mem_nonZeroDivisors_of_dense_compl_support {W T : Scheme.{0}} (I : W.IdealSheafData) (d : T ⟶ W)
     [IsSchemeTheoreticallyDominant d] [QuasiCompact d] (hd : ∀ t : T, d t ∉ I.support)
     (A : W.affineOpens) (s : Γ(W, A.1)) (hs : I.ideal A = Ideal.span {s}) : s ∈ nonZeroDivisors Γ(W, A.1) := by
@@ -24,6 +31,13 @@ theorem mem_nonZeroDivisors_of_dense_compl_support {W T : Scheme.{0}} (I : W.Ide
   rw [map_zero]
   exact hu.mul_left_eq_zero.1 h
 
+/- English proof (translation)
+Introduce `w`. Take `⟨k, hk⟩ : ∃ k, w ∈ g ⁻¹ᵁ L.U k` from `TopologicalSpace.Opens.mem_iSup.1 (hI.1.ge (show w ∈ (⊤ : W.Opens) from trivial))`. Take `⟨i, hi⟩` from `GlobalTheory.ProjSpace.exists_mem_chart R m (ψ w)`. Take `⟨A, hA, hw, hle⟩` from `exists_isAffineOpen_mem_and_subset (show w ∈ g ⁻¹ᵁ L.U k ⊓ ψ ⁻¹ᵁ GlobalTheory.ProjSpace.chart R m i from ⟨hk, hi⟩)`. Establish `hAk : A ≤ g ⁻¹ᵁ L.U k` using `fun x hx => (hle hx).1`.
+
+Establish `hAi : A ≤ ψ ⁻¹ᵁ GlobalTheory.ProjSpace.chart R m i` using `fun x hx => (hle hx).2`. Establish `hs : I.ideal ⟨A, hA⟩ = Ideal.span {(g.appLE (L.U k) A hAk).hom ((σ i).f k)}`. Rewrite using `[hI.2 k ⟨A, hA⟩ hAk]`. Use `le_antisymm (Ideal.span_le.2 ?_) (Ideal.span_mono (Set.singleton_subset_iff.2 ⟨i, rfl⟩))` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`.
+
+Conclude with `Ideal.mem_span_singleton'.2 ⟨_, (hp A k hAk i hAi j).symm⟩`. Conclude with `⟨⟨A, hA⟩, _, hw, mem_nonZeroDivisors_of_dense_compl_support I d hd ⟨A, hA⟩ _ hs, hs⟩`.
+-/
 theorem effCartier_of_proportional (R : Type) [CommRing R] (X W T : Scheme.{0}) (I : W.IdealSheafData) (L : LB X)
     (m : ℕ) (σ : Fin (m + 1) → L.Sec) (g : W ⟶ X) (ψ : W ⟶ PSpace R m) (d : T ⟶ W)
     (hI : GeneratesAlong I σ g) (hp : Proportional σ g ψ) (h₁ : IsSchemeTheoreticallyDominant d)

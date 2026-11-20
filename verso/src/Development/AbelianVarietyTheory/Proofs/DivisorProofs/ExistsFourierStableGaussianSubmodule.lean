@@ -3,6 +3,29 @@ open FourierTransform MeasureTheory Filter Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ _ _ _ N G hG hGN hD hL`. Set `S : Set (Submodule ℂ (SchwartzMap E ℂ))` to `{K | G ∈ K ∧ (∀ (v : E) (f f₁ : SchwartzMap E ℂ), f ∈ K → (∀ x, f₁ x = fderiv ℝ (⇑f) x v) → f₁ ∈ K) ∧ (∀ (ℓ : E →L[ℝ] ℝ) (f f₁ : SchwartzMap E ℂ), f ∈ K → (∀ x, f₁ x = (ℓ x : ℂ) * f x) → f₁ ∈ K)}`. Establish `hWG : G ∈ sInf S` using `Submodule.mem_sInf.2 fun K hK => hK.1`. Establish `hWD : ∀ (v : E) (f f₁ : SchwartzMap E ℂ), f ∈ sInf S → (∀ x, f₁ x = fderiv ℝ (⇑f) x v) → f₁ ∈ sInf S` using `fun v f f₁ hf h => Submodule.mem_sInf.2 fun K hK => hK.2.1 v f f₁ (Submodule.mem_sInf.1 hf K hK) h`. Establish `hWL : ∀ (ℓ : E →L[ℝ] ℝ) (f f₁ : SchwartzMap E ℂ), f ∈ sInf S → (∀ x, f₁ x = (ℓ x : ℂ) * f x) → f₁ ∈ sInf S` using `fun v f f₁ hf h => Submodule.mem_sInf.2 fun K hK => hK.2.2 v f f₁ (Submodule.mem_sInf.1 hf K hK) h`.
+
+Establish `htemp : ∀ m : E, Function.HasTemperateGrowth (fun x : E => inner ℝ x m)`. Introduce `m`. Establish `: (fun x : E => inner ℝ x m) = (innerSL ℝ m : E →L[ℝ] ℝ)`. Use function extensionality and compare the values at `x`. Simplify using `[real_inner_comm]`.
+
+Rewrite using `[this]`. Conclude with `(innerSL ℝ m).hasTemperateGrowth`. Establish `hFG : 𝓕 G = G`. Use extensionality with `w`. Establish `h1 : (⇑G) = fun v : E => Complex.exp (-(Real.pi : ℂ) * (‖v‖ : ℂ) ^ 2)`.
+
+Use function extensionality and compare the values at `v`. Rewrite using `[hG]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Rewrite using `[SchwartzMap.fourier_coe, h1, fourier_gaussian_innerProductSpace (by simpa using Real.pi_pos), div_self hpi, Complex.one_cpow, one_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `hK : (sInf S).comap (SchwartzMap.fourierTransformCLM ℂ (V` using `E) (E := ℂ)).toLinearMap ∈ S := by`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show 𝓕 G ∈ sInf S`. Rewrite using `[hFG]`. Conclude with `hWG`. Introduce `v f f₁ hf h`.
+
+Establish `hf' : 𝓕 f ∈ sInf S` using `hf`. Use `show 𝓕 f₁ ∈ sInf S`. Establish `h1 : f₁ = LineDeriv.lineDerivOp v f`. Use extensionality with `x`. Rewrite using `[h, SchwartzMap.lineDerivOp_apply_eq_fderiv]`.
+
+Rewrite using `[h1, SchwartzMap.fourier_lineDerivOp_eq]`. Use `Submodule.smul_mem _ _ (hWL (innerSL ℝ v) _ _ hf' fun x => ?_)` and prove the remaining obligations. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply (htemp v)]`. Simplify using `[real_inner_comm]`. Introduce `ℓ f f₁ hf h`.
+
+Establish `hf' : 𝓕 f ∈ sInf S` using `hf`. Use `show 𝓕 f₁ ∈ sInf S`. Use `set u : E := (InnerProductSpace.toDual ℝ E).symm ℓ with hu`. Establish `h1 : f₁ = SchwartzMap.smulLeftCLM ℂ (fun x => inner ℝ x u) f`. Use extensionality with `x`.
+
+Rewrite using `[h, SchwartzMap.smulLeftCLM_apply_apply (htemp u), real_inner_comm, hu, InnerProductSpace.toDual_symm_apply]`. Simplify using the standard rewrite rules. Establish `h2 : LineDeriv.lineDerivOp u (𝓕 f) ∈ sInf S` using `hWD u _ _ hf' fun x => SchwartzMap.lineDerivOp_apply_eq_fderiv _ _ _`. Rewrite `h2` using `[SchwartzMap.lineDerivOp_fourier_eq, ← h1, ← SchwartzMap.fourierTransformCLM_apply ℂ, map_smul, SchwartzMap.fourierTransformCLM_apply]`. Establish `hc : (-(2 * (Real.pi : ℂ) * Complex.I)) ≠ 0`.
+
+Simplify using `[Real.pi_ne_zero]`. Conclude with `(Submodule.smul_mem_iff _ hc).1 h2`. Conclude with `⟨sInf S, sInf_le ⟨hGN, hD, hL⟩, hWG, hWL, fun f hf => sInf_le hK hf⟩`.
+-/
 theorem exists_fourier_stable_gaussian_submodule :
     ∀ (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
     (N : Submodule ℂ (SchwartzMap E ℂ)) (G : SchwartzMap E ℂ),

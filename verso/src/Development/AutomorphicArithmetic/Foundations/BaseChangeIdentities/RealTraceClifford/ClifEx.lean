@@ -22,33 +22,54 @@ private abbrev Mt (n : ℕ) : Type := Matrix (Finset (Io n)) (Finset (Io n)) ℂ
 
 private def rr : ℂ := ((Real.sqrt 2 : ℝ) : ℂ)⁻¹
 
+/- English proof (translation)
+Unfold `rr`. Rewrite using `[← mul_inv, ← Complex.ofReal_mul, Real.mul_self_sqrt (by norm_num)]`. Evaluate the numerical expressions.
+-/
 private lemma rr_sq : rr * rr = 1 / 2 := by
   unfold rr
   rw [← mul_inv, ← Complex.ofReal_mul, Real.mul_self_sqrt (by norm_num)]
   norm_num
 
+/- English proof (translation)
+Unfold `rr`. Rewrite using `[star_inv₀, Complex.star_def, Complex.conj_ofReal]`.
+-/
 private lemma rr_conj : star rr = rr := by
   unfold rr
   rw [star_inv₀, Complex.star_def, Complex.conj_ofReal]
 
 private def pr (a b : Fin n) : Io n := ⟨(min a b, max a b), min_le_max⟩
 
+/- English proof (translation)
+Unfold `pr`. Simplify using `only [min_comm a b, max_comm a b]`.
+-/
 private lemma pr_comm (a b : Fin n) : pr a b = pr b a := by
   unfold pr
   simp only [min_comm a b, max_comm a b]
 
 private def cs (a b : Fin n) : ℂ := if a < b then 0 else if b < a then 1 else rr
 
+/- English proof (translation)
+Apply the tactic sequence `unfold cs; split_ifs <;> simp [rr_conj]`.
+-/
 private lemma cs_conj (a b : Fin n) : star (cs a b) = cs a b := by
   unfold cs; split_ifs <;> simp [rr_conj]
 
+/- English proof (translation)
+Simplify using `[cs, h]`.
+-/
 private lemma cs_lt {a b : Fin n} (h : a < b) : cs a b = 0 := by simp [cs, h]
+/- English proof (translation)
+Simplify using `[cs, h, not_lt.mpr h.le]`.
+-/
 private lemma cs_gt {a b : Fin n} (h : b < a) : cs a b = 1 := by
   simp [cs, h, not_lt.mpr h.le]
 
 private def cM (α : Io n → Mt n) (a b : Fin n) : Mt n :=
   cs a b • α (pr a b) + cs b a • (α (pr a b))ᴴ
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [add_mul, mul_add, smul_mul_smul_comm, smul_add, mul_comm s' s, mul_comm t' t, mul_comm s' t, mul_comm t' s]`. Normalize the expressions using the abelian group laws. Use `_ = (s * t' + t * s') • e := by`. Rewrite using `[h1, h2, h3, h4, smul_zero, smul_zero, zero_add, add_zero, add_smul]`.
+-/
 private lemma anti {R : Type} [Ring R] [Algebra ℂ R] (u u' v v' e : R) (s t s' t' : ℂ)
     (h1 : u * u' + u' * u = 0) (h2 : u * v' + v' * u = e) (h3 : v * u' + u' * v = e)
     (h4 : v * v' + v' * v = 0) :
@@ -63,6 +84,11 @@ private lemma anti {R : Type} [Ring R] [Algebra ℂ R] (u u' v v' e : R) (s t s'
     _ = (s * t' + t * s') • e := by
         rw [h1, h2, h3, h4, smul_zero, smul_zero, zero_add, add_zero, add_smul]
 
+/- English proof (translation)
+Simplify using `only [pr, Subtype.mk.injEq, Prod.mk.injEq] at h`. Take `⟨h1, h2⟩` from `h`. Rewrite `h1` using `[min_def, min_def]`. Rewrite `h2` using `[max_def, max_def]`. Unfold `cs`.
+
+Apply the tactic sequence `split_ifs at h1 h2 <;> split_ifs <;> first | omega | (simp_all [rr_sq]; done) | (simp_all [rr_sq]; norm_num)`.
+-/
 private lemma comb1 (a b d e : Fin n) (h : pr a b = pr d e) :
     cs a b * cs e d + cs b a * cs d e = if b = d ∧ a = e then 1 else 0 := by
   simp only [pr, Subtype.mk.injEq, Prod.mk.injEq] at h
@@ -72,6 +98,13 @@ private lemma comb1 (a b d e : Fin n) (h : pr a b = pr d e) :
   unfold cs
   split_ifs at h1 h2 <;> split_ifs <;> first | omega | (simp_all [rr_sq]; done) | (simp_all [rr_sq]; norm_num)
 
+/- English proof (translation)
+Introduce `a b d e`. Establish `k2 : α (pr a b) * (α (pr d e))ᴴ + (α (pr d e))ᴴ * α (pr a b) = if pr a b = pr d e then 1 else 0` using `h2 _ _`. Establish `k3 : (α (pr a b))ᴴ * α (pr d e) + α (pr d e) * (α (pr a b))ᴴ = if pr a b = pr d e then 1 else 0`. Rewrite using `[add_comm, h2]`. Simplify using `only [eq_comm]`.
+
+Establish `k4 : (α (pr a b))ᴴ * (α (pr d e))ᴴ + (α (pr d e))ᴴ * (α (pr a b))ᴴ = 0`. Use `congrArg Matrix.conjTranspose (h1 (pr d e) (pr a b))` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_add, Matrix.conjTranspose_mul]`. Unfold `cM`. Rewrite using `[anti _ _ _ _ _ _ _ _ _ (h1 _ _) k2 k3 k4]`.
+
+Distinguish the cases in `hp : pr a b = pr d e`. Apply the tactic sequence `rw [comb1 a b d e hp, if_pos hp] split_ifs <;> simp`. Rewrite using `[if_neg hp, smul_zero, if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hp (pr_comm _ _)`.
+-/
 private lemma relC (α : Io n → Mt n) (h1 : ∀ i j, α i * α j + α j * α i = 0)
     (h2 : ∀ i j, α i * (α j)ᴴ + (α j)ᴴ * α i = if i = j then 1 else 0) : Clif (cM α) := by
   intro a b d e
@@ -93,6 +126,9 @@ private lemma relC (α : Io n → Mt n) (h1 : ∀ i j, α i * α j + α j * α i
     rintro ⟨rfl, rfl⟩
     exact hp (pr_comm _ _)
 
+/- English proof (translation)
+Unfold `cM`. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_smul, Matrix.conjTranspose_smul, Matrix.conjTranspose_conjTranspose, cs_conj, cs_conj, pr_comm b a, add_comm]`.
+-/
 private lemma adjC (α : Io n → Mt n) (a b : Fin n) : (cM α a b)ᴴ = cM α b a := by
   unfold cM
   rw [Matrix.conjTranspose_add, Matrix.conjTranspose_smul, Matrix.conjTranspose_smul,
@@ -102,6 +138,11 @@ private def sg (a d : Fin n) : ℝ := (if a < d then 1 else 0) - (if d < a then 
 
 private def eta (A : Finset (Io n)) : Wt n := -rhoV n + ∑ i ∈ A, rt i.1.1 i.1.2
 
+/- English proof (translation)
+Simplify using `only [sg, Finset.sum_sub_distrib, Finset.sum_boole]`. Rewrite using `[Finset.filter_lt_eq_Ioi, Finset.filter_gt_eq_Iio, Fin.card_Ioi, Fin.card_Iio]`. Simplify using `only [rhoV]`. Use `a.isLt` as an intermediate fact. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega)]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma sg_sum (a : Fin n) : ∑ d, sg a d = 2 * rhoV n a := by
   simp only [sg, Finset.sum_sub_distrib, Finset.sum_boole]
   rw [Finset.filter_lt_eq_Ioi, Finset.filter_gt_eq_Iio, Fin.card_Ioi, Fin.card_Iio]
@@ -111,6 +152,11 @@ private lemma sg_sum (a : Fin n) : ∑ d, sg a d = 2 * rhoV n a := by
   push_cast
   ring
 
+/- English proof (translation)
+Take `⟨⟨p, q⟩, hpq⟩` from `i`. Simplify using `only at hpq`. Simplify using `only [pr, Subtype.mk.injEq, Prod.mk.injEq, rt, Pi.sub_apply, Pi.single_apply]`. Rewrite using `[Finset.sum_eq_single_of_mem (if a = p then q else p) (Finset.mem_univ _)]`. Apply the tactic sequence `simp only [sg, min_def, max_def] split_ifs <;> first | omega | norm_num`.
+
+Introduce `d _ hd`. Simplify using `only [sg, min_def, max_def]`. Apply the tactic sequence `split_ifs at hd <;> split_ifs <;> first | rfl | omega | norm_num`.
+-/
 private lemma rt_eq (i : Io n) (a : Fin n) :
     rt i.1.1 i.1.2 a = ∑ d, if pr a d = i then sg a d else 0 := by
   obtain ⟨⟨p, q⟩, hpq⟩ := i
@@ -123,6 +169,9 @@ private lemma rt_eq (i : Io n) (a : Fin n) :
     simp only [sg, min_def, max_def]
     split_ifs at hd <;> split_ifs <;> first | rfl | omega | norm_num
 
+/- English proof (translation)
+Repeatedly rewrite using `[rt_eq]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun d _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private lemma sgN (A : Finset (Io n)) (a : Fin n) :
     ∑ d, sg a d * (if pr a d ∈ A then 1 else 0) = ∑ i ∈ A, rt i.1.1 i.1.2 a := by
   simp_rw [rt_eq]
@@ -131,6 +180,9 @@ private lemma sgN (A : Finset (Io n)) (a : Fin n) :
   rw [Finset.sum_ite_eq]
   split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `cM`. Rewrite using `[cs_lt h, cs_gt h, pr_comm d a]`. Simplify using `only [zero_smul, one_smul, zero_add, add_zero]`. Conclude with `h3 _`.
+-/
 private lemma Dlt (α : Io n → Mt n)
     (h3 : ∀ i, (α i)ᴴ * α i = Matrix.diagonal fun A => if i ∈ A then 1 else 0)
     {a d : Fin n} (h : a < d) :
@@ -140,6 +192,19 @@ private lemma Dlt (α : Io n → Mt n)
   simp only [zero_smul, one_smul, zero_add, add_zero]
   exact h3 _
 
+/- English proof (translation)
+Break down `lt_trichotomy a d with h | h | h` into its components or cases. Rewrite using `[Dlt α h3 h]`. Use `congr 1`. Use function extensionality and compare the values at `A`. Simplify using `[sg, h, not_lt.mpr h.le]`.
+
+Substitute `h` using the available equality. Establish `hcl` using `hc a a a a`. Simplify using `only [and_self, if_true] at hcl`. Establish `hX : cM α a a * cM α a a = (1 / 2 : ℂ) • (1 : Mt n)`. Establish `h2 : (2 : ℂ) • (cM α a a * cM α a a) = 1`.
+
+Rewrite using `[two_smul]`. Conclude with `hcl`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul]`. Evaluate the numerical expressions.
+
+Use `_ = _ := by rw [h2]`. Rewrite using `[hX]`. Use extensionality with `i j`. Simplify using `[Matrix.diagonal_apply, Matrix.one_apply, sg]`. Establish `hcl` using `hc a d d a`.
+
+Simplify using `only [and_self, if_true] at hcl`. Establish `e` using `Dlt α h3 h`. Establish `hs : cM α a d * cM α d a = 1 - cM α d a * cM α a d` using `eq_sub_of_add_eq hcl`. Rewrite using `[hs, e, pr_comm d a]`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.diagonal_apply, Matrix.one_apply, sg, h, not_lt.mpr h.le]`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 private lemma Dall (α : Io n → Mt n) (hc : Clif (cM α))
     (h3 : ∀ i, (α i)ᴴ * α i = Matrix.diagonal fun A => if i ∈ A then 1 else 0)
     (a d : Fin n) :
@@ -173,6 +238,19 @@ private lemma Dall (α : Io n → Mt n) (hc : Clif (cM α))
     simp [Matrix.diagonal_apply, Matrix.one_apply, sg, h, not_lt.mpr h.le]
     split_ifs <;> norm_num
 
+/- English proof (translation)
+Establish `key : ∀ A : Finset (Io n), (∑ d, ((1 / 2 : ℂ) + (sg a d : ℂ) * ((if pr a d ∈ A then 1 else 0) - 1 / 2))) - (n : ℂ) / 2 = ((eta A a : ℝ) : ℂ)`. Introduce `A`. Establish `c1 : ∑ d, (sg a d : ℂ) = 2 * (rhoV n a : ℂ)`. Use `congrArg (fun x : ℝ => (x : ℂ)) (sg_sum a)` as an intermediate fact. Move the coercions through the operations in `at this`.
+
+Conclude with `this`. Establish `c2 : ∑ d, (sg a d : ℂ) * (if pr a d ∈ A then 1 else 0) = ((∑ i ∈ A, rt i.1.1 i.1.2 a : ℝ) : ℂ)`. Rewrite using `[← sgN A a]`. Use `push_cast`. Use `Finset.sum_congr rfl (fun d _ => ?_)` and prove the remaining obligations.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `e : eta A a = -rhoV n a + ∑ i ∈ A, rt i.1.1 i.1.2 a`. Simplify using `[eta, Finset.sum_apply]`. Rewrite using `[e]`. Use `push_cast`.
+
+Move the coercions through the operations in `at c2`. Simplify using `only [Finset.sum_add_distrib, mul_sub, Finset.sum_sub_distrib, ← Finset.sum_mul, c1, c2, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Unfold `spn`. Simplify using `only [if_true]`.
+
+Repeatedly rewrite using `[Dall α hc h3 a]`. Use extensionality with `i j`. Simplify using `only [Matrix.sub_apply, Matrix.sum_apply, Matrix.diagonal_apply, Matrix.algebraMap_matrix_apply]`. Use `split_ifs with hij`. Substitute `hij` using the available equality.
+
+Conclude with `key i`. Simplify using the standard rewrite rules.
+-/
 private lemma diagC (α : Io n → Mt n) (hc : Clif (cM α))
     (h3 : ∀ i, (α i)ᴴ * α i = Matrix.diagonal fun A => if i ∈ A then 1 else 0) (a : Fin n) :
     spn (cM α) a a = Matrix.diagonal fun A => ((eta A a : ℝ) : ℂ) := by
@@ -207,6 +285,9 @@ private lemma diagC (α : Io n → Mt n) (hc : Clif (cM α))
     exact key i
   · simp
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (cfBasic n).2.1`. Consider the case `insert a s ha ih => rw [sum_insert ha, prod_insert ha, (cfBasic n).1, ih]`.
+-/
 private lemma ex_sum {κ : Type} (s : Finset κ) (f : κ → Wt n) :
     ex (∑ i ∈ s, f i) = ∏ i ∈ s, ex (f i) := by
   classical
@@ -214,6 +295,31 @@ private lemma ex_sum {κ : Type} (s : Finset κ) (f : κ → Wt n) :
   | empty => simpa using (cfBasic n).2.1
   | insert a s ha ih => rw [sum_insert ha, prod_insert ha, (cfBasic n).1, ih]
 
+/- English proof (translation)
+Take `⟨hadd, h0, -⟩` from `cfBasic n`. Take `⟨-, -, -, -, -, -, -, hw, hwB⟩` from `chRF n`. Establish `s1 : ∀ A : Finset (Io n), ex (eta A) = ex (-rhoV n) * ∏ i ∈ A, ex (rt i.1.1 i.1.2)`. Introduce `A`. Rewrite using `[eta, hadd, ex_sum]`.
+
+Repeatedly rewrite using `[s1]`. Rewrite using `[← Finset.mul_sum, ← Finset.powerset_univ, ← Finset.prod_one_add, ← Finset.prod_filter_mul_prod_filter_not Finset.univ (fun i : Io n => i.1.1 = i.1.2)]`. Establish `hcard' : (Finset.univ.filter (fun i : Io n => i.1.1 = i.1.2)).card = (Finset.univ : Finset (Fin n)).card`. Use `Finset.card_nbij' (fun i => i.1.1) (fun a => ⟨(a, a), le_refl a⟩) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i _`.
+
+Simplify using the standard rewrite rules. Introduce `a _`. Simplify using the standard rewrite rules. Introduce `i hi`. Establish `h` using `(Finset.mem_filter.mp hi).2`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply the tactic sequence `ext <;> simp [h]`. Introduce `a _`. Both sides reduce to the same expression. Establish `hcard : (Finset.univ.filter (fun i : Io n => i.1.1 = i.1.2)).card = n`.
+
+Rewrite using `[hcard', Finset.card_univ, Fintype.card_fin]`. Establish `d1 : ∏ i ∈ Finset.univ.filter (fun i : Io n => i.1.1 = i.1.2), (1 + ex (rt i.1.1 i.1.2)) = (2:ℂ) ^ n • (1 : FR n)`. Rewrite using `[Finset.prod_congr rfl (g := fun _ => (1 : FR n) + 1)]`. Rewrite using `[Finset.prod_const, hcard, ← two_mul, mul_one]`. Rewrite using `[show (2 : FR n) = (2:ℂ) • (1 : FR n) by rw [two_smul, one_add_one_eq_two]]`.
+
+Rewrite using `[smul_pow, one_pow]`. Introduce `i hi`. Establish `h` using `(Finset.mem_filter.mp hi).2`. Rewrite using `[h]`. Simplify using `[rt, h0]`.
+
+Establish `d2 : ∏ i ∈ Finset.univ.filter (fun i : Io n => ¬ i.1.1 = i.1.2), (1 + ex (rt i.1.1 i.1.2)) = ∏ p ∈ posP n, (1 + ex (rt p.1 p.2))`. Use `Finset.prod_nbij' (fun i => i.1) (fun p => pr p.1 p.2) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Establish `h` using `(Finset.mem_filter.mp hi).2`. Simplify using `only [posP, Finset.mem_filter, Finset.mem_univ, true_and]`.
+
+Conclude with `lt_of_le_of_ne i.2 h`. Introduce `p hp`. Simplify using `only [posP, Finset.mem_filter, Finset.mem_univ, true_and] at hp`. Simplify using `[pr, min_eq_left hp.le, max_eq_right hp.le, hp.ne]`. Introduce `i hi`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[pr, min_eq_left i.2, max_eq_right i.2]`. Introduce `p hp`. Simplify using `only [posP, Finset.mem_filter, Finset.mem_univ, true_and] at hp`. Simplify using `[pr, min_eq_left hp.le, max_eq_right hp.le]`.
+
+Introduce `i _`. Both sides reduce to the same expression. Rewrite using `[d1, d2]`. Establish `d3 : ∏ p ∈ posP n, (1 + ex (rt p.1 p.2)) = ex (wtB (posP n)) * ∏ p ∈ posP n, (1 + ex (-rt p.1 p.2))`. Rewrite using `[hwB, ex_sum, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl (fun p _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_add, mul_one, ← hadd, add_neg_cancel, h0, add_comm]`. Rewrite using `[d3, hw]`. Unfold `chR`. Rewrite using `[smul_mul_assoc, one_mul, mul_smul_comm, ← mul_assoc, ← hadd]`.
+
+Use `congr 3`. Rewrite using `[two_smul]`. Normalize the expressions using the abelian group laws.
+-/
 private lemma chrC : ∑ A : Finset (Io n), ex (eta A) = (2 : ℂ) ^ n • chR n := by
   obtain ⟨hadd, h0, -⟩ := cfBasic n
   obtain ⟨-, -, -, -, -, -, -, hw, hwB⟩ := chRF n
@@ -281,6 +387,9 @@ private lemma chrC : ∑ A : Finset (Io n), ex (eta A) = (2 : ℂ) ^ n • chR n
 
 end UpperTheory.RealTr.ClifP
 
+/- English proof (translation)
+Introduce `n`. Take `⟨α, h1, h2, h3⟩` from `carEx (ClifP.Io n)`. Conclude with `⟨Finset (ClifP.Io n), inferInstance, inferInstance, ClifP.cM α, ClifP.eta, ⟨ClifP.relC α h1 h2, ClifP.adjC α, ClifP.diagC α (ClifP.relC α h1 h2) h3, ClifP.chrC⟩⟩`.
+-/
 theorem UpperTheory.RealTr.clifEx :
     ∀ n : ℕ, ∃ (J : Type) (_ : Fintype J) (_ : DecidableEq J) (c : Fin n → Fin n → Matrix J J ℂ) (η : J → Wt n), ClifMod c η := by
   intro n

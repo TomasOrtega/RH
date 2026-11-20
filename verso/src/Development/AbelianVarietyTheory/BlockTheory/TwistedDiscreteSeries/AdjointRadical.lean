@@ -22,6 +22,11 @@ def lieRadical : Submodule k (Matrix (Fin r) (Fin r) k) where
 
 variable {b}
 
+/- English proof (translation)
+Introduce `i j h`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : b l < b i`. Rewrite using `[hA hl, zero_mul]`.
+
+Rewrite using `[hX l j (by omega), mul_zero]`.
+-/
 theorem mul_mem_lieRadical {A X : Matrix (Fin r) (Fin r) k} (hA : A.BlockTriangular b)
     (hX : X ∈ lieRadical k b) : A * X ∈ lieRadical k b := by
   intro i j h
@@ -31,6 +36,11 @@ theorem mul_mem_lieRadical {A X : Matrix (Fin r) (Fin r) k} (hA : A.BlockTriangu
   · rw [hA hl, zero_mul]
   · rw [hX l j (by omega), mul_zero]
 
+/- English proof (translation)
+Introduce `i j h`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : b j < b l`. Rewrite using `[hA hl, mul_zero]`.
+
+Rewrite using `[hX i l (by omega), zero_mul]`.
+-/
 theorem mem_lieRadical_mul {A X : Matrix (Fin r) (Fin r) k} (hX : X ∈ lieRadical k b)
     (hA : A.BlockTriangular b) : X * A ∈ lieRadical k b := by
   intro i j h
@@ -40,6 +50,9 @@ theorem mem_lieRadical_mul {A X : Matrix (Fin r) (Fin r) k} (hX : X ∈ lieRadic
   · rw [hA hl, mul_zero]
   · rw [hX i l (by omega), zero_mul]
 
+/- English proof (translation)
+Use `letI := g.invertible`. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hg`.
+-/
 theorem blockTriangular_inv {α : Type} [LinearOrder α] {c : Fin r → α} {g : GL (Fin r) k}
     (hg : (g : Matrix (Fin r) (Fin r) k).BlockTriangular c) :
     ((g⁻¹ : GL (Fin r) k) : Matrix (Fin r) (Fin r) k).BlockTriangular c := by
@@ -47,6 +60,9 @@ theorem blockTriangular_inv {α : Type} [LinearOrder α] {c : Fin r → α} {g :
   rw [Matrix.coe_units_inv]
   exact Matrix.blockTriangular_inv_of_blockTriangular hg
 
+/- English proof (translation)
+Introduce `i j hij`. Establish `h1` using `h i j (by omega)`. Establish `hne : i ≠ j` using `by rintro rfl; omega`. Simplify `h1` using `[Matrix.one_apply_ne hne]`.
+-/
 theorem blockTriangular_of_sub_one {A : Matrix (Fin r) (Fin r) k} (h : A - 1 ∈ lieRadical k b) :
     A.BlockTriangular b := by
   intro i j hij
@@ -102,6 +118,9 @@ def levi : Subgroup (GL (Fin r) k) where
     · exact blockTriangular_inv h2 h
     · exact blockTriangular_inv h1 h
 
+/- English proof (translation)
+Introduce `i j h` and use `δ.2 i j (by omega)`.
+-/
 theorem levi_blockTriangular (δ : levi k b) :
     ((δ : GL (Fin r) k) : Matrix (Fin r) (Fin r) k).BlockTriangular b :=
   fun i j h => δ.2 i j (by omega)
@@ -118,6 +137,9 @@ def adRadical (δ : levi k b) : lieRadical k b →ₗ[k] lieRadical k b where
     apply Subtype.ext
     simp
 
+/- English proof (translation)
+Establish `e : (((δ : GL (Fin r) k)⁻¹ * n * δ : GL (Fin r) k) : Matrix (Fin r) (Fin r) k) - 1 = (((δ⁻¹ : levi k b) : GL (Fin r) k) : Matrix (Fin r) (Fin r) k) * ((n : Matrix (Fin r) (Fin r) k) - 1) * ((δ : GL (Fin r) k) : Matrix (Fin r) (Fin r) k)`. Rewrite using `[mul_sub, sub_mul, mul_one, Subgroup.coe_inv, Units.inv_mul, Units.val_mul, Units.val_mul]`. Use `show _ ∈ lieRadical k b`. Rewrite using `[e]`. Conclude with `mem_lieRadical_mul (mul_mem_lieRadical (levi_blockTriangular δ⁻¹) hn) (levi_blockTriangular δ)`.
+-/
 theorem conj_mem_radical (δ : levi k b) {n : GL (Fin r) k} (hn : n ∈ radical k b) :
     (δ : GL (Fin r) k)⁻¹ * n * δ ∈ radical k b := by
   have e : (((δ : GL (Fin r) k)⁻¹ * n * δ : GL (Fin r) k) : Matrix (Fin r) (Fin r) k) - 1
@@ -159,10 +181,16 @@ def RegularLeviNoEigenvalueOne : Prop :=
     ((γ : GL (Fin r) k) : Matrix (Fin r) (Fin r) k).charpoly.Separable →
     ¬ Module.End.HasEigenvalue (adRadical (m⁻¹ * γ * m)) 1
 
+/- English proof (translation)
+Introduce `i j h`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all`.
+-/
 example : (!![0, 1; 0, 0] : Matrix (Fin 2) (Fin 2) ℝ) ∈ lieRadical ℝ (fun i : Fin 2 => (i : ℕ)) := by
   intro i j h
   fin_cases i <;> fin_cases j <;> simp_all
 
+/- English proof (translation)
+Establish `nd : ∀ (k : Type) [NontriviallyNormedField k], ¬ DiscreteTopology k` using `fun k _ hk => by`. Establish `h0 : (nhdsWithin (0 : k) {0}ᶜ).NeBot` using `inferInstance`. Conclude with `h0.ne (discreteTopology_iff_nhds_ne.1 hk 0)`. Conclude with `⟨fun δ hδ => (h ℝ (nd ℝ) r b δ hδ).1, fun δ hδ => (h ℚ_[p] (nd _) r b δ hδ).1⟩`.
+-/
 example (h : UnipotentChangeOfVariables) (p : ℕ) [Fact p.Prime] (r : ℕ) (b : Fin r → ℕ) :
     (∀ δ : levi ℝ b, Function.Bijective
       (adRadical δ - LinearMap.id : lieRadical ℝ b →ₗ[ℝ] lieRadical ℝ b) →

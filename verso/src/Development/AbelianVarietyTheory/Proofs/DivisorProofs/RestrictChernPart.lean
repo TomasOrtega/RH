@@ -18,6 +18,21 @@ open scoped ENNReal
 
 namespace GlobalTheory.ChernMA
 
+/- English proof (translation)
+Establish `h₁ : fderiv ℝ (h ∘ toV D) = fun w => (fderiv ℝ h (toV D w)).comp (toV D).toContinuousLinearMap`. Use function extensionality and compare the values at `fun _ => (toV D).comp_right_fderiv`. Establish `hD` using `((hf.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero).hasFDerivAt`. Establish `h₂` using `((hD.comp z (toV D).hasFDerivAt).clm_comp (hasFDerivAt_const (toV D).toContinuousLinearMap z)).fderiv`. Use `set x := toV D z`.
+
+Use `set H := fderiv ℝ (fderiv ℝ h) x`. Establish `hH (a b : Fin D → ℂ) : fderiv ℝ (fderiv ℝ (h ∘ toV D)) z a b = H (toV D a) (toV D b)`. Rewrite using `[h₁]`. Use `erw [h₂]`. Simplify using the standard rewrite rules.
+
+Establish `hdiff` using `ReciprocityTheory.L2DbarEstimates.eventually_differentiableAt_of_contDiffAt hf`. Use `set G : Fin D → V D → ℂ := fun k y => (2 : ℂ)⁻¹ * ((fderiv ℝ h y (bas D k) : ℂ) + Complex.I * (fderiv ℝ h y (Complex.I • bas D k) : ℂ))`. Establish `hwdb : ∀ k, wdb D k (fun y => (h y : ℂ)) =ᶠ[𝓝 x] G k`. Introduce `k`. Use `filter_upwards [hdiff] with y hy`.
+
+Simplify using `only [wdb, G, ReciprocityTheory.L2DbarEstimates.fderiv_ofReal_apply hy]`. Expand and normalize the polynomial expressions, which then agree. Establish `hGd : ∀ k e, fderiv ℝ (G k) x e = ((H e (bas D k) : ℂ) + Complex.I * (H e (Complex.I • bas D k) : ℂ)) / 2`. Introduce `k e`. Establish `ha : ∀ b : V D, HasFDerivAt (fun y => ((fderiv ℝ h y b : ℝ) : ℂ)) (Complex.ofRealCLM.comp ((fderiv ℝ h x).comp (0 : V D →L[ℝ] V D) + H.flip b)) x` using `fun b => Complex.ofRealCLM.hasFDerivAt.comp x (hD.clm_apply (hasFDerivAt_const b x))`.
+
+Establish `hG : HasFDerivAt (G k) _ x` using `((ha (bas D k)).add ((ha (Complex.I • bas D k)).const_mul Complex.I)).const_mul (2 : ℂ)⁻¹`. Rewrite using `[hG.fderiv]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `e₁ (a : Fin D) : toV D (Pi.single a 1) = bas D a` using `rfl`.
+
+Establish `e₂ (a : Fin D) : toV D (Complex.I • Pi.single a 1) = Complex.I • bas D a` using `rfl`. Use extensionality with `j l`. Rewrite using `[cHess, Matrix.of_apply, wd, (hwdb l).fderiv_eq, hGd, hGd]`. Simplify using `only [hessC, hH, e₁, e₂]`. Use `push_cast`.
+
+Take the linear combination `(-(H (Complex.I • bas D j) (Complex.I • bas D l) : ℂ) / 4) * Complex.I_mul_I`.
+-/
 theorem cHess_eq_hessC {D : ℕ} {h : V D → ℝ} {z : Fin D → ℂ} (hf : ContDiffAt ℝ 2 h (toV D z)) :
     cHess D (fun v => (h v : ℂ)) (toV D z) = hessC (h ∘ toV D) z := by
   have h₁ : fderiv ℝ (h ∘ toV D) =
@@ -59,6 +74,9 @@ theorem cHess_eq_hessC {D : ℕ} {h : V D → ℝ} {z : Fin D → ℂ} (hf : Con
   push_cast
   linear_combination (-(H (Complex.I • bas D j) (Complex.I • bas D l) : ℂ) / 4) * Complex.I_mul_I
 
+/- English proof (translation)
+Use extensionality with `T hT`. Rewrite using `[Measure.map_apply_of_aemeasurable (hs.mono_ac (withDensity_absolutelyContinuous _ _)) hT, withDensity_apply _ hT, ← lintegral_indicator hT, lintegral_map' (hg.indicator hT).aemeasurable hs, withDensity_apply₀ _ (hs.nullMeasurableSet_preimage hT), ← lintegral_indicator₀ (hs.nullM …`. Both sides reduce to the same expression.
+-/
 theorem map_withDensity {α β : Type*} [MeasurableSpace α] [MeasurableSpace β] {m : Measure α}
     {s : α → β} (hs : AEMeasurable s m) {g : β → ℝ≥0∞} (hg : Measurable g) :
     (m.map s).withDensity g = (m.withDensity (g ∘ s)).map s := by
@@ -73,6 +91,11 @@ theorem map_withDensity {α β : Type*} [MeasurableSpace α] [MeasurableSpace β
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
   {B : LB Y} {φ : Weight p σ B} {A : FinHolAtlas D (CxPts p σ)}
 
+/- English proof (translation)
+Establish `hy` using `c.finChart.map_target hz`. Establish `hr : c.e (c.finChart.symm z) = toV D z` using `c.e.right_inv hz`. Establish `hs` using `h.contDiffAt c hy (mem_pick φ.isLB _)`. Rewrite `hs` using `[hr]`. Establish `e : (fun y' => φ.locPot.φ (c.finChart.symm z) (c.finChart.symm y')) = fun v => 2⁻¹ * ((fun v => φ.φ (pick φ.isLB (c.finChart.symm z)) (c.e.symm v)) ∘ toV D) v`.
+
+Use function extensionality and compare the values at `fun _ => div_eq_inv_mul _ _`. Rewrite using `[locDens, hc, maDens, ReciprocityTheory.AnForm.A.mdisc_const, e, hessC_const_mul', AlgChart.chernDens, AlgChart.hess, hr, cHess_eq_hessC hs, Matrix.det_smul, Fintype.card_fin, ← Complex.ofReal_pow, Complex.re_ofReal_mul, div_pow, inv_pow]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem locDens_eq (h : φ.IsCInf) {c : AlgChart p σ D} {j : Fin A.n} (hc : A.chart j = c.finChart)
     {z : Fin D → ℂ} (hz : z ∈ c.finChart.target) :
     locDens A (fun _ => φ.locPot) j z = c.chernDens φ (c.finChart.symm z) := by
@@ -90,6 +113,11 @@ theorem locDens_eq (h : φ.IsCInf) {c : AlgChart p σ D} {j : Fin A.n} (hc : A.c
 
 variable [SecondCountableTopology (CxPts p σ)]
 
+/- English proof (translation)
+Use extensionality with `T hT`. Establish `ht` using `c.finChart.open_target.measurableSet`. Establish `hs : AEMeasurable c.finChart.symm (volume.restrict c.finChart.target)` using `c.finChart.continuousOn_symm.aemeasurable ht`. Establish `hp : MeasurePreserving (MeasurableEquiv.toLp 2 (Fin D → ℂ))` using `MeasurePreserving.symm (MeasurableEquiv.toLp 2 (Fin D → ℂ)).symm (volume_preserving_ofLp_complex (Fin D))`. Rewrite using `[Measure.restrict_apply hT, Weight.chernPart_apply h ε c (hT.inter c.finChart.open_source.measurableSet) inter_subset_right, Measure.map_apply_of_aemeasurable (hs.mono_ac (withDensity_absolutelyContinuous _ _)) hT, withDensity_apply', Measure.restrict_restrict' ht, inter_comm, Al …`.
+
+Both sides reduce to the same expression.
+-/
 theorem restrict_chernPart (h : φ.IsCInf) (ε : ℤˣ) (c : AlgChart p σ D) :
     (φ.chernPart D ε).restrict c.finChart.source = ((volume.restrict c.finChart.target).withDensity
       fun z => ENNReal.ofReal ((ε : ℤ) * c.chernDens φ (c.finChart.symm z))).map c.finChart.symm := by
@@ -112,6 +140,17 @@ variable [CompactSpace (CxPts p σ)] [T2Space (CxPts p σ)]
 
 omit [CompactSpace (CxPts p σ)] [T2Space (CxPts p σ)] in
 
+/- English proof (translation)
+Establish `hm (j) : Measurable fun y => ENNReal.ofReal (P.χ j y)` using `ENNReal.measurable_ofReal.comp (continuousOn_univ.1 (((hA.smooth_iff hA.anRead).1 (P.smooth j)).continuousOn isOpen_univ)).measurable`. Establish `hpot` using `((Weight.isCInf_iff_isSmooth hA.anRead).1 h).isPotential hA`. Establish `key (j) : chartPartMeasure A P (fun _ => φ.locPot) (ε : ℤ) j = (φ.chernPart D ε).withDensity fun y => ENNReal.ofReal (P.χ j y)`. Take `⟨c, hc⟩` from `hA j`. Establish `ht` using `c.finChart.open_target.measurableSet`.
+
+Establish `hs : AEMeasurable c.finChart.symm (volume.restrict c.finChart.target)` using `c.finChart.continuousOn_symm.aemeasurable ht`. Establish `e : (fun y => ENNReal.ofReal (P.χ j y)) = c.finChart.source.indicator fun y => ENNReal.ofReal (P.χ j y)`. Use `(indicator_eq_self.2 fun y hy => hc ▸ P.tsupport_subset j (subset_tsupport _ ?_)).symm` and prove the remaining obligations. Conclude with `fun h0 => hy (by simp [h0])`. Establish `hd : AEMeasurable (fun z => ENNReal.ofReal ((ε : ℤ) * c.chernDens φ (c.finChart.symm z))) (volume.restrict c.finChart.target)`.
+
+Use `locDensCont A _ (fun _ => hpot) j` as an intermediate fact. Rewrite `this` using `[hc]`. Conclude with `(((this.congr fun z hz => (locDens_eq h hc hz).symm).aemeasurable ht).const_mul _).ennreal_ofReal`. Rewrite using `[e, withDensity_indicator c.finChart.open_source.measurableSet, restrict_chernPart h, map_withDensity (hs.mono_ac (withDensity_absolutelyContinuous _ _)) (hm j), ← withDensity_mul₀ hd ((hm j).comp_aemeasurable hs), chartPartMeasure]`. Simplify using `only [hc]`.
+
+Use `congrArg _ (withDensity_congr_ae (ae_restrict_of_forall_mem ht fun z hz => ?_))` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, Function.comp_apply]`. Rewrite using `[locDens_eq h hc hz, mul_left_comm, ENNReal.ofReal_mul (P.nonneg _ _), mul_comm]`. Use extensionality with `T hT`. Simplify using `only [key, Measure.coe_finsetSum, Finset.sum_apply, withDensity_apply _ hT]`.
+
+Rewrite using `[← lintegral_finsetSum _ fun j _ => hm j, ← setLIntegral_one]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_sum_of_nonneg fun j _ => P.nonneg j y, P.sum_eq_one, ENNReal.ofReal_one]`.
+-/
 theorem chernPart_eq_sum (h : φ.IsCInf) (hA : IsAlgAtlas A) (P : ChartPartition A) (ε : ℤˣ) :
     φ.chernPart D ε = ∑ j, chartPartMeasure A P (fun _ => φ.locPot) (ε : ℤ) j := by
   have hm (j) : Measurable fun y => ENNReal.ofReal (P.χ j y) :=
@@ -147,6 +186,15 @@ theorem chernPart_eq_sum (h : φ.IsCInf) (hA : IsAlgAtlas A) (P : ChartPartition
   refine lintegral_congr fun y => ?_
   rw [← ENNReal.ofReal_sum_of_nonneg fun j _ => P.nonneg j y, P.sum_eq_one, ENNReal.ofReal_one]
 
+/- English proof (translation)
+Establish `hΦ : ∀ _ : Fin D, IsPotential A φ.locPot` using `fun _ => ((Weight.isCInf_iff_isSmooth hA.anRead).1 h).isPotential hA`. Establish `hi` using `mIntegrableCont A _ hΦ f hf`. Use `set P := (existsPartition A).some`. Establish `h1` using `fun s j => integral_chartPartMeasure A P _ hΦ s j f hf.measurable hi`. Establish `h2 (s : ℝ) (j) : IntegrableOn (fun y => f ((A.chart j).symm y) * max (s * (P.χ j ((A.chart j).symm y) * locDens A (fun _ => φ.locPot) j y)) 0) (A.chart j).target`.
+
+Take `⟨hK, hKT, h0⟩` from `chart_weight_compact A P (fun _ => φ.locPot) j`. Establish `hχ : ContinuousOn (fun y => P.χ j ((A.chart j).symm y)) (A.chart j).target` using `(P.smooth j j).continuousOn.mono fun y hy => ⟨hy, mem_univ _⟩`. Use `((((hf.comp_continuousOn (A.chart j).continuousOn_symm).mul ((continuousOn_const.mul (hχ.mul (locDensCont A _ hΦ j))).sup continuousOn_const)).mono hKT).integrableOn_compact hK).of_forall_sdiff_eq_zero (A.chart j).open_target.measurableSet fun y hy => ?_` and prove the remaining obligations. Simplify using `[h0 y hy.1 hy.2]`. Rewrite using `[Weight.chernInt, Measure.restrict_univ, Measure.restrict_univ, chernPart_eq_sum h hA P, chernPart_eq_sum h hA P, integral_finsetSum_measure fun j _ => (h1 _ j).1, integral_finsetSum_measure fun j _ => (h1 _ j).1, ← Finset.sum_sub_distrib, mInt, dif_pos (existsPartition A), integ …`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[(h1 _ j).2, (h1 _ j).2, ← integral_sub (h2 _ j) (h2 _ j)]`. Use `integral_congr_ae (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Simplify using `only [Units.val_one, Units.val_neg, Int.cast_one, Int.cast_neg]`. Rewrite using `[one_mul, neg_one_mul, ← mul_sub, max_zero_sub_max_neg_zero_eq_self]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chernInt_eq_mInt (h : φ.IsCInf) (hA : IsAlgAtlas A) {f : CxPts p σ → ℝ}
     (hf : Continuous f) : φ.chernInt D univ f = mInt A (fun _ => φ.locPot) f := by
   have hΦ : ∀ _ : Fin D, IsPotential A φ.locPot := fun _ =>

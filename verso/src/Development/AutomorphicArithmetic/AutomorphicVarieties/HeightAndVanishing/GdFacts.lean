@@ -6,6 +6,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
+/- English proof (translation)
+Establish `h1 : orderOf x ∣ 2` using `orderOf_dvd_of_pow_eq_one h2`. Establish `h3 : orderOf x ∣ n` using `orderOf_dvd_of_pow_eq_one hn`. Break down `(Nat.dvd_prime Nat.prime_two).1 h1 with h | h` into its components or cases. Rewrite `h` using `[orderOf_eq_one_iff]`. Simplify using `[h]`.
+
+Establish `h2n : 2 ∣ n` using `h ▸ h3`. Establish `hodd : ¬ 2 ∣ j` using `fun h2j => absurd (Nat.Coprime.eq_one_of_dvd (Nat.Coprime.coprime_dvd_left h2j hj) h2n) (by norm_num)`. Take `⟨k, hk⟩` from `Nat.odd_iff.mpr (Nat.two_dvd_ne_zero.mp hodd)`. Rewrite using `[hk, pow_succ, pow_mul, h2, one_pow, one_mul]`.
+-/
 private theorem pow_eq_self_of_sq {M : Type} [Monoid M] {x : M} {n j : ℕ} (h2 : x ^ 2 = 1) (hn : x ^ n = 1)
     (hj : j.Coprime n) : x ^ j = x := by
   have h1 : orderOf x ∣ 2 := orderOf_dvd_of_pow_eq_one h2
@@ -19,6 +24,33 @@ private theorem pow_eq_self_of_sq {M : Type} [Monoid M] {x : M} {n j : ℕ} (h2 
     obtain ⟨k, hk⟩ := Nat.odd_iff.mpr (Nat.two_dvd_ne_zero.mp hodd)
     rw [hk, pow_succ, pow_mul, h2, one_pow, one_mul]
 
+/- English proof (translation)
+Introduce `Ω _ _ _ K _ _ _ l _ e O _ _ N _ ψ hG`. Establish `hl : l.Prime` using `Fact.out`. Establish `hpos : 0 < orderOf ψ`. Rewrite using `[← (orbFacts O N ψ).1]`. Conclude with `Nat.pos_of_ne_zero Subgroup.index_ne_zero_of_finite`.
+
+Establish `hA` using `compAlg O N l hl`. Establish `hcc : comp l (comp l ψ) = comp l ψ` using `(hA.2.2.2.2.2.1 ψ).1`. Establish `hcd : ∀ χ : DirichletCharacter O N, orderOf (comp l χ) ∣ orderOf χ` using `fun χ => (hA.2.2.2.2.2.1 χ).2.1`. Establish `hP` using `(partOrd _ l hl ψ hpos).2.2.2.2.2.1 hG.ord`. Establish `hth : th0 l ψ = ψ` using `hP.2`.
+
+Establish `hkap : kap l ψ = 1` using `hP.1`. Establish `hchi : chiP l ψ = ψ * (comp l ψ)⁻¹` using `by show th0 l ψ * (comp l (th0 l ψ))⁻¹ = _`. Rewrite using `[hth]`. Establish `hcn : comp l ψ ^ orderOf ψ = 1` using `orderOf_dvd_iff_pow_eq_one.mp (hcd ψ)`. Establish `hcchi : comp l (chiP l ψ) = 1`.
+
+Rewrite using `[hchi, hA.2.1, hA.2.2.2.1, hcc, mul_inv_cancel]`. Establish `hchid : orderOf (chiP l ψ) ∣ orderOf ψ`. Rewrite using `[orderOf_dvd_iff_pow_eq_one, hchi, mul_pow, inv_pow, pow_orderOf_eq_one, hcn, inv_one, mul_one]`. Use `⟨?_, hth, hkap, ?_, hcchi, fun h => hG.ord (h.trans hchid), ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+
+Establish `h2` using `hl.two_le`. Establish `g` using `hG.gen`. Establish `lo` using `hG.l_odd`. Use `interval_cases l`. Conclude with `lo rfl`.
+
+Conclude with `g (dvd_mul_right 2 e)`. Evaluate the numerical expressions using `at hl`. Rewrite using `[hchi, inv_mul_cancel_right]`. Introduce `hne`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hN`. Conclude with `hne ((hA.2.2.2.2.2.1 ψ).2.2.1 hN)`. Establish `hO` using `(compOrd O N (comp l ψ) l hl).2.2.2 2 1 Nat.prime_two (Ne.symm hG.l_odd) (by rw [pow_one]; exact hG.ine) (by rwa [hcc])`. Rewrite `hO` using `[hcc]`. Conclude with `hO.2`.
+
+Introduce `ψ' hker`. Take `⟨j, hj, rfl⟩` from `((orbFacts O N ψ).2.2.1 ψ').1 hker`. Establish `hcj : comp l (ψ ^ j) = comp l ψ`. Rewrite using `[hA.2.2.2.2.1]`. Conclude with `pow_eq_self_of_sq hG.ine hcn hj`.
+
+Use `⟨?_, hcj⟩` and prove the remaining obligations. Establish `hord : orderOf (ψ ^ j) = orderOf ψ` using `Nat.Coprime.orderOf_pow hj.symm`. Establish `hP' : ¬ l ∣ orderOf (ψ ^ j)`. Rewrite using `[hord]`. Conclude with `hG.ord`.
+
+Establish `hth' : th0 l (ψ ^ j) = ψ ^ j` using `((partOrd _ l hl (ψ ^ j) (hord ▸ hpos)).2.2.2.2.2.1 hP').2`. Establish `hchi' : chiP l (ψ ^ j) = chiP l ψ ^ j` using `by show th0 l (ψ ^ j) * (comp l (th0 l (ψ ^ j)))⁻¹ = _`. Rewrite using `[hth', hcj, hchi, mul_pow, inv_pow, pow_eq_self_of_sq hG.ine hcn hj]`. Establish `hkc : (MulChar.toUnitHom (chiP l (ψ ^ j))).ker = (MulChar.toUnitHom (chiP l ψ)).ker` using `((orbFacts O N (chiP l ψ)).2.2.1 _).2 ⟨j, Nat.Coprime.coprime_dvd_right hchid hj, hchi'⟩`. Establish `hpow : ∀ (χ : DirichletCharacter O N) (k : ℕ), (χ ^ k) (-1) = χ (-1) ^ k`.
+
+Introduce `χ k`. Establish `h` using `MulChar.pow_apply_coe χ k (-1)`. Rewrite `h` using `[Units.val_neg, Units.val_one]`. Then use the resulting hypothesis. Establish `h1 : (1 : DirichletCharacter O N) (-1) = 1`. Establish `h` using `MulChar.one_apply_coe (R' := O) (-1 : (ZMod N)ˣ)`.
+
+Rewrite `h` using `[Units.val_neg, Units.val_one]`. Then use the resulting hypothesis. Establish `hpar : PsiEven e (ψ ^ j)` using `by show (ψ ^ j) (-1) = (-1) ^ e`. Establish `hx2 : ψ (-1) ^ 2 = 1` using `by rw [← map_pow, neg_one_sq, map_one]`. Establish `hxn : ψ (-1) ^ orderOf ψ = 1` using `by rw [← hpow, pow_orderOf_eq_one, h1]`. Rewrite using `[hpow, pow_eq_self_of_sq hx2 hxn hj]`.
+
+Conclude with `hG.par`. Establish `hk : (Chr.dirG ℚ Ω (chiP l (ψ ^ j))).ker = (Chr.dirG ℚ Ω (chiP l ψ)).ker`. Unfold `Chr.dirG`. Rewrite using `[← MonoidHom.comap_ker, ← MonoidHom.comap_ker, hkc]`. Conclude with `{ l_odd := hG.l_odd, e_pos := hG.e_pos, N_even := hG.N_even, ord := hP', ine := by rw [hcj]; exact hG.ine, par := hpar, quad := hG.quad, imag := hG.imag, l_cop := hG.l_cop, cop := hG.cop, eta := by rw [hk]; exact hG.eta, gen := hG.gen }`.
+-/
 theorem UpperTheory.V.HV.gdFacts :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (K : Type) [Field K] [NumberField K] [Algebra K Ω] (l : ℕ) [Fact l.Prime] (e : ℕ) (O : Type) [CommRing O] [IsDomain O] (N : ℕ) [NeZero N]
       (ψ : DirichletCharacter O N), GD Ω K l e ψ → 5 ≤ l ∧ th0 l ψ = ψ ∧ kap l ψ = 1 ∧ chiP l ψ * comp l ψ = ψ ∧ comp l (chiP l ψ) = 1 ∧

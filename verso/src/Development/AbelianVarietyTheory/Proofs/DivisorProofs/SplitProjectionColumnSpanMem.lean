@@ -20,6 +20,21 @@ noncomputable section
 
 namespace GlobalTheory.ColSpanDown
 
+/- English proof (translation)
+Use `set q : AF F ⊗[F] E →+* Fv F v := (splitProj τ).toRingHom.comp (compFin F E v) with hq`. Establish `hq' : ∀ z, splitProj τ (compFin F E v z) = q z` using `fun z => rfl`. Simplify using `only [hq']`. Establish `hincl : ∀ x : E, q (inclR (F` using `F) (AF F) x) = τ x := by`. Introduce `x`.
+
+Express the relevant statement in the definitionally equal form `splitProj τ (compFin F E v (inclR (F := F) (AF F) x)) = τ x`. Establish `: compFin F E v (inclR (F` using `F) (AF F) x) = inclR (Fv F v) x := by`. Express the relevant statement in the definitionally equal form `evFin F v 1 ⊗ₜ[F] x = (1 : Fv F v) ⊗ₜ[F] x`. Rewrite using `[map_one]`. Rewrite using `[this, splitProj_inclR]`.
+
+Unfold `GlobalTheory.StdPar.colSpan at hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, hi, rfl⟩` from `hx`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+
+Use `⟨i, hi, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Simplify using `[adMat, Matrix.transpose_apply, Matrix.map_apply, hincl]`. Consider the case `zero`. Establish `e : (fun k : Fin n => q ((0 : Fin n → AF F ⊗[F] E) k)) = 0` using `by funext k; simp`.
+
+Rewrite using `[e]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy`. Use `Submodule.add_mem _ hx hy` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Consider the case `smul c x _ hx`. Use `Submodule.smul_mem _ (q c) hx` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+-/
 theorem mem_span_comp {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     {v : HeightOneSpectrum (𝓞 F)} (τ : E →ₐ[F] Fv F v) {n r : ℕ} (X : Matrix (Fin n) (Fin r) E) (I : Set (Fin r))
     (y : Fin n → AF F ⊗[F] E) (hy : y ∈ GlobalTheory.StdPar.colSpan F X I) :

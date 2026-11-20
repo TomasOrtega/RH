@@ -22,14 +22,25 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 section F4BA
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+The claim follows from `indefinite_unitary_mul_mem ε hg (exp_indefinite_unitary_holds n ε X hX t)`.
+-/
 lemma curve_mem_indefinite_unitary {g X : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (hX : inG ε X) (t : ℝ) :
     inUJ ε (g * NormedSpace.exp ((t : ℂ) • X)) :=
   indefinite_unitary_mul_mem ε hg (exp_indefinite_unitary_holds n ε X hX t)
 
+/- English proof (translation)
+Simplify using `[NormedSpace.exp_zero]`.
+-/
 lemma mul_exp_zero_smul_eq (g X : Matrix (Fin n) (Fin n) ℂ) :
     g * NormedSpace.exp (((0 : ℝ) : ℂ) • X) = g := by
   simp [NormedSpace.exp_zero]
 
+/- English proof (translation)
+Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g hg`. Establish `hγ` using `hasDerivAt_mul_exp_smul_zero g X`. Establish `hFd : DifferentiableAt ℝ F g` using `(hF.differentiableOn (by simp)).differentiableAt (hU.mem_nhds hgU)`. Establish `hcomp : HasDerivAt (fun t : ℝ => F (g * NormedSpace.exp ((t : ℂ) • X))) (fderiv ℝ F g (g * X)) 0` using `hFd.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hγ (mul_exp_zero_smul_eq g X).symm`. Establish `hev : (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) =ᶠ[𝓝 0] (fun t : ℝ => F (g * NormedSpace.exp ((t : ℂ) • X)))`.
+
+Establish `hmem : ∀ᶠ t : ℝ in 𝓝 0, g * NormedSpace.exp ((t : ℂ) • X) ∈ U` using `hγ.continuousAt.preimage_mem_nhds (by rw [mul_exp_zero_smul_eq]; exact hU.mem_nhds hgU)`. Use `filter_upwards [hmem] with t ht`. Conclude with `hfF _ ht (curve_mem_indefinite_unitary hg hX t)`. Rewrite using `[right_derivative_extends n ε f F U g X hU hgU hg hF hfF hX]`. Conclude with `hcomp.congr_of_eventuallyEq hev`.
+-/
 lemma hasDerivAt_smooth_curve {f : Matrix (Fin n) (Fin n) ℂ → ℂ} {g X : Matrix (Fin n) (Fin n) ℂ}
     (hf : SmoothOnG ε f) (hX : inG ε X) (hg : inUJ ε g) :
     HasDerivAt (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) (Rd X f g) 0 := by
@@ -49,12 +60,18 @@ lemma hasDerivAt_smooth_curve {f : Matrix (Fin n) (Fin n) ℂ → ℂ} {g X : Ma
   rw [right_derivative_extends n ε f F U g X hU hgU hg hF hfF hX]
   exact hcomp.congr_of_eventuallyEq hev
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g₀ hg₀`. Conclude with `⟨U, F, hU, hgU, hF, fun g hg hgJ => (e g hgJ).symm.trans (hfF g hg hgJ)⟩`.
+-/
 lemma smooth_on_group_congr {f h : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnG ε f)
     (e : ∀ g, inUJ ε g → f g = h g) : SmoothOnG ε h := by
   intro g₀ hg₀
   obtain ⟨U, F, hU, hgU, hF, hfF⟩ := hf g₀ hg₀
   exact ⟨U, F, hU, hgU, hF, fun g hg hgJ => (e g hgJ).symm.trans (hfF g hg hgJ)⟩
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g₀ hg₀`. Take `⟨U', H, hU', hgU', hH, hhH⟩` from `hh g₀ hg₀`. Conclude with `⟨U ∩ U', fun x => F x + H x, hU.inter hU', ⟨hgU, hgU'⟩, (hF.mono Set.inter_subset_left).add (hH.mono Set.inter_subset_right), fun g hg hgJ => by simp only; rw [hfF g hg.1 hgJ, hhH g hg.2 hgJ]⟩`.
+-/
 lemma smooth_on_group_add {f h : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnG ε f) (hh : SmoothOnG ε h) :
     SmoothOnG ε (fun x => f x + h x) := by
   intro g₀ hg₀
@@ -64,6 +81,9 @@ lemma smooth_on_group_add {f h : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : Smoot
     (hF.mono Set.inter_subset_left).add (hH.mono Set.inter_subset_right),
     fun g hg hgJ => by simp only; rw [hfF g hg.1 hgJ, hhH g hg.2 hgJ]⟩
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g₀ hg₀`. Take `⟨U', H, hU', hgU', hH, hhH⟩` from `hh g₀ hg₀`. Conclude with `⟨U ∩ U', fun x => F x * H x, hU.inter hU', ⟨hgU, hgU'⟩, (hF.mono Set.inter_subset_left).mul (hH.mono Set.inter_subset_right), fun g hg hgJ => by simp only; rw [hfF g hg.1 hgJ, hhH g hg.2 hgJ]⟩`.
+-/
 lemma smooth_on_group_mul {f h : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnG ε f) (hh : SmoothOnG ε h) :
     SmoothOnG ε (fun x => f x * h x) := by
   intro g₀ hg₀
@@ -73,12 +93,23 @@ lemma smooth_on_group_mul {f h : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : Smoot
     (hF.mono Set.inter_subset_left).mul (hH.mono Set.inter_subset_right),
     fun g hg hgJ => by simp only; rw [hfF g hg.1 hgJ, hhH g hg.2 hgJ]⟩
 
+/- English proof (translation)
+Introduce `_ _` and use `⟨Set.univ, fun _ => c, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩`.
+-/
 lemma smooth_on_group_const_fun (c : ℂ) : SmoothOnG ε (fun _ : Matrix (Fin n) (Fin n) ℂ => c) :=
   fun _ _ => ⟨Set.univ, fun _ => c, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩
 
+/- English proof (translation)
+The claim follows from `smooth_on_group_mul (smooth_on_group_const_fun c) hf`.
+-/
 lemma smooth_on_group_const_mul (c : ℂ) {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnG ε f) :
     SmoothOnG ε (fun x => c * f x) := smooth_on_group_mul (smooth_on_group_const_fun c) hf
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf g₀ hg₀`. Use `⟨U, fun x => starRingEnd ℂ (F x), hU, hgU, ?_, fun g hg hgJ => by` and prove the remaining obligations. Use `hfF g hg hgJ` as an intermediate fact. Simplify using `only at this ⊢`.
+
+Rewrite using `[this]⟩`. Use `(Complex.conjCLE : ℂ ≃L[ℝ] ℂ).contDiff.comp_contDiffOn hF` as an intermediate fact. Conclude with `this`.
+-/
 lemma smooth_on_group_conj {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnG ε f) :
     SmoothOnG ε (fun x => starRingEnd ℂ (f x)) := by
   intro g₀ hg₀
@@ -88,6 +119,11 @@ lemma smooth_on_group_conj {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : Smooth
   have := (Complex.conjCLE : ℂ ≃L[ℝ] ℂ).contDiff.comp_contDiffOn hF
   exact this
 
+/- English proof (translation)
+Introduce `g₀ hg₀`. Take `⟨U, H, hU, hgU, hH, hhH⟩` from `hh g₀ hg₀`. Use `⟨U, fun x => ((ψ (H x).re : ℝ) : ℂ), hU, hgU, ?_, fun g hg hgJ => by` and prove the remaining obligations. Use `hhH g hg hgJ` as an intermediate fact. Simplify using `only at this ⊢`.
+
+Rewrite using `[← this, Complex.ofReal_re]⟩`. Conclude with `Complex.ofRealCLM.contDiff.comp_contDiffOn ((hψ.comp Complex.reCLM.contDiff).comp_contDiffOn hH)`.
+-/
 lemma smooth_real_comp {h : Matrix (Fin n) (Fin n) ℂ → ℝ} (ψ : ℝ → ℝ) (hψ : ContDiff ℝ ∞ ψ)
     (hh : SmoothOnG ε (fun x => ((h x : ℝ) : ℂ))) :
     SmoothOnG ε (fun x => ((ψ (h x) : ℝ) : ℂ)) := by
@@ -98,23 +134,38 @@ lemma smooth_real_comp {h : Matrix (Fin n) (Fin n) ℂ → ℝ} (ψ : ℝ → �
   exact Complex.ofRealCLM.contDiff.comp_contDiffOn
     ((hψ.comp Complex.reCLM.contDiff).comp_contDiffOn hH)
 
+/- English proof (translation)
+The claim follows from `rdSmooth_of right_derivative_extends n ε f X hf hX`.
+-/
 lemma smooth_right_derivative_alt {f : Matrix (Fin n) (Fin n) ℂ → ℂ} {X : Matrix (Fin n) (Fin n) ℂ}
     (hf : SmoothOnG ε f) (hX : inG ε X) : SmoothOnG ε (Rd X f) :=
   rdSmooth_of right_derivative_extends n ε f X hf hX
 
+/- English proof (translation)
+Take `⟨h1, h2, -, -⟩` from `complex_parts_mem_lie_algebra_holds n ε Z`. Conclude with `smooth_on_group_add (smooth_right_derivative_alt hf h1) (smooth_on_group_const_mul Complex.I (smooth_right_derivative_alt hf h2))`.
+-/
 lemma smooth_complexified_derivative {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (Z : Matrix (Fin n) (Fin n) ℂ)
     (hf : SmoothOnG ε f) : SmoothOnG ε (Ec ε Z f) := by
   obtain ⟨h1, h2, -, -⟩ := complex_parts_mem_lie_algebra_holds n ε Z
   exact smooth_on_group_add (smooth_right_derivative_alt hf h1) (smooth_on_group_const_mul Complex.I (smooth_right_derivative_alt hf h2))
 
+/- English proof (translation)
+The claim follows from `smooth_complexified_derivative _ hf`.
+-/
 lemma smooth_lie_derivative {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (a b : Fin n) (hf : SmoothOnG ε f) :
     SmoothOnG ε (Eab ε a b f) := smooth_complexified_derivative _ hf
 
+/- English proof (translation)
+The claim follows from `| [] => hf | p :: w => smooth_lie_derivative p.1 p.2 (smooth_iterated_lie_derivative hf w)`.
+-/
 lemma smooth_iterated_lie_derivative {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnG ε f) :
     ∀ w : List (Fin n × Fin n), SmoothOnG ε (Eword ε w f)
   | [] => hf
   | p :: w => smooth_lie_derivative p.1 p.2 (smooth_iterated_lie_derivative hf w)
 
+/- English proof (translation)
+Unfold `Rd`. Use `congr 1`. Use function extensionality and compare the values at `t`. Conclude with `e _ (curve_mem_indefinite_unitary hg hX t)`.
+-/
 lemma right_derivative_congr {f h : Matrix (Fin n) (Fin n) ℂ → ℂ} {g X : Matrix (Fin n) (Fin n) ℂ}
     (e : ∀ x, inUJ ε x → f x = h x) (hX : inG ε X) (hg : inUJ ε g) : Rd X f g = Rd X h g := by
   unfold Rd
@@ -122,6 +173,9 @@ lemma right_derivative_congr {f h : Matrix (Fin n) (Fin n) ℂ → ℂ} {g X : M
   funext t
   exact e _ (curve_mem_indefinite_unitary hg hX t)
 
+/- English proof (translation)
+Establish `H` using `(hasDerivAt_smooth_curve hf hX hg).mul (hasDerivAt_smooth_curve hh hX hg)`. Rewrite `H` using `[mul_exp_zero_smul_eq]`. Conclude with `H.deriv`.
+-/
 lemma right_derivative_mul {f h : Matrix (Fin n) (Fin n) ℂ → ℂ} {g X : Matrix (Fin n) (Fin n) ℂ}
     (hf : SmoothOnG ε f) (hh : SmoothOnG ε h) (hX : inG ε X) (hg : inUJ ε g) :
     Rd X (fun x => f x * h x) g = Rd X f g * h g + f g * Rd X h g := by
@@ -129,12 +183,22 @@ lemma right_derivative_mul {f h : Matrix (Fin n) (Fin n) ℂ → ℂ} {g X : Mat
   rw [mul_exp_zero_smul_eq] at H
   exact H.deriv
 
+/- English proof (translation)
+Establish `H` using `(hasDerivAt_smooth_curve hf hX hg).star`. Conclude with `H.deriv`.
+-/
 lemma right_derivative_conj {f : Matrix (Fin n) (Fin n) ℂ → ℂ} {g X : Matrix (Fin n) (Fin n) ℂ}
     (hf : SmoothOnG ε f) (hX : inG ε X) (hg : inUJ ε g) :
     Rd X (fun x => starRingEnd ℂ (f x)) g = starRingEnd ℂ (Rd X f g) := by
   have H := (hasDerivAt_smooth_curve hf hX hg).star
   exact H.deriv
 
+/- English proof (translation)
+Establish `D` using `hasDerivAt_smooth_curve hh hX hg`. Establish `D2 : HasDerivAt (fun t : ℝ => h (g * NormedSpace.exp ((t : ℂ) • X))) (Rd X (fun x => ((h x : ℝ) : ℂ)) g).re 0`. Use `Complex.reCLM.hasFDerivAt.comp_hasDerivAt (0 : ℝ) D` as an intermediate fact. Establish `e : (⇑Complex.reCLM ∘ fun t : ℝ => ((h (g * NormedSpace.exp ((t : ℂ) • X)) : ℝ) : ℂ)) = fun t : ℝ => h (g * NormedSpace.exp ((t : ℂ) • X))`. Use function extensionality and compare the values at `t`.
+
+Simplify using the standard rewrite rules. Rewrite `this` using `[e, Complex.reCLM_apply]`. Conclude with `this`. Establish `hd : DifferentiableAt ℝ ψ (h g)` using `hψ.differentiable (by simp) _`. Establish `D3` using `hd.hasDerivAt.comp_of_eq (0 : ℝ) D2 (by rw [mul_exp_zero_smul_eq])`.
+
+Conclude with `D3.ofReal_comp.deriv`.
+-/
 lemma right_derivative_real_comp {h : Matrix (Fin n) (Fin n) ℂ → ℝ} (ψ : ℝ → ℝ) (hψ : ContDiff ℝ ∞ ψ)
     (hh : SmoothOnG ε (fun x => ((h x : ℝ) : ℂ))) {g X : Matrix (Fin n) (Fin n) ℂ}
     (hX : inG ε X) (hg : inUJ ε g) :
@@ -153,6 +217,9 @@ lemma right_derivative_real_comp {h : Matrix (Fin n) (Fin n) ℂ → ℝ} (ψ : 
   have D3 := hd.hasDerivAt.comp_of_eq (0 : ℝ) D2 (by rw [mul_exp_zero_smul_eq])
   exact D3.ofReal_comp.deriv
 
+/- English proof (translation)
+Simplify using `[Rd]`.
+-/
 lemma right_derivative_const_zero {g X : Matrix (Fin n) (Fin n) ℂ} :
     Rd X (fun _ : Matrix (Fin n) (Fin n) ℂ => (0 : ℂ)) g = 0 := by
   simp [Rd]
@@ -162,20 +229,35 @@ end F4BA
 section F4BB
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+The claim follows from `(complex_parts_mem_lie_algebra_holds n ε _).1`.
+-/
 lemma real_part_single_mem (ε : Fin n → Bool) (a b : Fin n) : inG ε (cpart1 ε (Matrix.single a b 1)) :=
   (complex_parts_mem_lie_algebra_holds n ε _).1
 
+/- English proof (translation)
+The claim follows from `(complex_parts_mem_lie_algebra_holds n ε _).2.1`.
+-/
 lemma imaginary_part_single_mem (ε : Fin n → Bool) (a b : Fin n) : inG ε (cpart2 ε (Matrix.single a b 1)) :=
   (complex_parts_mem_lie_algebra_holds n ε _).2.1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma lie_derivative_def (a b : Fin n) (f : Matrix (Fin n) (Fin n) ℂ → ℂ) (g : Matrix (Fin n) (Fin n) ℂ) :
     Eab ε a b f g = Rd (cpart1 ε (Matrix.single a b 1)) f g +
       Complex.I * Rd (cpart2 ε (Matrix.single a b 1)) f g := rfl
 
+/- English proof (translation)
+Rewrite using `[lie_derivative_def, lie_derivative_def, right_derivative_congr e (real_part_single_mem ε a b) hg, right_derivative_congr e (imaginary_part_single_mem ε a b) hg]`.
+-/
 lemma lie_derivative_congr {f h : Matrix (Fin n) (Fin n) ℂ → ℂ} (a b : Fin n) {g : Matrix (Fin n) (Fin n) ℂ}
     (e : ∀ x, inUJ ε x → f x = h x) (hg : inUJ ε g) : Eab ε a b f g = Eab ε a b h g := by
   rw [lie_derivative_def, lie_derivative_def, right_derivative_congr e (real_part_single_mem ε a b) hg, right_derivative_congr e (imaginary_part_single_mem ε a b) hg]
 
+/- English proof (translation)
+Rewrite using `[lie_derivative_def, lie_derivative_def, lie_derivative_def, right_derivative_mul hf hh (real_part_single_mem ε a b) hg, right_derivative_mul hf hh (imaginary_part_single_mem ε a b) hg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma lie_derivative_mul {f h : Matrix (Fin n) (Fin n) ℂ → ℂ} (a b : Fin n) {g : Matrix (Fin n) (Fin n) ℂ}
     (hf : SmoothOnG ε f) (hh : SmoothOnG ε h) (hg : inUJ ε g) :
     Eab ε a b (fun x => f x * h x) g = Eab ε a b f g * h g + f g * Eab ε a b h g := by
@@ -183,6 +265,9 @@ lemma lie_derivative_mul {f h : Matrix (Fin n) (Fin n) ℂ → ℂ} (a b : Fin n
     right_derivative_mul hf hh (imaginary_part_single_mem ε a b) hg]
   ring
 
+/- English proof (translation)
+Rewrite using `[lie_derivative_def, lie_derivative_def, lie_derivative_def, (right_derivative_linear n ε f h _ _ 0 c g hf hh (real_part_single_mem ε a b) (real_part_single_mem ε a b) hg).2.2, (right_derivative_linear n ε f h _ _ 0 c g hf hh (imaginary_part_single_mem ε a b) (imaginary_part_sing …`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma lie_derivative_add_smul {f h : Matrix (Fin n) (Fin n) ℂ → ℂ} (a b : Fin n) (c : ℂ)
     {g : Matrix (Fin n) (Fin n) ℂ} (hf : SmoothOnG ε f) (hh : SmoothOnG ε h) (hg : inUJ ε g) :
     Eab ε a b (fun x => f x + c * h x) g = Eab ε a b f g + c * Eab ε a b h g := by
@@ -191,10 +276,18 @@ lemma lie_derivative_add_smul {f h : Matrix (Fin n) (Fin n) ℂ → ℂ} (a b : 
     (right_derivative_linear n ε f h _ _ 0 c g hf hh (imaginary_part_single_mem ε a b) (imaginary_part_single_mem ε a b) hg).2.2]
   ring
 
+/- English proof (translation)
+Rewrite using `[lie_derivative_def, right_derivative_const_zero, right_derivative_const_zero]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma lie_derivative_const_zero (a b : Fin n) (g : Matrix (Fin n) (Fin n) ℂ) :
     Eab ε a b (fun _ => (0 : ℂ)) g = 0 := by
   rw [lie_derivative_def, right_derivative_const_zero, right_derivative_const_zero]; ring
 
+/- English proof (translation)
+Rewrite using `[Matrix.conjTranspose_single, star_one]`. Use extensionality with `i j`. Simplify using `only [Jm, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.smul_apply, Matrix.single_apply, smul_eq_mul, sgn]`. Apply the tactic sequence `by_cases hi : b = i <;> by_cases hj : a = j`. Substitute `hi` using the available equality.
+
+Substitute `hj` using the available equality. Apply the tactic sequence `by_cases ha : ε a = true <;> by_cases hb : ε b = true <;> simp [ha, hb]`. Apply the tactic sequence `all_goals simp [hi, hj]`.
+-/
 lemma signature_conj_single (ε : Fin n → Bool) (a b : Fin n) :
     Jm ε * (Matrix.single a b (1 : ℂ))ᴴ * Jm ε = ((sgn ε a b : ℝ) : ℂ) • Matrix.single b a 1 := by
   rw [Matrix.conjTranspose_single, star_one]
@@ -206,16 +299,29 @@ lemma signature_conj_single (ε : Fin n → Bool) (a b : Fin n) :
     by_cases ha : ε a = true <;> by_cases hb : ε b = true <;> simp [ha, hb]
   all_goals simp [hi, hj]
 
+/- English proof (translation)
+Apply the tactic sequence `unfold sgn; split_ifs <;> simp`.
+-/
 lemma signature_sign_mul_self (ε : Fin n → Bool) (a b : Fin n) :
     ((sgn ε a b : ℝ) : ℂ) * ((sgn ε a b : ℝ) : ℂ) = 1 := by
   unfold sgn; split_ifs <;> simp
 
+/- English proof (translation)
+Unfold `sgn`. Distinguish the cases in `h : ε a = ε b`. Rewrite using `[if_pos h, if_pos h.symm]`. Rewrite using `[if_neg h, if_neg (Ne.symm h)]`.
+-/
 lemma signature_sign_symm (ε : Fin n → Bool) (a b : Fin n) : sgn ε b a = sgn ε a b := by
   unfold sgn
   by_cases h : ε a = ε b
   · rw [if_pos h, if_pos h.symm]
   · rw [if_neg h, if_neg (Ne.symm h)]
 
+/- English proof (translation)
+Establish `e1` using `signature_conj_single ε a b`. Establish `e2` using `signature_conj_single ε b a`. Rewrite `e2` using `[signature_sign_symm]`. Unfold `cpart1`. Rewrite using `[e1, e2]`.
+
+Unfold `sgn`. Use `split_ifs`. Simplify using `only [Complex.ofReal_one, Complex.ofReal_neg, one_smul]`. Use `module`. Simplify using `only [Complex.ofReal_one, Complex.ofReal_neg, neg_neg, one_smul, neg_smul]`.
+
+Use `module`.
+-/
 lemma real_part_single_swap (ε : Fin n → Bool) (a b : Fin n) :
     cpart1 ε (Matrix.single b a 1) = ((-(sgn ε a b) : ℝ) : ℂ) • cpart1 ε (Matrix.single a b 1) := by
   have e1 := signature_conj_single ε a b
@@ -228,6 +334,13 @@ lemma real_part_single_swap (ε : Fin n → Bool) (a b : Fin n) :
   · simp only [Complex.ofReal_one, Complex.ofReal_neg, one_smul]; module
   · simp only [Complex.ofReal_one, Complex.ofReal_neg, neg_neg, one_smul, neg_smul]; module
 
+/- English proof (translation)
+Establish `e1` using `signature_conj_single ε a b`. Establish `e2` using `signature_conj_single ε b a`. Rewrite `e2` using `[signature_sign_symm]`. Unfold `cpart2`. Rewrite using `[e1, e2]`.
+
+Unfold `sgn`. Use `split_ifs`. Simplify using `only [Complex.ofReal_one, one_smul]`. Use `module`. Simplify using `only [Complex.ofReal_one, Complex.ofReal_neg, one_smul, neg_smul]`.
+
+Use `module`.
+-/
 lemma imaginary_part_single_swap (ε : Fin n → Bool) (a b : Fin n) :
     cpart2 ε (Matrix.single b a 1) = ((sgn ε a b : ℝ) : ℂ) • cpart2 ε (Matrix.single a b 1) := by
   have e1 := signature_conj_single ε a b
@@ -240,6 +353,9 @@ lemma imaginary_part_single_swap (ε : Fin n → Bool) (a b : Fin n) :
   · simp only [Complex.ofReal_one, one_smul]; module
   · simp only [Complex.ofReal_one, Complex.ofReal_neg, one_smul, neg_smul]; module
 
+/- English proof (translation)
+Rewrite using `[lie_derivative_def, real_part_single_swap, imaginary_part_single_swap, (right_derivative_linear n ε f f _ _ (-(sgn ε a b)) 0 g hf hf (real_part_single_mem ε a b) (real_part_single_mem ε a b) hg).2.1, (right_derivative_linear n ε f f _ _ (sgn ε a b) 0 g hf hf (imaginary_part_sing …`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma lie_derivative_swap {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (a b : Fin n) {g : Matrix (Fin n) (Fin n) ℂ}
     (hf : SmoothOnG ε f) (hg : inUJ ε g) :
     Eab ε b a f g = -((sgn ε a b : ℝ) : ℂ) * Rd (cpart1 ε (Matrix.single a b 1)) f g +
@@ -249,6 +365,9 @@ lemma lie_derivative_swap {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (a b : Fin n)
     (right_derivative_linear n ε f f _ _ (sgn ε a b) 0 g hf hf (imaginary_part_single_mem ε a b) (imaginary_part_single_mem ε a b) hg).2.1]
   push_cast; ring
 
+/- English proof (translation)
+Rewrite using `[lie_derivative_swap a b hf hg, lie_derivative_def, right_derivative_conj hf (real_part_single_mem ε a b) hg, right_derivative_conj hf (imaginary_part_single_mem ε a b) hg]`. Establish `hs` using `signature_sign_mul_self ε a b`. Simplify using `only [map_add, map_mul, map_neg, Complex.conj_ofReal, Complex.conj_I]`. Take the linear combination `(starRingEnd ℂ (Rd (cpart1 ε (Matrix.single a b 1)) f g) + Complex.I * starRingEnd ℂ (Rd (cpart2 ε (Matrix.single a b 1)) f g)) * (-hs)`.
+-/
 lemma lie_derivative_conj {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (a b : Fin n) {g : Matrix (Fin n) (Fin n) ℂ}
     (hf : SmoothOnG ε f) (hg : inUJ ε g) :
     Eab ε a b (fun x => starRingEnd ℂ (f x)) g =
@@ -260,6 +379,11 @@ lemma lie_derivative_conj {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (a b : Fin n)
   linear_combination (starRingEnd ℂ (Rd (cpart1 ε (Matrix.single a b 1)) f g) +
     Complex.I * starRingEnd ℂ (Rd (cpart2 ε (Matrix.single a b 1)) f g)) * (-hs)
 
+/- English proof (translation)
+Rewrite using `[lie_derivative_def, right_derivative_real_comp ψ hψ hh (real_part_single_mem ε a b) hg, right_derivative_real_comp ψ hψ hh (imaginary_part_single_mem ε a b) hg]`. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_I, one_mul, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs, Real.norm_eq_abs, abs_mul, abs_mul, mul_add]`. Use `gcongr`. Conclude with `Complex.abs_re_le_norm _`.
+
+Conclude with `Complex.abs_re_le_norm _`.
+-/
 lemma lie_derivative_real_comp_le {h : Matrix (Fin n) (Fin n) ℂ → ℝ} (ψ : ℝ → ℝ) (hψ : ContDiff ℝ ∞ ψ)
     (hh : SmoothOnG ε (fun x => ((h x : ℝ) : ℂ))) (a b : Fin n) {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : inUJ ε g) :
@@ -278,9 +402,15 @@ def lieDerivativeLogFrobeniusBound (ε : Fin n → Bool) (a b : Fin n) : ℝ :=
   2 * Real.sqrt (hs (cpart1 ε (Matrix.single a b (1 : ℂ)))) +
     2 * Real.sqrt (hs (cpart2 ε (Matrix.single a b (1 : ℂ))))
 
+/- English proof (translation)
+Unfold `lieDerivativeLogFrobeniusBound`. Check the signs of the components of the expression.
+-/
 lemma lie_derivative_bound_nonneg (ε : Fin n → Bool) (a b : Fin n) : 0 ≤ lieDerivativeLogFrobeniusBound ε a b := by
   unfold lieDerivativeLogFrobeniusBound; positivity
 
+/- English proof (translation)
+Use `(lie_derivative_real_comp_le ψ hψ (hl n ε).1 a b hg).trans ?_` and prove the remaining obligations. Use `gcongr`. Unfold `lieDerivativeLogFrobeniusBound`. Conclude with `add_le_add ((hl n ε).2 _ g (real_part_single_mem ε a b) hg) ((hl n ε).2 _ g (imaginary_part_single_mem ε a b) hg)`.
+-/
 lemma lie_derivative_log_frobenius_comp_le (hl : HhLip) (ψ : ℝ → ℝ) (hψ : ContDiff ℝ ∞ ψ) (a b : Fin n)
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     ‖Eab ε a b (fun x => ((ψ (hh x) : ℝ) : ℂ)) g‖ ≤ |deriv ψ (hh g)| * lieDerivativeLogFrobeniusBound ε a b := by
@@ -292,6 +422,11 @@ lemma lie_derivative_log_frobenius_comp_le (hl : HhLip) (ψ : ℝ → ℝ) (hψ 
 def VanishesOutsideBall (ε : Fin n → Bool) (R : ℝ) (f : Matrix (Fin n) (Fin n) ℂ → ℂ) : Prop :=
   ∀ g, inUJ ε g → R < hs g → f g = 0
 
+/- English proof (translation)
+Introduce `g hg hR`. Unfold `Rd`. Establish `hc : ContinuousAt (fun t : ℝ => hs (g * NormedSpace.exp ((t : ℂ) • X))) 0` using `continuous_hs_real_place_taylor.continuousAt.comp (hasDerivAt_mul_exp_smul_zero g X).continuousAt`. Establish `hev : ∀ᶠ t : ℝ in 𝓝 0, R < hs (g * NormedSpace.exp ((t : ℂ) • X))` using `hc.eventually (lt_mem_nhds (by show R < hs (g * NormedSpace.exp (((0 : ℝ) : ℂ) • X)); rw [mul_exp_zero_smul_eq]; exact hR))`. Establish `hz : (fun t : ℝ => f (g * NormedSpace.exp ((t : ℂ) • X))) =ᶠ[𝓝 0] fun _ => (0 : ℂ)` using `by filter_upwards [hev] with t ht`.
+
+Conclude with `hf _ (curve_mem_indefinite_unitary hg hX t) ht`. Rewrite using `[hz.deriv_eq]`. Simplify using the standard rewrite rules.
+-/
 lemma vanishing_outside_right_derivative {R : ℝ} {f : Matrix (Fin n) (Fin n) ℂ → ℂ} {X : Matrix (Fin n) (Fin n) ℂ}
     (hf : VanishesOutsideBall ε R f) (hX : inG ε X) : VanishesOutsideBall ε R (Rd X f) := by
   intro g hg hR
@@ -307,16 +442,27 @@ lemma vanishing_outside_right_derivative {R : ℝ} {f : Matrix (Fin n) (Fin n) �
   rw [hz.deriv_eq]
   simp
 
+/- English proof (translation)
+Introduce `g hg hR`. Rewrite using `[lie_derivative_def, vanishing_outside_right_derivative hf (real_part_single_mem ε a b) g hg hR, vanishing_outside_right_derivative hf (imaginary_part_single_mem ε a b) g hg hR]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma vanishing_outside_lie_derivative {R : ℝ} {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (a b : Fin n) (hf : VanishesOutsideBall ε R f) :
     VanishesOutsideBall ε R (Eab ε a b f) := by
   intro g hg hR
   rw [lie_derivative_def, vanishing_outside_right_derivative hf (real_part_single_mem ε a b) g hg hR, vanishing_outside_right_derivative hf (imaginary_part_single_mem ε a b) g hg hR]
   ring
 
+/- English proof (translation)
+Introduce `g hg hR`. Simplify using `[hf g hg hR]`.
+-/
 lemma vanishing_outside_mul_left {R : ℝ} {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (h : Matrix (Fin n) (Fin n) ℂ → ℂ)
     (hf : VanishesOutsideBall ε R f) : VanishesOutsideBall ε R (fun x => f x * h x) := by
   intro g hg hR; simp [hf g hg hR]
 
+/- English proof (translation)
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `g`. Take `⟨U, F, hU, hgU, hF, hfF⟩` from `hf (toM g) g.2`. Establish `hFc : ContinuousAt F (toM g)` using `(hF.continuousOn).continuousAt (hU.mem_nhds hgU)`. Establish `h1 : ContinuousAt (fun g : UJ ε => F (toM g)) g` using `hFc.comp (continuous_coeMatrix ε).continuousAt`.
+
+Use `h1.congr ?_` and prove the remaining obligations. Establish `hpre : ∀ᶠ g' : UJ ε in 𝓝 g, toM g' ∈ U` using `(continuous_coeMatrix ε).continuousAt.preimage_mem_nhds (hU.mem_nhds hgU)`. Use `filter_upwards [hpre] with g' hg'`. Conclude with `(hfF _ hg' g'.2).symm`.
+-/
 lemma continuous_smooth_on_group_eval {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnG ε f) :
     Continuous (fun g : UJ ε => f (toM g)) := by
   rw [continuous_iff_continuousAt]
@@ -330,12 +476,18 @@ lemma continuous_smooth_on_group_eval {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (
   filter_upwards [hpre] with g' hg'
   exact (hfF _ hg' g'.2).symm
 
+/- English proof (translation)
+Establish `h` using `(isClosedEmbeddingMatrix n ε).1.isCompact_preimage ((hermitian_small_ball n ε).1 R)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Conclude with `⟨fun hg => ⟨g.2, hg⟩, fun hg => hg.2⟩`.
+-/
 lemma isCompact_frobenius_ball_group (ε : Fin n → Bool) (R : ℝ) : IsCompact {g : UJ ε | hsG g ≤ R} := by
   have h := (isClosedEmbeddingMatrix n ε).1.isCompact_preimage ((hermitian_small_ball n ε).1 R)
   convert h using 1
   ext g
   exact ⟨fun hg => ⟨g.2, hg⟩, fun hg => hg.2⟩
 
+/- English proof (translation)
+Use `hF.integrable_of_hasCompactSupport ?_` and prove the remaining obligations. Use `HasCompactSupport.intro' (isCompact_frobenius_ball_group ε R) (isClosed_le (continuous_frobenius_on_group ε) continuous_const) ?_` and prove the remaining obligations. Introduce `g hg`. Conclude with `hv g (lt_of_not_ge hg)`.
+-/
 lemma integrable_complex_continuous_bounded_support {F : UJ ε → ℂ} (hF : Continuous F) (R : ℝ) (hv : ∀ g, R < hsG g → F g = 0) :
     Integrable F (muG ε) := by
   refine hF.integrable_of_hasCompactSupport ?_
@@ -344,10 +496,16 @@ lemma integrable_complex_continuous_bounded_support {F : UJ ε → ℂ} (hF : Co
   intro g hg
   exact hv g (lt_of_not_ge hg)
 
+/- English proof (translation)
+The claim follows from `integrable_complex_continuous_bounded_support (continuous_smooth_on_group_eval hf) R (fun g hg => hv _ g.2 hg)`.
+-/
 lemma integrable_of_vanishing_outside {f : Matrix (Fin n) (Fin n) ℂ → ℂ} (hf : SmoothOnG ε f) {R : ℝ}
     (hv : VanishesOutsideBall ε R f) : Integrable (fun g : UJ ε => f (toM g)) (muG ε) :=
   integrable_complex_continuous_bounded_support (continuous_smooth_on_group_eval hf) R (fun g hg => hv _ g.2 hg)
 
+/- English proof (translation)
+Establish `i1` using `integrable_of_vanishing_outside (smooth_right_derivative_alt hφ (real_part_single_mem ε a b)) (vanishing_outside_right_derivative hv (real_part_single_mem ε a b))`. Establish `i2` using `integrable_of_vanishing_outside (smooth_right_derivative_alt hφ (imaginary_part_single_mem ε a b)) (vanishing_outside_right_derivative hv (imaginary_part_single_mem ε a b))`. Simplify using `only [lie_derivative_def]`. Rewrite using `[integral_add i1 (i2.const_mul Complex.I), integral_const_mul, hz n ε φ _ R hφ (real_part_single_mem ε a b) hv, hz n ε φ _ R hφ (imaginary_part_single_mem ε a b) hv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma integral_lie_derivative_eq_zero (hz : IntRdZero) {φ : Matrix (Fin n) (Fin n) ℂ → ℂ} (hφ : SmoothOnG ε φ) {R : ℝ}
     (hv : VanishesOutsideBall ε R φ) (a b : Fin n) :
     ∫ g : UJ ε, Eab ε a b φ (toM g) ∂(muG ε) = 0 := by
@@ -362,18 +520,47 @@ end F4BB
 
 def cutoffProfile (t : ℝ) : ℝ := Real.smoothTransition (2 - t)
 
+/- English proof (translation)
+The claim follows from `(Real.smoothTransition.contDiff (n := ⊤)).comp (contDiff_const.sub contDiff_id)`.
+-/
 lemma contDiff_cutoff_profile : ContDiff ℝ ∞ cutoffProfile :=
   (Real.smoothTransition.contDiff (n := ⊤)).comp (contDiff_const.sub contDiff_id)
 
+/- English proof (translation)
+The claim follows from `Real.smoothTransition.nonneg _`.
+-/
 lemma cutoff_profile_eq_one (t : ℝ) : 0 ≤ cutoffProfile t := Real.smoothTransition.nonneg _
+/- English proof (translation)
+The claim follows from `Real.smoothTransition.le_one _`.
+-/
 lemma cutoff_profile_le_one (t : ℝ) : cutoffProfile t ≤ 1 := Real.smoothTransition.le_one _
+/- English proof (translation)
+The claim follows from `Real.smoothTransition.one_of_one_le (by linarith)`.
+-/
 lemma cutoff_profile_eq_one_near {t : ℝ} (h : t ≤ 1) : cutoffProfile t = 1 :=
   Real.smoothTransition.one_of_one_le (by linarith)
+/- English proof (translation)
+The claim follows from `Real.smoothTransition.zero_of_nonpos (by linarith)`.
+-/
 lemma cutoff_profile_eq_zero {t : ℝ} (h : 2 ≤ t) : cutoffProfile t = 0 :=
   Real.smoothTransition.zero_of_nonpos (by linarith)
+/- English proof (translation)
+Introduce `x y h` and use `Real.smoothTransition.monotone (by linarith)`.
+-/
 lemma antitone_cutoff_profile : Antitone cutoffProfile := fun x y h =>
   Real.smoothTransition.monotone (by linarith)
 
+/- English proof (translation)
+Establish `hc : Continuous (deriv cutoffProfile)` using `contDiff_cutoff_profile.continuous_deriv (by simp)`. Take `⟨C, hC⟩` from `(isCompact_Icc (a := (1 : ℝ)) (b := 2)).exists_bound_of_continuousOn hc.continuousOn`. Use `⟨max C 0, le_max_right _ _, fun t => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h1 : t < 1`. Establish `: deriv cutoffProfile t = 0`.
+
+Establish `hev : cutoffProfile =ᶠ[𝓝 t] fun _ => 1` using `by filter_upwards [Iio_mem_nhds h1] with s hs`. Conclude with `cutoff_profile_eq_one_near (le_of_lt hs)`. Rewrite using `[hev.deriv_eq]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules. Distinguish the cases in `h2 : 2 < t`. Establish `: deriv cutoffProfile t = 0`. Establish `hev : cutoffProfile =ᶠ[𝓝 t] fun _ => 0` using `by filter_upwards [Ioi_mem_nhds h2] with s hs`. Conclude with `cutoff_profile_eq_zero (le_of_lt hs)`.
+
+Rewrite using `[hev.deriv_eq]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Simplify using the standard rewrite rules. Use `hC t ⟨le_of_not_gt h1, le_of_not_gt h2⟩` as an intermediate fact.
+
+Rewrite `this` using `[Real.norm_eq_abs]`. Conclude with `this.trans (le_max_left _ _)`.
+-/
 lemma exists_cutoff_deriv_bound : ∃ B : ℝ, 0 ≤ B ∧ ∀ t, |deriv cutoffProfile t| ≤ B := by
   have hc : Continuous (deriv cutoffProfile) := contDiff_cutoff_profile.continuous_deriv (by simp)
   obtain ⟨C, hC⟩ := (isCompact_Icc (a := (1 : ℝ)) (b := 2)).exists_bound_of_continuousOn
@@ -398,14 +585,26 @@ lemma exists_cutoff_deriv_bound : ∃ B : ℝ, 0 ≤ B ∧ ∀ t, |deriv cutoffP
   exact this.trans (le_max_left _ _)
 
 def cutoffDerivBound : ℝ := Classical.choose exists_cutoff_deriv_bound
+/- English proof (translation)
+The claim follows from `(Classical.choose_spec exists_cutoff_deriv_bound).1`.
+-/
 lemma cutoffDerivBound_nonneg : 0 ≤ cutoffDerivBound := (Classical.choose_spec exists_cutoff_deriv_bound).1
+/- English proof (translation)
+The claim follows from `(Classical.choose_spec exists_cutoff_deriv_bound).2 t`.
+-/
 lemma abs_deriv_cutoff_profile_le (t : ℝ) : |deriv cutoffProfile t| ≤ cutoffDerivBound := (Classical.choose_spec exists_cutoff_deriv_bound).2 t
 
 def radialCutoff (R t : ℝ) : ℝ := cutoffProfile (t / R)
 
+/- English proof (translation)
+The claim follows from `contDiff_cutoff_profile.comp (contDiff_id.div_const R)`.
+-/
 lemma contDiff_radialCutoff (R : ℝ) : ContDiff ℝ ∞ (radialCutoff R) :=
   contDiff_cutoff_profile.comp (contDiff_id.div_const R)
 
+/- English proof (translation)
+Establish `h1 : HasDerivAt (fun s : ℝ => s / R) (1 / R) t` using `(hasDerivAt_id t).div_const R`. Establish `h2 : HasDerivAt cutoffProfile (deriv cutoffProfile (t / R)) (t / R)` using `(contDiff_cutoff_profile.differentiable (by simp) _).hasDerivAt`. Conclude with `h2.comp t h1`.
+-/
 lemma hasDerivAt_cutoff_alt (R t : ℝ) :
     HasDerivAt (radialCutoff R) (deriv cutoffProfile (t / R) * (1 / R)) t := by
   have h1 : HasDerivAt (fun s : ℝ => s / R) (1 / R) t := (hasDerivAt_id t).div_const R
@@ -413,6 +612,9 @@ lemma hasDerivAt_cutoff_alt (R t : ℝ) :
     (contDiff_cutoff_profile.differentiable (by simp) _).hasDerivAt
   exact h2.comp t h1
 
+/- English proof (translation)
+Rewrite using `[(hasDerivAt_cutoff_alt R t).deriv, abs_mul, abs_of_pos (by positivity : 0 < 1 / R)]`. Use `abs_deriv_cutoff_profile_le (t / R)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma abs_deriv_cutoff_le {R : ℝ} (hR : 0 < R) (t : ℝ) : |deriv (radialCutoff R) t| ≤ cutoffDerivBound / R := by
   rw [(hasDerivAt_cutoff_alt R t).deriv, abs_mul, abs_of_pos (by positivity : 0 < 1 / R)]
   have := abs_deriv_cutoff_profile_le (t / R)
@@ -421,9 +623,15 @@ lemma abs_deriv_cutoff_le {R : ℝ} (hR : 0 < R) (t : ℝ) : |deriv (radialCutof
 
 def weightProfileAlt (a R t : ℝ) : ℝ := radialCutoff R t ^ 2 * Real.exp (2 * a * t)
 
+/- English proof (translation)
+The claim follows from `((contDiff_radialCutoff R).pow 2).mul (Real.contDiff_exp.comp (contDiff_const.mul contDiff_id))`.
+-/
 lemma contDiff_weight_profile (a R : ℝ) : ContDiff ℝ ∞ (weightProfileAlt a R) :=
   ((contDiff_radialCutoff R).pow 2).mul (Real.contDiff_exp.comp (contDiff_const.mul contDiff_id))
 
+/- English proof (translation)
+The claim follows from `|deriv (weightProfileAlt a R) t| ≤ radialCutoff R t * Real.exp (2 * a * t) * (2 * cutoffDerivBound + 2 * a) := by have hR0 : 0 < R := by linarith have hc := hasDerivAt_cutoff_alt R t have he : HasDerivAt (fun s => Real.exp (2 * a * s)) (Real.exp (2 * a * t) * (2 * a)) t := by hav …`.
+-/
 lemma abs_deriv_weight_profile_le {a R : ℝ} (ha : 0 ≤ a) (hR : 1 ≤ R) (t : ℝ) :
     |deriv (weightProfileAlt a R) t| ≤ radialCutoff R t * Real.exp (2 * a * t) * (2 * cutoffDerivBound + 2 * a) := by
   have hR0 : 0 < R := by linarith
@@ -462,6 +670,15 @@ lemma abs_deriv_weight_profile_le {a R : ℝ} (ha : 0 ≤ a) (hR : 1 ≤ R) (t :
         gcongr
     _ = radialCutoff R t * Real.exp (2 * a * t) * (2 * cutoffDerivBound + 2 * a) := by ring
 
+/- English proof (translation)
+Establish `h1` using `(indefinite_unitary_inv_closed n ε g hg).2`. Establish `ht : Matrix.trace ((Jm ε * gᴴ * Jm ε) * g) = n` using `by rw [h1]; simp`. Establish `hre : (n : ℝ) = (Matrix.trace ((Jm ε * gᴴ * Jm ε) * g)).re` using `by rw [ht]; simp`. Establish `e : ∀ i j, (Jm ε * gᴴ * Jm ε) i j = (if ε i then 1 else -1) * star (g j i) * (if ε j then 1 else -1)`. Introduce `i j`.
+
+Simplify using `[Jm, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.conjTranspose_apply]`. Rewrite using `[hre]`. Generalize the expression as in `Jm ε * gᴴ * Jm ε = A at e`. Unfold `hs`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Complex.re_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_le_sum fun j _ => Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Use `(Complex.re_le_norm _).trans ?_` and prove the remaining obligations. Rewrite using `[e, norm_mul, norm_mul, norm_mul, norm_star]`. Establish `n1 : ∀ b : Bool, ‖(if b = true then (1 : ℂ) else -1)‖ = 1`.
+
+Apply the tactic sequence `intro b; cases b <;> simp`. Rewrite using `[n1, n1]`. Put the polynomial expressions in normal form. Both sides reduce to the same expression.
+-/
 lemma dim_le_frobenius {n : ℕ} {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     (n : ℝ) ≤ hs g := by
   have h1 := (indefinite_unitary_inv_closed n ε g hg).2
@@ -484,6 +701,11 @@ lemma dim_le_frobenius {n : ℕ} {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin 
   rw [n1, n1]
   ring_nf; rfl
 
+/- English proof (translation)
+Unfold `hh`. Break down `Nat.eq_zero_or_pos n with h0 | hpos` into its components or cases. Substitute `h0` using the available equality. Simplify using `[hs]`. Apply `Real.log_nonneg` to reduce the goal to its premises.
+
+Use `dim_le_frobenius hg` as an intermediate fact. Establish `: (1 : ℝ) ≤ n` using `by exact_mod_cast hpos`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma log_frobenius_nonneg {n : ℕ} {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     0 ≤ hh g := by
   unfold hh
@@ -494,12 +716,20 @@ lemma log_frobenius_nonneg {n : ℕ} {ε : Fin n → Bool} {g : Matrix (Fin n) (
     have : (1 : ℝ) ≤ n := by exact_mod_cast hpos
     linarith
 
+/- English proof (translation)
+Rewrite using `[Real.one_le_exp_iff]`. Use `log_frobenius_nonneg g.2` as an intermediate fact. Check the signs of the components of the expression.
+-/
 lemma one_le_exponential_weight {n : ℕ} {ε : Fin n → Bool} {a : ℝ} (ha : 0 ≤ a) (g : UJ ε) :
     1 ≤ Real.exp (2 * a * hh (toM g)) := by
   rw [Real.one_le_exp_iff]
   have := log_frobenius_nonneg g.2
   positivity
 
+/- English proof (translation)
+Unfold `radialCutoff`. Apply `cutoff_profile_eq_zero` to reduce the goal to its premises. Rewrite using `[le_div_iff₀ hR]`. Unfold `hh`. Establish `hpos : 0 < hs x` using `(Real.exp_pos _).trans hx`.
+
+Use `Real.log_lt_log (Real.exp_pos _) hx` as an intermediate fact. Rewrite `this` using `[Real.log_exp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma cutoff_vanishes_far {n : ℕ} {R : ℝ} (hR : 0 < R) {x : Matrix (Fin n) (Fin n) ℂ}
     (hx : Real.exp (2 * R) < hs x) : radialCutoff R (hh x) = 0 := by
   unfold radialCutoff
@@ -514,6 +744,9 @@ lemma cutoff_vanishes_far {n : ℕ} {R : ℝ} (hR : 0 < R) {x : Matrix (Fin n) (
 section F4BML
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qh27.smooth_on_group_sum .. | (apply UpperTheory.Reformulated.B.Qh27.smooth_on_group_sum <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qh27.smooth_on_group_sum <;> assumption) | (apply @UpperTheory.Reformulated.B.Qh27.smooth_ …`.
+-/
 lemma smooth_on_group_sum {ι : Type*} (s : Finset ι) (f : ι → Matrix (Fin n) (Fin n) ℂ → ℂ)
     (h : ∀ i ∈ s, SmoothOnG ε (f i)) : SmoothOnG ε (fun x => ∑ i ∈ s, f i x) := by
   first | exact UpperTheory.Reformulated.B.Qh27.smooth_on_group_sum .. | (apply UpperTheory.Reformulated.B.Qh27.smooth_on_group_sum <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qh27.smooth_on_group_sum <;> assumption) | (apply @UpperTheory.Reformulated.B.Qh27.smooth_on_group_sum <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qh27.smooth_on_group_sum <;> assumption) | (apply @UpperTheory.Reformulated.B.Qh27.smooth_on_group_sum <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qh27.smooth_on_group_sum n ε ι s f h | exact @UpperTheory.Reformulated.B.Qh27.smooth_on_group_sum n ε ι s f | exact @UpperTheory.Reformulated.B.Qh27.smooth_on_group_sum n ε ι s | exact @UpperTheory.Reformulated.B.Qh27.smooth_on_group_sum n ε ι | exact @UpperTheory.Reformulated.B.Qh27.smooth_on_group_sum n ε | exact @UpperTheory.Reformulated.B.Qh27.smooth_on_group_sum n
@@ -522,23 +755,38 @@ def signedCasimirDifference (ε : Fin n → Bool) (u : Matrix (Fin n) (Fin n) �
     Matrix (Fin n) (Fin n) ℂ → ℂ :=
   fun x => ∑ i, ∑ j, ((sgn ε i j : ℝ) : ℂ) * Eab ε j i (Eab ε i j u) x
 
+/- English proof (translation)
+The claim follows from `smooth_on_group_sum _ _ fun i _ => smooth_on_group_sum _ _ fun j _ => smooth_on_group_const_mul _ (smooth_lie_derivative j i (smooth_lie_derivative i j hu))`.
+-/
 lemma smooth_signedCasimir {u : Matrix (Fin n) (Fin n) ℂ → ℂ} (hu : SmoothOnG ε u) : SmoothOnG ε (signedCasimirDifference ε u) :=
   smooth_on_group_sum _ _ fun i _ => smooth_on_group_sum _ _ fun j _ =>
     smooth_on_group_const_mul _ (smooth_lie_derivative j i (smooth_lie_derivative i j hu))
 
 def radialWeight (a R : ℝ) (x : Matrix (Fin n) (Fin n) ℂ) : ℂ := ((weightProfileAlt a R (hh x) : ℝ) : ℂ)
 
+/- English proof (translation)
+The claim follows from `smooth_real_comp _ (contDiff_weight_profile a R) (hl n ε).1`.
+-/
 lemma smooth_weight (hl : HhLip) (a R : ℝ) : SmoothOnG ε (radialWeight (n := n) a R) :=
   smooth_real_comp _ (contDiff_weight_profile a R) (hl n ε).1
 
+/- English proof (translation)
+Introduce `g _ hg`. Simplify using `[radialWeight, weightProfileAlt, cutoff_vanishes_far hR hg]`.
+-/
 lemma weight_vanishing_outside (a : ℝ) {R : ℝ} (hR : 0 < R) :
     VanishesOutsideBall ε (Real.exp (2 * R)) (radialWeight (n := n) a R) := by
   intro g _ hg
   simp [radialWeight, weightProfileAlt, cutoff_vanishes_far hR hg]
 
+/- English proof (translation)
+Unfold `weightProfileAlt`. Check the signs of the components of the expression.
+-/
 lemma weight_profile_nonneg (a R t : ℝ) : 0 ≤ weightProfileAlt a R t := by
   unfold weightProfileAlt; positivity
 
+/- English proof (translation)
+Unfold `weightProfileAlt`. Establish `h0` using `cutoff_profile_eq_one (t / R)`. Establish `h1` using `cutoff_profile_le_one (t / R)`. Establish `: radialCutoff R t ^ 2 ≤ 1` using `by unfold radialCutoff; nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma weight_profile_le_exp (a R t : ℝ) : weightProfileAlt a R t ≤ Real.exp (2 * a * t) := by
   unfold weightProfileAlt
   have h0 := cutoff_profile_eq_one (t / R)
@@ -548,6 +796,9 @@ lemma weight_profile_le_exp (a R t : ℝ) : weightProfileAlt a R t ≤ Real.exp 
         gcongr
     _ = _ := one_mul _
 
+/- English proof (translation)
+Use `(lie_derivative_log_frobenius_comp_le hl (weightProfileAlt a R) (contDiff_weight_profile a R) i j hg).trans ?_` and prove the remaining obligations. Use `abs_deriv_weight_profile_le ha hR (hh g)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma lie_derivative_weight_le (hl : HhLip) {a R : ℝ} (ha : 0 ≤ a) (hR : 1 ≤ R) (i j : Fin n)
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     ‖Eab ε i j (radialWeight a R) g‖ ≤ radialCutoff R (hh g) * Real.exp (2 * a * hh g) *
@@ -559,23 +810,44 @@ lemma lie_derivative_weight_le (hl : HhLip) {a R : ℝ} (ha : 0 ≤ a) (hR : 1 �
         gcongr; exact lie_derivative_bound_nonneg ε i j
     _ = _ := by ring
 
+/- English proof (translation)
+The claim follows from `Real.measurable_exp.comp (measurable_const.mul (Real.measurable_log.comp (continuous_frobenius_on_group ε).measurable))`.
+-/
 lemma measurable_exponential_weight (a : ℝ) : Measurable (fun g : UJ ε => Real.exp (2 * a * hh (toM g))) :=
   Real.measurable_exp.comp (measurable_const.mul
     (Real.measurable_log.comp (continuous_frobenius_on_group ε).measurable))
 
+/- English proof (translation)
+The claim follows from `((measurable_exponential_weight a).mul ((continuous_smooth_on_group_eval hu).norm.pow 2).measurable).aestronglyMeasurable`.
+-/
 lemma aestronglyMeasurable_weighted_norm_sq (a : ℝ) {u : Matrix (Fin n) (Fin n) ℂ → ℂ} (hu : SmoothOnG ε u) :
     AEStronglyMeasurable (fun g : UJ ε => Real.exp (2 * a * hh (toM g)) * ‖u (toM g)‖ ^ 2)
       (muG ε) :=
   ((measurable_exponential_weight a).mul ((continuous_smooth_on_group_eval hu).norm.pow 2).measurable).aestronglyMeasurable
 
+/- English proof (translation)
+Use `h.re` as an intermediate fact. Simplify using `using this`.
+-/
 lemma integrable_of_ofReal {F : UJ ε → ℝ} (h : Integrable (fun g => ((F g : ℝ) : ℂ)) (muG ε)) :
     Integrable F (muG ε) := by
   have := h.re
   simpa using this
 
+/- English proof (translation)
+Use polynomial arithmetic with `[mul_nonneg he (sq_nonneg (x - y))]`.
+-/
 lemma amgm_mul_le (x y e : ℝ) (he : 0 ≤ e) : x * y * e ≤ x ^ 2 * e / 2 + y ^ 2 * e / 2 := by
   nlinarith [mul_nonneg he (sq_nonneg (x - y))]
 
+/- English proof (translation)
+Establish `wsm` using `smooth_weight (ε := ε) hl a R`. Establish `wv` using `weight_vanishing_outside (ε := ε) a hR`. Establish `hv` using `smooth_lie_derivative i j hu`. Establish `hφs : SmoothOnG ε (fun x => (radialWeight a R x * u x) * starRingEnd ℂ (Eab ε i j u x))` using `smooth_on_group_mul (smooth_on_group_mul wsm hu) (smooth_on_group_conj hv)`. Establish `hφv : VanishesOutsideBall ε (Real.exp (2 * R)) (fun x => (radialWeight a R x * u x) * starRingEnd ℂ (Eab ε i j u x))` using `vanishing_outside_mul_left _ (vanishing_outside_mul_left _ wv)`.
+
+Establish `h0` using `integral_lie_derivative_eq_zero hz hφs hφv i j`. Establish `key : ∀ g : UJ ε, Eab ε i j (fun x => (radialWeight a R x * u x) * starRingEnd ℂ (Eab ε i j u x)) (toM g) = Eab ε i j (radialWeight a R) (toM g) * u (toM g) * starRingEnd ℂ (Eab ε i j u (toM g)) + radialWeight a R (toM g) * Eab ε i j u (toM g) * starRingEnd ℂ (Eab ε i j u (toM g) …`. Introduce `g`. Rewrite using `[lie_derivative_mul i j (smooth_on_group_mul wsm hu) (smooth_on_group_conj hv) g.2, lie_derivative_mul i j wsm hu g.2, lie_derivative_conj i j hv g.2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `i1 : Integrable (fun g : UJ ε => Eab ε i j (radialWeight a R) (toM g) * u (toM g) * starRingEnd ℂ (Eab ε i j u (toM g))) (muG ε)` using `integrable_of_vanishing_outside (f := fun x => Eab ε i j (radialWeight a R) x * u x * starRingEnd ℂ (Eab ε i j u x)) (smooth_on_group_mul (smooth_on_group_mul (smooth_lie_derivative i j wsm) hu) (smooth_on_group_conj hv)) (vanishing_outside_mul_left _ (vanishing_outside_mul_left …`. Establish `i2 : Integrable (fun g : UJ ε => radialWeight a R (toM g) * Eab ε i j u (toM g) * starRingEnd ℂ (Eab ε i j u (toM g))) (muG ε)` using `integrable_of_vanishing_outside (f := fun x => radialWeight a R x * Eab ε i j u x * starRingEnd ℂ (Eab ε i j u x)) (smooth_on_group_mul (smooth_on_group_mul wsm hv) (smooth_on_group_conj hv)) (vanishing_outside_mul_left _ (vanishing_outside_mul_left _ wv))`. Establish `i3 : Integrable (fun g : UJ ε => radialWeight a R (toM g) * u (toM g) * starRingEnd ℂ (Eab ε j i (Eab ε i j u) (toM g))) (muG ε)` using `integrable_of_vanishing_outside (f := fun x => radialWeight a R x * u x * starRingEnd ℂ (Eab ε j i (Eab ε i j u) x)) (smooth_on_group_mul (smooth_on_group_mul wsm hu) (smooth_on_group_conj (smooth_lie_derivative j i hv))) (vanishing_outside_mul_left _ (vanishing_outside_mul_left …`. Rewrite `h0` using `[integral_congr_ae (Eventually.of_forall key)]`. Establish `e1` using `integral_add (i1.add i2) (i3.const_mul (-((sgn ε i j : ℝ) : ℂ)))`.
+
+Simplify using `only [Pi.add_apply] at e1`. Rewrite `e1` using `[integral_add i1 i2, integral_const_mul]`. Rewrite `h0` using `[e1]`. Take the linear combination `h0`.
+-/
 lemma integral_lie_derivative_weight_identity (hl : HhLip) (hz : IntRdZero) (a : ℝ) {R : ℝ} (hR : 0 < R)
     {u : Matrix (Fin n) (Fin n) ℂ → ℂ} (hu : SmoothOnG ε u) (i j : Fin n) :
     ∫ g : UJ ε, radialWeight a R (toM g) * Eab ε i j u (toM g) * starRingEnd ℂ (Eab ε i j u (toM g))
@@ -629,12 +901,18 @@ end F4BML
 section F4BML2
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Unfold `radialWeight`. Rewrite using `[mul_assoc, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma weight_mul_conj_eq (a R : ℝ) (x : Matrix (Fin n) (Fin n) ℂ) (v : ℂ) :
     radialWeight a R x * v * starRingEnd ℂ v = ((weightProfileAlt a R (hh x) * ‖v‖ ^ 2 : ℝ) : ℂ) := by
   unfold radialWeight
   rw [mul_assoc, Complex.mul_conj, Complex.normSq_eq_norm_sq]
   push_cast; ring
 
+/- English proof (translation)
+The claim follows from `integrable_of_vanishing_outside (f := fun x => Eab ε i j (radialWeight a R) x * u x * starRingEnd ℂ (Eab ε i j u x)) (smooth_on_group_mul (smooth_on_group_mul (smooth_lie_derivative i j (smooth_weight hl a R)) hu) (smooth_on_group_conj (smooth_lie_derivative i j hu))) (vanishing_ …`.
+-/
 lemma integrable_weight_derivative_product (hl : HhLip) (a : ℝ) {R : ℝ} (hR : 0 < R) {u : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (hu : SmoothOnG ε u) (i j : Fin n) :
     Integrable (fun g : UJ ε => Eab ε i j (radialWeight a R) (toM g) * u (toM g) *
@@ -643,6 +921,9 @@ lemma integrable_weight_derivative_product (hl : HhLip) (a : ℝ) {R : ℝ} (hR 
     (smooth_on_group_mul (smooth_on_group_mul (smooth_lie_derivative i j (smooth_weight hl a R)) hu) (smooth_on_group_conj (smooth_lie_derivative i j hu)))
     (vanishing_outside_mul_left _ (vanishing_outside_mul_left _ (vanishing_outside_lie_derivative i j (weight_vanishing_outside a hR))))
 
+/- English proof (translation)
+The claim follows from `integrable_of_vanishing_outside (f := fun x => radialWeight a R x * u x * starRingEnd ℂ (h x)) (smooth_on_group_mul (smooth_on_group_mul (smooth_weight hl a R) hu) (smooth_on_group_conj hh')) (vanishing_outside_mul_left _ (vanishing_outside_mul_left _ (weight_vanishing_outside a …`.
+-/
 lemma integrable_weight_product (hl : HhLip) (a : ℝ) {R : ℝ} (hR : 0 < R) {u h : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (hu : SmoothOnG ε u) (hh' : SmoothOnG ε h) :
     Integrable (fun g : UJ ε => radialWeight a R (toM g) * u (toM g) * starRingEnd ℂ (h (toM g)))
@@ -651,6 +932,9 @@ lemma integrable_weight_product (hl : HhLip) (a : ℝ) {R : ℝ} (hR : 0 < R) {u
     (smooth_on_group_mul (smooth_on_group_mul (smooth_weight hl a R) hu) (smooth_on_group_conj hh'))
     (vanishing_outside_mul_left _ (vanishing_outside_mul_left _ (weight_vanishing_outside a hR)))
 
+/- English proof (translation)
+Apply `integrable_of_ofReal` to reduce the goal to its premises. Use `(integrable_weight_product hl a hR hv hv).congr (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Conclude with `weight_mul_conj_eq a R _ _`.
+-/
 lemma integrable_weighted_norm_sq (hl : HhLip) (a : ℝ) {R : ℝ} (hR : 0 < R) {v : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (hv : SmoothOnG ε v) :
     Integrable (fun g : UJ ε => weightProfileAlt a R (hh (toM g)) * ‖v (toM g)‖ ^ 2) (muG ε) := by
@@ -658,6 +942,37 @@ lemma integrable_weighted_norm_sq (hl : HhLip) (a : ℝ) {R : ℝ} (hR : 0 < R) 
   refine (integrable_weight_product hl a hR hv hv).congr (Eventually.of_forall fun g => ?_)
   exact weight_mul_conj_eq a R _ _
 
+/- English proof (translation)
+Establish `hR0 : 0 < R` using `by linarith`. Use `set Nu := ∫ g : UJ ε, Real.exp (2 * a * hh (toM g)) * ‖u (toM g)‖ ^ 2 ∂(muG ε) with hNu`. Use `set NT := ∫ g : UJ ε, Real.exp (2 * a * hh (toM g)) * ‖signedCasimirDifference ε u (toM g)‖ ^ 2 ∂(muG ε) with hNT`. Use `set I : Fin n → Fin n → ℝ := fun i j => ∫ g : UJ ε, weightProfileAlt a R (hh (toM g)) * ‖Eab ε i j u (toM g)‖ ^ 2 ∂(muG ε) with hIdef`. Use `set K : Fin n → Fin n → ℝ := fun i j => (2 * cutoffDerivBound + 2 * a) * lieDerivativeLogFrobeniusBound ε i j with hK`.
+
+Use `set C1 : Fin n → Fin n → ℂ := fun i j => ∫ g : UJ ε, Eab ε i j (radialWeight a R) (toM g) * u (toM g) * starRingEnd ℂ (Eab ε i j u (toM g)) ∂(muG ε) with hC1`. Use `set C4 : ℂ := ∫ g : UJ ε, radialWeight a R (toM g) * u (toM g) * starRingEnd ℂ (signedCasimirDifference ε u (toM g)) ∂(muG ε) with hC4`. Establish `hI : ∀ i j, ((I i j : ℝ) : ℂ) = -C1 i j + ((sgn ε i j : ℝ) : ℂ) * ∫ g : UJ ε, radialWeight a R (toM g) * u (toM g) * starRingEnd ℂ (Eab ε j i (Eab ε i j u) (toM g)) ∂(muG ε)`. Introduce `i j`. Rewrite using `[← integral_lie_derivative_weight_identity hl hz a hR0 hu i j]`.
+
+Simplify using `only [hIdef]`. Rewrite using `[← integral_complex_ofReal]`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Conclude with `(weight_mul_conj_eq a R _ _).symm`. Establish `hsum : ∑ i, ∑ j, ((sgn ε i j : ℝ) : ℂ) * ∫ g : UJ ε, radialWeight a R (toM g) * u (toM g) * starRingEnd ℂ (Eab ε j i (Eab ε i j u) (toM g)) ∂(muG ε) = C4`.
+
+Establish `pw : ∀ g : UJ ε, radialWeight a R (toM g) * u (toM g) * starRingEnd ℂ (signedCasimirDifference ε u (toM g)) = ∑ i, ∑ j, ((sgn ε i j : ℝ) : ℂ) * (radialWeight a R (toM g) * u (toM g) * starRingEnd ℂ (Eab ε j i (Eab ε i j u) (toM g)))`. Introduce `g`. Simplify using `only [signedCasimirDifference, map_sum, map_mul, Complex.conj_ofReal]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hC4, integral_congr_ae (Eventually.of_forall pw), integral_finsetSum _ fun i _ => integrable_finsetSum _ fun j _ => (integrable_weight_product hl a hR0 hu (smooth_lie_derivative j i (smooth_lie_derivative i j hu))).const_mul _]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[integral_finsetSum _ fun j _ => (integrable_weight_product hl a hR0 hu (smooth_lie_derivative j i (smooth_lie_derivative i j hu))).const_mul _]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul]`. Establish `hIi : ∀ i j, Integrable (fun g : UJ ε => weightProfileAlt a R (hh (toM g)) * ‖Eab ε i j u (toM g)‖ ^ 2) (muG ε)` using `fun i j => integrable_weighted_norm_sq hl a hR0 (smooth_lie_derivative i j hu)`. Establish `hC1b : ∀ i j, ‖C1 i j‖ ≤ I i j / 2 + K i j ^ 2 * Nu / 2`.
+
+Introduce `i j`. Use `(norm_integral_le_integral_norm _).trans ?_` and prove the remaining obligations. Establish `hb : ∀ g : UJ ε, ‖Eab ε i j (radialWeight a R) (toM g) * u (toM g) * starRingEnd ℂ (Eab ε i j u (toM g))‖ ≤ weightProfileAlt a R (hh (toM g)) * ‖Eab ε i j u (toM g)‖ ^ 2 / 2 + K i j ^ 2 * (Real.exp (2 * a * hh (toM g)) * ‖u (toM g)‖ ^ 2) / 2`. Introduce `g`. Establish `h1` using `lie_derivative_weight_le hl ha hR i j g.2`.
+
+Rewrite using `[norm_mul, norm_mul, Complex.norm_conj]`. Establish `hχ` using `cutoff_profile_eq_one (hh (toM g) / R)`. Establish `hE` using `Real.exp_pos (2 * a * hh (toM g))`. Combine the equalities or inequalities in the displayed calculation. Establish `hr1 : Integrable (fun g : UJ ε => weightProfileAlt a R (hh (toM g)) * ‖Eab ε i j u (toM g)‖ ^ 2 / 2) (muG ε)` using `Integrable.div_const (f := fun g : UJ ε => weightProfileAlt a R (hh (toM g)) * ‖Eab ε i j u (toM g)‖ ^ 2) (hIi i j) 2`.
+
+Establish `hr2 : Integrable (fun g : UJ ε => K i j ^ 2 * (Real.exp (2 * a * hh (toM g)) * ‖u (toM g)‖ ^ 2) / 2) (muG ε)` using `Integrable.div_const (f := fun g : UJ ε => K i j ^ 2 * (Real.exp (2 * a * hh (toM g)) * ‖u (toM g)‖ ^ 2)) (Integrable.const_mul (f := fun g : UJ ε => Real.exp (2 * a * hh (toM g)) * ‖u (toM g)‖ ^ 2) hu2 _) 2`. Establish `hr : Integrable (fun g : UJ ε => weightProfileAlt a R (hh (toM g)) * ‖Eab ε i j u (toM g)‖ ^ 2 / 2 + K i j ^ 2 * (Real.exp (2 * a * hh (toM g)) * ‖u (toM g)‖ ^ 2) / 2) (muG ε)` using `Integrable.add (f := fun g : UJ ε => weightProfileAlt a R (hh (toM g)) * ‖Eab ε i j u (toM g)‖ ^ 2 / 2) (g := fun g : UJ ε => K i j ^ 2 * (Real.exp (2 * a * hh (toM g)) * ‖u (toM g)‖ ^ 2) / 2) hr1 hr2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_add hr1 hr2, integral_div, integral_div, integral_const_mul]`. Establish `hC4b : ‖C4‖ ≤ Nu / 2 + NT / 2`.
+
+Use `(norm_integral_le_integral_norm _).trans ?_` and prove the remaining obligations. Establish `hb : ∀ g : UJ ε, ‖radialWeight a R (toM g) * u (toM g) * starRingEnd ℂ (signedCasimirDifference ε u (toM g))‖ ≤ Real.exp (2 * a * hh (toM g)) * ‖u (toM g)‖ ^ 2 / 2 + Real.exp (2 * a * hh (toM g)) * ‖signedCasimirDifference ε u (toM g)‖ ^ 2 / 2`. Introduce `g`. Rewrite using `[norm_mul, norm_mul, Complex.norm_conj]`. Establish `hw : ‖radialWeight a R (toM g)‖ ≤ Real.exp (2 * a * hh (toM g))`.
+
+Unfold `radialWeight`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (weight_profile_nonneg _ _ _)]`. Conclude with `weight_profile_le_exp _ _ _`. Establish `hE` using `Real.exp_pos (2 * a * hh (toM g))`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hr1 : Integrable (fun g : UJ ε => Real.exp (2 * a * hh (toM g)) * ‖u (toM g)‖ ^ 2 / 2) (muG ε)` using `Integrable.div_const (f := fun g : UJ ε => Real.exp (2 * a * hh (toM g)) * ‖u (toM g)‖ ^ 2) hu2 2`. Establish `hr2 : Integrable (fun g : UJ ε => Real.exp (2 * a * hh (toM g)) * ‖signedCasimirDifference ε u (toM g)‖ ^ 2 / 2) (muG ε)` using `Integrable.div_const (f := fun g : UJ ε => Real.exp (2 * a * hh (toM g)) * ‖signedCasimirDifference ε u (toM g)‖ ^ 2) hT2 2`. Establish `hr : Integrable (fun g : UJ ε => Real.exp (2 * a * hh (toM g)) * ‖u (toM g)‖ ^ 2 / 2 + Real.exp (2 * a * hh (toM g)) * ‖signedCasimirDifference ε u (toM g)‖ ^ 2 / 2) (muG ε)` using `Integrable.add (f := fun g : UJ ε => Real.exp (2 * a * hh (toM g)) * ‖u (toM g)‖ ^ 2 / 2) (g := fun g : UJ ε => Real.exp (2 * a * hh (toM g)) * ‖signedCasimirDifference ε u (toM g)‖ ^ 2 / 2) hr1 hr2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_add hr1 hr2, integral_div, integral_div]`.
+
+Establish `hc : ((∑ i, ∑ j, I i j : ℝ) : ℂ) = ∑ i, ∑ j, -C1 i j + C4`. Use `push_cast`. Simplify using `only [hI, Finset.sum_add_distrib, hsum]`. Establish `hre : ∑ i, ∑ j, I i j = ∑ i, ∑ j, -(C1 i j).re + C4.re`. Use `congrArg Complex.re hc` as an intermediate fact.
+
+Simplify `this` using `[Complex.re_sum]`. Establish `h1 : ∑ i, ∑ j, -(C1 i j).re ≤ ∑ i, ∑ j, (I i j / 2 + K i j ^ 2 * Nu / 2)` using `Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => (neg_le_abs _).trans ((Complex.abs_re_le_norm _).trans (hC1b i j))`. Establish `h2 : C4.re ≤ Nu / 2 + NT / 2` using `(Complex.re_le_norm _).trans hC4b`. Establish `h3 : ∑ i, ∑ j, (I i j / 2 + K i j ^ 2 * Nu / 2) = (∑ i, ∑ j, I i j) / 2 + (∑ i, ∑ j, K i j ^ 2 * Nu) / 2`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_div]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma sum_weighted_lie_derivative_bound (hl : HhLip) (hz : IntRdZero) {a : ℝ} (ha : 0 ≤ a) {R : ℝ} (hR : 1 ≤ R)
     {u : Matrix (Fin n) (Fin n) ℂ → ℂ} (hu : SmoothOnG ε u)
     (hu2 : Integrable (fun g : UJ ε => Real.exp (2 * a * hh (toM g)) * ‖u (toM g)‖ ^ 2) (muG ε))
@@ -812,6 +1127,13 @@ end F4BML2
 section Integrability
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Establish `hf0 : ∀ x, 0 ≤ f x` using `fun x => (hF0 0 x).trans (hle 0 x)`. Use `⟨hf, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (Eventually.of_forall hf0)]`. Establish `hsup : ∀ x, ENNReal.ofReal (f x) = ⨆ N, ENNReal.ofReal (F N x)`. Introduce `x`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Take `⟨N, hN⟩` from `hlim x`. Rewrite using `[← hN]`. Conclude with `le_iSup (fun N => ENNReal.ofReal (F N x)) N`. Conclude with `iSup_le fun N => ENNReal.ofReal_le_ofReal (hle N x)`.
+
+Rewrite using `[lintegral_congr hsup, lintegral_iSup' (fun N => (hF N).aemeasurable.ennreal_ofReal) (Eventually.of_forall fun x => fun N M h => ENNReal.ofReal_le_ofReal (hmono x h))]`. Use `lt_of_le_of_lt (iSup_le fun N => ?_) (ENNReal.ofReal_lt_top (r := B))` and prove the remaining obligations. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal (hF N) (Eventually.of_forall (hF0 N))]`. Conclude with `ENNReal.ofReal_le_ofReal (hB N)`.
+-/
 lemma integrable_of_monotone_bounded {X : Type*} [MeasurableSpace X] {μ : Measure X} {F : ℕ → X → ℝ} {f : X → ℝ}
     (hF : ∀ N, Integrable (F N) μ) (hF0 : ∀ N x, 0 ≤ F N x) (hmono : ∀ x, Monotone (fun N => F N x))
     (hlim : ∀ x, ∃ N, F N x = f x) (hle : ∀ N x, F N x ≤ f x) (hf : AEStronglyMeasurable f μ)
@@ -830,6 +1152,9 @@ lemma integrable_of_monotone_bounded {X : Type*} [MeasurableSpace X] {μ : Measu
   rw [← ofReal_integral_eq_lintegral_ofReal (hF N) (Eventually.of_forall (hF0 N))]
   exact ENNReal.ofReal_le_ofReal (hB N)
 
+/- English proof (translation)
+Introduce `N M h`. Unfold `radialCutoff`. Apply `antitone_cutoff_profile` to reduce the goal to its premises. Establish `h1 : (N : ℝ) + 1 ≤ (M : ℝ) + 1` using `by exact_mod_cast Nat.add_le_add_right h 1`. Conclude with `div_le_div_of_nonneg_left ht (by positivity) h1`.
+-/
 lemma monotone_cutoff_in_radius {t : ℝ} (ht : 0 ≤ t) : Monotone (fun N : ℕ => radialCutoff ((N : ℝ) + 1) t) := by
   intro N M h
   unfold radialCutoff
@@ -837,6 +1162,11 @@ lemma monotone_cutoff_in_radius {t : ℝ} (ht : 0 ≤ t) : Monotone (fun N : ℕ
   have h1 : (N : ℝ) + 1 ≤ (M : ℝ) + 1 := by exact_mod_cast Nat.add_le_add_right h 1
   exact div_le_div_of_nonneg_left ht (by positivity) h1
 
+/- English proof (translation)
+Use `⟨⌈t⌉₊, fun M hM => ?_⟩` and prove the remaining obligations. Unfold `radialCutoff`. Apply `cutoff_profile_eq_one_near` to reduce the goal to its premises. Rewrite using `[div_le_one (by positivity)]`. Use `Nat.le_ceil t` as an intermediate fact.
+
+Establish `: (⌈t⌉₊ : ℝ) ≤ M` using `by exact_mod_cast hM`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma cutoff_eventually_one (t : ℝ) : ∃ N : ℕ, ∀ M, N ≤ M → radialCutoff ((M : ℝ) + 1) t = 1 := by
   refine ⟨⌈t⌉₊, fun M hM => ?_⟩
   unfold radialCutoff
@@ -846,6 +1176,17 @@ lemma cutoff_eventually_one (t : ℝ) : ∃ N : ℕ, ∀ M, N ≤ M → radialCu
   have : (⌈t⌉₊ : ℝ) ≤ M := by exact_mod_cast hM
   linarith
 
+/- English proof (translation)
+Establish `hv` using `smooth_lie_derivative i j hu`. Use `integrable_of_monotone_bounded (F := fun N g => weightProfileAlt a ((N : ℝ) + 1) (hh (toM g)) * ‖Eab ε i j u (toM g)‖ ^ 2) (fun N => integrable_weighted_norm_sq hl a (by positivity) hv) (fun N g => mul_nonneg (weight_profile_nonneg _ _ _) (by positivity)) ?_ ?_ ?_ (aestronglyMeas …` and prove the remaining obligations. Introduce `g N M h`. Establish `h0` using `log_frobenius_nonneg g.2`. Establish `hm` using `monotone_cutoff_in_radius h0 h`.
+
+Establish `p0` using `cutoff_profile_eq_one (hh (toM g) / ((N : ℝ) + 1))`. Simplify using `only [weightProfileAlt]`. Establish `: radialCutoff ((N : ℝ) + 1) (hh (toM g)) ^ 2 ≤ radialCutoff ((M : ℝ) + 1) (hh (toM g)) ^ 2`. Unfold `radialCutoff at hm p0 ⊢`. Conclude with `pow_le_pow_left₀ p0 hm 2`.
+
+Use `gcongr`. Introduce `g`. Take `⟨N, hN⟩` from `cutoff_eventually_one (hh (toM g))`. Use `⟨N, ?_⟩` and prove the remaining obligations. Simplify using `only [weightProfileAlt, hN N le_rfl]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `N g show weightProfileAlt a ((N : ℝ) + 1) (hh (toM g)) * ‖Eab ε i j u (toM g)‖ ^ 2 ≤ Real.exp (2 * a * hh (toM g)) * ‖Eab ε i j u (toM g)‖ ^ 2 gcongr`. Conclude with `weight_profile_le_exp _ _ _`. Introduce `N`. Establish `h2` using `sum_weighted_lie_derivative_bound hl hz ha (R := (N : ℝ) + 1) (by linarith [N.cast_nonneg (α := ℝ)]) hu hu2 hT2`.
+
+Use `le_trans ?_ h2` and prove the remaining obligations. Establish `hnn : ∀ i' j', 0 ≤ ∫ g : UJ ε, weightProfileAlt a ((N : ℝ) + 1) (hh (toM g)) * ‖Eab ε i' j' u (toM g)‖ ^ 2 ∂(muG ε)` using `fun i' j' => integral_nonneg fun g => mul_nonneg (weight_profile_nonneg _ _ _) (by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma integrable_lie_derivative_weighted (hl : HhLip) (hz : IntRdZero) {a : ℝ} (ha : 0 ≤ a)
     {u : Matrix (Fin n) (Fin n) ℂ → ℂ} (hu : SmoothOnG ε u)
     (hu2 : Integrable (fun g : UJ ε => Real.exp (2 * a * hh (toM g)) * ‖u (toM g)‖ ^ 2) (muG ε))
@@ -900,6 +1241,11 @@ end Integrability
 section F4BUL
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Establish `hb : Integrable (fun g : UJ ε => Real.exp (2 * a * hh (toM g)) * ‖f (toM g)‖ ^ 2 / 2 + Real.exp (2 * a * hh (toM g)) * ‖f' (toM g)‖ ^ 2 / 2) (muG ε)` using `Integrable.add (f := fun g : UJ ε => Real.exp (2 * a * hh (toM g)) * ‖f (toM g)‖ ^ 2 / 2) (g := fun g : UJ ε => Real.exp (2 * a * hh (toM g)) * ‖f' (toM g)‖ ^ 2 / 2) (Integrable.div_const (f := fun g : UJ ε => Real.exp (2 * a * hh (toM g)) * ‖f (toM g)‖ ^ 2) h2 2) (Integrable.div …`. Use `hb.mono' ((continuous_smooth_on_group_eval hf).mul ((continuous_smooth_on_group_eval hf').star)).aestronglyMeasurable (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_conj]`. Establish `he` using `one_le_exponential_weight ha g`. Establish `h1` using `amgm_mul_le ‖f (toM g)‖ ‖f' (toM g)‖ 1 zero_le_one`.
+
+Establish `h3 : 0 ≤ ‖f (toM g)‖ ^ 2` using `by positivity`. Establish `h4 : 0 ≤ ‖f' (toM g)‖ ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 lemma integrable_mul_conj_of_weighted {a : ℝ} (ha : 0 ≤ a) {f f' : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (hf : SmoothOnG ε f) (hf' : SmoothOnG ε f')
     (h2 : Integrable (fun g : UJ ε => Real.exp (2 * a * hh (toM g)) * ‖f (toM g)‖ ^ 2) (muG ε))
@@ -924,17 +1270,33 @@ lemma integrable_mul_conj_of_weighted {a : ℝ} (ha : 0 ≤ a) {f f' : Matrix (F
 
 def radialCutoffFunction (R : ℝ) (x : Matrix (Fin n) (Fin n) ℂ) : ℂ := ((radialCutoff R (hh x) : ℝ) : ℂ)
 
+/- English proof (translation)
+The claim follows from `smooth_real_comp _ (contDiff_radialCutoff R) (hl n ε).1`.
+-/
 lemma smooth_cutoff (hl : HhLip) (R : ℝ) : SmoothOnG ε (radialCutoffFunction (n := n) R) :=
   smooth_real_comp _ (contDiff_radialCutoff R) (hl n ε).1
 
+/- English proof (translation)
+Introduce `g _ hg`. Simplify using `[radialCutoffFunction, cutoff_vanishes_far hR hg]`.
+-/
 lemma cutoff_vanishing_outside {R : ℝ} (hR : 0 < R) : VanishesOutsideBall ε (Real.exp (2 * R)) (radialCutoffFunction (n := n) R) := by
   intro g _ hg
   simp [radialCutoffFunction, cutoff_vanishes_far hR hg]
 
+/- English proof (translation)
+The claim follows from `Complex.measurable_ofReal.comp ((contDiff_radialCutoff R).continuous.measurable.comp (Real.measurable_log.comp (continuous_frobenius_on_group ε).measurable))`.
+-/
 lemma measurable_cutoff_alt (R : ℝ) : Measurable (fun g : UJ ε => radialCutoffFunction (n := n) R (toM g)) :=
   Complex.measurable_ofReal.comp ((contDiff_radialCutoff R).continuous.measurable.comp
     (Real.measurable_log.comp (continuous_frobenius_on_group ε).measurable))
 
+/- English proof (translation)
+Use `tendsto_integral_of_dominated_convergence (fun g => ‖F g‖) (fun N => ?_) hF.norm (fun N => Eventually.of_forall fun g => ?_) (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Conclude with `(measurable_cutoff_alt _).aestronglyMeasurable.mul hF.aestronglyMeasurable`. Rewrite using `[norm_mul]`. Establish `h0` using `cutoff_profile_eq_one (hh (toM g) / ((N : ℝ) + 1))`. Establish `h1` using `cutoff_profile_le_one (hh (toM g) / ((N : ℝ) + 1))`.
+
+Establish `: ‖radialCutoffFunction (n` using `n) ((N : ℝ) + 1) (toM g)‖ ≤ 1 := by`. Unfold `radialCutoffFunction radialCutoff`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg h0]`. Conclude with `h1`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨N, hN⟩` from `cutoff_eventually_one (hh (toM g))`. Use `tendsto_const_nhds.congr' (eventually_atTop.2 ⟨N, fun M hM => ?_⟩)` and prove the remaining obligations. Simplify using `[radialCutoffFunction, hN M hM]`.
+-/
 lemma tendsto_integral_cutoff {F : UJ ε → ℂ} (hF : Integrable F (muG ε)) :
     Tendsto (fun N : ℕ => ∫ g : UJ ε, radialCutoffFunction ((N : ℝ) + 1) (toM g) * F g ∂(muG ε)) atTop
       (𝓝 (∫ g : UJ ε, F g ∂(muG ε))) := by
@@ -953,6 +1315,33 @@ lemma tendsto_integral_cutoff {F : UJ ε → ℂ} (hF : Integrable F (muG ε)) :
     refine tendsto_const_nhds.congr' (eventually_atTop.2 ⟨N, fun M hM => ?_⟩)
     simp [radialCutoffFunction, hN M hM]
 
+/- English proof (translation)
+Establish `hv` using `smooth_lie_derivative i j hu`. Establish `hv'` using `smooth_lie_derivative j i hu'`. Establish `P1` using `integrable_mul_conj_of_weighted ha hv hu' hv2 hu2'`. Establish `P2` using `integrable_mul_conj_of_weighted ha hu hv' hu2 hv2'`. Establish `P0` using `integrable_mul_conj_of_weighted ha hu hu' hu2 hu2'`.
+
+Use `set s : ℂ := ((sgn ε i j : ℝ) : ℂ) with hs`. Use `set A : ℕ → ℂ := fun N => ∫ g : UJ ε, radialCutoffFunction ((N : ℝ) + 1) (toM g) * (Eab ε i j u (toM g) * starRingEnd ℂ (u' (toM g))) ∂(muG ε) with hA`. Use `set Bq : ℕ → ℂ := fun N => ∫ g : UJ ε, radialCutoffFunction ((N : ℝ) + 1) (toM g) * (u (toM g) * starRingEnd ℂ (Eab ε j i u' (toM g))) ∂(muG ε) with hBq`. Use `set C : ℕ → ℂ := fun N => ∫ g : UJ ε, Eab ε i j (radialCutoffFunction ((N : ℝ) + 1)) (toM g) * u (toM g) * starRingEnd ℂ (u' (toM g)) ∂(muG ε) with hC`. Establish `hrel : ∀ N, A N = s * Bq N - C N`.
+
+Introduce `N`. Establish `hR : (0 : ℝ) < (N : ℝ) + 1` using `by positivity`. Establish `csm` using `smooth_cutoff (ε := ε) hl ((N : ℝ) + 1)`. Establish `cv` using `cutoff_vanishing_outside (ε := ε) hR`. Establish `hφs : SmoothOnG ε (fun x => (radialCutoffFunction ((N : ℝ) + 1) x * u x) * starRingEnd ℂ (u' x))` using `smooth_on_group_mul (smooth_on_group_mul csm hu) (smooth_on_group_conj hu')`.
+
+Establish `hφv : VanishesOutsideBall ε (Real.exp (2 * ((N : ℝ) + 1))) (fun x => (radialCutoffFunction ((N : ℝ) + 1) x * u x) * starRingEnd ℂ (u' x))` using `vanishing_outside_mul_left _ (vanishing_outside_mul_left _ cv)`. Establish `h0` using `integral_lie_derivative_eq_zero hz hφs hφv i j`. Establish `key : ∀ g : UJ ε, Eab ε i j (fun x => (radialCutoffFunction ((N : ℝ) + 1) x * u x) * starRingEnd ℂ (u' x)) (toM g) = Eab ε i j (radialCutoffFunction ((N : ℝ) + 1)) (toM g) * u (toM g) * starRingEnd ℂ (u' (toM g)) + radialCutoffFunction ((N : ℝ) + 1) (toM g) * (Eab ε i j u (toM g) …`. Introduce `g`. Rewrite using `[lie_derivative_mul i j (smooth_on_group_mul csm hu) (smooth_on_group_conj hu') g.2, lie_derivative_mul i j csm hu g.2, lie_derivative_conj i j hu' g.2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `i1 : Integrable (fun g : UJ ε => Eab ε i j (radialCutoffFunction ((N : ℝ) + 1)) (toM g) * u (toM g) * starRingEnd ℂ (u' (toM g))) (muG ε)` using `integrable_of_vanishing_outside (f := fun x => Eab ε i j (radialCutoffFunction ((N : ℝ) + 1)) x * u x * starRingEnd ℂ (u' x)) (smooth_on_group_mul (smooth_on_group_mul (smooth_lie_derivative i j csm) hu) (smooth_on_group_conj hu')) (vanishing_outside_mul_left _ (vanishing_outside …`. Establish `i2 : Integrable (fun g : UJ ε => radialCutoffFunction ((N : ℝ) + 1) (toM g) * (Eab ε i j u (toM g) * starRingEnd ℂ (u' (toM g)))) (muG ε)` using `integrable_of_vanishing_outside (f := fun x => radialCutoffFunction ((N : ℝ) + 1) x * (Eab ε i j u x * starRingEnd ℂ (u' x))) (smooth_on_group_mul csm (smooth_on_group_mul hv (smooth_on_group_conj hu'))) (vanishing_outside_mul_left _ cv)`. Establish `i3 : Integrable (fun g : UJ ε => radialCutoffFunction ((N : ℝ) + 1) (toM g) * (u (toM g) * starRingEnd ℂ (Eab ε j i u' (toM g)))) (muG ε)` using `integrable_of_vanishing_outside (f := fun x => radialCutoffFunction ((N : ℝ) + 1) x * (u x * starRingEnd ℂ (Eab ε j i u' x))) (smooth_on_group_mul csm (smooth_on_group_mul hu (smooth_on_group_conj hv'))) (vanishing_outside_mul_left _ cv)`. Rewrite `h0` using `[integral_congr_ae (Eventually.of_forall key)]`.
+
+Establish `e1` using `integral_add (i1.add i2) (i3.const_mul (-s))`. Simplify using `only [Pi.add_apply] at e1`. Rewrite `e1` using `[integral_add i1 i2, integral_const_mul]`. Rewrite `h0` using `[e1]`. Simplify using `only [hA, hBq, hC]`.
+
+Take the linear combination `h0`. Establish `hCt : Tendsto C atTop (𝓝 0)` using `by set P := ∫ g : UJ ε, ‖u (toM g) * starRingEnd ℂ (u' (toM g))‖ ∂(muG ε)`. Establish `hb : ∀ N : ℕ, ‖C N‖ ≤ cutoffDerivBound * lieDerivativeLogFrobeniusBound ε i j * P * (1 / ((N : ℝ) + 1))`. Introduce `N`. Establish `hR : (0 : ℝ) < (N : ℝ) + 1` using `by positivity`.
+
+Use `(norm_integral_le_integral_norm _).trans ?_` and prove the remaining obligations. Establish `hpt : ∀ g : UJ ε, ‖Eab ε i j (radialCutoffFunction ((N : ℝ) + 1)) (toM g) * u (toM g) * starRingEnd ℂ (u' (toM g))‖ ≤ (cutoffDerivBound * lieDerivativeLogFrobeniusBound ε i j * (1 / ((N : ℝ) + 1))) * ‖u (toM g) * starRingEnd ℂ (u' (toM g))‖`. Introduce `g`. Establish `h1 : ‖Eab ε i j (radialCutoffFunction ((N : ℝ) + 1)) (toM g)‖ ≤ cutoffDerivBound * lieDerivativeLogFrobeniusBound ε i j * (1 / ((N : ℝ) + 1))`. Use `lie_derivative_log_frobenius_comp_le (ε := ε) hl (radialCutoff ((N : ℝ) + 1)) (contDiff_radialCutoff _) i j g.2` as an intermediate fact.
+
+Use `this.trans ?_` and prove the remaining obligations. Establish `h2` using `abs_deriv_cutoff_le hR (hh (toM g))`. Establish `hL` using `lie_derivative_bound_nonneg ε i j`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, norm_mul]`.
+
+Use `gcongr`. Establish `hi : Integrable (fun g : UJ ε => (cutoffDerivBound * lieDerivativeLogFrobeniusBound ε i j * (1 / ((N : ℝ) + 1))) * ‖u (toM g) * starRingEnd ℂ (u' (toM g))‖) (muG ε)` using `Integrable.const_mul (f := fun g : UJ ε => ‖u (toM g) * starRingEnd ℂ (u' (toM g))‖) P0.norm _`. Establish `i1 : Integrable (fun g : UJ ε => Eab ε i j (radialCutoffFunction ((N : ℝ) + 1)) (toM g) * u (toM g) * starRingEnd ℂ (u' (toM g))) (muG ε)` using `integrable_of_vanishing_outside (f := fun x => Eab ε i j (radialCutoffFunction ((N : ℝ) + 1)) x * u x * starRingEnd ℂ (u' x)) (smooth_on_group_mul (smooth_on_group_mul (smooth_lie_derivative i j (smooth_cutoff hl _)) hu) (smooth_on_group_conj hu')) (vanishing_outside_mul_left _ ( …`. Use `(integral_mono i1.norm hi hpt).trans ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul]`.
+
+Put the polynomial expressions in normal form. Both sides reduce to the same expression. Establish `ht : Tendsto (fun N : ℕ => cutoffDerivBound * lieDerivativeLogFrobeniusBound ε i j * P * (1 / ((N : ℝ) + 1))) atTop (𝓝 0)`. Use `(tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ)).const_mul (cutoffDerivBound * lieDerivativeLogFrobeniusBound ε i j * P)` as an intermediate fact. Simplify using `using this`.
+
+Conclude with `squeeze_zero_norm hb ht`. Establish `hAt : Tendsto A atTop (𝓝 (∫ g : UJ ε, Eab ε i j u (toM g) * starRingEnd ℂ (u' (toM g)) ∂(muG ε)))` using `tendsto_integral_cutoff P1`. Establish `hBt : Tendsto Bq atTop (𝓝 (∫ g : UJ ε, u (toM g) * starRingEnd ℂ (Eab ε j i u' (toM g)) ∂(muG ε)))` using `tendsto_integral_cutoff P2`. Establish `hAt2 : Tendsto A atTop (𝓝 (s * (∫ g : UJ ε, u (toM g) * starRingEnd ℂ (Eab ε j i u' (toM g)) ∂(muG ε)) - 0))`. Use `(hBt.const_mul s).sub hCt` as an intermediate fact.
+
+Use `this.congr' (Eventually.of_forall fun N => ?_)` and prove the remaining obligations. Conclude with `(hrel N).symm`. Rewrite `hAt2` using `[sub_zero]`. Conclude with `tendsto_nhds_unique hAt hAt2`.
+-/
 lemma integrable_lie_derivative_pairing (hl : HhLip) (hz : IntRdZero) {a : ℝ} (ha : 0 ≤ a)
     {u u' : Matrix (Fin n) (Fin n) ℂ → ℂ} (hu : SmoothOnG ε u) (hu' : SmoothOnG ε u')
     (hu2 : Integrable (fun g : UJ ε => Real.exp (2 * a * hh (toM g)) * ‖u (toM g)‖ ^ 2) (muG ε))
@@ -1091,10 +1480,18 @@ abbrev SmoothFunctionsModGroup := (smoothFunctionsOnGroup ε) ⧸ (vanishingOnGr
 
 variable {ε}
 
+/- English proof (translation)
+The claim follows from `u.2`.
+-/
 lemma smoothFunctions_smooth (u : smoothFunctionsOnGroup ε) : SmoothOnG ε (u : Matrix (Fin n) (Fin n) ℂ → ℂ) := u.2
 
 def quotientMkAlt (u : smoothFunctionsOnGroup ε) : SmoothFunctionsModGroup ε := Submodule.Quotient.mk u
 
+/- English proof (translation)
+Unfold `quotientMkAlt`. Rewrite using `[Submodule.Quotient.eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h g hg`. Use `h g hg` as an intermediate fact.
+
+Conclude with `sub_eq_zero.1 this`. Introduce `h g hg show (u : Matrix (Fin n) (Fin n) ℂ → ℂ) g - (v : Matrix (Fin n) (Fin n) ℂ → ℂ) g = 0`. Rewrite using `[h g hg, sub_self]`.
+-/
 lemma quotient_mk_eq_iff {u v : smoothFunctionsOnGroup ε} :
     quotientMkAlt u = quotientMkAlt v ↔ ∀ g, inUJ ε g → (u : Matrix (Fin n) (Fin n) ℂ → ℂ) g = (v : Matrix (Fin n) (Fin n) ℂ → ℂ) g := by
   unfold quotientMkAlt
@@ -1107,11 +1504,26 @@ lemma quotient_mk_eq_iff {u v : smoothFunctionsOnGroup ε} :
     show (u : Matrix (Fin n) (Fin n) ℂ → ℂ) g - (v : Matrix (Fin n) (Fin n) ℂ → ℂ) g = 0
     rw [h g hg, sub_self]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma quotient_mk_add (u v : smoothFunctionsOnGroup ε) : quotientMkAlt (u + v) = quotientMkAlt u + quotientMkAlt v := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma quotient_mk_sub (u v : smoothFunctionsOnGroup ε) : quotientMkAlt (u - v) = quotientMkAlt u - quotientMkAlt v := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma quotient_mk_smul (c : ℂ) (u : smoothFunctionsOnGroup ε) : quotientMkAlt (c • u) = c • quotientMkAlt u := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma quotient_mk_zero : quotientMkAlt (0 : smoothFunctionsOnGroup ε) = 0 := rfl
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Conclude with `⟨u, rfl⟩`.
+-/
 lemma quotient_mk_surjective (m : SmoothFunctionsModGroup ε) : ∃ u : smoothFunctionsOnGroup ε, m = quotientMkAlt u := by
   obtain ⟨u, rfl⟩ := Submodule.Quotient.mk_surjective _ m
   exact ⟨u, rfl⟩
@@ -1148,9 +1560,25 @@ def lieOperatorQuotient (i j : Fin n) : Module.End ℂ (SmoothFunctionsModGroup 
 
 variable {ε}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma lie_operator_quotient_mk (i j : Fin n) (u : smoothFunctionsOnGroup ε) :
     lieOperatorQuotient ε i j (quotientMkAlt u) = quotientMkAlt ⟨Eab ε i j u, smooth_lie_derivative i j u.2⟩ := rfl
 
+/- English proof (translation)
+Introduce `a b c d`. Apply `Submodule.linearMap_qext` to reduce the goal to its premises. Use `LinearMap.ext fun u => ?_` and prove the remaining obligations. Establish `hGl` using `fun g (hg : inUJ ε g) => eabGl_of complex_parts_mem_lie_algebra_holds right_derivative_linear (rdBracket_of right_derivative_extends (rdSmooth_of right_derivative_extends)) (rdSmooth_of right_derivative_extends) n ε u a b c d g u.2 hg`. Simplify using `only [LinearMap.comp_apply, Submodule.mkQ_apply, LinearMap.sub_apply, Module.End.mul_apply]`.
+
+Express the relevant statement in the definitionally equal form `lieOperatorQuotient ε a b (lieOperatorQuotient ε c d (quotientMkAlt u)) - lieOperatorQuotient ε c d (lieOperatorQuotient ε a b (quotientMkAlt u)) = (if b = c then lieOperatorQuotient ε a d else 0) (quotientMkAlt u) - (if d = a then lieOperatorQuotient ε c b else 0) (quotientMkAlt …`. Simplify using `only [lie_operator_quotient_mk]`. Apply the tactic sequence `by_cases h1 : b = c <;> by_cases h2 : d = a <;>`. Simplify using `only [h1, h2, if_true, if_false, LinearMap.zero_apply, lie_operator_quotient_mk] at hGl ⊢`. Rewrite using `[← quotient_mk_sub, ← quotient_mk_sub, quotient_mk_eq_iff]`.
+
+Introduce `g hg`. Use `hGl g hg` as an intermediate fact. Simplify using `only [Submodule.coe_sub, Submodule.coe_zero, Submodule.coe_mk, Pi.sub_apply, Pi.zero_apply, sub_zero, zero_sub, Submodule.coe_neg, Pi.neg_apply] at this ⊢`. Take the linear combination `this`. Rewrite using `[← quotient_mk_sub, ← quotient_mk_zero, ← quotient_mk_sub, quotient_mk_eq_iff]`.
+
+Introduce `g hg`. Use `hGl g hg` as an intermediate fact. Simplify using `only [Submodule.coe_sub, Submodule.coe_zero, Submodule.coe_mk, Pi.sub_apply, Pi.zero_apply, sub_zero, zero_sub, Submodule.coe_neg, Pi.neg_apply] at this ⊢`. Take the linear combination `this`. Rewrite using `[← quotient_mk_sub, ← quotient_mk_zero, ← quotient_mk_sub, quotient_mk_eq_iff]`.
+
+Introduce `g hg`. Use `hGl g hg` as an intermediate fact. Simplify using `only [Submodule.coe_sub, Submodule.coe_zero, Submodule.coe_mk, Pi.sub_apply, Pi.zero_apply, sub_zero, zero_sub, Submodule.coe_neg, Pi.neg_apply] at this ⊢`. Take the linear combination `this`. Rewrite using `[← quotient_mk_sub, sub_zero, ← quotient_mk_zero, quotient_mk_eq_iff]`.
+
+Introduce `g hg`. Use `hGl g hg` as an intermediate fact. Simplify using `only [Submodule.coe_sub, Submodule.coe_zero, Submodule.coe_mk, Pi.sub_apply, Pi.zero_apply, sub_zero, zero_sub, Submodule.coe_neg, Pi.neg_apply] at this ⊢`. Take the linear combination `this`.
+-/
 lemma lie_operators_gl_relations : GlRel (lieOperatorQuotient ε) := by
   intro a b c d
   apply Submodule.linearMap_qext
@@ -1190,18 +1618,32 @@ end F4BAlg
 section F4BAlg2
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+The claim follows from `(map_sum (vanishingOnGroup ε).mkQ f s).symm`.
+-/
 lemma finset_sum_quotient_mk {ι : Type*} (s : Finset ι) (f : ι → smoothFunctionsOnGroup ε) :
     ∑ i ∈ s, quotientMkAlt (f i) = quotientMkAlt (∑ i ∈ s, f i) :=
   (map_sum (vanishingOnGroup ε).mkQ f s).symm
 
+/- English proof (translation)
+Rewrite using `[Submodule.coe_sum, Finset.sum_apply]`.
+-/
 lemma coe_finset_sum_smooth {ι : Type*} (s : Finset ι) (f : ι → smoothFunctionsOnGroup ε) (x : Matrix (Fin n) (Fin n) ℂ) :
     ((∑ i ∈ s, f i : smoothFunctionsOnGroup ε) : Matrix (Fin n) (Fin n) ℂ → ℂ) x =
       ∑ i ∈ s, (f i : Matrix (Fin n) (Fin n) ℂ → ℂ) x := by
   rw [Submodule.coe_sum, Finset.sum_apply]
 
+/- English proof (translation)
+The claim follows from `smooth_on_group_sum _ _ fun a _ => smooth_on_group_sum _ _ fun b _ => smooth_lie_derivative a b (smooth_lie_derivative b a hu)`.
+-/
 lemma smooth_casimir {u : Matrix (Fin n) (Fin n) ℂ → ℂ} (hu : SmoothOnG ε u) : SmoothOnG ε (CasF ε u) :=
   smooth_on_group_sum _ _ fun a _ => smooth_on_group_sum _ _ fun b _ => smooth_lie_derivative a b (smooth_lie_derivative b a hu)
 
+/- English proof (translation)
+Unfold `Cas`. Simplify using `only [LinearMap.sum_apply, Module.End.mul_apply, lie_operator_quotient_mk, finset_sum_quotient_mk]`. Rewrite using `[quotient_mk_eq_iff]`. Introduce `g _`. Simplify using `only [coe_finset_sum_smooth]`.
+
+Both sides reduce to the same expression.
+-/
 lemma casimir_quotient_mk (u : smoothFunctionsOnGroup ε) :
     Cas (lieOperatorQuotient ε) (quotientMkAlt u) = quotientMkAlt ⟨CasF ε u, smooth_casimir (smoothFunctions_smooth u)⟩ := by
   unfold Cas
@@ -1214,6 +1656,11 @@ lemma casimir_quotient_mk (u : smoothFunctionsOnGroup ε) :
 def signedCasimirQuotient (ε : Fin n → Bool) : Module.End ℂ (SmoothFunctionsModGroup ε) :=
   ∑ i, ∑ j, ((sgn ε i j : ℝ) : ℂ) • (lieOperatorQuotient ε j i * lieOperatorQuotient ε i j)
 
+/- English proof (translation)
+Unfold `signedCasimirQuotient`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply, lie_operator_quotient_mk, ← quotient_mk_smul, finset_sum_quotient_mk]`. Rewrite using `[quotient_mk_eq_iff]`. Introduce `g _`. Simplify using `only [coe_finset_sum_smooth, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul]`.
+
+Both sides reduce to the same expression.
+-/
 lemma signedCasimir_quotient_mk (u : smoothFunctionsOnGroup ε) :
     signedCasimirQuotient ε (quotientMkAlt u) = quotientMkAlt ⟨signedCasimirDifference ε u, smooth_signedCasimir (smoothFunctions_smooth u)⟩ := by
   unfold signedCasimirQuotient
@@ -1224,6 +1671,13 @@ lemma signedCasimir_quotient_mk (u : smoothFunctionsOnGroup ε) :
   simp only [coe_finset_sum_smooth, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_comm]`. Unfold `CasK Cas`. Rewrite using `[Finset.smul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[signature_sign_symm]`. Unfold `sgn`. Distinguish the cases in `h : ε a = ε b`. Rewrite using `[if_pos h, if_pos h]`.
+
+Simplify using `only [Complex.ofReal_one, one_smul, two_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[if_neg h, if_neg h]`. Simplify using the standard rewrite rules.
+-/
 lemma signed_casimir_identity {A : Type*} [Ring A] [Algebra ℂ A] (E : Fin n → Fin n → A) :
     ∑ i, ∑ j, ((sgn ε i j : ℝ) : ℂ) • (E j i * E i j) = (2 : ℂ) • CasK ε E - Cas E := by
   rw [Finset.sum_comm]
@@ -1242,6 +1696,9 @@ def wordActionQuotient (ε : Fin n → Bool) : List (Fin n × Fin n) → SmoothF
   | [] => fun m => m
   | p :: w => fun m => lieOperatorQuotient ε p.1 p.2 (wordActionQuotient ε w m)
 
+/- English proof (translation)
+The claim follows from `| [] => rfl | p :: w => by show lieOperatorQuotient ε p.1 p.2 (wordActionQuotient ε w (quotientMkAlt u)) = _ rw [word_action_quotient_mk u w, lie_operator_quotient_mk] rfl`.
+-/
 lemma word_action_quotient_mk (u : smoothFunctionsOnGroup ε) : ∀ w : List (Fin n × Fin n),
     wordActionQuotient ε w (quotientMkAlt u) = quotientMkAlt ⟨Eword ε w u, smooth_iterated_lie_derivative (smoothFunctions_smooth u) w⟩
   | [] => rfl
@@ -1250,6 +1707,9 @@ lemma word_action_quotient_mk (u : smoothFunctionsOnGroup ε) : ∀ w : List (Fi
     rw [word_action_quotient_mk u w, lie_operator_quotient_mk]
     rfl
 
+/- English proof (translation)
+The claim follows from `| [] => rfl | p :: w => by show lieOperatorQuotient ε p.1 p.2 (wordActionQuotient ε w (c • m)) = c • lieOperatorQuotient ε p.1 p.2 (wordActionQuotient ε w m) rw [word_action_smul c m w, map_smul]`.
+-/
 lemma word_action_smul (c : ℂ) (m : SmoothFunctionsModGroup ε) : ∀ w : List (Fin n × Fin n),
     wordActionQuotient ε w (c • m) = c • wordActionQuotient ε w m
   | [] => rfl
@@ -1257,6 +1717,9 @@ lemma word_action_smul (c : ℂ) (m : SmoothFunctionsModGroup ε) : ∀ w : List
     show lieOperatorQuotient ε p.1 p.2 (wordActionQuotient ε w (c • m)) = c • lieOperatorQuotient ε p.1 p.2 (wordActionQuotient ε w m)
     rw [word_action_smul c m w, map_smul]
 
+/- English proof (translation)
+The claim follows from `| [] => rfl | p :: w => by show X (lieOperatorQuotient ε p.1 p.2 (wordActionQuotient ε w m)) = lieOperatorQuotient ε p.1 p.2 (wordActionQuotient ε w (X m)) rw [← word_action_commute X hX m w, ← Module.End.mul_apply, hX, Module.End.mul_apply]`.
+-/
 lemma word_action_commute (X : Module.End ℂ (SmoothFunctionsModGroup ε)) (hX : ∀ i j, X * lieOperatorQuotient ε i j = lieOperatorQuotient ε i j * X)
     (m : SmoothFunctionsModGroup ε) : ∀ w : List (Fin n × Fin n), X (wordActionQuotient ε w m) = wordActionQuotient ε w (X m)
   | [] => rfl
@@ -1275,13 +1738,22 @@ def wordFiltration (W : Submodule ℂ (Matrix (Fin n) (Fin n) ℂ → ℂ)) (k :
 variable {ε}
 variable {W : Submodule ℂ (Matrix (Fin n) (Fin n) ℂ → ℂ)}
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨w, m, hm, hw, rfl⟩`.
+-/
 lemma word_mem_filtration {k : ℕ} {w : List (Fin n × Fin n)} {m : SmoothFunctionsModGroup ε} (hm : m ∈ weightVectorsQuotient ε W)
     (hw : w.length ≤ k) : wordActionQuotient ε w m ∈ wordFiltration ε W k :=
   Submodule.subset_span ⟨w, m, hm, hw, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono fun _ ⟨w, m, hm, hw, hx⟩ => ⟨w, m, hm, hw.trans h, hx⟩`.
+-/
 lemma filtration_mono {k k' : ℕ} (h : k ≤ k') : wordFiltration ε W k ≤ wordFiltration ε W k' :=
   Submodule.span_mono fun _ ⟨w, m, hm, hw, hx⟩ => ⟨w, m, hm, hw.trans h, hx⟩
 
+/- English proof (translation)
+Establish `: wordFiltration ε W k ≤ (wordFiltration ε W (k + 1)).comap (lieOperatorQuotient ε i j)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨w, m, hm, hw, rfl⟩`. Conclude with `word_mem_filtration (w := (i, j) :: w) hm (by simp; omega)`. Conclude with `this hx`.
+-/
 lemma lie_operator_raises_filtration (i j : Fin n) {k : ℕ} {x : SmoothFunctionsModGroup ε} (hx : x ∈ wordFiltration ε W k) :
     lieOperatorQuotient ε i j x ∈ wordFiltration ε W (k + 1) := by
   have : wordFiltration ε W k ≤ (wordFiltration ε W (k + 1)).comap (lieOperatorQuotient ε i j) := by
@@ -1290,6 +1762,9 @@ lemma lie_operator_raises_filtration (i j : Fin n) {k : ℕ} {x : SmoothFunction
     exact word_mem_filtration (w := (i, j) :: w) hm (by simp; omega)
   exact this hx
 
+/- English proof (translation)
+Take `⟨f, hfW, hf, rfl⟩` from `hm`. Take `⟨f', hf'W, he⟩` from `hstab f hfW c d hcd`. Use `⟨f', hf'W, hsm f' hf'W, ?_⟩` and prove the remaining obligations. Rewrite using `[lie_operator_quotient_mk, quotient_mk_eq_iff]`. Conclude with `he`.
+-/
 lemma weight_vectors_stable (hsm : ∀ w ∈ W, SmoothOnG ε w)
     (hstab : ∀ w ∈ W, ∀ i j : Fin n, ε i = ε j → ∃ w' ∈ W, ∀ g, inUJ ε g → Eab ε i j w g = w' g)
     {m : SmoothFunctionsModGroup ε} (hm : m ∈ weightVectorsQuotient ε W) {c d : Fin n} (hcd : ε c = ε d) :
@@ -1300,6 +1775,9 @@ lemma weight_vectors_stable (hsm : ∀ w ∈ W, SmoothOnG ε w)
   rw [lie_operator_quotient_mk, quotient_mk_eq_iff]
   exact he
 
+/- English proof (translation)
+The claim follows from `| [] => word_mem_filtration (w := []) (weight_vectors_stable hsm hstab hm hcd) le_rfl | p :: w => by have ih := lie_operator_word_mem_filtration hsm hstab hcd hm w have hgl := lie_operators_gl_relations (ε := ε) c d p.1 p.2 have key : lieOperatorQuotient ε c d (lieOperatorQuotien …`.
+-/
 lemma lie_operator_word_mem_filtration (hsm : ∀ w ∈ W, SmoothOnG ε w)
     (hstab : ∀ w ∈ W, ∀ i j : Fin n, ε i = ε j → ∃ w' ∈ W, ∀ g, inUJ ε g → Eab ε i j w g = w' g)
     {c d : Fin n} (hcd : ε c = ε d) {m : SmoothFunctionsModGroup ε} (hm : m ∈ weightVectorsQuotient ε W) :
@@ -1325,6 +1803,9 @@ lemma lie_operator_word_mem_filtration (hsm : ∀ w ∈ W, SmoothOnG ε w)
       · exact word_mem_filtration (w := (p.1, d) :: w) hm (by simp)
       · rw [LinearMap.zero_apply]; exact zero_mem _
 
+/- English proof (translation)
+Establish `: wordFiltration ε W k ≤ (wordFiltration ε W k).comap (lieOperatorQuotient ε c d)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨w, m, hm, hw, rfl⟩`. Conclude with `filtration_mono hw (lie_operator_word_mem_filtration hsm hstab hcd hm w)`. Conclude with `this hx`.
+-/
 lemma compact_lie_operator_preserves_filtration (hsm : ∀ w ∈ W, SmoothOnG ε w)
     (hstab : ∀ w ∈ W, ∀ i j : Fin n, ε i = ε j → ∃ w' ∈ W, ∀ g, inUJ ε g → Eab ε i j w g = w' g)
     {c d : Fin n} (hcd : ε c = ε d) {k : ℕ} {x : SmoothFunctionsModGroup ε} (hx : x ∈ wordFiltration ε W k) :
@@ -1335,6 +1816,11 @@ lemma compact_lie_operator_preserves_filtration (hsm : ∀ w ∈ W, SmoothOnG ε
     exact filtration_mono hw (lie_operator_word_mem_filtration hsm hstab hcd hm w)
   exact this hx
 
+/- English proof (translation)
+Unfold `CasK`. Simplify using `only [LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[Module.End.mul_apply]`.
+
+Conclude with `compact_lie_operator_preserves_filtration hsm hstab h (compact_lie_operator_preserves_filtration hsm hstab h.symm hx)`. Rewrite using `[LinearMap.zero_apply]`. Conclude with `zero_mem _`.
+-/
 lemma compact_casimir_preserves_filtration (hsm : ∀ w ∈ W, SmoothOnG ε w)
     (hstab : ∀ w ∈ W, ∀ i j : Fin n, ε i = ε j → ∃ w' ∈ W, ∀ g, inUJ ε g → Eab ε i j w g = w' g)
     {k : ℕ} {x : SmoothFunctionsModGroup ε} (hx : x ∈ wordFiltration ε W k) : CasK ε (lieOperatorQuotient ε) x ∈ wordFiltration ε W k := by
@@ -1346,6 +1832,13 @@ lemma compact_casimir_preserves_filtration (hsm : ∀ w ∈ W, SmoothOnG ε w)
     exact compact_lie_operator_preserves_filtration hsm hstab h (compact_lie_operator_preserves_filtration hsm hstab h.symm hx)
   · rw [LinearMap.zero_apply]; exact zero_mem _
 
+/- English proof (translation)
+Establish `hcomm` using `(casimir_central_holds (Module.End ℂ (SmoothFunctionsModGroup ε)) n ε (lieOperatorQuotient ε) lie_operators_gl_relations).1`. Establish `: wordFiltration ε W k ≤ LinearMap.ker (Cas (lieOperatorQuotient ε) - c • (1 : Module.End ℂ (SmoothFunctionsModGroup ε)))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨w, m, ⟨f, hfW, hf, rfl⟩, _, rfl⟩`. Use `show (Cas (lieOperatorQuotient ε) - c • (1 : Module.End ℂ (SmoothFunctionsModGroup ε))) _ = 0`.
+
+Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero, word_action_commute _ hcomm, ← word_action_smul]`. Use `congr 1`. Rewrite using `[casimir_quotient_mk, ← quotient_mk_smul, quotient_mk_eq_iff]`. Introduce `g hg`. Use `show CasF ε f g = c * f g`.
+
+Conclude with `hcas f hfW g hg`. Establish `h` using `this hx`. Rewrite `h` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Conclude with `h`.
+-/
 lemma casimir_scalar_on_filtration (hsm : ∀ w ∈ W, SmoothOnG ε w) {c : ℂ}
     (hcas : ∀ w ∈ W, ∀ g, inUJ ε g → CasF ε w g = c * w g)
     {k : ℕ} {x : SmoothFunctionsModGroup ε} (hx : x ∈ wordFiltration ε W k) : Cas (lieOperatorQuotient ε) x = c • x := by
@@ -1366,6 +1859,9 @@ lemma casimir_scalar_on_filtration (hsm : ∀ w ∈ W, SmoothOnG ε w) {c : ℂ}
     sub_eq_zero] at h
   exact h
 
+/- English proof (translation)
+Unfold `signedCasimirQuotient`. Rewrite using `[signed_casimir_identity, LinearMap.sub_apply, LinearMap.smul_apply, casimir_scalar_on_filtration hsm hcas hx]`. Conclude with `sub_mem (Submodule.smul_mem _ _ (compact_casimir_preserves_filtration hsm hstab hx)) (Submodule.smul_mem _ _ hx)`.
+-/
 lemma signedCasimir_preserves_filtration (hsm : ∀ w ∈ W, SmoothOnG ε w)
     (hstab : ∀ w ∈ W, ∀ i j : Fin n, ε i = ε j → ∃ w' ∈ W, ∀ g, inUJ ε g → Eab ε i j w g = w' g)
     {c : ℂ} (hcas : ∀ w ∈ W, ∀ g, inUJ ε g → CasF ε w g = c * w g)
@@ -1393,6 +1889,9 @@ def evalQuotient : SmoothFunctionsModGroup ε →ₗ[ℂ] (UJ ε → ℂ) :=
     funext g
     exact hu _ g.2)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma evalQuotient_mk (u : smoothFunctionsOnGroup ε) :
     evalQuotient ε (quotientMkAlt u) = fun g => (u : Matrix (Fin n) (Fin n) ℂ → ℂ) (toM g) := rfl
 
@@ -1455,6 +1954,19 @@ def weightedSquareIntegrable (a : ℝ) : Submodule ℂ (SmoothFunctionsModGroup 
       Real.exp (2 * a * hh (toM g)) * ‖c * (u : Matrix (Fin n) (Fin n) ℂ → ℂ) (toM g)‖ ^ 2
     rw [norm_mul]; ring
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `w hw f hf`. Establish `: w = []` using `List.eq_nil_of_length_eq_zero (by omega)`.
+
+Substitute `this` using the available equality. Conclude with `hint f hf`. Consider the case `succ k ih`. Introduce `w hw f hf`. Consider the cases of `w with`.
+
+Consider the case `nil => exact hint f hf`. Consider the case `cons p w'`. Establish `hw' : w'.length ≤ k` using `by simp at hw; omega`. Establish `hu` using `smooth_iterated_lie_derivative (hsm f hf) w'`. Establish `hu2` using `ih w' hw' f hf`.
+
+Establish `hVG : wordFiltration ε W k ≤ weightedSquareIntegrable ε a`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨w'', m, ⟨f'', hf''W, hf'', rfl⟩, hw'', rfl⟩`. Use `show Integrable (fun g : UJ ε => Real.exp (2 * a * hh (toM g)) * ‖evalQuotient ε (wordActionQuotient ε w'' (quotientMkAlt ⟨f'', hf''⟩)) g‖ ^ 2) (muG ε)`. Rewrite using `[word_action_quotient_mk, evalQuotient_mk]`.
+
+Conclude with `ih w'' hw'' f'' hf''W`. Establish `hx : wordActionQuotient ε w' (quotientMkAlt ⟨f, hsm f hf⟩) ∈ wordFiltration ε W k` using `word_mem_filtration ⟨f, hf, hsm f hf, rfl⟩ hw'`. Establish `hT` using `hVG (signedCasimir_preserves_filtration hsm hstab hcas hx)`. Establish `hT' : Integrable (fun g : UJ ε => Real.exp (2 * a * hh (toM g)) * ‖evalQuotient ε (signedCasimirQuotient ε (wordActionQuotient ε w' (quotientMkAlt ⟨f, hsm f hf⟩))) g‖ ^ 2) (muG ε)` using `hT`. Rewrite `hT'` using `[word_action_quotient_mk, signedCasimir_quotient_mk, evalQuotient_mk]`.
+
+Conclude with `integrable_lie_derivative_weighted hl hz ha hu hu2 hT' p.1 p.2`.
+-/
 lemma weighted_square_integrable_filtration (hl : HhLip) (hz : IntRdZero) {W : Submodule ℂ (Matrix (Fin n) (Fin n) ℂ → ℂ)}
     {c : ℂ} {a : ℝ} (ha : 0 ≤ a) (hsm : ∀ w ∈ W, SmoothOnG ε w)
     (hstab : ∀ w ∈ W, ∀ i j : Fin n, ε i = ε j → ∃ w' ∈ W, ∀ g, inUJ ε g → Eab ε i j w g = w' g)
@@ -1494,6 +2006,9 @@ lemma weighted_square_integrable_filtration (hl : HhLip) (hz : IntRdZero) {W : S
       rw [word_action_quotient_mk, signedCasimir_quotient_mk, evalQuotient_mk] at hT'
       exact integrable_lie_derivative_weighted hl hz ha hu hu2 hT' p.1 p.2
 
+/- English proof (translation)
+Introduce `n ε W c a _ ha hsm hstab hcas hint w₁ w₂ f f' hf hf'`. Establish `P : ∀ (w : List (Fin n × Fin n)) (f : Matrix (Fin n) (Fin n) ℂ → ℂ), f ∈ W → Integrable (fun g : UJ ε => Real.exp (2 * a * hh (toM g)) * ‖Eword ε w f (toM g)‖ ^ 2) (muG ε)` using `fun w f hf => weighted_square_integrable_filtration hl hz ha hsm hstab hcas hint w.length w le_rfl f hf`. Use `⟨smooth_iterated_lie_derivative (hsm f hf) w₁, P w₁ f hf, fun i j => ?_⟩` and prove the remaining obligations. Conclude with `integrable_lie_derivative_pairing hl hz ha (smooth_iterated_lie_derivative (hsm f hf) w₁) (smooth_iterated_lie_derivative (hsm f' hf') w₂) (P w₁ f hf) (P w₂ f' hf') i j (P ((i, j) :: w₁) f hf) (P ((j, i) :: w₂) f' hf')`.
+-/
 theorem square_integrable_of_lipschitz (hl : HhLip) (hz : IntRdZero) : SmoothVectorGrowthBound := by
   intro n ε W c a _ ha hsm hstab hcas hint w₁ w₂ f f' hf hf'
   have P : ∀ (w : List (Fin n × Fin n)) (f : Matrix (Fin n) (Fin n) ℂ → ℂ), f ∈ W →

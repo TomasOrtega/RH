@@ -14,6 +14,19 @@ open GlobalTheory GlobalTheory.Ex
 
 namespace GlobalTheory.Ex.ClosurePoint
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 h5 h6 h7 E _ _ _ H D l Xo c W₀ Y K _ _ _ n j ρ z v hn hodd hj hc hvan hcos`. Establish `hm : Odd (n ^ j)` using `hodd.pow`. Establish `hn3 : 3 ≤ n`. Use `hn.two_le` as an intermediate fact. Break down `hodd with ⟨k, hk⟩` into its components or cases.
+
+Use linear arithmetic over natural numbers and integers. Establish `hm3 : 3 ≤ n ^ j` using `hn3.trans (Nat.le_self_pow (by omega) n)`. Establish `hv0 : v ≠ 0`. Introduce `h`. Take `⟨x, hx⟩` from `hcos 0`.
+
+Conclude with `hx (by rw [h]; rfl)`. Take `⟨C, _, _, _, _, _, S, κ, _, _, res, i, o, M, v', r', z', hnorm, hS, hres, hth, hv', hr', hρ, hz', hz⟩` from `GlobalTheory.T.exists_trait_specialisation_of_mem_closure_thetaPoints h1 h2 h3 h4 h5 h6 h7 E H D l Xo c W₀ Y K (n ^ j) ρ z v hm hc hv0 hvan`. Establish `hunit : ∀ x, v x ≠ 0 → ‖(v' x : C)‖ = 1`. Introduce `x hx`. Establish `hle : ‖(v' x : C)‖ ≤ 1` using `(hS _).1 (v' x).2`.
+
+Assume the negation of the conclusion as `hne`. Establish `h0` using `hres (v' x) (lt_of_le_of_ne hle hne)`. Rewrite `h0` using `[hv' x]`. Conclude with `hx (i.injective (by rw [h0, map_zero]))`. Establish `hprop : IsProper M.t.G.hom` using `GlobalTheory.T.isProper_of_theta_unit_in_every_coset h1 h2 h3 h4 h5 h6 h7 E H D C o M n j hn hodd (hnorm n hn.pos) hj (fun x => v' x) hth (fun x => (hS _).1 (v' x).2) (fun x => (hcos x).imp fun h hh => hunit _ hh)`.
+
+Take `⟨o', hρ', hζ', hth'⟩` from `GlobalTheory.T.exists_specialisation_with_thetaPoint h1 h2 h3 h4 h5 h6 h7 E H D C hnorm o M hprop S hS κ res hres (n ^ j) v' hm hm3 hth (by`. Take `⟨x, hx⟩` from `hcos 0`. Conclude with `⟨_, by rw [hv']; exact (map_ne_zero i).2 hx⟩)`. Use `GlobalTheory.T.exists_fullObject_of_thetaPoint_in_algClosed_subfield h1 h2 h3 h4 h5 h6 h7 E H D l Xo c W₀ Y K κ i (n ^ j) ρ z v o' hm hc ((hρ' r' hr').trans hρ) ((hζ' _ (by positivity) z' hz').trans hz) ?_` and prove the remaining obligations. Establish `: (fun x => res (v' x)) = fun x => i (v x)` using `funext hv'`.
+
+Rewrite `hth'` using `[this]`. Then use the resulting hypothesis.
+-/
 theorem exists_full_of_closure_of_cosets :
     HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory.LN.HomExtSt → ThetaPtDeterminesSt → EndDeterminedOnTorsionSt → ThetaUnifAV → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (W₀ : ValuationSubring ℂ) (Y : Model Xo c (c.V W₀).subtype), ∀ (K : Type) [Field K] [IsAlgClosed K] [CharZero K] (n j : ℕ) (ρ z : K) (v : D.La → K), n.Prime → Odd n → 2 ≤ j → Compat H ((n ^ j) ^ 2) z ρ → (∀ G, VanishC D (n ^ j) G → MvPolynomial.eval₂ (cf z ρ) v G = 0) → (∀ x, ∃ h, v (x + n ^ (j - 1) • h) ≠ 0) → ∃ o : Full D K, o.ρ = ρ ∧ (o.I.ζ ((n ^ j) ^ 2) : K) = z ∧ o.Theta (n ^ j) v := by
   intro h1 h2 h3 h4 h5 h6 h7 E _ _ _ H D l Xo c W₀ Y K _ _ _ n j ρ z v hn hodd hj hc hvan hcos

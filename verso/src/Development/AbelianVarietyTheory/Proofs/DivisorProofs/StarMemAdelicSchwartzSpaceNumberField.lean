@@ -25,9 +25,23 @@ def conjSchwartz {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (f : Schw
     rw [e, h]
     exact hC x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjSchwartz_apply {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (f : SchwartzMap V ℂ) (x : V) :
     conjSchwartz f x = star (f x) := rfl
 
+/- English proof (translation)
+Introduce `F _ _ κ _ Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Ψ hΨ`. Take `⟨f, g, hg, rfl⟩` from `hΨ`. Use `Submodule.subset_span ⟨conjSchwartz f, fun y => star (g y), ⟨hg.1.comp star, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Conclude with `hg.2.comp_left (g := star) (star_zero ℂ)`. Use function extensionality and compare the values at `x`. Simplify using `[pureA, conjSchwartz_apply, star_mul']`. Consider the case `zero`. Use `(schA F κ).zero_mem using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Consider the case `add Ψ Ψ' _ _ h h'`. Use `(schA F κ).add_mem h h'` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `x`. Simplify using `[star_add]`. Consider the case `smul c Ψ _ h`. Use `(schA F κ).smul_mem (star c) h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `x`. Simplify using `[star_mul']`.
+-/
 theorem star_mem_schA : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (Φ : (κ → AF F) → ℂ), Φ ∈ schA F κ → (fun x => star (Φ x)) ∈ schA F κ := by
   intro F _ _ κ _ Φ hΦ

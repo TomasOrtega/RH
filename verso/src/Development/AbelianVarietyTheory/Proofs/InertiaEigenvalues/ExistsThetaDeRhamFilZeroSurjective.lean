@@ -15,6 +15,9 @@ variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} (T : LocTi
 def fil0 : Subring P.R.BdR :=
   (algebraMap (Formalism.Per.BdRp l) (Formalism.Per.BdR l)).range.comap T.eD.toRingHom
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(∃ z, algebraMap (Formalism.Per.BdRp l) (Formalism.Per.BdR l) z = T.eD x) ↔ _`. Conclude with `(GlobalTheory.ThetaTie.fil_zero T x).symm`.
+-/
 theorem mem_deRhamFilZeroSubringPreimage_iff (x : P.R.BdR) : x ∈ fil0 T ↔ x ∈ Fil P 0 := by
   change (∃ z, algebraMap (Formalism.Per.BdRp l) (Formalism.Per.BdR l) z = T.eD x) ↔ _
   exact (GlobalTheory.ThetaTie.fil_zero T x).symm
@@ -31,8 +34,16 @@ def theta : ↥(fil0 T) →+* ℂ_[l] where
     exact left_eq_add.1 h
   map_add' x y := (GlobalTheory.ThetaTie.thetaL T).θ_add _ ((mem_deRhamFilZeroSubringPreimage_iff T _).1 x.2) _ ((mem_deRhamFilZeroSubringPreimage_iff T _).1 y.2)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem theta_apply (x : ↥(fil0 T)) : theta T x = (GlobalTheory.ThetaTie.thetaL T).θ x := rfl
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `hx`. Use `⟨Formalism.Per.σDp g a, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = T.eD (P.actQdR g x)`. Rewrite using `[T.actD]`. Express the relevant statement in the definitionally equal form `_ = Formalism.Per.σD g (T.eD x)`.
+
+Establish `ha' : algebraMap (Formalism.Per.BdRp l) (Formalism.Per.BdR l) a = T.eD x` using `ha`. Rewrite using `[← ha']`. Conclude with `(GlobalTheory.MemLoc.ActLaws.σD_alg g a).symm`.
+-/
 theorem act_mem (g : GQ l) (x : P.R.BdR) (hx : x ∈ fil0 T) : P.actQdR g x ∈ fil0 T := by
   obtain ⟨a, ha⟩ := hx
   refine ⟨Formalism.Per.σDp g a, ?_⟩
@@ -49,6 +60,13 @@ namespace GlobalTheory.PMon
 
 open GlobalTheory.PMon.ThetaFil in
 
+/- English proof (translation)
+Introduce `l _ P AI T`. Use `⟨fil0 T, theta T, mem_deRhamFilZeroSubringPreimage_iff T, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c`. Take `⟨x, hx, e⟩` from `(GlobalTheory.ThetaTie.thetaL T).θ_onto c`. Conclude with `⟨⟨x, (mem_deRhamFilZeroSubringPreimage_iff T x).2 hx⟩, e⟩`.
+
+Introduce `x`. Conclude with `(GlobalTheory.ThetaTie.thetaL T).θ_ker _ ((mem_deRhamFilZeroSubringPreimage_iff T _).1 x.2)`. Introduce `y`. Take `⟨z, h1, -⟩` from `T.om y`. Conclude with `⟨⟨z, h1.symm⟩, (GlobalTheory.ThetaTie.thetaL T).θ_Om y⟩`.
+
+Introduce `g x`. Use `⟨act_mem T g x x.2, ?_⟩` and prove the remaining obligations. Rewrite using `[theta_apply, theta_apply, (GlobalTheory.ThetaTie.thetaL T).θ_act g _ ((mem_deRhamFilZeroSubringPreimage_iff T _).1 x.2)]`. Conclude with `GlobalTheory.ThetaTie.actC_eq AI g _`.
+-/
 theorem exists_theta_deRhamFilZero_surjective_alt : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI),
     ∃ (S : Subring P.R.BdR) (θ : ↥S →+* ℂ_[l]), (∀ x, x ∈ S ↔ x ∈ Fil P 0) ∧ Function.Surjective θ ∧
       (∀ x : ↥S, θ x = 0 ↔ (x : P.R.BdR) ∈ Fil P 1) ∧

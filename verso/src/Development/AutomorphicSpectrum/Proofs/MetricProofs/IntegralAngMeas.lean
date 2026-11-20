@@ -18,6 +18,9 @@ instance : IsProbabilityMeasure angMeas := ⟨by
     Set.univ_inter, Real.volume_Ioc, sub_zero, smul_eq_mul]
   rw [← ENNReal.ofReal_mul (by positivity), inv_mul_cancel₀ h.ne', ENNReal.ofReal_one]⟩
 
+/- English proof (translation)
+Establish `h : (0 : ℝ) < 2 * π` using `by positivity`. Rewrite using `[angMeas, integral_smul_measure, Real.circleAverage_def, intervalIntegral.integral_of_le h.le, ENNReal.toReal_ofReal (by positivity)]`.
+-/
 theorem integral_angMeas (F : ℂ → ℝ) (ρ : ℝ) :
     ∫ t, F (circleMap 0 ρ t) ∂angMeas = Real.circleAverage F 0 ρ := by
   have h : (0 : ℝ) < 2 * π := by positivity

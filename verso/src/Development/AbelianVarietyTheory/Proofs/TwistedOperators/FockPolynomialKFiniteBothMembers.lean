@@ -7,15 +7,28 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheo
 
 namespace GlobalTheory.FockKFin
 
+/- English proof (translation)
+Apply the tactic sequence `cases a <;> cases b <;> simp [sameBlock]`.
+-/
 theorem sameBlock_iff_isLeft {p q : ℕ} (a b : Ix p q) : sameBlock a b ↔ a.isLeft = b.isLeft := by
   cases a <;> cases b <;> simp [sameBlock]
 
+/- English proof (translation)
+Introduce `a b h`. Apply `Matrix.one_apply_ne` to reduce the goal to its premises. Introduce and unpack `rfl`. Conclude with `h ((sameBlock_iff_isLeft a a).2 rfl)`.
+-/
 theorem isKC_one {p q : ℕ} : IsKC (1 : Mat p q) := by
   intro a b h
   apply Matrix.one_apply_ne
   rintro rfl
   exact h ((sameBlock_iff_isLeft a a).2 rfl)
 
+/- English proof (translation)
+Introduce `x y hxy`. Take `⟨⟨a, c⟩, rfl⟩` from `(lineEquiv p q r s).surjective x`. Take `⟨⟨b, d⟩, rfl⟩` from `(lineEquiv p q r s).surjective y`. Rewrite `hxy` using `[sameBlock_iff_isLeft, lineEquiv_isLeft, lineEquiv_isLeft]`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.kroneckerMap_apply]`.
+
+Distinguish the cases in `h1 : sameBlock a b`. Distinguish the cases in `h2 : sameBlock c d`. It suffices to derive a contradiction. Apply `hxy` to reduce the goal to its premises. Apply the tactic sequence `cases a <;> cases b <;> cases c <;> cases d <;> simp_all [sameBlock, linePos]`.
+
+Rewrite using `[hB c d h2, mul_zero]`. Rewrite using `[hA a b h1, zero_mul]`.
+-/
 theorem isKC_kronecker {p q r s : ℕ} (A : Mat p q) (B : Mat r s) (hA : IsKC A) (hB : IsKC B) :
     IsKC (Matrix.reindex (lineEquiv p q r s) (lineEquiv p q r s)
       (Matrix.kroneckerMap (· * ·) A B)) := by
@@ -33,6 +46,9 @@ theorem isKC_kronecker {p q r s : ℕ} (A : Mat p q) (B : Mat r s) (hA : IsKC A)
     · rw [hB c d h2, mul_zero]
   · rw [hA a b h1, zero_mul]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `IsKC _`. Rewrite using `[F.emb_cov]`. Conclude with `isKC_kronecker _ _ hg hh`.
+-/
 theorem emb_mem_Kset {p q r s : ℕ} {T0 : GrpData (p * r + q * s) (p * s + q * r)}
     {T1 : GrpData p q} {T2 : GrpData r s} (F : FockData T0 T1 T2) {g : T1.G} {h : T2.G}
     (hg : g ∈ T1.Kset) (hh : h ∈ T2.Kset) : F.emb (g, h) ∈ T0.Kset := by
@@ -40,11 +56,21 @@ theorem emb_mem_Kset {p q r s : ℕ} {T0 : GrpData (p * r + q * s) (p * s + q * 
   rw [F.emb_cov]
   exact isKC_kronecker _ _ hg hh
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `IsKC _`. Rewrite using `[map_one, Units.val_one]`. Conclude with `isKC_one`.
+-/
 theorem one_mem_Kset {p q : ℕ} (T : GrpData p q) : (1 : T.G) ∈ T.Kset := by
   change IsKC _
   rw [map_one, Units.val_one]
   exact isKC_one
 
+/- English proof (translation)
+Use `⟨(MvPolynomial.restrictTotalDegree (Ix p q × Ix r s) ℂ P.totalDegree).map F.ι, inferInstance, fun k hk => ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← MvPolynomial.sum_homogeneousComponent P]`. Rewrite using `[map_sum, map_sum]`. Use `Submodule.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Take `⟨Q, hQ, e⟩` from `H k hk d _ (MvPolynomial.homogeneousComponent_mem d P)`.
+
+Rewrite using `[e]`. Use `Submodule.mem_map_of_mem ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.mem_restrictTotalDegree]`. Establish `h1 : Q.totalDegree ≤ d` using `MvPolynomial.IsHomogeneous.totalDegree_le hQ`. Establish `h2` using `Finset.mem_range.1 hd`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_finite {p q r s : ℕ} {T0 : GrpData (p * r + q * s) (p * s + q * r)}
     {T1 : GrpData p q} {T2 : GrpData r s} (F : FockData T0 T1 T2)
     (H : ∀ k ∈ T0.Kset, ∀ (d : ℕ), ∀ P ∈ homog (Ix p q × Ix r s) d,
@@ -63,6 +89,11 @@ theorem exists_finite {p q r s : ℕ} {T0 : GrpData (p * r + q * s) (p * s + q *
   have h2 := Finset.mem_range.1 hd
   omega
 
+/- English proof (translation)
+Introduce `p q r s T0 T1 T2 F H P`. Take `⟨W, hW, hmem⟩` from `exists_finite F H P`. Prove the components needed by the constructor for the conclusion. Use `Submodule.finiteDimensional_of_le (S₂ := W) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Conclude with `hmem _ (emb_mem_Kset F k.2 (one_mem_Kset T2))`. Use `Submodule.finiteDimensional_of_le (S₂ := W) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `hmem _ (emb_mem_Kset F (one_mem_Kset T1) k.2)`.
+-/
 theorem kfin_fock : ∀ (p q r s : ℕ) (T0 : GrpData (p * r + q * s) (p * s + q * r)) (T1 : GrpData p q) (T2 : GrpData r s) (F : FockData T0 T1 T2), (∀ k ∈ T0.Kset, ∀ (d : ℕ), ∀ P ∈ homog (Ix p q × Ix r s) d, ∃ Q ∈ homog (Ix p q × Ix r s) d, F.Om k (F.ι P) = F.ι Q) → ∀ P : Pol p q r s, KFin T1 (fun g => F.π (g, 1)) (F.ι P) ∧ KFin T2 (fun h => F.π (1, h)) (F.ι P) := by
   intro p q r s T0 T1 T2 F H P
   obtain ⟨W, hW, hmem⟩ := exists_finite F H P

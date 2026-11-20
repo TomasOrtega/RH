@@ -13,17 +13,32 @@ section Nu
 
 variable {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ)
 
+/- English proof (translation)
+Simplify using `[nu, map_mul, norm_mul]`.
+-/
 private theorem nu_mul' (x y : ℂ) : nu ι (x * y) = nu ι x * nu ι y := by
   simp [nu, map_mul, norm_mul]
 
+/- English proof (translation)
+Simplify using `[nu, map_pow, norm_pow]`.
+-/
 private theorem nu_pow' (x : ℂ) (k : ℕ) : nu ι (x ^ k) = nu ι x ^ k := by
   simp [nu, map_pow, norm_pow]
 
+/- English proof (translation)
+Simplify using `[nu]`.
+-/
 private theorem nu_zero' : nu ι 0 = 0 := by
   simp [nu]
 
+/- English proof (translation)
+The claim follows from `norm_nonneg _`.
+-/
 private theorem nu_nonneg' (x : ℂ) : 0 ≤ nu ι x := norm_nonneg _
 
+/- English proof (translation)
+Use `rootBound l ι S c hc fun j h1 h2 => ?_` and prove the remaining obligations. Take `⟨a, ha, hb⟩` from `h j h1 h2`. Rewrite using `[← ha, nu_mul', nu_pow']`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem roots_le {q : ℂ} (hq : nu ι q ≤ 1) {c : ℝ} (hc : 0 ≤ c) (S : Multiset ℂ)
     (h : ∀ j, 1 ≤ j → j ≤ S.card → ∃ a : ℂ, q ^ j.choose 2 * a = S.esymm j ∧ nu ι a ≤ c ^ j) :
     ∀ b ∈ S, nu ι b ≤ c := by
@@ -36,6 +51,13 @@ private theorem roots_le {q : ℂ} (hq : nu ι q ≤ 1) {c : ℝ} (hc : 0 ≤ c)
 
 end Nu
 
+/- English proof (translation)
+Establish `key : ∀ k : Fin n, lo + ((k : ℕ) : ℤ) ≤ lam.w k ∧ lam.w k ≤ hi + ((k : ℕ) : ℤ)`. Introduce `k`. Take `⟨m, hm, h1, h2⟩` from `h ((lam.w k : ℂ) + (((n : ℂ) - 1) / 2 - (k : ℕ))) (Multiset.mem_map.2 ⟨k, Finset.mem_univ_val k, rfl⟩)`. Establish `e1 : ((lam.w k - ((k : ℕ) : ℤ) : ℤ) : ℂ) = (m : ℂ)`. Use `push_cast`.
+
+Take the linear combination `hm`. Establish `e2 : lam.w k - ((k : ℕ) : ℤ) = m` using `by exact_mod_cast e1`. Use linear arithmetic over natural numbers and integers. Establish `h0` using `(key ⟨0, by omega⟩).2`. Establish `h1` using `(key ⟨n - 1, by omega⟩).1`.
+
+Establish `a0 : lam.w i ≤ lam.w ⟨0, by omega⟩` using `lam.anti (Fin.mk_le_of_le_val (Nat.zero_le _))`. Establish `a1 : lam.w ⟨n - 1, by omega⟩ ≤ lam.w i` using `lam.anti (Fin.le_def.2 (by simp; omega))`. Simplify using `only at h0 h1`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem weight_bounds {n : ℕ} (hn : 1 ≤ n) (lam : DomWeight n) {lo hi : ℤ}
     (h : Within n (infOfWeight lam) lo hi) (i : Fin n) :
     lo + ((n : ℤ) - 1) ≤ lam.w i ∧ lam.w i ≤ hi := by
@@ -55,10 +77,18 @@ private theorem weight_bounds {n : ℕ} (hn : 1 ≤ n) (lam : DomWeight n) {lo h
   simp only at h0 h1
   omega
 
+/- English proof (translation)
+Simplify using `[algSat, Multiset.bind_singleton, Multiset.map_map]`.
+-/
 private theorem algSat_as_map (n q : ℕ) (B : Multiset ℂˣ) :
     algSat n q B = B.map fun α : ℂˣ => (((q : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) * (α : ℂ) := by
   simp [algSat, Multiset.bind_singleton, Multiset.map_map]
 
+/- English proof (translation)
+Establish `h : ((N : ℝ) ^ (((n : ℝ) - 1) / 2)) ^ 2 = (N : ℝ) ^ (n - 1)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg N), ← Real.rpow_natCast]`. Use `congr 1`. Rewrite using `[Nat.cast_sub hn]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `congrArg (fun x : ℝ => (x : ℂ)) h` after adjusting the coercions.
+-/
 private theorem sq_factor (N n : ℕ) (hn : 1 ≤ n) :
     ((((N : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ)) ^ 2 = (N : ℂ) ^ (n - 1) := by
   have h : ((N : ℝ) ^ (((n : ℝ) - 1) / 2)) ^ 2 = (N : ℝ) ^ (n - 1) := by
@@ -69,6 +99,37 @@ private theorem sq_factor (N n : ℕ) (hn : 1 ≤ n) :
     ring
   exact_mod_cast congrArg (fun x : ℝ => (x : ℂ)) h
 
+/- English proof (translation)
+Introduce `l _ ι E _ _ _ n hn σ hσ lam hlam w hw τ B hc hB lo hi hW b hb`. Take `⟨hun, hcard, hE⟩` from `eigAll E n σ hσ w hw τ B hc hB`. Take `⟨hv, hprod⟩` from `prodNorm l ι E w`. Establish `hvne : ∀ t ∈ Ov ι w, nu ι (t (unif w : E)) ≠ 0` using `fun t ht => (hv t ht).1.ne'`. Establish `hq1 : nu ι (normV w : ℂ) ≤ 1`.
+
+Rewrite using `[← hprod]`. Conclude with `Finset.prod_le_one (fun t ht => (hv t ht).1.le) fun t ht => (hv t ht).2.le`. Establish `hq0 : 0 < nu ι (normV w : ℂ)`. Rewrite using `[← hprod]`. Conclude with `Finset.prod_pos fun t ht => (hv t ht).1`.
+
+Establish `hqne : (normV w : ℂ) ≠ 0`. Introduce `h0`. Rewrite `hq0` using `[h0, nu_zero']`. Conclude with `lt_irrefl _ hq0`. Establish `hlh : ∀ t i, lo t + ((n : ℤ) - 1) ≤ (lam t).w i ∧ (lam t).w i ≤ hi t` using `fun t i => weight_bounds hn (lam t) (hW t) i`.
+
+Establish `hop` using `opBound l ι E n hn σ hσ lam hlam w hw hun (fun t => lo t + ((n : ℤ) - 1)) hi hlh`. Establish `hPhi : 0 ≤ ∏ t ∈ Ov ι w, nu ι (t (unif w : E)) ^ (-hi t)` using `Finset.prod_nonneg fun t ht => zpow_nonneg (hv t ht).1.le _`. Establish `hPlo : 0 ≤ ∏ t ∈ Ov ι w, nu ι (t (unif w : E)) ^ (lo t + ((n : ℤ) - 1))` using `Finset.prod_nonneg fun t ht => zpow_nonneg (hv t ht).1.le _`. Establish `hroot : ∀ x ∈ algSat n (normV w) B, nu ι x ≤ ∏ t ∈ Ov ι w, nu ι (t (unif w : E)) ^ (-hi t)`. Use `roots_le ι hq1 hPhi _ fun j _ hj => ?_` and prove the remaining obligations.
+
+Establish `hjn : j ≤ n` using `by simpa [algSat, hcard] using hj`. Take `⟨s, s', hs, hs', he⟩` from `hE j hjn`. Use `⟨((normV w : ℂ) ^ j.choose 2)⁻¹ * (algSat n (normV w) B).esymm j, mul_inv_cancel_left₀ (pow_ne_zero _ hqne) _, ?_⟩` and prove the remaining obligations. Use `(hop j s _ fun f hf hsph => ?_).1 hs` and prove the remaining obligations. Rewrite using `[mul_smul, ← (he f hf hsph).1, inv_smul_smul₀ (pow_ne_zero _ hqne)]`.
+
+Establish `hinv : ∀ x ∈ algSat n (normV w) (B.map (·⁻¹)), nu ι x ≤ ∏ t ∈ Ov ι w, nu ι (t (unif w : E)) ^ (lo t + ((n : ℤ) - 1))`. Use `roots_le ι hq1 hPlo _ fun j _ hj => ?_` and prove the remaining obligations. Establish `hjn : j ≤ n` using `by simpa [algSat, hcard] using hj`. Take `⟨s, s', hs, hs', he⟩` from `hE j hjn`. Use `⟨((normV w : ℂ) ^ j.choose 2)⁻¹ * (algSat n (normV w) (B.map (·⁻¹))).esymm j, mul_inv_cancel_left₀ (pow_ne_zero _ hqne) _, ?_⟩` and prove the remaining obligations.
+
+Use `(hop j s' _ fun f hf hsph => ?_).2 hs'` and prove the remaining obligations. Rewrite using `[mul_smul, ← (he f hf hsph).2, inv_smul_smul₀ (pow_ne_zero _ hqne)]`. Prove the components needed by the constructor for the conclusion. Establish `h1` using `hroot b hb`. Establish `h2 : (∏ t ∈ Ov ι w, nu ι (t (unif w : E)) ^ (-hi t)) * ∏ t ∈ Ov ι w, nu ι (t (unif w : E)) ^ hi t = 1`.
+
+Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun t ht => ?_` and prove the remaining obligations. Rewrite using `[_root_.zpow_neg, inv_mul_cancel₀ (zpow_ne_zero _ (hvne t ht))]`. Establish `h3 : 0 ≤ ∏ t ∈ Ov ι w, nu ι (t (unif w : E)) ^ hi t` using `Finset.prod_nonneg fun t ht => zpow_nonneg (hv t ht).1.le _`. Use `show nu ι b * ∏ t ∈ Ov ι w, nu ι (t (unif w : E)) ^ hi t ≤ 1`.
+
+Rewrite using `[← h2]`. Conclude with `mul_le_mul_of_nonneg_right h1 h3`. Establish `hb2 : b ∈ B.map (fun α : ℂˣ => ((((normV w : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ)) * (α : ℂ))`. Rewrite `hb` using `[algSat_as_map]`. Then use the resulting hypothesis. Take `⟨α, hα, rfl⟩` from `Multiset.mem_map.1 hb2`.
+
+Use `set r : ℂ := (((normV w : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) with hr`. Establish `hr2 : r ^ 2 = (normV w : ℂ) ^ (n - 1)` using `sq_factor (normV w) n hn`. Establish `hrne : r ≠ 0`. Introduce `h0`. Rewrite `hr2` using `[h0]`.
+
+Conclude with `pow_ne_zero _ hqne (by simpa using hr2.symm)`. Establish `hαne : (α : ℂ) ≠ 0` using `α.ne_zero`. Establish `hmem : r * ((α⁻¹ : ℂˣ) : ℂ) ∈ algSat n (normV w) (B.map (·⁻¹))`. Rewrite using `[algSat_as_map]`. Conclude with `Multiset.mem_map.2 ⟨α⁻¹, Multiset.mem_map.2 ⟨α, hα, rfl⟩, rfl⟩`.
+
+Establish `h1` using `hinv _ hmem`. Establish `hb' : (r * (α : ℂ))⁻¹ * (normV w : ℂ) ^ (n - 1) = r * ((α⁻¹ : ℂˣ) : ℂ)`. Rewrite using `[← hr2, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts. Rewrite `h1` using `[← hb', nu_mul', nu_pow']`.
+
+Establish `hsplit : ∏ t ∈ Ov ι w, nu ι (t (unif w : E)) ^ (lo t + ((n : ℤ) - 1)) = (∏ t ∈ Ov ι w, nu ι (t (unif w : E)) ^ lo t) * nu ι (normV w : ℂ) ^ (n - 1)`. Rewrite using `[← hprod, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun t ht => ?_` and prove the remaining obligations. Establish `: (n : ℤ) - 1 = ((n - 1 : ℕ) : ℤ)` using `by omega`. Rewrite using `[zpow_add₀ (hvne t ht), this, zpow_natCast]`.
+
+Rewrite `h1` using `[hsplit]`. Establish `h2` using `le_of_mul_le_mul_right h1 (pow_pos hq0 _)`. Establish `h3 : (∏ t ∈ Ov ι w, nu ι (t (unif w : E)) ^ lo t) * ∏ t ∈ Ov ι w, nu ι (t (unif w : E)) ^ (-lo t) = 1`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun t ht => ?_` and prove the remaining obligations.
+
+Rewrite using `[_root_.zpow_neg, mul_inv_cancel₀ (zpow_ne_zero _ (hvne t ht))]`. Establish `h4 : 0 ≤ ∏ t ∈ Ov ι w, nu ι (t (unif w : E)) ^ (-lo t)` using `Finset.prod_nonneg fun t ht => zpow_nonneg (hv t ht).1.le _`. Use `show nu ι (r * (α : ℂ))⁻¹ * ∏ t ∈ Ov ι w, nu ι (t (unif w : E)) ^ (-lo t) ≤ 1`. Rewrite using `[← h3]`. Conclude with `mul_le_mul_of_nonneg_right h2 h4`.
+-/
 theorem coreU : CoreU := by
   intro l _ ι E _ _ _ n hn σ hσ lam hlam w hw τ B hc hB lo hi hW b hb
   obtain ⟨hun, hcard, hE⟩ := eigAll E n σ hσ w hw τ B hc hB

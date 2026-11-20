@@ -13,6 +13,23 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
   {P0 : M.Par} {T : D.LevTower P0.k P0.r Wp Wq} {j : Fin (P0.r + 1)}
 
+/- English proof (translation)
+Set `w : List C.Letter` to `[(true, Y)]`. Set `Fv : Ix (Fin w.length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)` to `Pi.single (eS 0 b) F`. Establish `hFv : ∀ e, JC.NiceCoef (T.bs j) ε (Fv e)`. Introduce `e`. Distinguish the cases in `h : e = eS 0 b`.
+
+Substitute `h` using the available equality. Simplify `hF` using `[Fv]`. Simplify using `only [Fv, Pi.single_eq_of_ne h]`. Conclude with `Formalism.FourierDecayAlt.P.JCx2.mn_nice_zero`. Set `xv : Ix (Fin w.length) → B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)` to `fun e => B.JF (T.bs j) (Fv e)`.
+
+Set `Φv : Ix (Fin w.length) → RadSp (JC.parLev P0 j).k (JC.parLev P0 j).r (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π'` to `Pi.single (eS 0 b) Φ`. Establish `hx : ∀ e, xv e ∈ FFl (JC.parLev P0 j).k (JC.parLev P0 j).r (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π' 0 (OmPlus (JC.parLev P0 j).k (JC.parLev P0 j).r (T.bs j).z (T.bs j).z')` using `fun e => Formalism.FourierDecayAlt.P.bessel_function_finite_class _ _ Wp Wq (T.bs j) (Fv e) ε hε (hFv e)`. Establish `hΦv : ∀ e, ∀ y ∈ DomR (JC.parLev P0 j).k (JC.parLev P0 j).r (T.bs j).z (T.bs j).z', (Φv e : Fn (JC.parLev P0 j).k (JC.parLev P0 j).r (Wq →L[ℂ] Wp)) y.1 y.2 = resG (JC.parLev P0 j).k (JC.parLev P0 j).r (Fin.last _) (xv e) y.1 y.2`. Introduce `e y hy`. Distinguish the cases in `h : e = eS 0 b`.
+
+Substitute `h` using the available equality. Use `hΦ y hy` as an intermediate fact. Simplify using `only [Φv, xv, Fv, Pi.single_eq_same]`. Conclude with `this`. Simplify using `only [Φv, xv, Fv, Pi.single_eq_of_ne h]`.
+
+Establish `h0` using `congrFun (congrFun (resG_JF_zero (T.bs j) (Fin.last (JC.parLev P0 j).r)) y.1) y.2`. Conclude with `h0.symm`. Establish `hRv : ∀ e, BSR R (Fv e)`. Introduce `e`. Distinguish the cases in `h : e = eS 0 b`.
+
+Substitute `h` using the available equality. Simplify `hRF` using `[Fv]`. Simplify using `only [Fv, Pi.single_eq_of_ne h]`. Conclude with `fun g _ h0 => absurd rfl h0`. Use `⟨D.actOp (D.RRlev T (M.sgn P0 l0) j w) Fv (eS 0 a), Formalism.FourierDecayAlt.P.module_regularity Wp Wq P0 T (M.sgn P0 l0) j w Fv ε hε hFv (eS 0 a), (actOp_nice_bsr P0 T (M.sgn P0 l0) j w Fv hFv hRv (eS 0 a)).2, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Establish `hact` using `Formalism.FourierDecayAlt.P.radial_module_action Wp Wq P0 T j X μ L st l0 hD w xv Φv hx hΦv (eS 0 a) y hy`. Establish `hbes` using `Formalism.FourierDecayAlt.P.bessel_module Wp Wq P0 T (M.sgn P0 l0) j w Fv ε hε hFv (eS 0 a) y hy`. Establish `e : P5.act (RRi L st 0 (D.positionted w)) Φv (eS 0 a) = (QQi L st 0 (Y : ℂ) a b).1 Φ` using `by show actP (RRw (QQi L st 0) [(⟨true, 0, (Y : ℂ)⟩ : Letter ℂ (Fin 1))]) (Pi.single (eS 0 b) Φ) (eS 0 a) = _`. Conclude with `blockMulVec_one_letter _ _ _ _ _ _`. Establish `e'` using `congrArg (fun Ψ : RadSp (JC.parLev P0 j).k (JC.parLev P0 j).r (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π' => (Ψ : Fn (JC.parLev P0 j).k (JC.parLev P0 j).r (Wq →L[ℂ] Wp)) y.1 y.2) e`.
+
+Conclude with `e'.symm.trans (hact.trans hbes.symm)`.
+-/
 theorem transportC {X : ActualOps (JC.parLev P0 j).k (JC.parLev P0 j).r (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π'}
     {μ : MeasureTheory.Measure (Mt (JC.parLev P0 j).k (JC.parLev P0 j).r)}
     {L : R.LevelData (Pr (RadSp (JC.parLev P0 j).k (JC.parLev P0 j).r (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π'))
@@ -90,6 +107,9 @@ def PicsInBS (T : D.LevTower P0.k P0.r Wp Wq) (j : Fin (P0.r + 1))
       (Φ : Fn (JC.parLev P0 j).k (JC.parLev P0 j).r (Wq →L[ℂ] Wp)) x.1 x.2 =
         resG (JC.parLev P0 j).k (JC.parLev P0 j).r (Fin.last (JC.parLev P0 j).r) (B.JF (T.bs j) F) x.1 x.2
 
+/- English proof (translation)
+Take `⟨Φ', hK, hΦ'⟩` from `hJ F ε R hε hF hRF`. Establish `e : Φ = Φ'` using `radSp_ext Φ Φ' (fun y hy => (hΦ y hy).trans (hΦ' y hy).symm)`. Rewrite using `[e]`. Conclude with `hK`.
+-/
 theorem pic_mem_K0C (hJ : PicsInBS T j (K 0)) {ε R : ℝ} (hε : 0 < ε) {F : B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)}
     (hF : JC.NiceCoef (T.bs j) ε F) (hRF : BSR R F)
     (Φ : RadSp (JC.parLev P0 j).k (JC.parLev P0 j).r (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π')
@@ -98,6 +118,15 @@ theorem pic_mem_K0C (hJ : PicsInBS T j (K 0)) {ε R : ℝ} (hε : 0 < ε) {F : B
   have e : Φ = Φ' := radSp_ext Φ Φ' (fun y hy => (hΦ y hy).trans (hΦ' y hy).symm)
   rw [e]; exact hK
 
+/- English proof (translation)
+Introduce `m hm`. Establish `key : ∀ m ∈ Submonoid.closure (Gen L st Pts), ∀ (F : B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)) (Φ : RadSp (JC.parLev P0 j).k (JC.parLev P0 j).r (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π'), JC.NiceCoef (T.bs j) ε F → BSR R F → IsPic T j Φ F → ∃ F', JC.NiceCoef (T.bs j) ε F' ∧ BSR …`. Introduce `m hm`. Proceed by induction on `hm using Submonoid.closure_induction with`. Consider the case `mem a ha`.
+
+Introduce `F Φ hF hRF hΦ`. Take `⟨Y, _, i, i', rfl⟩` from `ha`. Conclude with `transportC hD hε hF Φ hΦ Y i i' hRF`. Consider the case `one => intro F Φ hF hRF hΦ`. Conclude with `⟨F, hF, hRF, hΦ⟩`.
+
+Consider the case `mul a b _ _ iha ihb`. Introduce `F Φ hF hRF hΦ`. Take `⟨F1, h1, hr1, h1'⟩` from `ihb F Φ hF hRF hΦ`. Take `⟨F2, h2, hr2, h2'⟩` from `iha F1 _ h1 hr1 h1'`. Conclude with `⟨F2, h2, hr2, h2'⟩`.
+
+Take `⟨F', hF', hRF', hΦ'⟩` from `key m hm F Φ hF hRF hΦ`. Conclude with `pic_mem_K0C hJ hε hF' hRF' _ hΦ'`.
+-/
 theorem pic_mem_UclsC (hD : IsData (JC.parLev P0 j) (T.bs j).z (T.bs j).z' (T.bs j).π (T.bs j).π' X μ L st l0)
     (hJ : PicsInBS T j (K 0)) (Pts : Set ℝ) {ε R : ℝ} (hε : 0 < ε) {F : B.Mat P0.k (P0.r - j) → (Wq →L[ℂ] Wp)}
     (hF : JC.NiceCoef (T.bs j) ε F) (hRF : BSR R F)

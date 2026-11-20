@@ -7,6 +7,29 @@ namespace PIW.AdelClassFin
 
 open NumberField
 
+/- English proof (translation)
+Introduce `E _ _ m N hN δ hδ`. Take `⟨k, n, hn⟩` from `Submodule.fg_iff_exists_fin_generating_family.mp hN`. Establish `hne : Ideal.span {δ} ≠ ⊥` using `by rwa [Ne, Ideal.span_singleton_eq_bot]`. Use `haveI : Finite ((𝓞 E) ⧸ Ideal.span {δ}) := by first`. Consider the case `exact (Ideal.absNorm_ne_zero_iff _).mp (by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact hne)`.
+
+Consider the case `exact Ideal.finiteQuotientOfFreeOfNeBot _ hne`. Establish `hδE : algebraMap (𝓞 E) E δ ≠ 0`. Introduce `h`. Apply `hδ` to reduce the goal to its premises. Conclude with `IsFractionRing.injective (𝓞 E) E (by rw [h, map_zero])`.
+
+Set `g` to `Function.surjInv (Ideal.Quotient.mk_surjective (I := Ideal.span {δ}))`. Set `T : Set (Fin m → E)` to `Set.range (fun c : Fin k → ((𝓞 E) ⧸ Ideal.span {δ}) => (algebraMap (𝓞 E) E δ)⁻¹ • ∑ i, (algebraMap (𝓞 E) E (g (c i))) • n i)`. Establish `hT : T.Finite` using `Set.finite_range _`. Establish `key : ∀ x : Fin m → E, δ • x ∈ N → ∃ t ∈ T, x - t ∈ N`. Introduce `x hx`.
+
+Rewrite `hx` using `[← hn]`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 E)).mp hx`. Establish `hq : ∀ i, ∃ q : 𝓞 E, algebraMap (𝓞 E) E (a i) - algebraMap (𝓞 E) E (g (Ideal.Quotient.mk (Ideal.span {δ}) (a i))) = algebraMap (𝓞 E) E δ * algebraMap (𝓞 E) E q`. Introduce `i`. Establish `h` using `Function.surjInv_eq (Ideal.Quotient.mk_surjective (I := Ideal.span {δ})) (Ideal.Quotient.mk (Ideal.span {δ}) (a i))`.
+
+Rewrite `h` using `[Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `h`. Use `⟨-c, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_sub, ← map_mul, mul_neg, ← hc, neg_sub]`. Use `choose q hq using hq`.
+
+Use `⟨_, ⟨fun i => Ideal.Quotient.mk (Ideal.span {δ}) (a i), rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hx2 : x = (algebraMap (𝓞 E) E δ)⁻¹ • ∑ i, a i • n i`. Rewrite using `[ha, ← algebraMap_smul E δ x, smul_smul, inv_mul_cancel₀ hδE, one_smul]`. Establish `e1 : ∀ i, a i • n i - (algebraMap (𝓞 E) E (g (Ideal.Quotient.mk (Ideal.span {δ}) (a i)))) • n i = (algebraMap (𝓞 E) E δ) • (q i • n i)`. Introduce `i`.
+
+Rewrite using `[← algebraMap_smul E (a i), ← algebraMap_smul E (q i), smul_smul, ← sub_smul, hq i]`. Establish `hdiff : x - (algebraMap (𝓞 E) E δ)⁻¹ • ∑ i, (algebraMap (𝓞 E) E (g (Ideal.Quotient.mk (Ideal.span {δ}) (a i)))) • n i = ∑ i, q i • n i`. Rewrite using `[hx2, ← smul_sub, ← Finset.sum_sub_distrib]`. Repeatedly rewrite using `[e1]`. Rewrite using `[← Finset.smul_sum, smul_smul, inv_mul_cancel₀ hδE, one_smul]`.
+
+Use `show x - (algebraMap (𝓞 E) E δ)⁻¹ • ∑ i, (algebraMap (𝓞 E) E (g (Ideal.Quotient.mk (Ideal.span {δ}) (a i)))) • n i ∈ N`. Rewrite using `[hdiff, ← hn]`. Conclude with `(Submodule.mem_span_range_iff_exists_fun (𝓞 E)).mpr ⟨q, rfl⟩`. Apply `Set.Finite.subset (hT.powerset.image (fun S => N ⊔ Submodule.span (𝓞 E) S))` to reduce the goal to its premises. Introduce `M hM`.
+
+Take `⟨hNM, hMδ⟩` from `hM`. Use `⟨(M : Set (Fin m → E)) ∩ T, Set.inter_subset_right, ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `sup_le hNM (Submodule.span_le.mpr Set.inter_subset_left)`. Introduce `x hx`.
+
+Take `⟨t, htT, hxt⟩` from `key x (hMδ x hx)`. Establish `htM : t ∈ M`. Establish `h` using `M.sub_mem hx (hNM hxt)`. Rewrite `h` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Establish `e : x = (x - t) + t` using `by abel`.
+
+Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (Submodule.mem_sup_left hxt) (Submodule.mem_sup_right (Submodule.subset_span ⟨htM, htT⟩))`.
+-/
 theorem partBetween : PartBetween := by
   intro E _ _ m N hN δ hδ
   obtain ⟨k, n, hn⟩ := Submodule.fg_iff_exists_fin_generating_family.mp hN

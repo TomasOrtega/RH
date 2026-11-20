@@ -14,6 +14,13 @@ set_option maxHeartbeats 1600000
 
 namespace GlobalTheory.WeakClosed.SmallW
 
+/- English proof (translation)
+Introduce `l _ P AI s`. Introduce `U hU`. Take `⟨hnu, hdiv⟩` from `tilt AI s`. Take `⟨N, m, hN⟩` from `nbhd (AI.εroot s - 1) hnu hdiv U hU`. Take `⟨k, hk⟩` from `witt (WittVector.teichmuller l (AI.εroot s) - 1) N m`.
+
+Use `⟨k, fun z => hN _ fun n hn => ?_⟩` and prove the remaining obligations. Establish `h0 : (WittVector.teichmuller l (AI.εroot s) - 1 : WittVector l (OCb l)).coeff 0 = AI.εroot s - 1`. Establish `h` using `WittVector.add_coeff_zero (WittVector.teichmuller l (AI.εroot s) - 1 : WittVector l (OCb l)) 1`. Rewrite `h` using `[sub_add_cancel, WittVector.teichmuller_coeff_zero, WittVector.one_coeff_zero]`. Conclude with `eq_sub_of_add_eq h.symm`.
+
+Simplify `hk z n hn` using `[h0]`.
+-/
 theorem glue
   (tilt : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (s : ℕ), ¬ IsUnit (AI.εroot s - 1) ∧ ∀ a : OCb l, a ≠ 0 → ∃ m : ℕ, a ∣ (AI.εroot s - 1) ^ m)
   (nbhd : ∀ {l : ℕ} [Fact l.Prime] (ϖ : OCb l), ¬ IsUnit ϖ → (∀ a : OCb l, a ≠ 0 → ∃ m : ℕ, a ∣ ϖ ^ m) → letI := wTop l; ∀ U ∈ 𝓝 (0 : WCb l), ∃ N m : ℕ, ∀ w : Ainf l, (∀ n < N, w.coeff n ∈ Ideal.span {ϖ ^ m}) → inclW l w ∈ U)
@@ -36,6 +43,9 @@ theorem glue
     exact eq_sub_of_add_eq h.symm
   simpa [h0] using hk z n hn
 
+/- English proof (translation)
+The claim follows from `glue GlobalTheory.T.epsilonRoot_sub_one_isPseudoUniformizer_tilt GlobalTheory.T.weakly_small_of_not_isUnit_of_dvd_pow GlobalTheory.T.exists_pow_mul_coeff_mem_span_coeff_zero_pow`.
+-/
 theorem main : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (s : ℕ), letI := wTop l; ∀ U ∈ 𝓝 (0 : WCb l), ∃ k : ℕ, ∀ z : Ainf l, inclW l ((WittVector.teichmuller l (AI.εroot s) - 1) ^ k * z) ∈ U :=
   glue GlobalTheory.T.epsilonRoot_sub_one_isPseudoUniformizer_tilt GlobalTheory.T.weakly_small_of_not_isUnit_of_dvd_pow GlobalTheory.T.exists_pow_mul_coeff_mem_span_coeff_zero_pow
 

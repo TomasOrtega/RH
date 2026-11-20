@@ -21,6 +21,13 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hL hL₂ _ _ V _ _ _ _ j D D' pD F _ _ k hk S`. Take `⟨hf, hd⟩` from `FamDimension.finrank_fam (D := D.toPre) (F := F) hL.globalFns hL₂.secTwist D.tau_bimult hk`. Take `⟨hf', hd'⟩` from `FamDimension.finrank_fam (D := D'.toPre) (F := F) hL.globalFns hL₂.secTwist D'.tau_bimult hk`. Take `⟨hr, hg⟩` from `rank_and_g_of_isPowDeg V j D.toPre D'.toPre pD`. Set `b` to `Module.finBasis F (Fam D.toPre F k)`.
+
+Use `choose b' hb' using fun a : Fin j → Fin (Module.finrank F (Fam D.toPre F k)) => BoxFamily.exists_isBoxFam hL.globalFns V j D.toPre D'.toPre pD F k (fun i => b (a i))`. Establish `hi : LinearIndependent F b'` using `boxFam_linearIndependent V j D.toPre D'.toPre pD F k _ b b.linearIndependent b' hb'`. Establish `hc : Fintype.card (Fin j → Fin (Module.finrank F (Fam D.toPre F k))) = Module.finrank F (Fam D'.toPre F k)`. Rewrite using `[Fintype.card_fun, Fintype.card_fin, Fintype.card_fin, hd, hd', hr, hg, ← pow_mul, ← mul_add, mul_comm]`. Establish `ht : Submodule.span F (Set.range b') = ⊤` using `hi.span_eq_top_of_card_eq_finrank' hc`.
+
+Establish `hS : S ∈ Submodule.span F (Set.range b')` using `ht ▸ Submodule.mem_top`. Use `Submodule.span_mono ?_ hS` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨_, hb' a⟩`.
+-/
 theorem mem_span_boxFam : Laws → Laws2 → Laws4 → TwistBaseChangeStatement → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] (j : ℕ) (D D' : DegData V (maximalIdeal V)) (pD : IsPowDeg D'.toPre D.toPre j) (F : Type) [Field F] [Algebra (FractionRing V) F] (k : ℕ), 1 ≤ k → ∀ S : Fam D'.toPre F k, S ∈ Submodule.span F {S' | ∃ s : Fin j → Fam D.toPre F k, IsBoxFam pD F k S' s} := by
   intro hL hL₂ _ _ V _ _ _ _ j D D' pD F _ _ k hk S
   obtain ⟨hf, hd⟩ := FamDimension.finrank_fam (D := D.toPre) (F := F) hL.globalFns hL₂.secTwist D.tau_bimult hk

@@ -13,6 +13,13 @@ namespace GlobalTheory.Mem.Col2.AdT
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B X I hOk hPins l Z u a i hi bad Ch chOf K k hR c fb hfb hchi κ`. Take `⟨x, hxchi, ⟨q, hq⟩, hxκ⟩` from `GlobalTheory.T.exists_levelElement_same_character_near_bad I hOk hPins l Z u a i hi bad Ch chOf K k hR c hchi κ`. Establish `hl` using `hR.lev c x.1 q hq`. Establish `hx : x.1 ∈ (fun β => (K β).lev.U) (chOf c)` using `x.2`. Take `⟨κ', h3⟩` from `hl.mp hx`.
+
+Establish `hg` using `h3.1`. Establish `hact` using `h3.2.1`. Establish `hcos` using `h3.2.2`. Use `⟨κ', ⟨hg, hcos⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hxchi]`.
+
+Conclude with `hR.chr c x κ' hg (hact ▸ hq)`. Introduce `P g hL`. Take `⟨hm1, hm2, hn⟩` from `GlobalTheory.T.levelElement_at_bad_primes_integral_and_near I hOk l Z u a i hi bad Ch chOf K k hR c x.1 κ' hg (hact ▸ hq) P`. Take `⟨p, hp, hpN⟩` from `hR.k_std (chOf c)`. Conclude with `GlobalTheory.T.adelicMatrixCongruence_move_rational_frame _ _ κ.1 x.1 (k (chOf c)) (fb P) _ (fun r s => (GlobalTheory.T.stdPointMatrix_and_inverse_integral_at_every_prime _ _ p hp hpN _ r s).1) (fun r s => (GlobalTheory.T.stdPointMatrix_and_inverse_integral_at_every_prime _ _ p h …`.
+-/
 theorem exists_stepElt_of_level : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (i : ℕ) (hi : i ≤ B.R.m) (bad : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (Ch : Type) (chOf : (I.stp u a i).Cl → Ch) (K : Charts I l Z u a i hi bad chOf) (k : Ch → GA B (B.R.N i)), ReadsAt I l Z K k → ∀ (c : (I.stp u a i).Cl) (fb : SBof I a → GL (Fin ((I.rec7 l Z).R.N i)) (I.rec7 l Z).host.E), FrNear I l Z a (k (chOf c)) fb → ChiFin I l Z (K (chOf c)).lev → ∀ κ : (K (chOf c)).lev.U, ∃ κ' : (I.stp u a i).G c.1, Keeps I κ' ((I.stp u a i).rep c) ∧ (((K (chOf c)).lev.chi κ : ℂˣ) : ℂ) = B.embLL (((I.stp u a i).chr c.1 κ' : B.LLˣ) : B.LL) ∧ ∀ (P : SBof I a) (g : Sp B.fields.E (B.R.N i) ≃ₗ[B.fields.E] Sp B.fields.E (B.R.N i)), LiftsInv I κ' P g → GlobalTheory.TwU.InFrame (i := i) (sm I l Z) fb (I.cst a).D P κ.1 g := by
   intro B X I hOk hPins l Z u a i hi bad Ch chOf K k hR c fb hfb hchi κ
   obtain ⟨x, hxchi, ⟨q, hq⟩, hxκ⟩ := GlobalTheory.T.exists_levelElement_same_character_near_bad I hOk hPins l Z u a i hi bad Ch chOf K k hR c hchi κ

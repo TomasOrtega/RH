@@ -12,6 +12,11 @@ open Formalism.L2.G.Model (Lin Th0 Aa Lin_comp Lin_one Lin_Pol Lin_smul map_Pol 
   dE invT_mul_D w_ne p_eq pQ_ne kapR kapR_alg lift_eq Bm Bm_eq Mx Mx_det Avec pol_iff thF flat_Ar)
 open Formalism.L2.G.Model.TS
 
+/- English proof (translation)
+Establish `hMt : IsUnit ((M⁻¹).transpose).det`. Rewrite using `[Matrix.det_transpose, Matrix.det_nonsing_inv]`. Conclude with `hM.ringInverse`. Consider the cases of `vec`. Simplify using `only [Aa, Bool.false_eq_true, if_false]`.
+
+Rewrite using `[← Matrix.transpose_mul, Matrix.mul_nonsing_inv _ hMt, Matrix.transpose_one]`. Simplify using `only [Aa, if_true]`. Rewrite using `[← Matrix.transpose_mul, Matrix.mul_nonsing_inv _ hM, Matrix.transpose_one]`.
+-/
 theorem Aa_dual2 {K : Type} [Field K] {m : ℕ} (vec : Bool) (M : Matrix (Fin (m + 1)) (Fin (m + 1)) K)
     (hM : IsUnit M.det) : Aa vec ((M⁻¹).transpose) * (Aa vec M).transpose = 1 := by
   have hMt : IsUnit ((M⁻¹).transpose).det := by
@@ -28,6 +33,13 @@ variable {p n' : ℕ} [Fact p.Prime] {W Qq O Kf : Type} [CommRing W] [IsDomain W
   [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
   {ι : Qq →+* Kf} {σ : Qq ≃+* Qq} {j : W →+* O} {w : O} {m : ℕ} {d : Fin n' → ℕ}
 
+/- English proof (translation)
+Use `letI : Algebra (WF p n') O := algOfIdent j φ`. Establish `hw` using `w_ne hS`. Establish `hF'` using `(pol_iff hS _ _ _).1 hF`. Establish `h1 : map (kapR hS) (subst p n' O w n' r g F) = Lin (Bm ι σ w φ r (vecE n') (fun x => x) g) (map (kapR hS) F)` using `lift_eq hS φ hφ r (LLT n') (fun x => x) (fun _ => rfl) g hg F`. Establish `hB : Bm ι σ w φ r (vecE n') (fun x => x) g = fun x => (if vecE n' x then algebraMap O Kf w else 1) • (Aa (vecE n' x) (la_tw ι σ x.val hmat)⁻¹ * Aa (vecE n' x) (Mx ι σ w φ r (fun x => x) hmat g x))`.
+
+Use function extensionality and compare the values at `fun x => Bm_eq hw φ r (vecE n') (fun x => x) hmat hh g hg x`. Rewrite using `[h1, hB, Lin_smul _ _ _ hF', Lin_comp]`. Use `congr 1`. Unfold `Avec`. Rewrite using `[← Finset.prod_pow_eq_pow_sum]`.
+
+Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `x _`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem subst_Lin (hS : HidaSetting p n' W Qq O Kf ι σ j w) (φ : WF p n' ≃+* W) (hφ : IsWittIdent σ φ) (r : ℕ)
     (hmat : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq) (hh : IsUnit hmat.det)
     (g : Matrix (Fin (m + 1)) (Fin (m + 1)) (WF p n')) (hg : IsGLW g)
@@ -55,6 +67,15 @@ theorem subst_Lin (hS : HidaSetting p n' W Qq O Kf ι σ j w) (φ : WF p n' ≃+
 
 variable (thK : ↥(Pol Kf (ι := Fin n') (m + 1) d) ≃ₗ[Kf] ↥(Vsp Kf (flW (m := m) d)))
 
+/- English proof (translation)
+Use `letI : Algebra (WF p n') O := algOfIdent j φ`. Establish `h1d : IsUnit (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq).det` using `by simp`. Set `P : ↥(Pol Kf (ι` to `Fin n') (m + 1) d) := ⟨Lin (fun x => Aa (vecE n' x) (la_tw ι σ x.val hmat)⁻¹) (map (kapR hS) F.1), Lin_Pol _ _ ((pol_iff hS _ _ _).1 F.2)⟩`. Set `Q : ↥(Pol Kf (ι` to `Fin n') (m + 1) d) := ⟨Lin (fun x => Aa (vecE n' x) (la_tw ι σ x.val (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq))⁻¹) (map (kapR hS) Fv.1), Lin_Pol _ _ ((pol_iff hS _ _ _).1 Fv.2)⟩`. Establish `eF : Θ F = thK P` using `Subtype.ext (by rw [hΘ F, hthK]; rfl)`.
+
+Establish `eFv : Θv Fv = thK Q` using `Subtype.ext (by rw [hΘv Fv, hthK]; rfl)`. Establish `hdual : ∀ s : Fin n', Aa (vecE n' s) (Mx ι σ w φ r (fun x => x) 1 gv s) * (Aa (vecE n' s) (Mx ι σ w φ r (fun x => x) hmat g s)).transpose = 1`. Introduce `s`. Establish `e1 : Mx ι σ w φ r (fun x => x) 1 gv s = ((Mx ι σ w φ r (fun x => x) hmat g s)⁻¹).transpose`. Unfold `Mx`.
+
+Rewrite using `[Matrix.one_mul, hrel]`. Conclude with `dualM hS s.val r _ hb`. Rewrite using `[e1]`. Conclude with `Aa_dual2 _ _ (Mx_det (w_ne hS) φ r (fun x => x) hmat hh g hg s)`. Establish `hL : be p r (flW d) (Θ F) (TY thK ((p : Kf) ^ κ / (((∏ s, (d s).factorial : ℕ) : ℕ) : Kf)) (Θv Fv)) = (p : Kf) ^ Ar r (flW (m` using `m) d) * (((p : Kf) ^ κ / (((∏ s, (d s).factorial : ℕ) : ℕ) : Kf)) * fockR (P : MvPolynomial (Fin n' × Fin (m + 1)) Kf) (Q : MvPolynomial (Fin n' × Fin (m + 1)) Kf)) := by`.
+
+Unfold `be`. Rewrite using `[eF, eFv, map_smul, smul_eq_mul, TY_apply]`. Rewrite using `[hL, map_div₀, map_mul, map_pow, map_natCast, map_natCast, fock_eq_fockR, ← fockR_map, subst_Lin hS φ hφ r hmat hh g hg F.1 F.2, subst_Lin hS φ hφ r 1 h1d gv hgv Fv.1 Fv.2, tsact_smul_left, tsact_smul_right, fockR_Lin_dual _ _ hdual, flat_Ar r hr1 hr2 (vecE n') d (flW d) (isFlat_ …`. Use `show _ = _ * (_ * (_ * fockR (P : MvPolynomial (Fin n' × Fin (m + 1)) Kf) (Q : MvPolynomial (Fin n' × Fin (m + 1)) Kf))) / _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pair_formula (hS : HidaSetting p n' W Qq O Kf ι σ j w) (φ : WF p n' ≃+* W) (hφ : IsWittIdent σ φ)
     (r : ℕ) (hr1 : 1 ≤ r) (hr2 : r < m + 1)
     (hthK : ∀ P, ((thK P : ↥(Vsp Kf (flW (m := m) d))) : MvPolynomial (Fin n' × (Fin (m + 1) × Fin (m + 1))) Kf) =
@@ -104,6 +125,23 @@ theorem pair_formula (hS : HidaSetting p n' W Qq O Kf ι σ j w) (φ : WF p n' �
     (Q : MvPolynomial (Fin n' × Fin (m + 1)) Kf))) / _
   ring
 
+/- English proof (translation)
+Use `hS.frac_alt` as an intermediate fact. Establish `hinj : Function.Injective (algebraMap W Qq)` using `IsFractionRing.injective W Qq`. Establish `h1 : ∀ c : Fin k, ∃ y : Fin k → W, (fun i => X i c) = (1 : Matrix (Fin k) (Fin k) Qq).mulVec (fun a => algebraMap W Qq (y a))`. Introduce `c`. Apply `(mem_colSpan _ _).1` to reduce the goal to its premises.
+
+Rewrite using `[← h]`. Conclude with `Submodule.subset_span ⟨c, rfl⟩`. Establish `h2 : ∀ c : Fin k, ∃ y : Fin k → W, (fun i => (1 : Matrix (Fin k) (Fin k) Qq) i c) = X.mulVec (fun a => algebraMap W Qq (y a))`. Introduce `c`. Apply `(mem_colSpan _ _).1` to reduce the goal to its premises.
+
+Rewrite using `[h]`. Conclude with `Submodule.subset_span ⟨c, rfl⟩`. Use `choose Y hY using h1`. Use `choose Y' hY' using h2`. Set `Cm : Matrix (Fin k) (Fin k) W` to `fun i c => Y c i`.
+
+Set `Cm' : Matrix (Fin k) (Fin k) W` to `fun i c => Y' c i`. Establish `hX : X = Cm.map (algebraMap W Qq)`. Use extensionality with `i c`. Use `congrFun (hY c) i` as an intermediate fact. Rewrite `this` using `[Matrix.one_mulVec]`.
+
+Conclude with `this`. Establish `hprod : Cm * Cm' = 1`. Apply `Matrix.map_injective hinj` to reduce the goal to its premises. Use `show (Cm * Cm').map (algebraMap W Qq) = (1 : Matrix (Fin k) (Fin k) W).map (algebraMap W Qq)`. Rewrite using `[Matrix.map_mul, ← hX, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Use extensionality with `i c`. Use `congrFun (hY' c) i` as an intermediate fact. Rewrite using `[Matrix.mul_apply]`. Conclude with `this.symm`. Establish `hdet : IsUnit Cm.det`.
+
+Establish `: Cm.det * Cm'.det = 1` using `by rw [← Matrix.det_mul, hprod, Matrix.det_one]`. Conclude with `IsUnit.of_mul_eq_one _ this`. Use `⟨(φ.symm : W →+* WF p n').mapMatrix Cm, ?_, ?_⟩` and prove the remaining obligations. Unfold `IsGLW`. Rewrite using `[← RingHom.map_det]`.
+
+Conclude with `hdet.map _`. Rewrite using `[hX]`. Use extensionality with `a c`. Simplify using `[matQ, RingHom.mapMatrix_apply, Matrix.map_apply]`.
+-/
 theorem exists_gv (hS : HidaSetting p n' W Qq O Kf ι σ j w) (φ : WF p n' ≃+* W) {k : ℕ} (X : Matrix (Fin k) (Fin k) Qq)
     (h : colSpan W X = colSpan W (1 : Matrix (Fin k) (Fin k) Qq)) :
     ∃ gv : Matrix (Fin k) (Fin k) (WF p n'), IsGLW gv ∧ matQ φ gv = X := by

@@ -7,6 +7,9 @@ namespace Formalism.L2.GlobalTheoryTheory.UnramifiedTrace
 open Formalism.BasicNotions Formalism.MainNotions.product_first_zeroth_parts Formalism.L2.Forms Formalism.L2.GlobalTheoryTheory Formalism.L2.GlobalTheoryTheory.LocalLatticeBases Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.S0 NumberField IsDedekindDomain Matrix Formalism.UG
 open scoped TensorProduct Classical
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Simplify using `only [Algebra.smul_def, map_natCast]`. Rewrite using `[mul_left_comm, mul_inv_cancel_left₀ hN]`.
+-/
 theorem nat_smul_inv {E : Type} [Field E] [NumberField E] {n : ℕ} (N : ℕ) (hN : (N : E) ≠ 0) (a : 𝓞 E) (w : Fin n → E) :
     ((N : ℕ) : 𝓞 E) • (a • (((N : ℕ) : E)⁻¹ • w)) = a • w := by
   ext i
@@ -19,6 +22,35 @@ variable {D : D7} {u : D.what₂.Word}
 set_option maxHeartbeats 16000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Take `⟨s1, e1, p1, d1, f1⟩` from `H1`. Take `⟨s3, e3, p3, d3, f3⟩` from `H3`. Establish `hTne : (((D.mem u).A.T : ℕ) : D.host.E) ≠ 0` using `by exact_mod_cast (D.mem u).A.T_prime.ne_zero`. Establish `eM : ((Γ3.1⁻¹ * Γ1.1 : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) = ((Γ3.1⁻¹ : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) * Γ1.1.1` using `Units.val_mul _ _`. Establish `hP : Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (mulLat ((Γ3.1⁻¹ * Γ1.1 : GL (Fin (D.R.N 0)) D.host.E) : Matrix _ _ D.host.E) (clsCrd D u 0 (Nat.zero_le _) c1)) = Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (clsCrd D u 0 (Nat.zero_le _) c3)`.
+
+Rewrite using `[eM]`. Conclude with `rlv_chainP (T.atT.Pv v) _ _ (CrossDiaZero.use₄ (T.atT.Pv v) Γ3.1 p3) p1`. Establish `hPd : Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (mulLat ((Γ3.1⁻¹ * Γ1.1 : GL (Fin (D.R.N 0)) D.host.E) : Matrix _ _ D.host.E) (Ld D u 0 (Nat.zero_le _) c1)) = Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (Ld D u 0 (Nat.zero_le _) c3)`. Rewrite using `[eM]`. Conclude with `rlv_chainP (T.atT.Pv v) _ _ (CrossDiaZero.use₄ (T.atT.Pv v) Γ3.1 d3) (d1.trans hw)`.
+
+Establish `hΓU : Γ3.1⁻¹ * Γ1.1 ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _))` using `mul_mem (inv_mem Γ3.2) Γ1.2`. Establish `hQd` using `local_dual_Q_eq_of_P T.atT v c3 c1 (Γ3.1⁻¹ * Γ1.1) hΓU hP`. Establish `eback : ∀ y : Fin (D.R.N 0) → D.host.E, Γ3.1.1 *ᵥ (((Γ3.1⁻¹ * Γ1.1 : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ y) = Γ1.1.1 *ᵥ y`. Introduce `y`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel_left]`.
+
+Use `trip_mem T v c c1 c3 Γ1 Γ3 h1 h3 k1 k3 s1 s3 e1 e3 hP hPd ?_` and prove the remaining obligations. Introduce `z hz`. Take `⟨b, hbP, hbQ, hb⟩` from `rlv_two (T.atT.Pv v) (rlvQ T.atT v) hPd.le hQd.le (x := ((Γ3.1⁻¹ * Γ1.1 : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z) ⟨z, hz, rfl⟩`. Take `⟨r, hr, b', hb'⟩` from `rlv_norm T.atT v b hbP hbQ`. Use `set R := algebraMap (𝓞 D.host.F) (𝓞 D.host.E) r with hR`.
+
+Establish `hmem : R • (((Γ3.1⁻¹ * Γ1.1 : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z) ∈ Ld D u 0 (Nat.zero_le _) c3`. Rewrite using `[hb', mul_smul]`. Conclude with `Submodule.smul_mem _ _ hb`. Use `⟨r, hr, hmem, ?_⟩` and prove the remaining obligations. Establish `hRz : R • z ∈ Ld D u 0 (Nat.zero_le _) c1` using `Submodule.smul_mem _ _ hz`.
+
+Establish `hloc : Γ1.1.1 *ᵥ (R • z) ∈ Formalism.HermitianLatticesTheory.localization₂ (T.atT.Pv v) (clsCrd D u 0 (Nat.zero_le _) c ⊔ Submodule.span (𝓞 D.host.E) {(((D.mem u).A.T : ℕ) : D.host.E)⁻¹ • w1})`. Rewrite using `[← d1]`. Conclude with `mem_localization_of_mem₂ _ ⟨_, hRz, rfl⟩`. Take `⟨t0, ht0, ht0m⟩` from `(rlv_mem_locP _ _ _).1 hloc`. Take `⟨l0, hl0, m0, hm0, em⟩` from `Submodule.mem_sup.1 ht0m`.
+
+Take `⟨e0, rfl⟩` from `Submodule.mem_span_singleton.1 hm0`. Take `⟨t1, ht1, ht1w⟩` from `(rlv_mem_locP _ _ _).1 hw1`. Use `set t := t1 * t0 with ht`. Establish `htP : t ∉ T.atT.Pv v` using `fun h => (Ideal.IsPrime.mem_or_mem inferInstance h).elim ht1 ht0`. Establish `eW : (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (Γ1.1.1 *ᵥ (t • (R • z))) = (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (t1 • l0) + (e0 * t1) • w1`.
+
+Rewrite using `[Matrix.mulVec_smul, ht, mul_smul, ← em, smul_add, smul_add]`. Use `congr 1`. Rewrite using `[show t1 • (e0 • ((((D.mem u).A.T : ℕ) : D.host.E)⁻¹ • w1)) = (t1 * e0) • ((((D.mem u).A.T : ℕ) : D.host.E)⁻¹ • w1) from smul_smul _ _ _, nat_smul_inv _ hTne, mul_comm]`. Establish `hl : t1 • l0 ∈ clsCrd D u 0 (Nat.zero_le _) c` using `Submodule.smul_mem _ _ hl0`. Establish `hYL : (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (t1 • l0) + (e0 * t1) • w1 ∈ clsCrd D u 0 (Nat.zero_le _) c`.
+
+Use `add_mem (Submodule.smul_mem _ _ hl) ?_` and prove the remaining obligations. Rewrite using `[mul_smul]`. Conclude with `Submodule.smul_mem _ _ ht1w`. Establish `hY : (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (t1 • l0) + (e0 * t1) • w1 ∈ Lk T.atT 0 (Nat.zero_le _) v c` using `Submodule.mem_sup_left hYL`. Establish `hX1m : t • (R • z) ∈ Ld D u 0 (Nat.zero_le _) c1` using `Submodule.smul_mem _ _ hRz`.
+
+Establish `hX1 : (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (Γ1.1.1 *ᵥ (⟨_, hX1m⟩ : ↥(Ld D u 0 (Nat.zero_le _) c1)).1) ∈ Lk T.atT 0 (Nat.zero_le _) v c` using `by show (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (Γ1.1.1 *ᵥ (t • (R • z))) ∈ _`. Rewrite using `[eW]`. Conclude with `hY`. Establish `hX3m : t • (R • (((Γ3.1⁻¹ * Γ1.1 : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z)) ∈ Ld D u 0 (Nat.zero_le _) c3` using `Submodule.smul_mem _ _ hmem`. Establish `eX3 : Γ3.1.1 *ᵥ (t • (R • (((Γ3.1⁻¹ * Γ1.1 : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) *ᵥ z))) = Γ1.1.1 *ᵥ (t • (R • z))`.
+
+Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_smul, eback, Matrix.mulVec_smul, Matrix.mulVec_smul]`. Establish `hX3 : (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (Γ3.1.1 *ᵥ (⟨_, hX3m⟩ : ↥(Ld D u 0 (Nat.zero_le _) c3)).1) ∈ Lk T.atT 0 (Nat.zero_le _) v c` using `by show (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (Γ3.1.1 *ᵥ _) ∈ _`. Rewrite using `[eX3]`. Conclude with `hX1`. Establish `q1` using `f1 ⟨_, hX1m⟩ hX1`.
+
+Establish `q3` using `f3 ⟨_, hX3m⟩ hX3`. Establish `qg` using `hg _ hl _ hY`. Establish `k1e : T.lv0.prk v c ⟨_, hX1⟩ = T.lv0.prk v c ⟨_, hY⟩` using `congrArg _ (Subtype.ext eW)`. Establish `k3e : T.lv0.prk v c ⟨_, hX3⟩ = T.lv0.prk v c ⟨_, hY⟩`. Use `congrArg _ (Subtype.ext ?_)` and prove the remaining obligations.
+
+Use `show (((D.mem u).A.T : ℕ) : 𝓞 D.host.E) • (Γ3.1.1 *ᵥ _) = _`. Rewrite using `[eX3, eW]`. Rewrite `q1` using `[k1e]`. Rewrite `q3` using `[k3e]`. Establish `pr1 : T.lv0.pr v c1 ⟨_, hX1m⟩ = T.atT.res v t • T.lv0.pr v c1 ⟨_, Submodule.smul_mem _ _ hz⟩` using `T.lv0.pr_smul v c1 t ⟨_, Submodule.smul_mem _ _ hz⟩`.
+
+Establish `pr3 : T.lv0.pr v c3 ⟨_, hX3m⟩ = T.atT.res v t • T.lv0.pr v c3 ⟨_, hmem⟩` using `T.lv0.pr_smul v c3 t ⟨_, hmem⟩`. Rewrite `q1` using `[pr1, map_smul]`. Rewrite `q3` using `[pr3, map_smul]`. Establish `hres : T.atT.res v t ≠ 0` using `fun h0 => htP (RingHom.mem_ker.2 h0)`. Conclude with `smul_right_injective _ hres (q3.trans (qg.symm.trans q1.symm))`.
+-/
 theorem comp_cmp (T : Forms0 D u) (v : (D.mem u).A.vT) (c c1 c3 : (D.mem u).C.cls 0)
     (w1 w3 : Fin (D.R.N 0) → D.host.E)
     (g1 g3 : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c))

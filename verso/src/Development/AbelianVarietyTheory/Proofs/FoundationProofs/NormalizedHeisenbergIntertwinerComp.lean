@@ -11,6 +11,19 @@ open scoped BigOperators
 
 namespace GlobalTheory.FinWeil
 
+/- English proof (translation)
+Introduce `R X M _ _ _ _ _ σ w γ W h lam hlam A B C hA hB hC hAB hAC v hv`. Proceed by induction on `hn : idx A B using Nat.strong_induction_on generalizing A v with`. Consider the case `_ n ih`. Distinguish the cases in `hle : B ≤ A`. Establish `hAB' : A = B`.
+
+Use `le_antisymm (fun x hx => (hB x).2 fun b hb => h.iso hA hx (hle hb)) hle` and prove the remaining obligations. Substitute `hAB'` using the available equality. Take `⟨h1, h2⟩` from `(GlobalTheory.T.sumOp_transversal_fixes_linear_and_of_le h A A hA).2.2 le_rfl`. Establish `: normOp lam W A A v = v`. Rewrite using `[normOp, h1, map_one, inv_one, one_smul, h2 v hv]`.
+
+Rewrite using `[this]`. Take `⟨A', hA', hadj, hbet⟩` from `GlobalTheory.T.exists_adjacent_selfDual_lattice_toward h A B hA hB hAB hle`. Take `⟨x, hx, P, hP, hfin, hann, hgen⟩` from `id hadj`. Take `⟨e1, e2, -⟩` from `GlobalTheory.T.adjacent_selfDual_lattices_index_simple h A A' hA hA' x hx P hP hfin hann hgen`. Establish `hcard : 1 < Nat.card (R ⧸ P)` using `by haveI : Nontrivial (R ⧸ P) := Ideal.Quotient.nontrivial_iff.2 hP.ne_top`.
+
+Conclude with `Finite.one_lt_card`. Establish `hAA' : idx A A' ≠ 0` using `by omega`. Establish `hA'A : idx A' A ≠ 0` using `by omega`. Establish `hA'B : idx A' B ≠ 0` using `AddSubgroup.relIndex_ne_zero_trans hA'A hAB`. Establish `hA'C : idx A' C ≠ 0` using `AddSubgroup.relIndex_ne_zero_trans hA'A hAC`.
+
+Establish `hmul` using `(GlobalTheory.T.heisenbergIntertwiningSum_comp_of_intermediate_lattice h A A' B hA hA' hB hAA' hA'B hbet).1`. Establish `hlt : idx A' B < n`. Rewrite using `[← hn, hmul, e1]`. Conclude with `lt_mul_of_one_lt_left (Nat.pos_of_ne_zero hA'B) hcard`. Establish `hfix : Fixes W A' (normOp lam W A A' v)`.
+
+Introduce `a ha`. Rewrite using `[normOp, map_smul, ((GlobalTheory.T.sumOp_transversal_fixes_linear_and_of_le h A A' hA').2.1 hAA').2.1 v hv a ha]`. Rewrite using `[← GlobalTheory.T.normalizedIntertwiner_comp_of_adjacent_lattices h lam hlam A A' B hA hA' hB hadj hAB v hv, ih _ hlt A' hA' hA'B hA'C _ hfix rfl, GlobalTheory.T.normalizedIntertwiner_comp_of_adjacent_lattices h lam hlam A A' C hA hA' hC hadj hAC v hv]`.
+-/
 theorem normOp_comp : ∀ {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] {σ : R →+* R} {w : R} {γ : X → X → ℂ} {W : X → M →ₗ[ℂ] M}, IsHeis σ w γ W → ∀ lam : ℕ →* ℂ, GoodNorm σ lam → ∀ (A B C : Submodule R X), SelfDual γ A → SelfDual γ B → SelfDual γ C → idx A B ≠ 0 → idx A C ≠ 0 → ∀ v, Fixes W A v → normOp lam W B C (normOp lam W A B v) = normOp lam W A C v := by
   intro R X M _ _ _ _ _ σ w γ W h lam hlam A B C hA hB hC hAB hAC v hv
   induction hn : idx A B using Nat.strong_induction_on generalizing A v with

@@ -19,6 +19,19 @@ set_option maxHeartbeats 800000
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ConjExpandRational
 end GlobalTheory.ConjExpandRational
+/- English proof (translation)
+Introduce `_ _ _ _`. Unfold `_root_.GlobalTheory.BigOn.Exp.TwistConditions _root_.GlobalTheory.BigOn.AtPtsAlt`. Use `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => ⟨0, fun x hx _ i p hr hm w _ j τ hτ Φ Φ' hC => ?_⟩⟩⟩` and prove the remaining obligations. Establish `hU : p.R.toRealDat.LUnif` using `hr.prim.unif`. Establish `hb` using `GlobalTheory.IndefiniteRowSideFullHecke.LatticePartsOverBalls.base_of_tie (i := j) p.fw`.
+
+Establish `hso : (p.O j).s0 = res p.T (sg0 _ p.P.A3.A)` using `(sOv_eq p.T.toCore (p.O j).c' (p.O j).hle).trans hb.1.symm`. Establish `hev` using `GlobalTheory.ConjExpandRational.evaluates_of_unif' p.fw hU j (sg0 _ p.P.A3.A) hb.2.1 hb.2.2`. Set `gf : p.T.cuspA ((j : ℕ) + 1) (wtA (p.κ j)) (p.κ j).n → NX.FmK p.Sx ((j : ℕ) + 1)` to `fun f => ⟨(p.nexp.fi j).e.symm (p.fw.e j f), ((p.nexp.fi j).wk _).2 (by rw [LinearEquiv.apply_symm_apply]; exact (p.fw.e j f).2)⟩`. Establish `hread : ∀ (f : p.T.cuspA ((j : ℕ) + 1) (wtA (p.κ j)) (p.κ j).n) h, (lieFac (p.T.Q.Dw ((j : ℕ) + 1)) (xiR (Fm.D x i)) (wtA (p.κ j)) : ℂ) * (p.O j).phi (p.T.cE ((j : ℕ) + 1) (p.O j).s0) (f : p.T.R ((j : ℕ) + 1)) h = evW p.nexp p.v₀ j (gf f).val h`. Introduce `f h`.
+
+Rewrite using `[phi_cE p.T p.R.toRealDat p.O j]`. Use `Eq.trans ?_ ((congrFun (hev f) h).symm.trans ?_)` and prove the remaining obligations. Conclude with `congrFun (GlobalTheory.LiftRatObj.phiC_congr p.T hso (p.O j).hV hb.2.2 _ _) h`. Use `show _ = ((p.R.HW j (sg0 _ p.P.A3.A)).e (((p.R.FW j).j (sg0 _ p.P.A3.A)) ((p.nexp.fi j).e ((p.nexp.fi j).e.symm (p.fw.e j f))))) (p.v₀ j (sg0 _ p.P.A3.A)) h`. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+
+Both sides reduce to the same expression. Take `⟨⟨n, a, f, hf⟩, h2⟩` from `hC`. Establish `hf'` using `h2 n a f hf`. Use `⟨n, a, fun k => gf (f k), funext fun h => ?_, funext fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[hf h, Finset.sum_apply]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, hread]`. Rewrite using `[hf' h, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, hread]`.
+
+Simplify using `only [one_mul]`.
+-/
 theorem GlobalTheory.ConjExpandRational.exists_evW_expansion_of_conjFun : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt → GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.SeriesRat → _root_.GlobalTheory.BigOn.Exp.TwistConditions fun Fm x hx i p w j => ∀ τ : ℂ ≃+* ℂ,
   (∀ y, τ (Formalism.L2.Host.embLL0 (Fm.D x i) y) = Formalism.L2.Host.embLL0 (Fm.D x i) y) →
   ∀ Φ Φ' : GA (Fm.D x i) (Wc (Fm.D x i) j) → ℂ, GlobalTheory.ConjTwist.ConjFun (p.O j) (p.κ j) τ 1 Φ Φ' →

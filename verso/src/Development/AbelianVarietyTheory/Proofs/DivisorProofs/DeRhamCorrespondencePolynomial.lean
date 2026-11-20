@@ -10,6 +10,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R R' _ _ σ A _ A' _ b φ m f f' _ _ e`. Establish `hT : ∀ (x : HdR A) (x' : HdR A'), m.Corr x x' → m.Corr (push (dp0 R) (𝟙 _) f x) (push (dp0 R') (𝟙 _) f' x')` using `fun x x' h ↦ GrpMor.Corr.push (m := m) m f f' e h`. Introduce `x x' hx Q`. Use `revert x x'`. Use `Polynomial.induction_on Q ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `a x x' hx c`. Simplify using `only [Polynomial.aeval_C, Polynomial.map_C, Module.algebraMap_end_apply, LinearMap.smul_apply, smul_eq_mul, hx c, map_mul]`. Introduce `p q hp hq x x' hx c`. Simplify using `only [Polynomial.map_add, map_add, LinearMap.add_apply, hp x x' hx c, hq x x' hx c]`. Introduce `n a ih x x' hx`.
+
+Establish `h` using `ih _ _ (hT x x' hx)`. Rewrite using `[_root_.pow_succ, ← _root_.mul_assoc, Polynomial.map_mul, Polynomial.map_X]`. Simplify using `only [map_mul, Polynomial.aeval_X, Module.End.mul_apply] at h ⊢`. Conclude with `h`.
+-/
 theorem DeRham.corr_aeval_push : ∀ (R R' : Type) [CommRing R] [CommRing R'] (σ : R →+* R') (A : Over (Sp R)) [GrpObj A] (A' : Over (Sp R')) [GrpObj A']
     (b : Sp R' ⟶ Sp R) (φ : A'.left ⟶ A.left) (m : GrpMor (dp0 R) (𝟙 _) A (dp0 R') (𝟙 _) A' σ b φ) (f : A ⟶ A) (f' : A' ⟶ A')
     [IsMonHom f] [IsMonHom f'], φ ≫ f.left = f'.left ≫ φ → ∀ (x : HdR A) (x' : HdR A'), m.Corr x x' →

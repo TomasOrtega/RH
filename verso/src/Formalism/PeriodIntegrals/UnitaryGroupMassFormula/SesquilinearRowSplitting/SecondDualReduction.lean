@@ -9,10 +9,16 @@ section Gen
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E)
 
+/- English proof (translation)
+Simplify using `[Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_one]`.
+-/
 theorem mem_dual_iff' (Λ : Submodule (𝓞 E) S.V) (x : S.V) :
     x ∈ Formalism.HermitianLatticesTheory.dual S.hT Λ ↔ ∀ y ∈ Λ, ∃ o : 𝓞 E, algebraMap (𝓞 E) E o = S.hT y x := by
   simp [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_one]
 
+/- English proof (translation)
+Establish `hx' : x ∈ Formalism.HermitianLatticesTheory.dual S.hT Λ`. Rewrite using `[show Formalism.HermitianLatticesTheory.dual S.hT Λ = Λ from hU]`. Conclude with `hx`. Conclude with `(mem_dual_iff' S Λ x).mp hx' y hy`.
+-/
 theorem pair_int {Λ : Submodule (𝓞 E) S.V} (hU : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ) {x y : S.V}
     (hx : x ∈ Λ) (hy : y ∈ Λ) : ∃ o : 𝓞 E, algebraMap (𝓞 E) E o = S.hT y x := by
   have hx' : x ∈ Formalism.HermitianLatticesTheory.dual S.hT Λ := by
@@ -22,6 +28,13 @@ theorem pair_int {Λ : Submodule (𝓞 E) S.V} (hU : Formalism.HermitianLattices
 
 end Gen
 
+/- English proof (translation)
+Introduce `E _ _ _ S r T aa F0 Λ hC b x hx`. Take `⟨_, hU, _, _, hX, hne, hst, _⟩` from `hC`. Rewrite using `[FractionalIdeal.mem_inv_iff (hne b)]`. Introduce `t ht`. Establish `h1 : star t • F0.e b ∈ Formalism.L2.SG.Saturated.latSpan aa F0.e` using `Submodule.subset_span ⟨b, star t, hst b t ht, rfl⟩`.
+
+Establish `h2 : star t • F0.e b ∈ XLam Λ (⟨F0, F0.z⟩ : LFlag S r T)` using `hX ▸ h1`. Establish `hmem : star t • F0.e b ∈ Λ` using `(Submodule.mem_inf.1 h2).1`. Take `⟨o, ho⟩` from `pair_int S hU hx hmem`. Rewrite using `[FractionalIdeal.mem_one_iff]`. Use `⟨o, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ho, LinearMap.map_smulₛₗ₂, starRingEnd_apply, star_star, smul_eq_mul, mul_comm]`.
+-/
 theorem first_dual_reduction : DualEStep := by
   intro E _ _ _ S r T aa F0 Λ hC b x hx
   obtain ⟨_, hU, _, _, hX, hne, hst, _⟩ := hC
@@ -36,6 +49,13 @@ theorem first_dual_reduction : DualEStep := by
   refine ⟨o, ?_⟩
   rw [ho, LinearMap.map_smulₛₗ₂, starRingEnd_apply, star_star, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Introduce `E _ _ _ S r T aa F0 Λ hC f hF b y hy`. Take `⟨_, hU, _, _, _, hne, hst, _⟩` from `hC`. Establish `hU'` using `hU`. Unfold `Formalism.HermitianLatticesTheory.IsUnimodular at hU'`. Rewrite using `[← hU', mem_dual_iff']`.
+
+Introduce `l hl`. Establish `h1 : S.hT (f b) l ∈ aa b` using `hF.2.2 b l hl`. Establish `h2` using `(FractionalIdeal.mem_inv_iff (hne b)).1 hy _ (hst b _ h1)`. Rewrite `h2` using `[FractionalIdeal.mem_one_iff]`. Take `⟨o, ho⟩` from `h2`.
+
+Use `⟨o, ?_⟩` and prove the remaining obligations. Rewrite using `[ho, map_smul, smul_eq_mul, ← LinearMap.isSymm_def.1 S.herm (f b) l, starRingEnd_apply]`.
+-/
 theorem second_dual_reduction : DualFStep := by
   intro E _ _ _ S r T aa F0 Λ hC f hF b y hy
   obtain ⟨_, hU, _, _, _, hne, hst, _⟩ := hC
@@ -50,6 +70,23 @@ theorem second_dual_reduction : DualFStep := by
   refine ⟨o, ?_⟩
   rw [ho, map_smul, smul_eq_mul, ← LinearMap.isSymm_def.1 S.herm (f b) l, starRingEnd_apply]
 
+/- English proof (translation)
+Introduce `E _ _ _ S r T aa F0 Λ hC f hF hiso`. Establish `hE` using `first_dual_reduction E S r T aa F0 Λ hC`. Establish `hFd` using `second_dual_reduction E S r T aa F0 Λ hC f hF`. Take `⟨_, _, hz, _, hX, _, _, _⟩` from `hC`. Establish `herm : ∀ x y, star (S.hT x y) = S.hT y x` using `fun x y => by`.
+
+Rewrite using `[← starRingEnd_apply]`. Conclude with `LinearMap.isSymm_def.1 S.herm x y`. Establish `hfe : ∀ c a, S.hT (f c) (F0.e a) = if a = c then 1 else 0` using `fun c a => by`. Rewrite using `[← herm, hF.1 a c]`. Apply the tactic sequence `by_cases h : a = c <;> simp [h]`.
+
+Establish `hXle : Formalism.L2.SG.Saturated.latSpan aa F0.e ≤ Λ`. Introduce `x hx`. Establish `h2 : x ∈ XLam Λ (⟨F0, F0.z⟩ : LFlag S r T)` using `hX ▸ hx`. Conclude with `(Submodule.mem_inf.1 h2).1`. Establish `hYle : Formalism.L2.SG.Saturated.latSpan (fun a => (aa a)⁻¹) f ≤ Λ`.
+
+Rewrite using `[Formalism.L2.SG.Saturated.latSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨a, y, hy, rfl⟩`. Conclude with `hFd a y hy`. Set `L : Submodule (𝓞 E) S.V` to `Λ ⊓ ⨅ a, (LinearMap.ker ((S.hT (F0.e a)).restrictScalars (𝓞 E)) ⊓ LinearMap.ker ((S.hT (f a)).restrictScalars (𝓞 E)))`. Establish `hmemL : ∀ x, x ∈ L ↔ x ∈ Λ ∧ ∀ a, S.hT (F0.e a) x = 0 ∧ S.hT (f a) x = 0` using `fun x => by`.
+
+Simplify using `[L, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker]`. Use `⟨f, L, hiso, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b`. Rewrite using `[hF.1 a b]`. Introduce `x hx a`.
+
+Conclude with `((hmemL x).1 hx).2 a`. Conclude with `(hmemL _).2 ⟨hz, fun a => ⟨F0.z_orth a, hF.2.1 a⟩⟩`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `l hl`. Establish `hPmem : (∑ a, S.hT (f a) l • F0.e a) ∈ Formalism.L2.SG.Saturated.latSpan aa F0.e` using `Submodule.sum_mem _ (fun a _ => Submodule.subset_span ⟨a, _, hF.2.2 a l hl, rfl⟩)`.
+
+Establish `hQmem : (∑ b, S.hT (F0.e b) l • f b) ∈ Formalism.L2.SG.Saturated.latSpan (fun a => (aa a)⁻¹) f` using `Submodule.sum_mem _ (fun b _ => Submodule.subset_span ⟨b, _, hE b l hl, rfl⟩)`. Establish `hμ : l - (∑ a, S.hT (f a) l • F0.e a) - (∑ b, S.hT (F0.e b) l • f b) ∈ L`. Rewrite using `[hmemL]`. Use `⟨Λ.sub_mem (Λ.sub_mem hl (hXle hPmem)) (hYle hQmem), fun c => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `[map_sum, F0.e_iso, hF.1, Finset.sum_ite_eq]`.
+
+Simplify using `[map_sum, hfe, hiso, Finset.sum_ite_eq']`. Establish `hsplit : l = (∑ a, S.hT (f a) l • F0.e a) + (l - (∑ a, S.hT (f a) l • F0.e a) - (∑ b, S.hT (F0.e b) l • f b)) + (∑ b, S.hT (F0.e b) l • f b)` using `by abel`. Rewrite using `[hsplit]`. Conclude with `Submodule.add_mem_sup (Submodule.add_mem_sup hPmem hμ) hQmem`. Conclude with `sup_le (sup_le hXle (fun x hx => ((hmemL x).1 hx).1)) hYle`.
+-/
 theorem assembly_reduction : AsmStep := by
   intro E _ _ _ S r T aa F0 Λ hC f hF hiso
   have hE := first_dual_reduction E S r T aa F0 Λ hC

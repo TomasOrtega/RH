@@ -13,17 +13,31 @@ namespace GlobalTheory.CompanionTheory.TyFinAL
 
 open ReciprocityTheory.Ty.Fin.Lq
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i => lt_irrefl i, fun _ _ _ h h' => lt_trans h h'⟩`.
+-/
 theorem lt_isPat (N : ℕ) : IsPat (fun i j : Fin N => i < j) :=
   ⟨fun i => lt_irrefl i, fun _ _ _ h h' => lt_trans h h'⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i h => lt_irrefl i h.1, fun _ _ _ h h' => ⟨lt_trans h.1 h'.1, h'.2⟩⟩`.
+-/
 theorem colPat_isPat (N k : ℕ) : IsPat (colPat N k) :=
   ⟨fun i h => lt_irrefl i h.1, fun _ _ _ h h' => ⟨lt_trans h.1 h'.1, h'.2⟩⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Conclude with `h (by simp only [cutE]; rw [if_neg hc])`.
+-/
 theorem cutE_ne (K : Type) [Field K] [Fintype K] [DecidableEq K] {N k : ℕ} {i j : Fin N}
     (h : cutE K N k i j ≠ 0) : (j : ℕ) = i + 1 ∧ (j : ℕ) ≠ k := by
   by_contra hc
   exact h (by simp only [cutE]; rw [if_neg hc])
 
+/- English proof (translation)
+Use `⟨fun i j h => ?_, fun i j l h h' => ?_⟩` and prove the remaining obligations. Use `(cutE_ne K h).1` as an intermediate fact. Conclude with `Fin.lt_def.2 (by omega)`. Assume the negation of the conclusion as `hc`. Use `(cutE_ne K hc).1` as an intermediate fact.
+
+Establish `h1` using `Fin.lt_def.1 h`. Establish `h2` using `Fin.lt_def.1 h'`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem cutE_lt (K : Type) [Field K] [Fintype K] [DecidableEq K] (N k : ℕ) :
     IsPatChar (fun i j : Fin N => i < j) (cutE K N k) := by
   refine ⟨fun i j h => ?_, fun i j l h h' => ?_⟩
@@ -35,16 +49,29 @@ theorem cutE_lt (K : Type) [Field K] [Fintype K] [DecidableEq K] (N k : ℕ) :
     have h2 := Fin.lt_def.1 h'
     omega
 
+/- English proof (translation)
+Use `⟨fun i j h => ?_, fun i j l h h' => (cutE_lt K N k).2 i j l h.1 h'.1⟩` and prove the remaining obligations. Conclude with `⟨(cutE_lt K N k).1 i j h, (cutE_ne K h).2⟩`.
+-/
 theorem cutE_col (K : Type) [Field K] [Fintype K] [DecidableEq K] (N k : ℕ) :
     IsPatChar (colPat N k) (cutE K N k) := by
   refine ⟨fun i j h => ?_, fun i j l h h' => (cutE_lt K N k).2 i j l h.1 h'.1⟩
   exact ⟨(cutE_lt K N k).1 i j h, (cutE_ne K h).2⟩
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.CompanionTheory.PatGrp.patGroup K (Fin N) Φ hΦ).2.2 E ψ₀ hE |>.2.2.2 τ τ.ρ`.
+-/
 theorem wh_nat {K : Type} [Field K] [Fintype K] [DecidableEq K] {N : ℕ} {Φ : Fin N → Fin N → Prop}
     (hΦ : IsPat Φ) {E : Fin N → Fin N → K} (hE : IsPatChar Φ E) (ψ₀ : AddChar K ℂ)
     (τ : FDRep ℂ (GL (Fin N) K)) : ∃ m : ℕ, wh Φ E ψ₀ τ.character = m :=
   (GlobalTheory.CompanionTheory.PatGrp.patGroup K (Fin N) Φ hΦ).2.2 E ψ₀ hE |>.2.2.2 τ τ.ρ
 
+/- English proof (translation)
+Use `choose D hD using fun i => wh_nat (lt_isPat N) (cutE_lt K N i) ψ₀ τ`. Use `choose n hn using fun k => wh_nat (colPat_isPat N k) (cutE_col K N k) ψ₀ τ`. Use `⟨D, n, hD, hn, fun k hk => ?_⟩` and prove the remaining obligations. Establish `hcl : ∀ x y, τ.character (x * y * x⁻¹) = τ.character y` using `fun x y => by`. Simplify using `using FDRep.char_conj τ y x`.
+
+Establish `h1` using `GlobalTheory.CompanionTheory.TyFin.colRec K N k ψ₀ τ.character hψ hcl hk`. Establish `h2` using `(GlobalTheory.CompanionTheory.TyFinRow.rowToCol K N ψ₀ τ.character hψ hcl).1`. Establish `h3 : ∑ a ∈ Finset.range k, wh (rowPat N k a) (rowE K N k a) ψ₀ τ.character = ∑ a ∈ Finset.range k, (n (k - 1 - a) : ℂ)` using `Finset.sum_congr rfl fun a ha => by rw [h2 k a (Finset.mem_range.1 ha) hk, hn]`. Rewrite `h1` using `[h3, hn, hD]`. Apply `Complex.ofReal_injective` to reduce the goal to its premises.
+
+Use `push_cast`. Conclude with `h1`.
+-/
 theorem exists_rec {K : Type} [Field K] [Fintype K] [DecidableEq K] (N : ℕ) (ψ₀ : AddChar K ℂ)
     (hψ : ψ₀ ≠ 1) (τ : FDRep ℂ (GL (Fin N) K)) :
     ∃ D n : ℕ → ℕ, (∀ i, wh (fun i j : Fin N => i < j) (cutE K N i) ψ₀ τ.character = D i) ∧

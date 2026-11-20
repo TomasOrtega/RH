@@ -11,6 +11,9 @@ variable {l : ℕ} [hl : Fact l.Prime] {E Ω : Type} [Field E] [NumberField E] [
   [IsAlgClosure E Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {j : Ω →+* PadicAlgCl l}
   {A : ValuationSubring Ω} (hj : ∀ x, x ∈ A ↔ ‖j x‖ ≤ 1)
 
+/- English proof (translation)
+Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.CovariantDegrees.continuous_rHom <;> assumption`.
+-/
 theorem continuous_rHom : Continuous (rHom (E := E) hj) :=
   by apply _root_.UpperTheory.Reformulated.B.CovariantDegrees.continuous_rHom <;> assumption
 
@@ -21,14 +24,23 @@ instance compact_GK (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimens
 def eDec : ↥(Dec (F := E) A) ≃* ↥(KwF (E := E) j).fixingSubgroup :=
   (MulEquiv.ofBijective (rHom hj) ⟨rHom_injective hj, rHom_surjective hj⟩).symm
 
+/- English proof (translation)
+Rewrite using `[← j_rHom hj]`. Use `congr 2`. Conclude with `congrArg Subtype.val ((MulEquiv.ofBijective (rHom hj) ⟨rHom_injective hj, rHom_surjective hj⟩).apply_symm_apply g)`.
+-/
 theorem eDec_comm (g : ↥(Dec (F := E) A)) (x : Ω) :
     ((eDec hj g : ↥(KwF (E := E) j).fixingSubgroup) : GQ l) (j x) = j ((g : G E Ω) x) := by
   rw [← j_rHom hj]
   congr 2
   exact congrArg Subtype.val ((MulEquiv.ofBijective (rHom hj) ⟨rHom_injective hj, rHom_surjective hj⟩).apply_symm_apply g)
 
+/- English proof (translation)
+The claim follows from `continuous_rHom hj`.
+-/
 theorem continuous_eDec_symm : Continuous (eDec (E := E) hj).symm := continuous_rHom hj
 
+/- English proof (translation)
+The claim follows from `Continuous.continuous_symm_of_equiv_compact_to_t2 (f := (MulEquiv.ofBijective (rHom hj) ⟨rHom_injective hj, rHom_surjective hj⟩).toEquiv) (continuous_rHom hj)`.
+-/
 theorem continuous_eDec : Continuous (eDec (E := E) hj) :=
   Continuous.continuous_symm_of_equiv_compact_to_t2
     (f := (MulEquiv.ofBijective (rHom hj) ⟨rHom_injective hj, rHom_surjective hj⟩).toEquiv)
@@ -55,6 +67,9 @@ def bridgeOf (LL : FinExt l)
 def nclo (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K] : FinExt l :=
   ⟨IntermediateField.normalClosure ℚ_[l] K (PadicAlgCl l), inferInstance⟩
 
+/- English proof (translation)
+The claim follows from `τ.fieldRange_le_normalClosure ⟨x, rfl⟩`.
+-/
 theorem mem_nclo (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K]
     (τ : ↥K →ₐ[ℚ_[l]] Om l) (x : ↥K) : τ x ∈ (nclo K).1 :=
   τ.fieldRange_le_normalClosure ⟨x, rfl⟩
@@ -65,6 +80,9 @@ namespace Formalism.BasicNotions.Examples₂
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc LB
 
+/- English proof (translation)
+Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap E Ω).injective`. Use `haveI : IsAlgClosure ℚ Ω := isAlgClosureQ E Ω`. Take `⟨j, hj⟩` from `exists_emb (l := l) A hA`. Conclude with `⟨j, hj, fun LL hLL => ⟨bridgeOf hj LL hLL, rfl, rfl, rfl⟩⟩`.
+-/
 theorem locBridge_nonempty (l : ℕ) [Fact l.Prime] (E Ω : Type) [Field E] [NumberField E] [Field Ω]
     [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (hA : A.valuation ((l : ℕ) : Ω) < 1) :
     ∃ (j : Ω →+* Om l) (_ : ∀ x, x ∈ A ↔ ‖j x‖ ≤ 1), ∀ LL : FinExt l,

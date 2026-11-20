@@ -21,6 +21,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ChF
 
+/- English proof (translation)
+Rewrite using `[Submodule.iSup_eq_range_dfinsupp_lsum, LinearMap.finrank_range_of_inj hi.dfinsupp_lsum_injective]`. Conclude with `Module.finrank_directSum (R := K) (fun i => S i)`.
+-/
 private theorem finrank_iSup_indep {K V I : Type} [Field K] [AddCommGroup V] [Module K V] [Module.Finite K V]
     [Fintype I] (S : I → Submodule K V) (hi : iSupIndep S) :
     Module.finrank K ↥(⨆ i, S i) = ∑ i, Module.finrank K (S i) := by
@@ -28,6 +31,15 @@ private theorem finrank_iSup_indep {K V I : Type} [Field K] [AddCommGroup V] [Mo
   rw [Submodule.iSup_eq_range_dfinsupp_lsum, LinearMap.finrank_range_of_inj hi.dfinsupp_lsum_injective]
   exact Module.finrank_directSum (R := K) (fun i => S i)
 
+/- English proof (translation)
+Establish `hf : IsIdempotentElem (Matrix.mulVecLin P)` using `by show Matrix.mulVecLin P ∘ₗ Matrix.mulVecLin P = _`. Rewrite using `[← Matrix.mulVecLin_mul, h]`. Establish `hp` using `LinearMap.IsIdempotentElem.isProj_range _ hf`. Use `haveI : Module.Projective O (LinearMap.range (Matrix.mulVecLin P)) := Module.Projective.of_split (LinearMap.range (Matrix.mulVecLin P)).subtype hp.codRestrict (by`. Use extensionality with `x : 1`.
+
+Conclude with `hp.codRestrict_apply_cod x)`. Use `haveI : Module.Free O (LinearMap.range (Matrix.mulVecLin P)) := Module.free_of_flat_of_isLocalRing`. Use `haveI : Module.Projective O (LinearMap.ker (Matrix.mulVecLin P)) := by`. Establish `hq` using `LinearMap.IsIdempotentElem.isProj_range _ hf.one_sub`. Establish `: LinearMap.range (1 - Matrix.mulVecLin P) = LinearMap.ker (Matrix.mulVecLin P)` using `(LinearMap.IsIdempotentElem.ker_eq_range_one_sub hf).symm`.
+
+Rewrite `hq` using `[this]`. Conclude with `Module.Projective.of_split (LinearMap.ker (Matrix.mulVecLin P)).subtype hq.codRestrict (by`. Use extensionality with `x : 1`. Conclude with `hq.codRestrict_apply_cod x)`. Use `haveI : Module.Finite O (LinearMap.ker (Matrix.mulVecLin P)) := by`.
+
+Rewrite using `[LinearMap.IsIdempotentElem.ker_eq_range_one_sub hf]`. Use `infer_instance`. Use `haveI : Module.Free O (LinearMap.ker (Matrix.mulVecLin P)) := Module.free_of_flat_of_isLocalRing`. Use `⟨_, ?_, rfl, ⟨(Module.finBasis O _).equivFun⟩⟩` and prove the remaining obligations. Rewrite using `[← hp.trace, ← Matrix.toLin'_apply', Matrix.trace_toLin'_eq]`.
+-/
 private theorem range_idem {O : Type} [CommRing O] [IsLocalRing O] {g : ℕ} (P : Matrix (Fin g) (Fin g) O)
     (h : P * P = P) : ∃ r : ℕ, Matrix.trace P = (r : O) ∧ Module.finrank O (LinearMap.range (Matrix.mulVecLin P)) = r ∧
       Nonempty (LinearMap.range (Matrix.mulVecLin P) ≃ₗ[O] (Fin r → O)) := by
@@ -55,6 +67,37 @@ private theorem range_idem {O : Type} [CommRing O] [IsLocalRing O] {g : ℕ} (P 
   refine ⟨_, ?_, rfl, ⟨(Module.finBasis O _).equivFun⟩⟩
   rw [← hp.trace, ← Matrix.toLin'_apply', Matrix.trace_toLin'_eq]
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ hv _ _ _ OE _ _ _ _ _ _ g ρ e he n t`. Use `haveI : IsDomain O := hv.hom_inj.isDomain (algebraMap O C)`. Use `haveI : ValuationRing O := ValuationRing.of_integers v hv`. Establish `hP : ρ e * ρ e = ρ e` using `by rw [← map_mul, he]`. Take `⟨r, htr, -, hne⟩` from `range_idem (ρ e) hP`.
+
+Establish `hPC : (ρ e).map (algebraMap O C) * (ρ e).map (algebraMap O C) = (ρ e).map (algebraMap O C)`. Rewrite using `[← Matrix.map_mul, hP]`. Take `⟨r', htr', hrk, -⟩` from `range_idem _ hPC`. Establish `hrr : r = r'`. Establish `: ((r : ℕ) : C) = r'`.
+
+Rewrite using `[← htr', ← AddMonoidHom.map_trace (algebraMap O C) (ρ e), htr]`. Simplify using the standard rewrite rules. Conclude with `this` after adjusting the coercions. Set `σ : (ℤ_[p] ⊗[ℤ] OE) →+* Module.End C (Fin g → C)` to `(Matrix.toLinAlgEquiv' (R := C) (n := Fin g)).toRingEquiv.toRingHom.comp ((algebraMap O C).mapMatrix.comp ρ)`. Establish `hσ : ∀ x, σ x = Matrix.toLin' ((ρ x).map (algebraMap O C))` using `fun x => rfl`.
+
+Set `ρE : OE →+* Module.End C (Fin g → C)` to `σ.comp (Algebra.TensorProduct.includeRight (R := ℤ) (A := ℤ_[p]) (B := OE)).toRingHom`. Take `⟨-, hd⟩` from `GlobalTheory.order_rep_diagonalisable C OE`. Take `⟨hind, htop⟩` from `hd (Fin g → C) ρE`. Take `⟨hex, h01, -⟩` from `GlobalTheory.ChF.embeddings_idempotents_conjugation p C v O hv OE`. Establish `hz` using `(GlobalTheory.ChF.padicInt_algebra_of_isAdicComplete_and_matrix_unique p O).2 g (ρ.comp (Algebra.TensorProduct.includeLeftRingHom (R := ℤ) (A := ℤ_[p]) (B := OE)))`.
+
+Use `set E : (OE →+* C) → Submodule C (Fin g → C) := fun τ => ⨅ a : OE, Module.End.eigenspace (ρE a) (τ a) with hE`. Establish `hact : ∀ (τ : OE →+* O) (y : Fin g → C), y ∈ E ((algebraMap O C).comp τ) → ∀ x, σ x y = algebraMap O C (tauExt τ x) • y`. Introduce `τ y hy x`. Establish `hy' : ∀ a, σ (1 ⊗ₜ[ℤ] a) y = algebraMap O C (τ a) • y`. Introduce `a`.
+
+Use `(Submodule.mem_iInf _).1 hy a` as an intermediate fact. Conclude with `Module.End.mem_eigenspace_iff.1 this`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' h h' => rw [map_add, map_add, map_add, LinearMap.add_apply, h, h', add_smul]`.
+
+Consider the case `tmul c a`. Establish `h1 : (c ⊗ₜ[ℤ] a : ℤ_[p] ⊗[ℤ] OE) = (c ⊗ₜ[ℤ] 1) * (1 ⊗ₜ[ℤ] a)` using `by simp`. Establish `h2 : ρ (c ⊗ₜ[ℤ] 1) = algebraMap ℤ_[p] O c • (1 : Matrix (Fin g) (Fin g) O)` using `hz c`. Establish `h3 : ∀ z, σ (c ⊗ₜ[ℤ] 1) z = algebraMap O C (algebraMap ℤ_[p] O c) • z`. Introduce `z`.
+
+Establish `: (algebraMap ℤ_[p] O c • (1 : Matrix (Fin g) (Fin g) O)).map (algebraMap O C) = algebraMap O C (algebraMap ℤ_[p] O c) • (1 : Matrix (Fin g) (Fin g) C)`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, Matrix.one_apply, Matrix.one_apply]`. Use `split_ifs`. Rewrite using `[map_one]`.
+
+Rewrite using `[map_zero]`. Rewrite using `[hσ, h2, this, map_smul, Matrix.toLin'_one]`. Both sides reduce to the same expression. Establish `h4 : tauExt τ (c ⊗ₜ[ℤ] a) = algebraMap ℤ_[p] O c * τ a`. Simplify using `[tauExt, Algebra.ofId_apply]`.
+
+Rewrite using `[h4, h1, map_mul, Module.End.mul_apply, h3, hy', smul_smul, map_mul]`. Establish `hinj : Function.Injective (fun j : Fin n => (algebraMap O C).comp ((t j : Emb (O` using `O) e) : OE →+* O)) := by`. Introduce `i j hij`. Apply `t.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Conclude with `(hex _).unique hij rfl`. Establish `hrange : LinearMap.range (σ e) = ⨆ j : Fin n, E ((algebraMap O C).comp ((t j : Emb (O` using `O) e) : OE →+* O)) := by`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[LinearMap.range_eq_map, ← htop, Submodule.map_iSup]`. Use `iSup_le fun τ => ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨τ', rfl, -⟩` from `hex τ`. Rewrite using `[hact τ' y hy e]`. Break down `h01 e τ' he with h | h` into its components or cases. Rewrite using `[h]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h, map_one, one_smul]`. Use `Submodule.mem_iSup_of_mem (t.symm ⟨τ', h⟩) ?_` and prove the remaining obligations. Rewrite using `[Equiv.apply_symm_apply]`. Conclude with `hy`.
+
+Use `iSup_le fun j => fun y hy => ⟨y, ?_⟩` and prove the remaining obligations. Establish `h : tauExt ((t j : Emb (O` using `O) e) : OE →+* O) e = 1 := (t j).2`. Rewrite using `[hact _ y hy e, h, map_one, one_smul]`. Establish `hsum` using `finrank_iSup_indep _ (hind.comp hinj)`. Establish `hfin : r' = ∑ j, eigDim C (fun a : OE => ρ (1 ⊗ₜ[ℤ] a)) ((algebraMap O C).comp ((t j : Emb (O` using `O) e) : OE →+* O)) := by`.
+
+Establish `h1 : Module.finrank C (LinearMap.range (σ e)) = r'` using `hrk`. Rewrite using `[← h1, hrange]`. Conclude with `hsum`. Rewrite using `[← hfin, ← hrr]`. Conclude with `hne`.
+-/
 theorem range_idempotent_equiv_sum_eigDim : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] (OE : Type) [CommRing OE] [IsDedekindDomain OE] [CharZero OE] [Module.Free ℤ OE] [Module.Finite ℤ OE] [StarRing OE] (g : ℕ) (ρ : (ℤ_[p] ⊗[ℤ] OE) →+* Matrix (Fin g) (Fin g) O) (e : ℤ_[p] ⊗[ℤ] OE), e * e = e → ∀ (n : ℕ) (t : Fin n ≃ Emb (O := O) e), Nonempty (LinearMap.range (Matrix.mulVecLin (ρ e)) ≃ₗ[O] (Fin (∑ j, eigDim C (fun a : OE => ρ (1 ⊗ₜ[ℤ] a)) ((algebraMap O C).comp ((t j : Emb (O := O) e) : OE →+* O))) → O)) := by
   intro p _ C _ _ _ v O _ _ hv _ _ _ OE _ _ _ _ _ _ g ρ e he n t
   haveI : IsDomain O := hv.hom_inj.isDomain (algebraMap O C)

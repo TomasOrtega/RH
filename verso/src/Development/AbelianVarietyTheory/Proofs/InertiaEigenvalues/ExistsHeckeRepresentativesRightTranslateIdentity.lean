@@ -20,14 +20,31 @@ namespace GlobalTheory.UpInj
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+The claim follows from `hk.1`.
+-/
 theorem levW_le_GfC (R : RealDat D A Ks) (i : Fin D.R.m) {k : GA D (Wc D i)} (hk : k ∈ levW R i) :
     k ∈ GfC (Wc D i) := hk.1
 
+/- English proof (translation)
+Simplify using `only [Set.mem_setOf_eq, KR, Subgroup.mem_subgroupOf, cf_eq_self_iff]`.
+-/
 theorem mem_locK_iff (R : RealDat D A Ks) (i : Fin D.R.m) (v : HeightOneSpectrum (𝓞 D.host.F)) (g : GfC (Wc D i)) :
     (g : GA D (Wc D i)) ∈ {k | k ∈ levW R i ∧ SuppF (Wc D i) (GlobalTheory.LevelProduct.fE D v) k} ↔
       g ∈ KR R i ∧ cf (Wc D i) v g = g := by
   simp only [Set.mem_setOf_eq, KR, Subgroup.mem_subgroupOf, cf_eq_self_iff]
 
+/- English proof (translation)
+Take `⟨C, hsupp, hrep⟩` from `hT.1 v _ (isFinIdem_fE v) α ((cf_eq_self_iff _ v α).1 hα)`. Use `⟨C.subtype (· ∈ GfC (Wc D i)), fun δ hδ => ?_, fun x ⟨k₁, k₂, h1, h2, h3, h4, hx⟩ => ?_⟩` and prove the remaining obligations. Rewrite `hδ` using `[Finset.mem_subtype]`. Use `⟨(cf_eq_self_iff _ v δ).2 (hsupp _ hδ), ?_⟩` and prove the remaining obligations. Take `⟨-, k₁, hk₁, k₂, hk₂, he⟩` from `hrep.1 _ hδ`.
+
+Use `⟨⟨k₁, levW_le_GfC R i hk₁.1⟩, ⟨k₂, levW_le_GfC R i hk₂.1⟩, ?_⟩` and prove the remaining obligations. Take `⟨a1, a2⟩` from `(mem_locK_iff R i v ⟨k₁, levW_le_GfC R i hk₁.1⟩).1 hk₁`. Take `⟨b1, b2⟩` from `(mem_locK_iff R i v ⟨k₂, levW_le_GfC R i hk₂.1⟩).1 hk₂`. Conclude with `⟨a1, a2, b1, b2, Subtype.ext he⟩`. Establish `hk₁` using `(mem_locK_iff R i v k₁).2 ⟨h1, h2⟩`.
+
+Establish `hk₂` using `(mem_locK_iff R i v k₂).2 ⟨h3, h4⟩`. Establish `hx' : (x : GA D (Wc D i)) = (k₁ : GA D (Wc D i)) * α * k₂` using `by rw [hx]; rfl`. Take `⟨γ, ⟨hγC, hγK⟩, huniq⟩` from `hrep.2 x ⟨_, hk₁, _, hk₂, hx'⟩`. Establish `hγG : γ ∈ GfC (Wc D i)` using `(hrep.1 γ hγC).1`. Establish `e : ((⟨γ, hγG⟩⁻¹ * x : GfC (Wc D i)) : GA D (Wc D i)) = γ⁻¹ * (x : GA D (Wc D i))`.
+
+Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Establish `hm` using `(mem_locK_iff R i v (⟨γ, hγG⟩⁻¹ * x)).1 (by rw [e]; exact hγK)`. Use `⟨⟨γ, hγG⟩, ⟨Finset.mem_subtype.2 hγC, hm⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `δ ⟨hδC, hδK, hδc⟩`. Establish `e' : ((δ⁻¹ * x : GfC (Wc D i)) : GA D (Wc D i)) = (δ : GA D (Wc D i))⁻¹ * (x : GA D (Wc D i))`.
+
+Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Establish `hm'` using `(mem_locK_iff R i v (δ⁻¹ * x)).2 ⟨hδK, hδc⟩`. Rewrite `hm'` using `[e']`. Conclude with `Subtype.ext (huniq (δ : GA D (Wc D i)) ⟨Finset.mem_subtype.1 hδC, hm'⟩)`.
+-/
 theorem dcRep_exists (R : RealDat D A Ks) (i : Fin D.R.m) (hT : TransLaws R i)
     (v : HeightOneSpectrum (𝓞 D.host.F)) (α : GfC (Wc D i)) (hα : cf (Wc D i) v α = α) :
     ∃ C, DCRep (cf (Wc D i) v) (KR R i) α C := by
@@ -57,6 +74,21 @@ theorem dcRep_exists (R : RealDat D A Ks) (i : Fin D.R.m) (hT : TransLaws R i)
     rw [e'] at hm'
     exact Subtype.ext (huniq (δ : GA D (Wc D i)) ⟨Finset.mem_subtype.1 hδC, hm'⟩)
 
+/- English proof (translation)
+Use `⟨fun γ hγ => ?_, fun γ hγ => ?_, fun x ⟨k₁, hk₁, k₂, hk₂, hx⟩ => ?_⟩` and prove the remaining obligations. Take `⟨δ, hδ, rfl⟩` from `Finset.mem_map.1 hγ`. Conclude with `(cf_eq_self_iff _ v δ).1 (hC.1 δ hδ).1`. Take `⟨δ, hδ, rfl⟩` from `Finset.mem_map.1 hγ`. Take `⟨-, k₁, k₂, h1, h2, h3, h4, he⟩` from `hC.1 δ hδ`.
+
+Use `⟨δ.2, k₁, (mem_locK_iff R i v k₁).2 ⟨h1, h2⟩, k₂, (mem_locK_iff R i v k₂).2 ⟨h3, h4⟩, ?_⟩` and prove the remaining obligations. Simplify using `[he]`. Establish `g₁` using `levW_le_GfC R i hk₁.1`. Establish `g₂` using `levW_le_GfC R i hk₂.1`. Establish `hxG : x ∈ GfC (Wc D i)`.
+
+Rewrite using `[hx]`. Conclude with `(GfC (Wc D i)).mul_mem ((GfC (Wc D i)).mul_mem g₁ α.2) g₂`. Take `⟨a1, a2⟩` from `(mem_locK_iff R i v ⟨k₁, g₁⟩).1 hk₁`. Take `⟨b1, b2⟩` from `(mem_locK_iff R i v ⟨k₂, g₂⟩).1 hk₂`. Establish `hx2 : (⟨x, hxG⟩ : GfC (Wc D i)) = ⟨k₁, g₁⟩ * α * ⟨k₂, g₂⟩`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul]`. Conclude with `hx`. Establish `hex` using `hC.2 ⟨x, hxG⟩ ⟨_, _, a1, a2, b1, b2, hx2⟩`. Take `⟨δ, ⟨hδC, hδK, hδc⟩, huniq⟩` from `hex`.
+
+Establish `hm` using `(mem_locK_iff R i v (δ⁻¹ * (⟨x, hxG⟩ : GfC (Wc D i)))).2 ⟨hδK, hδc⟩`. Establish `e : ((δ⁻¹ * (⟨x, hxG⟩ : GfC (Wc D i)) : GfC (Wc D i)) : GA D (Wc D i)) = (δ : GA D (Wc D i))⁻¹ * x`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Rewrite `hm` using `[e]`. Use `⟨(δ : GA D (Wc D i)), ⟨Finset.mem_map_of_mem _ hδC, hm⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `γ ⟨hγC, hγK⟩`. Take `⟨δ', hδ', rfl⟩` from `Finset.mem_map.1 hγC`. Establish `e' : ((δ'⁻¹ * (⟨x, hxG⟩ : GfC (Wc D i)) : GfC (Wc D i)) : GA D (Wc D i)) = (δ' : GA D (Wc D i))⁻¹ * x`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Take `⟨c1, c2⟩` from `(mem_locK_iff R i v (δ'⁻¹ * (⟨x, hxG⟩ : GfC (Wc D i)))).1 (by rw [e']; exact hγK)`.
+
+Conclude with `congrArg Subtype.val (huniq δ' ⟨hδ', c1, c2⟩)`.
+-/
 theorem isCosetRep_map (R : RealDat D A Ks) (i : Fin D.R.m) (v : HeightOneSpectrum (𝓞 D.host.F)) (α : GfC (Wc D i))
     (C : Finset (GfC (Wc D i))) (hC : DCRep (cf (Wc D i) v) (KR R i) α C) :
     (∀ γ ∈ C.map (Function.Embedding.subtype _), SuppF (Wc D i) (GlobalTheory.LevelProduct.fE D v) γ) ∧
@@ -94,6 +126,13 @@ theorem isCosetRep_map (R : RealDat D A Ks) (i : Fin D.R.m) (v : HeightOneSpectr
     obtain ⟨c1, c2⟩ := (mem_locK_iff R i v (δ'⁻¹ * (⟨x, hxG⟩ : GfC (Wc D i)))).1 (by rw [e']; exact hγK)
     exact congrArg Subtype.val (huniq δ' ⟨hδ', c1, c2⟩)
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R i hT B hB`. Use `⟨fun v α hα => dcRep_exists R i hT v α hα, fun v α C hα hC γ => ?_⟩` and prove the remaining obligations. Take `⟨hs, hr⟩` from `isCosetRep_map R i v α C hC`. Establish `hB1 : ∀ y, B 1 y = y` using `fun y => ext_inner_left ℂ fun x => by`. Rewrite using `[← hB, OneMemClass.coe_one, hT.2.2.2.2.2]`.
+
+Establish `key : ∀ (γ : GfC (Wc D i)) y y', (∀ γ ∈ GfC (Wc D i), ∀ x, trPair R i γ x y' = ∑ δ ∈ C.map (Function.Embedding.subtype _), trPair R i (γ * δ) x y) → B γ y' = (∑ δ ∈ C, B (γ * δ)) y` using `fun γ y y' h => ext_inner_left ℂ fun x => by`. Rewrite using `[← hB, h γ γ.2 x, Finset.sum_map, ContinuousLinearMap.sum_apply, inner_sum]`. Use `Finset.sum_congr rfl fun δ _ => ?_` and prove the remaining obligations. Rewrite using `[← hB]`. Both sides reduce to the same expression.
+
+Use extensionality with `y`. Take `⟨y', -, hy'⟩` from `hT.2.1 v _ (isFinIdem_fE v) α ((cf_eq_self_iff _ v α).1 hα) _ hs hr y`. Establish `e1` using `key 1 y y' hy'`. Simplify using `only [one_mul, hB1] at e1`. Rewrite using `[ContinuousLinearMap.mul_apply, ← e1, key γ y y' hy']`.
+-/
 theorem heckeReps : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m)
     (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m),
     TransLaws R i → ∀ (B : GfC (Wc D i) → ((R.HW i (sg0 D A)).H →L[ℂ] (R.HW i (sg0 D A)).H)),

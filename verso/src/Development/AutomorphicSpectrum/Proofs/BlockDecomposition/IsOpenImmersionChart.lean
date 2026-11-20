@@ -13,6 +13,11 @@ instance isOpenImmersion_chart (R : Type) [CommRing R] (N : ℕ) (j : Fin (N + 1
   unfold chart
   infer_instance
 
+/- English proof (translation)
+Establish `hr : (chart R N j).opensRange = GlobalTheory.ProjSpace.chart R N j` using `Proj.opensRange_awayι _ _ _ _`. Rewrite using `[← hr]`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `x ∈ Set.range (pullback.fst i (chart R N j)) ↔ i x ∈ Set.range (chart R N j)`. Rewrite using `[Scheme.Pullback.range_fst]`.
+
+Both sides reduce to the same expression.
+-/
 theorem opensRange_fst {R : Type} [CommRing R] {X : Scheme.{0}} (N : ℕ)
     (i : X ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.PSpace R N) (j : Fin (N + 1)) :
     (pullback.fst i (chart R N j)).opensRange = i ⁻¹ᵁ GlobalTheory.ProjSpace.chart R N j := by
@@ -23,6 +28,9 @@ theorem opensRange_fst {R : Type} [CommRing R] {X : Scheme.{0}} (N : ℕ)
   rw [Scheme.Pullback.range_fst]
   rfl
 
+/- English proof (translation)
+Take `⟨_, s, hs, _⟩` from `h`. Rewrite using `[← opensRange_fst]`. Use `⟨(pullback.fst i (chart R N j)).isoOpensRange.inv ≫ s j, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hs, Iso.inv_comp_eq]`. Conclude with `(Scheme.Hom.isoOpensRange_hom_ι _).symm`.
+-/
 theorem preimage_chart_mem {R : Type} [CommRing R] {X : Scheme.{0}} (D : E.LineData X) (N : ℕ)
     (i : X ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.PSpace R N) (h : IsTautologicalLineAt D N i) (j : Fin (N + 1)) :
     i ⁻¹ᵁ GlobalTheory.ProjSpace.chart R N j ∈ 𝒱D D := by

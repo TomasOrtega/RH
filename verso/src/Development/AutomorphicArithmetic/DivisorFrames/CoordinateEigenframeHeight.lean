@@ -17,6 +17,17 @@ open GlobalTheory.ShFam.CoordUniq GlobalTheory.ShFam.Pad.Guard
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Take `rfl : φ₁ = φ₂` from `RingHom.ext fun a => hι ((RingHom.congr_fun h₁.2.1 a).symm.trans (RingHom.congr_fun h₂.2.1 a))`. Take `⟨k₁, hk₁⟩` from `f₁.exists_isMap _ h₁.2.1 h₁.1`. Take `⟨k₂, hk₂⟩` from `f₂.exists_isMap _ h₁.2.1 h₁.1`. Take `⟨q₁, hq₁⟩` from `f₁.exists_isMap _ b.2.1 b.1`. Take `⟨q₂, hq₂⟩` from `f₂.exists_isMap _ b.2.1 b.1`.
+
+Establish `e1 (τ i d) : k₂.co f₀ τ d i = ∑ j, k₁.co f₀ τ j i * ι (f₂.co f₁ τ d j)`. Rewrite using `[← k₂.co_mul k₁, hk₂.co τ hk₁ h₁.1, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Establish `hM (τ d i) (h : i < d) : f₂.co f₁ τ d i = 0` using `hι ((tri_of_mul (M := fun i a => ι (f₂.co f₁ τ a i)) (fun i a => (h₂.co τ hk₂).1 a i) (fun i a' => (h₁.co τ hk₁).1 a' i) (fun i => (h₁.co τ hk₁).2 i ▸ (t₁ τ i).ne_zero) (e1 τ) i d h).trans (map_zero _).symm)`. Establish `hT (τ) (a i) (h : i < a) : q₂.co g τ a i = 0`.
+
+Rewrite using `[← q₂.co_mul q₁, hq₂.co τ hq₁ b.1, Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Break down `lt_or_ge j a with hj | hj` into its components or cases. Rewrite using `[Matrix.map_apply, hM τ a j hj, map_zero, zero_mul]`. Rewrite using `[(b.co τ hq₁).1 j i (h.trans_le hj), mul_zero]`.
+
+Establish `hu (τ i) : q₂.co g τ i i ≠ 0`. Use `q₂.isUnit_det_co g τ` as an intermediate fact. Rewrite `this` using `[Matrix.det_of_upperTriangular (M := q₂.co g τ) fun _ _ h => hT τ _ _ h]`. Conclude with `Finset.prod_ne_zero_iff.1 this.ne_zero i (Finset.mem_univ i)`. Use `⟨fun τ i => Units.mk0 _ (hu τ i), b.1, b.2.1, fun τ i => ⟨fun a => q₂.co g τ a i, rfl, fun a ha => hT τ a i ha, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[← funext (hq₂ τ)]`. Conclude with `q₂.co_spec g τ i`.
+-/
 private theorem tri_swap {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β} {R : Type} [CommRing R]
     {φ₁ φ₂ : c.F →+* R} {x : Sp R ⟶ Z.X}
     (f₁ : EigFrame Z φ₁ x) (f₂ : EigFrame Z φ₂ x) {K : Type} [Field K] {ι : R →+* K} (hι : Function.Injective ι)
@@ -52,6 +63,9 @@ private theorem tri_swap {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model X
 
 attribute [local instance] Over.cartesianMonoidalCategory in
 
+/- English proof (translation)
+Introduce `cf cf' w h1 h2`. Use `(f.basis τ w (comb_tan (f.tan τ) h1) fun a => ?_).unique h1 h2` and prove the remaining obligations. Rewrite using `[← (isCombAtG_iff Z.t _ (fun j => ovT (f.tan τ j)) _ _).1 h1]`. Use `Z.t.act.hom a` as an intermediate fact. Conclude with `congrArg (fun f => f.left) (combT_eig _ (fun j => ovT (f.tan τ j)) (Z.t.act.act a) _ (fun j => Over.OverMorphism.ext (f.eig τ j a)) cf)`.
+-/
 private theorem indep_v {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β} {R : Type} [CommRing R]
     {φ : c.F →+* R} {x : Sp R ⟶ Z.X} (f : EigFrame Z φ x) (τ : E →+* ℂ) : Indep Z.t x (f.v τ) := by
   intro cf cf' w h1 h2
@@ -61,6 +75,15 @@ private theorem indep_v {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo
   exact congrArg (fun f => f.left) (combT_eig _ (fun j => ovT (f.tan τ j)) (Z.t.act.act a) _
     (fun j => Over.OverMorphism.ext (f.eig τ j a)) cf)
 
+/- English proof (translation)
+Establish `hl : lat Z.t p x false = latDR Z.t x` using `rfl`. Break down `st with ⟨τ, k⟩ | k` into its components or cases. Distinguish the cases in `hk : k < Dw.mult τ`. Simplify using `only [letterOf, lnStep, dif_pos hk, Option.elim, hl]`. Rewrite using `[grNorm_tri (f.tan τ) (d := fun i => d ⟨τ, i⟩) (fun i => hd _) (h τ), Real.log_mul (norm_ne_zero_iff.2 (hd _)) (grNorm_latDR_pos Z x (f.tan τ) (indep_v f τ) _).2.ne', add_sub_assoc]`.
+
+Simplify using `[letterOf, lnStep, hk]`. Distinguish the cases in `hk : k < (letters Dw).length`. Take `⟨i1, c1⟩` from `GlobalTheory.Proof.frame_combination_coeff_unique.concat_frame E H Dw l c Z.X Z.t C φ x f.v ⟨fun τ i => ⟨f.tan τ i, f.eig τ i⟩, f.basis⟩`. Establish `e : letterOf Dw (.inr k) = some ((letters Dw).get ⟨k, hk⟩)` using `List.getElem?_eq_getElem hk`. Simplify using `only [e, lnStep, dif_pos hk, Option.elim, hl]`.
+
+Rewrite using `[grNorm_tri (u := fun i => f.v ((letters Dw).get i).1 ((letters Dw).get i).2) (fun i => f.tan _ _) (d := fun i => d ((letters Dw).get i)) (fun i => hd _) (fun j => by`. Take `⟨cf, e1, e2, e3⟩` from `h ((letters Dw).get j).1 ((letters Dw).get j).2`. Take `⟨cg, a1, a2, a3⟩` from `c1 j cf _ e2 e3`. Conclude with `⟨cg, a2.trans e1, a1, a3⟩), Real.log_mul (norm_ne_zero_iff.2 (hd _))`. Use the proof step `(grNorm_latDR_pos Z x (fun i => f.tan _ _) i1 _).2.ne']`.
+
+Establish `e : letterOf Dw (.inr k) = none` using `List.getElem?_eq_none (not_lt.1 hk)`. Simplify using `[e, lnStep, hk]`.
+-/
 private theorem lnStep_change {Z : Model Xo c (algebraMap (𝓞 c.F) c.F)} {C : Type} [NontriviallyNormedField C]
     [IsUltrametricDist C] {φ : c.F →+* C} {x : Sp C ⟶ Z.X} (f g : EigFrame Z φ x) (p : ℕ)
     {d : Letter Dw → C} (hd : ∀ z, d z ≠ 0)
@@ -89,6 +112,11 @@ private theorem lnStep_change {Z : Model Xo c (algebraMap (𝓞 c.F) c.F)} {C : 
     · have e : letterOf Dw (.inr k) = none := List.getElem?_eq_none (not_lt.1 hk)
       simp [e, lnStep, hk]
 
+/- English proof (translation)
+Simplify using `only [expo, Finsupp.sum, Int.cast_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Break down `letterOf Dw a.2.2 with _ | z` into its components or cases. Simplify using the standard rewrite rules.
+
+Rewrite using `[Finset.sum_eq_single z (fun b _ hb => by simp [hb.symm]) (by simp)]`. Simplify using the standard rewrite rules.
+-/
 private theorem sum_letters (w : Pad.Sym E →₀ ℤ) (L : Letter Dw → ℝ) :
     ∑ a ∈ w.support, (w a : ℝ) * (letterOf Dw a.2.2).elim 0 L = ∑ z, (expo Dw w z : ℝ) * L z := by
   classical
@@ -100,6 +128,13 @@ private theorem sum_letters (w : Pad.Sym E →₀ ℤ) (L : Letter Dw → ℝ) :
   · rw [Finset.sum_eq_single z (fun b _ hb => by simp [hb.symm]) (by simp)]
     simp
 
+/- English proof (translation)
+Take `⟨s₂, b₂⟩` from `tri_swap f₁ f₂ hι h₁ h₂ b`. Take `⟨u, hu⟩` from `exists_unit_ratio f₂ f₁ hι h₂ h₁`. Use `⟨s₂, r₁ * ((∏ z : Letter Dw, u z.1 z.2 ^ n z : Rˣ) : R), b₂, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hr, mul_assoc]`. Use `congr 1`.
+
+Simplify using `only [hu _ _ _ _ h₂ h₁, mul_zpow, Finset.prod_mul_distrib, ← map_zpow, ← map_prod]`. Both sides reduce to the same expression. Establish `hs : Units.map (ψ : R →* k) (∏ z : Letter Dw, u z.1 z.2 ^ n z) * ∏ z : Letter Dw, s₂ z.1 z.2 ^ (-n z) = ∏ z : Letter Dw, s₁ z.1 z.2 ^ (-n z)`. Simplify using `only [hu _ _ _ _ b₂ b, mul_zpow, map_prod, map_zpow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun z _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_left_comm, ← zpow_add, add_neg_cancel, zpow_zero, mul_one]`. Rewrite using `[map_mul, mul_assoc, ← hs]`. Both sides reduce to the same expression.
+-/
 private theorem coord_move {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β} {R : Type} [CommRing R]
     [IsLocalRing R] {φ₁ φ₂ : c.F →+* R} {x : Sp R ⟶ Z.X}
     (f₁ : EigFrame Z φ₁ x) (f₂ : EigFrame Z φ₂ x) {K : Type} [Field K] {ι : R →+* K} (hι : Function.Injective ι)
@@ -126,6 +161,17 @@ private theorem coord_move {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model
     rw [map_mul, mul_assoc, ← hs]
     rfl
 
+/- English proof (translation)
+Substitute `hχ` using the available equality. Establish `hx : spMap J ≫ x = spMap (J.comp ψ) ≫ x₀`. Rewrite using `[b₂.1, ← Category.assoc, sp_comp]`. Take `⟨f', hf'⟩` from `f₂.exists_isMap (J.comp ψ) (φ' := J.comp φ) (by rw [b₂.2.1, RingHom.comp_assoc]) hx`. Take `⟨g', hg'⟩` from `g.exists_isMap J rfl rfl`.
+
+Establish `key` using `lnStep_change f' g' p (d := fun z => J (s z.1 z.2)) (fun z => (map_ne_zero _).2 (Units.ne_zero _)) (fun τ i => by`. Take `⟨cf, e1, e2, e3⟩` from `b₂.2.2 τ i`. Use `⟨fun a => J (cf a), congrArg J e1, fun a ha => (congrArg J (e2 a ha)).trans (map_zero _), ?_⟩` and prove the remaining obligations. Use `GlobalTheory.LatDRFree.comb_map _ J e3` as an intermediate fact. Simplify using `only [GlobalTheory.GradedPieces.dual_comp] at this`.
+
+Rewrite using `[hg' τ i, funext (hf' τ)]`. Conclude with `this)`. Establish `ef : (fun τ i => spMap (dualMap (J.comp ψ)) ≫ f₂.v τ i) = f'.v`. Use function extensionality and compare the values at `fun τ => funext fun i => (hf' τ i).symm`. Establish `eg : (fun τ i => spMap (dualMap J) ≫ g.v τ i) = g'.v`.
+
+Use function extensionality and compare the values at `fun τ => funext fun i => (hg' τ i).symm`. Rewrite using `[← hx, ef, eg, Finsupp.sum, Finsupp.sum, Finset.sum_congr rfl fun a ha => by rw [hw a ha]]`. Simplify using `only [key, mul_add, Finset.sum_add_distrib, sum_letters]`. Establish `hr0 : J r ≠ 0` using `(map_ne_zero _).2 hr`. Establish `hs0 (z : Letter Dw) : ‖J (s z.1 z.2)‖ ≠ 0` using `norm_ne_zero_iff.2 ((map_ne_zero _).2 (Units.ne_zero _))`.
+
+Simplify using `only [Units.coe_prod, Units.val_zpow_eq_zpow_val, map_mul, map_prod, map_zpow₀, norm_mul, norm_prod, norm_zpow]`. Rewrite using `[Real.log_mul (norm_ne_zero_iff.2 hr0) (Finset.prod_ne_zero_iff.2 fun z _ => zpow_ne_zero _ (hs0 z)), Real.log_prod fun z _ => zpow_ne_zero _ (hs0 z)]`. Simplify using `only [Real.log_zpow, Int.cast_neg, neg_mul, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem core {Z : Model Xo c (algebraMap (𝓞 c.F) c.F)} {R k C : Type} [CommRing R] [Field k]
     [NontriviallyNormedField C] [IsUltrametricDist C] {φ₂ : c.F →+* R} {x₀ : Sp R ⟶ Z.X} (f₂ : EigFrame Z φ₂ x₀)
     {φ : c.F →+* k} {x : Sp k ⟶ Z.X} (g : EigFrame Z φ x) {ψ : R →+* k} {s : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → kˣ}
@@ -162,6 +208,13 @@ private theorem core {Z : Model Xo c (algebraMap (𝓞 c.F) c.F)} {R k C : Type}
   simp only [Real.log_zpow, Int.cast_neg, neg_mul, Finset.sum_neg_distrib]
   ring
 
+/- English proof (translation)
+Establish `: CharZero c.F` using `RingHom.charZero c.F.val.toRingHom`. Take `⟨y₀, ψ, φ₁, f, t, t', r, h₁, h₂, h₃, h₄, rfl⟩` from `hco`. Establish `h0 : spMap (θ.comp ψ) ≫ Y.Y.X.fromSpecStalk y₀ = spMap (Scheme.stalkClosedPointTo y).hom ≫ Y.Y.X.fromSpecStalk (below y)`. Use `Eq.trans ?_ (Scheme.Spec_stalkClosedPointTo_fromSpecStalk y).symm` and prove the remaining obligations. Rewrite using `[hy, h₁, ← Category.assoc, sp_comp]`.
+
+Both sides reduce to the same expression. Establish `hE` using `stalk_ext (isLocalHom_of_algebraic φ₁ (θ.comp ψ)) inferInstance h0`. Take `rfl : y₀ = below y` from `hE.1`. Establish `e'` using `eq_of_heq hE.2`. Take `⟨s, r₂, b₂, hr, hb'⟩` from `coord_move f f₂ (IsFractionRing.injective (Y.Y.X.presheaf.stalk (below y)) Y.Y.X.functionField) h₂ h h₃ _ h₄`.
+
+Use `⟨ψ, s, ψ r₂, e'.symm, b₂, ?_, hb'⟩` and prove the remaining obligations. Rewrite using `[← hr, Base.valAt_stalk, ← e', RingHom.comp_apply]`.
+-/
 private theorem coord_at {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β} {F : Type} [Field F] [NumberField F]
     {e : F ≃+* c.F} (Y : FlagCpt Z e) {k K : Type} [Field k] [Field K] [CharZero K] [Algebra.IsAlgebraic ℚ K]
     {φ : c.F →+* k} {x : Sp k ⟶ Z.X} {g : EigFrame Z φ x} {q : Sp k ⟶ Y.Y.X} {n : Letter Dw → ℤ} {σ : Y.Y.Fn} {b : k}
@@ -190,6 +243,9 @@ private theorem coord_at {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model X
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+The claim follows from `dif_pos hp.out`.
+-/
 private theorem lg_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Z : Model Xo c (algebraMap (𝓞 c.F) c.F)} {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e) (w : Pad.Sym E →₀ ℤ) (v : HeightOneSpectrum (𝓞 F)) [hp : Fact (resP v).Prime] (ε : GlobalTheory.TrueGeo.Ext v) (y : AlgPt Y.Y) :
   lgOf Y w v ε y = Real.log (ε.w (valAt y.1 (((∏ x : Letter Dw, (Y.gr_spec (below y.1)).choose_spec.choose_spec.choose x.1 x.2 ^ expo Dw w x) *
         (eqn (divOf Y (expo Dw w)) (below y.1))⁻¹ : Y.Y.Fnˣ) : Y.Y.Fn))) +
@@ -197,10 +253,18 @@ private theorem lg_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Re
         w.sum fun a n => (n : ℝ) * lnStep Z.t (spMap ((ioOf (resP v) ε).comp (Scheme.stalkClosedPointTo y.1).hom) ≫ stalkPt Y.Y (below y.1) ≫ Y.π ≫ genι Z)
           (fun τ i => spMap (dualMap ((ioOf (resP v) ε).comp (Scheme.stalkClosedPointTo y.1).hom)) ≫ (Y.gr_spec (below y.1)).choose_spec.choose.v τ i) (resP v) (a.1 (resP v)) a.2.2 := dif_pos hp.out
 
+/- English proof (translation)
+Rewrite using `[h0, h1, h2, ← mul_add, h3, mul_add]`.
+-/
 private theorem pullback_fin_relation {A A' B d lr lb S S' : ℝ} (h0 : A = A') (h1 : A' = d * lr) (h2 : B = d * lb)
     (h3 : lr + S = lb + S') : A + d * S = B + d * S' := by
   rw [h0, h1, h2, ← mul_add, h3, mul_add]
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Z F _ _ e Y φ x g q w b hb hco v hp ε θ y hw hy`. Establish `: Algebra.IsAlgebraic ℚ (AlgebraicClosure F)` using `Algebra.IsAlgebraic.trans ℚ F _`. Rewrite `hco` using `[← Res.below_comp q θ, ← hy]`. Take `⟨ψ, s, r, e1, b₂, e2, rfl⟩` from `coord_at Y hco θ y.1 hy _ (Y.gr_spec (below y.1)).choose_spec.choose_spec.choose_spec.1`. Establish `hlog` using `log_w_eq (resP v) ε _ (ioOf_le_one_iff _ (residueCharacteristic_mem v) ε)`.
+
+Establish `key` using `core _ g b₂ ((ioOf (resP v) ε).comp θ) ((ioOf (resP v) ε).comp (Scheme.stalkClosedPointTo y.1).hom) (by rw [e1, RingHom.comp_assoc]) (resP v) w hw (left_ne_zero_of_mul hb)`. Rewrite `e2` using `[mul_comm (Units.val _), ← Units.val_mul]`. Rewrite `key` using `[RingHom.comp_apply, RingHom.comp_apply]`. Conclude with `(lg_eq Y w v ε y).trans (pullback_fin_relation (congrArg (fun a => Real.log (ε.w a)) e2) (hlog _) (hlog _) key)`.
+-/
 theorem UpperTheory.coordinate_eigenframe_height :
     ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Z : Model Xo c (algebraMap (𝓞 c.F) c.F)} {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e) (φ : c.F →+* Qb) (x : Sp Qb ⟶ Z.X) (g : EigFrame Z φ x) (q : Sp Qb ⟶ Y.Y.X) (w : Pad.Sym E →₀ ℤ) (b : Qb), b ≠ 0 → IsCoord Y q g (expo Dw w) ((eqn (divOf Y (expo Dw w)) (below q))⁻¹ : Y.Y.Fnˣ) b → ∀ (v : HeightOneSpectrum (𝓞 F)) [Fact (resP v).Prime] (ε : GlobalTheory.TrueGeo.Ext v) (θ : Qb →+* AlgebraicClosure F) (y : AlgPt Y.Y), (∀ a ∈ w.support, a.1 (resP v) = false) → y.1 = spMap θ ≫ q → lgOf Y w v ε y = Real.log (ε.w (θ b)) + (-Real.log (ε.w (resP v)) / Real.log (resP v)) * w.sum fun a n => (n : ℝ) * lnStep Z.t (spMap ((ioOf (resP v) ε).comp θ) ≫ x) (fun τ i => spMap (dualMap ((ioOf (resP v) ε).comp θ)) ≫ g.v τ i) (resP v) false a.2.2 := by
   intro E _ _ _ H Dw l Xo c Z F _ _ e Y φ x g q w b hb hco v hp ε θ y hw hy

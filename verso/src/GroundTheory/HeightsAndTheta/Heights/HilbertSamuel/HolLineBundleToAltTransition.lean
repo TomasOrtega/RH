@@ -33,6 +33,11 @@ def holLineBundleEquivAlt : HolLineBundle A ≃ IndefiniteRowSideFullHecke.Hilbe
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b, c⟩`. Conclude with `⟨a, c, b⟩`. Introduce and unpack `⟨a, b, c⟩`.
+
+Conclude with `⟨a, c, b⟩`.
+-/
 theorem sections_eq_sectionSpace (L : HolLineBundle A) (n : ℕ) :
     L.sections n = IndefiniteRowSideFullHecke.HilbertSamuel.Bergman.sectionSpace L.toIndefiniteRowSideFullHecke n := by
   ext f
@@ -48,6 +53,9 @@ namespace Weight
 
 variable {L : HolLineBundle A}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨W.smooth, W.compat⟩`.
+-/
 theorem isWeight (W : Weight L) : IndefiniteRowSideFullHecke.HilbertSamuel.Bergman.IsWeight L.toIndefiniteRowSideFullHecke W.φ :=
   ⟨W.smooth, W.compat⟩
 
@@ -65,12 +73,20 @@ def equivIsWeight : Weight L ≃ {φ : Fin A.n → X → ℝ // IndefiniteRowSid
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lerp_φ (W₀ W₁ : Weight L) (t : ℝ) :
     (W₀.lerp W₁ t).φ = IndefiniteRowSideFullHecke.HilbertSamuel.Bergman.interp W₀.φ W₁.φ t :=
   rfl
 
 end Weight
 
+/- English proof (translation)
+Establish `hT : MeasurableSet (A.chart j).target` using `(A.chart j).open_target.measurableSet`. Establish `hs : AEMeasurable (A.chart j).symm (volume.restrict (A.chart j).target)` using `(A.chart j).continuousOn_symm.aemeasurable hT`. Establish `hf : AEMeasurable (fun y => ENNReal.ofReal (d y)) (volume.restrict (A.chart j).target)` using `ENNReal.measurable_ofReal.comp_aemeasurable (hd.aemeasurable hT)`. Rewrite using `[lintegral_map' hg.aemeasurable (hs.mono_ac (withDensity_absolutelyContinuous _ _)), lintegral_withDensity_eq_lintegral_mul₀ hf (show AEMeasurable (fun y => g ((A.chart j).symm y)) _ from hg.comp_aemeasurable hs)]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations.
+
+Simplify using `only [Pi.mul_apply]`. Conclude with `mul_comm _ _`.
+-/
 theorem lintegral_map_chart [MeasurableSpace X] [BorelSpace X] (j : Fin A.n)
     {d : (Fin D → ℂ) → ℝ} (hd : ContinuousOn d (A.chart j).target) {g : X → ℝ≥0∞}
     (hg : Measurable g) :

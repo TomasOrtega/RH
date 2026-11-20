@@ -13,6 +13,27 @@ open scoped ContDiff
 
 namespace Formalism.FourierDecayAlt.P.CutEX.MkTopBump
 
+/- English proof (translation)
+Take `⟨δ, hδ, hδf⟩` from `Metric.continuousAt_iff.1 hf.continuousAt (1 / 2 : ℝ) (by norm_num)`. Take `⟨δ', hδ', hδg⟩` from `Metric.continuousAt_iff.1 hg.continuousAt (1 / 2 : ℝ) (by norm_num)`. Establish `hm : 0 < min δ δ'` using `lt_min hδ hδ'`. Set `B : ContDiffBump (0 : E)` to `⟨min δ δ' / 4, min δ δ' / 2, by positivity, by linarith⟩`. Use `set b : E → ℝ := fun x => B x with hbdef`.
+
+Establish `hbd : ContDiff ℝ ∞ b` using `B.contDiff`. Establish `hbc : HasCompactSupport b` using `B.hasCompactSupport`. Establish `hbnn : ∀ x, 0 ≤ b x` using `fun x => B.nonneg`. Establish `hbcont : Continuous b` using `B.continuous`. Establish `hbint : 0 < ∫ x, b x ∂μ` using `B.integral_pos`.
+
+Establish `hbs : tsupport b ⊆ Metric.ball (0 : E) (min δ δ')`. Rewrite using `[show tsupport b = Metric.closedBall (0 : E) (min δ δ' / 2) from B.tsupport_eq]`. Conclude with `Metric.closedBall_subset_ball (by linarith)`. Establish `aux : ∀ h : E → ℂ, Continuous h → (∀ x, dist x 0 < min δ δ' → ‖h x - 1‖ < 1 / 2) → (∫ x, (b x : ℂ) * h x ∂μ) ≠ 0`. Introduce `h hh hs`.
+
+Establish `hbC : Continuous (fun x => (b x : ℂ))` using `Complex.continuous_ofReal.comp hbcont`. Establish `hbcC : HasCompactSupport (fun x => (b x : ℂ))` using `hbc.comp_left Complex.ofReal_zero`. Establish `hi1 : Integrable (fun x => (b x : ℂ)) μ` using `hbC.integrable_of_hasCompactSupport hbcC`. Establish `hi2 : Integrable (fun x => (b x : ℂ) * (h x - 1)) μ` using `(hbC.mul (hh.sub continuous_const)).integrable_of_hasCompactSupport (hbcC.mul_right)`. Establish `hi3 : Integrable (fun x => b x * (1 / 2 : ℝ)) μ` using `(hbcont.integrable_of_hasCompactSupport hbc).mul_const _`.
+
+Establish `split : (∫ x, (b x : ℂ) * h x ∂μ) = (∫ x, (b x : ℂ) ∂μ) + ∫ x, (b x : ℂ) * (h x - 1) ∂μ`. Rewrite using `[← integral_add hi1 hi2]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hbound : ‖∫ x, (b x : ℂ) * (h x - 1) ∂μ‖ ≤ ∫ x, b x * (1 / 2 : ℝ) ∂μ`. Use `norm_integral_le_of_norm_le hi3 (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (hbnn x)]`. Distinguish the cases in `hbx : b x = 0`. Rewrite using `[hbx]`.
+
+Simplify using the standard rewrite rules. Establish `hx : x ∈ Metric.ball (0 : E) (min δ δ')` using `hbs (subset_tsupport _ hbx)`. Conclude with `mul_le_mul_of_nonneg_left (hs x hx).le (hbnn x)`. Establish `hreal : (∫ x, (b x : ℂ) ∂μ) = ((∫ x, b x ∂μ : ℝ) : ℂ)` using `integral_ofReal`. Rewrite `hbound` using `[integral_mul_const]`.
+
+Introduce `h0`. Rewrite `h0` using `[split, hreal]`. Establish `e1 : ((∫ x, b x ∂μ : ℝ) : ℂ) = -∫ x, (b x : ℂ) * (h x - 1) ∂μ` using `eq_neg_of_add_eq_zero_left h0`. Establish `e2 : ‖((∫ x, b x ∂μ : ℝ) : ℂ)‖ = ‖∫ x, (b x : ℂ) * (h x - 1) ∂μ‖` using `by rw [e1, norm_neg]`. Rewrite `e2` using `[Complex.norm_real, Real.norm_of_nonneg hbint.le]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨b, hbd, hbc, aux f hf fun x hx => ?_, aux g hg fun x hx => ?_⟩` and prove the remaining obligations. Use `hδf (lt_of_lt_of_le hx (min_le_left _ _))` as an intermediate fact. Rewrite `this` using `[hf0, dist_eq_norm]`. Then use the resulting hypothesis. Use `hδg (lt_of_lt_of_le hx (min_le_right _ _))` as an intermediate fact.
+
+Rewrite `this` using `[hg0, dist_eq_norm]`. Then use the resulting hypothesis.
+-/
 theorem bump_two {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [MeasurableSpace E]
     [BorelSpace E] (μ : Measure E) [IsFiniteMeasureOnCompacts μ] [μ.IsOpenPosMeasure]
     (f g : E → ℂ) (hf : Continuous f) (hg : Continuous g) (hf0 : f 0 = 1) (hg0 : g 0 = 1) :
@@ -70,14 +91,25 @@ theorem bump_two {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteD
 local instance bsS {p : ℕ} : BorelSpace ((G.UT p → ℂ) × (Fin p → ℝ)) := Prod.borelSpace
 local instance bsRC {k p ρ : ℕ} : BorelSpace (U.RC k p ρ) := Prod.borelSpace
 
+/- English proof (translation)
+The claim follows from `Measure.pi.isAddHaarMeasure (fun _ => volume)`.
+-/
 theorem piHaar {n p : ℕ} : (volume : Measure (Fin n → Fin p → ℂ)).IsAddHaarMeasure :=
   Measure.pi.isAddHaarMeasure (fun _ => volume)
 
+/- English proof (translation)
+Use `@piHaar (2 * ρ + k + 1) p` as an intermediate fact. Rewrite using `[Measure.volume_eq_prod]`. Conclude with `Measure.prod.instIsAddHaarMeasure _ _`.
+-/
 theorem rcHaar {k p ρ : ℕ} : (volume : Measure (U.RC k p ρ)).IsAddHaarMeasure := by
   have := @piHaar (2 * ρ + k + 1) p
   rw [Measure.volume_eq_prod]
   exact Measure.prod.instIsAddHaarMeasure _ _
 
+/- English proof (translation)
+Establish `hc : Continuous (fun x : U.RC k p ρ => psi k (p + ρ) (liftVec k p ρ z) cStd (U.Rn k p ρ x))` using `(Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.psi_cont _ _).comp (Formalism.FourierDecayAlt.P.Dx2.SplitF.rn_cont p ρ)`. Establish `hc' : Continuous (fun x : U.RC k p ρ => star (psi k (p + ρ) (liftVec k p ρ z') cStd (U.Rn k p ρ x)))` using `((Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.psi_cont _ _).comp (Formalism.FourierDecayAlt.P.Dx2.SplitF.rn_cont p ρ)).star`. Establish `h0 : psi k (p + ρ) (liftVec k p ρ z) cStd (U.Rn k p ρ 0) = 1`. Rewrite using `[Formalism.FourierDecayAlt.P.LeftFubiniLemmas.rn_zero]`. Conclude with `Formalism.FourierDecayAlt.P.Qx5.psi_one (Formalism.FourierDecayAlt.P.LeftFubiniLemmas.inWb_liftVec hz) _`.
+
+Establish `h0' : star (psi k (p + ρ) (liftVec k p ρ z') cStd (U.Rn k p ρ 0)) = 1`. Rewrite using `[Formalism.FourierDecayAlt.P.LeftFubiniLemmas.rn_zero, Formalism.FourierDecayAlt.P.Qx5.psi_one (Formalism.FourierDecayAlt.P.LeftFubiniLemmas.inWb_liftVec hz') _, star_one]`. Use `@rcHaar k p ρ` as an intermediate fact. Unfold `U.muRC`. Conclude with `bump_two volume _ _ hc hc' h0 h0'`.
+-/
 theorem bump_exists {k p ρ : ℕ} (z z' : Fin (2 * ρ + k + 1) → ℂ) (hz : inWb k ρ z) (hz' : inWb k ρ z') :
     ∃ b : U.RC k p ρ → ℝ, ContDiff ℝ ∞ b ∧ HasCompactSupport b ∧
       (∫ x, (b x : ℂ) * psi k (p + ρ) (liftVec k p ρ z) cStd (U.Rn k p ρ x) ∂(U.muRC k p ρ)) ≠ 0 ∧

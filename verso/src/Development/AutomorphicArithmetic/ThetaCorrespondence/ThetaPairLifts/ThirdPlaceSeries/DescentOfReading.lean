@@ -28,6 +28,31 @@ variable (rd : M →ₛₗ[eK] (G → ℂ)) (eL : L →+* ℂ)
   (hL : ∀ c : O, eL (algebraMap O L c) = eK (algebraMap O (FractionRing O) c))
 end Generic
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.BigOn.Exp.CanonicalFits _root_.GlobalTheory.BigOn.Exp.TwistConditions _root_.GlobalTheory.BigOn.AtPtsAlt`. Use `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => ⟨0, fun x hx _ i p hr hm w _ j ρ hρ ν rd hfit hcan => ?_⟩⟩⟩` and prove the remaining obligations. Introduce `e he1 he2 z n a y hy hz`. Establish `hν : ν ≠ 0` using `hfit.2.1.1`. Take `⟨Z⟩` from `hm.2.2.series`.
+
+Establish `hU : p.R.toRealDat.LUnif` using `hr.prim.unif`. Establish `hW : p.R.toRealDat.models_HW` using `p.charW.base.models.HW`. Establish `hK : (p.Sx.A ((j : ℕ) + 1)).IsKsForm` using `GlobalTheory.isKsForm_of_formsIso _ _ (p.nexp.fi j) (p.fw.ks j)`. Establish `hF : Faithful (rdAt p w j hρ ν)` using `GlobalTheory.SeriesTie.realRd_faithful _ _ _ _ _ _ _ p.R p.cG p.Sx p.nexp p.v₀ ρ hρ ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) ν hν hU hW (Z.vec j) hK`. Establish `hL : ∀ c : (Fm.D x i).ntw.O ((Fm.ex x hx i).nch.twI w), e (algebraMap _ (FractionRing ((Fm.ex x hx i).nch.Oe w)) c) = ρ.e ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.sd w) (algebraMap _ (FractionRing _) c)` using `fun c => by`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply _ ((Fm.ex x hx i).nch.Oe w) (FractionRing ((Fm.ex x hx i).nch.Oe w)), IsScalarTower.algebraMap_apply _ ((Fm.D x i).ntw.Ok ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.k' w)) ((Fm.ex x hx i).nch.Oe w), he2, hρ.ek_e]`. Both sides reduce to the same expression. Use `set R := readExt (rdAt p w j hρ ν) e hL with hRdef`. Establish `hRinj : Function.Injective R` using `readExt_injective _ e hL hF`. Establish `hinc : ∀ z, R (incl (Fm.D x i).nexp ((Fm.ex x hx i).nch.twI w) _ ((Fm.ex x hx i).nch.sd w) ((Fm.ex x hx i).nch.Oe w) ((Fm.ex x hx i).nch.k' w) z) = rdK (rdAt p w j hρ ν) hρ ((Fm.ex x hx i).nch.k' w) z` using `fun z => by`.
+
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, map_zero]`. Consider the case `add u v hu hv => rw [map_add, map_add, map_add, hu, hv]`. Consider the case `tmul c f`. Rewrite using `[rdK_tmul, ← he2]`.
+
+Both sides reduce to the same expression. Establish `hgen : ∀ f : NX.FmK p.Sx ((j : ℕ) + 1), R (rd ((p.nexp.fi j).e (Subtype.val f))) = ν⁻¹ • adForm (R2 p) j ((p.nexp.fi j).e (Subtype.val f)) (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A))` using `fun f => by`. Rewrite using `[hcan f, hRdef, readExt_tmul, map_one, one_smul]`. Use `erw [realRd_tmul]`. Use `erw [map_one, mul_one]`.
+
+Both sides reduce to the same expression. Establish `hA0 : adForm (R2 p) j 0 (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A)) = 0`. Express the relevant statement in the definitionally equal form `((R2 p).HW j _).e (((R2 p).FW j).j _ 0) (p.v₀ j _) = 0`. Rewrite using `[map_zero, map_zero]`. Both sides reduce to the same expression.
+
+Establish `hAadd : ∀ u v, adForm (R2 p) j (u + v) (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A)) = adForm (R2 p) j u (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A)) + adForm (R2 p) j v (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A))` using `fun u v => by`. Express the relevant statement in the definitionally equal form `((R2 p).HW j _).e (((R2 p).FW j).j _ (u + v)) (p.v₀ j _) = _`. Rewrite using `[map_add, map_add]`. Both sides reduce to the same expression. Establish `hs : sg0 (Fm.D x i) p.P.A3.A = (Fm.D x i).what₂.embLL` using `sgAt_mk _ (R2 p).hv0`.
+
+Establish `hAsmul : ∀ (c : (Fm.D x i).what₂.LL) u, adForm (R2 p) j (c • u) (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A)) = (Fm.D x i).what₂.embLL c • adForm (R2 p) j u (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A))` using `fun c u => by`. Express the relevant statement in the definitionally equal form `((R2 p).HW j _).e (((R2 p).FW j).j _ (c • u)) (p.v₀ j _) = _`. Rewrite using `[LinearMap.map_smulₛₗ, map_smul]`. Conclude with `congrArg (fun s : ℂ => s • adForm (R2 p) j u (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A))) (DFunLike.congr_fun hs c)`. Establish `hrd : ∀ u ∈ Submodule.span (Fm.D x i).what₂.LL ((p.nexp.fi j).e '' ((p.Sx.A ((j : ℕ) + 1)).WK : Set _)), R (rd u) = ν⁻¹ • adForm (R2 p) j u (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A))` using `fun u hu => by`.
+
+Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨f, hf, rfl⟩` from `hu`. Conclude with `hgen ⟨f, hf⟩`. Consider the case `zero => erw [LinearMap.map_zero rd]`.
+
+Rewrite using `[AddMonoidHom.map_zero R]`. Use `erw [hA0]`. Rewrite using `[smul_zero]`. Consider the case `add u v _ _ hu hv => erw [LinearMap.map_add rd]`. Rewrite using `[AddMonoidHom.map_add R, hu, hv]`.
+
+Use `erw [hAadd]`. Rewrite using `[smul_add]`. Consider the case `smul c u _ hu => erw [LinearMap.map_smulₛₗ rd]`. Rewrite using `[hRdef, readExt_smul, ← hRdef, hu, he1]`. Use `erw [hAsmul]`.
+
+Rewrite using `[smul_comm]`. Apply `hRinj` to reduce the goal to its premises. Rewrite using `[hinc, hz, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul (FractionRing ((Fm.ex x hx i).nch.Oe w)) (a k) (rd (y k)), hRdef, readExt_smul, ← hRdef, hrd _ (hy k), mul_smul]`.
+-/
 theorem descent_of_reading_alt : _root_.GlobalTheory.BigOn.Exp.CanonicalFits fun Fm x hx i p w j ρ hρ ν rd => ∀ e : FractionRing ((Fm.ex x hx i).nch.Oe w) →+* ℂ, (∀ y, e ((Fm.ex x hx i).nch.embW w y) = (Fm.D x i).what₂.embLL y) → (∀ a : (Fm.D x i).ntw.Ok ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.k' w), e (algebraMap ((Fm.ex x hx i).nch.Oe w) _ (algebraMap _ ((Fm.ex x hx i).nch.Oe w) a)) = ρ.eOk ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.sd w) ((Fm.ex x hx i).nch.k' w) a) →
   ∀ (z : (Fm.D x i).ntw.Ok ((Fm.ex x hx i).nch.twI w) ((Fm.ex x hx i).nch.k' w) ⊗[(Fm.D x i).ntw.O ((Fm.ex x hx i).nch.twI w)] (Fm.D x i).nexp.Fm ((Fm.ex x hx i).nch.twI w) ((j : ℕ) + 1) ((Fm.ex x hx i).nch.sd w))
     (n : ℕ) (a : Fin n → (Fm.ex x hx i).nch.Oe w) (y : Fin n → Fin ((R2 p).nW j) → (Fm.D x i).what₂.LL), (∀ k, y k ∈ Submodule.span (Fm.D x i).what₂.LL ((p.nexp.fi j).e '' ((p.Sx.A ((j : ℕ) + 1)).WK : Set _))) →

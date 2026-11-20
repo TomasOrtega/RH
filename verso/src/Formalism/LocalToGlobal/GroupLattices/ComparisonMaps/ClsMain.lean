@@ -20,6 +20,9 @@ open Classical in
 def gOf (Lt : Fin nV → Submodule W (Fin (m + 1) → Qq)) : Fin nV → GL (Fin (m + 1)) Qq :=
   if h : ∀ v, IsLattice W (Lt v) then Classical.choose (exists_tupOf W Lt h) else 1
 
+/- English proof (translation)
+Unfold `gOf`. Rewrite using `[dif_pos h]`. Conclude with `Classical.choose_spec (exists_tupOf W Lt h)`.
+-/
 theorem gOf_spec (Lt : Fin nV → Submodule W (Fin (m + 1) → Qq)) (h : ∀ v, IsLattice W (Lt v)) : Lt = tupOf W (gOf Lt) := by
   unfold gOf
   rw [dif_pos h]
@@ -29,15 +32,24 @@ def clsC (I : LocId L p nV W Qq) (hdet : IsUnit sp.gram0.det) (hk : m + 1 = R.k)
     (Lt : Fin nV → Submodule W (Fin (m + 1) → Qq)) : ClassSet (HA sp) (KA L) :=
   clsG I hdet i (fun v => toF I hk v (gOf Lt v))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem clsC_eq (I : LocId L p nV W Qq) (hdet : IsUnit sp.gram0.det) (hk : m + 1 = R.k) (i : compL L p)
     (Lt : Fin nV → Submodule W (Fin (m + 1) → Qq)) :
     clsC I hdet hk i Lt = Fib.mkC (HA sp) (KA L) (repP L p i * jQ I hdet hk (gOf Lt)) := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Rewrite using `[prP_apply, repP_over L p i (I.plc v) (I.pl v).2, map_one, map_one]`. Both sides reduce to the same expression.
+-/
 theorem prP_repP (I : LocId L p nV W Qq) (hk : m + 1 = R.k) (i : compL L p) : prP I hk (repP L p i) = 1 := by
   funext v
   rw [prP_apply, repP_over L p i (I.plc v) (I.pl v).2, map_one, map_one]
   rfl
 
+/- English proof (translation)
+Rewrite using `[prP_ratA, MulEquiv.eq_symm_apply]`. Conclude with `levC_act sp.cm.sig sp.gram0 (Formalism.L2.Herm.awayFrom₂ L p) hS nV r lam0 dom hk I.iw I.frQ ψ y v γ`.
+-/
 theorem act_eq_prP (I : LocId L p nV W Qq) (hS : HidaSetting p n' W Qq O Kf ι σ j w) (r : ℕ)
     (lam0 : Fin nV → Fin n' → Fin (m + 1) → ℤ) (dom : ∀ v, IsDominant (lam0 v)) (hk : m + 1 = R.k)
     (ψ : Formalism.L2.Herm.awayFrom₂ L p →* Oˣ) (y : GL (Fin R.k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (v : Fin nV)
@@ -47,6 +59,13 @@ theorem act_eq_prP (I : LocId L p nV W Qq) (hS : HidaSetting p n' W Qq O Kf ι �
   rw [prP_ratA, MulEquiv.eq_symm_apply]
   exact levC_act sp.cm.sig sp.gram0 (Formalism.L2.Herm.awayFrom₂ L p) hS nV r lam0 dom hk I.iw I.frQ ψ y v γ
 
+/- English proof (translation)
+Establish `key : ∀ γ : GA sp, g'⁻¹ * (prP I hk γ * g) ∈ stabTup (nV` using `nV) (k := m + 1) (Qq := Qq) W ↔ tupOf W g' = fun v => gMap W (prP I hk γ v) (tupOf W g v) := by`. Introduce `γ`. Rewrite using `[← tupOf_eq_iff, eq_comm]`. Establish `: tupOf W (prP I hk γ * g) = fun v => gMap W (prP I hk γ v) (tupOf W g v)`. Use function extensionality and compare the values at `v`.
+
+Conclude with `gMap_mul W _ _ _`. Rewrite using `[this]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ, h1, h2⟩`. Take `⟨γ0, rfl⟩` from `exists_ratA γ hγ`.
+
+Conclude with `⟨⟨γ0, (mem_gamC_iff y γ0).2 h1⟩, (key _).1 h2⟩`. Introduce and unpack `⟨γ, h⟩`. Conclude with `⟨ratA sp γ.1, ratA_mem _, (mem_gamC_iff y γ.1).1 γ.2, (key _).2 h⟩`.
+-/
 theorem orb_iff (I : LocId L p nV W Qq) (hk : m + 1 = R.k) (y : GA sp) (g g' : Fin nV → GL (Fin (m + 1)) Qq) :
     (∃ γ ∈ HA sp, y⁻¹ * γ * y ∈ KA' L p ∧ g'⁻¹ * (prP I hk γ * g) ∈ stabTup (nV := nV) (k := m + 1) (Qq := Qq) W) ↔
       ∃ γ : gamC sp.cm.sig sp.gram0 (Formalism.L2.Herm.awayFrom₂ L p) (y : GL (Fin R.k) _),
@@ -66,6 +85,11 @@ theorem orb_iff (I : LocId L p nV W Qq) (hk : m + 1 = R.k) (y : GA sp) (g g' : F
   · rintro ⟨γ, h⟩
     exact ⟨ratA sp γ.1, ratA_mem _, (mem_gamC_iff y γ.1).1 γ.2, (key _).2 h⟩
 
+/- English proof (translation)
+Rewrite using `[clsC_eq]`. Use `((fibP I hdet hk hH).cls_iff (HA sp) (repP L p) (repP_mk L p) (prP_repP I hk) i i _ _).2 ⟨rfl, 1, Subgroup.one_mem _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_one, inv_mul_cancel]`. Conclude with `Subgroup.one_mem _`. Use `show g⁻¹ * (prP I hk 1 * gOf (tupOf W g)) ∈ _`.
+
+Rewrite using `[map_one, one_mul, ← tupOf_eq_iff]`. Conclude with `(gOf_spec (tupOf W g) (tupOf_lat W g)).symm`.
+-/
 theorem clsC_tupOf (I : LocId L p nV W Qq) (hdet : IsUnit sp.gram0.det) (hk : m + 1 = R.k) (hH : HypAtP I) (i : compL L p)
     (g : Fin nV → GL (Fin (m + 1)) Qq) :
     clsC I hdet hk i (tupOf W g) = Fib.mkC (HA sp) (KA L) (repP L p i * jQ I hdet hk g) := by
@@ -86,6 +110,9 @@ variable (hS : HidaSetting p n' W Qq O Kf ι σ j w) (r : ℕ)
 
 include hH in
 
+/- English proof (translation)
+Rewrite using `[clsC_eq, clsC_eq]`. Use `((fibP I hdet hk hH).cls_iff (HA sp) (repP L p) (repP_mk L p) (prP_repP I hk) i i' (gOf Lt) (gOf Lt')).trans (and_congr_right fun _ => ?_)` and prove the remaining obligations. Use `(orb_iff I hk (repP L p i) (gOf Lt) (gOf Lt')).trans (exists_congr fun γ => ?_)` and prove the remaining obligations. Rewrite using `[← gOf_spec Lt' h', ← gOf_spec Lt h]`.
+-/
 theorem class_eq_iff_translate_level_zero (i i' : compL L p) (Lt Lt' : Fin nV → Submodule W (Fin (m + 1) → Qq))
     (h : ∀ v, IsLattice W (Lt v)) (h' : ∀ v, IsLattice W (Lt' v)) :
     clsC I hdet hk i Lt = clsC I hdet hk i' Lt' ↔
@@ -97,6 +124,9 @@ theorem class_eq_iff_translate_level_zero (i i' : compL L p) (Lt Lt' : Fin nV �
   refine (orb_iff I hk (repP L p i) (gOf Lt) (gOf Lt')).trans (exists_congr fun γ => ?_)
   rw [← gOf_spec Lt' h', ← gOf_spec Lt h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Rewrite using `[← act_eq_prP I hS r lam0 dom hk ψ y v γ]`. Both sides reduce to the same expression.
+-/
 theorem level_action_lattice_eq (y : GL (Fin R.k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
     (γ : gamC sp.cm.sig sp.gram0 (Formalism.L2.Herm.awayFrom₂ L p) y) (Lt : Fin nV → Submodule W (Fin (m + 1) → Qq)) :
     (levC sp.cm.sig sp.gram0 (Formalism.L2.Herm.awayFrom₂ L p) hS nV r lam0 dom hk I.iw I.frQ ψ y).smul γ Lt =

@@ -28,6 +28,9 @@ def Stmt : Prop :=
       (∃ π : Qb, π ∈ K ∧ IsIntegral ℤ π ∧ ∃ σ : Qb →ₐ[ℚ] Qb, π * σ π = (p : Qb)) ∧
       Admissible K m L ∧ ¬ SplitsCompletely L p
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : 0 < (1 : ℕ) ∧ 0 < (4 : ℕ) ∧ 4 * 1 ∣ (4 : ℕ) := by decide
 
 end Formalism.MainNotions.N.Lit.RayLarger

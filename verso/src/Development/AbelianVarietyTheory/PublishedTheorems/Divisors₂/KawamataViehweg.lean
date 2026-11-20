@@ -20,6 +20,9 @@ def KawamataViehweg : Prop :=
     ∀ (K : CanonLB (strHom k X) D) (N : LB X), IsNef k N → IsBig k N →
       ∀ q : ℕ, 0 < q → Subsingleton (coh (LB.toMod (tens K.bundle N)) q)
 
+/- English proof (translation)
+Take `rfl` from `strHom_eq hp`. Conclude with `h k X D hX K N h₁ h₂ q hq`.
+-/
 theorem KawamataViehweg.of_hom (h : KawamataViehweg) {k : Type} [Field k] [IsAlgClosed k]
     [CharZero k] {X : Scheme.{0}} [Algebra k Γ(X, ⊤)] [IsIntegral X] {p : X ⟶ Sp k}
     (hp : ∀ r, algebraMap k Γ(X, ⊤) r = p.appTop ((Scheme.ΓSpecIso (.of k)).inv r))
@@ -29,6 +32,9 @@ theorem KawamataViehweg.of_hom (h : KawamataViehweg) {k : Type} [Field k] [IsAlg
   obtain rfl := strHom_eq hp
   exact h k X D hX K N h₁ h₂ q hq
 
+/- English proof (translation)
+Take `⟨i⟩` from `nonempty_twist_iso_of_cls_eq (structureModule X) hM (isLB_tens K.isLB h₁.isLB) e`. Conclude with `(cohOn.mapIso Γ(X, ⊤) ⊤ q (i ≪≫ Twist.unitTwistIso _)).toEquiv.subsingleton_congr.2 (h.of_hom hp hX K h₁ h₂ hq)`.
+-/
 theorem KawamataViehweg.twist (h : KawamataViehweg) {k : Type} [Field k] [IsAlgClosed k]
     [CharZero k] {X : Scheme.{0}} [Algebra k Γ(X, ⊤)] [IsIntegral X] {p : X ⟶ Sp k}
     (hp : ∀ r, algebraMap k Γ(X, ⊤) r = p.appTop ((Scheme.ΓSpecIso (.of k)).inv r))
@@ -42,6 +48,9 @@ theorem KawamataViehweg.twist (h : KawamataViehweg) {k : Type} [Field k] [IsAlgC
 
 open GlobalTheory.ProjSpace in
 
+/- English proof (translation)
+Rewrite using `[strHom_eq (algebraMap_top_eq ℂ D)]`. Establish `hs` using `Adelic.smoothOfRelativeDimension_pspace ℂ D`. Conclude with `⟨inferInstance, isProjOver_str ℂ D, isNef_twistingSheaf ℂ D, isBig_twistingSheaf ℂ D, hs, CanonLB.nonempty⟩`.
+-/
 example (D : ℕ) : IsIntegral (PSpace ℂ D) ∧ IsProjOver (strHom ℂ (PSpace ℂ D)) ∧
     IsNef ℂ (O1 ℂ D) ∧ IsBig ℂ (O1 ℂ D) ∧
     ∃ _ : SmoothOfRelativeDimension D (strHom ℂ (PSpace ℂ D)),

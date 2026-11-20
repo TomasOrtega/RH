@@ -28,6 +28,11 @@ variable (H : LocGood σ J A) (hW : LocInt A) (hHc : LocHypC S A) (hA : A.ActB)
 
 include H hA hΓ in
 
+/- English proof (translation)
+Take `⟨κ, hκ⟩` from `awayEx_of H S hΓ i γ`. Establish `hx'` using `A.isPt_smul hA i g _ κ.1 hx γ hκ`. Use `⟨κ₀ * κ⁻¹, ?_⟩` and prove the remaining obligations. Establish `e : bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) (A.gamI i γ * γ₀) * y * (κ₀ * κ⁻¹ : S.U).1 = bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) (A.gamI i γ) * (bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ₀ * y * κ₀.1) * κ.1⁻¹ := by`. Rewrite using `[map_mul]`.
+
+Use `show _ * _ * (κ₀.1 * κ.1⁻¹) = _`. Use `group`. Rewrite using `[e]`. Conclude with `hx'`.
+-/
 theorem pt_smul (i : G.comp) (g : ∀ v, GL (Fin (G.P.m + 1)) (G.P.Qq v)) (y : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
     (γ₀ : GL (Fin n) E) (κ₀ : S.U)
     (hx : A.IsPt i g (bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ₀ * y * κ₀.1)) (γ : (G.lev i).Γ) :
@@ -48,6 +53,21 @@ theorem pt_smul (i : G.comp) (g : ∀ v, GL (Fin (G.P.m + 1)) (G.P.Qq v)) (y : G
 set_option maxHeartbeats 2000000 in
 include H hW hHc hA hΓ in
 
+/- English proof (translation)
+Establish `hδ : γ₁ * γ₀⁻¹ ∈ UJ (σ : E →+* E) J` using `Subgroup.mul_mem _ hγ₁ (Subgroup.inv_mem _ hγ₀)`. Establish `hκU : κ₀.1⁻¹ * κ₁.1 ∈ S.U` using `S.U.mul_mem (S.U.inv_mem κ₀.2) κ₁.2`. Establish `hrel : (bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) γ₁ * y * κ₁.1)⁻¹ * bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) (γ₁ * γ₀⁻¹) * (bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ₀ * y * κ₀.1) = (κ₀.1⁻¹ * κ₁.1)⁻¹ := by`. Rewrite using `[map_mul, map_inv]`. Use `group`.
+
+Establish `hoff : ∀ w : HeightOneSpectrum (𝓞 F), ((p : ℕ) : 𝓞 F) ∉ w.asIdeal → bc (prV (E` using `E) w) ((A.yG i')⁻¹ * bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) (γ₁ * γ₀⁻¹) * A.yG i) ∈ S.Uloc w := by`. Introduce `w hw`. Establish `h2` using `((S.U_eq _).1 (S.U.inv_mem hκU)).2 w`. Rewrite `h2` using `[← hrel, map_mul (bc (prV (E := E) w)), map_mul (bc (prV (E := E) w)), map_inv (bc (prV (E := E) w)), h0.1 w hw, h1.1 w hw]`. Rewrite using `[map_mul (bc (prV (E := E) w)), map_mul (bc (prV (E := E) w)), map_inv (bc (prV (E := E) w))]`.
+
+Conclude with `h2`. Take `rfl` from `hci i i' _ hδ hoff`. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ⟩` from `hon i _ hδ hoff`. Use `⟨γ, hγ, ?_⟩` and prove the remaining obligations.
+
+Take `⟨κ, hκ⟩` from `awayEx_of H S hΓ i γ`. Establish `hx'` using `A.isPt_smul hA i g _ κ.1 h0 γ hκ`. Establish `hmU : (bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) (A.gamI i γ) * (bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ₀ * y * κ₀.1) * κ.1⁻¹)⁻¹ * (bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ₁ * y * κ₁.1) ∈ S.U := by`. Establish `e : (bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) (A.gamI i γ) * (bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ₀ * y * κ₀.1) * κ.1⁻¹)⁻¹ * (bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ₁ * y * κ₁.1) = κ.1 * (κ₀.1⁻¹ * κ₁.1) := by`. Establish `hγ' : A.gamI i γ = γ₁ * γ₀⁻¹` using `hγ`.
+
+Rewrite using `[hγ', map_mul, map_inv]`. Use `group`. Rewrite using `[e]`. Conclude with `S.U.mul_mem κ.2 hκU`. Use function extensionality and compare the values at `v`.
+
+Establish `hloc` using `((S.U_eq _).1 hmU).2 (A.pl v).1`. Take `⟨k1, k2⟩` from `hHc v _ hloc`. Rewrite `k1`, `k2` using `[ff_quot i _ g' _ _ hx' h1 v]`. Rewrite `k2` using `[← map_inv, ← map_inv]`. Establish `hst : ((G.lev i).act v γ * g v)⁻¹ * g' v ∈ stabStd (k` using `G.P.m + 1) (Qq := G.P.Qq v) (G.P.W v) := (stabStd_iff _ _).2 ⟨int_of_eQ hW v _ k1, int_of_eQ hW v _ k2⟩`.
+
+Rewrite using `[smul_colSpan i γ L g hL v, hL' v, colSpan_eq, colSpan_eq]`. Conclude with `(gMap_std_eq_iff _ _ _).2 hst`.
+-/
 theorem orbit_of_pts (hci : CompInj S A) (hon : ∀ i, GamOnto S A i) (i i' : G.comp) (L L' : G.P.Tup)
     (g g' : ∀ v, GL (Fin (G.P.m + 1)) (G.P.Qq v))
     (hL : ∀ v, L v = colSpan (G.P.W v) (g v : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v)))

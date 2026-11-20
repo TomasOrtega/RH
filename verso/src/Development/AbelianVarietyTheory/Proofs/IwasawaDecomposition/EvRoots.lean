@@ -43,6 +43,9 @@ def phiKop (In : RatIn D S) (i : T.Tw) (j : ℕ) (b : Bool) (k : ℕ) (P : PlE D
     Module.End (FractionRing (T.O i)) (FmT D T S i j b) :=
   aeval (hLT D T S In i j b k P) ((evPol D S In j k P).map (readT D T i b))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hkT_eq (In : RatIn D S) (i : T.Tw) (j : ℕ) (b : Bool) (k : ℕ) (P : PlE D.host) :
     hkT D T S In i j b k P = (algebraMap (T.O i) (FractionRing (T.O i)) (cHkT D T i b P : T.O i)) ^ k • hLT D T S In i j b k P :=
   rfl

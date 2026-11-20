@@ -12,6 +12,9 @@ variable {k G H : Type u} [CommRing k] [Group G] [Group H]
 
 variable (U : Subgroup G) (ι : H →* G) (N : Rep.{u} k U)
 
+/- English proof (translation)
+Take `⟨a, ha, b, hb, e⟩` from `(DoubleCoset.eq U ι.range _ y).1 (DoubleCoset.out_eq' U ι.range (DoubleCoset.mk U ι.range y))`. Take `⟨h, rfl⟩` from `MonoidHom.mem_range.1 hb`. Conclude with `⟨⟨a, ha⟩, h, e⟩`.
+-/
 theorem exists_eq_mul_out_mul (y : G) :
     ∃ u : U, ∃ h : H, y = (u : G) * (DoubleCoset.mk U ι.range y).out * ι h := by
   obtain ⟨a, ha, b, hb, e⟩ :=
@@ -19,10 +22,22 @@ theorem exists_eq_mul_out_mul (y : G) :
   obtain ⟨h, rfl⟩ := MonoidHom.mem_range.1 hb
   exact ⟨⟨a, ha⟩, h, e⟩
 
+/- English proof (translation)
+The claim follows from `((DoubleCoset.eq U ι.range _ _).2 ⟨u, u.2, ι h, ⟨h, rfl⟩, rfl⟩).symm`.
+-/
 theorem doubleCosetMk_mul_mul (x : G) (u : U) (h : H) :
     DoubleCoset.mk U ι.range ((u : G) * x * ι h) = DoubleCoset.mk U ι.range x :=
   ((DoubleCoset.eq U ι.range _ _).2 ⟨u, u.2, ι h, ⟨h, rfl⟩, rfl⟩).symm
 
+/- English proof (translation)
+Establish `he : x * ι (h * h'⁻¹) * x⁻¹ = ((u⁻¹ * u' : U) : G)`. Establish `e' : x * ι h = (u : G)⁻¹ * (u' * x * ι h')`. Rewrite using `[← e]`. Use `group`. Rewrite using `[map_mul, map_inv, ← mul_assoc, e']`.
+
+Use `push_cast`. Use `group`. Establish `hm : h * h'⁻¹ ∈ mackeySubgroup U ι x`. Rewrite using `[mem_mackeySubgroup, he]`. Conclude with `(u⁻¹ * u').2`.
+
+Establish `h1` using `F.2 ⟨_, hm⟩ h'`. Establish `h2 : (mackeySubgroup U ι x).subtype ⟨_, hm⟩ * h' = h` using `by simp`. Establish `h3 : mackeyConj U ι x ⟨_, hm⟩ = u⁻¹ * u'` using `Subtype.ext he`. Rewrite `h1` using `[h2]`. Rewrite using `[h1]`.
+
+Express the relevant statement in the definitionally equal form `N.ρ u (N.ρ (mackeyConj U ι x ⟨_, hm⟩) (F.1 h')) = _`. Rewrite using `[h3, map_mul, Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem coind_apply_eq_of_mul_eq (x : G)
     (F : Representation.coindV (mackeySubgroup U ι x).subtype (mackeyRep U ι N x).ρ)
     {u u' : U} {h h' : H} (e : (u : G) * x * ι h = u' * x * ι h') :
@@ -45,6 +60,9 @@ theorem coind_apply_eq_of_mul_eq (x : G)
   rw [h3, map_mul, Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel,
     map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Substitute `hd` using the available equality. Conclude with `coind_apply_eq_of_mul_eq U ι N d.out (F d) e`.
+-/
 theorem coind_apply_eq_of_mul_eq' (F : ∀ d : MackeyDoubleCoset U ι, mackeySummand U ι N d.out)
     {d d' : MackeyDoubleCoset U ι} (hd : d = d') {u u' : U} {h h' : H}
     (e : (u : G) * d.out * ι h = u' * d'.out * ι h') :
@@ -57,6 +75,9 @@ noncomputable def mackeyLiftFun (F : ∀ d : MackeyDoubleCoset U ι, mackeySumma
   N.ρ (exists_eq_mul_out_mul U ι y).choose
     ((F (DoubleCoset.mk U ι.range y)).1 (exists_eq_mul_out_mul U ι y).choose_spec.choose)
 
+/- English proof (translation)
+Use `set y := (u : G) * d.out * ι h with hy`. Establish `hd : DoubleCoset.mk U ι.range y = d`. Rewrite using `[hy, doubleCosetMk_mul_mul, DoubleCoset.out_eq']`. Conclude with `coind_apply_eq_of_mul_eq' U ι N F hd ((exists_eq_mul_out_mul U ι y).choose_spec.choose_spec.symm.trans hy)`.
+-/
 theorem mackeyLiftFun_apply (F : ∀ d : MackeyDoubleCoset U ι, mackeySummand U ι N d.out)
     (d : MackeyDoubleCoset U ι) (u : U) (h : H) :
     mackeyLiftFun U ι N F ((u : G) * d.out * ι h) = N.ρ u ((F d).1 h) := by
@@ -66,6 +87,11 @@ theorem mackeyLiftFun_apply (F : ∀ d : MackeyDoubleCoset U ι, mackeySummand U
   exact coind_apply_eq_of_mul_eq' U ι N F hd
     ((exists_eq_mul_out_mul U ι y).choose_spec.choose_spec.symm.trans hy)
 
+/- English proof (translation)
+Introduce `u₀ y`. Take `⟨u, h, hy⟩` from `exists_eq_mul_out_mul U ι y`. Rewrite using `[hy]`. Establish `e : U.subtype u₀ * ((u : G) * (DoubleCoset.mk U ι.range y).out * ι h) = ((u₀ * u : U) : G) * (DoubleCoset.mk U ι.range y).out * ι h`. Simplify using `[mul_assoc]`.
+
+Rewrite using `[e, mackeyLiftFun_apply, mackeyLiftFun_apply, map_mul, Module.End.mul_apply]`.
+-/
 theorem mackeyLiftFun_mem (F : ∀ d : MackeyDoubleCoset U ι, mackeySummand U ι N d.out) :
     mackeyLiftFun U ι N F ∈ Representation.coindV U.subtype N.ρ := by
   intro u₀ y
@@ -94,11 +120,17 @@ noncomputable def mackeyLift :
     rw [← map_smul]
     rfl
 
+/- English proof (translation)
+The claim follows from `mackeyLiftFun_apply U ι N F d u h`.
+-/
 theorem mackeyLift_apply (F : ∀ d : MackeyDoubleCoset U ι, mackeySummand U ι N d.out)
     (d : MackeyDoubleCoset U ι) (u : U) (h : H) :
     (mackeyLift U ι N F).1 ((u : G) * d.out * ι h) = N.ρ u ((F d).1 h) :=
   mackeyLiftFun_apply U ι N F d u h
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `h`. Rewrite using `[mackeyProj_hom_apply]`. Establish `e : d.out * ι h = ((1 : U) : G) * d.out * ι h` using `by simp`. Rewrite using `[e, mackeyLift_apply, map_one, Module.End.one_apply]`.
+-/
 theorem mackeyProj_mackeyLift (F : ∀ d : MackeyDoubleCoset U ι, mackeySummand U ι N d.out)
     (d : MackeyDoubleCoset U ι) :
     (mackeyProj U ι N d.out).hom (mackeyLift U ι N F) = F d := by
@@ -108,6 +140,11 @@ theorem mackeyProj_mackeyLift (F : ∀ d : MackeyDoubleCoset U ι, mackeySummand
   have e : d.out * ι h = ((1 : U) : G) * d.out * ι h := by simp
   rw [e, mackeyLift_apply, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Take `⟨u, h, hy⟩` from `exists_eq_mul_out_mul U ι y`. Rewrite using `[hy, mackeyLift_apply, mackeyProj_hom_apply]`. Establish `e : (u : G) * (DoubleCoset.mk U ι.range y).out * ι h = U.subtype u * ((DoubleCoset.mk U ι.range y).out * ι h)`.
+
+Simplify using `[mul_assoc]`. Rewrite using `[e, f.2]`.
+-/
 theorem mackeyLift_mackeyProj (f : Rep.coind U.subtype N) :
     mackeyLift U ι N (fun d => (mackeyProj U ι N d.out).hom f) = f := by
   apply Subtype.ext
@@ -119,6 +156,11 @@ theorem mackeyLift_mackeyProj (f : Rep.coind U.subtype N) :
     simp [mul_assoc]
   rw [e, f.2]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Take `⟨u, h, hy⟩` from `exists_eq_mul_out_mul U ι y`. Express the relevant statement in the definitionally equal form `_ = (mackeyLift U ι N F).1 (y * ι h₀)`. Establish `e : y * ι h₀ = (u : G) * (DoubleCoset.mk U ι.range y).out * ι (h * h₀)` using `by conv_lhs => rw [hy]`.
+
+Rewrite using `[map_mul, mul_assoc]`. Rewrite using `[e, mackeyLift_apply]`. Use `conv_lhs => rw [hy]`. Rewrite using `[mackeyLift_apply]`. Both sides reduce to the same expression.
+-/
 theorem mackeyLift_ρ (F : ∀ d : MackeyDoubleCoset U ι, mackeySummand U ι N d.out) (h₀ : H) :
     mackeyLift U ι N (fun d => (mackeySummand U ι N d.out).ρ h₀ (F d)) =
       (Rep.coind U.subtype N).ρ (ι h₀) (mackeyLift U ι N F) := by
@@ -143,11 +185,19 @@ noncomputable def mackeyEquiv :
   left_inv f := mackeyLift_mackeyProj U ι N f
   right_inv F := funext fun d => mackeyProj_mackeyLift U ι N F d
 
+/- English proof (translation)
+The claim follows from `Rep.hom_comm_apply (mackeyProj U ι N d.out) h₀ f`.
+-/
 theorem mackeyEquiv_apply_ρ (f : Rep.coind U.subtype N) (h₀ : H) (d : MackeyDoubleCoset U ι) :
     mackeyEquiv U ι N ((Rep.coind U.subtype N).ρ (ι h₀) f) d =
       (mackeySummand U ι N d.out).ρ h₀ (mackeyEquiv U ι N f d) :=
   Rep.hom_comm_apply (mackeyProj U ι N d.out) h₀ f
 
+/- English proof (translation)
+Rewrite using `[← mackeyLift_ρ]`. Use `congr 1`. Use function extensionality and compare the values at `d'`. Distinguish the cases in `hd : d' = d`. Substitute `hd` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hd]`.
+-/
 theorem mackeyLift_single_ρ [DecidableEq (MackeyDoubleCoset U ι)] (d : MackeyDoubleCoset U ι)
     (F : mackeySummand U ι N d.out) (h₀ : H) :
     mackeyLift U ι N (Pi.single d ((mackeySummand U ι N d.out).ρ h₀ F)) =
@@ -171,10 +221,16 @@ noncomputable def mackeyIncl (d : MackeyDoubleCoset U ι) :
     fun h₀ => LinearMap.ext fun F => mackeyLift_single_ρ U ι N d F h₀⟩
 
 open scoped Classical in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mackeyIncl_hom_apply (d : MackeyDoubleCoset U ι) (F : mackeySummand U ι N d.out) :
     (mackeyIncl U ι N d).hom F = mackeyLift U ι N (Pi.single d F) :=
   rfl
 
+/- English proof (translation)
+Use extensionality with `F : 3`. Express the relevant statement in the definitionally equal form `(mackeyProj U ι N d.out).hom ((mackeyIncl U ι N d).hom F) = F`. Rewrite using `[mackeyIncl_hom_apply, mackeyProj_mackeyLift]`. Simplify using the standard rewrite rules.
+-/
 theorem mackeyIncl_comp_mackeyProj (d : MackeyDoubleCoset U ι) :
     mackeyIncl U ι N d ≫ mackeyProj U ι N d.out = 𝟙 _ := by
   classical
@@ -183,6 +239,9 @@ theorem mackeyIncl_comp_mackeyProj (d : MackeyDoubleCoset U ι) :
   rw [mackeyIncl_hom_apply, mackeyProj_mackeyLift]
   simp
 
+/- English proof (translation)
+Use extensionality with `F : 3`. Express the relevant statement in the definitionally equal form `(mackeyProj U ι N d'.out).hom ((mackeyIncl U ι N d).hom F) = 0`. Rewrite using `[mackeyIncl_hom_apply, mackeyProj_mackeyLift]`. Simplify using `[Pi.single_eq_of_ne (Ne.symm hd)]`.
+-/
 theorem mackeyIncl_comp_mackeyProj_of_ne {d d' : MackeyDoubleCoset U ι} (hd : d ≠ d') :
     mackeyIncl U ι N d ≫ mackeyProj U ι N d'.out = 0 := by
   classical
@@ -196,6 +255,11 @@ section Finite
 variable [Fintype (MackeyDoubleCoset U ι)]
 
 open scoped Classical in
+/- English proof (translation)
+Use extensionality with `f : 3`. Express the relevant statement in the definitionally equal form `(∑ d : MackeyDoubleCoset U ι, mackeyProj U ι N d.out ≫ mackeyIncl U ι N d).hom f = f`. Set `ev : (Rep.res ι (Rep.coind U.subtype N) ⟶ Rep.res ι (Rep.coind U.subtype N)) →+ Rep.coind U.subtype N` to `AddMonoidHom.mk' (fun φ => φ.hom f) fun _ _ => rfl`. Express the relevant statement in the definitionally equal form `ev (∑ d : MackeyDoubleCoset U ι, mackeyProj U ι N d.out ≫ mackeyIncl U ι N d) = f`. Rewrite using `[map_sum]`.
+
+Express the relevant statement in the definitionally equal form `∑ d : MackeyDoubleCoset U ι, (mackeyIncl U ι N d).hom ((mackeyProj U ι N d.out).hom f) = f`. Rewrite using `[Finset.sum_congr rfl fun d _ => mackeyIncl_hom_apply U ι N d _, ← map_sum, Finset.univ_sum_single]`. Conclude with `mackeyLift_mackeyProj U ι N f`.
+-/
 theorem sum_mackeyProj_comp_mackeyIncl :
     ∑ d : MackeyDoubleCoset U ι, mackeyProj U ι N d.out ≫ mackeyIncl U ι N d = 𝟙 _ := by
   ext f : 3
@@ -233,6 +297,9 @@ noncomputable def mackeyIso :
   biproduct.uniqueUpToIso _ (mackeyBiconeIsBilimit U ι N)
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Rewrite using `[mackeyIso, biproduct.uniqueUpToIso_hom]`. Conclude with `biproduct.lift_π _ _`. Use the proof step `@[reassoc (attr := simp)]`.
+-/
 theorem mackeyIso_hom_π (d : MackeyDoubleCoset U ι) :
     (mackeyIso U ι N).hom ≫ biproduct.π (fun d : MackeyDoubleCoset U ι => mackeySummand U ι N d.out) d =
       mackeyProj U ι N d.out := by
@@ -240,6 +307,9 @@ theorem mackeyIso_hom_π (d : MackeyDoubleCoset U ι) :
   exact biproduct.lift_π _ _
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Rewrite using `[mackeyIso, biproduct.uniqueUpToIso_inv]`. Conclude with `biproduct.ι_desc _ _`.
+-/
 theorem ι_mackeyIso_inv (d : MackeyDoubleCoset U ι) :
     biproduct.ι (fun d : MackeyDoubleCoset U ι => mackeySummand U ι N d.out) d ≫ (mackeyIso U ι N).inv =
       mackeyIncl U ι N d := by

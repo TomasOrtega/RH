@@ -10,26 +10,44 @@ open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma rr_toMK_one (ε : Fin n → Bool) : toMK (1 : KG ε) = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma rr_toMK_mul {ε : Fin n → Bool} (k k' : KG ε) : toMK (k * k') = toMK k * toMK k' := rfl
 
+/- English proof (translation)
+Use `show _ = ((((k : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)`. Rewrite using `[Matrix.coe_units_inv]`.
+-/
 lemma rr_toMK_inv {ε : Fin n → Bool} (k : KG ε) : (toMK k)⁻¹ = toMK k⁻¹ := by
   show _ = ((((k : UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)
   rw [Matrix.coe_units_inv]
 
+/- English proof (translation)
+Take `⟨a, b⟩` from `p`. Take `⟨c, d⟩` from `q`. Simplify using `only [adC, inv_one, Matrix.one_apply, Prod.mk.injEq]`. Apply the tactic sequence `by_cases h1 : a = c <;> by_cases h2 : b = d <;> simp [h1, h2, eq_comm]`.
+-/
 lemma rr_adC_one (p q : Fin n × Fin n) : adC (1 : Matrix (Fin n) (Fin n) ℂ) p q = if p = q then 1 else 0 := by
   obtain ⟨a, b⟩ := p
   obtain ⟨c, d⟩ := q
   simp only [adC, inv_one, Matrix.one_apply, Prod.mk.injEq]
   by_cases h1 : a = c <;> by_cases h2 : b = d <;> simp [h1, h2, eq_comm]
 
+/- English proof (translation)
+Simplify using `only [adC, Matrix.mul_inv_rev, Matrix.mul_apply, Finset.sum_mul_sum, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun r1 _ => Finset.sum_congr rfl fun r2 _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma rr_adC_mul (A B : Matrix (Fin n) (Fin n) ℂ) (p q : Fin n × Fin n) :
     adC (A * B) p q = ∑ r : Fin n × Fin n, adC B p r * adC A r q := by
   simp only [adC, Matrix.mul_inv_rev, Matrix.mul_apply, Finset.sum_mul_sum, Fintype.sum_prod_type]
   refine Finset.sum_congr rfl fun r1 _ => Finset.sum_congr rfl fun r2 _ => ?_
   ring
 
+/- English proof (translation)
+Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Take `⟨i, hi⟩` from `Function.ne_iff.mp h`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (if_neg hi)`.
+-/
 lemma rr_prod_ite {l : ℕ} (w x : Fin l → Fin n × Fin n) :
     (∏ i, (if w i = x i then (1 : ℂ) else 0)) = if w = x then 1 else 0 := by
   split_ifs with h
@@ -37,13 +55,38 @@ lemma rr_prod_ite {l : ℕ} (w x : Fin l → Fin n × Fin n) :
   · obtain ⟨i, hi⟩ := Function.ne_iff.mp h
     exact Finset.prod_eq_zero (Finset.mem_univ i) (if_neg hi)
 
+/- English proof (translation)
+Simplify using `[KType.op]`.
+-/
 lemma rr_op_one {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) : T.op 1 = 1 := by
   simp [KType.op]
 
+/- English proof (translation)
+Simplify using `[KType.op]`.
+-/
 lemma rr_op_mul {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) (k k' : KG ε) (v : T.V) :
     T.op (k * k') v = T.op k (T.op k' v) := by
   simp [KType.op]
 
+/- English proof (translation)
+Introduce `n ε Λ T m`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Use function extensionality and compare the values at `x'`. Simplify using `only [rhoA, rr_toMK_one, rr_adC_one, rr_prod_ite, rr_op_one, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+
+Both sides reduce to the same expression. Introduce `k k' a`. Use function extensionality and compare the values at `x'`. Simplify using `only [rhoA, map_sum, map_smul, Finset.smul_sum, smul_smul]`. Use `Eq.trans ?_ (Finset.sum_comm (s := (Finset.univ : Finset (Fin x'.1 → Fin n × Fin n))) (t := (Finset.univ : Finset (Fin x'.1 → Fin n × Fin n)))).symm` and prove the remaining obligations.
+
+Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul, rr_op_mul]`. Use `congr 1`. Simplify using `only [rr_toMK_mul, rr_adC_mul]`. Rewrite using `[Finset.prod_univ_sum]`.
+
+Simplify using `only [Fintype.piFinset_univ]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `k a a'`. Use function extensionality and compare the values at `x'`. Simplify using `only [rhoA, Pi.add_apply, map_add, smul_add, Finset.sum_add_distrib]`. Introduce `k c a`. Use function extensionality and compare the values at `x'`.
+
+Simplify using `only [rhoA, Pi.smul_apply, map_smul, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`. Introduce `a`. Establish `hK : Continuous fun k : KG ε => toMK k` using `(continuous_toM ε).comp continuous_subtype_val`.
+
+Establish `hKi : Continuous fun k : KG ε => (toMK k)⁻¹`. Simplify using `only [rr_toMK_inv]`. Conclude with `hK.comp continuous_inv`. Establish `hop : ∀ v : T.V, Continuous fun k : KG ε => T.op k v` using `fun v => (continuous_subtype_val.comp T.cont).clm_apply continuous_const`. Use `continuous_pi fun x' => ?_` and prove the remaining obligations.
+
+Simplify using `only [rhoA]`. Use `continuous_finsetSum _ fun w _ => ?_` and prove the remaining obligations. Use `Continuous.smul ?_ (hop _)` and prove the remaining obligations. Use `continuous_finsetProd _ fun i _ => ?_` and prove the remaining obligations. Simplify using `only [adC]`.
+
+Conclude with `((continuous_apply _).comp ((continuous_apply _).comp hK)).mul ((continuous_apply _).comp ((continuous_apply _).comp hKi))`.
+-/
 theorem rho_representation_holds : PositivityTheory.RgDs.K.RhoRep := by
   intro n ε Λ T m
   refine ⟨?_, ?_, ?_, ?_, ?_⟩

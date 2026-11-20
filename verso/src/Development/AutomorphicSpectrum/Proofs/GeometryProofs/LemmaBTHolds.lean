@@ -19,6 +19,15 @@ namespace GlobalTheory.CompanionTheory.Ar.BT
 
 open CategoryTheory Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj TensorProduct
 
+/- English proof (translation)
+Unfold `GlobalTheory.CompanionTheory.Ar.BT.LemmaBT`. Introduce `R _ _ _ _ T _ _ Γ S G _ _ x N i hi hG`. Use `⟨GlobalTheory.T.btOrder_isHopfOrder_noetherian R T Γ, ?_, fun hN => GlobalTheory.T.btOrder_eq_top_of_etale R T Γ (GlobalTheory.T.torsion_group_etale_of_unit R T Γ S G x N i hi hG hN), ?_, ?_, fun L _ _ M => GlobalTheory.T.exists_dual_to_invariant_differentials R T Γ S G x N i hi …` and prove the remaining obligations. Take `⟨j, hj, -⟩` from `GlobalTheory.T.existsUnique_btOrder_embedding R T Γ`. Take `⟨hoi, htr⟩` from `GlobalTheory.T.btOrder_embedding_open_immersion R T Γ j hj`.
+
+Use `⟨j, hj, hoi, htr, fun hP => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.btOrder_embedding_iso_finite R T Γ j hj (GlobalTheory.T.torsion_group_finite_of_proper R T Γ S G x N i hi hP)`. Introduce `a _ α hα f hf`. Take `⟨a', _, ha'⟩` from `GlobalTheory.T.torsion_group_endomorphism_lift R T Γ S G x N i hi a`. Use `GlobalTheory.T.btOrder_comap_hom R T Γ T Γ a' α (fun t => ?_) f hf` and prove the remaining obligations.
+
+Take `⟨_, _, hcancel, _⟩` from `hi`. Apply `hcancel` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Category.assoc, ha', hα t]`. Introduce `R' _ _ _ Γ' F hF`. Take `⟨hd, hΓ'⟩` from `GlobalTheory.T.btOrder_base_change_generic R T Γ R' Γ' F hF`.
+
+Take `⟨-, e, he⟩` from `GlobalTheory.T.hopf_order_scalar_extension R T R' _ (GlobalTheory.T.btOrder_isHopfOrder_noetherian R T Γ) hd`. Rewrite using `[hΓ']`. Conclude with `⟨e, he⟩`.
+-/
 theorem lemmaBT_holds : LemmaBT := by
   unfold GlobalTheory.CompanionTheory.Ar.BT.LemmaBT
   intro R _ _ _ _ T _ _ Γ S G _ _ x N i hi hG

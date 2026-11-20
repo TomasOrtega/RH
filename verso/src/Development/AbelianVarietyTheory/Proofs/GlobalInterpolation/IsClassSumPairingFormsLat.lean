@@ -22,9 +22,15 @@ def wForm (a b : C → ι → ℂ) : ℂ := ∑ c, ((w c : ℕ) : ℂ)⁻¹ * (s
 
 variable {G}
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun c _ => mul_nonneg (inv_nonneg.2 (Nat.cast_nonneg _)) (hG.dotProduct_mulVec_nonneg _)`.
+-/
 theorem wForm_nonneg (hG : G.PosSemidef) (a : C → ι → ℂ) : 0 ≤ wForm w G a a :=
   Finset.sum_nonneg fun c _ => mul_nonneg (inv_nonneg.2 (Nat.cast_nonneg _)) (hG.dotProduct_mulVec_nonneg _)
 
+/- English proof (translation)
+Unfold `wForm`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_inv₀, map_natCast, starRingEnd_apply, ← Matrix.star_dotProduct, Matrix.star_mulVec, hG.eq, ← Matrix.dotProduct_mulVec]`.
+-/
 theorem wForm_conj (hG : G.IsHermitian) (a b : C → ι → ℂ) : starRingEnd ℂ (wForm w G b a) = wForm w G a b := by
   unfold wForm
   rw [map_sum]
@@ -32,6 +38,11 @@ theorem wForm_conj (hG : G.IsHermitian) (a b : C → ι → ℂ) : starRingEnd �
   rw [map_mul, map_inv₀, map_natCast, starRingEnd_apply, ← Matrix.star_dotProduct, Matrix.star_mulVec, hG.eq,
     ← Matrix.dotProduct_mulVec]
 
+/- English proof (translation)
+Set `core : PreInnerProductSpace.Core ℂ (C → ι → ℂ)` to `{ inner := wForm w G conj_inner_symm := fun x y => wForm_conj w hG.1 x y re_inner_nonneg := fun x => (Complex.nonneg_iff.1 (wForm_nonneg w hG x)).1 add_left := fun x y z => by`. Simplify using `only [wForm, Pi.add_apply, star_add, add_dotProduct, mul_add, Finset.sum_add_distrib]`. Use `smul_left := fun x y r => by`. Simplify using `only [wForm, Pi.smul_apply, star_smul, smul_dotProduct, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun c _ => by rw [starRingEnd_apply]; ring }`.
+
+Establish `h : ‖wForm w G a b‖ * ‖wForm w G b a‖ ≤ (wForm w G a a).re * (wForm w G b b).re` using `@InnerProductSpace.Core.inner_mul_inner_self_le ℂ _ _ _ _ core a b`. Rewrite `h` using `[← wForm_conj w hG.1 b a, Complex.norm_conj, ← sq]`. Then use the resulting hypothesis.
+-/
 theorem wForm_le (hG : G.PosSemidef) (a b : C → ι → ℂ) :
     ‖wForm w G a b‖ ^ 2 ≤ (wForm w G a a).re * (wForm w G b b).re := by
   let core : PreInnerProductSpace.Core ℂ (C → ι → ℂ) :=
@@ -47,12 +58,20 @@ theorem wForm_le (hG : G.PosSemidef) (a b : C → ι → ℂ) :
     @InnerProductSpace.Core.inner_mul_inner_self_le ℂ _ _ _ _ core a b
   rwa [← wForm_conj w hG.1 b a, Complex.norm_conj, ← sq] at h
 
+/- English proof (translation)
+Unfold `wForm`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[star_star, Matrix.dotProduct_mulVec, dotProduct_comm, ← Matrix.mulVec_transpose, hG]`.
+-/
 theorem wForm_star (hG : Gᵀ = G) (a : C → ι → ℂ) :
     wForm w G (fun c => star (a c)) (fun c => star (a c)) = wForm w G a a := by
   unfold wForm
   refine Finset.sum_congr rfl fun c _ => ?_
   rw [star_star, Matrix.dotProduct_mulVec, dotProduct_comm, ← Matrix.mulVec_transpose, hG]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c`. Assume the negation of the conclusion as `hc`. Establish `h1` using `(Finset.sum_eq_zero_iff_of_nonneg fun c _ => mul_nonneg (inv_nonneg.2 (Nat.cast_nonneg _)) (hG.posSemidef.dotProduct_mulVec_nonneg (a c))).1 h c (Finset.mem_univ c)`. Break down `mul_eq_zero.1 h1 with h2 | h2` into its components or cases. Conclude with `(Nat.cast_ne_zero.2 (hw c).ne') (inv_eq_zero.1 h2)`.
+
+Conclude with `(hG.dotProduct_mulVec_pos hc).ne' h2`.
+-/
 theorem wForm_eq_zero (hw : ∀ c, 0 < w c) (hG : G.PosDef) {a : C → ι → ℂ} (h : wForm w G a a = 0) : a = 0 := by
   funext c
   by_contra hc
@@ -71,6 +90,9 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] (S : GSD K) (h : S.Ok
 def coordAt (v : InfinitePlace K) (φ : S.D → S.V) : S.Cl → S.ιV → ℂ :=
   fun c i => v.embedding (S.bV.repr (φ (S.outSec.rep c)) i)
 
+/- English proof (translation)
+Unfold `GSD.ipAt wForm GSD.pairAt`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, Matrix.map_apply, Pi.star_apply, coordAt, starRingEnd_apply, mul_assoc]`.
+-/
 theorem ipAt_eq (v : InfinitePlace K) (φ ψ : S.D → S.V) :
     S.ipAt h v φ ψ = @wForm _ _ h.fintypeCl _ (S.toCSD h).wt (S.gramV.map v.embedding) (coordAt S v φ) (coordAt S v ψ) := by
   unfold GSD.ipAt wForm GSD.pairAt
@@ -93,6 +115,11 @@ def gramAt (v : InfinitePlace K) : Matrix (Fin (S.hDim h)) (Fin (S.hDim h)) ℂ 
   X v := frameOf (gramAt S h v)
   L := N
 
+/- English proof (translation)
+Use `letI := h.fintypeCl`. Establish `e : ∀ i j, gramAt S h v i j = _` using `fun i j => ipAt_eq S h v _ _`. Rewrite using `[dotProduct]`. Simplify using `only [Matrix.mulVec, dotProduct, e, Finset.mul_sum]`. Simplify using `only [wForm, Finset.sum_apply, Pi.smul_apply, star_sum, star_smul, sum_dotProduct, smul_dotProduct, Matrix.mulVec_sum, Matrix.mulVec_smul, dotProduct_sum, dotProduct_smul, smul_eq_mul, Finset.mul_sum, Finset.sum_mul, Pi.star_apply]`.
+
+Use `conv_rhs => rw [Finset.sum_comm]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun c _ => by ring` and prove the remaining obligations.
+-/
 theorem gramAt_form (v : InfinitePlace K) (a b : Fin (S.hDim h) → ℂ) :
     star a ⬝ᵥ gramAt S h v *ᵥ b = @wForm _ _ h.fintypeCl _ (S.toCSD h).wt (S.gramV.map v.embedding)
       (∑ i, a i • coordAt S v (S.hB h i : S.D → S.V)) (∑ i, b i • coordAt S v (S.hB h i : S.D → S.V)) := by
@@ -109,6 +136,9 @@ theorem gramAt_form (v : InfinitePlace K) (a b : Fin (S.hDim h) → ℂ) :
   conv_rhs => rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun c _ => by ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c k`. Use `conv_lhs => rw [← (S.hB h).sum_repr x]`. Simplify using `only [coordAt, AddSubmonoidClass.coe_finset_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, map_sum, map_smul, Finsupp.coe_finset_sum, Finsupp.coe_smul, smul_eq_mul, map_mul]`.
+-/
 theorem coordAt_sum (v : InfinitePlace K) (x : S.EqFun) :
     coordAt S v (x : S.D → S.V) = ∑ i, v.embedding ((S.hB h).repr x i) • coordAt S v (S.hB h i : S.D → S.V) := by
   funext c k
@@ -116,6 +146,13 @@ theorem coordAt_sum (v : InfinitePlace K) (x : S.EqFun) :
   simp only [coordAt, AddSubmonoidClass.coe_finset_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, map_sum,
     map_smul, Finsupp.coe_finset_sum, Finsupp.coe_smul, smul_eq_mul, map_mul]
 
+/- English proof (translation)
+Use `letI := h.fintypeCl`. Use `letI : Algebra K ℂ := v.embedding.toAlgebra`. Set `f : S.EqFun →ₗ[K] (S.Cl × S.ιV → K)` to `LinearMap.pi fun p => S.bV.coord p.2 ∘ₗ LinearMap.proj (S.outSec.rep p.1) ∘ₗ S.EqFun.subtype`. Establish `hf : LinearMap.ker f = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`.
+
+Introduce `φ hφ`. Apply `(S.res h).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c`.
+
+Conclude with `S.bV.forall_coord_eq_zero_iff.1 fun k => congrFun hφ (c, k)`. Conclude with `(linearIndependent_algebraMap_comp_iff (S := ℂ)).2 ((S.hB h).linearIndependent.map' f hf)`.
+-/
 theorem coordAt_indep (v : InfinitePlace K) :
     LinearIndependent ℂ fun i => fun p : S.Cl × S.ιV => coordAt S v (S.hB h i : S.D → S.V) p.1 p.2 := by
   letI := h.fintypeCl
@@ -132,6 +169,13 @@ theorem coordAt_indep (v : InfinitePlace K) :
     exact S.bV.forall_coord_eq_zero_iff.1 fun k => congrFun hφ (c, k)
   exact (linearIndependent_algebraMap_comp_iff (S := ℂ)).2 ((S.hB h).linearIndependent.map' f hf)
 
+/- English proof (translation)
+Use `letI := h.fintypeCl`. Use `Matrix.PosDef.of_dotProduct_mulVec_pos ?_ fun a ha => ?_` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Matrix.conjTranspose_apply, gramAt, Matrix.of_apply, Matrix.of_apply, ipAt_eq, ipAt_eq]`. Conclude with `wForm_conj _ hG.1 _ _`.
+
+Rewrite using `[gramAt_form]`. Use `lt_of_le_of_ne (wForm_nonneg _ hG.posSemidef _) fun h0 => ha ?_` and prove the remaining obligations. Establish `h1` using `wForm_eq_zero _ (S.toCSD h).wt_pos hG h0.symm`. Use function extensionality and compare the values at `i`. Use `Fintype.linearIndependent_iff.1 (coordAt_indep S h v) a ?_ i` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `p`. Simplify using `using congrFun (congrFun h1 p.1) p.2`.
+-/
 theorem gramAt_posDef (v : InfinitePlace K) (hG : (S.gramV.map v.embedding).PosDef) : (gramAt S h v).PosDef := by
   letI := h.fintypeCl
   refine Matrix.PosDef.of_dotProduct_mulVec_pos ?_ fun a ha => ?_
@@ -146,6 +190,13 @@ theorem gramAt_posDef (v : InfinitePlace K) (hG : (S.gramV.map v.embedding).PosD
     funext p
     simpa using congrFun (congrFun h1 p.1) p.2
 
+/- English proof (translation)
+Use `⟨fun _ => Iff.rfl, fun v (x : S.EqFun) => ?_⟩` and prove the remaining obligations. Establish `hm` using `(frameOfSpec _ _ (gramAt_posDef S h v (hG v))).2`. Establish `h1` using `gramAt_form S h v (Formalism.HermitianLatticesTheory.vecAt (S.hB h) v x) (Formalism.HermitianLatticesTheory.vecAt (S.hB h) v x)`. Rewrite `h1` using `[← hm, metOf, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec]`. Use `show _ = S.ipAt h v x x`.
+
+Rewrite using `[ipAt_eq, coordAt_sum S h v x]`. Use `Eq.trans ?_ h1` and prove the remaining obligations. Rewrite using `[Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.cnorm, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _), Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_pow, ← Complex.conj_mul']`.
+
+Both sides reduce to the same expression.
+-/
 theorem isFormsOf_formsLat (hG : ∀ v : InfinitePlace K, (S.gramV.map v.embedding).PosDef) (N : Submodule (𝓞 K) S.EqFun) :
     IsFormsOf S h N (formsLat S h N) (LinearEquiv.refl _ _) := by
   refine ⟨fun _ => Iff.rfl, fun v (x : S.EqFun) => ?_⟩
@@ -160,6 +211,9 @@ theorem isFormsOf_formsLat (hG : ∀ v : InfinitePlace K, (S.gramV.map v.embeddi
   rw [Complex.ofReal_pow, ← Complex.conj_mul']
   rfl
 
+/- English proof (translation)
+Simplify using `only [GSD.pairAt, dotProduct, Matrix.mulVec, Finset.mul_sum, Matrix.map_apply, Pi.star_apply, starRingEnd_apply, mul_assoc]`.
+-/
 theorem pairAt_eq (v : InfinitePlace K) (x : S.V) :
     S.pairAt v x x = star (fun i => v.embedding (S.bV.repr x i)) ⬝ᵥ
       S.gramV.map v.embedding *ᵥ fun i => v.embedding (S.bV.repr x i) := by
@@ -178,6 +232,13 @@ section Coeff
 
 open GlobalTheory.TestLat.Compare
 
+/- English proof (translation)
+Introduce `K _ _ ι _ n lam M hM x`. Use `letI : StarRing K := starRingOfComm`. Establish `h` using `GlobalTheory.TransDual.nabDelDual K ι n lam (fun _ => 1) M (fun _ => Matrix.conjTranspose_one) (fun _ => by simp) hM`. Establish `e : (fun τ => hdualFr (1 : Matrix (Fin n) (Fin n) K) (M τ)) = fun τ => dualFr (M τ)`. Use function extensionality and compare the values at `τ`.
+
+Use extensionality with `y`. Rewrite using `[hdualFr_triv, Matrix.one_mulVec]`. Establish `e2 : ∀ y, pairK lam (fun _ => 1) y x = pairBK lam x y` using `fun y => by`. Rewrite using `[pairK_apply, pairBK_apply, pairP_trivial]`. Conclude with `pairingBSymm_holds K ι n lam _ _`.
+
+Rewrite `h` using `[e]`. Rewrite using `[← h.1, ← h.2]`. Simplify using `[Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, e2]`.
+-/
 theorem pairBDualK : PairBDualK := by
   intro K _ _ ι _ n lam M hM x
   letI : StarRing K := starRingOfComm
@@ -193,17 +254,28 @@ theorem pairBDualK : PairBDualK := by
   rw [← h.1, ← h.2]
   simp [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, e2]
 
+/- English proof (translation)
+Introduce `E K _ _ _ _ ι _ n emb lam L hL x` and use `pairBDualK K ι n lam _ (fun τ => GlobalTheory.TauLat.tauLatLattice E K ι n emb τ L hL) x`.
+-/
 theorem pairBDual : PairBDual := fun E K _ _ _ _ ι _ n emb lam L hL x =>
   pairBDualK K ι n lam _ (fun τ => GlobalTheory.TauLat.tauLatLattice E K ι n emb τ L hL) x
 
 variable {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n)
 
+/- English proof (translation)
+Establish `h` using `pairK_basis (K := K) lam 1 i j`. Rewrite `h` using `[map_one]`. Conclude with `h`.
+-/
 theorem pairK_one_basis [StarRing K] (i j : VVIdx lam) :
     pairK lam (fun _ => (1 : Matrix (Fin n) (Fin n) K)) (bVV K lam i) (bVV K lam j) = gramB K lam i j := by
   have h := pairK_basis (K := K) lam 1 i j
   rw [map_one] at h
   exact h
 
+/- English proof (translation)
+Use `letI : StarRing K := starRingOfComm`. Establish `h` using `pairingPositive_holds K ι n lam (fun _ => 1) φ fun τ => by`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `Matrix.PosDef.one`. Simplify using `only [pairK_one_basis] at h`.
+
+Conclude with `h`.
+-/
 theorem gramB_posDef (φ : K →+* ℂ) : ((gramB K lam).map φ).PosDef := by
   letI : StarRing K := starRingOfComm
   have h := pairingPositive_holds K ι n lam (fun _ => 1) φ fun τ => by
@@ -211,6 +283,9 @@ theorem gramB_posDef (φ : K →+* ℂ) : ((gramB K lam).map φ).PosDef := by
   simp only [pairK_one_basis] at h
   exact h
 
+/- English proof (translation)
+Use `conv_lhs => rw [← (bVV K lam).sum_repr x, ← (bVV K lam).sum_repr y]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, map_mul, dotProduct, Matrix.mulVec, Matrix.map_apply, gramB, Matrix.of_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem map_pairBK (φ : K →+* ℂ) (x y : VV K lam) :
     φ (pairBK lam x y) = (fun i => φ ((bVV K lam).repr x i)) ⬝ᵥ (gramB K lam).map φ *ᵥ fun i => φ ((bVV K lam).repr y i) := by
   conv_lhs => rw [← (bVV K lam).sum_repr x, ← (bVV K lam).sum_repr y]
@@ -226,14 +301,23 @@ section Level
 variable {X : Fields} {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))} (C C' : CoefPk X n (DecoSet X.E n ST SG))
   (Λ : LevFam X.E X.K n SG)
 
+/- English proof (translation)
+Rewrite using `[LevFam.chr_apply Λ g, ← Finset.prod_inv_distrib]`. Conclude with `LevFam.chr_apply Λ.inv g`.
+-/
 theorem chr_inv (g : Λ.grp) : Λ.inv.chr g = (Λ.chr g)⁻¹ := by
   rw [LevFam.chr_apply Λ g, ← Finset.prod_inv_distrib]
   exact LevFam.chr_apply Λ.inv g
 
+/- English proof (translation)
+Rewrite using `[e, map_smul, map_smul, LinearMap.smul_apply, smul_smul, Units.inv_mul, one_smul]`.
+-/
 theorem pairBK_smul {K ι : Type} [Field K] [Fintype ι] (lam : ι → DomWeight n) (a b : Kˣ) (e : b = a⁻¹)
     (x y : VV K lam) : pairBK lam ((a : K) • x) ((b : K) • y) = pairBK lam x y := by
   rw [e, map_smul, map_smul, LinearMap.smul_apply, smul_smul, Units.inv_mul, one_smul]
 
+/- English proof (translation)
+Set `e : FormG Λ.inv ≃ FormG Λ` to `Equiv.refl (FormG Λ)`. Use `Nat.card_congr (Equiv.subtypeEquiv e fun a => ?_)` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff, MulAction.mem_stabilizer_iff, formGSD_smul, formGSD_smul]`. Both sides reduce to the same expression.
+-/
 theorem card_stab_inv (d : DecoSet X.E n ST SG) :
     Nat.card (MulAction.stabilizer (formGSD C' Λ.inv).G d) = Nat.card (MulAction.stabilizer (formGSD C Λ).G d) := by
   let e : FormG Λ.inv ≃ FormG Λ := Equiv.refl (FormG Λ)
@@ -258,6 +342,9 @@ def dualVal (SG : Finset (HeightOneSpectrum (𝓞 X.E))) : CoefPk X (R.N R.m - 1
 
 @[reducible] def dualGSD : GSD X.K := formGSD (dualVal W (rowSG Pr sel mu)) (rowTy Ch sel mu P)
 
+/- English proof (translation)
+The claim follows from `formGSD_ok _ _ hX { nab_smul := fun a d => roundPk_nab X _ _ (d.1.N_act a.1.1 a.2) del_smul := fun a d => roundPk_del X _ _ (d.1.N_act a.1.1 a.2) inv := roundPk_inv X _ _ hX.emb_star }`.
+-/
 theorem dualOk (hX : X.Ok) : (dualGSD W Ch sel mu P).Ok :=
   formGSD_ok _ _ hX
     { nab_smul := fun a d => roundPk_nab X _ _ (d.1.N_act a.1.1 a.2)
@@ -277,6 +364,11 @@ def classSum (h : (mtildeGSD W Ch sel mu P).Ok) :
     (dualGSD W Ch sel mu P).EqFun →ₗ[X.K] (mtildeGSD W Ch sel mu P).EqFun →ₗ[X.K] X.K :=
   (rowPair W Ch sel mu P).formOf h (mtildeGSD W Ch sel mu P).outSec
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `e : gramKd X.emb (1 : Matrix (Fin (R.N R.m - 1)) (Fin (R.N R.m - 1)) X.E) = fun _ => 1`. Use function extensionality and compare the values at `τ`. Rewrite using `[gramKd, Matrix.map_one _ (map_zero _) (map_one _), inv_one, Matrix.transpose_one]`. Use `show pairK W.sgTrue (gramKd X.emb 1) (bVV _ _ i) (bVV _ _ j) = _`.
+
+Rewrite using `[e]`. Conclude with `pairK_one_basis W.sgTrue i j`.
+-/
 theorem dual_gramV : (dualGSD W Ch sel mu P).gramV = gramB X.K W.sgTrue := by
   ext i j
   have e : gramKd X.emb (1 : Matrix (Fin (R.N R.m - 1)) (Fin (R.N R.m - 1)) X.E) = fun _ => 1 := by
@@ -286,6 +378,11 @@ theorem dual_gramV : (dualGSD W Ch sel mu P).gramV = gramB X.K W.sgTrue := by
   rw [e]
   exact pairK_one_basis W.sgTrue i j
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `e : gramK X.emb (1 : Matrix (Fin (R.N R.m - 1)) (Fin (R.N R.m - 1)) X.E) = fun _ => 1`. Use function extensionality and compare the values at `τ`. Rewrite using `[gramK, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `show pairK W.sgTrue (gramK X.emb 1) (bVV _ _ i) (bVV _ _ j) = _`.
+
+Rewrite using `[e]`. Conclude with `pairK_one_basis W.sgTrue i j`.
+-/
 theorem row_gramV : (mtildeGSD W Ch sel mu P).gramV = gramB X.K W.sgTrue := by
   ext i j
   have e : gramK X.emb (1 : Matrix (Fin (R.N R.m - 1)) (Fin (R.N R.m - 1)) X.E) = fun _ => 1 := by

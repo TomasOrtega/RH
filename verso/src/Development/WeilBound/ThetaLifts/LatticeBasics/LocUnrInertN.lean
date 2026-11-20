@@ -6,6 +6,11 @@ namespace GlobalTheory.ThK.Dbl.Inert
 
 open MeasureTheory Formalism.UG GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables
 
+/- English proof (translation)
+Rewrite using `[Fin.prod_univ_eq_prod_range (fun i => T (n - 1 - i) * T i), Finset.prod_mul_distrib]`. Take `⟨m, rfl | rfl⟩` from `Nat.even_or_odd' n`. Rewrite using `[if_neg (by simp), show 2 * m / 2 = m by omega, two_mul, Finset.prod_range_add, mul_one, mul_comm, ← Finset.prod_range_reflect (fun i => T (m + i))]`. Conclude with `congrArg _ (Finset.prod_congr rfl fun i hi => congrArg T (by have := Finset.mem_range.1 hi; omega))`. Rewrite using `[if_pos (by simp), show (2 * m + 1) / 2 = m by omega, show 2 * m + 1 = m + 1 + m by ring, Finset.prod_range_add, Finset.prod_range_succ, ← Finset.prod_range_reflect (fun i => T (m + 1 + i)), mul_assoc, mul_comm]`.
+
+Conclude with `congrArg _ (Finset.prod_congr rfl fun i hi => congrArg T (by have := Finset.mem_range.1 hi; omega))`.
+-/
 theorem prod_fold (T : ℕ → ℂ) (n : ℕ) :
     (∏ i : Fin (n / 2), T (n - 1 - i) * T i) * (if Odd n then T (n / 2) else 1) = ∏ k ∈ Finset.range n, T k := by
   rw [Fin.prod_univ_eq_prod_range (fun i => T (n - 1 - i) * T i), Finset.prod_mul_distrib]
@@ -17,6 +22,29 @@ theorem prod_fold (T : ℕ → ℂ) (n : ℕ) :
       Finset.prod_range_succ, ← Finset.prod_range_reflect (fun i => T (m + 1 + i)), mul_assoc, mul_comm]
     exact congrArg _ (Finset.prod_congr rfl fun i hi => congrArg T (by have := Finset.mem_range.1 hi; omega))
 
+/- English proof (translation)
+Take `⟨α, hα, hw⟩` from `isZonal_one hU n`. Establish `h2 : 2 ≤ q` using `hU.2.2.2.2.2.1`. Establish `hq : (q : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hn : (0 : ℝ) ≤ n` using `n.cast_nonneg`. Establish `lt : ∀ z : ℂ, z.re < 0 → ‖(q : ℂ) ^ z‖ < 1` using `fun z hz => by`.
+
+Rewrite using `[Complex.norm_natCast_cpow_of_pos (by omega)]`. Conclude with `Real.rpow_lt_one_of_one_lt_of_neg (by exact_mod_cast h2) hz`. Establish `y0 : varY q ((1 : Lˣ →* ℂˣ) ϖ) s = (q : ℂ) ^ (-(2 * s + 1))` using `by simp [varY]`. Establish `y1 : ∀ i, (q : ℂ) ^ (-(2 * s + 1)) * α i = (q : ℂ) ^ (-(2 * s + 1) + (n - 1 - 2 * (i.val : ℂ)))` using `fun i => by`. Rewrite using `[hα, ← Complex.cpow_intCast, ← Complex.cpow_add _ _ hq]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Establish `y2 : ∀ i, (q : ℂ) ^ (-(2 * s + 1)) / α i = (q : ℂ) ^ (-(2 * s + 1) - (n - 1 - 2 * (i.val : ℂ)))` using `fun i => by`. Rewrite using `[hα, ← Complex.cpow_intCast, ← Complex.cpow_sub _ _ hq]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Take `⟨h3, h4, -⟩` from `(GlobalTheory.CompanionTheory.InertZetaTop.unramDoublingInert L ϖ σ q n hU μ hμ 1 (fun _ _ => rfl) s Φ hΦ α _ hw).1 (by`. Rewrite using `[y0]`. Use `⟨lt _ (by simp; linarith), fun i => ?_⟩` and prove the remaining obligations. Establish `h5 : 2 * (i.val : ℝ) + 1 ≤ n` using `by exact_mod_cast (by have := i.2; omega : 2 * i.val + 1 ≤ n)`.
+
+Establish `h6 : (0 : ℝ) ≤ i.val` using `Nat.cast_nonneg _`. Rewrite using `[← norm_mul, ← norm_inv, ← norm_mul, ← div_eq_mul_inv, y1, y2]`. Conclude with `⟨lt _ (by simp; linarith), lt _ (by simp; linarith)⟩)`. Simplify using `only [mul_one] at h3 h4`. Use `⟨h3, ?_⟩` and prove the remaining obligations.
+
+Establish `e : ∀ z : ℂ, ((q ^ 2 : ℕ) : ℂ) ^ z = (q : ℂ) ^ (2 * z)` using `fun z => by`. Rewrite using `[Nat.cast_pow, ← Complex.natCast_cpow_natCast_mul]`. Both sides reduce to the same expression. Rewrite using `[h4, closedForm, y0, ← prod_fold (fun i => (1 - ((q ^ 2 : ℕ) : ℂ) ^ (-(s + n / 2 - i)))⁻¹), mul_assoc (Finset.prod _ _), mul_right_comm, ← Finset.prod_range_reflect, ← Finset.prod_mul_distrib, Finset.prod_eq_one, one_mul]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `i.2` as an intermediate fact. Rewrite using `[y1, y2, e, e, Nat.cast_sub (by omega), Nat.cast_sub (by omega)]`. Apply the tactic sequence `congr 4 <;> push_cast <;> ring`. Use `split_ifs with h`.
+
+Take `⟨m, rfl⟩` from `h`. Rewrite using `[e, show (2 * m + 1) / 2 = m by omega]`. Use `congr 3`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Both sides reduce to the same expression. Introduce `i hi`. Establish `hi` using `Finset.mem_range.1 hi`. Establish `e2 : (-(q : ℂ)) ^ (n - 1 - i) * varX q n ((1 : Lˣ →* ℂˣ) ϖ) s = (-1) ^ (n - (i + 1)) * (q : ℂ) ^ (-(2 * s + (i + 1 : ℕ)))`. Rewrite using `[neg_pow, varX, MonoidHom.one_apply, Units.val_one, one_mul, mul_assoc, ← Complex.cpow_natCast (q : ℂ), ← Complex.cpow_add _ _ hq, Nat.cast_sub (by omega), Nat.cast_sub (by omega), show n - 1 - i = n - (i + 1) by omega]`.
+
+Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Use `mul_inv_cancel₀ (sub_ne_zero.2 fun h => ?_)` and prove the remaining obligations.
+
+Establish `h6 : (0 : ℝ) ≤ i` using `Nat.cast_nonneg _`. Use `lt (-(2 * s + (i + 1 : ℕ))) (by simp; linarith)` as an intermediate fact. Establish `h7` using `congrArg norm h`. Rewrite `h7` using `[norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]`. Conclude with `this.ne h7.symm`.
+-/
 theorem triv {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] {ϖ : Lˣ} {σ : L →+* L} {q n : ℕ}
     (hU : IsUnramInv (ϖ : L) σ q) [MeasurableSpace (GU σ n)] [BorelSpace (GU σ n)] (μ : Measure (GU σ n)) [μ.IsHaarMeasure]
     (hμ : μ (KU σ n) = 1) {s : ℂ} (hs : (n : ℝ) / 2 < s.re) {Φ : GD σ n → ℂ} (hΦ : IsSphSec σ q n 1 s Φ) :

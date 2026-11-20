@@ -23,6 +23,9 @@ namespace GlobalTheory.TorusSat
 
 open GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps (torus lieMap lieAdd LieCongr IsLieLinear lieCoord IsSaturatedTorus TorusSaturated)
 
+/- English proof (translation)
+Take `⟨a, ha, z, hz⟩` from `h`. Use `⟨a, ha, ρ z, ?_⟩` and prove the remaining obligations. Use `congrArg ρ hz` as an intermediate fact. Rewrite `this` using `[hρu, hρ.1, hρu, hρ.2]`. Conclude with `this`.
+-/
 theorem lieCongr_of_retraction {R : Type} [CommRing R] {T G : Over (Spec (CommRingCat.of R))}
     [GrpObj T] [GrpObj G] (u : T ⟶ G) [IsMonHom u] (ρ : LieG G → LieG T) (hρ : IsLieLinear ρ)
     (hρu : ∀ x, ρ (lieMap u x) = x) (I : Ideal R) (x y : LieG T)
@@ -33,6 +36,11 @@ theorem lieCongr_of_retraction {R : Type} [CommRing R] {T G : Over (Spec (CommRi
   rw [hρu, hρ.1, hρu, hρ.2] at this
   exact this
 
+/- English proof (translation)
+Introduce `R _ _ _ K _ _ _ G _ hG r uK huK hci`. Take `⟨u, ⟨hu, hu'⟩, huniq⟩` from `GlobalTheory.Published.SemiAbelianHomExtension.dvr (K := K) h.p22 (G := torus R r) (H := G) (GlobalTheory.Diag.isSemiAbelian _ _) hG uK`. Use `⟨u, hu, hu', fun u' h1 h2 => huniq u' ⟨h1, h2⟩, ?_⟩` and prove the remaining obligations. Establish `hsp` using `GlobalTheory.T.torus_closed_immersion_special_of_generic h R K G hG r u hu (hu' ▸ hci)`. Take `⟨ρ, hρ, hρu⟩` from `GlobalTheory.T.torus_lie_algebra_retraction_exists R G hG.smooth r u hsp`.
+
+Conclude with `⟨hsp, fun x y hxy => lieCongr_of_retraction u ρ hρ hρu _ x y hxy, GlobalTheory.T.torus_lie_algebra_coordinate_linear_equiv R r, ρ, hρ, hρu⟩`.
+-/
 theorem torusSaturated (h : GlobalTheory.CovTop.Hypotheses2) : TorusSaturated := by
   intro R _ _ _ K _ _ _ G _ hG r uK huK hci
   obtain ⟨u, ⟨hu, hu'⟩, huniq⟩ :=
@@ -43,6 +51,9 @@ theorem torusSaturated (h : GlobalTheory.CovTop.Hypotheses2) : TorusSaturated :=
   obtain ⟨ρ, hρ, hρu⟩ := GlobalTheory.T.torus_lie_algebra_retraction_exists R G hG.smooth r u hsp
   exact ⟨hsp, fun x y hxy => lieCongr_of_retraction u ρ hρ hρu _ x y hxy, GlobalTheory.T.torus_lie_algebra_coordinate_linear_equiv R r, ρ, hρ, hρu⟩
 
+/- English proof (translation)
+The claim follows from `torusSaturated`.
+-/
 theorem main : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.TorusSaturated := torusSaturated
 
 end GlobalTheory.TorusSat

@@ -14,6 +14,17 @@ namespace Grp
 
 variable {n : ℕ} (G : Grp k n)
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `hun`. Establish `hJmul'` using `hJmul hcb hccB`. Establish `hJinv'` using `hJinv hcb hccB`. Establish `hΔU'` using `hΔU hccB`. Establish `hlM'` using `hlM hcb hΔU hΔM hccB`.
+
+Establish `hiw'` using `hiw hcb hccB hΔU hJmul hJinv`. Establish `hTE'` using `hTE hcb hccB hΔU hΔM hJmul hJinv hlM hlU hiw`. Establish `hPJ'` using `hPJ hcb hccB hΔU hΔM hJone hJmul hJinv hlM hlB hKC`. Establish `hTI'` using `hTI hcb hccB hΔU hΔM hJone hJmul hJinv hlM hlB hlU hiw hPJ hkill hni hTE hKC ϖ hϖ V π hs`. Establish `hTp'` using `hTp hcb hccB hΔU hΔM hJmul hJinv hlM hlU hiw hTE ϖ hϖ V π`.
+
+Establish `hE : ∀ y ∈ G.Eig π, G.Tz π ϖ 1 y ∈ G.Eig π` using `fun y hy => (hTE' ϖ hϖ 1).2 V π y hy`. Establish `key : ∀ m : ℕ, ∀ y ∈ G.Eig π, (G.Tz π ϖ 1)^[m] y = 0 → y = 0`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro y _ h`.
+
+Simplify using `using h`. Consider the case `succ m ih`. Introduce `y hy h`. Rewrite `h` using `[Function.iterate_succ_apply]`. Conclude with `hTI' y hy (ih _ (hE y hy) h)`.
+
+Introduce `h0`. Take `⟨m, hm⟩` from `hjK hcb hccB hΔU hΔM hJmul hJinv hlM hiw hTE hlU ϖ hϖ V π hs x hx h0`. Rewrite `hm` using `[hTp' x hx m]`. Conclude with `hx0 (key m x hx hm)`.
+-/
 theorem jac_ne_zero (hcb : CompactConductorBasicProp (k := k)) (hccB : G.CompactConductorBoundProp) (hJone : G.JacquetOneProp) (hJmul : G.JacquetMultiplicativeProp)
     (hJinv : G.JacquetInverseProp) (hKC : G.CompactOpenKernelProp) (hΔU : G.ModulusOnUnitsProp) (hΔM : G.ModulusMultiplicativeProp) (hlM : G.LambdaMultiplicativeProp)
     (hlB : G.LambdaBasicProp) (hlU : G.LambdaUnipotentProp) (hiw : G.IwahoriDecompositionProp) (hPJ : G.ParabolicJacquetProp) (hkill : G.AnnihilationProp)
@@ -46,6 +57,9 @@ theorem jac_ne_zero (hcb : CompactConductorBasicProp (k := k)) (hccB : G.Compact
   rw [hTp' x hx m] at hm
   exact hx0 (key m x hx hm)
 
+/- English proof (translation)
+Introduce `L V _ _ π hs hirr ⟨x, hx0, hx⟩`. Use `hjP L V π hs hirr ⟨_, G.jac_ne_zero hcb hccB hJone hJmul hJinv hKC hΔU hΔM hlM hlB hlU hiw hPJ hkill hni hTE hTp hjK hTI hun π hs x hx0 hx, fun m hm => hjI hlL hJone V π x hx m hm⟩` and prove the remaining obligations.
+-/
 theorem cMain (hcb : CompactConductorBasicProp (k := k)) (hccB : G.CompactConductorBoundProp) (hJone : G.JacquetOneProp) (hJmul : G.JacquetMultiplicativeProp)
     (hJinv : G.JacquetInverseProp) (hKC : G.CompactOpenKernelProp) (hΔU : G.ModulusOnUnitsProp) (hΔM : G.ModulusMultiplicativeProp) (hlM : G.LambdaMultiplicativeProp)
     (hlB : G.LambdaBasicProp) (hlU : G.LambdaUnipotentProp) (hiw : G.IwahoriDecompositionProp) (hPJ : G.ParabolicJacquetProp) (hkill : G.AnnihilationProp)

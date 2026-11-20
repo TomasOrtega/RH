@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
+/- English proof (translation)
+Introduce `n A G _ _ D`. Use `⟨fun B _ _ x y => ?_, D.toDet.ker, fun y => (UpperTheory.V.CA.d_ker D.toDet y).1.trans (UpperTheory.V.CA.d_toDet D y).2.2.2⟩` and prove the remaining obligations. Establish `h` using `UpperTheory.V.CA.d_comm D.toDet B (toT A G B x) (toT A G B y)`. Express the relevant statement in the definitionally equal form `D.D B (ofT A G B _) = D.D B (ofT A G B _) at h`. Simplify `h` using `only [map_add, map_one, map_mul, ofT_toT]`.
+-/
 theorem UpperTheory.V.AlgebraTools.Det.gcomm :
     ∀ {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G),
     (∀ (B : Type) [CommRing B] [Algebra A B] (x y : MonoidAlgebra B G), D.D B (1 + x * y) = D.D B (1 + y * x)) ∧

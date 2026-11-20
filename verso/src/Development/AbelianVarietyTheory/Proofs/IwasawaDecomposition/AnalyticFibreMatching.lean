@@ -19,6 +19,19 @@ open GlobalTheory.OneMapRef GlobalTheory.WeilParts
 
 open AlgebraicGeometry CategoryTheory in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ r g X bas idx e x L hs hx hL hA y y' A A' mk hmk hm hm' th th' hr hr'`. Establish `he` using `GlobalTheory.Dict.anFib_ex_eq E H Dw l Xo c r g X bas idx e x L y y' A A' hs hx hL hA mk hmk hm hm'`. Establish `hfr` using `GlobalTheory.FrameEquiv.anFib_fr_eq_of_ex_left_eq E H Dw l Xo c r g X bas idx e x L y y' A A' hs hx hL he`. Establish `hyx : y'.x = y.x`. Establish `h1 : (A.ex 0).left ≫ Xo.univ.t.G.hom = y.x` using `Over.w (A.ex 0)`.
+
+Establish `h2 : (A'.ex 0).left ≫ Xo.univ.t.G.hom = y'.x` using `Over.w (A'.ex 0)`. Rewrite using `[← h1, ← h2, he]`. Establish `hu : y'.u = y.u` using `funext fun τ => funext fun i => by`. Establish `d` using `A'.der ⟨τ, i⟩`. Simplify using `only [he] at d`.
+
+Conclude with `ReciprocityTheory.ChartRestriction.G.PullbackSections.ExpRows.isDerivAt0_unique d (A.der ⟨τ, i⟩)`. Take `⟨x', hover', u', tan', eig', basis', s', gen'⟩` from `y'`. Simplify using `only at hyx hu`. Substitute `hyx hu` using the available equality. Take `⟨a, ha⟩` from `GlobalTheory.Frames.ChgOf.gen_unit' y.s s' y.gen gen'`.
+
+Use `⟨a, a.ne_zero, ?_, fun w n f hf => ?_⟩` and prove the remaining obligations. Use `(reads_existsUnique_theta E H Dw l Xo c r g X bas idx e x L _ A' hs hx hL 1 s').1.unique hr' ?_` and prove the remaining obligations. Introduce `j z pt h1 h2 hj`. Rewrite `h1`, `hj` using `[he]`. Establish `h3` using `hr j z pt h1 h2 hj`.
+
+Establish `h4` using `(GlobalTheory.sec_values_complex_fibre GlobalTheory.abelianSchemeLaws_all.2.secTwist E H Dw l Xo y.x y.s).1 a (fun _ => j) pt h2`. Use `((congrArg (Geo.Tor.valAt' pt _) (ha fun _ => j)).trans h4).trans ?_` and prove the remaining obligations. Rewrite using `[hfr j z hj, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `congrArg _ h3`. Set `t : Formalism.L2.Pj.Ix Dw → ℂˣ` to `fun i => match i with`.
+
+Consider the case `none => a`. Consider the case `some _ => 1`. Use `(GlobalTheory.LamT.evR_frChg_tri (inferInstance) hf t (fun _ => 1) (fun τ i j hij => Matrix.one_apply_ne hij.ne) (fun τ i => Matrix.one_apply_eq i) (y := y) (y' := ⟨y.x, hover', y.u, tan', eig', basis', s', gen'⟩) ⟨rfl, ((GlobalTheory.Frames.frChg_refl_and_comp E H Dw l Xo c ℂ y …` and prove the remaining obligations. Use `congr 1`. Simplify using `[wchar, Fintype.prod_option, t, Formalism.L2.Pj.ex]`.
+-/
 theorem GlobalTheory.OneMapRef.exists_scalar_of_marked : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [Algebra c.F ℂ] (r g : ℕ) (X : Data E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (e : Fin g ≃ Lt1 Dw) (x : Frame X.Ψ r) (L : Lt E r), IsSympl X bas → x ∈ X.dom → SelfD X L → l.A = 1 → ∀ (y y' : FrPt Xo c ℂ) (A : AnFib X bas idx e x L y) (A' : AnFib X bas idx e x L y') (mk : Dw.La →ₗ[𝓞 E] (Fin r → E)), IsMark l L mk → A.Marked mk → A'.Marked mk → ∀ th th', A.Reads 1 y.s th → A'.Reads 1 y'.s th' → ∃ lam : ℂ, lam ≠ 0 ∧ th' = lam • th ∧ ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), ∀ f ∈ sec Xo c a n, evR Xo c f y' = lam ^ n * evR Xo c f y := by
   intro E _ _ _ H Dw l Xo c _ r g X bas idx e x L hs hx hL hA y y' A A' mk hmk hm hm' th th' hr hr'
   have he := GlobalTheory.Dict.anFib_ex_eq E H Dw l Xo c r g X bas idx e x L y y' A A' hs hx hL hA mk hmk hm hm'

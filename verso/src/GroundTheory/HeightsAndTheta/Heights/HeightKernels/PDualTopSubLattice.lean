@@ -11,6 +11,13 @@ open ReciprocityTheory.ChartRestriction.G.Geo NumberField
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `K _ _ i F F' T T' _ _ _ _ b hb b' hb' II hi hII hle`. Establish `hcard : Fintype.card T = Fintype.card T'`. Rewrite using `[DualTopStackedExistence.card_eq_of_bijective b hb, DualTopStackedExistence.card_eq_of_bijective b' hb']`. Take `⟨b₁, b₁', a, hab⟩` from `DualTopStackedExistence.exists_stacked hle b b' hcard`. Establish `hb₁` using `DualEmbBijective.proof K i F T' b₁`.
+
+Establish `hb₁'` using `DualEmbBijective.proof K i F' T' b₁'`. Establish `h1 : II Unit (dualBlocks T') (dualIdeal b') i (fun _ => dualLine F'.withStdMetric b' hb') = II Unit (dualBlocks T') (dualIdeal b₁') i (fun _ => dualLine F'.withStdMetric b₁' hb₁')` using `hBasis K i F'.withStdMetric T' T' b₁' hb₁' b' hb' II hi hII`. Establish `h2 : II Unit (dualBlocks T') (dualIdeal b₁) i (fun _ => dualLine F.withStdMetric b₁ hb₁) = II Unit (dualBlocks T) (dualIdeal b) i (fun _ => dualLine F.withStdMetric b hb)` using `hBasis K i F.withStdMetric T T' b hb b₁ hb₁ II hi hII`. Establish `h3` using `hStacked K i F F' T' b₁ hb₁ b₁' hb₁' a II hi hII hle hab`. Establish `h4` using `hDeg K i F F' T' b₁ b₁' a hle hab`.
+
+Rewrite using `[h1, h3, h2, h4]`.
+-/
 theorem DualTopSubLattice.proof (hBasis : DualTopBasisChange.Statement)
     (hStacked : DualTopStacked.Statement) (hDeg : DualStackedDegree.Statement) :
     DualTopSubLattice.Statement := by

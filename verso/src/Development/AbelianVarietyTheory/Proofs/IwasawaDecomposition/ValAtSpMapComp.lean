@@ -16,6 +16,9 @@ section Values
 
 variable {K : Type} [Field K] {Z : Scheme.{0}}
 
+/- English proof (translation)
+Establish `h : (spMap ψ) (IsLocalRing.closedPoint K) = IsLocalRing.closedPoint K` using `Subsingleton.elim (α := PrimeSpectrum K) _ _`. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (congrArg y h)`.
+-/
 theorem below_spMap_comp (ψ : K →+* K) (y : Sp K ⟶ Z) : below (spMap ψ ≫ y) = below y := by
   have h : (spMap ψ) (IsLocalRing.closedPoint K) = IsLocalRing.closedPoint K :=
     Subsingleton.elim (α := PrimeSpectrum K) _ _
@@ -23,6 +26,9 @@ theorem below_spMap_comp (ψ : K →+* K) (y : Sp K ⟶ Z) : below (spMap ψ ≫
 
 variable [IsIntegral Z]
 
+/- English proof (translation)
+Substitute `hy` using the available equality. Establish `e : φ = Scheme.stalkClosedPointTo y`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono (Z.fromSpecStalk _), h, Scheme.Spec_stalkClosedPointTo_fromSpecStalk]`. Rewrite using `[e, Base.valAt_stalk]`.
+-/
 theorem valAt_of_factor (x : Z) (y : Sp K ⟶ Z) (hy : below y = x)
     (φ : Z.presheaf.stalk x ⟶ CommRingCat.of K) (h : Spec.map φ ≫ Z.fromSpecStalk x = y)
     (a : Z.presheaf.stalk x) : valAt y (algebraMap _ Z.functionField a) = φ.hom a := by
@@ -32,6 +38,11 @@ theorem valAt_of_factor (x : Z) (y : Sp K ⟶ Z) (hy : below y = x)
     rw [← cancel_mono (Z.fromSpecStalk _), h, Scheme.Spec_stalkClosedPointTo_fromSpecStalk]
   rw [e, Base.valAt_stalk]
 
+/- English proof (translation)
+Distinguish the cases in `h : RegAt (below y) f`. Take `⟨a, rfl⟩` from `h`. Rewrite using `[Base.valAt_stalk y]`. Use `valAt_of_factor (below y) _ (below_spMap_comp ψ y) (Scheme.stalkClosedPointTo y ≫ CommRingCat.ofHom ψ) ?_ a` and prove the remaining obligations. Rewrite using `[Spec.map_comp, Category.assoc, Scheme.Spec_stalkClosedPointTo_fromSpecStalk]`.
+
+Establish `h' : ¬ RegAt (below (spMap ψ ≫ y)) f` using `by rwa [below_spMap_comp]`. Rewrite using `[valAt, dif_neg h', valAt, dif_neg h, map_zero]`.
+-/
 theorem valAt_spMap_comp (ψ : K →+* K) (y : Sp K ⟶ Z) (f : Z.functionField) :
     valAt (spMap ψ ≫ y) f = ψ (valAt y f) := by
   by_cases h : RegAt (below y) f
@@ -54,6 +65,11 @@ def act (g : AlgebraicClosure F ≃ₐ[F] AlgebraicClosure F) (y : AlgPt Y) : Al
     rw [Category.assoc, y.2, ← Spec.map_comp]
     exact congrArg (fun ρ => spMap ρ) e⟩
 
+/- English proof (translation)
+Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `spMap (g.symm : AlgebraicClosure F →+* AlgebraicClosure F) ≫ spMap (g : AlgebraicClosure F →+* AlgebraicClosure F) ≫ y.1 = y.1`. Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Establish `e' : Spec.map (CommRingCat.ofHom (g : AlgebraicClosure F →+* AlgebraicClosure F) ≫ CommRingCat.ofHom (g.symm : AlgebraicClosure F →+* AlgebraicClosure F)) = 𝟙 _`. Establish `e : CommRingCat.ofHom (g : AlgebraicClosure F →+* AlgebraicClosure F) ≫ CommRingCat.ofHom (g.symm : AlgebraicClosure F →+* AlgebraicClosure F) = 𝟙 _` using `CommRingCat.hom_ext (RingHom.ext g.symm_apply_apply)`.
+
+Rewrite using `[e, Spec.map_id]`. Rewrite using `[e', Category.id_comp]`.
+-/
 theorem act_symm_act (g : AlgebraicClosure F ≃ₐ[F] AlgebraicClosure F) (y : AlgPt Y) :
     act g.symm (act g y) = y := by
   refine Subtype.ext ?_
@@ -77,6 +93,17 @@ def actEquiv (g : AlgebraicClosure F ≃ₐ[F] AlgebraicClosure F) : AlgPt Y ≃
 variable {C : CxSt F} {A : Adl C Y} {M : TrueGeo.Model Y} {L : HermLB M.p} {k : ℕ+}
   {cf : HeightOneSpectrum (𝓞 F) → ℝ}
 
+/- English proof (translation)
+Take `⟨-, r, -, -, hfin⟩` from `hI`. Take `⟨yt, hyt, hU⟩` from `exists_valuationRing_point F Y M v e' y`. Establish `hx : yt (IsLocalRing.closedPoint e'.O) ∈ (⨆ i, L.B.U i : M.X.Opens)`. Rewrite using `[L.isLB.cover]`. Discharge the goal by the elementary cases of `trivial`.
+
+Take `⟨i, hi⟩` from `Opens.mem_iSup.mp hx`. Set `gO : e'.O →+* e.O` to `((g : AlgebraicClosure F →+* AlgebraicClosure F).comp e'.O.subtype).codRestrict e.O.toSubring fun x => (e.mem_O _).2 (by`. Use `(e'.mem_O _).1 x.2` as an intermediate fact. Rewrite `this` using `[hg]`. Conclude with `this)`.
+
+Establish `hc : spMap e.O.subtype ≫ spMap gO = spMap (g : AlgebraicClosure F →+* AlgebraicClosure F) ≫ spMap e'.O.subtype`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hyt₂ : spMap e.O.subtype ≫ spMap gO ≫ yt = (act g y).1 ≫ M.j`. Rewrite using `[← Category.assoc, hc, Category.assoc, hyt]`.
+
+Conclude with `(Category.assoc _ _ _).symm`. Establish `h'` using `hfin v e' y yt (fun _ => i) hyt (hU _ hi).1`. Establish `h` using `hfin v e (act g y) (spMap gO ≫ yt) (fun _ => i) hyt₂ (fun x _ => (hU _ hi).1 (x := spMap gO x) trivial)`. Establish `hb : below (act g y).1 = below y.1` using `below_spMap_comp _ _`. Establish `hv (u : Y.Fn) : e.w (valAt (act g y).1 u) = e'.w (valAt y.1 u)`.
+
+Rewrite using `[hg]`. Conclude with `congrArg e.w (valAt_spMap_comp _ y.1 u)`. Rewrite `h` using `[hb, hv, ← h']`. Conclude with `mul_left_cancel₀ (by exact_mod_cast k.ne_zero) h`.
+-/
 theorem lg_act (hI : A.Induced M L k cf) {v : HeightOneSpectrum (𝓞 F)} (e e' : Ext v)
     (g : AlgebraicClosure F ≃ₐ[F] AlgebraicClosure F) (hg : ∀ x, e'.w x = e.w (g x)) (y : AlgPt Y) :
     A.lg v e (act g y) = A.lg v e' y := by
@@ -108,6 +135,13 @@ theorem lg_act (hI : A.Induced M L k cf) {v : HeightOneSpectrum (𝓞 F)} (e e' 
   rw [hb, hv, ← h'] at h
   exact mul_left_cancel₀ (by exact_mod_cast k.ne_zero) h
 
+/- English proof (translation)
+Introduce `F _ _ C Y A hA x hx`. Take `⟨M, L, k, cf, hI⟩` from `hA`. Use `⟨fun v e e' => ?_, ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `ExtConj.conj v e e'`. Use `(finsum_comp_equiv (actEquiv g) (f := fun y : AlgPt Y => ∑ᶠ (_ : below y.1 = x), A.lg v e y)).symm.trans (finsum_congr fun y => ?_)` and prove the remaining obligations.
+
+Establish `hb : below (act g y).1 = below y.1` using `below_spMap_comp _ _`. Express the relevant statement in the definitionally equal form `∑ᶠ (_ : below (act g y).1 = x), A.lg v e (act g y) = _`. Rewrite using `[hb, lg_act hI e e' g hg y]`. Establish `hP : {y : AlgPt Y | below y.1 = x}.Finite` using `Set.finite_coe_iff.1 (ExtConj.pts Y x hx).2`. Use `(hP.biUnion fun y _ => finite_places_lg_ne_zero F C Y A M L k cf hI y).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `v ⟨e, y, hy, h⟩`. Conclude with `Set.mem_iUnion₂.2 ⟨y, hy, e, h⟩`.
+-/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y), A.IsModel → ∀ x : Y.X, IsClosed ({x} : Set Y.X) → (∀ (v : HeightOneSpectrum (𝓞 F)) (e e' : Ext v), ∑ᶠ (y : AlgPt Y) (_ : below y.1 = x), A.lg v e y = ∑ᶠ (y : AlgPt Y) (_ : below y.1 = x), A.lg v e' y) ∧ {v : HeightOneSpectrum (𝓞 F) | ∃ (e : Ext v) (y : AlgPt Y), below y.1 = x ∧ A.lg v e y ≠ 0}.Finite := by
   intro F _ _ C Y A hA x hx
   obtain ⟨M, L, k, cf, hI⟩ := hA

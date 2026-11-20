@@ -27,6 +27,9 @@ def poinc {G : Type*} [Group G] (D : Set G) (Ph : G → ℂ) (x : G) : ℂ :=
 def stab {G : Type*} [Group G] (S S' : Subgroup G) (γ : G) : Subgroup G :=
   S ⊓ S'.comap (MulAut.conj γ⁻¹).toMonoidHom
 
+/- English proof (translation)
+Unfold `stab`. Rewrite using `[Subgroup.mem_inf, Subgroup.mem_comap]`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv]`.
+-/
 theorem mem_stab {G : Type*} [Group G] (S S' : Subgroup G) (γ g : G) :
     g ∈ stab S S' γ ↔ g ∈ S ∧ γ⁻¹ * g * γ ∈ S' := by
   unfold stab

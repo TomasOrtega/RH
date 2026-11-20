@@ -18,6 +18,9 @@ open InfinitePlace.Completion
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Use `Units.ext (Prod.ext ?_ rfl)` and prove the remaining obligations. Use `show Pi.mulSingle w (a : w.Completion) = Pi.mulSingle w (a : w.Completion)`. Use `congr!`.
+-/
 theorem infiniteEmbedding_eq (w : InfinitePlace E) (a : (w.Completion)ˣ) :
     (infiniteEmbedding w a : IdeleGroup E) = ReciprocityTheory.Neutral.Bridge.HCFR.infIdele E w a := by
   classical
@@ -25,6 +28,9 @@ theorem infiniteEmbedding_eq (w : InfinitePlace E) (a : (w.Completion)ˣ) :
   show Pi.mulSingle w (a : w.Completion) = Pi.mulSingle w (a : w.Completion)
   congr!
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.InfTypeLocal.infType_iff_local E I φ hφ χ.1 χ.2.1 n).1 hn i k`. Rewrite using `[HeckeCharacter.infiniteComponent_apply, coe_toIdele, infiniteEmbedding_eq]`. Conclude with `h`.
+-/
 theorem component_on_field (χ : HChar E) (hu : IsUnitary χ) {I : Type} [Fintype I] {φ : I → E →+* ℂ}
     (hφ : Function.Bijective fun i => InfinitePlace.mk (φ i)) (n : I → ℤ)
     (hn : Formalism.L2.Host.HChar.HasInf χ φ n) (i : I) (k : Eˣ) :
@@ -34,10 +40,20 @@ theorem component_on_field (χ : HChar E) (hu : IsUnitary χ) {I : Type} [Fintyp
   rw [HeckeCharacter.infiniteComponent_apply, coe_toIdele, infiniteEmbedding_eq]
   exact h
 
+/- English proof (translation)
+The claim follows from `((Function.surjective_eval w).denseRange.comp (GlobalTheory.InfTypeLocal.denseRange_atInf E) (continuous_apply w) : DenseRange _)`.
+-/
 theorem denseRange_atInf_place (w : InfinitePlace E) : DenseRange (Formalism.L2.Host.atInf w) :=
   ((Function.surjective_eval w).denseRange.comp (GlobalTheory.InfTypeLocal.denseRange_atInf E)
     (continuous_apply w) : DenseRange _)
 
+/- English proof (translation)
+Establish `h1 : Continuous fun u : ((InfinitePlace.mk (φ i)).Completion)ˣ => e u` using `hec.comp Units.continuous_val`. Establish `h2 : ∀ u : ((InfinitePlace.mk (φ i)).Completion)ˣ, e u ≠ 0` using `fun u => (map_ne_zero _).2 u.ne_zero`. Establish `h3 : ∀ u : ((InfinitePlace.mk (φ i)).Completion)ˣ, ((‖e u‖ : ℝ) : ℂ) ≠ 0` using `fun u => by`. Conclude with `norm_ne_zero_iff.2 (h2 u)` after adjusting the coercions. Establish `key : (fun u : ((InfinitePlace.mk (φ i)).Completion)ˣ => (((toHecke χ hu).infiniteComponent (InfinitePlace.mk (φ i)) u : Circle) : ℂ)) = fun u : ((InfinitePlace.mk (φ i)).Completion)ˣ => (e u / ((‖e u‖ : ℝ) : ℂ)) ^ n i`.
+
+Use `(denseRange_atInf_place _).equalizer ?_ ?_ ?_` and prove the remaining obligations. Conclude with `continuous_subtype_val.comp (map_continuous _)`. Conclude with `(h1.div (Complex.continuous_ofReal.comp h1.norm) h3).zpow₀ _ fun u => Or.inl (div_ne_zero (h2 u) (h3 u))`. Use function extensionality and compare the values at `k show _ = (e (algebraMap E _ (k : E)) / ((‖e (algebraMap E _ (k : E))‖ : ℝ) : ℂ)) ^ n i`. Rewrite using `[he]`.
+
+Conclude with `component_on_field χ hu hφ n hn i k`. Conclude with `congrFun key a`.
+-/
 theorem component_eq (χ : HChar E) (hu : IsUnitary χ) {I : Type} [Fintype I] {φ : I → E →+* ℂ}
     (hφ : Function.Bijective fun i => InfinitePlace.mk (φ i)) (n : I → ℤ)
     (hn : Formalism.L2.Host.HChar.HasInf χ φ n) (i : I)
@@ -64,12 +80,34 @@ theorem component_eq (χ : HChar E) (hu : IsUnitary χ) {I : Type} [Fintype I] {
       exact component_on_field χ hu hφ n hn i k
   exact congrFun key a
 
+/- English proof (translation)
+Establish `h0 : ((‖z‖ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast norm_ne_zero_iff.2 hz`. Rewrite using `[inv_div, div_eq_div_iff h0 hz, Complex.conj_mul']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem conj_div_norm {z : ℂ} (hz : z ≠ 0) :
     (starRingEnd ℂ) z / ((‖z‖ : ℝ) : ℂ) = (z / ((‖z‖ : ℝ) : ℂ))⁻¹ := by
   have h0 : ((‖z‖ : ℝ) : ℂ) ≠ 0 := by exact_mod_cast norm_ne_zero_iff.2 hz
   rw [inv_div, div_eq_div_iff h0 hz, Complex.conj_mul']
   ring
 
+/- English proof (translation)
+Use `set w := InfinitePlace.mk (φ i) with hw`. Use `set T := toHecke χ hu with hT`. Establish `hnr : ¬ w.IsReal` using `InfinitePlace.not_isReal_iff_isComplex.2 hc`. Use `set e := InfinitePlace.Completion.ringEquivComplexOfIsComplex hc with he`. Establish `hec : Continuous e.symm` using `(isometryEquivComplexOfIsComplex hc).symm.continuous`.
+
+Use `set ψ : ℂˣ →ₜ* Circle := (T.infiniteComponent w).comp (unitsContinuousHom e.symm hec) with hψ`. Take `⟨p, -, huniq⟩` from `existsUnique_complexUnits_circle ψ`. Establish `hι : ∀ z : ℂˣ, extensionEmbedding w ((unitsContinuousHom e.symm hec z : (w.Completion)ˣ) : w.Completion) = z` using `fun z => e.apply_symm_apply (z : ℂ)`. Establish `hnorm : ∀ z : ℂˣ, ‖((unitsContinuousHom e.symm hec z : (w.Completion)ˣ) : w.Completion)‖ = ‖(z : ℂ)‖` using `fun z => by`. Rewrite using `[← hι z]`.
+
+Conclude with `((isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) _).symm`. Establish `h1 : ∀ z : ℂˣ, (ψ z : ℂ) = ((z : ℂ) / (‖(z : ℂ)‖ : ℂ)) ^ (T.infiniteWeight w, 2 * T.infiniteTau w).1 * ((‖(z : ℂ)‖ : ℝ) : ℂ) ^ ((((T.infiniteWeight w, 2 * T.infiniteTau w).2 : ℝ) : ℂ) * Complex.I)` using `fun z => by`. Establish `hpos : 0 < ‖(z : ℂ)‖` using `norm_pos_iff.2 z.ne_zero`. Use `show ((T.infiniteComponent w (unitsContinuousHom e.symm hec z) : Circle) : ℂ) = _`. Rewrite using `[HeckeCharacter.infiniteComponent_eq, hι, hnorm, InfinitePlace.mult, if_neg hnr, ofReal_pow_cpow hpos]`.
+
+Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∃ s : ℤ, s.natAbs = (n i).natAbs ∧ ∀ z : ℂˣ, (ψ z : ℂ) = ((z : ℂ) / (‖(z : ℂ)‖ : ℂ)) ^ (s, (0 : ℝ)).1 * ((‖(z : ℂ)‖ : ℝ) : ℂ) ^ ((((s, (0 : ℝ)).2 : ℝ) : ℂ) * Complex.I)`. Establish `h0 : ∀ k : E, extensionEmbedding w (algebraMap E _ k) = w.embedding k` using `fun k => extensionEmbedding_coe w (WithAbs.toAbs _ k)`.
+
+Establish `hcont` using `(isometry_extensionEmbedding w).continuous`. Break down `InfinitePlace.embedding_mk_eq (φ i) with h | h` into its components or cases. Use `⟨n i, rfl, fun z => ?_⟩` and prove the remaining obligations. Use `component_eq χ hu hφ n hn i (extensionEmbedding w) hcont (fun k => by rw [h0, hw, h]) (unitsContinuousHom e.symm hec z)` as an intermediate fact. Use `show ((T.infiniteComponent w (unitsContinuousHom e.symm hec z) : Circle) : ℂ) = _`.
+
+Rewrite using `[this, hι]`. Simplify using the standard rewrite rules. Use `⟨-n i, by simp, fun z => ?_⟩` and prove the remaining obligations. Use `component_eq χ hu hφ n hn i ((starRingEnd ℂ).comp (extensionEmbedding w)) (Complex.continuous_conj.comp hcont) (fun k => by` as an intermediate fact. Rewrite using `[RingHom.comp_apply, h0, hw, h]`.
+
+Use the proof step `simp) (unitsContinuousHom e.symm hec z)`. Use `show ((T.infiniteComponent w (unitsContinuousHom e.symm hec z) : Circle) : ℂ) = _`. Rewrite using `[this, RingHom.comp_apply, hι, Complex.norm_conj, conj_div_norm z.ne_zero, inv_zpow, ← zpow_neg]`. Simplify using the standard rewrite rules. Take `⟨s, hs, h2⟩` from `h2`.
+
+Establish `e1` using `huniq _ h1`. Establish `e2` using `huniq _ h2`. Establish `e3` using `e1.trans e2.symm`. Establish `e4 : T.infiniteWeight w = s` using `congrArg Prod.fst e3`. Establish `e5 : 2 * T.infiniteTau w = 0` using `congrArg Prod.snd e3`.
+
+Conclude with `⟨by linarith, by rw [e4, hs]⟩`.
+-/
 theorem params (χ : HChar E) (hu : IsUnitary χ) {I : Type} [Fintype I] {φ : I → E →+* ℂ}
     (hφ : Function.Bijective fun i => InfinitePlace.mk (φ i)) (n : I → ℤ)
     (hn : Formalism.L2.Host.HChar.HasInf χ φ n) (i : I) (hc : (InfinitePlace.mk (φ i)).IsComplex) :
@@ -125,6 +163,9 @@ theorem params (χ : HChar E) (hu : IsUnitary χ) {I : Type} [Fintype I] {φ : I
   have e5 : 2 * T.infiniteTau w = 0 := congrArg Prod.snd e3
   exact ⟨by linarith, by rw [e4, hs]⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ I _ φ hφ χ hu n hn i`. Conclude with `params χ hu (GlobalTheory.CMTypeCard.bijective_mk_of_isCMType hφ) n hn i (IsTotallyComplex.isComplex _)`.
+-/
 theorem infiniteParams_of_hasInf : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (I : Type) [Fintype I] (φ : I → E →+* ℂ), IsCMType φ → ∀ (χ : HChar E) (hu : IsUnitary χ) (n : I → ℤ), Formalism.L2.Host.HChar.HasInf χ φ n → ∀ i : I, (toHecke χ hu).infiniteTau (InfinitePlace.mk (φ i)) = 0 ∧ ((toHecke χ hu).infiniteWeight (InfinitePlace.mk (φ i))).natAbs = (n i).natAbs := by
   intro E _ _ _ I _ φ hφ χ hu n hn i
   exact params χ hu (GlobalTheory.CMTypeCard.bijective_mk_of_isCMType hφ) n hn i

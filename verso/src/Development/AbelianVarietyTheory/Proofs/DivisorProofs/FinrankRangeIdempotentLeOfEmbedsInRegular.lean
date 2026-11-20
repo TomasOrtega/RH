@@ -5,6 +5,25 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Arithmet
 
 namespace GlobalTheory.BadCount
 
+/- English proof (translation)
+Introduce `K Γ V _ _ _ _ _ _ ρ H n hE a ha hidem`. Take `⟨j, hj, hjρ⟩` from `hE`. Set `ψ` to `MonoidAlgebra.mapDomainAlgHom K K H.subtype`. Establish `hψinj : Function.Injective ψ` using `MonoidAlgebra.mapDomain_injective Subtype.val_injective`. Set `a' : MonoidAlgebra K H` to `MonoidAlgebra.ofCoeff (Finsupp.comapDomain Subtype.val a.coeff Subtype.val_injective.injOn)`.
+
+Establish `hψa : ψ a' = a`. Apply `MonoidAlgebra.coeff_injective` to reduce the goal to its premises. Use `show Finsupp.mapDomain Subtype.val (Finsupp.comapDomain Subtype.val a.coeff Subtype.val_injective.injOn) = a.coeff`. Apply `Finsupp.mapDomain_comapDomain _ Subtype.val_injective` to reduce the goal to its premises. Introduce `g hg`.
+
+Conclude with `⟨⟨g, ha g (by simpa using hg)⟩, rfl⟩`. Establish `hidem' : a' * a' = a'` using `hψinj (by rw [map_mul, hψa, hidem])`. Establish `hc1 : a'.coeff 1 = a.coeff 1` using `rfl`. Establish `key : ∀ (b : MonoidAlgebra K H) (v : V) (i : Fin n), j (ρ.asAlgebraHom (ψ b) v) i = b * j v i`. Introduce `b`.
+
+Proceed by induction on `b using MonoidAlgebra.induction_on with`. Consider the case `of h`. Introduce `v i`. Establish `: ψ (MonoidAlgebra.of K H h) = MonoidAlgebra.of K Γ (h : Γ)`. Simplify using `[ψ]`.
+
+Rewrite using `[this, Representation.asAlgebraHom_of, hjρ h v i]`. Both sides reduce to the same expression. Consider the case `add b c hb hc => intro v i`. Simplify using `[map_add, LinearMap.add_apply, hb, hc, add_mul]`. Consider the case `smul r b hb => intro v i`.
+
+Simplify using `[map_smul, LinearMap.smul_apply, hb, smul_mul_assoc]`. Use `⟨finrank K (LinearMap.range (LinearMap.mulLeft K a')), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.finrank_range_mulLeft_idempotent_groupAlgebra K H a' hidem', hc1]`. Set `R` to `LinearMap.range (LinearMap.mulLeft K a')`. Set `g : LinearMap.range (ρ.asAlgebraHom a) →ₗ[K] (Fin n → R)` to `LinearMap.pi fun i => LinearMap.codRestrict R ((LinearMap.proj i).comp (j.comp (LinearMap.range (ρ.asAlgebraHom a)).subtype)) (by`.
+
+Introduce and unpack `⟨x, v, rfl⟩`. Use `⟨j v i, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.proj_apply, LinearMap.mulLeft_apply]`. Rewrite using `[← hψa, key])`. Establish `hg : Function.Injective g`.
+
+Introduce `x y hxy`. Apply `Subtype.val_injective` to reduce the goal to its premises. Apply `hj` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `congrArg (fun f => ((f i : R) : MonoidAlgebra K H)) hxy` as an intermediate fact.
+
+Simplify `this` using `[g]`. Use `LinearMap.finrank_le_finrank_of_injective hg` as an intermediate fact. Rewrite `this` using `[Module.finrank_pi_fintype]`. Simplify `this` using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`.
+-/
 theorem finrank_range_idem_le_of_embReg : ∀ (K Γ V : Type) [Field K] [CharZero K] [Group Γ] [Finite Γ] [AddCommGroup V]
     [Module K V] (ρ : Representation K Γ V) (H : Subgroup Γ) (n : ℕ), EmbReg ρ H n → ∀ a : MonoidAlgebra K Γ,
     (∀ g, a.coeff g ≠ 0 → g ∈ H) → a * a = a → ∃ r : ℕ, (r : K) = (Nat.card H : K) * a.coeff 1 ∧

@@ -27,6 +27,9 @@ instance [FiniteDimensional ℂ V] : FiniteDimensional ℂ (SectionInnerProductS
 
 def val : SectionInnerProductSpace V →ₗ[ℂ] (Fin A.n → X → ℂ) := V.subtype
 
+/- English proof (translation)
+The claim follows from `(show V from v).2`.
+-/
 theorem val_mem (v : SectionInnerProductSpace V) : val V v ∈ V := (show V from v).2
 
 variable [CompactSpace X] [T2Space X] [MeasurableSpace X] [BorelSpace X]
@@ -34,11 +37,17 @@ variable [CompactSpace X] [T2Space X] [MeasurableSpace X] [BorelSpace X]
 
 omit [CompactSpace X] [T2Space X] [BorelSpace X] in
 
+/- English proof (translation)
+Repeatedly rewrite using `[pairing_self]`. Conclude with `integral_ofReal`.
+-/
 theorem integral_pairing_self (s : Fin A.n → X → ℂ) :
     ∫ x, pairing W n s s x ∂dV.μ = ((sectionL2NormSq W dV n s : ℝ) : ℂ) := by
   simp_rw [pairing_self]
   exact integral_ofReal
 
+/- English proof (translation)
+Use `dV.isProb` as an intermediate fact. Conclude with `integrableOn_univ.1 ((pairing_continuous W n hs ht).continuousOn.integrableOn_compact isCompact_univ)`. Use the proof step `@[instance_reducible]`.
+-/
 theorem pairing_integrable {s t : Fin A.n → X → ℂ} (hs : s ∈ L.sections n)
     (ht : t ∈ L.sections n) : Integrable (pairing W n s t) dV.μ := by
   have := dV.isProb
@@ -106,6 +115,29 @@ def core (hV : V ≤ L.sections n) : InnerProductSpace.Core ℂ (SectionInnerPro
       · exact hs.2.2 j x hx
     exact (Subtype.ext hzero : (show V from v) = 0)
 
+/- English proof (translation)
+Set `cd : InnerProductSpace.Core ℂ (SectionInnerProductSpace V)` to `core V W dV n hV`. Set `: NormedAddCommGroup (SectionInnerProductSpace V)` to `InnerProductSpace.Core.toNormedAddCommGroup (𝕜 := ℂ)`. Set `: InnerProductSpace ℂ (SectionInnerProductSpace V)` to `InnerProductSpace.ofCore cd.toCore`. Establish `hinner : ∀ v w : SectionInnerProductSpace V, ⟪v, w⟫_ℂ = ∫ x, pairing W n (val V v) (val V w) x ∂dV.μ` using `fun _ _ ↦ rfl`. Establish `hnorm : ∀ v : SectionInnerProductSpace V, sectionL2NormSq W dV n (val V v) = ‖v‖ ^ 2` using `fun v ↦ by`.
+
+Rewrite using `[InnerProductSpace.norm_sq_eq_re_inner (𝕜 := ℂ) v]`. Use `show _ = RCLike.re (∫ x, pairing W n (val V v) (val V v) x ∂dV.μ)`. Rewrite using `[integral_pairing_self, RCLike.re_to_complex, Complex.ofReal_re]`. Set `b` to `stdOrthonormalBasis ℂ (SectionInnerProductSpace V)`. Use `⟨_, fun i ↦ val V (b i), fun i ↦ val_mem V (b i), fun x ↦ ?_⟩` and prove the remaining obligations.
+
+Set `ev : SectionInnerProductSpace V →ₗ[ℂ] ℂ` to `(LinearMap.proj (R := ℂ) x).comp ((LinearMap.proj (R := ℂ) (chartIdx A x)).comp (val V))`. Use `set w := Real.exp (-(n : ℝ) * W.φ (chartIdx A x) x) with hw`. Establish `hw0 : 0 ≤ w` using `(Real.exp_pos _).le`. Establish `hpt : ∀ v : SectionInnerProductSpace V, ptNormSq W n (val V v) x = ‖ev v‖ ^ 2 * w` using `fun _ ↦ rfl`. Set `r : SectionInnerProductSpace V` to `∑ i, conj (ev (b i)) • b i`.
+
+Establish `hr : ∀ v, ev v = ⟪r, v⟫_ℂ` using `fun v ↦ by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ ↦ by rw [map_smul, smul_eq_mul, mul_comm]`. Use `_ = ⟪r, v⟫_ℂ := by`.
+
+Rewrite using `[sum_inner]`. Conclude with `Finset.sum_congr rfl fun i _ ↦ by rw [inner_smul_left, Complex.conj_conj]`. Establish `hrn : ‖r‖ ^ 2 = ∑ i, ‖ev (b i)‖ ^ 2`. Rewrite using `[← b.sum_sq_norm_inner_right r]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations.
+
+Rewrite using `[← inner_conj_symm, ← hr, Complex.norm_conj]`. Establish `hsum : ∑ i, ptNormSq W n (val V (b i)) x = ‖r‖ ^ 2 * w`. Rewrite using `[hrn, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ ↦ hpt _`. Establish `hle : ∀ s : V, ptNormSq W n (s : Fin A.n → X → ℂ) x / sectionL2NormSq W dV n s ≤ ‖r‖ ^ 2 * w`.
+
+Introduce `s`. Set `v : SectionInnerProductSpace V` to `s`. Express the relevant statement in the definitionally equal form `ptNormSq W n (val V v) x / sectionL2NormSq W dV n (val V v) ≤ ‖r‖ ^ 2 * w`. Rewrite using `[hpt, hnorm]`. Establish `hcs : ‖ev v‖ ≤ ‖r‖ * ‖v‖` using `by rw [hr]; exact norm_inner_le_norm r v`.
+
+Break down `eq_or_ne ‖v‖ 0 with h0 | h0` into its components or cases. Rewrite using `[h0]`. Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, div_zero]`. Check the signs of the components of the expression. Rewrite using `[div_le_iff₀ (by positivity)]`.
+
+Establish `h2 : ‖ev v‖ ^ 2 ≤ (‖r‖ * ‖v‖) ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) hcs 2`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h2 hw0]`. Establish `hattain : ptNormSq W n (val V r) x / sectionL2NormSq W dV n (val V r) = ‖r‖ ^ 2 * w`. Establish `hn : ‖⟪r, r⟫_ℂ‖ = ‖r‖ ^ 2`. Rewrite using `[inner_self_eq_norm_sq_to_K]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hpt, hnorm, hr, hn]`. Break down `eq_or_ne ‖r‖ 0 with h0 | h0` into its components or cases. Simplify using `[h0]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[hsum]`. Use `le_antisymm (ciSup_le hle) ?_` and prove the remaining obligations. Conclude with `le_ciSup_of_le ⟨_, forall_mem_range.2 hle⟩ (show V from r) hattain.ge`.
+-/
 theorem bergman_eq_sum (hV : V ≤ L.sections n) [FiniteDimensional ℂ V] :
     ∃ (m : ℕ) (u : Fin m → Fin A.n → X → ℂ), (∀ i, u i ∈ V) ∧
       ∀ x, bergman W dV V n x = ∑ i, ptNormSq W n (u i) x := by
@@ -165,6 +197,11 @@ theorem bergman_eq_sum (hV : V ≤ L.sections n) [FiniteDimensional ℂ V] :
   refine le_antisymm (ciSup_le hle) ?_
   exact le_ciSup_of_le ⟨_, forall_mem_range.2 hle⟩ (show V from r) hattain.ge
 
+/- English proof (translation)
+Introduce `D X _ _ _ _ _ A L W dV n V _ hV`. Take `⟨m, u, hu, h⟩` from `bergman_eq_sum V W dV n hV`. Use `dV.isProb` as an intermediate fact. Establish `hc : Continuous (bergman W dV V n)`. Rewrite using `[show bergman W dV V n = fun x ↦ ∑ i, ptNormSq W n (u i) x from funext h]`.
+
+Conclude with `continuous_finsetSum _ fun i _ ↦ ptNormSq_continuous W n (hV (hu i))`. Conclude with `integrableOn_univ.1 (hc.continuousOn.integrableOn_compact isCompact_univ)`.
+-/
 theorem proof : BergmanIntegrable.Statement := by
   intro D X _ _ _ _ _ A L W dV n V _ hV
   obtain ⟨m, u, hu, h⟩ := bergman_eq_sum V W dV n hV

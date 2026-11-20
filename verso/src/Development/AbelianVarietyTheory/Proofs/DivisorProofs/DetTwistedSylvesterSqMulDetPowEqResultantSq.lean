@@ -8,9 +8,25 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.LeviDesc
 
+/- English proof (translation)
+Rewrite using `[← pow_mul, mul_comm, pow_mul, neg_one_sq, one_pow]`.
+-/
 theorem sign_sq_eq_one_of_pow {k : Type} [Field k] (n : ℕ) : ((-1 : k) ^ n) ^ 2 = 1 := by
   rw [← pow_mul, mul_comm, pow_mul, neg_one_sq, one_pow]
 
+/- English proof (translation)
+Introduce `k _ a b A B`. Set `e : Matrix (Fin a) (Fin b) k ≃ₗ[k] ((Fin b → k) →ₗ[k] (Fin a → k))` to `Matrix.toLin'`. Set `F : ((Fin b → k) →ₗ[k] (Fin a → k)) →ₗ[k] ((Fin b → k) →ₗ[k] (Fin a → k))` to `LinearMap.llcomp k (Fin b → k) (Fin a → k) (Fin a → k) (Matrix.toLin' A.val)`. Set `G : ((Fin b → k) →ₗ[k] (Fin a → k)) →ₗ[k] ((Fin b → k) →ₗ[k] (Fin a → k))` to `LinearMap.lcomp k (Fin a → k) (Matrix.toLin' B)`. Establish `hcomp : F ∘ₗ ((e : _ →ₗ[k] _) ∘ₗ GlobalTheory.LeviDesc.adL A B ∘ₗ (e.symm : _ →ₗ[k] _)) = F - G`.
+
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `ψ`. Take `⟨X, rfl⟩` from `e.surjective ψ`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, LinearMap.sub_apply, F, G, e, LinearMap.llcomp_apply, LinearMap.lcomp_apply, GlobalTheory.LeviDesc.adL, LinearMap.coe_mk, AddHom.coe_mk]`. Express the relevant statement in the definitionally equal form `Matrix.toLin' A.val ∘ₗ Matrix.toLin' (X - (A⁻¹ : GL (Fin a) k).val * X * B) = Matrix.toLin' A.val ∘ₗ Matrix.toLin' X - Matrix.toLin' X ∘ₗ Matrix.toLin' B`.
+
+Rewrite using `[← Matrix.toLin'_mul, ← Matrix.toLin'_mul, ← Matrix.toLin'_mul, ← map_sub]`. Use `congr 1`. Rewrite using `[Matrix.mul_sub, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`. Establish `h1` using `congrArg LinearMap.det hcomp`. Rewrite `h1` using `[LinearMap.det_comp, LinearMap.det_conj, GlobalTheory.DetAdResultant.det_ad_eq_resultant, Matrix.charpoly_toLin', Matrix.charpoly_toLin']`.
+
+Establish `hz : (0 : (Fin b → k) →ₗ[k] (Fin b → k)).charpoly = X ^ b`. Rewrite using `[← (Matrix.toLin' : Matrix (Fin b) (Fin b) k ≃ₗ[k] _).map_zero, Matrix.charpoly_toLin', Matrix.charpoly_zero, Fintype.card_fin]`. Establish `hF0 : F - LinearMap.lcomp k (Fin a → k) (0 : (Fin b → k) →ₗ[k] (Fin b → k)) = F`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `ψ`.
+
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[F]`. Establish `h0 : LinearMap.det F = (-1) ^ (a * b) * A.val.charpoly.coeff 0 ^ b`. Establish `h` using `GlobalTheory.DetAdResultant.det_ad_eq_resultant k (Fin a → k) (Fin b → k) (Matrix.toLin' A.val) 0`.
+
+Rewrite `h` using `[hF0, Matrix.charpoly_toLin', hz]`. Rewrite using `[h, natDegree_X_pow, resultant_X_pow_right _ _ _ le_rfl, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Rewrite using `[← h1, h0, pow_mul, Matrix.det_eq_sign_charpoly_coeff, Fintype.card_fin, mul_pow ((-1 : k) ^ a), sign_sq_eq_one_of_pow, one_mul]`. Establish `hs` using `sign_sq_eq_one_of_pow (k := k) (a * b)`. Take the linear combination `(-(LinearMap.det (GlobalTheory.LeviDesc.adL A B) ^ 2 * (A.val.charpoly.coeff 0 ^ b) ^ 2)) * hs`.
+-/
 theorem det_adL_sq_mul_det_pow : ∀ (k : Type) [Field k] (a b : ℕ) (A : GL (Fin a) k)
     (B : Matrix (Fin b) (Fin b) k),
     LinearMap.det (GlobalTheory.LeviDesc.adL A B) ^ 2 * A.val.det ^ (2 * b)

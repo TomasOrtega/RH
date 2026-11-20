@@ -24,6 +24,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 namespace GlobalTheory.FockFrameChange
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem sum4_lemma {α β γ δ R : Type*} [Fintype α] [Fintype β] [Fintype γ] [Fintype δ] [AddCommMonoid R]
     (f : α → β → γ → δ → R) :
     ∑ k, ∑ l, ∑ k', ∑ l', f k l k' l' = ∑ k', ∑ l', ∑ k, ∑ l, f k l k' l' := by
@@ -34,6 +37,11 @@ private theorem sum4_lemma {α β γ δ R : Type*} [Fintype α] [Fintype β] [Fi
         Finset.sum_congr rfl fun k' _ => Finset.sum_congr rfl fun k _ => Finset.sum_comm
     _ = ∑ k', ∑ l', ∑ k, ∑ l, f k l k' l' := Finset.sum_congr rfl fun k' _ => Finset.sum_comm
 
+/- English proof (translation)
+Unfold `GlobalTheory.CompactHowe.substF`. Rewrite using `[← AlgHom.comp_apply, MvPolynomial.comp_aeval]`. Use `congrArg (fun F => (MvPolynomial.aeval F) P) (funext fun p => ?_)` and prove the remaining obligations. Take `⟨τ, a, b⟩` from `p`. Simplify using `only [map_sum, map_mul, MvPolynomial.aeval_C, MvPolynomial.aeval_X, MvPolynomial.algebraMap_eq, Matrix.mul_apply]`.
+
+Simplify using `only [Finset.sum_mul_sum]`. Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Use `(sum4_lemma _).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun k' _ => Finset.sum_congr rfl fun l' _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem substF_mul {ι : Type} {N n : ℕ} (h h' : ι → Matrix (Fin N) (Fin N) ℂ) (g g' : ι → Matrix (Fin n) (Fin n) ℂ)
     (P : MvPolynomial (ι × Fin N × Fin n) ℂ) :
     GlobalTheory.CompactHowe.substF h g (GlobalTheory.CompactHowe.substF h' g' P) =
@@ -50,6 +58,9 @@ theorem substF_mul {ι : Type} {N n : ℕ} (h h' : ι → Matrix (Fin N) (Fin N)
     Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem change_mul {n : ℕ} {A F : Matrix (Fin n) (Fin n) ℂ} (hA : A * A⁻¹ = 1) (hF : F * F⁻¹ = 1)
     (M : Matrix (Fin n) (Fin n) ℂ) : F⁻¹ * A * (A⁻¹ * M * A) = F⁻¹ * M * F * (F⁻¹ * A) := by
   calc F⁻¹ * A * (A⁻¹ * M * A) = F⁻¹ * (A * A⁻¹) * M * A := by simp only [Matrix.mul_assoc]
@@ -57,12 +68,20 @@ theorem change_mul {n : ℕ} {A F : Matrix (Fin n) (Fin n) ℂ} (hA : A * A⁻¹
     _ = F⁻¹ * M * (F * F⁻¹) * A := by rw [hF, Matrix.mul_one]
     _ = F⁻¹ * M * F * (F⁻¹ * A) := by simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.transpose_mul, ← Matrix.transpose_mul, ← Matrix.mul_inv_rev (F⁻¹ * A) (A⁻¹ * M * A), ← Matrix.mul_inv_rev (F⁻¹ * M * F) (F⁻¹ * A), change_mul hA hF M]`.
+-/
 theorem change_mul_invT {n : ℕ} {A F : Matrix (Fin n) (Fin n) ℂ} (hA : A * A⁻¹ = 1) (hF : F * F⁻¹ = 1)
     (M : Matrix (Fin n) (Fin n) ℂ) :
     ((F⁻¹ * A)⁻¹).transpose * ((A⁻¹ * M * A)⁻¹).transpose = ((F⁻¹ * M * F)⁻¹).transpose * ((F⁻¹ * A)⁻¹).transpose := by
   rw [← Matrix.transpose_mul, ← Matrix.transpose_mul, ← Matrix.mul_inv_rev (F⁻¹ * A) (A⁻¹ * M * A),
     ← Matrix.mul_inv_rev (F⁻¹ * M * F) (F⁻¹ * A), change_mul hA hF M]
 
+/- English proof (translation)
+Rewrite using `[substF_mul, substF_mul]`. Conclude with `congrArg₂ (fun h g => GlobalTheory.CompactHowe.substF h g P) (funext fun τ => by`. Simplify using `only [← Matrix.map_mul]`. Rewrite using `[change_mul (hA τ) (hF τ)])`. Use the proof step `(funext fun τ => by`.
+
+Simplify using `only [← Matrix.map_mul]`. Rewrite using `[change_mul_invT (hA' τ) (hF' τ)])`.
+-/
 theorem subst_change {ι : Type} {N n : ℕ} {A F : ι → Matrix (Fin N) (Fin N) ℂ} {A' F' : ι → Matrix (Fin n) (Fin n) ℂ}
     (hA : ∀ τ, A τ * (A τ)⁻¹ = 1) (hF : ∀ τ, F τ * (F τ)⁻¹ = 1) (hA' : ∀ τ, A' τ * (A' τ)⁻¹ = 1)
     (hF' : ∀ τ, F' τ * (F' τ)⁻¹ = 1) (M : ι → Matrix (Fin N) (Fin N) ℂ) (M' : ι → Matrix (Fin n) (Fin n) ℂ)
@@ -84,6 +103,9 @@ theorem subst_change {ι : Type} {N n : ℕ} {A F : ι → Matrix (Fin N) (Fin N
       simp only [← Matrix.map_mul]
       rw [change_mul_invT (hA' τ) (hF' τ)])
 
+/- English proof (translation)
+Apply `Matrix.mul_nonsing_inv` to reduce the goal to its premises. Establish `h` using `(Matrix.isUnits_det_units g).map φ`. Rewrite `h` using `[RingHom.map_det]`. Conclude with `h`.
+-/
 theorem map_mul_inv {n : ℕ} {E : Type} [Field E] (φ : E →+* ℂ) (g : GL (Fin n) E) :
     g.1.map φ * (g.1.map φ)⁻¹ = 1 := by
   apply Matrix.mul_nonsing_inv
@@ -91,6 +113,11 @@ theorem map_mul_inv {n : ℕ} {E : Type} [Field E] (φ : E →+* ℂ) (g : GL (F
   rw [RingHom.map_det] at h
   exact h
 
+/- English proof (translation)
+Establish `e1 : A' = fun τ => BS τ * ((BS τ)⁻¹ * A' τ)`. Use function extensionality and compare the values at `τ`. Rewrite using `[← Matrix.mul_assoc, hBS τ, Matrix.one_mul]`. Establish `e2 : A = fun τ => BT τ * ((BT τ)⁻¹ * A τ)`. Use function extensionality and compare the values at `τ`.
+
+Rewrite using `[← Matrix.mul_assoc, hBT τ, Matrix.one_mul]`. Use `conv_lhs => rw [e1, e2]`. Conclude with `GlobalTheory.FockNegSubst.pureTensorO_negSp_subst D ψ θ S T hψ hθ BS (fun τ => (BS τ)⁻¹ * A' τ) BT (fun τ => (BT τ)⁻¹ * A τ) f hf P`.
+-/
 private theorem fock_frame_lemma {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D)
     (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     (BS A' : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (BT A : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)
@@ -111,6 +138,19 @@ private theorem fock_frame_lemma {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ :
   exact GlobalTheory.FockNegSubst.pureTensorO_negSp_subst D ψ θ S T hψ hθ BS (fun τ => (BS τ)⁻¹ * A' τ) BT
     (fun τ => (BT τ)⁻¹ * A τ) f hf P
 
+/- English proof (translation)
+Introduce `D T L sc G W U S μ0 hL i hi`. Establish `hdT : DefNode D.R.m (Node.grid i D.R.m)`. Unfold `DefNode`. Conclude with `⟨hi.le, rfl⟩`. Establish `hdS : DefNode D.R.m (Node.grid (i + 1) D.R.m)`.
+
+Unfold `DefNode`. Conclude with `⟨hi, rfl⟩`. Establish `hdP : DefPair D.R.m (Pair.chi i D.R.m : Pair T)`. Unfold `DefPair`. Conclude with `⟨hi, rfl⟩`.
+
+Establish `honb : ∀ X, DefNode D.R.m X → ∀ τ, W.onb X τ * (W.onb X τ)⁻¹ = 1` using `fun X hX τ => Matrix.mul_nonsing_inv _ (Matrix.isUnit_det_of_left_inverse (GlobalTheory.FockReal.onb_def hL W hX τ))`. Establish `hfr : ∀ X τ, S.N.frC X τ * (S.N.frC X τ)⁻¹ = 1` using `fun X τ => map_mul_inv (tauE D τ) (S.N.fr X)`. Use `⟨(GlobalTheory.CompactHowe.substF (fun τ => ((S.N.frC (Node.grid i D.R.m) τ)⁻¹ * W.onb (Node.grid i D.R.m) τ).map (starRingEnd ℂ)) (fun τ => ((((S.N.frC (Node.grid (i + 1) D.R.m) τ)⁻¹ * W.onb (Node.grid (i + 1) D.R.m) τ)⁻¹).transpose).map (starRingEnd ℂ))).toLinearMap, ?_, ?_⟩` and prove the remaining obligations. Introduce `t _ d hd P`. Establish `hf` using `(GlobalTheory.FockRealVec.vec_theta_fock W S.Z hdP d hd).1`.
+
+Establish `hcS : G.cartS W.cart (Pair.chi i D.R.m : Pair T) = fun _ => -1`. Use function extensionality and compare the values at `τ`. Use `show -W.cart (Node.grid (i + 1) D.R.m) τ = -1`. Rewrite using `[GlobalTheory.FockReal.cart_def hL W hdS τ]`. Establish `hcT : G.onT W.cart (Pair.chi i D.R.m : Pair T) = fun _ => 1`.
+
+Use function extensionality and compare the values at `τ`. Conclude with `GlobalTheory.FockReal.cart_def hL W hdT τ`. Unfold `GlobalTheory.ChiGrid.GridData.Weil.fock GlobalTheory.FunObj.fockIn`. Rewrite using `[hcS, hcT, AlgHom.toLinearMap_apply]`. Conclude with `fock_frame_lemma W.ψ W.θ (G.V (Node.grid (i + 1) D.R.m)) (G.V (Node.grid i D.R.m)) W.ψ_std W.θ_is (S.N.frC (Node.grid (i + 1) D.R.m)) (W.onb (Node.grid (i + 1) D.R.m)) (S.N.frC (Node.grid i D.R.m)) (W.onb (Node.grid i D.R.m)) (hfr _) (hfr _) (S.Z.vec d) hf P`.
+
+Introduce `k _ k' _ P`. Unfold `GlobalTheory.FockReal.realSubst`. Rewrite using `[AlgHom.toLinearMap_apply, AlgHom.toLinearMap_apply]`. Conclude with `subst_change (A := W.onb (Node.grid i D.R.m)) (F := S.N.frC (Node.grid i D.R.m)) (A' := W.onb (Node.grid (i + 1) D.R.m)) (F' := S.N.frC (Node.grid (i + 1) D.R.m)) (fun τ => honb _ hdT τ) (hfr _) (fun τ => honb _ hdS τ) (hfr _) _ _ P`.
+-/
 theorem exists_frame_change : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {μ0 : T},
     L.Is μ0 → ∀ (i : ℕ), i < D.R.m →
     ∃ σ₀ : PolF D (G.pT (.chi i D.R.m : Pair T)).rank (G.pS (.chi i D.R.m : Pair T)).rank →ₗ[ℂ] PolF D (G.pT (.chi i D.R.m : Pair T)).rank (G.pS (.chi i D.R.m : Pair T)).rank,

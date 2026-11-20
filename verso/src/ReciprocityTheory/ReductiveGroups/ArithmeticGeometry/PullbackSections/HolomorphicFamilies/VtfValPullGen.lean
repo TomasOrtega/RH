@@ -15,12 +15,18 @@ section LC
 
 variable {X Y Z : Scheme.{0}} (L : LB X) {K K' : Type} [Fintype K] [Fintype K']
 
+/- English proof (translation)
+Establish `key : ∀ x : Rˣ, φ ↑x = ((Units.map φ.toMonoidHom x : ℂˣ) : ℂ)` using `fun _ => rfl`. Rewrite using `[key, map_prod, Units.coe_prod]`. Simplify using `only [map_zpow, Units.val_zpow_eq_zpow_val, key]`.
+-/
 private lemma valprod_lemma {R : Type} [CommRing R] (φ : R →+* ℂ) (u : K → Rˣ) (ε : K → ℤ) :
     φ ↑(∏ k, u k ^ ε k) = ∏ k, φ ↑(u k) ^ ε k := by
   have key : ∀ x : Rˣ, φ ↑x = ((Units.map φ.toMonoidHom x : ℂˣ) : ℂ) := fun _ => rfl
   rw [key, map_prod, Units.coe_prod]
   simp only [map_zpow, Units.val_zpow_eq_zpow_val, key]
 
+/- English proof (translation)
+Simplify using `only [valAt', dif_pos h]`. Unfold `valAt`. Simplify using `only [← RingHom.comp_apply]`. Conclude with `valprod_lemma _ u ε`.
+-/
 theorem vtf_val_prodU (p : Sp ℂ ⟶ Y) {V : Y.Opens} (h : ⊤ ≤ p ⁻¹ᵁ V) (u : K → Γ(Y, V)ˣ) (ε : K → ℤ) :
     valAt' p V (∏ k, u k ^ ε k).val = ∏ k, valAt' p V (u k).val ^ ε k := by
   simp only [valAt', dif_pos h]
@@ -28,6 +34,9 @@ theorem vtf_val_prodU (p : Sp ℂ ⟶ Y) {V : Y.Opens} (h : ⊤ ≤ p ⁻¹ᵁ V
   simp only [← RingHom.comp_apply]
   exact valprod_lemma _ u ε
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Conclude with `congrArg (· ^ ε k) ((vtf_val_res (U := φ k ⁻¹ᵁ (L.U (j k) ⊓ L.U (j' k))) p _ h _).trans (vtf_val_pullU p (φ k) (L.U (j k) ⊓ L.U (j' k)) (L.g (j k) (j' k))))`.
+-/
 theorem vtf_val_lcg (φ : K → (Y ⟶ X)) (ε : K → ℤ) (p : Sp ℂ ⟶ Y) (j j' : K → L.ι)
     (h : ⊤ ≤ p ⁻¹ᵁ (LB.wchart L φ j ⊓ LB.wchart L φ j')) :
     valAt' p _ ((LB.LinComb L φ ε).g j j').val =
@@ -47,11 +56,19 @@ theorem vtf_val_lcg (φ : K → (Y ⟶ X)) (ε : K → ℤ) (p : Sp ℂ ⟶ Y) (
         exact congrArg (· ^ ε k) ((vtf_val_res (U := φ k ⁻¹ᵁ (L.U (j k) ⊓ L.U (j' k))) p _ h _).trans
           (vtf_val_pullU p (φ k) (L.U (j k) ⊓ L.U (j' k)) (L.g (j k) (j' k))))
 
+/- English proof (translation)
+Conclude with `(vtf_val_res p _ hp _).trans (vtf_val_pullU _ _ _ _)`.
+-/
 theorem vtf_val_pullGen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (c : LB.Gen (LB.LinComb L φ ε)) (h : Z ⟶ Y)
     (p : Sp ℂ ⟶ Z) (j : K → L.ι) (hp : ⊤ ≤ p ⁻¹ᵁ LB.wchart L (fun k => h ≫ φ k) j) :
     valAt' p _ ((LB.pullGen L φ ε c h).s j).val = valAt' (p ≫ h) _ (c.s j).val := by
   exact (vtf_val_res p _ hp _).trans (vtf_val_pullU _ _ _ _)
 
+/- English proof (translation)
+Establish `h' : ⊤ ≤ p ⁻¹ᵁ ((LB.LinComb L φ ε).U j ⊓ (LB.LinComb L φ ε).U j')` using `h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ht j j']`. Use `_ = valAt' p ((LB.LinComb L φ ε).U j ⊓ (LB.LinComb L φ ε).U j') ((LB.LinComb L φ ε).g j j').val * valAt' p ((LB.LinComb L φ ε).U j ⊓ (LB.LinComb L φ ε).U j') (res (inf_le_right : (LB.LinComb L φ ε).U j ⊓ (LB.LinComb L φ ε).U j' ≤ _) (t.s j')).val := by`. Rewrite using `[Units.val_mul, valAt'_mul]`.
+
+Use `_ = _ := by rw [vtf_val_lcg L φ ε p j j' h, vtf_val_res p _ h']`.
+-/
 theorem vtf_isGen_val (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen)
     (p : Sp ℂ ⟶ Y) (j j' : K → L.ι) (h : ⊤ ≤ p ⁻¹ᵁ (LB.wchart L φ j ⊓ LB.wchart L φ j')) :
     valAt' p _ (t.s j).val =
@@ -72,6 +89,9 @@ theorem vtf_isGen_val (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen (LB.Li
         rw [Units.val_mul, valAt'_mul]
     _ = _ := by rw [vtf_val_lcg L φ ε p j j' h, vtf_val_res p _ h']
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hc j j' hj hj' hjj]`. Use `_ = _ := vtf_val_res p _ h _`.
+-/
 theorem vtf_corr_val (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb L φ' ε')) (hc : LB.Gen.Corr L φ ε φ' ε' t t')
     (j : K → L.ι) (j' : K' → L.ι) (hj : LB.Coh L φ j) (hj' : LB.Coh L φ' j')
@@ -93,6 +113,17 @@ section Liou
 
 variable {g : ℕ}
 
+/- English proof (translation)
+Take `⟨s, hsl, hss, hli⟩` from `exists_linearIndependent ℝ (lat : Set (Fin g → ℂ))`. Establish `hsp : ⊤ ≤ Submodule.span ℝ (Set.range ((↑) : s → Fin g → ℂ))` using `le_of_eq (by rw [Subtype.range_coe, hss, hspan])`. Establish `hfin : s.Finite` using `hli.setFinite`. Use `haveI : Fintype s := hfin.fintype`. Set `b : Module.Basis s ℝ (Fin g → ℂ)` to `Module.Basis.mk hli hsp`.
+
+Establish `hb : ∀ i, b i ∈ lat` using `fun i => by`. Simplify using `only [b, Module.Basis.mk_apply]`. Conclude with `hsl i.2`. Establish `hfl : ∀ x : Fin g → ℂ, (ZSpan.floor b x : Fin g → ℂ) ∈ lat`. Introduce `x`.
+
+Establish `h1 : Submodule.span ℤ (Set.range b) ≤ lat.toIntSubmodule`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hb i`. Conclude with `h1 (ZSpan.floor b x).2`.
+
+Establish `hK : IsCompact (closure (ZSpan.fundamentalDomain b))` using `(ZSpan.fundamentalDomain_isBounded b).isCompact_closure`. Take `⟨C, hC⟩` from `(hK.image hf.continuous).isBounded.exists_norm_le`. Establish `hbd : Bornology.IsBounded (Set.range f)`. Rewrite using `[isBounded_iff_forall_norm_le]`. Use `⟨C, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Establish `hx : ZSpan.fract b x + (ZSpan.floor b x : Fin g → ℂ) = x`. Rewrite using `[ZSpan.fract_apply, sub_add_cancel]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hf.apply_eq_apply_of_bounded hbd z w`.
+-/
 theorem vtf_liouville (lat : AddSubgroup (Fin g → ℂ)) (hspan : Submodule.span ℝ (lat : Set (Fin g → ℂ)) = ⊤)
     (f : (Fin g → ℂ) → ℂ) (hf : Differentiable ℂ f) (hper : ∀ z, ∀ a ∈ lat, ‖f (z + a)‖ = ‖f z‖)
     (z w : Fin g → ℂ) : f z = f w := by

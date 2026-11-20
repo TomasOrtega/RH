@@ -28,6 +28,9 @@ def IsRatio (ev : V →ₗ[K] Ω) (τ : ℕ) (t : Ω) : Prop :=
   ∃ (e : ℕ) (h : Ω), h ∈ ((LinearMap.range ev) ^ e : Submodule K Ω) ∧ h ≠ 0 ∧
     t * h ∈ ((LinearMap.range ev) ^ (τ + e) : Submodule K Ω)
 
+/- English proof (translation)
+Use `⟨⟨0, 1, by simp [Submodule.one_eq_span], one_ne_zero, by simp⟩, ?_⟩` and prove the remaining obligations. Establish `h : Polynomial.X * Polynomial.C (ev v) ∈ coneAlg ev` using `Algebra.subset_adjoin ⟨v, rfl⟩`. Rewrite using `[IsIntDeg, pow_one]`. Conclude with `isIntegral_algebraMap (R := coneAlg ev) (x := ⟨_, h⟩)`.
+-/
 example (ev : V →ₗ[K] Ω) (v : V) : IsRatio ev 1 (ev v) ∧ IsIntDeg ev 1 (ev v) := by
   refine ⟨⟨0, 1, by simp [Submodule.one_eq_span], one_ne_zero, by simp⟩, ?_⟩
   have h : Polynomial.X * Polynomial.C (ev v) ∈ coneAlg ev := Algebra.subset_adjoin ⟨v, rfl⟩

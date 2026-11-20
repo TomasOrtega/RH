@@ -25,6 +25,9 @@ def kFiniteVectors (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H
     rintro c a ⟨S, hS, ha, hSK⟩
     exact ⟨S, hS, S.smul_mem c ha, hSK⟩
 
+/- English proof (translation)
+Conclude with `Iff.rfl`.
+-/
 theorem mem_kFiniteVectors (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (v : H) :
     v ∈ kFiniteVectors ε σ ↔ IsKFin ε σ v := by
   exact Iff.rfl

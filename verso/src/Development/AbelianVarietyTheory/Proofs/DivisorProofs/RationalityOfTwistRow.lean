@@ -7,6 +7,13 @@ open GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.BigOn.Exp
 
 namespace GlobalTheory.BigOn.Exp
 
+/- English proof (translation)
+Unfold `TieRat AtTw AtPts at *`. Use `(Formalism.MainNotions.Closed.and hA hR).imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `h.1.and h.2`. Use `⟨x0, fun x hx hle i p hp hm w hw j Z => ?_⟩` and prove the remaining obligations. Take `⟨hA', hR'⟩` from `hx0 x hx hle i p hp`.
+
+Establish `hrow` using `hR' hm w hw j Z.ρ Z.good Z.pin (levelOf_exportTie Z)`. Establish `hs` using `Z.scalar ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w)`. Establish `hrat` using `hs.rat hrow`. Take `⟨ν, hn, -⟩` from `hrow`. Take `⟨hok, hcl, -⟩` from `hA' hm w hw j`.
+
+Conclude with `⟨hs.norm ⟨ν, hn⟩, hrat.1, fun s h P hd => hrat.2.1 _ _ _ hok hcl s h P hd⟩`.
+-/
 theorem tieRat_of (hA : TwAdm) (hR : RowAt) : TieRat := by
   unfold TieRat AtTw AtPts at *
   refine (Formalism.MainNotions.Closed.and hA hR).imp fun Fm CH _ h => ?_

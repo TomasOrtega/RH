@@ -16,6 +16,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Ker.HatLat
 
+/- English proof (translation)
+Use `choose N hN hA using h`. Use `⟨∏ i, N i, Finset.prod_pos fun i _ => hN i, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i), mul_comm, mul_smul]`. Conclude with `nsmul_mem (hA i) _`.
+-/
 theorem exists_common {G ι : Type} [AddCommGroup G] [Fintype ι] (A : AddSubgroup G) (z : ι → G)
     (h : ∀ i, ∃ N : ℕ, 0 < N ∧ N • z i ∈ A) : ∃ N : ℕ, 0 < N ∧ ∀ i, N • z i ∈ A := by
   choose N hN hA using h
@@ -27,6 +30,13 @@ section Tens
 
 variable {E : Type} [Field E] [NumberField E] {n r : ℕ} (Λ : Lt E n) (L : Lt E r)
 
+/- English proof (translation)
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨v, hv, u, hu, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨c • v, Λ.smul_mem c hv, u, hu, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Conclude with `(mul_assoc _ _ _).symm`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`.
+
+Conclude with `neg_mem hx`.
+-/
 theorem smul_mem_tens (c : 𝓞 E) {y : Matrix (Fin n) (Fin r) E} (hy : y ∈ tens Λ L) : (c : E) • y ∈ tens Λ L := by
   induction hy using AddSubgroup.closure_induction with
   | mem w hw =>
@@ -38,6 +48,11 @@ theorem smul_mem_tens (c : 𝓞 E) {y : Matrix (Fin n) (Fin r) E} (hy : y ∈ te
   | add x y _ _ hx hy => rw [smul_add]; exact add_mem hx hy
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Establish `h` using `Submodule.FG.map₂ (vecMulVecBilin ℤ ℤ : (Fin n → E) →ₗ[ℤ] (Fin r → E) →ₗ[ℤ] _) (hΛ.restrictScalars (R := ℤ)) (hL.restrictScalars (R := ℤ))`. Rewrite `h` using `[Submodule.map₂_eq_span_image2]`. Unfold `tens`. Rewrite using `[AddSubgroup.toIntSubmodule_closure]`. Establish `e : {y : Matrix (Fin n) (Fin r) E | ∃ v ∈ Λ, ∃ u ∈ L, y = vecMulVec v u} = Set.image2 (fun v u => vecMulVec v u) (Λ : Set (Fin n → E)) (L : Set (Fin r → E))`.
+
+Use extensionality with `y`. Conclude with `⟨fun ⟨v, hv, u, hu, e⟩ => ⟨v, hv, u, hu, e.symm⟩, fun ⟨v, hv, u, hu, e⟩ => ⟨v, hv, u, hu, e.symm⟩⟩`. Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem tens_fg (hΛ : Λ.FG) (hL : L.FG) : (tens Λ L).toIntSubmodule.FG := by
   have h := Submodule.FG.map₂ (vecMulVecBilin ℤ ℤ : (Fin n → E) →ₗ[ℤ] (Fin r → E) →ₗ[ℤ] _)
     (hΛ.restrictScalars (R := ℤ)) (hL.restrictScalars (R := ℤ))
@@ -51,6 +66,13 @@ theorem tens_fg (hΛ : Λ.FG) (hL : L.FG) : (tens Λ L).toIntSubmodule.FG := by
   rw [e]
   exact h
 
+/- English proof (translation)
+Take `⟨N, hN, h⟩` from `exists_common (tens Λ L) (fun k => vecMulVec (Pi.single k 1) (y k)) fun k => by`. Take `⟨d, hd, h1⟩` from `GlobalTheory.AdLat.OpenLat.exists_denom Λ hΛ (Pi.single k 1)`. Take `⟨e, he, h2⟩` from `GlobalTheory.AdLat.OpenLat.exists_denom L hL (y k)`. Use `⟨d * e, mul_pos hd he, AddSubgroup.subset_closure ⟨_, h1, _, h2, ?_⟩⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.smul_apply, vecMulVec_apply, Pi.smul_apply]`. Simplify using `only [nsmul_eq_mul, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨N, hN, ?_⟩` and prove the remaining obligations. Establish `: y = ∑ k, vecMulVec (Pi.single k 1) (y k)`.
+
+Use extensionality with `i j`. Simplify using `[Matrix.sum_apply, vecMulVec_apply, Pi.single_apply]`. Rewrite using `[this, Finset.smul_sum]`. Conclude with `sum_mem fun k _ => h k`.
+-/
 theorem tens_den (hΛ : Submodule.span E (Λ : Set (Fin n → E)) = ⊤) (hL : Submodule.span E (L : Set (Fin r → E)) = ⊤)
     (y : Matrix (Fin n) (Fin r) E) : ∃ N : ℕ, 0 < N ∧ N • y ∈ tens Λ L := by
   obtain ⟨N, hN, h⟩ := exists_common (tens Λ L) (fun k => vecMulVec (Pi.single k 1) (y k)) fun k => by
@@ -105,15 +127,26 @@ def finG (E : Type) [Field E] [Algebra F E] : AF F ⊗[F] E →+* Af F ⊗[F] E 
 variable {F}
 
 omit [NumberField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fT_apply (α : Af F) (y : Matrix (Fin n) (Fin r) E) (a k) :
     fT F α y a k = pairA F 0 α ⊗ₜ[F] y k a := rfl
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨α, hα, y, hy, rfl⟩`.
+-/
 theorem fT_mem {A : AddSubgroup (Matrix (Fin n) (Fin r) E)} {α : Af F}
     (hα : α ∈ intG F) {y} (hy : y ∈ A) : fT F α y ∈ hatG F A :=
   AddSubgroup.subset_closure ⟨α, hα, y, hy, rfl⟩
 
 omit [NumberField E] in
+/- English proof (translation)
+Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousSMul (AF F) (AF F ⊗[F] E) := IsModuleTopology.toContinuousSMul _ _`. Use `continuous_matrix fun a k => ?_` and prove the remaining obligations. Establish `: (fun α => fT F α y a k) = fun α => pairA F 0 α • ((1 : AF F) ⊗ₜ[F] y k a)`. Use function extensionality and compare the values at `α`.
+
+Rewrite using `[fT_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[this]`. Establish `h : Continuous fun α => pairA F 0 α` using `continuous_const.prodMk continuous_id`. Establish `ho : Continuous fun _ : Af F => (1 : AF F) ⊗ₜ[F] y k a` using `continuous_const`. Conclude with `h.smul ho`.
+-/
 theorem continuous_fT (y : Matrix (Fin n) (Fin r) E) : Continuous fun α : Af F => fT F α y := by
   haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
   haveI : ContinuousSMul (AF F) (AF F ⊗[F] E) := IsModuleTopology.toContinuousSMul _ _
@@ -127,6 +160,9 @@ theorem continuous_fT (y : Matrix (Fin n) (Fin r) E) : Continuous fun α : Af F 
   exact h.smul ho
 
 omit [NumberField E] in
+/- English proof (translation)
+Establish `: hatG F A ≤ ((infG F E).toAddMonoidHom.mapMatrix (m` using `Fin r) (n := Fin n)).ker := by`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨α, -, y, -, rfl⟩`. Conclude with `Matrix.ext fun a k => TensorProduct.zero_tmul _ (y k a)`. Conclude with `this hu`.
+-/
 theorem inf_eq_zero_of_mem {A : AddSubgroup (Matrix (Fin n) (Fin r) E)} {u : Matrix (Fin r) (Fin n) (AF F ⊗[F] E)}
     (hu : u ∈ hatG F A) : u.map (infG F E) = 0 := by
   have : hatG F A ≤ ((infG F E).toAddMonoidHom.mapMatrix (m := Fin r) (n := Fin n)).ker := by
@@ -147,6 +183,9 @@ def co (p : Fin r × Fin n × Fin d) : Matrix (Fin r) (Fin n) (AF F ⊗[F] E) �
   map_zero' := by rw [Matrix.zero_apply, LinearMap.map_zero, map_zero]
   map_add' x y := by rw [Matrix.add_apply, LinearMap.map_add, map_add]
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Establish `h1 : Continuous ((Algebra.TensorProduct.basis (AF F) b).coord p.2.2)` using `IsModuleTopology.continuous_of_linearMap _`. Establish `h2 : Continuous (sndA F)` using `continuous_snd`. Conclude with `h2.comp (h1.comp ((continuous_apply p.2.1).comp (continuous_apply p.1)))`.
+-/
 theorem continuous_co (p : Fin r × Fin n × Fin d) : Continuous (co b p) := by
   haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
   have h1 : Continuous ((Algebra.TensorProduct.basis (AF F) b).coord p.2.2) :=
@@ -154,6 +193,9 @@ theorem continuous_co (p : Fin r × Fin n × Fin d) : Continuous (co b p) := by
   have h2 : Continuous (sndA F) := continuous_snd
   exact h2.comp (h1.comp ((continuous_apply p.2.1).comp (continuous_apply p.1)))
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `sndA F ((Algebra.TensorProduct.basis (AF F) b).repr (pairA F 0 1 ⊗ₜ[F] y p.2.1 p.1) p.2.2) = _`. Rewrite using `[Algebra.TensorProduct.basis_repr_tmul, Finsupp.smul_apply, Finsupp.mapRange_apply, smul_eq_mul, map_mul, AlgHom.commutes]`. Conclude with `one_mul _`.
+-/
 theorem co_fT (p : Fin r × Fin n × Fin d) (y : Matrix (Fin n) (Fin r) E) :
     co b p (fT F 1 y) = algebraMap F _ (b.repr (y p.2.1 p.1) p.2.2) := by
   change sndA F ((Algebra.TensorProduct.basis (AF F) b).repr (pairA F 0 1 ⊗ₜ[F] y p.2.1 p.1) p.2.2) = _
@@ -161,21 +203,33 @@ theorem co_fT (p : Fin r × Fin n × Fin d) (y : Matrix (Fin n) (Fin r) E) :
     AlgHom.commutes]
   exact one_mul _
 
+/- English proof (translation)
+Use extensionality with `k a`. Simplify using `[sgl, Matrix.sum_apply, Fintype.sum_prod_type, Matrix.single_apply, ite_and]`.
+-/
 theorem sum_sgl (y : Matrix (Fin n) (Fin r) E) :
     ∑ p : Fin r × Fin n × Fin d, b.repr (y p.2.1 p.1) p.2.2 • sgl b p = y := by
   ext k a
   simp [sgl, Matrix.sum_apply, Fintype.sum_prod_type, Matrix.single_apply, ite_and]
 
+/- English proof (translation)
+Simplify using `[sgl, fT_apply, Matrix.sum_apply, Fintype.sum_prod_type, Matrix.single_apply, ite_and, TensorProduct.tmul_ite]`.
+-/
 theorem sum_fT (α : Fin r × Fin n × Fin d → Af F) (a k) :
     (∑ p, fT F (α p) (sgl b p)) a k = ∑ j, pairA F 0 (α (a, k, j)) ⊗ₜ[F] b j := by
   simp [sgl, fT_apply, Matrix.sum_apply, Fintype.sum_prod_type, Matrix.single_apply, ite_and,
     TensorProduct.tmul_ite]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← (Algebra.TensorProduct.basis (AF F) b).sum_repr z]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+-/
 theorem eq_sum_coord (z : AF F ⊗[F] E) : z = ∑ j, (Algebra.TensorProduct.basis (AF F) b).repr z j ⊗ₜ[F] b j := by
   conv_lhs => rw [← (Algebra.TensorProduct.basis (AF F) b).sum_repr z]
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]
 
+/- English proof (translation)
+Use `Matrix.ext fun a k => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, Matrix.sub_apply, map_sub, sum_fT, Matrix.zero_apply, sub_eq_zero, map_sum]`. Use `conv_lhs => rw [eq_sum_coord b (w a k), map_sum]`. Both sides reduce to the same expression.
+-/
 theorem fin_sub (w : Matrix (Fin r) (Fin n) (AF F ⊗[F] E)) :
     (w - ∑ p, fT F (co b p w) (sgl b p)).map (finG F E) = 0 := by
   refine Matrix.ext fun a k => ?_
@@ -183,6 +237,11 @@ theorem fin_sub (w : Matrix (Fin r) (Fin n) (AF F ⊗[F] E)) :
   conv_lhs => rw [eq_sum_coord b (w a k), map_sum]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Express the relevant statement in the definitionally equal form `_ = (Algebra.TensorProduct.basis (Ainf F) b).repr (fstA F a ⊗ₜ[F] x) j`. Simplify using `only [Algebra.TensorProduct.basis_repr_tmul, Finsupp.smul_apply, Finsupp.mapRange_apply, smul_eq_mul, map_mul, AlgHom.commutes]`.
+
+Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+-/
 theorem fst_coord (z : AF F ⊗[F] E) (j) : fstA F ((Algebra.TensorProduct.basis (AF F) b).repr z j) =
     (Algebra.TensorProduct.basis (Ainf F) b).repr (infG F E z) j := by
   induction z using TensorProduct.induction_on with
@@ -193,6 +252,11 @@ theorem fst_coord (z : AF F ⊗[F] E) (j) : fstA F ((Algebra.TensorProduct.basis
       map_mul, AlgHom.commutes]
   | add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]
 
+/- English proof (translation)
+Use `Matrix.ext fun a k => ?_` and prove the remaining obligations. Rewrite using `[sum_fT]`. Use `conv_lhs => rw [eq_sum_coord b (w a k)]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use `Prod.ext ?_ rfl` and prove the remaining obligations. Establish `h : infG F E (w a k) = 0` using `congrFun (congrFun hw a) k`. Use `fst_coord b (w a k) j` as an intermediate fact. Rewrite `this` using `[h, LinearEquiv.map_zero]`. Conclude with `this`.
+-/
 theorem eq_sum_of_fin {w : Matrix (Fin r) (Fin n) (AF F ⊗[F] E)} (hw : w.map (infG F E) = 0) :
     w = ∑ p, fT F (co b p w) (sgl b p) := by
   refine Matrix.ext fun a k => ?_
@@ -209,6 +273,9 @@ theorem eq_sum_of_fin {w : Matrix (Fin r) (Fin n) (AF F ⊗[F] E)} (hw : w.map (
 end Coord
 
 omit [NumberField E] in
+/- English proof (translation)
+Rewrite using `[Algebra.algebraMap_eq_smul_one, map_smul, map_smul, LinearMap.smul_apply]`.
+-/
 theorem fT_algebraMap (x : F) (y : Matrix (Fin n) (Fin r) E) : fT F (algebraMap F _ x) y = fT F 1 (x • y) := by
   rw [Algebra.algebraMap_eq_smul_one, map_smul, map_smul, LinearMap.smul_apply]
 
@@ -216,6 +283,17 @@ variable {A : AddSubgroup (Matrix (Fin n) (Fin r) E)}
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Take `⟨m, x, hx⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 hfg`. Establish `hxA : ∀ k, x k ∈ A` using `fun k => by`. Establish `: x k ∈ A.toIntSubmodule` using `hx ▸ Submodule.subset_span ⟨k, rfl⟩`. Conclude with `this`. Use `⟨m, x, fun u => ⟨fun hu => ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, v, hv, rfl⟩` from `hy`. Establish `hv' : v ∈ Submodule.span ℤ (Set.range x)` using `by rw [hx]; exact hv`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hv'`.
+
+Use `⟨fun k => c k • a, fun k => zsmul_mem (show a ∈ intG F from ha) _, ?_⟩` and prove the remaining obligations. Simplify using `only [map_sum, map_zsmul, LinearMap.smul_apply]`. Consider the case `zero => exact ⟨0, fun k => zero_mem _, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨c, hc, rfl⟩` from `hy`.
+
+Take `⟨e, he, rfl⟩` from `hz`. Conclude with `⟨c + e, fun k => add_mem (hc k) (he k), by simp [Finset.sum_add_distrib]⟩`. Consider the case `neg y _ hy`. Take `⟨c, hc, rfl⟩` from `hy`. Conclude with `⟨-c, fun k => neg_mem (hc k), by simp⟩`.
+
+Introduce and unpack `⟨c, hc, rfl⟩`. Conclude with `sum_mem fun k _ => fT_mem (hc k) (hxA k)`.
+-/
 theorem exists_gen (hfg : A.toIntSubmodule.FG) : ∃ (m : ℕ) (x : Fin m → Matrix (Fin n) (Fin r) E),
     ∀ u, u ∈ hatG F A ↔ ∃ c : Fin m → Af F, (∀ k, c k ∈ intG F) ∧ ∑ k, fT F (c k) (x k) = u := by
   obtain ⟨m, x, hx⟩ := Submodule.fg_iff_exists_fin_generating_family.1 hfg
@@ -242,6 +320,11 @@ theorem exists_gen (hfg : A.toIntSubmodule.FG) : ∃ (m : ℕ) (x : Fin m → Ma
     exact sum_mem fun k _ => fT_mem (hc k) (hxA k)
 
 omit [NumberField E] in
+/- English proof (translation)
+Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (AF F ⊗[F] E) := IsModuleTopology.toContinuousAdd (AF F) _`. Take `⟨m, x, hx⟩` from `exists_gen (F := F) hfg`. Establish `hI : IsCompact (intAf F)` using `GlobalTheory.AdeleCocompact.isCompact_integral F`. Establish `hg : Continuous fun c : Fin m → Af F => ∑ k, fT F (c k) (x k)` using `continuous_finset_sum _ fun k _ => (continuous_fT (x k)).comp (continuous_apply k)`.
+
+Use `(isCompact_univ_pi fun _ => hI).image hg using 1` and compare the differences between its conclusion and the goal. Use extensionality with `u`. Conclude with `(hx u).trans ⟨fun ⟨c, hc, e⟩ => ⟨c, fun k _ => hc k, e⟩, fun ⟨c, hc, e⟩ => ⟨c, fun k => hc k trivial, e⟩⟩`.
+-/
 theorem isCompact_hatG (hfg : A.toIntSubmodule.FG) :
     IsCompact (hatG F A : Set (Matrix (Fin r) (Fin n) (AF F ⊗[F] E))) := by
   haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
@@ -255,6 +338,11 @@ theorem isCompact_hatG (hfg : A.toIntSubmodule.FG) :
   exact (hx u).trans ⟨fun ⟨c, hc, e⟩ => ⟨c, fun k _ => hc k, e⟩, fun ⟨c, hc, e⟩ => ⟨c, fun k => hc k trivial, e⟩⟩
 
 omit [NumberField E] in
+/- English proof (translation)
+Take `⟨m, x, hx⟩` from `exists_gen (F := F) hfg`. Take `⟨N, hN, h⟩` from `GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F (⋂ k, (fun α => fT F α (x k)) ⁻¹' U) (Filter.iInter_mem.2 fun k => (hU.preimage (continuous_fT (x k))).mem_nhds (by simp))`. Use `⟨N, hN, fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, rfl⟩` from `(hx u).1 hu`. Rewrite using `[Finset.smul_sum]`.
+
+Use `sum_mem fun k _ => ?_` and prove the remaining obligations. Use `Set.mem_iInter.1 (h (c k) (hc k)) k` as an intermediate fact. Rewrite `this` using `[Set.mem_preimage, map_nsmul, LinearMap.smul_apply]`. Then use the resulting hypothesis.
+-/
 theorem exists_nsmul_mem_open (hfg : A.toIntSubmodule.FG) (U : AddSubgroup (Matrix (Fin r) (Fin n) (AF F ⊗[F] E)))
     (hU : IsOpen (U : Set (Matrix (Fin r) (Fin n) (AF F ⊗[F] E)))) :
     ∃ N : ℕ, 0 < N ∧ ∀ u ∈ hatG F A, N • u ∈ U := by
@@ -269,6 +357,13 @@ theorem exists_nsmul_mem_open (hfg : A.toIntSubmodule.FG) (U : AddSubgroup (Matr
   rwa [Set.mem_preimage, map_nsmul, LinearMap.smul_apply] at this
 
 omit [NumberField E] in
+/- English proof (translation)
+Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, y, hy, rfl⟩` from `hw`. Take `⟨x, β, hβ, rfl⟩` from `(GlobalTheory.AdLat.strong_approximation_mod_nat F N hN).2 α hα`. Use `⟨_, hO x y hy, _, fT_mem (α := β) hβ hy, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, LinearMap.add_apply, fT_algebraMap, map_nsmul, LinearMap.smul_apply]`. Consider the case `zero => exact ⟨0, zero_mem _, 0, zero_mem _, by simp⟩`. Consider the case `add x x' _ _ h h'`. Take `⟨y, hy, u, hu, rfl⟩` from `h`. Take `⟨y', hy', u', hu', rfl⟩` from `h'`.
+
+Conclude with `⟨y + y', add_mem hy hy', u + u', add_mem hu hu', by rw [map_add, smul_add]; abel⟩`. Consider the case `neg x _ h`. Take `⟨y, hy, u, hu, rfl⟩` from `h`. Conclude with `⟨-y, neg_mem hy, -u, neg_mem hu, by rw [map_neg, smul_neg]; abel⟩`.
+-/
 theorem exists_mod (hO : ∀ c : 𝓞 F, ∀ y ∈ A, (c : F) • y ∈ A) {N : ℕ} (hN : 0 < N) {u} (hu : u ∈ hatG F A) :
     ∃ y ∈ A, ∃ u' ∈ hatG F A, u = fT F 1 y + N • u' := by
   induction hu using AddSubgroup.closure_induction with
@@ -286,6 +381,11 @@ theorem exists_mod (hO : ∀ c : 𝓞 F, ∀ y ∈ A, (c : F) • y ∈ A) {N : 
     obtain ⟨y, hy, u, hu, rfl⟩ := h
     exact ⟨-y, neg_mem hy, -u, neg_mem hu, by rw [map_neg, smul_neg]; abel⟩
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Set `b` to `Module.finBasis F E`. Take `⟨N, hN, hA⟩` from `exists_common A (sgl b) fun p => hden _`. Use `choose x a ha hx using fun p => (GlobalTheory.AdLat.strong_approximation_mod_nat F N hN).1 (co b p u)`. Use `⟨∑ p, x p • sgl b p, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[eq_sum_of_fin b hu, map_sum, ← Finset.sum_sub_distrib]`. Use `sum_mem fun p _ => ?_` and prove the remaining obligations. Rewrite using `[hx, map_add, LinearMap.add_apply, fT_algebraMap, add_sub_cancel_left, map_nsmul, LinearMap.smul_apply, ← map_nsmul]`. Conclude with `fT_mem (ha p) (hA p)`.
+-/
 theorem exists_rat (hden : ∀ y, ∃ N : ℕ, 0 < N ∧ N • y ∈ A) {u : Matrix (Fin r) (Fin n) (AF F ⊗[F] E)}
     (hu : u.map (infG F E) = 0) : ∃ y, u - fT F 1 y ∈ hatG F A := by
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -299,6 +399,13 @@ theorem exists_rat (hden : ∀ y, ∃ N : ℕ, 0 < N ∧ N • y ∈ A) {u : Mat
     ← map_nsmul]
   exact fT_mem (ha p) (hA p)
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalAddGroup (AF F ⊗[F] E) := IsModuleTopology.topologicalAddGroup (AF F) _`. Set `b` to `Module.finBasis F E`. Take `⟨M, hM, hA⟩` from `exists_common A (sgl b) fun p => hden _`.
+
+Use `GlobalTheory.LatOpen.isOpen_of_nhds ((finG F E).toAddMonoidHom.mapMatrix (m := Fin r) (n := Fin n)) _ N (⋂ p, co b p ⁻¹' {c | ∃ a : Af F, (∀ v, a v ∈ v.adicCompletionIntegers F) ∧ c = (N * M) • a}) ?_ ?_` and prove the remaining obligations. Use `Filter.iInter_mem.2 fun p => (continuous_co b p).continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `GlobalTheory.AdLat.OpenLat.nsmul_integral_mem_nhds F _ (mul_pos hN hM)`. Introduce `w hw choose a ha hx using Set.mem_iInter.1 hw`.
+
+Use `⟨∑ p, fT F (a p) (M • sgl b p), sum_mem fun p _ => fT_mem (ha p) (hA p), ?_⟩` and prove the remaining obligations. Use `fin_sub b w` as an intermediate fact. Simplify using `only [hx, map_nsmul, LinearMap.smul_apply, mul_smul] at this`. Simplify using `only [map_nsmul, Finset.smul_sum]`. Conclude with `this`.
+-/
 theorem isOpen_nsmul (hden : ∀ y, ∃ N : ℕ, 0 < N ∧ N • y ∈ A) {N : ℕ} (hN : 0 < N) :
     IsOpen {w : Matrix (Fin r) (Fin n) (AF F ⊗[F] E) | ∃ u ∈ hatG F A, (w - N • u).map (finG F E) = 0} := by
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -319,6 +426,17 @@ theorem isOpen_nsmul (hden : ∀ y, ∃ N : ℕ, 0 < N ∧ N • y ∈ A) {N : �
     simp only [map_nsmul, Finset.smul_sum]
     exact this
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Set `b` to `Module.finBasis F E`. Take `⟨M, hM, hA⟩` from `exists_common A (sgl b) fun p => hden _`. Take `⟨N, hN, hU⟩` from `exists_nsmul_mem_open hfg (⨅ p, (intG F).comap (co b p)) (by`. Rewrite using `[AddSubgroup.coe_iInf]`.
+
+Conclude with `isOpen_iInter_of_finite fun p => (GlobalTheory.LatOpen.isOpen_intAf F).preimage (continuous_co b p))`. Take `⟨y', hy', u, hu, e⟩` from `exists_mod hO (mul_pos hM hN) hy`. Establish `e' : fT F 1 (y - y') = M • N • u` using `by rw [map_sub, e, add_sub_cancel_left, mul_smul]`. Establish `hz : y - y' ∈ A`. Rewrite using `[← sum_sgl b (y - y')]`.
+
+Use `sum_mem fun p _ => ?_` and prove the remaining obligations. Establish `h1 : co b p (N • u) ∈ intG F` using `AddSubgroup.mem_iInf.1 (hU u hu) p`. Establish `h2` using `co_fT b p (y - y')`. Rewrite `h2` using `[e', map_nsmul]`. Establish `hM' : (M : F) ≠ 0` using `Nat.cast_ne_zero.2 hM.ne'`.
+
+Establish `h3 : algebraMap F (Af F) ((M : F)⁻¹ * b.repr ((y - y') p.2.1 p.1) p.2.2) = co b p (N • u)`. Rewrite using `[map_mul, ← h2, ← Algebra.smul_def, ← Nat.cast_smul_eq_nsmul F M, inv_smul_smul₀ hM']`. Take `⟨c, hc⟩` from `(GlobalTheory.AdLat.Model.integral_iff _).1 (h3 ▸ h1)`. Establish `h4` using `hO c _ (hA p)`. Rewrite `h4` using `[show (c : F) = _ from hc, ← Nat.cast_smul_eq_nsmul F M, smul_smul, mul_right_comm, inv_mul_cancel₀ hM', one_mul]`. Then use the resulting hypothesis.
+
+Simplify using `using add_mem hz hy'`.
+-/
 theorem mem_of_fT_mem (hO : ∀ c : 𝓞 F, ∀ y ∈ A, (c : F) • y ∈ A) (hfg : A.toIntSubmodule.FG)
     (hden : ∀ y, ∃ N : ℕ, 0 < N ∧ N • y ∈ A) {y} (hy : fT F 1 y ∈ hatG F A) : y ∈ A := by
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
@@ -346,6 +464,11 @@ theorem mem_of_fT_mem (hO : ∀ c : 𝓞 F, ∀ y ∈ A, (c : F) • y ∈ A) (h
 
 end Gen
 
+/- English proof (translation)
+Introduce `D S T _ Λ L hΛ hL`. Establish `hO : ∀ c : 𝓞 D.host.F, ∀ y ∈ tens Λ L, (c : D.host.F) • y ∈ tens Λ L` using `fun c y hy => smul_mem_tens Λ L (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) c) hy`. Establish `hfg` using `tens_fg Λ L hΛ.1 hL.1`. Establish `hden` using `tens_den Λ L hΛ.2 hL.2`. Establish `h1 : (1 : Af D.host.F) ∈ intG D.host.F` using `fun v => one_mem (v.adicCompletionIntegers D.host.F)`.
+
+Conclude with `⟨fun u hu => exists_rat (F := D.host.F) hden hu, fun y => ⟨fun hy => mem_of_fT_mem hO hfg hden hy, fun hy => fT_mem h1 hy⟩, fun u hu => ⟨inf_eq_zero_of_mem (F := D.host.F) hu, fun N hN => exists_mod hO hN hu⟩, fun U hU => exists_nsmul_mem_open (F := D.host.F) hfg U hU, fun N hN = …`.
+-/
 theorem hatA_tens : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ (Λ : Lt D.host.E S.rank) (L : Lt D.host.E T.rank), (Λ.FG ∧ Submodule.span D.host.E (Λ : Set (Fin S.rank → D.host.E)) = ⊤) → (L.FG ∧ Submodule.span D.host.E (L : Set (Fin T.rank → D.host.E)) = ⊤) → (∀ u, IsFinPt u → ∃ y : Matrix (Fin S.rank) (Fin T.rank) D.host.E, u - finW S T y ∈ hatA S T (tens Λ L)) ∧ (∀ y : Matrix (Fin S.rank) (Fin T.rank) D.host.E, finW S T y ∈ hatA S T (tens Λ L) ↔ y ∈ tens Λ L) ∧ (∀ u ∈ hatA S T (tens Λ L), IsFinPt u ∧ ∀ N : ℕ, 0 < N → ∃ y ∈ tens Λ L, ∃ u' ∈ hatA S T (tens Λ L), u = finW S T y + N • u') ∧ (∀ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) → ∃ N : ℕ, 0 < N ∧ ∀ u ∈ hatA S T (tens Λ L), N • u ∈ U) ∧ (∀ N : ℕ, 0 < N → IsOpen {w : WO S T | ∃ u ∈ hatA S T (tens Λ L), IsRealPt (w - N • u)}) ∧ IsCompact (hatA S T (tens Λ L) : Set (WO S T)) := by
   intro D S T _ Λ L hΛ hL
   have hO : ∀ c : 𝓞 D.host.F, ∀ y ∈ tens Λ L, (c : D.host.F) • y ∈ tens Λ L := fun c y hy =>

@@ -15,6 +15,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.SemiAbelianTower
 
+/- English proof (translation)
+Use `letI := D.addCommGroup`. Use `letI := D.grpB`. Use `D.q_hom` as an intermediate fact. Use `D.i_hom` as an intermediate fact. Use `D.q_flat` as an intermediate fact.
+
+Use `D.q_surjective` as an intermediate fact. Use `D.q_quasiCompact` as an intermediate fact. Use `D.free` as an intermediate fact. Use `D.finite` as an intermediate fact. Establish `h1 : IsFinite ((𝟙 D.B) ^ N : D.B ⟶ D.B).left` using `GlobalTheory.MulFiniteAny.isFinite_mulA K D.B D.isAbelian N hN`.
+
+Establish `hf : IsFinite (mulN (splitTorus (Sp K) D.X) N).left` using `Diag.isFinite_mulN _ D.X (by omega)`. Rewrite `hf` using `[GrpTangent.mulN_eq_pow]`. Use `isAffineHom_descendsAlong_fpqc.{0}` as an intermediate fact. Establish `hP` using `IsPullback.of_hasPullback D.q ((𝟙 D.B) ^ N)`. Establish `w : ((𝟙 G) ^ N) ≫ D.q = D.q ≫ ((𝟙 D.B) ^ N)`.
+
+Rewrite using `[MonObj.pow_comp, MonObj.comp_pow, Category.id_comp, Category.comp_id]`. Establish `ha` using `hP.lift_fst _ _ w`. Establish `hb` using `hP.lift_snd _ _ w`. Establish `a2 : IsAffineHom (hP.lift _ _ w).left` using `ExtensionMul.of_pow_kernel @IsAffineHom D.i D.q D.isKernel N hP ha hb inferInstance`. Establish `a3 : UniversallyClosed (hP.lift _ _ w).left` using `ExtensionMul.of_pow_kernel @UniversallyClosed D.i D.q D.isKernel N hP ha hb inferInstance`.
+
+Establish `a4 : LocallyOfFiniteType (hP.lift _ _ w).left` using `ExtensionMul.of_pow_kernel @LocallyOfFiniteType D.i D.q D.isKernel N hP ha hb inferInstance`. Establish `a5 : IsFinite (hP.lift _ _ w).left` using `(IsFinite.iff_isIntegralHom_and_locallyOfFiniteType _).mpr ⟨IsIntegralHom.iff_universallyClosed_and_isAffineHom.mpr ⟨a3, a2⟩, a4⟩`. Establish `hP'` using `(hP.map (Over.forget _)).flip`. Establish `b1 : IsFinite (pullback.fst D.q ((𝟙 D.B) ^ N)).left` using `MorphismProperty.of_isPullback (P := @IsFinite) hP' h1`. Rewrite using `[← ha, Over.comp_left]`.
+
+Use `infer_instance`.
+-/
 theorem isFinite_pow {K : Type} [Field K] [IsAlgClosed K] (G : Over (Sp K)) [GrpObj G] [IsCommMonObj G]
     (D : TorusExtension G) (N : ℕ) (hN : 1 ≤ N) : IsFinite ((𝟙 G) ^ N : G ⟶ G).left := by
   letI := D.addCommGroup
@@ -49,6 +62,15 @@ theorem isFinite_pow {K : Type} [Field K] [IsAlgClosed K] (G : Over (Sp K)) [Grp
   rw [← ha, Over.comp_left]
   infer_instance
 
+/- English proof (translation)
+Use `MapDeg.of_isFinite fun U hU hne => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `hne`. Take `⟨y, rfl⟩` from `ψ.surjective z`. Take `⟨x, rfl⟩` from `φ.surjective y`. Use `haveI : Nonempty U := ⟨⟨_, hz⟩⟩`.
+
+Use `haveI : Nonempty (ψ ⁻¹ᵁ U) := ⟨⟨φ x, hz⟩⟩`. Use `haveI : Nonempty (φ ⁻¹ᵁ ψ ⁻¹ᵁ U) := ⟨⟨x, hz⟩⟩`. Use `letI := (ψ.app U).hom.toAlgebra`. Use `letI := (φ.app (ψ ⁻¹ᵁ U)).hom.toAlgebra`. Use `letI : Algebra Γ(Z, U) Γ(X, φ ⁻¹ᵁ ψ ⁻¹ᵁ U) := ((φ ≫ ψ).app U).hom.toAlgebra`.
+
+Use `haveI : IsScalarTower Γ(Z, U) Γ(Y, ψ ⁻¹ᵁ U) Γ(X, φ ⁻¹ᵁ ψ ⁻¹ᵁ U) := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : Module.Finite Γ(Z, U) Γ(Y, ψ ⁻¹ᵁ U) := ψ.finite_app U hU`. Use `haveI := IsSchemeTheoreticallyDominant.of_isDominant φ`. Use `haveI := IsSchemeTheoreticallyDominant.of_isDominant ψ`. Use `haveI : FaithfulSMul Γ(Z, U) Γ(Y, ψ ⁻¹ᵁ U) := (faithfulSMul_iff_algebraMap_injective _ _).mpr (ψ.app_injective U)`.
+
+Use `haveI : FaithfulSMul Γ(Y, ψ ⁻¹ᵁ U) Γ(X, φ ⁻¹ᵁ ψ ⁻¹ᵁ U) := (faithfulSMul_iff_algebraMap_injective _ _).mpr (φ.app_injective _)`. Rewrite using `[← hE.finrank_eq U hU ⟨_, hz⟩, ← hD.finrank_eq _ (hU.preimage ψ) ⟨φ x, hz⟩]`. Conclude with `(Module.finrank_mul_finrank' Γ(X, φ ⁻¹ᵁ ψ ⁻¹ᵁ U)).symm`.
+-/
 theorem mapDeg_comp {X Y Z : Scheme.{0}} [IsIntegral X] [IsIntegral Y] [IsIntegral Z] (φ : X ⟶ Y) (ψ : Y ⟶ Z)
     [IsFinite φ] [IsFinite ψ] [Surjective φ] [Surjective ψ] {D E : ℕ} (hD : MapDeg φ D) (hE : MapDeg ψ E) :
     MapDeg (φ ≫ ψ) (E * D) := by
@@ -73,6 +95,13 @@ theorem mapDeg_comp {X Y Z : Scheme.{0}} [IsIntegral X] [IsIntegral Y] [IsIntegr
   rw [← hE.finrank_eq U hU ⟨_, hz⟩, ← hD.finrank_eq _ (hU.preimage ψ) ⟨φ x, hz⟩]
   exact (Module.finrank_mul_finrank' Γ(X, φ ⁻¹ᵁ ψ ⁻¹ᵁ U)).symm
 
+/- English proof (translation)
+Take `⟨_, ⟨U, hU, rfl⟩, hy, -⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ y) isOpen_univ`. Use `replace hU : IsAffineOpen U := hU`. Use `haveI : Nonempty U := ⟨⟨_, hy⟩⟩`. Use `letI := (φ.app U).hom.toAlgebra`. Use `haveI : Module.Finite Γ(Y, U) Γ(X, φ ⁻¹ᵁ U) := φ.finite_app U hU`.
+
+Use `haveI : Module.Flat Γ(Y, U) Γ(X, φ ⁻¹ᵁ U) := by`. Use `φ.flat_appLE hU (hU.preimage φ) le_rfl` as an intermediate fact. Rewrite `this` using `[Scheme.Hom.appLE_eq_app]`. Then use the resulting hypothesis. Establish `hp : IsPullback (hU.preimage φ).fromSpec (Spec.map (φ.app U)) φ hU.fromSpec` using `(IsOpenImmersion.isPullback _ _ _ _ (by`. Rewrite using `[Scheme.Hom.app_eq_appLE, IsAffineOpen.SpecMap_appLE_fromSpec φ hU (hU.preimage φ)])`.
+
+Use the proof step `(by simp)).flip`. Take `⟨q, rfl⟩ : y ∈ Set.range hU.fromSpec` from `by rw [hU.range_fromSpec]; exact hy`. Rewrite using `[← hD.finrank_eq U hU ⟨_, hy⟩, ← FiniteCover.rankAtStalk_bot, Module.rankAtStalk_eq_of_le_of_finite_of_flat _ (p := ⊥) (q := q) bot_le, ← Scheme.Hom.finrank_of_isPullback _ _ _ _ hp q]`. Conclude with `Scheme.Hom.finrank_SpecMap_algebraMap Γ(Y, U) Γ(X, φ ⁻¹ᵁ U) _`.
+-/
 theorem finrank_eq_of_mapDeg {X Y : Scheme.{0}} [IsIntegral Y] (φ : X ⟶ Y) [IsFinite φ] [Flat φ] {D : ℕ}
     (hD : MapDeg φ D) (y : Y) : φ.finrank y = D := by
   obtain ⟨_, ⟨U, hU, rfl⟩, hy, -⟩ :=
@@ -94,6 +123,21 @@ theorem finrank_eq_of_mapDeg {X Y : Scheme.{0}} [IsIntegral Y] (φ : X ⟶ Y) [I
     ← Scheme.Hom.finrank_of_isPullback _ _ _ _ hp q]
   exact Scheme.Hom.finrank_SpecMap_algebraMap Γ(Y, U) Γ(X, φ ⁻¹ᵁ U) _
 
+/- English proof (translation)
+Establish `hs` using `(flat_and_surjective_of_isFinite_grpEnd K G α).2`. Take `⟨D, -, hD⟩` from `exists_mapDeg_of_isFinite _ _ α.left inferInstance hs`. Take `⟨_, ⟨U, hU, rfl⟩, hξ, -⟩` from `G.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (genericPoint G.left)) isOpen_univ`. Establish `: Nonempty U` using `⟨⟨_, hξ⟩⟩`. Establish `: Nonempty (α.left ⁻¹ᵁ U)`.
+
+Take `⟨x, hx⟩` from `α.left.surjective (genericPoint G.left)`. Conclude with `⟨⟨x, show α.left x ∈ U from hx ▸ hξ⟩⟩`. Use `letI := (α.left.app U).hom.toAlgebra`. Establish `: Module.Finite Γ(G.left, U) Γ(G.left, α.left ⁻¹ᵁ U)` using `α.left.finite_app U hU`. Establish `: IsSchemeTheoreticallyDominant α.left` using `.of_isDominant _`.
+
+Establish `: FaithfulSMul Γ(G.left, U) Γ(G.left, α.left ⁻¹ᵁ U)` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr (α.left.app_injective U)`. Set `c : K →+* Γ(G.left, U)` to `(G.hom.appLE ⊤ U le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom`. Establish `: ExpChar Γ(G.left, U) (ringExpChar K)` using `expChar_of_injective_ringHom c.injective _`. Set `Ω` to `AlgebraicClosure (FractionRing Γ(G.left, U))`. Establish `: FaithfulSMul Γ(G.left, U) Ω`.
+
+Rewrite using `[faithfulSMul_iff_algebraMap_injective, IsScalarTower.algebraMap_eq Γ(G.left, U) (FractionRing Γ(G.left, U)) Ω, RingHom.coe_comp]`. Conclude with `(RingHom.injective _).comp (IsFractionRing.injective _ _)`. Take `⟨h0, e, he⟩` from `finrank_eq_pow_mul_card Γ(G.left, U) Γ(G.left, α.left ⁻¹ᵁ U) Ω (ringExpChar K)`. Rewrite `h0`, `he` using `[card_fibre_eq α.left hU Ω]`. Use `set z := Spec.map (CommRingCat.ofHom (algebraMap Γ(G.left, U) Ω)) ≫ hU.fromSpec with hz`.
+
+Set `z' : Over.mk (z ≫ G.hom) ⟶ G` to `Over.homMk z rfl`. Establish `h1 : Nat.card {y : Over.mk (z ≫ G.hom) ⟶ G // y ≫ α = z'} = Nat.card {y : Spec (CommRingCat.of Ω) ⟶ G.left // y ≫ α.left = z}`. Use `Nat.card_congr (Equiv.ofBijective (fun y => ⟨y.1.left, congrArg CommaMorphism.left y.2⟩) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce `y y' h`. Conclude with `Subtype.ext (Over.OverMorphism.ext (congrArg Subtype.val h))`.
+
+Introduce and unpack `⟨y, hy⟩`. Use `⟨⟨Over.homMk y ?_, Over.OverMorphism.ext hy⟩, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y ≫ G.hom = z ≫ G.hom`. Rewrite using `[← hy, Category.assoc, Over.w α]`. Rewrite `h0`, `he` using `[← h1]`.
+
+Establish `hne` using `(Nat.card_ne_zero.mp h0).1`. Rewrite `h0`, `he` using `[← card_coset_eq G _ α z' hne, ← card_ker_eq G α Ω (z ≫ G.hom)]`. Use `⟨(Nat.card_ne_zero.mp h0).2, e, ?_⟩` and prove the remaining obligations. Rewrite using `[← he, hD.finrank_eq U hU ⟨_, hξ⟩]`. Conclude with `hD`.
+-/
 theorem mapDeg_eq_pow_mul_card (K : Type) [Field K] [IsAlgClosed K] (G : Over (Sp K)) [GrpObj G]
     [IsIntegral G.left] [LocallyOfFiniteType G.hom] (α : G ⟶ G) [IsMonHom α] [IsFinite α.left] :
     Finite {x : Out.baseOver (Sp K) ⟶ G // x ≫ α = 1} ∧
@@ -140,6 +184,19 @@ theorem mapDeg_eq_pow_mul_card (K : Type) [Field K] [IsAlgClosed K] (G : Over (S
   rw [← he, hD.finrank_eq U hU ⟨_, hξ⟩]
   exact hD
 
+/- English proof (translation)
+Use `forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ G.hom ‹_› ‹_›` as an intermediate fact. Establish `: IsIntegral G.left` using `GeometricallyIntegral.isIntegral_of_subsingleton G.hom`. Establish `hm : ∀ N, IsMonHom ((𝟙 G) ^ N : G ⟶ G)` using `fun N => GlobalTheory.AbLaw.MulN.isMonHom_mulA G N`. Establish `hf : ∀ n, IsFinite ((𝟙 G) ^ p ^ n : G ⟶ G).left` using `fun n => isFinite_pow G D _ (Nat.one_le_pow _ _ hp.out.pos)`. Establish `hl` using `fun n => (flat_and_surjective_of_isFinite_grpEnd K G ((𝟙 G) ^ p ^ n)).1`.
+
+Establish `hs` using `fun n => (flat_and_surjective_of_isFinite_grpEnd K G ((𝟙 G) ^ p ^ n)).2`. Take `⟨hfin, e, he⟩` from `mapDeg_eq_pow_mul_card K G ((𝟙 G) ^ p ^ 1)`. Use `haveI : CharP K p := (CharP.charP_iff_prime_eq_zero hp.out).2 h0`. Rewrite `he` using `[ringExpChar.eq K p]`. Set `M : Subgroup (Out.baseOver (Sp K) ⟶ G)` to `(IsMonHom.monoidHom ((𝟙 G) ^ p ^ 1 : G ⟶ G) _).ker`.
+
+Use `haveI : Finite M := hfin`. Take `⟨k, hk⟩` from `(IsPGroup.iff_card (p := p) (G := M)).1 fun g => ⟨1, Subtype.ext (by`. Establish `h : g.1 ≫ (𝟙 G) ^ p ^ 1 = 1` using `g.2`. Rewrite `h` using `[MonObj.comp_pow, Category.comp_id]`. Conclude with `h)⟩`.
+
+Establish `hd : ∀ n, MapDeg ((𝟙 G) ^ p ^ n : G ⟶ G).left (p ^ (n * (e + k)))` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero`. Simplify using `only [pow_zero, pow_one, zero_mul]`. Conclude with `MapDeg.id_one _`.
+
+Consider the case `succ n ih`. Establish `h` using `mapDeg_comp _ _ he ih`. Rewrite `h` using `[← Over.comp_left, MonObj.comp_pow, Category.comp_id, ← pow_mul, ← pow_add, show Nat.card {x : Out.baseOver (Sp K) ⟶ G // x ≫ (𝟙 G) ^ p ^ 1 = 1} = p ^ k from hk, ← pow_add, ← pow_add, add_comm 1 n]`. Rewrite using `[add_mul, _root_.one_mul]` and apply the resulting hypothesis. Use `⟨e + k, fun n S _ _ _ y H => ?_⟩` and prove the remaining obligations.
+
+Rewrite `H` using `[GrpTangent.mulN_eq_pow]`. Establish `h` using `Scheme.Hom.finrank_of_isPullback _ _ _ _ H (⊥ : PrimeSpectrum K)`. Rewrite `h` using `[finrank_eq_of_mapDeg _ (hd n)]`. Rewrite using `[← h, ← FiniteCover.rankAtStalk_bot]`. Conclude with `(Scheme.Hom.finrank_SpecMap_algebraMap K S _).symm`.
+-/
 theorem exists_finrank_torsion (p : ℕ) [hp : Fact p.Prime] (K : Type) [Field K] [IsAlgClosed K] (h0 : (p : K) = 0)
     (G : Over (Sp K)) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] [GeometricallyConnected G.hom]
     (D : TorusExtension G) : ∃ h : ℕ, ∀ (n : ℕ) (S : Type) [CommRing S] [Algebra K S] [Module.Finite K S]
@@ -178,6 +235,19 @@ theorem exists_finrank_torsion (p : ℕ) [hp : Fact p.Prime] (K : Type) [Field K
   rw [← h, ← FiniteCover.rankAtStalk_bot]
   exact (Scheme.Hom.finrank_SpecMap_algebraMap K S _).symm
 
+/- English proof (translation)
+Introduce `p hp O _ _ A _ hA hf`. Distinguish the cases in `h0 : (p : O) = 0`. Use `swap`. Conclude with `RaynaudPDiv.exists_tower p O h0 A hA hf`. Use `hA.comm` as an intermediate fact.
+
+Use `hA.smooth` as an intermediate fact. Use `hA.geomConnected` as an intermediate fact. Set `K` to `AlgebraicClosure (FractionRing O)`. Establish `hi : Function.Injective (algebraMap O K)` using `(algebraMap (FractionRing O) K).injective.comp (IsFractionRing.injective O _)`. Set `B` to `(Over.pullback (spMap (algebraMap O K))).obj A`.
+
+Establish `: Smooth B.hom` using `inferInstanceAs (Smooth (pullback.snd A.hom _))`. Establish `: GeometricallyConnected B.hom` using `inferInstanceAs (GeometricallyConnected (pullback.snd A.hom _))`. Use `choose R _ _ y h1 h2 H using fun n : ℕ => RaynaudPDiv.exists_isPullback_torsion O A (p ^ n) (hf _ (Nat.one_le_pow _ _ hp.out.pos)).1 (hf _ (Nat.one_le_pow _ _ hp.out.pos)).2`. Establish `h` using `fun n => AbelianPDiv.isUnivTorsion_of_isPullback (y n) (H n)`. Take `⟨D⟩` from `hA.fibres K (spMap (algebraMap O K))`.
+
+Take `⟨d, hd⟩` from `exists_finrank_torsion p K (by rw [← map_natCast (algebraMap O K), h0, map_zero]) B D`. Establish `hk : ∀ n, Module.finrank K (K ⊗[O] R n) = p ^ (n * d)` using `fun n => by`. Take `⟨y', h'⟩` from `AbelianPDiv.exists_isPullback_baseChange (y n) (H n) K`. Conclude with `hd n _ y' h'`. Establish `hr : ∀ n (q : PrimeSpectrum O), Module.rankAtStalk (R n) q = p ^ (n * d)` using `fun n q => by`.
+
+Rewrite using `[← Module.rankAtStalk_eq_of_le_of_finite_of_flat (R n) (p := PrimeSpectrum.comap (algebraMap O K) ⊥) (q := q) ?_, ← Module.rankAtStalk_baseChange, Module.rankAtStalk_eq_finrank_of_free, hk n]`. Both sides reduce to the same expression. Introduce `a ha`. Establish `ha' : algebraMap O K a = 0` using `ha`. Rewrite using `[(map_eq_zero_iff _ hi).1 ha']`.
+
+Conclude with `zero_mem _`. Use `choose r r1 r2 r3 using fun n : ℕ => (h n).exists_res (h (n + 1)) (by rw [pow_succ, pow_mul, (h n).1, one_pow])`. Set `G : PDivGroup p O` to `{ height := d A := R hopf := fun n => (h n).hopfAlgebra cocomm := fun n => (h n).isCocomm finite := h1 projective := h2 rank_eq := hr res := r res_surjective := r1 ker_res := r2 }`. Conclude with `⟨G, ⟨{ y := y mul := fun n B _ _ => (h n).mul_y inj := fun n B _ _ _ _ => (h n).inj surj := fun n B _ _ z hz => ((h n).2 B z hz).exists res := r3 }⟩⟩`.
+-/
 theorem exists_tower : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [IsDomain O] (A : Over (Sp O)) [GrpObj A], IsSemiAbelian A → (∀ N, 1 ≤ N → IsFinite (torsion A N).hom ∧ Flat (torsion A N).hom) → ∃ G : PDivGroup p O, Nonempty (G.TorsionTower A) := by
   intro p hp O _ _ A _ hA hf
   by_cases h0 : (p : O) = 0

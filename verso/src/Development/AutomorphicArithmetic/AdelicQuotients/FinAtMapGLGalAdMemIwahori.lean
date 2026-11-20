@@ -7,6 +7,9 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Gl
 open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Loc PositivityTheory.Rg.Tf.Geo
 open scoped NumberField.AdeleRing
 
+/- English proof (translation)
+Establish `: (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Rewrite using `[(ValuativeRel.isEquiv (ValuativeRel.valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))).lt_one_iff_lt_one, Valued.toNormedField.norm_lt_one_iff]`.
+-/
 private theorem val_lt_iff' {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
     (y : w.adicCompletion E) : ValuativeRel.valuation (w.adicCompletion E) y < 1 ↔ ‖y‖ < 1 := by
   have : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible :=
@@ -15,6 +18,9 @@ private theorem val_lt_iff' {E : Type} [Field E] [NumberField E] (w : HeightOneS
     (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))).lt_one_iff_lt_one,
     Valued.toNormedField.norm_lt_one_iff]
 
+/- English proof (translation)
+Establish `: (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Rewrite using `[(ValuativeRel.isEquiv (ValuativeRel.valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))).le_one_iff_le_one, Valued.toNormedField.norm_le_one_iff]`.
+-/
 private theorem val_le_iff' {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
     (y : w.adicCompletion E) : ValuativeRel.valuation (w.adicCompletion E) y ≤ 1 ↔ ‖y‖ ≤ 1 := by
   have : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible :=
@@ -23,11 +29,19 @@ private theorem val_le_iff' {E : Type} [Field E] [NumberField E] (w : HeightOneS
     (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))).le_one_iff_le_one,
     Valued.toNormedField.norm_le_one_iff]
 
+/- English proof (translation)
+Rewrite using `[le_antisymm_iff, le_antisymm_iff, val_le_iff', not_iff_not.1 (by`. Rewrite using `[not_le, not_le]`. Conclude with `val_lt_iff' w y : ¬ (1 ≤ ValuativeRel.valuation (w.adicCompletion E) y) ↔ ¬ (1 ≤ ‖y‖))]`.
+-/
 private theorem val_eq_iff' {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
     (y : w.adicCompletion E) : ValuativeRel.valuation (w.adicCompletion E) y = 1 ↔ ‖y‖ = 1 := by
   rw [le_antisymm_iff, le_antisymm_iff, val_le_iff', not_iff_not.1 (by
     rw [not_le, not_le]; exact val_lt_iff' w y : ¬ (1 ≤ ValuativeRel.valuation (w.adicCompletion E) y) ↔ ¬ (1 ≤ ‖y‖))]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n w g hg`. Establish `key : ∀ i j, ‖finAt (σ • w) (mapGL n (galAd σ) g : AdelicGLn.AdelicGL E n) i j‖ = ‖finAt w g i j‖` using `fun i j => (UpperTheory.norm_galois_smul_adele_component_at_smul_place F E σ (g i j)).1 w`. Take `⟨h1, h2, h3⟩` from `(GLnLocal.mem_iwahori_iff _ n).1 hg`. Use `(GLnLocal.mem_iwahori_iff _ n).2 ⟨fun i j => ?_, fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[val_le_iff', key]`.
+
+Conclude with `(val_le_iff' w _).1 (h1 i j)`. Rewrite using `[val_lt_iff', key]`. Conclude with `(val_lt_iff' w _).1 (h2 i j hij)`. Rewrite using `[val_eq_iff', key]`. Conclude with `(val_eq_iff' w _).1 (h3 i)`.
+-/
 theorem UpperTheory.finAt_mapGL_galAd_mem_iwahori :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E ≃ₐ[F] E) (n : ℕ) (w : HeightOneSpectrum (𝓞 E)) (g : AdelicGLn.AdelicGL E n),
         finAt w g ∈ GLnLocal.iwahori (w.adicCompletion E) n →

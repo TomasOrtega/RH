@@ -12,11 +12,20 @@ namespace GlobalTheory.ChainStep
 
 variable {C : Type} [Field C] {V : VF C}
 
+/- English proof (translation)
+Simplify using `[VF.MM]`.
+-/
 theorem mm_zero : V.MM (0 : C) := by simp [VF.MM]
 
+/- English proof (translation)
+The claim follows from `V.v.map_lt_add ha hb`.
+-/
 theorem mm_add {a b : C} (ha : V.MM a) (hb : V.MM b) : V.MM (a + b) :=
   V.v.map_lt_add ha hb
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using mm_zero`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `mm_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem mm_sum {ι : Type*} {s : Finset ι} {f : ι → C} (h : ∀ i ∈ s, V.MM (f i)) :
     V.MM (∑ i ∈ s, f i) := by
   induction s using Finset.induction_on with
@@ -26,15 +35,24 @@ theorem mm_sum {ι : Type*} {s : Finset ι} {f : ι → C} (h : ∀ i ∈ s, V.M
     exact mm_add (h a (Finset.mem_insert_self a s))
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Unfold `VF.MM at *`. Unfold `VF.Ge at hb`. Rewrite using `[V.v.map_mul]`. Conclude with `lt_of_lt_of_le ha (le_add_of_nonneg_right (by simpa using hb))`.
+-/
 theorem mm_mul_int {a b : C} (ha : V.MM a) (hb : V.Ge 0 b) : V.MM (a * b) := by
   unfold VF.MM at *
   unfold VF.Ge at hb
   rw [V.v.map_mul]
   exact lt_of_lt_of_le ha (le_add_of_nonneg_right (by simpa using hb))
 
+/- English proof (translation)
+Rewrite using `[mul_comm]`. Conclude with `mm_mul_int hb ha`.
+-/
 theorem int_mul_mm {a b : C} (ha : V.Ge 0 a) (hb : V.MM b) : V.MM (a * b) := by
   rw [mul_comm]; exact mm_mul_int hb ha
 
+/- English proof (translation)
+Unfold `VF.MM`. Rewrite using `[V.v_l]`. Conclude with `zero_lt_one`.
+-/
 theorem mm_l : V.MM (V.l : C) := by
   unfold VF.MM
   rw [V.v_l]
@@ -48,6 +66,11 @@ def intRing (V : VF C) : Subring C where
   zero_mem' := VF.Ge.zero 0
   neg_mem' ha := VF.Ge.neg ha
 
+/- English proof (translation)
+Establish `h : ∃ r : intRing V, ((⟨a, ha⟩ : intRing V) + ⟨b, hb⟩) ^ (V.l ^ n) = (⟨a, ha⟩ : intRing V) ^ (V.l ^ n) + (⟨b, hb⟩ : intRing V) ^ (V.l ^ n) + (V.l : intRing V) * r`. Take `⟨r, hr⟩` from `exists_add_pow_prime_pow_eq V.l_prime (⟨a, ha⟩ : intRing V) ⟨b, hb⟩ n`. Use `first`. Consider the case `exact ⟨r, hr⟩`. Consider the case `exact ⟨_, by rw [hr, mul_assoc, mul_assoc]⟩`.
+
+Take `⟨r, hr⟩` from `h`. Establish `h2` using `congrArg (fun z : intRing V => (z : C)) hr`. Move the coercions through the operations in `at h2`. Rewrite using `[h2, add_sub_cancel_left]`. Conclude with `mm_mul_int mm_l r.2`.
+-/
 theorem add_pow_congr {a b : C} (ha : V.Ge 0 a) (hb : V.Ge 0 b) (n : ℕ) :
     V.MM ((a + b) ^ (V.l ^ n) - (a ^ (V.l ^ n) + b ^ (V.l ^ n))) := by
   have h : ∃ r : intRing V, ((⟨a, ha⟩ : intRing V) + ⟨b, hb⟩) ^ (V.l ^ n) =
@@ -62,6 +85,11 @@ theorem add_pow_congr {a b : C} (ha : V.Ge 0 a) (hb : V.Ge 0 b) (n : ℕ) :
   rw [h2, add_sub_cancel_left]
   exact mm_mul_int mm_l r.2
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa [V.l_prime.ne_zero] using mm_zero`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Establish `h'` using `fun i hi => h i (Finset.mem_insert_of_mem hi)`.
+
+Establish `h1` using `add_pow_congr (h a (Finset.mem_insert_self a s)) (VF.Ge.sum h') n`. Establish `h2` using `mm_add h1 (ih h')`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_pow_congr {ι : Type*} {s : Finset ι} {f : ι → C} (h : ∀ i ∈ s, V.Ge 0 (f i)) (n : ℕ) :
     V.MM ((∑ i ∈ s, f i) ^ (V.l ^ n) - ∑ i ∈ s, f i ^ (V.l ^ n)) := by
   induction s using Finset.induction_on with
@@ -74,6 +102,9 @@ theorem sum_pow_congr {ι : Type*} {s : Finset ι} {f : ι → C} (h : ∀ i ∈
     convert h2 using 1
     ring
 
+/- English proof (translation)
+Establish `h2 : 2 ∣ d` using `hd.two_dvd`. Rewrite using `[ZMod.val_add, ZMod.val_natCast, Nat.even_iff, Nat.even_iff, Nat.mod_mod_of_dvd _ h2, Nat.add_mod, Nat.mod_mod_of_dvd _ h2]`. Simplify using the standard rewrite rules.
+-/
 theorem even_val_add {d : ℕ} [NeZero d] (hd : Even d) (a : ZMod d) (s : ℕ) :
     Even (a + ((2 * s : ℕ) : ZMod d)).val ↔ Even a.val := by
   have h2 : 2 ∣ d := hd.two_dvd
@@ -81,6 +112,9 @@ theorem even_val_add {d : ℕ} [NeZero d] (hd : Even d) (a : ZMod d) (s : ℕ) :
     Nat.add_mod, Nat.mod_mod_of_dvd _ h2]
   simp
 
+/- English proof (translation)
+Use `fin_cases g`. Conclude with `(hA.2 _).2 ((even_val_add hA.1 a s).2 ((hA.2 _).1 h))`. Establish `h1 : ∀ b, X.big 1 b ↔ ¬ X.big 0 b` using `fun b => by simpa using X.big_compl 0 b`. Use `(h1 _).2 fun h2 => (h1 _).1 h ?_` and prove the remaining obligations. Conclude with `(hA.2 _).2 ((even_val_add hA.1 a s).1 ((hA.2 _).1 h2))`.
+-/
 theorem big_add {d : ℕ} [NeZero d] {I J : Fin 2 → Type} [∀ g, Fintype (I g)] [∀ g, Fintype (J g)]
     (X : RowData C V d I J) (hA : X.Alt) (g : Fin 2) (a : ZMod d) (h : X.big g a) (s : ℕ) :
     X.big g (a + ((2 * s : ℕ) : ZMod d)) := by
@@ -90,6 +124,13 @@ theorem big_add {d : ℕ} [NeZero d] {I J : Fin 2 → Type} [∀ g, Fintype (I g
     refine (h1 _).2 fun h2 => (h1 _).1 h ?_
     exact (hA.2 _).2 ((even_val_add hA.1 a s).1 ((hA.2 _).1 h2))
 
+/- English proof (translation)
+Establish `h1 : S.U * S.U⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr S.U_det_ne)`. Establish `h2 : z c = ∑ k, (∑ b, z b * S.tan b k) * S.U⁻¹ k c`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `: ∀ b, ∑ k, z b * S.tan b k * S.U⁻¹ k c = z b * (S.U * S.U⁻¹) b c`.
+
+Introduce `b`. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by simp [Sys.U, mul_assoc]`. Simplify using `only [this, h1, Matrix.one_apply]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h2]`. Conclude with `mm_sum fun k _ => mm_mul_int (h k) (inv_int S.U S.U_int S.unimod k c)`.
+-/
 theorem mm_of_tan {d : ℕ} {I J : Type} [Fintype I] [Fintype J] {G : Cart V d I J} (S : Sys G)
     (z : I → C) (h : ∀ k, V.MM (∑ c, z c * S.tan c k)) (c : I) : V.MM (z c) := by
   have h1 : S.U * S.U⁻¹ = 1 := Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr S.U_det_ne)
@@ -105,6 +146,31 @@ theorem mm_of_tan {d : ℕ} {I J : Type} [Fintype I] [Fintype J] {G : Cart V d I
   rw [h2]
   exact mm_sum fun k _ => mm_mul_int (h k) (inv_int S.U S.U_int S.unimod k c)
 
+/- English proof (translation)
+Introduce `C _ V d _ I J _ _ X hA g a hbig i S Z D hD s hs m y hy hyi N x hx hxi hker`. Use `set F : Finset (I g) := Finset.univ.filter (fun c => D.lev c = s) with hF`. Establish `hFm : ∀ c, c ∈ F ↔ D.lev c = s` using `fun c => by simp [hF]`. Establish `hDi : D.i = i` using `hD.2.2.1`. Establish `hDl : D.l = V.l` using `hD.2.1`.
+
+Establish `hDv : D.v = V.v` using `hD.1`. Establish `hgood : ∀ c ∈ F, D.good c` using `fun c hc => D.pure_good c (by rw [(hFm c).1 hc, hDi]; omega)`. Set `w : Fin N → I g → C` to `fun ν c => ∑ δ, x ν δ * y δ c`. Establish `hw : ∀ ν c, V.Ge 0 (w ν c)` using `fun ν c => VF.Ge.sum fun δ _ => (hx ν δ).mul_int (hy δ c)`. Establish `hG : ∀ c ∈ F, (X.G g).Good (a + ((2 * s : ℕ) : ZMod d)) (S.tan c) (S.cur c)`.
+
+Introduce `c hc`. Establish `h1` using `hD.good (hgood c hc)`. Rewrite `h1` using `[hD.2.2.2.2 c (by rw [(hFm c).1 hc]; omega), (hFm c).1 hc]`. Then use the resulting hypothesis. Establish `hal : ∀ c ∈ F, ∀ e, V.Ge 0 ((V.l : C) * D.al c 2 e)` using `fun c hc e => hDl ▸ hD.l_mul_al_two_int (hgood c hc) e`. Establish `key` using `X.R1 hA g _ (big_add X hA g a hbig s) N (fun ν => ∑ c ∈ F, w ν c • S.tan c) (fun ν => ∑ c ∈ F, teich V.l (w ν c) (S.cur c)) (fun ν => Cart.Good.comb F (fun c _ => hw ν c) hG) ?_ ?_`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `ν k`. Rewrite using `[Cart.scaledSecond_sum]`. Establish `e1 : ∑ c ∈ F, w ν c ^ (V.l ^ 2) * (X.G g).V2 (S.cur c) k = ∑ e, (∑ c ∈ F, w ν c ^ (V.l ^ 2) * ((V.l : C) * D.al c 2 e)) * S.tan e k`. Simplify using `only [Finset.sum_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `h1` using `hD.2.2.2.1 c 2 k (by norm_num)`. Simplify using `only [Sys.al, Sys.cur_zero_inl] at h1`. Simplify using `only [Cart.V2, h1, Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun e _ => by ring`. Rewrite using `[e1]`. Use `mm_sum fun e _ => mm_mul_int ?_ (tan_int S e k)` and prove the remaining obligations. Distinguish the cases in `he : D.lev e = s + 1`. Establish `h1` using `hker ν e he`.
+
+Establish `h2 : V.MM (∑ c ∈ F, (w ν c ^ (V.l ^ 2) - ∑ δ, (x ν δ * y δ c) ^ (V.l ^ 2)) * ((V.l : C) * D.al c 2 e))` using `mm_sum fun c hc => mm_mul_int (sum_pow_congr (fun δ _ => (hx ν δ).mul_int (hy δ c)) 2) (hal c hc e)`. Establish `e2 : ∑ δ, x ν δ ^ (V.l ^ 2) * ∑ c ∈ F, (V.l : C) * D.al c 2 e * y δ c ^ (V.l ^ 2) = ∑ c ∈ F, (∑ δ, (x ν δ * y δ c) ^ (V.l ^ 2)) * ((V.l : C) * D.al c 2 e)`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun δ _ => by`.
+
+Rewrite using `[mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `mm_add h1 h2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[e2, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun c _ => by ring`.
+
+Use `mm_sum fun c hc => int_mul_mm ((hw ν c).pow _) ?_` and prove the remaining obligations. Establish `hc'` using `(hFm c).1 hc`. Rewrite using `[D.al_two c (by rw [hc', hDi]; omega) e, D.g_supp c (by rw [hc', hDi]; omega) e (by rw [hc']; exact he), hDl, zero_add, mul_inv_cancel_left₀ VF.l_ne_zero]`. Use `mm_mul_int mm_l ?_` and prove the remaining obligations. Use `D.lam_int c e` as an intermediate fact.
+
+Rewrite `this` using `[hDv]`. Simplify `this` using `[VF.Ge]`. Introduce `co hco hmm`. Use `hxi co hco (hyi (fun δ => ∑ ν, co ν * x ν δ) (fun δ => VF.Ge.sum fun ν _ => (hco ν).mul_int (hx ν δ)) ?_)` and prove the remaining obligations. Use `mm_of_tan S _ fun k => ?_` and prove the remaining obligations.
+
+Use `hmm k using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Simplify using `only [hF, Finset.sum_filter, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hc : D.lev c = s`. Simplify using `only [hc, if_true, w, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun ν _ => Finset.sum_congr rfl fun δ _ => by ring`. Simplify using `[hc]`.
+-/
 theorem rank_le : ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [NeZero d] (I J : Fin 2 → Type) [∀ g, Fintype (I g)] [∀ g, Fintype (J g)] (X : RowData C V d I J), X.Alt → ∀ (g : Fin 2) (a : ZMod d), X.big g a → ∀ (i : ℕ) (S : Sys (X.G g)) (Z : Type) (D : Formalism.BaseCaseIdentities.Data C Z (I g)), Adapted S D a i → ∀ s : ℕ, s + 1 < Formalism.BaseCaseIdentities.Kn i → ∀ (m : ℕ) (y : Fin m → I g → C), (∀ δ c, V.Ge 0 (y δ c)) → IndepMod V (fun δ c => if D.lev c = s then y δ c else 0) → ∀ (N : ℕ) (x : Fin N → Fin m → C), (∀ ν δ, V.Ge 0 (x ν δ)) → IndepMod V x → (∀ ν e, D.lev e = s + 1 → V.MM (∑ δ, x ν δ ^ (V.l ^ 2) * ∑ c ∈ Finset.univ.filter (fun c => D.lev c = s), (V.l : C) * D.al c 2 e * y δ c ^ (V.l ^ 2))) → N ≤ X.j' := by
   intro C _ V d _ I J _ _ X hA g a hbig i S Z D hD s hs m y hy hyi N x hx hxi hker
   set F : Finset (I g) := Finset.univ.filter (fun c => D.lev c = s) with hF

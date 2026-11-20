@@ -12,6 +12,9 @@ variable {C : Type u} [Category.{v} C] {U : C} {A : Type w} [Category.{max u v} 
 
 abbrev zObj (P : (Over U)ᵒᵖ ⥤ A) (X : C) : A := ∐ (fun s : X ⟶ U => P.obj (op (Over.mk s)))
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `: a = a'` using `Over.OverMorphism.ext ha`. Rewrite using `[this]`.
+-/
 lemma zι_eq (P : (Over U)ᵒᵖ ⥤ A) {Y : C} {V : Over U} {t t' : Y ⟶ U} (h : t = t')
     (a : Over.mk t ⟶ V) (a' : Over.mk t' ⟶ V) (ha : a.left = a'.left) :
     P.map a.op ≫ Sigma.ι (fun s : Y ⟶ U => P.obj (op (Over.mk s))) t =
@@ -25,12 +28,18 @@ def zMap (P : (Over U)ᵒᵖ ⥤ A) {X Y : C} (g : Y ⟶ X) : zObj P X ⟶ zObj 
     Sigma.ι (fun s : Y ⟶ U => P.obj (op (Over.mk s))) (g ≫ s)
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Simplify using `[zMap]`.
+-/
 lemma ι_zMap (P : (Over U)ᵒᵖ ⥤ A) {X Y : C} (g : Y ⟶ X) (s : X ⟶ U) :
     Sigma.ι (fun s : X ⟶ U => P.obj (op (Over.mk s))) s ≫ zMap P g =
       P.map (Over.homMk g rfl : Over.mk (g ≫ s) ⟶ Over.mk s).op ≫
         Sigma.ι (fun s : Y ⟶ U => P.obj (op (Over.mk s))) (g ≫ s) := by
   simp [zMap]
 
+/- English proof (translation)
+Apply `Sigma.hom_ext` to reduce the goal to its premises. Introduce `s`. Rewrite using `[ι_zMap, Category.comp_id]`. Rewrite using `[zι_eq P (Category.id_comp s) (Over.homMk (𝟙 X) rfl : Over.mk (𝟙 _ ≫ s) ⟶ Over.mk s) (𝟙 (Over.mk s)) (by simp)]`. Simplify using the standard rewrite rules.
+-/
 lemma zMap_id (P : (Over U)ᵒᵖ ⥤ A) (X : C) : zMap P (𝟙 X) = 𝟙 _ := by
   apply Sigma.hom_ext; intro s
   rw [ι_zMap, Category.comp_id]
@@ -38,6 +47,9 @@ lemma zMap_id (P : (Over U)ᵒᵖ ⥤ A) (X : C) : zMap P (𝟙 X) = 𝟙 _ := b
       (𝟙 (Over.mk s)) (by simp)]
   simp
 
+/- English proof (translation)
+Apply `Sigma.hom_ext` to reduce the goal to its premises. Introduce `s`. Rewrite using `[ι_zMap, ι_zMap_assoc, ι_zMap, ← P.map_comp_assoc, ← op_comp]`. Conclude with `zι_eq P (Category.assoc _ _ _) _ _ (by simp)`.
+-/
 lemma zMap_comp (P : (Over U)ᵒᵖ ⥤ A) {X Y Z : C} (f : Z ⟶ Y) (g : Y ⟶ X) :
     zMap P (f ≫ g) = zMap P g ≫ zMap P f := by
   apply Sigma.hom_ext; intro s
@@ -54,6 +66,9 @@ def zNatApp {P Q : (Over U)ᵒᵖ ⥤ A} (φ : P ⟶ Q) (X : C) : zObj P X ⟶ z
   Sigma.desc fun s => φ.app (op (Over.mk s)) ≫ Sigma.ι (fun s : X ⟶ U => Q.obj (op (Over.mk s))) s
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Simplify using `[zNatApp]`.
+-/
 lemma ι_zNatApp {P Q : (Over U)ᵒᵖ ⥤ A} (φ : P ⟶ Q) (X : C) (s : X ⟶ U) :
     Sigma.ι (fun s : X ⟶ U => P.obj (op (Over.mk s))) s ≫ zNatApp φ X =
       φ.app (op (Over.mk s)) ≫ Sigma.ι (fun s : X ⟶ U => Q.obj (op (Over.mk s))) s := by
@@ -85,6 +100,9 @@ def zCoApp (Q : Cᵒᵖ ⥤ A) (X : C) : zObj ((Over.forget U).op ⋙ Q) X ⟶ Q
   Sigma.desc fun _ => 𝟙 (Q.obj (op X))
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Unfold `zCoApp`. Use `erw [colimit.ι_desc]`. Both sides reduce to the same expression.
+-/
 lemma ι_zCoApp (Q : Cᵒᵖ ⥤ A) (X : C) (s : X ⟶ U) :
     Sigma.ι (fun s : X ⟶ U => ((Over.forget U).op ⋙ Q).obj (op (Over.mk s))) s ≫ zCoApp Q X = 𝟙 _ := by
   unfold zCoApp; erw [colimit.ι_desc]; rfl
@@ -141,10 +159,16 @@ def zAdj : (zFun : ((Over U)ᵒᵖ ⥤ A) ⥤ (Cᵒᵖ ⥤ A)) ⊣ (Functor.whis
           zCoApp Q V.unop.left = 𝟙 _
         erw [ι_zCoApp]; all_goals rfl }
 
+/- English proof (translation)
+Apply `Sigma.hom_ext` to reduce the goal to its premises. Introduce `s`. Rewrite using `[ι_zNatApp]`. Simplify using the standard rewrite rules.
+-/
 lemma zNatApp_eq_map {P Q : (Over U)ᵒᵖ ⥤ A} (φ : P ⟶ Q) (X : C) :
     zNatApp φ X = Limits.Sigma.map fun s : X ⟶ U => φ.app (op (Over.mk s)) := by
   apply Sigma.hom_ext; intro s; rw [ι_zNatApp]; simp
 
+/- English proof (translation)
+Set `q : Discrete.functor f ⟶ Discrete.functor g` to `Discrete.natTrans (fun j => p j.as)`. Establish `: ∀ j, Mono (q.app j)` using `fun j => (inferInstance : Mono (p j.as))`. Establish `: Mono q` using `NatTrans.mono_of_mono_app _`. Use `preservesMonomorphisms_of_preservesLimitsOfShape (colim : (Discrete T ⥤ A) ⥤ A)` as an intermediate fact. Conclude with `(colim : (Discrete T ⥤ A) ⥤ A).map_mono q`.
+-/
 lemma sigmaMap_mono [HasFiniteLimits A] {T : Type v} [HasExactColimitsOfShape (Discrete T) A] {f g : T → A}
     (p : ∀ j, f j ⟶ g j) [∀ j, Mono (p j)] : Mono (Limits.Sigma.map p) := by
   let q : Discrete.functor f ⟶ Discrete.functor g := Discrete.natTrans (fun j => p j.as)
@@ -184,6 +208,9 @@ end LateralTheory.KummerTheory.ForgetInjPf
 namespace LateralTheory.KummerTheory
 
 open LateralTheory.KummerTheory.ForgetInjPf in
+/- English proof (translation)
+Introduce `R _ F _ S`. Use `⟨((Scheme.etaleTopology.overPullback (ModuleCat.{1} (ULift.{1} R)) S).obj F).2, ?_⟩` and prove the remaining obligations. Use `Functor.preservesInjectiveObjects_of_adjunction_of_preservesMonomorphisms (sheafZAdj (A := ModuleCat.{1} (ULift.{1} R)) Scheme.etaleTopology S)` as an intermediate fact. Conclude with `inferInstanceAs (Injective ((Scheme.etaleTopology.overPullback (ModuleCat.{1} (ULift.{1} R)) S).obj F))`.
+-/
 theorem ForgetInj_of : ForgetInj := by
   intro R _ F _ S
   refine ⟨((Scheme.etaleTopology.overPullback (ModuleCat.{1} (ULift.{1} R)) S).obj F).2, ?_⟩

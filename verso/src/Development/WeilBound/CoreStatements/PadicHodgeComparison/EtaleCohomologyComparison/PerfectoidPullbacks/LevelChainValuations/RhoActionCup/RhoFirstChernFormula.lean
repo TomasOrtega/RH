@@ -40,6 +40,9 @@ variable (S : LevSys (per l K)) (hS : S.Good) (hC : ∀ m, (S.L m).CrisOK)
 
 variable [FiniteDimensional ℚ_[l] K]
 
+/- English proof (translation)
+Take `⟨U⟩` from `cov_sm_pf M hM`. Use `⟨Finset.univ.sup U.d + (m + 1), fun s hs => ?_⟩` and prove the remaining obligations. Use `chain_good (hS.lev m) M s hM U (fun α => ?_) (by omega) _ (rHof_tr_gen _ _ M s)` and prove the remaining obligations. Use `Finset.le_sup (f := U.d) (Finset.mem_univ α)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem chK_good (M : Model l K) (hM : M.Sm) (m : ℕ) :
     ∃ s₁, ∀ s, s₁ ≤ s → (chK S hS hC M m s).Good := by
   obtain ⟨U⟩ := cov_sm_pf M hM
@@ -48,6 +51,11 @@ theorem chK_good (M : Model l K) (hM : M.Sm) (m : ℕ) :
   have := Finset.le_sup (f := U.d) (Finset.mem_univ α)
   omega
 
+/- English proof (translation)
+Establish `H` using `GlobalTheory.T.realization_functorial (chK S hS hC M m s') (chK S hS hC M m s) (homS (hS.lev m) M h (qb_le (hS.lev m) M s) (qb_le (hS.lev m) M s') (rHof (dOf S hS hC m) (hcOf S hS hC m) M s) (rHof (dOf S hS hC m) (hcOf S hS hC m) M s')) hG' hG (homS_good_of_inclHM _ _ _ _ _ _ _ ( …`. Establish `e : (homS (hS.lev m) M h (qb_le (hS.lev m) M s) (qb_le (hS.lev m) M s') (rHof (dOf S hS hC m) (hcOf S hS hC m) M s) (rHof (dOf S hS hC m) (hcOf S hS hC m) M s')).tr j f = f`. Use extensionality with `φ`. Both sides reduce to the same expression. Rewrite `H` using `[e]`.
+
+Conclude with `H`.
+-/
 theorem rho_mono (M : Model l K) (m : ℕ) {s s' : ℕ} (h : s ≤ s') (hG : (chK S hS hC M m s).Good)
     (hG' : (chK S hS hC M m s').Good) {j : ℕ} (x : ∀ n, M.Hc false n j) (f : Module.Dual K (HdR M.q j) →+ (S.L m).B)
     (hf : (chK S hS hC M m s').Rho x f) : (chK S hS hC M m s).Rho x f := by
@@ -62,6 +70,9 @@ theorem rho_mono (M : Model l K) (m : ℕ) {s s' : ℕ} (h : s ≤ s') (hG : (ch
   rw [e] at H
   exact H
 
+/- English proof (translation)
+Introduce `M a hM j m x f f' ⟨_, s₀, h⟩ ⟨_, s₀', h'⟩`. Take `⟨s₁, hg⟩` from `chK_good S hS hC M hM m`. Conclude with `GlobalTheory.T.realization_unique (chK S hS hC M m (max s₁ (max s₀ s₀'))) (hg _ (le_max_left _ _)) _ f f' (h _ (le_trans (le_max_left _ _) (le_max_right _ _))) (h' _ (le_trans (le_max_right _ _) (le_max_right _ _)))`.
+-/
 theorem rho_uniq_pf : ∀ {M : Model l K} (a : (dat Amp).Ch M), M.Sm → ∀ j m x f f',
     rhoK S hS hC a j m x f → rhoK S hS hC a j m x f' → f = f' := by
   intro M a hM j m x f f' ⟨_, s₀, h⟩ ⟨_, s₀', h'⟩
@@ -69,6 +80,11 @@ theorem rho_uniq_pf : ∀ {M : Model l K} (a : (dat Amp).Ch M), M.Sm → ∀ j m
   exact GlobalTheory.T.realization_unique (chK S hS hC M m (max s₁ (max s₀ s₀'))) (hg _ (le_max_left _ _)) _ f f'
     (h _ (le_trans (le_max_left _ _) (le_max_right _ _))) (h' _ (le_trans (le_max_right _ _) (le_max_right _ _)))
 
+/- English proof (translation)
+Introduce `M a hM j m x`. Take `⟨s₁, hg⟩` from `chK_good S hS hC M hM m`. Take `⟨f, hf⟩` from `GlobalTheory.T.exists_realization_of_compatible (chK S hS hC M m s₁) (hg s₁ le_rfl) (show (M.HS false j).lim from x).1 (fun n => (show (M.HS false j).lim from x).2 n)`. Use `⟨f, hM, s₁, fun s hs => ?_⟩` and prove the remaining obligations. Take `⟨g, hgs⟩` from `GlobalTheory.T.exists_realization_of_compatible (chK S hS hC M m s) (hg s hs) (show (M.HS false j).lim from x).1 (fun n => (show (M.HS false j).lim from x).2 n)`.
+
+Establish `e : g = f` using `GlobalTheory.T.realization_unique _ (hg s₁ le_rfl) _ g f (rho_mono S hS hC M m hs (hg s₁ le_rfl) (hg s hs) _ g hgs) hf`. Rewrite `hgs` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem rho_ex_pf : ∀ {M : Model l K} (a : (dat Amp).Ch M), M.Sm → ∀ j m x, ∃ f, rhoK S hS hC a j m x f := by
   intro M a hM j m x
   obtain ⟨s₁, hg⟩ := chK_good S hS hC M hM m
@@ -80,22 +96,36 @@ theorem rho_ex_pf : ∀ {M : Model l K} (a : (dat Amp).Ch M), M.Sm → ∀ j m x
   have e : g = f := GlobalTheory.T.realization_unique _ (hg s₁ le_rfl) _ g f (rho_mono S hS hC M m hs (hg s₁ le_rfl) (hg s hs) _ g hgs) hf
   rwa [e] at hgs
 
+/- English proof (translation)
+Introduce `M a hM j m x y f g ⟨_, s₀, h⟩ ⟨_, s₀', h'⟩`. Conclude with `⟨hM, max s₀ s₀', fun s hs => GlobalTheory.T.realization_add (chK S hS hC M m s) _ _ f g (h s (le_trans (le_max_left _ _) hs)) (h' s (le_trans (le_max_right _ _) hs))⟩`.
+-/
 theorem rho_add_pf : ∀ {M : Model l K} (a : (dat Amp).Ch M), M.Sm → ∀ j m x y f g,
     rhoK S hS hC a j m x f → rhoK S hS hC a j m y g → rhoK S hS hC a j m (x + y) (f + g) := by
   intro M a hM j m x y f g ⟨_, s₀, h⟩ ⟨_, s₀', h'⟩
   exact ⟨hM, max s₀ s₀', fun s hs => GlobalTheory.T.realization_add (chK S hS hC M m s) _ _ f g
     (h s (le_trans (le_max_left _ _) hs)) (h' s (le_trans (le_max_right _ _) hs))⟩
 
+/- English proof (translation)
+Introduce `M a hM j m c x f ⟨_, s₀, h⟩`. Conclude with `⟨hM, s₀, fun s hs => GlobalTheory.T.realization_smul (chK S hS hC M m s) c _ f (h s hs)⟩`.
+-/
 theorem rho_smul_pf : ∀ {M : Model l K} (a : (dat Amp).Ch M), M.Sm → ∀ j m (c : (per l K).A) x f, rhoK S hS hC a j m x f →
     rhoK S hS hC a j m (c • x) ((AddMonoidHom.mulLeft ((S.L m).ι ((S.L m).lam c))).comp f) := by
   intro M a hM j m c x f ⟨_, s₀, h⟩
   exact ⟨hM, s₀, fun s hs => GlobalTheory.T.realization_smul (chK S hS hC M m s) c _ f (h s hs)⟩
 
+/- English proof (translation)
+Introduce `M a hM j m x f ⟨_, s₀, h⟩ k φ`. Conclude with `(h s₀ le_rfl).1 k φ`.
+-/
 theorem rho_lin'_pf : ∀ {M : Model l K} (a : (dat Amp).Ch M), M.Sm → ∀ j m x f, rhoK S hS hC a j m x f →
     ∀ (k : K) φ, f (k • φ) = algebraMap K (S.L m).B k * f φ := by
   intro M a hM j m x f ⟨_, s₀, h⟩ k φ
   exact (h s₀ le_rfl).1 k φ
 
+/- English proof (translation)
+Introduce `M a hM j m x f ⟨_, s₀, h⟩ n r hnm hfil φ hφ`. Take `⟨U⟩` from `cov_sm_pf M hM`. Establish `hU : ∀ α, U.d α + (m + 1) ≤ max s₀ (Finset.univ.sup U.d + (m + 1))` using `fun α => by`. Use `Finset.le_sup (f := U.d) (Finset.mem_univ α)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `fil_lev_pf (hS.lev m) (dOf S hS hC m) (hcOf S hS hC m) M _ hM U hU (by omega) _ (fun n => (show (M.HS false j).lim from x).2 n) f (h _ (le_max_left _ _)) n r (by omega) hfil φ hφ`.
+-/
 theorem rho_fil_pf : ∀ {M : Model l K} (a : (dat Amp).Ch M), M.Sm → ∀ j m x f, rhoK S hS hC a j m x f → ∀ n r : ℕ, n ≤ m →
     (dat Amp).fil a j n x → ∀ φ : Module.Dual K (HdR M.q j), (∀ h ∈ FilR M.q j (r + 1), φ h = 0) →
       f φ ∈ pdP (S.L m).γB (n - r) := by
@@ -107,6 +137,11 @@ theorem rho_fil_pf : ∀ {M : Model l K} (a : (dat Amp).Ch M), M.Sm → ∀ j m 
   exact fil_lev_pf (hS.lev m) (dOf S hS hC m) (hcOf S hS hC m) M _ hM U hU (by omega) _
     (fun n => (show (M.HS false j).lim from x).2 n) f (h _ (le_max_left _ _)) n r (by omega) hfil φ hφ
 
+/- English proof (translation)
+Introduce `M a hM m x f c ⟨_, s₀, h⟩ hx hc φ`. Take `⟨U⟩` from `cov_sm_pf M hM`. Take `⟨s₁, hg⟩` from `chK_good S hS hC M hM m`. Establish `hU : ∀ α, U.d α + (m + 1) ≤ max (max s₀ s₁) (Finset.univ.sup U.d + (m + 1))` using `fun α => by`. Use `Finset.le_sup (f := U.d) (Finset.mem_univ α)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `H` using `crystalline_firstChern_level (hS.lev m) (dOf S hS hC m) (hcOf S hS hC m) M _ hM U hU (by omega) a x hx c hc`. Establish `e` using `GlobalTheory.T.realization_unique (chK S hS hC M m _) (hg _ (by omega)) _ f (evB M c) (h _ (by omega)) H`. Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 theorem rho_firstChern_formula : ∀ {M : Model l K} (a : (dat Amp).Ch M), M.Sm → ∀ m x f c, rhoK S hS hC a 2 m x f → (dat Amp).c1H a x →
     IsFirstChernDeRham _ (lineK a.1) c → ∀ φ, f φ = algebraMap K (S.L m).B (φ c) := by
   intro M a hM m x f c ⟨_, s₀, h⟩ hx hc φ

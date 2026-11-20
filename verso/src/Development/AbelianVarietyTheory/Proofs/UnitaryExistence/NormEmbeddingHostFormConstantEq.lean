@@ -34,6 +34,11 @@ open GlobalTheory.RecDict
 
 namespace GlobalTheory.ExtCore
 
+/- English proof (translation)
+Unfold `xiR`. Establish `hs : ∀ σ : D.host.E →+* ℂ, ‖σ D.host.sqrtMinusD‖ ^ 2 = ‖(D.host.d : ℂ)‖` using `fun σ => by`. Rewrite using `[← norm_pow, sq_emb, norm_neg]`. Establish `hn : ‖τ D.host.sqrtMinusD‖ = ‖D.host.φ₀ D.host.sqrtMinusD‖` using `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 ((hs τ).trans (hs _).symm)`. Rewrite using `[show D.host.xi0 = -1 / ((Ideal.absNorm D.host.ccK : D.host.E) * D.host.sqrtMinusD) from rfl]`.
+
+Simplify using `only [map_div₀, map_neg, map_one, map_mul, map_natCast, norm_div, norm_neg, norm_one, norm_mul, hn]`.
+-/
 theorem norm_embedding_hostFormConstant_eq (D : D7) (τ : D.host.E →+* ℂ) : ‖τ D.host.xi0‖ = xiR D := by
   unfold xiR
   have hs : ∀ σ : D.host.E →+* ℂ, ‖σ D.host.sqrtMinusD‖ ^ 2 = ‖(D.host.d : ℂ)‖ := fun σ => by
@@ -43,6 +48,9 @@ theorem norm_embedding_hostFormConstant_eq (D : D7) (τ : D.host.E →+* ℂ) : 
   rw [show D.host.xi0 = -1 / ((Ideal.absNorm D.host.ccK : D.host.E) * D.host.sqrtMinusD) from rfl]
   simp only [map_div₀, map_neg, map_one, map_mul, map_natCast, norm_div, norm_neg, norm_one, norm_mul, hn]
 
+/- English proof (translation)
+Unfold `IsDetRoot at *`. Rewrite using `[Units.val_mul, (matHom V).map_mul, Units.val_mul, Matrix.det_mul, RingHom.map_mul]`. Use `conv_lhs => rw [hx, hx']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isDetRoot_mul {D : D7} (V : HSp D) (g g' : GA D V) (x x' : (AE D)ˣ) (hx : IsDetRoot V g x)
     (hx' : IsDetRoot V g' x') : IsDetRoot V (g * g') (x * x') := by
   unfold IsDetRoot at *
@@ -50,12 +58,22 @@ theorem isDetRoot_mul {D : D7} (V : HSp D) (g g' : GA D V) (x x' : (AE D)ˣ) (hx
   conv_lhs => rw [hx, hx']
   ring
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `h.1 g`. Take `⟨x', hx'⟩` from `h.1 g'`. Rewrite using `[h.2 _ _ (isDetRoot_mul V g g' x x' hx hx'), h.2 _ _ hx, h.2 _ _ hx', map_mul, Circle.coe_mul]`.
+-/
 theorem muVal_mul {D : D7} {V : HSp D} {χ : (AE D)ˣ →* Circle} {mu : GA D V → ℂ} (h : MuVal V χ mu)
     (g g' : GA D V) : mu (g * g') = mu g * mu g' := by
   obtain ⟨x, hx⟩ := h.1 g
   obtain ⟨x', hx'⟩ := h.1 g'
   rw [h.2 _ _ (isDetRoot_mul V g g' x x' hx hx'), h.2 _ _ hx, h.2 _ _ hx', map_mul, Circle.coe_mul]
 
+/- English proof (translation)
+Distinguish the cases in `hj : InR D j`. Take `⟨io, h1, h2, -, -, -, h3⟩` from `GlobalTheory.RecDict.exists_latEmb_sign_one D Q hQ j hj`. Use `⟨LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast (D.sp.W_rank j hj.1 hj.2).symm) ∘ₗ io, fun hj' => ?_⟩` and prove the remaining obligations. Establish `he : LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast (D.sp.W_rank j hj'.1 hj'.2)) ∘ₗ (LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast (D.sp.W_rank j hj.1 hj.2).symm) ∘ₗ io) = io`. Use extensionality with `x i`.
+
+Both sides reduce to the same expression. Introduce `io'`. Establish `: io' = io` using `he`. Rewrite using `[this]`. Conclude with `⟨h1, h2, h3⟩`.
+
+Conclude with `⟨0, fun h => absurd h hj⟩`.
+-/
 theorem exists_latEmb (D : D7) (Q : Par D) (hQ : Q.Pins) (j : ℕ) :
     ∃ ι₀ : (Q.Dw j).La →ₗ[𝓞 D.host.E] (Fin D.R.r → D.host.E), ∀ hj : InR D j,
       let io := LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast (D.sp.W_rank j hj.1 hj.2)) ∘ₗ ι₀
@@ -78,6 +96,21 @@ theorem exists_latEmb (D : D7) (Q : Par D) (hQ : Q.Pins) (j : ℕ) :
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hI hA hC hTh hL hL2 hH D Q hQ hpq hV chiW mu hmu`. Establish `hB` using `hL.secBaseChange`. Establish `hT` using `hL2.secTwist`. Establish `h0 : GoodEmb Q.c Q.c.F.val.toRingHom` using `rfl`. Establish `h1 : InR D 1` using `⟨le_rfl, by have := D.R.two_le_m; omega⟩`.
+
+Take `⟨hgood, -, -⟩` from `GlobalTheory.RecDict.level_good_and_sign D Q hQ`. Take `⟨pb, hpb⟩` from `GlobalTheory.LevelHalf.half_eq_prod D Q hQ`. Use `choose ι hι using exists_latEmb D Q hQ`. Use `choose Kf hKf _hKf' using fun j => GlobalTheory.RecDict.exists_isLevelK D (D.sp.W j) (D.host.g 0 * D.host.g 1)`. Establish `hpk` using `fun j (hj : InR D j) σ (hσ : GoodEmb Q.c σ) => GlobalTheory.T.lattice_embedding_trace_form hI hA hC hTh hL hL2 hH D Q hQ hpq j hj σ hσ _ (hι j hj).1 (hι j hj).2.2 (Kf j) (hKf j)`.
+
+Establish `hne : Nonempty (Data D.host.E D.R.r)`. Take `⟨U, dict, -⟩` from `hpk 1 h1 _ h0`. Conclude with `⟨U.X (dict 1).1⟩`. Establish `hall : ∀ j (σ : Q.c.F →+* ℂ), ∃ (U : Unf (Q.Xo j) Q.c σ D.R.r) (dict : GA D (D.sp.W j) → Σ k, Frame (U.X k).Ψ D.R.r) (x₀ : (D.host.E →+* ℂ) → Matrix (Fin D.R.r) (Fin D.R.r) ℂ), ∀ hj : InR D j, GoodEmb Q.c σ → ∃ th : ∀ k, (U.X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ), IsU …`. Introduce `j σ`.
+
+Distinguish the cases in `h : InR D j ∧ GoodEmb Q.c σ`. Take `⟨U, dict, x₀, h'⟩` from `hpk j h.1 σ h.2`. Conclude with `⟨U, dict, x₀, fun _ _ => h'⟩`. Take `⟨U, ⟨p⟩⟩` from `GlobalTheory.exists_unf_nonempty_frame hC hT D Q hpq hne j σ`. Conclude with `⟨U, fun _ => p, fun _ => 1, fun hj hσ => absurd ⟨hj, hσ⟩ h⟩`.
+
+Use `choose U dict x₀ th hunf hchi hth hdict hunit hloc hmod hlatZ hcu hexpo hpin using hall`. Establish `hmuU : ∀ j, InR D j → ∀ σ, GoodEmb Q.c σ → MuUnit (D.sp.W j) (dict j σ) (mu j σ)` using `fun j hj σ hσ => ⟨muVal_mul (hmu j hj σ hσ).1, (hmu j hj σ hσ).1.norm, (hmu j hj σ hσ).2.1, hunit j σ hj hσ⟩`. Establish `hsup : ∀ j, InR D j → SupDef (Q.Xo j) Q.c (U j)` using `fun j hj => supDef_of _ _ _ fun a n _ σ hσ f hf hz => (GlobalTheory.reading_linearIndependent_and_injective hB _ _ _ _ (Q.Xo j) Q.c σ _ (Formalism.L2.PjFree.Unf.ofPj (U j σ)) ((Formalism.L2.PjFree.isUnf_ofPj _).2 (hunf j σ hj hσ)) a n).2 f ((mem_cusp _ _ _ _ _ _).1 hf).1 hz`. Establish `hsq` using `fun j (hj : InR D j) σ (hσ : GoodEmb Q.c σ) => GlobalTheory.CuspSqInt.cusp_l2_and_definite D _ _ _ (Q.Xo j) Q.c _ (U j) σ (D.sp.W j) (dict j σ) (mu j σ) (Kf j) (th j σ hj hσ) _ hV (D.sp.W_sig j) hσ (hchi j σ hj hσ) (hdict j σ hj hσ) (hmuU j hj σ hσ) (hmu j hj σ hσ).2.2.1 (hloc j …`. Establish `halg` using `fun j => GlobalTheory.Frames.algebraic_laws hB _ _ _ _ (Q.Xo j) Q.c`.
+
+Set `T : CoreJ D` to `{ Q := Q, U := U, V := fun j _ => D.sp.W j, dict := dict, mu := mu, Kf := fun j _ => Kf j, pb := pb, cE := fun _ _ _ => 1, chiW := chiW, x₀ := x₀, iota := ι }`. Establish `hM : LawsM T.toCore` using `{ pins := hQ half := hpb evalWD := fun j _ => (halg j).2.2.1 unf := fun j hj σ hσ => hunf j σ hj hσ unTest := fun j _ σ _ k x => haveI : IsReduced (CAt σ) := inferInstanceAs (IsReduced ℂ) GlobalTheory.Frames.allTest_of_secBaseChange hB _ _ _ _ (Q.Xo j) Q.c (CAt σ) ((U j σ).un k x …`. Use `⟨T, ?_, ?_, rfl, HEq.rfl⟩` and prove the remaining obligations. Conclude with `{ toLawsM := hM cUnit := fun _ _ _ _ _ => norm_one muVal := fun j hj σ hσ => (hmu j hj σ hσ).1 muConj := fun j hj σ hσ => (hmu j hj σ hσ).2.2.2 intAll := fun j _ => GlobalTheory.IntegralFrames.intAll hI hA hB hT _ _ _ _ (Q.Xo j) Q.c (hpq j) hgood modelW := fun j hj σ hσ => ⟨_, fu …`. Take `⟨g, e, F, ik, φ, h⟩` from `hpin j σ hj hσ`.
+
+Conclude with `⟨D.sp.W_rank j hj.1 hj.2, g, e, F, ik, φ, th j σ hj hσ, (hι j hj).1, (hι j hj).2.1, hth j σ hj hσ, h⟩ }`. Conclude with `{ toLawsM := hM cuspMul := fun j _ => cusp_mul_of_M5 siegelSpaceAlgebra_holds (U j) latZ := fun j hj => hlatZ j _ hj h0 cuNe := fun j hj => hcu j _ hj h0 expo := fun j hj => hexpo j _ hj h0 }`.
+-/
 theorem exists_coreJ : PartI → N1ab → N1c → ThetaUnifAV → Out.Laws → Out.Laws2 → GlobalTheory.Published.HasseNormSt → ∀ (D : D7) (Q : Par D), Q.Pins → (∀ j, 1 ≤ (Q.Dw j).p + (Q.Dw j).q) → VolTieG D → ∀ (chiW : ℕ → (Q.c.F →+* ℂ) → (AE D)ˣ →* Circle) (mu : ∀ j, (Q.c.F →+* ℂ) → GA D (D.sp.W j) → ℂ), (∀ j, InR D j → ∀ σ, GoodEmb Q.c σ → MuVal (D.sp.W j) (chiW j σ) (mu j σ) ∧ (∀ γ ∈ GQ (D.sp.W j), mu j σ γ = 1) ∧ Continuous (mu j σ) ∧ MuConj Q.c.F.val.toRingHom σ (chiW j Q.c.F.val.toRingHom) (chiW j σ)) → ∃ T : CoreJ D, LawsJ T ∧ LawsCore T.toCore ∧ T.Q = Q ∧ HEq T.chiW chiW := by
   intro hI hA hC hTh hL hL2 hH D Q hQ hpq hV chiW mu hmu
   have hB := hL.secBaseChange

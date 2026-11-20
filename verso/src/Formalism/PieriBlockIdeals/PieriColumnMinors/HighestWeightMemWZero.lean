@@ -9,18 +9,32 @@ namespace Formalism.CohomologicalDescent.LR
 
 open Formalism.GradedWeylDivisibility Formalism.CohomologicalDescent.Symmetrization Formalism.CohomologicalDescent.BinaryFormsExample
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem formB_apply (p q w : ℕ) (lam2 : Fin q → ℕ) (x y : VQ p q w lam2) :
     formB p q w lam2 x y = fockQ (x : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ) y /
       fockQ (hw ℚ le_rfl (LD.blockWt p q w lam2)) (hw ℚ le_rfl (LD.blockWt p q w lam2)) := rfl
 
+/- English proof (translation)
+The claim follows from `(fockQPos _ (hw ℚ le_rfl ν) (hw ℚ le_rfl ν)).2 (hwNe ℚ r r le_rfl ν)`.
+-/
 theorem hw_norm_pos {r : ℕ} (ν : Fin r → ℕ) : 0 < fockQ (hw ℚ le_rfl ν) (hw ℚ le_rfl ν) :=
   (fockQPos _ (hw ℚ le_rfl ν) (hw ℚ le_rfl ν)).2 (hwNe ℚ r r le_rfl ν)
 
+/- English proof (translation)
+Introduce `p q w lam2 a b x y`. Use `show formB p q w lam2 (EV p q w lam2 a b x) y = formB p q w lam2 x (EV p q w lam2 b a y)`. Rewrite using `[formB_apply, formB_apply, EV_coe, EV_coe, fock_der]`.
+-/
 theorem real_contragredient : RealContra := by
   intro p q w lam2 a b x y
   show formB p q w lam2 (EV p q w lam2 a b x) y = formB p q w lam2 x (EV p q w lam2 b a y)
   rw [formB_apply, formB_apply, EV_coe, EV_coe, fock_der]
 
+/- English proof (translation)
+Introduce `p q w lam2 v hv`. Establish `h` using `hv v`. Rewrite `h` using `[formB_apply, div_eq_zero_iff]`. Break down `h with h | h` into its components or cases. Assume the negation of the conclusion as `hne`.
+
+Establish `hne' : (v : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ) ≠ 0` using `fun h0 => hne (Subtype.ext h0)`. Conclude with `absurd h (ne_of_gt ((fockQPos _ (v : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ) v).2 hne'))`. Conclude with `absurd h (ne_of_gt (hw_norm_pos _))`.
+-/
 theorem real_nondegenerate : RealNondeg := by
   intro p q w lam2 v hv
   have h := hv v
@@ -31,12 +45,25 @@ theorem real_nondegenerate : RealNondeg := by
     exact absurd h (ne_of_gt ((fockQPos _ (v : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ) v).2 hne'))
   · exact absurd h (ne_of_gt (hw_norm_pos _))
 
+/- English proof (translation)
+The claim follows from `finSumFinEquiv.surjective`.
+-/
 theorem idx_surj (p q : ℕ) : Function.Surjective (idx p q) := finSumFinEquiv.surjective
 
+/- English proof (translation)
+Rewrite using `[← rowDiv_one, lgraded_coeff_euler, lgraded_weight_rowW]`.
+-/
 theorem coeff_der_diag {r n : ℕ} (a : Fin r) (f : MvPolynomial (Fin r × Fin n) ℚ) (m : Fin r × Fin n →₀ ℕ) :
     coeff m (der r n a a f) = ((Finsupp.weight (rowW r n) m a : ℕ) : ℚ) * coeff m f := by
   rw [← rowDiv_one, lgraded_coeff_euler, lgraded_weight_rowW]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h a`. Use extensionality with `m`. Rewrite using `[coeff_der_diag, coeff_smul, smul_eq_mul]`. Distinguish the cases in `hm : coeff m f = 0`.
+
+Rewrite using `[hm, mul_zero, mul_zero]`. Rewrite using `[h hm]`. Introduce `h m hm`. Use function extensionality and compare the values at `a`. Establish `h1` using `congrArg (coeff m) (h a)`.
+
+Rewrite `h1` using `[coeff_der_diag, coeff_smul, smul_eq_mul]`. Conclude with `mul_right_cancel₀ hm h1` after adjusting the coercions.
+-/
 theorem der_diag_iff {r n : ℕ} (f : MvPolynomial (Fin r × Fin n) ℚ) (μ : Fin r → ℕ) :
     IsWeightedHomogeneous (rowW r n) f μ ↔ ∀ a, der r n a a f = (μ a : ℚ) • f := by
   constructor
@@ -52,12 +79,22 @@ theorem der_diag_iff {r n : ℕ} (f : MvPolynomial (Fin r × Fin n) ℚ) (μ : F
     rw [coeff_der_diag, coeff_smul, smul_eq_mul] at h1
     exact_mod_cast mul_right_cancel₀ hm h1
 
+/- English proof (translation)
+Simplify using `only [HidaSetting.wt, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Both sides reduce to the same expression.
+-/
 theorem mem_wt (p q w : ℕ) (lam2 : Fin q → ℕ) (v : VQ p q w lam2) (κ : Fin p ⊕ Fin q → ℤ) :
     v ∈ (rationalBlockModuleSetting p q w lam2).wt κ ↔ ∀ a, EV p q w lam2 a a v = (κ a : ℚ) • v := by
   simp only [HidaSetting.wt, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply,
     Module.End.one_apply, sub_eq_zero]
   rfl
 
+/- English proof (translation)
+Introduce `p q w lam2 v μ`. Rewrite using `[mem_wt, der_diag_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h a`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[EV_coe, h]`. Simplify using the standard rewrite rules. Introduce `h a`. Take `⟨a', rfl⟩` from `idx_surj p q a`. Establish `h1` using `congrArg Subtype.val (h a')`.
+
+Rewrite `h1` using `[EV_coe]`. Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+-/
 theorem real_weight : RealWeight := by
   intro p q w lam2 v μ
   rw [mem_wt, der_diag_iff]
@@ -73,19 +110,35 @@ theorem real_weight : RealWeight := by
     rw [h1]
     simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using `[rowNu, a.isLt]`.
+-/
 theorem rowNu_self {r : ℕ} (ν : Fin r → ℕ) : rowNu (r := r) ν = ν := by
   funext a
   simp [rowNu, a.isLt]
 
+/- English proof (translation)
+Establish `h` using `hwRowWeight ℚ r r le_rfl ν hν`. Rewrite `h` using `[rowNu_self]`. Then use the resulting hypothesis.
+-/
 theorem hw_rowHom {r : ℕ} (ν : Fin r → ℕ) (hν : Antitone ν) :
     IsWeightedHomogeneous (rowW r r) (hw ℚ le_rfl ν) ν := by
   have h := hwRowWeight ℚ r r le_rfl ν hν
   rwa [rowNu_self] at h
 
+/- English proof (translation)
+Rewrite using `[← rowDiv_one]`. Conclude with `hwRaise ℚ r r le_rfl ν a b 1 hab le_rfl`.
+-/
 theorem der_hw_raise {r : ℕ} (ν : Fin r → ℕ) (a b : Fin r) (hab : a < b) : der r r a b (hw ℚ le_rfl ν) = 0 := by
   rw [← rowDiv_one]
   exact hwRaise ℚ r r le_rfl ν a b 1 hab le_rfl
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hpos` using `(fockQPos _ (der r r b a (hw ℚ le_rfl ν)) (der r r b a (hw ℚ le_rfl ν))).2 hne`. Establish `hc` using `der_comm (n := r) a b b a (hw ℚ le_rfl ν)`. Simplify using `only [if_true, der_hw_raise ν a b hab, map_zero, sub_zero] at hc`. Establish `hd` using `(der_diag_iff _ _).1 (hw_rowHom ν hν)`.
+
+Rewrite `hpos` using `[fock_der, hc, hd a, hd b, he, sub_self]`. Establish `h0 : fockQ (hw ℚ le_rfl ν) (0 : MvPolynomial (Fin r × Fin r) ℚ) = 0`. Use `fock_smul_right (0 : ℚ) (hw ℚ le_rfl ν) (0 : MvPolynomial (Fin r × Fin r) ℚ)` as an intermediate fact. Simplify using `using this`. Rewrite `hpos` using `[h0]`.
+
+Conclude with `lt_irrefl _ hpos`.
+-/
 theorem der_hw_lower {r : ℕ} (ν : Fin r → ℕ) (hν : Antitone ν) (a b : Fin r) (hab : a < b) (he : ν a = ν b) :
     der r r b a (hw ℚ le_rfl ν) = 0 := by
   by_contra hne
@@ -103,6 +156,15 @@ theorem der_hw_lower {r : ℕ} (ν : Fin r → ℕ) (hν : Antitone ν) (a b : F
 def hwV (p q w : ℕ) (lam2 : Fin q → ℕ) (ha : Antitone lam2) (hb : ∀ b, lam2 b ≤ w) : VQ p q w lam2 :=
   ⟨hw ℚ le_rfl (LD.blockWt p q w lam2), hwMem ℚ _ _ le_rfl _ (LD.ld_blockWt_anti p q w lam2 ha hb)⟩
 
+/- English proof (translation)
+Establish `hanti` using `LD.ld_blockWt_anti p q w lam2 ha hb`. Rewrite using `[mem_orthogonal_frame_iff]`. Use `⟨fun α a => Subtype.ext ?_, fun α β => Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[EV_coe]`. Use `der_hw_raise _ _ _ ?_` and prove the remaining obligations.
+
+Use `show (Fin.castAdd q α) < (Fin.natAdd p a)`. Rewrite using `[Fin.lt_def]`. Simplify using `only [Fin.val_castAdd, Fin.val_natAdd]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[EV_coe]`.
+
+Establish `hval : ∀ γ : Fin p, LD.blockWt p q w lam2 (Fin.castAdd q γ) = w` using `fun γ => Fin.append_left _ _ γ`. Use `show der _ _ (Fin.castAdd q α) (Fin.castAdd q β) (hw ℚ le_rfl (LD.blockWt p q w lam2)) = _`. Break down `lt_trichotomy α β with h | h | h` into its components or cases. Rewrite using `[if_neg (ne_of_lt h)]`. Conclude with `der_hw_raise _ _ _ (by rw [Fin.lt_def] at h ⊢; simpa using h)`.
+
+Substitute `h` using the available equality. Rewrite using `[if_pos rfl, (der_diag_iff _ _).1 (hw_rowHom _ hanti), hval]`. Both sides reduce to the same expression. Rewrite using `[if_neg (ne_of_gt h)]`. Conclude with `der_hw_lower _ hanti _ _ (by rw [Fin.lt_def] at h ⊢; simpa using h) (by rw [hval, hval])`.
+-/
 theorem hwV_mem (p q w : ℕ) (lam2 : Fin q → ℕ) (ha : Antitone lam2) (hb : ∀ b, lam2 b ≤ w) :
     hwV p q w lam2 ha hb ∈ W0 p q w lam2 := by
   have hanti := LD.ld_blockWt_anti p q w lam2 ha hb
@@ -126,6 +188,11 @@ theorem hwV_mem (p q w : ℕ) (lam2 : Fin q → ℕ) (ha : Antitone lam2) (hb : 
     · rw [if_neg (ne_of_gt h)]
       exact der_hw_lower _ hanti _ _ (by rw [Fin.lt_def] at h ⊢; simpa using h) (by rw [hval, hval])
 
+/- English proof (translation)
+Introduce `a b k`. Use `closed_of_der a b _ ?_ k` and prove the remaining obligations. Take `⟨a', rfl⟩` from `idx_surj p q a`. Take `⟨b', rfl⟩` from `idx_surj p q b`. Introduce and unpack `f ⟨x, hx, rfl⟩`.
+
+Conclude with `⟨EV p q w lam2 a' b' x, hU a' b' x hx, rfl⟩`.
+-/
 theorem closed_of_stable (p q w : ℕ) (lam2 : Fin q → ℕ) (U : Submodule ℚ (VQ p q w lam2))
     (hU : ∀ a b, ∀ x ∈ U, EV p q w lam2 a b x ∈ U) :
     RowDivClosed (U.map (dualWeyl ℚ (p + q) (p + q) (LD.blockWt p q w lam2)).subtype) := by
@@ -136,6 +203,17 @@ theorem closed_of_stable (p q w : ℕ) (lam2 : Fin q → ℕ) (U : Submodule ℚ
   rintro f ⟨x, hx, rfl⟩
   exact ⟨EV p q w lam2 a' b' x, hU a' b' x hx, rfl⟩
 
+/- English proof (translation)
+Establish `hanti` using `LD.ld_blockWt_anti p q w lam2 ha hb`. Establish `hcl` using `closed_of_stable p q w lam2 U hU`. Establish `hle : U.map (dualWeyl ℚ (p + q) (p + q) (LD.blockWt p q w lam2)).subtype ≤ dualWeyl ℚ (p + q) (p + q) (LD.blockWt p q w lam2)`. Introduce and unpack `f ⟨x, _, rfl⟩`. Conclude with `x.2`.
+
+Establish `hne' : U.map (dualWeyl ℚ (p + q) (p + q) (LD.blockWt p q w lam2)).subtype ≠ ⊥`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `x hx`.
+
+Establish `hx' : (x : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ) ∈ U.map (dualWeyl ℚ (p + q) (p + q) (LD.blockWt p q w lam2)).subtype` using `⟨x, hx, rfl⟩`. Rewrite `hx'` using `[h0, Submodule.mem_bot]`. Rewrite using `[Submodule.mem_bot]`. Conclude with `Subtype.ext hx'`. Establish `hhw` using `hwInClosed _ _ le_rfl _ hanti _ hle hcl hne'`.
+
+Establish `heq` using `closedEqNabla _ _ le_rfl _ hanti _ hle hcl hhw`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : (x : MvPolynomial (Fin (p + q) × Fin (p + q)) ℚ) ∈ U.map (dualWeyl ℚ (p + q) (p + q) (LD.blockWt p q w lam2)).subtype`. Rewrite using `[heq]`.
+
+Conclude with `x.2`. Take `⟨y, hy, hyx⟩` from `hx`. Establish `: y = x` using `Subtype.ext hyx`. Rewrite using `[← this]` and apply the resulting hypothesis.
+-/
 theorem top_of_stable (p q w : ℕ) (lam2 : Fin q → ℕ) (ha : Antitone lam2) (hb : ∀ b, lam2 b ≤ w)
     (U : Submodule ℚ (VQ p q w lam2)) (hU : ∀ a b, ∀ x ∈ U, EV p q w lam2 a b x ∈ U) (hne : U ≠ ⊥) : U = ⊤ := by
   have hanti := LD.ld_blockWt_anti p q w lam2 ha hb
@@ -165,9 +243,17 @@ theorem top_of_stable (p q w : ℕ) (lam2 : Fin q → ℕ) (ha : Antitone lam2) 
   have : y = x := Subtype.ext hyx
   rwa [← this]
 
+/- English proof (translation)
+Introduce `h` and use `hwNe ℚ _ _ le_rfl _ (congrArg Subtype.val h)`.
+-/
 theorem hwV_ne (p q w : ℕ) (lam2 : Fin q → ℕ) (ha : Antitone lam2) (hb : ∀ b, lam2 b ≤ w) :
     hwV p q w lam2 ha hb ≠ 0 := fun h => hwNe ℚ _ _ le_rfl _ (congrArg Subtype.val h)
 
+/- English proof (translation)
+Introduce `p q w lam2 ha hb U hW hU`. Use `top_of_stable p q w lam2 ha hb U hU ?_` and prove the remaining obligations. Introduce `h0`. Establish `h1 : hwV p q w lam2 ha hb ∈ U` using `hW (hwV_mem p q w lam2 ha hb)`. Rewrite `h1` using `[h0, Submodule.mem_bot]`.
+
+Conclude with `hwV_ne p q w lam2 ha hb h1`.
+-/
 theorem real_generated : RealGenerated := by
   intro p q w lam2 ha hb U hW hU
   refine top_of_stable p q w lam2 ha hb U hU ?_
@@ -176,6 +262,15 @@ theorem real_generated : RealGenerated := by
   rw [h0, Submodule.mem_bot] at h1
   exact hwV_ne p q w lam2 ha hb h1
 
+/- English proof (translation)
+Introduce `p q w lam2 ha hb Z hZ hst hne h hh`. Establish `hanti` using `LD.ld_blockWt_anti p q w lam2 ha hb`. Set `SZ : HidaSetting ℚ (VQ p q w lam2) (Fin p) (Fin q)` to `{ E := EV p q w lam2 comm := EV_comm p q w lam2 W := Z w := (w : ℚ) kill := fun α a u hu => ((mem_orthogonal_frame_iff p q w lam2 u).1 (hZ hu)).1 α a scal := fun α β u hu => ((mem_orthogonal_frame_iff p q w lam2 u).1 (hZ hu)).2 α β stab := hst }`. Establish `hgen : Generated SZ`. Introduce `U hW hU`.
+
+Use `top_of_stable p q w lam2 ha hb U hU ?_` and prove the remaining obligations. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[eq_bot_iff, ← h0]`. Conclude with `hW`.
+
+Establish `hwt : h ∈ SZ.wt fun a => (LD.blockWt p q w lam2 (idx p q a) : ℤ)`. Use `(real_weight p q w lam2 h (LD.blockWt p q w lam2)).1 (by rw [hh]; exact hw_rowHom _ hanti)` as an intermediate fact. Conclude with `this`. Establish `hsum : ∑ α : Fin p, ((LD.blockWt p q w lam2 (idx p q (Sum.inl α)) : ℕ) : ℤ) + ((0 : ℕ) : ℤ) = (Fintype.card (Fin p) : ℤ) * (w : ℤ)`. Establish `hval : ∀ γ : Fin p, LD.blockWt p q w lam2 (idx p q (Sum.inl γ)) = w` using `fun γ => Fin.append_left _ _ γ`.
+
+Simplify using `[hval]`. Establish `h1` using `depth_of_weight_holds ℚ (VQ p q w lam2) (Fin p) (Fin q) SZ w 0 rfl hgen _ h hwt hsum`. Rewrite `h1` using `[(depth_span_holds ℚ (VQ p q w lam2) (Fin p) (Fin q) SZ).1]`. Conclude with `h1`.
+-/
 theorem real_irreducible : RealIrred := by
   intro p q w lam2 ha hb Z hZ hst hne h hh
   have hanti := LD.ld_blockWt_anti p q w lam2 ha hb

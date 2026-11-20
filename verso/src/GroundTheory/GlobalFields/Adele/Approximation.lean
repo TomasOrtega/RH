@@ -9,6 +9,9 @@ open scoped RestrictedProduct
 variable {R : Type*} [CommRing R] [IsDedekindDomain R] {K : Type*} [Field K] [Algebra R K]
   [IsFractionRing R K]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.ExistsValuationSubLeOne.exists_valuation_sub_le_one S x`.
+-/
 theorem exists_valuation_sub_le_one (S : Finset (HeightOneSpectrum R))
     (x : HeightOneSpectrum R → K) :
     ∃ k : K, (∀ v ∈ S, v.valuation K (k - x v) ≤ 1) ∧ (∀ v ∉ S, v.valuation K k ≤ 1) :=
@@ -23,20 +26,40 @@ def integralFiniteAdeles (R K : Type*) [CommRing R] [IsDedekindDomain R] [Field 
   zero_mem' _ := Subring.zero_mem _
   neg_mem' ha v := Subring.neg_mem _ (ha v)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_integralFiniteAdeles {a : FiniteAdeleRing R K} :
     a ∈ integralFiniteAdeles R K ↔ ∀ v : HeightOneSpectrum R, a v ∈ v.adicCompletionIntegers K :=
   Iff.rfl
 
+/- English proof (translation)
+The claim follows from `RestrictedProduct.isOpen_forall_mem (R := fun v : HeightOneSpectrum R => v.adicCompletion K) (A := fun v => (v.adicCompletionIntegers K : Set (v.adicCompletion K))) (fun _ => Valued.isOpen_valuationSubring _)`.
+-/
 theorem isOpen_integralFiniteAdeles :
     IsOpen (integralFiniteAdeles R K : Set (FiniteAdeleRing R K)) :=
   RestrictedProduct.isOpen_forall_mem (R := fun v : HeightOneSpectrum R => v.adicCompletion K)
     (A := fun v => (v.adicCompletionIntegers K : Set (v.adicCompletion K)))
     (fun _ => Valued.isOpen_valuationSubring _)
 
+/- English proof (translation)
+Rewrite using `[mem_adicCompletionIntegers, valuedAdicCompletion_eq_valuation']`.
+-/
 theorem coe_mem_adicCompletionIntegers_iff (v : HeightOneSpectrum R) (k : K) :
     (k : v.adicCompletion K) ∈ v.adicCompletionIntegers K ↔ v.valuation K k ≤ 1 := by
   rw [mem_adicCompletionIntegers, valuedAdicCompletion_eq_valuation']
 
+/- English proof (translation)
+Establish `hS : {v : HeightOneSpectrum R | a v ∉ v.adicCompletionIntegers K}.Finite` using `Filter.eventually_cofinite.mp a.2`. Establish `hx : ∀ v : HeightOneSpectrum R, ∃ z : K, a v - (z : v.adicCompletion K) ∈ v.adicCompletionIntegers K`. Introduce `v`. Establish `hU : IsOpen {w : v.adicCompletion K | a v - w ∈ v.adicCompletionIntegers K}` using `(Valued.isOpen_valuationSubring (v.adicCompletion K)).preimage (continuous_const.sub continuous_id)`. Take `⟨z, hz⟩` from `(denseRange_algebraMap (K := K) v).exists_mem_open hU ⟨a v, by simp⟩`.
+
+Conclude with `⟨z, hz⟩`. Use `choose x hx using hx`. Take `⟨k, hkS, hkn⟩` from `exists_valuation_sub_le_one hS.toFinset x`. Use `⟨k, fun v => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a v - (k : v.adicCompletion K) ∈ v.adicCompletionIntegers K`.
+
+Distinguish the cases in `hv : v ∈ hS.toFinset`. Establish `h1` using `(coe_mem_adicCompletionIntegers_iff v (k - x v)).mpr (hkS v hv)`. Establish `h2 : a v - (k : v.adicCompletion K) = (a v - (x v : v.adicCompletion K)) - ((k - x v : K) : v.adicCompletion K)`. Establish `hc : ∀ z : K, (z : v.adicCompletion K) = algebraMap K (v.adicCompletion K) z` using `fun z => by simp [algebraMap_adicCompletion]`. Rewrite using `[hc, hc, hc, map_sub]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Conclude with `Subring.sub_mem _ (hx v) h1`. Establish `hav : a v ∈ v.adicCompletionIntegers K`. Simplify using `using hv`.
+
+Conclude with `Subring.sub_mem _ hav ((coe_mem_adicCompletionIntegers_iff v k).mpr (hkn v hv))`.
+-/
 theorem exists_sub_mem_integralFiniteAdeles (a : FiniteAdeleRing R K) :
     ∃ k : K, a - algebraMap K (FiniteAdeleRing R K) k ∈ integralFiniteAdeles R K := by
   classical
@@ -69,6 +92,11 @@ theorem exists_sub_mem_integralFiniteAdeles (a : FiniteAdeleRing R K) :
       simpa using hv
     exact Subring.sub_mem _ hav ((coe_mem_adicCompletionIntegers_iff v k).mpr (hkn v hv))
 
+/- English proof (translation)
+Use `eq_top_iff.mpr fun a _ => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_sub_mem_integralFiniteAdeles a`. Establish `: a = algebraMap K (FiniteAdeleRing R K) k + (a - algebraMap K (FiniteAdeleRing R K) k)`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`.
+
+Conclude with `AddSubgroup.add_mem_sup ⟨k, rfl⟩ hk`.
+-/
 theorem range_algebraMap_sup_integralFiniteAdeles :
     (algebraMap K (FiniteAdeleRing R K)).range.toAddSubgroup ⊔
       (integralFiniteAdeles R K).toAddSubgroup = ⊤ := by

@@ -17,6 +17,9 @@ structure IneRel (x y : WD h) : Prop where
   pol : ∀ s, x.charPol (ineIncl h s) = y.charPol (ineIncl h s)
   eig : ∀ ξ, EigZero y ξ → EigZero x ξ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => rfl, fun _ k => k⟩`.
+-/
 theorem IneRel.refl (x : WD h) : IneRel x x := ⟨fun _ => rfl, fun _ k => k⟩
 
 end Weil

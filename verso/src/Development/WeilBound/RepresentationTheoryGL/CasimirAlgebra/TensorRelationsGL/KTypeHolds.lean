@@ -24,6 +24,17 @@ import Development.WeilBound.RepresentationTheoryGL.CasimirAlgebra.TensorRelatio
 
 namespace PositivityTheory.Rg.Cz
 
+/- English proof (translation)
+Establish `tg` using `tensorGl_holds`. Establish `jm` using `jmComm_of tg`. Establish `cu` using `curry_holds`. Establish `qd` using `qdetFacts_holds`. Establish `pq` using `piQdet_of tg jm`.
+
+Establish `sf` using `stepFormula_of tg jm pq cu`. Establish `sc` using `stepChar_of tg sf qd`. Establish `sp` using `spectrum_of tg jm cu sc`. Establish `ht` using `height_of tg`. Establish `wq` using `wallQuot_of qd`.
+
+Establish `ch` using `chain_of tg jm cu sf qd sc ht wq`. Establish `ca` using `colAnti_of tg jm ht`. Establish `tf` using `transFin_of tg jm sf qd sp ch ca`. Establish `tr` using `trans_of tf`. Establish `ta` using `transAll_of tg tr`.
+
+Establish `tk` using `tensorGK_of tg`. Establish `wa` using `wallAlg_of tg jm qd sp`. Establish `li` using `lieInv_holds`. Establish `co` using `contract_of tg qd wa tk li wq`. Establish `sz` using `semiZero_of qd wa li wq`.
+
+Establish `sa` using `sphAll_of swStart_holds co sz`. Conclude with `kType_of tg ta tk sa young_holds`.
+-/
 theorem kType_holds : KType := by
   have tg := tensorGl_holds
   have jm := jmComm_of tg

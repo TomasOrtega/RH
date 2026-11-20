@@ -14,6 +14,21 @@ open scoped Formalism.Per NNReal
 noncomputable section
 namespace GlobalTheory.BKLim.WHeightSprime
 
+/- English proof (translation)
+Introduce `l _ K bk τ hτ d ρ hρ s Y hY hP`. Take `⟨ι, TB, k, v, Z, hnull, hWZ, hsum⟩` from `GlobalTheory.T.exists_bounded_semistable_periods_null_family l K bk τ hτ d ρ hρ s`. Establish `hcol : ∀ i (b : Fin d), ∃ c : Fin d → bk.S, (fun a => v i a b) = Y *ᵥ fun a => bk.ev (c a)`. Introduce `i b`. Use `(hP _).1 ⟨fun a => Z i a b, fun j hj => ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `a`. Establish `h` using `congrFun (congrFun (hWZ j hj i) a) b`. Simplify `h` using `[Matrix.mulVec, dotProduct, Matrix.mul_apply]`. Use `choose σc hσc using hcol`. Use `set σ : ι → Matrix (Fin d) (Fin d) bk.S := fun i => Matrix.of fun a b => σc i b a with hσdef`.
+
+Establish `hv : ∀ i, v i = Y * (σ i).map bk.ev`. Introduce `i`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Establish `h` using `congrFun (hσc i b) a`. Simplify `h` using `[Matrix.mulVec, dotProduct, Matrix.mul_apply, σ]`.
+
+Establish `hσn` using `GlobalTheory.T.null_powerSeries_of_null_ainf_mul l K bk ι TB d Y hY σ (fun n a b => by simpa only [← hv] using hnull n a b)`. Establish `hL : ∀ c b : Fin d, ∃ L : Ainf l, ∀ n : ℕ, ∃ F : Finset ι, ∀ G : Finset ι, F ⊆ G → L - ∑ i ∈ G, bk.ev (σ i c b) * TB.b i ∈ (bk.J ^ n).map bk.ev` using `fun c b => GlobalTheory.T.breuilKisin_exists_adic_sum_of_null_family l K bk ι TB (fun i => σ i c b) (fun n => hσn n c b)`. Use `choose L hL using hL`. Use `⟨k, Matrix.of L, ?_⟩` and prove the remaining obligations. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations.
+
+Use `GlobalTheory.T.ainf_jAdic_limit_eq_disc_sum l K bk ι TB (fun i => v i a b * TB.b i) _ _ ?_ ?_` and prove the remaining obligations. Simplify `hsum a b` using `[Matrix.smul_apply, Matrix.one_apply]`. Introduce `n`. Use `choose F hF using fun c => hL c b n`. Use `⟨Finset.univ.biUnion F, fun G hG => ?_⟩` and prove the remaining obligations.
+
+Establish `e : (Y * Matrix.of L) a b - ∑ i ∈ G, v i a b * TB.b i = ∑ c, Y a c * (L c b - ∑ i ∈ G, bk.ev (σ i c b) * TB.b i)`. Simplify using `only [hv, Matrix.mul_apply, Matrix.map_apply, Matrix.of_apply, mul_sub, Finset.sum_sub_distrib, Finset.sum_mul, Finset.mul_sum]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun i _ => by ring` and prove the remaining obligations.
+
+Rewrite using `[e]`. Conclude with `Ideal.sum_mem _ fun c _ => Ideal.mul_mem_left _ _ (hF c G ((Finset.subset_biUnion_of_mem F (Finset.mem_univ c)).trans hG))`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l) (hτ : bk.IsPer τ) (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (hρ : ∀ g, IsUnit (ρ g)) (s : WSeed bk d ρ τ) (Y : Matrix (Fin d) (Fin d) (Ainf l)), IsUnit (Y.map (inclW l)) → (∀ y, (fun y : Fin d → Ainf l => ∃ x : Fin d → bk.DS bk.ρ₀, ∀ j : bk.DS bk.ρ₀ →+* bk.DA bk.ρ₀, IsDiscMap bk.ev j → s.W *ᵥ (fun a => j (x a)) = fun a => bk.iA (y a)) y ↔ ∃ c : Fin d → bk.S, y = Y *ᵥ fun a => bk.ev (c a)) → ∃ (k : ℕ) (S' : Matrix (Fin d) (Fin d) (Ainf l)), Y * S' = ((l : Ainf l) ^ k * τ ^ (2 * s.N)) • (1 : Matrix (Fin d) (Fin d) (Ainf l)) := by
   intro l _ K bk τ hτ d ρ hρ s Y hY hP
   obtain ⟨ι, TB, k, v, Z, hnull, hWZ, hsum⟩ := GlobalTheory.T.exists_bounded_semistable_periods_null_family l K bk τ hτ d ρ hρ s

@@ -12,6 +12,13 @@ def RestWinE (D : Formalism.BasicNotions.D7) : Prop :=
     ∀ X : flipOneThree.Inst, AdmNoK D C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc Cs X →
       flipOneThree.HI C0 CYb Cde Ck CD Cb Cc X → RestWin C0 CE1 CE2 X CM
 
+/- English proof (translation)
+Unfold `RestWinE at h`. Unfold `SymmetryWindowOnAdmissible`. Unfold `Formalism.MainNotions.flipOneThree.TransportedAlt at h ⊢`. Introduce `Cc hCc`. Take `⟨T0, hT0, h0⟩` from `h Cc hCc`.
+
+Use `⟨T0, hT0, fun C0 hC0 => ?_⟩` and prove the remaining obligations. Take `⟨T1, hT1, h1⟩` from `h0 C0 hC0`. Use `⟨T1, hT1, fun CE1 CE2 hE1 hE2 => ?_⟩` and prove the remaining obligations. Take `⟨T2, hT2, h2⟩` from `h1 CE1 CE2 hE1 hE2`. Use `⟨T2, hT2, fun CYb Cde Ck CD Cb ha hb hc hd he => ?_⟩` and prove the remaining obligations.
+
+Introduce `Ckap Cs CM hCM X hX hHI`. Conclude with `⟨symmCondition C0 CE1 CE2 X, h2 CYb Cde Ck CD Cb ha hb hc hd he Ckap Cs CM hCM X hX hHI⟩`.
+-/
 theorem symmetric_dims_of_windows (D : Formalism.BasicNotions.D7) (h : RestWinE D) : SymmetryWindowOnAdmissible D := by
   unfold RestWinE at h
   unfold SymmetryWindowOnAdmissible
@@ -26,6 +33,9 @@ theorem symmetric_dims_of_windows (D : Formalism.BasicNotions.D7) (h : RestWinE 
   intro Ckap Cs CM hCM X hX hHI
   exact ⟨symmCondition C0 CE1 CE2 X, h2 CYb Cde Ck CD Cb ha hb hc hd he Ckap Cs CM hCM X hX hHI⟩
 
+/- English proof (translation)
+The claim follows from `closed_of_orthogonal_basis D hB hG (symmetric_dims_of_windows D h)`.
+-/
 theorem integralityFromMetric_of_orthBasisLat (D : Formalism.BasicNotions.D7) (hB : OrthBasisLat) (hG : GoodLeSmall) (h : RestWinE D) :
     IntegralityFromMetricForLargeConstants D :=
   closed_of_orthogonal_basis D hB hG (symmetric_dims_of_windows D h)

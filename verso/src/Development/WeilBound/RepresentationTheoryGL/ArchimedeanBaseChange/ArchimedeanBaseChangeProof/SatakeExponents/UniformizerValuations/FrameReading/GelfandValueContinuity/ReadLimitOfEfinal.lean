@@ -15,6 +15,9 @@ namespace PositivityTheory.Rg.BcB.F.Rd.P
 
 open PositivityTheory.Rg.BcB.CG PositivityTheory.Rg.BcB.F
 
+/- English proof (translation)
+The claim follows from `B.readLimit_of PositivityTheory.Rg.BcB.E2.proper_base_change pack_holds ef actVal_holds finHecke valCont_holds infConv B.infLim reproEx_holds tensMul BlockFiniteConvolution.blkOp₀ BlockFiniteConvolution.blkWord₀ blkSum adjWords`.
+-/
 theorem readLimit_of_efinal (ef : PositivityTheory.Rg.BcB.SpectralAccumulation.EFinal) : ReadLimit :=
   B.readLimit_of PositivityTheory.Rg.BcB.E2.proper_base_change pack_holds ef actVal_holds finHecke valCont_holds infConv B.infLim reproEx_holds tensMul
     BlockFiniteConvolution.blkOp₀ BlockFiniteConvolution.blkWord₀ blkSum adjWords

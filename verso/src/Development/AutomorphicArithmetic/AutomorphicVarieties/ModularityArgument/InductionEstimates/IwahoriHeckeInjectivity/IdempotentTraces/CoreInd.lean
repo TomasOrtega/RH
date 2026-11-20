@@ -36,6 +36,9 @@ open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.Invariant
 
 section SlopeTestRemainingChoices
 
+/- English proof (translation)
+Establish `hfib : ∀ v : Pl F, {w : Pl E | w.under (𝓞 F) = v}.Finite` using `fun v => by`. Use `(Set.finite_range (Subtype.val : PlacesOver E v → Pl E)).subset ?_` and prove the remaining obligations. Introduce and unpack `w rfl`. Conclude with `⟨⟨w, ⟨rfl⟩⟩, rfl⟩`. Conclude with `hS.preimage' fun v _ => hfib v`.
+-/
 private theorem fin_pre {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (S : Set (Pl F)) (hS : S.Finite) : {w : Pl E | w.under (𝓞 F) ∈ S}.Finite := by
   have hfib : ∀ v : Pl F, {w : Pl E | w.under (𝓞 F) = v}.Finite := fun v => by
@@ -44,15 +47,24 @@ private theorem fin_pre {F E : Type} [Field F] [NumberField F] [Field E] [Number
     exact ⟨⟨w, ⟨rfl⟩⟩, rfl⟩
   exact hS.preimage' fun v _ => hfib v
 
+/- English proof (translation)
+The claim follows from `HeightOneSpectrum.ext (w.2.over).symm`.
+-/
 private theorem under_of {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {v : Pl F} (w : PlacesOver E v) : w.1.under (𝓞 F) = v :=
   HeightOneSpectrum.ext (w.2.over).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨H.1, fun w hw => H.2 w fun h' => hw (h h')⟩`.
+-/
 private theorem at_mono {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : Measure (G1 K n)} [μ.IsHaarMeasure]
     {S S' : Set (Pl K)} (h : S ⊆ S') {V : Submodule ℂ (LL μ)} {Λ : (K →+* ℂ) → Multiset ℂ} {t : Pl K → Multiset ℂ}
     (H : At μ S V Λ t) : At μ S' V Λ t :=
   ⟨H.1, fun w hw => H.2 w fun h' => hw (h h')⟩
 
+/- English proof (translation)
+Unfold `GeoPair Side.Rep at h ⊢`. Rewrite using `[h1, h2, h3]`. Conclude with `h`.
+-/
 private theorem geo_congr {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n l : ℕ}
     {μE : Measure (G1 E n)} [μE.IsHaarMeasure] {μF : Measure (G1 F n)} [μF.IsHaarMeasure] {θ : Twist μE}
     {𝔢 𝔢' : Side θ l} {𝔣 : Side (Twist.id μF) l} {c : ℂ} (h1 : 𝔢'.toAmp = 𝔢.toAmp) (h2 : 𝔢'.g = 𝔢.g)
@@ -61,6 +73,11 @@ private theorem geo_congr {F E : Type} [Field F] [NumberField F] [Field E] [Numb
   rw [h1, h2, h3]
   exact h
 
+/- English proof (translation)
+Introduce `g`. Establish `e1 : ∀ x, (c • f) x = c * f x` using `fun x => rfl`. Simplify using `only [e1]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [mul_left_comm (D.e _)]`.
+
+Rewrite using `[integral_const_mul, (h g).1]`. Simplify using `only [mul_assoc]`. Rewrite using `[integral_const_mul, (h g).2]`.
+-/
 private theorem hecke_smul {K : Type} [Field K] [NumberField K] {n : ℕ} {D : TypeDat K n} {f : TG K n}
     (h : D.Hecke f) (c : ℂ) : D.Hecke (c • f) := by
   intro g
@@ -72,6 +89,9 @@ private theorem hecke_smul {K : Type} [Field K] [NumberField K] {n : ℕ} {D : T
   · simp only [mul_assoc]
     rw [integral_const_mul, (h g).2]
 
+/- English proof (translation)
+Introduce `u hu x`. Establish `h1 : u * x ∈ U ↔ x ∈ U` using `Subgroup.mul_mem_cancel_left U hu`. Establish `h2 : x * u ∈ U ↔ x ∈ U` using `Subgroup.mul_mem_cancel_right U hu`. Simplify using `only [hφ, Set.indicator, SetLike.mem_coe, h1, h2, Pi.one_apply, and_self]`.
+-/
 private theorem ind_inv {G : Type} [Group G] (U : Subgroup G) (φ : G → ℂ)
     (hφ : ∀ x, φ x = (U : Set G).indicator 1 x) : ∀ u ∈ U, ∀ x, φ (u * x) = φ x ∧ φ (x * u) = φ x := by
   intro u hu x
@@ -81,6 +101,63 @@ private theorem ind_inv {G : Type} [Group G] (U : Subgroup G) (φ : G → ℂ)
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `hCI hGM hLift F E _ _ _ _ _ _ _ _ σ hσ hgen τ₁ τ₂ θ₂ hpair hgal₂ hsw₁ hsw₂ S hSsp hSunr m₁ m₂ B₁ B₂ hA₁ hA₂ μF _`. Establish `hpr : (Module.finrank F E).Prime` using `hσ ▸ Nat.prime_two`. Establish `hpl` using `UpperTheory.ConvolutionTheory.T.places F E hpr`. Take `⟨q, hqsp, hqS⟩` from `hpl.1.exists_notMem_finset S`. Establish `hqsp' : GM.Split E q` using `hqsp`.
+
+Take `⟨w₀⟩` from `hpl.2.2.1 q`. Establish `hf1` using `fin_pre (E := E) (S : Set (Pl F)) S.finite_toSet`. Establish `hf2` using `fin_pre (E := E) (insert q (S : Set (Pl F))) (S.finite_toSet.insert q)`. Take `⟨SE', hSE'⟩ : ∃ SE' : Finset (Pl E), ∀ w, w ∈ SE' ↔ w.under (𝓞 F) ∈ S` from `⟨hf1.toFinset, fun w => by simp⟩`. Take `⟨SE, hSE⟩ : ∃ SE : Finset (Pl E), ∀ w, w ∈ SE ↔ w.under (𝓞 F) ∈ S ∨ w.under (𝓞 F) = q` from `⟨hf2.toFinset, fun w => by simp [or_comm]⟩`.
+
+Take `⟨pp⟩` from `(UpperTheory.ConvolutionTheory.L1.infSplit F E σ hgen 1 hσ).1 inferInstance`. Take `⟨D, -⟩` from `(UpperTheory.ConvolutionTheory.L1.infSplit F E σ hgen 1 hσ).2 pp`. Take `⟨κF, eF, κ, e, κ₂, p₁, p₂, k₀, hIF, hSq, hAL⟩` from `archEx F E σ hσ hgen τ₁ τ₂ θ₂ hpair hgal₂ hsw₁ hsw₂ D`. Establish `hsph₁ : SphOff (BW.mu1 E 2) τ₁ SE'` using `fun w hw => (hA₁.2 w fun h => hw ((hSE' w).2 h)).2.1`. Establish `hsph₂ : SphOff (BW.mu1 E 2) τ₂ SE'` using `fun w hw => (hA₂.2 w fun h => hw ((hSE' w).2 h)).2.1`.
+
+Take `⟨U₀, f, hU₀, hf0, hsec, hfA, hfF⟩` from `hAL.ex SE' hsph₁ hsph₂`. Take `⟨L, U, hLS, hU, hUle, hUq, hlev, hLφ, htw⟩` from `locSm F E σ hσ hgen (2 + 2) (by norm_num) q w₀ S hqS hSunr hSsp U₀ hU₀ SE hSE`. Establish `hLL` using `(UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks.levLaws (K := E) (2 + 2) SE).1 U hU`. Take `⟨Dt, hTy, hSt⟩` from `typeOf E (2 + 2) κ e hAL.idem (levOn SE U) hLL.2 hLL.1.2`. Establish `hflat` using `(UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks.secTr (BW.mu1 E 2) τ₁ τ₂ κ e hAL.idem).2.1 f hsec.cont`.
+
+Establish `hle : levOn SE U ≤ levOn SE' U₀`. Introduce `u hu`. Establish `hu' : ∀ v, finAt v (finEmb E (2 + 2) u) ∈ (if v ∈ SE then U v else GLnLocal.integralGL (v.adicCompletion E) (2 + 2))` using `hu`. Use `show ∀ v, finAt v (finEmb E (2 + 2) u) ∈ (if v ∈ SE' then U₀ v else GLnLocal.integralGL (v.adicCompletion E) (2 + 2))`. Introduce `v`.
+
+Establish `h` using `hu' v`. Distinguish the cases in `h1 : v ∈ SE'`. Establish `h1'` using `(hSE' v).1 h1`. Rewrite `h` using `[if_pos ((hSE v).2 (Or.inl h1')), ]`. Rewrite using `[if_pos h1]`.
+
+Conclude with `hUle v h1' h`. Rewrite `h`, `with`, `h2` using `[if_neg h1] split_ifs`. Conclude with `(hU v).2 h`. Conclude with `h`. Establish `hfF' : FixF (levOn SE U) f` using `fun u hu g => hfF u (hle hu) g`.
+
+Take `⟨θ, hθK⟩` from `UpperTheory.ConvolutionTheory.K.galTwistEx E (2 + 2) (BW.mu1 E (2 + 2)) σ.toRingEquiv`. Establish `hgl` using `galLoc F E σ hσ hgen (2 + 2) (by norm_num) (BW.mu1 E (2 + 2)) θ`. Establish `hθ : IsGalTwist σ θ` using `hgl.1.2 hθK`. Take `⟨hinv, harc, -⟩` from `hgl.2 hθ`. Establish `htw'` using `htw (BW.mu1 E (2 + 2)) θ hθ`.
+
+Establish `hSta : Stable Dt θ` using `hSt (BW.mu1 E (2 + 2)) θ (harc D eF e hSq) htw' hinv`. Establish `hpair' : Pair (BW.mu1 E 2) τ₂ τ₁` using `⟨hpair.irr₂, hpair.irr₁, hpair.orth.symm⟩`. Take `⟨d, ⟨A⟩⟩` from `lineEx E (BW.mu1 E (2 + 2)) (BW.mu1 E 2) τ₁ τ₂ hpair Dt`. Take `⟨d', ⟨A'⟩⟩` from `lineEx E (BW.mu1 E (2 + 2)) (BW.mu1 E 2) τ₂ τ₁ hpair' Dt`. Take `⟨⟨P, hP⟩, -⟩` from `projEx E (BW.mu1 E (2 + 2)) (BW.mu1 E 2) τ₁ τ₂ hpair Dt d d' A A'`.
+
+Take `⟨s, hs_sec, hs_op⟩` from `convU E (BW.mu1 E (2 + 2)) (BW.mu1 E 2) τ₁ τ₂ hpair Dt d d' A A' σ.toRingEquiv θ θ₂ hθK hgal₂ hSta hsw₁ hsw₂`. Establish `hHH : Continuous (HP (K` using `E) 2 2) := (hpSpec (K := E)).2.2.2.1`. Establish `hflc : Continuous (flat 0 f)` using `(Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp hHH))).mul hsec.cont`. Establish `hfne : flat 0 f ≠ 0` using `fun h => hf0 ((UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks.secTr (BW.mu1 E 2) τ₁ τ₂ κ e hAL.idem).2.2.1 f 0 (h.trans (by funext x; simp [flat])))`. Set `νF : Measure (archGroup F (2 + 2))` to `Measure.haar`.
+
+Use `haveI hνE : (Measure.map (glueA D (2 + 2)) (Measure.pi fun _ => νF)).IsHaarMeasure := (UpperTheory.ConvolutionTheory.L1.archBasic F E σ 1 D (2 + 2)).2.2.2.2.2.2.1 νF`. Take `⟨b, a, aE, aF, hsl, hBi, g₀, hg₀⟩` from `ampEx F E σ D (2 + 2) (by norm_num) κF eF κ e hIF hAL.idem hSq (Measure.map (glueA D (2 + 2)) (Measure.pi fun _ => νF)) νF rfl (flat 0 f) hflc hfne (hflat.1.2 hfA)`. Take `⟨hAE, hAF⟩` from `UpperTheory.ConvolutionTheory.L1.ampPosition F E σ 1 D (2 + 2) _ νF b a aE aF hsl`. Establish `hAP : GM.ArchPair σ _ νF aE aF 1` using `@UpperTheory.ConvolutionTheory.L1.pairPosition F E _ _ _ _ _ _ _ σ 1 hσ D (2 + 2) _ _ νF _ b a aE aF hsl`. Take `⟨cκ, hcκ, hG⟩` from `hGM F E σ hgen hpr (2 + 2) (by norm_num) (BW.mu1 E (2 + 2)) μF θ hθ q w₀ hqsp' _ νF aE aF 1 one_pos (hAE (BW.mu1 E (2 + 2))) (hAF μF) (@hAP)`.
+
+Take `⟨ν, hν⟩` from `UpperTheory.ConvolutionTheory.T.goodEx (2 + 2) (by norm_num)`. Establish `hG'` using `hG L ν hν`. Rewrite `hG'` using `[hσ]`. Take `⟨𝔢, 𝔣, h𝔢, h𝔣, hgeo⟩` from `hG'`. Take `⟨𝔢', φ, w₁, h1, h2, h3, h4, hφ, hten, c, hc, hca⟩` from `sideX F E σ hσ hgen (2 + 2) (by norm_num) (BW.mu1 E (2 + 2)) θ hθ q w₀ hqsp' L _ aE ν 𝔢 h𝔢 hLφ`.
+
+Establish `hgeo'` using `geo_congr h1 h2 h3 hgeo`. Establish `hU' : 𝔢'.toAmp.U = levOn SE U` using `by rw [h1]; exact h𝔢.2.2.2.1.trans hlev`. Establish `ha₀ : 𝔢'.toAmp.a₀ = aE` using `by rw [h1]; exact h𝔢.2.1`. Establish `hν' : 𝔢'.toAmp.ν = Measure.map (glueA D (2 + 2)) (Measure.pi fun _ => νF)` using `by rw [h1]; exact h𝔢.1`. Establish `hSE𝔢 : ∀ w, w ∈ 𝔢'.toAmp.S ↔ w ∈ SE` using `fun w => by`.
+
+Rewrite using `[h1, hSE w, ← hLS]`. Conclude with `h𝔢.2.2.1 w`. Establish `hUq0 : 𝔢'.Uq 0 = Uiw (BW.mu1 E (2 + 2)) w₀.1 ν` using `h3.trans h𝔢.2.2.2.2.2`. Establish `hφ' : ∀ x, φ x = (levOn SE U : Set (FA E (2 + 2))).indicator 1 x` using `fun x => by`. Rewrite using `[hφ x, ← hU', h1]`.
+
+Establish `hinvφ` using `ind_inv (levOn SE U) φ hφ'`. Establish `hBi' : BiA κ e 𝔢'.toAmp.a₀` using `ha₀ ▸ hBi`. Establish `hg_hecke : Dt.Hecke 𝔢'.g` using `hten ▸ hTy.hecke _ φ hBi' hinvφ`. Establish `ha_hecke : Dt.Hecke 𝔢'.a` using `hca ▸ hecke_smul hg_hecke c`. Establish `hlevel : Dt.Level (levOn SE U)` using `hTy.level`.
+
+Establish `hsub : {w : Pl E | w.under (𝓞 F) ∈ S} ⊆ 𝔢'.toAmp.S` using `fun w hw => (hSE𝔢 w).2 ((hSE w).2 (Or.inl hw))`. Establish `hat₁` using `at_mono hsub hA₁`. Establish `hat₂` using `at_mono hsub hA₂`. Establish `hs₁ : IsSummand (BW.mu1 E 2) τ₁` using `⟨hpair.irr₁.le, hpair.irr₁.closed, hpair.irr₁.inv, hpair.irr₁.ne, hpair.irr₁.irr⟩`. Establish `hs₂ : IsSummand (BW.mu1 E 2) τ₂` using `⟨hpair.irr₂.le, hpair.irr₂.closed, hpair.irr₂.inv, hpair.irr₂.ne, hpair.irr₂.irr⟩`.
+
+Establish `hrE` using `rigidE E τ₁ τ₂ hpair 𝔢'.toAmp.S 𝔢'.toAmp.finS m₁ m₂ B₁ B₂ hat₁ hat₂`. Establish `hw₀S : w₀.1 ∈ SE` using `(hSE _).2 (Or.inr (under_of w₀))`. Establish `hw₁S : w₁.1 ∈ SE` using `(hSE _).2 (Or.inr (under_of w₁))`. Establish `hI₀` using `hUq w₀.1 (under_of w₀)`. Establish `hI₁` using `hUq w₁.1 (under_of w₁)`.
+
+Establish `hUa` using `uiwAct E (BW.mu1 E (2 + 2)) (BW.mu1 E 2) τ₁ τ₂ hpair SE U hU Dt hlevel d d' A A'`. Establish `hUb` using `uiwAct E (BW.mu1 E (2 + 2)) (BW.mu1 E 2) τ₂ τ₁ hpair' SE U hU Dt hlevel d' d A' A`. Establish `hz : ∀ i : ZMod 2, i = 0 ∨ i = 1` using `by decide`. Establish `hv : ∀ i : ZMod 2, ∃ s', Act A.J (𝔢'.Uq i) s'` using `fun i => by`. Break down `hz i with rfl | rfl` into its components or cases.
+
+Rewrite using `[hUq0]`. Conclude with `((hUa _ hw₀S hI₀ ν).1).imp fun _ h => h.1`. Rewrite using `[h4]`. Conclude with `((hUa _ hw₁S hI₁ ν).1).imp fun _ h => h.1`. Establish `hu : ∀ i : ZMod 2, ∃ s', Act A'.J (𝔢'.Uq i) s'` using `fun i => by`.
+
+Break down `hz i with rfl | rfl` into its components or cases. Rewrite using `[hUq0]`. Conclude with `((hUb _ hw₀S hI₀ ν).1).imp fun _ h => h.1`. Rewrite using `[h4]`. Conclude with `((hUb _ hw₁S hI₁ ν).1).imp fun _ h => h.1`.
+
+Use `choose vv hvv using hv`. Use `choose uu huu using hu`. Take `⟨βa, hβa⟩` from `convR E (BW.mu1 E (2 + 2)) (BW.mu1 E 2) τ₂ τ₁ hpair' Dt d' d A' A 𝔢'.a ha_hecke`. Take `⟨βg, hβg⟩` from `convR E (BW.mu1 E (2 + 2)) (BW.mu1 E 2) τ₂ τ₁ hpair' Dt d' d A' A 𝔢'.g hg_hecke`. Set `𝔵 : Fam 𝔢'` to `{ τ₁ := τ₁, τ₂ := τ₂, pair := hpair, m₁ := m₁, m₂ := m₂, B₁ := B₁, B₂ := B₂, at₁ := hat₁, at₂ := hat₂ smo₁ := fun V hV hAt => UpperTheory.ConvolutionTheory.Dp.atInj E 2 (BW.mu1 E 2) V τ₁ hV hs₁ _ 𝔢'.toAmp.finS B₁ hAt.2 hat₁.2 smo₂ := fun V hV hAt => UpperTheory.ConvolutionTheory. …`.
+
+Establish `hrig : ∀ (b : Datum F (2 + 2)) Λ' t', b.Pt 𝔣.toAmp.S Λ' t' → ¬ (𝔵.Λ = bcInf Λ' ∧ ∀ w ∉ 𝔢'.toAmp.S, 𝔵.t w = bcSat t' w)` using `fun b Λ' t' hb h => rigidF hLift F E σ hσ hgen τ₁ τ₂ θ₂ hpair hgal₂ hsw₁ hsw₂ 𝔢'.toAmp.S 𝔣.toAmp.S 𝔢'.toAmp.finS 𝔣.toAmp.finS m₁ m₂ B₁ B₂ hat₁ hat₂ b Λ' t' hb h.2`. Take `⟨N, hN, hid⟩` from `hCI F E (BW.mu1 E (2 + 2)) μF θ 𝔢' 𝔣 _ hgeo' 𝔵 hrig`. Establish `hSpl : ∀ w ∈ SE, GM.Split E (w.under (𝓞 F)) ∧ ∀ w' : Pl E, w'.under (𝓞 F) = w.under (𝓞 F) → w' ∈ SE`. Introduce `w hw`. Use `⟨?_, fun w' h => (hSE w').2 (h ▸ (hSE w).1 hw)⟩` and prove the remaining obligations.
+
+Break down `(hSE w).1 hw with h | h` into its components or cases. Conclude with `hSsp _ h`. Rewrite using `[h]`. Conclude with `hqsp'`. Take `⟨v₀, hv₀⟩ : f ∈ LinearMap.range A.sec` from `(A.onto f).2 ⟨hsec, (hTy.fix f hsec.cont).2 ⟨hfA, hfF'⟩⟩`.
+
+Establish `hnz : ∃ v g, ∫ y, 𝔢'.toAmp.a₀ y * flat 0 (𝔵.A.sec v) (g * archP E (2 + 2) y) ∂𝔢'.toAmp.ν ≠ 0`. Use `⟨v₀, g₀, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∫ y, 𝔢'.toAmp.a₀ y * flat 0 (A.sec v₀) (g₀ * archP E (2 + 2) y) ∂𝔢'.toAmp.ν ≠ 0`. Rewrite using `[hv₀, ha₀, hν']`. Conclude with `hg₀`.
+
+Take `⟨x, hx, hfr⟩` from `famNe F E σ hσ hgen (BW.mu1 E (2 + 2)) θ hθ 𝔢' 𝔵 κ e κ₂ p₁ p₂ k₀ hAL SE U hU hSpl hU' hTy htw' w₀.1 hw₀S hI₀ ν hν.1.antitone hUq0 φ hφ' hten ⟨c, hc, hca⟩ hBi' hnz N hN`. Take `⟨j, hj1, hj2⟩` from `(hfr.and_eventually (hid x hx)).exists`. Establish `hcusp : 𝔢'.tr (fun V => At (BW.mu1 E (2 + 2)) 𝔢'.toAmp.S V 𝔵.Λ 𝔵.t) x j = 0`. Establish `: {V : Submodule ℂ (LL (BW.mu1 E (2 + 2))) | IsSummand (BW.mu1 E (2 + 2)) V ∧ V.map (θ.U : LL (BW.mu1 E (2 + 2)) →ₗ[ℂ] LL (BW.mu1 E (2 + 2))) = V ∧ At (BW.mu1 E (2 + 2)) 𝔢'.toAmp.S V 𝔵.Λ 𝔵.t} = ∅` using `Set.eq_empty_of_forall_notMem fun V hV => hrE.2 (BW.mu1 E (2 + 2)) V hV.1 hV.2.2`. Unfold `Side.tr`.
+
+Rewrite using `[this, finsum_mem_empty]`. Rewrite `hj2` using `[hcusp, zero_add]`. Establish `hne : 𝔣.tr (fun V => ∃ Λ' t', At μF 𝔣.toAmp.S V Λ' t' ∧ 𝔵.Λ = bcInf Λ' ∧ ∀ w ∉ 𝔢'.toAmp.S, 𝔵.t w = bcSat t' w) x j ≠ 0`. Introduce `h0`. Rewrite `hj2` using `[h0, mul_zero]`.
+
+Conclude with `hj1 ((mul_eq_zero.1 hj2).resolve_left (by norm_num))`. Choose the witnesses or unpack the hypotheses as in `⟨V, hV, -, Λ', t', hAt, hΛ, ht⟩ : ∃ V : Submodule ℂ (LL μF), IsSummand μF V ∧ V.map ((Twist.id μF).U : LL μF →ₗ[ℂ] LL μF) = V ∧ ∃ Λ' t', At μF 𝔣.toAmp.S V Λ' t' ∧ 𝔵.Λ = bcInf Λ' ∧ ∀ w ∉ 𝔢'.toAmp.S, 𝔵.t w = bcSat t' w := by`. Assume the negation of the conclusion as `hno`. Apply `hne` to reduce the goal to its premises. Establish `hemp : {V : Submodule ℂ (LL μF) | IsSummand μF V ∧ V.map ((Twist.id μF).U : LL μF →ₗ[ℂ] LL μF) = V ∧ ∃ Λ' t', At μF 𝔣.toAmp.S V Λ' t' ∧ 𝔵.Λ = bcInf Λ' ∧ ∀ w ∉ 𝔢'.toAmp.S, 𝔵.t w = bcSat t' w} = ∅` using `Set.eq_empty_of_forall_notMem fun V hV => hno ⟨V, hV⟩`.
+
+Unfold `Side.tr`. Rewrite using `[hemp, finsum_mem_empty]`. Conclude with `⟨V, Λ', t', hV, ⟨_, 𝔣.toAmp.finS, hAt⟩, hΛ, Filter.mem_of_superset 𝔢'.toAmp.finS.compl_mem_cofinite fun w hw => ht w hw⟩`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.coreInd :
     CIx → GM.GM → T.LiftAll → CoreInd := by
   intro hCI hGM hLift F E _ _ _ _ _ _ _ _ σ hσ hgen τ₁ τ₂ θ₂ hpair hgal₂ hsw₁ hsw₂ S hSsp hSunr m₁ m₂ B₁ B₂ hA₁ hA₂ μF _

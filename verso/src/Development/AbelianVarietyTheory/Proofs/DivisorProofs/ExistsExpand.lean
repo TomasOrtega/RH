@@ -19,6 +19,11 @@ namespace GlobalTheory.LeviGL.ZGood
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.QuantumMinorCharts.commute_of_mem_Zalg`. Consider the case `exact _root_.GlobalTheory.QuantumMinorCharts.commute_of_mem_Zalg`. Consider the case `(apply _root_.GlobalTheory.QuantumMinorCharts.commute_of_mem_Zalg <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.QuantumMinorCharts.commute_of_mem_Zalg <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.QuantumMinorCharts.commute_of_mem_Zalg <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.QuantumMinorCharts.commute_of_mem_Zalg ..)`.
+-/
 theorem zalg_commute {z z' : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) (hz' : z' ∈ Zalg E a) : Commute z z' := by
   first
   | exact @_root_.GlobalTheory.QuantumMinorCharts.commute_of_mem_Zalg
@@ -28,6 +33,9 @@ theorem zalg_commute {z z' : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) (hz'
   | (intros; apply @_root_.GlobalTheory.QuantumMinorCharts.commute_of_mem_Zalg <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.QuantumMinorCharts.commute_of_mem_Zalg ..)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [chart, mul_assoc]`.
+-/
 theorem chart_left (φ : GA E a → ℂ) (h g : GA E a) :
     chart (fun x => φ (h * x)) g = chart φ (h * g) := by
   funext x
@@ -40,6 +48,9 @@ def leftRat (γ : GL (Fin a) E) : Module.End ℂ (Sm E a) where
   map_add' φ ψ := rfl
   map_smul' c φ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem leftRat_apply (γ : GL (Fin a) E) (φ : Sm E a) (g : GA E a) :
     (leftRat γ φ).1 g = φ.1 (ratGL E a γ * g) := rfl
 

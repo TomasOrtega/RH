@@ -12,6 +12,25 @@ namespace GlobalTheory.SmoothPtLift
 
 set_option autoImplicit false
 
+/- English proof (translation)
+Establish `hItop : I ≠ ⊤`. Introduce and unpack `rfl`. Establish `h1 : (1 : C) ∈ (⊤ : Ideal C) ^ 2` using `by rw [Ideal.top_pow]; exact Submodule.mem_top`. Rewrite `h1` using `[hI, Ideal.mem_bot]`. Conclude with `one_ne_zero h1`.
+
+Use `haveI : Nontrivial (C ⧸ I) := Ideal.Quotient.nontrivial_iff.mpr hItop`. Use `haveI : IsLocalRing (C ⧸ I) := IsLocalRing.of_surjective' (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective`. Use `haveI : IsLocalHom (Ideal.Quotient.mk I) := IsLocalHom.of_surjective _ Ideal.Quotient.mk_surjective`. Set `t₀ : Sp (C ⧸ I)` to `IsLocalRing.closedPoint (C ⧸ I)`. Take `⟨_, ⟨W, hW, rfl⟩, hxW, -⟩` from `S.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (p (u₀ t₀))) isOpen_univ`.
+
+Take `⟨_, ⟨V, hV, rfl⟩, hxV, hVW⟩` from `U.isBasis_affineOpens.exists_subset_of_mem_open (a := u₀ t₀) hxW (W.2.preimage p.continuous)`. Use `haveI : IsOpenImmersion hW.fromSpec := hW.isOpenImmersion_fromSpec`. Use `haveI : IsOpenImmersion hV.fromSpec := hV.isOpenImmersion_fromSpec`. Establish `hmap : (spMap (Ideal.Quotient.mk I)) t₀ = IsLocalRing.closedPoint C` using `IsLocalRing.comap_closedPoint (Ideal.Quotient.mk I)`. Establish `hsW : Set.range s ⊆ Set.range hW.fromSpec`.
+
+Rewrite using `[hW.range_fromSpec]`. Introduce and unpack `_ ⟨z, rfl⟩`. Establish `h1 : s (IsLocalRing.closedPoint C) ∈ W`. Rewrite using `[← hmap, ← Scheme.Hom.comp_apply, ← hw, Scheme.Hom.comp_apply]`. Conclude with `hxW`.
+
+Conclude with `((IsLocalRing.specializes_closedPoint z).map s.continuous).mem_open W.2 h1`. Establish `hu₀V : Set.range u₀ ⊆ Set.range hV.fromSpec`. Rewrite using `[hV.range_fromSpec]`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `((IsLocalRing.specializes_closedPoint z).map u₀.continuous).mem_open V.2 hxV`.
+
+Take `⟨a, ha⟩ : ∃ a, Spec.map a = IsOpenImmersion.lift hW.fromSpec s hsW` from `⟨_, Spec.map_preimage _⟩`. Take `⟨b₀, hb₀⟩ : ∃ b, Spec.map b = IsOpenImmersion.lift hV.fromSpec u₀ hu₀V` from `⟨_, Spec.map_preimage _⟩`. Establish `key : p.appLE W V hVW ≫ b₀ = a ≫ CommRingCat.ofHom (Ideal.Quotient.mk I)`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono hW.fromSpec, Spec.map_comp, Spec.map_comp, Category.assoc, Category.assoc, IsAffineOpen.SpecMap_appLE_fromSpec p hW hV hVW, hb₀, ha, IsOpenImmersion.lift_fac_assoc, IsOpenImmersion.lift_fac, hw]`.
+
+Establish `hsm` using `p.smooth_appLE hW hV hVW`. Use `algebraize [(p.appLE W V hVW).hom, a.hom]`. Set `g : Γ(U, V) →ₐ[Γ(S, W)] C ⧸ I` to `{ b₀.hom with commutes' := fun r => by`. Use `congrArg (fun f => f.hom r) key` as an intermediate fact. Conclude with `this }`.
+
+Set `b` to `Algebra.FormallySmooth.lift I ⟨2, hI⟩ g`. Use `⟨Spec.map (CommRingCat.ofHom b.toRingHom) ≫ hV.fromSpec, ?_, ?_⟩` and prove the remaining obligations. Establish `e : CommRingCat.ofHom b.toRingHom ≫ CommRingCat.ofHom (Ideal.Quotient.mk I) = b₀`. Use extensionality with `x`. Conclude with `Algebra.FormallySmooth.mk_lift I ⟨2, hI⟩ g x`.
+
+Rewrite using `[← Category.assoc, ← Spec.map_comp, e, hb₀, IsOpenImmersion.lift_fac]`. Establish `e : p.appLE W V hVW ≫ CommRingCat.ofHom b.toRingHom = a`. Use extensionality with `r`. Conclude with `b.commutes r`. Rewrite using `[Category.assoc, ← IsAffineOpen.SpecMap_appLE_fromSpec p hW hV hVW, ← Category.assoc, ← Spec.map_comp, e, ha, IsOpenImmersion.lift_fac]`.
+-/
 theorem exists_lift (U S : Scheme.{0}) (p : U ⟶ S) [Smooth p] (C : Type) [CommRing C] [IsLocalRing C]
     (I : Ideal C) (hI : I ^ 2 = ⊥) (s : Sp C ⟶ S) (u₀ : Sp (C ⧸ I) ⟶ U)
     (hw : u₀ ≫ p = spMap (Ideal.Quotient.mk I) ≫ s) :

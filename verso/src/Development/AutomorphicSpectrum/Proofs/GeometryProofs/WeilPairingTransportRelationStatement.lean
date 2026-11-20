@@ -12,6 +12,9 @@ import Development.AutomorphicSpectrum.Proofs.GeometryProofs.DualMapSnd
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.TorsionChars.chars_descend | exact GlobalTheory.CompanionTheory.Ar.TorsionChars.chars_descend | (intros; apply GlobalTheory.CompanionTheory.Ar.TorsionChars.chars_descend <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.weil_pairing_transport_relation : ∀ (Ω Ω' : Type) [Field Ω] [Field Ω'] (i : Ω →+* Ω') (C A : Type) [CommGroup C] [CommGroup A] (rel : A → C → Prop) (n : ℕ), 1 ≤ n →
   (∀ c : C, c ^ n = 1 → ∃ a : A, a ^ n = 1 ∧ rel a c) →
   (∀ a : A, a ^ n = 1 → ∃ c : C, c ^ n = 1 ∧ rel a c) →

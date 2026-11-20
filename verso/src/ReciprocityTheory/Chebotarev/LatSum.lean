@@ -25,6 +25,17 @@ noncomputable def latSumEquiv (Λ₀ Λ' : Submodule ℤ V) (hle : Λ' ≤ Λ₀
       obtain ⟨l, hl, β, hβ, rfl⟩ := hcover α hα
       exact ⟨(⟨l, hl⟩, ⟨β, hβ⟩), rfl⟩)
 
+/- English proof (translation)
+Use `set e := latSumEquiv Λ₀ Λ' hle reps hmem hcover huniq`. Establish `hc : ∀ α : Λ₀, ‖c' α‖ ≤ ∑ β ∈ reps, ‖c' β‖`. Introduce and unpack `⟨α, hα⟩`. Take `⟨l, hl, β, hβ, rfl⟩` from `hcover α hα`. Rewrite using `[hper l hl β hβ]`.
+
+Conclude with `Finset.single_le_sum (f := fun β => ‖c' β‖) (fun _ _ => norm_nonneg _) hβ`. Establish `hcg : Summable fun α : Λ₀ => c' α * g α`. Use `summable_norm_iff.mp (Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun α => ?_) ((summable_norm_iff.mpr hg).mul_left (∑ β ∈ reps, ‖c' β‖)))` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hc α) (norm_nonneg _)`.
+
+Establish `hs : Summable fun p : Λ' × reps => c' (e p) * g (e p)` using `(e.summable_iff).mpr hcg`. Rewrite using `[← e.tsum_eq, hs.tsum_prod]`. Use `tsum_congr fun l => ?_` and prove the remaining obligations. Rewrite using `[tsum_fintype]`. Establish `h1 : ∀ β : reps, (fun α : Λ₀ => c' α * g α) (e (l, β)) = c' β * g (l + β)`.
+
+Introduce and unpack `⟨β, hβ⟩`. Use `show c' ((l : V) + β) * g ((l : V) + β) = _`. Rewrite using `[hper l l.2 β hβ]`. Simplify using `only [h1]`. Rewrite using `[Finset.sum_coe_sort reps (fun β => c' β * g (l + β))]`.
+
+Simplify using `only [mul_sub, Finset.sum_sub_distrib, ← Finset.sum_mul, hmean, zero_mul, sub_zero]`.
+-/
 theorem tsum_latSum_eq (Λ₀ Λ' : Submodule ℤ V) (hle : Λ' ≤ Λ₀) (reps : Finset V)
     (hmem : ∀ β ∈ reps, β ∈ Λ₀)
     (hcover : ∀ α ∈ Λ₀, ∃ l ∈ Λ', ∃ β ∈ reps, α = l + β)
@@ -57,6 +68,31 @@ theorem tsum_latSum_eq (Λ₀ Λ' : Submodule ℤ V) (hle : Λ' ≤ Λ₀) (reps
 
 variable [FiniteDimensional ℝ V]
 
+/- English proof (translation)
+Take `⟨R₀, C, hRC⟩` from `hdiff`. Use `set R := max R₀ 1 with hRdef`. Establish `hRpos : 0 < R` using `lt_of_lt_of_le one_pos (le_max_right _ _)`. Use `set A := ∑ β ∈ reps, ‖c' β‖ with hAdef`. Establish `hr0 : r < 0` using `lt_of_lt_of_le hr (neg_nonpos.mpr (Nat.cast_nonneg _))`.
+
+Use `set X := |C| + 2 * |K| * R ^ (-r) with hXdef`. Establish `hX : 0 ≤ X` using `by positivity`. Set `u : Λ' → ℝ` to `fun l => A * X * ‖(l : V)‖ ^ r + if (l : V) = 0 then A * (2 * |K|) else 0`. Establish `hu : Summable u`. Use `Summable.add ?_ ?_` and prove the remaining obligations.
+
+Use `Summable.mul_left (A * X) ?_` and prove the remaining obligations. Establish `h0` using `ZLattice.summable_norm_rpow Λ₀ r hr`. Establish `h1` using `h0.comp_injective (i := fun l : Λ' => (⟨l, hle l.2⟩ : Λ₀)) (fun a b h => Subtype.ext (congrArg Subtype.val h :))`. Conclude with `h1`. Apply `summable_of_ne_finset_zero (s := {0})` to reduce the goal to its premises.
+
+Introduce `l hl`. Establish `: (l : V) ≠ 0` using `by simpa using hl`. Simplify using `[this]`. Use `⟨fun s => ∑' l : Λ', ∑ β ∈ reps, c' β * (G s (l + β) - G s l), ?_, ?_⟩` and prove the remaining obligations. Use `continuousOn_tsum (u := u) (fun l => ?_) hu (fun l s hs => ?_)` and prove the remaining obligations.
+
+Use `continuousOn_finsetSum _ fun β hβ => ?_` and prove the remaining obligations. Conclude with `continuousOn_const.mul ((hcont _ (Λ₀.add_mem (hle l.2) (hmem β hβ))).sub (hcont _ (hle l.2)))`. Establish `key : ∀ β ∈ reps, ‖G s (l + β) - G s l‖ ≤ X * ‖(l : V)‖ ^ r + if (l : V) = 0 then 2 * |K| else 0`. Introduce `β hβ`. Establish `h2K : ‖G s (l + β) - G s l‖ ≤ 2 * |K|`.
+
+Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Use `hbound s hs _ (Λ₀.add_mem (hle l.2) (hmem β hβ))` as an intermediate fact. Use `hbound s hs _ (hle l.2)` as an intermediate fact. Use `le_abs_self K` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hpow : 0 ≤ ‖(l : V)‖ ^ r` using `Real.rpow_nonneg (norm_nonneg _) _`. Distinguish the cases in `hl0 : (l : V) = 0`. Rewrite using `[if_pos hl0]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[if_neg hl0, add_zero]`.
+
+Distinguish the cases in `hR : R ≤ ‖(l : V)‖`. Use `hRC s hs β hβ l l.2 ((le_max_left _ _).trans hR)` as an intermediate fact. Establish `hC : C * ‖(l : V)‖ ^ r ≤ |C| * ‖(l : V)‖ ^ r` using `mul_le_mul_of_nonneg_right (le_abs_self C) hpow`. Establish `: 0 ≤ 2 * |K| * R ^ (-r) * ‖(l : V)‖ ^ r` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+
+Rewrite `hR` using `[not_le]`. Establish `hlpos : 0 < ‖(l : V)‖` using `norm_pos_iff.mpr hl0`. Establish `hRr : R ^ r ≤ ‖(l : V)‖ ^ r` using `Real.rpow_le_rpow_of_nonpos hlpos hR.le hr0.le`. Establish `hone : R ^ (-r) * R ^ r = 1`. Rewrite using `[Real.rpow_neg hRpos.le, inv_mul_cancel₀ (Real.rpow_pos_of_pos hRpos r).ne']`.
+
+Establish `hRn : 0 ≤ R ^ (-r)` using `Real.rpow_nonneg hRpos.le _`. Establish `h3 : 2 * |K| ≤ 2 * |K| * R ^ (-r) * ‖(l : V)‖ ^ r`. Combine the equalities or inequalities in the displayed calculation. Establish `: 0 ≤ |C| * ‖(l : V)‖ ^ r` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+
+Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [norm_mul]`. Use `_ ≤ ∑ β ∈ reps, ‖c' β‖ * (X * ‖(l : V)‖ ^ r + if (l : V) = 0 then 2 * |K| else 0) := Finset.sum_le_sum fun β hβ => mul_le_mul_of_nonneg_left (key β hβ) (norm_nonneg _)`. Use `_ = u l := by`.
+
+Rewrite using `[← Finset.sum_mul]`. Simplify using `only [u]`. Apply the tactic sequence `split_ifs <;> ring`. Introduce `s hs`. Conclude with `(tsum_latSum_eq Λ₀ Λ' hle reps hmem hcover huniq c' hper hmean (G s) (hsum s hs)).symm`.
+-/
 theorem exists_continuousOn_latticeSum (Λ₀ Λ' : Submodule ℤ V) [DiscreteTopology Λ₀] (hle : Λ' ≤ Λ₀)
     (reps : Finset V) (hmem : ∀ β ∈ reps, β ∈ Λ₀)
     (hcover : ∀ α ∈ Λ₀, ∃ l ∈ Λ', ∃ β ∈ reps, α = l + β)

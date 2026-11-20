@@ -8,6 +8,9 @@ open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR GlobalTheory.Compan
 
 namespace GlobalTheory.CompanionTheory.Ar.Num.ZTop
 
+/- English proof (translation)
+Take `⟨hmin, hrel⟩` from `hW`. Rewrite `hmin` using `[hϖ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton]`. Use `PairNumberJoinLeft.verticalComponentFibre O ϖ hϖ K ι P d hP (C ϖ) 0 (isWeightedHomogeneous_C _ _) (fun h => hϖ.ne_zero ?_) W hmin hrel (hmin.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)))` and prove the remaining obligations. Conclude with `Ideal.mem_bot.mp (hP.noTorsion ▸ Ideal.mem_comap.mpr h)`.
+-/
 theorem isFibreComp_variety {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {ϖ : O}
     (hϖ : Irreducible ϖ) {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
     {P : Ideal (MRing ι O)} {d : ℕ} (hP : IsModelOver P d) {W : Ideal (MRing ι O)} (hW : IsFibreComp P W) :
@@ -21,6 +24,11 @@ theorem isFibreComp_variety {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValu
     (hmin.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)))
   exact Ideal.mem_bot.mp (hP.noTorsion ▸ Ideal.mem_comap.mpr h)
 
+/- English proof (translation)
+Unfold `classNum genNum`. Rewrite using `[MvPolynomial.support_map_of_injective _ (RingHom.injective_int (Int.castRingHom ℝ))]`. Use `push_cast`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_map]`.
+
+Both sides reduce to the same expression.
+-/
 theorem cast_classNum {K : Type} [DecidableEq K] {ι : K → Type} {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] {σ : Type} (cls : σ → K → ℤ) (H : MvPolynomial σ ℤ) (Q : List (K → ℤ))
     (W : Ideal (MRing ι O)) :
@@ -33,6 +41,11 @@ theorem cast_classNum {K : Type} [DecidableEq K] {ι : K → Type} {O : Type} [C
   rw [MvPolynomial.coeff_map]
   rfl
 
+/- English proof (translation)
+Introduce `hS O _ _ _ ϖ hϖ K _ _ ι _ P d hP N x hx W hW k hk Q hQ`. Take `⟨Ω, _, _, y, w, hy, hflag⟩` from `hx W hW`. Take `⟨hprime, hdim⟩` from `isFibreComp_variety hϖ hP hW`. Establish `h` using `GlobalTheory.T.flag_frame_point_dimension hS (IsLocalRing.ResidueField O) Ω K ι y d (hy ▸ hprime) (hy ▸ hdim) N w x hflag k hk Q hQ`. Establish `hmap : MvPolynomial.map (Int.castRingHom ℝ) (psum (Fin N) ℤ k) = ∑ i, X i ^ k`.
+
+Simplify using `[psum]`. Establish `h2` using `cast_classNum x (psum (Fin N) ℤ k) Q W`. Rewrite `h2` using `[hmap, ← hy, h]`. Conclude with `h2` after adjusting the coercions.
+-/
 theorem powerSumsVanish_of_trivFlagAt :
     NumericalSegre.Statement → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O),
       Irreducible ϖ → ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)]

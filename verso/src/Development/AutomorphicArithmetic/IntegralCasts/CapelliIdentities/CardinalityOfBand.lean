@@ -7,6 +7,11 @@ noncomputable def UpperTheory.Reformulated.B.CardinalityOfBand.band :
         (@instDecidableAnd (@LE.le Nat instLENat a (@Fin.val m i)) (@LT.lt Nat instLTNat (@Fin.val m i) b)
           (a.decLe (@Fin.val m i)) ((@Fin.val m i).decLt b))
 
+/- English proof (translation)
+Introduce `m a b hb`. Rewrite using `[← Nat.card_Ico a b, ← Finset.card_map Fin.valEmbedding]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and, Fin.valEmbedding_apply, Finset.mem_Ico, UpperTheory.Reformulated.B.CardinalityOfBand.band, decide_eq_true_eq]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi, rfl⟩`. Conclude with `hi`. Introduce `hx`. Conclude with `⟨⟨x, lt_of_lt_of_le hx.2 hb⟩, hx, rfl⟩`.
+-/
 theorem UpperTheory.Reformulated.B.CardinalityOfBand.card_band :
     ∀ (m a b : Nat),
       @LE.le Nat instLENat b m →

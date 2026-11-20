@@ -8,6 +8,17 @@ namespace GlobalTheory.IndefiniteRowSideFullHecke.PlacesAboveMainDegree
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.FrobeniusOrbits NumberField
 
+/- English proof (translation)
+Distinguish the cases in `hp : p = 0`. Use `Set.Finite.subset Set.finite_empty ?_` and prove the remaining obligations. Introduce `w hw`. Conclude with `absurd (hw.trans hp) (D.what₂.places.resChar_prime w).ne_zero`. Establish `hI : (Ideal.span {(p : 𝓞 D.what₂.LL)} : Ideal (𝓞 D.what₂.LL)) ≠ 0`.
+
+Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hp` after adjusting the coercions. Use `Set.Finite.subset ((Ideal.finite_factors hI).preimage D.plEq.injective.injOn) ?_` and prove the remaining obligations. Introduce `w hw`. Establish `hw' : D.what₂.places.resChar w = p` using `hw`.
+
+Establish `h1` using `D.what₂.places.val_resChar w`. Establish `h0 : ((p : ℕ) : D.what₂.LL) ≠ 0` using `by exact_mod_cast hp`. Rewrite `h1` using `[hw', D.val_eq w _ h0]`. Establish `h2 : vAdd (D.plEq w) ((p : ℕ) : D.what₂.LL) = (D.what₂.places.ramIdx w : ℤ)` using `by exact_mod_cast h1`. Establish `h3` using `D.what₂.places.ramIdx_pos w`.
+
+Use `show (D.plEq w).asIdeal ∣ _`. Rewrite using `[← IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_dvd (K := D.what₂.LL)]`. Use `lt_of_le_of_ne (IsDedekindDomain.HeightOneSpectrum.valuation_le_one _ _) (fun h => ?_)` and prove the remaining obligations. Unfold `vAdd at h2`. Establish `h4 : (algebraMap (𝓞 D.what₂.LL) D.what₂.LL (p : 𝓞 D.what₂.LL)) = ((p : ℕ) : D.what₂.LL)` using `map_natCast _ _`.
+
+Establish `h5 : (D.plEq w).valuation D.what₂.LL ((p : ℕ) : D.what₂.LL) = 1` using `h4 ▸ h`. Rewrite `h2` using `[h5, WithZero.log_one]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finite_over (D : D7) (p : ℕ) : {w : D.what₂.places.Pl | D.what₂.places.resChar w = p}.Finite := by
   by_cases hp : p = 0
   · refine Set.Finite.subset Set.finite_empty ?_
@@ -124,6 +135,9 @@ def ShiftSize {eps : ℝ} (Fm : FamP eps) : Prop :=
   ∀ C : ℝ, ∃ x0 : ℝ, ∀ x : ℝ, x0 ≤ x → Fm.x1 < x → ∀ i : Fm.Ix x,
     C * (exch (Fm.D x i) * (Fm.L x i).sc.X'' (Fm.D x i).R.n) ≤ (Fm.L x i).sc.b
 
+/- English proof (translation)
+Use `ne_zero_of_dvd_ne_zero ?_ (h u)` and prove the remaining obligations. Unfold `minkM Formalism.HermitianLatticeCounting.S6.minkowskiM`. Use `Finset.prod_ne_zero_iff.2 fun p hp => pow_ne_zero _ ?_` and prove the remaining obligations. Use `(Finset.mem_filter.1 hp).2` as an intermediate fact. Conclude with `this.ne_zero`.
+-/
 theorem GamDvd.ne_zero {D : D7} (h : GamDvd D) (u : D.what₂.Word) : (D.mem u).C.DGam ≠ 0 := by
   refine ne_zero_of_dvd_ne_zero ?_ (h u)
   unfold minkM Formalism.HermitianLatticeCounting.S6.minkowskiM

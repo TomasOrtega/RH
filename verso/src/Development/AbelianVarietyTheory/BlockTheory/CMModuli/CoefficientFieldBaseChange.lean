@@ -11,8 +11,16 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 def ze (n : ℕ) : ℂ := Complex.exp (2 * Real.pi * Complex.I / n)
 
+/- English proof (translation)
+The claim follows from `Complex.isPrimitiveRoot_exp n hn.ne'`.
+-/
 theorem ze_prim {n : ℕ} (hn : 0 < n) : IsPrimitiveRoot (ze n) n := Complex.isPrimitiveRoot_exp n hn.ne'
 
+/- English proof (translation)
+Unfold `ze`. Rewrite using `[← Complex.exp_nat_mul]`. Use `congr 1`. Establish `: (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `: (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem ze_pow {n m : ℕ} (hn : 0 < n) (hm : 0 < m) : ze (n * m) ^ m = ze n := by
   unfold ze
   rw [← Complex.exp_nat_mul]
@@ -33,8 +41,14 @@ def subfieldBase (l : Level H) (L : IntermediateField ℚ ℂ) (hr : H.rt0 ∈ L
 
 def KA (l : Level H) : IntermediateField ℚ ℂ := IntermediateField.adjoin ℚ {H.rt0, ze l.A}
 
+/- English proof (translation)
+The claim follows from `IntermediateField.subset_adjoin _ _ (by simp)`.
+-/
 theorem rootZero_mem_adjoin (l : Level H) : H.rt0 ∈ KA l := IntermediateField.subset_adjoin _ _ (by simp)
 
+/- English proof (translation)
+The claim follows from `IntermediateField.subset_adjoin _ _ (by simp)`.
+-/
 theorem ze_mem_KA (l : Level H) : ze l.A ∈ KA l := IntermediateField.subset_adjoin _ _ (by simp)
 
 def baseKA (l : Level H) : Base l (KA l) := subfieldBase l (KA l) (rootZero_mem_adjoin l) (ze_mem_KA l)
@@ -58,6 +72,13 @@ structure IsCoeffField (l : Level H) (F₀ : IntermediateField ℚ ℂ) : Prop w
   conj : ∀ (τ : E →+* ℂ) (x : E), τ x ∈ F₀
   root : ze l.M' ∈ F₀
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `h1 : (τ (H.rt : E)) ^ 2 = H.rt0 ^ 2`. Rewrite using `[H.sqrt_neg_disc_sq, ← map_pow]`. Establish `: ((H.rt : E)) ^ 2 = -(H.d : E)`. Use `congrArg (fun x : 𝓞 E => (x : E)) H.rt_sq` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp h1 with h2 | h2` into its components or cases. Rewrite using `[← h2]`.
+
+Conclude with `h.conj τ _`. Establish `: H.rt0 = -τ (H.rt : E)` using `by rw [h2, neg_neg]`. Rewrite using `[this]`. Conclude with `neg_mem (h.conj τ _)`.
+-/
 theorem IsCoeffField.coeff_field_contains_root {l : Level H} {F₀ : IntermediateField ℚ ℂ} (h : IsCoeffField l F₀) : H.rt0 ∈ F₀ := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   have h1 : (τ (H.rt : E)) ^ 2 = H.rt0 ^ 2 := by
@@ -71,6 +92,9 @@ theorem IsCoeffField.coeff_field_contains_root {l : Level H} {F₀ : Intermediat
   · have : H.rt0 = -τ (H.rt : E) := by rw [h2, neg_neg]
     rw [this]; exact neg_mem (h.conj τ _)
 
+/- English proof (translation)
+Take `⟨m, hm⟩ : l.A ∣ l.M'` from `Nat.dvd_lcm_right _ _`. Establish `hM : 0 < l.M'` using `Nat.lcm_pos (by have := l.three_le; omega) l.A_pos`. Establish `hm0 : 0 < m` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hm; omega)`. Rewrite using `[← ze_pow l.A_pos hm0, ← hm]`. Conclude with `pow_mem h.root m`.
+-/
 theorem IsCoeffField.ze_mem {l : Level H} {F₀ : IntermediateField ℚ ℂ} (h : IsCoeffField l F₀) : ze l.A ∈ F₀ := by
   obtain ⟨m, hm⟩ : l.A ∣ l.M' := Nat.dvd_lcm_right _ _
   have hM : 0 < l.M' := Nat.lcm_pos (by have := l.three_le; omega) l.A_pos
@@ -78,6 +102,9 @@ theorem IsCoeffField.ze_mem {l : Level H} {F₀ : IntermediateField ℚ ℂ} (h 
   rw [← ze_pow l.A_pos hm0, ← hm]
   exact pow_mem h.root m
 
+/- English proof (translation)
+Rewrite using `[KA, IntermediateField.adjoin_le_iff]`. Introduce and unpack `x (rfl | rfl)`. Conclude with `h.coeff_field_contains_root`. Conclude with `h.ze_mem`.
+-/
 theorem IsCoeffField.KA_le {l : Level H} {F₀ : IntermediateField ℚ ℂ} (h : IsCoeffField l F₀) : KA l ≤ F₀ := by
   rw [KA, IntermediateField.adjoin_le_iff]
   rintro x (rfl | rfl)
@@ -99,6 +126,9 @@ def baseChangeFst {l : Level H} {X : Scheme.{0}} (str : X ⟶ Sp (KA l)) {F₀ :
 def baseChangeStr {l : Level H} {X : Scheme.{0}} (str : X ⟶ Sp (KA l)) {F₀ : IntermediateField ℚ ℂ}
     (h : IsCoeffField l F₀) : baseChange str h ⟶ Sp F₀ := pullback.snd str (spMap h.incl)
 
+/- English proof (translation)
+The claim follows from `IsPullback.of_hasPullback _ _`.
+-/
 theorem isPullback_baseChange {l : Level H} {X : Scheme.{0}} (str : X ⟶ Sp (KA l)) {F₀ : IntermediateField ℚ ℂ}
     (h : IsCoeffField l F₀) : IsPullback (baseChangeFst str h) (baseChangeStr str h) str (spMap h.incl) :=
   IsPullback.of_hasPullback _ _

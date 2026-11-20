@@ -10,6 +10,11 @@ namespace GlobalTheory.MinorFrame
 
 variable {σ σ' : Type} [Fintype σ] [Fintype σ']
 
+/- English proof (translation)
+Establish `: (constantCoeff : MvPolynomial σ' ℂ →+* ℂ).comp (rsub M).toRingHom = constantCoeff`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using the standard rewrite rules. Introduce `i`.
+
+Simplify using `[rsub_X]`. Conclude with `congrArg (fun φ : MvPolynomial σ ℂ →+* ℂ => φ g) this`.
+-/
 theorem constantCoeff_rsub (M : Matrix σ' σ ℂ) (g : MvPolynomial σ ℂ) :
     constantCoeff (rsub M g) = constantCoeff g := by
   have : (constantCoeff : MvPolynomial σ' ℂ →+* ℂ).comp (rsub M).toRingHom = constantCoeff := by
@@ -18,6 +23,17 @@ theorem constantCoeff_rsub (M : Matrix σ' σ ℂ) (g : MvPolynomial σ ℂ) :
     · intro i; simp [rsub_X]
   exact congrArg (fun φ : MvPolynomial σ ℂ →+* ℂ => φ g) this
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C c => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq, mul_add, Finset.sum_add_distrib]`. Consider the case `mul_X p k hp`. Establish `hX : pderiv s (rsub M (X k)) = C (M s k)`.
+
+Rewrite using `[rsub_X, map_sum, Finset.sum_eq_single s]`. Simplify using `[pderiv_X]`. Introduce `b _ hb`. Rewrite using `[Derivation.leibniz, pderiv_C, pderiv_X_of_ne hb]`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules. Rewrite using `[map_mul, Derivation.leibniz, hX, hp, smul_eq_mul, smul_eq_mul]`. Repeatedly rewrite using `[Derivation.leibniz, smul_eq_mul, map_add, map_mul, mul_add, Finset.sum_add_distrib]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single k]`.
+
+Rewrite using `[pderiv_X_self, map_one]`. Expand and normalize the polynomial expressions, which then agree. Introduce `b _ hb`. Rewrite using `[pderiv_X_of_ne hb.symm]`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pderiv_rsub [DecidableEq σ] [DecidableEq σ'] (M : Matrix σ' σ ℂ) (s : σ') (g : MvPolynomial σ ℂ) :
     pderiv s (rsub M g) = ∑ w, C (M s w) * rsub M (pderiv w g) := by
   induction g using MvPolynomial.induction_on with
@@ -44,6 +60,13 @@ theorem pderiv_rsub [DecidableEq σ] [DecidableEq σ'] (M : Matrix σ' σ ℂ) (
       refine Finset.sum_congr rfl fun j _ => ?_
       ring
 
+/- English proof (translation)
+Proceed by induction on `F using MvPolynomial.induction_on generalizing F' with`. Consider the case `C a => rw [algHom_C, algebraMap_eq, fockL_C_left, fockL_C_left, constantCoeff_rsub]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, hp, hq]`. Consider the case `mul_X p v hp`. Establish `e1 : rsub M (p * X v) = ∑ w, M w v • (X w * rsub M p)`.
+
+Rewrite using `[map_mul, rsub_X, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, map_sum, LinearMap.sum_apply]`.
+
+Repeatedly rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, fockL_X_pderiv, hp]`. Rewrite using `[mul_comm p, fockL_X_pderiv, pderiv_rsub, map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_eq_C_mul, map_smul, Matrix.conjTranspose_apply, starRingEnd_apply]`.
+-/
 theorem fockL_rsub_adj (M : Matrix σ' σ ℂ) (F : MvPolynomial σ ℂ) (F' : MvPolynomial σ' ℂ) :
     fockL (rsub M F) F' = fockL F (rsub Mᴴ F') := by
   classical
@@ -61,6 +84,9 @@ theorem fockL_rsub_adj (M : Matrix σ' σ ℂ) (F : MvPolynomial σ ℂ) (F' : M
     refine Finset.sum_congr rfl fun b _ => ?_
     rw [← smul_eq_C_mul, map_smul, Matrix.conjTranspose_apply, starRingEnd_apply]
 
+/- English proof (translation)
+Introduce `σ σ' _ _ M F F'`. Conclude with `fockL_rsub_adj M F F'`.
+-/
 theorem fockS_rsub_adj : ∀ {σ σ' : Type} [Fintype σ] [Fintype σ'] (M : Matrix σ' σ ℂ) (F : MvPolynomial σ ℂ)
     (F' : MvPolynomial σ' ℂ), Formalism.L2.DIV.fockS (GlobalTheory.MinorFrame.rsub M F) F' =
       Formalism.L2.DIV.fockS F (GlobalTheory.MinorFrame.rsub M.conjTranspose F') := by

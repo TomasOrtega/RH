@@ -17,15 +17,26 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l} {S : Type} [CommRing S]
 
+/- English proof (translation)
+Unfold `scal Out.liftFun`. Simplify using `only [map_mul]`.
+-/
 theorem reframe_scal_mul (x : Sp S ⟶ Xo.X) (a b : S) (i : (PPx x).ι) :
     scal x (a * b) i = scal x a i * scal x b i := by
   unfold scal Out.liftFun
   simp only [map_mul]
 
+/- English proof (translation)
+Unfold `scal Out.liftFun`. Simplify using `only [map_one]`.
+-/
 theorem reframe_scal_one (x : Sp S ⟶ Xo.X) (i : (PPx x).ι) : scal x (1 : S) i = 1 := by
   unfold scal Out.liftFun
   simp only [map_one]
 
+/- English proof (translation)
+Take `⟨a, ha, -⟩` from `hs s'`. Take `⟨b, hb, -⟩` from `hs' s`. Take `⟨c, -, hc⟩` from `hs s`. Establish `h1 : b * a = c` using `hc _ fun i => by rw [reframe_scal_mul, _root_.mul_assoc, ← ha i, ← hb i]`. Establish `h2 : (1 : S) = c` using `hc _ fun i => by rw [reframe_scal_one, _root_.one_mul]`.
+
+Conclude with `⟨⟨a, b, by rw [mul_comm, h1, ← h2], by rw [h1, ← h2]⟩, ha⟩`.
+-/
 theorem generators_unit {x : Sp S ⟶ Xo.X} (s s' : LB.Sec (PPx x))
     (hs : ∀ r : LB.Sec (PPx x), ∃! a : S, ∀ i, r.f i = scal x a i * s.f i)
     (hs' : ∀ r : LB.Sec (PPx x), ∃! a : S, ∀ i, r.f i = scal x a i * s'.f i) :
@@ -39,6 +50,11 @@ theorem generators_unit {x : Sp S ⟶ Xo.X} (s s' : LB.Sec (PPx x))
 
 variable [Algebra c.F S]
 
+/- English proof (translation)
+Take `⟨hx, hc⟩` from `h`. Take `⟨hx', hc'⟩` from `h'`. Use `⟨hx'.trans hx, fun τ i => ?_⟩` and prove the remaining obligations. Establish `h2` using `hc' τ i`. Rewrite `h2` using `[hx]`.
+
+Conclude with `GlobalTheory.TangentLinear.isCombAt_mulVec _ _ _ _ _ _ _ (y.u τ) (y.tan τ) (y'.u τ) (g τ) (fun j => g' τ j i) (y''.u τ i) (hc τ) h2`.
+-/
 theorem Reframe.trans {g g' : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S} {y y' y'' : FrPt Xo c S}
     (h : Reframe g y y') (h' : Reframe g' y' y'') : Reframe (fun τ => g τ * g' τ) y y'' := by
   obtain ⟨hx, hc⟩ := h
@@ -49,17 +65,32 @@ theorem Reframe.trans {g g' : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (F
   exact GlobalTheory.TangentLinear.isCombAt_mulVec _ _ _ _ _ _ _ (y.u τ) (y.tan τ) (y'.u τ) (g τ) (fun j => g' τ j i)
     (y''.u τ i) (hc τ) h2
 
+/- English proof (translation)
+Unfold `spMap`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+-/
 private theorem spMap_comp_moduli_spaces {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B)
     (g : B →+* C) : spMap g ≫ spMap f = spMap (g.comp f) := by
   unfold spMap
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons a L ih => rw [List.prod_cons, MonObj.comp_mul, ih, List.map_cons, List.prod_cons]`.
+-/
 private theorem comp_list_prod' {X Y : Over Xo.X} (f : X ⟶ Y) (L : List (Y ⟶ Xo.univ.t.G)) :
     f ≫ L.prod = (L.map (f ≫ ·)).prod := by
   induction L with
   | nil => simp
   | cons a L ih => rw [List.prod_cons, MonObj.comp_mul, ih, List.map_cons, List.prod_cons]
 
+/- English proof (translation)
+Take `⟨hx, hc⟩` from `h`. Take `⟨hzx, hzu, -⟩` from `hz`. Take `⟨hzx', hzu', -⟩` from `hz'`. Use `⟨by rw [hzx', hzx, hx], fun τ i => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hp⟩` from `hc τ i`.
+
+Establish `r1 : (dualMap φ.toRingHom).comp (algebraMap S (DualNumber S)) = (algebraMap T (DualNumber T)).comp φ.toRingHom`. Apply the tactic sequence `refine RingHom.ext fun s => TrivSqZeroExt.ext ?_ ?_ <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `r2 : ∀ a : S, (dualMap φ.toRingHom).comp (epsMul a) = (epsMul (φ.toRingHom a)).comp (dualMap φ.toRingHom)`. Introduce `a`. Apply the tactic sequence `refine RingHom.ext fun s => TrivSqZeroExt.ext ?_ ?_ <;> simp [dualMap, epsMul, mul_comm]`.
+
+Establish `hw : spMap (dualMap φ.toRingHom) ≫ (tEps y.x).hom = (tEps z.x).hom` using `by show spMap (dualMap φ.toRingHom) ≫ (spMap (algebraMap S (DualNumber S)) ≫ y.x) = spMap (algebraMap T (DualNumber T)) ≫ z.x`. Rewrite using `[hzx, ← Category.assoc, ← Category.assoc, spMap_comp_moduli_spaces, spMap_comp_moduli_spaces, r1]`. Take `⟨F, hF⟩ : ∃ F : tEps z.x ⟶ tEps y.x, F.left = spMap (dualMap φ.toRingHom)` from `⟨Over.homMk _ hw, rfl⟩`. Use `⟨fun j => F ≫ u j, fun j => ?_, ?_⟩` and prove the remaining obligations. Establish `hu' : (u j).left = spMap (epsMul (g τ j i)) ≫ y.u τ j` using `hu j show (F ≫ u j).left = spMap (epsMul (φ.toRingHom (g τ j i))) ≫ z.u τ j`.
+
+Rewrite using `[Over.comp_left, hF, hu', hzu τ j, ← Category.assoc, ← Category.assoc, spMap_comp_moduli_spaces, spMap_comp_moduli_spaces, r2]`. Establish `hl : (List.ofFn fun j => F ≫ u j).prod = F ≫ (List.ofFn u).prod`. Simplify using `only [comp_list_prod', List.map_ofFn, Function.comp_def]`. Rewrite using `[hl, Over.comp_left, hF, hp, hzu' τ i]`.
+-/
 theorem Reframe.baseChange {T : Type} [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T)
     {g : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S} {y y' : FrPt Xo c S} {z z' : FrPt Xo c T}
     (h : Reframe g y y') (hz : FrMap φ y z) (hz' : FrMap φ y' z') : Reframe (fun τ => (g τ).map φ) z z' := by
@@ -90,12 +121,22 @@ theorem Reframe.baseChange {T : Type} [CommRing T] [Algebra c.F T] (φ : S →�
       simp only [comp_list_prod', List.map_ofFn, Function.comp_def]
     rw [hl, Over.comp_left, hF, hp, hzu' τ i]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(X.presheaf.map (𝟙 (Opposite.op U))).hom r = r`. Rewrite using `[X.presheaf.map_id]`. Both sides reduce to the same expression.
+-/
 private theorem appLE_id_apply' {X : Scheme} (U : X.Opens) (e : U ≤ (𝟙 X) ⁻¹ᵁ U) (r : Γ(X, U)) :
     (Scheme.Hom.appLE (𝟙 X) U U e).hom r = r := by
   change (X.presheaf.map (𝟙 (Opposite.op U))).hom r = r
   rw [X.presheaf.map_id]
   rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, hx, hcomb, -⟩ choose cf hcf1 hcf2 hcf3 using hcomb`. Use `⟨fun τ j i => cf τ i j, fun τ => ⟨fun p q hpq => hcf2 τ q p hpq, fun p => ?_⟩, hx, fun τ i => hcf3 τ i⟩` and prove the remaining obligations. Use `show IsUnit (cf τ p p)`. Rewrite using `[hcf1 τ p]`.
+
+Conclude with `Units.isUnit _`. Introduce and unpack `⟨b, hb, hx, hcomb⟩`. Consider the cases of `y'`. Simplify using `only at hx hcomb ⊢`. Substitute `hx` using the available equality.
+
+Take `⟨a, ha⟩` from `generators_unit y.s _ y.gen ‹_›`. Take `⟨t, ht0, ht1⟩ : ∃ t : Ix Dw → Sˣ, t none = a ∧ ∀ τ i, (t (some ⟨τ, i⟩) : S) = b τ i i` from `⟨fun o => o.elim a fun p => ((hb p.1).2 p.2).unit, rfl, fun τ i => ((hb τ).2 i).unit_spec⟩`. Use `⟨t, rfl, fun τ i => ⟨fun j => b τ j i, (ht1 τ i).symm, fun j hij => (hb τ).1 hij, hcomb τ i⟩, 𝟙 _, Category.id_comp _, Category.id_comp _, fun i h => ?_⟩` and prove the remaining obligations. Rewrite using `[ht0, ← ha i]`. Conclude with `appLE_id_apply' _ _ _`.
+-/
 theorem frBor_iff_reframe (y y' : FrPt Xo c S) : (∃ t : Ix Dw → Sˣ, FrBor t y y') ↔
     ∃ b : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S,
       (∀ τ, (b τ).BlockTriangular id ∧ ∀ i, IsUnit (b τ i i)) ∧ Reframe b y y' := by
@@ -120,6 +161,9 @@ theorem frBor_iff_reframe (y y' : FrPt Xo c S) : (∃ t : Ix Dw → Sˣ, FrBor t
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c S _ _`. Conclude with `⟨fun g g' y y' y'' h h' => Reframe.trans h h', fun T _ _ φ g y y' z z' h hz hz' => Reframe.baseChange φ h hz hz', fun y y' => frBor_iff_reframe y y'⟩`.
+-/
 theorem reframe_calculus : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (S : Type) [CommRing S] [Algebra c.F S], (∀ (g g' : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S) (y y' y'' : FrPt Xo c S), Reframe g y y' → Reframe g' y' y'' → Reframe (fun τ => g τ * g' τ) y y'') ∧ (∀ (T : Type) [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T) (g : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S) (y y' : FrPt Xo c S) (z z' : FrPt Xo c T), Reframe g y y' → FrMap φ y z → FrMap φ y' z' → Reframe (fun τ => (g τ).map φ) z z') ∧ ∀ y y' : FrPt Xo c S, (∃ t : Ix Dw → Sˣ, FrBor t y y') ↔ ∃ b : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S, (∀ τ, (b τ).BlockTriangular id ∧ ∀ i, IsUnit (b τ i i)) ∧ Reframe b y y' := by
   intro E _ _ _ H Dw l Xo c S _ _
   exact ⟨fun g g' y y' y'' h h' => Reframe.trans h h',

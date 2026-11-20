@@ -23,6 +23,21 @@ namespace GlobalTheory.FockKStab
 open GlobalTheory.ExpAct
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
+/- English proof (translation)
+Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `l'`. Use `set l : V →ₗ[ℂ] ℂ := l' ∘ₗ N.mkQ with hldef`. Establish `hl : ∀ v ∈ N, l v = 0` using `fun v hv => by simp [hldef, (Submodule.Quotient.mk_eq_zero N).2 hv]`. Use `show l (L T) = 0`.
+
+Take `⟨N0, hfin, hT, hN0⟩` from `hL T`. Use `set A := mat L N0 hN0`. Use `set x := crd N0 ⟨T, hT⟩`. Use `set φ := l ∘ₗ emb N0`. Establish `hpow : ∀ n : ℕ, φ ((A ^ n) *ᵥ x) = l ((L ^ n) T)` using `fun n => by`.
+
+Simplify using `only [φ, LinearMap.comp_apply, A, emb_pow_mulVec, x, emb_crd]`. Establish `hg : ∀ s : ℝ, φ (NormedSpace.exp (s • A) *ᵥ x) = 0`. Introduce `s`. Take `⟨U, hU, hUN⟩` from `h s`. Establish `h1` using `hU T l`.
+
+Establish `h2` using `hasSum_exp_mulVec (s • A) φ x`. Establish `e : ∀ n : ℕ, ((n.factorial : ℂ))⁻¹ * φ (((s • A) ^ n) *ᵥ x) = ((n.factorial : ℂ))⁻¹ * l ((((s : ℂ) • L) ^ n) T)` using `fun n => by`. Rewrite using `[smul_pow, smul_pow, Matrix.smul_mulVec, LinearMap.map_smul_of_tower, hpow, LinearMap.smul_apply, map_smul]`. Simplify using `[Complex.real_smul]`. Simplify using `only [e] at h2`.
+
+Rewrite using `[h2.unique h1, hl _ hUN]`. Set `ψ : Matrix (Fin (Module.finrank ℂ N0)) (Fin (Module.finrank ℂ N0)) ℂ →ₗ[ℝ] ℂ` to `{ toFun := fun M => φ (M *ᵥ x) map_add' := fun M M' => by simp [Matrix.add_mulVec] map_smul' := fun r M => by`. Rewrite using `[Matrix.smul_mulVec, LinearMap.map_smul_of_tower]`. Use `rfl }`. Establish `hd : HasDerivAt (fun u : ℝ => ψ.toContinuousLinearMap (NormedSpace.exp (u • A))) (ψ.toContinuousLinearMap (A * NormedSpace.exp ((0 : ℝ) • A))) 0` using `(ψ.toContinuousLinearMap).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_exp_smul_const' A (0 : ℝ))`.
+
+Establish `hz : (fun u : ℝ => ψ.toContinuousLinearMap (NormedSpace.exp (u • A))) = fun _ => 0`. Use function extensionality and compare the values at `u`. Conclude with `hg u`. Rewrite `hd` using `[hz]`. Use `hd.unique (hasDerivAt_const (0 : ℝ) (0 : ℂ))` as an intermediate fact.
+
+Simplify using `only [zero_smul, NormedSpace.exp_zero, mul_one] at this`. Establish `e2 : ψ.toContinuousLinearMap A = l (L T)` using `by show φ (A *ᵥ x) = _`. Simplify using `only [φ, LinearMap.comp_apply, A, emb_mulVec, x, emb_crd]`. Rewrite using `[← e2]`. Conclude with `this`.
+-/
 theorem mem_of_exp {V : Type} [AddCommGroup V] [Module ℂ V] (L : Module.End ℂ V) (hL : LocFin L) (N : Submodule ℂ V)
     (T : V) (h : ∀ s : ℝ, ∃ U : Module.End ℂ V, IsExp ((s : ℂ) • L) U ∧ U T ∈ N) : L T ∈ N := by
   rw [← Submodule.Quotient.mk_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]
@@ -73,9 +88,17 @@ noncomputable section
 namespace GlobalTheory.FockKStab
 open Matrix
 
+/- English proof (translation)
+Simplify using `[Formalism.BasicNotions.TH.Jm, Formalism.UG.Jpq, Matrix.fromBlocks_multiply, Matrix.fromBlocks_one]`.
+-/
 theorem jm_mul_jm (R S : ℕ) : Formalism.BasicNotions.TH.Jm R S * Formalism.BasicNotions.TH.Jm R S = 1 := by
   simp [Formalism.BasicNotions.TH.Jm, Formalism.UG.Jpq, Matrix.fromBlocks_multiply, Matrix.fromBlocks_one]
 
+/- English proof (translation)
+Use `show X * _ = _ * X`. Establish `h1 : ∀ i j, X (Sum.inl i) (Sum.inr j) = 0` using `fun i j => hX _ _ (by simp [sameBlock])`. Establish `h2 : ∀ i j, X (Sum.inr i) (Sum.inl j) = 0` using `fun i j => hX _ _ (by simp [sameBlock])`. Use extensionality with `a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;>`.
+
+Simplify using `[Formalism.BasicNotions.TH.Jm, Formalism.UG.Jpq, Matrix.mul_apply, Matrix.fromBlocks, Fintype.sum_sum_type, Matrix.one_apply, h1, h2]`.
+-/
 theorem commute_jm {R S : ℕ} {X : Mat R S} (hX : IsKC X) : Commute X (Formalism.BasicNotions.TH.Jm R S) := by
   show X * _ = _ * X
   have h1 : ∀ i j, X (Sum.inl i) (Sum.inr j) = 0 := fun i j => hX _ _ (by simp [sameBlock])
@@ -84,23 +107,43 @@ theorem commute_jm {R S : ℕ} {X : Mat R S} (hX : IsKC X) : Commute X (Formalis
   rcases a with a | a <;> rcases b with b | b <;>
     simp [Formalism.BasicNotions.TH.Jm, Formalism.UG.Jpq, Matrix.mul_apply, Matrix.fromBlocks, Fintype.sum_sum_type, Matrix.one_apply, h1, h2]
 
+/- English proof (translation)
+Introduce `a b h` and use `by simp [hX a b h]`.
+-/
 theorem isKC_smul {R S : ℕ} {X : Mat R S} (hX : IsKC X) (c : ℂ) : IsKC (c • X) := fun a b h => by
   simp [hX a b h]
 
+/- English proof (translation)
+Introduce `a b _` and use `rfl`.
+-/
 theorem isKC_zero (R S : ℕ) : IsKC (0 : Mat R S) := fun a b _ => rfl
 
+/- English proof (translation)
+Introduce `a b h` and use `by simp [hX a b h, hX' a b h]`.
+-/
 theorem isKC_add {R S : ℕ} {X X' : Mat R S} (hX : IsKC X) (hX' : IsKC X') : IsKC (X + X') := fun a b h => by
   simp [hX a b h, hX' a b h]
 
+/- English proof (translation)
+Introduce `a b h` and use `by have h' : ¬ sameBlock b a := by intro h2; apply h; rcases a with a | a <;> rcases b with b | b <;> simp_all [sameBlock] simp [Matrix.conjTranspose_apply, hX b a h']`.
+-/
 theorem isKC_conjTranspose {R S : ℕ} {X : Mat R S} (hX : IsKC X) : IsKC Xᴴ := fun a b h => by
   have h' : ¬ sameBlock b a := by
     intro h2; apply h; rcases a with a | a <;> rcases b with b | b <;> simp_all [sameBlock]
   simp [Matrix.conjTranspose_apply, hX b a h']
 
+/- English proof (translation)
+Use `show Xᴴ * _ + _ * X = 0`. Rewrite using `[hs, ← (commute_jm hX).eq]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_upq {R S : ℕ} {X : Mat R S} (hX : IsKC X) (hs : Xᴴ = -X) : X ∈ upq R S := by
   show Xᴴ * _ + _ * X = 0
   rw [hs, ← (commute_jm hX).eq]; simp
 
+/- English proof (translation)
+Use `set K := M * C.map star * Formalism.BasicNotions.TH.Jm R S`. Establish `h1 : Cᵀ * K = 1`. Simplify using `only [K, ← Matrix.mul_assoc, h.1, jm_mul_jm]`. Establish `h2 : Kᵀ * C = 1`. Use `congrArg Matrix.transpose h1` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_one]`. Then use the resulting hypothesis. Establish `h3 : A' = Kᵀ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h3, h2]`.
+-/
 theorem frame_inv {α : Type} [Fintype α] [DecidableEq α] {R S : ℕ} {M : Matrix α α ℂ} {C : Matrix α (Ix R S) ℂ}
     {A' : Matrix (Ix R S) α ℂ} (h : IsFrame M C) (hA : C * A' = 1) : A' * C = 1 := by
   set K := M * C.map star * Formalism.BasicNotions.TH.Jm R S
@@ -114,6 +157,11 @@ theorem frame_inv {α : Type} [Fintype α] [DecidableEq α] {R S : ℕ} {M : Mat
       _ = Kᵀ := by rw [Matrix.mul_assoc, hA, Matrix.mul_one]
   rw [h3, h2]
 
+/- English proof (translation)
+Establish `hG' : G = C * E * A'` using `by rw [← hG, Matrix.mul_assoc, hCA, Matrix.mul_one]`. Establish `hθ' : A' * θ = Formalism.BasicNotions.TH.Jm R S * A'`. Combine the equalities or inequalities in the displayed calculation. Use `show G * θ = θ * G`. Rewrite using `[hG']`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem commute_of_frame {α : Type} [Fintype α] [DecidableEq α] {R S : ℕ} {C : Matrix α (Ix R S) ℂ}
     {A' : Matrix (Ix R S) α ℂ} (hCA : C * A' = 1) (hAC : A' * C = 1) {G θ : Matrix α α ℂ} {E : Mat R S}
     (hG : G * C = C * E) (hθ : θ * C = C * Formalism.BasicNotions.TH.Jm R S) (hE : Commute E (Formalism.BasicNotions.TH.Jm R S)) : Commute G θ := by
@@ -139,18 +187,35 @@ open Matrix
 section Tensor
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {V : ι → Type} [∀ i, AddCommGroup (V i)] [∀ i, Module ℂ (V i)]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem atPl_eq' (w : ι) (L : Module.End ℂ (V w)) :
     atPl w L = PiTensorProduct.mapMultilinear ℂ V V (Function.update (fun i => (LinearMap.id : V i →ₗ[ℂ] V i)) w L) := rfl
 
+/- English proof (translation)
+Simplify using `only [atPl_eq', MultilinearMap.map_update_add]`.
+-/
 theorem atPl_add' (w : ι) (L L' : Module.End ℂ (V w)) : atPl w (L + L') = atPl w L + atPl w L' := by
   simp only [atPl_eq', MultilinearMap.map_update_add]
 
+/- English proof (translation)
+Simplify using `only [atPl_eq', MultilinearMap.map_update_smul]`.
+-/
 theorem atPl_smul' (w : ι) (c : ℂ) (L : Module.End ℂ (V w)) : atPl w (c • L) = c • atPl w L := by
   simp only [atPl_eq', MultilinearMap.map_update_smul]
 
+/- English proof (translation)
+Simplify using `only [atPl_eq', MultilinearMap.map_update_zero]`.
+-/
 theorem atPl_zero' (w : ι) : atPl w (0 : Module.End ℂ (V w)) = 0 := by
   simp only [atPl_eq', MultilinearMap.map_update_zero]
 
+/- English proof (translation)
+Rewrite using `[atPl_eq', show Function.update (fun i => (LinearMap.id : V i →ₗ[ℂ] V i)) w 1 = fun i => LinearMap.id by`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = w`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Both sides reduce to the same expression. Simplify using `[Function.update_of_ne h]]`. Conclude with `PiTensorProduct.map_id`.
+-/
 theorem atPl_one' (w : ι) : atPl w (1 : Module.End ℂ (V w)) = 1 := by
   rw [atPl_eq', show Function.update (fun i => (LinearMap.id : V i →ₗ[ℂ] V i)) w 1 = fun i => LinearMap.id by
     funext i; by_cases h : i = w
@@ -160,6 +225,9 @@ theorem atPl_one' (w : ι) : atPl w (1 : Module.End ℂ (V w)) = 1 := by
 
 end Tensor
 
+/- English proof (translation)
+Introduce `v` and use `by obtain ⟨⟨W, hW, hv, hs⟩, -⟩ := (GlobalTheory.FockPolGK.pol_locFin_weights P Q R S).2 v exact ⟨W, hW, hv, fun y hy => W.add_mem (hs Y hY y hy) (W.smul_mem c hy)⟩`.
+-/
 theorem locFin_fock2' (P Q R S : ℕ) (Y : Mat R S) (hY : IsKC Y) (c : ℂ) :
     LocFin (fockAct2 P Q R S Y + c • 1) := fun v => by
   obtain ⟨⟨W, hW, hv, hs⟩, -⟩ := (GlobalTheory.FockPolGK.pol_locFin_weights P Q R S).2 v
@@ -167,6 +235,29 @@ theorem locFin_fock2' (P Q R S : ℕ) (Y : Mat R S) (hY : IsKC Y) (c : ℂ) :
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hAL hLE F E _ _ _ _ _ σ B n d P Q R S X W om C Φ c hcm hC hθ hinj hact hadm N hN w`. Introduce `Y hY hYs T hT`. Use `set L0 : Module.End ℂ (Tens F P Q R S) := atPl (V := fun _ : InfinitePlace F => Formalism.BasicNotions.TH.Pol P Q R S) w (fockAct2 P Q R S Y + (c w * Y.trace) • 1) with hL0`. Use `set Ys : ℝ → InfinitePlace F → Mat R S := fun s w' => if w' = w then (s : ℂ) • Y else 0 with hYsdef`. Establish `hYsKC : ∀ s w', IsKC (Ys s w')`.
+
+Introduce `s w'`. Distinguish the cases in `h : w' = w`. Simplify using `only [hYsdef, if_pos h]`. Conclude with `isKC_smul hY _`. Simplify using `only [hYsdef, if_neg h]`.
+
+Conclude with `isKC_zero R S`. Establish `hYsU : ∀ s w', Ys s w' ∈ upq R S`. Introduce `s w'`. Apply `mem_upq (hYsKC s w')` to reduce the goal to its premises. Distinguish the cases in `h : w' = w`.
+
+Simplify using `[hYsdef, h, Matrix.conjTranspose_smul, hYs]`. Simplify using `[hYsdef, h]`. Establish `hsum : ∀ s : ℝ, sumPl (V` using `fun _ : InfinitePlace F => Formalism.BasicNotions.TH.Pol P Q R S) (fun w' => fockAct2 P Q R S (Ys s w') + (c w' * (Ys s w').trace) • 1) = (s : ℂ) • L0 := by`. Introduce `s`. Unfold `sumPl`.
+
+Rewrite using `[Finset.sum_eq_single w]`. Rewrite using `[hL0, ← atPl_smul']`. Use `congr 1`. Simplify using `only [hYsdef, if_pos rfl, map_smul, Matrix.trace_smul, smul_add, smul_smul, smul_eq_mul]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `w' _ hw'`. Simplify using `[hYsdef, hw', atPl_zero']`. Simplify using the standard rewrite rules. Establish `hloc : ∀ s : ℝ, LocFin (sumPl (V` using `fun _ : InfinitePlace F => Formalism.BasicNotions.TH.Pol P Q R S) (fun w' => fockAct2 P Q R S (Ys s w') + (c w' * (Ys s w').trace) • 1)) := fun s => GlobalTheory.RealLift.locFin_sumPl _ _ _ (fun w' => locFin_fock2' P Q R S _ (hYsKC s w') _)`.
+
+Establish `hexp : ∀ s : ℝ, ∃ U : Module.End ℂ (Tens F P Q R S), IsExp ((s : ℂ) • L0) U ∧ U T ∈ N`. Introduce `s`. Take `⟨γ, hγ, hgen⟩` from `hLE F E σ (Fin d) R S B.emb (incM F W.J) Complex.I C hcm hC (Ys s) (hYsU s)`. Take `⟨U, hU, hSA⟩` from `GlobalTheory.ExpAct.expAct_fock F (Fin n × Fin d) _ Φ _ ((om.comp (MonoidHom.inr _ _)).comp γ) (hloc s) (fun t l hl => hadm _ l hl) (fun T => hact γ hγ (Ys s) hgen T)`. Use `⟨U, hsum s ▸ hU, ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `(hAL F _ (Φ T) (Φ (U T)) (Φ (U T))).2.1 _ (map_zero _) (hSA T)`. Establish `hk : γ (Multiplicative.ofAdd 1) ∈ KInf σ W B.emb`. Use `⟨hγ.2 _, fun w' => ?_⟩` and prove the remaining obligations. Take `⟨A', hA'⟩` from `(hC w').2`. Conclude with `commute_of_frame hA' (frame_inv (hC w') hA') (hgen 1 w') (hθ w') (Commute.exp_left (Commute.smul_left (commute_jm (hYsKC s w')) _))`.
+
+Establish `h2` using `hN _ hk T hT _ h1`. Take `⟨y, hy, e⟩` from `Submodule.mem_map.1 h2`. Conclude with `hinj e ▸ hy`. Establish `hL0loc : LocFin L0`. Use `hloc 1` as an intermediate fact.
+
+Rewrite `this` using `[hsum 1, Complex.ofReal_one, one_smul]`. Then use the resulting hypothesis. Establish `hmem` using `mem_of_exp L0 hL0loc N T hexp`. Establish `e : L0 T = atPl (V` using `fun _ : InfinitePlace F => Formalism.BasicNotions.TH.Pol P Q R S) w (fockAct2 P Q R S Y) T + (c w * Y.trace) • T := by`. Simplify using `[hL0, atPl_add', atPl_smul', atPl_one']`. Rewrite `hmem` using `[e]`.
+
+Simplify using `using N.sub_mem hmem (N.smul_mem (c w * Y.trace) hT)`.
+-/
 theorem kstab_skew : GlobalTheory.RealLift.ActsLaws → GlobalTheory.RealLift.LineEx → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d P Q R S : ℕ) (X : Spc F E n) (W : Spc F E d) (om : Rep σ X W)
     (C : InfinitePlace F → Matrix (Fin d) (Formalism.BasicNotions.TH.Ix R S) ℂ) (Φ : GlobalTheory.RealLift.Tens F P Q R S →ₗ[ℂ] SInf F (Fin n × Fin d))
@@ -233,6 +324,15 @@ theorem kstab_skew : GlobalTheory.RealLift.ActsLaws → GlobalTheory.RealLift.Li
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hAL hLE F E _ _ _ _ _ σ B n d P Q R S X W om C Φ c hcm hC hθ hinj hact hadm N hN w Z hZ T hT`. Establish `key` using `kstab_skew hAL hLE F E σ B n d P Q R S X W om C Φ c hcm hC hθ hinj hact hadm N hN w`. Take `⟨Y1, hY1⟩ : ∃ Y1 : Mat R S, Y1 = (1 / 2 : ℂ) • (Z - Zᴴ)` from `⟨_, rfl⟩`. Take `⟨Y2, hY2⟩ : ∃ Y2 : Mat R S, Y2 = (1 / (2 * Complex.I)) • (Z + Zᴴ)` from `⟨_, rfl⟩`. Establish `hZ' : Z = Y1 + Complex.I • Y2`.
+
+Rewrite using `[hY1, hY2, smul_smul, show Complex.I * (1 / (2 * Complex.I)) = 1 / 2 by field_simp, ← smul_add]`. Rewrite using `[show Z - Zᴴ + (Z + Zᴴ) = (2 : ℂ) • Z by rw [two_smul]; abel, smul_smul]; norm_num`. Establish `hZh : IsKC Zᴴ` using `isKC_conjTranspose hZ`. Establish `k1 : IsKC Y1` using `hY1 ▸ isKC_smul (by rw [sub_eq_add_neg]; exact isKC_add hZ (by simpa using isKC_smul hZh (-1))) _`. Establish `k2 : IsKC Y2` using `hY2 ▸ isKC_smul (isKC_add hZ hZh) _`.
+
+Establish `s1 : Y1ᴴ = -Y1`. Rewrite using `[hY1, Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_conjTranspose]`. Rewrite using `[show star (1 / 2 : ℂ) = 1 / 2 by simp, ← smul_neg, neg_sub]`. Establish `s2 : Y2ᴴ = -Y2`. Rewrite using `[hY2, Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_conjTranspose]`.
+
+Rewrite using `[show star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I)) by simp, neg_smul, add_comm]`. Rewrite using `[hZ', map_add, map_smul, atPl_add', atPl_smul', LinearMap.add_apply, LinearMap.smul_apply]`. Conclude with `N.add_mem (key Y1 k1 s1 T hT) (N.smul_mem _ (key Y2 k2 s2 T hT))`.
+-/
 theorem kstab : GlobalTheory.RealLift.ActsLaws → GlobalTheory.RealLift.LineEx →
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d P Q R S : ℕ) (X : Spc F E n) (W : Spc F E d) (om : Rep σ X W)

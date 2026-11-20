@@ -15,6 +15,15 @@ section Core
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Take `⟨B, hB, hWB⟩` from `hBW k r z c u lam ε h H σ hl hds hg hok hz hT hc Vp π hπ w hw μG μW μN ν hG hW hN hQ W hc1 he1 hr1 hl1 hl1'`. Take `⟨B0, hB0, hW0B⟩` from `hBW k r z c u lam ε h H σ hl hds hg hok hz hT hc Vp π hπ w hw μG μW μN ν hG hW hN hQ W0 hc2 he2 hr2 hl2 hl2'`. Rewrite `hB`, `hB0` using `[Formalism.L2.SG.LitS.psi_eq_psiGen]`. Take `⟨a, b, hab, hlin'⟩` from `hM1 k r ε lam h H σ z (fun _ => c) u Vp π hok.1 hg hok.2.1 hl hds hz hT (fun _ => hc) hπ B B0 ((Formalism.MainNotions.BridgeCS3d.isBesselMapSm_iff z _ σ π B).1 hB) ((Formalism.MainNotions.BridgeCS3d.isBesselMapSm_iff z _ σ π B0).1 hB0)`. Establish `hlin : ∀ v ∈ smoothVecs (k` using `k) (r := r) σ, a • B v + b • B0 v = 0 := fun v hv => hlin' v hv`.
+
+Establish `hsm : ∀ x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), σ x w ∈ smoothVecs (k` using `k) (r := r) σ := fun x hx => Formalism.L2.SG.BesselSplit.smooth_translate_ds hds hws hx`. Distinguish the cases in `ha : a = 0`. It suffices to derive a contradiction. Establish `hb : b ≠ 0` using `hab.resolve_left (not_not.2 ha)`. Take `⟨x0, hx0U, hx0W⟩` from `hx0`.
+
+Establish `h1` using `hlin (σ x0 w) (hsm x0 hx0U)`. Rewrite `h1` using `[ha, zero_smul, zero_add]`. Establish `h2 : B0 (σ x0 w) = 0` using `(smul_eq_zero.1 h1).resolve_left hb`. Conclude with `hx0W (by rw [hW0B x0 hx0U, h2])`. Use `⟨-(b / a), fun x hx => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `hlin (σ x w) (hsm x hx)`. Rewrite using `[hWB x hx, hW0B x hx]`. Establish `: a • B (σ x w) = -(b • B0 (σ x w))` using `eq_neg_of_add_eq_zero_left h1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this, smul_neg, smul_smul, neg_smul, div_eq_inv_mul]`.
+-/
 theorem besselUniq_core (hBW : Formalism.L2.SG.LocWSOf.BesselOfW) (hM1 : CompanionTheory.Lime.BM.UniqGap)
     {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {u : Fin k → ℝ} {lam : Fin (2 * r + k + 1) → ℝ}
     {ε : Fin (2 * r + k + 1) → Bool} {h : ℝ}
@@ -73,6 +82,53 @@ section Main
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Take `⟨P0, hP0⟩` from `Formalism.MainNotions.S.Inh.exists_isCayleyU_eps48 k r hk`. Establish `hCP : CayPair (eps48 k r) P0 (Hpk k r * P0ᴴ * Formalism.REAL.Jm (eps48 k r))` using `⟨hP0.1.2, rfl⟩`. Generalize the expression as in `hB0 : Hpk k r * P0ᴴ * Formalism.REAL.Jm (eps48 k r) = B0 at hCP`. Establish `hinv : P0⁻¹ = B0` using `Matrix.inv_eq_left_inv hCP.BP`. Establish `hσB1 : (fun g => (fun M => σ (P0 * M * B0)) (P0⁻¹ * g * P0)) = σ`.
+
+Use function extensionality and compare the values at `g`. Simplify using `only [hinv]`. Use `congr 1`. Simplify using `only [← Matrix.mul_assoc, hCP.PB, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, hCP.PB, Matrix.mul_one]`.
+
+Establish `hDSB : IsDSHpk k r (eps48 k r) (lam48 k r v b) (fun M => σ (P0 * M * B0))` using `⟨P0, hP0, by rw [hσB1]; exact hDS⟩`. Establish `hwB : IsLowUnitH k r (eps48 k r) (lam48 k r v b) (fun M => σ (P0 * M * B0)) w` using `⟨P0, hP0, by rw [hσB1]; exact hw⟩`. Establish `hcc0 : ((4 * Real.pi / gg : ℝ) : ℂ) ≠ 0`. Establish `: (0 : ℝ) < 4 * Real.pi / gg` using `by positivity`. Conclude with `this.ne'` after adjusting the coercions.
+
+Establish `hTz : 0 < Tz k r (zBv k r T)` using `by rw [Tz_zB hT.le]; exact hT`. Establish `hS48 : RealPlaceNumericalSetting k r (zBv k r T) (fun _ => ((4 * Real.pi / gg : ℝ) : ℂ)) u v b` using `⟨hk, hke, inWb_zB T, hTz, fun _ => hcc0, hu, hl, hI, hH, hGap⟩`. Establish `hπB` using `hcTypeW_piB hF hT.le hπ`. Establish `hG` using `isHaarOn_G hCP`. Establish `hSB` using `isHaarOn_S hF hS`.
+
+Establish `hQB` using `isQuotMeas_B hF hCP hQ`. Take `⟨μW, μN, hW, hN, hWfin, hNc⟩` from `WlocSk.haar_measure_unipotent_nilradical k r (zBv k r T) (inWb_zB T) hTz`. Take `⟨cS, hcS0, hcSt, hP⟩` from `WlocSk.product_decomposition_holds k r (zBv k r T) (fun _ => ((4 * Real.pi / gg : ℝ) : ℂ)) u v b H (fun M => σ (P0 * M * B0)) Vl (piB (eps48 k r) e f wf (z0v T z) πl) w _ _ _ μW μN ⟨hS48, hDSB, hπB, hwB, hG, hSB, hQB, hW, hN, hWfin, hNc⟩`. Establish `hmuS : Formalism.MainNotions.S.muS μW μN = cS • (μS.map (cM (Qi (eps48 k r) e f wf (z0v T z)) (Qm e f wf (z0v T z))))` using `hP`. Establish `hQ' : IsQuotMeas ((Formalism.REAL.muG (eps48 k r)).map (cM B0 P0)) (Formalism.MainNotions.S.muS μW μN) (cS⁻¹ • ν.map (cM (Qi (eps48 k r) e f wf (z0v T z)) P0))`.
+
+Introduce `g hg`. Rewrite using `[hQB g hg, hmuS]`. Simplify using `only [lintegral_smul_measure, smul_eq_mul]`. Rewrite using `[lintegral_const_mul' _ _ hcSt, ← mul_assoc, ENNReal.inv_mul_cancel hcS0 hcSt, one_mul]`. Establish `hS' : IsHaarOn (Sset k r (zBv k r T)) (Formalism.MainNotions.S.muS μW μN)`.
+
+Rewrite using `[hmuS]`. Conclude with `isHaarOn_smul hSB hcS0 hcSt`. Take `⟨W0, hc0, he0, hr0, -, hL20, hwt0, α, Ω, a, hΩc, h1Ω, hΩU, hαm, hαs, hαb, hαr⟩` from `hWl hB hCW k r (zBv k r T) _ u v b hS48 H _ hDSB Vl (piB (eps48 k r) e f wf (z0v T z) πl) hπB w hwB _ _ _ hG hS' hQ'`. Establish `hpsi : Formalism.QuantumDeterminants.psi k r (zBv k r T) ((4 * Real.pi / gg : ℝ) : ℂ) = psiGen k r (zBv k r T) (fun _ => ((4 * Real.pi / gg : ℝ) : ℂ))` using `Formalism.L2.SG.LitS.psi_eq_psiGen _ _ _ _`. Establish `he0' : IsSPsiEquiv (zBv k r T) (Formalism.QuantumDeterminants.psi k r (zBv k r T) ((4 * Real.pi / gg : ℝ) : ℂ)) (piB (eps48 k r) e f wf (z0v T z) πl) W0` using `by rw [hpsi]; exact he0`.
+
+Establish `embX` using `cM_measEmb (ε := eps48 k r) (A := Qi (eps48 k r) e f wf (z0v T z)) (B := P0) (A' := Qm e f wf (z0v T z)) (B' := B0) (Qm_mul_Qi hF) hCP.PB`. Establish `embG` using `cM_measEmb (ε := eps48 k r) (A := B0) (B := P0) (A' := P0) (B' := B0) hCP.PB hCP.PB`. Establish `hXU : ∀ x : Formalism.REAL.UJ (eps48 k r), (Matrix.of (cM (Qi (eps48 k r) e f wf (z0v T z)) P0 x) : Matrix _ _ ℂ) ∈ UH (Hpk k r)` using `cX_mem_UH hF hCP`. Establish `hl2eq : l2SG (cS⁻¹ • ν.map (cM (Qi (eps48 k r) e f wf (z0v T z)) P0)) (WB hF hCP W) = cS⁻¹ * ∫⁻ x, ‖W x‖ₑ ^ 2 ∂ν`. Unfold `l2SG`.
+
+Rewrite using `[lintegral_smul_measure, smul_eq_mul, embX.lintegral_map]`. Use `congr 1`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Use `show (‖WB hF hCP W (Matrix.of (cM (Qi (eps48 k r) e f wf (z0v T z)) P0 x))‖₊ : ℝ≥0∞) ^ 2 = ‖W x‖ₑ ^ 2`. Rewrite using `[WB_cM]`.
+
+Both sides reduce to the same expression. Establish `hcSi0 : cS⁻¹ ≠ 0` using `ENNReal.inv_ne_zero.2 hcSt`. Establish `hcSit : cS⁻¹ ≠ ⊤` using `ENNReal.inv_ne_top.2 hcS0`. Establish `hl2ne : l2SG (cS⁻¹ • ν.map (cM (Qi (eps48 k r) e f wf (z0v T z)) P0)) (WB hF hCP W) ≠ 0`. Rewrite using `[hl2eq]`.
+
+Conclude with `mul_ne_zero hcSi0 hL0`. Establish `hl2lt : l2SG (cS⁻¹ • ν.map (cM (Qi (eps48 k r) e f wf (z0v T z)) P0)) (WB hF hCP W) < ⊤`. Rewrite using `[hl2eq]`. Conclude with `ENNReal.mul_lt_top (lt_top_iff_ne_top.2 hcSit) (lt_top_iff_ne_top.2 hLt)`. Establish `hx0 : ∃ x0 ∈ UH (Hpk k r), W0 x0 ≠ 0`.
+
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `: l2SG (cS⁻¹ • ν.map (cM (Qi (eps48 k r) e f wf (z0v T z)) P0)) W0 = 0`. Unfold `l2SG`. Rewrite using `[lintegral_smul_measure, smul_eq_mul, embX.lintegral_map]`.
+
+Establish `hz0 : ∀ x : Formalism.REAL.UJ (eps48 k r), (‖W0 (Matrix.of (cM (Qi (eps48 k r) e f wf (z0v T z)) P0 x))‖₊ : ℝ≥0∞) ^ 2 = 0`. Introduce `x`. Rewrite using `[hcon _ (hXU x)]`. Simplify using the standard rewrite rules. Simplify using `only [hz0, lintegral_zero, mul_zero]`.
+
+Rewrite `this` using `[hL20]`. Conclude with `one_ne_zero this`. Take `⟨a', hprop⟩` from `besselUniq_core hBW hM1 hl hDSB hga hok (inWb_zB T) hTz hcc0 hπB hwB (lowSmoothSK hDSB hwB) hG hW hN hQ' (WB_continuousOn hF hCP hWc) (WB_equiv hF hCP (Qm_zB hT z) hgg hWe) (WB_reprod hF hCP σ w hWr) hl2ne hl2lt hc0 he0' hr0 (by rw [hL20]; exact one_ne_zero) (by rw [hL20]; exact …`. Establish `hWeq : ∀ x : Formalism.REAL.UJ (eps48 k r), W x = a' • W0 (Matrix.of (cM (Qi (eps48 k r) e f wf (z0v T z)) P0 x))`. Introduce `x`.
+
+Rewrite using `[← hprop _ (hXU x), WB_cM]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hc : 0 ≤ opn (Qm e f wf (z0v T z)) * opn B0` using `mul_nonneg (Formalism.L2.SG.WuDecayPf.opn_nonneg _) (Formalism.L2.SG.WuDecayPf.opn_nonneg _)`. Establish `hN : 0 ≤ N1H k r` using `by unfold N1H; positivity`. Use `set K : ℝ≥0∞ := ‖a'‖ₑ * ENNReal.ofReal ((opn (Qm e f wf (z0v T z)) * opn B0) ^ N1H k r) with hKdef`.
+
+Establish `hpt : ∀ x, ‖W x‖ₑ * ENNReal.ofReal (nuLoc (e` using `e) (f := f) (wf := wf) (z0 := z0v T z) (zBv k r T) x ^ N1H k r) ≤ K * (‖W0 (Matrix.of (cM (Qi (eps48 k r) e f wf (z0v T z)) P0 x))‖ₑ * ENNReal.ofReal (nuH k r (zBv k r T) (Matrix.of (cM (Qi (eps48 k r) e f wf (z0v T z)) P0 x)) ^ N1H k r)) := by`. Introduce `x`. Establish `h0 : 0 ≤ nuLoc (e` using `e) (f := f) (wf := wf) (z0 := z0v T z) (zBv k r T) x := Real.iInf_nonneg fun _ => Formalism.L2.SG.WuDecayPf.opn_nonneg _`. Establish `h0' : 0 ≤ nuH k r (zBv k r T) (Matrix.of (cM (Qi (eps48 k r) e f wf (z0v T z)) P0 x))` using `Real.iInf_nonneg fun _ => Formalism.L2.SG.WuDecayPf.opn_nonneg _`. Establish `hle` using `nuLoc_le hF hCP (zBv k r T) x`.
+
+Rewrite using `[hWeq x, enorm_smul, hKdef]`. Establish `h2 : ENNReal.ofReal (nuLoc (e` using `e) (f := f) (wf := wf) (z0 := z0v T z) (zBv k r T) x ^ N1H k r) ≤ ENNReal.ofReal ((opn (Qm e f wf (z0v T z)) * opn B0) ^ N1H k r) * ENNReal.ofReal (nuH k r (zBv k r T) (Matrix.of (cM (Qi (eps48 k r) e f wf (z0v T z)) P0 x)) ^ N1H k r) := by`. Rewrite using `[← ENNReal.ofReal_mul (Real.rpow_nonneg hc _), ← Real.mul_rpow hc h0']`. Conclude with `ENNReal.ofReal_le_ofReal (Real.rpow_le_rpow h0 hle hN)`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `lt_of_le_of_lt (lintegral_mono hpt) ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul' _ _ (ENNReal.mul_ne_top enorm_ne_top ENNReal.ofReal_ne_top)]`. Use `ENNReal.mul_lt_top (lt_top_iff_ne_top.2 (ENNReal.mul_ne_top enorm_ne_top ENNReal.ofReal_ne_top)) ?_` and prove the remaining obligations. Establish `h3` using `hwt0`. Rewrite `h3` using `[lintegral_smul_measure, smul_eq_mul, embX.lintegral_map]`.
+
+Establish `h4 : ∫⁻ x, ‖W0 (Matrix.of (cM (Qi (eps48 k r) e f wf (z0v T z)) P0 x))‖ₑ * ENNReal.ofReal (nuH k r (zBv k r T) (Matrix.of (cM (Qi (eps48 k r) e f wf (z0v T z)) P0 x)) ^ N1H k r) ∂ν = cS * (cS⁻¹ * ∫⁻ x, ‖W0 (Matrix.of (cM (Qi (eps48 k r) e f wf (z0v T z)) P0 x))‖ₑ * ENNReal.ofReal …`. Rewrite using `[← mul_assoc, ENNReal.mul_inv_cancel hcS0 hcSt, one_mul]`. Rewrite using `[h4]`. Conclude with `ENNReal.mul_lt_top (lt_top_iff_ne_top.2 hcSt) h3`. Use `⟨fun g => α (cM B0 P0 g), cM B0 P0 ⁻¹' Ω, a, (cM_closedEmb hCP.PB hCP.PB).isCompact_preimage hΩc, ?_, hαm.comp embG.measurable, fun y hy => hαs _ hy, fun y => hαb _, ?_⟩` and prove the remaining obligations.
+
+Use `show Matrix.of (cM B0 P0 (1 : Formalism.REAL.UJ (eps48 k r))) ∈ Ω`. Establish `: Matrix.of (cM B0 P0 (1 : Formalism.REAL.UJ (eps48 k r))) = (1 : Mat k r)` using `by show B0 * uMat 1 * P0 = 1; rw [uMat_one', Matrix.mul_one, hCP.BP]`. Rewrite using `[this]`. Conclude with `h1Ω`. Introduce `x`.
+
+Take `⟨hint, hval⟩` from `hαr _ (hXU x)`. Establish `hint2` using `embG.integrable_map_iff.mp hint`. Establish `hprod : ∀ g : Formalism.REAL.UJ (eps48 k r), (Matrix.of (cM (Qi (eps48 k r) e f wf (z0v T z)) P0 x) : Matrix _ _ ℂ) * Matrix.of (cM B0 P0 g) = Matrix.of (cM (Qi (eps48 k r) e f wf (z0v T z)) P0 (x * g))` using `fun g => cMprod hCP _ x g`. Establish `hpt : ∀ g : Formalism.REAL.UJ (eps48 k r), α (cM B0 P0 g) • W (x * g) = a' • (α (Matrix.of (cM B0 P0 g)) • W0 ((Matrix.of (cM (Qi (eps48 k r) e f wf (z0v T z)) P0 x) : Matrix _ _ ℂ) * Matrix.of (cM B0 P0 g)))`. Introduce `g`.
+
+Rewrite using `[hprod, hWeq, smul_comm]`. Both sides reduce to the same expression. Use `⟨(hint2.smul a').congr (ae_of_all _ fun g => (hpt g).symm), ?_⟩` and prove the remaining obligations. Rewrite using `[integral_congr_ae (ae_of_all _ hpt), integral_smul]`. Establish `h5 : ∫ g, α (Matrix.of (cM B0 P0 g)) • W0 ((Matrix.of (cM (Qi (eps48 k r) e f wf (z0v T z)) P0 x) : Matrix _ _ ℂ) * Matrix.of (cM B0 P0 g)) ∂(Formalism.REAL.muG (eps48 k r)) = W0 (Matrix.of (cM (Qi (eps48 k r) e f wf (z0v T z)) P0 x))`.
+
+Rewrite using `[← hval]`. Unfold `rconv`. Rewrite using `[embG.integral_map]`. Rewrite using `[h5, ← hWeq]`.
+-/
 theorem locUniq_gen (hBW : Formalism.L2.SG.LocWSOf.BesselOfW) (hM1 : CompanionTheory.Lime.BM.UniqGap)
     (hB : BesselNVGap) (hCW : CoefWeightedLoc) (hWl : WlocExists)
     (hk : 1 ≤ k) (hke : Even k) {T : ℝ} (hT : 0 < T) {gg : ℕ} (hgg : 0 < gg)
@@ -258,6 +314,33 @@ theorem locUniq_gen (hBW : Formalism.L2.SG.LocWSOf.BesselOfW) (hM1 : CompanionTh
 
 end Main
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `hε' : ε = eps48 k r` using `funext fun i => by rw [hε i]; rfl`. Substitute `hε'` using the available equality. Establish `hlam' : lam = lam48 k r v b` using `funext fun i => by rw [hlam i]; rfl`. Substitute `hlam'` using the available equality.
+
+Establish `hF` using `isFrameJ_of (ε := eps48 k r) e f z wf hT hee hff hef hez hfz hzz hww hew hfw hzw`. Establish `hc : (((Real.sqrt T)⁻¹ : ℝ) : ℂ) ≠ 0`. Establish `: (Real.sqrt T)⁻¹ ≠ 0` using `inv_ne_zero (Real.sqrt_pos.mpr hT).ne'`. Conclude with `this` after adjusting the coercions. Establish `hP` using `hHN k r (eps48 k r) e f wf (z0v T z) z _ hF hc rfl`.
+
+Establish `heq : HNset (eps48 k r) e f wf (z0v T z) (zBv k r T) = {s | ∃ m ∈ {g : Formalism.REAL.UJ (eps48 k r) | InN (eps48 k r) e z (uMat g)}, ∃ h ∈ {g : Formalism.REAL.UJ (eps48 k r) | (∀ a, uMat g *ᵥ e a = e a) ∧ (∀ a, uMat g *ᵥ f a = f a) ∧ uMat g *ᵥ z = z}, s = m * h}` using `Set.ext fun s => HNset_eq_NH hHN hT hF s`. Establish `hS' : IsLocHaar (HNset (eps48 k r) e f wf (z0v T z) (zBv k r T)) μS`. Take `⟨h1, h2, h3, h4⟩` from `hS`. Conclude with `⟨h1, h2, by rw [heq]; exact h3, fun s hs => h4 s (heq ▸ hs)⟩`. Establish `hz : (Qm e f wf (z0v T z)) *ᵥ (zBv k r T) = z` using `Qm_zB hT z`.
+
+Establish `hzB0` using `inWb_zB (k := k) (r := r) T`. Establish `hWe' : ∀ s x : Formalism.REAL.UJ (eps48 k r), ∀ h' ∈ UWset k r (zBv k r T), ∀ m' ∈ Nset k r, Qi (eps48 k r) e f wf (z0v T z) * uMat s * Qm e f wf (z0v T z) = h' * m' → W (s * x) = psiR (eps48 k r) gg e f z (uMat s) • piB (eps48 k r) e f wf (z0v T z) πl h' (W x)`. Introduce `s x h' hh' m' hm' hsm`. Use `set sh : Formalism.REAL.UJ (eps48 k r) := toUJ (Qm e f wf (z0v T z) * h' * Qi (eps48 k r) e f wf (z0v T z)) (conjQ_UJ hF hh'.1) with hsh`. Use `set sm : Formalism.REAL.UJ (eps48 k r) := toUJ (Qm e f wf (z0v T z) * m' * Qi (eps48 k r) e f wf (z0v T z)) (conjQ_UJ hF hm'.1) with hsm'`.
+
+Establish `hush : uMat sh = Qm e f wf (z0v T z) * h' * Qi (eps48 k r) e f wf (z0v T z)` using `uMat_toUJ _ _`. Establish `husm : uMat sm = Qm e f wf (z0v T z) * m' * Qi (eps48 k r) e f wf (z0v T z)` using `uMat_toUJ _ _`. Establish `hfix : (∀ a, uMat sh *ᵥ e a = e a) ∧ (∀ a, uMat sh *ᵥ f a = f a) ∧ uMat sh *ᵥ z = z`. Rewrite using `[hush]`. Conclude with `rev_UW hF hz hh'`.
+
+Establish `hNm : InN (eps48 k r) e z (uMat sm)` using `by rw [husm]; exact rev_N hF hz hzB0 hm'`. Establish `hs_eq : s = sh * sm`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show uMat s = uMat sh * uMat sm`.
+
+Rewrite using `[hush, husm]`. Establish `e1 : uMat s = Qm e f wf (z0v T z) * (Qi (eps48 k r) e f wf (z0v T z) * uMat s * Qm e f wf (z0v T z)) * Qi (eps48 k r) e f wf (z0v T z)`. Simplify using `only [← Matrix.mul_assoc, Qm_mul_Qi hF, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, Qm_mul_Qi hF, Matrix.mul_one]`. Rewrite using `[e1, hsm]`.
+
+Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_assoc (Qm e f wf (z0v T z) * h') (Qi (eps48 k r) e f wf (z0v T z)) (Qm e f wf (z0v T z)), Qi_mul_Qm hF, Matrix.mul_one]`. Establish `hnn : InN (eps48 k r) e z (uMat (sh * sm * sh⁻¹))` using `hP.2.2.2 sh hfix sm hNm`. Establish `hs2 : s = sh * sm * sh⁻¹ * sh` using `by rw [hs_eq]; group`. Rewrite using `[hs2, hWe _ hnn sh hfix x, ← hs2]`.
+
+Unfold `piB`. Rewrite using `[hush]`. Take `⟨hwt, α, Ω, a, hΩc, h1Ω, hαm, hαs, hαb, hαr⟩` from `locUniq_gen hBW hM1 hB hCW hWl hk hke hT hgg hF hu hl hI hH hGap hga hok hDS hw hπ hS' hQ hWc hWe' hWr hL0 hLt`. Use `⟨?_, α, Ω, a, hΩc, h1Ω, hαm, hαs, hαb, hαr⟩` and prove the remaining obligations. Establish `hn0 : 0 < 2 * r + k + 1` using `by omega`.
+
+Establish `hne1 : Nonempty {s : Formalism.REAL.UJ (eps48 k r) | InS e z (uMat s)}` using `⟨⟨1, inS_one⟩⟩`. Establish `hne2 : Nonempty (HNset (eps48 k r) e f wf (z0v T z) (zBv k r T))`. Use `⟨⟨1, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[heq]`. Conclude with `⟨1, hP.2.2.1.1, 1, fix_one, (one_mul 1).symm⟩`.
+
+Establish `hge1 : ∀ x, 1 ≤ ⨅ t : {s : Formalism.REAL.UJ (eps48 k r) | InS e z (uMat s)}, opn (uMat ((t : Formalism.REAL.UJ (eps48 k r)) * x))` using `fun x => le_ciInf fun t => Formalism.L2.SG.WuDecayPf.one_le_opn hn0 _`. Establish `hle : ∀ x, (⨅ t : {s : Formalism.REAL.UJ (eps48 k r) | InS e z (uMat s)}, opn (uMat ((t : Formalism.REAL.UJ (eps48 k r)) * x))) ≤ nuLoc (e` using `e) (f := f) (wf := wf) (z0 := z0v T z) (zBv k r T) x := by`. Introduce `x`. Use `le_ciInf fun t => ?_` and prove the remaining obligations. Establish `ht : InS e z (uMat (t : Formalism.REAL.UJ (eps48 k r)))` using `inS_of_HNset hF hz hzB0 ⟨_, rfl⟩ t.2`.
+
+Conclude with `ciInf_le (f := fun t : {s : Formalism.REAL.UJ (eps48 k r) | InS e z (uMat s)} => opn (uMat ((t : Formalism.REAL.UJ (eps48 k r)) * x))) ⟨0, by rintro _ ⟨i, rfl⟩; exact Formalism.L2.SG.WuDecayPf.opn_nonneg _⟩ ⟨t, ht⟩`. Establish `hN1 : 0 ≤ N1H k r` using `by unfold N1H; positivity`. Use `lt_of_le_of_lt (lintegral_mono fun x => ?_) hwt` and prove the remaining obligations. Use `gcongr ‖W x‖ₑ * ?_`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem locUniq_n (hBW : Formalism.L2.SG.LocWSOf.BesselOfW) (hM1 : CompanionTheory.Lime.BM.UniqGap)
     (hB : BesselNVGap) (hCW : CoefWeightedLoc) (hWl : WlocExists) (hHN : LocHNProps)
     {k r n : ℕ} (hn : n = 2 * r + k + 1) (hk : 1 ≤ k) (hke : Even k) {T : ℝ} (hT : 0 < T) {gg : ℕ} (hgg : 0 < gg)
@@ -390,6 +473,39 @@ def LocUniqStep : Prop :=
       ∀ v (W : Formalism.REAL.UJ (X.B.I.ε v) → X.Vloc u v), Continuous W → LocEquivW X u v W → LocReprodW X u v W →
         ∫⁻ y, ‖W y‖ₑ ^ 2 ∂(νl v) ≠ 0 → ∫⁻ y, ‖W y‖ₑ ^ 2 ∂(νl v) ≠ ⊤ → LocConcl X u v (νl v) W
 
+/- English proof (translation)
+Introduce `hB hCW hWl hBW hM1 D hG X u μS νl C hQW v W hWc hWe hWr hL0 hLt`. Take `⟨-, -, hloc, -⟩` from `hQW`. Take `⟨hSv, hQv⟩` from `hloc v`. Establish `hk : 1 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Establish `hN1801 : 1801 ≤ 2 * D.R.rS + D.R.k + 1` using `by rw [dimS D]; exact hG.1`.
+
+Establish `hT : (0 : ℝ) < ((D.mem u).A.T : ℝ)` using `by exact_mod_cast (D.mem u).A.T_prime.pos`. Establish `hgg : 0 < X.B.g`. Rewrite using `[X.g_eq]`. Conclude with `Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos`. Establish `R` using `fun p q => Formalism.L2.SG.PoincareInHH.Cut.hJ_crd X v p q`.
+
+Establish `hee : ∀ a b, hJ (X.B.I.ε v) (rv X.B.I v (X.eR a)) (rv X.B.I v (X.eR b)) = 0` using `fun a b => by`. Use `R (X.eX a) (X.eX b)` as an intermediate fact. Rewrite `this` using `[X.ee, map_zero]`. Conclude with `this`. Establish `hff : ∀ a b, hJ (X.B.I.ε v) (rv X.B.I v (X.fR a)) (rv X.B.I v (X.fR b)) = 0` using `fun a b => by`.
+
+Use `R (X.fY a) (X.fY b)` as an intermediate fact. Rewrite `this` using `[X.ff, map_zero]`. Conclude with `this`. Establish `hef : ∀ a b, hJ (X.B.I.ε v) (rv X.B.I v (X.eR a)) (rv X.B.I v (X.fR b)) = if a = b then 1 else 0` using `fun a b => by`. Apply the tactic sequence `have := R (X.eX a) (X.fY b); rw [X.ef] at this; rw [show X.eR a = X.crd (X.eX a) from rfl, show X.fR b = X.crd (X.fY b) from rfl, this]; split_ifs <;> simp`.
+
+Establish `hez : ∀ a, hJ (X.B.I.ε v) (rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u)) = 0` using `fun a => by`. Use `R (X.eX a) (X.zu u)` as an intermediate fact. Rewrite `this` using `[(X.zu_orth u a).1, map_zero]`. Conclude with `this`. Establish `hfz : ∀ a, hJ (X.B.I.ε v) (rv X.B.I v (X.fR a)) (rv X.B.I v (X.zR u)) = 0` using `fun a => by`.
+
+Use `R (X.fY a) (X.zu u)` as an intermediate fact. Rewrite `this` using `[(X.zu_orth u a).2, map_zero]`. Conclude with `this`. Establish `hzz : hJ (X.B.I.ε v) (rv X.B.I v (X.zR u)) (rv X.B.I v (X.zR u)) = -(((D.mem u).A.T : ℝ) : ℂ)`. Use `R (X.zu u) (X.zu u)` as an intermediate fact.
+
+Rewrite `this` using `[X.zu_norm, map_neg, map_natCast]`. Rewrite using `[show X.zR u = X.crd (X.zu u) from rfl, this]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hw1` using `X.wfr_on u v`.
+
+Establish `hew : ∀ c a, hJ (X.B.I.ε v) (rv X.B.I v (X.eR c)) (X.wfr u v a) = 0` using `fun c a => ((X.wfr_perp u v a).1 c).1`. Establish `hfw : ∀ c a, hJ (X.B.I.ε v) (rv X.B.I v (X.fR c)) (X.wfr u v a) = 0` using `fun c a => ((X.wfr_perp u v a).1 c).2`. Establish `hzw : ∀ a, hJ (X.B.I.ε v) (rv X.B.I v (X.zR u)) (X.wfr u v a) = 0` using `fun a => (X.wfr_perp u v a).2`. Establish `hu` using `Formalism.MainNotions.uS_hc D u (X.pl v)`. Establish `hl : Formalism.QuantumDeterminants.IsHCParam (lam48 D.R.k D.R.rS (Formalism.MainNotions.v48 D (X.pl v)) (Formalism.MainNotions.b48 D (X.pl v)))`.
+
+Rewrite using `[Formalism.MainNotions.lambda_highest_weight_eq]`. Conclude with `Formalism.MainNotions.S.Inh.obj_isHCParam_lamSH D.R (D.hc (X.pl v))`. Establish `hm` using `Formalism.MainNotions.two_rS_add_two D`. Establish `hI : InterlacingCondition D.R.k D.R.rS (Formalism.MainNotions.S.uS D u (X.pl v)) (Formalism.MainNotions.v48 D (X.pl v)) (Formalism.MainNotions.b48 D (X.pl v))`. Use `⟨fun i => ?_, fun h => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `(D.hcW u (X.pl v)).u_gt_v i`. Establish `h2` using `(D.hcW u (X.pl v)).v_gt_u i`. Rewrite `h1`, `h2` using `[D.hcW_v u (X.pl v)]`. Simplify using `only [Formalism.MainNotions.v48, Formalism.MainNotions.S.uS]`. Conclude with `⟨by exact_mod_cast h1, by exact_mod_cast h2⟩`.
+
+Establish `h1` using `(D.hcW u (X.pl v)).u_last_gt h (by omega)`. Rewrite `h1` using `[D.hcW_b u (X.pl v)]`. Simplify using `only [Formalism.MainNotions.b48, Formalism.MainNotions.S.uS]`. Establish `e : (Fin.cast hm ⟨0, by omega⟩ : Fin D.R.m) = ⟨0, by omega⟩` using `rfl`. Rewrite using `[e]`.
+
+Conclude with `h1` after adjusting the coercions. Establish `hH` using `Formalism.MainNotions.LeviCoordinates.halfInt_of_integrality _ _ _ _ _ hu hl`. Establish `hGap` using `gapBig_of_gapHyp D hG (X.pl v)`. Establish `hga` using `Formalism.MainNotions.gap_at_least_of_low_gap D.R.k D.R.rS (Formalism.MainNotions.v48 D (X.pl v)) (Formalism.MainNotions.b48 D (X.pl v)) _ hk hl.1 (lowGap_of_gapHyp D hG (X.pl v))`. Establish `hok : Formalism.FourierDecayAlt.ThreeDimData.GapOK D.R.k D.R.rS (16 * (D.R.r : ℝ) ^ 19)`.
+
+Use `gapOK_of_big D.R.k D.R.rS hk hN1801` as an intermediate fact. Rewrite `this` using `[dimS D]`. Then use the resulting hypothesis. Establish `hNH : NHloc X u v = {s | ∃ m ∈ {g : Formalism.REAL.UJ (X.B.I.ε v) | InN (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u)) (uMat g)}, ∃ h ∈ {g : Formalism.REAL.UJ (X.B.I.ε v) | (∀ a, uMat g *ᵥ rv X.B.I v (X.eR a) = rv X.B.I v (X.eR a)) ∧ (∀ a, uMat g *ᵥ rv X.B.I v ( …`. Unfold `NHloc`. Rewrite using `[Hloc_eq]`.
+
+Both sides reduce to the same expression. Take `⟨h1, h2, h3, h4⟩` from `hSv`. Rewrite `h3`, `h4` using `[hNH]`. Establish `hWe' : ∀ m : Formalism.REAL.UJ (X.B.I.ε v), InN (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u)) (uMat m) → ∀ h : Formalism.REAL.UJ (X.B.I.ε v), ((∀ a, uMat h *ᵥ rv X.B.I v (X.eR a) = rv X.B.I v (X.eR a)) ∧ (∀ a, uMat h *ᵥ rv X.B.I v (X.fR a) = rv X.B.I v (X.fR a) …`. Introduce `m hm h hh x`.
+
+Establish `hh' : h ∈ Hloc X u v` using `by rw [Hloc_eq]; exact hh`. Establish `hmat : matW X.B.I (X.wfr u v) v (single X v h) = fun a b => hJ (X.B.I.ε v) (X.wfr u v a) (uMat h *ᵥ X.wfr u v b)`. Use function extensionality and compare the values at `a b`. Simplify using `[matW, single]`. Rewrite using `[hWe m hm h hh' x, hmat]`.
+
+Both sides reduce to the same expression. Establish `key` using `locUniq_n hBW hM1 hB hCW hWl Formalism.L2.SG.Pf.WFL.locHNProps_holds (hdim X) hk D.R.k_even hT hgg (X.B.I.ε v) (eps_cast X v) (fun a => rv X.B.I v (X.eR a)) (fun a => rv X.B.I v (X.fR a)) (rv X.B.I v (X.zR u)) (X.wfr u v) hee hff hef hez hfz hzz hw1 hew hfw hzw hu hl hI hH hGap h …`. Conclude with `key`.
+-/
 theorem local_uniqueness_reduction : LocUniqStep := by
   intro hB hCW hWl hBW hM1 D hG X u μS νl C hQW v W hWc hWe hWr hL0 hLt
   obtain ⟨-, -, hloc, -⟩ := hQW
@@ -476,6 +592,9 @@ theorem local_uniqueness_reduction : LocUniqStep := by
     (μS v) (νl v) ⟨h1, h2, h3, h4⟩ hQv W hWc hWe' hWr hL0 hLt (N1 X) (first_count_le_log X)
   exact key
 
+/- English proof (translation)
+Introduce `D hG X u μS νl C hQ v`. Conclude with `hU hB hC hW hBW hM1 D hG X u μS νl C hQ v (X.Wloc u v) (X.Wloc_cont u v) (fun m hm h hh x => locEquiv X u v m hm h hh x) (hR D hG X u μS νl C hQ v) (localRepresentationL2 X u hQ v).1 (localRepresentationL2 X u hQ v).2`.
+-/
 theorem locDecayStep_of (hB : BesselNVGap) (hC : CoefWeightedLoc) (hW : WlocExists)
     (hBW : Formalism.L2.SG.LocWSOf.BesselOfW) (hM1 : CompanionTheory.Lime.BM.UniqGap)
     (hR : LocReprodStep) (hU : LocUniqStep) : LocDecayStep := by
@@ -484,6 +603,9 @@ theorem locDecayStep_of (hB : BesselNVGap) (hC : CoefWeightedLoc) (hW : WlocExis
     (fun m hm h hh x => locEquiv X u v m hm h hh x) (hR D hG X u μS νl C hQ v)
     (localRepresentationL2 X u hQ v).1 (localRepresentationL2 X u hQ v).2
 
+/- English proof (translation)
+The claim follows from `wuDecayOfGap_of_steps hC (quotAll_of hQK locHNProps_holds hNU) (locDecayStep_of hB hC hW (Formalism.MainNotions.BridgeCS3dBOW.besselOfW_gap hM1) hM1 (locReprodStep_of hS) local_uniqueness_reduction)`.
+-/
 theorem wuDecay_gap (hM1 : CompanionTheory.Lime.BM.UniqGap) (hB : BesselNVGap) (hC : CoefWeightedLoc) (hW : WlocExists)
     (hQK : QuotProdK) (hNU : NUnimodLoc) (hS : LocScalarStep) : Formalism.L2.SG.Pf.WuDecayOfGap :=
   wuDecayOfGap_of_steps hC (quotAll_of hQK locHNProps_holds hNU)

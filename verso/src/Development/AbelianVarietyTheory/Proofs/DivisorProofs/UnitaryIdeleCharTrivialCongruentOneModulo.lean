@@ -7,6 +7,11 @@ open scoped TensorProduct Topology
 
 namespace GlobalTheory.HeckeSplitGen
 
+/- English proof (translation)
+Unfold `intAEF GlobalTheory.AdLat.hat1`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, x, rfl⟩`.
+
+Conclude with `⟨a, ha, _, ⟨x, rfl⟩, rfl⟩`. Introduce and unpack `⟨a, ha, _, ⟨x, rfl⟩, rfl⟩`. Conclude with `⟨a, ha, x, rfl⟩`.
+-/
 theorem integralFiniteAdelesTensor_eq_adelicCompletion_integers (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] :
     intAEF F E = GlobalTheory.AdLat.hat1 F (Set.range (algebraMap (𝓞 E) E)) := by
   unfold intAEF GlobalTheory.AdLat.hat1
@@ -18,6 +23,15 @@ theorem integralFiniteAdelesTensor_eq_adelicCompletion_integers (F E : Type) [Fi
   · rintro ⟨a, ha, _, ⟨x, rfl⟩, rfl⟩
     exact ⟨a, ha, x, rfl⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ ν hν`. Take `⟨e, he, -, he'⟩` from `GlobalTheory.AdSplit.exists_adele_equiv F E`. Use `haveI : IsModuleTopology (FiniteAdeleRing (𝓞 F) F) (GlobalTheory.AdLat.RA F E) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (GlobalTheory.AdLat.RA F E) := IsModuleTopology.toContinuousAdd (FiniteAdeleRing (𝓞 F) F) _`. Establish `hsmall` using `(GlobalTheory.AdLat.OpenLat.isOpen_nsmul_hat F E 0 ⊤ (by simp)).2`.
+
+Take `⟨N, hN, hker, -⟩` from `GlobalTheory.CharFin.finite_order_of_small (infPartF F E) (finPartF F E) e.symm he' (fun z => by`. Rewrite using `[RingEquiv.symm_apply_eq]`. Conclude with `Prod.ext (he z).1.symm (he z).2.symm)`. Use the proof step `(GlobalTheory.CharFin.hatRing F E) hsmall (GlobalTheory.CharFin.finite_quotient_hatRing F E) ν hν`. Use `⟨N, hN, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Take `⟨h1, ⟨r, hr, hxr⟩, h3⟩` from `hx`. Rewrite `hr`, `h3` using `[integralFiniteAdelesTensor_eq_adelicCompletion_integers]`. Establish `hNr : (N : Af F ⊗[F] E) * r = N • r` using `(nsmul_eq_mul _ _).symm`. Establish `hfin : finPartF F E (x : AEF F E) ∈ GlobalTheory.AdLat.hat1 F (Set.range (algebraMap (𝓞 E) E))`. Establish `: finPartF F E (x : AEF F E) = 1 + N • r` using `by rw [← hNr, ← hxr]; ring`.
+
+Rewrite using `[this]`. Conclude with `add_mem (AddSubgroup.subset_closure ⟨1, fun w => one_mem _, _, ⟨1, rfl⟩, by simp [Algebra.TensorProduct.one_def]⟩) (nsmul_mem hr N)`. Conclude with `hker x ⟨h1, hfin, h3⟩ ⟨r, hr, by rw [hxr, hNr]⟩`.
+-/
 theorem char_trivial_modSetF : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (ν : (AF F ⊗[F] E)ˣ →* Circle), Continuous ν →
     ∃ N : ℕ, 0 < N ∧ ∀ x ∈ GlobalTheory.HeckeSplitGen.modSetF F E N, ν x = 1 := by

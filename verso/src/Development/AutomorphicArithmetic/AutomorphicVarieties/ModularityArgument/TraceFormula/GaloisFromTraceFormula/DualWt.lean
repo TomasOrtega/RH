@@ -7,5 +7,8 @@ open PositivityTheory.Rg.BcB.G8
 open UpperTheory.V.Af.Bc (cPl)
 open UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm UpperTheory.V.Z.Tf.GaloisFromTraceFormula
 
+/- English proof (translation)
+Introduce `_ lam` and use `⟨lam.dual, GlobalTheory.DefiniteBC.infOfWeight_dual lam⟩`.
+-/
 theorem UpperTheory.V.Z.Tf.GaloisFromTraceFormula.dualWt :
     DualWt := fun _ lam => ⟨lam.dual, GlobalTheory.DefiniteBC.infOfWeight_dual lam⟩

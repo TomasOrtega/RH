@@ -11,6 +11,11 @@ open UpperTheory.GalN.V
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 section SlopeTestRemainingChoices
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Take `⟨u, -, hu⟩` from `(UpperTheory.V.Chr.placesQ Ω).2.2 l A _ hl hA (h.pl_over l hl)`. Establish `e : ∀ γ : G ℚ Ω →* c.Oˣ, γ (u⁻¹ * s * u) = γ s` using `fun γ => by`. Rewrite using `[map_mul, map_mul, map_inv, mul_right_comm, inv_mul_cancel, one_mul]`. Establish `h3` using `(facts D h).2.2.2.1 i (u⁻¹ * s * u) ⟨⟨hu s hs, (e _).trans h1⟩, (e _).trans h2⟩`.
+
+Rewrite `h3` using `[e, e]`. Then use the resulting hypothesis.
+-/
 private theorem ps_wt_any {D : Raw Ω c} (h : D.Good) {A : ValuationSubring Ω} (hA : A.valuation (l : Ω) < 1) (i : Fin 4)
     {s : G ℚ Ω} (hs : s ∈ Ine (F := ℚ) A) (h1 : s ∈ D.ψ.ker) (h2 : s ∈ D.om.ker) :
     D.ps i s = chiO ℚ Ω l c.O s ^ D.wts4 i := by
@@ -20,15 +25,34 @@ private theorem ps_wt_any {D : Raw Ω c} (h : D.Good) {A : ValuationSubring Ω} 
     rw [map_mul, map_mul, map_inv, mul_right_comm, inv_mul_cancel, one_mul]
   have h3 := (facts D h).2.2.2.1 i (u⁻¹ * s * u) ⟨⟨hu s hs, (e _).trans h1⟩, (e _).trans h2⟩
   rwa [e, e] at h3
+/- English proof (translation)
+Simplify using `[PD.ψ, PD.map, Matrix.mul_apply, adj_apply, map_sum]`.
+-/
 private theorem map_psi {ι Γ R R' : Type} [Group Γ] [CommRing R] [CommRing R'] (P : PD ι Γ R) (f : R →+* R') (v : ι) (i : Fin 4)
     (s : Γ) : (P.map f).ψ v i s = f (P.ψ v i s) := by
   simp [PD.ψ, PD.map, Matrix.mul_apply, adj_apply, map_sum]
+/- English proof (translation)
+Take `⟨u, hu⟩` from `h`. Use `show ((r g).map f).charpoly = ((r' g).map f).charpoly`. Rewrite using `[Matrix.charpoly_map, Matrix.charpoly_map, hu, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`.
+-/
 private theorem charpoly_conj {H K K' : Type} [Group H] [Field K] [Field K'] (f : K →+* K') {r r' : H →* M4 K}
     (h : IsConj4 r r') (g : H) : (mapRep f r g).charpoly = (mapRep f r' g).charpoly := by
   obtain ⟨u, hu⟩ := h
   show ((r g).map f).charpoly = ((r' g).map f).charpoly
   rw [Matrix.charpoly_map, Matrix.charpoly_map, hu, Matrix.coe_units_inv, Matrix.charpoly_units_conj]
 end SlopeTestRemainingChoices
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D hD ι 𝔞 e he r hr`. Take `⟨T, c', h, X, J, y, r₁, -, -, hPM, hy, -, hJ, hconj, -, hres, hin⟩` from `hr`. Set `f : 𝔞.V →+* PadicAlgCl l` to `(e : 𝔞.K →+* PadicAlgCl l).comp 𝔞.toK`. Set `y' : X.A →ₐ[c'.O] PadicAlgCl l` to `{ f.comp y with commutes' := fun x => by`. Establish `h1 : y (algebraMap c'.O X.A x) = 𝔞.a c' x` using `DFunLike.congr_fun hy x`.
+
+Conclude with `(congrArg f h1).trans (he.1 c' x) }`. Establish `hy' : ∀ x, y' x = f (y x)` using `fun _ => rfl`. Establish `hw : T.Wts (fun i => 2 * D.wts4 i) (X.P.map (y' : X.A →+* PadicAlgCl l))` using `mkWts4 <| by`. Establish `hc : Continuous (resQ T.F)` using `UpperTheory.V.Af.continuous_restrictScalarsHom ℚ T.F Ω`. Use `⟨(D.ψ.ker ⊓ D.om.ker).comap (resQ T.F), (hD.psi_open.inter (facts D hD).2.2.2.2.2.2.2.2.2.2.2.2.1).preimage hc, fun v i s hs => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : resQ T.F s ∈ Ine (F` using `ℚ) (T.pl v) := hs.2`. Establish `h2` using `ps_wt_any hD (T.ovl v) i h1 hs.1.1 hs.1.2`. Establish `h3 : f (y (X.P.ψ v i s)) = ((D.ps i (resQ T.F s) : c.O) : PadicAlgCl l)` using `(congrArg f (hin v i s hs.2)).trans (he.1 c _)`. Establish `h4 : (GlobalTheory.GalOfCusp.cycBar T.F Ω l s : PadicAlgCl l) = ((chiO ℚ Ω l c.O (resQ T.F s) : c.O) : PadicAlgCl l)` using `rfl`. Use `(congrArg (· ^ 2) ((map_psi X.P _ v i s).trans h3)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[h2]`. Establish `h5 : (2 * (D.wts4 i : ℤ)) = ((D.wts4 i * 2 : ℕ) : ℤ)` using `by push_cast; ring`. Simplify using `only [h5, zpow_natCast, Units.val_pow_eq_pow_val, h4, SubmonoidClass.coe_pow, pow_mul]`. Establish `hp` using `hPM.pur y' (fun b hb => by rw [hy', hJ b hb, map_zero]) hw (mapRep f r₁) (by`. Use extensionality with `g i j`.
+
+Conclude with `congrArg f (congrFun (congrFun (DFunLike.congr_fun hres g) i) j))`. Take `⟨H, M, hH, hM, hp⟩` from `_root_.UpperTheory.GalN.V.pureW' hp`. Use `⟨H, M, hH, hM, fun p h1 h2 A hA n σ hn hσ hF => ?_⟩` and prove the remaining obligations. Establish `h3 : (mapRep f r σ).charpoly = (mapRep f r₁ σ).charpoly` using `charpoly_conj (e : 𝔞.K →+* PadicAlgCl l) hconj σ`. Rewrite using `[h3]`.
+
+Conclude with `hp p h1 h2 A hA n σ hn hσ hF`.
+-/
 theorem UpperTheory.V.Ws.pureW_of_proModular_of_isZero :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ (ι : PadicAlgCl l ≃+* ℂ) (𝔞 : Amb l) (e : 𝔞.K ≃+* PadicAlgCl l), 𝔞.IsZero e → ∀ r, _root_.UpperTheory.V.Ws.ProModAlt D ι 𝔞 r → PureW ι (mapRep ((e : 𝔞.K →+* PadicAlgCl l).comp 𝔞.toK) r) := by
   intro Ω _ _ _ l _ c D hD ι 𝔞 e he r hr

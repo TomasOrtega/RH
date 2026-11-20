@@ -18,6 +18,13 @@ noncomputable section
 
 namespace GlobalTheory.LagrAvgAdm
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ κ _ Λ hΛ hdim r u hu hli hspan μ hμ ι _ w hw htriv ν hν g hg`. Use `haveI := GlobalTheory.schwartzMap_barrelledSpace (κ → mixedEmbedding.mixedSpace F)`. Establish `key : ∀ t : ι → AF F, ∃ S : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ →L[ℂ] ℂ, ∀ f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ, ∫ x, schr ψ (∑ j, x j • ((fun k => algebraMap F (AF F) ((u j).1 k)), (fun k => algebraMap F (AF F) ((u j).2 k)))) (schr ψ (∑ i, t i • ((fun …`. Introduce `t`. Take `⟨A, g', hg', hA⟩` from `GlobalTheory.ThetaHeisCLM.exists_schr_pureA_eq ψ hψ (∑ i, t i • ((fun k => algebraMap F (AF F) ((w i).1 k)), (fun k => algebraMap F (AF F) ((w i).2 k)))) hg`.
+
+Take `⟨T, hT⟩` from `GlobalTheory.T.schrodinger_lattice_distribution_continuous F ψ hψ κ r u hli μ hμ g' hg'`. Conclude with `⟨T.comp A, fun f => by rw [hA f, hT (A f), ContinuousLinearMap.comp_apply]⟩`. Use `choose S hS using key`. Establish `hint : ∀ f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ, Integrable (fun t => S t f) ν`. Introduce `f`.
+
+Establish `hmem : pureA F (⇑f) g ∈ schA F κ` using `Submodule.subset_span ⟨f, g, hg, rfl⟩`. Establish `h` using `GlobalTheory.T.lagrangian_lattice_theta_integral_formula F ψ hψ κ Λ hΛ hdim r u hu hli hspan μ hμ ι w hw htriv ν hν _ hmem`. Simplify `h` using `only [hS]`. Take `⟨L, hL⟩` from `@GlobalTheory.ThetaIntAdm.exists_clm_integral _ _ _ _ _ _ _ _ (borel _) ν S hint`. Conclude with `⟨L, fun f => by rw [hL]; simp only [hS]⟩`.
+-/
 theorem avg_exists_clm : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ] (Λ : Submodule F ((κ → F) × (κ → F))), (∀ a ∈ Λ, ∀ b ∈ Λ, a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2) →
     Module.finrank F Λ = Fintype.card κ → ∀ (r : ℕ) (u : Fin r → (κ → F) × (κ → F)), (∀ j, u j ∈ Λ) →
     LinearIndependent F (fun j => (u j).1) → (∀ v ∈ Λ, ∃ c : Fin r → F, v.1 = ∑ j, c j • (u j).1) →

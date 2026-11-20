@@ -18,6 +18,17 @@ namespace GlobalTheory.ThKNInvB
 
 open GlobalTheory.PlaneLevi in
 
+/- English proof (translation)
+Establish `hyp : Hyp (σ` using `σ) (J := X.J) H.x H.y := ⟨hH.xx, hH.yy, hH.xy, by rw [← form_swap hσ hX.herm, hH.xy, map_one]⟩`. Establish `hs : (t : E) ≠ 0` using `Nat.cast_ne_zero.2 ht`. Establish `hσs : σ (t : E) = t` using `map_natCast σ t`. Establish `hinv : levi σ X.J H.x H.y (t : E)⁻¹ * levi σ X.J H.x H.y (t : E) = 1`. Use `levi_mul_levi hyp (inv_ne_zero hs)` as an intermediate fact.
+
+Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Set `g : GL (Fin n) E` to `⟨levi σ X.J H.x H.y t, levi σ X.J H.x H.y (t : E)⁻¹, levi_mul_levi hyp hs, hinv⟩`. Use `⟨toUA σ g (levi_unitary hσ hX.herm hyp hs hσs), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mat_toUA]`. Use extensionality with `i`.
+
+Express the relevant statement in the definitionally equal form `((levi σ X.J H.x H.y t).map (inclR (F := F) (AF F)) *ᵥ ((inclR (F := F) (AF F)) ∘ H.x)) i = _`. Rewrite using `[← RingHom.map_mulVec, levi_mulVec_of_hyp hyp]`. Simplify using `[incV, map_natCast]`. Rewrite using `[mat_toUA]`. Use extensionality with `i`.
+
+Express the relevant statement in the definitionally equal form `(t : AE F E) * ((levi σ X.J H.x H.y t).map (inclR (F := F) (AF F)) *ᵥ ((inclR (F := F) (AF F)) ∘ H.y)) i = _`. Rewrite using `[← RingHom.map_mulVec, levi_mulVec_y hyp, ← map_natCast (inclR (F := F) (AF F)) t, ← map_mul]`. Simplify using `only [incV, Pi.smul_apply, smul_eq_mul, ← mul_assoc, mul_inv_cancel₀ hs, one_mul]`. Introduce `z`. Rewrite using `[mat_toUA, Matrix.mulVec_mulVec]`.
+
+Use `congr 1`. Express the relevant statement in the definitionally equal form `(levi σ X.J H.x H.y t).map (inclR (F := F) (AF F)) * H.ι.map (inclR (F := F) (AF F)) = H.ι.map (inclR (F := F) (AF F))`. Rewrite using `[← Matrix.map_mul, levi_mul_of_orth _ hH.orth]`.
+-/
 theorem levi_scale {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {B : Base F E}
     {n n₁ : ℕ} {X : Spc F E n} {X₁ : Spc F E n₁} {H : Plane E n n₁} {j₀ j₁ r s : ℕ}
     (hH : H.IsAdapted σ B X X₁ j₀ j₁) (hX : X.IsHerm σ B r s) (hσ : ∀ e : E, σ (σ e) = e) (t : ℕ) (ht : t ≠ 0) :
@@ -48,6 +59,55 @@ theorem levi_scale {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
       H.ι.map (inclR (F := F) (AF F))
     rw [← Matrix.map_mul, levi_mul_of_orth _ hH.orth]
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ V₂ n₁ X₁ H₀ j₀ j₁ M₂ e₂ hV₂ hH₀ hM₂ he Φ hΦ h n hn g`. Establish `hs` using `IsUWeilPair.isUSplitting hT.weil`. Establish `hstd : IsStd B.ψ` using `hT.base.std`. Establish `hσσ : ∀ x : E, σ (σ x) = x`. Introduce `x`.
+
+Set `τ : E →+* ℂ` to `(IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hT.base.cm.2.2.2 τ, hT.base.cm.2.2.2 τ, star_star]`. Establish `hom : ∀ (x y : UA σ G.V.J) Ψ, om (x * y, 1) Ψ = om (x, 1) (om (y, 1) Ψ)`. Introduce `x y Ψ`.
+
+Rewrite using `[show ((x * y, 1) : UA σ G.V.J × UA σ G.W.J) = (x, 1) * (y, 1) by simp, map_mul]`. Both sides reduce to the same expression. Establish `hsc` using `GlobalTheory.T.config_b_triple_seesaw hKP F E σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ V₂ n₁ X₁ H₀ j₀ j₁ M₂ e₂ hV₂ hH₀ hM₂ he`. Establish `hmulS : ∀ (x y : UA σ G.V.J) (c₁ c₂ : ℂ), (∀ Ψ ∈ schA F (Fin a × Fin (a + (b + 2))), e₂ (om (x, 1) Ψ) = c₁ • e₂ Ψ) → (∀ Ψ ∈ schA F (Fin a × Fin (a + (b + 2))), e₂ (om (y, 1) Ψ) = c₂ • e₂ Ψ) → ∀ Ψ ∈ schA F (Fin a × Fin (a + (b + 2))), e₂ (om (x * y, 1) Ψ) = (c₁ * c₂) • e₂ Ψ`. Introduce `x y c₁ c₂ hx hy Ψ hΨ`.
+
+Rewrite using `[hom, hx _ (hs.pres _ _ hΨ), hy _ hΨ, smul_smul]`. Establish `key : ∀ k ∈ unip σ G.V H₀, mat k *ᵥ incV F H₀.x = incV F H₀.x ∧ ∀ Ψ ∈ schA F (Fin a × Fin (a + (b + 2))), e₂ (om (k, 1) Ψ) = e₂ Ψ`. Establish `om11 : ∀ Ψ, om (1, 1) Ψ = Ψ`. Introduce `Ψ`. Rewrite using `[show ((1 : UA σ G.V.J), (1 : UA σ G.W.J)) = 1 from rfl, map_one]`.
+
+Both sides reduce to the same expression. Establish `gen : ∀ u : UA σ G.V.J, mat u *ᵥ incV F H₀.x = incV F H₀.x → (∀ z : Fin n₁ → AE F E, ∃ d : AE F E, mat u *ᵥ (incM F H₀.ι *ᵥ z) = incM F H₀.ι *ᵥ z + d • incV F H₀.x) → ∀ Ψ ∈ schA F (Fin a × Fin (a + (b + 2))), e₂ (om (u, 1) Ψ) = e₂ Ψ`. Introduce `u hu1 hu2`. Distinguish the cases in `h0 : ∀ Ψ ∈ schA F (Fin a × Fin (a + (b + 2))), e₂ Ψ = 0`. Introduce `Ψ hΨ`.
+
+Rewrite using `[h0 _ (hs.pres _ _ hΨ), h0 _ hΨ]`. Use `push_neg at h0`. Take `⟨Ψ₀, hΨ₀, hne⟩` from `h0`. Take `⟨y, hy⟩` from `Function.ne_iff.mp hne`. Establish `ext : ∀ c c' : ℂ, c • e₂ Ψ₀ = c' • e₂ Ψ₀ → c = c'`.
+
+Introduce `c c' hcc`. Establish `h1` using `congrFun hcc y`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h1`. Conclude with `mul_right_cancel₀ hy h1`. Establish `hinvS : ∀ (x : UA σ G.V.J) (c : ℂ), (∀ Ψ ∈ schA F (Fin a × Fin (a + (b + 2))), e₂ (om (x, 1) Ψ) = c • e₂ Ψ) → c ≠ 0 ∧ ∀ Ψ ∈ schA F (Fin a × Fin (a + (b + 2))), e₂ (om (x⁻¹, 1) Ψ) = c⁻¹ • e₂ Ψ`.
+
+Introduce `x c hx`. Establish `hrec : ∀ Ψ ∈ schA F (Fin a × Fin (a + (b + 2))), e₂ Ψ = c • e₂ (om (x⁻¹, 1) Ψ)`. Introduce `Ψ hΨ`. Rewrite using `[← hx _ (hs.pres _ _ hΨ), ← hom, mul_inv_cancel, om11]`. Establish `hc : c ≠ 0`.
+
+Introduce and unpack `rfl`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hrec _ hΨ₀, zero_smul]`. Use `⟨hc, fun Ψ hΨ => ?_⟩` and prove the remaining obligations. Rewrite using `[hrec _ hΨ, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+
+Establish `hpowS : ∀ (x : UA σ G.V.J) (c : ℂ), (∀ Ψ ∈ schA F (Fin a × Fin (a + (b + 2))), e₂ (om (x, 1) Ψ) = c • e₂ Ψ) → ∀ k : ℕ, ∀ Ψ ∈ schA F (Fin a × Fin (a + (b + 2))), e₂ (om (x ^ k, 1) Ψ) = (c ^ k) • e₂ Ψ`. Introduce `x c hx k`. Proceed by induction on `k with`. Consider the case `zero => intro Ψ _`. Rewrite using `[pow_zero, pow_zero, om11, one_smul]`.
+
+Consider the case `succ k ih => intro Ψ hΨ`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `hmulS _ _ _ _ ih hx Ψ hΨ`. Take `⟨m2, hm2x, hm2y, hm2ι⟩ : ∃ m : UA σ G.V.J, mat m *ᵥ incV F H₀.x = ((2 : ℕ) : AE F E) • incV F H₀.x ∧ ((2 : ℕ) : AE F E) • (mat m *ᵥ incV F H₀.y) = incV F H₀.y ∧ ∀ z : Fin n₁ → AE F E, mat m *ᵥ (incM F H₀.ι *ᵥ z) = incM F H₀.ι *ᵥ z` from `levi_scale hH₀ hV₂ hσσ 2 two_ne_zero`. Take `⟨m3, hm3x, hm3y, hm3ι⟩ : ∃ m : UA σ G.V.J, mat m *ᵥ incV F H₀.x = ((3 : ℕ) : AE F E) • incV F H₀.x ∧ ((3 : ℕ) : AE F E) • (mat m *ᵥ incV F H₀.y) = incV F H₀.y ∧ ∀ z : Fin n₁ → AE F E, mat m *ᵥ (incM F H₀.ι *ᵥ z) = incM F H₀.ι *ᵥ z` from `levi_scale hH₀ hV₂ hσσ 3 (by norm_num)`.
+
+Take `⟨cu, hcu⟩` from `hsc u 1 (by rw [one_smul]; exact hu1) hu2`. Take `⟨c2, hc2⟩` from `hsc m2 _ hm2x (fun z => ⟨0, by rw [zero_smul, add_zero, hm2ι]⟩)`. Take `⟨c3, hc3⟩` from `hsc m3 _ hm3x (fun z => ⟨0, by rw [zero_smul, add_zero, hm3ι]⟩)`. Take `⟨hcu0, hcuI⟩` from `hinvS u cu hcu`. Take `⟨hc20, hc2I⟩` from `hinvS m2 c2 hc2`.
+
+Take `⟨hc30, hc3I⟩` from `hinvS m3 c3 hc3`. Establish `hvS : ∀ Ψ ∈ schA F (Fin a × Fin (a + (b + 2))), e₂ (om (u⁻¹ * u⁻¹ * (m2 * u * m2⁻¹), 1) Ψ) = cu⁻¹ • e₂ Ψ`. Introduce `Ψ hΨ`. Establish `h1` using `hmulS _ _ _ _ (hmulS _ _ _ _ hcuI hcuI) (hmulS _ _ _ _ (hmulS _ _ _ _ hc2 hcu) hc2I) Ψ hΨ`. Rewrite `h1` using `[show cu⁻¹ * cu⁻¹ * (c2 * cu * c2⁻¹) = cu⁻¹ by field_simp]`. Then use the resulting hypothesis.
+
+Establish `hconj : ∀ (m : UA σ G.V.J) (c : ℂ), (∀ Ψ ∈ schA F (Fin a × Fin (a + (b + 2))), e₂ (om (m, 1) Ψ) = c • e₂ Ψ) → (∀ Ψ ∈ schA F (Fin a × Fin (a + (b + 2))), e₂ (om (m⁻¹, 1) Ψ) = c⁻¹ • e₂ Ψ) → c ≠ 0 → ∀ Ψ ∈ schA F (Fin a × Fin (a + (b + 2))), e₂ (om (m * (u⁻¹ * u⁻¹ * (m2 * u * m2⁻¹)) …`. Introduce `m c hm hmI hc Ψ hΨ`. Establish `h1` using `hmulS _ _ _ _ (hmulS _ _ _ _ hm hvS) hmI Ψ hΨ`. Rewrite `h1` using `[show c * cu⁻¹ * c⁻¹ = cu⁻¹ by field_simp]`. Then use the resulting hypothesis. Establish `hm2x' : mat m2 *ᵥ incV F H₀.x = (2 : AE F E) • incV F H₀.x` using `by rw [hm2x, Nat.cast_ofNat]`.
+
+Establish `hm2y' : (2 : AE F E) • (mat m2 *ᵥ incV F H₀.y) = incV F H₀.y`. Establish `h1` using `hm2y`. Rewrite `h1` using `[Nat.cast_ofNat]`. Then use the resulting hypothesis. Take `⟨cy, z₀, huy⟩ : ∃ (c : AE F E) (z₀ : Fin n₁ → AE F E), mat u *ᵥ incV F H₀.y = incV F H₀.y + c • incV F H₀.x + incM F H₀.ι *ᵥ z₀` from `GlobalTheory.UnipLine.mulVec_y hH₀ hV₂ u hu1`. Establish `hspan : ∀ w : Fin a → AE F E, ∃ (c d : AE F E) (z : Fin n₁ → AE F E), w = c • incV F H₀.x + incM F H₀.ι *ᵥ z + d • incV F H₀.y` using `GlobalTheory.UnipLine.span_A hH₀ hV₂`.
+
+Establish `hcen2` using `GlobalTheory.UnipLine.conj_eq_pow hspan u hu1 hu2 cy z₀ huy m2 m2 2 hm2x' hm2y' hm2ι hm2x hm2y hm2ι`. Establish `hcen3` using `GlobalTheory.UnipLine.conj_eq_pow hspan u hu1 hu2 cy z₀ huy m2 m3 3 hm2x' hm2y' hm2ι hm3x hm3y hm3ι`. Establish `e4 : cu⁻¹ = cu⁻¹ ^ (2 ^ 2)`. Use `ext _ _ ?_` and prove the remaining obligations. Rewrite using `[← hconj m2 c2 hc2 hc2I hc20 _ hΨ₀, hcen2, hpowS _ _ hvS _ _ hΨ₀]`.
+
+Establish `e9 : cu⁻¹ = cu⁻¹ ^ (3 ^ 2)`. Use `ext _ _ ?_` and prove the remaining obligations. Rewrite using `[← hconj m3 c3 hc3 hc3I hc30 _ hΨ₀, hcen3, hpowS _ _ hvS _ _ hΨ₀]`. Establish `hw0 : cu⁻¹ ≠ 0` using `inv_ne_zero hcu0`. Establish `h3 : cu⁻¹ ^ 3 = 1`.
+
+Establish `h4 : cu⁻¹ * cu⁻¹ ^ 3 = cu⁻¹ * 1` using `by rw [mul_one, ← pow_succ']; norm_num at e4 ⊢; exact e4.symm`. Conclude with `mul_left_cancel₀ hw0 h4`. Establish `h1 : cu⁻¹ = 1`. Rewrite using `[e9, show (3 : ℕ) ^ 2 = 3 * 3 by norm_num, pow_mul, h3, one_pow]`. Establish `hcu1 : cu = 1` using `inv_eq_one.mp h1`.
+
+Introduce `Ψ hΨ`. Rewrite using `[hcu _ hΨ, hcu1, one_smul]`. Introduce `k hk`. Proceed by induction on `hk using Subgroup.closure_induction with`. Consider the case `mem u hu => exact ⟨hu.1, gen u hu.1 hu.2⟩`.
+
+Consider the case `one => exact ⟨by rw [GlobalTheory.UnipLine.mat_one, Matrix.one_mulVec], fun Ψ _ => by rw [om11]⟩`. Consider the case `mul x y _ _ hx hy`. Conclude with `⟨by rw [GlobalTheory.UnipLine.mulVec_mul, hy.1, hx.1], fun Ψ hΨ => by rw [hom, hx.2 _ (hs.pres _ _ hΨ), hy.2 _ hΨ]⟩`. Consider the case `inv x _ hx`. Use `⟨GlobalTheory.UnipLine.inv_mulVec_of_mulVec hx.1, fun Ψ hΨ => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `hx.2 _ (hs.pres (x⁻¹, 1) Ψ hΨ)`. Rewrite `h1` using `[← hom, mul_inv_cancel, om11]`. Conclude with `h1.symm`. Establish `hΦs : Φ ∈ schA F (Fin a × Fin (a + (b + 2)))`. Use `(Submodule.span_le.2 ?_) hΦ` and prove the remaining obligations.
+
+Introduce and unpack `Φ ⟨f, -, φ, hSB, hev, rfl⟩`. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ hSB ((hev.and hT.geo.hM.std).mono fun v hv => hv.1.trans hv.2)`. Establish `hΨ` using `hs.pres (g, h) Φ hΦs`. Take `⟨hx, hinv⟩` from `key n hn`. Establish `hact : actAB (cA σ) ((n, 1) : UA σ G.V.J × UA σ G.W.J) (shiftA H₀ H' 1) = shiftA H₀ H' 1`.
+
+Unfold `actAB shiftA`. Rewrite using `[Units.val_one, one_smul, Matrix.mul_vecMulVec]`. Use `erw [hx]`. Simplify using the standard rewrite rules. Rewrite using `[show ((n * g, h) : UA σ G.V.J × UA σ G.W.J) = (n, 1) * (g, h) by simp, map_mul, Module.End.mul_apply]`.
+
+Rewrite using `[← hact, ← hs.impl (n, 1) _ _ hΨ, hact, hinv _ (GlobalTheory.HeisSchA.rho_mem_schA G.M B.ψ hstd _ _ hΨ)]`.
+-/
 theorem unip_inv : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' → ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' → ∀ (V₂ : Spc F E a) (n₁ : ℕ) (X₁ : Spc F E n₁) (H₀ : Plane E a n₁) (j₀ j₁ : ℕ) (M₂ : Model σ X₁ G₁.W) (e₂ : Fn F a (a + (b + 2)) →ₗ[ℂ] Fn F n₁ (a + b)), (reS G.V V₂).IsHerm σ B (a - G.p) G.p → H₀.IsAdapted σ B (reS G.V V₂) X₁ j₀ j₁ → M₂.IsGood B.ψ → IsEv B G.M M₂ H₀.ι H'.ι (isoA H₀ H') e₂ → ∀ Φ ∈ PolData B G.M, ∀ h, ∀ n ∈ unip σ G.V H₀, ∀ g, thetaSum F (e₂ (G.M.co.rho B.ψ (shiftA H₀ H' 1) (om (n * g, h) Φ))) = thetaSum F (e₂ (G.M.co.rho B.ψ (shiftA H₀ H' 1) (om (g, h) Φ))) := by
   intro hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ V₂ n₁ X₁ H₀ j₀ j₁ M₂ e₂ hV₂ hH₀ hM₂ he Φ hΦ h n hn g
   have hs := IsUWeilPair.isUSplitting hT.weil

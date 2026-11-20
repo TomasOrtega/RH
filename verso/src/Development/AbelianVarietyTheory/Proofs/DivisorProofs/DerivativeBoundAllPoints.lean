@@ -16,6 +16,9 @@ open AlgebraicGeometry CategoryTheory
 
 namespace GlobalTheory.CovHt.Link.DenseBound
 
+/- English proof (translation)
+Establish `h1 : (Y.str.appLE ⊤ U le_top).hom.FiniteType` using `HasRingHomProperty.appLE @LocallyOfFiniteType Y.str inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ le_top`. Establish `h2 : ((Scheme.ΓSpecIso (CommRingCat.of F)).inv).hom.FiniteType` using `RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of F)).inv).2`. Conclude with `RingHom.FiniteType.comp h1 h2`.
+-/
 theorem strHom_finiteType {F : Type} [Field F] (Y : Var F) (U : Y.X.Opens) (hU : IsAffineOpen U) :
     (HorizPt.strHom Y.str U).hom.FiniteType := by
   have h1 : (Y.str.appLE ⊤ U le_top).hom.FiniteType :=
@@ -25,6 +28,15 @@ theorem strHom_finiteType {F : Type} [Field F] (Y : Var F) (U : Y.X.Opens) (hU :
       (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of F)).inv).2
   exact RingHom.FiniteType.comp h1 h2
 
+/- English proof (translation)
+Introduce `_ _ D A N j S κ s Φ k la f hf p _ B _ hall x`. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Take `⟨U, hU, ε, -, t, η, hη, hcl⟩` from `GlobalTheory.T.padic_point_affine_approx D A N j S κ s Φ k la f hf p x (drAt Φ k la p x f - B) (by linarith)`. Use `letI : Algebra D.what₂.LL Γ((Φ.C k).Y.X, U) := (HorizPt.strHom (Φ.C k).Y.str U).hom.toAlgebra`.
+
+Use `haveI : Algebra.FiniteType D.what₂.LL Γ((Φ.C k).Y.X, U) := strHom_finiteType (Φ.C k).Y U hU`. Take `⟨ι, φ, hφ⟩` from `GlobalTheory.T.padic_approx_algebraic_point D.what₂.LL Γ((Φ.C k).Y.X, U) p ε t η hη`. Set `y : AlgPt (Φ.C k).Y` to `⟨spMap φ.toRingHom ≫ hU.fromSpec, by`. Rewrite using `[Category.assoc, HorizPt.fromSpec_str, ← Spec.map_comp]`. Use `congr 1`.
+
+Use extensionality with `a`. Conclude with `φ.commutes a⟩`. Establish `e : spMap ι ≫ y.1 = spMap (ι.comp φ.toRingHom) ≫ hU.fromSpec` using `by show spMap ι ≫ spMap φ.toRingHom ≫ hU.fromSpec = _`. Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+
+Establish `h1` using `hcl (ι.comp φ.toRingHom) hφ`. Establish `h2` using `hall ι y`. Rewrite `h2` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem drAt_le_of_algPt : Hypotheses2 → HypothesesH → ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp) (la : AllWt.Weight S.Dw) (f : (Φ.C k).Y.Fn), f ∈ (Φ.C k).Y.H0 ((Φ.C k).Lw la) → ∀ (p : ℕ) [Fact p.Prime] (B : ℝ), 0 < B → (∀ (ι : AlgebraicClosure D.what₂.LL →+* ℂ_[p]) (y : AlgPt (Φ.C k).Y), drAt Φ k la p (spMap ι ≫ y.1) f ≤ B) → ∀ x : Sp ℂ_[p] ⟶ (Φ.C k).Y.X, drAt Φ k la p x f ≤ B := by
   intro _ _ D A N j S κ s Φ k la f hf p _ B _ hall x
   by_contra hlt

@@ -6,10 +6,16 @@ open scoped TensorProduct DirectSum
 
 namespace GlobalTheory.OneFunctional
 
+/- English proof (translation)
+Simplify using `only [DomWeight.detShift, dif_pos hn, h]`.
+-/
 private lemma detShift_eq_add_of_weight_shift (n : ℕ) (c : ℤ) (lam lam' : DomWeight n) (h : ∀ i, lam'.w i = lam.w i + c)
     (hn : 0 < n) : lam'.detShift = lam.detShift + c := by
   simp only [DomWeight.detShift, dif_pos hn, h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [DomWeight.natW, detShift_eq_add_of_weight_shift n c lam lam' h (Fin.pos i), h]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma natW_eq_of_weight_shift (n : ℕ) (c : ℤ) (lam lam' : DomWeight n) (h : ∀ i, lam'.w i = lam.w i + c) :
     lam'.natW = lam.natW := by
   funext i
@@ -17,10 +23,20 @@ private lemma natW_eq_of_weight_shift (n : ℕ) (c : ℤ) (lam lam' : DomWeight 
   congr 1
   ring
 
+/- English proof (translation)
+Simplify using `only [nablaSq, natW_eq_of_weight_shift n c lam lam' h]`.
+-/
 private lemma nablaSq_eq_of_weight_shift (n : ℕ) (c : ℤ) (lam lam' : DomWeight n) (h : ∀ i, lam'.w i = lam.w i + c) :
     nablaSq ℂ n lam' = nablaSq ℂ n lam := by
   simp only [nablaSq, natW_eq_of_weight_shift n c lam lam' h]
 
+/- English proof (translation)
+Establish `hdet : Matrix.GeneralLinearGroup.det (unitaryIncl n g) = detU n g`. Use `ext`. Simplify using `[detU, unitaryIncl_coe]`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality.
+
+Establish `h1 : detU 0 g = 1`. Use `ext`. Simplify using `[detU]`. Simplify using `[h1, DomWeight.detShift, detPow]`. Simplify using `only [detPow, detShift_eq_add_of_weight_shift n c lam lam' h hn, hdet, zpow_add, Units.val_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma detPow_detShift_of_weight_shift (n : ℕ) (c : ℤ) (lam lam' : DomWeight n) (h : ∀ i, lam'.w i = lam.w i + c) (g : U n) :
     detPow ℂ n (unitaryIncl n g) lam'.detShift =
       ((detU n g ^ c : ℂˣ) : ℂ) * detPow ℂ n (unitaryIncl n g) lam.detShift := by
@@ -36,6 +52,11 @@ private lemma detPow_detShift_of_weight_shift (n : ℕ) (c : ℤ) (lam lam' : Do
   · simp only [detPow, detShift_eq_add_of_weight_shift n c lam lam' h hn, hdet, zpow_add, Units.val_mul]
     ring
 
+/- English proof (translation)
+Use `⟨LinearEquiv.ofEq _ _ (nablaSq_eq_of_weight_shift n c lam lam' h).symm, fun g x => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((detU n ^ c) g : ℂ) • (sqRep ℂ n lam (unitaryIncl n g) x : MvPolynomial (Fin n × Fin n) ℂ) = (sqRep ℂ n lam' (unitaryIncl n g) (LinearEquiv.ofEq _ _ (nablaSq_eq_of_weight_shift n c lam lam' h).symm x) : MvPolynomial (Fin n × Fin n) ℂ)`. Establish `hz : (detU n ^ c) g = detU n g ^ c` using `rfl`. Rewrite using `[sqRep_coe, sqRep_coe, hz]`.
+
+Simplify using `only [sqAct, LinearEquiv.coe_ofEq_apply, detPow_detShift_of_weight_shift n c lam lam' h g, mul_smul]`.
+-/
 theorem iso_twist_det_irr_shift (n : ℕ) (c : ℤ) (lam lam' : DomWeight n) (h : ∀ i, lam'.w i = lam.w i + c) :
     Iso (twist (detU n ^ c) (irr n lam)) (irr n lam') := by
   refine ⟨LinearEquiv.ofEq _ _ (nablaSq_eq_of_weight_shift n c lam lam' h).symm, fun g x => ?_⟩

@@ -10,6 +10,13 @@ namespace GlobalTheory.FlipTopChain
 
 open Classical in
 
+/- English proof (translation)
+Substitute `hX hY` using the available equality. Take `rfl` from `eq_of_heq h1`. Take `rfl` from `eq_of_heq h2`. Take `rfl` from `eq_of_heq h3`. Take `rfl` from `eq_of_heq h4`.
+
+Use `hθ using 2` and compare the differences between its conclusion and the goal. Name the introduced variables `x`. Distinguish the cases in `h : IsHalf e x ∧ IsIntM (Comparison₂.fr βT βS (x.map (toEAf D)))`. Establish `h' : IsHalf e x ∧ IsIntM (frMapO S S' βS βT x)` using `h`. Rewrite using `[if_pos h, if_pos h']`.
+
+Conclude with `(hN _ h.2).symm`. Establish `h' : ¬ (IsHalf e x ∧ IsIntM (frMapO S S' βS βT x))` using `h`. Rewrite using `[if_neg h, if_neg h']`.
+-/
 theorem transport {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (t : T) (k : ℕ)
     (P : Finset (Pl D.host.E)) (ψ : AddChar (AF D.host.F) ℂ) (e : AE D)
     {S S' : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛS' : Submodule (𝓞 D.host.E) (Fin S'.rank → D.host.E)}
@@ -46,14 +53,27 @@ end GlobalTheory.FlipTopChain
 
 namespace GlobalTheory.FlipTopChain
 
+/- English proof (translation)
+Introduce and unpack `_ rfl`. Conclude with `colY_m L`.
+-/
 theorem colY_eq_m {D : D7} {T : Type} (L : LevCh D T) : ∀ n, n = D.R.m → columnBlock L n = ⟨D.sp.X', L.ΛX⟩ := by
   rintro _ rfl; exact colY_m L
 
+/- English proof (translation)
+Introduce and unpack `_ rfl`. Conclude with `colFrame_m L`.
+-/
 theorem colFrame_eq_m {D : D7} {T : Type} (L : LevCh D T) : ∀ n, n = D.R.m → HEq (colFrame L n) L.βX := by
   rintro _ rfl; exact colFrame_m L
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R F large₂ hS ch hch t j g hj hg`. Take `⟨k, hk⟩` from `j`. Simplify using `only at hj`. Take `rfl : k = D.R.m - 1` from `by omega`. Take `⟨-, e', he', hθ⟩` from `hS.core.chain.vX t`.
+
+Use `⟨e', he', ?_⟩` and prove the remaining obligations. Establish `hm : D.R.m - 1 < D.R.m` using `hk`. Establish `hb' : D.sp.X'.rank = D.R.r + (D.R.m - 1 + 1) * D.R.t`. Rewrite using `[hj]`. Conclude with `D.sp.X'_rank`.
+
+Establish `hN` using `(Comparison₂.local_factors ch.S.B t hS.core.lev).2.2 (D.R.m - 1) hm _ hb'`. Establish `hchi : R.toLevCh.chi (D.R.m - 1 + 1) = R.toLevCh.chi D.R.m` using `by rw [hj]`. Rewrite `hN` using `[hchi]`. Unfold `GlobalTheory.FlipTop.topFn`. Conclude with `transport ch.G t (D.R.m - 1) _ ch.W.ψ e' (X := ch.G.node (.grid 0 (D.R.m - 1))) (Y := ch.G.node (.grid 0 (D.R.m - 1 + 1))) (colY_lt R.toLevCh hm) (colY_eq_m R.toLevCh _ hj) (colFrame_lt R.toLevCh hm) (colFrame_eq_m R.toLevCh _ hj) (hch.vac.2 _ hj) hg _ _ (Comparison₂.rank_Yc hm.l …`.
+-/
 theorem last_step_theta : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A} {large₂ : SizeData₂ D},
     HidaSetting large₂ R F → ∀ ch : Choice R, ch.Is → ∀ (t : T) (j : Fin D.R.m) (g : Sch ch.G (.down t 0 j)) (hj : (j : ℕ) + 1 = D.R.m),

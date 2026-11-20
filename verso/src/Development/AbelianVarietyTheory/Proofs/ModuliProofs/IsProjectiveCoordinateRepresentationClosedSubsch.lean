@@ -14,10 +14,22 @@ noncomputable section
 namespace GlobalTheory.ZM.ClosedCoord
 open MvPolynomial
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp_eq {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Take `⟨J, e, he⟩` from `IsClosedImmersion.Spec_iff.1 (inferInstance : IsClosedImmersion (pullback.snd i x))`. Use `⟨J, fun R' _ φ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩ f hf`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective (pullback.lift y (spMap φ) hy ≫ e.hom)`. Establish `h1 : Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J) ≫ ψ) = spMap φ`.
+
+Rewrite using `[Spec.map_comp, hψ, Category.assoc, ← he, pullback.lift_snd]`. Establish `h2` using `Spec.map_injective h1`. Establish `h3 : ψ.hom (Ideal.Quotient.mk J f) = φ f` using `congrArg (fun t => t.hom f) h2`. Rewrite using `[← h3, Ideal.Quotient.eq_zero_iff_mem.2 hf, map_zero]`. Introduce `h`.
+
+Use `⟨spMap (Ideal.Quotient.lift J φ h) ≫ e.inv ≫ pullback.fst i x, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, pullback.condition, he]`. Simplify using `only [Category.assoc, Iso.inv_hom_id_assoc]`. Rewrite using `[← Category.assoc]`. Use `congr 1`.
+
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem exists_ideal_factor {Y Z : Scheme.{0}} (i : Y ⟶ Z) [IsClosedImmersion i] {S : Type} [CommRing S]
     (x : Sp S ⟶ Z) : ∃ J : Ideal S, ∀ (R' : Type) [CommRing R'] (φ : S →+* R'),
       (∃ y : Sp R' ⟶ Y, y ≫ i = spMap φ ≫ x) ↔ ∀ f ∈ J, φ f = 0 := by
@@ -38,6 +50,15 @@ theorem exists_ideal_factor {Y Z : Scheme.{0}} (i : Y ⟶ Z) [IsClosedImmersion 
     congr 1
     rw [← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C c => exact ⟨0, C c, fun _ _ _ _ _ => by simp, fun _ _ _ _ _ => rfl⟩`. Consider the case `add p q hp hq`. Take `⟨d, G, h1, h2⟩` from `hp`. Take `⟨d', G', h1', h2'⟩` from `hq`.
+
+Use `⟨d + d', X a ^ d' * G + X a ^ d * G', fun R' _ β u w => ?_, fun R' _ β w hw => ?_⟩` and prove the remaining obligations. Simplify using `only [eval₂_add, eval₂_mul, eval₂_pow, eval₂_X, h1, h1']`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [eval₂_add, eval₂_mul, eval₂_pow, eval₂_X, h2 _ β w hw, h2' _ β w hw, hw]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `mul_X p n hp`. Take `⟨d, G, h1, h2⟩` from `hp`. Use `⟨d + 1, G * X n, fun R' _ β u w => ?_, fun R' _ β w hw => ?_⟩` and prove the remaining obligations. Simplify using `only [eval₂_mul, eval₂_X, h1]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [eval₂_mul, eval₂_X, h2 _ β w hw]`.
+-/
 theorem exists_homogenisation {R σ : Type} [CommRing R] (a : σ) (F : MvPolynomial σ R) :
     ∃ (d : ℕ) (G : MvPolynomial σ R),
       (∀ (R' : Type) [CommRing R'] (β : R →+* R') (u : R') (w : σ → R'),
@@ -57,6 +78,11 @@ theorem exists_homogenisation {R σ : Type} [CommRing R] (a : σ) (F : MvPolynom
     · simp only [eval₂_mul, eval₂_X, h1]; ring
     · simp only [eval₂_mul, eval₂_X, h2 _ β w hw]
 
+/- English proof (translation)
+Establish `: r ∈ (⊥ : Ideal R')`. Use `Submodule.mem_of_span_eq_top_of_smul_pow_mem _ (Set.range v) hv r ?_` and prove the remaining obligations. Introduce and unpack `⟨_, a, rfl⟩`. Take `⟨⟨_, n, rfl⟩, hn⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers (v a)) _ r).1 (h a)`. Conclude with `⟨n, by simpa using hn⟩`.
+
+Simplify using `using this`.
+-/
 theorem eq_zero_of_away {R' σ : Type} [CommRing R'] (v : σ → R') (hv : Ideal.span (Set.range v) = ⊤) (r : R')
     (h : ∀ a, algebraMap R' (Localization.Away (v a)) r = 0) : r = 0 := by
   have : r ∈ (⊥ : Ideal R') := by
@@ -69,13 +95,40 @@ theorem eq_zero_of_away {R' σ : Type} [CommRing R'] (v : σ → R') (hv : Ideal
 def awayUnit {R' : Type} [CommRing R'] (r : R') : (Localization.Away r)ˣ :=
   (IsLocalization.Away.algebraMap_isUnit (S := Localization.Away r) r).unit
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem awayUnit_coe {R' : Type} [CommRing R'] (r : R') :
     (awayUnit r : Localization.Away r) = algebraMap R' _ r := rfl
 
+/- English proof (translation)
+Rewrite using `[← awayUnit_coe]`. Conclude with `Units.inv_mul _`.
+-/
 theorem awayUnit_inv_mul {R' : Type} [CommRing R'] (r : R') :
     ((awayUnit r)⁻¹ : (Localization.Away r)ˣ) * algebraMap R' (Localization.Away r) r = 1 := by
   rw [← awayUnit_coe]; exact Units.inv_mul _
 
+/- English proof (translation)
+Use `choose K hK1 hK using ch`. Use `Fintype.ofFinite σ` as an intermediate fact. Establish `nrm : ∀ (A : Type) [CommRing A] β₀ (t : σ → A) (b : σ), P A β₀ t → ∀ F ∈ K b, eval₂ ((algebraMap A (Localization.Away (t b))).comp β₀) (fun j => ((awayUnit (t b))⁻¹ : (Localization.Away (t b))ˣ) * algebraMap A _ (t j)) F = 0`. Introduce `A _ β₀ t b ht`. Conclude with `(hK b _ _ _ (awayUnit_inv_mul _)).1 (sc _ _ _ _ (bc _ _ _ _ _ ht))`.
+
+It suffices to establish `h : P (Localization.Away (v a)) ((algebraMap R' _).comp β) (fun j => ((awayUnit (v a))⁻¹ : (Localization.Away (v a))ˣ) * algebraMap R' _ (v j)) by`. Establish `h2` using `sc _ (awayUnit (v a)) _ _ h`. Simplify `h2` using `only [Units.mul_inv_cancel_left]`. Use `(hK a _ _ _ (awayUnit_inv_mul _)).2 fun F hF => ?_` and prove the remaining obligations. Take `⟨d, G, hG, hGF⟩` from `exists_homogenisation a F`.
+
+Establish `step : ∀ b, ∃ n : ℕ, X a ^ n * G ∈ K b`. Introduce `b`. Establish `hP : P (MvPolynomial σ R ⧸ K b) ((Ideal.Quotient.mk _).comp C) (fun j => Ideal.Quotient.mk _ (X j))`. Use `(hK b _ _ _ ?_).2 fun F' hF' => ?_` and prove the remaining obligations. Rewrite using `[← map_one (Ideal.Quotient.mk (K b)), Ideal.Quotient.eq]`.
+
+Conclude with `hK1 b`. Use `(eval₂_comp_left (Ideal.Quotient.mk (K b)) C X F').symm` as an intermediate fact. Rewrite `this` using `[eval₂_eta, Ideal.Quotient.eq_zero_iff_mem.2 hF']`. Conclude with `this`. Establish `h1` using `nrm _ _ _ a hP F hF`.
+
+Rewrite `h1` using `[← hGF _ _ _ (awayUnit_inv_mul _), hG, (Units.isUnit _).pow d |>.mul_right_eq_zero]`. Establish `h2` using `eval₂_comp_left (algebraMap _ (Localization.Away (Ideal.Quotient.mk (K b) (X a)))) ((Ideal.Quotient.mk _).comp C) (fun j => Ideal.Quotient.mk (K b) (X j)) G`. Establish `h3` using `(eval₂_comp_left (Ideal.Quotient.mk (K b)) C X G)`. Rewrite `h3` using `[eval₂_eta]`. Establish `h4 : algebraMap _ (Localization.Away (Ideal.Quotient.mk (K b) (X a))) (Ideal.Quotient.mk (K b) G) = 0`.
+
+Rewrite using `[h3]`. Conclude with `h2.trans h1`. Take `⟨⟨_, n, rfl⟩, hn⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers (Ideal.Quotient.mk (K b) (X a))) _ _).1 h4`. Use `⟨n, Ideal.Quotient.eq_zero_iff_mem.1 ?_⟩` and prove the remaining obligations. Simplify using `using hn`.
+
+Use `choose n hn using step`. Establish `hH : eval₂ β v (X a ^ (∑ b, n b) * G) = 0`. Use `hv _ fun A _ β₀ t ht => eq_zero_of_away t (uni _ _ _ ht) _ fun b => ?_` and prove the remaining obligations. Establish `hm : X a ^ (∑ b, n b) * G ∈ K b`. Take `⟨m, hm⟩` from `Nat.exists_eq_add_of_le' (Finset.single_le_sum (f := n) (fun _ _ => Nat.zero_le _) (Finset.mem_univ b))`.
+
+Rewrite using `[hm, pow_add, _root_.mul_assoc]`. Conclude with `Ideal.mul_mem_left _ _ (hn b)`. Establish `h1` using `nrm _ _ _ b ht _ hm`. Rewrite using `[eval₂_comp_left]`. Rewrite `h1` using `[eval₂_mul, eval₂_pow, eval₂_X, hG, mul_pow, _root_.mul_mul_mul_comm, ← pow_add, (Units.isUnit _).pow _ |>.mul_right_eq_zero]`.
+
+Rewrite using `[eval₂_mul, eval₂_pow, eval₂_X]`. Conclude with `h1`. Establish `h5` using `congrArg (algebraMap R' (Localization.Away (v a))) hH`. Rewrite `h5` using `[eval₂_mul, eval₂_pow, eval₂_X, map_mul, map_pow, map_zero, ← awayUnit_coe, (Units.isUnit _).pow _ |>.mul_right_eq_zero, eval₂_comp_left]`. Rewrite using `[← hGF _ _ _ (awayUnit_inv_mul _), hG]`.
+
+Conclude with `mul_eq_zero_of_right _ h5`.
+-/
 theorem away_of_vanishing {R σ : Type} [CommRing R] [Finite σ]
     (P : ∀ (R' : Type) [CommRing R'], (R →+* R') → (σ → R') → Prop)
     (bc : ∀ (R' R'' : Type) [CommRing R'] [CommRing R''] (φ : R' →+* R'') β v, P R' β v → P R'' (φ.comp β) (fun j => φ (v j)))
@@ -140,6 +193,43 @@ theorem away_of_vanishing {R σ : Type} [CommRing R] [Finite σ]
   rw [← hGF _ _ _ (awayUnit_inv_mul _), hG]
   exact mul_eq_zero_of_right _ h5
 
+/- English proof (translation)
+Introduce `R σ _ _ I Z Y s M th i N ty ⟨hM, hloc, hpts⟩ hi hN hc`. Establish `mem : ∀ F, F ∈ idealOf (i ≫ s) N ty (𝟙 Y) ↔ ∀ (R' : Type) [CommRing R'] (β : R →+* R') (y : Sp R' ⟶ Y) (v : σ → R'), y ≫ i ≫ s = spMap β → SecCoord M th (y ≫ i) v → eval₂ β v F = 0`. Introduce `F`. Simplify using `only [idealOf, Ideal.mem_iInf, RingHom.mem_ker, coe_eval₂Hom, Category.comp_id, hc, and_imp]`. Establish `hbc : ∀ (A B : Type) [CommRing A] [CommRing B] (φ : A →+* B) (x : Sp A ⟶ Z) (v : σ → A), SecCoord M th x v → SecCoord M th (spMap φ ≫ x) (fun j => φ (v j))` using `fun A B _ _ φ x v h => (GlobalTheory.ZM.Coord.secCoord_bc_scale_unique Z M σ th A x v hM h).1 B φ`.
+
+Establish `huniq : ∀ (A : Type) [CommRing A] (β : R →+* A) (v : σ → A) (x x' : Sp A ⟶ Z), x ≫ s = spMap β → SecCoord M th x v → x' ≫ s = spMap β → SecCoord M th x' v → x = x'`. Introduce `A _ β v x x' h1 h2 h3 h4`. Take `⟨h5, h6⟩` from `hloc A β x v h1 h2`. Conclude with `(hpts A β v h5 h6).unique ⟨h1, h2⟩ ⟨h3, h4⟩`. Use `⟨hN, fun R' _ β y v h1 h2 => ?_, fun R' _ β v hv hI => ?_⟩` and prove the remaining obligations.
+
+Rewrite `h2` using `[hc]`. Conclude with `⟨(hloc R' β (y ≫ i) v (by simpa using h1) h2).1, fun F hF => (mem F).1 hF R' β y v h1 h2⟩`. Establish `hIv : ∀ F ∈ I, eval₂ β v F = 0` using `fun F hF => hI F ((mem F).2 fun A _ β' y w h1 h2 => (hloc A β' (y ≫ i) w (by simpa using h1) h2).2 F hF)`. Take `⟨x, ⟨hx1, hx2⟩, -⟩` from `hpts R' β v hv hIv`. Establish `key` using `away_of_vanishing (R := R) (σ := σ) (fun A _ β' w => ∃ y : Sp A ⟶ Y, y ≫ i ≫ s = spMap β' ∧ SecCoord M th (y ≫ i) w) (by`.
+
+Introduce and unpack `A B _ _ φ β' w ⟨y, h1, h2⟩`. Use `⟨spMap φ ≫ y, by rw [Category.assoc, h1, spMap_comp_eq], ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc]`. Conclude with `hbc _ _ φ _ _ h2)`. Use the proof step `(by`.
+
+Introduce and unpack `A _ u β' w ⟨y, h1, h2⟩`. Conclude with `⟨y, h1, (GlobalTheory.ZM.Coord.secCoord_bc_scale_unique Z M σ th A _ w hM h2).2.1 u⟩)`. Use the proof step `(by`. Introduce and unpack `A _ β' w ⟨y, h1, h2⟩`. Conclude with `(hloc A β' (y ≫ i) w (by simpa using h1) h2).1)`.
+
+Use the proof step `(by`. Introduce `a`. Establish `hq : ∀ F, eval₂ ((Ideal.Quotient.mk (I ⊔ Ideal.span {X a - 1})).comp C) (fun j => Ideal.Quotient.mk _ (X j)) F = Ideal.Quotient.mk (I ⊔ Ideal.span {X a - 1}) F`. Introduce `F`. Use `(eval₂_comp_left (Ideal.Quotient.mk (I ⊔ Ideal.span {X a - 1})) C X F).symm` as an intermediate fact.
+
+Rewrite `this` using `[eval₂_eta]`. Conclude with `this`. Establish `ha : X a - 1 ∈ I ⊔ Ideal.span {X a - 1}` using `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`. Take `⟨xa, ⟨hxa1, hxa2⟩, -⟩` from `hpts (MvPolynomial σ R ⧸ (I ⊔ Ideal.span {X a - 1})) ((Ideal.Quotient.mk _).comp C) (fun j => Ideal.Quotient.mk _ (X j)) (by`. Rewrite using `[Ideal.eq_top_iff_one]`.
+
+Use `Ideal.subset_span ⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_one (Ideal.Quotient.mk (I ⊔ Ideal.span {X a - 1}))]`. Conclude with `Ideal.Quotient.eq.2 ha)`. Use the proof step `(fun F hF => by rw [hq]; exact Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_sup_left hF))`. Take `⟨J, hJ⟩` from `exists_ideal_factor i xa`.
+
+Establish `hle : ∀ F ∈ I ⊔ Ideal.span {X a - 1}, F ∈ J.comap (Ideal.Quotient.mk (I ⊔ Ideal.span {X a - 1}))`. Introduce `F hF`. Rewrite using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.2 hF]`. Conclude with `J.zero_mem`. Use `⟨J.comap (Ideal.Quotient.mk _), hle _ ha, fun A _ β' w hw => ?_⟩` and prove the remaining obligations.
+
+Establish `main : ∀ h : ∀ F ∈ I ⊔ Ideal.span {X a - 1}, eval₂Hom β' w F = 0, (spMap (Ideal.Quotient.lift _ _ h) ≫ xa) ≫ s = spMap β' ∧ SecCoord M th (spMap (Ideal.Quotient.lift _ _ h) ≫ xa) w`. Introduce `h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hxa1, spMap_comp_eq]`. Use `congr 1`.
+
+Use extensionality with `r`. Simplify using the standard rewrite rules. Use `hbc _ _ (Ideal.Quotient.lift _ _ h) _ _ hxa2` as an intermediate fact. Simplify using `using this`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, h1, h2⟩ F hF`. Establish `h : ∀ F ∈ I ⊔ Ideal.span {X a - 1}, eval₂Hom β' w F = 0`. Introduce `F hF`. Establish `hle' : I ⊔ Ideal.span {X a - 1} ≤ RingHom.ker (eval₂Hom β' w)`. Use `sup_le (fun F hF => (hloc A β' (y ≫ i) w (by simpa using h1) h2).2 F hF) ?_` and prove the remaining obligations.
+
+Rewrite using `[Ideal.span_singleton_le_iff_mem, RingHom.mem_ker]`. Simplify using `[hw]`. Conclude with `hle' hF`. Establish `e` using `huniq A β' w _ _ (by simpa using h1) h2 (main h).1 (main h).2`. Conclude with `(hJ A _).1 ⟨y, e⟩ _ hF`.
+
+Introduce `hF`. Establish `h : ∀ F ∈ I ⊔ Ideal.span {X a - 1}, eval₂Hom β' w F = 0` using `fun F h => hF F (hle F h)`. Take `⟨y, hy⟩` from `(hJ A (Ideal.Quotient.lift _ _ h)).2 (by`. Introduce `f hf`. Take `⟨F, rfl⟩` from `Ideal.Quotient.mk_surjective f`.
+
+Conclude with `hF F hf)`. Conclude with `⟨y, by rw [← Category.assoc, hy]; exact (main h).1, by rw [hy]; exact (main h).2⟩)`. Use the proof step `R' β v (fun F hF => hI F ((mem F).2 fun A _ β' y w h1 h2 => hF A β' w ⟨y, h1, h2⟩))`. Take `⟨J, hJ⟩` from `exists_ideal_factor i x`. Take `⟨y, hy⟩` from `(hJ R' (RingHom.id R')).2 (by`.
+
+Introduce `f hf`. Use `eq_zero_of_away v hv f fun a => ?_` and prove the remaining obligations. Take `⟨y, h1, h2⟩` from `key a`. Use `(hJ _ (algebraMap R' _)).1 ⟨y, ?_⟩ f hf` and prove the remaining obligations. Use `huniq _ _ _ _ _ (by simpa using h1) h2 ?_ (hbc _ _ _ _ _ hx2)` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, hx1, spMap_comp_eq])`. Establish `hid : spMap (RingHom.id R') = 𝟙 (Sp R')` using `Spec.map_id _`. Rewrite `hy` using `[hid, Category.id_comp]`. Use `⟨y, ⟨by rw [← Category.assoc, hy, hx1], by rw [hc, hy]; exact hx2⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `y' ⟨h1, h2⟩`.
+
+Rewrite `h2` using `[hc]`. Rewrite using `[← cancel_mono i, hy]`. Conclude with `huniq _ _ _ _ _ (by simpa using h1) h2 hx1 hx2`.
+-/
 theorem projRep_closed : ∀ (R σ : Type) [CommRing R] [Finite σ] (I : Ideal (MvPolynomial σ R)) (Z Y : Scheme.{0}) (s : Z ⟶ Sp R) (M : LB Z) (th : σ → M.Sec) (i : Y ⟶ Z) (N : LB Y) (ty : σ → N.Sec), ProjRep I s M th → IsClosedImmersion i → N.IsLB → (∀ (R' : Type) [CommRing R'] (y : Sp R' ⟶ Y) (v : σ → R'), SecCoord N ty y v ↔ SecCoord M th (y ≫ i) v) → ProjRep (idealOf (i ≫ s) N ty (𝟙 Y)) (i ≫ s) N ty := by
   intro R σ _ _ I Z Y s M th i N ty ⟨hM, hloc, hpts⟩ hi hN hc
   have mem : ∀ F, F ∈ idealOf (i ≫ s) N ty (𝟙 Y) ↔ ∀ (R' : Type) [CommRing R'] (β : R →+* R') (y : Sp R' ⟶ Y)

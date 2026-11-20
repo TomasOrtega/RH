@@ -52,6 +52,11 @@ def IsHolFamily (D : Datum H) {g : ℕ} (ty : Fin g → (E →+* ℂ)) {V : Type
     (B : Set V) (Pf : V → (D.La →+ (Fin g → ℂ))) : Prop :=
   (∀ b ∈ B, IsPeriodMap D ty (Pf b)) ∧ ∀ x : D.La, DifferentiableOn ℂ (fun b => Pf b x) B
 
+/- English proof (translation)
+Take `⟨J, h1, h2, h3, h4⟩` from `D.dom`. Establish `key` using `fun a : 𝓞 E => h4 a (actR D a) (sigTrace D a) (fun x => rfl) rfl`. Use `⟨J, h1, fun a => (key a).1, h2, h3, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[(key a).2.1, (key a).2.2]`. Apply `Complex.ext` to reduce the goal to its premises.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem domain_nonempty (D : Datum H) : (domain D).Nonempty := by
   obtain ⟨J, h1, h2, h3, h4⟩ := D.dom
   have key := fun a : 𝓞 E => h4 a (actR D a) (sigTrace D a) (fun x => rfl) rfl
@@ -61,12 +66,22 @@ theorem domain_nonempty (D : Datum H) : (domain D).Nonempty := by
   · simp
   · simp; ring
 
+/- English proof (translation)
+Take `⟨-, J, -, φ, h1, -, h3⟩` from `h`. Rewrite using `[← h1, ← h1, ← h3]`. Both sides reduce to the same expression.
+-/
 theorem IsPeriodMap.map_smul {D : Datum H} {g : ℕ} {ty : Fin g → (E →+* ℂ)} {P : D.La →+ (Fin g → ℂ)}
     (h : IsPeriodMap D ty P) (a : 𝓞 E) (x : D.La) : P (a • x) = tyAct ty a (P x) := by
   obtain ⟨-, J, -, φ, h1, -, h3⟩ := h
   rw [← h1, ← h1, ← h3]
   rfl
 
+/- English proof (translation)
+Take `⟨φ, h1, h2, -⟩` from `h`. Take `⟨φ', h1', h2', -⟩` from `h'`. Establish `e : ∀ v, φ v = φ' v`. Introduce `v`. Proceed by induction on `v using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul r x`. Establish `: r ⊗ₜ[ℤ] x = r • ((1 : ℝ) ⊗ₜ[ℤ] x)` using `by simp [TensorProduct.smul_tmul']`. Rewrite using `[this, map_smul, map_smul, h1, h1']`. Consider the case `add u v hu hv => simp [hu, hv]`.
+
+Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[h2, e (J' v), h2', e]`.
+-/
 theorem Presents.unique {D : Datum H} {g : ℕ} {ty ty' : Fin g → (E →+* ℂ)} {P : D.La →+ (Fin g → ℂ)}
     {J J' : ℝ ⊗[ℤ] D.La →ₗ[ℝ] ℝ ⊗[ℤ] D.La} (h : Presents D ty P J) (h' : Presents D ty' P J') : J = J' := by
   obtain ⟨φ, h1, h2, -⟩ := h

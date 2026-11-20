@@ -11,6 +11,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hF : GlobalTheory.Published.AbelianDeRham.Free` using `abelianDeRhamStructure_toFree hS`. Conclude with `⟨hF, hS.2.1, hS.2.2, GlobalTheory.Published.AbelianDeRham.rigid_of_free_of_crystallineDeRham hF hC, GlobalTheory.CubeDual.abelianDeRham_duality hQ hD hP hF⟩`.
+-/
 theorem abelianDeRham_of_duality (hQ : GlobalTheory.Published.CubeTheorem)
     (hS : GlobalTheory.Published.AbelianDeRhamStructure)
     (hC : GlobalTheory.Published.CrystallineDeRham) (hD : GlobalTheory.Published.DualAbelianScheme)
@@ -20,6 +23,9 @@ theorem abelianDeRham_of_duality (hQ : GlobalTheory.Published.CubeTheorem)
     GlobalTheory.Published.AbelianDeRham.rigid_of_free_of_crystallineDeRham hF hC,
     GlobalTheory.CubeDual.abelianDeRham_duality hQ hD hP hF⟩
 
+/- English proof (translation)
+The claim follows from `abelianDeRham_of_duality`.
+-/
 example : GlobalTheory.Published.CubeTheorem → GlobalTheory.Published.AbelianDeRhamStructure →
     GlobalTheory.Published.CrystallineDeRham → GlobalTheory.Published.DualAbelianScheme →
     GlobalTheory.Published.PoincareDeRhamDuality → GlobalTheory.Published.AbelianDeRham :=

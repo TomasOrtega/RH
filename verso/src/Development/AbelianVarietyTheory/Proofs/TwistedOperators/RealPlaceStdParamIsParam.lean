@@ -10,12 +10,28 @@ namespace GlobalTheory
 def realPlaceStdParam (p q : ℕ) : Ix p q → ℚ :=
   Sum.elim (fun i => -((i : ℕ) : ℚ)) (fun j => -(((p + j : ℕ)) : ℚ))
 
+/- English proof (translation)
+Break down `a with i | j` into its components or cases. Conclude with `⟨-((i : ℕ) : ℤ), by simp [realPlaceStdParam]⟩`. Conclude with `⟨-((p + j : ℕ) : ℤ), by simp [realPlaceStdParam]⟩`.
+-/
 theorem realPlaceStdParam_int (p q : ℕ) (a : Ix p q) :
     ∃ k : ℤ, realPlaceStdParam p q a = k := by
   rcases a with i | j
   · exact ⟨-((i : ℕ) : ℤ), by simp [realPlaceStdParam]⟩
   · exact ⟨-((p + j : ℕ) : ℤ), by simp [realPlaceStdParam]⟩
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(i | j) (i' | j') h`. Simplify using `only [realPlaceStdParam, Sum.elim_inl, neg_inj, Nat.cast_inj] at h`. Conclude with `congrArg Sum.inl (Fin.ext h)`. Simplify using `only [realPlaceStdParam, Sum.elim_inl, Sum.elim_inr, neg_inj, Nat.cast_inj] at h`.
+
+Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `only [realPlaceStdParam, Sum.elim_inl, Sum.elim_inr, neg_inj, Nat.cast_inj] at h`. Use `i'.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [realPlaceStdParam, Sum.elim_inr, neg_inj, Nat.cast_inj] at h`. Conclude with `congrArg Sum.inr (Fin.ext (by omega))`. Introduce and unpack `(i | j) (i' | j') h`. Establish `h' : (i : ℕ) < i'` using `h`. Simplify using `only [realPlaceStdParam, Sum.elim_inl, neg_lt_neg_iff, Nat.cast_lt]`.
+
+Conclude with `h'`. Conclude with `absurd h (by simp [posC])`. Conclude with `absurd h (by simp [posC])`. Establish `h' : (j : ℕ) < j'` using `h`. Simplify using `only [realPlaceStdParam, Sum.elim_inr, neg_lt_neg_iff, Nat.cast_lt]`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `a`. Take `⟨k, hk⟩` from `realPlaceStdParam_int p q a`. Conclude with `⟨2 * k, by rw [hk]; push_cast; ring⟩`. Introduce `a b`.
+
+Take `⟨k, hk⟩` from `realPlaceStdParam_int p q a`. Take `⟨l, hl⟩` from `realPlaceStdParam_int p q b`. Conclude with `⟨k - l, by rw [hk, hl]; push_cast; ring⟩`.
+-/
 theorem realPlaceStdParam_isParam (p q : ℕ) : IsParam (realPlaceStdParam p q) := by
   refine ⟨?_, ?_, ?_, ?_⟩
   · rintro (i | j) (i' | j') h
@@ -46,6 +62,13 @@ theorem realPlaceStdParam_isParam (p q : ℕ) : IsParam (realPlaceStdParam p q) 
     obtain ⟨l, hl⟩ := realPlaceStdParam_int p q b
     exact ⟨k - l, by rw [hk, hl]; push_cast; ring⟩
 
+/- English proof (translation)
+Introduce `H`. Set `grp : ∀ p q : ℕ, GrpData p q` to `fun p q => Classical.choice (GlobalTheory.DetSqrtCover.nonempty_grpData p q)`. Establish `key : ∀ (p q : ℕ) (lam : Ix p q → ℚ), ∃ R : DSRep (grp p q), IsParam lam → Formalism.L2.Theta.HasParam R lam`. Introduce `p q lam`. Distinguish the cases in `h : IsParam lam`.
+
+Take `⟨R, hR⟩` from `H p q (grp p q) lam h`. Conclude with `⟨R, fun _ => hR⟩`. Take `⟨R, -⟩` from `H p q (grp p q) _ (realPlaceStdParam_isParam p q)`. Conclude with `⟨R, fun h' => absurd h' h⟩`. Use `choose ds hds using key`.
+
+Conclude with `⟨⟨grp, fun p q r s => Classical.choice (GlobalTheory.T.nonempty_fockModel_of_unitary_pair_covers p q r s _ _ _), ds⟩, hds⟩`.
+-/
 theorem exists_provA_of_forall_exists_hasParam :
     (∀ (p q : ℕ) (T : GrpData p q) (lam : Ix p q → ℚ), IsParam lam →
       ∃ R : DSRep T, Formalism.L2.Theta.HasParam R lam) →

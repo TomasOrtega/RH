@@ -171,6 +171,9 @@ def adm9 : Prop :=
     riemannZeta (1 - s) = 2 * (2 * Real.pi) ^ (-s) * Complex.Gamma s *
       Complex.cos (Real.pi * s / 2) * riemannZeta s
 
+/- English proof (translation)
+Introduce `s hs hs'`. Conclude with `riemannZeta_one_sub hs hs'`.
+-/
 theorem content_divisibility_clause : adm9 := by
   intro s hs hs'
   exact riemannZeta_one_sub hs hs'

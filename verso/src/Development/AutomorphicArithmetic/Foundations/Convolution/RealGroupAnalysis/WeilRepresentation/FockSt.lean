@@ -16,6 +16,19 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Topology Filter
 open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspRep GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published GroundTheory.Global GroundTheory.Automorphic.GJMatrix
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Fo
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W`. Take `⟨O⟩` from `opsEx F`. Establish `one : ∀ (T : Module.End ℂ (S4 F)), (∀ φ ∈ Vac D.δ, T φ ∈ Vac D.δ) → (∀ w i φ, T (O.x w i φ) ∈ Submodule.span ℂ {χ : S4 F | ∃ w' j, χ = O.x w' j (T φ) ∨ χ = O.d w' j (T φ)}) → ∀ φ ∈ Fock D.δ, T φ ∈ Fock D.δ`. Introduce `T h1 h2 φ hφ`. Take `⟨Λ, m, hm⟩` from `fockEx F E D O {φ} (Set.finite_singleton φ) (by simpa using hφ)`.
+
+Conclude with `(fkLe F D.δ O).2 _ le_rfl m (fkStab F D.δ O T (Vac D.δ ⊓ Fix D.δ Λ) _ le_rfl (fun χ hχ => h1 χ hχ.1) h2 m φ (hm φ rfl))`. Use `⟨fun k => one _ (vacL F E D W _ ?_) (lX F E D W O _), fun φ hφ => ?_, fun φ hφ C hC hO => ?_⟩` and prove the remaining obligations. Rewrite using `[pInf_finGL]`. Conclude with `one_mem _`. Take `⟨Λ, m, hm⟩` from `fockEx F E D O {φ} (Set.finite_singleton φ) (by simpa using hφ)`.
+
+Use `⟨_, (fkLe F D.δ O).2 _ inf_le_left m, (fkBasic F O).2.2 _ (vacFd F E D Λ) m, fun k => ?_⟩` and prove the remaining obligations. Use `fkStab F D.δ O _ (Vac D.δ ⊓ Fix D.δ Λ) (Vac D.δ ⊓ Fix D.δ Λ) inf_le_left (fun χ hχ => ⟨vacL F E D W _ ?_ χ hχ.1, lFix F E D W _ Λ χ hχ.2⟩) (lX F E D W O _) m φ (hm φ rfl)` and prove the remaining obligations. Rewrite using `[pInf_infGL]`. Conclude with `k.2`. Take `⟨s, hs, h1, h2⟩` from `omFinite F E D W φ C hC`.
+
+Establish `orth : ∀ g : G1 F, InfOne g → InfOrth g`. Introduce `g hg i j`. Establish `e : ∀ a b c d : A F, (a * b + c * d).1 = a.1 * b.1 + c.1 * d.1` using `fun _ _ _ _ => rfl`. Establish `hg' : ∀ i j, (g.1 i j).1 = ((1 : Matrix (Fin 2) (Fin 2) (A F)) i j).1` using `hg`. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_two, e, Matrix.transpose_apply, Matrix.transpose_apply, hg', hg', hg', hg', ← e]`.
+
+Use `congrArg (fun x : A F => x.1) ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.one_apply]`. Take `⟨Λ, m, hm⟩` from `fockEx F E D O ((fun g => W.Om g φ) '' s) (hs.image _) (by`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `one _ (vacOm F E D W g (orth g (h1 g hg))) (omX F E D W O g) φ hφ)`.
+
+Use `⟨_, (fkLe F D.δ O).2 _ inf_le_left m, (fkBasic F O).2.2 _ (vacFd F E D Λ) m, fun k hk => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, k', a1, a2, a3⟩` from `h2 k hk`. Rewrite using `[a3]`. Conclude with `fkStab F D.δ O _ (Vac D.δ ⊓ Fix D.δ Λ) (Vac D.δ ⊓ Fix D.δ Λ) inf_le_left (fun χ hχ => ⟨vacOm F E D W k' (a2 (hO k hk)) χ hχ.1, omFix F E D W k' a1 Λ χ hχ.2⟩) (omX F E D W O k') m _ (hm _ ⟨g, hg, rfl⟩)`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.fockSt :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D), St.FockSt W := by
   intro F E _ _ _ _ _ _ _ D W

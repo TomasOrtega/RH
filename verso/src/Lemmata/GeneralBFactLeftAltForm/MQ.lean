@@ -57,6 +57,19 @@ import Formalism.RealPlaceAnalysis.StatementC
 
 namespace Bl.general_b_fact_left_alt_form
 
+/- English proof (translation)
+Introduce `O _ _ _ W _ _ _ _ M y hy`. Rewrite `hy` using `[Formalism.MainNotions.G.MQ]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact M.zero_mem⟩`.
+
+Consider the case `add x z _ _ hx hz`. Take `⟨a, ha, hax⟩` from `hx`. Take `⟨b, hb, hbz⟩` from `hz`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`.
+
+Use `M.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `M.smul_mem b hax`. Rewrite using `[mul_smul]`. Conclude with `M.smul_mem a hbz`.
+
+Consider the case `smul c x _ hx`. Take `⟨b, hb, hbx⟩` from `hx`. Take `⟨⟨r, s⟩, hrs⟩` from `IsLocalization.surj (nonZeroDivisors O) c`. Use `⟨(s : O) * b, mul_ne_zero (nonZeroDivisors.ne_zero s.2) hb, ?_⟩` and prove the remaining obligations. Establish `key : ((s : O) * b) • (c • x) = r • (b • x)`.
+
+Rewrite using `[← algebraMap_smul (Formalism.MainNotions.G.KK O) ((s : O) * b) (c • x), smul_smul, ← algebraMap_smul (Formalism.MainNotions.G.KK O) r (b • x), ← algebraMap_smul (Formalism.MainNotions.G.KK O) b x, smul_smul]`. Use `congr 1`. Rewrite using `[map_mul, ← hrs]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`.
+
+Conclude with `M.smul_mem r hbx`.
+-/
 theorem goal1 :
   ∀ {O : Type} [inst : CommRing.{0} O]
   [inst_1 : @IsDomain.{0} O (@CommSemiring.toSemiring.{0} O (@CommRing.toCommSemiring.{0} O inst))]

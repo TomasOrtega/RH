@@ -4,6 +4,31 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Spher
 open Formalism.UG GlobalTheory.LKDef.HeckeTraceForms UpperTheory.Gal.W2.Seed
 open scoped Classical
 
+/- English proof (translation)
+Introduce `hAdm hAc hIff X M M' _ _ _ T L' Kw hF hAp t r hr hr'`. Use function extensionality and compare the values at `g₀`. Use `set Φ : X → ℂ := fun y => T.tf r (y⁻¹ * g₀) with hΦ`. Establish `hTy : T.IsTy Φ`. Introduce `k hk g`.
+
+Establish `hki : k⁻¹ ∈ T.K` using `T.K.inv_mem hk`. Simplify using `only [hΦ, mul_inv_rev, mul_assoc]`. Rewrite using `[((hAdm X M T r hr).2 k⁻¹ hki (g⁻¹ * g₀)).1, smul_eq_mul]`. Use `congr 2`. Establish `e : (⟨T.L.pr k⁻¹, T.fact.2 _ hki⟩ : T.J) = (⟨T.L.pr k, T.fact.2 _ hk⟩ : T.J)⁻¹` using `Subtype.ext (map_inv _ _)`.
+
+Rewrite using `[e, map_inv, inv_inv]`. Establish `key` using `hAc X M M' T L' Kw hF hAp t 1 ⟨fun g => by group, map_one _⟩ ℂ Φ hTy 1`. Establish `lhs : conv T.K₀ (T.tf (L'.loc t)) (T.tf r) g₀ = Formalism.UG.hAct T.K₀ (T.tf (L'.loc t * 1)) Φ 1`. Simplify using `[conv, Formalism.UG.hAct, hΦ, smul_eq_mul]`. Rewrite using `[lhs, key]`.
+
+Establish `memKrK : ∀ y, y ∈ DoubleCoset.doubleCoset r (T.K : Set X) T.K → L'.pr y ∈ Kw`. Introduce `y hy`. Rewrite `hy` using `[DoubleCoset.mem_doubleCoset]`. Take `⟨a, ha, b, hb, rfl⟩` from `hy`. Simplify using `only [map_mul, hr', mul_one]`.
+
+Conclude with `Kw.mul_mem (hF.2 a ha) (hF.2 b hb)`. Simplify using `only [hΦ, one_mul, smul_eq_mul]`. Rewrite using `[finsum_eq_single _ ((L'.pr g₀ : M' ⧸ Kw)) ?_]`. Take `⟨w, hw⟩` from `QuotientGroup.mk_out_eq_mul Kw (L'.pr g₀)`. Rewrite using `[hw]`.
+
+Establish `h1 : (L'.pr g₀ * w ∈ DoubleCoset.doubleCoset t (Kw : Set M') Kw) ↔ L'.pr g₀ ∈ DoubleCoset.doubleCoset t (Kw : Set M') Kw`. Simplify using `only [DoubleCoset.mem_doubleCoset, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, e⟩`. Use `⟨a, ha, b * (w : M')⁻¹, Kw.mul_mem hb (Kw.inv_mem w.2), ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨a, ha, b, hb, e⟩`. Conclude with `⟨a, ha, b * w, Kw.mul_mem hb w.2, by rw [e]; group⟩`. Establish `h2 : ((L'.loc (L'.pr g₀ * w))⁻¹ * g₀ ∈ DoubleCoset.doubleCoset r (T.K : Set X) T.K) ↔ (L'.loc (L'.pr g₀))⁻¹ * g₀ ∈ DoubleCoset.doubleCoset r (T.K : Set X) T.K`. Establish `hwK : L'.loc w ∈ T.K` using `hF.1 w w.2`.
+
+Establish `e : (L'.loc (L'.pr g₀ * w))⁻¹ * g₀ = (L'.loc w)⁻¹ * ((L'.loc (L'.pr g₀))⁻¹ * g₀)`. Rewrite using `[map_mul, mul_inv_rev, mul_assoc]`. Rewrite using `[e]`. Simplify using `only [DoubleCoset.mem_doubleCoset, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, ha, b, hb, e2⟩`. Use `⟨L'.loc w * a, T.K.mul_mem hwK ha, b, hb, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨a, ha, b, hb, e2⟩`. Conclude with `⟨(L'.loc w)⁻¹ * a, T.K.mul_mem (T.K.inv_mem hwK) ha, b, hb, by rw [e2]; group⟩`.
+
+Establish `hprm : ∀ m, T.L.pr ((L'.loc m)⁻¹ * g₀) = T.L.pr g₀`. Introduce `m`. Rewrite using `[map_mul, map_inv, hAp.1, inv_one, one_mul]`. Simplify using `only [TyLev.tf, dosetInd, Set.indicator_apply, Pi.one_apply, hprm, h1, h2, hIff X M' L' T.K Kw hF t r hr' g₀]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+
+Introduce `x hx`. Establish `hy : (L'.loc (Quotient.out x))⁻¹ * g₀ ∉ DoubleCoset.doubleCoset r (T.K : Set X) T.K`. Introduce `hm`. Apply `hx` to reduce the goal to its premises. Establish `hh` using `memKrK _ hm`.
+
+Rewrite `hh` using `[map_mul, map_inv, L'.pr_loc]`. Rewrite using `[← QuotientGroup.out_eq' x]`. Conclude with `QuotientGroup.eq.2 hh`. Simplify using `[TyLev.tf, dosetInd, Set.indicator_apply, hy]`.
+-/
 theorem UpperTheory.Gal.W2.Seed.pTfMulL :
     TfAdm → TfAct → (∀ (X M' : Type) [Group X] [Group M'] (L' : Loc X M') (K : Subgroup X) (Kw : Subgroup M'), L'.Fact K Kw → ∀ (t : M') (r : X), L'.pr r = 1 → ∀ g, g ∈ DoubleCoset.doubleCoset (L'.loc t * r) (K : Set X) K ↔ L'.pr g ∈ DoubleCoset.doubleCoset t (Kw : Set M') Kw ∧ (L'.loc (L'.pr g))⁻¹ * g ∈ DoubleCoset.doubleCoset r (K : Set X) K) → TfMulL := by
   intro hAdm hAc hIff X M M' _ _ _ T L' Kw hF hAp t r hr hr'

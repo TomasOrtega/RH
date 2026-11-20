@@ -11,6 +11,27 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.ResidueDictionary
 
+/- English proof (translation)
+Introduce `D V V₀ r d hA l hl hIw`. Establish `hsc : ∀ q : stab d, ScalesBy D.sp.cm.sig V.gram d.e (q : GA D V) (onX d q)` using `fun q => mul_jX d q`. Establish `hstab` using `(GlobalTheory.EisCont.parFlag_stab_leftInv D V V₀ (r + 1) d).2.2.1`. Establish `hiff : ∀ x : GA D V, (∃ β, ScalesBy D.sp.cm.sig V.gram d.e x β) ↔ x ∈ stab d` using `fun x => ⟨fun ⟨β, e⟩ => (hstab x β e).1, fun hx => ⟨_, hsc ⟨x, hx⟩⟩⟩`. Establish `htriv` using `GlobalTheory.Doubling.triv_of_isCompact (isClosed_stab d) (continuous_absDet d) hl.isCompact_K`.
+
+Establish `hmk : ∀ t γ : GQ V, GlobalTheory.AutomorphicL2Unitary.mk ((stab d).subgroupOf (GQ V)) t = GlobalTheory.AutomorphicL2Unitary.mk ((stab d).subgroupOf (GQ V)) γ ↔ ((γ * t⁻¹ : GQ V) : GA D V) ∈ stab d` using `fun t γ => by`. Rewrite using `[GlobalTheory.AutomorphicL2Unitary.mk_eq_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨δ, hδ⟩`. Establish `: (γ * t⁻¹ : GQ V) = δ` using `by rw [← hδ]; group`.
+
+Rewrite using `[this]`. Conclude with `δ.2`. Introduce `h`. Conclude with `⟨⟨γ * t⁻¹, h⟩, by simp⟩`. Use `⟨⟨isCMExt_host D, GlobalTheory.Doubling.isHermND_gram V, GlobalTheory.WittFrameOfDec.isWittFrame_of_hypDec D V V₀ _ d hA, hl.1, fun g => ?_, fun p β e k hk => ?_⟩, ?_, fun T hT g s => ?_⟩` and prove the remaining obligations.
+
+Take `⟨q, k, hk, rfl⟩` from `hIw g`. Conclude with `⟨q, onX d q, hsc q, k, hk, rfl⟩`. Take `⟨hp, rfl⟩` from `hstab p β e`. Use `iwAbs_mul_of_triv htriv ⟨p, hp⟩ hk` as an intermediate fact. Rewrite using `[this]`.
+
+Both sides reduce to the same expression. Use `⟨Set.range fun q : GlobalTheory.AutomorphicL2Unitary.Quot ((stab d).subgroupOf (GQ V)) => (q.out : GQ V), fun γ => ?_⟩` and prove the remaining obligations. Use `⟨(GlobalTheory.AutomorphicL2Unitary.mk ((stab d).subgroupOf (GQ V)) γ).out, ⟨⟨_, rfl⟩, (hiff _).2 ((hmk _ _).1 (Quotient.out_eq _))⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `t' ⟨⟨q, rfl⟩, ht'⟩`. Establish `e` using `(hmk q.out γ).2 ((hiff _).1 ht')`.
+
+Establish `e2 : q = GlobalTheory.AutomorphicL2Unitary.mk ((stab d).subgroupOf (GQ V)) γ` using `(Quotient.out_eq q).symm.trans e`. Substitute `e2` using the available equality. Both sides reduce to the same expression. Establish `hbij : Function.Bijective fun t : T => GlobalTheory.AutomorphicL2Unitary.mk ((stab d).subgroupOf (GQ V)) (t.1 : GQ V)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨t, ht⟩ ⟨t', ht'⟩ e`. Establish `e'` using `(hmk _ _).1 e`. Take `⟨u, -, hu⟩` from `hT t'`. Establish `h1` using `hu t' ⟨ht', (hiff _).2 (by simp)⟩`. Establish `h2` using `hu t ⟨ht, (hiff _).2 e'⟩`.
+
+Conclude with `Subtype.ext (h2.trans h1.symm)`. Introduce `q`. Proceed by induction on `q using Quotient.inductionOn with`. Consider the case `h γ`. Take `⟨t, ⟨ht, hs⟩, -⟩` from `hT γ`.
+
+Conclude with `⟨⟨t, ht⟩, (hmk _ _).2 ((hiff _).1 hs)⟩`. Express the relevant statement in the definitionally equal form `cosetSum (stab d) (GQ V) (sphericalSectionIwasawa d l.K s) g = _`. Rewrite using `[GlobalTheory.Eis.cosetSum_eq_tsum (GlobalTheory.AnisotropicResidueNonvanishing.witt_spherical_section_left_invariant_rational_parabolic d l hl hIw s) hbij g]`. Use `tsum_congr fun t => ?_` and prove the remaining obligations. Simplify using `only [sphericalSectionIwasawa, npow, rhoH]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dict : ∀ (D : D7) (V V₀ : HSp D) (r : ℕ) (d : HypDec V V₀ (r + 1)), IsAniso V₀ → ∀ l : Lvl V, l.Good → HasIw d l.K → DataJ D.sp.cm.sig V.gram d.e d.e' l.L l.c (fun g => (iwAbs (absDet d) l.K g : ℝ)) ∧ (∃ T, IsRepsJ D.sp.cm.sig V.gram d.e T) ∧ ∀ T, IsRepsJ D.sp.cm.sig V.gram d.e T → ∀ (g : GA D V) (s : ℂ), sphericalEisensteinSeriesOnGroup d l.K g s = ∑' t : T, (((iwAbs (absDet d) l.K (t.1.1 * g) : ℝ≥0) : ℝ) : ℂ) ^ (s + ((V.rank : ℂ) - (r + 1)) / 2) := by
   intro D V V₀ r d hA l hl hIw
   have hsc : ∀ q : stab d, ScalesBy D.sp.cm.sig V.gram d.e (q : GA D V) (onX d q) := fun q => mul_jX d q

@@ -16,6 +16,11 @@ namespace RD
 
 variable {d : SD σ} (R : RD d) (w : InfinitePlace F)
 
+/- English proof (translation)
+Establish `hm : t.1.map (compFin F E v) = 1`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, ← Place.compFin_finOne v (t.1 i j)]`. Express the relevant statement in the definitionally equal form `compFin F E v ((finOne F • t.1) i j) = _`. Rewrite using `[hf, Matrix.smul_apply, Place.compFin_finOne, Matrix.one_apply, Matrix.one_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hm, Matrix.det_one]`.
+-/
 theorem compFin_det (t : GL (Fin d.n) (AE F E)) (hf : finOne F • t.1 = finOne F • 1) (v : Pl F) :
     compFin F E v (t.1.det) = 1 := by
   have hm : t.1.map (compFin F E v) = 1 := by
@@ -26,6 +31,11 @@ theorem compFin_det (t : GL (Fin d.n) (AE F E)) (hf : finOne F • t.1 = finOne 
     split_ifs <;> simp
   rw [RingHom.map_det, RingHom.mapMatrix_apply, hm, Matrix.det_one]
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply]`. Distinguish the cases in `h : w' = w`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `congrArg Matrix.det ht`.
+
+Rewrite using `[Function.update_of_ne h]`. Use `congrArg Matrix.det (ho w' h)` as an intermediate fact. Rewrite `this` using `[Matrix.det_one]`. Conclude with `this`.
+-/
 theorem piInf_det (t : GL (Fin d.n) (AE F E)) (a : Matrix (Fin d.n) (Fin d.n) ℂ) (ht : d.cw w t.1 = a)
     (ho : ∀ w', w' ≠ w → d.cw w' t.1 = 1) (w' : InfinitePlace F) :
     piInf (d.B.emb w') (t.1.det) = Function.update (fun _ => (1 : ℂ)) w a.det w' := by
@@ -39,6 +49,11 @@ theorem piInf_det (t : GL (Fin d.n) (AE F E)) (a : Matrix (Fin d.n) (Fin d.n) �
     rw [Matrix.det_one] at this
     exact this
 
+/- English proof (translation)
+Take `⟨-, hs2, hs3, -, -⟩` from `(Place.exists_sec d.cm d.B.emb).choose_spec`. Apply `PositivityTheory.ThKG.Tow.Levi.ad_ext d.cm d.B.emb` to reduce the goal to its premises. Introduce `w'`. Rewrite using `[piInf_det (d := d) w t a ht ho w', SD.uW, map_add, hs2, Place.piInf_finOne, add_zero]`. Introduce `v`.
+
+Rewrite using `[compFin_det (d := d) t hf v, SD.uW, map_add, ← Place.compFin_finOne v, hs3, map_zero, zero_add, Place.compFin_finOne, map_one]`.
+-/
 theorem det_uW (t : GL (Fin d.n) (AE F E)) (a : Matrix (Fin d.n) (Fin d.n) ℂ) (ht : d.cw w t.1 = a)
     (ho : ∀ w', w' ≠ w → d.cw w' t.1 = 1) (hf : finOne F • t.1 = finOne F • 1) :
     t.1.det = d.uW w a.det := by
@@ -50,6 +65,11 @@ theorem det_uW (t : GL (Fin d.n) (AE F E)) (a : Matrix (Fin d.n) (Fin d.n) ℂ) 
     rw [compFin_det (d := d) t hf v, SD.uW, map_add, ← Place.compFin_finOne v, hs3, map_zero, zero_add,
       Place.compFin_finOne, map_one]
 
+/- English proof (translation)
+Establish `e` using `det_uW (d := d) w t a ht ho hf`. Establish `hu : IsUnit (d.uW w a.det)`. Rewrite using `[← e]`. Conclude with `(Matrix.GeneralLinearGroup.det t).isUnit.map (RingHom.id _) |>.map (RingHom.id _) |> fun h => by`. Simplify `h` using `[Matrix.GeneralLinearGroup.val_det_apply]`.
+
+Rewrite using `[SD.chiW, dif_pos hu]`. Establish `: hu.unit = Matrix.GeneralLinearGroup.det t` using `Units.ext (by rw [IsUnit.unit_spec, Matrix.GeneralLinearGroup.val_det_apply, e])`. Rewrite using `[this]`.
+-/
 theorem chi_det (t : GL (Fin d.n) (AE F E)) (a : Matrix (Fin d.n) (Fin d.n) ℂ) (ht : d.cw w t.1 = a)
     (ho : ∀ w', w' ≠ w → d.cw w' t.1 = 1) (hf : finOne F • t.1 = finOne F • 1) :
     (d.χ (Matrix.GeneralLinearGroup.det t) : ℂ) = d.chiW w a.det := by
@@ -63,6 +83,15 @@ theorem chi_det (t : GL (Fin d.n) (AE F E)) (a : Matrix (Fin d.n) (Fin d.n) ℂ)
     Units.ext (by rw [IsUnit.unit_spec, Matrix.GeneralLinearGroup.val_det_apply, e])
   rw [this]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.Doubling.absE_apply]`. Establish `hinf : ∀ w', GlobalTheory.Doubling.absEw F E w' (GlobalTheory.Doubling.unitInf F E w' (Matrix.GeneralLinearGroup.det t)) = ‖Function.update (fun _ => (1 : ℂ)) w a.det w'‖₊ ^ 2`. Introduce `w'`. Rewrite using `[GlobalTheory.Doubling.absEw_eq_sq d.cm (d.B.emb w'), ← piInf_det (d := d) w t a ht ho w', ← Matrix.GeneralLinearGroup.val_det_apply]`. Both sides reduce to the same expression.
+
+Establish `hfin : ∀ v, GlobalTheory.Doubling.absEv F E v (GlobalTheory.Doubling.unitFin F E v (Matrix.GeneralLinearGroup.det t)) = 1`. Introduce `v`. Establish `: GlobalTheory.Doubling.unitFin F E v (Matrix.GeneralLinearGroup.det t) = 1`. Apply `Units.ext` to reduce the goal to its premises. Use `show compFin F E v ((Matrix.GeneralLinearGroup.det t : (AE F E)ˣ) : AE F E) = 1`.
+
+Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, compFin_det (d := d) t hf v]`. Rewrite using `[this, map_one]`. Simplify using `only [hinf, hfin, finprod_one, mul_one]`. Rewrite using `[Finset.prod_eq_single w (fun w' _ h => by rw [Function.update_of_ne h]; simp) (fun h => absurd (Finset.mem_univ w) h), Function.update_self]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem absE_det (t : GL (Fin d.n) (AE F E)) (a : Matrix (Fin d.n) (Fin d.n) ℂ) (ht : d.cw w t.1 = a)
     (ho : ∀ w', w' ≠ w → d.cw w' t.1 = 1) (hf : finOne F • t.1 = finOne F • 1) :
     (absE F E (Matrix.GeneralLinearGroup.det t) : ℝ) = ‖a.det‖ ^ 2 := by
@@ -86,6 +115,11 @@ theorem absE_det (t : GL (Fin d.n) (AE F E)) (a : Matrix (Fin d.n) (Fin d.n) ℂ
   push_cast
   rfl
 
+/- English proof (translation)
+Introduce `y a ha hy`. Take `⟨t, ht, ho, hf, hS⟩` from `R.stepM_gen w hT y a ha hy`. Establish `hc : (d.χ (Matrix.GeneralLinearGroup.det t) : ℂ) * (((absE F E (Matrix.GeneralLinearGroup.det t) : ℝ) ^ ((d.m : ℝ) / 2) : ℝ) : ℂ) = d.chiW w a.det * (‖a.det‖ : ℂ) ^ d.m`. Rewrite using `[chi_det (d := d) w t a ht ho hf, absE_det (d := d) w t a ht ho hf, ← Real.rpow_natCast ‖a.det‖ 2, ← Real.rpow_mul (norm_nonneg _), show ((2 : ℕ) : ℝ) * ((d.m : ℝ) / 2) = (d.m : ℝ) by push_cast; ring, Real.rpow_natCast]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Simplify using `only [hc] at hS`. Conclude with `hS`.
+-/
 theorem stepM_val_pf (hT : TAll) : ∀ (y : GR d.n) (a : Matrix (Fin d.n) (Fin d.n) ℂ), IsUnit a.det → mR y = mLoc a →
     R.StepOK w (R.ι w y) (fun f u => (d.chiW w a.det * (‖a.det‖ : ℂ) ^ d.m) * f (Matrix.of u * a)) id := by
   intro y a ha hy

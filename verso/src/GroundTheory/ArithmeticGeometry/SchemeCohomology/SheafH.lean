@@ -66,10 +66,16 @@ noncomputable def freeYonedaHomAddEquiv (U : C) (P : Cᵒᵖ ⥤ AddCommGrpCat.{
   toEquiv := ((AddCommGrpCat.adj.whiskerRight Cᵒᵖ).homEquiv (yoneda.obj U) P).trans yonedaEquiv
   map_add' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma freeYonedaHomAddEquiv_apply (U : C) (P : Cᵒᵖ ⥤ AddCommGrpCat.{v})
     (g : yoneda.obj U ⋙ AddCommGrpCat.free.{v} ⟶ P) :
     freeYonedaHomAddEquiv U P g = g.app (op U) (FreeAbelianGroup.of (𝟙 U)) := rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `yonedaEquiv (((AddCommGrpCat.adj.whiskerRight Cᵒᵖ).homEquiv (yoneda.obj U) P) (((Functor.whiskeringRight _ _ _).obj AddCommGrpCat.free).map (yoneda.map f) ≫ g)) = _`. Rewrite using `[Adjunction.homEquiv_naturality_left, yonedaEquiv_comp, yonedaEquiv_yoneda_map]`. Use `NatTrans.naturality_apply (((AddCommGrpCat.adj.whiskerRight Cᵒᵖ).homEquiv (yoneda.obj V) P) g) f.op (𝟙 V)` as an intermediate fact. Conclude with `(congrArg _ (Category.comp_id f).symm).trans this`.
+-/
 lemma freeYonedaHomAddEquiv_naturality_left {U V : C} (f : U ⟶ V) (P : Cᵒᵖ ⥤ AddCommGrpCat.{v})
     (g : yoneda.obj V ⋙ AddCommGrpCat.free.{v} ⟶ P) :
     freeYonedaHomAddEquiv U P (Functor.whiskerRight (yoneda.map f) AddCommGrpCat.free ≫ g) =
@@ -97,6 +103,9 @@ noncomputable def freeSheafHomAddEquiv (U : C) (F : Sheaf J AddCommGrpCat.{v}) :
   ((sheafificationAdjunction J AddCommGrpCat.{v}).homAddEquiv _ F).trans
     (freeYonedaHomAddEquiv U F.obj)
 
+/- English proof (translation)
+Simplify using `only [freeSheafHomAddEquiv, AddEquiv.trans_apply, Adjunction.homAddEquiv_apply, freeYonedaHomAddEquiv_apply, Adjunction.homEquiv_naturality_right]`. Both sides reduce to the same expression.
+-/
 lemma freeSheafHomAddEquiv_naturality (U : C) {F G : Sheaf J AddCommGrpCat.{v}}
     (g : freeSheaf J U ⟶ F) (φ : F ⟶ G) :
     freeSheafHomAddEquiv U G (g ≫ φ) = φ.hom.app (op U) (freeSheafHomAddEquiv U F g) := by
@@ -104,6 +113,9 @@ lemma freeSheafHomAddEquiv_naturality (U : C) {F G : Sheaf J AddCommGrpCat.{v}}
     freeYonedaHomAddEquiv_apply, Adjunction.homEquiv_naturality_right]
   rfl
 
+/- English proof (translation)
+Simplify using `only [freeSheafHomAddEquiv, AddEquiv.trans_apply, Adjunction.homAddEquiv_apply, Adjunction.homEquiv_naturality_left]`. Conclude with `freeYonedaHomAddEquiv_naturality_left f F.obj _`.
+-/
 lemma freeSheafHomAddEquiv_naturality_left {U V : C} (f : U ⟶ V) (F : Sheaf J AddCommGrpCat.{v})
     (g : freeSheaf J V ⟶ F) :
     freeSheafHomAddEquiv U F (freeSheafMap J f ≫ g) =
@@ -118,11 +130,19 @@ noncomputable def H'.equiv₀ (F : Sheaf J AddCommGrpCat.{v}) (U : C) :
     F.H' 0 U ≃+ F.obj.obj (op U) :=
   (Ext.addEquiv₀ (X := freeSheaf J U) (Y := F)).trans (freeSheafHomAddEquiv U F)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma cohomologyPresheafFunctor_map_app_apply {F G : Sheaf J AddCommGrpCat.{v}} (φ : F ⟶ G)
     (n : ℕ) (U : C) (x : F.H' n U) :
     ((Sheaf.cohomologyPresheafFunctor J n).map φ).app (op U) x =
       (show Ext (freeSheaf J U) F n from x).comp (Ext.mk₀ φ) (add_zero n) := rfl
 
+/- English proof (translation)
+Rewrite using `[cohomologyPresheafFunctor_map_app_apply]`. Take `⟨g, rfl⟩` from `(Ext.addEquiv₀ (X := freeSheaf J U) (Y := F)).symm.surjective x`. Express the relevant statement in the definitionally equal form `freeSheafHomAddEquiv U G (Ext.addEquiv₀ ((Ext.addEquiv₀.symm g).comp (Ext.mk₀ φ) (add_zero 0))) = φ.hom.app (op U) (freeSheafHomAddEquiv U F (Ext.addEquiv₀ (Ext.addEquiv₀.symm g)))`. Rewrite using `[AddEquiv.apply_symm_apply, ← freeSheafHomAddEquiv_naturality, Ext.addEquiv₀_symm_apply, Ext.mk₀_comp_mk₀]`. Use `congr 1`.
+
+Apply `(Ext.mk₀_bijective _ _).injective` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+-/
 lemma H'.equiv₀_naturality {F G : Sheaf J AddCommGrpCat.{v}} (φ : F ⟶ G) (U : C)
     (x : F.H' 0 U) :
     H'.equiv₀ G U (((Sheaf.cohomologyPresheafFunctor J 0).map φ).app (op U) x) =
@@ -144,6 +164,9 @@ section Injective
 
 variable [HasSheafify J AddCommGrpCat.{v}] [HasExt.{w'} (Sheaf J AddCommGrpCat.{v})]
 
+/- English proof (translation)
+The claim follows from `Ext.eq_zero_of_injective x`.
+-/
 lemma H.eq_zero_of_injective (F : Sheaf J AddCommGrpCat.{v}) [Injective F] {n : ℕ}
     (x : Sheaf.H F (n + 1)) : x = 0 :=
   Ext.eq_zero_of_injective x
@@ -163,6 +186,9 @@ variable [HasSheafify J AddCommGrpCat.{v}] [HasExt.{w'} (Sheaf J AddCommGrpCat.{
 noncomputable def H.δ (n₀ n₁ : ℕ) (h : n₀ + 1 = n₁) : Sheaf.H S.X₃ n₀ →+ Sheaf.H S.X₁ n₁ :=
   hS.extClass.postcomp _ h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma H.δ_apply (n₀ n₁ : ℕ) (h : n₀ + 1 = n₁) (x : Sheaf.H S.X₃ n₀) :
     H.δ hS n₀ n₁ h x = x.comp hS.extClass h := rfl
 
@@ -174,27 +200,45 @@ noncomputable def H.sequence (n₀ n₁ : ℕ) (h : n₀ + 1 = n₁) :
 
 include hS in
 
+/- English proof (translation)
+The claim follows from `Ext.covariant_sequence_exact₂ _ hS y hy`.
+-/
 theorem H.exact₂ {n : ℕ} (y : Sheaf.H S.X₂ n) (hy : Sheaf.H.map S.g n y = 0) :
     ∃ x : Sheaf.H S.X₁ n, Sheaf.H.map S.f n x = y :=
   Ext.covariant_sequence_exact₂ _ hS y hy
 
+/- English proof (translation)
+The claim follows from `Ext.covariant_sequence_exact₃ _ hS y h hy`.
+-/
 theorem H.exact₃ {n₀ n₁ : ℕ} (h : n₀ + 1 = n₁) (y : Sheaf.H S.X₃ n₀)
     (hy : H.δ hS n₀ n₁ h y = 0) : ∃ x : Sheaf.H S.X₂ n₀, Sheaf.H.map S.g n₀ x = y :=
   Ext.covariant_sequence_exact₃ _ hS y h hy
 
+/- English proof (translation)
+The claim follows from `Ext.covariant_sequence_exact₁ _ hS x hx h`.
+-/
 theorem H.exact₁ {n₀ n₁ : ℕ} (h : n₀ + 1 = n₁) (x : Sheaf.H S.X₁ n₁)
     (hx : Sheaf.H.map S.f n₁ x = 0) : ∃ y : Sheaf.H S.X₃ n₀, H.δ hS n₀ n₁ h y = x :=
   Ext.covariant_sequence_exact₁ _ hS x hx h
 
+/- English proof (translation)
+Rewrite using `[← Sheaf.H.map_comp_apply, S.zero, Sheaf.H.map_apply, Ext.mk₀_zero, Ext.comp_zero]`.
+-/
 lemma H.map_g_map_f {n : ℕ} (x : Sheaf.H S.X₁ n) :
     Sheaf.H.map S.g n (Sheaf.H.map S.f n x) = 0 := by
   rw [← Sheaf.H.map_comp_apply, S.zero, Sheaf.H.map_apply, Ext.mk₀_zero, Ext.comp_zero]
 
+/- English proof (translation)
+Rewrite using `[H.δ_apply, Sheaf.H.map_apply, Ext.comp_assoc_of_second_deg_zero, hS.comp_extClass, Ext.comp_zero]`.
+-/
 lemma H.δ_map_g {n₀ n₁ : ℕ} (h : n₀ + 1 = n₁) (x : Sheaf.H S.X₂ n₀) :
     H.δ hS n₀ n₁ h (Sheaf.H.map S.g n₀ x) = 0 := by
   rw [H.δ_apply, Sheaf.H.map_apply, Ext.comp_assoc_of_second_deg_zero, hS.comp_extClass,
     Ext.comp_zero]
 
+/- English proof (translation)
+Rewrite using `[H.δ_apply, Sheaf.H.map_apply, Ext.comp_assoc_of_third_deg_zero, hS.extClass_comp, Ext.comp_zero]`.
+-/
 lemma H.map_f_δ {n₀ n₁ : ℕ} (h : n₀ + 1 = n₁) (x : Sheaf.H S.X₃ n₀) :
     Sheaf.H.map S.f n₁ (H.δ hS n₀ n₁ h x) = 0 := by
   rw [H.δ_apply, Sheaf.H.map_apply, Ext.comp_assoc_of_third_deg_zero, hS.extClass_comp,

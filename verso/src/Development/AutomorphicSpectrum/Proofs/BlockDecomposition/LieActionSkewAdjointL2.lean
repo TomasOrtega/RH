@@ -16,6 +16,15 @@ open scoped ComplexConjugate InnerProductSpace
 
 namespace GlobalTheory.CompanionTheory.PeterssonSkew
 
+/- English proof (translation)
+Establish `mc : ∀ {f : Q → ℂ}, AEStronglyMeasurable f ν → AEStronglyMeasurable (fun q => conj (f q)) ν` using `fun h => Complex.continuous_conj.comp_aestronglyMeasurable h`. Establish `hC : 0 ≤ C ∨ IsEmpty Q`. Distinguish the cases in `h : Nonempty Q`. Take `⟨q⟩` from `h`. Conclude with `Or.inl ((norm_nonneg _).trans (bu 0 q))`.
+
+Conclude with `Or.inr (not_nonempty_iff.1 h)`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := ν) (x₀ := (0 : ℝ)) (s := Set.univ) (F := fun t q => u t q * conj (v t q)) (F' := fun t q => u' t q * conj (v t q) + u t q * conj (v' t q)) (bound := fun _ => C * C + C * C) Filter.univ_mem (Eventually.of_forall fun t => (mu t …`. Rewrite using `[norm_mul, RCLike.norm_conj]`. Conclude with `mul_le_mul (bu 0 q) (bv 0 q) (norm_nonneg _) ((norm_nonneg _).trans (bu 0 q))))`. Use the proof step `((mu'.mul (mc (mv 0))).add ((mu 0).mul (mc mv')))`.
+
+Use the proof step `(Eventually.of_forall fun q t _ => by`. Apply the tactic sequence `refine (norm_add_le _ _).trans (add_le_add ?_ ?_) <;> rw [norm_mul, RCLike.norm_conj]`. Conclude with `mul_le_mul (bu' t q) (bv t q) (norm_nonneg _) ((norm_nonneg _).trans (bu' t q))`. Conclude with `mul_le_mul (bu t q) (bv' t q) (norm_nonneg _) ((norm_nonneg _).trans (bu t q)))`. Use the proof step `(integrable_const _)`.
+
+Use the proof step `(Eventually.of_forall fun q t _ => (hu t q).mul (hv t q).star)`. Establish `h0 : HasDerivAt (fun t : ℝ => ∫ q, u t q * conj (v t q) ∂ν) 0 0`. Simplify using `only [hc]`. Conclude with `hasDerivAt_const _ _`. Conclude with `key.2.unique h0`.
+-/
 theorem integral_deriv_eq_zero {Q : Type*} [MeasurableSpace Q] (ν : Measure Q) [IsFiniteMeasure ν]
     (u v u' v' : ℝ → Q → ℂ) (C : ℝ)
     (hu : ∀ t q, HasDerivAt (fun s => u s q) (u' t q) t) (hv : ∀ t q, HasDerivAt (fun s => v s q) (v' t q) t)
@@ -55,6 +64,13 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 open scoped Matrix.Norms.Operator in
 
+/- English proof (translation)
+Use `set Y : Matrix (Fin a) (Fin a) (Cinf E) := Matrix.of X with hY`. Use `haveI : CompleteSpace (Matrix (Fin a) (Fin a) (Cinf E)) := FiniteDimensional.complete ℝ _`. Establish `hadd : ∀ s t : ℝ, NormedSpace.exp ((s + t) • Y) = NormedSpace.exp (s • Y) * NormedSpace.exp (t • Y)` using `fun s t => by`. Rewrite using `[add_smul]`. Conclude with `NormedSpace.exp_add_of_commute (((Commute.refl Y).smul_left s).smul_right t)`.
+
+Establish `hone : ∀ t : ℝ, NormedSpace.exp (t • Y) * NormedSpace.exp ((-t) • Y) = 1` using `fun t => by`. Rewrite using `[← hadd, add_neg_cancel, zero_smul, NormedSpace.exp_zero]`. Use `⟨fun t => ⟨NormedSpace.exp (t • Y), NormedSpace.exp ((-t) • Y), hone t, by simpa using hone (-t)⟩, Units.ext (by simp [NormedSpace.exp_zero]), fun s t => Units.ext (hadd s t), ?_⟩` and prove the remaining obligations. Establish `h` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) Y (0 : ℝ)`. Simplify using `only [zero_smul, NormedSpace.exp_zero, one_mul] at h`.
+
+Set `L : Matrix (Fin a) (Fin a) (Cinf E) →L[ℝ] Lie E a` to `LinearMap.toContinuousLinearMap (Matrix.ofLinearEquiv ℝ).symm.toLinearMap`. Conclude with `L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h`.
+-/
 theorem exists_curve (X : Lie E a) : ∃ c : ℝ → Matrix.GeneralLinearGroup (Fin a) (Cinf E), c 0 = 1 ∧
     (∀ s t, c (s + t) = c s * c t) ∧ HasDerivAt (fun t => toL (c t).val) X 0 := by
   set Y : Matrix (Fin a) (Fin a) (Cinf E) := Matrix.of X with hY
@@ -72,6 +88,9 @@ theorem exists_curve (X : Lie E a) : ∃ c : ℝ → Matrix.GeneralLinearGroup (
     LinearMap.toContinuousLinearMap (Matrix.ofLinearEquiv ℝ).symm.toLinearMap
   exact L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h
 
+/- English proof (translation)
+Establish `h` using `hasDerivAt_curve φ (g * infGL E a (c t)) c X h0 hX`. Establish `h2 : HasDerivAt (fun s => φ.1 (g * infGL E a (c t) * infGL E a (c (s - t)))) (lieD X φ.1 (g * infGL E a (c t))) t` using `HasDerivAt.comp_sub_const t t (by simpa using h)`. Use `h2.congr_of_eventuallyEq (Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `only [mul_assoc, ← map_mul, ← hadd]`. Simplify using the standard rewrite rules.
+-/
 theorem hasDerivAt_translate {X : Lie E a} {c : ℝ → Matrix.GeneralLinearGroup (Fin a) (Cinf E)} (h0 : c 0 = 1)
     (hadd : ∀ s t, c (s + t) = c s * c t) (hX : HasDerivAt (fun t => toL (c t).val) X 0) (φ : Sm E a) (g : GA E a)
     (t : ℝ) : HasDerivAt (fun s => φ.1 (g * infGL E a (c s))) (lieD X φ.1 (g * infGL E a (c t))) t := by
@@ -82,6 +101,9 @@ theorem hasDerivAt_translate {X : Lie E a} {c : ℝ → Matrix.GeneralLinearGrou
   simp only [mul_assoc, ← map_mul, ← hadd]
   simp
 
+/- English proof (translation)
+Rewrite using `[← MemL2Quotient.inner_toL2_eq_theta_pairing (hφ.mul_right g) (hψ.mul_right g), ← right_translate_toL2, ← right_translate_toL2, ← MemL2Quotient.inner_toL2_eq_theta_pairing hφ hψ]`. Conclude with `LinearIsometry.inner_map_map { toLinearMap := (R (GlobalTheory.UnitaryBC.latticeGL E a) μ g : L2 (GlobalTheory.UnitaryBC.latticeGL E a) μ →L[ℂ] L2 (GlobalTheory.UnitaryBC.latticeGL E a) μ).toLinearMap norm_map' := norm_R g } _ _`.
+-/
 theorem pet_mul_right (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] {φ ψ : GA E a → ℂ}
     (hφ : MemL2Quotient (GlobalTheory.UnitaryBC.latticeGL E a) μ φ) (hψ : MemL2Quotient (GlobalTheory.UnitaryBC.latticeGL E a) μ ψ) (g : GA E a) :
     pet (GlobalTheory.UnitaryBC.latticeGL E a) μ (fun x => φ (x * g)) (fun x => ψ (x * g)) =
@@ -92,6 +114,11 @@ theorem pet_mul_right (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightI
         L2 (GlobalTheory.UnitaryBC.latticeGL E a) μ →L[ℂ] L2 (GlobalTheory.UnitaryBC.latticeGL E a) μ).toLinearMap
       norm_map' := norm_R g } _ _
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.CovolGL.isFiniteMeasure_quotMeasure E a μ`. Take `⟨c, h0, hadd, hX⟩` from `exists_curve X`. Establish `e0 : infGL E a (c 0) = 1` using `by rw [h0, map_one]`. Establish `key` using `integral_deriv_eq_zero (GlobalTheory.AutomorphicL2Unitary.quotMeasure (GlobalTheory.UnitaryBC.latticeGL E a) μ) (fun t q => φ.1 (q.out * infGL E a (c t))) (fun t q => ψ.1 (q.out * infGL E a (c t))) (fun t q => lieD X φ.1 (q.out * infGL E a (c t))) (fun t q => lieD X ψ.1 (q.out * …`. Establish `h1` using `pet_mul_right μ hφ hψ (infGL E a (c t))`.
+
+Simplify using `only [e0, mul_one]`. Conclude with `h1)`. Simplify using `only [e0, mul_one] at key`. Conclude with `(integral_add (hφ'.integrable_mul_conj hψ) (hφ.integrable_mul_conj hψ')).symm.trans key`.
+-/
 theorem pet_lie_add (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (X : Lie E a) (φ ψ : Sm E a)
     (hφ : MemL2Quotient (GlobalTheory.UnitaryBC.latticeGL E a) μ φ.1) (hψ : MemL2Quotient (GlobalTheory.UnitaryBC.latticeGL E a) μ ψ.1)
     (hφ' : MemL2Quotient (GlobalTheory.UnitaryBC.latticeGL E a) μ (lie E a X φ).1)
@@ -117,6 +144,13 @@ theorem pet_lie_add (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightInv
   simp only [e0, mul_one] at key
   exact (integral_add (hφ'.integrable_mul_conj hψ) (hφ.integrable_mul_conj hψ')).symm.trans key
 
+/- English proof (translation)
+Introduce `E _ _ _ a μ _ _ π hm hb X φ ψ`. Establish `hL : ∀ f : π.V, ∃ C : ℝ, ∀ g, ‖f.1.1 g‖ ≤ C` using `fun f => hb f.1 f.2`. Take `⟨C₁, b₁⟩` from `hL φ`. Take `⟨C₂, b₂⟩` from `hL ψ`. Take `⟨C₃, b₃⟩` from `hL (π.op (.lie X) φ)`.
+
+Take `⟨C₄, b₄⟩` from `hL (π.op (.lie X) ψ)`. Establish `h` using `pet_lie_add μ X φ.1 ψ.1 (hm _ φ.2) (hm _ ψ.2) (hm _ (π.op (.lie X) φ).2) (hm _ (π.op (.lie X) ψ).2) (max (max C₁ C₂) (max C₃ C₄)) (fun g => (b₁ g).trans ((le_max_left _ _).trans (le_max_left _ _))) (fun g => (b₂ g).trans ((le_max_right _ _).trans (le_max_left _ _))) (fun g => (b₃ …`. Establish `e1` using `MemL2Quotient.inner_toL2_eq_theta_pairing (hm _ (π.op (.lie X) φ).2) (hm _ ψ.2)`. Establish `e2` using `MemL2Quotient.inner_toL2_eq_theta_pairing (hm _ φ.2) (hm _ (π.op (.lie X) ψ).2)`. Express the relevant statement in the definitionally equal form `inner ℂ (hm _ ψ.2).toL2 (hm _ (π.op (.lie X) φ).2).toL2 = -inner ℂ (hm _ (π.op (.lie X) ψ).2).toL2 (hm _ φ.2).toL2`.
+
+Rewrite using `[e1, e2]`. Conclude with `eq_neg_of_add_eq_zero_left h`.
+-/
 theorem lie_skew_adjoint : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (π : CuspSub E a) (hm : ∀ φ ∈ π.V, GlobalTheory.AutomorphicL2Unitary.MemL2Quotient (GlobalTheory.UnitaryBC.latticeGL E a) μ φ.1), (∀ φ ∈ π.V, ∃ C : ℝ, ∀ g, ‖φ.1 g‖ ≤ C) → ∀ (X : Lie E a) (φ ψ : π.V), inner ℂ (GlobalTheory.CuspRep.CuspidalL2GL.toL2ₗ μ π.V hm ψ) (GlobalTheory.CuspRep.CuspidalL2GL.toL2ₗ μ π.V hm (π.op (.lie X) φ)) = -inner ℂ (GlobalTheory.CuspRep.CuspidalL2GL.toL2ₗ μ π.V hm (π.op (.lie X) ψ)) (GlobalTheory.CuspRep.CuspidalL2GL.toL2ₗ μ π.V hm φ) := by
   intro E _ _ _ a μ _ _ π hm hb X φ ψ
   have hL : ∀ f : π.V, ∃ C : ℝ, ∀ g, ‖f.1.1 g‖ ≤ C := fun f => hb f.1 f.2

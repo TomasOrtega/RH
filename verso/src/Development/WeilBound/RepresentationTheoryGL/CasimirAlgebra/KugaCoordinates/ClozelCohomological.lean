@@ -5,6 +5,9 @@ import Development.WeilBound.RepresentationTheoryGL.CasimirAlgebra.KugaCoordinat
 
 namespace PositivityTheory.Rg.Cz
 
+/- English proof (translation)
+The claim follows from `clozelCohomological_of_three whitLie_holds kugaGlue_holds Coch.cochain_holds`.
+-/
 theorem clozelCohomological : GlobalTheory.Published.ClozelCohomological :=
   clozelCohomological_of_three whitLie_holds kugaGlue_holds Coch.cochain_holds
 

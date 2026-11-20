@@ -25,6 +25,11 @@ namespace GlobalTheory.EwfMove
 
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
 
+/- English proof (translation)
+Unfold `RealDat.eC`. Rewrite using `[coeff_idemOf, coeff_idemOf, map_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun χ hχ => ?_` and prove the remaining obligations. Establish `h1` using `(hX χ hχ).map_inv σ 1`. Establish `h2` using `(hX χ hχ).map_inv σ g⁻¹`.
+
+Rewrite `h1` using `[inv_one]`. Simplify using `only [map_mul, map_div₀, map_natCast]`. Rewrite using `[h2, ← h1]`.
+-/
 theorem star_eC (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) (σ : D.what₂.LL →+* ℂ) (g : G) :
     starRingEnd ℂ (RealDat.eC (A := A) σ g) = RealDat.eC (A := A) σ g⁻¹ := by
   unfold RealDat.eC
@@ -36,6 +41,17 @@ theorem star_eC (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) (σ : D.what₂.LL →+* 
   simp only [map_mul, map_div₀, map_natCast]
   rw [h2, ← h1]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.TwistAdelicTop.locallyCompact_secondCountable_borel_countable V`. Establish `: IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E)` using `⟨rfl⟩`. Establish `: Module.Finite D.host.F D.host.E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `: IsTopologicalRing (AF D.host.F ⊗[D.host.F] D.host.E)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Establish `: IsTopologicalGroup (GA D V)` using `inferInstanceAs (IsTopologicalGroup (HR (AF D.host.F) D.sp.cm.sig V.gram))`.
+
+Take `⟨hcpt, hlift⟩` from `GlobalTheory.ParahoricCompact.isCompact_flag_and_lift V β L`. Establish `hκ : hk.choose ∈ levG V β (flagL L)` using `hlift g0 _ hk.choose_spec`. Establish `ha : ‖(levChi V β (flagL L) hk.choose)⁻¹‖ = 1`. Rewrite using `[norm_inv, GlobalTheory.norm_levChi_flagL_eq_one V β L _ hκ, inv_one]`. Establish `hmap : Measure.map (fun g => g * hk.choose) μ = μ` using `GlobalTheory.haar_map_mul_right_of_mem_compact_subgroup μ _ hcpt _ hκ`.
+
+Use `set a := (levChi V β (flagL L) hk.choose)⁻¹ with ha_def`. Establish `haa : star a * a = 1`. Establish `: star a * a = ((‖a‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `push_cast`.
+
+Both sides reduce to the same expression. Rewrite using `[this, ha]`. Evaluate the numerical expressions. Establish `key : (fun g => star (actG0 V β L g0 F g) * actG0 V β L g0 S g) = fun g => star (F (g * hk.choose)) * S (g * hk.choose)`. Use function extensionality and compare the values at `g`.
+
+Simplify using `only [actG0, dif_pos hk]`. Rewrite using `[star_mul', ← ha_def]`. Take the linear combination `(star (F (g * hk.choose)) * S (g * hk.choose)) * haa`. Rewrite using `[key]`. Conclude with `GlobalTheory.fundamentalDomain_setIntegral_mul_right (GQ V) μ 𝓕 h𝓕 _ hmap (fun g => star (F g) * S g) (fun γ hγ g => by simp only [hF γ hγ g, hS γ hγ g]) hi`.
+-/
 theorem integral_levelGroupAction_pairing_invariant {V : HSp D} (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank)
     (g0 : G0 L.Pg L.r) (μ : Measure (GA D V)) [μ.IsHaarMeasure] (𝓕 : Set (GA D V))
     (h𝓕 : IsFundamentalDomain (GQ V) 𝓕 μ) (hk : ∃ κ, IsLevelLift V β L g0 κ) (F S : GA D V → ℂ)
@@ -77,6 +93,23 @@ noncomputable section
 
 namespace GlobalTheory.EwfMove
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC hX i σ v Φ hΦ hi y`. Take `⟨hinj, hrange, hip⟩` from `hC.models.HW i σ`. Take `⟨h1, h2⟩` from `hC.models.νW i`. Use `haveI := h1.1`. Establish `hgW` using `hC.models.gW`.
+
+Establish `hL : ∀ z : (R.HW i σ).H, ∀ γ ∈ GQ (Wc D i), ∀ g, (R.HW i σ).e z (fun ρ => v ρ) (γ * g) = (R.HW i σ).e z (fun ρ => v ρ) g` using `fun z => (GlobalTheory.mult_value_left_cont_level R.θ (R.MW i σ) _ _ _ ((hrange.le : _ ≤ R.Wall i σ) (LinearMap.mem_range_self _ z)) _).1`. Establish `hS : ∀ (g : G) (z : (R.HW i σ).H), (R.HW i σ).e z (fun ρ => v ρ) = actG0 (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) ((R.HW i σ).e (R.gW i σ g⁻¹ z) (fun ρ => v ρ))`. Introduce `g z`. Establish `e` using `congrArg (fun T : MMap (R.MW i σ) => T (fun ρ => v ρ)) (hgW i σ g (R.gW i σ g⁻¹ z))`. Rewrite `e` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+
+Conclude with `e`. Establish `hper : ∀ g : G, IntegrableOn (fun h => star (actG0 (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) Φ h) * (R.HW i σ).e y (fun ρ => v ρ) h) (R.fdW i) (R.νW i) ∧ ∫ h in R.fdW i, star (actG0 (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) Φ h) * (R.HW i σ).e y (fun ρ => v ρ) h ∂(R.νW i) …`. Introduce `g`. Distinguish the cases in `hk : ∃ κ, IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) κ`. Rewrite using `[hS g y]`.
+
+Conclude with `integral_levelGroupAction_pairing_invariant _ _ _ _ _ h2 hk Φ _ hΦ (hL _) (hi _)`. Establish `h0 : ∀ z : (R.HW i σ).H, (R.HW i σ).e z (fun ρ => v ρ) = 0` using `fun z => by`. Rewrite using `[hS g z]`. Simplify using `only [actG0, dif_neg hk]`. Prove the components needed by the constructor for the conclusion.
+
+Simplify using `only [h0, Pi.zero_apply, mul_zero]`. Conclude with `integrableOn_zero`. Simplify using `only [h0, Pi.zero_apply, mul_zero]`. Establish `eL : ∀ h, star (R.eWf i σ Φ h) * (R.HW i σ).e y (fun ρ => v ρ) h = ∑ g, starRingEnd ℂ (RealDat.eC (A` using `A) σ g) * (star (actG0 (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) Φ h) * (R.HW i σ).e y (fun ρ => v ρ) h) := by`. Introduce `h`.
+
+Simplify using `only [RealDat.eWf, gaL, LinearMap.sum_apply, LinearMap.smul_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, star_sum, star_mul', Finset.sum_mul]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Both sides reduce to the same expression. Establish `eR : ∀ h, star (Φ h) * (R.HW i σ).e (GlobalTheory.LiftLower.projH R i σ y) (fun ρ => v ρ) h = ∑ g, RealDat.eC (A` using `A) σ g * (star (Φ h) * (R.HW i σ).e (R.gW i σ g y) (fun ρ => v ρ) h) := by`.
+
+Introduce `h`. Simplify using `only [GlobalTheory.LiftLower.projH, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, MultilinearMap.sum_apply, MultilinearMap.smul_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [eL, eR]`.
+
+Rewrite using `[integral_finset_sum _ fun g _ => ((hper g).1.const_mul _), integral_finset_sum _ fun g _ => ((hi (R.gW i σ g y)).const_mul _)]`. Simplify using `only [integral_const_mul, (hper _).2, star_eC hX]`. Conclude with `Fintype.sum_equiv (Equiv.inv G) _ _ (fun g => rfl)`.
+-/
 theorem integral_eWf_move : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → (∀ χ ∈ A.X, IsAbsIrrChar χ) → ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (v : ∀ ρ, lowT (R.MW i σ) ρ) (Φ : GA D (Wc D i) → ℂ), (∀ γ ∈ GQ (Wc D i), ∀ g, Φ (γ * g) = Φ g) → (∀ y : (R.HW i σ).H, IntegrableOn (fun g => star (Φ g) * (R.HW i σ).e y (fun ρ => v ρ) g) (R.fdW i) (R.νW i)) → ∀ y : (R.HW i σ).H, ∫ g in R.fdW i, star (R.eWf i σ Φ g) * (R.HW i σ).e y (fun ρ => v ρ) g ∂(R.νW i) = ∫ g in R.fdW i, star (Φ g) * (R.HW i σ).e (GlobalTheory.LiftLower.projH R i σ y) (fun ρ => v ρ) g ∂(R.νW i) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hC hX i σ v Φ hΦ hi y
   obtain ⟨hinj, hrange, hip⟩ := hC.models.HW i σ

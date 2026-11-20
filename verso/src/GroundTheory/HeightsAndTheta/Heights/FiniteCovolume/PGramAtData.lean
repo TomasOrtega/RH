@@ -9,6 +9,13 @@ variable {F E : Type*} [Field F] [Field E] [NumberField F] [NumberField E] [Alge
   [Algebra.IsQuadraticExtension F E] [IsTotallyReal F] [IsTotallyComplex E]
 variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Introduce `w`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [gramAt, conjTranspose_apply, map_apply, Automorphic.gram_apply]`. Express the relevant statement in the definitionally equal form `starRingEnd ℂ (w.embedding (h.toSesq (v j) (v i))) = w.embedding (h.toSesq (v i) (v j))`.
+
+Rewrite using `[← embedding_conj (F := F) w.embedding]`. Use `congr 1`. Conclude with `h.isSymm.eq (v j) (v i)`. Simplify using `only [gramAt]`. Rewrite using `[show ((gram h.toSesq v).map w.embedding).det = w.embedding (gram h.toSesq v).det from (RingHom.map_det w.embedding _).symm]`.
+
+Conclude with `(isUnit_det_gram h v).map w.embedding`.
+-/
 theorem GramAtData.proof (h : HermitianForm F E W) (v : Basis ι E W) :
     GramAtData.Statement h v := by
   intro w

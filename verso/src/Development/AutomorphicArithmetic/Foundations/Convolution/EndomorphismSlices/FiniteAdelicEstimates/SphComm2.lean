@@ -2,6 +2,9 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.EndomorphismSli
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.AdelicHeckeBlocks.ImportsAlt
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.AdelicHeckeBlocks.IsCompactMaximalPairPlace
 
+/- English proof (translation)
+Introduce `E _ _ _ a b w f f' hf hf'`. Conclude with `PositivityTheory.Rg.BcB.F.sphComm E a b w f f' hf hf'`.
+-/
 theorem UpperTheory.Zero.ConvolutionTheory.EB.sphComm2 :
     UpperTheory.Zero.ConvolutionTheory.EB.SphComm2 := by
   intro E _ _ _ a b w f f' hf hf'

@@ -19,9 +19,17 @@ def epsZeroPt : Over.mk x ⟶ epsPtR x :=
     rw [← Spec.map_id]
     congr 1)
 
+/- English proof (translation)
+The claim follows from `rfl @[reassoc]`.
+-/
 @[simp] lemma epsZeroPt_left : (epsZeroPt x).left = spMap (TrivSqZeroExt.fstHom k k k).toRingHom := rfl
 
 @[reassoc]
+/- English proof (translation)
+Use `ext1`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Use `CommRingCat.hom_ext (RingHom.ext fun z => ?_)` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules.
+-/
 lemma epsZeroPt_epsScalePt (c : k) : epsZeroPt x ≫ epsScalePt x c = epsZeroPt x := by
   ext1
   change Spec.map _ ≫ Spec.map _ = Spec.map _
@@ -30,6 +38,9 @@ lemma epsZeroPt_epsScalePt (c : k) : epsZeroPt x ≫ epsScalePt x c = epsZeroPt 
   refine CommRingCat.hom_ext (RingHom.ext fun z => ?_)
   simp
 
+/- English proof (translation)
+Rewrite using `[sqZeroMapPt_comp]`. Use `congr 1`. Use `LinearMap.ext_ring ?_` and prove the remaining obligations. Simplify using `[mul_comm]`.
+-/
 lemma epsScalePt_mul (a b : k) : epsScalePt x a ≫ epsScalePt x b = epsScalePt x (a * b) := by
   rw [sqZeroMapPt_comp]
   congr 1
@@ -48,6 +59,9 @@ def tanSub : Subgroup (epsPtR x ⟶ G) where
     change epsZeroPt x ≫ a⁻¹ = 1
     rw [GrpObj.comp_inv, ha, _root_.inv_one]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `epsZeroPt x ≫ w = 1 ↔ _`. Conclude with `⟨fun h => congrArg Over.Hom.left h, fun h => Over.OverMorphism.ext h⟩`.
+-/
 lemma mem_tanSub_iff (w : epsPtR x ⟶ G) :
     w ∈ tanSub x G ↔ spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ w.left = (1 : Over.mk x ⟶ G).left := by
   change epsZeroPt x ≫ w = 1 ↔ _
@@ -61,18 +75,36 @@ def Tan.hom (v : Tan x G) : epsPtR x ⟶ G := (Additive.toMul v : tanSub x G).1
 
 def Tan.mk (w : epsPtR x ⟶ G) (hw : w ∈ tanSub x G) : Tan x G := Additive.ofMul ⟨w, hw⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma Tan.hom_mk (w : epsPtR x ⟶ G) (hw : w ∈ tanSub x G) : (Tan.mk w hw).hom = w := rfl
 
+/- English proof (translation)
+The claim follows from `(Additive.toMul v : tanSub x G).2`.
+-/
 lemma Tan.hom_mem (v : Tan x G) : v.hom ∈ tanSub x G := (Additive.toMul v : tanSub x G).2
 
+/- English proof (translation)
+The claim follows from `Additive.toMul.injective (Subtype.ext h)`.
+-/
 @[ext] lemma Tan.ext {v w : Tan x G} (h : v.hom = w.hom) : v = w :=
   Additive.toMul.injective (Subtype.ext h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma Tan.hom_zero : (0 : Tan x G).hom = 1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma Tan.hom_add (v w : Tan x G) : (v + w).hom = v.hom * w.hom := rfl
 
 def Tan.homAdd : Tan x G →+ Additive (epsPtR x ⟶ G) := (tanSub x G).subtype.toAdditive
 
+/- English proof (translation)
+Use `map_sum (Tan.homAdd (x := x) (G := G)) v s` as an intermediate fact. Conclude with `congrArg Additive.toMul this`.
+-/
 lemma Tan.hom_sum {I : Type} (s : Finset I) (v : I → Tan x G) : (∑ i ∈ s, v i).hom = ∏ i ∈ s, (v i).hom := by
   have := map_sum (Tan.homAdd (x := x) (G := G)) v s
   exact congrArg Additive.toMul this
@@ -92,6 +124,9 @@ instance : Module k (Tan x G) where
   add_smul a b v := Tan.ext (epsScalePt_add_comp x a b ((mem_tanSub_iff x G _).mp v.hom_mem))
   zero_smul v := Tan.ext (epsScalePt_zero_comp x ((mem_tanSub_iff x G _).mp v.hom_mem))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma Tan.hom_smul (c : k) (v : Tan x G) : (c • v).hom = epsScalePt x c ≫ v.hom := rfl
 
 def Tan.map (f : G ⟶ G) [IsMonHom f] : Tan x G →ₗ[k] Tan x G where
@@ -101,6 +136,9 @@ def Tan.map (f : G ⟶ G) [IsMonHom f] : Tan x G →ₗ[k] Tan x G where
   map_add' v w := Tan.ext (mul_comp _ _ _)
   map_smul' c v := Tan.ext (Category.assoc _ _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma Tan.hom_map (f : G ⟶ G) [IsMonHom f] (v : Tan x G) : (Tan.map f v).hom = v.hom ≫ f := rfl
 
 def actEnd {O : Type} [Ring O] (a : OActN O G) : O →+* Module.End k (Tan x G) where
@@ -123,6 +161,9 @@ def actEnd {O : Type} [Ring O] (a : OActN O G) : O →+* Module.End k (Tan x G) 
     ext v
     simp [a.add, comp_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] lemma actEnd_hom {O : Type} [Ring O] (a : OActN O G) (b : O) (v : Tan x G) :
     (actEnd a b v).hom = v.hom ≫ a.act b := rfl
 

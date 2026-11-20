@@ -15,6 +15,17 @@ open GlobalTheory.Poinc.Sep
 
 namespace GlobalTheory.Poinc.Sep
 
+/- English proof (translation)
+Introduce `g n F W Z i X₁ z₁ act V _ _ _ ev X _ m t δ 𝔪 u hu`. Use `haveI : CharZero V := 𝔪.cn.2.2.2`. Use `haveI : CharZero (FractionRing V) := IsFractionRing.charZero V`. Use `set k := (X₁.S.r * X₁.S.N) ^ 2 with hk`. Establish `hkpos : 0 < k`.
+
+Establish `h1` using `X₁.S.r_pos`. Establish `h2` using `X₁.S.N_ge`. Check the signs of the components of the expression. Establish `hinj : Function.Injective (algebraMap X₁.o₁ X₁.S.R)`. Introduce `a b hab`.
+
+Apply `X₁.ar.inj` to reduce the goal to its premises. Use `congrArg (fun x : X₁.S.R => (x : X₁.Ω₁)) hab` as an intermediate fact. Simplify using `using this`. Establish `hR : IsPrimitiveRoot (algebraMap X₁.o₁ X₁.S.R X₁.S.ζ) k` using `X₁.S.prim.map_of_injective hinj`. Establish `hroot : (Polynomial.cyclotomic k (FractionRing V)).IsRoot (𝔪.yK (algebraMap X₁.o₁ X₁.S.R X₁.S.ζ))`.
+
+Establish `h` using `(hR.isRoot_cyclotomic hkpos).map (f := 𝔪.yK)`. Rewrite `h` using `[Polynomial.map_cyclotomic]`. Then use the resulting hypothesis. Use `haveI : NeZero (k : FractionRing V) := ⟨by exact_mod_cast hkpos.ne'⟩`. Establish `hK : IsPrimitiveRoot (𝔪.yK (algebraMap X₁.o₁ X₁.S.R X₁.S.ζ)) k` using `(Polynomial.isRoot_cyclotomic_iff).1 hroot`. Take `⟨e, -, he⟩` from `hK.eq_pow_of_pow_eq_one hu`.
+
+Conclude with `⟨e, by rw [map_pow, map_pow, he]⟩`.
+-/
 theorem eq_yK_zeta_pow_of_pow_eq_one : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i) (z₁ : X₁.M.Z) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (m : ℕ) (t : Fin m → V) (δ : Fin m → LinearMap.BilinForm ℤ X) (𝔪 : UMem X₁ z₁ act V ev X t δ), ∀ u : FractionRing V, u ^ ((X₁.S.r * X₁.S.N) ^ 2) = 1 → ∃ e : ℕ, u = 𝔪.yK (algebraMap X₁.o₁ X₁.S.R (X₁.S.ζ ^ e)) := by
   intro g n F W Z i X₁ z₁ act V _ _ _ ev X _ m t δ 𝔪 u hu
   haveI : CharZero V := 𝔪.cn.2.2.2

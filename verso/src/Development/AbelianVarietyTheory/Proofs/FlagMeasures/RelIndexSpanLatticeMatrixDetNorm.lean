@@ -11,6 +11,31 @@ open scoped Pointwise ENNReal Classical
 
 namespace GlobalTheory.HL.FrameIndex
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ L ϖ hϖ n m b hb A c hc0 hA Q Q' hQ hQ'`. Take `⟨c2, hc, hN⟩` from `TupleJac.exists_int_basis L`. Use `L.free` as an intermediate fact. Take `⟨u, hu⟩` from `(GlobalTheory.UnramVal.vE_valuation L ϖ hϖ).2.2.2 c hc0`. Establish `hAu : IsUnit A.det`.
+
+Establish `h` using `(IsUnit.mk0 c hc0).map (algebraMap F E)`. Rewrite `h` using `[← hA]`. Conclude with `isUnit_of_mul_isUnit_left h`. Establish `hdet : IsUnit (LinearMap.det (Matrix.toLin' A))`. Rewrite using `[LinearMap.det_toLin']`.
+
+Conclude with `hAu`. Use `set φ := LinearMap.equivOfIsUnitDet hdet with hφdef`. Establish `hφ : φ.toLinearMap = Matrix.toLin' A` using `LinearMap.coe_equivOfIsUnitDet hdet`. Establish `hφx : ∀ x, φ x = A.mulVec x` using `fun x => LinearMap.congr_fun hφ x`. Set `W0 : AddSubgroup (Fin m → E)` to `AddSubgroup.pi Set.univ fun _ => L.O.toAddSubgroup`.
+
+Establish `hW0 : ∀ x, x ∈ W0 ↔ ∀ i, x i ∈ L.O` using `fun x => by`. Simplify using `only [W0, AddSubgroup.mem_pi, Set.mem_univ, true_imp_iff, Subring.mem_toAddSubgroup]`. Establish `h` using `LatDet.relVol_map ϖ hϖ (c2.smulTower (Pi.basisFun E (Fin m))) (φ.restrictScalars F) (vE L ϖ (algebraMap F E c)) u (by`. Apply `GlobalTheory.UnramOrder.algebraMap_inj L` to reduce the goal to its premises. Rewrite using `[← hu, ← hA, ← hN, ← LinearMap.det_toLin', ← hφ, ← LinearMap.det_restrictScalars]`.
+
+Use the proof step `rfl) W0 (by`. Introduce `x`. Simplify using `only [hW0, hc, Module.Basis.smulTower_repr, Pi.basisFun_repr]`. Conclude with `⟨fun h i => h _ _, fun h j i => h (i, j)⟩)`. Set `e : (Fin m → E) →+ (Fin n → E)` to `(Fintype.linearCombination E b).toAddMonoidHom`.
+
+Establish `he : ∀ x, e x = ∑ i, x i • b i` using `fun x => Fintype.linearCombination_apply E b x`. Establish `hei : Function.Injective e`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Conclude with `funext (Fintype.linearIndependent_iff.1 hb x ((he x).symm.trans hx))`.
+
+Establish `h1 : Q.toAddSubgroup = W0.map e`. Use extensionality with `w`. Rewrite using `[hQ, Submodule.mem_toAddSubgroup, Submodule.mem_span_range_iff_exists_fun, AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`.
+
+Conclude with `⟨fun i => x i, (hW0 _).2 fun i => (x i).2, he _⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨fun i => ⟨x i, (hW0 _).1 hx i⟩, (he _).symm⟩`. Establish `hsum : ∀ x : Fin m → E, e (φ x) = ∑ j, x j • ∑ i, A i j • b i`. Introduce `x`.
+
+Rewrite using `[he, hφx]`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm]`. Establish `h2 : Q'.toAddSubgroup = (W0.map (φ.restrictScalars F).toAddEquiv.toAddMonoidHom).map e`.
+
+Use extensionality with `w`. Rewrite using `[hQ', Submodule.mem_toAddSubgroup, Submodule.mem_span_range_iff_exists_fun, AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨_, ⟨fun i => x i, (hW0 _).2 fun i => (x i).2, rfl⟩, hsum _⟩`.
+
+Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨fun i => ⟨x i, (hW0 _).1 hx i⟩, (hsum _).symm⟩`. Rewrite using `[h1, h2, AddSubgroup.relIndex_map_map_of_injective _ _ hei, AddSubgroup.relIndex_map_map_of_injective _ _ hei]`. Take `⟨n1, n2, h3⟩` from `h`. Use `⟨n1, n2, ?_⟩` and prove the remaining obligations.
+
+Unfold `relVol at h3`. Establish `hq : (resQ ϖ : ℝ) ≠ 0` using `by exact_mod_cast LatDet.resQ_ne_zero hϖ`. Rewrite `h3` using `[div_eq_iff (by exact_mod_cast n1)]`. Rewrite using `[h3, ← mul_assoc, ← zpow_add₀ hq, add_neg_cancel, zpow_zero, one_mul]`.
+-/
 theorem relIndex_span_matrix : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ ϖ : 𝒪[F], Irreducible ϖ → ∀ {n m : ℕ} (b : Fin m → Fin n → E), LinearIndependent E b → ∀ (A : Matrix (Fin m) (Fin m) E) (c : F), c ≠ 0 → A.det * L.cj A.det = algebraMap F E c → ∀ Q Q' : Submodule L.O (Fin n → E), Q = Submodule.span L.O (Set.range b) → Q' = Submodule.span L.O (Set.range fun j => ∑ i, A i j • b i) → Q'.toAddSubgroup.relIndex Q.toAddSubgroup ≠ 0 ∧ Q.toAddSubgroup.relIndex Q'.toAddSubgroup ≠ 0 ∧ (Q'.toAddSubgroup.relIndex Q.toAddSubgroup : ℝ) = (resQ ϖ : ℝ) ^ (vE L ϖ (algebraMap F E c)) * (Q.toAddSubgroup.relIndex Q'.toAddSubgroup : ℝ) := by
   intro F _ _ _ _ _ E _ _ _ L ϖ hϖ n m b hb A c hc0 hA Q Q' hQ hQ'
   obtain ⟨c2, hc, hN⟩ := TupleJac.exists_int_basis L

@@ -14,6 +14,15 @@ namespace GlobalTheory.CechDR
 open Opposite KaehlerDifferential
 variable {R' : Type} [CommRing R'] {X X' : Scheme.{0}}
 
+/- English proof (translation)
+Establish `ex : ∀ W : X'.affineOpens, ∃ G : (OAff s').obj (op W), ∀ (p : Pair φ) (hp : p.1.1 ≤ W), mp (OAff s') (homOfLE hp).op G = g p - f.1 (op W) (op p.1.1) (homOfLE hp).op`. Introduce `W`. Use `GlobalTheory.T.exists_glue_functions_affineOpen_from_pairs φ s' W _ fun p q hp hq hqp ↦ ?_` and prove the remaining obligations. Establish `e` using `Z1.comp f (homOfLE hp).op (homOfLE (Pair.le_fst hqp)).op`. Rewrite `e` using `[show (homOfLE hp).op ≫ (homOfLE (Pair.le_fst hqp)).op = (homOfLE hq).op from rfl, hg p q hqp]`.
+
+Rewrite using `[map_sub, e]`. Expand and normalize the polynomial expressions, which then agree. Use `choose G hG using ex`. Use `⟨fun T ↦ G T.unop, ?_, hG⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' a`.
+
+Use `sec_eq_of_pair φ s' T'.unop _ _ fun p hp ↦ ?_` and prove the remaining obligations. Establish `e1` using `Z1.comp f a (homOfLE hp).op`. Establish `e2 : a ≫ (homOfLE hp).op = (homOfLE (hp.trans (leOfHom a.unop))).op` using `rfl`. Rewrite `e1` using `[e2]`. Rewrite using `[amitsur_d0_apply, map_sub, ← mp_comp, e2, hG, hG]`.
+
+Take the linear combination `e1`.
+-/
 theorem exists_cob_of_pair (φ : X' ⟶ X) (s' : X' ⟶ Sp R') (f : Z1 (OAff s'))
     (g : ∀ p : Pair φ, (OAff s').obj (op p.1.1))
     (hg : ∀ (p q : Pair φ) (hqp : q ≤ p), f.1 (op p.1.1) (op q.1.1) (homOfLE (Pair.le_fst hqp)).op =
@@ -43,6 +52,21 @@ end GlobalTheory.CechDR
 namespace GlobalTheory.CechDR
 open Opposite KaehlerDifferential
 
+/- English proof (translation)
+Introduce `R' _ X X' φ s'`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Take `⟨f, rfl⟩` from `H1.mk_surjective _ c`.
+
+Rewrite `hc` using `[CoefMap.pullCohomologyOne_class, H1.mk_eq_zero]`. Take `⟨g, hg⟩` from `hc`. Take `⟨G, hG, -⟩` from `exists_cob_of_pair φ s' f (fun p ↦ g (op p)) fun p q hqp ↦ (congrFun (congrFun (congrFun hg (op p)) (op q)) (homOfLE hqp).op).symm`. Conclude with `H1.mk_eq_zero.2 ⟨G, hG⟩`. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `ω hω`. Establish `h0 : ∀ p : Pair φ, ω.1 (op p.1.1) = 0` using `fun p ↦ (cechDeRhamCoefMapOneForms_restrictAlongFunctor (OAff s') (pairFst φ) (op p) _).symm.trans (congrArg (fun z : Glob1 (OPair φ s') ↦ z.1 (op p)) hω)`. Use `Subtype.ext (funext fun W ↦ GlobalTheory.T.oneForm_eq_zero_of_vanishing_on_pairs φ s' W.unop _ fun p hp ↦ ?_)` and prove the remaining obligations. Rewrite using `[← ω.2 (homOfLE hp).op]`. Conclude with `h0 p`.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Take `⟨z, rfl⟩` from `Hyp1.mk_surjective _ c`. Rewrite `hc` using `[pullHyp1_mk, Hyp1.mk_eq_zero]`. Take `⟨g, hg⟩` from `hc`.
+
+Set `g' : ∀ p : Pair φ, (OAff s').obj (op p.1.1)` to `fun p ↦ g (op p)`. Establish `hf : ∀ (p q : Pair φ) (hqp : q ≤ p), z.1.1 (op p.1.1) (op q.1.1) (homOfLE (Pair.le_fst hqp)).op = g' q - mp (OAff s') (homOfLE (Pair.le_fst hqp)).op (g' p)` using `fun p q hqp ↦ (congrArg (fun c : Tot1 (OPair φ s') ↦ c.1 (op p) (op q) (homOfLE hqp).op) hg).symm`. Establish `hω : ∀ p : Pair φ, D R' _ (g' p) = z.1.2 (op p.1.1)` using `fun p ↦ (congrArg (fun c : Tot1 (OPair φ s') ↦ c.2 (op p)) hg).trans (cechDeRhamCoefMapOneForms_restrictAlongFunctor _ _ _ _)`. Take `⟨G, hG, hGp⟩` from `exists_cob_of_pair φ s' (cechDeRhamTotalCocyclesOne.fn _ z) g' hf`. Use `Hyp1.mk_eq_zero.2 ⟨G, Tot1.ext (fun T T' a ↦ congrFun (congrFun (congrFun hG T) T') a) fun W ↦ ?_⟩` and prove the remaining obligations.
+
+Use `(sub_eq_zero.1 (GlobalTheory.T.oneForm_eq_zero_of_vanishing_on_pairs φ s' W.unop (D R' _ (G W) - z.1.2 W) fun p hp ↦ ?_))` and prove the remaining obligations. Establish `e` using `cechDeRhamTotalCocyclesOne.conn z (homOfLE hp).op`. Rewrite using `[map_sub, p1_D, hGp, map_sub, hω]`. Express the relevant statement in the definitionally equal form `_ - (p1 _ _ _) = _`. Rewrite using `[e, show ((cechDeRhamTotalCocyclesOne.fn (OAff s') z : Z1 (OAff s')) : C1 (OAff s')) = z.1.1 from rfl]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem pairRes_injective : ∀ {R' : Type} [CommRing R'] {X X' : Scheme.{0}} (φ : X' ⟶ X)
     (s' : X' ⟶ Sp R'), Function.Injective (pairRes φ s').pull1 ∧
       Function.Injective (pullGlob1 (pairRes φ s')) ∧ Function.Injective (pullHyp1 (pairRes φ s')) := by

@@ -10,6 +10,13 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.LocLanglands GlobalTheory.HeckeGal GlobalTheory.LocGL GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published UpperTheory.V.Af.Bc GlobalTheory.RealGal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ K _ _ _ _ A v w h h' j i hP x x' hx s ht`. Take `⟨S, hS, -, -, -, -, hTw, -⟩` from `GlobalTheory.T.place_over_transport_ring_iso_symm F Ω A v h K Ω A w h' (RingEquiv.refl Ω) j i hP`. Take `⟨c, hc, hdeg, hq, -⟩` from `GlobalTheory.T.place_over_transport_ring_iso F Ω A v h K Ω A w h' (RingEquiv.refl Ω) j i hP`. Establish `hx2 : WDRel (RingEquiv.refl Ω) (x.lpTw s) (x'.lpTw s)`. Rewrite using `[hS, hTw, (hS x x').mp hx]`.
+
+Take `⟨n, b, b', hb, hb', hN, hρ⟩` from `hx2`. Rewrite using `[← hb, WD.tempered_mk]`. Rewrite `ht` using `[← hb', WD.tempered_mk]`. Introduce `φ hφ`. Establish `h1 : b.ρ φ = b'.ρ (c φ)` using `hρ φ (c φ) ((hc φ (c φ)).mpr rfl)`.
+
+Establish `h2` using `ht (c φ) (by rw [hdeg, hφ])`. Rewrite using `[h1, hN, ← hq]`. Conclude with `h2`.
+-/
 theorem GlobalTheory.TemperedTransport.main : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra K Ω] [IsAlgClosure K Ω] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 K)) (h : IsPlaceOver A v) (h' : IsPlaceOver A w) (j : F →+* K) (i : v.adicCompletion F ≃+* w.adicCompletion K), PlaceIso A v A w (RingEquiv.refl Ω) j i → ∀ (x : WD h) (x' : WD h'), WDRel (RingEquiv.refl Ω) x x' → ∀ s : ℝ, (x'.lpTw s).tempered → (x.lpTw s).tempered := by
   intro F Ω _ _ _ _ _ K _ _ _ _ A v w h h' j i hP x x' hx s ht
   obtain ⟨S, hS, -, -, -, -, hTw, -⟩ :=

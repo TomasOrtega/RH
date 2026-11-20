@@ -10,6 +10,13 @@ noncomputable section
 namespace GlobalTheory.LeviLoc
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Substitute `hw` using the available equality. Rewrite using `[Algebra.smul_def]`. Use `EulerTie.comp_finComp.ext' ?_ fun Q => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_sub, map_one, (EulerTie.parts_locIdele w y).1, sub_self, mul_zero, map_zero]`. Rewrite using `[GlobalTheory.CMPrimeIdele.ev_mul, map_zero]`.
+
+Distinguish the cases in `hQ : Q = w`. Substitute `hQ` using the available equality. Rewrite using `[EulerTie.comp_finComp.2.2.2.2]`. Establish `: u.2 (Q.under (𝓞 F)) = 0` using `hu`. Rewrite using `[this, map_zero, zero_mul]`.
+
+Both sides reduce to the same expression. Rewrite using `[map_sub, map_one]`. Express the relevant statement in the definitionally equal form `_ * (EulerTie.finComp F E (locIdele F w y : AE F E) Q - 1) = _`. Rewrite using `[EulerTie.finComp_locIdele_ne hQ, sub_self, mul_zero]`. Both sides reduce to the same expression.
+-/
 theorem smul_locIdele_sub_one {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (hw : w.under (𝓞 F) = v)
     (y : (w.adicCompletion E)ˣ) (u : AF F) (hu : evFin F v u = 0) :
     u • ((locIdele F w y : AE F E) - 1) = 0 := by
@@ -27,17 +34,42 @@ theorem smul_locIdele_sub_one {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (hw : 
       change _ * (EulerTie.finComp F E (locIdele F w y : AE F E) Q - 1) = _
       rw [EulerTie.finComp_locIdele_ne hQ, sub_self, mul_zero]; rfl
 
+/- English proof (translation)
+Establish `: t • z - z = (t - 1) • z` using `by rw [sub_smul, one_smul]`. Rewrite using `[this, ← smul_assoc, ht, zero_smul]`.
+-/
 theorem smul_sub_eq_zero {n : ℕ} {c : AF F} {t : AE F E} (ht : c • (t - 1) = 0) (z : Fin n → AE F E) :
     c • (t • z - z) = 0 := by
   have : t • z - z = (t - 1) • z := by rw [sub_smul, one_smul]
   rw [this, ← smul_assoc, ht, zero_smul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[incV, incM, Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+-/
 theorem incV_decomp {n n₁ : ℕ} (x y : Fin n → E) (ι : Matrix (Fin n) (Fin n₁) E) (s t : E) (u : Fin n₁ → E) :
     incV F (s • x + ι *ᵥ u + t • y) =
       inclR (F := F) (AF F) s • incV F x + incM F ι *ᵥ incV F u + inclR (F := F) (AF F) t • incV F y := by
   funext i
   simp [incV, incM, Matrix.mulVec, dotProduct, map_sum, map_mul]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hA v w hw x m hL`. Establish `hspan : ∀ z : Fin (a + a') → E, ∃ (s t : E) (u : Fin d₁ → E), z = s • H'.x + H'.ι *ᵥ u + t • H'.y`. Set `S : Submodule E (Fin (a + a') → E)` to `{ carrier := {z | ∃ (s t : E) (u : Fin d₁ → E), z = s • H'.x + H'.ι *ᵥ u + t • H'.y} add_mem' := by`. Introduce and unpack `_ _ ⟨s, t, u, rfl⟩ ⟨s', t', u', rfl⟩`. Conclude with `⟨s + s', t + t', u + u', by rw [add_smul, add_smul, Matrix.mulVec_add]; abel⟩`.
+
+Use the proof step `zero_mem' := ⟨0, 0, 0, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c _ ⟨s, t, u, rfl⟩`. Conclude with `⟨c * s, c * t, c • u, by rw [Matrix.mulVec_smul, smul_add, smul_add, mul_smul, mul_smul]⟩ }`. Establish `hsub : (G.W.L : Set (Fin (a + a') → E)) ⊆ S` using `fun z hz => by`.
+
+Take `⟨s, t, u, -, -, -, e⟩` from `hA.split z hz`. Conclude with `⟨s, t, u, e⟩`. Introduce `z`. Establish `hz : z ∈ Submodule.span E (G.W.L : Set (Fin (a + a') → E))`. Rewrite using `[hT.geo.hW.lat.span_eq_top]`.
+
+Discharge the goal by the elementary cases of `trivial`. Conclude with `Submodule.span_le.2 hsub hz`. Use `show ∀ c : AF F, evFin F v c = 0 → c • (mat m - 1) = 0`. Introduce `c hc`. Establish `h1 : c • ((locIdele F w x : AE F E) - 1) = 0` using `smul_locIdele_sub_one hw x c hc`.
+
+Establish `h2 : c • (cA σ ((locIdele F w x)⁻¹ : (AE F E)ˣ).1 - 1) = 0`. Rewrite using `[← map_inv, ← map_one (cA σ), ← map_sub, ← map_smul, smul_locIdele_sub_one hw x⁻¹ c hc, map_zero]`. Establish `hx : (c • (mat m - 1)) *ᵥ incV F H'.x = 0`. Rewrite using `[Matrix.smul_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, hL.1]`. Conclude with `smul_sub_eq_zero h1 _`.
+
+Establish `hy : (c • (mat m - 1)) *ᵥ incV F H'.y = 0`. Rewrite using `[Matrix.smul_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, hL.2.1]`. Conclude with `smul_sub_eq_zero h2 _`. Establish `hι : (c • (mat m - 1)) * incM F H'.ι = 0`. Rewrite using `[Matrix.smul_mul, Matrix.sub_mul, Matrix.one_mul, hL.2.2]`.
+
+Establish `: mat (1 : UA σ W₁.J) = 1` using `rfl`. Rewrite using `[this, Matrix.mul_one, sub_self, smul_zero]`. Use extensionality with `i j`. Take `⟨s, t, u, e⟩` from `hspan (Pi.single j 1)`. Establish `hcol : (c • (mat m - 1)) *ᵥ incV F (Pi.single j (1 : E)) = 0`.
+
+Rewrite using `[e, incV_decomp, Matrix.mulVec_add, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hx, hy, hι, Matrix.zero_mulVec, smul_zero, smul_zero, add_zero, add_zero]`. Establish `hsingle : incV F (Pi.single j (1 : E)) = Pi.single j 1`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality.
+
+Simplify using `[incV]`. Simplify using `[incV, Pi.single_apply, hk]`. Rewrite `hcol` using `[hsingle, Matrix.mulVec_single_one]`. Use `congrFun hcol i` as an intermediate fact. Simplify `this` using `[Matrix.col]`.
+-/
 theorem levi_locIdele_mem_UAt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B G.W W₁ i₀ i₁ → ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), w.under (𝓞 F) = v → ∀ (x : (w.adicCompletion E)ˣ) (m : UA σ G.W.J), IsLevi (W₁ := W₁) H' (locIdele F w x) 1 m → m ∈ UAt σ G.W (evFin F v) := by
   intro F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hA v w hw x m hL
   have hspan : ∀ z : Fin (a + a') → E, ∃ (s t : E) (u : Fin d₁ → E), z = s • H'.x + H'.ι *ᵥ u + t • H'.y := by

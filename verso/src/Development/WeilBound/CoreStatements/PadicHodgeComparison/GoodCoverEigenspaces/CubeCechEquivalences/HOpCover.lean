@@ -18,6 +18,9 @@ def hOp {k : Type} [Field k] (H : HTower k) (g : H.Γ) (h1 : IsFinite (H.s g)) (
     hodgeH H.q a b →ₗ[k] hodgeH H.q a b :=
   hodgeTrace (s := H.q) (s' := H.s g ≫ H.q) (f := H.s g) rfl a b ∘ₗ hodgePull (s := H.q) (s' := H.s g ≫ H.q) (H.comm g) a b
 
+/- English proof (translation)
+Establish `hσ' : ∀ i, σ i ≫ (H.s g ≫ H.q) = c ≫ H.q` using `fun i => by rw [← Category.assoc, hS.1 i]`. Use extensionality with `x`. Simplify using `only [hOp, LinearMap.comp_apply, one_smul, LinearMap.sum_apply]`. Rewrite using `[hTr _ H.q (H.s g) c σ hσ' hS]`. Conclude with `Finset.sum_congr rfl fun i _ => hodgePull_comp (H.comm g) (hσ' i) (hσ i) a b x`.
+-/
 theorem hOp_cover (hTr : TraceSplit) {k : Type} [Field k] (H : HTower k) (g : H.Γ) (h1 : IsFinite (H.s g)) (h2 : Etale (H.s g))
     {W : Scheme.{0}} (c : W ⟶ H.Z) [IsFinite c] [Etale c] {I : Type} [Fintype I] (σ : I → (W ⟶ H.Y g))
     (hσ : ∀ i, (σ i ≫ H.t g) ≫ H.q = c ≫ H.q) (hS : Splits (H.s g) c σ) (a b : ℕ) :
@@ -28,6 +31,13 @@ theorem hOp_cover (hTr : TraceSplit) {k : Type} [Field k] (H : HTower k) (g : H.
   rw [hTr _ H.q (H.s g) c σ hσ' hS]
   exact Finset.sum_congr rfl fun i _ => hodgePull_comp (H.comm g) (hσ' i) (hσ i) a b x
 
+/- English proof (translation)
+Take `⟨β, hβ1, hβ2⟩` from `hBC _ _ φ`. Take `⟨c', hc'⟩` from `hβ1 H.q H'.q bc.z bc.hz a b c`. Use `choose f1 f2 hx' using hx`. Use `coords_of_common_eigenvector φ (β H.q H'.q bc.z bc.hz a b) c c' hc' _ (fun g => hOp H' (ι' g) (f1 _) (f2 _) a b) (fun g v => ?_) _ x hx0 fun g => hx' (ι' g)` and prove the remaining obligations. Establish `hp` using `(bc.hs g).paste_vert bc.hz`.
+
+Use `h1 g` as an intermediate fact. Use `h2 g` as an intermediate fact. Use `f1 (ι' g)` as an intermediate fact. Use `f2 (ι' g)` as an intermediate fact. Establish `e1` using `(hβ2 H.q H'.q bc.z bc.hz _ _ (bc.y g) hp (H.s g) rfl (H'.s (ι' g)) rfl (bc.hs g).w a b).2`.
+
+Establish `e2` using `(hβ2 H.q H'.q bc.z bc.hz _ _ (bc.y g) hp (H.t g) (H.comm _) (H'.t (ι' g)) (H'.comm _) (bc.ht g) a b).1`. Conclude with `(e1 _).trans (congrArg _ (e2 v))`.
+-/
 theorem eig_bc (hBC : HodgeBC) {k k' : Type} [Field k] [Field k'] (φ : k →+* k') (H : HTower k) [IsProper H.q] (H' : HTower k')
     (ι' : H.Γ → H'.Γ) (bc : TowerBC φ H H' id ι') (h1 : ∀ g, IsFinite (H.s g)) (h2 : ∀ g, Etale (H.s g)) (θ' : H'.Γ → k')
     (a b : ℕ) (x : hodgeH H'.q a b) (hx0 : x ≠ 0) (hx : IsHEig H' θ' a b x) {I : Type} [Fintype I] [DecidableEq I]
@@ -45,6 +55,29 @@ theorem eig_bc (hBC : HodgeBC) {k k' : Type} [Field k] [Field k'] (φ : k →+* 
   exact (e1 _).trans (congrArg _ (e2 v))
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `hBC hTr hOpE l _ K ιC H H' ι' bc θ θ' a hθ hN hops hcov hocc d ρ hρ`. Take `⟨b, x, hx0, hx⟩` from `hocc`. Take `⟨F, Φ, hΦ, hj⟩` from `hcov (a + b)`. Take `⟨bV, hbV⟩` from `hρ`. Establish `h1 : ∀ g, IsFinite (H.s g)` using `fun g => (hN.2.2 g).choose_spec.1`.
+
+Establish `h2 : ∀ g, Etale (H.s g)` using `fun g => (hN.2.2 g).choose_spec.2.1`. Establish `: IsProper H.q` using `GlobalTheory.CommonModel.isProper_of_isProjOver hN.2.1`. Set `lof` to `DirectSum.lof ℚ_[l] ℤ (fun n : ℤ => HQ l (sch.obj (H.geomZ (Qbar l))) n 0) ((a + b : ℕ) : ℤ)`. Set `MH : H.Γ → ∀ r : Fin (a + b + 1), Matrix (Fin (F.e r)) (Fin (F.e r)) ↥K.1` to `fun g r => LinearMap.toMatrix (F.c r) (F.c r) (hOp H g (h1 g) (h2 g) r (a + b - r))`. Establish `key : ∀ g, ∃ T : EtV (K` using `K) H.q (a + b) →ₗ[ℚ_[l]] EtV (K := K) H.q (a + b), (∀ v, hop l H (Qbar l) g (lof v) = lof (T v)) ∧ (LinearMap.toMatrix F.b F.b T).map (algebraMap ℚ_[l] ℂ_[l]) * Φ = Φ * (blockDiagonal' (MH g)).map (toC K) := by`.
+
+Introduce `g`. Take `⟨W, c, G, _, _, act, I, _, σ, hσ, hG, hS, F', Φ', np, nt⟩` from `hj g`. Use `h1 g` as an intermediate fact. Use `h2 g` as an intermediate fact. Use `hG.1` as an intermediate fact.
+
+Use `hG.2.1` as an intermediate fact. Take `⟨hinj, T, hT1, hT2⟩` from `hOpE l K H g W c G act I σ hσ hG hS (hops g) (a + b)`. Conclude with `⟨T, hT1, CrystallineSemistableComparison.Jump.corr_ht F F' Φ Φ' rfl hσ (fun _ => 1) np nt hinj T (fun r => hOp H g (h1 g) (h2 g) r (a + b - r)) (hT2.trans (Finset.sum_congr rfl fun i _ => (one_smul _ _).symm)) fun r => hOp_cover hTr H g (h1 g) (h2 g) c σ hσ hS r (a + b - r)⟩`. Use `choose TV hTV hint using key`. Set `r₀ : Fin (a + b + 1)` to `⟨a, by omega⟩`.
+
+Establish `hex : ∀ m, m = b → ∃ x : hodgeH H'.q a m, x ≠ 0 ∧ IsHEig H' θ' a m x` using `by rintro _ rfl; exact ⟨x, hx0, hx⟩`. Take `⟨x', hx0', hx'⟩` from `hex (a + b - a) (by omega)`. Take `⟨y', hy0, hy'⟩` from `eig_bc hBC _ H H' ι' bc h1 h2 θ' a (a + b - a) x' hx0' hx' (F.c r₀)`. Set `i` to `algebraMap ↥K.1 (Qbar l)`. Establish `hy : ∀ g, (MH g r₀).map i *ᵥ (fun p => ιC.symm (y' p)) = θ g • fun p => ιC.symm (y' p)` using `fun g => funext fun p => by`.
+
+Apply `ιC.injective` to reduce the goal to its premises. Use `congrFun (hy' g) p` as an intermediate fact. Rewrite `this` using `[hθ]`. Simplify `this` using `[mulVec, dotProduct, MH, i]`. Take `⟨Y, hY1, hY2, hY3⟩` from `block_eig (fun r => (0 : Matrix (Fin (F.e r)) (Fin (F.e r)) (Qbar l))) r₀ (fun p => ιC.symm (y' p)) 0 (by simp)`.
+
+Take `⟨E, hE, hEc⟩` from `exists_emb (L := Qbar l) F.b lof (DirectSum.of_injective _)`. Take `⟨⟨Ψ, -, hΨ⟩, hΦ2⟩` from `hΦ`. Establish `hmm : ∀ {m n : Type} (M : Matrix m n ℚ_[l]), (M.map (algebraMap ℚ_[l] (Qbar l))).map (algebraMap (Qbar l) ℂ_[l]) = M.map (algebraMap ℚ_[l] ℂ_[l])` using `fun M => by`. Use extensionality with `p q`. Conclude with `(IsScalarTower.algebraMap_apply ℚ_[l] (Qbar l) ℂ_[l] (M p q)).symm`.
+
+Take `⟨S, z, hz, hz'⟩` from `occE (k := Qbar l) (C := ℂ_[l]) (Γ := ↥(GK K)) (fun σ => Formalism.Per.σC (σ : GQ l)) (fun σ => (LinearMap.toMatrix F.b F.b (etAct H.q (a + b) σ)).map (algebraMap ℚ_[l] (Qbar l))) Φ (fun u v h => by`. Use `congrArg (Ψ *ᵥ ·) h` as an intermediate fact. Simplify `this)` using `only [mulVec_mulVec, hΨ, one_mulVec]`. Use the proof step `(fun σ j => chiPow (σ : GQ l) (-((j.1 : ℕ) : ℤ))) (fun σ => by rw [hmm]; exact hΦ2 σ)`. Use the proof step `(fun g => (LinearMap.toMatrix F.b F.b (TV g)).map (algebraMap ℚ_[l] (Qbar l)))`.
+
+Use the proof step `(fun g => blockDiagonal' fun r => (MH g r).map i)`. Use the proof step `(fun g => by`. Rewrite using `[hmm, hint g]`. Use `congr 1`. Rewrite using `[← blockDiagonal'_map _ _ (map_zero i)]`.
+
+Use the proof step `rfl)`. Use `θ Y (fun h0 => hy0 (funext fun p => by`. Use `(hY1 p).symm.trans (congrFun h0 _)` as an intermediate fact. Simplify using `using this))`. Use the proof step `(fun σ => chiPow (σ : GQ l) (-(a : ℤ))) (fun σ p hp => by rw [hY2 p hp])`.
+
+Use the proof step `(fun g => hY3 _ _ (hy g)) E hE (fun g => (hop l H (Qbar l) g).baseChange (Qbar l)) (fun g => hEc _ _ (hTV g))`. Use the proof step `(fun σ => galV l H (Qbar l) (Qbar l) (IntermediateField.fixingSubgroupEquiv K.1 σ))`. Use the proof step `(fun σ => hEc _ _ fun v => DirectSum.lmap_lof _ _ _) _ rfl bV _ fun σ => hbV _`. Use `⟨S, z, hz, fun σ hS => hz' σ fun t ht => ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.RingBasics.σC_coe _ t).trans (congrArg _ (hS t ht))`.
+-/
 theorem locE_of : LocEOf := by
   classical
   intro hBC hTr hOpE l _ K ιC H H' ι' bc θ θ' a hθ hN hops hcov hocc d ρ hρ

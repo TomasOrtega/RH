@@ -14,6 +14,57 @@ open Matrix
 
 variable {Γ Ga Gp : Type} [Group Γ] [Group Ga] [Group Gp] (X : Frame Γ Ga Gp)
 
+/- English proof (translation)
+Substitute `hτ' hφ'` using the available equality. Establish `hfirst` using `(absSpec X hinj W τ θ hθ φ c hc hφ hχ U hdir hfin hfree _ rfl _ rfl).1`. Use `⟨hfirst, ?_⟩` and prove the remaining obligations. Establish `hτO : (Matrix.GeneralLinearGroup.map (algebraMap O Ω)).comp ((Matrix.GeneralLinearGroup.map (algebraMap A O)).comp τ) = (Matrix.GeneralLinearGroup.map (algebraMap A Ω)).comp τ`. Use `MonoidHom.ext fun u => Units.ext ?_` and prove the remaining obligations.
+
+Use extensionality with `i k`. Simplify using `[IsScalarTower.algebraMap_apply A O Ω]`. Establish `hχO : ∀ t : X.I.T, algebraMap O Ω (((Units.map (algebraMap A O : A →* O)).comp θ t : Oˣ) : O) = algebraMap O Ω (φ t) * W.χ ⟨t, X.I.T_le t.2⟩`. Introduce `t`. Rewrite using `[← hχ t]`.
+
+Simplify using `[IsScalarTower.algebraMap_apply A O Ω]`. Establish `hCO : ∀ K e, c ≤ e → _` using `fun K e he => ctrlOrd Γ Ga Gp X O Ω hinj W m ((Matrix.GeneralLinearGroup.map (algebraMap A O)).comp τ) ((Units.map (algebraMap A O : A →* O)).comp θ) φ e (hc.trans he) (fun t ht => hφ t (X.I.Tc_anti he ht)) hχO (U K) (hfin K) (free_map X (algebraMap A O) τ θ (U K) (hfree K))`. Establish `hinjK : ∀ K e, c ≤ e → ∀ F ∈ X.ClOrd W ((Matrix.GeneralLinearGroup.map (algebraMap A Ω)).comp τ) (U K) e ((Units.map (algebraMap O Ω : O →* Ω)).comp φ), X.ctrl m W F = 0 → F = 0`. Introduce `K e he`. Establish `h` using `(hCO K e he).1`.
+
+Rewrite `h` using `[hτO]`. Then use the resulting hypothesis. Establish `hmapK : ∀ K e, c ≤ e → Submodule.map (X.ctrl m W) (X.ClOrd W ((Matrix.GeneralLinearGroup.map (algebraMap A Ω)).comp τ) (U K) e ((Units.map (algebraMap O Ω : O →* Ω)).comp φ)) = Submodule.span Ω (X.mapFn (B` using `Ω) '' (X.Ord ((Matrix.GeneralLinearGroup.map (algebraMap A O)).comp τ) ((Units.map (algebraMap A O : A →* O)).comp θ) (U K) : Set (X.Fn O m))) := by`. Introduce `K e he`. Establish `h` using `(hCO K e he).2`. Rewrite `h` using `[hτO]`. Then use the resulting hypothesis.
+
+Establish `hmapTwo : ∀ f : X.Fn A m, X.mapFn (B` using `Ω) (X.mapFn (B := O) f) = X.mapFn (B := Ω) f := by`. Introduce `f`. Use function extensionality and compare the values at `g i`. Simplify using `[Frame.mapFn, IsScalarTower.algebraMap_apply A O Ω]`. Establish `hspanEq : ∀ K, Submodule.span Ω (X.mapFn (B` using `Ω) '' (X.Ord ((Matrix.GeneralLinearGroup.map (algebraMap A O)).comp τ) ((Units.map (algebraMap A O : A →* O)).comp θ) (U K) : Set (X.Fn O m))) = Submodule.span Ω (X.mapFn (B := Ω) '' (X.Ord τ θ (U K) : Set (X.Fn A m))) := by`.
+
+Introduce `K`. Take `⟨j, hj, hb⟩` from `ordBC Γ Ga Gp X A m τ θ hθ O (U K) (hfin K) (hfree K)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Use `hb.inductionOn (⟨y, hy⟩ : X.Ord _ _ (U K)) (fun n => X.mapFn (B := Ω) (n : X.Fn O m) ∈ Submodule.span Ω (X.mapFn (B := Ω) '' (X.Ord τ θ (U K) : Set (X.Fn A m)))) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `f`. Rewrite using `[hj, hmapTwo]`. Conclude with `Submodule.subset_span ⟨f, f.2, rfl⟩`.
+
+Introduce `s n hn`. Rewrite using `[Submodule.coe_smul, map_smul, ← algebraMap_smul Ω s]`. Conclude with `Submodule.smul_mem _ _ hn`. Introduce `n₁ n₂ h₁ h₂`. Rewrite using `[Submodule.coe_add, map_add]`.
+
+Conclude with `add_mem h₁ h₂`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Use `Submodule.subset_span ⟨(j ⟨f, hf⟩ : X.Fn O m), (j ⟨f, hf⟩).2, ?_⟩` and prove the remaining obligations. Rewrite using `[hj, hmapTwo]`.
+
+Establish `huniq : ∀ K K' F F', F ∈ X.ClOrd W ((Matrix.GeneralLinearGroup.map (algebraMap A Ω)).comp τ) (U K) c ((Units.map (algebraMap O Ω : O →* Ω)).comp φ) → F' ∈ X.ClOrd W ((Matrix.GeneralLinearGroup.map (algebraMap A Ω)).comp τ) (U K') c ((Units.map (algebraMap O Ω : O →* Ω)).comp φ) → …`. Introduce `K K' F F' hF hF' hcF`. Take `⟨k, hk1, hk2⟩` from `hdir K K'`. Establish `h1` using `clOrd_mono X W _ _ le_rfl hk1 hF`. Establish `h2` using `clOrd_mono X W _ _ le_rfl hk2 hF'`.
+
+Establish `h3` using `hinjK k c le_rfl (F - F') (sub_mem h1 h2) (by rw [map_sub, hcF, sub_self])`. Conclude with `sub_eq_zero.1 h3`. Take `⟨sp, hsp⟩ : ∃ sp : X.Fn A m → Fin m → X.Fn Ω (W.d + 1), ∀ f K F, F ∈ X.ClOrd W ((Matrix.GeneralLinearGroup.map (algebraMap A Ω)).comp τ) (U K) c ((Units.map (algebraMap O Ω : O →* Ω)).comp φ) → X.ctrl m W F = X.mapFn (B` from `Ω) f → sp f = F := by`. Use `⟨fun f => if h : ∃ F, ∃ K, F ∈ X.ClOrd W ((Matrix.GeneralLinearGroup.map (algebraMap A Ω)).comp τ) (U K) c ((Units.map (algebraMap O Ω : O →* Ω)).comp φ) ∧ X.ctrl m W F = X.mapFn (B := Ω) f then h.choose else 0, ?_⟩` and prove the remaining obligations. Introduce `f K F hF hcF`.
+
+Establish `h : ∃ F, ∃ K, F ∈ X.ClOrd W ((Matrix.GeneralLinearGroup.map (algebraMap A Ω)).comp τ) (U K) c ((Units.map (algebraMap O Ω : O →* Ω)).comp φ) ∧ X.ctrl m W F = X.mapFn (B` using `Ω) f := ⟨F, K, hF, hcF⟩`. Simplify using `only [dif_pos h]`. Take `⟨K2, hK2, hc2⟩` from `h.choose_spec`. Conclude with `huniq K2 K _ F hK2 hF (hc2.trans hcF.symm)`. Establish `hgood : ∀ K, ∀ f ∈ X.Ord τ θ (U K), sp f ∈ X.ClOrd W ((Matrix.GeneralLinearGroup.map (algebraMap A Ω)).comp τ) (U K) c ((Units.map (algebraMap O Ω : O →* Ω)).comp φ) ∧ X.ctrl m W (sp f) = X.mapFn (B` using `Ω) f := by`.
+
+Introduce `K f hf`. Establish `h1 : X.mapFn (B` using `Ω) f ∈ Submodule.map (X.ctrl m W) (X.ClOrd W ((Matrix.GeneralLinearGroup.map (algebraMap A Ω)).comp τ) (U K) c ((Units.map (algebraMap O Ω : O →* Ω)).comp φ)) := by`. Rewrite using `[hmapK K c le_rfl, hspanEq K]`. Conclude with `Submodule.subset_span ⟨f, hf, rfl⟩`. Take `⟨F, hF, hcF⟩` from `h1`.
+
+Rewrite using `[hsp f K F hF hcF]`. Conclude with `⟨hF, hcF⟩`. Establish `hmapU : ∀ a : Gp, a ∈ X.I.P → ∀ f : X.Fn A m, X.mapFn (B` using `Ω) (X.U A m a f) = X.U Ω m a (X.mapFn (B := Ω) f) := by`. Introduce `a ha f`. Conclude with `uOpNat Gp X.I A (X.Fn A m) (X.rp A m) Ω (X.Fn Ω m) (X.rp Ω m) (X.mapFn (A := A) (B := Ω)).toAddMonoidHom a ha f (fun u _ => rfl)`.
+
+Use `⟨sp, ?_, ?_, ?_, ?_, ?_, ?_, fun K f hf => hgood K f hf, fun f K F hF hcF => hsp f K F hF hcF⟩` and prove the remaining obligations. Introduce `K f hf f' hf'`. Take `⟨h1, h2⟩` from `hgood K f hf`. Take `⟨h3, h4⟩` from `hgood K f' hf'`. Conclude with `hsp (f + f') K _ (add_mem h1 h3) (by rw [map_add, h2, h4, map_add])`.
+
+Introduce `K f hf b`. Take `⟨h1, h2⟩` from `hgood K f hf`. Conclude with `hsp (b • f) K _ (Submodule.smul_mem _ _ h1) (by rw [map_smul, h2, map_smul, algebraMap_smul])`. Introduce `K e he`. Establish `hS : Submodule.map (X.ctrl m W) (Submodule.span Ω (sp '' (X.Ord τ θ (U K) : Set (X.Fn A m)))) = Submodule.span Ω (X.mapFn (B` using `Ω) '' (X.Ord τ θ (U K) : Set (X.Fn A m))) := by`.
+
+Rewrite using `[Submodule.map_span, ← Set.image_comp]`. Use `congr 1`. Conclude with `Set.image_congr fun f hf => (hgood K f hf).2`. Establish `hle : Submodule.span Ω (sp '' (X.Ord τ θ (U K) : Set (X.Fn A m))) ≤ X.ClOrd W ((Matrix.GeneralLinearGroup.map (algebraMap A Ω)).comp τ) (U K) e ((Units.map (algebraMap O Ω : O →* Ω)).comp φ)`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `clOrd_mono X W _ _ he le_rfl (hgood K f hf).1`. Use `le_antisymm hle fun G hG => ?_` and prove the remaining obligations. Establish `h1 : X.ctrl m W G ∈ Submodule.map (X.ctrl m W) (Submodule.span Ω (sp '' (X.Ord τ θ (U K) : Set (X.Fn A m))))`. Rewrite using `[hS, ← hspanEq K, ← hmapK K e he]`.
+
+Conclude with `Submodule.mem_map_of_mem hG`. Take `⟨G', hG', hGG⟩` from `h1`. Establish `h2` using `hinjK K e he (G - G') (sub_mem hG (hle hG')) (by rw [map_sub, hGG, sub_self])`. Rewrite using `[sub_eq_zero.1 h2]`. Conclude with `hG'`.
+
+Introduce `K κ b`. Take `⟨j, hj, hb⟩` from `ordBC Γ Ga Gp X A m τ θ hθ O (U K) (hfin K) (hfree K)`. Establish `hli : LinearIndependent O fun i => ((j (b i) : _) : X.Fn O m)`. Establish `h0` using `(hb.basis b).linearIndependent.map' (Submodule.subtype _) (Submodule.ker_subtype _)`. Establish `heq : (⇑(Submodule.subtype _) ∘ ⇑(hb.basis b)) = fun i => ((j (b i) : _) : X.Fn O m)`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[Function.comp_apply, Submodule.subtype_apply, IsBaseChange.basis_apply]`. Rewrite `h0` using `[heq]`. Then use the resulting hypothesis. Establish `h3` using `fnIndep O Ω (Ga × Gp) κ hinj m (fun i => ((j (b i) : _) : X.Fn O m)) hli`. Use `LinearIndependent.of_comp (X.ctrl m W) ?_` and prove the remaining obligations.
+
+Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Rewrite using `[Function.comp_apply, (hgood K _ (b i).2).2, ← hmapTwo, ← hj]`. Both sides reduce to the same expression. Introduce `K a f hf`.
+
+Take `⟨h1, h2⟩` from `hgood K f hf`. Establish `hstab : ∀ a : X.I.P, ∀ F ∈ X.Cl ((Matrix.GeneralLinearGroup.map (algebraMap A Ω)).comp τ) W.ξ (U K) c ((Units.map (algebraMap O Ω : O →* Ω)).comp φ), X.UF m W a F ∈ X.Cl ((Matrix.GeneralLinearGroup.map (algebraMap A Ω)).comp τ) W.ξ (U K) c ((Units.map (algebraMap O Ω : O →* Ω)).c …` using `fun a => ((hfirst K c le_rfl).2.1 a).1`. Conclude with `hsp _ K _ (uf_clOrd X W _ _ c (U K) hstab a _ h1) (by`. Rewrite using `[(ctrlEq Γ Ga Gp X O Ω W m ((Matrix.GeneralLinearGroup.map (algebraMap A Ω)).comp τ)).2.1 a, h2]`. Conclude with `(hmapU _ a.2 f).symm)`.
+
+Introduce `K K' κ _ u hyp f hf`. Take `⟨h1, h2⟩` from `hgood K f hf`. Use `hsp _ K' _ (sum_clOrd X W _ _ c (U K) (U K') u hyp _ h1) ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply, map_sum, LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[(ctrlEq Γ Ga Gp X O Ω W m _).1, h2, mapFn_ra]`.
+-/
 private theorem absSpec2 {A O Ω : Type} [CommRing A] [IsCNL A] [CommRing O] [IsDomain O] [IsCNL O] [Field Ω] [IsAlgClosed Ω]
     [Algebra A O] [Algebra O Ω] [Algebra A Ω] [IsScalarTower A O Ω] [IsLocalHom (algebraMap A O)]
     (hinj : Function.Injective (algebraMap O Ω)) (W : WtRep X.I O Ω) {m : ℕ} (τ : X.Ub →* GL (Fin m) A) (θ : X.I.T →* Aˣ)
@@ -202,6 +253,9 @@ private theorem absSpec2 {A O Ω : Type} [CommRing A] [IsCNL A] [CommRing O] [Is
 private def trE (Ω : Type) [Field Ω] (d m : ℕ) (g : Ga) : Module.End Ω (Fin m → X.Fn Ω d) :=
   LinearMap.compLeft (rtr Ω (Ga × Gp) (Fin d → Ω) (g, 1)) (Fin m)
 
+/- English proof (translation)
+Establish `hc : ((g, (1 : Gp)) : Ga × Gp) * (1, b) = (1, b) * (g, 1)`. Apply the tactic sequence `ext <;> simp`. Use function extensionality and compare the values at `i x`. Simplify using `only [trE, Frame.rpF, Frame.rp, rtr, MonoidHom.coe_mk, OneHom.coe_mk, MonoidHom.coe_comp, Function.comp_apply, MonoidHom.inr_apply, LinearMap.compLeft_apply, LinearMap.funLeft_apply]`. Rewrite using `[mul_assoc, mul_assoc, hc]`.
+-/
 private theorem tr_rpF {Ω : Type} [Field Ω] {d m : ℕ} (g : Ga) (b : Gp) (F : Fin m → X.Fn Ω d) :
     trE X Ω d m g (X.rpF Ω d m b F) = X.rpF Ω d m b (trE X Ω d m g F) := by
   have hc : ((g, (1 : Gp)) : Ga × Gp) * (1, b) = (1, b) * (g, 1) := by
@@ -211,6 +265,11 @@ private theorem tr_rpF {Ω : Type} [Field Ω] {d m : ℕ} (g : Ga) (b : Gp) (F :
     Function.comp_apply, MonoidHom.inr_apply, LinearMap.compLeft_apply, LinearMap.funLeft_apply]
   rw [mul_assoc, mul_assoc, hc]
 
+/- English proof (translation)
+Simplify using `only [Iwa.uOp]`. Use `set f := fun q : ↥X.I.N ⧸ (X.I.Nconj a).subgroupOf X.I.N => X.rpF Ω d m (↑(Quotient.out q) * a) with hf`. Distinguish the cases in `h : (Function.support f).Finite`. Rewrite using `[finsum_eq_sum f h]`. Rewrite using `[LinearMap.sum_apply, LinearMap.sum_apply, map_sum]`.
+
+Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Conclude with `tr_rpF X g _ F`. Rewrite using `[finsum_of_infinite_support h]`. Simplify using the standard rewrite rules.
+-/
 private theorem tr_uOp {Ω : Type} [Field Ω] {d m : ℕ} (g : Ga) (a : Gp) (ha : a ∈ X.I.P) (F : Fin m → X.Fn Ω d) :
     trE X Ω d m g (X.I.uOp (X.rpF Ω d m) a F) = X.I.uOp (X.rpF Ω d m) a (trE X Ω d m g F) := by
   simp only [Iwa.uOp]
@@ -223,6 +282,17 @@ private theorem tr_uOp {Ω : Type} [Field Ω] {d m : ℕ} (g : Ga) (a : Gp) (ha 
   · rw [finsum_of_infinite_support h]
     simp
 
+/- English proof (translation)
+Simplify using `only [Frame.Cl, Submodule.mem_inf] at hF ⊢`. Take `⟨⟨hA, hfix⟩, heig⟩` from `hF`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite `hA`, the goal using `[Submodule.mem_pi]`. Introduce `i _ γ x`.
+
+Establish `h1` using `hA i (Set.mem_univ i) γ (x * (g, 1))`. Simplify `h1` using `[trE, rtr, mul_assoc]`. Introduce `u hu`. Take `⟨u', hu', hg, hτ⟩` from `hU u hu`. Establish `h0` using `hfix u' hu'`.
+
+Use function extensionality and compare the values at `i x k`. Establish `h2` using `congrFun (congrFun (congrFun h0 i) (x * (g, 1))) k`. Establish `hx : x * (g, 1) * (((u' : X.Ub) : Ga), (1 : Gp)) = x * (((u : X.Ub) : Ga), 1) * (g, 1)`. Apply the tactic sequence `rw [hg]; ext <;> simp [mul_assoc]`. Simplify using `only [Frame.raF, Frame.ra, trE, rtr, MonoidHom.coe_mk, OneHom.coe_mk, LinearMap.coe_mk, AddHom.coe_mk, LinearMap.compLeft_apply, LinearMap.funLeft_apply, Function.comp_apply, hτ, hx] at h2 ⊢`.
+
+Conclude with `h2`. Take `⟨h1, h2, h3⟩` from `heig`. Use `⟨fun n hn => ?_, fun n hn => ?_, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[← tr_rpF, h1 n hn]`. Rewrite using `[← tr_rpF, h2 n hn]`.
+
+Rewrite using `[← tr_rpF, h3 t, map_smul]`.
+-/
 private theorem tr_cl {Ω : Type} [Field Ω] {d m : ℕ} (τ' : X.Ub →* GL (Fin m) Ω) (ξ : Gp →* GL (Fin d) Ω) (U : Subgroup X.Ub)
     (c : ℕ) (φ' : X.I.T →* Ωˣ) (g : Ga)
     (hU : ∀ u ∈ U, ∃ u' ∈ U, ((u' : X.Ub) : Ga) = g⁻¹ * u * g ∧ τ' u' = τ' u) {F : Fin m → X.Fn Ω d}
@@ -250,6 +320,15 @@ private theorem tr_cl {Ω : Type} [Field Ω] {d m : ℕ} (τ' : X.Ub →* GL (Fi
     · rw [← tr_rpF, h2 n hn]
     · rw [← tr_rpF, h3 t, map_smul]
 
+/- English proof (translation)
+Establish `hcomm : Commute (trE X Ω (W.d + 1) m g) (X.UF m W ⟨X.I.z, X.I.z_mem⟩)`. Use `LinearMap.ext fun F' => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, Frame.UF, LinearMap.smul_apply, map_smul]`. Rewrite using `[tr_uOp X g _ X.I.z_mem]`. Establish `hmap : ∀ ν : Ω, (X.Cl τ' W.ξ U c φ' ⊓ (X.UF m W ⟨X.I.z, X.I.z_mem⟩).maxGenEigenspace ν).map (trE X Ω (W.d + 1) m g) ≤ X.Cl τ' W.ξ U c φ' ⊓ (X.UF m W ⟨X.I.z, X.I.z_mem⟩).maxGenEigenspace ν`.
+
+Introduce and unpack `ν _ ⟨F', h12, rfl⟩`. Rewrite `h12` using `[SetLike.mem_coe, Submodule.mem_inf]`. Take `⟨h1, h2⟩` from `h12`. Use `Submodule.mem_inf.2 ⟨tr_cl X τ' W.ξ U c φ' g hU h1, ?_⟩` and prove the remaining obligations. Rewrite `h2`, the goal using `[Module.End.mem_maxGenEigenspace]`.
+
+Take `⟨k, hk⟩` from `h2`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `hc2` using `(hcomm.sub_right (Commute.smul_right (Commute.one_right _) ν)).pow_right k`. Rewrite using `[← Module.End.mul_apply, ← hc2.eq, Module.End.mul_apply, hk, map_zero]`. Simplify using `only [Frame.ClOrd] at hF ⊢`.
+
+Establish `h3` using `Submodule.mem_map_of_mem (f := trE X Ω (W.d + 1) m g) hF`. Rewrite `h3` using `[Submodule.map_iSup]`. Conclude with `iSup_mono (fun μ => hmap _) h3`.
+-/
 private theorem tr_clOrd {O Ω : Type} [CommRing O] [IsLocalRing O] [Field Ω] [Algebra O Ω] (W : WtRep X.I O Ω) {m : ℕ}
     (τ' : X.Ub →* GL (Fin m) Ω) (φ' : X.I.T →* Ωˣ) (U : Subgroup X.Ub) (c : ℕ) (g : Ga)
     (hU : ∀ u ∈ U, ∃ u' ∈ U, ((u' : X.Ub) : Ga) = g⁻¹ * u * g ∧ τ' u' = τ' u) {F : Fin m → X.Fn Ω (W.d + 1)}
@@ -274,6 +353,9 @@ private theorem tr_clOrd {O Ω : Type} [CommRing O] [IsLocalRing O] [Field Ω] [
   rw [Submodule.map_iSup] at h3
   exact iSup_mono (fun μ => hmap _) h3
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x i`. Simplify using `[Frame.ctrl, trE, rtr, LinearMap.funLeft_apply, LinearMap.compLeft_apply]`.
+-/
 private theorem ctrl_tr {O Ω : Type} [CommRing O] [IsLocalRing O] [Field Ω] [Algebra O Ω] (W : WtRep X.I O Ω) {m : ℕ} (g : Ga)
     (F : Fin m → X.Fn Ω (W.d + 1)) :
     X.ctrl m W (trE X Ω (W.d + 1) m g F) = rtr Ω (Ga × Gp) (Fin m → Ω) (g, 1) (X.ctrl m W F) := by
@@ -285,6 +367,71 @@ end UpperTheory.V.Hi.Sp
 attribute [local instance 2000] UpperTheory.V.W.coefLocal
 
 set_option maxHeartbeats 400000 in
+/- English proof (translation)
+Introduce `L Ω _ _ _ _ _ l _ n c H hAx A _ _ _ θ hWt ι x lam hAr`. Use `haveI : Finite (ResidueField c.O) := by haveI : IsDiscreteValuationRing c.O := c.dvr haveI : Module.Finite ℤ_[l] c.O := c.fin`. Conclude with `(abelian₂.dvr_finite l c.O).2.1`. Use `haveI : IsCNL A := IsCNL.ofCO c.O A`. Take `⟨⟨c1, hc1, hx1⟩, a0, ha0, ha0', hnorm⟩` from `(GradeZeroInterpolatingElement.coPt c A).1 x`.
+
+Take `⟨c', hc', R, halg, hχR⟩` from `wtRep L l n H.V H.Sl ι lam c1`. Use `letI iOC : Algebra c'.O ℂ := (ι.toRingHom.comp (algebraMap c'.O (Qbar l))).toAlgebra`. Establish `hxO : ∀ a : A, x a ∈ c'.O` using `fun a => hc' (hx1 a)`. Set `xO : A →+* c'.O` to `x.toRingHom.codRestrict c'.O hxO`. Use `letI iAO : Algebra A c'.O := xO.toAlgebra`.
+
+Use `letI iAC : Algebra A ℂ := (ι.toRingHom.comp x.toRingHom).toAlgebra`. Use `haveI : IsScalarTower A c'.O ℂ := IsScalarTower.of_algebraMap_eq fun a => rfl`. Use `haveI hDVR : IsDiscreteValuationRing c'.O := c'.dvr`. Use `haveI : Module.Finite ℤ_[l] c'.O := c'.fin`. Establish `hle1 : ∀ y : c'.O, ‖(y : Qbar l)‖ ≤ 1`.
+
+Introduce `y`. Rewrite using `[← spec_intIff]`. Conclude with `(Algebra.IsIntegral.isIntegral (R := ℤ_[l]) y).map c'.O.val`. Use `haveI : IsLocalHom (algebraMap A c'.O) := by`. Use `⟨fun a ha => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hna`. Establish `hm : a ∈ maximalIdeal A` using `(IsLocalRing.mem_maximalIdeal a).2 hna`. Establish `h1 : ‖x a‖ ≤ a0 ^ 1` using `hnorm 1 a (by rwa [pow_one])`. Take `⟨u, hu⟩` from `ha`. Establish `h2 : ((u⁻¹ : c'.Oˣ) : c'.O) * (algebraMap A c'.O a) = 1`.
+
+Rewrite using `[← hu]`. Conclude with `u.inv_mul`. Establish `h3 : ((((u⁻¹ : c'.Oˣ) : c'.O) : Qbar l)) * x a = 1`. Establish `h6` using `congrArg (fun z : c'.O => (z : Qbar l)) h2`. Establish `h7 : ((algebraMap A c'.O a : c'.O) : Qbar l) = x a` using `rfl`.
+
+Simplify using `only [Subalgebra.coe_mul, h7] at h6`. Simplify using `using h6`. Establish `h4` using `hle1 ((u⁻¹ : c'.Oˣ) : c'.O)`. Establish `h5 : ‖((((u⁻¹ : c'.Oˣ) : c'.O) : Qbar l))‖ * ‖x a‖ = 1`. Rewrite using `[← norm_mul, h3, norm_one]`.
+
+Rewrite `h1` using `[pow_one]`. Use polynomial arithmetic with `[norm_nonneg (x a), norm_nonneg ((((u⁻¹ : c'.Oˣ) : c'.O) : Qbar l))]`. Use `haveI : IsCNL c'.O := by`. Take `⟨h1, h2, -⟩` from `abelian₂.dvr_finite l c'.O`. Conclude with `⟨h1, h2⟩`.
+
+Establish `hinj : Function.Injective (algebraMap c'.O ℂ)` using `ι.injective.comp Subtype.val_injective`. Set `W : WtRep H.X.I c'.O ℂ` to `R`. Take `⟨ψ, hψ⟩` from `spec_chi hinj W`. Set `φ : H.X.I.T →* c'.Oˣ` to `(Units.map (algebraMap A c'.O : A →* c'.O)).comp θ * ψ⁻¹`. Take `⟨e, he⟩` from `hAr`.
+
+Establish `hχ : ∀ t : H.X.I.T, algebraMap A ℂ (θ t) = algebraMap c'.O ℂ (φ t) * W.χ ⟨t, H.X.I.T_le t.2⟩`. Introduce `t`. Rewrite using `[← hψ t, ← map_mul, ← Units.val_mul]`. Simplify using `only [φ, MonoidHom.mul_apply, MonoidHom.inv_apply, inv_mul_cancel_right, MonoidHom.comp_apply, Units.coe_map]`. Conclude with `IsScalarTower.algebraMap_apply A c'.O ℂ _`.
+
+Establish `hφeV : ∀ (v : H.V) (i : Fin n) (y : ↥(Uo (HeightOneSpectrum.adicCompletion L (H.Sl v)))), algebraMap c'.O ℂ (φ (eV n H.Sl v i y)) = ι (H.finPart θ x.toRingHom lam v i y)`. Introduce `v i y`. Establish `h1` using `hχ (eV n H.Sl v i y)`. Establish `h2` using `Sp.chi_eV H.Sl ι lam R.χ hχR v i y`. Establish `h2' : (W.χ ⟨_, H.X.I.T_le (eV n H.Sl v i y).2⟩ : ℂ) = ι (algPow (H.Sl v) (lowW lam i) (((y : (HeightOneSpectrum.adicCompletion L (H.Sl v))ˣ)) : HeightOneSpectrum.adicCompletion L (H.Sl v)))` using `h2`.
+
+Rewrite `h1` using `[h2']`. Establish `hne : ι (algPow (H.Sl v) (lowW lam i) (((y : (HeightOneSpectrum.adicCompletion L (H.Sl v))ˣ)) : HeightOneSpectrum.adicCompletion L (H.Sl v))) ≠ 0`. Rewrite using `[← h2']`. Conclude with `Units.ne_zero _`. Simplify using `only [HSet.finPart, map_div₀]`.
+
+Rewrite using `[eq_div_iff hne, ← h1]`. Both sides reduce to the same expression. Set `c0` to `max W.c0 e`. Establish `hφ : ∀ t : H.X.I.T, (t : GV n H.Sl) ∈ H.X.I.Tc c0 → φ t = 1`. Introduce `t ht`.
+
+Use `MonoidHom.mem_ker.1 ((Subgroup.mem_toSubmonoid _ _).1 (Sp.gen_Tc H.Sl (MonoidHom.ker φ).toSubmonoid c0 (fun v i y hy => ?_) t ht))` and prove the remaining obligations. Use `(Subgroup.mem_toSubmonoid _ _).2 (MonoidHom.mem_ker.2 ?_)` and prove the remaining obligations. Establish `h1` using `hφeV v i y`. Rewrite `h1` using `[he v i y (Sp.Uc_anti _ (by omega) hy), map_one]`. Conclude with `Units.ext (hinj (h1.trans (map_one _).symm))`.
+
+Establish `hτ' : H.τC ι = (Matrix.GeneralLinearGroup.map (algebraMap A ℂ)).comp (H.τA A)`. Use `MonoidHom.ext fun u => Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [HSet.τC, HSet.τA, MonoidHom.comp_apply, Matrix.GeneralLinearGroup.map_apply, RingHom.mapMatrix_apply, Matrix.map_apply, RingHom.coe_comp, Function.comp_apply]`. Use `show ι _ = ι (x _)`.
+
+Conclude with `congrArg ι (by rw [← AlgHom.commutes x]; rfl)`. Take `⟨hfirst, sp, hadd, hsmul, hspan, hind, hUop, hsum, hgood, huniq⟩` from `Sp.absSpec2 H.X hinj W (H.τA A) θ hWt.cont φ c0 (le_max_left _ _) hφ hχ H.lev (Sp.lev_dir H) hAx.fin hWt.free (H.τC ι) hτ' _ rfl`. Establish `hcl : ∀ K e', H.ClAt θ ι x.toRingHom lam W.ξ K e' = H.X.Cl (H.τC ι) W.ξ (H.lev K) e' ((Units.map (algebraMap c'.O ℂ : c'.O →* ℂ)).comp φ)` using `fun K e' => spec_cl H θ ι x.toRingHom lam W.ξ K e' _ (fun v i y => hφeV v i y)`. Establish `hP : ∀ (v : H.V) (j : ℕ), alV n H.Sl v j ∈ H.X.I.P`. Introduce `v j`.
+
+Conclude with `Sp.alV_mem H.Sl v j`. Establish `hUF : ∀ (v : H.V) (j : Fin n), H.opC ι lam (W.d + 1) (Sum.inr (v, j)) = H.X.UF H.m W ⟨alV n H.Sl v ((j : ℕ) + 1), hP v ((j : ℕ) + 1)⟩`. Introduce `v j`. Establish `hχa : ((W.χ ⟨alV n H.Sl v ((j : ℕ) + 1), H.X.I.P_le _ (hP v _)⟩ : ℂˣ) : ℂ) = H.lowVal ι lam v ((j : ℕ) + 1)` using `Sp.chi_alV H.Sl ι lam R.χ hχR v ((j : ℕ) + 1)`. Simplify using `only [Frame.UF, HSet.opC, Subtype.coe_mk]`.
+
+Rewrite using `[Units.val_inv_eq_inv_val, hχa]`. Establish `huz : H.uzC ι lam (W.d + 1) = H.X.UF H.m W ⟨H.X.I.z, H.X.I.z_mem⟩`. Establish `hz : ((W.χ ⟨H.X.I.z, H.X.I.P_le _ H.X.I.z_mem⟩ : ℂˣ) : ℂ) = ∏ v : H.V, ∏ j ∈ Finset.range n, H.lowVal ι lam v j`. Establish `h1` using `congrArg (fun u : ℂˣ => (u : ℂ)) (Sp.weightChar_central_eq_prod_uniformizerDiag H.Sl R.χ)`. Simplify using `only [Units.coe_prod] at h1`.
+
+Use `h1.trans (Finset.prod_congr rfl fun v _ => Finset.prod_congr rfl fun j _ => ?_)` and prove the remaining obligations. Conclude with `Sp.chi_alV H.Sl ι lam R.χ hχR v j`. Simplify using `only [HSet.uzC, Frame.UF, Subtype.coe_mk]`. Rewrite using `[Units.val_inv_eq_inv_val, hz]`. Establish `hint : ∀ μ : ℂ, IsIntegral c'.O μ ↔ ‖ι.symm μ‖ ≤ 1` using `spec_int c' ι (fun a => rfl)`.
+
+Establish `hunit : ∀ μ : ℂ, IsIntUnit c'.O μ ↔ ‖ι.symm μ‖ = 1` using `spec_unit c' ι (fun a => rfl)`. Establish `hord : ∀ K e', H.OrdAt θ ι x.toRingHom lam W.ξ K e' = H.X.ClOrd W (H.τC ι) (H.lev K) e' ((Units.map (algebraMap c'.O ℂ : c'.O →* ℂ)).comp φ)`. Introduce `K e'`. Simplify using `only [HSet.OrdAt, Frame.ClOrd, hcl, huz]`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Conclude with `iSup_le fun μ => le_iSup_of_le (⟨μ.1, (hunit _).2 μ.2⟩ : {μ : ℂ // IsIntUnit c'.O μ}) le_rfl`. Conclude with `iSup_le fun μ => le_iSup_of_le (⟨μ.1, (hunit _).1 μ.2⟩ : {μ : ℂ // ‖ι.symm μ‖ = 1}) le_rfl`. Use `⟨W.d + 1, W.ξ, c0, sp, ?_, ?_⟩` and prove the remaining obligations. Use `⟨halg, fun v i y hy => he v i y (Sp.Uc_anti _ (by omega) hy), ?_, ?_, ?_, fun K f hf f' hf' => hadd K f hf f' hf', fun K f hf b => hsmul K f hf b, fun K e' h => (hspan K e' h).trans (hord K e').symm, fun K κ b => hind K κ b, ?_, ?_⟩` and prove the remaining obligations. Introduce `K e' h`.
+
+Rewrite using `[hcl]`. Conclude with `(hfirst K e' h).1`. Introduce `K e' h i F hF`. Rewrite `hF`, the goal using `[hcl]`. Break down `i with ⟨⟨w, hw⟩, j⟩ | ⟨v, j⟩` into its components or cases.
+
+Take `⟨κ, _, u, hu⟩` from `Sp.lev_sph H w ((j : ℕ) + 1)`. Establish `h1 : H.opC ι lam (W.d + 1) (Sum.inl (⟨w, hw⟩, j)) = ∑ q, H.X.raF (W.d + 1) (H.τC ι) (u q)` using `(hu ℂ _ (H.X.raF (W.d + 1) (H.τC ι))).1`. Rewrite using `[h1]`. Establish `hfx : F ∈ fixd (H.X.raF (W.d + 1) (H.τC ι)) (H.lev K)` using `(Submodule.mem_inf.1 (Submodule.mem_inf.1 hF).1).2`. Conclude with `Sp.sum_cl H.X W _ _ e' (H.lev K) (H.lev K) u F hF ((hu ℂ _ (H.X.raF (W.d + 1) (H.τC ι))).2 hAx hw K F hfx)`.
+
+Rewrite using `[hUF]`. Conclude with `((hfirst K e' h).2.1 _).1 F hF`. Introduce `K e' h i F hF hne μ heq`. Rewrite `hF` using `[hcl]`. Rewrite using `[← hint]`.
+
+Break down `i with ⟨⟨w, hw⟩, j⟩ | ⟨v, j⟩` into its components or cases. Take `⟨κ, _, u, hu⟩` from `Sp.lev_sph H w ((j : ℕ) + 1)`. Establish `h1 : H.opC ι lam (W.d + 1) (Sum.inl (⟨w, hw⟩, j)) = ∑ q, H.X.raF (W.d + 1) (H.τC ι) (u q)` using `(hu ℂ _ (H.X.raF (W.d + 1) (H.τC ι))).1`. Rewrite `heq` using `[h1]`. Conclude with `(hfirst K e' h).2.2 κ u F hF hne μ heq`.
+
+Rewrite `heq` using `[hUF]`. Conclude with `((hfirst K e' h).2.1 _).2 F hF hne μ heq`. Introduce `K i f hf`. Break down `i with ⟨⟨w, hw⟩, j⟩ | ⟨v, j⟩` into its components or cases. Take `⟨κ, _, u, hu⟩` from `Sp.lev_sph H w ((j : ℕ) + 1)`.
+
+Establish `h1 : H.opC ι lam (W.d + 1) (Sum.inl (⟨w, hw⟩, j)) = ∑ q, H.X.raF (W.d + 1) (H.τC ι) (u q)` using `(hu ℂ _ (H.X.raF (W.d + 1) (H.τC ι))).1`. Establish `h2 : H.op A (Sum.inl (⟨w, hw⟩, j)) = ∑ q, H.X.ra (H.τA A) (u q)` using `(hu A _ (H.X.ra (H.τA A))).1`. Rewrite using `[h1, h2]`. Conclude with `hsum K K κ u (fun F hF => (hu ℂ _ (H.X.raF (W.d + 1) (H.τC ι))).2 hAx hw K F hF) f hf`. Establish `h2 : H.op A (Sum.inr (v, j)) = H.X.U A H.m (alV n H.Sl v ((j : ℕ) + 1))`.
+
+Simplify using `only [HSet.op]`. Rewrite using `[hUF, h2]`. Conclude with `hUop K ⟨_, hP v ((j : ℕ) + 1)⟩ f hf`. Introduce `K K' q g f hf _`. Take `⟨K'', hK''⟩` from `Sp.lev_act H hAx K q g`.
+
+Establish `h1` using `hsum K K'' Unit (fun _ => H.sec (H.wq q) g) (fun F hF => by`. Simplify using `only [Finset.univ_unique, Finset.sum_singleton]`. Conclude with `hK'' ℂ _ (H.X.raF (W.d + 1) (H.τC ι)) F hF) f hf`. Simplify using `only [Finset.univ_unique, Finset.sum_singleton] at h1`. Rewrite using `[HSet.atW]`.
+
+Conclude with `h1`. Introduce `g hN K f hf`. Establish `hU : ∀ u ∈ H.lev K, ∃ u' ∈ H.lev K, ((u' : H.X.Ub) : H.Ga) = g⁻¹ * u * g ∧ H.τC ι u' = H.τC ι u`. Introduce `u hu`. Take `⟨u', hu', h1, h2⟩` from `hN.lev K u hu`.
+
+Conclude with `⟨u', hu', h1, congrArg (Matrix.GeneralLinearGroup.map (ι.toRingHom.comp (algebraMap c.O (Qbar l)))) h2⟩`. Establish `hmem` using `Sp.tr_clOrd H.X W (H.τC ι) _ (H.lev K) c0 g hU (hgood K f hf).1`. Establish `hctrl : H.X.ctrl H.m W (Sp.trE H.X ℂ (W.d + 1) H.m g (sp f)) = H.X.mapFn (B` using `ℂ) (trA H A g f) := by`. Rewrite using `[Sp.ctrl_tr, (hgood K f hf).2]`. Both sides reduce to the same expression.
+
+Conclude with `huniq (trA H A g f) K _ hmem hctrl`.
+-/
 theorem UpperTheory.V.Z.Desc.V0.spec2 :
     Spec2 := by
   intro L Ω _ _ _ _ _ l _ n c H hAx A _ _ _ θ hWt ι x lam hAr

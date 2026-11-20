@@ -15,6 +15,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 namespace GlobalTheory.CovTop
+/- English proof (translation)
+Introduce `hX h1 h2 h3 hS hT hL h4 h5 h6 h7 h8`. Use `Formalism.MainNotions.Closed.imp (_root_.GlobalTheory.T.rk_small_scale_le_of_share hX h1 hS hT h2 h3 hL h4 h5 h6 h7 h8) ?_` and prove the remaining obligations. Introduce and unpack `_ Fm _ _ ⟨C, h0, a, h⟩`. Use `⟨C, h0, a, fun x hx hle ι p hp i hi Y hY => ?_⟩` and prove the remaining obligations. Establish `H` using `h x hx hle ι p hp i hi Y hY 1 le_rfl (by norm_num)`.
+
+Rewrite `H` using `[Nat.cast_one, one_mul]`. Use `H.trans (mul_le_mul_of_nonneg_right ?_ (Nat.cast_nonneg _))` and prove the remaining obligations. Conclude with `add_le_add le_rfl (min_le_right _ _)`.
+-/
 theorem covering_rank_of_descent_steps : GlobalTheory.CovTop.HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted →
     GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative →
     DeepGood → Size → FlatDeg → Deg → Share → Rk := by
@@ -40,6 +45,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.covering_rank_of_descent_steps | exact _root_.GlobalTheory.CovTop.covering_rank_of_descent_steps | (intros; apply _root_.GlobalTheory.CovTop.covering_rank_of_descent_steps <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.covering_rank_formula : GlobalTheory.CovTop.HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → DeepGood → Size → FlatDeg → Deg → Share → Rk := by
   first | exact @_root_.GlobalTheory.CovTop.covering_rank_of_descent_steps | exact _root_.GlobalTheory.CovTop.covering_rank_of_descent_steps | (intros; apply _root_.GlobalTheory.CovTop.covering_rank_of_descent_steps <;> assumption)
 end

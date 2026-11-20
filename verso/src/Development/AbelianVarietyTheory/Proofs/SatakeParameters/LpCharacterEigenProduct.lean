@@ -8,11 +8,17 @@ namespace GlobalTheory.WeilDeligne.DetSp
 
 open Polynomial TensorProduct Module
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.charpoly_toMatrix f (Module.finBasis ℂ V), ← Matrix.det_eq_prod_roots_charpoly, LinearMap.det_toMatrix]`.
+-/
 theorem prod_roots_charpoly {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (f : Module.End ℂ V) : f.charpoly.roots.prod = LinearMap.det f := by
   rw [← LinearMap.charpoly_toMatrix f (Module.finBasis ℂ V), ← Matrix.det_eq_prod_roots_charpoly,
     LinearMap.det_toMatrix]
 
+/- English proof (translation)
+Use `set b := Pi.basisFun ℂ (Fin n)`. Use `set c := Pi.basisFun ℂ (Fin m)`. Rewrite using `[← LinearMap.det_toMatrix (b.tensorProduct c), TensorProduct.toMatrix_map, Matrix.det_kronecker, LinearMap.det_toMatrix, LinearMap.det_toMatrix, Fintype.card_fin, Fintype.card_fin]`.
+-/
 theorem det_map {n m : ℕ} (f : Module.End ℂ (Fin n → ℂ)) (g : Module.End ℂ (Fin m → ℂ)) :
     LinearMap.det (TensorProduct.map f g) = LinearMap.det f ^ m * LinearMap.det g ^ n := by
   classical
@@ -21,6 +27,9 @@ theorem det_map {n m : ℕ} (f : Module.End ℂ (Fin n → ℂ)) (g : Module.End
   rw [← LinearMap.det_toMatrix (b.tensorProduct c), TensorProduct.toMatrix_map, Matrix.det_kronecker,
     LinearMap.det_toMatrix, LinearMap.det_toMatrix, Fintype.card_fin, Fintype.card_fin]
 
+/- English proof (translation)
+Establish `e : diagEnd c = Matrix.toLin' (Matrix.diagonal c)`. Use `LinearMap.ext fun v => funext fun i => ?_` and prove the remaining obligations. Simplify using `[Matrix.mulVec_diagonal]`. Rewrite using `[e, LinearMap.det_toLin', Matrix.det_diagonal]`.
+-/
 theorem det_diagEnd {m : ℕ} (c : Fin m → ℂ) : LinearMap.det (diagEnd c) = ∏ i, c i := by
   classical
   have e : diagEnd c = Matrix.toLin' (Matrix.diagonal c) := by
@@ -28,6 +37,11 @@ theorem det_diagEnd {m : ℕ} (c : Fin m → ℂ) : LinearMap.det (diagEnd c) = 
     simp [Matrix.mulVec_diagonal]
   rw [e, LinearMap.det_toLin', Matrix.det_diagonal]
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => ((i : ℝ) - ((m : ℝ) - 1) / 2)), Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Establish `: ∀ k : ℕ, ∑ i ∈ Finset.range k, (i : ℝ) = (k : ℝ) * ((k : ℝ) - 1) / 2`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`.
+
+Consider the case `succ k ih => rw [Finset.sum_range_succ, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_centred (m : ℕ) : ∑ i : Fin m, (((i : ℕ) : ℝ) - ((m : ℝ) - 1) / 2) = 0 := by
   rw [Fin.sum_univ_eq_sum_range (fun i => ((i : ℝ) - ((m : ℝ) - 1) / 2)), Finset.sum_sub_distrib,
     Finset.sum_const, Finset.card_range, nsmul_eq_mul]
@@ -40,6 +54,9 @@ theorem sum_centred (m : ℕ) : ∑ i : Fin m, (((i : ℕ) : ℝ) - ((m : ℝ) -
 
 variable {E : Type*} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, qPow_add]`.
+-/
 theorem prod_qPow {ι : Type*} (s : Finset ι) (f : ι → ℝ) :
     ∏ i ∈ s, qPow w (f i) = qPow w (∑ i ∈ s, f i) := by
   classical
@@ -47,6 +64,9 @@ theorem prod_qPow {ι : Type*} (s : Finset ι) (f : ι → ℝ) :
   | empty => simp
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, qPow_add]
 
+/- English proof (translation)
+Simplify using `only [WDRep.spEig]`. Rewrite using `[prod_qPow, sum_centred, qPow_zero]`.
+-/
 theorem prod_spEig (m : ℕ) : ∏ i, WDRep.spEig w m i = 1 := by
   simp only [WDRep.spEig]
   rw [prod_qPow, sum_centred, qPow_zero]
@@ -55,6 +75,9 @@ end GlobalTheory.WeilDeligne.DetSp
 
 namespace GlobalTheory.WeilDeligne
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h x l σ`. Proceed by induction on `x using WD.ind with`. Consider the case `hP n a`. Rewrite using `[WD.lpSp, WD.lpChar_mk, WD.eig_mk, WD.eig_mk, WDRep.tensor_ρ, WDRep.sp_ρ, DetSp.prod_roots_charpoly, DetSp.prod_roots_charpoly, DetSp.det_map, DetSp.det_diagEnd, Finset.prod_zpow, ← Units.coe_prod, DetSp.prod_spEig, Units.val_one, one_zpow, one_pow, mul_one]`.
+-/
 theorem prod_eig_lpChar_lpSp : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (x : WD h) (l : ℕ) (σ : Weil h), ((x.lpChar (WD.lpSp h l)).eig σ).prod = ((x.eig σ).prod) ^ l := by
   intro E Ω _ _ _ _ _ A w h x l σ
   induction x using WD.ind with

@@ -8,6 +8,45 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hLfin : Module.length O (O ⧸ Ideal.span {a}) ≠ ⊤`. Rewrite using `[Module.length_ne_top_iff]`. Conclude with `isFiniteLength_quotient_span_singleton O (mem_nonZeroDivisors_of_ne_zero ha)`. Set `φ : Submodule.torsionBy O Z a →ₗ[O] Submodule.torsionBy O Q a` to `LinearMap.codRestrict (Submodule.torsionBy O Q a) (π ∘ₗ (Submodule.torsionBy O Z a).subtype) (fun z => by`. Rewrite using `[Submodule.mem_torsionBy_iff, LinearMap.comp_apply, Submodule.subtype_apply, ← map_smul, (Submodule.mem_torsionBy_iff _ _).mp z.2, map_zero])`.
+
+Establish `hφ : Function.Surjective φ`. Introduce and unpack `⟨q, hq⟩`. Take `⟨z, rfl⟩` from `hs q`. Establish `h1 : π (a • z) = 0`. Rewrite using `[map_smul]`.
+
+Conclude with `(Submodule.mem_torsionBy_iff _ _).mp hq`. Take `⟨y, hy0, hy⟩` from `hdiv a ha (a • z) h1`. Use `⟨⟨z - y, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_torsionBy_iff, smul_sub, hy, sub_self]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `[φ, hy0]`. Establish `hexact` using `Module.length_eq_add_of_exact (LinearMap.ker φ).subtype φ (Submodule.subtype_injective _) hφ (LinearMap.exact_subtype_ker_map φ)`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hdvd_unit : ∀ c : O, ¬ ϖ ∣ c → IsUnit c`. Introduce `c hc`.
+
+Assume the negation of the conclusion as `hnu`. Apply `hc` to reduce the goal to its premises. Establish `hmem` using `(IsLocalRing.mem_maximalIdeal c).mpr hnu`. Rewrite `hmem` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ, Ideal.mem_span_singleton]`. Conclude with `hmem`.
+
+Take `⟨x, hx0, hxK, b, hb0, hbx⟩` from `htor`. Take `⟨m, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb0 hϖ`. Establish `hxm : ϖ ^ m • x = 0`. Rewrite `hbx` using `[mul_smul, ← Units.smul_def, smul_eq_zero_iff_eq]`. Conclude with `hbx`.
+
+Establish `hex : ∃ j, ϖ ^ j • x = 0` using `⟨m, hxm⟩`. Establish `hj : ϖ ^ Nat.find hex • x = 0` using `Nat.find_spec hex`. Establish `hj0 : Nat.find hex ≠ 0`. Introduce `h`. Rewrite `hj` using `[h, pow_zero, one_smul]`.
+
+Conclude with `hx0 hj`. Take `⟨i, hi⟩` from `Nat.exists_eq_succ_of_ne_zero hj0`. Establish `he0 : ϖ ^ i • x ≠ 0` using `Nat.find_min hex (by omega)`. Establish `hϖe : ϖ • (ϖ ^ i • x) = 0`. Rewrite `hj` using `[hi]`.
+
+Rewrite using `[smul_smul, ← pow_succ']`. Conclude with `hj`. Establish `heK : π (ϖ ^ i • x) = 0` using `by rw [map_smul, hxK, smul_zero]`. Establish `hunit_e : ∀ w : O, IsUnit w → w • (ϖ ^ i • x) ≠ 0`. Introduce `w hw h`.
+
+Conclude with `he0 ((hw.smul_eq_zero).mp h)`. Take `⟨n, v, hav⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hϖ`. Establish `hadvd : ∀ c : O, a ∣ c ↔ ϖ ^ n ∣ c`. Introduce `c`. Rewrite using `[hav, Units.mul_left_dvd]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨y₀, hy₀K, hy₀⟩ : ∃ y₀ : Z, π y₀ = 0 ∧ ∀ c : O, c • y₀ = 0 ↔ a ∣ c := by`. Consider the cases of `n with`. Consider the case `zero`. Use `⟨0, map_zero π, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[hadvd, pow_zero]`.
+
+Simplify using the standard rewrite rules. Consider the case `succ n'`. Take `⟨y, hyK, hy⟩` from `hdiv (ϖ ^ n') (pow_ne_zero _ hϖ.ne_zero) _ heK`. Use `⟨y, hyK, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[hadvd]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hc`. Distinguish the cases in `hc0 : c = 0`. Rewrite using `[hc0]`. Conclude with `dvd_zero _`.
+
+Take `⟨r, w, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hc0 hϖ`. Distinguish the cases in `hr : n' + 1 ≤ r`. Conclude with `Dvd.dvd.mul_left (pow_dvd_pow ϖ hr) _`. It suffices to derive a contradiction. Take `⟨d, hd⟩ : ∃ d, n' = r + d` from `⟨n' - r, by omega⟩`.
+
+Apply `hunit_e (w : O) w.isUnit` to reduce the goal to its premises. Establish `hmul : (w : O) * ϖ ^ n' = ϖ ^ d * ((w : O) * ϖ ^ r)` using `by rw [hd, pow_add]; ring`. Rewrite using `[← hy, smul_smul, hmul, mul_smul, hc, smul_zero]`. Introduce and unpack `⟨d, rfl⟩`. Establish `hmul : ϖ ^ (n' + 1) * d = d * ϖ * ϖ ^ n'` using `by ring`.
+
+Rewrite using `[hmul, mul_smul, hy, mul_smul, hϖe, smul_zero]`. Establish `hy₀T : y₀ ∈ Submodule.torsionBy O Z a` using `(Submodule.mem_torsionBy_iff _ _).mpr ((hy₀ a).mpr dvd_rfl)`. Establish `hy₀ker : (⟨y₀, hy₀T⟩ : Submodule.torsionBy O Z a) ∈ LinearMap.ker φ`. Rewrite using `[LinearMap.mem_ker]`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `[φ, hy₀K]`. Set `f : O →ₗ[O] LinearMap.ker φ` to `LinearMap.toSpanSingleton O _ ⟨⟨y₀, hy₀T⟩, hy₀ker⟩`. Establish `hker : Ideal.span {a} = LinearMap.ker f`. Use extensionality with `c`. Rewrite using `[LinearMap.mem_ker, LinearMap.toSpanSingleton_apply, Ideal.mem_span_singleton, ← hy₀ c]`.
+
+Simplify using `[Subtype.ext_iff]`. Establish `hK : Module.length O (O ⧸ Ideal.span {a}) ≤ Module.length O (LinearMap.ker φ)`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : Module.length O ↥(Submodule.torsionBy O Q a) + Module.length O (O ⧸ Ideal.span {a}) ≤ (k : ℕ∞) * Module.length O (O ⧸ Ideal.span {a}) + Module.length O (O ⧸ Ideal.span {a})`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `(ENat.add_le_add_iff_right hLfin).mp h2`.
+-/
 theorem length_torsionBy_quotient_divisible_le (O : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] (Z Q : Type) [AddCommGroup Z] [Module O Z] [AddCommGroup Q]
     [Module O Q] (π : Z →ₗ[O] Q) (hs : Function.Surjective π)

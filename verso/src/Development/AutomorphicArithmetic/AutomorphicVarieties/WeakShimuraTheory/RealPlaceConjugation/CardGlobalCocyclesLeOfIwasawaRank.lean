@@ -8,6 +8,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Two
 open scoped Classical
 
+/- English proof (translation)
+Establish `h : Ideal.span {((N : ℕ) : 𝓞 F)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `Nat.cast_ne_zero.2 hN`. Use `(Ideal.finite_factors h).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.2 hv`.
+-/
 private theorem plDvd_fin (F : Type) [Field F] [NumberField F] (N : ℕ) (hN : N ≠ 0) : (plDvd F N).Finite := by
   have h : Ideal.span {((N : ℕ) : 𝓞 F)} ≠ 0 := by
     rw [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]
@@ -15,6 +18,25 @@ private theorem plDvd_fin (F : Type) [Field F] [NumberField F] (N : ℕ) (hN : N
   refine (Ideal.finite_factors h).subset fun v hv => ?_
   exact Ideal.dvd_span_singleton.2 hv
 
+/- English proof (translation)
+Introduce `P F Ω _ _ _ _ _ l _ R M _ _ _ _ hlM ρ K N r g hl hN hlN hg hI hKn hKo hKi hKρ hKc hX`. Take `⟨inst, ρ', hρ'⟩` from `exists_zmod_prime_representation_of_torsion l (G F Ω) R M hlM ρ`. Use `letI : TopologicalSpace M := ⊥`. Use `haveI : DiscreteTopology M := ⟨rfl⟩`. Establish `hfin` using `plDvd_fin F N hN`.
+
+Establish `hcard : hfin.toFinset.card ≤ g` using `by rwa [← Set.ncard_eq_toFinset_card _ hfin]`. Establish `hmem : ∀ v, v ∈ plDvd F N → v ∈ hfin.toFinset` using `fun v hv => hfin.mem_toFinset.2 hv`. Generalize the expression as in `hfin.toFinset = S at hcard hmem`. Establish `hS : ContainsAbove S l` using `fun v hv => hmem v (by`. Take `⟨k, rfl⟩` from `hlN`.
+
+Use `show ((l * k : ℕ) : 𝓞 F) ∈ v.asIdeal`. Rewrite using `[Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hv)`. Take `⟨ρS, h1, h2, h3⟩` from `exists_descent_to_galoisGroupUnramifiedOutside F Ω (ZMod (l ^ 1)) M S ρ' K N hmem (fun σ h m => by rw [hρ', hI σ h]) hKo (fun σ h m => by rw [hρ', hKρ σ h])`. Establish `hc : ∀ w : InfinitePlace F, ∃ c : G F Ω, w.IsReal → IsCCAt w c` using `fun w => by`.
+
+Distinguish the cases in `hw : w.IsReal`. Take `⟨c, hc⟩` from `exists_complexConjugation_at_realPlace F Ω w hw`. Conclude with `⟨c, fun _ => hc⟩`. Conclude with `⟨1, fun h => absurd h hw⟩`. Use `choose c hc using hc`.
+
+Take `⟨hZ, hb⟩` from `greenberg_wiles_count_mod_l P F Ω l M S ρS K r c hl hS h2 hKn hKi (fun σ h m => by rw [h1, hρ', hKρ σ h]) hKc hX hc`. Establish `hM : 0 < Nat.card M` using `Nat.card_pos`. Establish `hex : ∀ z : cocOff ρ (ineOff F Ω N), ∃ y : Z1 ρS, ∀ g, y.1 (toGS Ω _ g) = z.1 g` using `fun z => by`. Take `⟨y, hy, e⟩` from `h3 z.1 ⟨z.2.1, fun a b => by rw [hρ']; exact z.2.2.1 a b, z.2.2.2⟩`. Conclude with `⟨⟨y, hy⟩, e⟩`.
+
+Use `choose f hf using hex`. Establish `hinj : Function.Injective f` using `fun a b h => Subtype.ext (funext fun x => by rw [← hf, ← hf, h])`. Establish `hb' : Nat.card (Z1 ρS) * archH0Card S ρS c ≤ Nat.card M ^ (r + 2 + g + Module.finrank ℚ F)` using `hb.trans (Nat.pow_le_pow_right hM (by omega))`. Use `⟨CardLe.of_injective ⟨hZ, le_trans (Nat.le_mul_of_pos_right _ ?_) hb'⟩ f hinj, fun hF hcc => ?_⟩` and prove the remaining obligations. Unfold `archH0Card`.
+
+Use `Nat.mul_pos (Finset.prod_pos fun w _ => ?_) (pow_pos hM _)` and prove the remaining obligations. Use `haveI : Nonempty {m : M // ρS (toGS Ω _ (c w)) m = m} := ⟨⟨0, map_zero _⟩⟩`. Conclude with `Nat.card_pos`. Establish `ha : archH0Card S ρS c = Nat.card M ^ Module.finrank ℚ F`. Rewrite using `[archH0Card, IsTotallyReal.nrComplexPlaces_eq_zero, pow_zero, mul_one, Finset.filter_true_of_mem fun w _ => IsTotallyReal.isReal w]`.
+
+Establish `hw : ∀ w, Nat.card {m : M // ρS (toGS Ω _ (c w)) m = m} = Nat.card M` using `fun w => by`. Take `⟨j, hj, -⟩` from `hc w (IsTotallyReal.isReal w)`. Conclude with `Nat.card_congr (Equiv.subtypeUnivEquiv fun m => by rw [h1, hρ', hcc _ ⟨j, hj⟩])`. Rewrite using `[Finset.prod_congr rfl fun w _ => hw w, Finset.prod_const, Finset.card_univ, IsTotallyReal.finrank, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyReal.nrComplexPlaces_eq_zero, add_zero]`. Rewrite `hb'` using `[ha, pow_add _ (r + 2 + g)]`.
+
+Conclude with `CardLe.of_injective ⟨hZ, Nat.le_of_mul_le_mul_right hb' (pow_pos hM _)⟩ f hinj`.
+-/
 theorem UpperTheory.V.Ws.card_globalCocycles_le_of_iwasawaRank :
     CohomologyHyp → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] [Finite M], (∀ m : M, l • m = 0) → ∀ (ρ : Representation R (G F Ω) M) (K : Subgroup (G F Ω)) (N r g : ℕ), l ≠ 2 → N ≠ 0 → l ∣ N → (plDvd F N).ncard ≤ g → (∀ σ ∈ ineOff F Ω N, ∀ m, ρ σ m = m) → K.Normal → IsOpen (K : Set (G F Ω)) → ¬ l ∣ K.index → (∀ σ ∈ K, ∀ m, ρ σ m = m) → K ≤ (cycMod F Ω l 1).ker → XRk l 1 K r → CardLe (cocOff ρ (ineOff F Ω N)) (Nat.card M ^ (r + 2 + g + Module.finrank ℚ F)) ∧ (IsTotallyReal F → (∀ σ : G F Ω, IsCC σ → ∀ m, ρ σ m = m) → CardLe (cocOff ρ (ineOff F Ω N)) (Nat.card M ^ (r + 2 + g))) := by
   intro P F Ω _ _ _ _ _ l _ R M _ _ _ _ hlM ρ K N r g hl hN hlN hg hI hKn hKo hKi hKρ hKc hX

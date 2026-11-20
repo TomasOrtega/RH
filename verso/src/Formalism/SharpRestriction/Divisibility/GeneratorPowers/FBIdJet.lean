@@ -10,6 +10,23 @@ open MvPolynomial Formalism.L2.Pj Formalism.MainNotions.ModuliIntegralCharts.H1.
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Use extensionality with `e`. Establish `hle : ∀ i, e i ≤ e.degree` using `fun i => by first`. Consider the case `exact Finsupp.le_degree i e`. Consider the case `exact Finsupp.le_degree e i`. Consider the case `(by_cases hi : e i = 0`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `Finset.single_le_sum (f := fun j => e j) (fun _ _ => Nat.zero_le _) (Finsupp.mem_support_iff.2 hi))`. Establish `hdeg : (e.sum fun _ k => k) = e.degree` using `by first`. Consider the case `rfl`. Consider the case `simp [Finsupp.degree, Finsupp.sum]`.
+
+Establish `hmem : e ∈ degLE m ↔ e.degree < m + 1`. Unfold `degLE`. Simplify using `only [Finset.mem_filter, Finset.mem_image, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h⟩`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `h`. Use `⟨⟨fun i => ⟨e i, by have := hle i; omega⟩, ?_⟩, by omega⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using the standard rewrite rules.
+
+Establish `hL : MvPolynomial.coeff e (psTrunc m f) = if e ∈ degLE m then MvPowerSeries.coeff e f else 0`. Unfold `psTrunc`. Rewrite using `[MvPolynomial.coeff_sum]`. Simplify using `only [MvPolynomial.coeff_monomial]`. Use `first`.
+
+Consider the case `exact Finset.sum_ite_eq' (degLE m) e (fun x => MvPowerSeries.coeff x f)`. Consider the case `exact Finset.sum_ite_eq (degLE m) e (fun x => MvPowerSeries.coeff x f)`. Consider the case `simp`. Rewrite using `[hL]`. Distinguish the cases in `h : e.degree < m + 1`.
+
+Rewrite using `[if_pos (hmem.2 h), MvPowerSeries.coeff_truncTotal]`. Conclude with `h`. Rewrite using `[if_neg (fun h' => h (hmem.1 h'))] first`. Consider the case `exact (MvPowerSeries.coeff_truncTotal_eq_zero (by omega)).symm`. Consider the case `exact (MvPowerSeries.coeff_truncTotal_eq_zero _ (by omega)).symm`.
+
+Consider the case `(rw [MvPowerSeries.coeff_truncTotal_eq_zero]; omega)`. Consider the case `exact (MvPowerSeries.coeff_truncTotal_of_le (by omega)).symm`. Consider the case `simp [MvPowerSeries.truncTotal, MvPowerSeries.truncTotalFun, MvPolynomial.coeff_sum, h]`. Consider the case `(simp [MvPowerSeries.truncTotal, h]; done)`.
+-/
 theorem psTrunc_eq {ι : Type} [Fintype ι] [DecidableEq ι] (m : ℕ) (f : MvPowerSeries ι R) :
     psTrunc m f = MvPowerSeries.truncTotal (m + 1) f := by
   ext e
@@ -57,6 +74,15 @@ theorem psTrunc_eq {ι : Type} [Fintype ι] [DecidableEq ι] (m : ℕ) (f : MvPo
     | simp [MvPowerSeries.truncTotal, MvPowerSeries.truncTotalFun, MvPolynomial.coeff_sum, h]
     | (simp [MvPowerSeries.truncTotal, h]; done)
 
+/- English proof (translation)
+Rewrite using `[Q.as_sum]`. Use `Ideal.sum_mem _ fun e he => ?_` and prove the remaining obligations. Establish `hd : m + 1 ≤ e.degree`. Assume the negation of the conclusion as `h`. Conclude with `(MvPolynomial.mem_support_iff.1 he) (hQ e (by omega))`.
+
+Rewrite using `[MvPolynomial.monomial_eq]`. Use `Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations. Use `Ideal.pow_le_pow_right hd ?_` and prove the remaining obligations. Establish `hX : ∀ i, (MvPolynomial.X i : MvPolynomial ι R) ∈ orig R ι` using `fun i => by first`. Consider the case `exact Ideal.subset_span ⟨i, rfl⟩`.
+
+Consider the case `(unfold orig; exact Ideal.subset_span ⟨i, rfl⟩)`. Establish `h1 : (∏ i ∈ e.support, (MvPolynomial.X i : MvPolynomial ι R) ^ e i) ∈ ∏ i ∈ e.support, orig R ι ^ e i` using `Ideal.prod_mem_prod fun i _ => Ideal.pow_mem_pow (hX i) _`. Rewrite `h1` using `[Finset.prod_pow_eq_pow_sum]`. Use `first`. Consider the case `exact h1`.
+
+Consider the case `(unfold Finsupp.prod; simpa [Finsupp.degree] using h1)`.
+-/
 private lemma mem_orig_pow_lemma_6 {ι : Type} (m : ℕ) (Q : MvPolynomial ι R)
     (hQ : ∀ e : ι →₀ ℕ, e.degree < m + 1 → MvPolynomial.coeff e Q = 0) :
     Q ∈ orig R ι ^ (m + 1) := by
@@ -80,6 +106,11 @@ private lemma mem_orig_pow_lemma_6 {ι : Type} (m : ℕ) (Q : MvPolynomial ι R)
   | exact h1
   | (unfold Finsupp.prod; simpa [Finsupp.degree] using h1)
 
+/- English proof (translation)
+Rewrite using `[Ideal.Quotient.eq]`. Apply `mem_orig_pow_lemma_6` to reduce the goal to its premises. Introduce `e he`. Use `first`. Consider the case `(rw [MvPolynomial.coeff_sub, MvPowerSeries.coeff_truncTotal, MvPolynomial.coeff_coe, sub_self] <;> exact he)`.
+
+Consider the case `simp [MvPowerSeries.coeff_truncTotal, he]`.
+-/
 theorem mk_trunc_coe {ι : Type} [Fintype ι] [DecidableEq ι] (m : ℕ) (P : MvPolynomial ι R) :
     (Ideal.Quotient.mk (orig R ι ^ (m + 1))
       (MvPowerSeries.truncTotal (m + 1) (P : MvPowerSeries ι R))) = Ideal.Quotient.mk _ P := by
@@ -91,10 +122,22 @@ theorem mk_trunc_coe {ι : Type} [Fintype ι] [DecidableEq ι] (m : ℕ) (P : Mv
       sub_self] <;> exact he)
   | simp [MvPowerSeries.coeff_truncTotal, he]
 
+/- English proof (translation)
+Rewrite using `[eq_sub_iff_add_eq, ← MvPolynomial.coe_add, sub_add_cancel]`.
+-/
 private lemma coe_sub_lemma_7 {ι : Type} (x y : MvPolynomial ι R) :
     ((x - y : MvPolynomial ι R) : MvPowerSeries ι R) = (x : MvPowerSeries ι R) - y := by
   rw [eq_sub_iff_add_eq, ← MvPolynomial.coe_add, sub_add_cancel]
 
+/- English proof (translation)
+Introduce `e he`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `Finset.sum_eq_zero fun x hx => ?_` and prove the remaining obligations. Use `replace hx : x.1 + x.2 = e := by first`. Consider the case `exact Finset.mem_antidiagonal.1 hx`.
+
+Consider the case `simpa using hx`. Consider the case `exact Finsupp.mem_antidiagonal.1 hx`. Establish `hd : x.1.degree + x.2.degree = e.degree`. Rewrite using `[← hx]`. Use `first`.
+
+Consider the case `exact (map_add Finsupp.degree x.1 x.2).symm`. Consider the case `exact (Finsupp.degree_add x.1 x.2).symm`. Consider the case `simp [Finsupp.degree, Finsupp.sum_add_index']`. Consider the case `(simp only [Finsupp.degree_eq_weight_one, map_add])`. Distinguish the cases in `h1 : x.1.degree < p`.
+
+Rewrite using `[hF _ h1, zero_mul]`. Rewrite using `[hG _ (by omega), mul_zero]`.
+-/
 private lemma low_mul_lemma {τ : Type} {F G : MvPowerSeries τ R} {p q : ℕ}
     (hF : ∀ e : τ →₀ ℕ, e.degree < p → MvPowerSeries.coeff e F = 0)
     (hG : ∀ e : τ →₀ ℕ, e.degree < q → MvPowerSeries.coeff e G = 0) :
@@ -119,6 +162,9 @@ private lemma low_mul_lemma {τ : Type} {F G : MvPowerSeries τ R} {p q : ℕ}
   · rw [hF _ h1, zero_mul]
   · rw [hG _ (by omega), mul_zero]
 
+/- English proof (translation)
+Introduce `e he`. Use `first`. Consider the case `(rw [map_sub, MvPolynomial.coeff_coe, psTrunc_eq, MvPowerSeries.coeff_truncTotal, sub_self] <;> exact he)`. Consider the case `simp [psTrunc_eq, MvPowerSeries.coeff_truncTotal, he]`.
+-/
 private lemma low_trunc_lemma_5 {ι : Type} [Fintype ι] [DecidableEq ι] (m : ℕ) (F : MvPowerSeries ι R) :
     ∀ e : ι →₀ ℕ, e.degree < m + 1 →
       MvPowerSeries.coeff e (F - (psTrunc m F : MvPowerSeries ι R)) = 0 := by
@@ -128,6 +174,13 @@ private lemma low_trunc_lemma_5 {ι : Type} [Fintype ι] [DecidableEq ι] (m : �
       sub_self] <;> exact he)
   | simp [psTrunc_eq, MvPowerSeries.coeff_truncTotal, he]
 
+/- English proof (translation)
+Unfold `psJet`. Rewrite using `[← map_mul, Ideal.Quotient.eq]`. Apply `mem_orig_pow_lemma_6` to reduce the goal to its premises. Introduce `e he`. Establish `h1` using `low_mul_lemma (G := g) (q := 0) (low_trunc_lemma_5 m f) (fun d hd => absurd hd (Nat.not_lt_zero _)) e (by omega)`.
+
+Establish `h2` using `low_mul_lemma (F := (psTrunc m f : MvPowerSeries ι R)) (p := 0) (fun d hd => absurd hd (Nat.not_lt_zero _)) (low_trunc_lemma_5 m g) e (by omega)`. Establish `h3` using `low_trunc_lemma_5 m (f * g) e he`. Establish `hcoe : MvPolynomial.coeff e (psTrunc m (f * g) - psTrunc m f * psTrunc m g) = MvPowerSeries.coeff e ((f - (psTrunc m f : MvPowerSeries ι R)) * g + (psTrunc m f : MvPowerSeries ι R) * (g - (psTrunc m g : MvPowerSeries ι R)) - (f * g - (psTrunc m (f * g) : MvPowerSeries ι R)))`. Rewrite using `[← MvPolynomial.coeff_coe, coe_sub_lemma_7, MvPolynomial.coe_mul]`. Use `first`.
+
+Consider the case `(congr 1; ring)`. Consider the case `exact congrArg _ (by ring)`. Rewrite using `[hcoe, map_sub, map_add, h1, h2, h3, add_zero, sub_zero]`.
+-/
 theorem psJet_mul {ι : Type} [Fintype ι] [DecidableEq ι] (m : ℕ) (f g : MvPowerSeries ι R) :
     psJet m (f * g) = psJet m f * psJet m g := by
   unfold psJet
@@ -149,6 +202,11 @@ theorem psJet_mul {ι : Type} [Fintype ι] [DecidableEq ι] (m : ℕ) (f g : MvP
     | exact congrArg _ (by ring)
   rw [hcoe, map_sub, map_add, h1, h2, h3, add_zero, sub_zero]
 
+/- English proof (translation)
+Unfold `psJet`. Use `first`. Consider the case `rw [psTrunc_eq, ← MvPolynomial.coe_one, mk_trunc_coe, map_one]`. Consider the case `(have h := mk_trunc_coe (R := R) (ι := ι) m 1`. Rewrite `h` using `[MvPolynomial.coe_one]`.
+
+Rewrite using `[psTrunc_eq, h, map_one])`.
+-/
 theorem psJet_one {ι : Type} [Fintype ι] [DecidableEq ι] (m : ℕ) :
     psJet m (1 : MvPowerSeries ι R) = 1 := by
   unfold psJet
@@ -158,6 +216,19 @@ theorem psJet_one {ι : Type} [Fintype ι] [DecidableEq ι] (m : ℕ) :
      rw [MvPolynomial.coe_one] at h
      rw [psTrunc_eq, h, map_one])
 
+/- English proof (translation)
+Unfold `psTrunc`. Use `Ideal.sum_mem _ fun e _ => ?_` and prove the remaining obligations. Distinguish the cases in `he : e = 0`. Substitute `he first` using the available equality. Consider the case `simp [hg]`.
+
+Consider the case `(rw [MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hg, map_zero]; exact Ideal.zero_mem _)`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, e i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `he (Finsupp.ext fun j => by simp [h j])`.
+
+Establish `key : MvPolynomial.monomial e (MvPowerSeries.coeff e g) = MvPolynomial.monomial (e - Finsupp.single i 1) (MvPowerSeries.coeff e g) * MvPolynomial.X i`. Establish `hs : e - Finsupp.single i 1 + Finsupp.single i 1 = e`. Use extensionality with `j`. Distinguish the cases in `h : j = i`. Substitute `h first` using the available equality.
+
+Consider the case `(simp only [Finsupp.coe_add, Finsupp.coe_tsub, Pi.add_apply, Pi.sub_apply, Finsupp.single_eq_same]; omega)`. Consider the case `(simp [Finsupp.single_apply]; omega)`. Consider the case `simp [Finsupp.single_apply]`. Use `first`. Consider the case `(simp only [Finsupp.coe_add, Finsupp.coe_tsub, Pi.add_apply, Pi.sub_apply, Finsupp.single_eq_of_ne h, Finsupp.single_eq_of_ne (Ne.symm h)]; omega)`.
+
+Consider the case `simp [Finsupp.single_apply, h, Ne.symm h]`. Rewrite using `[MvPolynomial.X, MvPolynomial.monomial_mul, mul_one, hs]`. Rewrite using `[key]`. Use `Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations. Use `first`.
+
+Consider the case `exact Ideal.subset_span ⟨i, rfl⟩`. Consider the case `(unfold orig; exact Ideal.subset_span ⟨i, rfl⟩)`.
+-/
 theorem psTrunc_mem_orig {τ : Type} [Fintype τ] [DecidableEq τ] (m : ℕ) (g : MvPowerSeries τ R)
     (hg : MvPowerSeries.constantCoeff g = 0) : psTrunc m g ∈ orig R τ := by
   unfold psTrunc
@@ -194,6 +265,11 @@ theorem psTrunc_mem_orig {τ : Type} [Fintype τ] [DecidableEq τ] (m : ℕ) (g 
     | exact Ideal.subset_span ⟨i, rfl⟩
     | (unfold orig; exact Ideal.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on`. Use `next c => first`. Consider the case `simp [MvPowerSeries.algebraMap_apply, MvPolynomial.algebraMap_eq]`. Consider the case `simp [MvPolynomial.algebraMap_eq]`. Consider the case `(rw [MvPolynomial.aeval_C, MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq, MvPolynomial.coe_C]; rfl)`.
+
+Consider the case `(ext n; simp [MvPowerSeries.coeff_C, MvPolynomial.coeff_C, MvPolynomial.algebraMap_eq])`. Use `next p q hp hq => simp only [map_add, MvPolynomial.coe_add, hp, hq]`. Use `next p i hp => simp only [map_mul, MvPolynomial.aeval_X, MvPolynomial.coe_mul, hp]`.
+-/
 theorem aeval_coe_comp {σ τ : Type} (A : σ → MvPolynomial τ R) (P : MvPolynomial σ R) :
     MvPolynomial.aeval (fun i => (A i : MvPowerSeries τ R)) P =
       ((MvPolynomial.aeval A P : MvPolynomial τ R) : MvPowerSeries τ R) := by
@@ -208,6 +284,9 @@ theorem aeval_coe_comp {σ τ : Type} (A : σ → MvPolynomial τ R) (P : MvPoly
   next p q hp hq => simp only [map_add, MvPolynomial.coe_add, hp, hq]
   next p i hp => simp only [map_mul, MvPolynomial.aeval_X, MvPolynomial.coe_mul, hp]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact fun e he => absurd he (Nat.not_lt_zero _)`. Consider the case `succ n ih`. Rewrite using `[pow_succ]`. Conclude with `low_mul_lemma ih hF`.
+-/
 private lemma low_pow_lemma_2 {τ : Type} {F : MvPowerSeries τ R}
     (hF : ∀ e : τ →₀ ℕ, e.degree < 1 → MvPowerSeries.coeff e F = 0) (n : ℕ) :
     ∀ e : τ →₀ ℕ, e.degree < n → MvPowerSeries.coeff e (F ^ n) = 0 := by
@@ -217,6 +296,11 @@ private lemma low_pow_lemma_2 {τ : Type} {F : MvPowerSeries τ R}
     rw [pow_succ]
     exact low_mul_lemma ih hF
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `e he`. Simplify using `at he`. Consider the case `@insert s S hs ih`.
+
+Rewrite using `[Finset.prod_insert hs, Finset.sum_insert hs]`. Conclude with `low_mul_lemma (hF s (Finset.mem_insert_self s S)) (ih fun t ht => hF t (Finset.mem_insert_of_mem ht))`.
+-/
 private lemma low_prod_lemma_3 {τ σ : Type} (S : Finset σ) (F : σ → MvPowerSeries τ R) (k : σ → ℕ)
     (hF : ∀ s ∈ S, ∀ e : τ →₀ ℕ, e.degree < k s → MvPowerSeries.coeff e (F s) = 0) :
     ∀ e : τ →₀ ℕ, e.degree < ∑ s ∈ S, k s → MvPowerSeries.coeff e (∏ s ∈ S, F s) = 0 := by
@@ -230,6 +314,15 @@ private lemma low_prod_lemma_3 {τ σ : Type} (S : Finset σ) (F : σ → MvPowe
     exact low_mul_lemma (hF s (Finset.mem_insert_self s S))
       (ih fun t ht => hF t (Finset.mem_insert_of_mem ht))
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on`. Use `next c =>`. Introduce `e he`. Simplify using the standard rewrite rules. Use `next p q hp hq =>`.
+
+Introduce `e he`. Establish `h1` using `hp e he`. Establish `h2` using `hq e he`. Simplify using `only [map_add, map_sub] at h1 h2 ⊢`. Take the linear combination `h1 + h2`.
+
+Use `next p i hp =>`. Introduce `e he`. Simplify using `only [map_mul, MvPolynomial.aeval_X]`. Establish `key : MvPolynomial.aeval a p * a i - MvPolynomial.aeval b p * b i = (MvPolynomial.aeval a p - MvPolynomial.aeval b p) * a i + MvPolynomial.aeval b p * (a i - b i)` using `by ring`. Rewrite using `[key, map_add]`.
+
+Establish `h1` using `low_mul_lemma (G := a i) (q := 0) hp (fun d hd => absurd hd (Nat.not_lt_zero _)) e (by omega)`. Establish `h2` using `low_mul_lemma (F := MvPolynomial.aeval b p) (p := 0) (fun d hd => absurd hd (Nat.not_lt_zero _)) (hab i) e (by omega)`. Rewrite using `[h1, h2, add_zero]`.
+-/
 private lemma low_aeval_lemma_4 {σ τ : Type} (n : ℕ) (a b : σ → MvPowerSeries τ R)
     (hab : ∀ i, ∀ e : τ →₀ ℕ, e.degree < n → MvPowerSeries.coeff e (a i - b i) = 0)
     (P : MvPolynomial σ R) :
@@ -258,6 +351,29 @@ private lemma low_aeval_lemma_4 {σ τ : Type} (n : ℕ) (a b : σ → MvPowerSe
       (fun d hd => absurd hd (Nat.not_lt_zero _)) (hab i) e (by omega)
     rw [h1, h2, add_zero]
 
+/- English proof (translation)
+Establish `hS : MvPowerSeries.HasSubst a` using `by first`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' ha`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Consider the case `exact ⟨fun s => by rw [ha s]; exact IsNilpotent.zero, fun d => Set.toFinite _⟩`. Establish `ha1 : ∀ i, ∀ e : τ →₀ ℕ, e.degree < 1 → MvPowerSeries.coeff e (a i) = 0`.
+
+Introduce `i e he`. Establish `he0 : e = 0` using `by first`. Consider the case `exact (Finsupp.degree_eq_zero_iff e).1 (by omega)`. Consider the case `exact Finsupp.degree_eq_zero_iff.1 (by omega)`. Substitute `he0` using the available equality.
+
+Use `first`. Consider the case `simpa using ha i`. Consider the case `(rw [MvPowerSeries.coeff_zero_eq_constantCoeff_apply]; exact ha i)`. Establish `hprod : ∀ d : σ →₀ ℕ, ∀ e : τ →₀ ℕ, e.degree < d.degree → MvPowerSeries.coeff e (d.prod fun s n => a s ^ n) = 0`. Introduce `d e he`.
+
+Establish `hd : d.degree = ∑ s ∈ d.support, d s` using `by first`. Consider the case `rfl`. Consider the case `simp [Finsupp.degree]`. Conclude with `low_prod_lemma_3 d.support (fun s => a s ^ d s) (fun s => d s) (fun s _ => low_pow_lemma_2 (ha1 s) (d s)) e (lt_of_lt_of_eq he hd)`. Establish `hr` using `low_trunc_lemma_5 m f`.
+
+Establish `hsr : ∀ e : τ →₀ ℕ, e.degree < m + 1 → MvPowerSeries.coeff e (MvPowerSeries.subst a (f - (psTrunc m f : MvPowerSeries σ R))) = 0`. Introduce `e he`. Rewrite using `[MvPowerSeries.coeff_subst hS]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `d`.
+
+Distinguish the cases in `hd : d.degree < m + 1`. Rewrite using `[hr d hd, zero_smul]`. Use `first`. Consider the case `rw [hprod d e (by omega), smul_zero]`. Consider the case `simp [hprod d e (by omega)]`.
+
+Establish `hsplit : MvPowerSeries.subst a f = MvPolynomial.aeval a (psTrunc m f) + MvPowerSeries.subst a (f - (psTrunc m f : MvPowerSeries σ R))` using `by first`. Consider the case `(rw [← MvPowerSeries.subst_coe, ← MvPowerSeries.subst_add hS]`. Use `congr 1`. Use the proof step `ring)`. Consider the case `(have h := MvPowerSeries.subst_add hS (psTrunc m f : MvPowerSeries σ R) (f - (psTrunc m f : MvPowerSeries σ R))`.
+
+Rewrite `h` using `[MvPowerSeries.subst_coe]`. Rewrite using `[← h]`. Use `congr 1`. Use the proof step `ring)`. Unfold `psJet`.
+
+Rewrite using `[jetMap_mk, Ideal.Quotient.eq]`. Apply `mem_orig_pow_lemma_6` to reduce the goal to its premises. Introduce `e he`. Establish `hA` using `low_aeval_lemma_4 (m + 1) a (fun i => (psTrunc m (a i) : MvPowerSeries τ R)) (fun i => low_trunc_lemma_5 m (a i)) (psTrunc m f) e he`. Establish `hT` using `low_trunc_lemma_5 m (MvPowerSeries.subst a f) e he`.
+
+Establish `hcoe : MvPolynomial.coeff e (psTrunc m (MvPowerSeries.subst a f) - MvPolynomial.aeval (fun i => psTrunc m (a i)) (psTrunc m f)) = MvPowerSeries.coeff e ((MvPolynomial.aeval a (psTrunc m f) - MvPolynomial.aeval (fun i => (psTrunc m (a i) : MvPowerSeries τ R)) (psTrunc m f)) + MvPo …`. Rewrite using `[← MvPolynomial.coeff_coe, coe_sub_lemma_7, ← aeval_coe_comp]`. Use `first`. Consider the case `(congr 1; linear_combination hsplit)`. Consider the case `exact congrArg _ (by linear_combination hsplit)`.
+
+Rewrite using `[hcoe, map_sub, map_add, hA, hsr e he, hT, add_zero, sub_zero]`.
+-/
 theorem psJet_subst {σ τ : Type} [Fintype σ] [DecidableEq σ] [Fintype τ] [DecidableEq τ] (m : ℕ)
     (a : σ → MvPowerSeries τ R) (ha : ∀ i, MvPowerSeries.constantCoeff (a i) = 0)
     (f : MvPowerSeries σ R) :

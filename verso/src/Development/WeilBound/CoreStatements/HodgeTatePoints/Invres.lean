@@ -13,6 +13,15 @@ open scoped Matrix
 
 open ReciprocityTheory.PGsh.L2.SecondCohomologyLattice
 
+/- English proof (translation)
+Set `A : Submodule S V` to `Submodule.span S (Set.range f)`. Set `J : Ideal S` to `Ideal.span (Set.range b)`. Establish `hJ : A ≤ J • A`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Establish `: f i = ∑ j, b j • (f j * f i)` using `by conv_lhs => rw [← one_mul (f i), h1, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => smul_mul_assoc _ _ _`. Rewrite using `[SetLike.mem_coe, this]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem_smul (Ideal.subset_span ⟨j, rfl⟩) (hmul i j)`. Take `⟨r, hr1, hr0⟩` from `Submodule.exists_sub_one_mem_and_smul_eq_zero_of_fg_of_le_smul J A (Submodule.fg_span (Set.finite_range f)) hJ`.
+
+Establish `h1A : (1 : V) ∈ A`. Rewrite using `[h1]`. Conclude with `Submodule.sum_mem _ fun j _ => A.smul_mem _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hr` using `hr0 1 h1A`. Rewrite `hr` using `[Algebra.smul_def, mul_one]`.
+
+Take `⟨e, he⟩` from `(Submodule.mem_span_range_iff_exists_fun S).1 (J.neg_mem hr1)`. Use `⟨e, ?_⟩` and prove the remaining obligations. Simplify using `only [smul_eq_mul] at he`. Rewrite using `[he, neg_sub, map_sub, hr, map_one, sub_zero]`.
+-/
 lemma unimod {S V ι : Type} [CommRing S] [CommRing V] [Algebra S V] [Fintype ι] (f : ι → V)
     (b : ι → S) (h1 : 1 = ∑ j, b j • f j)
     (hmul : ∀ i j, f j * f i ∈ Submodule.span S (Set.range f)) :
@@ -40,6 +49,31 @@ lemma unimod {S V ι : Type} [CommRing S] [CommRing V] [Algebra S V] [Fintype ι
   simp only [smul_eq_mul] at he
   rw [he, neg_sub, map_sub, hr, map_one, sub_zero]
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v R _ _ hv _ N _ _ _ AA K K' _ g hg hinv`. Establish `: Fintype (N ⧸ K)` using `Fintype.ofFinite _`. Take `⟨⟨f, hf, hfree⟩, -⟩` from `ReciprocityTheory.PGsh.L2.h3 C R inferInstance inferInstance v hv N K AA`. Establish `hB : ∀ b ∈ (AA.carrier.comap (pullQ (R` using `R) K)).map (pullQ K), b ∈ invFun AA.carrier K := by`. Introduce and unpack `_ ⟨q, hq, rfl⟩`.
+
+Use `⟨hq, fun x k hk => ?_⟩` and prove the remaining obligations. Use `show q ((x + k : N) : N ⧸ K) = q (x : N ⧸ K)`. Rewrite using `[QuotientAddGroup.mk_add_of_mem x hk]`. Establish `hdec : ∀ a ∈ AA.carrier, ∃ b : K → N → C, (∀ j, b j ∈ invFun AA.carrier K) ∧ a = ∑ j, b j * f j`. Introduce `a ha`.
+
+Take `⟨b, ⟨hb, hab⟩, -⟩` from `hfree a ha`. Conclude with `⟨b, fun j => hB _ (hb j), hab⟩`. Set `S : Subalgebra R (N → C)` to `(invFun AA.carrier K).toSubalgebra ⟨AA.one_mem, fun _ _ _ => rfl⟩ (fun x y hx hy => ⟨AA.mul_mem _ _ hx.1 hy.1, fun z k hk => by`. Simplify using `only [Pi.mul_apply, hx.2 z k hk, hy.2 z k hk]⟩)`. Set `A : Submodule S (N → C)` to `Submodule.span S (Set.range f)`.
+
+Establish `hA : ∀ a ∈ AA.carrier, a ∈ A`. Introduce `a ha`. Take `⟨b, hb, rfl⟩` from `hdec a ha`. Conclude with `Submodule.sum_mem _ fun j _ => A.smul_mem (⟨b j, hb j⟩ : S) (Submodule.subset_span ⟨j, rfl⟩)`. Take `⟨b, hb, h1⟩` from `hdec 1 AA.one_mem`.
+
+Take `⟨e, he⟩` from `unimod f (fun j => (⟨b j, hb j⟩ : S)) h1 (fun i j => hA _ (AA.mul_mem _ _ (hf j) (hf i)))`. Establish `he' : ∀ x, ∑ j, (e j : N → C) x * b j x = 1`. Introduce `x`. Establish `: ((∑ j, e j * (⟨b j, hb j⟩ : S) : S) : N → C) x = 1` using `congrFun he x`. Simplify using `using this`.
+
+Take `⟨c, hc, hgc⟩` from `hdec g hg`. Use `⟨((∑ j, e j * (⟨c j, hc j⟩ : S) : S) : N → C), (∑ j, e j * (⟨c j, hc j⟩ : S) : S).2, fun x hx => ?_⟩` and prove the remaining obligations. Set `ρ : (N → C) →ₗ[C] (K → C)` to `LinearMap.funLeft C C fun k : K => x + (k : N)`. Establish `hρ : ∀ b : K → N → C, (∀ j, b j ∈ invFun AA.carrier K) → ρ (∑ j, b j * f j) = ∑ j, b j x • ρ (f j)`. Introduce `b hb`.
+
+Use function extensionality and compare the values at `k`. Simplify using `only [ρ, LinearMap.funLeft_apply, Finset.sum_apply, Pi.mul_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [(hb j).2 x k k.2]`. Establish `hli : LinearIndependent C fun j => ρ (f j)`. Apply `linearIndependent_of_top_le_span_of_card_eq_finrank` to reduce the goal to its premises.
+
+Establish `hsurj : Function.Surjective ρ` using `LinearMap.funLeft_surjective_of_injective _ _ _ (fun k k' h => Subtype.ext (add_left_cancel h))`. Rewrite using `[← LinearMap.range_eq_top.2 hsurj, ← Submodule.map_top, ← span_top_of_isLat (C := C) AA.lat, Submodule.map_span_le]`. Introduce `a ha`. Take `⟨b', hb', rfl⟩` from `hdec a ha`. Rewrite using `[hρ b' hb']`.
+
+Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Simplify using the standard rewrite rules. Establish `hkey : ∀ j, c j x = g x * b j x`. Establish `h2 : ∑ j, (c j x - g x * b j x) • ρ (f j) = 0`. Simplify using `only [sub_smul, mul_smul, Finset.sum_sub_distrib, ← Finset.smul_sum]`.
+
+Rewrite using `[← hρ c hc, ← hρ b hb, ← hgc, ← h1]`. Use function extensionality and compare the values at `k`. Simplify using `[ρ, LinearMap.funLeft_apply, hinv x hx k k.2]`. Introduce `j`. Conclude with `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hli _ h2 j)`.
+
+Establish `: ((∑ j, e j * (⟨c j, hc j⟩ : S) : S) : N → C) x = ∑ j, (e j : N → C) x * c j x`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Simplify using `only [hkey]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring`. Use `_ = g x := by rw [he', mul_one]`.
+-/
 theorem invres : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (N : Type) [AddCommGroup N] [Fintype N] [DecidableEq N], ∀ AA : HopfOrder (C := C) R N, ∀ K K' : AddSubgroup N, K ≤ K' → ∀ g ∈ AA.carrier, (∀ x ∈ K', ∀ k ∈ K, g (x + k) = g x) → ∃ g' ∈ invFun AA.carrier K, ∀ x ∈ K', g' x = g x := by
   intro p _ C _ _ _ v R _ _ hv _ N _ _ _ AA K K' _ g hg hinv
   classical

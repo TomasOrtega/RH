@@ -17,6 +17,11 @@ section Congr
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty T : Type} {m : ℕ} {A3 : FamIn3 D.what₂.LL G Pl0 I0 Ty T m}
   {P0 : Subgroup G} {ψ0 : P0 →* D.what₂.LLˣ} {Ps : Subgroup G} {ψs : Ps →* D.what₂.LLˣ} {X0 : Formalism.BasicNotions.BaseLevelRowSide D}
 
+/- English proof (translation)
+Substitute `hZ` using the available equality. Consider the cases of `h0`. Consider the cases of `h1`. Consider the cases of `hD`. Consider the cases of `hS`.
+
+Consider the cases of `hC`. Conclude with `⟨NuC, I, hT, HEq.rfl, HEq.rfl⟩`.
+-/
 theorem divTied3_congr {Zs Zs' : DefSub A3.fam3.amb3} (hZ : Zs = Zs')
     {S0 : IndefData (A3.side3 P0 ψ0 Zs)} {S0' : IndefData (A3.side3 P0 ψ0 Zs')} (h0 : HEq S0 S0')
     {S1 : IndefData (A3.side3 Ps ψs Zs)} {S1' : IndefData (A3.side3 Ps ψs Zs')} (h1 : HEq S1 S1')
@@ -43,12 +48,18 @@ open Formalism.MainNotions Formalism.L2.Rows
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : MainNotions.G.Inst D L} {Gl : MainNotions.G.LatInst D} {Kc : MainNotions.G.Consts} {Y : DivX D}
   {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX}
 
+/- English proof (translation)
+Substitute `ha` using the available equality. Consider the cases of `hb`. Conclude with `⟨x, HEq.rfl⟩`.
+-/
 private theorem exists_heq_of_eq_of_heq {α : Sort*} {β : α → Sort*} {γ : ∀ a, β a → Sort*} {a a' : α} (ha : a = a')
     {b : β a} {b' : β a'} (hb : HEq b b') (x : γ a b) : ∃ y : γ a' b', HEq y x := by
   subst ha
   cases hb
   exact ⟨x, HEq.rfl⟩
 
+/- English proof (translation)
+Take `⟨C', hC'⟩` from `exists_heq_of_eq_of_heq (β := fun a => SPer a) (γ := fun a b => ColData a b P.S1) h.1.symm h.2.symm P.C`. Take `⟨NuC', I', hT', hN, hI⟩` from `divTied3_congr (Zs := P.Zs) (Zs' := P.Zs) rfl HEq.rfl HEq.rfl (heq_of_eq h.1.symm) h.2.symm hC'.symm (DivTied3.ofSplit P.tied.div hR)`. Conclude with `⟨C', NuC', I', hT', hC', hN, hI⟩`.
+-/
 theorem ColTie3.transport {P : RowSideFamily ex} {X : Formalism.L2.Col.Fields} {e : X.Tau → (X.E →+* D.what₂.LL)}
     {c : ColRec3 (fieldsLL D X e) P.A3 P.Ps P.ψs} {Sp : ∀ Zs : DefSub P.A3.fam3.amb3, SPer (c.face Zs)}
     (h : ColTie3 P X e c Sp) (hR : DivRows3 D P.A3 P.P0 P.ψ0 P.Ps P.ψs P.Zs P.S0 P.S1 ex.p0 P.C P.NuC P.I) :
@@ -95,12 +106,18 @@ def ColTieT (T : TiedDataSK ex) (P : RowSideFamily ex) (X : Formalism.L2.Col.Fie
     HEq c.Li (fun t => T.ker.idx (P.I.tup t)) ∧ c.m2 = T.ker.m2 ∧ HEq c.Gc T.ker.glob ∧
     HEq c.Am (Formalism.L2.Ker.ambOf T.ker.seam T.ker.B T.ker.χ T.ker.cD) ∧ c.Mem = D.what₂.Word ∧ HEq c.wd T.ker.word
 
+/- English proof (translation)
+Substitute `ha` using the available equality. Consider the cases of `h`. Conclude with `HEq.rfl`.
+-/
 private theorem heq_app_of_eq_of_heq {α : Sort*} {β γ : α → Sort*} (f : ∀ a, β a → γ a) {a a' : α} (ha : a = a')
     {x : β a} {y : β a'} (h : HEq x y) : HEq (f a x) (f a' y) := by
   subst ha
   cases h
   exact HEq.rfl
 
+/- English proof (translation)
+Take `⟨C', NuC', I', hT', hC', -, hI'⟩` from `ColTie3.transport hCT hR`. Establish `h0' : HEq P.S0 Pk.core.base.toIndefData` using `(heq_of_eq (Classical.choose_spec hr.rows0)).symm.trans (heq_app_of_eq_of_heq (fun Z (Q : IndefRows (P.A3.side3 P.P0 P.ψ0 Z)) => Q.toIndefData) hZs.symm hRows.symm)`. Take `⟨NuC'', I'', hT'', -, hI''⟩` from `divTied3_congr hZs.symm h0' hS1.symm (congr_arg_heq c.face hZs.symm) (congr_arg_heq Sp hZs.symm) (C' := Pk.core.cols.col) (hC'.trans hCol.symm) hT'`. Conclude with `⟨NuC'', I'', hT'', hI''.trans hI'⟩`.
+-/
 private theorem tied_pkg_lemma_3 (P : RowSideFamily ex) (hr : RowsHold0_3 P) (X : Formalism.L2.Col.Fields)
     (e : X.Tau → (X.E →+* D.what₂.LL)) (c : ColRec3 (fieldsLL D X e) P.A3 P.Ps P.ψs)
     (Sp : ∀ Zs : DefSub P.A3.fam3.amb3, SPer (c.face Zs)) (Zsc : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3)
@@ -121,6 +138,9 @@ private theorem tied_pkg_lemma_3 (P : RowSideFamily ex) (hr : RowsHold0_3 P) (X 
     (congr_arg_heq Sp hZs.symm) (C' := Pk.core.cols.col) (hC'.trans hCol.symm) hT'
   exact ⟨NuC'', I'', hT'', hI''.trans hI'⟩
 
+/- English proof (translation)
+Take `⟨NuC', I', hT', hI'⟩` from `tied_pkg_lemma_3 P hr.toRowsHold0_3 X e c Sp Zsc hCT hR Pk hZs hRows hS1 hCol`. Take `⟨brT, inp, hQ, h0c⟩` from `hOpen NuC' I' hT' hI'`. Conclude with `⟨DivisionPackageColumns.ofTied P hr.toRowsHold0_3 X e c Sp Zsc C Cabs Cp CHp cf Pk hZs hRows NuC' I' hT' brT Del h0 lam0 C0 ce Ch Sw C1 eJ H inp hQ h0c hN Z hk tH hh hF hC0 hC1 hC2 hCabs hLa⟩`.
+-/
 theorem pkg_of_rows (T : TiedDataSK ex) (P : RowSideFamily ex) (hr : RowsHold3 P) (X : Formalism.L2.Col.Fields)
     (e : X.Tau → (X.E →+* D.what₂.LL)) (c : ColRec3 (fieldsLL D X e) P.A3 P.Ps P.ψs)
     (Sp : ∀ Zs : DefSub P.A3.fam3.amb3, SPer (c.face Zs)) (Zsc : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3)
@@ -161,6 +181,11 @@ open Formalism.MainNotions Formalism.L2.Rows
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : MainNotions.G.Inst D L} {Gl : MainNotions.G.LatInst D} {Kc : MainNotions.G.Consts} {Y : DivX D}
   {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX}
 
+/- English proof (translation)
+Substitute `hZ` using the available equality. Consider the cases of `h0`. Consider the cases of `h1`. Consider the cases of `hD`. Consider the cases of `h`.
+
+Conclude with `⟨rfl, fun _ _ => HEq.rfl, fun _ => HEq.rfl⟩`.
+-/
 theorem divTieDat3_heq {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty T : Type} {m : ℕ} {A3 : FamIn3 D.what₂.LL G Pl0 I0 Ty T m} {P0 : Subgroup G} {ψ0 : P0 →* D.what₂.LLˣ} {Ps : Subgroup G}
     {ψs : Ps →* D.what₂.LLˣ} {X0 : Formalism.BasicNotions.BaseLevelRowSide D} {Zs Zs' : DefSub A3.fam3.amb3}
     {S0 : IndefData (A3.side3 P0 ψ0 Zs)} {S0' : IndefData (A3.side3 P0 ψ0 Zs')}
@@ -253,16 +278,28 @@ def SquareIntegrableColumnsCompatible.toK {T : TiedDataSK ex} {P : RowSideFamily
   muTie := K.muTie
   ok1 := K.ok1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem SquareIntegrableColumnsCompatible.toK_c {T : TiedDataSK ex} {P : RowSideFamily ex} (K : SquareIntegrableColumnsCompatible T P) (hr : RowsHold0_3 P)
     (Zsc : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3) : (K.toK hr Zsc).c = K.c := rfl
 
 def DivisionRowsKernel.toT (R : DivisionRowsKernel ex) : DivisionRowsColumns L :=
   { DivisionRowsColumns.split_model_to_place_model (L := L) R.P R.hr R.X R.e R.c R.Sp R.Zsc with s := 1, hOk := R.ok1 }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem DivisionRowsKernel.tied_rows_scale_eq_one (R : DivisionRowsKernel ex) : R.toT.s = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem DivisionRowsKernel.toT_c (R : DivisionRowsKernel ex) : R.toT.c = R.c := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem DivisionRowsKernel.toT_toF (R : DivisionRowsKernel ex) : R.toT.toF = (DivisionRowsColumns.split_model_to_place_model (L := L) R.P R.hr R.X R.e R.c R.Sp R.Zsc).toF := rfl
 
 structure DivisionPackageKernel (Q : DivisionRowsKernel ex) (C Cabs : ℝ) extends DivisionPackageColumns Q.toT C Cabs where
@@ -271,12 +308,18 @@ structure DivisionPackageKernel (Q : DivisionRowsKernel ex) (C Cabs : ℝ) exten
     HEq (eV t F) (Q.P.I.jA t ((rV0 D Q.P.A3.A Q.P.Ps Q.P.ψs t).mulVec F))
   wuTie : ∀ u, HEq (wU u) u
 
+/- English proof (translation)
+Substitute `ha` using the available equality. Consider the cases of `h`. Both sides reduce to the same expression.
+-/
 private theorem eq_app_of_eq_of_heq {α : Sort*} {β : α → Sort*} {γ : Sort*} (f : ∀ a, β a → γ) {a a' : α} (ha : a = a')
     {x : β a} {y : β a'} (h : HEq x y) : f a x = f a' y := by
   subst ha
   cases h
   rfl
 
+/- English proof (translation)
+Conclude with `(Pt.brTied.dcPt u t x F).trans (eq_app_of_eq_of_heq (fun a (v : D.what₂.Amb a) => D.what₂.perCol u a (D.jN u (Pt.eNu u x)) v) (Pt.tupTie t) (Pt.evTie t F))`.
+-/
 theorem DivisionPackageKernel.pin {R : DivisionRowsKernel ex} {C Cabs : ℝ} (Pt : DivisionPackageKernel R C Cabs) (u : D.what₂.Word) (t : R.P.A3.fam3.base3.Tup)
     (x : Fin (ramDim R.c.W R.c.Ch R.c.hX (R.c.wd (Pt.wU u))) → D.what₂.LL)
     (F : Fin ((R.P.A3.side3 R.P.Ps R.P.ψs Pt.Pk.Zs).nV t) → D.what₂.LL) :
@@ -285,6 +328,11 @@ theorem DivisionPackageKernel.pin {R : DivisionRowsKernel ex} {C Cabs : ℝ} (Pt
   exact (Pt.brTied.dcPt u t x F).trans
     (eq_app_of_eq_of_heq (fun a (v : D.what₂.Amb a) => D.what₂.perCol u a (D.jN u (Pt.eNu u x)) v) (Pt.tupTie t) (Pt.evTie t F))
 
+/- English proof (translation)
+Take `⟨NuC', I', hT', hI'⟩` from `tied_pkg_lemma_3 R.P R.hr R.X R.e R.c R.Sp R.Zsc R.colTie hR Pk hZs hRows hS1 hCol`. Take `⟨brT, inp, hQ, h0c⟩` from `hOpen NuC' I' hT' hI'`. Establish `hD : HEq (R.c.face Pk.Zs) R.P.Dc` using `(congr_arg_heq R.c.face hZs).trans (heq_of_eq R.colTie.1)`. Establish `h0' : HEq Pk.core.base.toIndefData R.P.S0` using `(heq_app_of_eq_of_heq (fun Z (Q : IndefRows (R.P.A3.side3 R.P.P0 R.P.ψ0 Z)) => Q.toIndefData) hZs hRows).trans (heq_of_eq (Classical.choose_spec R.hr.rows0))`. Take `⟨ht, hj, hw⟩` from `divTieDat3_heq hZs h0' hS1 hD hI'`.
+
+Set `Q0` to `DivisionPackageColumns.ofTied R.P R.hr R.X R.e R.c R.Sp R.Zsc C Cabs Cp CHp cf Pk hZs hRows NuC' I' hT' brT Del h0 lam0 C0 ce Ch Sw C1 eJ H inp hQ h0c hN Z hk tH hh hF hC0 hC1 hC2 hCabs hLa`. Conclude with `⟨⟨⟨Q0.toDivisionPackageFace, Q0.hQ, Q0.h0⟩, congrFun ht, fun t F => hj t _, fun u => (hw u).trans (R.wTie u)⟩⟩`.
+-/
 theorem pkg_of_rowsK (R : DivisionRowsKernel ex)
     (hR : DivRows3 D R.P.A3 R.P.P0 R.P.ψ0 R.P.Ps R.P.ψs R.P.Zs R.P.S0 R.P.S1 ex.p0 R.P.C R.P.NuC R.P.I) (C Cabs Cp CHp : ℝ) (cf : ConvFace R.P.A3.fam3.base3)
     (Pk : IndefPkgR R.P.A3.fam3.amb3 (Formalism.IndefR.Cx.faceOf3 R.P.A3 R.P.P0 R.P.ψ0 R.P.Ps R.P.ψs R.c.face R.Sp R.Zsc) cf Cp CHp)
@@ -339,6 +387,9 @@ structure BridgeRowsK {eps : ℝ} (Fm : FamP eps)
   rr : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, (Fm.D x i).RRFull
   la : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, 0 ≤ (Fm.L x i).La
 
+/- English proof (translation)
+Introduce `hN` and use `by obtain ⟨C, x0, h⟩ := B.pkg hN exact ⟨C, x0, fun x hx0 hx h' i => (h x hx0 hx h' i).map DivisionPackageKernel.toDivisionPackageColumns⟩ adm2 := B.adm2 cut := B.cut c3 := B.c3 hh := B.hh c2 := B.c2 c5 := B.c5 bu := B.bu rr := B.rr la := B.la`.
+-/
 theorem BridgeRowsK.toT {eps : ℝ} {Fm : FamP eps}
     {Rk : Σ' x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, DivisionRowsKernel (Fm.ex x hx i)} {Cabs CH : ℝ}
     (B : BridgeRowsK Fm Rk Cabs CH) : BridgeRowsT Fm (rowsKtoT Rk) Cabs CH where
@@ -355,6 +406,11 @@ theorem BridgeRowsK.toT {eps : ℝ} {Fm : FamP eps}
   rr := B.rr
   la := B.la
 
+/- English proof (translation)
+Use `first`. Consider the case `exact linkDIVt_of_rowsT Fm (rowsKtoT Rk) Cabs CH B.toT`. Consider the case `exact linkDIVt_of_rowsT Fm _ Cabs CH B.toT`. Consider the case `exact linkDIVt_of_rowsT B.toT`. Consider the case `exact linkDIVt_of_T Fm (rowsKtoT Rk) Cabs CH B.toT`.
+
+Consider the case `exact linkDIVt_of_bridgeT Fm (rowsKtoT Rk) Cabs CH B.toT`. Consider the case `exact B.toT.link`.
+-/
 theorem linkDIVt_of_rowsK {eps : ℝ} (Fm : FamP eps)
     (Rk : Σ' x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, DivisionRowsKernel (Fm.ex x hx i)) (Cabs CH : ℝ)
     (B : BridgeRowsK Fm Rk Cabs CH) : LinkDIVt Fm Cabs CH := by
@@ -366,6 +422,9 @@ theorem linkDIVt_of_rowsK {eps : ℝ} (Fm : FamP eps)
   | exact linkDIVt_of_bridgeT Fm (rowsKtoT Rk) Cabs CH B.toT
   | exact B.toT.link
 
+/- English proof (translation)
+Take `⟨ε1, hε1, hK⟩` from `h`. Use `⟨ε1, hε1, fun eps he he1 => ?_⟩` and prove the remaining obligations. Take `⟨K, hKP⟩` from `hK eps he he1`. Conclude with `⟨K, fun Fm CH hc hL hT hG => linkDIVt_of_rowsK Fm (Rk Fm hc) Cabs CH (hKP Fm CH hc hL hc hT hG)⟩`.
+-/
 theorem linkDIVt_closedK (𝒟 : FamClass) (Cabs : ℝ)
     (Rk : ∀ {eps : ℝ} (Fm : FamP eps), 𝒟 Fm →
       Σ' x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, DivisionRowsKernel (Fm.ex x hx i))

@@ -16,6 +16,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AbDatum.Adjoint
 
+/- English proof (translation)
+Establish `hs' : (swap P).IsLB` using `pull_isLB hP _`. Establish `sym (a b : Y ⟶ A) : evc hP a b = evc hP b a`. Rewrite using `[← evc_swap hP hs' a b, evc, evc, (cls_eq_iff hs' hP).2 hs]`. Establish `e` using `congrArg (CechPic.pull (lift z y).left) ((cls_eq_iff (pull_isLB hP _) (pull_isLB hP _)).2 h)`. Rewrite `e` using `[cls_ev hP, cls_ev hP, pull_evc, pull_evc, lift_fst_assoc, lift_snd, lift_fst, lift_snd_assoc]`.
+
+Rewrite using `[sym, e, sym]`.
+-/
 theorem evc_swap_adj {S : Scheme.{0}} {A : Over S} {P : LB (A ⊗ A).left} (hP : P.IsLB) (hs : LBIso (swap P) P)
     {f g : A ⟶ A} (h : LBIso (ev P (fst A A ≫ f) (snd A A)) (ev P (fst A A) (snd A A ≫ g))) {Y : Over S}
     (y z : Y ⟶ A) : evc hP y (z ≫ f) = evc hP (y ≫ g) z := by
@@ -26,6 +31,17 @@ theorem evc_swap_adj {S : Scheme.{0}} {A : Over S} {P : LB (A ⊗ A).left} (hP :
   rw [cls_ev hP, cls_ev hP, pull_evc, pull_evc, lift_fst_assoc, lift_snd, lift_fst, lift_snd_assoc] at e
   rw [sym, e, sym]
 
+/- English proof (translation)
+Establish `hP' : (P.pull m).IsLB` using `pull_isLB hP _`. Use `(cls_eq_iff (pull_isLB hP' _) (pull_isLB hP' _)).1 ?_` and prove the remaining obligations. Set `Y : Over S` to `Over.mk (m ≫ (A ⊗ A).hom)`. Set `y : Y ⟶ A` to `Over.homMk (m ≫ (fst A A).left) (by rw [Category.assoc, Over.w]; rfl)`. Set `z : Y ⟶ A` to `Over.homMk (m ≫ (snd A A).left) (by rw [Category.assoc, Over.w]; rfl)`.
+
+Establish `k (u : A ⟶ A) : ((Over.pullback b).map u).left ≫ pullback.fst A.hom b = pullback.fst A.hom b ≫ u.left` using `pullback.lift_fst _ _ _`. Establish `e` using `h Y y z`. Rewrite using `[cls_ev hP', cls_ev hP', evc, evc, cls_pull hP, ← pull_comp, ← pull_comp]`. Rewrite `e` using `[evc, evc]`. Use `Eq.trans ?_ (e.trans ?_)` and prove the remaining obligations.
+
+Use `congr 2`. Apply `left_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, m₁, lift_left_fst_assoc, lift_left_fst, ← m₁]`. Both sides reduce to the same expression. Rewrite using `[Category.assoc, m₂, lift_left_snd_assoc, lift_left_snd, Over.comp_left, Category.assoc, k, ← Category.assoc, ← m₂]`.
+
+Both sides reduce to the same expression. Use `congr 2`. Apply `left_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, m₁, lift_left_fst_assoc, lift_left_fst, Over.comp_left, Over.comp_left, Category.assoc, k, ← Category.assoc, ← m₁]`. Both sides reduce to the same expression.
+
+Rewrite using `[Category.assoc, m₂, lift_left_snd_assoc, lift_left_snd, ← m₂]`. Both sides reduce to the same expression.
+-/
 theorem adj_pull {S S' : Scheme.{0}} {A : Over S} (b : S' ⟶ S) {P : LB (A ⊗ A).left} (hP : P.IsLB)
     {f g : A ⟶ A} (h : ∀ (Y : Over S) (y z : Y ⟶ A), evc hP y (z ≫ f) = evc hP (y ≫ g) z)
     {m : ((Over.pullback b).obj A ⊗ (Over.pullback b).obj A).left ⟶ (A ⊗ A).left}
@@ -59,6 +75,15 @@ theorem adj_pull {S S' : Scheme.{0}} {A : Over S} (b : S' ⟶ S) {P : LB (A ⊗ 
     · rw [Category.assoc, m₂, lift_left_snd_assoc, lift_left_snd, ← m₂]
       rfl
 
+/- English proof (translation)
+Introduce `hP O _ c T A _ g hA hg i P hS H e ρ β hρ hβ x`. Use `hom_dual_ext_affine fun V hV s t ↦ ?_` and prove the remaining obligations. Take `⟨m, φ, m₁, m₂, hφ, pφ, k⟩` from `hβ V hV`. Establish `hL` using `hS.1.isLB`. Establish `hAV` using `DeRhamSheaf.VB.isAbelianScheme_onAff A hA hV`.
+
+Establish `hgV` using `DeRhamSheaf.VB.smooth_onAff A hg hV`. Use `haveI := i.hom x`. Use `haveI := i.hom (c x)`. Set `X (s : Γ(H, V)) : HdR (onAff A hV)` to `dualApp (β.app V s) le_rfl ∘ₗ (e V hV).symm.toLinearMap`. Establish `hX (s t : Γ(H, V)) : X s (e V hV t) = dualApp (β.app V s) le_rfl t` using `congrArg (dualApp (β.app V s) le_rfl) ((e V hV).symm_apply_apply t)`.
+
+Establish `adj` using `hφ.adjoint (cupSquare_of_free hP.p5.1 (AbelianSchemeGerms.isAbelianScheme_tensor _ _ hAV hAV) (smooth_prod hgV hgV)) (pull_isLB hL m) (pull_isLB hL m) hφ ((Over.pullback hV.fromSpec).map (i.act (c x))) ((Over.pullback hV.fromSpec).map (i.act x)) (adj_pull hV.fromSpec hL (fun _ y …`. Establish `key` using `pφ.bijective_left.1 (LinearMap.ext fun y ↦ ((k _ (X ((VB.act ρ x).app V s)) y (hX _)).trans (congrArg y (hρ x V hV s))).trans ((k s (X s) _ (hX s)).symm.trans (adj y)))`. Use `(hX _ t).symm.trans ((LinearMap.congr_fun key (e V hV t)).trans ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (dualApp_dualMap (VB.act ρ (c x)) (β.app V s) le_rfl t).symm` and prove the remaining obligations. Rewrite using `[← hX, hρ]`.
+
+Both sides reduce to the same expression.
+-/
 theorem main : GlobalTheory.CovTop.Hypotheses2 → ∀ (O : Type) [CommRing O] (c : O →+* O) (T : Scheme.{0}) (A : Over T) [GrpObj A] (g : ℕ),
     IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (i : OAct O A) (P : LB (A ⊗ A).left), IsSelfDual c i P →
     ∀ (H : T.Modules)

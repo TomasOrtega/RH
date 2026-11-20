@@ -12,16 +12,27 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory.LKCx.PsiBound
 
+/- English proof (translation)
+Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc]`.
+-/
 theorem form_conj {n : ℕ} (Z M : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) :
     star x ⬝ᵥ ((Zᴴ * M * Z) *ᵥ y) = star (Z *ᵥ x) ⬝ᵥ (M *ᵥ (Z *ᵥ y)) := by
   rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul ℂ t x, ← algebraMap_smul ℂ t y, star_smul, mulVec_smul, dotProduct_smul, smul_dotProduct]`. Simplify using `only [smul_eq_mul, Complex.coe_algebraMap, Complex.star_def, Complex.conj_ofReal]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_smul {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) (x y : Fin n → ℂ) :
     star (t • x) ⬝ᵥ (M *ᵥ (t • y)) = ((t ^ 2 : ℝ) : ℂ) * (star x ⬝ᵥ (M *ᵥ y)) := by
   rw [← algebraMap_smul ℂ t x, ← algebraMap_smul ℂ t y, star_smul, mulVec_smul, dotProduct_smul, smul_dotProduct]
   simp only [smul_eq_mul, Complex.coe_algebraMap, Complex.star_def, Complex.conj_ofReal]
   push_cast; ring
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.LowerTriangularEntryBound.entry_bound`. Consider the case `exact _root_.GlobalTheory.LowerTriangularEntryBound.entry_bound`. Consider the case `(apply _root_.GlobalTheory.LowerTriangularEntryBound.entry_bound <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.LowerTriangularEntryBound.entry_bound <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.LowerTriangularEntryBound.entry_bound <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LowerTriangularEntryBound.entry_bound ..)`.
+-/
 theorem bound_of_form {n : ℕ} (f : (Fin n → ℂ) → ℝ) (hc : Continuous f)
     (hh : ∀ (t : ℝ) (x : Fin n → ℂ), f (t • x) = t ^ 2 * f x) (hp : ∀ x, x ≠ 0 → 0 < f x) :
     ∃ K : ℝ, ∀ (A : Matrix (Fin n) (Fin n) ℂ) (s : ℝ), 0 ≤ s → (∀ x, f (A *ᵥ x) = s * f x) →

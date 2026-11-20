@@ -38,6 +38,35 @@ def AddM (V : VF C) (X : RawChart C d I κ) : Prop :=
       ∀ v : κ → C, (∀ i, V.Ge 0 (v i)) →
         IntS V (MvPowerSeries.subst γ'' (X.sg v) - MvPowerSeries.subst γ (X.sg v) - MvPowerSeries.subst γ' (X.sg v))
 
+/- English proof (translation)
+Introduce `_ g a a' hodd S t ht k hk`. Establish `ht0 : ∀ g' c, MvPowerSeries.constantCoeff (t g' c) = 0` using `fun g' => (ht g').1`. Establish `hT` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (tW_const ht0)`. Establish `hne : a ≠ a'`. Introduce `h`.
+
+Substitute `h` using the available equality. Rewrite `hodd` using `[sub_self, ZMod.val_zero]`. Use `Nat.odd_iff.mp hodd` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hSg` using `fun g' => hS g' (H g') (S g') (t g') (ht g')`.
+
+Use `choose Φ hΦ0 hΦI hΦt hΛ using hSg`. Take `⟨Λ, hΛI, hσ⟩` from `hΛ g k`. Take `⟨J, hJI, hder⟩` from `hD g k`. Use `set Φ' : Fin 2 × κ → MvPowerSeries (WV I) C := fun q => upG q.1 (Φ q.1 q.2) with hΦ'`. Establish `hΦ'0 : ∀ q, MvPowerSeries.constantCoeff (Φ' q) = 0` using `fun q => upG_const _ (hΦ0 q.1 q.2)`.
+
+Establish `hΦ'I : ∀ q, IntS V (Φ' q)` using `fun q => intS_upG _ (hΦI q.1 q.2)`. Establish `hΨ : (fun q : Fin 2 × κ => X.expPt q.1 q.2) = fun q => MvPowerSeries.subst (tW t) (Φ' q)`. Use function extensionality and compare the values at `q`. Rewrite using `[expPt_eq, ← hΦt q.1 q.2, subst_tW_upG ht0]`. Establish `hJ' : MvPowerSeries.subst (fun q : Fin 2 × κ => X.expPt q.1 q.2) J = MvPowerSeries.subst (tW t) (MvPowerSeries.subst Φ' J)`.
+
+Rewrite using `[hΨ, MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero hΦ'0) hT]`. Establish `hexG0 : ∀ i, MvPowerSeries.constantCoeff (X.expG g i) = 0` using `fun i => by`. Rewrite using `[← hΦt g i]`. Conclude with `constantCoeff_subst_zero (ht0 g) (hΦ0 g i)`. Establish `hsg : MvPowerSeries.subst (X.expPt g) (X.sg (X.u (1 - g) k)) = upG g (MvPowerSeries.subst (X.expG g) (X.sg (X.u (1 - g) k)))`.
+
+Rewrite using `[upG_subst g hexG0]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `expPt_eq X g i`. Use `set sig0 : MvPowerSeries (I g) C := ∑ c : I g, if X.ty g c = X.ty (1 - g) k then X.sg1 (X.u g c) (X.u (1 - g) k) • (MvPowerSeries.X c : MvPowerSeries (I g) C) else 0 with hsig0`.
+
+Use `set L := toLeafL (fun g => RawChart.cart (H g)) g a a' with hL`. Establish `hsig : L (upG g sig0) = 0`. Rewrite using `[hsig0, upG_eq, map_sum, map_sum]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Use `split_ifs with hc`.
+
+Rewrite using `[map_smul, map_smul, ← upG_eq, upG_X]`. Establish `: L (MvPowerSeries.X (⟨g, c⟩ : WV I)) = 0`. Use `toLeaf_X_off _ g a a' _ ?_` and prove the remaining obligations. Introduce and unpack `(⟨-, h2⟩ | ⟨h1, -⟩)`. Conclude with `hne (h2.symm.trans (hc.trans hk))`.
+
+Apply the tactic sequence `fin_cases g <;> simp at h1`. Rewrite using `[this, smul_zero]`. Rewrite using `[map_zero, map_zero]`. Use `⟨MvPowerSeries.subst (tW t) ((X.k : C) • (MvPowerSeries.subst Φ' J - upG g Λ)), ⟨(X.k : C) • (MvPowerSeries.subst Φ' J - upG g Λ), fun μ => ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hI : IntS V ((X.k : C) • (MvPowerSeries.subst Φ' J - upG g Λ))`.
+
+Introduce `ν`. Rewrite using `[MvPowerSeries.coeff_smul, map_sub]`. Conclude with `(ge_natCast _).mul_int ((IntS.subst hΦ'0 hΦ'I hJI ν).sub (intS_upG g hΛI ν))`. Conclude with `hI μ`. Establish `hpair : (∑ q : JJ I g, X.pairK g q k • upG g ((S g).ze (t g) q)) = (-(X.k : C)) • upG g ((S g).ze (t g) k)`.
+
+Rewrite using `[Finset.sum_eq_single k]`. Simplify using `[RawChart.pairK]`. Introduce `q _ hq`. Simplify using `[RawChart.pairK, hq]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ k) h`. Establish `hw : X.OnLf g a a' (⟨1 - g, k⟩ : WV I)` using `Or.inr ⟨rfl, hk⟩`. Rewrite using `[dVar_hLf X H g a a' _ hw, hpair, hder, hJ', hsg, hσ]`. Establish `e1 : upG g ((S g).ze (t g) k + MvPowerSeries.subst (t g) Λ + sig0) = upG g ((S g).ze (t g) k) + MvPowerSeries.subst (tW t) (upG g Λ) + upG g sig0`. Rewrite using `[upG_eq, map_add, map_add, ← upG_eq, ← upG_eq, ← upG_eq, subst_tW_upG ht0]`.
+
+Establish `e2 : MvPowerSeries.subst (tW t) ((X.k : C) • (MvPowerSeries.subst Φ' J - upG g Λ)) = (X.k : C) • (MvPowerSeries.subst (tW t) (MvPowerSeries.subst Φ' J) - MvPowerSeries.subst (tW t) (upG g Λ))`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hT, map_smul, map_sub]`. Rewrite using `[e1, e2]`. Use `show L _ - L _ = L _`. Simplify using `only [map_smul, map_sub, map_add, hsig]`.
+
+Use `module`.
+-/
 theorem cEq_of {V : VF C} (X : RawChart C d I κ) (H : ∀ g, X.CartHyp V g) (hS : SumAt V X) (hD : DerAt V X) :
     RawChart.CEqSt H := by
   intro _ g a a' hodd S t ht k hk
@@ -115,6 +144,15 @@ theorem cEq_of {V : VF C} (X : RawChart C d I κ) (H : ∀ g, X.CartHyp V g) (hS
     simp only [map_smul, map_sub, map_add, hsig]
     module
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `⟨fun _ => 0, fun _ => ⟨map_zero _, intS_zero⟩, fun i => ?_, fun v _ => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_empty]`. Conclude with `subst_zero_const _ (hlg0 i)`.
+
+Rewrite using `[Finset.sum_empty, sub_zero, subst_zero_const _ (X.constantCoeff_sg hax v)]`. Conclude with `intS_zero`. Consider the case `insert c s hc ih`. Take `⟨Γ, hΓ, hL, hS⟩` from `ih`. Take `⟨Γ', hΓ', hL', hS'⟩` from `hA τ Γ (γ c) hΓ (hγ c)`.
+
+Use `⟨Γ', hΓ', fun i => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[hL', hL, Finset.sum_insert hc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_insert hc]`. Use `intS_add (hS' v hv) (hS v hv)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sumCvK {V : VF C} (X : RawChart C d I κ) (hA : AddM V X)
     (hlg0 : ∀ i, MvPowerSeries.constantCoeff (X.lg i) = 0)
     (hax : ∀ e : Fin 2 × κ →₀ ℕ, (∀ s ∈ e.support, s.1 ≠ 0) → MvPowerSeries.coeff e X.h = 0)
@@ -142,6 +180,49 @@ theorem sumCvK {V : VF C} (X : RawChart C d I κ) (hA : AddM V X)
       convert this using 1
       ring
 
+/- English proof (translation)
+Introduce `g H S t ht`. Establish `hl2 : 2 ≤ V.l` using `V.l_prime.two_le`. Establish `ht0 : ∀ c, MvPowerSeries.constantCoeff (t c) = 0` using `ht.1`. Establish `htS` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ht0`. Establish `hmem : ∀ c, ∃ γ : κ → PowerSeries C, ∃ lam : JJ I g → PowerSeries C, IsCv V γ ∧ IsCv V lam ∧ (∀ i, alongCv γ (X.lg i) = ∑ c' : I g, X.u g c' i • tyS V.l (fun s => S.cur c s (Sum.inl c'))) ∧ ∀ q : JJ I g, tyS V.l (fun s => S.cur c s (Sum.inr q)) = lam q - alongCv γ (X.sg (X.u (1 - …` using `fun c => by`.
+
+Take `⟨h, -, -⟩` from `S.curve c`. Conclude with `h`. Use `choose γ lam hγ hlam h1 h2 using hmem`. Establish `be0 : ∀ c (q : JJ I g), S.cur c 0 (Sum.inr q) = 0` using `fun c q => by`. Take `⟨-, h0, -⟩` from `S.curve c`.
+
+Rewrite using `[h0]`. Both sides reduce to the same expression. Establish `hc : ∀ c (a : ℕ → C) (μ : I g →₀ ℕ), MvPowerSeries.coeff μ (MvPowerSeries.subst (fun _ : Unit => t c) (tyS V.l a)) = ∑ s ∈ Finset.range (μ.degree + 1), a s * MvPowerSeries.coeff μ (t c ^ (V.l ^ s))` using `fun c a μ => coeff_subst_tyS hl2 (ht0 c) a μ`. Establish `hC : ∀ x : I g, ∑ c, MvPowerSeries.subst (fun _ : Unit => t c) (tyS V.l (fun s => S.cur c s (Sum.inl x))) = MvPowerSeries.X x`. Introduce `x`.
+
+Use extensionality with `μ`. Rewrite using `[map_sum, MvPowerSeries.coeff_X]`. Simplify using `only [hc]`. Rewrite using `[Finset.sum_comm]`. Conclude with `ht.2 x μ`.
+
+Establish `hB : ∀ q : JJ I g, ∑ c, MvPowerSeries.subst (fun _ : Unit => t c) (tyS V.l (fun s => S.cur c s (Sum.inr q))) = -S.ze t q`. Introduce `q`. Use extensionality with `μ`. Rewrite using `[map_sum, map_neg]`. Simplify using `only [hc]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `show _ = -(-(∑ s ∈ Finset.Icc 1 μ.degree, ∑ c : I g, S.be c s q * MvPowerSeries.coeff μ (t c ^ (V.l ^ s))))`. Rewrite using `[neg_neg, show Finset.range (μ.degree + 1) = insert 0 (Finset.Icc 1 μ.degree) by ext s; simp; omega, Finset.sum_insert (by simp)]`. Simplify using `only [be0, zero_mul, Finset.sum_const_zero, zero_add]`. Both sides reduce to the same expression.
+
+Use `set γt : I g → κ → MvPowerSeries (I g) C := fun c i => MvPowerSeries.subst (fun _ : Unit => (MvPowerSeries.X c : MvPowerSeries (I g) C)) (γ c i) with hγtd`. Establish `hγt : ∀ c, IsCvK V (γt c)` using `fun c i => ⟨constantCoeff_subst_zero (fun _ => MvPowerSeries.constantCoeff_X _) (hγ c i).1, IntS.subst (fun _ => MvPowerSeries.constantCoeff_X _) (fun _ => intS_X _) (intS_ps.2 (hγ c i).2)⟩`. Establish `key1 : ∀ c (f : MvPowerSeries (κ) C), MvPowerSeries.subst (γt c) f = MvPowerSeries.subst (fun _ : Unit => (MvPowerSeries.X c : MvPowerSeries (I g) C)) (alongCv (γ c) f)`. Introduce `c f`. Unfold `alongCv`.
+
+Rewrite using `[MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => (hγ c i).1) (hasSubst_unit (MvPowerSeries.constantCoeff_X c))]`. Establish `key2 : ∀ c (F : PowerSeries C), MvPowerSeries.subst t (MvPowerSeries.subst (fun _ : Unit => (MvPowerSeries.X c : MvPowerSeries (I g) C)) F) = MvPowerSeries.subst (fun _ : Unit => t c) F`. Introduce `c F`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (hasSubst_unit (MvPowerSeries.constantCoeff_X c)) htS]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `_`. Rewrite using `[MvPowerSeries.subst_X htS]`. Establish `hlin : ∀ c (r : I g → C) (F : I g → PowerSeries C), MvPowerSeries.subst (fun _ : Unit => t c) (∑ c' : I g, r c' • F c') = ∑ c' : I g, r c' • MvPowerSeries.subst (fun _ : Unit => t c) (F c')` using `fun c r F => subst_lin (hasSubst_unit (ht0 c)) _ r F`. Take `⟨Γ, hΓ, hL, hSg⟩` from `sumCvK X hA hlg0 hax Finset.univ γt hγt`. Establish `hΓS` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => (hΓ i).1`.
+
+Establish `hZ0 : ∀ j, MvPowerSeries.constantCoeff (MvPowerSeries.subst t (Γ j)) = 0` using `fun j => constantCoeff_subst_zero ht0 (hΓ j).1`. Establish `hZS` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hZ0`. Establish `hsum : ∀ f : MvPowerSeries (κ) C, MvPowerSeries.subst (fun j => MvPowerSeries.subst t (Γ j)) f = MvPowerSeries.subst t (MvPowerSeries.subst Γ f)` using `fun f => (MvPowerSeries.subst_comp_subst_apply hΓS htS f).symm`. Establish `hpush : ∀ f : MvPowerSeries (κ) C, MvPowerSeries.subst t (∑ c, MvPowerSeries.subst (γt c) f) = ∑ c, MvPowerSeries.subst (fun _ : Unit => t c) (alongCv (γ c) f)`. Introduce `f`.
+
+Rewrite using `[← MvPowerSeries.coe_substAlgHom htS, map_sum, MvPowerSeries.coe_substAlgHom]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[key1, key2]`. Establish `hlgZ : ∀ i, MvPowerSeries.subst (fun j => MvPowerSeries.subst t (Γ j)) (X.lg i) = ∑ c' : I g, X.u g c' i • (MvPowerSeries.X c' : MvPowerSeries (I g) C)`. Introduce `i`.
+
+Rewrite using `[hsum, hL i, hpush]`. Simplify using `only [h1, hlin]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c' _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.smul_sum, hC c']`.
+
+Establish `hZ : ∀ i, MvPowerSeries.subst t (Γ i) = X.expG g i`. Introduce `i`. Establish `e1 : MvPowerSeries.subst (fun j => MvPowerSeries.subst t (Γ j)) (MvPowerSeries.subst X.lg (X.ex i)) = MvPowerSeries.subst t (Γ i)`. Rewrite using `[hexlg i, MvPowerSeries.subst_X hZS]`. Rewrite using `[← e1, MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero hlg0) hZS]`.
+
+Unfold `RawChart.expG`. Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `hlgZ j`. Use `⟨Γ, fun i => (hΓ i).1, fun i => (hΓ i).2, hZ, fun q => ?_⟩` and prove the remaining obligations.
+
+Use `set v := X.u (1 - g) q with hv`. Establish `hvI : ∀ i, V.Ge 0 (v i)` using `fun i => huI (1 - g) q i`. Use `⟨(MvPowerSeries.subst Γ (X.sg v) - ∑ c, MvPowerSeries.subst (γt c) (X.sg v)) + ∑ c, MvPowerSeries.subst (fun _ : Unit => (MvPowerSeries.X c : MvPowerSeries (I g) C)) (lam c q), ?_, ?_⟩` and prove the remaining obligations. Use `intS_add (hSg v hvI) (intS_sum _ fun c _ => ?_)` and prove the remaining obligations. Conclude with `IntS.subst (fun _ => MvPowerSeries.constantCoeff_X _) (fun _ => intS_X _) (intS_ps.2 (hlam c q).2)`.
+
+Establish `hexp : X.expG g = fun j => MvPowerSeries.subst t (Γ j)`. Use function extensionality and compare the values at `j`. Conclude with `(hZ j).symm`. Establish `hA : ∀ c, MvPowerSeries.subst (fun _ : Unit => t c) (alongCv (γ c) (X.sg v)) = MvPowerSeries.subst (fun _ : Unit => t c) (lam c q) - MvPowerSeries.subst (fun _ : Unit => t c) (tyS V.l (fun s => S.cur c s (Sum.inr q))) + ∑ c' : I g, if X.ty g c' = X.ty (1 - g) q then X.sg1 (X.u g …`. Introduce `c`.
+
+Establish `e : alongCv (γ c) (X.sg v) = lam c q - tyS V.l (fun s => S.cur c s (Sum.inr q)) + ∑ c' : I g, if X.ty g c' = X.ty (1 - g) q then X.sg1 (X.u g c') v • tyS V.l (fun s => S.cur c s (Sum.inl c')) else 0`. Rewrite using `[h2 c q]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← MvPowerSeries.coe_substAlgHom (hasSubst_unit (ht0 c)), map_add, map_sub, map_sum]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun c' _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[map_smul]`. Rewrite using `[map_zero]`. Establish `hAll : ∑ c, MvPowerSeries.subst (fun _ : Unit => t c) (alongCv (γ c) (X.sg v)) = S.ze t q + ∑ c, MvPowerSeries.subst (fun _ : Unit => t c) (lam c q) + ∑ c' : I g, if X.ty g c' = X.ty (1 - g) q then X.sg1 (X.u g c') v • (MvPowerSeries.X c' : MvPowerSeries (I g) C) else 0`.
+
+Simplify using `only [hA]`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_sub_distrib, hB q, Finset.sum_comm (s := Finset.univ) (t := Finset.univ)]`. Establish `hx : ∀ c' : I g, (∑ c : I g, if X.ty g c' = X.ty (1 - g) q then X.sg1 (X.u g c') v • MvPowerSeries.subst (fun _ : Unit => t c) (tyS V.l (fun s => S.cur c s (Sum.inl c'))) else 0) = if X.ty g c' = X.ty (1 - g) q then X.sg1 (X.u g c') v • (MvPowerSeries.X c' : MvPowerSeries (I g) C …`. Introduce `c'`. Use `split_ifs`.
+
+Rewrite using `[← Finset.smul_sum, hC c']`. Conclude with `Finset.sum_const_zero`. Rewrite using `[Finset.sum_congr rfl fun c' _ => hx c']`. Expand and normalize the polynomial expressions, which then agree. Establish `hsplit : MvPowerSeries.subst t ((MvPowerSeries.subst Γ (X.sg v) - ∑ c, MvPowerSeries.subst (γt c) (X.sg v)) + ∑ c, MvPowerSeries.subst (fun _ : Unit => (MvPowerSeries.X c : MvPowerSeries (I g) C)) (lam c q)) = MvPowerSeries.subst t (MvPowerSeries.subst Γ (X.sg v)) - ∑ c, MvPowerS …`.
+
+Rewrite using `[← hpush, ← MvPowerSeries.coe_substAlgHom htS, map_add, map_sub, map_sum, map_sum]`. Simplify using `only [MvPowerSeries.coe_substAlgHom, key2]`. Rewrite using `[hexp, hsum, hsplit, hAll]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sumAt_of {V : VF C} (X : RawChart C d I κ) (hA : AddM V X)
     (hlg0 : ∀ i, MvPowerSeries.constantCoeff (X.lg i) = 0)
     (hax : ∀ e : Fin 2 × κ →₀ ℕ, (∀ s ∈ e.support, s.1 ≠ 0) → MvPowerSeries.coeff e X.h = 0)

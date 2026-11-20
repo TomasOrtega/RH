@@ -21,6 +21,15 @@ private structure COb (O : Type) [CommRing O] [IsLocalRing O] : Type 1 where
 
 attribute [local instance] COb.ring COb.alg COb.co
 
+/- English proof (translation)
+Set `B' : Option T → Type` to `fun o => Option.rec A B o`. Set `iR : ∀ o, CommRing (B' o)` to `fun o => Option.rec (motive := fun o => CommRing (B' o)) (inferInstance : CommRing A) (fun t => (inferInstance : CommRing (B t))) o`. Set `iA : ∀ o, @Algebra O (B' o) _ (iR o).toCommSemiring.toSemiring` to `fun o => Option.rec (motive := fun o => @Algebra O (B' o) _ (iR o).toCommSemiring.toSemiring) (inferInstance : Algebra O A) (fun t => (inferInstance : Algebra O (B t))) o`. Establish `iC : ∀ o, @IsCO O (B' o) _ _ (iR o) (iA o)` using `fun o => Option.rec (motive := fun o => @IsCO O (B' o) _ _ (iR o) (iA o)) (inferInstance : IsCO O A) (fun t => (inferInstance : IsCO O (B t))) o`. Take `⟨R, iR', iA', iC', j, hj⟩` from `@co_coprod O _ _ _ _ (Option T) _ B' iR iA iC`.
+
+Use `⟨R, iR', iA', iC', j none, fun t => j (some t), ?_⟩` and prove the remaining obligations. Introduce `R' _ _ _ fa f`. Set `F' : ∀ o, @AlgHom O (B' o) R' _ (iR o).toCommSemiring.toSemiring _ (iA o) _` to `fun o => Option.rec (motive := fun o => @AlgHom O (B' o) R' _ (iR o).toCommSemiring.toSemiring _ (iA o) _) fa f o`. Take `⟨g, hg, hu⟩` from `hj R' F'`. Use `⟨g, ⟨hg none, fun t => hg (some t)⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `g' ⟨h1, h2⟩`. Apply `hu` to reduce the goal to its premises. Introduce `o`. Consider the cases of `o with`. Consider the case `none => exact h1`.
+
+Consider the case `some t => exact h2 t`.
+-/
 private theorem coprod_opt (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O]
     [IsAdicComplete (maximalIdeal O) O] (T : Type) [Finite T] (A : Type) [CommRing A] [Algebra O A] [IsCO O A]
     (B : T → Type) [∀ t, CommRing (B t)] [∀ t, Algebra O (B t)] [∀ t, IsCO O (B t)] :
@@ -56,6 +65,13 @@ section
 variable {O : Type} [CommRing O] [IsLocalRing O] {R R' : Type} [CommRing R] [Algebra O R] [IsCO O R]
   [CommRing R'] [Algebra O R'] [IsCO O R'] (f : R →ₐ[O] R')
 
+/- English proof (translation)
+Introduce `N`. Establish `hm : maximalIdeal R ≤ (maximalIdeal R').comap (f : R →+* R')`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, ← res_eq_zero_iff O R']`. Express the relevant statement in the definitionally equal form `res O R' (f x) = 0`.
+
+Rewrite using `[res_map, res_eq_zero_iff O R]`. Conclude with `hx`. Establish `hN : maximalIdeal R ^ N ≤ (maximalIdeal R' ^ N).comap (f : R →+* R')`. Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.mpr hm) N`.
+
+Establish `hc` using `(hu N).comp (Ideal.quotientMap (maximalIdeal R' ^ N) (f : R →+* R') hN)`. Use `hc using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using `[Ideal.quotientMap_mk]`.
+-/
 private theorem adic_map {Γ : Type} [TopologicalSpace Γ] {u : Γ → R} (hu : AdicCont (maximalIdeal R) u) :
     AdicCont (maximalIdeal R') fun g => f (u g) := by
   intro N
@@ -73,6 +89,15 @@ private theorem adic_map {Γ : Type} [TopologicalSpace Γ] {u : Γ → R} (hu : 
   funext g
   simp [Ideal.quotientMap_mk]
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hc` using `h.cont`. Unfold `GDet.IsCont at hc ⊢`. Introduce `i`. Establish `e : ∀ g : G, (D.map (f : R →+* R')).lam i (MonoidAlgebra.single g 1) = f (D.lam i (MonoidAlgebra.single g 1))`.
+
+Introduce `g`. Use `((d_gmap D).2.2.1 (f : R →+* R') (MonoidAlgebra.single g 1)).2 i` as an intermediate fact. Simplify `this` using `[MonoidAlgebra.mapRingHom_single]`. Simplify using `only [e]`. Conclude with `adic_map f (hc i)`.
+
+Rewrite using `[(d_gmap D).2.1]`. Establish `e : ((res O R' : R' →ₐ[O] ResidueField O) : R' →+* ResidueField O).comp (f : R →+* R') = (res O R : R →+* ResidueField O)`. Use extensionality with `x`. Conclude with `res_map f x`. Rewrite using `[e]`.
+
+Conclude with `h.red`.
+-/
 private theorem def_map {n : ℕ} {G : Type} [Group G] [TopologicalSpace G] {Dbar : GDet n (ResidueField O) G}
     {D : GDet n R G} (h : IsDef O Dbar D) : IsDef O Dbar (D.map (f : R →+* R')) := by
   refine ⟨?_, ?_⟩
@@ -94,6 +119,13 @@ private theorem def_map {n : ℕ} {G : Type} [Group G] [TopologicalSpace G] {Dba
 
 variable {l : ℕ} [Fact l.Prime] {F : GFrame l} [Algebra ℤ_[l] O] {n : ℕ} (r : Resid F O n)
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `adic_map f h.cont`. Introduce `g`. Use `h.red g` as an intermediate fact. Simplify using `only [pushCh, MonoidHom.coe_comp, Function.comp_apply, Units.coe_map, MonoidHom.coe_coe]`.
+
+Rewrite using `[← this]`. Conclude with `res_map f _`. Introduce `g`. Simplify using `only [pushCh, MonoidHom.coe_comp, Function.comp_apply, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[h.mu g]`.
+
+Conclude with `f.commutes _`.
+-/
 private theorem psi_map {v : F.Vl} {i : Fin n} {ψ : F.Gv v →* Rˣ} (h : r.IsPsi v i ψ) :
     r.IsPsi v i (pushCh (f : R →+* R') ψ) := by
   refine ⟨?_, ?_, ?_⟩
@@ -110,6 +142,17 @@ private theorem psi_map {v : F.Vl} {i : Fin n} {ψ : F.Gv v →* Rˣ} (h : r.IsP
 
 end
 
+/- English proof (translation)
+Take `⟨s, hs, hgen⟩` from `h`. Use `haveI : Finite s := hs.to_subtype`. Use `Finite.of_injective (fun φ : {φ : G →* Z // IsOpen (φ.ker : Set G)} => fun x : s => φ.1 x) ?_` and prove the remaining obligations. Introduce `φ ψ hφψ`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `hsub : Subgroup.closure s ≤ φ.1.eqLocus ψ.1`. Rewrite using `[Subgroup.closure_le]`. Introduce `x hx`. Conclude with `congrFun hφψ ⟨x, hx⟩`. Establish `hopen : IsOpen ((φ.1.eqLocus ψ.1 : Subgroup G) : Set G)`.
+
+Use `Subgroup.isOpen_mono (H₁ := φ.1.ker ⊓ ψ.1.ker) ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨h1, h2⟩` from `hx`. Establish `e1 : φ.1 x = 1` using `h1`. Establish `e2 : ψ.1 x = 1` using `h2`.
+
+Use `show φ.1 x = ψ.1 x`. Rewrite using `[e1, e2]`. Rewrite using `[Subgroup.coe_inf]`. Conclude with `φ.2.inter ψ.2`. Establish `hclosed : IsClosed ((φ.1.eqLocus ψ.1 : Subgroup G) : Set G)` using `Subgroup.isClosed_of_isOpen _ hopen`.
+
+Establish `htop : (Subgroup.closure s).topologicalClosure ≤ φ.1.eqLocus ψ.1` using `Subgroup.topologicalClosure_minimal _ hsub hclosed`. Rewrite `htop` using `[(topGen_iff s).mp hgen]`. Use extensionality with `x`. Conclude with `htop (Subgroup.mem_top x)`.
+-/
 private theorem finite_open_homs_to_finite_group (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (h : TopFG G)
     (Z : Type) [Group Z] [Finite Z] : Finite {φ : G →* Z // IsOpen (φ.ker : Set G)} := by
   obtain ⟨s, hs, hgen⟩ := h
@@ -138,10 +181,18 @@ private theorem finite_open_homs_to_finite_group (G : Type) [Group G] [Topologic
   ext x
   exact htop (Subgroup.mem_top x)
 
+/- English proof (translation)
+Introduce `H hH` and use `finite_open_homs_to_finite_group H ((TopFG.subgroup_quot G h).1 H hH) _`.
+-/
 private theorem phi_of_fg (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
     (l : ℕ) [Fact l.Prime] (h : TopFG G) : PhiCond G l := fun H hH =>
   finite_open_homs_to_finite_group H ((TopFG.subgroup_quot G h).1 H hH) _
 
+/- English proof (translation)
+Establish `hR : ((GDet.repAlg ρ B : MonoidAlgebra B G →ₐ[B] Matrix ι ι B) : MonoidAlgebra B G →+* Matrix ι ι B).comp (MonoidAlgebra.mapDomainRingHom B p) = ((GDet.repAlg (ρ.comp p) B : MonoidAlgebra B H →ₐ[B] Matrix ι ι B) : MonoidAlgebra B H →+* Matrix ι ι B)`. Apply `MonoidAlgebra.ringHom_ext` to reduce the goal to its premises. Introduce `b`. Unfold `GDet.repAlg`. Simplify using the standard rewrite rules.
+
+Introduce `g`. Unfold `GDet.repAlg`. Simplify using the standard rewrite rules. Conclude with `RingHom.congr_fun hR x`.
+-/
 private theorem gDet_repAlg_mapDomainRingHom_eq_repAlg_comp {A G H : Type} [CommRing A] [Group G] [Group H] {ι : Type} [Fintype ι]
     [DecidableEq ι] (ρ : G →* Matrix ι ι A) (p : H →* G) (B : Type) [CommRing B] [Algebra A B]
     (x : MonoidAlgebra B H) :
@@ -158,6 +209,27 @@ private theorem gDet_repAlg_mapDomainRingHom_eq_repAlg_comp {A G H : Type} [Comm
       simp
   exact RingHom.congr_fun hR x
 
+/- English proof (translation)
+Establish `hcomap : r.Dbar.comap p = GDet.ofChars (fun i => (r.chib i).comp p)`. Apply `GDet.ext` to reduce the goal to its premises. Introduce `B _ _ x`. Use `show ((GDet.ofChars r.chib).comap p).D B x = _`. Unfold `GDet.comap GDet.ofChars GDet.ofRep GDet.diagRep`.
+
+Simplify using `only [MonoidHom.coe_comp, Function.comp_apply]`. Use `erw [gDet_repAlg_mapDomainRingHom_eq_repAlg_comp]`. Both sides reduce to the same expression. Rewrite using `[hcomap]`. Establish `hopen : ∀ i, IsOpen (((r.chib i).comp p).ker : Set G)` using `fun i => (r.chib_open i).preimage hp`.
+
+Establish `hinj : Function.Injective (fun i => (r.chib i).comp p)`. Introduce `i j hij`. Apply `r.chib_inj` to reduce the goal to its premises. Apply `MonoidHom.ext` to reduce the goal to its premises. Introduce `g`.
+
+Take `⟨x, rfl⟩` from `hs g`. Conclude with `DFunLike.congr_fun hij x`. Take `⟨R₀, iR0, iA0, iC0, D₀, hD₀⟩` from `univDet_mf l O (fun i => (r.chib i).comp p) h0 hopen hinj`. Establish `hb` using `fun t : F.Vl × Fin n => universalDeformationRing_localCharacters r t.1 t.2 (hv t.1)`. Use `choose Rv iRv iAv iCv ψv hψ hU using hb`.
+
+Take `⟨R, iR, iA, iC, a, j, hR⟩` from `@coprod_opt O _ _ _ _ (F.Vl × Fin n) _ R₀ iR0 iA0 iC0 Rv iRv iAv iCv`. Use `⟨R, iR, iA, iC, D₀.map (a : R₀ →+* R), fun v i => pushCh (j (v, i) : Rv (v, i) →+* R) (ψv (v, i)), def_map a hD₀.isDef, fun v i => psi_map (j (v, i)) r (hψ (v, i)), ?_⟩` and prove the remaining obligations. Introduce `R' _ _ _ D' ψ' hD' hψ'`. Take `⟨fD, hfD, -⟩` from `hD₀.univ R' D' hD'`. Establish `hq` using `fun t : F.Vl × Fin n => hU t R' (ψ' t.1 t.2) (hψ' t.1 t.2)`.
+
+Use `choose fv hfv using hq`. Establish `push : ∀ (t : F.Vl × Fin n) (h : R →ₐ[O] R'), pushCh (h : R →+* R') (pushCh (j t : Rv t →+* R) (ψv t)) = pushCh ((h.comp (j t) : Rv t →ₐ[O] R') : Rv t →+* R') (ψv t)`. Introduce `t h`. Use extensionality with `x`. Simplify using `[pushCh]`.
+
+Establish `dmap : ∀ h : R →ₐ[O] R', (D₀.map (a : R₀ →+* R)).map (h : R →+* R') = D₀.map ((h.comp a : R₀ →ₐ[O] R') : R₀ →+* R')`. Introduce `h`. Rewrite using `[(d_gmap D₀).2.1]`. Both sides reduce to the same expression. Take `⟨g, ⟨hga, hgj⟩, hgu⟩` from `hR R' fD (fun t => fv t)`.
+
+Use `⟨g, ⟨?_, fun v i => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[dmap, hga]`. Conclude with `hfD`. Rewrite using `[push (v, i), hgj (v, i)]`. Conclude with `(hfv (v, i)).1`.
+
+Introduce and unpack `g' ⟨h1, h2⟩`. Apply `hgu` to reduce the goal to its premises. Use `⟨?_, fun t => ?_⟩` and prove the remaining obligations. Conclude with `(hD₀.univ R' D' hD').unique (by rw [← dmap]; exact h1) hfD`. Use `(hfv t).2 _ ?_ show pushCh ((g'.comp (j t) : Rv t →ₐ[O] R') : Rv t →+* R') (ψv t) = ψ' t.1 t.2` and prove the remaining obligations.
+
+Rewrite using `[← push t]`. Conclude with `h2 t.1 t.2`.
+-/
 private theorem pre_univ {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [CommRing O] [IsLocalRing O]
     [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] [Finite (ResidueField O)] [CharP (ResidueField O) l]
     [Algebra ℤ_[l] O] {n : ℕ} (r : Resid F O n) {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
@@ -222,6 +294,43 @@ private theorem pre_univ {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [Com
       rw [← push t]
       exact h2 t.1 t.2
 
+/- English proof (translation)
+Introduce `l _ L G0 T Λ n O _ _ _ _ _ r B _ _ _ u J D A`. Use `haveI : CharP (ResidueField O) l := IsCoef.char`. Use `haveI : IsAdicComplete (maximalIdeal O) O := IsCoef.complete`. Use `haveI : Finite (ResidueField O) := IsCoef.finite`. Establish `hfgPh : TopFG Λ.Ph`.
+
+Take `⟨s, hs⟩` from `Λ.fg`. Conclude with `⟨_, s.finite_toSet, (topGen_iff _).mpr hs⟩`. Use `haveI : CompactSpace (Ph0 Λ) := isCompact_iff_compactSpace.mp (Subgroup.isClosed_of_isOpen _ Λ.Ph0_open).isCompact`. Establish `hfg0 : TopFG (Ph0 Λ)` using `(TopFG.subgroup_quot Λ.Ph hfgPh).1 _ Λ.Ph0_open`. Establish `h0 : PhiCond (Ph0 Λ) l` using `phi_of_fg _ l hfg0`.
+
+Establish `hpc : Continuous (Λ.h.p₀.comp (πo0 Λ))` using `Λ.h.p₀_cont.comp Λ.πo0_cont`. Establish `hps : Function.Surjective (Λ.h.p₀.comp (πo0 Λ))` using `Λ.h.p₀_surj.comp Λ.πo0_surj`. Take `⟨R₁, firstRealIndex, iA1, indexCFirst, D₁, ψ₁, hD₁, hψ₁, hU₁⟩` from `pre_univ r (Λ.h.p₀.comp (πo0 Λ)) hpc hps h0 (fun v => T.phiV v)`. Set `σ : Type` to `Unit ⊕ ((Fin T.q × Fin n) ⊕ (Fin T.q × Fin n))`. Use `haveI : IsCO O (MvPowerSeries σ R₁) := co_mvps O R₁ σ`.
+
+Set `c : R₁ →ₐ[O] MvPowerSeries σ R₁` to `IsScalarTower.toAlgHom O R₁ (MvPowerSeries σ R₁)`. Establish `hc : ∀ x, c x = MvPowerSeries.C x`. Introduce `x`. Simplify using `[c, MvPowerSeries.algebraMap_apply]`. Establish `Xmem : ∀ s : σ, (MvPowerSeries.X s : MvPowerSeries σ R₁) ∈ maximalIdeal (MvPowerSeries σ R₁)`.
+
+Introduce `s`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff, MvPowerSeries.constantCoeff_X]`. Conclude with `not_isUnit_zero`. Establish `dmap : ∀ {R' : Type} [CommRing R'] [Algebra O R'] (G : MvPowerSeries σ R₁ →ₐ[O] R'), (D₁.map (c : R₁ →+* MvPowerSeries σ R₁)).map (G : MvPowerSeries σ R₁ →+* R') = D₁.map ((G.comp c : R₁ →ₐ[O] R') : R₁ →+* R')`. Introduce `R' _ _ G`.
+
+Rewrite using `[(d_gmap D₁).2.1]`. Both sides reduce to the same expression. Establish `push : ∀ {R' : Type} [CommRing R'] [Algebra O R'] (G : MvPowerSeries σ R₁ →ₐ[O] R') v i, pushCh (G : MvPowerSeries σ R₁ →+* R') (pushCh (c : R₁ →+* MvPowerSeries σ R₁) (ψ₁ v i)) = pushCh ((G.comp c : R₁ →ₐ[O] R') : R₁ →+* R') (ψ₁ v i)`. Introduce `R' _ _ G v i`. Use extensionality with `x`.
+
+Simplify using `[pushCh]`. Use `⟨⟨MvPowerSeries σ R₁, ⟨D₁.map (c : R₁ →+* MvPowerSeries σ R₁), (def_map c hD₁).cont, (def_map c hD₁).red, fun v i => pushCh (c : R₁ →+* MvPowerSeries σ R₁) (ψ₁ v i), fun v i => psi_map c r (hψ₁ v i), MvPowerSeries.X (Sum.inl ()), Xmem _, fun j i => algebraMap O (MvPowerSeries σ R …` and prove the remaining obligations. Rewrite using `[add_sub_cancel_left]`. Conclude with `Xmem _,`. Use `fun j i => MvPowerSeries.X (Sum.inr (Sum.inr (j, i))), fun j i => Xmem _⟩, ?_⟩⟩`.
+
+Introduce `R' _ _ _ t'`. Take `⟨f₁, ⟨hf1, hf2⟩, hfu⟩` from `hU₁ R' t'.D t'.ψ ⟨t'.cont, t'.red⟩ t'.psi`. Set `a : σ → R'` to `fun s => Sum.elim (fun _ => t'.s) (Sum.elim (fun p => t'.U p.1 p.2 - algebraMap O R' (A.ut p.1 p.2)) (fun p => t'.y p.1 p.2)) s`. Establish `ha : ∀ s, a s ∈ maximalIdeal R'`. Introduce and unpack `(⟨⟩ | ⟨j, i⟩ | ⟨j, i⟩)`.
+
+Conclude with `t'.s_mem`. Conclude with `t'.U_mem j i`. Conclude with `t'.y_mem j i`. Take `⟨F, ⟨hFC, hFX⟩, hFu⟩` from `co_ev O R₁ R' σ f₁ a ha`. Establish `hFc : F.comp c = f₁`.
+
+Use extensionality with `x`. Rewrite using `[AlgHom.comp_apply, hc, hFC]`. Use `⟨F, ?_, ?_⟩` and prove the remaining obligations. Unfold `Tup.Maps dsimp only`. Use `⟨?_, fun v i => ?_, ?_, fun j i => ?_, fun j i => ?_⟩` and prove the remaining obligations.
+
+Use `show (D₁.map (c : R₁ →+* MvPowerSeries σ R₁)).map (F : MvPowerSeries σ R₁ →+* R') = t'.D`. Rewrite using `[dmap, hFc]`. Conclude with `hf1`. Use `show pushCh (F : MvPowerSeries σ R₁ →+* R') (pushCh (c : R₁ →+* MvPowerSeries σ R₁) (ψ₁ v i)) = t'.ψ v i`. Rewrite using `[push, hFc]`.
+
+Conclude with `hf2 v i`. Use `show F (MvPowerSeries.X (Sum.inl ())) = t'.s`. Rewrite using `[hFX]`. Both sides reduce to the same expression. Use `show F (algebraMap O (MvPowerSeries σ R₁) (A.ut j i) + MvPowerSeries.X (Sum.inr (Sum.inl (j, i)))) = t'.U j i`.
+
+Rewrite using `[map_add, AlgHom.commutes, hFX]`. Use `show algebraMap O R' (A.ut j i) + (t'.U j i - algebraMap O R' (A.ut j i)) = t'.U j i`. Expand and normalize the polynomial expressions, which then agree. Use `show F (MvPowerSeries.X (Sum.inr (Sum.inr (j, i)))) = t'.y j i`. Rewrite using `[hFX]`.
+
+Both sides reduce to the same expression. Introduce `G hG`. Unfold `Tup.Maps at hG`. Simplify using `only at hG`. Take `⟨g1, g2, g3, g4, g5⟩` from `hG`.
+
+Establish `hGc : G.comp c = f₁`. Apply `hfu` to reduce the goal to its premises. Use `⟨?_, fun v i => ?_⟩` and prove the remaining obligations. Rewrite using `[← dmap]`. Conclude with `g1`.
+
+Rewrite using `[← push]`. Conclude with `g2 v i`. Apply `hFu` to reduce the goal to its premises. Use `⟨fun x => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, ← hGc]`.
+
+Both sides reduce to the same expression. Introduce and unpack `(⟨⟩ | ⟨j, i⟩ | ⟨j, i⟩)`. Conclude with `g3`. Establish `h4 : G (algebraMap O (MvPowerSeries σ R₁) (A.ut j i) + MvPowerSeries.X (Sum.inr (Sum.inl (j, i)))) = t'.U j i` using `g4 j i show G (MvPowerSeries.X (Sum.inr (Sum.inl (j, i)))) = t'.U j i - algebraMap O R' (A.ut j i)`. Rewrite using `[← h4, map_add, AlgHom.commutes]`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `g5 j i`.
+-/
 theorem UpperTheory.V.Pa.Core.rrEx :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (Λ : Lim T) (n : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (r : Resid G0.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (J : Ideal B) (D : ℕ) (A : TWAut u J Unit D T), Nonempty (RRObj Λ A) := by
   intro l _ L G0 T Λ n O _ _ _ _ _ r B _ _ _ u J D A

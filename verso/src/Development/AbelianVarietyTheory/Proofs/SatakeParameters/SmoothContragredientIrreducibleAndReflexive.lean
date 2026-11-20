@@ -11,10 +11,18 @@ namespace GlobalTheory.ContraRefl
 variable {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Simplify using `[fixed, eig]`.
+-/
 theorem mem_fix {X : Type} [AddCommGroup X] [Module ℂ X] {σ : Representation ℂ G X}
     {K : Subgroup G} {v : X} : v ∈ fixed σ K ↔ ∀ h ∈ K, σ h v = v := by
   simp [fixed, eig]
 
+/- English proof (translation)
+Use `(IsLocallyConstant.iff_eventually_eq _).2 fun g => ?_` and prove the remaining obligations. Establish `ho : IsOpen ((fun x => g⁻¹ * x) ⁻¹' {x : G | π x u = u})` using `(hπ u).preimage (by fun_prop)`. Use `filter_upwards [ho.mem_nhds (by simp)] with x hx`. Establish `hx' : π (g⁻¹ * x) u = u` using `hx`. Use `conv_rhs => rw [← hx']`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`.
+-/
 theorem isLocallyConstant_orbit {π : Representation ℂ G V} (hπ : IsSmooth π) (u : V) :
     IsLocallyConstant fun g : G => π g u := by
   refine (IsLocallyConstant.iff_eventually_eq _).2 fun g => ?_
@@ -24,6 +32,29 @@ theorem isLocallyConstant_orbit {π : Representation ℂ G V} (hπ : IsSmooth π
   conv_rhs => rw [← hx']
   rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]
 
+/- English proof (translation)
+Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Take `⟨T, hTS, hwT⟩` from `Submodule.mem_span_finite_of_mem_span hw'`. Establish `hT : ∀ t ∈ T, ∃ (n : K) (v : V), t = π n v - v`. Introduce `t ht`. Take `⟨n, v, e⟩` from `hTS ht`.
+
+Conclude with `⟨n, v, by simpa using e⟩`. Use `choose! n v hnv using hT`. Set `O : Set V` to `⋃ t ∈ T, Set.range fun h : K => π h (v t)`. Establish `hOfin : O.Finite` using `Set.Finite.biUnion T.finite_toSet fun t _ => ((isLocallyConstant_orbit hπ (v t)).comp_continuous continuous_subtype_val).range_finite`. Establish `hOst : ∀ (k : K) (x : V), x ∈ O → π k x ∈ O`.
+
+Introduce `k x hx`. Simplify using `only [O, Set.mem_iUnion, Set.mem_range] at hx ⊢`. Take `⟨t, ht, h, rfl⟩` from `hx`. Conclude with `⟨t, ht, k * h, by simp [map_mul]⟩`. Establish `hvO : ∀ t ∈ T, v t ∈ O` using `fun t ht => by`.
+
+Simplify using `only [O, Set.mem_iUnion, Set.mem_range]`. Conclude with `⟨t, ht, 1, by simp⟩`. Use `haveI : Finite O := hOfin`. Set `φ : K → O → O` to `fun k x => ⟨π k x.1, hOst k x.1 x.2⟩`. Establish `hφmul : ∀ k k' : K, φ (k * k') = φ k ∘ φ k'`.
+
+Introduce `k k'`. Use function extensionality and compare the values at `x`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[φ, map_mul]`. Establish `hφone : φ 1 = id` using `by funext x; apply Subtype.ext; simp [φ]`.
+
+Set `ι` to `Set.range φ`. Use `haveI : Fintype ι := Fintype.ofFinite ι`. Use `haveI : Nonempty ι := ⟨⟨φ 1, 1, rfl⟩⟩`. Set `r : ι → K` to `fun f => f.2.choose`. Establish `hr : ∀ f : ι, φ (r f) = f.1` using `fun f => f.2.choose_spec`.
+
+Set `A : V →ₗ[ℂ] V` to `∑ f : ι, π (r f)`. Establish `hAO : ∀ x (hx : x ∈ O), A x = ∑ f : ι, (f.1 ⟨x, hx⟩).1`. Introduce `x hx`. Simplify using `only [A, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations.
+
+Conclude with `congrArg Subtype.val (congrFun (hr f) ⟨x, hx⟩)`. Set `e : K → ι ≃ ι` to `fun k => { toFun := fun f => ⟨f.1 ∘ φ k, r f * k, by rw [hφmul, hr f]⟩ invFun := fun f => ⟨f.1 ∘ φ k⁻¹, r f * k⁻¹, by rw [hφmul, hr f]⟩ left_inv := fun f => Subtype.ext (by show (f.1 ∘ φ k) ∘ φ k⁻¹ = f.1`. Rewrite using `[Function.comp_assoc, ← hφmul, mul_inv_cancel, hφone, Function.comp_id])`. Use `right_inv := fun f => Subtype.ext (by show (f.1 ∘ φ k⁻¹) ∘ φ k = f.1`. Rewrite using `[Function.comp_assoc, ← hφmul, inv_mul_cancel, hφone, Function.comp_id]) }`.
+
+Establish `hAinv : ∀ (k : K) x, x ∈ O → A (π k x) = A x`. Introduce `k x hx`. Rewrite using `[hAO _ (hOst k x hx), hAO x hx]`. Conclude with `Fintype.sum_equiv (e k) _ _ (fun f => rfl)`. Establish `hker : (T : Set V) ⊆ LinearMap.ker A`.
+
+Introduce `t ht`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, hnv t ht, map_sub, hAinv _ _ (hvO t ht), sub_self]`. Establish `hA0 : A w = 0` using `LinearMap.mem_ker.1 (Submodule.span_le.2 hker hwT)`. Establish `hAw : A w = (Fintype.card ι : ℂ) • w`. Simplify using `only [A, LinearMap.sum_apply]`.
+
+Rewrite using `[Finset.sum_congr rfl fun f _ => mem_fix.1 hw _ (r f).2, Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ]`. Establish `hne : (Fintype.card ι : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Rewrite `hA0` using `[hAw]`. Conclude with `(smul_eq_zero.1 hA0).resolve_left hne`.
+-/
 theorem eq_zero_of_fixed_twKer {π : Representation ℂ G V} (hπ : IsSmooth π) {K : Subgroup G}
     (hK : IsCompact (K : Set G)) {w : V} (hw : w ∈ fixed π K) (hw' : w ∈ twKer π K 1) : w = 0 := by
   classical
@@ -93,6 +124,9 @@ namespace GlobalTheory.ContraRefl
 variable {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Use extensionality with `u`. Take `⟨v, hv, e⟩` from `IwahoriOnto.exists_fixed_map_eq hσ hK (l - l') u fun g hg => by`. Simplify using `[hl g hg, hl' g hg]`. Simplify using `only [LinearMap.sub_apply, h v hv, sub_self] at e`. Conclude with `sub_eq_zero.1 e.symm`.
+-/
 theorem form_ext {X : Type} [AddCommGroup X] [Module ℂ X] {σ : Representation ℂ G X} (hσ : IsSmooth σ)
     {K : Subgroup G} (hK : IsCompact (K : Set G)) {l l' : Module.Dual ℂ X}
     (hl : ∀ h ∈ K, ∀ w, l (σ h w) = l w) (hl' : ∀ h ∈ K, ∀ w, l' (σ h w) = l' w)
@@ -103,6 +137,17 @@ theorem form_ext {X : Type} [AddCommGroup X] [Module ℂ X] {σ : Representation
   simp only [LinearMap.sub_apply, h v hv, sub_self] at e
   exact sub_eq_zero.1 e.symm
 
+/- English proof (translation)
+Use `set N := twKer π K 1`. Set `g : fixed π K →ₗ[ℂ] V ⧸ N` to `N.mkQ ∘ₗ (fixed π K).subtype`. Establish `hg : LinearMap.ker g = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `v hv`.
+
+Establish `: (v : V) ∈ N` using `(Submodule.Quotient.mk_eq_zero N).1 hv`. Conclude with `Subtype.ext (eq_zero_of_fixed_twKer hπ hK v.2 this)`. Take `⟨g', hg'⟩` from `LinearMap.exists_leftInverse_of_injective g hg`. Set `l₀ : Module.Dual ℂ V` to `m ∘ₗ g' ∘ₗ N.mkQ`. Establish `hinv : ∀ h ∈ K, ∀ u, l₀ (π h u) = l₀ u`.
+
+Introduce `h hh u`. Establish `: N.mkQ (π h u) = N.mkQ u`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Conclude with `Submodule.subset_span ⟨⟨h, hh⟩, u, by simp⟩`. Simplify using `only [l₀, LinearMap.comp_apply, this]`.
+
+Establish `hdual : ∀ h ∈ K, π.dual h l₀ = l₀`. Introduce `h hh`. Use extensionality with `u`. Conclude with `hinv _ (inv_mem hh) u`. Use `⟨⟨l₀, mem_smoothPart_of_nhds (Filter.mem_of_superset (ho.mem_nhds (one_mem K)) hdual)⟩, fun h hh => Subtype.ext (hdual h hh), fun v => ?_⟩` and prove the remaining obligations.
+
+Use `LinearMap.congr_fun hg' v` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at this`. Use `show m (g' (N.mkQ v)) = m v`. Rewrite using `[show N.mkQ (v : V) = g v from rfl, this]`.
+-/
 theorem exists_fixed_contra {π : Representation ℂ G V} (hπ : IsSmooth π) {K : Subgroup G}
     (ho : IsOpen (K : Set G)) (hK : IsCompact (K : Set G)) (m : Module.Dual ℂ (fixed π K)) :
     ∃ l : smoothPart π.dual, (∀ h ∈ K, contra π h l = l) ∧
@@ -138,9 +183,15 @@ def res (π : Representation ℂ G V) (K : Subgroup G) :
     fixed (contra π) K →ₗ[ℂ] Module.Dual ℂ (fixed π K) :=
   (fixed π K).subtype.dualMap ∘ₗ (smoothPart π.dual).subtype ∘ₗ (fixed (contra π) K).subtype
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem res_apply (π : Representation ℂ G V) (K : Subgroup G) (l : fixed (contra π) K)
     (v : fixed π K) : res π K l v = ((l : smoothPart π.dual) : Module.Dual ℂ V) v := rfl
 
+/- English proof (translation)
+Establish `h1` using `mem_fix.1 l.2 h⁻¹ (inv_mem hh)`. Use `conv_rhs => rw [← h1]`. Rewrite using `[contra_apply, inv_inv]`.
+-/
 theorem invariant_of_fixed {π : Representation ℂ G V} {K : Subgroup G} (l : fixed (contra π) K)
     (h : G) (hh : h ∈ K) (w : V) :
     ((l : smoothPart π.dual) : Module.Dual ℂ V) (π h w) = ((l : smoothPart π.dual) : Module.Dual ℂ V) w := by
@@ -148,6 +199,9 @@ theorem invariant_of_fixed {π : Representation ℂ G V} {K : Subgroup G} (l : f
   conv_rhs => rw [← h1]
   rw [contra_apply, inv_inv]
 
+/- English proof (translation)
+Introduce `l l' h`. Use `Subtype.ext (Subtype.ext ?_)` and prove the remaining obligations. Conclude with `form_ext hπ hK (invariant_of_fixed l) (invariant_of_fixed l') fun w hw => LinearMap.congr_fun h ⟨w, hw⟩`.
+-/
 theorem res_injective {π : Representation ℂ G V} (hπ : IsSmooth π) {K : Subgroup G}
     (hK : IsCompact (K : Set G)) : Function.Injective (res π K) := by
   intro l l' h
@@ -155,12 +209,20 @@ theorem res_injective {π : Representation ℂ G V} (hπ : IsSmooth π) {K : Sub
   exact form_ext hπ hK (invariant_of_fixed l) (invariant_of_fixed l')
     fun w hw => LinearMap.congr_fun h ⟨w, hw⟩
 
+/- English proof (translation)
+Introduce `m`. Take `⟨l, h1, h2⟩` from `exists_fixed_contra hπ ho hK m`. Conclude with `⟨⟨l, mem_fix.2 h1⟩, LinearMap.ext h2⟩`.
+-/
 theorem res_surjective {π : Representation ℂ G V} (hπ : IsSmooth π) {K : Subgroup G}
     (ho : IsOpen (K : Set G)) (hK : IsCompact (K : Set G)) : Function.Surjective (res π K) := by
   intro m
   obtain ⟨l, h1, h2⟩ := exists_fixed_contra hπ ho hK m
   exact ⟨⟨l, mem_fix.2 h1⟩, LinearMap.ext h2⟩
 
+/- English proof (translation)
+Take `⟨K, ho, hc, hKs⟩` from `hG _ ((hπ v).mem_nhds (by simp))`. Establish `hvK : v ∈ fixed π K` using `mem_fix.2 fun h hh => hKs hh`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m : Module.Dual ℂ (fixed π K), m ⟨v, hvK⟩ ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+
+Conclude with `hv (congrArg Subtype.val ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 hne))`. Take `⟨l, -, hl⟩` from `exists_fixed_contra hπ ho hc m`. Conclude with `⟨l, by rw [show v = ((⟨v, hvK⟩ : fixed π K) : V) from rfl, hl]; exact hm⟩`.
+-/
 theorem exists_smooth_form_ne {π : Representation ℂ G V} (hπ : IsSmooth π)
     (hG : ∀ U ∈ nhds (1 : G), ∃ K : Subgroup G, IsOpen (K : Set G) ∧ IsCompact (K : Set G) ∧ (K : Set G) ⊆ U)
     {v : V} (hv : v ≠ 0) : ∃ l : smoothPart π.dual, (l : Module.Dual ℂ V) v ≠ 0 := by
@@ -197,6 +259,17 @@ def evMap (π : Representation ℂ G V) (hπ : IsSmooth π) : π.IntertwiningMap
     show (l : Module.Dual ℂ V) (π g v) = (l : Module.Dual ℂ V) (π g⁻¹⁻¹ v)
     rw [inv_inv]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `show Function.Injective (ev π hπ.1)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `v hv`. Assume the negation of the conclusion as `h0`.
+
+Take `⟨l, hl⟩` from `exists_smooth_form_ne hπ.1 hG h0`. Conclude with `hl (LinearMap.congr_fun (congrArg Subtype.val hv) l)`. Introduce `Λ`. Take `⟨K, ho, hc, hKs⟩` from `hG _ ((isSmooth_contra (contra π) Λ).mem_nhds (by simp))`. Use `haveI := hπ.2 K ho hc`.
+
+Establish `hbij : Function.Bijective (res π K)` using `⟨res_injective hπ.1 hc, res_surjective hπ.1 ho hc⟩`. Set `e` to `LinearEquiv.ofBijective (res π K) hbij`. Set `μ : Module.Dual ℂ (fixed (contra π) K)` to `(Λ : Module.Dual ℂ (smoothPart π.dual)) ∘ₗ (fixed (contra π) K).subtype`. Take `⟨v, hv⟩` from `(Module.evalEquiv ℂ (fixed π K)).surjective (μ ∘ₗ e.symm.toLinearMap)`. Establish `hfix : ∀ x : fixed (contra π) K, (Λ : Module.Dual ℂ (smoothPart π.dual)) x = ((x : smoothPart π.dual) : Module.Dual ℂ V) v`.
+
+Introduce `x`. Establish `h1` using `LinearMap.congr_fun hv (e x)`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply] at h1`. Conclude with `h1.symm`. Use `⟨v, Subtype.ext (form_ext (isSmooth_contra π) hc (fun h hh w => ?_) (fun h hh w => ?_) fun w hw => ?_)⟩` and prove the remaining obligations.
+
+Use `show ((contra π h w : smoothPart π.dual) : Module.Dual ℂ V) v = (w : Module.Dual ℂ V) v`. Rewrite using `[contra_apply, mem_fix.1 v.2 _ (inv_mem hh)]`. Establish `h1 : (contra π).dual h⁻¹ (Λ : Module.Dual ℂ (smoothPart π.dual)) = Λ` using `congrArg Subtype.val (show contra (contra π) h⁻¹ Λ = Λ from hKs (inv_mem hh)) conv_rhs => rw [← h1] show _ = (Λ : Module.Dual ℂ (smoothPart π.dual)) (contra π h⁻¹⁻¹ w)`. Rewrite using `[inv_inv]`. Conclude with `(hfix ⟨w, hw⟩).symm`.
+-/
 theorem evMap_bijective
     (hG : ∀ U ∈ nhds (1 : G), ∃ K : Subgroup G, IsOpen (K : Set G) ∧ IsCompact (K : Set G) ∧ (K : Set G) ⊆ U)
     {π : Representation ℂ G V} (hπ : IsAdmissible π) : Function.Bijective (evMap π hπ.1) := by
@@ -243,6 +316,21 @@ namespace GlobalTheory.ContraRefl
 variable {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Take `⟨K, ho, hc, hKs⟩` from `hG _ ((isSmooth_contra π l).mem_nhds (by simp))`. Establish `hlK : l ∈ fixed (contra π) K` using `mem_fix.2 fun h hh => hKs hh`. Use `haveI := hπ.2 K ho hc`. Set `S : Submodule ℂ (Module.Dual ℂ (fixed π K))` to `(U.toSubmodule.comap (fixed (contra π) K).subtype).map (res π K)`. Distinguish the cases in `hS : S = ⊤`.
+
+Establish `hmem : res π K ⟨l, hlK⟩ ∈ S` using `hS ▸ Submodule.mem_top`. Take `⟨u, hu, he⟩` from `hmem`. Use `res_injective hπ.1 hc he` as an intermediate fact. Rewrite using `[show l = ((⟨l, hlK⟩ : fixed (contra π) K) : smoothPart π.dual) from rfl, ← this]`. Conclude with `hu`.
+
+It suffices to derive a contradiction. Take `⟨φ, hφ, hφS⟩` from `Submodule.exists_dual_map_eq_bot_of_lt_top (lt_top_iff_ne_top.2 hS) inferInstance`. Take `⟨v, rfl⟩` from `(Module.evalEquiv ℂ (fixed π K)).surjective φ`. Establish `hv0 : v ≠ 0` using `fun h => hφ (by rw [h, map_zero])`. Apply `hv0` to reduce the goal to its premises.
+
+Use `Subtype.ext (hA v fun u hu => ?_)` and prove the remaining obligations. Establish `hUs : IsSmooth U.toRepresentation` using `fun x => by`. Establish `: {g : G | U.toRepresentation g x = x} = {g : G | contra π g x.1 = x.1}`. Use extensionality with `g`. Conclude with `Subtype.ext_iff`.
+
+Rewrite using `[this]`. Conclude with `isSmooth_contra π x.1`. Set `f : U.toSubmodule →ₗ[ℂ] ℂ` to `Module.Dual.eval ℂ V v ∘ₗ (smoothPart π.dual).subtype ∘ₗ U.toSubmodule.subtype`. Take `⟨y, hy, hfy⟩` from `IwahoriOnto.exists_fixed_map_eq hUs hc f ⟨u, hu⟩ fun h hh => by show ((contra π h u : smoothPart π.dual) : Module.Dual ℂ V) v = (u : Module.Dual ℂ V) v`. Rewrite using `[contra_apply, mem_fix.1 v.2 _ (inv_mem hh)]`.
+
+Establish `hyK : (y : smoothPart π.dual) ∈ fixed (contra π) K` using `mem_fix.2 fun h hh => congrArg Subtype.val (mem_fix.1 hy h hh)`. Establish `h1 : res π K ⟨y, hyK⟩ ∈ S` using `⟨⟨y, hyK⟩, y.2, rfl⟩`. Establish `h2 : Module.evalEquiv ℂ (fixed π K) v (res π K ⟨y, hyK⟩) = 0`. Use `Submodule.mem_map_of_mem (f := (Module.evalEquiv ℂ (fixed π K) v)) h1` as an intermediate fact. Rewrite `this` using `[hφS]`.
+
+Conclude with `(Submodule.mem_bot ℂ).1 this`. Use `show f ⟨u, hu⟩ = 0`. Rewrite using `[← hfy]`. Conclude with `h2`.
+-/
 theorem mem_of_annihilator_eq_bot
     (hG : ∀ U ∈ nhds (1 : G), ∃ K : Subgroup G, IsOpen (K : Set G) ∧ IsCompact (K : Set G) ∧ (K : Set G) ⊆ U)
     {π : Representation ℂ G V} (hπ : IsAdmissible π) (U : Subrepresentation (contra π))
@@ -286,6 +374,21 @@ theorem mem_of_annihilator_eq_bot
     rw [← hfy]
     exact h2
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v : V, v ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `(bot_ne_top : (⊥ : Subrepresentation π) ≠ ⊤)` to reduce the goal to its premises. Apply `Subrepresentation.ext` to reduce the goal to its premises.
+
+Use extensionality with `x`. Rewrite using `[h x]`. Conclude with `⟨fun _ => zero_mem _, fun _ => zero_mem _⟩`. Take `⟨l, hl⟩` from `exists_smooth_form_ne hπ.1 hG hv`. Use `{ exists_pair_ne := ⟨⊥, ⊤, fun h => hl ?_⟩, eq_bot_or_eq_top := fun U => ?_ }` and prove the remaining obligations.
+
+Establish `: l ∈ (⊥ : Subrepresentation (contra π)).toSubmodule`. Rewrite using `[h]`. Conclude with `Submodule.mem_top`. Rewrite using `[(Submodule.mem_bot ℂ).1 this]`. Both sides reduce to the same expression.
+
+Set `A : Subrepresentation π` to `{ toSubmodule := ⨅ u ∈ U.toSubmodule, LinearMap.ker (u : Module.Dual ℂ V) apply_mem_toSubmodule := fun g v hv => by`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker] at hv ⊢`. Introduce `u hu`. Use `hv _ (U.apply_mem_toSubmodule g⁻¹ hu)` as an intermediate fact. Rewrite using `[contra_apply, inv_inv] at this }` and apply the resulting hypothesis.
+
+Establish `hmemA : ∀ v, v ∈ A.toSubmodule ↔ ∀ u ∈ U.toSubmodule, (u : Module.Dual ℂ V) v = 0`. Introduce `v`. Simplify using `[A]`. Break down `hirr.eq_bot_or_eq_top A with hA | hA` into its components or cases. Use `right`.
+
+Apply `Subrepresentation.ext` to reduce the goal to its premises. Use `eq_top_iff.2 fun l _ => mem_of_annihilator_eq_bot hG hπ U (fun v hv => ?_) l` and prove the remaining obligations. Establish `: v ∈ A.toSubmodule` using `(hmemA v).2 hv`. Rewrite `this` using `[hA]`. Conclude with `(Submodule.mem_bot ℂ).1 this`.
+
+Use `left`. Apply `Subrepresentation.ext` to reduce the goal to its premises. Use `eq_bot_iff.2 fun u hu => (Submodule.mem_bot ℂ).2 (Subtype.ext (LinearMap.ext fun w => ?_))` and prove the remaining obligations. Establish `: w ∈ A.toSubmodule` using `by rw [hA]; exact Submodule.mem_top`. Conclude with `(hmemA w).1 this u hu`.
+-/
 theorem contra_isIrreducible
     (hG : ∀ U ∈ nhds (1 : G), ∃ K : Subgroup G, IsOpen (K : Set G) ∧ IsCompact (K : Set G) ∧ (K : Set G) ⊆ U)
     {π : Representation ℂ G V} (hπ : IsAdmissible π) (hirr : π.IsIrreducible) :
@@ -347,6 +450,9 @@ def contraMap {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Mod
     show (l : Module.Dual ℂ Y) (τ g⁻¹ (f x)) = (l : Module.Dual ℂ Y) (f (σ g⁻¹ x))
     rw [f.isIntertwining]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem contraMap_apply {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y]
     {σ : Representation ℂ G X} {τ : Representation ℂ G Y} (f : σ.IntertwiningMap τ)
     (l : smoothPart τ.dual) (x : X) :
@@ -364,6 +470,9 @@ def contraEquiv {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [M
       show (l : Module.Dual ℂ X) (e.symm (e x)) = (l : Module.Dual ℂ X) x
       rw [e.symm_apply_apply])
 
+/- English proof (translation)
+Introduce `G _ _ _ hG V _ _ W _ _ π π' hπ hπ'`. Use `⟨contra_isIrreducible hG hπ, ⟨evEquiv hG hπ⟩, fun ⟨e⟩ => ⟨?_⟩⟩` and prove the remaining obligations. Conclude with `((evEquiv hG hπ).trans (contraEquiv e.symm)).trans (evEquiv hG hπ').symm`.
+-/
 theorem contra_irreducible_reflexive : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G], (∀ U ∈ nhds (1 : G), ∃ K : Subgroup G, IsOpen (K : Set G) ∧ IsCompact (K : Set G) ∧ (K : Set G) ⊆ U) → ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (W : Type) [AddCommGroup W] [Module ℂ W] (π : Representation ℂ G V) (π' : Representation ℂ G W), IsAdmissible π → IsAdmissible π' → (π.IsIrreducible → (contra π).IsIrreducible) ∧ Nonempty (π.Equiv (contra (contra π))) ∧ (Nonempty ((contra π).Equiv (contra π')) → Nonempty (π.Equiv π')) := by
   intro G _ _ _ hG V _ _ W _ _ π π' hπ hπ'
   refine ⟨contra_isIrreducible hG hπ, ⟨evEquiv hG hπ⟩, fun ⟨e⟩ => ⟨?_⟩⟩

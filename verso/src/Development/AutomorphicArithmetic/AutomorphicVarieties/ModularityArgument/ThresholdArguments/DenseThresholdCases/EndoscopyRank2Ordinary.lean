@@ -26,6 +26,13 @@ set_option synthInstance.maxHeartbeats 200000
 open UpperTheory.V.Z UpperTheory.V.Z.Ord UpperTheory.Gal.projectedFormsSystemPart UpperTheory.GalN.V
 open private au_isTeich au_open from Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.AuTeichEx
 open private absPt ss_comp iso_of_det ss_of_irr irr_of_comp irr_iso from Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.IrrOfComp
+/- English proof (translation)
+Break down `hJ with ⟨_, rfl⟩ | ⟨i1, i2, f, -, hmap, hsurj, hlam, rfl⟩` into its components or cases. Conclude with `absurd (hx (Submodule.mem_top (x := 1))) (by simp)`. Take `⟨⟨lam, hl⟩, hb⟩` from `_root_.UpperTheory.V.Hi.arith_good_iff_hset_of_theta_incr_weight H.litN l L Ω s n hn V Q c R.m R.τ₀ r B Λ R.θ R.theta h ha.1`. Establish `har` using `(hb lam hl x).1.1 ha`. Establish `out` using `_root_.UpperTheory.V.Z.Ord.core_hecke_of_automorphic_hecke_dense_weight H.litN L Ω l n c (hset Q R.τ₀) (_root_.UpperTheory.V.Hi.axU_s H.litN l L Ω s n hn V Q c R.m R.τ₀) Λ.Λ R.θ R.isWt ι _ (_root_.UpperTheory.Gal.projectedFormsSystemPart.autAway_alt H hL hC s hn V Q c r ι R.m R.τ …`.
+
+Take `⟨ρ, hc, hs, hP, e3⟩` from `absPt (hset Q R.τ₀) R.θ R.a K B.u.D (Λ.toPair B.u) f hsurj hlam out x hx lam (Set.mem_univ _) har`. Use `⟨ρ, hc, hs, hP, ?_⟩` and prove the remaining obligations. Use `replace e3 : x.D = W.GDet.ofRep (W.mat ρ) := e3`. Express the relevant statement in the definitionally equal form `x.D.comap V.pr = _`. Rewrite using `[e3]`.
+
+Conclude with `(AlgebraTools.Det.repApi (W.mat ρ)).2.2.2.2.2.2.1 V.pr`.
+-/
 private theorem coreA (H : _root_.UpperTheory.V.Af.HypothesesH') (hL : _root_.UpperTheory.Gal.projectedFormsSystemPart.PartLinkAlt) (hC : ConjTor) {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L]
     [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {s : HidaSetting l L Ω} {n : ℕ} (hn : 1 ≤ n) {V : s.Lev} {Q : QData V}
     {c : Coef l} {r : Resid V.frame c.O n} {ι : Qbar l ≃+* ℂ} {B : UniversalOrdinaryDeterminantRing r} {Λ : LamObj r} {R : _root_.UpperTheory.V.Hi.CaseU.UnitaryHeckeData Q ι Λ} {K : (hset Q R.τ₀).Lev}
@@ -45,6 +52,17 @@ private theorem coreA (H : _root_.UpperTheory.V.Af.HypothesesH') (hL : _root_.Up
   change x.D.comap V.pr = _
   rw [e3]
   exact (AlgebraTools.Det.repApi (W.mat ρ)).2.2.2.2.2.2.1 V.pr
+/- English proof (translation)
+Introduce `l _ L Ω _ _ _ _ _ _ s n hn V Q c r ι B Λ R K hS J hJ x h ρ hx ha hρ hi`. Establish `hpr : Function.Surjective V.pr` using `fun g => by`. Take `⟨τ, hτ⟩ : ∃ τ, toGS Ω V.S' τ = g.1` from `QuotientGroup.mk_surjective g.1`. Take `⟨σ, rfl⟩` from `(V.hη τ).1 (by rw [hτ]; exact g.2)`. Conclude with `⟨σ, Subtype.ext hτ⟩`.
+
+Take `⟨ρ₀, -, hs, hP, hr⟩` from `coreA H hL hC hn hS hJ x h hx ha`. Establish `e : Af.RepIso (ρ₀.comp V.pr) ρ` using `iso_of_det (ss_of_irr hi) (ss_comp hpr hs) (hρ.symm.trans hr)`. Take `⟨π, h1, h2, h3, h4⟩` from `hP (irr_iso e.symm' hi)`. Establish `h5 : Af.AttC ι ρ π` using `⟨ss_of_irr hi, h3.2.mono fun w ⟨b, hb, hf⟩ => ⟨b, hb, hf.of_iso e⟩⟩`. Use `⟨⟨π, h1, h2, h5⟩, fun hc => ?_⟩` and prove the remaining obligations.
+
+Establish `born` using `hB l L Ω s n hn V c r ι B Λ J (_root_.UpperTheory.V.Hi.ring_props_of_is_j_unitary_hecke_data H l L Ω s n hn V Q c r ι B Λ R K hS J hJ) (hE l L Ω s n hn V Q c r ι B Λ R K J hJ) x h ρ hx ha hρ hi hc`. Use `⟨fun v hv hu => (born v hv hu).1, fun π' _ p => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `ImaginaryQuadraticEtaCharacter.winOf L n hn π'`. Use `⟨t, fun v hv0 hv => ?_⟩` and prove the remaining obligations. Establish `k : TU π' v`.
+
+Distinguish the cases in `hl : ((l : ℕ) : 𝓞 L) ∈ v.asIdeal`. Use `(born v hl fun A hA => ?_).2 π' p` and prove the remaining obligations. Take `⟨κ, k1, k2⟩` from `hv.resolve_left (fun a => a hl) A hA`. Conclude with `⟨κ, k1, fun i j e => k2 i j 1 le_rfl (by rw [e])⟩`. Conclude with `tu_same hn h5 p (h4 v hl hv0)`.
+
+Conclude with `ht v k.1 k.2`.
+-/
 theorem UpperTheory.Gal.projectedFormsSystemPart.irrArithPointsAutomorphicAway_of_isJ (H : _root_.UpperTheory.V.Af.HypothesesH') (hL : _root_.UpperTheory.Gal.projectedFormsSystemPart.PartLinkAlt) (hC : ConjTor) (hE : _root_.UpperTheory.V.Z.Ord.EndOrdAlt) (hB : BornJ) :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →
     ∀ (V : s.Lev) (Q : QData V) (c : Coef l), ∀ (r : Resid V.frame c.O n) (ι : Qbar l ≃+* ℂ), ∀ (B : UniversalOrdinaryDeterminantRing r) (Λ : LamObj r) (R : _root_.UpperTheory.V.Hi.CaseU.UnitaryHeckeData Q ι Λ) (K : (hset Q R.τ₀).Lev), V.S' = s.S → ∀ J : Ideal B.B, R.IsJ B K J → IrrArithPointsAutomorphicAway B ι J := by

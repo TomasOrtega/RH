@@ -16,6 +16,17 @@ set_option autoImplicit false
 
 namespace GlobalTheory.HSNef
 
+/- English proof (translation)
+Introduce `k _ X _ p D hX P hA a`. Take `⟨M, hM⟩` from `GlobalTheory.T.exists_hermitianRepresentative_integerCombination k X p P a 0`. Take `⟨b, hb, u, hu⟩` from `exists_sec_finite_subset_nonzeroLocus k X p D hX M P.A hA {genericPoint X} (Set.finite_singleton _)`. Establish `hA1` using `(Pair.rep_base k X p P).2.1`. Establish `hAb` using `Pair.rep_pow k X p P 0 1 P.A b hA1`.
+
+Establish `hN` using `Pair.rep_tens k X p P a 0 _ _ M (P.A.pow b) hM hAb`. Establish `e1 : a + (b : ℤ) * 0 = a` using `by ring`. Establish `e2 : (0 : ℤ) + (b : ℤ) * 1 = b` using `by ring`. Rewrite `hN` using `[e1, e2]`. Take `⟨e, -, hrange, -, hloc⟩` from `RepDict.rep_dict k X p P a b _ hN`.
+
+Establish `hmem : e u ∈ P.H a b`. Establish `: e u ∈ Set.range e` using `Set.mem_range_self u`. Rewrite `this` using `[hrange]`. Conclude with `this`. Take `⟨i, hi⟩ : ∃ i, genericPoint X ∈ P.L.B.U i` from `Opens.mem_iSup.1 (P.L.isLB.cover.ge (Opens.mem_top _))`.
+
+Take `⟨j, hj⟩ : ∃ j, genericPoint X ∈ P.A.B.U j` from `Opens.mem_iSup.1 (P.A.isLB.cover.ge (Opens.mem_top _))`. Establish `hU` using `(hloc u (genericPoint X) i j hi hj).1 (hu rfl)`. Use `⟨b, e u, hb, fun h0 => ?_, hmem⟩` and prove the remaining obligations. Establish `hz : ∀ x : X, ¬ UnitAt x (0 : X.functionField)`. Introduce and unpack `x ⟨w, hw, h⟩`.
+
+Conclude with `(hw.map (algebraMap _ X.functionField)).ne_zero h`. Rewrite `hU` using `[h0]`. Establish `z : P.loc a b 0 i j = 0` using `by simp [Pair.loc]`. Rewrite `hU` using `[z]`. Conclude with `hz _ hU`.
+-/
 theorem exists_pos_nonzero_mem_H : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (P : Pair p), IsAmpleLB P.A.B → ∀ (a : ℤ),
       ∃ (c : ℕ) (h : X.functionField), 0 < c ∧ h ≠ 0 ∧ h ∈ P.H a c := by

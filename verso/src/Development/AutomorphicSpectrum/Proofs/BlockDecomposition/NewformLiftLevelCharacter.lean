@@ -19,11 +19,17 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace F] [BorelSpace F]
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Rewrite using `[← mem_valBall_zero_iff, mem_valBall_iff_le_ord hx]`.
+-/
 theorem mem_integer_iff_ord {x : F} (hx : x ≠ 0) : x ∈ 𝒪[F] ↔ 0 ≤ ord x := by
   rw [← mem_valBall_zero_iff, mem_valBall_iff_le_ord hx]
 
 omit [MeasurableSpace F] [BorelSpace F] in
 
+/- English proof (translation)
+Break down `eq_or_ne y 0 with rfl | h0` into its components or cases. Simplify using the standard rewrite rules. Use `hy h0` as an intermediate fact. Rewrite using `[mem_integer_iff_ord (mul_ne_zero (inv_ne_zero hm) h0), ord_mul (inv_ne_zero hm) h0, ord_inv hm]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem inv_mul_mem_of_ord_le {m y : F} (hm : m ≠ 0) (hy : y ≠ 0 → ord m ≤ ord y) :
     m⁻¹ * y ∈ 𝒪[F] := by
   rcases eq_or_ne y 0 with rfl | h0
@@ -34,6 +40,9 @@ theorem inv_mul_mem_of_ord_le {m y : F} (hm : m ≠ 0) (hy : y ≠ 0 → ord m �
     omega
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Establish `e : ((unifUnit F)⁻¹ ^ n : Fˣ) = unifUnit F ^ (-(n : ℤ))`. Rewrite using `[inv_pow, _root_.zpow_neg, zpow_natCast]`. Establish `h` using `(mem_integer_iff_ord (mul_ne_zero (Units.ne_zero _) h0)).1 hc`. Rewrite `h` using `[ord_mul (Units.ne_zero _) h0, e, ord_unifUnit_zpow]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem le_ord_of_mem {n : ℕ} {y : F} (h0 : y ≠ 0)
     (hc : (((unifUnit F)⁻¹ ^ n : Fˣ) : F) * y ∈ 𝒪[F]) : (n : ℤ) ≤ ord y := by
   have e : ((unifUnit F)⁻¹ ^ n : Fˣ) = unifUnit F ^ (-(n : ℤ)) := by
@@ -44,6 +53,17 @@ theorem le_ord_of_mem {n : ℕ} {y : F} (h0 : y ≠ 0)
 
 omit [MeasurableSpace F] [BorelSpace F] in
 
+/- English proof (translation)
+Take `⟨hx, hc, hd⟩` from `h`. Establish `hxi` using `((GLnLocal.mem_integralGL_iff F 2).1 hx).1`. Establish `hπ : ((unifUnit F : Fˣ) : F) ≠ 0` using `Units.ne_zero _`. Establish `h0 : 0 ≤ ord (d : F)` using `(mem_integer_iff_ord d.ne_zero).1 (hd ▸ hxi 1 1)`. Assume the negation of the conclusion as `hne`.
+
+Establish `h1 : ord ((unifUnit F : Fˣ) : F) ≤ ord (x 1 1)`. Rewrite using `[ord_unifUnit, ← hd]`. Use linear arithmetic over natural numbers and integers. Establish `hd'` using `inv_mul_mem_of_ord_le hπ (y := x 1 1) fun _ => h1`. Establish `hc'` using `inv_mul_mem_of_ord_le hπ (y := x 1 0) fun h0 => by`.
+
+Use `le_ord_of_mem h0 hc` as an intermediate fact. Rewrite using `[ord_unifUnit]`. Use linear arithmetic over natural numbers and integers. Establish `hdet : ((unifUnit F : Fˣ) : F)⁻¹ * (Matrix.GeneralLinearGroup.det x : F) ∈ 𝒪[F]`. Establish `: ((unifUnit F : Fˣ) : F)⁻¹ * (Matrix.GeneralLinearGroup.det x : F) = x 0 0 * (((unifUnit F : Fˣ) : F)⁻¹ * x 1 1) - x 0 1 * (((unifUnit F : Fˣ) : F)⁻¹ * x 1 0)`.
+
+Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `sub_mem (mul_mem (hxi 0 0) hd') (mul_mem (hxi 0 1) hc')`. Establish `hz : ord (Matrix.GeneralLinearGroup.det x : F) = 0` using `GodementSectionLocal.ord_det_eq_zero hx`.
+
+Establish `hdn : (Matrix.GeneralLinearGroup.det x : F) ≠ 0` using `Units.ne_zero _`. Use `(mem_integer_iff_ord (mul_ne_zero (inv_ne_zero hπ) hdn)).1 hdet` as an intermediate fact. Rewrite `this` using `[ord_mul (inv_ne_zero hπ) hdn, ord_inv hπ, ord_unifUnit, hz]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ord_lower_right {n : ℕ} (hn : 1 ≤ n) {x : GL (Fin 2) F} {d : Fˣ} (h : GammaZeroLevelMembership n x d) :
     ord (d : F) = 0 := by
   obtain ⟨hx, hc, hd⟩ := h
@@ -73,6 +93,15 @@ theorem ord_lower_right {n : ℕ} (hn : 1 ≤ n) {x : GL (Fin 2) F} {d : Fˣ} (h
 
 end Local
 
+/- English proof (translation)
+Use `⟨(AdelicGLn.mem_integralFiniteGL_iff_forall ℚ 2).2 fun v => ?_, ?_⟩` and prove the remaining obligations. Establish `e : (AdelicGLn.finiteRestrictedEquiv ℚ 2 u v : GL (Fin 2) (Qv v)) = glAt v u` using `Units.ext (Matrix.ext fun a b => rfl)`. Rewrite using `[e]`. Conclude with `hint v`. Rewrite using `[GL2Classical.mem_levelIdeal_iff, mem_integralFiniteAdeles]`.
+
+Introduce `v`. Establish `hw : adeleAt v ((((GL2Classical.levelUnit N)⁻¹ : Afˣ)) : Af) = ((N : Qv v))⁻¹`. Establish `h1 : ((((GL2Classical.levelUnit N)⁻¹ : Afˣ)) : Af) * (N : Af) = 1`. Rewrite using `[← GL2Classical.coe_levelUnit N, Units.inv_mul]`. Establish `h2` using `congrArg (adeleAt v) h1`.
+
+Rewrite `h2` using `[map_mul, map_natCast, map_one]`. Conclude with `eq_inv_of_mul_eq_one_left h2`. Establish `e : (((((GL2Classical.levelUnit N)⁻¹ : Afˣ)) : Af) * (u : Matrix (Fin 2) (Fin 2) Af) 1 0) v = ((N : Qv v))⁻¹ * glAt v u 1 0`. Rewrite using `[← hw]`. Conclude with `map_mul (adeleAt v) _ _`.
+
+Rewrite using `[e]`. Conclude with `(mem_valuationInteger_iff v _).1 (hlev v)`.
+-/
 theorem mem_Gamma0Level_of_places (N : ℕ) [NeZero N] (u : AdelicGLn.FiniteAdelicGL ℚ 2)
     (hint : ∀ v : Pl, glAt v u ∈ integralGL (Qv v) 2)
     (hlev : ∀ v : Pl, ((N : Qv v))⁻¹ * glAt v u 1 0 ∈ 𝒪[Qv v]) : u ∈ Gamma0Level N := by
@@ -96,6 +125,11 @@ theorem mem_Gamma0Level_of_places (N : ℕ) [NeZero N] (u : AdelicGLn.FiniteAdel
     rw [e]
     exact (mem_valuationInteger_iff v _).1 (hlev v)
 
+/- English proof (translation)
+Use `⟨(AdelicGLn.prodEquiv ℚ 2 h).2, ?_, fun v => Units.ext (Matrix.ext fun a b => rfl)⟩` and prove the remaining obligations. Apply `(AdelicGLn.prodEquiv ℚ 2).injective` to reduce the goal to its premises. Rewrite using `[prodEquiv_finEmb]`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Apply `(AdelicGLn.infiniteEquiv ℚ 2).injective` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `w`. Rewrite using `[map_one]`. Conclude with `hinf w`.
+-/
 theorem exists_finEmb (h : G2) (hinf : ∀ w, infAt w h = 1) :
     ∃ u : AdelicGLn.FiniteAdelicGL ℚ 2, h = finEmb ℚ 2 u ∧ ∀ v : Pl, glAt v u = finAt v h := by
   refine ⟨(AdelicGLn.prodEquiv ℚ 2 h).2, ?_, fun v => Units.ext (Matrix.ext fun a b => rfl)⟩
@@ -107,6 +141,11 @@ theorem exists_finEmb (h : G2) (hinf : ∀ w, infAt w h = 1) :
   rw [map_one]
   exact hinf w
 
+/- English proof (translation)
+Take `⟨u, rfl, hu⟩` from `exists_finEmb h hinf`. Use `hL.level u (mem_Gamma0Level_of_places N u (fun v => ?_) fun v => ?_) D hD (fun v hv => ?_) g` and prove the remaining obligations. Rewrite using `[hu v]`. Conclude with `hint v`. Rewrite using `[hu v]`.
+
+Conclude with `hlev v`. Rewrite using `[hu v]`. Conclude with `hD' v hv`.
+-/
 theorem lift_right {k N : ℕ} [NeZero N] {f : UpperHalfPlane → ℂ} {ω : HeckeCharacter ℚ} {φ : G2 → ℂ}
     (hL : Lift k N f ω φ) {h : G2} (hinf : ∀ w, infAt w h = 1)
     (hint : ∀ v : Pl, finAt v h ∈ integralGL (Qv v) 2)
@@ -120,14 +159,27 @@ theorem lift_right {k N : ℕ} [NeZero N] {f : UpperHalfPlane → ℂ} {ω : Hec
   · rw [hu v]; exact hlev v
   · rw [hu v]; exact hD' v hv
 
+/- English proof (translation)
+Establish `h : (algebraMap ℚ (Qv v)) (N : ℚ) ≠ 0` using `(map_ne_zero _).2 (Nat.cast_ne_zero.2 (NeZero.ne N))`. Rewrite `h` using `[map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem natCast_ne_zero_at (N : ℕ) [NeZero N] (v : Pl) : (N : Qv v) ≠ 0 := by
   have h : (algebraMap ℚ (Qv v)) (N : ℚ) ≠ 0 :=
     (map_ne_zero _).2 (Nat.cast_ne_zero.2 (NeZero.ne N))
   rwa [map_natCast] at h
 
+/- English proof (translation)
+Simplify using `[lf]`.
+-/
 theorem lf_one (v : Pl) : (lf v (1 : Afˣ) : Qv v) = 1 := by
   simp [lf]
 
+/- English proof (translation)
+Establish `key` using `lift_right hL hinf hint (fun v => ?_) 1 (fun v => ?_) (fun v hv => ?_) g`. Simplify using `using key`. Distinguish the cases in `hv : pOf v ∣ N`. Rewrite using `[hbad v hv]`. Simplify using the standard rewrite rules.
+
+Use `inv_mul_mem_of_ord_le (natCast_ne_zero_at N v) fun h0 => ?_` and prove the remaining obligations. Rewrite using `[hord v hv]`. Conclude with `(mem_integer_iff_ord h0).1 (((GLnLocal.mem_integralGL_iff _ 2).1 (hint v)).1 1 0)`. Rewrite using `[lf_one]`. Conclude with `ord_one`.
+
+Rewrite using `[lf_one, hbad v hv]`. Simplify using the standard rewrite rules.
+-/
 theorem lift_right_good {k N : ℕ} [NeZero N] {f : UpperHalfPlane → ℂ} {ω : HeckeCharacter ℚ}
     {φ : G2 → ℂ} (hord : ∀ v : Pl, ¬ pOf v ∣ N → ord (N : Qv v) = 0)
     (hL : Lift k N f ω φ) {h : G2} (hinf : ∀ w, infAt w h = 1)
@@ -143,6 +195,13 @@ theorem lift_right_good {k N : ℕ} [NeZero N] {f : UpperHalfPlane → ℂ} {ω 
   · rw [lf_one]; exact ord_one
   · rw [lf_one, hbad v hv]; simp
 
+/- English proof (translation)
+Apply `(IdeleGroup.prodEquiv ℚ).injective` to reduce the goal to its premises. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Establish `e : (IdeleGroup.prodEquiv ℚ d').1 = 1`. Apply `Units.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`.
+
+Establish `h` using `congrArg (fun M : GL (Fin 2) _ => M 1 1) (h3 w)`. Use `show (d' : 𝔸[ℚ]).1 w = 1`. Simplify `h` using `[dg2]`. Rewrite using `[e]`. Conclude with `IdeleGroup.toInfinite_ofFinite _`.
+
+Conclude with `IdeleGroup.toFinite_ofFinite _`.
+-/
 theorem ofFinite_toFinite_of_inf {a' d' : Jd} (h3 : ∀ w, infAt w (dg2 a' d' : G2) = 1) :
     IdeleGroup.ofFinite (IdeleGroup.toFinite ℚ d') = d' := by
   apply (IdeleGroup.prodEquiv ℚ).injective
@@ -157,6 +216,31 @@ theorem ofFinite_toFinite_of_inf {a' d' : Jd} (h3 : ∀ w, infAt w (dg2 a' d' : 
     exact IdeleGroup.toInfinite_ofFinite _
   · exact IdeleGroup.toFinite_ofFinite _
 
+/- English proof (translation)
+Introduce `hB k N _ hk χ hχ f a hf he ω φ hω hL`. Take `⟨hloc, -, -, -, -, -, -, hid⟩` from `hB`. Establish `hordN : ∀ v : Pl, ord (N : Qv v) = N.factorization (pOf v)` using `fun v => (hloc v).2.2.2.2.1 N (NeZero.ne N)`. Establish `hgood : ∀ v : Pl, ¬ pOf v ∣ N → ord (N : Qv v) = 0` using `fun v hv => by`. Rewrite using `[hordN v, Nat.factorization_eq_zero_of_not_dvd hv]`.
+
+Both sides reduce to the same expression. Use `⟨fun v hv x hx h hh g => ?_, fun v hv x d hxd h hh g => ?_, fun κ hκ hκ' g => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `hh`. Use `lift_right_good hgood hL h3 (fun v' => ?_) (fun v' hv' => ?_) g` and prove the remaining obligations. Distinguish the cases in `e : v' = v`.
+
+Substitute `e` using the available equality. Rewrite using `[h1]`. Conclude with `hx`. Rewrite using `[h2 v' e]`. Conclude with `one_mem _`.
+
+Use `h2 v' fun e => hv (e ▸ hv')` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `hh`. Establish `hn : 1 ≤ N.factorization (pOf v)` using `(hloc v).2.2.1.factorization_pos_of_dvd (NeZero.ne N) hv`. Establish `hu : ord (d : Qv v) = 0` using `ord_lower_right hn hxd`. Take `⟨x', a', d', -, ⟨e1, e2, e3⟩, -, -, hc⟩` from `hid v 0 1 d`.
+
+Establish `hcomp : ∀ v' : Pl, (lf v' (IdeleGroup.toFinite ℚ d') : Qv v') = finAt v' (dg2 a' d' : G2) 1 1` using `fun v' => rfl`. Establish `hdv : (lf v (IdeleGroup.toFinite ℚ d') : Qv v) = d`. Rewrite using `[hcomp v, e1]`. Simplify using `[dg2]`. Establish `hov : ∀ v' : Pl, v' ≠ v → (lf v' (IdeleGroup.toFinite ℚ d') : Qv v') = 1` using `fun v' hv' => by`.
+
+Rewrite using `[hcomp v', e2 v' hv']`. Simplify using the standard rewrite rules. Establish `key` using `lift_right hL h3 (fun v' => ?_) (fun v' => ?_) (IdeleGroup.toFinite ℚ d') (fun v' => ?_) (fun v' hv' => ?_) g`. Rewrite `key` using `[ofFinite_toFinite_of_inf e3, (hc ω).2]`. Conclude with `key`.
+
+Distinguish the cases in `e : v' = v`. Substitute `e` using the available equality. Rewrite using `[h1]`. Conclude with `hxd.1`. Rewrite using `[h2 v' e]`.
+
+Conclude with `one_mem _`. Distinguish the cases in `e : v' = v`. Substitute `e` using the available equality. Rewrite using `[h1]`. Use `inv_mul_mem_of_ord_le (natCast_ne_zero_at N v') fun h0 => ?_` and prove the remaining obligations.
+
+Rewrite using `[hordN v']`. Conclude with `le_ord_of_mem h0 hxd.2.1`. Rewrite using `[h2 v' e]`. Simplify using the standard rewrite rules. Distinguish the cases in `e : v' = v`.
+
+Substitute `e` using the available equality. Rewrite using `[hdv]`. Conclude with `hu`. Rewrite using `[hov v' e]`. Conclude with `ord_one`.
+
+Distinguish the cases in `e : v' = v`. Substitute `e` using the available equality. Rewrite using `[hdv, h1]`. Conclude with `hxd.2.2`. Rewrite using `[hov v' e, h2 v' e]`.
+
+Simplify using the standard rewrite rules. Conclude with `lift_right_good hgood hL hκ (fun v' => κ.2.2 v') hκ' g`.
+-/
 theorem lift_local_invariance : Ad3.R.B0 → Ad3.R.AutomorphicLevelEquivariance := by
   intro hB k N _ hk χ hχ f a hf he ω φ hω hL
   obtain ⟨hloc, -, -, -, -, -, -, hid⟩ := hB

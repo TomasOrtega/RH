@@ -52,9 +52,15 @@ def ReadFinSt : Prop :=
         ∃ (la : HeightOneSpectrum (𝓞 c.F)) (x : (pjSys Xo c).Pt la) (t : Ix D → ℝ),
           (p : 𝓞 c.F) ∈ la.asIdeal ∧ (∀ j, 0 < t j) ∧ ReadsSecFin Fr z x t ∧ ReadsRootsFin Or z t (latExp E S p)
 
+/- English proof (translation)
+The claim follows from `if_neg h`.
+-/
 theorem latExp_of_notMem (E : Type) [Field E] [NumberField E] {S : Finset ℕ} {p : ℕ} (h : p ∉ S) :
     latExp E S p = 0 := if_neg h
 
+/- English proof (translation)
+Unfold `htExp`. Use `split_ifs`. Evaluate the numerical expressions. Establish `: (2 : ℝ) ≤ p` using `by exact_mod_cast hp.two_le`. Conclude with `one_div_pos.2 (by linarith)`.
+-/
 theorem htExp_pos {p : ℕ} (hp : p.Prime) : 0 < htExp p := by
   unfold htExp
   split_ifs
@@ -62,6 +68,9 @@ theorem htExp_pos {p : ℕ} (hp : p.Prime) : 0 < htExp p := by
   · have : (2 : ℝ) ≤ p := by exact_mod_cast hp.two_le
     exact one_div_pos.2 (by linarith)
 
+/- English proof (translation)
+Unfold `latExp`. Use `split_ifs`. Use `htExp_pos hp` as an intermediate fact. Check the signs of the components of the expression. Conclude with `le_rfl`.
+-/
 theorem latExp_nonneg (E : Type) [Field E] [NumberField E] (S : Finset ℕ) {p : ℕ} (hp : p.Prime) :
     0 ≤ latExp E S p := by
   unfold latExp
@@ -70,13 +79,26 @@ theorem latExp_nonneg (E : Type) [Field E] [NumberField E] (S : Finset ℕ) {p :
     positivity
   · exact le_rfl
 
+/- English proof (translation)
+Apply the tactic sequence `constructor <;> norm_num [htExp]`.
+-/
 example : htExp 2 = 2 ∧ htExp 3 = 1 / 2 := by
   constructor <;> norm_num [htExp]
 
+/- English proof (translation)
+Introduce `_ hp h` and use `Nat.mem_primeFactors.2 ⟨hp, Int.natCast_dvd.1 h, Int.natAbs_ne_zero.2 (discr_ne_zero E)⟩`.
+-/
 example (E : Type) [Field E] [NumberField E] :
     ∀ p : ℕ, p.Prime → (p : ℤ) ∣ discr E → p ∈ (discr E).natAbs.primeFactors := fun _ hp h =>
   Nat.mem_primeFactors.2 ⟨hp, Int.natCast_dvd.1 h, Int.natAbs_ne_zero.2 (discr_ne_zero E)⟩
 
+/- English proof (translation)
+Establish `he' : (0 : ℝ) < e` using `by exact_mod_cast he`. Establish `hp' : (1 : ℝ) ≤ p` using `by exact_mod_cast hp`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hm : ((e * (m / e) : ℝ) : EReal) = m` using `by congr 1; field_simp`.
+
+Conclude with `le_antisymm ((h _).2 hm.le) ((h _).1 hm.ge)`. Introduce and unpack `rfl s`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `h1 : m / e ≤ s` using `by rw [div_le_iff₀ he', mul_comm]; exact EReal.coe_le_coe_iff.1 h`. Conclude with `mul_le_mul_of_nonneg_right (Real.rpow_le_rpow_of_exponent_le hp' (by linarith)) hr`.
+
+Establish `h1 : s ≤ m / e` using `by rw [le_div_iff₀ he', mul_comm]; exact EReal.coe_le_coe_iff.1 h`. Conclude with `mul_le_mul_of_nonneg_right (Real.rpow_le_rpow_of_exponent_le hp' (by linarith)) hr`.
+-/
 theorem isNormOfVal_coe {p e : ℕ} (hp : 1 ≤ p) (he : 0 < e) (m : ℝ) {r : ℝ} (hr : 0 ≤ r) (x : ℝ) :
     IsNormOfVal p e (m : EReal) r x ↔ x = (p : ℝ) ^ (-(m / e)) * r := by
   have he' : (0 : ℝ) < e := by exact_mod_cast he
@@ -92,6 +114,11 @@ theorem isNormOfVal_coe {p e : ℕ} (hp : 1 ≤ p) (he : 0 < e) (m : ℝ) {r : �
     · have h1 : s ≤ m / e := by rw [le_div_iff₀ he', mul_comm]; exact EReal.coe_le_coe_iff.1 h
       exact mul_le_mul_of_nonneg_right (Real.rpow_le_rpow_of_exponent_le hp' (by linarith)) hr
 
+/- English proof (translation)
+Establish `hp' : (1 : ℝ) < p` using `by exact_mod_cast hp`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `le_antisymm ?_ hx` and prove the remaining obligations. Establish `h1 : Filter.Tendsto (fun s : ℝ => (p : ℝ) ^ (-s) * r) Filter.atTop (nhds (0 * r))` using `((tendsto_rpow_atBot_of_base_gt_one _ hp').comp Filter.tendsto_neg_atTop_atBot).mul_const r`.
+
+Rewrite `h1` using `[zero_mul]`. Conclude with `ge_of_tendsto' h1 fun s => (h s).2 le_top`. Introduce and unpack `rfl s`. Conclude with `⟨fun h => absurd (top_le_iff.1 h) (EReal.coe_ne_top _), fun _ => by positivity⟩`.
+-/
 theorem isNormOfVal_top {p : ℕ} (hp : 2 ≤ p) (e : ℕ) {r x : ℝ} (hr : 0 ≤ r) (hx : 0 ≤ x) :
     IsNormOfVal p e ⊤ r x ↔ x = 0 := by
   have hp' : (1 : ℝ) < p := by exact_mod_cast hp
@@ -105,6 +132,13 @@ theorem isNormOfVal_top {p : ℕ} (hp : 2 ≤ p) (e : ℕ) {r x : ℝ} (hr : 0 �
   · rintro rfl s
     exact ⟨fun h => absurd (top_le_iff.1 h) (EReal.coe_ne_top _), fun _ => by positivity⟩
 
+/- English proof (translation)
+Use `forall_congr' fun ρ => exists_congr fun w => and_congr_right fun _ => ?_` and prove the remaining obligations. Establish `hs : 0 < supMet (RM.xdeg ρ) z` using `Finset.prod_pos fun k _ => zpow_pos (norm_pos_iff.2 fun h => by`. Take `⟨i, hi⟩` from `hz k`. Conclude with `hi (congrFun h i)) _`. Establish `htt : 0 < t (rootFrameIx D ρ) ^ HodgeCpt.rootSgn D ρ` using `zpow_pos (ht _) _`.
+
+Rewrite using `[zero_mul, abs_nonpos_iff, sub_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hw, h⟩`. Use `Real.log_injOn_pos hs (div_pos (norm_pos_iff.2 hw) htt) h` as an intermediate fact. Rewrite using `[this]`.
+
+Clear the denominators using the available nonvanishing facts. Introduce `h`. Use `⟨norm_pos_iff.1 (h ▸ mul_pos htt hs), ?_⟩` and prove the remaining obligations. Rewrite using `[h, mul_div_cancel_left₀ _ htt.ne']`.
+-/
 theorem readsRootsFin_zero {p : ℕ} [Fact p.Prime] {z : (Σ k, RM.ι k) → PadicAlgCl p} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0)
     {t : Ix D → ℝ} (ht : ∀ j, 0 < t j) :
     ReadsRootsFin Or z t 0 ↔ ∀ ρ : RootIx D, ∃ w : PadicAlgCl p, HasVal RM.y (RM.xdeg ρ) (Or.e ρ)⁻¹ z w ∧
@@ -124,6 +158,11 @@ theorem readsRootsFin_zero {p : ℕ} [Fact p.Prime] {z : (Σ k, RM.ι k) → Pad
     refine ⟨norm_pos_iff.1 (h ▸ mul_pos htt hs), ?_⟩
     rw [h, mul_div_cancel_left₀ _ htt.ne']
 
+/- English proof (translation)
+Take `⟨q, T, io, e, ho, y, hy, eta, heta, rfl⟩` from `x`. Use `show Formalism.L2.Pj.nval T.V e (Formalism.L2.Pj.evI y 1) = 0`. Establish `h1 : Formalism.L2.Pj.evI y 1 = 1`. Use `letI := io.toAlgebra`. Conclude with `Formalism.L2.Pj.evalAt_one _ _ _ y.2.1`.
+
+Rewrite using `[h1, Formalism.L2.Pj.nval_of_ne one_ne_zero]`. Simplify using `[Formalism.L2.Pj.vV]`.
+-/
 theorem pjSys_val_one {la : HeightOneSpectrum (𝓞 c.F)} (x : (pjSys Xo c).Pt la) : (pjSys Xo c).val x 1 = 0 := by
   obtain ⟨q, T, io, e, ho, y, hy, eta, heta, rfl⟩ := x
   show Formalism.L2.Pj.nval T.V e (Formalism.L2.Pj.evI y 1) = 0
@@ -135,6 +174,19 @@ theorem pjSys_val_one {la : HeightOneSpectrum (𝓞 c.F)} (x : (pjSys Xo c).Pt l
 
 set_option synthInstance.maxHeartbeats 200000 in
 
+/- English proof (translation)
+Establish `hp0 : (p : c.F) ≠ 0` using `by exact_mod_cast hp.out.ne_zero`. Establish `hres : Formalism.L2.Pj.resCharOf la = p`. Assume the negation of the conclusion as `h`. Use `Formalism.L2.Pj.Crude.crv_not_mem la (fun hd => h ?_) hla` and prove the remaining obligations. Conclude with `(Nat.prime_dvd_prime_iff_eq (Formalism.L2.Pj.Crude.resCharOf_prime la) hp.out).1 hd`.
+
+Establish `hv : Ref.vl la (p : c.F) = ramOverZ la`. Rewrite using `[← hres]`. Conclude with `Formalism.L2.Pj.Crude.crv_vLa_char la`. Establish `he : 0 < ramOverZ la`. Establish `h1 : la.valuation c.F (p : c.F) < 1`.
+
+Rewrite using `[← map_natCast (algebraMap (𝓞 c.F) c.F)]`. Conclude with `(la.valuation_lt_one_iff_mem _).2 hla`. Establish `h2` using `(WithZero.log_lt_log ((la.valuation c.F).ne_zero_iff.2 hp0) one_ne_zero).2 h1`. Rewrite `h2` using `[WithZero.log_one]`. Establish `h3 : (0 : ℤ) < Ref.vl la (p : c.F)` using `by unfold Ref.vl; omega`.
+
+Rewrite `h3` using `[hv]`. Conclude with `h3` after adjusting the coercions. Apply the tactic sequence `have h3 : ∀ j, ex D 0 0 j = 0 := fun j => by cases j <;> rfl`. Establish `hC : ∀ a : ℤ, IsMultiHomog (C a : MRing RM.ι) 0` using `fun a m hm k => by classical`. Establish `: m = 0`.
+
+Assume the negation of the conclusion as `h`. Conclude with `mem_support_iff.1 hm (by rw [coeff_C, if_neg (Ne.symm h)])`. Simplify using `[this]`. Use `⟨p, ⟨0, 0, C (p : ℤ), C 1, hC _, hC _, fun _ => by simp, ?_, by simp, by simp⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Fr.rd_smul, Fr.rd_one]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[(pjSys Xo c).val_smul x _ _ hp0, pjSys_val_one, add_zero, hv, isNormOfVal_coe hp.out.one_le he _ (Finset.prod_nonneg fun j _ => by rw [h3, pow_zero]; exact zero_le_one)]`. Establish `he' : (ramOverZ la : ℝ) ≠ 0` using `by exact_mod_cast he.ne'`. Simplify using `only [h3, pow_zero, Finset.prod_const_one, mul_one, Int.cast_natCast, div_self he', Real.rpow_neg_one]`. Rewrite using `[← map_natCast (algebraMap ℚ_[p] (PadicAlgCl p)), norm_algebraMap', Padic.norm_p]`.
+-/
 theorem readsSecFin_prime (Fr : GenFrame Or) {p : ℕ} [hp : Fact p.Prime] (z : (Σ k, RM.ι k) → PadicAlgCl p)
     {la : HeightOneSpectrum (𝓞 c.F)} (hla : (p : 𝓞 c.F) ∈ la.asIdeal) (x : (pjSys Xo c).Pt la) (t : Ix D → ℝ) :
     ∃ v : PadicAlgCl p, HasVal RM.y 0 (Fr.rd ((p : c.F) • 1)) z v ∧

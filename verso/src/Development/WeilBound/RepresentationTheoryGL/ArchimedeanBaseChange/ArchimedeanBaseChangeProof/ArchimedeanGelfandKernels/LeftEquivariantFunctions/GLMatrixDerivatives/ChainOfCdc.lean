@@ -16,17 +16,29 @@ variable {n : ℕ}
 
 def mulRL (c : Mat n) : Mat n →L[ℝ] Mat n := LinearMap.toContinuousLinearMap (LinearMap.mulRight ℝ c)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mulRL_apply (c y : Mat n) : mulRL c y = y * c := rfl
 
 def mulLRL (a c : Mat n) : Mat n →L[ℝ] Mat n :=
   LinearMap.toContinuousLinearMap ((LinearMap.mulLeft ℝ a).comp (LinearMap.mulRight ℝ c))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mulLRL_apply (a c y : Mat n) : mulLRL a c y = a * (y * c) := rfl
 
+/- English proof (translation)
+Simplify using `only [GLs, Set.mem_ofPred_eq, Matrix.det_mul] at *`. Conclude with `mul_ne_zero hx hy`.
+-/
 theorem mem_GLs_mul {x y : Mat n} (hx : x ∈ GLs n) (hy : y ∈ GLs n) : x * y ∈ GLs n := by
   simp only [GLs, Set.mem_ofPred_eq, Matrix.det_mul] at *
   exact mul_ne_zero hx hy
 
+/- English proof (translation)
+Simplify using `only [GLs, Set.mem_ofPred_eq]`. Introduce `h`. Use `congrArg Matrix.det (unit_star_mul k)` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h, mul_zero, Matrix.det_one]`. Conclude with `zero_ne_one this`.
+-/
 theorem unit_mem (k : Matrix.unitaryGroup (Fin n) ℂ) : k.1 ∈ GLs n := by
   simp only [GLs, Set.mem_ofPred_eq]
   intro h
@@ -34,6 +46,9 @@ theorem unit_mem (k : Matrix.unitaryGroup (Fin n) ℂ) : k.1 ∈ GLs n := by
   rw [Matrix.det_mul, h, mul_zero, Matrix.det_one] at this
   exact zero_ne_one this
 
+/- English proof (translation)
+Simplify using `only [GLs, Set.mem_ofPred_eq]`. Introduce `h`. Use `congrArg Matrix.det (unit_mul_star k)` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h, mul_zero, Matrix.det_one]`. Conclude with `zero_ne_one this`.
+-/
 theorem unit_star_mem (k : Matrix.unitaryGroup (Fin n) ℂ) : (k.1)ᴴ ∈ GLs n := by
   simp only [GLs, Set.mem_ofPred_eq]
   intro h
@@ -41,10 +56,18 @@ theorem unit_star_mem (k : Matrix.unitaryGroup (Fin n) ℂ) : (k.1)ᴴ ∈ GLs n
   rw [Matrix.det_mul, h, mul_zero, Matrix.det_one] at this
   exact zero_ne_one this
 
+/- English proof (translation)
+Rewrite using `[← Matrix.star_eq_conjTranspose]`. Both sides reduce to the same expression.
+-/
 theorem inv_val (k : Matrix.unitaryGroup (Fin n) ℂ) : (k⁻¹ : Matrix.unitaryGroup (Fin n) ℂ).1 = (k.1)ᴴ := by
   rw [← Matrix.star_eq_conjTranspose]
   rfl
 
+/- English proof (translation)
+Establish `e` using `hEq.fderiv_eq (𝕜 := ℝ)`. Establish `h1 : HasFDerivAt (fun y => F (y * c)) ((fderiv ℝ F (g * c)).comp (mulRL c)) g`. Conclude with `hF.hasFDerivAt.comp g (mulRL c).hasFDerivAt`. Establish `h2 : HasFDerivAt (fun y => Φ (F y)) (Φ.comp (fderiv ℝ F g)) g` using `Φ.hasFDerivAt.comp g hF'.hasFDerivAt`. Rewrite `e` using `[h1.fderiv, h2.fderiv]`.
+
+Use `congrArg (fun L : Mat n →L[ℝ] W => L Z) e` as an intermediate fact. Simplify using `using this`.
+-/
 theorem fderiv_right {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] (F : Mat n → W) (c g : Mat n) (Φ : W →L[ℝ] W)
     (hF : DifferentiableAt ℝ F (g * c)) (hF' : DifferentiableAt ℝ F g)
     (hEq : (fun y => F (y * c)) =ᶠ[nhds g] fun y => Φ (F y)) (Z : Mat n) :
@@ -62,28 +85,55 @@ section Cx
 variable {lam : Fin n → ℤ} {E : KMod n} {Fr : Mat n → (E.V →L[ℂ] E.V)} {ε ι : Mat n →ₗ[ℝ] (E.V →L[ℂ] E.V)}
   {S : ℝ → (E.V →L[ℂ] E.V)} {Γ T : E.V →L[ℂ] E.V}
 
+/- English proof (translation)
+Rewrite using `[← inv_val, h.onK]`.
+-/
 theorem fr_star (h : CxData lam E Fr ε ι S Γ T) (k : Matrix.unitaryGroup (Fin n) ℂ) : Fr (k.1)ᴴ = E.ρ k⁻¹ := by
   rw [← inv_val, h.onK]
 
+/- English proof (translation)
+Rewrite using `[← map_mul, mul_inv_cancel, map_one]`.
+-/
 theorem rho_mul_inv (k : Matrix.unitaryGroup (Fin n) ℂ) : E.ρ k * E.ρ k⁻¹ = 1 := by
   rw [← map_mul, mul_inv_cancel, map_one]
 
+/- English proof (translation)
+Use `h.frε (k.1)ᴴ (unit_star_mem k) X hX` as an intermediate fact. Rewrite `this` using `[fr_star h, Matrix.conjTranspose_conjTranspose]`. Then use the resulting hypothesis.
+-/
 theorem eps_rho_inv (h : CxData lam E Fr ε ι S Γ T) (k : Matrix.unitaryGroup (Fin n) ℂ) (X : Mat n) (hX : X.IsHermitian) :
     ε X * E.ρ k⁻¹ = E.ρ k⁻¹ * ε (k.1 * X * (k.1)ᴴ) := by
   have := h.frε (k.1)ᴴ (unit_star_mem k) X hX
   rwa [fr_star h, Matrix.conjTranspose_conjTranspose] at this
 
+/- English proof (translation)
+Use `h.frε k.1 (unit_mem k) Y hY` as an intermediate fact. Rewrite `this` using `[h.onK]`. Then use the resulting hypothesis.
+-/
 theorem eps_rho (h : CxData lam E Fr ε ι S Γ T) (k : Matrix.unitaryGroup (Fin n) ℂ) (Y : Mat n) (hY : Y.IsHermitian) :
     ε Y * E.ρ k = E.ρ k * ε ((k.1)ᴴ * Y * k.1) := by
   have := h.frε k.1 (unit_mem k) Y hY
   rwa [h.onK] at this
 
+/- English proof (translation)
+The claim follows from `(h.smooth.differentiableOn (by simp)).differentiableAt (isOpen_GLs.mem_nhds hx)`.
+-/
 theorem fr_diff (h : CxData lam E Fr ε ι S Γ T) {x : Mat n} (hx : x ∈ GLs n) : DifferentiableAt ℝ Fr x :=
   (h.smooth.differentiableOn (by simp)).differentiableAt (isOpen_GLs.mem_nhds hx)
 
+/- English proof (translation)
+Simplify using `[GLs]`.
+-/
 theorem one_mem_GLs : (1 : Mat n) ∈ GLs n := by
   simp [GLs]
 
+/- English proof (translation)
+Use `set L : (E.V →L[ℂ] E.V) →L[ℝ] (E.V →L[ℂ] E.V) := (ContinuousLinearMap.mulLeftRight ℂ (E.V →L[ℂ] E.V) (E.ρ k⁻¹) (E.ρ k)).restrictScalars ℝ with hL`. Establish `hEq : (fun y => Fr ((k.1)ᴴ * (y * k.1))) =ᶠ[nhds (1 : Mat n)] fun y => L (Fr y)` using `by filter_upwards [isOpen_GLs.mem_nhds (one_mem_GLs (n := n))] with y hy`. Rewrite using `[h.mul _ (unit_star_mem k) _ (mem_GLs_mul hy (unit_mem k)), h.mul _ hy _ (unit_mem k), fr_star h, h.onK]`. Simplify using `[hL, ContinuousLinearMap.mulLeftRight_apply, mul_assoc]`. Establish `e` using `hEq.fderiv_eq (𝕜 := ℝ)`.
+
+Establish `hpt : (k.1)ᴴ * ((1 : Mat n) * k.1) = 1` using `by rw [Matrix.one_mul, unit_star_mul]`. Establish `h1 : HasFDerivAt (fun y => Fr ((k.1)ᴴ * (y * k.1))) ((fderiv ℝ Fr 1).comp (mulLRL (k.1)ᴴ k.1)) 1`. Establish `hd` using `(fr_diff h (one_mem_GLs (n := n))).hasFDerivAt`. Rewrite `hd` using `[← hpt]`. Use `hd.comp (1 : Mat n) (mulLRL (k.1)ᴴ k.1).hasFDerivAt` as an intermediate fact.
+
+Rewrite `this` using `[hpt]`. Conclude with `this`. Establish `h2 : HasFDerivAt (fun y => L (Fr y)) (L.comp (fderiv ℝ Fr 1)) 1` using `L.hasFDerivAt.comp (1 : Mat n) (fr_diff h (one_mem_GLs (n := n))).hasFDerivAt`. Rewrite `e` using `[h1.fderiv, h2.fderiv]`. Use `congrArg (fun M : Mat n →L[ℝ] (E.V →L[ℂ] E.V) => M Y) e` as an intermediate fact.
+
+Simplify `this` using `[hL, ContinuousLinearMap.mulLeftRight_apply]`.
+-/
 theorem dFr_conj (h : CxData lam E Fr ε ι S Γ T) (k : Matrix.unitaryGroup (Fin n) ℂ) (Y : Mat n) :
     fderiv ℝ Fr 1 ((k.1)ᴴ * (Y * k.1)) = E.ρ k⁻¹ * fderiv ℝ Fr 1 Y * E.ρ k := by
   set L : (E.V →L[ℂ] E.V) →L[ℝ] (E.V →L[ℂ] E.V) :=

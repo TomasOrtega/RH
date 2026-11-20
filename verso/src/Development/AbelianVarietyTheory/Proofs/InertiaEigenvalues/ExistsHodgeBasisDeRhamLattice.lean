@@ -16,6 +16,45 @@ noncomputable section
 
 namespace GlobalTheory.HodgeEx
 
+/- English proof (translation)
+Introduce `l _ K P AI T C hC ξ hξ d ρ hDR`. Use `set M : ↥(GK K) → Matrix (Fin d) (Fin d) P.R.BdR := fun g => (ρ g).val.map (fun z : ℤ_[l] => algebraMap ℚ_[l] P.R.BdR (z : ℚ_[l])) with hM`. Establish `hKact : ∀ (g : ↥(GK K)) (k : ↥K.1) (v : P.R.BdR), P.actQdR (g : GQ l) (algebraMap ↥K.1 P.R.BdR k * v) = algebraMap ↥K.1 P.R.BdR k * P.actQdR (g : GQ l) v`. Introduce `g k v`. Rewrite using `[← P.PD_actdR, ← P.PD_actdR, map_mul, AlgEquiv.commutes]`.
+
+Set `Iv : Submodule ↥K.1 (Fin d → P.R.BdR)` to `{ carrier := {c | ∀ g : ↥(GK K), M g *ᵥ (fun i => P.actQdR (g : GQ l) (c i)) = c} add_mem' := by`. Introduce `u v hu hv g`. Simplify using `only [Set.mem_setOf_eq] at hu hv ⊢`. Establish `: (fun i => P.actQdR (g : GQ l) ((u + v) i)) = (fun i => P.actQdR (g : GQ l) (u i)) + (fun i => P.actQdR (g : GQ l) (v i))`. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.mulVec_add, hu g, hv g]`. Use the proof step `zero_mem' := by`. Introduce `g`. Simplify using `only [Set.mem_setOf_eq, Pi.zero_apply, map_zero]`.
+
+Conclude with `Matrix.mulVec_zero _`. Use the proof step `smul_mem' := by`. Introduce `k u hu g`. Simplify using `only [Set.mem_setOf_eq] at hu ⊢`. Establish `: (fun i => P.actQdR (g : GQ l) ((k • u) i)) = k • (fun i => P.actQdR (g : GQ l) (u i))`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, Algebra.smul_def, hKact]`. Rewrite using `[this, Matrix.mulVec_smul, hu g] }`. Establish `hmemIv : ∀ c, c ∈ Iv ↔ ∀ g : ↥(GK K), M g *ᵥ (fun i => P.actQdR (g : GQ l) (c i)) = c` using `fun c => Iff.rfl`. Take `⟨x, hxli, hxinv, hxspan⟩` from `GlobalTheory.T.exists_invariant_basis_of_isDeRham_lattice l P AI T K d ρ hDR`.
+
+Use `set D : Submodule ↥K.1 (Fin d → P.R.BdR) := Submodule.span ↥K.1 (Set.range x) with hD`. Establish `hDIv : D ≤ Iv` using `Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact (hmemIv _).2 (hxinv j))`. Establish `hIvD : ∀ c, c ∈ Iv → c ∈ D` using `fun c hc => hxspan c hc`. Use `haveI : FiniteDimensional ↥K.1 D := FiniteDimensional.span_of_finite ↥K.1 (Set.finite_range x)`. Establish `hfr : Module.finrank ↥K.1 D = d`.
+
+Rewrite using `[hD, finrank_span_eq_card hxli, Fintype.card_fin]`. Set `F : ℤ → Submodule ↥K.1 (Fin d → P.R.BdR)` to `fun a => Submodule.pi Set.univ (fun _ => (P.PD K).Fil a)`. Establish `hmemF : ∀ a v, v ∈ F a ↔ ∀ i, v i ∈ (P.PD K).Fil a` using `fun a v => by`. Simplify using `[F, Submodule.mem_pi]`. Establish `hFil : Antitone (P.PD K).Fil` using `antitone_int_of_succ_le (P.PD K).Fil_anti`.
+
+Establish `hF : Antitone F` using `fun a b hab v hv => (hmemF _ _).2 fun i => hFil hab ((hmemF _ _).1 hv i)`. Establish `hex : ∀ v ∈ D, ∃ a, v ∈ F a`. Introduce `v _`. Use `choose a ha using fun i => (P.PD K).Fil_exh (v i)`. Use `⟨-∑ i, |a i|, (hmemF _ _).2 fun i => hFil ?_ (ha i)⟩` and prove the remaining obligations.
+
+Establish `h1 : |a i| ≤ ∑ j, |a j|` using `Finset.single_le_sum (f := fun j => |a j|) (fun j _ => abs_nonneg _) (Finset.mem_univ i)`. Establish `h2` using `neg_abs_le (a i)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsep : ∀ v ∈ D, (∀ a, v ∈ F a) → v = 0` using `fun v _ hv =>`. Use function extensionality and compare the values at `fun i => (P.PD K).Fil_sep (v i) fun a => (hmemF a v).1 (hv a) i`.
+
+Take `⟨b0, h0, hbF0, hbrep0⟩` from `GlobalTheory.T.exists_filtration_adapted_basis_of_subspace D F hF hex hsep`. Use `set e := finCongr hfr`. Use `set b := b0.reindex e with hb`. Use `set h : Fin d → ℤ := fun j => h0 (e.symm j) with hh`. Establish `hbF : ∀ j, (b j : Fin d → P.R.BdR) ∈ F (h j) ∧ (b j : Fin d → P.R.BdR) ∉ F (h j + 1)` using `fun j => by`.
+
+Rewrite using `[hb, Module.Basis.reindex_apply]`. Conclude with `hbF0 _`. Establish `hbrep : ∀ (a : ℤ) (v : D), (v : Fin d → P.R.BdR) ∈ F a → ∀ j, b.repr v j ≠ 0 → a ≤ h j`. Introduce `a v hv j hj`. Rewrite `hj` using `[hb, Module.Basis.repr_reindex_apply]`.
+
+Conclude with `hbrep0 a v hv _ hj`. Establish `hbinv : ∀ j (g : ↥(GK K)), M g *ᵥ (fun i => P.actQdR (g : GQ l) ((b j : Fin d → P.R.BdR) i)) = (b j : Fin d → P.R.BdR)` using `fun j => (hmemIv _).1 (hDIv (b j).2)`. Establish `hspan : ∀ y : Fin d → P.R.BdR, (∀ i, y i ∈ (P.PD K).Fil 0) → ∃ c : Fin d → P.R.BdR, (∀ j, c j ∈ (P.PD K).Fil (-h j)) ∧ y = ∑ j, c j • (b j : Fin d → P.R.BdR)`. Introduce `y hy`. Take `⟨m, k, bb, z, hz, rfl⟩` from `GlobalTheory.T.deRham_filtered_comparison_coordinates l P AI T K d ρ hDR 0 y hy`.
+
+Establish `hzD : ∀ r, z r ∈ D` using `fun r => hIvD _ ((hmemIv _).2 (hz r).1)`. Set `cf : Fin m → Fin d → ↥K.1` to `fun r j => b.repr ⟨z r, hzD r⟩ j`. Use `⟨fun j => ∑ r, cf r j • bb r, fun j => ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.sum_mem _ fun r _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : cf r j = 0`.
+
+Rewrite using `[hc, zero_smul]`. Conclude with `zero_mem _`. Establish `hkr` using `hbrep (k r) ⟨z r, hzD r⟩ ((hmemF _ _).2 (hz r).2.1) j hc`. Use `Submodule.smul_mem _ _ (hFil ?_ (hz r).2.2)` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hexp : ∀ r, z r = ∑ j, cf r j • (b j : Fin d → P.R.BdR)` using `fun r => by`. Use `congrArg Subtype.val (b.sum_repr ⟨z r, hzD r⟩)` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul] at this`. Conclude with `this.symm`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Use `conv_lhs => enter [2, r]`. Rewrite using `[hexp r]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Simplify using `only [Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨H, hH⟩` from `GlobalTheory.T.hodge_structure_of_adapted_invariant_family l K P AI T C hC ξ hξ d ρ (fun j => (b j : Fin d → P.R.BdR)) h hbinv (fun j i => (hmemF _ _).1 (hbF j).1 i) hspan`.
+
+Use `⟨H, fun N ⟨h1, h2⟩ i => ?_⟩` and prove the remaining obligations. Rewrite using `[hH i]`. Establish `hne : (b i : Fin d → P.R.BdR) ≠ 0` using `fun h0' => b.ne_zero i (Subtype.ext h0')`. Take `⟨hlo, hhi⟩` from `GlobalTheory.T.deRham_filtration_bounds_invariant_coordinates l P K d ρ N h1 h2 _ (hbinv i) hne`. Rewrite using `[abs_le]`.
+
+Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion as `hlt push_neg at hlt`. Conclude with `(hbF i).2 (hF (show h i + 1 ≤ -(N : ℤ) by omega) ((hmemF _ _).2 hlo))`. Assume the negation of the conclusion as `hlt push_neg at hlt`. Conclude with `hhi ((hmemF _ _).1 (hF (show (N : ℤ) + 1 ≤ h i by omega) (hbF i).1))`.
+-/
 theorem exists_hodge : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (C : Core l), Fits T C → ∀ (ξ : Ainf l), Ideal.span {ξ} = RingHom.ker (Per.θ l) → ∀ (d : ℕ) (ρ : ↥(GK K) →* GL (Fin d) ℤ_[l]), Formalism.MainNotions.N.IsDR (P.PD K) (qRep ρ) → ∃ H : Hodge C ξ (fun g => (ρ g).val.map (zOm l)) K, ∀ N : ℕ, (DdR (P.PD K) (qRep ρ) ≤ FilV (P.PD K) (LL := ℚ_[l]) (V := Fin d → ℚ_[l]) (-(N : ℤ)) ∧ DdR (P.PD K) (qRep ρ) ⊓ FilV (P.PD K) (LL := ℚ_[l]) (V := Fin d → ℚ_[l]) ((N : ℤ) + 1) = ⊥) → ∀ i, |(H.p i : ℤ) - H.q| ≤ N := by
   intro l _ K P AI T C hC ξ hξ d ρ hDR
   set M : ↥(GK K) → Matrix (Fin d) (Fin d) P.R.BdR :=

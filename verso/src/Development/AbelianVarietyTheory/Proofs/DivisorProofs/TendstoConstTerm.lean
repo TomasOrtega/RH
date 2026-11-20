@@ -13,6 +13,37 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.EisCT.LimCT
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r X Y L a h Eis c hS hP k U H hU hHd hHE μ 𝓕 hμ h𝓕 h1 g`. Take `⟨V, hV, C, N, hbd⟩` from `GlobalTheory.T.eisenstein_derivative_bound_setting F E σ n J r X Y L a h Eis c hS hP k U H hU hHd hHE`. Use `set ρ : ℂ := ((n : ℂ) - 1) / 2 with hρ`. Take `⟨hCM, -, hJ, -, hW, -, -⟩` from `hS`. Establish `hσ : ∀ x, σ (σ x) = x` using `sigma_sigma hCM`.
+
+Establish `hC : GlobalTheory.UAut.IsIsoCols σ J (col0 X)`. Establish `e : col0 X = X.submatrix id (Fin.castLE (show 1 ≤ r + 1 by omega))`. Use extensionality with `i j`. Rewrite using `[Subsingleton.elim j 0]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `GlobalTheory.UAut.isIsoCols_of_isWittFrame hW hσ hJ _`. Take `⟨K, hK, hcov⟩` from `GlobalTheory.UAut.cocompact_unipRad hCM hJ hC`. Take `⟨M, hM⟩` from `hK.exists_bound_of_continuousOn ((NNReal.continuous_coe.comp ((GlobalTheory.AdelicU.continuous_height_GAd σ J).comp continuous_subtype_val)) : Continuous fun u : unipRad σ J (col0 X) => (height σ J u.1 : ℝ)).continuousOn`. Take `⟨-, -, -, hcont, -⟩` from `hP`.
+
+Take `⟨k₀, U₀, H₀, hU₀, hH₀E, hH₀S, -⟩` from `hcont ρ`. Establish `hWn : U ∩ U₀ ∩ V ∈ 𝓝 ρ` using `inter_mem (inter_mem hU hU₀) hV`. Establish `hEis : ∀ s ∈ U₀, s ≠ ρ → ∀ g', Eis s g' = H₀ s g' / (s - ρ) ^ k₀` using `fun s hs hne g' => by`. Rewrite using `[hH₀E s hs hne g', mul_div_cancel_left₀ _ (pow_ne_zero _ (sub_ne_zero.2 hne))]`. Establish `hHs : ∀ s ∈ U ∩ U₀ ∩ V, s ≠ ρ → ∀ g', H s g' = (s - ρ) ^ k * (H₀ s g' / (s - ρ) ^ k₀)` using `fun s hs hne g' => by`.
+
+Rewrite using `[hHE s hs.1.1 hne g', hEis s hs.1.2 hne g']`. Establish `hcontS : ∀ s ∈ U ∩ U₀ ∩ V, s ≠ ρ → Continuous (H s)` using `fun s hs hne => by`. Establish `: H s = fun g' => (s - ρ) ^ k * (H₀ s g' / (s - ρ) ^ k₀)` using `funext (hHs s hs hne)`. Rewrite using `[this]`. Conclude with `continuous_const.mul ((hH₀S s hs.1.2).cont.div_const _)`.
+
+Establish `hlim : ∀ g', Tendsto (fun s => H s g') (𝓝[≠] ρ) (𝓝 (H ρ g'))` using `fun g' => (((hHd g').continuousOn.continuousAt hU).tendsto).mono_left nhdsWithin_le_nhds`. Establish `hev : ∀ᶠ s in 𝓝[≠] ρ, s ∈ U ∩ U₀ ∩ V ∧ s ≠ ρ` using `(eventually_nhdsWithin_of_eventually_nhds hWn).and self_mem_nhdsWithin`. Establish `hinvS : ∀ s ∈ U ∩ U₀ ∩ V, s ≠ ρ → ∀ γ ∈ ratPts σ J, ∀ g', H s (γ * g') = H s g'` using `fun s hs hne γ hγ g' => by rw [hHs s hs hne, hHs s hs hne, (hH₀S s hs.1.2).left γ hγ]`. Establish `hinv : ∀ s ∈ U ∩ U₀ ∩ V, ∀ γ ∈ ratPts σ J, ∀ g', H s (γ * g') = H s g'`. Introduce `s hs γ hγ g'`.
+
+Distinguish the cases in `hne : s = ρ`. Substitute `hne` using the available equality. Conclude with `tendsto_nhds_unique ((hlim (γ * g')).congr' (hev.mono fun t ht => hinvS t ht.1 ht.2 γ hγ g')) (hlim g')`. Conclude with `hinvS s hs hne γ hγ g'`. Establish `hC0 : 0 ≤ C`.
+
+Establish `h1'` using `(norm_nonneg _).trans (hbd ρ (mem_of_mem_nhds hV) g)`. Establish `hp : 0 < (height σ J g : ℝ) ^ N` using `pow_pos (lt_of_lt_of_le one_pos (by exact_mod_cast GlobalTheory.AdelicU.one_le_height σ J g)) N`. Conclude with `le_of_mul_le_mul_right (by simpa using h1') hp`. Establish `hM0 : 0 ≤ M`. Take `⟨γ, -, hγK⟩` from `hcov 1`.
+
+Conclude with `(norm_nonneg _).trans (hM _ hγK)`. Use `set B : ℝ := C * (M * (height σ J g : ℝ)) ^ N with hB`. Establish `hbound : ∀ s ∈ U ∩ U₀ ∩ V, ∀ u : unipRad σ J (col0 X), ‖H s (u.1 * g)‖ ≤ B`. Introduce `s hs u`. Take `⟨γ, hγ, hγK⟩` from `hcov u`.
+
+Establish `e1 : H s (u.1 * g) = H s ((γ * u).1 * g)`. Rewrite using `[Subgroup.coe_mul, mul_assoc, hinv s hs _ (Subgroup.mem_subgroupOf.1 hγ)]`. Rewrite using `[e1]`. Use `(hbd s hs.2 _).trans (mul_le_mul_of_nonneg_left ?_ hC0)` and prove the remaining obligations. Use `pow_le_pow_left₀ (NNReal.coe_nonneg _) ?_ N` and prove the remaining obligations.
+
+Establish `h2 : (height σ J ((γ * u).1 * g) : ℝ) ≤ (height σ J (γ * u).1 : ℝ) * height σ J g`. Conclude with `GlobalTheory.AdelicU.height_mul_le σ J _ _` after adjusting the coercions. Establish `h3 : (height σ J (γ * u).1 : ℝ) ≤ M`. Use `hM _ hγK` as an intermediate fact. Simplify using `only [Function.comp_apply] at this`.
+
+Rewrite `this` using `[Real.norm_of_nonneg (NNReal.coe_nonneg _)]`. Then use the resulting hypothesis. Conclude with `h2.trans (mul_le_mul_of_nonneg_right h3 (NNReal.coe_nonneg _))`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := isFiniteMeasure_restrict.2 (by rw [h1]; exact ENNReal.one_ne_top)`. Establish `hmeasS : ∀ s ∈ U ∩ U₀ ∩ V, s ≠ ρ → AEStronglyMeasurable (fun u : unipRad σ J (col0 X) => H s (u.1 * g)) (μ.restrict 𝓕)` using `fun s hs hne => ((hcontS s hs hne).comp ((continuous_subtype_val).mul continuous_const)).aestronglyMeasurable`. Establish `hmeasρ : AEStronglyMeasurable (fun u : unipRad σ J (col0 X) => H ρ (u.1 * g)) (μ.restrict 𝓕)` using `by classical`.
+
+Set `f : ℂ → unipRad σ J (col0 X) → ℂ` to `fun s => if s ∈ U ∩ U₀ ∩ V ∧ s ≠ ρ then fun u => H s (u.1 * g) else 0`. Use `aestronglyMeasurable_of_tendsto_ae (𝓝[≠] ρ) (f := f) (fun s => ?_) (.of_forall fun u => ?_)` and prove the remaining obligations. Distinguish the cases in `hs : s ∈ U ∩ U₀ ∩ V ∧ s ≠ ρ`. Simplify using `only [f, if_pos hs]`. Conclude with `hmeasS s hs.1 hs.2`.
+
+Simplify using `only [f, if_neg hs]`. Conclude with `aestronglyMeasurable_const`. Use `(hlim (u.1 * g)).congr' (hev.mono fun t ht => ?_)` and prove the remaining obligations. Simplify using `only [f, if_pos ht]`. Use `⟨(integrable_const B).mono' hmeasρ (.of_forall fun u => hbound ρ (mem_of_mem_nhds hWn) u), ?_⟩` and prove the remaining obligations.
+
+Use `tendsto_integral_filter_of_dominated_convergence (fun _ => B) (hev.mono fun s hs => hmeasS s hs.1 hs.2) (hev.mono fun s hs => .of_forall fun u => hbound s hs.1 u) (integrable_const B) (.of_forall fun u => hlim (u.1 * g))` and prove the remaining obligations.
+-/
 theorem tendsto_constTerm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E))
     (a : GL (Fin n) (AF F ⊗[F] E)) (h : GAd σ J → ℝ) (Eis : ℂ → GAd σ J → ℂ) (c : ℂ → ℂ),

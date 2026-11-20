@@ -7,6 +7,11 @@ namespace GlobalTheory.Nef.PathJet
 
 open PowerSeries
 
+/- English proof (translation)
+Use `letI := α.toAlgebra`. Use `letI := β'.toAlgebra`. Use `letI := (π.comp β').toAlgebra`. Use `haveI : Algebra.FormallySmooth B A := hα`. Set `π₁ : R' →ₐ[B] O` to `{ π with commutes' := fun _ => rfl }`.
+
+Set `χ₁ : A →ₐ[B] O` to `{ χ with commutes' := fun b => RingHom.congr_fun hc b }`. Establish `hn : IsNilpotent (RingHom.ker (π₁ : R' →+* O))` using `⟨2, hk⟩`. Use `⟨(Algebra.FormallySmooth.liftOfSurjective χ₁ π₁ hs hn : A →+* R'), RingHom.ext fun a => ?_, RingHom.ext fun b => (Algebra.FormallySmooth.liftOfSurjective χ₁ π₁ hs hn).commutes b⟩` and prove the remaining obligations. Conclude with `Algebra.FormallySmooth.liftOfSurjective_apply χ₁ π₁ hs hn a`.
+-/
 theorem ringHom_lift_sqZero {B A O R' : Type} [CommRing B] [CommRing A] [CommRing O] [CommRing R'] (α : B →+* A)
     (hα : α.FormallySmooth) (π : R' →+* O) (hs : Function.Surjective π) (hk : RingHom.ker π ^ 2 = ⊥)
     (β' : B →+* R') (χ : A →+* O) (hc : χ.comp α = π.comp β') :
@@ -22,6 +27,9 @@ theorem ringHom_lift_sqZero {B A O R' : Type} [CommRing B] [CommRing A] [CommRin
     RingHom.ext fun b => (Algebra.FormallySmooth.liftOfSurjective χ₁ π₁ hs hn).commutes b⟩
   exact Algebra.FormallySmooth.liftOfSurjective_apply χ₁ π₁ hs hn a
 
+/- English proof (translation)
+Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton]`.
+-/
 theorem mk_eq_iff_X_pow_dvd {R : Type} [CommRing R] (k : ℕ) (x y : PowerSeries R) :
     Ideal.Quotient.mk (Ideal.span {(X : PowerSeries R) ^ k}) x =
       Ideal.Quotient.mk (Ideal.span {(X : PowerSeries R) ^ k}) y ↔ (X : PowerSeries R) ^ k ∣ x - y := by
@@ -40,6 +48,13 @@ noncomputable def quotRingHom {A B R : Type} [CommRing A] [CommRing B] [CommRing
     simpa using this
   map_add' f g := by rw [← map_add, mk_eq_iff_X_pow_dvd]; exact hφ.2.1 f g
 
+/- English proof (translation)
+Establish `hker : ∀ z ∈ RingHom.ker (Ideal.Quotient.factor hle), ∃ x, (X : PowerSeries R) ^ n ∣ x ∧ Ideal.Quotient.mk (Ideal.span {(X : PowerSeries R) ^ (n + 1)}) x = z`. Introduce `z hz`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Use `⟨x, ?_, rfl⟩` and prove the remaining obligations. Rewrite `hz` using `[RingHom.mem_ker, Ideal.Quotient.factor_mk, ← map_zero (Ideal.Quotient.mk _), mk_eq_iff_X_pow_dvd, sub_zero]`.
+
+Conclude with `hz`. Rewrite using `[pow_two, eq_bot_iff]`. Use `Ideal.mul_le.2 fun a ha b hb => ?_` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `hker a ha`. Take `⟨y, hy, rfl⟩` from `hker b hb`.
+
+Rewrite using `[Ideal.mem_bot, ← map_mul, ← map_zero (Ideal.Quotient.mk _), mk_eq_iff_X_pow_dvd, sub_zero]`. Establish `h2 : (X : PowerSeries R) ^ (n + n) ∣ x * y` using `by rw [pow_add]; exact mul_dvd_mul hx hy`. Conclude with `(pow_dvd_pow _ (by omega : n + 1 ≤ n + n)).trans h2`.
+-/
 theorem ker_factor_sq {R : Type} [CommRing R] (n : ℕ) (hn : 1 ≤ n)
     (hle : Ideal.span {(X : PowerSeries R) ^ (n + 1)} ≤ Ideal.span {(X : PowerSeries R) ^ n}) :
     RingHom.ker (Ideal.Quotient.factor hle) ^ 2 = ⊥ := by
@@ -59,6 +74,17 @@ theorem ker_factor_sq {R : Type} [CommRing R] (n : ℕ) (hn : 1 ≤ n)
   have h2 : (X : PowerSeries R) ^ (n + n) ∣ x * y := by rw [pow_add]; exact mul_dvd_mul hx hy
   exact (pow_dvd_pow _ (by omega : n + 1 ≤ n + n)).trans h2
 
+/- English proof (translation)
+Introduce `A B R _ _ _ π β hπ n hn φ hφ`. Establish `hle : Ideal.span {(X : PowerSeries R) ^ (n + 1)} ≤ Ideal.span {(X : PowerSeries R) ^ n}`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_span_singleton]`. Conclude with `pow_dvd_pow _ (Nat.le_succ n)`. Establish `hs : Function.Surjective (Ideal.Quotient.factor hle)`.
+
+Introduce `y`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `⟨_, Ideal.Quotient.factor_mk hle x⟩`. Establish `hc : (quotRingHom π β n φ hφ).comp π = (Ideal.Quotient.factor hle).comp ((Ideal.Quotient.mk _).comp ((C : R →+* PowerSeries R).comp β))`. Use extensionality with `b`.
+
+Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (φ (π b)) = Ideal.Quotient.factor hle (Ideal.Quotient.mk _ (C (β b)))`. Rewrite using `[Ideal.Quotient.factor_mk, mk_eq_iff_X_pow_dvd]`. Conclude with `hφ.2.2.2 b`. Take `⟨χ', h₁, h₂⟩` from `ringHom_lift_sqZero π hπ _ hs (ker_factor_sq n hn hle) _ _ hc`. Use `choose ψ hψ using fun f => Ideal.Quotient.mk_surjective (χ' f)`.
+
+Use `⟨ψ, ⟨fun f g => ?_, fun f g => ?_, ?_, fun b => ?_⟩, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[← mk_eq_iff_X_pow_dvd, map_mul, hψ, hψ, hψ, map_mul]`. Rewrite using `[← mk_eq_iff_X_pow_dvd, map_add, hψ, hψ, hψ, map_add]`. Rewrite using `[← mk_eq_iff_X_pow_dvd, map_one, hψ, map_one]`. Rewrite using `[← mk_eq_iff_X_pow_dvd, hψ, ← RingHom.comp_apply χ' π, h₂]`.
+
+Both sides reduce to the same expression. Rewrite using `[← mk_eq_iff_X_pow_dvd, ← Ideal.Quotient.factor_mk hle, hψ, ← RingHom.comp_apply, h₁]`. Both sides reduce to the same expression.
+-/
 theorem exists_lift_succ : ∀ (A B R : Type) [CommRing A] [CommRing B] [CommRing R] (π : B →+* A) (β : B →+* R), π.FormallySmooth → ∀ n : ℕ, 1 ≤ n → ∀ φ : A → PowerSeries R, GlobalTheory.Nef.PathJet.IsRingHomMod π β n φ → ∃ ψ : A → PowerSeries R, GlobalTheory.Nef.PathJet.IsRingHomMod π β (n + 1) ψ ∧ ∀ f, (PowerSeries.X : PowerSeries R) ^ n ∣ ψ f - φ f := by
   intro A B R _ _ _ π β hπ n hn φ hφ
   have hle : Ideal.span {(X : PowerSeries R) ^ (n + 1)} ≤ Ideal.span {(X : PowerSeries R) ^ n} := by

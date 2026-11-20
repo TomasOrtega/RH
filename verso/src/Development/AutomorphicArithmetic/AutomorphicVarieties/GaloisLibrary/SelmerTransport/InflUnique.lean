@@ -4,6 +4,35 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base
 
 set_option maxHeartbeats 200000 in
+/- English proof (translation)
+Introduce `k E Ω _ _ _ _ _ _ _ _ _ _ _ l _ D e`. Take `⟨hemb, -, -⟩` from `galEmbTop k E Ω`. Set `ψ : G E Ω →* galOf k E Ω` to `(galEmb k E Ω).codRestrict _ (galEmb_mem k E Ω)`. Establish `hsurj : Function.Surjective ψ`. Introduce and unpack `⟨τ, hτ⟩`.
+
+Use `⟨AlgEquiv.ofRingEquiv (f := τ.toRingEquiv) (fun x => hτ x), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `x`. Both sides reduce to the same expression. Set `Ψ : G E Ω ≃* galOf k E Ω` to `MulEquiv.ofBijective ψ ⟨fun a b h => hemb.injective (congrArg Subtype.val h), hsurj⟩`.
+
+Establish `hΨ : ∀ σ, Ψ σ = ⟨galEmb k E Ω σ, galEmb_mem k E Ω σ⟩` using `fun _ => rfl`. Establish `hcont : Continuous (fun u : galOf k E Ω => Ψ.symm u)`. Rewrite using `[hemb.continuous_iff]`. Establish `hc : (galEmb k E Ω) ∘ (fun u : galOf k E Ω => Ψ.symm u) = Subtype.val`. Use function extensionality and compare the values at `u`.
+
+Use `show ((Ψ (Ψ.symm u) : galOf k E Ω) : G k Ω) = u`. Rewrite using `[Ψ.apply_symm_apply]`. Rewrite using `[hc]`. Conclude with `continuous_subtype_val`. Establish `hEk : ∀ σ : G E Ω, LDataCardLeFinrank.qzG k Ω l e (galEmb k E Ω σ) = LDataCardLeFinrank.qzG E Ω l e σ`.
+
+Introduce `σ`. Establish `hχ : (cycZ k Ω l ^ (-e)).comp (galEmb k E Ω) = cycZ E Ω l ^ (-e)`. Use `MonoidHom.ext fun τ => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply]`. Simplify using `only [MonoidHom.zpow_apply]`.
+
+Both sides reduce to the same expression. Use `show scalRep (QZ l) (cycZ k Ω l ^ (-e)) (galEmb k E Ω σ) = scalRep (QZ l) (cycZ E Ω l ^ (-e)) σ`. Rewrite using `[← hχ]`. Both sides reduce to the same expression. Establish `hrep : ∀ σ : G E Ω, LDataCardLeFinrank.qzG k Ω l e (galEmb k E Ω σ) = qzTw D e (toGS Ω (D.S : Set (HeightOneSpectrum (𝓞 E))) σ)`.
+
+Introduce `σ`. Establish `h` using `DFunLike.congr_fun (LDataCardLeFinrank.qzTw_comp_toGS D e) σ`. Rewrite `h` using `[MonoidHom.comp_apply]`. Rewrite using `[hEk]`. Conclude with `h.symm`.
+
+Establish `hu : ∀ u : galOf k E Ω, (u : G k Ω) = galEmb k E Ω (Ψ.symm u)`. Introduce `u`. Use `conv_lhs => rw [← Ψ.apply_symm_apply u]`. Both sides reduce to the same expression. Establish `hTs : Function.Surjective (toGS Ω (D.S : Set (HeightOneSpectrum (𝓞 E))))` using `QuotientGroup.mk'_surjective _`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `x`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Set `f : galOf k E Ω → QZ l` to `fun u => (z : GS Ω (D.S : Set (HeightOneSpectrum (𝓞 E))) → QZ l) (toGS Ω (D.S : Set (HeightOneSpectrum (𝓞 E))) (Ψ.symm u))`. Establish `hf : f ∈ Z1U (LDataCardLeFinrank.qzG k Ω l e) (galOf k E Ω)`.
+
+Use `⟨z.2.1.comp ((continuous_toGS Ω (D.S : Set (HeightOneSpectrum (𝓞 E)))).comp hcont), ?_⟩` and prove the remaining obligations. Introduce `u v`. Use `show (z : GS Ω (D.S : Set (HeightOneSpectrum (𝓞 E))) → QZ l) (toGS Ω (D.S : Set (HeightOneSpectrum (𝓞 E))) (Ψ.symm (u * v))) = (z : GS Ω (D.S : Set (HeightOneSpectrum (𝓞 E))) → QZ l) (toGS Ω (D.S : Set (HeightOneSpectrum (𝓞 E))) (Ψ.symm u)) + ((LDataCardLeFinrank.qzG k Ω l e).com …`. Rewrite using `[map_mul, map_mul, z.2.2, MonoidHom.comp_apply, Subgroup.coe_subtype, hu u, hrep]`. Use `⟨Submodule.Quotient.mk ⟨f, hf⟩, z, ⟨f, hf⟩, rfl, rfl, ?_⟩` and prove the remaining obligations.
+
+Introduce `σ`. Use `show (z : GS Ω (D.S : Set (HeightOneSpectrum (𝓞 E))) → QZ l) (toGS Ω (D.S : Set (HeightOneSpectrum (𝓞 E))) (Ψ.symm ⟨galEmb k E Ω σ, _⟩)) = _`. Rewrite using `[← hΨ, Ψ.symm_apply_apply]`. Introduce and unpack `x x' y y' ⟨z1, w1, rfl, rfl, h1⟩ ⟨z2, w2, rfl, rfl, h2⟩`. Rewrite using `[mk_eq_mk, Submodule.Quotient.eq, Submodule.mem_comap, Submodule.coe_subtype, mem_coboundaries1]`.
+
+Apply `exists_congr` to reduce the goal to its premises. Introduce `m`. Prove the components needed by the constructor for the conclusion. Introduce `h u`. Take `⟨σ, rfl⟩` from `Ψ.surjective u`.
+
+Establish `h3` using `h (toGS Ω (D.S : Set (HeightOneSpectrum (𝓞 E))) σ)`. Rewrite `h3` using `[Submodule.coe_sub, Pi.sub_apply]`. Rewrite using `[hΨ, h1, h2, h3]`. Conclude with `congrArg (fun T => T m - m) (hrep σ).symm`. Introduce `h g`.
+
+Take `⟨σ, rfl⟩` from `hTs g`. Establish `h3` using `h (Ψ σ)`. Rewrite `h3` using `[hΨ, h1, h2]`. Rewrite using `[Submodule.coe_sub, Pi.sub_apply, h3]`. Conclude with `congrArg (fun T => T m - m) (hrep σ)`.
+-/
 theorem UpperTheory.V.Base.inflUnique :
     ∀ (k E Ω : Type) [Field k] [NumberField k] [Field E] [NumberField E] [Field Ω] [Algebra k E] [Algebra k Ω] [Algebra E Ω]
       [IsScalarTower k E Ω] [IsAlgClosure k Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (D : LData E Ω l) (e : ℤ),

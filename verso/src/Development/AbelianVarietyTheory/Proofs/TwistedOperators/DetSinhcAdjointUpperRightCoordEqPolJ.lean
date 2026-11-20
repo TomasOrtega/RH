@@ -13,29 +13,70 @@ noncomputable def pCoord (p q : ℕ) : (Fin p → Fin q → ℂ) →+ (PIx p q �
     cases a <;> cases b <;> simp [pY, pOf]
   map_add' B C := by funext ab; simp [pY_add]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pCoord_apply {p q : ℕ} (C : Fin p → Fin q → ℂ) (ab : PIx p q) :
     pCoord p q C ab = pY C ab.1.1 ab.1.2 := rfl
 
+/- English proof (translation)
+Simplify using `[pY, pOf]`.
+-/
 private lemma pY_inl_inr {p q : ℕ} (C : Fin p → Fin q → ℂ) (i : Fin p) (j : Fin q) :
     pY C (Sum.inl i) (Sum.inr j) = C i j := by
   simp [pY, pOf]
 
+/- English proof (translation)
+Simplify using `[pY, pOf]`.
+-/
 private lemma pY_inr_inl {p q : ℕ} (C : Fin p → Fin q → ℂ) (i : Fin p) (j : Fin q) :
     pY C (Sum.inr j) (Sum.inl i) = star (C i j) := by
   simp [pY, pOf]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp_all [sameBlock, pY, pOf]`.
+-/
 private lemma pY_eq_zero_of_sameBlock {p q : ℕ} (C : Fin p → Fin q → ℂ) (a b : Ix p q)
     (h : sameBlock a b) : pY C a b = 0 := by
   rcases a with a | a <;> rcases b with b | b <;> simp_all [sameBlock, pY, pOf]
 
+/- English proof (translation)
+Simplify using `[sameBlock]`.
+-/
 private lemma not_sameBlock_inl_inr {p q : ℕ} (i : Fin p) (j : Fin q) :
     ¬ sameBlock (Sum.inl i : Ix p q) (Sum.inr j) := by
   simp [sameBlock]
 
+/- English proof (translation)
+Simplify using `[sameBlock]`.
+-/
 private lemma not_sameBlock_inr_inl {p q : ℕ} (i : Fin p) (j : Fin q) :
     ¬ sameBlock (Sum.inr j : Ix p q) (Sum.inl i) := by
   simp [sameBlock]
 
+/- English proof (translation)
+Use `set M : Matrix (PIx p q) (PIx p q) ℂ := (sinhcAd Y).submatrix (Subtype.val : PIx p q → Ix p q × Ix p q) Subtype.val with hM`. Establish `hj : ∀ (t : ℝ) (x : Fin p → Fin q → ℂ), pCoord p q (t • x) = (t : ℂ) • pCoord p q x`. Introduce `t x`. Use function extensionality and compare the values at `ab`. Simplify using `only [pCoord_apply, pY_smul, Pi.smul_apply, Matrix.smul_apply, Complex.real_smul, smul_eq_mul]`.
+
+Establish `hspan : ∀ w : PIx p q → ℂ, ∃ a b : Fin p → Fin q → ℂ, w = pCoord p q a + Complex.I • pCoord p q b`. Introduce `w`. Set `u : Fin p → Fin q → ℂ` to `fun i j => w ⟨(Sum.inl i, Sum.inr j), not_sameBlock_inl_inr i j⟩`. Set `v : Fin p → Fin q → ℂ` to `fun i j => w ⟨(Sum.inr j, Sum.inl i), not_sameBlock_inr_inl i j⟩`. Use `⟨fun i j => (u i j + star (v i j)) / 2, fun i j => -Complex.I * (u i j - star (v i j)) / 2, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `⟨⟨a, b⟩, h⟩`. Apply the tactic sequence `rcases a with i | j <;> rcases b with j' | i'`. Conclude with `absurd (by simp [sameBlock]) h`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, pCoord_apply, pY_inl_inr]`. Apply the tactic sequence `apply Complex.ext <;> simp [u] <;> ring`.
+
+Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, pCoord_apply, pY_inr_inl]`. Apply the tactic sequence `apply Complex.ext <;> simp [v] <;> ring`. Conclude with `absurd (by simp [sameBlock]) h`. Establish `hinj : ∀ a b : Fin p → Fin q → ℂ, pCoord p q a + Complex.I • pCoord p q b = 0 → a = 0 ∧ b = 0`. Introduce `a b hab`.
+
+Establish `h1 : ∀ i j, a i j + Complex.I * b i j = 0` using `fun i j => by`. Use `congrFun hab ⟨(Sum.inl i, Sum.inr j), not_sameBlock_inl_inr i j⟩` as an intermediate fact. Simplify `this` using `[pCoord_apply, pY_inl_inr]`. Establish `h2 : ∀ i j, star (a i j) + Complex.I * star (b i j) = 0` using `fun i j => by`. Use `congrFun hab ⟨(Sum.inr j, Sum.inl i), not_sameBlock_inr_inl i j⟩` as an intermediate fact.
+
+Simplify `this` using `[pCoord_apply, pY_inr_inl]`. Establish `hre : ∀ i j, a i j = 0 ∧ b i j = 0`. Introduce `i j`. Establish `e1` using `congrArg Complex.re (h1 i j)`. Establish `e2` using `congrArg Complex.im (h1 i j)`.
+
+Establish `e3` using `congrArg Complex.re (h2 i j)`. Establish `e4` using `congrArg Complex.im (h2 i j)`. Simplify using `at e1 e2 e3 e4`. Apply the tactic sequence `constructor <;> apply Complex.ext <;> simp <;> linarith`. Conclude with `⟨funext fun i => funext fun j => (hre i j).1,`.
+
+Use function extensionality and compare the values at `fun i => funext fun j => (hre i j).2⟩`. Establish `hS : ∀ x, Matrix.toLin' M (pCoord p q x) = pCoord p q (sP Y x)`. Introduce `x`. Use function extensionality and compare the values at `ab`. Rewrite using `[Matrix.toLin'_apply, pCoord_apply, ← hY x]`.
+
+Simplify using `only [sAd, Matrix.of_apply, Matrix.mulVec, dotProduct, vecM, hM, Matrix.submatrix_apply, pCoord_apply]`. Rewrite using `[← Fintype.sum_subtype_add_sum_subtype (fun cd : Ix p q × Ix p q => ¬ sameBlock cd.1 cd.2)]`. Establish `hz : ∑ cd : {cd : Ix p q × Ix p q // ¬ ¬ sameBlock cd.1 cd.2}, sinhcAd Y (ab.1.1, ab.1.2) cd.1 * pY x cd.1.1 cd.1.2 = 0`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `cd _`.
+
+Rewrite using `[pY_eq_zero_of_sameBlock x _ _ (not_not.mp cd.2), mul_zero]`. Rewrite using `[hz, add_zero]`. Establish `key` using `det_complexification (Fin p → Fin q → ℂ) (PIx p q → ℂ) (pCoord p q) (sP Y) (Matrix.toLin' M) hj hspan hinj hS`. Rewrite `key` using `[LinearMap.det_toLin']`. Unfold `polJ`.
+
+Rewrite using `[← hM, key, Complex.ofReal_re]`.
+-/
 theorem det_sinhc_eq_polarJacobian (p q : ℕ) (Y : Mat p q)
     (hY : ∀ C : Fin p → Fin q → ℂ, sAd Y (pY C) = pY (sP Y C)) :
     LinearMap.det (sP Y) = polJ Y := by

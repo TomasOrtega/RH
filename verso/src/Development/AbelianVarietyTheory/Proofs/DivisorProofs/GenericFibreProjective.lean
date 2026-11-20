@@ -12,10 +12,20 @@ namespace GlobalTheory.GenericFibre
 
 open Limits
 
+/- English proof (translation)
+Substitute `ha hb` using the available equality. Conclude with `IsPullback.of_hasPullback _ _`.
+-/
 theorem pullback_isPullback_of_eq {X Y' Z : Scheme.{0}} (a a' : X ⟶ Z) (b b' : Y' ⟶ Z) (ha : a = a') (hb : b = b') :
     IsPullback (pullback.fst a b) (pullback.snd a b) a' b' := by
   subst ha hb; exact IsPullback.of_hasPullback _ _
 
+/- English proof (translation)
+Introduce `k _ B Y _ q p hq hp f hfq G j s H`. Use `haveI : IsProper q := CommonModel.isProper_of_isProjOver hq`. Take `⟨φ, hφ⟩ : ∃ φ : k →+* B.functionField, B.fromSpecStalk (genericPoint B) ≫ q = spMap φ` from `⟨(Spec.preimage (B.fromSpecStalk (genericPoint B) ≫ q)).hom, by simp [spMap]⟩`. Establish `P : IsPullback (pullback.fst (f ≫ q) (B.fromSpecStalk (genericPoint B) ≫ q)) (pullback.snd (f ≫ q) (B.fromSpecStalk (genericPoint B) ≫ q)) p (spMap φ)`. Conclude with `pullback_isPullback_of_eq _ _ _ _ hfq hφ`.
+
+Establish `h1` using `ProjSpace.isProjOver_of_isPullback_spMap φ P hp`. Establish `h2` using `ProjSpace.isProjOver_comp_of_isClosedImmersion (H.isoPullback.hom ≫ pullback.mapDesc f (B.fromSpecStalk (genericPoint B)) q) h1`. Establish `e : (H.isoPullback.hom ≫ pullback.mapDesc f (B.fromSpecStalk (genericPoint B)) q) ≫ pullback.snd (f ≫ q) (B.fromSpecStalk (genericPoint B) ≫ q) = s`. Simplify using `only [pullback.mapDesc, pullback.map, Category.assoc, pullback.lift_snd, Category.comp_id]`. Conclude with `H.isoPullback_hom_snd`.
+
+Rewrite `h2` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem isProjOver_genericFibre : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] (q : B ⟶ Sp k)
     (p : Y ⟶ Sp k), IsProjOver q → IsProjOver p → ∀ (f : Y ⟶ B), f ≫ q = p → ∀ (G : Scheme.{0}) (j : G ⟶ Y)
     (s : G ⟶ Sp B.functionField), IsPullback j s f (B.fromSpecStalk (genericPoint B)) → IsProjOver s := by

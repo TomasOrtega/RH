@@ -17,20 +17,34 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g q0 n : ℕ} {H : Host E} {Dw : Datum H}
   {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Introduce `_` and use `⟨GlobalTheory.Survey.StandardLatticeGoodPlace.unimod_std H n, GlobalTheory.Survey.StandardLatticeGoodPlace.trivAt_std n _, l.odd, dvd_rfl, by simp only [GenLat.Ln, inf_idem]; exact Submodule.smul_le_right⟩`.
+-/
 theorem latsOK_std (l : Geo.Tor.Level H) (n : ℕ) (Cl : Type) :
     LatsOK l.M (fun _ : Cl => (⟨stdLat E n⟩ : GenLat E n)) (fun _ => l.M) := fun _ =>
   ⟨GlobalTheory.Survey.StandardLatticeGoodPlace.unimod_std H n, GlobalTheory.Survey.StandardLatticeGoodPlace.trivAt_std n _, l.odd, dvd_rfl, by
     simp only [GenLat.Ln, inf_idem]; exact Submodule.smul_le_right⟩
 
+/- English proof (translation)
+Introduce `h` and use `by obtain ⟨-, -, ho, hd, -⟩ := h k exact (Nat.not_even_iff_odd.2 ho) (hM.trans_dvd hd)`.
+-/
 theorem not_latsOK_even {M : ℕ} (hM : Even M) {Cl : Type} (k : Cl) (La : Cl → GenLat E n) (Nc : Cl → ℕ) :
     ¬ LatsOK M La Nc := fun h => by
   obtain ⟨-, -, ho, hd, -⟩ := h k
   exact (Nat.not_even_iff_odd.2 ho) (hM.trans_dvd hd)
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.RootsSplitTest.zCard_pos Dw (La k) (Nc k) M (h k).1 (h k).2.2).ne'`.
+-/
 theorem zCard_ne_zero (Dw : Datum H) {M : ℕ} {Cl : Type} {La : Cl → GenLat E n} {Nc : Cl → ℕ} (h : LatsOK M La Nc)
     (k : Cl) : (La k).zCard (Nc k) (Dw.p + Dw.q) ≠ 0 :=
   (GlobalTheory.RootsSplitTest.zCard_pos Dw (La k) (Nc k) M (h k).1 (h k).2.2).ne'
 
+/- English proof (translation)
+Establish `hz` using `zCard_ne_zero Dw (latsOK_std l₂ n Unit) ()`. Establish `hm : (⟨stdLat E n⟩ : GenLat E n).mIdx l₂.M (Dw.p + Dw.q) = (⟨stdLat E n⟩ : GenLat E n).zCard l₂.M (Dw.p + Dw.q)`. Establish `e : (⟨stdLat E n⟩ : GenLat E n).Ln = stdLat E n` using `inf_idem _`. Rewrite using `[GenLat.mIdx, GenLat.zCard, e]`. Establish `hz' : (((⟨stdLat E n⟩ : GenLat E n).zCard l₂.M (Dw.p + Dw.q) : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast hz`.
+
+Simplify using `only [clsSum, Finset.univ_unique, Finset.sum_singleton, hm, map_mul, map_inv₀, map_natCast, map_one]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem clsSum_std (σ : c.F →+* ℂ) (X : Data E (Dw.p + Dw.q)) (hr : X.p0 + q0 = Dw.p + Dw.q)
     (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ)
     (idx : Fin g ≃ X.Ψ × Fin (Dw.p + Dw.q)) (eL : LtN Dw n ≃ Harm.Var X.Ψ q0 X.p0 (Fin n)) (l₂ : Geo.Tor.Level H)
@@ -59,9 +73,15 @@ def oneSim (D : Datum H) : Sim D where
   inv n _ := ⟨LinearMap.id, fun a => ⟨⟨0, by simp⟩, ⟨0, by simp⟩⟩⟩
   mult n _ a b := by simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by simp [oneSim], fun a => by simp [oneSim], fun a => ⟨0, by simp [oneSim]⟩⟩`.
+-/
 theorem oneSim_inGam (l l₂ : Geo.Tor.Level H) : (oneSim Dw).InGam l l₂ :=
   ⟨by simp [oneSim], fun a => by simp [oneSim], fun a => ⟨0, by simp [oneSim]⟩⟩
 
+/- English proof (translation)
+Introduce `s hs kI σq h1 h2 q`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, h s hs kI σq h1 h2 q, h' s hs kI σq h1 h2 q]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem datEq_lin (d : DeltaDat Xo c n) (ψ : (LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d) →* c.Fˣ)
     {w w' : (Fin n → LevQ Dw d.l₂) → c.F} (h : DatEq d ψ w) (h' : DatEq d ψ w') (t : c.F) :
     DatEq d ψ (w + t • w') := by
@@ -69,6 +89,9 @@ theorem datEq_lin (d : DeltaDat Xo c n) (ψ : (LaI Xo c d ≃ₗ[𝓞 E] LaI Xo 
   simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, h s hs kI σq h1 h2 q, h' s hs kI σq h1 h2 q]
   ring
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `Function.ne_iff.1 hw`. Establish `e` using `(h s hs kI σq h1 h2 q).symm.trans (h' s hs kI σq h1 h2 q)`. Conclude with `inv_injective (Units.ext (mul_right_cancel₀ hq e))`.
+-/
 theorem datEq_char (d : DeltaDat Xo c n) {ψ ψ' : (LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d) →* c.Fˣ}
     {w : (Fin n → LevQ Dw d.l₂) → c.F} (h : DatEq d ψ w) (h' : DatEq d ψ' w) (hw : w ≠ 0)
     (s : Sim Dw) (hs : s.InGam l d.l₂) (kI : LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d) (σq : LevQ Dw d.l₂ ≃ LevQ Dw d.l₂)
@@ -78,6 +101,19 @@ theorem datEq_char (d : DeltaDat Xo c n) {ψ ψ' : (LaI Xo c d ≃ₗ[𝓞 E] La
   have e := (h s hs kI σq h1 h2 q).symm.trans (h' s hs kI σq h1 h2 q)
   exact inv_injective (Units.ext (mul_right_cancel₀ hq e))
 
+/- English proof (translation)
+Set `π : LevQ Dw d.l₂ →ₗ[𝓞 E] LaI Xo c d` to `Submodule.factor (Submodule.smul_mono_left hI)`. Establish `hπ : ∀ a : Dw.La, π (Submodule.Quotient.mk a) = Submodule.Quotient.mk a` using `fun a => rfl`. Establish `uniq : ∀ k k' : LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d, (∀ b, k (x₀ b) = k' (x₀ b)) → k = k'`. Introduce `k k' h`. Apply `LinearEquiv.toLinearMap_injective` to reduce the goal to its premises.
+
+Conclude with `LinearMap.ext_on_range hx h`. Set `w : (Fin n → LevQ Dw d.l₂) → c.F` to `fun q => if h : ∃ k : LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d, ∀ b, π (q b) = k (x₀ b) then (ψ h.choose : c.Fˣ) else 0`. Establish `hw : ∀ q (k : LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d), (∀ b, π (q b) = k (x₀ b)) → w q = (ψ k : c.Fˣ)`. Introduce `q k hk`. Establish `h : ∃ k : LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d, ∀ b, π (q b) = k (x₀ b)` using `⟨k, hk⟩`.
+
+Establish `: h.choose = k` using `uniq _ _ fun b => (h.choose_spec b).symm.trans (hk b)`. Simplify using `only [w, dif_pos h, this]`. Use `⟨w, ?_, fun k a ha => hw _ k fun b => (hπ _).trans (ha b)⟩` and prove the remaining obligations. Introduce `s _ kI σq h1 h2 q`. Establish `hc : ∀ u, π (σq u) = kI (π u)`.
+
+Introduce `u`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ u`. Rewrite using `[h2, hπ, hπ, h1]`. Establish `hc' : ∀ u, π u = kI (π (σq.symm u))` using `fun u => by rw [← hc, Equiv.apply_symm_apply]`. Distinguish the cases in `h : ∃ k : LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d, ∀ b, π (q b) = k (x₀ b)`.
+
+Take `⟨k, hk⟩` from `h`. Rewrite using `[hw q k hk, hw _ (kI⁻¹ * k) (fun b => ?_), map_mul, map_inv, Units.val_mul]`. Apply `kI.injective` to reduce the goal to its premises. Rewrite using `[← hc', hk]`. Express the relevant statement in the definitionally equal form `_ = (kI * (kI⁻¹ * k)) (x₀ b)`.
+
+Rewrite using `[mul_inv_cancel_left]`. Establish `h' : ¬ ∃ k : LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d, ∀ b, π (σq.symm (q b)) = k (x₀ b)`. Introduce and unpack `⟨k, hk⟩`. Conclude with `h ⟨kI * k, fun b => by rw [hc', hk]; rfl⟩`. Simplify using `only [w, dif_neg h, dif_neg h', mul_zero]`.
+-/
 theorem exists_datEq (d : DeltaDat Xo c n) (hI : d.l₂.Mb ≤ d.I) (ψ : (LaI Xo c d ≃ₗ[𝓞 E] LaI Xo c d) →* c.Fˣ)
     (x₀ : Fin n → LaI Xo c d) (hx : Submodule.span (𝓞 E) (Set.range x₀) = ⊤) :
     ∃ w : (Fin n → LevQ Dw d.l₂) → c.F, DatEq d ψ w ∧
@@ -117,6 +153,9 @@ theorem exists_datEq (d : DeltaDat Xo c n) (hI : d.l₂.Mb ≤ d.I) (ψ : (LaI X
       exact h ⟨kI * k, fun b => by rw [hc', hk]; rfl⟩
     simp only [w, dif_neg h, dif_neg h', mul_zero]
 
+/- English proof (translation)
+The claim follows from `(h x hx y₂ A mk hm hA).symm.trans (h' x hx y₂ A mk hm hA)`.
+-/
 theorem cvIs_unique (d : DeltaDat Xo c n) [Algebra d.c₂.F ℂ] {X : Data E r} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ}
     {idx : Fin g ≃ X.Ψ × Fin r} {e : Fin g ≃ Lt1 Dw} {L : Lt E r} {cv cv' : (Dw.La →ₗ[𝓞 E] (Fin r → E)) → ℂ}
     (h : CvIs d X bas idx e L cv) (h' : CvIs d X bas idx e L cv') {x : Frame X.Ψ r} (hx : x ∈ X.dom)
@@ -124,6 +163,9 @@ theorem cvIs_unique (d : DeltaDat Xo c n) [Algebra d.c₂.F ℂ] {X : Data E r} 
     (hm : IsMark d.l₂ L mk) (hA : A.Marked mk) : cv mk = cv' mk :=
   (h x hx y₂ A mk hm hA).symm.trans (h' x hx y₂ A mk hm hA)
 
+/- English proof (translation)
+Introduce `_ _ y₂ _ _ _ _` and use `h y₂`.
+-/
 theorem cvIs_const (d : DeltaDat Xo c n) [Algebra d.c₂.F ℂ] (X : Data E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ)
     (idx : Fin g ≃ X.Ψ × Fin r) (e : Fin g ≃ Lt1 Dw) (L : Lt E r) (t : ℂ)
     (h : ∀ y₂ : FrPt d.Xo₂ d.c₂ ℂ, evR d.Xo₂ d.c₂ d.cδ y₂ = t) : CvIs d X bas idx e L fun _ => t :=

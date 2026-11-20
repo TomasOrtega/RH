@@ -17,6 +17,17 @@ noncomputable section
 
 namespace GlobalTheory.Heat.InvWt
 
+/- English proof (translation)
+Introduce `p _`. Set `p0 : PrimeSpectrum S` to `PrimeSpectrum.comap (algebraMap S (DualNumber S)) p`. Establish `hp : (spMap (TrivSqZeroExt.fstHom S S S).toRingHom) p0 = p`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use extensionality with `z`.
+
+Use `show algebraMap S (DualNumber S) (TrivSqZeroExt.fst z) ∈ p.asIdeal ↔ z ∈ p.asIdeal`. Establish `hz : TrivSqZeroExt.inr (TrivSqZeroExt.snd z) ∈ p.asIdeal`. Apply `p.isPrime.mem_of_pow_mem 2` to reduce the goal to its premises. Rewrite using `[pow_two, TrivSqZeroExt.inr_mul_inr]`. Conclude with `p.asIdeal.zero_mem`.
+
+Rewrite using `[TrivSqZeroExt.algebraMap_eq_inl]`. Prove the components needed by the constructor for the conclusion. Introduce `h1`. Rewrite using `[← TrivSqZeroExt.inl_fst_add_inr_snd_eq z]`. Conclude with `p.asIdeal.add_mem h1 hz`.
+
+Introduce `h1`. Establish `e : TrivSqZeroExt.inl (TrivSqZeroExt.fst z) = z - TrivSqZeroExt.inr (TrivSqZeroExt.snd z)`. Rewrite using `[eq_sub_iff_add_eq, TrivSqZeroExt.inl_fst_add_inr_snd_eq]`. Rewrite using `[e]`. Conclude with `p.asIdeal.sub_mem h1 hz`.
+
+Establish `hm : p0 ∈ a ⁻¹ᵁ U` using `ha (Set.mem_univ _)`. Rewrite `hm` using `[← h]`. Use `show w p ∈ U`. Rewrite using `[← hp]`. Conclude with `hm`.
+-/
 theorem top_le_preimage_of_fst {S : Type} [CommRing S] {X : Scheme.{0}} (w : Sp (DualNumber S) ⟶ X) (a : Sp S ⟶ X) (U : X.Opens)
     (h : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ w = a) (ha : ⊤ ≤ a ⁻¹ᵁ U) : ⊤ ≤ w ⁻¹ᵁ U := by
   intro p _
@@ -45,12 +56,26 @@ theorem top_le_preimage_of_fst {S : Type} [CommRing S] {X : Scheme.{0}} (w : Sp 
   rw [← hp]
   exact hm
 
+/- English proof (translation)
+Use `ext`. Establish `e` using `congrArg (fun g => g.hom (u : A)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))`. Conclude with `e.symm`.
+-/
 theorem map_unitOn {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (u : Aˣ) :
     Units.map (spMap f).appTop.hom.toMonoidHom (unitOn u) = unitOn (Units.map f.toMonoidHom u) := by
   ext
   have e := congrArg (fun g => g.hom (u : A)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))
   exact e.symm
 
+/- English proof (translation)
+Use `⟨Over.homMk (spMap (dualMap φ) ≫ (tv v).left) ?_, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Over.w (tv v)]`. Simplify using `only [overAt, Over.mk_hom, Category.comp_id, spMap, ← Spec.map_comp]`. Use `congr 1`. Apply the tactic sequence `ext r <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl, CommRingCat.hom_comp]`.
+
+Set `ψ : Over.mk (spMap φ) ⟶ overAt (𝟙 (Sp R)) (DualNumber R)` to `Over.homMk (spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ spMap (dualMap φ)) (by`. Simplify using `only [overAt, Over.mk_hom, Category.comp_id, spMap, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `r`. Simplify using `[dualMap, TrivSqZeroExt.algebraMap_eq_inl])`.
+
+Establish `hψ : ψ ≫ Formalism.L2.Pj.homAt (𝟙 (Sp R)) (tm ((0 : R) • LinearMap.id)) = ψ`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show (spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ spMap (dualMap φ)) ≫ spMap _ = spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ spMap (dualMap φ)`. Simplify using `only [spMap, ← Spec.map_comp, Category.assoc]`. Use `congr 1`.
+
+Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `z`. Simplify using `[dualMap, CommRingCat.hom_comp, tm]`. Establish `e` using `congrArg (·.left) (Formalism.L2.Pj.tan_pull (𝟙 (Sp R)) ψ hψ (tv v) (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv_mem v))`.
+
+Simplify `e` using `[ψ]`.
+-/
 theorem exists_tan_over {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (v : TanM (𝟙 (Sp R)) G)
     {S : Type} [CommRing S] (φ : R →+* S) :
     ∃ v' : Over.mk (spMap ((algebraMap S (DualNumber S)).comp φ)) ⟶ G,
@@ -80,6 +105,13 @@ theorem exists_tan_over {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [Is
     have e := congrArg (·.left) (Formalism.L2.Pj.tan_pull (𝟙 (Sp R)) ψ hψ (tv v) (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv_mem v))
     simpa [ψ] using e
 
+/- English proof (translation)
+Introduce `χ y J hJ`. Establish `p'` using `((GlobalTheory.TorusModel.isPull_iff k _ _).1 (Y.rep.1 _ _ k x')).2 χ y J hJ`. Establish `p` using `((GlobalTheory.TorusModel.isPull_iff k _ _).1 (Y.rep.1 _ _ k x)).2 χ y J hJ`. Set `g : LB.Gen (LB.LinComb Q.P.L (Y` to `T.left) (K := PEmpty.{1}) PEmpty.elim PEmpty.elim) := ⟨fun _ => res le_top (u χ)⟩`. Establish `hg : ∀ (Z : Scheme.{0}) (r : Z ⟶ T.left) z J', Good Q.P.L z J' → val g r z J' = gm r z ⊤ (u χ)` using `fun Z r z J' hJ' => gm_res r z le_top (hJ'.mem PEmpty.elim r) (u χ)`.
+
+Establish `hC` using `corr_of_val Q.P.isLB (t := (Y.Φ _ x').s χ) (t' := LB.mulGen Q.P.L _ _ _ _ g ((Y.Φ _ x).s χ)) (fun y' J' hJ' => by rw [val_mul hJ', hg _ _ _ _ hJ']; exact h χ y' J' hJ')`. Establish `e` using `val_corr hJ hC k.left`. Rewrite `e` using `[val_mul hJ, hg _ _ _ _ hJ]`. Use `show GlobalTheory.TorusModel.cv _ χ y J = _ * GlobalTheory.TorusModel.cv _ χ y J`. Rewrite using `[p', p, e]`.
+
+Use `congr 1`. Establish `e2` using `gm_pull (𝟙 _) k.left y ⊤ trivial (u χ)`. Rewrite `e2` using `[Category.id_comp]`. Rewrite using `[← e2]`. Both sides reduce to the same expression.
+-/
 theorem cv_pull_of_unit {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRing O] [StarRing O] [Module O Q.X]
     {oa : Q.OAct O} (Y : Ray oa) {T T' : Over (Sp R)} (k : T' ⟶ T) (x x' : T ⟶ Y.H) (u : Q.X → (Γ(T.left, ⊤))ˣ)
     (h : ∀ χ y J, Good Q.P.L y J →
@@ -106,6 +138,11 @@ theorem cv_pull_of_unit {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O :
   rw [← e2]
   rfl
 
+/- English proof (translation)
+Introduce `χ y J hJ`. Establish `h1` using `((GlobalTheory.TorusModel.isAdd_iff _ _ _).1 (Y.rep.2 _ X v)).2 χ y J hJ`. Establish `h2` using `((GlobalTheory.TorusModel.isAdd_iff _ _ _).1 (Y.rep.2 _ X' v)).2 χ y J hJ`. Rewrite `h1`, `h2` using `[Y.Φ_b, Y.Φ_b]`. Rewrite `h2` using `[hq]`.
+
+Establish `h3` using `h χ y J hJ`. Apply `mul_right_cancel (b := DVR.th Q y J (DVR.cP Q _ χ) (X ≫ Y.q) (v ≫ Y.q))` to reduce the goal to its premises. Use `show GlobalTheory.TorusModel.cv _ χ y J * _ = _ * GlobalTheory.TorusModel.cv _ χ y J * _`. Rewrite using `[h2, _root_.mul_assoc, h1, ← _root_.mul_assoc]`. Use `congr 1`.
+-/
 theorem cv_mul_of_unit {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRing O] [StarRing O] [Module O Q.X]
     {oa : Q.OAct O} (Y : Ray oa) {T : Over (Sp R)} (X X' v : T ⟶ Y.H) (hq : X' ≫ Y.q = X ≫ Y.q)
     (u : Q.X → (Γ(T.left, ⊤))ˣ)
@@ -124,6 +161,29 @@ theorem cv_mul_of_unit {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : 
   rw [h2, _root_.mul_assoc, h1, ← _root_.mul_assoc]
   congr 1
 
+/- English proof (translation)
+Introduce `R _ _ Q O _ _ _ oa Y v dd hinv α V f hf`. Introduce `S _ φ x x' c a a' ha ha' hV hV' hq hc`. Set `φε : R →+* DualNumber S` to `(algebraMap S (DualNumber S)).comp φ`. Set `π : Over.mk (spMap φε) ⟶ Over.mk (spMap φ)` to `Over.homMk (spMap (algebraMap S (DualNumber S))) (by show spMap (algebraMap S (DualNumber S)) ≫ spMap φ = spMap φε`. Simplify using `only [spMap, φε, ← Spec.map_comp]`.
+
+Use the proof step `rfl)`. Set `ie : Over.mk (spMap φ) ⟶ Over.mk (spMap φε)` to `Over.homMk (spMap (TrivSqZeroExt.fstHom S S S).toRingHom) (by show spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ spMap φε = spMap φ`. Simplify using `only [spMap, φε, ← Spec.map_comp]`. Use `congr 1)`. Take `⟨v'', hv₁, hv₂⟩` from `exists_tan_over Y.H v φ`.
+
+Establish `hιπ : ie ≫ π = 𝟙 _` using `by ext1 show spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ spMap (algebraMap S (DualNumber S)) = 𝟙 _`. Simplify using `only [spMap, ← Spec.map_comp]`. Rewrite using `[← Spec.map_id]`. Use `congr 1`. Establish `hiev : ie ≫ v'' = 1` using `by ext1`.
+
+Conclude with `hv₂`. Establish `hqm : IsMonHom Y.q` using `Y.q_linear.isMonHom`. Establish `hW : ∀ z : Over.mk (spMap φ) ⟶ Y.H, ie ≫ (π ≫ z * v'') = z`. Introduce `z`. Rewrite using `[MonObj.comp_mul, ← Category.assoc, hιπ, Category.id_comp, hiev, _root_.mul_one]`.
+
+Establish `hWa : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ (π ≫ x * v'').left = a`. Rewrite using `[ha]`. Conclude with `congrArg (·.left) (hW x)`. Establish `hWa' : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ (π ≫ x' * v'').left = a'`. Rewrite using `[ha']`.
+
+Conclude with `congrArg (·.left) (hW x')`. Establish `htr : ∀ z : Over.mk (spMap φ) ⟶ Y.H, IsTr Y.H φ z.left v (π ≫ z * v'').left`. Introduce `z`. Set `e : tEpsG (z.left ≫ Y.H.hom) ⟶ Over.mk (spMap φε)` to `Over.homMk (𝟙 _) (by show 𝟙 _ ≫ spMap φε = spMap (algebraMap S (DualNumber S)) ≫ z.left ≫ Y.H.hom`. Rewrite using `[Over.w z]`.
+
+Simplify using `only [Over.mk_hom, Category.id_comp, spMap, φε]`. Rewrite using `[← Spec.map_comp]`. Use the proof step `rfl)`. Use `⟨e ≫ π ≫ z, e ≫ v'', ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show 𝟙 _ ≫ spMap (algebraMap S (DualNumber S)) ≫ z.left = _`.
+
+Rewrite using `[Category.id_comp]`. Use `show 𝟙 _ ≫ v''.left = _`. Rewrite using `[Category.id_comp, hv₁]`. Rewrite using `[← MonObj.comp_mul] show 𝟙 _ ≫ _ = _`. Rewrite using `[Category.id_comp]`.
+
+Set `c' : Q.X → (DualNumber S)ˣ` to `fun χ => Units.map (algebraMap S (DualNumber S)).toMonoidHom (c χ)`. Establish `hqW : (π ≫ x' * v'') ≫ Y.q = (π ≫ x * v'') ≫ Y.q`. Rewrite using `[MonObj.mul_comp, MonObj.mul_comp, Category.assoc, Category.assoc, hq]`. Establish `hcW` using `cv_mul_of_unit Y (π ≫ x) (π ≫ x') v'' (by rw [Category.assoc, Category.assoc, hq]) (fun χ => Units.map π.left.appTop.hom.toMonoidHom (unitOn (c χ))) (cv_pull_of_unit Y π x x' (fun χ => unitOn (c χ)) hc)`. Establish `key` using `hf (DualNumber S) φε (π ≫ x * v'') (π ≫ x' * v'') c' _ _ rfl rfl (top_le_preimage_of_fst _ a V hWa hV) (top_le_preimage_of_fst _ a' V hWa' hV') hqW (fun χ y J hJ => by`.
+
+Rewrite using `[hcW χ y J hJ]`. Use `congr 2`. Conclude with `map_unitOn _ _)`. Establish `e₁` using `hinv.2 S φ a (π ≫ x * v'').left V f (by rw [ha]; exact Over.w x) hV (ha ▸ htr x)`. Establish `e₂` using `hinv.2 S φ a' (π ≫ x' * v'').left V f (by rw [ha']; exact Over.w x') hV' (ha' ▸ htr x')`.
+
+Rewrite using `[← e₁, ← e₂, key]`. Use `show ((c' α : DualNumber S) * _).snd = _`. Rewrite using `[TrivSqZeroExt.snd_mul]`. Simplify using `[c', TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem _root_.GlobalTheory.Heat.IsInv.isWt : ∀ {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRing O] [StarRing O] [Module O Q.X] {oa : Q.OAct O} (Y : Ray oa) (v : TanM (𝟙 (Sp R)) Y.H) (dd : Fld Y.H.left), IsInv Y.H v dd → ∀ (α : Q.X) (V : Y.H.left.Opens) (f : Γ(Y.H.left, V)), IsWt Y α V f → IsWt Y α V (dd V f) := by
   intro R _ _ Q O _ _ _ oa Y v dd hinv α V f hf
   intro S _ φ x x' c a a' ha ha' hV hV' hq hc

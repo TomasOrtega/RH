@@ -25,11 +25,17 @@ def twW (x : κ → Ω') (i : κ) (q : Fin 2) : Ω' := if q = 0 then 1 else (x i
 
 def twistVec (x : κ → Ω') (i : κ) (q : Fin 2) : Fin 2 → Ω' := twW x i q • Pi.single q 1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Apply the tactic sequence `fin_cases p <;> simp [twistVec, Fin.sum_univ_two, twW]`.
+-/
 theorem sum_twistVec (x : κ → Ω') (i : κ) (a : Fin 2 → Ω') :
     ∑ q, a q • twistVec x i q = fun p => a p * twW x i p := by
   funext p
   fin_cases p <;> simp [twistVec, Fin.sum_univ_two, twW]
 
+/- English proof (translation)
+Unfold `twW`. Use `split_ifs`. Conclude with `one_ne_zero`. Conclude with `inv_ne_zero hi`.
+-/
 theorem twW_ne_zero {x : κ → Ω'} {i : κ} (hi : x i ≠ 0) (q : Fin 2) : twW x i q ≠ 0 := by
   unfold twW
   split_ifs
@@ -39,21 +45,39 @@ theorem twW_ne_zero {x : κ → Ω'} {i : κ} (hi : x i ≠ 0) (q : Fin 2) : twW
 def twistBasis {x : κ → Ω'} {i : κ} (hi : x i ≠ 0) : Module.Basis (Fin 2) Ω' (Fin 2 → Ω') :=
   (Pi.basisFun Ω' (Fin 2)).isUnitSMul (w := twW x i) fun q => (twW_ne_zero hi q).isUnit
 
+/- English proof (translation)
+Rewrite using `[twistBasis, Module.Basis.isUnitSMul_apply, Pi.basisFun_apply]`. Both sides reduce to the same expression.
+-/
 theorem twistBasis_apply {x : κ → Ω'} {i : κ} (hi : x i ≠ 0) (q : Fin 2) :
     twistBasis hi q = twistVec x i q := by
   rw [twistBasis, Module.Basis.isUnitSMul_apply, Pi.basisFun_apply]
   rfl
 
+/- English proof (translation)
+Use `(twistBasis hi).linearIndependent` as an intermediate fact. Rewrite `this` using `[show ⇑(twistBasis hi) = twistVec x i from funext (twistBasis_apply hi)]`. Then use the resulting hypothesis.
+-/
 theorem twistVec_linearIndependent {x : κ → Ω'} {i : κ} (hi : x i ≠ 0) :
     LinearIndependent Ω' (twistVec x i) := by
   have := (twistBasis hi).linearIndependent
   rwa [show ⇑(twistBasis hi) = twistVec x i from funext (twistBasis_apply hi)] at this
 
+/- English proof (translation)
+Use `(twistBasis hi).span_eq` as an intermediate fact. Rewrite `this` using `[show ⇑(twistBasis hi) = twistVec x i from funext (twistBasis_apply hi)]`. Then use the resulting hypothesis.
+-/
 theorem twistVec_span {x : κ → Ω'} {i : κ} (hi : x i ≠ 0) :
     Submodule.span Ω' (Set.range (twistVec x i)) = ⊤ := by
   have := (twistBasis hi).span_eq
   rwa [show ⇑(twistBasis hi) = twistVec x i from funext (twistBasis_apply hi)] at this
 
+/- English proof (translation)
+Simplify using `only [one_pow, one_smul, one_mul, exists_const, sum_twistVec]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, h1⟩`. Use `⟨fun q => if q = 0 then e 0 else x i * e 1, fun q => ?_, ?_⟩` and prove the remaining obligations. Use `fin_cases q`.
+
+Simplify using `using h0`. Simplify using `using h1`. Use function extensionality and compare the values at `p fin_cases p`. Simplify using `[twW]`. Simplify using `[twW]`.
+
+Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨a, ha, rfl⟩`. Use `⟨by simpa [twW] using ha 0, ?_⟩` and prove the remaining obligations. Establish `h1 : x i * (a 1 * twW x i 1) = a 1`. Simplify using `only [twW, if_neg (show (1 : Fin 2) ≠ 0 by decide)]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[h1]`. Simplify using `using ha 1`.
+-/
 theorem twist_frame_iff {x : κ → Ω'} {i : κ} (hi : x i ≠ 0) (e : Fin 2 → Ω') :
     (∃ n : ℕ, (1 : Ω') ^ n • e ∈ twistLat x i) ↔
       ∃ a : Fin 2 → Ω', (∀ q, ∃ n : ℕ, (1 : Ω') ^ n * a q ∈ chartRing ℤ x i) ∧
@@ -105,12 +129,20 @@ end Bundle
 
 abbrev ch (l : Fin 2) : Unit → Fin 2 := fun _ => l
 
+/- English proof (translation)
+Simplify using `[segreCoord]`.
+-/
 theorem segreCoord_ch (l : Fin 2) : segreCoord yLine (ch l) = yLine ⟨(), l⟩ := by
   simp [segreCoord]
 
 def tautSq (l : Fin 2) (z : (Σ _ : Unit, Fin 2) → ℂ) : ℝ :=
   (‖z ⟨(), 0⟩‖ ^ 2 + ‖z ⟨(), 1⟩‖ ^ 2) / ‖z ⟨(), l⟩‖ ^ 2
 
+/- English proof (translation)
+Establish `hl : 0 < ‖z ⟨(), l⟩‖ ^ 2` using `by positivity`. Establish `: ‖z ⟨(), l⟩‖ ^ 2 ≤ ‖z ⟨(), 0⟩‖ ^ 2 + ‖z ⟨(), 1⟩‖ ^ 2` using `by fin_cases l`. Simplify using `only [Fin.zero_eta]`. Use polynomial arithmetic with `[sq_nonneg ‖z ⟨(), 1⟩‖]`. Simplify using `only [Fin.mk_one]`.
+
+Use polynomial arithmetic with `[sq_nonneg ‖z ⟨(), 0⟩‖]`. Conclude with `div_pos (lt_of_lt_of_le hl this) hl`.
+-/
 theorem tautSq_pos {l : Fin 2} {z : (Σ _ : Unit, Fin 2) → ℂ} (hz : z ⟨(), l⟩ ≠ 0) : 0 < tautSq l z := by
   have hl : 0 < ‖z ⟨(), l⟩‖ ^ 2 := by positivity
   have : ‖z ⟨(), l⟩‖ ^ 2 ≤ ‖z ⟨(), 0⟩‖ ^ 2 + ‖z ⟨(), 1⟩‖ ^ 2 := by
@@ -122,9 +154,17 @@ theorem tautSq_pos {l : Fin 2} {z : (Σ _ : Unit, Fin 2) → ℂ} (hz : z ⟨(),
 def twistGram (l : Fin 2) (z : (Σ _ : Unit, Fin 2) → ℂ) : Matrix (Fin 2) (Fin 2) ℂ :=
   Matrix.diagonal ![1, (tautSq l z : ℂ)]
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases a <;> simp [tautSq, chartMap_apply] <;> ring`.
+-/
 theorem tautSq_chart (a : Fin 2) (t : Fin 1 → ℂ) : tautSq a (chartMap a t) = 1 + 4 * ‖t 0‖ ^ 2 := by
   fin_cases a <;> simp [tautSq, chartMap_apply] <;> ring
 
+/- English proof (translation)
+Establish `h` using `isMultiHomog_prod_X (ι := PBlk 2) (ch l)`. Establish `h'` using `isMultiHomog_prod_X (ι := PBlk 2) (ch l')`. Use `⟨fun _ => 1, ∏ k, X ⟨k, ch l k⟩, ∏ k, X ⟨k, ch l' k⟩, h, h', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using yLine_ne_zero ⟨(), l'⟩`. Simplify using `only [aeval_X, Fintype.prod_unique]`.
+
+Conclude with `(div_mul_cancel₀ _ (yLine_ne_zero _)).symm`. Simplify using `using hz`. Simplify using the standard rewrite rules.
+-/
 theorem isValueAt_ratio (l l' : Fin 2) {z : (Σ _ : Unit, Fin 2) → ℂ} (hz : z ⟨(), l'⟩ ≠ 0) :
     IsValueAt yLine (yLine ⟨(), l⟩ / yLine ⟨(), l'⟩) z (z ⟨(), l⟩ / z ⟨(), l'⟩) := by
   have h := isMultiHomog_prod_X (ι := PBlk 2) (ch l)
@@ -136,6 +176,11 @@ theorem isValueAt_ratio (l l' : Fin 2) {z : (Σ _ : Unit, Fin 2) → ℂ} (hz : 
   · simpa using hz
   · simp
 
+/- English proof (translation)
+Establish `: (fun t : Fin 1 → ℂ => chartMap a t ⟨(), p⟩) = fun t => if p = a then 1 else 2 * t 0`. Use function extensionality and compare the values at `t`. Simplify using `only [chartMap_apply]`. Rewrite using `[this]`. Use `split_ifs`.
+
+Conclude with `contDiff_const`. Conclude with `contDiff_const.mul (contDiff_apply ℝ ℂ (0 : Fin 1))`.
+-/
 theorem contDiff_chartMap {n : WithTop ℕ∞} (a p : Fin 2) :
     ContDiff ℝ n (fun t : Fin 1 → ℂ => chartMap a t ⟨(), p⟩) := by
   have : (fun t : Fin 1 → ℂ => chartMap a t ⟨(), p⟩) = fun t => if p = a then 1 else 2 * t 0 := by
@@ -146,12 +191,18 @@ theorem contDiff_chartMap {n : WithTop ℕ∞} (a p : Fin 2) :
   · exact contDiff_const
   · exact contDiff_const.mul (contDiff_apply ℝ ℂ (0 : Fin 1))
 
+/- English proof (translation)
+Establish `hn : ∀ p : Fin 2, ContDiff ℝ n (fun t' : Fin 1 → ℂ => ‖chartMap a t' ⟨(), p⟩‖ ^ 2)` using `fun p => (contDiff_norm_sq ℝ).comp (contDiff_chartMap a p)`. Conclude with `(((hn 0).add (hn 1)).contDiffAt).div (hn l).contDiffAt (by positivity)`.
+-/
 theorem contDiffAt_tautSq {n : WithTop ℕ∞} (l a : Fin 2) (t : Fin 1 → ℂ) (hz : chartMap a t ⟨(), l⟩ ≠ 0) :
     ContDiffAt ℝ n (fun t' => tautSq l (chartMap a t')) t := by
   have hn : ∀ p : Fin 2, ContDiff ℝ n (fun t' : Fin 1 → ℂ => ‖chartMap a t' ⟨(), p⟩‖ ^ 2) :=
     fun p => (contDiff_norm_sq ℝ).comp (contDiff_chartMap a p)
   exact (((hn 0).add (hn 1)).contDiffAt).div (hn l).contDiffAt (by positivity)
 
+/- English proof (translation)
+Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [hs]`.
+-/
 theorem inv_diag2 (s : ℝ) (hs : s ≠ 0) :
     (Matrix.diagonal ![(1 : ℂ), (s : ℂ)])⁻¹ = Matrix.diagonal ![(1 : ℂ), ((s⁻¹ : ℝ) : ℂ)] := by
   refine Matrix.inv_eq_left_inv ?_
@@ -159,6 +210,9 @@ theorem inv_diag2 (s : ℝ) (hs : s ≠ 0) :
   ext i j
   fin_cases i <;> fin_cases j <;> simp [hs]
 
+/- English proof (translation)
+Use `Matrix.PosSemidef.diagonal fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Simplify using `using Complex.zero_le_real.2 hu`. Simplify using `using Complex.zero_le_real.2 hv`.
+-/
 theorem psd_diag2 (u v : ℝ) (hu : 0 ≤ u) (hv : 0 ≤ v) :
     (Matrix.diagonal ![(u : ℂ), (v : ℂ)]).PosSemidef := by
   refine Matrix.PosSemidef.diagonal fun i => ?_
@@ -166,18 +220,31 @@ theorem psd_diag2 (u v : ℝ) (hu : 0 ≤ u) (hv : 0 ≤ v) :
   · simpa using Complex.zero_le_real.2 hu
   · simpa using Complex.zero_le_real.2 hv
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+-/
 theorem diagonal_two_sub_smul_one (s c : ℝ) :
     Matrix.diagonal ![(1 : ℂ), ((s : ℝ) : ℂ)] - ((c : ℝ) : ℂ) • (1 : Matrix (Fin 2) (Fin 2) ℂ) =
       Matrix.diagonal ![((1 - c : ℝ) : ℂ), ((s - c : ℝ) : ℂ)] := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+-/
 theorem sub_diag2 (C s : ℝ) :
     ((C : ℝ) : ℂ) • (1 : Matrix (Fin 2) (Fin 2) ℂ) - Matrix.diagonal ![(1 : ℂ), ((s : ℝ) : ℂ)] =
       Matrix.diagonal ![((C - 1 : ℝ) : ℂ), ((C - s : ℝ) : ℂ)] := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp
 
+/- English proof (translation)
+Establish `h1 : HasFDerivAt (fun t' : Fin 1 → ℂ => t' 0) (ContinuousLinearMap.proj (R` using `ℝ) (φ := fun _ : Fin 1 => ℂ) 0) t := hasFDerivAt_apply 0 t`. Establish `h2` using `(h1.norm_sq.const_mul (4 : ℝ)).const_add 1`. Establish `h3 : HasFDerivAt (fun t' : Fin 1 → ℂ => (((1 + 4 * ‖t' 0‖ ^ 2 : ℝ)) : ℂ)) _ t` using `Complex.ofRealCLM.hasFDerivAt.comp t h2`. Rewrite using `[h3.fderiv]`. Use `(ContinuousLinearMap.opNorm_comp_le _ _).trans ?_` and prove the remaining obligations.
+
+Establish `hp : ‖(innerSL ℝ (t 0)).comp (ContinuousLinearMap.proj (R` using `ℝ) (φ := fun _ : Fin 1 => ℂ) 0)‖ ≤ ‖t 0‖ := by`. Use `ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun v => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply, innerSL_apply_apply, ContinuousLinearMap.proj_apply]`. Conclude with `(norm_inner_le_norm _ _).trans (mul_le_mul_of_nonneg_left (norm_le_pi_norm v 0) (norm_nonneg _))`. Establish `ht0 : ‖t 0‖ ≤ 1` using `(norm_le_pi_norm t 0).trans ht.le`.
+
+Rewrite using `[Complex.ofRealCLM_norm, one_mul, norm_smul, ← Nat.cast_smul_eq_nsmul ℝ, norm_smul]`. Evaluate the numerical expressions. Use polynomial arithmetic with `[norm_nonneg ((innerSL ℝ (t 0)).comp (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin 1 => ℂ) 0))]`.
+-/
 theorem norm_fderiv_taut (t : Fin 1 → ℂ) (ht : ‖t‖ < 1) :
     ‖fderiv ℝ (fun t' : Fin 1 → ℂ => (((1 + 4 * ‖t' 0‖ ^ 2 : ℝ)) : ℂ)) t‖ ≤ 8 := by
   have h1 : HasFDerivAt (fun t' : Fin 1 → ℂ => t' 0)

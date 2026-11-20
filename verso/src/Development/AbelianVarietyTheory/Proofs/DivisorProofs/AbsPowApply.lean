@@ -30,12 +30,18 @@ def stabAt (X : Spc F E n) (ev : AF F → R) (x : Fin n → E) : Subgroup (UAtSu
     conv_lhs => rw [← hg]
     rw [Matrix.mulVec_mulVec, ← GlobalTheory.StabHaar.mat_mul, inv_mul_cancel, GlobalTheory.StabHaar.mat_one, Matrix.one_mulVec]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_stabAt {X : Spc F E n} {ev : AF F → R} {x : Fin n → E} {g : UAtSub σ X ev} :
     g ∈ stabAt σ X ev x ↔ mat g.1 *ᵥ incV F x = incV F x := Iff.rfl
 
 def kIncl {X : Spc F E n} (K : Subgroup (UA σ X.J)) (ev : AF F → R) : KAt K ev →* UAtSub σ X ev :=
   Subgroup.inclusion inf_le_right
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem kIncl_val {X : Spc F E n} (K : Subgroup (UA σ X.J)) (ev : AF F → R) (k : KAt K ev) :
     (kIncl K ev k).1 = k.1 := rfl
 
@@ -44,6 +50,9 @@ variable (E) in
 def absPow (ev : AF F → R) (k : ℕ) : idelesAt E ev →* ℝ≥0 :=
   (powMonoidHom k).comp ((absE F E).comp (idelesAt E ev).subtype)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem absPow_apply (ev : AF F → R) (k : ℕ) (t : idelesAt E ev) : absPow E ev k t = absE F E t.1 ^ k := rfl
 
 end GlobalTheory.ThK.LemF.QuotInv

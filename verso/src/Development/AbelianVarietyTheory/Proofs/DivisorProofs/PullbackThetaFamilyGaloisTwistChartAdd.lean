@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.Mum.Conj
 
+/- English proof (translation)
+Introduce `R _ _ D N σ s s' s'' h α j`. Establish `e : s'' = s + s'` using `ReciprocityTheory.ChartRestriction.G.DVR.fam_ext fun α j => (h α j).trans (ReciprocityTheory.ChartRestriction.G.DVR.add_f s s' α j).symm`. Substitute `e` using the available equality. Use `show ((GlobalTheory.FieldBaseChange.famPull D (Kb R) (TwF σ) GlobalTheory.allSixLaws.1.globalFns N (s + s') : Fam D (TwF σ) N).s α).f j = _`. Rewrite using `[map_add]`.
+
+Both sides reduce to the same expression.
+-/
 theorem famTw_add_f : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (N : ℕ) (σ : Kb R →ₐ[FractionRing R] Kb R) (s s' s'' : Fam D (Kb R) N), (∀ α j, (s''.s α).f j = (s.s α).f j + (s'.s α).f j) → ∀ α j, ((famTw D N σ s'').s α).f j = ((famTw D N σ s).s α).f j + ((famTw D N σ s').s α).f j := by
   intro R _ _ D N σ s s' s'' h α j
   have e : s'' = s + s' := ReciprocityTheory.ChartRestriction.G.DVR.fam_ext fun α j => (h α j).trans (ReciprocityTheory.ChartRestriction.G.DVR.add_f s s' α j).symm

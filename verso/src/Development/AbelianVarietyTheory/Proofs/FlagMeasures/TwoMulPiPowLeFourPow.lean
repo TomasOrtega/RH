@@ -5,6 +5,11 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.Amp
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le hk`. Establish `h0` using `Real.pi_pos.le`. Establish `h1 : Real.pi ^ 3 ≤ (3.15 : ℝ) ^ 3` using `pow_le_pow_left₀ h0 Real.pi_lt_d2.le 3`. Establish `h2 : Real.pi ^ m ≤ (4 : ℝ) ^ m` using `pow_le_pow_left₀ h0 Real.pi_le_four m`. Establish `h3 : 2 * Real.pi ^ 3 ≤ (4 : ℝ) ^ 3` using `by norm_num at h1 ⊢; linarith`.
+
+Rewrite using `[pow_add, pow_add, ← mul_assoc]`. Conclude with `mul_le_mul h3 h2 (by positivity) (by positivity)`.
+-/
 theorem two_mul_pi_pow_le_four_pow (k : ℕ) (hk : 3 ≤ k) : 2 * Real.pi ^ k ≤ (4 : ℝ) ^ k := by
   obtain ⟨m, rfl⟩ := Nat.exists_eq_add_of_le hk
   have h0 := Real.pi_pos.le
@@ -14,6 +19,21 @@ theorem two_mul_pi_pow_le_four_pow (k : ℕ) (hk : 3 ≤ k) : 2 * Real.pi ^ k �
   rw [pow_add, pow_add, ← mul_assoc]
   exact mul_le_mul h3 h2 (by positivity) (by positivity)
 
+/- English proof (translation)
+Introduce `r j n₁ n₂ n₃ M hj hjr h1 h2 h3 hM`. Establish `hr : 1 ≤ r` using `hj.trans hjr`. Establish `hrR : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hpi` using `Real.pi_pos.le`. Establish `hpi4` using `Real.pi_le_four`.
+
+Establish `hM0 : 0 ≤ M` using `by linarith`. Establish `hA : (1 : ℝ) ≤ 4 * r` using `by linarith`. Establish `hrr : r * (r - 1) + r = r ^ 2`. Take `⟨s, rfl⟩` from `Nat.exists_eq_add_of_le hr`. Simplify using `only [Nat.add_sub_cancel_left]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hjj : j ^ 2 ≤ r ^ 2` using `Nat.pow_le_pow_left hjr 2`. Establish `hr2 : r ≤ r ^ 2` using `by nlinarith`. Establish `hj2 : 1 ≤ j ^ 2` using `by nlinarith`. Establish `e : (Real.pi * M ^ 2) ^ n₁ * (Real.pi * (2 * r * M ^ 2) ^ 2) ^ n₂ * (2 * (2 * r * M ^ 2)) ^ n₃ * (2 * (Real.pi * M ^ 2) ^ (2 * j) * M ^ (2 * j ^ 2) * Real.pi ^ (j ^ 2)) = (Real.pi ^ n₁ * (Real.pi * (2 * r) ^ 2) ^ n₂ * (4 * r) ^ n₃ * (2 * Real.pi ^ (2 * j + j ^ 2))) * M ^ (2 * n₁ …`.
+
+Establish `a1 : Real.pi * (2 * r * M ^ 2) ^ 2 = (Real.pi * (2 * r) ^ 2) * M ^ 4` using `by ring`. Establish `a2 : 2 * (2 * r * M ^ 2) = (4 * (r : ℝ)) * M ^ 2` using `by ring`. Rewrite using `[a1, a2, mul_pow Real.pi, mul_pow _ (M ^ 4), mul_pow _ (M ^ 2), mul_pow Real.pi (M ^ 2)]`. Generalize the expression as in `Real.pi * (2 * (r : ℝ)) ^ 2 = B`. Generalize the expression as in `4 * (r : ℝ) = C`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `b1 : Real.pi ^ n₁ ≤ (4 * r : ℝ) ^ n₁` using `pow_le_pow_left₀ hpi (by linarith) _`. Establish `b2 : (Real.pi * (2 * r) ^ 2) ^ n₂ ≤ (4 * r : ℝ) ^ (2 * n₂)`. Rewrite using `[pow_mul]`.
+
+Use `pow_le_pow_left₀ (by positivity) ?_ _` and prove the remaining obligations. Establish `: (0 : ℝ) ≤ (2 * r) ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `b4 : 2 * Real.pi ^ (2 * j + j ^ 2) ≤ (4 * r : ℝ) ^ (2 * j + j ^ 2)` using `(two_mul_pi_pow_le_four_pow _ (by omega)).trans (pow_le_pow_left₀ (by norm_num) (by linarith) _)`. Use `mul_le_mul ?_ (pow_le_pow_right₀ hM (by omega)) (by positivity) (by positivity)` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← pow_add, ← pow_add, ← pow_add]`. Use `_ ≤ _ := pow_le_pow_right₀ hA (by omega)`.
+-/
 theorem box_volume_arith : ∀ (r j n₁ n₂ n₃ : ℕ) (M : ℝ), 1 ≤ j → j ≤ r → 2 * n₁ ≤ r * (r - 1) → 2 * n₂ ≤ r * (r - 1) → n₃ ≤ r → 1 ≤ M → (Real.pi * M ^ 2) ^ n₁ * (Real.pi * (2 * r * M ^ 2) ^ 2) ^ n₂ * (2 * (2 * r * M ^ 2)) ^ n₃ * (2 * (Real.pi * M ^ 2) ^ (2 * j) * M ^ (2 * j ^ 2) * Real.pi ^ (j ^ 2)) ≤ (4 * r : ℝ) ^ (4 * r ^ 2) * M ^ (8 * r ^ 2) := by
   intro r j n₁ n₂ n₃ M hj hjr h1 h2 h3 hM
   have hr : 1 ≤ r := hj.trans hjr

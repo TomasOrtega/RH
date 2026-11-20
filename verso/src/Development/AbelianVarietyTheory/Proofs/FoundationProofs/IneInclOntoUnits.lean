@@ -8,6 +8,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.PsType
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h a ha`. Use `⟨fun u hu => ?_, fun s => ?_⟩` and prove the remaining obligations. Take `⟨τ, rfl⟩` from `ha.surj u`. Establish `hdeg : deg τ = 0`. Use `ha.ord_eq τ` as an intermediate fact.
+
+Rewrite `this` using `[GlobalTheory.SmGL.ord_eq_zero_iff.2 hu]`. Use linear arithmetic over natural numbers and integers. Conclude with `⟨⟨τ, deg_eq_zero_iff.1 hdeg⟩, congrArg a (Subtype.ext (by rw [coe_ineIncl]))⟩`. Conclude with `GlobalTheory.SmGL.ord_eq_zero_iff.1 (by rw [ha.ord_eq, deg_ineIncl, neg_zero])`.
+-/
 theorem ineIncl_onto_units : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (a : Weil h →* (w.adicCompletion E)ˣ), IsLocalArtin h a → (∀ u : (w.adicCompletion E)ˣ, valuation (w.adicCompletion E) (u : w.adicCompletion E) = 1 → ∃ s : ↥(Ine (F := E) A), a (ineIncl h s) = u) ∧ ∀ s : ↥(Ine (F := E) A), valuation (w.adicCompletion E) (a (ineIncl h s) : w.adicCompletion E) = 1 := by
   intro E Ω _ _ _ _ _ A w h a ha
   refine ⟨fun u hu => ?_, fun s => ?_⟩

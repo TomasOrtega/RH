@@ -33,6 +33,9 @@ def multiProdEquiv (e : (Σ a, m a) ≃ n) {X Y : α → Type} [∀ a, AddCommGr
     {σ : ∀ a, Representation ℂ (GL (m a) k) (Y a)} (φ : ∀ a, (π a).Equiv (σ a)) :
     (multiProd e π).Equiv (multiProd e σ) :=
   parIndEquiv e (piTensorEquiv φ)
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, v, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Use `Submodule.subset_span ⟨u, f v, ?_⟩` and prove the remaining obligations. Simplify using `[Representation.IntertwiningMap.isIntertwining _ _ f]`.
+-/
 private theorem twKer_le_comap_intertwining {G : Type} [Group G] {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y]
     [Module ℂ Y] {ρ : Representation ℂ G X} {τ : Representation ℂ G Y} (f : ρ.IntertwiningMap τ) (N : Subgroup G) :
     twKer ρ N 1 ≤ (twKer τ N 1).comap f.toLinearMap := by
@@ -42,6 +45,15 @@ private theorem twKer_le_comap_intertwining {G : Type} [Group G] {X Y : Type} [A
   refine Submodule.subset_span ⟨u, f v, ?_⟩
   simp [Representation.IntertwiningMap.isIntertwining _ _ f]
 
+/- English proof (translation)
+Use `⟨fun w => ?_, fun s d e hne => ?_⟩` and prove the remaining obligations. Establish `key : ∀ g, φ.symm (σ g w) = π g (φ.symm w)` using `fun g => Representation.IntertwiningMap.isIntertwining _ _ φ.symm.toIntertwiningMap g w`. Establish `hset : {g : GL n k | σ g w = w} = {g | π g (φ.symm w) = φ.symm w}`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hg`. Rewrite using `[← key, hg]`. Introduce `hg`. Apply `EquivLike.injective φ.symm` to reduce the goal to its premises.
+
+Rewrite using `[key, hg]`. Rewrite using `[hset]`. Conclude with `h.1 _`. Establish `h2 : twKer π (unipRad k e) 1 = ⊤` using `Submodule.Quotient.subsingleton_iff.1 (h.2 s d e hne)`. Use `Submodule.Quotient.subsingleton_iff.2 (eq_top_iff.2 fun w _ => ?_)` and prove the remaining obligations.
+
+Establish `hw` using `twKer_le_comap_intertwining φ.toIntertwiningMap (unipRad k e) (h2 ▸ Submodule.mem_top : φ.symm w ∈ twKer π (unipRad k e) 1)`. Rewrite `hw` using `[Submodule.mem_comap]`. Simplify using `using hw`.
+-/
 theorem isCuspidal_of_equiv {π : Representation ℂ (GL n k) V} {σ : Representation ℂ (GL n k) W} (φ : π.Equiv σ)
     (h : IsCuspidal π) : IsCuspidal σ := by
   refine ⟨fun w => ?_, fun s d e hne => ?_⟩
@@ -64,6 +76,11 @@ theorem isCuspidal_of_equiv {π : Representation ℂ (GL n k) V} {σ : Represent
     rw [Submodule.mem_comap] at hw
     simpa using hw
 
+/- English proof (translation)
+Use `⟨isSmooth_twist h.1 hχ.detChar, fun s d e hne => ?_⟩` and prove the remaining obligations. Establish `h2 : twKer π (unipRad k e) 1 = ⊤` using `Submodule.Quotient.subsingleton_iff.1 (h.2 s d e hne)`. Use `Submodule.Quotient.subsingleton_iff.2 (eq_top_iff.2 ?_)` and prove the remaining obligations. Rewrite using `[← h2]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨u, v, rfl⟩`. Use `Submodule.subset_span ⟨u, v, ?_⟩` and prove the remaining obligations. Simplify using `[twist_apply, detChar_apply, det_eq_one_of_mem_unipRad k u.2]`.
+-/
 theorem isCuspidal_twist {π : Representation ℂ (GL n k) V} (h : IsCuspidal π) {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
     IsCuspidal (twist π (detChar n χ)) := by
   refine ⟨isSmooth_twist h.1 hχ.detChar, fun s d e hne => ?_⟩
@@ -75,8 +92,18 @@ theorem isCuspidal_twist {π : Representation ℂ (GL n k) V} (h : IsCuspidal π
   refine Submodule.subset_span ⟨u, v, ?_⟩
   simp [twist_apply, detChar_apply, det_eq_one_of_mem_unipRad k u.2]
 
+/- English proof (translation)
+The claim follows from `isSmoothChar_of_isUnram (isUnram_absPow k s)`.
+-/
 theorem isSmoothChar_absPow (s : ℂ) : IsSmoothChar (absPow k s) := isSmoothChar_of_isUnram (isUnram_absPow k s)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨ϖ, hϖ⟩` from `exists_uniformizer k`. Establish `h1 : ((absPow k (s : ℂ) ϖ : ℂˣ) : ℂ) = 1` using `by rw [h]; rfl`. Rewrite `h1` using `[val_absPow_ofReal, Complex.ofReal_eq_one]`.
+
+Establish `hpos : 0 < nabs k ϖ` using `nabs_pos' k ϖ`. Establish `hne : nabs k ϖ ≠ 1`. Rewrite using `[Ne, nabs_eq_one_iff, hϖ]`. Conclude with `ne_of_lt uniformizer_lt_one`. Rewrite `h1` using `[Real.rpow_def_of_pos hpos, Real.exp_eq_one_iff, mul_eq_zero]`.
+
+Conclude with `h1.resolve_left (Real.log_ne_zero_of_pos_of_ne_one hpos hne)`. Introduce and unpack `rfl`. Simplify using the standard rewrite rules.
+-/
 theorem absPow_ofReal_eq_one {s : ℝ} : absPow k s = 1 ↔ s = 0 := by
   constructor
   · intro h
@@ -91,13 +118,24 @@ theorem absPow_ofReal_eq_one {s : ℝ} : absPow k s = 1 ↔ s = 0 := by
     exact h1.resolve_left (Real.log_ne_zero_of_pos_of_ne_one hpos hne)
   · rintro rfl
     simp
+/- English proof (translation)
+Rewrite using `[mem_parab]`. Introduce `i j hij`. Conclude with `absurd hij (by rw [Subsingleton.elim (blk e j) (blk e i)]; exact lt_irrefl _)`.
+-/
 private theorem ofChar_cl_congr (e : (Σ _ : Fin 1, n) ≃ n) (g : GL n k) : g ∈ parab k e := by
   rw [mem_parab]
   intro i j hij
   exact absurd hij (by rw [Subsingleton.elim (blk e j) (blk e i)]; exact lt_irrefl _)
+/- English proof (translation)
+The claim follows from `Matrix.GeneralLinearGroup.ext fun i j => by rw [leviProj_apply, he, he]`.
+-/
 private theorem leviProj_fin_one (e : (Σ _ : Fin 1, n) ≃ n) (he : ∀ a i, e ⟨a, i⟩ = i) (p : parab k e) (a : Fin 1) :
     leviProj k e p a = (p : GL n k) :=
   Matrix.GeneralLinearGroup.ext fun i j => by rw [leviProj_apply, he, he]
+/- English proof (translation)
+Establish `h0 : ∀ a : Fin 1, modExp (fun _ : Fin 1 => n) a = 0`. Introduce `a`. Rewrite using `[Subsingleton.elim a 0]`. Simplify using `[modExp]`. Use `ext`.
+
+Simplify using `[deltaHalf_apply, h0]`.
+-/
 private theorem deltaHalf_fin_one_eq_one (g : Levi k fun _ : Fin 1 => n) : deltaHalf k (fun _ : Fin 1 => n) g = 1 := by
   have h0 : ∀ a : Fin 1, modExp (fun _ : Fin 1 => n) a = 0 := by
     intro a
@@ -106,6 +144,31 @@ private theorem deltaHalf_fin_one_eq_one (g : Levi k fun _ : Fin 1 => n) : delta
   ext
   simp [deltaHalf_apply, h0]
 
+/- English proof (translation)
+Set `ι : V ≃ₗ[ℂ] PiTensorProduct ℂ (fun _ : Fin 1 => V)` to `(PiTensorProduct.subsingletonEquiv (R := ℂ) (s := fun _ : Fin 1 => V) 0).symm`. Establish `hι : ∀ v, ι v = PiTensorProduct.tprod ℂ (fun _ => v)` using `fun v => PiTensorProduct.subsingletonEquiv_symm_apply' 0 v`. Set `σ'` to `(twist (piTensor fun _ : Fin 1 => π) (deltaHalf k fun _ : Fin 1 => n)).comp (leviProj k e)`. Establish `hact : ∀ (p : parab k e) (v : V), σ' p (ι v) = ι (π p v)`. Introduce `p v`.
+
+Simplify using `only [σ', MonoidHom.comp_apply, twist_apply, deltaHalf_fin_one_eq_one, hι, piTensor_tprod, leviProj_fin_one e he]`. Simplify using the standard rewrite rules. Set `G0 : V → indSpace (parab k e) σ'` to `fun v => ⟨fun g => ι (π g v), fun p g => by show ι (π (↑p * g) v) = σ' p (ι (π g v))`. Rewrite using `[map_mul, Module.End.mul_apply, hact]⟩`. Establish `hopen : ∀ v, G0 v ∈ smoothPart (ind (parab k e) σ')`.
+
+Introduce `v`. Use `show IsOpen {g | ind (parab k e) σ' g (G0 v) = G0 v}`. Use `hπ v using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `congrArg (fun f : indSpace (parab k e) σ' => f.1 1) h`. Establish `h2 : ι (π (1 * g) v) = ι (π 1 v)` using `h1`. Rewrite `h2` using `[one_mul, map_one, Module.End.one_apply]`.
+
+Conclude with `ι.injective h2`. Introduce `h`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Use `show ι (π (y * g) v) = ι (π y v)`.
+
+Rewrite using `[map_mul, Module.End.mul_apply, h]`. Set `F : V →ₗ[ℂ] IndSp e (piTensor fun _ : Fin 1 => π)` to `{ toFun := fun v => ⟨G0 v, hopen v⟩ map_add' := fun v w => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+
+Simplify using `[G0]`. Use the proof step `map_smul' := fun c v => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+
+Simplify using `[G0] }`. Set `Φ : π.IntertwiningMap (multiProd e fun _ : Fin 1 => π)` to `⟨F, fun g => LinearMap.ext fun v => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`.
+
+Use `show ι (π y (π g v)) = ι (π (y * g) v)`. Rewrite using `[map_mul, Module.End.mul_apply]⟩`. Establish `hinj : Function.Injective Φ` using `fun v w h => by`. Establish `h1` using `congrArg (fun f : IndSp e (piTensor fun _ : Fin 1 => π) => f.1.1 1) h`. Establish `h2 : ι (π 1 v) = ι (π 1 w)` using `h1`.
+
+Simplify using `using h2`. Establish `hsurj : Function.Surjective Φ` using `fun f => by`. Use `⟨ι.symm (f.1.1 1), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `y`. Establish `hl` using `f.1.2 ⟨y, ofChar_cl_congr e y⟩ 1`. Rewrite `hl` using `[mul_one]`. Establish `h3` using `hact ⟨y, ofChar_cl_congr e y⟩ (ι.symm (f.1.1 1))`. Rewrite `h3` using `[LinearEquiv.apply_symm_apply]`.
+
+Conclude with `h3.symm.trans hl.symm`. Conclude with `⟨equivOfBijective Φ ⟨hinj, hsurj⟩⟩`.
+-/
 theorem nonempty_equiv_multiProd_one {π : Representation ℂ (GL n k) V} (hπ : IsSmooth π) (e : (Σ _ : Fin 1, n) ≃ n)
     (he : ∀ a i, e ⟨a, i⟩ = i) : Nonempty (π.Equiv (multiProd e fun _ : Fin 1 => π)) := by
   classical
@@ -187,6 +250,9 @@ def of {N : ℕ} (π : Representation ℂ (GL (Fin N) k) V) (hs : IsSmooth π) (
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Simplify using `only [IrrGL.of, Sigma.mk.inj_iff, heq_eq_eq, true_and]`. Conclude with `IrrRep.cl_eq_iff`.
+-/
 theorem of_eq_of {N : ℕ} {π : Representation ℂ (GL (Fin N) k) V} {hs : IsSmooth π} {hi : π.IsIrreducible}
     {σ : Representation ℂ (GL (Fin N) k) W} {hs' : IsSmooth σ} {hi' : σ.IsIrreducible} :
     of π hs hi = of σ hs' hi' ↔ Nonempty (π.Equiv σ) := by
@@ -195,6 +261,9 @@ theorem of_eq_of {N : ℕ} {π : Representation ℂ (GL (Fin N) k) V} {hs : IsSm
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+The claim follows from `Sigma.ext rfl (heq_of_eq (IrrCl.cl_rep _))`.
+-/
 @[simp] theorem of_rep (x : IrrGL k) : of x.rep x.2.rep.smooth x.2.rep.irr = x := Sigma.ext rfl (heq_of_eq (IrrCl.cl_rep _))
 
 def equivOf {N : ℕ} (π : Representation ℂ (GL (Fin N) k) V) (hs : IsSmooth π) (hi : π.IsIrreducible) :
@@ -213,31 +282,54 @@ def Inert (x y : IrrGL k) : Prop := ∃ (μ : kˣ →* ℂˣ) (hμ : IsUnram μ)
 
 def IsUnramChar (x : IrrGL k) : Prop := ∃ (μ : kˣ →* ℂˣ) (hμ : IsUnram μ), x = ofChar μ (isSmoothChar_of_isUnram hμ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem tw_fst (x : IrrGL k) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) : (x.tw χ hχ).1 = x.1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem nu_fst (x : IrrGL k) (s : ℂ) : (x.nu s).1 = x.1 := rfl
 
 def twEquiv (x : IrrGL k) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     (twist x.rep (detChar _ χ)).Equiv (x.tw χ hχ).rep := equivRep (irrTwist x.2.rep _ hχ.detChar)
 
+/- English proof (translation)
+The claim follows from `Sigma.ext rfl (heq_of_eq (clTwist_cl _ _ _))`.
+-/
 theorem tw_of {N : ℕ} (π : Representation ℂ (GL (Fin N) k) V) (hs : IsSmooth π) (hi : π.IsIrreducible)
     (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) : (of π hs hi).tw χ hχ =
       of (twist π (detChar _ χ)) (isSmooth_twist hs hχ.detChar) (isIrreducible_twist hi _) := Sigma.ext rfl (heq_of_eq (clTwist_cl _ _ _))
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem clTwist_congr {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (c : IrrCl G)
     {χ ψ : G →* ℂˣ} (h : χ = ψ) (hχ : IsSmoothChar χ) (hψ : IsSmoothChar ψ) : clTwist c χ hχ = clTwist c ψ hψ := by
   subst h
   rfl
+/- English proof (translation)
+Use extensionality with `g`. Simplify using `[detChar_apply]`.
+-/
 private theorem detChar_mul' (m : Type) [Fintype m] [DecidableEq m] (χ ψ : kˣ →* ℂˣ) :
     detChar m (χ * ψ) = detChar m χ * detChar m ψ := by
   ext g
   simp [detChar_apply]
 
+/- English proof (translation)
+Take `⟨N, c⟩` from `x`. Use `Sigma.ext rfl (heq_of_eq ?_)` and prove the remaining obligations. Conclude with `(clTwist_clTwist _ _ _ _ _).trans (clTwist_congr _ (detChar_mul' _ χ ψ).symm _ _)`.
+-/
 theorem tw_tw (x : IrrGL k) (χ ψ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) (hψ : IsSmoothChar ψ) :
     (x.tw χ hχ).tw ψ hψ = x.tw (χ * ψ) (hχ.mul hψ) := by
   obtain ⟨N, c⟩ := x
   refine Sigma.ext rfl (heq_of_eq ?_)
   exact (clTwist_clTwist _ _ _ _ _).trans (clTwist_congr _ (detChar_mul' _ χ ψ).symm _ _)
 
+/- English proof (translation)
+Use `Sigma.ext rfl (heq_of_eq ?_)` and prove the remaining obligations. Use `show clTwist x.2 _ _ = x.2`. Establish `h1 : detChar (Fin x.1) (1 : kˣ →* ℂˣ) = 1`. Use extensionality with `g`. Simplify using `[detChar_apply]`.
+
+Conclude with `(clTwist_congr _ h1 _ isSmoothChar_one).trans (clTwist_one _ _)`.
+-/
 theorem tw_one (x : IrrGL k) (h : IsSmoothChar (1 : kˣ →* ℂˣ)) : x.tw 1 h = x := by
   refine Sigma.ext rfl (heq_of_eq ?_)
   show clTwist x.2 _ _ = x.2
@@ -245,30 +337,55 @@ theorem tw_one (x : IrrGL k) (h : IsSmoothChar (1 : kˣ →* ℂˣ)) : x.tw 1 h 
     ext g
     simp [detChar_apply]
   exact (clTwist_congr _ h1 _ isSmoothChar_one).trans (clTwist_one _ _)
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem tw_congr' (x : IrrGL k) {χ ψ : kˣ →* ℂˣ} (h : χ = ψ) (hχ : IsSmoothChar χ) (hψ : IsSmoothChar ψ) :
     x.tw χ hχ = x.tw ψ hψ := by
   subst h
   rfl
 
+/- English proof (translation)
+Use `show (x.tw _ _).tw _ _ = x.tw _ _`. Rewrite using `[tw_tw]`. Conclude with `tw_congr' _ (absPow_add k s t).symm _ _`.
+-/
 @[simp] theorem nu_nu (x : IrrGL k) (s t : ℂ) : (x.nu s).nu t = x.nu (s + t) := by
   show (x.tw _ _).tw _ _ = x.tw _ _
   rw [tw_tw]
   exact tw_congr' _ (absPow_add k s t).symm _ _
 
+/- English proof (translation)
+The claim follows from `(tw_congr' x (absPow_zero k) _ isSmoothChar_one).trans (tw_one x _)`.
+-/
 @[simp] theorem nu_zero (x : IrrGL k) : x.nu 0 = x := (tw_congr' x (absPow_zero k) _ isSmoothChar_one).trans (tw_one x _)
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem mem_parab_fin_one {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {χ ψ : G →* ℂˣ}
     (h : χ = ψ) (hχ : IsSmoothChar χ) (hψ : IsSmoothChar ψ) : (IrrRep.ofChar χ hχ).cl = (IrrRep.ofChar ψ hψ).cl := by
   subst h
   rfl
 
+/- English proof (translation)
+Use `Sigma.ext rfl (heq_of_eq ?_)` and prove the remaining obligations. Conclude with `(clTwist_ofChar _ _ _ _).trans (mem_parab_fin_one (detChar_mul' _ χ ψ).symm _ _)`.
+-/
 theorem tw_ofChar (χ ψ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) (hψ : IsSmoothChar ψ) :
     (ofChar χ hχ).tw ψ hψ = ofChar (χ * ψ) (hχ.mul hψ) := by
   refine Sigma.ext rfl (heq_of_eq ?_)
   exact (clTwist_ofChar _ _ _ _).trans (mem_parab_fin_one (detChar_mul' _ χ ψ).symm _ _)
+/- English proof (translation)
+Use `ext`. Simplify using the standard rewrite rules.
+-/
 private theorem det_scalar_fin_one' (x : kˣ) : GeneralLinearGroup.det (GeneralLinearGroup.scalar (Fin 1) x) = x := by
   ext
   simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `only [IrrGL.ofChar, Sigma.mk.inj_iff, heq_eq_eq, true_and] at h`. Establish `h2` using `(IrrRep.cl_ofChar_inj _ _).1 h`. Use extensionality with `x`.
+
+Establish `h3` using `DFunLike.congr_fun h2 (GeneralLinearGroup.scalar (Fin 1) x)`. Simplify using `only [detChar_apply] at h3`. Rewrite `h3` using `[det_scalar_fin_one']`. Rewrite using `[h3]`. Introduce and unpack `rfl`.
+
+Both sides reduce to the same expression.
+-/
 theorem ofChar_inj {χ ψ : kˣ →* ℂˣ} {hχ : IsSmoothChar χ} {hψ : IsSmoothChar ψ} :
     ofChar χ hχ = ofChar ψ hψ ↔ χ = ψ := by
   constructor
@@ -283,6 +400,11 @@ theorem ofChar_inj {χ ψ : kˣ →* ℂˣ} {hχ : IsSmoothChar χ} {hψ : IsSmo
   · rintro rfl
     rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `only [IrrGL.nu, tw_ofChar, ofChar_inj] at h`. Establish `h2 : absPow k (((s - t : ℝ)) : ℂ) = 1`. Rewrite using `[Complex.ofReal_sub, sub_eq_add_neg, absPow_add, absPow_neg, mul_left_cancel h, mul_inv_cancel]`.
+
+Conclude with `sub_eq_zero.1 (absPow_ofReal_eq_one.1 h2)`. Introduce and unpack `rfl`. Both sides reduce to the same expression.
+-/
 theorem nu_ofChar_inj (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) {s t : ℝ} :
     (ofChar χ hχ).nu s = (ofChar χ hχ).nu t ↔ s = t := by
   constructor
@@ -294,19 +416,34 @@ theorem nu_ofChar_inj (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) {s t : ℝ} 
   · rintro rfl
     rfl
 
+/- English proof (translation)
+Use `show 0 < N ∧ IsCuspidal (of π hs hi).rep ↔ _`. Conclude with `and_congr Iff.rfl ⟨fun h => isCuspidal_of_equiv (equivOf π hs hi).symm h, fun h => isCuspidal_of_equiv (equivOf π hs hi) h⟩`.
+-/
 theorem isCusp_of {N : ℕ} {π : Representation ℂ (GL (Fin N) k) V} {hs : IsSmooth π} {hi : π.IsIrreducible} :
     (of π hs hi).IsCusp ↔ 0 < N ∧ IsCuspidal π := by
   show 0 < N ∧ IsCuspidal (of π hs hi).rep ↔ _
   exact and_congr Iff.rfl ⟨fun h => isCuspidal_of_equiv (equivOf π hs hi).symm h,
     fun h => isCuspidal_of_equiv (equivOf π hs hi) h⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, isCuspidal_of_equiv (x.twEquiv χ hχ) (isCuspidal_twist h.2 hχ)⟩`.
+-/
 theorem IsCusp.tw {x : IrrGL k} (h : x.IsCusp) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) : (x.tw χ hχ).IsCusp := ⟨h.1, isCuspidal_of_equiv (x.twEquiv χ hχ) (isCuspidal_twist h.2 hχ)⟩
 
+/- English proof (translation)
+The claim follows from `h.tw _ _`.
+-/
 theorem IsCusp.nu {x : IrrGL k} (h : x.IsCusp) (s : ℂ) : (x.nu s).IsCusp := h.tw _ _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨one_pos, isCuspidal_of_equiv (IrrRep.nonempty_equiv_rep (IrrRep.det (Fin 1) χ hχ)).some.symm (isCuspidal_detRep_one hχ)⟩`.
+-/
 theorem isCusp_ofChar (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) : (ofChar χ hχ).IsCusp := ⟨one_pos, isCuspidal_of_equiv (IrrRep.nonempty_equiv_rep (IrrRep.det (Fin 1) χ hχ)).some.symm
   (isCuspidal_detRep_one hχ)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, fun _ _ => rfl, (tw_one x _).symm⟩ symm := by rintro x y ⟨μ, hμ, rfl⟩ refine ⟨μ⁻¹, isUnram_inv hμ, ?_⟩ rw [tw_tw] exact ((tw_congr' x (mul_inv_cancel μ) _ isSmoothChar_one).trans (tw_one x _)).symm trans := by rintro x y z ⟨μ, hμ, rfl⟩ ⟨μ', hμ', rfl⟩ exact ⟨μ * μ', isUnram_mu …`.
+-/
 theorem inert_equivalence : Equivalence (Inert (k := k)) where
   refl x := ⟨1, fun _ _ => rfl, (tw_one x _).symm⟩
   symm := by
@@ -318,8 +455,16 @@ theorem inert_equivalence : Equivalence (Inert (k := k)) where
     rintro x y z ⟨μ, hμ, rfl⟩ ⟨μ', hμ', rfl⟩
     exact ⟨μ * μ', isUnram_mul hμ hμ', tw_tw _ _ _ _ _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨absPow k s, isUnram_absPow k s, rfl⟩`.
+-/
 theorem inert_nu (x : IrrGL k) (s : ℂ) : Inert x (x.nu s) := ⟨absPow k s, isUnram_absPow k s, rfl⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨μ, hμ, h⟩`. Rewrite `h` using `[tw_of, of_eq_of]`. Conclude with `⟨μ, hμ, h⟩`. Introduce and unpack `⟨μ, hμ, h⟩`.
+
+Conclude with `⟨μ, hμ, by rw [tw_of, of_eq_of]; exact h⟩`.
+-/
 theorem inert_of {N : ℕ} {π : Representation ℂ (GL (Fin N) k) V} {hs : IsSmooth π} {hi : π.IsIrreducible}
     {σ : Representation ℂ (GL (Fin N) k) W} {hs' : IsSmooth σ} {hi' : σ.IsIrreducible} :
     Inert (of π hs hi) (of σ hs' hi') ↔ InertEquiv π σ := by
@@ -336,6 +481,9 @@ def prodIrr {h N : ℕ} (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N) :
     Representation ℂ (GL (Fin N) k) (IndSp (stdBlocks (fun a => (x a).1) hd) (piTensor fun a => (x a).rep)) :=
   multiProd (stdBlocks (fun a => (x a).1) hd) fun a => (x a).rep
 
+/- English proof (translation)
+The claim follows from `isSmooth_parInd _ _`.
+-/
 theorem isSmooth_prodIrr {h N : ℕ} (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N) : IsSmooth (prodIrr x hd) := isSmooth_parInd _ _
 
 def prodIrrEquiv {h N : ℕ} {d : Fin h → ℕ} (hd : ∑ a, d a = N) {X : Fin h → Type} [∀ a, AddCommGroup (X a)]
@@ -344,6 +492,9 @@ def prodIrrEquiv {h N : ℕ} {d : Fin h → ℕ} (hd : ∑ a, d a = N) {X : Fin 
     (multiProd (stdBlocks d hd) π).Equiv (prodIrr (fun a => IrrGL.of (π a) (hs a) (hi a)) hd) :=
   multiProdEquiv _ fun a => IrrGL.equivOf (π a) (hs a) (hi a)
 
+/- English proof (translation)
+The claim follows from `nonempty_equiv_multiProd_one x.2.rep.smooth _ fun a i => by apply Fin.ext rw [stdBlocks_val, Finset.sum_eq_zero fun b _ => absurd b.2 (by simp), zero_add]`.
+-/
 theorem nonempty_equiv_prodIrr_one (x : IrrGL k) (hd : ∑ _ : Fin 1, x.1 = x.1) :
     Nonempty (x.rep.Equiv (prodIrr (fun _ : Fin 1 => x) hd)) := nonempty_equiv_multiProd_one x.2.rep.smooth _ fun a i => by
   apply Fin.ext
@@ -356,29 +507,47 @@ section Support
 
 variable {n : Type} [Fintype n] [DecidableEq n] {π : Representation ℂ (GL n k) V} {s : Multiset (IrrGL k)}
 
+/- English proof (translation)
+Take `⟨_, _, _, hc⟩` from `h`. Conclude with `hc.1`.
+-/
 theorem HasSupport.isIrreducible (h : HasSupport π s) : π.IsIrreducible := by
   obtain ⟨_, _, _, hc⟩ := h
   exact hc.1
 
+/- English proof (translation)
+Take `⟨_, _, _, -, -, e, hs⟩` from `h`. Conclude with `hs.isSmooth (isSmooth_parInd _ _)`.
+-/
 theorem HasSupport.isSmooth (h : HasSupport π s) : IsSmooth π := by
   obtain ⟨_, _, _, -, -, e, hs⟩ := h
   exact hs.isSmooth (isSmooth_parInd _ _)
 
+/- English proof (translation)
+Take `⟨_, x, rfl, hc⟩` from `h`. Take `⟨a, -, rfl⟩` from `Multiset.mem_map.1 hy`. Conclude with `⟨(hc.2.1 a).1, (hc.2.1 a).2.2⟩`.
+-/
 theorem HasSupport.isCusp (h : HasSupport π s) {y : IrrGL k} (hy : y ∈ s) : y.IsCusp := by
   obtain ⟨_, x, rfl, hc⟩ := h
   obtain ⟨a, -, rfl⟩ := Multiset.mem_map.1 hy
   exact ⟨(hc.2.1 a).1, (hc.2.1 a).2.2⟩
 
+/- English proof (translation)
+Take `⟨_, x, rfl, -, -, e, -⟩` from `h`. Rewrite using `[Multiset.map_map, ← Fintype.card_congr e, Fintype.card_sigma]`. Simplify using `[Finset.sum_eq_multiset_sum]`.
+-/
 theorem HasSupport.sum_fst (h : HasSupport π s) : (s.map Sigma.fst).sum = Fintype.card n := by
   obtain ⟨_, x, rfl, -, -, e, -⟩ := h
   rw [Multiset.map_map, ← Fintype.card_congr e, Fintype.card_sigma]
   simp [Finset.sum_eq_multiset_sum]
 
+/- English proof (translation)
+Take `⟨h', x, hx, hi, hc, e, hs⟩` from `h`. Conclude with `⟨h', x, hx, isIrreducible_of_equiv φ hi, hc, e, (IsSubquotient.of_surjective φ.toIntertwiningMap (EquivLike.surjective φ)).trans hs⟩`.
+-/
 theorem HasSupport.of_equiv (h : HasSupport π s) {σ : Representation ℂ (GL n k) W} (φ : π.Equiv σ) : HasSupport σ s := by
   obtain ⟨h', x, hx, hi, hc, e, hs⟩ := h
   exact ⟨h', x, hx, isIrreducible_of_equiv φ hi, hc, e,
     (IsSubquotient.of_surjective φ.toIntertwiningMap (EquivLike.surjective φ)).trans hs⟩
 
+/- English proof (translation)
+Take `⟨e, hs⟩` from `H.2.2`. Set `x : Fin h → IrrGL k` to `fun a => IrrGL.of (σ a) (H.2.1 a).2.2.1 (H.2.1 a).2.1`. Establish `φ : ∀ a, (σ a).Equiv (x a).rep` using `fun a => IrrGL.equivOf (σ a) (H.2.1 a).2.2.1 (H.2.1 a).2.1`. Use `⟨h, x, rfl, H.1, fun a => ⟨(H.2.1 a).1, isIrreducible_of_equiv (φ a) (H.2.1 a).2.1, isCuspidal_of_equiv (φ a) (H.2.1 a).2.2⟩, e, hs.trans ?_⟩` and prove the remaining obligations. Conclude with `IsSubquotient.of_surjective (multiProdEquiv e φ).symm.toIntertwiningMap (EquivLike.surjective (multiProdEquiv e φ).symm)`.
+-/
 theorem hasSupport_of_isCuspSupport {h : ℕ} {d : Fin h → ℕ} {X : Fin h → Type} [∀ a, AddCommGroup (X a)]
     [∀ a, Module ℂ (X a)] {σ : ∀ a, Representation ℂ (GL (Fin (d a)) k) (X a)} (H : IsCuspSupport π d σ) :
     HasSupport π (Finset.univ.val.map fun a => IrrGL.of (σ a) (H.2.1 a).2.2.1 (H.2.1 a).2.1) := by
@@ -389,10 +558,16 @@ theorem hasSupport_of_isCuspSupport {h : ℕ} {d : Fin h → ℕ} {X : Fin h →
     isCuspidal_of_equiv (φ a) (H.2.1 a).2.2⟩, e, hs.trans ?_⟩
   exact IsSubquotient.of_surjective (multiProdEquiv e φ).symm.toIntertwiningMap (EquivLike.surjective (multiProdEquiv e φ).symm)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h, x, rfl, hi, fun a => ⟨(hc a).1, (x a).2.rep.irr, (hc a).2⟩, stdBlocks _ hd, hs⟩`.
+-/
 theorem hasSupport_of_isSubquotient {h N : ℕ} {π : Representation ℂ (GL (Fin N) k) V} (hi : π.IsIrreducible)
     {x : Fin h → IrrGL k} (hc : ∀ a, (x a).IsCusp) {hd : ∑ a, (x a).1 = N} (hs : IsSubquotient π (prodIrr x hd)) :
     HasSupport π (Finset.univ.val.map x) := ⟨h, x, rfl, hi, fun a => ⟨(hc a).1, (x a).2.rep.irr, (hc a).2⟩, stdBlocks _ hd, hs⟩
 
+/- English proof (translation)
+Establish `hd : ∑ _ : Fin 1, x.1 = x.1` using `by simp`. Take `⟨φ⟩` from `nonempty_equiv_prodIrr_one x hd`. Conclude with `⟨1, fun _ => x, by simp, x.2.rep.irr, fun _ => ⟨hx.1, x.2.rep.irr, hx.2⟩, stdBlocks _ hd, IsSubquotient.of_injective φ.toIntertwiningMap (EquivLike.injective φ)⟩`.
+-/
 theorem hasSupport_self {x : IrrGL k} (hx : x.IsCusp) : HasSupport x.rep {x} := by
   have hd : ∑ _ : Fin 1, x.1 = x.1 := by simp
   obtain ⟨φ⟩ := nonempty_equiv_prodIrr_one x hd
@@ -411,6 +586,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 def first (Δ : Segment k) : IrrGL k := ⟨Δ.d, Δ.start⟩
 
+/- English proof (translation)
+Take `⟨σ, hσ, hc⟩` from `Δ.cusp`. Conclude with `⟨Δ.d_pos, isCuspidal_of_equiv (cl_eq_iff_rep.1 hσ).some hc⟩`.
+-/
 theorem isCusp_first (Δ : Segment k) : Δ.first.IsCusp := by
   obtain ⟨σ, hσ, hc⟩ := Δ.cusp
   exact ⟨Δ.d_pos, isCuspidal_of_equiv (cl_eq_iff_rep.1 hσ).some hc⟩
@@ -418,10 +596,21 @@ theorem isCusp_first (Δ : Segment k) : Δ.first.IsCusp := by
 def ofFirst (ρ : IrrGL k) (hρ : ρ.IsCusp) (l : ℕ) (hl : 0 < l) : Segment k :=
   ⟨ρ.1, hρ.1, ρ.2, ⟨ρ.2.rep, ρ.2.cl_rep, hρ.2⟩, l, hl⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem first_ofFirst (ρ : IrrGL k) (hρ : ρ.IsCusp) (l : ℕ) (hl : 0 < l) : (ofFirst ρ hρ l hl).first = ρ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem len_ofFirst (ρ : IrrGL k) (hρ : ρ.IsCusp) (l : ℕ) (hl : 0 < l) : (ofFirst ρ hρ l hl).len = l := rfl
 
+/- English proof (translation)
+Take `⟨d, hd, s, hs, l, hl⟩` from `Δ`. Take `⟨d', hd', s', hs', l', hl'⟩` from `Δ'`. Simplify using `only [Segment.first, Sigma.mk.inj_iff] at h`. Take `⟨rfl, h2⟩` from `h`. Take `rfl` from `eq_of_heq h2`.
+
+Simplify using `only at h'`. Substitute `h'` using the available equality. Both sides reduce to the same expression.
+-/
 theorem ext_first {Δ Δ' : Segment k} (h : Δ.first = Δ'.first) (h' : Δ.len = Δ'.len) : Δ = Δ' := by
   obtain ⟨d, hd, s, hs, l, hl⟩ := Δ
   obtain ⟨d', hd', s', hs', l', hl'⟩ := Δ'
@@ -455,12 +644,21 @@ def Linked (Δ Δ' : Segment k) : Prop :=
 
 def Precedes (Δ Δ' : Segment k) : Prop := Linked Δ Δ' ∧ ∃ j : ℕ, 0 < j ∧ Δ'.first = Δ.first.nu j
 
+/- English proof (translation)
+The claim follows from `Δ.isCusp_first.nu _`.
+-/
 theorem isCusp_term (Δ : Segment k) (a : Fin Δ.len) : (Δ.term a).IsCusp := Δ.isCusp_first.nu _
 
+/- English proof (translation)
+Use `show ∑ _a : Fin Δ.len, Δ.d = Δ.len * Δ.d`. Simplify using the standard rewrite rules.
+-/
 theorem sum_term_fst (Δ : Segment k) : ∑ a, (Δ.term a).1 = Δ.deg := by
   show ∑ _a : Fin Δ.len, Δ.d = Δ.len * Δ.d
   simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨a, a.2, rfl⟩`. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨⟨a, ha⟩, rfl⟩`.
+-/
 theorem mem_carrier {Δ : Segment k} {x : IrrGL k} : x ∈ Δ.carrier ↔ ∃ a : ℕ, a < Δ.len ∧ Δ.first.nu a = x := by
   constructor
   · rintro ⟨a, rfl⟩
@@ -468,12 +666,27 @@ theorem mem_carrier {Δ : Segment k} {x : IrrGL k} : x ∈ Δ.carrier ↔ ∃ a 
   · rintro ⟨a, ha, rfl⟩
     exact ⟨⟨a, ha⟩, rfl⟩
 
+/- English proof (translation)
+Simplify using `[Segment.ms, Segment.carrier]`.
+-/
 theorem mem_ms {Δ : Segment k} {x : IrrGL k} : x ∈ Δ.ms ↔ x ∈ Δ.carrier := by
   simp [Segment.ms, Segment.carrier]
 
+/- English proof (translation)
+Simplify using `[Segment.ms]`.
+-/
 @[simp] theorem card_ms (Δ : Segment k) : Δ.ms.card = Δ.len := by
   simp [Segment.ms]
 
+/- English proof (translation)
+Rewrite using `[mem_carrier]`. Use `show (∃ a : ℕ, a < (d - c + 1).toNat ∧ (ρ.nu c).nu a = x) ↔ _`. Simplify using `only [IrrGL.nu_nu]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`.
+
+Rewrite `ha` using `[Int.lt_toNat]`. Use `⟨c + a, by omega, by omega, ?_⟩` and prove the remaining obligations. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce and unpack `⟨a, h1, h2, rfl⟩`. Establish `h3 : ((a - c).toNat : ℤ) = a - c` using `Int.toNat_of_nonneg (by omega)`. Use `⟨(a - c).toNat, by omega, ?_⟩` and prove the remaining obligations. Use `congr 1`. Establish `h4 : (((a - c).toNat : ℕ) : ℂ) = (a : ℂ) - c` using `by exact_mod_cast h3`.
+
+Rewrite using `[h4]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mem_icc {ρ : IrrGL k} {hρ : ρ.IsCusp} {c d : ℤ} {h : c ≤ d} {x : IrrGL k} :
     x ∈ (icc ρ hρ c d h).carrier ↔ ∃ a : ℤ, c ≤ a ∧ a ≤ d ∧ ρ.nu a = x := by
   rw [mem_carrier]
@@ -494,27 +707,48 @@ theorem mem_icc {ρ : IrrGL k} {hρ : ρ.IsCusp} {c d : ℤ} {h : c ≤ d} {x : 
     rw [h4]
     ring
 
+/- English proof (translation)
+Use `show Set.range (fun a : Fin 1 => ρ.nu ((a : ℕ) : ℂ)) = {ρ}`. Rewrite using `[Set.range_unique]`. Simplify using the standard rewrite rules.
+-/
 @[simp] theorem carrier_single (ρ : IrrGL k) (hρ : ρ.IsCusp) : (single ρ hρ).carrier = {ρ} := by
   show Set.range (fun a : Fin 1 => ρ.nu ((a : ℕ) : ℂ)) = {ρ}
   rw [Set.range_unique]
   simp
 
+/- English proof (translation)
+Use `show Finset.univ.val.map (fun a : Fin 1 => ρ.nu ((a : ℕ) : ℂ)) = {ρ}`. Simplify using the standard rewrite rules.
+-/
 @[simp] theorem ms_single (ρ : IrrGL k) (hρ : ρ.IsCusp) : (single ρ hρ).ms = {ρ} := by
   show Finset.univ.val.map (fun a : Fin 1 => ρ.nu ((a : ℕ) : ℂ)) = {ρ}
   simp
 
+/- English proof (translation)
+Take `⟨⟨Γ, hΓ⟩, h1, h2⟩` from `h`. Conclude with `⟨⟨Γ, hΓ.trans (Set.union_comm _ _)⟩, h2, h1⟩`.
+-/
 theorem Linked.symm {Δ Δ' : Segment k} (h : Linked Δ Δ') : Linked Δ' Δ := by
   obtain ⟨⟨Γ, hΓ⟩, h1, h2⟩ := h
   exact ⟨⟨Γ, hΓ.trans (Set.union_comm _ _)⟩, h2, h1⟩
 
+/- English proof (translation)
+Introduce `h` and use `h.2.1 (Set.Subset.refl _)`.
+-/
 theorem not_linked_self (Δ : Segment k) : ¬ Linked Δ Δ := fun h => h.2.1 (Set.Subset.refl _)
 
+/- English proof (translation)
+Take `⟨a, -, rfl⟩` from `mem_carrier.1 h`. Conclude with `IrrGL.inert_nu _ _`.
+-/
 theorem inert_of_mem {Δ : Segment k} {x : IrrGL k} (h : x ∈ Δ.carrier) : IrrGL.Inert Δ.first x := by
   obtain ⟨a, -, rfl⟩ := mem_carrier.1 h
   exact IrrGL.inert_nu _ _
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨0, Δ.len_pos⟩, by simp [Segment.term]⟩`.
+-/
 private theorem first_mem_carrier' (Δ : Segment k) : Δ.first ∈ Δ.carrier :=
   ⟨⟨0, Δ.len_pos⟩, by simp [Segment.term]⟩
 
+/- English proof (translation)
+Take `⟨⟨Γ, hΓ⟩, -, -⟩` from `h`. Establish `h1 : Δ.first ∈ Γ.carrier` using `hΓ ▸ Or.inl (first_mem_carrier' Δ)`. Establish `h2 : Δ'.first ∈ Γ.carrier` using `hΓ ▸ Or.inr (first_mem_carrier' Δ')`. Conclude with `IrrGL.inert_equivalence.trans (IrrGL.inert_equivalence.symm (inert_of_mem h1)) (inert_of_mem h2)`.
+-/
 theorem Linked.inert {Δ Δ' : Segment k} (h : Linked Δ Δ') : IrrGL.Inert Δ.first Δ'.first := by
   obtain ⟨⟨Γ, hΓ⟩, -, -⟩ := h
   have h1 : Δ.first ∈ Γ.carrier := hΓ ▸ Or.inl (first_mem_carrier' Δ)
@@ -562,6 +796,15 @@ def IsSpeh (x : IrrGL k) (d : ℕ) (π : Representation ℂ (GL (Fin N) k) V) : 
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Establish `hu` using `mem_unipRad.1 u.2`. Establish `hv` using `mem_unipRad.1 v.2`. Establish `lo : ∀ g : GL (Fin N) k, g ∈ parab k (points (Fin N)) → ∀ p q : Fin N, q < p → (g : Matrix (Fin N) (Fin N) k) p q = 0` using `fun g hg p q hpq => mem_parab.1 hg p q (by simpa [blk, points] using hpq)`. Establish `di : ∀ g : GL (Fin N) k, (∀ (a : Fin N) (i j : Unit), (g : Matrix (Fin N) (Fin N) k) (points (Fin N) ⟨a, i⟩) (points (Fin N) ⟨a, j⟩) = (1 : Matrix Unit Unit k) i j) → ∀ p, (g : Matrix (Fin N) (Fin N) k) p p = 1` using `fun g hg p => by simpa using hg p () ()`. Establish `hij' : i ≠ j` using `fun h => by rw [h] at hij; omega`.
+
+Rewrite using `[Subgroup.coe_mul, Units.val_mul, Matrix.mul_apply, Fintype.sum_eq_add i j hij' fun l hl => ?_]`. Rewrite using `[di _ hu.2 i, di _ hv.2 j]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `h1 : l < i`. Rewrite using `[lo _ hu.1 i l h1, zero_mul]`.
+
+Establish `h2 : (j : ℕ) < l`. Use `Fin.val_ne_of_ne hl.1` as an intermediate fact. Use `Fin.val_ne_of_ne hl.2` as an intermediate fact. Rewrite `h1` using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[lo _ hv.1 l j (Fin.lt_def.2 h2), mul_zero]`.
+-/
 theorem unipB_mul_apply (u v : unipB k (Fin N)) {i j : Fin N} (hij : (j : ℕ) = i + 1) :
     ((u * v : unipB k (Fin N)) : GL (Fin N) k).val i j = (u : GL (Fin N) k).val i j + (v : GL (Fin N) k).val i j := by
   have hu := mem_unipRad.1 u.2
@@ -601,9 +844,15 @@ def IsGenericFor (ψ : AddChar k Circle) (π : Representation ℂ (GL (Fin N) k)
 def IsGeneric (π : Representation ℂ (GL (Fin N) k) V) : Prop :=
   ∃ ψ : AddChar k Circle, Continuous ψ ∧ ψ ≠ 1 ∧ IsGenericFor ψ π
 
+/- English proof (translation)
+Simplify using `[msupp]`.
+-/
 @[simp] theorem msupp_add (𝔪 𝔫 : Multiset (Segment k)) : msupp (𝔪 + 𝔫) = msupp 𝔪 + msupp 𝔫 := by
   simp [msupp]
 
+/- English proof (translation)
+Simplify using `[msupp]`.
+-/
 @[simp] theorem msupp_singleton (Δ : Segment k) : msupp {Δ} = Δ.ms := by
   simp [msupp]
 
@@ -612,61 +861,105 @@ section Equiv
 variable {π : Representation ℂ (GL (Fin N) k) V} {σ : Representation ℂ (GL (Fin N) k) W} {Δ : Segment k}
   {𝔪 : Multiset (Segment k)}
 
+/- English proof (translation)
+Take `⟨hd, hs⟩` from `h`. Conclude with `⟨hd, hs.of_equiv φ (Representation.Equiv.refl _)⟩`.
+-/
 theorem IsZSeg.of_equiv (h : IsZSeg Δ π) (φ : π.Equiv σ) : IsZSeg Δ σ := by
   obtain ⟨hd, hs⟩ := h
   exact ⟨hd, hs.of_equiv φ (Representation.Equiv.refl _)⟩
 
+/- English proof (translation)
+Take `⟨hd, hs⟩` from `h`. Conclude with `⟨hd, hs.of_equiv φ (Representation.Equiv.refl _)⟩`.
+-/
 theorem IsLSeg.of_equiv (h : IsLSeg Δ π) (φ : π.Equiv σ) : IsLSeg Δ σ := by
   obtain ⟨hd, hs⟩ := h
   exact ⟨hd, hs.of_equiv φ (Representation.Equiv.refl _)⟩
 
+/- English proof (translation)
+Take `⟨h, x, hd, hz, hs⟩` from `h`. Conclude with `⟨h, x, hd, hz, hs.of_equiv φ (Representation.Equiv.refl _)⟩`.
+-/
 theorem IsZ.of_equiv (h : IsZ 𝔪 π) (φ : π.Equiv σ) : IsZ 𝔪 σ := by
   obtain ⟨h, x, hd, hz, hs⟩ := h
   exact ⟨h, x, hd, hz, hs.of_equiv φ (Representation.Equiv.refl _)⟩
 
+/- English proof (translation)
+Take `⟨h, x, hd, hz, hs⟩` from `h`. Conclude with `⟨h, x, hd, hz, hs.of_equiv φ (Representation.Equiv.refl _)⟩`.
+-/
 theorem IsL.of_equiv (h : IsL 𝔪 π) (φ : π.Equiv σ) : IsL 𝔪 σ := by
   obtain ⟨h, x, hd, hz, hs⟩ := h
   exact ⟨h, x, hd, hz, hs.of_equiv φ (Representation.Equiv.refl _)⟩
 
+/- English proof (translation)
+Take `⟨hd, hs⟩` from `h`. Take `⟨hd', hs'⟩` from `h'`. Conclude with `IsSocle.unique hs hs'`.
+-/
 theorem IsZSeg.unique (h : IsZSeg Δ π) (h' : IsZSeg Δ σ) : Nonempty (σ.Equiv π) := by
   obtain ⟨hd, hs⟩ := h
   obtain ⟨hd', hs'⟩ := h'
   exact IsSocle.unique hs hs'
 
+/- English proof (translation)
+Take `⟨hd, hs⟩` from `h`. Take `⟨hd', hs'⟩` from `h'`. Conclude with `IsCosocle.unique hs hs'`.
+-/
 theorem IsLSeg.unique (h : IsLSeg Δ π) (h' : IsLSeg Δ σ) : Nonempty (σ.Equiv π) := by
   obtain ⟨hd, hs⟩ := h
   obtain ⟨hd', hs'⟩ := h'
   exact IsCosocle.unique hs hs'
 
+/- English proof (translation)
+Take `⟨hd, hs⟩` from `h`. Conclude with `⟨Δ.len, Δ.term, rfl, hs.1, fun a => ⟨(Δ.isCusp_term a).1, (Δ.term a).2.rep.irr, (Δ.isCusp_term a).2⟩, stdBlocks _ hd, hs.isSubquotient⟩`.
+-/
 theorem IsZSeg.hasSupport (h : IsZSeg Δ π) : HasSupport π Δ.ms := by
   obtain ⟨hd, hs⟩ := h
   exact ⟨Δ.len, Δ.term, rfl, hs.1, fun a => ⟨(Δ.isCusp_term a).1, (Δ.term a).2.rep.irr, (Δ.isCusp_term a).2⟩,
     stdBlocks _ hd, hs.isSubquotient⟩
 
+/- English proof (translation)
+Take `⟨hd, hs⟩` from `h`. Conclude with `⟨Δ.len, Δ.term, rfl, hs.1, fun a => ⟨(Δ.isCusp_term a).1, (Δ.term a).2.rep.irr, (Δ.isCusp_term a).2⟩, stdBlocks _ hd, hs.isSubquotient⟩`.
+-/
 theorem IsLSeg.hasSupport (h : IsLSeg Δ π) : HasSupport π Δ.ms := by
   obtain ⟨hd, hs⟩ := h
   exact ⟨Δ.len, Δ.term, rfl, hs.1, fun a => ⟨(Δ.isCusp_term a).1, (Δ.term a).2.rep.irr, (Δ.isCusp_term a).2⟩,
     stdBlocks _ hd, hs.isSubquotient⟩
 
+/- English proof (translation)
+Take `⟨hd, -⟩` from `h`. Conclude with `Δ.sum_term_fst.symm.trans hd`.
+-/
 theorem IsZSeg.deg_eq (h : IsZSeg Δ π) : Δ.deg = N := by
   obtain ⟨hd, -⟩ := h
   exact Δ.sum_term_fst.symm.trans hd
 
+/- English proof (translation)
+Take `⟨hd, -⟩` from `h`. Conclude with `Δ.sum_term_fst.symm.trans hd`.
+-/
 theorem IsLSeg.deg_eq (h : IsLSeg Δ π) : Δ.deg = N := by
   obtain ⟨hd, -⟩ := h
   exact Δ.sum_term_fst.symm.trans hd
 
+/- English proof (translation)
+Take `⟨h, x, hd, -, hs⟩` from `h`. Conclude with `⟨hs.1, hs.isSubquotient.isSmooth (isSmooth_prodIrr x hd)⟩`.
+-/
 theorem IsZ.irr_smooth (h : IsZ 𝔪 π) : π.IsIrreducible ∧ IsSmooth π := by
   obtain ⟨h, x, hd, -, hs⟩ := h
   exact ⟨hs.1, hs.isSubquotient.isSmooth (isSmooth_prodIrr x hd)⟩
 
+/- English proof (translation)
+Take `⟨h, x, hd, -, hs⟩` from `h`. Conclude with `⟨hs.1, hs.isSubquotient.isSmooth (isSmooth_prodIrr x hd)⟩`.
+-/
 theorem IsL.irr_smooth (h : IsL 𝔪 π) : π.IsIrreducible ∧ IsSmooth π := by
   obtain ⟨h, x, hd, -, hs⟩ := h
   exact ⟨hs.1, hs.isSubquotient.isSmooth (isSmooth_prodIrr x hd)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by simp, fun i j hij => absurd hij (by rw [Subsingleton.elim i j]; exact lt_irrefl j)⟩`.
+-/
 theorem isOrderedForm_one (Δ : Segment k) :
     IsOrderedForm (fun _ : Fin 1 => Δ) {Δ} := ⟨by simp, fun i j hij => absurd hij (by rw [Subsingleton.elim i j]; exact lt_irrefl j)⟩
 
+/- English proof (translation)
+Take `⟨hd, hs⟩` from `h`. Establish `hsm : IsSmooth π` using `hs.isSubquotient.isSmooth (isSmooth_prodIrr _ hd)`. Set `y : IrrGL k` to `IrrGL.of π hsm hs.1`. Establish `hd1 : ∑ _a : Fin 1, y.1 = y.1` using `by simp`. Take `⟨e⟩` from `nonempty_equiv_prodIrr_one y hd1`.
+
+Establish `e' : π.Equiv (prodIrr (fun _ : Fin 1 => y) hd1)` using `(IrrGL.equivOf π hsm hs.1).trans e`. Establish `hS : IsSocle π (prodIrr (fun _ : Fin 1 => y) hd1)` using `(isSocle_self hs.1).of_equiv (Representation.Equiv.refl π) e'`. Establish `hZ : IsZSeg Δ y.rep` using `⟨hd, hs.of_equiv (IrrGL.equivOf π hsm hs.1) (Representation.Equiv.refl _)⟩`. Conclude with `⟨1, fun _ => y, hd1, ⟨fun _ => Δ, isOrderedForm_one Δ, fun _ => hZ⟩, hS⟩`.
+-/
 theorem IsZSeg.isZ (h : IsZSeg Δ π) : IsZ {Δ} π := by
   obtain ⟨hd, hs⟩ := h
   have hsm : IsSmooth π := hs.isSubquotient.isSmooth (isSmooth_prodIrr _ hd)
@@ -678,6 +971,11 @@ theorem IsZSeg.isZ (h : IsZSeg Δ π) : IsZ {Δ} π := by
   have hZ : IsZSeg Δ y.rep := ⟨hd, hs.of_equiv (IrrGL.equivOf π hsm hs.1) (Representation.Equiv.refl _)⟩
   exact ⟨1, fun _ => y, hd1, ⟨fun _ => Δ, isOrderedForm_one Δ, fun _ => hZ⟩, hS⟩
 
+/- English proof (translation)
+Take `⟨hd, hs⟩` from `h`. Establish `hsm : IsSmooth π` using `hs.isSubquotient.isSmooth (isSmooth_prodIrr _ hd)`. Set `y : IrrGL k` to `IrrGL.of π hsm hs.1`. Establish `hd1 : ∑ _a : Fin 1, y.1 = y.1` using `by simp`. Take `⟨e⟩` from `nonempty_equiv_prodIrr_one y hd1`.
+
+Establish `e' : π.Equiv (prodIrr (fun _ : Fin 1 => y) hd1)` using `(IrrGL.equivOf π hsm hs.1).trans e`. Establish `hS : IsCosocle π (prodIrr (fun _ : Fin 1 => y) hd1)` using `(isCosocle_self hs.1).of_equiv (Representation.Equiv.refl π) e'`. Establish `hZ : IsLSeg Δ y.rep` using `⟨hd, hs.of_equiv (IrrGL.equivOf π hsm hs.1) (Representation.Equiv.refl _)⟩`. Conclude with `⟨1, fun _ => y, hd1, ⟨fun _ => Δ, isOrderedForm_one Δ, fun _ => hZ⟩, hS⟩`.
+-/
 theorem IsLSeg.isL (h : IsLSeg Δ π) : IsL {Δ} π := by
   obtain ⟨hd, hs⟩ := h
   have hsm : IsSmooth π := hs.isSubquotient.isSmooth (isSmooth_prodIrr _ hd)
@@ -695,6 +993,9 @@ def segProdEquiv (Δ : Segment k) (hd : ∑ a, (Δ.term a).1 = N) :
     (multiProd (stdBlocks (fun _ : Fin Δ.len => Δ.d) hd) (segTerm Δ.start.rep.ρ Δ.len)).Equiv (prodIrr Δ.term hd) :=
   multiProdEquiv _ fun _ => Δ.first.twEquiv _ (isSmoothChar_absPow _)
 
+/- English proof (translation)
+Take `⟨hd, hs⟩` from `h`. Take `⟨f, hf, -⟩` from `hs.2`. Use `((hZ Δ Δ.start.rep (IrrCl.cl_rep _) (stdBlocks (fun _ => Δ.d) hd) π).1).2 ⟨(segProdEquiv Δ hd).symm.toIntertwiningMap.comp f, fun a b hab => hf ?_⟩` and prove the remaining obligations. Conclude with `EquivLike.injective (segProdEquiv Δ hd).symm hab`.
+-/
 theorem IsZSeg.cl_eq {Z : ∀ Δ : Segment k, IrrCl (GL (Fin (Δ.len * Δ.d)) k)} (hZ : IsSegmentClass k Z) {Δ : Segment k}
     {π : IrrRep (GL (Fin (Δ.len * Δ.d)) k)} (h : IsZSeg Δ π.ρ) : π.cl = Z Δ := by
   obtain ⟨hd, hs⟩ := h
@@ -702,11 +1003,19 @@ theorem IsZSeg.cl_eq {Z : ∀ Δ : Segment k, IrrCl (GL (Fin (Δ.len * Δ.d)) k)
   refine ((hZ Δ Δ.start.rep (IrrCl.cl_rep _) (stdBlocks (fun _ => Δ.d) hd) π).1).2
     ⟨(segProdEquiv Δ hd).symm.toIntertwiningMap.comp f, fun a b hab => hf ?_⟩
   exact EquivLike.injective (segProdEquiv Δ hd).symm hab
+/- English proof (translation)
+Take `rfl : x = fun _ => y` from `funext fun a => by rw [Subsingleton.elim a 0, hx]`. Conclude with `nonempty_equiv_prodIrr_one y hd`.
+-/
 private theorem nonempty_equiv_prodIrr_fin_one (x : Fin 1 → IrrGL k) (y : IrrGL k) (hx : x 0 = y)
     (hd : ∑ a, (x a).1 = y.1) : Nonempty (y.rep.Equiv (prodIrr x hd)) := by
   obtain rfl : x = fun _ => y := funext fun a => by rw [Subsingleton.elim a 0, hx]
   exact nonempty_equiv_prodIrr_one y hd
 
+/- English proof (translation)
+Establish `h0 : (Segment.single ρ hρ).term (0 : Fin 1) = ρ` using `by show ρ.nu ((((0 : Fin 1) : ℕ)) : ℂ) = ρ`. Simplify using the standard rewrite rules. Establish `hd : ∑ a : Fin 1, ((Segment.single ρ hρ).term a).1 = ρ.1` using `by show ∑ _a : Fin 1, ρ.1 = ρ.1`. Simplify using the standard rewrite rules. Take `⟨e⟩` from `nonempty_equiv_prodIrr_fin_one (Segment.single ρ hρ).term ρ h0 hd`.
+
+Establish `hZ : IsZSeg (.single ρ hρ) ρ.rep` using `⟨hd, (isSocle_self ρ.2.rep.irr).of_equiv (.refl _) e⟩`. Establish `hL : IsLSeg (.single ρ hρ) ρ.rep` using `⟨hd, (isCosocle_self ρ.2.rep.irr).of_equiv (.refl _) e⟩`. Conclude with `⟨hZ, hL, hZ.isZ, hL.isL⟩`.
+-/
 theorem single_spec {ρ : IrrGL k} (hρ : ρ.IsCusp) :
     IsZSeg (.single ρ hρ) ρ.rep ∧ IsLSeg (.single ρ hρ) ρ.rep ∧ IsZ {.single ρ hρ} ρ.rep ∧ IsL {.single ρ hρ} ρ.rep := by
   have h0 : (Segment.single ρ hρ).term (0 : Fin 1) = ρ := by
@@ -719,6 +1028,11 @@ theorem single_spec {ρ : IrrGL k} (hρ : ρ.IsCusp) :
   have hZ : IsZSeg (.single ρ hρ) ρ.rep := ⟨hd, (isSocle_self ρ.2.rep.irr).of_equiv (.refl _) e⟩
   have hL : IsLSeg (.single ρ hρ) ρ.rep := ⟨hd, (isCosocle_self ρ.2.rep.irr).of_equiv (.refl _) e⟩
   exact ⟨hZ, hL, hZ.isZ, hL.isL⟩
+/- English proof (translation)
+Substitute `hy` using the available equality. Take `⟨φ⟩` from `IrrRep.nonempty_equiv_rep (IrrRep.det (Fin 1) ψ hψ)`. Establish `h1` using `Representation.IntertwiningMap.isIntertwining _ _ φ.toIntertwiningMap g w`. Establish `h2 : φ ((ψ (GeneralLinearGroup.det g) : ℂ) • w) = ((ψ (GeneralLinearGroup.det g) : ℂ)) • φ w` using `map_smul φ _ w`. Apply `EquivLike.injective φ` to reduce the goal to its premises.
+
+Use `h1.trans (Eq.trans ?_ h2.symm)` and prove the remaining obligations. Conclude with `(ofChar_apply (detChar (Fin 1) ψ) g (φ w)).trans rfl`.
+-/
 private theorem rep_apply_eq_det_smul_of_eq_ofChar {ψ : kˣ →* ℂˣ} (hψ : IsSmoothChar ψ) (y : IrrGL k) (hy : y = IrrGL.ofChar ψ hψ)
     (g : GL (Fin y.1) k) (w : y.2.rep.V) : y.rep g w = (ψ (GeneralLinearGroup.det g) : ℂ) • w := by
   subst hy
@@ -729,6 +1043,37 @@ private theorem rep_apply_eq_det_smul_of_eq_ofChar {ψ : kˣ →* ℂˣ} (hψ : 
   refine h1.trans (Eq.trans ?_ h2.symm)
   exact (ofChar_apply (detChar (Fin 1) ψ) g (φ w)).trans rfl
 
+/- English proof (translation)
+Set `x` to `(Segment.ofChar χ hχ l hl).term`. Set `e` to `stdBlocks (fun a => (x a).1) hd`. Establish `hxa : ∀ a, x a = IrrGL.ofChar (χ * absPow k ((a : ℕ) : ℂ)) (hχ.mul (isSmoothChar_absPow _))` using `fun a => IrrGL.tw_ofChar χ _ hχ (isSmoothChar_absPow _)`. Establish `hact : ∀ a (g : GL (Fin (x a).1) k) (w : (x a).2.rep.V), (x a).rep g w = ((χ * absPow k ((a : ℕ) : ℂ)) (GeneralLinearGroup.det g) : ℂ) • w` using `fun a g w => rep_apply_eq_det_smul_of_eq_ofChar _ (x a) (hxa a) g w`. Establish `hw : ∀ a, ∃ w : (x a).2.rep.V, w ≠ 0` using `fun a => by haveI := nontrivial_of_irreducible (x a).2.rep.irr`.
+
+Conclude with `exists_ne 0`. Use `choose w hw using hw`. Establish `ht0ne : PiTensorProduct.tprod ℂ w ≠ 0`. Establish `hφ : ∀ a, ∃ φ : Module.Dual ℂ (x a).2.rep.V, φ (w a) ≠ 0` using `fun a => by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `hw a ((Module.forall_dual_apply_eq_zero_iff ℂ (w a)).1 h)`. Use `choose φ hφ using hφ`. Introduce `h0`. Establish `h1` using `congrArg (PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra ℂ (Fin (Segment.ofChar χ hχ l hl).len) ℂ).compLinearMap φ)) h0`.
+
+Rewrite `h1` using `[PiTensorProduct.lift.tprod, map_zero, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply]`. Conclude with `Finset.prod_ne_zero_iff.2 (fun a _ => hφ a) h1`. Establish `hρ : ∀ M : Levi k (fun a => Fin (x a).1), piTensor (fun a => (x a).rep) M (PiTensorProduct.tprod ℂ w) = (∏ a : Fin (Segment.ofChar χ hχ l hl).len, ((χ * absPow k ((a : ℕ) : ℂ)) (GeneralLinearGroup.det (M a)) : ℂ)) • PiTensorProduct.tprod ℂ w`. Introduce `M`. Rewrite using `[piTensor_tprod]`.
+
+Simplify using `only [hact]`. Conclude with `(PiTensorProduct.tprod ℂ).map_smul_univ _ _`. Establish `hscal : ∀ p : parab k e, (((χ * absPow k (((l : ℂ) - 1) / 2)) (GeneralLinearGroup.det (p : GL (Fin N) k)) : ℂˣ) : ℂ) = (deltaHalf k (fun a => Fin (x a).1) (leviProj k e p) : ℂ) * ∏ a : Fin (Segment.ofChar χ hχ l hl).len, ((χ * absPow k ((a : ℕ) : ℂ)) (GeneralLinearGroup.det (levi …`. Introduce `p`. Rewrite using `[det_parab k e p, map_prod, Units.coe_prod, deltaHalf_apply, Units.coe_prod, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `hme : ((modExp (fun b => Fin (x b).1) a : ℤ) : ℂ) / 2 + ((a : ℕ) : ℂ) = ((l : ℂ) - 1) / 2`. Rewrite using `[modExp_fin (fun b => Fin (x b).1) (fun i => Fintype.card_fin 1) a]`. Establish `hlen : (((Segment.ofChar χ hχ l hl).len : ℕ) : ℂ) = (l : ℂ)` using `rfl`. Use `push_cast`.
+
+Rewrite using `[hlen]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hme, absPow_add]`. Simplify using `only [MonoidHom.mul_apply, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Set `σ'` to `(twist (piTensor fun a => (x a).rep) (deltaHalf k fun a => Fin (x a).1)).comp (leviProj k e)`. Set `F0 : indSpace (parab k e) σ'` to `⟨fun g => (((χ * absPow k (((l : ℂ) - 1) / 2)) (GeneralLinearGroup.det g) : ℂˣ) : ℂ) • PiTensorProduct.tprod ℂ w, fun p g => by`. Simplify using `only [σ', MonoidHom.comp_apply, twist_apply, map_smul, hρ, smul_smul]`. Rewrite using `[map_mul, map_mul, Units.val_mul, hscal p]`. Use `congr 1`.
+
+Use the proof step `ring⟩`. Establish `hind : ∀ g : GL (Fin N) k, ind (parab k e) σ' g F0 = (((χ * absPow k (((l : ℂ) - 1) / 2)) (GeneralLinearGroup.det g) : ℂˣ) : ℂ) • F0`. Introduce `g`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`.
+
+Use `show (((χ * absPow k (((l : ℂ) - 1) / 2)) (GeneralLinearGroup.det (y * g)) : ℂˣ) : ℂ) • PiTensorProduct.tprod ℂ w = (((χ * absPow k (((l : ℂ) - 1) / 2)) (GeneralLinearGroup.det g) : ℂˣ) : ℂ) • ((((χ * absPow k (((l : ℂ) - 1) / 2)) (GeneralLinearGroup.det y) : ℂˣ) : ℂ) • PiTensorP …`. Rewrite using `[map_mul, map_mul, Units.val_mul, smul_smul, mul_comm]`. Establish `hF0ne : F0 ≠ 0` using `fun h => ht0ne (by`. Establish `h1` using `congrArg (fun f : indSpace (parab k e) σ' => f.1 1) h`. Simplify `h1)` using `[F0]`.
+
+Establish `hsm : F0 ∈ smoothPart (ind (parab k e) σ')` using `by show IsOpen {g | ind (parab k e) σ' g F0 = F0}`. Establish `hset : {g | ind (parab k e) σ' g F0 = F0} = ((detChar (Fin N) (χ * absPow k (((l : ℂ) - 1) / 2))).ker : Set (GL (Fin N) k))`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, SetLike.mem_coe, MonoidHom.mem_ker, hind, detChar_apply]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Conclude with `Units.val_eq_one.1 (smul_left_injective ℂ hF0ne (h.trans (one_smul ℂ F0).symm))`. Introduce `h`. Rewrite using `[h, Units.val_one, one_smul]`. Rewrite using `[hset]`.
+
+Conclude with `(hχ.mul (isSmoothChar_absPow _)).detChar`. Set `F0' : IndSp e (piTensor fun a => (x a).rep)` to `⟨F0, hsm⟩`. Set `Φ : (detRep (Fin N) (χ * absPow k (((l : ℂ) - 1) / 2))).IntertwiningMap (prodIrr x hd)` to `⟨LinearMap.toSpanSingleton ℂ _ F0', fun g => LinearMap.ext fun z => by`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(detRep (Fin N) (χ * absPow k (((l : ℂ) - 1) / 2)) g z) • F0 = ind (parab k e) σ' g (z • F0)`.
+
+Rewrite using `[map_smul, hind, smul_smul]`. Use `congr 1`. Simplify using `only [detRep, ofChar_apply, detChar_apply]`. Use the proof step `ring⟩`. Use `⟨Φ, fun z z' h => ?_⟩` and prove the remaining obligations.
+
+Establish `h2 : z • F0 = z' • F0` using `congrArg Subtype.val (show z • F0' = z' • F0' from h)`. Conclude with `smul_left_injective ℂ hF0ne h2`.
+-/
 theorem embeds_detRep_segment {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) {l : ℕ} (hl : 0 < l)
     (hd : ∑ a, ((Segment.ofChar χ hχ l hl).term a).1 = N) :
     Embeds (detRep (Fin N) (χ * absPow k (((l : ℂ) - 1) / 2))) (prodIrr (Segment.ofChar χ hχ l hl).term hd) := by
@@ -823,12 +1168,18 @@ theorem embeds_detRep_segment {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) {l :
   have h2 : z • F0 = z' • F0 := congrArg Subtype.val (show z • F0' = z' • F0' from h)
   exact smul_left_injective ℂ hF0ne h2
 
+/- English proof (translation)
+Take `⟨hd, hs⟩` from `h`. Conclude with `hs.equiv_of_embeds (isIrreducible_ofChar _) (embeds_detRep_segment hχ hl hd)`.
+-/
 theorem IsZSeg.equiv_detRep {χ : kˣ →* ℂˣ} {hχ : IsSmoothChar χ} {l : ℕ} {hl : 0 < l}
     {π : Representation ℂ (GL (Fin N) k) V} (h : IsZSeg (Segment.ofChar χ hχ l hl) π) :
     Nonempty ((detRep (Fin N) (χ * absPow k (((l : ℂ) - 1) / 2))).Equiv π) := by
   obtain ⟨hd, hs⟩ := h
   exact hs.equiv_of_embeds (isIrreducible_ofChar _) (embeds_detRep_segment hχ hl hd)
 
+/- English proof (translation)
+Establish `hd : ∑ a, ((Segment.ofChar χ hχ l hl).term a).1 = l` using `(Segment.sum_term_fst _).trans (mul_one l)`. Take `⟨f, hf⟩` from `embeds_detRep_segment hχ hl hd`. Conclude with `⟨l, (Segment.ofChar χ hχ l hl).term, rfl, isIrreducible_ofChar _, fun a => ⟨((Segment.ofChar χ hχ l hl).isCusp_term a).1, (((Segment.ofChar χ hχ l hl).term a)).2.rep.irr, ((Segment.ofChar χ hχ l hl).isCusp_term a).2⟩, stdBlocks _ hd, IsSubquotient.of_injective f hf⟩`.
+-/
 theorem hasSupport_detRep {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) {l : ℕ} (hl : 0 < l) :
     HasSupport (detRep (Fin l) (χ * absPow k (((l : ℂ) - 1) / 2))) (Segment.ofChar χ hχ l hl).ms := by
   have hd : ∑ a, ((Segment.ofChar χ hχ l hl).term a).1 = l := (Segment.sum_term_fst _).trans (mul_one l)
@@ -837,6 +1188,19 @@ theorem hasSupport_detRep {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) {l : ℕ
     fun a => ⟨((Segment.ofChar χ hχ l hl).isCusp_term a).1, (((Segment.ofChar χ hχ l hl).term a)).2.rep.irr,
       ((Segment.ofChar χ hχ l hl).isCusp_term a).2⟩, stdBlocks _ hd, IsSubquotient.of_injective f hf⟩
 
+/- English proof (translation)
+Establish `hc` using `IrrGL.isCusp_ofChar χ hχ`. Establish `hne : IrrGL.ofChar χ hχ ≠ (IrrGL.ofChar χ hχ).nu 1`. Introduce `h`. Establish `h0` using `(IrrGL.nu_ofChar_inj χ hχ (s := 0) (t := 1)).1 (by simpa using h)`. Evaluate the numerical expressions using `at h0`.
+
+Use `⟨⟨⟨⟨Segment.ofFirst (IrrGL.ofChar χ hχ) hc 2 (by norm_num), ?_⟩, ?_, ?_⟩, 1, one_pos, ?_⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Rewrite using `[Segment.mem_carrier, Segment.carrier_single, Segment.carrier_single]`. Simplify using `only [Segment.first_ofFirst, Segment.len_ofFirst, Set.mem_union, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, ha, rfl⟩ interval_cases a`. Use `left`. Simplify using the standard rewrite rules. Use `right`. Simplify using the standard rewrite rules.
+
+Introduce and unpack `(rfl | rfl)`. Conclude with `⟨0, by norm_num, by simp⟩`. Conclude with `⟨1, by norm_num, by simp⟩`. Rewrite using `[Segment.carrier_single, Segment.carrier_single, Set.singleton_subset_singleton]`. Conclude with `hne`.
+
+Rewrite using `[Segment.carrier_single, Segment.carrier_single, Set.singleton_subset_singleton]`. Conclude with `fun h => hne h.symm`. Use `show (IrrGL.ofChar χ hχ).nu 1 = (IrrGL.ofChar χ hχ).nu ((1 : ℕ) : ℂ)`. Simplify using the standard rewrite rules. Introduce and unpack `⟨-, j, hj, h⟩`.
+
+Express the relevant statement in the definitionally equal form `IrrGL.ofChar χ hχ = ((IrrGL.ofChar χ hχ).nu 1).nu ((j : ℕ) : ℂ) at h`. Rewrite `h` using `[IrrGL.nu_nu]`. Establish `h0` using `(IrrGL.nu_ofChar_inj χ hχ (s := 0) (t := 1 + j)).1 (by push_cast; simpa using h)`. Establish `: (0 : ℝ) ≤ j` using `Nat.cast_nonneg j`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem single_precedes (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     (Segment.single _ (IrrGL.isCusp_ofChar χ hχ)).Precedes (.single _ ((IrrGL.isCusp_ofChar χ hχ).nu 1)) ∧
       ¬ (Segment.single _ ((IrrGL.isCusp_ofChar χ hχ).nu 1)).Precedes (.single _ (IrrGL.isCusp_ofChar χ hχ)) := by
@@ -872,6 +1236,9 @@ theorem single_precedes (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     have : (0 : ℝ) ≤ j := Nat.cast_nonneg j
     linarith
 
+/- English proof (translation)
+Establish `h0 : spehFactor x 1 (0 : Fin 1) = x` using `by simp [spehFactor]`. Establish `hd : ∑ a : Fin 1, (spehFactor x 1 a).1 = x.1` using `by simp [spehFactor]`. Take `⟨e⟩` from `nonempty_equiv_prodIrr_fin_one (spehFactor x 1) x h0 hd`. Conclude with `⟨hd, (isCosocle_self x.2.rep.irr).of_equiv (.refl _) e⟩`.
+-/
 theorem isSpeh_one (x : IrrGL k) : IsSpeh x 1 x.rep := by
   have h0 : spehFactor x 1 (0 : Fin 1) = x := by simp [spehFactor]
   have hd : ∑ a : Fin 1, (spehFactor x 1 a).1 = x.1 := by simp [spehFactor]
@@ -880,6 +1247,13 @@ theorem isSpeh_one (x : IrrGL k) : IsSpeh x 1 x.rep := by
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Establish `hu : ∀ u : unipB k (Fin 1), u = 1`. Introduce `u`. Establish `hd` using `(mem_unipRad.1 u.2).2`. Use `Subtype.ext (Matrix.GeneralLinearGroup.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0]`.
+
+Simplify using `using hd 0 () ()`. Establish `hbot : twKer (detRep (Fin 1) χ) (unipB k (Fin 1)) (whitChar ψ 1) = ⊥`. Use `le_bot_iff.1 (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨u, v, rfl⟩`. Rewrite using `[hu u]`.
+
+Simplify using the standard rewrite rules. Conclude with `(Submodule.quotEquivOfEqBot _ hbot).toEquiv.nontrivial`.
+-/
 theorem isGenericFor_one (ψ : AddChar k Circle) (χ : kˣ →* ℂˣ) : IsGenericFor ψ (detRep (Fin 1) χ) := by
   have hu : ∀ u : unipB k (Fin 1), u = 1 := by
     intro u

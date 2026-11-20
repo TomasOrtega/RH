@@ -12,6 +12,11 @@ open GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ShFam
 
 namespace GlobalTheory.CarrySpec
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.UpperTriangularMul.upperTriangular_mul`. Consider the case `exact _root_.GlobalTheory.UpperTriangularMul.upperTriangular_mul`. Consider the case `(apply _root_.GlobalTheory.UpperTriangularMul.upperTriangular_mul <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.UpperTriangularMul.upperTriangular_mul <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.UpperTriangularMul.upperTriangular_mul <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.UpperTriangularMul.upperTriangular_mul ..)`.
+-/
 theorem upper_mul {n : ℕ} {R : Type} [CommRing R] {M N : Matrix (Fin n) (Fin n) R}
     (hM : ∀ a i, i < a → M a i = 0) (hN : ∀ a i, i < a → N a i = 0) :
     (∀ a i, i < a → (M * N) a i = 0) ∧ ∀ i, (M * N) i i = M i i * N i i := by
@@ -23,6 +28,9 @@ theorem upper_mul {n : ℕ} {R : Type} [CommRing R] {M N : Matrix (Fin n) (Fin n
   | (intros; apply @_root_.GlobalTheory.UpperTriangularMul.upperTriangular_mul <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.UpperTriangularMul.upperTriangular_mul ..)
 
+/- English proof (translation)
+Simplify using `[spMap, Spec.map_comp]`.
+-/
 theorem spMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (ρ : R →+* R') (ψ : R' →+* R'') :
     spMap (ψ.comp ρ) = spMap ψ ≫ spMap ρ := by
   simp [spMap, Spec.map_comp]
@@ -30,12 +38,18 @@ theorem spMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
 
+/- English proof (translation)
+Introduce `τ i` and use `by rw [h2 τ i, h1 τ i, GlobalTheory.ShFam.CarriesAt.spMap_dualMap_comp, Category.assoc]`.
+-/
 theorem isMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] {φ : c.F →+* R} {φ' : c.F →+* R'}
     {φ'' : c.F →+* R''} {x : Sp R ⟶ Z.X} {x' : Sp R' ⟶ Z.X} {x'' : Sp R'' ⟶ Z.X} {f : EigFrame Z φ x}
     {f' : EigFrame Z φ' x'} {f'' : EigFrame Z φ'' x''} {ρ : R →+* R'} {ψ : R' →+* R''}
     (h1 : f.IsMap ρ f') (h2 : f'.IsMap ψ f'') : f.IsMap (ψ.comp ρ) f'' := fun τ i => by
   rw [h2 τ i, h1 τ i, GlobalTheory.ShFam.CarriesAt.spMap_dualMap_comp, Category.assoc]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hx, hφ, fun τ i => ⟨fun a => f'.co g τ a i, hd τ i, fun k hk => hu τ k i hk, by have := f'.co_spec g τ i rwa [funext (hf τ)] at this⟩⟩`.
+-/
 theorem tri_of_co {R R' : Type} [CommRing R] [CommRing R'] {φ : c.F →+* R} {φ' : c.F →+* R'} {x : Sp R ⟶ Z.X}
     {x' : Sp R' ⟶ Z.X} {f : EigFrame Z φ x} {ψ : R →+* R'} {f' g : EigFrame Z φ' x'} (hf : f.IsMap ψ f')
     (hx : x' = spMap ψ ≫ x) (hφ : φ' = ψ.comp φ) (t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → R'ˣ)
@@ -44,6 +58,25 @@ theorem tri_of_co {R R' : Type} [CommRing R] [CommRing R'] {φ : c.F →+* R} {�
     have := f'.co_spec g τ i
     rwa [funext (hf τ)] at this⟩⟩
 
+/- English proof (translation)
+Establish `hφV : φV = ρ.comp φ₁` using `RingHom.ext fun a => hν (by`. Use `RingHom.congr_fun (hL.2.1.symm.trans hfL.2.1) a` as an intermediate fact. Simplify using `using this)`. Take `⟨h, hh⟩` from `EigFrame.exists_isMap f ρ hφV hxV`. Take `⟨gVL, hgVL⟩` from `EigFrame.exists_isMap gV ν hL.2.1 hL.1`.
+
+Take `⟨hLf, hhL⟩` from `EigFrame.exists_isMap h ν hL.2.1 hL.1`. Establish `hfhL : f.IsMap (ν.comp ρ) hLf` using `isMap_comp hh hhL`. Establish `hA : ∀ τ, (∀ a i, i < a → h.co gV τ a i = 0)` using `fun τ a i hia => by`. Take `⟨hU, -⟩` from `EigFrame.Tri.co τ hfL hfhL`. Take `⟨hW, -⟩` from `EigFrame.Tri.co τ hL hgVL`.
+
+Establish `hmap` using `EigFrame.IsMap.co τ hhL hgVL hL.1`. Establish `hmul` using `EigFrame.co_mul hLf gVL gL τ`. Establish `hWu` using `EigFrame.isUnit_det_co gVL gL τ`. Use `set W := gVL.co gL τ`. Establish `hWt : W.BlockTriangular id` using `fun a b h => hW a b h`.
+
+Use `letI := Matrix.invertibleOfIsUnitDet W hWu`. Establish `hWi : W⁻¹.BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular hWt`. Establish `hM : hLf.co gVL τ = hLf.co gL τ * W⁻¹`. Rewrite using `[← hmul, Matrix.mul_nonsing_inv_cancel_right _ _ hWu]`. Establish `hP : (hLf.co gL τ * W⁻¹).BlockTriangular id` using `Matrix.BlockTriangular.mul (fun a b h => hU a b h) hWi`.
+
+Apply `hν` to reduce the goal to its premises. Use `hP hia` as an intermediate fact. Rewrite `this` using `[← hM, hmap, Matrix.map_apply]`. Rewrite using `[this, map_zero]`. Establish `hAd : ∀ τ i, IsUnit (h.co gV τ i i)` using `fun τ i => by`.
+
+Establish `hdet` using `EigFrame.isUnit_det_co h gV τ`. Rewrite `hdet` using `[Matrix.det_of_upperTriangular (fun a b hab => hA τ a b hab)]`. Conclude with `isUnit_of_dvd_unit (Finset.dvd_prod_of_mem (fun j => h.co gV τ j j) (Finset.mem_univ i)) hdet`. Take `⟨hkf, hhk⟩` from `EigFrame.exists_isMap h r hk.2.1 hk.1`. Take `⟨gVk, hgVk⟩` from `EigFrame.exists_isMap gV r hk.2.1 hk.1`.
+
+Establish `hfhk : f.IsMap (r.comp ρ) hkf` using `isMap_comp hh hhk`. Establish `hco : ∀ τ, hkf.co gk τ = (h.co gV τ).map r * gVk.co gk τ` using `fun τ => by`. Rewrite using `[← EigFrame.IsMap.co τ hhk hgVk hk.1, EigFrame.co_mul]`. Establish `key : ∀ τ, (∀ a i, i < a → hkf.co gk τ a i = 0) ∧ ∀ i, hkf.co gk τ i i = r (h.co gV τ i i) * tk τ i`. Introduce `τ`.
+
+Take `⟨hN, hNd⟩` from `EigFrame.Tri.co τ hk hgVk`. Establish `hm` using `upper_mul (M := (h.co gV τ).map r) (fun a i hia => by rw [Matrix.map_apply, hA τ a i hia, map_zero]) hN`. Rewrite using `[hco]`. Conclude with `⟨hm.1, fun i => by rw [hm.2, Matrix.map_apply, hNd]⟩`. Use `⟨fun τ i => ((hAd τ i).map r).unit * tk τ i, tri_of_co hfhk ?_ ?_ _ (fun τ => (key τ).1) fun τ i => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hk.1, hxV, spMap_comp, Category.assoc]`. Rewrite using `[hk.2.1, hφV, RingHom.comp_assoc]`. Rewrite using `[(key τ).2, Units.val_mul, IsUnit.unit_spec]`.
+-/
 theorem tri_spec {R V L k : Type} [CommRing R] [CommRing V] [CommRing L] [CommRing k]
     {φ₁ : c.F →+* R} {x₁ : Sp R ⟶ Z.X} (f : EigFrame Z φ₁ x₁) (ρ : R →+* V) (ν : V →+* L)
     (hν : Function.Injective ν) (r : V →+* k) {φV : c.F →+* V} {xV : Sp V ⟶ Z.X} (hxV : xV = spMap ρ ≫ x₁)
@@ -106,6 +139,11 @@ namespace GlobalTheory.CarrySpec
 open MvPolynomial GlobalTheory.ProjVar GlobalTheory.FlagBundle GlobalTheory.GoodMetric GlobalTheory.LieBase
 open Classical
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ e C V _ _ L _ ν hν k _ r _ q φV xV hxV gV φL xL gL tL hL hcar φk xk gk tk hk`. Use `set y₀ := q (IsLocalRing.closedPoint V)`. Use `set ρ := (Scheme.stalkClosedPointTo (R := CommRingCat.of V) q).hom`. Establish `hq : spMap ρ ≫ stalkPt C.Y y₀ = q` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := CommRingCat.of V) q`. Take `⟨φ₁, f, t, hf, -⟩` from `C.gr_spec y₀`.
+
+Establish `hpL : spMap ν ≫ q = spMap (ν.comp ρ) ≫ stalkPt C.Y y₀` using `(congrArg (spMap ν ≫ ·) hq).symm.trans (by rw [spMap_comp, Category.assoc])`. Take `⟨t', hfL⟩` from `hany E H Dw l Xo c O β Z F e C L φL xL gL (spMap ν ≫ q) hcar y₀ (ν.comp ρ) φ₁ f t hpL hf`. Establish `hxV' : xV = spMap ρ ≫ (stalkPt C.Y y₀ ≫ C.π ≫ genι Z)` using `hxV.trans ((congrArg (· ≫ C.π ≫ genι Z) hq).symm.trans (Category.assoc _ _ _))`. Take `⟨t'', htri⟩` from `tri_spec f ρ ν hν r hxV' gV gL tL hL t' hfL gk tk hk`. Conclude with `⟨y₀, r.comp ρ, φ₁, f, t, t'', (congrArg (spMap r ≫ ·) hq).symm.trans (by rw [spMap_comp, Category.assoc]), hf, htri⟩`.
+-/
 theorem spec_of_anypoint (hany : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (F : Type) [Field F] (e : F ≃+* c.F) (C : FlagCpt Z e) (k : Type) [Field k] (φ : c.F →+* k) (x : Sp k ⟶ Z.X) (g : EigFrame Z φ x) (p : Sp k ⟶ C.Y.X), C.Carries p g → ∀ (y : C.Y.X) (ψ : C.Y.X.presheaf.stalk y →+* k) (φ₁ : c.F →+* C.Y.X.presheaf.stalk y) (f : EigFrame Z φ₁ (stalkPt C.Y y ≫ C.π ≫ genι Z)) (t : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → C.Y.Fnˣ), p = spMap ψ ≫ stalkPt C.Y y → f.Tri (algebraMap (C.Y.X.presheaf.stalk y) C.Y.X.functionField) C.f0 t → ∃ t' : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → kˣ, f.Tri ψ g t') : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (F : Type) [Field F] (e : F ≃+* c.F) (C : FlagCpt Z e) (V : Type) [CommRing V] [IsLocalRing V] (L : Type) [Field L] (ν : V →+* L), Function.Injective ν → ∀ (k : Type) [Field k] (r : V →+* k), RingHom.ker r = IsLocalRing.maximalIdeal V → ∀ (q : Sp V ⟶ C.Y.X) (φV : c.F →+* V) (xV : Sp V ⟶ Z.X), xV = q ≫ C.π ≫ genι Z → ∀ (gV : EigFrame Z φV xV) (φL : c.F →+* L) (xL : Sp L ⟶ Z.X) (gL : EigFrame Z φL xL) (tL : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Lˣ), gV.Tri ν gL tL → C.Carries (spMap ν ≫ q) gL → ∀ (φk : c.F →+* k) (xk : Sp k ⟶ Z.X) (gk : EigFrame Z φk xk) (tk : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → kˣ), gV.Tri r gk tk → C.Carries (spMap r ≫ q) gk := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ e C V _ _ L _ ν hν k _ r _ q φV xV hxV gV φL xL gL tL hL hcar φk xk gk tk hk
   set y₀ := q (IsLocalRing.closedPoint V)

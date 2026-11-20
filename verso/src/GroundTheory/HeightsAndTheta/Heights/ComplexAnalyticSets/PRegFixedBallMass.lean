@@ -20,6 +20,11 @@ namespace RegFixedBallMass
 
 variable {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin (d + 1)) (Fin n) ℂ}
 
+/- English proof (translation)
+Establish `hfin : (fibre J A y).Finite` using `FiniteProjectionCluster.fibre_finite J A hA y`. Unfold `chartDens sheetSum`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin]`. Use `Finset.sum_le_sum fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Set.Finite.mem_toFinset]`.
+
+Use `split_ifs with h`. Establish `h0` using `hN n d J A u ε x h.choose hε h.choose_spec`. Rewrite `h0` using `[hx.2]`. Conclude with `mul_le_mul_of_nonneg_right (hw x) h0`. Conclude with `le_rfl`.
+-/
 theorem chartDens_weight_mono (hN : RegDensNonneg.Statement) (hA : IsFiniteProjection J A)
     (u : Fin n → ℂ) {ε : ℝ} (hε : 0 < ε) {w w' : (Fin n → ℂ) → ℝ} (hw : ∀ x, w x ≤ w' x)
     (y : Fin (d + 1) → ℂ) :
@@ -40,6 +45,25 @@ end RegFixedBallMass
 
 open RegFixedBallMass in
 
+/- English proof (translation)
+Introduce `n d J A u R hJ hdim hA hu`. Take `⟨θ, hθs, hθ01, hθU, V, -, hBV, hθV⟩` from `exists_cutoff_near (S := Metric.closedBall (0 : Fin n → ℂ) R) Metric.isClosed_closedBall Metric.isOpen_ball (Metric.closedBall_subset_ball (lt_add_one R))`. Establish `hθR : tsupport θ ⊆ Metric.closedBall 0 (R + 1)` using `hθU.trans Metric.ball_subset_closedBall`. Establish `hθc : HasCompactSupport θ` using `(isCompact_closedBall (0 : Fin n → ℂ) (R + 1)).of_isClosed_subset (isClosed_tsupport θ) hθR`. Establish `hθw : ∀ x, (Metric.closedBall (0 : Fin n → ℂ) R).indicator (fun _ => (1 : ℝ)) x ≤ θ x`.
+
+Introduce `x`. Distinguish the cases in `hx : x ∈ Metric.closedBall (0 : Fin n → ℂ) R`. Rewrite using `[Set.indicator_of_mem hx, hθV x (hBV hx)]`. Rewrite using `[Set.indicator_of_notMem hx]`. Conclude with `(hθ01 x).1`.
+
+Establish `hηs : ∀ i : Fin d, SmoothNear (zeroSet J) ((fun _ => euclPot) i)` using `fun _ => smoothNear_of_contDiff (contDiff_euclPot n)`. Establish `hθη : ∀ i : Fin (d + 1), SmoothNear (zeroSet J) (vecCons θ (fun _ => euclPot) i)`. Introduce `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `using smoothNear_of_contDiff (S := zeroSet J) hθs`.
+
+Simplify using `using hηs i`. Establish `hu2 : linForm ((2 : ℂ) • u) ∉ J`. Establish `he : linForm ((2 : ℂ) • u) = C 2 * linForm u`. Simplify using `[linForm, Finset.mul_sum, ← mul_assoc, C_mul]`. Introduce `hm`.
+
+Apply `hu` to reduce the goal to its premises. Use `J.mul_mem_left (C (1 / 2 : ℂ)) (he ▸ hm)` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← C_mul, show (1 / 2 : ℂ) * 2 = 1 by norm_num, C_1, one_mul]`. Then use the resulting hypothesis. Take `⟨P, hP, hPy⟩` from `LelongRegularise.exists_poly_of_linEval_eq_zero hJ hA hu`. Establish `hgood : ∀ᵐ y : Fin (d + 1) → ℂ, ∀ x ∈ fibre J A y, linEval u x ≠ 0` using `by filter_upwards [LelongRegularise.ae_eval_ne_zero P hP] with y hy x hx h0`.
+
+Conclude with `hy (hPy y x hx h0)`. Establish `hTi` using `(hL n (d + 1) J A u _ (R + 1) hJ hdim hA hu hθη).add (hL n (d + 1) J A ((2 : ℂ) • u) _ (R + 1) hJ hdim hA hu2 hθη)`. Use `⟨∫ y, (chartAbsDens J A ((Metric.closedBall 0 (R + 1)).indicator fun x => Real.log ‖linEval u x‖) (vecCons θ fun _ => euclPot) + chartAbsDens J A ((Metric.closedBall 0 (R + 1)).indicator fun x => Real.log ‖linEval ((2 : ℂ) • u) x‖) (vecCons θ fun _ => euclPot)) y, fun ε hε => ?_⟩` and prove the remaining obligations. Establish `hgs : ∀ i : Fin (d + 1), SmoothNear (zeroSet J) (vecCons (logReg u ε) (fun _ => euclPot) i)`. Introduce `i`.
+
+Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `using smoothNear_of_contDiff (S := zeroSet J) (contDiff_logReg u hε.1)`. Simplify using `using hηs i`. Establish `hGi : Integrable (chartDens J A θ (vecCons (logReg u ε) fun _ => euclPot))` using `(hC n (d + 1) J A θ _ hJ hdim hA hθs.continuous.continuousOn hgs (Or.inl hθc)).mono' (SheetSumMeasurable.proof n (d + 1) J A θ _ hJ hdim hA hθs.continuous.measurable hgs).1.aestronglyMeasurable (Eventually.of_forall fun y => by simpa [Real.norm_eq_abs] using abs_chartDens_le J A …`. Establish `hFi : Integrable (chartDens J A ((Metric.closedBall 0 R).indicator fun _ => 1) (vecCons (logReg u ε) fun _ => euclPot))` using `hGi.mono' (RegBallMass.measurable_chartDens_indicator hJ hdim hA u hε.1 Metric.isClosed_closedBall.measurableSet).aestronglyMeasurable (Eventually.of_forall fun y => by`.
+
+Establish `h0` using `(RegBallMass.chartDens_indicator_mono hN hA u hε.1 (subset_refl (Metric.closedBall (0 : Fin n → ℂ) R)) y).1`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg h0]`. Conclude with `chartDens_weight_mono hN hA u hε.1 hθw y)`. Use `⟨hFi, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `LelongRegularise.norm_chartDens_le hA _ hθR hε.1 hε.2 hy)`.
+-/
 theorem RegFixedBallMass.proof (hN : RegDensNonneg.Statement) (hS : StokesOnChart.Statement)
     (hL : LogIntegrable.Statement) (hC : ChartMassCompact.Statement) : RegFixedBallMass.Statement := by
   intro n d J A u R hJ hdim hA hu

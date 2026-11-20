@@ -17,33 +17,58 @@ def conjCME (k : G) : G ≃ₜ* G :=
     continuous_toFun := (continuous_const.mul continuous_id).mul continuous_const
     continuous_invFun := (continuous_const.mul continuous_id).mul continuous_const }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem conjCME_apply (k x : G) : conjCME k x = k * x * k⁻¹ := rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[mul_assoc]`.
+-/
 theorem conjCME_mul (a b : G) : conjCME (a * b) = (conjCME b).trans (conjCME a) := by
   ext x
   simp [mul_assoc]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem conjCME_one : conjCME (1 : G) = ContinuousMulEquiv.refl G := by
   ext x
   simp
 
 variable [LocallyCompactSpace G] [MeasurableSpace G] [BorelSpace G]
 
+/- English proof (translation)
+Rewrite using `[conjCME_mul, mulEquivHaarChar_trans, mul_comm]`.
+-/
 theorem mulEquivHaarChar_conjCME_mul (a b : G) :
     mulEquivHaarChar (conjCME (a * b)) =
       mulEquivHaarChar (conjCME a) * mulEquivHaarChar (conjCME b) := by
   rw [conjCME_mul, mulEquivHaarChar_trans, mul_comm]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [conjCME_one]`. Consider the case `succ n ih => rw [pow_succ, mulEquivHaarChar_conjCME_mul, ih, pow_succ]`.
+-/
 theorem mulEquivHaarChar_conjCME_pow (a : G) (n : ℕ) :
     mulEquivHaarChar (conjCME (a ^ n)) = mulEquivHaarChar (conjCME a) ^ n := by
   induction n with
   | zero => simp [conjCME_one]
   | succ n ih => rw [pow_succ, mulEquivHaarChar_conjCME_mul, ih, pow_succ]
 
+/- English proof (translation)
+Rewrite using `[← mulEquivHaarChar_conjCME_mul, inv_mul_cancel, conjCME_one, mulEquivHaarChar_refl]`.
+-/
 theorem mulEquivHaarChar_conjCME_inv (a : G) :
     mulEquivHaarChar (conjCME a⁻¹) * mulEquivHaarChar (conjCME a) = 1 := by
   rw [← mulEquivHaarChar_conjCME_mul, inv_mul_cancel, conjCME_one, mulEquivHaarChar_refl]
 
+/- English proof (translation)
+Take `⟨V, hVc, hV1⟩` from `exists_compact_mem_nhds (1 : G)`. Use `set μ : Measure G := Measure.haar`. Use `set C : Set G := (fun p : G × G × G => p.1 * p.2.1 * p.2.2) '' (K ×ˢ V ×ˢ K)`. Establish `hC : IsCompact C` using `(hK.prod (hVc.prod hK)).image (by fun_prop)`. Establish `hV0 : μ V ≠ 0` using `(μ.measure_pos_of_mem_nhds hV1).ne'`.
+
+Establish `hCt : μ C ≠ ∞` using `hC.measure_lt_top.ne`. Use `⟨(μ C / μ V).toNNReal, fun k hk => ?_⟩` and prove the remaining obligations. Establish `hsub : V ⊆ conjCME k ⁻¹' C` using `fun x hx => ⟨(k, x, k⁻¹), ⟨hk, hx, hKinv k hk⟩, rfl⟩`. Establish `e` using `mulEquivHaarChar_smul_preimage μ (X := C) (conjCME k)`. Establish `hle : (mulEquivHaarChar (conjCME k) : ℝ≥0∞) * μ V ≤ μ C`.
+
+Rewrite using `[← e, ENNReal.smul_def, smul_eq_mul]`. Use `gcongr`. Establish `: (mulEquivHaarChar (conjCME k) : ℝ≥0∞) ≤ μ C / μ V` using `(ENNReal.le_div_iff_mul_le (Or.inl hV0) (Or.inr hCt)).2 hle`. Rewrite using `[← ENNReal.coe_le_coe, ENNReal.coe_toNNReal (ENNReal.div_ne_top hCt hV0)]`. Conclude with `this`.
+-/
 theorem exists_bound_mulEquivHaarChar_conjCME {K : Set G} (hK : IsCompact K)
     (hKinv : ∀ k ∈ K, k⁻¹ ∈ K) :
     ∃ B : ℝ≥0, ∀ k ∈ K, mulEquivHaarChar (conjCME k) ≤ B := by
@@ -65,6 +90,15 @@ theorem exists_bound_mulEquivHaarChar_conjCME {K : Set G} (hK : IsCompact K)
   rw [← ENNReal.coe_le_coe, ENNReal.coe_toNNReal (ENNReal.div_ne_top hCt hV0)]
   exact this
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `exists_bound_mulEquivHaarChar_conjCME hK fun k hk => K.inv_mem hk`. Establish `hle : ∀ a ∈ K, mulEquivHaarChar (conjCME a) ≤ 1`. Introduce `a ha`. Assume the negation of the conclusion as `hlt`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt B (not_le.1 hlt)`.
+
+Use `hB (a ^ n) (K.pow_mem ha n)` as an intermediate fact. Rewrite `this` using `[mulEquivHaarChar_conjCME_pow]`. Conclude with `absurd this (not_le.2 hn)`. Establish `h1` using `hle k hk`. Establish `h2` using `hle k⁻¹ (K.inv_mem hk)`.
+
+Establish `h3` using `mulEquivHaarChar_conjCME_inv k`. Use `le_antisymm h1 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Establish `hlt'` using `not_le.1 hlt`. Establish `: mulEquivHaarChar (conjCME k⁻¹) * mulEquivHaarChar (conjCME k) < 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite `this` using `[h3]`. Conclude with `lt_irrefl _ this`.
+-/
 theorem mulEquivHaarChar_conjCME_eq_one {K : Subgroup G} (hK : IsCompact (K : Set G)) {k : G}
     (hk : k ∈ K) : mulEquivHaarChar (conjCME k) = 1 := by
   obtain ⟨B, hB⟩ := exists_bound_mulEquivHaarChar_conjCME hK fun k hk => K.inv_mem hk
@@ -88,11 +122,17 @@ theorem mulEquivHaarChar_conjCME_eq_one {K : Subgroup G} (hK : IsCompact (K : Se
   rw [h3] at this
   exact lt_irrefl _ this
 
+/- English proof (translation)
+Establish `e` using `mulEquivHaarChar_smul_map μ (conjCME k)`. Rewrite `e` using `[mulEquivHaarChar_conjCME_eq_one hK hk, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem map_conj_eq_self_of_mem (μ : Measure G) [μ.IsHaarMeasure] [μ.Regular] {K : Subgroup G}
     (hK : IsCompact (K : Set G)) {k : G} (hk : k ∈ K) : μ.map (conjCME k) = μ := by
   have e := mulEquivHaarChar_smul_map μ (conjCME k)
   rwa [mulEquivHaarChar_conjCME_eq_one hK hk, one_smul] at e
 
+/- English proof (translation)
+Establish `e` using `integral_map_equiv (conjCME k).toHomeomorph.toMeasurableEquiv (μ := μ) F`. Use `conv_rhs => rw [← map_conj_eq_self_of_mem μ hK hk]`. Conclude with `e.symm`.
+-/
 theorem integral_conj_eq_self_of_mem (μ : Measure G) [μ.IsHaarMeasure] [μ.Regular]
     {K : Subgroup G} (hK : IsCompact (K : Set G)) {k : G} (hk : k ∈ K) {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] (F : G → E) :
@@ -108,6 +148,19 @@ section Closed
 variable {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸]
   {G : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸}
 
+/- English proof (translation)
+Use `set W : Set 𝔸ˣ := (fun u : 𝔸ˣ => (u : 𝔸)) ⁻¹' h.nhdOne with hW`. Establish `hWo : IsOpen W` using `h.isOpen_nhdOne.preimage Units.continuous_val`. Use `isClosed_of_closure_subset fun x hx => ?_` and prove the remaining obligations. Establish `hN : {z : 𝔸ˣ | z⁻¹ * x ∈ W} ∈ 𝓝 x`. Use `(hWo.preimage (continuous_inv.mul continuous_const)).mem_nhds ?_` and prove the remaining obligations.
+
+Use `show (((x⁻¹ * x : 𝔸ˣ)) : 𝔸) ∈ h.nhdOne`. Simplify using `using h.one_mem_nhdOne`. Take `⟨g₀, hg₀N, hg₀G⟩` from `mem_closure_iff_nhds.1 hx _ hN`. Use `set y := g₀⁻¹ * x with hy`. Establish `hyW : y ∈ W` using `hg₀N`.
+
+Establish `hyc : y ∈ closure (G : Set 𝔸ˣ)` using `map_mem_closure (continuous_const.mul continuous_id) hx fun z hz => G.mul_mem (G.inv_mem hg₀G) hz`. Establish `hyc' : y ∈ closure (W ∩ (G : Set 𝔸ˣ))` using `hWo.inter_closure ⟨hyW, hyc⟩`. Use `set L : 𝔸ˣ → 𝔸 := fun u => (expPartialHomeomorph ℝ 𝔸).symm (u : 𝔸) with hLdef`. Establish `hL : ContinuousAt L y` using `((expPartialHomeomorph ℝ 𝔸).continuousAt_symm (h.nhdOne_subset_target hyW)).comp Units.continuous_val.continuousAt`. Establish `himg : L '' (W ∩ (G : Set 𝔸ˣ)) ⊆ (𝔤 : Set 𝔸)`.
+
+Introduce and unpack `_ ⟨u, ⟨huW, huG⟩, rfl⟩`. Apply `h.mem_of_mem_nhd (h.symm_mem_nhd huW)` to reduce the goal to its premises. Establish `: expUnit ℝ 𝔸 (L u) = u` using `Units.ext (h.exp_symm huW)`. Rewrite using `[this]`. Conclude with `huG`.
+
+Establish `hLy : L y ∈ 𝔤` using `(Submodule.closed_of_finiteDimensional 𝔤).closure_subset_iff.2 himg (mem_closure_image hL hyc')`. Establish `hyG : y ∈ G`. Establish `: expUnit ℝ 𝔸 (L y) = y` using `Units.ext (h.exp_symm hyW)`. Rewrite using `[← this]`. Conclude with `h.expUnit_mem _ hLy`.
+
+Establish `: x = g₀ * y` using `by rw [hy, mul_inv_cancel_left]`. Rewrite using `[this]`. Conclude with `G.mul_mem hg₀G hyG`.
+-/
 theorem IsExpLieAlgebra.isClosed (h : IsExpLieAlgebra G 𝔤) : IsClosed (G : Set 𝔸ˣ) := by
   set W : Set 𝔸ˣ := (fun u : 𝔸ˣ => (u : 𝔸)) ⁻¹' h.nhdOne with hW
   have hWo : IsOpen W := h.isOpen_nhdOne.preimage Units.continuous_val
@@ -152,6 +205,11 @@ open scoped Matrix.Norms.L2Operator
 
 variable {𝕜 : Type*} [RCLike 𝕜] {ι : Type*} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Establish `hT : IsCompact (Set.pi univ fun _ : ι => Set.pi univ fun _ : ι => Metric.closedBall (0 : 𝕜) 1)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall 0 1`. Use `hT.of_isClosed_subset ?_ ?_` and prove the remaining obligations. Establish `: (Matrix.unitaryGroup ι 𝕜 : Set (Matrix ι ι 𝕜)) = {a | aᴴ * a = 1}`. Use extensionality with `a`. Simplify using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`.
+
+Rewrite using `[this]`. Conclude with `isClosed_eq (continuous_id.matrix_conjTranspose.matrix_mul continuous_id) continuous_const`. Introduce `a ha i _ j _`. Simplify using `using entry_norm_bound_of_unitary ha i j`.
+-/
 theorem isCompact_unitaryGroup_entries : IsCompact (Matrix.unitaryGroup ι 𝕜 : Set (Matrix ι ι 𝕜)) := by
   have hT : IsCompact (Set.pi univ fun _ : ι => Set.pi univ fun _ : ι => Metric.closedBall (0 : 𝕜) 1) :=
     isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall 0 1
@@ -164,6 +222,17 @@ theorem isCompact_unitaryGroup_entries : IsCompact (Matrix.unitaryGroup ι 𝕜 
   · intro a ha i _ j _
     simpa using entry_norm_bound_of_unitary ha i j
 
+/- English proof (translation)
+Use `set e : G → Matrix ι ι 𝕜 := fun x => ((x : (Matrix ι ι 𝕜)ˣ) : Matrix ι ι 𝕜) with he`. Establish `hemb : Topology.IsEmbedding e` using `Units.isOpenEmbedding_val.isEmbedding.comp Topology.IsEmbedding.subtypeVal`. Rewrite using `[hemb.isCompact_iff]`. Use `set S := (Matrix.unitaryGroup ι 𝕜 : Set (Matrix ι ι 𝕜))`. Establish `himg : e '' (maxCompact G : Set G) = S ∩ range e`.
+
+Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `⟨hg, g, rfl⟩`. Introduce and unpack `⟨ha, g, rfl⟩`.
+
+Conclude with `⟨g, ha, rfl⟩`. Rewrite using `[himg]`. Use `isCompact_unitaryGroup_entries.of_isClosed_subset ?_ inter_subset_left` and prove the remaining obligations. Use `isClosed_of_closure_subset fun a ha => ?_` and prove the remaining obligations. Establish `haS : a ∈ S` using `(closure_mono inter_subset_left |>.trans isCompact_unitaryGroup_entries.isClosed.closure_subset) ha`.
+
+Use `set u : (Matrix ι ι 𝕜)ˣ := ⟨a, star a, Matrix.mem_unitaryGroup_iff.1 haS, Matrix.mem_unitaryGroup_iff'.1 haS⟩`. Establish `hu : u ∈ closure (G : Set (Matrix ι ι 𝕜)ˣ)`. Rewrite using `[Units.isOpenEmbedding_val.isInducing.closure_eq_preimage_closure_image]`. Use `closure_mono ?_ ha` and prove the remaining obligations. Introduce and unpack `_ ⟨-, g, rfl⟩`.
+
+Conclude with `⟨g, g.2, rfl⟩`. Establish `huG : u ∈ G` using `hG.closure_subset hu`. Conclude with `⟨haS, ⟨u, huG⟩, rfl⟩`.
+-/
 theorem isCompact_maxCompact_of_isClosed {G : Subgroup (Matrix ι ι 𝕜)ˣ}
     (hG : IsClosed (G : Set (Matrix ι ι 𝕜)ˣ)) :
     IsCompact ((maxCompact G : Subgroup G) : Set G) := by
@@ -194,11 +263,17 @@ theorem isCompact_maxCompact_of_isClosed {G : Subgroup (Matrix ι ι 𝕜)ˣ}
   have huG : u ∈ G := hG.closure_subset hu
   exact ⟨haS, ⟨u, huG⟩, rfl⟩
 
+/- English proof (translation)
+The claim follows from `isCompact_maxCompact_of_isClosed h.isClosed`.
+-/
 theorem IsExpLieAlgebra.isCompact_maxCompact_real {G : Subgroup (Matrix ι ι ℝ)ˣ}
     {𝔤 : Submodule ℝ (Matrix ι ι ℝ)} (h : IsExpLieAlgebra G 𝔤) :
     IsCompact ((maxCompact G : Subgroup G) : Set G) :=
   isCompact_maxCompact_of_isClosed h.isClosed
 
+/- English proof (translation)
+The claim follows from `isCompact_maxCompact_of_isClosed h.isClosed`.
+-/
 theorem IsExpLieAlgebra.isCompact_maxCompact_complex {G : Subgroup (Matrix ι ι ℂ)ˣ}
     {𝔤 : Submodule ℝ (Matrix ι ι ℂ)} (h : IsExpLieAlgebra G 𝔤) :
     IsCompact ((maxCompact G : Subgroup G) : Set G) :=

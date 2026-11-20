@@ -16,11 +16,21 @@ namespace GlobalTheory.SingleBlockJac
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `leviEmb_apply_same k (GlobalTheory.JacTensor.oneBlock N) g 0 i j`.
+-/
 theorem leviEmb_oneBlock (N : ℕ) (g : Levi k fun _ : Fin 1 => Fin N) :
     leviEmb k (GlobalTheory.JacTensor.oneBlock N) g = g 0 := by
   ext i j
   exact leviEmb_apply_same k (GlobalTheory.JacTensor.oneBlock N) g 0 i j
 
+/- English proof (translation)
+Rewrite using `[deltaHalf_apply]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Establish `hm : modExp (fun _ : Fin 1 => Fin N) a = 0`. Unfold `modExp`. Rewrite using `[Finset.sum_eq_zero, Finset.sum_eq_zero, sub_zero]`.
+
+Introduce `c hc`. Conclude with `absurd (Finset.mem_filter.1 hc).2 (by rw [Subsingleton.elim c a]; exact lt_irrefl a)`. Introduce `c hc`. Conclude with `absurd (Finset.mem_filter.1 hc).2 (by rw [Subsingleton.elim c a]; exact lt_irrefl a)`. Rewrite using `[hm]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem deltaHalf_one (N : ℕ) (g : Levi k fun _ : Fin 1 => Fin N) :
     deltaHalf k (fun _ : Fin 1 => Fin N) g = 1 := by
   rw [deltaHalf_apply]
@@ -35,6 +45,11 @@ theorem deltaHalf_one (N : ℕ) (g : Levi k fun _ : Fin 1 => Fin N) :
   rw [hm]
   simp
 
+/- English proof (translation)
+Take `⟨-, h2⟩` from `mem_unipRad.1 hg`. Use `Units.ext (Matrix.ext fun x y => ?_)` and prove the remaining obligations. Take `⟨⟨a, i⟩, rfl⟩` from `e.surjective x`. Take `⟨⟨b, j⟩, rfl⟩` from `e.surjective y`. Take `rfl : a = b` from `Subsingleton.elim a b`.
+
+Rewrite using `[h2 a i j]`. Simplify using `[Matrix.one_apply, e.injective.eq_iff]`.
+-/
 theorem eq_one_of_mem_unipRad_oneBlock {N : ℕ} (e : (Σ _ : Fin 1, Fin N) ≃ Fin N) {g : GL (Fin N) k}
     (hg : g ∈ unipRad k e) : g = 1 := by
   obtain ⟨-, h2⟩ := mem_unipRad.1 hg
@@ -45,6 +60,9 @@ theorem eq_one_of_mem_unipRad_oneBlock {N : ℕ} (e : (Σ _ : Fin 1, Fin N) ≃ 
   rw [h2 a i j]
   simp [Matrix.one_apply, e.injective.eq_iff]
 
+/- English proof (translation)
+Use `(Submodule.span_eq_bot).2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨n, v, rfl⟩`. Rewrite using `[eq_one_of_mem_unipRad_oneBlock e n.2]`. Simplify using the standard rewrite rules.
+-/
 theorem twKer_eq_bot {V : Type} [AddCommGroup V] [Module ℂ V] {N : ℕ} (e : (Σ _ : Fin 1, Fin N) ≃ Fin N)
     (π : Representation ℂ (GL (Fin N) k) V) : twKer π (unipRad k e) 1 = ⊥ := by
   refine (Submodule.span_eq_bot).2 ?_
@@ -67,6 +85,9 @@ def toJac {V : Type} [AddCommGroup V] [Module ℂ V] (N : ℕ) (π : Representat
       simp only [map_add] at hx hy ⊢
       rw [hx, hy]
 
+/- English proof (translation)
+Introduce `x y h`. Establish `h' : (Submodule.mkQ (twKer π (unipRad k (GlobalTheory.JacTensor.oneBlock N)) 1)) (PiTensorProduct.subsingletonEquiv (R` using `ℂ) (s := fun _ : Fin 1 => V) (0 : Fin 1) x) = (Submodule.mkQ (twKer π (unipRad k (GlobalTheory.JacTensor.oneBlock N)) 1)) (PiTensorProduct.subsingletonEquiv (R := ℂ) (s := fun _ : Fin 1 => V) (0 : Fin 1) y) := h`. Rewrite `h'` using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq, twKer_eq_bot, Submodule.mem_bot, sub_eq_zero]`. Conclude with `(PiTensorProduct.subsingletonEquiv (R := ℂ) (s := fun _ : Fin 1 => V) (0 : Fin 1)).injective h'`.
+-/
 theorem toJac_injective {V : Type} [AddCommGroup V] [Module ℂ V] (N : ℕ) (π : Representation ℂ (GL (Fin N) k) V) :
     Function.Injective (toJac N π) := by
   intro x y h
@@ -80,6 +101,9 @@ theorem toJac_injective {V : Type} [AddCommGroup V] [Module ℂ V] (N : ℕ) (π
 
 end GlobalTheory.SingleBlockJac
 
+/- English proof (translation)
+Introduce `k _ _ _ _ N V _ _ π e`. Take `⟨φ⟩` from `(GlobalTheory.SmGL.Placing.parInd_jac_placing k (Fin 1) (Fin N) (fun _ => Fin N) (GlobalTheory.JacTensor.oneBlock N) e V).2 π`. Conclude with `IsSubquotient.of_injective ((φ.toIntertwiningMap).comp (GlobalTheory.SingleBlockJac.toJac N π)) (φ.toLinearEquiv.injective.comp (GlobalTheory.SingleBlockJac.toJac_injective N π))`.
+-/
 theorem GlobalTheory.SingleBlockJac.isSubquotient_piTensor_jac : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (N : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V)
     (e : (Σ _ : Fin 1, Fin N) ≃ Fin N), IsSubquotient (piTensor fun _ : Fin 1 => π) (jac e π) := by

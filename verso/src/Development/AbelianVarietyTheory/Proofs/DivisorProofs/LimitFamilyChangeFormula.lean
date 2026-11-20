@@ -9,6 +9,11 @@ open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions Formalism.Basic
 
 namespace GlobalTheory.Mean4
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert p T hp ih`. Establish `hpA : p ∉ A` using `fun hA => Finset.disjoint_left.mp hd hA (Finset.mem_insert_self p T)`. Establish `h1` using `ih (hd.mono_right (Finset.subset_insert p T)) (fun q hq => h q (Finset.mem_insert_of_mem hq))`.
+
+Establish `h2` using `h p (Finset.mem_insert_self p T) (A ∪ T)`. Establish `hn : p ∉ A ∪ T` using `by simp [hpA, hp]`. Rewrite `h2` using `[Finset.erase_eq_of_notMem hn]`. Rewrite using `[Finset.sum_insert hp, Finset.union_insert]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem telescope_finset (f : Finset ℕ → ℝ) (d : ℕ → ℝ) (A T : Finset ℕ) (hd : Disjoint A T)
     (h : ∀ p ∈ T, ∀ S : Finset ℕ, f (S.erase p) - f (insert p S) = d p) :
     f A = f (A ∪ T) + ∑ p ∈ T, d p := by

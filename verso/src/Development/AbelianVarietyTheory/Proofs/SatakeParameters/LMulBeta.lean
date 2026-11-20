@@ -42,11 +42,17 @@ variable {l : ℕ} [Fact l.Prime]
 
 def linv (l : ℕ) [Fact l.Prime] : Per.AinfP l := ((GlobalTheory.RingBasics.isUnit_l l).unit⁻¹ : (Per.AinfP l)ˣ)
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.RingBasics.isUnit_l l).mul_val_inv`.
+-/
 theorem mul_linv : ((l : ℕ) : Per.AinfP l) * linv l = 1 := (GlobalTheory.RingBasics.isUnit_l l).mul_val_inv
 
 def beta (ϖ : Per.Fl l) : Per.AinfP l :=
   linv l * algebraMap (Per.Ainf l) (Per.AinfP l) (Per.tm ϖ) - 1
 
+/- English proof (translation)
+Establish `h` using `mul_linv (l := l)`. Rewrite using `[beta]`. Take the linear combination `algebraMap (Per.Ainf l) (Per.AinfP l) (Per.tm ϖ) * h`.
+-/
 theorem l_mul_beta (ϖ : Per.Fl l) : ((l : ℕ) : Per.AinfP l) * beta ϖ =
     algebraMap (Per.Ainf l) (Per.AinfP l) (Per.tm ϖ) - ((l : ℕ) : Per.AinfP l) := by
   have h := mul_linv (l := l)

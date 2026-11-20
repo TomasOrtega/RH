@@ -5,5 +5,8 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.BasicNotions Formalism
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.EtaTildeOddParity.isEtaTilde_of_odd | exact GlobalTheory.EtaTildeOddParity.isEtaTilde_of_odd | (intros; apply GlobalTheory.EtaTildeOddParity.isEtaTilde_of_odd <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isUnramifiedEtaTilde_of_odd_exponentSum : ∀ (D : D7) (c : (AE D)ˣ →* Circle) (χ : Formalism.L2.Host.HChar D.host.E), ChrEq c χ → Formalism.L2.Host.IsEtaT D.host χ → ∀ (μ : (AE D)ˣ →* Circle) (n m : ℕ), ResEta D μ n → ResEta D (μ * c⁻¹) m → Odd (n + m) → IsEtaTilde D c := by
   first | exact @GlobalTheory.EtaTildeOddParity.isEtaTilde_of_odd | exact GlobalTheory.EtaTildeOddParity.isEtaTilde_of_odd | (intros; apply GlobalTheory.EtaTildeOddParity.isEtaTilde_of_odd <;> assumption)

@@ -33,6 +33,9 @@ def CoprimeF {eps : ℝ} (Fm : FamP eps) : Prop :=
 def StatementF {eps : ℝ} (Fm : FamP eps) : Prop :=
   ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, StatementAt (Fm.D x i)
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : minkNum 1 = 2 ∧ minkNum 2 = 24 ∧ minkNum 3 = 48 ∧ minkNum 4 = 5760 := by decide
 
 end GlobalTheory.IndefiniteRowSideFullHecke.RationalRankMinkowski

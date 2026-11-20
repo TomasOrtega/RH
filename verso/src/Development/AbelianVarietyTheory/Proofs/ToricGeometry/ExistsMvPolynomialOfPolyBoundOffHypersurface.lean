@@ -10,6 +10,11 @@ open Filter Topology Asymptotics
 namespace GlobalTheory
 
 open Filter Topology Asymptotics in
+/- English proof (translation)
+Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`. Combine the linear relations using `[norm_nonneg x']`. Simplify using `only [Fin.cons_succ]`.
+
+Combine the linear relations using `[norm_le_pi_norm x' i, norm_nonneg j]`.
+-/
 private theorem norm_cons_le_lemma_4 {d : ℕ} (j : ℂ) (x' : Fin d → ℂ) :
     ‖(Fin.cons j x' : Fin (d + 1) → ℂ)‖ ≤ ‖j‖ + ‖x'‖ := by
   refine (pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => ?_
@@ -18,6 +23,9 @@ private theorem norm_cons_le_lemma_4 {d : ℕ} (j : ℂ) (x' : Fin d → ℂ) :
   · simp only [Fin.cons_succ]; linarith [norm_le_pi_norm x' i, norm_nonneg j]
 
 open Filter Topology Asymptotics in
+/- English proof (translation)
+Establish `h1 : 1 + ‖x‖ ≤ (1 + ‖j‖) * (1 + ‖x'‖)`. Use `norm_cons_le_lemma_4 j x'` as an intermediate fact. Rewrite `this` using `[← hx]`. Use polynomial arithmetic with `[norm_nonneg j, norm_nonneg x']`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem norm_le_of_bound_cons_lemma {d m : ℕ} {C : ℝ} {g : (Fin (d + 1) → ℂ) → ℂ}
     {x : Fin (d + 1) → ℂ} (j : ℂ) (x' : Fin d → ℂ) (hx : x = Fin.cons j x')
     (h : ‖g x‖ ≤ C * (1 + ‖x‖) ^ m) :
@@ -33,6 +41,49 @@ private theorem norm_le_of_bound_cons_lemma {d m : ℕ} {C : ℝ} {g : (Fin (d +
     _ = |C| * (1 + ‖j‖) ^ m * (1 + ‖x'‖) ^ m := by rw [mul_pow, mul_assoc]
 
 open Filter Topology Asymptotics in
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `r g hn hr hg hb`. Establish `hc : ∀ s, r.eval s ≠ 0`.
+
+Introduce `s h0`. Apply `hr` to reduce the goal to its premises. Rewrite `h0` using `[Polynomial.eq_C_of_natDegree_eq_zero hn, Polynomial.eval_C]`. Rewrite using `[Polynomial.eq_C_of_natDegree_eq_zero hn, h0, map_zero]`. Establish `hU : {s | r.eval s ≠ 0} = Set.univ` using `Set.eq_univ_of_forall hc`.
+
+Rewrite `hg` using `[hU]`. Take `⟨p, hp, hgp⟩` from `_root_.GlobalTheory.entire_exists_polynomial_of_poly_bound (differentiableOn_univ.mp hg) (C := K) (m := m) (fun z => hb z (hc z))`. Conclude with `⟨p, hp, fun s _ => hgp s⟩`. Consider the case `succ n ih`. Introduce `r g hn hr hg hb`.
+
+Take `⟨c, hc⟩` from `Complex.exists_root (f := r) (by`. Rewrite using `[Polynomial.degree_eq_natDegree hr, hn]`. Conclude with `Nat.succ_pos n)` after adjusting the coercions. Use `set r' := r /ₘ (Polynomial.X - Polynomial.C c) with hr'def`. Establish `hfac : (Polynomial.X - Polynomial.C c) * r' = r` using `Polynomial.mul_divByMonic_eq_iff_isRoot.mpr hc`.
+
+Establish `hr'0 : r' ≠ 0`. Introduce and unpack `h`. Apply `hr` to reduce the goal to its premises. Rewrite using `[← hfac, h, mul_zero]`. Establish `hdeg : r'.natDegree = n`.
+
+Use `Polynomial.natDegree_mul (Polynomial.X_sub_C_ne_zero c) hr'0` as an intermediate fact. Rewrite `this` using `[hfac, hn, Polynomial.natDegree_X_sub_C]`. Use linear arithmetic over natural numbers and integers. Establish `heval : ∀ z, r.eval z = (z - c) * r'.eval z`. Introduce `z`.
+
+Rewrite using `[← hfac, Polynomial.eval_mul, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]`. Establish `hopen : IsOpen {z : ℂ | r'.eval z ≠ 0}` using `isOpen_ne_fun (Polynomial.continuous r') continuous_const`. Establish `hopenr : IsOpen {z : ℂ | r.eval z ≠ 0}` using `isOpen_ne_fun (Polynomial.continuous r) continuous_const`. Use `set g' := Function.update g c (limUnder (𝓝[≠] c) g) with hg'def`. Establish `hoff : ∀ z, z ≠ c → g' z = g z` using `fun z hz => Function.update_of_ne hz _ _`.
+
+Establish `key : r'.eval c ≠ 0 → DifferentiableAt ℂ g' c ∧ ‖g' c‖ ≤ K * (1 + ‖c‖) ^ m`. Introduce `hc'`. Use `set S := {z : ℂ | r'.eval z ≠ 0} ∩ Metric.ball c 1 with hSdef`. Establish `hSn : S ∈ 𝓝 c` using `(hopen.inter Metric.isOpen_ball).mem_nhds ⟨hc', Metric.mem_ball_self one_pos⟩`. Establish `hS : DifferentiableOn ℂ g (S \ {c})`.
+
+Use `hg.mono ?_` and prove the remaining obligations. Introduce and unpack `z ⟨⟨hz1, -⟩, hz2⟩`. Use `show r.eval z ≠ 0`. Rewrite using `[heval]`. Conclude with `mul_ne_zero (sub_ne_zero.mpr hz2) hz1`.
+
+Establish `hbdd : BddAbove (norm ∘ g '' (S \ {c}))`. Use `⟨|K| * (2 + ‖c‖) ^ m, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, ⟨⟨hz1, hz3⟩, hz2⟩, rfl⟩`. Establish `hrz : r.eval z ≠ 0`. Rewrite using `[heval]`.
+
+Conclude with `mul_ne_zero (sub_ne_zero.mpr hz2) hz1`. Establish `hzc : ‖z - c‖ < 1` using `mem_ball_iff_norm.mp hz3`. Establish `hzn : ‖z‖ ≤ 1 + ‖c‖`. Use `norm_sub_norm_le z c` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hU` using `Complex.differentiableOn_update_limUnder_of_bddAbove hSn hS hbdd`. Establish `hd : DifferentiableAt ℂ g' c` using `(hU c (mem_of_mem_nhds hSn)).differentiableAt hSn`. Use `⟨hd, ?_⟩` and prove the remaining obligations. Establish `hcont : ContinuousAt (fun z => ‖g' z‖ - K * (1 + ‖z‖) ^ m) c` using `hd.continuousAt.norm.sub (by fun_prop)`.
+
+Establish `hev : ∀ᶠ z in 𝓝[≠] c, ‖g' z‖ - K * (1 + ‖z‖) ^ m ≤ 0` using `by filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds hSn] with z hzc hzS`. Establish `hz : z ≠ c` using `hzc`. Establish `hrz : r.eval z ≠ 0`. Rewrite using `[heval]`. Conclude with `mul_ne_zero (sub_ne_zero.mpr hz) hzS.1`.
+
+Rewrite using `[hoff z hz]`. Combine the linear relations using `[hb z hrz]`. Use `le_of_tendsto (hcont.tendsto.mono_left nhdsWithin_le_nhds) hev` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdiff : DifferentiableOn ℂ g' {s | r'.eval s ≠ 0}`.
+
+Introduce `s hs`. Distinguish the cases in `hsc : s = c`. Substitute `hsc` using the available equality. Conclude with `(key hs).1.differentiableWithinAt`. Establish `hrs : r.eval s ≠ 0`.
+
+Rewrite using `[heval]`. Conclude with `mul_ne_zero (sub_ne_zero.mpr hsc) hs`. Establish `hgs : DifferentiableAt ℂ g s` using `(hg s hrs).differentiableAt (hopenr.mem_nhds hrs)`. Establish `heq : g =ᶠ[𝓝 s] g'` using `Filter.eventuallyEq_of_mem (isOpen_ne.mem_nhds hsc) (fun z hz => (hoff z hz).symm)`. Conclude with `(hgs.congr_of_eventuallyEq heq.symm).differentiableWithinAt`.
+
+Establish `hbound : ∀ s, r'.eval s ≠ 0 → ‖g' s‖ ≤ K * (1 + ‖s‖) ^ m`. Introduce `s hs`. Distinguish the cases in `hsc : s = c`. Substitute `hsc` using the available equality. Conclude with `(key hs).2`.
+
+Establish `hrs : r.eval s ≠ 0`. Rewrite using `[heval]`. Conclude with `mul_ne_zero (sub_ne_zero.mpr hsc) hs`. Rewrite using `[hoff s hsc]`. Conclude with `hb s hrs`.
+
+Take `⟨p, hp, hgp⟩` from `ih r' g' hdeg hr'0 hdiff hbound`. Use `⟨p, hp, fun s hs => ?_⟩` and prove the remaining obligations. Establish `hsc : s ≠ c`. Introduce and unpack `rfl`. Apply `hs` to reduce the goal to its premises.
+
+Rewrite using `[heval, sub_self, zero_mul]`. Establish `hs' : r'.eval s ≠ 0`. Introduce `h0`. Apply `hs` to reduce the goal to its premises. Rewrite using `[heval, h0, mul_zero]`.
+
+Rewrite using `[← hoff s hsc]`. Conclude with `hgp s hs'`.
+-/
 private theorem polynomial_of_bound_off_roots_lemma_2 {m : ℕ} {K : ℝ} :
     ∀ (n : ℕ) (r : Polynomial ℂ) (g : ℂ → ℂ), r.natDegree = n → r ≠ 0 →
       DifferentiableOn ℂ g {s | r.eval s ≠ 0} →
@@ -139,6 +190,11 @@ private theorem polynomial_of_bound_off_roots_lemma_2 {m : ℕ} {K : ℝ} :
     rw [← hoff s hsc]; exact hgp s hs'
 
 open Filter Topology Asymptotics in
+/- English proof (translation)
+Establish `hU : IsOpen ((↑(ρ.roots.toFinset.erase a) : Set ℂ)ᶜ)` using `(Finset.finite_toSet _).isClosed.isOpen_compl`. Establish `ha : a ∈ ((↑(ρ.roots.toFinset.erase a) : Set ℂ)ᶜ)` using `by simp`. Use `filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (hU.mem_nhds ha)] with t ht htU h0`. Apply `htU` to reduce the goal to its premises. Simplify using `only [Finset.coe_erase, Set.mem_diff, Finset.mem_coe, Multiset.mem_toFinset, Polynomial.mem_roots hρ, Polynomial.IsRoot.def, h0, Set.mem_singleton_iff, true_and]`.
+
+Conclude with `ht`.
+-/
 private theorem polynomial_eventually_ne_zero_lemma_3 {ρ : Polynomial ℂ} (hρ : ρ ≠ 0) (a : ℂ) :
     ∀ᶠ t in 𝓝[≠] a, ρ.eval t ≠ 0 := by
   have hU : IsOpen ((↑(ρ.roots.toFinset.erase a) : Set ℂ)ᶜ) :=
@@ -152,6 +208,61 @@ private theorem polynomial_eventually_ne_zero_lemma_3 {ρ : Polynomial ℂ} (hρ
 
 open Filter Topology Asymptotics in
 
+/- English proof (translation)
+Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `m q f C _ _ _`. Use `⟨MvPolynomial.C (f 0), fun x _ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[MvPolynomial.eval_C, Subsingleton.elim x 0]`. Consider the case `succ d ih`. Introduce `m q f C hq hf hb`. Use `set Q := MvPolynomial.finSuccEquiv ℂ d q with hQ`. Establish `hQ0 : Q ≠ 0`.
+
+Rewrite using `[hQ]`. Conclude with `(map_ne_zero_iff _ (MvPolynomial.finSuccEquiv ℂ d).injective).mpr hq`. Use `set qs : ℂ → MvPolynomial (Fin d) ℂ := fun j => Polynomial.eval (MvPolynomial.C j) Q with hqsdef`. Establish `hqs : ∀ j x', MvPolynomial.eval x' (qs j) = MvPolynomial.eval (Fin.cons j x') q`. Introduce `j x'`.
+
+Rewrite using `[MvPolynomial.eval_eq_eval_mv_eval', Polynomial.eval_map, hqsdef, ← Polynomial.eval₂_hom, MvPolynomial.eval_C]`. Establish `hopen : IsOpen {x : Fin (d + 1) → ℂ | MvPolynomial.eval x q ≠ 0}` using `isOpen_ne_fun (MvPolynomial.continuous_eval q) continuous_const`. Use `set B := {j : ℂ | qs j = 0} with hBdef`. Establish `hB : B.Finite`. Use `((Q.roots.toFinset.finite_toSet).preimage (MvPolynomial.C_injective (Fin d) ℂ).injOn).subset ?_` and prove the remaining obligations.
+
+Introduce `j hj`. Simplify using `only [Set.mem_preimage, Finset.mem_coe, Multiset.mem_toFinset, Polynomial.mem_roots hQ0, Polynomial.IsRoot.def]`. Conclude with `hj`. Use `set emb := hB.infinite_compl.natEmbedding`. Use `set v : ℕ → ℂ := fun k => (emb k : ℂ) with hvdef`.
+
+Establish `hvinj : Function.Injective v` using `Subtype.val_injective.comp emb.injective`. Establish `hvB : ∀ k, qs (v k) ≠ 0` using `fun k => (emb k).2`. Establish `hnode : ∀ k, ∃ P : MvPolynomial (Fin d) ℂ, ∀ x' : Fin d → ℂ, MvPolynomial.eval x' (qs (v k)) ≠ 0 → f (Fin.cons (v k) x') = MvPolynomial.eval x' P`. Introduce `k`. Use `ih m (qs (v k)) (fun x' => f (Fin.cons (v k) x')) (|C| * (1 + ‖v k‖) ^ m) (hvB k) ?_ ?_` and prove the remaining obligations.
+
+Establish `hc : Differentiable ℂ (fun x' : Fin d → ℂ => (Fin.cons (v k) x' : Fin (d + 1) → ℂ))` using `differentiable_pi.2 fun i => Fin.cases (by simpa using differentiable_const (v k)) (fun i => by simpa using differentiable_apply i) i`. Use `hf.comp hc.differentiableOn ?_` and prove the remaining obligations. Introduce `x' hx'`. Use `show MvPolynomial.eval (Fin.cons (v k) x') q ≠ 0`. Rewrite using `[← hqs]`.
+
+Conclude with `hx'`. Introduce `x' hx'`. Rewrite `hx'` using `[hqs]`. Use `norm_le_of_bound_cons_lemma (v k) x' rfl (hb _ hx')` as an intermediate fact. Simplify using `using this`.
+
+Use `choose P hP using hnode`. Use `set s := Finset.range (m + 1) with hsdef`. Use `set Pm : MvPolynomial (Fin (d + 1)) ℂ := ∑ k ∈ s, Polynomial.aeval (MvPolynomial.X 0) (Lagrange.basis s v k) * MvPolynomial.rename Fin.succ (P k) with hPmdef`. Establish `hPm : ∀ x : Fin (d + 1) → ℂ, MvPolynomial.eval x Pm = ∑ k ∈ s, (Lagrange.basis s v k).eval (x 0) * MvPolynomial.eval (Fin.tail x) (P k)`. Introduce `x`.
+
+Establish `hA : ∀ φ : Polynomial ℂ, MvPolynomial.eval x (Polynomial.aeval (MvPolynomial.X 0) φ) = φ.eval (x 0)`. Introduce `φ`. Proceed by induction on `φ using Polynomial.induction_on' with`. Consider the case `add p₁ p₂ h₁ h₂ => simp only [map_add, Polynomial.eval_add, h₁, h₂]`. Consider the case `monomial n a => simp [Polynomial.aeval_monomial, Polynomial.eval_monomial]`.
+
+Rewrite using `[hPmdef, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, MvPolynomial.eval_rename, hA]`. Both sides reduce to the same expression. Establish `hgen : ∀ x : Fin (d + 1) → ℂ, MvPolynomial.eval x q ≠ 0 → (∀ k ∈ s, MvPolynomial.eval (Fin.tail x) (qs (v k)) ≠ 0) → f x = MvPolynomial.eval x Pm`.
+
+Introduce `x hx hxs`. Use `set x' := Fin.tail x`. Establish `hxc : (Fin.cons (x 0) x' : Fin (d + 1) → ℂ) = x` using `Fin.cons_self_tail x`. Use `set r := Polynomial.map (MvPolynomial.eval x') Q with hrdef`. Establish `hr : ∀ t, r.eval t = MvPolynomial.eval (Fin.cons t x') q`.
+
+Introduce `t`. Rewrite using `[MvPolynomial.eval_eq_eval_mv_eval']`. Establish `hr0 : r ≠ 0`. Introduce `h0`. Apply `hx` to reduce the goal to its premises.
+
+Rewrite using `[← hxc, ← hr, h0, Polynomial.eval_zero]`. Establish `hc : Differentiable ℂ (fun t : ℂ => (Fin.cons t x' : Fin (d + 1) → ℂ))` using `differentiable_pi.2 fun i => Fin.cases (by simpa using differentiable_id) (fun i => by simpa using differentiable_const (x' i)) i`. Take `⟨φ, hφdeg, hφ⟩` from `polynomial_of_bound_off_roots_lemma_2 (m := m) (K := |C| * (1 + ‖x'‖) ^ m) r.natDegree r (fun t => f (Fin.cons t x')) rfl hr0 (hf.comp hc.differentiableOn (fun t ht => by show MvPolynomial.eval (Fin.cons t x') q ≠ 0`. Rewrite using `[← hr]`. Conclude with `ht))`.
+
+Use the proof step `(fun t ht => by`. Rewrite `ht` using `[hr]`. Use `norm_le_of_bound_cons_lemma t x' rfl (hb _ ht)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `hinterp` using `Lagrange.eq_interpolate (s := s) (v := v) (f := φ) hvinj.injOn (by`.
+
+Rewrite using `[hsdef, Finset.card_range]`. Conclude with `(Polynomial.degree_le_of_natDegree_le hφdeg).trans_lt (by exact_mod_cast Nat.lt_succ_self m))`. Establish `hx0 : f x = φ.eval (x 0)`. Use `hφ (x 0) (by rw [hr, hxc]; exact hx)` as an intermediate fact. Rewrite using `[← this, hxc]`.
+
+Rewrite using `[hx0, hinterp, Lagrange.interpolate_apply, Polynomial.eval_finset_sum, hPm]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.eval_mul, Polynomial.eval_C, mul_comm]`. Use `congr 1`. Establish `hk' : r.eval (v k) ≠ 0` using `by rw [hr, ← hqs]; exact hxs k hk`.
+
+Rewrite using `[← hφ (v k) hk']`. Conclude with `hP k x' (hxs k hk)`. Use `⟨Pm, fun x hx => ?_⟩` and prove the remaining obligations. Use `set x' := Fin.tail x`. Establish `hxc : (Fin.cons (x 0) x' : Fin (d + 1) → ℂ) = x` using `Fin.cons_self_tail x`.
+
+Use `set R := ∏ k ∈ s, qs (v k) with hRdef`. Establish `hR0 : R ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => hvB k`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, MvPolynomial.eval y R ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+
+Conclude with `hR0 (MvPolynomial.funext fun y => by rw [h y, map_zero])`. Use `set w : Fin d → ℂ := y - x'`. Use `set ρ := _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.PG.lineHom x' w R`. Establish `hρ : ∀ t, ρ.eval t = MvPolynomial.eval (fun i => x' i + w i * t) R` using `fun t => _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.PG.eval_lineHom x' w R t`. Establish `hρ0 : ρ ≠ 0`.
+
+Introduce `h0`. Apply `hy` to reduce the goal to its premises. Use `hρ 1` as an intermediate fact. Rewrite `this` using `[h0, Polynomial.eval_zero]`. Establish `hy' : (fun i => x' i + w i * 1) = y`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[w]`. Rewrite `this` using `[hy']`. Conclude with `this.symm`. Use `set γ : ℂ → Fin (d + 1) → ℂ := fun t => Fin.cons (x 0) (fun i => x' i + w i * t)`.
+
+Establish `hγ : Continuous γ`. Use `continuous_pi fun i => Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify `continuous_const` using `[γ]`. Simplify using `only [γ, Fin.cons_succ]`. Use `fun_prop`.
+
+Establish `hγ0 : γ 0 = x`. Simplify using `only [γ, mul_zero, add_zero]`. Conclude with `hxc`. Establish `hfx : ContinuousAt f x` using `(hf x hx).continuousWithinAt.continuousAt (hopen.mem_nhds hx)`. Establish `hγc : Tendsto γ (𝓝 0) (𝓝 x)`.
+
+Use `hγ.tendsto 0` as an intermediate fact. Rewrite `this` using `[hγ0]`. Then use the resulting hypothesis. Establish `h1 : Tendsto (fun t => f (γ t)) (𝓝[≠] 0) (𝓝 (f x))` using `(hfx.tendsto.comp hγc).mono_left nhdsWithin_le_nhds`. Establish `h2 : Tendsto (fun t => MvPolynomial.eval (γ t) Pm) (𝓝[≠] 0) (𝓝 (MvPolynomial.eval x Pm))` using `((MvPolynomial.continuous_eval Pm).continuousAt.tendsto.comp hγc).mono_left nhdsWithin_le_nhds`. Establish `hq : ∀ᶠ t in 𝓝[≠] (0 : ℂ), MvPolynomial.eval (γ t) q ≠ 0`.
+
+Establish `hcq : ContinuousAt (fun t => MvPolynomial.eval (γ t) q) 0` using `((MvPolynomial.continuous_eval q).comp hγ).continuousAt`. Use `hcq.eventually_ne (by simpa [hγ0] using hx)` as an intermediate fact. Conclude with `this.filter_mono nhdsWithin_le_nhds`. Establish `heq : (fun t => f (γ t)) =ᶠ[𝓝[≠] 0] (fun t => MvPolynomial.eval (γ t) Pm)` using `by filter_upwards [hq, polynomial_eventually_ne_zero_lemma_3 hρ0 0] with t ht hρt`. Use `hgen (γ t) ht fun k hk => ?_` and prove the remaining obligations.
+
+Rewrite `hρt` using `[hρ, hRdef, map_prod]`. Use `Finset.prod_ne_zero_iff.mp hρt k hk` as an intermediate fact. Simplify `this` using `[γ, Fin.tail_cons]`. Conclude with `tendsto_nhds_unique_of_eventuallyEq h1 h2 heq`.
+-/
 theorem _root_.GlobalTheory.exists_mvPolynomial_of_poly_bound_off_hypersurface :
     ∀ (d m : ℕ) (q : MvPolynomial (Fin d) ℂ) (f : (Fin d → ℂ) → ℂ) (C : ℝ), q ≠ 0 →
       DifferentiableOn ℂ f {x | MvPolynomial.eval x q ≠ 0} →

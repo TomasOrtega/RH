@@ -2,6 +2,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeDeform
 import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeDeformations.AbsDefs
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia.Abs
 
+/- English proof (translation)
+Introduce `O _ _ σ hσ wt`. Establish `hinj : Function.Injective (algebraMap O (FractionRing O))` using `IsFractionRing.injective O _`. Set `φ : FA O wt →ₐ[O] MvPowerSeries σ (FractionRing O)` to `(MvPowerSeries.mapAlgHom (Algebra.ofId O (FractionRing O))).comp (WPres.free O wt).A.val`. Establish `hφ : ∀ (f : FA O wt) (d : σ →₀ ℕ), coeff d (φ f) = algebraMap O (FractionRing O) (coeff d (ser f))` using `fun f d => rfl`. Use `⟨σ, hσ, wt, φ, ⟨?_, ?_, ?_, ?_⟩, fun j => rfl⟩` and prove the remaining obligations.
+
+Introduce `j f hf d hd`. Rewrite using `[hφ, mem_Fgr.1 hf d hd, map_zero]`. Introduce `f`. Rewrite using `[weightedSeriesOrigin_apply]`. Conclude with `hφ f 0`.
+
+Introduce `i`. Establish `hz : ser ((WPres.free O wt).zA i) = MvPowerSeries.X i` using `rfl`. Use `⟨(WPres.free O wt).zA i, ?_, fun i' hi => ?_⟩` and prove the remaining obligations. Rewrite using `[hφ, hz, coeff_index_single_self_X, map_one]`. Conclude with `one_ne_zero`.
+
+Rewrite using `[hφ, hz, coeff_index_single_X, if_neg hi, map_zero]`. Introduce `f h0 h1`. Use `(UpperTheory.mem_satSq_iff_constantCoeff_and_linearCoeff_eq_zero O σ wt f).2 ⟨by rw [← weightedSeriesOrigin_apply, h0], fun i => hinj ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ, h1, map_zero]`.
+-/
 theorem UpperTheory.smoothPt_weightedGradedAlgebra_basePoint :
     ∀ (O : Type) [CommRing O] [IsDomain O] (σ : Type) [Fintype σ] (wt : σ → ℤ),
         SmoothPt (Fgr O wt) (x0 O wt) (fun j => Nat.card {i // wt i = j}) := by

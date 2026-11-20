@@ -23,11 +23,17 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 abbrev Zs (F : Type) [Field F] [NumberField F] (n d : ℕ) : Type :=
   (Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F)
 
+/- English proof (translation)
+Unfold `infAd`. Rewrite using `[map_add, map_add]`. Both sides reduce to the same expression.
+-/
 theorem infAd_add (a b : mixedEmbedding.mixedSpace F) : infAd F (a + b) = infAd F a + infAd F b := by
   unfold infAd
   rw [map_add, map_add]
   rfl
 
+/- English proof (translation)
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (t • a) = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ _ t) * (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm a`. Rewrite using `[← map_mul, Algebra.smul_def]`. Use `show (0 : FiniteAdeleRing (𝓞 F) F) = 0 * 0`. Rewrite using `[mul_zero]`.
+-/
 theorem infAd_smul (t : ℝ) (a : mixedEmbedding.mixedSpace F) : infAd F (t • a) = realAd F t * infAd F a := by
   refine Prod.ext ?_ ?_
   · show (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (t • a) =
@@ -36,18 +42,27 @@ theorem infAd_smul (t : ℝ) (a : mixedEmbedding.mixedSpace F) : infAd F (t • 
   · show (0 : FiniteAdeleRing (𝓞 F) F) = 0 * 0
     rw [mul_zero]
 
+/- English proof (translation)
+Unfold `liftI`. Rewrite using `[← map_add]`. Use `congr 1`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> funext i <;> simp [infAd_add]`.
+-/
 theorem liftI_add (M : Model σ X W) (ζ ζ' : Zs F n d) : liftI M (ζ + ζ') = liftI M ζ + liftI M ζ' := by
   unfold liftI
   rw [← map_add]
   congr 1
   refine Prod.ext ?_ ?_ <;> funext i <;> simp [infAd_add]
 
+/- English proof (translation)
+Unfold `liftI`. Rewrite using `[← LinearEquiv.map_smul]`. Use `congr 1`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> funext i <;> simp [infAd_smul]`.
+-/
 theorem liftI_smul (M : Model σ X W) (t : ℝ) (ζ : Zs F n d) : liftI M (t • ζ) = realAd F t • liftI M ζ := by
   unfold liftI
   rw [← LinearEquiv.map_smul]
   congr 1
   refine Prod.ext ?_ ?_ <;> funext i <;> simp [infAd_smul]
 
+/- English proof (translation)
+Unfold `liftI arch`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> funext i <;>`. Conclude with `(InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply _`.
+-/
 theorem arch_e_liftI (M : Model σ X W) (ζ : Zs F n d) :
     (arch F (M.co.e (liftI M ζ)).1, arch F (M.co.e (liftI M ζ)).2) = ζ := by
   unfold liftI arch
@@ -65,6 +80,13 @@ def readC (M : Model σ X W) : Zs F n d →ₗ[ℝ] (InfinitePlace F → Fin n �
     simp only [liftI_smul, Matrix.smul_apply, RingHom.id_apply, Pi.smul_apply]
     rw [GlobalTheory.RealScalar.piInf_realAd_smul, Complex.real_smul]
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `ζ hζ`. Establish `hA` using `(liftI_at_movI F E σ n d X W M 1 ζ).1`. Establish `h0 : liftI M ζ = 0`. Use extensionality with `i j`.
+
+Use `GlobalTheory.ArchInj.eq_zero_of_at_of_piInf F E σ hCM τ _ ?_ ?_` and prove the remaining obligations. Introduce `a ha`. Use `congrFun (congrFun (hA a ha) i) j` as an intermediate fact. Simplify `this` using `[Matrix.smul_apply]`. Introduce `w`.
+
+Conclude with `congrFun (congrFun (congrFun hζ w) i) j`. Rewrite using `[← arch_e_liftI M ζ, h0, map_zero]`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> funext i <;> exact map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)`.
+-/
 theorem readC_injective (hCM : IsCMExt F E σ) (M : Model σ X W) : Function.Injective (readC τ M) := by
   rw [injective_iff_map_eq_zero]
   intro ζ hζ
@@ -80,6 +102,9 @@ theorem readC_injective (hCM : IsCMExt F E σ) (M : Model σ X W) : Function.Inj
   rw [← arch_e_liftI M ζ, h0, map_zero]
   refine Prod.ext ?_ ?_ <;> funext i <;> exact map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)
 
+/- English proof (translation)
+Unfold `piInf`. Break down `infEmb_eq_or_conj hCM τ₀ τ' with e | e` into its components or cases. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, e]`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, e, RingHom.comp_apply, Complex.norm_conj]`.
+-/
 theorem norm_piInf_eq (hCM : IsCMExt F E σ) {w : InfinitePlace F} (τ₀ τ' : EmbOver E w) (z : AE F E) :
     ‖piInf τ' z‖ = ‖piInf τ₀ z‖ := by
   unfold piInf
@@ -91,6 +116,19 @@ end GlobalTheory.ArchDecay.MovSize
 
 open GlobalTheory.ArchDecay.MovSize in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP`. Establish `hCM : IsCMExt F E σ` using `hP.base.cm`. Use `set L := readC B.emb M with hL`. Take `⟨K, -, hK⟩` from `L.exists_antilipschitzWith (LinearMap.ker_eq_bot.2 (readC_injective B.emb hCM M))`. Use `set Lc := LinearMap.toContinuousLinearMap L with hLc`.
+
+Use `⟨K * (n * d) * ‖Lc‖, 1, fun g h ζ => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖movI M (g, h) ζ‖ ≤ K * ‖L (movI M (g, h) ζ)‖`. Use `hK.le_mul_dist (movI M (g, h) ζ) 0` as an intermediate fact. Simplify `this` using `[dist_eq_norm]`. Establish `hB : ∀ (w : InfinitePlace F) (τ' : EmbOver E w) k l, ‖piInf τ' (liftI M ζ k l)‖ ≤ ‖L ζ‖`.
+
+Introduce `w τ' k l`. Rewrite using `[norm_piInf_eq hCM (B.emb w) τ']`. Conclude with `(norm_le_pi_norm (L ζ w k) l).trans ((norm_le_pi_norm (L ζ w) k).trans (norm_le_pi_norm (L ζ) w))`. Establish `hg : (ht (((g, h)⁻¹ : UA σ X.J × UA σ W.J)).1 : ℝ) = ht g` using `by show ((heightGL F ((g⁻¹ : UA σ X.J) : GL (Fin n) (AE F E))) : ℝ) = heightGL F (g : GL (Fin n) (AE F E))`. Rewrite using `[Subgroup.coe_inv, heightGL_inv]`.
+
+Establish `hh : (ht (((g, h)⁻¹ : UA σ X.J × UA σ W.J)).2 : ℝ) = ht h` using `by show ((heightGL F ((h⁻¹ : UA σ W.J) : GL (Fin d) (AE F E))) : ℝ) = heightGL F (h : GL (Fin d) (AE F E))`. Rewrite using `[Subgroup.coe_inv, heightGL_inv]`. Establish `hgh : (0 : ℝ) ≤ n * d * ((ht g : ℝ) * ht h)` using `mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)) (mul_nonneg (NNReal.coe_nonneg _) (NNReal.coe_nonneg _))`. Establish `hpos : (0 : ℝ) ≤ n * d * ((ht g : ℝ) * ht h) * ‖L ζ‖` using `mul_nonneg hgh (norm_nonneg _)`. Establish `h2 : ‖L (movI M (g, h) ζ)‖ ≤ n * d * ((ht g : ℝ) * ht h) * ‖L ζ‖`.
+
+Use `(pi_norm_le_iff_of_nonneg hpos).2 fun w => ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg hpos).2 fun i => ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg hpos).2 fun j => ?_` and prove the remaining obligations. Use `show ‖piInf (B.emb w) (liftI M (movI M (g, h) ζ) i j)‖ ≤ _`. Rewrite using `[(liftI_at_movI F E σ n d X W M (g, h) ζ).2]`.
+
+Use `GlobalTheory.WeilDirBound.norm_piInf_actAB_le σ n d X.J W.J (g, h)⁻¹ (liftI M ζ) ‖L ζ‖ (norm_nonneg _) hB w (B.emb w) i j` as an intermediate fact. Rewrite `this` using `[hg, hh]`. Then use the resulting hypothesis. Establish `h3 : ‖L ζ‖ ≤ ‖Lc‖ * ‖ζ‖` using `Lc.le_opNorm ζ`. Establish `hK0 : (0 : ℝ) ≤ K` using `K.2`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem GlobalTheory.ArchDecay.movI_size : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → ∃ (C : ℝ) (k : ℕ), ∀ (g : UA σ X.J) (h : UA σ W.J) (ζ : (Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F)), ‖movI M (g, h) ζ‖ ≤ C * ((ht g : ℝ) * ht h) ^ k * ‖ζ‖ := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP
   have hCM : IsCMExt F E σ := hP.base.cm

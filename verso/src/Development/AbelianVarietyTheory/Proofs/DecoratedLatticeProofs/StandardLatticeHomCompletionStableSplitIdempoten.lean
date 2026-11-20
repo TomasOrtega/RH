@@ -17,8 +17,14 @@ def intVecSub (D : D7) (n : ℕ) : Submodule (NumberField.RingOfIntegers D.host.
     show IsIntegral ℤ ((c : D.host.E) * x k)
     exact c.2.mul (hx k)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_intVecSub (D : D7) (n : ℕ) : ((intVecSub D n : Submodule _ _) : Set (Fin n → D.host.E)) = intVec D n := rfl
 
+/- English proof (translation)
+Introduce `D S T a ha u hu`. Establish `h` using `Formalism.IndefR.Fin.latO_map_splitIdem S T (intVecSub D S.rank) (intVecSub D T.rank) ha (u := u) (by rw [coe_intVecSub, coe_intVecSub]; exact hu)`. Rewrite `h` using `[coe_intVecSub, coe_intVecSub]`. Conclude with `h`.
+-/
 theorem stdHom_map_splitIdem : ∀ (D : D7) (S T : HSp D) (a : AE D), IsSplitIdem D a → ∀ u ∈ stdHom S T, u.map (fun x => a * x) ∈ stdHom S T := by
   intro D S T a ha u hu
   have h := Formalism.IndefR.Fin.latO_map_splitIdem S T (intVecSub D S.rank) (intVecSub D T.rank) ha

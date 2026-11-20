@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.TrMult
 
+/- English proof (translation)
+Take `⟨n, rfl⟩ : ∃ n, r = n + 1` from `⟨r - 1, by obtain ⟨k, hk⟩ := hr; omega⟩`. Rewrite using `[Fin.strictAnti_iff_succ_lt]`. Introduce `i`. Use `h i.castSucc i.succ (by simp)` as an intermediate fact. Move the coercions through the operations in `at this`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem strictAnti_of_gap {r : ℕ} (hr : Odd r) {lam : Fin r → ℤ} (h : Gap lam) : StrictAnti lam := by
   obtain ⟨n, rfl⟩ : ∃ n, r = n + 1 := ⟨r - 1, by obtain ⟨k, hk⟩ := hr; omega⟩
   rw [Fin.strictAnti_iff_succ_lt]
@@ -21,6 +26,13 @@ theorem strictAnti_of_gap {r : ℕ} (hr : Odd r) {lam : Fin r → ℤ} (h : Gap 
   push_cast at this
   omega
 
+/- English proof (translation)
+Introduce `hE hP hR D V lam S M T U μa μf μ _ _ fa ff hT dta dtf dt hdt`. Take `⟨hOK, hfin, -, hint⟩` from `hP D V lam S M T U μa μf μ fa ff hT dta dtf dt hdt`. Establish `heq : ∀ P, GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.termOrb V μa μf fa ff P (dta P) (dtf P) (dt P) = GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.term V lam μf ff P (dta P) (dtf P) (dt P)`. Introduce `P`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.termOrb GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.term`.
+
+Use `congr 1`. Rewrite using `[← (Equiv.ofBijective _ (GlobalTheory.AdelicU.placeOf_bijective D)).prod_comp]`. Use `Finset.prod_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Conclude with `hR D V lam S M μa fa hT.1 (fun ρ => strictAnti_of_gap hT.1 (hT.2.1 ρ)) hT.2.2.1 hT.2.2.2.2.1.1 hT.2.2.2.2.2.1 P ρ (dta P (GlobalTheory.AdelicU.placeOf D ρ)) ((hdt P).1 _)`. Establish `hfun : (fun P => GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.termOrb V μa μf fa ff P (dta P) (dtf P) (dt P)) = fun P => GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.term V lam μf ff P (dta P) (dtf P) (dt P)` using `funext heq`.
+
+Use `⟨fun P => (hOK P).1, hfun ▸ hfin, ?_⟩` and prove the remaining obligations. Establish `h1` using `hE D V lam S M T U μa μf μ fa ff hT`. Rewrite `h1` using `[hint, hfun]`. Conclude with `h1`.
+-/
 theorem geomExpansion_of_parts : EllTrace → EllipticPart → RealStable → GeomExpansion := by
   intro hE hP hR D V lam S M T U μa μf μ _ _ fa ff hT dta dtf dt hdt
   obtain ⟨hOK, hfin, -, hint⟩ := hP D V lam S M T U μa μf μ fa ff hT dta dtf dt hdt

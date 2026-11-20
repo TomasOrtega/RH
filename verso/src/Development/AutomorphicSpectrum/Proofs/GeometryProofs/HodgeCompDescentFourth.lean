@@ -14,6 +14,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.ChgUnit
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `p`. Simplify using `only at hp`. Substitute `hp` using the available equality. Take `⟨_, s, hs, -⟩` from `h`. Conclude with `⟨s, hs⟩`.
+-/
 theorem mem_regAt_of_valAt {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {R : Type}
     [CommRing R] [IsLocalRing R] {z : Spec (CommRingCat.of R) ⟶ X} {a : Ω} {r : R} (h : ValAt ξ z a r) (p : Cpt ξ)
     (hp : p.1 = centre z) : a ∈ regAt ξ p := by
@@ -23,6 +26,11 @@ theorem mem_regAt_of_valAt {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (C
   obtain ⟨_, s, hs, -⟩ := h
   exact ⟨s, hs⟩
 
+/- English proof (translation)
+Use `⟨Finset.prod_ne_zero_iff.2 fun k _ => (hw.2 k _ (hc k)).1, fun c' => ?_⟩` and prove the remaining obligations. Use `show (∏ k, y ⟨k, c' k⟩) / (∏ k, y ⟨k, c k⟩) ∈ regAt ξ p`. Rewrite using `[← Finset.prod_div_distrib]`. Use `prod_mem fun k _ => ?_` and prove the remaining obligations. Take `⟨r, hr, -⟩` from `(hw.2 k _ (hc k)).2 (c' k)`.
+
+Conclude with `mem_regAt_of_valAt hr p hp`.
+-/
 theorem inChart_of_coordsAt {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {K : Type}
     [Fintype K] {J : K → Type} {y : (Σ k, J k) → Ω} {R : Type} [CommRing R] [IsLocalRing R]
     {z : Spec (CommRingCat.of R) ⟶ X} {w : (Σ k, J k) → R} (hw : CoordsAt ξ y z w) (c : (k : K) → J k)
@@ -35,6 +43,13 @@ theorem inChart_of_coordsAt {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (
   obtain ⟨r, hr, -⟩ := (hw.2 k _ (hc k)).2 (c' k)
   exact mem_regAt_of_valAt hr p hp
 
+/- English proof (translation)
+Establish `h1 : a ∈ Submodule.span R {b}` using `h ▸ Submodule.mem_span_singleton_self a`. Establish `h2 : b ∈ Submodule.span R {a}` using `h ▸ Submodule.mem_span_singleton_self b`. Take `⟨r, hr⟩` from `Submodule.mem_span_singleton.1 h1`. Take `⟨t, ht⟩` from `Submodule.mem_span_singleton.1 h2`. Establish `hr' : (r : Ω) * b = a` using `hr`.
+
+Establish `ht' : (t : Ω) * a = b` using `ht`. Establish `hrt : (r : Ω) * t = 1`. Apply `mul_right_cancel₀ ha` to reduce the goal to its premises. Rewrite using `[_root_.mul_assoc, ht', hr', _root_.one_mul]`. Use `⟨r, r.2, ?_, hr'.symm⟩` and prove the remaining obligations.
+
+Rewrite using `[inv_eq_of_mul_eq_one_right hrt]`. Conclude with `t.2`.
+-/
 theorem exists_unit_of_span_eq {Ω : Type} [Field Ω] (R : Subring Ω) {a b : Ω} (ha : a ≠ 0)
     (h : Submodule.span R {a} = Submodule.span R {b}) : ∃ u : Ω, u ∈ R ∧ u⁻¹ ∈ R ∧ a = u * b := by
   have h1 : a ∈ Submodule.span R {b} := h ▸ Submodule.mem_span_singleton_self a
@@ -50,6 +65,9 @@ theorem exists_unit_of_span_eq {Ω : Type} [Field Ω] (R : Subring Ω) {a b : Ω
   rw [inv_eq_of_mul_eq_one_right hrt]
   exact t.2
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `ofNat m => simpa using pow_mem h m`. Consider the case `negSucc m`. Rewrite using `[zpow_negSucc, ← inv_pow]`. Conclude with `pow_mem h' _`.
+-/
 theorem zpow_mem_of_inv_mem {Ω : Type} [Field Ω] (R : Subring Ω) {u : Ω} (h : u ∈ R) (h' : u⁻¹ ∈ R) (n : ℤ) :
     u ^ n ∈ R := by
   cases n with
@@ -60,6 +78,13 @@ theorem zpow_mem_of_inv_mem {Ω : Type} [Field Ω] (R : Subring Ω) {u : Ω} (h 
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `t ⟨s', hs', rfl⟩`. Establish `h'` using `hs' ()`. Take `⟨u, hu, hu', e⟩` from `exists_unit_of_span_eq (regAt ξ p) h'.1 (h'.2.symm.trans hs.2)`.
+
+Use `Submodule.mem_span_singleton.2 ⟨⟨u ^ n, zpow_mem_of_inv_mem _ hu hu' n⟩, ?_⟩` and prove the remaining obligations. Use `show u ^ n * s ^ n = _`. Simplify using `[e, mul_zpow]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `t rfl`.
+
+Conclude with `Submodule.subset_span ⟨fun _ => s, fun _ => hs, by simp⟩`.
+-/
 theorem tens_unit_eq {Λ : Lat ξ Ω} {p : Cpt ξ} {s : Ω} (hs : Λ.IsGenAt p s) (n : ℤ) :
     Lat.tens (fun _ : Unit => Λ) (fun _ => n) p = Submodule.span (regAt ξ p) {s ^ n} := by
   apply le_antisymm
@@ -74,6 +99,13 @@ theorem tens_unit_eq {Λ : Lat ξ Ω} {p : Cpt ξ} {s : Ω} (hs : Λ.IsGenAt p s
     rintro t rfl
     exact Submodule.subset_span ⟨fun _ => s, fun _ => hs, by simp⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Establish `hempty : {t | ∃ s : Unit → Ω, (∀ i, Λ.IsGenAt p (s i)) ∧ t = ∏ i, s i ^ (fun _ => n) i} = ∅`. Use extensionality with `t`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨s, hs, -⟩`.
+
+Conclude with `hn ⟨_, hs ()⟩`. Establish `h0 : Lat.tens (fun _ : Unit => Λ) (fun _ => n) p = ⊥` using `by show Submodule.span _ _ = ⊥`. Rewrite using `[hempty, Submodule.span_empty]`. Establish `hm : g ∈ Submodule.span (regAt ξ p) {g}` using `Submodule.mem_span_singleton_self g`. Rewrite `hm` using `[← h, h0]`.
+
+Conclude with `hg ((Submodule.mem_bot _).1 hm)`.
+-/
 theorem exists_gen_of_tens {Λ : Lat ξ Ω} {p : Cpt ξ} {g : Ω} {n : ℤ} (hg : g ≠ 0)
     (h : Lat.tens (fun _ : Unit => Λ) (fun _ => n) p = Submodule.span (regAt ξ p) {g}) : ∃ s, Λ.IsGenAt p s := by
   by_contra hn
@@ -89,6 +121,9 @@ theorem exists_gen_of_tens {Λ : Lat ξ Ω} {p : Cpt ξ} {g : Ω} {n : ℤ} (hg 
   rw [← h, h0] at hm
   exact hg ((Submodule.mem_bot _).1 hm)
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `h1`. Take `⟨t, ht⟩` from `h2`. Establish `hst : s * t = 1` using `hξ.inj ⟨centre z, hz⟩ (by rw [map_mul, hs, ht, map_one, mul_inv_cancel₀ hf])`. Use `⟨(Scheme.stalkClosedPointTo z).hom s, fun h0 => ?_, hz, s, hs, rfl⟩` and prove the remaining obligations. Conclude with `((IsUnit.of_mul_eq_one t hst).map (Scheme.stalkClosedPointTo z).hom).ne_zero h0`.
+-/
 theorem exists_value_of_unit (hξ : IsCptGen ξ) (z : Spec (CommRingCat.of ℂ) ⟶ X) (hz : genPt ξ ⤳ centre z) {f : Ω}
     (hf : f ≠ 0) (h1 : f ∈ regAt ξ ⟨centre z, hz⟩) (h2 : f⁻¹ ∈ regAt ξ ⟨centre z, hz⟩) :
     ∃ u : ℂ, u ≠ 0 ∧ ValAt ξ z f u := by
@@ -98,6 +133,19 @@ theorem exists_value_of_unit (hξ : IsCptGen ξ) (z : Spec (CommRingCat.of ℂ) 
   refine ⟨(Scheme.stalkClosedPointTo z).hom s, fun h0 => ?_, hz, s, hs, rfl⟩
   exact ((IsUnit.of_mul_eq_one t hst).map (Scheme.stalkClosedPointTo z).hom).ne_zero h0
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y S₀ S Ω₀ Ω _ _ K₀ K _ _ J₀ J _ _ y₀ y 𝔐₀ 𝔐 i h hd Fl₀ Fl bk bx a a₀ e e₀ r hβ hΩ hy hgen hdeg₀ hdeg hunit hreg hco z w hw cc c₀ hc hc₀`. Use `haveI := hΩ`. Establish `hz : genPt 𝔐.ξ ⤳ centre z` using `𝔐.all _`. Set `q : Cpt 𝔐.ξ` to `⟨centre z, hz⟩`. Set `q₀ : Cpt 𝔐₀.ξ` to `pushCpt hd q`.
+
+Establish `hw₀` using `hco z w hw`. Establish `huc : ∀ k, IsUnit (w ⟨k, cc k⟩)` using `fun k => IsUnit.mk0 _ (hc k)`. Establish `huc₀ : ∀ k, IsUnit ((fun p => w (blkV bk bx p)) (⟨k, c₀ k⟩ : Σ k, J₀ k))` using `fun k => IsUnit.mk0 _ (hc₀ k)`. Establish `hq₀c : q₀.1 = centre (z ≫ h)` using `rfl`. Establish `hq : (Fl.rootLat r) q = Submodule.span (regAt 𝔐.ξ q) {(∏ k, y ⟨k, cc k⟩ ^ a k) * e}` using `hdeg.2 q trivial cc (inChart_of_coordsAt hw cc huc q rfl)`.
+
+Establish `hq₀ : (Fl₀.rootLat r) q₀ = Submodule.span (regAt 𝔐₀.ξ q₀) {(∏ k, y₀ ⟨k, c₀ k⟩ ^ a₀ k) * e₀}` using `hdeg₀.2 q₀ trivial c₀ (inChart_of_coordsAt hw₀ c₀ huc₀ q₀ hq₀c)`. Establish `hg : (∏ k, y ⟨k, cc k⟩ ^ a k) * e ≠ 0` using `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hw.2 k _ (huc k)).1) hdeg.1`. Establish `hg₀ : (∏ k, y₀ ⟨k, c₀ k⟩ ^ a₀ k) * e₀ ≠ 0` using `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hw₀.2 k _ (huc₀ k)).1) hdeg₀.1`. Take `⟨s₀, hs₀⟩` from `exists_gen_of_tens (Λ := (𝔐₀.V (HodgeCpt.rootIdx D r).1).gr (Fl₀.b (HodgeCpt.rootIdx D r).1) (HodgeCpt.rootIdx D r).2) (n := HodgeCpt.rootSgn D r) hg₀ hq₀`. Establish `e₁` using `tens_unit_eq hs₀ (HodgeCpt.rootSgn D r)`.
+
+Take `⟨u₀, hu₀, hu₀', hgu⟩` from `exists_unit_of_span_eq (regAt 𝔐₀.ξ q₀) hg₀ (hq₀.symm.trans e₁)`. Establish `hs : ((𝔐.V (HodgeCpt.rootIdx D r).1).gr (Fl.b (HodgeCpt.rootIdx D r).1) (HodgeCpt.rootIdx D r).2).IsGenAt q (i s₀)` using `hgen q (fun p hp => not_inFibre 𝔐.ξ z hz hp) _ _ s₀ hs₀`. Establish `e₂` using `tens_unit_eq hs (HodgeCpt.rootSgn D r)`. Take `⟨v, hv, hv', hgv⟩` from `exists_unit_of_span_eq (regAt 𝔐.ξ q) (zpow_ne_zero _ hs.1) (e₂.symm.trans hq)`. Establish `hfe : i ((∏ k, y₀ ⟨k, c₀ k⟩ ^ a₀ k) * e₀) / ((∏ k, y ⟨k, cc k⟩ ^ a k) * e) = i u₀ * v`.
+
+Rewrite using `[hgu, map_mul, map_zpow₀, hgv, ← _root_.mul_assoc (i u₀) v]`. Conclude with `mul_div_cancel_right₀ _ hg`. Establish `hf : i ((∏ k, y₀ ⟨k, c₀ k⟩ ^ a₀ k) * e₀) / ((∏ k, y ⟨k, cc k⟩ ^ a k) * e) ≠ 0` using `div_ne_zero ((map_ne_zero i).2 hg₀) hg`. Use `exists_value_of_unit 𝔐.tie.gen z hz hf ?_ ?_` and prove the remaining obligations. Rewrite using `[hfe]`.
+
+Conclude with `mul_mem (hreg q _ hu₀) hv`. Rewrite using `[hfe, mul_inv, ← map_inv₀]`. Conclude with `mul_mem (hreg q _ hu₀') hv'`.
+-/
 theorem comparison_unit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S₀ S : Finset ℕ) (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] (K₀ K : Type) [Fintype K₀] [Fintype K] (J₀ : K₀ → Type) (J : K → Type) [∀ k, Fintype (J₀ k)] [∀ k, Fintype (J k)] (y₀ : (Σ k, J₀ k) → Ω₀) (y : (Σ k, J k) → Ω) (𝔐₀ : HodgeCpt Y S₀ y₀) (𝔐 : HodgeCpt Y S y) (i : Ω₀ →+* Ω) (h : 𝔐.X ⟶ 𝔐₀.X) (hd : GlobalTheory.CompanionTheory.Ar.Dominates 𝔐.ξ 𝔐₀.ξ h i) (Fl₀ : 𝔐₀.Flag) (Fl : 𝔐.Flag) (bk : K₀ → K) (bx : ∀ k, J₀ k ≃ J (bk k)) (a : K → ℤ) (a₀ : K₀ → ℤ) (e : Ω) (e₀ : Ω₀) (r : CMType H × Fin (D.p + D.q)), Function.Injective β → CharZero Ω → (∀ k a, y ⟨bk k, bx k a⟩ = i (y₀ ⟨k, a⟩)) → GenPull Fl₀ Fl i hd → (Fl₀.rootLat r).IsDegOn Set.univ y₀ a₀ e₀ → (Fl.rootLat r).IsDegOn Set.univ y a e → (∀ (p : Cpt 𝔐.ξ) (a : Ω₀), a ∈ regAt 𝔐₀.ξ (pushCpt hd p) → unitAt 𝔐.ξ p (i a) → unitAt 𝔐₀.ξ (pushCpt hd p) a) → (∀ (p : Cpt 𝔐.ξ) (a : Ω₀), a ∈ regAt 𝔐₀.ξ (pushCpt hd p) → i a ∈ regAt 𝔐.ξ p) → (∀ (z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X) (w : (Σ k, J k) → ℂ), CoordsAt 𝔐.ξ y z w → CoordsAt 𝔐₀.ξ y₀ (z ≫ h) (fun p => w (blkV bk bx p))) → ∀ (z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X) (w : (Σ k, J k) → ℂ), CoordsAt 𝔐.ξ y z w → ∀ (c : (k : K) → J k) (c₀ : (k : K₀) → J₀ k), (∀ k, w ⟨k, c k⟩ ≠ 0) → (∀ k, w (blkV bk bx ⟨k, c₀ k⟩) ≠ 0) → ∃ u : ℂ, u ≠ 0 ∧ ValAt 𝔐.ξ z (i ((∏ k, y₀ ⟨k, c₀ k⟩ ^ a₀ k) * e₀) / ((∏ k, y ⟨k, c k⟩ ^ a k) * e)) u := by
   intro E _ _ _ H D l Xo c O _ β Y S₀ S Ω₀ Ω _ _ K₀ K _ _ J₀ J _ _ y₀ y 𝔐₀ 𝔐 i h hd Fl₀ Fl bk bx a a₀ e e₀ r hβ hΩ
     hy hgen hdeg₀ hdeg hunit hreg hco z w hw cc c₀ hc hc₀

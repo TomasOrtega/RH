@@ -13,6 +13,29 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V}
 
+/- English proof (translation)
+Take `rfl : φ' = fun k => jK V ≫ φ k` from `funext hφ`. Take `⟨e, he⟩` from `exists_gen_of_local L hL φ ε`. Take `⟨j₀, htop⟩` from `exists_chart_top L hL φ ε`. Establish `hK : (⊤ : (Spec (CommRingCat.of (FractionRing V))).Opens) ≤ LB.wchart L (fun k => jK V ≫ φ k) j₀`. Introduce `y _`.
+
+Establish `hy : (jK V).base y ∈ LB.wchart L φ j₀`. Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`. Establish `hy' : (jK V).base y ∈ (⋂ k, (φ k).base ⁻¹' (L.U (j₀ k) : Set X))` using `hy`. Use `show y ∈ (⋂ k, (jK V ≫ φ k).base ⁻¹' (L.U (j₀ k) : Set X))`.
+
+Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations. Establish `h1` using `Set.mem_iInter.1 hy' k`. Simplify using `using h1`. Establish `hP` using `pullGen_isGen L φ ε e he (jK V)`. Establish `gen3 : ∀ {A : Scheme.{0}} {U U' U'' : A.Opens} (h1 : U' ≤ U) (h2 : U'' ≤ U') (x : Γ(A, U)ˣ), res h2 (res h1 x) = res (h2.trans h1) x`.
+
+Introduce `A U U' U'' h1 h2 x`. Apply `Units.ext` to reduce the goal to its premises. Establish `hm : A.presheaf.map (homOfLE h1).op ≫ A.presheaf.map (homOfLE h2).op = A.presheaf.map (homOfLE (h2.trans h1)).op`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+
+Conclude with `congrArg (fun m => m.hom x.val) hm`. Establish `gen0 : ∀ {A : Scheme.{0}} {U : A.Opens} (h : U ≤ U) (x : Γ(A, U)ˣ), res h x = x`. Introduce `A U h x`. Apply `Units.ext` to reduce the goal to its premises. Use `show (A.presheaf.map (homOfLE h).op).hom x.val = x.val`.
+
+Rewrite using `[show (homOfLE h).op = 𝟙 (Opposite.op U) from rfl, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression. Establish `hle : ∀ j : Ix → L.ι, LB.wchart L (fun k => jK V ≫ φ k) j ≤ LB.wchart L (fun k => jK V ≫ φ k) j₀` using `fun j => le_top.trans hK`. Establish `keyA : ∀ {W W0 : (Spec (CommRingCat.of (FractionRing V))).Opens} (hle : W ≤ W0) (hl : W ⊓ W0 ≤ W) (hr : W ⊓ W0 ≤ W0) (T P : Γ(Spec (CommRingCat.of (FractionRing V)), W)ˣ) (T0 P0 : Γ(Spec (CommRingCat.of (FractionRing V)), W0)ˣ) (g : Γ(Spec (CommRingCat.of (FractionRing V)), W ⊓ W …`. Introduce `W W0 hle hl hr T P T0 P0 g h1 h2`.
+
+Establish `h3 : res hl (T / P) = res hr (T0 / P0)`. Rewrite using `[map_div, map_div, h1, h2, mul_div_mul_left_eq_div]`. Establish `h4` using `congrArg (res (le_inf le_rfl hle : W ≤ W ⊓ W0)) h3`. Rewrite `h4` using `[gen3, gen3, gen0]`. Conclude with `div_eq_iff_eq_mul.1 h4`.
+
+Use `set Dt : Γ(Spec (CommRingCat.of (FractionRing V)), ⊤)ˣ := res hK (t.s j₀ / (LB.pullGen L φ ε e (jK V)).s j₀) with hDt`. Use `set c : FractionRing V := (Scheme.ΓSpecIso (CommRingCat.of (FractionRing V))).hom.hom Dt.val with hc`. Establish `hc0 : c ≠ 0`. Introduce `h0`. Establish `hu : IsUnit c` using `Dt.isUnit.map (Scheme.ΓSpecIso (CommRingCat.of (FractionRing V))).hom.hom`.
+
+Rewrite `hu` using `[h0]`. Conclude with `not_isUnit_zero hu`. Take `⟨n, hn⟩` from `hasVal_of_ne_zero hϖ hc0`. Use `⟨n, e, he, c, hn, fun (j : Ix → L.ι) => ?_⟩` and prove the remaining obligations. Establish `hsc : scal (𝟙 (Spec (CommRingCat.of (FractionRing V)))) c = Dt.val`.
+
+Simplify using `[scal, hc, Scheme.Hom.appTop]`. Establish `hkey` using `keyA (hle j) inf_le_left inf_le_right (t.s j) ((LB.pullGen L φ ε e (jK V)).s j) (t.s j₀) ((LB.pullGen L φ ε e (jK V)).s j₀) _ (ht j j₀) (hP j j₀)`. Use `(congrArg Units.val hkey).trans ?_` and prove the remaining obligations. Establish `hA : (res (hle j) (t.s j₀ / (LB.pullGen L φ ε e (jK V)).s j₀)).val = resTop (LB.wchart L (fun k => jK V ≫ φ k) j) (scal (𝟙 (Spec (CommRingCat.of (FractionRing V)))) c)`. Rewrite using `[hsc, hDt]`.
+
+Conclude with `(congrArg Units.val (gen3 hK (le_top : LB.wchart L (fun k => jK V ≫ φ k) j ≤ ⊤) _)).symm`. Conclude with `(Units.val_mul _ _).trans (congrArg₂ (· * ·) hA rfl)`.
+-/
 theorem exists_genHasVal (hϖ : Irreducible ϖ) {X : Scheme.{0}} (L : LB X) (hL : L.IsLB) {Ix : Type} [Fintype Ix]
     (φ : Ix → (Spec (CommRingCat.of V) ⟶ X)) (φ' : Ix → (Spec (CommRingCat.of (FractionRing V)) ⟶ X))
     (hφ : ∀ k, φ' k = jK V ≫ φ k) (ε : Ix → ℤ) (t : LB.Gen (LB.LinComb L φ' ε)) (ht : t.IsGen) :
@@ -85,6 +108,11 @@ theorem exists_genHasVal (hϖ : Irreducible ϖ) {X : Scheme.{0}} (L : LB X) (hL 
 def scalUnit (c : FractionRing V) (hc : c ≠ 0) : Γ(Spec (CommRingCat.of (FractionRing V)), ⊤)ˣ :=
   Units.map (Scheme.ΓSpecIso (CommRingCat.of (FractionRing V))).inv.hom.toMonoidHom (Units.mk0 c hc)
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `hn`. Rewrite using `[hu]`. Establish `hinj` using `IsFractionRing.injective V (FractionRing V)`. Use `mul_ne_zero (zpow_ne_zero _ ?_) ?_` and prove the remaining obligations. Conclude with `(map_ne_zero_iff _ hinj).2 hϖ.ne_zero`.
+
+Conclude with `(map_ne_zero_iff _ hinj).2 u.ne_zero`.
+-/
 lemma ne_zero_of_hasVal {c : FractionRing V} {n : ℤ} (hϖ : Irreducible ϖ) (hn : HasVal ϖ c n) : c ≠ 0 := by
   obtain ⟨u, hu⟩ := hn
   rw [hu]
@@ -93,6 +121,15 @@ lemma ne_zero_of_hasVal {c : FractionRing V} {n : ℤ} (hϖ : Irreducible ϖ) (h
   · exact (map_ne_zero_iff _ hinj).2 hϖ.ne_zero
   · exact (map_ne_zero_iff _ hinj).2 u.ne_zero
 
+/- English proof (translation)
+Take `rfl : φ' = fun k => jK V ≫ φ k` from `funext hφ`. Take `⟨j₀, htop⟩` from `exists_chart_top L hL φ ε`. Establish `hK : (⊤ : (Spec (CommRingCat.of (FractionRing V))).Opens) ≤ LB.wchart L (fun k => jK V ≫ φ k) j₀`. Introduce `y _`. Establish `hy : (jK V).base y ∈ LB.wchart L φ j₀`.
+
+Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`. Establish `hy' : (jK V).base y ∈ (⋂ k, (φ k).base ⁻¹' (L.U (j₀ k) : Set X))` using `hy`. Use `show y ∈ (⋂ k, (jK V ≫ φ k).base ⁻¹' (L.U (j₀ k) : Set X))`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations.
+
+Establish `h1` using `Set.mem_iInter.1 hy' k`. Simplify using `using h1`. Take `⟨c1, hc1, u1, h1⟩` from `genHasVal_top L φ ε t hn j₀ htop hK`. Take `⟨c2, hc2, u2, h2⟩` from `genHasVal_top L φ ε t hm j₀ htop hK`. Establish `h12 : c1 * algebraMap V (FractionRing V) (u1 : V) = c2 * algebraMap V (FractionRing V) (u2 : V)` using `h1.symm.trans h2`.
+
+Use `hasVal_unique hϖ (hasVal_mul_unit hc1 u1) ?_` and prove the remaining obligations. Rewrite using `[h12]`. Conclude with `hasVal_mul_unit hc2 u2`.
+-/
 theorem genHasVal_unique (hϖ : Irreducible ϖ) {X : Scheme.{0}} (L : LB X) (hL : L.IsLB) {Ix : Type} [Fintype Ix]
     (φ : Ix → (Spec (CommRingCat.of V) ⟶ X)) (φ' : Ix → (Spec (CommRingCat.of (FractionRing V)) ⟶ X))
     (hφ : ∀ k, φ' k = jK V ≫ φ k) (ε : Ix → ℤ) (t : LB.Gen (LB.LinComb L φ' ε)) {n m : ℤ}
@@ -118,6 +155,9 @@ theorem genHasVal_unique (hϖ : Irreducible ϖ) {X : Scheme.{0}} (L : LB X) (hL 
   rw [h12]
   exact hasVal_mul_unit hc2 u2
 
+/- English proof (translation)
+Introduce and unpack `(k | k)`. Conclude with `hφ₁ k`. Conclude with `hφ₂ k`.
+-/
 lemma sumElim_hφ {X : Scheme.{0}} {Ix Ix' : Type}
     {φ₁ : Ix → (Spec (CommRingCat.of V) ⟶ X)} {φ₁' : Ix → (Spec (CommRingCat.of (FractionRing V)) ⟶ X)}
     (hφ₁ : ∀ k, φ₁' k = jK V ≫ φ₁ k)
@@ -130,6 +170,25 @@ lemma sumElim_hφ {X : Scheme.{0}} {Ix Ix' : Type}
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨e₁, he₁, c₁, hc₁, hC₁⟩` from `genHasVal_units L φ₁ φ₁' hφ₁ ε₁ t₁ hn`. Take `⟨e₂, he₂, c₂, hc₂, hC₂⟩` from `genHasVal_units L φ₂ φ₂' hφ₂ ε₂ t₂ hm`. Use `⟨LB.mulGen L φ₁ ε₁ φ₂ ε₂ e₁ e₂, mulGen_isGen L φ₁ ε₁ φ₂ ε₂ e₁ e₂ he₁ he₂, c₁ * c₂, ?_, fun (j : Ix ⊕ Ix' → L.ι) => ?_⟩` and prove the remaining obligations. Take `⟨u₁, hu₁⟩` from `hc₁`. Take `⟨u₂, hu₂⟩` from `hc₂`.
+
+Use `⟨u₁ * u₂, ?_⟩` and prove the remaining obligations. Establish `hπ : algebraMap V (FractionRing V) ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective V (FractionRing V))).2 hϖ.ne_zero`. Rewrite using `[hu₁, hu₂, zpow_add₀ hπ, Units.val_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `gen1 : ∀ (W W' : (Spec (CommRingCat.of (FractionRing V))).Opens) (h : W' ≤ W) (x : Γ(Spec (CommRingCat.of (FractionRing V)), ⊤)), ((Spec (CommRingCat.of (FractionRing V))).presheaf.map (homOfLE h).op).hom (resTop W x) = resTop W' x`.
+
+Introduce `W W' h x`. Simplify using `only [resTop]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression. Establish `gen2 : ∀ {A B : Scheme.{0}} (f : A ⟶ B) (U U' : B.Opens) (hU : U' ≤ U) (W : A.Opens) (hW : W ≤ f ⁻¹ᵁ U') (x : Γ(B, U)ˣ), res hW (pullU f U' (res hU x)) = res (fun y hy => hU (hW hy) : W ≤ f ⁻¹ᵁ U) (pullU f U x)`.
+
+Introduce `A B f U U' hU W hW x`. Apply `Units.ext` to reduce the goal to its premises. Establish `hm : (B.presheaf.map (homOfLE hU).op ≫ f.app U') ≫ A.presheaf.map (homOfLE hW).op = f.app U ≫ A.presheaf.map (homOfLE (fun y hy => hU (hW hy) : W ≤ f ⁻¹ᵁ U)).op`. Rewrite using `[Scheme.Hom.naturality, Category.assoc, ← Functor.map_comp]`. Both sides reduce to the same expression.
+
+Conclude with `congrArg (fun m => m.hom x.val) hm`. Establish `gen3 : ∀ {A : Scheme.{0}} {U U' U'' : A.Opens} (h1 : U' ≤ U) (h2 : U'' ≤ U') (x : Γ(A, U)ˣ), res h2 (res h1 x) = res (h2.trans h1) x`. Introduce `A U U' U'' h1 h2 x`. Apply `Units.ext` to reduce the goal to its premises. Establish `hm : A.presheaf.map (homOfLE h1).op ≫ A.presheaf.map (homOfLE h2).op = A.presheaf.map (homOfLE (h2.trans h1)).op`.
+
+Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression. Conclude with `congrArg (fun m => m.hom x.val) hm`. Establish `key2 : ∀ {W W1 W2 : (Spec (CommRingCat.of (FractionRing V))).Opens} {U U1 U2 : (Spec (CommRingCat.of V)).Opens} (a1 : W ≤ W1) (a2 : W ≤ W2) (b1 : W1 ≤ jK V ⁻¹ᵁ U1) (b2 : W2 ≤ jK V ⁻¹ᵁ U2) (m1 : U ≤ U1) (m2 : U ≤ U2) (h : W ≤ jK V ⁻¹ᵁ U) (E1 : Γ(Spec (CommRingCat.of V), U1)ˣ) (E2 …`. Introduce `W W1 W2 U U1 U2 a1 a2 b1 b2 m1 m2 h E1 E2 T1 C1 T2 C2 c1 c2 h1 h2 h3 h4`.
+
+Establish `e1 : (res a1 C1).val = resTop W (scal (𝟙 (Spec (CommRingCat.of (FractionRing V)))) c1)`. Rewrite using `[← gen1 W1 W a1, ← h3]`. Both sides reduce to the same expression. Establish `e2 : (res a2 C2).val = resTop W (scal (𝟙 (Spec (CommRingCat.of (FractionRing V)))) c2)`. Rewrite using `[← gen1 W2 W a2, ← h4]`.
+
+Both sides reduce to the same expression. Establish `e3 : resTop W (scal (𝟙 (Spec (CommRingCat.of (FractionRing V)))) (c1 * c2)) = resTop W (scal (𝟙 (Spec (CommRingCat.of (FractionRing V)))) c1) * resTop W (scal (𝟙 (Spec (CommRingCat.of (FractionRing V)))) c2)`. Simplify using `only [scal, resTop, map_mul]`. Rewrite using `[h1, h2, map_mul, map_mul, gen3, gen3, map_mul (pullU (jK V) U), map_mul (res h), gen2, gen2]`. Simplify using `only [Units.val_mul]`.
+
+Rewrite using `[e1, e2, e3]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨C₁, hC₁v, hC₁e⟩` from `hC₁ (j ∘ Sum.inl)`. Take `⟨C₂, hC₂v, hC₂e⟩` from `hC₂ (j ∘ Sum.inr)`. Conclude with `key2 _ _ _ _ _ _ _ _ _ _ C₁ _ C₂ _ _ hC₁e hC₂e hC₁v hC₂v`.
+-/
 theorem genHasVal_mulGen (hϖ : Irreducible ϖ) {X : Scheme.{0}} (L : LB X) (hL : L.IsLB) {Ix Ix' : Type} [Fintype Ix] [Fintype Ix']
     (φ₁ : Ix → (Spec (CommRingCat.of V) ⟶ X)) (φ₁' : Ix → (Spec (CommRingCat.of (FractionRing V)) ⟶ X))
     (hφ₁ : ∀ k, φ₁' k = jK V ≫ φ₁ k) (ε₁ : Ix → ℤ)
@@ -207,6 +266,19 @@ theorem genHasVal_mulGen (hϖ : Irreducible ϖ) {X : Scheme.{0}} (L : LB X) (hL 
     obtain ⟨C₂, hC₂v, hC₂e⟩ := hC₂ (j ∘ Sum.inr)
     exact key2 _ _ _ _ _ _ _ _ _ _ C₁ _ C₂ _ _ hC₁e hC₂e hC₁v hC₂v
 
+/- English proof (translation)
+Take `⟨e, he, c, ⟨u, hu⟩, hj⟩` from `hn`. Use `⟨LB.invGen L φ ε e, invGen_isGen L φ ε e he, c⁻¹, ⟨u⁻¹, ?_⟩, fun (j : Ix → L.ι) => ?_⟩` and prove the remaining obligations. Rewrite using `[hu, mul_inv, zpow_neg, map_units_inv]`. Establish `hT` using `hj j`. Establish `hxy : resTop (LB.wchart L φ' j) (scal (𝟙 (Spec (CommRingCat.of (FractionRing V)))) c) * resTop (LB.wchart L φ' j) (scal (𝟙 (Spec (CommRingCat.of (FractionRing V)))) c⁻¹) = 1`.
+
+Distinguish the cases in `hc : c = 0`. Establish `h0 : (t.s j).val = 0`. Establish `hs0 : scal (𝟙 (Spec (CommRingCat.of (FractionRing V)))) (0 : FractionRing V) = 0`. Simplify using `only [scal, map_zero]`. Establish `hr0 : resTop (LB.wchart L φ' j) (0 : Γ(Spec (CommRingCat.of (FractionRing V)), ⊤)) = 0`.
+
+Simplify using `only [resTop, map_zero]`. Rewrite using `[hT, hc, hs0, hr0]`. Conclude with `zero_mul _`. Establish `hu0` using `(t.s j).isUnit`. Rewrite `hu0` using `[h0]`.
+
+Conclude with `eq_of_zero_eq_one (isUnit_zero_iff.1 hu0) _ _`. Simplify using `only [resTop, scal, ← map_mul, mul_inv_cancel₀ hc, map_one]`. Express the relevant statement in the definitionally equal form `((t.s j)⁻¹).val = _`. Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[hT, show (LB.invGen L φ ε e).s j = (e.s j)⁻¹ from rfl]`.
+
+Establish `hRR : (res (wchart_le_preimage L (jK V) φ φ' hφ j) (pullU (jK V) (LB.wchart L φ j) (e.s j))).val * (res (wchart_le_preimage L (jK V) φ φ' hφ j) (pullU (jK V) (LB.wchart L φ j) (e.s j)⁻¹)).val = 1`. Establish `gen : ∀ {A B : Scheme.{0}} (f : A ⟶ B) (U : B.Opens) (W : A.Opens) (hW : W ≤ f ⁻¹ᵁ U) (x : Γ(B, U)ˣ), (res hW (pullU f U x)).val * (res hW (pullU f U x⁻¹)).val = 1`. Introduce `A B f U W hW x`. Rewrite using `[map_inv, map_inv]`. Conclude with `Units.mul_inv _`.
+
+Conclude with `gen _ _ _ _ (e.s j)`. Establish `key : ∀ (x y r r' : Γ(Spec (CommRingCat.of (FractionRing V)), LB.wchart L φ' j)), x * y = 1 → r * r' = 1 → x * r * (y * r') = 1`. Introduce `x y r r' h1 h2`. Combine the equalities or inequalities in the displayed calculation. Conclude with `key _ _ _ _ hxy hRR`.
+-/
 theorem genHasVal_invGen {X : Scheme.{0}} (L : LB X) (hL : L.IsLB) {Ix : Type} [Fintype Ix]
     (φ : Ix → (Spec (CommRingCat.of V) ⟶ X)) (φ' : Ix → (Spec (CommRingCat.of (FractionRing V)) ⟶ X))
     (hφ : ∀ k, φ' k = jK V ≫ φ k) (ε : Ix → ℤ) (t : LB.Gen (LB.LinComb L φ' ε)) {n : ℤ}
@@ -249,6 +321,35 @@ theorem genHasVal_invGen {X : Scheme.{0}} (L : LB X) (hL : L.IsLB) {Ix : Type} [
         _ = 1 := by rw [h1, h2, one_mul]
     exact key _ _ _ _ hxy hRR
 
+/- English proof (translation)
+Take `rfl : φ₁' = fun k => jK V ≫ φ₁ k` from `funext hφ₁`. Take `rfl : φ₂' = fun k => jK V ≫ φ₂ k` from `funext hφ₂`. Establish `sep : ∀ (x x' : Spec (CommRingCat.of V) ⟶ X), jK V ≫ x = jK V ≫ x' → x ≫ s = 𝟙 _ → x' ≫ s = 𝟙 _ → x = x'`. Introduce `x x' h hx hx'`. Set `S : ValuativeCommSq s` to `{ R := V, K := FractionRing V, i₁ := jK V ≫ x, i₂ := 𝟙 _, commSq := ⟨by rw [Category.assoc, hx]⟩ }`.
+
+Establish `hU : Subsingleton S.commSq.LiftStruct` using `IsSeparated.valuativeCriterion s S`. Conclude with `congrArg CommSq.LiftStruct.l (@Subsingleton.elim _ hU (⟨x, rfl, hx⟩ : S.commSq.LiftStruct) (⟨x', h.symm, hx'⟩ : S.commSq.LiftStruct))`. Establish `gen3 : ∀ {A : Scheme.{0}} {U U' U'' : A.Opens} (h1 : U' ≤ U) (h2 : U'' ≤ U') (x : Γ(A, U)ˣ), res h2 (res h1 x) = res (h2.trans h1) x`. Introduce `A U U' U'' h1 h2 x`. Apply `Units.ext` to reduce the goal to its premises.
+
+Establish `hm : A.presheaf.map (homOfLE h1).op ≫ A.presheaf.map (homOfLE h2).op = A.presheaf.map (homOfLE (h2.trans h1)).op`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression. Conclude with `congrArg (fun m => m.hom x.val) hm`. Establish `gen5 : ∀ {A : Scheme.{0}} {U1 U2 W : A.Opens} (l : U1 ⊓ U2 ≤ U1) (r : U1 ⊓ U2 ≤ U2) (h : W ≤ U1 ⊓ U2) (h1 : W ≤ U1) (h2 : W ≤ U2) (x : Γ(A, U1)ˣ) (y : Γ(A, U2)ˣ), res l x = res r y → res h1 x = res h2 y`.
+
+Introduce `A U1 U2 W l r h h1 h2 x y H`. Establish `H'` using `congrArg (res h) H`. Rewrite `H'` using `[gen3, gen3]`. Conclude with `H'`. Establish `hch : ∀ y : Spec (CommRingCat.of V) ⟶ X, ∃ i : L.ι, y.base (IsLocalRing.closedPoint V) ∈ L.U i`.
+
+Introduce `y`. Establish `hmem : y.base (IsLocalRing.closedPoint V) ∈ ⨆ i, L.U i`. Rewrite using `[hL.cover]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 hmem`.
+
+Use `choose ich hich using hch`. Establish `htop₁ : LB.wchart L φ₁ (fun k => ich (φ₁ k)) = ⊤`. Apply `eq_top_of_closedPoint_mem` to reduce the goal to its premises. Use `show _ ∈ (⋂ k, (φ₁ k).base ⁻¹' (L.U (ich (φ₁ k)) : Set X))`. Conclude with `Set.mem_iInter.2 fun k => hich (φ₁ k)`.
+
+Establish `htop₂ : LB.wchart L φ₂ (fun k => ich (φ₂ k)) = ⊤`. Apply `eq_top_of_closedPoint_mem` to reduce the goal to its premises. Use `show _ ∈ (⋂ k, (φ₂ k).base ⁻¹' (L.U (ich (φ₂ k)) : Set X))`. Conclude with `Set.mem_iInter.2 fun k => hich (φ₂ k)`. Establish `hK₁ : (⊤ : (Spec (CommRingCat.of (FractionRing V))).Opens) ≤ LB.wchart L (fun k => jK V ≫ φ₁ k) (fun k => ich (φ₁ k))`.
+
+Introduce `y _`. Establish `hy : (jK V).base y ∈ LB.wchart L φ₁ (fun k => ich (φ₁ k))`. Rewrite using `[htop₁]`. Discharge the goal by the elementary cases of `trivial`. Establish `hy' : (jK V).base y ∈ (⋂ k, (φ₁ k).base ⁻¹' (L.U ((fun k => ich (φ₁ k)) k) : Set X))` using `hy`.
+
+Use `show y ∈ (⋂ k, (jK V ≫ φ₁ k).base ⁻¹' (L.U ((fun k => ich (φ₁ k)) k) : Set X))`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations. Establish `h1` using `Set.mem_iInter.1 hy' k`. Simplify using `using h1`. Establish `hK₂ : (⊤ : (Spec (CommRingCat.of (FractionRing V))).Opens) ≤ LB.wchart L (fun k => jK V ≫ φ₂ k) (fun k => ich (φ₂ k))`.
+
+Introduce `y _`. Establish `hy : (jK V).base y ∈ LB.wchart L φ₂ (fun k => ich (φ₂ k))`. Rewrite using `[htop₂]`. Discharge the goal by the elementary cases of `trivial`. Establish `hy' : (jK V).base y ∈ (⋂ k, (φ₂ k).base ⁻¹' (L.U ((fun k => ich (φ₂ k)) k) : Set X))` using `hy`.
+
+Use `show y ∈ (⋂ k, (jK V ≫ φ₂ k).base ⁻¹' (L.U ((fun k => ich (φ₂ k)) k) : Set X))`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations. Establish `h1` using `Set.mem_iInter.1 hy' k`. Simplify using `using h1`. Take `⟨m, hm⟩` from `exists_genHasVal hϖ L hL φ₂ _ hφ₂ ε₂ t₂ ht₂`.
+
+Take `⟨c1, hc1, u1, h1⟩` from `genHasVal_top L φ₁ ε₁ t₁ hn _ htop₁ hK₁`. Take `⟨c2, hc2, u2, h2⟩` from `genHasVal_top L φ₂ ε₂ t₂ hm _ htop₂ hK₂`. Establish `hco` using `hc (fun k => ich (φ₁ k)) (fun k => ich (φ₂ k)) (fun a b hab => congrArg ich (sep _ _ hab (hs₁ a) (hs₁ b))) (fun a b hab => congrArg ich (sep _ _ hab (hs₂ a) (hs₂ b))) (fun a b hab => congrArg ich (sep _ _ hab (hs₁ a) (hs₂ b)))`. Establish `h3` using `gen5 _ _ (le_inf hK₁ hK₂) hK₁ hK₂ _ _ hco`. Establish `h4` using `congrArg (fun z => (Scheme.ΓSpecIso (CommRingCat.of (FractionRing V))).hom.hom z.val) h3`.
+
+Establish `h5 : c1 * algebraMap V (FractionRing V) (u1 : V) = c2 * algebraMap V (FractionRing V) (u2 : V)` using `h1.symm.trans (h4.trans h2)`. Establish `hnm : n = m`. Use `hasVal_unique hϖ (hasVal_mul_unit hc1 u1) ?_` and prove the remaining obligations. Rewrite using `[h5]`. Conclude with `hasVal_mul_unit hc2 u2`.
+
+Rewrite using `[hnm]`. Conclude with `hm`.
+-/
 theorem genHasVal_corr (hϖ : Irreducible ϖ) {X : Scheme.{0}} (L : LB X) (hL : L.IsLB) {Ix Ix' : Type}
     [Fintype Ix] [Fintype Ix'] (s : X ⟶ Spec (CommRingCat.of V)) [IsSeparated s]
     (φ₁ : Ix → (Spec (CommRingCat.of V) ⟶ X)) (φ₁' : Ix → (Spec (CommRingCat.of (FractionRing V)) ⟶ X))
@@ -342,6 +443,15 @@ theorem genHasVal_corr (hϖ : Irreducible ϖ) {X : Scheme.{0}} (L : LB X) (hL : 
   rw [hnm]
   exact hm
 
+/- English proof (translation)
+Substitute `hq` using the available equality. Establish `gen2 : ∀ {A B : Scheme.{0}} (f : A ⟶ B) (U U' : B.Opens) (hU : U' ≤ U) (W : A.Opens) (hW : W ≤ f ⁻¹ᵁ U') (x : Γ(B, U)ˣ), res hW (pullU f U' (res hU x)) = res (fun y hy => hU (hW hy) : W ≤ f ⁻¹ᵁ U) (pullU f U x)`. Introduce `A B f U U' hU W hW x`. Apply `Units.ext` to reduce the goal to its premises. Establish `hm : (B.presheaf.map (homOfLE hU).op ≫ f.app U') ≫ A.presheaf.map (homOfLE hW).op = f.app U ≫ A.presheaf.map (homOfLE (fun y hy => hU (hW hy) : W ≤ f ⁻¹ᵁ U)).op`.
+
+Rewrite using `[Scheme.Hom.naturality, Category.assoc, ← Functor.map_comp]`. Both sides reduce to the same expression. Conclude with `congrArg (fun m => m.hom x.val) hm`. Establish `gen4 : ∀ {A B C : Scheme.{0}} (f : A ⟶ B) (g : B ⟶ C) (U : C.Opens) (U' : B.Opens) (hU' : U' ≤ g ⁻¹ᵁ U) (W : A.Opens) (h1 : W ≤ (f ≫ g) ⁻¹ᵁ U) (h2 : W ≤ f ⁻¹ᵁ U') (x : Γ(C, U)ˣ), res h1 (pullU (f ≫ g) U x) = res h2 (pullU f U' (res hU' (pullU g U x)))`. Introduce `A B C f g U U' hU' W h1 h2 x`.
+
+Rewrite using `[pullU_comp, gen2]`. Both sides reduce to the same expression. Use `⟨LB.pullGen L φ ε t p, pullGen_isGen L φ ε t ht p, 1, ⟨1, by simp⟩, fun j => ?_⟩` and prove the remaining obligations. Simplify using `only [scal, resTop, map_one]`. Use `Eq.trans ?_ (one_mul _).symm` and prove the remaining obligations.
+
+Conclude with `congrArg Units.val (gen4 (jK V) p (LB.wchart L φ j) (LB.wchart L (fun k => p ≫ φ k) j) _ _ _ _ (t.s j))`.
+-/
 theorem genHasVal_pullGen_of {X Y : Scheme.{0}} (L : LB X) {Ix : Type} [Fintype Ix] (φ : Ix → (Y ⟶ X))
     (ε : Ix → ℤ) (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (p : Spec (CommRingCat.of V) ⟶ Y)
     (q : Spec (CommRingCat.of (FractionRing V)) ⟶ Y) (hq : q = jK V ≫ p) :
@@ -369,6 +479,17 @@ theorem genHasVal_pullGen_of {X Y : Scheme.{0}} (L : LB X) {Ix : Type} [Fintype 
   refine Eq.trans ?_ (one_mul _).symm
   exact congrArg Units.val (gen4 (jK V) p (LB.wchart L φ j) (LB.wchart L (fun k => p ≫ φ k) j) _ _ _ _ (t.s j))
 
+/- English proof (translation)
+Take `rfl : φ' = fun k => jK V ≫ φ k` from `funext hφ`. Take `⟨e, he, c, -, hC⟩` from `genHasVal_units L φ _ hφ ε t hn`. Establish `hP` using `pullGen_isGen L φ ε e he (jK V)`. Establish `gen1 : ∀ (W W' : (Spec (CommRingCat.of (FractionRing V))).Opens) (h : W' ≤ W) (x : Γ(Spec (CommRingCat.of (FractionRing V)), ⊤)), ((Spec (CommRingCat.of (FractionRing V))).presheaf.map (homOfLE h).op).hom (resTop W x) = resTop W' x`. Introduce `W W' h x`.
+
+Simplify using `only [resTop]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression. Establish `key : ∀ {Wi Wj : (Spec (CommRingCat.of (FractionRing V))).Opens} (hl : Wi ⊓ Wj ≤ Wi) (hr : Wi ⊓ Wj ≤ Wj) (Ti Ci Pi : Γ(Spec (CommRingCat.of (FractionRing V)), Wi)ˣ) (Tj Cj Pj : Γ(Spec (CommRingCat.of (FractionRing V)), Wj)ˣ) (g : Γ(Spec (CommRingCat.of (FractionRing V)), Wi ⊓ Wj) …`. Introduce `Wi Wj hl hr Ti Ci Pi Tj Cj Pj g x h1 h2 h3 h4 h5`.
+
+Establish `hCC : res hl Ci = res hr Cj`. Establish `e1 : (res hl Ci).val = resTop (Wi ⊓ Wj) x`. Rewrite using `[← gen1 Wi (Wi ⊓ Wj) hl x, ← h3]`. Both sides reduce to the same expression. Establish `e2 : (res hr Cj).val = resTop (Wi ⊓ Wj) x`.
+
+Rewrite using `[← gen1 Wj (Wi ⊓ Wj) hr x, ← h4]`. Both sides reduce to the same expression. Conclude with `Units.ext (e1.trans e2.symm)`. Rewrite using `[h1, h2, map_mul, map_mul, hCC, h5]`. Conclude with `mul_left_comm _ _ _`.
+
+Introduce `i j`. Take `⟨Ci, hCi1, hCi2⟩` from `hC i`. Take `⟨Cj, hCj1, hCj2⟩` from `hC j`. Conclude with `key _ _ _ Ci _ _ Cj _ _ _ hCi2 hCj2 hCi1 hCj1 (hP i j)`.
+-/
 theorem genHasVal_isGen {X : Scheme.{0}} (L : LB X) {Ix : Type} [Fintype Ix]
     (φ : Ix → (Spec (CommRingCat.of V) ⟶ X)) (φ' : Ix → (Spec (CommRingCat.of (FractionRing V)) ⟶ X))
     (hφ : ∀ k, φ' k = jK V ≫ φ k) (ε : Ix → ℤ) (t : LB.Gen (LB.LinComb L φ' ε)) {n : ℤ}
@@ -408,6 +529,29 @@ theorem genHasVal_isGen {X : Scheme.{0}} (L : LB X) {Ix : Type} [Fintype Ix]
   obtain ⟨Cj, hCj1, hCj2⟩ := hC j
   exact key _ _ _ Ci _ _ Cj _ _ _ hCi2 hCj2 hCi1 hCj1 (hP i j)
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Take `⟨j₀, htop⟩` from `exists_chart_top L hL (fun _ : PUnit => x) (fun _ => ε)`. Establish `hK : (⊤ : (Spec (CommRingCat.of (FractionRing V))).Opens) ≤ LB.wchart L (fun _ : PUnit => jK V ≫ x) j₀`. Introduce `y _`. Establish `hy : (jK V).base y ∈ LB.wchart L (fun _ : PUnit => x) j₀`.
+
+Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`. Establish `hy' : (jK V).base y ∈ (⋂ k : PUnit, x.base ⁻¹' (L.U (j₀ k) : Set X))` using `hy`. Use `show y ∈ (⋂ k : PUnit, (jK V ≫ x).base ⁻¹' (L.U (j₀ k) : Set X))`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations.
+
+Establish `h1` using `Set.mem_iInter.1 hy' k`. Simplify using `using h1`. Take `⟨c, hc, eV, hX⟩` from `genHasVal_top L (fun _ : PUnit => x) (fun _ => ε) t hn j₀ htop hK`. Establish `hW : (⊤ : (Spec (CommRingCat.of V)).Opens) ≤ x ⁻¹ᵁ L.U (j₀ PUnit.unit)`. Introduce `y _`.
+
+Establish `hy : y ∈ LB.wchart L (fun _ : PUnit => x) j₀`. Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`. Establish `hy' : y ∈ (⋂ k : PUnit, x.base ⁻¹' (L.U (j₀ k) : Set X))` using `hy`. Conclude with `Set.mem_iInter.1 hy' PUnit.unit`.
+
+Take `⟨r, hrm, hr⟩` from `hin j₀ ⊤ (isAffineOpen_top _) hW (le_top.trans hK)`. Establish `hcomp : ((Scheme.ΓSpecIso (CommRingCat.of V)).hom.hom).comp (DegPre.toOpen (⊤ : (Spec (CommRingCat.of V)).Opens)) = RingHom.id V`. Use extensionality with `v`. Use `show (Scheme.ΓSpecIso (CommRingCat.of V)).hom.hom (((Spec (CommRingCat.of V)).presheaf.map (𝟙 _)).hom ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom v)) = v`. Rewrite using `[CategoryTheory.Functor.map_id]`.
+
+Simplify using the standard rewrite rules. Establish `hr' : (Scheme.ΓSpecIso (CommRingCat.of V)).hom.hom r ∈ IsLocalRing.maximalIdeal V ^ k`. Establish `h1` using `Ideal.mem_map_of_mem ((Scheme.ΓSpecIso (CommRingCat.of V)).hom.hom) hrm`. Rewrite `h1` using `[Ideal.map_map, hcomp, Ideal.map_id]`. Then use the resulting hypothesis. Establish `hval : algebraMap V (FractionRing V) ((Scheme.ΓSpecIso (CommRingCat.of V)).hom.hom r) = c * algebraMap V (FractionRing V) (eV : V)`.
+
+Rewrite using `[← hX]`. Establish `e1` using `congrArg (fun m => m.hom r) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (algebraMap V (FractionRing V))))`. Conclude with `e1.symm.trans (congrArg (fun z => (Scheme.ΓSpecIso (CommRingCat.of (FractionRing V))).hom.hom z) hr)`. Use `set r' := (Scheme.ΓSpecIso (CommRingCat.of V)).hom.hom r with hr'def`. Rewrite `hr'` using `[Irreducible.maximalIdeal_eq hϖ, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+
+Take `⟨s, hs⟩` from `hr'`. Establish `hπ : algebraMap V (FractionRing V) ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective V (FractionRing V))).2 hϖ.ne_zero`. Establish `hc0 : c * algebraMap V (FractionRing V) (eV : V) ≠ 0` using `mul_ne_zero (ne_zero_of_hasVal hϖ hc) ((map_ne_zero_iff _ (IsFractionRing.injective V (FractionRing V))).2 eV.ne_zero)`. Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`.
+
+Apply `hc0` to reduce the goal to its premises. Rewrite using `[← hval, hs, mul_zero, map_zero]`. Take `⟨m, w, hw⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hs0 hϖ`. Establish `hv1 : HasVal ϖ (algebraMap V (FractionRing V) r') ((k : ℤ) + (m : ℤ))`. Use `⟨w, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hs, hw, zpow_add₀ hπ, zpow_natCast, zpow_natCast]`. Simplify using `only [map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hv2` using `hasVal_mul_unit hc eV`. Rewrite `hv2` using `[← hval]`.
+
+Establish `h3` using `hasVal_unique hϖ hv1 hv2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem genHasVal_ge_of_in (hϖ : Irreducible ϖ) {X : Scheme.{0}} (L : LB X) (hL : L.IsLB)
     (x : Spec (CommRingCat.of V) ⟶ X) (x' : Spec (CommRingCat.of (FractionRing V)) ⟶ X) (hx : x' = jK V ≫ x)
     (ε : ℤ) (t : LB.Gen (LB.LinComb L (K := PUnit) (fun _ => x') (fun _ => ε))) (k : ℕ)

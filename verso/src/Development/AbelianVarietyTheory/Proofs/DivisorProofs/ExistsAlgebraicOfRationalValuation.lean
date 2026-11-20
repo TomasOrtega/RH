@@ -10,6 +10,15 @@ open GlobalTheory.LatVal (Sz)
 
 namespace GlobalTheory.QFam
 
+/- English proof (translation)
+Establish `hl0 : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`. Establish `hlc : (l : algebraicClosure ℚ ℂ) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Establish `hl : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹`. Establish `h1` using `PadicComplex.norm_extends' l (l : ℚ_[l])`. Rewrite `h1` using `[Padic.norm_p]`.
+
+Simplify using `using h1`. Use `haveI : IsAlgClosed (algebraicClosure ℚ ℂ) := (algebraicClosure.isAlgClosure ℚ ℂ).isAlgClosed`. Take `⟨x, hx⟩` from `IsAlgClosed.exists_pow_nat_eq ((l : algebraicClosure ℚ ℂ) ^ q.num) q.den_pos`. Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Rewrite `hx` using `[zero_pow q.den_ne_zero]`. Conclude with `zpow_ne_zero _ hlc hx.symm`. Establish `h1 : ‖lam x‖ ^ q.den = ((l : ℝ) ^ (-(q : ℝ))) ^ q.den`. Rewrite using `[← norm_pow, ← map_pow, hx, map_zpow₀, map_natCast, norm_zpow, hl, ← Real.rpow_natCast, ← Real.rpow_mul hl0.le, inv_zpow', ← Real.rpow_intCast]`. Use `congr 1`.
+
+Establish `h2 : (q : ℝ) * (q.den : ℝ) = (q.num : ℝ)` using `by exact_mod_cast q.mul_den_eq_num`. Use `push_cast`. Rewrite using `[neg_mul, h2]`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (Real.rpow_nonneg hl0.le _) q.den_ne_zero).1 h1`.
+-/
 theorem exists_algebraic_norm_eq_rpow (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]) (q : ℚ) :
     ∃ x : algebraicClosure ℚ ℂ, x ≠ 0 ∧ ‖lam x‖ = (l : ℝ) ^ (-(q : ℝ)) := by
   have hl0 : (0 : ℝ) < l := by exact_mod_cast (Fact.out : l.Prime).pos
@@ -33,10 +42,16 @@ theorem exists_algebraic_norm_eq_rpow (l : ℕ) [Fact l.Prime] (lam : algebraicC
       rw [neg_mul, h2]
     exact (pow_left_inj₀ (norm_nonneg _) (Real.rpow_nonneg hl0.le _) q.den_ne_zero).1 h1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨x.2, hx.le⟩`.
+-/
 theorem sz_of_norm_eq {l : ℕ} [Fact l.Prime] {lam : algebraicClosure ℚ ℂ →+* ℂ_[l]} {r : ℝ} {x : algebraicClosure ℚ ℂ}
     (hx : ‖lam x‖ = (l : ℝ) ^ (-r)) : Sz l lam (-r) (x : ℂ) :=
   ⟨x.2, hx.le⟩
 
+/- English proof (translation)
+Establish `hl0 : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`. Use `⟨inv_mem x.2, ?_⟩` and prove the remaining obligations. Establish `e : (⟨(x : ℂ)⁻¹, inv_mem x.2⟩ : algebraicClosure ℚ ℂ) = x⁻¹` using `rfl`. Rewrite using `[e, map_inv₀, norm_inv, hx, Real.rpow_neg hl0.le, inv_inv]`.
+-/
 theorem sz_inv_of_norm_eq {l : ℕ} [Fact l.Prime] {lam : algebraicClosure ℚ ℂ →+* ℂ_[l]} {r : ℝ} {x : algebraicClosure ℚ ℂ}
     (hx : ‖lam x‖ = (l : ℝ) ^ (-r)) : Sz l lam r (x : ℂ)⁻¹ := by
   have hl0 : (0 : ℝ) < l := by exact_mod_cast (Fact.out : l.Prime).pos
@@ -44,6 +59,9 @@ theorem sz_inv_of_norm_eq {l : ℕ} [Fact l.Prime] {lam : algebraicClosure ℚ �
   have e : (⟨(x : ℂ)⁻¹, inv_mem x.2⟩ : algebraicClosure ℚ ℂ) = x⁻¹ := rfl
   rw [e, map_inv₀, norm_inv, hx, Real.rpow_neg hl0.le, inv_inv]
 
+/- English proof (translation)
+Introduce `l _ lam q`. Take `⟨x, hx0, hx⟩` from `exists_algebraic_norm_eq_rpow l lam q`. Conclude with `⟨x, fun h => hx0 (Subtype.ext h), sz_of_norm_eq hx, sz_inv_of_norm_eq hx⟩`.
+-/
 theorem exists_sz_scale : ∀ (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]), ∀ q : ℚ,
     ∃ c : ℂ, c ≠ 0 ∧ Sz l lam (-(q : ℝ)) c ∧ Sz l lam q c⁻¹ := by
   intro l _ lam q

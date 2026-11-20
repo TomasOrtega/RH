@@ -7,6 +7,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.AbTorsionGeomDescent
 
+/- English proof (translation)
+Introduce `k _ _ A _ _ hA n hn`. Establish `hn1 : 1 ≤ n`. Break down `Nat.eq_zero_or_pos n with h | h` into its components or cases. Conclude with `absurd (by rw [h, Nat.cast_zero]) hn`. Conclude with `h`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.TorusExtTorsion.finite_torsion_abelian_geomPoint A hA k (𝟙 _) n hn1`. Introduce `κ _ _ x g hg`. Use `letI : Algebra k κ := (Spec.preimage x).hom.toAlgebra`. Establish `hx : x = spMap (algebraMap k κ)` using `by show x = Spec.map (CommRingCat.ofHom (Spec.preimage x).hom)`.
+
+Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`. Take `⟨g₀, hg₀, hgl⟩` from `GlobalTheory.AlgClosedDescent.torsion_descent (K := κ) A hA n hn hx g hg`. Use `⟨g₀, hg₀, ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, hgl]`.
+
+Use `congr 1`.
+-/
 theorem finite_torsion_and_descent : ∀ (k : Type) [Field k] [IsAlgClosed k] (A : Over (Sp k)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (n : ℕ), (n : k) ≠ 0 → Finite {g : 𝟙_ (Over (Sp k)) ⟶ A // g ^ n = 1} ∧ ∀ (κ : Type) [Field κ] [IsAlgClosed κ] (x : Sp κ ⟶ Sp k) (g : Over.mk x ⟶ A), g ^ n = 1 → ∃ g₀ : 𝟙_ (Over (Sp k)) ⟶ A, g₀ ^ n = 1 ∧ g = toUnit (Over.mk x) ≫ g₀ := by
   intro k _ _ A _ _ hA n hn
   have hn1 : 1 ≤ n := by

@@ -15,6 +15,17 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Establish `key : ∀ a : T.V, iT (algebraMap T.V T.Fr a) ∈ (algebraMap T'.V T'.Fr).range`. Introduce `a`. Distinguish the cases in `h0 : algebraMap T.V T.Fr a = 0`. Rewrite using `[h0, map_zero]`. Conclude with `zero_mem _`.
+
+Establish `h1 : valV T.V (algebraMap T.V T.Fr a) ≤ 1` using `IsDedekindDomain.HeightOneSpectrum.valuation_le_one _ a`. Establish `h2` using `(WithZero.log_le_log (valV_ne_zero (V := T.V) h0) one_ne_zero).2 h1`. Establish `h3 : 0 ≤ vV T'.V (iT (algebraMap T.V T.Fr a))`. Rewrite using `[h]`. Use `mul_nonneg (Nat.cast_nonneg e) ?_` and prove the remaining obligations.
+
+Rewrite `h2` using `[WithZero.log_one]`. Unfold `vV`. Use linear arithmetic over natural numbers and integers. Establish `h4 : valV T'.V (iT (algebraMap T.V T.Fr a)) ≤ 1`. Use `(WithZero.log_le_log (valV_ne_zero ((map_ne_zero iT).2 h0)) one_ne_zero).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[WithZero.log_one]`. Unfold `vV at h3`. Use linear arithmetic over natural numbers and integers. Conclude with `IsDiscreteValuationRing.exists_lift_of_le_one (A := T'.V) (K := T'.Fr) h4`. Set `j` to `RingEquiv.ofBijective (algebraMap T'.V T'.Fr).rangeRestrict ⟨fun a b hab => IsFractionRing.injective T'.V T'.Fr (congrArg Subtype.val hab), RingHom.rangeRestrict_surjective _⟩`.
+
+Conclude with `⟨j.symm.toRingHom.comp ((iT.comp (algebraMap T.V T.Fr)).codRestrict _ key), fun a => congrArg Subtype.val (j.apply_symm_apply ⟨_, key a⟩)⟩`.
+-/
 theorem exists_restrict (T T' : CDVR) (iT : T.Fr →+* T'.Fr) (e : ℕ)
     (h : ∀ a : T.Fr, vV T'.V (iT a) = (e : ℤ) * vV T.V a) :
     ∃ φ : T.V →+* T'.V, ∀ a, algebraMap T'.V T'.Fr (φ a) = iT (algebraMap T.V T.Fr a) := by
@@ -42,6 +53,13 @@ theorem exists_restrict (T T' : CDVR) (iT : T.Fr →+* T'.Fr) (e : ℕ)
   exact ⟨j.symm.toRingHom.comp ((iT.comp (algebraMap T.V T.Fr)).codRestrict _ key),
     fun a => congrArg Subtype.val (j.apply_symm_apply ⟨_, key a⟩)⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c T T' io y iT e _ hv`. Establish `hv' : ∀ a : T.Fr, vV T'.V (iT a) = (e : ℤ) * vV T.V a` using `fun a => by`. Distinguish the cases in `h : a = 0`. Substitute `h` using the available equality. Simplify using `[vV]`.
+
+Conclude with `hv a h`. Set `_` to `io.toAlgebra`. Set `_` to `(iT.comp io).toAlgebra`. Take `⟨φ, hφ⟩` from `exists_restrict T T' iT e hv'`. Establish `inj : Function.Injective φ` using `fun a b h => IsFractionRing.injective T.V T.Fr (iT.injective ((hφ a).symm.trans ((congrArg _ h).trans (hφ b))))`.
+
+Set `ψ : T.Fr →ₐ[c.F] T'.Fr` to `⟨iT, fun _ => rfl⟩`. Take `⟨z, hz⟩` from `GlobalTheory.FramedBaseChange.exists_frMap GlobalTheory.abelianSchemeLaws_all.1 E H Dw l Xo c _ _ ψ y.1`. Take `⟨p, ρ, y₀, h₀⟩` from `y.2.1`. Conclude with `⟨⟨z, ⟨p, ψ.comp ρ, y₀, GlobalTheory.FramedBaseChange.trans ρ ψ h₀ hz⟩, GlobalTheory.IntegralPull.integral_baseChange T T' io (iT.comp io) φ inj ψ (fun a => (hφ a).symm) y.1 z hz y.2.2⟩, ψ, rfl, hz⟩`.
+-/
 theorem exists_intFr_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), PullbackSections.IntFrBCSt Xo c := by
   intro E _ _ _ H Dw l Xo c T T' io y iT e _ hv

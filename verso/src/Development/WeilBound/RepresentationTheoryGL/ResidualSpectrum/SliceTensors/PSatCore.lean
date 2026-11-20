@@ -24,6 +24,9 @@ def locRepU {m : ℕ} (w : HeightOneSpectrum (𝓞 E)) (U : Submodule ℂ (Sm E 
     Representation ℂ (GL (Fin m) (w.adicCompletion E)) U :=
   GlobalTheory.PRep.sub ((finRep E m).comp (locGL E m w)) U fun g ψ hψ => hst _ ψ hψ
 
+/- English proof (translation)
+Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r ψ`. Rewrite using `[map_smul, map_smul, map_smul, piTensor_tprod, evT_tprod, evT_tprod]`. Both sides reduce to the same expression. Consider the case `add v₁ v₂ h₁ h₂ => rw [map_add, map_add, map_add, h₁, h₂]`.
+-/
 theorem evT_piTensor_locRepU {c : ℕ} {n : Fin c → ℕ} (w : HeightOneSpectrum (𝓞 E)) (U : ∀ i, Submodule ℂ (Sm E (n i)))
     (hst : ∀ i (g : GL (Fin (n i)) (Af E)), ∀ ψ ∈ U i, finRep E (n i) g ψ ∈ U i) (x : ∀ i, GA E (n i))
     (μ : ∀ i, GL (Fin (n i)) (w.adicCompletion E)) (v : ⨂[ℂ] i, U i) :
@@ -39,6 +42,29 @@ end Core
 
 open PositivityTheory.Rg.Rs.SatakeVectors.Core in
 
+/- English proof (translation)
+Use `set Bt := ∑ i, (S i).map (· * qU w ((modExp (fun i => Fin (n i)) i : ℂ) / 2)) with hBt`. Establish `key : ∀ y₀ : GA E N, Matrix.GeneralLinearGroup.map (pLoc E w) (Matrix.GeneralLinearGroup.map (pFin E) y₀) = 1 → locFn w F y₀ = 0 ∨ GlobalTheory.LFun.IsSatVecGL w (GlobalTheory.PRep.rightReg ℂ _ ℂ) (locFn w F y₀) Bt`. Introduce `y₀ hy₀`. Distinguish the cases in `hG0 : locFn w F y₀ = 0`. Conclude with `Or.inl hG0`.
+
+Use `right`. Take `⟨u, hu₀, m, k, hy⟩` from `iwasawa_inf n h y₀`. Use `set g₀ := Matrix.GeneralLinearGroup.map (pFin E) y₀ with hg₀`. Take `⟨v, hv⟩` from `exists_tensor U (ht k g₀)`. Establish `hs : ∀ i, GlobalTheory.PRep.IsSmooth (locRepU w (U i) (hst i))` using `fun i ψ => by`.
+
+Establish `e : {g : GL (Fin (n i)) (w.adicCompletion E) | locRepU w (U i) (hst i) g ψ = ψ} = {g | finRep E (n i) (locGL E (n i) w g) ψ.1 = ψ.1}`. Use extensionality with `g`. Conclude with `Subtype.ext_iff`. Rewrite using `[e]`. Conclude with `hsm i ψ.1 ψ.2`.
+
+Establish `hS' : ∀ i, ∀ x ∈ GlobalTheory.PRep.fixed (locRepU w (U i) (hst i)) (GlobalTheory.LFun.KGL w (n i)), x ≠ 0 → GlobalTheory.LFun.IsSatVecGL w (locRepU w (U i) (hst i)) x (S i)` using `fun i x hx hx0 => GlobalTheory.LFun.IsSatVecGL.of_map (U i).subtype (fun _ _ => rfl) Subtype.val_injective (hS i x.1 x.2 (fun k' hk' => congrArg Subtype.val (GlobalTheory.LGrp.mem_fixed.1 hx k' hk')) fun e => hx0 (Subtype.ext e))`. Establish `hcomm : ∀ x : GL (Fin N) (w.adicCompletion E), (infGL E N (Unitary.toUnits k) * finGL E N g₀) * finGL E N (locGL E N w x) = finGL E N (locGL E N w x) * (infGL E N (Unitary.toUnits k) * finGL E N g₀)` using `fun x => by`. Rewrite using `[mul_assoc, ← map_mul, LocSph.comm_locGL w g₀ hy₀ x, map_mul, ← mul_assoc, ← mul_assoc, infGL_comm]`. Use `isSatVecGL_of_levi h (X := fun i => U i) (π := fun i => locRepU w (U i) (hst i)) hs S hS' (fun i => qU w ((modExp (fun i => Fin (n i)) i : ℂ) / 2)) (fun i => rfl) (fun i => evAt (U i) (infGL E (n i) (m i))) (locFn w F y₀) (fun g k' hk' => ?_) (fun u' hu' g => ?_) v (fun μ => ?_) …` and prove the remaining obligations. Use `show F.1 (y₀ * finGL E N (locGL E N w (g * k'))) = F.1 (y₀ * finGL E N (locGL E N w g))`.
+
+Rewrite using `[map_mul, map_mul, ← mul_assoc]`. Conclude with `congrArg (fun φ : Sm E N => φ.1 (y₀ * finGL E N (locGL E N w g))) (hK k' hk')`. Use `show F.1 (y₀ * finGL E N (locGL E N w (u' * g))) = F.1 (y₀ * finGL E N (locGL E N w g))`. Rewrite using `[map_mul, map_mul, ← mul_assoc, commute_finGL_locGL w hy₀, mul_assoc]`. Conclude with `hu _ (finGL_locGL_mem_unipRad n h w hu') _`.
+
+Rewrite using `[evT_piTensor_locRepU, ← hv] show F.1 (y₀ * finGL E N (locGL E N w (leviEmb (w.adicCompletion E) (stdBlocks n h) μ))) = _`. Rewrite using `[hy, mul_assoc (u * _), hcomm, finGL_locGL_leviEmb, ← mul_assoc, mul_assoc u, ← map_mul, mul_assoc, hu _ hu₀]`. Both sides reduce to the same expression. Establish `hL : ∀ (y₀ : GA E N) (g₁ : GL (Fin N) (w.adicCompletion E)), locFn w F (y₀ * finGL E N (locGL E N w g₁)) = fun g => locFn w F y₀ (g₁ * g)` using `fun y₀ g₁ => funext fun g => by show F.1 (y₀ * finGL E N (locGL E N w g₁) * finGL E N (locGL E N w g)) = F.1 (y₀ * finGL E N (locGL E N w (g₁ * g)))`. Rewrite using `[map_mul, map_mul, mul_assoc]`.
+
+Set `large₂ : GL (Fin N) (w.adicCompletion E) → ((GL (Fin N) (w.adicCompletion E) → ℂ) →ₗ[ℂ] (GL (Fin N) (w.adicCompletion E) → ℂ))` to `fun g₁ => LinearMap.funLeft ℂ ℂ (g₁ * ·)`. Establish `hLe : ∀ g₁ x (φ : GL (Fin N) (w.adicCompletion E) → ℂ), large₂ g₁ (GlobalTheory.PRep.rightReg ℂ _ ℂ x φ) = GlobalTheory.PRep.rightReg ℂ _ ℂ x (large₂ g₁ φ)` using `fun g₁ x φ => funext fun g => by show φ (g₁ * g * x) = φ (g₁ * (g * x))`. Rewrite using `[mul_assoc]`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, F.1 y ≠ 0 := by`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Conclude with `h0 (Subtype.ext (funext hc))`. Take `⟨y₀, g₁, hy₀, rfl⟩` from `exists_split_at w y`. Establish `hne : locFn w F y₀ ≠ 0` using `fun e => hy (congrFun e g₁)`. Establish `hsat` using `(key y₀ hy₀).resolve_left hne`.
+
+Use `⟨h0, GlobalTheory.LGrp.mem_fixed.2 fun k' hk' => hK k' hk', hsat.2.2.1, fun ϖ hϖ j hj => ?_⟩` and prove the remaining obligations. Use `Subtype.ext (funext fun y' => ?_)` and prove the remaining obligations. Take `⟨y₁, g₂, hy₁, rfl⟩` from `exists_split_at w y'`. Rewrite using `[heckeVec_apply w (GlobalTheory.LFun.Tj_mem_hecke hϖ j)]`. Express the relevant statement in the definitionally equal form `GlobalTheory.LFun.heckeVec _ _ _ (locFn w F (y₁ * finGL E N (locGL E N w g₂))) 1 = GlobalTheory.LFun.satEig (Formalism.UG.qV E w) N Bt j * F.1 (y₁ * finGL E N (locGL E N w g₂))`.
+
+Rewrite using `[hL, show (fun g => locFn w F y₁ (g₂ * g)) = large₂ g₂ (locFn w F y₁) from rfl, ← GlobalTheory.LFun.map_heckeVec (Formalism.UG.Final.GLintComm E w N) (GlobalTheory.LFun.Tj_mem_hecke hϖ j) (large₂ g₂) (hLe g₂)]`. Use `show GlobalTheory.LFun.heckeVec _ _ _ (locFn w F y₁) (g₂ * 1) = _`. Break down `key y₁ hy₁ with h1 | h1` into its components or cases. Establish `e0 : F.1 (y₁ * finGL E N (locGL E N w g₂)) = 0` using `congrFun h1 g₂`. Rewrite using `[h1, e0, mul_zero]`.
+
+Use `(GlobalTheory.LFun.SatCompare.heckeLin (Formalism.UG.Final.GLintComm E w N) (GlobalTheory.LFun.Tj_mem_hecke hϖ j) (GlobalTheory.PRep.rightReg ℂ (GL (Fin N) (w.adicCompletion E)) ℂ)).map_zero` as an intermediate fact. Conclude with `congrFun this _`. Rewrite using `[h1.2.2.2 ϖ hϖ j hj, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem isSatVecGL_of_ind {c N : ℕ} {n : Fin c → ℕ} (h : ∑ i, n i = N) {w : HeightOneSpectrum (𝓞 E)}
     (U : ∀ i, Submodule ℂ (Sm E (n i)))
     (hst : ∀ i (g : GL (Fin (n i)) (Af E)), ∀ ψ ∈ U i, finRep E (n i) g ψ ∈ U i)

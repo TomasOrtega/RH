@@ -23,23 +23,35 @@ section Gen
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction _ (IsThetaFunO ψ S T) (fun _ _ => GlobalTheory.OrientedHeis.theta_add) GlobalTheory.OrientedHeis.theta_zero fun u hu => GlobalTheory.OrientedHeis.theta_smul _ (GlobalTheory.FinTranslate.isThetaFunO_heisO hψ.1.1 hψ.1.2.1 hf (hc u hu))`.
+-/
 theorem theta_comb (hψ : IsStdChar D ψ (-1)) {c : WO S T →₀ ℂ} (hc : IsFinComb c) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) : IsThetaFunO ψ S T (comb ψ S T c f) :=
   Finset.sum_induction _ (IsThetaFunO ψ S T) (fun _ _ => GlobalTheory.OrientedHeis.theta_add) GlobalTheory.OrientedHeis.theta_zero
     fun u hu => GlobalTheory.OrientedHeis.theta_smul _ (GlobalTheory.FinTranslate.isThetaFunO_heisO hψ.1.1 hψ.1.2.1 hf (hc u hu))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `only [GlobalTheory.FrComb.comb_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem comb_smul (c : WO S T →₀ ℂ) (a : ℂ) (f : WO S T → ℂ) :
     comb ψ S T c (a • f) = a • comb ψ S T c f := by
   funext w
   simp only [GlobalTheory.FrComb.comb_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Establish `hle : latO S T (LS : Set _) (LT : Set _) P ≤ latO S T (LS : Set _) (LT : Set _) fun _ => True` using `AddSubgroup.closure_mono fun w ⟨α, hα, _, hw⟩ => ⟨α, hα, fun _ h => absurd trivial h, hw⟩`. Conclude with `⟨h.1, fun u hu => h.2.1 u (hle hu), fun e he u hu hh => h.2.2 e he u (hle hu) hh⟩`.
+-/
 theorem vac_mono {LS : GlobalTheory.FinPl.Lat S} {LT : GlobalTheory.FinPl.Lat T} (P : GlobalTheory.FinPl.Pl D → Prop) {f : WO S T → ℂ}
     (h : GlobalTheory.FinPl.Vac ψ S T LS LT (fun _ => True) f) : GlobalTheory.FinPl.Vac ψ S T LS LT P f := by
   have hle : latO S T (LS : Set _) (LT : Set _) P ≤ latO S T (LS : Set _) (LT : Set _) fun _ => True :=
     AddSubgroup.closure_mono fun w ⟨α, hα, _, hw⟩ => ⟨α, hα, fun _ h => absurd trivial h, hw⟩
   exact ⟨h.1, fun u hu => h.2.1 u (hle hu), fun e he u hu hh => h.2.2 e he u (hle hu) hh⟩
 
+/- English proof (translation)
+Establish `h1 : om (1, 1) (comb ψ S T e f₀) = (1 : ℂ) • comb ψ S T e f₀`. Rewrite using `[one_smul, show ((1, 1) : GA D S × GA D T) = 1 from rfl, map_one, Module.End.one_apply]`. Use `(GlobalTheory.FockComb.om_pureTensorO_comb D ψ θ S T χS χT om hθ hW sS sT BS BT e f₀ _ 1 he hf₀ (theta_comb hW.std he hf₀) 1 (one_mem _) 1 (one_mem _) h1 P a ha a' ha').1` as an intermediate fact. Rewrite `this` using `[mul_one, mul_one, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem real_fock {χS χT : (AE D)ˣ →* Circle} {om : Om S T} (hθ : IsInfFam θ) (hW : IsWeilDatumO ψ S T χS χT om) (sS sT BS BT)
     {e : WO S T →₀ ℂ} (he : IsFinComb e) {f₀ : WO S T → ℂ} (hf₀ : IsThetaFunO ψ S T f₀) (P) {a : GA D S} (ha : a ∈ GinfC S)
     {a' : GA D T} (ha' : a' ∈ GinfC T) :
@@ -51,6 +63,15 @@ theorem real_fock {χS χT : (AE D)ˣ →* Circle} {om : Om S T} (hθ : IsInfFam
     1 (one_mem _) 1 (one_mem _) h1 P a ha a' ha').1
   rwa [mul_one, mul_one, one_smul] at this
 
+/- English proof (translation)
+Establish `hψ : IsStdChar D ψ (-1)` using `hW.std`. Establish `hPQ` using `GlobalTheory.DisjComb.main D ψ hψ S T P Q hd`. Establish `hQP` using `GlobalTheory.DisjComb.main D ψ hψ S T Q P (fun p h h' => hd p h' h)`. Establish `fG : IsFinComb dG` using `(hPQ.2.1 dG hdG).1`. Establish `fQ : IsFinComb dQ` using `(hQP.2.1 dQ hdQ).1`.
+
+Establish `h1 : om (1, 1) (comb ψ S T dG vac) = (1 : ℂ) • comb ψ S T dG vac`. Rewrite using `[one_smul, show ((1, 1) : GA D S × GA D T) = 1 from rfl, map_one, Module.End.one_apply]`. Establish `hvac` using `fun a ha a' ha' => (GlobalTheory.FockComb.om_pureTensorO_comb D ψ θ S T χS χT om hθ hW sS sT BS BT dG vac _ 1 fG hv.1 (theta_comb hψ fG hv.1) 1 (one_mem _) 1 (one_mem _) h1 Pol a ha a' ha').2 LS LT hv`. Establish `hth : IsThetaFunO ψ S T (pureTensorO ψ θ S T sS sT BS BT vac Pol)`. Use `(hvac 1 (one_mem _) 1 (one_mem _)).1` as an intermediate fact.
+
+Rewrite `this` using `[show ((1, 1) : GA D S × GA D T) = 1 from rfl, map_one, Module.End.one_apply]`. Then use the resulting hypothesis. Establish `hg` using `(hPQ.2.1 dG hdG).2 LS LT _ (vac_mono Q (hvac a ha a' ha'))`. Establish `e1 : ((a * b, a' * b') : GA D S × GA D T) = (b, b') * (a, a')`. Rewrite using `[Formalism.IndefR.Eqv.Act.comm_inf_fin ha hb, Formalism.IndefR.Eqv.Act.comm_inf_fin ha' hb']`. Both sides reduce to the same expression.
+
+Establish `hG'` using `hG (theta_comb hψ fG hth)`. Rewrite `hG'` using `[e1, map_mul, Module.End.mul_apply, GlobalTheory.FrComb.om_comb hW ha ha' fG hth]`. Rewrite using `[e1, map_mul, Module.End.mul_apply, real_fock hθ hW sS sT BS BT fQ (theta_comb hψ fG hv.1) Pol ha ha', real_fock hθ hW sS sT BS BT fG hv.1 Pol ha ha', hQ _ hg, hG', comb_smul, hPQ.1 eG eQ heG heQ]`.
+-/
 theorem step {χS χT : (AE D)ˣ →* Circle} {om : Om S T} (hθ : IsInfFam θ) (hW : IsWeilDatumO ψ S T χS χT om) (sS sT BS BT)
     {P Q : GlobalTheory.FinPl.Pl D → Prop} (hd : ∀ p, P p → ¬ Q p) {LS : GlobalTheory.FinPl.Lat S} {LT : GlobalTheory.FinPl.Lat T} {vac : WO S T → ℂ}
     (hv : GlobalTheory.FinPl.Vac ψ S T LS LT (fun _ => True) vac) {dG dQ eG eQ : WO S T →₀ ℂ} (hdG : GlobalTheory.FinPl.CombAt P dG)
@@ -86,6 +107,15 @@ theorem step {χS χT : (AE D)ˣ →* Circle} {om : Om S T} (hθ : IsInfFam θ) 
 
 end Gen
 
+/- English proof (translation)
+Introduce `e`. Take `⟨i, hi⟩` from `(hL.Pg PP).1 h`. Take `⟨⟨q, hq, hcard, -, hqg⟩, -⟩` from `hL.Q_pl t PP' h'`. Establish `hg : ((D.host.g i : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`. Establish `h0` using `L.C.P.pb_over i`.
+
+Rewrite `h0` using `[← hi]`. Establish `h2 : algebraMap (𝓞 D.host.K) (𝓞 D.host.E) ((D.host.g i : ℕ) : 𝓞 D.host.K) ∈ PP.asIdeal` using `h0`. Rewrite `h2` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hq' : (q : 𝓞 D.host.E) ∈ PP'.asIdeal`. Establish `h1 : Nat.card (kP PP') • (1 : kP PP') = 0` using `card_nsmul_eq_zero'`.
+
+Rewrite `h1` using `[hcard, nsmul_one]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 ((map_natCast _ q).trans h1)`. Establish `hqF : (q : 𝓞 D.host.F) ∈ (PP'.under (𝓞 D.host.F)).asIdeal` using `by show algebraMap (𝓞 D.host.F) (𝓞 D.host.E) q ∈ PP'.asIdeal`. Rewrite using `[map_natCast]` and apply the resulting hypothesis. Rewrite `hqF` using `[← e]`.
+
+Establish `hqP : (q : 𝓞 D.host.E) ∈ PP.asIdeal`. Establish `h2 : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) q ∈ PP.asIdeal` using `hqF`. Rewrite `h2` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨a, b, hab⟩ : IsCoprime ((D.host.g i : ℕ) : 𝓞 D.host.E) q` from `Nat.Coprime.cast ((Nat.coprime_primes (D.host.g_prime i) hq).2 fun h => hqg i h.symm)`. Conclude with `PP.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ PP.asIdeal.add_mem (PP.asIdeal.mul_mem_left _ hg) (PP.asIdeal.mul_mem_left _ hqP)))`.
+-/
 theorem under_ne {D : D7} {T : Type} (L : LevCh D T) {μ0 : T} (hL : L.Is μ0) (t : T) {PP PP' : Pl D.host.E} (h : PP ∈ L.Pg)
     (h' : PP' ∈ L.Q t) : PP.under (𝓞 D.host.F) ≠ PP'.under (𝓞 D.host.F) := by
   intro e
@@ -112,6 +142,25 @@ theorem under_ne {D : D7} {T : Type} (L : LevCh D T) {μ0 : T} (hL : L.Is μ0) (
   exact PP.isPrime.ne_top ((Ideal.eq_top_iff_one _).2
     (hab ▸ PP.asIdeal.add_mem (PP.asIdeal.mul_mem_left _ hg) (PP.asIdeal.mul_mem_left _ hqP)))
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W u f hP hR v hv hVT n G pl hGP hGR`. Take `⟨s, hs, hGm, hGt⟩` from `GlobalTheory.T.exists_nonzero_local_scalars D L hT Gi Gl Kc Yd cX ex W u f hP hR v hv hVT n G pl hGP hGR`. Take `⟨hSm, hSt⟩` from `GlobalTheory.T.exists_descent_data_chain D L hT Gi Gl Kc Yd cX ex W u f hP hR`. Use `⟨s, hs, fun t => ?_⟩` and prove the remaining obligations. Take `⟨ζ, hζ, hZm, hZt, -⟩` from `GlobalTheory.TupRoot.weil_tuple_root D L hT Gi Gl Kc Yd cX ex W u f hP hR t`.
+
+Use `⟨ζ, hζ, fun w hwQ heQ hQ => ?_⟩` and prove the remaining obligations. Establish `hc` using `W.Q.charW.base`. Establish `eP : (fun p => ∃ PP ∈ (pk W).Pg, p = PP.under (𝓞 D.host.F)) = (· ∈ v.gP)`. Use function extensionality and compare the values at `fun p => propext (hVT.gP p).symm`. Establish `eQ : (fun p => ∃ PP ∈ (pk W).Q t, p = PP.under (𝓞 D.host.F)) = (· ∈ w.Q)`.
+
+Use function extensionality and compare the values at `fun p => propext (hwQ p).symm`. Establish `hd : ∀ p, p ∈ v.gP → ¬ p ∈ w.Q` using `fun p h h' => by`. Take `⟨PP, h1, e1⟩` from `(hVT.gP p).1 h`. Take `⟨PP', h2, e2⟩` from `(hwQ p).1 h'`. Conclude with `under_ne _ hc.lev t h1 h2 (e1.symm.trans e2)`.
+
+Establish `hb : ∀ j, f.g.b j ∈ GfC _` using `fun j => hVT.b j ▸ hv.b j`. Establish `hbT : f.g.bT ∈ GfC _` using `hVT.bT.1 ▸ hv.bT`. Use `⟨fun j hj P a ha a' ha' => ?_, fun j h P => ?_⟩` and prove the remaining obligations. Take `⟨dG, hdG, hall⟩` from `hSm j hj`. Take `⟨dQ, hdQ, hvP⟩` from `hall t`.
+
+Establish `hvac` using `hdG.2.1.2`. Rewrite using `[hVT.b, hVT.b]`. Establish `key` using `step (c := s j * ζ j) (Ψ := v.Ψ j P a a') hvac.inf (hc.chain.ωY t j hj) (cart ((pk W).MY j)) (cart ((pk W).MY (j + 1))) (onb ((pk W).MY j)) (onb ((pk W).MY (j + 1))) hd ⟨hvac.theta, hvac.lat⟩ (by have h1 := hdG.1; rw [eP] at h1; exact h1) (by have h1 := hdQ.1; rw [eQ] at h1; exac …`. Establish `e1` using `hZm j hj (hb j) (hb (j + 1)) a ha a' ha' _ hth`. Establish `e2` using `hGm j hj dG hdG P a ha a' ha'`.
+
+Use `e1.trans ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `congrArg _ e2`. Rewrite `key` using `[← hvP]`. Conclude with `key`.
+
+Take `⟨dG, hdG, hall⟩` from `hSt j h`. Take `⟨dQ, hdQ, hvT⟩` from `hall t`. Establish `hvac` using `hdG.2.1.2`. Rewrite using `[hVT.b, hVT.bT.1]`. Establish `hWt` using `GlobalTheory.TupRoot.isWeil_rec (idx_top h) _ (hc.chain.ωX t)`.
+
+Establish `key` using `step (c := s (j + 1) * ζ (j + 1)) (Ψ := v.ΨT j h P) hvac.inf hWt (cart ((pk W).MY (j + 1))) (cart (pk W).MX) (onb ((pk W).MY (j + 1))) (onb (pk W).MX) hd ⟨hvac.theta, hvac.lat⟩ (by have h1 := hdG.1; rw [eP] at h1; exact h1) (by have h1 := hdQ.1; rw [eQ] at h1; exact h1) ((hv.atG …`. Establish `e1` using `hZt j h _ hth`. Establish `e2` using `hGt j h dG hdG P`. Rewrite using `[one_mul, one_mul]`. Use `e1.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm, mul_smul]`. Conclude with `congrArg _ e2`. Rewrite `key` using `[← hvT, one_mul, one_mul]`. Conclude with `key`.
+-/
 theorem main : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Yd : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Yd cX) (W : RealPack ex) (u : D.what₂.Word) (f : FamCh W u), PkHyp W → f.RowOK → ∀ v : VCom f.c, v.Is → VTie f v → ∀ (n : ℕ) (G : Fin n → GLoc v) (pl : Fin n ≃ (pk W).Pg), GPin G → GRead f G pl → ∃ s : ℕ → ℂ, (∀ j, s j ≠ 0) ∧ ∀ t, ∃ ζ : ℕ → ℂ, (∀ j, ∃ n : ℕ, 0 < n ∧ ζ j ^ n = 1) ∧ ∀ w : VTup (f.t t), (∀ p, p ∈ w.Q ↔ ∃ PP ∈ (pk W).Q t, p = PP.under (𝓞 D.host.F)) → (∀ j, GlobalTheory.FinPl.CombAt (· ∈ w.Q) (w.eQ j) ∧ ∀ h, GlobalTheory.FinPl.CombAt (· ∈ w.Q) (w.eQT j h)) → QVec f w → VfAt f v w fun j => s j * ζ j := by
   intro D L hT Gi Gl Kc Yd cX ex W u f hP hR v hv hVT n G pl hGP hGR
   obtain ⟨s, hs, hGm, hGt⟩ := GlobalTheory.T.exists_nonzero_local_scalars D L hT Gi Gl Kc Yd cX ex W u f hP hR v hv hVT n G pl hGP hGR

@@ -15,8 +15,16 @@ section L1
 
 variable {K : Type} [Field K] {ι : Type} (σ : K →+* ℂ)
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+-/
 theorem l1At_nonneg (P : MvPolynomial ι K) : 0 ≤ l1At σ P := Finset.sum_nonneg fun _ _ => norm_nonneg _
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => by simp [l1At, h]⟩` and prove the remaining obligations. Rewrite `h` using `[l1At, Finset.sum_eq_zero_iff_of_nonneg fun _ _ => norm_nonneg _]`. Use extensionality with `m`. Assume the negation of the conclusion as `hm`. Use `h m (MvPolynomial.mem_support_iff.2 (by simpa using hm))` as an intermediate fact.
+
+Simplify using `at this`. Conclude with `hm (by simpa using this)`.
+-/
 theorem l1At_eq_zero_iff (P : MvPolynomial ι K) : l1At σ P = 0 ↔ P = 0 := by
   refine ⟨fun h => ?_, fun h => by simp [l1At, h]⟩
   rw [l1At, Finset.sum_eq_zero_iff_of_nonneg fun _ _ => norm_nonneg _] at h
@@ -26,10 +34,16 @@ theorem l1At_eq_zero_iff (P : MvPolynomial ι K) : l1At σ P = 0 ↔ P = 0 := by
   simp at this
   exact hm (by simpa using this)
 
+/- English proof (translation)
+The claim follows from `Finset.sum_subset hs fun m _ hm => by simp [MvPolynomial.notMem_support_iff.1 hm]`.
+-/
 theorem l1At_eq_sum (P : MvPolynomial ι K) (s : Finset (ι →₀ ℕ)) (hs : P.support ⊆ s) :
     l1At σ P = ∑ m ∈ s, ‖σ (P.coeff m)‖ :=
   Finset.sum_subset hs fun m _ hm => by simp [MvPolynomial.notMem_support_iff.1 hm]
 
+/- English proof (translation)
+Rewrite using `[l1At_eq_sum σ (P + Q) (P.support ∪ Q.support) MvPolynomial.support_add, l1At_eq_sum σ P (P.support ∪ Q.support) Finset.subset_union_left, l1At_eq_sum σ Q (P.support ∪ Q.support) Finset.subset_union_right, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_add, map_add]`. Conclude with `norm_add_le _ _`.
+-/
 theorem l1At_add_le (P Q : MvPolynomial ι K) : l1At σ (P + Q) ≤ l1At σ P + l1At σ Q := by
   classical
   rw [l1At_eq_sum σ (P + Q) (P.support ∪ Q.support) MvPolynomial.support_add,
@@ -39,16 +53,27 @@ theorem l1At_add_le (P Q : MvPolynomial ι K) : l1At σ (P + Q) ≤ l1At σ P + 
   rw [MvPolynomial.coeff_add, map_add]
   exact norm_add_le _ _
 
+/- English proof (translation)
+Rewrite using `[l1At_eq_sum σ _ {m} MvPolynomial.support_monomial_subset]`. Simplify using the standard rewrite rules.
+-/
 theorem l1At_monomial (m : ι →₀ ℕ) (a : K) : l1At σ (MvPolynomial.monomial m a) = ‖σ a‖ := by
   classical
   rw [l1At_eq_sum σ _ {m} MvPolynomial.support_monomial_subset]
   simp
 
+/- English proof (translation)
+Rewrite using `[l1At_eq_sum σ (a • P) P.support MvPolynomial.support_smul, l1At, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem l1At_smul (a : K) (P : MvPolynomial ι K) : l1At σ (a • P) = ‖σ a‖ * l1At σ P := by
   rw [l1At_eq_sum σ (a • P) P.support MvPolynomial.support_smul, l1At, Finset.mul_sum]
   refine Finset.sum_congr rfl fun m _ => ?_
   simp
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.eval₂_eq]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun m _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_prod]`. Use `mul_le_of_le_one_right (norm_nonneg _) (Finset.prod_le_one (fun _ _ => norm_nonneg _) fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_pow]`.
+
+Conclude with `pow_le_one₀ (norm_nonneg _) (hz i)`.
+-/
 theorem norm_eval₂_le (P : MvPolynomial ι K) (z : ι → ℂ) (hz : ∀ i, ‖z i‖ ≤ 1) :
     ‖MvPolynomial.eval₂ σ z P‖ ≤ l1At σ P := by
   rw [MvPolynomial.eval₂_eq]
@@ -62,13 +87,22 @@ end L1
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem gamAt_iff (T : Core D) : GamAt T ↔ ∀ j, InR D j → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ →
     GlobalTheory.FrameNorm.HasPrinc (⟨(T.U j σ).Comp, (T.U j σ).X, (T.U j σ).un⟩ : Formalism.L2.PjFree.Unf _ _ σ _) T.Q.l.M :=
   Iff.rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, ⟨Formalism.L2.Geo.one_le_jcl D 0, Formalism.L2.Geo.jcl_le D 0⟩, T.σ₀, T.good_σ₀⟩`.
+-/
 theorem range_nonempty (T : Core D) : ∃ j, InR D j ∧ ∃ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ :=
   ⟨_, ⟨Formalism.L2.Geo.one_le_jcl D 0, Formalism.L2.Geo.jcl_le D 0⟩, T.σ₀, T.good_σ₀⟩
 
+/- English proof (translation)
+The claim follows from `(hM.gam k γ).2 ⟨hγ, fun a _ => GlobalTheory.FrameUnif.congr_of_dvd_modulus _ (M.φ k) _ dvd_rfl h a, fun a => GlobalTheory.FrameUnif.congr_of_dvd_modulus _ (M.φ k) _ hA h a⟩`.
+-/
 theorem mem_of_modelBase {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {r g : ℕ} {ty : Fin g → (E →+* ℂ)} {σ' : KA l →+* ℂ}
     {F : FamilyUnif Xo σ' ty} {M : ModelsOf F r} (hM : ModelBase M) (hA : l.A ∣ l.M) (k : Fin F.n)
@@ -78,6 +112,11 @@ theorem mem_of_modelBase {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
   (hM.gam k γ).2 ⟨hγ, fun a _ => GlobalTheory.FrameUnif.congr_of_dvd_modulus _ (M.φ k) _ dvd_rfl h a,
     fun a => GlobalTheory.FrameUnif.congr_of_dvd_modulus _ (M.φ k) _ hA h a⟩
 
+/- English proof (translation)
+Establish `hex : ∀ j (σ : Q.c.F →+* ℂ), ∃ p : PkgT Q j σ, InR D j → GoodEmb Q.c σ → PkgOK2 Q j σ p ∧ ∀ k (γ : GL (Fin D.R.r) D.host.E), IsUStab (p.1.X k).Gm (p.1.X k).Λ γ → (∀ x ∈ (p.1.X k).Λ, ∃ y ∈ (p.1.X k).Λ, Matrix.mulVec (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E) x - x = (Q.l.M : D. …`. Introduce `j σ`. Distinguish the cases in `hj : InR D j`. Distinguish the cases in `hσ : GoodEmb Q.c σ`. Use `⟨pkgJ (L.pkg j hj σ hσ), fun _ _ => ⟨pkgJ_ok _ (L.allTest j hj) (xiConst_holds D) (L.wtC j hj σ hσ) (muOK_one (L.pkg j hj σ hσ).unitFr), fun k γ hγ h => ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `mem_of_modelBase (L.pkg j hj σ hσ).modelEx.choose_spec.1 (hQ.2.1.2 ▸ one_dvd _) k γ hγ h`. Conclude with `⟨Classical.choice (L.dataAll j σ), fun _ h => absurd h hσ⟩`. Conclude with `⟨Classical.choice (L.dataAll j σ), fun h => absurd h hj⟩`. Use `choose pk hpk using hex`. Conclude with `⟨coreOfP Q pk L.half.choose, rfl, lawsCore_coreOfP L.toBaseRows pk (fun j hj σ hσ => (hpk j σ hj hσ).1) hQ, fun j hj σ hσ => (hpk j σ hj hσ).2⟩`.
+-/
 theorem exists_lawsCore_gamAt {hN : N1c} {Q : Par D} {hpq : ∀ j, 1 ≤ (Q.Dw j).p + (Q.Dw j).q}
     (L : LawsRemainingRows hN Q hpq) (hQ : Q.Pins) : ∃ T : Core D, T.Q = Q ∧ LawsCore T ∧ GamAt T := by
   have hex : ∀ j (σ : Q.c.F →+* ℂ), ∃ p : PkgT Q j σ, InR D j → GoodEmb Q.c σ → PkgOK2 Q j σ p ∧
@@ -98,6 +137,21 @@ theorem exists_lawsCore_gamAt {hN : N1c} {Q : Par D} {hpq : ∀ j, 1 ≤ (Q.Dw j
     lawsCore_coreOfP L.toBaseRows pk (fun j hj σ hσ => (hpk j σ hj hσ).1) hQ,
     fun j hj σ hσ => (hpk j σ hj hσ).2⟩
 
+/- English proof (translation)
+Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Establish `key : ∀ z : ℂ, z ^ 2 = -(H.d : ℂ) → z.re = 0 ∧ z.im ≠ 0`. Introduce `z hz`. Establish `h1` using `congrArg Complex.re hz`. Establish `h2` using `congrArg Complex.im hz`.
+
+Simplify using `[sq] at h1 h2`. Establish `him : z.im ≠ 0`. Introduce `h`. Rewrite `h1` using `[h]`. Use polynomial arithmetic with `[mul_self_nonneg z.re]`.
+
+Use `⟨?_, him⟩` and prove the remaining obligations. Establish `: z.re * z.im = 0` using `by linarith`. Conclude with `(mul_eq_zero.1 this).resolve_right him`. Establish `hE : ((H.rt : E)) ^ 2 = -(H.d : E)`. Use `congrArg (fun z : 𝓞 E => (z : E)) H.rt_sq` as an intermediate fact.
+
+Simplify using `using this`. Establish `hcc : cc (H.rt : E) = -(H.rt : E)`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Establish `hk` using `key (τ (H.rt : E)) (by rw [← map_pow, hE, map_neg, map_natCast])`.
+
+Establish `: τ (cc (H.rt : E)) = starRingEnd ℂ (τ (H.rt : E))` using `IsCMField.complexEmbedding_complexConj E τ _`. Rewrite using `[this, map_neg]`. Apply the tactic sequence `apply Complex.ext <;> simp [hk.1]`. Establish `h0 : (H.rt : E) ≠ 0`. Introduce `h`.
+
+Rewrite `hE` using `[h]`. Establish `: (H.d : E) = 0` using `by linear_combination hE`. Conclude with `H.d_prime.ne_zero (by exact_mod_cast this)`. Break down `lt_or_gt_of_ne (key _ H.sqrt_neg_disc_sq).2 with h | h` into its components or cases. Conclude with `⟨H.rt, hcc, h0, fun τ hτ => hτ ▸ h⟩`.
+
+Use `⟨-(H.rt : E), ?_, neg_ne_zero.2 h0, fun τ hτ => by rw [map_neg, hτ]; simpa using h⟩` and prove the remaining obligations. Establish `: cc (-(H.rt : E)) = -cc (H.rt : E)` using `by simp [cc]`. Rewrite using `[this, hcc]`.
+-/
 theorem exists_xi {E : Type} [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) :
     ∃ ξ : E, cc ξ = -ξ ∧ ξ ≠ 0 ∧ ∀ τ : E →+* ℂ, τ (H.rt : E) = H.rt0 → (τ ξ).im < 0 := by
   have hd : (0 : ℝ) < H.d := by exact_mod_cast H.d_prime.pos
@@ -132,6 +186,13 @@ theorem exists_xi {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Recipr
     have : cc (-(H.rt : E)) = -cc (H.rt : E) := by simp [cc]
     rw [this, hcc]
 
+/- English proof (translation)
+Take `⟨ξ, hξ, hξ0, hneg⟩` from `exists_xi T.Q.H`. Establish `hex : ∀ j (σ : T.Q.c.F →+* ℂ), ∃ (U : Unf (T.Q.Xo j) T.Q.c σ D.R.r) (_ : Σ k, Frame (U.X k).Ψ D.R.r), InR D j → GoodEmb T.Q.c σ → IsUnf U ∧ Nonempty U.Comp ∧ GlobalTheory.FrameNorm.HasPrinc (⟨U.Comp, U.X, U.un⟩ : Formalism.L2.PjFree.Unf _ _ σ _) T.Q.l.M`. Introduce `j σ`. Distinguish the cases in `h : InR D j ∧ GoodEmb T.Q.c σ`. Take `⟨hj, hσ⟩` from `h`.
+
+Establish `hr : D.R.r = (T.Q.Dw j).p + (T.Q.Dw j).q`. Rewrite using `[(hQ.2.2.2 j hj).1, (hQ.2.2.2 j hj).2.1, Formalism.L2.Geo.sigW_sum D hj.1 hj.2]`. Take `⟨Gm, φ, hφ⟩` from `GlobalTheory.exists_herm_coord_of_datum _ T.Q.H (T.Q.Dw j) (-ξ) (by have : cc (-ξ) = -cc ξ := by simp [cc]`. Rewrite using `[this, hξ]) (neg_ne_zero.2 hξ0) _ hr`. Take `⟨U, hU, hP, ⟨k⟩, -⟩` from `GlobalTheory.FrameUnif.exists_unf_hasPrinc _ T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c σ D.R.r ξ Gm φ (by have := Formalism.L2.Geo.two_le_r D; omega) hσ hξ hneg hφ`.
+
+Establish `hM : T.Q.l.M' = T.Q.l.M` using `by rw [Level.M', hQ.2.1.2, Nat.lcm_one_right]`. Conclude with `⟨⟨U.Comp, U.X, U.un⟩, ⟨k, 0⟩, fun _ _ => ⟨hU, ⟨k⟩, hM ▸ hP⟩⟩`. Conclude with `⟨T.U j σ, T.dict j σ 1, fun h1 h2 => absurd ⟨h1, h2⟩ h⟩`. Use `choose U d hU using hex`. Conclude with `⟨⟨T.Q, U, T.V, fun j σ _ => d j σ, T.mu, T.Kf, T.pb⟩, rfl, fun j hj σ hσ => (hU j σ hj hσ).2.2, fun j hj σ hσ => ⟨(hU j σ hj hσ).1, (hU j σ hj hσ).2.1⟩⟩`.
+-/
 theorem exists_gamAt (T : Core D) (hQ : T.Q.Pins) : ∃ T' : Core D, T'.Q = T.Q ∧ GamAt T' ∧
     ∀ j, InR D j → ∀ σ, GoodEmb T'.Q.c σ → IsUnf (T'.U j σ) ∧ Nonempty (T'.U j σ).Comp := by
   obtain ⟨ξ, hξ, hξ0, hneg⟩ := exists_xi T.Q.H

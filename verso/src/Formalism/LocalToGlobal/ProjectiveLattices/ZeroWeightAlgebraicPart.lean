@@ -19,6 +19,11 @@ def evCH (h : LawsP T) {j : ℕ} (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c) 
   map_zero' := evalAt_zero (K := T.Q.c.F) (fun S _ _ => FrPt (T.Q.Xo j) T.Q.c S) (fun φ y z => FrMap φ y z) _
   map_add' f g := evalAt_add (K := T.Q.c.F) (fun S _ _ => FrPt (T.Q.Xo j) T.Q.c S) (fun φ y z => FrMap φ y z) f g _
 
+/- English proof (translation)
+Use `haveI : IsReduced (CAt T.σ₀) := inferInstanceAs (IsReduced ℂ)`. Unfold `rdU`. Simplify using `only [LinearMap.coe_mk, AddHom.coe_mk, dif_pos hy]`. Use `show toC (evalAt (K := T.Q.c.F) (fun S _ _ => FrPt (T.Q.Xo j) T.Q.c S) (fun φ y z => FrMap φ y z) 1 ((T.U j T.σ₀).un k ⟨y, hy⟩)) = 1`. Rewrite using `[evalAt_one (K := T.Q.c.F) (fun S _ _ => FrPt (T.Q.Xo j) T.Q.c S) (fun φ y z => FrMap φ y z) _ (h.allTest j hj _ _)]`.
+
+Both sides reduce to the same expression.
+-/
 theorem rdU_one_of (h : LawsP T) {j : ℕ} (hj : InR D j) (k : (T.U j T.σ₀).Comp)
     {y : Frame ((T.U j T.σ₀).X k).Ψ D.R.r} (hy : y ∈ ((T.U j T.σ₀).X k).dom) : rdU (T.U j T.σ₀) 1 k y = 1 := by
   haveI : IsReduced (CAt T.σ₀) := inferInstanceAs (IsReduced ℂ)
@@ -36,11 +41,17 @@ def frAt {j : ℕ} {k : (T.U j T.σ₀).Comp} (x₀ x : Frame ((T.U j T.σ₀).X
     Frame ((T.U j T.σ₀).X k).Ψ D.R.r :=
   if x ∈ ((T.U j T.σ₀).X k).dom then x else x₀
 
+/- English proof (translation)
+Unfold `frAt`. Rewrite using `[if_pos hx]`.
+-/
 theorem frAt_of_mem {j : ℕ} {k : (T.U j T.σ₀).Comp} (x₀ : Frame ((T.U j T.σ₀).X k).Ψ D.R.r)
     {x : Frame ((T.U j T.σ₀).X k).Ψ D.R.r} (hx : x ∈ ((T.U j T.σ₀).X k).dom) : frAt x₀ x = x := by
   unfold frAt
   rw [if_pos hx]
 
+/- English proof (translation)
+Unfold `frAt`. Use `split_ifs with hx`. Conclude with `hx`. Conclude with `hx0`.
+-/
 theorem frAt_mem {j : ℕ} {k : (T.U j T.σ₀).Comp} {x₀ : Frame ((T.U j T.σ₀).X k).Ψ D.R.r}
     (hx0 : x₀ ∈ ((T.U j T.σ₀).X k).dom) (x : Frame ((T.U j T.σ₀).X k).Ψ D.R.r) :
     frAt x₀ x ∈ ((T.U j T.σ₀).X k).dom := by
@@ -59,6 +70,9 @@ def evFr (h : LawsP T) {j : ℕ} (hj : InR D j) {k : (T.U j T.σ₀).Comp} {x₀
   map_zero' := funext fun x => by simp
   map_add' f g := funext fun x => by simp
 
+/- English proof (translation)
+Use `show rdU (T.U j T.σ₀) f k (frAt x₀ x) = _`. Rewrite using `[frAt_of_mem x₀ hx]`.
+-/
 theorem evFr_of_mem (h : LawsP T) {j : ℕ} (hj : InR D j) {k : (T.U j T.σ₀).Comp}
     {x₀ : Frame ((T.U j T.σ₀).X k).Ψ D.R.r} (hx0 : x₀ ∈ ((T.U j T.σ₀).X k).dom) (f : T.R j)
     {x : Frame ((T.U j T.σ₀).X k).Ψ D.R.r} (hx : x ∈ ((T.U j T.σ₀).X k).dom) :
@@ -75,6 +89,9 @@ def thR (h : LawsP T) {j : ℕ} (hj : InR D j) {k : (T.U j T.σ₀).Comp} {x₀ 
     AddMonoidAlgebra (T.R j) (WTZ D.host.E) →+* (Frame ((T.U j T.σ₀).X k).Ψ D.R.r → ℂ) :=
   (augF k).comp (AddMonoidAlgebra.mapRingHom (WTZ D.host.E) (evFr h hj hx0))
 
+/- English proof (translation)
+Simplify using `[thR, augF, AddMonoidAlgebra.liftNCRingHom]`.
+-/
 theorem thR_single (h : LawsP T) {j : ℕ} (hj : InR D j) {k : (T.U j T.σ₀).Comp}
     {x₀ : Frame ((T.U j T.σ₀).X k).Ψ D.R.r} (hx0 : x₀ ∈ ((T.U j T.σ₀).X k).dom) (G : WTZ D.host.E) (f : T.R j) :
     thR h hj hx0 (AddMonoidAlgebra.single G f) = evFr h hj hx0 f := by
@@ -84,12 +101,18 @@ def PsiZ (h : LawsP T) {j : ℕ} (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c) 
     AddMonoidAlgebra (T.R j) (WTZ D.host.E) →+* AC Z :=
   AddMonoidAlgebra.mapRingHom (WTZ D.host.E) (evCH h hj hG Z)
 
+/- English proof (translation)
+Simplify using `[PsiZ]`. Both sides reduce to the same expression.
+-/
 theorem PsiZ_single (h : LawsP T) {j : ℕ} (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c) (Z : Comp (T.Q.Xo j) T.Q.c)
     (G : WTZ D.host.E) (f : T.R j) :
     PsiZ h hj hG Z (AddMonoidAlgebra.single G f) = AddMonoidAlgebra.single G (evC hG Z f) := by
   simp [PsiZ]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeff_PsiZ (h : LawsP T) {j : ℕ} (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c) (Z : Comp (T.Q.Xo j) T.Q.c)
     (b : AddMonoidAlgebra (T.R j) (WTZ D.host.E)) (G : WTZ D.host.E) :
     (PsiZ h hj hG Z b).coeff G = evC hG Z (b.coeff G) := by
@@ -101,6 +124,9 @@ def gensR (h : LawsP T) (j : ℕ) : Set (AddMonoidAlgebra (T.R j) (WTZ D.host.E)
 def secZ (T : Top D) (j : ℕ) (G : WTZ D.host.E) : Submodule T.Q.c.F (T.R j) :=
   ⨆ u : {u : WeightFamilies.Wt D j // wtZ (wtA u) u.n = G}, sec (T.Q.Xo j) T.Q.c (wtA u.1) u.1.n
 
+/- English proof (translation)
+Simplify using `only [wtZ, Prod.mk.injEq] at e`. Take `⟨h1, h2⟩` from `e`. Use `⟨funext fun x => ?_, by exact_mod_cast h2⟩` and prove the remaining obligations. Establish `hx` using `congrFun h1 x`. Conclude with `hx` after adjusting the coercions.
+-/
 theorem wtZ_inj {a a' : (D.host.E →+* ℂ) × ℕ → ℕ} {n n' : ℕ} (e : wtZ a n = wtZ a' n') : a = a' ∧ n = n' := by
   simp only [wtZ, Prod.mk.injEq] at e
   obtain ⟨h1, h2⟩ := e
@@ -108,6 +134,13 @@ theorem wtZ_inj {a a' : (D.host.E →+* ℂ) × ℕ → ℕ} {n n' : ℕ} (e : w
   have hx := congrFun h1 x
   exact_mod_cast hx
 
+/- English proof (translation)
+Distinguish the cases in `hne : Nonempty {u : WeightFamilies.Wt D j // wtZ (wtA u) u.n = G}`. Take `⟨⟨u0, hu0⟩⟩` from `hne right`. Use `⟨u0, hu0, ?_⟩` and prove the remaining obligations. Establish `hle : secZ T j G ≤ sec (T.Q.Xo j) T.Q.c (wtA u0) u0.n`. Use `iSup_le fun u => ?_` and prove the remaining obligations.
+
+Take `⟨ha, hn⟩` from `wtZ_inj (u.2.trans hu0.symm)`. Rewrite using `[ha, hn]`. Conclude with `hle hf`. Use `left haveI : IsEmpty {u : WeightFamilies.Wt D j // wtZ (wtA u) u.n = G} := not_nonempty_iff.mp hne`. Establish `hbot : secZ T j G = ⊥` using `iSup_of_empty _`.
+
+Rewrite `hf` using `[hbot]`. Conclude with `(Submodule.mem_bot _).mp hf`.
+-/
 theorem secZ_cases {j : ℕ} {G : WTZ D.host.E} {f : T.R j} (hf : f ∈ secZ T j G) :
     f = 0 ∨ ∃ u : WeightFamilies.Wt D j, wtZ (wtA u) u.n = G ∧ f ∈ sec (T.Q.Xo j) T.Q.c (wtA u) u.n := by
   by_cases hne : Nonempty {u : WeightFamilies.Wt D j // wtZ (wtA u) u.n = G}
@@ -125,6 +158,11 @@ theorem secZ_cases {j : ℕ} {G : WTZ D.host.E} {f : T.R j} (hf : f ∈ secZ T j
     rw [hbot] at hf
     exact (Submodule.mem_bot _).mp hf
 
+/- English proof (translation)
+Use `Submodule.iSup_induction _ (motive := fun f => f * g ∈ secZ T j (G + G')) hf (fun p f hf => ?_) (by rw [zero_mul]; exact zero_mem _) (fun f1 f2 h1 h2 => by rw [add_mul]; exact add_mem h1 h2)` and prove the remaining obligations. Use `Submodule.iSup_induction _ (motive := fun g => f * g ∈ secZ T j (G + G')) hg (fun q g hg => ?_) (by rw [mul_zero]; exact zero_mem _) (fun g1 g2 h1 h2 => by rw [mul_add]; exact add_mem h1 h2)` and prove the remaining obligations. Establish `hs` using `sec_mul (T.Q.Xo j) T.Q.c _ _ _ _ hf hg`. Rewrite `hs` using `[← wtA_wadd]`. Use `Submodule.mem_iSup_of_mem ⟨WeightAlgebra.wadd p.1 q.1, ?_⟩ hs` and prove the remaining obligations.
+
+Use `show wtZ (wtA (WeightAlgebra.wadd p.1 q.1)) (p.1.n + q.1.n) = G + G'`. Rewrite using `[wtA_wadd, wtZ_add, p.2, q.2]`.
+-/
 theorem secZ_mul {j : ℕ} {G G' : WTZ D.host.E} {f g : T.R j} (hf : f ∈ secZ T j G) (hg : g ∈ secZ T j G') :
     f * g ∈ secZ T j (G + G') := by
   refine Submodule.iSup_induction _ (motive := fun f => f * g ∈ secZ T j (G + G')) hf (fun p f hf => ?_)
@@ -139,10 +177,18 @@ theorem secZ_mul {j : ℕ} {G G' : WTZ D.host.E} {f g : T.R j} (hf : f ∈ secZ 
 
 def w00 (D : D7) (j : ℕ) : WeightFamilies.Wt D j := WeightAlgebra.wscalar D j 0 ⟨0, rfl⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[wtA, w00, WeightAlgebra.wscalar, ext0]`.
+-/
 theorem zero_weight_algebraic_part {j : ℕ} : wtA (w00 D j) = 0 := by
   funext x
   simp [wtA, w00, WeightAlgebra.wscalar, ext0]
 
+/- English proof (translation)
+Rewrite using `[zero_weight_algebraic_part]`. Use `⟨fun p q φ y z _ => ?_, fun p t y y' _ => ?_⟩` and prove the remaining obligations. Use `show (1 : q.R) = φ 1`. Rewrite using `[map_one]`. Use `show (1 : p.R) = wchar (ex (T.Q.Dw j) 0 0) t * 1`.
+
+Apply the tactic sequence `have : ex (T.Q.Dw j) 0 0 = 0 := by funext i; cases i <;> rfl`. Simplify using `[wchar, this]`.
+-/
 theorem one_mem_sec {j : ℕ} : (1 : T.R j) ∈ sec (T.Q.Xo j) T.Q.c (wtA (w00 D j)) (w00 D j).n := by
   rw [zero_weight_algebraic_part]
   refine ⟨fun p q φ y z _ => ?_, fun p t y y' _ => ?_⟩
@@ -151,6 +197,9 @@ theorem one_mem_sec {j : ℕ} : (1 : T.R j) ∈ sec (T.Q.Xo j) T.Q.c (wtA (w00 D
     have : ex (T.Q.Dw j) 0 0 = 0 := by funext i; cases i <;> rfl
     simp [wchar, this]
 
+/- English proof (translation)
+Rewrite using `[zero_weight_algebraic_part]`. Both sides reduce to the same expression.
+-/
 theorem zero_weight_exponent_zero {j : ℕ} : wtZ (wtA (w00 D j)) (w00 D j).n = 0 := by
   rw [zero_weight_algebraic_part]
   rfl
@@ -177,6 +226,11 @@ def secSub (T : Top D) (j : ℕ) : Subring (AddMonoidAlgebra (T.R j) (WTZ D.host
   neg_mem' {a} ha G := by
     rw [AddMonoidAlgebra.coeff_neg, Finsupp.neg_apply]; exact neg_mem (ha G)
 
+/- English proof (translation)
+Use `show ∀ G', (AddMonoidAlgebra.single G g).coeff G' ∈ secZ T j G'`. Introduce `G'`. Rewrite using `[AddMonoidAlgebra.coeff_single, Finsupp.single_apply]`. Use `split_ifs with hG`. Substitute `hG` using the available equality.
+
+Conclude with `hg`. Conclude with `zero_mem _`.
+-/
 theorem single_mem_secSub {j : ℕ} {G : WTZ D.host.E} {g : T.R j} (hg : g ∈ secZ T j G) :
     AddMonoidAlgebra.single G g ∈ secSub T j := by
   classical
@@ -188,6 +242,9 @@ theorem single_mem_secSub {j : ℕ} {G : WTZ D.host.E} {g : T.R j} (hg : g ∈ s
     exact hg
   · exact zero_mem _
 
+/- English proof (translation)
+Rewrite using `[Subring.closure_le]`. Introduce and unpack `b ⟨u, F, rfl⟩`. Conclude with `single_mem_secSub (Submodule.mem_iSup_of_mem ⟨u, rfl⟩ (cusp_le_sec _ _ _ _ _ (cutR_le T.C j u F.2)))`.
+-/
 theorem closure_le_secSub (h : LawsP T) (j : ℕ) : Subring.closure (gensR h j) ≤ secSub T j := by
   rw [Subring.closure_le]
   rintro b ⟨u, F, rfl⟩
@@ -199,6 +256,9 @@ variable (h : LawsP T) {j : ℕ} (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c)
 
 include h hj hκ in
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `h1` using `(hκ Z (w00 D j) 1 one_mem_sec).mpr (fun x hx => absurd ⟨x, hx⟩ hne)`. Establish `h2 : evC hG Z (1 : T.R j) = 1` using `(evCH h hj hG Z).map_one`. Rewrite `h1` using `[h2]`. Conclude with `one_ne_zero h1`.
+-/
 theorem dom_ne : ((T.U j T.σ₀).X (κ Z)).dom.Nonempty := by
   by_contra hne
   have h1 := (hκ Z (w00 D j) 1 one_mem_sec).mpr (fun x hx => absurd ⟨x, hx⟩ hne)
@@ -209,6 +269,13 @@ theorem dom_ne : ((T.U j T.σ₀).X (κ Z)).dom.Nonempty := by
 variable {x₀ : Frame ((T.U j T.σ₀).X (κ Z)).Ψ D.R.r} (hx0 : x₀ ∈ ((T.U j T.σ₀).X (κ Z)).dom)
 
 include hκ in
+/- English proof (translation)
+Establish `hc : ∀ G, evFr h hj hx0 (b.coeff G) = 0`. Introduce `G`. Establish `hG0 : evC hG Z (b.coeff G) = 0`. Rewrite using `[← coeff_PsiZ h hj hG Z b G, hb]`. Both sides reduce to the same expression.
+
+Break down `secZ_cases (hbS G) with h0 | ⟨u, -, hu⟩` into its components or cases. Rewrite using `[h0, map_zero]`. Use function extensionality and compare the values at `x`. Conclude with `(hκ Z u _ hu).mp hG0 (frAt x₀ x) (frAt_mem hx0 x)`. Establish `hm : AddMonoidAlgebra.mapRingHom (WTZ D.host.E) (evFr h hj hx0) b = 0` using `by first`.
+
+Consider the case `(ext G x; exact congrFun (hc G) x)`. Consider the case `(ext G : 1; exact hc G)`. Consider the case `(ext G : 1; rw [AddMonoidAlgebra.coeff_zero]; exact hc G)`. Use `show augF (κ Z) (AddMonoidAlgebra.mapRingHom (WTZ D.host.E) (evFr h hj hx0) b) = 0`. Rewrite using `[hm, map_zero]`.
+-/
 theorem thR_eq_zero (b : AddMonoidAlgebra (T.R j) (WTZ D.host.E)) (hbS : b ∈ secSub T j)
     (hb : PsiZ h hj hG Z b = 0) : thR h hj hx0 b = 0 := by
   have hc : ∀ G, evFr h hj hx0 (b.coeff G) = 0 := by
@@ -229,6 +296,13 @@ theorem thR_eq_zero (b : AddMonoidAlgebra (T.R j) (WTZ D.host.E)) (hbS : b ∈ s
   rw [hm, map_zero]
 
 include hκ in
+/- English proof (translation)
+Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.mp hb`. Establish `h1 : PsiZ h hj hG Z b = AddMonoidAlgebra.single G c`. Rewrite using `[← hc, AddMonoidAlgebra.smul_single, smul_eq_mul, mul_one]`. Establish `h2 : c = evC hG Z (b.coeff G)`. Rewrite using `[← coeff_PsiZ h hj hG Z b G, h1, AddMonoidAlgebra.coeff_single, Finsupp.single_eq_same]`.
+
+Establish `hS : AddMonoidAlgebra.single G (b.coeff G) ∈ secSub T j` using `single_mem_secSub (hbS G)`. Establish `h3 : PsiZ h hj hG Z (b - AddMonoidAlgebra.single G (b.coeff G)) = 0`. Rewrite using `[map_sub, PsiZ_single, h1, h2, sub_self]`. Establish `h4` using `thR_eq_zero h hj hG hκ Z hx0 _ (sub_mem hbS hS) h3`. Rewrite `h4` using `[map_sub, thR_single, sub_eq_zero]`.
+
+Conclude with `h4`.
+-/
 theorem thR_homog (b : AddMonoidAlgebra (T.R j) (WTZ D.host.E)) (hbS : b ∈ secSub T j) {G : WTZ D.host.E}
     (hb : PsiZ h hj hG Z b ∈ AG Z G) : thR h hj hx0 b = evFr h hj hx0 (b.coeff G) := by
   obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.mp hb
@@ -244,10 +318,18 @@ theorem thR_homog (b : AddMonoidAlgebra (T.R j) (WTZ D.host.E)) (hbS : b ∈ sec
   exact h4
 end Kappa
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨differentiableOn_const _, fun x _ b _ => ?_, fun γ _ x _ => ?_⟩ <;> simp`.
+-/
 theorem isSec_zero' {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) :
     X.IsSec la 0 := by
   refine ⟨differentiableOn_const _, fun x _ b _ => ?_, fun γ _ x _ => ?_⟩ <;> simp
 
+/- English proof (translation)
+Unfold `Data.IsSec at hP ⊢`. Use `⟨hP.1.congr fun x hx => (hPQ x hx).symm, fun x hx b hb => ?_, fun γ hγ x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← hPQ _ (ReciprocityTheory.ChartRestriction.G.AR.Up.OntoS.dom_rmul X hx hb), ← hPQ x hx]`. Conclude with `hP.2.1 x hx b hb`. Rewrite using `[← hPQ _ (ReciprocityTheory.ChartRestriction.G.AR.Up.OntoS.dom_lact X hγ hx), ← hPQ x hx]`.
+
+Conclude with `hP.2.2 γ hγ x hx`.
+-/
 theorem isSec_congr' {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r) {la : Wt X.Ψ r}
     {P Q : Frame X.Ψ r → ℂ} (hPQ : ∀ x ∈ X.dom, P x = Q x) (hP : X.IsSec la P) : X.IsSec la Q := by
   unfold Data.IsSec at hP ⊢
@@ -266,6 +348,9 @@ def wtF {j : ℕ} (k : (T.U j T.σ₀).Comp) (G : WTZ D.host.E) : Wt ((T.U j T.�
       G.1 (Function.invFun (relab T.Q.c T.σ₀) τ.1, (i : ℕ) - ((T.U j T.σ₀).X k).p0) + G.2 / 2
     else -G.1 (Function.invFun (relab T.Q.c T.σ₀) (conjEmb τ.1), ((T.U j T.σ₀).X k).p0 - 1 - (i : ℕ)) - G.2 / 2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i`. Simplify using `only [wtF, laU, wtZ]`. Apply the tactic sequence `split_ifs <;> push_cast <;> rfl`.
+-/
 theorem wtF_wtZ {j : ℕ} (k : (T.U j T.σ₀).Comp) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) :
     wtF k (wtZ a n) = laU (T.U j T.σ₀) a n k := by
   funext τ i
@@ -299,10 +384,18 @@ variable (h : LawsP T) {j : ℕ} (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c)
 
 def preR (f : RgR h hj hG Z) : BcR h j := (RingHom.mem_range.1 f.2).choose
 
+/- English proof (translation)
+The claim follows from `(RingHom.mem_range.1 f.2).choose_spec`.
+-/
 theorem preR_spec (f : RgR h hj hG Z) : PsiC h hj hG Z (preR h hj hG Z f) = f.1 :=
   (RingHom.mem_range.1 f.2).choose_spec
 
 include hκ in
+/- English proof (translation)
+Establish `hsub : b.1 - b'.1 ∈ secSub T j` using `sub_mem (closure_le_secSub h j b.2) (closure_le_secSub h j b'.2)`. Establish `h0 : PsiZ h hj hG Z (b.1 - b'.1) = 0`. Rewrite using `[map_sub]`. Conclude with `sub_eq_zero.mpr e`. Establish `h1` using `thR_eq_zero h hj hG hκ Z hx0 (b.1 - b'.1) hsub h0`.
+
+Rewrite `h1` using `[map_sub, sub_eq_zero]`. Conclude with `h1`.
+-/
 theorem thR_congr (b b' : BcR h j) (e : PsiC h hj hG Z b = PsiC h hj hG Z b') : thR h hj hx0 b.1 = thR h hj hx0 b'.1 := by
   have hsub : b.1 - b'.1 ∈ secSub T j :=
     sub_mem (closure_le_secSub h j b.2) (closure_le_secSub h j b'.2)
@@ -329,10 +422,20 @@ def rdRg : RgR h hj hG Z →+* (Frame ((T.U j T.σ₀).X (κ Z)).Ψ D.R.r → �
     · rw [map_add, preR_spec, preR_spec, preR_spec]; exact Subring.coe_add _ f g
     · rw [Subring.coe_add, map_add]
 
+/- English proof (translation)
+The claim follows from `thR_congr h hj hG hκ Z hx0 _ b (preR_spec h hj hG Z _)`.
+-/
 theorem rdRg_apply (b : BcR h j) (hb : PsiC h hj hG Z b ∈ RgR h hj hG Z) :
     rdRg h hj hG hκ Z hx0 ⟨PsiC h hj hG Z b, hb⟩ = thR h hj hx0 b.1 :=
   thR_congr h hj hG hκ Z hx0 _ b (preR_spec h hj hG Z _)
 
+/- English proof (translation)
+Establish `hPb : PsiZ h hj hG Z (preR h hj hG Z ⟨f, hf⟩).1 = f` using `preR_spec h hj hG Z ⟨f, hf⟩`. Establish `hbS : (preR h hj hG Z ⟨f, hf⟩).1 ∈ secSub T j` using `closure_le_secSub h j (preR h hj hG Z ⟨f, hf⟩).2`. Use `⟨(preR h hj hG Z ⟨f, hf⟩).1.coeff G, hbS G, ?_, ?_⟩` and prove the remaining obligations. Use `show thR h hj hx0 (preR h hj hG Z ⟨f, hf⟩).1 = _`. Conclude with `thR_homog h hj hG hκ Z hx0 _ hbS (by rw [hPb]; exact hfA)`.
+
+Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.mp hfA`. Establish `h1 : f = AddMonoidAlgebra.single G c`. Rewrite using `[← hc, AddMonoidAlgebra.smul_single, smul_eq_mul, mul_one]`. Establish `h2 : f.coeff G = evC hG Z ((preR h hj hG Z ⟨f, hf⟩).1.coeff G)`. Rewrite using `[← coeff_PsiZ h hj hG Z, hPb]`.
+
+Establish `h3 : c = evC hG Z ((preR h hj hG Z ⟨f, hf⟩).1.coeff G)`. Rewrite using `[← h2, h1, AddMonoidAlgebra.coeff_single, Finsupp.single_eq_same]`. Rewrite `h1` using `[h3]`. Conclude with `h1`.
+-/
 theorem rd_homog {G : WTZ D.host.E} {f : AC Z} (hf : f ∈ RgR h hj hG Z) (hfA : f ∈ AG Z G) :
     ∃ g ∈ secZ T j G, rdRg h hj hG hκ Z hx0 ⟨f, hf⟩ = evFr h hj hx0 g ∧
       f = AddMonoidAlgebra.single G (evC hG Z g) := by
@@ -351,6 +454,9 @@ theorem rd_homog {G : WTZ D.host.E} {f : AC Z} (hf : f ∈ RgR h hj hG Z) (hfA :
     rw [h3] at h1
     exact h1
 
+/- English proof (translation)
+Use `⟨⟨AddMonoidAlgebra.single (wtZ (wtA u) u.n) F.1, Subring.subset_closure ⟨u, F, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Use `show PsiZ h hj hG Z (AddMonoidAlgebra.single (wtZ (wtA u) u.n) F.1) = _`. Rewrite using `[PsiZ_single]`. Both sides reduce to the same expression.
+-/
 theorem valC_mem_Rg (u : WeightFamilies.Wt D j) (F : (recB h.toLawsCore).Cusp j u) :
     valC hG (wtA u) u.n F.1 Z ∈ RgR h hj hG Z := by
   refine ⟨⟨AddMonoidAlgebra.single (wtZ (wtA u) u.n) F.1, Subring.subset_closure ⟨u, F, rfl⟩⟩, ?_⟩
@@ -374,6 +480,17 @@ def rdData1 (h : LawsP T) {j : ℕ} (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.
     rw [hwL]; show Even ((uL.n : ℕ) : ℤ); exact_mod_cast hev
   wt := wtR (κ Z)
 
+/- English proof (translation)
+Establish `hx0` using `(dom_ne h hj hG hκ Z).some_mem`. Use `⟨fun G hGE f hf hfA => ?_, fun G f hf hfA hz => ?_, fun u F _ => valC_mem_Rg h hj hG Z u F, fun u hu => (show Even ((u.n : ℕ) : ℤ) by exact_mod_cast hu), fun u F hF x hx => ?_, fun u hu => wtF_wtZ (κ Z) (wtA u) u.n⟩` and prove the remaining obligations. Take `⟨g, hg, hrd, -⟩` from `rd_homog h hj hG hκ Z hx0 hf hfA show ((T.U j T.σ₀).X (κ Z)).IsSec (wtF (κ Z) G) (rdRg h hj hG hκ Z hx0 ⟨f, hf⟩)`. Rewrite using `[hrd]`. Break down `secZ_cases hg with rfl | ⟨u, rfl, hs⟩` into its components or cases.
+
+Rewrite using `[map_zero]`. Conclude with `isSec_zero' _ _`. Rewrite using `[wtF_wtZ]`. Conclude with `isSec_congr' _ (fun x hx => (evFr_of_mem h hj hx0 g hx).symm) ((h.unf j hj T.σ₀ T.good_σ₀).2.2.2.2.1 (wtA u) u.n (dom_wtA u) g hs (κ Z))`. Take `⟨g, hg, hrd, hfe⟩` from `rd_homog h hj hG hκ Z hx0 hf hfA`.
+
+Establish `hv : ∀ x ∈ ((T.U j T.σ₀).X (κ Z)).dom, rdU (T.U j T.σ₀) g (κ Z) x = 0` using `fun x hx => by`. Rewrite using `[← evFr_of_mem h hj hx0 g hx, ← hrd]`. Conclude with `hz x hx`. Establish `he : evC hG Z g = 0`. Break down `secZ_cases hg with rfl | ⟨u, -, hs⟩` into its components or cases.
+
+Conclude with `(evCH h hj hG Z).map_zero`. Conclude with `(hκ Z u g hs).2 hv`. Rewrite using `[hfe, he, AddMonoidAlgebra.single_zero]`. Establish `hb0 : PsiC h hj hG Z ⟨_, Subring.subset_closure ⟨u, F, rfl⟩⟩ = valC hG (wtA u) u.n F.1 Z` using `PsiZ_single h hj hG Z _ F.1`. Establish `e : (⟨valC hG (wtA u) u.n F.1 Z, hF⟩ : RgR h hj hG Z) = ⟨PsiC h hj hG Z ⟨_, Subring.subset_closure ⟨u, F, rfl⟩⟩, by rw [hb0]; exact hF⟩` using `Subtype.ext hb0.symm`.
+
+Use `show rdRg h hj hG hκ Z hx0 ⟨_, hF⟩ x = _`. Rewrite using `[e, rdRg_apply, thR_single, evFr_of_mem h hj hx0 _ hx]`. Both sides reduce to the same expression.
+-/
 theorem tieRd1 (h : LawsP T) {j : ℕ} (hj : InR D j) (hG : GenFrEx (T.Q.Xo j) T.Q.c)
     (d : ReciprocityTheory.ChartRestriction.G.T0.Data T.Q.c.F (Comp (T.Q.Xo j) T.Q.c) (fun Z => Om Z) (WTZ D.host.E) (fun Z => AC Z))
     {κ : Comp (T.Q.Xo j) T.Q.c → (T.U j T.σ₀).Comp} (hκ : KappaTie j hG κ) (hd : DTie h j hG d)

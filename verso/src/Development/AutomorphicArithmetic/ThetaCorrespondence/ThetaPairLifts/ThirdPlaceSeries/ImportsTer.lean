@@ -22,6 +22,29 @@ open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.TopVol GlobalTheory.FinPl
 noncomputable section
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha haT`. Take `⟨hle, hc, ho⟩` from `_root_.GlobalTheory.T.true_geometry_level_spherical_alt W hW u a ha haT`. Establish `hv` using `_root_.GlobalTheory.T.true_geometry_subspace_property_alt W hW u a ha haT _ hle hc ho`. Use `⟨(volLev a.g.volT (_root_.GlobalTheory.TopVol.sphericalLevelSubgroup W a.g.bT) : ℂ), Complex.ofReal_ne_zero.2 hv, fun t J hJ => ?_⟩` and prove the remaining obligations. Establish `hA` using `_root_.GlobalTheory.T.true_geometry_twist_chain_identity_alt W hW u a ha haT t J hJ`.
+
+Establish `hK` using `_root_.GlobalTheory.T.mem_levSph_of_inK_of_quadraticExtensionData W hW u a ha haT t J hJ`. Establish `hM` using `_root_.GlobalTheory.T.true_geometry_twist_chain_relation_alt W hW u a ha haT t J hJ`. Establish `hinj` using `_root_.GlobalTheory.T.injective_q_v_of_reads W hW u a ha haT t J hJ`. Use `set S := (I.rec7 l Z).sp.X'`. Use `set U := _root_.GlobalTheory.TopVol.sphericalLevelSubgroup W a.g.bT`.
+
+Use `set U' := _root_.GlobalTheory.TopVol.twistedLevelSubgroup W a.g.bT t`. Set `Jf : (i : Fin J.r) → Subgroup (GL _ (J.G i).k)` to `fun i => ((J.G i).T (J.E i).δ (J.E i).tame (J.E i).η).levTop.J`. Set `φ : GA (I.rec7 l Z) S →* ((i : Fin J.r) → GL _ (J.G i).k)` to `MonoidHom.pi fun i => GlobalTheory.LevIdx.locHom (J.G i).q S (J.G i).FT`. Establish `hφi : ∀ g i, φ g i = GlobalTheory.LevIdx.locHom (J.G i).q S (J.G i).FT g` using `fun _ _ => rfl`. Establish `hU'' : ∀ g, g ∈ U' ↔ g ∈ U ∧ ∀ i, φ g i ∈ Jf i`.
+
+Introduce `g`. Rewrite using `[hA g]`. Use `and_congr_right fun _ => forall_congr' fun i => ?_` and prove the remaining obligations. Use `⟨fun h => h _ ((GlobalTheory.LevIdx.eq_locHom_iff _ _ _ _ _).2 rfl), fun h x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[(GlobalTheory.LevIdx.eq_locHom_iff _ _ _ _ _).1 hx]`.
+
+Conclude with `h`. Establish `hle' : U' ≤ U` using `fun g hg => ((hU'' g).1 hg).1`. Establish `hidx : U'.relIndex U = ∏ i, (Jf i).relIndex (GlobalTheory.SplitWeil.KO (J.G i).k _)`. Use `GlobalTheory.T.relIndex_eq_prod_relIndex_of_surjective_pi φ U U' (fun i => GlobalTheory.SplitWeil.KO (J.G i).k _) Jf (fun i => (J.E i).leT) ?_ ?_ hU''` and prove the remaining obligations. Introduce `g hg i`.
+
+Conclude with `GlobalTheory.T.mem_integralGL_split_place_of_carries_latticeCompletion (J.G i).q S (J.G i).FT a.v.NT _ ⟨i, rfl⟩ (J.G i).latT g (hM g hg) _ ((GlobalTheory.LevIdx.eq_locHom_iff _ _ _ _ _).2 rfl)`. Introduce `x hx`. Take `⟨g, hg, hgx⟩` from `GlobalTheory.T.exists_selfDual_stabilizer_with_prescribed_splitPlace_matrices S a.v.NT ha.vis.sdT (fun i => (J.G i).k) (fun i => (J.G i).q) _ (fun i => (J.G i).FT) hinj (fun i => (J.G i).latT) x hx`. Use `⟨g, hK g hg, funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hφi]`.
+
+Conclude with `((GlobalTheory.LevIdx.eq_locHom_iff _ _ _ _ _).1 (hgx i)).symm`. Establish `hU'o : IsOpen ((U'.subgroupOf (GfC S) : Subgroup (GfC S)) : Set (GfC S))`. Establish `e : ((U'.subgroupOf (GfC S) : Subgroup (GfC S)) : Set (GfC S)) = ((U.subgroupOf (GfC S) : Subgroup (GfC S)) : Set (GfC S)) ∩ ⋂ i, (fun g : GfC S => GlobalTheory.LevIdx.locHom (J.G i).q S (J.G i).FT g.1) ⁻¹' (Jf i : Set (GL _ (J.G i).k))`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, Subgroup.mem_subgroupOf, Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage]`.
+
+Rewrite using `[hU'']`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `ho.inter (isOpen_iInter_of_finite fun i => ((J.E i).openT).preimage ((GlobalTheory.LevIdx.continuous_locHom (J.G i).q S (J.G i).FT).comp continuous_subtype_val))`. Establish `hvol` using `GlobalTheory.T.archimedeanLevelVolume_mul_relIndex (I.rec7 l Z) S a.g.volT U' U hle' hle hc hU'o`.
+
+Use `⟨U', fun h => _root_.GlobalTheory.TopVol.mem_level_twist_iff_conj_mem_levS_datXP h, fun β => ?_⟩` and prove the remaining obligations. Establish `hw : ∀ i, (J.E i).wt B.R.m (β i) = (((Jf i).relIndex (GlobalTheory.SplitWeil.KO (J.G i).k _) : ℕ) : ℂ)`. Introduce `i`. Establish `key : ∀ j (e : (J.G i).s + 1 + 1 = j) (y : (J.E i).Ch j), (J.E i).wt j y = ((J.E i).idx j : ℂ)`. Introduce and unpack `j rfl y`.
+
+Conclude with `(J.E i).wt_top y`. Establish `e2 : (J.E i).wt B.R.m (β i) = ((J.E i).idx B.R.m : ℂ)` using `key _ (J.G i).hs (β i)`. Establish `e3 : (J.E i).idx B.R.m = (J.E i).idx ((J.G i).s + 1 + 1)` using `congrArg (J.E i).idx (J.G i).hs.symm`. Rewrite using `[e2, e3, (J.E i).idx_top]`. Rewrite using `[← hvol, _root_.GlobalTheory.Fam.QuadraticExtensionData.wt]`.
+
+Simplify using `only [hw]`. Rewrite using `[hidx]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.TopVol.main_alt_alt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u), a.Is → a.True → ∃ VT : ℂ, VT ≠ 0 ∧ ∀ t (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t), J.Reads → J.VolT VT := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha haT
   obtain ⟨hle, hc, ho⟩ := _root_.GlobalTheory.T.true_geometry_level_spherical_alt W hW u a ha haT

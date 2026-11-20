@@ -17,6 +17,25 @@ open ValuativeRel
 
 namespace GlobalTheory.SymRes
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Set `e : Fin κ ⊕ Fin (s + 1) ≃ Fin (κ + (s + 1))` to `finSumFinEquiv`. Establish `he : ∀ a, (e a).val = GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos _ _ a`. Apply the tactic sequence `rintro (a | a) <;> simp [e, GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos]`. Establish `hfree : ∀ a b, FreePos S.ρ κ (e a).val (e b).val ↔ GlobalTheory.SymChain.FreeTop S.ρ a b`.
+
+Introduce `a b`. Rewrite using `[he, he]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;>`. Apply the tactic sequence `simp only [GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos, Sum.elim_inl, Sum.elim_inr, GlobalTheory.SymChain.FreeTop, FreePos, Fin.lt_def] <;>`. Apply the tactic sequence `have := a.2 <;> have := b.2 <;> omega`.
+
+Use `choose l hl using fun a b => Ideal.Quotient.mk_surjective (I := I) (g.val (e a) (e b))`. Establish `key : ∀ a b, g.val (e a) (e b) = (1 : Matrix _ _ (O ⧸ I)) (e a) (e b) ↔ valuation k (π (l a b) - (1 : Matrix _ _ k) a b) < 1`. Introduce `a b`. Establish `h4` using `h.ker (l a b - if a = b then 1 else 0)`. Rewrite `h4` using `[map_sub, map_sub, sub_eq_zero, apply_ite (Ideal.Quotient.mk I), apply_ite π, map_one, map_one, map_zero, map_zero, hl]`.
+
+Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Simplify using `only [e.apply_eq_iff_eq]`. Use `h4` and compare the differences between its conclusion and the goal. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩ i j hij`.
+
+Take `⟨a, rfl⟩` from `e.surjective i`. Take `⟨b, rfl⟩` from `e.surjective j`. Establish `h1` using `hx a b _ _ (he a) (he b) _ (hl a b)`. Establish `h2` using `((GlobalTheory.SymChain.SymData.mem_J_iff_pattern k s κ S x.1).1 x.2).2 a b (fun h' => hij ((hfree a b).2 h'))`. Establish `h3` using `(valuation k).map_sub_lt h2 h1`.
+
+Rewrite `h3` using `[sub_sub_sub_cancel_left]`. Conclude with `(key a b).2 h3`. Introduce `hg`. Establish `hM : (Matrix.of l).map (Ideal.Quotient.mk I) = g.val.submatrix e e` using `Matrix.ext hl`. Establish `hu : IsUnit ((Matrix.of l).map (Ideal.Quotient.mk I)).det`.
+
+Rewrite using `[hM, det_submatrix_equiv_self]`. Use `(Matrix.isUnit_iff_isUnit_det _).1 g.isUnit` and compare the differences between its conclusion and the goal. Take `⟨x, hx1, hx2⟩` from `(h.isUnit_det_iff _).1 hu`. Establish `hx3 : ∀ a b, x.val a b = π (l a b)` using `fun a b => congrFun (congrFun hx2 a) b`. Use `⟨⟨x, (GlobalTheory.SymChain.SymData.mem_J_iff_pattern k s κ S x).2 ⟨by convert hx1, fun a b hab => ?_⟩⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hx3]`. Conclude with `(key a b).1 (hg _ _ fun h' => hab ((hfree a b).1 h'))`. Introduce `a b a' b' ha hb z hz`. Take `rfl : a' = e a` from `Fin.ext (ha.trans (he a).symm)`. Take `rfl : b' = e b` from `Fin.ext (hb.trans (he b).symm)`.
+
+Express the relevant statement in the definitionally equal form `valuation k (x.val a b - π z) < 1`. Rewrite using `[hx3, ← map_sub, ← h.ker, map_sub, hl, hz, sub_self]`.
+-/
 theorem exists_red_iff_isPat {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {O : Type} [CommRing O] (I : Ideal O) (π : O →+* k) (h : GlobalTheory.FunObj.Comparison₂.IsRed (Ideal.Quotient.mk I) π)
     {s κ r : ℕ} (hr : r = κ + (s + 1)) (S : GlobalTheory.SymChain.SymData k s κ) (g : GL (Fin r) (O ⧸ I)) :
@@ -68,6 +87,15 @@ theorem exists_red_iff_isPat {k : Type} [Field k] [ValuativeRel k] [TopologicalS
       change valuation k (x.val a b - π z) < 1
       rw [hx3, ← map_sub, ← h.ker, map_sub, hl, hz, sub_self]
 
+/- English proof (translation)
+Introduce `D u d τ PP G g`. Take `⟨π', h1, h2, -⟩` from `GlobalTheory.FinPl.SplitPt.exists_lift_isRed D G.k G.q PP G.idem`. Establish `hr : D.R.r = D.R.k + (G.s + 1)`. Use `G.hs` as an intermediate fact. Unfold `Ranks.r`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hρ : D.R.rS = G.S.ρ`. Use `G.hs` as an intermediate fact. Use `G.S.odd` as an intermediate fact. Unfold `Ranks.rS`.
+
+Use linear arithmetic over natural numbers and integers. Set `π : 𝓞 D.host.E →+* G.k` to `(π'.comp (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype).comp (oToS D.host.F D.host.E)`. Establish `hπ : ∀ z : 𝓞 D.host.E, π z = (GlobalTheory.LocMod.ofSplit G.q).pr (z : D.host.E)` using `fun z => h1 (incA D (z : D.host.E))`. Establish `h : GlobalTheory.FunObj.Comparison₂.IsRed (Ideal.Quotient.mk PP.asIdeal) π` using `⟨h2.field, fun z => h2.int _, fun z => (iff_of_eq (congrArg (· = 0) (resS_oToS (F := D.host.F) PP z).symm)).trans (h2.ker _)⟩`. Use `exists_red_iff_isPat PP.asIdeal π h hr G.S g` as an intermediate fact.
+
+Simplify using `only [hπ] at this`. Rewrite using `[hρ]`. Conclude with `this`.
+-/
 theorem exists_red_iff : ∀ (D : D7) (u : D.what₂.Word) (d : GlobalTheory.SeeSaw.Dat D u) (τ : ∀ j h, Matrix (Fin (d.bes j 0 h).L.rank) (Fin d.Lz.rank) D.host.E) (PP : Formalism.L2.DIV.Pl D.host.E) (G : GlobalTheory.LocMod.GAt d τ PP) (g : GL (Fin D.R.r) (Formalism.L2.DIV.kP PP)), (∃ x, G.Red x g) ↔ GlobalTheory.SymRes.IsPat D.R.rS D.R.k g := by
   intro D u d τ PP G g
   obtain ⟨π', h1, h2, -⟩ := GlobalTheory.FinPl.SplitPt.exists_lift_isRed D G.k G.q PP G.idem

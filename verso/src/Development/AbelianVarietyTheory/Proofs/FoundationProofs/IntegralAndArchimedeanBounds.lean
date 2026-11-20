@@ -11,6 +11,9 @@ open scoped BigOperators
 
 namespace GlobalTheory.NormSum
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GlobalTheory.T.classSumDenominatorBound_of_cmThetaHypotheses GlobalTheory.T.cmThetaNormBoundHypotheses_satisfied, GlobalTheory.T.thetaJetClassSum_archimedeanBound_of_cmTheta GlobalTheory.T.cmThetaNormBoundHypotheses_satisfied⟩`.
+-/
 theorem intSt_and_archSt : IntSt ∧ ArchSt :=
   ⟨GlobalTheory.T.classSumDenominatorBound_of_cmThetaHypotheses GlobalTheory.T.cmThetaNormBoundHypotheses_satisfied, GlobalTheory.T.thetaJetClassSum_archimedeanBound_of_cmTheta GlobalTheory.T.cmThetaNormBoundHypotheses_satisfied⟩
 

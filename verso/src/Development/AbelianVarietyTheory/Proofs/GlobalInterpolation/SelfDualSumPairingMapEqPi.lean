@@ -9,6 +9,11 @@ open scoped ENNReal TensorProduct
 
 namespace GlobalTheory.SelfDualProduct
 
+/- English proof (translation)
+Set `b : ContDiffBump (0 : V)` to `⟨1, 2, one_pos, one_lt_two⟩`. Establish `h1 : HasCompactSupport (fun x => ((b x : ℝ) : ℂ))` using `b.hasCompactSupport.comp_left (g := fun r : ℝ => (r : ℂ)) (by simp)`. Use `⟨h1.toSchwartzMap (Complex.ofRealCLM.contDiff.comp b.contDiff), h1, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((b 0 : ℝ) : ℂ) = 1`. Rewrite using `[b.one_of_mem_closedBall (Metric.mem_closedBall_self zero_le_one)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_test (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] :
     ∃ Φ : SchwartzMap V ℂ, HasCompactSupport Φ ∧ Φ 0 = 1 := by
   let b : ContDiffBump (0 : V) := ⟨1, 2, one_pos, one_lt_two⟩
@@ -19,6 +24,11 @@ theorem exists_test (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [Finit
   rw [b.one_of_mem_closedBall (Metric.mem_closedBall_self zero_le_one)]
   simp
 
+/- English proof (translation)
+Unfold `ActionCoordinates.fourierT`. Rewrite using `[← integral_fintype_prod_eq_prod (fun ρ (x : V) => f x * Complex.exp (2 * Real.pi * Complex.I * ((ε * β x (y ρ) : ℝ) : ℂ)))]`. Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Simplify using `only [Finset.prod_mul_distrib, ← Complex.exp_sum]`. Use `congr 2`.
+
+Rewrite using `[Finset.mul_sum, Complex.ofReal_sum, Finset.mul_sum]`.
+-/
 theorem integral_prod_exp {T V : Type} [Fintype T] [MeasurableSpace V] (ε : ℝ) (β : V → V → ℝ)
     (μ₀ : Measure V) [SigmaFinite μ₀] (f : V → ℂ) (y : T → V) :
     ∫ x : T → V, (∏ ρ, f (x ρ)) *
@@ -32,6 +42,23 @@ theorem integral_prod_exp {T V : Type} [Fintype T] [MeasurableSpace V] (ε : ℝ
   congr 2
   rw [Finset.mul_sum, Complex.ofReal_sum, Finset.mul_sum]
 
+/- English proof (translation)
+Introduce `T V W _ _ _ _ _ _ _ _ _ _ e ε β μ₀ hμ₀ hsd μ χ hχ hμ`. Use `haveI : IsTopologicalAddGroup W := Topology.IsInducing.topologicalAddGroup (e : W →+ (T → V)) e.toHomeomorph.isInducing`. Use `haveI := hμ.1`. Use `haveI : (μ.map e).IsAddHaarMeasure := e.isAddHaarMeasure_map μ`. Use `set ν : Measure (T → V) := Measure.pi fun _ : T => μ₀ with hν`.
+
+Use `haveI : ν.IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Establish `h0 : μ.map e = Measure.addHaarScalarFactor (μ.map e) ν • ν` using `Measure.isAddLeftInvariant_eq_smul _ _`. Use `set c : NNReal := Measure.addHaarScalarFactor (μ.map e) ν`. Establish `hemb : MeasurableEmbedding e` using `e.toHomeomorph.measurableEmbedding`. Establish `hint : ∀ F : (T → V) → ℂ, ∫ x, F (e x) ∂μ = (c : ℂ) * ∫ x, F x ∂ν` using `fun F => by`.
+
+Rewrite using `[← hemb.integral_map, h0, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`. Establish `hF : ∀ (f : V → ℂ) (y : W), ∫ x, (∏ ρ, f (e x ρ)) * χ x y ∂μ = (c : ℂ) * ∏ ρ, ActionCoordinates.fourierT ε β μ₀ f (e y ρ)` using `fun f y => by`. Rewrite using `[← integral_prod_exp, ← hint]`. Simplify using `only [hχ]`. Take `⟨φ, hφs, hφ0⟩` from `exists_test V`.
+
+Take `⟨-, hI, hinv⟩` from `hsd φ`. Establish `hc1 : Continuous fun x : T → V => ∏ ρ, φ (x ρ)` using `continuous_finset_prod _ fun ρ _ => φ.continuous.comp (continuous_apply ρ)`. Establish `hs1 : HasCompactSupport fun x : T → V => ∏ ρ, φ (x ρ)`. Use `HasCompactSupport.intro (isCompact_univ_pi fun _ : T => hφs.isCompact) fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Set.mem_univ_pi, not_forall]`.
+
+Take `⟨ρ, hρ⟩` from `hx`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ ρ) (image_eq_zero_of_notMem_tsupport hρ)`. Establish `hI1 : Integrable (fun y : T → V => (c : ℂ) * ∏ ρ, ActionCoordinates.fourierT ε β μ₀ φ (y ρ)) (μ.map e)`. Rewrite using `[h0]`. Conclude with `((Integrable.fintype_prod (f := fun _ : T => ActionCoordinates.fourierT ε β μ₀ φ) fun _ => hI).const_mul _).smul_measure_nnreal`.
+
+Establish `key` using `hμ.2 (fun x => ∏ ρ, φ (e x ρ)) (hc1.comp e.continuous) (hs1.comp_homeomorph e.toHomeomorph) (by`. Simplify using `only [hF]`. Conclude with `(hemb.integrable_map_iff).1 hI1) 0`. Simplify using `only [hF, mul_assoc] at key`. Rewrite `key` using `[integral_const_mul, hF]`.
+
+Simplify using `only [hinv, map_zero, neg_zero, Pi.zero_apply, hφ0, Finset.prod_const_one, mul_one] at key`. Establish `h5 : c * c = 1` using `by exact_mod_cast key`. Establish `h6 : c = 1`. Establish `: (c : ℝ) * c = 1` using `by exact_mod_cast h5`. Establish `h7 : (c : ℝ) = 1` using `by nlinarith [c.coe_nonneg]`.
+
+Conclude with `h7` after adjusting the coercions. Rewrite using `[h0, h6, one_smul]`.
+-/
 theorem map_eq_pi : ∀ (T V W : Type) [Fintype T] [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] [AddCommGroup W] [TopologicalSpace W] [MeasurableSpace W] [BorelSpace W] (e : W ≃ₜ+ (T → V)) (ε : ℝ) (β : V → V → ℝ) (μ₀ : Measure V), μ₀.IsAddHaarMeasure → ActionCoordinates.IsSelfDualFor ε β μ₀ → ∀ (μ : Measure W) (χ : W → W → ℂ), (∀ x y, χ x y = Complex.exp (2 * Real.pi * Complex.I * ((ε * ∑ ρ, β (e x ρ) (e y ρ) : ℝ) : ℂ))) → SelfDual μ χ → μ.map e = Measure.pi fun _ : T => μ₀ := by
   intro T V W _ _ _ _ _ _ _ _ _ _ e ε β μ₀ hμ₀ hsd μ χ hχ hμ
   haveI : IsTopologicalAddGroup W :=

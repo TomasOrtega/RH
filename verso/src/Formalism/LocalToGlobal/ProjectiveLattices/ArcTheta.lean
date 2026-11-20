@@ -13,6 +13,51 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Take `⟨w1, hw1, hrig, -⟩` from `m1.lin`. Establish `hPG` using `(ReciprocityTheory.ChartRestriction.G.Geo.Tor.isGen_iff w1).1 hw1`. Take `⟨s1, hs1⟩` from `thf_secUp hPG Xo.univ.t.PP.isLB t'.PP.isLB σ'`. Establish `pb` using `m1.cart.1`. Establish `hcond : (snd (Over.mk x) Xo.univ.t.G).left ≫ Xo.univ.t.G.hom = (fst (Over.mk x) Xo.univ.t.G).left ≫ x` using `(Over.w (snd (Over.mk x) Xo.univ.t.G)).trans (Over.w (fst (Over.mk x) Xo.univ.t.G)).symm`.
+
+Take `⟨h, hF, hS⟩ : ∃ h : Gx x ⟶ t'.G.left, h ≫ m1.φ = (snd (Over.mk x) Xo.univ.t.G).left ∧ h ≫ t'.G.hom = (fst (Over.mk x) Xo.univ.t.G).left` from `⟨pb.lift _ _ hcond, pb.lift_fst _ _ hcond, pb.lift_snd _ _ hcond⟩`. Choose the witnesses or unpack the hypotheses as in `⟨g0, g0F, g0S, hhg⟩ : ∃ g0 : t'.G.left ⟶ Gx x, g0 ≫ (snd (Over.mk x) Xo.univ.t.G).left = m1.φ ∧ g0 ≫ (fst (Over.mk x) Xo.univ.t.G).left = t'.G.hom ∧ h ≫ g0 = 𝟙 _ := by`. Set `P : Over Xo.X` to `Over.mk (m1.φ ≫ Xo.univ.t.G.hom)`. Set `a : P ⟶ Over.mk x` to `Over.homMk t'.G.hom pb.w.symm`. Set `b : P ⟶ Xo.univ.t.G` to `Over.homMk m1.φ rfl`.
+
+Set `hO : (Over.mk x ⊗ Xo.univ.t.G) ⟶ P` to `Over.homMk h (by show h ≫ m1.φ ≫ Xo.univ.t.G.hom = _`. Rewrite using `[← Category.assoc, hF]`. Conclude with `Over.w (snd (Over.mk x) Xo.univ.t.G))`. Establish `e : hO ≫ lift a b = 𝟙 _`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, lift_fst, Category.id_comp]`. Use `ext`. Conclude with `hS`. Rewrite using `[Category.assoc, lift_snd, Category.id_comp]`. Use `ext`.
+
+Conclude with `hF`. Conclude with `⟨(lift a b).left, congrArg (fun f => f.left) (lift_snd (f := a) (g := b)), congrArg (fun f => f.left) (lift_fst (f := a) (g := b)), congrArg (fun f => f.left) e⟩`. Establish `hgh0 : g0 ≫ h = 𝟙 _` using `pb.hom_ext (by rw [Category.assoc, hF, g0F, Category.id_comp]) (by rw [Category.assoc, hS, g0S, Category.id_comp])`. Use `⟨thfPull1 Xo.univ.t.PP.L h hF s1, w1, s1, ⟨hw1, hrig⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i k`.
+
+Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Establish `key` using `hs1 _ (𝟙 _) y i k hy.1 hy.2`. Rewrite using `[gs_res (𝟙 _) y _ hy, key, gs_mul (𝟙 _) y _ hy, gs_res (𝟙 _) y _ hy]`. Use `congr 1`. Conclude with `(gs_unit (𝟙 _) y _ hy (w1.s (i, k))).symm`.
+
+Introduce `g hgs hgf j hj`. Establish `hgh : g ≫ h = 𝟙 _` using `pb.hom_ext (by rw [Category.assoc, hF, hgs, Category.id_comp]) (by rw [Category.assoc, hS, hgf, Category.id_comp])`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Establish `e1` using `gs_appLE g _ _ hj (𝟙 _) y hy ((thfPull1 Xo.univ.t.PP.L h hF s1).f (fun _ => j PUnit.unit))`. Establish `e2 : gs g y ((PPx x).U (fun _ => j PUnit.unit)) ((thfPull1 Xo.univ.t.PP.L h hF s1).f (fun _ => j PUnit.unit)) = gs (g ≫ h) y _ (s1.f (fun _ => j PUnit.unit))` using `gs_appLE h _ _ _ g y (hj hy) _`.
+
+Rewrite `e1` using `[Category.id_comp]`. Rewrite using `[e1, e2, hgh]`. Apply the tactic sequence `all_goals rfl`. Introduce `s''`. Establish `hle : ∀ j, m1.φ ⁻¹ᵁ Xo.univ.t.PP.L.U j ≤ g0 ⁻¹ᵁ (PPx x).U (fun _ => j)`.
+
+Introduce `j y hy`. Establish `e : (g0 ≫ (snd (Over.mk x) Xo.univ.t.G).left) y ∈ Xo.univ.t.PP.L.U j`. Rewrite using `[g0F]`. Conclude with `hy`. Use `show g0.base y ∈ (⋂ k : Fin 1, ((snd (Over.mk x) Xo.univ.t.G).left.base ⁻¹' (Xo.univ.t.PP.L.U j : Set _)))`.
+
+Conclude with `Set.mem_iInter.2 fun _ => e`. Establish `mm : ∀ (y : t'.G.left) j, m1.φ y ∈ Xo.univ.t.PP.L.U j → g0 y ∈ (PPx x).U (fun _ => j)` using `fun y j hj => hle j hj`. Establish `hσ : ∀ (y : t'.G.left) (j j' : Xo.univ.t.PP.L.ι), m1.φ y ∈ Xo.univ.t.PP.L.U j → m1.φ y ∈ Xo.univ.t.PP.L.U j' → gs (𝟙 _) y _ ((g0.appLE _ _ (hle j)).hom (s''.f (fun _ => j))) = (gm m1.φ y (Xo.univ.t.PP.L.U j ⊓ Xo.univ.t.PP.L.U j') (Xo.univ.t.PP.L.g j j')).val * gs (𝟙 _) y _ ((g0.a …`. Introduce `y j j' hj hj'`. Establish `e1` using `gs_appLE g0 _ _ (hle j) (𝟙 _) y (show y ∈ m1.φ ⁻¹ᵁ Xo.univ.t.PP.L.U j from hj) (s''.f (fun _ => j))`.
+
+Establish `e2` using `gs_appLE g0 _ _ (hle j') (𝟙 _) y (show y ∈ m1.φ ⁻¹ᵁ Xo.univ.t.PP.L.U j' from hj') (s''.f (fun _ => j'))`. Establish `e3` using `gs_compat s'' g0 y (mm y j hj) (mm y j' hj')`. Establish `e4` using `gm_linComb Xo.univ.t.PP.L (fun _ : Fin 1 => (snd (Over.mk x) Xo.univ.t.G).left) (fun _ => (1 : ℤ)) g0 y (fun _ => j) (fun _ => j') (mm y j hj) (mm y j' hj')`. Simplify using `only [Fin.prod_univ_one, zpow_one, g0F] at e4`. Rewrite using `[e1, e2, Category.id_comp, e3]`.
+
+Use `erw [e4]`. Take `⟨σ'', hσ''⟩` from `sec_down hPG Xo.univ.t.PP.isLB t'.PP.isLB (fun j => (g0.appLE _ _ (hle j)).hom (s''.f (fun _ => j))) hσ`. Take `⟨a, ha, hau⟩` from `hgen σ''`. Use `⟨a, fun i => ?_, fun b hb => hau b ?_⟩` and prove the remaining obligations. Take `⟨j, rfl⟩ : ∃ j, i = fun _ => j` from `⟨i 0, funext fun k => congrArg i (Subsingleton.elim _ _)⟩`.
+
+Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, h y ∈ t'.PP.L.U k := by`. Establish `: h y ∈ ⨆ i, t'.PP.L.U i`. Rewrite using `[t'.PP.isLB.cover]`. Discharge the goal by the elementary cases of `trivial`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.1 this`. Establish `hF' : m1.φ (h y) ∈ Xo.univ.t.PP.L.U j`. Establish `e : (h ≫ m1.φ) y ∈ Xo.univ.t.PP.L.U j`. Rewrite using `[hF]`. Conclude with `LB.wchart_le Xo.univ.t.PP.L (fun _ : Fin 1 => (snd (Over.mk x) Xo.univ.t.G).left) (fun _ => j) 0 hy`.
+
+Conclude with `e`. Establish `eR1 : gs (𝟙 _) y _ (scal x a (fun _ => j)) = cst (fst (Over.mk x) Xo.univ.t.G).left y a`. Use `gs_constFn (fst (Over.mk x) Xo.univ.t.G).left ((PPx x).U (fun _ => j)) (𝟙 _) y hy a` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Conclude with `this`.
+
+Establish `eR2 : gs (𝟙 _) y ((PPx x).U (fun _ => j)) ((thfPull1 Xo.univ.t.PP.L h hF s1).f (fun _ => j)) = (gw w1 h y j k).val * gs h y _ (σ'.f k)`. Use `gs_appLE h _ _ (chart_le_pullback_open Xo.univ.t.PP.L h hF (fun _ => j)) (𝟙 _) y hy (s1.f (fun _ => j))` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Conclude with `this.trans (hs1 _ h y (fun _ => j) k (mem_pull.2 hF') hk)`. Establish `eL : gs (𝟙 _) y _ (s''.f (fun _ => j)) = (gw w1 h y j k).val * (cst (fst (Over.mk x) Xo.univ.t.G).left y a * gs h y _ (σ'.f k))`.
+
+Establish `e5` using `gs_appLE g0 _ _ (hle j) h y (show h y ∈ m1.φ ⁻¹ᵁ Xo.univ.t.PP.L.U j from hF') (s''.f (fun _ => j))`. Rewrite `e5` using `[hhg]`. Rewrite using `[← e5, hσ'' _ h y j k hF' hk, ha k, gs_mul h y _ hk, gs_constFn t'.G.hom _ h y hk a, hS]`. Rewrite using `[gs_mul (𝟙 _) y _ hy, eR1, eR2, eL, mul_left_comm]`. Introduce `k`.
+
+Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, m1.φ y ∈ Xo.univ.t.PP.L.U j := by`. Establish `: m1.φ y ∈ ⨆ i, Xo.univ.t.PP.L.U i`. Rewrite using `[Xo.univ.t.PP.isLB.cover]`. Discharge the goal by the elementary cases of `trivial`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.1 this`. Establish `e1` using `hσ'' _ (𝟙 _) y j k hj hy`. Establish `c1 : gs g0 y _ (scal x b (fun _ => j)) = cst t'.G.hom y b`. Use `gs_constFn (fst (Over.mk x) Xo.univ.t.G).left ((PPx x).U (fun _ => j)) g0 y (mm y j hj) b` as an intermediate fact. Rewrite `this` using `[g0S]`.
+
+Conclude with `this`. Establish `c2 : gs g0 y ((PPx x).U (fun _ => j)) ((thfPull1 Xo.univ.t.PP.L h hF s1).f (fun _ => j)) = gs (𝟙 _) y _ (s1.f (fun _ => j))`. Use `gs_appLE h _ _ (chart_le_pullback_open Xo.univ.t.PP.L h hF (fun _ => j)) g0 y (mm y j hj) (s1.f (fun _ => j))` as an intermediate fact. Rewrite `this` using `[hgh0]`. Conclude with `this`.
+
+Establish `e2 : gs (𝟙 _) y _ ((g0.appLE _ _ (hle j)).hom (s''.f (fun _ => j))) = cst t'.G.hom y b * ((gw w1 (𝟙 _) y j k).val * gs (𝟙 _) y _ (σ'.f k))`. Rewrite using `[gs_appLE g0 _ _ (hle j) (𝟙 _) y (show y ∈ m1.φ ⁻¹ᵁ Xo.univ.t.PP.L.U j from hj), Category.id_comp, hb (fun _ => j), gs_mul g0 y _ (mm y j hj), c1, c2, hs1 _ (𝟙 _) y (fun _ => j) k (mem_pull.2 hj) hy]`. Establish `e3` using `e1.symm.trans e2`. Rewrite `e3` using `[mul_left_comm]`. Rewrite using `[gs_mul (𝟙 _) y _ hy, gs_constFn t'.G.hom _ (𝟙 _) y hy b, Category.id_comp]`.
+
+Conclude with `(Units.mul_right_inj (gw w1 (𝟙 _) y j k)).1 e3`.
+-/
 theorem frame_of_gen (Xo : Moduli Dw l) {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (t' : SAB H (Sp S))
     (m1 : SABMap t' Xo.univ.t x) (σ' : LB.Sec t'.PP.L)
     (hgen : ∀ s' : LB.Sec t'.PP.L, ∃! a : S, ∀ i, s'.f i = constFn t'.G.hom _ a * σ'.f i) :
@@ -155,6 +200,11 @@ theorem frame_of_gen (Xo : Moduli Dw l) {S : Type} [CommRing S] (x : Sp S ⟶ Xo
       rw [gs_mul (𝟙 _) y _ hy, gs_constFn t'.G.hom _ (𝟙 _) y hy b, Category.id_comp]
       exact (Units.mul_right_inj (gw w1 (𝟙 _) y j k)).1 e3
 
+/- English proof (translation)
+Take `⟨w2, hgen, hrig, -⟩` from `m2.lin`. Take `⟨σ', hσ'⟩` from `sec_pull_down ((ReciprocityTheory.ChartRestriction.G.Geo.Tor.isGen_iff w2).1 hgen) G.PP.isLB t'.PP.isLB θ`. Use `⟨w2, σ', ⟨hgen, hrig⟩, fun i k => fn_ext fun y hy => ?_⟩` and prove the remaining obligations. Establish `h1 : m2.φ y ∈ G.PP.L.U (i PUnit.unit)` using `mem_pull.1 hy.1`. Establish `key` using `hσ' _ (𝟙 _) y (i PUnit.unit) k h1 hy.2`.
+
+Establish `hl : gs (𝟙 _) y _ ((thfPull G.PP.L m2.φ θ).f i) = gs (𝟙 _ ≫ m2.φ) y _ (θ.f (i PUnit.unit))` using `gs_appLE m2.φ _ _ _ (𝟙 _) y hy.1 _`. Rewrite using `[gs_res (𝟙 _) y _ hy, hl, key, gs_mul (𝟙 _) y _ hy, gs_res (𝟙 _) y _ hy]`. Use `congr 1`. Conclude with `(gs_unit (𝟙 _) y _ hy (w2.s (i, k))).symm`.
+-/
 theorem pull_sec {R S : Type} [CommRing R] [CommRing S] (G : SAB H (Sp R)) (t' : SAB H (Sp S)) {f : Sp S ⟶ Sp R}
     (m2 : SABMap t' G f) (θ : LB.Sec G.PP.L) :
     ∃ (w2 : LB.Iso t'.PP.L (G.PP.L.pull m2.φ)) (σ' : LB.Sec t'.PP.L),

@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MemRelParabColEq
 open GlobalTheory.PRep GlobalTheory.SmGL Matrix GlobalTheory.CellDetFirst
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CellDetFirst.sigmaC_mk_scalar | exact GlobalTheory.CellDetFirst.sigmaC_mk_scalar | (intros; apply GlobalTheory.CellDetFirst.sigmaC_mk_scalar <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.induced_rep_sigma_apply_quotient : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (χ₁ χ₂ : kˣ →* ℂˣ) (u v : ℕ) (p : relParab k (colEq u v)) (w : ℂ ⊗[ℂ] ℂ),
     sigmaC χ₁ χ₂ u v p (Submodule.Quotient.mk w) =

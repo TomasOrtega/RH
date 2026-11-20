@@ -5,6 +5,13 @@ open UpperTheory.Gal.CertificateRingHomMap (GUf Plc)
 open UpperTheory.Gal.W2.Seed (Arith Setup)
 open UpperTheory.Gal.Int.Geo UpperTheory.Gal.Int.Geo.Pl
 
+/- English proof (translation)
+Introduce `hL hT hI E _ _ _ A n p _ S F x hx N w σ J L _ g θ ϑ hD hm`. Take `⟨-, h2, h3, -⟩` from `hL p S.D S.G S.L`. Take `⟨l1, l2, l3, l4, l5⟩` from `σ.lv`. Use `⟨σ.q, σ.r, Ideal.span {((ordCompl[σ.q] N.1 : ℕ) : 𝓞 E)} * σ.𝔞, σ.K₀, σ.atp, ⟨ordCompl[σ.q] N.1, σ.𝔞, l1, l2, l3, l4, l5, rfl⟩, σ.isLev, h2 _ _ _ _ (h3 N.1) σ.isLev ((Ideal.span_singleton_le_iff_mem _).2 σ.mem), σ.mem, hD, ?_⟩` and prove the remaining obligations. Introduce `i hi`.
+
+Take `⟨j, ⟨hin, hK, hH, hM⟩, hθ⟩` from `hm i hi`. Use `⟨j, hK, (hT E A n p S F x hx N w σ i hin _ hH).2, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hM]`. Conclude with `Dvd.intro_left _ rfl`. Introduce `_`.
+
+Conclude with `hI E A n p S F x hx N w σ i hin _ hH`. Rewrite using `[hθ, idx, hK]`.
+-/
 theorem UpperTheory.Gal.Int.Geo.Pl.congOf_of :
     LevBasic → TjOK → TjIdx → CongOf := by
   intro hL hT hI E _ _ _ A n p _ S F x hx N w σ J L _ g θ ϑ hD hm

@@ -10,6 +10,9 @@ noncomputable def companion (p : Polynomial ℂ) (n : ℕ) : (Fin n → ℂ) →
     if h : (i : ℕ) + 1 < n then LinearMap.proj ⟨i + 1, h⟩
     else - ∑ k : Fin n, p.coeff k • LinearMap.proj k
 
+/- English proof (translation)
+Establish `h` using `hrel s`. Rewrite `h` using `[Finset.sum_range_succ, hp.coeff_natDegree, one_mul]`. Establish `e : ∑ k : Fin p.natDegree, p.coeff k * F k s = ∑ k ∈ Finset.range p.natDegree, p.coeff k * F k s` using `(Finset.sum_range (fun k => p.coeff k * F k s)).symm`. Rewrite using `[e]`. Take the linear combination `h`.
+-/
 theorem top_eq {p : Polynomial ℂ} (hp : p.Monic) {F : ℕ → ℝ → ℂ}
     (hrel : ∀ s : ℝ, ∑ k ∈ Finset.range (p.natDegree + 1), p.coeff k * F k s = 0) (s : ℝ) :
     F p.natDegree s = - ∑ k : Fin p.natDegree, p.coeff k * F k s := by
@@ -21,6 +24,19 @@ theorem top_eq {p : Polynomial ℂ} (hp : p.Monic) {F : ℕ → ℝ → ℂ}
   rw [e]
   linear_combination h
 
+/- English proof (translation)
+Set `X : ℝ → (Fin p.natDegree → ℂ)` to `fun s i => F i s`. Establish `hX : ∀ s, HasDerivAt X (companion p p.natDegree (X s)) s`. Introduce `s`. Rewrite using `[hasDerivAt_pi]`. Introduce `i`.
+
+Establish `e : companion p p.natDegree (X s) i = F (i + 1) s`. Simplify using `only [companion, LinearMap.pi_apply]`. Use `split_ifs with h`. Both sides reduce to the same expression. Establish `hi : (i : ℕ) + 1 = p.natDegree`.
+
+Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hi, top_eq hp hrel s]`. Simplify using `[X, LinearMap.sum_apply, smul_eq_mul]`. Rewrite using `[e]`.
+
+Conclude with `hF i s`. Establish `hA : LipschitzWith ‖LinearMap.toContinuousLinearMap (companion p p.natDegree)‖₊ (companion p p.natDegree)`. Use `(LinearMap.toContinuousLinearMap (companion p p.natDegree)).lipschitz` as an intermediate fact. Simplify using `using this`. Establish `hzero : ∀ s, X s = 0`.
+
+Introduce `s`. Establish `key` using `ODE_solution_unique_of_mem_Icc (v := fun _ => companion p p.natDegree) (s := fun _ => Set.univ) (a := -(|s| + 1)) (b := |s| + 1) (t₀ := 0) (fun t _ => hA.lipschitzOnWith) ⟨by linarith [abs_nonneg s], by linarith [abs_nonneg s]⟩ (fun t _ => (hX t).continuousAt.continuousWithinAt) …`. Conclude with `key ⟨by linarith [neg_abs_le s], by linarith [le_abs_self s]⟩`. Introduce `k hk`. Use function extensionality and compare the values at `s`.
+
+Simplify `congrFun (hzero s) ⟨k, hk⟩` using `[X]`.
+-/
 theorem lower_eq_zero {p : Polynomial ℂ} (hp : p.Monic) {F : ℕ → ℝ → ℂ}
     (hF : ∀ (k : ℕ) (s : ℝ), HasDerivAt (F k) (F (k + 1) s) s)
     (hrel : ∀ s : ℝ, ∑ k ∈ Finset.range (p.natDegree + 1), p.coeff k * F k s = 0)
@@ -62,6 +78,11 @@ theorem lower_eq_zero {p : Polynomial ℂ} (hp : p.Monic) {F : ℕ → ℝ → �
   funext s
   simpa [X] using congrFun (hzero s) ⟨k, hk⟩
 
+/- English proof (translation)
+Introduce `k hk`. Proceed by induction on `k, hk using Nat.le_induction with`. Consider the case `base => exact h`. Consider the case `succ k hmk ih`. Use function extensionality and compare the values at `s`.
+
+Establish `h1` using `hF k s`. Rewrite `h1` using `[ih]`. Use `show F (k + 1) s = 0`. Conclude with `h1.unique (hasDerivAt_const s (0 : ℂ))`.
+-/
 theorem chain_zero {F : ℕ → ℝ → ℂ} (hF : ∀ (k : ℕ) (s : ℝ), HasDerivAt (F k) (F (k + 1) s) s)
     {m : ℕ} (h : F m = 0) : ∀ k, m ≤ k → F k = 0 := by
   intro k hk
@@ -74,6 +95,13 @@ theorem chain_zero {F : ℕ → ℝ → ℂ} (hF : ∀ (k : ℕ) (s : ℝ), HasD
     show F (k + 1) s = 0
     exact h1.unique (hasDerivAt_const s (0 : ℂ))
 
+/- English proof (translation)
+Establish `hlow` using `lower_eq_zero hp hF hrel h0`. Establish `htop : F p.natDegree = 0`. Use function extensionality and compare the values at `s`. Rewrite using `[top_eq hp hrel s]`. Establish `hz : ∀ k : Fin p.natDegree, p.coeff k * F k s = 0` using `fun k => by`.
+
+Rewrite using `[hlow k k.isLt]`. Simplify using the standard rewrite rules. Simplify using `[hz]`. Introduce `k`. Break down `lt_or_ge k p.natDegree with hk | hk` into its components or cases.
+
+Conclude with `hlow k hk`. Conclude with `chain_zero hF htop k hk`.
+-/
 theorem eq_zero_of_initial {p : Polynomial ℂ} (hp : p.Monic) {F : ℕ → ℝ → ℂ}
     (hF : ∀ (k : ℕ) (s : ℝ), HasDerivAt (F k) (F (k + 1) s) s)
     (hrel : ∀ s : ℝ, ∑ k ∈ Finset.range (p.natDegree + 1), p.coeff k * F k s = 0)
@@ -107,6 +135,9 @@ def solSpace (p : Polynomial ℂ) : Submodule ℂ (ℕ → ℝ → ℂ) where
       ring
     simp only [h, ← Finset.mul_sum, rF s, mul_zero]
 
+/- English proof (translation)
+Set `Φ : solSpace p →ₗ[ℂ] (Fin p.natDegree → ℂ)` to `{ toFun := fun F i => (F : ℕ → ℝ → ℂ) i 0 map_add' := fun F G => rfl map_smul' := fun c F => rfl }`. Use `Module.Finite.of_injective Φ ((injective_iff_map_eq_zero Φ).2 fun F hF => ?_)` and prove the remaining obligations. Take `⟨hFd, hFr⟩` from `F.2`. Establish `hz` using `eq_zero_of_initial hp hFd hFr (fun k hk => congrFun hF ⟨k, hk⟩)`. Conclude with `Subtype.ext (funext hz)`.
+-/
 theorem finiteDimensional_solSpace {p : Polynomial ℂ} (hp : p.Monic) :
     FiniteDimensional ℂ (solSpace p) := by
   let Φ : solSpace p →ₗ[ℂ] (Fin p.natDegree → ℂ) :=
@@ -118,6 +149,17 @@ theorem finiteDimensional_solSpace {p : Polynomial ℂ} (hp : p.Monic) :
   have hz := eq_zero_of_initial hp hFd hFr (fun k hk => congrFun hF ⟨k, hk⟩)
   exact Subtype.ext (funext hz)
 
+/- English proof (translation)
+Introduce `p hp`. Use `haveI := finiteDimensional_solSpace hp`. Set `ev : ℝ → Module.Dual ℂ (solSpace p)` to `fun t => { toFun := fun F => (F : ℕ → ℝ → ℂ) 0 t map_add' := fun F G => rfl map_smul' := fun c F => rfl }`. Set `φ : Module.Dual ℂ (solSpace p)` to `{ toFun := fun F => (F : ℕ → ℝ → ℂ) 1 0 map_add' := fun F G => rfl map_smul' := fun c F => rfl }`. Establish `hco : (Submodule.span ℂ (Set.range ev)).dualCoannihilator = ⊥`.
+
+Rewrite using `[eq_bot_iff]`. Introduce `F hF`. Rewrite `hF` using `[Submodule.mem_dualCoannihilator]`. Establish `h0 : (F : ℕ → ℝ → ℂ) 0 = 0`. Use function extensionality and compare the values at `fun t => hF (ev t) (Submodule.subset_span ⟨t, rfl⟩)`.
+
+Take `⟨hFd, -⟩` from `F.2`. Establish `hall` using `chain_zero hFd h0`. Rewrite using `[Submodule.mem_bot]`. Conclude with `Subtype.ext (funext fun k => hall k (Nat.zero_le k))`. Establish `hspan : Submodule.span ℂ (Set.range ev) = ⊤`.
+
+Rewrite using `[← Subspace.dualCoannihilator_dualAnnihilator_eq (W := Submodule.span ℂ (Set.range ev)), hco, Submodule.dualAnnihilator_bot]`. Establish `hφ : φ ∈ Submodule.span ℂ (Set.range ev)`. Rewrite using `[hspan]`. Conclude with `Submodule.mem_top`. Take `⟨c, hc⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 hφ`.
+
+Use `⟨c.support, c, fun F hFd hFr => ?_⟩` and prove the remaining obligations. Establish `hmem : F ∈ solSpace p` using `⟨hFd, hFr⟩`. Establish `key` using `LinearMap.congr_fun hc ⟨F, hmem⟩`. Simplify using `only [Finsupp.sum, LinearMap.sum_apply, LinearMap.smul_apply] at key`. Conclude with `key.symm`.
+-/
 theorem deriv_zero_eq_sum :
     ∀ p : Polynomial ℂ, p.Monic → ∃ (T : Finset ℝ) (w : ℝ → ℂ), ∀ F : ℕ → ℝ → ℂ,
       (∀ (k : ℕ) (s : ℝ), HasDerivAt (F k) (F (k + 1) s) s) →

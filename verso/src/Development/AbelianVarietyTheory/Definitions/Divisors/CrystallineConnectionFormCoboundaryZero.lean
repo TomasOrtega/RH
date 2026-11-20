@@ -29,9 +29,15 @@ variable {B M : Type} [CommRing B] [Algebra R B] [AddCommGroup M]
     [Module B M] [Module Bᵐᵒᵖ M] [IsCentralScalar B M] [Module R M] [IsScalarTower R B M]
     [IsScalarTower R Bᵐᵒᵖ M] (D : Derivation R B M) (b : B)
 
+/- English proof (translation)
+Conclude with `add_zero b`.
+-/
 @[simp] theorem fst_derSec : (derSec D b).fst = b := by
   exact add_zero b
 
+/- English proof (translation)
+Conclude with `zero_add (D b)`.
+-/
 @[simp] theorem snd_derSec : (derSec D b).snd = D b := by
   exact zero_add (D b)
 
@@ -48,8 +54,14 @@ variable (R) (B B' : Type) [CommRing B] [Algebra R B] [CommRing B'] [Algebra R B
 
 attribute [local instance] opModule
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ ↦ rfl⟩`.
+-/
 theorem isCentralScalar_kaehler : IsCentralScalar B Ω[B⁄R] := ⟨fun _ _ ↦ rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun r b m ↦ smul_assoc r b.unop m⟩`.
+-/
 theorem isScalarTower_kaehler : IsScalarTower R Bᵐᵒᵖ Ω[B⁄R] := ⟨fun r b m ↦ smul_assoc r b.unop m⟩
 
 attribute [local instance] isCentralScalar_kaehler isScalarTower_kaehler
@@ -71,12 +83,18 @@ def diagMap [Algebra B B'] [IsScalarTower R B B'] :
 
 variable {B B'} in
 
+/- English proof (translation)
+Conclude with `add_zero _`.
+-/
 theorem fst_diagMap [Algebra B B'] [IsScalarTower R B B'] (c : TrivSqZeroExt B Ω[B⁄R]) :
     (diagMap R B B' c).fst = algebraMap B B' c.fst := by
   exact add_zero _
 
 variable {B B'} in
 
+/- English proof (translation)
+Conclude with `zero_add _`.
+-/
 theorem snd_diagMap [Algebra B B'] [IsScalarTower R B B'] (c : TrivSqZeroExt B Ω[B⁄R]) :
     (diagMap R B B' c).snd = KaehlerDifferential.map R R B B' c.snd := by
   exact zero_add _
@@ -87,11 +105,23 @@ def connForm (f : Z1 (O (dp0 R) s)) (x : Sp B ⟶ X) (hx : x ≫ s = spMap (alge
   TrivSqZeroExt.snd (R := B) (ev f ((diagExt R B).secHom hx (diagExt R B).i fun _ ↦ rfl) -
     ev f ((diagExt R B).secHom hx (diagSec R B) (fst_derSec _)))
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `TrivSqZeroExt.snd (R := B) ((_ - TrivSqZeroExt.inl _) - (_ - diagSec R B _)) = _`. Simplify using the standard rewrite rules.
+-/
 theorem crystallineConnectionForm_coboundaryZero (g : C0 (O (dp0 R) s)) (x : Sp B ⟶ X) (hx : x ≫ s = spMap (algebraMap R B)) :
     connForm ⟨d0 _ g, commAlgFunctorCoboundaryZero_mem_cocyclesOne _ g⟩ x hx = D R B (g (Thick.triv B x hx)) := by
   change TrivSqZeroExt.snd (R := B) ((_ - TrivSqZeroExt.inl _) - (_ - diagSec R B _)) = _
   simp
 
+/- English proof (translation)
+Set `a` to `Thick.trivHom (hx := hx) (T := Thick.triv B' x' hx') (IsScalarTower.toAlgHom R B B') e`. Set `Φ` to `(diagExt R B).thickHom (diagExt R B') (diagMap R B B') (IsScalarTower.toAlgHom R B B') (fun c ↦ (fst_diagMap R c).symm) hx hx' e`. Establish `k1` using `ev_sq f a ((diagExt R B').secHom hx' (diagExt R B').i fun _ ↦ rfl) ((diagExt R B).secHom hx (diagExt R B).i fun _ ↦ rfl) Φ fun c ↦ TrivSqZeroExt.ext (fst_diagMap R (TrivSqZeroExt.inl c)).symm ((snd_diagMap R (TrivSqZeroExt.inl c)).trans (map_zero _)).symm`. Establish `k2` using `ev_sq f a ((diagExt R B').secHom hx' (diagSec R B') (fst_derSec _)) ((diagExt R B).secHom hx (diagSec R B) (fst_derSec _)) Φ fun c ↦ by`. Express the relevant statement in the definitionally equal form `diagSec R B' (algebraMap B B' c) = diagMap R B B' (diagSec R B c)`.
+
+Use `ext`. Rewrite using `[fst_diagMap, fst_derSec, fst_derSec]`. Rewrite using `[snd_diagMap, snd_derSec, snd_derSec, KaehlerDifferential.map_D]`. Establish `l1` using `congrArg (TrivSqZeroExt.snd (R := B')) k1`. Establish `l2` using `congrArg (TrivSqZeroExt.snd (R := B')) k2`.
+
+Express the relevant statement in the definitionally equal form `0 + _ = (diagMap R B B' _).snd + _ at l1`. Express the relevant statement in the definitionally equal form `(diagSec R B' (ev f a)).snd + _ = (diagMap R B B' _).snd + _ at l2`. Rewrite `l1`, `l2` using `[snd_diagMap]`. Rewrite `l2` using `[snd_derSec]`. Simplify using `only [connForm, TrivSqZeroExt.snd_sub, map_sub]`.
+
+Establish `key : ∀ a b c d e f : Ω[B'⁄R], 0 + a = c + e → f + b = d + e → a - b - (c - d) = f` using `fun a b c d e f h1 h2 ↦ by linear_combination (norm := abel1) h1 - h2`. Conclude with `key _ _ _ _ _ _ l1 l2`.
+-/
 theorem connForm_map [Algebra B B'] [IsScalarTower R B B'] (f : Z1 (O (dp0 R) s)) (x : Sp B ⟶ X)
     (hx : x ≫ s = spMap (algebraMap R B)) (x' : Sp B' ⟶ X) (hx' : x' ≫ s = spMap (algebraMap R B'))
     (e : spMap (algebraMap B B') ≫ x = x') :
@@ -137,6 +167,9 @@ def IsSmall {ι : Type} (U : ι → X.Opens) : ObjectProperty (Thick γ s) :=
 
 variable {γ s} in
 
+/- English proof (translation)
+Rewrite using `[← φ.pt]`. Conclude with `fun p _ ↦ h (Set.mem_univ ((spMap φ.φ₀) p))`.
+-/
 theorem Thick.Hom.le_preimage {T T' : Thick γ s} (φ : T ⟶ T') {U : X.Opens} (h : ⊤ ≤ T.x ⁻¹ᵁ U) :
     ⊤ ≤ T'.x ⁻¹ᵁ U := by
   rw [← φ.pt]
@@ -152,6 +185,9 @@ def IsChern (L : LB X) (z : H2 γ s) : Prop :=
       dpExp T''.obj.δ (ℓ.1 T T' T'' φ ψ) * u T T'' (φ ≫ ψ) = ψ.hom.φ (u T T' φ) * u T' T'' ψ) ∧
     (CoefMap.restrict (O γ s) (IsSmall γ s L.U).ι).pull2 z = H2.mk _ ℓ
 
+/- English proof (translation)
+Use `⟨fun T ↦ T.property.choose, fun T ↦ T.property.choose_spec, fun _ _ _ ↦ 1, 0, fun T T' φ ↦ by rw [h, Units.val_one, map_one, map_one], fun T T' T'' φ ψ ↦ ⟨T''.obj.J.zero_mem, ?_⟩, by rw [map_zero, map_zero]⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `dpExp T''.obj.δ 0 * 1 = _`. Rewrite using `[dpExp_zero, map_one]`.
+-/
 theorem isChern_zero (L : LB X) (h : ∀ i j, L.g i j = 1) : IsChern γ s L 0 := by
   refine ⟨fun T ↦ T.property.choose, fun T ↦ T.property.choose_spec, fun _ _ _ ↦ 1, 0,
     fun T T' φ ↦ by rw [h, Units.val_one, map_one, map_one], fun T T' T'' φ ψ ↦ ⟨T''.obj.J.zero_mem, ?_⟩,
@@ -163,6 +199,9 @@ end Chern
 
 section Examples
 
+/- English proof (translation)
+Establish `hx : inv s ≫ s = spMap (algebraMap R R)` using `by rw [IsIso.inv_hom_id]; exact (spMap_id R).symm`. Use `H1.eq_zero_of_isInitial _ (T₀ := Thick.triv R (inv s) hx) (Limits.IsInitial.ofUniqueHom (fun T ↦ Thick.trivHom (Algebra.ofId R T.B) ?_) fun T m ↦ ?_) c` and prove the remaining obligations. Rewrite using `[IsIso.comp_inv_eq]`. Conclude with `T.w.symm`. Conclude with `Thick.hom_ext fun b ↦ (m.φ.commutes b).trans ((Algebra.ofId R T.B).commutes b).symm`.
+-/
 theorem firstDeRham_base_eq_zero (s : X ⟶ Sp R) [IsIso s] (c : FirstDeRham s) : c = 0 := by
   have hx : inv s ≫ s = spMap (algebraMap R R) := by rw [IsIso.inv_hom_id]; exact (spMap_id R).symm
   refine H1.eq_zero_of_isInitial _ (T₀ := Thick.triv R (inv s) hx)
@@ -176,9 +215,17 @@ abbrev lineStr (R : Type) [CommRing R] : Sp R[X] ⟶ Sp R := spMap (algebraMap R
 
 def coordLift (T : Thick (dp0 R) (lineStr R)) : T.B := (T.surj ((Spec.preimage T.x).hom Polynomial.X)).choose
 
+/- English proof (translation)
+The claim follows from `(T.surj _).choose_spec`.
+-/
 theorem π_coordLift (T : Thick (dp0 R) (lineStr R)) :
     T.π (coordLift T) = (Spec.preimage T.x).hom Polynomial.X := (T.surj _).choose_spec
 
+/- English proof (translation)
+Rewrite using `[← T'.ker, map_sub, ← φ.comm, π_coordLift, π_coordLift, ← φ.pt, sub_eq_zero]`. Establish `: Spec.preimage (spMap φ.φ₀ ≫ T.x) = Spec.preimage T.x ≫ CommRingCat.ofHom φ.φ₀`. Apply `Spec.map_injective` to reduce the goal to its premises. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Both sides reduce to the same expression.
+-/
 theorem coordLift_sub_mem {T T' : Thick (dp0 R) (lineStr R)} (φ : T ⟶ T') :
     coordLift T' - φ.φ (coordLift T) ∈ T'.J := by
   rw [← T'.ker, map_sub, ← φ.comm, π_coordLift, π_coordLift, ← φ.pt, sub_eq_zero]
@@ -187,6 +234,9 @@ theorem coordLift_sub_mem {T T' : Thick (dp0 R) (lineStr R)} (φ : T ⟶ T') :
     simp
   rw [this]; rfl
 
+/- English proof (translation)
+Rewrite using `[δ.dpow_add ha hb]`. Simplify using `[Finset.Nat.antidiagonal_succ, δ.dpow_zero ha, δ.dpow_zero hb, δ.dpow_one ha, δ.dpow_one hb]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dpow_two_add {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) {a b : B} (ha : a ∈ J)
     (hb : b ∈ J) : δ.dpow 2 (a + b) = δ.dpow 2 a + a * b + δ.dpow 2 b := by
   rw [δ.dpow_add ha hb]
@@ -211,6 +261,21 @@ def tdt (R : Type) [CommRing R] : Form (lineStr R) :=
     change (_ * _ + _ : T'.B) = 0
     rw [this, mul_zero, zero_add, dpow_eval_zero _ two_ne_zero]⟩
 
+/- English proof (translation)
+Introduce `h`. Take `⟨g, hg⟩` from `H1.mk_eq_zero.1 h`. Establish `hx : 𝟙 _ ≫ lineStr R = spMap (algebraMap R R[X])` using `Category.id_comp _`. Set `E` to `SqExt.ofModule R R[X] R[X]`. Set `j : R[X] →ₐ[R] E.C` to `derSec derivative'`.
+
+Establish `hπ : ∀ b, E.π (j b) = b` using `fst_derSec _`. Establish `c0 : coordLift (Thick.triv R[X] _ hx) = Polynomial.X`. Use `(π_coordLift (Thick.triv R[X] _ hx)).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Spec.preimage (𝟙 (Sp R[X]))).hom Polynomial.X = Polynomial.X`. Rewrite using `[Spec.preimage_id]`.
+
+Both sides reduce to the same expression. Establish `c1 : (coordLift (E.thick _ hx)).fst = Polynomial.X`. Use `(π_coordLift (E.thick _ hx)).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Spec.preimage (𝟙 (Sp R[X]))).hom Polynomial.X = Polynomial.X`. Rewrite using `[Spec.preimage_id]`.
+
+Both sides reduce to the same expression. Establish `e1` using `congrFun (congrFun (congrFun hg _) _) (E.secHom hx E.i E.π_i)`. Establish `e2` using `congrFun (congrFun (congrFun hg _) _) (E.secHom hx j hπ)`. Express the relevant statement in the definitionally equal form `(_ - TrivSqZeroExt.inl _ : E.C) = TrivSqZeroExt.inl (coordLift (Thick.triv R[X] _ hx)) * (_ - TrivSqZeroExt.inl (coordLift (Thick.triv R[X] _ hx))) + (divided₂ E.sq).dpow 2 _ at e1`. Express the relevant statement in the definitionally equal form `(_ - j _ : E.C) = j (coordLift (Thick.triv R[X] _ hx)) * (_ - j (coordLift (Thick.triv R[X] _ hx))) + (divided₂ E.sq).dpow 2 _ at e2`.
+
+Rewrite `e1`, `e2` using `[squareZeroDividedPowers_dpow E.sq le_rfl, c0]`. Establish `key : ∀ (G c : TrivSqZeroExt R[X] R[X]) (p : R[X]), c.fst = Polynomial.X → G - TrivSqZeroExt.inl p = TrivSqZeroExt.inl Polynomial.X * (c - TrivSqZeroExt.inl Polynomial.X) + 0 → G - derSec (R` using `R) derivative' p = derSec (R := R) derivative' Polynomial.X * (c - derSec (R := R) derivative' Polynomial.X) + 0 → derivative p = Polynomial.X := by`. Introduce `G c p c1 e1 e2`. Establish `f1` using `congrArg TrivSqZeroExt.snd e1`. Establish `f2` using `congrArg TrivSqZeroExt.snd e2`.
+
+Simplify using `[c1] at f1 f2`. Take the linear combination `f1 - f2`. Establish `f3` using `key _ _ _ c1 e1 e2`. Use `congrArg (coeff · 1) f3` as an intermediate fact. Simplify using `only [coeff_derivative, coeff_X_one] at this`.
+
+Rewrite `this` using `[show ((1 : ℕ) : R) + 1 = 2 by norm_num, h2, mul_zero]`. Conclude with `zero_ne_one this`.
+-/
 theorem cl_tdt_ne_zero [Nontrivial R] (h2 : (2 : R) = 0) : Form.cl _ (tdt R) ≠ 0 := by
   intro h
   obtain ⟨g, hg⟩ := H1.mk_eq_zero.1 h

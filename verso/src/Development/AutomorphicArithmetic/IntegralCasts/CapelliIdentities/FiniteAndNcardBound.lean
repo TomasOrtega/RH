@@ -1,6 +1,27 @@
 import Mathlib
 
 open NumberField in
+/- English proof (translation)
+Introduce `E _ _`. Set `L` to `LinearMap.toContinuousLinearMap (canonicalEmbedding.latticeBasis E).equivFun.toLinearMap`. Set `c : ℝ` to `‖L‖`. Establish `hc : 0 ≤ c` using `norm_nonneg _`. Set `n` to `Fintype.card (Module.Free.ChooseBasisIndex ℤ (RingOfIntegers E))`.
+
+Use `⟨(2 * c + 3) ^ n, n, fun R hR => ?_⟩` and prove the remaining obligations. Set `M : ℕ` to `⌈c * R⌉₊`. Establish `hM : c * R ≤ M` using `Nat.le_ceil _`. Establish `hM' : (M : ℝ) ≤ c * R + 1` using `(Nat.ceil_lt_add_one (by positivity)).le`. Set `f : RingOfIntegers E → (Module.Free.ChooseBasisIndex ℤ (RingOfIntegers E) → ℤ)` to `(RingOfIntegers.basis E).equivFun`.
+
+Establish `hf : Function.Injective f` using `(RingOfIntegers.basis E).equivFun.injective`. Set `T : Finset (Module.Free.ChooseBasisIndex ℤ (RingOfIntegers E) → ℤ)` to `Fintype.piFinset fun _ => Finset.Icc (-(M : ℤ)) M`. Establish `hT : T.card = (2 * M + 1) ^ n`. Establish `h1 : (Finset.Icc (-(M : ℤ)) M).card = 2 * M + 1`. Rewrite using `[Int.card_Icc]`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `only [T, n, Fintype.card_piFinset, h1, Finset.prod_const, Finset.card_univ]`. Establish `hmaps : ∀ r ∈ {r : RingOfIntegers E | ∀ (w : InfinitePlace E), (w : E → ℝ) (↑r : E) ≤ R}, f r ∈ (T : Set _)`. Introduce `r hr`. Establish `h1 : ‖canonicalEmbedding E (r : E)‖ ≤ R`.
+
+Rewrite using `[canonicalEmbedding.norm_le_iff]`. Introduce `φ`. Use `hr (InfinitePlace.mk φ)` as an intermediate fact. Rewrite `this` using `[InfinitePlace.apply]`. Then use the resulting hypothesis. Establish `h2 : ‖L (canonicalEmbedding E (r : E))‖ ≤ M` using `(L.le_opNorm _).trans ((mul_le_mul_of_nonneg_left h1 hc).trans hM)`.
+
+Simplify using `only [T, Finset.mem_coe, Fintype.mem_piFinset, Finset.mem_Icc]`. Introduce `i`. Establish `h3` using `(norm_le_pi_norm _ i).trans h2`. Establish `h4 : L (canonicalEmbedding E (r : E)) i = ((f r i : ℤ) : ℂ)`. Express the relevant statement in the definitionally equal form `(canonicalEmbedding.latticeBasis E).repr (canonicalEmbedding E (r : E)) i = _`.
+
+Rewrite using `[canonicalEmbedding.integralBasis_repr_apply]`. Use `integralBasis_repr_apply E r i` as an intermediate fact. Rewrite using `[RingOfIntegers.coe_eq_algebraMap, this]`. Simplify using `[f]`. Rewrite `h3` using `[h4, Complex.norm_intCast]`.
+
+Establish `h5 : |f r i| ≤ (M : ℤ)` using `by exact_mod_cast h3`. Conclude with `abs_le.mp h5`. Use `⟨Set.Finite.of_finite_image (T.finite_toSet.subset ?_) hf.injOn, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨r, hr, rfl⟩`. Conclude with `hmaps r hr`.
+
+Establish `h` using `Set.ncard_le_ncard_of_injOn f hmaps hf.injOn T.finite_toSet`. Rewrite `h` using `[Set.ncard_coe_finset, hT]`. Combine the equalities or inequalities in the displayed calculation. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+
+Use `_ = _ := mul_pow _ _ _`.
+-/
 theorem UpperTheory.Reformulated.B.FiniteAndNcardBound.finite_and_ncard_le :
     ∀ (E : Type) [inst : Field E] [NumberField E],
     ∃ (C : ℝ) (N : ℕ),

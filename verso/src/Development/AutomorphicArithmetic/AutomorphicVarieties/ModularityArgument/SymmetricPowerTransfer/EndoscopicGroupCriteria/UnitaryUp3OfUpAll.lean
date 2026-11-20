@@ -15,6 +15,9 @@ def Up3 : Prop :=
   ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (r : G ℚ Ω →* GL (Fin 3) (Qbar l)),
     IsAutR ι r → IsAutQ ι r
 
+/- English proof (translation)
+Introduce `l _ Ω _ _ _ ι c hc N w φ θ h1 h2 h3` and use `(h l Ω ι c hc N w φ θ h1 h2 h3).imp fun _ H k hk hp => (H k hk hp).imp fun _ hρ => hρ.1`.
+-/
 theorem PropEGad.eg (h : PropEGad) : PropEG := fun l _ Ω _ _ _ ι c hc N w φ θ h1 h2 h3 =>
   (h l Ω ι c hc N w φ θ h1 h2 h3).imp fun _ H k hk hp => (H k hk hp).imp fun _ hρ => hρ.1
 

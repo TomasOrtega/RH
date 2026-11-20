@@ -18,6 +18,9 @@ namespace GlobalTheory.HoweLocal.WeilImpl
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `h1 : GlobalTheory.LatVac.liftV v 1 • liftE (E` using `E) v z = liftE v z := by`. Rewrite using `[GlobalTheory.HoweLocal.LocCoords.liftV_one_smul, GlobalTheory.HoweLocal.LocCoords.compFin_liftE]`. Rewrite using `[← h1, smul_mul_assoc, GlobalTheory.HoweLocal.LocCoords.liftV_one_smul, map_mul, GlobalTheory.HoweLocal.LocCoords.compFin_liftE]`.
+-/
 theorem liftE_mul_eq (v : Pl F) (z : Fv F v ⊗[F] E) (M : AE F E) :
     liftE v z * M = liftE v (z * compFin F E v M) := by
   have h1 : GlobalTheory.LatVac.liftV v 1 • liftE (E := E) v z = liftE v z := by
@@ -25,6 +28,9 @@ theorem liftE_mul_eq (v : Pl F) (z : Fv F v ⊗[F] E) (M : AE F E) :
   rw [← h1, smul_mul_assoc, GlobalTheory.HoweLocal.LocCoords.liftV_one_smul, map_mul,
     GlobalTheory.HoweLocal.LocCoords.compFin_liftE]
 
+/- English proof (translation)
+Introduce `u hu`. Establish `h1 : GlobalTheory.LatVac.liftV v 1 • liftE (E` using `E) v z = liftE v z := by`. Rewrite using `[GlobalTheory.HoweLocal.LocCoords.liftV_one_smul, GlobalTheory.HoweLocal.LocCoords.compFin_liftE]`. Rewrite using `[← h1, smul_smul, mul_comm, GlobalTheory.HoweLocal.LocCoords.liftV_mul, hu, mul_zero, map_zero, zero_smul]`.
+-/
 theorem at_liftE (v : Pl F) (z : Fv F v ⊗[F] E) : At (evFin F v) (liftE (E := E) v z) := by
   intro u hu
   have h1 : GlobalTheory.LatVac.liftV v 1 • liftE (E := E) v z = liftE v z := by
@@ -35,6 +41,23 @@ end GlobalTheory.HoweLocal.WeilImpl
 
 namespace GlobalTheory.HoweLocal.WeilImpl
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ a b JA B κ _ dA ψ omB hstd hW v _hv inst2 eB hcomp omL hL co hco g w φ hφ`. Establish `hat : ∀ x : Matrix (Fin a) (Fin b) (Fv F v ⊗[F] E), At (evFin F v) (x.map (liftE v))`. Introduce `x u hu`. Use function extensionality and compare the values at `i j`. Conclude with `at_liftE v (x i j) u hu`.
+
+Establish `hrho : ∀ (x : Matrix (Fin a) (Fin b) (Fv F v ⊗[F] E)) (φ₀ : (κ → Fv F v) → ℂ), Acts (evFin F v) (dA.rho ψ (x.map (liftE v))) φ₀ (co.rho (GlobalTheory.LatVac.psiAt ψ v) x φ₀)`. Introduce `x φ₀`. Establish `h` using `GlobalTheory.VacBridge.rho_acts_locCo dA ψ v _ (hat x) φ₀`. Rewrite `h` using `[← hco x]`. Use `h using 2` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [Darboux.rho]`. Apply the tactic sequence `first | rfl | (congr 1; exact Subsingleton.elim _ _) | congr`. Establish `hSB : ∀ x, ∀ φ₀ ∈ SB (κ → Fv F v), co.rho (GlobalTheory.LatVac.psiAt ψ v) x φ₀ ∈ SB (κ → Fv F v)`. Introduce `x φ₀ h0`. Use `GlobalTheory.SchrSB.schr_mem_SB ψ hstd.1 v (co.e x) φ₀ h0` as an intermediate fact.
+
+Use `this using 2` and compare the differences between its conclusion and the goal. Simplify using `only [Darboux.rho]`. Apply the tactic sequence `first | rfl | (congr 1; exact Subsingleton.elim _ _) | congr`. Establish `hpresR : ∀ x, ∀ Φ ∈ schA F κ, dA.rho ψ x Φ ∈ schA F κ`. Introduce `x Φ hΦ`.
+
+Conclude with `GlobalTheory.SchrKeepsSchA.schr_mem_schA F ψ hstd κ _ Φ hΦ`. Establish `hm : (((g : UG (GlobalTheory.HoweLocal.cv σ v) (GlobalTheory.HoweLocal.Jv v B.J)) : GL (Fin b) (Fv F v ⊗[F] E)) : Matrix (Fin b) (Fin b) (Fv F v ⊗[F] E)) = (mat ((eB.symm g : UAtGrp σ B (evFin F v)) : UA σ B.J)).map (compFin F E v)`. Use `hcomp.1 (eB.symm g)` as an intermediate fact. Rewrite `this` using `[MulEquiv.apply_symm_apply]`. Conclude with `this`.
+
+Establish `hact : actB (cA σ) (eB.symm g).1 (w.map (liftE v)) = (actB (GlobalTheory.HoweLocal.cv σ v) g w).map (liftE v)`. Use function extensionality and compare the values at `i j`. Simplify using `only [actB, Matrix.map_apply, Matrix.mul_apply, Matrix.transpose_apply, map_sum, hm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[liftE_mul_eq]`.
+
+Both sides reduce to the same expression. Establish `h1` using `GlobalTheory.ThK.LocalOps.acts_comp v (hpresR (w.map (liftE v))) (hrho w φ) (hL g _ (hSB w φ hφ)).2`. Establish `h2` using `GlobalTheory.ThK.LocalOps.acts_comp v (fun Φ hΦ => hW.pres (eB.symm g).1 Φ hΦ) (hL g φ hφ).2 (hrho (actB (GlobalTheory.HoweLocal.cv σ v) g w) (omL g φ))`. Establish `h2' : Acts (evFin F v) (omB (eB.symm g).1 ∘ dA.rho ψ (w.map (liftE v))) φ (co.rho (GlobalTheory.LatVac.psiAt ψ v) (actB (GlobalTheory.HoweLocal.cv σ v) g w) (omL g φ))`. Introduce `r hr`.
+
+Use `h2 r hr` as an intermediate fact. Simplify using `only [Function.comp_apply] at this ⊢`. Rewrite using `[hW.impl (eB.symm g).1 (w.map (liftE v)) _ hr.2, hact]`. Conclude with `this`. Conclude with `GlobalTheory.HoweLocal.LocOpsW.acts_uniq v _ hφ h1 h2'`.
+-/
 theorem impl_local : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (a b : ℕ)
     (JA : Matrix (Fin a) (Fin a) E) (B : Spc F E b) (κ : Type) [Fintype κ]
     (dA : Darboux (symp (R := AF F) (cA σ) (-1) (incM F JA) (incM F B.J)) κ) (ψ : AddChar (AF F) ℂ)

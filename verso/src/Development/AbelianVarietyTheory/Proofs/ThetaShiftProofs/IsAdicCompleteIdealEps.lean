@@ -16,24 +16,42 @@ section Dual
 
 variable {R R' : Type} [CommRing R] [CommRing R']
 
+/- English proof (translation)
+Simplify using `[dualMapR]`.
+-/
 @[simp] theorem fst_dualMapR (φ : R →+* R') (a : DualNumber R) : (dualMapR φ a).fst = φ a.fst := by
   simp [dualMapR]
 
+/- English proof (translation)
+Simplify using `[dualMapR]`.
+-/
 @[simp] theorem snd_dualMapR (φ : R →+* R') (a : DualNumber R) : (dualMapR φ a).snd = φ a.snd := by
   simp [dualMapR]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp`.
+-/
 theorem dualMapR_inl (φ : R →+* R') (a : R) : dualMapR φ (TrivSqZeroExt.inl a) = TrivSqZeroExt.inl (φ a) := by
   ext <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp`.
+-/
 theorem dualMapR_eps (φ : R →+* R') : dualMapR φ DualNumber.eps = DualNumber.eps := by
   ext <;> simp
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun a => by have e : a = TrivSqZeroExt.inl a.fst + TrivSqZeroExt.inl a.snd * DualNumber.eps := by ext <;> simp rw [e, map_add, map_add, map_mul, map_mul, h, h, he, dualMapR_inl, dualMapR_inl, dualMapR_eps]`.
+-/
 theorem eq_dualMapR (φ : R →+* R') (ρ : DualNumber R →+* DualNumber R')
     (h : ∀ r, ρ (TrivSqZeroExt.inl r) = TrivSqZeroExt.inl (φ r)) (he : ρ DualNumber.eps = DualNumber.eps) :
     ρ = dualMapR φ := RingHom.ext fun a => by
   have e : a = TrivSqZeroExt.inl a.fst + TrivSqZeroExt.inl a.snd * DualNumber.eps := by ext <;> simp
   rw [e, map_add, map_add, map_mul, map_mul, h, h, he, dualMapR_inl, dualMapR_inl, dualMapR_eps]
 
+/- English proof (translation)
+The claim follows from `have : Nontrivial (DualNumber R) := (TrivSqZeroExt.inl_injective (R := R) (M := R)).nontrivial IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun x => by rw [TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.isUnit_iff_isUnit_fst] simpa using IsLocalRing.isUnit_or_isUnit_one_sub_s …`.
+-/
 theorem isLocalRing_dual (R : Type) [CommRing R] [IsLocalRing R] : IsLocalRing (DualNumber R) :=
   have : Nontrivial (DualNumber R) := (TrivSqZeroExt.inl_injective (R := R) (M := R)).nontrivial
   IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun x => by
@@ -45,6 +63,9 @@ end Dual
 abbrev idealEps : Ideal (DualNumber ℂ⟦X⟧) :=
   (Ideal.span {(PowerSeries.X : ℂ⟦X⟧)}).map (algebraMap ℂ⟦X⟧ (DualNumber ℂ⟦X⟧))
 
+/- English proof (translation)
+The claim follows from `have : Module.Finite ℂ⟦X⟧ (DualNumber ℂ⟦X⟧) := inferInstanceAs (Module.Finite ℂ⟦X⟧ (ℂ⟦X⟧ × ℂ⟦X⟧)) isAdicComplete_map_of_finite _ (DualNumber ℂ⟦X⟧)`.
+-/
 theorem isAdicComplete_idealEps : IsAdicComplete idealEps (DualNumber ℂ⟦X⟧) :=
   have : Module.Finite ℂ⟦X⟧ (DualNumber ℂ⟦X⟧) := inferInstanceAs (Module.Finite ℂ⟦X⟧ (ℂ⟦X⟧ × ℂ⟦X⟧))
   isAdicComplete_map_of_finite _ (DualNumber ℂ⟦X⟧)
@@ -57,10 +78,19 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 def jet (F : V → ℂ) (z : V) : DualNumber ℂ := TrivSqZeroExt.inl (F 0) + TrivSqZeroExt.inr (fderiv ℂ F 0 z)
 
+/- English proof (translation)
+Simplify using `[jet]`.
+-/
 @[simp] theorem fst_jet (F : V → ℂ) (z : V) : (jet F z).fst = F 0 := by simp [jet]
 
+/- English proof (translation)
+Simplify using `[jet]`.
+-/
 @[simp] theorem snd_jet (F : V → ℂ) (z : V) : (jet F z).snd = fderiv ℂ F 0 z := by simp [jet]
 
+/- English proof (translation)
+Use `ext`. Simplify using the standard rewrite rules. Rewrite using `[snd_jet, fderiv_fun_mul hF hG]`. Simplify using `[TrivSqZeroExt.snd_mul, _root_.mul_comm]`.
+-/
 theorem jet_mul {F G : V → ℂ} (hF : DifferentiableAt ℂ F 0) (hG : DifferentiableAt ℂ G 0) (z : V) :
     jet (fun v => F v * G v) z = jet F z * jet G z := by
   ext
@@ -68,12 +98,18 @@ theorem jet_mul {F G : V → ℂ} (hF : DifferentiableAt ℂ F 0) (hG : Differen
   · rw [snd_jet, fderiv_fun_mul hF hG]
     simp [TrivSqZeroExt.snd_mul, _root_.mul_comm]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => ext <;> simp`. Consider the case `succ n ih => rw [pow_succ, ← ih, ← jet_mul (hF.fun_pow n) hF]`. Simplify using `only [pow_succ]`.
+-/
 theorem jet_pow {F : V → ℂ} (hF : DifferentiableAt ℂ F 0) (z : V) (n : ℕ) :
     jet (fun v => F v ^ n) z = jet F z ^ n := by
   induction n with
   | zero => ext <;> simp
   | succ n ih => rw [pow_succ, ← ih, ← jet_mul (hF.fun_pow n) hF]; simp only [pow_succ]
 
+/- English proof (translation)
+Rewrite using `[jet, jet, h.eq_of_nhds, h.fderiv_eq]`.
+-/
 theorem jet_congr {F G : V → ℂ} (h : F =ᶠ[nhds 0] G) (z : V) : jet F z = jet G z := by
   rw [jet, jet, h.eq_of_nhds, h.fderiv_eq]
 
@@ -83,8 +119,14 @@ def IsJet (x : V → ℂ⟦X⟧) (z : V) (y : DualNumber ℂ⟦X⟧) : Prop :=
 
 variable {z : V}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun n => by simp, rfl, fun n => by simp⟩`.
+-/
 theorem isJet_zero (z : V) : IsJet (fun _ => 0) z 0 := ⟨fun n => by simp, rfl, fun n => by simp⟩
 
+/- English proof (translation)
+Use `⟨fun n => ?_, by simp [h.2.1, h'.2.1], fun n => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add]`. Conclude with `(h.1 n).fun_add (h'.1 n)`. Simplify using `only [map_add, TrivSqZeroExt.snd_add]`. Rewrite using `[fderiv_fun_add (h.1 n) (h'.1 n), h.2.2, h'.2.2, ContinuousLinearMap.add_apply]`.
+-/
 theorem IsJet.add {x x' : V → ℂ⟦X⟧} {y y' : DualNumber ℂ⟦X⟧} (h : IsJet x z y) (h' : IsJet x' z y') :
     IsJet (fun v => x v + x' v) z (y + y') := by
   refine ⟨fun n => ?_, by simp [h.2.1, h'.2.1], fun n => ?_⟩
@@ -93,6 +135,9 @@ theorem IsJet.add {x x' : V → ℂ⟦X⟧} {y y' : DualNumber ℂ⟦X⟧} (h : 
   · simp only [map_add, TrivSqZeroExt.snd_add]
     rw [fderiv_fun_add (h.1 n) (h'.1 n), h.2.2, h'.2.2, ContinuousLinearMap.add_apply]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using isJet_zero z`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self _ _)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem IsJet.sum {K : Type} (s : Finset K) {x : K → V → ℂ⟦X⟧} {y : K → DualNumber ℂ⟦X⟧}
     (h : ∀ i ∈ s, IsJet (x i) z (y i)) : IsJet (fun v => ∑ i ∈ s, x i v) z (∑ i ∈ s, y i) := by
   classical
@@ -102,6 +147,11 @@ theorem IsJet.sum {K : Type} (s : Finset K) {x : K → V → ℂ⟦X⟧} {y : K 
     simp only [Finset.sum_insert ha]
     exact (h a (Finset.mem_insert_self _ _)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Use `⟨fun n => ?_, by simp [h.2.1], fun n => ?_⟩` and prove the remaining obligations. Simplify using `only [PowerSeries.coeff_mul]`. Conclude with `DifferentiableAt.fun_sum fun p _ => (h.1 _).const_mul _`. Establish `e : (TrivSqZeroExt.inl r * y : DualNumber ℂ⟦X⟧).snd = r * y.snd` using `by simp [TrivSqZeroExt.snd_mul]`. Simplify using `only [e, PowerSeries.coeff_mul]`.
+
+Rewrite using `[fderiv_fun_sum fun p _ => (h.1 _).const_mul _, ContinuousLinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[fderiv_const_mul (h.1 _), h.2.2]`. Both sides reduce to the same expression.
+-/
 theorem IsJet.const_mul {x : V → ℂ⟦X⟧} {y : DualNumber ℂ⟦X⟧} (h : IsJet x z y) (r : ℂ⟦X⟧) :
     IsJet (fun v => r * x v) z (TrivSqZeroExt.inl r * y) := by
   refine ⟨fun n => ?_, by simp [h.2.1], fun n => ?_⟩
@@ -114,12 +164,18 @@ theorem IsJet.const_mul {x : V → ℂ⟦X⟧} {y : DualNumber ℂ⟦X⟧} (h : 
     rw [fderiv_const_mul (h.1 _), h.2.2]
     rfl
 
+/- English proof (translation)
+Use `⟨fun n => ?_, by simp, fun n => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `by_cases hn : n = 0 <;> simp [PowerSeries.coeff_C, hn, hF]`. Apply the tactic sequence `by_cases hn : n = 0 <;> simp [PowerSeries.coeff_C, hn]`.
+-/
 theorem isJet_C {F : V → ℂ} (hF : DifferentiableAt ℂ F 0) (z : V) :
     IsJet (fun v => PowerSeries.C (F v)) z (constEps (jet F z)) := by
   refine ⟨fun n => ?_, by simp, fun n => ?_⟩
   · by_cases hn : n = 0 <;> simp [PowerSeries.coeff_C, hn, hF]
   · by_cases hn : n = 0 <;> simp [PowerSeries.coeff_C, hn]
 
+/- English proof (translation)
+Rewrite `h` using `[idealEps, ← Ideal.map_pow, Ideal.span_singleton_pow, Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton]`. Take `⟨c, rfl⟩` from `h`. Conclude with `⟨⟨c.fst, by simp [TrivSqZeroExt.algebraMap_eq_inl]⟩, ⟨c.snd, by`. Rewrite using `[TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.snd_mul]`. Use the proof step `simp⟩⟩`.
+-/
 theorem mem_idealEps_pow {a : DualNumber ℂ⟦X⟧} {n : ℕ} (h : a ∈ idealEps ^ n) :
     PowerSeries.X ^ n ∣ a.fst ∧ PowerSeries.X ^ n ∣ a.snd := by
   rw [idealEps, ← Ideal.map_pow, Ideal.span_singleton_pow, Ideal.map_span, Set.image_singleton,
@@ -128,6 +184,13 @@ theorem mem_idealEps_pow {a : DualNumber ℂ⟦X⟧} {n : ℕ} (h : a ∈ idealE
   exact ⟨⟨c.fst, by simp [TrivSqZeroExt.algebraMap_eq_inl]⟩, ⟨c.snd, by
     rw [TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.snd_mul]; simp⟩⟩
 
+/- English proof (translation)
+Establish `key : ∀ (n : ℕ) (a b : ℂ⟦X⟧), PowerSeries.X ^ (n + 1) ∣ a - b → PowerSeries.coeff n a = PowerSeries.coeff n b` using `fun n a b hab => by`. Use `PowerSeries.X_pow_dvd_iff.1 hab n (Nat.lt_succ_self n)` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Use `⟨fun n => ?_, PowerSeries.ext fun n => ?_, fun n => ?_⟩` and prove the remaining obligations. Take `⟨x', y', h₁, h₂, -⟩` from `h n`.
+
+Simplify using `only [fun v => key n _ _ (h₂ v)]`. Conclude with `h₁.1 n`. Take `⟨x', y', h₁, h₂, h₃⟩` from `h n`. Rewrite using `[key n _ _ (h₂ 0), ← h₁.2.1]`. Conclude with `key n _ _ (by simpa using (mem_idealEps_pow h₃).1)`.
+
+Take `⟨x', y', h₁, h₂, h₃⟩` from `h n`. Simplify using `only [fun v => key n _ _ (h₂ v)]`. Rewrite using `[← h₁.2.2]`. Conclude with `key n _ _ (by simpa using (mem_idealEps_pow h₃).2)`.
+-/
 theorem isJet_of_approx {x : V → ℂ⟦X⟧} {y : DualNumber ℂ⟦X⟧}
     (h : ∀ e : ℕ, ∃ x' y', IsJet x' z y' ∧ (∀ v, PowerSeries.X ^ (e + 1) ∣ x v - x' v) ∧ y - y' ∈ idealEps ^ (e + 1)) :
     IsJet x z y := by
@@ -147,6 +210,15 @@ theorem isJet_of_approx {x : V → ℂ⟦X⟧} {y : DualNumber ℂ⟦X⟧}
     rw [← h₁.2.2]
     exact key n _ _ (by simpa using (mem_idealEps_pow h₃).2)
 
+/- English proof (translation)
+Establish `c : ∀ (g : ℂ⸨X⸩) (n : ℤ), (HahnSeries.single m (1 : ℂ) * g).coeff (n + m) = g.coeff n` using `fun g n => by`. Rewrite using `[HahnSeries.coeff_single_mul_add, _root_.one_mul]`. Use `TrivSqZeroExt.ext (by simp [h.2.1, hf]) ?_` and prove the remaining obligations. Establish `e : (TrivSqZeroExt.inl (HahnSeries.single m (1 : ℂ)) * (TrivSqZeroExt.inl (f 0) + TrivSqZeroExt.inr F) : DualNumber ℂ⸨X⸩).snd = HahnSeries.single m (1 : ℂ) * F`. Simplify using `[TrivSqZeroExt.snd_mul]`.
+
+Rewrite using `[e, snd_dualMapR]`. Use extensionality with `k`. Take `⟨n, rfl⟩ : ∃ n, k = n + m` from `⟨k - m, by ring⟩`. Rewrite using `[c, hF]`. Simplify using `only [fun v => (c (f v) n).symm.trans (congrArg (fun q : ℂ⸨X⸩ => q.coeff (n + m)) (hf v).symm)]`.
+
+Generalize the expression as in `n + m = k`. Rewrite using `[LaurentSeries.coe_algebraMap]`. Simplify using `only [PowerSeries.coeff_coe]`. Distinguish the cases in `hk : k < 0`. Simplify using `[hk]`.
+
+Simplify using `only [if_neg hk]`. Conclude with `h.2.2 _`.
+-/
 theorem IsJet.dualMapR_eq {x : V → ℂ⟦X⟧} {y : DualNumber ℂ⟦X⟧} (h : IsJet x z y) (m : ℤ) (f : V → ℂ⸨X⸩)
     (hf : ∀ v, algebraMap ℂ⟦X⟧ ℂ⸨X⸩ (x v) = HahnSeries.single m (1 : ℂ) * f v) (F : ℂ⸨X⸩)
     (hF : ∀ n, F.coeff n = fderiv ℂ (fun v => (f v).coeff n) 0 z) :

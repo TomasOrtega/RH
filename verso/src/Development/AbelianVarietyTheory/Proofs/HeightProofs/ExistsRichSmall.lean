@@ -23,9 +23,15 @@ open scoped IntermediateField
 
 namespace GlobalTheory.FieldSize.SmallField
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.field_size_monotone.1 F a b a' b' h ha hb`.
+-/
 theorem sz_mono {F : IntermediateField ℚ ℂ} {a b a' b' : ℝ} (h : Sz F a b) (ha : a ≤ a') (hb : b ≤ b') :
     Sz F a' b' := GlobalTheory.T.field_size_monotone.1 F a b a' b' h ha hb
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | h` into its components or cases. Establish `h1` using `sz_adjoin_rootOfUnity 1 one_pos`. Simplify using `only [Nat.cast_one, div_one, Complex.exp_two_pi_mul_I, Real.log_one] at h1`. Simplify `h1` using `only [Nat.cast_zero, div_zero, Complex.exp_zero, Real.log_zero]`. Conclude with `sz_adjoin_rootOfUnity n h`.
+-/
 theorem sz_cyc (n : ℕ) : Sz ℚ⟮Complex.exp (2 * Real.pi * Complex.I / n)⟯ (Real.log n) (Real.log n) := by
   rcases Nat.eq_zero_or_pos n with rfl | h
   · have h1 := sz_adjoin_rootOfUnity 1 one_pos
@@ -33,6 +39,13 @@ theorem sz_cyc (n : ℕ) : Sz ℚ⟮Complex.exp (2 * Real.pi * Complex.I / n)⟯
     simpa only [Nat.cast_zero, div_zero, Complex.exp_zero, Real.log_zero] using h1
   · exact sz_adjoin_rootOfUnity n h
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact ⟨F, le_rfl, by simpa using h, by simp⟩`. Consider the case `cons n l ih`. Take `⟨F', h1, h2, h3⟩` from `ih`. Use `⟨F' ⊔ ℚ⟮Complex.exp (2 * Real.pi * Complex.I / n)⟯, h1.trans le_sup_left, ?_, ?_⟩` and prove the remaining obligations.
+
+Apply the tactic sequence `refine sz_mono (GlobalTheory.T.field_size_sup_add _ _ _ _ _ _ h2 (sz_cyc n)) (le_of_eq ?_) (le_of_eq ?_) <;>`. Simplify using `only [List.map_cons, List.sum_cons]`. Expand and normalize the polynomial expressions, which then agree. Introduce `N hN`. Break down `List.mem_cons.1 hN with rfl | hN` into its components or cases.
+
+Conclude with `(le_sup_right : _ ≤ F' ⊔ _) (IntermediateField.mem_adjoin_simple_self ℚ _)`. Conclude with `(le_sup_left : F' ≤ _) (h3 N hN)`.
+-/
 theorem exists_roots (l : List ℕ) (F : IntermediateField ℚ ℂ) (a : ℝ) (h : Sz F a a) :
     ∃ F' : IntermediateField ℚ ℂ, F ≤ F' ∧
       Sz F' (a + (l.map fun N : ℕ => Real.log N).sum) (a + (l.map fun N : ℕ => Real.log N).sum) ∧
@@ -49,6 +62,11 @@ theorem exists_roots (l : List ℕ) (F : IntermediateField ℚ ℂ) (a : ℝ) (h
       · exact (le_sup_right : _ ≤ F' ⊔ _) (IntermediateField.mem_adjoin_simple_self ℚ _)
       · exact (le_sup_left : F' ≤ _) (h3 N hN)
 
+/- English proof (translation)
+Establish `hG : ∀ k, L.G k = L'.G k` using `fun k => by unfold PeriodPair.G; rw [h]`. Establish `h2 : L.g₂ = L'.g₂` using `by unfold PeriodPair.g₂; rw [hG]`. Establish `h3 : L.g₃ = L'.g₃` using `by unfold PeriodPair.g₃; rw [hG]`. Establish `hP : ∀ z, L.weierstrassP z = L'.weierstrassP z` using `fun z => by unfold PeriodPair.weierstrassP; rw [h]`. Unfold `weberSet`.
+
+Simplify using `only [h2, h3, hP, h]`.
+-/
 theorem weberSet_congr {L L' : PeriodPair} (h : L.lattice = L'.lattice) (n : ℕ) : weberSet L n = weberSet L' n := by
   have hG : ∀ k, L.G k = L'.G k := fun k => by unfold PeriodPair.G; rw [h]
   have h2 : L.g₂ = L'.g₂ := by unfold PeriodPair.g₂; rw [hG]
@@ -57,6 +75,11 @@ theorem weberSet_congr {L L' : PeriodPair} (h : L.lattice = L'.lattice) (n : ℕ
   unfold weberSet
   simp only [h2, h3, hP, h]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => exact ⟨F, le_rfl, by simpa using h, fun K _ _ j h1 h2 => by omega⟩`. Consider the case `succ m ih`. Take `⟨F', h1, h2, h3⟩` from `ih`. Take `⟨G, g1, g2, g3⟩` from `step (m + 1) F' _ h1 h2`.
+
+Use `⟨G, h1.trans g1, sz_mono g2 (le_of_eq (by push_cast; ring)) (le_of_eq (by push_cast; ring)), fun K hK hG j j1 j2 => ?_⟩` and prove the remaining obligations. Break down `j2.lt_or_eq with hlt | rfl` into its components or cases. Conclude with `h3 K hK (g1.trans hG) j j1 (by omega)`. Conclude with `g3 K hK hG`.
+-/
 theorem exists_chain (Q : ℕ → IntermediateField ℚ ℂ → Prop) (c : ℝ) (F : IntermediateField ℚ ℂ) (a : ℝ) (h : Sz F a a)
     (step : ∀ j (G : IntermediateField ℚ ℂ) (b : ℝ), F ≤ G → Sz G b b → ∃ G' : IntermediateField ℚ ℂ, G ≤ G' ∧
       Sz G' (b + c) (b + c) ∧ ∀ K : IntermediateField ℚ ℂ, FiniteDimensional ℚ K → G' ≤ K → Q j K) (m : ℕ) :
@@ -73,6 +96,11 @@ theorem exists_chain (Q : ℕ → IntermediateField ℚ ℂ → Prop) (c : ℝ) 
     · exact h3 K hK (g1.trans hG) j j1 (by omega)
     · exact g3 K hK hG
 
+/- English proof (translation)
+Break down `Nat.lt_or_ge g 2 with h | h` into its components or cases. Apply the tactic sequence `interval_cases g <;> simp`. Establish `h1 : ((g * (g - 1) : ℕ) : ℝ) ≤ (g : ℝ) ^ 2`. Establish `: g * (g - 1) ≤ g ^ 2` using `by rw [sq]; exact Nat.mul_le_mul_left g (Nat.sub_le g 1)`. Conclude with `this` after adjusting the coercions.
+
+Establish `h0 : (0 : ℝ) < ((g * (g - 1) : ℕ) : ℝ)`. Establish `: 0 < g * (g - 1)` using `Nat.mul_pos (by omega) (by omega)`. Conclude with `this` after adjusting the coercions. Simplify using `using Real.log_le_log h0 h1`.
+-/
 theorem log_mul_pred_le (g : ℕ) : Real.log ((g * (g - 1) : ℕ) : ℝ) ≤ 2 * Real.log g := by
   rcases Nat.lt_or_ge g 2 with h | h
   · interval_cases g <;> simp

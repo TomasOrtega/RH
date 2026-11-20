@@ -14,14 +14,29 @@ noncomputable def tensorCoeff (x : X) : M ⊗[R] R[X] →ₗ[R] M :=
   (TensorProduct.rid R M).toLinearMap ∘ₗ
     (Finsupp.lapply x ∘ₗ (coeffLinearEquiv R : R[X] ≃ₗ[R] X →₀ R).toLinearMap).lTensor M
 
+/- English proof (translation)
+Simplify using `[tensorCoeff]`.
+-/
 @[simp] theorem tensorCoeff_tmul (x : X) (m : M) (p : R[X]) :
     tensorCoeff R M x (m ⊗ₜ p) = p.coeff x • m := by
   simp [tensorCoeff]
 
+/- English proof (translation)
+Simplify using `[Finsupp.single_apply]`.
+-/
 theorem tensorCoeff_tmul_single_one [DecidableEq X] (x y : X) (m : M) :
     tensorCoeff R M x (m ⊗ₜ single y 1) = if y = x then m else 0 := by
   simp [Finsupp.single_apply]
 
+/- English proof (translation)
+Set `E : M ⊗[R] R[X] ≃ₗ[R] X →₀ M` to `(coeffLinearEquiv R : R[X] ≃ₗ[R] X →₀ R).lTensor M ≪≫ₗ finsuppScalarRight R R M X`. Establish `hE : ∀ t x, E t x = tensorCoeff R M x t`. Introduce `t x`. Proceed by induction on `t with`. Consider the case `zero => simp`.
+
+Consider the case `add a b ha hb => simp [ha, hb]`. Consider the case `tmul m p => simp [E, finsuppScalarRight_apply_tmul_apply]`. Use `⟨(E t).support, fun x hx => by rw [← hE]; simpa using hx, E.injective ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Rewrite using `[map_sum, Finsupp.finsetSum_apply]`.
+
+Simplify using `only [hE, tensorCoeff_tmul_single_one]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[← hE]`.
+
+Simplify using `using h`.
+-/
 theorem exists_eq_sum_tensorCoeff (t : M ⊗[R] R[X]) :
     ∃ s : Finset X, (∀ x ∉ s, tensorCoeff R M x t = 0) ∧
       t = ∑ x ∈ s, tensorCoeff R M x t ⊗ₜ[R] single x (1 : R) := by
@@ -43,6 +58,9 @@ theorem exists_eq_sum_tensorCoeff (t : M ⊗[R] R[X]) :
   · rfl
   · rw [← hE]; simpa using h
 
+/- English proof (translation)
+Take `⟨s, hs, e⟩` from `exists_eq_sum_tensorCoeff t`. Take `⟨s', hs', e'⟩` from `exists_eq_sum_tensorCoeff t'`. Use `e.trans (Eq.trans ?_ e'.symm)` and prove the remaining obligations. Rewrite using `[Finset.sum_subset (Finset.subset_union_left (s₁ := s) (s₂ := s')) (fun x _ hx => by simp [hs x hx]), Finset.sum_subset (Finset.subset_union_right (s₁ := s) (s₂ := s')) (fun x _ hx => by simp [hs' x hx])]`. Simplify using `only [h]`.
+-/
 theorem tensorCoeff_ext {t t' : M ⊗[R] R[X]}
     (h : ∀ x, tensorCoeff R M x t = tensorCoeff R M x t') : t = t' := by
   classical
@@ -58,6 +76,17 @@ theorem tensorCoeff_ext {t t' : M ⊗[R] R[X]}
 noncomputable abbrev torusWeightSpace (ρ : M →ₗ[R] M ⊗[R] R[X]) (x : X) : Submodule R M :=
   coactionWeightSpace ρ (single x 1)
 
+/- English proof (translation)
+Establish `h1 : ∀ t : M ⊗[R] R[X], tensorCoeff R (M ⊗[R] R[X]) x (ρ.rTensor _ t) = ρ (tensorCoeff R M x t)`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+
+Consider the case `tmul m p => simp`. Establish `h2 : ∀ t : M ⊗[R] R[X], tensorCoeff R (M ⊗[R] R[X]) x ((TensorProduct.assoc R M R[X] R[X]).symm ((comul (R` using `R)).lTensor M t)) = tensorCoeff R M x t ⊗ₜ single x 1 := by`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => simp`.
+
+Consider the case `add a b ha hb => simp only [map_add, ha, hb, add_tmul]`. Consider the case `tmul m p`. Proceed by induction on `p using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [tmul_add, map_add, ha, hb, add_tmul]`.
+
+Consider the case `single y r`. Distinguish the cases in `hy : y = x`. Substitute `hy` using the available equality. Simplify using `[smul_tmul']`. Simplify using `[hy]`.
+
+Rewrite using `[mem_coactionWeightSpace, ← h1, ← h2, ← h.coassoc, LinearEquiv.symm_apply_apply]`.
+-/
 theorem IsCoaction.tensorCoeff_mem {ρ : M →ₗ[R] M ⊗[R] R[X]} (h : IsCoaction ρ) (x : X) (m : M) :
     tensorCoeff R M x (ρ m) ∈ torusWeightSpace ρ x := by
   classical
@@ -85,6 +114,9 @@ theorem IsCoaction.tensorCoeff_mem {ρ : M →ₗ[R] M ⊗[R] R[X]} (h : IsCoact
         · simp [hy]
   rw [mem_coactionWeightSpace, ← h1, ← h2, ← h.coassoc, LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Take `⟨s, -, e⟩` from `exists_eq_sum_tensorCoeff (ρ m)`. Use `⟨s, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← h.rid_counit m, e]`. Simplify using the standard rewrite rules.
+-/
 theorem IsCoaction.exists_eq_sum {ρ : M →ₗ[R] M ⊗[R] R[X]} (h : IsCoaction ρ) (m : M) :
     ∃ s : Finset X, m = ∑ x ∈ s, tensorCoeff R M x (ρ m) := by
   obtain ⟨s, -, e⟩ := exists_eq_sum_tensorCoeff (ρ m)
@@ -94,11 +126,25 @@ theorem IsCoaction.exists_eq_sum {ρ : M →ₗ[R] M ⊗[R] R[X]} (h : IsCoactio
 
 variable [DecidableEq X]
 
+/- English proof (translation)
+Rewrite using `[mem_coactionWeightSpace.1 hm, tensorCoeff_tmul_single_one]`.
+-/
 theorem tensorCoeff_of_mem_torusWeightSpace {ρ : M →ₗ[R] M ⊗[R] R[X]} {y : X} {m : M}
     (hm : m ∈ torusWeightSpace ρ y) (x : X) :
     tensorCoeff R M x (ρ m) = if y = x then m else 0 := by
   rw [mem_coactionWeightSpace.1 hm, tensorCoeff_tmul_single_one]
 
+/- English proof (translation)
+Establish `key : ∀ (z : ⨁ x, torusWeightSpace ρ x) (x : X), tensorCoeff R M x (ρ (DirectSum.coeAddMonoidHom _ z)) = z x`. Introduce `z x`. Proceed by induction on `z using DirectSum.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb, DirectSum.add_apply, Submodule.coe_add]`.
+
+Consider the case `of y m`. Rewrite using `[coeAddMonoidHom_of, tensorCoeff_of_mem_torusWeightSpace m.2]`. Use `split_ifs with hy`. Substitute `hy` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[DirectSum.of_eq_of_ne _ _ _ (Ne.symm hy)]`. Both sides reduce to the same expression. Use `⟨fun z z' e => ?_, fun m => ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[← key, e, key]`.
+
+Take `⟨s, e⟩` from `h.exists_eq_sum m`. Use `⟨∑ x ∈ s, DirectSum.of (fun x => torusWeightSpace ρ x) x ⟨_, h.tensorCoeff_mem x m⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Simplify using `only [coeAddMonoidHom_of]`. Conclude with `e.symm`.
+
+Use the proof step `@[instance_reducible]`.
+-/
 theorem IsCoaction.isInternal_torusWeightSpace {ρ : M →ₗ[R] M ⊗[R] R[X]} (h : IsCoaction ρ) :
     IsInternal (torusWeightSpace ρ) := by
   have key : ∀ (z : ⨁ x, torusWeightSpace ρ x) (x : X),
@@ -126,6 +172,11 @@ noncomputable def IsCoaction.decomposition {ρ : M →ₗ[R] M ⊗[R] R[X]} (h :
     Decomposition (torusWeightSpace ρ) :=
   h.isInternal_torusWeightSpace.chooseDecomposition
 
+/- English proof (translation)
+Proceed by induction on `m using Decomposition.inductionOn (torusWeightSpace ρ) with`. Consider the case `zero => simp`. Consider the case `add a b ha hb`. Simplify using `only [decompose_add, map_add, ← ha, ← hb, DirectSum.add_apply, Submodule.coe_add]`. Consider the case `@homogeneous y m`.
+
+Rewrite using `[tensorCoeff_of_mem_torusWeightSpace m.2]`. Use `split_ifs with hy`. Substitute `hy` using the available equality. Conclude with `decompose_of_mem_same _ m.2`. Conclude with `decompose_of_mem_ne _ m.2 hy`.
+-/
 theorem coe_decompose_torusWeightSpace (ρ : M →ₗ[R] M ⊗[R] R[X])
     [Decomposition (torusWeightSpace ρ)] (m : M) (x : X) :
     (decompose (torusWeightSpace ρ) m x : M) = tensorCoeff R M x (ρ m) := by
@@ -145,11 +196,19 @@ noncomputable def gradingCoaction (ℳ : X → Submodule R M) [Decomposition ℳ
       (fun x => (TensorProduct.mk R M R[X]).flip (single x 1) ∘ₗ (ℳ x).subtype) ∘ₗ
     (decomposeLinearEquiv ℳ).toLinearMap
 
+/- English proof (translation)
+Use `lift m to ℳ x using hm`. Simplify using `[gradingCoaction]`.
+-/
 theorem gradingCoaction_of_mem (ℳ : X → Submodule R M) [Decomposition ℳ] {x : X} {m : M}
     (hm : m ∈ ℳ x) : gradingCoaction ℳ m = m ⊗ₜ single x 1 := by
   lift m to ℳ x using hm
   simp [gradingCoaction]
 
+/- English proof (translation)
+Proceed by induction on `m using Decomposition.inductionOn ℳ with`. Consider the case `zero => simp`. Consider the case `add a b ha hb`. Simplify using `only [decompose_add, map_add, ha, hb, DirectSum.add_apply, Submodule.coe_add]`. Consider the case `@homogeneous y m`.
+
+Rewrite using `[gradingCoaction_of_mem ℳ m.2, tensorCoeff_tmul_single_one]`. Use `split_ifs with hy`. Substitute `hy` using the available equality. Conclude with `(decompose_of_mem_same _ m.2).symm`. Conclude with `(decompose_of_mem_ne _ m.2 hy).symm`.
+-/
 theorem tensorCoeff_gradingCoaction (ℳ : X → Submodule R M) [Decomposition ℳ] (m : M) (x : X) :
     tensorCoeff R M x (gradingCoaction ℳ m) = decompose ℳ m x := by
   induction m using Decomposition.inductionOn ℳ with
@@ -162,6 +221,11 @@ theorem tensorCoeff_gradingCoaction (ℳ : X → Submodule R M) [Decomposition �
     · subst hy; exact (decompose_of_mem_same _ m.2).symm
     · exact (decompose_of_mem_ne _ m.2 hy).symm
 
+/- English proof (translation)
+Proceed by induction on `m using Decomposition.inductionOn ℳ with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `homogeneous m => simp [gradingCoaction_of_mem ℳ m.2]`. Use `counit m := by`.
+
+Proceed by induction on `m using Decomposition.inductionOn ℳ with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb, add_tmul]`. Consider the case `homogeneous m => simp [gradingCoaction_of_mem ℳ m.2]`.
+-/
 theorem isCoaction_gradingCoaction (ℳ : X → Submodule R M) [Decomposition ℳ] :
     IsCoaction (gradingCoaction ℳ) where
   coassoc m := by
@@ -175,6 +239,9 @@ theorem isCoaction_gradingCoaction (ℳ : X → Submodule R M) [Decomposition �
     | add a b ha hb => simp only [map_add, ha, hb, add_tmul]
     | homogeneous m => simp [gradingCoaction_of_mem ℳ m.2]
 
+/- English proof (translation)
+Use extensionality with `x m`. Use `⟨fun hm => ?_, fun hm => gradingCoaction_of_mem ℳ hm⟩` and prove the remaining obligations. Use `tensorCoeff_of_mem_torusWeightSpace hm x` as an intermediate fact. Rewrite `this` using `[if_pos rfl, tensorCoeff_gradingCoaction]`. Conclude with `this ▸ (decompose ℳ m x).2`.
+-/
 @[simp] theorem torusWeightSpace_gradingCoaction (ℳ : X → Submodule R M) [Decomposition ℳ] :
     torusWeightSpace (gradingCoaction ℳ) = ℳ := by
   ext x m
@@ -183,6 +250,9 @@ theorem isCoaction_gradingCoaction (ℳ : X → Submodule R M) [Decomposition �
   rw [if_pos rfl, tensorCoeff_gradingCoaction] at this
   exact this ▸ (decompose ℳ m x).2
 
+/- English proof (translation)
+Use `LinearMap.ext fun m => tensorCoeff_ext fun x => ?_` and prove the remaining obligations. Rewrite using `[tensorCoeff_gradingCoaction, coe_decompose_torusWeightSpace]`.
+-/
 @[simp] theorem gradingCoaction_torusWeightSpace (ρ : M →ₗ[R] M ⊗[R] R[X])
     [Decomposition (torusWeightSpace ρ)] : gradingCoaction (torusWeightSpace ρ) = ρ := by
   refine LinearMap.ext fun m => tensorCoeff_ext fun x => ?_
@@ -203,6 +273,11 @@ noncomputable def coactionEquivGrading :
 
 omit [DecidableEq X] in
 
+/- English proof (translation)
+Use `⟨fun hf x m hm => map_mem_coactionWeightSpace hf hm, fun hf m => ?_⟩` and prove the remaining obligations. Use `letI := h.decomposition`. Proceed by induction on `m using Decomposition.inductionOn (torusWeightSpace ρ) with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+
+Consider the case `homogeneous m`. Rewrite using `[mem_coactionWeightSpace.1 (hf _ _ m.2), mem_coactionWeightSpace.1 m.2, LinearMap.rTensor_tmul]`.
+-/
 theorem IsCoaction.comm_iff_mapsTo_torusWeightSpace {ρ : M →ₗ[R] M ⊗[R] R[X]} (h : IsCoaction ρ)
     (ρ' : M' →ₗ[R] M' ⊗[R] R[X]) (f : M →ₗ[R] M') :
     (∀ m, ρ' (f m) = f.rTensor R[X] (ρ m)) ↔
@@ -217,6 +292,9 @@ theorem IsCoaction.comm_iff_mapsTo_torusWeightSpace {ρ : M →ₗ[R] M ⊗[R] R
     rw [mem_coactionWeightSpace.1 (hf _ _ m.2), mem_coactionWeightSpace.1 m.2,
       LinearMap.rTensor_tmul]
 
+/- English proof (translation)
+Use `((isLeftCoaction_iff_isCoaction_comm ρ).1 h).isInternal_torusWeightSpace` as an intermediate fact. Use `this using 2 with x` and compare the differences between its conclusion and the goal. Use extensionality with `m`. Rewrite using `[mem_coactionWeightSpace, ← (TensorProduct.comm R M R[X]).apply_eq_iff_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem IsLeftCoaction.isInternal {ρ : M →ₗ[R] R[X] ⊗[R] M} (h : IsLeftCoaction ρ) :
     IsInternal fun x : X => LinearMap.eqLocus ρ (TensorProduct.mk R R[X] M (single x 1)) := by
   have := ((isLeftCoaction_iff_isCoaction_comm ρ).1 h).isInternal_torusWeightSpace
@@ -261,6 +339,9 @@ noncomputable def gradingCoactionAlgHom (𝒜 : X → Submodule R A) [GradedAlge
             gradingCoaction_of_mem 𝒜 (SetLike.mul_mem_graded a.2 b.2),
             Algebra.TensorProduct.tmul_mul_tmul, single_mul_single, _root_.mul_one])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem gradingCoactionAlgHom_toLinearMap (𝒜 : X → Submodule R A) [GradedAlgebra 𝒜] :
     (gradingCoactionAlgHom 𝒜).toLinearMap = gradingCoaction 𝒜 := rfl
 

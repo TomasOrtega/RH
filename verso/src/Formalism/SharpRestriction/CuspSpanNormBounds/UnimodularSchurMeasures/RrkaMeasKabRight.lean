@@ -11,6 +11,11 @@ section Alg
 
 variable {G : Type*} [Group G] {Γ : Subgroup G} {φ : G → ℂ}
 
+/- English proof (translation)
+Unfold `rrk_Kab`. Rewrite using `[← (Equiv.inv Γ).tsum_eq (fun γ : Γ => ‖φ (y⁻¹ * (γ : G) * x)‖ₑ)]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Use `show ‖φ (y⁻¹ * ((γ⁻¹ : Γ) : G) * x)‖ₑ = _`. Establish `e : y⁻¹ * ((γ⁻¹ : Γ) : G) * x = (x⁻¹ * (γ : G) * y)⁻¹` using `by simp [mul_assoc]`.
+
+Rewrite using `[e, hsa, enorm_eq_nnnorm, enorm_eq_nnnorm, nnnorm_star]`.
+-/
 theorem rrka_Kab_symm (hsa : ∀ z, φ z⁻¹ = star (φ z)) (x y : G) : rrk_Kab Γ φ y x = rrk_Kab Γ φ x y := by
   unfold rrk_Kab
   rw [← (Equiv.inv Γ).tsum_eq (fun γ : Γ => ‖φ (y⁻¹ * (γ : G) * x)‖ₑ)]
@@ -19,6 +24,11 @@ theorem rrka_Kab_symm (hsa : ∀ z, φ z⁻¹ = star (φ z)) (x y : G) : rrk_Kab
   have e : y⁻¹ * ((γ⁻¹ : Γ) : G) * x = (x⁻¹ * (γ : G) * y)⁻¹ := by simp [mul_assoc]
   rw [e, hsa, enorm_eq_nnnorm, enorm_eq_nnnorm, nnnorm_star]
 
+/- English proof (translation)
+Unfold `rrk_K`. Rewrite using `[tsum_star, ← (Equiv.inv Γ).tsum_eq (fun γ : Γ => φ (y⁻¹ * (γ : G) * x))]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Use `show φ (y⁻¹ * ((γ⁻¹ : Γ) : G) * x) = _`. Establish `e : y⁻¹ * ((γ⁻¹ : Γ) : G) * x = (x⁻¹ * (γ : G) * y)⁻¹` using `by simp [mul_assoc]`.
+
+Rewrite using `[e, hsa]`.
+-/
 theorem rrka_K_symm (hsa : ∀ z, φ z⁻¹ = star (φ z)) (x y : G) : rrk_K Γ φ y x = star (rrk_K Γ φ x y) := by
   unfold rrk_K
   rw [tsum_star, ← (Equiv.inv Γ).tsum_eq (fun γ : Γ => φ (y⁻¹ * (γ : G) * x))]
@@ -27,6 +37,11 @@ theorem rrka_K_symm (hsa : ∀ z, φ z⁻¹ = star (φ z)) (x y : G) : rrk_K Γ 
   have e : y⁻¹ * ((γ⁻¹ : Γ) : G) * x = (x⁻¹ * (γ : G) * y)⁻¹ := by simp [mul_assoc]
   rw [e, hsa]
 
+/- English proof (translation)
+Unfold `rrk_Kab`. Rewrite using `[← (Equiv.mulLeft δ).tsum_eq (fun γ : Γ => ‖φ (((δ : G) * y)⁻¹ * (γ : G) * x)‖ₑ)]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Use `show ‖φ (((δ : G) * y)⁻¹ * ((δ * γ : Γ) : G) * x)‖ₑ = _`. Establish `e : ((δ : G) * y)⁻¹ * ((δ * γ : Γ) : G) * x = y⁻¹ * (γ : G) * x` using `by simp [mul_assoc]`.
+
+Rewrite using `[e]`.
+-/
 theorem rrka_Kab_smul (δ : Γ) (x y : G) : rrk_Kab Γ φ ((δ : G) * y) x = rrk_Kab Γ φ y x := by
   unfold rrk_Kab
   rw [← (Equiv.mulLeft δ).tsum_eq (fun γ : Γ => ‖φ (((δ : G) * y)⁻¹ * (γ : G) * x)‖ₑ)]
@@ -35,6 +50,11 @@ theorem rrka_Kab_smul (δ : Γ) (x y : G) : rrk_Kab Γ φ ((δ : G) * y) x = rrk
   have e : ((δ : G) * y)⁻¹ * ((δ * γ : Γ) : G) * x = y⁻¹ * (γ : G) * x := by simp [mul_assoc]
   rw [e]
 
+/- English proof (translation)
+Unfold `rrk_K`. Rewrite using `[← (Equiv.mulLeft δ).tsum_eq (fun γ : Γ => φ (((δ : G) * y)⁻¹ * (γ : G) * x))]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Use `show φ (((δ : G) * y)⁻¹ * ((δ * γ : Γ) : G) * x) = _`. Establish `e : ((δ : G) * y)⁻¹ * ((δ * γ : Γ) : G) * x = y⁻¹ * (γ : G) * x` using `by simp [mul_assoc]`.
+
+Rewrite using `[e]`.
+-/
 theorem rrka_K_smul (δ : Γ) (x y : G) : rrk_K Γ φ ((δ : G) * y) x = rrk_K Γ φ y x := by
   unfold rrk_K
   rw [← (Equiv.mulLeft δ).tsum_eq (fun γ : Γ => φ (((δ : G) * y)⁻¹ * (γ : G) * x))]
@@ -50,9 +70,17 @@ section Meas
 variable {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [MeasurableInv G]
 variable {μ : Measure G} {Γ : Subgroup G} [Countable Γ] {D : Set G} {φ : G → ℂ}
 
+/- English proof (translation)
+The claim follows from `Measurable.tsum fun γ => (hφm.comp (measurable_const_mul (x⁻¹ * (γ : G)))).enorm`.
+-/
 theorem rrka_meas_Kab_right (hφm : Measurable φ) (x : G) : Measurable fun y => rrk_Kab Γ φ x y :=
   Measurable.tsum fun γ => (hφm.comp (measurable_const_mul (x⁻¹ * (γ : G)))).enorm
 
+/- English proof (translation)
+Rewrite using `[(rr_isFD h).lintegral_eq_tsum'']`. Establish `e : ∀ δ : Γ, ∫⁻ y in D, ‖φ (x⁻¹ * (δ • y))‖ₑ * rrk_Kab Γ φ (δ • y) x ∂μ = ∫⁻ y in D, ‖φ (x⁻¹ * (δ : G) * y)‖ₑ * rrk_Kab Γ φ x y ∂μ`. Introduce `δ`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Rewrite using `[Subgroup.smul_def, smul_eq_mul, rrka_Kab_smul, rrka_Kab_symm hsa, ← mul_assoc]`.
+
+Rewrite using `[tsum_congr e, ← lintegral_tsum (μ := μ.restrict D) (f := fun (δ : Γ) y => ‖φ (x⁻¹ * (δ : G) * y)‖ₑ * rrk_Kab Γ φ x y) (fun δ => ((hφm.comp (measurable_const_mul (x⁻¹ * (δ : G)))).enorm.mul (rrka_meas_Kab_right hφm x)).aemeasurable)]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.tsum_mul_right, sq]`. Both sides reduce to the same expression.
+-/
 theorem rrka_lint [μ.IsMulLeftInvariant] (h : rr_FD μ Γ D) (hφm : Measurable φ) (hsa : ∀ z, φ z⁻¹ = star (φ z)) (x : G) :
     ∫⁻ y, ‖φ (x⁻¹ * y)‖ₑ * rrk_Kab Γ φ y x ∂μ = ∫⁻ y in D, (rrk_Kab Γ φ x y) ^ 2 ∂μ := by
   rw [(rr_isFD h).lintegral_eq_tsum'']
@@ -68,9 +96,43 @@ theorem rrka_lint [μ.IsMulLeftInvariant] (h : rr_FD μ Γ D) (hφm : Measurable
   rw [ENNReal.tsum_mul_right, sq]
   rfl
 
+/- English proof (translation)
+The claim follows from `Summable.of_nnnorm (ENNReal.tsum_coe_ne_top_iff_summable.1 hf)`.
+-/
 theorem rrka_summable_of {ι : Type*} {f : ι → ℂ} (hf : ∑' i, ‖f i‖ₑ ≠ ∞) : Summable f :=
   Summable.of_nnnorm (ENNReal.tsum_coe_ne_top_iff_summable.1 hf)
 
+/- English proof (translation)
+Use `set ψ : Γ → G → ℂ := fun γ y => φ (x⁻¹ * y) * φ (y⁻¹ * (γ : G) * x) with hψ`. Establish `hψm : ∀ γ, Measurable (ψ γ)` using `fun γ => (hφm.comp (measurable_const_mul _)).mul (hφm.comp ((measurable_inv.mul_const _).mul_const _))`. Establish `hψint : ∀ γ : Γ, ∫ y, ψ γ y ∂μ = φ (x⁻¹ * (γ : G) * x)`. Introduce `γ`. Rewrite using `[← hid (x⁻¹ * (γ : G) * x), ← integral_mul_left_eq_self (fun g => φ g * φ (g⁻¹ * (x⁻¹ * (γ : G) * x))) x⁻¹]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Establish `e : (x⁻¹ * y)⁻¹ * (x⁻¹ * (γ : G) * x) = y⁻¹ * (γ : G) * x` using `by simp [mul_assoc]`. Simplify using `only [hψ, e]`. Establish `hpt : ∀ y, ∑' γ : Γ, ‖ψ γ y‖ₑ = ‖φ (x⁻¹ * y)‖ₑ * rrk_Kab Γ φ y x`. Introduce `y`.
+
+Simplify using `only [hψ, enorm_mul]`. Rewrite using `[ENNReal.tsum_mul_left]`. Both sides reduce to the same expression. Establish `hsum : ∑' γ : Γ, ∫⁻ y, ‖ψ γ y‖ₑ ∂μ = ∫⁻ y in D, (rrk_Kab Γ φ x y) ^ 2 ∂μ`. Rewrite using `[← rrka_lint h hφm hsa x, ← lintegral_tsum (fun γ => (hψm γ).enorm.aemeasurable)]`.
+
+Conclude with `lintegral_congr hpt`. Establish `hfin : ∑' γ : Γ, ∫⁻ y, ‖ψ γ y‖ₑ ∂μ ≠ ∞` using `by rw [hsum]; exact hx`. Establish `hS : Summable (fun γ : Γ => φ (x⁻¹ * (γ : G) * x))`. Use `rrka_summable_of (ne_top_of_le_ne_top hfin (ENNReal.tsum_le_tsum fun γ => ?_))` and prove the remaining obligations. Rewrite using `[← hψint γ]`.
+
+Conclude with `enorm_integral_le_lintegral_enorm _`. Use `set Ψ : G → ℂ := fun y => φ (x⁻¹ * y) * rrk_K Γ φ y x with hΨ`. Establish `hΨeq : Ψ = fun y => ∑' γ : Γ, ψ γ y`. Use function extensionality and compare the values at `y`. Simplify using `only [hΨ, hψ]`.
+
+Rewrite using `[tsum_mul_left]`. Both sides reduce to the same expression. Establish `hfin2 : ∫⁻ y, ∑' γ : Γ, ‖ψ γ y‖ₑ ∂μ ≠ ∞`. Rewrite using `[lintegral_tsum (fun γ => (hψm γ).enorm.aemeasurable)]`. Conclude with `hfin`.
+
+Establish `hae : ∀ᵐ y ∂μ, Summable fun γ : Γ => ψ γ y` using `by filter_upwards [ae_lt_top (Measurable.tsum fun γ => (hψm γ).enorm) hfin2] with y hy`. Conclude with `rrka_summable_of hy.ne`. Establish `hΨm : AEStronglyMeasurable Ψ μ`. Rewrite using `[hΨeq]`. Conclude with `rrk_aesm_tsum (fun γ => (hψm γ).aestronglyMeasurable) hae`.
+
+Establish `hΨfin : ∫⁻ y, ‖Ψ y‖ₑ ∂μ < ∞`. Use `lt_of_le_of_lt (lintegral_mono fun y => ?_) (lt_top_iff_ne_top.2 hfin2)` and prove the remaining obligations. Rewrite using `[hΨeq]`. Conclude with `enorm_tsum_le_tsum_enorm`. Establish `hΨint : Integrable Ψ μ` using `⟨hΨm, hasFiniteIntegral_iff_enorm.2 hΨfin⟩`.
+
+Establish `e1 : rrk_K Γ φ x x = ∫ y, Ψ y ∂μ`. Combine the equalities or inequalities in the displayed calculation. Establish `e2` using `(rr_isFD h).integral_eq_tsum'' Ψ hΨint`. Establish `e3 : ∑' δ : Γ, ∫ y in D, Ψ (δ • y) ∂μ = ∫ y in D, ∑' δ : Γ, Ψ (δ • y) ∂μ`. Use `(integral_tsum (μ := μ.restrict D) (f := fun (δ : Γ) y => Ψ (δ • y)) (fun δ => ?_) ?_).symm` and prove the remaining obligations.
+
+Conclude with `(hΨm.comp_measurePreserving (measurePreserving_smul δ μ)).restrict`. Rewrite using `[← (rr_isFD h).lintegral_eq_tsum'' (fun y => ‖Ψ y‖ₑ)]`. Conclude with `hΨfin.ne`. Establish `e4 : ∀ y, ∑' δ : Γ, Ψ (δ • y) = ((‖rrk_K Γ φ x y‖ ^ 2 : ℝ) : ℂ)`. Introduce `y`.
+
+Establish `a : ∀ δ : Γ, Ψ (δ • y) = φ (x⁻¹ * (δ : G) * y) * rrk_K Γ φ y x`. Introduce `δ`. Simplify using `only [hΨ]`. Rewrite using `[Subgroup.smul_def, smul_eq_mul, rrka_K_smul, ← mul_assoc]`. Rewrite using `[tsum_congr a, tsum_mul_right, rrka_K_symm hsa x y]`.
+
+Use `show rrk_K Γ φ x y * star (rrk_K Γ φ x y) = _`. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Establish `haeD : ∀ᵐ y ∂μ.restrict D, rrk_Kab Γ φ x y < ∞` using `by filter_upwards [ae_lt_top ((rrka_meas_Kab_right (Γ := Γ) hφm x).pow_const 2) hx] with y hy`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_lt, top_le_iff]`.
+
+Rewrite `hy` using `[hc]`. Simplify using `at hy`. Establish `hKm : AEStronglyMeasurable (fun y => rrk_K Γ φ x y) (μ.restrict D)`. Use `rrk_aesm_tsum (fun γ => (hφm.comp (measurable_const_mul _)).aestronglyMeasurable) ?_` and prove the remaining obligations. Use `filter_upwards [haeD] with y hy`.
+
+Conclude with `rrka_summable_of hy.ne`. Use `⟨hS, ?_, hKm, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, e2, e3, ← integral_complex_ofReal]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall e4)`. Rewrite using `[eLpNorm_lt_top_iff_lintegral_rpow_enorm_lt_top (by norm_num) (by norm_num)]`.
+
+Use `lt_of_le_of_lt (lintegral_mono fun y => ?_) (lt_top_iff_ne_top.2 hx)` and prove the remaining obligations. Simplify using `only [ENNReal.toReal_ofNat, ENNReal.rpow_two]`. Use `gcongr`. Conclude with `enorm_tsum_le_tsum_enorm`.
+-/
 theorem rrk_idem [SigmaFinite μ] [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] (h : rr_FD μ Γ D) (hφm : Measurable φ)
     (hsa : ∀ z, φ z⁻¹ = star (φ z)) (hid : ∀ z, ∫ g, φ g * φ (g⁻¹ * z) ∂μ = φ z) (x : G)
     (hx : ∫⁻ y in D, (rrk_Kab Γ φ x y) ^ 2 ∂μ ≠ ∞) :

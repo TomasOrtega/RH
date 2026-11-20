@@ -19,11 +19,19 @@ noncomputable section
 
 namespace GlobalTheory.KeyEven.LocPf
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hy`.
+-/
 theorem isLieBasis_cast {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {m n : ℕ} (h : m = n)
     (y : Fin n → (epsR R ⟶ G)) (hy : IsLieBasis y) : IsLieBasis (fun i : Fin m => y (i.cast h)) := by
   subst h
   exact hy
 
+/- English proof (translation)
+Take `⟨q⟩ : Nonempty (Sp (FractionRing A))` from `inferInstance`. Establish `hp` using `hgen ⟨q, rfl⟩`. Take `⟨_, ⟨r, rfl⟩, hpr, hrU⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (a := (spMap (algebraMap A (FractionRing A)) q : PrimeSpectrum A)) hp hU`. Use `⟨r, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Conclude with `(PrimeSpectrum.mem_basicOpen _ _).1 hpr (Ideal.zero_mem _)`. Rewrite using `[show Set.range (spMap (algebraMap A (Localization.Away r))) = ((PrimeSpectrum.basicOpen r : TopologicalSpace.Opens (PrimeSpectrum A)) : Set (PrimeSpectrum A)) from PrimeSpectrum.localization_away_comap_range (Localization.Away r) r]`. Conclude with `hrU`.
+-/
 theorem exists_away_subset {A : Type} [CommRing A] [IsDomain A] (U : Set (Sp A)) (hU : IsOpen U)
     (hgen : Set.range (spMap (algebraMap A (FractionRing A))) ⊆ U) :
     ∃ f : A, f ≠ 0 ∧ Set.range (spMap (algebraMap A (Localization.Away f))) ⊆ U := by
@@ -40,6 +48,19 @@ theorem exists_away_subset {A : Type} [CommRing A] [IsDomain A] (U : Set (Sp A))
       PrimeSpectrum.localization_away_comap_range (Localization.Away r) r]
     exact hrU
 
+/- English proof (translation)
+Take `⟨⟨a, s⟩, hs⟩` from `IsLocalization.surj (Submonoid.powers f) b`. Take `⟨n, hn⟩` from `s.2`. Establish `hdiv : f ^ n ∣ a`. Use `GlobalTheory.T.dvd_of_dvd_in_completeDVRs_finite_residue A a (f ^ n) (pow_ne_zero n hf) ?_` and prove the remaining obligations. Introduce `V _ _ _ _ hc hfin t ht`.
+
+Distinguish the cases in `htf0 : t f = 0`. Consider the cases of `n with`. Consider the case `zero => simp`. Consider the case `succ k => exact absurd (by rw [map_pow, htf0, zero_pow (Nat.succ_ne_zero k)]) ht`. Establish `htf : t f ≠ 0` using `htf0`.
+
+Establish `hinjV` using `IsFractionRing.injective V (FractionRing V)`. Establish `hu : IsUnit (((algebraMap V (FractionRing V)).comp t) f)` using `isUnit_iff_ne_zero.2 ((map_ne_zero_iff _ hinjV).2 htf)`. Establish `hcomp` using `IsLocalization.Away.lift_comp (S := Localization.Away f) f hu`. Take `⟨w, hw⟩` from `H V hc hfin t htf _ hcomp`. Establish `e` using `congrArg (IsLocalization.Away.lift (S := Localization.Away f) f hu) hs`.
+
+Rewrite `e` using `[map_mul, hw, ← RingHom.comp_apply, hcomp, ← RingHom.comp_apply, hcomp, RingHom.comp_apply, RingHom.comp_apply, ← map_mul]`. Establish `e'` using `hinjV e`. Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[← e', ← hn, map_pow, mul_comm]`. Take `⟨c, hc⟩` from `hdiv`.
+
+Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hsu : IsUnit (algebraMap A (Localization.Away f) (s : A))` using `IsLocalization.map_units _ s`. Establish `hn' : (s : A) = f ^ n` using `hn.symm`. Rewrite `hs` using `[hc, map_mul]`. Use `(hsu.mul_left_inj).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[hs, hn', mul_comm]`.
+-/
 theorem mem_range_of_traits {A : Type} [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [CharZero A]
     [Algebra.FiniteType ℤ A] (f : A) (hf : f ≠ 0) (b : Localization.Away f)
     (H : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V],
@@ -81,6 +102,25 @@ end GlobalTheory.KeyEven.LocPf
 
 namespace GlobalTheory.KeyEven.LocPf
 
+/- English proof (translation)
+Introduce `κ hFU hKT A _ _ _ _ _ G _ _ L σ x y hG hsm hopen hsym hpol hunif hy hσ hkey`. Establish `hkey0` using `hkey`. Take `⟨φ, -, -, -, hpb, -⟩` from `hkey`. Use `haveI : IsProper x.P.A.hom := x.P.isAb.proper`. Establish `hab` using `GlobalTheory.range_subset_abLocus_of_isProper hG hpb.1`.
+
+Take `⟨f, hf0, hfab⟩` from `exists_away_subset (abLocus G) hopen hab`. Use `haveI : IsNoetherianRing A := Algebra.FiniteType.isNoetherianRing ℤ A`. Establish `hle : Submonoid.powers f ≤ nonZeroDivisors A` using `powers_le_nonZeroDivisors_of_noZeroDivisors hf0`. Use `haveI : IsDomain (Localization.Away f) := IsLocalization.isDomain_localization hle`. Use `haveI : IsNoetherianRing (Localization.Away f) := IsLocalization.isNoetherianRing (Submonoid.powers f) (Localization.Away f) inferInstance`.
+
+Use `haveI : IsIntegrallyClosed (Localization.Away f) := isIntegrallyClosed_of_isLocalization (Localization.Away f) (Submonoid.powers f) hle`. Establish `hinj : Function.Injective (algebraMap A (Localization.Away f))` using `IsLocalization.injective _ hle`. Use `haveI : CharZero (Localization.Away f) := charZero_of_injective_algebraMap hinj`. Take `⟨xB, hgB, hkB⟩` from `GlobalTheory.T.exists_keyDatum_abelianLocus_point A (Localization.Away f) (algebraMap A _) G L σ x.P.g y x.g_pos hG hsm hopen hsym hpol hy hσ hfab`. Take `⟨u, hu⟩` from `hFU (Localization.Away f) xB`.
+
+Establish `hfu : IsUnit ((algebraMap A (FractionRing A)) f)` using `isUnit_iff_ne_zero.2 ((map_ne_zero_iff _ (IsFractionRing.injective A (FractionRing A))).2 hf0)`. Establish `hc` using `IsLocalization.Away.lift_comp (S := Localization.Away f) f hfu`. Establish `hpbx : KeyPB x xB (IsLocalization.Away.lift (S` using `Localization.Away f) f hfu) := GlobalTheory.T.keyDatum_fibre_of_composable_baseChange A (Localization.Away f) (FractionRing A) (algebraMap A _) _ G L σ x.P.g y xB x hgB rfl hkB (by rw [hc]; exact hkey0)`. Establish `hval` using `hu _ _ x hpbx`. Establish `trait : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V], IsAdicComplete (IsLocalRing.maximalIdeal V) V → Finite (IsLocalRing.ResidueField V) → ∀ (t : A →+* V), t f ≠ 0 → ∀ h : Localization.Away f →+* FractionRing V, h.comp (algebraMap A _) = (algeb …`.
+
+Introduce `V _ _ _ _ hcomp hfin t ht h hh`. Establish `hrange : Set.range (spMap ((algebraMap V (FractionRing V)).comp t)) ⊆ abLocus G`. Rewrite using `[← hh]`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `hfab ⟨spMap h p, rfl⟩`.
+
+Take `⟨xV, hgV, hkV⟩` from `GlobalTheory.T.exists_keyDatum_abelianLocus_point A (FractionRing V) ((algebraMap V _).comp t) G L σ x.P.g y x.g_pos hG hsm hopen hsym hpol hy hσ hrange`. Establish `hpbV : KeyPB xV xB h` using `GlobalTheory.T.keyDatum_fibre_of_composable_baseChange A (Localization.Away f) (FractionRing V) (algebraMap A _) h G L σ x.P.g y xB xV hgB hgV hkB (by rw [hh]; exact hkV)`. Establish `hvalV` using `hu _ h xV hpbV`. Take `⟨L', σ', y', hiso, hy', hσ', hk'⟩` from `GlobalTheory.T.keyDatum_pullback_baseChange_lieBasis A V (FractionRing V) t (algebraMap V _) G L σ xV (fun i => y (i.cast hgV)) hG (isLieBasis_cast hgV y hy) hσ hkV`. Establish `hne : (spMap t ⁻¹' abLocus G).Nonempty`.
+
+Take `⟨q⟩ : Nonempty (Sp (FractionRing V))` from `inferInstance`. Conclude with `⟨spMap (algebraMap V _) q, hrange ⟨q, rfl⟩⟩`. Take `⟨D, A', U, hU⟩` from `hunif V hcomp hfin (spMap t) hne`. Take `⟨w, hw⟩` from `hKT V hcomp hfin _ L' σ' xV y' (IsSemiAbelian.pullback _ G hG) ⟨D, A', U, LBIso.trans U.LG.isLB (pull_isLB L.isLB _) L'.isLB hU hiso⟩ hy' hσ' hk'`. Conclude with `⟨w, hvalV.symm.trans hw⟩`.
+
+Take `⟨c, hcu⟩` from `mem_range_of_traits f hf0 (u : Localization.Away f) (fun V _ _ _ _ hcomp hfin t ht h hh => by`. Take `⟨w, hw⟩` from `trait V hcomp hfin t ht h hh`. Conclude with `⟨w, hw⟩)`. Take `⟨c', hcu'⟩` from `mem_range_of_traits f hf0 ((u⁻¹ : (Localization.Away f)ˣ) : Localization.Away f) (fun V _ _ _ _ hcomp hfin t ht h hh => by`. Take `⟨w, hw⟩` from `trait V hcomp hfin t ht h hh`.
+
+Use `⟨((w⁻¹ : Vˣ) : V), ?_⟩` and prove the remaining obligations. Rewrite using `[map_units_inv, map_units_inv, hw])`. Establish `hcc : c * c' = 1` using `hinj (by rw [map_mul, hcu, hcu', Units.mul_inv, map_one])`. Use `⟨⟨c, c', hcc, by rw [mul_comm]; exact hcc⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hval, Units.val_mk, ← hcu, ← RingHom.comp_apply, hc]`.
+-/
 theorem keyLoc_of_famUnit_keyTrait : ∀ κ : Rule, FamUnit κ → KeyTrait κ → KeyLoc κ := by
   intro κ hFU hKT A _ _ _ _ _ G _ _ L σ x y hG hsm hopen hsym hpol hunif hy hσ hkey
   have hkey0 := hkey

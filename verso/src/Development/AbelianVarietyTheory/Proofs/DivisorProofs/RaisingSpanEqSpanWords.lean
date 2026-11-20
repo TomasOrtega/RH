@@ -13,6 +13,31 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.HolDS
 
+/- English proof (translation)
+Introduce `n ε H _ _ σ D E hK S hSD`. Use `set Y : Set D := {y : D | ∃ l : List (Fin n × Fin n), (∀ p ∈ l, ε p.1 = true ∧ ε p.2 = false) ∧ ∃ x ∈ S.comap D.subtype, y = (l.map fun p : Fin n × Fin n => E p.1 p.2).prod x} with hY`. Establish `hcmp` using `GlobalTheory.T.complexifiedDerivedAction_eq_sum_kFiniteModule n ε H σ D E hK`. Establish `hstab : ∀ a b, ε a = true → ε b = false → ∀ y ∈ Submodule.span ℂ Y, E a b y ∈ Submodule.span ℂ Y`. Introduce `a b ha hb y hy`.
+
+Establish `hle : Submodule.span ℂ Y ≤ (Submodule.span ℂ Y).comap (E a b)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `z ⟨l, hl, x, hx, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨(a, b) :: l, ?_, x, hx, ?_⟩` and prove the remaining obligations.
+
+Introduce `p hp`. Break down `List.mem_cons.1 hp with rfl | hp` into its components or cases. Conclude with `⟨ha, hb⟩`. Conclude with `hl p hp`. Simplify using `[List.map_cons, List.prod_cons, Module.End.mul_apply]`.
+
+Conclude with `hle hy`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[raisingSpan, Submodule.span_le]`. Introduce and unpack `w ⟨l, hl, v, hv, rfl⟩`. Establish `key : ∀ l : List (Matrix (Fin n) (Fin n) ℂ), (∀ Z ∈ l, Z ∈ pPlus ε) → ∃ y ∈ Submodule.span ℂ Y, (y : H) = l.foldr (GlobalTheory.SmVec.dRepC (Jm ε) σ) v`.
+
+Introduce `l`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `_`. Use `⟨⟨v, hSD hv⟩, Submodule.subset_span ⟨[], by simp, ⟨v, hSD hv⟩, hv, by simp⟩, rfl⟩` and prove the remaining obligations.
+
+Consider the case `cons Z l ih`. Introduce `hl`. Take `⟨y, hy, hyv⟩` from `ih (fun Z' hZ' => hl Z' (List.mem_cons_of_mem _ hZ'))`. Establish `hZ` using `hl Z List.mem_cons_self`. Use `⟨∑ a, ∑ b, Z a b • E a b y, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : ε a = true ∧ ε b = false`. Conclude with `Submodule.smul_mem _ _ (hstab a b h.1 h.2 y hy)`. Rewrite using `[hZ a b h, zero_smul]`. Conclude with `Submodule.zero_mem _`.
+
+Rewrite using `[List.foldr_cons, ← hyv, hcmp Z y]`. Take `⟨y, hy, hyv⟩` from `key l hl`. Conclude with `⟨y, hy, hyv⟩`. Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨y, ⟨l, hl, x, hx, rfl⟩, rfl⟩`.
+
+Establish `key : ∀ l : List (Fin n × Fin n), (((l.map fun p : Fin n × Fin n => E p.1 p.2).prod x : D) : H) = (l.map fun p : Fin n × Fin n => Matrix.single p.1 p.2 (1 : ℂ)).foldr (GlobalTheory.SmVec.dRepC (Jm ε) σ) (x : H)`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons p l ih`.
+
+Rewrite using `[List.map_cons, List.map_cons, List.foldr_cons, ← ih, hcmp, List.prod_cons, Module.End.mul_apply]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single p.1, Finset.sum_eq_single p.2]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Simplify using `[Matrix.single_apply, Ne.symm hb]`. Simplify using the standard rewrite rules. Introduce `a _ ha`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Simplify using `[Matrix.single_apply, Ne.symm ha]`.
+
+Simplify using the standard rewrite rules. Use `Submodule.subset_span ⟨l.map fun p : Fin n × Fin n => Matrix.single p.1 p.2 (1 : ℂ), ?_, (x : H), hx, key l⟩` and prove the remaining obligations. Introduce `Z hZ`. Take `⟨p, hp, rfl⟩` from `List.mem_map.1 hZ`. Conclude with `single_mem_pPlus (hl p hp).1 (hl p hp).2 1`.
+-/
 theorem raisingSpan_eq_span_words : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (D : Submodule ℂ H) (E : Fin n → Fin n → Module.End ℂ D), IsKMod ε σ D E → ∀ S : Submodule ℂ H, S ≤ D → raisingSpan ε σ S = (Submodule.span ℂ {y : D | ∃ l : List (Fin n × Fin n), (∀ p ∈ l, ε p.1 = true ∧ ε p.2 = false) ∧ ∃ x ∈ S.comap D.subtype, y = (l.map fun p : Fin n × Fin n => E p.1 p.2).prod x}).map D.subtype := by
   intro n ε H _ _ σ D E hK S hSD
   set Y : Set D := {y : D | ∃ l : List (Fin n × Fin n), (∀ p ∈ l, ε p.1 = true ∧ ε p.2 = false) ∧

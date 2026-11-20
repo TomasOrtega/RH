@@ -8,6 +8,11 @@ open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberFiel
 
 namespace GlobalTheory.CompanionTheory.Ar
 
+/- English proof (translation)
+Introduce `o _ Ω _ _ κ _ x ⟨c, hc, h⟩`. Establish `h' : ∀ a : Ω, ∃ g ∈ Algebra.adjoin o (Set.range fun j => x j / x c), ∃ k ∈ Algebra.adjoin o (Set.range fun j => x j / x c), k ≠ 0 ∧ a = g / k`. Introduce `a`. Take `⟨u, hu, v, hv, rfl⟩` from `h a`. Distinguish the cases in `hv0 : v = 0`.
+
+Conclude with `⟨0, zero_mem _, 1, one_mem _, one_ne_zero, by simp [hv0]⟩`. Conclude with `⟨u, hu, v, hv, hv0, rfl⟩`. Take `⟨X, ξ, s, tie, all, -, -, hover⟩` from `GlobalTheory.T.exists_proper_integral_model Ω o κ x c hc h'`. Conclude with `⟨{ X := X, ξ := ξ, s := s, hover := hover, all := all, tie := tie }⟩`.
+-/
 theorem nonempty_pModel_of_chart : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ]
     (x : κ → Ω), (∃ c, x c ≠ 0 ∧ ∀ a : Ω, ∃ u ∈ chRing o x c, ∃ v ∈ chRing o x c, a = u / v) →
     Nonempty (PModel o x) := by

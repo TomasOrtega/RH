@@ -28,6 +28,11 @@ section Mat
 
 variable {k : Type} [CommRing k] {n n' r t : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Unfold `blkOf blk2`. Use `split_ifs with ha`. Both sides reduce to the same expression. Use `a.2` as an intermediate fact.
+
+Rewrite using `[Nat.div_eq_of_lt (by omega)]`.
+-/
 theorem blkOf_eq (h : n = r + t) (ht : 0 < t) : blkOf (n := n) r t = blk2 r := by
   funext a
   unfold blkOf blk2
@@ -36,12 +41,26 @@ theorem blkOf_eq (h : n = r + t) (ht : 0 < t) : blkOf (n := n) r t = blk2 r := b
   · have := a.2
     rw [Nat.div_eq_of_lt (by omega)]
 
+/- English proof (translation)
+Use `mem_blockTri.2 fun a c hac => ?_` and prove the remaining obligations. Unfold `blk2 at hac`. Apply the tactic sequence `by_cases ha : (a : ℕ) < r <;> by_cases hc : (c : ℕ) < r <;> simp [ha, hc] at hac`. Conclude with `h a c (by omega) hc`.
+-/
 theorem mem_twoBlockTriangular_of_blockTriangular {x : GL (Fin n) k} (h : ∀ a c : Fin n, r ≤ (a : ℕ) → (c : ℕ) < r → x.val a c = 0) : x ∈ blockTri (blk2 r) := by
   refine mem_blockTri.2 fun a c hac => ?_
   unfold blk2 at hac
   by_cases ha : (a : ℕ) < r <;> by_cases hc : (c : ℕ) < r <;> simp [ha, hc] at hac
   exact h a c (by omega) hc
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `hx' : ∀ a c, x.val a c = (if a = c then 1 else 0) + v a * (if c = m then 1 else 0)` using `fun a c => by`. Use `hx a c` as an intermediate fact. Simplify `this` using `[colMat, Matrix.one_apply, Matrix.vecMulVec_apply, Pi.single_apply]`. Establish `hb : x ∈ blockTri (blk2 r)` using `mem_twoBlockTriangular_of_blockTriangular fun a c ha hc => by`.
+
+Rewrite using `[hx', if_neg (by rintro rfl; omega), if_neg (by rintro rfl; omega)]; simp`. Rewrite using `[blkOf_eq h ht]`. Use `⟨hb, Units.ext ?_, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[diag_block_det_val 1 hb]`. Establish `hm1 : blk2 r m = 1` using `by unfold blk2; rw [if_neg (by omega)]`.
+
+Establish `e : (x : Matrix (Fin n') (Fin n') k).submatrix (Subtype.val : {a : Fin n' // blk2 r a = 1} → Fin n') Subtype.val = 1 + Matrix.replicateCol Unit (fun a : {a : Fin n' // blk2 r a = 1} => v a.1) * Matrix.replicateRow Unit (Pi.single (⟨m, hm1⟩ : {a : Fin n' // blk2 r a = 1}) (1 : k))`. Use extensionality with `a c`. Simplify using `[hx', Matrix.one_apply, Matrix.mul_apply, Pi.single_apply, Subtype.ext_iff]`. Rewrite using `[e, Matrix.det_one_add_replicateCol_mul_replicateRow]`. Simplify using `[hv]`.
+
+Rewrite using `[upper_block_val_submatrix hr hb]`. Use extensionality with `a c`. Establish `hc : Fin.castLE hr c ≠ m`. Introduce and unpack `rfl`. Use `c.2` as an intermediate fact.
+
+Simplify using `at hm`. Use linear arithmetic over natural numbers and integers. Simplify using `[hx', hc, Matrix.one_apply]`.
+-/
 theorem colMat_blocks (hn : n' = n) (h : n = r + t) (ht : 0 < t) (hr : r ≤ n') (x : GL (Fin n') k) (m : Fin n) (v : Fin n → k)
     (hm : r ≤ (m : ℕ)) (hv : v m = 0) (hx : ∀ a c, x.val (Fin.cast hn.symm a) (Fin.cast hn.symm c) = colMat v m a c) :
     x ∈ blockTri (blkOf r t) ∧ dBlk (blkOf r t) 1 x = 1 ∧ upperLeftBlock hr x = 1 := by
@@ -71,6 +90,21 @@ theorem colMat_blocks (hn : n' = n) (h : n = r + t) (ht : 0 < t) (hr : r ≤ n')
       omega
     simp [hx', hc, Matrix.one_apply]
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Take `rfl : x = b * e * b⁻¹` from `Units.ext (Matrix.ext fun a c => hx a c)`. Establish `hb' : b ∈ blockTri (blk2 r)` using `mem_twoBlockTriangular_of_blockTriangular hb`. Establish `he' : e ∈ blockTri (blk2 r)` using `mem_twoBlockTriangular_of_blockTriangular fun a c ha hc => by`. Rewrite using `[he, dif_neg (by omega), if_neg (by rintro rfl; omega)]`.
+
+Establish `hd : dBlk (blk2 r) 1 e = 1`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[diag_block_det_val 1 he']`. Establish `e1 : (e : Matrix (Fin n') (Fin n') k).submatrix (Subtype.val : {a : Fin n' // blk2 r a = 1} → Fin n') (Subtype.val : {a : Fin n' // blk2 r a = 1} → Fin n') = 1`. Use extensionality with `a c`.
+
+Establish `ha : ¬ ((a.1 : ℕ) < r)` using `fun h' => by`. Use `a.2` as an intermediate fact. Unfold `blk2 at this`. Rewrite `this` using `[if_pos h']`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[Matrix.submatrix_apply, he, dif_neg (fun h' => ha h'.1)]`. Simplify using `[Matrix.one_apply, Subtype.ext_iff]`. Rewrite using `[e1]`. Simplify using the standard rewrite rules. Establish `hg : upperLeftBlock hr e = g`.
+
+Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[upper_block_val_submatrix hr he']`. Use extensionality with `a c`. Rewrite using `[Matrix.submatrix_apply, he, dif_pos ⟨a.2, c.2⟩]`. Both sides reduce to the same expression.
+
+Rewrite using `[blkOf_eq h ht]`. Use `⟨mul_mem (mul_mem hb' he') (inv_mem hb'), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[diag_block_det_mul (mul_mem hb' he') (inv_mem hb'), diag_block_det_mul hb' he', hd, mul_one, ← diag_block_det_mul hb' (inv_mem hb'), mul_inv_cancel]`. Conclude with `blockDiagonalExtendByOnePrimeField_one _ _`. Rewrite using `[← hg]`.
+
+Conclude with `(extendMatrixByIdentityAlongIndices_mul _ (mul_mem hb' he') (inv_mem hb')).trans (congrArg₂ (· * ·) (extendMatrixByIdentityAlongIndices_mul _ hb' he') (extendOne_inv _ hb'))`.
+-/
 theorem conj_blocks (hn : n' = n) (h : n = r + t) (ht : 0 < t) (hr : r ≤ n) (hr' : r ≤ n') (b : GL (Fin n) k)
     (hb : ∀ a c : Fin n, r ≤ (a : ℕ) → (c : ℕ) < r → b.val a c = 0) (g : GL (Fin r) k) (e : GL (Fin n) k)
     (he : ∀ a c : Fin n, e.val a c = if hac : (a : ℕ) < r ∧ (c : ℕ) < r then g.val ⟨a, hac.1⟩ ⟨c, hac.2⟩ else if a = c then 1 else 0)
@@ -115,6 +149,9 @@ section Loc
 
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
+/- English proof (translation)
+Establish `h1 : s.loc n κ ∈ Formalism.UG.GLint (Fin n) (s.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring`. Rewrite using `[GlobalTheory.HeckeStdFacts.mem_GLint_iff, ← map_inv]`. Conclude with `⟨fun i j => GlobalTheory.HeckeStdFacts.proj_mem s (h i j), fun i j => GlobalTheory.HeckeStdFacts.proj_mem s (inv_mem h i j)⟩`. Take `⟨y, hy⟩` from `h1`. Conclude with `⟨y, fun a c => congrArg (fun g : GL (Fin n) _ => g.val a c) hy⟩`.
+-/
 theorem exists_isCompOf (s : ReciprocityTheory.Aut.SplitPlace L) {κ : Formalism.AUTREP.GAf L n} (h : κ ∈ ReciprocityTheory.Aut.Umax L n) :
     ∃ y, IsCompOf s κ y := by
   have h1 : s.loc n κ ∈ Formalism.UG.GLint (Fin n) (s.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring := by
@@ -123,10 +160,24 @@ theorem exists_isCompOf (s : ReciprocityTheory.Aut.SplitPlace L) {κ : Formalism
   obtain ⟨y, hy⟩ := h1
   exact ⟨y, fun a c => congrArg (fun g : GL (Fin n) _ => g.val a c) hy⟩
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.HeckeStdFacts.loc_mem_GLint_iff s ht).1 ⟨y, Units.ext (Matrix.ext fun a c => h a c)⟩`.
+-/
 theorem mem_Umax_of_isCompOf (s : ReciprocityTheory.Aut.SplitPlace L) {κ : Formalism.AUTREP.GAf L n} (ht : ReciprocityTheory.Aut.TrivOutside {s.v} κ)
     {y : GL (Fin n) (Os s)} (h : IsCompOf s κ y) : κ ∈ ReciprocityTheory.Aut.Umax L n :=
   (GlobalTheory.HeckeStdFacts.loc_mem_GLint_iff s ht).1 ⟨y, Units.ext (Matrix.ext fun a c => h a c)⟩
 
+/- English proof (translation)
+Use `haveI : NeZero p := ⟨hp.ne_zero⟩`. Establish `h` using `hl a c`. Use `show φ (y.val a c) = _`. Distinguish the cases in `hac : (a : ℕ) < r ∧ (c : ℕ) < r`. Rewrite `h`, the goal using `[dif_pos hac]`.
+
+Rewrite `h` using `[← hy a c]`. Establish `h2 : φ (y.val a c - ((g.val ⟨a, hac.1⟩ ⟨c, hac.2⟩).val : Os s)) = 0` using `(hφ.ker _).2 (by`. Establish `e : ((y.val a c - ((g.val ⟨a, hac.1⟩ ⟨c, hac.2⟩).val : Os s) : Os s) : s.v.adicCompletion (maximalRealSubfield L)) = (y.val a c : s.v.adicCompletion (maximalRealSubfield L)) - ((g.val ⟨a, hac.1⟩ ⟨c, hac.2⟩).val : ℕ)` using `(map_sub (s.v.adicCompletionIntegers (maximalRealSubfield L)).subtype _ _).trans (congrArg _ (map_natCast (s.v.adicCompletionIntegers (maximalRealSubfield L)).subtype _))`. Rewrite using `[e]`. Conclude with `h)`.
+
+Rewrite `h2` using `[map_sub, sub_eq_zero, map_natCast]`. Rewrite using `[h2]`. Use `show _ = iso (g.val ⟨a, hac.1⟩ ⟨c, hac.2⟩)`. Rewrite using `[← map_natCast iso, ZMod.natCast_zmod_val]`. Rewrite `h`, the goal using `[dif_neg hac]`.
+
+Rewrite `h` using `[← hy a c]`. Distinguish the cases in `e : a = c`. Rewrite `h`, the goal using `[if_pos e]`. Rewrite using `[show y.val a c = 1 from Subtype.ext h, map_one]`. Rewrite `h`, the goal using `[if_neg e]`.
+
+Rewrite using `[show y.val a c = 0 from Subtype.ext h, map_zero]`.
+-/
 theorem red_of_isLiftAt (s : ReciprocityTheory.Aut.SplitPlace L) {k : Type} [CommRing k] {φ : Os s →+* k} (hφ : IsResidue s φ) {r p : ℕ}
     (hp : p.Prime) (iso : ZMod p →+* k) (g : GL (Fin r) (ZMod p)) {κ : Formalism.AUTREP.GAf L n} {y : GL (Fin n) (Os s)}
     (hy : IsCompOf s κ y) (hl : GlobalTheory.PendOf.IsLiftAt s r p g (s.loc n κ)) (a c : Fin n) :
@@ -162,6 +213,11 @@ section Lev
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `⟨mem_parLev.2 ⟨GlobalTheory.LevFinCong.finE_mem_UA V κ, hSt, fun PP h => (hP PP h).1, fun PP h => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hQ PP h]`. Conclude with `one_mem _`. Unfold `levChi levFn`. Rewrite using `[Finset.prod_eq_one, Finset.prod_eq_one, mul_one, mul_one]`.
+
+Introduce `PP h`. Rewrite using `[hQ PP h, dBlk, blockDiagonalExtendByOnePrimeField_one, map_one]`. Introduce `PP h`. Rewrite using `[hs, Finset.prod_range_one, zero_add, (hP PP h).2, map_one]`.
+-/
 theorem lev_of_red (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (Ld : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) (hs : Ld.s = 1) (κ : GA D V)
     (hSt : finE V κ ∈ Formalism.L2.DIV.St β) (hQ : ∀ PP ∈ Ld.Q, redFn β PP (finE V κ) = 1)
     (hP : ∀ PP ∈ Ld.Pg, redFn β PP (finE V κ) ∈ blockTri (blkOf Ld.r Ld.t) ∧ dBlk (blkOf Ld.r Ld.t) 1 (redFn β PP (finE V κ)) = 1) :
@@ -176,8 +232,14 @@ theorem lev_of_red (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (Ld : Formalism.L2
     · intro PP h
       rw [hs, Finset.prod_range_one, zero_add, (hP PP h).2, map_one]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨PP.under _, rfl⟩`.
+-/
 theorem exists_overPl (PP : Formalism.L2.DIV.Pl D.host.E) : ∃ v, NG.OverPl PP v := ⟨PP.under _, rfl⟩
 
+/- English proof (translation)
+Establish `h1 : (p : 𝓞 (maximalRealSubfield D.host.E)) ∈ v.asIdeal`. Rewrite using `[← h, Ideal.mem_comap, map_natCast]`. Conclude with `hp`. Rewrite `h1` using `[← h', Ideal.mem_comap, map_natCast]`. Conclude with `h1`.
+-/
 theorem nat_mem_of_overPl {P P' : Formalism.L2.DIV.Pl D.host.E} {v} (h : NG.OverPl P v) (h' : NG.OverPl P' v) {p : ℕ}
     (hp : (p : 𝓞 D.host.E) ∈ P.asIdeal) : (p : 𝓞 D.host.E) ∈ P'.asIdeal := by
   have h1 : (p : 𝓞 (maximalRealSubfield D.host.E)) ∈ v.asIdeal := by
@@ -185,6 +247,9 @@ theorem nat_mem_of_overPl {P P' : Formalism.L2.DIV.Pl D.host.E} {v} (h : NG.Over
   rw [← h', Ideal.mem_comap, map_natCast] at h1
   exact h1
 
+/- English proof (translation)
+Introduce and unpack `⟨kv, hkv⟩`. Take `⟨⟨q, hq1, hq2, -, hq4⟩, -⟩` from `hL.Q_pl t PP hPP`. Conclude with `GlobalTheory.MtIn.Under.not_both (D.host.g_prime kv.1) hq1 (hq4 kv.1) (nat_mem_of_overPl hkv hv (D.naut.plGw_over kv.1 kv.2)) (GlobalTheory.MtIn.Under.q_mem hq2)`.
+-/
 theorem twist_off {T : Type} {Lc : Formalism.IndefR.Links.LevCh D T} {μ0 : T} (hL : Lc.Is μ0) (t : T) {PP} (hPP : PP ∈ Lc.Q t) {v}
     (hv : NG.OverPl PP v) : v ∉ GlobalTheory.PendOf.gPl D := by
   rintro ⟨kv, hkv⟩
@@ -192,6 +257,13 @@ theorem twist_off {T : Type} {Lc : Formalism.IndefR.Links.LevCh D T} {μ0 : T} (
   exact GlobalTheory.MtIn.Under.not_both (D.host.g_prime kv.1) hq1 (hq4 kv.1)
     (nat_mem_of_overPl hkv hv (D.naut.plGw_over kv.1 kv.2)) (GlobalTheory.MtIn.Under.q_mem hq2)
 
+/- English proof (translation)
+Break down `GlobalTheory.SplitPlaceOver.eq_or_isConjPl D s _ h with e | e` into its components or cases. Conclude with `e`. Take `⟨k, v⟩` from `kv`. Take `⟨k', v'⟩` from `kv'`. Distinguish the cases in `hk : k' = k`.
+
+Substitute `hk` using the available equality. Rewrite `e` using `[hs]`. Conclude with `absurd e (D.naut.plGw_nconj _ _ _)`. Establish `hne : D.host.g k' ≠ D.host.g k`. Use `D.host.g_ne` as an intermediate fact.
+
+Apply the tactic sequence `fin_cases k <;> fin_cases k' <;> first | exact absurd rfl hk | exact this | exact this.symm`. Use `(GlobalTheory.MtIn.Under.not_both (D.host.g_prime k) (D.host.g_prime k') hne ?_ (nat_mem_of_overPl h s.w_under (D.naut.plGw_over k' v'))).elim` and prove the remaining obligations. Rewrite using `[hs]`. Conclude with `D.naut.plGw_over k v`.
+-/
 theorem fixed_eq (s : ReciprocityTheory.Aut.SplitPlace D.host.E) (kv kv' : Σ k : Fin 2, D.nd.PlG k) (hs : s.w = D.naut.plGw kv.1 kv.2)
     (h : NG.OverPl (D.naut.plGw kv'.1 kv'.2) s.v) : s.w = D.naut.plGw kv'.1 kv'.2 := by
   rcases GlobalTheory.SplitPlaceOver.eq_or_isConjPl D s _ h with e | e
@@ -217,16 +289,45 @@ section Core
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type}
   [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
+/- English proof (translation)
+The claim follows from `D.sp.V_rank _ (Nat.le_add_left _ _) i.2`.
+-/
 theorem rank_V (i : Fin D.R.m) : (Vc D i).rank = D.R.nV := D.sp.V_rank _ (Nat.le_add_left _ _) i.2
 
+/- English proof (translation)
+Use `D.R.rank_add_five_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem t_pos (D : D7) : 0 < D.R.t := by have := D.R.rank_add_five_le; omega
 
+/- English proof (translation)
+Use `D.R.m_add_three_le_k` as an intermediate fact. Use `D.R.two_le_m` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem two_le_r (D : D7) : 2 ≤ D.R.r := by have := D.R.m_add_three_le_k; have := D.R.two_le_m; unfold Ranks.r; omega
 
+/- English proof (translation)
+Use `t_pos D` as an intermediate fact. Unfold `Ranks.nV`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem r_lt_nV (D : D7) : D.R.r < D.R.nV := by have := t_pos D; unfold Ranks.nV; omega
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Substitute `hPP` using the available equality. Take `⟨c, hβ⟩` from `hL.βV i`. Rewrite `hβ` using `[one_pow]`. Take `⟨φ, b, hφ, hb⟩` from `GlobalTheory.FrameRedSplit.frameRed_exists D (Vc D i) D.R.nV (rank_V i) hF P (R.βV i) _ hP hβ s`. Establish `hpar : ∀ a c : Fin D.R.nV, D.R.r ≤ (a : ℕ) → (c : ℕ) < D.R.r → b.val a c = 0`.
+
+Use `GlobalTheory.ParaForce.para_of_colMat_fixed D.host.E D.R.nV D.R.r s (kP s.w) φ (Field.toIsField _) hφ (two_le_r D) (r_lt_nV D) W f hf J χ ψ₀ ξ h0 hu hJ b ?_` and prove the remaining obligations. Introduce `κ y ht hy m v hm hv he x`. Establish `hU` using `mem_Umax_of_isCompOf s ht hy`. Take `⟨hSt, hoff⟩` from `GlobalTheory.FrameOff.stdFrame_stab_red D (Vc D i) D.R.nV hF P (R.βV i) _ hP hβ κ hU`. Establish `hall : ∀ PP ∈ R.Pg, redFn (R.βV i) PP (finE (Vc D i) (P.ψ κ)) ∈ blockTri (blkOf D.R.r D.R.t) ∧ dBlk (blkOf D.R.r D.R.t) 1 (redFn (R.βV i) PP (finE (Vc D i) (P.ψ κ))) = 1 ∧ upperLeftBlock (r_le_V i) (redFn (R.βV i) PP (finE (Vc D i) (P.ψ κ))) = 1`.
+
+Introduce `PP hPP`. Distinguish the cases in `e : s.w = PP`. Substitute `e` using the available equality. Conclude with `colMat_blocks (rank_V i) rfl (t_pos D) (r_le_V i) _ m v hm hv fun a c => (hb κ hU y hy a c).trans (by rw [he])`. Take `⟨v', hv'⟩` from `exists_overPl PP`.
+
+Establish `hne : v' ∉ ({s.v} : Set _)`. Introduce and unpack `rfl`. Take `⟨kv', rfl⟩` from `hPg PP hPP`. Conclude with `e (fixed_eq s kv kv' hs hv')`. Rewrite using `[hoff _ v' PP ht hv' hne]`.
+
+Conclude with `⟨one_mem _, blockDiagonalExtendByOnePrimeField_one _ _, blockDiagonalExtendByOnePrimeField_one _ _⟩`. Establish `hQ : ∀ PP ∈ R.Q t, redFn (R.βV i) PP (finE (Vc D i) (P.ψ κ)) = 1`. Introduce `PP hPP`. Take `⟨v', hv'⟩` from `exists_overPl PP`. Use `hoff _ v' PP ht hv' ?_` and prove the remaining obligations.
+
+Introduce and unpack `rfl`. Conclude with `twist_off hL t hPP hv' ⟨kv, hs ▸ s.w_under⟩`. Take `⟨h1, h2⟩` from `lev_of_red (Vc D i) (R.βV i) (datVP R i t Pl) rfl (P.ψ κ) hSt hQ fun PP h => ⟨(hall PP h).1, (hall PP h).2.1⟩`. Establish `h3 : rTup (R.βV i) (datVP R i t Pl) (finE (Vc D i) (P.ψ κ)) = 1` using `funext fun PP => (hall PP.1 PP.2).2.2`. Rewrite `h2` using `[h3, blockDiagonalExtendByOnePrimeField_one]`.
+
+Establish `h4 : P.ψ κ ∈ levS (Vc D i) (R.βV i) (datVP R i t Pl)` using `⟨P.into κ, h1, by rw [h3]; exact one_mem _⟩`. Rewrite using `[hlev κ h4 x, h2]`. Simplify using the standard rewrite rules. Use `⟨upperLeftBlock (r_lt_nV D).le b, fun κ hU g hg => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `exists_isCompOf s hU`.
+
+Conclude with `conj_blocks (rank_V i) rfl (t_pos D) (r_lt_nV D).le (r_le_V i) b hpar _ _ (red_of_isLiftAt s hφ (D.host.g_prime kv.1) iso g hy hg) _ (hb κ hU y hy)`.
+-/
 theorem local_red (hL : R.toLevCh.Is A.μ0) (hPg : ∀ PP ∈ R.Pg, ∃ kv : (Σ k : Fin 2, D.nd.PlG k), PP = D.naut.plGw kv.1 kv.2)
     (i : Fin D.R.m) (t : T) (Pl : LevelP R.Pg D.R.r ℂ) {hF : D.host.F = maximalRealSubfield D.host.E}
     (P : principalLevelFrame.RowPsi (Vc D i) D.R.nV) (hP : R3.StdFrame hF P) {W : Type} [AddCommGroup W] [Module ℂ W]
@@ -282,6 +383,9 @@ theorem local_red (hL : R.toLevCh.Is A.μ0) (hPg : ∀ PP ∈ R.Pg, ∃ kv : (Σ
   exact conj_blocks (rank_V i) rfl (t_pos D) (r_lt_nV D).le (r_le_V i) b hpar _ _
     (red_of_isLiftAt s hφ (D.host.g_prime kv.1) iso g hy hg) _ (hb κ hU y hy)
 
+/- English proof (translation)
+Establish `hc` using `(Subalgebra.mem_center_iff.1 z.2) (MonoidAlgebra.single u 1)`. Use `congrArg (fun z => z.coeff (g * u)) hc` as an intermediate fact. Simplify using `only [MonoidAlgebra.single_mul_apply, MonoidAlgebra.mul_single_apply, one_mul, mul_one, mul_inv_cancel_right] at this`. Rewrite using `[mul_assoc]`. Conclude with `this`.
+-/
 theorem coeff_conj {H : Type} [Group H] (z : Subalgebra.center ℂ (MonoidAlgebra ℂ H)) (u g : H) :
     (z : MonoidAlgebra ℂ H).coeff (u⁻¹ * g * u) = (z : MonoidAlgebra ℂ H).coeff g := by
   have hc := (Subalgebra.mem_center_iff.1 z.2) (MonoidAlgebra.single u 1)
@@ -299,6 +403,31 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Take `⟨t, rfl⟩ : ∃ t, Y.tup t = μ` from `⟨_, Y.tupTie μ hμ⟩`. Take `⟨Lf, hLf, hU⟩` from `GlobalTheory.LiftStandardGroup.main D D.R.nV (r_lt_nV D).le`. Use `⟨Lf, hLf, fun z x => ?_⟩` and prove the remaining obligations. Establish `hread` using `ad.read _ hμ i`. Distinguish the cases in `hx : (M (Y.tup t) ((i : ℕ) + 1) h1 h2).real x = 0`.
+
+Establish `hx0 : x = 0` using `(M (Y.tup t) ((i : ℕ) + 1) h1 h2).real_inj (hx.trans (map_zero _).symm)`. Rewrite using `[hx0, map_zero, map_zero]`. Simplify using `[GlobalTheory.PendOf.actSum, Finsupp.sum]`. Take `⟨plg, iso, hpl, -, -, hiso⟩` from `hK.grp`. Establish `hPg : ∀ PP ∈ R.Pg, ∃ kv : (Σ k : Fin 2, D.nd.PlG k), PP = D.naut.plGw kv.1 kv.2` using `fun PP h => ⟨plg.symm ⟨PP, h⟩, by rw [← hpl, Equiv.apply_symm_apply]⟩`.
+
+Establish `hty : (M (Y.tup t) ((i : ℕ) + 1) h1 h2).real x ∈ NG.TypeSp _ _ _` using `(M (Y.tup t) ((i : ℕ) + 1) h1 h2).real_range ▸ LinearMap.mem_range_self _ x`. Establish `hloc : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), ∃ u : GL (Fin D.R.r) (kP (plg kv).1), ∀ g : G0g D.nd, redFn (R.βV i) (plg kv).1 (finE (Vc D i) ((ad.PV i).ψ (Lf g))) ∈ blockTri (blkOf D.R.r D.R.t) ∧ dBlk (blkOf D.R.r D.R.t) 1 (redFn (R.βV i) (plg kv).1 (finE (Vc D i) ((ad.PV i).ψ (Lf g)) …`. Introduce `kv`. Take `⟨s, hs⟩` from `GlobalTheory.FixedPlaceOverType.exists_splitPlace_w_plGw D kv.1 kv.2`. Take `⟨ψ₀, ξ, h0, hl⟩` from `hu kv.1 kv.2 s hs`.
+
+Take `⟨u, hu'⟩` from `local_red (R := R.toRealDat) hB.lev hPg i (Y.tupT (Y.tup t)) (R.toRealDat.levR F.lv2 false) (ad.PV i) (ad.std i) _ hx _ _ (fun κ y => congrFun (hty.2 κ) y) (fun κ hκ y => (ad.eW _ hμ i).injective (by`. Rewrite using `[map_smul, hread, hread, map_mul]`. Conclude with `(Y.IL.jMt _ hμ i x).2.2 _ hκ _))`. Use `kv s hs ψ₀ ξ h0 hl (plg kv).1 (hs.trans (hpl kv).symm) (iso kv)`. Conclude with `⟨u, fun g => hu' _ (hU g) _ ((hLf g).2 kv s hs)⟩`.
+
+Use `choose u hu' using hloc`. Take `⟨c, hβ⟩` from `hB.lev.βV i`. Rewrite `hβ` using `[one_pow]`. Choose the witnesses or unpack the hypotheses as in `⟨û, hû⟩ : ∃ û : G, ∀ kv, R.eG û (plg kv) = u kv := by`. Set `u' : G0 R.Pg D.R.r` to `(Equiv.piCongrLeft (fun PP : R.Pg => GL (Fin D.R.r) (kP PP.1)) plg) u`.
+
+Conclude with `⟨R.eG.symm u', fun kv => by rw [MulEquiv.apply_symm_apply]; exact Equiv.piCongrLeft_apply_apply _ _ _ _⟩`. Establish `key : ∀ g : G0g D.nd, IsLevelLift (Vc D i) (R.βV i) (R.datVt i t) (R.eG (û * (R.eG.trans cG).symm g * û⁻¹)) ((ad.PV i).ψ (Lf g)) ∧ levChi (Vc D i) (R.βV i) (flagL (R.datVt i t)) ((ad.PV i).ψ (Lf g)) = 1`. Introduce `g`. Take `⟨hSt, hoff⟩` from `GlobalTheory.FrameOff.stdFrame_stab_red D (Vc D i) D.R.nV Y.hF (ad.PV i) (R.βV i) _ (ad.std i) hβ _ (hU g)`. Establish `hQ : ∀ PP ∈ R.Q t, redFn (R.βV i) PP (finE (Vc D i) ((ad.PV i).ψ (Lf g))) = 1`.
+
+Introduce `PP hPP`. Take `⟨v', hv'⟩` from `exists_overPl PP`. Conclude with `hoff _ v' PP (hLf g).1 hv' (twist_off hB.lev t hPP hv')`. Establish `hP : ∀ PP ∈ R.Pg, redFn (R.βV i) PP (finE (Vc D i) ((ad.PV i).ψ (Lf g))) ∈ blockTri (blkOf D.R.r D.R.t) ∧ dBlk (blkOf D.R.r D.R.t) 1 (redFn (R.βV i) PP (finE (Vc D i) ((ad.PV i).ψ (Lf g)))) = 1`. Introduce `PP hPP`.
+
+Take `⟨kv, e⟩` from `plg.surjective ⟨PP, hPP⟩`. Take `rfl : (plg kv).1 = PP` from `congrArg Subtype.val e`. Conclude with `⟨(hu' kv g).1, (hu' kv g).2.1⟩`. Use `⟨⟨(ad.PV i).into _, (lev_of_red (Vc D i) (R.βV i) (R.datVt i t) rfl _ hSt hQ hP).1, funext fun PP => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨kv, rfl⟩` from `plg.surjective PP`.
+
+Use `(hu' kv g).2.2.trans ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_inv, Pi.mul_apply, Pi.mul_apply, Pi.inv_apply, hû, hiso, MulEquiv.apply_symm_apply]`. Rewrite using `[(lev_of_red (Vc D i) (R.βV i) (flagL (R.datVt i t)) rfl _ hSt hQ hP).2, extendOne_of_mem (P := (flagL (R.datVt i t)).P.H) _ (Subgroup.mem_top _)]`. Both sides reduce to the same expression. Set `e : G ≃ G0g D.nd` to `(MulAut.conj û⁻¹).toEquiv.trans (R.eG.trans cG).toEquiv`.
+
+Establish `he : ∀ g, û * (R.eG.trans cG).symm (e g) * û⁻¹ = g` using `fun g => by show û * (R.eG.trans cG).symm ((R.eG.trans cG) (û⁻¹ * g * û⁻¹⁻¹)) * û⁻¹ = g`. Rewrite using `[MulEquiv.symm_apply_apply]`. Use `group`. Establish `hact` using `GlobalTheory.CenTranslate.main D G Pl0 I0 T A3 Ks R.toRealDat F.lv2 X0 Y cG hB hO hC i t hμ (fun g => (ad.PV i).ψ (Lf (e g))) (fun g => by have := (key (e g)).1; rwa [he] at this) z x`. Use function extensionality and compare the values at `y`.
+
+Use `(ad.eW _ hμ i).injective ?_` and prove the remaining obligations. Use `letI : Fintype (G0g D.nd) := Fintype.ofEquiv G e`. Rewrite using `[hread, hact, GlobalTheory.PendOf.actSum, Finsupp.sum_fintype _ _ (by intro _; exact zero_smul _ _), Finset.sum_apply, map_sum, ← e.sum_comp]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Establish `hz : (z : MonoidAlgebra ℂ (G0g D.nd)).coeff (e g) = (z : MonoidAlgebra ℂ (G0g D.nd)).coeff ((R.eG.trans cG) g)` using `by show (z : MonoidAlgebra ℂ (G0g D.nd)).coeff ((R.eG.trans cG) (û⁻¹ * g * û⁻¹⁻¹)) = _`.
+
+Rewrite using `[inv_inv, map_mul (R.eG.trans cG), map_mul (R.eG.trans cG), map_inv (R.eG.trans cG), coeff_conj]`. Rewrite using `[(key (e g)).2, inv_one, mul_one, Pi.smul_apply, map_smul, hz, ← map_mul (ad.PV i).ψ, ← hread]`. Both sides reduce to the same expression.
+-/
 theorem cen_used (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (hB : R.toRealDat.BaseW F.lv2)
     (hK : Keep (A3 := A3) R.toRealDat F.lv2 cG) (hO : A3.A.fam.Ok 1) (hC : CenRead Y cG) (M : MtFam D) (ad : MtAd Y M)
     (μ : D.what₂.Tup) (hμ : Used0 D μ) (i : Fin D.R.m) (h1 : 1 ≤ (i : ℕ) + 1) (h2 : (i : ℕ) + 1 ≤ D.R.m)
@@ -381,6 +510,9 @@ theorem cen_used (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (cG : G0 R.Pg D.R
   rw [(key (e g)).2, inv_one, mul_one, Pi.smul_apply, map_smul, hz, ← map_mul (ad.PV i).ψ, ← hread]
   rfl
 
+/- English proof (translation)
+Substitute `hμ` using the available equality. Take `⟨i, rfl⟩ : ∃ i : Fin D.R.m, j = (i : ℕ) + 1` from `⟨⟨j - 1, by omega⟩, by simp; omega⟩`. Use `cen_used Y cG hB hK hO hC M ad _ (Or.inr ⟨w, ((D.what₂.muAt_or _).resolve_left hw).symm⟩) i h1 h2 fun k v s hs => ?_` and prove the remaining obligations. Take `⟨ψ₀, ξ, h0, -, hl⟩` from `mt.uni w i k v s hs`. Conclude with `⟨ψ₀, ξ, h0, hl⟩`.
+-/
 theorem cen_twisted (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (hB : R.toRealDat.BaseW F.lv2)
     (hK : Keep (A3 := A3) R.toRealDat F.lv2 cG) (hO : A3.A.fam.Ok 1) (hC : CenRead Y cG) (M : MtFam D) (ad : MtAd Y M)
     {tup : D.what₂.Tup → Fin D.R.m → Formalism.L2.Host.HChar D.host.E} {Q} (mt : MtInput D M tup Q) (w : D.what₂.places.Pl)
@@ -404,6 +536,9 @@ namespace GlobalTheory.SerThird
 open Formalism.MainNotions.N Formalism.L2.Host Formalism.IndefR.NX ReciprocityTheory.Aut Formalism.AUTREP GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting.Up GlobalTheory.CenFrame
 attribute [local instance] GlobalTheory.TypeRec.factG
 
+/- English proof (translation)
+Substitute `hμ` using the available equality. Substitute `h` using the available equality. Rewrite using `[eq_of_heq (he _), eq_of_heq (he _)]`. Conclude with `(tL μ).cen z a ha x`.
+-/
 theorem cen_heq {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] {O : Type} [CommRing O] {φ : O →+* ℂ}
     {σ : K →+* ℂ} {τ : Type} (mL : τ → Mat1 K G) (s : τ → Sp1 O φ G) (tL : ∀ μ, Tie1 σ (mL μ) (s μ)) {μ μ' : τ} (hμ : μ = μ')
     {m' : Mat1 K G} (h : mL μ' = m') (e : (Fin m'.n → K) → Fin (mL μ).n → K) (he : ∀ x, HEq (e x) x)
@@ -417,6 +552,11 @@ theorem cen_heq {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Gr
 open Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR.Cx GlobalTheory.Mem.R3.Tr in
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `i t z a ha v`. Establish `hc` using `x.fits.cen _ (GlobalTheory.Mem.R3.Rw.Ties.stdIso_dat x.m.z)`. Set `z' : Subalgebra.center ℂ (MonoidAlgebra ℂ (Gc B w.px))` to `Bare.cenPull (x.m.z.R.eG.trans x.m.z.cG) z`. Establish `hz` using `Bare.coeff_cenPull (x.m.z.R.eG.trans x.m.z.cG) z`. Establish `ha' : ∀ g, (w.st x.o.Z).toD7.what₂.embLL (a.coeff g) = (z' : MonoidAlgebra ℂ (Gc B w.px)).coeff g` using `fun g => (ha g).trans (hz g).symm`.
+
+Establish `h1` using `hc.mt (x.r.Y.tup t) ((i : ℕ) + 1) ((by with_unfolding_all exact (z :))) z' ((by with_unfolding_all exact (hz :))) ((P.q.p.tL (x.r.Y.tup t) ((i : ℕ) + 1)).j ((by with_unfolding_all exact ((x.r.Y.eMt i t v) :))))`. Establish `h2` using `cen_heq (fun a => P.q.p.mL a ((i : ℕ) + 1)) (fun a => P.q.p.sL a ((i : ℕ) + 1)) (fun a => P.q.p.tL a ((i : ℕ) + 1)) (congrFun x.r.tup t) (x.m.t.hL i t) (fun y => (by with_unfolding_all exact ((x.r.Y.eMt i t ((y))) : _))) ((by with_unfolding_all exact ((x.r.eMt i t) :))) z' ((by w …`. Conclude with `(by with_unfolding_all exact ((h1.trans h2) :))`.
+-/
 theorem cenRead_state {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w} (x : St P) :
     CenRead x.r.Y x.m.z.cG := by
   intro i t z a ha v
@@ -433,6 +573,9 @@ theorem cenRead_state {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : C
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `i`. Establish `h` using `cen_twisted x.r.Y x.m.z.cG x.m.z.pins.char.base x.m.z.pins.keep x.m.intersectionNumber_baseChange.ok.ok2 (cenRead_state x) l.mt.M l.mt.ad l.mt.mt ((withLoc Lc).nd.w i) ((withLoc Lc).nd.w_tw i) ((withLoc Lc).nd.mu i) ((withLoc Lc).nd.mu_w i) ((withLoc Lc).nd.j i) ((withLoc Lc).nd. …`. Conclude with `(by with_unfolding_all exact (h :))`.
+-/
 theorem cenLoc_third {hL : GlobalTheory.Published.LocalLanglandsGL} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T}
     {P : Pre2 K w} (x : St P) (l : LC hL x) (Lc : LocAll (lay0 (Dof x))) : CenLoc (withLoc Lc) (mtL Lc l.mt.M) := by
   intro i
@@ -443,6 +586,13 @@ theorem cenLoc_third {hL : GlobalTheory.Published.LocalLanglandsGL} {K : Ctx} {B
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨Sp, ⟨Au⟩, ss⟩` from `hB`. Establish `hmt : MtInput (Dof x) l.mt.M l.c.tp.tup l.c.ch.Q`. Establish `key : ∀ (xi : (Dof x).what₂.Tup → HChar (Dof x).host.E) (Q : (Dof x).what₂.places.Pl → Finset (PlE (Dof x).host)), MtInput (Dof x) l.mt.M (fun μ j => (cfOf x).mu0 j * xi μ) Q → l.c.tp.xi = xi → l.c.ch.Q = Q → MtInput (Dof x) l.mt.M l.c.tp.tup l.c.ch.Q`. Introduce `xi Q h hx hQ`. Substitute `hx hQ` using the available equality.
+
+Conclude with `h`. Conclude with `key _ _ l.mt.mt l.c.xi_eq l.c.Q_eq`. Set `nt : NTrue hL (withLoc L) (cfL L (cfOf x)) (chL L l.c.ch) (tpL L l.c.tp)` to `{ D := Dof x, cf := cfOf x, jE := l.a.jE, A := l.a.A, cg := l.a.cg, au := l.a.au, rep := repOf x.r.Y, row := l.a.row, low := lowAll (Dof x), Pq := l.Pq, S := l.rat.S, hL := l.rat.In.hL, eig := l.rat.In.eig, θ := l.rat.In.θ, Bs := l.b.Bs, M := l.mt.M, C := l.c.ch, tp := l.c.tp, ch …`. Establish `hval : ValLL0 (withLoc L) (cfL L (cfOf x))` using `⟨l.a.val.mu0, l.a.val.eta, l.a.val.chiPsi, l.a.val.del, l.a.val.del'⟩`. Take `⟨Q, -, -, -, -, h5⟩` from `GlobalTheory.NPin.pin_of_nTrue hL _ _ _ _ nt hval (fun σ σ' h => x.r.Y.eFT.injective (Formalism.IndefR.principalLevelFrame.rowRepR_inj _ _ _ h)) l.a.elem.star l.a.elem.int l.a.elem.split (GlobalTheory.ChebSplitDense.chebSplit_nd hP.what₂.cheb _)`.
+
+Conclude with `⟨Q, eq_of_heq h5⟩`.
+-/
 theorem pin_withLoc (hL : GlobalTheory.Published.LocalLanglandsGL) (hP : PrN) {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B}
     {w : ColW B f T} {P : Pre2 K w} (x : St P) (l : LC hL x) (big : (Dof x).what₂.places.Pl → Finset ℂ)
     (L : LocAll (lay0 (Dof x))) (hB : GlobalTheory.CoefDuty.Built l.a.A l.mt.M l.c.ch l.c.tp.tup big L) :
@@ -470,6 +620,9 @@ theorem pin_withLoc (hL : GlobalTheory.Published.LocalLanglandsGL) (hP : PrN) {K
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `k` and use `⟨(x.fits.grp.teich k).symm, x.fits.grp.ser k⟩`.
+-/
 theorem labTie_withLoc {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w}
     (x : St P) (Lc : LocAll (lay0 (Dof x))) :
     GlobalTheory.SerSys.LabTie (withLoc Lc) fun k => GlobalTheory.Mem.TypePl.labDat ((withLoc Lc).host.g k) :=
@@ -477,6 +630,9 @@ theorem labTie_withLoc {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : 
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `k v` and use `⟨l.a.A.grp.kv k v, by have h := l.a.A.grp.tg_tame k v rw [l.a.zeta k] at h exact h⟩`.
+-/
 theorem tame_withLoc {hL : GlobalTheory.Published.LocalLanglandsGL} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T}
     {P : Pre2 K w} (x : St P) (l : LC hL x) (Lc : LocAll (lay0 (Dof x))) :
     ∀ k v, ∃ κ : IsLocalRing.ResidueField ((withLoc Lc).nd.plOm.1 ((withLoc Lc).naut.plGw k v)) ≃+* Formalism.CyclotomicNorms.Fbar ((withLoc Lc).host.g k),
@@ -489,6 +645,11 @@ theorem tame_withLoc {hL : GlobalTheory.Published.LocalLanglandsGL} {K : Ctx} {B
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `hL hP`. Use `StepW.of_all ?_` and prove the remaining obligations. Introduce `K B f T w _ _ _ P x l`. Use `⟨fun _ => ∅, fun Lc hB _ => ?_⟩` and prove the remaining obligations. Take `⟨Pn, hM⟩` from `pin_withLoc hL hP x l _ Lc hB`.
+
+Conclude with `GlobalTheory.SerSys.Assembly.serLoc_concrete hP.what₂ hP.green hP.zel hP.dz hL (withLoc Lc) Pn _ (labTie_withLoc x Lc) (tame_withLoc x l Lc) (hM ▸ cenLoc_third x l Lc)`.
+-/
 theorem main : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, PrN → AllSt fun _ _ _ _ _ _ x =>
     ∀ l : LC hL x, GlobalTheory.CoefDuty.EvO l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => SumRepresentations.hypO D' → GlobalTheory.TypeLeaf.SerLoc D' := by
   intro hL hP

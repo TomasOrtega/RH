@@ -23,6 +23,33 @@ end GlobalTheory.VFormCls
 namespace GlobalTheory.VFormCls
 open Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.RecTie Formalism.L2.Theta
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Substitute `hk` using the available equality. Take `⟨Fx, hmem, hext, hin⟩` from `inner_eq X μ hμ j`. Take `⟨N, hN, hopen⟩` from `GlobalTheory.T.exists_principalCongruence_in_definiteLevel D P.cf P.C P.tp X P.M P.rep hA j (X.tupT μ)`. Take `⟨Fb, hFb⟩` from `GlobalTheory.T.definiteLevel_preimage_finitely_many_cosets D P.cf P.C P.tp X P.M P.rep hA j (X.tupT μ)`. Establish `hcV` using `X.given.core.models.cV j`.
+
+Establish `hφ` using `frame_bij (hA.PV j)`. Use `set φ := (finHom (Vc D j)).rangeRestrict.comp (hA.PV j).ψ with hφdef`. Use `set EV := levEnv (Vc D j) (X.R.βV j) (X.R.datVt j (X.tupT μ)) with hEV`. Use `set eW := hA.eW μ hμ j with heW`. Establish `hrat : ∀ h, h ∈ ReciprocityTheory.Aut.GQ D.host.E D.R.nV ↔ ∃ γ, Bridge.ratF (Vc D j) γ = φ ((hA.a j)⁻¹ * h * hA.a j)`.
+
+Introduce `h`. Rewrite using `[hA.rat j h]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ, e⟩`. Conclude with `⟨⟨γ, hγ⟩, Subtype.ext e⟩`.
+
+Introduce and unpack `⟨γ, e⟩`. Conclude with `⟨γ.1, γ.2, congrArg Subtype.val e⟩`. Take `⟨T, hT, hsum⟩` from `transport (ReciprocityTheory.Aut.GQ D.host.E D.R.nV) (Bridge.ratF (Vc D j)) (ratF_inj _) φ hφ (hA.a j) hrat EV.J (X.R.B.L j (X.tupT μ)).pres.y (X.R.B.L j (X.tupT μ)).pres.reps`. Establish `hreal : ∀ x h, (P.M μ (j.1 + 1) h1 h2).real x h = eW (Fx x (φ ((hA.a j)⁻¹ * h)))`. Introduce `x h`.
+
+Rewrite using `[hA.real μ hμ j x h, ← hext x]`. Establish `hin' : ((hA.PV j).ψ ((hA.a j)⁻¹ * h))⁻¹ ∈ GfC (Vc D j)` using `(GfC _).inv_mem ((hA.PV j).into _)`. Use `show eW ((X.R.cV j).ρ ((hA.PV j).ψ ((hA.a j)⁻¹ * h))⁻¹ _) = _`. Rewrite using `[hcV.1 _ hin']`. Both sides reduce to the same expression.
+
+Set `β : (P.M μ (j.1 + 1) h1 h2).wt.W →ₗ⋆[ℂ] (P.M μ (j.1 + 1) h1 h2).wt.W →ₗ[ℂ] ℂ` to `((innerₛₗ ℂ).comp eW.symm.toLinearMap).compl₂ eW.symm.toLinearMap`. Establish `hβ : ∀ u v, β u v = inner ℂ (eW.symm u) (eW.symm v)` using `fun u v => rfl`. Use `⟨EV.J.comap φ, EV.χ.comp (φ.subgroupComap EV.J), T, β, (RealDat.nP X.F false)⁻¹, ⟨?_, ?_, ?_⟩, ?_, ?_, hT, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `u v`. Rewrite using `[hβ, hβ, inner_conj_symm]`.
+
+Introduce `u hu`. Rewrite using `[hβ]`. Conclude with `(re_inner_self_pos (𝕜 := ℂ)).2 ((LinearEquiv.map_ne_zero_iff eW.symm).2 hu)`. Introduce `γ u v`. Take `⟨γ', e⟩` from `(hrat γ).1 γ.2`.
+
+Establish `hw` using `hA.wt μ hμ j γ γ'.1 γ'.2 (congrArg Subtype.val e)`. Establish `hs : ∀ w, eW.symm ((P.M μ (j.1 + 1) h1 h2).wt.ρ γ w) = (X.R.cV j).ρ γ'.1 (eW.symm w)`. Introduce `w`. Rewrite using `[LinearEquiv.symm_apply_eq, hw, LinearEquiv.apply_symm_apply]`. Rewrite using `[hβ, hβ, hs, hs, hcV.2.1]`.
+
+Conclude with `⟨Fb, fun κ hκ => hFb κ hκ⟩`. Conclude with `⟨N, hN, fun κ hκ => hopen κ hκ⟩`. Unfold `RealDat.nP`. Conclude with `inv_pos.2 (Nat.cast_pos.2 Nat.card_pos)`. Introduce `x`.
+
+Establish `hr : (P.M μ (j.1 + 1) h1 h2).real x ∈ NG.TypeSp (P.M μ (j.1 + 1) h1 h2).wt.ρ (P.M μ (j.1 + 1) h1 h2).J (P.M μ (j.1 + 1) h1 h2).χ`. Rewrite using `[← (P.M μ (j.1 + 1) h1 h2).real_range]`. Conclude with `LinearMap.mem_range_self _ _`. Use `⟨hr.1, fun κ => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `h`.
+
+Use `show (P.M μ (j.1 + 1) h1 h2).real x (h * κ) = _`. Rewrite using `[Pi.smul_apply, hreal, hreal, ← mul_assoc, map_mul]`. Establish `hm` using `adForms_right (hmem x) (φ ((hA.a j)⁻¹ * h)) ⟨φ κ, κ.2⟩`. Rewrite using `[hm]`. Conclude with `(eW.map_smul _ _).trans rfl`.
+
+Introduce `x y`. Rewrite using `[hin x y, hsum (Fx x) (Fx y)]`. Unfold `GlobalTheory.CoefDuty.classSum`. Use `congr 1`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hreal, hreal]`. Simplify using `only [hβ, LinearEquiv.symm_apply_apply]`.
+-/
 theorem core_data_of_point (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D) (X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp)
     (hA : GlobalTheory.NJoin.Agree X P.M P.rep) (μ : D.what₂.Tup) (hμ : Used0 D μ) (j : Fin D.R.m) (k : ℕ) (hk : j.1 + 1 = k)
     (h1 : 1 ≤ k) (h2 : k ≤ D.R.m) :
@@ -99,6 +126,9 @@ theorem core_data_of_point (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7
     refine Finset.sum_congr rfl fun s _ => ?_
     rw [hreal, hreal]
     simp only [hβ, LinearEquiv.symm_apply_apply]
+/- English proof (translation)
+Introduce `hL D P X hA i`. Establish `hμ : Used0 D (D.nd.mu i)` using `Or.inr ⟨D.nd.w i, (D.nd.mu_w i).trans ((D.what₂.muAt_or _).resolve_left (D.nd.w_tw i)).symm⟩`. Establish `hr` using `D.nd.j_range i`. Take `⟨j, hj⟩ : ∃ j : Fin D.R.m, j.1 + 1 = D.nd.j i` from `⟨⟨D.nd.j i - 1, by omega⟩, by simp only; omega⟩`. Conclude with `_root_.GlobalTheory.VFormCls.core_data_of_point hL D P X hA _ hμ j _ hj hr.1 hr.2`.
+-/
 theorem main_alt_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D) (X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp),
     GlobalTheory.NJoin.Agree X P.M P.rep → ∀ i, ∃ (J : Subgroup (GAf D.host.E D.R.nV)) (χ : J →* ℂˣ)
       (T : Finset (GAf D.host.E D.R.nV)) (β : (P.M.loc i).wt.W →ₗ⋆[ℂ] (P.M.loc i).wt.W →ₗ[ℂ] ℂ) (c : ℝ),

@@ -4,6 +4,9 @@ namespace CompanionTheory.NFCpt
 
 open MeasureTheory Filter Topology
 
+/- English proof (translation)
+Rewrite using `[ae_all_iff]`. Introduce `a`. Establish `h : (volume : Measure (Fin n → ℂ)) {c | c a = 0} = 0` using `Measure.pi_hyperplane _ a 0`. Rewrite using `[ae_iff]`. Simplify using `using h`.
+-/
 theorem ae_coords_ne_zero (n : ℕ) : ∀ᵐ c : Fin n → ℂ, ∀ a, c a ≠ 0 := by
   rw [ae_all_iff]
   intro a
@@ -11,10 +14,16 @@ theorem ae_coords_ne_zero (n : ℕ) : ∀ᵐ c : Fin n → ℂ, ∀ a, c a ≠ 0
   rw [ae_iff]
   simpa using h
 
+/- English proof (translation)
+Rewrite using `[ae_iff]`. Simplify using the standard rewrite rules.
+-/
 theorem ae_ne_zero_c : ∀ᵐ t : ℂ, t ≠ 0 := by
   rw [ae_iff]
   simp
 
+/- English proof (translation)
+The claim follows from `| 0, E, _, _, _ => by have e : E 0 = fun _ => E 0 (fun a => a.elim0) := funext fun c => congrArg _ (Subsingleton.elim _ _) refine ⟨by rw [e]; exact integrable_const _, ?_⟩ rw [e, integral_const] simp [Measure.real, volume_pi] | n + 1, E, hm, h0, hs => by let e : (Fin (n + 1) → ℂ) …`.
+-/
 theorem tower_integral : ∀ (n : ℕ) (E : (j : ℕ) → (Fin j → ℂ) → ℝ),
     AEStronglyMeasurable (E n) volume → (∀ c, (∀ a, c a ≠ 0) → 0 ≤ E n c) →
     (∀ j, j < n → ∀ c : Fin j → ℂ, (∀ a, c a ≠ 0) →
@@ -79,6 +88,15 @@ theorem tower_integral : ∀ (n : ℕ) (E : (j : ℕ) → (Fin j → ℂ) → �
         simp [hGe]
       rw [h1, integral_prod G hGI, integral_congr_ae hae, hV]
 
+/- English proof (translation)
+Use `set x := Real.sqrt a`. Use `set y := Real.sqrt b`. Use `set z := Real.sqrt d`. Establish `hx : a = x ^ 2` using `(Real.sq_sqrt ha).symm`. Establish `hy : b = y ^ 2` using `(Real.sq_sqrt hb).symm`.
+
+Establish `hz : d = z ^ 2` using `(Real.sq_sqrt hd).symm`. Establish `hx0 : 0 ≤ x` using `Real.sqrt_nonneg _`. Establish `hy0 : 0 ≤ y` using `Real.sqrt_nonneg _`. Establish `hz0 : 0 ≤ z` using `Real.sqrt_nonneg _`. Establish `e : |a - b| = |x - y| * (x + y)`.
+
+Rewrite using `[hx, hy, show x ^ 2 - y ^ 2 = (x - y) * (x + y) by ring, abs_mul, abs_of_nonneg (add_nonneg hx0 hy0)]`. Rewrite using `[e, hx, hy, hz]`. Establish `h1 : |x - y| * (x + y) ≤ z * (x + y)` using `mul_le_mul_of_nonneg_right h (add_nonneg hx0 hy0)`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[div_add' _ _ _ hδ.ne', le_div_iff₀ hδ]`.
+
+Use polynomial arithmetic with `[sq_nonneg (z - δ * x), sq_nonneg (z - δ * y), sq_nonneg (δ * x), sq_nonneg (δ * y), sq_nonneg z]`.
+-/
 theorem abs_sub_le_of_sqrt {a b d δ : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (hd : 0 ≤ d) (hδ : 0 < δ)
     (h : |Real.sqrt a - Real.sqrt b| ≤ Real.sqrt d) : |a - b| ≤ d / δ + δ * (a + b) := by
   set x := Real.sqrt a
@@ -98,6 +116,29 @@ theorem abs_sub_le_of_sqrt {a b d δ : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (hd : 
   rw [div_add' _ _ _ hδ.ne', le_div_iff₀ hδ]
   nlinarith [sq_nonneg (z - δ * x), sq_nonneg (z - δ * y), sq_nonneg (δ * x), sq_nonneg (δ * y), sq_nonneg z]
 
+/- English proof (translation)
+Establish `hv : AEStronglyMeasurable v μ` using `aestronglyMeasurable_of_tendsto_ae atTop (fun n => (hq n).1) hlim`. Choose the witnesses or unpack the hypotheses as in `⟨B, hB⟩ : ∃ B : ℝ, ∀ n, ∫ x, q n x ∂μ ≤ B := by`. Take `⟨B, hB⟩` from `ha.bddAbove_range`. Conclude with `⟨B, fun n => hB ⟨n, rfl⟩⟩`. Establish `hB0 : 0 ≤ B` using `(integral_nonneg (hq0 0)).trans (hB 0)`.
+
+Establish `key : ∀ η : ℝ, 0 < η → ∃ N : ℕ, ∀ n, N ≤ n → ∫⁻ x, ‖q n x - v x‖ₑ ∂μ ≤ ENNReal.ofReal η`. Introduce `η hη`. Use `set δ : ℝ := η / (4 * (B + 1)) with hδdef`. Establish `hδ : 0 < δ` using `by positivity`. Take `⟨N, hN⟩` from `hC (δ * (η / 2)) (by positivity)`.
+
+Use `⟨N, fun n hn => ?_⟩` and prove the remaining obligations. Establish `hnm : ∀ m, N ≤ m → ∫⁻ x, ‖q n x - q m x‖ₑ ∂μ ≤ ENNReal.ofReal η`. Introduce `m hm`. Establish `hI : Integrable (fun x => d n m x / δ + δ * (q n x + q m x)) μ` using `((hd n m).div_const δ).add (((hq n).add (hq m)).const_mul δ)`. Establish `h1 : ∫⁻ x, ‖q n x - q m x‖ₑ ∂μ ≤ ∫⁻ x, ENNReal.ofReal (d n m x / δ + δ * (q n x + q m x)) ∂μ`.
+
+Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Rewrite using `[← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal (abs_sub_le_of_sqrt (hq0 n x) (hq0 m x) (hd0 n m x) hδ (htri n m x))`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal hI (Eventually.of_forall fun x => by`.
+
+Use `hd0 n m x` as an intermediate fact. Use `hq0 n x` as an intermediate fact. Use `hq0 m x` as an intermediate fact. Use the proof step `positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations.
+
+Establish `hI2 : Integrable (fun x => δ * (q n x + q m x)) μ` using `((hq n).add (hq m)).const_mul δ`. Rewrite using `[integral_add ((hd n m).div_const δ) hI2, integral_div, integral_const_mul, integral_add (hq n) (hq m)]`. Establish `h2 : (∫ x, d n m x ∂μ) / δ ≤ η / 2`. Rewrite using `[div_le_iff₀ hδ]`. Combine the linear relations using `[hN n m hn hm]`.
+
+Establish `h3 : δ * (∫ x, q n x ∂μ + ∫ x, q m x ∂μ) ≤ δ * (2 * (B + 1))` using `mul_le_mul_of_nonneg_left (by linarith [hB n, hB m]) hδ.le`. Establish `h4 : δ * (2 * (B + 1)) = η / 2` using `by rw [hδdef]; field_simp; ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hae : ∀ᵐ x ∂μ, ‖q n x - v x‖ₑ = liminf (fun m => ‖q n x - q m x‖ₑ) atTop` using `by filter_upwards [hlim] with x hx`. Conclude with `((continuous_enorm.tendsto _).comp (tendsto_const_nhds.sub hx)).liminf_eq.symm`.
+
+Rewrite using `[lintegral_congr_ae hae]`. Use `(lintegral_liminf_le' fun m => ((hq n).1.sub (hq m).1).enorm).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hvi : Integrable v μ`. Take `⟨N, hN⟩` from `key 1 one_pos`.
+
+Establish `hd₁ : Integrable (fun x => q N x - v x) μ` using `⟨(hq N).1.sub hv, (hN N le_rfl).trans_lt ENNReal.ofReal_lt_top⟩`. Conclude with `((hq N).sub hd₁).congr (ae_of_all _ fun x => by simp)`. Use `⟨hvi, tendsto_nhds_unique ?_ ha⟩` and prove the remaining obligations. Rewrite using `[Metric.tendsto_atTop]`. Introduce `η hη`.
+
+Take `⟨N, hN⟩` from `key (η / 2) (by linarith)`. Use `⟨N, fun n hn => ?_⟩` and prove the remaining obligations. Rewrite using `[dist_eq_norm, ← integral_sub (hq n) hvi]`. Establish `h1` using `(enorm_integral_le_lintegral_enorm (fun x => q n x - v x)).trans (hN n hn)`. Rewrite `h1` using `[← ofReal_norm, ENNReal.ofReal_le_ofReal_iff (by linarith)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem integral_eq_of_sqrt_cauchy {α : Type*} [MeasurableSpace α] {μ : Measure α} {q : ℕ → α → ℝ} {v : α → ℝ}
     {d : ℕ → ℕ → α → ℝ} {a : ℝ} (hq : ∀ n, Integrable (q n) μ) (hq0 : ∀ n x, 0 ≤ q n x)
     (hd : ∀ n m, Integrable (d n m) μ) (hd0 : ∀ n m x, 0 ≤ d n m x)

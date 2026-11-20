@@ -12,6 +12,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling GlobalTheory.ThK.DblKer
 open GlobalTheory.DblDatum
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DblDatumBox.box_intertwine | exact GlobalTheory.DblDatumBox.box_intertwine | (intros; apply GlobalTheory.DblDatumBox.box_intertwine <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.doubled_model_darboux_weil_action : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), B.IsGood σ → ∀ (n d : ℕ) (Xs : Spc F E n) (W : Spc F E d) (M : Model σ Xs W)
     (W₂ : Spc F E (d + d)), W₂.J = dblGram finSumFinEquiv W.J →

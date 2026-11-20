@@ -77,11 +77,20 @@ def WeilCharacters : Prop :=
 
 def WeilAll : Prop := WeilLaws ∧ WeilNondegenerate ∧ WeilCharacters
 
+/- English proof (translation)
+The claim follows from `pow_zero x`.
+-/
 example {S : Scheme.{0}} (P : PolAV S) (T : Over S) (x : T ⟶ P.A) : x ∈ tors P T 0 := pow_zero x
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+-/
 example {S : Scheme.{0}} (P : PolAV S) (T : Over S) (x y : T ⟶ P.A) :
     x * y = lift x y ≫ μ[P.A] ∧ (1 : T ⟶ P.A) = toUnit T ≫ η[P.A] := ⟨rfl, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Units.map_injective (Scheme.ΓSpecIso (CommRingCat.of K)).symm.commRingCatIsoToRingEquiv.injective`.
+-/
 example {K : Type} [CommRing K] : Function.Injective (unitSpec (K := K)) :=
   Units.map_injective (Scheme.ΓSpecIso (CommRingCat.of K)).symm.commRingCatIsoToRingEquiv.injective
 

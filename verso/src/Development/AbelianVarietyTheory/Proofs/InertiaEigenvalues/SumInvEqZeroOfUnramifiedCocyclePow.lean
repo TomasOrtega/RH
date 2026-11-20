@@ -5,6 +5,15 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hPT F Ω _ _ _ _ _ _ l _ n ζ hn hζ`. Take `⟨inv, hinv, H⟩` from `hPT.annihilators F Ω l n hn ζ hζ`. Use `⟨inv, hinv, fun S hS Av hA w hw wl hwl => ?_⟩` and prove the remaining obligations. Take `⟨μ, hμ⟩` from `exists_lift_cycMod (Ω := Ω) (r := n) hS`. Take `⟨W, hWc, hW⟩` from `exists_descend_pair_quotient _ w.1 w.2.1 hw`.
+
+Establish `hmem : W ∈ Z2 (charRep μ)`. Use `⟨hWc, fun g h k => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective g`. Take `⟨h, rfl⟩` from `QuotientGroup.mk_surjective h`. Take `⟨k, rfl⟩` from `QuotientGroup.mk_surjective k`.
+
+Establish `e` using `w.2.2 g h k`. Establish `e2 : μ (g : G F Ω ⧸ _) = cycMod F Ω l n g` using `DFunLike.congr_fun hμ g`. Rewrite using `[← QuotientGroup.mk_mul, ← QuotientGroup.mk_mul, hW, hW, hW, hW, charRep_apply, e2]`. Conclude with `e`. Establish `e` using `(H S hS (fun v => Av v.1) (fun v => hA v.1) μ hμ).1 (Submodule.Quotient.mk ⟨W, hmem⟩)`.
+
+Rewrite using `[← Finset.sum_coe_sort]`. Use `Eq.trans (Finset.sum_congr rfl fun v _ => ?_) e` and prove the remaining obligations. Use `congrArg (inv (Av v.1)) ?_` and prove the remaining obligations. Use `congrArg Submodule.Quotient.mk (Subtype.ext (funext fun p => ?_))` and prove the remaining obligations. Conclude with `(hwl v.1 p.1 p.2).trans (hW _ _).symm`.
+-/
 theorem sum_inv_eq_zero_of_unramified_cocycle_pow : PoitouTateTotallyComplex → ∀ (F Ω : Type) [Field F] [NumberField F] [IsTotallyComplex F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (ζ : Ω), 0 < n → IsPrimitiveRoot ζ (l ^ n) → ∃ inv : InvFam F Ω l n, IsLocalInvariants ζ inv ∧ ∀ S : Finset (HeightOneSpectrum (𝓞 F)), ContainsAbove S l → ∀ Av : HeightOneSpectrum (𝓞 F) → ValuationSubring Ω, (∀ v, IsPlaceOver (Av v) v) → ∀ w : Z2 (muRep F Ω l n), (∀ g h : G F Ω, ∀ u ∈ NS Ω (S : Set (HeightOneSpectrum (𝓞 F))), ∀ u' ∈ NS Ω (S : Set (HeightOneSpectrum (𝓞 F))), w.1 (g * u, h * u') = w.1 (g, h)) → ∀ wl : ∀ v, Z2 (muLoc F l n (Av v)), (∀ v (g h : Dec (F := F) (Av v)), (wl v).1 (g, h) = w.1 ((g : G F Ω), (h : G F Ω))) → ∑ v ∈ S, inv (Av v) (Submodule.Quotient.mk (wl v)) = 0 := by
   intro hPT F Ω _ _ _ _ _ _ l _ n ζ hn hζ
   obtain ⟨inv, hinv, H⟩ := hPT.annihilators F Ω l n hn ζ hζ

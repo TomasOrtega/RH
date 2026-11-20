@@ -16,10 +16,18 @@ section Points
 
 variable {k : Type} [CommRing k] {d : ℕ}
 
+/- English proof (translation)
+Rewrite using `[gt_ev_ev' V _ hV (pair_points_zero_constant ha hb), eval_pair_points]`.
+-/
 theorem ev_ev_two {m n : ℕ} (V : Fin m → Pt k n d) (hV : ∀ j, GP (V j)) (a b : Pt k m d) (ha : GP a) (hb : GP b)
     (f : PS k 2 d) : ev V (ev ![a, b] f) = ev ![evP V a, evP V b] f := by
   rw [gt_ev_ev' V _ hV (pair_points_zero_constant ha hb), eval_pair_points]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `MvPowerSeries.subst (fun p : Fin 2 × Fin d => (![pt k (n := 2) d 0, pt k (n := 2) d 1] p.1) p.2) f = f`. Establish `e : (fun p : Fin 2 × Fin d => (![pt k (n` using `2) d 0, pt k (n := 2) d 1] p.1) p.2) = X := by`. Use function extensionality and compare the values at `p`. Take `⟨j, i⟩` from `p`. Apply the tactic sequence `fin_cases j <;> rfl`.
+
+Rewrite using `[e, MvPowerSeries.subst_self]`. Both sides reduce to the same expression.
+-/
 theorem ev_pt_two (f : PS k 2 d) : ev ![pt k (n := 2) d 0, pt k (n := 2) d 1] f = f := by
   change MvPowerSeries.subst (fun p : Fin 2 × Fin d => (![pt k (n := 2) d 0, pt k (n := 2) d 1] p.1) p.2) f = f
   have e : (fun p : Fin 2 × Fin d => (![pt k (n := 2) d 0, pt k (n := 2) d 1] p.1) p.2) = X := by
@@ -29,12 +37,21 @@ theorem ev_pt_two (f : PS k 2 d) : ev ![pt k (n := 2) d 0, pt k (n := 2) d 1] f 
   rw [e, MvPowerSeries.subst_self]
   rfl
 
+/- English proof (translation)
+The claim follows from `gp_addOf _ G.const a b ha hb`.
+-/
 theorem gp_add (G : FGLaw k d) {n : ℕ} {a b : Pt k n d} (ha : GP a) (hb : GP b) : GP (addOf G.F a b) :=
   gp_addOf _ G.const a b ha hb
 
+/- English proof (translation)
+The claim follows from `gp_comp1 _ a (A.const c) ha`.
+-/
 theorem gp_act {O : Type} [CommRing O] {G : FGLaw k d} (A : OAct O G) (c : O) {n : ℕ} {a : Pt k n d} (ha : GP a) :
     GP (comp1 (A.act c) a) := gp_comp1 _ a (A.const c) ha
 
+/- English proof (translation)
+Use `congrArg (ev ![a]) hf` as an intermediate fact. Rewrite `this` using `[ev_ev_two _ (single_point_zero_constant ha) _ _ gp_zero₂ (gp_pt _), evP_zero _ (single_point_zero_constant ha), evP_pt _ (single_point_zero_constant ha), gt_ev_zero _ (single_point_zero_constant ha)]`. Conclude with `this`.
+-/
 theorem ax_left {f : PS k 2 d} (hf : ev (n := 1) ![0, pt k d 0] f = 0) {n : ℕ} {a : Pt k n d} (ha : GP a) :
     ev ![0, a] f = 0 := by
   have := congrArg (ev ![a]) hf
@@ -42,6 +59,9 @@ theorem ax_left {f : PS k 2 d} (hf : ev (n := 1) ![0, pt k d 0] f = 0) {n : ℕ}
     evP_pt _ (single_point_zero_constant ha), gt_ev_zero _ (single_point_zero_constant ha)] at this
   exact this
 
+/- English proof (translation)
+Use `congrArg (ev ![a]) hf` as an intermediate fact. Rewrite `this` using `[ev_ev_two _ (single_point_zero_constant ha) _ _ (gp_pt _) gp_zero₂, evP_zero _ (single_point_zero_constant ha), evP_pt _ (single_point_zero_constant ha), gt_ev_zero _ (single_point_zero_constant ha)]`. Conclude with `this`.
+-/
 theorem ax_right {f : PS k 2 d} (hf : ev (n := 1) ![pt k d 0, 0] f = 0) {n : ℕ} {a : Pt k n d} (ha : GP a) :
     ev ![a, 0] f = 0 := by
   have := congrArg (ev ![a]) hf
@@ -49,6 +69,9 @@ theorem ax_right {f : PS k 2 d} (hf : ev (n := 1) ![pt k d 0, 0] f = 0) {n : ℕ
     evP_pt _ (single_point_zero_constant ha), gt_ev_zero _ (single_point_zero_constant ha)] at this
   exact this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `congrArg (ev ![a]) (G.unit i)` as an intermediate fact. Rewrite `this` using `[ev_ev_two _ (single_point_zero_constant ha) _ _ gp_zero₂ (gp_pt _), evP_zero _ (single_point_zero_constant ha), evP_pt _ (single_point_zero_constant ha), gt_ev_X _ (single_point_zero_constant ha)]`. Conclude with `this`.
+-/
 theorem zero_addOf (G : FGLaw k d) {n : ℕ} {a : Pt k n d} (ha : GP a) : addOf G.F 0 a = a := by
   funext i
   have := congrArg (ev ![a]) (G.unit i)
@@ -56,6 +79,9 @@ theorem zero_addOf (G : FGLaw k d) {n : ℕ} {a : Pt k n d} (ha : GP a) : addOf 
     evP_pt _ (single_point_zero_constant ha), gt_ev_X _ (single_point_zero_constant ha)] at this
   exact this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `hV` using `pair_points_zero_constant ha hb`. Use `congrArg (ev ![a, b]) (G.comm i)` as an intermediate fact. Rewrite `this` using `[ev_ev_two _ hV _ _ (gp_pt _) (gp_pt _), evP_pt _ hV, evP_pt _ hV]`. Conclude with `this.symm`.
+-/
 theorem addOf_comm (G : FGLaw k d) {n : ℕ} {a b : Pt k n d} (ha : GP a) (hb : GP b) :
     addOf G.F a b = addOf G.F b a := by
   funext i
@@ -64,9 +90,17 @@ theorem addOf_comm (G : FGLaw k d) {n : ℕ} {a b : Pt k n d} (ha : GP a) (hb : 
   rw [ev_ev_two _ hV _ _ (gp_pt _) (gp_pt _), evP_pt _ hV, evP_pt _ hV] at this
   exact this.symm
 
+/- English proof (translation)
+Rewrite using `[addOf_comm G ha gp_zero₂, zero_addOf G ha]`.
+-/
 theorem addOf_zero (G : FGLaw k d) {n : ℕ} {a : Pt k n d} (ha : GP a) : addOf G.F a 0 = a := by
   rw [addOf_comm G ha gp_zero₂, zero_addOf G ha]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `hV` using `triple_points_zero_constant ha hb hc`. Establish `h0 : ev (n` using `3) ![addOf G.F (pt k d 0) (pt k d 1), pt k d 2] (G.F i) = ev (n := 3) ![pt k d 0, addOf G.F (pt k d 1) (pt k d 2)] (G.F i) := G.assoc i`. Use `congrArg (ev ![a, b, c]) h0` as an intermediate fact. Rewrite `this` using `[ev_ev_two _ hV _ _ (gp_add G (gp_pt _) (gp_pt _)) (gp_pt _), ev_ev_two _ hV _ _ (gp_pt _) (gp_add G (gp_pt _) (gp_pt _)), evP_addOf _ hV _ _ _ (gp_pt _) (gp_pt _), evP_addOf _ hV _ _ _ (gp_pt _) (gp_pt _), evP_pt _ hV, evP_pt _ hV, evP_pt _ hV]`.
+
+Conclude with `this`.
+-/
 theorem addOf_assoc (G : FGLaw k d) {n : ℕ} {a b c : Pt k n d} (ha : GP a) (hb : GP b) (hc : GP c) :
     addOf G.F (addOf G.F a b) c = addOf G.F a (addOf G.F b c) := by
   funext i
@@ -82,6 +116,9 @@ theorem addOf_assoc (G : FGLaw k d) {n : ℕ} {a b c : Pt k n d} (ha : GP a) (hb
 
 variable {O : Type} [CommRing O] {G : FGLaw k d} (A : OAct O G)
 
+/- English proof (translation)
+Establish `hV` using `pair_points_zero_constant ha hb`. Use `congrArg (evP ![a, b]) (A.hom c)` as an intermediate fact. Rewrite `this` using `[evP_comp1 _ hV _ _ (gp_add G (gp_pt _) (gp_pt _)), evP_addOf _ hV _ _ _ (gp_pt _) (gp_pt _), evP_addOf _ hV _ _ _ (gp_act A c (gp_pt _)) (gp_act A c (gp_pt _)), evP_comp1 _ hV _ _ (gp_pt _), evP_comp1 _ hV _ _ (gp_pt _), evP_pt _ hV, evP_pt _ hV]`. Conclude with `this`.
+-/
 theorem act_addOf (c : O) {n : ℕ} {a b : Pt k n d} (ha : GP a) (hb : GP b) :
     comp1 (A.act c) (addOf G.F a b) = addOf G.F (comp1 (A.act c) a) (comp1 (A.act c) b) := by
   have hV := pair_points_zero_constant ha hb
@@ -93,18 +130,30 @@ theorem act_addOf (c : O) {n : ℕ} {a b : Pt k n d} (ha : GP a) (hb : GP b) :
     evP_pt _ hV, evP_pt _ hV] at this
   exact this
 
+/- English proof (translation)
+Rewrite using `[A.add_act]`. Conclude with `evP_addOf ![a] (single_point_zero_constant ha) _ _ _ (A.const b) (A.const c)`.
+-/
 theorem add_act_pt (b c : O) {n : ℕ} {a : Pt k n d} (ha : GP a) :
     comp1 (A.act (b + c)) a = addOf G.F (comp1 (A.act b) a) (comp1 (A.act c) a) := by
   rw [A.add_act]
   exact evP_addOf ![a] (single_point_zero_constant ha) _ _ _ (A.const b) (A.const c)
 
+/- English proof (translation)
+Rewrite using `[A.mul_act, gt_comp1_comp1 _ _ (A.const c) a ha]`.
+-/
 theorem mul_act_pt (b c : O) {n : ℕ} {a : Pt k n d} (ha : GP a) :
     comp1 (A.act (b * c)) a = comp1 (A.act b) (comp1 (A.act c) a) := by
   rw [A.mul_act, gt_comp1_comp1 _ _ (A.const c) a ha]
 
+/- English proof (translation)
+Rewrite using `[A.one_act, gt_comp1_pt a ha]`.
+-/
 theorem one_act_pt {n : ℕ} {a : Pt k n d} (ha : GP a) : comp1 (A.act 1) a = a := by
   rw [A.one_act, gt_comp1_pt a ha]
 
+/- English proof (translation)
+The claim follows from `gt_comp1_zero _ (A.const c)`.
+-/
 theorem act_zero_pt (c : O) {n : ℕ} : comp1 (A.act c) (0 : Pt k n d) = 0 := gt_comp1_zero _ (A.const c)
 
 end Points
@@ -115,9 +164,15 @@ variable {k : Type} [CommRing k] [Algebra ℚ k] {d : ℕ}
 
 def expR {n : ℕ} (f : PS k n d) : PS k n d := FB.expS k (f - C (constantCoeff f))
 
+/- English proof (translation)
+Simplify using `[expR, hf]`.
+-/
 theorem expR_eq {n : ℕ} {f : PS k n d} (hf : constantCoeff f = 0) : expR f = FB.expS k f := by
   simp [expR, hf]
 
+/- English proof (translation)
+Unfold `expR`. Rewrite using `[← gt_expS_add _ _ (by simp) (by simp)]`. Use `congr 1`. Simplify using `only [map_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem expR_add {n : ℕ} (f g : PS k n d) : expR (f + g) = expR f * expR g := by
   unfold expR
   rw [← gt_expS_add _ _ (by simp) (by simp)]
@@ -125,10 +180,16 @@ theorem expR_add {n : ℕ} (f g : PS k n d) : expR (f + g) = expR f * expR g := 
   simp only [map_add]
   ring
 
+/- English proof (translation)
+Rewrite using `[expR_eq (by simp), FB.expS, PowerSeries.subst_zero_eq_C_constantCoeff, PowerSeries.constantCoeff_exp, map_one]`. Simplify using the standard rewrite rules.
+-/
 theorem expR_zero {n : ℕ} : expR (0 : PS k n d) = 1 := by
   rw [expR_eq (by simp), FB.expS, PowerSeries.subst_zero_eq_C_constantCoeff, PowerSeries.constantCoeff_exp, map_one]
   simp
 
+/- English proof (translation)
+Unfold `expR`. Rewrite using `[gt_ev_expS V hV _ (by simp), gt_ev_sub V hV, gt_const_ev_eq V hV]`. Use `congr 2`. Unfold `ev`. Rewrite using `[MvPowerSeries.subst_C]`.
+-/
 theorem ev_expR {m n : ℕ} (V : Fin m → Pt k n d) (hV : ∀ j, GP (V j)) (f : PS k m d) :
     ev V (expR f) = expR (ev V f) := by
   unfold expR
@@ -137,9 +198,15 @@ theorem ev_expR {m n : ℕ} (V : Fin m → Pt k n d) (hV : ∀ j, GP (V j)) (f :
   unfold ev
   rw [MvPowerSeries.subst_C]
 
+/- English proof (translation)
+Rewrite using `[expR_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mul_expR {n : ℕ} (P Q f g : PS k n d) : P * expR f * (Q * expR g) = P * Q * expR (f + g) := by
   rw [expR_add]; ring
 
+/- English proof (translation)
+Rewrite using `[← expR_eq hg, mul_assoc, ← expR_add, h, expR_zero, mul_one]`.
+-/
 theorem eq_mul_expS {n : ℕ} (P f g : PS k n d) (hg : constantCoeff g = 0) (h : f + g = 0) :
     P = P * expR f * FB.expS k g := by
   rw [← expR_eq hg, mul_assoc, ← expR_add, h, expR_zero, mul_one]
@@ -162,6 +229,9 @@ def sy : PS k 2 d := B.sy * expR (ev (n := 2) ![pt k d 0, pt k d 1] h - ev (n :=
 def ad (a : O) : PS k 2 d := B.ad a * expR (ev (n := 2) ![pt k d 0, comp1 (B.A.act (star a)) (pt k d 1)] h -
   ev (n := 2) ![comp1 (B.A.act a) (pt k d 0), pt k d 1] h)
 
+/- English proof (translation)
+Establish `hV` using `triple_points_zero_constant ha hb hc`. Rewrite using `[ph1, gt_ev_mul _ hV, ev_expR _ hV, gt_ev_sub _ hV, gt_ev_sub _ hV, ev_ev_two _ hV _ _ (gp_add _ (gp_pt _) (gp_pt _)) (gp_pt _), ev_ev_two _ hV _ _ (gp_pt _) (gp_pt _), ev_ev_two _ hV _ _ (gp_pt _) (gp_pt _), evP_addOf _ hV _ _ _ (gp_pt _) (gp_pt _), evP_pt _ hV, evP_pt _ hV, evP …`. Both sides reduce to the same expression.
+-/
 theorem germEv_regaugedFirstLawFamily {n : ℕ} {a b c : Pt k n d} (ha : GP a) (hb : GP b) (hc : GP c) :
     ev ![a, b, c] (ph1 B h) = ev ![a, b, c] B.ph1 *
       expR (ev ![addOf B.G.F a b, c] h - ev ![a, c] h - ev ![b, c] h) := by
@@ -172,6 +242,9 @@ theorem germEv_regaugedFirstLawFamily {n : ℕ} {a b c : Pt k n d} (ha : GP a) (
     evP_addOf _ hV _ _ _ (gp_pt _) (gp_pt _), evP_pt _ hV, evP_pt _ hV, evP_pt _ hV]
   rfl
 
+/- English proof (translation)
+Establish `hV` using `triple_points_zero_constant ha hb hc`. Rewrite using `[ph2, gt_ev_mul _ hV, ev_expR _ hV, gt_ev_sub _ hV, gt_ev_sub _ hV, ev_ev_two _ hV _ _ (gp_pt _) (gp_add _ (gp_pt _) (gp_pt _)), ev_ev_two _ hV _ _ (gp_pt _) (gp_pt _), ev_ev_two _ hV _ _ (gp_pt _) (gp_pt _), evP_addOf _ hV _ _ _ (gp_pt _) (gp_pt _), evP_pt _ hV, evP_pt _ hV, evP …`. Both sides reduce to the same expression.
+-/
 theorem germEv_regaugedSecondLawFamily {n : ℕ} {a b c : Pt k n d} (ha : GP a) (hb : GP b) (hc : GP c) :
     ev ![a, b, c] (ph2 B h) = ev ![a, b, c] B.ph2 *
       expR (ev ![a, addOf B.G.F b c] h - ev ![a, b] h - ev ![a, c] h) := by
@@ -182,6 +255,9 @@ theorem germEv_regaugedSecondLawFamily {n : ℕ} {a b c : Pt k n d} (ha : GP a) 
     evP_addOf _ hV _ _ _ (gp_pt _) (gp_pt _), evP_pt _ hV, evP_pt _ hV, evP_pt _ hV]
   rfl
 
+/- English proof (translation)
+Establish `hV` using `pair_points_zero_constant ha hb`. Rewrite using `[sy, gt_ev_mul _ hV, ev_expR _ hV, gt_ev_sub _ hV, ev_ev_two _ hV _ _ (gp_pt _) (gp_pt _), ev_ev_two _ hV _ _ (gp_pt _) (gp_pt _), evP_pt _ hV, evP_pt _ hV]`. Both sides reduce to the same expression.
+-/
 theorem ev_sy {n : ℕ} {a b : Pt k n d} (ha : GP a) (hb : GP b) :
     ev ![a, b] (sy B h) = ev ![a, b] B.sy * expR (ev ![a, b] h - ev ![b, a] h) := by
   have hV := pair_points_zero_constant ha hb
@@ -190,6 +266,9 @@ theorem ev_sy {n : ℕ} {a b : Pt k n d} (ha : GP a) (hb : GP b) :
     evP_pt _ hV, evP_pt _ hV]
   rfl
 
+/- English proof (translation)
+Establish `hV` using `pair_points_zero_constant ha hb`. Rewrite using `[ad, gt_ev_mul _ hV, ev_expR _ hV, gt_ev_sub _ hV, ev_ev_two _ hV _ _ (gp_pt _) (gp_act _ _ (gp_pt _)), ev_ev_two _ hV _ _ (gp_act _ _ (gp_pt _)) (gp_pt _), evP_comp1 _ hV _ _ (gp_pt _), evP_comp1 _ hV _ _ (gp_pt _), evP_pt _ hV, evP_pt _ hV]`. Both sides reduce to the same expression.
+-/
 theorem ev_ad (c : O) {n : ℕ} {a b : Pt k n d} (ha : GP a) (hb : GP b) :
     ev ![a, b] (ad B h c) = ev ![a, b] (B.ad c) *
       expR (ev ![a, comp1 (B.A.act (star c)) b] h - ev ![comp1 (B.A.act c) a, b] h) := by
@@ -339,6 +418,13 @@ namespace GlobalTheory
 
 open GlobalTheory.Regauge
 
+/- English proof (translation)
+Introduce `k _ _ d O _ _ B h ⟨h0, h1⟩`. Establish `hc : constantCoeff h = 0`. Use `congrArg constantCoeff h0` as an intermediate fact. Rewrite `this` using `[gt_const_ev_eq _ (pair_points_zero_constant gp_zero₂ (gp_pt 0)), map_zero]`. Then use the resulting hypothesis. Establish `hcc : ∀ {n : ℕ} {a b : Pt k n d}, GP a → GP b → constantCoeff (ev ![a, b] h) = 0` using `fun ha hb => gt_const_ev _ (pair_points_zero_constant ha hb) h hc`.
+
+Use `⟨regauge B h h0 h1, rfl, rfl, ?_, ?_, ?_, fun a => ?_⟩` and prove the remaining obligations. Use `eq_mul_expS _ _ _ ?_ (by ring)` and prove the remaining obligations. Simplify using `(maxDischargeDepth := 4) only [map_sub, map_add, hcc, gp_pt, gp_add, add_zero, sub_zero]`. Use `eq_mul_expS _ _ _ ?_ (by ring)` and prove the remaining obligations. Simplify using `(maxDischargeDepth := 4) only [map_sub, map_add, hcc, gp_pt, gp_add, add_zero, sub_zero]`.
+
+Use `eq_mul_expS _ _ _ ?_ (by rw [ev_pt_two]; ring)` and prove the remaining obligations. Simplify using `(maxDischargeDepth := 4) only [map_sub, hcc, hc, gp_pt, sub_zero]`. Use `eq_mul_expS _ _ _ ?_ (by ring)` and prove the remaining obligations. Simplify using `(maxDischargeDepth := 4) only [map_sub, hcc, gp_pt, gp_act, sub_zero]`.
+-/
 theorem exists_regauge : ∀ (k : Type) [CommRing k] [Algebra ℚ k] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB k d O) (h : PS k 2 d), (ev (n := 1) ![0, pt k d 0] h = 0 ∧ ev (n := 1) ![pt k d 0, 0] h = 0) → ∃ B' : FB k d O, B'.G.F = B.G.F ∧ B'.A.act = B.A.act ∧ B.ph1 = B'.ph1 * FB.expS k (ev (n := 3) ![pt k d 0, pt k d 2] h + ev (n := 3) ![pt k d 1, pt k d 2] h - ev (n := 3) ![addOf B.G.F (pt k d 0) (pt k d 1), pt k d 2] h) ∧ B.ph2 = B'.ph2 * FB.expS k (ev (n := 3) ![pt k d 0, pt k d 1] h + ev (n := 3) ![pt k d 0, pt k d 2] h - ev (n := 3) ![pt k d 0, addOf B.G.F (pt k d 1) (pt k d 2)] h) ∧ B.sy = B'.sy * FB.expS k (ev (n := 2) ![pt k d 1, pt k d 0] h - h) ∧ ∀ a : O, B.ad a = B'.ad a * FB.expS k (ev (n := 2) ![comp1 (B.A.act a) (pt k d 0), pt k d 1] h - ev (n := 2) ![pt k d 0, comp1 (B.A.act (star a)) (pt k d 1)] h) := by
   intro k _ _ d O _ _ B h ⟨h0, h1⟩
   have hc : constantCoeff h = 0 := by

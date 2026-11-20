@@ -19,16 +19,31 @@ open Formalism.L2.NTheta (IsIdemAt)
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `le_antisymm ha (by calc (1 : WithZero (Multiplicative ℤ)) = a * b := h.symm _ ≤ a := mul_le_of_le_one_right' hb)`.
+-/
 theorem val_eq_one_of_le {a b : WithZero (Multiplicative ℤ)} (ha : a ≤ 1) (hb : b ≤ 1) (h : a * b = 1) : a = 1 :=
   le_antisymm ha (by
     calc (1 : WithZero (Multiplicative ℤ)) = a * b := h.symm
       _ ≤ a := mul_le_of_le_one_right' hb)
 
+/- English proof (translation)
+Take `⟨o, rfl⟩` from `h`. Conclude with `o.2`.
+-/
 theorem valued_isInt {v : HeightOneSpectrum (𝓞 D.host.F)} {x : Fv D.host.F v}
     (h : GlobalTheory.SplitHecke.IsInt (GlobalTheory.SplitHecke.Ov D v) x) : Valued.v x ≤ 1 := by
   obtain ⟨o, rfl⟩ := h
   exact o.2
 
+/- English proof (translation)
+Take `⟨φ, hφ, hint, -⟩` from `GlobalTheory.ChartLevels.chart_levels D es PP v π he hπ`. Establish `hc' : Valued.v (GlobalTheory.StdFrames.cpt PP (toEAf D c')) = 1`. Establish `h1 : GlobalTheory.StdFrames.cpt PP (toEAf D c) * GlobalTheory.StdFrames.cpt PP (toEAf D c') = 1`. Rewrite using `[← map_mul, ← map_mul, hcc, map_one, map_one]`. Establish `h2` using `congrArg Valued.v h1`.
+
+Rewrite `h2` using `[map_mul, hc, one_mul, map_one]`. Conclude with `h2`. Establish `key : ∀ y : AE D, Valued.v (GlobalTheory.StdFrames.cpt PP (toEAf D y)) = 1 → Valued.v (π y) ≤ 1`. Introduce `y hy`. Rewrite using `[← hφ]`.
+
+Use `valued_isInt ((hint _).1 ((GlobalTheory.AdIsom.mem_OA _).2 fun Q => ?_))` and prove the remaining obligations. Rewrite using `[map_mul]`. Distinguish the cases in `hQ : Q = PP`. Substitute `hQ` using the available equality. Rewrite using `[(GlobalTheory.StdFrames.cpt_of_isIdemAt he).1, one_mul, hy]`.
+
+Rewrite using `[(GlobalTheory.StdFrames.cpt_of_isIdemAt he).2 Q hQ, zero_mul, map_zero]`. Conclude with `zero_le'`. Use `val_eq_one_of_le (key c hc) (key c' hc') ?_` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_mul, hcc, map_one, map_one]`.
+-/
 theorem chart_val_eq_one {es : AE D} {PP : Pl D.host.E} (he : IsIdemAt es PP) {v : HeightOneSpectrum (𝓞 D.host.F)}
     {π : AE D →+* Fv D.host.F v} (hπ : GlobalTheory.SplitHecke.Chart es v π) {c c' : AE D} (hcc : c * c' = 1)
     (hc : Valued.v (GlobalTheory.StdFrames.cpt PP (toEAf D c)) = 1) : Valued.v (π c) = 1 := by
@@ -50,6 +65,11 @@ theorem chart_val_eq_one {es : AE D} {PP : Pl D.host.E} (he : IsIdemAt es PP) {v
   refine val_eq_one_of_le (key c hc) (key c' hc') ?_
   rw [← map_mul, ← map_mul, hcc, map_one, map_one]
 
+/- English proof (translation)
+Take `⟨v, π, hπ⟩` from `GlobalTheory.SplitChart.exists_chart es he.1`. Establish `hee : es * es = es` using `he.1.1`. Establish `hu1 : (1 - es) * (u : AE D) = 1 - es` using `by rw [hu]; linear_combination (1 - c) * hee`. Rewrite using `[GlobalTheory.SplitLinear.absFin_split D es v π he.1 hπ u hu1, GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absV]`. Establish `hπu : π (u : AE D) = π c`.
+
+Rewrite using `[hu, map_add, map_mul, map_sub, map_one, hπ.map_e hee, one_mul, sub_self, add_zero]`. Express the relevant statement in the definitionally equal form `((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ^ (WithZero.log (Valued.v (π (u : AE D)))) = 1`. Rewrite using `[hπu, chart_val_eq_one he hπ hcc hc, WithZero.log_one, zpow_zero]`.
+-/
 theorem absFin_single {es : AE D} {PP : Pl D.host.E} (he : IsIdemAt es PP) (u : (AE D)ˣ) (c : AE D)
     (hu : (u : AE D) = es * c + (1 - es)) (c' : AE D) (hcc : c * c' = 1)
     (hc : Valued.v (GlobalTheory.StdFrames.cpt PP (toEAf D c)) = 1) : GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absFin D u = 1 := by
@@ -62,6 +82,13 @@ theorem absFin_single {es : AE D} {PP : Pl D.host.E} (he : IsIdemAt es PP) (u : 
   change ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ^ (WithZero.log (Valued.v (π (u : AE D)))) = 1
   rw [hπu, chart_val_eq_one he hπ hcc hc, WithZero.log_one, zpow_zero]
 
+/- English proof (translation)
+Take `⟨⟨es, hes, hae⟩, -⟩` from `he`. Set `u : {PP // PP ∈ P} → (AE D)ˣ` to `fun PP => { val := es PP.1 * c + (1 - es PP.1) inv := es PP.1 * c' + (1 - es PP.1) val_inv := GlobalTheory.SplitIdeleModulus.unit_aux (hes PP.1 PP.2).1.1 hcc inv_val := GlobalTheory.SplitIdeleModulus.unit_aux (hes PP.1 PP.2).1.1 (by rw [mul_comm]; exact hcc) }`. Establish `hx' : x = ∏ PP ∈ P.attach, u PP`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hx, Units.coe_prod]`.
+
+Express the relevant statement in the definitionally equal form `_ = ∏ PP ∈ P.attach, (fun PP => es PP * c + (1 - es PP)) PP.1`. Rewrite using `[Finset.prod_attach P (fun PP => es PP * c + (1 - es PP)), GlobalTheory.SplitIdeleModulus.prod_idem hes _ P subset_rfl, hae]`. Set `A : (AE D)ˣ →* ℝ` to `⟨⟨GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absFin D, GlobalTheory.SplitIdeleModulus.absFin_one'⟩, GlobalTheory.SplitLinear.absFin_mul⟩`. Establish `hA : GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absFin D x = A x` using `rfl`. Rewrite using `[hA, hx', map_prod]`.
+
+Conclude with `Finset.prod_eq_one fun PP _ => absFin_single (hes PP.1 PP.2) (u PP) c rfl c' hcc (hc PP.1 PP.2)`.
+-/
 theorem absFin_idemSum_eq_one {e : AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e P) (x : (AE D)ˣ) (c c' : AE D)
     (hcc : c * c' = 1) (hx : (x : AE D) = e * c + (1 - e))
     (hc : ∀ PP ∈ P, Valued.v (GlobalTheory.StdFrames.cpt PP (toEAf D c)) = 1) : GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absFin D x = 1 := by
@@ -85,6 +112,11 @@ theorem absFin_idemSum_eq_one {e : AE D} {P : Finset (Pl D.host.E)} (he : IsIdem
 end GlobalTheory.DetIdeleUnit
 
 open GlobalTheory.FunObj in
+/- English proof (translation)
+Establish `hu : IsUnit ((S.βp (j + 1)).val.det)` using `(Matrix.GeneralLinearGroup.det (S.βp (j + 1))).isUnit`. Establish `ha : ((S.βp (j + 1)).val.map (GlobalTheory.StdFrames.cpt w)).det ≠ 0`. Introduce `h0`. Apply `(hu.map (GlobalTheory.StdFrames.cpt w)).ne_zero` to reduce the goal to its premises. Rewrite using `[RingHom.map_det]`.
+
+Conclude with `h0`. Unfold `GlobalTheory.TopLevelInv.kapAt inBasis`. Simplify using `[gdet, GlobalTheory.StepData.reGL, Matrix.GeneralLinearGroup.det, GlobalTheory.StdFrames.loc, RingHom.map_det]`. Rewrite using `[mul_right_comm, inv_mul_cancel₀ ha, one_mul]`.
+-/
 theorem GlobalTheory.DetIdeleUnit.cpt_gdet_kapAt {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) (t : T) (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.top (j + 1))) (w : Pl D.host.E) :
   ((gdet (GlobalTheory.TopLevelInv.kapAt S t j hj k w) : (Kw w)ˣ) : Kw w) = GlobalTheory.StdFrames.cpt w ((finG (G.V (.top (j + 1))) k).val.det) := by
   have hu : IsUnit ((S.βp (j + 1)).val.det) := (Matrix.GeneralLinearGroup.det (S.βp (j + 1))).isUnit
@@ -94,6 +126,9 @@ theorem GlobalTheory.DetIdeleUnit.cpt_gdet_kapAt {D : D7} {T : Type} {L : LevCh 
   simp [gdet, GlobalTheory.StepData.reGL, Matrix.GeneralLinearGroup.det, GlobalTheory.StdFrames.loc, RingHom.map_det]
   rw [mul_right_comm, inv_mul_cancel₀ ha, one_mul]
 
+/- English proof (translation)
+Use `haveI : (Valued.v : Valuation (Kw w) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `e` using `ValuativeRel.isEquiv (ValuativeRel.valuation (Kw w)) (Valued.v : Valuation (Kw w) (WithZero (Multiplicative ℤ)))`. Use `first`. Consider the case `exact e.eq_one_iff_eq_one.1 h`. Consider the case `exact le_antisymm (e.le_one_iff_le_one.1 h.le) (e.one_le_iff_one_le.1 h.ge)`.
+-/
 theorem GlobalTheory.DetIdeleUnit.valued_eq_one_of_valuation {D : D7} {w : Pl D.host.E} (y : Kw w) (h : ValuativeRel.valuation (Kw w) y = 1) : Valued.v y = 1 := by
   haveI : (Valued.v : Valuation (Kw w) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _
   have e := ValuativeRel.isEquiv (ValuativeRel.valuation (Kw w)) (Valued.v : Valuation (Kw w) (WithZero (Multiplicative ℤ)))
@@ -108,12 +143,26 @@ open GlobalTheory.ExpansionInvariance
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.IdemSupport.mt_mul, GlobalTheory.IdemSupport.mt_mul, Matrix.det_mul, Matrix.det_mul, mul_comm (Formalism.L2.Theta.mt V h⁻¹).det, mul_assoc, ← Matrix.det_mul, ← GlobalTheory.IdemSupport.mt_mul, inv_mul_cancel, GlobalTheory.AdelicLatMove.mt_one, Matrix.det_one, mul_on …`.
+-/
 theorem det_mt_conj (V : HSp D) (h k : GA D V) :
     (Formalism.L2.Theta.mt V (h⁻¹ * k * h)).det = (Formalism.L2.Theta.mt V k).det := by
   rw [GlobalTheory.IdemSupport.mt_mul, GlobalTheory.IdemSupport.mt_mul, Matrix.det_mul, Matrix.det_mul,
     mul_comm (Formalism.L2.Theta.mt V h⁻¹).det, mul_assoc, ← Matrix.det_mul, ← GlobalTheory.IdemSupport.mt_mul, inv_mul_cancel,
     GlobalTheory.AdelicLatMove.mt_one, Matrix.det_one, mul_one]
 
+/- English proof (translation)
+Establish `hee : e * e = e` using `(GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum he).idem`. Establish `hc0 : e * cA D e = 0` using `he.2`. Take `⟨hf1, hf2⟩` from `idem_conj_sum hee hc0`. Take `⟨⟨es, hes, hae⟩, -⟩` from `id he`. Set `ψ : AE D →+* Kw PP` to `(GlobalTheory.StdFrames.cpt PP).comp (toEAf D)`.
+
+Establish `hψe : ψ e = 1`. Rewrite using `[hae, map_sum, Finset.sum_eq_single PP]`. Conclude with `(GlobalTheory.StdFrames.cpt_of_isIdemAt (hes PP hPP)).1`. Introduce `Q hQ hne`. Conclude with `(GlobalTheory.StdFrames.cpt_of_isIdemAt (hes Q hQ)).2 PP (Ne.symm hne)`.
+
+Introduce `h`. Conclude with `absurd hPP h`. Establish `hψc : ψ (cA D e) = 0`. Use `congrArg ψ hc0` as an intermediate fact. Rewrite `this` using `[map_mul, hψe, one_mul, map_zero]`. Then use the resulting hypothesis.
+
+Establish `hψa : ψ (e + cA D e) = 1` using `by rw [map_add, hψe, hψc, add_zero]`. Use `show ψ _ = ψ _`. Rewrite using `[RingHom.map_det, RingHom.map_det, mt_cutPart hf1 hf2]`. Use `congr 1`. Use extensionality with `a b`.
+
+Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, map_sub, map_one, hψa, one_mul, sub_self, zero_mul, add_zero]`.
+-/
 theorem cpt_det_cutPart {e : AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e P) {PP : Pl D.host.E} (hPP : PP ∈ P)
     (V : HSp D) (g : GA D V) :
     GlobalTheory.StdFrames.cpt PP (toEAf D (Formalism.L2.Theta.mt V (cutPart (e + cA D e) V g)).det) =
@@ -140,6 +189,9 @@ theorem cpt_det_cutPart {e : AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e 
   simp only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add,
     map_mul, map_sub, map_one, hψa, one_mul, sub_self, zero_mul, add_zero]
 
+/- English proof (translation)
+The claim follows from `absFin_idemSum_eq_one he _ (Formalism.L2.Theta.mt V (cutPart (e + cA D e) V g)).det (Formalism.L2.Theta.mt V (cutPart (e + cA D e) V g)⁻¹).det (by rw [← Matrix.det_mul, ← GlobalTheory.IdemSupport.mt_mul, mul_inv_cancel, GlobalTheory.AdelicLatMove.mt_one, Matrix.det_one]) rfl (fun …`.
+-/
 theorem absFin_detAt_cutPart {e : AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e P) (hee : e * e = e) (V : HSp D)
     (g : GA D V) (hg : ∀ PP ∈ P, Valued.v (GlobalTheory.StdFrames.cpt PP (toEAf D (Formalism.L2.Theta.mt V g).det)) = 1) :
     GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absFin D (GlobalTheory.VecInv.detAt e hee V (cutPart (e + cA D e) V g)) = 1 :=
@@ -152,6 +204,11 @@ end GlobalTheory.DetIdeleUnit
 
 open GlobalTheory.DetIdeleUnit in
 
+/- English proof (translation)
+Introduce `D T L sc G W U S t μ₀ hμ ht Φ β j hj k hk e he`. Use `absFin_detAt_cutPart he _ _ _ fun PP hPP => ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.TopLevelInv.valuation_gdet_kapAt S hj hk ⟨PP, hPP⟩`. Rewrite `h1` using `[cpt_gdet_kapAt]`. Establish `h2` using `valued_eq_one_of_valuation _ h1`.
+
+Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, Subgroup.coe_inv, det_mt_conj]`. Rewrite using `[RingHom.map_det]`. Conclude with `h2`.
+-/
 theorem GlobalTheory.DetIdeleUnit.absFin_detAt_conj_eq_one : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {t : T} {μ₀ : T}, L.Is μ₀ → t ∈ U → ∀ {Φ : G.Datum} {β : CosFam G t} (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.top (j + 1))),
     finG (G.V (.top (j + 1))) k ∈ S.levTop t Φ β (j + 1) hj → ∀ (e : AE D) (he : IsIdemSum e (locPl G t)),
     GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absFin D (GlobalTheory.VecInv.detAt e (GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum he).idem (G.V (.top (j + 1)))

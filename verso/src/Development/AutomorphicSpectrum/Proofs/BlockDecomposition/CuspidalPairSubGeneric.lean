@@ -35,6 +35,13 @@ set_option synthInstance.maxHeartbeats 400000
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hc : ∑ j, Multiset.card (t j) = 1`. Use `congrArg Multiset.card h` as an intermediate fact. Rewrite `this` using `[Multiset.card_sum]`. Simplify using `using this.symm`. Take `⟨j₀, -, h1⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (hc.symm ▸ one_ne_zero)`.
+
+Establish `hz : ∀ j, j ≠ j₀ → t j = 0` using `fun j hj => by`. Establish `h2` using `Finset.add_le_sum (s := Finset.univ) (f := fun j => Multiset.card (t j)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ j₀) (Finset.mem_univ j) (Ne.symm hj)`. Simplify using `only [hc] at h2`. Conclude with `Multiset.card_eq_zero.1 (by omega)`. Use `⟨j₀, ?_, hz⟩` and prove the remaining obligations.
+
+Rewrite using `[h, Finset.sum_eq_single j₀ (fun j _ hj => hz j hj) (by simp)]`.
+-/
 theorem exists_eq_singleton_of_sum' {ι A : Type*} [Fintype ι] [DecidableEq ι] {a : A} {t : ι → Multiset A}
     (h : ({a} : Multiset A) = ∑ j, t j) : ∃ j₀, t j₀ = {a} ∧ ∀ j, j ≠ j₀ → t j = 0 := by
   have hc : ∑ j, Multiset.card (t j) = 1 := by
@@ -50,6 +57,13 @@ theorem exists_eq_singleton_of_sum' {ι A : Type*} [Fintype ι] [DecidableEq ι]
   refine ⟨j₀, ?_, hz⟩
   rw [h, Finset.sum_eq_single j₀ (fun j _ hj => hz j hj) (by simp)]
 
+/- English proof (translation)
+Take `⟨r, u, hu, hi, hc, e, hsub⟩` from `h`. Take `rfl : r = 1` from `by simpa using congrArg Multiset.card hu`. Take `rfl : u = fun _ => z` from `funext fun i => by`. Rewrite using `[Subsingleton.elim i 0]`. Simplify using `using hu`.
+
+Take `⟨d, c⟩` from `y`. Take `rfl : z.1 = d` from `by simpa using Fintype.card_congr e`. Establish `hd : ∑ _ : Fin 1, z.1 = z.1` using `by simp`. Take `⟨φ⟩` from `(GlobalTheory.SmGL.Placing.parInd_jac_placing k _ _ _ e (stdBlocks (fun _ : Fin 1 => z.1) hd) _).1 (piTensor fun _ => z.rep)`. Take `⟨ψ⟩` from `nonempty_equiv_prodIrr_one z hd`.
+
+Set `χ` to `φ.trans ψ.symm`. Take `⟨θ⟩` from `nonempty_equiv_of_isSubquotient hi z.2.rep.irr (hsub.trans (.of_injective χ.toIntertwiningMap χ.toLinearEquiv.injective))`. Conclude with `((IrrGL.of_rep z).symm.trans ((IrrGL.of_eq_of.2 ⟨θ⟩).trans (IrrGL.of_rep ⟨_, c⟩))).symm`.
+-/
 theorem eq_of_hasSupport_singleton {y z : IrrGL k} (h : HasSupport y.rep {z}) : y = z := by
   obtain ⟨r, u, hu, hi, hc, e, hsub⟩ := h
   obtain rfl : r = 1 := by simpa using congrArg Multiset.card hu
@@ -67,6 +81,23 @@ theorem eq_of_hasSupport_singleton {y z : IrrGL k} (h : HasSupport y.rep {z}) : 
     (hsub.trans (.of_injective χ.toIntertwiningMap χ.toLinearEquiv.injective))
   exact ((IrrGL.of_rep z).symm.trans ((IrrGL.of_eq_of.2 ⟨θ⟩).trans (IrrGL.of_rep ⟨_, c⟩))).symm
 
+/- English proof (translation)
+Establish `hG` using `GlobalTheory.CompanionTheory.GeoLink.geometricLemma`. Establish `hBZ` using `GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness`. Establish `hτ : (piTensor fun j => (y j).rep).IsIrreducible` using `GlobalTheory.T.piExteriorTensor_smoothIrreducible_isIrreducible hBZ k _ _ fun j => (y j).2.rep`. Establish `hτs : IsSmooth (piTensor fun j => (y j).rep)` using `isSmooth_piTensor fun j => (y j).2.rep.smooth`. Take `⟨s, hrow, hcol⟩` from `GlobalTheory.CompanionTheory.Hypotheses₂.TD.exists_of_cell (hG k).2 f g (fun i => (x i).2.rep.smooth) (fun i => (x i).2.rep.hasFiniteLength) hτ hτs h0`.
+
+Establish `hR : ∀ i, ∃ t : Fin l → Multiset (IrrGL k), (∀ j, HasSupport (s i j).ρ (t j)) ∧ {x i} = ∑ j, t j` using `fun i => GlobalTheory.CompanionTheory.Hypotheses₂.TD.exists_sum_of_jac hG hBZ (hasSupport_self (hxc i)) (f i) (GlobalTheory.T.piExteriorTensor_smoothIrreducible_isIrreducible hBZ k _ _ fun j => s i j) (hrow i) (fun j => s i j) (fun j => GlobalTheory.CompanionTheory.Hypotheses₂.TD …`. Use `choose t ht hAt using hR`. Establish `hC : ∀ j, HasSupport (y j).rep (∑ i, t i j)`. Introduce `j`. Establish `hd : ∑ i, b.1 i j = (y j).1` using `by simpa using Fintype.card_congr (g j)`.
+
+Establish `hy` using `GlobalTheory.CompanionTheory.Hypotheses₂.TD.isSubquotient_comp_mulSingle (fun j => (y j).rep) (fun j => (y j).2.rep.irr) j`. Establish `h1` using `isSubquotient_factor (fun j => multiProd (g j) fun i => (s i j).ρ) j (y j).2.rep.irr (hy.trans (isSubquotient_comp hcol _))`. Take `⟨φ⟩` from `(GlobalTheory.SmGL.Placing.parInd_jac_placing k _ _ _ (g j) (stdBlocks (fun i => b.1 i j) hd) _).1 (piTensor fun i => (s i j).ρ)`. Set `ψ` to `φ.trans (prodIrrEquiv hd (fun i => (s i j).ρ) (fun i => (s i j).smooth) fun i => (s i j).irr)`. Conclude with `GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_of_isSubquotient_prodIrr (y := fun i => IrrGL.of (s i j).ρ (s i j).smooth (s i j).irr) (fun i => (ht i j).of_equiv (IrrGL.equivOf _ _ _)) (y j).2.rep.irr (h1.trans (.of_injective ψ.toIntertwiningMap ψ.toLinearEquiv.injective) …`.
+
+Use `choose r hr1 hr0 using fun i => exists_eq_singleton_of_sum' (hAt i)`. Establish `hsurj : Function.Surjective r`. Introduce `j`. Assume the negation of the conclusion as `hj`. Use `push_neg at hj`.
+
+Establish `hz : ∑ i, t i j = 0` using `Finset.sum_eq_zero fun i _ => hr0 i j (Ne.symm (hj i))`. Establish `h1` using `(hC j).sum_fst`. Rewrite `h1` using `[hz]`. Use `hyp j` as an intermediate fact. Simplify using `at h1`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hbij : Function.Bijective r` using `⟨Finite.injective_iff_surjective.2 hsurj, hsurj⟩`. Set `E` to `Equiv.ofBijective r hbij`. Use `⟨E.symm, fun j => ?_⟩` and prove the remaining obligations. Establish `hrE : r (E.symm j) = j` using `E.apply_symm_apply j`.
+
+Establish `hs1 : ∑ i, t i j = {x (E.symm j)}`. Rewrite using `[Finset.sum_eq_single (E.symm j)]`. Rewrite using `[← hr1 (E.symm j), hrE]`. Introduce `i _ hi`. Use `hr0 i j fun e => hi ?_` and prove the remaining obligations.
+
+Conclude with `hbij.1 (e.symm.trans hrE.symm)`. Simplify using the standard rewrite rules. Establish `h2` using `hC j`. Rewrite `h2` using `[hs1]`. Conclude with `eq_of_hasSupport_singleton h2`.
+-/
 theorem exists_equiv_of_cell {l : ℕ} (x y : Fin l → IrrGL k) (hxc : ∀ a, (x a).IsCusp)
     (hyp : ∀ a, 0 < (y a).1) (b : SizeMatrix (fun i => Fin (x i).1) (fun j => Fin (y j).1))
     (f : ∀ i, (Σ j, Fin (b.1 i j)) ≃ Fin (x i).1) (g : ∀ j, (Σ i, Fin (b.1 i j)) ≃ Fin (y j).1)
@@ -122,6 +153,11 @@ theorem exists_equiv_of_cell {l : ℕ} (x y : Fin l → IrrGL k) (hxc : ∀ a, (
   rw [hs1] at h2
   exact eq_of_hasSupport_singleton h2
 
+/- English proof (translation)
+Use `haveI : Fintype (SizeMatrix (fun i => Fin (x i).1) (fun j => Fin (y j).1)) := Fintype.ofFinite _`. Establish `hτ : (piTensor fun j => (y j).rep).IsIrreducible` using `GlobalTheory.T.piExteriorTensor_smoothIrreducible_isIrreducible GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k _ _ fun j => (y j).2.rep`. Set `f : ∀ (b : SizeMatrix (fun i => Fin (x i).1) (fun j => Fin (y j).1)) i, (Σ j, Fin (b.1 i j)) ≃ Fin (x i).1` to `fun b => b.nonempty_rows.some`. Set `g : ∀ (b : SizeMatrix (fun i => Fin (x i).1) (fun j => Fin (y j).1)) j, (Σ i, Fin (b.1 i j)) ≃ Fin (y j).1` to `fun b => b.nonempty_cols.some`. Establish `h1` using `(GlobalTheory.CompanionTheory.GeoLink.geometricLemma k).1.jhMult_eq (stdBlocks (fun a => (x a).1) hx) (stdBlocks (fun a => (y a).1) hy) (isSmooth_piTensor fun i => (x i).2.rep.smooth) f g hτ`.
+
+Establish `h2 : jm y hy (prodIrr x hx) = jhMult (piTensor fun j => (y j).rep) (jac (stdBlocks (fun a => (y a).1) hy) (parInd (stdBlocks (fun a => (x a).1) hx) (piTensor fun i => (x i).rep)))` using `rfl`. Rewrite `h` using `[h2, h1]`. Take `⟨b, -, hb⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`. Conclude with `exists_equiv_of_cell x y hxc hyp b (f b) (g b) hb`.
+-/
 theorem exists_equiv_of_jm_ne_zero {l N : ℕ} (x y : Fin l → IrrGL k) (hx : ∑ a, (x a).1 = N)
     (hy : ∑ a, (y a).1 = N) (hxc : ∀ a, (x a).IsCusp) (hyp : ∀ a, 0 < (y a).1)
     (h : jm y hy (prodIrr x hx) ≠ 0) : ∃ e : Fin l ≃ Fin l, ∀ a, y a = x (e a) := by
@@ -142,6 +178,9 @@ theorem exists_equiv_of_jm_ne_zero {l N : ℕ} (x y : Fin l → IrrGL k) (hx : �
   obtain ⟨b, -, hb⟩ := Finset.exists_ne_zero_of_sum_ne_zero h
   exact exists_equiv_of_cell x y hxc hyp b (f b) (g b) hb
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.T.jacquet_multiplicity_cuspidal_product hA x y hx hy hxc hyc]`. Establish `: Set.ncard {e : Fin l ≃ Fin l | ∀ a, y a = x (e a)} ≤ 1`. Use `(Set.ncard_le_one_iff (Set.toFinite _)).2 fun {e e'} he he' => Equiv.ext fun a => hinj ?_` and prove the remaining obligations. Conclude with `(he a).symm.trans (he' a)`. Conclude with `this` after adjusting the coercions.
+-/
 theorem jm_le_one (hA : IrreducibleAdmissibleGL) {l N : ℕ} (x y : Fin l → IrrGL k) (hx : ∑ a, (x a).1 = N)
     (hy : ∑ a, (y a).1 = N) (hxc : ∀ a, (x a).IsCusp) (hyc : ∀ a, (y a).IsCusp)
     (hinj : Function.Injective x) : jm y hy (prodIrr x hx) ≤ 1 := by
@@ -156,6 +195,13 @@ section Sat
 variable {N : ℕ} {V W Y : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] [AddCommGroup Y]
   [Module ℂ Y]
 
+/- English proof (translation)
+Set `Q` to `GlobalTheory.CompanionTheory.BZSeg.TwoSeg.quotRep π ω f`. Set `p : π.IntertwiningMap Q` to `⟨(LinearMap.range f.toLinearMap).mkQ, fun g => by ext v; rfl⟩`. Establish `hp : Function.Surjective p` using `Submodule.mkQ_surjective _`. Establish `hex : Function.Exact f p` using `fun v => by show (LinearMap.range f.toLinearMap).mkQ v = 0 ↔ _`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `Iff.rfl`. Establish `hadd : jm t ht π = jm t ht ω + jm t ht Q` using `GlobalTheory.CompanionTheory.SocleJm.jhMult_jac_exact _ (GlobalTheory.CompanionTheory.FrobJm.piTensor_rep_isIrreducible hA t) f p hπ hf hp hex`. Establish `hQs : IsSmooth Q` using `(IsSubquotient.of_surjective p hp).isSmooth hπ`. Establish `h3 : jm t ht τ ≤ jm t ht Q` using `GlobalTheory.CompanionTheory.JmMono.jm_le_of_isSubquotient t ht τ Q hQs (.of_surjective q hq)`. Establish `h4 : (1 : ℕ∞) + 1 ≤ 1` using `calc (1 : ℕ∞) + 1 ≤ jm t ht ω + jm t ht Q := add_le_add h1 (h2.trans h3) _ = jm t ht π := hadd.symm _ ≤ 1 := hle`.
+
+Conclude with `absurd h4 (by norm_num)`.
+-/
 theorem false_of_sub_quot {h : ℕ} (t : Fin h → IrrGL k) (ht : ∑ a, (t a).1 = N) (hA : IrreducibleAdmissibleGL)
     {π : Representation ℂ (GL (Fin N) k) V} (hπ : IsSmooth π) {ω : Representation ℂ (GL (Fin N) k) W}
     (f : ω.IntertwiningMap π) (hf : Function.Injective f) {τ : Representation ℂ (GL (Fin N) k) Y}
@@ -179,6 +225,25 @@ theorem false_of_sub_quot {h : ℕ} (t : Fin h → IrrGL k) (ht : ∑ a, (t a).1
     _ ≤ 1 := hle
   exact absurd h4 (by norm_num)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hns`. Establish `hs` using `isSmooth_prodIrr ![x, y] hd`. Establish `hxc : ∀ a, (![x, y] a).IsCusp` using `Fin.forall_fin_two.2 ⟨hx, hy⟩`. Establish `hyc : ∀ a, (![y, x] a).IsCusp` using `Fin.forall_fin_two.2 ⟨hy, hx⟩`. Establish `hinj : Function.Injective ![x, y]`.
+
+Introduce `a b hab`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp_all`. Establish `hfl : HasFiniteLength (prodIrr ![x, y] hd)` using `GlobalTheory.ProdFiniteLength.multiProd_hasFiniteLength GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k 2 N (fun a => (![x, y] a).1) (fun a => GlobalTheory.SplitRead.Irr.ofIrrRep (![x, y] a).2.rep) _`. Set `Q` to `GlobalTheory.CompanionTheory.BZSeg.TwoSeg.quotRep (prodIrr ![x, y] hd) ω f`. Set `p : (prodIrr ![x, y] hd).IntertwiningMap Q` to `⟨(LinearMap.range f.toLinearMap).mkQ, fun g => by ext v; rfl⟩`.
+
+Establish `hp : Function.Surjective p` using `Submodule.mkQ_surjective _`. Establish `hQs : IsSmooth Q` using `(IsSubquotient.of_surjective p hp).isSmooth hs`. Establish `hQn : Nontrivial (_ ⧸ LinearMap.range f.toLinearMap)` using `Submodule.Quotient.nontrivial_iff.2 fun h => hns (LinearMap.range_eq_top.1 h)`. Take `⟨Y', _, _, τ, hτs, hτi, q, hq⟩` from `IrrQuot.exists_irreducible_smooth_quotient Q hQs (GlobalTheory.JacquetBlocks.hasFiniteLength_of_surjective p hp hfl) hQn`. Establish `hτsub : IsSubquotient τ (prodIrr ![x, y] hd)` using `(IsSubquotient.of_surjective q hq).trans (.of_surjective p hp)`.
+
+Establish `hsum : x.1 + y.1 = N` using `by simpa [Fin.sum_univ_two] using hd`. Establish `hN : 0 < N` using `by have := hx.1; omega`. Take `⟨u, hu, hu0, g, hg⟩` from `GlobalTheory.CompanionTheory.JacquetLeft.exists_embedding hA τ hτs hτi hN`. Use `haveI hYn : Nontrivial Y' := GlobalTheory.JacFactor.nontrivial_of_isIrreducible hτi`. Establish `hg0 : ∃ v, g v ≠ 0`.
+
+Take `⟨v, hv⟩` from `exists_ne (0 : Y')`. Conclude with `⟨v, fun h => hv (hg (h.trans (map_zero g).symm))⟩`. Establish `hj` using `GlobalTheory.CompanionTheory.FrobJm.one_le_jm hA u hu τ hτs g hg0`. Establish `hj'` using `GlobalTheory.CompanionTheory.JmMono.jm_le_of_isSubquotient u hu τ _ hs hτsub`. Distinguish the cases in `hz : (u 1).1 = 0`.
+
+Take `⟨z, hz1, ⟨E⟩⟩` from `GlobalTheory.CompanionTheory.FineProd.ProdSingle.prodIrr_single u hu 0 (fun i hi => by`. Take `rfl : i = 1` from `by omega`. Conclude with `hz)`. Establish `hsq : IsSubquotient τ z.rep.ρ` using `.of_injective (E.toIntertwiningMap.comp g) (E.toLinearEquiv.injective.comp hg)`. Take `⟨θ⟩` from `nonempty_equiv_of_isSubquotient hτi z.rep.irr hsq`.
+
+Establish `hc : IrrGL.IsCusp (⟨N, z⟩ : IrrGL k)` using `hz1 ▸ hu0`. Establish `h0` using `GlobalTheory.CompanionTheory.CuspNotInd.jhMult_eq_zero_of_isCusp hA ⟨N, z⟩ ![x, y] hd hc le_rfl (Fin.forall_fin_two.2 ⟨hx.1, hy.1⟩)`. Conclude with `jhMult_ne_zero_iff.2 ((IsSubquotient.of_injective θ.toIntertwiningMap θ.toLinearEquiv.injective).trans hτsub) h0`. Establish `hpos : ∀ a, 0 < (u a).1`. Use `Fin.forall_fin_two.2 ⟨hu0.1, Nat.pos_of_ne_zero hz⟩` and prove the remaining obligations.
+
+Take `⟨e, he⟩` from `exists_equiv_of_jm_ne_zero ![x, y] u hd hu hxc hpos (ENat.one_le_iff_ne_zero.1 (hj.trans hj'))`. Establish `hcases : u = ![x, y] ∨ u = ![y, x]`. Establish `hee : e 0 ≠ e 1` using `fun h => by simpa using e.injective h`. Establish `key : ∀ a b : Fin 2, a ≠ b → (a = 0 ∧ b = 1) ∨ (a = 1 ∧ b = 0)` using `by decide`. Break down `key _ _ hee with ⟨a, b⟩ | ⟨a, b⟩` into its components or cases.
+
+Conclude with `Or.inl (funext (Fin.forall_fin_two.2 ⟨(he 0).trans (by simp [a]), (he 1).trans (by simp [b])⟩))`. Conclude with `Or.inr (funext (Fin.forall_fin_two.2 ⟨(he 0).trans (by simp [a]), (he 1).trans (by simp [b])⟩))`. Break down `hcases with rfl | rfl` into its components or cases. Conclude with `false_of_sub_quot ![x, y] hd hA hs f hf q hq (jm_le_one hA _ _ hd hd hxc hxc hinj) h1 hj`. Conclude with `false_of_sub_quot ![y, x] hd' hA hs f hf q hq (jm_le_one hA _ _ hd hd' hxc hyc hinj) h2 hj`.
+-/
 theorem surjective_of_jm (hA : IrreducibleAdmissibleGL) {x y : IrrGL k} (hx : x.IsCusp) (hy : y.IsCusp) (hne : x ≠ y)
     (hd : ∑ a, (![x, y] a).1 = N) (hd' : ∑ a, (![y, x] a).1 = N) {ω : Representation ℂ (GL (Fin N) k) W}
     (f : ω.IntertwiningMap (prodIrr ![x, y] hd)) (hf : Function.Injective f)
@@ -238,6 +303,11 @@ theorem surjective_of_jm (hA : IrreducibleAdmissibleGL) {x y : IrrGL k} (hx : x.
 
 end Sat
 
+/- English proof (translation)
+Take `⟨ψ, hc, h1, h2⟩` from `h`. Use `⟨ψ, hc, h1, ?_⟩` and prove the remaining obligations. Unfold `IsGenericFor at h2 ⊢`. Take `⟨q, hq⟩` from `exists_ne (0 : TwJacquet ω (unipB k (Fin N)) (whitChar ψ N))`. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`.
+
+Establish `hw : w ∉ twKer ω (unipB k (Fin N)) (whitChar ψ N)` using `fun h => hq ((Submodule.Quotient.mk_eq_zero _).2 h)`. Establish `hgw : g w ∉ twKer σ (unipB k (Fin N)) (whitChar ψ N)` using `fun h => hw (GlobalTheory.CompanionTheory.PRep.WhitExact.twKer_whitChar_reflect k ψ hc N ω σ hω hσ g.toLinearMap hg (fun a v => Representation.IntertwiningMap.isIntertwining _ _ g a v) w h)`. Conclude with `⟨Submodule.Quotient.mk (g w), 0, fun h => hgw ((Submodule.Quotient.mk_eq_zero _).1 h)⟩`.
+-/
 theorem isGeneric_of_injective {N : ℕ} {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ω : Representation ℂ (GL (Fin N) k) V} {σ : Representation ℂ (GL (Fin N) k) W} (hω : IsSmooth ω) (hσ : IsSmooth σ)
     (g : ω.IntertwiningMap σ) (hg : Function.Injective g) (h : IsGeneric ω) : IsGeneric σ := by
@@ -252,10 +322,16 @@ theorem isGeneric_of_injective {N : ℕ} {V W : Type} [AddCommGroup V] [Module �
       (fun a v => Representation.IntertwiningMap.isIntertwining _ _ g a v) w h)
   exact ⟨Submodule.Quotient.mk (g w), 0, fun h => hgw ((Submodule.Quotient.mk_eq_zero _).1 h)⟩
 
+/- English proof (translation)
+Introduce `h` and use `by have h1 : x.nu ((1 : ℕ) : ℂ) = x.nu ((0 : ℕ) : ℂ) := by simpa using h exact one_ne_zero (IrrGL.nu_natCast_inj hx |>.1 h1)`.
+-/
 theorem nu_one_ne {x : IrrGL k} (hx : 0 < x.1) : x.nu 1 ≠ x := fun h => by
   have h1 : x.nu ((1 : ℕ) : ℂ) = x.nu ((0 : ℕ) : ℂ) := by simpa using h
   exact one_ne_zero (IrrGL.nu_natCast_inj hx |>.1 h1)
 
+/- English proof (translation)
+Establish `hG` using `GlobalTheory.CompanionTheory.BZMir.genericProdIrr_of_genericProdIff k (GlobalTheory.CompanionTheory.Leib.genericProdIff_of_whitHeredity k (GlobalTheory.CompanionTheory.Rodier.whitHeredity k))`. Establish `hc : ∀ z : IrrGL k, z.IsCusp → IsGeneric z.rep` using `fun z hz => hCG z.1 _ z.rep hz.1 z.2.rep.smooth z.2.rep.irr hz.2`. Conclude with `(hG 2 N ![x, y] hd).2 (Fin.forall_fin_two.2 ⟨hc x hx, hc y hy⟩)`.
+-/
 theorem isGeneric_prodIrr (hCG : GlobalTheory.BZSeg.CuspGeneric k) {x y : IrrGL k} (hx : x.IsCusp) (hy : y.IsCusp) {N : ℕ}
     (hd : ∑ a, (![x, y] a).1 = N) : IsGeneric (prodIrr ![x, y] hd) := by
   have hG := GlobalTheory.CompanionTheory.BZMir.genericProdIrr_of_genericProdIff k
@@ -264,6 +340,23 @@ theorem isGeneric_prodIrr (hCG : GlobalTheory.BZSeg.CuspGeneric k) {x y : IrrGL 
     hCG z.1 _ z.rep hz.1 z.2.rep.smooth z.2.rep.irr hz.2
   exact (hG 2 N ![x, y] hd).2 (Fin.forall_fin_two.2 ⟨hc x hx, hc y hy⟩)
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hA _ hNu hCG x y N hd hx hy hne W _ _ σ f hf hW`. Establish `hs` using `isSmooth_prodIrr ![x, y] hd`. Establish `hsq` using `IsSubquotient.of_injective f hf`. Establish `hσs` using `hsq.isSmooth hs`. Establish `hfl : HasFiniteLength (prodIrr ![x, y] hd)` using `GlobalTheory.ProdFiniteLength.multiProd_hasFiniteLength GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k 2 N (fun a => (![x, y] a).1) (fun a => GlobalTheory.SplitRead.Irr.ofIrrRep (![x, y] a).2.rep) _`.
+
+Take `⟨S, g, hg⟩` from `GlobalTheory.CompanionTheory.IrrSub.exists_irrRep_injective k N W _ σ (prodIrr ![x, y] hd) hσs hW hsq hfl`. Use `isGeneric_of_injective S.smooth hσs g hg ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hng`. Take `⟨α, β, β', hd1, hd2, hα, hβ, hββ, h1, h2⟩` from `hNu N S.V S.ρ S.smooth S.irr hng`. Set `ι : S.ρ.IntertwiningMap (prodIrr ![x, y] hd)` to `f.comp g`.
+
+Establish `hι : Function.Injective ι` using `hf.comp hg`. Use `haveI : Nontrivial S.V := GlobalTheory.JacFactor.nontrivial_of_isIrreducible S.irr`. Establish `hι0 : ∃ v, ι v ≠ 0`. Take `⟨v, hv⟩` from `exists_ne (0 : S.V)`. Conclude with `⟨v, fun h => hv (hι (h.trans (map_zero ι).symm))⟩`.
+
+Establish `hF : 1 ≤ jm ![x, y] hd S.ρ` using `GlobalTheory.CompanionTheory.FrobJm.one_le_jm hA _ hd S.ρ S.smooth ι hι0`. Establish `hxc : ∀ a, (![x, y] a).IsCusp` using `Fin.forall_fin_two.2 ⟨hx, hy⟩`. Establish `key : ∀ (u : Fin 2 → IrrGL k) (hu : ∑ a, (u a).1 = N), (∀ a, 0 < (u a).1) → 1 ≤ jm u hu S.ρ → u = ![x, y] ∨ u = ![y, x]`. Introduce `u hu hpos hj`. Establish `hj'` using `GlobalTheory.CompanionTheory.JmMono.jm_le_of_isSubquotient u hu S.ρ _ hs (.of_injective ι hι)`.
+
+Take `⟨e, he⟩` from `exists_equiv_of_jm_ne_zero ![x, y] u hd hu hxc hpos (ENat.one_le_iff_ne_zero.1 (hj.trans hj'))`. Establish `hee : e 0 ≠ e 1` using `fun h => by simpa using e.injective h`. Establish `key : ∀ a b : Fin 2, a ≠ b → (a = 0 ∧ b = 1) ∨ (a = 1 ∧ b = 0)` using `by decide`. Break down `key _ _ hee with ⟨a, b⟩ | ⟨a, b⟩` into its components or cases. Conclude with `Or.inl (funext (Fin.forall_fin_two.2 ⟨(he 0).trans (by simp [a]), (he 1).trans (by simp [b])⟩))`.
+
+Conclude with `Or.inr (funext (Fin.forall_fin_two.2 ⟨(he 0).trans (by simp [a]), (he 1).trans (by simp [b])⟩))`. Establish `hp1 : ∀ a, 0 < (![α, β] a).1` using `Fin.forall_fin_two.2 ⟨hα, hβ⟩`. Establish `hp2 : ∀ a, 0 < (![β', α.nu 1] a).1` using `Fin.forall_fin_two.2 ⟨hββ ▸ hβ, hα⟩`. Establish `c1` using `key _ hd1 hp1 h1`. Establish `c2` using `key _ hd2 hp2 h2`.
+
+Establish `e0 : ∀ {a b c d : IrrGL k}, ![a, b] = ![c, d] → a = c ∧ b = d` using `fun h => ⟨congrFun h 0, congrFun h 1⟩`. Apply the tactic sequence `rcases c1 with c1 | c1 <;> obtain ⟨rfl, rfl⟩ := e0 c1`. Apply the tactic sequence `rcases c2 with c2 | c2 <;> obtain ⟨-, h3⟩ := e0 c2`. Conclude with `hne h3.symm`. Conclude with `nu_one_ne hx.1 h3`.
+
+Apply the tactic sequence `rcases c2 with c2 | c2 <;> obtain ⟨-, h3⟩ := e0 c2`. Conclude with `nu_one_ne hy.1 h3`. Establish `hxy : β ≠ α` using `fun h => nu_one_ne hy.1 (h3.trans h)`. Establish `hsurj : Function.Surjective ι` using `surjective_of_jm hA hx hy hxy hd hd1 ι hι hF h1`. Conclude with `hng (GlobalTheory.CompanionTheory.BZSeg.isGeneric_of_surjective ι hsurj (isGeneric_prodIrr hCG hx hy hd))`.
+-/
 theorem cuspPairSubGeneric : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.Published.IrreducibleAdmissibleGL → GlobalTheory.Published.GeometricLemmaFiltration → GlobalTheory.BZSeg.NuPair k →
     GlobalTheory.BZSeg.CuspGeneric k → GlobalTheory.BZSeg.CuspPairSubGeneric k := by

@@ -10,6 +10,9 @@ noncomputable section
 
 namespace IncidenceGeneric
 
+/- English proof (translation)
+Rewrite using `[aeval_def, aeval_def, eval₂_comp_left]`. Use `congr 1`. Use extensionality with `r`. Conclude with `hΦ r`.
+-/
 theorem hom_aeval {F σ R T : Type*} [Field F] [CommRing R] [CommRing T] [Algebra F R] [Algebra F T]
     (Φ : R →+* T) (hΦ : ∀ r : F, Φ (algebraMap F R r) = algebraMap F T r) (y : σ → R)
     (g : MvPolynomial σ F) : Φ (aeval y g) = aeval (fun s => Φ (y s)) g := by
@@ -18,11 +21,19 @@ theorem hom_aeval {F σ R T : Type*} [Field F] [CommRing R] [CommRing T] [Algebr
   ext r
   exact hΦ r
 
+/- English proof (translation)
+Simplify using `[genSubst, map_sum]`.
+-/
 theorem map_genSubst {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) {n k : ℕ}
     (ζ c : Fin n → R) (ij : Fin k × Fin n) :
     map φ (genSubst ζ c ij) = genSubst (fun l => φ (ζ l)) (fun l => φ (c l)) ij := by
   simp [genSubst, map_sum]
 
+/- English proof (translation)
+Establish `hC : ∑ l, C (c l) * C (ζ l) = (1 : MvPolynomial (Fin k × Fin n) R)`. Rewrite using `[← C_1, ← hc, map_sum]`. Simplify using `only [C_mul]`. Establish `h0 : ∑ l, genSubst ζ c (ij.1, l) * C (ζ l) = 0`. Simplify using `only [genSubst, sub_mul, Finset.sum_sub_distrib, mul_assoc, ← Finset.mul_sum, hC, mul_one, sub_self]`.
+
+Rewrite using `[show genSubst ζ c' ij = X ij - (∑ l, X (ij.1, l) * C (ζ l)) * C (c' ij.2) from rfl]`. Simplify using `only [map_sub, map_mul, map_sum, aeval_X, aeval_C, algebraMap_eq, h0, zero_mul, sub_zero]`.
+-/
 theorem aeval_genSubst_genSubst {R : Type*} [CommRing R] {n k : ℕ} (ζ c c' : Fin n → R)
     (hc : ∑ l, c l * ζ l = 1) (ij : Fin k × Fin n) :
     aeval (genSubst ζ c) (genSubst ζ c' ij) = genSubst ζ c ij := by
@@ -35,6 +46,9 @@ theorem aeval_genSubst_genSubst {R : Type*} [CommRing R] {n k : ℕ} (ζ c c' : 
   rw [show genSubst ζ c' ij = X ij - (∑ l, X (ij.1, l) * C (ζ l)) * C (c' ij.2) from rfl]
   simp only [map_sub, map_mul, map_sum, aeval_X, aeval_C, algebraMap_eq, h0, zero_mul, sub_zero]
 
+/- English proof (translation)
+Use `hom_aeval (F := F) (aeval (genSubst ζ c) : MvPolynomial (Fin k × Fin n) R →ₐ[R] _).toRingHom (fun r => by simp [MvPolynomial.algebraMap_apply]) (genSubst ζ c') g` as an intermediate fact. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, aeval_genSubst_genSubst ζ c c' hc, h, map_zero] at this`. Conclude with `this.symm`.
+-/
 theorem aeval_genSubst_eq_zero_of {F R : Type*} [Field F] [CommRing R] [Algebra F R] {n k : ℕ}
     (ζ c c' : Fin n → R) (hc : ∑ l, c l * ζ l = 1) (g : MvPolynomial (Fin k × Fin n) F)
     (h : aeval (genSubst ζ c') g = 0) : aeval (genSubst ζ c) g = 0 := by
@@ -44,6 +58,33 @@ theorem aeval_genSubst_eq_zero_of {F R : Type*} [Field F] [CommRing R] [Algebra 
     map_zero] at this
   exact this.symm
 
+/- English proof (translation)
+Simplify using `only [incIdeal, Ideal.mem_iInf, RingHom.mem_ker]`. Introduce `v hv`. Take `⟨x, hx0, hxP, hvx⟩` from `hv`. Take `⟨j, hj⟩ : ∃ j, x j ≠ 0` from `Function.ne_iff.mp hx0`. Use `set a : (MvPolynomial (Fin n) F ⧸ P) := Ideal.Quotient.mk P (X j) with ha_def`.
+
+Establish `ha : a ≠ 0`. Introduce `h0`. Apply `hj` to reduce the goal to its premises. Simplify using `using hxP _ (Ideal.Quotient.eq_zero_iff_mem.mp h0)`. Establish `hξj : genPt P j ≠ 0` using `by show algebraMap (MvPolynomial (Fin n) F ⧸ P) (FractionRing (MvPolynomial (Fin n) F ⧸ P)) a ≠ 0`.
+
+Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff]` and apply the resulting hypothesis. Take `⟨c', hc'_def⟩ : ∃ c' : Fin n → (FractionRing (MvPolynomial (Fin n) F ⧸ P)), c' = Pi.single j (genPt P j)⁻¹` from `⟨_, rfl⟩`. Establish `hc' : ∑ l, c' l * genPt P l = 1`. Rewrite using `[Finset.sum_eq_single j (fun l _ hl => by rw [hc'_def, Pi.single_eq_of_ne hl, zero_mul]) (fun h => absurd (Finset.mem_univ j) h), hc'_def, Pi.single_eq_same, inv_mul_cancel₀ hξj]`. Establish `h' : aeval (genSubst (genPt P) c') g = 0` using `aeval_genSubst_eq_zero_of _ c' c hc' g h`.
+
+Set `L` to `Localization.Away a`. Establish `hθu : IsUnit (algebraMap (MvPolynomial (Fin n) F ⧸ P) (FractionRing (MvPolynomial (Fin n) F ⧸ P)) a)` using `isUnit_iff_ne_zero.mpr hξj`. Set `θ : L →+* (FractionRing (MvPolynomial (Fin n) F ⧸ P))` to `IsLocalization.Away.lift a hθu`. Establish `hθinj : Function.Injective θ`. Unfold `θ IsLocalization.Away.lift`.
+
+Rewrite using `[IsLocalization.lift_injective_iff]`. Introduce `y z`. Rewrite using `[(IsLocalization.injective L (powers_le_nonZeroDivisors_of_noZeroDivisors ha)).eq_iff, (IsFractionRing.injective (MvPolynomial (Fin n) F ⧸ P) (FractionRing (MvPolynomial (Fin n) F ⧸ P))).eq_iff]`. Set `ev : (MvPolynomial (Fin n) F ⧸ P) →+* AlgebraicClosure F` to `Ideal.Quotient.lift P (aeval x).toRingHom (fun p hp => hxP p hp)`. Establish `hev : ∀ p, ev (Ideal.Quotient.mk P p) = aeval x p` using `fun p => rfl`.
+
+Establish `hψu : IsUnit (ev a)` using `isUnit_iff_ne_zero.mpr (by rw [ha_def, hev, aeval_X]; exact hj)`. Set `ψ : L →+* AlgebraicClosure F` to `IsLocalization.Away.lift a hψu`. Set `ξL : Fin n → L` to `fun l => algebraMap (MvPolynomial (Fin n) F ⧸ P) L (Ideal.Quotient.mk P (X l))`. Set `cL : Fin n → L` to `Pi.single j (IsLocalization.Away.invSelf a)`. Establish `hθξ : ∀ l, θ (ξL l) = genPt P l` using `fun l => IsLocalization.Away.lift_eq a hθu _`.
+
+Establish `hθinv : θ (IsLocalization.Away.invSelf a) = (genPt P j)⁻¹`. Use `congrArg θ (IsLocalization.Away.mul_invSelf (S := L) a)` as an intermediate fact. Rewrite `this` using `[map_mul, map_one, show θ (algebraMap (MvPolynomial (Fin n) F ⧸ P) L a) = genPt P j from hθξ j]`. Conclude with `eq_inv_of_mul_eq_one_right this`. Establish `hθc : ∀ l, θ (cL l) = c' l`.
+
+Introduce `l`. Distinguish the cases in `hl : l = j`. Substitute `hl` using the available equality. Simplify using `[cL, hc'_def, hθinv]`. Simplify using `[cL, hc'_def, Pi.single_eq_of_ne hl]`.
+
+Establish `hψξ : ∀ l, ψ (ξL l) = x l` using `fun l => by`. Rewrite using `[IsLocalization.Away.lift_eq, hev, aeval_X]`. Set `f₀ : F →+* MvPolynomial (Fin k × Fin n) L` to `C.comp ((algebraMap (MvPolynomial (Fin n) F ⧸ P) L).comp (algebraMap F (MvPolynomial (Fin n) F ⧸ P)))`. Set `Q` to `eval₂ f₀ (genSubst ξL cL) g`. Establish `hQ : map θ Q = aeval (genSubst (genPt P) c') g`.
+
+Rewrite using `[eval₂_comp_left, aeval_def]`. Use `congr 1`. Use extensionality with `r`. Simplify using `[f₀, θ, MvPolynomial.algebraMap_apply, IsScalarTower.algebraMap_apply F (MvPolynomial (Fin n) F ⧸ P) (FractionRing (MvPolynomial (Fin n) F ⧸ P))]`. Use function extensionality and compare the values at `ij`.
+
+Simplify using `only [Function.comp_apply, map_genSubst, hθξ, hθc]`. Establish `hQ0 : Q = 0`. Apply `map_injective θ hθinj` to reduce the goal to its premises. Rewrite using `[hQ, h', map_zero]`. Establish `hvQ : eval₂Hom ψ v Q = aeval v g`.
+
+Rewrite using `[eval₂_comp_left, aeval_def]`. Use `congr 1`. Use extensionality with `r`. Simplify using `only [f₀, RingHom.coe_comp, Function.comp_apply, eval₂Hom_C]`. Rewrite using `[IsLocalization.Away.lift_eq, ← Ideal.Quotient.mk_algebraMap, hev, AlgHom.commutes]`.
+
+Use function extensionality and compare the values at `ij`. Simplify using `[genSubst, hψξ, hvx ij.1]`. Rewrite using `[← hvQ, hQ0, map_zero]`.
+-/
 theorem mem_incIdeal_of_aeval_eq_zero {F : Type*} [Field F] {n k : ℕ}
     (P : Ideal (MvPolynomial (Fin n) F)) [P.IsPrime]
     (c : Fin n → (FractionRing (MvPolynomial (Fin n) F ⧸ P)))
@@ -120,6 +161,27 @@ theorem mem_incIdeal_of_aeval_eq_zero {F : Type*} [Field F] {n k : ℕ}
       simp [genSubst, hψξ, hvx ij.1]
   rw [← hvQ, hQ0, map_zero]
 
+/- English proof (translation)
+Simplify using `only [incIdeal, Ideal.mem_iInf, RingHom.mem_ker] at hg`. Set `e : MvPolynomial (Fin n ⊕ Fin n) F →ₐ[F] FractionRing (MvPolynomial (Fin n) F ⧸ P)` to `aeval (Sum.elim (genPt P) c)`. Set `D` to `e.range`. Establish `: Algebra.FiniteType F D` using `Algebra.FiniteType.of_surjective e.rangeRestrict e.rangeRestrict_surjective`. Establish `: Algebra.FiniteType F (MvPolynomial (Fin k × Fin n) D)` using `Algebra.FiniteType.trans (S := D) inferInstance inferInstance`.
+
+Set `ξD : Fin n → D` to `fun l => ⟨genPt P l, X (Sum.inl l), by simp [e]⟩`. Set `cD : Fin n → D` to `fun l => ⟨c l, X (Sum.inr l), by simp [e]⟩`. Establish `hD : ∑ l, cD l * ξD l = 1` using `Subtype.ext (by simpa [ξD, cD] using hc)`. Set `r : MvPolynomial (Fin k × Fin n) D` to `aeval (genSubst ξD cD) g`. Establish `hr : map D.val.toRingHom r = aeval (genSubst (genPt P) c) g` using `by show map D.val.toRingHom (aeval (genSubst ξD cD) g) = _`.
+
+Rewrite using `[hom_aeval (F := F) (R := MvPolynomial (Fin k × Fin n) D) (T := MvPolynomial (Fin k × Fin n) (FractionRing (MvPolynomial (Fin n) F ⧸ P))) (map D.val.toRingHom) (fun s => by simp [MvPolynomial.algebraMap_apply])]`. Rewrite using `[show (fun s => map D.val.toRingHom (genSubst ξD cD s)) = genSubst (genPt P) c from`. Use function extensionality and compare the values at `fun ij => by rw [map_genSubst]; rfl]`. Rewrite using `[← hr]`. It suffices to establish `r = 0 by rw [this, map_zero]`.
+
+Use `h₁ F (MvPolynomial (Fin k × Fin n) D) r fun φ => ?_` and prove the remaining obligations. Set `x : Fin n → AlgebraicClosure F` to `fun l => φ (C (ξD l))`. Set `cx : Fin n → AlgebraicClosure F` to `fun l => φ (C (cD l))`. Set `w : Fin k × Fin n → AlgebraicClosure F` to `fun ij => φ (X ij)`. Set `v : Fin k × Fin n → AlgebraicClosure F` to `fun ij => w ij - (∑ l, w (ij.1, l) * x l) * cx ij.2`.
+
+Establish `hφC : ∀ s : F, φ (C (algebraMap F D s)) = algebraMap F (AlgebraicClosure F) s` using `fun s => by`. Rewrite using `[← MvPolynomial.algebraMap_apply, AlgHom.commutes]`. Establish `key : ∑ l, cx l * x l = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hφr : φ r = aeval v g`.
+
+Rewrite using `[show φ r = φ.toRingHom r from rfl, hom_aeval (F := F) φ.toRingHom (fun s => φ.commutes s)]`. Rewrite using `[show (fun s => φ.toRingHom (genSubst ξD cD s)) = v from funext fun ij => by`. Simplify using `[genSubst, v, w, x, cx]]`. Establish `hvI : v ∈ incidence P k`. Use `⟨x, fun hx => ?_, fun p hp => ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Rewrite `key` using `[hx]`. Simplify using `at key`. Establish `hpD : aeval ξD p = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `hom_aeval (F := F) D.val.toRingHom (fun s => D.val.commutes s) ξD p`.
+
+Establish `h2` using `hom_aeval (F := F) ((algebraMap (MvPolynomial (Fin n) F ⧸ P) (FractionRing (MvPolynomial (Fin n) F ⧸ P))).comp (Ideal.Quotient.mk P)) (fun s => by`. Rewrite using `[RingHom.comp_apply, Ideal.Quotient.mk_algebraMap, ← IsScalarTower.algebraMap_apply]) X p`. Simplify using `only [aeval_X_left_apply, RingHom.coe_comp, Function.comp_apply, Ideal.Quotient.eq_zero_iff_mem.mpr hp, map_zero] at h2`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Subalgebra.coe_val] at h1`. Rewrite using `[h1]`.
+
+Conclude with `h2.symm`. Establish `h3` using `hom_aeval (F := F) (φ.toRingHom.comp C) hφC ξD p`. Simplify using `only [hpD, map_zero, RingHom.coe_comp, Function.comp_apply] at h3`. Conclude with `h3.symm`. Simplify using `only [v, sub_mul, Finset.sum_sub_distrib, mul_assoc, ← Finset.mul_sum, key, mul_one, sub_self]`.
+
+Rewrite using `[hφr]`. Conclude with `hg v hvI`.
+-/
 theorem aeval_eq_zero_of_mem_incIdeal (h₁ : FGNullstellensatz.Statement) {F : Type} [Field F]
     {n k : ℕ} (P : Ideal (MvPolynomial (Fin n) F)) [P.IsPrime]
     (c : Fin n → FractionRing (MvPolynomial (Fin n) F ⧸ P)) (hc : ∑ j, c j * genPt P j = 1)
@@ -187,6 +249,9 @@ theorem aeval_eq_zero_of_mem_incIdeal (h₁ : FGNullstellensatz.Statement) {F : 
   rw [hφr]
   exact hg v hvI
 
+/- English proof (translation)
+Introduce `F _ n k P _ c hc g`. Conclude with `⟨aeval_eq_zero_of_mem_incIdeal h₁ P c hc g, mem_incIdeal_of_aeval_eq_zero P c g⟩`.
+-/
 theorem proof (h₁ : FGNullstellensatz.Statement) : IncidenceGeneric.Statement := by
   intro F _ n k P _ c hc g
   exact ⟨aeval_eq_zero_of_mem_incIdeal h₁ P c hc g, mem_incIdeal_of_aeval_eq_zero P c g⟩

@@ -24,6 +24,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Ker.ExtInv
 
+/- English proof (translation)
+Introduce `D S T C Lv M hM hM𝔪 gL hgL φ ψ hφ hψ hφk hψk hag`. Establish `hΛ : C.X.Λ.FG ∧ Submodule.span D.host.E (C.X.Λ : Set (Fin T.rank → D.host.E)) = ⊤` using `⟨C.X.Λ_fg, C.X.Λ_span⟩`. Establish `hm1 : IsMov (fmt T 1) C.X.Λ C.X.Λ` using `by rw [Red.fmt_one]; exact Red.isMov_one _`. Take `⟨-, hL⟩` from `GlobalTheory.T.self_dual_lattices_at_level D S T C`. Establish `hI : C.under Lv ≠ ⊥` using `(hL Lv 1 _ hΛ.1 hm1).2.2.1`.
+
+Establish `hgrp` using `((GlobalTheory.T.rational_unitary_group_structure D S T C).2.2.2 T).2.1`. Establish `hcomm` using `((GlobalTheory.T.rational_unitary_group_structure D S T C).2.2.2 T).2.2.2.1`. Use function extensionality and compare the values at `g`. Take `⟨γ, hγ, a, ha, g', hg', k, hk, hg, ht, -, hck, hcJ⟩` from `GlobalTheory.T.exists_rational_real_trivialAt_congruent_factor D T C.X.Λ (C.under Lv) M hΛ hI hM g`. Establish `hinv : fmt T g' * fmt T g'⁻¹ = 1` using `by rw [← (hgrp g' g'⁻¹).2.1, mul_inv_cancel, Red.fmt_one]`.
+
+Take `⟨L, hLf, hLm⟩` from `((GlobalTheory.T.finiteAdelicLatticeTransport_laws D _ C.X.Λ hΛ).2.2.2 _ _ hinv).1`. Establish `hLl : L ∈ Lv.lats` using `(hL Lv g' L hLf.1 hLm).2.1 ht`. Take `⟨h1, h2, h3⟩` from `hgL L hLl`. Establish `hk1 : C.LevK Lv k 1` using `Red.levK_one C Lv k hk hck.1 (hcJ _ hM𝔪)`. Establish `hk2 : C.LevK Lv ((gL L)⁻¹ * g') 1` using `GlobalTheory.T.level_group_congruent_of_two_lattice_moves D S T C Lv (gL L) g' L h1 hg' h2 ht hLf.1 h3 hLm`.
+
+Establish `e : g = γ * (gL L * a * ((gL L)⁻¹ * g') * k)`. Rewrite using `[hg, ← (hcomm a ha).2.2 _ h1]`. Use `group`. Rewrite using `[e, hφ γ hγ, hψ γ hγ, hφk k hk1, hψk k hk1, hφk _ hk2, hψk _ hk2]`. Conclude with `hag L hLl a ha`.
+-/
 theorem eq_of_invariant : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (Lv : SW.Level C.X) (M : ℕ), 0 < M → (M : 𝓞 D.host.E) ∈ Lv.𝔪 → ∀ gL : Lt D.host.E T.rank → GA D T, (∀ L ∈ Lv.lats, gL L ∈ GfC T ∧ TrivAt T (C.under Lv) (gL L) ∧ IsMov (fmt T (gL L)) C.X.Λ L) → ∀ φ ψ : GA D T → ℂ, (∀ γ ∈ GQ T, ∀ g, φ (γ * g) = φ g) → (∀ γ ∈ GQ T, ∀ g, ψ (γ * g) = ψ g) → (∀ k, C.LevK Lv k 1 → ∀ g, φ (g * k) = φ g) → (∀ k, C.LevK Lv k 1 → ∀ g, ψ (g * k) = ψ g) → (∀ L ∈ Lv.lats, ∀ a ∈ GinfC T, φ (gL L * a) = ψ (gL L * a)) → φ = ψ := by
   intro D S T C Lv M hM hM𝔪 gL hgL φ ψ hφ hψ hφk hψk hag
   have hΛ : C.X.Λ.FG ∧ Submodule.span D.host.E (C.X.Λ : Set (Fin T.rank → D.host.E)) = ⊤ :=

@@ -17,11 +17,17 @@ open Limits
 
 variable {L : Type} [CommRing L]
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun x => TrivSqZeroExt.ext (by simp [Formalism.L2.Pj.dualMap, Chart.dualMapR]) (by simp [Formalism.L2.Pj.dualMap, Chart.dualMapR])`.
+-/
 theorem dualMap_algebraMap_eq (a : L) :
     Formalism.L2.Pj.dualMap (algebraMap L (Localization.Away a)) = Chart.dAway a :=
   RingHom.ext fun x => TrivSqZeroExt.ext (by simp [Formalism.L2.Pj.dualMap, Chart.dualMapR])
     (by simp [Formalism.L2.Pj.dualMap, Chart.dualMapR])
 
+/- English proof (translation)
+Use `RingHom.ext fun x => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `all_goals simp only [RingHom.comp_apply, Formalism.L2.Pj.dualMap, Chart.dualMapR, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, TrivSqZeroExt.fst_add, TrivSqZeroExt.snd_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, add_zero, z …`.
+-/
 theorem dualMap_comp_dAway (a : L) (c : L)
     (φ : Localization.Away a →+* Localization.Away c) (hφ : ∀ x, φ (algebraMap L _ x) = algebraMap L (Localization.Away c) x) :
     (Formalism.L2.Pj.dualMap φ).comp (Chart.dAway a) = (Formalism.L2.Pj.dualMap (algebraMap L (Localization.Away c))) := by
@@ -30,6 +36,13 @@ theorem dualMap_comp_dAway (a : L) (c : L)
     OneHom.coe_mk, TrivSqZeroExt.fst_add, TrivSqZeroExt.snd_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr,
     TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, add_zero, zero_add, hφ]
 
+/- English proof (translation)
+Establish `hu : IsUnit ((α.comp (Chart.dAway a)) (TrivSqZeroExt.inl (a * b)))`. Rewrite using `[← TrivSqZeroExt.inl_mul_inl, map_mul]`. Use `((Chart.isUnit_dAway a).map α).mul ?_` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `(Chart.isUnit_dAway b).map β`.
+
+Take `⟨γ, hγ⟩` from `Chart.dAway_lift (a * b) (α.comp (Chart.dAway a)) hu`. Establish `eγ : γ.comp (Formalism.L2.Pj.dualMap (algebraMap L (Localization.Away (a * b)))) = α.comp (Chart.dAway a)`. Rewrite using `[dualMap_algebraMap_eq]`. Conclude with `hγ`. Use `⟨γ, Chart.dAway_ext a ?_, Chart.dAway_ext b ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[RingHom.comp_assoc, dualMap_comp_dAway a (a * b) _ (fun x => IsLocalization.Away.awayToAwayRight_eq a b x), eγ]`. Rewrite using `[RingHom.comp_assoc, dualMap_comp_dAway b (a * b) _ (fun x => IsLocalization.Away.awayToAwayLeft_eq b a x), eγ, h]`.
+-/
 theorem factor_ab (a b : L) {T : Type} [CommRing T] (α : DualNumber (Localization.Away a) →+* T)
     (β : DualNumber (Localization.Away b) →+* T) (h : α.comp (Chart.dAway a) = β.comp (Chart.dAway b)) :
     ∃ γ : DualNumber (Localization.Away (a * b)) →+* T,
@@ -57,6 +70,25 @@ open Limits
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Introduce `L _ s hs Y w hw`. Establish `hs' : Ideal.span (Set.range (fun a : s => (TrivSqZeroExt.inl (a : L) : DualNumber L))) = ⊤`. Use `congrArg (Ideal.map (TrivSqZeroExt.inlHom L L)) hs` as an intermediate fact. Rewrite `this` using `[Ideal.map_span, Ideal.map_top]`. Rewrite using `[← this]`.
+
+Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules. Set `𝒰` to `(Scheme.affineOpenCoverOfSpanRangeEqTop (R := CommRingCat.of (DualNumber L)) _ hs').openCover`. Set `f : ∀ k : s, 𝒰.X k ⟶ Y` to `fun k => Spec.map (CommRingCat.ofHom (Chart.toL (k : L))) ≫ w k`.
+
+Establish `hf : ∀ k l, pullback.fst (𝒰.f k) (𝒰.f l) ≫ f k = pullback.snd (𝒰.f k) (𝒰.f l) ≫ f l`. Use `fun (k : s) (l : s) => Scheme.Cover.hom_ext (pullback (𝒰.f k) (𝒰.f l)).affineOpenCover.openCover _ _ fun (i : (pullback (𝒰.f k) (𝒰.f l)).affineOpenCover.I₀) => ?_` and prove the remaining obligations. Set `a : Spec ((pullback (𝒰.f k) (𝒰.f l)).affineOpenCover.X i) ⟶ pullback (𝒰.f k) (𝒰.f l)` to `(pullback (𝒰.f k) (𝒰.f l)).affineOpenCover.f i`. Set `A : CommRingCat.of (Chart.Ld (k : L)) ⟶ (pullback (𝒰.f k) (𝒰.f l)).affineOpenCover.X i` to `Spec.preimage (a ≫ pullback.fst (𝒰.f k) (𝒰.f l))`. Set `B : CommRingCat.of (Chart.Ld (l : L)) ⟶ (pullback (𝒰.f k) (𝒰.f l)).affineOpenCover.X i` to `Spec.preimage (a ≫ pullback.snd (𝒰.f k) (𝒰.f l))`.
+
+Establish `ea : Spec.map A = a ≫ pullback.fst (𝒰.f k) (𝒰.f l)` using `Spec.map_preimage _`. Establish `eb : Spec.map B = a ≫ pullback.snd (𝒰.f k) (𝒰.f l)` using `Spec.map_preimage _`. Establish `e1 : Spec.map (CommRingCat.ofHom (algebraMap (DualNumber L) (Chart.Ld (k : L))) ≫ A) = Spec.map (CommRingCat.ofHom (algebraMap (DualNumber L) (Chart.Ld (l : L))) ≫ B)`. Rewrite using `[Spec.map_comp, Spec.map_comp, ea, eb, Category.assoc, Category.assoc]`. Conclude with `congrArg (a ≫ ·) pullback.condition`.
+
+Establish `key : A.hom.comp (algebraMap (DualNumber L) (Chart.Ld (k : L))) = B.hom.comp (algebraMap (DualNumber L) (Chart.Ld (l : L)))` using `congrArg CommRingCat.Hom.hom (Spec.map_injective e1)`. Establish `hkey : (A.hom.comp (Chart.toL (k : L))).comp (Chart.dAway (k : L)) = (B.hom.comp (Chart.toL (l : L))).comp (Chart.dAway (l : L))`. Rewrite using `[RingHom.comp_assoc, RingHom.comp_assoc, Chart.toL_comp, Chart.toL_comp]`. Conclude with `key`. Take `⟨γ, hα, hβ⟩` from `factor_ab (k : L) (l : L) _ _ hkey`.
+
+Establish `h : Spec.map (CommRingCat.ofHom (A.hom.comp (Chart.toL (k : L)))) ≫ w k = Spec.map (CommRingCat.ofHom (B.hom.comp (Chart.toL (l : L)))) ≫ w l`. Rewrite using `[hα, hβ, CommRingCat.ofHom_comp, CommRingCat.ofHom_comp, Spec.map_comp, Spec.map_comp, Category.assoc, Category.assoc]`. Conclude with `congrArg (Spec.map (CommRingCat.ofHom γ) ≫ ·) (hw k l)`. Use `show a ≫ pullback.fst (𝒰.f k) (𝒰.f l) ≫ Spec.map (CommRingCat.ofHom (Chart.toL (k : L))) ≫ w k = a ≫ pullback.snd (𝒰.f k) (𝒰.f l) ≫ Spec.map (CommRingCat.ofHom (Chart.toL (l : L))) ≫ w l`. Rewrite using `[← Category.assoc a, ← Category.assoc a, ← ea, ← eb, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp]`.
+
+Conclude with `h`. Set `g` to `𝒰.glueMorphisms f hf`. Establish `hι : ∀ k : s, 𝒰.f k ≫ g = f k` using `fun k => Scheme.Cover.ι_glueMorphisms 𝒰 f hf k`. Use `⟨g, fun k => ?_⟩` and prove the remaining obligations. Establish `e : spMap (Formalism.L2.Pj.dualMap (algebraMap L (Localization.Away (k : L)))) = Spec.map (CommRingCat.ofHom (Chart.fromL (k : L))) ≫ 𝒰.f k`.
+
+Rewrite using `[dualMap_algebraMap_eq]`. Use `show _ = _ ≫ Spec.map (CommRingCat.ofHom (algebraMap (DualNumber L) (Chart.Ld (k : L))))`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, Chart.fromL_comp]`. Rewrite using `[e, Category.assoc, hι k]`. Use `show Spec.map (CommRingCat.ofHom (Chart.fromL (k : L))) ≫ Spec.map (CommRingCat.ofHom (Chart.toL (k : L))) ≫ w k = _`.
+
+Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, Chart.fromL_toL, CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]`.
+-/
 theorem glue_away_dual : ∀ {L : Type} [CommRing L] {s : Set L}, Ideal.span s = ⊤ → ∀ {Y : Scheme.{0}} (w : ∀ a : s, Sp (DualNumber (Localization.Away (a : L))) ⟶ Y), (∀ a b : s, spMap (Formalism.L2.Pj.dualMap (IsLocalization.Away.awayToAwayRight (S := Localization.Away (a : L)) (P := Localization.Away ((a : L) * b)) (a : L) (b : L))) ≫ w a = spMap (Formalism.L2.Pj.dualMap (IsLocalization.Away.awayToAwayLeft (S := Localization.Away (b : L)) (P := Localization.Away ((a : L) * b)) (b : L) (a : L))) ≫ w b) → ∃ w₀ : Sp (DualNumber L) ⟶ Y, ∀ a : s, spMap (Formalism.L2.Pj.dualMap (algebraMap L (Localization.Away (a : L)))) ≫ w₀ = w a := by
   intro L _ s hs Y w hw
   have hs' : Ideal.span (Set.range (fun a : s => (TrivSqZeroExt.inl (a : L) : DualNumber L))) = ⊤ := by

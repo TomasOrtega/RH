@@ -28,32 +28,52 @@ def intMap (hU : IsUnrExt K K' d φ) : K.O →+* K'.O where
     have h3 := Classical.choose_spec (exists_int_image hU b)
     rw [h1]; simp only [map_add, h2, h3])
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (exists_int_image hU a)`.
+-/
 theorem intMap_spec (hU : IsUnrExt K K' d φ) (a : K.O) :
     algebraMap K'.O K'.E (intMap hU a) = φ (algebraMap K.O K.E a) :=
   Classical.choose_spec (exists_int_image hU a)
 
+/- English proof (translation)
+Introduce `a b h`. Apply `IsFractionRing.injective K.O K.E` to reduce the goal to its premises. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[← intMap_spec hU, ← intMap_spec hU, h]`.
+-/
 theorem intMap_injective (hU : IsUnrExt K K' d φ) : Function.Injective (intMap hU) := by
   intro a b h
   apply IsFractionRing.injective K.O K.E
   apply φ.injective
   rw [← intMap_spec hU, ← intMap_spec hU, h]
 
+/- English proof (translation)
+Unfold `val`. Rewrite using `[map_mul, WithZero.log_mul (by simpa using hx) (by simpa using hy)]; ring`.
+-/
 theorem val_mul_ne (K : UQ) {x y : K.E} (hx : x ≠ 0) (hy : y ≠ 0) :
     val K.O (x * y) = val K.O x + val K.O y := by
   unfold val
   rw [map_mul, WithZero.log_mul (by simpa using hx) (by simpa using hy)]; ring
 
+/- English proof (translation)
+Unfold `val`. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap, IsDedekindDomain.HeightOneSpectrum.intValuation_singleton _ h.ne_zero ((IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 h), WithZero.log_exp]`. Both sides reduce to the same expression.
+-/
 theorem val_irreducible (K : UQ) {ϖ : K.O} (h : Irreducible ϖ) : val K.O (algebraMap K.O K.E ϖ) = 1 := by
   unfold val
   rw [IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap,
     IsDedekindDomain.HeightOneSpectrum.intValuation_singleton _ h.ne_zero
       ((IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 h), WithZero.log_exp]; rfl
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [val]`. Consider the case `succ n ih => rw [pow_succ, val_mul_ne K (pow_ne_zero _ hx) hx, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem val_pow_ne (K : UQ) {x : K.E} (hx : x ≠ 0) (n : ℕ) : val K.O (x ^ n) = n * val K.O x := by
   induction n with
   | zero => simp [val]
   | succ n ih => rw [pow_succ, val_mul_ne K (pow_ne_zero _ hx) hx, ih]; push_cast; ring
 
+/- English proof (translation)
+Take `⟨w, rfl⟩` from `hu`. Establish `h1 : (algebraMap K.O K.E (w : K.O)) ≠ 0` using `by simp`. Establish `h2 : (algebraMap K.O K.E ((w⁻¹ : K.Oˣ) : K.O)) ≠ 0` using `by simp`. Establish `h` using `val_mul_ne K h1 h2`. Rewrite `h` using `[← map_mul, Units.mul_inv, map_one]`.
+
+Establish `h3` using `val_algebraMap_nonneg K (w : K.O)`. Establish `h4` using `val_algebraMap_nonneg K ((w⁻¹ : K.Oˣ) : K.O)`. Establish `h5 : val K.O (1 : K.E) = 0` using `by simp [val]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem val_isUnit (K : UQ) {u : K.O} (hu : IsUnit u) : val K.O (algebraMap K.O K.E u) = 0 := by
   obtain ⟨w, rfl⟩ := hu
   have h1 : (algebraMap K.O K.E (w : K.O)) ≠ 0 := by simp
@@ -65,6 +85,11 @@ theorem val_isUnit (K : UQ) {u : K.O} (hu : IsUnit u) : val K.O (algebraMap K.O 
   have h5 : val K.O (1 : K.E) = 0 := by simp [val]
   omega
 
+/- English proof (translation)
+Establish `hx0 : x ≠ 0` using `by rintro rfl; simp [val] at hx`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible K.O`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx0 hϖ`. Establish `hϖ0 : algebraMap K.O K.E ϖ ≠ 0` using `by simpa using hϖ.ne_zero`. Establish `hu0 : algebraMap K.O K.E (u : K.O) ≠ 0` using `by simp`.
+
+Rewrite `hx` using `[map_mul, map_pow, val_mul_ne K hu0 (pow_ne_zero _ hϖ0), val_pow_ne K hϖ0, val_isUnit K u.isUnit, val_irreducible K hϖ]`. Establish `hn : n = 1` using `by omega`. Substitute `hn` using the available equality. Rewrite using `[pow_one]`. Conclude with `(irreducible_units_mul u).2 hϖ`.
+-/
 theorem irreducible_of_val_one (K : UQ) {x : K.O} (hx : val K.O (algebraMap K.O K.E x) = 1) :
     Irreducible x := by
   have hx0 : x ≠ 0 := by rintro rfl; simp [val] at hx
@@ -79,6 +104,9 @@ theorem irreducible_of_val_one (K : UQ) {x : K.O} (hx : val K.O (algebraMap K.O 
   rw [pow_one]
   exact (irreducible_units_mul u).2 hϖ
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible K.O`. Establish `h1` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`. Establish `h2 : Irreducible (intMap hU ϖ)` using `irreducible_of_val_one K' (by rw [intMap_spec, hU.2.2.1, val_irreducible K hϖ])`. Rewrite using `[h1, Ideal.map_span, Set.image_singleton, (IsDiscreteValuationRing.irreducible_iff_uniformizer _).1 h2]`.
+-/
 theorem map_maximalIdeal (hU : IsUnrExt K K' d φ) :
     Ideal.map (intMap hU) (IsLocalRing.maximalIdeal K.O) = IsLocalRing.maximalIdeal K'.O := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible K.O
@@ -90,6 +118,33 @@ theorem map_maximalIdeal (hU : IsUnrExt K K' d φ) :
 
 open scoped nonZeroDivisors in
 
+/- English proof (translation)
+Use `letI : Algebra K.E K'.E := φ.toAlgebra`. Use `letI : Algebra K.O K'.O := (intMap hU).toAlgebra`. Use `letI : Algebra K.O K'.E := (φ.comp (algebraMap K.O K.E)).toAlgebra`. Use `haveI : IsScalarTower K.O K.E K'.E := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower K.O K'.O K'.E := IsScalarTower.of_algebraMap_eq fun a => (intMap_spec hU a).symm`.
+
+Establish `hmap : ∀ a : K.O, algebraMap K.O K'.O a = intMap hU a` using `fun _ => rfl`. Take `⟨u, hu⟩` from `hB`. Use `haveI hfin : Module.Finite K.O K'.O := by classical`. Use `⟨⟨Finset.univ.image u, eq_top_iff.2 fun y _ => ?_⟩⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hu y`.
+
+Establish `hy : y = ∑ i, a i • u i`. Apply `IsFractionRing.injective K'.O K'.E` to reduce the goal to its premises. Rewrite using `[ha, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, hmap, intMap_spec]`.
+
+Rewrite using `[hy]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span (by simp))`. Use `haveI : FaithfulSMul K.O K'.O := (faithfulSMul_iff_algebraMap_injective K.O K'.O).2 (intMap_injective hU)`. Use `haveI : Module.Free K.O K'.O := Module.free_of_finite_type_torsion_free'`. Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid K'.O K.O⁰) K'.E := by`.
+
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible K.O`. Establish `hϖ0 : algebraMap K.O K.E ϖ ≠ 0` using `by simpa using hϖ.ne_zero`. Establish `hφϖ : φ (algebraMap K.O K.E ϖ) ≠ 0` using `by simpa using hϖ0`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`.
+
+Take `⟨r, hr, rfl⟩` from `hy`. Use `IsUnit.mk0 _ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap K'.O K'.E (intMap hU r) ≠ 0`. Rewrite using `[intMap_spec]`. Simplify using `using nonZeroDivisors.ne_zero hr`.
+
+Introduce `z`. Distinguish the cases in `hz : z = 0`. Conclude with `⟨⟨0, 1⟩, by simp [hz]⟩`. Take `⟨s, hs⟩` from `mem_range_of_val_nonneg K' (z * φ (algebraMap K.O K.E ϖ) ^ (-(val K'.O z)).toNat) (by`. Rewrite using `[val_mul_ne K' hz (pow_ne_zero _ hφϖ), val_pow_ne K' hφϖ, hU.2.2.1, val_irreducible K hϖ]`.
+
+Use the proof step `omega)`. Use `⟨⟨s, ⟨algebraMap K.O K'.O (ϖ ^ (-(val K'.O z)).toNat), Algebra.mem_algebraMapSubmonoid_of_mem ⟨_, pow_mem (mem_nonZeroDivisors_of_ne_zero hϖ.ne_zero) _⟩⟩⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `z * algebraMap K'.O K'.E (intMap hU (ϖ ^ (-(val K'.O z)).toNat)) = algebraMap K'.O K'.E s`. Rewrite using `[hs, intMap_spec, map_pow, map_pow]`. Introduce `x y h`.
+
+Conclude with `⟨1, by rw [IsFractionRing.injective K'.O K'.E h]⟩`. Establish `hpS : Ideal.map (algebraMap K.O K'.O) (IsLocalRing.maximalIdeal K.O) = IsLocalRing.maximalIdeal K'.O` using `map_maximalIdeal hU`. Use `haveI hmax : (Ideal.map (algebraMap K.O K'.O) (IsLocalRing.maximalIdeal K.O)).IsMaximal := by`. Rewrite using `[hpS]`. Use `infer_instance`.
+
+Use `letI : Field (K.O ⧸ IsLocalRing.maximalIdeal K.O) := Ideal.Quotient.field _`. Use `letI : Field (K'.O ⧸ Ideal.map (algebraMap K.O K'.O) (IsLocalRing.maximalIdeal K.O)) := Ideal.Quotient.field _`. Use `haveI : Finite (K'.O ⧸ IsLocalRing.maximalIdeal K'.O) := K'.fin`. Use `haveI : Finite (K'.O ⧸ Ideal.map (algebraMap K.O K'.O) (IsLocalRing.maximalIdeal K.O)) := Finite.of_equiv _ (Ideal.quotEquivOfEq hpS).symm.toEquiv`. Use `haveI : Finite (K.O ⧸ IsLocalRing.maximalIdeal K.O) := K.fin`.
+
+Use `haveI : FiniteDimensional (K.O ⧸ IsLocalRing.maximalIdeal K.O) (K'.O ⧸ Ideal.map (algebraMap K.O K'.O) (IsLocalRing.maximalIdeal K.O)) := inferInstance`. Use `haveI : Algebra.IsSeparable (K.O ⧸ IsLocalRing.maximalIdeal K.O) (K'.O ⧸ Ideal.map (algebraMap K.O K'.O) (IsLocalRing.maximalIdeal K.O)) := inferInstance`. Take `⟨z, hz⟩` from `Algebra.trace_surjective (K.O ⧸ IsLocalRing.maximalIdeal K.O) (K'.O ⧸ Ideal.map (algebraMap K.O K'.O) (IsLocalRing.maximalIdeal K.O)) 1`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Establish `htr` using `Algebra.trace_quotient_mk (R := K.O) (S := K'.O) y`.
+
+Rewrite `htr` using `[hz]`. Use `⟨y, Algebra.trace K.O K'.O y, ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Establish `h0 : Ideal.Quotient.mk (IsLocalRing.maximalIdeal K.O) (Algebra.trace K.O K'.O y) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 ((IsLocalRing.mem_maximalIdeal _).2 h)`. Rewrite `htr` using `[h0]`.
+
+Conclude with `one_ne_zero htr`. Conclude with `Algebra.trace_localization K.O K.O⁰ (Rₘ := K.E) (Sₘ := K'.E) y`.
+-/
 theorem exists_trace_unit_of_span (K K' : UQ) (d : ℕ) (φ : K.E →+* K'.E) (hU : IsUnrExt K K' d φ)
     (hB : ∃ u : Fin d → K'.O, ∀ y : K'.O, ∃ a : Fin d → K.O,
       algebraMap K'.O K'.E y = ∑ i, φ (algebraMap K.O K.E (a i)) * algebraMap K'.O K'.E (u i)) :
@@ -172,6 +227,9 @@ theorem exists_trace_unit_of_span (K K' : UQ) (d : ℕ) (φ : K.E →+* K'.E) (h
     exact one_ne_zero htr
   · exact Algebra.trace_localization K.O K.O⁰ (Rₘ := K.E) (Sₘ := K'.E) y
 
+/- English proof (translation)
+The claim follows from `exists_trace_unit_of_span K K' d φ hU (exists_int_basis_of_unr K K' d φ hU)`.
+-/
 theorem exists_trace_unit (K K' : UQ) (d : ℕ) (φ : K.E →+* K'.E) (hU : IsUnrExt K K' d φ) :
     ∃ y : K'.O, ∃ a : K.O, IsUnit a ∧
       @Algebra.trace K.E K'.E _ _ φ.toAlgebra (algebraMap K'.O K'.E y) = algebraMap K.O K.E a :=

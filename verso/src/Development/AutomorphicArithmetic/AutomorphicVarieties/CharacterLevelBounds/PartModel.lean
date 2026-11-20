@@ -9,6 +9,11 @@ import Formalism.GaloisCohomology.GaloisCohomologyProofs.LdataNonempty
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.V.Chr
 
+/- English proof (translation)
+Substitute `hU ha` using the available equality. Establish `hχ : chiO k Ω l O ^ (-e) = (Units.map (algebraMap ℤ_[l] O).toMonoidHom).comp (cycZ k Ω l ^ (-e))`. Use extensionality with `g`. Simplify using `[chiO]`. Establish `h1` using `(shaLenEq k E Ω l D e).2 _ σ hσ s`.
+
+Establish `h3` using `(qoBase l (G k Ω) O (cycZ k Ω l ^ (-e)) (galOf k E Ω) (shaFam k Ω l)).2 (conjStable_shaFam k Ω l) σ s`. Rewrite using `[h1, hχ]`. Conclude with `h3.symm`.
+-/
 private theorem eigModel (k E Ω : Type) [Field k] [NumberField k] [Field E] [NumberField E] [Field Ω] [Algebra k E] [Algebra k Ω]
     [Algebra E Ω] [IsScalarTower k E Ω]
     [IsAlgClosure k Ω] [IsAlgClosure E Ω] [Normal k E] (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O]
@@ -26,6 +31,15 @@ private theorem eigModel (k E Ω : Type) [Field k] [NumberField k] [Field E] [Nu
   rw [h1, hχ]
   exact h3.symm
 
+/- English proof (translation)
+Introduce `E _ _ _ N _ H hH l _ O _ _ _ _ _ Ω' _ _ _ D Ω _ _ _ e`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Set `j : E →ₐ[ℚ] Ω` to `IsAlgClosed.lift`. Use `letI : Algebra E Ω := j.toRingHom.toAlgebra`.
+
+Use `haveI : Algebra.IsAlgebraic E Ω := Algebra.IsAlgebraic.tower_top (K := ℚ) E`. Use `haveI : IsAlgClosure E Ω := ⟨inferInstance, inferInstance⟩`. Use `haveI hab := (levGal E N H hH).1`. Establish `hU` using `((levGal E N H hH).2.2 Ω).1`. Use `(ldata_nonempty (F := E) (Ω := Ω) l).elim fun D' => ?_` and prove the remaining obligations.
+
+Use `(exists_isConjOm (E := E) (Ω := Ω)).elim fun σ hσ => ?_` and prove the remaining obligations. Set `c : G ℚ Ω` to `AlgEquiv.ofRingEquiv (f := σ) fun x => by simp`. Establish `hc : IsConjOm c.toRingEquiv` using `hσ`. Establish `hpm` using `LDataCardLeFinrank.partLenCongr E Ω' E Ω l D D' (RingEquiv.refl E) e`. Use `⟨c, hc, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `eigModel ℚ E Ω l O D' e (levH ℚ Ω H) hU (cE E) c (IsConjOm.isLift (E := E) hc) ((-1) ^ e) ((-1) ^ e) (by rw [map_pow, map_neg, map_one])`. Conclude with `(congrArg (· * eO l O) hpm.1).trans h`. Establish `h` using `eigModel ℚ E Ω l O D' e (levH ℚ Ω H) hU (cE E) c (IsConjOm.isLift (E := E) hc) ((-1) ^ (e + 1)) ((-1) ^ (e + 1)) (by rw [map_pow, map_neg, map_one])`. Conclude with `(congrArg (· * eO l O) hpm.2).trans h`.
+-/
 theorem UpperTheory.V.Chr.partModel :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ) [NeZero N] (H : Subgroup (ZMod N)ˣ), HasLevel E N H → ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] (Ω' : Type) [Field Ω'] [Algebra E Ω'] [IsAlgClosure E Ω'] (D : LData E Ω' l)
           (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (e : ℕ), ∃ c : G ℚ Ω, IsConjOm c.toRingEquiv ∧

@@ -6,6 +6,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Admis
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.N Polynomial GlobalTheory GlobalTheory.WeilDeligne GlobalTheory.CuspRep UpperTheory.V.Af UpperTheory.GalN.V
 
+/- English proof (translation)
+Establish `h : Matrix.scalar (Fin n) (c * x) - c • M = c • (Matrix.scalar (Fin n) x - M)`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.scalar_apply, Matrix.diagonal_apply, hij, mul_sub]`. Rewrite using `[Polynomial.IsRoot.def, Polynomial.IsRoot.def, Matrix.eval_charpoly, Matrix.eval_charpoly, h, Matrix.det_smul]`. Simplify using `[hc]`.
+-/
 private theorem isRoot_charpoly_smul' {k : Type} [Field k] {n : ℕ} (c : k) (hc : c ≠ 0)
     (M : Matrix (Fin n) (Fin n) k) (x : k) :
     (c • M).charpoly.IsRoot (c * x) ↔ M.charpoly.IsRoot x := by
@@ -16,6 +19,13 @@ private theorem isRoot_charpoly_smul' {k : Type} [Field k] {n : ℕ} (c : k) (hc
     Matrix.det_smul]
   simp [hc]
 
+/- English proof (translation)
+Take `⟨ι⟩ : Nonempty (Qbar l ≃+* ℂ)` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex l`. Set `m : G F Ω →* GL (Fin 1) (Qbar l)` to `UpperTheory.V.Af.tw 1 μ`. Establish `hval : ∀ s, (m s : Matrix (Fin 1) (Fin 1) (Qbar l)) = (μ s : Qbar l) • (1 : Matrix (Fin 1) (Fin 1) (Qbar l))`. Introduce `s`. Simplify `UpperTheory.V.Af.tw_val (1 : G F Ω →* GL (Fin 1) (Qbar l)) μ s` using `[m]`.
+
+Establish `hc : Continuous fun g => (m g : Matrix (Fin 1) (Fin 1) (Qbar l))`. Simplify using `only [hval]`. Conclude with `(Units.continuous_val.comp hμ).smul continuous_const`. Establish `h0 : (wdOf h hl ι m).mono0` using `WD.mono0_of_lpDim_eq_one (by rw [lpDim_wdOf]; simp)`. Establish `hfin` using `(weilDeligneParam_monodromy_eq_zero_iff hl ι hc).1 h0`.
+
+Use `(hfin.image Matrix.GeneralLinearGroup.det).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Use `⟨m s, ⟨s, hs, rfl⟩, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, hval]`.
+-/
 private theorem finite_char_ine {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] (μ : G F Ω →* (Qbar l)ˣ) (hμ : Continuous μ)
     {w : HeightOneSpectrum (𝓞 F)} (hl : ((l : ℕ) : 𝓞 F) ∉ w.asIdeal) {A : ValuationSubring Ω}
@@ -37,6 +47,17 @@ private theorem finite_char_ine {F Ω : Type} [Field F] [NumberField F] [Field �
   apply Units.ext
   simp [Matrix.GeneralLinearGroup.val_det_apply, hval]
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ l _ n r μ hμ hU w hl A hA hfin`. Establish `hμf` using `finite_char_ine μ hμ hl hA`. Establish `hr : (r '' (Ine (F` using `F) A : Set (G F Ω))).Finite := by`. Use `(Set.Finite.image2 (fun (c : (Qbar l)ˣ) (x : GL (Fin n) (Qbar l)) => Matrix.GeneralLinearGroup.scalar (Fin n) c⁻¹ * x) hμf hfin).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`.
+
+Use `⟨μ s, ⟨s, hs, rfl⟩, UpperTheory.V.Af.tw r μ s, ⟨s, hs, rfl⟩, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Establish `e` using `UpperTheory.V.Af.tw_val r μ s`. Simplify using `only [Units.val_mul, e]`. Simplify using `[Matrix.GeneralLinearGroup.scalar, Matrix.scalar_apply, ← Matrix.smul_eq_diagonal_mul, smul_smul]`.
+
+Take `⟨s, j, hj, hs, hn⟩` from `hU w hl A hA hr`. Use `⟨s, j, hj, hs, ?_⟩` and prove the remaining obligations. Introduce `α β hα hβ k hk e`. Use `set c : Qbar l := (μ s : Qbar l) with hcdef`. Establish `hc : c ≠ 0` using `Units.ne_zero _`.
+
+Rewrite `hα`, `hβ` using `[UpperTheory.V.Af.tw_val]`. Establish `back : ∀ x : Qbar l, (c • (r s : Matrix (Fin n) (Fin n) (Qbar l))).charpoly.IsRoot x → (r s : Matrix (Fin n) (Fin n) (Qbar l)).charpoly.IsRoot (c⁻¹ * x)`. Introduce `x hx`. Use `(isRoot_charpoly_smul' c hc _ _).1 ?_` and prove the remaining obligations. Rewrite using `[mul_inv_cancel_left₀ hc]` and apply the resulting hypothesis.
+
+Use `hn _ _ (back _ hα) (back _ hβ) k hk ?_` and prove the remaining obligations. Rewrite using `[mul_pow, mul_left_comm, mul_pow, e, mul_pow]`.
+-/
 theorem UpperTheory.GalN.V.L.wtw :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (r : G F Ω →* GL (Fin n) (Qbar l)) (μ : G F Ω →* (Qbar l)ˣ), Continuous μ → Unlinked r → Unlinked (UpperTheory.V.Af.tw r μ) := by
   intro F Ω _ _ _ _ _ l _ n r μ hμ hU w hl A hA hfin

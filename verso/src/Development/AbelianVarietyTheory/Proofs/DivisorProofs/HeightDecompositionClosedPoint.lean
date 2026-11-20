@@ -13,6 +13,9 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVa
 
 namespace GlobalTheory.Mean4O.HtComb
 
+/- English proof (translation)
+Establish `e (f : α → ℝ) : ∑ᶠ (y) (_ : p y), f y = ∑ y ∈ hp.toFinset, f y` using `finsum_mem_eq_finite_toFinset_sum f hp`. Simplify using `only [e, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun y hy => h y (hp.mem_toFinset.1 hy)`.
+-/
 theorem finsum_rel {α ι : Type} [Fintype ι] {p : α → Prop} (hp : {y | p y}.Finite) (a l d : α → ℝ) (c : ι → α → ℝ)
     (q r : ℝ) (b : ι → ℝ) (h : ∀ y, p y → q * a y = l y + ∑ i, b i * c i y - r * d y) :
     q * ∑ᶠ (y) (_ : p y), a y =
@@ -22,6 +25,9 @@ theorem finsum_rel {α ι : Type} [Fintype ι] {p : α → Prop} (hp : {y | p y}
   rw [Finset.sum_comm, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]
   exact Finset.sum_congr rfl fun y hy => h y (hp.mem_toFinset.1 hy)
 
+/- English proof (translation)
+Establish `h₁` using `finsum_mem_eq_finite_toFinset_sum (fun y => Real.log (w (f y))) hp`. Establish `h₂` using `finprod_mem_eq_finite_toFinset_prod f hp`. Use `h₁.trans (Eq.trans ?_ (congrArg (fun a => Real.log (w a)) h₂).symm)` and prove the remaining obligations. Rewrite using `[map_prod, Real.log_prod fun y hy => hw _ (hf y (hp.mem_toFinset.1 hy))]`.
+-/
 theorem finsum_log {α K : Type} [Field K] (w : K →* ℝ) (hw : ∀ a, a ≠ 0 → w a ≠ 0) {p : α → Prop}
     (hp : {y | p y}.Finite) (f : α → K) (hf : ∀ y, p y → f y ≠ 0) :
     ∑ᶠ (y : α) (_ : p y), Real.log (w (f y)) = Real.log (w (∏ᶠ (y : α) (_ : p y), f y)) := by
@@ -30,6 +36,13 @@ theorem finsum_log {α K : Type} [Field K] (w : K →* ℝ) (hw : ∀ a, a ≠ 0
   refine h₁.trans (Eq.trans ?_ (congrArg (fun a => Real.log (w a)) h₂).symm)
   rw [map_prod, Real.log_prod fun y hy => hw _ (hf y (hp.mem_toFinset.1 hy))]
 
+/- English proof (translation)
+Establish `h₁ : ∀ s : Finset ι, CartierDiv.IsEqn (∑ i ∈ s, b i • E i) x (∏ i ∈ s, eqn (E i) x ^ b i)` using `fun s => by`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using CartierDiv.isEqn_zero x`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha]`.
+
+Conclude with `((Base.isEqn_eqn (E a) x).zsmul (b a)).add ih`. Establish `h₂` using `(Base.isEqn_eqn D x).nsmul q`. Establish `h₃` using `h₁ Finset.univ`. Rewrite `h₃` using `[← h]`. Establish `h₄` using `h₂.iff_unitAt.1 h₃`.
+
+Use `h₄ using 1` and compare the differences between its conclusion and the goal. Simplify using `[genAt, Finset.prod_inv_distrib, div_eq_mul_inv, mul_comm]`.
+-/
 theorem unitAt_quot {F : Type} [Field F] {Y : Var F} {ι : Type} [Fintype ι] (D : Y.Dv) (E : ι → Y.Dv) (q : ℕ)
     (b : ι → ℤ) (h : q • D = ∑ i, b i • E i) (x : Y.X) :
     UnitAt x (genAt D x ^ q / ∏ i, genAt (E i) x ^ b i) := by
@@ -47,6 +60,37 @@ theorem unitAt_quot {F : Type} [Field F] {Y : Var F} {ι : Type} [Fintype ι] (D
   convert h₄ using 1
   simp [genAt, Finset.prod_inv_distrib, div_eq_mul_inv, mul_comm]
 
+/- English proof (translation)
+Introduce `F _ _ C Y M ι _ ρ t g ⟨q, b, hq, ht, hD, hi, hv⟩ hfs x hx`. Establish `hu` using `unitAt_quot M.D (fun i => (ρ i).D) q b hD x`. Use `set U : Y.Fn := genAt M.D x ^ q / ∏ i, genAt (ρ i).D x ^ b i with hU`. Take `⟨N, hN, H⟩` from `exists_finprod_valAt_eq F Y x hx _ hu`. Establish `hfin : Finite {y : AlgPt Y // below y.1 = x}` using `(ExtConj.pts Y x hx).2`.
+
+Take `⟨n, hn, hc⟩` from `HtTwist.exists_card Y.str x hx`. Establish `hA : Nat.card {y : AlgPt Y // below y.1 = x} = n` using `hc _ _`. Set `a (A : Adl C Y) (σ : F →+* ℂ) : ℝ` to `∑ᶠ (z : Pts Y σ) (_ : under z = x), lnAdl A σ z`. Set `c (A : Adl C Y) (v : HeightOneSpectrum (𝓞 F)) : ℝ` to `∑ᶠ (y : AlgPt Y) (_ : below y.1 = x), A.lg v (Ext.instNonempty v).some y`. Establish `hht (A : Adl C Y) : A.ht x = -((∑ σ, a A σ) + ∑ᶠ v, c A v) / (((A.n : ℕ) : ℝ) * (Module.finrank ℚ F : ℝ) * n)`.
+
+Simplify using `only [Adl.ht, dif_pos (Ext.instNonempty _), hA]`. Use `congr 3`. Use `Finset.sum_congr rfl fun σ _ => finsum_congr fun z => finsum_congr fun hz => ?_` and prove the remaining obligations. Substitute `hz` using the available equality. Both sides reduce to the same expression.
+
+Establish `h₁ (σ : F →+* ℂ) : q * a M σ = Real.log ‖σ N‖ + ∑ i, b i * a (ρ i) σ - q * (M.n : ℕ) * ∑ᶠ (z : Pts Y σ) (_ : under z = x), g σ z`. Take `⟨hf, hp⟩` from `H ℂ σ`. Establish `key` using `finsum_log (normHom : ℂ →*₀ ℝ).toMonoidHom (fun a ha => norm_ne_zero_iff.2 ha) hf (fun y => valAt y.1 U) fun y hy => (Base.valAt_zpow y.1 (hy ▸ hu)).1`. Rewrite `key` using `[hp]`. Use `finsum_rel (p := fun z : Pts Y σ => under z = x) hf (lnAdl M σ) (fun z => Real.log ‖valAt z.1 U‖) (g σ) (fun i => lnAdl (ρ i) σ) q (q * (M.n : ℕ)) (fun i => b i) fun z hz => by` as an intermediate fact.
+
+Rewrite using `[(hi σ z).2, TrivNef.ratVal_eq_valAt, hz]`. Conclude with `this.trans (congrArg (fun s => s + _ - _) key)`. Establish `h₂ (v : HeightOneSpectrum (𝓞 F)) : q * c M v = Real.log (NumberField.HeightOneSpectrum.adicAbv F v N) + ∑ i, b i * c (ρ i) v`. Take `⟨hf, hp⟩` from `H (AlgebraicClosure F) (algebraMap F _)`. Set `e` to `(Ext.instNonempty v).some`.
+
+Establish `key` using `finsum_log e.w.toMonoidHom (fun a ha => e.w.ne_zero ha) hf (fun y => valAt y.1 U) fun y hy => (Base.valAt_zpow y.1 (hy ▸ hu)).1`. Rewrite `key` using `[hp]`. Use `finsum_rel (p := fun y : AlgPt Y => below y.1 = x) hf (M.lg v e) (fun y => Real.log (e.w (valAt y.1 U))) (fun _ => 0) (fun i => (ρ i).lg v e) q 0 (fun i => b i) fun y hy => by` as an intermediate fact. Rewrite using `[hv v e y, hy, zero_mul, sub_zero]`. Rewrite `this` using `[zero_mul, sub_zero]`.
+
+Conclude with `this.trans (congrArg (fun s => s + _) (key.trans (congrArg Real.log (e.w_alg N))))`. Establish `hs (i : ι) : (Function.support (c (ρ i))).Finite`. Use `(Set.finite_iUnion fun y : {y : AlgPt Y // below y.1 = x} => hfs i y.1).subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Simplify using `only [Set.mem_iUnion, Set.mem_ofPred_eq, not_exists, not_not, ne_eq] at h`.
+
+Use `hv ?_` and prove the remaining obligations. Simplify using `only [c]`. Rewrite using `[← finsum_subtype_eq_finsum_cond]`. Simplify using `[h]`. Take `⟨hl, h₃⟩` from `sum_log_embedding_add_finsum_log_adicAbv_eq_zero F N hN`.
+
+Establish `hs' (i : ι) : (Function.support fun v => (b i : ℝ) * c (ρ i) v).Finite` using `(hs i).subset fun v (hv : (b i : ℝ) * c (ρ i) v ≠ 0) (h0 : c (ρ i) v = 0) => hv (by rw [h0, mul_zero])`. Establish `h₄ : q * ∑ᶠ v, c M v = (∑ᶠ v : HeightOneSpectrum (𝓞 F), Real.log (NumberField.HeightOneSpectrum.adicAbv F v N)) + ∑ i, b i * ∑ᶠ v, c (ρ i) v`. Rewrite using `[mul_finsum]`. Simplify using `only [h₂, mul_finsum]`. Rewrite using `[finsum_add_distrib hl, finsum_sum_comm _ _ fun i _ => hs' i]`.
+
+Use `(Set.finite_iUnion hs').subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Simplify using `only [Set.mem_iUnion, Function.mem_support, not_exists, not_not, ne_eq] at h`. Conclude with `hv (Finset.sum_eq_zero fun i _ => h i)`. Establish `h₅ : q * ∑ σ, a M σ = (∑ σ : F →+* ℂ, Real.log ‖σ N‖) + ∑ i, b i * (∑ σ, a (ρ i) σ) - q * (M.n : ℕ) * ∑ σ : F →+* ℂ, ∑ᶠ (z : Pts Y σ) (_ : under z = x), g σ z`.
+
+Simplify using `only [Finset.mul_sum, h₁]`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_add_distrib, Finset.sum_comm]`. Establish `hn' : (n : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Establish `hF : (Module.finrank ℚ F : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Establish `hm (A : Adl C Y) : ((A.n : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 A.n.ne_zero`.
+
+Establish `hq' : (q : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hq.ne'`. Establish `h₆ (i : ι) : (q : ℝ) * (M.n : ℕ) * (Module.finrank ℚ F : ℝ) * n * (t i * (ρ i).ht x) = -(b i * (∑ σ, a (ρ i) σ)) - b i * ∑ᶠ v, c (ρ i) v`. Use `hm (ρ i)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ht i, hht]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hM` using `hm M`. Use `mul_left_cancel₀ (a := (q : ℝ) * (M.n : ℕ) * (Module.finrank ℚ F : ℝ) * n) (by positivity) ?_` and prove the remaining obligations. Rewrite using `[mul_add, Finset.mul_sum, hA]`.
+
+Simplify using `only [h₆, Finset.sum_sub_distrib, Finset.sum_neg_distrib]`. Rewrite using `[hht M]`. Establish `e₁ (s : ℝ) : (q : ℝ) * (M.n : ℕ) * (Module.finrank ℚ F : ℝ) * n * (s / (((M.n : ℕ) : ℝ) * (Module.finrank ℚ F : ℝ) * n)) = q * s` using `by field_simp`. Establish `e₂ (s : ℝ) : (q : ℝ) * (M.n : ℕ) * (Module.finrank ℚ F : ℝ) * n * (s / ((Module.finrank ℚ F : ℝ) * n)) = q * (M.n : ℕ) * s` using `by field_simp`. Rewrite using `[e₁, e₂]`.
+
+Take the linear combination `-h₄ - h₅ - h₃`.
+-/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (M : Adl C Y) (ι : Type) [Fintype ι] (ρ : ι → Adl C Y) (t : ι → ℝ) (g : ∀ σ, Pts Y σ → ℝ), IsComb M ρ t g → (∀ i (y : AlgPt Y), {v : HeightOneSpectrum (𝓞 F) | ∃ e : TrueGeo.Ext v, (ρ i).lg v e y ≠ 0}.Finite) → ∀ x : Y.X, IsClosed ({x} : Set Y.X) → M.ht x = ∑ i, t i * (ρ i).ht x + (∑ σ : F →+* ℂ, ∑ᶠ (z : Pts Y σ) (_ : under z = x), g σ z) / ((Module.finrank ℚ F : ℝ) * (Nat.card {y : AlgPt Y // below y.1 = x} : ℝ)) := by
   intro F _ _ C Y M ι _ ρ t g ⟨q, b, hq, ht, hD, hi, hv⟩ hfs x hx
   have hu := unitAt_quot M.D (fun i => (ρ i).D) q b hD x

@@ -17,6 +17,11 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : �
 def epsConj (M : Matrix (Fin (r + 1)) (Fin (r + 1)) E) : Matrix (Fin (r + 1)) (Fin (r + 1)) E :=
   fun c b => (-1) ^ (r - c.val) * M c b * (-1) ^ (r - b.val)
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [ZhatOM, epsConj, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Establish `h : ((-1 : E) ^ (r - c.val)) * (-1) ^ (r - c.val) = 1`.
+
+Rewrite using `[← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules. Take the linear combination `(-(A a d * Z d c * M c b * (-1 : E) ^ (r - b.val))) * h`.
+-/
 theorem zhatOM_mul (A Z M : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :
     ZhatOM (A * Z * M) = A * ZhatOM Z * epsConj M := by
   ext a b
@@ -27,6 +32,11 @@ theorem zhatOM_mul (A Z M : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :
     rw [← pow_add, ← two_mul, pow_mul]; simp
   linear_combination (-(A a d * Z d c * M c b * (-1 : E) ^ (r - b.val))) * h
 
+/- English proof (translation)
+Introduce `i j`. Use `⟨fun hij => ?_, fun hij => ?_⟩` and prove the remaining obligations. Simplify using `only [epsConj]`. Rewrite using `[(h i j).1 hij]`. Expand and normalize the polynomial expressions, which then agree.
+
+Substitute `hij` using the available equality. Simplify using `only [epsConj]`. Rewrite using `[(h i i).2 rfl, mul_one, ← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem isUpUni_epsConj {M : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (h : IsUpUni M) : IsUpUni (epsConj M) := by
   intro i j
   refine ⟨fun hij => ?_, fun hij => ?_⟩
@@ -36,6 +46,13 @@ theorem isUpUni_epsConj {M : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (h : IsUpUni 
     rw [(h i i).2 rfl, mul_one, ← pow_add, ← two_mul, pow_mul]
     simp
 
+/- English proof (translation)
+Unfold `sgUp`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Simplify using `only [epsConj]`.
+
+Establish `e : r - a.val = (r - (a.val + 1)) + 1` using `by omega`. Rewrite using `[e, pow_succ]`. Establish `hsq : ((-1 : E) ^ (r - (a.val + 1))) * (-1) ^ (r - (a.val + 1)) = 1`. Rewrite using `[← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules.
+
+Take the linear combination `(-(M a ⟨a.val + 1, h⟩)) * hsq`. Simplify using the standard rewrite rules.
+-/
 theorem sgUp_epsConj (M : Matrix (Fin (r + 1)) (Fin (r + 1)) E) : sgUp (epsConj M) = -sgUp M := by
   unfold sgUp
   rw [← Finset.sum_neg_distrib]
@@ -49,12 +66,20 @@ theorem sgUp_epsConj (M : Matrix (Fin (r + 1)) (Fin (r + 1)) E) : sgUp (epsConj 
     linear_combination (-(M a ⟨a.val + 1, h⟩)) * hsq
   · simp
 
+/- English proof (translation)
+Introduce `i j`. Use `⟨fun hij => ?_, fun hij => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply, (h j i).1 hij, star_zero]`. Substitute `hij` using the available equality. Rewrite using `[Matrix.conjTranspose_apply, (h i i).2 rfl, star_one]`.
+-/
 theorem isLoUni_conjT {M : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (h : IsUpUni M) : IsLoUni M.conjTranspose := by
   intro i j
   refine ⟨fun hij => ?_, fun hij => ?_⟩
   · rw [Matrix.conjTranspose_apply, (h j i).1 hij, star_zero]
   · subst hij; rw [Matrix.conjTranspose_apply, (h i i).2 rfl, star_one]
 
+/- English proof (translation)
+Unfold `sgLo sgUp`. Rewrite using `[star_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Both sides reduce to the same expression.
+
+Simplify using the standard rewrite rules.
+-/
 theorem sgLo_conjT (M : Matrix (Fin (r + 1)) (Fin (r + 1)) E) : sgLo M.conjTranspose = star (sgUp M) := by
   unfold sgLo sgUp
   rw [star_sum]
@@ -63,6 +88,13 @@ theorem sgLo_conjT (M : Matrix (Fin (r + 1)) (Fin (r + 1)) E) : sgLo M.conjTrans
   · rfl
   · simp
 
+/- English proof (translation)
+Establish `hni` using `Formalism.L2.SG.Pf.nlam_inv hn`. Take `⟨vn, hvn, hvnF⟩` from `nlam_frame Λ F hni`. Take `⟨um, hum, humF⟩` from `nlam_frame Λ Fs hm`. Use `⟨vn, um, hvn, hum, hvnF, humF, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`.
+
+Establish `hiso : ∀ x y, S.hT (n⁻¹ x) (n⁻¹ y) = S.hT x y` using `hni.1.1`. Establish `hnn : ∀ y, n⁻¹ (n y) = y` using `fun y => by`. Rewrite using `[← LinearEquiv.mul_apply, inv_mul_cancel]`. Both sides reduce to the same expression. Establish `lhs : ZhatL F F2 a b = S.hT (frame F a) (frame F2 b)` using `rfl`.
+
+Rewrite using `[lhs, hF2, ← hiso, hnn, hvnF, humF]`. Simplify using `only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ₂, map_smul, Matrix.mul_apply, Matrix.conjTranspose_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `only [show ∀ x y, ZhatL F Fs x y = S.hT (frame F x) (frame Fs y) from fun _ _ => rfl, starRingEnd_apply, RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zhat_nm (Λ : Submodule (𝓞 E) S.V) {T T' : E} (F : LFlag S r T) (Fs F2 : LFlag S r T')
     {n m : S.V ≃ₗ[E] S.V} (hn : n ∈ NLam Λ F) (hm : m ∈ NLam Λ Fs) (hF2 : ∀ b, frame F2 b = n (m (frame Fs b))) :
     ∃ vn um : Matrix (Fin (r + 1)) (Fin (r + 1)) E, IsUpUni vn ∧ IsUpUni um ∧
@@ -85,6 +117,11 @@ theorem zhat_nm (Λ : Submodule (𝓞 E) S.V) {T T' : E} (F : LFlag S r T) (Fs F
     RingHom.id_apply]
   ring
 
+/- English proof (translation)
+Take `⟨vn, um, hvn, hum, hvF, humF, hZ⟩` from `zhat_nm Λ F Fs F2 hn hm hF2`. Use `⟨vn, um, hvn, hum, hvF, humF, ?_⟩` and prove the remaining obligations. Establish `e : (vn.conjTranspose * Ls) * ptMat w * (Us * epsConj um) = L2 * ptMat w * U2`. Rewrite using `[← h2, hZ, zhatOM_mul, hs]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Establish `hds` using `simple_decomposition_holds E (r + 1) w _ _ _ _ (Formalism.MainNotions.BridgeLemma.bru_lo_mul (isLoUni_conjT hvn) hLs) (Formalism.MainNotions.BridgeLemma.bru_up_mul hUs (isUpUni_epsConj hum)) hL2 hU2 e`. Rewrite `hds` using `[sgLo_mul (isLoUni_conjT hvn) hLs, sgUp_mul hUs (isUpUni_epsConj hum), sgLo_conjT, sgUp_epsConj]`. Take the linear combination `-hds`.
+-/
 theorem phase_move (Λ : Submodule (𝓞 E) S.V) {T T' : E} (F : LFlag S r T) (Fs F2 : LFlag S r T')
     {n m : S.V ≃ₗ[E] S.V} (hn : n ∈ NLam Λ F) (hm : m ∈ NLam Λ Fs) (hF2 : ∀ b, frame F2 b = n (m (frame Fs b)))
     (w : Point E (r + 1)) {Ls Us L2 U2 : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hLs : IsLoUni Ls) (hUs : IsUpUni Us)

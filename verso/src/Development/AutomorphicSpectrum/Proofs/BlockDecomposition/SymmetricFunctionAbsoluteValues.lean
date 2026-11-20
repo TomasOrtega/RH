@@ -5,6 +5,11 @@ open PositivityTheory.JacquetShalikaLocal GroundTheory.Automorphic GroundTheory.
 
 namespace GlobalTheory.CompanionTheory.JSBound
 
+/- English proof (translation)
+Unfold `esymmL`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Simplify using `only [evalAt, monomial, AddMonoidAlgebra.lift_single, one_smul, pointHom, monomialChar, MonoidHom.coe_mk, OneHom.coe_mk, toAdd_ofAdd, lamS]`. Rewrite using `[← Fintype.prod_ite_mem S]`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem evalAt_esymmL_eq_sum_prod {n : ℕ} (z : Fin n → ℂˣ) (r : ℕ) :
     evalAt z (esymmL n r) =
       ∑ S ∈ (Finset.univ : Finset (Fin n)).powersetCard r, ∏ i ∈ S, (z i : ℂ) := by
@@ -17,6 +22,11 @@ theorem evalAt_esymmL_eq_sum_prod {n : ℕ} (z : Fin n → ℂˣ) (r : ℕ) :
   refine Finset.prod_congr rfl fun i _ => ?_
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `h` using `Finset.prod_add (fun j => t * w j) (fun _ => (1 : ℂ)) (Finset.univ : Finset (Fin n))`. Simplify using `only [Finset.prod_const_one, mul_one, Finset.prod_mul_distrib, Finset.prod_const] at h`. Rewrite using `[show (∏ j, (1 + t * w j)) = ∏ j, (t * w j + 1) from Finset.prod_congr rfl fun _ _ => add_comm _ _, h, Finset.sum_powerset, Finset.card_univ, Fintype.card_fin]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun S hS => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_powersetCard.1 hS).2]`.
+-/
 theorem prod_one_add_mul_eq {n : ℕ} (w : Fin n → ℂ) (t : ℂ) :
     ∏ j, (1 + t * w j) = ∑ r ∈ Finset.range (n + 1),
       t ^ r * ∑ S ∈ (Finset.univ : Finset (Fin n)).powersetCard r, ∏ i ∈ S, w i := by
@@ -29,6 +39,9 @@ theorem prod_one_add_mul_eq {n : ℕ} (w : Fin n → ℂ) (t : ℂ) :
   refine Finset.sum_congr rfl fun S hS => ?_
   rw [(Finset.mem_powersetCard.1 hS).2]
 
+/- English proof (translation)
+Rewrite using `[show (∏ j, (t + z j)) = ∏ j, (z j + t) from Finset.prod_congr rfl fun _ _ => add_comm _ _, Finset.prod_add, Finset.sum_powerset, Finset.card_univ, Fintype.card_fin]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun S hS => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_const, ← Finset.compl_eq_univ_sdiff, Finset.card_compl, Fintype.card_fin, (Finset.mem_powersetCard.1 hS).2, mul_comm]`.
+-/
 theorem prod_add_eq {n : ℕ} (z : Fin n → ℂ) (t : ℂ) :
     ∏ j, (t + z j) = ∑ r ∈ Finset.range (n + 1),
       t ^ (n - r) * ∑ S ∈ (Finset.univ : Finset (Fin n)).powersetCard r, ∏ i ∈ S, z i := by
@@ -40,6 +53,11 @@ theorem prod_add_eq {n : ℕ} (z : Fin n → ℂ) (t : ℂ) :
   rw [Finset.prod_const, ← Finset.compl_eq_univ_sdiff, Finset.card_compl, Fintype.card_fin,
     (Finset.mem_powersetCard.1 hS).2, mul_comm]
 
+/- English proof (translation)
+Simplify using `only [evalAt_esymmL_eq_sum_prod] at h ⊢`. Rewrite using `[prod_one_add_mul_eq, prod_add_eq, Finset.mul_sum]`. Use `conv_rhs => rw [← Finset.sum_range_reflect]`. Use `Finset.sum_congr rfl fun r hr => ?_` and prove the remaining obligations. Establish `hrn : r ≤ n` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hr)`.
+
+Establish `key` using `h r hrn`. Simplify using `only [map_sum, map_prod] at key`. Rewrite using `[Nat.add_sub_cancel, Nat.sub_sub_self hrn, ← key]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mul_prod_one_add_conj_eq {n : ℕ} (z : Fin n → ℂˣ)
     (h : ∀ r ≤ n, starRingEnd ℂ (evalAt z (esymmL n r)) * evalAt z (esymmL n n) =
       evalAt z (esymmL n (n - r))) (t : ℂ) :
@@ -54,6 +72,15 @@ theorem mul_prod_one_add_conj_eq {n : ℕ} (z : Fin n → ℂˣ)
   rw [Nat.add_sub_cancel, Nat.sub_sub_self hrn, ← key]
   ring
 
+/- English proof (translation)
+Unfold `ParameterAbsoluteValues`. Introduce `n z h i`. Establish `h0` using `mul_prod_one_add_conj_eq z h 0`. Establish `h1` using `mul_prod_one_add_conj_eq z h (-(z i : ℂ))`. Simplify using `only [zero_mul, add_zero, zero_add, Finset.prod_const_one, mul_one] at h0`.
+
+Establish `hne : evalAt z (esymmL n n) ≠ 0`. Rewrite using `[h0]`. Conclude with `Finset.prod_ne_zero_iff.2 fun j _ => (z j).ne_zero`. Establish `hz : ∏ j, (-(z i : ℂ) + z j) = 0` using `Finset.prod_eq_zero (Finset.mem_univ i) (by ring)`. Rewrite `h1` using `[hz, mul_eq_zero]`.
+
+Take `⟨j, -, hj⟩` from `Finset.prod_eq_zero_iff.1 (h1.resolve_left hne)`. Use `⟨j, ?_⟩` and prove the remaining obligations. Establish `hc : (z i : ℂ) * starRingEnd ℂ (z j : ℂ) = 1` using `by linear_combination -hj`. Establish `hn` using `congrArg norm hc`. Rewrite `hn` using `[norm_mul, Complex.norm_conj, norm_one]`.
+
+Rewrite using `[mul_comm]`. Conclude with `hn`.
+-/
 theorem symmetric_function_absolute_values : ParameterAbsoluteValues := by
   unfold ParameterAbsoluteValues
   intro n z h i

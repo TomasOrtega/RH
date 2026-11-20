@@ -7,6 +7,13 @@ open scoped Pointwise ENNReal
 
 namespace Formalism.L2.SG.AvgPf
 
+/- English proof (translation)
+Use `⟨hS.nullMeasurableSet, hcov, ?_⟩` and prove the remaining obligations. Introduce `g h hgh`. Use `show AEDisjoint μ (g • S) (h • S)`. Use `Disjoint.aedisjoint ?_` and prove the remaining obligations. Rewrite using `[Set.disjoint_left]`.
+
+Introduce and unpack `y ⟨a, ha, rfl⟩ ⟨b, hb, hba⟩`. Establish `hmem : (h⁻¹ * g) • a ∈ S`. Establish `hba' : h • b = g • a` using `hba`. Rewrite using `[mul_smul, ← hba', inv_smul_smul]`. Conclude with `hb`.
+
+Establish `e` using `huniq a ha _ hmem`. Rewrite `e` using `[inv_mul_eq_one]`. Conclude with `hgh e.symm`.
+-/
 theorem isFD_of_strict {Γ α : Type*} [Group Γ] [MulAction Γ α] [MeasurableSpace α] (μ : Measure α) {S : Set α}
     (hS : MeasurableSet S) (hcov : ∀ᵐ x ∂μ, ∃ g : Γ, g • x ∈ S)
     (huniq : ∀ x ∈ S, ∀ g : Γ, g • x ∈ S → g = 1) : IsFundamentalDomain Γ S μ := by
@@ -24,6 +31,9 @@ theorem isFD_of_strict {Γ α : Type*} [Group Γ] [MulAction Γ α] [MeasurableS
   rw [inv_mul_eq_one] at e
   exact hgh e.symm
 
+/- English proof (translation)
+Introduce `h0`. Conclude with `hμ (h.measure_zero_of_invariant _ (fun _ => Set.smul_set_univ) (by rw [Set.univ_inter]; exact h0))`.
+-/
 theorem fd_ne_zero {Γ α : Type*} [Group Γ] [MulAction Γ α] [MeasurableSpace α] {μ : Measure α}
     [MeasurableConstSMul Γ α] [SMulInvariantMeasure Γ α μ] [Countable Γ] {S : Set α}
     (h : IsFundamentalDomain Γ S μ) (hμ : μ univ ≠ 0) : μ S ≠ 0 := by
@@ -33,6 +43,25 @@ theorem fd_ne_zero {Γ α : Type*} [Group Γ] [MulAction Γ α] [MeasurableSpace
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]
   [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
 
+/- English proof (translation)
+Take `⟨sB, ⟨e0⟩⟩` from `MeasurableSpace.measurableEquiv_nat_bool_of_countablyGenerated G`. Take `⟨g0, hg0⟩` from `MeasureTheory.exists_measurableEmbedding_real (ℕ → Bool)`. Set `f : G → ℝ` to `fun x => g0 (e0 x : ℕ → Bool)`. Establish `hfm : Measurable f` using `hg0.measurable.comp (measurable_subtype_coe.comp e0.measurable)`. Establish `hfi : Function.Injective f` using `fun x y hxy => e0.injective (Subtype.ext (hg0.injective hxy))`.
+
+Establish `hΓc : IsClosed (Γ : Set G)` using `Subgroup.isClosed_of_discrete`. Establish `hfin : ∀ r : G, {t : G | t ∈ Γ ∧ t * r ∈ K}.Finite`. Introduce `r`. Establish `hc : IsCompact ((Homeomorph.mulRight r) ⁻¹' K)` using `(Homeomorph.mulRight r).isCompact_preimage.2 hK`. Establish `h1 : IsCompact ((Subtype.val : Γ → G) ⁻¹' ((Homeomorph.mulRight r) ⁻¹' K))` using `hΓc.isClosedEmbedding_subtypeVal.isCompact_preimage hc`.
+
+Use `(h1.finite_of_discrete.image Subtype.val).subset ?_` and prove the remaining obligations. Introduce and unpack `t ⟨htΓ, htK⟩`. Conclude with `⟨⟨t, htΓ⟩, htK, rfl⟩`. Set `D : Set G` to `K ∩ (R : Set G) ∩ {x | ∀ s ∈ Γ, s * x ∈ K → f x ≤ f (s * x)}`. Establish `hDm : MeasurableSet D`.
+
+Use `(hK.measurableSet.inter hR.measurableSet).inter ?_` and prove the remaining obligations. Establish `e : {x : G | ∀ s ∈ Γ, s * x ∈ K → f x ≤ f (s * x)} = ⋂ s : Γ, ({x : G | (s : G) * x ∈ K}ᶜ ∪ {x | f x ≤ f ((s : G) * x)})`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter, Set.mem_union, Set.mem_compl_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h s`. Distinguish the cases in `hk : (s : G) * x ∈ K`. Conclude with `Or.inr (h s s.2 hk)`. Conclude with `Or.inl hk`. Introduce `h s hs hk`.
+
+Conclude with `(h ⟨s, hs⟩).resolve_left (fun hc => hc hk)`. Rewrite using `[e]`. Use `MeasurableSet.iInter fun s => ?_` and prove the remaining obligations. Use `MeasurableSet.union ?_ ?_` and prove the remaining obligations. Conclude with `((measurable_const_mul (s : G)) hK.measurableSet).compl`.
+
+Conclude with `measurableSet_le hfm (hfm.comp (measurable_const_mul _))`. Use `⟨D, hDm, fun x hx => hx.1.1, fun x hx => hx.1.2, ?_, ?_⟩` and prove the remaining obligations. Introduce `r hr`. Take `⟨s0, hs0, hs0K⟩` from `hKc r hr`. Take `⟨t, ⟨htΓ, htK⟩, hmin⟩` from `Set.exists_min_image {t : G | t ∈ Γ ∧ t * r ∈ K} (fun t => f (t * r)) (hfin r) ⟨s0, hs0, hs0K⟩`.
+
+Use `⟨t, htΓ, ⟨htK, R.mul_mem (hΓR htΓ) hr⟩, ?_⟩` and prove the remaining obligations. Introduce `s hs hsK`. Establish `hle` using `hmin (s * t) ⟨Γ.mul_mem hs htΓ, by rw [mul_assoc]; exact hsK⟩`. Simplify `hle` using `only [mul_assoc]`. Introduce `r hr s hs hsr`.
+
+Establish `h1 : f r ≤ f (s * r)` using `hr.2 s hs hsr.1.1`. Establish `h2 : f (s * r) ≤ f (s⁻¹ * (s * r))` using `hsr.2 s⁻¹ (Γ.inv_mem hs) (by rw [inv_mul_cancel_left]; exact hr.1.1)`. Rewrite `h2` using `[inv_mul_cancel_left]`. Establish `e : s * r = r` using `hfi (le_antisymm h2 h1)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_fd (R Γ : Subgroup G) (hR : IsClosed (R : Set G)) (hΓR : Γ ≤ R) [DiscreteTopology Γ] [Countable Γ]
     (K : Set G) (hK : IsCompact K) (hKc : ∀ r ∈ R, ∃ s ∈ Γ, s * r ∈ K) :
     ∃ D : Set G, MeasurableSet D ∧ D ⊆ K ∧ D ⊆ (R : Set G) ∧ (∀ r ∈ R, ∃ s ∈ Γ, s * r ∈ D) ∧

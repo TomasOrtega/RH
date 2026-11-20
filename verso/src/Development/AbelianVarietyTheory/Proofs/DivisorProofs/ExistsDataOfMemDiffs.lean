@@ -16,6 +16,15 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.ThK.DescB.CuspDiff
 
+/- English proof (translation)
+Establish `hmul : mat (m * m'⁻¹) * mat m' = mat m`. Establish `: mat (m * m'⁻¹ * m') = mat (m * m'⁻¹) * mat m'` using `rfl`. Rewrite using `[← this, inv_mul_cancel_right]`. Establish `h1 : mat h₁ * mat h₁⁻¹ = 1`. Establish `: mat (h₁ * h₁⁻¹) = mat h₁ * mat h₁⁻¹` using `rfl`.
+
+Rewrite using `[← this, mul_inv_cancel]`. Both sides reduce to the same expression. Use `Subgroup.subset_closure ⟨?_, fun z => ⟨0, ?_⟩⟩` and prove the remaining obligations. Establish `e1` using `hm.1`. Establish `e2` using `hm'.1`.
+
+Simplify using `only [Units.val_one, one_smul] at e1 e2`. Combine the equalities or inequalities in the displayed calculation. Establish `e : mat (m * m'⁻¹) * incM F H'.ι = incM F H'.ι`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, h1, Matrix.mul_one]`.
+
+Use `_ = incM F H'.ι := by`. Rewrite using `[← hm'.2.2, ← Matrix.mul_assoc, hmul, hm.2.2, Matrix.mul_assoc, h1, Matrix.mul_one]`. Rewrite using `[Matrix.mulVec_mulVec, e, zero_smul, add_zero]`.
+-/
 theorem levi_mul_inv_mem_unip {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {d d₁ : ℕ} {W : Spc F E d} {W₁ : Spc F E d₁} {H' : Plane E d d₁} {h₁ : UA σ W₁.J} {m m' : UA σ W.J}
     (hm : IsLevi (W₁ := W₁) H' 1 h₁ m) (hm' : IsLevi (W₁ := W₁) H' 1 h₁ m') : m * m'⁻¹ ∈ unip σ W H' := by
@@ -38,6 +47,23 @@ theorem levi_mul_inv_mem_unip {F E : Type} [Field F] [NumberField F] [Field E] [
             rw [← hm'.2.2, ← Matrix.mul_assoc, hmul, hm.2.2, Matrix.mul_assoc, h1, Matrix.mul_one]
     rw [Matrix.mulVec_mulVec, e, zero_smul, add_zero]
 
+/- English proof (translation)
+Establish `hT` using `hM.triple`. Establish `hP` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT).1`. Establish `hW` using `GlobalTheory.T.weil_convergence_of_kernel hK F E σ B a (a + a') G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ hP (Or.inl (GlobalTheory.ThK.Check.conv_range hT.geo))`. Establish `hS` using `GlobalTheory.ThK.SqIntCont.polData_le_schA (B := B) hT.geo.hM`. Establish `lin` using `GlobalTheory.T.matched_pair_theta_local_global hK F E σ B a a' G X om om' R Rf hM`.
+
+Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨Φ, Φ', hΦ', hm, rfl⟩` from `hf`. Take `⟨h1, h2⟩` from `GlobalTheory.ThKOrthCusp.polData_of_polMatch hm`. Conclude with `⟨Φ, h1, Φ', ⟨h2, hΦ'⟩, Submodule.subset_span ⟨Φ, Φ', hΦ', hm, rfl⟩, Submodule.subset_span ⟨Φ, Φ', hΦ', hm, rfl⟩, rfl⟩`.
+
+Consider the case `zero`. Use `⟨(0 : ℂ) • 0, Submodule.smul_mem _ _ (Submodule.zero_mem _), (0 : ℂ) • 0, Submodule.smul_mem _ _ (Submodule.zero_mem _), ?_⟩` and prove the remaining obligations. Rewrite using `[SpanVSplit.thetaInt_smul, SpanVSplit.thetaInt_smul, zero_smul, zero_smul]`. Use `⟨Submodule.zero_mem _, Submodule.zero_mem _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `h`.
+
+Simplify using the standard rewrite rules. Consider the case `add f g _ _ ihf ihg`. Take `⟨Φ, hΦ, Φ', hΦ', s1, s1', rfl⟩` from `ihf`. Take `⟨Ψ, hΨ, Ψ', hΨ', s2, s2', rfl⟩` from `ihg`. Establish `e1` using `SpanVSplit.thetaInt_add G.M om (IsUWeilPair.isUSplitting hT.weil).pres (hS hΦ) (hS hΨ) (hW.1 Φ (hS hΦ)).1 (hW.1 Ψ (hS hΨ)).1`.
+
+Establish `e2` using `lin Φ' hΦ' Ψ' hΨ' 1`. Rewrite `e2` using `[one_smul, one_smul]`. Use `⟨Φ + Ψ, Submodule.add_mem _ hΦ hΨ, Φ' + Ψ', Submodule.add_mem _ hΦ' hΨ', ?_⟩` and prove the remaining obligations. Rewrite using `[e1, e2]`. Use `⟨Submodule.add_mem _ s1 s2, Submodule.add_mem _ s1' s2', ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `h`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul z f _ ih`. Take `⟨Φ, hΦ, Φ', hΦ', s1, s1', rfl⟩` from `ih`.
+
+Use `⟨z • Φ, Submodule.smul_mem _ _ hΦ, z • Φ', Submodule.smul_mem _ _ hΦ', ?_⟩` and prove the remaining obligations. Rewrite using `[SpanVSplit.thetaInt_smul, SpanVSplit.thetaInt_smul]`. Use `⟨Submodule.smul_mem _ _ s1, Submodule.smul_mem _ _ s1', ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `h`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_data_of_mem_diffs (hK : GlobalTheory.ThK.KP) {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] {σ : E →ₐ[F] E} {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W}
     {om' : Rep σ G.V' G.W} {R : RealMaps F a a'} {Rf : FinMaps F a a'} (hM : IsMatched B G X om om' R Rf) {c : ℂ}
@@ -81,6 +107,27 @@ theorem exists_data_of_mem_diffs (hK : GlobalTheory.ThK.KP) {F E : Type} [Field 
     refine ⟨Submodule.smul_mem _ _ s1, Submodule.smul_mem _ _ s1', ?_⟩
     funext h; simp only [Pi.smul_apply, smul_eq_mul]; ring
 
+/- English proof (translation)
+Establish `hT` using `hM.triple`. Take `⟨Φ, hΦ, Φ', hΦ', s1, s1', hfe⟩` from `exists_data_of_mem_diffs hK hM hf`. Take `⟨hsV, hsV'⟩` from `GlobalTheory.T.split_existence hK F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH`. Take `⟨⟨ga, gb⟩, (hs : Split2 W₁ H' X (G.M.I om Φ) ga gb), -⟩` from `hsV Φ hΦ`. Take `⟨⟨ga', gb'⟩, (hs' : Split2 W₁ H' X (G.M'.I om' ((-c) • Φ')) ga' gb'), -⟩` from `hsV' ((-c) • Φ') (Submodule.smul_mem _ _ hΦ')`.
+
+Rewrite `hs'` using `[SpanVSplit.thetaInt_smul]`. Establish `hadd` using `GlobalTheory.T.theta_lift_adapted_growth hK F E σ B a a' G X om om' R Rf hM d₁ W₁ H' i₀ i₁ hH _ s1 _ (Submodule.smul_mem _ (-c) s1') _ _ hs.1 hs'.1`. Establish `e : G.M.I om Φ + (-c) • G.M'.I om' Φ' = f`. Rewrite using `[hfe]`. Use function extensionality and compare the values at `h`.
+
+Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hadd` using `[e]`. Establish `hsp : SplitZ W₁ H' X.α X.β ((a' : ℝ) / 2) ((a : ℝ) / 2) f (ga + ga') (gb + gb')`. Use `⟨by rw [add_add_add_comm]; exact hadd, fun t m hm h => ?_, fun t m hm h => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Pi.add_apply]`. Rewrite using `[hs.2.1 t m hm h, hs'.2.1 t m hm h]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Pi.add_apply]`. Rewrite using `[hs.2.2 t m hm h, hs'.2.2 t m hm h]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hb0` using `hβ f hf _ _ hsp`. Establish `hct : IsCT H' f (ga + ga')`. Use `hsp.1` as an intermediate fact. Rewrite `this` using `[hb0, add_zero]`. Then use the resulting hypothesis.
+
+Take `⟨μ, 𝓕, hμ, h𝓕, h1, -⟩` from `GlobalTheory.T.unipotent_haar_fundamental_domain_exists F E σ B a a' G X om om' hK hT d₁ W₁ H' i₀ i₁ hH`. Establish `hinv` using `GlobalTheory.CTInv.ct_mul_left_unip F E σ (a + a') d₁ G.W H' f _ hct ⟨μ, 𝓕, hμ, h𝓕, h1⟩`. Establish `hex` using `GlobalTheory.T.exists_levi_element_small_unitary F E σ B (a + a') G.W _ _ d₁ W₁ H' i₀ i₁ hT.base.cm hT.geo.hW hH`. Establish `huniq : ∀ h₁ m, IsLevi (W₁` using `W₁) H' 1 h₁ m → ∀ k ∈ finK σ G.W B.emb, (ga + ga') (m * k) = 0 := by`. Introduce `h₁ m hm k hk`.
+
+Use `choose lv hlv using hex`. Establish `hmem : (fun x => (ga + ga') (lv x * k)) ∈ alphaSpan W₁ H' X.α X.β ((a' : ℝ) / 2) ((a : ℝ) / 2) (finK σ G.W B.emb) (Diffs B G X om om' R Rf c)`. Use `Submodule.subset_span ⟨f, hf, _, _, hsp, k, hk, fun x => ⟨lv x, hlv x⟩, fun x m' hm' => ?_⟩` and prove the remaining obligations. Use `hinv _ (levi_mul_inv_mem_unip (hlv x) hm') (m' * k)` as an intermediate fact. Rewrite using `[← this]`.
+
+Simplify using `only [mul_assoc, inv_mul_cancel_left]`. Rewrite `hmem` using `[hα, Submodule.mem_bot]`. Establish `h0 : (ga + ga') (lv h₁ * k) = 0` using `congrFun hmem h₁`. Use `hinv _ (levi_mul_inv_mem_unip hm (hlv h₁)) (lv h₁ * k)` as an intermediate fact. Rewrite `this` using `[h0]`.
+
+Rewrite using `[← this]`. Simplify using `only [mul_assoc, inv_mul_cancel_left]`. Establish `ha0 : ga + ga' = 0`. Use function extensionality and compare the values at `g`. Take `⟨n, hn, t, m₁, hm₁, h₁, m₂, hm₂, k, hk, rfl⟩` from `GlobalTheory.T.iwasawa_decomposition_unipotent_levi F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH g`.
+
+Establish `hassoc : n * m₁ * m₂ * k = n * (m₁ * (m₂ * k))` using `by simp only [mul_assoc]`. Rewrite using `[hassoc, hinv n hn, hsp.2.1 t m₁ hm₁, huniq h₁ m₂ hm₂ k hk, mul_zero, Pi.zero_apply]`. Rewrite `hct` using `[ha0]`. Then use the resulting hypothesis.
+-/
 theorem isCT_zero (hK : GlobalTheory.ThK.KP) {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] {σ : E →ₐ[F] E} {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W}
     {om' : Rep σ G.V' G.W} {R : RealMaps F a a'} {Rf : FinMaps F a a'} (hM : IsMatched B G X om om' R Rf)
@@ -135,6 +182,15 @@ theorem isCT_zero (hK : GlobalTheory.ThK.KP) {F E : Type} [Field F] [NumberField
     rw [hassoc, hinv n hn, hsp.2.1 t m₁ hm₁, huniq h₁ m₂ hm₂ k hk, mul_zero, Pi.zero_apply]
   rwa [ha0] at hct
 
+/- English proof (translation)
+Establish `h : IsCMExt F E σ` using `hT.base.cm`. Establish `hσ : ∀ x, σ (σ x) = x` using `sigma_sigma h`. Take `⟨c₁, hc₁, hc₁σ⟩` from `GlobalTheory.CMImag.exists_imag_ne_zero F E σ h`. Establish `hJ₁` using `GlobalTheory.ThK.SqIntHerm.isHermND_smul_map F E σ B (a + a') G.W _ _ hT.geo.hW c₁ hc₁ hc₁σ`. Take `⟨K, hKm, hAV, hAV'⟩` from `GlobalTheory.T.max_compact_pol_data_pair F E σ hσ B a a' G X om om' hK hT c₁ hc₁ hc₁σ Φ hΦd Φ' hΦ'`.
+
+Establish `hA : IsAut σ (c₁ • G.W.J.map σ) K (fun x => G.M.I om Φ ((toGAd hσ G.W.J hc₁).symm x) - c * G.M'.I om' Φ' ((toGAd hσ G.W.J hc₁).symm x))` using `GlobalTheory.StdPar.isAutOn_empty.1 (GlobalTheory.T.automorphic_sub_scalar_mul F E σ (a + a') _ 0 (0 : Matrix (Fin (a + a')) (Fin 0) E) 0 ∅ K _ _ c (GlobalTheory.StdPar.isAutOn_empty.2 hAV) (GlobalTheory.StdPar.isAutOn_empty.2 hAV'))`. Take `⟨hx0, hxiso, hct⟩` from `GlobalTheory.T.constant_term_nonzero_vector F E σ hσ B (a + a') d₁ G.W W₁ H' i₀ i₁ _ _ hT.geo.hW hH c₁ hc₁ _ hCT`. Establish `hcusp` using `GlobalTheory.ThKOrthCusp.core h hJ₁ hK.automorphicFormsUnitary.2 hKm hA (fun x hx hxi => GlobalTheory.T.constant_term_isotropic_vectors F E σ h (a + a') _ hJ₁ _ hA.mod.left _ x hx0 hxiso hx hxi hct) (fun r Xf Yf hW S hS => by`. Establish `h1` using `GlobalTheory.T.pol_data_witt_frame_scaled F E σ hσ B a a' G X om om' hK hT c₁ hc₁ hc₁σ Φ hΦd r Xf Yf hW K hKm hAV S hS`. Establish `h2` using `GlobalTheory.T.pol_data_so_witt_frame F E σ hσ B a a' G X om om' hK hT c₁ hc₁ hc₁σ Φ' hΦ' r Xf Yf hW K hKm hAV' S hS`.
+
+Use `GlobalTheory.T.automorphic_linear_combination_const F E σ h (a + a') _ hJ₁ r Xf Yf hW K S _ _ 0 0 c (GlobalTheory.StdPar.isAutOn_empty.2 hAV) (GlobalTheory.StdPar.isAutOn_empty.2 hAV') h1 h2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Use the proof step `simp)`. Use `GlobalTheory.SiegelSet.rapidDecay_qht hK.siegelSetUnitary F E σ h _ G.W.J c₁ hc₁ hJ₁ (fun h => G.M.I om Φ h - c * G.M'.I om' Φ' h) _ (fun g g' e => ?_) hA.mod hcusp N` and prove the remaining obligations.
+
+Establish `: (toGAd hσ G.W.J hc₁).symm g' = g` using `Subtype.ext e.symm`. Simplify using `only [this]`.
+-/
 theorem decay (hK : GlobalTheory.ThK.KP) {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] {σ : E →ₐ[F] E} {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W}
     {om' : Rep σ G.V' G.W} (hT : IsTriple B G X om om')

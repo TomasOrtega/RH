@@ -13,6 +13,13 @@ section
 open UpperTheory.GalN.V UpperTheory.V.Z.Win.Birth
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Polynomial GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp
 open UpperTheory.V UpperTheory.V.Af UpperTheory.V.Base UpperTheory.V.Published UpperTheory.V.Sd UpperTheory.V.Ws UpperTheory.V.Z.Bc UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E
+/- English proof (translation)
+Establish `h1 : Module.finrank ℚ M ≤ Module.finrank ℚ A * Module.finrank ℚ B` using `hM ▸ IntermediateField.finrank_sup_le A B`. Use `haveI : FiniteDimensional ℚ M := hM ▸ IntermediateField.finiteDimensional_sup A B`. Use `haveI : Module.Free B M := Module.Free.of_divisionRing B M`. Establish `h2` using `Module.finrank_mul_finrank ℚ B M`. Establish `h3 : 0 < Module.finrank ℚ B` using `Module.finrank_pos`.
+
+Establish `h4 : 0 < Module.finrank ℚ M` using `Module.finrank_pos`. Establish `h5 : Module.finrank ℚ B ≠ Module.finrank ℚ M` using `fun e => hn (IntermediateField.eq_of_le_of_finrank_eq (hM ▸ le_sup_right : B ≤ M) e ▸ (hM ▸ le_sup_left : A ≤ M))`. Generalize the expression as in `Module.finrank B M = n at h2 ⊢`. Rewrite `h1` using `[hA, ← h2, mul_comm 2]`. Establish `h6` using `Nat.le_of_mul_le_mul_left h1 h3`.
+
+Rewrite `h4`, `h5` using `[← h2]`. Apply the tactic sequence `interval_cases n <;> simp_all`.
+-/
 private theorem deg_two {Ω : Type} [Field Ω] [CharZero Ω] (A B M : IntermediateField ℚ Ω) [FiniteDimensional ℚ A]
     [FiniteDimensional ℚ B] (hM : M = A ⊔ B) (hA : Module.finrank ℚ A = 2) (hn : ¬ A ≤ B) [Algebra B M] [IsScalarTower ℚ B M] :
     Module.finrank B M = 2 := by
@@ -29,6 +36,11 @@ private theorem deg_two {Ω : Type} [Field Ω] [CharZero Ω] (A B M : Intermedia
   have h6 := Nat.le_of_mul_le_mul_left h1 h3
   rw [← h2] at h4 h5
   interval_cases n <;> simp_all
+/- English proof (translation)
+Assume the negation of the conclusion as `hw`. Use `push Not at hw`. Establish `h1` using `InfinitePlace.card_add_two_mul_card_eq_rank k`. Establish `h2` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces k`. Establish `h3 : ({w, v, v'} : Finset (InfinitePlace k)).card = 3` using `Finset.card_eq_three.2 ⟨w, v, v', hw.1, hw.2, hv, rfl⟩`.
+
+Establish `h4` using `Finset.card_le_univ ({w, v, v'} : Finset (InfinitePlace k))`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem two_places {k : Type} [Field k] [NumberField k] [IsTotallyReal k] (h : Module.finrank ℚ k = 2)
     {v v' : InfinitePlace k} (hv : v ≠ v') (w : InfinitePlace k) : w = v ∨ w = v' := by
   classical
@@ -39,6 +51,9 @@ private theorem two_places {k : Type} [Field k] [NumberField k] [IsTotallyReal k
   have h3 : ({w, v, v'} : Finset (InfinitePlace k)).card = 3 := Finset.card_eq_three.2 ⟨w, v, v', hw.1, hw.2, hv, rfl⟩
   have h4 := Finset.card_le_univ ({w, v, v'} : Finset (InfinitePlace k))
   omega
+/- English proof (translation)
+Use `letI : Algebra L ℂ := φ.toAlgebra`. Use `haveI : FiniteDimensional L M := Module.finite_of_finrank_pos (by omega)`. Establish `hc` using `AlgHom.card L M ℂ`. Take `⟨a, b, hab⟩` from `Fintype.exists_pair_of_one_lt_card (α := M →ₐ[L] ℂ) (by omega)`. Conclude with `⟨a, b, fun e => hab (AlgHom.coe_ringHom_injective e), a.comp_algebraMap, b.comp_algebraMap⟩`.
+-/
 private theorem two_emb {L M : Type} [Field L] [Field M] [CharZero L] [Algebra L M] (h : Module.finrank L M = 2) (φ : L →+* ℂ) :
     ∃ τ τ' : M →+* ℂ, τ ≠ τ' ∧ τ.comp (algebraMap L M) = φ ∧ τ'.comp (algebraMap L M) = φ := by
   letI : Algebra L ℂ := φ.toAlgebra
@@ -46,6 +61,11 @@ private theorem two_emb {L M : Type} [Field L] [Field M] [CharZero L] [Algebra L
   have hc := AlgHom.card L M ℂ
   obtain ⟨a, b, hab⟩ := Fintype.exists_pair_of_one_lt_card (α := M →ₐ[L] ℂ) (by omega)
   exact ⟨a, b, fun e => hab (AlgHom.coe_ringHom_injective e), a.comp_algebraMap, b.comp_algebraMap⟩
+/- English proof (translation)
+Set `S : IntermediateField ℚ M` to `(τ.eqLocusField τ').toIntermediateField fun q => by`. Rewrite using `[RingHom.mem_eqLocusField]`. Simplify using the standard rewrite rules. Establish `h : M ≤ IntermediateField.lift S` using `hM.trans <| sup_le (fun x hx => (IntermediateField.mem_lift (⟨x, hA hx⟩ : M)).2 (eA ⟨x, hx⟩)) (fun x hx => (IntermediateField.mem_lift (⟨x, hB hx⟩ : M)).2 (eB ⟨x, hx⟩))`. Use extensionality with `x`.
+
+Conclude with `(IntermediateField.mem_lift x).1 (h x.2)`.
+-/
 private theorem hom_ext_sup {Ω : Type} [Field Ω] [CharZero Ω] (A B M : IntermediateField ℚ Ω) (hA : A ≤ M) (hB : B ≤ M)
     (hM : M ≤ A ⊔ B) (τ τ' : M →+* ℂ) (eA : ∀ x : A, τ ⟨x, hA x.2⟩ = τ' ⟨x, hA x.2⟩) (eB : ∀ x : B, τ ⟨x, hB x.2⟩ = τ' ⟨x, hB x.2⟩) :
     τ = τ' := by
@@ -57,6 +77,9 @@ private theorem hom_ext_sup {Ω : Type} [Field Ω] [CharZero Ω] (A B M : Interm
     (fun x hx => (IntermediateField.mem_lift (⟨x, hB hx⟩ : M)).2 (eB ⟨x, hx⟩))
   ext x
   exact (IntermediateField.mem_lift x).1 (h x.2)
+/- English proof (translation)
+Use `⟨Multiset.Nodup.map (fun i j e => ?_) Finset.univ.nodup, fun z hz => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have e' : m i = m j := by exact_mod_cast add_left_cancel e fin_cases i <;> fin_cases j <;> simp_all`. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hz`. Conclude with `⟨m i, add_comm _ _⟩`.
+-/
 private theorem inf_reg (m : Fin 2 → ℤ) (h : m 0 ≠ m 1) :
     (infOf m).Nodup ∧ ∀ z ∈ infOf m, ∃ n : ℤ, z = (n : ℂ) + (((2 : ℕ) : ℂ) - 1) / 2 := by
   refine ⟨Multiset.Nodup.map (fun i j e => ?_) Finset.univ.nodup, fun z hz => ?_⟩
@@ -64,11 +87,75 @@ private theorem inf_reg (m : Fin 2 → ℤ) (h : m 0 ≠ m 1) :
     fin_cases i <;> fin_cases j <;> simp_all
   · obtain ⟨i, -, rfl⟩ := Multiset.mem_map.1 hz
     exact ⟨m i, add_comm _ _⟩
+/- English proof (translation)
+Rewrite using `[← hA]`. Simplify using the standard rewrite rules.
+-/
 private theorem val_of_mem {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {A : ValuationSubring Ω}
     {v : HeightOneSpectrum (𝓞 F)} (hA : IsPlaceOver A v) (p : ℕ) : A.valuation (p : Ω) < 1 ↔ ((p : ℕ) : 𝓞 F) ∈ v.asIdeal := by
   rw [← hA]
   simp
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Introduce `hQ hS hI Ω _ _ _ l _ c D T k₀ _ _ φ ι k t r α β R δ h hrw`. Establish `hKL : T.K ≤ T.L` using `T.hL ▸ le_sup_right`. Establish `hfix : ∀ g : G T.F Ω, g ∈ T.GalL → resQ T.F g ∈ T.L.fixingSubgroup` using `fun g hg => by`. Rewrite using `[T.hL, IntermediateField.fixingSubgroup_sup]`. Conclude with `⟨(IntermediateField.mem_fixingSubgroup_iff _ _).2 fun y hy => g.commutes ⟨y, hy⟩, hg⟩`.
+
+Establish `hirr : IsIrr ((R.comp (resQ T.F)).comp T.G'.subtype)` using `UpperTheory.induced_irreducible Ω l c D T k₀ φ ι k t r α β R δ h`. Establish `hL : IsIrr (R.comp (resQ T.L))`. Take `⟨h1, -, h3⟩` from `hirr`. Use `⟨h1, fun _ _ _ => Submodule.mem_top, fun W hW hi => h3 W hW fun g v hv => ?_⟩` and prove the remaining obligations. Establish `hg : resQ T.F g ∈ galOf ℚ T.L Ω` using `fun x => (IntermediateField.mem_fixingSubgroup_iff _ _).1 (hfix g g.2.1) x x.2`.
+
+Rewrite `hg` using `[← range_galEmb]`. Take `⟨g', hg'⟩` from `hg`. Use `hi g' v hv` as an intermediate fact. Rewrite `this` using `[show (R.comp (resQ T.L)) g' = R (resQ T.F g) from congrArg R hg']`. Then use the resulting hypothesis. Establish `hkL : ¬ k₀ ≤ T.L` using `fun hle => by`.
+
+Take `⟨g, hg, hne⟩` from `UpperTheory.residual_characters_psi_ne Ω l c D T h.hyp.good h.hyp.ok h.hyp.two`. Conclude with `hne ((h.hyp.ps g).2 (IntermediateField.fixingSubgroup_le hle (hfix g hg.1)))`. Establish `hKk : ¬ T.K ≤ k₀` using `fun hle => by`. Use `letI : Algebra T.K k₀ := (IntermediateField.inclusion hle).toRingHom.toAlgebra`. Use `haveI : IsTotallyComplex k₀ := isTotallyComplex_of_algebra T.K k₀`.
+
+Take `⟨w⟩ : Nonempty (InfinitePlace k₀)` from `inferInstance`. Conclude with `InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w) (IsTotallyReal.isReal w)`. Use `haveI := T.nK.to_finiteDimensional`. Use `haveI := T.nL.to_finiteDimensional`. Use `haveI : FiniteDimensional ℚ k₀ := NumberField.to_finiteDimensional`.
+
+Take `⟨E, hE⟩ : ∃ E : IntermediateField ℚ Ω, E = k₀ ⊔ T.K` from `⟨_, rfl⟩`. Take `⟨M, hM⟩ : ∃ M : IntermediateField ℚ Ω, M = k₀ ⊔ T.L` from `⟨_, rfl⟩`. Use `haveI : FiniteDimensional ℚ E := hE ▸ IntermediateField.finiteDimensional_sup k₀ T.K`. Use `haveI : FiniteDimensional ℚ M := hM ▸ IntermediateField.finiteDimensional_sup k₀ T.L`. Use `haveI : NumberField E := {}`.
+
+Use `haveI : NumberField M := {}`. Establish `hEM : E ≤ M` using `hE ▸ hM ▸ sup_le_sup_left hKL _`. Establish `hKE : T.K ≤ E` using `hE ▸ le_sup_right`. Establish `hkE : k₀ ≤ E` using `hE ▸ le_sup_left`. Establish `hLM : T.L ≤ M` using `hM ▸ le_sup_right`.
+
+Use `letI : Algebra T.K E := (IntermediateField.inclusion hKE).toRingHom.toAlgebra`. Use `letI : Algebra k₀ E := (IntermediateField.inclusion hkE).toRingHom.toAlgebra`. Use `letI : Algebra T.L M := (IntermediateField.inclusion hLM).toRingHom.toAlgebra`. Use `letI : Algebra E M := (IntermediateField.inclusion hEM).toRingHom.toAlgebra`. Use `haveI : IsScalarTower k₀ E Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+
+Use `haveI : IsScalarTower T.L M Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower E M Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower ℚ k₀ E := IsScalarTower.of_algebraMap_eq fun _ => by simp`. Use `haveI : IsScalarTower ℚ T.L M := IsScalarTower.of_algebraMap_eq fun _ => by simp`. Use `haveI : IsScalarTower ℚ E M := IsScalarTower.of_algebraMap_eq fun _ => by simp`.
+
+Use `haveI : IsTotallyComplex E := isTotallyComplex_of_algebra T.K _`. Use `haveI : IsTotallyComplex M := isTotallyComplex_of_algebra T.L _`. Use `haveI : IsAlgClosure E Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) _⟩`. Use `haveI : IsAlgClosure M Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) _⟩`. Use `haveI : Algebra.IsQuadraticExtension ℚ T.K := { finrank_eq_two' := T.degK }`.
+
+Use `haveI hK : IsAbelianGalois ℚ T.K := IsAbelianGalois.of_isCyclic ℚ T.K`. Use `haveI : Algebra.IsQuadraticExtension ℚ k₀ := { finrank_eq_two' := h.hyp.deg }`. Use `haveI hk₀ : IsAbelianGalois ℚ k₀ := IsAbelianGalois.of_isCyclic ℚ k₀`. Use `haveI hLa : IsAbelianGalois ℚ T.L := by`. Establish `h` using `@GroundTheory.Global.isAbelianGalois_sup ℚ Ω _ _ _ _ T.F T.K T.nF.to_finiteDimensional T.nK.to_finiteDimensional T.abF hK`.
+
+Rewrite `h` using `[← T.hL]`. Conclude with `h`. Use `haveI : IsAbelianGalois ℚ M := hM ▸ @GroundTheory.Global.isAbelianGalois_sup ℚ Ω _ _ _ _ k₀ T.L ‹_› ‹_› hk₀ hLa`. Use `haveI : IsAbelianGalois E M := IsAbelianGalois.tower_top ℚ _ _`. Use `haveI : Group.IsSolvable (M ≃ₐ[E] M) := Group.isSolvable_of_comm fun a b => mul_comm' a b`.
+
+Establish `dE : Module.finrank k₀ E = 2` using `deg_two T.K k₀ _ (hE.trans (sup_comm _ _)) T.degK hKk`. Establish `dM : Module.finrank T.L M = 2` using `deg_two k₀ T.L _ hM h.hyp.deg hkL`. Take `⟨π, hatt, v, v', hv, hi, hi'⟩` from `h.dat.att`. Establish `hk` using `h.dat.hk`. Establish `ht` using `h.dat.ht`.
+
+Establish `hreg : π.IsRegAlg` using `fun w => by`. Break down `two_places h.hyp.deg hv w with rfl | rfl` into its components or cases. Conclude with `⟨_, hi, inf_reg _ (by simp; omega)⟩`. Conclude with `⟨_, hi', inf_reg _ (by simp; omega)⟩`. Establish `RE` using `resFacts k₀ E Ω l 2 r`.
+
+Establish `RM` using `resFacts E M Ω l 2 (r.comp (galEmb k₀ E Ω))`. Take `⟨P₁, reg₁, att₁, inf₁⟩` from `hQ k₀ E Ω l ι dE r π h.dat.cont hreg hatt (RE.2.2.2.1.1 (h.dat.irr _ RE.2.1))`. Take `⟨P, reg, att, inf⟩` from `hS E M Ω l ι _ P₁ (h.dat.cont.comp RE.1) reg₁ att₁ (RM.2.2.2.1.1 (RE.2.2.2.2.1 h.dat.irr _ RM.2.1))`. Use `haveI : IsCMField M := IsCMField.of_isAbelianGalois M`. Use `haveI : IsAbelianGalois T.L M := IsAbelianGalois.tower_top ℚ _ _`.
+
+Establish `hMfix : ∀ s : G T.L Ω, resQ T.L s ∈ k₀.fixingSubgroup → ∀ x : M, s (algebraMap M Ω x) = algebraMap M Ω x` using `fun s hs x => by`. Establish `: resQ T.L s ∈ M.fixingSubgroup`. Rewrite using `[hM, IntermediateField.fixingSubgroup_sup]`. Conclude with `⟨hs, (IntermediateField.mem_fixingSubgroup_iff _ _).2 fun y hy => s.commutes ⟨y, hy⟩⟩`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 this x x.2`.
+
+Establish `hsp : ∀ (p : ℕ) (v : HeightOneSpectrum (𝓞 T.L)), S2.SplitIn p k₀ → ((p : ℕ) : 𝓞 T.L) ∈ v.asIdeal → UpperTheory.ConvolutionTheory.GM.Split M v` using `fun p v hp hv => splitOfDec T.L M Ω v fun A hA s hs => hMfix s (hp A ((val_of_mem hA p).2 hv) hs)`. Establish `hpol : Sol.Pol ι ((r.comp (galEmb k₀ E Ω)).comp (galEmb E M Ω))`. Take `⟨m, hm⟩` from `h.hyp.two.ord`. Use `UpperTheory.solvable_polarized_restriction E M Ω l ι 2 _ (UpperTheory.solvable_polarized_restriction k₀ E Ω l ι 2 r (_root_.UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.polMix_alt H Ω l k₀ ι _ k t r h.dat ⟨2 ^ m, by positivity, ?_⟩))` and prove the remaining obligations. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations.
+
+Rewrite using `[MonoidHom.pow_apply, S2.up, MonoidHom.comp_apply, ← map_pow, ← MonoidHom.pow_apply, hm, MonoidHom.one_apply, map_one, MonoidHom.one_apply]`. Use `haveI : IsAbelianGalois ℚ E := IsAbelianGalois.tower_bot ℚ E M`. Use `haveI : IsCMField E := IsCMField.of_isAbelianGalois E`. Establish `hW : AllW ι ((r.comp (galEmb k₀ E Ω)).comp (galEmb E M Ω))` using `by haveI : IsAlgClosure k₀ Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) _⟩`. Establish `h1 : Sd.IsAlgChar ι (1 : G E Ω →* (Qbar l)ˣ)` using `by simpa using (_root_.UpperTheory.V.Sd.alg_cyclotomic_of_printed_results H.toClassicalTheorems E Ω l ι).1 0 1 (by rw [MonoidHom.ker_one]; exact isOpen_univ)`.
+
+Establish `h2` using `_root_.UpperTheory.V.Z.Win.Birth.awChain_of_printsH H k₀ E M Ω dE l ι r 1 h.dat.cont hrw h1 (RM.2.2.2.1.1 (RE.2.2.2.2.1 h.dat.irr _ RM.2.1))`. Establish `e : tw (r.comp (galEmb k₀ E Ω)) 1 = r.comp (galEmb k₀ E Ω)` using `MonoidHom.ext fun g => Units.ext (by rw [tw_val]; simp)`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Establish `hbad : SplitBad T.L P` using `fun v hv => by`. Use `⟨unrOfIne T.L M Ω v fun A _ s hs => hMfix s ?_, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Set `g : G T.F Ω` to `AlgEquiv.ofRingEquiv (f := s.toRingEquiv) fun x => s.commutes ⟨x, T.F_le x.2⟩`. Conclude with `(h.hyp.ps g).1 (h.hyp.two.unr A g ⟨hs.1, hs.2⟩)`. Establish `hn : ∀ p : ℕ, S2.SplitIn p k₀ → ((p : ℕ) : 𝓞 M) ∉ w.asIdeal` using `fun p hp hm => hv (hsp p v hp (by`. Rewrite using `[← hw]`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 T.L) (𝓞 M) p ∈ w.asIdeal`.
+
+Rewrite using `[map_natCast]))` and apply the resulting hypothesis. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω w`. Use `haveI : IsAlgClosure k₀ Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) _⟩`. Use `_root_.UpperTheory.V.Z.Win.Birth.sphOfUnrW_alt H M Ω l ι 2 one_le_two _ P ((h.dat.cont.comp RE.1).comp RM.1) hpol reg att hW w (hn l h.hyp.spl) A hA fun s hs => ?_` and prove the remaining obligations. Take `⟨g, hg⟩` from `h.dat.away A (mt (val_of_mem hA l).1 (hn l h.hyp.spl))`.
+
+Establish `h2 : D.ξ (resQ k₀ (galEmb k₀ E Ω (galEmb E M Ω s))) = 1` using `h.hyp.two.xi A (fun p hp => by`. Rewrite using `[Finset.mem_singleton.1 hp]`. Conclude with `mt (val_of_mem hA 2).1 (hn 2 h.hyp.sp2)) ⟨hs.1, hs.2⟩`. Establish `h3` using `hg (galEmb k₀ E Ω (galEmb E M Ω s)) ⟨hs.1, hs.2⟩`. Establish `h5 : (S2.up D.ξ).comp (resQ k₀) (galEmb k₀ E Ω (galEmb E M Ω s)) = 1`.
+
+Rewrite using `[MonoidHom.comp_apply, S2.up, MonoidHom.comp_apply, h2, map_one]`. Generalize the expression as in `(S2.up D.ξ).comp (resQ k₀) = y at h3 h5`. Establish `h4 : g * r (galEmb k₀ E Ω (galEmb E M Ω s)) * g⁻¹ = 1` using `Units.ext (h3.trans (by`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [h5]))`.
+
+Conclude with `mul_left_cancel (a := g) (by rw [mul_one]; exact mul_inv_eq_one.1 h4)`. Use `(fun h1 h2 => And.intro (hI T.L M Ω dM l ι P _ att h1 hbad _ ((UpperTheory.galoisRep_irreducibility_criterion.1 _ Unit _ 4 _).2.1 hL) h2) (awInd T.L M Ω dM l ι P _ att (hW P reg att) hbad _ h2)) (fun ψ => ?_) fun s hs => ?_` and prove the remaining obligations. Take `⟨τ, τ', hne, e, e'⟩` from `two_emb dM ψ`. Set `pl : (M →+* ℂ) → InfinitePlace k₀` to `fun τ => InfinitePlace.mk ((τ.comp (algebraMap E M)).comp (algebraMap k₀ E))`. Establish `hpl : ∀ τ m, π.HasInfChar (pl τ) m → P.HasInfChar τ m` using `fun τ m hm => inf τ m (inf₁ _ m hm)`.
+
+Establish `hd : pl τ ≠ pl τ'` using `fun hp => by`. Use `hne (hom_ext_sup k₀ T.L M (hkE.trans hEM) hLM hM.le τ τ' (fun x => ?_) fun x => DFunLike.congr_fun (e.trans e'.symm) x)` and prove the remaining obligations. Break down `InfinitePlace.mk_eq_iff.1 hp with hp | hp` into its components or cases. Conclude with `DFunLike.congr_fun hp x`. Rewrite `hp` using `[ComplexEmbedding.isReal_iff.1 (InfinitePlace.isReal_mk_iff.1 (IsTotallyReal.isReal _))]`.
+
+Conclude with `DFunLike.congr_fun hp x`. Establish `hinj : Function.Injective ![![(k : ℤ) + t, -(t : ℤ)] 0, ![(k : ℤ) + t, -(t : ℤ)] 1, ![(k : ℤ), 0] 0, ![(k : ℤ), 0] 1]`. Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first | rfl | (simp at hij <;> omega)`. Apply the tactic sequence `rcases two_places h.hyp.deg hv (pl τ) with p | p <;> rcases two_places h.hyp.deg hv (pl τ') with p' | p'`.
+
+Conclude with `absurd (p.trans p'.symm) hd`. Conclude with `⟨_, _, τ, τ', hne, e, e', hpl _ _ (p ▸ hi), hpl _ _ (p' ▸ hi'), hinj⟩`. Conclude with `⟨_, _, τ', τ, hne.symm, e', e, hpl _ _ (p' ▸ hi), hpl _ _ (p ▸ hi'), hinj⟩`. Conclude with `absurd (p.trans p'.symm) hd`. Establish `hs' : resQ T.L s ∉ (resQ k₀).range`.
+
+Introduce and unpack `⟨u, hu⟩`. Apply `hs` to reduce the goal to its premises. Rewrite using `[range_galEmb]`. Establish `: resQ T.L s ∈ M.fixingSubgroup`. Rewrite using `[hM, IntermediateField.fixingSubgroup_sup]`.
+
+Conclude with `⟨(IntermediateField.mem_fixingSubgroup_iff _ _).2 fun y hy => hu ▸ u.commutes ⟨y, hy⟩, (IntermediateField.mem_fixingSubgroup_iff _ _).2 fun y hy => s.commutes ⟨y, hy⟩⟩`. Conclude with `fun x => (IntermediateField.mem_fixingSubgroup_iff _ _).1 this x x.2`. Take `⟨c1, c2⟩` from `UpperTheory.symmetric_square_mixed_charpoly _ _ _ _ _ _ _ _ _ h.mix _ hs'`. Use `⟨fun g g' e => c1 (galEmb k₀ E Ω (galEmb E M Ω g)) (galEmb k₀ E Ω (galEmb E M Ω g')) ?_, fun g e => c2 (galEmb k₀ E Ω (galEmb E M Ω g)) ?_⟩` and prove the remaining obligations. Use `congrArg (resQ T.L) e` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_mul, map_inv]`. Conclude with `this`. Use `congrArg (resQ T.L) e` as an intermediate fact. Rewrite `this` using `[map_mul]`. Conclude with `this`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.indAutLP_of_upQuad_upSol_indAutCs (H : _root_.UpperTheory.V.Af.HypothesesH') : UpQuadI → UpSolI → IndAutCs → IndAutLP := by
   intro hQ hS hI Ω _ _ _ l _ c D T k₀ _ _ φ ι k t r α β R δ h hrw
   have hKL : T.K ≤ T.L := T.hL ▸ le_sup_right

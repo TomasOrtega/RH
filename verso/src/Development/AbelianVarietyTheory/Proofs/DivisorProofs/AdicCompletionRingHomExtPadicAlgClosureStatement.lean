@@ -14,5 +14,8 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AdicExt.completion_ringHom_ext | exact GlobalTheory.AdicExt.completion_ringHom_ext | (intros; apply GlobalTheory.AdicExt.completion_ringHom_ext <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.adicCompletion_ringHom_ext_padicAlgClosure : ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] (p : ℕ) [Fact p.Prime] (f g : AdicCompletion (maximalIdeal O) O →+* OO p), IsLocalHom (f.comp (algebraMap O _)) → (∀ a, f (algebraMap O _ a) = g (algebraMap O _ a)) → f = g := by
   first | exact @GlobalTheory.AdicExt.completion_ringHom_ext | exact GlobalTheory.AdicExt.completion_ringHom_ext | (intros; apply GlobalTheory.AdicExt.completion_ringHom_ext <;> assumption)

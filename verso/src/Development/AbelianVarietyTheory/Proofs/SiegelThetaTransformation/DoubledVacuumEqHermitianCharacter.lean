@@ -19,6 +19,35 @@ namespace GlobalTheory.SW.DblVac
 
 section General
 
+/- English proof (translation)
+Use `set N₁ : Submodule ℤ V := A₁.toIntSubmodule with hN₁`. Use `set N₂ : Submodule ℤ V := A₂.toIntSubmodule with hN₂`. Establish `hmem1 : ∀ q : ℚ, q ∈ (1 : Submodule ℤ ℚ) ↔ ∃ k : ℤ, q = k`. Introduce `q`. Rewrite using `[Submodule.mem_one]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩`. Conclude with `⟨k, by simp⟩`. Introduce and unpack `⟨k, rfl⟩`. Conclude with `⟨k, by simp⟩`.
+
+Establish `g₁ : N₁.FG`. Rewrite using `[Submodule.fg_iff_addSubgroup_fg, hN₁, AddSubgroup.toIntSubmodule_toAddSubgroup]`. Conclude with `f₁`. Establish `g₂ : N₂.FG`. Rewrite using `[Submodule.fg_iff_addSubgroup_fg, hN₂, AddSubgroup.toIntSubmodule_toAddSubgroup]`.
+
+Conclude with `f₂`. Establish `sd₁ : B.dualSubmodule N₁ = N₁`. Use extensionality with `y`. Rewrite using `[LinearMap.BilinForm.mem_dualSubmodule]`. Express the relevant statement in the definitionally equal form `(∀ y' ∈ A₁, B y y' ∈ (1 : Submodule ℤ ℚ)) ↔ y ∈ A₁`.
+
+Simplify using `only [hmem1]`. Conclude with `(h₁ y).symm`. Establish `sd₂ : B.dualSubmodule N₂ = N₂`. Use extensionality with `y`. Rewrite using `[LinearMap.BilinForm.mem_dualSubmodule]`.
+
+Express the relevant statement in the definitionally equal form `(∀ y' ∈ A₂, B y y' ∈ (1 : Submodule ℤ ℚ)) ↔ y ∈ A₂`. Simplify using `only [hmem1]`. Conclude with `(h₂ y).symm`. Establish `hsepL : ∀ m : V, (∀ n, B m n = 0) → m = 0`. Introduce `m hm`.
+
+Apply `GlobalTheory.eq_zero_of_forall_rat_smul_mem N₁ g₁` to reduce the goal to its premises. Introduce `q`. Express the relevant statement in the definitionally equal form `q • m ∈ A₁`. Rewrite using `[h₁]`. Introduce `y' _`.
+
+Conclude with `⟨0, by simp [hm]⟩`. Establish `hnd : B.Nondegenerate`. Use `⟨hsepL, fun n hn => hsepL n fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[hB, hn m, neg_zero]`. Establish `lat₁ : N₁.IsLattice ℚ` using `GlobalTheory.isLattice_of_fg_dualSubmodule B hnd N₁ g₁ (by rw [sd₁]; exact g₁)`.
+
+Establish `hsup : (N₁ ⊔ N₂).IsLattice ℚ`. Use `⟨g₁.sup g₂, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← lat₁.span_eq_top]`. Conclude with `Submodule.span_mono (fun z hz => Submodule.mem_sup_left hz)`. Take `⟨b, hb⟩` from `GlobalTheory.exists_basis_span_eq_of_isLattice (N₁ ⊔ N₂)`.
+
+Establish `hdual : B.dualSubmodule (N₁ ⊔ N₂) = N₁ ⊓ N₂`. Use extensionality with `y`. Rewrite using `[Submodule.mem_inf]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+
+Establish `d₁ : y ∈ B.dualSubmodule N₁` using `fun z hz => hy z (Submodule.mem_sup_left hz)`. Establish `d₂ : y ∈ B.dualSubmodule N₂` using `fun z hz => hy z (Submodule.mem_sup_right hz)`. Rewrite `d₁` using `[sd₁]`. Rewrite `d₂` using `[sd₂]`. Conclude with `⟨d₁, d₂⟩`.
+
+Introduce and unpack `⟨hy₁, hy₂⟩ z hz`. Take `⟨z₁, hz₁, z₂, hz₂, rfl⟩` from `Submodule.mem_sup.mp hz`. Rewrite `hy₁` using `[← sd₁]`. Rewrite `hy₂` using `[← sd₂]`. Rewrite using `[map_add]`.
+
+Conclude with `add_mem (hy₁ z₁ hz₁) (hy₂ z₂ hz₂)`. Establish `hx' : x ∈ B.flip.dualSubmodule (B.dualSubmodule (N₁ ⊔ N₂))`. Rewrite using `[hdual]`. Introduce `y hy`. Express the relevant statement in the definitionally equal form `B y x ∈ (1 : Submodule ℤ ℚ)`.
+
+Rewrite using `[hmem1]`. Conclude with `hx y (Submodule.mem_inf.mp hy).1 (Submodule.mem_inf.mp hy).2`. Rewrite `hx'` using `[hb, LinearMap.BilinForm.dualSubmodule_flip_dualSubmodule_of_basis B hnd b, ← hb]`. Take `⟨z₁, hz₁, z₂, hz₂, rfl⟩` from `Submodule.mem_sup.mp hx'`. Conclude with `AddSubgroup.add_mem_sup hz₁ hz₂`.
+-/
 theorem mem_sup_of_dual_inf {V : Type} [AddCommGroup V] [Module ℚ V] [FiniteDimensional ℚ V]
     (B : LinearMap.BilinForm ℚ V) (hB : ∀ x y, B x y = -B y x) {A₁ A₂ : AddSubgroup V}
     (f₁ : A₁.FG) (f₂ : A₂.FG) (h₁ : ∀ y, y ∈ A₁ ↔ ∀ y' ∈ A₁, ∃ k : ℤ, B y y' = k)
@@ -98,6 +127,15 @@ theorem mem_sup_of_dual_inf {V : Type} [AddCommGroup V] [Module ℚ V] [FiniteDi
   obtain ⟨z₁, hz₁, z₂, hz₂, rfl⟩ := Submodule.mem_sup.mp hx'
   exact AddSubgroup.add_mem_sup hz₁ hz₂
 
+/- English proof (translation)
+Establish `hsr : ∀ (b : ℂ) u v, P u → P v → B u (b • v) = conj b * B u v`. Introduce `b u v hu hv`. Establish `h'` using `hs 1 b u v hu hv`. Rewrite `h'` using `[one_smul, one_mul]`. Then use the resulting hypothesis. Establish `hsl : ∀ (a : ℂ) u v, P u → P v → B (a • u) v = a * B u v`.
+
+Introduce `a u v hu hv`. Establish `h'` using `hs a 1 u v hu hv`. Rewrite `h'` using `[one_smul, map_one, mul_one]`. Then use the resulting hypothesis. Establish `hIy` using `ps I y hy`. Establish `hxy` using `pa x y hx hy`.
+
+Establish `hxIy` using `pa x _ hx hIy`. Establish `e1` using `h0 (x + y) hxy`. Establish `e2` using `h0 (x + I • y) hxIy`. Rewrite `e1` using `[h1 x y _ hx hy hxy, h2 x x y hx hx hy, h2 y x y hy hx hy, h0 x hx, h0 y hy]`. Rewrite `e2` using `[h1 x (I • y) _ hx hIy hxIy, h2 x x (I • y) hx hx hIy, h2 (I • y) x (I • y) hIy hx hIy, h0 x hx, h0 _ hIy, hsr I x y hx hy, hsl I y x hy hx, Complex.conj_I]`.
+
+Establish `h2I : (2 * I) * B x y = 0` using `by linear_combination I * e1 - e2`. Break down `mul_eq_zero.mp h2I with h | h` into its components or cases. Conclude with `absurd h (mul_ne_zero two_ne_zero Complex.I_ne_zero)`. Conclude with `h`.
+-/
 theorem eq_zero_of_diag {V : Type} [AddCommGroup V] [Module ℂ V] (P : V → Prop)
     (pa : ∀ x y, P x → P y → P (x + y)) (ps : ∀ (c : ℂ) x, P x → P (c • x)) (B : V → V → ℂ)
     (h1 : ∀ x x' y, P x → P x' → P y → B (x + x') y = B x y + B x' y)
@@ -125,6 +163,15 @@ theorem eq_zero_of_diag {V : Type} [AddCommGroup V] [Module ℂ V] (P : V → Pr
   · exact absurd h (mul_ne_zero two_ne_zero Complex.I_ne_zero)
   · exact h
 
+/- English proof (translation)
+Establish `hn₁ : (‖c₁‖ : ℂ) ≠ 0` using `by exact_mod_cast norm_ne_zero_iff.mpr h₁`. Establish `hn₂ : (‖c₂‖ : ℂ) ≠ 0` using `by exact_mod_cast norm_ne_zero_iff.mpr h₂`. Establish `hb' : (b : ℂ) ≠ 0` using `by exact_mod_cast hb.ne'`. Establish `hnorm : b * (‖c₁‖ * ‖c₂‖) = ‖t‖ * ‖s‖ * ρ`. Establish `h'` using `congrArg (fun z : ℂ => ‖z‖) e`.
+
+Simplify using `only [norm_mul, Complex.norm_conj, Complex.norm_real, Real.norm_of_nonneg hb.le, Real.norm_of_nonneg hρ] at h'`. Conclude with `h'`. Establish `hnorm' : ((b : ℂ) * ‖c₁‖ * ‖c₂‖) = (‖t‖ : ℂ) ^ 2 * ρ`. Establish `h' : b * ‖c₁‖ * ‖c₂‖ = ‖t‖ ^ 2 * ρ` using `by rw [hn] at hnorm; linear_combination hnorm`. Conclude with `h'` after adjusting the coercions.
+
+Establish `hs2 : conj s * s = (‖t‖ : ℂ) ^ 2` using `by rw [Complex.conj_mul', hn]`. Establish `hc : (((‖c₁‖ : ℂ)⁻¹ * c₁) * conj ((‖c₂‖ : ℂ)⁻¹ * c₂) * s) * ((b : ℂ) * ‖c₁‖ * ‖c₂‖) = (b * (c₁ * conj c₂)) * s`. Simplify using `only [map_mul, map_inv₀, Complex.conj_ofReal]`. Clear the denominators using the available nonvanishing facts. Rewrite `hc` using `[e]`.
+
+Establish `hK : ((b : ℂ) * ‖c₁‖ * ‖c₂‖) ≠ 0` using `mul_ne_zero (mul_ne_zero hb' hn₁) hn₂`. Apply `mul_right_cancel₀ hK` to reduce the goal to its premises. Rewrite using `[hc, hnorm']`. Take the linear combination `(t * ρ) * hs2`.
+-/
 theorem phase_eq {c₁ c₂ s t : ℂ} {b ρ : ℝ} (h₁ : c₁ ≠ 0) (h₂ : c₂ ≠ 0) (ht : t ≠ 0)
     (hn : ‖s‖ = ‖t‖) (hb : 0 < b) (hρ : 0 ≤ ρ) (e : b * (c₁ * conj c₂) = t * conj s * ρ) :
     ((‖c₁‖ : ℂ)⁻¹ * c₁) * conj ((‖c₂‖ : ℂ)⁻¹ * c₂) * s = t := by
@@ -150,6 +197,9 @@ theorem phase_eq {c₁ c₂ s t : ℂ} {b ρ : ℝ} (h₁ : c₁ ≠ 0) (h₂ : 
   rw [hc, hnorm']
   linear_combination (t * ρ) * hs2
 
+/- English proof (translation)
+Rewrite using `[← Complex.exp_conj, ← Complex.exp_add]`. Establish `h0 : (π : ℂ) * I * (t : ℂ) + conj ((π : ℂ) * I * (t : ℂ)) = 0`. Simplify using `only [map_mul, Complex.conj_ofReal, Complex.conj_I, map_ratCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h0, Complex.exp_zero]`.
+-/
 theorem exp_mul_conj (t : ℚ) : cexp (π * I * t) * conj (cexp (π * I * t)) = 1 := by
   rw [← Complex.exp_conj, ← Complex.exp_add]
   have h0 : (π : ℂ) * I * (t : ℂ) + conj ((π : ℂ) * I * (t : ℂ)) = 0 := by
@@ -164,16 +214,30 @@ section Ip
 variable {K κ ι : Type} [Field K] [NumberField K] [Fintype κ] [Fintype ι]
   {φ φ' ψ ψ' : Matrix κ ι K → ℂ}
 
+/- English proof (translation)
+Establish `hc : IsSB fun x => conj (ψ x)` using `(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear K κ ι ψ ψ h' h').2.2.2.1`. Conclude with `(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear K κ ι φ _ h hc).2.2.1`.
+-/
 theorem sb_mul_conj (h : IsSB φ) (h' : IsSB ψ) : IsSB fun x => φ x * conj (ψ x) := by
   have hc : IsSB fun x => conj (ψ x) := (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear K κ ι ψ ψ h' h').2.2.2.1
   exact (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear K κ ι φ _ h hc).2.2.1
 
+/- English proof (translation)
+Conclude with `(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear K κ ι φ ψ h h').1`.
+-/
 theorem sb_add (h : IsSB φ) (h' : IsSB ψ) : IsSB (φ + ψ) := by
   exact (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear K κ ι φ ψ h h').1
 
+/- English proof (translation)
+Conclude with `(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear K κ ι φ φ h h).2.1 c`.
+-/
 theorem sb_smul (c : ℂ) (h : IsSB φ) : IsSB (c • φ) := by
   exact (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear K κ ι φ φ h h).2.1 c
 
+/- English proof (translation)
+Establish `e : (fun x => (φ + φ') x * conj (ψ x)) = (fun x => φ x * conj (ψ x)) + fun x => φ' x * conj (ψ x)`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, add_mul]`. Unfold `GlobalTheory.SW.ip`. Rewrite using `[e]`.
+
+Conclude with `(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear K κ ι _ _ (sb_mul_conj h k) (sb_mul_conj h' k)).2.2.2.2.1`.
+-/
 theorem ip_add_left (h : IsSB φ) (h' : IsSB φ') (k : IsSB ψ) :
     ip (φ + φ') ψ = ip φ ψ + ip φ' ψ := by
   have e : (fun x => (φ + φ') x * conj (ψ x)) =
@@ -183,6 +247,11 @@ theorem ip_add_left (h : IsSB φ) (h' : IsSB φ') (k : IsSB ψ) :
   rw [e]
   exact (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear K κ ι _ _ (sb_mul_conj h k) (sb_mul_conj h' k)).2.2.2.2.1
 
+/- English proof (translation)
+Establish `e : (fun x => φ x * conj ((ψ + ψ') x)) = (fun x => φ x * conj (ψ x)) + fun x => φ x * conj (ψ' x)`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, map_add, mul_add]`. Unfold `GlobalTheory.SW.ip`. Rewrite using `[e]`.
+
+Conclude with `(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear K κ ι _ _ (sb_mul_conj h k) (sb_mul_conj h k')).2.2.2.2.1`.
+-/
 theorem ip_add_right (h : IsSB φ) (k : IsSB ψ) (k' : IsSB ψ') :
     ip φ (ψ + ψ') = ip φ ψ + ip φ ψ' := by
   have e : (fun x => φ x * conj ((ψ + ψ') x)) =
@@ -192,6 +261,11 @@ theorem ip_add_right (h : IsSB φ) (k : IsSB ψ) (k' : IsSB ψ') :
   rw [e]
   exact (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear K κ ι _ _ (sb_mul_conj h k) (sb_mul_conj h k')).2.2.2.2.1
 
+/- English proof (translation)
+Establish `e : (fun x => (a • φ) x * conj ((b • ψ) x)) = (a * conj b) • fun x => φ x * conj (ψ x)`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Unfold `GlobalTheory.SW.ip`.
+
+Rewrite using `[e]`. Conclude with `(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear K κ ι _ _ (sb_mul_conj h k) (sb_mul_conj h k)).2.2.2.2.2.1 _`.
+-/
 theorem ip_smul (h : IsSB φ) (k : IsSB ψ) (a b : ℂ) :
     ip (a • φ) (b • ψ) = a * conj b * ip φ ψ := by
   have e : (fun x => (a • φ) x * conj ((b • ψ) x)) = (a * conj b) • fun x => φ x * conj (ψ x) := by
@@ -200,6 +274,11 @@ theorem ip_smul (h : IsSB φ) (k : IsSB ψ) (a b : ℂ) :
   rw [e]
   exact (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear K κ ι _ _ (sb_mul_conj h k) (sb_mul_conj h k)).2.2.2.2.2.1 _
 
+/- English proof (translation)
+Distinguish the cases in `hf : (Function.support f).Finite`. Simplify using `using (map_finsum Complex.ofRealHom hf).symm`. Establish `hs : Function.support (fun a => (f a : ℂ)) = Function.support f`. Use extensionality with `a`. Simplify using `[Function.mem_support]`.
+
+Rewrite using `[finsum_of_infinite_support hf, finsum_of_infinite_support (by rwa [hs]), Complex.ofReal_zero]`.
+-/
 private lemma finsum_ofReal {α : Type} (f : α → ℝ) :
     ∑ᶠ a, (f a : ℂ) = ((∑ᶠ a, f a : ℝ) : ℂ) := by
   by_cases hf : (Function.support f).Finite
@@ -208,6 +287,17 @@ private lemma finsum_ofReal {α : Type} (f : α → ℝ) :
       ext a; simp [Function.mem_support]
     rw [finsum_of_infinite_support hf, finsum_of_infinite_support (by rwa [hs]), Complex.ofReal_zero]
 
+/- English proof (translation)
+Establish `hts : t * conj s ≠ 0` using `mul_ne_zero ht ((map_ne_zero _).mpr hs)`. Establish `e : (fun x => φ x * conj (ψ x)) = (t * conj s) • fun x => if x ∈ A ∧ x ∈ B then (1 : ℂ) else 0`. Use function extensionality and compare the values at `x`. Simplify using `only [e₁, e₂, Pi.smul_apply, smul_eq_mul]`. Apply the tactic sequence `by_cases ha : x ∈ A <;> by_cases hb : x ∈ B <;>`.
+
+Simplify using `only [ha, hb, and_self, and_true, and_false, ↓reduceIte, map_zero, mul_zero, zero_mul, map_mul, mul_one]`. Take the linear combination `(t * conj s) * hχ x`. Establish `hind : IsSB fun x : Matrix κ ι K => if x ∈ A ∧ x ∈ B then (1 : ℂ) else 0`. Establish `e' : (fun x : Matrix κ ι K => if x ∈ A ∧ x ∈ B then (1 : ℂ) else 0) = (t * conj s)⁻¹ • fun x => φ x * conj (ψ x)`. Rewrite using `[e, smul_smul, inv_mul_cancel₀ hts, one_smul]`.
+
+Rewrite using `[e']`. Conclude with `sb_smul _ (sb_mul_conj h k)`. Choose the witnesses or unpack the hypotheses as in `⟨ρ, hρ, hh⟩ : ∃ ρ : ℝ, 0 ≤ ρ ∧ haar (fun x : Matrix κ ι K => if x ∈ A ∧ x ∈ B then (1 : ℂ) else 0) = ρ := by`. Unfold `GlobalTheory.SW.haar`. Rewrite using `[dif_pos hind]`.
+
+Unfold `GlobalTheory.SW.haarAt`. Use `⟨((hind.choose : ℝ) ^ (Module.finrank ℚ K * (Fintype.card κ * Fintype.card ι)))⁻¹ * ∑ᶠ q : Matrix κ ι K ⧸ perSub K κ ι hind.choose, (if (q.out ∈ A ∧ q.out ∈ B) then (1 : ℝ) else 0), ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `exact mul_nonneg (by positivity) (finsum_nonneg fun q => by split_ifs <;> norm_num)`. Rewrite using `[Complex.ofReal_mul, ← finsum_ofReal]`. Use `push_cast`.
+
+Use `congr 1`. Apply the tactic sequence `exact finsum_congr fun q => by split_ifs <;> simp`. Use `⟨ρ, hρ, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.SW.ip`. Rewrite using `[e, (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear K κ ι _ _ hind hind).2.2.2.2.2.1, hh]`.
+-/
 theorem ip_of_support (h : IsSB φ) (k : IsSB ψ) {A B : Set (Matrix κ ι K)} {χ : Matrix κ ι K → ℂ}
     (hχ : ∀ x, χ x * conj (χ x) = 1) {s t : ℂ} (hs : s ≠ 0) (ht : t ≠ 0)
     (e₁ : ∀ x, φ x = if x ∈ A then t * χ x else 0) (e₂ : ∀ x, ψ x = if x ∈ B then s * χ x else 0) :
@@ -245,6 +335,9 @@ theorem ip_of_support (h : IsSB φ) (k : IsSB ψ) {A B : Set (Matrix κ ι K)} {
   unfold GlobalTheory.SW.ip
   rw [e, (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear K κ ι _ _ hind hind).2.2.2.2.2.1, hh]
 
+/- English proof (translation)
+Unfold `GlobalTheory.SW.unitv`. Rewrite using `[ip_smul h h c c, h1, mul_one, Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.ofReal_re, Real.sqrt_sq (norm_nonneg c), smul_smul]`.
+-/
 theorem unitv_smul {n g : ℕ} {v : TF n g} (h : IsSB v) (h1 : ip v v = 1) (c : ℂ) :
     unitv (c • v) = ((‖c‖ : ℂ)⁻¹ * c) • v := by
   unfold GlobalTheory.SW.unitv
@@ -259,6 +352,9 @@ open DiagSplit
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r n : ℕ} {X : Data E r}
 
+/- English proof (translation)
+Rewrite using `[EF_def, ← map_neg]`. Use `congr 1`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.herm, pair, skew, Matrix.vecMul, dotProduct, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring` and prove the remaining obligations.
+-/
 theorem EF_eq_trace (x y : Fin r → E) :
     EF X x y = -Algebra.trace ℚ E (pair (x ᵥ* skew X) y) := by
   rw [EF_def, ← map_neg]
@@ -268,17 +364,31 @@ theorem EF_eq_trace (x y : Fin r → E) :
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
+/- English proof (translation)
+Rewrite using `[pair_vecMul, ccT_skew, Matrix.vecMul_neg]`. Simplify using `only [pair, Pi.neg_apply, ReciprocityTheory.ChartRestriction.G.FD.cc, map_neg, mul_neg, Finset.sum_neg_distrib]`.
+-/
 theorem pair_comm_skew (x y : Fin r → E) : pair (x ᵥ* skew X) y = -pair x (y ᵥ* skew X) := by
   rw [pair_vecMul, ccT_skew, Matrix.vecMul_neg]
   simp only [pair, Pi.neg_apply, ReciprocityTheory.ChartRestriction.G.FD.cc, map_neg, mul_neg, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Simplify using `only [pair, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`.
+-/
 private lemma pair_smul_left' (c : E) (x y : Fin r → E) : pair (c • x) y = c * pair x y := by
   simp only [pair, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [pair, Pi.smul_apply, smul_eq_mul, ReciprocityTheory.ChartRestriction.G.FD.cc, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`.
+-/
 private lemma pair_smul_right_eq_cc_mul (c : E) (x y : Fin r → E) : pair x (c • y) = cc c * pair x y := by
   simp only [pair, Pi.smul_apply, smul_eq_mul, ReciprocityTheory.ChartRestriction.G.FD.cc, map_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun a _ => by ring
 
+/- English proof (translation)
+Rewrite using `[EF_eq_trace, EF_eq_trace, pair_smul_right_eq_cc_mul, pair_smul_right_eq_cc_mul]`. It suffices to establish `hq : pair (y₁ ᵥ* skew X) y₁ = pair (y₂ ᵥ* skew X) y₂ by rw [hq]`. Establish `e1 : pair ((y₁ - y₂) ᵥ* β) (y₁ - y₂) = pair (y₁ - y₂) ((y₁ - y₂) ᵥ* β)`. Rewrite using `[pair_vecMul, hβ]`. Rewrite `e1` using `[← h, pair_smul_left', pair_smul_right_eq_cc_mul]`.
+
+Establish `h2 : cc (1 / 2 : E) = 1 / 2` using `by simp [ReciprocityTheory.ChartRestriction.G.FD.cc]`. Rewrite `e1` using `[h2]`. Establish `e2` using `pair_comm_skew (X := X) (y₁ - y₂) (y₁ + y₂)`. Simplify using `only [Matrix.add_vecMul, Matrix.sub_vecMul, pair_add_left, pair_sub_left, pair_add_right, pair_sub_right] at e1 e2`. Take the linear combination `e1 + (1 / 2 : E) * e2`.
+-/
 theorem EF_eq_of_graph (w : E) {β : Matrix (Fin r) (Fin r) E} (hβ : ccT β = β) {y₁ y₂ : Fin r → E}
     (h : (1 / 2 : E) • ((y₁ + y₂) ᵥ* skew X) = (y₁ - y₂) ᵥ* β) :
     EF X y₁ (w • y₁) = EF X y₂ (w • y₂) := by
@@ -294,12 +404,18 @@ theorem EF_eq_of_graph (w : E) {β : Matrix (Fin r) (Fin r) E} (hβ : ccT β = �
     pair_sub_right] at e1 e2
   linear_combination e1 + (1 / 2 : E) * e2
 
+/- English proof (translation)
+Unfold `dblT`. Rewrite using `[Matrix.fromCols_mul_fromBlocks, Matrix.toCols₁_fromCols, Matrix.mul_one, Matrix.mul_neg, Matrix.mul_one, sub_eq_add_neg]`.
+-/
 theorem toCols₁_dblT (y₁ y₂ : Matrix (Fin n) (Fin r) E) :
     (Matrix.fromCols y₁ y₂ * dblT X).toCols₁ = y₁ - y₂ := by
   unfold dblT
   rw [Matrix.fromCols_mul_fromBlocks, Matrix.toCols₁_fromCols, Matrix.mul_one, Matrix.mul_neg,
     Matrix.mul_one, sub_eq_add_neg]
 
+/- English proof (translation)
+Unfold `dblT skew`. Rewrite using `[Matrix.fromCols_mul_fromBlocks, Matrix.toCols₂_fromCols, ← Matrix.add_mul, Matrix.mul_smul, Matrix.mul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem toCols₂_dblT (y₁ y₂ : Matrix (Fin n) (Fin r) E) :
     (Matrix.fromCols y₁ y₂ * dblT X).toCols₂ = (1 / 2 : E) • ((y₁ + y₂) * skew X) := by
   unfold dblT skew
@@ -308,9 +424,29 @@ theorem toCols₂_dblT (y₁ y₂ : Matrix (Fin n) (Fin r) E) :
   congr 1
   ring
 
+/- English proof (translation)
+Conclude with `GlobalTheory.SW.TensLat.tens_le fun v hv u hu => GlobalTheory.SW.TensLat.pure_mem hv (h hu)`.
+-/
 theorem tens_mono (Λ : Lt E n) {L L' : Lt E r} (h : L ≤ L') : tens Λ L ≤ tens Λ L' := by
   exact GlobalTheory.SW.TensLat.tens_le fun v hv u hu => GlobalTheory.SW.TensLat.pure_mem hv (h hu)
 
+/- English proof (translation)
+Establish `hd' : d ∈ AddSubgroup.closure {y | ∃ v ∈ Λ, ∃ u ∈ L₁ ⊔ L₂, y = vecMulVec v u}` using `hd`. Use `clear hd`. Proceed by induction on `hd' using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨v, hv, u, hu, rfl⟩` from `hy`.
+
+Take `⟨z₁, hz₁, z₂, hz₂, e⟩` from `hβ u hu`. Rewrite `e` using `[vecMul_dblT]`. Establish `e1 : z₁ - z₂ = u`. Use function extensionality and compare the values at `a`. Simplify using `using congrFun e (Sum.inl a)`.
+
+Establish `e2 : (1 / 2 : E) • ((z₁ + z₂) ᵥ* skew X) = u ᵥ* β`. Use function extensionality and compare the values at `a`. Simplify using `using congrFun e (Sum.inr a)`. Use `⟨vecMulVec v z₁, GlobalTheory.SW.TensLat.pure_mem hv hz₁, vecMulVec v z₂, GlobalTheory.SW.TensLat.pure_mem hv hz₂, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← e1]`.
+
+Use extensionality with `k a`. Simplify using `[Matrix.vecMulVec_apply, mul_sub]`. Use extensionality with `k a`. Establish `ea` using `congrFun e2 a`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Matrix.vecMul, dotProduct, Pi.add_apply] at ea`.
+
+Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.mul_apply, Matrix.add_apply, Matrix.vecMulVec_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun b _ => by ring`. Use `_ = ∑ b, v k * u b * β b a := by`.
+
+Rewrite using `[ea, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun b _ => by ring`. Consider the case `zero => exact ⟨0, zero_mem _, 0, zero_mem _, by simp, by simp⟩`. Consider the case `add d d' _ _ ih ih'`. Take `⟨y₁, hy₁, y₂, hy₂, e1, e2⟩` from `ih`.
+
+Take `⟨z₁, hz₁, z₂, hz₂, f1, f2⟩` from `ih'`. Use `⟨y₁ + z₁, add_mem hy₁ hz₁, y₂ + z₂, add_mem hy₂ hz₂, by rw [← e1, ← f1]; abel, ?_⟩` and prove the remaining obligations. Rewrite using `[show y₁ + z₁ + (y₂ + z₂) = (y₁ + y₂) + (z₁ + z₂) by abel, Matrix.add_mul, smul_add, e2, f2, Matrix.add_mul]`. Consider the case `neg d _ ih`. Take `⟨y₁, hy₁, y₂, hy₂, e1, e2⟩` from `ih`.
+
+Use `⟨-y₁, neg_mem hy₁, -y₂, neg_mem hy₂, by rw [← e1]; abel, ?_⟩` and prove the remaining obligations. Rewrite using `[← neg_add, Matrix.neg_mul, smul_neg, e2, Matrix.neg_mul]`.
+-/
 theorem exists_lift {L₁ L₂ : Lt E r} {β : Matrix (Fin r) (Fin r) E}
     (hβ : ∀ d ∈ L₁ ⊔ L₂, ∃ y₁ ∈ L₁, ∃ y₂ ∈ L₂, Sum.elim y₁ y₂ ᵥ* dblT X = Sum.elim d (d ᵥ* β))
     (Λ : Lt E n) {d : Matrix (Fin n) (Fin r) E} (hd : d ∈ tens Λ (L₁ ⊔ L₂)) :
@@ -370,9 +506,43 @@ noncomputable def rowForm (X : Data E r) (n : ℕ) :
       rw [Finset.smul_sum]
       exact Finset.sum_congr rfl fun k _ => LinearMap.map_smul (EFBil X _) _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rowForm_apply (y y' : Matrix (Fin n) (Fin r) E) :
     rowForm X n y y' = ∑ k, EF X (y k) (y' k) := rfl
 
+/- English proof (translation)
+Distinguish the cases in `hx : x ∈ tens Λ (L₁ ⊔ L₂)`. Rewrite using `[if_pos hx]`. Take `⟨y₁, hy₁, y₂, hy₂, e1, e2⟩` from `exists_lift hβ Λ hx`. Establish `e2' : (1 / 2 : E) • ((y₁ + y₂) * skew X) = (y₁ - y₂) * β` using `by rw [e1]; exact e2`. Establish `hrow : ∀ k, (1 / 2 : E) • ((y₁ k + y₂ k) ᵥ* skew X) = (y₁ k - y₂ k) ᵥ* β`.
+
+Introduce `k`. Use function extensionality and compare the values at `a`. Establish `h'` using `congrFun (congrFun e2' k) a`. Simplify using `only [Matrix.smul_apply, Matrix.mul_apply, Matrix.add_apply, Matrix.sub_apply, smul_eq_mul] at h'`. Simplify using `only [Pi.smul_apply, Matrix.vecMul, dotProduct, Pi.add_apply, Pi.sub_apply, smul_eq_mul]`.
+
+Conclude with `h'`. Establish `hs : ∑ k, EF X (y₁ k) (w • y₁ k) = ∑ k, EF X (y₂ k) (w • y₂ k)` using `Finset.sum_congr rfl fun k _ => EF_eq_of_graph w hc (hrow k)`. Establish `heps : epsW X w y₁ = epsW X w y₂`. Unfold `GlobalTheory.SW.epsW`. Rewrite using `[hs]`.
+
+Establish `htr : (∑ k, ∑ a, (x * β) k a * (2 * cc (x k a) - cc (x k a))) = (x * β * ccT x).trace`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, GlobalTheory.SW.ccT, Matrix.transpose_apply, Matrix.map_apply]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun a _ => by ring`. Establish `key` using `congrFun (hψ y₁ hy₁ y₂ hy₂) x`. Rewrite `key` using `[e2, e1, heps, GlobalTheory.SW.TensVac.epsW_mul_conj, one_smul]`.
+
+Simplify using `only [GlobalTheory.SW.heisH, sub_self] at key`. Rewrite `key` using `[htr]`. Conclude with `key`. Rewrite using `[if_neg hx]`. Assume the negation of the conclusion as `hψx`.
+
+Apply `hx` to reduce the goal to its premises. Establish `hB : ∀ a b, rowForm X n a b = -rowForm X n b a`. Introduce `a b`. Rewrite using `[rowForm_apply, rowForm_apply, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ => GlobalTheory.SW.TensLat.EF_swap X (b k) (a k)`.
+
+Establish `h₁' : ∀ y, y ∈ tens Λ L₁ ↔ ∀ y' ∈ tens Λ L₁, ∃ k : ℤ, rowForm X n y y' = k`. Introduce `y`. Simplify using `only [rowForm_apply]`. Conclude with `h₁ y`. Establish `h₂' : ∀ y, y ∈ tens Λ L₂ ↔ ∀ y' ∈ tens Λ L₂, ∃ k : ℤ, rowForm X n y y' = k`.
+
+Introduce `y`. Simplify using `only [rowForm_apply]`. Conclude with `h₂ y`. Establish `hx' : ∀ y ∈ tens Λ L₁, y ∈ tens Λ L₂ → ∃ k : ℤ, rowForm X n y x = k`. Introduce `y hy1 hy2`.
+
+Establish `key` using `congrFun (hψ y hy1 y hy2) x`. Rewrite `key` using `[GlobalTheory.SW.TensVac.epsW_mul_conj, one_smul, sub_self]`. Establish `hyy : (1 / 2 : E) • ((y + y) * skew X) = y * skew X`. Rewrite using `[← two_smul E y, Matrix.smul_mul, smul_smul]`. Evaluate the numerical expressions.
+
+Rewrite `key` using `[hyy]`. Simplify using `only [GlobalTheory.SW.heisH, sub_zero] at key`. Establish `hq : Algebra.trace ℚ E (∑ k, ∑ a, (y * skew X) k a * (2 * cc (x k a) - cc ((0 : Matrix (Fin n) (Fin r) E) k a))) = -2 * rowForm X n y x`. Rewrite using `[rowForm_apply, Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Establish `hin : ∑ a, (y * skew X) k a * (2 * cc (x k a) - cc ((0 : Matrix (Fin n) (Fin r) E) k a)) = pair (y k ᵥ* skew X) (x k) + pair (y k ᵥ* skew X) (x k)`. Simplify using `only [pair, Matrix.mul_apply, Matrix.vecMul, dotProduct, Matrix.zero_apply, ReciprocityTheory.ChartRestriction.G.FD.cc, map_zero, sub_zero, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`. Rewrite using `[hin, map_add, EF_eq_trace]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `key` using `[hq]`. Establish `hone : cexp (↑π * I * (((-2 * rowForm X n y x : ℚ)) : ℂ)) = 1`. Establish `h' : ψ x * cexp (↑π * I * (((-2 * rowForm X n y x : ℚ)) : ℂ)) = ψ x * 1`. Rewrite using `[mul_one]`. Conclude with `key.symm`.
+
+Conclude with `mul_left_cancel₀ hψx h'`. Take `⟨m, hm⟩` from `Complex.exp_eq_one_iff.mp hone`. Use `⟨-m, ?_⟩` and prove the remaining obligations. Establish `hpi : (π : ℂ) * I ≠ 0` using `mul_ne_zero (by exact_mod_cast Real.pi_ne_zero) Complex.I_ne_zero`. Establish `h2 : (((-2 * rowForm X n y x : ℚ)) : ℂ) = ((2 * m : ℚ) : ℂ)`.
+
+Apply `mul_left_cancel₀ hpi` to reduce the goal to its premises. Rewrite using `[hm]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : -2 * rowForm X n y x = 2 * m` using `by exact_mod_cast h2`.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmem` using `mem_sup_of_dual_inf (rowForm X n) hB f₁ f₂ h₁' h₂' hx'`. Conclude with `(sup_le (tens_mono Λ le_sup_left) (tens_mono Λ le_sup_right)) hmem`.
+-/
 theorem eq_of_law (w : E) {L₁ L₂ : Lt E r} {β : Matrix (Fin r) (Fin r) E} (hc : ccT β = β)
     (hβ : ∀ d ∈ L₁ ⊔ L₂, ∃ y₁ ∈ L₁, ∃ y₂ ∈ L₂, Sum.elim y₁ y₂ ᵥ* dblT X = Sum.elim d (d ᵥ* β))
     (Λ : Lt E n) (f₁ : (tens Λ L₁).FG) (f₂ : (tens Λ L₂).FG)
@@ -461,6 +631,11 @@ section Main
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ} {X : Data E r}
   {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (idx : Fin g ≃ X.Ψ × Fin r)
 
+/- English proof (translation)
+Establish `e : (fun x => ψ x * conj (φ x)) = fun x => conj (φ x * conj (ψ x))`. Use function extensionality and compare the values at `x`. Simplify using `only [map_mul, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Unfold `GlobalTheory.SW.ip`.
+
+Rewrite using `[e]`. Conclude with `(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear K κ ι _ _ (sb_mul_conj h k) (sb_mul_conj h k)).2.2.2.2.2.2.1`.
+-/
 theorem ip_conj {K κ ι : Type} [Field K] [NumberField K] [Fintype κ] [Fintype ι]
     {φ ψ : Matrix κ ι K → ℂ} (h : IsSB φ) (k : IsSB ψ) : ip ψ φ = conj (ip φ ψ) := by
   have e : (fun x => ψ x * conj (φ x)) = fun x => conj (φ x * conj (ψ x)) := by
@@ -469,6 +644,25 @@ theorem ip_conj {K κ ι : Type} [Field K] [NumberField K] [Fintype κ] [Fintype
   rw [e]
   exact (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear K κ ι _ _ (sb_mul_conj h k) (sb_mul_conj h k)).2.2.2.2.2.2.1
 
+/- English proof (translation)
+Establish `sbD : ∀ x y : TF n g, IsSB x → IsSB y → IsSB (dbl X bas idx x y)` using `fun x y hx hy => (GlobalTheory.T.doubledHermitianTestFunction_spec E r X g bas idx n hs hn x y hx hy).1`. Establish `addL : ∀ x x' y : TF n g, IsSB x → IsSB x' → IsSB y → dbl X bas idx (x + x') y = dbl X bas idx x y + dbl X bas idx x' y` using `fun x x' y hx hx' hy => ((GlobalTheory.T.doubledThetaTestFunction_sesquilinear_heisenberg E r X g bas idx n hs hn x y hx hy).1 x' hx').1`. Establish `addR : ∀ x y y' : TF n g, IsSB x → IsSB y → IsSB y' → dbl X bas idx x (y + y') = dbl X bas idx x y + dbl X bas idx x y'` using `fun x y y' hx hy hy' => ((GlobalTheory.T.doubledThetaTestFunction_sesquilinear_heisenberg E r X g bas idx n hs hn x y hx hy).1 y' hy').2`. Establish `smulD : ∀ (x y : TF n g) (a c : ℂ), IsSB x → IsSB y → dbl X bas idx (a • x) (c • y) = (a * conj c) • dbl X bas idx x y` using `fun x y a c hx hy => (GlobalTheory.T.doubledThetaTestFunction_sesquilinear_heisenberg E r X g bas idx n hs hn x y hx hy).2.1 a c`. Establish `smulL : ∀ (x y : TF n g) (a : ℂ), IsSB x → IsSB y → dbl X bas idx (a • x) y = a • dbl X bas idx x y`.
+
+Introduce `x y a hx hy`. Establish `h'` using `smulD x y a 1 hx hy`. Rewrite `h'` using `[one_smul, map_one, mul_one]`. Then use the resulting hypothesis. Establish `smulR : ∀ (x y : TF n g) (c : ℂ), IsSB x → IsSB y → dbl X bas idx x (c • y) = conj c • dbl X bas idx x y`. Introduce `x y c hx hy`.
+
+Establish `h'` using `smulD x y 1 c hx hy`. Rewrite `h'` using `[one_smul, one_mul]`. Then use the resulting hypothesis. Establish `step1 : ∀ χ x y : TF n g, IsSB χ → IsSB x → IsSB y → ip (dbl X bas idx x χ) (dbl X bas idx y χ) - b * (ip x y * ip χ χ) = 0`. Introduce `χ x y hχ hx hy`. Use `GlobalTheory.SW.DblVac.eq_zero_of_diag IsSB (fun u v hu hv => GlobalTheory.SW.DblVac.sb_add hu hv) (fun c u hu => GlobalTheory.SW.DblVac.sb_smul c hu) (fun u v => ip (dbl X bas idx u χ) (dbl X bas idx v χ) - b * (ip u v * ip χ χ)) ?_ ?_ ?_ ?_ hx hy` and prove the remaining obligations.
+
+Introduce `u u' v hu hu' hv`. Rewrite using `[addL u u' χ hu hu' hχ, GlobalTheory.SW.DblVac.ip_add_left (sbD u χ hu hχ) (sbD u' χ hu' hχ) (sbD v χ hv hχ), GlobalTheory.SW.DblVac.ip_add_left hu hu' hv]`. Expand and normalize the polynomial expressions, which then agree. Introduce `u v v' hu hv hv'`. Rewrite using `[addL v v' χ hv hv' hχ, GlobalTheory.SW.DblVac.ip_add_right (sbD u χ hu hχ) (sbD v χ hv hχ) (sbD v' χ hv' hχ), GlobalTheory.SW.DblVac.ip_add_right hu hv hv']`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `a c u v hu hv`. Rewrite using `[smulL u χ a hu hχ, smulL v χ c hv hχ, GlobalTheory.SW.DblVac.ip_smul (sbD u χ hu hχ) (sbD v χ hv hχ), GlobalTheory.SW.DblVac.ip_smul hu hv]`. Expand and normalize the polynomial expressions, which then agree. Introduce `u hu`.
+
+Rewrite using `[hb u χ hu hχ]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ip (dbl X bas idx φ₁ φ₂) (dbl X bas idx ψ₁ ψ₂) - b * (ip φ₁ ψ₁ * ip ψ₂ φ₂) = 0`. Use `GlobalTheory.SW.DblVac.eq_zero_of_diag IsSB (fun u v hu hv => GlobalTheory.SW.DblVac.sb_add hu hv) (fun c u hu => GlobalTheory.SW.DblVac.sb_smul c hu) (fun u v => ip (dbl X bas idx φ₁ v) (dbl X bas idx ψ₁ u) - b * (ip φ₁ ψ₁ * ip u v)) ?_ ?_ ?_ ?_ k₂ h₂` and prove the remaining obligations. Introduce `u u' v hu hu' hv`.
+
+Rewrite using `[addR ψ₁ u u' k₁ hu hu', GlobalTheory.SW.DblVac.ip_add_right (sbD φ₁ v h₁ hv) (sbD ψ₁ u k₁ hu) (sbD ψ₁ u' k₁ hu'), GlobalTheory.SW.DblVac.ip_add_left hu hu' hv]`. Expand and normalize the polynomial expressions, which then agree. Introduce `u v v' hu hv hv'`. Rewrite using `[addR φ₁ v v' h₁ hv hv', GlobalTheory.SW.DblVac.ip_add_left (sbD φ₁ v h₁ hv) (sbD φ₁ v' h₁ hv') (sbD ψ₁ u k₁ hu), GlobalTheory.SW.DblVac.ip_add_right hu hv hv']`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `a c u v hu hv`. Rewrite using `[smulR φ₁ v c h₁ hv, smulR ψ₁ u a k₁ hu, GlobalTheory.SW.DblVac.ip_smul (sbD φ₁ v h₁ hv) (sbD ψ₁ u k₁ hu), GlobalTheory.SW.DblVac.ip_smul hu hv, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Introduce `u hu`. Conclude with `step1 u φ₁ ψ₁ hu h₁ k₁`.
+
+Conclude with `sub_eq_zero.mp key`.
+-/
 theorem ip_dbl (hs : IsSympl X bas) (hn : Even n) {b : ℂ}
     (hb : ∀ φ₁ φ₂ : TF n g, IsSB φ₁ → IsSB φ₂ →
       ip (dbl X bas idx φ₁ φ₂) (dbl X bas idx φ₁ φ₂) = b * (ip φ₁ φ₁ * ip φ₂ φ₂))
@@ -551,6 +745,33 @@ end GlobalTheory.SW.DblVac
 
 open GlobalTheory.SW.DblVac in
 
+/- English proof (translation)
+Introduce `E _ _ _ r X g bas idx n hs hn w hw hw1 L₁ L₂ hL₁ hL₂ M hM v₁ v₂ hv₁ hv₂`. Take `⟨β, hβh, hβ⟩` from `GlobalTheory.SW.DiagSplit.doubled_lattice_split E r X w hw hw1 L₁ L₂ hL₁ hL₂`. Establish `hlift : ∀ d ∈ L₁ ⊔ L₂, ∃ y₁ ∈ L₁, ∃ y₂ ∈ L₂, Sum.elim y₁ y₂ ᵥ* dblT X = Sum.elim d (d ᵥ* β)` using `fun d hd => (hβ d (d ᵥ* β)).2 ⟨hd, fun d' _ => ⟨0, by simp⟩⟩`. Take `⟨a, ha, b, hb, hab⟩` from `GlobalTheory.T.doubledHermitianTestFunction_zero_and_norm E r X g bas idx n hs hn`. Establish `VAC` using `GlobalTheory.SW.TensVac.vacua E r X g bas idx n hs hn w hw hw1`.
+
+Establish `TL` using `GlobalTheory.SW.TensLat.tens_selfDual_semichar_index E r X g bas idx n hs hn w hw hw1`. Apply the tactic sequence `have WeylSymmetry := GlobalTheory.T.doubledHermitianTestFunction_spec E r X g bas idx n hs hn`. Establish `D9` using `GlobalTheory.T.doubledThetaTestFunction_sesquilinear_heisenberg E r X g bas idx n hs hn`. Establish `hΛ₀ : stdL E n ∈ Vset E n M` using `GlobalTheory.SW.Base.stdL_mem_Vset n M`. Establish `LAW : ∀ Λ ∈ Vset E n M, ∀ V₁ V₂ : TF n g, IsVac X bas w (tens Λ L₁) V₁ → IsVac X bas w (tens Λ L₂) V₂ → ∀ x, dbl X bas idx V₁ V₂ x = if x ∈ tens Λ (L₁ ⊔ L₂) then (a * ip V₁ V₂) * cexp (π * I * ((Algebra.trace ℚ E (x * β * ccT x).trace : ℚ) : ℂ)) else 0`.
+
+Introduce `Λ hΛ V₁ V₂ hV₁ hV₂ x`. Establish `T₁` using `TL L₁ hL₁ M Λ hΛ`. Establish `T₂` using `TL L₂ hL₂ M Λ hΛ`. Rewrite using `[← (hab V₁ V₂ hV₁.1 hV₂.1).1]`. Use `eq_of_law w hβh hlift Λ T₁.1 T₂.1 T₁.2.1 T₂.2.1 ?_ x` and prove the remaining obligations.
+
+Introduce `y₁ hy₁ y₂ hy₂`. Establish `s₁` using `(GlobalTheory.SW.TensVac.laws idx hs hn y₁ hV₁.1).1`. Establish `s₂` using `(GlobalTheory.SW.TensVac.laws idx hs hn y₂ hV₂.1).1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hV₁.2.2 y₁ hy₁, hV₂.2.2 y₂ hy₂]`.
+
+Use `_ = (epsW X w y₁ * conj (epsW X w y₂)) • dbl X bas idx (heisG X bas y₁ V₁) (heisG X bas y₂ V₂) := (D9 _ _ s₁ s₂).2.1 _ _`. Use `_ = _ := by rw [(D9 V₁ V₂ hV₁.1 hV₂.1).2.2 y₁ y₂, toCols₁_dblT, toCols₂_dblT]`. Use `⟨β, a * ip v₁ v₂, hβh, ?_⟩` and prove the remaining obligations. Introduce `Λ hΛ x`. Take `⟨V₁, hV₁⟩` from `(VAC L₁ hL₁ M Λ hΛ).1`.
+
+Take `⟨V₂, hV₂⟩` from `(VAC L₂ hL₂ M Λ hΛ).1`. Establish `hp₁ : projA X bas w (tens Λ L₁) v₁ = ip v₁ V₁ • V₁` using `(VAC L₁ hL₁ M Λ hΛ).2.2.1 v₁ hv₁.1 V₁ hV₁`. Establish `hp₂ : projA X bas w (tens Λ L₂) v₂ = ip v₂ V₂ • V₂` using `(VAC L₂ hL₂ M Λ hΛ).2.2.1 v₂ hv₂.1 V₂ hV₂`. Establish `ov₁` using `(VAC L₁ hL₁ M (stdL E n) hΛ₀).2.2.2 L₁ hL₁ Λ hΛ v₁ V₁ hv₁ hV₁`. Establish `ov₂` using `(VAC L₂ hL₂ M (stdL E n) hΛ₀).2.2.2 L₂ hL₂ Λ hΛ v₂ V₂ hv₂ hV₂`.
+
+Establish `ov₀` using `(VAC L₁ hL₁ M (stdL E n) hΛ₀).2.2.2 L₂ hL₂ (stdL E n) hΛ₀ v₁ v₂ hv₁ hv₂`. Establish `ovΛ` using `(VAC L₁ hL₁ M Λ hΛ).2.2.2 L₂ hL₂ Λ hΛ V₁ V₂ hV₁ hV₂`. Establish `ne_of_ov : ∀ {k : ℝ} {z : ℂ}, k * ‖z‖ ^ 2 = 1 → z ≠ 0`. Introduce `k z hk hz`. Rewrite `hk` using `[hz, norm_zero]`.
+
+Evaluate the numerical expressions using `at hk`. Establish `hc₁ : ip v₁ V₁ ≠ 0` using `ne_of_ov ov₁`. Establish `hc₂ : ip v₂ V₂ ≠ 0` using `ne_of_ov ov₂`. Establish `htne : a * ip v₁ v₂ ≠ 0` using `mul_ne_zero ha (ne_of_ov ov₀)`. Establish `hsne : a * ip V₁ V₂ ≠ 0` using `mul_ne_zero ha (ne_of_ov ovΛ)`.
+
+Establish `hidx : ((tens Λ L₂).relIndex (tens Λ L₁) : ℝ) = ((tens (stdL E n) L₂).relIndex (tens (stdL E n) L₁) : ℝ)`. Rewrite using `[((TL L₁ hL₁ M Λ hΛ).2.2.2.2.1 L₂ hL₂).1, ((TL L₁ hL₁ M (stdL E n) hΛ₀).2.2.2.2.1 L₂ hL₂).1]`. Establish `hnorm : ‖a * ip V₁ V₂‖ = ‖a * ip v₁ v₂‖`. Rewrite using `[norm_mul, norm_mul]`. Use `congr 1`.
+
+Rewrite `ovΛ` using `[hidx]`. Establish `hk : ((tens (stdL E n) L₂).relIndex (tens (stdL E n) L₁) : ℝ) ≠ 0`. Introduce `h0`. Rewrite `ov₀` using `[h0, zero_mul]`. Evaluate the numerical expressions using `at ov₀`.
+
+Establish `h2 : ‖ip V₁ V₂‖ ^ 2 = ‖ip v₁ v₂‖ ^ 2` using `mul_left_cancel₀ hk (ovΛ.trans ov₀.symm)`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).mp h2`. Establish `hb' : ∀ φ₁ φ₂ : TF n g, IsSB φ₁ → IsSB φ₂ → ip (dbl X bas idx φ₁ φ₂) (dbl X bas idx φ₁ φ₂) = (b : ℂ) * (ip φ₁ φ₁ * ip φ₂ φ₂)` using `fun φ₁ φ₂ h₁ h₂ => (hab φ₁ φ₂ h₁ h₂).2`. Apply the tactic sequence `obtain ⟨ρ, hρ, hip⟩ := ip_of_support (χ := fun x : Matrix (Fin n) (Fin r) E => cexp (π * I * ((Algebra.trace ℚ E (x * β * ccT x).trace : ℚ) : ℂ))) (WeylSymmetry v₁ v₂ hv₁.1 hv₂.1).1 (WeylSymmetry V₁ V₂ hV₁.1 hV₂.1).1 (fun x => exp_mul_conj _) hsne htne (LAW _ hΛ₀ v₁ v₂ hv₁ hv₂) ( …`. Establish `e : (b : ℂ) * (ip v₁ V₁ * conj (ip v₂ V₂)) = a * ip v₁ v₂ * conj (a * ip V₁ V₂) * ρ`.
+
+Rewrite using `[← ip_conj hv₂.1 hV₂.1, ← ip_dbl idx hs hn hb' hv₁.1 hv₂.1 hV₁.1 hV₂.1, hip]`. Establish `hph` using `phase_eq hc₁ hc₂ htne hnorm hb hρ e`. Rewrite using `[hp₁, hp₂, unitv_smul hV₁.1 hV₁.2.1, unitv_smul hV₂.1 hV₂.2.1, (D9 V₁ V₂ hV₁.1 hV₂.1).2.1, Pi.smul_apply, smul_eq_mul, LAW Λ hΛ V₁ V₂ hV₁ hV₂ x]`. Use `split_ifs`. Rewrite using `[← hph]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_zero]`.
+-/
 theorem GlobalTheory.SW.dbl_vacuum : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ w : E, IsIntegral ℤ w → w + cc w = 1 → ∀ L₁ L₂ : Lt E r, SelfD X L₁ → SelfD X L₂ → ∀ M : ℕ, 0 < M → ∀ v₁ v₂ : TF n g, IsVac X bas w (tens (stdL E n) L₁) v₁ → IsVac X bas w (tens (stdL E n) L₂) v₂ → ∃ (β : Matrix (Fin r) (Fin r) E) (t : ℂ), ccT β = β ∧ ∀ Λ ∈ Vset E n M, ∀ x, dbl X bas idx (unitv (projA X bas w (tens Λ L₁) v₁)) (unitv (projA X bas w (tens Λ L₂) v₂)) x = if x ∈ tens Λ (L₁ ⊔ L₂) then t * cexp (π * I * ((Algebra.trace ℚ E (x * β * ccT x).trace : ℚ) : ℂ)) else 0 := by
   intro E _ _ _ r X g bas idx n hs hn w hw hw1 L₁ L₂ hL₁ hL₂ M hM v₁ v₂ hv₁ hv₂
   obtain ⟨β, hβh, hβ⟩ := GlobalTheory.SW.DiagSplit.doubled_lattice_split E r X w hw hw1 L₁ L₂ hL₁ hL₂

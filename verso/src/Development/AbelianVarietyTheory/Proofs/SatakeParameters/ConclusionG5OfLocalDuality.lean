@@ -9,6 +9,13 @@ open Formalism.BasicNotions Formalism.ConjugateSelfDual Formalism.MainNotions Fo
 
 namespace GlobalTheory.LevelPlaces
 
+/- English proof (translation)
+Introduce `h1 h2 h3 D hA hRb`. Establish `hLGC : LGC D` using `GlobalTheory.T.local_global_compatibility D hA.1.1`. Establish `hEig : EigPd D` using `GlobalTheory.T.eigen_period_of_local_global D hA.1.1 hLGC hRb`. Establish `hH : HOneTwo D` using `GlobalTheory.T.hOneTwo_of_localFiniteness_tateDuality_eulerChar h1 h2 h3 D`. Use `SumRepresentations.galois_clause_of_sufficient D hA.1.1 fun i hg r hr w hw => ⟨hLGC i r hr w hw, fun hS => ⟨hRb i hg, fun rb hrb => ?_⟩⟩` and prove the remaining obligations.
+
+Establish `hS'` using `(D.nd.S_def i w).1 hS`. Establish `hnr : ¬ (((rb (D.nd.gam0 i w) : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) _).charpoly).IsRoot (IsLocalRing.residue (D.nd.O i) (chi1 D.nd i (D.nd.gam0 i w)))`. Establish `hk : ∀ k, w ∈ placesOver D.host.E (D.host.g k) → D.nd.l i ≠ D.host.g k` using `fun k hk h => hS'.2 (h ▸ hk)`. Break down `hS'.1 with h0 | h0 | h0` into its components or cases. Conclude with `(hA.2.1 i hg rb hrb).2 0 (hk 0 h0) w h0`.
+
+Conclude with `(hA.2.1 i hg rb hrb).2 1 (hk 1 h0) w h0`. Conclude with `hEig i hg w hS h0 rb hrb`. Conclude with `⟨hnr, hH i rb w hS hrb hnr⟩`.
+-/
 theorem local_conditions_at_level : LocalFiniteness → LocalTateDuality → LocalEulerChar →
     ∀ D : D7, SumRepresentations.admitted D → RbEx D → SumRepresentations.ConclusionG5 D := by
   intro h1 h2 h3 D hA hRb

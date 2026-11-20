@@ -12,6 +12,9 @@ open GlobalTheory.ConstRatio (Factor)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 namespace GlobalTheory.TopDict
 open Matrix
+/- English proof (translation)
+Introduce `_`. Use `⟨0, fun ε CF _ => ⟨0, 0, fun C _ D large₂ _ _ _ T Lc μ₀ _ G => ?_⟩⟩` and prove the remaining obligations. Introduce `W i j X hG hX A A₁ AV AV₁ hA hA₁ hAV hAV₁`. Conclude with `dict_frames X _ _ _ _ _ _ hX.2.2.2.2.2.2.2 A A₁ (frSum AV AV₁) (hG.2.2.2.1.trans (funext fun τ => (hA τ).2.symm)) (hG.2.2.2.2.1.trans (funext fun τ => (hA₁ τ).2.symm)) (hG.2.2.2.2.2 AV AV₁ hAV hAV₁)`.
+-/
 theorem theta_parameter_dictionary : _root_.GlobalTheory.FunPr.ThetaLocalInputs →
   GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m) (X : TriG G i j), TopGrid W i j X → IsStageC W i j (pp D j) (qq D j) X →
     ∀ (A : Fr (G.V (.grid (i + 1) (j + 1)))) (A₁ : Fr (G.V (.grid i j))) (AV : Fr (G.V (.grid i (j + 1)))) (AV₁ : Fr (G.V (.grid (i + 1) j))), IsGridFr W _ A → IsGridFr W _ A₁ → IsGridFr W _ AV → IsGridFr W _ AV₁ →
@@ -37,6 +40,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Tri)
 open GlobalTheory.ConstRatio (Factor)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.TopDict.theta_parameter_dictionary | exact _root_.GlobalTheory.TopDict.theta_parameter_dictionary | (intros; apply _root_.GlobalTheory.TopDict.theta_parameter_dictionary <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.theta_parameter_dictionary_bijective : _root_.GlobalTheory.FunPr.ThetaLocalInputs →
   GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m) (X : TriG G i j), TopGrid W i j X → IsStageC W i j (pp D j) (qq D j) X →
     ∀ (A : Fr (G.V (.grid (i + 1) (j + 1)))) (A₁ : Fr (G.V (.grid i j))) (AV : Fr (G.V (.grid i (j + 1)))) (AV₁ : Fr (G.V (.grid (i + 1) j))), IsGridFr W _ A → IsGridFr W _ A₁ → IsGridFr W _ AV → IsGridFr W _ AV₁ →

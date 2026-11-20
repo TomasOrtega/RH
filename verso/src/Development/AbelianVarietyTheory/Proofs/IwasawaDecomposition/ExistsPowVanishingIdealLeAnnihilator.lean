@@ -13,6 +13,15 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 
 namespace GlobalTheory.QCoh
 
+/- English proof (translation)
+Take `⟨S, hS, hc, hi, rfl⟩` from `NoetherianSpace.exists_finite_set_isClosed_irreducible hT`. Establish `hSne : S.Nonempty`. Take `⟨x, t, ht, -⟩` from `hne`. Conclude with `⟨t, ht⟩`. Take `⟨Z, hZ⟩` from `hS.exists_maximal hSne`.
+
+Establish `hfin : (S \ {Z}).Finite` using `hS.diff`. Use `⟨Z, hc Z hZ.1, hi Z hZ.1, Set.subset_sUnion_of_mem hZ.1, (⋃₀ (S \ {Z}))ᶜ, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[isOpen_compl_iff, Set.sUnion_eq_biUnion]`. Conclude with `hfin.isClosed_biUnion fun t ht => hc t ht.1`. Assume the negation of the conclusion as `h`.
+
+Establish `hsub : Z ⊆ ⋃₀ (hfin.toFinset : Set (Set α))` using `fun x hx => by`. Rewrite using `[hfin.coe_toFinset]`. Assume the negation of the conclusion as `hx'`. Conclude with `h ⟨x, Set.subset_sUnion_of_mem hZ.1 hx, hx'⟩`. Take `⟨z, hz, hZz⟩` from `isIrreducible_iff_sUnion_isClosed.1 (hi Z hZ.1) hfin.toFinset (fun z hz => hc z (hfin.mem_toFinset.1 hz).1) hsub`.
+
+Establish `hz'` using `hfin.mem_toFinset.1 hz`. Conclude with `hz'.2 (le_antisymm (hZ.2 hz'.1 hZz) hZz)`. Introduce and unpack `x ⟨⟨t, ht, hxt⟩, hx⟩`. Assume the negation of the conclusion as `hxZ`. Conclude with `hx ⟨t, ⟨ht, fun e => hxZ ((show t = Z from e) ▸ hxt)⟩, hxt⟩`.
+-/
 theorem exists_isIrreducible_inter_open_subset {α : Type*} [TopologicalSpace α] [NoetherianSpace α]
     {T : Set α} (hT : IsClosed T) (hne : T.Nonempty) :
     ∃ Z : Set α, IsClosed Z ∧ IsIrreducible Z ∧ Z ⊆ T ∧
@@ -42,6 +51,11 @@ theorem exists_isIrreducible_inter_open_subset {α : Type*} [TopologicalSpace α
 
 variable {X : Scheme.{0}}
 
+/- English proof (translation)
+Use `finite_sections F W.2` as an intermediate fact. Establish `: IsNoetherianRing Γ(X, W.1)` using `IsLocallyNoetherian.component_noetherian W`. Use `Ideal.exists_pow_le_of_le_radical_of_fg ?_ (IsNoetherian.noetherian _)` and prove the remaining obligations. Rewrite using `[Scheme.IdealSheafData.vanishingIdeal_ideal, ← PrimeSpectrum.vanishingIdeal_zeroLocus_eq_radical, ← Module.support_eq_zeroLocus, ← fromSpec_preimage_support F W.2]`. Use `PrimeSpectrum.vanishingIdeal_anti_mono fun p hp => h ⟨hp, ?_⟩` and prove the remaining obligations.
+
+Conclude with `W.2.range_fromSpec.le ⟨p, rfl⟩`.
+-/
 theorem exists_pow_vanishingIdeal_le_annihilator [IsLocallyNoetherian X] (F : X.Modules)
     [IsFiniteQC F] (Z : Closeds X) (W : X.affineOpens) (h : support F ∩ W.1 ⊆ Z) :
     ∃ k : ℕ, (Scheme.IdealSheafData.vanishingIdeal Z).ideal W ^ k ≤
@@ -54,6 +68,15 @@ theorem exists_pow_vanishingIdeal_le_annihilator [IsLocallyNoetherian X] (F : X.
   refine PrimeSpectrum.vanishingIdeal_anti_mono fun p hp => h ⟨hp, ?_⟩
   exact W.2.range_fromSpec.le ⟨p, rfl⟩
 
+/- English proof (translation)
+Use `set φ := (Scheme.Modules.pullbackPushforwardAdjunction I.subschemeι).unit.app E with hφ`. Introduce `a ha`. Use `Module.mem_annihilator.2 fun t => ?_` and prove the remaining obligations. Establish `h₁ : appLinear (kernel.ι φ) W.1 t ∈ (I.ideal W • ⊤ : Submodule Γ(X, W.1) Γ(E, W.1))`. Use `(surjective_and_ker_unit_subschemeι I E W).2` as an intermediate fact.
+
+Rewrite `this` using `[← hφ, ← range_kernel_ι_app]`. Conclude with `this.le ⟨t, rfl⟩`. Establish `h₂ : ∀ u ∈ (I.ideal W • ⊤ : Submodule Γ(X, W.1) Γ(E, W.1)), a • u = 0` using `fun u hu => by`. Use `Submodule.smul_induction_on hu (fun r hr n _ => ?_) fun x y hx hy => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`.
+
+Conclude with `Module.mem_annihilator.1 (h (pow_succ (I.ideal W) k ▸ Ideal.mul_mem_mul ha hr)) n`. Rewrite using `[smul_add, hx, hy, add_zero]`. Use `injective_kernel_ι_app φ W.1 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `appLinear (kernel.ι φ) W.1 (a • t) = appLinear (kernel.ι φ) W.1 0`. Rewrite using `[map_smul, map_zero]`.
+
+Conclude with `h₂ _ h₁`.
+-/
 theorem pow_le_annihilator_kernel_unit (I : X.IdealSheafData) (E : X.Modules) [E.IsQuasicoherent]
     (W : X.affineOpens) {k : ℕ}
     (h : I.ideal W ^ (k + 1) ≤ Module.annihilator Γ(X, W.1) Γ(E, W.1)) :
@@ -76,6 +99,21 @@ theorem pow_le_annihilator_kernel_unit (I : X.IdealSheafData) (E : X.Modules) [E
   rw [map_smul, map_zero]
   exact h₂ _ h₁
 
+/- English proof (translation)
+Introduce `X _ P h0 hext hZ`. It suffices to establish `H : ∀ T : Closeds X, ∀ F : X.Modules, IsFiniteQC F → support F = T → P F from fun F hF => H ⟨support F, isClosed_support F⟩ F hF rfl`. Introduce `T`. Proceed by induction on `T using WellFoundedLT.induction with`. Consider the case `ind T ih`.
+
+Introduce `F hF hT`. Establish `ih' : ∀ E : X.Modules, IsFiniteQC E → support E ⊂ (T : Set X) → P E` using `fun E hE h => ih ⟨support E, isClosed_support E⟩ h E hE rfl`. Break down `(T : Set X).eq_empty_or_nonempty with he | hne` into its components or cases. Conclude with `h0 F (support_eq_empty_iff.1 (hT.trans he))`. Take `⟨Z, hZc, hZi, hZT, U, hU, ⟨x, hxT, hxU⟩, hUZ⟩` from `exists_isIrreducible_inter_open_subset T.isClosed hne`.
+
+Take `⟨W, hW, hxW, hWU⟩` from `exists_affine_mem_le (U := ⟨U, hU⟩) x hxU`. Set `Z' : Closeds X` to `⟨Z, hZc⟩`. Establish `hP` using `hZ Z' hZi fun E hE h => ih' E hE (h.trans_subset hZT)`. Take `⟨k, hk⟩` from `exists_pow_vanishingIdeal_le_annihilator F Z' ⟨W, hW⟩ fun y hy => hUZ ⟨hT ▸ hy.1, hWU hy.2⟩`. Establish `key : ∀ (k : ℕ) (E : X.Modules), IsFiniteQC E → support E ⊆ T → (Scheme.IdealSheafData.vanishingIdeal Z').ideal ⟨W, hW⟩ ^ k ≤ Module.annihilator Γ(X, W) Γ(E, W) → P E`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `E hE hET h`. Use `ih' E hE ⟨hET, fun hle => ?_⟩` and prove the remaining obligations.
+
+Establish `h₁` using `(mem_support_iff_annihilator_le (F := E) hW ⟨x, hxW⟩).1 (hle hxT)`. Rewrite `h` using `[pow_zero, Ideal.one_eq_top]`. Conclude with `(hW.primeIdealOf ⟨x, hxW⟩).isPrime.ne_top (top_le_iff.1 (h.trans h₁))`. Consider the case `succ k ihk`. Introduce `E hE hET h`.
+
+Set `G` to `(Scheme.Modules.pullback (redι Z')).obj E`. Set `φ : E ⟶ (Scheme.Modules.pushforward (redι Z')).obj G` to `(Scheme.Modules.pullbackPushforwardAdjunction (redι Z')).unit.app E`. Establish `hepi : Epi φ` using `(epi_iff_forall_affine φ).2 fun V hV => (surjective_and_ker_unit_subschemeι _ E ⟨V, hV⟩).1`. Establish `hS : (ShortComplex.mk (kernel.ι φ) φ (kernel.condition φ)).ShortExact` using `{ exact := ShortComplex.exact_kernel φ }`. Establish `hK : IsFiniteQC (kernel φ)` using `inferInstance`.
+
+Conclude with `hext _ hS hK (IsFiniteQC.of_epi φ) (ihk _ hK ((support_subset_of_mono (kernel.ι φ)).trans hET) (pow_le_annihilator_kernel_unit _ E ⟨W, hW⟩ h)) (hP G inferInstance)`. Conclude with `key k F hF hT.le hk`.
+-/
 theorem devissage : ∀ (X : Scheme.{0}) [AlgebraicGeometry.IsNoetherian X] (P : X.Modules → Prop), (∀ F : X.Modules, IsZero F → P F) → (∀ S : ShortComplex X.Modules, S.ShortExact → IsFiniteQC S.X₁ → IsFiniteQC S.X₃ → P S.X₁ → P S.X₃ → P S.X₂) → (∀ (Z : Closeds X), IsIrreducible (Z : Set X) → (∀ F : X.Modules, IsFiniteQC F → GlobalTheory.QCoh.support F ⊂ (Z : Set X) → P F) → ∀ G : (Scheme.IdealSheafData.vanishingIdeal Z).subscheme.Modules, IsFiniteQC G → P ((Scheme.Modules.pushforward (redι Z)).obj G)) → ∀ F : X.Modules, IsFiniteQC F → P F := by
   intro X _ P h0 hext hZ
   suffices H : ∀ T : Closeds X, ∀ F : X.Modules, IsFiniteQC F → support F = T → P F from

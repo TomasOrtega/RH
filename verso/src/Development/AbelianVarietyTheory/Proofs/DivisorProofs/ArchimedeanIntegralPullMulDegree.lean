@@ -20,6 +20,25 @@ namespace GlobalTheory.ArchPull
 
 open Set
 
+/- English proof (translation)
+Take `⟨V, hVη, hV⟩` from `GlobalTheory.CoverDeg.exists_open_covering_charts hX hY g rfl hη hδ`. Take `⟨hcard, hchart, hlift⟩` from `hV σ`. Use `set F := PtsOver.map g (rfl : g ≫ p = g ≫ p) (spMap σ) with hFdef`. Establish `hFm : Measurable F` using `(PtsOver.continuous_map _ _ _).measurable`. Establish `hpre : ∀ W : X.Opens, F ⁻¹' ptsIn p σ W = ptsIn (g ≫ p) σ (g ⁻¹ᵁ W)`.
+
+Introduce `W`. Use extensionality with `z`. Simplify using `only [Set.mem_preimage, mem_ptsIn]`. Both sides reduce to the same expression. Establish `hUm : MeasurableSet (ptsIn p σ U)` using `(isOpen_ptsIn U).measurableSet`.
+
+Establish `hVm : MeasurableSet (ptsIn p σ V)` using `(isOpen_ptsIn V).measurableSet`. Establish `h0 : (N.φ σ).chernPart e ε (ptsIn p σ V)ᶜ = 0`. Establish `h` using `GlobalTheory.ChernNull.chernPart_over_closed hX ((V : X.Opens) : Set X)ᶜ V.isOpen.isClosed_compl (by simp [hVη]) σ (N.φ σ) ε`. Use `h using 2` and compare the differences between its conclusion and the goal. Use extensionality with `y`.
+
+Simplify using `[mem_ptsIn]`. Establish `hmeas : (g.residueDegree (genericPoint Y) : ℝ≥0∞) • ((N.φ σ).chernPart e ε).restrict (ptsIn p σ U) = Measure.map F ((((N.φ σ).pull g rfl).chernPart e ε).restrict (F ⁻¹' (ptsIn p σ U ∩ ptsIn p σ V)))`. Use extensionality with `A hA`. Rewrite using `[Measure.smul_apply, Measure.restrict_apply hA, Measure.map_apply hFm hA, Measure.restrict_apply (hFm hA), ← Set.preimage_inter, GlobalTheory.CoverChern.chernPart_preimage_of_cover hX hY g rfl (N.φ σ) (N.cInf σ) ε (ptsIn p σ V) (isOpen_ptsIn V) _ hcard hchart hlift (fun c c' hc w …`. Use `set T' := F ⁻¹' (ptsIn p σ U ∩ ptsIn p σ V) with hT'`.
+
+Establish `hT'eq : T' = ptsIn (g ≫ p) σ (g ⁻¹ᵁ U) ∩ ptsIn (g ≫ p) σ (g ⁻¹ᵁ V)`. Rewrite using `[hT', Set.preimage_inter, hpre, hpre]`. Establish `hT'm : MeasurableSet T'` using `hFm (hUm.inter hVm)`. Establish `hT'U : T' ⊆ ptsIn (g ≫ p) σ (g ⁻¹ᵁ U)`. Rewrite using `[hT'eq]`.
+
+Conclude with `Set.inter_subset_left`. Establish `h0' : ((N.φ σ).pull g rfl).chernPart e ε T'ᶜ = 0`. Establish `h` using `GlobalTheory.ChernNull.chernPart_over_closed hY (g ⁻¹' ((U ⊓ V : X.Opens) : Set X)ᶜ) ((U ⊓ V).isOpen.isClosed_compl.preimage g.continuous) (by simp [hη, hU, hVη]) σ ((N.φ σ).pull g rfl) ε`. Use `h using 2` and compare the differences between its conclusion and the goal. Rewrite using `[hT'eq]`.
+
+Use extensionality with `y`. Simplify using `[mem_ptsIn]`. Establish `hae : S' =ᵐ[((N.φ σ).pull g rfl).chernPart e ε] T'`. Use `ae_eq_set.2 ⟨measure_mono_null (fun x hx => hx.2) h0', ?_⟩` and prove the remaining obligations. Rewrite using `[Set.diff_eq_empty.2 (hT'U.trans hsub)]`.
+
+Conclude with `measure_empty`. Establish `hfm : AEStronglyMeasurable f (Measure.map F ((((N.φ σ).pull g rfl).chernPart e ε).restrict T'))`. Rewrite using `[← hmeas]`. Conclude with `(hf.aestronglyMeasurable hUm).smul_measure _`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← hmeas, integral_smul_measure, ENNReal.toReal_natCast, smul_eq_mul]`.
+-/
 theorem setIntegral_pull {k : Type} [CommRing k] {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y]
     {p : X ⟶ Sp k} {e : ℕ} (hX : IsArithVar p e) (g : Y ⟶ X) (hY : IsArithVar (g ≫ p) e)
     (hη : g (genericPoint Y) = genericPoint X) (hδ : g.residueDegree (genericPoint Y) ≠ 0)
@@ -92,6 +111,13 @@ theorem setIntegral_pull {k : Type} [CommRing k] {X Y : Scheme.{0}} [IsIntegral 
     _ = _ := by
         rw [← hmeas, integral_smul_measure, ENNReal.toReal_natCast, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `k _ X Y _ _ p q e hX hY g hg hη hδ M N r hr`. Substitute `hg` using the available equality. Establish `hη' : g (genericPoint Y) ⤳ genericPoint X` using `hη ▸ specializes_rfl`. Establish `hU : genericPoint X ∈ (M.div hr).supp.compl` using `(M.div hr).genericPoint_notMem_supp`. Establish `key : ∀ σ : k →+* ℂ, ((N.restr g).φ σ).chernInt e (offSupp (g ≫ p) σ ((M.restr g).div (MultPull.isRatSec_pull_map g hη' hr))) (logNorm ((M.restr g).φ σ) (fun c => Units.map (TrueGeo.SmallSec.fnMap g hη').toMonoidHom (r (c PUnit.unit)))) = (g.residueDegree (genericPoint Y) : ℝ) * …`.
+
+Introduce `σ`. Establish `hsub` using `fun (y : CxPts (g ≫ p) σ) (hy : y ∈ ptsIn (g ≫ p) σ (g ⁻¹ᵁ (M.div hr).supp.compl)) => ArchIntAlter.mem_offSupp_pull M g hη' hr hy`. Establish `hf'` using `fun (y : CxPts (g ≫ p) σ) (hy : y ∈ ptsIn (g ≫ p) σ (g ⁻¹ᵁ (M.div hr).supp.compl)) => ArchIntAlter.logNorm_pull M g hη' hr hy`. Establish `hc` using `ArchIntAlter.continuousOn_logNorm (M.φ σ) hr (M.cInf σ)`. Unfold `Weight.chernInt`.
+
+Rewrite using `[setIntegral_pull hX g hY hη hδ N σ _ hU _ hc _ hsub _ hf' 1, setIntegral_pull hX g hY hη hδ N σ _ hU _ hc _ hsub _ hf' (-1), mul_sub]`. Both sides reduce to the same expression. Unfold `HermLB.archInt`. Use `(finsum_congr key).trans ?_` and prove the remaining obligations. Conclude with `(mul_finsum _ _).symm`.
+-/
 theorem archInt_pull : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (e : ℕ), IsArithVar p e → IsArithVar q e → ∀ (g : Y ⟶ X) (hg : g ≫ p = q) (hη : g (genericPoint Y) = genericPoint X), g.residueDegree (genericPoint Y) ≠ 0 → ∀ (M N : HermLB p) (r : M.B.ι → X.functionFieldˣ) (hr : IsRatSec M.B r), (N.pull g hg).archInt (M.pull g hg) e (MultPull.isRatSec_pull_map g (hη ▸ specializes_rfl : g (genericPoint Y) ⤳ genericPoint X) hr) = (g.residueDegree (genericPoint Y) : ℝ) * N.archInt M e hr := by
   intro k _ X Y _ _ p q e hX hY g hg hη hδ M N r hr
   subst hg

@@ -20,6 +20,9 @@ def jOf {M : DSModel (D.sp.Y 0) S} {μ : Measure (GA D (D.sp.Y 0))} {𝓕 : Set 
     {ι : GA D (D.sp.Y 0) ≃* X.B.I.GA} {c : ℝ} (h : EvalTie M μ 𝓕 E X G ι c) : E ≃ₗ[ℂ] EEC X G :=
   h.choose_spec.2.choose
 
+/- English proof (translation)
+The claim follows from `h.choose_spec.2.choose_spec T`.
+-/
 theorem jOf_spec {M : DSModel (D.sp.Y 0) S} {μ : Measure (GA D (D.sp.Y 0))} {𝓕 : Set (GA D (D.sp.Y 0))}
     {E : Submodule ℂ (MMap M)} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {G : GoodOp X}
     {ι : GA D (D.sp.Y 0) ≃* X.B.I.GA} {c : ℝ} (h : EvalTie M μ 𝓕 E X G ι c) (T : E) :

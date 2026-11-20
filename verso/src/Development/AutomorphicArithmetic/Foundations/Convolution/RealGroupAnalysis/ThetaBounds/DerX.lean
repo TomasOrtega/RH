@@ -13,6 +13,31 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D O W M π f hf φ hφ Y s hY h`. Take `⟨ω, -, hω⟩` from `UpperTheory.ConvolutionTheory.R2.cen F π`. Take `⟨z, c, hc, hz⟩` from `UpperTheory.ConvolutionTheory.R2.Ff.cenExp F E D s`. Establish `hc0 : c 0 = 1` using `((UpperTheory.ConvolutionTheory.R2.Ff.parCont F).2 c _ hc).1`. Set `χ : ℝ → ℂ` to `fun t => ((ω (ideleNorm F E (z t)) : ℂˣ) : ℂ)`.
+
+Establish `hfx : ∀ t x, f.1 (x * TR.infGL F 2 (c t)) = χ t * f.1 x`. Introduce `t x`. Rewrite using `[← (hz t).2, ← UpperTheory.ConvolutionTheory.R2.scalar_comm, hω f hf]`. Establish `hfun : ∀ t, lift W M f.1 φ (h * infGL E 2 (ex (Y + zE s) t)) = χ t * lift W M f.1 φ (h * infGL E 2 (ex Y t))`. Introduce `t`.
+
+Rewrite using `[(UpperTheory.ConvolutionTheory.R2.Ff.exPar E Y).2.2.2.2 s t, map_mul, (hz t).1, ← mul_assoc, ← UpperTheory.ConvolutionTheory.R2.scalar_comm, mul_assoc]`. Conclude with `(UpperTheory.ConvolutionTheory.R2.equiv F E D W M π f hf φ).2 ω (hω f hf) (z t) _`. Establish `hlin` using `(UpperTheory.ConvolutionTheory.R2.Ff.lin F E D W M π).2.2.2`. Establish `hG` using `UpperTheory.ConvolutionTheory.R2.Ff.derL F E D O W M π f hf φ hφ Y hY h`. Establish `hD : HasDerivAt (fun t => χ t * lift W M f.1 φ h) (lift W M (TR.lie F 2 (zF (trI F s)) f).1 φ h) 0`.
+
+Establish `h0` using `UpperTheory.ConvolutionTheory.R2.Ff.derF F E D W M π f hf φ hφ c _ hc h`. Use `h0.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `e : (fun x => f.1 (x * TR.infGL F 2 (c t))) = χ t • f.1`. Use function extensionality and compare the values at `x`. Conclude with `hfx t x`.
+
+Simplify using `only [e]`. Rewrite using `[hlin]`. Both sides reduce to the same expression. Distinguish the cases in `h0 : f.1 = 0`. Establish `hz0 : ∀ (φ₁ : S4 F) h₁, lift W M f.1 φ₁ h₁ = 0`.
+
+Introduce `φ₁ h₁`. Use `congrFun (hlin f.1 0 φ₁) h₁` as an intermediate fact. Rewrite `this` using `[zero_smul]`. Rewrite `this`, the goal using `[h0]`. Simplify using `using this`.
+
+Establish `hl : lift W M (TR.lie F 2 (zF (trI F s)) f).1 φ h = 0`. Establish `hc' : HasDerivAt (fun t => χ t * lift W M f.1 φ h) 0 0`. Simplify using `only [hz0, mul_zero]`. Conclude with `hasDerivAt_const _ _`. Conclude with `hD.unique hc'`.
+
+Rewrite using `[hl, hz0, add_zero]`. Simplify using `only [hz0]`. Conclude with `hasDerivAt_const _ _`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : ∃ g, f.1 g ≠ 0 := by`. Assume the negation of the conclusion as `hn`.
+
+Use `push_neg at hn`. Conclude with `h0 (funext hn)`. Establish `hcv` using `TR.hasDerivAt_curve f g c _ hc0 hc.2`. Establish `hχ : HasDerivAt χ (TR.lieD (zF (trI F s)) f.1 g / f.1 g) 0`. Use `(hcv.div_const (f.1 g)).congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+
+Use `show χ t = f.1 (g * TR.infGL F 2 (c t)) / f.1 g`. Rewrite using `[hfx, mul_div_assoc, div_self hg, mul_one]`. Establish `hχ0 : χ 0 = 1`. Use `hfx 0 g` as an intermediate fact. Rewrite `this` using `[hc0, map_one, mul_one]`.
+
+Conclude with `(mul_right_cancel₀ hg (by rw [one_mul]; exact this.symm))`. Establish `hex0 : ex Y 0 = 1`. Use `(UpperTheory.ConvolutionTheory.R2.Ff.exPar E Y).1 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`.
+
+Establish `hl` using `hD.unique (hχ.mul_const (lift W M f.1 φ h))`. Establish `hp` using `hχ.mul hG`. Rewrite `hp` using `[hex0, map_one, mul_one, hχ0, one_mul, ← hl, add_comm]`. Conclude with `hp.congr_of_eventuallyEq (Filter.Eventually.of_forall hfun)`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.derX :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (O : Fo.Ops F) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), DerX O W M π := by
   intro F E _ _ _ _ _ _ _ D O W M π f hf φ hφ Y s hY h

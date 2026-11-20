@@ -18,6 +18,21 @@ open Formalism.L2.Col
 
 namespace GlobalTheory.Mem.LiftWt
 
+/- English proof (translation)
+Take `⟨hj, W, hk, hm, ht, hjj, he, hv, hb, hw⟩` from `GlobalTheory.ForcedWeights.lamLForced X.toD7 j h1 h2 τ`. Establish `hk : W.k = X.B.R.k` using `hk`. Establish `hm : W.m = X.B.R.m` using `hm`. Establish `ht : W.t = X.B.R.t` using `ht`. Establish `he : (W.e : ℚ) = (X.B.hc τ).e ⟨j - 1, hj.2⟩` using `he`.
+
+Establish `hv : ∀ a : Fin (X.B.R.k - 1), (W.v (a + 2) : ℚ) = (X.B.hc τ).v a` using `hv`. Establish `hb : ∀ a : Fin X.B.R.m, (W.b (a + 1) : ℚ) = (X.B.hc τ).b a` using `hb`. Establish `hkm` using `X.B.R.m_add_three_le_k`. Establish `q` using `RowPar.lamV_eq (X.B.hc τ) h1 h2 i'`. Establish `hi` using `i'.2`.
+
+Establish `hE : (RowPar.of (X.B.hc τ)).eAt (j - 1) = W.e`. Rewrite using `[he]`. Conclude with `dif_pos hj.2`. Establish `hB : ∀ n, n < X.B.R.m → (RowPar.of (X.B.hc τ)).bAt n = W.b (n + 1)` using `fun n hn => by`. Rewrite using `[hb ⟨n, hn⟩]`.
+
+Conclude with `dif_pos hn`. Establish `key : W.lamPrime (i'.1 + 1) = (RowPar.of (X.B.hc τ)).lamVQ j i'`. Unfold `Ranks.nV Ranks.r at hi`. Unfold `IndefiniteWeightData.WeightData.lamPrime IndefiniteWeightData.WeightData.thetaWt IndefiniteWeightData.WeightData.dTau IndefiniteWeightData.WeightData.aPlus IndefiniteWeightData.WeightData.aMinus IndefiniteWeightData.WeightData.lam IndefiniteWeightData.WeightData.nV IndefiniteWeig …`. Rewrite using `[hk, hm, ht, hjj, hE]`.
+
+Use `congr 1`. Distinguish the cases in `a : i'.1 < X.B.R.k + j - 1`. Rewrite using `[if_pos a, if_pos (show i'.1 + 1 ≤ _ from a), Nat.add_sub_cancel]`. Distinguish the cases in `b : i'.1 < X.B.R.k - 1`. Rewrite using `[dif_pos b, if_pos (show i'.1 + 1 ≤ _ from b), hv ⟨_, b⟩]`.
+
+Both sides reduce to the same expression. Rewrite using `[dif_neg b, if_neg (show ¬ i'.1 + 1 ≤ _ from b), hB _ (by omega), Int.cast_neg, show i'.1 + 1 - (X.B.R.k - 1) = i'.1 - (X.B.R.k - 1) + 1 by omega]`. Both sides reduce to the same expression. Rewrite using `[if_neg a, if_neg (show ¬ i'.1 + 1 ≤ _ from a)]`. Distinguish the cases in `b : i'.1 < X.B.R.k + j - 1 + X.B.R.t`.
+
+Rewrite using `[if_pos b, if_pos (show i'.1 + 1 ≤ _ from b)]`. Rewrite using `[if_neg b, if_neg (show ¬ i'.1 + 1 ≤ _ from b), hB _ (by omega), show X.B.R.m - j + 1 - (X.B.R.m - j + 1 - (i'.1 + 1 - (X.B.R.k + j - 1) - X.B.R.t)) = i'.1 - (X.B.R.k + j - 1 + X.B.R.t) + 1 by omega, show j + (i'.1 - (X.B.R.k + j - 1 + X.B.R.t) + 1) - 1 + 1 = j + (i'.1 - (X.B.R.k …`. Use `(hw i).trans ((e ▸ key).trans q.symm)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+-/
 theorem lamLdef_eq_lamV (X : Stages) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ X.B.R.m) (τ) (i : Fin (X.toD7.sp.V j).rank)
     (i' : Fin X.B.R.nV) (e : (i : ℕ) = i') :
     (Bridge.lamLdef (D := X.toD7) (X.toD7.sp.V j).rank j τ).w i = (X.B.wts.lamV j τ).w i' := by
@@ -60,6 +75,9 @@ theorem lamLdef_eq_lamV (X : Stages) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ X.B.R.
   have := (hw i).trans ((e ▸ key).trans q.symm)
   exact_mod_cast this
 
+/- English proof (translation)
+Introduce `X i τ a`. Conclude with `(lamLdef_eq_lamV X ((i : ℕ) + 1) (by omega) i.2 τ _ a rfl).symm`.
+-/
 theorem lamV_eq_lamLdef : ∀ (X : Stages) (i : Fin X.toD7.R.m) (τ : X.B.fields.Tau) (a : Fin X.B.R.nV),
     (X.B.wts.lamV ((i : ℕ) + 1) τ).w a =
       (Bridge.lamLdef (D := X.toD7) (Vc X.toD7 i).rank ((i : ℕ) + 1) τ).w (Fin.cast (LiftBrg.rkEq X i) a) := by

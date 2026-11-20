@@ -19,14 +19,23 @@ end GlobalTheory.LKCx
 namespace GlobalTheory.LKCx
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pairOf_β {G : HTGroup p} (F : Form G) (r : grp G F.β) (h : RegEl G (r : G.Cˣ × ℚˣ).1) :
     (pairOf F r h).β = F.β := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pairOf_γ {G : HTGroup p} (F : Form G) (r : grp G F.β) (h : RegEl G (r : G.Cˣ × ℚˣ).1) :
     (pairOf F r h).γ = (r : G.Cˣ × ℚˣ).1 := rfl
 
 open GlobalTheory.LKTrip.Example GlobalTheory.LKMid.Example in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨exPair.reg, rfl⟩`.
+-/
 example : ∃ (h : RegEl (ex 1 one_ne_zero) exPair.γ),
     pairOf (Form.ofPair exPair) ⟨(exPair.γ, exPair.c), exPair.sim, by show (0:ℚ) < 5; norm_num⟩ h = exPair :=
   ⟨exPair.reg, rfl⟩

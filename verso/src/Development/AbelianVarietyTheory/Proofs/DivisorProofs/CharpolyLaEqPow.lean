@@ -7,6 +7,11 @@ open NumberField Polynomial
 
 namespace GlobalTheory.UPel.HT
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis ℤ M`. Establish `hA : aeval (LinearMap.toMatrixAlgEquiv b f) μ = 0`. Use `Polynomial.aeval_algHom_apply (LinearMap.toMatrixAlgEquiv b).toAlgHom f μ` as an intermediate fact. Simplify `this` using `[h]`. Establish `hd` using `GlobalTheory.UnitLemma.Centraliser.charpoly_dvd_pow_of_aeval_eq_zero _ μ hA`.
+
+Establish `hc : (LinearMap.toMatrixAlgEquiv b f).charpoly = f.charpoly` using `LinearMap.charpoly_toMatrix f b`. Rewrite `hd` using `[hc]`. Take `⟨i, -, hi'⟩` from `(dvd_prime_pow hi.prime _).1 hd`. Conclude with `⟨i, eq_of_monic_of_associated (LinearMap.charpoly_monic f) (hm.pow i) hi'⟩`.
+-/
 theorem charpoly_eq_pow_of_aeval_irreducible {M : Type*} [AddCommGroup M] [Module.Free ℤ M] [Module.Finite ℤ M]
     (f : Module.End ℤ M) (μ : ℤ[X]) (hm : μ.Monic) (hi : Irreducible μ) (h : aeval f μ = 0) :
     ∃ s : ℕ, f.charpoly = μ ^ s := by
@@ -21,6 +26,9 @@ theorem charpoly_eq_pow_of_aeval_irreducible {M : Type*} [AddCommGroup M] [Modul
   obtain ⟨i, -, hi'⟩ := (dvd_prime_pow hi.prime _).1 hd
   exact ⟨i, eq_of_monic_of_associated (LinearMap.charpoly_monic f) (hm.pow i) hi'⟩
 
+/- English proof (translation)
+The claim follows from `D.freeLa; haveI := D.finLa LinearMap.charpoly (DistribMulAction.toLinearMap ℤ D.La (algebraMap (𝓞 D.F) D.O c)) = (LinearMap.charpoly (LinearMap.mulLeft ℤ c)) ^ (D.m * D.n) := by haveI := D.freeLa; haveI := D.finLa have hint : IsIntegral ℤ c := RingOfIntegers.isIntegral c have hm …`.
+-/
 theorem Datum.charpoly_La_eq_pow (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (c : 𝓞 D.F) :
     haveI := D.freeLa; haveI := D.finLa
     LinearMap.charpoly (DistribMulAction.toLinearMap ℤ D.La (algebraMap (𝓞 D.F) D.O c)) =

@@ -13,6 +13,21 @@ noncomputable section
 
 namespace GlobalTheory.DblEval.L2RightPartial
 
+/- English proof (translation)
+Introduce `F _ _ κ κ' _ _ T hT hmem μ hμ`. Use `letI mX : MeasurableSpace (κ → AF F) := borel _`. Use `haveI : BorelSpace (κ → AF F) := ⟨rfl⟩`. Use `letI mY : MeasurableSpace (κ' → AF F) := borel _`. Use `haveI : BorelSpace (κ' → AF F) := ⟨rfl⟩`.
+
+Use `letI mZ : MeasurableSpace (κ ⊕ κ' → AF F) := borel _`. Use `haveI : BorelSpace (κ ⊕ κ' → AF F) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (AF F) := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `haveI : SecondCountableTopology (AF F) := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := hμ`.
+
+Set `μ₁ : Measure (κ → AF F)` to `Measure.addHaar`. Set `μ₂ : Measure (κ' → AF F)` to `Measure.addHaar`. Take `⟨C, hC⟩` from `hT μ₂ inferInstance`. Set `e : (κ ⊕ κ' → AF F) ≃ₜ (κ → AF F) × (κ' → AF F)` to `Homeomorph.sumArrowHomeomorphProdArrow`. Set `eA : (κ ⊕ κ' → AF F) ≃ₜ+ (κ → AF F) × (κ' → AF F)` to `{ e.toEquiv with map_add' := fun _ _ => rfl continuous_toFun := e.continuous continuous_invFun := e.symm.continuous }`.
+
+Use `haveI : (μ.map eA).IsAddHaarMeasure := ContinuousAddEquiv.isAddHaarMeasure_map μ eA`. Use `set c := (μ.map eA).addHaarScalarFactor (μ₁.prod μ₂)`. Establish `hprod : μ.map eA = c • μ₁.prod μ₂` using `Measure.isAddLeftInvariant_eq_smul _ _`. Establish `key : ∀ g : (κ ⊕ κ' → AF F) → ℝ≥0∞, Measurable g → ∫⁻ z, g z ∂μ = c * ∫⁻ a, ∫⁻ b, g (Sum.elim a b) ∂μ₂ ∂μ₁`. Introduce `g hg`.
+
+Establish `h1 : ∫⁻ z, g z ∂μ = ∫⁻ p, g (e.symm p) ∂(μ.map eA)`. Rewrite using `[show μ.map eA = μ.map e.toMeasurableEquiv from rfl, lintegral_map_equiv]`. Use `lintegral_congr fun z => ?_` and prove the remaining obligations. Conclude with `congrArg g (e.symm_apply_apply z).symm`. Rewrite using `[h1, hprod, lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul, lintegral_prod (fun p => g (e.symm p)) (hg.comp e.symm.continuous.measurable).aemeasurable]`.
+
+Both sides reduce to the same expression. Establish `hmeas : ∀ Φ ∈ schA F (κ ⊕ κ'), Measurable fun z => ‖Φ z‖ₑ ^ 2` using `fun Φ hΦ => ((GlobalTheory.ThetaTransformMeas.continuous_of_mem_schA F hΦ).measurable.enorm).pow_const 2`. Use `⟨C, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `hslice : ∀ a : κ → AF F, (fun x => Φ (Sum.elim a x)) ∈ schA F κ'` using `fun a => GlobalTheory.ThK.Adapt.slice_mem_schA (Equiv.refl (κ ⊕ κ')) a hΦ`. Establish `hin : ∀ a : κ → AF F, ∫⁻ b, ‖partR T Φ (Sum.elim a b)‖ₑ ^ 2 ∂μ₂ = C * ∫⁻ b, ‖Φ (Sum.elim a b)‖ₑ ^ 2 ∂μ₂` using `fun a => hC _ (hslice a)`.
+
+Establish `hm2 : Measurable fun a : κ → AF F => ∫⁻ b, ‖Φ (Sum.elim a b)‖ₑ ^ 2 ∂μ₂` using `((hmeas Φ hΦ).comp e.symm.continuous.measurable).lintegral_prod_right'`. Rewrite using `[key _ (hmeas _ (hmem Φ hΦ)), key _ (hmeas Φ hΦ)]`. Repeatedly rewrite using `[hin]`. Rewrite using `[lintegral_const_mul _ hm2, mul_left_comm]`.
+-/
 theorem partR_lintegral_sq_eq_const_mul_of_mem_schA : ∀ {F : Type} [Field F] [NumberField F] {κ κ' : Type} [Fintype κ] [Fintype κ']
     (T : ((κ' → AF F) → ℂ) →ₗ[ℂ] ((κ' → AF F) → ℂ)),
     (∀ μ : @Measure (κ' → AF F) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →

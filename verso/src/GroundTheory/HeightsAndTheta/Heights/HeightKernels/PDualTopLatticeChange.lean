@@ -27,6 +27,11 @@ def supStandard (F : HermLattice K i) : HermLattice K i where
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Use extensionality with `a c`. Simplify using `only [gramAt, embVec, Matrix.one_mulVec, dotProduct, Pi.star_apply, Pi.single_apply, apply_ite σ, map_one, map_zero, Matrix.one_apply]`. Distinguish the cases in `h : a = c`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[h, Ne.symm h]`.
+-/
 theorem gramAt_one_single (σ : K →+* ℂ) :
     gramAt (1 : Matrix (Fin i) (Fin i) ℂ) σ (fun j : Fin i => (Pi.single j 1 : Fin i → K)) = 1 := by
   ext a c
@@ -37,6 +42,11 @@ theorem gramAt_one_single (σ : K →+* ℂ) :
     simp
   · simp [h, Ne.symm h]
 
+/- English proof (translation)
+Establish `hinf : (HermLattice.standard K i).lattice ⊓ (Submodule.span K (Set.range fun j : Fin i => (Pi.single j 1 : Fin i → K))).restrictScalars (𝓞 K) = (HermLattice.standard K i).lattice` using `inf_eq_left.mpr (Submodule.span_le_restrictScalars (𝓞 K) K _)`. Simplify using `only [HermLattice.degree, subDegree, hinf]`. Establish `hstd : (HermLattice.standard K i).metric = fun _ => 1` using `rfl`. Simplify using `only [hstd, gramAt_one_single, Matrix.det_one, Complex.one_re, Real.log_one, Finset.sum_const_zero, mul_zero, sub_zero, genIndex]`. Use `show Real.log (((HermLattice.standard K i).lattice.toAddSubgroup.relIndex (HermLattice.standard K i).lattice.toAddSubgroup : ℝ) / ((HermLattice.standard K i).lattice.toAddSubgroup.relIndex (HermLattice.standard K i).lattice.toAddSubgroup : ℝ)) = 0`.
+
+Simplify using `[AddSubgroup.relIndex_self]`.
+-/
 theorem standard_degree : (HermLattice.standard K i).degree = 0 := by
   have hinf : (HermLattice.standard K i).lattice ⊓
       (Submodule.span K (Set.range fun j : Fin i => (Pi.single j 1 : Fin i → K))).restrictScalars (𝓞 K) =
@@ -56,6 +66,11 @@ end TopDualLatticeChange
 
 open TopDualLatticeChange in
 
+/- English proof (translation)
+Introduce `K _ _ i F T T' _ _ _ _ b hb b' hb' II hi hII`. Take `⟨TG, hTG, hdTG, ⟨bG⟩⟩` from `DualLatticeBasisExists.proof K i (supStandard F)`. Establish `hbG` using `DualEmbBijective.proof K i (supStandard F) TG bG`. Establish `h1` using `hSub K i (supStandard F) F TG T bG hbG b hb II hi hII le_sup_left`. Establish `h2` using `hSub K i (supStandard F) (HermLattice.standard K i) TG T' bG hbG b' hb' II hi hII le_sup_right`.
+
+Establish `hstd : (HermLattice.standard K i).withStdMetric.degree = 0` using `standard_degree`. Establish `hline : dualLine (HermLattice.standard K i).withStdMetric b' hb' = dualLine (HermLattice.standard K i) b' hb'` using `rfl`. Rewrite `h2` using `[hline, hstd]`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem DualTopLatticeChange.proof (hSub : DualTopSubLattice.Statement) :
     DualTopLatticeChange.Statement := by
   intro K _ _ i F T T' _ _ _ _ b hb b' hb' II hi hII

@@ -12,6 +12,23 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ hϖ Ω _ _ K _ _ ι _ y d hV N E _ _ B B' hB w w' x x' f g hfl M M' a₀ a₀' φ φ' hφ hφ' Φ _ _ _ _ e t ht k hk r a ha`. Use `set I := pointIdeal O (flagClosurePt y w e φ φ' t (k + 1)) with hI`. Establish `hIp : I.IsPrime` using `(hModel O ϖ hϖ Ω K ι y d hV N E B B' hB w w' x x' f g hfl M M' a₀ a₀' φ φ' hφ hφ' Φ e t ht (k + 1) (Nat.le_add_left 1 k) hk).1.multiProj.isPrime`. Establish `hpt : ∀ (j : ℕ) (p : Σ k, ι k), flagClosurePt y w e φ φ' t j ⟨some (some p.1), p.2⟩ = algebraMap Ω Φ (y p)` using `fun _ _ => rfl`. Establish `hlift : ∀ i, liftPairForm M M' (a i) ∉ I` using `fun i hm => ha i ((liftPairForm_mem_iff (hpt (k + 1)) _).1 hm)`.
+
+Take `⟨f₃, g₃, hD₃, hv₃, hk₃⟩` from `hD0 O ϖ hϖ Ω K ι y d hV N E B B' hB w w' x x' f g hfl M M' a₀ a₀' φ φ' hφ hφ' Φ e t ht k hk`. Set `bad : MRing (bundleIdx (bundleIdx ι M) M') O → Set (Ideal (MRing (bundleIdx (bundleIdx ι M) M') O))` to `fun z => {Q | Q ∈ (I ⊔ Ideal.span {z}).minimalPrimes ∧ IsRelevant Q ∧ (C ϖ : MRing (bundleIdx (bundleIdx ι M) M') O) ∉ Q}`. Set `T` to `bad f₃ ∪ bad g₃ ∪ ⋃ i, bad (liftPairForm M M' (a i))`. Establish `hbfin : ∀ z, (bad z).Finite` using `fun z => (Ideal.finite_minimalPrimes_of_isNoetherianRing _ (I ⊔ Ideal.span {z})).subset fun Q hQ => hQ.1`. Establish `hTfin : T.Finite` using `((hbfin _).union (hbfin _)).union (Set.finite_iUnion fun i => hbfin _)`.
+
+Establish `hbad : ∀ z, ∀ Q ∈ bad z, Q.IsPrime ∧ IsRelevant Q ∧ I ≤ Q ∧ (C ϖ : MRing (bundleIdx (bundleIdx ι M) M') O) ∉ Q` using `fun z Q hQ => ⟨hQ.1.1.1, hQ.2.1, le_sup_left.trans hQ.1.1.2, hQ.2.2⟩`. Take `⟨cs, ch, s, h, hs, hh, hdeg, hsI, hhI, hval, havoid⟩` from `hForms O ϖ hϖ Ω K ι y d hV N E B B' hB w w' x x' f g hfl M M' a₀ a₀' φ φ' hφ hφ' Φ e t ht k hk hTfin.toFinset (by`. Introduce `Q hQ`. Break down `(hTfin.mem_toFinset.1 hQ) with (hQ | hQ) | hQ` into its components or cases. Conclude with `hbad _ Q hQ`.
+
+Conclude with `hbad _ Q hQ`. Take `⟨i, hi⟩` from `Set.mem_iUnion.1 hQ`. Conclude with `hbad _ Q hi)`. Establish `hdiv` using `hDiv O ϖ hϖ Ω K ι y d hV N E B B' hB w w' x x' f g hfl M M' a₀ a₀' φ φ' hφ hφ' Φ e t ht k hk cs ch s h hs hh hdeg hsI hhI hval`. Use `⟨cs, ch, s, h, f₃, g₃, hs, hh, hdeg, hsI, hhI, hval, hdiv, hD₃, hv₃, hk₃, ?_⟩` and prove the remaining obligations.
+
+Introduce `H hH hϖH`. Distinguish the cases in `hh0 : divCycle I h H = 0`. Establish `hs0 : divCycle I s H ≠ 0` using `hH.resolve_right (not_not.2 hh0)`. Establish `hne : ratDiv I s h H ≠ 0`. Unfold `ratDiv`.
+
+Rewrite using `[hh0, sub_zero]`. Conclude with `hs0`. Rewrite `hne` using `[hdiv H hϖH]`. Use `split_ifs at hne with hc`. Take `⟨hk0, rfl⟩` from `hc`.
+
+Take `⟨hf, hg, -⟩` from `hk₃ hk0`. Conclude with `⟨hf, hg, fun i hm => ha i ((liftPairForm_mem_iff (hpt k) _).1 hm)⟩`. Conclude with `absurd rfl hne`. Take `⟨hmin, hrel⟩` from `relevant_minimal_of_divCycle_ne_zero hh0`. Establish `hhH : h ∈ H` using `hmin.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self h))`.
+
+Establish `avoid : ∀ z, z ∉ I → (H ∈ bad z → H ∈ T) → z ∉ H`. Introduce `z hz hT hzH`. Conclude with `havoid H (hTfin.mem_toFinset.2 (hT ⟨mem_minimalPrimes_sup_span_of_mem hmin hz hzH, hrel, hϖH⟩)) hhH`. Conclude with `⟨avoid f₃ hD₃.num_not_mem fun h' => Set.mem_union_left _ (Set.mem_union_left _ h'), avoid g₃ hD₃.den_not_mem fun h' => Set.mem_union_left _ (Set.mem_union_right _ h'), fun i => avoid _ (hlift i) fun h' => Set.mem_union_right _ (Set.mem_iUnion.2 ⟨i, h'⟩)⟩`.
+-/
 theorem SegreFlagCutSection.proof (hModel : SegreFlagClosureModel.Statement)
     (hForms : SegreFlagCutForms.Statement) (hDiv : SegreFlagCutDivisor.Statement)
     (hD0 : SegreFlagDegreeZero.Statement) : SegreFlagCutSection.Statement := by

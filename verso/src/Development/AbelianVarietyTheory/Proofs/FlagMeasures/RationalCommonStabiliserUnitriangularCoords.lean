@@ -15,6 +15,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.HL.StCoord
 
+/- English proof (translation)
+Establish `hs : ∀ x : D.host.E, D.conjF x = star x` using `fun x => by`. Rewrite using `[D.conjF_eq]`. Conclude with `(Formalism.BasicNotions.Examples₂.star_eq_conj D.host x).symm`. Use function extensionality and compare the values at `a b`. Use `c.h_eq (frame F0' b) (frame F0 a)` as an intermediate fact.
+
+Simplify using `only [GFrames.Zh, Matrix.of_apply, c.f_eq, c.f'_eq]`. Simplify using `only [hs]`. Conclude with `this`.
+-/
 theorem zh_eq (D : D7) (Z : LocDat D) {T T' : D.host.E} (F0 : LFlag (VS D) D.R.rS T) (F0' : LFlag (VS D) D.R.rS T')
     (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS) (G : GFrames (placesOf Z) D.R.rS D.R.k)
     (c : GCoord Z F0 F0' FP G) : G.Zh = ZhatL F0 F0' := by
@@ -26,6 +31,19 @@ theorem zh_eq (D : D7) (Z : LocDat D) {T T' : D.host.E} (F0 : LFlag (VS D) D.R.r
   simp only [hs]
   exact this
 
+/- English proof (translation)
+Introduce `D X Y u u' _ _ w F00 F'0 FP hw _ _ G c`. Establish `hZ : Formalism.MainNotions.S.ZhatOM G.Zh = Formalism.MainNotions.S.ptMat w` using `by rw [zh_eq D _ F00 F'0 FP G c]; exact hw`. Establish `hinv : ∀ x, (D.conjF : D.host.E →+* D.host.E) ((D.conjF : D.host.E →+* D.host.E) x) = x`. Introduce `x`. Establish `hs : ∀ x : D.host.E, D.conjF x = star x` using `fun x => by`.
+
+Rewrite using `[D.conjF_eq]`. Conclude with `(Formalism.BasicNotions.Examples₂.star_eq_conj D.host x).symm`. Use `show D.conjF (D.conjF x) = x`. Rewrite using `[hs, hs, star_star]`. Take `⟨hb1, hb2⟩` from `GlobalTheory.T.unitriangularStabilizer_pointMatrix_blockDiagonal (D.conjF : D.host.E →+* D.host.E) hinv D.R.rS w G.Zh hZ`.
+
+Establish `up : ∀ s : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E, ((∀ i j, j < i → s i j = 0) ∧ (∀ i, s i i = 1)) ↔ Formalism.MainNotions.S.IsUpUni s`. Introduce `s`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i j`. Conclude with `⟨h1 i j, fun h => h ▸ h2 i⟩`.
+
+Introduce `h`. Conclude with `⟨fun i j hij => (h i j).1 hij, fun i => (h i i).2 rfl⟩`. Use `⟨fun x hx => ?_, fun B hB hBb => ?_⟩` and prove the remaining obligations. Take `⟨s, s', hs, hs', hf, hf'⟩` from `GlobalTheory.T.globalFrameStabilizer_acts_unitriangular _ _ _ G x hx`. Establish `hZs` using `(GlobalTheory.T.hermitianStabiliser_rational_unitriangular_pairs _ _ _ G s s' hs hs').2 ⟨x, hx, hf, hf'⟩`.
+
+Conclude with `⟨s', (up s').1 hs', hf', hb1 s s' ((up s).1 hs) ((up s').1 hs') hZs⟩`. Take `⟨s, hs, hZs⟩` from `hb2 B hB hBb`. Take `⟨h, hh, -, hh'⟩` from `(GlobalTheory.T.hermitianStabiliser_rational_unitriangular_pairs _ _ _ G s B ((up s).2 hs) ((up B).2 hB)).1 hZs`. Use `⟨h, ⟨hh, hh'⟩, fun y ⟨hy, hy'⟩ => ?_⟩` and prove the remaining obligations. Establish `h1 : h⁻¹ * y = 1`.
+
+Use `GlobalTheory.T.rationalCommonStabiliser_eq_one_of_fixes_second_frame _ _ _ G _ (G.St.mul_mem (G.St.inv_mem hh) hy) fun b => ?_` and prove the remaining obligations. Use `show h.symm (y (G.f' b)) = G.f' b`. Rewrite using `[hy', ← hh' b, LinearEquiv.symm_apply_apply]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem stab_coords : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), Formalism.MainNotions.S.Cnt.Stand D u u' → 4 * D.R.rS + 7 ≤ D.R.k → ∀ (w : Point D.host.E (D.R.rS + 1)) (F00 : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F'0 : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (FP : ∀ p : PlF D, LocNG.FPair (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) D.R.rS), ZhatOM (ZhatL F00 F'0) = ptMat w → Gval F00 F'0 ≠ 0 → (∀ p, AtBase (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p F00 F'0 (Tu D u) (Tu D u') (FP p) ∧ (FP p).RelG (LocNG.theta (Y.M p))) → ∀ (G : GFrames (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) D.R.rS D.R.k) (c : GCoord (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) F00 F'0 FP G), (∀ x ∈ G.St, ∃ B : Formalism.L2.SG.PairVal.MatR D, IsUpUni B ∧ (∀ b, x (G.f' b) = ∑ a, B a b • G.f' a) ∧ ∀ a b : Fin (D.R.rS + 1), Formalism.L2.SG.RealObj.blkOf w.1 a.1 ≠ Formalism.L2.SG.RealObj.blkOf w.1 b.1 → B a b = 0) ∧ ∀ B : Formalism.L2.SG.PairVal.MatR D, IsUpUni B → (∀ a b : Fin (D.R.rS + 1), Formalism.L2.SG.RealObj.blkOf w.1 a.1 ≠ Formalism.L2.SG.RealObj.blkOf w.1 b.1 → B a b = 0) → ∃! x, x ∈ G.St ∧ ∀ b, x (G.f' b) = ∑ a, B a b • G.f' a := by
   intro D X Y u u' _ _ w F00 F'0 FP hw _ _ G c
   have hZ : Formalism.MainNotions.S.ZhatOM G.Zh = Formalism.MainNotions.S.ptMat w := by rw [zh_eq D _ F00 F'0 FP G c]; exact hw

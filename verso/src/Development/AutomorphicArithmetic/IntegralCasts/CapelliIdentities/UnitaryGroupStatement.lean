@@ -1,5 +1,8 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `V _ _`. Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.EndomorphismFiltrationMulMem.aux1 :
     ∀ {V : Type} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V], SMulCommClass ℂ ℂ V := by
   intro V _ _
@@ -15,6 +18,13 @@ noncomputable def UpperTheory.Reformulated.B.EndomorphismFiltrationMulMem.U :
         {x : Module.End ℂ V |
           ∃ (l : List (Fin n × Fin n)), l.length ≤ k ∧ x = (List.map (fun (p : Fin n × Fin n) ↦ E p.1 p.2) l).prod}
 
+/- English proof (translation)
+Introduce `n V _ _ E j k x y hx hy`. Establish `h : UpperTheory.Reformulated.B.EndomorphismFiltrationMulMem.U E j * UpperTheory.Reformulated.B.EndomorphismFiltrationMulMem.U E k ≤ UpperTheory.Reformulated.B.EndomorphismFiltrationMulMem.U E (j + k)`. Unfold `UpperTheory.Reformulated.B.EndomorphismFiltrationMulMem.U`. Rewrite using `[Submodule.span_mul_span]`. Apply `Submodule.span_le.mpr` to reduce the goal to its premises.
+
+Introduce and unpack `z ⟨a, ⟨l1, hl1, rfl⟩, b, ⟨l2, hl2, rfl⟩, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨l1 ++ l2, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [List.length_append]`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `[List.map_append, List.prod_append]`. Conclude with `h (Submodule.mul_mem_mul hx hy)`.
+-/
 theorem UpperTheory.Reformulated.B.EndomorphismFiltrationMulMem.main :
     ∀ {n : ℕ} {V : Type} [inst : AddCommGroup V] [inst_1 : _root_.Module ℂ V] (E : Fin n → Fin n → Module.End ℂ V) {j k : ℕ}
       {x y : Module.End ℂ V},

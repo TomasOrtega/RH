@@ -32,6 +32,11 @@ def addBundle {A T : Over S} [MonObj A] (M : LB (A ⊗ T).left) : LB (A ⊗ (A �
       (ev M (snd A (A ⊗ T) ≫ fst A T) (snd A (A ⊗ T) ≫ snd A T)))
     (ev M (fst A (A ⊗ T) * (snd A (A ⊗ T) ≫ fst A T)) (snd A (A ⊗ T) ≫ snd A T))
 
+/- English proof (translation)
+Introduce `x hx`. Establish `e : g.base (f.base x) = g'.base (f'.base x)`. Rewrite using `[← Scheme.Hom.comp_apply, h, Scheme.Hom.comp_apply]`. Use `show g'.base (f'.base x) ∈ U`. Rewrite using `[← e]`.
+
+Conclude with `hx`.
+-/
 theorem preimage_le_of_comp {X Y Z W : Scheme.{0}} {f : X ⟶ Y} {g : Y ⟶ W} {f' : X ⟶ Z} {g' : Z ⟶ W}
     (h : f ≫ g = f' ≫ g') (U : W.Opens) : f ⁻¹ᵁ (g ⁻¹ᵁ U) ≤ f' ⁻¹ᵁ (g' ⁻¹ᵁ U) := by
   intro x hx
@@ -41,6 +46,9 @@ theorem preimage_le_of_comp {X Y Z W : Scheme.{0}} {f : X ⟶ Y} {g : Y ⟶ W} {
   rw [← e]
   exact hx
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp [pmap2, ptFst, pmap]`.
+-/
 theorem prodMapPairTimesIdentity_fst {A A' : Over S} (q : A ⟶ A') (T : Over S) :
     (pmap2 q T).left ≫ (lift (fst A' (A' ⊗ T)) (snd A' (A' ⊗ T) ≫ snd A' T)).left =
       (ptFst A T).left ≫ (pmap q T).left := by
@@ -48,6 +56,9 @@ theorem prodMapPairTimesIdentity_fst {A A' : Over S} (q : A ⟶ A') (T : Over S)
   congr 1
   ext <;> simp [pmap2, ptFst, pmap]
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp [pmap2, ptSnd, pmap]`.
+-/
 theorem prodMapPairTimesIdentity_snd {A A' : Over S} (q : A ⟶ A') (T : Over S) :
     (pmap2 q T).left ≫ (lift (snd A' (A' ⊗ T) ≫ fst A' T) (snd A' (A' ⊗ T) ≫ snd A' T)).left =
       (ptSnd A T).left ≫ (pmap q T).left := by
@@ -55,6 +66,9 @@ theorem prodMapPairTimesIdentity_snd {A A' : Over S} (q : A ⟶ A') (T : Over S)
   congr 1
   ext <;> simp [pmap2, ptSnd, pmap]
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp [pmap2, ptMul, pmap, MonObj.comp_mul, MonObj.mul_comp]`.
+-/
 theorem prodMapPairTimesIdentity_mul {A A' : Over S} [MonObj A] [MonObj A'] (q : A ⟶ A') [IsMonHom q] (T : Over S) :
     (pmap2 q T).left ≫ (lift (fst A' (A' ⊗ T) * (snd A' (A' ⊗ T) ≫ fst A' T)) (snd A' (A' ⊗ T) ≫ snd A' T)).left =
       (ptMul A T).left ≫ (pmap q T).left := by
@@ -62,18 +76,27 @@ theorem prodMapPairTimesIdentity_mul {A A' : Over S} [MonObj A] [MonObj A'] (q :
   congr 1
   ext <;> simp [pmap2, ptMul, pmap, MonObj.comp_mul, MonObj.mul_comp]
 
+/- English proof (translation)
+Use `le_trans ?_ (preimage_le_of_comp (prodMapPairTimesIdentity_fst q T) _)` and prove the remaining obligations. Introduce `x hx`. Conclude with `LB.wchart_le M _ k.1.1 PUnit.unit hx.1.1`.
+-/
 theorem addGen_le₁ {A A' T : Over S} [MonObj A'] (q : A ⟶ A') (M : LB (A' ⊗ T).left) (k : (addBundle M).ι) :
     (pmap2 q T).left ⁻¹ᵁ (addBundle M).U k ≤ (ptFst A T).left ⁻¹ᵁ ((pmap q T).left ⁻¹ᵁ M.U (k.1.1 PUnit.unit)) := by
   refine le_trans ?_ (preimage_le_of_comp (prodMapPairTimesIdentity_fst q T) _)
   intro x hx
   exact LB.wchart_le M _ k.1.1 PUnit.unit hx.1.1
 
+/- English proof (translation)
+Use `le_trans ?_ (preimage_le_of_comp (prodMapPairTimesIdentity_snd q T) _)` and prove the remaining obligations. Introduce `x hx`. Conclude with `LB.wchart_le M _ k.1.2 PUnit.unit hx.1.2`.
+-/
 theorem addGen_le₂ {A A' T : Over S} [MonObj A'] (q : A ⟶ A') (M : LB (A' ⊗ T).left) (k : (addBundle M).ι) :
     (pmap2 q T).left ⁻¹ᵁ (addBundle M).U k ≤ (ptSnd A T).left ⁻¹ᵁ ((pmap q T).left ⁻¹ᵁ M.U (k.1.2 PUnit.unit)) := by
   refine le_trans ?_ (preimage_le_of_comp (prodMapPairTimesIdentity_snd q T) _)
   intro x hx
   exact LB.wchart_le M _ k.1.2 PUnit.unit hx.1.2
 
+/- English proof (translation)
+Use `le_trans ?_ (preimage_le_of_comp (prodMapPairTimesIdentity_mul q T) _)` and prove the remaining obligations. Introduce `x hx`. Conclude with `LB.wchart_le M _ k.2 PUnit.unit hx.2`.
+-/
 theorem addGen_le₃ {A A' T : Over S} [MonObj A] [MonObj A'] (q : A ⟶ A') [IsMonHom q] (M : LB (A' ⊗ T).left)
     (k : (addBundle M).ι) :
     (pmap2 q T).left ⁻¹ᵁ (addBundle M).U k ≤ (ptMul A T).left ⁻¹ᵁ ((pmap q T).left ⁻¹ᵁ M.U (k.2 PUnit.unit)) := by

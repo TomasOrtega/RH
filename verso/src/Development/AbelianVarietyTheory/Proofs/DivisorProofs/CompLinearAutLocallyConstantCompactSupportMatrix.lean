@@ -6,6 +6,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.LeviDesc
 
+/- English proof (translation)
+Introduce `E _ _ w a b L φ hdet hlc hcs`. Use `haveI hMT : IsModuleTopology (w.adicCompletion E) (Matrix (Fin a) (Fin b) (w.adicCompletion E)) := inferInstanceAs (IsModuleTopology (w.adicCompletion E) (Fin a → Fin b → w.adicCompletion E))`. Use `haveI hLC : LocallyCompactSpace (Matrix (Fin a) (Fin b) (w.adicCompletion E)) := inferInstanceAs (LocallyCompactSpace (Fin a → Fin b → w.adicCompletion E))`. Set `e` to `LinearMap.equivOfDetNeZero L hdet`. Establish `he : ∀ x, e x = L x` using `fun x => rfl`.
+
+Establish `hc : Continuous e` using `IsModuleTopology.continuous_of_linearMap e.toLinearMap`. Establish `hc' : Continuous e.symm` using `IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap`. Set `h : Matrix (Fin a) (Fin b) (w.adicCompletion E) ≃ₜ Matrix (Fin a) (Fin b) (w.adicCompletion E)` to `{ toEquiv := e.toEquiv, continuous_toFun := hc, continuous_invFun := hc' }`. Take `⟨U, hUo, hU⟩` from `hlc`. Use `⟨⟨U.comap L.toAddMonoidHom, ?_, ?_⟩, ?_, hLC⟩` and prove the remaining obligations.
+
+Conclude with `hUo.preimage (IsModuleTopology.continuous_of_linearMap L)`. Introduce `x y hy`. Rewrite using `[map_add]`. Conclude with `hU (L x) (L y) hy`. Conclude with `hcs.comp_homeomorph h`.
+-/
 theorem comp_linearAut_smooth_compact : ∀ (E : Type) [Field E] [NumberField E] (w : Pl E) (a b : ℕ) (L : Matrix (Fin a) (Fin b) (w.adicCompletion E) →ₗ[w.adicCompletion E] Matrix (Fin a) (Fin b) (w.adicCompletion E)) (φ : Matrix (Fin a) (Fin b) (w.adicCompletion E) → ℂ), LinearMap.det L ≠ 0 → (∃ U : AddSubgroup (Matrix (Fin a) (Fin b) (w.adicCompletion E)), IsOpen (U : Set (Matrix (Fin a) (Fin b) (w.adicCompletion E))) ∧ ∀ x, ∀ y ∈ U, φ (x + y) = φ x) → HasCompactSupport φ → (∃ U : AddSubgroup (Matrix (Fin a) (Fin b) (w.adicCompletion E)), IsOpen (U : Set (Matrix (Fin a) (Fin b) (w.adicCompletion E))) ∧ ∀ x, ∀ y ∈ U, φ (L (x + y)) = φ (L x)) ∧ HasCompactSupport (fun x => φ (L x)) ∧ LocallyCompactSpace (Matrix (Fin a) (Fin b) (w.adicCompletion E)) := by
   intro E _ _ w a b L φ hdet hlc hcs
   haveI hMT : IsModuleTopology (w.adicCompletion E) (Matrix (Fin a) (Fin b) (w.adicCompletion E)) :=

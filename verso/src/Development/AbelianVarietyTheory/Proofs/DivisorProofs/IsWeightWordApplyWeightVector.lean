@@ -12,6 +12,17 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.WordWeight
 
+/- English proof (translation)
+Introduce `c`. Establish `h` using `hE c c a b`. Establish `h2 : E c c (E a b v) = E a b (E c c v) + ((if c = a then E c b else 0) - (if b = c then E a c else 0)) v`. Rewrite using `[← h]`. Simplify using `[Module.End.mul_apply]`.
+
+Rewrite using `[h2, hv c, map_smul]`. Simplify using `only [root, Pi.add_apply, Pi.sub_apply, Pi.single_apply]`. Apply the tactic sequence `by_cases hca : c = a <;> by_cases hbc : b = c`. Substitute `hca` using the available equality. Substitute `hbc` using the available equality.
+
+Simplify using the standard rewrite rules. Substitute `hca` using the available equality. Establish `: ¬ c = b` using `fun h => hbc h.symm`. Simplify using `[this, hbc]`. Rewrite using `[add_smul, one_smul]`.
+
+Both sides reduce to the same expression. Substitute `hbc` using the available equality. Simplify using `[hca]`. Rewrite using `[add_smul, neg_smul, one_smul]`. Both sides reduce to the same expression.
+
+Establish `: ¬ c = b` using `fun h => hbc h.symm`. Simplify using `[hca, this, hbc]`.
+-/
 theorem step {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) (ν : Fin n → ℝ) (v : V)
     (hv : IsWeight E ν v) (a b : Fin n) :
@@ -37,6 +48,9 @@ theorem step {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
   · have : ¬ c = b := fun h => hbc h.symm
     simp [hca, this, hbc]
 
+/- English proof (translation)
+The claim follows from `| [], μ, w, hw => by simpa using hw | p :: l, μ, w, hw => by have ih := word E hE l μ w hw have := step E hE _ _ ih p.1 p.2 simp only [List.map_cons, List.sum_cons, List.prod_cons, Module.End.mul_apply] convert this using 1 abel`.
+-/
 theorem word {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) :
     ∀ (l : List (Fin n × Fin n)) (μ : Fin n → ℝ) (w : V), IsWeight E μ w →
@@ -52,6 +66,9 @@ theorem word {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
 end GlobalTheory.WordWeight
 
+/- English proof (translation)
+Introduce `n V _ _ E hE μ w hw l`. Conclude with `GlobalTheory.WordWeight.word E hE l μ w hw`.
+-/
 theorem GlobalTheory.wordWeight : ∀ (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (E : Fin n → Fin n → Module.End ℂ V), GlRel E → ∀ (μ : Fin n → ℝ) (w : V), IsWeight E μ w → ∀ l : List (Fin n × Fin n), IsWeight E (μ + (l.map fun p : Fin n × Fin n => root p.1 p.2).sum) ((l.map fun p : Fin n × Fin n => E p.1 p.2).prod w) := by
   intro n V _ _ E hE μ w hw l
   exact GlobalTheory.WordWeight.word E hE l μ w hw

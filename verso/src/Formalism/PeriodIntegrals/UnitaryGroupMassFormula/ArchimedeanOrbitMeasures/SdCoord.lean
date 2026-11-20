@@ -22,6 +22,9 @@ def complReal (v : InfinitePlace F) (hv : v.IsReal) : v.Completion ≃ₜ ℝ :=
     rw [hf]
     exact (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hv).isEmbedding.isInducing)
 
+/- English proof (translation)
+The claim follows from `map_add (InfinitePlace.Completion.ringEquivRealOfIsReal hv) x y`.
+-/
 theorem complReal_add (v : InfinitePlace F) (hv : v.IsReal) (x y : v.Completion) :
     complReal v hv (x + y) = complReal v hv x + complReal v hv y :=
   map_add (InfinitePlace.Completion.ringEquivRealOfIsReal hv) x y
@@ -29,6 +32,9 @@ theorem complReal_add (v : InfinitePlace F) (hv : v.IsReal) (x y : v.Completion)
 def ainfReal (hF : ∀ v : InfinitePlace F, v.IsReal) : InfiniteAdeleRing F ≃ₜ (InfinitePlace F → ℝ) :=
   Homeomorph.piCongrRight fun v => complReal v (hF v)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Conclude with `complReal_add v (hF v) (x v) (y v)`.
+-/
 theorem ainfReal_add (hF : ∀ v : InfinitePlace F, v.IsReal) (x y : InfiniteAdeleRing F) :
     ainfReal hF (x + y) = ainfReal hF x + ainfReal hF y := by
   funext v
@@ -47,6 +53,9 @@ def tensCoord : R ⊗[F] E ≃ₜ (Module.Free.ChooseBasisIndex R (R ⊗[F] E) �
     continuous_toFun := IsModuleTopology.continuous_of_linearMap e.toLinearMap
     continuous_invFun := IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap }
 
+/- English proof (translation)
+The claim follows from `map_add (Module.Free.chooseBasis R (R ⊗[F] E)).equivFun x y`.
+-/
 theorem tensCoord_add (x y : R ⊗[F] E) : tensCoord R (x + y) = tensCoord R x + tensCoord R y :=
   map_add (Module.Free.chooseBasis R (R ⊗[F] E)).equivFun x y
 
@@ -64,6 +73,9 @@ def flat4 (A B C P : Type) [Fintype A] [Fintype B] [Fintype C] [Fintype P] :
   continuous_invFun := continuous_pi fun a => continuous_pi fun b => continuous_pi fun c => continuous_pi fun d =>
     (continuous_apply (a, b, c, d)).comp (EuclideanSpace.equiv (A × B × C × P) ℝ).continuous
 
+/- English proof (translation)
+Use extensionality with `k`. Simplify using `[flat4]`.
+-/
 theorem flatten_four_add (A B C P : Type) [Fintype A] [Fintype B] [Fintype C] [Fintype P] (f g : A → B → C → P → ℝ) :
     flat4 A B C P (f + g) = flat4 A B C P f + flat4 A B C P g := by
   ext k

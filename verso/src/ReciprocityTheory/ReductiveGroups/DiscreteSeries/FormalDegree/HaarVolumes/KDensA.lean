@@ -16,16 +16,27 @@ def kdC (ε : Fin n → Bool) : Bool → ℕ
   | true => pOf ε
   | false => qOf ε
 
+/- English proof (translation)
+Apply the tactic sequence `cases s <;> rfl`.
+-/
 lemma kdC_card (ε : Fin n → Bool) (s : Bool) : (univ.filter fun a => ε a = s).card = kdC ε s := by
   cases s <;> rfl
 
 def kdE (ε : Fin n → Bool) (s : Bool) : Fin (kdC ε s) ↪o Fin n :=
   (univ.filter fun a => ε a = s).orderEmbOfFin (kdC_card ε s)
 
+/- English proof (translation)
+Establish `h` using `(univ.filter fun a => ε a = s).orderEmbOfFin_mem (kdC_card ε s) i`. Conclude with `(Finset.mem_filter.1 h).2`.
+-/
 lemma ε_kdE (ε : Fin n → Bool) (s : Bool) (i : Fin (kdC ε s)) : ε (kdE ε s i) = s := by
   have h := (univ.filter fun a => ε a = s).orderEmbOfFin_mem (kdC_card ε s) i
   exact (Finset.mem_filter.1 h).2
 
+/- English proof (translation)
+Establish `ha : a ∈ (univ.filter fun b => ε b = ε a)` using `by simp`. Use `Finset.range_orderEmbOfFin (univ.filter fun b => ε b = ε a) (kdC_card ε (ε a))` as an intermediate fact. Establish `hr : a ∈ Set.range ((univ.filter fun b => ε b = ε a).orderEmbOfFin (kdC_card ε (ε a)))`. Rewrite using `[this]`. Conclude with `ha`.
+
+Conclude with `hr`.
+-/
 lemma kdE_surj (ε : Fin n → Bool) (a : Fin n) : ∃ i, kdE ε (ε a) i = a := by
   have ha : a ∈ (univ.filter fun b => ε b = ε a) := by simp
   have := Finset.range_orderEmbOfFin (univ.filter fun b => ε b = ε a) (kdC_card ε (ε a))
@@ -50,6 +61,9 @@ def kdSig (ε : Fin n → Bool) : (Σ s : Bool, Fin (kdC ε s)) ≃ Fin n :=
       obtain ⟨i, hi⟩ := kdE_surj ε a
       exact ⟨⟨ε a, i⟩, hi⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma kdSig_apply (ε : Fin n → Bool) (s : Bool) (i : Fin (kdC ε s)) : kdSig ε ⟨s, i⟩ = kdE ε s i := rfl
 
 def kdD (ε : Fin n → Bool) :
@@ -57,16 +71,25 @@ def kdD (ε : Fin n → Bool) :
   (Matrix.reindexAlgEquiv ℂ ℂ (kdSig ε)).toRingEquiv.toRingHom.comp
     (Matrix.blockDiagonal'RingHom (fun s => Fin (kdC ε s)) ℂ)
 
+/- English proof (translation)
+Simplify using `[kdD, Matrix.reindex_apply]`.
+-/
 lemma kdD_apply (ε : Fin n → Bool) (v : ∀ s : Bool, Matrix (Fin (kdC ε s)) (Fin (kdC ε s)) ℂ)
     (x y : Σ s : Bool, Fin (kdC ε s)) :
     kdD ε v (kdSig ε x) (kdSig ε y) = blockDiagonal' v x y := by
   simp [kdD, Matrix.reindex_apply]
 
+/- English proof (translation)
+Use `show Continuous fun v : (∀ s : Bool, Matrix (Fin (kdC ε s)) (Fin (kdC ε s)) ℂ) => Matrix.reindex (kdSig ε) (kdSig ε) (blockDiagonal' v)`. Conclude with `(continuous_id.matrix_blockDiagonal').matrix_reindex _ _`.
+-/
 lemma continuous_kdD (ε : Fin n → Bool) : Continuous (kdD ε) := by
   show Continuous fun v : (∀ s : Bool, Matrix (Fin (kdC ε s)) (Fin (kdC ε s)) ℂ) =>
     Matrix.reindex (kdSig ε) (kdSig ε) (blockDiagonal' v)
   exact (continuous_id.matrix_blockDiagonal').matrix_reindex _ _
 
+/- English proof (translation)
+Introduce `v w h`. Use function extensionality and compare the values at `s`. Use extensionality with `i j`. Use `congrFun (congrFun h (kdSig ε ⟨s, i⟩)) (kdSig ε ⟨s, j⟩)` as an intermediate fact. Rewrite `this` using `[kdD_apply, kdD_apply, blockDiagonal'_apply_eq, blockDiagonal'_apply_eq]`. Then use the resulting hypothesis.
+-/
 lemma kdD_injective (ε : Fin n → Bool) : Function.Injective (kdD ε) := by
   intro v w h
   funext s
@@ -74,6 +97,15 @@ lemma kdD_injective (ε : Fin n → Bool) : Function.Injective (kdD ε) := by
   have := congrFun (congrFun h (kdSig ε ⟨s, i⟩)) (kdSig ε ⟨s, j⟩)
   rwa [kdD_apply, kdD_apply, blockDiagonal'_apply_eq, blockDiagonal'_apply_eq] at this
 
+/- English proof (translation)
+Unfold `Jm`. Prove the components needed by the constructor for the conclusion. Introduce `h a b hab`. Establish `h1` using `congrFun (congrFun h a) b`. Rewrite `h1` using `[mul_diagonal, diagonal_mul]`.
+
+Establish `hne : (if ε b = true then (1 : ℂ) else -1) - (if ε a = true then 1 else -1) ≠ 0` using `by revert hab`. Apply the tactic sequence `cases ε a <;> cases ε b <;> norm_num`. Establish `h2 : M a b * ((if ε b = true then (1 : ℂ) else -1) - (if ε a = true then 1 else -1)) = 0`. Rewrite using `[mul_sub, h1, mul_comm, sub_self]`. Conclude with `(mul_eq_zero.1 h2).resolve_right hne`.
+
+Introduce `h`. Use extensionality with `a b`. Rewrite using `[mul_diagonal, diagonal_mul]`. Distinguish the cases in `hab : ε a = ε b`. Rewrite using `[hab, mul_comm]`.
+
+Rewrite using `[h a b hab, zero_mul, mul_zero]`.
+-/
 lemma kd_commJ_iff (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ) :
     M * Jm ε = Jm ε * M ↔ ∀ a b, ε a ≠ ε b → M a b = 0 := by
   unfold Jm
@@ -94,6 +126,11 @@ lemma kd_commJ_iff (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ) :
     · rw [hab, mul_comm]
     · rw [h a b hab, zero_mul, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[kd_commJ_iff]`. Introduce `a b hab`. Take `⟨⟨s, i⟩, rfl⟩` from `(kdSig ε).surjective a`. Take `⟨⟨s', j⟩, rfl⟩` from `(kdSig ε).surjective b`. Rewrite using `[kdD_apply]`.
+
+Use `blockDiagonal'_apply_ne _ _ _ ?_` and prove the remaining obligations. Rewrite `hab` using `[kdSig_apply, kdSig_apply, ε_kdE ε s i, ε_kdE ε s' j]`. Conclude with `hab`.
+-/
 lemma kdD_commJ (ε : Fin n → Bool) (v : ∀ s : Bool, Matrix (Fin (kdC ε s)) (Fin (kdC ε s)) ℂ) :
     kdD ε v * Jm ε = Jm ε * kdD ε v := by
   rw [kd_commJ_iff]
@@ -109,6 +146,11 @@ def kdR (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) (s : Bool) :
     Matrix (Fin (kdC ε s)) (Fin (kdC ε s)) ℂ :=
   Matrix.of fun i j => X (kdE ε s i) (kdE ε s j)
 
+/- English proof (translation)
+Use extensionality with `a b`. Take `⟨⟨s, i⟩, rfl⟩` from `(kdSig ε).surjective a`. Take `⟨⟨s', j⟩, rfl⟩` from `(kdSig ε).surjective b`. Rewrite using `[kdD_apply]`. Distinguish the cases in `h : s = s'`.
+
+Substitute `h` using the available equality. Rewrite using `[blockDiagonal'_apply_eq]`. Both sides reduce to the same expression. Rewrite using `[blockDiagonal'_apply_ne _ _ _ h]`. Conclude with `(kd_commJ_iff ε X).1 hX _ _ (by rw [kdSig_apply, kdSig_apply, ε_kdE ε s i, ε_kdE ε s' j]; exact h)`.
+-/
 lemma eq_kdD {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : X * Jm ε = Jm ε * X) :
     X = kdD ε (kdR ε X) := by
   ext a b
@@ -121,6 +163,11 @@ lemma eq_kdD {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : X * Jm
   · rw [blockDiagonal'_apply_ne _ _ _ h]
     exact (kd_commJ_iff ε X).1 hX _ _ (by rw [kdSig_apply, kdSig_apply, ε_kdE ε s i, ε_kdE ε s' j]; exact h)
 
+/- English proof (translation)
+Use extensionality with `a b`. Take `⟨⟨s, i⟩, rfl⟩` from `(kdSig ε).surjective a`. Take `⟨⟨s', j⟩, rfl⟩` from `(kdSig ε).surjective b`. Rewrite using `[conjTranspose_apply, kdD_apply, kdD_apply]`. Distinguish the cases in `h : s = s'`.
+
+Substitute `h` using the available equality. Rewrite using `[blockDiagonal'_apply_eq, blockDiagonal'_apply_eq, conjTranspose_apply]`. Rewrite using `[blockDiagonal'_apply_ne _ _ _ h, blockDiagonal'_apply_ne _ _ _ (Ne.symm h), star_zero]`.
+-/
 lemma kdD_conjTranspose (ε : Fin n → Bool) (v : ∀ s : Bool, Matrix (Fin (kdC ε s)) (Fin (kdC ε s)) ℂ) :
     (kdD ε v)ᴴ = kdD ε (fun s => (v s)ᴴ) := by
   ext a b
@@ -132,6 +179,9 @@ lemma kdD_conjTranspose (ε : Fin n → Bool) (v : ∀ s : Bool, Matrix (Fin (kd
     rw [blockDiagonal'_apply_eq, blockDiagonal'_apply_eq, conjTranspose_apply]
   · rw [blockDiagonal'_apply_ne _ _ _ h, blockDiagonal'_apply_ne _ _ _ (Ne.symm h), star_zero]
 
+/- English proof (translation)
+Use `⟨?_, kdD_commJ ε v⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, kdD_conjTranspose, ← map_mul]`. Establish `: (v * fun s => (v s)ᴴ) = 1` using `funext hv`. Rewrite using `[this, map_one]`.
+-/
 lemma kdD_Kset (ε : Fin n → Bool) (v : ∀ s : Bool, Matrix (Fin (kdC ε s)) (Fin (kdC ε s)) ℂ)
     (hv : ∀ s, v s * (v s)ᴴ = 1) : kdD ε v ∈ Kset ε := by
   refine ⟨?_, kdD_commJ ε v⟩
@@ -139,6 +189,11 @@ lemma kdD_Kset (ε : Fin n → Bool) (v : ∀ s : Bool, Matrix (Fin (kdC ε s)) 
   have : (v * fun s => (v s)ᴴ) = 1 := funext hv
   rw [this, map_one]
 
+/- English proof (translation)
+Set `_ : ∀ s : Bool, NormedRing (Matrix (Fin (kdC ε s)) (Fin (kdC ε s)) ℂ)` to `fun _ => Matrix.linftyOpNormedRing`. Set `_ : ∀ s : Bool, NormedAlgebra ℂ (Matrix (Fin (kdC ε s)) (Fin (kdC ε s)) ℂ)` to `fun _ => Matrix.linftyOpNormedAlgebra`. Set `_ : NormedRing (Matrix (Fin n) (Fin n) ℂ)` to `Matrix.linftyOpNormedRing`. Set `_ : NormedAlgebra ℂ (Matrix (Fin n) (Fin n) ℂ)` to `Matrix.linftyOpNormedAlgebra`. Establish `hv : NormedSpace.exp v = fun s => NormedSpace.exp (v s)`.
+
+Use function extensionality and compare the values at `s`. Conclude with `NormedSpace.map_exp_of_mem_ball (𝕂 := ℂ) (Pi.evalRingHom (fun s : Bool => Matrix (Fin (kdC ε s)) (Fin (kdC ε s)) ℂ) s) (continuous_apply s) v ((NormedSpace.expSeries_radius_eq_top ℂ (∀ s : Bool, Matrix (Fin (kdC ε s)) (Fin (kdC ε s)) ℂ)).symm ▸ edist_lt_top _ _)`. Rewrite using `[← hv]`. Conclude with `(NormedSpace.map_exp_of_mem_ball (𝕂 := ℂ) (kdD ε) (continuous_kdD ε) v ((NormedSpace.expSeries_radius_eq_top ℂ (∀ s : Bool, Matrix (Fin (kdC ε s)) (Fin (kdC ε s)) ℂ)).symm ▸ edist_lt_top _ _)).symm`.
+-/
 lemma exp_kdD (ε : Fin n → Bool) (v : ∀ s : Bool, Matrix (Fin (kdC ε s)) (Fin (kdC ε s)) ℂ) :
     NormedSpace.exp (kdD ε v) = kdD ε (fun s => NormedSpace.exp (v s)) := by
   let _ : ∀ s : Bool, NormedRing (Matrix (Fin (kdC ε s)) (Fin (kdC ε s)) ℂ) :=
@@ -159,8 +214,14 @@ lemma exp_kdD (ε : Fin n → Bool) (v : ∀ s : Bool, Matrix (Fin (kdC ε s)) (
     ((NormedSpace.expSeries_radius_eq_top ℂ
       (∀ s : Bool, Matrix (Fin (kdC ε s)) (Fin (kdC ε s)) ℂ)).symm ▸ edist_lt_top _ _)).symm
 
+/- English proof (translation)
+Simplify using `[Jm]`.
+-/
 lemma kd_Jm_true (k : ℕ) : Jm (fun _ : Fin k => true) = 1 := by simp [Jm]
 
+/- English proof (translation)
+Establish `h : (toM u)ᴴ * Jm (fun _ : Fin N => true) * toM u = Jm (fun _ : Fin N => true)` using `u.2`. Rewrite `h` using `[kd_Jm_true, Matrix.mul_one]`. Conclude with `mul_eq_one_comm.1 h`.
+-/
 lemma kd_un_unitary {N : ℕ} (u : UNgrp N) : toM u * (toM u)ᴴ = 1 := by
   have h : (toM u)ᴴ * Jm (fun _ : Fin N => true) * toM u = Jm (fun _ : Fin N => true) := u.2
   rw [kd_Jm_true, Matrix.mul_one] at h
@@ -171,8 +232,14 @@ def kdMkU {N : ℕ} (A : Matrix (Fin N) (Fin N) ℂ) (h : A * Aᴴ = 1) : UNgrp 
     show Aᴴ * Jm (fun _ : Fin N => true) * A = Jm (fun _ : Fin N => true)
     rw [kd_Jm_true, Matrix.mul_one]; exact mul_eq_one_comm.1 h⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Units.ext e)`.
+-/
 lemma kd_toM_inj {ε : Fin n → Bool} {g h : UJ ε} (e : toM g = toM h) : g = h := Subtype.ext (Units.ext e)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (kd_toM_inj e)`.
+-/
 lemma kd_KG_ext {ε : Fin n → Bool} {g h : KG ε} (e : toMK g = toMK h) : g = h :=
   Subtype.ext (kd_toM_inj e)
 
@@ -188,14 +255,23 @@ def kdPair (ε : Fin n → Bool) (A : Matrix (Fin (pOf ε)) (Fin (pOf ε)) ℂ)
   | true => A
   | false => B
 
+/- English proof (translation)
+Apply the tactic sequence `funext s; cases s <;> rfl`.
+-/
 lemma kdPair_mul (ε : Fin n → Bool) (A A' : Matrix (Fin (pOf ε)) (Fin (pOf ε)) ℂ)
     (B B' : Matrix (Fin (qOf ε)) (Fin (qOf ε)) ℂ) :
     kdPair ε (A * A') (B * B') = kdPair ε A B * kdPair ε A' B' := by
   funext s; cases s <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `funext s; cases s <;> rfl`.
+-/
 lemma kdPair_one (ε : Fin n → Bool) : kdPair ε 1 1 = 1 := by
   funext s; cases s <;> rfl
 
+/- English proof (translation)
+The claim follows from `kdD_Kset ε _ (by intro s; cases s; exacts [kd_un_unitary x.2, kd_un_unitary x.1])`.
+-/
 lemma kdPsi_mem (ε : Fin n → Bool) (x : UNgrp (pOf ε) × UNgrp (qOf ε)) :
     kdD ε (kdPair ε (toM x.1) (toM x.2)) ∈ Kset ε :=
   kdD_Kset ε _ (by intro s; cases s; exacts [kd_un_unitary x.2, kd_un_unitary x.1])
@@ -212,9 +288,17 @@ def kdPsi (ε : Fin n → Bool) : UNgrp (pOf ε) × UNgrp (qOf ε) →* KG ε wh
       kdD ε (kdPair ε (toM x.1) (toM x.2)) * kdD ε (kdPair ε (toM y.1) (toM y.2))
     rw [kdPair_mul, map_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma toMK_kdPsi (ε : Fin n → Bool) (x : UNgrp (pOf ε) × UNgrp (qOf ε)) :
     toMK (kdPsi ε x) = kdD ε (kdPair ε (toM x.1) (toM x.2)) := rfl
 
+/- English proof (translation)
+Establish `hP : Continuous fun x : UNgrp (pOf ε) × UNgrp (qOf ε) => kdPair ε (toM x.1) (toM x.2)`. Use `continuous_pi fun s => ?_` and prove the remaining obligations. Consider the cases of `s`. Conclude with `(continuous_toM _).comp continuous_snd`. Conclude with `(continuous_toM _).comp continuous_fst`.
+
+Establish `hM : Continuous fun x : UNgrp (pOf ε) × UNgrp (qOf ε) => kdD ε (kdPair ε (toM x.1) (toM x.2))` using `(continuous_kdD ε).comp hP`. Use `Continuous.subtype_mk (Continuous.subtype_mk ?_ _) _` and prove the remaining obligations. Conclude with `Units.continuous_iff.mpr ⟨hM, continuous_star.comp hM⟩`.
+-/
 lemma continuous_kdPsi (ε : Fin n → Bool) : Continuous (kdPsi ε) := by
   have hP : Continuous fun x : UNgrp (pOf ε) × UNgrp (qOf ε) => kdPair ε (toM x.1) (toM x.2) := by
     refine continuous_pi fun s => ?_
@@ -226,12 +310,24 @@ lemma continuous_kdPsi (ε : Fin n → Bool) : Continuous (kdPsi ε) := by
   refine Continuous.subtype_mk (Continuous.subtype_mk ?_ _) _
   exact Units.continuous_iff.mpr ⟨hM, continuous_star.comp hM⟩
 
+/- English proof (translation)
+Introduce `x y h`. Establish `h1 : kdPair ε (toM x.1) (toM x.2) = kdPair ε (toM y.1) (toM y.2)` using `kdD_injective ε (by rw [← toMK_kdPsi, ← toMK_kdPsi, h])`. Conclude with `Prod.ext (kd_toM_inj (congrFun h1 true)) (kd_toM_inj (congrFun h1 false))`.
+-/
 lemma kdPsi_injective (ε : Fin n → Bool) : Function.Injective (kdPsi ε) := by
   intro x y h
   have h1 : kdPair ε (toM x.1) (toM x.2) = kdPair ε (toM y.1) (toM y.2) :=
     kdD_injective ε (by rw [← toMK_kdPsi, ← toMK_kdPsi, h])
   exact Prod.ext (kd_toM_inj (congrFun h1 true)) (kd_toM_inj (congrFun h1 false))
 
+/- English proof (translation)
+Introduce `k`. Establish `hk : toMK k ∈ Kset ε` using `k.2`. Use `set X := toMK k with hXdef`. Establish `hX : X = kdD ε (kdR ε X)` using `eq_kdD hk.2`. Establish `hu : X * Xᴴ = 1`.
+
+Use `hk.1` as an intermediate fact. Rewrite `this` using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose]`. Conclude with `this`. Establish `hv : (kdR ε X * fun s => (kdR ε X s)ᴴ) = 1`. Apply `kdD_injective ε` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, ← kdD_conjTranspose, ← hX, hu, map_one]`. Use `⟨(kdMkU (kdR ε X true) (congrFun hv true), kdMkU (kdR ε X false) (congrFun hv false)), ?_⟩` and prove the remaining obligations. Apply `kd_KG_ext` to reduce the goal to its premises. Rewrite using `[toMK_kdPsi]`. Use `conv_rhs => rw [← hXdef, hX]`.
+
+Use `congr 1`. Apply the tactic sequence `funext s; cases s <;> rfl`.
+-/
 lemma kdPsi_surjective (ε : Fin n → Bool) : Function.Surjective (kdPsi ε) := by
   intro k
   have hk : toMK k ∈ Kset ε := k.2
@@ -257,6 +353,13 @@ def kdHomeo (ε : Fin n → Bool) : (UNgrp (pOf ε) × UNgrp (qOf ε)) ≃ₜ KG
   (continuous_kdPsi ε).homeoOfEquivCompactToT2 (f := Equiv.ofBijective (kdPsi ε)
     ⟨kdPsi_injective ε, kdPsi_surjective ε⟩)
 
+/- English proof (translation)
+Use `unGrp_compactSpace (pOf ε)` as an intermediate fact. Use `unGrp_compactSpace (qOf ε)` as an intermediate fact. Use `compactSpace_KG ε` as an intermediate fact. Establish `: Measure.IsHaarMeasure ((μp.prod μq).map (kdPsi ε))` using `Measure.isHaarMeasure_map _ (kdPsi ε) (continuous_kdPsi ε) (kdPsi_surjective ε) (by rw [Filter.cocompact_eq_bot]; exact Filter.tendsto_bot)`. Establish `: IsProbabilityMeasure ((μp.prod μq).map (kdPsi ε))` using `Measure.isProbabilityMeasure_map (continuous_kdPsi ε).aemeasurable`.
+
+Establish `h0 : muK ε Set.univ ≠ 0` using `(isOpen_univ.measure_pos (muK ε) Set.univ_nonempty).ne'`. Establish `htop : muK ε Set.univ ≠ ⊤` using `measure_ne_top _ _`. Establish `: Measure.IsHaarMeasure (dk ε)` using `Measure.IsHaarMeasure.smul _ (ENNReal.inv_ne_zero.2 htop) (ENNReal.inv_ne_top.2 h0)`. Establish `: IsProbabilityMeasure (dk ε)` using `⟨by`. Simplify using `only [dk, Measure.smul_apply, smul_eq_mul]`.
+
+Conclude with `ENNReal.inv_mul_cancel h0 htop⟩`. Conclude with `Measure.isHaarMeasure_eq_of_isProbabilityMeasure _ _`.
+-/
 theorem kd_dk_eq_map (ε : Fin n → Bool) (μp : Measure (UNgrp (pOf ε))) [μp.IsHaarMeasure]
     [IsProbabilityMeasure μp] (μq : Measure (UNgrp (qOf ε))) [μq.IsHaarMeasure] [IsProbabilityMeasure μq] :
     dk ε = (μp.prod μq).map (kdPsi ε) := by

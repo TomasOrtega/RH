@@ -21,6 +21,25 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
   {D : DegData V (maximalIdeal V)} {F : Type} [Field F] [Algebra (FractionRing V) F]
   {v : AddValuation F (WithTop ℚ)}
 
+/- English proof (translation)
+Establish `hL` using `D.toPre.P.isLB`. Take `⟨n, a, σ, σF, hscal, hva, hsum⟩` from `hs`. Establish `e1 : ∀ i, ∃ t : D.toPre.SecB k₂ χ, ∀ (Z : Scheme.{0}) (ρ : Z ⟶ D.toPre.P.A.left) (z : Z) (J), Good D.toPre.P.L z J → sval t ρ z J = sval (σ i) (ρ ≫ TB) z J * (val eB ρ z J).val` using `fun i => by`. Take `⟨t, ht⟩` from `exists_sec hL hform (pullMulSec (σ i) TB eB heB)`. Conclude with `⟨t, fun Z ρ z J hJ => (ht Z ρ z J hJ).trans (sval_pullMulSec _ _ _ heB ρ z hJ)⟩`.
+
+Use `choose σ' hσ' using e1`. Establish `hformF : FormEq (fun i => (DegPre.prB D.toPre F).left ≫ D.toPre.famφB χ i) (DegPre.famε k₂) (DegPre.famφ D.toPre F χ) (DegPre.famε k₂)` using `fun U _ g => Finset.prod_congr rfl fun i _ => by rw [GC.famφ_eq]`. Establish `e2 : ∀ i, ∃ t : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre F χ) (DegPre.famε k₂)), ∀ (Z : Scheme.{0}) (ρ : Z ⟶ (DegPre.BF D.toPre F).left) (z : Z) (J), Good D.toPre.P.L z J → sval t ρ z J = sval (σ' i) (ρ ≫ (DegPre.prB D.toPre F).left) z J` using `fun i => by`. Take `⟨t, ht⟩` from `exists_sec hL hformF (pullSec D.toPre.P.L _ _ (σ' i) (DegPre.prB D.toPre F).left)`. Conclude with `⟨t, fun Z ρ z J hJ => (ht Z ρ z J hJ).trans (sval_pullSec _ _ _ _ ρ z hJ)⟩`.
+
+Use `choose σ'F hσ'F using e2`. Use `⟨n, fun i => c * a i, σ', σ'F, fun i => ?_, fun i => ?_, fun j => ?_⟩` and prove the remaining obligations. Conclude with `secScal_of_sval hL fun y J hJ => (hσ'F i _ (𝟙 _) y J hJ).symm`. Rewrite using `[AddValuation.map_mul, WithTop.coe_add, add_comm ((r : ℚ) : WithTop ℚ)]`. Conclude with `add_le_add hq (hva i)`.
+
+Use `show s'.f j = ∑ i, resTop _ (gF D.toPre F (c * a i)) * (σ'F i).f j`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Use `choose I hI using fun ψ : (DegPre.BF D.toPre F).left ⟶ D.toPre.P.A.left => Geo.Tor.exists_chart hL (ψ y)`. Establish `hIy : Good D.toPre.P.L y I` using `hI`. Establish `m` using `hIy.mem (DegPre.famφ D.toPre F χ) (𝟙 _)`.
+
+Establish `hy' : y ∈ LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j` using `hy`. Establish `T0` using `sec_trans s' (𝟙 _) y hy' m`. Use `set τ := (Geo.Tor.trF (DegPre.famφ D.toPre F χ) (DegPre.famε k₂) (𝟙 _) y j (fun k => I (𝟙 _ ≫ DegPre.famφ D.toPre F χ k))).val with hτ`. Establish `Ti : ∀ i, gs (𝟙 _) y (LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) (resTop (LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) (gF D.toPre F (c * a i)) * (show Γ((DegPre.BF D.toPre F).left, LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) from (σ'F i).f j)) = τ * (gs (𝟙 _ …` using `fun i => by`. Establish `S1 : gs (𝟙 _) y (LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) (resTop (LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) (gF D.toPre F (c * a i))) = gs (𝟙 _) y ⊤ (gF D.toPre F (c * a i))` using `gs_res _ y le_top hy' _`.
+
+Rewrite using `[gs_mul _ y _ hy', S1, sec_trans (σ'F i) (𝟙 _) y hy' m, hτ]`. Conclude with `mul_left_comm _ _ _`. Establish `RHS : gs (𝟙 _) y (LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) (∑ i, resTop (LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) (gF D.toPre F (c * a i)) * (show Γ((DegPre.BF D.toPre F).left, LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) from (σ'F i).f j)) = τ * ∑ i, gs …`. Rewrite using `[gs_sum _ y _ hy', Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Ti i`.
+
+Establish `CORE : sval s' (𝟙 _) y I = ∑ i, gs (𝟙 _) y ⊤ (gF D.toPre F (c * a i)) * sval (σ'F i) (𝟙 _) y I`. Establish `H1` using `(secRel_iff hL _ _ s' _ _ s h _ _ u).1 hrel _ (𝟙 _) y I hIy`. Establish `H2` using `sval_lin (fun i => gF D.toPre F (a i)) σF (fun j => hsum j) (𝟙 _ ≫ h) y hIy`. Rewrite using `[H1, H2, hc y I hIy, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Establish `A1 : gs (𝟙 _ ≫ h) y ⊤ (gF D.toPre F (a i)) = gs (𝟙 _) y ⊤ (gF D.toPre F (a i))`. Rewrite using `[Category.id_comp]`. Conclude with `gs_gF_comp hfst y (a i)`. Establish `A2 : sval (σF i) (𝟙 _ ≫ h) y I = sval (σ i) ((DegPre.prB D.toPre F).left ≫ TB) y I`. Rewrite using `[← secScal_sval (hscal i) (𝟙 _ ≫ h) y hIy, Category.assoc, hh, Category.id_comp]`.
+
+Establish `A3 : sval (σ'F i) (𝟙 _) y I = sval (σ i) ((DegPre.prB D.toPre F).left ≫ TB) y I * (val eB (DegPre.prB D.toPre F).left y I).val`. Rewrite using `[hσ'F i _ (𝟙 _) y I hIy, Category.id_comp, hσ' i _ _ y I hIy]`. Rewrite using `[A1, A2, A3, map_mul, gs_mul _ y ⊤ (by trivial)]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `T0.trans ((congrArg (fun x => τ * x) CORE).trans RHS.symm)`.
+-/
 theorem vge_move₂ {k₁ k₂ : ℕ} {α χ : D.toPre.X}
     {s : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre F α) (DegPre.famε k₁))}
     {s' : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre F χ) (DegPre.famε k₂))}
@@ -161,6 +180,17 @@ def PullbackValuationInvariance : Prop :=
       ∀ k : ℕ, 1 ≤ k → ∀ (s : Fam D.toPre F k) (s' : Fam D.toPre F (k * N)),
         PullAl D F oa a k N s s' → ∀ r : ℚ, NuGe D Q F v k s r ↔ NuGe D Q F v (k * N) s' r
 
+/- English proof (translation)
+Introduce `V _ _ _ ϖ hϖ D Q hQD F _ _ v hv O _ _ _ oa w0 hw0 a N hN ha1 ha2 k hk s s' hpull r hs`. Unfold `NuGe at hs ⊢`. Introduce `β`. Take `⟨hrelAll, hzero⟩` from `hpull`. Distinguish the cases in `hβ : ∃ χ, β = star a • χ`.
+
+Take `⟨χ, rfl⟩` from `hβ`. Take `⟨u, hu, hcorr, hrel⟩` from `hrelAll χ`. Take `⟨m, ψ, δ, eB, heB, hform, c, hc0, hc⟩` from `hG V ϖ hϖ D F v hv O oa w0 hw0 a N hN ha1 ha2 k hk χ u hu hcorr`. Establish `hfst : (aF D F oa a).left ≫ (fst (TF (R` using `V) F) D.toPre.P.A).left = (fst (TF (R := V) F) D.toPre.P.A).left := congrArg (fun φ => φ.left) (lift_fst (fst _ _) (DegPre.prB D.toPre F ≫ oa.onB.act a))`. Establish `hh : (aF D F oa a).left ≫ (DegPre.prB D.toPre F).left = (DegPre.prB D.toPre F).left ≫ (oa.onB.act a).left` using `congrArg (fun φ => φ.left) (lift_snd (fst _ _) (DegPre.prB D.toPre F ≫ oa.onB.act a))`.
+
+Establish `hq0 : ((0 : ℚ) : WithTop ℚ) ≤ v c` using `by simpa using hc0`. Establish `key` using `SectionScalarValuation.vge_move₂ hfst hh u hrel eB heB hform c hc (q := 0) hq0 (hs χ)`. Establish `hQa` using `hQ V ϖ hϖ D Q hQD O oa a N ha1 ha2 χ`. Establish `hk0 : (k : ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr (by omega)`. Establish `hN0 : (N : ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr (by omega)`.
+
+Use `key using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hQa]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`.
+
+Use `push_neg at hβ`. Use `⟨0, Fin.elim0, Fin.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[hzero β hβ j]`. Simplify using the standard rewrite rules.
+-/
 private theorem fwd_lemma (hG : PullGenStatement) (hQ : QAlStatement) :
     ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ →
     ∀ (D : DegData V (maximalIdeal V)) (Q : D.toPre.X → ℤ), IsQ D.toPre ϖ Q →
@@ -200,6 +230,13 @@ private theorem fwd_lemma (hG : PullGenStatement) (hQ : QAlStatement) :
     rw [hzero β hβ j]
     simp
 
+/- English proof (translation)
+Introduce `V _ _ _ ϖ hϖ D Q hQD F _ _ v hv O _ _ _ oa w0 hw0 a N hN ha1 ha2 k hk s s' hpull r`. Use `⟨fwd_lemma hG hQ V ϖ hϖ D Q hQD F v hv O oa w0 hw0 a N hN ha1 ha2 k hk s s' hpull r, fun hs' => ?_⟩` and prove the remaining obligations. Unfold `NuGe at hs' ⊢`. Introduce `χ`. Establish `hQa` using `hQ V ϖ hϖ D Q hQD O oa a N ha1 ha2 χ`.
+
+Establish `hk0 : (k : ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr (by omega)`. Establish `hN0 : (N : ℚ) ≠ 0` using `Nat.cast_ne_zero.mpr (by omega)`. Establish `h1` using `hs' (star a • χ)`. Establish `heq : r + (Q (star a • χ) : ℚ) / ((k * N : ℕ) : ℚ) = r + (Q χ : ℚ) / (k : ℚ)`. Rewrite using `[hQa]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`. Rewrite `h1` using `[heq]`. Conclude with `hR V ϖ hϖ D F v hv O oa a N hN ha1 ha2 k hk s s' hpull χ _ h1`.
+-/
 theorem pullback_valuation_invariance_of (hR : PullReflStatement) (hG : PullGenStatement) (hQ : QAlStatement) : PullbackValuationInvariance := by
   intro V _ _ _ ϖ hϖ D Q hQD F _ _ v hv O _ _ _ oa w0 hw0 a N hN ha1 ha2 k hk s s' hpull r
   refine ⟨fwd_lemma hG hQ V ϖ hϖ D Q hQD F v hv O oa w0 hw0 a N hN ha1 ha2 k hk s s' hpull r, fun hs' => ?_⟩
@@ -227,6 +264,9 @@ def PullbackValuationForwardBound : Prop :=
       ∀ k : ℕ, 1 ≤ k → ∀ (s : Fam D.toPre F k) (s' : Fam D.toPre F (k * N)),
         PullAl D F oa a k N s s' → ∀ r : ℚ, NuGe D Q F v k s r → NuGe D Q F v (k * N) s' r
 
+/- English proof (translation)
+The claim follows from `fwd_lemma hG hQ`.
+-/
 theorem pullback_valuation_forward_of (hG : PullGenStatement) (hQ : QAlStatement) : PullbackValuationForwardBound :=
   fwd_lemma hG hQ
 

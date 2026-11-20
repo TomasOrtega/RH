@@ -8,29 +8,49 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheo
 noncomputable section
 namespace GlobalTheory.InducedPBW.Onto
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono fun _ ⟨l, hl, hu⟩ => ⟨l, hl.trans h, hu⟩`.
+-/
 private lemma UgF_mono {p q j k : ℕ} (h : j ≤ k) : UgF p q j ≤ UgF p q k :=
   Submodule.span_mono fun _ ⟨l, hl, hu⟩ => ⟨l, hl.trans h, hu⟩
 
+/- English proof (translation)
+Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `z ⟨u, hu, v, rfl⟩`. Conclude with `⟨u, UgF_mono h hu, v, rfl⟩`.
+-/
 theorem indF_mono {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (act : Mat p q →ₗ[ℂ] Module.End ℂ V) {j k : ℕ} (h : j ≤ k) : indF act j ≤ indF act k := by
   refine Submodule.span_mono ?_
   rintro z ⟨u, hu, v, rfl⟩
   exact ⟨u, UgF_mono h hu, v, rfl⟩
 
+/- English proof (translation)
+Unfold `indFlt`. Conclude with `iSup₂_le fun j hj => indF_mono act hj.le`.
+-/
 theorem indFlt_le {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (k : ℕ) : indFlt act k ≤ indF act k := by
   unfold indFlt
   exact iSup₂_le fun j hj => indF_mono act hj.le
 
+/- English proof (translation)
+Unfold `indFlt`. Conclude with `le_iSup₂ (f := fun i (_ : i < k) => indF act i) j h`.
+-/
 theorem le_indFlt {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (act : Mat p q →ₗ[ℂ] Module.End ℂ V) {j k : ℕ} (h : j < k) : indF act j ≤ indFlt act k := by
   unfold indFlt
   exact le_iSup₂ (f := fun i (_ : i < k) => indF act i) j h
 
+/- English proof (translation)
+Unfold `pLin`. Conclude with `MvPolynomial.IsHomogeneous.sum _ _ _ fun ab _ => MvPolynomial.isHomogeneous_C_mul_X _ _`.
+-/
 theorem pLin_isHomogeneous {p q : ℕ} (Z : Mat p q) : (pLin Z).IsHomogeneous 1 := by
   unfold pLin
   exact MvPolynomial.IsHomogeneous.sum _ _ _ fun ab _ => MvPolynomial.isHomogeneous_C_mul_X _ _
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil`. Rewrite using `[List.map_nil, List.prod_nil, List.length_nil]`. Conclude with `MvPolynomial.isHomogeneous_one _ _`. Consider the case `cons Z l ih`.
+
+Rewrite using `[List.map_cons, List.prod_cons, List.length_cons, Nat.add_comm]`. Conclude with `(pLin_isHomogeneous Z).mul ih`.
+-/
 theorem prod_pLin_isHomogeneous {p q : ℕ} (l : List (Mat p q)) :
     (l.map pLin).prod.IsHomogeneous l.length := by
   induction l with
@@ -41,9 +61,15 @@ theorem prod_pLin_isHomogeneous {p q : ℕ} (l : List (Mat p q)) :
     rw [List.map_cons, List.prod_cons, List.length_cons, Nat.add_comm]
     exact (pLin_isHomogeneous Z).mul ih
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨l, h, rfl⟩`.
+-/
 theorem prod_mem_UgF {p q k : ℕ} (l : List (Mat p q)) (h : l.length ≤ k) :
     (l.map (ugι p q)).prod ∈ UgF p q k := Submodule.subset_span ⟨l, h, rfl⟩
 
+/- English proof (translation)
+Unfold `symProd`. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun σ _ => ?_)` and prove the remaining obligations. Establish `hmem` using `prod_mem_UgF (k := k) (List.ofFn fun i => x (σ i)) (by rw [List.length_ofFn]; exact h)`. Rewrite `hmem` using `[List.map_ofFn]`. Conclude with `hmem`.
+-/
 theorem symProd_mem_UgF {p q k m : ℕ} (x : Fin m → Mat p q) (h : m ≤ k) :
     symProd (fun i => ugι p q (x i)) ∈ UgF p q k := by
   unfold symProd
@@ -52,6 +78,13 @@ theorem symProd_mem_UgF {p q k m : ℕ} (x : Fin m → Mat p q) (h : m ≤ k) :
   rw [List.map_ofFn] at hmem
   exact hmem
 
+/- English proof (translation)
+Rewrite using `[f.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Establish `hdeg : d.degree = k`. Assume the negation of the conclusion as `hne`. Conclude with `MvPolynomial.mem_support_iff.mp hd (hf.coeff_eq_zero hne)`.
+
+Establish `e : MvPolynomial.monomial d (f.coeff d) = f.coeff d • (MvPolynomial.basisMonomials (PIx p q) ℂ) d`. Rewrite using `[MvPolynomial.coe_basisMonomials, MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e, map_smul]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[symU, Module.Basis.constr_basis]`.
+
+Use `symProd_mem_UgF _ (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Multiset.length_toList, Finsupp.card_toMultiset, ← hdeg]`. Both sides reduce to the same expression.
+-/
 theorem symU_mem_UgF {p q k : ℕ} (f : MvPolynomial (PIx p q) ℂ) (hf : f.IsHomogeneous k) :
     symU p q f ∈ UgF p q k := by
   rw [f.as_sum, map_sum]
@@ -69,6 +102,13 @@ theorem symU_mem_UgF {p q k : ℕ} (f : MvPolynomial (PIx p q) ℂ) (hf : f.IsHo
   rw [Multiset.length_toList, Finsupp.card_toMultiset, ← hdeg]
   rfl
 
+/- English proof (translation)
+Break down `lt_or_eq_of_le hl with hlt | heq` into its components or cases. Use `Submodule.mem_sup_left (le_indFlt act hlt ?_)` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨_, prod_mem_UgF l le_rfl, v, rfl⟩`. Substitute `heq` using the available equality. Establish `hP : (l.map pLin).prod ∈ homog (PIx p q) l.length` using `(MvPolynomial.mem_homogeneousSubmodule _ _).mpr (prod_pLin_isHomogeneous l)`.
+
+Establish `hs : (indRel act).mkQ (TensorProduct.tmul ℂ (symU p q (l.map pLin).prod) v) ∈ (symTens p q V l.length).map ((indRel act).mkQ ∘ₗ LinearMap.rTensor V (symU p q))`. Use `⟨LinearMap.rTensor V (homog (PIx p q) l.length).subtype (TensorProduct.tmul ℂ (⟨_, hP⟩ : homog (PIx p q) l.length) v), LinearMap.mem_range_self _ _, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.rTensor_tmul, Submodule.subtype_apply]`. Establish `hsum` using `Submodule.add_mem_sup (hc l v) hs`. Rewrite `hsum` using `[sub_add_cancel]`.
+
+Conclude with `hsum`.
+-/
 private lemma mkQ_tmul_prod_mem_indFlt_sup {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (hc : SymbolCongr act) (k : ℕ)
     (l : List (Mat p q)) (hl : l.length ≤ k) (v : V) :
@@ -89,6 +129,15 @@ private lemma mkQ_tmul_prod_mem_indFlt_sup {p q : ℕ} {V : Type} [AddCommGroup 
     rw [sub_add_cancel] at hsum
     exact hsum
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `z ⟨u, hu, v, rfl⟩`. Establish `key : UgF p q k ≤ (indFlt act k ⊔ (symTens p q V k).map ((indRel act).mkQ ∘ₗ LinearMap.rTensor V (symU p q))).comap ((indRel act).mkQ ∘ₗ (TensorProduct.mk ℂ (Ug p q) V).flip v)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations.
+
+Introduce and unpack `w ⟨l, hl, rfl⟩`. Conclude with `mkQ_tmul_prod_mem_indFlt_sup act hc k l hl v`. Conclude with `key hu`. Use `sup_le (indFlt_le act k) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, ⟨w, rfl⟩, rfl⟩`.
+
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f v`. Simplify using `only [LinearMap.comp_apply, LinearMap.rTensor_tmul, Submodule.subtype_apply]`. Conclude with `Submodule.subset_span ⟨_, symU_mem_UgF f.1 ((MvPolynomial.mem_homogeneousSubmodule _ _).mp f.2), v, rfl⟩`.
+
+Consider the case `add a b ha hb`. Rewrite using `[map_add, map_add]`. Conclude with `add_mem ha hb`.
+-/
 theorem indF_eq_sup (p q : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
     (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (hc : SymbolCongr act) (k : ℕ) :
     indF act k = indFlt act k ⊔

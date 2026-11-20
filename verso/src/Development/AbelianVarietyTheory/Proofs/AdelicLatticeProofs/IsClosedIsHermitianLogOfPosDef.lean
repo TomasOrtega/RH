@@ -5,6 +5,25 @@ open scoped Kronecker ComplexOrder TensorProduct
 
 namespace GlobalTheory.ClassFin
 
+/- English proof (translation)
+Introduce `ι _ _`. Set `K : Set (Matrix ι ι ℂ)` to `Set.pi Set.univ (fun _ => Set.pi Set.univ (fun _ => Metric.closedBall (0 : ℂ) 1))`. Establish `hK : IsCompact K` using `isCompact_univ_pi (fun _ => isCompact_univ_pi (fun _ => isCompact_closedBall _ _))`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK`. Set `D : K × (Matrix ι ι ℂ × Matrix ι ι ℂ) → ι → ℝ` to `fun q i => (((q.1 : Matrix ι ι ℂ)ᴴ * q.2.1 * (q.1 : Matrix ι ι ℂ)) i i).re`.
+
+Establish `hU : Continuous (fun q : K × (Matrix ι ι ℂ × Matrix ι ι ℂ) => (q.1 : Matrix ι ι ℂ))` using `continuous_subtype_val.comp continuous_fst`. Establish `hD : ∀ i, Continuous (fun q => D q i)`. Introduce `i`. Use `Complex.continuous_re.comp ?_` and prove the remaining obligations. Conclude with `((hU.matrix_conjTranspose.matrix_mul (continuous_fst.comp continuous_snd)).matrix_mul hU).matrix_elem i i`.
+
+Set `S : Set (K × (Matrix ι ι ℂ × Matrix ι ι ℂ))` to `{q | (q.1 : Matrix ι ι ℂ) * (q.1 : Matrix ι ι ℂ)ᴴ = 1 ∧ q.2.1 = (q.1 : Matrix ι ι ℂ) * diagonal (fun i => (D q i : ℂ)) * (q.1 : Matrix ι ι ℂ)ᴴ ∧ q.2.2 = (q.1 : Matrix ι ι ℂ) * diagonal (fun i => (Real.exp (D q i) : ℂ)) * (q.1 : Matrix ι ι ℂ)ᴴ}`. Establish `hS : IsClosed S`. Use `IsClosed.inter (isClosed_eq (hU.matrix_mul hU.matrix_conjTranspose) continuous_const) (IsClosed.inter (isClosed_eq (continuous_fst.comp continuous_snd) ?_) (isClosed_eq (continuous_snd.comp continuous_snd) ?_))` and prove the remaining obligations. Use `(hU.matrix_mul (Continuous.matrix_diagonal ?_)).matrix_mul hU.matrix_conjTranspose` and prove the remaining obligations. Conclude with `continuous_pi fun i => Complex.continuous_ofReal.comp (hD i)`.
+
+Use `(hU.matrix_mul (Continuous.matrix_diagonal ?_)).matrix_mul hU.matrix_conjTranspose` and prove the remaining obligations. Conclude with `continuous_pi fun i => Complex.continuous_ofReal.comp (Real.continuous_exp.comp (hD i))`. Establish `key : {p : Matrix ι ι ℂ × Matrix ι ι ℂ | IsLog p.1 p.2} = Prod.snd '' S`. Use extensionality with `p`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨U, d, h1, h2, h3⟩`. Establish `hUK : U ∈ K`. Introduce `i _ j _`. Establish `hu : U ∈ Matrix.unitaryGroup ι ℂ` using `Matrix.mem_unitaryGroup_iff.mpr h1`. Simplify using `using entry_norm_bound_of_unitary hu i j`.
+
+Establish `h1' : Uᴴ * U = 1` using `mul_eq_one_comm.mp h1`. Establish `hd : D (⟨U, hUK⟩, p) = d`. Use function extensionality and compare the values at `i`. Use `show ((Uᴴ * p.1 * U) i i).re = d i`. Establish `: Uᴴ * p.1 * U = diagonal (fun i => (d i : ℂ))`.
+
+Rewrite using `[h2]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [h1']; simp`. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules. Use `⟨(⟨U, hUK⟩, p), ⟨h1, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[hd]`. Conclude with `h2`. Rewrite using `[hd]`.
+
+Conclude with `h3`. Introduce and unpack `⟨q, ⟨h1, h2, h3⟩, rfl⟩`. Conclude with `⟨q.1, D q, h1, h2, h3⟩`. Rewrite using `[key]`. Conclude with `isClosedMap_snd_of_compactSpace S hS`.
+-/
 theorem isClosed_isLog : ∀ (ι : Type) [Fintype ι] [DecidableEq ι],
     IsClosed {p : Matrix ι ι ℂ × Matrix ι ι ℂ | IsLog p.1 p.2} := by
   intro ι _ _

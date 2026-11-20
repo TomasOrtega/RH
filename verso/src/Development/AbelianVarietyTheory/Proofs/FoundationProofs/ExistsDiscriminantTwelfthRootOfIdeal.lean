@@ -9,6 +9,9 @@ open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalis
 
 namespace GlobalTheory.Glob.IntegralWittCoefficients
 
+/- English proof (translation)
+Take `⟨wq, hwq⟩` from `GlobalTheory.GenusOneDatum.exists_isWq (C • wModel lam Λ)`. Take `⟨ex, he0, he⟩` from `GlobalTheory.GenusOneDatum.exists_subst_eq_X _ (GlobalTheory.GenusOneDatum.constantCoeff_flog _ wq) (GlobalTheory.GenusOneDatum.coeff_one_flog hwq)`. Conclude with `⟨wq, ex, hC, hwq, he0, he⟩`.
+-/
 theorem exists_ok_of_isModelU (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (Λ : AddSubgroup ℂ)
     (C : WeierstrassCurve.VariableChange ℂ_[p]) (hC : IsModelU lam Λ C) :
     ∃ wq ex : PowerSeries ℂ_[p], (⟨lam, Λ, C, wq, ex⟩ : G1 p).Ok := by
@@ -17,6 +20,9 @@ theorem exists_ok_of_isModelU (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]
     (GlobalTheory.GenusOneDatum.constantCoeff_flog _ wq) (GlobalTheory.GenusOneDatum.coeff_one_flog hwq)
   exact ⟨wq, ex, hC, hwq, he0, he⟩
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hM`. Take `⟨wq, ex, hok⟩` from `exists_ok_of_isModelU p lam _ C hC`. Conclude with `⟨⟨lam, lamOf D cc δ, C, wq, ex⟩, rfl, h1, h2, h3, rfl, hok⟩`.
+-/
 theorem exists_at_of_model (D : D7) (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p])
     (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (h1 : IsCurveIdeal D cc)
     (h2 : Nat.Coprime (Ideal.absNorm cc) p) (h3 : IsDiscriminantTwelfthRootOfIdealLattice D cc δ)
@@ -26,46 +32,79 @@ theorem exists_at_of_model (D : D7) (p : ℕ) [Fact p.Prime] (lam : Qbar →+* �
   obtain ⟨wq, ex, hok⟩ := exists_ok_of_isModelU p lam _ C hC
   exact ⟨⟨lam, lamOf D cc δ, C, wq, ex⟩, rfl, h1, h2, h3, rfl, hok⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨top_ne_bot, by simp⟩`.
+-/
 theorem isCurveIdeal_top (D : D7) : IsCurveIdeal D ⊤ :=
   ⟨top_ne_bot, by simp⟩
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem coprime_absNorm_top (D : D7) (p : ℕ) :
     Nat.Coprime (Ideal.absNorm (⊤ : Ideal (𝓞 D.host.K))) p := by simp
 
+/- English proof (translation)
+The claim follows from `IsAlgClosed.exists_pow_nat_eq _ (by norm_num)`.
+-/
 theorem exists_discriminantTwelfthRoot_of_ideal (D : D7) (cc : Ideal (𝓞 D.host.K)) : ∃ δ, IsDiscriminantTwelfthRootOfIdealLattice D cc δ :=
   IsAlgClosed.exists_pow_nat_eq _ (by norm_num)
 
+/- English proof (translation)
+Establish `: Algebra.IsAlgebraic ℚ Qbar` using `algebraicClosure.isAlgebraic ℚ ℂ`. Conclude with `⟨(IsAlgClosed.lift (R := ℚ) (S := Qbar) (M := ℂ_[p])).toRingHom⟩`.
+-/
 theorem nonempty_place (p : ℕ) [Fact p.Prime] : Nonempty (Qbar →+* ℂ_[p]) := by
   have : Algebra.IsAlgebraic ℚ Qbar := algebraicClosure.isAlgebraic ℚ ℂ
   exact ⟨(IsAlgClosed.lift (R := ℚ) (S := Qbar) (M := ℂ_[p])).toRingHom⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isModelU_iff {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (Λ : AddSubgroup ℂ)
     (C : WeierstrassCurve.VariableChange ℂ_[p]) : IsModelU lam Λ C ↔ GL3Theta.IsModelU lam Λ C := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem at_iff (D : D7) {p : ℕ} [Fact p.Prime] (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : G1 p) :
     At D cc δ g ↔ GL3Theta.At D cc δ ⟨g.lam, g.abelian₂, g.C, g.wq, g.ex⟩ := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem at_iff' (D : D7) {p : ℕ} [Fact p.Prime] (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : GL3Theta.G1 p) :
     GL3Theta.At D cc δ g ↔ At D cc δ ⟨g.lam, g.abelian₂, g.C, g.wq, g.ex⟩ := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `exists_at_of_model D p lam cc δ h1 h2 h3 (hM p lam cc δ h1 h2 h3).1`.
+-/
 theorem exists_at_of_modelEx (D : D7) (hM : GL3Theta.modelEx D) (p : ℕ) [Fact p.Prime]
     (lam : Qbar →+* ℂ_[p]) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (h1 : IsCurveIdeal D cc)
     (h2 : Nat.Coprime (Ideal.absNorm cc) p) (h3 : IsDiscriminantTwelfthRootOfIdealLattice D cc δ) :
     ∃ g : G1 p, g.lam = lam ∧ At D cc δ g :=
   exists_at_of_model D p lam cc δ h1 h2 h3 (hM p lam cc δ h1 h2 h3).1
 
+/- English proof (translation)
+The claim follows from `exists_at_of_modelEx D (GlobalTheory.UnitModel.modelEx_holds D) p lam cc δ h1 h2 h3`.
+-/
 theorem exists_at (D : D7) (p : ℕ) [Fact p.Prime]
     (lam : Qbar →+* ℂ_[p]) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (h1 : IsCurveIdeal D cc)
     (h2 : Nat.Coprime (Ideal.absNorm cc) p) (h3 : IsDiscriminantTwelfthRootOfIdealLattice D cc δ) :
     ∃ g : G1 p, g.lam = lam ∧ At D cc δ g :=
   exists_at_of_modelEx D (GlobalTheory.UnitModel.modelEx_holds D) p lam cc δ h1 h2 h3
 
+/- English proof (translation)
+Take `⟨lam⟩` from `nonempty_place p`. Take `⟨δ, hδ⟩` from `exists_discriminantTwelfthRoot_of_ideal D ⊤`. Take `⟨g, -, hg⟩` from `exists_at D p lam ⊤ δ (isCurveIdeal_top D) (coprime_absNorm_top D p) hδ`. Conclude with `⟨δ, g, hg⟩`.
+-/
 theorem exists_at_top (D : D7) (p : ℕ) [Fact p.Prime] : ∃ (δ : ℂ) (g : G1 p), At D ⊤ δ g := by
   obtain ⟨lam⟩ := nonempty_place p
   obtain ⟨δ, hδ⟩ := exists_discriminantTwelfthRoot_of_ideal D ⊤
   obtain ⟨g, -, hg⟩ := exists_at D p lam ⊤ δ (isCurveIdeal_top D) (coprime_absNorm_top D p) hδ
   exact ⟨δ, g, hg⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨exists_ok_of_isModelU p, nonempty_place p, fun D => ⟨exists_at D p, ⟨isCurveIdeal_top D, coprime_absNorm_top D p⟩, exists_discriminantTwelfthRoot_of_ideal D, ⟨⊤, exists_at_top D p⟩, at_iff D⟩⟩`.
+-/
 theorem genusOne_datum_inhabited (p : ℕ) [Fact p.Prime] :
     (∀ (lam : Qbar →+* ℂ_[p]) (Λ : AddSubgroup ℂ) (C : WeierstrassCurve.VariableChange ℂ_[p]),
       IsModelU lam Λ C → ∃ wq ex : PowerSeries ℂ_[p], (⟨lam, Λ, C, wq, ex⟩ : G1 p).Ok) ∧

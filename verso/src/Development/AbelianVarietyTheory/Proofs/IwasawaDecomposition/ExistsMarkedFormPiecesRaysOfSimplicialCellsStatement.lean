@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsMarked
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfIsOrbFormConst
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PolFan.OrbMark.exists_pieces_match | exact GlobalTheory.PolFan.OrbMark.exists_pieces_match | (intros; apply GlobalTheory.PolFan.OrbMark.exists_pieces_match <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_markedForm_pieces_rays_of_simplicialCells : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (φ : InvFun (𝓞 E)), IsTwInv H φ →
   ∀ {X₀ : Type} [AddCommGroup X₀] [Module (𝓞 E) X₀] [Module.Finite (𝓞 E) X₀] {m₀ : ℕ} (δ₀ : Fin m₀ → LinearMap.BilinForm ℤ X₀) (h₀ : IsCell H.bar φ δ₀),
   LinearIndependent ℤ δ₀ → (∀ i, IsPrim H.bar (⟨δ₀ i, h₀.mem i⟩ : balForms H.bar X₀)) →

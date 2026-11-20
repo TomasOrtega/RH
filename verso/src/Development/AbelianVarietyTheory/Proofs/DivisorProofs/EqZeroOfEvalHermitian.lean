@@ -9,6 +9,11 @@ open MeasureTheory MvPolynomial GlobalTheory.FibLine
 
 namespace GlobalTheory.FibLine
 
+/- English proof (translation)
+Use `MvPolynomial.funext_set (fun _ => Set.range Complex.ofReal) (fun _ => Set.infinite_range_of_injective Complex.ofReal_injective) ?_` and prove the remaining obligations. Introduce `x hx`. Establish `hx' : ∀ i, ∃ r : ℝ, (r : ℂ) = x i` using `fun i => hx i (Set.mem_univ i)`. Use `choose r hr using hx'`. Establish `: x = fun i => (r i : ℂ)` using `funext fun i => (hr i).symm`.
+
+Rewrite using `[this, h, map_zero]`.
+-/
 theorem eq_zero_of_eval_real {σ : Type} (Q : MvPolynomial σ ℂ)
     (h : ∀ x : σ → ℝ, eval (fun i => (x i : ℂ)) Q = 0) : Q = 0 := by
   refine MvPolynomial.funext_set (fun _ => Set.range Complex.ofReal)
@@ -22,6 +27,9 @@ theorem eq_zero_of_eval_real {σ : Type} (Q : MvPolynomial σ ℂ)
 def hermSubst (ab : Fin 2 × Fin 2) : MvPolynomial (Fin 2 × Fin 2) ℂ :=
   !![X (0, 0), X (0, 1) + C Complex.I * X (1, 0); X (0, 1) - C Complex.I * X (1, 0), X (1, 1)] ab.1 ab.2
 
+/- English proof (translation)
+Establish `h1 : (fun i => eval x (hermSubst i)) = entries !![x (0, 0), x (0, 1) + Complex.I * x (1, 0); x (0, 1) - Complex.I * x (1, 0), x (1, 1)]`. Use function extensionality and compare the values at `⟨a, b⟩`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [hermSubst, entries]`. Rewrite using `[← h1]`. Conclude with `eval₂Hom_bind₁ (RingHom.id ℂ) x hermSubst P`.
+-/
 theorem eval_bind_hermSubst (P : MvPolynomial (Fin 2 × Fin 2) ℂ) (x : Fin 2 × Fin 2 → ℂ) :
     eval x (bind₁ hermSubst P) =
       eval (entries !![x (0, 0), x (0, 1) + Complex.I * x (1, 0); x (0, 1) - Complex.I * x (1, 0), x (1, 1)]) P := by
@@ -32,6 +40,13 @@ theorem eval_bind_hermSubst (P : MvPolynomial (Fin 2 × Fin 2) ℂ) (x : Fin 2 �
   rw [← h1]
   exact eval₂Hom_bind₁ (RingHom.id ℂ) x hermSubst P
 
+/- English proof (translation)
+Establish `hQ : bind₁ hermSubst P = 0`. Use `eq_zero_of_eval_real _ fun x => ?_` and prove the remaining obligations. Rewrite using `[eval_bind_hermSubst]`. Use `h _ ?_` and prove the remaining obligations. Use extensionality with `a b`.
+
+Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [Matrix.conjTranspose_apply, sub_eq_add_neg]`. Use `MvPolynomial.funext fun y => ?_` and prove the remaining obligations. Establish `h2` using `eval_bind_hermSubst P (entries !![y (0, 0), (y (0, 1) + y (1, 0)) / 2; (y (0, 1) - y (1, 0)) / (2 * Complex.I), y (1, 1)])`. Rewrite `h2` using `[hQ]`. Rewrite `h2`, the goal using `[map_zero]`.
+
+Rewrite using `[h2]`. Use `congr 2`. Use function extensionality and compare the values at `⟨a, b⟩`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [entries] <;> field_simp <;> ring`.
+-/
 theorem eq_zero_of_eval_hermitian (P : MvPolynomial (Fin 2 × Fin 2) ℂ)
     (h : ∀ H : Matrix (Fin 2) (Fin 2) ℂ, H.IsHermitian → MvPolynomial.eval (entries H) P = 0) : P = 0 := by
   have hQ : bind₁ hermSubst P = 0 := by

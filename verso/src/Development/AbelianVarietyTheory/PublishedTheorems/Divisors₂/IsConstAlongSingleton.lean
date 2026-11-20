@@ -115,6 +115,9 @@ variable {σ J X Y}
 
 omit [NumberField E] in
 
+/- English proof (translation)
+The claim follows from `eq_bot_iff.2 fun g hg => by refine Subtype.ext (Units.ext (Matrix.ext fun i j => ?_)) have h := hg.2.2 (Pi.single j 1) (by simp [colPerp]) have e : colSpan F X {i | ∃ k ∈ (∅ : Finset (Fin r)), i ≤ k} = ⊥ := by simp [colSpan] rw [e, Submodule.mem_bot, sub_eq_zero, mulVec_single_on …`.
+-/
 theorem unip_empty : unip σ J X ∅ = ⊥ := eq_bot_iff.2 fun g hg => by
   refine Subtype.ext (Units.ext (Matrix.ext fun i j => ?_))
   have h := hg.2.2 (Pi.single j 1) (by simp [colPerp])
@@ -123,15 +126,33 @@ theorem unip_empty : unip σ J X ∅ = ⊥ := eq_bot_iff.2 fun g hg => by
   exact (congrFun h i).trans (Pi.single_apply _ _ _)
 
 omit [NumberField E] in
+/- English proof (translation)
+Simplify using `[levi]`.
+-/
 @[simp] theorem levi_empty : levi σ J X Y ∅ = ⊤ := by simp [levi]
 
+/- English proof (translation)
+Simplify using `[leviOne]`.
+-/
 @[simp] theorem leviOne_empty : leviOne σ J X Y ∅ = ⊤ := by simp [leviOne]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨⟨fun γ hγ => h.leftM γ hγ (by simp), h.level, h.cont, h.smooth, h.growth⟩, h.kfin, h.zfin⟩, fun h => ⟨fun u hu g => by rw [unip_empty, Subgroup.mem_bot] at hu; rw [hu, one_mul], fun γ hγ _ => h.mod.left γ hγ, h.mod.level, h.mod.cont, h.mod.smooth, h.mod.growth, h.kfin, …`.
+-/
 theorem isAutOn_empty {K : Subgroup (GAd σ J)} {φ : GAd σ J → ℂ} : IsAutOn σ J X Y ∅ K φ ↔ IsAut σ J K φ :=
   ⟨fun h => ⟨⟨fun γ hγ => h.leftM γ hγ (by simp), h.level, h.cont, h.smooth, h.growth⟩, h.kfin, h.zfin⟩,
     fun h => ⟨fun u hu g => by rw [unip_empty, Subgroup.mem_bot] at hu; rw [hu, one_mul], fun γ hγ _ => h.mod.left γ hγ,
       h.mod.level, h.mod.cont, h.mod.smooth, h.mod.growth, h.kfin, h.zfin⟩⟩
 
+/- English proof (translation)
+Unfold `IsSqIntOn`. Rewrite using `[leviOne_empty]`. Set `t : (⊤ : Subgroup (GAd σ J)) ≃ₜ* GAd σ J` to `{ Subgroup.topEquiv with continuous_toFun := continuous_subtype_val, continuous_invFun := continuous_id.subtype_mk _ }`. Use `⟨fun h μ 𝓕 h1 h2 => ?_, fun h μ 𝓕 h1 h2 g => ?_⟩` and prove the remaining obligations. Set `e` to `t.toHomeomorph.toMeasurableEquiv`.
+
+Establish `hp : MeasurePreserving e (μ.map t.symm) μ` using `(MeasurePreserving.symm e.symm ⟨e.symm.measurable, rfl⟩ :)`. Use `h (μ.map t.symm) (e ⁻¹' 𝓕) inferInstance (h2.preimage_of_equiv hp.quasiMeasurePreserving (e := fun δ => ⟨⟨δ, trivial⟩, δ.2⟩) ⟨fun a b hab => Subtype.ext (congrArg (·.1.1) hab), fun δ => ⟨⟨δ.1, δ.2⟩, rfl⟩⟩ fun _ _ => rfl) 1` as an intermediate fact. Use `(hp.integrableOn_comp_preimage e.measurableEmbedding).1 ?_` and prove the remaining obligations. Simplify using `only [mul_one] at this`. Conclude with `this`.
+
+Set `e` to `t.toHomeomorph.toMeasurableEquiv.trans (MeasurableEquiv.mulRight g)`. Establish `hp : MeasurePreserving e.symm ((μ.map t).map (· * g)) μ` using `MeasurePreserving.symm e ⟨e.measurable, (Measure.map_map (measurable_mul_const g) t.continuous.measurable).symm⟩`. Use `h ((μ.map t).map (· * g)) (e.symm ⁻¹' 𝓕) inferInstance (h2.preimage_of_equiv hp.quasiMeasurePreserving (e := fun δ => ⟨δ.1, δ.2⟩) ⟨fun a b hab => Subtype.ext (Subtype.ext (congrArg (·.1) hab)), fun δ => ⟨⟨⟨δ, trivial⟩, δ.2⟩, rfl⟩⟩ fun _ _ => Subtype.ext (mul_assoc _ _ _))` as an intermediate fact. Use `(hp.integrableOn_comp_preimage e.symm.measurableEmbedding).1 ?_` and prove the remaining obligations. Use `this using 2 with x` and compare the differences between its conclusion and the goal.
+
+Conclude with `congrArg (‖φ ·‖ ^ 2) (e.apply_symm_apply x)`.
+-/
 theorem isSqIntOn_empty {φ : GAd σ J → ℂ} : IsSqIntOn σ J X Y ∅ φ ↔ IsSqInt σ J φ := by
   unfold IsSqIntOn
   rw [leviOne_empty]
@@ -156,11 +177,21 @@ theorem isSqIntOn_empty {φ : GAd σ J → ℂ} : IsSqIntOn σ J X Y ∅ φ ↔ 
     convert this using 2 with x
     exact congrArg (‖φ ·‖ ^ 2) (e.apply_symm_apply x)
 
+/- English proof (translation)
+Simplify using `[NegExp, stepSum]`.
+-/
 theorem negExp_empty {s : Fin r → ℂ} : NegExp S ∅ s ↔ ∀ k ∈ S, ∑ i with i ≤ k, (s i).re < 0 := by
   simp [NegExp, stepSum]
 
 end Empty
 
+/- English proof (translation)
+Establish `h` using `isSmoothModerate_const σ J c`. Establish `h1 : ∀ l : List (ℝ → GAd σ J), ∃ c' : ℂ, l.foldr lineDer (fun _ => c) = fun _ => c'` using `fun l => by`. Proceed by induction on `l with`. Consider the case `nil => exact ⟨c, rfl⟩`. Consider the case `cons γ l ih`.
+
+Take `⟨c', h⟩` from `ih`. Conclude with `⟨0, by rw [List.foldr_cons, h]; funext g; simp [lineDer]⟩`. Use `choose d hd using h1`. Apply the tactic sequence `refine ⟨fun _ _ _ => rfl, fun _ _ _ _ => rfl, h.level, h.cont, h.smooth, h.growth, ?_, ?_⟩ <;>`. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ {(fun _ => 1 : GAd σ J → ℂ)}) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `Submodule.mem_span_singleton.2 ⟨c, by funext g; simp⟩`. Introduce and unpack `_ ⟨z, -, rfl⟩`. Conclude with `Submodule.mem_span_singleton.2 ⟨z.sum fun l a => a * d l, by funext g; simp [dop, hd]⟩`.
+-/
 theorem isAutOn_const (K : Subgroup (GAd σ J)) (c : ℂ) : IsAutOn σ J X Y S K fun _ => c := by
   have h := isSmoothModerate_const σ J c
   have h1 : ∀ l : List (ℝ → GAd σ J), ∃ c' : ℂ, l.foldr lineDer (fun _ => c) = fun _ => c' := fun l => by
@@ -179,9 +210,15 @@ theorem isAutOn_const (K : Subgroup (GAd σ J)) (c : ℂ) : IsAutOn σ J X Y S K
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Introduce `μ 𝓕 _ _ h _` and use `by simp [Measure.real, h]`.
+-/
 theorem isConstAlong_const (c : ℂ) : IsConstAlong σ J X S (fun _ => c) fun _ => c := fun μ 𝓕 _ _ h _ => by
   simp [Measure.real, h]
 
+/- English proof (translation)
+The claim follows from `and_iff_left fun _ h => absurd (Finset.subset_univ _) h.2`.
+-/
 theorem isCuspOn_univ {K : Subgroup (GAd σ J)} {ψ : GAd σ J → ℂ} :
     IsCuspOn σ J X Y Finset.univ K ψ ↔ IsAutOn σ J X Y Finset.univ K ψ :=
   and_iff_left fun _ h => absurd (Finset.subset_univ _) h.2
@@ -190,6 +227,11 @@ variable (n r) in
 
 def negRho (i : Fin r) : ℂ := ((i.val - (n - 1) / 2 : ℝ) : ℂ)
 
+/- English proof (translation)
+Establish `h : (modulus F n fun i => Real.exp (v i)) = Real.exp (-(2 * Module.finrank ℚ F * ∑ i : Fin r, (i.val - (n - 1) / 2 : ℝ) * v i)) ^ 2`. Rewrite using `[← Real.exp_nat_mul, Finset.mul_sum, ← Finset.sum_neg_distrib, Finset.mul_sum, Real.exp_sum, modulus]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Real.rpow_intCast, ← Real.exp_mul]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[expChar, h, Real.sqrt_sq (Real.exp_pos _).le, Complex.ofReal_exp, ← Complex.exp_add]`. Simplify using `[negRho]`.
+-/
 theorem expChar_negRho (v : Fin r → ℝ) : expChar F n (negRho n r) v = 1 := by
   have h : (modulus F n fun i => Real.exp (v i)) =
       Real.exp (-(2 * Module.finrank ℚ F * ∑ i : Fin r, (i.val - (n - 1) / 2 : ℝ) * v i)) ^ 2 := by
@@ -204,15 +246,24 @@ theorem expChar_negRho (v : Fin r → ℝ) : expChar F n (negRho n r) v = 1 := b
 
 variable {σ J X Y} in
 
+/- English proof (translation)
+The claim follows from `let ⟨a, ha⟩ := exists_isTorusElt h hJ hW (t := fun i => Real.exp (stepSum S 0 i)) fun _ => Real.exp_ne_zero _ ⟨_, Submodule.subset_span ⟨0, a, ha, rfl⟩, one_ne_zero, fun _ _ _ _ => by rw [expChar_negRho, one_mul]⟩`.
+-/
 theorem isExponent_one (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) :
     IsExponent σ J X Y S (fun _ => 1) (negRho n r) :=
   let ⟨a, ha⟩ := exists_isTorusElt h hJ hW (t := fun i => Real.exp (stepSum S 0 i)) fun _ => Real.exp_ne_zero _
   ⟨_, Submodule.subset_span ⟨0, a, ha, rfl⟩, one_ne_zero, fun _ _ _ _ => by rw [expChar_negRho, one_mul]⟩
 
+/- English proof (translation)
+Simplify using `only [negExp_empty, Finset.mem_univ, forall_const, Fin.forall_fin_one, Finset.sum_filter, Fin.sum_univ_one]`. Evaluate the numerical expressions using `[negRho]`.
+-/
 example : NegExp Finset.univ ∅ (negRho 2 1) ∧ ¬ NegExp Finset.univ ∅ (-negRho 2 1) := by
   simp only [negExp_empty, Finset.mem_univ, forall_const, Fin.forall_fin_one, Finset.sum_filter, Fin.sum_univ_one]
   norm_num [negRho]
 
+/- English proof (translation)
+Simplify using `only [NegExp, stepSum, Finset.mem_univ, forall_const, Fin.forall_fin_two, Finset.sum_filter, Fin.sum_univ_two]`. Simplify using the standard rewrite rules. Conclude with `⟨fun ⟨y, h1, h2⟩ => by linarith, fun h => ⟨fun _ => ((s 0).re + (s 1).re) / 2, by linarith, by linarith⟩⟩`.
+-/
 example (s : Fin 2 → ℂ) : NegExp Finset.univ {1} s ↔ (s 0).re < (s 1).re := by
   simp only [NegExp, stepSum, Finset.mem_univ, forall_const, Fin.forall_fin_two, Finset.sum_filter, Fin.sum_univ_two]
   simp
@@ -223,6 +274,9 @@ section Single
 variable {σ J X Y}
 
 omit [NumberField E] in
+/- English proof (translation)
+Establish `: (fun i => (adMat F X)ᵀ i) '' {i | i ≤ k} = Set.range (adMat F (initCols X k)).col` using `Set.ext fun _ => ⟨fun ⟨i, hi, e⟩ => ⟨⟨i, Nat.lt_succ_of_le hi⟩, e⟩, fun ⟨i, e⟩ => ⟨i.castLE k.2, Nat.le_of_lt_succ i.2, e⟩⟩`. Rewrite using `[colSpan, this, ← Matrix.range_mulVecLin]`. Both sides reduce to the same expression.
+-/
 theorem mem_colSpan_iff {k : Fin r} {y : Fin n → AF F ⊗[F] E} :
     y ∈ colSpan F X {i | i ≤ k} ↔ ∃ a, adMat F (initCols X k) *ᵥ a = y := by
   have : (fun i => (adMat F X)ᵀ i) '' {i | i ≤ k} = Set.range (adMat F (initCols X k)).col := Set.ext fun _ =>
@@ -231,12 +285,40 @@ theorem mem_colSpan_iff {k : Fin r} {y : Fin n → AF F ⊗[F] E} :
   rfl
 
 omit [NumberField E] in
+/- English proof (translation)
+Simplify using `only [colPerp, Submodule.mem_iInf, LinearMap.mem_ker]`. Conclude with `⟨fun h => funext fun i => h (i.castLE k.2) (Nat.le_of_lt_succ i.2), fun h i hi => congrFun h ⟨i, Nat.lt_succ_of_le hi⟩⟩`.
+-/
 theorem mem_colPerp_iff {k : Fin r} {y : Fin n → AF F ⊗[F] E} :
     y ∈ colPerp σ J X {i | i ≤ k} ↔ adMat F (cT (σ : E →+* E) (initCols X k) * J) *ᵥ y = 0 := by
   simp only [colPerp, Submodule.mem_iInf, LinearMap.mem_ker]
   exact ⟨fun h => funext fun i => h (i.castLE k.2) (Nat.le_of_lt_succ i.2),
     fun h i hi => congrFun h ⟨i, Nat.lt_succ_of_le hi⟩⟩
 
+/- English proof (translation)
+Establish `e1 : {i | ∃ k' ∈ ({k} : Finset (Fin r)), i ≤ k'} = {i | i ≤ k}` using `by simp`. Establish `e2 : ∀ j, k < j → {i | ∃ k' ∈ ({k} : Finset (Fin r)), i ≤ k' ∧ k' < j} = {i | i ≤ k}` using `fun j h => by simp [h]`. Establish `e3 : ∀ j, ¬ k < j → colSpan F X {i | ∃ k' ∈ ({k} : Finset (Fin r)), i ≤ k' ∧ k' < j} = ⊥` using `fun j h => by`. Simplify using `[h, colSpan]`. Establish `c1 : ∀ {a b : ℕ} (Z : Matrix (Fin a) (Fin b) E), cT (sigR (AF F) σ) (adMat F Z) = adMat F (cT (σ : E →+* E) Z)` using `fun Z => rfl`.
+
+Establish `fix : ∀ g ∈ unip σ J X {k}, (matHom _ σ J g).1 * adMat F (initCols X k) = adMat F (initCols X k)` using `fun g hg => Matrix.ext_col fun i => by`. Use `(Subgroup.mem_iInf.1 hg.1 (i.castLE k.2)).2 _ (Submodule.subset_span ⟨_, rfl, rfl⟩)` as an intermediate fact. Rewrite `this` using `[e3 _ (not_lt.2 (Nat.le_of_lt_succ i.2)), Submodule.mem_bot, sub_eq_zero]`. Conclude with `this`. Use `le_antisymm (fun g hg => ?_) ((Subgroup.closure_le _).2 ?_)` and prove the remaining obligations.
+
+Use `on_goal 1 =>`. Apply `Subgroup.subset_closure` to reduce the goal to its premises. Use `⟨?_, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.sub_mul, fix g hg, Matrix.one_mul, sub_self]`. Establish `hu : cT (sigR (AF F) σ) (matHom _ σ J g).1 * adMat F J * (matHom _ σ J g).1 = adMat F J` using `g.2`.
+
+Rewrite using `[Matrix.mul_sub, Matrix.mul_one, sub_eq_zero, adMat, Matrix.map_mul]`. Express the relevant statement in the definitionally equal form `adMat F _ * adMat F J * _ = adMat F _ * adMat F J`. Use `conv_lhs => rw [← c1, ← fix g hg, Formalism.UG.cT_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc _ (adMat F J), hu, c1]`. Use `hg.2.2 (fun i => inclR (F := F) (AF F) (x i)) (by` as an intermediate fact. Rewrite using `[e1, mem_colPerp_iff]`.
+
+Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (inclR (F := F) (AF F)) _ x i).symm.trans (by rw [hx]; exact map_zero _))`. Rewrite `this` using `[e1, mem_colSpan_iff]`. Conclude with `this.imp fun a ha => by rw [sub_mulVec, one_mulVec, ha]`. Introduce and unpack `g ⟨h1, -, h3⟩`.
+
+Rewrite `h1` using `[Matrix.sub_mul, Matrix.one_mul, sub_eq_zero]`. Establish `s1 : ∀ y, y ∈ colSpan F X {i | i ≤ k} ↔ (matHom _ σ J g).1 *ᵥ y ∈ colSpan F X {i | i ≤ k}` using `fun y => by`. Simplify using `only [mem_colSpan_iff]`. Use `exists_congr fun a => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← h1, ← mulVec_mulVec]`.
+
+Conclude with `(Matrix.mulVec_injective_of_isUnit (Units.isUnit _)).eq_iff.symm`. Establish `s2 : ∀ y ∈ colPerp σ J X {i | i ≤ k}, (matHom _ σ J g).1 *ᵥ y - y ∈ colSpan F X {i | i ≤ k}` using `fun y hy => by set T := cT (σ : E →+* E) (initCols X k) * J`. Establish `hT : T * initCols Y k = 1` using `Matrix.ext fun i j => (congrFun (congrFun hW.xy (i.castLE k.2)) (j.castLE k.2)).trans (by simp [Matrix.one_apply])`. Establish `hQ : T * (1 - initCols Y k * T) = 0`. Rewrite using `[Matrix.mul_sub, ← Matrix.mul_assoc, hT, Matrix.one_mul, Matrix.mul_one, sub_self]`.
+
+Establish `hy' : y = adMat F (1 - initCols Y k * T) *ᵥ y`. Rewrite using `[adMat, Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_mul, sub_mulVec, one_mulVec, ← mulVec_mulVec, mem_colPerp_iff.1 hy, mulVec_zero, sub_zero]`. Establish `: (matHom _ σ J g).1 *ᵥ y - y = ((matHom _ σ J g).1 - 1).mulVecLin y` using `by simp [sub_mulVec]`. Rewrite using `[this, hy', mulVec_eq_sum, map_sum]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[op_smul_eq_smul, map_smul]`. Take `⟨a, ha⟩` from `h3 (fun i => (1 - initCols Y k * T : Matrix (Fin n) (Fin n) E) i j) (funext fun i => congrFun (congrFun hQ i) j)`. Conclude with `Submodule.smul_mem _ _ (mem_colSpan_iff.2 ⟨a, ha.symm⟩)`. Use `⟨Subgroup.mem_iInf.2 fun j => ?_, e1.symm ▸ ⟨s1, s2⟩⟩` and prove the remaining obligations. Distinguish the cases in `hj : k < j`.
+
+Rewrite using `[e2 j hj]`. Use `⟨s1, fun y hy => s2 y (Submodule.span_le.2 ?_ hy)⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨l, -, rfl⟩`. Use `mem_colPerp_iff.2 (funext fun i => ?_)` and prove the remaining obligations. Conclude with `(RingHom.map_mulVec (inclR (F := F) (AF F)) _ (Xᵀ l) i).symm.trans ((congrArg _ (congrFun (congrFun hW.xx (i.castLE k.2)) l)).trans (map_zero _))`.
+
+Rewrite using `[e3 j hj]`. Use `⟨fun y => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.mem_bot]`. Conclude with `⟨fun h => by rw [h, mulVec_zero], fun h => Matrix.mulVec_injective_of_isUnit (Units.isUnit _) (h.trans (mulVec_zero _).symm)⟩`. Take `⟨a, rfl⟩` from `mem_colSpan_iff.1 (Submodule.span_mono (Set.image_mono (show {j} ⊆ {i | i ≤ k} from fun _ h => h ▸ not_lt.1 hj)) hy)`.
+
+Rewrite using `[mulVec_mulVec, h1, sub_self]`. Conclude with `zero_mem _`.
+-/
 theorem unip_singleton (hW : IsWittFrame σ J X Y) (k : Fin r) : unip σ J X {k} = unipRad σ J (initCols X k) := by
   have e1 : {i | ∃ k' ∈ ({k} : Finset (Fin r)), i ≤ k'} = {i | i ≤ k} := by simp
   have e2 : ∀ j, k < j → {i | ∃ k' ∈ ({k} : Finset (Fin r)), i ≤ k' ∧ k' < j} = {i | i ≤ k} := fun j h => by simp [h]
@@ -304,6 +386,9 @@ theorem unip_singleton (hW : IsWittFrame σ J X Y) (k : Fin r) : unip σ J X {k}
         rw [mulVec_mulVec, h1, sub_self]
         exact zero_mem _
 
+/- English proof (translation)
+Unfold `IsConstAlong`. Rewrite using `[unip_singleton hW]`. Both sides reduce to the same expression.
+-/
 theorem isConstAlong_singleton (hW : IsWittFrame σ J X Y) (k : Fin r) {φ c : GAd σ J → ℂ} :
     IsConstAlong σ J X {k} φ c ↔ IsConstTerm σ J (initCols X k) φ c := by
   unfold IsConstAlong
@@ -316,6 +401,9 @@ section Closed
 
 variable {σ J X Y}
 
+/- English proof (translation)
+The claim follows from `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩ ⟨IsModuleTopology.isTopologicalRing (AF F) _, .of_injective_continuous (f := (Algebra.TensorProduct.basis (AF F) (Module.finBasis F E)).equivFun) (LinearE …`.
+-/
 theorem ring_facts : IsTopologicalRing (AF F ⊗[F] E) ∧ T2Space (AF F ⊗[F] E) :=
   haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F
   haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
@@ -324,8 +412,22 @@ theorem ring_facts : IsTopologicalRing (AF F ⊗[F] E) ∧ T2Space (AF F ⊗[F] 
       (LinearEquiv.injective _) (IsModuleTopology.continuous_of_linearMap
         (Algebra.TensorProduct.basis (AF F) (Module.finBasis F E)).equivFun.toLinearMap)⟩
 
+/- English proof (translation)
+The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+-/
 theorem continuous_mat : Continuous fun g : GAd σ J => (matHom _ σ J g).1 := Units.continuous_val.comp continuous_subtype_val
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `ring_facts (F := F) (E := E)`. Establish `hL' : adMat F L * adMat F X = 1` using `by rw [← Matrix.map_mul, hL, Matrix.map_one _ (map_zero _) (map_one _)]`. Set `P` to `adMat F X * diagonal (fun i => if i ∈ I then (1 : AF F ⊗[F] E) else 0) * adMat F L`. Establish `: (colSpan F X I : Set (Fin n → AF F ⊗[F] E)) = {y | P *ᵥ y = y}`. Use `Set.ext fun y => ⟨fun hy => ?_, fun hy => ?_⟩` and prove the remaining obligations.
+
+Use `(Submodule.span_le (p := LinearMap.eqLocus P.mulVecLin LinearMap.id)).2 ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Express the relevant statement in the definitionally equal form `(P * adMat F X).col i = _`. Rewrite using `[Matrix.mul_assoc, hL', Matrix.mul_one]`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[hi]`. Rewrite using `[← show P *ᵥ y = y from hy]`. Unfold `P`. Rewrite using `[Matrix.mul_assoc, ← mulVec_mulVec, mulVec_eq_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[op_smul_eq_smul]`. Distinguish the cases in `hi : i ∈ I`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, hi, rfl⟩)`. Rewrite using `[← mulVec_mulVec, mulVec_diagonal, if_neg hi, zero_mul, zero_smul]`. Conclude with `zero_mem _`.
+
+Conclude with `this ▸ isClosed_eq (continuous_const.matrix_mulVec continuous_id) continuous_id`.
+-/
 theorem isClosed_colSpan {L : Matrix (Fin r) (Fin n) E} (hL : L * X = 1) (I : Set (Fin r)) :
     IsClosed (colSpan F X I : Set (Fin n → AF F ⊗[F] E)) := by
   classical
@@ -351,6 +453,11 @@ theorem isClosed_colSpan {L : Matrix (Fin r) (Fin n) E} (hL : L * X = 1) (I : Se
         exact zero_mem _
   exact this ▸ isClosed_eq (continuous_const.matrix_mulVec continuous_id) continuous_id
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `ring_facts (F := F) (E := E)`. Establish `e : ∀ (a : GAd σ J) y, (matHom _ σ J a⁻¹).1 *ᵥ (matHom _ σ J a).1 *ᵥ y = y` using `fun a y => by`. Rewrite using `[mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, one_mulVec]`. Establish `: (trivOn σ J A B : Set (GAd σ J)) = (⋂ y ∈ A, {g | (matHom _ σ J g).1 *ᵥ y ∈ A} ∩ {g | (matHom _ σ J g⁻¹).1 *ᵥ y ∈ A}) ∩ ⋂ y ∈ B, {g | (matHom _ σ J g).1 *ᵥ y - y ∈ A}` using `Set.ext fun g => by`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_ofPred_eq]`.
+
+Conclude with `⟨fun h => ⟨fun y hy => ⟨(h.1 y).1 hy, ((inv_mem h).1 y).1 hy⟩, h.2⟩, fun h => ⟨fun y => ⟨fun hy => (h.1 y hy).1, fun hy => e g y ▸ (h.1 _ hy).2⟩, h.2⟩⟩`. Rewrite using `[this]`. Conclude with `(isClosed_biInter fun y _ => (hA.preimage (continuous_mat.matrix_mulVec continuous_const)).inter (hA.preimage ((continuous_mat.comp continuous_inv).matrix_mulVec continuous_const))).inter (isClosed_biInter fun y _ => hA.preimage ((continuous_mat.matrix_mulVec continuous_const).su …`.
+-/
 theorem isClosed_trivOn {A B : Submodule (AF F ⊗[F] E) (Fin n → AF F ⊗[F] E)} (hA : IsClosed (A : Set (Fin n → AF F ⊗[F] E))) :
     IsClosed (trivOn σ J A B : Set (GAd σ J)) := by
   obtain ⟨_, _⟩ := ring_facts (F := F) (E := E)
@@ -366,6 +473,13 @@ theorem isClosed_trivOn {A B : Submodule (AF F ⊗[F] E) (Fin n → AF F ⊗[F] 
     (hA.preimage ((continuous_mat.comp continuous_inv).matrix_mulVec continuous_const))).inter
     (isClosed_biInter fun y _ => hA.preimage ((continuous_mat.matrix_mulVec continuous_const).sub continuous_const))
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `ring_facts (F := F) (E := E)`. Establish `hL' : adMat F L * adMat F C = 1` using `by rw [← Matrix.map_mul, hL, Matrix.map_one _ (map_zero _) (map_one _)]`. Set `b : GAd σ J → Matrix (Fin k) (Fin k) (AF F ⊗[F] E)` to `fun g => adMat F L * ((matHom _ σ J g).1 * adMat F C)`. Establish `hb : Continuous b` using `continuous_const.matrix_mul (continuous_mat.matrix_mul continuous_const)`. Establish `: (frameStab σ J C H : Set (GAd σ J)) = {g | (matHom _ σ J g).1 * adMat F C = adMat F C * b g} ∩ (fun g => (b g, MulOpposite.op (b g⁻¹))) ⁻¹' (Units.embedProduct _ '' H)` using `Set.ext fun g => by`.
+
+Use `⟨fun ⟨B, hB, e⟩ => ?_, fun ⟨h1, B, hB, e⟩ => ⟨B, hB, h1.trans (congrArg _ (congrArg Prod.fst e).symm)⟩⟩` and prove the remaining obligations. Establish `h1 : b g = B` using `(congrArg (adMat F L * ·) e).trans (by rw [← Matrix.mul_assoc, hL', Matrix.one_mul])`. Establish `h2 : b g⁻¹ = B⁻¹.1`. Establish `: adMat F C = (matHom _ σ J g).1 * (adMat F C * B⁻¹.1)`. Rewrite using `[← Matrix.mul_assoc, e, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`.
+
+Simplify using `only [b]`. Rewrite using `[this, ← Matrix.mul_assoc (Units.val _), map_inv, Units.inv_mul, Matrix.one_mul, ← Matrix.mul_assoc, hL', Matrix.one_mul]`. Conclude with `⟨e.trans (by rw [h1]), B, hB, by simp only [h1, h2]; rfl⟩`. Rewrite using `[this]`. Conclude with `(isClosed_eq (continuous_mat.matrix_mul continuous_const) (continuous_const.matrix_mul hb)).inter ((Units.isClosedEmbedding_embedProduct.isClosedMap _ hH).preimage (hb.prodMk (MulOpposite.continuous_op.comp (hb.comp continuous_inv))))`.
+-/
 theorem isClosed_frameStab {k : ℕ} {C : Matrix (Fin n) (Fin k) E} {L : Matrix (Fin k) (Fin n) E} (hL : L * C = 1)
     {H : Subgroup (GL (Fin k) (AF F ⊗[F] E))} (hH : IsClosed (H : Set (GL (Fin k) (AF F ⊗[F] E)))) :
     IsClosed (frameStab σ J C H : Set (GAd σ J)) := by
@@ -391,16 +505,27 @@ theorem isClosed_frameStab {k : ℕ} {C : Matrix (Fin n) (Fin k) E} {L : Matrix 
 variable (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y)
 include h hJ hW
 
+/- English proof (translation)
+Use `congrArg (cT (σ : E →+* E)) hW.xy` as an intermediate fact. Rewrite `this` using `[Formalism.UG.cT_mul, Formalism.UG.cT_mul, show cT (σ : E →+* E) (cT (σ : E →+* E) X) = X from Matrix.ext fun _ _ => sigma_sigma h _, show cT (σ : E →+* E) J = J from Matrix.ext fun i j => hJ.1 i j, Formalism.UG.cT_one, ← Matrix.mul_assoc]`. Then use the resulting hypothesis.
+-/
 theorem yx : cT (σ : E →+* E) Y * J * X = 1 := by
   have := congrArg (cT (σ : E →+* E)) hW.xy
   rwa [Formalism.UG.cT_mul, Formalism.UG.cT_mul, show cT (σ : E →+* E) (cT (σ : E →+* E) X) = X from Matrix.ext fun _ _ => sigma_sigma h _,
     show cT (σ : E →+* E) J = J from Matrix.ext fun i j => hJ.1 i j, Formalism.UG.cT_one, ← Matrix.mul_assoc] at this
 
+/- English proof (translation)
+Rewrite using `[unip, Subgroup.coe_inf, Subgroup.coe_iInf]`. Conclude with `(isClosed_iInter fun _ => isClosed_trivOn (isClosed_colSpan (yx h hJ hW) _)).inter (isClosed_trivOn (isClosed_colSpan (yx h hJ hW) _))`.
+-/
 theorem isClosed_unip : IsClosed (unip σ J X S : Set (GAd σ J)) := by
   rw [unip, Subgroup.coe_inf, Subgroup.coe_iInf]
   exact (isClosed_iInter fun _ => isClosed_trivOn (isClosed_colSpan (yx h hJ hW) _)).inter
     (isClosed_trivOn (isClosed_colSpan (yx h hJ hW) _))
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `ring_facts (F := F) (E := E)`. Establish `key : ∀ {L : Matrix (Fin r) (Fin n) E} {C : Matrix (Fin n) (Fin r) E}, L * C = 1 → ∀ k : Fin r, L.submatrix (Fin.castLE k.2) id * initCols C k = 1` using `fun hL k => Matrix.ext fun i j => (congrFun (congrFun hL (i.castLE k.2)) (j.castLE k.2)).trans (by simp [Matrix.one_apply])`. Establish `h1 : IsClosed (levi σ J X Y S : Set (GAd σ J))`. Simplify using `only [levi, Subgroup.coe_iInf, Subgroup.coe_inf]`. Conclude with `isClosed_biInter fun k _ => (isClosed_frameStab (key (yx h hJ hW) k) isClosed_univ).inter (isClosed_frameStab (key hW.xy k) isClosed_univ)`.
+
+Use `⟨h1, ?_⟩` and prove the remaining obligations. Simplify using `only [leviOne, Subgroup.coe_iInf, Subgroup.coe_inf]`. Conclude with `h1.inter (isClosed_biInter fun k _ => isClosed_frameStab (key (yx h hJ hW) k) (isClosed_eq (GlobalTheory.Doubling.continuous_absE.comp Matrix.GeneralLinearGroup.continuous_det) continuous_const))`.
+-/
 theorem isClosed_levi : IsClosed (levi σ J X Y S : Set (GAd σ J)) ∧ IsClosed (leviOne σ J X Y S : Set (GAd σ J)) := by
   obtain ⟨_, _⟩ := ring_facts (F := F) (E := E)
   have key : ∀ {L : Matrix (Fin r) (Fin n) E} {C : Matrix (Fin n) (Fin r) E}, L * C = 1 → ∀ k : Fin r,
@@ -415,11 +540,17 @@ theorem isClosed_levi : IsClosed (levi σ J X Y S : Set (GAd σ J)) ∧ IsClosed
   exact h1.inter (isClosed_biInter fun k _ => isClosed_frameStab (key (yx h hJ hW) k)
     (isClosed_eq (GlobalTheory.Doubling.continuous_absE.comp Matrix.GeneralLinearGroup.continuous_det) continuous_const))
 
+/- English proof (translation)
+The claim follows from `haveI := (isClosed_levi S h hJ hW).2.locallyCompactSpace ⟨Measure.haar, _, inferInstance, GlobalTheory.AutomorphicL2Unitary.isFundamentalDomain_stdDom _ _⟩`.
+-/
 theorem exists_haar_leviOne : ∃ (μ : Measure (leviOne σ J X Y S)) (𝓕 : Set (leviOne σ J X Y S)), μ.IsHaarMeasure ∧
     IsFundamentalDomain ((ratPts σ J).subgroupOf (leviOne σ J X Y S)) 𝓕 μ :=
   haveI := (isClosed_levi S h hJ hW).2.locallyCompactSpace
   ⟨Measure.haar, _, inferInstance, GlobalTheory.AutomorphicL2Unitary.isFundamentalDomain_stdDom _ _⟩
 
+/- English proof (translation)
+The claim follows from `exists_isTorusElt h hJ hW fun _ => Real.exp_ne_zero _`.
+-/
 theorem exists_isSplitElt (u : Fin r → ℝ) : ∃ a, IsSplitElt σ J X Y S u a :=
   exists_isTorusElt h hJ hW fun _ => Real.exp_ne_zero _
 

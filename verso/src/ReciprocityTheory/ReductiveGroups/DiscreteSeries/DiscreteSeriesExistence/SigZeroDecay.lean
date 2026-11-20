@@ -12,6 +12,13 @@ namespace ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
 
+/- English proof (translation)
+Unfold `S7.hs`. Establish `hg' : gᴴ * Jm ε * g = Jm ε` using `hg`. Establish `h1 : (gᴴ * Jm ε * g) i i = Jm ε i i` using `by rw [hg']`. Rewrite `h1` using `[Matrix.mul_apply]`. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.conjTranspose_apply, Matrix.diagonal_apply_eq] at h1`.
+
+Establish `key : ‖(if ε i = true then (1 : ℂ) else -1)‖ ≤ ∑ x, ‖g x i‖ ^ 2`. Rewrite using `[← h1]`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, norm_star]`.
+
+Apply the tactic sequence `split_ifs <;> simp [sq]`. Establish `hrow : ∑ x, ‖g x i‖ ^ 2 ≤ ∑ a, ∑ b, ‖g a b‖ ^ 2` using `Finset.sum_le_sum fun a _ => Finset.single_le_sum (f := fun b => ‖g a b‖ ^ 2) (fun b _ => by positivity) (Finset.mem_univ i)`. Apply the tactic sequence `have hn : ‖(if ε i = true then (1 : ℂ) else -1)‖ = 1 := by split_ifs <;> simp`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sigZeroDecay_one_le_hs {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (i : Fin n) : 1 ≤ S7.hs g := by
   unfold S7.hs
   have hg' : gᴴ * Jm ε * g = Jm ε := hg
@@ -31,6 +38,15 @@ theorem sigZeroDecay_one_le_hs {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g)
     split_ifs <;> simp
   linarith
 
+/- English proof (translation)
+Establish `hc0 : 0 < c` using `lt_of_lt_of_le one_pos hc`. Establish `ha : 0 < h / (8 * c)` using `by positivity`. Establish `hlog : Real.log G ≤ Real.log N + s`. Establish `h1` using `Real.log_le_log hG hGle`. Rewrite `h1` using `[Real.log_mul hN.ne' (Real.exp_pos s).ne', Real.log_exp]`. Then use the resulting hypothesis.
+
+Establish `hcs : c * (s / c) = s` using `by first`. Consider the case `(field_simp; done)`. Consider the case `(field_simp; ring)`. Establish `hmin : s - 1 ≤ c * min (s ^ 2) (s / c)`. Break down `min_cases (s ^ 2) (s / c) with ⟨h1, _⟩ | ⟨h1, _⟩` into its components or cases.
+
+Rewrite using `[h1]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hc (sq_nonneg s), sq_nonneg (s - 1)]`. Rewrite using `[h1, hcs]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hh8 : h / 8 = c * (h / (8 * c))` using `by first`.
+
+Consider the case `(field_simp; done)`. Consider the case `(field_simp; ring)`. Rewrite using `[Real.rpow_def_of_pos hN, Real.rpow_def_of_pos hG, ← Real.exp_add, ← Real.exp_add, Real.exp_le_exp, hh8]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hmin ha.le, mul_le_mul_of_nonneg_left hlog ha.le]`.
+-/
 theorem sigZeroDecay_real {h c s N G : ℝ} (hh : 0 < h) (hc : 1 ≤ c) (hN : 0 < N)
     (hG : 0 < G) (hGle : G ≤ N * Real.exp s) :
     Real.exp (-(h / 8) * min (s ^ 2) (s / c)) ≤
@@ -58,6 +74,23 @@ theorem sigZeroDecay_real {h c s N G : ℝ} (hh : 0 < h) (hc : 1 ≤ c) (hN : 0 
     Real.exp_le_exp, hh8]
   nlinarith [mul_le_mul_of_nonneg_left hmin ha.le, mul_le_mul_of_nonneg_left hlog ha.le]
 
+/- English proof (translation)
+Establish `hqn : S7.q0 ε ≤ n`. Unfold `S7.q0 pOf`. Conclude with `(min_le_left _ _).trans ((Finset.card_filter_le _ _).trans_eq (Finset.card_fin n))`. Establish `hn : 0 < n` using `lt_of_lt_of_le one_pos (hq.trans hqn)`. Establish `hG1 : ∀ g ∈ UJset ε, 1 ≤ Real.sqrt (S7.hs g)` using `fun g hg => Real.one_le_sqrt.mpr (sigZeroDecay_one_le_hs hg ⟨0, hn⟩)`.
+
+Use `set c := Real.sqrt (2 * (S7.q0 ε : ℝ)) with hcdef`. Establish `hc : 1 ≤ c`. Rewrite using `[hcdef, Real.one_le_sqrt]`. Establish `: (1 : ℝ) ≤ S7.q0 ε` using `by exact_mod_cast hq`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Break down `le_or_gt h 0 with hh | hh` into its components or cases. Use `⟨‖uniformisationL2 ε Ψ v₀ v'‖ * ‖uniformisationL2 ε Ψ v₀ v‖, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hiso : ‖rreg ε g (uniformisationL2 ε Ψ v₀ v)‖ = ‖uniformisationL2 ε Ψ v₀ v‖` using `(rreg_isURepOn ε).2.1 g hg _`. Establish `hpow : 1 ≤ Real.sqrt (S7.hs g) ^ (-(h / (8 * c)))`. Use `Real.one_le_rpow (hG1 g hg) ?_` and prove the remaining obligations.
+
+Establish `: h / (8 * c) ≤ 0` using `div_nonpos_of_nonpos_of_nonneg hh (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Use `⟨‖uniformisationL2 ε Ψ v₀ T.w‖ ^ 2 * ‖v'‖ * ‖v‖ * (Real.exp (h / (8 * c)) * Real.sqrt n ^ (h / (8 * c))), fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨k, X, hX, rfl⟩` from `S7.polar_exists hg`.
+
+Establish `hd` using `dec_sigLam hgap hP hv₀ hdec k hX v v'`. Use `set s := Real.sqrt (S7.hs X) with hsdef`. Establish `hsX : S7.hs X = s ^ 2` using `(Real.sq_sqrt (S7.hs_nonnegVG X)).symm`. Establish `hN : 0 < Real.sqrt (n : ℝ)` using `Real.sqrt_pos.mpr (by exact_mod_cast hn)`. Establish `hGpos : 0 < Real.sqrt (S7.hs (S7.toMK k * NormedSpace.exp X))` using `lt_of_lt_of_le one_pos (hG1 _ hg)`.
+
+Establish `hGle : Real.sqrt (S7.hs (S7.toMK k * NormedSpace.exp X)) ≤ Real.sqrt n * Real.exp s`. Rewrite using `[S7.hs_kmulVG]`. Establish `h2 : S7.hs (NormedSpace.exp X) ≤ (Real.sqrt n * Real.exp s) ^ 2`. Establish `e2 : Real.exp s ^ 2 = Real.exp (2 * s)`. Rewrite using `[← Real.exp_nat_mul]`.
+
+Evaluate the numerical expressions. Use `S7.hs_exp_leVG X` as an intermediate fact. Rewrite `this` using `[← hsdef]`. Rewrite using `[mul_pow, Real.sq_sqrt (Nat.cast_nonneg n), e2]`. Conclude with `this`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hr` using `sigZeroDecay_real hh hc hN hGpos hGle`. Rewrite `hr` using `[← hsX]`. Establish `hM : 0 ≤ ‖uniformisationL2 ε Ψ v₀ T.w‖ ^ 2 * ‖v'‖ * ‖v‖` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem dec_gN_sigLam (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) {h : ℝ} (hq : 1 ≤ S7.q0 ε)
     (hdec : ∀ (k : S7.KG ε) (X : Matrix (Fin n) (Fin n) ℂ), inP ε X →
       ‖Ψ (S7.toMK k * NormedSpace.exp X)‖ ≤

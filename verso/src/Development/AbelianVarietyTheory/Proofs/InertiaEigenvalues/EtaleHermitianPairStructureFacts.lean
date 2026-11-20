@@ -17,20 +17,34 @@ variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [N
 
 namespace GlobalTheory.JR.EtFacts
 
+/- English proof (translation)
+Use `U.charZero` as an intermediate fact. Take `⟨b, d, hb0, hs, hd, hd0⟩` from `Unram.exists_basis_antifixed F E`. Establish `h2` using `(IsUnit.mk0 (2 : F) two_ne_zero)`. Conclude with `(quadratic_star_structure b d hb0 hs hd U.star_fix (IsUnit.mk0 d hd0) h2).2.1 z`.
+-/
 theorem normE [U : Unram F E] (z : E) : algebraMap F E (Algebra.norm F z) = z * star z := by
   have := U.charZero
   obtain ⟨b, d, hb0, hs, hd, hd0⟩ := Unram.exists_basis_antifixed F E
   have h2 := (IsUnit.mk0 (2 : F) two_ne_zero)
   exact (quadratic_star_structure b d hb0 hs hd U.star_fix (IsUnit.mk0 d hd0) h2).2.1 z
 
+/- English proof (translation)
+Establish `hbc` using `A.push.out`. Conclude with `Module.Free.of_basis (hbc.basis (Module.Free.chooseBasis F A.K))`.
+-/
 theorem free_L_E [Unram F E] (A : Et F E) : Module.Free E A.L := by
   have hbc := A.push.out
   exact Module.Free.of_basis (hbc.basis (Module.Free.chooseBasis F A.K))
 
+/- English proof (translation)
+Take `⟨⟨b⟩, -⟩` from `GlobalTheory.JR.Et.quadratic_structure F E A`. Conclude with `Module.Free.of_basis b`.
+-/
 theorem free_L_K [Unram F E] (A : Et F E) : Module.Free A.K A.L := by
   obtain ⟨⟨b⟩, -⟩ := GlobalTheory.JR.Et.quadratic_structure F E A
   exact Module.Free.of_basis b
 
+/- English proof (translation)
+Use `free_L_E A` as an intermediate fact. Use `free_L_K A` as an intermediate fact. Establish `h1 : Algebra.norm F (A.NL y) = Algebra.norm F (Algebra.norm E y)`. Rewrite using `[Et.NL, Algebra.norm_norm, Algebra.norm_norm]`. Rewrite using `[Et.etaK, h1, eta]`.
+
+Take `⟨x, hx⟩` from `U.unram (Algebra.norm E y)`. Establish `hx2 : ‖Algebra.norm F (Algebra.norm E y)‖ = ‖x‖ ^ 2`. Rewrite using `[← norm_algebraMap' E, normE, norm_mul, U.norm_star, hx, sq]`. Rewrite using `[if_pos ⟨x, hx2⟩]`.
+-/
 theorem eta_NL [U : Unram F E] (A : Et F E) (y : A.L) : A.etaK (A.NL y) = 1 := by
   have := free_L_E A
   have := free_L_K A
@@ -42,6 +56,11 @@ theorem eta_NL [U : Unram F E] (A : Et F E) (y : A.L) : A.etaK (A.NL y) = 1 := b
     rw [← norm_algebraMap' E, normE, norm_mul, U.norm_star, hx, sq]
   rw [if_pos ⟨x, hx2⟩]
 
+/- English proof (translation)
+Rewrite using `[Et.etaK, eta]`. Use `if_pos ⟨1, ?_⟩` and prove the remaining obligations. Establish `h : Algebra.norm F (-1 : A.K) * Algebra.norm F (-1 : A.K) = 1`. Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules.
+
+Establish `h'` using `congrArg norm h`. Rewrite `h'` using `[norm_mul, norm_one]`. Establish `h0 : 0 ≤ ‖Algebra.norm F (-1 : A.K)‖` using `norm_nonneg _`. Simplify using `only [norm_one, one_pow]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem eta_neg_one [Unram F E] (A : Et F E) : A.etaK (-1) = 1 := by
   rw [Et.etaK, eta]
   refine if_pos ⟨1, ?_⟩
@@ -57,6 +76,9 @@ end GlobalTheory.JR.EtFacts
 
 namespace GlobalTheory.JR.EtFacts
 
+/- English proof (translation)
+Take `⟨-, hinj, hN, -, -⟩` from `GlobalTheory.JR.Et.quadratic_structure F E A`. Introduce and unpack `_ ⟨k, rfl⟩`. Use `⟨Units.map (algebraMap A.K A.L).toMonoidHom k, Units.ext (hinj ?_)⟩` and prove the remaining obligations. Rewrite using `[EtMeas.normU_val, hN]`. Simplify using `[A.star_K, sq]`.
+-/
 theorem sq_le_range [Unram F E] (A : Et F E) :
     (powMonoidHom 2 : A.Kˣ →* A.Kˣ).range ≤ (EtMeas.normU A).range := by
   obtain ⟨-, hinj, hN, -, -⟩ := GlobalTheory.JR.Et.quadratic_structure F E A
@@ -65,12 +87,22 @@ theorem sq_le_range [Unram F E] (A : Et F E) :
   rw [EtMeas.normU_val, hN]
   simp [A.star_K, sq]
 
+/- English proof (translation)
+Establish `: (powMonoidHom 2 : A.Kˣ →* A.Kˣ).range.FiniteIndex` using `Subgroup.finiteIndex_of_finite_quotient`. Use `Subgroup.finiteIndex_of_le (sq_le_range A)` as an intermediate fact. Conclude with `Subgroup.finite_quotient_of_finiteIndex`.
+-/
 theorem finite_quot [Unram F E] (A : Et F E) (hsq : Finite (A.Kˣ ⧸ (powMonoidHom 2 : A.Kˣ →* A.Kˣ).range)) :
     Finite (A.Kˣ ⧸ (EtMeas.normU A).range) := by
   have : (powMonoidHom 2 : A.Kˣ →* A.Kˣ).range.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient
   have := Subgroup.finiteIndex_of_le (sq_le_range A)
   exact Subgroup.finite_quotient_of_finiteIndex
 
+/- English proof (translation)
+Rewrite using `[QuotientGroup.eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, h⟩`. Use `⟨hy.unit, Units.ext ?_⟩` and prove the remaining obligations. Simplify using `[h, Et.NL, EtMeas.normU]`.
+
+Introduce and unpack `⟨y, h⟩`. Use `⟨y, y.isUnit, ?_⟩` and prove the remaining obligations. Use `congrArg Units.val h` as an intermediate fact. Simplify using `only [EtMeas.normU, Units.coe_map, Units.val_mul] at this`. Rewrite using `[Et.NL, this]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem key_rel (A : Et F E) (a x : A.Kˣ) : (∃ y : A.L, IsUnit y ∧ (a : A.K) = x * A.NL y) ↔
     (QuotientGroup.mk x : A.Kˣ ⧸ (EtMeas.normU A).range) = QuotientGroup.mk a := by
   rw [QuotientGroup.eq]
@@ -84,6 +116,9 @@ theorem key_rel (A : Et F E) (a x : A.Kˣ) : (∃ y : A.L, IsUnit y ∧ (a : A.K
     simp only [EtMeas.normU, Units.coe_map, Units.val_mul] at this
     rw [Et.NL, this]; simp
 
+/- English proof (translation)
+Use `⟨Set.range (Quotient.out : A.Kˣ ⧸ (EtMeas.normU A).range → A.Kˣ), Set.finite_range _, fun a => ⟨Quotient.out (QuotientGroup.mk a : A.Kˣ ⧸ (EtMeas.normU A).range), ⟨⟨_, rfl⟩, (key_rel A _ _).2 (QuotientGroup.out_eq' _)⟩, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨q, rfl⟩, h⟩`. Rewrite using `[← (key_rel A _ _).1 h, QuotientGroup.out_eq']`.
+-/
 theorem finite_reps_exists [Unram F E] (A : Et F E) (hf : Finite (A.Kˣ ⧸ (EtMeas.normU A).range)) :
     ∃ S : Set A.Kˣ, S.Finite ∧ A.IsReps S := by
   refine ⟨Set.range (Quotient.out : A.Kˣ ⧸ (EtMeas.normU A).range → A.Kˣ), Set.finite_range _, fun a =>
@@ -92,6 +127,11 @@ theorem finite_reps_exists [Unram F E] (A : Et F E) (hf : Finite (A.Kˣ ⧸ (EtM
   rintro _ ⟨⟨q, rfl⟩, h⟩
   rw [← (key_rel A _ _).1 h, QuotientGroup.out_eq']
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (fun x : S => (QuotientGroup.mk (x : A.Kˣ) : A.Kˣ ⧸ (EtMeas.normU A).range))`. Introduce and unpack `⟨x, hx⟩ ⟨x', hx'⟩ h`. Take `⟨z, -, hz⟩` from `hS x'`. Establish `e1` using `hz x ⟨hx, (key_rel A _ _).2 h⟩`. Establish `e2` using `hz x' ⟨hx', (key_rel A _ _).2 rfl⟩`.
+
+Conclude with `Subtype.ext (e1.trans e2.symm)`. Conclude with `Set.finite_coe_iff.1 (Finite.of_injective _ hinj)`.
+-/
 theorem finite_of_reps [Unram F E] (A : Et F E) (hf : Finite (A.Kˣ ⧸ (EtMeas.normU A).range)) (S : Set A.Kˣ)
     (hS : A.IsReps S) : S.Finite := by
   have hinj : Function.Injective (fun x : S => (QuotientGroup.mk (x : A.Kˣ) : A.Kˣ ⧸ (EtMeas.normU A).range)) := by
@@ -106,6 +146,13 @@ end GlobalTheory.JR.EtFacts
 
 namespace GlobalTheory.JR.EtFacts
 
+/- English proof (translation)
+Use `U.lcF` as an intermediate fact. Establish `: IsArtinianRing A.K` using `IsArtinianRing.of_finite F A.K`. Establish `hfin` using `IsArtinianRing.setOfPred_isMaximal_finite A.K`. Establish `hsub : {t : A.K | ¬ IsUnit t} ⊆ ⋃ m ∈ {I : Ideal A.K | I.IsMaximal}, (m : Set A.K)`. Introduce `t ht`.
+
+Take `⟨m, hm, htm⟩` from `exists_max_ideal_of_mem_nonunits (show t ∈ nonunits A.K from ht)`. Conclude with `Set.mem_biUnion hm htm`. Use `measure_mono_null hsub ((measure_biUnion_null_iff hfin.countable).2 fun m hm => ?_)` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.addHaar_proper_submodule_eq_zero_moduleTopology F A.K μ hμ (m.restrictScalars F) (fun h => hm.ne_top ?_)`. Conclude with `h`.
+
+Rewrite using `[Ideal.eq_top_iff_one]`. Establish `: (1 : A.K) ∈ m.restrictScalars F` using `h ▸ Submodule.mem_top`. Conclude with `this`.
+-/
 theorem nonunits_null [U : Unram F E] (A : Et F E) (μ : Measure A.K) (hμ : μ.IsAddHaarMeasure) :
     μ {t | ¬ IsUnit t} = 0 := by
   have := U.lcF
@@ -122,6 +169,11 @@ theorem nonunits_null [U : Unram F E] (A : Et F E) (μ : Measure A.K) (hμ : μ.
     have : (1 : A.K) ∈ m.restrictScalars F := h ▸ Submodule.mem_top
     exact this
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ U A`. Use `U.charZero` as an intermediate fact. Use `U.lcF` as an intermediate fact. Establish `: ProperSpace F` using `.of_nontriviallyNormedField_of_weaklyLocallyCompactSpace F`. Take `⟨-, -, hN, htr, -⟩` from `GlobalTheory.JR.Et.quadratic_structure F E A`.
+
+Establish `hq` using `finite_quot A (GlobalTheory.T.finite_units_quot_sq_finiteEtaleHermitianPair F E A)`. Use `⟨hN, htr, ⟨fun x hx => ?_, fun x hx => ?_⟩, fun y _ => eta_NL A y, eta_neg_one A, (GlobalTheory.isOpenUnits_and_eventually_sq F A.K).2, finite_reps_exists A hq, finite_of_reps A hq, nonunits_null A, GlobalTheory.T.isOpen_finiteEtaleHermitianPair_OK F E A, GlobalTheory.T.isCompact …` and prove the remaining obligations. Conclude with `EtMeas.eq_zero_of_trace F A.K x fun y => by simpa using hx y`. Conclude with `EtMeas.eq_zero_of_trace F A.K x fun y => by simpa [mul_comm] using hx y`.
+-/
 theorem main : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E), (∀ y : A.L, algebraMap A.K A.L (A.NL y) = y * star y) ∧ (∀ y : A.L, algebraMap A.K A.L (Algebra.trace A.K A.L y) = y + star y) ∧ (Algebra.traceForm F A.K).Nondegenerate ∧ (∀ y : A.L, IsUnit y → A.etaK (A.NL y) = 1) ∧ A.etaK (-1) = 1 ∧ (∀ᶠ v in 𝓝 (1 : A.K), ∃ s : A.K, s ^ 2 = v) ∧ (∃ S : Set A.Kˣ, S.Finite ∧ A.IsReps S) ∧ (∀ S : Set A.Kˣ, A.IsReps S → S.Finite) ∧ (∀ μ : Measure A.K, μ.IsAddHaarMeasure → μ {t | ¬ IsUnit t} = 0) ∧ IsOpen A.OK ∧ IsCompact A.OK ∧ ∃ R : Subring A.K, (R : Set A.K) = A.OK := by
   intro F E _ _ _ _ U A
   have := U.charZero; have := U.lcF

@@ -20,6 +20,23 @@ open scoped TensorProduct Topology
 
 namespace GlobalTheory.FinCharInt
 
+/- English proof (translation)
+Set `C : AddSubgroup (E ⊗[F] R)` to `AddSubgroup.closure {z | ∃ b ∈ S₁, ∃ α ∈ S₂, z = b ⊗ₜ[F] α}`. Establish `hC : C ≤ K`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, α, hα, rfl⟩`. Conclude with `hK b hb α hα`.
+
+Establish `hmul : ∀ x ∈ C, ∀ y ∈ C, x * y ∈ C`. Introduce `x hx y hy`. Proceed by induction on `hx, hy using AddSubgroup.closure_induction₂ with`. Consider the case `mem x y hx hy`. Take `⟨b, hb, α, hα, rfl⟩` from `hx`.
+
+Take `⟨c, hc, β, hβ, rfl⟩` from `hy`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Conclude with `AddSubgroup.subset_closure ⟨_, S₁.mul_mem hb hc, _, S₂.mul_mem hα hβ, rfl⟩`. Consider the case `zero_left x _ => rw [zero_mul]`. Conclude with `C.zero_mem`.
+
+Consider the case `zero_right x _ => rw [mul_zero]`. Conclude with `C.zero_mem`. Consider the case `add_left x y z _ _ _ h1 h2 => rw [add_mul]`. Conclude with `C.add_mem h1 h2`. Consider the case `add_right x y z _ _ _ h1 h2 => rw [mul_add]`.
+
+Conclude with `C.add_mem h1 h2`. Consider the case `neg_left x y _ _ h => rw [neg_mul]`. Conclude with `C.neg_mem h`. Consider the case `neg_right x y _ _ h => rw [mul_neg]`. Conclude with `C.neg_mem h`.
+
+Use `hC ?_` and prove the remaining obligations. Unfold `Formalism.UG.tensInt at hx`. Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨c, rfl⟩ | ⟨c, rfl⟩` into its components or cases.
+
+Conclude with `AddSubgroup.subset_closure ⟨_, c.2, _, S₂.one_mem, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨_, S₁.one_mem, _, c.2, rfl⟩`. Consider the case `zero => exact C.zero_mem`. Consider the case `one => exact AddSubgroup.subset_closure ⟨_, S₁.one_mem, _, S₂.one_mem, Algebra.TensorProduct.one_def⟩`. Consider the case `add x y _ _ ihx ihy => exact C.add_mem ihx ihy`.
+
+Consider the case `neg x _ ihx => exact C.neg_mem ihx`. Consider the case `mul x y _ _ ihx ihy => exact hmul _ ihx _ ihy`.
+-/
 theorem tensInt_le {F E R : Type} [Field F] [CommRing E] [Algebra F E] [CommRing R] [Algebra F R]
     (S₁ : Subring E) (S₂ : Subring R) (K : AddSubgroup (E ⊗[F] R))
     (hK : ∀ b ∈ S₁, ∀ α ∈ S₂, b ⊗ₜ[F] α ∈ K) {x : E ⊗[F] R} (hx : x ∈ Formalism.UG.tensInt R S₁ S₂) : x ∈ K := by
@@ -55,6 +72,11 @@ theorem tensInt_le {F E R : Type} [Field F] [CommRing E] [Algebra F E] [CommRing
   | neg x _ ihx => exact C.neg_mem ihx
   | mul x y _ _ ihx ihy => exact hmul _ ihx _ ihy
 
+/- English proof (translation)
+Establish `hU : (⋂ i, {α : Af F | ψ (pairA F 0 (α * (c i).2)) = 1}) ∈ 𝓝 (0 : Af F)`. Use `Filter.iInter_mem.2 fun i => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun α : Af F => α * (c i).2` using `continuous_id.mul continuous_const`. Conclude with `h1.continuousAt.preimage_mem_nhds (x := 0) (t := {a | ψ (pairA F 0 a) = 1}) (by rw [zero_mul]; exact GlobalTheory.FinTranslate.ker_mem_nhds hc hn)`. Take `⟨N, hN, h⟩` from `GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F _ hU`.
+
+Use `⟨N, hN, fun i α hα => ?_⟩` and prove the remaining obligations. Establish `h1 : ψ (pairA F 0 ((N • α) * (c i).2)) = 1` using `Set.mem_iInter.1 (h α hα) i`. Establish `e : N • (pairA F 0 α * c i) = pairA F 0 ((N • α) * (c i).2)` using `Prod.ext (show N • ((0 : Ainf F) * (c i).1) = 0 by rw [zero_mul, smul_zero]) (show N • (α * (c i).2) = (N • α) * (c i).2 from (smul_mul_assoc N α _).symm)`. Rewrite using `[e, h1]`.
+-/
 theorem exists_nsmul_kill {F : Type} [Field F] [NumberField F] {ψ : AddChar (AF F) ℂ} (hc : Continuous ψ)
     (hn : ∀ x, ‖ψ x‖ = 1) {ι : Type} [Finite ι] (c : ι → AF F) :
     ∃ N : ℕ, 0 < N ∧ ∀ i, ∀ α ∈ Formalism.UG.intAd F, ψ (N • (pairA F 0 α * c i)) = 1 := by
@@ -91,6 +113,13 @@ variable {D : D7}
 noncomputable def finIncl (D : D7) : Af D.host.F ⊗[D.host.F] D.host.E →ₗ[D.host.F] AE D :=
   TensorProduct.map (LinearMap.inr D.host.F (Ainf D.host.F) (Af D.host.F)) LinearMap.id
 
+/- English proof (translation)
+Establish `key : ∀ a : AE D, (1 - GlobalTheory.FinTranslate.eInf D) • a = finIncl D (finPart D a)`. Introduce `a`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp only [smul_zero, map_zero]`. Consider the case `add a b ha hb => rw [smul_add, ha, hb, RingHom.map_add, map_add]`.
+
+Consider the case `tmul a x`. Rewrite using `[TensorProduct.smul_tmul']`. Establish `: (1 - GlobalTheory.FinTranslate.eInf D) • a = LinearMap.inr D.host.F (Ainf D.host.F) (Af D.host.F) (sndA D.host.F a)` using `Prod.ext (show (1 - 1) * a.1 = 0 by rw [sub_self, zero_mul]) (show (1 - 0) * a.2 = a.2 by rw [sub_zero, one_mul])`. Rewrite using `[this]`. Both sides reduce to the same expression.
+
+Rewrite using `[← key, sub_smul, one_smul, GlobalTheory.FinTranslate.smul_eq_zero_of_inf h, sub_zero]`.
+-/
 theorem finIncl_finPart {a : AE D} (h : infPart D a = 0) : finIncl D (finPart D a) = a := by
   have key : ∀ a : AE D, (1 - GlobalTheory.FinTranslate.eInf D) • a = finIncl D (finPart D a) := by
     intro a
@@ -106,6 +135,19 @@ theorem finIncl_finPart {a : AE D} (h : infPart D a = 0) : finIncl D (finPart D 
       rfl
   rw [← key, sub_smul, one_smul, GlobalTheory.FinTranslate.smul_eq_zero_of_inf h, sub_zero]
 
+/- English proof (translation)
+Set `w` to `RingOfIntegers.basis D.host.E`. Take `⟨N, hN, h⟩` from `exists_nsmul_kill hc hn (fun p : ι × Module.Free.ChooseBasisIndex ℤ (𝓞 D.host.E) => lam p.1 ((1 : AF D.host.F) ⊗ₜ[D.host.F] (algebraMap (𝓞 D.host.E) D.host.E (w p.2))))`. Use `⟨N, hN, fun i a ha hint => ?_⟩` and prove the remaining obligations. Set `g : D.host.E ⊗[D.host.F] Af D.host.F →+ AF D.host.F` to `N • ((lam i).toAddMonoidHom.comp ((finIncl D).toAddMonoidHom.comp (TensorProduct.comm D.host.F D.host.E (Af D.host.F)).toLinearMap.toAddMonoidHom))`. Establish `hg : ∀ y, g (Lev.swapAE D y) = N • lam i (finIncl D y)`.
+
+Introduce `y`. Establish `: TensorProduct.comm D.host.F D.host.E (Af D.host.F) (Lev.swapAE D y) = y` using `(TensorProduct.comm D.host.F (Af D.host.F) D.host.E).symm_apply_apply y`. Use `show N • lam i (finIncl D (TensorProduct.comm D.host.F D.host.E (Af D.host.F) (Lev.swapAE D y))) = _`. Rewrite using `[this]`. Establish `h1 : Lev.swapAE D (finPart D a) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`.
+
+Use `(GlobalTheory.BotClassDict.toAfE_int_iff _).2 hint` as an intermediate fact. Rewrite `this` using `[GlobalTheory.BotClassDict.toAfE_finQ]`. Then use the resulting hypothesis. Establish `h2 : Lev.swapAE D (finPart D a) ∈ (kerSub ψ).comap g`. Use `tensInt_le _ _ _ ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨b, rfl⟩ α hα`.
+
+Set `φ : 𝓞 D.host.E →+ D.host.E ⊗[D.host.F] Af D.host.F` to `((TensorProduct.mk D.host.F D.host.E (Af D.host.F)).flip α).toAddMonoidHom.comp (algebraMap (𝓞 D.host.E) D.host.E).toAddMonoidHom`. Establish `hb : b ∈ (((kerSub ψ).comap g).comap φ).toIntSubmodule`. Establish `hsp : b ∈ Submodule.span ℤ (Set.range w)` using `by rw [w.span_eq]; trivial`. Use `Submodule.span_le.2 ?_ hsp` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Establish `h3` using `h (i, k) α hα`. Rewrite `h3` using `[← smul_eq_mul, ← map_smul, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Conclude with `h3`. Conclude with `hb`. Establish `h3 : ψ (g (Lev.swapAE D (finPart D a))) = 1` using `h2`.
+
+Rewrite `h3` using `[hg, finIncl_finPart ha]`. Then use the resulting hypothesis.
+-/
 theorem exists_nsmul_kill_forms {ψ : AddChar (AF D.host.F) ℂ} (hc : Continuous ψ) (hn : ∀ x, ‖ψ x‖ = 1)
     {ι : Type} [Finite ι] (lam : ι → (AE D →ₗ[AF D.host.F] AF D.host.F)) :
     ∃ N : ℕ, 0 < N ∧ ∀ i, ∀ a : AE D, infPart D a = 0 → GlobalTheory.BotClassDict.finQ D a ∈ Formalism.MainNotions.StandardLatticesGL3.OhE D →
@@ -149,6 +191,11 @@ noncomputable def symplR (S T : HSp D) (x : WO S T) : WO S T →ₗ[AF D.host.F]
   map_add' := GlobalTheory.FinTranslate.symplOH_add_right S T x
   map_smul' c y := GlobalTheory.FinTranslate.symplOH_smul_right S T c x y
 
+/- English proof (translation)
+Introduce `D ψ hc hn S T A0`. Take `⟨N, hN, h⟩` from `exists_nsmul_kill_forms hc hn (fun p : Fin T.rank × Fin S.rank => (symplR S T A0).comp (Matrix.singleLinearMap (AF D.host.F) p.1 p.2))`. Use `⟨N, hN, fun v hv hint => ?_⟩` and prove the remaining obligations. Use `show symplR S T A0 (N • v) ∈ kerSub ψ`. Rewrite using `[map_nsmul, Matrix.matrix_eq_sum_single v, map_sum, Finset.smul_sum]`.
+
+Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, Finset.smul_sum]`. Conclude with `sum_mem fun j _ => h (i, j) (v i j) (hv i j) (hint i j)`.
+-/
 theorem char_sympl_nsmul_int : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ), Continuous ψ → (∀ x, ‖ψ x‖ = 1) →
     ∀ (S T : HSp D) (A0 : WO S T), ∃ N : ℕ, 0 < N ∧ ∀ v : WO S T, (∀ i j, infPart D (v i j) = 0) →
       (∀ i j, GlobalTheory.BotClassDict.finQ D (v i j) ∈ Formalism.MainNotions.StandardLatticesGL3.OhE D) → ψ (symplOH S T A0 (N • v)) = 1 := by

@@ -8,10 +8,22 @@ open GlobalTheory.KZ GlobalTheory.Ord2 UpperTheory.V.HV Formalism.ConjugateSelfD
 
 namespace GlobalTheory.KZ.AutoPin
 
+/- English proof (translation)
+Use `IsUltrametricDist.norm_add_le_max x (-y)` as an intermediate fact. Rewrite `this` using `[norm_neg, ← sub_eq_add_neg]`. Then use the resulting hypothesis.
+-/
 theorem norm_sub_le_max' {l : ℕ} [Fact l.Prime] (x y : Qbar l) : ‖x - y‖ ≤ max ‖x‖ ‖y‖ := by
   have := IsUltrametricDist.norm_add_le_max x (-y)
   rwa [norm_neg, ← sub_eq_add_neg] at this
 
+/- English proof (translation)
+Establish `hp : l.Prime` using `Fact.out`. Establish `hz1 : ‖z‖ = 1`. Establish `h` using `congrArg norm hz.pow_eq_one`. Rewrite `h` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (pow_pos hp.pos m).ne').1 h`.
+
+Establish `h1 : ‖z - 1‖ ≤ 1` using `le_trans (norm_sub_le_max' z 1) (by simp [hz1])`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Set `x : integralClosure ℤ_[l] (Qbar l)` to `⟨z - 1, (isIntegral_iff_norm_le_one _).2 h1⟩`. Take `⟨r, hr⟩` from `exists_add_pow_prime_pow_eq hp x 1 m`. Establish `hr'` using `congrArg Subtype.val hr`.
+
+Establish `hrn : ‖(r : Qbar l)‖ ≤ 1` using `(isIntegral_iff_norm_le_one _).1 r.2`. Simplify using `only [x] at hr'`. Move the coercions through the operations in `at hr'`. Rewrite `hr'` using `[sub_add_cancel, hz.pow_eq_one]`. Establish `: (z - 1) ^ l ^ m = -((l : Qbar l) * ((z - 1) * r))` using `by linear_combination -hr'`.
+
+Rewrite using `[this, norm_neg, norm_mul, norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (mul_le_one₀ h1 (norm_nonneg _) hrn)`.
+-/
 theorem root_bound (l : ℕ) [Fact l.Prime] (m : ℕ) (z : Qbar l) (hz : IsPrimitiveRoot z (l ^ m)) :
     ‖z - 1‖ ≤ 1 ∧ ‖(z - 1) ^ (l ^ m)‖ ≤ ‖((l : ℕ) : Qbar l)‖ := by
   have hp : l.Prime := Fact.out
@@ -32,6 +44,11 @@ theorem root_bound (l : ℕ) [Fact l.Prime] (m : ℕ) (z : Qbar l) (hz : IsPrimi
   rw [this, norm_neg, norm_mul, norm_mul]
   exact mul_le_of_le_one_right (norm_nonneg _) (mul_le_one₀ h1 (norm_nonneg _) hrn)
 
+/- English proof (translation)
+Rewrite using `[Polynomial.eval_eq_sum_range]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun n _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : n < N`. Rewrite using `[h0 n h, zero_mul, norm_zero]`. Check the signs of the components of the expression.
+
+Rewrite using `[norm_mul, norm_pow]`. Conclude with `le_trans (mul_le_of_le_one_left (by positivity) (hp n)) (pow_le_pow_of_le_one (norm_nonneg _) hx (not_lt.1 h))`.
+-/
 theorem norm_eval_le {l : ℕ} [Fact l.Prime] (p : Polynomial (Qbar l)) (N : ℕ) (x : Qbar l) (hx : ‖x‖ ≤ 1)
     (hp : ∀ n, ‖p.coeff n‖ ≤ 1) (h0 : ∀ n < N, p.coeff n = 0) : ‖p.eval x‖ ≤ ‖x‖ ^ N := by
   rw [Polynomial.eval_eq_sum_range]
@@ -42,10 +59,16 @@ theorem norm_eval_le {l : ℕ} [Fact l.Prime] (p : Polynomial (Qbar l)) (N : ℕ
     exact le_trans (mul_le_of_le_one_left (by positivity) (hp n))
       (pow_le_pow_of_le_one (norm_nonneg _) hx (not_lt.1 h))
 
+/- English proof (translation)
+Rewrite using `[Polynomial.eval, PowerSeries.eval₂_trunc_eq_sum_range]`. Both sides reduce to the same expression.
+-/
 theorem tval_eq_eval {l : ℕ} [Fact l.Prime] (P : PowerSeries (Qbar l)) (N : ℕ) (z : Qbar l) :
     tval P N z = (PowerSeries.trunc N P).eval (z - 1) := by
   rw [Polynomial.eval, PowerSeries.eval₂_trunc_eq_sum_range]; rfl
 
+/- English proof (translation)
+Rewrite using `[PowerSeries.coeff_trunc]`. Use `split_ifs`. Conclude with `hP n`. Simplify using the standard rewrite rules.
+-/
 theorem norm_coeff_trunc_le {l : ℕ} [Fact l.Prime] (P : PowerSeries (Qbar l)) (N : ℕ) (hP : ∀ n, ‖P.coeff n‖ ≤ 1) (n : ℕ) :
     ‖(PowerSeries.trunc N P).coeff n‖ ≤ 1 := by
   rw [PowerSeries.coeff_trunc]
@@ -53,6 +76,15 @@ theorem norm_coeff_trunc_le {l : ℕ} [Fact l.Prime] (P : PowerSeries (Qbar l)) 
   · exact hP n
   · simp
 
+/- English proof (translation)
+Rewrite using `[tval_eq_eval, tval_eq_eval, tval_eq_eval, ← Polynomial.eval_mul, ← Polynomial.eval_sub, norm_pow]`. Use `norm_eval_le _ N _ hz (fun n => ?_) (fun n hn => ?_)` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_sub]`. Use `le_trans (norm_sub_le_max' _ _) (max_le (norm_coeff_trunc_le _ _ (fun n => ?_) n) ?_)` and prove the remaining obligations. Rewrite using `[PowerSeries.coeff_mul]`.
+
+Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun p _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hP _) (norm_nonneg _) (hQ _)`. Rewrite using `[Polynomial.coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun p _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (norm_coeff_trunc_le _ _ hP _) (norm_nonneg _) (norm_coeff_trunc_le _ _ hQ _)`. Rewrite using `[Polynomial.coeff_sub, PowerSeries.coeff_trunc, if_pos hn, PowerSeries.coeff_mul, Polynomial.coeff_mul, sub_eq_zero]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Use `Finset.HasAntidiagonal.mem_antidiagonal.1 hp` as an intermediate fact.
+
+Rewrite using `[PowerSeries.coeff_trunc, PowerSeries.coeff_trunc, if_pos (by omega), if_pos (by omega)]`.
+-/
 theorem tval_mul_le (l : ℕ) [Fact l.Prime] (P Q : PowerSeries (Qbar l)) (N : ℕ) (z : Qbar l) (hP : ∀ n, ‖P.coeff n‖ ≤ 1)
     (hQ : ∀ n, ‖Q.coeff n‖ ≤ 1) (hz : ‖z - 1‖ ≤ 1) :
     ‖tval (P * Q) N z - tval P N z * tval Q N z‖ ≤ ‖(z - 1) ^ N‖ := by
@@ -72,6 +104,11 @@ theorem tval_mul_le (l : ℕ) [Fact l.Prime] (P Q : PowerSeries (Qbar l)) (N : �
     have := Finset.HasAntidiagonal.mem_antidiagonal.1 hp
     rw [PowerSeries.coeff_trunc, PowerSeries.coeff_trunc, if_pos (by omega), if_pos (by omega)]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨R, hR⟩ : (Polynomial.X : Polynomial (Qbar l)) ∣ (Polynomial.X + 1) ^ l - 1 := by`. Rewrite using `[Polynomial.X_dvd_iff, Polynomial.coeff_zero_eq_eval_zero]`. Simplify using the standard rewrite rules. Use `⟨R, hR, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun p : Polynomial (Qbar l) => p.coeff (0 + 1)) hR`.
+
+Simplify using `only [Polynomial.coeff_X_mul, Polynomial.coeff_sub, Polynomial.coeff_X_add_one_pow] at h`. Rewrite using `[← h]`. Simplify using `[Polynomial.coeff_one]`.
+-/
 theorem exists_factor (l : ℕ) [Fact l.Prime] : ∃ R : Polynomial (Qbar l),
     ((Polynomial.X + 1) ^ l - 1 : Polynomial (Qbar l)) = Polynomial.X * R ∧ R.coeff 0 = (l : Qbar l) := by
   obtain ⟨R, hR⟩ : (Polynomial.X : Polynomial (Qbar l)) ∣ (Polynomial.X + 1) ^ l - 1 := by
@@ -81,23 +118,43 @@ theorem exists_factor (l : ℕ) [Fact l.Prime] : ∃ R : Polynomial (Qbar l),
   simp only [Polynomial.coeff_X_mul, Polynomial.coeff_sub, Polynomial.coeff_X_add_one_pow] at h
   rw [← h]; simp [Polynomial.coeff_one]
 
+/- English proof (translation)
+Take `⟨R, hR, -⟩` from `exists_factor l`. Rewrite using `[hR, mul_pow, Polynomial.coeff_X_pow_mul', if_neg (by omega)]`.
+-/
 theorem polyPow_coeff_lt {l : ℕ} [Fact l.Prime] {k n : ℕ} (h : n < k) :
     ((((Polynomial.X + 1) ^ l - 1 : Polynomial (Qbar l))) ^ k).coeff n = 0 := by
   obtain ⟨R, hR, -⟩ := exists_factor l
   rw [hR, mul_pow, Polynomial.coeff_X_pow_mul', if_neg (by omega)]
 
+/- English proof (translation)
+Take `⟨R, hR, h0⟩` from `exists_factor l`. Rewrite using `[hR, mul_pow, Polynomial.coeff_X_pow_mul', if_pos le_rfl, Nat.sub_self, Polynomial.coeff_zero_eq_eval_zero, Polynomial.eval_pow, ← Polynomial.coeff_zero_eq_eval_zero, h0]`.
+-/
 theorem polyPow_coeff_self {l : ℕ} [Fact l.Prime] (k : ℕ) :
     ((((Polynomial.X + 1) ^ l - 1 : Polynomial (Qbar l))) ^ k).coeff k = (l : Qbar l) ^ k := by
   obtain ⟨R, hR, h0⟩ := exists_factor l
   rw [hR, mul_pow, Polynomial.coeff_X_pow_mul', if_pos le_rfl, Nat.sub_self, Polynomial.coeff_zero_eq_eval_zero,
     Polynomial.eval_pow, ← Polynomial.coeff_zero_eq_eval_zero, h0]
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `polyPow_coeff_int (l := l) k n`. Rewrite using `[ht, norm_mul]`. Conclude with `mul_le_one₀ (hB k) (norm_nonneg _) (IsUltrametricDist.norm_intCast_le_one _ t)`.
+-/
 theorem norm_term_le {l : ℕ} [Fact l.Prime] (B : PowerSeries (Qbar l)) (hB : ∀ n, ‖B.coeff n‖ ≤ 1) (k n : ℕ) :
     ‖B.coeff k * ((((Polynomial.X + 1) ^ l - 1 : Polynomial (Qbar l))) ^ k).coeff n‖ ≤ 1 := by
   obtain ⟨t, ht⟩ := polyPow_coeff_int (l := l) k n
   rw [ht, norm_mul]
   exact mul_le_one₀ (hB k) (norm_nonneg _) (IsUltrametricDist.norm_intCast_le_one _ t)
 
+/- English proof (translation)
+Establish `h2 : tval B M (z ^ l) = (∑ k ∈ Finset.range M, Polynomial.C (B.coeff k) * (((Polynomial.X + 1) ^ l - 1 : Polynomial (Qbar l))) ^ k).eval (z - 1)`. Simplify using `[tval, Polynomial.eval_finsetSum]`. Rewrite using `[h2, tval_eq_eval, ← Polynomial.eval_sub]`. Use `le_trans (norm_eval_le _ (min N M) _ hz (fun n => ?_) (fun n hn => ?_)) ?_` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_sub]`.
+
+Use `le_trans (norm_sub_le_max' _ _) (max_le (norm_coeff_trunc_le _ _ (fun n => ?_) n) ?_)` and prove the remaining obligations. Rewrite using `[compPow, PowerSeries.coeff_mk]`. Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun k _ => norm_term_le B hB k n`. Rewrite using `[Polynomial.finsetSum_coeff]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Polynomial.coeff_C_mul]`. Conclude with `norm_term_le B hB k n`. Establish `h1 : n < N` using `lt_of_lt_of_le hn (min_le_left _ _)`. Establish `h3 : n < M` using `lt_of_lt_of_le hn (min_le_right _ _)`. Rewrite using `[Polynomial.coeff_sub, PowerSeries.coeff_trunc, if_pos h1, compPow, PowerSeries.coeff_mk, Polynomial.finsetSum_coeff, sub_eq_zero]`.
+
+Simplify using `only [Polynomial.coeff_C_mul]`. Use `Finset.sum_subset (Finset.range_mono (by omega)) fun k _ hk => ?_` and prove the remaining obligations. Rewrite using `[polyPow_coeff_lt (by simpa using hk), mul_zero]`. Rewrite using `[norm_pow, norm_pow]`. Apply the tactic sequence `rcases min_choice N M with h | h <;> rw [h]`.
+
+Conclude with `le_max_left _ _`. Conclude with `le_max_right _ _`.
+-/
 theorem tval_compPow_le (l : ℕ) [Fact l.Prime] (B : PowerSeries (Qbar l)) (N M : ℕ) (z : Qbar l)
     (hB : ∀ n, ‖B.coeff n‖ ≤ 1) (hz : ‖z - 1‖ ≤ 1) :
     ‖tval (compPow l B) N z - tval B M (z ^ l)‖ ≤ max ‖(z - 1) ^ N‖ ‖(z - 1) ^ M‖ := by
@@ -125,6 +182,11 @@ theorem tval_compPow_le (l : ℕ) [Fact l.Prime] (B : PowerSeries (Qbar l)) (N M
     · exact le_max_left _ _
     · exact le_max_right _ _
 
+/- English proof (translation)
+Use `⟨fun n hn => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[compPow, PowerSeries.coeff_mk]`. Use `Finset.sum_eq_zero fun k hk => ?_` and prove the remaining obligations. Rewrite using `[hB k (by have := Finset.mem_range.1 hk; omega), zero_mul]`. Rewrite using `[compPow, PowerSeries.coeff_mk, Finset.sum_range_succ, polyPow_coeff_self, Finset.sum_eq_zero, zero_add, mul_comm]`.
+
+Introduce `k hk`. Rewrite using `[hB k (Finset.mem_range.1 hk), zero_mul]`.
+-/
 theorem compPow_low {l : ℕ} [Fact l.Prime] (B : PowerSeries (Qbar l)) (j : ℕ) (hB : ∀ i < j, B.coeff i = 0) :
     (∀ n < j, (compPow l B).coeff n = 0) ∧ (compPow l B).coeff j = (l : Qbar l) ^ j * B.coeff j := by
   refine ⟨fun n hn => ?_, ?_⟩
@@ -135,6 +197,11 @@ theorem compPow_low {l : ℕ} [Fact l.Prime] (B : PowerSeries (Qbar l)) (j : ℕ
     intro k hk
     rw [hB k (Finset.mem_range.1 hk), zero_mul]
 
+/- English proof (translation)
+Rewrite using `[PowerSeries.coeff_mul]`. Use `Finset.sum_eq_single (i, j) (fun p hp hne => ?_) (fun h => (h (by simp)).elim)` and prove the remaining obligations. Establish `h` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`. Distinguish the cases in `h1 : p.1 < i`. Rewrite using `[hP _ h1, zero_mul]`.
+
+Establish `h2 : p.2 < j`. Assume the negation of the conclusion as `h2`. Conclude with `hne (Prod.ext (by simp only; omega) (by simp only; omega))`. Rewrite using `[hQ _ h2, mul_zero]`.
+-/
 theorem coeff_mul_low {l : ℕ} [Fact l.Prime] (P Q : PowerSeries (Qbar l)) (i j : ℕ) (hP : ∀ n < i, P.coeff n = 0)
     (hQ : ∀ n < j, Q.coeff n = 0) : (P * Q).coeff (i + j) = P.coeff i * Q.coeff j := by
   rw [PowerSeries.coeff_mul]
@@ -147,6 +214,9 @@ theorem coeff_mul_low {l : ℕ} [Fact l.Prime] (P Q : PowerSeries (Qbar l)) (i j
       exact hne (Prod.ext (by simp only; omega) (by simp only; omega))
     rw [hQ _ h2, mul_zero]
 
+/- English proof (translation)
+Establish `h : ∃ i, A.coeff i ≠ 0`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hA (PowerSeries.ext fun n => by simpa using h n)`. Conclude with `⟨Nat.find h, Nat.find_spec h, fun n hn => by simpa using Nat.find_min h hn⟩`.
+-/
 theorem exists_low {l : ℕ} [Fact l.Prime] (A : PowerSeries (Qbar l)) (hA : A ≠ 0) :
     ∃ i, A.coeff i ≠ 0 ∧ ∀ n < i, A.coeff n = 0 := by
   classical
@@ -156,6 +226,13 @@ theorem exists_low {l : ℕ} [Fact l.Prime] (A : PowerSeries (Qbar l)) (hA : A �
     exact hA (PowerSeries.ext fun n => by simpa using h n)
   exact ⟨Nat.find h, Nat.find_spec h, fun n hn => by simpa using Nat.find_min h hn⟩
 
+/- English proof (translation)
+Take `⟨i, hi, hi0⟩` from `exists_low A hA`. Take `⟨j, hj, hj0⟩` from `exists_low B hB`. Take `⟨a1, a2⟩` from `compPow_low A i hi0`. Take `⟨b1, b2⟩` from `compPow_low B j hj0`. Establish `h1` using `congrArg (PowerSeries.coeff (i + j)) h`.
+
+Rewrite `h1` using `[PowerSeries.coeff_smul, smul_eq_mul, coeff_mul_low _ _ i j hi0 b1, coeff_mul_low _ _ i j a1 hj0, a2, b2]`. Establish `h2 : (l : Qbar l) ^ j = u * (l : Qbar l) ^ i` using `mul_right_cancel₀ (mul_ne_zero hi hj) (by linear_combination h1)`. Establish `h3` using `congrArg norm h2`. Rewrite `h3` using `[norm_mul, hu, one_mul, norm_pow, norm_pow]`. Establish `hij : j = i` using `pow_right_injective₀ norm_l_pos norm_l_lt_one.ne h3`.
+
+Rewrite `h2` using `[hij]`. Establish `hl : (l : Qbar l) ^ i ≠ 0` using `pow_ne_zero _ (norm_pos_iff.1 norm_l_pos)`. Conclude with `(mul_right_cancel₀ hl (by rw [one_mul]; exact h2)).symm`.
+-/
 theorem eq_one_of_compPow (l : ℕ) [Fact l.Prime] (A B : PowerSeries (Qbar l)) (u : Qbar l) (hA : A ≠ 0) (hB : B ≠ 0)
     (hu : ‖u‖ = 1) (h : A * compPow l B = u • (compPow l A * B)) : u = 1 := by
   obtain ⟨i, hi, hi0⟩ := exists_low A hA
@@ -179,23 +256,38 @@ namespace GlobalTheory.KZ.AutoPin
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Unfold `Cg at *`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cg_sub' {k : ℕ} {a b a' b' : Qbar l} (h : Cg k a b) (h' : Cg k a' b') : Cg k (a - a') (b - b') := by
   unfold Cg at *
   calc ‖a - a' - (b - b')‖ = ‖(a - b) - (a' - b')‖ := by ring_nf
     _ ≤ max ‖a - b‖ ‖a' - b'‖ := norm_sub_le_max' _ _
     _ ≤ _ := max_le h h'
 
+/- English proof (translation)
+The claim follows from `le_trans h hx`.
+-/
 theorem cg_of_le {k : ℕ} {a b x : Qbar l} (h : ‖a - b‖ ≤ ‖x‖) (hx : ‖x‖ ≤ ‖((l : ℕ) : Qbar l) ^ k‖) : Cg k a b :=
   le_trans h hx
 
+/- English proof (translation)
+Unfold `Cg at *`. Rewrite using `[sub_zero]` and apply the resulting hypothesis.
+-/
 theorem cg_zero_of_cg {k : ℕ} {a b : Qbar l} (h : Cg k a b) : Cg k (a - b) 0 := by
   unfold Cg at *; rwa [sub_zero]
 
+/- English proof (translation)
+Rewrite using `[PowerSeries.coeff_mul]`. Conclude with `sum_mem fun p _ => mul_mem (hP _) (hQ _)`.
+-/
 theorem coeff_mul_mem (O : Subalgebra ℤ_[l] (PadicAlgCl l)) (P Q : PowerSeries (Qbar l)) (hP : ∀ n, P.coeff n ∈ O)
     (hQ : ∀ n, Q.coeff n ∈ O) (n : ℕ) : (P * Q).coeff n ∈ O := by
   rw [PowerSeries.coeff_mul]
   exact sum_mem fun p _ => mul_mem (hP _) (hQ _)
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `root_bound l m z hz`. Rewrite `h2`, the goal using `[norm_pow]`. Rewrite using `[norm_pow]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem small_pow {m : ℕ} {z : Qbar l} (hz : IsPrimitiveRoot z (l ^ m)) {N K : ℕ} (hN : K * l ^ m ≤ N) :
     ‖(z - 1) ^ N‖ ≤ ‖((l : ℕ) : Qbar l) ^ K‖ := by
   obtain ⟨h1, h2⟩ := root_bound l m z hz
@@ -205,6 +297,9 @@ theorem small_pow {m : ℕ} {z : Qbar l} (hz : IsPrimitiveRoot z (l ^ m)) {N K :
     _ = (‖z - 1‖ ^ l ^ m) ^ K := by rw [← pow_mul, mul_comm]
     _ ≤ ‖((l : ℕ) : Qbar l)‖ ^ K := pow_le_pow_left₀ (by positivity) h2 K
 
+/- English proof (translation)
+Establish `hl : 1 ≤ l` using `(Fact.out : l.Prime).one_lt.le`. Establish `h1 : m ≤ l ^ m` using `(Nat.lt_pow_self (Fact.out : l.Prime).one_lt).le`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem nat_bound (m : ℕ) (hm : 1 ≤ m) : m * l ^ (m + 1) ≤ l ^ (3 * m) := by
   have hl : 1 ≤ l := (Fact.out : l.Prime).one_lt.le
   have h1 : m ≤ l ^ m := (Nat.lt_pow_self (Fact.out : l.Prime).one_lt).le
@@ -216,6 +311,51 @@ end GlobalTheory.KZ.AutoPin
 
 open GlobalTheory.KZ.AutoPin in
 
+/- English proof (translation)
+Introduce `l _ c A B u w c₀ m₀ hA hB hB0 hu hw hval`. Establish `hAn : ∀ n, ‖A.coeff n‖ ≤ 1` using `fun n => norm_le_one_of_mem c (hA n)`. Establish `hBn : ∀ n, ‖B.coeff n‖ ≤ 1` using `fun n => norm_le_one_of_mem c (hB n)`. Establish `hwd : ∀ m d, Cg m (w (m + d)) (w m)`. Introduce `m d`.
+
+Proceed by induction on `d with`. Consider the case `zero => simp only [add_zero, Cg, sub_self, norm_zero]`. Conclude with `norm_nonneg _`. Consider the case `succ d ih`. Rewrite using `[show m + (d + 1) = m + d + 1 by omega]`.
+
+Conclude with `cg_trans (cg_mono (hw (m + d)).2 (by omega)) ih`. Establish `hz1 : ∀ m (z : Qbar l), IsPrimitiveRoot z (l ^ m) → ‖z - 1‖ ≤ 1` using `fun m z hz => (root_bound l m z hz).1`. Establish `hA0 : A ≠ 0`. Introduce and unpack `rfl`. Apply `hB0` to reduce the goal to its premises.
+
+Use `GlobalTheory.KZ.series_eq_zero_of_vals_tendsto_zero l c B hB fun k => ⟨m₀ + 2 * (k + c₀), fun m hm z hz => ?_⟩` and prove the remaining obligations. Establish `h` using `hval m (by omega) z hz`. Establish `ht : tval (0 : PowerSeries (Qbar l)) (l ^ (3 * m)) z = 0` using `by simp [tval]`. Rewrite `h` using `[ht]`. Unfold `Cg at h ⊢`.
+
+Rewrite `h` using `[zero_sub, norm_neg, norm_mul, norm_mul, (hw m).1, norm_pow, hu, one_pow, one_mul, one_mul]`. Rewrite using `[sub_zero]`. Conclude with `le_trans h (norm_lpow_anti (by omega))`. Establish `hui : IsIntegral ℤ_[l] u` using `(isIntegral_iff_norm_le_one u).2 hu.le`. Take `⟨c', hcc', huc'⟩` from `(coefSup l).2.2.1 c u hui`.
+
+Establish `hA' : ∀ n, A.coeff n ∈ c'.O` using `fun n => hcc' (hA n)`. Establish `hB' : ∀ n, B.coeff n ∈ c'.O` using `fun n => hcc' (hB n)`. Establish `hφA : ∀ n, ‖(compPow l A).coeff n‖ ≤ 1` using `fun n => norm_le_one_of_mem c (compPow_coeff_mem c A hA n)`. Establish `hφB : ∀ n, ‖(compPow l B).coeff n‖ ≤ 1` using `fun n => norm_le_one_of_mem c (compPow_coeff_mem c B hB n)`. Use `set F := A * compPow l B - u • (compPow l A * B) with hFdef`.
+
+Establish `hF : ∀ n, F.coeff n ∈ c'.O`. Introduce `n`. Rewrite using `[hFdef, map_sub, PowerSeries.coeff_smul, smul_eq_mul]`. Conclude with `sub_mem (coeff_mul_mem _ _ _ hA' (compPow_coeff_mem c' B hB') n) (mul_mem huc' (coeff_mul_mem _ _ _ (compPow_coeff_mem c' A hA') hB' n))`. Establish `hF0 : F = 0`.
+
+Use `GlobalTheory.KZ.series_eq_zero_of_vals_tendsto_zero l c' F hF fun k => ⟨m₀ + 2 * (k + c₀) + k + 2, fun L hL z hz => ?_⟩` and prove the remaining obligations. Take `⟨m, rfl⟩ : ∃ m, L = m + 1` from `⟨L - 1, by omega⟩`. Establish `hy : IsPrimitiveRoot (z ^ l) (l ^ m)` using `IsPrimitiveRoot.pow (pow_pos (Fact.out : l.Prime).pos _) hz (by ring)`. Establish `hm1 : 1 ≤ m` using `by omega`. Establish `hkm : k ≤ m` using `by omega`.
+
+Use `set N := l ^ (3 * (m + 1))`. Use `set M := l ^ (3 * m)`. Establish `hzz` using `hz1 _ z hz`. Establish `hyy` using `hz1 _ _ hy`. Establish `hsN : ‖(z - 1) ^ N‖ ≤ ‖((l : ℕ) : Qbar l) ^ k‖` using `le_trans (small_pow hz (K := m) (le_trans (nat_bound m hm1) (Nat.pow_le_pow_right (Fact.out : l.Prime).pos (by omega)))) (norm_lpow_anti hkm)`.
+
+Establish `hsM : ‖(z - 1) ^ M‖ ≤ ‖((l : ℕ) : Qbar l) ^ k‖` using `le_trans (small_pow hz (K := m) (nat_bound m hm1)) (norm_lpow_anti hkm)`. Establish `hmax : max ‖(z - 1) ^ N‖ ‖(z - 1) ^ M‖ ≤ ‖((l : ℕ) : Qbar l) ^ k‖` using `max_le hsN hsM`. Use `set a1 := tval A N z`. Use `set b1 := tval B N z`. Use `set a0 := tval A M (z ^ l)`.
+
+Use `set b0 := tval B M (z ^ l)`. Establish `na1 : ‖a1‖ ≤ 1` using `norm_tval_le A N z hAn hzz`. Establish `nb1 : ‖b1‖ ≤ 1` using `norm_tval_le B N z hBn hzz`. Establish `nb0 : ‖b0‖ ≤ 1` using `norm_tval_le B M (z ^ l) hBn hyy`. Establish `e1 : Cg k (tval (A * compPow l B) N z) (a1 * tval (compPow l B) N z)` using `cg_of_le (tval_mul_le l A (compPow l B) N z hAn hφB hzz) hsN`.
+
+Establish `e2 : Cg k (a1 * tval (compPow l B) N z) (a1 * b0)` using `cg_mul na1 (le_trans (tval_compPow_le l B N M z hBn hzz) hmax)`. Establish `e3 : Cg k (tval (compPow l A * B) N z) (tval (compPow l A) N z * b1)` using `cg_of_le (tval_mul_le l (compPow l A) B N z hφA hBn hzz) hsN`. Establish `e4 : Cg k (tval (compPow l A) N z * b1) (a0 * b1)`. Use `cg_mul (n := k) nb1 (le_trans (tval_compPow_le l A N M z hAn hzz) hmax)` as an intermediate fact. Rewrite `this` using `[mul_comm b1, mul_comm b1]`. Then use the resulting hypothesis.
+
+Establish `e5 : Cg k (a1 * b0) (w (m + 1) * u ^ (m + 1) * b1 * b0)`. Use `cg_mul nb0 (cg_mono (k := k) (hval (m + 1) (by omega) z hz) (by omega))` as an intermediate fact. Rewrite `this` using `[mul_comm b0, mul_comm b0]`. Then use the resulting hypothesis. Establish `e6 : Cg k (a0 * b1) (w m * u ^ m * b0 * b1)`. Use `cg_mul nb1 (cg_mono (k := k) (hval m (by omega) (z ^ l) hy) (by omega))` as an intermediate fact.
+
+Rewrite `this` using `[mul_comm b1, mul_comm b1]`. Then use the resulting hypothesis. Establish `e7 : Cg k (w (m + 1) * u ^ (m + 1) * b1 * b0) (w m * u ^ (m + 1) * b1 * b0)`. Establish `hx : ‖u ^ (m + 1) * b1 * b0‖ ≤ 1`. Rewrite using `[norm_mul, norm_mul, norm_pow, hu, one_pow, one_mul]`. Conclude with `mul_le_one₀ nb1 (norm_nonneg _) nb0`.
+
+Use `cg_mul hx (cg_mono (hw m).2 hkm)` as an intermediate fact. Apply the tactic sequence `convert this using 1 <;> ring`. Establish `eu : Cg k (u * (tval (compPow l A * B) N z)) (u * (w m * u ^ m * b0 * b1))` using `cg_mul hu.le (cg_trans e3 (cg_trans e4 e6))`. Establish `etot` using `cg_sub' (cg_trans e1 (cg_trans e2 (cg_trans e5 e7))) eu`. Establish `hid : w m * u ^ (m + 1) * b1 * b0 - u * (w m * u ^ m * b0 * b1) = 0` using `by ring`.
+
+Rewrite `etot` using `[hid]`. Establish `htF : tval F N z = tval (A * compPow l B) N z - u * tval (compPow l A * B) N z`. Rewrite using `[hFdef, tval_sub, tval_smul]`. Rewrite using `[htF]`. Conclude with `etot`.
+
+Establish `hu1 : u = 1` using `eq_one_of_compPow l A B u hA0 hB0 hu (sub_eq_zero.1 hF0)`. Use `⟨hu1, fun k => ⟨k, fun m hm n => ?_⟩⟩` and prove the remaining obligations. Establish `hwi : IsIntegral ℤ_[l] (w m)` using `(isIntegral_iff_norm_le_one _).2 (hw m).1.le`. Take `⟨cm, hccm, hwm⟩` from `(coefSup l).2.2.1 c (w m) hwi`. Use `set H := A - w m • B with hHdef`.
+
+Establish `hH : ∀ n, H.coeff n ∈ cm.O`. Introduce `n`. Rewrite using `[hHdef, map_sub, PowerSeries.coeff_smul, smul_eq_mul]`. Conclude with `sub_mem (hccm (hA n)) (mul_mem hwm (hccm (hB n)))`. Establish `key` using `GlobalTheory.KZ.CoefVal.coeff_cg_of_values l cm H k (max m₀ (max (2 * (k + c₀)) m)) hH (fun L hL z hz => by`.
+
+Establish `hL1 : m₀ ≤ L` using `le_trans (le_max_left _ _) hL`. Establish `hL2 : 2 * (k + c₀) ≤ L` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hL`. Establish `hL3 : m ≤ L` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hL`. Establish `hv` using `hval L hL1 z hz`. Rewrite `hv` using `[hu1, one_pow, mul_one]`.
+
+Establish `nb : ‖tval B (l ^ (3 * L)) z‖ ≤ 1` using `norm_tval_le B _ z hBn (hz1 L z hz)`. Establish `h1 : Cg k (tval A (l ^ (3 * L)) z) (w L * tval B (l ^ (3 * L)) z)` using `cg_mono hv (by omega)`. Establish `h2 : Cg k (w L * tval B (l ^ (3 * L)) z) (w m * tval B (l ^ (3 * L)) z)`. Use `cg_mul nb (cg_mono (hwd m (L - m)) (by omega : k ≤ m))` as an intermediate fact. Rewrite `this` using `[show m + (L - m) = L by omega]`.
+
+Rewrite `this` using `[mul_comm _ (w L), mul_comm _ (w m)]`. Then use the resulting hypothesis. Establish `h3` using `cg_zero_of_cg (cg_trans h1 h2)`. Rewrite using `[hHdef, tval_sub, tval_smul]`. Conclude with `h3) n`. Establish `: H.coeff n = A.coeff n - w m * B.coeff n`.
+
+Rewrite using `[hHdef, map_sub, PowerSeries.coeff_smul, smul_eq_mul]`. Rewrite `key` using `[this]`. Unfold `Cg at key ⊢`. Rewrite `key` using `[sub_zero]`. Then use the resulting hypothesis.
+-/
 theorem GlobalTheory.KZ.autoPin_congr : ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) (A B : PowerSeries (Qbar l)) (u : Qbar l) (w : ℕ → Qbar l) (c₀ m₀ : ℕ), (∀ n, A.coeff n ∈ c.O) → (∀ n, B.coeff n ∈ c.O) → B ≠ 0 → ‖u‖ = 1 → (∀ m, ‖w m‖ = 1 ∧ Cg m (w (m + 1)) (w m)) → (∀ m, m₀ ≤ m → ∀ z : Qbar l, IsPrimitiveRoot z (l ^ m) → Cg (m / 2 - c₀) (tval A (l ^ (3 * m)) z) (w m * u ^ m * tval B (l ^ (3 * m)) z)) → u = 1 ∧ ∀ k : ℕ, ∃ m₁ : ℕ, ∀ m, m₁ ≤ m → ∀ n, Cg k (A.coeff n) (w m * B.coeff n) := by
   intro l _ c A B u w c₀ m₀ hA hB hB0 hu hw hval
   have hAn : ∀ n, ‖A.coeff n‖ ≤ 1 := fun n => norm_le_one_of_mem c (hA n)

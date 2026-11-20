@@ -5,6 +5,13 @@ namespace GlobalTheory.InertiaEigenvalues.FreeHausdorff
 
 open PowerSeries GlobalTheory.BK
 
+/- English proof (translation)
+Establish `hb : ∀ n : ℕ, ‖algebraMap O K y‖ ≤ ‖(l : K)‖ ^ n`. Introduce `n`. Establish `h` using `hy n`. Rewrite `h` using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Take `⟨a, rfl⟩` from `h`.
+
+Establish `ha : ‖algebraMap O K a‖ ≤ 1` using `(IsUnitBall.mem_range_iff (O := O) (algebraMap O K a)).1 ⟨a, rfl⟩`. Rewrite using `[map_mul, map_pow, map_natCast, norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation. Establish `h0 : ‖algebraMap O K y‖ ≤ 0` using `ge_of_tendsto' (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) hl) hb`. Establish `h1 : algebraMap O K y = 0` using `norm_le_zero_iff.1 h0`.
+
+Conclude with `IsUnitBall.inj (K := K) (h1.trans (map_zero _).symm)`.
+-/
 theorem eq_zero_of_mem_pow {O K : Type} [CommRing O] [NormedField K] [Algebra O K]
     [IsUnitBall O K] {l : ℕ} (hl : ‖(l : K)‖ < 1) {y : O}
     (hy : ∀ n : ℕ, y ∈ Ideal.span {(l : O)} ^ n) : y = 0 := by
@@ -24,12 +31,22 @@ theorem eq_zero_of_mem_pow {O K : Type} [CommRing O] [NormedField K] [Algebra O 
   have h1 : algebraMap O K y = 0 := norm_le_zero_iff.1 h0
   exact IsUnitBall.inj (K := K) (h1.trans (map_zero _).symm)
 
+/- English proof (translation)
+Use `⟨fun x hx => eq_zero_of_mem_pow (K := K) hl fun n => ?_⟩` and prove the remaining obligations. Establish `h` using `SModEq.sub_mem.1 (hx n)`. Simplify `h` using `[smul_eq_mul, Ideal.mul_top]`.
+-/
 theorem isHausdorff_ring {O K : Type} [CommRing O] [NormedField K] [Algebra O K]
     [IsUnitBall O K] {l : ℕ} (hl : ‖(l : K)‖ < 1) : IsHausdorff (Ideal.span {(l : O)}) O := by
   refine ⟨fun x hx => eq_zero_of_mem_pow (K := K) hl fun n => ?_⟩
   have h := SModEq.sub_mem.1 (hx n)
   simpa [smul_eq_mul, Ideal.mul_top] using h
 
+/- English proof (translation)
+Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Set `b` to `Module.Free.chooseBasis R M`. Use `b.ext_elem fun i => ?_` and prove the remaining obligations. Rewrite using `[map_zero, Finsupp.zero_apply]`. Use `h.haus _ fun n => ?_` and prove the remaining obligations.
+
+Establish `hxn : x ∈ I ^ n • (⊤ : Submodule R M)` using `by simpa using SModEq.sub_mem.1 (hx n)`. Establish `hle : (I ^ n • (⊤ : Submodule R M)).map (b.coord i) ≤ I ^ n • (⊤ : Submodule R R)`. Rewrite using `[Submodule.map_le_iff_le_comap]`. Use `Submodule.smul_le.2 fun r hr m _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, map_smul]`.
+
+Conclude with `Submodule.smul_mem_smul hr Submodule.mem_top`. Use `hle (Submodule.mem_map_of_mem hxn)` as an intermediate fact. Rewrite using `[SModEq.sub_mem, sub_zero]`. Simplify using `using this`.
+-/
 theorem isHausdorff_of_free {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [Module.Free R M] (I : Ideal R) [h : IsHausdorff I R] : IsHausdorff I M := by
   refine ⟨fun x hx => ?_⟩
@@ -53,6 +70,9 @@ namespace GlobalTheory.InertiaEigenvalues
 
 open PowerSeries GlobalTheory.BK
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ η H D hD`. Use `haveI : Module.Free O D.Z := hD.1`. Use `haveI : IsHausdorff (Ideal.span {(l : O)}) O := FreeHausdorff.isHausdorff_ring (K := K) (norm_l_lt_one (K := K) l)`. Conclude with `FreeHausdorff.isHausdorff_of_free _`.
+-/
 theorem isHausdorff_Z_of_finiteFree : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] (η H : ℕ) (D : BKDat O K l e a ι η H), GlobalTheory.IndefiniteRowSideFullHecke.ImagePolynomialAction.FiniteFree D → IsHausdorff (Ideal.span {(l : O)}) D.Z := by
   intro O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ η H D hD
   haveI : Module.Free O D.Z := hD.1

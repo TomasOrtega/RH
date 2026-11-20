@@ -20,6 +20,19 @@ noncomputable section
 
 namespace GlobalTheory.TorsRam
 
+/- English proof (translation)
+Use `haveI : CharZero W := hW.2.2`. Establish `hA` using `GlobalTheory.ArcPointDescent.admissibleBase_maximalIdeal_completeDVR hW`. Establish `hL : GlobalTheory.UT.LL` using `GlobalTheory.firstFiveLaws`. Take `⟨f, hf, hiff⟩` from `GlobalTheory.Mum.Recog.exists_goodLab hA hH U F`. Establish `hx₀ : f k p ^ k = 1` using `hf.pow k hk p`.
+
+Use `U.gen_hom` as an intermediate fact. Establish `: IsMonHom U.gen.symm.hom` using `inferInstanceAs (IsMonHom U.gen.inv)`. Establish `gp : IsGrpPullback Q.A H (jK W) (U.gen.inv.left ≫ pullback.fst H.hom (jK W))` using `((isGrpPullback_of_iso U.gen.symm).comp (isGrpPullback_pullback H (jK W))).congr (Category.id_comp _) rfl`. Establish `w₁ : ((f k p).left ≫ U.gen.inv.left ≫ pullback.fst H.hom (jK W)) ≫ H.hom = jFK (R` using `W) F ≫ jK W := by`. Rewrite using `[Category.assoc, gp.1.w, ← Category.assoc, Over.w (f k p)]`.
+
+Both sides reduce to the same expression. Set `xG : TF (R` to `W) F ⟶ H := Over.homMk ((f k p).left ≫ U.gen.inv.left ≫ pullback.fst H.hom (jK W)) w₁`. Establish `hxG : xG ^ k = 1` using `(GlobalTheory.PsiAbelian.pow_eq_one_iff_of_pull rfl gp (x := xG) (x' := f k p) rfl).1 hx₀`. Establish `fixG` using `hfixH xG hxG`. Set `σ' : F →ₐ[FractionRing W] F` to `⟨σ.toRingHom, RingHom.congr_fun hσ⟩`.
+
+Establish `s₂ : spMap σ.toRingHom ≫ jFK (R` using `W) F = jFK (R := W) F := by show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, hσ]`. Establish `fix₀ : spMap σ.toRingHom ≫ (f k p).left = (f k p).left`. Use `gp.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc]`.
+
+Conclude with `fixG`. Rewrite using `[Category.assoc, Over.w (f k p)]`. Conclude with `s₂`. Set `x' : TFK (R` to `W) F ⟶ Q.A := Over.homMk (spMap σ.toRingHom ≫ (f k p).left) (by`. Rewrite using `[Category.assoc, Over.w (f k p)]`.
+
+Conclude with `s₂)`. Establish `hq : QkToAkU U.toUnifPre F k q x'` using `(GlobalTheory.TorsionExt.qkToAkU_iff_of_qkExt hL W (maximalIdeal W) hA D Q H hH U F F σ' k hk p q (f k p) x' hpq rfl).1 ((hiff k hk p (f k p)).2 rfl)`. Establish `e : x' = f k p` using `Over.OverMorphism.ext fix₀`. Conclude with `(hf.eqv k hk p q).1 (e.symm.trans ((hiff k hk q x').1 hq))`.
+-/
 theorem classes_fixed {W : Type} [CommRing W] [IsDomain W] [IsLocalRing W] (hW : GlobalTheory.LN.CDvr W)
     {D : DegData W (maximalIdeal W)} {Q : PolAV (Sp (FractionRing W))} {H : Over (Sp W)} [GrpObj H] [IsCommMonObj H]
     (hH : IsSemiAbelian H) (U : Unif (maximalIdeal W) D Q H) (F : Type) [Field F] [IsAlgClosed F]
@@ -62,6 +75,17 @@ end GlobalTheory.TorsRam
 namespace GlobalTheory.TorsRam
 open GlobalTheory.BXOf in
 
+/- English proof (translation)
+Take `⟨e, -, a, ha, hψ⟩` from `GlobalTheory.LevelOneIdeal.exists_psi_val D.toPre χ (D.psi_pos χ hχ)`. Use `D.toPre.P.isAb.proper` as an intermediate fact. Establish `: D.toPre.P.A.left.IsSeparated` using `⟨by rw [← terminal.comp_from D.toPre.P.A.hom]; infer_instance⟩`. Take `⟨J, hJ, eJ⟩` from `GlobalTheory.UnramTorsion.exists_good_ext D.toPre.P.isLB (algebraMap W (FractionRing W)) (IsFractionRing.injective W (FractionRing W)) J₀ h₀`. Establish `h1` using `hψ (TK W).left (𝟙 _) (closedPoint (FractionRing W)) J hJ`.
+
+Establish `hj : J (𝟙 _ ≫ D.toPre.xK χ) = J₀ ((D.toPre.c χ).left (closedPoint W))`. Rewrite using `[Category.id_comp]`. Conclude with `eJ (D.toPre.c χ).left`. Establish `e0` using `val_of (D.toPre.psi χ) (𝟙 _) (closedPoint (FractionRing W)) J _ (fun _ => hj)`. Establish `e1 : (stalkClosedPointIso (CommRingCat.of (FractionRing W))).hom.hom (val (D.toPre.psi χ) (𝟙 _) (closedPoint (FractionRing W)) J).val = algebraMap W _ u`.
+
+Rewrite using `[e0]`. Conclude with `hu`. Take `⟨u', hu'⟩` from `GlobalTheory.UnramTorsion.val_integral (algebraMap W (FractionRing W)) h₀ eJ e (𝟙 _)`. Establish `e2 : (stalkClosedPointIso (CommRingCat.of (FractionRing W))).hom.hom (cst (𝟙 (TK W).left ≫ jK W) (closedPoint (FractionRing W)) a) = algebraMap W _ a`. Rewrite using `[Category.id_comp]`.
+
+Conclude with `GlobalTheory.UnramTorsion.stalk_gs_top _ a`. Establish `e3 : (stalkClosedPointIso (CommRingCat.of (FractionRing W))).hom.hom (val e (𝟙 (TK W).left ≫ jK W) (closedPoint (FractionRing W)) J).val = algebraMap W _ u'`. Rewrite using `[Category.id_comp]`. Conclude with `hu'`. Establish `e4` using `congrArg (stalkClosedPointIso (CommRingCat.of (FractionRing W))).hom.hom h1`.
+
+Rewrite `e4` using `[map_mul, e1, e2, e3, ← map_mul]`. Establish `e5` using `IsFractionRing.injective W (FractionRing W) e4`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 ha (isUnit_of_mul_isUnit_left (e5 ▸ u.isUnit))`.
+-/
 theorem psiLoc_not_unit {W : Type} [CommRing W] [IsDomain W] [IsLocalRing W] (D : DegData W (maximalIdeal W))
     (J₀ : D.toPre.P.A.left → D.toPre.P.L.ι) (h₀ : ∀ x, x ∈ D.toPre.P.L.U (J₀ x)) (χ : D.toPre.X) (hχ : χ ≠ 0) (u : Wˣ)
     (hu : (GlobalTheory.UnramTorsion.psiLoc D.toPre χ (J₀ ((D.toPre.c χ).left (closedPoint W))) : FractionRing W) =
@@ -95,14 +119,45 @@ end GlobalTheory.TorsRam
 
 namespace GlobalTheory.TorsRam
 
+/- English proof (translation)
+Rewrite using `[show a = c ^ e * b⁻¹ by rw [← h, mul_inv_cancel_right₀ hb], mul_zpow, zpow_mul, zpow_natCast, inv_zpow']`.
+-/
 theorem zpow_of_mul_eq {F : Type} [Field F] {a b c : F} {e : ℕ} (hb : b ≠ 0) (h : a * b = c ^ e) (m : ℤ) :
     a ^ m = c ^ ((e : ℤ) * m) * b ^ (-m) := by
   rw [show a = c ^ e * b⁻¹ by rw [← h, mul_inv_cancel_right₀ hb], mul_zpow, zpow_mul, zpow_natCast, inv_zpow']
 
+/- English proof (translation)
+The claim follows from `(congrArg Units.val (map_zpow (Units.map T.subtype.toMonoidHom) w z)).trans (Units.val_zpow_eq_zpow_val _ _)`.
+-/
 theorem coe_units_zpow {F : Type} [Field F] (T : Subring F) (w : Tˣ) (z : ℤ) :
     (((w ^ z : Tˣ) : T) : F) = ((w : T) : F) ^ z :=
   (congrArg Units.val (map_zpow (Units.map T.subtype.toMonoidHom) w z)).trans (Units.val_zpow_eq_zpow_val _ _)
 
+/- English proof (translation)
+Introduce `W _ _ _ hW D Q H _ _ hH U _ F _ _ _ n N hn Hj`. Use `haveI : IsDiscreteValuationRing W := hW.1`. Use `haveI : CharZero W := hW.2.2`. Use `haveI : CharZero (FractionRing W) := charZero_of_injective_algebraMap (IsFractionRing.injective W (FractionRing W))`. Use `haveI : CharZero F := charZero_of_injective_algebraMap (algebraMap (FractionRing W) F).injective`.
+
+Establish `hL : GlobalTheory.UT.LL` using `GlobalTheory.firstFiveLaws`. Use `choose J₀ h₀ using fun x : D.toPre.P.A.left => exists_chart D.toPre.P.isLB x`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible W`. Use `choose m u hu using fun χ => IsDiscreteValuationRing.exists_units_eq_smul_zpow_of_irreducible (K := FractionRing W) hπ (GlobalTheory.UnramTorsion.psiLoc D.toPre χ (J₀ ((D.toPre.c χ).left (closedPoint W)))).ne_zero`. Establish `key : ∀ j : ℕ, ∃ e : ℕ, 1 ≤ e ∧ e ≤ N ∧ (∀ y χ, ((n ^ j : ℕ) : ℤ) ∣ (e : ℤ) * m (y + χ) - (e : ℤ) * m y - (e : ℤ) * m χ) ∧ ∀ χ, (e : ℤ) * m (-χ) = (e : ℤ) * m χ` using `fun j => by`.
+
+Take `⟨T, hT, g, e, hg, he1, heN, hram, hfix⟩` from `Hj j`. Take `⟨ϖ, hϖ, v, hv⟩` from `hram π hπ`. Establish `hP : ∀ r, r ∈ (closedPoint W).asIdeal ↔ ¬ IsUnit (g r)` using `fun r => by show r ∈ maximalIdeal W ↔ _`. Use `⟨fun hr hgr => ?_, fun h => (mem_maximalIdeal r).2 fun hr => h (hr.map g)⟩` and prove the remaining obligations. Rewrite `hr` using `[hπ.maximalIdeal_eq, Ideal.mem_span_singleton]`.
+
+Take `⟨s, rfl⟩` from `hr`. Rewrite `hgr` using `[map_mul]`. Establish `h1 : IsUnit (ϖ ^ e)` using `hv ▸ (isUnit_of_mul_isUnit_left hgr).mul v.isUnit`. Conclude with `hϖ.not_isUnit (isUnit_pow_iff (by omega) |>.1 h1)`. Establish `hv' : (g π : F) * ((v : T) : F) = (ϖ : F) ^ e`.
+
+Use `congrArg (fun t : T => (t : F)) hv` as an intermediate fact. Simplify `this` using `only [Subring.coe_mul, Subring.coe_pow]`. Establish `hvne : ((v : T) : F) ≠ 0` using `fun h => v.ne_zero (Subtype.ext h)`. Establish `hm : ∀ χ, ∃ u' : Tˣ, algebraMap (FractionRing W) F (GlobalTheory.UnramTorsion.psiLoc D.toPre χ (J₀ ((D.toPre.c χ).left (closedPoint W))) : FractionRing W) = ((u' : T) : F) * (ϖ : F) ^ ((fun χ => (e : ℤ) * m χ) χ)` using `fun χ => ⟨Units.map g.toMonoidHom (u χ) * v ^ (-(m χ)), by`. Rewrite using `[hu χ, Units.smul_def, Algebra.smul_def, map_mul, map_zpow₀, ← hg, ← hg, Units.val_mul, Subring.coe_mul, coe_units_zpow, zpow_of_mul_eq hvne hv' (m χ)]`.
+
+Rewrite using `[show (((Units.map g.toMonoidHom (u χ) : Tˣ) : T) : F) = (g (u χ) : F) from rfl]`. Use the proof step `ring⟩`. Establish `hσ : ∀ σ : F ≃+* F, (∀ z ∈ T, σ z = z) → σ.toRingHom.comp (algebraMap (FractionRing W) F) = algebraMap (FractionRing W) F` using `fun σ hσ => IsLocalization.ringHom_ext (nonZeroDivisors W) (RingHom.ext fun r => by show σ (algebraMap (FractionRing W) F (algebraMap W _ r)) = algebraMap (FractionRing W) F (algebraMap W _ r)`. Rewrite using `[← hg]`. Conclude with `hσ _ (g r).2)`.
+
+Take `⟨h1, h2⟩` from `GlobalTheory.UnramTorsion.level_step hL.1.mulN D.tau_bimult D.psi_even (closedPoint W) J₀ h₀ (n ^ j) (pow_ne_zero _ (by omega)) T g hg hP ϖ hϖ (fun χ => (e : ℤ) * m χ) hm (fun σ hσ' p q hpq => classes_fixed hW hH U F (Nat.one_le_pow _ _ (by omega)) σ (hσ σ hσ') (fun x hx => hfix …`. Conclude with `⟨e, he1, heN, h1, h2⟩`. Establish `add : ∀ y χ, m (y + χ) = m y + m χ` using `fun y χ => by`. Take `⟨e, he1, heN, hdiv, -⟩` from `key (N * (m (y + χ) - m y - m χ).natAbs)`. Establish `h1` using `hdiv y χ`.
+
+Rewrite `h1` using `[show (e : ℤ) * m (y + χ) - (e : ℤ) * m y - (e : ℤ) * m χ = (e : ℤ) * (m (y + χ) - m y - m χ) by ring]`. Assume the negation of the conclusion as `hne`. Establish `hd : m (y + χ) - m y - m χ ≠ 0` using `fun h => hne (by omega)`. Establish `h2` using `Int.eq_zero_of_dvd_of_natAbs_lt_natAbs h1 (by`. Rewrite using `[Int.natAbs_mul, Int.natAbs_natCast, Int.natAbs_natCast]`.
+
+Conclude with `lt_of_le_of_lt (Nat.mul_le_mul_right _ heN) (Nat.lt_pow_self (by omega)))`. Conclude with `(mul_ne_zero (by exact_mod_cast (show e ≠ 0 by omega)) hd) h2`. Establish `even : ∀ χ, m (-χ) = m χ` using `fun χ => by`. Take `⟨e, he1, -, -, h⟩` from `key 0`. Conclude with `Int.eq_of_mul_eq_mul_left (by exact_mod_cast (show e ≠ 0 by omega)) (h χ)`.
+
+Establish `m0 : ∀ y, m y = 0` using `fun y => by`. Establish `a` using `add 0 0`. Establish `b` using `add y (-y)`. Rewrite `a` using `[add_zero]`. Rewrite `b` using `[add_neg_cancel, even]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `z : ∀ y : D.toPre.X, y = 0` using `fun y => by`. Assume the negation of the conclusion as `hy`. Use `psiLoc_not_unit D J₀ h₀ y hy (u y) ?_` and prove the remaining obligations. Rewrite using `[hu y, m0, zpow_zero, Units.smul_def, Algebra.smul_def, _root_.mul_one]`.
+
+Conclude with `⟨fun a b => (z a).trans (z b).symm⟩`.
+-/
 theorem subsingleton_of_bounded_ramification : ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], GlobalTheory.LN.CDvr W → ∀ (D : DegData W (maximalIdeal W)) (Q : PolAV (Sp (FractionRing W))) (H : Over (Sp W)) [GrpObj H] [IsCommMonObj H], IsSemiAbelian H → ∀ U : Unif (maximalIdeal W) D Q H, GlobalTheory.LN.ToATotal U.toUnifPre → ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing W) F] (n N : ℕ), 2 ≤ n → (∀ j : ℕ, ∃ (T : Subring F) (_ : IsDiscreteValuationRing T) (g : W →+* T) (e : ℕ), (∀ w, (g w : F) = algebraMap (FractionRing W) F (algebraMap W _ w)) ∧ 1 ≤ e ∧ e ≤ N ∧ (∀ π, Irreducible π → ∃ ϖ : T, Irreducible ϖ ∧ Associated (g π) (ϖ ^ e)) ∧ ∀ σ : F ≃+* F, (∀ z ∈ T, σ z = z) → ∀ x : TF (R := W) F ⟶ H, x ^ (n ^ j) = 1 → spMap σ.toRingHom ≫ x.left = x.left) → Subsingleton D.toPre.X := by
   intro W _ _ _ hW D Q H _ _ hH U _ F _ _ _ n N hn Hj
   haveI : IsDiscreteValuationRing W := hW.1

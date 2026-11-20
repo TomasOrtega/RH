@@ -42,6 +42,9 @@ attribute [instance] LocPack.cW LocPack.dW LocPack.vW LocPack.fQ LocPack.aW LocP
 
 def rSc (sc : Scale) (k p : ℕ) : ℕ := if (p : ℝ) < sc.p0 k then rG sc else 1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rRec_eq {D : D7} (L : SizeData₂ D) (p : ℕ) : rRec L p = rSc L.sc D.R.k p := rfl
 
 def epSc (R : Ranks) (sc : Scale) (Ce : ℝ) (p : ℕ) : ℕ := ⌈Ce * (R.f : ℝ) * (R.k : ℝ) ^ 2 * Real.logb p sc.a⌉₊
@@ -107,6 +110,9 @@ def latInstG (Lv : ∀ u w h, Levels (fillsG D sc Ce Lc X hd L P u w h)) (Ch : �
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Rewrite using `[latTied_iff]`. Introduce `(u : D.what₂.Word) (w : D.what₂.places.Pl) (h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))`. Conclude with `latTiedAt_rec L P K Ce u h.2.2.1 (X u w h).hS _ (by rw [rRec_eq, hsc]; rfl) (Lc u) (X u w h).I (X u w h).ψ (repP (Lc u) _) _`.
+-/
 theorem latTiedG (hsc : L.sc = sc) (K : Consts) (Lv : ∀ u w h, Levels (fillsG D sc Ce Lc X hd L P u w h))
     (Ch : ∀ u w h, Chain (Lv u w h))
     (Vram : ∀ u w h, Submodule ((recG D sc Ce Lc X hd).gat u w h).O ((recG D sc Ce Lc X hd).gat u w h).Fn) :
@@ -116,6 +122,9 @@ theorem latTiedG (hsc : L.sc = sc) (K : Consts) (Lv : ∀ u w h, Levels (fillsG 
   exact latTiedAt_rec L P K Ce u h.2.2.1 (X u w h).hS _ (by rw [rRec_eq, hsc]; rfl) (Lc u) (X u w h).I (X u w h).ψ
     (repP (Lc u) _) _
 
+/- English proof (translation)
+The claim follows from `instRec_fill L K Ce`.
+-/
 theorem fill_instRec_eq_wj (K : Consts) :
     ∀ j ∈ SizeData₂.lifts (recG D sc Ce Lc X hd), ∀ (τ : D.what₂.Tau) (z : Bool × HH D),
       (D.eTau τ : D.R.GG) = plGG D z → fill (instRec L K Ce) (bL L) j z = wj D j τ :=
@@ -125,6 +134,9 @@ def levTieG (u : D.what₂.Word) (w : D.what₂.places.Pl) (h : GIdx D.host (D.m
     Formalism.L2.Herm.GLevTie (Lc u) ((recG D sc Ce Lc X hd).gat u w h) :=
   gatRecP_lev D u _ (X u w h).hS _ (Lc u) (X u w h).I (X u w h).ψ _
 
+/- English proof (translation)
+Introduce `u w h`. Use `show epSc D.R sc Ce (D.what₂.places.resChar w) = ⌈Ce * (D.R.f : ℝ) * (D.R.k : ℝ) ^ 2 * Real.logb (D.what₂.places.resChar w) L.sc.a⌉₊`. Rewrite using `[hsc]`. Both sides reduce to the same expression.
+-/
 theorem epTieG (hsc : L.sc = sc) (K : Consts) : EpTie (instRec L K Ce) := by
   intro u w h
   show epSc D.R sc Ce (D.what₂.places.resChar w) =
@@ -132,11 +144,17 @@ theorem epTieG (hsc : L.sc = sc) (K : Consts) : EpTie (instRec L K Ce) := by
   rw [hsc]
   rfl
 
+/- English proof (translation)
+Introduce `u _ _ _ _ j hj` and use `wRec_eq D u _ j hj`.
+-/
 theorem fillsAllG (Lv : ∀ u w h, Levels (fillsG D sc Ce Lc X hd L P u w h)) (Ch : ∀ u w h, Chain (Lv u w h))
     (Vram : ∀ u w h, Submodule ((recG D sc Ce Lc X hd).gat u w h).O ((recG D sc Ce Lc X hd).gat u w h).Fn) :
     FillsAll (gatTiesG D sc Ce Lc X hd) (latInstG D sc Ce Lc X hd L P Lv Ch Vram) :=
   fun u _ _ _ _ j hj => wRec_eq D u _ j hj
 
+/- English proof (translation)
+The claim follows from `(G.P.setting v).prime five_le := (G.P.setting v).five_le two_le := (G.P.setting v).two_le even := (G.P.setting v).even r_pos := hr two_r := h2r m_pos := hm base := Fl.base v dom := G.P.dom v w_low := fun s => ⟨le_trans (le_max_left _ _) (Fl.w_ge v s), le_trans (le_max_right _ _) …`.
+-/
 theorem std_of_fills {p : ℕ} (G : GAtP p) (Fl : Fills G) (v : Fin G.P.nV) (hr : 1 ≤ G.P.r) (h2r : 2 * G.P.r ≤ G.P.m + 1)
     (hm : 1 ≤ Fl.mm) :
     Formalism.MainNotions.FormalGroupSystem.Std p (G.P.n' v) G.P.m Fl.t Fl.mm Fl.c G.P.r (Fl.TT v) (Fl.a v) (Fl.b v) (G.P.lam0 v) (Fl.w v) where
@@ -152,10 +170,16 @@ theorem std_of_fills {p : ℕ} (G : GAtP p) (Fl : Fills G) (v : Fin G.P.nV) (hr 
   w_low := fun s => ⟨le_trans (le_max_left _ _) (Fl.w_ge v s), le_trans (le_max_right _ _) (Fl.w_ge v s)⟩
   w_mono := fun s l h1 _ => Fl.w_mono v s l h1
 
+/- English proof (translation)
+Unfold `rSc rG`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem one_le_rSc (k p : ℕ) : 1 ≤ rSc sc k p := by
   unfold rSc rG
   split_ifs <;> omega
 
+/- English proof (translation)
+Unfold `rSc`. Use `split_ifs`. Conclude with `h`. Unfold `rG at h`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem two_rSc_le (k p : ℕ) (h : 2 * rG sc ≤ k) : 2 * rSc sc k p ≤ k := by
   unfold rSc
   split_ifs
@@ -163,6 +187,11 @@ theorem two_rSc_le (k p : ℕ) (h : 2 * rG sc ≤ k) : 2 * rSc sc k p ≤ k := b
   · unfold rG at h
     omega
 
+/- English proof (translation)
+Use `std_of_fills _ _ v ?_ ?_ ?_` and prove the remaining obligations. Conclude with `one_le_rSc sc _ _`. Establish `h1` using `two_rSc_le sc D.R.k (D.what₂.places.resChar w) h2r`. Establish `h2` using `D.R.m_add_three_le_k`. Use `show 2 * rSc sc D.R.k (D.what₂.places.resChar w) ≤ D.R.k - 1 + 1`.
+
+Use linear arithmetic over natural numbers and integers. Use `D.R.two_le_m show 1 ≤ D.R.m` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem stdG (h2r : 2 * rG sc ≤ D.R.k) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (v : Fin ((recG D sc Ce Lc X hd).gat u w h).P.nV) :
     Formalism.MainNotions.FormalGroupSystem.Std (D.what₂.places.resChar w) (((recG D sc Ce Lc X hd).gat u w h).P.n' v) ((recG D sc Ce Lc X hd).gat u w h).P.m

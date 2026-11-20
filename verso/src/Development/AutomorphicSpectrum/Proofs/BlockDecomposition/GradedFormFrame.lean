@@ -9,6 +9,15 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 noncomputable section
 namespace GlobalTheory.CompanionTheory.GrForm.FrameEx
 
+/- English proof (translation)
+Use `le_bot_iff.1 (Ideal.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, hr, rfl⟩`. Establish `hpos : ∃ p ∈ l, p.1 ≠ 0`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+
+Establish `: (l.map Prod.fst).sum = 0`. Use `List.sum_eq_zero ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨p, hp, rfl⟩` from `List.mem_map.1 hx`. Conclude with `hne p hp`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨p, hp, hp0⟩` from `hpos`. Establish `h0 : p.2 = 0` using `by simpa using hl p hp`. Establish `: (dividedPowersBot O).dpow p.1 p.2 = 0`. Rewrite using `[h0]`.
+
+Conclude with `(dividedPowersBot O).dpow_eval_zero hp0`. Establish `hz : (l.map fun q => (dividedPowersBot O).dpow q.1 q.2).prod = 0` using `List.prod_eq_zero (List.mem_map.2 ⟨p, hp, this⟩)`. Rewrite using `[hz]`. Conclude with `Ideal.zero_mem _`.
+-/
 theorem dividedPowerFiltration_dividedPowersBot (O : Type) [CommRing O] {n : ℕ} (hn : n ≠ 0) :
     pdP (dividedPowersBot O) n = ⊥ := by
   refine le_bot_iff.1 (Ideal.span_le.2 ?_)
@@ -33,6 +42,9 @@ theorem dividedPowerFiltration_dividedPowersBot (O : Type) [CommRing O] {n : ℕ
 
 variable {O : Type} [CommRing O] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)}
 
+/- English proof (translation)
+Take `⟨-, V, hV, hT⟩` from `h`. Rewrite `hT` using `[Set.mem_singleton_iff.1 hV]`. Conclude with `hT`.
+-/
 theorem inU_of_SS {l s : ℕ} {W : X.Opens} (T : Thick (LL q)) (h : SS q l s W T) : InU W T := by
   obtain ⟨-, V, hV, hT⟩ := h
   rw [Set.mem_singleton_iff.1 hV] at hT
@@ -44,6 +56,21 @@ namespace GlobalTheory.CompanionTheory.GrForm
 
 open FrameEx in
 
+/- English proof (translation)
+Introduce `O _ l s hb X q W d c u hu`. Use `letI := (strV q W).toAlgebra`. Take `⟨c', e, hTF, he1, het, hev⟩` from `GlobalTheory.T.exists_chart_from_coordinates (O := O) (R := O) (I := ⊥) (dividedPowersBot O) l s hb q (Ideal.Quotient.mk ⊥) (fun a => rfl) c`. Establish `good` using `GlobalTheory.T.chart_is_good c'`. Establish `hQ : ∀ T, SS q l s W T → InU W T` using `inU_of_SS`.
+
+Establish `hD : SS q l s W c'.D` using `⟨hTF, W, rfl, c'.inV⟩`. Take `⟨hpow, hgr⟩` from `GlobalTheory.T.chart_divided_powers_graded_constant c' good (SS q l s W) hQ hD`. Establish `hval : ∀ (T : Thick (LL q)) (h : InU W T) (σ : c'.D ⟶ T) (f : Γ(X, W)), Ideal.Quotient.mk T.J (σ.φ (e (1 ⊗ₜ f))) = ev T h f`. Introduce `T h σ f`. Rewrite using `[ev_nat σ c'.inV h f, hev f]`.
+
+Both sides reduce to the same expression. Establish `hσ : ∀ T : (SS q l s W).FullSubcategory, ∃ σ : c'.D ⟶ T.obj, ∀ i, σ.φ (c'.t i) = u i T.obj`. Introduce `T`. Establish `hT` using `hQ _ T.property`. Take `⟨σ₀⟩` from `good.1 T.obj hT`.
+
+Take `⟨σ, h1, -⟩` from `good.2 T.obj σ₀ (fun i => u i T.obj - σ₀.φ (c'.t i)) (fun i => by`. Use `Ideal.Quotient.eq.1 ?_` and prove the remaining obligations. Rewrite using `[hu i T.obj hT, ← het i, hval T.obj hT σ₀])`. Conclude with `⟨σ, fun i => by simpa using h1 i⟩`. Use `choose σ hσ using hσ`.
+
+Set `θ : Γ(X, W) ≃+* (sP (SS q l s W)).A.obj (c'.frame good (SS q l s W) hQ hD).D` to `((Algebra.TensorProduct.lid O Γ(X, W)).symm.toRingEquiv).trans e`. Establish `hθ : ∀ f, θ f = e (1 ⊗ₜ f)` using `fun f => rfl`. Use `⟨c'.frame good (SS q l s W) hQ hD, fun T => ObjectProperty.homMk (σ T), θ, hgr, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `n hn`. Express the relevant statement in the definitionally equal form `c'.D.pdPow ((n : ℤ).toNat) = ⊥`.
+
+Rewrite using `[Int.toNat_natCast, hpow, dividedPowerFiltration_dividedPowersBot O hn, Ideal.map_bot]`. Introduce `i T s s'`. Express the relevant statement in the definitionally equal form `(s'.hom.φ (c'.t i) - s.hom.φ (c'.t i) : T.obj.B) = s'.hom.φ (θ (c.t i)) - s.hom.φ (θ (c.t i))`. Rewrite using `[hθ, het]`. Introduce `i T`.
+
+Express the relevant statement in the definitionally equal form `(σ T).φ (θ (c.t i)) = u i T.obj`. Rewrite using `[hθ, het, hσ]`. Introduce `T h f`. Conclude with `hval T.obj h (σ T) f`.
+-/
 theorem stFrame : StFrame := by
   intro O _ l s hb X q W d c u hu
   letI := (strV q W).toAlgebra

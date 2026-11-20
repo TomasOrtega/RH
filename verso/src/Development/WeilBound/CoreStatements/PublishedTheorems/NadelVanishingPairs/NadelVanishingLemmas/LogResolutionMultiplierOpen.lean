@@ -10,6 +10,11 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.CechPic GlobalTheory.QCoh GlobalTheory.Discrepancy GlobalTheory.LogPair
 namespace GlobalTheory.Discrepancy
 
+/- English proof (translation)
+Establish `h : {x : X | ∀ w : Y, s w ⤳ x → P w} = (⋃ w ∈ {w | ¬ P w}, closure {s w})ᶜ`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_compl_iff, Set.mem_iUnion, not_exists, ← specializes_iff_mem_closure]`. Conclude with `⟨fun h w hw hx => hw (h w hx), fun h w hx => by_contra fun hw => h w hw hx⟩`. Rewrite using `[h]`.
+
+Conclude with `(hP.isClosed_biUnion fun w _ => isClosed_closure).isOpen_compl`.
+-/
 theorem isOpen_setOf_forall_specializes_of_finite {X Y : Type} [TopologicalSpace X] (s : Y → X)
     (P : Y → Prop) (hP : {w | ¬ P w}.Finite) :
     IsOpen {x : X | ∀ w : Y, s w ⤳ x → P w} := by
@@ -21,6 +26,17 @@ theorem isOpen_setOf_forall_specializes_of_finite {X Y : Type} [TopologicalSpace
   rw [h]
   exact (hP.isClosed_biUnion fun w _ => isClosed_closure).isOpen_compl
 
+/- English proof (translation)
+Introduce `k _ _ X _ _ _ p n hproj hn Δ η m G Y _ _ s _ K B hlm hres`. Take `⟨N, i, hi, hpi⟩` from `hres.proj`. Use `haveI : QuasiCompact (s ≫ p) := hpi ▸ inferInstance`. Use `haveI : CompactSpace Y := QuasiCompact.compactSpace_of_compactSpace (s ≫ p)`. Establish `hfin` using `(pullCart s G - m • K).finite_support_mult`.
+
+Establish `hm : (0 : ℤ) < m` using `by exact_mod_cast hlm.pos`. Establish `hiff` using `kltAt_lcAt_iff_of_isLogRes k X p n hproj hn Δ η m G Y s K B hlm hres`. Prove the components needed by the constructor for the conclusion. Establish `: {x : X | KltAt p n Δ x} = {x : X | ∀ w : Y, s w ⤳ x → (pullCart s G - m • K).mult w < m}`. Use extensionality with `x`.
+
+Conclude with `(hiff x).1`. Rewrite using `[this]`. Use `isOpen_setOf_forall_specializes_of_finite _ _ (hfin.subset fun w hw => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, not_lt] at hw`. Simplify using `only [Function.mem_support]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `: {x : X | LcAt p n Δ x} = {x : X | ∀ w : Y, s w ⤳ x → (pullCart s G - m • K).mult w ≤ m}`. Use extensionality with `x`. Conclude with `(hiff x).2`. Rewrite using `[this]`.
+
+Use `isOpen_setOf_forall_specializes_of_finite _ _ (hfin.subset fun w hw => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, not_le] at hw`. Simplify using `only [Function.mem_support]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem isOpen_kltAt_and_lcAt_of_isLogRes : ∀ (k : Type) [Field k] [CharZero k] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp k) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → ∀ (Δ : X → ℚ) (η : RatForms p n) (m : ℕ) (G : CartierDiv X) (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (s : Y ⟶ X) [IsDominant s] (K : CartierDiv Y) (B : Closeds Y), IsLogMult p n Δ η m G → IsLogRes p n η m G s K B → IsOpen {x : X | KltAt p n Δ x} ∧ IsOpen {x : X | LcAt p n Δ x} := by
   intro k _ _ X _ _ _ p n hproj hn Δ η m G Y _ _ s _ K B hlm hres
   obtain ⟨N, i, hi, hpi⟩ := hres.proj

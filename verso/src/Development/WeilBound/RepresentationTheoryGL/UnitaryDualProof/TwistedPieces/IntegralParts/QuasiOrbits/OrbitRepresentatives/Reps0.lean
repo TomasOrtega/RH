@@ -23,6 +23,25 @@ def Reps0 : Prop :=
         ∃ u : Fin n → k, a *ᵥ p.2 = P.val *ᵥ u ∧ ∀ i, w i < 0 → u i = 0) ∧
     ∀ x ∈ Bz Z, IsNilpotent x → ∀ v : Fin n → k, v ≠ 0 → ∃ p ∈ s, (x, v) ∈ orb Z p
 
+/- English proof (translation)
+Introduce `n Z hZ c hc`. Take `⟨M, _, L, _, hL, R, o, hF⟩` from `PositivityTheory.RgUd.T.Nil.Orb.BReps.exists_frames Z hZ.1 hZ.2`. Use `haveI := hL`. Set `typ : ∀ (N : Matrix (Fin n) (Fin n) k) (v : Fin n → k), PositivityTheory.RgUd.T.Nil.Orb.BReps.Frame Z M L R o N v → (M → Fin (n + 1) → Fin (n + 1) → Fin (n + 1))` to `fun N v F m ℓ σ => ⟨Nat.card {a : F.ι m // F.l m a = (ℓ : ℕ) ∧ F.s m a = (σ : ℕ)}, by haveI := F.fι m`. Conclude with `Nat.lt_succ_of_le ((Finite.card_subtype_le _).trans (F.card_le m))⟩`.
+
+Set `Good : (M → Fin (n + 1) → Fin (n + 1) → Fin (n + 1)) → Prop` to `fun θ => ∃ q : Sp k n, q.1 ∈ Bz Z ∧ IsNilpotent (q.1 - c) ∧ q.2 ≠ 0 ∧ ∃ F : PositivityTheory.RgUd.T.Nil.Orb.BReps.Frame Z M L R o (q.1 - c) q.2, typ _ _ F = θ`. Use `⟨(Finset.univ.filter Good).image (fun θ => if h : Good θ then Classical.choose h else ((0 : Matrix (Fin n) (Fin n) k), (0 : Fin n → k))), ?_, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Rewrite `hp` using `[Finset.mem_image]`. Take `⟨θ, hθ, rfl⟩` from `hp`.
+
+Establish `hG : Good θ` using `(Finset.mem_filter.1 hθ).2`. Simplify using `only [dif_pos hG]`. Take `⟨h1, h2, h3, F, -⟩` from `Classical.choose_spec hG`. Use `⟨h1, h2, h3, ?_⟩` and prove the remaining obligations. Take `⟨P, w, hPw, hA⟩` from `PositivityTheory.RgUd.T.Nil.Orb.BReps.grade_of_frame F`.
+
+Use `⟨P, w, hPw, ?_⟩` and prove the remaining obligations. Introduce `a ha hap`. Apply `hA a ha` to reduce the goal to its premises. Establish `hca : c * a = a * c` using `ha c hc`. Rewrite using `[mul_sub, sub_mul, hap, hca]`.
+
+Introduce `x hx hnil v hv`. Establish `hcomm : ∀ z ∈ Z, z * (x - c) = (x - c) * z`. Introduce `z hz`. Rewrite using `[mul_sub, sub_mul, hx z hz, hZ.1 z hz c hc]`. Take `⟨F⟩` from `hF (x - c) hcomm hnil v`.
+
+Establish `hG : Good (typ _ _ F)` using `⟨(x, v), hx, hnil, hv, F, rfl⟩`. Use `⟨Classical.choose hG, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_image]`. Conclude with `⟨typ _ _ F, Finset.mem_filter.2 ⟨Finset.mem_univ _, hG⟩, dif_pos hG⟩`. Take `⟨h1, h2, h3, F', hF'⟩` from `Classical.choose_spec hG`.
+
+Take `⟨g, hgZ, hgN, hgv⟩` from `PositivityTheory.RgUd.T.Nil.Orb.BReps.conj_of_frames F' F (by`. Introduce `m ℓ σ hℓ hσ`. Establish `e` using `congrFun (congrFun (congrFun hF' m) ⟨ℓ, Nat.lt_succ_of_le hℓ⟩) ⟨σ, Nat.lt_succ_of_le hσ⟩`. Conclude with `congrArg Fin.val e)`. Use `⟨g, hgZ, ?_⟩` and prove the remaining obligations.
+
+Establish `hcg : c * (g : Matrix (Fin n) (Fin n) k) = g * c` using `hgZ c hc`. Establish `e : (g : Matrix (Fin n) (Fin n) k) * (Classical.choose hG).1 = x * g`. Establish `h4` using `hgN`. Rewrite `h4` using `[mul_sub, sub_mul, ← hcg]`. Conclude with `sub_left_inj.mp h4`.
+
+Use `show ((g : Matrix (Fin n) (Fin n) k) * (Classical.choose hG).1 * ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k), (g : Matrix (Fin n) (Fin n) k) *ᵥ (Classical.choose hG).2) = (x, v)`. Rewrite using `[e, mul_assoc, Units.mul_inv, mul_one, hgv]`.
+-/
 theorem repsP : PositivityTheory.RgUd.T.Nil.Orb.Reps (k := k) := by
   classical
   intro n Z hZ c hc
@@ -79,6 +98,11 @@ theorem repsP : PositivityTheory.RgUd.T.Nil.Orb.Reps (k := k) := by
           (g : Matrix (Fin n) (Fin n) k) *ᵥ (Classical.choose hG).2) = (x, v)
       rw [e, mul_assoc, Units.mul_inv, mul_one, hgv]
 
+/- English proof (translation)
+Introduce `n Z hZ`. Take `⟨s, hs1, hs2⟩` from `repsP k n Z hZ 0 Z.zero_mem`. Use `⟨s, ?_, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Simplify using `using hs1 p hp`.
+
+Introduce `x hx hnil v hv`. Conclude with `hs2 x hx (by simpa using hnil) v hv`.
+-/
 theorem reps0 : Reps0 k := by
   intro n Z hZ
   obtain ⟨s, hs1, hs2⟩ := repsP k n Z hZ 0 Z.zero_mem

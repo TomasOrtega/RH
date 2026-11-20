@@ -22,6 +22,9 @@ namespace GlobalTheory.SemicontLB
 
 open GlobalTheory.AbLaw GlobalTheory.Adelic
 
+/- English proof (translation)
+Use `haveI : SheafOfModules.IsQuasicoherent (LB.toMod M) := GlobalTheory.LB.isQuasicoherent_toMod hM`. Use `letI : Algebra R Γ(X, ⊤) := algebraΓOfHom f`. Conclude with `⟨(((HomologicalComplex.homologyFunctor _ _ n).mapIso (FieldChangeInter.cechIso f M D)).toLinearEquiv.toEquiv).trans (cechHEquivCoh R hc hD (LB.toMod M) n).toEquiv⟩`.
+-/
 theorem nonempty_cechLB_homology_equiv_coh {X : Scheme.{0}} {R : Type} [CommRing R]
     (f : X ⟶ Spec (CommRingCat.of R)) {M : LB X} (hM : M.IsLB) {κ : Type} [LinearOrder κ] [Finite κ]
     {D : κ → X.Opens} (hc : ⨆ i, D i = ⊤) (hD : ∀ s : Finset κ, s.Nonempty → IsAffineOpen (⨅ i ∈ s, D i))
@@ -32,6 +35,13 @@ theorem nonempty_cechLB_homology_equiv_coh {X : Scheme.{0}} {R : Type} [CommRing
     (FieldChangeInter.cechIso f M D)).toLinearEquiv.toEquiv).trans
     (cechHEquivCoh R hc hD (LB.toMod M) n).toEquiv⟩
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset ι, ⨅ i ∈ s, π ⁻¹ᵁ U i = π ⁻¹ᵁ (⨅ i ∈ s, U i)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.iInf_insert, Finset.iInf_insert, ih]`.
+
+Both sides reduce to the same expression. Use `⟨?_, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.preimage_iSup, hU]`. Both sides reduce to the same expression. Rewrite using `[key s]`.
+
+Conclude with `(hint s hs).preimage π`.
+-/
 private theorem affine_cover_preimage_of_isAffineHom {X Y : Scheme.{0}} (π : Y ⟶ X) [IsAffineHom π] {ι : Type}
     (U : ι → X.Opens) (hU : ⨆ i, U i = ⊤)
     (hint : ∀ s : Finset ι, s.Nonempty → IsAffineOpen (⨅ i ∈ s, U i)) :
@@ -46,6 +56,13 @@ private theorem affine_cover_preimage_of_isAffineHom {X Y : Scheme.{0}} (π : Y 
   · rw [← Scheme.Hom.preimage_iSup, hU]; rfl
   · rw [key s]; exact (hint s hs).preimage π
 
+/- English proof (translation)
+Set `P : PrimeSpectrum R` to `⟨RingHom.ker g, RingHom.ker_isPrime g⟩`. Express the relevant statement in the definitionally equal form `_ ↔ Module.finrank P.asIdeal.ResidueField ((((ModuleCat.extendScalars (algebraMap R P.asIdeal.ResidueField)).mapHomologicalComplex (ComplexShape.up ℕ)).obj K).homology q) = 0`. Use `haveI := hV P`. Establish `hunit : P.asIdeal.primeCompl ≤ Submonoid.comap g (IsUnit.submonoid κ)`. Introduce `x hx`.
+
+Simplify using `only [Submonoid.mem_comap, IsUnit.mem_submonoid_iff]`. Conclude with `isUnit_iff_ne_zero.2 fun h => hx (RingHom.mem_ker.2 h)`. Set `φ : P.asIdeal.ResidueField →+* κ` to `Ideal.ResidueField.lift P.asIdeal g le_rfl hunit`. Establish `hcomp : φ.comp (algebraMap R P.asIdeal.ResidueField) = g` using `RingHom.ext fun r => Ideal.ResidueField.lift_algebraMap _ _ le_rfl hunit r`. Use `letI : Algebra P.asIdeal.ResidueField κ := φ.toAlgebra`.
+
+Take `⟨e⟩` from `FieldChangeInter.nonempty_homology_equiv κ (((ModuleCat.extendScalars (algebraMap R P.asIdeal.ResidueField)).mapHomologicalComplex (ComplexShape.up ℕ)).obj K) q`. Establish `e2` using `((HomologicalComplex.homologyFunctor _ _ q).mapIso ((Functor.mapHomologicalComplexCompIso (ModuleCat.extendScalarsComp (algebraMap R P.asIdeal.ResidueField) φ).symm (ComplexShape.up ℕ)).app K)).toLinearEquiv`. Establish `e3 : (↑((((ModuleCat.extendScalars (φ.comp (algebraMap R P.asIdeal.ResidueField))).mapHomologicalComplex (ComplexShape.up ℕ)).obj K).homology q) : Type) = (↑((((ModuleCat.extendScalars g).mapHomologicalComplex (ComplexShape.up ℕ)).obj K).homology q) : Type)` using `by rw [hcomp]`. Rewrite using `[← Module.finrank_baseChange (R := κ), Module.finrank_zero_iff]`. Conclude with `(((Equiv.cast e3).symm.trans e2.symm.toEquiv).trans e.toEquiv).subsingleton_congr`.
+-/
 private theorem fibre_lemma_2 {R : Type} [CommRing R] (K : CochainComplex (ModuleCat.{0} R) ℕ) (q : ℕ)
     (hV : ∀ p : PrimeSpectrum R, Module.Finite p.asIdeal.ResidueField
       ((((ModuleCat.extendScalars (algebraMap R p.asIdeal.ResidueField)).mapHomologicalComplex
@@ -84,6 +101,25 @@ private theorem fibre_lemma_2 {R : Type} [CommRing R] (K : CochainComplex (Modul
   rw [← Module.finrank_baseChange (R := κ), Module.finrank_zero_iff]
   exact (((Equiv.cast e3).symm.trans e2.symm.toEquiv).trans e.toEquiv).subsingleton_congr
 
+/- English proof (translation)
+Introduce `R _ _ X f _ _ M hM κ₁ κ₂ _ _ g₁ g₂ X₁ X₂ f₁ f₂ π₁ π₂ h₁ h₂ hker q hsub`. Use `haveI : CompactSpace X := by`. Establish `: QuasiCompact f` using `inferInstance`. Conclude with `⟨(QuasiCompact.isCompact_preimage (f := f) _ isOpen_univ isCompact_univ)⟩`. Take `⟨ι, _, U, hU, hUtop⟩` from `GlobalTheory.QCoh.exists_finite_affine_cover_of_isCompact (X := X) (W := ⊤) isCompact_univ`.
+
+Use `letI : LinearOrder ι := LinearOrder.lift' (Fintype.equivFin ι) (Fintype.equivFin ι).injective`. Establish `hsep : X.IsSeparated`. Establish `e : terminal.from X = f ≫ terminal.from _` using `terminal.hom_ext _ _`. Conclude with `⟨by rw [e]; infer_instance⟩`. Establish `hint : ∀ s : Finset ι, s.Nonempty → IsAffineOpen (⨅ i ∈ s, U i)` using `(GlobalTheory.cech_computes_coh_of_affine_cover.{0, 0, 0} X ℤ).1 (Or.inl hsep) ι U hU`.
+
+Establish `hcov : ⨆ i, U i = ⊤` using `hUtop.symm`. Use `haveI : IsAffineHom π₁ := MorphismProperty.of_isPullback h₁.flip inferInstance`. Use `haveI : IsAffineHom π₂ := MorphismProperty.of_isPullback h₂.flip inferInstance`. Take `⟨hc₁, hi₁⟩` from `affine_cover_preimage_of_isAffineHom π₁ U hcov hint`. Take `⟨hc₂, hi₂⟩` from `affine_cover_preimage_of_isAffineHom π₂ U hcov hint`.
+
+Use `haveI : SheafOfModules.IsQuasicoherent (LB.toMod M) := GlobalTheory.LB.isQuasicoherent_toMod hM`. Use `haveI : IsFiniteQC (LB.toMod M) := GlobalTheory.QCoh.isFiniteQC_iff_isFiniteType.2 ⟨inferInstance, GlobalTheory.LB.isFiniteType_toMod hM⟩`. Establish `hfin : ∀ p : ℕ, Module.Finite R ((cechLB f M U).homology p)`. Introduce `p`. Use `letI : Algebra R Γ(X, ⊤) := algebraΓOfHom f`.
+
+Establish `e` using `((HomologicalComplex.homologyFunctor _ _ p).mapIso (FieldChangeInter.cechIso f M U)).toLinearEquiv.trans (cechHEquivCoh R hcov hint (LB.toMod M) p)`. Use `haveI := GlobalTheory.ProperFinite.finite_coh_of_isProper f (LB.toMod M) p`. Conclude with `Module.Finite.equiv e.symm`. Take `⟨K, φ, hKz, hKfin, -, hKproj, -, -, hKq⟩` from `exists_finite_projective_complex_quasiIso (cechLB f M U) (Fintype.card ι) (fun p hp => GlobalTheory.AbLaw.isZero_cechLB_X f M U hp.le) (fun p => GlobalTheory.AbLaw.flat_cechLB_X f hM hint p) hfin`. Use `haveI : ∀ i, Module.Finite R (K.X i) := hKfin`.
+
+Use `haveI : ∀ i, Module.Projective R (K.X i) := hKproj`. Establish `hsemi` using `GlobalTheory.semicontinuity_finite_projective_complex K (Fintype.card ι) hKz`. Establish `hV` using `fun p => hsemi.1 q p`. Establish `hus` using `hsemi.2.1 q`. Establish `step : ∀ {κ : Type} [Field κ] (g : R →+* κ) (Y : Scheme.{0}) (fY : Y ⟶ Sp κ) (π : Y ⟶ X), IsPullback π fY f (spMap g) → (⨆ i, π ⁻¹ᵁ U i = ⊤) → (∀ s : Finset ι, s.Nonempty → IsAffineOpen (⨅ i ∈ s, π ⁻¹ᵁ U i)) → (Subsingleton (coh (LB.toMod (M.pull π)) q) ↔ Subsingleton ((((ModuleC …`.
+
+Introduce `κ _ g Y fY π h hc hi`. Take `⟨e1⟩` from `nonempty_cechLB_homology_equiv_coh fY (LB.isLB_pull hM π) hc hi q`. Establish `e2` using `(HomologicalComplex.homologyFunctor _ _ q).mapIso (GlobalTheory.AbLaw.cechLBBaseChangeIso hM h hint)`. Use `letI : Algebra R κ := g.toAlgebra`. Use `haveI : QuasiIso (((ModuleCat.extendScalars g).mapHomologicalComplex (ComplexShape.up ℕ)).map φ) := hKq κ`.
+
+Establish `e3` using `asIso (HomologicalComplex.homologyMap (((ModuleCat.extendScalars g).mapHomologicalComplex (ComplexShape.up ℕ)).map φ) q)`. Conclude with `((e3.toLinearEquiv.toEquiv.trans e2.toLinearEquiv.toEquiv).trans e1).subsingleton_congr.symm`. Establish `k1` using `(fibre_lemma_2 K q hV g₁).1 ((step g₁ X₁ f₁ π₁ h₁ hc₁ hi₁).1 hsub)`. Use `(step g₂ X₂ f₂ π₂ h₂ hc₂ hi₂).2 ((fibre_lemma_2 K q hV g₂).2 ?_)` and prove the remaining obligations. Establish `hspec : (⟨RingHom.ker g₂, RingHom.ker_isPrime g₂⟩ : PrimeSpectrum R) ⤳ (⟨RingHom.ker g₁, RingHom.ker_isPrime g₁⟩ : PrimeSpectrum R)` using `(PrimeSpectrum.le_iff_specializes _ _).1 hker`.
+
+Establish `h0 : (fun p : PrimeSpectrum R => Module.finrank p.asIdeal.ResidueField ↑((((ModuleCat.extendScalars (algebraMap R p.asIdeal.ResidueField)).mapHomologicalComplex (ComplexShape.up ℕ)).obj K).homology q)) ⟨RingHom.ker g₁, RingHom.ker_isPrime g₁⟩ < 1`. Simplify using `only [k1]`. Conclude with `Nat.zero_lt_one`. Establish `hlt` using `((hus _ 1 h0).filter_mono hspec.nhds_le_nhds).self_of_nhds`. Conclude with `Nat.lt_one_iff.1 hlt`.
+-/
 theorem subsingleton_coh_pull_of_ker_le : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (X : Scheme.{0})
     (f : X ⟶ Sp R) [IsProper f] [Flat f] (M : LB X), M.IsLB → ∀ (κ₁ κ₂ : Type) [Field κ₁] [Field κ₂]
     (g₁ : R →+* κ₁) (g₂ : R →+* κ₂) (X₁ X₂ : Scheme.{0}) (f₁ : X₁ ⟶ Sp κ₁) (f₂ : X₂ ⟶ Sp κ₂) (π₁ : X₁ ⟶ X)

@@ -17,6 +17,13 @@ noncomputable section
 namespace GlobalTheory.FracGen
 open scoped nonZeroDivisors
 
+/- English proof (translation)
+Introduce `h`. Establish `h2` using `h.map (Algebra.norm ℤ (S := 𝓞 F))`. Establish `h3 : Algebra.norm ℤ (((l : ℤ) : 𝓞 F)) = (l : ℤ) ^ Module.finrank ℤ (𝓞 F)`. Rewrite using `[← Algebra.norm_algebraMap]`. Both sides reduce to the same expression.
+
+Rewrite `h2` using `[h3]`. Establish `hpos : 0 < Module.finrank ℤ (𝓞 F)` using `Module.finrank_pos`. Establish `h4 : IsUnit (l : ℤ)` using `(isUnit_pow_iff hpos.ne').1 h2`. Rewrite `h4` using `[Int.isUnit_iff]`. Use `hl.two_le` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem natCast_not_isUnit (F : Type) [Field F] [NumberField F] (l : ℕ) (hl : l.Prime) :
     ¬ IsUnit ((l : ℤ) : 𝓞 F) := by
   intro h
@@ -30,6 +37,17 @@ theorem natCast_not_isUnit (F : Type) [Field F] [NumberField F] (l : ℕ) (hl : 
   have := hl.two_le
   omega
 
+/- English proof (translation)
+Use `haveI : Fact l.Prime := ⟨hl⟩`. Rewrite using `[Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hl]`. Introduce `hd`. Use `haveI : Finite (𝓞 F ⧸ K) := Ideal.finiteQuotientOfFreeOfNeBot K hK`. Establish `hcard : Ideal.absNorm K = Nat.card (𝓞 F ⧸ K)`.
+
+Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Rewrite `hd` using `[hcard]`. Take `⟨x, hx⟩` from `exists_prime_addOrderOf_dvd_card' (G := 𝓞 F ⧸ K) l hd`. Establish `h1 : (1 : 𝓞 F) ∈ Ideal.span {((l : ℕ) : 𝓞 F)} ⊔ K` using `hsup ▸ Submodule.mem_top`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 h1`.
+
+Take `⟨w, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Establish `hz0 : Ideal.Quotient.mk K z = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 hz`. Establish `hu : (l : 𝓞 F ⧸ K) * Ideal.Quotient.mk K w = 1`. Use `congrArg (Ideal.Quotient.mk K) hyz` as an intermediate fact. Rewrite `this` using `[map_add, hz0, add_zero, map_one, map_mul, map_natCast]`.
+
+Rewrite using `[mul_comm]`. Conclude with `this`. Establish `hlx : l • x = 0` using `hx ▸ addOrderOf_nsmul_eq_zero x`. Establish `hx0 : x = 0`. Rewrite `hlx` using `[nsmul_eq_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite `hx` using `[hx0, addOrderOf_zero]`. Conclude with `hl.one_lt.ne hx`.
+-/
 theorem coprime_absNorm (F : Type) [Field F] [NumberField F] (l : ℕ) (hl : l.Prime)
     (K : Ideal (𝓞 F)) (hK : K ≠ ⊥) (hsup : Ideal.span {((l : ℕ) : 𝓞 F)} ⊔ K = ⊤) :
     (Ideal.absNorm K).Coprime l := by
@@ -58,6 +76,21 @@ theorem coprime_absNorm (F : Type) [Field F] [NumberField F] (l : ℕ) (hl : l.P
   rw [hx0, addOrderOf_zero] at hx
   exact hl.one_lt.ne hx
 
+/- English proof (translation)
+Use `set L : Ideal (𝓞 F) := Ideal.span {((l : ℕ) : 𝓞 F)} with hLdef`. Establish `hl0 : ((l : ℕ) : 𝓞 F) ≠ 0` using `by exact_mod_cast hl.ne_zero`. Establish `hL0 : L ≠ ⊥` using `by rw [hLdef, Ne, Ideal.span_singleton_eq_bot]; exact hl0`. Establish `hLtop : L ≠ ⊤`. Rewrite using `[hLdef, Ne, Ideal.span_singleton_eq_top]`.
+
+Use `natCast_not_isUnit F l hl` as an intermediate fact. Simplify using `using this`. Take `⟨a, ha⟩` from `IsDedekindDomain.exists_sup_span_eq (I := J * L) (J := J) Ideal.mul_le_left (mul_ne_zero hJ hL0)`. Establish `haJ : a ∈ J` using `ha ▸ Ideal.mem_sup_right (Ideal.mem_span_singleton_self a)`. Establish `hdvd : J ∣ Ideal.span {a}` using `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem J).2 haJ)`.
+
+Take `⟨K, hK⟩` from `hdvd`. Establish `hLK : L ⊔ K = ⊤`. Establish `: J * (L ⊔ K) = J * ⊤` using `by rw [Ideal.mul_sup, ← hK, ha, Ideal.mul_top]`. Conclude with `mul_left_cancel₀ hJ this`. Establish `ha0 : a ≠ 0`.
+
+Introduce `h0`. Rewrite `hK` using `[h0, Ideal.span_singleton_eq_bot.2 rfl]`. Establish `hK0 : K = ⊥`. Break down `mul_eq_zero.1 hK.symm with h | h` into its components or cases. Conclude with `absurd h hJ`.
+
+Conclude with `h`. Rewrite `hLK` using `[hK0, sup_bot_eq]`. Conclude with `hLtop hLK`. Establish `hK0 : K ≠ ⊥`. Introduce `h`.
+
+Rewrite `hK` using `[h, Ideal.mul_bot]`. Conclude with `ha0 (Ideal.span_singleton_eq_bot.1 hK)`. Use `⟨a, haJ, ha0, Ideal.absNorm K, coprime_absNorm F l hl K hK0 hLK, fun j hj => ?_⟩` and prove the remaining obligations. Establish `hm : (Ideal.absNorm K : 𝓞 F) * j ∈ Ideal.span {a}`. Rewrite using `[hK, mul_comm]`.
+
+Conclude with `Ideal.mul_mem_mul (Ideal.absNorm_mem K) hj`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 hm`. Conclude with `⟨t, ht.symm⟩`.
+-/
 theorem exists_gen_int (F : Type) [Field F] [NumberField F] (l : ℕ) (hl : l.Prime)
     (J : Ideal (𝓞 F)) (hJ : J ≠ ⊥) :
     ∃ j₀ ∈ J, j₀ ≠ 0 ∧ ∃ n : ℕ, n.Coprime l ∧ ∀ j ∈ J, ∃ t : 𝓞 F, (n : 𝓞 F) * j = t * j₀ := by
@@ -94,6 +127,23 @@ theorem exists_gen_int (F : Type) [Field F] [NumberField F] (l : ℕ) (hl : l.Pr
   obtain ⟨t, ht⟩ := Ideal.mem_span_singleton'.1 hm
   exact ⟨t, ht.symm⟩
 
+/- English proof (translation)
+Introduce `F _ _ 𝔠 l hl`. Establish `hlp : l.Prime` using `hl.out`. Take `⟨d, hdS, hd⟩` from `(𝔠 : FractionalIdeal (𝓞 F)⁰ F).isFractional`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hdS`. Establish `hdF : (d : F) ≠ 0` using `by exact_mod_cast hd0`.
+
+Set `J : Ideal (𝓞 F)` to `𝔠.elt.comap ((LinearMap.mulLeft (𝓞 F) (d : F)⁻¹) ∘ₗ Algebra.linearMap (𝓞 F) F)`. Establish `hJ : ∀ o, o ∈ J ↔ (d : F)⁻¹ * algebraMap (𝓞 F) F o ∈ 𝔠.elt` using `fun o => Iff.rfl`. Establish `hint : ∀ c ∈ 𝔠.elt, ∃ o ∈ J, (c : F) = (d : F)⁻¹ * algebraMap (𝓞 F) F o`. Introduce `c hc`. Take `⟨o, ho⟩` from `hd c hc`.
+
+Establish `e : c = (d : F)⁻¹ * algebraMap (𝓞 F) F o`. Establish `: algebraMap (𝓞 F) F o = (d : F) * c` using `by rw [ho, Algebra.smul_def]`. Rewrite using `[this, inv_mul_cancel_left₀ hdF]`. Conclude with `⟨o, (hJ o).2 (e ▸ hc), e⟩`. Establish `hJ0 : J ≠ ⊥`.
+
+Establish `hne : (𝔠 : FractionalIdeal (𝓞 F)⁰ F) ≠ 0` using `𝔠.ne_zero`. Establish `hne' : 𝔠.elt ≠ ⊥`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Conclude with `FractionalIdeal.coeToSubmodule_eq_bot.1 h`.
+
+Take `⟨c, hc, hc0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne'`. Take `⟨o, ho, e⟩` from `hint c hc`. Introduce `h`. Rewrite `ho` using `[h, Ideal.mem_bot]`. Apply `hc0` to reduce the goal to its premises.
+
+Rewrite using `[e, ho]`. Simplify using the standard rewrite rules. Take `⟨j₀, hj₀, hj₀0, n, hn, hgen⟩` from `exists_gen_int F l hlp J hJ0`. Use `⟨⟨(d : F)⁻¹ * algebraMap (𝓞 F) F j₀, (hJ j₀).1 hj₀⟩, ?_, fun c => ?_⟩` and prove the remaining obligations. Simplify using `only [ne_eq, mul_eq_zero, inv_eq_zero, not_or]`.
+
+Conclude with `⟨hdF, fun h => hj₀0 (RingOfIntegers.coe_injective (by exact h.trans (map_zero _).symm))⟩`. Take `⟨o, ho, e⟩` from `hint c c.2`. Take `⟨t, ht⟩` from `hgen o ho`. Use `⟨n, t, hn, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `only [Submodule.coe_smul, Submodule.coe_smul_of_tower]`. Rewrite using `[e, nsmul_eq_mul, Algebra.smul_def]`. Use `congrArg (algebraMap (𝓞 F) F) ht` as an intermediate fact. Simplify using `only [map_mul, map_natCast] at this`. Take the linear combination `(d : F)⁻¹ * this`.
+-/
 theorem exists_gen : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (l : ℕ) [Fact l.Prime],
     ∃ c₀ : 𝔠.elt, (c₀ : F) ≠ 0 ∧ ∀ c : 𝔠.elt, ∃ (n : ℕ) (t : 𝓞 F), n.Coprime l ∧ n • c = t • c₀ := by
   intro F _ _ 𝔠 l hl

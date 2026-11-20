@@ -18,6 +18,9 @@ open GlobalTheory.UT
 def kf (R : Type) [CommRing R] [IsDomain R] (F : Type) [Field F] [Algebra (FractionRing R) F] :
     F →+* Γ((TFK (R := R) F).left, ⊤) := (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom
 
+/- English proof (translation)
+The claim follows from `ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of F)).inv`.
+-/
 theorem kf_bijective (R : Type) [CommRing R] [IsDomain R] (F : Type) [Field F] [Algebra (FractionRing R) F] :
     Function.Bijective (kf R F) :=
   ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of F)).inv
@@ -25,6 +28,9 @@ theorem kf_bijective (R : Type) [CommRing R] [IsDomain R] (F : Type) [Field F] [
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} {ρ : S.Real} {p : ℕ} [Fact p.Prime]
   {y₀ : S.R →+* PadicAlgCl p} (u : ρ.UTest p y₀)
 
+/- English proof (translation)
+Use `(Category.comp_id _).trans ?_` and prove the remaining obligations. Conclude with `(congrArg spMap u.fac.symm).trans (Spec.map_comp (CommRingCat.ofHom u.yK) (CommRingCat.ofHom (algebraMap (FractionRing u.V) (PadicAlgCl p))))`.
+-/
 theorem base_eq : (show (TFK (R := u.V) (PadicAlgCl p)).left ⟶ (baseOver (Sp S.R)).left from spMap y₀) ≫
     (baseOver (Sp S.R)).hom = (TFK (R := u.V) (PadicAlgCl p)).hom ≫ spMap u.yK := by
   refine (Category.comp_id _).trans ?_
@@ -35,6 +41,9 @@ def Moved (w : LB.Iso u.A.L (ρ.P.L.pull u.φ)) {k : ℕ} (t : SecA u.A (PadicAl
     (s : LB.Sec (LPow ρ.P.A ρ.P.L (k : ℤ) (baseOver (Sp S.R)))) : Prop :=
   ThetaPtMove.SecRel u.cart (T := TFK (R := u.V) (PadicAlgCl p)) (T₀ := baseOver (Sp S.R)) (spMap y₀) (base_eq u) w t s
 
+/- English proof (translation)
+The claim follows from `ThetaPtMove.exists_secRel u.cart _ _ hw ρ.P.isLB u.A.isLB s`.
+-/
 theorem exists_moved {w : LB.Iso u.A.L (ρ.P.L.pull u.φ)} (hw : w.IsGen) {k : ℕ}
     (s : LB.Sec (LPow ρ.P.A ρ.P.L (k : ℤ) (baseOver (Sp S.R)))) : ∃ t, Moved u w t s :=
   ThetaPtMove.exists_secRel u.cart _ _ hw ρ.P.isLB u.A.isLB s

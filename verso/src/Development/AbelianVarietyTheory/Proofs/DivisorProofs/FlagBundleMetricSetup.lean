@@ -37,6 +37,19 @@ section Point
 open MeasureTheory GlobalTheory.CxPts GlobalTheory.ChartGlue GlobalTheory.GoodMetric
 open ReciprocityTheory.L2DbarEstimates (V)
 
+/- English proof (translation)
+Take `⟨H, hH⟩` from `SmoothMetric.exists_isMetricOn_top F σ X ι m E`. Use `⟨H, hH, fun y hy => absurd mem_ptsIn_top hy, fun R t ht => ?_⟩` and prove the remaining obligations. Take `⟨⟨y⟩, hsub⟩` from `GlobalTheory.Published.ArDegreeModel.unique_pt X σ hX`. Use `X.smooth_str` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver σ X.isProjOver` as an intermediate fact.
+
+Take `⟨c, hc⟩` from `AlgChart.exists_mem_source (p := X.str) (σ := σ) (D := X.dim) y`. Establish `hV : Subsingleton (V X.dim)` using `by rw [hX]; infer_instance`. Establish `hvol : (volume : Measure (V X.dim)) Set.univ = 1`. Use `(stdOrthonormalBasis ℝ (V X.dim)).volume_parallelepiped` as an intermediate fact. Rewrite `this` using `[Set.eq_univ_of_forall (s := parallelepiped _) fun v => (mem_parallelepiped_iff _ _).2 ⟨0, ⟨le_rfl, zero_le_one⟩, Subsingleton.elim _ _⟩]`. Then use the resulting hypothesis.
+
+Establish `hdet (i j : AlgChart X.str σ X.dim) (z : CxPts X.str σ) : transDet i.e j.e z = 1`. Rewrite using `[transDet, ContinuousLinearMap.det]`. Conclude with `LinearMap.det_eq_one_of_finrank_eq_zero (Module.finrank_zero_of_subsingleton (R := ℂ) (M := V X.dim)) _`. Use `set r := MvPolynomial.eval (fun x : ι × ℕ => if x.2 = 0 then (1 : ℝ) else 0) R`. Establish `hA : MeasurableSet (ptsIn X.str σ ⊤)` using `(isOpen_ptsIn _).measurableSet`.
+
+Establish `hAs : ptsIn X.str σ ⊤ ⊆ c.e.source` using `fun z _ => Subsingleton.elim y z ▸ hc`. Establish `hm (ε : ℤˣ) : chernTopPart E H R ε (ptsIn X.str σ ⊤) = ENNReal.ofReal ((ε : ℤ) * r)`. Rewrite using `[chernTopPart, glueMeas_apply _ _ (fun i j => i.holo_trans j) ?_ c hA hAs, chartMeas_apply_of_subset _ _ hA hAs]`. Simplify using `only [PointChern.chernTop_eq_eval hX]`. Rewrite using `[show c.e '' ptsIn X.str σ ⊤ = Set.univ from Set.eq_univ_of_forall fun v => ⟨y, mem_ptsIn_top, Subsingleton.elim _ _⟩]`.
+
+Simplify using `[hvol, r]`. Introduce `i j z _ _`. Simplify using `[hdet, PointChern.chernTop_eq_eval hX]`. Take `⟨-, h2⟩` from `ht`. Rewrite using `[← h2, Measure.real, Measure.real, hm, hm, ENNReal.toReal_ofReal', ENNReal.toReal_ofReal']`.
+
+Use `push_cast`. Break down `le_total 0 r with h | h` into its components or cases. Rewrite using `[max_eq_left (by linarith), max_eq_right (by linarith)]; ring`. Rewrite using `[max_eq_right (by linarith), max_eq_left (by linarith)]; ring`.
+-/
 theorem chernIntegral_point {F : Type} [Field F] (σ : F →+* ℂ) {ι : Type} [Fintype ι] {m : ι → ℕ} (X : GlobalTheory.ProjVar.Var F)
     (E : GlobalTheory.FlagBundle.Fr (GlobalTheory.FlagBundle.ratOf X) m 0) (hX : X.dim = 0) :
     ∃ H : GlobalTheory.FlagBundle.Mat m X.Fn → CxPts X.str σ → GlobalTheory.FlagBundle.Mat m ℂ,
@@ -81,6 +94,9 @@ end Point
 open GlobalTheory.VB GlobalTheory.FlagBundle GlobalTheory.ProjVar GlobalTheory.FlagCell GlobalTheory.FlagConnect GlobalTheory.Cartier GlobalTheory.ZH GlobalTheory.GoodMetric
 open GlobalTheory.Twist (resM resM_self)
 
+/- English proof (translation)
+Introduce `W h` and use `by have hb := isFrame_pullbackSections π he (h.trans hV) W le_rfl have hN : IsUnit (M.map (resG Y h)).det := by rw [← RingHom.mapMatrix_apply, ← RingHom.map_det] exact hM.map _ have hc : Function.Bijective (M.map (resG Y h)).mulVec := Function.bijective_iff_has_inverse.2 ⟨(M.map …`.
+-/
 theorem isFrame_pullCol {B Y : Scheme.{0}} (π : Y ⟶ B) {E : B.Modules} {U : B.Opens} {m : ℕ} [E.IsQuasicoherent]
     {e : Fin m → Γ(E, U)} (he : IsFrame e) {V : Y.Opens} (hV : V ≤ π ⁻¹ᵁ U) {M : Matrix (Fin m) (Fin m) Γ(Y, V)}
     (hM : IsUnit M.det) : IsFrame (pullCol π e hV M) := fun W h => by
@@ -101,9 +117,15 @@ theorem isFrame_pullCol {B Y : Scheme.{0}} (π : Y ⟶ B) {E : B.Modules} {U : B
 
 variable {F : Type} [Field F]
 
+/- English proof (translation)
+The claim follows from `@IsIso.comp_isIso _ _ _ _ _ _ _ (isIso_proj_ι F 0) (GlobalTheory.ProjSpace.Model.isIso_str_zero (R := F))`.
+-/
 theorem isIso_str_pt : IsIso (proj F 0).str :=
   @IsIso.comp_isIso _ _ _ _ _ _ _ (isIso_proj_ι F 0) (GlobalTheory.ProjSpace.Model.isIso_str_zero (R := F))
 
+/- English proof (translation)
+Establish `e : @inv _ _ _ _ (proj F 0).ι (isIso_proj_ι F 0) ≫ (proj F 0).str = PSpace.str F 0` using `by haveI := isIso_proj_ι F 0`. Conclude with `IsIso.inv_hom_id_assoc (proj F 0).ι (PSpace.str F 0)`. Rewrite using `[toPt, spToPt, Category.assoc, Category.assoc]`. Use `erw [e]`. Rewrite using `[ptF, GlobalTheory.ProjSpace.pt_str, show spMap (RingHom.id F) = 𝟙 _ from Spec.map_id _, Category.comp_id]`.
+-/
 theorem toPt_comp_str (Y : Var F) : toPt Y ≫ (proj F 0).str = Y.str := by
   have e : @inv _ _ _ _ (proj F 0).ι (isIso_proj_ι F 0) ≫ (proj F 0).str = PSpace.str F 0 := by
     haveI := isIso_proj_ι F 0
@@ -112,11 +134,19 @@ theorem toPt_comp_str (Y : Var F) : toPt Y ≫ (proj F 0).str = Y.str := by
   erw [e]
   rw [ptF, GlobalTheory.ProjSpace.pt_str, show spMap (RingHom.id F) = 𝟙 _ from Spec.map_id _, Category.comp_id]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.FlagBundle.exists_isHom_of_generic (ratOf (proj F 0)) (ratOf Y) (toPt Y) (toPt_comp_str Y) (GlobalTheory.FlagQ.eq_genericPoint_of_dim_zero (proj F 0) rfl _)`.
+-/
 theorem exists_isHom_toPt (Y : Var F) :
     ∃ φ : (proj F 0).Fn →ₐ[F] Y.Fn, (ratOf (proj F 0)).IsHom (ratOf Y) φ (toPt Y) :=
   GlobalTheory.FlagBundle.exists_isHom_of_generic (ratOf (proj F 0)) (ratOf Y) (toPt Y) (toPt_comp_str Y)
     (GlobalTheory.FlagQ.eq_genericPoint_of_dim_zero (proj F 0) rfl _)
 
+/- English proof (translation)
+Introduce `z g hg`. Establish `hall (x : (proj F 0).Fn) : x ∈ (ratOf (proj F 0)).O (toPt Y z)`. Establish `e : toPt Y z = genericPoint (ratOf (proj F 0)).Z` using `GlobalTheory.FlagQ.eq_genericPoint_of_dim_zero (proj F 0) rfl _`. Conclude with `((congrArg (ratOf (proj F 0)).O e).trans (ratOf (proj F 0)).O_genericPoint).ge trivial`. Use `⟨(map_ne_zero φ).2 hg.1, h.map_mem_O (hall g), fun x n hx _ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[div_eq_mul_inv, ← map_inv₀]`. Conclude with `mul_mem hx (h.map_mem_O (hall g⁻¹))`.
+-/
 theorem keepsRad_toPt (Y : Var F) (φ : (proj F 0).Fn →ₐ[F] Y.Fn) (h : (ratOf (proj F 0)).IsHom (ratOf Y) φ (toPt Y)) :
     KeepsRad (ratOf (proj F 0)) (ratOf Y) φ (toPt Y) := by
   intro z g hg
@@ -132,6 +162,9 @@ variable {Y : Var F} {ι : Type} [Fintype ι] {r : ι → ℕ} {E : ι → (Sp F
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Establish `e : A * (1 : Mat r (proj F 0).Fn)⁻¹ = A`. Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `A τ * (1 : Matrix _ _ _)⁻¹ = A τ`. Rewrite using `[inv_one, mul_one]`. Conclude with `e ▸ hA`.
+-/
 theorem par_of_mem_triv {z : (proj F 0).X} {A : Mat r (proj F 0).Fn} (hA : A ∈ (triv F r).S z) :
     Par 0 ((ratOf (proj F 0)).O z).toSubring A := by
   have e : A * (1 : Mat r (proj F 0).Fn)⁻¹ = A := by
@@ -149,6 +182,13 @@ def adFr (hE : ∀ a, IsVB (E a) (r a)) (he : ∀ a, IsFrame (e a)) : Fr (ratOf 
     have := GlobalTheory.T.parahoric_action_preserves_adapted_frame F Y ι r E e fl hE he z A _ (hA z hz) h
     rwa [mul_assoc, Mat.inv_mul hd, mul_one] at this
 
+/- English proof (translation)
+Establish `hfl (a : ι) : ∃ fl' : Vert.Flag ((Scheme.Modules.pullback x).obj (E a)) (r a), Spans fl' ⊤ (pullCol x (e a) le_top ((h a).transpose.map (Scheme.ΓSpecIso (.of L)).inv.hom))`. Use `(hE a).isQuasicoherent` as an intermediate fact. Use `exists_flag_spans_of_frame _ _ _ _ (isFrame_pullCol x (he a) _ ?_)` and prove the remaining obligations. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, Matrix.det_transpose]`. Conclude with `(Ne.isUnit (hh a)).map _`.
+
+Use `choose fl' hfl' using hfl`. Take `⟨p, ⟨w, hp⟩, hu⟩` from `hF _ x fl'`. Use `⟨p, ⟨w, ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨A', hA'⟩` from `(adFr (fl := fl) hE he).nonempty (p (IsLocalRing.closedPoint L))`. Conclude with `⟨A', hA', (GlobalTheory.T.adapted_frame_base_change_field_point F Y ι r E e fl hE he L p x w h fl' hfl' A' hA').1 hp⟩`.
+
+Introduce and unpack `q ⟨w', A', hA', hP⟩`. Conclude with `hu q ⟨w', (GlobalTheory.T.adapted_frame_base_change_field_point F Y ι r E e fl hE he L q x w' h fl' hfl' A' hA').2 hP⟩`.
+-/
 theorem existsUnique_pt (hE : ∀ a, IsVB (E a) (r a)) (he : ∀ a, IsFrame (e a)) (hF : IsFlagBundle Y.str E r fl)
     (L : Type) [Field L] (x : Sp L ⟶ Sp F) (h : Mat r L) (hh : ∀ a, (h a).det ≠ 0) :
     ∃! p : Sp L ⟶ Y.X, p ≫ Y.str = x ∧ ∃ A', AdFrame e fl (p (IsLocalRing.closedPoint L)) A' ∧
@@ -167,6 +207,19 @@ theorem existsUnique_pt (hE : ∀ a, IsVB (E a) (r a)) (he : ∀ a, IsFrame (e a
   · rintro q ⟨w', A', hA', hP⟩
     exact hu q ⟨w', (GlobalTheory.T.adapted_frame_base_change_field_point F Y ι r E e fl hE he L q x w' h fl' hfl' A' hA').2 hP⟩
 
+/- English proof (translation)
+Use `⟨fun _ => Nat.zero_le _, hφ, fun z A' hA' A hA => ?_, keepsRad_toPt Y φ hφ, fun L _ x A hA h hh => ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.T.adapted_frame_parahoric_transition F Y ι r E e fl hE he z A' hA').1.mul ((par_of_mem_triv hA).map (φ : (proj F 0).Fn →+* Y.Fn) fun x hx => hφ.map_mem_O hx).inv`. Establish `hA₀` using `par_of_mem_triv hA`. Establish `hc : Par 0 ⊤ (h * A.map ((ratOf (proj F 0)).val x))` using `hh.mul (hA₀.map_of _ (RatModel.valLoc (M := ratOf (proj F 0)) x _ specializes_rfl) fun z => (RatModel.valLoc_eq_val (M := ratOf (proj F 0)) x _ z).symm)`. Use `(existsUnique_congr fun p => ?_).1 (existsUnique_pt hE he hF L (x ≫ (proj F 0).str) _ hc.det_ne)` and prove the remaining obligations.
+
+Use `isIso_str_pt (F := F)` as an intermediate fact. Establish `hx (p : Sp L ⟶ Y.X) (x : Sp L ⟶ (proj F 0).X) : p ≫ Y.str = x ≫ (proj F 0).str ↔ p ≫ toPt Y = x`. Rewrite using `[← toPt_comp_str, ← Category.assoc, cancel_mono]`. Use `(and_congr_left' (hx p x)).trans (and_congr_right fun hp => exists_congr fun A' => and_congr_right fun hA' => ?_)` and prove the remaining obligations. Substitute `hp` using the available equality.
+
+Set `ψ` to `RatModel.valLoc (M := ratOf Y) p (p (IsLocalRing.closedPoint L)) specializes_rfl`. Establish `hψ (x : ((ratOf Y).O (p (IsLocalRing.closedPoint L))).toSubring) : (ratOf Y).val p x = ψ x` using `(RatModel.valLoc_eq_val (M := ratOf Y) p _ x).symm`. Establish `hB : Par 0 ((ratOf Y).O (p (IsLocalRing.closedPoint L))).toSubring (A.map φ)` using `hA₀.map (φ : (proj F 0).Fn →+* Y.Fn) fun x hx => hφ.map_mem_O hx`. Establish `ec : A.map ((ratOf (proj F 0)).val (p ≫ toPt Y)) = (A.map φ).map ((ratOf Y).val p)`. Use function extensionality and compare the values at `τ`.
+
+Use extensionality with `i k`. Conclude with `hφ.val_comp p _ ((hA₀ τ).1 i k)`. Establish `hc'` using `hB.map_of _ ψ hψ`. Establish `einv : (A.map φ)⁻¹.map ((ratOf Y).val p) = ((A.map φ).map ((ratOf Y).val p))⁻¹`. Establish `e` using `hB.inv.map_mul_of hB _ ψ hψ`.
+
+Rewrite `e` using `[Mat.inv_mul hB.det_ne]`. Use function extensionality and compare the values at `τ`. Use `(Matrix.inv_eq_left_inv ?_).symm` and prove the remaining obligations. Use `(congrFun e τ).symm.trans (Matrix.map_one _ ?_ ?_)` and prove the remaining obligations. Conclude with `(hψ 0).trans (map_zero ψ)`.
+
+Conclude with `(hψ 1).trans (map_one ψ)`. Rewrite using `[(GlobalTheory.T.adapted_frame_parahoric_transition F Y ι r E e fl hE he _ A' hA').1.map_mul_of hB.inv _ ψ hψ, einv, Mat.mul_inv_rev, Mat.inv_inv hc'.det_ne, ← ec, ← mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem refines_adFr (hE : ∀ a, IsVB (E a) (r a)) (he : ∀ a, IsFrame (e a)) (hF : IsFlagBundle Y.str E r fl)
     (φ : (proj F 0).Fn →ₐ[F] Y.Fn) (hφ : (ratOf (proj F 0)).IsHom (ratOf Y) φ (toPt Y)) :
     Refines (triv F r) (adFr (fl := fl) hE he) φ (toPt Y) := by
@@ -206,6 +259,13 @@ theorem refines_adFr (hE : ∀ a, IsVB (E a) (r a)) (he : ∀ a, IsFrame (e a)) 
     Mat.inv_inv hc'.det_ne, ← ec, ← mul_assoc]
   rfl
 
+/- English proof (translation)
+Establish `hfr (a : ι) : ∃ e : Fin (r a) → Γ(E a, ⊤), IsFrame e`. Take `⟨U, e, hx, he⟩` from `hE a (IsLocalRing.closedPoint F)`. Take `rfl : U = ⊤` from `eq_top_iff.2 fun y _ => Subsingleton.elim (α := PrimeSpectrum F) (IsLocalRing.closedPoint F) y ▸ hx`. Conclude with `⟨e, he⟩`. Use `choose e he using hfr`.
+
+Take `⟨φ, hφ⟩` from `exists_isHom_toPt Y`. Take `⟨gr, h₁, h₂⟩` from `GlobalTheory.T.exists_root_divisors_of_frame_bundle F Y ι r E e fl hE he (adFr hE he) fun _ _ => Iff.rfl`. Use `⟨gr, h₁, fun Q c hQ => ?_⟩` and prove the remaining obligations. Take `⟨H, hH, hg, hT⟩` from `chernIntegral_point σ (proj F 0) (triv F r) rfl`. Use `hG.flag (refines_adFr hE he hF φ hφ) h₂ hH hg (Q := Q) (R := C c) (by rw [hQ, algHom_C, algebraMap_eq, C_mul'])` as an intermediate fact.
+
+Rewrite using `[hT _ _ this, eval_C]`.
+-/
 theorem exists_interPoly_eq (hG : GoodChernWeil) (σ : F →+* ℂ) (hE : ∀ a, IsVB (E a) (r a))
     (hF : IsFlagBundle Y.str E r fl) : ∃ gr : Root r → Y.Dv,
       (∀ x, toPic (gr x) = GlobalTheory.CechPic.cls ((fl x.1).root x.2) ((fl x.1).isLB_root x.2)) ∧
@@ -230,6 +290,11 @@ namespace GlobalTheory.FibreProj
 
 open GlobalTheory.VB GlobalTheory.ProjVar GlobalTheory.GoodMetric GlobalTheory.FlagBaseChange GlobalTheory.CechPic GlobalTheory.Cartier
 
+/- English proof (translation)
+Introduce `T' h fl''`. Take `⟨u, ⟨wu, hu⟩, huniq⟩` from `hfl T' (h ≫ g) (fun a => (fl'' a).ofIso ((Scheme.Modules.pullbackComp h g).app (E a)))`. Take `⟨v, rfl, hv⟩ : ∃ v : T' ⟶ P, v ≫ f₁ = u ∧ v ≫ f₂ = h` from `⟨hP.lift u h wu, hP.lift_fst _ _ _, hP.lift_snd _ _ _⟩`. Use `⟨v, ⟨hv, fun a i => (sqFlag_iff _ _ _ _ _ (fl a) v h hv wu (fl'' a) i).2 (hu a i)⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `v' ⟨hv', hprop⟩`.
+
+Establish `w : (v' ≫ f₁) ≫ π = h ≫ g` using `by rw [Category.assoc, hP.w, ← Category.assoc, hv']`. Conclude with `hP.hom_ext (huniq _ ⟨w, fun a i => (sqFlag_iff _ _ _ _ hP.w (fl a) v' h hv' w (fl'' a) i).1 (hprop a i)⟩) (hv'.trans hv.symm)`.
+-/
 theorem isFlagBundle_sqFlag {B Y T P : Scheme.{0}} {f₁ : P ⟶ Y} {f₂ : P ⟶ T} {π : Y ⟶ B} {g : T ⟶ B}
     (hP : IsPullback f₁ f₂ π g) {ι : Type} {E : ι → B.Modules} {r : ι → ℕ}
     {fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)} (hfl : IsFlagBundle π E r fl) :
@@ -244,6 +309,9 @@ theorem isFlagBundle_sqFlag {B Y T P : Scheme.{0}} {f₁ : P ⟶ Y} {f₂ : P �
   exact hP.hom_ext (huniq _ ⟨w, fun a i => (sqFlag_iff _ _ _ _ hP.w (fl a) v' h hv' w (fl'' a) i).1 (hprop a i)⟩)
     (hv'.trans hv.symm)
 
+/- English proof (translation)
+The claim follows from `((cls_eq_iff ((fl.isVB_gr i).pullback f₁).isLB_det _).2 (((fl.isVB_gr i).pullback f₁).lbIso_det_of_iso (fl.pullGrIso f₁ i))).symm.trans ((cls_eq_iff _ _).2 ((fl.isVB_gr i).lbIso_det_pullback f₁)).symm`.
+-/
 theorem lbIso_root_sqFlag {B Y T P : Scheme.{0}} {f₁ : P ⟶ Y} {f₂ : P ⟶ T} {π : Y ⟶ B} {g : T ⟶ B}
     (w : f₁ ≫ π = f₂ ≫ g) {E : B.Modules} {n : ℕ} (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) n) (i : Fin n) :
     cls _ ((sqFlag f₁ π f₂ g w fl).isLB_root i) = cls _ (LB.isLB_pull (fl.isLB_root i) f₁) :=
@@ -251,10 +319,18 @@ theorem lbIso_root_sqFlag {B Y T P : Scheme.{0}} {f₁ : P ⟶ Y} {f₂ : P ⟶ 
     (((fl.isVB_gr i).pullback f₁).lbIso_det_of_iso (fl.pullGrIso f₁ i))).symm.trans
       ((cls_eq_iff _ _).2 ((fl.isVB_gr i).lbIso_det_pullback f₁)).symm
 
+/- English proof (translation)
+Use `GlobalTheory.ProjSpace.Model.isIso_str_zero (R := F)` as an intermediate fact. Conclude with `⟨0, inv (PSpace.str F 0), inferInstance, IsIso.inv_hom_id _⟩`.
+-/
 theorem isProjOver_id (F : Type) [Field F] : IsProjOver (𝟙 (Sp F)) := by
   have := GlobalTheory.ProjSpace.Model.isIso_str_zero (R := F)
   exact ⟨0, inv (PSpace.str F 0), inferInstance, IsIso.inv_hom_id _⟩
 
+/- English proof (translation)
+Substitute `hm` using the available equality. Establish `hl : m.toMultiset.toList.length = m.degree`. Rewrite using `[Multiset.length_toList, Finsupp.card_toMultiset]`. Both sides reduce to the same expression. Use `⟨fun a => m.toMultiset.toList.get (a.cast hl.symm), ?_⟩` and prove the remaining obligations.
+
+Use `Eq.trans ?_ ((finCongr hl.symm).prod_comp (fun a => (X (m.toMultiset.toList.get a) : MvPolynomial κ ℝ)) |>.trans (Fin.prod_univ_fun_getElem m.toMultiset.toList fun a => (X a : MvPolynomial κ ℝ))).symm` and prove the remaining obligations. Rewrite using `[Multiset.prod_map_toList, ← prod_X_pow_eq_monomial, Finsupp.toMultiset_map, Finsupp.prod_toMultiset, Finsupp.prod_mapDomain_index (by simp) (by simp [pow_add])]`. Both sides reduce to the same expression.
+-/
 theorem exists_monomial_eq_prod_X {κ : Type} (n : ℕ) (m : κ →₀ ℕ) (hm : m.degree = n) :
     ∃ s : Fin n → κ, (monomial m 1 : MvPolynomial κ ℝ) = ∏ a, X (s a) := by
   subst hm
@@ -268,6 +344,25 @@ theorem exists_monomial_eq_prod_X {κ : Type} (n : ℕ) (m : κ →₀ ℕ) (hm 
     Finsupp.prod_mapDomain_index (by simp) (by simp [pow_add])]
   rfl
 
+/- English proof (translation)
+Introduce `hP k _ B Y _ _ q p d D hB hr hY π w ι _ E r h H fl hF κ _ A Φ Ψ hΦ hΨ P Q c hP' hQ hc`. Establish `hE (a : ι) : IsVB (E a) (r a)` using `(h a).isVB`. Use `hB.isNoetherianRing` as an intermediate fact. Use `isNoetherian_of_isProjOver hB.isProjOver` as an intermediate fact. Establish `hs` using `GlobalTheory.T.flag_bundle_smooth_relative_dimension B Y π ι E r fl hE hF`.
+
+Generalize the expression as in `(∑ a, r a * (r a - 1) / 2) = n at hs`. Choose the witnesses or unpack the hypotheses as in `rfl : D = d + n := by`. Use `hY.dim_eq.symm.trans (GlobalTheory.SmoothDimTotal.topologicalKrullDim_eq_of_smooth_surjective B Y π n d (GlobalTheory.FlagSurj.isFlagBundle_surjective B Y π ι E r fl hE hF) hB.dim_eq)` as an intermediate fact. Establish `h' : D + 1 = d + n + 1` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `hQ` using `[Nat.add_sub_cancel_left]`. Take `⟨σ⟩` from `GlobalTheory.T.arithmetic_variety_embeds_complex k B q d hB`. Set `g : Sp B.functionField ⟶ B` to `B.fromSpecStalk (genericPoint B)`. Establish `hE' (a : ι)` using `(hE a).pullback g`. Establish `h₀` using `IsPullback.of_hasPullback π g`.
+
+Establish `hF₀` using `isFlagBundle_sqFlag h₀ hF`. Use `GlobalTheory.T.flag_bundle_geometrically_connected _ _ _ ι _ r _ hE' hF₀` as an intermediate fact. Establish `: SmoothOfRelativeDimension n (Limits.pullback.snd π g)`. Use `smoothOfRelativeDimension_isStableUnderBaseChange.{0} n` as an intermediate fact. Conclude with `MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension _) h₀ hs`.
+
+Establish `hpr` using `GlobalTheory.FlagProj.isProjOver_of_isFlagBundle _ _ _ _ _ ι _ r _ (isProjOver_id B.functionField) hE' hF₀`. Rewrite `hpr` using `[Category.comp_id]`. Take `⟨V, e, hd, he⟩` from `Var.exists_iso (Limits.pullback.snd π g) n hpr`. Substitute `hd` using the available equality. Establish `hj : IsPullback (e.inv ≫ Limits.pullback.fst π g) V.str π g` using `IsPullback.of_iso_pullback ⟨by rw [Category.assoc, Limits.pullback.condition, ← he, Category.assoc, e.inv_hom_id_assoc]⟩ e.symm rfl (by rw [Iso.symm_hom, ← he, e.inv_hom_id_assoc])`.
+
+Generalize the expression as in `e.inv ≫ Limits.pullback.fst π g = j at hj`. Take `⟨gr, hgr, hI⟩` from `GlobalTheory.FlagOverField.exists_interPoly_eq hP.p16 σ hE' (isFlagBundle_sqFlag hj hF)`. Rewrite using `[← hI Q c hc, Q.as_sum]`. Simplify using `only [map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations.
+
+Take `⟨s, e₀⟩` from `exists_monomial_eq_prod_X V.dim m (by`. Rewrite using `[Finsupp.degree_eq_weight_one]`. Conclude with `hQ (mem_support_iff.1 hm))`. Take `⟨Ψ', hΨ'⟩` from `((hP.p4.arExists k Y p _ hY).2 _ (Sum.elim (fun i => VMetric.grLB (fl (s i).1) (s i).2 ((H (s i).1).pull π w)) fun a => (A a).pull π w)).1`. Establish `e₁` using `GlobalTheory.T.arithmetic_variety_generic_fibre hP.p4 k B Y q p d V.dim hB hr hY π w V.X j V.str hj _ κ A Φ Ψ' hΦ hΨ' P hP'`.
+
+Apply the tactic sequence `rw [VertForm.FormEx.arFun_eq_rename hP.p4 hY hΨ' hΨ (Sum.map s id) (by rintro (a | a) <;> rfl)] at e₁`. Establish `e₂` using `Var.inter_eq_of_toPic_eq (Δ := gr ∘ s) (fun i => LB.isLB_pull ((fl (s i).1).isLB_root (s i).2) j) fun i => (hgr (s i)).trans (lbIso_root_sqFlag hj.w (fl (s i).1) (s i).2)`. Rewrite using `[show monomial m (coeff m Q) = coeff m Q • monomial m 1 by rw [smul_monomial, smul_eq_mul, mul_one], e₀, map_smul, smul_mul_assoc, map_smul, map_smul, smul_eq_mul, smul_eq_mul, mul_assoc, Var.interPoly_prod, e₂]`. Use `congr 1`. Use `Eq.trans (congrArg Ψ ?_) e₁` and prove the remaining obligations.
+
+Simplify using `[rename_rename, Function.comp_def]`.
+-/
 theorem flag_mul_pull : Hypotheses2 → ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d D : ℕ), IsArithVar q d → (∀ b : B, IsRegularLocalRing (B.presheaf.stalk b)) → IsArithVar p D → ∀ (π : Y ⟶ B) (w : π ≫ q = p) (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ) (h : ∀ a, VMetric q (E a) (r a)) (H : ∀ a, (h a).IsCInf) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), IsFlagBundle π E r fl → ∀ (κ : Type) [Fintype κ] (A : κ → HermLB q) (Φ : MvPolynomial κ ℝ →ₗ[ℝ] ℝ) (Ψ : MvPolynomial ((Σ a, Fin (r a)) ⊕ κ) ℝ →ₗ[ℝ] ℝ), IsArFun A d Φ → IsArFun (Sum.elim (fun z : Σ a, Fin (r a) => VMetric.grLB (fl z.1) z.2 ((H z.1).pull π w)) fun a => (A a).pull π w) D Ψ → ∀ (P : MvPolynomial κ ℝ) (Q : MvPolynomial (Σ a, Fin (r a)) ℝ) (c : ℝ), P.IsHomogeneous (d + 1) → Q.IsHomogeneous (D - d) → GlobalTheory.GoodMetric.antisymm Q = c • GlobalTheory.GoodMetric.rootDiscr r → Ψ (rename Sum.inl Q * rename Sum.inr P) = c * Φ P := by
   intro hP k _ B Y _ _ q p d D hB hr hY π w ι _ E r h H fl hF κ _ A Φ Ψ hΦ hΨ P Q c hP' hQ hc
   have hE (a : ι) : IsVB (E a) (r a) := (h a).isVB

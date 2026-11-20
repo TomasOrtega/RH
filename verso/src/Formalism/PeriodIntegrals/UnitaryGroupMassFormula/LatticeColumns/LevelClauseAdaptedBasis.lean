@@ -10,6 +10,25 @@ open scoped Matrix TensorProduct
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (algebraMap (Op X p) (FpX X p))` using `Subtype.val_injective`. Establish `key : ∀ a b : Fin D.R.k, InG X p (algebraMap (Op X p) (FpX X p) ((B : Matrix (Fin D.R.k) (Fin D.R.k) (Op X p)) a b) - if a = b then 1 else 0) ↔ π ((B : Matrix (Fin D.R.k) (Fin D.R.k) (Op X p)) a b) = if a = b then 1 else 0`. Introduce `a b`. Apply the tactic sequence `have e : (algebraMap (Op X p) (FpX X p) ((B : Matrix (Fin D.R.k) (Fin D.R.k) (Op X p)) a b) - if a = b then 1 else 0) = algebraMap (Op X p) (FpX X p) ((B : Matrix (Fin D.R.k) (Fin D.R.k) (Op X p)) a b - if a = b then 1 else 0) := by split_ifs <;> simp`. Rewrite using `[e]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Establish `h1 : (B : Matrix (Fin D.R.k) (Fin D.R.k) (Op X p)) a b - (if a = b then 1 else 0) = y * ((gOf p : ℕ) : Op X p)` using `hinj (by rw [hy, map_mul, map_natCast, mul_comm]; rfl)`. Establish `h2 : (B : Matrix (Fin D.R.k) (Fin D.R.k) (Op X p)) a b - (if a = b then 1 else 0) ∈ RingHom.ker π`. Rewrite using `[hπk, Ideal.mem_span_singleton']`.
+
+Conclude with `⟨y, h1.symm⟩`. Rewrite `h2` using `[RingHom.mem_ker, map_sub, sub_eq_zero]`. Apply the tactic sequence `split_ifs at h2 ⊢ <;> simpa using h2`. Introduce `h`. Establish `h2 : (B : Matrix (Fin D.R.k) (Fin D.R.k) (Op X p)) a b - (if a = b then 1 else 0) ∈ RingHom.ker π`.
+
+Apply the tactic sequence `rw [RingHom.mem_ker, map_sub, sub_eq_zero]; split_ifs at h ⊢ <;> simpa using h`. Rewrite `h2` using `[hπk, Ideal.mem_span_singleton']`. Take `⟨y, hy⟩` from `h2`. Conclude with `⟨y, by rw [← hy, map_mul, map_natCast, mul_comm]; rfl⟩`. Establish `hBint : ∀ a b, ((B : Matrix (Fin D.R.k) (Fin D.R.k) (Op X p)).map (algebraMap (Op X p) (FpX X p))) a b ∈ p.1.adicCompletionIntegers X.B.I.F` using `fun a b => ((B : Matrix (Fin D.R.k) (Fin D.R.k) (Op X p)) a b).2`.
+
+Rewrite using `[show (MassDataIdxRed.glRed π B ∈ Formalism.DoubleCosetMeasures.upUniG (ZMod (gOf p)) D.R.k) ↔ Formalism.DoubleCosetMeasures.IsUpUni ((B : Matrix (Fin D.R.k) (Fin D.R.k) (Op X p)).map π) by`. Rewrite using `[← MassDataIdxRed.glRed_coe]`. Conclude with `Iff.rfl]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `hcol : ∀ i j : Fin D.R.k, i ≤ j → InG X p (algebraMap (Op X p) (FpX X p) ((B : Matrix (Fin D.R.k) (Fin D.R.k) (Op X p)) j i) - if j = i then 1 else 0)` using `fun i j hij => fwd_col (hLB := hLB) (hy1 := hy1) (hW := hW) (x := x) (hBint := hBint) (hYc := hYc) (i := i) (j := j) (hij := hij) (h := h i)`. Use `⟨fun a b hba => ?_, fun a => ?_⟩` and prove the remaining obligations. Use `(key a b).1 (hcol b a hba.le)` as an intermediate fact. Establish `hne : a ≠ b` using `ne_of_gt (show b < a from hba)`. Rewrite `this` using `[if_neg hne]`.
+
+Simplify using `using this`. Use `(key a a).1 (hcol a a le_rfl)` as an intermediate fact. Simplify using `using this`. Introduce and unpack `⟨hU, hD⟩ i`. Use `bwd_col (hLB := hLB) (hε := theta_eps_one (hθ := hθ) (hW := hW) (i := i)) (hW := hW) (x := x) (hYc := hYc) (i := i) (hcol := fun j hij => (key j i).2 ?_)` and prove the remaining obligations.
+
+Break down `hij.lt_or_eq with h | h` into its components or cases. Rewrite using `[if_neg h.ne']`. Simplify using `using hU h`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl]`.
+
+Simplify using `using hD i`.
+-/
 theorem beta_iff (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p : TypX X)
     (θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p) (hθ : IsSplitEquiv X p θ) (Q : GL (Idx D.R.rS D.R.k) (FpX X p))
     (hLB : LatBasis X p θ (reindex₂ X p Q))
@@ -80,6 +99,11 @@ theorem beta_iff (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Wor
     · rw [if_neg h.ne']; simpa using hU h
     · subst h; rw [if_pos rfl]; simpa using hD i
 
+/- English proof (translation)
+Introduce `D X hb hK u _ hL p θ hθ Q l _ hy1 _ hLB hW ψ hform π hπk x B hB`. Rewrite using `[mem_K2Hp_iff_beta X hb hK hL u p x, ← beta_iff X hb u p θ hθ Q hLB hy1 hW x B (hYc_of X u p θ Q ψ hform x B hB) π hπk]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Use `first`. Consider the case `exact Iff.rfl`.
+
+Consider the case `simp only [Amat, Ymat, map_mul, map_inv]`.
+-/
 theorem level_clause_adapted_basis : DClauseAll := by
   intro D X hb hK u _ hL p θ hθ Q l _ hy1 _ hLB hW ψ hform π hπk x B hB
   rw [mem_K2Hp_iff_beta X hb hK hL u p x,

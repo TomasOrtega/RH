@@ -6,6 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite
 namespace LateralTheory.E.LeafShIsoPf
 open LateralTheory.E.LeafDegCut LateralTheory.E.EtaleTopologySheaves
 
+/- English proof (translation)
+Take `⟨S, hS, hP⟩` from `h`. Set `R : Sieve U` to `{ arrows := fun Z c => ∀ (W : B.Etale) (d : W ⟶ Z), Q W (d ≫ c) downward_closed := fun {Z Z'} c hc e W d => by simpa [Category.assoc] using hc W (d ≫ e) }`. Use `⟨R, (EtTop B).transitive hS R ?_, fun U' a ha => by simpa using ha U' (𝟙 _)⟩` and prove the remaining obligations. Introduce `Y f hf`. Take `⟨S', hS', hQ⟩` from `hPQ Y f (hP Y f hf)`.
+
+Use `(EtTop B).superset_covering ?_ hS'` and prove the remaining obligations. Introduce `Z c hc W d`. Simplify `hQ W (d ≫ c) (S'.downward_closed hc d)` using `[Category.assoc]`.
+-/
 theorem Cov.bind {B : Scheme.{0}} {U : B.Etale} {P Q : ∀ U' : B.Etale, (U' ⟶ U) → Prop} (h : Cov U P)
     (hPQ : ∀ U' (a : U' ⟶ U), P U' a → Cov U' (fun U'' b => Q U'' (b ≫ a))) : Cov U Q := by
   obtain ⟨S, hS, hP⟩ := h
@@ -35,6 +40,15 @@ def LeafSheafIso : Prop := ∀ (B : Scheme.{0}) (q : ℕ) (F G : SShv B q) (g : 
     Cov U (fun U' a => ∃ t : (H0 B q).obj ((OU B q).obj U') ⟶ F, (H0 B q).map ((OU B q).map a) ≫ s = t ≫ g)) →
   IsIso g
 
+/- English proof (translation)
+Introduce `B q L K ℓ m hinj hsurj`. Use `set f := (shiftFunctor (DerivedCategory (SShv B q)) m).map ℓ with hf`. Establish `key : IsIso ((H0 B q).map f)`. Apply `hS` to reduce the goal to its premises. Introduce `U t ht`.
+
+Use `Cov.bind (hL B q _ U t) ?_` and prove the remaining obligations. Introduce and unpack `U' a ⟨x, hx⟩`. Establish `h1 : (H0 B q).map (x ≫ f) = 0`. Rewrite using `[Functor.map_comp, ← hx, Category.assoc, ht, comp_zero]`. Establish `h2` using `hinj U' x 0 ((hK B q _ U' _ h1).mono (fun U'' b hb => by simpa using hb))`.
+
+Use `h2.mono (fun U'' b hb => ?_)` and prove the remaining obligations. Rewrite using `[Functor.map_comp, Functor.map_comp, Category.assoc, hx, ← Functor.map_comp, hb, comp_zero, Functor.map_zero]`. Introduce `U s`. Use `Cov.bind (hL B q _ U s) ?_` and prove the remaining obligations. Introduce and unpack `U' a ⟨y, hy⟩`.
+
+Use `(hsurj U' y).mono (fun U'' b ⟨x, hx⟩ => ⟨(H0 B q).map x, ?_⟩)` and prove the remaining obligations. Rewrite using `[Functor.map_comp, Functor.map_comp, Category.assoc, hy, ← Functor.map_comp, hx, Functor.map_comp]`. Establish `e` using `((H0 B q).isoShift m)`. Conclude with `(NatIso.isIso_map_iff e ℓ).1 key`.
+-/
 theorem LeafShIso_of (hL : EtaleDerivedDegreeZeroHomologyLocallyLifts) (hK : EtaleDerivedDegreeZeroHomologyKernelLocallyVanishes) (hS : LeafSheafIso) : LeafShIso := by
   intro B q L K ℓ m hinj hsurj
   set f := (shiftFunctor (DerivedCategory (SShv B q)) m).map ℓ with hf

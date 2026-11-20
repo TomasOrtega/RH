@@ -5,6 +5,17 @@ noncomputable section
 
 namespace GlobalTheory.JSW
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hmn`. Unfold `jtDet`. Rewrite using `[← Matrix.det_submatrix_equiv_self finSumFinEquiv]`. Use `set M := (Matrix.of fun i j : Fin (m + k) => if ((padTo hmn l i : ℤ) - i + j) < 0 then 0 else h (((padTo hmn l i : ℤ) - i + j).toNat)).submatrix finSumFinEquiv finSumFinEquiv with hM`. Establish `h21 : M.toBlocks₂₁ = 0`.
+
+Use extensionality with `i j`. Simplify using `only [hM, Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.submatrix_apply, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Matrix.zero_apply, padTo]`. Establish `hj` using `j.2`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+
+Establish `h22 : M.toBlocks₂₂.det = 1`. Rewrite using `[Matrix.det_of_upperTriangular]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `i _`. Simplify using `[hM, Matrix.toBlocks₂₂, padTo, h0]`.
+
+Introduce `i j hij`. Simplify using `only [hM, Matrix.toBlocks₂₂, Matrix.of_apply, Matrix.submatrix_apply, finSumFinEquiv_apply_right, padTo]`. Establish `: (j : ℕ) < i` using `hij`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+
+Establish `h11 : M.toBlocks₁₁ = Matrix.of fun i j : Fin m => if ((l i : ℤ) - i + j) < 0 then 0 else h (((l i : ℤ) - i + j).toNat)`. Use extensionality with `i j`. Simplify using `[hM, Matrix.toBlocks₁₁, padTo]`. Rewrite using `[← Matrix.fromBlocks_toBlocks M, h21, Matrix.det_fromBlocks_zero₂₁, h22, h11, mul_one]`.
+-/
 theorem jacobi_trudi_det_pad_zeros {A : Type*} [CommRing A] (h : ℕ → A) (h0 : h 0 = 1) {m n : ℕ} (hmn : m ≤ n)
     (l : Fin m → ℕ) : jtDet n h (padTo hmn l) = jtDet m h l := by
   obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le hmn
@@ -36,6 +47,9 @@ theorem jacobi_trudi_det_pad_zeros {A : Type*} [CommRing A] (h : ℕ → A) (h0 
     simp [hM, Matrix.toBlocks₁₁, padTo]
   rw [← Matrix.fromBlocks_toBlocks M, h21, Matrix.det_fromBlocks_zero₂₁, h22, h11, mul_one]
 
+/- English proof (translation)
+Rewrite using `[schur_eq_jtDet]`. Conclude with `jacobi_trudi_det_pad_zeros _ (MvPolynomial.hsymm_zero _ _) hmn l`.
+-/
 theorem schur_padTo_eq_jtDet {m n : ℕ} (hmn : m ≤ n) (l : Fin m → ℕ) :
     schur n (padTo hmn l) = jtDet m (fun k => MvPolynomial.hsymm (Fin n) ℤ k) l := by
   rw [schur_eq_jtDet]

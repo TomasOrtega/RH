@@ -11,6 +11,19 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo IsLocalRing
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `K _ ι _ P s t a W y hP hs hsP hW ht htW hy`. Establish `hWp : W.IsPrime` using `hW.1.1.1`. Establish `hPW : P ≤ W` using `le_sup_left.trans hW.1.1.2`. Use `hP.1` as an intermediate fact. Use `hWp` as an intermediate fact.
+
+Establish `hWm : IsMultiProjPrime W` using `⟨hWp, isMultiHomogIdeal_of_mem_minimalPrimes hP.2.1 hs hW.1, hW.2⟩`. Establish `htnz : Ideal.Quotient.mk P t ∈ nonZeroDivisors (MRing ι ⧸ P)`. Use `mem_nonZeroDivisors_of_ne_zero ?_` and prove the remaining obligations. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `fun h => htW (hPW h)`.
+
+Establish `hyO : y ∈ locRing P W`. Use `Subring.subset_closure ⟨s, t, a, htnz, htW, hs, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocalization.eq_mk'_iff_mul_eq]`. Conclude with `hy`. Use `⟨hyO, ?_⟩` and prove the remaining obligations.
+
+Take `⟨_, _, _, hmax⟩` from `h₂ K ι P W hP hWm hPW`. Establish `: IsLocalHom (algebraMap (locRing P W) (coneLocRing P W hPW))` using `((local_hom_TFAE _).out 2 0).mp hmax.le`. Establish `hu : IsUnit (algebraMap (MRing ι ⧸ P) (coneLocRing P W hPW) (Ideal.Quotient.mk P t))` using `IsLocalization.map_units (coneLocRing P W hPW) (⟨_, ⟨t, htW, rfl⟩⟩ : W.primeCompl.map (Ideal.Quotient.mk P))`. Establish `hs' : algebraMap (MRing ι ⧸ P) (coneLocRing P W hPW) (Ideal.Quotient.mk P s) = algebraMap (locRing P W) (coneLocRing P W hPW) ⟨y, hyO⟩ * algebraMap (MRing ι ⧸ P) (coneLocRing P W hPW) (Ideal.Quotient.mk P t)`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[Subalgebra.coe_mul, locRing.algebraMap_cone_coe, Subalgebra.coe_algebraMap, Subalgebra.coe_algebraMap, hy]`. Establish `hspan : Ideal.span {algebraMap (MRing ι ⧸ P) (coneLocRing P W hPW) (Ideal.Quotient.mk P s)} = (Ideal.span {(⟨y, hyO⟩ : locRing P W)}).map (algebraMap (locRing P W) (coneLocRing P W hPW))`. Rewrite using `[Ideal.map_span, Set.image_singleton, hs', Ideal.span_singleton_mul_right_unit hu]`. Establish `key : ∀ (A B : Type) [CommRing A] [CommRing B] [IsLocalRing A] [IsLocalRing B] [Algebra A B] [IsLocalHom (algebraMap A B)] [Module.Flat A B], (maximalIdeal A).map (algebraMap A B) = maximalIdeal B → ∀ x : A, Module.length B (B ⧸ (Ideal.span {x}).map (algebraMap A B)) = Module.len …`. Introduce `A B _ _ _ _ _ _ _ hm x`.
+
+Establish `hres : Module.length B (B ⧸ maximalIdeal B) = 1` using `Module.length_eq_one_iff.mpr (isSimpleModule_iff_quot_maximal.mpr ⟨_, maximalIdeal.isMaximal _, ⟨LinearEquiv.refl _ _⟩⟩)`. Rewrite using `[(Algebra.TensorProduct.quotIdealMapEquivTensorQuot B (Ideal.span {x})).toLinearEquiv.length_eq, IsLocalRing.length_baseChange, hm, hres, mul_one]`. Unfold `multAt`. Rewrite using `[dif_pos hWp, h₁ (MRing ι) P W s (coneLocRing P W hPW) inferInstance, hspan, locIdeal_eq_span hyO, key (locRing P W) (coneLocRing P W hPW) hmax]`.
+-/
 theorem regularityDehomogenization_holds.proof (h₁ : GroundTheory.Heights₂.Heights.FieldNumbers.LocalizedQuotientLength.Statement.{0, 0})
     (h₂ : regularityLocalFlat_holds.Statement) : regularityDehomogenization_holds.Statement := by
   intro K _ ι _ P s t a W y hP hs hsP hW ht htW hy

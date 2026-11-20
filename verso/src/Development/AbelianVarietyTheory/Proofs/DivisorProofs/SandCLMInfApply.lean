@@ -33,6 +33,9 @@ def sandCLMInf (A B : Matrix (Fin n) (Fin n) (Cinf E)) :
         change (A * (c • Matrix.of x) * B) i j = c • (A * Matrix.of x * B) i j
         rw [Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sandCLMInf_apply (A B : Matrix (Fin n) (Fin n) (Cinf E)) (x : Fin n → Fin n → Cinf E) (i j : Fin n) :
     sandCLMInf A B x i j = (A * Matrix.of x * B) i j := rfl
 
@@ -54,9 +57,15 @@ def secEtaInf {X Z : Type} [NormedAddCommGroup Z] [NormedSpace ℝ Z] (L : Z →
   (τ p.2).comp ((ContinuousLinearMap.id ℝ Z).prod
     ((sandCLMInf ((q⁻¹ : GL (Fin n) (Cinf E)) : Matrix (Fin n) (Fin n) (Cinf E)) (Matrix.of p.1)).comp L))
 
+/- English proof (translation)
+Simplify using `only [jacInf, Matrix.det_mul, Pi.mul_apply, map_mul, mul_pow, Finset.prod_mul_distrib]`.
+-/
 theorem jacInf_mul (x y : Matrix (Fin n) (Fin n) (Cinf E)) : jacInf (x * y) = jacInf x * jacInf y := by
   simp only [jacInf, Matrix.det_mul, Pi.mul_apply, map_mul, mul_pow, Finset.prod_mul_distrib]
 
+/- English proof (translation)
+Use `⟨fun _ _ =>measurable_const, fun X₀ _ γ₀ _ =>⟨measurable_const, fun _ =>measurable_const⟩, fun N => ⟨htInf (1 : GL (Fin n) (Cinf E)) ^ N, 0, fun q =>⟨integrable_const _, ?_⟩⟩⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 example (Z : Type) [NormedAddCommGroup Z] [NormedSpace ℝ Z] :
     IsRapidFamInf (Measure.dirac ()) (fun (_ : GL (Fin n) (Cinf E)) (_ : Unit) =>(1 : ℂ)) (fun _ =>1)
       (fun _ _ =>(0 : Z →L[ℝ] ℝ)) := by

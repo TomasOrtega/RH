@@ -17,6 +17,9 @@ variable (k : Type) [Field k]
 def scaleHom (R : Type) [CommRing R] [Algebra k R] (u : R) : Polynomial k →+* Polynomial R :=
   Polynomial.eval₂RingHom (Polynomial.C.comp (algebraMap k R)) (Polynomial.C u * Polynomial.X)
 
+/- English proof (translation)
+Use extensionality with `a`. Simplify using `[scaleHom, Polynomial.algebraMap_apply]`.
+-/
 theorem scaleHom_algebraMap (R : Type) [CommRing R] [Algebra k R] (u : R) :
     (scaleHom k R u).comp (algebraMap k (Polynomial k)) = algebraMap k (Polynomial R) := by
   ext a
@@ -43,6 +46,9 @@ end GlobalTheory.LineConst
 namespace GlobalTheory.LineConst
 open Polynomial
 
+/- English proof (translation)
+Apply `Polynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[scaleHom]`. Simplify using `[scaleHom]`.
+-/
 theorem scaleHom_comp_map {k : Type} [Field k] {R R' : Type} [CommRing R] [Algebra k R] [CommRing R'] [Algebra k R']
     (φ : R →ₐ[k] R') (u : R) :
     (Polynomial.mapRingHom (φ : R →+* R')).comp (scaleHom k R u) = scaleHom k R' (φ u) := by
@@ -59,6 +65,9 @@ def lineMap {k : Type} [Field k] {R R' : Type} [CommRing R] [Algebra k R] [CommR
     congr 2
     ext a; simp [Polynomial.algebraMap_apply])
 
+/- English proof (translation)
+Use `ext1`. Express the relevant statement in the definitionally equal form `spMap (Polynomial.mapRingHom (φ : R →+* R')) ≫ spMap (scaleHom k R u) ≫ f = spMap (scaleHom k R' (φ u)) ≫ f`. Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, scaleHom_comp_map]`.
+-/
 theorem lineMap_scaled {k : Type} [Field k] (B : Over (Sp k)) (f : Sp (Polynomial k) ⟶ B.left)
     (hf : f ≫ B.hom = spMap (algebraMap k (Polynomial k))) {R R' : Type} [CommRing R] [Algebra k R]
     [CommRing R'] [Algebra k R'] (φ : R →ₐ[k] R') (u : R) :
@@ -68,6 +77,9 @@ theorem lineMap_scaled {k : Type} [Field k] (B : Over (Sp k)) (f : Sp (Polynomia
     spMap (scaleHom k R' (φ u)) ≫ f
   rw [← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, scaleHom_comp_map]
 
+/- English proof (translation)
+Establish `h` using `congrArg CommaMorphism.left (show lineMap φ ≫ (scaled B f hf R u * (scaled B f hf R 1)⁻¹) = scaled B f hf R' (φ u) * (scaled B f hf R' 1)⁻¹ by`. Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv, lineMap_scaled, lineMap_scaled, map_one])`. Conclude with `h`.
+-/
 theorem famMap_base {k : Type} [Field k] (B : Over (Sp k)) [GrpObj B] (f : Sp (Polynomial k) ⟶ B.left)
     (hf : f ≫ B.hom = spMap (algebraMap k (Polynomial k))) {R R' : Type} [CommRing R] [Algebra k R]
     [CommRing R'] [Algebra k R'] (φ : R →ₐ[k] R') (u : R) :
@@ -78,6 +90,9 @@ theorem famMap_base {k : Type} [Field k] (B : Over (Sp k)) [GrpObj B] (f : Sp (P
       rw [MonObj.comp_mul, GrpObj.comp_inv, lineMap_scaled, lineMap_scaled, map_one])
   exact h
 
+/- English proof (translation)
+Unfold `famMap`. Rewrite using `[mul_inv_cancel, Hom.one_def, Over.comp_left]`. Use `congr 1`.
+-/
 theorem famMap_one {k : Type} [Field k] (B : Over (Sp k)) [GrpObj B] (f : Sp (Polynomial k) ⟶ B.left)
     (hf : f ≫ B.hom = spMap (algebraMap k (Polynomial k))) (R : Type) [CommRing R] [Algebra k R] :
     famMap B f hf R 1 = spMap (algebraMap k (Polynomial R)) ≫ (η[B] : 𝟙_ (Over (Sp k)) ⟶ B).left := by
@@ -98,6 +113,11 @@ def linePt {k : Type} [Field k] (a : k) : 𝟙_ (Over (Sp k)) ⟶ lineOver k k :
       ext z; simp
     rw [this, CommRingCat.ofHom_id, Spec.map_id])
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `spMap (Polynomial.evalRingHom a) ≫ spMap (scaleHom k k c) ≫ f = _`. Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 3`. Apply `Polynomial.ringHom_ext` to reduce the goal to its premises. Introduce `z`.
+
+Simplify using `[scaleHom]`. Simplify using `[scaleHom]`.
+-/
 theorem linePt_scaled_left {k : Type} [Field k] (B : Over (Sp k)) (f : Sp (Polynomial k) ⟶ B.left)
     (hf : f ≫ B.hom = spMap (algebraMap k (Polynomial k))) (a c : k) :
     (linePt a ≫ scaled B f hf k c).left = spMap (Polynomial.evalRingHom (c * a)) ≫ f := by
@@ -108,6 +128,17 @@ theorem linePt_scaled_left {k : Type} [Field k] (B : Over (Sp k)) (f : Sp (Polyn
   · intro z; simp [scaleHom]
   · simp [scaleHom]
 
+/- English proof (translation)
+Establish `hpt : ∀ b : k, spMap (Polynomial.evalRingHom b) ≫ spMap (algebraMap k (Polynomial k)) = 𝟙 _`. Introduce `b`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `: (Polynomial.evalRingHom b).comp (algebraMap k (Polynomial k)) = RingHom.id k`. Use extensionality with `z`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this, CommRingCat.ofHom_id, Spec.map_id]`. Establish `hleft : spMap (Polynomial.evalRingHom a) ≫ famMap B f hf k c = spMap (Polynomial.evalRingHom 0) ≫ famMap B f hf k c` using `by conv_lhs => rw [h]`. Rewrite using `[← Category.assoc, hpt, Category.id_comp]`. Establish `hq : ∀ b : k, linePt b ≫ (scaled B f hf k c * (scaled B f hf k 1)⁻¹) = (linePt b ≫ scaled B f hf k c) * (linePt b ≫ scaled B f hf k 1)⁻¹`.
+
+Introduce `b`. Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv]`. Establish `h0 : linePt 0 ≫ scaled B f hf k c = linePt 0 ≫ scaled B f hf k 1` using `by ext1`. Rewrite using `[linePt_scaled_left, linePt_scaled_left, mul_zero, mul_zero]`. Establish `hall : linePt a ≫ (scaled B f hf k c * (scaled B f hf k 1)⁻¹) = linePt 0 ≫ (scaled B f hf k c * (scaled B f hf k 1)⁻¹)` using `by ext1`.
+
+Conclude with `hleft`. Rewrite `hall` using `[hq, hq, h0, mul_inv_cancel]`. Establish `hall' : linePt a ≫ scaled B f hf k c = linePt a ≫ scaled B f hf k 1` using `mul_inv_eq_one.mp hall`. Establish `h2` using `congrArg CommaMorphism.left hall'`. Establish `e1` using `linePt_scaled_left B f hf a c`.
+
+Establish `e2` using `linePt_scaled_left B f hf a 1`. Rewrite `e2` using `[_root_.one_mul]`. Rewrite using `[← e1, ← e2]`. Conclude with `h2`.
+-/
 theorem scale_inv_of_famMap {k : Type} [Field k] (B : Over (Sp k)) [GrpObj B] (f : Sp (Polynomial k) ⟶ B.left)
     (hf : f ≫ B.hom = spMap (algebraMap k (Polynomial k))) (c : k)
     (h : famMap B f hf k c = spMap (algebraMap k (Polynomial k)) ≫ spMap (Polynomial.evalRingHom 0) ≫ famMap B f hf k c)

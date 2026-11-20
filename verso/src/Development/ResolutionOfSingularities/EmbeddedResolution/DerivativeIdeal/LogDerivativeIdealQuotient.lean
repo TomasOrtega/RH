@@ -8,6 +8,13 @@ namespace FunctorialResolution.EmbeddedResolution
 variable (k : Type*) [CommRing k] {S T : Type*} [CommRing S] [CommRing T]
   [Algebra k S] [Algebra k T]
 
+/- English proof (translation)
+Rewrite using `[Ideal.map_le_iff_le_comap, logDerivIdeal_le_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `x hx`. Rewrite using `[Ideal.mem_comap]`. Conclude with `le_derivIdeal k (Ideal.map f.toRingHom J) (Ideal.mem_map_of_mem f.toRingHom hx)`.
+
+Introduce `D hD x hx`. Establish `hD' : ∀ s ∈ RingHom.ker f.toRingHom, D s ∈ RingHom.ker f.toRingHom` using `(mem_tangentDerivations k (RingHom.ker f.toRingHom) D).mp hD`. Establish `hmem : f x ∈ Ideal.map f.toRingHom J` using `Ideal.mem_map_of_mem f.toRingHom hx`. Establish `h2` using `derivation_apply_mem_derivIdeal k (Ideal.map f.toRingHom J) (derivationOfSurjective f hf D hD') hmem`. Rewrite `h2` using `[derivationOfSurjective_apply]`.
+
+Rewrite using `[Ideal.mem_comap]`. Conclude with `h2`.
+-/
 theorem map_logDerivIdeal_ker_le_derivIdeal_map (f : S →ₐ[k] T)
     (hf : Function.Surjective f) (J : Ideal S) :
     Ideal.map f.toRingHom (logDerivIdeal k (RingHom.ker f.toRingHom) J)
@@ -27,6 +34,9 @@ theorem map_logDerivIdeal_ker_le_derivIdeal_map (f : S →ₐ[k] T)
     rw [Ideal.mem_comap]
     exact h2
 
+/- English proof (translation)
+Proceed by induction on `r with`. Consider the case `zero => exact le_rfl`. Consider the case `succ r ih`. Rewrite using `[logDerivIdealIterate_succ, derivIdealIterate_succ]`. Conclude with `(map_logDerivIdeal_ker_le_derivIdeal_map k f hf _).trans (derivIdeal_mono k ih)`.
+-/
 theorem map_logDerivIdealIterate_ker_le_derivIdealIterate_map (f : S →ₐ[k] T)
     (hf : Function.Surjective f) (r : ℕ) (J : Ideal S) :
     Ideal.map f.toRingHom (logDerivIdealIterate k (RingHom.ker f.toRingHom) r J)
@@ -37,6 +47,9 @@ theorem map_logDerivIdealIterate_ker_le_derivIdealIterate_map (f : S →ₐ[k] T
       rw [logDerivIdealIterate_succ, derivIdealIterate_succ]
       exact (map_logDerivIdeal_ker_le_derivIdeal_map k f hf _).trans (derivIdeal_mono k ih)
 
+/- English proof (translation)
+Substitute `hP` using the available equality. Conclude with `map_logDerivIdealIterate_ker_le_derivIdealIterate_map k f hf r J`.
+-/
 theorem map_logDerivIdealIterate_le_derivIdealIterate_map_of_eq_ker (f : S →ₐ[k] T)
     (hf : Function.Surjective f) {P : Ideal S} (hP : P = RingHom.ker f.toRingHom)
     (r : ℕ) (J : Ideal S) :

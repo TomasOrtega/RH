@@ -14,6 +14,11 @@ section Grp
 variable {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R] [Algebra F R]
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
+/- English proof (translation)
+Unfold `hE Formalism.UG.hform`. Simplify using `only [map_sum, map_mul, AlgHom.coe_toRingHom, hσ]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hJ a b]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermForm_base_conj_symm (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) (x y : Fin n → E) :
     σ (hE σ J x y) = hE σ J y x := by
   unfold hE Formalism.UG.hform
@@ -23,6 +28,15 @@ theorem hermForm_base_conj_symm (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (
   rw [hJ a b]
   ring
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨a, rfl⟩` from `hu`. Conclude with `Submodule.subset_span ⟨a, Set.mem_univ _, rfl⟩`. Consider the case `zero`.
+
+Establish `e0 : ratV (F` using `F) R (0 : Fin n → E) = 0 := funext fun i => map_zero _`. Rewrite using `[e0]`. Conclude with `Submodule.zero_mem _`. Consider the case `add u w _ _ hu hw`. Establish `e0 : ratV (F` using `F) R (u + w) = ratV (F := F) R u + ratV (F := F) R w :=`.
+
+Use function extensionality and compare the values at `fun i => map_add _ _ _`. Rewrite using `[e0]`. Conclude with `Submodule.add_mem _ hu hw`. Consider the case `smul c u _ hu`. Establish `e0 : ratV (F` using `F) R (c • u) = inclR (F := F) R c • ratV (F := F) R u :=`.
+
+Use function extensionality and compare the values at `fun i => by first`. Consider the case `(simp only [ratV, Pi.smul_apply, smul_eq_mul]; exact map_mul _ _ _)`. Consider the case `(simp [ratV, map_mul]; rfl)`. Rewrite using `[e0]`. Conclude with `Submodule.smul_mem _ _ hu`.
+-/
 theorem rational_vector_mem_span {r : ℕ} (Y : Fin r → Fin n → E) (x : Fin n → E)
     (hx : x ∈ Submodule.span E (Set.range Y)) : ratV (F := F) R x ∈ spanR (F := F) R Y Set.univ := by
   induction hx using Submodule.span_induction with
@@ -47,9 +61,17 @@ theorem rational_vector_mem_span {r : ℕ} (Y : Fin r → Fin n → E) (x : Fin 
     rw [e0]
     exact Submodule.smul_mem _ _ hu
 
+/- English proof (translation)
+Introduce `i` and use `⟨by rw [hermForm_rational_vectors, (hx i).1, map_zero], by rw [hermForm_rational_vectors, (hx i).2, map_zero]⟩`.
+-/
 theorem rational_vector_in_complement {r : ℕ} (P : Frame E n r) (x : Fin n → E) (hx : ∀ a, hE σ J (P.e a) x = 0 ∧ hE σ J (P.f a) x = 0) :
     WbR R σ J P (ratV (F := F) R x) := fun i => ⟨by rw [hermForm_rational_vectors, (hx i).1, map_zero], by rw [hermForm_rational_vectors, (hx i).2, map_zero]⟩
 
+/- English proof (translation)
+Establish `hfix : h • ratTup (F` using `F) R (tupH P) = ratTup (F := F) R (tupH P) := hh`. Establish `h1 : lin R σ J h (ratTup (F` using `F) R (tupH P) (Fin.castAdd r (Fin.castSucc a))) = ratTup (F := F) R (tupH P) (Fin.castAdd r (Fin.castSucc a)) := congrFun hfix _`. Establish `e1 : ratTup (F` using `F) R (tupH P) (Fin.castAdd r (Fin.castSucc a)) = ratV (F := F) R (P.e a) := by`. Use function extensionality and compare the values at `i`. Simplify using `[ratTup, tupH, F0, ratV]`.
+
+Rewrite `h1` using `[e1]`. Then use the resulting hypothesis.
+-/
 theorem stabilizer_fixes_isotropic_e {r : ℕ} (P : Frame E n r) {h : HA R σ J} (hh : h ∈ Hsub R σ J P) (a : Fin r) :
     lin R σ J h (ratV (F := F) R (P.e a)) = ratV (F := F) R (P.e a) := by
   have hfix : h • ratTup (F := F) R (tupH P) = ratTup (F := F) R (tupH P) := hh
@@ -60,6 +82,11 @@ theorem stabilizer_fixes_isotropic_e {r : ℕ} (P : Frame E n r) {h : HA R σ J}
     simp [ratTup, tupH, F0, ratV]
   rwa [e1] at h1
 
+/- English proof (translation)
+Establish `hfix : h • ratTup (F` using `F) R (tupH P) = ratTup (F := F) R (tupH P) := hh`. Establish `h1 : lin R σ J h (ratTup (F` using `F) R (tupH P) (Fin.natAdd (r + 1) a)) = ratTup (F := F) R (tupH P) (Fin.natAdd (r + 1) a) := congrFun hfix _`. Establish `e1 : ratTup (F` using `F) R (tupH P) (Fin.natAdd (r + 1) a) = ratV (F := F) R (P.f a) := by`. Use function extensionality and compare the values at `i`. Simplify using `[ratTup, tupH, F0, ratV]`.
+
+Rewrite `h1` using `[e1]`. Then use the resulting hypothesis.
+-/
 theorem stabilizer_fixes_isotropic_f {r : ℕ} (P : Frame E n r) {h : HA R σ J} (hh : h ∈ Hsub R σ J P) (a : Fin r) :
     lin R σ J h (ratV (F := F) R (P.f a)) = ratV (F := F) R (P.f a) := by
   have hfix : h • ratTup (F := F) R (tupH P) = ratTup (F := F) R (tupH P) := hh
@@ -70,6 +97,11 @@ theorem stabilizer_fixes_isotropic_f {r : ℕ} (P : Frame E n r) {h : HA R σ J}
     simp [ratTup, tupH, F0, ratV]
   rwa [e1] at h1
 
+/- English proof (translation)
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨a, _, rfl⟩` from `hu`. Conclude with `hY a`. Consider the case `zero => exact map_zero _`.
+
+Consider the case `add u w _ _ hu hw => rw [map_add, hu, hw]`. Consider the case `smul c u _ hu => rw [map_smul, hu]`.
+-/
 theorem stabilizer_fixes_span {r : ℕ} (P : Frame E n r) {h : HA R σ J} (hh : h ∈ Hsub R σ J P) (Y : Fin r → Fin n → E)
     (hY : ∀ a, lin R σ J h (ratV (F := F) R (Y a)) = ratV (F := F) R (Y a))
     (y : Fin n → R ⊗[F] E) (hy : y ∈ spanR (F := F) R Y Set.univ) : lin R σ J h y = y := by
@@ -81,6 +113,9 @@ theorem stabilizer_fixes_span {r : ℕ} (P : Frame E n r) {h : HA R σ J} (hh : 
   | add u w _ _ hu hw => rw [map_add, hu, hw]
   | smul c u _ hu => rw [map_smul, hu]
 
+/- English proof (translation)
+Introduce `i` and use `⟨by rw [← stabilizer_fixes_isotropic_e P hh i, hR_lin]; exact (hw i).1, by rw [← stabilizer_fixes_isotropic_f P hh i, hR_lin]; exact (hw i).2⟩`.
+-/
 theorem stabilizer_preserves_complement {r : ℕ} (P : Frame E n r) {h : HA R σ J} (hh : h ∈ Hsub R σ J P) {w : Fin n → R ⊗[F] E}
     (hw : WbR R σ J P w) : WbR R σ J P (lin R σ J h w) := fun i => ⟨by rw [← stabilizer_fixes_isotropic_e P hh i, hR_lin]; exact (hw i).1,
     by rw [← stabilizer_fixes_isotropic_f P hh i, hR_lin]; exact (hw i).2⟩
@@ -92,11 +127,17 @@ section Lat
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
   {J : Matrix (Fin n) (Fin n) E} (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Unfold `latLoc`. Rewrite using `[Set.image_union, Submodule.span_union]`.
+-/
 theorem localLattice_union (A B : Set (Fin n → E)) :
     latLoc (E := E) v (A ∪ B) = latLoc v A ⊔ latLoc v B := by
   unfold latLoc
   rw [Set.image_union, Submodule.span_union]
 
+/- English proof (translation)
+Unfold `latLoc`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `rational_vector_mem_span (F := F) Y x (hA x hx)`.
+-/
 theorem localLattice_le_span {r : ℕ} (Y : Fin r → Fin n → E) (A : Set (Fin n → E))
     (hA : ∀ x ∈ A, x ∈ Submodule.span E (Set.range Y)) :
     latLoc (E := E) v A ≤ (spanR (F := F) (Fv F v) Y Set.univ).restrictScalars (v.adicCompletionIntegers F) := by
@@ -105,6 +146,9 @@ theorem localLattice_le_span {r : ℕ} (Y : Fin r → Fin n → E) (A : Set (Fin
   rintro _ ⟨x, hx, rfl⟩
   exact rational_vector_mem_span (F := F) Y x (hA x hx)
 
+/- English proof (translation)
+Unfold `latLoc`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `rational_vector_in_complement (σ := σ) (J := J) P x (hA x hx)`.
+-/
 theorem localLattice_le_complement {r : ℕ} (P : Frame E n r) (A : Set (Fin n → E))
     (hA : ∀ w ∈ A, ∀ a, hE σ J (P.e a) w = 0 ∧ hE σ J (P.f a) w = 0) :
     latLoc (E := E) v A ≤ (WbSub (Fv F v) σ J P).restrictScalars (v.adicCompletionIntegers F) := by
@@ -113,6 +157,11 @@ theorem localLattice_le_complement {r : ℕ} (P : Frame E n r) (A : Set (Fin n �
   rintro _ ⟨x, hx, rfl⟩
   exact rational_vector_in_complement (σ := σ) (J := J) P x (hA x hx)
 
+/- English proof (translation)
+Rewrite `hm` using `[localLattice_union, localLattice_union]`. Take `⟨ab, hab, c, hc, rfl⟩` from `Submodule.mem_sup.1 hm`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hab`. Establish `ha'` using `localLattice_le_span v P.e A hA ha`. Establish `hb'` using `localLattice_le_complement (σ := σ) (J := J) v P B hB hb`.
+
+Establish `hc'` using `localLattice_le_span v P.f C hC hc`. Establish `hwb` using `witt_decomposition_unique (P := P) (hee := hee) (hef := hef) (hfe := hfe) (hx := hx) (ha := ha') (hc := hc') (hw := hw) (hb := hb') (h := h.symm)`. Rewrite using `[hwb]`. Conclude with `hb`.
+-/
 theorem witt_decomposition_lattice {r : ℕ} (P : Frame E n r) (hee : ∀ a b, hE σ J (P.e a) (P.e b) = 0)
     (hef : ∀ a b, hE σ J (P.e a) (P.f b) = if a = b then 1 else 0)
     (hfe : ∀ a b, hE σ J (P.f a) (P.e b) = if a = b then 1 else 0)
@@ -133,6 +182,13 @@ theorem witt_decomposition_lattice {r : ℕ} (P : Frame E n r) (hee : ∀ a b, h
   rw [hwb]
   exact hb
 
+/- English proof (translation)
+Unfold `latLoc at hm ⊢`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨y, hy, rfl⟩` from `hu`. Conclude with `hg y hy`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add u w _ _ hu hw => rw [map_add]`. Conclude with `Submodule.add_mem _ hu hw`. Consider the case `smul c u _ hu`.
+
+Rewrite using `[LinearMap.map_smul_of_tower]`. Conclude with `Submodule.smul_mem _ _ hu`.
+-/
 theorem lin_mem_localLattice (g : HA (Fv F v) σ J) (A : Set (Fin n → E))
     (hg : ∀ y ∈ A, lin (Fv F v) σ J g (ratV (F := F) (Fv F v) y) ∈ latLoc (E := E) v A)
     (m : Fin n → Fv F v ⊗[F] E) (hm : m ∈ latLoc (E := E) v A) : lin (Fv F v) σ J g m ∈ latLoc (E := E) v A := by
@@ -151,6 +207,37 @@ end Lat
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `D X w p n h hn hh hK`. Establish `hstd` using `FrameW.frameOf_isStd X w`. Establish `hee` using `hstd.1`. Establish `hef` using `hstd.2.2.1`. Establish `hσ : ∀ x, X.B.I.cm.sig (X.B.I.cm.sig x) = x` using `fun x => by simp [FrameW.sig_apply]`.
+
+Establish `hJ : ∀ i j, X.B.I.cm.sig (X.B.I.J j i) = X.B.I.J i j` using `(cmInst_holds X).2.1`. Establish `hfe : ∀ a b, hE X.B.I.cm.sig X.B.I.J ((frameOf X w).f a) ((frameOf X w).e b) = if a = b then 1 else 0`. Introduce `a b`. Rewrite using `[← hermForm_base_conj_symm hσ hJ, hef b a]`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> simp_all`.
+
+Establish `had` using `LatW.adapted X w`. Use `set M := latLoc (E := X.B.I.E) p.1 (LatW.LX X ∪ LatW.LW X ∪ LatW.LY X) with hM`. Establish `hML : latLoc (E` using `X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) = M := (LatW.latLoc_eq X p.1).symm`. Establish `hK' : ∀ x, x ∈ M ↔ lin _ X.B.I.cm.sig X.B.I.J (n * h) x ∈ M`. Rewrite using `[← hML]`.
+
+Conclude with `fun x => hK x`. Establish `hKi : (n * h)⁻¹ ∈ KvSubT X p` using `(KvSubT X p).inv_mem hK`. Establish `hKi' : ∀ x, x ∈ M ↔ lin _ X.B.I.cm.sig X.B.I.J (n * h)⁻¹ x ∈ M`. Rewrite using `[← hML]`. Conclude with `fun x => hKi x`.
+
+Establish `hgen : ∀ y ∈ LatW.LX X ∪ LatW.LW X ∪ LatW.LY X, ratV (F` using `X.B.I.F) (Fv X.B.I.F p.1) y ∈ M := fun y hy => Submodule.subset_span ⟨y, hy, rfl⟩`. Establish `hWgen : ∀ y ∈ LatW.LW X, ratV (F` using `X.B.I.F) (Fv X.B.I.F p.1) y ∈ M := fun y hy => hgen y (Or.inl (Or.inr hy))`. Establish `hLWM : ∀ u, u ∈ latLoc (E` using `X.B.I.E) p.1 (LatW.LW X) → u ∈ M := by`. Introduce `u hu`. Conclude with `(Submodule.span_mono (Set.image_mono (fun y hy => Or.inl (Or.inr hy)))) hu`.
+
+Establish `hdec : ∀ {m x w' : Fin X.B.I.n → Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E}, m ∈ M → x ∈ spanR (F` using `X.B.I.F) (Fv X.B.I.F p.1) (frameOf X w).e Set.univ → WbR (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X w) w' → m = x + w' → w' ∈ latLoc (E := X.B.I.E) p.1 (LatW.LW X) := fun hm hx hw he => witt_decomposition_lattice p.1 (frameOf X w) hee hef hfe (LatW.LX X) (LatW.LW X) (LatW.L …`. Establish `hh' : h⁻¹ ∈ Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X w)` using `inv_mem hh`. Establish `hn' : n⁻¹ ∈ Nsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X w)` using `inv_mem hn`. Establish `hXY : ∀ g ∈ Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X w), ∀ y ∈ LatW.LX X ∪ LatW.LY X, lin _ X.B.I.cm.sig X.B.I.J g (ratV (F` using `X.B.I.F) (Fv X.B.I.F p.1) y) = ratV (F := X.B.I.F) (Fv X.B.I.F p.1) y := by`. Introduce `g hg y hy`.
+
+Break down `hy with hy | hy` into its components or cases. Conclude with `stabilizer_fixes_span (frameOf X w) hg _ (stabilizer_fixes_isotropic_e (frameOf X w) hg) _ (rational_vector_mem_span _ y (had.1 y hy))`. Conclude with `stabilizer_fixes_span (frameOf X w) hg _ (stabilizer_fixes_isotropic_f (frameOf X w) hg) _ (rational_vector_mem_span _ y (had.2.1 y hy))`. Establish `hW1 : ∀ y ∈ LatW.LW X, lin _ X.B.I.cm.sig X.B.I.J h (ratV (F` using `X.B.I.F) (Fv X.B.I.F p.1) y) ∈ M := by`. Introduce `y hy`.
+
+Use `set u := lin _ X.B.I.cm.sig X.B.I.J h (ratV (F := X.B.I.F) (Fv X.B.I.F p.1) y)`. Establish `hu : WbR _ X.B.I.cm.sig X.B.I.J (frameOf X w) u` using `stabilizer_preserves_complement (frameOf X w) hh (rational_vector_in_complement _ y (had.2.2 y hy))`. Establish `hnu` using `hn.2 u (fun a => (hu a).1)`. Establish `hm : lin _ X.B.I.cm.sig X.B.I.J n u ∈ M`. Use `(hK' _).1 (hWgen y hy)` as an intermediate fact.
+
+Rewrite `this` using `[lin_mul]`. Then use the resulting hypothesis. Conclude with `hLWM u (hdec hm hnu hu (sub_add_cancel _ _).symm)`. Establish `hW2 : ∀ y ∈ LatW.LW X, lin _ X.B.I.cm.sig X.B.I.J h⁻¹ (ratV (F` using `X.B.I.F) (Fv X.B.I.F p.1) y) ∈ M := by`. Introduce `y hy`. Use `set y' := ratV (F := X.B.I.F) (Fv X.B.I.F p.1) y`.
+
+Establish `hy' : WbR _ X.B.I.cm.sig X.B.I.J (frameOf X w) y'` using `rational_vector_in_complement _ y (had.2.2 y hy)`. Establish `hx'` using `hn'.2 y' (fun a => (hy' a).1)`. Use `set x' := lin _ X.B.I.cm.sig X.B.I.J n⁻¹ y' - y'`. Establish `hfix : lin _ X.B.I.cm.sig X.B.I.J h⁻¹ x' = x'` using `stabilizer_fixes_span (frameOf X w) hh' _ (stabilizer_fixes_isotropic_e (frameOf X w) hh') _ hx'`. Establish `hm : x' + lin _ X.B.I.cm.sig X.B.I.J h⁻¹ y' ∈ M`.
+
+Use `(hKi' _).1 (hWgen y hy)` as an intermediate fact. Rewrite `this` using `[mul_inv_rev, lin_mul]`. Establish `e : lin _ X.B.I.cm.sig X.B.I.J n⁻¹ y' = y' + x'` using `by simp [x']`. Rewrite `this` using `[e, map_add, hfix, add_comm]`. Conclude with `this`.
+
+Conclude with `hLWM _ (hdec hm hx' (stabilizer_preserves_complement (frameOf X w) hh' hy') rfl)`. Establish `hall : ∀ g ∈ Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X w), (∀ y ∈ LatW.LW X, lin _ X.B.I.cm.sig X.B.I.J g (ratV (F` using `X.B.I.F) (Fv X.B.I.F p.1) y) ∈ M) → ∀ m ∈ M, lin _ X.B.I.cm.sig X.B.I.J g m ∈ M := by`. Introduce `g hgH hgW m hm`. Use `lin_mem_localLattice p.1 g _ ?_ m hm` and prove the remaining obligations. Introduce `y hy`.
+
+Break down `hy with (hy | hy) | hy` into its components or cases. Rewrite using `[hXY g hgH y (Or.inl hy)]`. Conclude with `hgen y (Or.inl (Or.inl hy))`. Conclude with `hgW y hy`. Rewrite using `[hXY g hgH y (Or.inr hy)]`.
+
+Conclude with `hgen y (Or.inr hy)`. Use `show ∀ x, x ∈ latLoc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) ↔ lin _ X.B.I.cm.sig X.B.I.J h x ∈ latLoc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))`. Rewrite using `[hML]`. Introduce `x`. Prove the components needed by the constructor for the conclusion.
+
+Conclude with `hall h hh hW1 x`. Introduce `hx`. Use `hall h⁻¹ hh' hW2 _ hx` as an intermediate fact. Rewrite `this` using `[lin_inv_lin]`. Then use the resulting hypothesis.
+-/
 theorem leviIntH : LeviIntH := by
   intro D X w p n h hn hh hK
   classical

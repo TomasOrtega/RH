@@ -5,6 +5,15 @@ open Finset
 
 namespace Formalism.ExtensionFiltration
 
+/- English proof (translation)
+Introduce `dA dB muA muN cfl X P Λ Q ε hdA hAB hBε hε hX hP hdeg hmuA hcfl hΛ`. Establish `hdB : 0 < dB` using `lt_of_lt_of_le hdA hAB`. Establish `hQ : 0 ≤ Q` using `le_trans (abs_nonneg _) hcfl`. Establish `hc1 : cfl ≤ Q` using `le_trans (le_abs_self _) hcfl`. Assume the negation of the conclusion as `hcon`.
+
+Rewrite `hcon` using `[not_le]`. Establish `h1 : dB * muN < dB * (cfl - X - P - 2 * ε * Q)` using `mul_lt_mul_of_pos_left hcon hdB`. Establish `h2 : dA * (cfl - X - P) ≤ dA * (muA - P)`. Apply `mul_le_mul_of_nonneg_left _ hdA.le` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h3 : (dB - dA) * (-Q) ≤ (dB - dA) * (-Λ)`. Apply `mul_le_mul_of_nonneg_left _ (by linarith); linarith` to reduce the goal to its premises. Establish `h4 : (dB - dA) * (cfl - X - P) ≤ (dB - dA) * Q`. Apply `mul_le_mul_of_nonneg_left _ (by linarith); linarith` to reduce the goal to its premises. Establish `h5 : (dB - dA) * Q ≤ ε * dB * Q`.
+
+Apply `mul_le_mul_of_nonneg_right _ hQ` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem descent_numeric : DescentNumeric := by
   intro dA dB muA muN cfl X P Λ Q ε hdA hAB hBε hε hX hP hdeg hmuA hcfl hΛ
   have hdB : 0 < dB := lt_of_lt_of_le hdA hAB
@@ -24,6 +33,15 @@ theorem descent_numeric : DescentNumeric := by
     apply mul_le_mul_of_nonneg_right _ hQ; linarith
   nlinarith
 
+/- English proof (translation)
+Introduce `d dg db muN muG mmax G Q δ hd hsum hdb hdb3 hδ hδ12 hdeg hmuN hmm hG`. Establish `hQ : 0 ≤ Q` using `le_trans (abs_nonneg _) hmuN`. Establish `hN1 : -Q ≤ muN` using `by have := neg_abs_le muN; linarith`. Establish `hdg : 3 / 4 * d ≤ dg` using `by nlinarith`. Establish `hdg0 : 0 < dg` using `by linarith`.
+
+Assume the negation of the conclusion as `hcon`. Rewrite `hcon` using `[not_le]`. Establish `h1 : dg * muG < dg * (muN - 12 * δ * Q)` using `mul_lt_mul_of_pos_left hcon hdg0`. Establish `h2 : db * (mmax + G) ≤ db * (2 * Q)`. Apply `mul_le_mul_of_nonneg_left _ hdb` to reduce the goal to its premises.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : db * (-muN) ≤ db * Q`. Apply `mul_le_mul_of_nonneg_left _ hdb` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : db * Q ≤ 3 * δ * d * Q` using `mul_le_mul_of_nonneg_right hdb3 hQ`.
+
+Establish `h5 : 3 / 4 * d * (δ * Q) ≤ dg * (δ * Q)` using `mul_le_mul_of_nonneg_right hdg (mul_nonneg hδ hQ)`. Substitute `hsum` using the available equality. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem bad_part_numeric : BadRowsNumeric := by
   intro d dg db muN muG mmax G Q δ hd hsum hdb hdb3 hδ hδ12 hdeg hmuN hmm hG
   have hQ : 0 ≤ Q := le_trans (abs_nonneg _) hmuN
@@ -43,6 +61,15 @@ theorem bad_part_numeric : BadRowsNumeric := by
   subst hsum
   nlinarith
 
+/- English proof (translation)
+Introduce `Pl _ w c1 ua muU muA muN muG muM mmax dA dB d dg db C1 Cf LL0 L b rd m q' cfl ε δ Q P Λ G P9 h41 hcfl hfl hdA hAB hBε hε hP hdesc hcQ hΛ hεQ hd hsum hdb hdb3 hδ hδ12 hcut hmuN hmm hG h9 hsmall hC1 hCf hq0 hqm hw hua hrd0 hrdL hLL hU hb`. Establish `hLL0 : 0 ≤ LL0` using `le_trans hrd0 hrdL`. Establish `hU0 : 0 ≤ ∑ τ, ua τ` using `by linarith`. Establish `hX : 0 ≤ 2 * (C1 * LL0 * (∑ τ, ua τ) + b / 4)` using `by positivity`. Establish `hN` using `descent_numeric dA dB muA muN (2 * cfl) (2 * (C1 * LL0 * (∑ τ, ua τ) + b / 4)) P Λ Q ε hdA hAB hBε hε hX hP hdesc (by linarith) hcQ hΛ`.
+
+Establish `hGd` using `bad_part_numeric d dg db muN muG mmax G Q δ hd hsum hdb hdb3 hδ hδ12 hcut hmuN hmm hG`. Establish `hW0 : 0 ≤ ∑ τ, w τ` using `Finset.sum_nonneg (fun τ _ => hw τ)`. Establish `hmW : m * (∑ τ, w τ) ≤ 2 * ∑ τ, ua τ`. Establish `: ∑ τ, m * w τ / 2 ≤ ∑ τ, ua τ` using `Finset.sum_le_sum (fun τ _ => hua τ)`. Rewrite `this` using `[← Finset.sum_div, ← Finset.mul_sum]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hqW : q' * (∑ τ, w τ) ≤ 2 * ∑ τ, ua τ` using `le_trans (mul_le_mul_of_nonneg_right hqm hW0) hmW`. Establish `h1 : Real.log rd * (q' * (∑ τ, w τ)) ≤ LL0 * (2 * ∑ τ, ua τ)` using `mul_le_mul hrdL hqW (mul_nonneg hq0 hW0) hLL0`. Establish `h2 : L ≤ LL0 * (∑ τ, ua τ)` using `by nlinarith`. Establish `h3 : Cf * (Real.log rd * (q' * (∑ τ, w τ))) ≤ Cf * (LL0 * (2 * ∑ τ, ua τ))` using `mul_le_mul_of_nonneg_left h1 hCf`.
+
+Establish `h4 : Cf * L ≤ Cf * (LL0 * (∑ τ, ua τ))` using `mul_le_mul_of_nonneg_left h2 hCf`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem slope_lower_chain_holds : SlopeLowerChain := by
   intro Pl _ w c1 ua muU muA muN muG muM mmax dA dB d dg db C1 Cf LL0 L b rd m q' cfl ε δ Q P Λ G P9
     h41 hcfl hfl hdA hAB hBε hε hP hdesc hcQ hΛ hεQ hd hsum hdb hdb3 hδ hδ12 hcut hmuN hmm hG h9 hsmall

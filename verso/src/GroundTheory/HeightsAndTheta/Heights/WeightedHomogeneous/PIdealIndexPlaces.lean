@@ -11,6 +11,9 @@ noncomputable section
 
 namespace IdealIndexPlaces
 
+/- English proof (translation)
+Unfold `genIndex`. Rewrite using `[AddSubgroup.relIndex_comap, AddSubgroup.relIndex_comap, AddSubgroup.map_comap_eq_self hA, AddSubgroup.map_comap_eq_self hB]`.
+-/
 theorem genIndex_comap {G G' : Type*} [AddCommGroup G] [AddCommGroup G'] (f : G' →+ G)
     {A B : AddSubgroup G} (hA : A ≤ f.range) (hB : B ≤ f.range) :
     genIndex (A.comap f) (B.comap f) = genIndex A B := by
@@ -18,9 +21,23 @@ theorem genIndex_comap {G G' : Type*} [AddCommGroup G] [AddCommGroup G'] (f : G'
   rw [AddSubgroup.relIndex_comap, AddSubgroup.relIndex_comap, AddSubgroup.map_comap_eq_self hA,
     AddSubgroup.map_comap_eq_self hB]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem absNorm_eq_index {L : Type*} [Field L] [NumberField L] (A : Ideal (𝓞 L)) :
     A.absNorm = A.toAddSubgroup.index := rfl
 
+/- English proof (translation)
+Establish `hAB : A ⊓ B ≠ ⊥` using `fun h ↦ (mul_ne_zero hA hB) (le_bot_iff.mp (h ▸ Ideal.mul_le_inf))`. Establish `hn : (A ⊓ B).absNorm ≠ 0` using `Ideal.absNorm_eq_zero_iff.not.mpr hAB`. Establish `hAn : A.absNorm ≠ 0` using `Ideal.absNorm_eq_zero_iff.not.mpr hA`. Establish `hBn : B.absNorm ≠ 0` using `Ideal.absNorm_eq_zero_iff.not.mpr hB`. Establish `h1 : B.toAddSubgroup.relIndex A.toAddSubgroup * A.absNorm = (A ⊓ B).absNorm`.
+
+Rewrite using `[← AddSubgroup.inf_relIndex_left A.toAddSubgroup B.toAddSubgroup, absNorm_eq_index, AddSubgroup.relIndex_mul_index inf_le_left, absNorm_eq_index]`. Both sides reduce to the same expression. Establish `h2 : A.toAddSubgroup.relIndex B.toAddSubgroup * B.absNorm = (A ⊓ B).absNorm`. Rewrite using `[← AddSubgroup.inf_relIndex_right A.toAddSubgroup B.toAddSubgroup, absNorm_eq_index, AddSubgroup.relIndex_mul_index inf_le_right, absNorm_eq_index]`. Both sides reduce to the same expression.
+
+Establish `h1' : (B.toAddSubgroup.relIndex A.toAddSubgroup : ℝ) = (A ⊓ B).absNorm / A.absNorm`. Rewrite using `[← h1]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `h2' : (A.toAddSubgroup.relIndex B.toAddSubgroup : ℝ) = (A ⊓ B).absNorm / B.absNorm`.
+
+Rewrite using `[← h2]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Unfold `genIndex`. Rewrite using `[h1', h2']`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem genIndex_ideal {L : Type*} [Field L] [NumberField L] {A B : Ideal (𝓞 L)} (hA : A ≠ ⊥)
     (hB : B ≠ ⊥) : genIndex A.toAddSubgroup B.toAddSubgroup = (B.absNorm : ℝ) / A.absNorm := by
   have hAB : A ⊓ B ≠ ⊥ := fun h ↦ (mul_ne_zero hA hB) (le_bot_iff.mp (h ▸ Ideal.mul_le_inf))
@@ -47,6 +64,59 @@ end IdealIndexPlaces
 
 open IdealIndexPlaces in
 
+/- English proof (translation)
+Introduce `L _ _ ι _ y hy`. Take `⟨⟨b, hb⟩, hint⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors (𝓞 L)) y`. Use `choose z hz using hint`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hbL : (b : L) ≠ 0` using `by rwa [Ne, RingOfIntegers.coe_eq_zero_iff]`.
+
+Establish `hzy : ∀ i, ((z i : 𝓞 L) : L) = (b : L) * y i` using `fun i ↦ by`. Establish `h` using `hz i`. Simplify using `only [Algebra.smul_def] at h`. Conclude with `h`. Take `⟨i0, hi0⟩` from `Function.ne_iff.mp hy`.
+
+Use `replace hi0 : y i0 ≠ 0 := hi0`. Use `set c : 𝓞 L := z i0 with hc`. Establish `hcy : (c : L) = b * y i0` using `hzy i0`. Establish `hcL : (c : L) ≠ 0` using `by rw [hcy]; exact mul_ne_zero hbL hi0`. Establish `hc0 : c ≠ 0` using `fun h ↦ hcL (by rw [h]; rfl)`.
+
+Use `set M := multiplierIdeal y with hMdef`. Set `g : 𝓞 L →ₗ[𝓞 L] L` to `(LinearMap.mulLeft (𝓞 L) ((c : L)⁻¹)).comp (Algebra.linearMap (𝓞 L) L)`. Establish `hg : ∀ t, g t = (c : L)⁻¹ * t` using `fun t ↦ rfl`. Use `set I : Ideal (𝓞 L) := M.comap g with hIdef`. Use `set J : Ideal (𝓞 L) := Ideal.span (Set.range z) with hJdef`.
+
+Establish `hI : ∀ t : 𝓞 L, t ∈ I ↔ ∀ i, t * z i ∈ Ideal.span {c * b}`. Introduce `t`. Express the relevant statement in the definitionally equal form `(∀ i, (c : L)⁻¹ * t * y i ∈ Set.range (algebraMap (𝓞 L) L)) ↔ _`. Use `forall_congr' fun i ↦ ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_span_singleton']`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e, he⟩`. Use `⟨e, RingOfIntegers.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(e : L) * ((c : L) * b) = t * z i`. Express the relevant statement in the definitionally equal form `(e : L) = _ at he`.
+
+Rewrite using `[he, hzy i]`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨e, he⟩`. Use `⟨e, ?_⟩` and prove the remaining obligations. Establish `he' : (e : L) * ((c : L) * b) = t * z i` using `congrArg (fun s : 𝓞 L ↦ (s : L)) he`.
+
+Rewrite `he'` using `[hzy i]`. Establish `h3 : (e : L) * c = t * y i` using `mul_right_cancel₀ hbL (by linear_combination he')`. Express the relevant statement in the definitionally equal form `(e : L) = _`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h3`.
+
+Establish `hIJ : I * J ≤ Ideal.span {c * b}`. Use `Ideal.mul_le.mpr fun t ht s hs ↦ ?_` and prove the remaining obligations. Establish `hle : J ≤ Submodule.comap (LinearMap.mulLeft (𝓞 L) t) (Ideal.span {c * b})` using `Ideal.span_le.mpr (by rintro _ ⟨i, rfl⟩; exact (hI t).mp ht i)`. Conclude with `hle hs`. Establish `hcbJ : Ideal.span {c * b} ≤ J` using `(Ideal.span_singleton_le_iff_mem _).mpr (Ideal.mul_mem_right b J (Ideal.subset_span ⟨i0, rfl⟩))`.
+
+Establish `hcb0 : Ideal.span {c * b} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `mul_ne_zero hc0 hb0`. Establish `hJ0 : J ≠ ⊥` using `fun h ↦ hcb0 (le_bot_iff.mp (h ▸ hcbJ))`. Take `⟨K, hK⟩` from `Ideal.dvd_iff_le.mpr hcbJ`.
+
+Establish `hKI : K ≤ I` using `fun t ht ↦ (hI t).mpr fun i ↦ by`. Rewrite using `[hK, mul_comm t]`. Conclude with `Ideal.mul_mem_mul (Ideal.subset_span (Set.mem_range_self i)) ht`. Establish `hIK : I ≤ K`. Establish `h : J * K ∣ J * I` using `Ideal.dvd_iff_le.mpr (by rw [mul_comm J I, ← hK]; exact hIJ)`.
+
+Conclude with `Ideal.le_of_dvd ((mul_dvd_mul_iff_left hJ0).mp h)`. Establish `hIeq : I = K` using `le_antisymm hIK hKI`. Establish `hI0 : I ≠ ⊥`. Introduce `h`. Rewrite `h` using `[hIeq]`.
+
+Rewrite `hK` using `[h, Ideal.mul_bot]`. Conclude with `hcb0 hK`. Establish `hnorm : (I.absNorm : ℝ) * J.absNorm = |((Algebra.norm ℤ c : ℤ) : ℝ)| * |((Algebra.norm ℤ b : ℤ) : ℝ)|`. Establish `h` using `congrArg (fun A ↦ (Ideal.absNorm A : ℝ)) hK`. Simplify using `only [map_mul, Ideal.absNorm_span_singleton, Int.natAbs_mul, Nat.cast_mul, Nat.cast_natAbs] at h`.
+
+Rewrite using `[hIeq]`. Move the coercions through the operations in `at h`. Take the linear combination `-1 * h`. Use `set C : Ideal (𝓞 L) := (1 : Submodule (𝓞 L) L).comap g with hCdef`. Establish `hC : C = Ideal.span {c}`.
+
+Use extensionality with `t`. Rewrite using `[Ideal.mem_span_singleton']`. Use `show g t ∈ (1 : Submodule (𝓞 L) L) ↔ _`. Rewrite using `[Submodule.mem_one, hg]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨e, he⟩`. Use `⟨e, RingOfIntegers.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(e : L) * c = t`. Express the relevant statement in the definitionally equal form `(e : L) = _ at he`. Rewrite using `[he]`.
+
+Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨e, rfl⟩`. Use `⟨e, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(e : L) = (c : L)⁻¹ * ((e : L) * c)`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hrange1 : M.toAddSubgroup ≤ g.toAddMonoidHom.range`. Introduce `a ha`. Establish `ha' : a ∈ M` using `ha`. Take `⟨e, he⟩` from `ha' i0`. Use `⟨b * e, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(c : L)⁻¹ * ((b : L) * e) = a`. Express the relevant statement in the definitionally equal form `(e : L) = _ at he`. Rewrite using `[he, hcy]`. Clear the denominators using the available nonvanishing facts. Establish `hrange2 : (1 : Submodule (𝓞 L) L).toAddSubgroup ≤ g.toAddMonoidHom.range`.
+
+Introduce `a ha`. Take `⟨e, rfl⟩` from `Submodule.mem_one.mp ha`. Use `⟨c * e, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(c : L)⁻¹ * ((c : L) * e) = e`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hC0 : C ≠ ⊥` using `by rw [hC, Ne, Ideal.span_singleton_eq_bot]; exact hc0`. Establish `hgen : genIndex M.toAddSubgroup (1 : Submodule (𝓞 L) L).toAddSubgroup = |((Algebra.norm ℤ c : ℤ) : ℝ)| / I.absNorm`. Rewrite using `[← genIndex_comap g.toAddMonoidHom hrange1 hrange2]`. Establish `e1 : M.toAddSubgroup.comap g.toAddMonoidHom = I.toAddSubgroup` using `rfl`. Establish `e2 : (1 : Submodule (𝓞 L) L).toAddSubgroup.comap g.toAddMonoidHom = C.toAddSubgroup` using `rfl`.
+
+Rewrite using `[e1, e2, genIndex_ideal hI0 hC0, hC, Ideal.absNorm_span_singleton, Nat.cast_natAbs]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hz0 : z ≠ 0` using `fun h ↦ hc0 (congrFun h i0)`. Establish `hprodz` using `absNorm_mul_finprod_finitePlace_eq_one hz0`.
+
+Establish `hsup : ∀ w : FinitePlace L, ⨆ i, w (z i : L) = w (b : L) * ⨆ i, w (y i)`. Introduce `w`. Repeatedly rewrite using `[hzy, map_mul]`. Conclude with `(Real.mul_iSup_of_nonneg (apply_nonneg w _) _).symm`. Rewrite `hprodz` using `[hsup]`.
+
+Rewrite `hprodz` using `[finprod_mul_distrib (FinitePlace.hasFiniteMulSupport hbL) (hasFiniteMulSupport_iSup_place hy), FinitePlace.prod_eq_inv_abs_norm_int hb0]`. Rewrite using `[hgen]`. Use `set P := ∏ᶠ w : FinitePlace L, ⨆ i, w (y i) with hPdef`. Establish `hbn : |((Algebra.norm ℤ b : ℤ) : ℝ)| ≠ 0`. Rewrite using `[abs_ne_zero, Int.cast_ne_zero, Ne, Algebra.norm_eq_zero_iff]`.
+
+Conclude with `hb0`. Establish `hIn : (I.absNorm : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr (Ideal.absNorm_eq_zero_iff.not.mpr hI0)`. Establish `hJn : (J.absNorm : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr (Ideal.absNorm_eq_zero_iff.not.mpr hJ0)`. Establish `hinv` using `mul_inv_cancel₀ hbn`. Establish `hP : (J.absNorm : ℝ) * P = |((Algebra.norm ℤ b : ℤ) : ℝ)|`.
+
+Take the linear combination `|((Algebra.norm ℤ b : ℤ) : ℝ)| * hprodz - (J.absNorm : ℝ) * P * hinv`. Rewrite using `[div_mul_eq_mul_div, div_eq_one_iff_eq hIn]`. Apply `mul_left_cancel₀ hJn` to reduce the goal to its premises. Take the linear combination `|((Algebra.norm ℤ c : ℤ) : ℝ)| * hP - hnorm`.
+-/
 theorem IdealIndexPlaces.proof : IdealIndexPlaces.Statement := by
   intro L _ _ ι _ y hy
   obtain ⟨⟨b, hb⟩, hint⟩ :=

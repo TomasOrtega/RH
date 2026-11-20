@@ -11,5 +11,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.LatMove.exists_conj_KAd_of_selfDual | exact GlobalTheory.Core.Rk.LatMove.exists_conj_KAd_of_selfDual | (intros; apply GlobalTheory.Core.Rk.LatMove.exists_conj_KAd_of_selfDual <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_finiteAdelic_conj_selfDual_doublingCompact : ∀ (D : D7) (A : HSp D) (L L' : Lat A), IsSelfDualC A L → IsSelfDualC A L' → ∃ k ∈ GfC A, ∀ (a : GL (Fin A.rank) (AE D)) (x : GA D (dblSp A)), x ∈ KAd D.sp.cm.sig (dblSp A).gram L' a ↔ (io A (k, k))⁻¹ * x * io A (k, k) ∈ KAd D.sp.cm.sig (dblSp A).gram L a := by
   first | exact @GlobalTheory.Core.Rk.LatMove.exists_conj_KAd_of_selfDual | exact GlobalTheory.Core.Rk.LatMove.exists_conj_KAd_of_selfDual | (intros; apply GlobalTheory.Core.Rk.LatMove.exists_conj_KAd_of_selfDual <;> assumption)

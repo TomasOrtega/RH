@@ -15,6 +15,23 @@ namespace PositivityTheory.SiegelWeilFormula.Aeis
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `hKc : IsCompact (d.K : Set d.G)` using `isCompact_K_w d.ok.good d.ok.stdK`. Take `⟨hac, hpos⟩` from `height_pos_w d.ok.good d.ok.stdK d.ok.hgt`. Take `⟨C0, hC0⟩` from `GlobalTheory.T.flat_section_growth_bound d.K d.a hKc d.ok.hgt hpos d.χ s₁ f hf`. Take `⟨σ₀, hσ⟩` from `godement_sum_w d.ok.good d.ok.frame d.ok.stdK d.ok.hgt`. Use `⟨σ₀ - (d.n : ℝ) / 2, fun z hz C hC => ?_⟩` and prove the remaining obligations.
+
+Use `set σ' : ℝ := z.re + (d.n : ℝ) / 2 with hσ'`. Establish `h1 : σ₀ < σ'` using `by linarith`. Establish `: IsTopologicalRing (AE F E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Establish `: IsTopologicalGroup d.G` using `Subgroup.instIsTopologicalGroupSubtypeMem _`. Establish `hKC : IsCompact ((d.K : Set d.G) * C)` using `hKc.mul hC`.
+
+Take `⟨M, hM⟩` from `hKC.exists_bound_of_continuousOn hac.continuousOn`. Take `⟨M', hM'⟩` from `hKC.exists_bound_of_continuousOn (hac.inv₀ fun y => (hpos y).ne').continuousOn`. Establish `hr : ∀ x, ∀ c ∈ C, d.a (x * c) ^ σ' ≤ (|M| ^ σ' + (|M'|⁻¹) ^ σ') * d.a x ^ σ'`. Introduce `x c hc`. Take `⟨k, hk, e⟩` from `hgt_mul_right d.ok.hgt x c`.
+
+Establish `hkc : k * c ∈ (d.K : Set d.G) * C` using `Set.mul_mem_mul hk hc`. Establish `r0` using `hpos (k * c)`. Establish `rM : d.a (k * c) ≤ |M|` using `(Real.le_norm_self _).trans ((hM _ hkc).trans (le_abs_self M))`. Establish `hm` using `hM' _ hkc`. Rewrite `hm` using `[Pi.inv_apply, norm_inv, Real.norm_of_nonneg r0.le]`.
+
+Establish `hM'pos : 0 < |M'|` using `lt_of_lt_of_le (inv_pos.2 r0) (hm.trans (le_abs_self _))`. Establish `rm : |M'|⁻¹ ≤ d.a (k * c)` using `(inv_le_comm₀ hM'pos r0).2 (hm.trans (le_abs_self _))`. Establish `hb : d.a (k * c) ^ σ' ≤ |M| ^ σ' + (|M'|⁻¹) ^ σ'`. Break down `le_total 0 σ' with hs | hs` into its components or cases. Conclude with `(Real.rpow_le_rpow r0.le rM hs).trans (le_add_of_nonneg_right (Real.rpow_nonneg (inv_nonneg.2 (abs_nonneg _)) _))`.
+
+Conclude with `(Real.rpow_le_rpow_of_nonpos (inv_pos.2 hM'pos) rm hs).trans (le_add_of_nonneg_left (Real.rpow_nonneg (abs_nonneg _) _))`. Rewrite using `[e, Real.mul_rpow (hpos x).le r0.le, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right hb (Real.rpow_nonneg (hpos x).le _)`. Take `⟨_, _, hsum⟩` from `hσ σ' h1`. Use `⟨fun q => |C0| * (|M| ^ σ' + (|M'|⁻¹) ^ σ') * d.a ((Quotient.out q).1 * 1) ^ σ', (hsum 1).1.mul_left _, fun g hg q => ?_⟩` and prove the remaining obligations.
+
+Establish `hΦ : (fun x => ((d.Ht x : ℝ) : ℂ) ^ (z - s₁) * f x) = flat d.a f s₁ z` using `funext fun y => by`. Simplify using `only [SD.Ht, flat]`. Rewrite using `[Real.coe_toNNReal _ (hpos y).le]`. Rewrite using `[hΦ]`. Use `show ‖flat d.a f s₁ z ((Quotient.out q).1 * g)‖ ≤ _`.
+
+Simplify using `only [mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem majorant_w (d : SD σ) {s₁ : ℂ} {f : d.G → ℂ} (hf : IsSec d.K d.χ s₁ f) :
     ∃ t : ℝ, ∀ z : ℂ, t < z.re → ∀ C : Set d.G, IsCompact C →
       ∃ u : GlobalTheory.Eis.Cosets (par2 σ d.Y) (rat2 σ d.Y) → ℝ, Summable u ∧
@@ -64,6 +81,21 @@ theorem majorant_w (d : SD σ) {s₁ : ℂ} {f : d.G → ℂ} (hf : IsSec d.K d.
         mul_le_mul_of_nonneg_left (hr _ g hg) (abs_nonneg _)
     _ = _ := by ring
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d s₁ f hf s₀`. Take `⟨Ê, ⟨t, hsum, hdiff⟩, hw⟩` from `eisBLW F E σ d.B d.n d.Y d.ok.good d.ok.hn d.χ d.ok.hecke d.m d.ok.res d.b d.K d.a d.ok.frame d.ok.stdK d.ok.hgt s₁ f hf`. Establish `hp : ∀ s₀ : ℂ, ∃ (k : ℕ) (H : ℂ → d.G → ℂ), An.Reg (fun x : d.G => (ht2 x : ℝ)) H s₀ ∧ ∀ᶠ s in 𝓝[≠] s₀, ∀ x, H s x = (s - s₀) ^ k * Ê s x`. Introduce `s₀`. Take `⟨k, U, H, hU, he, hd⟩` from `hw s₀`.
+
+Use `⟨k, fun s => (H s).1, reg_of_weak hU hd, ?_⟩` and prove the remaining obligations. Use `filter_upwards [eventually_nhdsWithin_of_eventually_nhds hU, self_mem_nhdsWithin] with s hs hne`. Conclude with `he s hs hne`. Establish `hr : ∀ s : ℂ, t < s.re → An.Reg (fun x : d.G => (ht2 x : ℝ)) Ê s` using `fun s hs => by`. Take `⟨k, H, a, e⟩` from `hp s`.
+
+Conclude with `a.remove one_le_height_GL2 e ((isOpen_lt continuous_const Complex.continuous_re).mem_nhds hs) hdiff`. Take `⟨U, p, G, hUo, hUr, hs₀, hp0, hreg, heq⟩` from `strip one_le_height_GL2 hp hr s₀`. Take `⟨hGd, hGc⟩` from `diff_cont_of_reg hreg`. Take `⟨t2, hmaj⟩` from `majorant_w d hf`. Establish `hinv` using `eis_left_rat_w d.ok.hgt hf d.ok.hecke t Ê hsum`.
+
+Establish `hfl : ∀ z, (fun y => ((d.Ht y : ℝ) : ℂ) ^ (z - s₁) * f y) = flat d.a f s₁ z` using `fun z => funext fun y => by`. Simplify using `only [SD.Ht, flat]`. Rewrite using `[Real.coe_toNNReal _ (GlobalTheory.CompanionTheory.EisRat.hgt_nonneg d.ok.hgt y)]`. Establish `Heisenberg₂ : ∀ z : ℂ, t < z.re → ∀ g, d.eis f s₁ z g = Ê z g` using `fun z hz g => by`. Simplify using `only [SD.eis]`.
+
+Rewrite using `[hfl z]`. Conclude with `(hsum z hz g).tsum_eq`. Use `⟨U, p, G, max t t2, hUo, hUr, hs₀, hp0, hGd, hGc, ?_, fun z hz => ⟨hmaj z (lt_of_le_of_lt (le_max_right _ _) hz), fun g => ?_⟩⟩` and prove the remaining obligations. Introduce `z hz γ hγ g`. Take `⟨τ, hτ⟩` from `hUr.1`.
+
+Establish `han : ∀ x, AnalyticOnNhd ℂ (G · x) U` using `fun x => (hGd x).analyticOnNhd hUo`. Establish `hz₀ : (((max τ t + 1 : ℝ)) : ℂ) ∈ rightOf (max τ t)` using `by simp`. Use `(han (γ * g)).eqOn_of_preconnected_of_eventuallyEq (han g) hUr.isPreconnected (hτ (rightOf_subset (le_max_left _ _) hz₀)) ?_ hz` and prove the remaining obligations. Use `filter_upwards [(isOpen_rightOf _).mem_nhds hz₀] with w hw`. Establish `hw' : t < w.re` using `lt_of_le_of_lt (le_max_right _ _) hw`.
+
+Rewrite using `[heq w hw', heq w hw', hinv w hw' γ hγ g]`. Establish `hz1 : t < z.re` using `lt_of_le_of_lt (le_max_left _ _) hz`. Rewrite using `[heq z hz1, Heisenberg₂ z hz1]`.
+-/
 theorem eisWk : EisWk := by
   intro F E _ _ _ _ _ σ d s₁ f hf s₀
   obtain ⟨Ê, ⟨t, hsum, hdiff⟩, hw⟩ := eisBLW F E σ d.B d.n d.Y d.ok.good d.ok.hn d.χ d.ok.hecke d.m d.ok.res d.b d.K d.a

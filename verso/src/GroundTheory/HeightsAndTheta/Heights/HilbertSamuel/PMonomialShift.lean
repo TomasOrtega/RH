@@ -14,6 +14,9 @@ namespace MonomialShift
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Establish `hrel` using `hY.2.1.2.2`. Use `⟨fun k => (hrel k).choose, fun k h0 => (hrel k).choose_spec ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ∈ RingHom.ker _`. Rewrite using `[RingHom.mem_ker]`. Simplify using `[mConeMap, h0]`.
+-/
 theorem exists_chart {y : (Σ k, ι k) → Ω} {d : ℕ} (hY : IsArithVar (mCoordIdeal y) d) :
     ∃ c : ∀ k, ι k, ∀ k, y ⟨k, c k⟩ ≠ 0 := by
   have hrel := hY.2.1.2.2
@@ -22,6 +25,19 @@ theorem exists_chart {y : (Σ k, ι k) → Ω} {d : ℕ} (hY : IsArithVar (mCoor
   rw [RingHom.mem_ker]
   simp [mConeMap, h0]
 
+/- English proof (translation)
+Establish `e1 : ‖∏ k, z ⟨k, c k⟩ ^ (j * a k + n)‖ = (∏ k, ‖z ⟨k, c k⟩‖ ^ a k) ^ j * (∏ k, ‖z ⟨k, c k⟩‖) ^ n`. Rewrite using `[norm_prod, ← Finset.prod_pow, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_pow]`. Expand and normalize the polynomial expressions, which then agree.
+
+Set `μ : (Σ k, ι k) →₀ ℕ` to `Finsupp.equivFunOnFinite.symm fun p => if p.2 = c p.1 then a p.1 else 0`. Establish `hμ : ∀ k, ∑ i, μ ⟨k, i⟩ = a k`. Introduce `k`. Simplify using `[μ]`. Establish `hmon : ∏ p, z p ^ μ p = ∏ k, z ⟨k, c k⟩ ^ a k`.
+
+Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[μ, pow_ite]`. Establish `hA : ∏ k, ‖z ⟨k, c k⟩‖ ^ a k ≤ A.h z`. Use `hM z hz μ hμ` as an intermediate fact.
+
+Rewrite `this` using `[hmon, norm_prod]`. Simplify `this` using `[norm_pow]`. Establish `hH : ∏ k, ‖z ⟨k, c k⟩‖ ≤ (fsH ι).h z`. Establish `hfs : (fsH ι).h z = ∏ k, Real.sqrt (∑ i, ‖z ⟨k, i⟩‖ ^ 2)`. Rewrite using `[fsH, GroundTheory.Heights₂.Heights.Inter.ofMetrics_fs_h]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hfs]`. Use `Finset.prod_le_prod (fun k _ => norm_nonneg _) fun k _ => Real.le_sqrt_of_sq_le ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun i => ‖z ⟨k, i⟩‖ ^ 2) (fun i _ => sq_nonneg _) (Finset.mem_univ (c k))`. Rewrite using `[e1]`.
+
+Use `gcongr`. Conclude with `pow_nonneg (A.pos z hz.1).le _`.
+-/
 theorem norm_prod_le {P : Ideal (MRing ι)} {A : HermLine ι} {a : K → ℕ} (hM : MonomialsBounded P A a)
     (c : ∀ k, ι k) (j n : ℕ) {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts P) :
     ‖∏ k, z ⟨k, c k⟩ ^ (j * a k + n)‖ ≤ A.h z ^ j * (fsH ι).h z ^ n := by
@@ -56,6 +72,11 @@ theorem norm_prod_le {P : Ideal (MRing ι)} {A : HermLine ι} {a : K → ℕ} (h
   gcongr
   exact pow_nonneg (A.pos z hz.1).le _
 
+/- English proof (translation)
+Establish `hH : IsSmoothHerm (fsH ι)` using `GroundTheory.Heights₂.Heights.Inter.isSmoothHerm_ofMetrics_fs 1`. Establish `hfun : (HermLine.zcomb A (fsH ι) q 1).h = fun z => A.h z ^ q * (fsH ι).h z`. Use function extensionality and compare the values at `z`. Express the relevant statement in the definitionally equal form `A.h z ^ ((q : ℕ) : ℤ) * (fsH ι).h z ^ (1 : ℤ) = _`. Rewrite using `[zpow_natCast, zpow_one]`.
+
+Unfold `IsSmoothHerm at hA hH ⊢`. Rewrite using `[hfun]`. Conclude with `(hA.pow q).mul hH`.
+-/
 theorem isSmoothHerm_zcomb_fsH {A : HermLine ι} (hA : IsSmoothHerm A) (q : ℕ) :
     IsSmoothHerm (HermLine.zcomb A (fsH ι) q 1) := by
   have hH : IsSmoothHerm (fsH ι) := GroundTheory.Heights₂.Heights.Inter.isSmoothHerm_ofMetrics_fs 1
@@ -67,6 +88,31 @@ theorem isSmoothHerm_zcomb_fsH {A : HermLine ι} (hA : IsSmoothHerm A) (q : ℕ)
   rw [hfun]
   exact (hA.pow q).mul hH
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ y D a A P0 q τ n hY hBir ha hP0 hsemi hM hq hτ`. Take `⟨c, hc⟩` from `exists_chart hY`. Take `⟨e, he⟩ : ∃ e : K → ℕ, e = fun k => (q * n - τ) * a k + n` from `⟨_, rfl⟩`. Establish `hBa : ∀ k, (HermLine.zcomb A (fsH ι) q 1).a k = (q : ℤ) * a k + 1`. Introduce `k`.
+
+Simplify using `[HermLine.zcomb, fsH, HermLine.ofMetrics, ha]`. Establish `hdeg : ∀ k, (n : ℤ) * (HermLine.zcomb A (fsH ι) q 1).a k = τ * A.a k + e k`. Introduce `k`. Rewrite using `[hBa, he]`. Simplify using `only [ha]`.
+
+Move the coercions through the operations in `[Nat.cast_sub hτ]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨mv, hmv⟩ : ∃ mv : Ω, mv = ∏ k, y ⟨k, c k⟩ ^ e k` from `⟨_, rfl⟩`. Establish `hmv0 : mv ≠ 0`. Rewrite using `[hmv]`.
+
+Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc k)`. Establish `hmvx : aeval y (xpow c e) = mv`. Simplify using `[hmv, xpow]`. Establish `hlat : ∀ s ∈ chartLatNm y A.a τ, mv * s ∈ chartLatNm y (HermLine.zcomb A (fsH ι) q 1).a n`. Introduce `s hs c' hc'`.
+
+Establish `h1` using `hs c' hc'`. Establish `h2 : ∏ k, (y ⟨k, c k⟩ / y ⟨k, c' k⟩) ^ e k ∈ integralClosure (chartRingZ y c') Ω`. Establish `hmem : ∏ k, (y ⟨k, c k⟩ / y ⟨k, c' k⟩) ^ e k ∈ chartRingZ y c'` using `Subalgebra.prod_mem _ fun k _ => pow_mem (Algebra.subset_adjoin (Set.mem_range_self (f := fun p : Σ k, ι k => y p / y ⟨p.1, c' p.1⟩) ⟨k, c k⟩)) _`. Conclude with `(integralClosure (chartRingZ y c') Ω).algebraMap_mem ⟨_, hmem⟩`. Establish `hsplit : ∀ k, y ⟨k, c' k⟩ ^ (-((n : ℤ) * (HermLine.zcomb A (fsH ι) q 1).a k)) = y ⟨k, c' k⟩ ^ (-((τ : ℤ) * A.a k)) * (y ⟨k, c' k⟩ ^ e k)⁻¹`.
+
+Introduce `k`. Rewrite using `[hdeg k, neg_add, zpow_add₀ (hc' k), zpow_neg (y _) ((e k : ℕ) : ℤ), zpow_natCast]`. Establish `key : mv * s * ∏ k, y ⟨k, c' k⟩ ^ (-((n : ℤ) * (HermLine.zcomb A (fsH ι) q 1).a k)) = (s * ∏ k, y ⟨k, c' k⟩ ^ (-((τ : ℤ) * A.a k))) * ∏ k, (y ⟨k, c k⟩ / y ⟨k, c' k⟩) ^ e k`. Simplify using `only [hsplit, div_eq_mul_inv, mul_pow, inv_pow, Finset.prod_mul_distrib, Finset.prod_inv_distrib, hmv]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[key]`. Conclude with `mul_mem h1 h2`. Establish `hsmall : ∀ s, IsSmallH (mCoordIdeal y) y A τ s → IsSmallH (mCoordIdeal y) y (HermLine.zcomb A (fsH ι) q 1) n (mv * s)`. Introduce `s hs dg dh g h z hg hh hd hgh hz`. Establish `hmh` using `ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul (isMultiHomog_xpow c e) hh`.
+
+Establish `hb` using `hs dg (e + dh) g (xpow c e * h) z hg hmh (fun k => by have := hd k; have := hdeg k; simp only [Pi.add_apply]; push_cast; linarith) (by rw [hgh, map_mul, hmvx]; ring) hz`. Establish `hApos : 0 < A.h z` using `A.pos z hz.1`. Establish `hxz : eval z (map (Int.castRingHom ℂ) (xpow c e)) = ∏ k, z ⟨k, c k⟩ ^ ((q * n - τ) * a k + n)`. Simplify using `[xpow, he]`. Establish `hBh : (HermLine.zcomb A (fsH ι) q 1).h z = A.h z ^ ((q : ℕ) : ℤ) * (fsH ι).h z ^ (1 : ℤ)` using `rfl`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, eval_mul, norm_mul, hxz]`. Use `_ ≤ (A.h z ^ (q * n - τ) * (fsH ι).h z ^ n) * ‖eval z (map (Int.castRingHom ℂ) h)‖ * A.h z ^ τ := by gcongr`. Conclude with `norm_prod_le hM c (q * n - τ) n hz`. Use `_ = ‖eval z (map (Int.castRingHom ℂ) h)‖ * (HermLine.zcomb A (fsH ι) q 1).h z ^ n := by`.
+
+Rewrite using `[hBh, zpow_natCast, zpow_one, mul_pow, ← pow_mul, show A.h z ^ (q * n) = A.h z ^ (q * n - τ) * A.h z ^ τ by rw [← pow_add, Nat.sub_add_cancel hτ]]`. Expand and normalize the polynomial expressions, which then agree. Set `f : {s : chartLatNm y A.a τ // IsSmallH (mCoordIdeal y) y A τ (s : Ω)} → {t : chartLatNm y (HermLine.zcomb A (fsH ι) q 1).a n // IsSmallH (mCoordIdeal y) y (HermLine.zcomb A (fsH ι) q 1) n (t : Ω)}` to `fun s => ⟨⟨mv * s.1, hlat s.1 s.1.2⟩, hsmall s.1 s.2⟩`. Establish `hinj : Function.Injective f`. Introduce `s t hst`.
+
+Establish `h` using `congrArg (fun u => ((u.1 : chartLatNm y (HermLine.zcomb A (fsH ι) q 1).a n) : Ω)) hst`. Conclude with `Subtype.ext (Subtype.ext (mul_left_cancel₀ hmv0 h))`. Establish `hfin` using `(hPack K ι Ω y D (HermLine.zcomb A (fsH ι) q 1) (chartLatNm y (HermLine.zcomb A (fsH ι) q 1).a) hY hBir (isSmoothHerm_zcomb_fsH hsemi.1 q) (fun _ => le_rfl)).1 n`. Establish `: Finite {t : chartLatNm y (HermLine.zcomb A (fsH ι) q 1).a n // IsSmallH (mCoordIdeal y) y (HermLine.zcomb A (fsH ι) q 1) n (t : Ω)}` using `hfin.to_subtype`. Establish `hcard` using `Nat.card_le_card_of_injective f hinj`.
+
+Unfold `smallSectionCount`. Break down `Nat.eq_zero_or_pos (Nat.card {s : chartLatNm y A.a τ // IsSmallH (mCoordIdeal y) y A τ (s : Ω)}) with h0 | hpos` into its components or cases. Rewrite using `[h0, Nat.cast_zero, Real.log_zero]`. Conclude with `Real.log_natCast_nonneg _`. Conclude with `Real.log_le_log (by exact_mod_cast hpos) (by exact_mod_cast hcard)`.
+-/
 theorem proof (hPack : PackingStatement) : MonomialShift.Statement := by
   intro K _ ι _ Ω _ y D a A P0 q τ n hY hBir ha hP0 hsemi hM hq hτ
   classical

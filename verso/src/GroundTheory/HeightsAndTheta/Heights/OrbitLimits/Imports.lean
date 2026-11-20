@@ -34,6 +34,11 @@ namespace GroundTheory.Heights₂.Heights.Targets
 open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4
 open GroundTheory.Heights₂.Heights.Inter
 
+/- English proof (translation)
+Establish `hRank : pointFormRank_holds.Statement` using `pointFormRank_holds.proof RatioAlgDep.proof`. Establish `hP0 : PushforwardProjectivePoint.Statement` using `PushforwardProjectivePoint.proof hIm (pointForm_holds.proof hRank pointFormEuler_holds.proof) (ProjectivePointVertical.proof hGeo hEU hPC)`. Establish `hCyc : ArithmeticIntersectionCycle.Statement` using `ArithmeticIntersectionCycle.proof (ArithmeticIntersectionHorizontal.proof divSuppArith hIm hP0) (ArithmeticIntersectionVertical.proof hGeo hEU hPC hPD (VerticalDegree.proof hFDZ ChartRankAdjoin.proof hVDA)) hDivPush GenericPointExists.proof hEU`. Establish `hAI3 : PushforwardArithIntersection.Statement` using `PushforwardArithIntersection.proof arithVarZero (RatR.proof hInt) hCyc (ArithmeticIntersectionIntegral.proof hInt (IntersectionWithSection.proof hRes hPullPush hPullCount pullbackDensity_holds.proof))`. Establish `hStep : PFStep.Statement` using `PFStep.proof (PFSecRed.proof hMult hFD) (PFVert.proof hGeo hEU hCMF) (PFIntZero.proof hRank) PFHoriz.proof (PFFibreSum.proof hFD PFFibreBij.proof hFM) hIm hCM`.
+
+Conclude with `PushforwardProjLineFlag.proof hAI3 hStep`.
+-/
 theorem PF.of_found
     (hInt : PtsIntegrableStatement) (hIm : ImageArithStatement) (hFD : FibreDimStatement)
     (hCM : ContractMixedStatement) (hCMF : ContractMixedFieldStatement)

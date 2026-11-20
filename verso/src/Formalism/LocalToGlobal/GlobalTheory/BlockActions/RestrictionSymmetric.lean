@@ -8,6 +8,11 @@ open Formalism.BasicNotions Formalism.MainNotions.product_first_zeroth_parts For
 
 variable {D : D7} {u : D.what₂.Word} {Ch : ℕ → Type} {chOf : ∀ i, (D.mem u).C.cls i → Ch i}
 
+/- English proof (translation)
+Establish `hS : ∀ τ, Formalism.L2.Col.Br.SameShift (lamTr D u τ) (sgTr D u τ)` using `fun τ => Formalism.L2.Ker.sameShiftTr D u τ (interlaceTr D u (sg_interlace Tf.valP) τ)`. Rewrite using `[blkRow_eq_blk, blkRow_eq_blk]`. Unfold `Formalism.L2.Ker.brTen`. Rewrite using `[Formalism.L2.Ker.ta_blk_comp, Formalism.L2.Ker.ta_blk_comp]`. Establish `e : (fun τ => ⇑(Formalism.L2.Ker.brOne ℂ (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ) ∘ₗ (Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `D.R.N D.R.m) ((Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ _ _ (Nm_succ D.R) (G τ) : GL (Fin (D.R.N D.R.m)) ℂ) : Matrix (Fin (D.R.N D.R.m)) (Fin (D.R.N D.R.m)) ℂ).transpose).toLinearMap)) = fun τ => ⇑((Formalism.GradedWeylDivisibility.rowAct ℂ (n := D.R.N D.R.m - 1) (G τ : M …`.
+
+Use function extensionality and compare the values at `τ f`. Simplify using `only [LinearMap.comp_apply, AlgHom.toLinearMap_apply]`. Conclude with `brOne_rowAct (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ) (hS τ) (G τ) f`. Rewrite using `[e]`.
+-/
 theorem brTen_blkRowS (Tf : FormsTiedSym D u Ch chOf) (G : D.what₂.Tau → GL (Fin (D.R.N D.R.m - 1)) ℂ)
     (P : MvPolynomial (D.what₂.Tau × Fin (D.R.N D.R.m) × Fin (D.R.N D.R.m)) ℂ) :
     Formalism.L2.Ker.brTen D u (blkRow (fun τ => ((Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ _ _ (Nm_succ D.R) (G τ) : GL (Fin (D.R.N D.R.m)) ℂ) :
@@ -28,6 +33,13 @@ theorem brTen_blkRowS (Tf : FormsTiedSym D u Ch chOf) (G : D.what₂.Tau → GL 
     exact brOne_rowAct (Nm_succ D.R).symm (lamTr D u τ) (sgTr D u τ) (hS τ) (G τ) f
   rw [e]
 
+/- English proof (translation)
+Establish `hS : Formalism.L2.Col.Br.SameShift (lamTr D u τ) (sgTr D u τ)` using `Formalism.L2.Ker.sameShiftTr D u τ (interlaceTr D u (sg_interlace Tf.valP) τ)`. Establish `hk` using `D.R.m_add_three_le_k`. Establish `hN : D.R.N D.R.m = D.R.k + D.R.m * (D.R.t + 1)` using `rfl`. Establish `h1 : 0 < D.R.N D.R.m` using `by omega`. Establish `h2 : 0 < D.R.N D.R.m - 1` using `by omega`.
+
+Establish `hS' : (sgTr D u τ).detShift = (lamTr D u τ).detShift` using `hS`. Unfold `lamTr sgTr at hS'`. Rewrite `hS'` using `[detShift_wSh _ _ h1, detShift_wSh _ _ h2]`. Simplify using `only [shiftOf, lamT, sgT]`. Rewrite using `[detShift_shW _ _ h1, detShift_shW _ _ h2]`.
+
+Unfold `cTw at hS'`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem shift_lamT_sgTS (Tf : FormsTiedSym D u Ch chOf) (τ : D.what₂.Tau) :
     shiftOf (lamT u D.R.m) τ = shiftOf (sgT u) τ := by
   have hS : Formalism.L2.Col.Br.SameShift (lamTr D u τ) (sgTr D u τ) :=
@@ -44,6 +56,21 @@ theorem shift_lamT_sgTS (Tf : FormsTiedSym D u Ch chOf) (τ : D.what₂.Tau) :
   unfold cTw at hS'
   omega
 
+/- English proof (translation)
+Introduce `w φ hφ c`. Take `⟨P, hP, hv⟩` from `val_repS Tf φ hφ c`. Use `⟨P, hP, hv, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hBc` using `hB w c`. Establish `hU1` using `atInf_inv_isUnit _ hBc`.
+
+Establish `hbZ` using `bZ_isUnitS Tf`. Establish `hbZg` using `bZg_isUnitS Tf (B w c) hBc`. Establish `hU2` using `atInf_inv_isUnit _ hbZg`. Establish `hL : coPTS Tf B w z c = (∏ τ, ((1 : D.what₂.Tau → Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) ℂ) τ * (atInf (embT D) (B w c)⁻¹ τ)⁻¹).det ^ shiftOf (sgT u) τ) • blkRow (fun τ => (1 : D.what₂.Tau → Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) ℂ) τ * (atInf (emb …`. Establish `e1 : coPTS Tf B w z c = fnInv (gramC (gramP D) (embT D)) (shiftOf (sgT u)) (atInf (embT D) (B w c)⁻¹) (Tf.valP.eW z c)`.
+
+Simplify using `only [coPTS, LinearMap.pi_apply, LinearMap.coe_comp, Function.comp_apply, LinearMap.coe_proj, Function.eval, LinearEquiv.coe_coe]`. Rewrite using `[e1, hz, fnOf_change _ _ (atInf (embT D) (B w c)⁻¹) 1 hU1, fnInv_fnOf _ _ _ hU1]`. Establish `hM : trEvS Tf c (φ ((D.fm u).til c)) = fnOf _ (shiftOf (lamT u D.R.m)) (mZ u Tf.til.z0) P`. Use function extensionality and compare the values at `y`. Rewrite using `[trEv_eqS, hv, Equiv.apply_symm_apply]`.
+
+Establish `hR : coMTS Tf B w c (φ ((D.fm u).til c)) = (∏ τ, (atInf (embT D) (bZ u Tf.til.z0)⁻¹ τ * (atInf (embT D) (bZg u Tf.til.z0 (B w c))⁻¹ τ)⁻¹).det ^ shiftOf (lamT u D.R.m) τ) • blkRow (fun τ => atInf (embT D) (bZ u Tf.til.z0)⁻¹ τ * (atInf (embT D) (bZg u Tf.til.z0 (B w c))⁻¹ τ)⁻¹) P`. Simplify using `only [coMTS, LinearMap.coe_comp, Function.comp_apply]`. Rewrite using `[hM, mZ, fnOf_change _ _ (atInf (embT D) (bZg u Tf.til.z0 (B w c))⁻¹) (atInf (embT D) (bZ u Tf.til.z0)⁻¹) hU2, fnInv_fnOf _ _ _ hU2]`. Establish `hKm : (fun τ => atInf (embT D) (bZ u Tf.til.z0)⁻¹ τ * (atInf (embT D) (bZg u Tf.til.z0 (B w c))⁻¹ τ)⁻¹) = fun τ => ((Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ _ _ (Nm_succ D.R) (glT (B w c) hBc τ) : GL (Fin (D.R.N D.R.m)) ℂ) : Matrix _ _ ℂ).transpose`. Use function extensionality and compare the values at `τ`.
+
+Rewrite using `[embGL_glT, atInf_inv_inv _ hbZg, bZg_eq_mul]`. Use `show (bZ u Tf.til.z0)⁻¹.map (embT D τ) * (bZ u Tf.til.z0 * dgE (B w c)).map (embT D τ) = _`. Rewrite using `[← Matrix.map_mul, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hbZ, Matrix.one_mul]`. Establish `hKp : (fun τ => (1 : D.what₂.Tau → Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) ℂ) τ * (atInf (embT D) (B w c)⁻¹ τ)⁻¹) = fun τ => ((glT (B w c) hBc τ : GL (Fin (D.R.N D.R.m - 1)) ℂ) : Matrix _ _ ℂ).transpose`. Use function extensionality and compare the values at `τ`.
+
+Rewrite using `[glT_val, Matrix.transpose_transpose, Pi.one_apply, Matrix.one_mul, atInf_inv_inv _ hBc]`. Both sides reduce to the same expression. Rewrite using `[hL, hR, hKm, hKp, map_smul, brTen_blkRowS Tf]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Establish `h1` using `congrFun hKm τ`. Establish `h2` using `congrFun hKp τ`. Rewrite using `[h1, h2, shift_lamT_sgTS Tf τ, embGL_glT, glT_val, Matrix.det_transpose]`. Unfold `dgE`. Rewrite using `[Matrix.reindex_apply, ← Matrix.submatrix_map, Matrix.det_submatrix_equiv_self, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero _), Matrix.map_zero _ (map_zero _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, mul_one, Matrix.det_tran …`.
+-/
 theorem exP_ofS (Tf : FormsTiedSym D u Ch chOf)
     (B : D.what₂.places.Pl → (D.fm u).clsP → Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E)
     (hB : ∀ w c, IsUnit (B w c).det) :
@@ -117,6 +144,9 @@ structure RestrictionSymmetric (Tf : FormsTiedSym D u Ch chOf)
     (Formalism.MainNotions.product_first_zeroth_parts.nfAll (D.fm u).sg (blk (fun τ => sqAct ℂ _ (sgTr D u τ) (gP w c τ)) (coPTS Tf B w z c))
       (blk (fun τ => sqAct ℂ _ (sgTr D u τ) (gP w c τ)) (coPTS Tf B w z c))).re
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨exP_ofS Tf B hB, h.lat_co, h.pt_co, h.ipV_co, h.re_petersson_self_eq_sum_coord⟩`.
+-/
 theorem pendRest_ofS (Tf : FormsTiedSym D u Ch chOf)
     (B : D.what₂.places.Pl → (D.fm u).clsP → Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E)
     (hB : ∀ w c, IsUnit (B w c).det)
@@ -124,6 +154,9 @@ theorem pendRest_ofS (Tf : FormsTiedSym D u Ch chOf)
     PendRestS Tf B gP :=
   ⟨exP_ofS Tf B hB, h.lat_co, h.pt_co, h.ipV_co, h.re_petersson_self_eq_sum_coord⟩
 
+/- English proof (translation)
+The claim follows from `{ coM_mem := coM_mem_ofS Tf B hB, coM_inj := coM_inj_ofS Tf B hB, coP_mem := coP_mem_of_isUnit_det' Tf B hB, coP_inj := coP_inj_of_isUnit_det' Tf B hB, exP := exP_ofS Tf B hB, lat_co := h.lat_co, pt_co := h.pt_co, ipV_co := h.ipV_co, re_petersson_self_eq_sum_coord := h.re_peterss …`.
+-/
 theorem pendClauses_ofS (Tf : FormsTiedSym D u Ch chOf)
     (B : D.what₂.places.Pl → (D.fm u).clsP → Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E)
     (hB : ∀ w c, IsUnit (B w c).det)
@@ -133,6 +166,9 @@ theorem pendClauses_ofS (Tf : FormsTiedSym D u Ch chOf)
     coP_inj := coP_inj_of_isUnit_det' Tf B hB, exP := exP_ofS Tf B hB, lat_co := h.lat_co, pt_co := h.pt_co, ipV_co := h.ipV_co,
     re_petersson_self_eq_sum_coord := h.re_petersson_self_eq_sum_coord }
 
+/- English proof (translation)
+The claim follows from `brExists_of_restS Tf B hB hL gP (pendRest_ofS Tf B hB gP h)`.
+-/
 theorem brExists_of_rest4S (Tf : FormsTiedSym D u Ch chOf) (hL : LowerSymmetricCompatible Tf)
     (B : D.what₂.places.Pl → (D.fm u).clsP → Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E)
     (hB : ∀ w c, IsUnit (B w c).det)
@@ -140,6 +176,15 @@ theorem brExists_of_rest4S (Tf : FormsTiedSym D u Ch chOf) (hL : LowerSymmetricC
     ∃ P : Pend D u, ArchimedeanSignatureMatching P :=
   brExists_of_restS Tf B hB hL gP (pendRest_ofS Tf B hB gP h)
 
+/- English proof (translation)
+Introduce `w z hz`. Establish `hQ : ∀ c, blk (fun τ => sqAct ℂ _ (sgTr D u τ) (gPof B hB o w c τ)) (coPTS Tf B w z c) ∈ Formalism.L2.Forms.CSpan (D.fm u).sg`. Introduce `c`. Establish `h0` using `coP_mem_of_isUnit_det' Tf B hB w z hz c`. Rewrite `h0` using `[← cspan_sgTr]`.
+
+Establish `h1` using `Formalism.L2.Ker.lc_blk_sqAct_mem _ (gPof B hB o w c) _ h0`. Rewrite `h1` using `[cspan_sgTr]`. Conclude with `h1`. Establish `hE : ∀ c, Tf.valP.eW z c = fnOf _ (shiftOf (sgT u)) (fun τ => (o.1 τ)⁻¹) (blk (fun τ => sqAct ℂ _ (sgTr D u τ) (gPof B hB o w c τ)) (coPTS Tf B w z c))`. Introduce `c`.
+
+Take `⟨Q, _, hq⟩` from `eW_repS Tf (B w c) (hB w c) z hz c`. Establish `hc : coPTS Tf B w z c = Q`. Simplify using `only [coPTS, LinearMap.pi_apply, LinearMap.coe_comp, Function.comp_apply, LinearMap.coe_proj, Function.eval, LinearEquiv.coe_coe]`. Rewrite using `[hq, fnInv_fnOf _ _ _ (atInf_inv_isUnit _ (hB w c))]`. Establish `hs : shiftOf (sgT u) = fun τ => (sgTr D u τ).detShift` using `funext fun τ => (shift_sgTr τ).symm`.
+
+Rewrite using `[hc, hq, hs, fnOf_sqAct _ (sgTr D u) (atInf (embT D) (B w c)⁻¹) o.1 o.2 _ (fun τ => rfl)]`. Rewrite using `[Tf.valP.ipP o ho z z _ _ hQ hQ hE hE, Complex.re_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[show ((Nat.card ((D.fm u).stabilizer₂ c) : ℕ) : ℂ)⁻¹ = (((Nat.card ((D.fm u).stabilizer₂ c) : ℝ))⁻¹ : ℝ) by push_cast; rfl, Complex.re_ofReal_mul]`. Both sides reduce to the same expression.
+-/
 theorem weightedInner_self_eq_sum_coords_of_orthonormal' (Tf : FormsTiedSym D u Ch chOf)
     (B : D.what₂.places.Pl → (D.fm u).clsP → Matrix (Fin (D.R.N D.R.m - 1)) (Fin (D.R.N D.R.m - 1)) D.host.E)
     (hB : ∀ w c, IsUnit (B w c).det) (o : FrP D) (ho : o.IsON) :

@@ -9,6 +9,9 @@ open Formalism.L2.Col
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `κ _ n k r t m rS h hr ht hn M`. Substitute `hr` using the available equality. Rewrite using `[HJsym_eq_JSymG ht (by omega) h]`.
+-/
 theorem mem_HJsym_iff_JSymG : ∀ (κ : Type) [Field κ] (n k r t m rS : ℕ) (h : r ≤ n), r = k + 2 * rS + 1 → 0 < t → n = r + m * t →
     ∀ M : GL (Fin n) κ, M ∈ HJsym κ n k r t m rS h ↔ M ∈ Formalism.L2.Forms.JSymG κ n k rS t false := by
   intro κ _ n k r t m rS h hr ht hn M

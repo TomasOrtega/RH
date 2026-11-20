@@ -18,11 +18,19 @@ noncomputable section
 namespace GlobalTheory.FinPl.SplitPhi
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `h` using `p.sec_pr 1`. Rewrite `h` using `[mul_one]`. Rewrite using `[← h, p.pr_sec, map_one]`.
+-/
 theorem pr_e (p : SplitPt D k) : p.pr p.e = 1 := by
   have h := p.sec_pr 1
   rw [mul_one] at h
   rw [← h, p.pr_sec, map_one]
 
+/- English proof (translation)
+Take `⟨ε, hε, he⟩` from `p.above`. Take `⟨h1, h2, -⟩` from `p.split`. Establish `: p.e = algebraMap (AF D.host.F) (AE D) ε * p.e`. Rewrite using `[← he, add_mul, h1, mul_comm (cA D p.e), h2, add_zero]`. Rewrite using `[this]`.
+
+Conclude with `GlobalTheory.AdForm.ChiStd.prV_toEAf_idem_mul hε hw _`.
+-/
 theorem prV_toEAf_e_ne (p : SplitPt D k) {w : HeightOneSpectrum (𝓞 D.host.F)} (hw : w ≠ p.v) :
     Formalism.UG.prV (E := D.host.E) w (toEAf D p.e) = 0 := by
   obtain ⟨ε, hε, he⟩ := p.above
@@ -32,6 +40,11 @@ theorem prV_toEAf_e_ne (p : SplitPt D k) {w : HeightOneSpectrum (𝓞 D.host.F)}
   rw [this]
   exact GlobalTheory.AdForm.ChiStd.prV_toEAf_idem_mul hε hw _
 
+/- English proof (translation)
+Take `⟨α, rfl, h1, -⟩` from `hε`. Establish `h1' : (Formalism.UG.evalV D.host.F p.v) ((sndA D.host.F) (pairA D.host.F 0 α)) = 1` using `h1`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply]`. Simplify using `[Formalism.IndefR.Datum.toEAf, finPart, Formalism.UG.prV]`. Rewrite using `[h1']`.
+
+Both sides reduce to the same expression.
+-/
 theorem prV_toEAf_eps (p : SplitPt D k) {ε : AF D.host.F} (hε : IsPlaceIdem D p.v ε) :
     Formalism.UG.prV (E := D.host.E) p.v (toEAf D (algebraMap (AF D.host.F) (AE D) ε)) = 1 := by
   obtain ⟨α, rfl, h1, -⟩ := hε
@@ -41,6 +54,11 @@ theorem prV_toEAf_eps (p : SplitPt D k) {ε : AF D.host.F} (hε : IsPlaceIdem D 
   rw [h1']
   rfl
 
+/- English proof (translation)
+Establish `h0 : toEAf D p.e * y = 0`. Use `Formalism.UG.P.afsplit_inj _ fun w => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Distinguish the cases in `hw : w = p.v`. Substitute `hw` using the available equality.
+
+Rewrite using `[hy, mul_zero]`. Rewrite using `[prV_toEAf_e_ne p hw, zero_mul]`. Establish `: p.prF he y = p.prF he (toEAf D p.e * y)`. Rewrite using `[map_mul, p.prF_toEAf he, pr_e, one_mul]`. Rewrite using `[this, h0, map_zero]`.
+-/
 theorem prF_eq_zero (p : SplitPt D k) {PP : HeightOneSpectrum (𝓞 D.host.E)} (he : Formalism.L2.NTheta.IsIdemAt p.e PP)
     (y : EAf D) (hy : Formalism.UG.prV (E := D.host.E) p.v y = 0) : p.prF he y = 0 := by
   have h0 : toEAf D p.e * y = 0 := by
@@ -53,6 +71,9 @@ theorem prF_eq_zero (p : SplitPt D k) {PP : HeightOneSpectrum (𝓞 D.host.E)} (
     rw [map_mul, p.prF_toEAf he, pr_e, one_mul]
   rw [this, h0, map_zero]
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← map_sub]`. Apply `prF_eq_zero p he` to reduce the goal to its premises. Rewrite using `[map_sub, Formalism.UG.P.afsplit_prV_IE, sub_self]`.
+-/
 theorem prF_IE_prV (p : SplitPt D k) {PP : HeightOneSpectrum (𝓞 D.host.E)} (he : Formalism.L2.NTheta.IsIdemAt p.e PP)
     (y : EAf D) : p.prF he (Formalism.UG.P.afsplitIE p.v (Formalism.UG.prV (E := D.host.E) p.v y)) = p.prF he y := by
   rw [← sub_eq_zero, ← map_sub]
@@ -70,19 +91,31 @@ def phi (p : SplitPt D k) {PP : HeightOneSpectrum (𝓞 D.host.E)} (he : Formali
   map_zero' := by simp only [map_zero]
   map_add' x y := by simp only [map_add]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phi_apply (p : SplitPt D k) {PP : HeightOneSpectrum (𝓞 D.host.E)} (he : Formalism.L2.NTheta.IsIdemAt p.e PP)
     (x : D.host.E ⊗[D.host.F] p.v.adicCompletion D.host.F) :
     phi p he x = p.prF he (Formalism.UG.P.afsplitIE p.v x) := rfl
 
+/- English proof (translation)
+Rewrite using `[phi_apply, prF_IE_prV, p.prF_toEAf he]`.
+-/
 theorem phi_prV (p : SplitPt D k) {PP : HeightOneSpectrum (𝓞 D.host.E)} (he : Formalism.L2.NTheta.IsIdemAt p.e PP)
     (a : AE D) : phi p he (Formalism.UG.prV (E := D.host.E) p.v (toEAf D a)) = p.pr a := by
   rw [phi_apply, prF_IE_prV, p.prF_toEAf he]
 
+/- English proof (translation)
+Rewrite using `[← phi_prV p he]`. Both sides reduce to the same expression.
+-/
 theorem phi_inclE (p : SplitPt D k) {PP : HeightOneSpectrum (𝓞 D.host.E)} (he : Formalism.L2.NTheta.IsIdemAt p.e PP)
     (c : D.host.E) : phi p he (Formalism.UG.inclE (F := D.host.F) (p.v.adicCompletion D.host.F) c) = p.pr (incA D c) := by
   rw [← phi_prV p he]
   rfl
 
+/- English proof (translation)
+Use `⟨Formalism.UG.P.afsplit_IE_int v z, fun h => ?_⟩` and prove the remaining obligations. Use `Formalism.UG.P.afsplit_prV_int v _ h` as an intermediate fact. Rewrite `this` using `[Formalism.UG.P.afsplit_prV_IE]`. Then use the resulting hypothesis.
+-/
 theorem tensInt_iff (v : HeightOneSpectrum (𝓞 D.host.F)) (z : D.host.E ⊗[D.host.F] v.adicCompletion D.host.F) :
     z ∈ Formalism.UG.tensInt (F := D.host.F) (v.adicCompletion D.host.F) (Formalism.UG.intOE D.host.E)
         (v.adicCompletionIntegers D.host.F).toSubring ↔
@@ -91,6 +124,9 @@ theorem tensInt_iff (v : HeightOneSpectrum (𝓞 D.host.F)) (z : D.host.E ⊗[D.
   have := Formalism.UG.P.afsplit_prV_int v _ h
   rwa [Formalism.UG.P.afsplit_prV_IE] at this
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => exact congrArg (· ⊗ₜ[D.host.F] x) (star_star a)`. Consider the case `add a b ha hb => rw [RingHom.map_add, RingHom.map_add, ha, hb]`.
+-/
 theorem sigR_sigR (z : EAf D) : Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)
     (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) z) = z := by
   induction z using TensorProduct.induction_on with
@@ -98,18 +134,29 @@ theorem sigR_sigR (z : EAf D) : Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm
   | tmul a x => exact congrArg (· ⊗ₜ[D.host.F] x) (star_star a)
   | add a b ha hb => rw [RingHom.map_add, RingHom.map_add, ha, hb]
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp only [RingHom.map_zero]`. Consider the case `add a b ha hb => simp only [RingHom.map_add, ha, hb]`. Consider the case `tmul y e => rfl`.
+-/
 theorem toEAf_cA (a : AE D) : toEAf D (cA D a) = Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) (toEAf D a) := by
   induction a using TensorProduct.induction_on with
   | zero => simp only [RingHom.map_zero]
   | add a b ha hb => simp only [RingHom.map_add, ha, hb]
   | tmul y e => rfl
 
+/- English proof (translation)
+Use `⟨fun h => ?_, GlobalTheory.LevSplit.sigR_int⟩` and prove the remaining obligations. Use `GlobalTheory.LevSplit.sigR_int h` as an intermediate fact. Rewrite `this` using `[sigR_sigR]`. Then use the resulting hypothesis.
+-/
 theorem sigR_mem_iff (s : EAf D) : Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) s ∈
     Formalism.L2.Herm.intAf D.host.F D.host.E ↔ s ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
   refine ⟨fun h => ?_, GlobalTheory.LevSplit.sigR_int⟩
   have := GlobalTheory.LevSplit.sigR_int h
   rwa [sigR_sigR] at this
 
+/- English proof (translation)
+Take `⟨ε, hε, he⟩` from `p.above`. Rewrite using `[← sub_eq_zero, ← sub_mul, sub_sub, ← RingHom.map_add, he]`. Use `Formalism.UG.P.afsplit_inj _ fun w => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Distinguish the cases in `hw : w = p.v`.
+
+Substitute `hw` using the available equality. Rewrite using `[map_sub, map_one, prV_toEAf_eps p hε, sub_self, zero_mul]`. Rewrite using `[hy w hw, mul_zero]`.
+-/
 theorem one_sub_e_mul (p : SplitPt D k) (y : EAf D)
     (hy : ∀ w, w ≠ p.v → Formalism.UG.prV (E := D.host.E) w y = 0) :
     (1 - toEAf D p.e) * y = toEAf D (cA D p.e) * y := by
@@ -121,12 +168,24 @@ theorem one_sub_e_mul (p : SplitPt D k) (y : EAf D)
   · subst hw; rw [map_sub, map_one, prV_toEAf_eps p hε, sub_self, zero_mul]
   · rw [hy w hw, mul_zero]
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.sigR, Formalism.UG.inclE, Algebra.TensorProduct.includeLeftRingHom_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.coe_id, id_eq]`.
+-/
 theorem sigR_inclE (v : HeightOneSpectrum (𝓞 D.host.F)) (c : D.host.E) :
     Formalism.UG.sigR (sigD D) (v.adicCompletion D.host.F) (Formalism.UG.inclE (F := D.host.F) (v.adicCompletion D.host.F) c) =
       Formalism.UG.inclE (F := D.host.F) (v.adicCompletion D.host.F) (sigD D c) := by
   simp only [Formalism.UG.sigR, Formalism.UG.inclE, Algebra.TensorProduct.includeLeftRingHom_apply, AlgHom.toRingHom_eq_coe,
     RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.coe_id, id_eq]
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p PP he`. Use `⟨phi p he, phi_prV p he, phi_inclE p he, fun c => by rw [sigR_inclE]; exact phi_inclE p he (sigD D c), fun z => ?_⟩` and prove the remaining obligations. Use `set y := Formalism.UG.P.afsplitIE p.v z with hy`. Establish `hsup : ∀ w, w ≠ p.v → Formalism.UG.prV (E` using `D.host.E) w y = 0 := fun w hw => Formalism.UG.P.afsplit_prV_IE_ne p.v w hw z`. Establish `hsig : Formalism.UG.P.afsplitIE p.v (Formalism.UG.sigR (sigD D) (p.v.adicCompletion D.host.F) z) = Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) y`.
+
+Rewrite using `[hy]`. Conclude with `(Formalism.UG.P.afsplit_sigR_IE (sigD D) p.v z).symm`. Establish `h1` using `tensInt_iff p.v z`. Establish `h2` using `p.mem_intAf_iff he y`. Establish `h3` using `one_sub_e_mul p y hsup`.
+
+Establish `h4` using `p.prF_mem_iff he (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) y)`. Establish `h5 : toEAf D (cA D p.e) * y = Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) (toEAf D p.e * Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) y)`. Rewrite using `[RingHom.map_mul, sigR_sigR, toEAf_cA]`. Use `h1.trans (h2.trans ?_)` and prove the remaining obligations. Rewrite using `[h3, h5, sigR_mem_iff, ← h4]`.
+
+Establish `e1 : phi p he z = p.prF he y` using `phi_apply p he z`. Establish `e2 : phi p he (Formalism.UG.sigR (sigD D) (p.v.adicCompletion D.host.F) z) = p.prF he (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) y)` using `(phi_apply p he _).trans (congrArg _ hsig)`. Rewrite using `[e1, e2]`. Conclude with `and_comm`.
+-/
 theorem exists_ringHom_int : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (PP : HeightOneSpectrum (𝓞 D.host.E)), Formalism.L2.NTheta.IsIdemAt p.e PP →
     ∃ φ : D.host.E ⊗[D.host.F] p.v.adicCompletion D.host.F →+* k,

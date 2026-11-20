@@ -23,6 +23,9 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Introduce `T hT hsub`. Establish `huniv : IsIrreducible (Set.univ : Set ↥X)` using `IrreducibleSpace.isIrreducible_univ ↥X`. Establish `hle : (Set.univ : Set ↥X) ⊆ T` using `hT.2 huniv (Set.subset_univ T)`. Conclude with `h (Set.univ_subset_iff.mp (hle.trans hsub))`.
+-/
 theorem nonzeroOnComponents_of_support_ne_univ {X : Scheme.{u}} [IrreducibleSpace ↥X]
     (I : X.IdealSheafData) (h : (↑I.support : Set ↥X) ≠ Set.univ) :
     NonzeroOnComponents I := by
@@ -31,20 +34,38 @@ theorem nonzeroOnComponents_of_support_ne_univ {X : Scheme.{u}} [IrreducibleSpac
   have hle : (Set.univ : Set ↥X) ⊆ T := hT.2 huniv (Set.subset_univ T)
   exact h (Set.univ_subset_iff.mp (hle.trans hsub))
 
+/- English proof (translation)
+The claim follows from `(Scheme.Hom.isClosedEmbedding f).injective`.
+-/
 private theorem base_injective_of_isClosedImmersion {X Y : Scheme.{u}} (f : X ⟶ Y)
     [IsClosedImmersion f] : Function.Injective ⇑f.base :=
   (Scheme.Hom.isClosedEmbedding f).injective
 
+/- English proof (translation)
+The claim follows from `(Scheme.Hom.isClosedEmbedding f).isClosed_range`.
+-/
 private theorem isClosed_range_of_isClosedImmersion {X Y : Scheme.{u}} (f : X ⟶ Y)
     [IsClosedImmersion f] : IsClosed (Set.range ⇑f.base) :=
   (Scheme.Hom.isClosedEmbedding f).isClosed_range
 
+/- English proof (translation)
+Establish `hcl` using `(isClosed_range_of_isClosedImmersion f).closure_eq`. Simplify using `[Scheme.Hom.support_ker, hcl]`.
+-/
 private theorem support_ker_eq_range_of_isClosedImmersion {X Y : Scheme.{u}} (f : X ⟶ Y)
     [IsClosedImmersion f] :
     ((Scheme.Hom.ker f).support : Set ↥Y) = Set.range ⇑f.base := by
   have hcl := (isClosed_range_of_isClosedImmersion f).closure_eq
   simp [Scheme.Hom.support_ker, hcl]
 
+/- English proof (translation)
+Use `nonzeroOnComponents_of_support_ne_univ _ ?_` and prove the remaining obligations. Rewrite using `[support_ker_eq_range_of_isClosedImmersion (j ≫ i)]`. Introduce `hrange`. Establish `hsurj : ∀ z : ↥A', ∃ y : ↥Y, (j ≫ i).base y = z`. Introduce `z`.
+
+Establish `hz : z ∈ Set.range ⇑(j ≫ i).base`. Rewrite using `[hrange]`. Conclude with `Set.mem_univ z`. Conclude with `Set.mem_range.mp hz`. Take `⟨a'⟩ : Nonempty ↥A'` from `inferInstance`.
+
+Take `⟨y, -⟩` from `hsurj a'`. Establish `hjsurj : ∀ b : ↥A, ∃ y' : ↥Y, j.base y' = b`. Introduce `b`. Take `⟨y', hy'⟩` from `hsurj (i.base b)`. Use `⟨y', base_injective_of_isClosedImmersion i ?_⟩` and prove the remaining obligations.
+
+Simplify using `using hy'`. Use `h (irreducibleComponent (j.base y)) (irreducibleComponent_mem_irreducibleComponents _) ?_` and prove the remaining obligations. Rewrite using `[support_ker_eq_range_of_isClosedImmersion j]`. Introduce `b _`. Conclude with `Set.mem_range.mpr (hjsurj b)`.
+-/
 theorem nonzeroOnComponents_ker_comp {Y A A' : Scheme.{u}} (j : Y ⟶ A) (i : A ⟶ A')
     [IsClosedImmersion j] [IsClosedImmersion i] [IrreducibleSpace ↥A']
     (h : NonzeroOnComponents (Scheme.Hom.ker j)) :
@@ -71,6 +92,9 @@ theorem nonzeroOnComponents_ker_comp {Y A A' : Scheme.{u}} (j : Y ⟶ A) (i : A 
   intro b _
   exact Set.mem_range.mpr (hjsurj b)
 
+/- English proof (translation)
+Establish `h : Scheme.Hom.appTop (a ≫ b) = Scheme.Hom.appTop b ≫ Scheme.Hom.appTop a`. Simplify using the standard rewrite rules. Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 private theorem appTop_comp_apply_eq {X Y Z : Scheme.{u}} (a : X ⟶ Y) (b : Y ⟶ Z)
     (x : ↑(Z.presheaf.obj (Opposite.op ⊤))) :
     (ConcreteCategory.hom (Scheme.Hom.appTop (a ≫ b))) x
@@ -81,6 +105,15 @@ private theorem appTop_comp_apply_eq {X Y Z : Scheme.{u}} (a : X ⟶ Y) (b : Y �
   rw [h]
   rfl
 
+/- English proof (translation)
+Use `choose s hs using hcoord`. Establish `hgcoord : ∀ i : N, (ConcreteCategory.hom (Scheme.Hom.appTop (AffineSpace.homOfVector (AffineSpace M (Spec R) ↘ Spec R) s))) (AffineSpace.coord (Spec R) i) = s i`. Introduce `i`. Simplify using `[AffineSpace.homOfVector_appTop_coord]`. Establish `key : f ≫ AffineSpace.homOfVector (AffineSpace M (Spec R) ↘ Spec R) s = 𝟙 (AffineSpace N (Spec R))`.
+
+Apply `AffineSpace.hom_ext` to reduce the goal to its premises. Simplify using `[hover]`. Introduce `i`. Rewrite using `[appTop_comp_apply_eq, hgcoord i, hs i]`. Simplify using the standard rewrite rules.
+
+Establish `hsurj : Function.Surjective (ConcreteCategory.hom (Scheme.Hom.appTop f))`. Introduce `x`. Use `⟨(ConcreteCategory.hom (Scheme.Hom.appTop (AffineSpace.homOfVector (AffineSpace M (Spec R) ↘ Spec R) s))) x, ?_⟩` and prove the remaining obligations. Establish `h : (ConcreteCategory.hom (Scheme.Hom.appTop (f ≫ AffineSpace.homOfVector (AffineSpace M (Spec R) ↘ Spec R) s))) x = (ConcreteCategory.hom (Scheme.Hom.appTop (𝟙 (AffineSpace N (Spec R))))) x`. Rewrite using `[key]`.
+
+Rewrite `h` using `[appTop_comp_apply_eq]`. Simplify using `using h`. Conclude with `IsClosedImmersion.of_surjective_of_isAffine f hsurj`.
+-/
 theorem isClosedImmersion_of_coord_surjective {R : CommRingCat.{u}} {N M : Type u}
     (f : AffineSpace N (Spec R) ⟶ AffineSpace M (Spec R))
     (hover : f ≫ (AffineSpace M (Spec R) ↘ Spec R) = (AffineSpace N (Spec R) ↘ Spec R))
@@ -124,22 +157,36 @@ def affineSpaceInrEmbedding (k : Type u) [Field k] (n m : ℕ) :
     (coordVectorInr n m (𝟙 (affineSpaceIndexedBy k (ULift.{u, 0} (Fin m)))))
 
 @[simp]
+/- English proof (translation)
+Simplify using `[affineSpaceInl]`. Use the proof step `@[simp]`.
+-/
 theorem affineSpaceInl_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (n m : ℕ) :
     affineSpaceInl k n m ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin n ⊕ Fin m)) =
       affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin n)) := by
   simp [affineSpaceInl]
 
 @[simp]
+/- English proof (translation)
+Simplify using `[affineSpaceInrEmbedding]`.
+-/
 theorem affineSpaceInrEmbedding_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (n m : ℕ) :
     affineSpaceInrEmbedding k n m ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin n ⊕ Fin m)) =
       affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin m)) := by
   simp [affineSpaceInrEmbedding]
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 private theorem pullbackCoord_id {k : Type u} [Field k] {N : Type u} (j : N) :
     pullbackCoord (𝟙 (affineSpaceIndexedBy k N)) j
       = AffineSpace.coord (Spec (CommRingCat.of k)) j := by
   simp
 
+/- English proof (translation)
+Establish `h : pullbackCoord (affineSpaceInl k n m) i = coordVectorInl n m (𝟙 (affineSpaceIndexedBy k (ULift.{u, 0} (Fin n)))) i`. Simplify using `only [pullbackCoord_def, affineSpaceInl, AffineSpace.homOfVector_appTop_coord]`. Rewrite using `[h]`. Take `⟨j⟩` from `i`. Consider the cases of `j with`.
+
+Consider the case `inl a => show pullbackCoord (𝟙 (affineSpaceIndexedBy k (ULift.{u, 0} (Fin n)))) (ULift.up.{u, 0} a) = AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up.{u, 0} a)`. Conclude with `pullbackCoord_id _`. Consider the case `inr _ => rfl`.
+-/
 theorem pullbackCoord_affineSpaceInl (k : Type u) [Field k] (n m : ℕ)
     (i : ULift.{u, 0} (Fin n ⊕ Fin m)) :
     pullbackCoord (affineSpaceInl k n m) i =
@@ -158,15 +205,26 @@ theorem pullbackCoord_affineSpaceInl (k : Type u) [Field k] (n m : ℕ)
       exact pullbackCoord_id _
   | inr _ => rfl
 
+/- English proof (translation)
+The claim follows from `pullbackCoord_affineSpaceInl k n m (ULift.up.{u, 0} (Sum.inl a))`.
+-/
 theorem pullbackCoord_affineSpaceInl_inl (k : Type u) [Field k] (n m : ℕ) (a : Fin n) :
     pullbackCoord (affineSpaceInl k n m) (ULift.up.{u, 0} (Sum.inl a)) =
       AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up.{u, 0} a) :=
   pullbackCoord_affineSpaceInl k n m (ULift.up.{u, 0} (Sum.inl a))
 
+/- English proof (translation)
+The claim follows from `pullbackCoord_affineSpaceInl k n m (ULift.up.{u, 0} (Sum.inr b))`.
+-/
 theorem pullbackCoord_affineSpaceInl_inr (k : Type u) [Field k] (n m : ℕ) (b : Fin m) :
     pullbackCoord (affineSpaceInl k n m) (ULift.up.{u, 0} (Sum.inr b)) = 0 :=
   pullbackCoord_affineSpaceInl k n m (ULift.up.{u, 0} (Sum.inr b))
 
+/- English proof (translation)
+Establish `h : pullbackCoord (affineSpaceInrEmbedding k n m) i = coordVectorInr n m (𝟙 (affineSpaceIndexedBy k (ULift.{u, 0} (Fin m)))) i`. Simplify using `only [pullbackCoord_def, affineSpaceInrEmbedding, AffineSpace.homOfVector_appTop_coord]`. Rewrite using `[h]`. Take `⟨j⟩` from `i`. Consider the cases of `j with`.
+
+Consider the case `inl _ => rfl`. Consider the case `inr b => show pullbackCoord (𝟙 (affineSpaceIndexedBy k (ULift.{u, 0} (Fin m)))) (ULift.up.{u, 0} b) = AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up.{u, 0} b)`. Conclude with `pullbackCoord_id _`.
+-/
 theorem pullbackCoord_affineSpaceInrEmbedding (k : Type u) [Field k] (n m : ℕ)
     (i : ULift.{u, 0} (Fin n ⊕ Fin m)) :
     pullbackCoord (affineSpaceInrEmbedding k n m) i =
@@ -185,15 +243,24 @@ theorem pullbackCoord_affineSpaceInrEmbedding (k : Type u) [Field k] (n m : ℕ)
           = AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up.{u, 0} b)
       exact pullbackCoord_id _
 
+/- English proof (translation)
+The claim follows from `pullbackCoord_affineSpaceInrEmbedding k n m (ULift.up.{u, 0} (Sum.inl a))`.
+-/
 theorem pullbackCoord_affineSpaceInrEmbedding_inl (k : Type u) [Field k] (n m : ℕ) (a : Fin n) :
     pullbackCoord (affineSpaceInrEmbedding k n m) (ULift.up.{u, 0} (Sum.inl a)) = 0 :=
   pullbackCoord_affineSpaceInrEmbedding k n m (ULift.up.{u, 0} (Sum.inl a))
 
+/- English proof (translation)
+The claim follows from `pullbackCoord_affineSpaceInrEmbedding k n m (ULift.up.{u, 0} (Sum.inr b))`.
+-/
 theorem pullbackCoord_affineSpaceInrEmbedding_inr (k : Type u) [Field k] (n m : ℕ) (b : Fin m) :
     pullbackCoord (affineSpaceInrEmbedding k n m) (ULift.up.{u, 0} (Sum.inr b)) =
       AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up.{u, 0} b) :=
   pullbackCoord_affineSpaceInrEmbedding k n m (ULift.up.{u, 0} (Sum.inr b))
 
+/- English proof (translation)
+Use `isClosedImmersion_of_coord_surjective (affineSpaceInl k n m) (affineSpaceInl_comp_affineSpaceIndexedByToSpec k n m) ?_` and prove the remaining obligations. Introduce and unpack `⟨a⟩`. Use `⟨AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up.{u, 0} (Sum.inl a)), ?_⟩` and prove the remaining obligations. Establish `h : pullbackCoord (affineSpaceInl k n m) (ULift.up.{u, 0} (Sum.inl a)) = AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up.{u, 0} a)` using `pullbackCoord_affineSpaceInl_inl k n m a`. Conclude with `h`.
+-/
 theorem isClosedImmersion_affineSpaceInl (k : Type u) [Field k] (n m : ℕ) :
     IsClosedImmersion (affineSpaceInl k n m) := by
   refine isClosedImmersion_of_coord_surjective (affineSpaceInl k n m)
@@ -205,6 +272,9 @@ theorem isClosedImmersion_affineSpaceInl (k : Type u) [Field k] (n m : ℕ) :
     pullbackCoord_affineSpaceInl_inl k n m a
   exact h
 
+/- English proof (translation)
+Use `isClosedImmersion_of_coord_surjective (R := CommRingCat.of k) (N := ULift.{u, 0} (Fin m)) (M := ULift.{u, 0} (Fin n ⊕ Fin m)) (affineSpaceInrEmbedding k n m) (affineSpaceInrEmbedding_comp_affineSpaceIndexedByToSpec k n m) ?_` and prove the remaining obligations. Introduce `i`. Use `⟨AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up.{u, 0} (Sum.inr i.down)), ?_⟩` and prove the remaining obligations. Conclude with `pullbackCoord_affineSpaceInrEmbedding k n m (ULift.up.{u, 0} (Sum.inr i.down))`.
+-/
 theorem isClosedImmersion_affineSpaceInrEmbedding (k : Type u) [Field k] (n m : ℕ) :
     IsClosedImmersion (affineSpaceInrEmbedding k n m) := by
   refine isClosedImmersion_of_coord_surjective (R := CommRingCat.of k)
@@ -222,6 +292,11 @@ instance instIsClosedImmersionLinEmbRight (k : Type u) [Field k] (n m : ℕ) :
     IsClosedImmersion (affineSpaceInrEmbedding k n m) :=
   isClosedImmersion_affineSpaceInrEmbedding k n m
 
+/- English proof (translation)
+Apply `AffineSpace.hom_ext` to reduce the goal to its premises. Simplify using `[hf]`. Introduce `i`. Take `⟨j⟩` from `i`. Rewrite using `[appTop_comp_apply_eq, AffineSpace.homOfVector_appTop_coord, ← pullbackCoord_def, pullbackCoord_affineSpaceInl]`.
+
+Consider the cases of `j with`. Consider the case `inl _ => rfl`. Consider the case `inr _ => exact map_zero _`.
+-/
 theorem comp_affineSpaceInl {k : Type u} [Field k] {Y : Scheme.{u}} (n m : ℕ)
     (q : Y ⟶ Spec (CommRingCat.of k)) (f : Y ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin n)))
     (hf : f ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin n)) = q) :
@@ -236,6 +311,13 @@ theorem comp_affineSpaceInl {k : Type u} [Field k] {Y : Scheme.{u}} (n m : ℕ)
     | inl _ => rfl
     | inr _ => exact map_zero _
 
+/- English proof (translation)
+Apply `AffineSpace.hom_ext` to reduce the goal to its premises. Simplify using `[hf]`. Introduce and unpack `⟨j⟩`. Rewrite using `[appTop_comp_apply_eq, AffineSpace.homOfVector_appTop_coord]`. Consider the cases of `j with`.
+
+Consider the case `inl a`. Establish `h` using `pullbackCoord_affineSpaceInrEmbedding_inl k n m a`. Rewrite `h` using `[pullbackCoord_def]`. Rewrite using `[h, map_zero, coordVectorInr_inl]`. Consider the case `inr b`.
+
+Establish `h` using `pullbackCoord_affineSpaceInrEmbedding_inr k n m b`. Rewrite `h` using `[pullbackCoord_def]`. Rewrite using `[h, coordVectorInr_inr, pullbackCoord_def]`.
+-/
 theorem comp_affineSpaceInrEmbedding {k : Type u} [Field k] {Y : Scheme.{u}} (n m : ℕ)
     (q : Y ⟶ Spec (CommRingCat.of k)) (f : Y ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin m)))
     (hf : f ≫ affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin m)) = q) :
@@ -254,12 +336,18 @@ theorem comp_affineSpaceInrEmbedding {k : Type u} [Field k] {Y : Scheme.{u}} (n 
         rw [pullbackCoord_def] at h
         rw [h, coordVectorInr_inr, pullbackCoord_def]
 
+/- English proof (translation)
+Use `⟨rfl, fun i _ => 𝟙 (s.schemeAt i), by simp, fun i _ => ?_, fun i _ => ?_⟩` and prove the remaining obligations. Conclude with `IsPullback.of_id_fst`. Simplify using the standard rewrite rules.
+-/
 theorem IsStrictPullbackBlowupSeq.id {X : Scheme.{u}} (s : SequenceOfBlowups X) :
     IsStrictPullbackBlowupSeq (𝟙 X) s s := by
   refine ⟨rfl, fun i _ => 𝟙 (s.schemeAt i), by simp, fun i _ => ?_, fun i _ => ?_⟩
   · exact IsPullback.of_id_fst
   · simp
 
+/- English proof (translation)
+Establish `: AlgebraicGeometry.Surjective (𝟙 X)` using `inferInstance`. Conclude with `IsStrictPullbackBlowupSeq.isomorphic (h.isStrictPullback_of_surjective hc) (IsStrictPullbackBlowupSeq.id t)`.
+-/
 theorem isomorphic_of_isPullbackSequenceOfBlowups_id {X : Scheme.{u}} (s t : SequenceOfBlowups X)
     (h : IsPullbackBlowupSequence (𝟙 X) s t) (hc : ∀ i : ℕ, i < t.length → t.center i ≠ ⊤) :
     s.Isomorphic t := by
@@ -267,11 +355,17 @@ theorem isomorphic_of_isPullbackSequenceOfBlowups_id {X : Scheme.{u}} (s t : Seq
   exact IsStrictPullbackBlowupSeq.isomorphic (h.isStrictPullback_of_surjective hc)
     (IsStrictPullbackBlowupSeq.id t)
 
+/- English proof (translation)
+The claim follows from `hsm k n`.
+-/
 private theorem smooth_affineSpaceIndexedByToSpec (hsm : AffineSpaceIsSmooth.{u}) (k : Type u)
     [Field k] (n : ℕ) :
     AlgebraicGeometry.Smooth (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin n))) :=
   hsm k n
 
+/- English proof (translation)
+Establish `: AlgebraicGeometry.Smooth (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin n)))` using `hsm k n`. Conclude with `inStrictNormalCrossingPosition_nil (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin n)))`.
+-/
 private theorem inStrictNormalCrossingPosition_nil_affineSpace (hsm : AffineSpaceIsSmooth.{u}) (k : Type u)
     [Field k] (n : ℕ) :
     InStrictNormalCrossingPosition (affineSpaceIndexedByToSpec k (ULift.{u, 0} (Fin n))) [] := by
@@ -297,6 +391,9 @@ def EmbeddingDatum.ofClosedImmersionAffineSpace (hsm : AffineSpaceIsSmooth.{u}) 
   sncEmpty := inStrictNormalCrossingPosition_nil_affineSpace hsm k n
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem EmbeddingDatum.ofClosedImmersionAffineSpace_ambient (hsm : AffineSpaceIsSmooth.{u}) {k : Type u} [Field k]
     [CharZero k] {Y : Scheme.{u}} {p : Y ⟶ Spec (CommRingCat.of k)} (n : ℕ)
     (e : Y ⟶ affineSpaceIndexedBy k (ULift.{u, 0} (Fin n))) [IsClosedImmersion e]

@@ -10,6 +10,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum (IsCO)
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.hasConductor_one_continuous_ne_one | exact GlobalTheory.hasConductor_one_continuous_ne_one | (intros; apply GlobalTheory.hasConductor_one_continuous_ne_one <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.addChar_conductor_integers_continuous_ne_one : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle),
     HasConductor ψ 1 → Continuous ψ ∧ ψ ≠ 1 := by
   first | exact @GlobalTheory.hasConductor_one_continuous_ne_one | exact GlobalTheory.hasConductor_one_continuous_ne_one | (intros; apply GlobalTheory.hasConductor_one_continuous_ne_one <;> assumption)

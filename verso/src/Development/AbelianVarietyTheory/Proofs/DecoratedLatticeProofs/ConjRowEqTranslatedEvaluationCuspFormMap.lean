@@ -25,6 +25,15 @@ noncomputable section
 
 namespace GlobalTheory.Core.SeeOnto
 
+/- English proof (translation)
+Introduce `hDS D X h θ S M J χ t v₀ hS hθ hGap hIdE hM hCV φ hφ`. Take `⟨c, hc, hv₀⟩` from `hCV`. Establish `hL` using `(GlobalTheory.T.discreteSeriesTestData_of_noncompactGaps D X hGap).2.2.2.2.2`. Take `⟨Φ, hΦ, hΦw⟩` from `Formalism.L2.SG.EvalTOnto.rows_eq_hom X hL (star φ) hφ`. Establish `hrep` using `GlobalTheory.T.exists_continuous_leftInvariant_rep_conjugateTensor hDS D X h θ S M J χ t c hS hθ hGap hIdE hM hc Φ hΦ`.
+
+Establish `hmult : GlobalTheory.ConjRowMult.conjMap X M c Φ h t ∈ Mult θ M J χ` using `Submodule.subset_span ⟨GlobalTheory.T.conjugateIntertwiner_values_smoothAutomorphic hDS D X h θ S M J χ t c hS hθ hGap hIdE hM hc Φ hΦ hrep, GlobalTheory.T.conjugateIntertwiner_values_isCuspFun hDS D X h θ S M J χ t c hS hθ hGap hIdE hM hc Φ hΦ hrep, GlobalTheory.T.conjugate_eval …`. Use `⟨PiTensorProduct.lift (GlobalTheory.ConjRowMult.conjMap X M c Φ h t), (mem_multT θ M J χ _).2 (by simpa using hmult), ?_⟩` and prove the remaining obligations. Establish `hw : GlobalTheory.ConjRowMult.vecC X M c v₀ = X.B.w` using `GlobalTheory.ConjRowMult.vecC_eq X M c v₀ X.B.w hv₀`. Take `⟨ψ, hψ⟩` from `hrep v₀`. Rewrite `hψ` using `[hw, hΦw]`.
+
+Establish `key : ∀ x, evS X h t (PiTensorProduct.lift (GlobalTheory.ConjRowMult.conjMap X M c Φ h t) (PiTensorProduct.tprod ℂ v₀)) x = star (ψ x)`. Introduce `x`. Rewrite using `[evS, PiTensorProduct.lift.tprod]`. Use `(GlobalTheory.ConjRowMult.conjMap_apply X M c Φ h t v₀ _).trans ?_` and prove the remaining obligations. Rewrite using `[hw, hΦw, GlobalTheory.ConjRowMult.contRepL_spec X hψ]`.
+
+Establish `e : ∀ a b : GA D (D.sp.Y 0), a * b * b⁻¹ = a` using `fun a b => mul_inv_cancel_right a b`. Use `erw [e, ContinuousMulEquiv.apply_symm_apply]`. Use `filter_upwards [hψ.2.2, Lp.coeFn_star φ] with x h1 h2`. Rewrite using `[key x, ← h1, h2, Pi.star_apply, star_star]`.
+-/
 theorem see_onto : GlobalTheory.Published.DiscreteSeriesClassification → ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (θ : InfFam D) (S : D.what₂.Tau → SPar) (M : DSModel (D.sp.Y 0) S) (J : Set (GA D (D.sp.Y 0))) (χ : GA D (D.sp.Y 0) → ℂ) (t : GA D (D.sp.Y 0)) (v₀ : M.Vec), S = parB (Ptw D) 0 → IsInfFam θ → GlobalTheory.Count.GapGe X.B (100 * (D.R.r : ℝ) ^ 4) → IdE X → Matches X h J χ t → ConjVec X h θ M v₀ → ∀ φ : L2X X, star φ ∈ HHX X → ∃ T ∈ MultT θ M J χ, (φ : X.B.I.GA → ℂ) =ᵐ[muX X] evS X h t (T (PiTensorProduct.tprod ℂ v₀)) := by
   intro hDS D X h θ S M J χ t v₀ hS hθ hGap hIdE hM hCV φ hφ
   obtain ⟨c, hc, hv₀⟩ := hCV

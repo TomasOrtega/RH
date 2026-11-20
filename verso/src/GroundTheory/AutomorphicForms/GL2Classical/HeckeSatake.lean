@@ -37,20 +37,32 @@ def toInts (x : 𝒪[Qp p]) : (placeAt p).adicCompletionIntegers ℚ :=
 def ofInts (y : (placeAt p).adicCompletionIntegers ℚ) : 𝒪[Qp p] :=
   ⟨(y : Qp p), (GroundTheory.Global.mem_valuationInteger_iff (placeAt p) (y : Qp p)).2 y.2⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.ext rfl`.
+-/
 theorem toInts_mul (x y : 𝒪[Qp p]) : toInts p (x * y) = toInts p x * toInts p y := Subtype.ext rfl
 
 def integersMulEquiv : 𝒪[Qp p] ≃* (placeAt p).adicCompletionIntegers ℚ :=
   { toFun := toInts p, invFun := ofInts p, left_inv := fun _ => Subtype.ext rfl,
     right_inv := fun _ => Subtype.ext rfl, map_mul' := toInts_mul p }
 
+/- English proof (translation)
+The claim follows from `(MulEquiv.irreducible_iff (integersMulEquiv p)).2 (GLnLocal.irreducible_uniformizer (Qp p))`.
+-/
 theorem irreducible_toInts : Irreducible (toInts p (GLnLocal.uniformizer (Qp p))) :=
   (MulEquiv.irreducible_iff (integersMulEquiv p)).2 (GLnLocal.irreducible_uniformizer (Qp p))
 
+/- English proof (translation)
+Establish `h` using `GroundTheory.Global.valued_of_irreducible (placeAt p) (irreducible_toInts p)`. Conclude with `h`.
+-/
 theorem valued_uniformizer :
     Valued.v (GLnLocal.uniformizer (Qp p) : Qp p) = WithZero.exp (-1 : ℤ) := by
   have h := GroundTheory.Global.valued_of_irreducible (placeAt p) (irreducible_toInts p)
   exact h
 
+/- English proof (translation)
+Introduce `h` and use `(GLnLocal.irreducible_uniformizer (Qp p)).ne_zero (Subtype.ext h)`.
+-/
 theorem uniformizer_ne_zero : (GLnLocal.uniformizer (Qp p) : Qp p) ≠ 0 := fun h =>
   (GLnLocal.irreducible_uniformizer (Qp p)).ne_zero (Subtype.ext h)
 
@@ -63,6 +75,9 @@ def localRightRep : Representation ℂ (GL (Fin 2) (Qp p)) (AdelicGL ℚ 2 → �
 
 variable {k : ℤ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[gMat_apply, coe_torusPow, cMat_apply_of_not c (fun h => h.2.1 (Finset.mem_univ _)), add_zero]`. Simplify using `[lamS, Matrix.one_apply, Matrix.diagonal_apply]`.
+-/
 theorem gMat_univ (c : Pairs (Finset.univ : Finset (Fin 2)) → 𝓀[Qp p]) :
     gMat Finset.univ c = torusPow (Qp p) 2 (fun _ => 1) := by
   ext i j

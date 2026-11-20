@@ -11,6 +11,9 @@ variable {E : Type} [CommRing E] {τ : E →+* E} {V : Type} [AddCommGroup V] [M
 abbrev Tuples (B : HermSp E τ V) (n : ℕ) : Type :=
   {x : Fin n → V // ∀ i j, B.h (x i) (x j) = if i = j then 1 else 0}
 
+/- English proof (translation)
+Rewrite using `[w.2]`. Conclude with `isUnit_one`.
+-/
 theorem isUnit_norm (B : HermSp E τ V) (w : {w : V // B.h w w = 1}) : IsUnit (B.h w.1 w.1) := by
   rw [w.2]; exact isUnit_one
 
@@ -46,6 +49,21 @@ namespace GlobalTheory.CompanionTheory.UnrDens
 
 open OrthCount in
 
+/- English proof (translation)
+Introduce `E _ τ q ε hR n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `m _ V _ _ B _`. Establish `h1 : Nat.card {x : Fin 0 → V // ∀ i j, B.h (x i) (x j) = if i = j then 1 else 0} = 1`.
+
+Rewrite using `[Nat.card_eq_one_iff_unique]`. Use `⟨⟨fun a b => Subtype.ext (funext fun i => i.elim0)⟩, ⟨⟨fun i => i.elim0, fun i => i.elim0⟩⟩⟩` and prove the remaining obligations. Simplify using `[h1]`. Consider the case `succ n ih`. Introduce `m hnm V _ _ B hc`.
+
+Take `⟨m', rfl⟩ : ∃ m', m = m' + 1` from `⟨m - 1, by omega⟩`. Establish `hq : 1 < q` using `hR.one_lt`. Establish `hq0 : q ≠ 0` using `by omega`. Use `haveI : Finite V := Nat.finite_of_card_ne_zero (by rw [hc]; exact pow_ne_zero _ hq0)`. Use `haveI : Finite E := Nat.finite_of_card_ne_zero (by rw [hR.card]; exact pow_ne_zero _ hq0)`.
+
+Use `haveI : Nontrivial E := Finite.one_lt_card_iff_nontrivial.1 (by rw [hR.card]; nlinarith)`. Establish `hsph` using `(GlobalTheory.T.hermitian_vector_values_card E τ q ε hR (m' + 1) V B hc).1 1 (map_one τ) one_ne_zero`. Establish `hperp : ∀ w : {w : V // B.h w w = 1}, Nat.card (B.perp w.1) = q ^ (2 * m')`. Introduce `w`. Establish `h1` using `Nat.card_congr (B.perpEquiv (isUnit_norm B w))`.
+
+Rewrite `h1` using `[Nat.card_prod, hR.card, hc]`. Establish `h2 : q ^ (2 * (m' + 1)) = q ^ 2 * q ^ (2 * m')` using `by ring`. Rewrite `h1` using `[h2]`. Conclude with `Nat.eq_of_mul_eq_mul_left (pow_pos (by omega) 2) h1`. Establish `hfib : ∀ w : {w : V // B.h w w = 1}, (Nat.card (Tuples (B.perpForm (isUnit_norm B w)) n) : ℝ) = ∏ i : Fin n, ((q : ℝ) ^ (2 * (m' - (i : ℕ))) / q * (1 - ((ε : ℝ) / q) ^ (m' - (i : ℕ))))` using `fun w => ih m' (by omega) (B.perp w.1) (B.perpForm (isUnit_norm B w)) (hperp w)`.
+
+Use `haveI : Fintype {w : V // B.h w w = 1} := Fintype.ofFinite _`. Establish `hcard : (Nat.card (Tuples B (n + 1)) : ℝ) = (Nat.card {w : V // B.h w w = 1} : ℝ) * ∏ i : Fin n, ((q : ℝ) ^ (2 * (m' - (i : ℕ))) / q * (1 - ((ε : ℝ) / q) ^ (m' - (i : ℕ))))`. Rewrite using `[Nat.card_congr (consEquiv B n), Nat.card_sigma]`. Use `push_cast`. Rewrite using `[Finset.sum_congr rfl (fun w _ => hfib w), Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Nat.card_eq_fintype_card]`.
+
+Express the relevant statement in the definitionally equal form `(Nat.card (Tuples B (n + 1)) : ℝ) = _`. Rewrite using `[hcard, hsph, Fin.prod_univ_succ]`. Simplify using `[Nat.add_sub_add_right]`.
+-/
 theorem card_orthonormal_tuples : ∀ (E : Type) [CommRing E] (τ : E →+* E) (q : ℕ) (ε : ℤ), ResAlg E τ q ε → ∀ (n m : ℕ), n ≤ m → ∀ (V : Type) [AddCommGroup V] [Module E V] (B : HermSp E τ V), Nat.card V = q ^ (2 * m) → (Nat.card {x : Fin n → V // ∀ i j, B.h (x i) (x j) = if i = j then 1 else 0} : ℝ) = ∏ i : Fin n, ((q : ℝ) ^ (2 * (m - (i : ℕ))) / q * (1 - ((ε : ℝ) / q) ^ (m - (i : ℕ)))) := by
   intro E _ τ q ε hR n
   induction n with

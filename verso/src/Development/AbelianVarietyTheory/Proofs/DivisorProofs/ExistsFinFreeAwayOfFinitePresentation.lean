@@ -18,11 +18,23 @@ variable {A B A' B' : Type} [CommRing A] [CommRing B] [CommRing A'] [CommRing B'
 
 def tr (φ : A →+* B) : B →+ A := letI := φ.toAlgebra; (Algebra.trace A B).toAddMonoidHom
 
+/- English proof (translation)
+Use `letI := φ.toAlgebra`. Express the relevant statement in the definitionally equal form `Algebra.trace A B (algebraMap A B a * b) = a * Algebra.trace A B b`. Rewrite using `[← Algebra.smul_def, map_smul, smul_eq_mul]`.
+-/
 theorem tr_mul (φ : A →+* B) (a : A) (b : B) : tr φ (φ a * b) = a * tr φ b := by
   letI := φ.toAlgebra
   change Algebra.trace A B (algebraMap A B a * b) = a * Algebra.trace A B b
   rw [← Algebra.smul_def, map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Use `algebraize [φ, α, β, φ', φ'.comp α]`. Establish `: IsScalarTower A B B'` using `IsScalarTower.of_algebraMap_eq' (congrArg CommRingCat.Hom.hom H.w).symm`. Establish `P : Algebra.IsPushout A B A' B'` using `CommRingCat.isPushout_iff_isPushout.1 H`. Use `haveI : Module.Finite A B := h.1`. Use `haveI : Module.Free A B := h.2`.
+
+Establish `hb : IsBaseChange A' (IsScalarTower.toAlgHom A B B').toLinearMap` using `P.symm.out`. Express the relevant statement in the definitionally equal form `LinearMap.trace A' B' (Algebra.lmul A' B' (β b)) = algebraMap A A' (LinearMap.trace A B (Algebra.lmul A B b))`. Rewrite using `[← LinearMap.trace_baseChange, ← LinearMap.trace_conj' _ hb.equiv]`. Use `congr 1`. Use extensionality with `y`.
+
+Take `⟨t, rfl⟩` from `hb.equiv.surjective y`. Simplify using `only [LinearEquiv.conj_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r x => simp [IsBaseChange.equiv_tmul]`.
+
+Both sides reduce to the same expression. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`.
+-/
 theorem tr_of_isPushout {φ : A →+* B} {α : A →+* A'} {β : B →+* B'} {φ' : A' →+* B'}
     (H : IsPushout (CommRingCat.ofHom φ) (CommRingCat.ofHom α) (CommRingCat.ofHom β)
       (CommRingCat.ofHom φ'))
@@ -47,6 +59,11 @@ theorem tr_of_isPushout {φ : A →+* B} {α : A →+* A'} {β : B →+* B'} {φ
   | tmul r x => simp [IsBaseChange.equiv_tmul]; rfl
   | add s t hs ht => simp only [map_add, hs, ht]
 
+/- English proof (translation)
+Use `letI := φ.toAlgebra`. Use `haveI : Module.Finite A B := h.1`. Use `haveI : Module.Free A B := h.2`. Break down `subsingleton_or_nontrivial A with hA | hA` into its components or cases. Conclude with `Subsingleton.elim _ _`.
+
+Express the relevant statement in the definitionally equal form `Algebra.trace A B (algebraMap A B a) = _`. Rewrite using `[Algebra.trace_algebraMap, hr hA, nsmul_eq_mul]`.
+-/
 theorem tr_map (φ : A →+* B) (h : FinFree φ) (r : ℕ)
     (hr : Nontrivial A → (letI := φ.toAlgebra; Module.finrank A B) = r) (a : A) :
     tr φ (φ a) = r * a := by
@@ -58,6 +75,13 @@ theorem tr_map (φ : A →+* B) (h : FinFree φ) (r : ℕ)
   · change Algebra.trace A B (algebraMap A B a) = _
     rw [Algebra.trace_algebraMap, hr hA, nsmul_eq_mul]
 
+/- English proof (translation)
+Use `algebraize [φ]`. Establish `: Module.FinitePresentation A B` using `Module.FinitePresentation.of_finite_of_finitePresentation A B`. Establish `: Module.Free (Localization p.asIdeal.primeCompl) (LocalizedModule p.asIdeal.primeCompl B)` using `Module.free_of_flat_of_isLocalRing`. Take `⟨r, hr, hfree, -⟩` from `Module.FinitePresentation.exists_free_localizedModule_powers p.asIdeal.primeCompl (LocalizedModule.mkLinearMap p.asIdeal.primeCompl B) (Localization p.asIdeal.primeCompl)`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations.
+
+Introduce `A' B' _ _ α β φ' H hu`. Use `algebraize [α, β, φ', φ'.comp α]`. Establish `: IsScalarTower A B B'` using `IsScalarTower.of_algebraMap_eq' (congrArg CommRingCat.Hom.hom H.w).symm`. Establish `P : Algebra.IsPushout A B A' B'` using `CommRingCat.isPushout_iff_isPushout.1 H`. Establish `hb : IsBaseChange A' (IsScalarTower.toAlgHom A B B').toLinearMap` using `P.symm.out`.
+
+Use `⟨Module.Finite.equiv hb.equiv, ?_⟩` and prove the remaining obligations. Use `letI : Algebra (Localization.Away r) A' := (IsLocalization.Away.lift r (g := α) hu).toAlgebra`. Establish `: IsScalarTower A (Localization.Away r) A'` using `IsScalarTower.of_algebraMap_eq fun x => (IsLocalization.Away.lift_eq r hu x).symm`. Establish `h₁ : Module.Free (Localization.Away r) (TensorProduct A (Localization.Away r) B)` using `Module.Free.of_equiv (IsLocalizedModule.isBaseChange (.powers r) (Localization.Away r) (LocalizedModule.mkLinearMap (.powers r) B)).equiv.symm`. Conclude with `Module.Free.of_equiv ((TensorProduct.AlgebraTensorModule.cancelBaseChange A (Localization.Away r) A' A' B).trans hb.equiv)`.
+-/
 theorem exists_finFree_away_of_finitePresentation {φ : A →+* B} (hf : φ.Finite) (hfl : φ.Flat)
     (hfp : φ.FinitePresentation) (p : PrimeSpectrum A) :
     ∃ r ∉ p.asIdeal, ∀ {A' B' : Type} [CommRing A'] [CommRing B'] {α : A →+* A'} {β : B →+* B'}
@@ -95,10 +119,16 @@ open GlobalTheory.FlatNorm (FreeOpen)
 
 variable {X Y : Scheme.{0}} (f : X ⟶ Y)
 
+/- English proof (translation)
+Conclude with `congr($(f.naturality (homOfLE h).op).hom a).symm`.
+-/
 theorem resG_app_eq {V W : Y.Opens} (h : W ≤ V) (a : Γ(Y, V)) :
     resG X (f.preimage_mono h) ((f.app V).hom a) = (f.app W).hom (resG Y h a) := by
   exact congr($(f.naturality (homOfLE h).op).hom a).symm
 
+/- English proof (translation)
+The claim follows from `(tr_of_isPushout (isPushout_app f hV hW h) hF b).symm`.
+-/
 theorem resG_tr [IsFinite f] {V W : Y.Opens} (hV : IsAffineOpen V) (hW : IsAffineOpen W) (h : W ≤ V)
     (hF : FinFree (f.app V).hom) (b : Γ(X, f ⁻¹ᵁ V)) :
     resG Y h (tr (f.app V).hom b) = tr (f.app W).hom (resG X (f.preimage_mono h) b) :=
@@ -108,9 +138,19 @@ variable [IsFinite f] [Flat f] [LocallyOfFinitePresentation f]
 
 omit [Flat f] [LocallyOfFinitePresentation f] in
 
+/- English proof (translation)
+The claim follows from `hV.preimage f`.
+-/
 theorem isAffineOpen_preimage {V : Y.Opens} (hV : IsAffineOpen V) : IsAffineOpen (f ⁻¹ᵁ V) :=
   hV.preimage f
 
+/- English proof (translation)
+Take `⟨V, hV, hyV, hle⟩` from `exists_isAffineOpen_mem_and_subset hy`. Establish `hfl : (f.app V).hom.Flat`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `f.flat_appLE hV (hV.preimage f) _`. Establish `hfp : (f.app V).hom.FinitePresentation`.
+
+Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `f.finitePresentation_appLE hV (hV.preimage f) _`. Take `⟨r, hr, H⟩` from `exists_finFree_away_of_finitePresentation (f.finite_app V hV) hfl hfp (hV.primeIdealOf ⟨y, hyV⟩)`. Use `⟨Y.basicOpen r, hV.basicOpen r, ?_, (Y.basicOpen_le r).trans hle, H (isPushout_app f hV (hV.basicOpen r) (Y.basicOpen_le r)) (Y.toRingedSpace.isUnit_res_basicOpen r)⟩` and prove the remaining obligations. Establish `e` using `hV.fromSpec_primeIdealOf ⟨y, hyV⟩`.
+
+Establish `h₁ : hV.primeIdealOf ⟨y, hyV⟩ ∈ hV.fromSpec ⁻¹ᵁ Y.basicOpen r`. Rewrite using `[hV.fromSpec_preimage_basicOpen]`. Conclude with `hr`. Conclude with `(congrArg (· ∈ Y.basicOpen r) e).mp h₁`.
+-/
 theorem exists_finFree_app_of_finitePresentation {y : Y} {U : Y.Opens} (hy : y ∈ U) :
     ∃ V : Y.Opens, IsAffineOpen V ∧ y ∈ V ∧ V ≤ U ∧ FinFree (f.app V).hom := by
   obtain ⟨V, hV, hyV, hle⟩ := exists_isAffineOpen_mem_and_subset hy
@@ -130,14 +170,25 @@ theorem exists_finFree_app_of_finitePresentation {y : Y} {U : Y.Opens} (hy : y �
     exact hr
   exact (congrArg (· ∈ Y.basicOpen r) e).mp h₁
 
+/- English proof (translation)
+Introduce `_ hx` and use `by obtain ⟨W, h₁, h₂, h₃, h₄⟩ := exists_finFree_app_of_finitePresentation f hx exact Opens.mem_iSup.2 ⟨⟨W, h₁, h₃, h₄⟩, h₂⟩`.
+-/
 theorem le_iSup_freeOpen (V : Y.Opens) : V ≤ ⨆ W : FreeOpen f V, W.1 := fun _ hx => by
   obtain ⟨W, h₁, h₂, h₃, h₄⟩ := exists_finFree_app_of_finitePresentation f hx
   exact Opens.mem_iSup.2 ⟨⟨W, h₁, h₃, h₄⟩, h₂⟩
 
+/- English proof (translation)
+The claim follows from `fun_ext_of_cover _ (fun W : FreeOpen f V => W.2.2.1) (le_iSup_freeOpen f V) h`.
+-/
 theorem ext_freeOpen {V : Y.Opens} {a b : Γ(Y, V)}
     (h : ∀ W : FreeOpen f V, resG Y W.2.2.1 a = resG Y W.2.2.1 b) : a = b :=
   fun_ext_of_cover _ (fun W : FreeOpen f V => W.2.2.1) (le_iSup_freeOpen f V) h
 
+/- English proof (translation)
+Use `letI := (f.app V).hom.toAlgebra`. Use `haveI : Module.Free Γ(Y, V) Γ(X, f ⁻¹ᵁ V) := hF.2`. Use `haveI : Module.Finite Γ(Y, V) Γ(X, f ⁻¹ᵁ V) := hF.1`. Take `⟨p⟩ : Nonempty (PrimeSpectrum Γ(Y, V))` from `inferInstance`. Establish `e` using `(GlobalTheory.AbelianMulFin.affine_finite_projective_rankAtStalk f r hr V hV).2.2.2 p`.
+
+Rewrite `e` using `[Module.rankAtStalk_eq_finrank_of_free]`. Conclude with `e`.
+-/
 theorem finrank_app_of_finrank (r : ℕ) (hr : ∀ y, f.finrank y = r) (V : Y.Opens) (hV : IsAffineOpen V)
     (hF : FinFree (f.app V).hom) (hN : Nontrivial Γ(Y, V)) :
     (letI := (f.app V).hom.toAlgebra; Module.finrank Γ(Y, V) Γ(X, f ⁻¹ᵁ V)) = r := by
@@ -149,6 +200,9 @@ theorem finrank_app_of_finrank (r : ℕ) (hr : ∀ y, f.finrank y = r) (V : Y.Op
   rw [Module.rankAtStalk_eq_finrank_of_free] at e
   exact e
 
+/- English proof (translation)
+The claim follows from `exists_fun_of_cover _ (fun W : FreeOpen f V => W.2.2.1) (le_iSup_freeOpen f V) _ fun W W' => ext_freeOpen f fun O => by rw [resG_resG, resG_resG, resG_tr f W.2.1 O.2.1 _ W.2.2.2, resG_tr f W'.2.1 O.2.1 _ W'.2.2.2, resG_resG, resG_resG]`.
+-/
 theorem exists_trFun (V : Y.Opens) (b : Γ(X, f ⁻¹ᵁ V)) : ∃ a : Γ(Y, V), ∀ W : FreeOpen f V,
     resG Y W.2.2.1 a = tr (f.app W.1).hom (resG X (f.preimage_mono W.2.2.1) b) :=
   exists_fun_of_cover _ (fun W : FreeOpen f V => W.2.2.1) (le_iSup_freeOpen f V) _ fun W W' =>
@@ -164,21 +218,33 @@ def trFun (V : Y.Opens) : Γ(X, f ⁻¹ᵁ V) →+ Γ(Y, V) where
     rw [(exists_trFun f V _).choose_spec W, map_add, map_add, map_add,
       (exists_trFun f V a).choose_spec W, (exists_trFun f V b).choose_spec W]
 
+/- English proof (translation)
+The claim follows from `(exists_trFun f V b).choose_spec W`.
+-/
 theorem resG_trFun_free {V : Y.Opens} (b : Γ(X, f ⁻¹ᵁ V)) (W : FreeOpen f V) :
     resG Y W.2.2.1 (trFun f V b) = tr (f.app W.1).hom (resG X (f.preimage_mono W.2.2.1) b) :=
   (exists_trFun f V b).choose_spec W
 
+/- English proof (translation)
+The claim follows from `ext_freeOpen f fun O => by rw [resG_trFun_free, resG_resG, resG_resG] exact resG_trFun_free f b ⟨O.1, O.2.1, O.2.2.1.trans h, O.2.2.2⟩`.
+-/
 theorem resG_trFun {V W : Y.Opens} (h : W ≤ V) (b : Γ(X, f ⁻¹ᵁ V)) :
     resG Y h (trFun f V b) = trFun f W (resG X (f.preimage_mono h) b) :=
   ext_freeOpen f fun O => by
     rw [resG_trFun_free, resG_resG, resG_resG]
     exact resG_trFun_free f b ⟨O.1, O.2.1, O.2.2.1.trans h, O.2.2.2⟩
 
+/- English proof (translation)
+The claim follows from `ext_freeOpen f fun W => by rw [resG_trFun_free, map_mul (resG X _), map_mul (resG Y _), resG_app_eq, tr_mul, resG_trFun_free]`.
+-/
 theorem trFun_mul {V : Y.Opens} (a : Γ(Y, V)) (b : Γ(X, f ⁻¹ᵁ V)) :
     trFun f V ((f.app V).hom a * b) = a * trFun f V b :=
   ext_freeOpen f fun W => by
     rw [resG_trFun_free, map_mul (resG X _), map_mul (resG Y _), resG_app_eq, tr_mul, resG_trFun_free]
 
+/- English proof (translation)
+The claim follows from `ext_freeOpen f fun W => by rw [resG_trFun_free, resG_app_eq, tr_map _ W.2.2.2 r (hr W.1 W.2.1 W.2.2.2), map_mul, map_natCast]`.
+-/
 theorem trFun_app (r : ℕ) (hr : ∀ V : Y.Opens, IsAffineOpen V → FinFree (f.app V).hom →
       Nontrivial Γ(Y, V) → (letI := (f.app V).hom.toAlgebra; Module.finrank Γ(Y, V) Γ(X, f ⁻¹ᵁ V)) = r)
     {V : Y.Opens} (a : Γ(Y, V)) : trFun f V ((f.app V).hom a) = r * a :=
@@ -201,6 +267,9 @@ variable {L : LB Y}
 
 abbrev pj (L : LB Y) (i : L.ι) : (L.pull f).ι := fun _ => i
 
+/- English proof (translation)
+Introduce `_ hx` and use `⟨hx.1, (pull_U f (pj f L i)).ge hx.2⟩`.
+-/
 theorem preimage_inf_le (V : Y.Opens) (i : L.ι) :
     f ⁻¹ᵁ (V ⊓ L.U i) ≤ f ⁻¹ᵁ V ⊓ (L.pull f).U (pj f L i) :=
   fun _ hx => ⟨hx.1, (pull_U f (pj f L i)).ge hx.2⟩
@@ -208,6 +277,11 @@ theorem preimage_inf_le (V : Y.Opens) (i : L.ι) :
 def trCoord (V : Y.Opens) (s : SecOn (L.pull f) (f ⁻¹ᵁ V)) (i : L.ι) : Γ(Y, V ⊓ L.U i) :=
   trFun f (V ⊓ L.U i) (resG X (preimage_inf_le f V i) (coord s (pj f L i)))
 
+/- English proof (translation)
+Introduce `i j`. Establish `e` using `coord_rel s (pj f L i) (pj f L j) (W := f ⁻¹ᵁ (V ⊓ L.U i ⊓ L.U j)) (fun _ hx => ⟨hx.1.1, (pull_U f (pj f L i)).ge hx.1.2⟩) (fun _ hx => ⟨hx.1.1, (pull_U f (pj f L j)).ge hx.2⟩) (fun _ hx => ⟨(pull_U f (pj f L i)).ge hx.1.2, (pull_U f (pj f L j)).ge hx.2⟩)`. Use `erw [resG_pull_g] at e`. Simplify using `only [trCoord, resG_trFun, resG_resG]`. Rewrite using `[← trFun_mul, ← resG_app_eq, resG_app]`.
+
+Conclude with `congrArg (trFun f _) e`.
+-/
 theorem trCoord_mem (V : Y.Opens) (s : SecOn (L.pull f) (f ⁻¹ᵁ V)) : trCoord f V s ∈ secOn L V := by
   intro i j
   have e := coord_rel s (pj f L i) (pj f L j) (W := f ⁻¹ᵁ (V ⊓ L.U i ⊓ L.U j))
@@ -224,22 +298,34 @@ def trSec (V : Y.Opens) : SecOn (L.pull f) (f ⁻¹ᵁ V) →+ SecOn L V where
   map_zero' := sec_ext fun i => by simp [trCoord]
   map_add' s t := sec_ext fun i => by simp [trCoord]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coord_trSec (V : Y.Opens) (s : SecOn (L.pull f) (f ⁻¹ᵁ V)) (i : L.ι) :
     coord (trSec f V s) i = trFun f (V ⊓ L.U i) (resG X (preimage_inf_le f V i) (coord s (pj f L i))) :=
   rfl
 
+/- English proof (translation)
+The claim follows from `sec_ext fun i => by rw [coord_trSec, coord_smul, coord_smul, coord_trSec, map_mul, resG_resG, ← trFun_mul, resG_app_eq]`.
+-/
 theorem trSec_smul (V : Y.Opens) (a : Γ(Y, V)) (s : SecOn (L.pull f) (f ⁻¹ᵁ V)) :
     trSec f V ((f.app V).hom a • s) = a • trSec f V s :=
   sec_ext fun i => by
     rw [coord_trSec, coord_smul, coord_smul, coord_trSec, map_mul, resG_resG, ← trFun_mul,
       resG_app_eq]
 
+/- English proof (translation)
+The claim follows from `sec_ext fun i => by rw [coord_trSec, SecOn.coord_restrict, SecOn.coord_restrict, coord_trSec] erw [resG_trFun, resG_resG, resG_resG]`.
+-/
 theorem trSec_restrict {V W : Y.Opens} (h : W ≤ V) (s : SecOn (L.pull f) (f ⁻¹ᵁ V)) :
     trSec f W (SecOn.restrict (L.pull f) (f.preimage_mono h) s) = SecOn.restrict L h (trSec f V s) :=
   sec_ext fun i => by
     rw [coord_trSec, SecOn.coord_restrict, SecOn.coord_restrict, coord_trSec]
     erw [resG_trFun, resG_resG, resG_resG]
 
+/- English proof (translation)
+The claim follows from `sec_ext fun i => by rw [coord_trSec, coord_smul] erw [coord_pullSec, resG_appLE] rw [map_natCast, ← trFun_app f r hr (coord s i), Scheme.Hom.app_eq_appLE]`.
+-/
 theorem trSec_pull (r : ℕ) (hr : ∀ V : Y.Opens, IsAffineOpen V → FinFree (f.app V).hom →
       Nontrivial Γ(Y, V) → (letI := (f.app V).hom.toAlgebra; Module.finrank Γ(Y, V) Γ(X, f ⁻¹ᵁ V)) = r)
     (V : Y.Opens) (s : SecOn L V) :
@@ -261,14 +347,23 @@ section Cech
 
 variable {X Y : Scheme.{0}} (f : X ⟶ Y) {R : Type} [CommRing R] (q : Y ⟶ Spec (CommRingCat.of R))
 
+/- English proof (translation)
+Rewrite using `[CommRingCat.ofHom_id, Spec.map_id, Category.comp_id]`.
+-/
 theorem comp_eq_comp_id : f ≫ q = (f ≫ q) ≫ Spec.map (CommRingCat.ofHom (RingHom.id R)) := by
   rw [CommRingCat.ofHom_id, Spec.map_id, Category.comp_id]
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.app_eq_appLE, appLE_cst (comp_eq_comp_id f q) (le_refl (f ⁻¹ᵁ V)) r]`. Conclude with `rs_cst (f ≫ q) e r`.
+-/
 theorem resG_cst_comp {V : Y.Opens} {V' : X.Opens} (e : f ⁻¹ᵁ V ≤ V') (r : R) :
     resG X e (cst (f ≫ q) V' r) = (f.app V).hom (cst q V r) := by
   rw [Scheme.Hom.app_eq_appLE, appLE_cst (comp_eq_comp_id f q) (le_refl (f ⁻¹ᵁ V)) r]
   exact rs_cst (f ≫ q) e r
 
+/- English proof (translation)
+The claim follows from `map_natCast _ r`.
+-/
 theorem natCast_eq_cst (V : Y.Opens) (r : ℕ) : cst q V (r : R) = (r : Γ(Y, V)) := map_natCast _ r
 
 variable [IsFinite f] [Flat f] [LocallyOfFinitePresentation f] {L : LB Y}
@@ -314,6 +409,9 @@ namespace GlobalTheory.FinTrace
 
 open GlobalTheory.FiniteAmple GlobalTheory.LB GlobalTheory.AbLaw
 
+/- English proof (translation)
+Rewrite `hD`, the goal using `[HomologicalComplex.exactAt_iff_isZero_homology]`. Rewrite using `[IsZero.iff_id_eq_zero]`. Establish `e : 𝟙 (C.homology n) = HomologicalComplex.homologyMap i n ≫ HomologicalComplex.homologyMap p n ≫ inv (HomologicalComplex.homologyMap (i ≫ p) n)`. Rewrite using `[← Category.assoc, ← HomologicalComplex.homologyMap_comp, IsIso.hom_inv_id]`. Rewrite using `[e, hD.eq_of_tgt (HomologicalComplex.homologyMap i n) 0, zero_comp]`.
+-/
 theorem exactAt_of_isIso_comp {R : Type} [CommRing R] {C D : CochainComplex (ModuleCat.{0} R) ℕ}
     (i : C ⟶ D) (p : D ⟶ C) [IsIso (i ≫ p)] {n : ℕ} (hD : D.ExactAt n) : C.ExactAt n := by
   rw [HomologicalComplex.exactAt_iff_isZero_homology] at hD ⊢
@@ -331,6 +429,11 @@ section Cech
 variable {X Y : Scheme.{0}} (f : X ⟶ Y) {R : Type} [CommRing R] (q : Y ⟶ Spec (CommRingCat.of R))
   [IsFinite f] [Flat f] [LocallyOfFinitePresentation f]
 
+/- English proof (translation)
+Use extensionality with `s x`. Take `⟨y, rfl⟩ : ∃ y : SecOn L (⨅ i ∈ s, D i), y = x` from `⟨x, rfl⟩`. Express the relevant statement in the definitionally equal form `trSec f _ (SecOn.restrict (L.pull f) (preimage_biInf D f s).le (SecOn.pullLE L f _ _ (preimage_biInf D f s).ge y)) = ((hu.unit : R)) • (show SecOnR q L _ from y)`. Rewrite using `[SecOn.restrict_pullLE]`. Use `erw [SecOn.pullLE_self, trSec_pull f r hr]`.
+
+Rewrite using `[IsUnit.unit_spec, SecOnR.smul_def, natCast_eq_cst]`. Both sides reduce to the same expression.
+-/
 theorem pullCube_trCube (r : ℕ) (hr : ∀ V : Y.Opens, IsAffineOpen V → FinFree (f.app V).hom →
       Nontrivial Γ(Y, V) → (letI := (f.app V).hom.toAlgebra; Module.finrank Γ(Y, V) Γ(X, f ⁻¹ᵁ V)) = r)
     (hu : IsUnit (r : R)) (L : LB Y) {κ : Type} (D : κ → Y.Opens) :
@@ -344,6 +447,9 @@ theorem pullCube_trCube (r : ℕ) (hr : ∀ V : Y.Opens, IsAffineOpen V → FinF
   rw [IsUnit.unit_spec, SecOnR.smul_def, natCast_eq_cst]
   rfl
 
+/- English proof (translation)
+Use `haveI : IsIso ((cechFunctor κ R).map (pullCube f q L D) ≫ (cechFunctor κ R).map (trCube f q L D)) := by`. Rewrite using `[← Functor.map_comp, pullCube_trCube f q r hr hu]`. Use `infer_instance`. Conclude with `exactAt_of_isIso_comp ((cechFunctor κ R).map (pullCube f q L D)) ((cechFunctor κ R).map (trCube f q L D)) h`.
+-/
 theorem cechLB_exactAt_of_pull (r : ℕ) (hr : ∀ V : Y.Opens, IsAffineOpen V → FinFree (f.app V).hom →
       Nontrivial Γ(Y, V) → (letI := (f.app V).hom.toAlgebra; Module.finrank Γ(Y, V) Γ(X, f ⁻¹ᵁ V)) = r)
     (hu : IsUnit (r : R)) (L : LB Y) {κ : Type} [LinearOrder κ] (D : κ → Y.Opens) (n : ℕ)
@@ -373,6 +479,11 @@ def cechSMul (a : Γ(Y, ⊤)) (L : LB Y) {κ : Type} [LinearOrder κ] (D : κ �
     cechLB q L D ⟶ cechLB q L D :=
   (cechFunctor κ R).map (funCube q a L D)
 
+/- English proof (translation)
+Use extensionality with `s x`. Take `⟨y, rfl⟩ : ∃ y : SecOn L (⨅ i ∈ s, D i), y = x` from `⟨x, rfl⟩`. Express the relevant statement in the definitionally equal form `rs Y (le_top : (⨅ i ∈ s, D i) ≤ ⊤) (hu.unit⁻¹).val • trSec f _ (SecOn.restrict (L.pull f) (preimage_biInf D f s).le (SecOn.pullLE L f _ _ (preimage_biInf D f s).ge y)) = y`. Rewrite using `[SecOn.restrict_pullLE]`. Use `erw [SecOn.pullLE_self, trSec_pull f r (finrank_app_of_finrank f r hr)]`.
+
+Rewrite using `[smul_smul, ← map_natCast (rs Y (le_top : (⨅ i ∈ s, D i) ≤ ⊤)) r, ← map_mul, IsUnit.val_inv_mul, map_one, one_smul]`.
+-/
 theorem pullCube_trCube_inv (r : ℕ) (hr : ∀ y, f.finrank y = r) (hu : IsUnit (r : Γ(Y, ⊤)))
     (L : LB Y) {κ : Type} (D : κ → Y.Opens) :
     pullCube f q L D ≫ trCube f q L D ≫ funCube q (hu.unit⁻¹).val L D = 𝟙 _ := by
@@ -386,6 +497,9 @@ theorem pullCube_trCube_inv (r : ℕ) (hr : ∀ y, f.finrank y = r) (hu : IsUnit
   rw [smul_smul, ← map_natCast (rs Y (le_top : (⨅ i ∈ s, D i) ≤ ⊤)) r, ← map_mul, IsUnit.val_inv_mul,
     map_one, one_smul]
 
+/- English proof (translation)
+Establish `e` using `congrArg (cechFunctor κ R).map (pullCube_trCube_inv f q r hr hu L D)`. Rewrite `e` using `[Functor.map_comp, Functor.map_comp, CategoryTheory.Functor.map_id]`. Conclude with `e`.
+-/
 theorem cechLB_retract (r : ℕ) (hr : ∀ y, f.finrank y = r) (hu : IsUnit (r : Γ(Y, ⊤)))
     (L : LB Y) {κ : Type} [LinearOrder κ] (D : κ → Y.Opens) :
     cechPull f q L D ≫ (cechTr f q L D ≫ cechSMul q (hu.unit⁻¹).val L D) = 𝟙 (cechLB q L D) := by
@@ -393,6 +507,9 @@ theorem cechLB_retract (r : ℕ) (hr : ∀ y, f.finrank y = r) (hu : IsUnit (r :
   rw [Functor.map_comp, Functor.map_comp, CategoryTheory.Functor.map_id] at e
   exact e
 
+/- English proof (translation)
+Use `⟨cechLB_retract f q r hr hu L D, fun n h => ?_⟩` and prove the remaining obligations. Use `haveI : IsIso (cechPull f q L D ≫ (cechTr f q L D ≫ cechSMul q (hu.unit⁻¹).val L D)) := by`. Rewrite using `[cechLB_retract f q r hr hu]`. Use `infer_instance`. Conclude with `exactAt_of_isIso_comp (cechPull f q L D) (cechTr f q L D ≫ cechSMul q (hu.unit⁻¹).val L D) h`.
+-/
 theorem cechLB_retract_and_exactAt (r : ℕ) (hr : ∀ y, f.finrank y = r) (hu : IsUnit (r : Γ(Y, ⊤)))
     (L : LB Y) {κ : Type} [LinearOrder κ] (D : κ → Y.Opens) :
     cechPull f q L D ≫ (cechTr f q L D ≫ cechSMul q (hu.unit⁻¹).val L D) = 𝟙 (cechLB q L D) ∧
@@ -403,6 +520,9 @@ theorem cechLB_retract_and_exactAt (r : ℕ) (hr : ∀ y, f.finrank y = r) (hu :
     infer_instance
   exact exactAt_of_isIso_comp (cechPull f q L D) (cechTr f q L D ≫ cechSMul q (hu.unit⁻¹).val L D) h
 
+/- English proof (translation)
+The claim follows from `(cechLB_retract_and_exactAt f q r hr hu L D).2 n h`.
+-/
 theorem cechLB_exactAt_of_pull_of_finrank (r : ℕ) (hr : ∀ y, f.finrank y = r)
     (hu : IsUnit (r : Γ(Y, ⊤))) (L : LB Y) {κ : Type} [LinearOrder κ] (D : κ → Y.Opens) (n : ℕ)
     (h : (cechLB (f ≫ q) (L.pull f) (fun i => f ⁻¹ᵁ D i)).ExactAt n) : (cechLB q L D).ExactAt n :=

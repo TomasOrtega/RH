@@ -54,26 +54,52 @@ def Contains (R : Subring K) : Prop := ∀ f ∈ R, f ∈ E.ring
 def IsPrimeOf (R : Subring K) : Prop :=
   E.Contains R ∧ ∀ f ∈ E.ring, ∃ a ∈ R, ∃ b ∈ R, b ≠ 0 ∧ E.ord b = 0 ∧ f * b = a
 
+/- English proof (translation)
+Simplify using `[ordQ]`.
+-/
 @[simp] theorem ordQ_single (g : K) (t : ℚ) : E.ordQ (Finsupp.single g t) = t * E.ord g := by
   simp [ordQ]
 
+/- English proof (translation)
+Consider the cases of `E`. Consider the cases of `F`. Consider the cases of `h`. Both sides reduce to the same expression.
+-/
 theorem ext {E F : Place c} (h : E.ring = F.ring) : E = F := by
   cases E; cases F; cases h; rfl
 
+/- English proof (translation)
+Simplify using `[ord]`.
+-/
 @[simp] theorem ord_one : E.ord 1 = 0 := by simp [ord]
 
+/- English proof (translation)
+Rewrite using `[ord, ord, ord, map_mul, WithZero.log_mul ((map_ne_zero _).2 hf) ((map_ne_zero _).2 hg)]`.
+-/
 theorem ord_mul {f g : K} (hf : f ≠ 0) (hg : g ≠ 0) : E.ord (f * g) = E.ord f + E.ord g := by
   rw [ord, ord, ord, map_mul, WithZero.log_mul ((map_ne_zero _).2 hf) ((map_ne_zero _).2 hg)]
 
+/- English proof (translation)
+Rewrite using `[ord, ord, map_inv₀, WithZero.log_inv]`.
+-/
 theorem ord_inv (f : K) : E.ord f⁻¹ = -E.ord f := by
   rw [ord, ord, map_inv₀, WithZero.log_inv]
 
+/- English proof (translation)
+Rewrite using `[ord, ord, map_zpow₀, WithZero.log_zpow, smul_eq_mul]`.
+-/
 theorem ord_zpow (f : K) (m : ℤ) : E.ord (f ^ m) = m * E.ord f := by
   rw [ord, ord, map_zpow₀, WithZero.log_zpow, smul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[← zpow_natCast, ord_zpow]`.
+-/
 theorem ord_pow (f : K) (m : ℕ) : E.ord (f ^ m) = m * E.ord f := by
   rw [← zpow_natCast, ord_zpow]
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `IsDiscreteValuationRing.exists_irreducible E.ring`. Establish `h` using `le_ordTop_vw_iff (F := K) ht 0 f`. Rewrite `h` using `[ordTop_vw_of_ne_zero _ hf, WithTop.coe_le_coe]`. Use `h.trans ⟨?_, fun hf => ⟨⟨_, hf⟩, by simp⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨a, ha⟩`.
+
+Rewrite using `[ha, zpow_zero, one_mul]`. Conclude with `a.2`.
+-/
 theorem ord_nonneg_iff {f : K} (hf : f ≠ 0) : 0 ≤ E.ord f ↔ f ∈ E.ring := by
   obtain ⟨t, ht⟩ := IsDiscreteValuationRing.exists_irreducible E.ring
   have h := le_ordTop_vw_iff (F := K) ht 0 f
@@ -83,12 +109,21 @@ theorem ord_nonneg_iff {f : K} (hf : f ≠ 0) : 0 ≤ E.ord f ↔ f ∈ E.ring :
   rw [ha, zpow_zero, one_mul]
   exact a.2
 
+/- English proof (translation)
+The claim follows from `(congrArg WithZero.log (Ring.ordFrac_of_isUnit hu)).trans WithZero.log_one`.
+-/
 theorem ord_eq_zero {u : E.ring} (hu : IsUnit u) : E.ord (u : K) = 0 :=
   (congrArg WithZero.log (Ring.ordFrac_of_isUnit hu)).trans WithZero.log_one
 
+/- English proof (translation)
+The claim follows from `(congrArg WithZero.log (Ring.ordFrac_irreducible (K := K) ht)).trans (WithZero.log_exp 1)`.
+-/
 theorem ord_irreducible {t : E.ring} (ht : Irreducible t) : E.ord (t : K) = 1 :=
   (congrArg WithZero.log (Ring.ordFrac_irreducible (K := K) ht)).trans (WithZero.log_exp 1)
 
+/- English proof (translation)
+Introduce `h`. Use `IsDiscreteValuationRing.not_isField E.ring ?_` and prove the remaining obligations. Use `⟨⟨0, 1, zero_ne_one⟩, mul_comm, fun {a} ha => ?_⟩` and prove the remaining obligations. Establish `ha' : (a : K) ≠ 0` using `fun e => ha (Subtype.ext e)`. Conclude with `⟨⟨(a : K)⁻¹, h.ge trivial⟩, Subtype.ext (mul_inv_cancel₀ ha')⟩`.
+-/
 theorem ring_ne_top : E.ring ≠ ⊤ := by
   intro h
   refine IsDiscreteValuationRing.not_isField E.ring ?_
@@ -96,19 +131,34 @@ theorem ring_ne_top : E.ring ≠ ⊤ := by
   have ha' : (a : K) ≠ 0 := fun e => ha (Subtype.ext e)
   exact ⟨⟨(a : K)⁻¹, h.ge trivial⟩, Subtype.ext (mul_inv_cancel₀ ha')⟩
 
+/- English proof (translation)
+Introduce `f hf` and use `h f (hR hf)`.
+-/
 theorem Contains.mono {E : Place c} {R R' : Subring K} (h : E.Contains R') (hR : R ≤ R') :
     E.Contains R := fun f hf => h f (hR hf)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ext (ValuationSubring.eq_of_le_of_ne_top E.ring h F.ring_ne_top).symm, fun h => h ▸ fun _ hf => hf⟩`.
+-/
 theorem contains_ring_iff (F : Place c) : F.Contains E.ring.toSubring ↔ F = E :=
   ⟨fun h => ext (ValuationSubring.eq_of_le_of_ne_top E.ring h F.ring_ne_top).symm,
     fun h => h ▸ fun _ hf => hf⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ h => h, fun f hf => ⟨f, hf, 1, one_mem _, one_ne_zero, E.ord_one, mul_one f⟩⟩`.
+-/
 theorem isPrimeOf_self : E.IsPrimeOf E.ring.toSubring :=
   ⟨fun _ h => h, fun f hf => ⟨f, hf, 1, one_mem _, one_ne_zero, E.ord_one, mul_one f⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => (E.contains_ring_iff F).1 h.1, fun h => h ▸ F.isPrimeOf_self⟩`.
+-/
 theorem isPrimeOf_ring_iff (F : Place c) : F.IsPrimeOf E.ring.toSubring ↔ F = E :=
   ⟨fun h => (E.contains_ring_iff F).1 h.1, fun h => h ▸ F.isPrimeOf_self⟩
 
+/- English proof (translation)
+Use `letI := E.const.toAlgebra`. Use `letI := c.toAlgebra`. Use `haveI : IsScalarTower k E.ring K := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : Algebra.FormallyEtale E.ring K := .of_isLocalization (nonZeroDivisors E.ring)`. Conclude with `hω.of_isBaseChange (isBaseChange_exteriorPower (KaehlerDifferential.isBaseChange_of_formallyEtale k E.ring K) n)`.
+-/
 theorem isFreeGen_toRat {ω : Forms E.const n} (hω : IsFreeGen E.ring ω) :
     IsFreeGen K (E.toRat n ω) := by
   letI := E.const.toAlgebra
@@ -118,15 +168,26 @@ theorem isFreeGen_toRat {ω : Forms E.const n} (hω : IsFreeGen E.ring ω) :
   exact hω.of_isBaseChange (isBaseChange_exteriorPower
     (KaehlerDifferential.isBaseChange_of_formallyEtale k E.ring K) n)
 
+/- English proof (translation)
+Introduce `h` and use `one_ne_zero ((E.isFreeGen_toRat hω).1 (a₁ := 1) (a₂ := 0) (by simp [h]))`.
+-/
 theorem toRat_ne_zero {ω : Forms E.const n} (hω : IsFreeGen E.ring ω) : E.toRat n ω ≠ 0 :=
   fun h => one_ne_zero ((E.isFreeGen_toRat hω).1 (a₁ := 1) (a₂ := 0) (by simp [h]))
 
 variable {E}
 
+/- English proof (translation)
+Take `⟨ω, hω, f, rfl, -⟩` from `h`. Conclude with `smul_ne_zero f.ne_zero (E.toRat_ne_zero hω)`.
+-/
 theorem IsFormOrd.ne_zero {η : Forms c n} {a : ℤ} (h : E.IsFormOrd η a) : η ≠ 0 := by
   obtain ⟨ω, hω, f, rfl, -⟩ := h
   exact smul_ne_zero f.ne_zero (E.toRat_ne_zero hω)
 
+/- English proof (translation)
+Take `⟨ω, hω, f, rfl, rfl⟩` from `h`. Take `⟨ω', hω', g, e, rfl⟩` from `h'`. Take `⟨u, rfl⟩` from `hω.2 ω'`. Establish `hu` using `hω.smul_iff.1 hω'`. Rewrite `e` using `[map_smulₛₗ, smul_smul]`.
+
+Establish `e' : (f : K) = g * u` using `smul_left_injective _ (E.toRat_ne_zero hω) e`. Establish `hu0 : (u : K) ≠ 0` using `(hu.map E.ring.subtype).ne_zero`. Rewrite using `[e', E.ord_mul g.ne_zero hu0, E.ord_eq_zero hu, add_zero]`.
+-/
 theorem IsFormOrd.unique {η : Forms c n} {a b : ℤ} (h : E.IsFormOrd η a)
     (h' : E.IsFormOrd η b) : a = b := by
   obtain ⟨ω, hω, f, rfl, rfl⟩ := h
@@ -138,6 +199,9 @@ theorem IsFormOrd.unique {η : Forms c n} {a b : ℤ} (h : E.IsFormOrd η a)
   have hu0 : (u : K) ≠ 0 := (hu.map E.ring.subtype).ne_zero
   rw [e', E.ord_mul g.ne_zero hu0, E.ord_eq_zero hu, add_zero]
 
+/- English proof (translation)
+Establish `h' : ∃ a, E.IsFormOrd η a` using `⟨a, h⟩`. Rewrite using `[formOrd, dif_pos h']`. Conclude with `h'.choose_spec.unique h`.
+-/
 theorem IsFormOrd.formOrd_eq {η : Forms c n} {a : ℤ} (h : E.IsFormOrd η a) :
     E.formOrd η = a := by
   have h' : ∃ a, E.IsFormOrd η a := ⟨a, h⟩
@@ -146,10 +210,16 @@ theorem IsFormOrd.formOrd_eq {η : Forms c n} {a : ℤ} (h : E.IsFormOrd η a) :
 
 variable (E)
 
+/- English proof (translation)
+The claim follows from `IsFormOrd.formOrd_eq ⟨ω, hω, Units.mk0 f hf, rfl, rfl⟩`.
+-/
 theorem formOrd_smul_toRat {ω : Forms E.const n} (hω : IsFreeGen E.ring ω) {f : K} (hf : f ≠ 0) :
     E.formOrd (f • E.toRat n ω) = E.ord f :=
   IsFormOrd.formOrd_eq ⟨ω, hω, Units.mk0 f hf, rfl, rfl⟩
 
+/- English proof (translation)
+Simplify using `using E.formOrd_smul_toRat hω one_ne_zero`.
+-/
 theorem formOrd_toRat {ω : Forms E.const n} (hω : IsFreeGen E.ring ω) :
     E.formOrd (E.toRat n ω) = 0 := by
   simpa using E.formOrd_smul_toRat hω one_ne_zero
@@ -166,33 +236,63 @@ section KltApi
 
 variable {c : k →+* K} {n : ℕ} {R R' : Subring K} {η : Forms c n} {φ : K →₀ ℚ}
 
+/- English proof (translation)
+The claim follows from `h.1`.
+-/
 theorem Klt.form_ne_zero (h : Klt c n R η φ) : η ≠ 0 := h.1
 
+/- English proof (translation)
+The claim follows from `h.2.1`.
+-/
 theorem Klt.apply_zero (h : Klt c n R η φ) : φ 0 = 0 := h.2.1
 
+/- English proof (translation)
+The claim follows from `h.2.2 E hE`.
+-/
 theorem Klt.lt_disc (h : Klt c n R η φ) {E : Place c} (hE : E.Contains R) : -1 < E.disc η φ :=
   h.2.2 E hE
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.1, fun _ hE => h.lt_disc (hE.mono hR)⟩`.
+-/
 theorem Klt.mono (h : Klt c n R η φ) (hR : R ≤ R') : Klt c n R' η φ :=
   ⟨h.1, h.2.1, fun _ hE => h.lt_disc (hE.mono hR)⟩
 
+/- English proof (translation)
+The claim follows from `h.1`.
+-/
 theorem EffAt.form_ne_zero (h : EffAt c n R η φ) : η ≠ 0 := h.1
 
+/- English proof (translation)
+The claim follows from `h.2.1`.
+-/
 theorem EffAt.apply_zero (h : EffAt c n R η φ) : φ 0 = 0 := h.2.1
 
+/- English proof (translation)
+The claim follows from `h.2.2 E hE`.
+-/
 theorem EffAt.disc_le (h : EffAt c n R η φ) {E : Place c} (hE : E.IsPrimeOf R) :
     E.disc η φ ≤ 0 := h.2.2 E hE
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => h.lt_disc E.isPrimeOf_self.1, fun h => ⟨hη, hφ, fun F hF => (E.contains_ring_iff F).1 hF ▸ h⟩⟩`.
+-/
 theorem klt_ring_iff (E : Place c) (hη : η ≠ 0) (hφ : φ 0 = 0) :
     Klt c n E.ring.toSubring η φ ↔ -1 < E.disc η φ :=
   ⟨fun h => h.lt_disc E.isPrimeOf_self.1,
     fun h => ⟨hη, hφ, fun F hF => (E.contains_ring_iff F).1 hF ▸ h⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => h.disc_le E.isPrimeOf_self, fun h => ⟨hη, hφ, fun F hF => (E.isPrimeOf_ring_iff F).1 hF ▸ h⟩⟩`.
+-/
 theorem effAt_ring_iff (E : Place c) (hη : η ≠ 0) (hφ : φ 0 = 0) :
     EffAt c n E.ring.toSubring η φ ↔ E.disc η φ ≤ 0 :=
   ⟨fun h => h.disc_le E.isPrimeOf_self,
     fun h => ⟨hη, hφ, fun F hF => (E.isPrimeOf_ring_iff F).1 hF ▸ h⟩⟩
 
+/- English proof (translation)
+Establish `h0 : (0 : K) ≠ t` using `fun h => ht.ne_zero (Subtype.ext h.symm)`. Rewrite using `[klt_ring_iff E (E.toRat_ne_zero hω) (Finsupp.single_eq_of_ne h0), Place.disc, Place.ordQ_single, E.ord_irreducible ht, E.formOrd_toRat hω]`. Use `push_cast`. Apply the tactic sequence `constructor <;> intro <;> linarith`.
+-/
 theorem klt_uniformiser_iff (E : Place c) {ω : Forms E.const n} (hω : IsFreeGen E.ring ω)
     {t : E.ring} (ht : Irreducible t) (s : ℚ) :
     Klt c n E.ring.toSubring (E.toRat n ω) (Finsupp.single (t : K) s) ↔ s < 1 := by
@@ -202,6 +302,9 @@ theorem klt_uniformiser_iff (E : Place c) {ω : Forms E.const n} (hω : IsFreeGe
   push_cast
   constructor <;> intro <;> linarith
 
+/- English proof (translation)
+Establish `h0 : (0 : K) ≠ t` using `fun h => ht.ne_zero (Subtype.ext h.symm)`. Rewrite using `[effAt_ring_iff E (E.toRat_ne_zero hω) (Finsupp.single_eq_of_ne h0), Place.disc, Place.ordQ_single, E.ord_irreducible ht, E.formOrd_toRat hω]`. Use `push_cast`. Apply the tactic sequence `constructor <;> intro <;> linarith`.
+-/
 theorem effAt_uniformiser_iff (E : Place c) {ω : Forms E.const n} (hω : IsFreeGen E.ring ω)
     {t : E.ring} (ht : Irreducible t) (s : ℚ) :
     EffAt c n E.ring.toSubring (E.toRat n ω) (Finsupp.single (t : K) s) ↔ 0 ≤ s := by
@@ -227,6 +330,9 @@ def TrBasis (c : k →+* K) {n : ℕ} (x : Fin n → K) : Prop :=
   letI := c.toAlgebra
   IsTranscendenceBasis k x
 
+/- English proof (translation)
+The claim follows from `trivial isLocalRing := (Subring.topEquiv (R := k)).symm.isLocalRing essFiniteType := (RingHom.FiniteType.of_surjective _ fun a => ⟨a.1, rfl⟩).essFiniteType frac f := ⟨f, trivial, 1, trivial, one_ne_zero, mul_one f⟩`.
+-/
 theorem isLocModel_self : IsLocModel (RingHom.id k) ⊤ where
   const_mem _ := trivial
   isLocalRing := (Subring.topEquiv (R := k)).symm.isLocalRing
@@ -237,6 +343,9 @@ namespace Place
 
 variable {c : k →+* K} (E : Place c) {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `E.const_mem isLocalRing := inferInstanceAs (IsLocalRing E.ring) essFiniteType := E.essFiniteType frac f := by obtain ⟨a, b, hb, e⟩ := IsFractionRing.div_surjective (A := E.ring) f have hb0 : (b : K) ≠ 0 := fun h => nonZeroDivisors.ne_zero hb (Subtype.ext h) refine ⟨a, a.2, b, b.2 …`.
+-/
 theorem isLocModel : IsLocModel c E.ring.toSubring where
   const_mem := E.const_mem
   isLocalRing := inferInstanceAs (IsLocalRing E.ring)
@@ -248,6 +357,13 @@ theorem isLocModel : IsLocModel c E.ring.toSubring where
     rw [← e]
     exact div_mul_cancel₀ _ hb0
 
+/- English proof (translation)
+Use `letI := E.const.toAlgebra`. Use `letI := c.toAlgebra`. Use `haveI : IsScalarTower k E.ring K := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : Algebra.EssFiniteType k E.ring := E.essFiniteType`. Use `haveI := formallySmooth_of_isRegularLocalRing_of_perfectField k E.ring`.
+
+Take `⟨t, ht⟩` from `IsDiscreteValuationRing.exists_irreducible E.ring`. Take `⟨m, z, b, -, hb⟩` from `exists_basis_kaehler_uniformiser k ht`. Establish `h1` using `trdeg_eq_of_basis_kaehler k K b`. Establish `h2` using `IsTranscendenceBasis.cardinalMk_eq_trdeg (R := k) hx`. Rewrite `h2` using `[h1, Cardinal.mk_fin]`.
+
+Take `rfl : n = m + 1` from `by exact_mod_cast h2`. Conclude with `⟨_, isFreeGen_dForm z b hb⟩`.
+-/
 theorem exists_isFreeGen [PerfectField k] {x : Fin n → K} (hx : TrBasis c x) :
     ∃ ω : Forms E.const n, IsFreeGen E.ring ω := by
   letI := E.const.toAlgebra
@@ -263,6 +379,9 @@ theorem exists_isFreeGen [PerfectField k] {x : Fin n → K} (hx : TrBasis c x) :
   obtain rfl : n = m + 1 := by exact_mod_cast h2
   exact ⟨_, isFreeGen_dForm z b hb⟩
 
+/- English proof (translation)
+Take `⟨ω, hω⟩` from `E.exists_isFreeGen hx`. Take `⟨f, rfl⟩` from `(E.isFreeGen_toRat hω).2 η`. Establish `hf : f ≠ 0` using `fun h => hη (by rw [h]; exact zero_smul _ _)`. Establish `h : E.IsFormOrd (f • E.toRat n ω) _` using `⟨ω, hω, Units.mk0 f hf, rfl, rfl⟩`. Conclude with `h.formOrd_eq.symm ▸ h`.
+-/
 theorem isFormOrd_formOrd [PerfectField k] {x : Fin n → K} (hx : TrBasis c x) {η : Forms c n}
     (hη : η ≠ 0) : E.IsFormOrd η (E.formOrd η) := by
   obtain ⟨ω, hω⟩ := E.exists_isFreeGen hx
@@ -271,6 +390,9 @@ theorem isFormOrd_formOrd [PerfectField k] {x : Fin n → K} (hx : TrBasis c x) 
   have h : E.IsFormOrd (f • E.toRat n ω) _ := ⟨ω, hω, Units.mk0 f hf, rfl, rfl⟩
   exact h.formOrd_eq.symm ▸ h
 
+/- English proof (translation)
+Take `⟨ω, hω, g, e, h⟩` from `E.isFormOrd_formOrd hx hη`. Rewrite using `[← h, e, smul_smul, E.formOrd_smul_toRat hω (mul_ne_zero hf g.ne_zero), E.ord_mul hf g.ne_zero]`.
+-/
 theorem formOrd_smul [PerfectField k] {x : Fin n → K} (hx : TrBasis c x) {η : Forms c n}
     (hη : η ≠ 0) {f : K} (hf : f ≠ 0) : E.formOrd (f • η) = E.ord f + E.formOrd η := by
   obtain ⟨ω, hω, g, e, h⟩ := E.isFormOrd_formOrd hx hη
@@ -286,6 +408,9 @@ variable {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {n : ℕ}
 def locRing (x : X) : Subring X.functionField :=
   (algebraMap (X.presheaf.stalk x) X.functionField).range
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_locRing {x : X} {f : X.functionField} : f ∈ locRing x ↔ RegAt x f := Iff.rfl
 
 def placeEquiv (p : X ⟶ Sp k) : DivOver p ≃ Place (Cartier.constFn p) where
@@ -294,26 +419,48 @@ def placeEquiv (p : X ⟶ Sp k) : DivOver p ≃ Place (Cartier.constFn p) where
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ord_placeEquiv (E : DivOver p) (f : X.functionFieldˣ) :
     (placeEquiv p E).ord f = E.ord f := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem formOrd_placeEquiv (E : DivOver p) (η : RatForms p n) :
     (placeEquiv p E).formOrd η = E.formOrd η := rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem contains_placeEquiv (E : DivOver p) (x : X) :
     (placeEquiv p E).Contains (locRing x) ↔ E.Through x := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[Place.disc, Place.ordQ_single, discrep, formOrd_placeEquiv, ord_placeEquiv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem disc_placeEquiv (E : DivOver p) (η : RatForms p n) (m : ℕ) (g : X.functionFieldˣ) :
     (placeEquiv p E).disc η (Finsupp.single (g : X.functionField) (1 / (m : ℚ))) =
       discrep E η m g := by
   rw [Place.disc, Place.ordQ_single, discrep, formOrd_placeEquiv, ord_placeEquiv]
   ring
 
+/- English proof (translation)
+The claim follows from `have ⟨_, E, _⟩ := DivOver.exists_isAt_affineLine (k := k) ⟨placeEquiv _ E⟩`.
+-/
 theorem nonempty_place_affineLine :
     Nonempty (Place (Cartier.constFn (spMap (algebraMap k (Polynomial k))))) :=
   have ⟨_, E, _⟩ := DivOver.exists_isAt_affineLine (k := k)
   ⟨placeEquiv _ E⟩
 
+/- English proof (translation)
+Set `e : X.presheaf.stalk z ≃+* locRing z` to `RingEquiv.ofBijective (algebraMap (X.presheaf.stalk z) X.functionField).rangeRestrict ⟨fun _ _ e => IsFractionRing.injective _ X.functionField (congrArg Subtype.val e), RingHom.rangeRestrict_surjective _⟩`. Take `⟨U, hU, hz, -⟩` from `exists_isAffineOpen_mem_and_subset (x := z) (U := ⊤) trivial`. Establish `hc (a : k) : algebraMap _ X.functionField (X.presheaf.germ U z hz (algX p U a)) = Cartier.constFn p a` using `(algebraMap_germ hz _).trans (RingHom.congr_fun (fnOf_comp_algX p U _) a)`. Use `⟨fun a => ⟨_, hc a⟩, e.isLocalRing, ?_, fun f => ?_⟩` and prove the remaining obligations. Establish `h1 : (algX p U).FiniteType` using `(p.finiteType_appLE (isAffineOpen_top _) hU _).comp (.of_surjective _ (ConcreteCategory.bijective_of_isIso _).2)`.
+
+Establish `h2 : (X.presheaf.germ U z hz).hom.EssFiniteType`. Use `letI := X.presheaf.algebra_section_stalk (⟨z, hz⟩ : U)`. Use `haveI := hU.isLocalization_stalk ⟨z, hz⟩`. Use the proof step `Algebra.EssFiniteType.of_isLocalization (X.presheaf.stalk z) (hU.primeIdealOf ⟨z, hz⟩).asIdeal.primeCompl`. Establish `h3` using `(h1.essFiniteType.comp h2).comp (RingHom.FiniteType.of_surjective e.toRingHom e.surjective).essFiniteType`.
+
+Use `h3 using 1` and compare the differences between its conclusion and the goal. Conclude with `RingHom.ext fun a => Subtype.ext (hc a).symm`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := X.presheaf.stalk z) f`. Establish `hb' : algebraMap _ X.functionField b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Conclude with `⟨_, ⟨a, rfl⟩, _, ⟨b, rfl⟩, hb', div_mul_cancel₀ _ hb'⟩`.
+-/
 theorem isLocModel_locRing [LocallyOfFiniteType p] (z : X) :
     IsLocModel (Cartier.constFn p) (locRing z) := by
   let e : X.presheaf.stalk z ≃+* locRing z := RingEquiv.ofBijective
@@ -342,6 +489,11 @@ theorem isLocModel_locRing [LocallyOfFiniteType p] (z : X) :
       IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb
     exact ⟨_, ⟨a, rfl⟩, _, ⟨b, rfl⟩, hb', div_mul_cancel₀ _ hb'⟩
 
+/- English proof (translation)
+Use `exists₃_congr fun η m g => ⟨fun ⟨h₁, h₂, h₃, h⟩ => ⟨h₂, h₃, h₁, Finsupp.single_eq_of_ne g.ne_zero.symm, fun E hE => ?_⟩, fun ⟨h₂, h₃, h⟩ => ⟨h.1, h₂, h₃, fun E hE => ?_⟩⟩` and prove the remaining obligations. Take `⟨E, rfl⟩` from `(placeEquiv p).surjective E`. Rewrite using `[disc_placeEquiv]`. Conclude with `h E hE`. Rewrite using `[← disc_placeEquiv]`.
+
+Conclude with `h.lt_disc hE`.
+-/
 theorem kltAt_iff_exists_klt (Δ : X → ℚ) (x : X) : KltAt p n Δ x ↔
     ∃ (η : RatForms p n) (m : ℕ) (g : X.functionFieldˣ), 0 < m ∧ IsLogEqn p Δ η x m g ∧
       Klt (Cartier.constFn p) n (locRing x) η
@@ -355,6 +507,9 @@ theorem kltAt_iff_exists_klt (Δ : X → ℚ) (x : X) : KltAt p n Δ x ↔
   · rw [← disc_placeEquiv]
     exact h.lt_disc hE
 
+/- English proof (translation)
+Use `⟨fun h' => ⟨hη, Finsupp.single_eq_of_ne g.ne_zero.symm, fun E hE => ?_⟩, fun h' => (kltAt_iff_exists_klt Δ x).2 ⟨η, m, g, hm, h, h'⟩⟩` and prove the remaining obligations. Take `⟨E, rfl⟩` from `(placeEquiv p).surjective E`. Rewrite using `[disc_placeEquiv]`. Conclude with `(h.kltAt_iff hn hη hm).1 h' E hE`.
+-/
 theorem kltAt_iff_klt [PerfectField k] [LocallyOfFiniteType p] [IsLocallyNoetherian X]
     [GlobalTheory.IsNormalScheme X] (hn : topologicalKrullDim X = n) {Δ : X → ℚ} {x : X}
     {η : RatForms p n} {m : ℕ} {g : X.functionFieldˣ} (hη : η ≠ 0) (hm : 0 < m)
@@ -369,12 +524,20 @@ theorem kltAt_iff_klt [PerfectField k] [LocallyOfFiniteType p] [IsLocallyNoether
 
 end Scheme
 
+/- English proof (translation)
+The claim follows from `have ⟨E⟩ := nonempty_place_affineLine (k := k) ⟨_, E, E.isLocModel, E.isPrimeOf_self⟩`.
+-/
 theorem exists_isLocModel_isPrimeOf :
     ∃ (R : Subring _) (E : Place (Cartier.constFn (spMap (algebraMap k (Polynomial k))))),
       IsLocModel (Cartier.constFn (spMap (algebraMap k (Polynomial k)))) R ∧ E.IsPrimeOf R :=
   have ⟨E⟩ := nonempty_place_affineLine (k := k)
   ⟨_, E, E.isLocModel, E.isPrimeOf_self⟩
 
+/- English proof (translation)
+Take `⟨z, E, -⟩` from `DivOver.exists_isAt_affineLine (k := k)`. Use `haveI : LocallyOfFiniteType (spMap (algebraMap k (Polynomial k))) := HasRingHomProperty.Spec_iff.2 (RingHom.finiteType_algebraMap.2 inferInstance)`. Establish `hn : topologicalKrullDim (Sp (Polynomial k)) = (1 : ℕ)`. Express the relevant statement in the definitionally equal form `topologicalKrullDim (PrimeSpectrum (Polynomial k)) = _`. Rewrite using `[PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim, Polynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`.
+
+Evaluate the numerical expressions. Take `⟨ω, hω⟩` from `E.exists_isFreeGen hn`. Take `⟨t, ht⟩` from `IsDiscreteValuationRing.exists_irreducible (placeEquiv _ E).ring`. Conclude with `⟨_, _, _, (placeEquiv _ E).isLocModel, fun s => ⟨klt_uniformiser_iff (placeEquiv _ E) hω ht s, effAt_uniformiser_iff (placeEquiv _ E) hω ht s⟩⟩`.
+-/
 theorem exists_threshold_affineLine [PerfectField k] :
     ∃ (R : Subring (Sp (Polynomial k)).functionField)
       (η : Forms (Cartier.constFn (spMap (algebraMap k (Polynomial k)))) 1)
@@ -395,6 +558,11 @@ theorem exists_threshold_affineLine [PerfectField k] :
   exact ⟨_, _, _, (placeEquiv _ E).isLocModel, fun s =>
     ⟨klt_uniformiser_iff (placeEquiv _ E) hω ht s, effAt_uniformiser_iff (placeEquiv _ E) hω ht s⟩⟩
 
+/- English proof (translation)
+Use `haveI : Algebra.IsAlgebraic (MvPolynomial (Fin n) k) (FractionRing (MvPolynomial (Fin n) k)) := IsLocalization.isAlgebraic _ (nonZeroDivisors _)`. Establish `h : IsTranscendenceBasis k (algebraMap (MvPolynomial (Fin n) k) (FractionRing (MvPolynomial (Fin n) k)) ∘ MvPolynomial.X)` using `(IsTranscendenceBasis.mvPolynomial (Fin n) k).algebraMap_comp`. Establish `e : (algebraMap k (FractionRing (MvPolynomial (Fin n) k))).toAlgebra = (inferInstance : Algebra k (FractionRing (MvPolynomial (Fin n) k)))` using `Algebra.algebra_ext _ _ fun _ => rfl`. Unfold `TrBasis`. Rewrite using `[e]`.
+
+Conclude with `h`.
+-/
 theorem trBasis_fractionRing (n : ℕ) :
     TrBasis (algebraMap k (FractionRing (MvPolynomial (Fin n) k)))
       fun i => algebraMap (MvPolynomial (Fin n) k) _ (MvPolynomial.X i) := by
@@ -410,9 +578,15 @@ theorem trBasis_fractionRing (n : ℕ) :
   rw [e]
   exact h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => h.1 rfl, fun h => h.1 rfl⟩`.
+-/
 example (c : k →+* K) (n : ℕ) (R : Subring K) (φ : K →₀ ℚ) :
     ¬ Klt c n R 0 φ ∧ ¬ EffAt c n R 0 φ := ⟨fun h => h.1 rfl, fun h => h.1 rfl⟩
 
+/- English proof (translation)
+Introduce `h` and use `by simpa using h.apply_zero`.
+-/
 example (c : k →+* K) (n : ℕ) (R : Subring K) (η : Forms c n) :
     ¬ Klt c n R η (Finsupp.single 0 1) := fun h => by simpa using h.apply_zero
 

@@ -10,6 +10,15 @@ open GroundTheory.Heights₂.Heights.Targets.CurveVerticalPointChart (chartMono_
 open GroundTheory.Heights₂.Heights.HilbertSamuel.SmallSectionsNonzero (chartMono isMultiHomog_chartMono aeval_chartMono)
 open GroundTheory.Heights₂.Heights.Inter.regularityLocalFlat_holds (homog_X mem_locRing_iff div_mem_locRing fracHom fracHom_eq_zero_iff isUnit_iff)
 
+/- English proof (translation)
+Set `ψ : MRing J →+* Ω` to `S.subtype.comp (aeval x : MRing J →ₐ[ℤ] S).toRingHom`. Establish `hψX : ∀ q, ψ (X q) = φ (X q) / φ (X ⟨q.1, c q.1⟩)` using `fun q => by show ((aeval x (X q) : S) : Ω) = _`. Rewrite using `[aeval_X]`. Conclude with `hx q`. Establish `hψC : ∀ a : ℤ, ψ (C a) = φ (C a)` using `fun a => RingHom.congr_fun (RingHom.ext_int (ψ.comp C) (φ.comp C)) a`.
+
+Use `show ψ g * φ (chartMono c e) = φ g`. Rewrite using `[g.as_sum, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hdeg : ∀ k, ∑ i, m ⟨k, i⟩ = e k` using `hg m hm`. Establish `hchart : φ (chartMono c e) = ∏ q : (Σ k, J k), φ (X ⟨q.1, c q.1⟩) ^ m q`.
+
+Rewrite using `[Fintype.prod_sigma]`. Simplify using `only [Finset.prod_pow_eq_pow_sum, hdeg]`. Use `show φ (∏ k, X ⟨k, c k⟩ ^ e k) = _`. Rewrite using `[map_prod]`. Simplify using `only [map_pow]`.
+
+Establish `hne : ∏ q : (Σ k, J k), φ (X ⟨q.1, c q.1⟩) ^ m q ≠ 0` using `Finset.prod_ne_zero_iff.2 fun q _ => pow_ne_zero _ (hc q.1)`. Rewrite using `[hchart, monomial_eq, map_mul, map_mul, hψC, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Simplify using `only [map_prod, map_pow, hψX, div_pow, Finset.prod_div_distrib]`. Rewrite using `[mul_assoc, div_mul_cancel₀ _ hne]`.
+-/
 theorem aeval_ratio_mul_chartMono {B : Type} [Fintype B] {J : B → Type} [∀ k, Fintype (J k)] {Ω : Type} [Field Ω]
     (φ : MRing J →+* Ω) (c : ∀ k, J k) (hc : ∀ k, φ (X ⟨k, c k⟩) ≠ 0) (S : Subring Ω) (x : (Σ k, J k) → S)
     (hx : ∀ q, (x q : Ω) = φ (X q) / φ (X ⟨q.1, c q.1⟩)) {g : MRing J} {e : B → ℕ} (hg : IsMultiHomog g e) :
@@ -38,6 +47,23 @@ theorem aeval_ratio_mul_chartMono {B : Type} [Fintype B] {J : B → Type} [∀ k
   simp only [map_prod, map_pow, hψX, div_pow, Finset.prod_div_distrib]
   rw [mul_assoc, div_mul_cancel₀ _ hne]
 
+/- English proof (translation)
+Introduce `B _ J _ p _ K _ w W c hP hW hle hcW _`. Use `haveI : (mCoordIdeal w).IsPrime := hP`. Use `haveI : W.IsPrime := hW`. Establish `hXP : ∀ k, fracHom (mCoordIdeal w) (X ⟨k, c k⟩) ≠ 0` using `fun k h => hcW k (hle (fracHom_eq_zero_iff.1 h))`. Establish `hchartP : ∀ a : B → ℕ, fracHom (mCoordIdeal w) (chartMono c a) ≠ 0` using `fun a h => chartMono_notMem hW hcW a (hle (fracHom_eq_zero_iff.1 h))`.
+
+Set `xS : (Σ k, J k) → locRing (mCoordIdeal w) W` to `fun q => ⟨fracHom (mCoordIdeal w) (X q) / fracHom (mCoordIdeal w) (X ⟨q.1, c q.1⟩), div_mem_locRing hle (homog_X q.1 q.2) (homog_X q.1 (c q.1)) (hcW q.1)⟩`. Set `s : Finset (locRing (mCoordIdeal w) W)` to `Finset.univ.image xS`. Establish `hsub : Set.range xS ⊆ (s : Set (locRing (mCoordIdeal w) W))`. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `Finset.mem_coe.2 (Finset.mem_image_of_mem xS (Finset.mem_univ q))`.
+
+Establish `hmem : ∀ g : MRing J, aeval xS g ∈ Algebra.adjoin (ZMod p) (s : Set (locRing (mCoordIdeal w) W))`. Introduce `g`. Use `Algebra.adjoin_mono hsub ?_` and prove the remaining obligations. Proceed by induction on `g using MvPolynomial.induction_on`. Use `next a =>`.
+
+Rewrite using `[aeval_C, algebraMap_int_eq, Int.coe_castRingHom]`. Conclude with `intCast_mem _ a`. Use `next f g hf hg =>`. Rewrite using `[map_add]`. Conclude with `add_mem hf hg`.
+
+Use `next f q hf =>`. Rewrite using `[map_mul, aeval_X]`. Conclude with `mul_mem hf (Algebra.subset_adjoin ⟨q, rfl⟩)`. Use `⟨⟨s, ?_⟩⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+
+Prove the components needed by the constructor for the conclusion. Introduce `y`. Conclude with `y.2`. Introduce `z`. Take `⟨u, v, a, hu, hv, hvW, hz⟩` from `(mem_locRing_iff hle).1 z.2`.
+
+Establish `hA` using `aeval_ratio_mul_chartMono (fracHom (mCoordIdeal w)) c hXP _ xS (fun q => rfl) hu`. Establish `hB` using `aeval_ratio_mul_chartMono (fracHom (mCoordIdeal w)) c hXP _ xS (fun q => rfl) hv`. Establish `hBu : IsUnit (aeval xS v)` using `(isUnit_iff hle (aeval xS v) hv (isMultiHomog_chartMono c a) (chartMono_notMem hW hcW a) hB).2 hvW`. Use `⟨(⟨aeval xS u, hmem u⟩, ⟨⟨aeval xS v, hmem v⟩, hBu⟩), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `mul_right_cancel₀ (hchartP a)` to reduce the goal to its premises. Use `show ((z : FractionRing (MRing J ⧸ mCoordIdeal w)) * (aeval xS v : FractionRing (MRing J ⧸ mCoordIdeal w))) * fracHom (mCoordIdeal w) (chartMono c a) = (aeval xS u : FractionRing (MRing J ⧸ mCoordIdeal w)) * fracHom (mCoordIdeal w) (chartMono c a)`. Rewrite using `[mul_assoc, hB, hA, hz]`. Introduce `x y h`. Conclude with `⟨1, by rw [Subtype.ext h]⟩`.
+-/
 theorem essFiniteType_locRing : ∀ (B : Type) [Fintype B] (J : B → Type) [∀ k, Fintype (J k)] (p : ℕ) [Fact p.Prime]
     (K : Type) [Field K] (w : (Σ k, J k) → K) (W : Ideal (MRing J)) (c : ∀ k, J k),
     (mCoordIdeal w).IsPrime → W.IsPrime → mCoordIdeal w ≤ W → (∀ k, (X ⟨k, c k⟩ : MRing J) ∉ W) →

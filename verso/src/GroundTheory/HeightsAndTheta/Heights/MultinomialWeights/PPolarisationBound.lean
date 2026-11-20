@@ -8,6 +8,11 @@ namespace GroundTheory.Heights₂.Heights.TheoremB
 
 open MvPolynomial Finset
 
+/- English proof (translation)
+Establish `hd : (∏ i ∈ m.support, (m i).factorial) ∣ (∑ i ∈ m.support, m i).factorial` using `Nat.prod_factorial_dvd_factorial_sum _ _`. Establish `hle : (∏ i ∈ m.support, (m i).factorial) ≤ n.factorial`. Rewrite using `[← hm]`. Conclude with `Nat.le_of_dvd (Nat.factorial_pos _) hd`. Use `show (∏ a ∈ m.support, ((m a).factorial : ℝ)) ≤ (n.factorial : ℝ)`.
+
+Conclude with `hle` after adjusting the coercions.
+-/
 theorem prod_factorial_le_factorial_of_sum {σ : Type*} (m : σ →₀ ℕ) (n : ℕ)
     (hm : (m.sum fun _ e => e) = n) :
     (m.prod fun _ e => (e.factorial : ℝ)) ≤ (n.factorial : ℝ) := by
@@ -18,6 +23,19 @@ theorem prod_factorial_le_factorial_of_sum {σ : Type*} (m : σ →₀ ℕ) (n :
   show (∏ a ∈ m.support, ((m a).factorial : ℝ)) ≤ (n.factorial : ℝ)
   exact_mod_cast hle
 
+/- English proof (translation)
+Introduce `σ _ n`. Use `⟨fun Φ Ψ hΦΨ F hF => ?_, fun Φ m M hm hM => ?_⟩` and prove the remaining obligations. Establish `hmono : ∀ m : σ →₀ ℕ, (m.sum fun _ e => e) = n → Φ (monomial m 1) = Ψ (monomial m 1)`. Introduce `m hm`. Rewrite using `[hC σ Φ n m hm, hC σ Ψ n m hm, hΦΨ]`.
+
+Use `conv_lhs => rw [F.as_sum]`. Use `conv_rhs => rw [F.as_sum]`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl (fun m hmF => ?_)` and prove the remaining obligations. Establish `hdeg : (m.sum fun _ e => e) = n`.
+
+Use `hF (mem_support_iff.1 hmF)` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum]`. Establish `hsm : monomial m (coeff m F) = coeff m F • monomial m (1 : ℝ)`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[hsm, map_smul, map_smul, hmono m hdeg]`.
+
+Establish `hc` using `hM m`. Establish `hM0 : 0 ≤ M` using `le_trans (abs_nonneg _) hc`. Establish `hfac` using `prod_factorial_le_factorial_of_sum m n hm`. Establish `hpos : (0 : ℝ) < (n.factorial : ℝ)` using `by exact_mod_cast Nat.factorial_pos n`. Establish `hpnn : (0 : ℝ) ≤ (m.prod fun _ e => (e.factorial : ℝ))`.
+
+Unfold `Finsupp.prod`. Conclude with `Finset.prod_nonneg (fun _ _ => by positivity)`. Establish `hq0 : 0 ≤ (m.prod fun _ e => (e.factorial : ℝ)) / (n.factorial : ℝ)` using `div_nonneg hpnn hpos.le`. Establish `hq1 : (m.prod fun _ e => (e.factorial : ℝ)) / (n.factorial : ℝ) ≤ 1`. Rewrite using `[div_le_one hpos]`.
+
+Conclude with `hfac`. Rewrite using `[hC σ Φ n m hm, abs_mul, abs_mul, abs_pow, abs_neg, abs_one, one_pow, one_mul, abs_of_nonneg hq0]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem PolarisationBound.proof (hC : PolarisationCoeff.Statement) : PolarisationBound.Statement := by
   intro σ _ n
   refine ⟨fun Φ Ψ hΦΨ F hF => ?_, fun Φ m M hm hM => ?_⟩

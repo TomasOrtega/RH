@@ -23,6 +23,11 @@ open GlobalTheory.Models GlobalTheory.ZM
 
 namespace GlobalTheory.ZM.SiegelUniversal
 
+/- English proof (translation)
+Establish `hle : ZP p M ≤ (algebraicClosure ℚ ℂ).toSubalgebra.toSubring`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `y (rfl | ⟨n, -, rfl⟩)`. Establish `h1 : zeta M ^ M = 1` using `(Complex.isPrimitiveRoot_exp M hM).pow_eq_one`. Conclude with `mem_algebraicClosure_iff.2 (IsAlgebraic.of_pow (Nat.pos_of_ne_zero hM) (h1 ▸ isAlgebraic_one))`.
+
+Conclude with `(algebraicClosure ℚ ℂ).inv_mem (natCast_mem _ n)`. Use `⟨fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← isAlgebraic_algHom_iff ((ZP p M).subtype.comp i).toIntAlgHom (Subtype.val_injective.comp hi), IsFractionRing.isAlgebraic_iff ℤ ℚ ℂ, ← mem_algebraicClosure_iff]`. Conclude with `hle (i x).2`.
+-/
 theorem isAlgebraic_of_injective {p M : ℕ} (hM : M ≠ 0) {o : Type} [CommRing o] (i : o →+* ZP p M)
     (hi : Function.Injective i) : Algebra.IsAlgebraic ℤ o := by
   have hle : ZP p M ≤ (algebraicClosure ℚ ℂ).toSubalgebra.toSubring := by
@@ -37,6 +42,15 @@ theorem isAlgebraic_of_injective {p M : ℕ} (hM : M ≠ 0) {o : Type} [CommRing
     IsFractionRing.isAlgebraic_iff ℤ ℚ ℂ, ← mem_algebraicClosure_iff]
   exact hle (i x).2
 
+/- English proof (translation)
+Introduce `L L2 hθ hU h n hh hn hodd`. Take `⟨j₀, hj₀⟩` from `GlobalTheory.T.nonempty_siegelFamily_over_arithmetic_base L L2 hθ hU h n hh hn hodd`. Use `⟨max j₀ 1, fun j hj p hp hnp => ?_⟩` and prove the remaining obligations. Establish `hj1 : 1 ≤ j` using `le_trans (le_max_right _ _) hj`. Take `⟨o, _, b, em, i, hem, hζ, hi, hconst⟩` from `GlobalTheory.ZM.CycBase.exists_base n (j * 2) p ((n ^ j) ^ 2) hn hp hnp.symm (by omega) (pow_mul n j 2).symm`.
+
+Take `⟨F⟩` from `hj₀ j (le_trans (le_max_left _ _) hj) o b em hem`. Establish `h3 : 3 ≤ n`. Use `hn.two_le` as an intermediate fact. Break down `hodd with ⟨m, rfl⟩` into its components or cases. Use linear arithmetic over natural numbers and integers.
+
+Establish `hk : 3 ≤ (n ^ j) ^ 2`. Rewrite using `[← pow_mul]`. Conclude with `h3.trans (Nat.le_self_pow (by omega) n)`. Establish `hinj : Function.Injective i` using `fun x y hxy => hem.2.2 (by rw [← hi, ← hi, hxy])`. Take `⟨Ag, hAg⟩` from `GlobalTheory.T.exists_siegelFamily_localised_cyclotomic_integers L L2 h _ p o _ i (hodd.pow.pow) hk hp hinj hζ hconst (isAlgebraic_of_injective (by omega) i hinj) F`.
+
+Take `⟨F', -⟩` from `F.exists_baseChange i hinj hζ`. Take `⟨Ag', -, H⟩` from `F'.exists_sRep_siegRep (by omega) Ag hAg`. Conclude with `⟨Ag', H⟩`.
+-/
 theorem exists_siegelFamily_siegRep : Out.Laws → Out.Laws2 → (∀ (S : Scheme.{0}) (P : Out.PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → ThetaUnifAV → ∀ h n : ℕ, 1 ≤ h → n.Prime → Odd n → ∃ j₀ : ℕ, ∀ j ≥ j₀, ∀ p : ℕ, p.Prime → p ≠ n → ∃ Ag : SiegelFamily h p ((n ^ j) ^ 2), SiegRep Ag := by
   intro L L2 hθ hU h n hh hn hodd
   obtain ⟨j₀, hj₀⟩ := GlobalTheory.T.nonempty_siegelFamily_over_arithmetic_base L L2 hθ hU h n hh hn hodd

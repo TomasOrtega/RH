@@ -14,6 +14,17 @@ namespace GlobalTheory.CycGen
 
 open Pointwise
 
+/- English proof (translation)
+Establish `: IsScalarTower ℚ E Ω` using `IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)`. Use `set τ : E ≃ₐ[ℚ] E := AlgEquiv.restrictNormalHom E σ with hτdef`. Establish `hcomm : ∀ y : E, algebraMap E Ω (τ y) = σ (algebraMap E Ω y)` using `fun y => AlgEquiv.restrictNormal_commutes σ E y`. Establish `hin : τ ∈ Ideal.inertia (E ≃ₐ[ℚ] E) w.asIdeal`. Introduce `y`.
+
+Use `show τ • y - y ∈ w.asIdeal`. Rewrite using `[← hw]`. Establish `hy : algebraMap E Ω (y : E) ∈ A` using `ReciprocityTheory.Gal.mem_of_isIntegral_int A ((y.2).map (IsScalarTower.toAlgHom ℤ E Ω))`. Establish `h` using `hσ.2 (algebraMap E Ω (y : E)) ((A.valuation_le_one_iff _).mpr hy)`. Establish `e : ((τ • y - y : 𝓞 E) : E) = τ y - y` using `rfl`.
+
+Rewrite using `[e, map_sub, hcomm]`. Conclude with `h`. Establish `hcard : Nat.card (Ideal.inertia (E ≃ₐ[ℚ] E) w.asIdeal) = 1`. Use `w.isPrime` as an intermediate fact. Rewrite using `[Ideal.card_inertia_eq_ramificationIdxIn (G := E ≃ₐ[ℚ] E) (w.asIdeal.under ℤ) w.asIdeal, Ideal.ramificationIdxIn_eq_ramificationIdx (w.asIdeal.under ℤ) w.asIdeal (E ≃ₐ[ℚ] E), he]`.
+
+Establish `h1 : τ = 1`. Use `(Subgroup.card_eq_one.mp hcard)` as an intermediate fact. Establish `h2 : τ ∈ (⊥ : Subgroup (E ≃ₐ[ℚ] E))` using `this ▸ hin`. Conclude with `Subgroup.mem_bot.mp h2`. Rewrite using `[← hcomm, h1]`.
+
+Both sides reduce to the same expression.
+-/
 theorem fix_of_unram {E Ω : Type} [Field E] [NumberField E] [IsGalois ℚ E] [Field Ω] [Algebra E Ω]
     [Algebra ℚ Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (hw : IsPlaceOver A w)
     (he : w.asIdeal.ramificationIdx ℤ = 1) (σ : G ℚ Ω) (hσ : σ ∈ Ine (F := ℚ) A) (x : E) :
@@ -47,6 +58,13 @@ end GlobalTheory.CycGen
 
 namespace GlobalTheory.CycGen
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `IsCyclic.exists_generator (α := (ZMod l)ˣ)`. Use `set b : ℤ_[l] := ((a : ZMod l).val : ℤ_[l])`. Establish `hb : PadicInt.toZMod b = (a : ZMod l)`. Simplify using `only [b, map_natCast, ZMod.natCast_zmod_val]`. Establish `hu : IsUnit b`.
+
+Assume the negation of the conclusion as `hn`. Establish `hm : b ∈ IsLocalRing.maximalIdeal ℤ_[l]` using `hn`. Rewrite `hm` using `[← PadicInt.ker_toZMod, RingHom.mem_ker, hb]`. Conclude with `a.ne_zero hm`. Use `⟨hu.unit, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[IsUnit.unit_spec, hb, orderOf_units, orderOf_eq_card_of_forall_mem_zpowers ha, Nat.card_eq_fintype_card, ZMod.card_units]`.
+-/
 theorem exists_unit_gen (l : ℕ) [Fact l.Prime] :
     ∃ v : ℤ_[l]ˣ, orderOf (PadicInt.toZMod (v : ℤ_[l])) = l - 1 := by
   obtain ⟨a, ha⟩ := IsCyclic.exists_generator (α := (ZMod l)ˣ)
@@ -62,6 +80,13 @@ theorem exists_unit_gen (l : ℕ) [Fact l.Prime] :
   rw [IsUnit.unit_spec, hb, orderOf_units, orderOf_eq_card_of_forall_mem_zpowers ha,
     Nat.card_eq_fintype_card, ZMod.card_units]
 
+/- English proof (translation)
+Introduce `R H what₂ N i hram`. Take `⟨w, hw⟩` from `GlobalTheory.TameFixedLift.exists_place H.E (N.l i)`. Use `⟨w, hw, ?_⟩` and prove the remaining obligations. Establish `: CharZero N.Om` using `charZero_of_injective_algebraMap (algebraMap H.E N.Om).injective`. Establish `: IsAlgClosed N.Om` using `IsAlgClosure.isAlgClosed H.E`.
+
+Establish `: IsScalarTower ℚ H.E N.Om` using `IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)`. Establish `: IsAlgClosure ℚ N.Om` using `IsAlgClosure.ofAlgebraic ℚ H.E N.Om`. Establish `hA : (N.plOm.1 w).valuation (N.l i : N.Om) < 1`. Use `(N.plOm.2 w (N.l i : 𝓞 H.E)).2 hw` as an intermediate fact. Simplify using `using this`.
+
+Use `H.hostE_isGalois` as an intermediate fact. Take `⟨v, hv⟩` from `exists_unit_gen (N.l i)`. Take `⟨σ, hσ, hσv⟩` from `GlobalTheory.CycInertia.cycZ_Ine_surjective N.Om (N.l i) (N.plOm.1 w) hA v`. Take `⟨g, hg, hc⟩` from `GlobalTheory.TameFixedLift.transfer (E := H.E) (N.plOm.1 w) (N.l i) σ hσ (fix_of_unram (N.plOm.1 w) w (N.plOm.2 w) (hram w hw) σ hσ)`. Conclude with `⟨g, hg, by rw [hc, hσv, hv]⟩`.
+-/
 theorem main : ∀ {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (i : N.Loc), (∀ v ∈ placesOver H.E (N.l i), v.asIdeal.ramificationIdx ℤ = 1) → ∃ w ∈ placesOver H.E (N.l i), ∃ g0 ∈ Ine (F := H.E) (N.plOm.1 w), orderOf (PadicInt.toZMod ((cycZ (F := H.E) (Ω := N.Om) (N.l i) g0 : ℤ_[N.l i]ˣ) : ℤ_[N.l i])) = N.l i - 1 := by
   intro R H what₂ N i hram
   obtain ⟨w, hw⟩ := GlobalTheory.TameFixedLift.exists_place H.E (N.l i)

@@ -6,6 +6,11 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 
 open Formalism.MainNotions.G MvPolynomial
 
+/- English proof (translation)
+Take `⟨hL, hz⟩` from `h j`. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = β j`. Substitute `hb` using the available equality. Establish `hm` using `(Submodule.mem_pi.mp hL) (β j) (Set.mem_univ _)`.
+
+Rewrite `hm` using `[if_neg hj]`. Simplify using `using hm`. Conclude with `hz b hb`.
+-/
 theorem famOK_zero {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {C0 CE1 CE2 Cm : ℝ} {X : Loc}
     [NeZero X.m] {β : GlobalTheory X} {u : Vecs O C0 CE1 CE2 X} (h : FamOK O C0 CE1 CE2 Cm X β u) {j : Fin (numSeg X.TT)}
     (hj : ¬ Kept X.p X.m (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (β j)) : u j = 0 := by
@@ -18,6 +23,9 @@ theorem famOK_zero {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing
     simpa using hm
   · exact hz b hb
 
+/- English proof (translation)
+Unfold `segForm fock`. Simplify using the standard rewrite rules.
+-/
 theorem segForm_zero_left {O : Type} [CommRing O] [IsDomain O] {p r s : ℕ} (S : SegData s)
     (g : SegVs O r s S.t) : segForm O p r S 0 g = 0 := by
   unfold segForm fock

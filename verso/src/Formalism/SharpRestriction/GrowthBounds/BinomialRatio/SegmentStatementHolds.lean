@@ -8,6 +8,11 @@ open Formalism.MainNotions.G
 
 variable {n' : ℕ}
 
+/- English proof (translation)
+Establish `hx` using `x.isLt`. Establish `hy` using `y.isLt`. Unfold `cdist`. Break down `le_or_gt x.val y.val with h | h` into its components or cases. Use `left`.
+
+Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite using `[show y.val + n' - x.val = (y.val - x.val) + n' by omega, Nat.add_mod_right, Nat.mod_eq_of_lt (by omega)]`. Use `right`. Conclude with `⟨h, Nat.mod_eq_of_lt (by omega)⟩`.
+-/
 theorem cd_cases (x y : Fin n') :
     (x.val ≤ y.val ∧ cdist x y = y.val - x.val) ∨ (y.val < x.val ∧ cdist x y = y.val + n' - x.val) := by
   have hx := x.isLt
@@ -21,6 +26,9 @@ theorem cd_cases (x y : Fin n') :
   · right
     exact ⟨h, Nat.mod_eq_of_lt (by omega)⟩
 
+/- English proof (translation)
+Apply `Fin.ext` to reduce the goal to its premises. Use `show (x.val + cdist x y) % n' = y.val`. Break down `cd_cases x y with ⟨h, e⟩ | ⟨h, e⟩` into its components or cases. Rewrite using `[e, show x.val + (y.val - x.val) = y.val by omega, Nat.mod_eq_of_lt y.isLt]`. Rewrite using `[e, show x.val + (y.val + n' - x.val) = y.val + n' by omega, Nat.add_mod_right, Nat.mod_eq_of_lt y.isLt]`.
+-/
 theorem posAdd_cdist (x y : Fin n') : posAdd x (cdist x y) = y := by
   apply Fin.ext
   show (x.val + cdist x y) % n' = y.val
@@ -29,20 +37,46 @@ theorem posAdd_cdist (x y : Fin n') : posAdd x (cdist x y) = y := by
   · rw [e, show x.val + (y.val + n' - x.val) = y.val + n' by omega, Nat.add_mod_right,
       Nat.mod_eq_of_lt y.isLt]
 
+/- English proof (translation)
+The claim follows from `(Finset.sortedLT_sort _).strictMono_get`.
+-/
 theorem ev_mono (TT : Finset (Fin n')) : StrictMono (evenTops TT).get := (Finset.sortedLT_sort _).strictMono_get
 
+/- English proof (translation)
+Simplify using `[evenTops, Finset.mem_sort, Finset.mem_filter]`.
+-/
 theorem ev_mem (TT : Finset (Fin n')) (x : Fin n') : x ∈ evenTops TT ↔ x ∈ TT ∧ Even x.val := by
   simp [evenTops, Finset.mem_sort, Finset.mem_filter]
 
+/- English proof (translation)
+Simplify using `[numSeg, evenTops, Finset.length_sort]`.
+-/
 theorem numSeg_eq (TT : Finset (Fin n')) : numSeg TT = (TT.filter (fun s => Even s.val)).card := by
   simp [numSeg, evenTops, Finset.length_sort]
 
+/- English proof (translation)
+The claim follows from `(ev_mem TT _).1 (List.get_mem _ _)`.
+-/
 theorem start_mem (TT : Finset (Fin n')) (j : Fin (numSeg TT)) :
     segStart TT j ∈ TT ∧ Even (segStart TT j).val := (ev_mem TT _).1 (List.get_mem _ _)
 
+/- English proof (translation)
+The claim follows from `(ev_mem TT _).1 (List.get_mem _ _)`.
+-/
 theorem next_mem (TT : Finset (Fin n')) (j : Fin (numSeg TT)) :
     segNext TT j ∈ TT ∧ Even (segNext TT j).val := (ev_mem TT _).1 (List.get_mem _ _)
 
+/- English proof (translation)
+Establish `lt_iff : ∀ a b : Fin L.length, (L.get a).val < (L.get b).val ↔ a.val < b.val` using `fun a b => (Fin.lt_def.symm.trans hL.lt_iff_lt).trans Fin.lt_def`. Establish `hj` using `j.isLt`. Establish `hm` using `m.isLt`. Establish `hs` using `(L.get j).isLt`. Establish `hnx` using `(L.get i').isLt`.
+
+Establish `he` using `(L.get m).isLt`. Break down `Nat.lt_or_ge (j.val + 1) L.length with hk | hk` into its components or cases. Rewrite `hi` using `[Nat.mod_eq_of_lt hk]`. Establish `a1 : (L.get j).val < (L.get i').val` using `(lt_iff j i').2 (by omega)`. Break down `Nat.lt_or_gt_of_ne hmj with hmj' | hmj'` into its components or cases.
+
+Establish `a2 : (L.get m).val < (L.get j).val` using `(lt_iff m j).2 hmj'`. Apply the tactic sequence `rcases cd_cases (L.get j) (L.get i') with ⟨_, e1⟩ | ⟨_, e1⟩ <;>`. Apply the tactic sequence `rcases cd_cases (L.get j) (L.get m) with ⟨_, e2⟩ | ⟨_, e2⟩ <;> omega`. Establish `a2 : ¬ (L.get m).val < (L.get i').val` using `fun h => by have := (lt_iff m i').1 h; omega`. Apply the tactic sequence `rcases cd_cases (L.get j) (L.get i') with ⟨_, e1⟩ | ⟨_, e1⟩ <;>`.
+
+Apply the tactic sequence `rcases cd_cases (L.get j) (L.get m) with ⟨_, e2⟩ | ⟨_, e2⟩ <;> omega`. Establish `hk' : j.val + 1 = L.length` using `by omega`. Rewrite `hi` using `[hk', Nat.mod_self]`. Establish `hmj' : m.val < j.val` using `by omega`. Establish `a1 : (L.get i').val < (L.get j).val` using `(lt_iff i' j).2 (by omega)`.
+
+Establish `a2 : (L.get m).val < (L.get j).val` using `(lt_iff m j).2 hmj'`. Establish `a3 : ¬ (L.get m).val < (L.get i').val` using `fun h => by have := (lt_iff m i').1 h; omega`. Apply the tactic sequence `rcases cd_cases (L.get j) (L.get i') with ⟨_, e1⟩ | ⟨_, e1⟩ <;>`. Apply the tactic sequence `rcases cd_cases (L.get j) (L.get m) with ⟨_, e2⟩ | ⟨_, e2⟩ <;> omega`.
+-/
 private lemma cdist_next_pos_and_le_of_strictMono (L : List (Fin n')) (hL : StrictMono L.get) (j i' m : Fin L.length)
     (hi : i'.val = (j.val + 1) % L.length) (hmj : m.val ≠ j.val) :
     0 < cdist (L.get j) (L.get i') ∧ cdist (L.get j) (L.get i') ≤ cdist (L.get j) (L.get m) := by
@@ -73,6 +107,9 @@ private lemma cdist_next_pos_and_le_of_strictMono (L : List (Fin n')) (hL : Stri
     rcases cd_cases (L.get j) (L.get i') with ⟨_, e1⟩ | ⟨_, e1⟩ <;>
     rcases cd_cases (L.get j) (L.get m) with ⟨_, e2⟩ | ⟨_, e2⟩ <;> omega
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `List.mem_iff_get.1 ((ev_mem TT e).2 ⟨he, hev⟩)`. Substitute `hm` using the available equality. Establish `hmj : m.val ≠ j.val` using `fun h => hne (congrArg (evenTops TT).get (Fin.ext h))`. Conclude with `cdist_next_pos_and_le_of_strictMono (evenTops TT) (ev_mono TT) j _ m rfl hmj`.
+-/
 theorem next_min (TT : Finset (Fin n')) (j : Fin (numSeg TT)) (e : Fin n') (he : e ∈ TT)
     (hev : Even e.val) (hne : e ≠ segStart TT j) :
     0 < cdist (segStart TT j) (segNext TT j) ∧
@@ -82,15 +119,24 @@ theorem next_min (TT : Finset (Fin n')) (j : Fin (numSeg TT)) (e : Fin n') (he :
   have hmj : m.val ≠ j.val := fun h => hne (congrArg (evenTops TT).get (Fin.ext h))
   exact cdist_next_pos_and_le_of_strictMono (evenTops TT) (ev_mono TT) j _ m rfl hmj
 
+/- English proof (translation)
+Simplify using `only [segDists, Finset.mem_sort, Finset.mem_image, Finset.mem_filter]`.
+-/
 theorem mem_dists {TT : Finset (Fin n')} {j : Fin (numSeg TT)} {d : ℕ} :
     d ∈ segDists TT j ↔ ∃ s, (s ∈ TT ∧ ¬ Even s.val ∧ 0 < cdist (segStart TT j) s ∧
       cdist (segStart TT j) s < segG TT j) ∧ cdist (segStart TT j) s = d := by
   simp only [segDists, Finset.mem_sort, Finset.mem_image, Finset.mem_filter]
 
+/- English proof (translation)
+The claim follows from `mem_dists.1 (List.get_mem _ _)`.
+-/
 theorem get_spec (TT : Finset (Fin n')) (j : Fin (numSeg TT)) (i : Fin (segS TT j)) :
     ∃ s, (s ∈ TT ∧ ¬ Even s.val ∧ 0 < cdist (segStart TT j) s ∧
       cdist (segStart TT j) s < segG TT j) ∧ cdist (segStart TT j) s = (segDists TT j).get i := mem_dists.1 (List.get_mem _ _)
 
+/- English proof (translation)
+Take `⟨s, hs, hd⟩` from `get_spec TT j i`. Unfold `segPos`. Rewrite using `[← hd, posAdd_cdist]`. Conclude with `⟨hs.1, hs.2.1⟩`.
+-/
 theorem pos_mem (TT : Finset (Fin n')) (j : Fin (numSeg TT)) (i : Fin (segS TT j)) :
     segPos TT j i ∈ TT ∧ ¬ Even (segPos TT j i).val := by
   obtain ⟨s, hs, hd⟩ := get_spec TT j i
@@ -98,6 +144,11 @@ theorem pos_mem (TT : Finset (Fin n')) (j : Fin (numSeg TT)) (i : Fin (segS TT j
   rw [← hd, posAdd_cdist]
   exact ⟨hs.1, hs.2.1⟩
 
+/- English proof (translation)
+Take `⟨s, hs, hd⟩` from `get_spec TT j i`. Introduce `h`. Unfold `segPos at h`. Rewrite `h` using `[← hd, posAdd_cdist]`. Establish `h0` using `hs.2.2.1`.
+
+Rewrite `h0` using `[h]`. Simplify using `[cdist] at h0`.
+-/
 theorem pos_ne_start (TT : Finset (Fin n')) (j : Fin (numSeg TT)) (i : Fin (segS TT j)) :
     segPos TT j i ≠ segStart TT j := by
   obtain ⟨s, hs, hd⟩ := get_spec TT j i
@@ -108,12 +159,20 @@ theorem pos_ne_start (TT : Finset (Fin n')) (j : Fin (numSeg TT)) (i : Fin (segS
   rw [h] at h0
   simp [cdist] at h0
 
+/- English proof (translation)
+Take `⟨s, hs, hd⟩` from `get_spec TT j i`. Rewrite using `[← hd]`. Conclude with `⟨hs.2.2.1, hs.2.2.2⟩`.
+-/
 theorem dist_pos_lt (TT : Finset (Fin n')) (j : Fin (numSeg TT)) (i : Fin (segS TT j)) :
     0 < (segDists TT j).get i ∧ (segDists TT j).get i < segG TT j := by
   obtain ⟨s, hs, hd⟩ := get_spec TT j i
   rw [← hd]
   exact ⟨hs.2.2.1, hs.2.2.2⟩
 
+/- English proof (translation)
+Take `⟨s, hs, hd⟩` from `get_spec TT j i`. Rewrite using `[← hd]`. Establish `he` using `(start_mem TT j).2`. Establish `ho` using `hs.2.1`. Rewrite `he`, `ho`, `hn` using `[Nat.even_iff]`.
+
+Rewrite using `[Nat.odd_iff]`. Apply the tactic sequence `rcases cd_cases (segStart TT j) s with ⟨h, e⟩ | ⟨h, e⟩ <;> rw [e] <;> omega`.
+-/
 theorem dist_odd (hn : Even n') (TT : Finset (Fin n')) (j : Fin (numSeg TT)) (i : Fin (segS TT j)) :
     Odd ((segDists TT j).get i) := by
   obtain ⟨s, hs, hd⟩ := get_spec TT j i
@@ -124,6 +183,11 @@ theorem dist_odd (hn : Even n') (TT : Finset (Fin n')) (j : Fin (numSeg TT)) (i 
   rw [Nat.odd_iff]
   rcases cd_cases (segStart TT j) s with ⟨h, e⟩ | ⟨h, e⟩ <;> rw [e] <;> omega
 
+/- English proof (translation)
+Establish `h1` using `(start_mem TT j).2`. Establish `h2` using `(next_mem TT j).2`. Rewrite `h1`, `h2`, `hn` using `[Nat.even_iff]`. Unfold `segG`. Use `split_ifs with h`.
+
+Conclude with `Nat.even_iff.2 hn`. Rewrite using `[Nat.even_iff]`. Apply the tactic sequence `rcases cd_cases (segStart TT j) (segNext TT j) with ⟨h', e⟩ | ⟨h', e⟩ <;> rw [e] <;> omega`.
+-/
 theorem segG_even (hn : Even n') (TT : Finset (Fin n')) (j : Fin (numSeg TT)) : Even (segG TT j) := by
   have h1 := (start_mem TT j).2
   have h2 := (next_mem TT j).2
@@ -134,8 +198,22 @@ theorem segG_even (hn : Even n') (TT : Finset (Fin n')) (j : Fin (numSeg TT)) : 
   · rw [Nat.even_iff]
     rcases cd_cases (segStart TT j) (segNext TT j) with ⟨h', e⟩ | ⟨h', e⟩ <;> rw [e] <;> omega
 
+/- English proof (translation)
+The claim follows from `(Finset.sortedLT_sort _).strictMono_get`.
+-/
 theorem dist_strictMono (TT : Finset (Fin n')) (j : Fin (numSeg TT)) : StrictMono (segDists TT j).get := (Finset.sortedLT_sort _).strictMono_get
 
+/- English proof (translation)
+Establish `hc : ((List.finRange n).filter (fun i => decide (P i))).length = (Finset.univ.filter P).card`. Rewrite using `[Fin.univ_def]`. Both sides reduce to the same expression. Rewrite using `[hc]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hlt`. Assume the negation of the conclusion as `hn`. Establish `hsub : Finset.univ.filter P ⊆ Finset.Iio i`. Introduce `x hx`. Rewrite `hx` using `[Finset.mem_filter]`.
+
+Rewrite using `[Finset.mem_Iio]`. Assume the negation of the conclusion as `hge`. Conclude with `hn (hP i x (not_lt.1 hge) hx.2)`. Use `Finset.card_le_card hsub` as an intermediate fact. Rewrite `this` using `[Fin.card_Iio]`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `hPi`. Establish `hsub : Finset.Iic i ⊆ Finset.univ.filter P`. Introduce `x hx`. Rewrite `hx` using `[Finset.mem_Iic]`.
+
+Conclude with `Finset.mem_filter.2 ⟨Finset.mem_univ _, hP x i hx hPi⟩`. Use `Finset.card_le_card hsub` as an intermediate fact. Rewrite `this` using `[Fin.card_Iic]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem filter_len_iff {n : ℕ} (P : Fin n → Prop) [DecidablePred P] (hP : ∀ i i' : Fin n, i ≤ i' → P i' → P i)
     (i : Fin n) : (i : ℕ) < ((List.finRange n).filter (fun i => decide (P i))).length ↔ P i := by
   have hc : ((List.finRange n).filter (fun i => decide (P i))).length =
@@ -164,6 +242,9 @@ theorem filter_len_iff {n : ℕ} (P : Fin n → Prop) [DecidablePred P] (hP : �
     rw [Fin.card_Iic] at this
     omega
 
+/- English proof (translation)
+Use `show (i : ℕ) < ((List.finRange (segS TT j)).filter (fun i => decide ((p : ℝ) ^ ((segDists TT j).get i) < (a : ℝ) / b'))).length ↔ _`. Use `filter_len_iff (fun i => (p : ℝ) ^ ((segDists TT j).get i) < (a : ℝ) / b') ?_ i` and prove the remaining obligations. Introduce `i i' hii' h`. Use `lt_of_le_of_lt ?_ h` and prove the remaining obligations. Conclude with `pow_le_pow_right₀ (by exact_mod_cast hp.le) ((dist_strictMono TT j).monotone hii')`.
+-/
 theorem sigma_iff (p : ℕ) (hp : 1 < p) (TT : Finset (Fin n')) (bT : Fin n' → ℕ) (a : ℕ) (b' Y La E0 : ℝ)
     (j : Fin (numSeg TT)) (i : Fin (segS TT j)) :
     (i : ℕ) < (segData p TT bT a b' Y La E0 j).sigma ↔ (p : ℝ) ^ ((segDists TT j).get i) < (a : ℝ) / b' := by
@@ -177,10 +258,18 @@ theorem sigma_iff (p : ℕ) (hp : 1 < p) (TT : Finset (Fin n')) (bT : Fin n' →
 def oddSet (TT : Finset (Fin n')) (j : Fin (numSeg TT)) : Finset (Fin n') :=
   TT.filter (fun s => ¬ Even s.val ∧ 0 < cdist (segStart TT j) s ∧ cdist (segStart TT j) s < segG TT j)
 
+/- English proof (translation)
+Simplify using `only [segS, segDists, Finset.length_sort]`. Conclude with `Finset.card_image_le`.
+-/
 theorem segS_le (TT : Finset (Fin n')) (j : Fin (numSeg TT)) : segS TT j ≤ (oddSet TT j).card := by
   simp only [segS, segDists, Finset.length_sort]
   exact Finset.card_image_le
 
+/- English proof (translation)
+Establish `hne : segStart TT j' ≠ segStart TT j` using `(ev_mono TT).injective.ne (Ne.symm h)`. Take `⟨hpos, hle⟩` from `next_min TT j (segStart TT j') (start_mem TT j').1 (start_mem TT j').2 hne`. Establish `hg : segG TT j = cdist (segStart TT j) (segNext TT j)`. Simplify using `only [segG, if_neg hpos.ne']`. Use `(Finset.mem_filter.1 hs).2.2.2` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 private lemma cdist_lt_segStart_of_mem_oddSet_of_ne (TT : Finset (Fin n')) (j j' : Fin (numSeg TT)) (h : j ≠ j') {s : Fin n'}
     (hs : s ∈ oddSet TT j) : cdist (segStart TT j) s < cdist (segStart TT j) (segStart TT j') := by
   have hne : segStart TT j' ≠ segStart TT j := (ev_mono TT).injective.ne (Ne.symm h)
@@ -190,6 +279,13 @@ private lemma cdist_lt_segStart_of_mem_oddSet_of_ne (TT : Finset (Fin n')) (j j'
   have := (Finset.mem_filter.1 hs).2.2.2
   omega
 
+/- English proof (translation)
+Rewrite using `[Finset.disjoint_left]`. Introduce `s hs hs'`. Establish `h1` using `cdist_lt_segStart_of_mem_oddSet_of_ne TT j j' h hs`. Establish `h2` using `cdist_lt_segStart_of_mem_oddSet_of_ne TT j' j (Ne.symm h) hs'`. Establish `p1` using `(Finset.mem_filter.1 hs).2.2.1`.
+
+Establish `p2` using `(Finset.mem_filter.1 hs').2.2.1`. Establish `hne : (segStart TT j).val ≠ (segStart TT j').val` using `fun e => (ev_mono TT).injective.ne h (Fin.ext e)`. Establish `ha` using `(segStart TT j).isLt`. Establish `hb` using `(segStart TT j').isLt`. Establish `hsl` using `s.isLt`.
+
+Apply the tactic sequence `rcases cd_cases (segStart TT j) s with ⟨_, e1⟩ | ⟨_, e1⟩ <;>`. Apply the tactic sequence `rcases cd_cases (segStart TT j') s with ⟨_, e2⟩ | ⟨_, e2⟩ <;>`. Apply the tactic sequence `rcases cd_cases (segStart TT j) (segStart TT j') with ⟨_, e3⟩ | ⟨_, e3⟩ <;>`. Apply the tactic sequence `rcases cd_cases (segStart TT j') (segStart TT j) with ⟨_, e4⟩ | ⟨_, e4⟩ <;>`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem oddSet_disj (TT : Finset (Fin n')) (j j' : Fin (numSeg TT)) (h : j ≠ j') :
     Disjoint (oddSet TT j) (oddSet TT j') := by
   rw [Finset.disjoint_left]
@@ -209,6 +305,15 @@ theorem oddSet_disj (TT : Finset (Fin n')) (j j' : Fin (numSeg TT)) (h : j ≠ j
   rcases cd_cases (segStart TT j') (segStart TT j) with ⟨_, e4⟩ | ⟨_, e4⟩ <;>
   omega
 
+/- English proof (translation)
+Establish `hdisj : Disjoint (Finset.univ.biUnion (oddSet TT)) (TT.filter (fun s => Even s.val))`. Rewrite using `[Finset.disjoint_left]`. Introduce `x hx hx'`. Take `⟨j, -, hj⟩` from `Finset.mem_biUnion.1 hx`. Conclude with `(Finset.mem_filter.1 hj).2.1 (Finset.mem_filter.1 hx').2`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.card_biUnion]`. Introduce `j _ j' _ h`. Conclude with `oddSet_disj TT j j' h`. Use `_ = (Finset.univ.biUnion (oddSet TT) ∪ TT.filter (fun s => Even s.val)).card := (Finset.card_union_of_disjoint hdisj).symm`.
+
+Use `_ ≤ TT.card := by`. Apply `Finset.card_le_card` to reduce the goal to its premises. Apply `Finset.union_subset` to reduce the goal to its premises. Introduce `x hx`. Take `⟨j, -, hj⟩` from `Finset.mem_biUnion.1 hx`.
+
+Conclude with `(Finset.mem_filter.1 hj).1`. Conclude with `Finset.filter_subset _ _`.
+-/
 theorem sum_segS (TT : Finset (Fin n')) (_h2 : 2 ≤ numSeg TT) :
     (∑ j, segS TT j) + numSeg TT ≤ TT.card := by
   have hdisj : Disjoint (Finset.univ.biUnion (oddSet TT)) (TT.filter (fun s => Even s.val)) := by
@@ -233,6 +338,11 @@ theorem sum_segS (TT : Finset (Fin n')) (_h2 : 2 ≤ numSeg TT) :
           exact (Finset.mem_filter.1 hj).1
         · exact Finset.filter_subset _ _
 
+/- English proof (translation)
+Introduce `X _ O _ _ _ j aT' m hne haT`. Establish `h1 : segATop X.TT aT' j = segATop X.TT X.aT j`. Use function extensionality and compare the values at `fun i => haT _ (pos_ne_start _ _ _)`. Establish `h2 : segAPlus X.TT aT' j = segAPlus X.TT X.aT j` using `haT _ hne`. Rewrite using `[h1, h2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem segment_statement_holds (D : Formalism.BasicNotions.D7) (C0 CE1 CE2 : ℝ) : PointsLemma D C0 CE1 CE2 := by
   intro X _ O _ _ _ j aT' m hne haT
   have h1 : segATop X.TT aT' j = segATop X.TT X.aT j :=

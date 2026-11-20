@@ -18,6 +18,21 @@ namespace ExpansionFunction
 
 open FieldBaseChange
 
+/- English proof (translation)
+Set `t : SecOver π' (LB.LinComb L φ' ε)` to `s`. Set `t' : SecOver π' (LB.LinComb L φ' ε)` to `s'`. Set `τ : SecOver π (LB.LinComb L φ ε)` to `σ`. Set `τ' : SecOver π (LB.LinComb L φ ε)` to `σ'`. Establish `E : pullOver L ε hp hφ τ = algebraMap R (FractionRing R) r • t` using `(secScal_iff hp hφ hL t τ π₀ _ h₀ r).1 H`.
+
+Establish `E' : pullOver L ε hp hφ τ' = algebraMap R (FractionRing R) r' • t'` using `(secScal_iff hp hφ hL t' τ' π₀ _ h₀ r').1 H'`. Establish `hi : ∀ x : SecOver π (LB.LinComb L φ ε), pullOver L ε hp hφ x = 0 → x = 0` using `fun x hx => SecOver.ext _ _ fun j => hinj _ (by`. Establish `e` using `congrArg (chartFun π' _ j) hx`. Establish `hw` using `wchart_eq (L := L) hφ j`. Use `Geo.Tor.fn_ext fun y hy => ?_` and prove the remaining obligations.
+
+Establish `hy' : (𝟙 Y' : Y' ⟶ Y') y ∈ LB.wchart L φ' j` using `hw.ge hy`. Establish `e₂` using `congrArg (Geo.Tor.gs (𝟙 Y') y (LB.wchart L φ' j)) e`. Use `(Geo.Tor.gs_pull _ p y _ hy _).trans ((gs_pullFn hp hw.le _ (𝟙 Y') y hy').symm.trans (e₂.trans ((gs_zero' _ y _ hy').trans ?_)))` and prove the remaining obligations. Conclude with `((Geo.Tor.gs_pull _ p y _ hy _).trans (gs_zero' (𝟙 Y' ≫ p) y (LB.wchart L φ j) hy)).symm)`. Establish `ha : algebraMap R (FractionRing R) r ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R _)).2 hr`.
+
+Establish `ha' : algebraMap R (FractionRing R) r' ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R _)).2 hr'`. Establish `key : pullOver L ε hp hφ (r' • τ + (-r) • τ') = (algebraMap R (FractionRing R) r * algebraMap R (FractionRing R) r') • (t - t')`. Rewrite using `[map_add, map_smulₛₗ, map_smulₛₗ, E, E', map_neg, smul_smul, smul_smul, smul_sub, sub_eq_add_neg, ← neg_smul, neg_mul, mul_comm (algebraMap R (FractionRing R) r')]`. Establish `main : t = t' ↔ r' • τ + (-r) • τ' = 0`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Conclude with `hi _ (by rw [key, h, sub_self, smul_zero])`. Introduce `h`. Rewrite `key` using `[h, map_zero]`. Conclude with `sub_eq_zero.1 ((smul_eq_zero_iff_right (mul_ne_zero ha ha')).1 key.symm)`.
+
+Use `main.trans ⟨fun h j => ?_, fun h => SecOver.ext _ _ fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_two]`. Conclude with `congrArg (chartFun π _ j) h`. Use `h j` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_two]`.
+
+Conclude with `this`.
+-/
 theorem eq_iff_comb_eq_zero {R : Type} [CommRing R] [IsDomain R] {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB)
     {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {φ' : K → (Y' ⟶ X)} {ε : K → ℤ}
     (π : Y ⟶ Spec (CommRingCat.of R)) (π' : Y' ⟶ Spec (CommRingCat.of (FractionRing R))) {p : Y' ⟶ Y}
@@ -66,6 +81,19 @@ theorem eq_iff_comb_eq_zero {R : Type} [CommRing R] [IsDomain R] {X Y Y' : Schem
 
 end ExpansionFunction
 
+/- English proof (translation)
+Introduce `R _ _ I hR D A G _ _ hG U k s s' F F' ⟨r, hr, σ, f, hσ, hf, hE⟩ ⟨r', hr', σ', f', hσ', hf', hE'⟩`. Use `U.smooth` as an intermediate fact. Use `D.toPre.P.isAb.smooth` as an intermediate fact. Establish `: Flat G.hom` using `inferInstance`. Establish `: Flat D.toPre.P.A.hom` using `inferInstance`.
+
+Establish `e : (TF (R` using `R) (FractionRing R)).hom = jK R := by show Spec.map _ ≫ Spec.map _ = _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hd : IsDominant (TF (R` using `R) (FractionRing R)).hom := DVR.GC.isDominant_jFR (V := R) (FractionRing R)`. Establish `h₁ : IsSchemeTheoreticallyDominant (TF (R` using `R) (FractionRing R)).hom := .of_isDominant _`.
+
+Establish `h₂ : IsSchemeTheoreticallyDominant (jK R)` using `e ▸ h₁`. Establish `h₅ : QuasiCompact (jK R)` using `inferInstanceAs (QuasiCompact (Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R)))))`. Establish `h₃ : QuasiCompact (TF (R` using `R) (FractionRing R)).hom := e ▸ h₅`. Establish `h₄ : IsSchemeTheoreticallyDominant (pullback.fst G.hom (jK R))` using `.of_isPullback (IsPullback.of_hasPullback G.hom (jK R)).flip`. Establish `hs` using `ExpansionFunction.eq_iff_comb_eq_zero U.LG.isLB G.hom (pullback.snd G.hom (jK R)) pullback.condition (fun _ => (Category.comp_id _).symm) (pullback.fst G.hom (jK R)).app_injective _ rfl hr hr' hσ hσ'`.
+
+Establish `hw : (DegPre.BF D.toPre (FractionRing R)).hom = (fst (TF (R` using `R) (FractionRing R)) D.toPre.P.A).left ≫ jK R := by`. Rewrite using `[← e]`. Conclude with `(Over.w _).symm`. Establish `hF` using `fun α => ExpansionFunction.eq_iff_comb_eq_zero D.toPre.P.isLB D.toPre.P.A.hom (fst (TF (R := R) (FractionRing R)) D.toPre.P.A).left ((Over.w (DegPre.prB D.toPre (FractionRing R))).trans hw) (DVR.GC.famφ_eq D.toPre (FractionRing R) α) (pullback.snd (TF (R := R) (FractionRing R)).h …`. Establish `H` using `comb_eq_zero_iff_expansion_comb_eq_zero R I hR D A G U k 2 ![r', -r] ![σ, σ'] ![f, f'] (fun i => by fin_cases i; exacts [hE, hE'])`.
+
+Apply the tactic sequence `have hc : ∀ α (i : Fin 2), (![f, f'] i) α = ![f α, f' α] i := fun α i => by fin_cases i <;> rfl`. Simplify using `only [hc] at H`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `DVR.fam_ext fun α j => by rw [(hF α).2 (H.1 (hs.1 h) α)]`.
+
+Introduce `h`. Conclude with `hs.2 (H.2 hG fun α => (hF α).1 (by rw [h]))`.
+-/
 theorem eq_iff_expansion_eq : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R), AdmBase R I → ∀ (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] [GeometricallyConnected G.hom] (U : UnifPre I D A G) (k : ℕ) (s s' : U.SecK k) (F F' : Fam D.toPre (FractionRing R) k), U.Expands k s F → U.Expands k s' F' → (s = s' ↔ F = F') := by
   intro R _ _ I hR D A G _ _ hG U k s s' F F' ⟨r, hr, σ, f, hσ, hf, hE⟩ ⟨r', hr', σ', f', hσ', hf', hE'⟩
   have := U.smooth

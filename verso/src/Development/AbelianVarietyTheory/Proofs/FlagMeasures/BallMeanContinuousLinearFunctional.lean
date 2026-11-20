@@ -6,6 +6,13 @@ noncomputable section
 
 namespace GlobalTheory.SgInf
 
+/- English proof (translation)
+Rewrite using `[eLpNorm_eq_lintegral_rpow_enorm_toReal (by norm_num) (by norm_num)]`. Establish `h2 : (∫⁻ x, ‖f x‖ₑ ^ (ENNReal.toReal 2) ∂ν) = ∫⁻ x, (‖f x‖₊ : ENNReal) ^ 2 ∂ν`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[show ENNReal.toReal 2 = ((2 : ℕ) : ℝ) by norm_num, ENNReal.rpow_natCast]`.
+
+Both sides reduce to the same expression. Rewrite using `[h2]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_rpow_of_nonneg (by positivity) (by norm_num)]`. Use `congr 1`.
+
+Rewrite using `[show (1 / ENNReal.toReal 2 : ℝ) = 1 / 2 by norm_num, ← Real.sqrt_eq_rpow, Real.sqrt_mul' _ (by positivity), Real.sqrt_sq ha]`.
+-/
 theorem ballMean_eLpNorm_two_le {α E : Type*} [MeasurableSpace α] [NormedAddCommGroup E]
     {ν : Measure α} {f : α → E} {C a : ℝ} (hC : 0 ≤ C) (ha : 0 ≤ a)
     (h : ∫⁻ x, (‖f x‖₊ : ENNReal) ^ 2 ∂ν ≤ ENNReal.ofReal (C * a ^ 2)) :
@@ -23,6 +30,15 @@ theorem ballMean_eLpNorm_two_le {α E : Type*} [MeasurableSpace α] [NormedAddCo
       rw [show (1 / ENNReal.toReal 2 : ℝ) = 1 / 2 by norm_num, ← Real.sqrt_eq_rpow,
         Real.sqrt_mul' _ (by positivity), Real.sqrt_sq ha]
 
+/- English proof (translation)
+Establish `h2` using `ballMean_eLpNorm_two_le hC ha h`. Establish `hL2 : MemLp f 2 ν` using `⟨hf, lt_of_le_of_lt h2 ENNReal.ofReal_lt_top⟩`. Use `⟨hL2.integrable (by norm_num), ?_⟩` and prove the remaining obligations. Establish `h1 : eLpNorm f 1 ν ≤ eLpNorm f 2 ν * ν Set.univ ^ (1 / (1 : ENNReal).toReal - 1 / (2 : ENNReal).toReal)` using `eLpNorm_le_eLpNorm_mul_rpow_measure_univ (by norm_num) hf`. Rewrite `h1` using `[eLpNorm_one_eq_lintegral_enorm]`.
+
+Establish `hexp : (1 / (1 : ENNReal).toReal - 1 / (2 : ENNReal).toReal : ℝ) = 1 / 2` using `by norm_num`. Rewrite `h1` using `[hexp]`. Establish `hmu : ν Set.univ ^ (1 / 2 : ℝ) = ENNReal.ofReal ((ν Set.univ).toReal ^ (1 / 2 : ℝ))`. Rewrite using `[← ENNReal.ofReal_rpow_of_nonneg ENNReal.toReal_nonneg (by norm_num), ENNReal.ofReal_toReal (measure_ne_top ν _)]`. Establish `key : ‖∫ x, f x ∂ν‖ₑ ≤ ENNReal.ofReal (Real.sqrt C * (ν Set.univ).toReal ^ (1 / 2 : ℝ) * a)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hmu]`. Use `gcongr`. Use `_ = _ := by`. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]; congr 1; ring`.
+
+Rewrite `key` using `[← ofReal_norm_eq_enorm]`. Conclude with `(ENNReal.ofReal_le_ofReal_iff (by positivity)).1 key`.
+-/
 theorem ballMean_norm_integral_le {α E : Type*} [MeasurableSpace α] [NormedAddCommGroup E]
     [NormedSpace ℝ E] {ν : Measure α} [IsFiniteMeasure ν] {f : α → E} {C a : ℝ} (hC : 0 ≤ C)
     (ha : 0 ≤ a) (hf : AEStronglyMeasurable f ν)
@@ -49,6 +65,17 @@ theorem ballMean_norm_integral_le {α E : Type*} [MeasurableSpace α] [NormedAdd
   rw [← ofReal_norm_eq_enorm] at key
   exact (ENNReal.ofReal_le_ofReal_iff (by positivity)).1 key
 
+/- English proof (translation)
+Introduce `k r H _ _ _ Wp _ _ _ σ μG T hμ hadd hsmul hL2 htr j`. Establish `hBfin : μG (nbd k r j) < ⊤` using `haar_compact_lt_top hμ (isCompact_nbd j)`. Use `haveI : IsFiniteMeasure (μG.restrict (nbd k r j)) := ⟨by rw [Measure.restrict_apply_univ]; exact hBfin⟩`. Take `⟨C, hC⟩` from `hL2 (nbd k r j) (isCompact_nbd j)`. Establish `hb : ∀ u : H, Integrable (fun x : Mt k r => T u (Matrix.of x)) (μG.restrict (nbd k r j)) ∧ ‖∫ x in nbd k r j, T u (Matrix.of x) ∂μG‖ ≤ Real.sqrt (max C 0) * ((μG.restrict (nbd k r j)) Set.univ).toReal ^ (1 / 2 : ℝ) * ‖u‖`.
+
+Introduce `u`. Use `ballMean_norm_integral_le (le_max_right C 0) (norm_nonneg u) (hC u).1 ?_` and prove the remaining obligations. Use `(hC u).2.trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Use `gcongr`. Conclude with `le_max_left C 0`.
+
+Use `set c : ℝ := ((μG (nbd k r j)).toReal)⁻¹ with hc`. Establish `hc0 : 0 ≤ c` using `inv_nonneg.2 ENNReal.toReal_nonneg`. Set `L : H →ₗ[ℂ] Wp` to `{ toFun := fun v => c • ∫ x in nbd k r j, T v (Matrix.of x) ∂μG map_add' := fun u u' => by`. Rewrite using `[integral_congr_ae (ae_restrict_of_ae (hadd u u')), integral_add (hb u).1 (hb u').1, smul_add]`. Use the proof step `map_smul' := fun b u => by`.
+
+Simplify using `only [RingHom.id_apply]`. Rewrite using `[integral_congr_ae (ae_restrict_of_ae (hsmul b u)), integral_smul, smul_comm] }`. Use `⟨L.mkContinuous (c * (Real.sqrt (max C 0) * ((μG.restrict (nbd k r j)) Set.univ).toReal ^ (1 / 2 : ℝ))) ?_, ?_⟩` and prove the remaining obligations. Introduce `v show ‖c • ∫ x in nbd k r j, T v (Matrix.of x) ∂μG‖ ≤ _`. Rewrite using `[norm_smul, Real.norm_of_nonneg hc0, mul_assoc]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (hb v).2 hc0`. Introduce `v x hx show c • ∫ y in nbd k r j, T (σ (Matrix.of x) v) (Matrix.of y) ∂μG = _`. Unfold `avgR`. Rewrite using `[integral_congr_ae (ae_restrict_of_ae (htr _ hx v))]`. Both sides reduce to the same expression.
+-/
 theorem ballMean_clm : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
     (σ : Mat k r → (H →L[ℂ] H)) (μG : Measure (Mt k r)) (T : H → Mat k r → Wp), IsHaarOn (GG k r) μG →

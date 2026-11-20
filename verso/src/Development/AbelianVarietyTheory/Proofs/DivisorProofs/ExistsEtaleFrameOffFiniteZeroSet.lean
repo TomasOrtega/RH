@@ -17,6 +17,27 @@ open scoped ENNReal ContDiff
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `n Y _ _ _ _ _ _ ι La _ A hn hH E L s hs hS`. Take `⟨H, hH⟩` from `hH`. Take `⟨T, hTf, hTd, hTm⟩` from `GlobalTheory.T.exists_finite_disjoint_meeting_every_component n Y ι La A hn _ hS`. Take `⟨k1, hk1⟩` from `GlobalTheory.T.exists_sections_coords_nonvanishing_at_finset n Y ι La A H hH hTf.toFinset (A.kap + E)`. Take `⟨k2, hk2⟩` from `GlobalTheory.T.exists_pos_add_nsmul_of_levi_pos n Y ι La A H ((2 * n + 4) • A.kap + E + L) hH`.
+
+Take `⟨t0, t, a, ht0, ht, ha, hT⟩` from `hk1 (max k1 k2) (le_max_left _ _)`. Take `⟨J, hJ, hJeq⟩` from `GlobalTheory.T.exists_jacobian_section_canonical_weight n Y ι La A (A.kap + (max k1 k2) • H) t0 t ht0 ht`. Take `⟨s', hs', hs'T, C, hC, hs'C⟩` from `GlobalTheory.T.exists_linComb_sections_ne_zero_on_finset n Y ι La A L n s hTf.toFinset hs (by`. Introduce `P hP hPS`. Conclude with `Set.disjoint_left.mp hTd (hTf.mem_toFinset.mp hP) hPS)`.
+
+Take `⟨hmul, hopen, hfrac⟩` from `GlobalTheory.T.atlasSections_mul_div_nonvanishing_isOpen n Y ι La A`. Establish `ha' : A.IsSec ((A.kap + (max k1 k2) • H) + (A.kap + E)) a`. Establish `e : (A.kap + (max k1 k2) • H) + (A.kap + E) = A.kap + ((A.kap + E) + (max k1 k2) • H)`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+
+Conclude with `ha`. Take `⟨h1, h1n⟩` from `hmul _ _ _ _ ht0 hJ`. Take `⟨h2, h2n⟩` from `hmul _ _ _ _ h1 ha'`. Take `⟨h3, h3n⟩` from `hmul _ _ _ _ h2 hs'`. Establish `hdec : ∀ y, t0 (A.pick y) y * J (A.pick y) y * a (A.pick y) y * s' (A.pick y) y ≠ 0 → t0 (A.pick y) y ≠ 0 ∧ A.IsCoordAt t0 t y ∧ a (A.pick y) y ≠ 0`.
+
+Introduce `y hy`. Establish `hJ0 : J (A.pick y) y ≠ 0` using `fun h => hy (by rw [h]; ring)`. Establish `ht00 : t0 (A.pick y) y ≠ 0` using `fun h => hy (by rw [h]; ring)`. Establish `ha0 : a (A.pick y) y ≠ 0` using `fun h => hy (by rw [h]; ring)`. Use `⟨ht00, ?_, ha0⟩` and prove the remaining obligations.
+
+Rewrite `hJ0` using `[hJeq (A.pick y) y (A.mem_pick y) ht00]`. Conclude with `right_ne_zero_of_mul hJ0`. Establish `hopen'` using `hopen _ _ h3`. Take `⟨M, hM⟩` from `(isCompact_range (ReciprocityTheory.L2DbarEstimates.Y.WeightedAtlas.continuous_nsq A h2)).bddAbove`. Use `⟨_, fun i y => t0 i y * J i y * a i y * s' i y, A.zmap t0 t, fun i y => a i y / t0 i y, h3, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `e : (A.kap + (max k1 k2) • H) + (A.kap + (2 * n) • (A.kap + (max k1 k2) • H)) + ((A.kap + (max k1 k2) • H) + (A.kap + E)) + L = ((2 * n + 4) • A.kap + E + L) + ((2 * n + 2) * max k1 k2) • H` using `by module`. Rewrite using `[e]`. Apply `hk2` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Conclude with `GlobalTheory.T.isEtaleCoordinates_section_quotients n Y ι La A _ t0 t _ ht0 ht hopen' (fun y hy => ⟨(hdec y hy).1, (hdec y hy).2.1⟩)`.
+
+Conclude with `hfrac _ _ a t0 _ ha' ht0 (fun y hy => ⟨(hdec y hy).2.2, (hdec y hy).1⟩)`. Use `GlobalTheory.T.dense_nonvanishingSet_of_ne_zero_on_components n Y ι La A _ _ T h3 hTm ?_` and prove the remaining obligations. Introduce `P hP`. Take `⟨ht0P, hcP, haP⟩` from `hT P (hTf.mem_toFinset.mpr hP)`. Establish `hsP` using `hs'T P (hTf.mem_toFinset.mpr hP)`.
+
+Establish `hJP : J (A.pick P) P ≠ 0`. Rewrite using `[hJeq (A.pick P) P (A.mem_pick P) ht0P]`. Conclude with `mul_ne_zero (pow_ne_zero _ ht0P) hcP`. Conclude with `mul_ne_zero (mul_ne_zero (mul_ne_zero ht0P hJP) haP) hsP`. Use `⟨max M 1 * C, by positivity, fun y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h3n y, mul_assoc]`. Conclude with `mul_le_mul ((hM ⟨y, rfl⟩).trans (le_max_left _ _)) (hs'C y) (ReciprocityTheory.L2DbarEstimates.Y.WeightedAtlas.nsq_nonneg A _ _ _) (by positivity)`.
+-/
 theorem exists_etale_frame_of_finite_zeroSet : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] [CompactSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), 1 ≤ n → (∃ H : La, ∀ i y, y ∈ (A.chart i).source → ∀ ξ : Fin n → ℂ, ξ ≠ 0 → 0 < A.leviAt i (A.ph H i) y ξ) → ∀ (E L : La) (s : Fin n → ι → Y → ℂ), (∀ k, A.IsSec L (s k)) → (A.zeroSet s).Finite → ∃ (Λ : La) (τ : ι → Y → ℂ) (z : Y → V n) (β : ι → Y → ℂ), A.IsSec Λ τ ∧ A.Pos Λ (fun _ => 0) ∧ Etale A (nz A τ) z ∧ A.IsFrameOn (A.kap + E) (nz A τ) β ∧ Dense (nz A τ) ∧ ∃ C : ℝ, 0 < C ∧ ∀ y, A.nsq Λ τ y ≤ C * A.sqn L s y := by
   intro n Y _ _ _ _ _ _ ι La _ A hn hH E L s hs hS
   obtain ⟨H, hH⟩ := hH

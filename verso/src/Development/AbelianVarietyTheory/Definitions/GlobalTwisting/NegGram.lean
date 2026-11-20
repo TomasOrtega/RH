@@ -24,10 +24,19 @@ def neg (W : HSpace E) : HSpace E :=
       unfold Formalism.HermitianLatticesTheory.IsUnimodular at h ⊢
       rw [e]; exact h }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem neg_rank (W : HSpace E) : (neg W).rank = W.rank := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem neg_gram (W : HSpace E) : (neg W).gram = -W.gram := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem neg_sig (W : HSpace E) (τ : E →+* ℂ) : (neg W).sig τ = ((W.sig τ).2, (W.sig τ).1) := rfl
 
 end GlobalTheory.NegSpace

@@ -33,6 +33,13 @@ section Glob
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
+/- English proof (translation)
+Unfold `psiR`. Establish `hS : (∑ a, (rootCoord ε e f z g a + star (rootCoord ε e f z g a))) = ((∑ a, 2 * (rootCoord ε e f z g a).re : ℝ) : ℂ)`. Use `push_cast`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.add_conj]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `Complex.norm_exp_ofReal_mul_I (2 * Real.pi * (∑ a, 2 * (rootCoord ε e f z g a).re) / gg) using 2` and compare the differences between its conclusion and the goal. Rewrite using `[hS]`. Use `push_cast`.
+
+Put the polynomial expressions in normal form.
+-/
 private theorem norm_psiR_eq_one {n r : ℕ} (ε : Fin n → Bool) (gg : ℕ) (e f : Fin r → Fin n → ℂ)
     (z : Fin n → ℂ) (g : Matrix (Fin n) (Fin n) ℂ) : ‖psiR ε gg e f z g‖ = 1 := by
   unfold psiR
@@ -48,12 +55,20 @@ private theorem norm_psiR_eq_one {n r : ℕ} (ε : Fin n → Bool) (gg : ℕ) (e
   push_cast
   ring_nf
 
+/- English proof (translation)
+Unfold `psiInf`. Rewrite using `[norm_prod]`. Conclude with `Finset.prod_eq_one fun v _ => norm_psiR_eq_one _ _ _ _ _ _`.
+-/
 private theorem norm_psiInf_eq_one (I : Formalism.MainNotions.S.AutInst) {r : ℕ} (g : ℕ) (e f : Fin r → Fin I.n → I.E)
     (z : Fin I.n → I.E) (s : I.Ginf) : ‖psiInf I g e f z s‖ = 1 := by
   unfold psiInf
   rw [norm_prod]
   exact Finset.prod_eq_one fun v _ => norm_psiR_eq_one _ _ _ _ _ _
 
+/- English proof (translation)
+Introduce `s hs x`. Rewrite using `[(X.Wu_spec u).1 s hs x, norm_smul, norm_psiInf_eq_one, one_mul]`. Establish `h` using `(X.piU_rep u).2.2.1 s hs (X.Wu u x) (X.Wu u x)`. Rewrite `h` using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Establish `h2 : ‖X.piU u s (X.Wu u x)‖ ^ 2 = ‖X.Wu u x‖ ^ 2` using `by exact_mod_cast h`.
+
+Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 h2`.
+-/
 theorem norm_Wu_S (u : D.what₂.Word) : ∀ s ∈ X.SinfU u, ∀ x, ‖X.Wu u (s * x)‖ = ‖X.Wu u x‖ := by
   intro s hs x
   rw [(X.Wu_spec u).1 s hs x, norm_smul, norm_psiInf_eq_one, one_mul]
@@ -67,6 +82,11 @@ theorem norm_Wu_S (u : D.what₂.Word) : ∀ s ∈ X.SinfU u, ∀ x, ‖X.Wu u (
   ‖⟪X.B.σ v (uMat a) (X.B.w v), X.B.σ v (uMat (γ v)) (X.B.σ v (uMat b) (X.B.w v))⟫_ℂ‖ₑ *
     ‖X.Wloc u v a‖ₑ * ‖X.Wloc u' v b‖ₑ
 
+/- English proof (translation)
+Establish `h` using `X.tensU_inner u a a`. Simplify using `only [inner_self_eq_norm_sq_to_K] at h`. Establish `h2 : ‖X.tensU u a‖ ^ 2 = (∏ v, ‖a v‖) ^ 2`. Rewrite using `[← Finset.prod_pow]`. Conclude with `h` after adjusting the coercions.
+
+Establish `h3` using `(pow_left_inj₀ (norm_nonneg _) (Finset.prod_nonneg fun v _ => norm_nonneg (a v)) two_ne_zero).1 h2`. Use `ext`. Use `push_cast`. Conclude with `h3`.
+-/
 private theorem nnnorm_tensU_eq_prod (u : D.what₂.Word) (a : ∀ v, X.Vloc u v) :
     ‖X.tensU u a‖₊ = ∏ v, ‖a v‖₊ := by
   have h := X.tensU_inner u a a
@@ -80,6 +100,9 @@ private theorem nnnorm_tensU_eq_prod (u : D.what₂.Word) (a : ∀ v, X.Vloc u v
   push_cast
   exact h3
 
+/- English proof (translation)
+Take `⟨hin, hσ, -⟩` from `X.B.tens_spec`. Unfold `PhiGG phiV`. Simplify using `only [hσ, hin, X.Wu_tens, enorm_eq_nnnorm, nnnorm_prod, nnnorm_tensU_eq_prod, ENNReal.ofNNReal_finsetProd, ← Finset.prod_mul_distrib]`.
+-/
 theorem phiGG_eq (u u' : D.what₂.Word) (γ x y : X.B.I.Ginf) :
     PhiGG X.B.σs (X.B.tens X.B.w) (X.Wu u) (X.Wu u') γ x y = ∏ v, phiV X u u' γ v (x v) (y v) := by
   obtain ⟨hin, hσ, -⟩ := X.B.tens_spec
@@ -87,6 +110,11 @@ theorem phiGG_eq (u u' : D.what₂.Word) (γ x y : X.B.I.Ginf) :
   simp only [hσ, hin, X.Wu_tens, enorm_eq_nnnorm, nnnorm_prod, nnnorm_tensU_eq_prod, ENNReal.ofNNReal_finsetProd,
     ← Finset.prod_mul_distrib]
 
+/- English proof (translation)
+Establish `hc : ∀ h : X.B.H v, Continuous (fun g : Formalism.REAL.UJ (X.B.I.ε v) => X.B.σ v (uMat g) h)` using `(Formalism.L2.S.Pv.SchurTens.unitRep_of_URepOn (X.ds v).2.2.1).2.2.2`. Establish `h1 : Measurable (fun p : Formalism.REAL.UJ (X.B.I.ε v) × Formalism.REAL.UJ (X.B.I.ε v) => ‖⟪X.B.σ v (uMat p.1) (X.B.w v), X.B.σ v (uMat (γ v)) (X.B.σ v (uMat p.2) (X.B.w v))⟫_ℂ‖ₑ)` using `(((hc _).comp continuous_fst).inner ((X.B.σ v (uMat (γ v))).continuous.comp ((hc _).comp continuous_snd))).enorm.measurable`. Establish `h2 : Measurable (fun p : Formalism.REAL.UJ (X.B.I.ε v) × Formalism.REAL.UJ (X.B.I.ε v) => ‖X.Wloc u v p.1‖ₑ)` using `((X.Wloc_cont u v).comp continuous_fst).enorm.measurable`. Establish `h3 : Measurable (fun p : Formalism.REAL.UJ (X.B.I.ε v) × Formalism.REAL.UJ (X.B.I.ε v) => ‖X.Wloc u' v p.2‖ₑ)` using `((X.Wloc_cont u' v).comp continuous_snd).enorm.measurable`. Unfold `phiV`.
+
+Conclude with `(h1.mul h2).mul h3`.
+-/
 theorem measurable_phiV (u u' : D.what₂.Word) (γ : X.B.I.Ginf) (v : InfinitePlace X.B.I.F) :
     Measurable (fun p : Formalism.REAL.UJ (X.B.I.ε v) × Formalism.REAL.UJ (X.B.I.ε v) => phiV X u u' γ v p.1 p.2) := by
   have hc : ∀ h : X.B.H v, Continuous (fun g : Formalism.REAL.UJ (X.B.I.ε v) => X.B.σ v (uMat g) h) :=
@@ -102,6 +130,11 @@ theorem measurable_phiV (u u' : D.what₂.Word) (γ : X.B.I.Ginf) (v : InfiniteP
   unfold phiV
   exact (h1.mul h2).mul h3
 
+/- English proof (translation)
+Establish `hm` using `measurable_phiV X u u' γ`. Establish `h1 : ∀ x : X.B.I.Ginf, ∫⁻ y, PhiGG X.B.σs (X.B.tens X.B.w) (X.Wu u) (X.Wu u') γ x y ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) = ∏ v, ∫⁻ b, phiV X u u' γ v (x v) b ∂(Formalism.REAL.muG (X.B.I.ε v))`. Introduce `x`. Repeatedly rewrite using `[phiGG_eq X u u' γ x]`. Conclude with `Formalism.L2.SG.RealObj.InfCut.ProductExactness.PiM.lintegral_pi_prod (fun v => Formalism.REAL.muG (X.B.I.ε v)) (fun v b => phiV X u u' γ v (x v) b) (fun v => (hm v).comp measurable_prodMk_left)`.
+
+Repeatedly rewrite using `[h1]`. Conclude with `Formalism.L2.SG.RealObj.InfCut.ProductExactness.PiM.lintegral_pi_prod (fun v => Formalism.REAL.muG (X.B.I.ε v)) (fun v a => ∫⁻ b, phiV X u u' γ v a b ∂(Formalism.REAL.muG (X.B.I.ε v))) (fun v => (hm v).lintegral_prod_right')`.
+-/
 theorem lint_GG_prod (u u' : D.what₂.Word) (γ : X.B.I.Ginf) :
     ∫⁻ x, ∫⁻ y, PhiGG X.B.σs (X.B.tens X.B.w) (X.Wu u) (X.Wu u') γ x y
         ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) ∂(Formalism.L2.SG.ProjRows.muInf X.B.I) =

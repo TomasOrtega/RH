@@ -8,6 +8,15 @@ namespace GlobalTheory.CosetFin
 
 variable {H : Type} [Group H]
 
+/- English proof (translation)
+Use `set S := (K.map (MulAut.conj x).toMonoidHom).subgroupOf A`. Use `haveI : S.FiniteIndex := ⟨h⟩`. Use `haveI : Finite (A ⧸ S) := Subgroup.finite_quotient_of_finiteIndex`. Use `(Set.finite_range (fun t : A ⧸ S => (QuotientGroup.mk ((t.out : H) * x) : H ⧸ K))).subset ?_` and prove the remaining obligations. Introduce and unpack `q ⟨a, ha, rfl⟩`.
+
+Use `⟨(QuotientGroup.mk (⟨a, ha⟩ : A) : A ⧸ S), ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul S (⟨a, ha⟩ : A)`. Simplify using `only`. Rewrite using `[hu]`. Establish `hu2 : ((u : A) : H) ∈ K.map (MulAut.conj x).toMonoidHom` using `u.2`.
+
+Take `⟨k, hk, hke⟩` from `hu2`. Rewrite using `[QuotientGroup.eq]`. Establish `: ((u : A) : H) = x * k * x⁻¹` using `by rw [← hke]; rfl`. Simplify using `only [Subgroup.coe_mul, this]`. Establish `e : (a * (x * k * x⁻¹) * x)⁻¹ * (a * x) = k⁻¹` using `by group`.
+
+Rewrite using `[e]`. Conclude with `K.inv_mem hk`.
+-/
 theorem finite_mk_mul (A K : Subgroup H) (x : H) (h : (K.map (MulAut.conj x).toMonoidHom).relIndex A ≠ 0) :
     {q : H ⧸ K | ∃ a ∈ A, q = (QuotientGroup.mk (a * x) : H ⧸ K)}.Finite := by
   set S := (K.map (MulAut.conj x).toMonoidHom).subgroupOf A
@@ -27,6 +36,13 @@ theorem finite_mk_mul (A K : Subgroup H) (x : H) (h : (K.map (MulAut.conj x).toM
   have e : (a * (x * k * x⁻¹) * x)⁻¹ * (a * x) = k⁻¹ := by group
   rw [e]; exact K.inv_mem hk
 
+/- English proof (translation)
+Use `set T := K.subgroupOf K₀`. Use `haveI : T.FiniteIndex := ⟨hc⟩`. Use `haveI : Finite (K₀ ⧸ T) := Subgroup.finite_quotient_of_finiteIndex`. Use `(Set.finite_iUnion (fun t : K₀ ⧸ T => finite_mk_mul K₀ K (s * (t.out : H)) (hconj _))).subset ?_` and prove the remaining obligations. Introduce and unpack `q ⟨k₁, hk₁, k₂, hk₂, rfl⟩`.
+
+Use `Set.mem_iUnion.2 ⟨(QuotientGroup.mk (⟨k₂, hk₂⟩ : K₀) : K₀ ⧸ T), k₁, hk₁, ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul T (⟨k₂, hk₂⟩ : K₀)`. Rewrite using `[hu, QuotientGroup.eq]`. Establish `hu2 : ((u : K₀) : H) ∈ K` using `u.2`. Simplify using `only [Subgroup.coe_mul]`.
+
+Establish `e : (k₁ * s * k₂)⁻¹ * (k₁ * (s * (k₂ * ((u : K₀) : H)))) = ((u : K₀) : H)` using `by group`. Rewrite using `[e]`. Conclude with `hu2`.
+-/
 theorem finite_mk_dcoset (K₀ K : Subgroup H) (hc : K.relIndex K₀ ≠ 0)
     (hconj : ∀ y : H, (K.map (MulAut.conj y).toMonoidHom).relIndex K₀ ≠ 0) (s : H) :
     {q : H ⧸ K | ∃ k₁ ∈ K₀, ∃ k₂ ∈ K₀, q = (QuotientGroup.mk (k₁ * s * k₂) : H ⧸ K)}.Finite := by
@@ -43,6 +59,9 @@ theorem finite_mk_dcoset (K₀ K : Subgroup H) (hc : K.relIndex K₀ ≠ 0)
   have e : (k₁ * s * k₂)⁻¹ * (k₁ * (s * (k₂ * ((u : K₀) : H)))) = ((u : K₀) : H) := by group
   rw [e]; exact hu2
 
+/- English proof (translation)
+Use `(S.finite_toSet.biUnion fun s _ => finite_mk_dcoset K₀ K hc hconj s).subset ?_` and prove the remaining obligations. Introduce and unpack `q ⟨g, hg, rfl⟩`. Take `⟨s, hs, k₁, hk₁, k₂, hk₂, rfl⟩` from `hS g hg`. Conclude with `Set.mem_biUnion hs ⟨k₁, hk₁, k₂, hk₂, rfl⟩`.
+-/
 theorem finite_mk_support (K₀ K : Subgroup H) (hc : K.relIndex K₀ ≠ 0)
     (hconj : ∀ y : H, (K.map (MulAut.conj y).toMonoidHom).relIndex K₀ ≠ 0) (φ : H → ℂ) (S : Finset H)
     (hS : ∀ g, φ g ≠ 0 → ∃ s ∈ S, ∃ k₁ ∈ K₀, ∃ k₂ ∈ K₀, g = k₁ * s * k₂) :
@@ -52,6 +71,9 @@ theorem finite_mk_support (K₀ K : Subgroup H) (hc : K.relIndex K₀ ≠ 0)
   obtain ⟨s, hs, k₁, hk₁, k₂, hk₂, rfl⟩ := hS g hg
   exact Set.mem_biUnion hs ⟨k₁, hk₁, k₂, hk₂, rfl⟩
 
+/- English proof (translation)
+Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK`. Use `haveI : Finite (K ⧸ U.subgroupOf K) := Subgroup.quotient_finite_of_isOpen _ (hU.preimage continuous_subtype_val)`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+-/
 theorem relIndex_ne_zero_open_compact {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (U K : Subgroup G) (hU : IsOpen (U : Set G)) (hK : IsCompact (K : Set G)) : U.relIndex K ≠ 0 := by
   haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK
@@ -59,6 +81,13 @@ theorem relIndex_ne_zero_open_compact {G : Type} [Group G] [TopologicalSpace G] 
     Subgroup.quotient_finite_of_isOpen _ (hU.preimage continuous_subtype_val)
   exact Subgroup.index_ne_zero_of_finite
 
+/- English proof (translation)
+Establish `e : ((U.map (MulAut.conj y).toMonoidHom : Subgroup G) : Set G) = (fun g => y⁻¹ * g * y) ⁻¹' (U : Set G)`. Use extensionality with `g`. Simplify using `only [Subgroup.coe_map, Set.mem_image, SetLike.mem_coe, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`.
+
+Establish `: y⁻¹ * ((MulAut.conj y).toMonoidHom k) * y = k` using `by show y⁻¹ * (y * k * y⁻¹) * y = k; group`. Rewrite using `[this]`. Conclude with `hk`. Introduce `h`. Use `⟨_, h, ?_⟩` and prove the remaining obligations.
+
+Use `show y * (y⁻¹ * g * y) * y⁻¹ = g`. Use `group`. Rewrite using `[e]`. Conclude with `hU.preimage ((continuous_const.mul continuous_id).mul continuous_const)`.
+-/
 theorem isOpen_map_conj {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (U : Subgroup G) (hU : IsOpen (U : Set G)) (y : G) :
     IsOpen ((U.map (MulAut.conj y).toMonoidHom : Subgroup G) : Set G) := by
@@ -80,6 +109,9 @@ end GlobalTheory.CosetFin
 
 namespace GlobalTheory.CosetFin
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (MulAut.conj y).toMonoidHom` using `(MulAut.conj y).injective`. Conclude with `⟨by rw [Subgroup.relIndex_map_map_of_injective _ _ hinj]; exact h.1, by rw [Subgroup.relIndex_map_map_of_injective _ _ hinj]; exact h.2⟩`.
+-/
 theorem commensurable_map_conj {G : Type} [Group G] {A B : Subgroup G} (h : A.Commensurable B) (y : G) :
     (A.map (MulAut.conj y).toMonoidHom).Commensurable (B.map (MulAut.conj y).toMonoidHom) := by
   have hinj : Function.Injective (MulAut.conj y).toMonoidHom := (MulAut.conj y).injective
@@ -90,6 +122,19 @@ end GlobalTheory.CosetFin
 
 open GlobalTheory.CosetFin in
 
+/- English proof (translation)
+Introduce `p _ G L f hf _ K' f' hf' _`. Take `⟨-, -, -, S, hS⟩` from `hf`. Take `⟨hc', -, -, S', hS'⟩` from `hf'`. Establish `hA : {a : G.GAf ⧸ L.K.toSubgroup | ∃ g, f g ≠ 0 ∧ a = (QuotientGroup.mk g : G.GAf ⧸ L.K.toSubgroup)}.Finite`. Use `finite_mk_support L.K.toSubgroup L.K.toSubgroup ?_ ?_ f S hS` and prove the remaining obligations.
+
+Rewrite using `[Subgroup.relIndex_self]`. Conclude with `one_ne_zero`. Introduce `y`. Conclude with `relIndex_ne_zero_open_compact _ _ (isOpen_map_conj _ L.K.isOpen y) L.compact`. Establish `hB : {b : Gr G 1 ⧸ K' | ∃ g, f' g ≠ 0 ∧ b = (QuotientGroup.mk g : Gr G 1 ⧸ K')}.Finite`.
+
+Use `finite_mk_support (KHT p G.m G.n 1 G.Fw) K' hc'.1 ?_ f' S' hS'` and prove the remaining obligations. Introduce `y`. Establish `h1` using `(GlobalTheory.heckeOperator_integral p G 1 Nat.one_pos).1 y`. Conclude with `((commensurable_map_conj hc' y).trans h1).1`. Set `ψ : (G.GAf × Gr G 1) ⧸ (L.K.toSubgroup.prod K' : Subgroup (G.GAf × Gr G 1)) → (G.GAf ⧸ L.K.toSubgroup) × (Gr G 1 ⧸ K')` to `fun q => ((QuotientGroup.mk q.out.1 : G.GAf ⧸ L.K.toSubgroup), (QuotientGroup.mk q.out.2 : Gr G 1 ⧸ K'))`.
+
+Establish `hψ : Function.Injective ψ`. Introduce `q r hqr`. Simplify using `only [ψ, Prod.mk.injEq, QuotientGroup.eq] at hqr`. Rewrite using `[← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' r]`. Apply `QuotientGroup.eq.2` to reduce the goal to its premises.
+
+Conclude with `Subgroup.mem_prod.2 ⟨by simpa using hqr.1, by simpa using hqr.2⟩`. Use `((hA.prod hB).preimage hψ.injOn).subset ?_` and prove the remaining obligations. Introduce `q hq`. Establish `h1 : f q.out.1 ≠ 0` using `left_ne_zero_of_mul hq`. Establish `h2 : f' q.out.2 ≠ 0` using `right_ne_zero_of_mul hq`.
+
+Conclude with `⟨⟨_, h1, rfl⟩, ⟨_, h2, rfl⟩⟩`.
+-/
 theorem GlobalTheory.testProd_support_finite : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (L : G.Level) (f : G.GAf → ℂ),
     IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f →
       (∀ k ∈ L.K.toSubgroup, ∀ k' ∈ L.K.toSubgroup, ∀ g, f (k * g * k') = f g) →

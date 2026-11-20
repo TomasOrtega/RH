@@ -17,6 +17,15 @@ namespace GlobalTheory.LayerJumps
 
 open Module
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `a ha`. Proceed by induction on `a, ha using Int.le_induction_down with`. Consider the case `base => rfl`. Consider the case `pred a ha ih`.
+
+Rewrite using `[← ih]`. Establish `h1` using `h (a - 1) (by rw [abs_of_neg (by omega)]; omega)`. Rewrite `h1` using `[sub_add_cancel]`. Conclude with `(Submodule.eq_of_le_of_finrank_eq (by simpa using anti (a - 1)) h1).symm`. Introduce `b hb`.
+
+Proceed by induction on `b, hb using Int.le_induction with`. Consider the case `base => rfl`. Consider the case `succ b hb ih`. Rewrite using `[← ih]`. Establish `h1` using `h b (by rw [abs_of_pos (by omega)]; omega)`.
+
+Conclude with `Submodule.eq_of_le_of_finrank_eq (anti b) h1`.
+-/
 theorem stab_of_steps {L M : Type} [Field L] [AddCommGroup M] [Module L M] (F : ℤ → Submodule L M)
     (anti : ∀ a, F (a + 1) ≤ F a) (fin : ∀ a, FiniteDimensional L (F a)) (N : ℕ)
     (h : ∀ a : ℤ, (N : ℤ) < |a| → finrank L (F (a + 1)) = finrank L (F a)) :
@@ -47,6 +56,11 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR]
     (PD : PeriodData G Qp K₀ K B BdR)
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hx`. Use `⟨f.rTensor _ y, ?_⟩` and prove the remaining obligations. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v c => simp`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem rTensor_mem_filV {LL LL' V W : Type} [Field LL] [Algebra Qp LL] [Field LL'] [Algebra Qp LL']
     [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     [AddCommGroup W] [Module LL' W] [Module Qp W] [IsScalarTower Qp LL' W]
@@ -59,6 +73,11 @@ theorem rTensor_mem_filV {LL LL' V W : Type} [Field LL] [Algebra Qp LL] [Field L
   | tmul v c => simp
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Establish `key : ∀ g (y : V ⊗[Qp] BdR), actVdR PD σ g (f.rTensor BdR y) = f.rTensor BdR (actVdR PD ρ g y)`. Introduce `g y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v c => simp [actVdR, hf]`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at hx ⊢`. Introduce `g`. Rewrite using `[key, hx g]`.
+-/
 theorem rTensor_mem_DdR {LL LL' V W : Type} [Field LL] [Algebra Qp LL] [Field LL'] [Algebra Qp LL']
     [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     [AddCommGroup W] [Module LL' W] [Module Qp W] [IsScalarTower Qp LL' W]
@@ -78,6 +97,13 @@ theorem rTensor_mem_DdR {LL LL' V W : Type} [Field LL] [Algebra Qp LL] [Field LL
 
 end Periods
 
+/- English proof (translation)
+Establish `hinj : LinearMap.ker (LinearMap.pi f) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `v hv`. Conclude with `hf v fun i => congrFun hv i`. Take `⟨G, hG⟩` from `LinearMap.exists_leftInverse_of_injective _ hinj`.
+
+Use `⟨fun i => G.comp (LinearMap.single Qp W i), fun v => ?_⟩` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun hG v`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at h1`. Simplify using `only [LinearMap.comp_apply, LinearMap.coe_single]`. Rewrite using `[← map_sum, Finset.univ_sum_single]`.
+
+Conclude with `h1`.
+-/
 theorem exists_sum_comp {Qp V ι : Type} [Field Qp] [AddCommGroup V] [Module Qp V] [Fintype ι] [DecidableEq ι]
     {W : ι → Type} [∀ i, AddCommGroup (W i)] [∀ i, Module Qp (W i)] (f : ∀ i, V →ₗ[Qp] W i)
     (hf : ∀ v, (∀ i, f i v = 0) → v = 0) :
@@ -94,6 +120,9 @@ theorem exists_sum_comp {Qp V ι : Type} [Field Qp] [AddCommGroup V] [Module Qp 
   rw [← map_sum, Finset.univ_sum_single]
   exact h1
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v c => simp only [LinearMap.rTensor_tmul]`. Rewrite using `[← TensorProduct.sum_tmul, h]`. Consider the case `add x y hx hy => simp only [map_add, Finset.sum_add_distrib, hx, hy]`.
+-/
 theorem sum_rTensor {Qp V ι BdR : Type} [Field Qp] [AddCommGroup V] [Module Qp V] [Fintype ι]
     [AddCommGroup BdR] [Module Qp BdR]
     {W : ι → Type} [∀ i, AddCommGroup (W i)] [∀ i, Module Qp (W i)] (f : ∀ i, V →ₗ[Qp] W i)
@@ -121,6 +150,19 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {LL : Type} [Field LL] [Algebra Qp LL]
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.Cmp.SmallJumps.finite_ddR_of_isField PD hF ρ`. Establish `fin : ∀ τ a, FiniteDimensional LL (FildR PD ρ τ a)` using `fun τ a => Submodule.finiteDimensional_of_le (S₂ := DdR PD ρ) (inf_le_left.trans inf_le_left)`. Establish `anti : ∀ τ a, FildR PD ρ τ (a + 1) ≤ FildR PD ρ τ a` using `fun τ a => inf_le_inf_left _ (GlobalTheory.Cmp.SmallJumps.filV_anti PD (by omega))`. Establish `st : ∀ τ, (∀ a ≤ -(N : ℤ), FildR PD ρ τ a = FildR PD ρ τ (-(N : ℤ))) ∧ ∀ b, (N : ℤ) + 1 ≤ b → FildR PD ρ τ b = FildR PD ρ τ ((N : ℤ) + 1)`. Introduce `τ`.
+
+Use `stab_of_steps (FildR PD ρ τ) (anti τ) (fin τ) N fun a ha => ?_` and prove the remaining obligations. Establish `h1` using `hm τ a`. Establish `h2 : (J τ).count a = 0` using `Multiset.count_eq_zero.2 fun hmem => by`. Use `hJ τ a hmem` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `h1` using `[h2, multV]`. Use linear arithmetic over natural numbers and integers. Establish `zero : ∀ τ, FildR PD ρ τ ((N : ℤ) + 1) = ⊥`. Introduce `τ`. Use `(Submodule.eq_bot_iff _).2 fun y hy => GlobalTheory.Cmp.JumpDict.filV_sep PD (LL := LL) y fun b => ?_` and prove the remaining obligations.
+
+Break down `le_total b ((N : ℤ) + 1) with hb | hb` into its components or cases. Conclude with `GlobalTheory.Cmp.SmallJumps.filV_anti PD hb (Submodule.mem_inf.1 hy).2`. Rewrite `hy` using `[← (st τ).2 b hb]`. Conclude with `(Submodule.mem_inf.1 hy).2`. Use `⟨fun x hx => ?_, ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, ha⟩` from `GlobalTheory.Cmp.SmallJumps.filV_exh PD (LL := LL) (V := V) x`. Break down `le_total a (-(N : ℤ)) with h | h` into its components or cases. Establish `hx' : x ∈ DdR PD ρ ⊓ FilV PD (LL` using `LL) (V := V) a := Submodule.mem_inf.2 ⟨hx, ha⟩`. Rewrite `hx'` using `[Formalism.MainNotions.N.JsetEmb.de_rham_filtration_eq_iSup_embeddings PD hcard ρ a]`. Establish `hle : (⨆ τ : K →ₐ[Qp] LL, FildR PD ρ τ a) ≤ FilV PD (LL` using `LL) (V := V) (-(N : ℤ)) := iSup_le fun τ => by rw [(st τ).1 a h]; exact inf_le_right`.
+
+Conclude with `hle hx'`. Conclude with `GlobalTheory.Cmp.SmallJumps.filV_anti PD h ha`. Rewrite using `[Formalism.MainNotions.N.JsetEmb.de_rham_filtration_eq_iSup_embeddings PD hcard ρ]`. Simplify using `[zero]`.
+-/
 theorem factor_bounds [CharZero Qp] [Fintype (K →ₐ[Qp] LL)]
     (hcard : Fintype.card (K →ₐ[Qp] LL) = finrank Qp K) (hF : IsField BdR) [Module.Finite Qp V]
     (ρ : Representation LL G V) (J : (K →ₐ[Qp] LL) → Multiset ℤ) (N : ℕ)
@@ -174,11 +216,17 @@ variable {l : ℕ} [Fact l.Prime]
 def matL (L : FinExt l) {a : ℕ} (M : Matrix (Fin a) (Fin a) (Om l)) (h : ∀ i j, M i j ∈ L.1) :
     Matrix (Fin a) (Fin a) ↥L.1 := fun i j => ⟨M i j, h i j⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem map_matL (L : FinExt l) {a : ℕ} (M : Matrix (Fin a) (Fin a) (Om l)) (h : ∀ i j, M i j ∈ L.1) :
     (algebraMap ↥L.1 (Om l)).mapMatrix (matL L M h) = M := by
   ext i j
   rfl
 
+/- English proof (translation)
+Introduce `A B h`. Use extensionality with `i j`. Conclude with `congrFun (congrFun h i) j`.
+-/
 theorem mapMatrix_inj (L : FinExt l) {a : ℕ} :
     Function.Injective ((algebraMap ↥L.1 (Om l)).mapMatrix : Matrix (Fin a) (Fin a) ↥L.1 →+* _) := by
   intro A B h
@@ -205,6 +253,9 @@ def matRepL {Γ : Type} [Group Γ] (L : FinExt l) {a : ℕ} (r : Γ →* GL (Fin
     Representation ↥L.1 Γ (Fin a → ↥L.1) :=
   ((Matrix.toLinAlgEquiv' : Matrix (Fin a) (Fin a) ↥L.1 ≃ₐ[↥L.1] _) : _ →* _).comp ((Units.coeHom _).comp r)
 
+/- English proof (translation)
+Simplify using `[matRepL, Matrix.toLinAlgEquiv'_apply]`.
+-/
 theorem matRepL_apply {Γ : Type} [Group Γ] (L : FinExt l) {a : ℕ} (r : Γ →* GL (Fin a) ↥L.1) (g : Γ)
     (v : Fin a → ↥L.1) : matRepL L r g v = (r g).val *ᵥ v := by
   simp [matRepL, Matrix.toLinAlgEquiv'_apply]
@@ -223,6 +274,9 @@ def colMap {Γ : Type} [Group Γ] {a d : ℕ} {L₀ : FinExt l} {Cl : Set (Γ �
   ∑ j, (LinearMap.proj j : (Fin d → ℚ_[l]) →ₗ[ℚ_[l]] ℚ_[l]).smulRight
     (fun i => (⟨Ly.b j k i c, Ly.b_mem j k i c⟩ : ↥(Ly.L k).1))
 
+/- English proof (translation)
+Simplify using `only [colMap, LinearMap.sum_apply, Finset.sum_apply, LinearMap.smulRight_apply, LinearMap.proj_apply, Pi.smul_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply]`. Both sides reduce to the same expression.
+-/
 theorem colMap_coe {Γ : Type} [Group Γ] {a d : ℕ} {L₀ : FinExt l} {Cl : Set (Γ →* GL (Fin a) (Om l))}
     {ρ : Γ →* GL (Fin d) ℤ_[l]} (Ly : Layer L₀ Cl ρ) (k : Fin Ly.m) (c : Fin a) (v : Fin d → ℚ_[l])
     (i : Fin a) :
@@ -233,6 +287,17 @@ theorem colMap_coe {Γ : Type} [Group Γ] {a d : ℕ} {L₀ : FinExt l} {Cl : Se
   rw [Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply]
   rfl
 
+/- English proof (translation)
+Rewrite using `[matRepL_apply]`. Use function extensionality and compare the values at `i₀`. Apply `(algebraMap ↥(Ly.L k).1 (Om l)).injective` to reduce the goal to its premises. Rewrite using `[colMap_coe]`. Establish `hread : ∀ j, ∑ i', (Ly.rep k g).val i₀ i' * Ly.b j k i' c = ∑ i, zOm l ((ρ g).val i j) * Ly.b i k i₀ c`.
+
+Introduce `j`. Use `congrArg (fun M => M i₀ c) ((Ly.reads k).equi g j)` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.sum_apply, smul_eq_mul]`. Establish `hL : algebraMap ↥(Ly.L k).1 (Om l) (((repL (Ly.L k) (Ly.rep k) (Ly.rep_mem k) g).val *ᵥ colMap Ly k c v) i₀) = ∑ i', (Ly.rep k g).val i₀ i' * ∑ j, algebraMap ℚ_[l] (Om l) (v j) * Ly.b j k i' c`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, colMap_coe]`.
+
+Both sides reduce to the same expression. Rewrite using `[hL]`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Establish `h2 : ∀ j, ∑ i', (Ly.rep k g).val i₀ i' * (algebraMap ℚ_[l] (Om l) (v j) * Ly.b j k i' c) = algebraMap ℚ_[l] (Om l) (v j) * ∑ i, zOm l ((ρ g).val i j) * Ly.b i k i₀ c`.
+
+Introduce `j`. Rewrite using `[← hread j, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i' _ => by ring`. Simplify using `only [h2, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [qRep, MonoidHom.coe_comp, Function.comp_apply]`. Use `show algebraMap ℚ_[l] (Om l) ((((ρ g).val.map (algebraMap ℤ_[l] ℚ_[l])) *ᵥ v) i) * _ = _`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, Finset.sum_mul, RingHom.mapMatrix_apply, Matrix.map_apply, Units.coeHom_apply, map_mul, zOm, RingHom.comp_apply]`. Use `Finset.sum_congr rfl fun x _ => by ring` and prove the remaining obligations.
+-/
 theorem colMap_equi {Γ : Type} [Group Γ] {a d : ℕ} {L₀ : FinExt l} {Cl : Set (Γ →* GL (Fin a) (Om l))}
     {ρ : Γ →* GL (Fin d) ℤ_[l]} (Ly : Layer L₀ Cl ρ) (k : Fin Ly.m) (c : Fin a) (g : Γ)
     (v : Fin d → ℚ_[l]) :
@@ -276,6 +341,11 @@ open Module
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `hs : ∑ j, v j • Ly.b j = 0`. Use function extensionality and compare the values at `k`. Use extensionality with `i c`. Use `congrArg (fun w => algebraMap ↥(Ly.L k).1 (Om l) (w i)) (h (k, c))` as an intermediate fact. Simplify using `only [colMap_coe, Pi.zero_apply, map_zero] at this`.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, Matrix.sum_apply, Matrix.smul_apply, Pi.zero_apply, Matrix.zero_apply]`. Simplify `this` using `only [Algebra.smul_def]`. Use function extensionality and compare the values at `j`. Conclude with `Fintype.linearIndependent_iff.1 Ly.indep v hs j`.
+-/
 theorem colMap_inj {Γ : Type} [Group Γ] {a d : ℕ} {L₀ : FinExt l} {Cl : Set (Γ →* GL (Fin a) (Om l))}
     {ρ : Γ →* GL (Fin d) ℤ_[l]} (Ly : Layer L₀ Cl ρ) (v : Fin d → ℚ_[l])
     (h : ∀ kc : Fin Ly.m × Fin a, colMap Ly kc.1 kc.2 v = 0) : v = 0 := by
@@ -290,6 +360,11 @@ theorem colMap_inj {Γ : Type} [Group Γ] {a d : ℕ} {L₀ : FinExt l} {Cl : Se
   funext j
   exact Fintype.linearIndependent_iff.1 Ly.indep v hs j
 
+/- English proof (translation)
+Use `K.2` as an intermediate fact. Rewrite using `[← AlgHom.card ℚ_[l] ↥K.1 (Om l)]`. Use `Fintype.card_congr (Equiv.ofBijective (fun τ => L.1.val.comp τ) ⟨fun τ τ' hτ => ?_, fun σ => ?_⟩)` and prove the remaining obligations. Use extensionality with `x`. Conclude with `congrArg (fun f : ↥K.1 →ₐ[ℚ_[l]] Om l => f x) hτ`.
+
+Establish `hm : ∀ x, σ x ∈ L.1.toSubalgebra` using `fun x => hle (hK σ x)`. Conclude with `⟨σ.codRestrict _ hm, rfl⟩`.
+-/
 theorem card_emb_of_le (K L₀ L : FinExt l) (hK : ∀ (τ : ↥K.1 →ₐ[ℚ_[l]] Om l) (x : ↥K.1), τ x ∈ L₀.1)
     (hle : L₀.1 ≤ L.1) [Fintype (↥K.1 →ₐ[ℚ_[l]] ↥L.1)] :
     Fintype.card (↥K.1 →ₐ[ℚ_[l]] ↥L.1) = finrank ℚ_[l] ↥K.1 := by
@@ -301,6 +376,17 @@ theorem card_emb_of_le (K L₀ L : FinExt l) (hK : ∀ (τ : ↥K.1 →ₐ[ℚ_[
   · have hm : ∀ x, σ x ∈ L.1.toSubalgebra := fun x => hle (hK σ x)
     exact ⟨σ.codRestrict _ hm, rfl⟩
 
+/- English proof (translation)
+Introduce `l _ K L₀ P AI T a Cl J N hK hJ d ρ Ly hCl`. Establish `hF : IsField P.R.BdR` using `GlobalTheory.Per.FontaineBound.isField_of_tied T`. Establish `fac : ∀ k : Fin Ly.m, DdR (P.PD K) (matRepL (Ly.L k) (repL (Ly.L k) (Ly.rep k) (Ly.rep_mem k))) ≤ FilV (P.PD K) (LL` using `↥(Ly.L k).1) (V := Fin a → ↥(Ly.L k).1) (-(N : ℤ)) ∧ DdR (P.PD K) (matRepL (Ly.L k) (repL (Ly.L k) (Ly.rep k) (Ly.rep_mem k))) ⊓ FilV (P.PD K) (LL := ↥(Ly.L k).1) (V := Fin a → ↥(Ly.L k).1) ((N : ℤ) + 1) = ⊥ := by`. Introduce `k`. Use `(Ly.L k).2` as an intermediate fact.
+
+Use `K.2` as an intermediate fact. Use `letI : Fintype (↥K.1 →ₐ[ℚ_[l]] ↥(Ly.L k).1) := Fintype.ofFinite _`. Establish `hcl` using `hCl (Ly.rep k) (Ly.mem k) (Ly.L k) (repL (Ly.L k) (Ly.rep k) (Ly.rep_mem k)) (matRepL (Ly.L k) (repL (Ly.L k) (Ly.rep k) (Ly.rep_mem k))) (Ly.le k) (fun g v => matRepL_apply _ _ g v) (fun g i j => rfl)`. Conclude with `factor_bounds (P.PD K) (card_emb_of_le K L₀ (Ly.L k) hK (Ly.le k)) hF _ (fun τ => J ((Ly.L k).1.val.comp τ)) N (fun τ => hJ _) hcl.2`. Take `⟨gi, hgi⟩` from `exists_sum_comp (fun kc : Fin Ly.m × Fin a => colMap Ly kc.1 kc.2) (colMap_inj Ly)`.
+
+Establish `hsum` using `sum_rTensor (BdR := P.R.BdR) _ gi hgi`. Establish `hD : ∀ (kc : Fin Ly.m × Fin a) x, x ∈ DdR (P.PD K) (qRep ρ) → (colMap Ly kc.1 kc.2).rTensor P.R.BdR x ∈ DdR (P.PD K) (matRepL (Ly.L kc.1) (repL (Ly.L kc.1) (Ly.rep kc.1) (Ly.rep_mem kc.1)))` using `fun kc x hx => rTensor_mem_DdR (P.PD K) _ _ _ (fun g v => colMap_equi Ly kc.1 kc.2 g v) x hx`. Prove the components needed by the constructor for the conclusion. Introduce `x hx`. Rewrite using `[← hsum x]`.
+
+Conclude with `Submodule.sum_mem _ fun kc _ => rTensor_mem_filV (P.PD K) (LL := ↥(Ly.L kc.1).1) _ _ _ ((fac kc.1).1 (hD kc x hx))`. Use `(Submodule.eq_bot_iff _).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨hx1, hx2⟩` from `Submodule.mem_inf.1 hx`. Rewrite using `[← hsum x]`. Use `Finset.sum_eq_zero fun kc _ => ?_` and prove the remaining obligations.
+
+Establish `h3 : (colMap Ly kc.1 kc.2).rTensor P.R.BdR x ∈ DdR (P.PD K) (matRepL (Ly.L kc.1) (repL (Ly.L kc.1) (Ly.rep kc.1) (Ly.rep_mem kc.1))) ⊓ FilV (P.PD K) (LL` using `↥(Ly.L kc.1).1) (V := Fin a → ↥(Ly.L kc.1).1) ((N : ℤ) + 1) := Submodule.mem_inf.2 ⟨hD kc x hx1, rTensor_mem_filV (P.PD K) (LL := ℚ_[l]) _ _ _ hx2⟩`. Rewrite `h3` using `[(fac kc.1).2]`. Rewrite using `[(Submodule.mem_bot _).1 h3, map_zero]`.
+-/
 theorem layer_DdR_bounds : ∀ (l : ℕ) [Fact l.Prime] (K L₀ : FinExt l) (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (a : ℕ) (Cl : Set (↥(GK K) →* GL (Fin a) (Om l))) (J : (↥K.1 →ₐ[ℚ_[l]] Om l) → Multiset ℤ) (N : ℕ), (∀ (τ : ↥K.1 →ₐ[ℚ_[l]] Om l) (x : ↥K.1), τ x ∈ L₀.1) → (∀ τ, ∀ n ∈ J τ, |n| ≤ N) → ∀ (d : ℕ) (ρ : ↥(GK K) →* GL (Fin d) ℤ_[l]) (Ly : Layer L₀ Cl ρ), (∀ ρ₁ ∈ Cl, (∀ (L : FinExt l) (r' : ↥(GK K) →* GL (Fin a) ↥L.1) (R : Representation ↥L.1 ↥(GK K) (Fin a → ↥L.1)), L₀.1 ≤ L.1 → (∀ g v, R g v = (r' g).val *ᵥ v) → (∀ g i j, (((r' g).val i j : ↥L.1) : Om l) = (ρ₁ g).val i j) → IsSst P R ∧ ∀ (τ : ↥K.1 →ₐ[ℚ_[l]] ↥L.1) (n : ℤ), multV (P.PD K) R τ n = ((J (L.1.val.comp τ)).count n : ℤ))) → (DdR (P.PD K) (qRep ρ) ≤ FilV (P.PD K) (LL := ℚ_[l]) (V := Fin d → ℚ_[l]) (-(N : ℤ)) ∧ DdR (P.PD K) (qRep ρ) ⊓ FilV (P.PD K) (LL := ℚ_[l]) (V := Fin d → ℚ_[l]) ((N : ℤ) + 1) = ⊥) := by
   intro l _ K L₀ P AI T a Cl J N hK hJ d ρ Ly hCl
   have hF : IsField P.R.BdR := GlobalTheory.Per.FontaineBound.isField_of_tied T

@@ -18,6 +18,9 @@ def PotTwo : Prop :=
     Af.IsFlagOn W (H ⊓ Ine (F := ℚ) B) (fun i => ((cycBar ℚ Ω l) ^ (![(e : ℤ), -(e : ℤ)] i)).comp (H ⊓ Ine (F := ℚ) B).subtype) →
     ∀ v : HeightOneSpectrum (𝓞 ℚ), ((l : ℕ) : 𝓞 ℚ) ∈ v.asIdeal → PotUnl W v
 
+/- English proof (translation)
+Introduce `K' _ _ _ _ _ _ _ _` and use `L.wup ℚ Ω l n r K' (L.wdown ℚ Ω l n r K h)`.
+-/
 theorem across2 (H : Af.HypothesesH) (K Ω : Type) [Field K] [NumberField K] [IsCMField K] [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [Algebra K Ω]
     (hK : Module.finrank ℚ K = 2) {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {n : ℕ} (hn : 1 ≤ n) {r : G ℚ Ω →* GL (Fin n) (Qbar l)}
     (hs : ∀ v : HeightOneSpectrum (𝓞 ℚ), ((l : ℕ) : 𝓞 ℚ) ∈ v.asIdeal → PotUnl r v)

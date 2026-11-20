@@ -9,14 +9,43 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.T
 
 namespace GlobalTheory.CechDR
 
+/- English proof (translation)
+The claim follows from `Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)`.
+-/
 private theorem spc {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B)
     (g : B →+* C) : spMap (g.comp f) = spMap g ≫ spMap f :=
   Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)
 
+/- English proof (translation)
+The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+-/
 private theorem spi {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B}
     (h : spMap f = spMap g) : f = g :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective h)
 
+/- English proof (translation)
+Use `set J : Ideal (Sec s p.1.2.1) := I.map (algebraMap R (Sec s p.1.2.1)) with hJ`. Set `q` to `Ideal.Quotient.mk J`. Establish `hφ : ∀ r, secPull s s₀ p (algebraMap R _ r) = algebraMap R₀ _ (π r)` using `(semiHom_secPull hpb.w p).map_algebraMap`. Establish `hJker : ∀ a ∈ J, secPull s s₀ p a = 0`. Establish `: J ≤ RingHom.ker (secPull s s₀ p)`.
+
+Rewrite using `[hJ, Ideal.map_le_iff_le_comap]`. Introduce `r hr`. Rewrite `hr` using `[← hk, RingHom.mem_ker]`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, hφ, hr, map_zero]`. Conclude with `fun a ha ↦ this ha`.
+
+Set `τ : R₀ →+* (Sec s p.1.2.1 ⧸ J)` to `π.liftOfSurjective hπ ⟨q.comp (algebraMap R _), fun r hr ↦ by`. Rewrite `hr` using `[hk]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_map_of_mem _ hr)⟩`. Establish `hτ : τ.comp π = q.comp (algebraMap R _)` using `RingHom.liftOfSurjective_comp _ _ _`. Establish `hz : (spMap q ≫ affPt s p.1.2) ≫ s = spMap τ ≫ spMap π`.
+
+Rewrite using `[Category.assoc, affPt_w, ← spc, ← spc, hτ]`. Set `w` to `hpb.lift _ _ hz`. Establish `hw : w ≫ i = spMap q ≫ affPt s p.1.2` using `hpb.lift_fst _ _ _`. Use `haveI : IsOpenImmersion (affPt s₀ p.1.1) := p.1.1.2.isOpenImmersion_fromSpec`. Use `haveI : IsOpenImmersion (affPt s p.1.2) := p.1.2.2.isOpenImmersion_fromSpec`.
+
+Establish `hr : Set.range w ⊆ Set.range (affPt s₀ p.1.1)`. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `e : Set.range (affPt s₀ p.1.1) = p.1.1.1` using `p.1.1.2.range_fromSpec`. Establish `e' : Set.range (affPt s p.1.2) = p.1.2.1` using `p.1.2.2.range_fromSpec`. Rewrite using `[e, ← hp]`.
+
+Express the relevant statement in the definitionally equal form `i (w x) ∈ (p.1.2.1 : Set X)`. Rewrite using `[← e', ← Scheme.Hom.comp_apply, hw, Scheme.Hom.comp_apply]`. Conclude with `⟨_, rfl⟩`. Set `w'` to `IsOpenImmersion.lift (affPt s₀ p.1.1) w hr`. Establish `hw' : w' ≫ affPt s₀ p.1.1 = w` using `IsOpenImmersion.lift_fac _ _ _`.
+
+Set `ψ : Sec s₀ p.1.1.1 →+* (Sec s p.1.2.1 ⧸ J)` to `(Spec.preimage w').hom`. Establish `hψ : spMap ψ = w'` using `Spec.map_preimage w'`. Establish `h1 : ψ.comp (secPull s s₀ p) = q`. Apply `spi` to reduce the goal to its premises. Rewrite using `[← cancel_mono (affPt s p.1.2), spc, Category.assoc, secPull_affPt, hψ, ← Category.assoc, hw', hw]`.
+
+Set `ψ'` to `Ideal.Quotient.lift J (secPull s s₀ p) hJker`. Establish `h2 : ψ'.comp q = secPull s s₀ p` using `Ideal.Quotient.lift_comp_mk _ _ _`. Use `haveI : IsClosedImmersion (spMap π) := IsClosedImmersion.spec_of_surjective _ hπ`. Use `haveI : IsClosedImmersion i := MorphismProperty.of_isPullback hpb.flip this`. Use `haveI : Mono (spMap (secPull s s₀ p) ≫ affPt s p.1.2) := by`.
+
+Rewrite using `[secPull_affPt]`. Use `infer_instance`. Use `haveI : Mono (spMap (secPull s s₀ p)) := mono_of_mono _ (affPt s p.1.2)`. Establish `h3 : ψ'.comp ψ = RingHom.id _`. Apply `spi` to reduce the goal to its premises.
+
+Rewrite using `[← cancel_mono (spMap (secPull s s₀ p)), ← spc, ← spc, RingHom.comp_assoc, h1, h2, RingHom.id_comp]`. Use `⟨fun b ↦ ?_, fun b ↦ ⟨fun hb ↦ ?_, hJker b⟩⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (ψ b)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[← h2, RingHom.comp_apply, show q a = ψ b from ha]`.
+
+Conclude with `congrArg (fun f ↦ f b) h3`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Express the relevant statement in the definitionally equal form `q b = 0`. Rewrite using `[← h1, RingHom.comp_apply, hb, map_zero]`.
+-/
 theorem secPull_surjective_and_ker (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R)
     (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (X₀ X : Scheme.{0})
     (s₀ : X₀ ⟶ Sp R₀) (s : X ⟶ Sp R) (i : X₀ ⟶ X) (hpb : IsPullback i s₀ s (spMap π))

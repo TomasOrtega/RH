@@ -9,6 +9,13 @@ open CategoryTheory AlgebraicGeometry TensorProduct Opposite MonoidalCategory Ca
 
 namespace GlobalTheory.CompanionTheory.PerfVB
 
+/- English proof (translation)
+Take `⟨α, hα₁, hα₂, hα₃⟩` from `m`. Take `⟨β, hβ₁, hβ₂, hβ₃⟩` from `n`. Use `⟨⟨fun T => (β T).comp (α T), ?_, ?_, ?_⟩, fun T b => rfl⟩` and prove the remaining obligations. Introduce `T T' φ b`. Simplify using `only [RingHom.comp_apply, hα₁, hβ₁]`.
+
+Introduce `T r b`. Simplify using `only [RingHom.comp_apply, hα₂, hβ₂, ← IsScalarTower.algebraMap_apply]`. Introduce `T`. Take `⟨e₁, he₁⟩` from `hα₃ T`. Take `⟨e₂, he₂⟩` from `hβ₃ T`.
+
+Use `⟨(TensorProduct.AlgebraTensorModule.cancelBaseChange R S S' S' (F.obj T)).symm.trans ((TensorProduct.AlgebraTensorModule.congr (LinearEquiv.refl S' S') e₁).trans e₂), fun b => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearEquiv.trans_apply, TensorProduct.AlgebraTensorModule.cancelBaseChange_symm_tmul, TensorProduct.AlgebraTensorModule.congr_tmul, LinearEquiv.refl_apply, he₁, he₂, RingHom.comp_apply]`.
+-/
 theorem exists_bc_comp (R S S' C : Type) [CommRing R] [CommRing S] [CommRing S'] [Algebra R S]
     [Algebra S S'] [Algebra R S'] [IsScalarTower R S S'] [Category.{0} C]
     (F : C ⥤ CommAlgCat.{0} R) (F' : C ⥤ CommAlgCat.{0} S) (F'' : C ⥤ CommAlgCat.{0} S')

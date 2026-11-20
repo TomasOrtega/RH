@@ -20,6 +20,9 @@ def parGL : Subgroup (GL (Fin n) R) := ⨅ k : ℕ, Formalism.UG.stabGL (stepLo 
 
 def leviGL : Subgroup (GL (Fin n) R) := parGL b lev ⊓ ⨅ k : ℕ, Formalism.UG.stabGL (stepHi b lev k)
 
+/- English proof (translation)
+Unfold `parGL`. Rewrite using `[Subgroup.mem_iInf]`. Both sides reduce to the same expression.
+-/
 theorem mem_parGL {g : GL (Fin n) R} : g ∈ parGL b lev ↔
     ∀ (k : ℕ) (u : Fin n → R), u ∈ stepLo b lev k ↔ (g : Matrix (Fin n) (Fin n) R) *ᵥ u ∈ stepLo b lev k := by
   unfold parGL

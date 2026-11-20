@@ -26,15 +26,24 @@ def mapT (W : ∀ v : X.Pl, Fin (X.G.P.n' v) → Matrix (Fin (NN X.G.P.m X.t (j 
 
 variable (W : ∀ v : X.Pl, Fin (X.G.P.n' v) → Matrix (Fin (NN X.G.P.m X.t (j + 1))) (Fin (NN X.G.P.m X.t (j + 1))) Kc)
 
+/- English proof (translation)
+Unfold `mapT cD`. Rewrite using `[RingHom.comp_apply, MvPolynomial.map_C]`. Simplify using `[tau0]`.
+-/
 theorem mapT_cD (a : Kc) : mapT X Kc j W (cD X Kc j a) = cD X Kc j a := by
   unfold mapT cD
   rw [RingHom.comp_apply, MvPolynomial.map_C]
   simp [tau0]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[dMat, mapT]`.
+-/
 theorem mapT_dMat (v : X.Pl) (s : Fin (X.G.P.n' v)) : (dMat X Kc j v s).map (mapT X Kc j W) = dMat X Kc j v s := by
   ext a b
   simp [dMat, mapT]
 
+/- English proof (translation)
+Use extensionality with `b t`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply, yMat, mapT, MvPolynomial.map_C]`. Rewrite using `[show (tau0 X Kc j W : XspC (X.Pj (j + 1)) Kc →+* XspC (X.Pj (j + 1)) Kc) (MvPolynomial.X (idxS X j ⟨v, (s, (b, t))⟩)) = frF X Kc j W (idxS X j ⟨v, (s, (b, t))⟩) from MvPolynomial.aeval_X _ _]`. Simplify using `only [frF, idxS, map_sum, map_mul, cD, RingHom.comp_apply, Fin.cast_cast, Fin.cast_eq_self]`. Both sides reduce to the same expression.
+-/
 theorem mapT_yMat (v : X.Pl) (s : Fin (X.G.P.n' v)) :
     (yMat X Kc j v s).map (mapT X Kc j W) = (W v s).map (cD X Kc j) * yMat X Kc j v s := by
   ext b t
@@ -56,11 +65,17 @@ def thU (U : ∀ v : X.Pl, Fin (X.G.P.n' v) → Matrix (Fin (NN X.G.P.m X.t (j +
 
 variable (U W : ∀ v : X.Pl, Fin (X.G.P.n' v) → Matrix (Fin (NN X.G.P.m X.t (j + 1))) (Fin (NN X.G.P.m X.t (j + 1))) Kc)
 
+/- English proof (translation)
+Unfold `thU cD`. Rewrite using `[RingHom.comp_apply, MvPolynomial.aeval_C]`. Both sides reduce to the same expression.
+-/
 theorem thU_cD (a : Kc) : thU X Kc j U (cD X Kc j a) = cD X Kc j a := by
   unfold thU cD
   rw [RingHom.comp_apply, MvPolynomial.aeval_C]
   rfl
 
+/- English proof (translation)
+Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_apply]`. Use `show thU X Kc j U (MvPolynomial.X _) = _`. Unfold `thU`. Rewrite using `[MvPolynomial.aeval_X]`.
+-/
 theorem thU_dMat (v : X.Pl) (s : Fin (X.G.P.n' v)) :
     (dMat X Kc j v s).map (thU X Kc j U) = dMat X Kc j v s * (U v s).map (cD X Kc j) := by
   refine Matrix.ext fun a b => ?_
@@ -69,6 +84,11 @@ theorem thU_dMat (v : X.Pl) (s : Fin (X.G.P.n' v)) :
   unfold thU
   rw [MvPolynomial.aeval_X]
 
+/- English proof (translation)
+Use `Matrix.ext fun b t => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_apply]`. Use `show thU X Kc j U (MvPolynomial.C _) = _`. Unfold `thU`. Rewrite using `[MvPolynomial.aeval_C]`.
+
+Both sides reduce to the same expression.
+-/
 theorem thU_yMat (v : X.Pl) (s : Fin (X.G.P.n' v)) :
     (yMat X Kc j v s).map (thU X Kc j U) = yMat X Kc j v s := by
   refine Matrix.ext fun b t => ?_
@@ -78,27 +98,48 @@ theorem thU_yMat (v : X.Pl) (s : Fin (X.G.P.n' v)) :
   rw [MvPolynomial.aeval_C]
   rfl
 
+/- English proof (translation)
+Unfold `dyMat`. Rewrite using `[← Matrix.submatrix_map, Matrix.map_mul, thU_dMat, thU_yMat]`.
+-/
 theorem thU_dyMat (v : X.Pl) (s : Fin (X.G.P.n' v)) :
     (dyMat X Kc j v s).map (thU X Kc j U) =
       (dMat X Kc j v s * (U v s).map (cD X Kc j) * yMat X Kc j v s).submatrix id (Fin.castLE (NN_le X j)) := by
   unfold dyMat
   rw [← Matrix.submatrix_map, Matrix.map_mul, thU_dMat, thU_yMat]
 
+/- English proof (translation)
+Unfold `dyMat`. Rewrite using `[← Matrix.submatrix_map, Matrix.map_mul, mapT_dMat, mapT_yMat]`.
+-/
 theorem mapT_dyMat (v : X.Pl) (s : Fin (X.G.P.n' v)) :
     (dyMat X Kc j v s).map (mapT X Kc j W) =
       (dMat X Kc j v s * ((W v s).map (cD X Kc j) * yMat X Kc j v s)).submatrix id (Fin.castLE (NN_le X j)) := by
   unfold dyMat
   rw [← Matrix.submatrix_map, Matrix.map_mul, mapT_dMat, mapT_yMat]
 
+/- English proof (translation)
+Rewrite using `[thU_dyMat, mapT_dyMat, h, Matrix.mul_assoc]`.
+-/
 theorem even_dyMat (v : X.Pl) (s : Fin (X.G.P.n' v)) (h : U v s = W v s) :
     (dyMat X Kc j v s).map (thU X Kc j U) = (dyMat X Kc j v s).map (mapT X Kc j W) := by
   rw [thU_dyMat, mapT_dyMat, h, Matrix.mul_assoc]
 
+/- English proof (translation)
+Use extensionality with `i k`. Simplify using `[Matrix.mul_apply]`.
+-/
 theorem sub_mul_left {m n o q : Type} [Fintype n] {R : Type} [CommRing R] (A : Matrix m n R) (B : Matrix n o R)
     (f : q → m) : (A * B).submatrix f id = A.submatrix f id * B := by
   ext i k
   simp [Matrix.mul_apply]
 
+/- English proof (translation)
+Establish `hy : ((yMat X Kc j v s).adjugate.submatrix (shiftI X j) id).map (thU X Kc j U) = (yMat X Kc j v s).adjugate.submatrix (shiftI X j) id`. Rewrite using `[← Matrix.submatrix_map]`. Use `RingHom.map_adjugate (thU X Kc j U : DA X Kc j →+* DA X Kc j) (yMat X Kc j v s)` as an intermediate fact. Simplify using `only [RingHom.mapMatrix_apply] at this`. Rewrite `this` using `[show (yMat X Kc j v s).map ((thU X Kc j U : DA X Kc j →+* DA X Kc j)) = yMat X Kc j v s from thU_yMat X Kc j U v s]`.
+
+Conclude with `congrArg (fun M => M.submatrix (shiftI X j) id) this`. Establish `hy' : ((yMat X Kc j v s).adjugate.submatrix (shiftI X j) id).map (mapT X Kc j W) = ((yMat X Kc j v s).adjugate * ((W v s).map (cD X Kc j)).adjugate).submatrix (shiftI X j) id`. Rewrite using `[← Matrix.submatrix_map]`. Use `RingHom.map_adjugate (mapT X Kc j W) (yMat X Kc j v s)` as an intermediate fact. Simplify using `only [RingHom.mapMatrix_apply] at this`.
+
+Rewrite `this` using `[mapT_yMat, Matrix.adjugate_mul_distrib]`. Rewrite using `[← this]`. Unfold `YtMat`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hy, hy', Matrix.transpose_map, Matrix.transpose_map, thU_dMat, mapT_dMat, Matrix.transpose_mul, ← Matrix.transpose_map, h, sub_mul_left]`. Establish `hm : (κ • (W v s).adjugate).map (cD X Kc j) = cD X Kc j κ • ((W v s).map (cD X Kc j)).adjugate`.
+
+Rewrite using `[show ((W v s).map (cD X Kc j)).adjugate = (W v s).adjugate.map (cD X Kc j) from (RingHom.map_adjugate (cD X Kc j) (W v s)).symm]`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[hm, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_assoc]`.
+-/
 theorem odd_YtMat (v : X.Pl) (s : Fin (X.G.P.n' v)) (κ : Kc) (h : (U v s).transpose = κ • (W v s).adjugate) :
     (YtMat X Kc j v s).map (thU X Kc j U) = cD X Kc j κ • (YtMat X Kc j v s).map (mapT X Kc j W) := by
   have hy : ((yMat X Kc j v s).adjugate.submatrix (shiftI X j) id).map (thU X Kc j U) =
@@ -141,6 +182,11 @@ def sg (v : X.Pl) (s : Fin (X.G.P.n' v)) : Kc := if IsOddPos s then κ v s ^ (NN
 
 variable {X Kc j U W κ}
 
+/- English proof (translation)
+Distinguish the cases in `ho : IsOddPos s`. Rewrite using `[ySub_odd X Kc j v s ho]`. Establish `h1` using `RingHom.map_adjugate (thU X Kc j U : DA X Kc j →+* DA X Kc j) (YtMat X Kc j v s)`. Establish `h2` using `RingHom.map_adjugate (mapT X Kc j W) (YtMat X Kc j v s)`. Simplify using `only [RingHom.mapMatrix_apply] at h1 h2`.
+
+Establish `h3 : (YtMat X Kc j v s).map ((thU X Kc j U : DA X Kc j →+* DA X Kc j)) = cD X Kc j (κ v s) • (YtMat X Kc j v s).map (mapT X Kc j W)` using `odd_YtMat X Kc j U W v s (κ v s) ((h v s).2 ho)`. Rewrite using `[show (YtMat X Kc j v s).adjugate.map (thU X Kc j U) = (YtMat X Kc j v s).adjugate.map ((thU X Kc j U : DA X Kc j →+* DA X Kc j)) from rfl, h1, h3, h2, Matrix.adjugate_smul, Fintype.card_fin, sg, if_pos ho, map_pow]`. Establish `h0 : ySub X Kc j v s = dyMat X Kc j v s` using `by unfold ySub; rw [if_neg ho]`. Rewrite using `[h0, even_dyMat X Kc j U W v s ((h v s).1 ho), sg, if_neg ho, map_one, one_smul]`.
+-/
 theorem ySub_rel (h : FrRel X Kc j U W κ) (v : X.Pl) (s : Fin (X.G.P.n' v)) :
     (ySub X Kc j v s).map (thU X Kc j U) = cD X Kc j (sg X Kc j κ v s) • (ySub X Kc j v s).map (mapT X Kc j W) := by
   by_cases ho : IsOddPos s
@@ -162,6 +208,19 @@ def sS (X : Sys p) (Kc : Type) [Field Kc] (j : ℕ) (κ : ∀ v : X.Pl, Fin (X.G
       ((NN X.G.P.m X.t j : ℤ) * cMu X j b.1 b.2 - szMu X j b.1 b.2).toNat else 1
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hC : ∀ a : X.G.Kf, thU X Kc j U (subD X Kc j (MvPolynomial.C a)) = mapT X Kc j W (subD X Kc j (MvPolynomial.C a))`. Introduce `a`. Rewrite using `[subD_C, thU_cD, mapT_cD]`. Establish `hX : ∀ x, thU X Kc j U (subD X Kc j (MvPolynomial.X x)) = cD X Kc j (sg X Kc j κ (blkJ X j x).1 (blkJ X j x).2) * mapT X Kc j W (subD X Kc j (MvPolynomial.X x))`. Introduce `x`.
+
+Rewrite using `[subD_X]`. Use `congrFun (congrFun (ySub_rel h (idxJ X j x).1 (idxJ X j x).2.1) (idxJ X j x).2.2.1) (idxJ X j x).2.2.2` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul]`. Conclude with `this`. Establish `key` using `ringHom_scale ((thU X Kc j U : DA X Kc j →+* DA X Kc j).comp (subD X Kc j : (X.Pj j).Xsp →+* DA X Kc j)) ((mapT X Kc j W).comp (subD X Kc j : (X.Pj j).Xsp →+* DA X Kc j)) (fun x => cD X Kc j (sg X Kc j κ (blkJ X j x).1 (blkJ X j x).2)) (fun a => by simpa only [RingHom.comp_apply, …`.
+
+Simplify `key` using `only [RingHom.comp_apply, RingHom.coe_coe]`. Introduce `m hm`. Simplify using `only [← map_pow, ← map_prod]`. Use `congr 1`. Rewrite using `[← Finset.prod_fiberwise Finset.univ (blkJ X j)]`.
+
+Unfold `sS`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `h2 : ∏ x ∈ Finset.univ.filter (fun x => blkJ X j x = b), sg X Kc j κ (blkJ X j x).1 (blkJ X j x).2 ^ m x = sg X Kc j κ b.1 b.2 ^ (∑ x ∈ Finset.univ.filter (fun x => blkJ X j x = b), m x)`. Rewrite using `[← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_congr rfl fun x hx => ?_` and prove the remaining obligations.
+
+Rewrite using `[(Finset.mem_filter.1 hx).2]`. Rewrite using `[h2]`. Unfold `sg`. Distinguish the cases in `hb : IsOddPos b.2`. Rewrite using `[if_pos hb, if_pos hb, ← hO m hm b hb, Int.toNat_natCast]`.
+
+Rewrite using `[if_neg hb, if_neg hb, one_pow]`.
+-/
 theorem thU_subD (h : FrRel X Kc j U W κ) (G : (X.Pj j).Xsp) (hO : OddDeg X j G) :
     thU X Kc j U (subD X Kc j G) = cD X Kc j (sS X Kc j κ) * mapT X Kc j W (subD X Kc j G) := by
   have hC : ∀ a : X.G.Kf, thU X Kc j U (subD X Kc j (MvPolynomial.C a)) = mapT X Kc j W (subD X Kc j (MvPolynomial.C a)) := by
@@ -207,27 +266,42 @@ variable {p : ℕ} [Fact p.Prime] {X : Sys p} {Kc : Type} [Field Kc] [Algebra (F
   {U W : ∀ v : X.Pl, Fin (X.G.P.n' v) → Matrix (Fin (NN X.G.P.m X.t (j + 1))) (Fin (NN X.G.P.m X.t (j + 1))) Kc}
   {κ : ∀ v : X.Pl, Fin (X.G.P.n' v) → Kc}
 
+/- English proof (translation)
+Rewrite using `[AlgHom.map_det]`. Use `show ((yMat X Kc j v s).map (thU X Kc j U)).det = _`. Rewrite using `[thU_yMat]`.
+-/
 theorem thU_det_y (v : X.Pl) (s : Fin (X.G.P.n' v)) : thU X Kc j U (yMat X Kc j v s).det = (yMat X Kc j v s).det := by
   rw [AlgHom.map_det]
   show ((yMat X Kc j v s).map (thU X Kc j U)).det = _
   rw [thU_yMat]
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_det]`. Use `show ((yMat X Kc j v s).map (mapT X Kc j W)).det = _`. Rewrite using `[mapT_yMat, Matrix.det_mul, det_map_cD]`.
+-/
 theorem mapT_det_y (v : X.Pl) (s : Fin (X.G.P.n' v)) :
     mapT X Kc j W (yMat X Kc j v s).det = cD X Kc j (W v s).det * (yMat X Kc j v s).det := by
   rw [RingHom.map_det]
   show ((yMat X Kc j v s).map (mapT X Kc j W)).det = _
   rw [mapT_yMat, Matrix.det_mul, det_map_cD]
 
+/- English proof (translation)
+Rewrite using `[thU_det_y, mapT_det_y, ← mul_assoc, ← map_mul, inv_mul_cancel₀ (hW v s), map_one, one_mul]`.
+-/
 theorem thU_det_y' (hW : ∀ v s, (W v s).det ≠ 0) (v : X.Pl) (s : Fin (X.G.P.n' v)) :
     thU X Kc j U (yMat X Kc j v s).det = cD X Kc j (W v s).det⁻¹ * mapT X Kc j W (yMat X Kc j v s).det := by
   rw [thU_det_y, mapT_det_y, ← mul_assoc, ← map_mul, inv_mul_cancel₀ (hW v s), map_one, one_mul]
 
+/- English proof (translation)
+Rewrite using `[AlgHom.map_det, RingHom.map_det]`. Use `show ((dyMat X Kc j v s).map (thU X Kc j U)).det = ((dyMat X Kc j v s).map (mapT X Kc j W)).det`. Rewrite using `[even_dyMat X Kc j U W v s ((h v s).1 ho)]`.
+-/
 theorem thU_det_dy (h : FrRel X Kc j U W κ) (v : X.Pl) (s : Fin (X.G.P.n' v)) (ho : ¬ IsOddPos s) :
     thU X Kc j U (dyMat X Kc j v s).det = mapT X Kc j W (dyMat X Kc j v s).det := by
   rw [AlgHom.map_det, RingHom.map_det]
   show ((dyMat X Kc j v s).map (thU X Kc j U)).det = ((dyMat X Kc j v s).map (mapT X Kc j W)).det
   rw [even_dyMat X Kc j U W v s ((h v s).1 ho)]
 
+/- English proof (translation)
+Rewrite using `[AlgHom.map_det, RingHom.map_det]`. Use `show ((YtMat X Kc j v s).map (thU X Kc j U)).det = _`. Rewrite using `[odd_YtMat X Kc j U W v s (κ v s) ((h v s).2 ho), Matrix.det_smul, Fintype.card_fin, map_pow]`. Both sides reduce to the same expression.
+-/
 theorem thU_det_Yt (h : FrRel X Kc j U W κ) (v : X.Pl) (s : Fin (X.G.P.n' v)) (ho : IsOddPos s) :
     thU X Kc j U (YtMat X Kc j v s).det = cD X Kc j (κ v s ^ NN X.G.P.m X.t j) * mapT X Kc j W (YtMat X Kc j v s).det := by
   rw [AlgHom.map_det, RingHom.map_det]
@@ -245,6 +319,13 @@ variable (X Kc j W κ) in
 def kD : Kc := ∏ v : X.Pl, ∏ s : Fin (X.G.P.n' v),
   if IsOddPos s then ((W v s).det⁻¹) ^ (-exY X j v s).toNat * (κ v s ^ NN X.G.P.m X.t j) ^ (-exT X j v s).toNat else 1
 
+/- English proof (translation)
+Unfold `numD kN`. Simplify using `only [map_prod]`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Distinguish the cases in `ho : IsOddPos s`. Simplify using `only [if_pos ho, map_mul, map_pow, thU_det_y' hW, thU_det_Yt h v s ho]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [if_neg ho]`.
+
+Rewrite using `[map_pow, thU_det_dy h v s ho, map_one, one_mul, map_pow]`.
+-/
 theorem thU_numD (h : FrRel X Kc j U W κ) (hW : ∀ v s, (W v s).det ≠ 0) :
     thU X Kc j U (numD X Kc j) = cD X Kc j (kN X Kc j W κ) * mapT X Kc j W (numD X Kc j) := by
   unfold numD kN
@@ -259,6 +340,13 @@ theorem thU_numD (h : FrRel X Kc j U W κ) (hW : ∀ v s, (W v s).det ≠ 0) :
   · simp only [if_neg ho]
     rw [map_pow, thU_det_dy h v s ho, map_one, one_mul, map_pow]
 
+/- English proof (translation)
+Unfold `denD kD`. Simplify using `only [map_prod]`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Distinguish the cases in `ho : IsOddPos s`. Simplify using `only [if_pos ho, map_mul, map_pow, thU_det_y' hW, thU_det_Yt h v s ho]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [if_neg ho]`.
+
+Rewrite using `[map_one, map_one, map_one, one_mul]`.
+-/
 theorem thU_denD (h : FrRel X Kc j U W κ) (hW : ∀ v s, (W v s).det ≠ 0) :
     thU X Kc j U (denD X Kc j) = cD X Kc j (kD X Kc j W κ) * mapT X Kc j W (denD X Kc j) := by
   unfold denD kD
@@ -273,6 +361,9 @@ theorem thU_denD (h : FrRel X Kc j U W κ) (hW : ∀ v s, (W v s).det ≠ 0) :
   · simp only [if_neg ho]
     rw [map_one, map_one, map_one, one_mul]
 
+/- English proof (translation)
+Unfold `kD`. Use `Finset.prod_ne_zero_iff.2 fun v _ => Finset.prod_ne_zero_iff.2 fun s _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `mul_ne_zero (pow_ne_zero _ (inv_ne_zero (hW v s))) (pow_ne_zero _ (pow_ne_zero _ (hk v s)))`. Conclude with `one_ne_zero`.
+-/
 theorem kD_ne (hW : ∀ v s, (W v s).det ≠ 0) (hk : ∀ v s, κ v s ≠ 0) : kD X Kc j W κ ≠ 0 := by
   unfold kD
   refine Finset.prod_ne_zero_iff.2 fun v _ => Finset.prod_ne_zero_iff.2 fun s _ => ?_
@@ -280,6 +371,11 @@ theorem kD_ne (hW : ∀ v s, (W v s).det ≠ 0) (hk : ∀ v s, κ v s ≠ 0) : k
   · exact mul_ne_zero (pow_ne_zero _ (inv_ne_zero (hW v s))) (pow_ne_zero _ (pow_ne_zero _ (hk v s)))
   · exact one_ne_zero
 
+/- English proof (translation)
+Establish `hc : (thU X Kc j U').comp (thU X Kc j U) = AlgHom.id _ _`. Use `MvPolynomial.algHom_ext fun z => ?_` and prove the remaining obligations. Take `⟨v, s, a, b⟩` from `z`. Establish `h1 : ((dMat X Kc j v s).map (thU X Kc j U)).map (thU X Kc j U') = dMat X Kc j v s`. Rewrite using `[thU_dMat, Matrix.map_mul, thU_dMat]`.
+
+Establish `h2 : ((U v s).map (cD X Kc j)).map (thU X Kc j U') = (U v s).map (cD X Kc j)` using `Matrix.ext fun a b => by rw [Matrix.map_apply, Matrix.map_apply, thU_cD]`. Rewrite using `[h2, Matrix.mul_assoc, ← Matrix.map_mul, hUU, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`. Conclude with `congrFun (congrFun h1 a) b`. Conclude with `congrArg (fun φ => φ P) hc`.
+-/
 theorem thU_comp (U' : ∀ v : X.Pl, Fin (X.G.P.n' v) → Matrix (Fin (NN X.G.P.m X.t (j + 1))) (Fin (NN X.G.P.m X.t (j + 1))) Kc)
     (hUU : ∀ v s, U' v s * U v s = 1) (P : DA X Kc j) : thU X Kc j U' (thU X Kc j U P) = P := by
   have hc : (thU X Kc j U').comp (thU X Kc j U) = AlgHom.id _ _ := by
@@ -293,11 +389,25 @@ theorem thU_comp (U' : ∀ v : X.Pl, Fin (X.G.P.n' v) → Matrix (Fin (NN X.G.P.
     exact congrFun (congrFun h1 a) b
   exact congrArg (fun φ => φ P) hc
 
+/- English proof (translation)
+Introduce `P Q hPQ`. Use `congrArg (thU X Kc j (fun v s => (U v s)⁻¹)) hPQ` as an intermediate fact. Rewrite `this` using `[thU_comp _ (fun v s => Matrix.nonsing_inv_mul _ (hU v s)), thU_comp _ (fun v s => Matrix.nonsing_inv_mul _ (hU v s))]`. Then use the resulting hypothesis.
+-/
 theorem thU_injective (hU : ∀ v s, IsUnit (U v s).det) : Function.Injective (thU X Kc j U) := by
   intro P Q hPQ
   have := congrArg (thU X Kc j (fun v s => (U v s)⁻¹)) hPQ
   rwa [thU_comp _ (fun v s => Matrix.nonsing_inv_mul _ (hU v s)), thU_comp _ (fun v s => Matrix.nonsing_inv_mul _ (hU v s))] at this
 
+/- English proof (translation)
+Take `⟨R, hR⟩` from `hG`. Rewrite using `[polDel_eq X Kc j G R hR]`. Establish `h1` using `congrArg (thU X Kc j U) hR`. Establish `h2` using `congrArg (mapT X Kc j W) hR`. Rewrite `h1` using `[map_mul, map_mul, thU_subD h G hO, thU_numD h hW, thU_denD h hW]`.
+
+Rewrite `h2` using `[map_mul, map_mul]`. Establish `hD : thU X Kc j U (denD X Kc j) ≠ 0`. Introduce `h0`. Conclude with `denD_ne_zero X Kc j (thU_injective hU (by rw [h0, map_zero]))`. Rewrite `hD` using `[thU_denD h hW]`.
+
+Use `mul_left_cancel₀ hD ?_` and prove the remaining obligations. Establish `hk'` using `kD_ne (X := X) (j := j) hW hk`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ = cD X Kc j (sS X Kc j κ * kN X Kc j W κ) * (mapT X Kc j W (denD X Kc j) * mapT X Kc j W R) := by rw [h2]`. Use `_ = _ := by`. Establish `hinv : cD X Kc j (kD X Kc j W κ) * cD X Kc j (kD X Kc j W κ)⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hk', map_one]`. Rewrite using `[map_mul (cD X Kc j) (sS X Kc j κ * kN X Kc j W κ) (kD X Kc j W κ)⁻¹]`.
+
+Take the linear combination `(-(cD X Kc j (sS X Kc j κ * kN X Kc j W κ) * mapT X Kc j W (denD X Kc j) * mapT X Kc j W R)) * hinv`.
+-/
 theorem thU_polDel (h : FrRel X Kc j U W κ) (hW : ∀ v s, (W v s).det ≠ 0) (hk : ∀ v s, κ v s ≠ 0)
     (hU : ∀ v s, IsUnit (U v s).det) (G : (X.Pj j).Xsp) (hG : GoodG X Kc j G) (hO : OddDeg X j G) :
     thU X Kc j U (polDel X Kc j G) =
@@ -331,6 +441,9 @@ namespace GlobalTheory.FrameB
 
 variable {p : ℕ} [Fact p.Prime] {X : Sys p} {Kc : Type} [Field Kc] [Algebra (Formalism.MainNotions.FormalGroupSystem.K0 p) Kc] [Algebra X.G.Kf Kc] {j : ℕ}
 
+/- English proof (translation)
+Use `show MvPolynomial.coeff n (MvPolynomial.C _ * MvPolynomial.map _ P) = _`. Rewrite using `[MvPolynomial.coeff_C_mul, MvPolynomial.coeff_map, LinearMap.smul_apply, Algebra.smul_def]`. Both sides reduce to the same expression.
+-/
 theorem coeff_cD_mapT (W : ∀ v : X.Pl, Fin (X.G.P.n' v) → Matrix (Fin (NN X.G.P.m X.t (j + 1))) (Fin (NN X.G.P.m X.t (j + 1))) Kc)
     (k : Kc) (P : DA X Kc j) (n : X.ZA j →₀ ℕ) :
     MvPolynomial.coeff n (cD X Kc j k * mapT X Kc j W P) = (k • (tau0 X Kc j W).toLinearMap) (MvPolynomial.coeff n P) := by
@@ -338,6 +451,13 @@ theorem coeff_cD_mapT (W : ∀ v : X.Pl, Fin (X.G.P.n' v) → Matrix (Fin (NN X.
   rw [MvPolynomial.coeff_C_mul, MvPolynomial.coeff_map, LinearMap.smul_apply, Algebra.smul_def]
   rfl
 
+/- English proof (translation)
+Use `MvPolynomial.algHom_ext fun y => ?_` and prove the remaining obligations. Take `⟨v, s, a, b⟩` from `y`. Rewrite using `[MvPolynomial.aeval_X]`. Unfold `thU`. Rewrite using `[MvPolynomial.aeval_X]`.
+
+Unfold `linT`. Rewrite using `[sum_block X j _ v s (fun z hz => by beta_reduce`. Rewrite using `[hV0 z _ (Ne.symm hz), map_zero, map_zero, zero_mul])]`. Rewrite using `[Finset.sum_eq_single a (fun a' _ ha' => Finset.sum_eq_zero fun b' _ => by beta_reduce`. Rewrite using `[hV, if_neg ha', map_zero, map_zero, zero_mul]) (fun h => absurd (Finset.mem_univ _) h)]`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.map_apply, hV, if_pos rfl, dMat]`. Use `Finset.sum_congr rfl fun b' _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem aeval_linT_eq (U : ∀ v : X.Pl, Fin (X.G.P.n' v) → Matrix (Fin (NN X.G.P.m X.t (j + 1))) (Fin (NN X.G.P.m X.t (j + 1))) Kc)
     (V : X.ZA j → X.ZA j → Kc)
     (hV : ∀ (v : X.Pl) (s : Fin (X.G.P.n' v)) (a a' : Fin (NN X.G.P.m X.t j)) (b b' : Fin (NN X.G.P.m X.t (j + 1))),
@@ -384,6 +504,11 @@ def wV (v : X.Pl) (s : Fin (X.G.P.n' v)) : Matrix (Fin (NN X.G.P.m X.t (j + 1)))
 def kV (v : X.Pl) (s : Fin (X.G.P.n' v)) : Kc :=
   if IsOddPos s then c * (mk Kc fd j La' v s).det⁻¹ else 1
 
+/- English proof (translation)
+Unfold `VOf uV mk mAt`. Distinguish the cases in `ha : a = a'`. Substitute `ha` using the available equality. Rewrite using `[if_pos ⟨rfl, rfl⟩, if_pos rfl]`. Distinguish the cases in `ho : IsOddPos s`.
+
+Rewrite using `[if_pos ho, if_pos ho]`. Both sides reduce to the same expression. Rewrite using `[if_neg ho, if_neg ho]`. Both sides reduce to the same expression. Rewrite using `[if_neg (fun h => ha h.2.symm), if_neg ha]`.
+-/
 theorem vOf_blk (v : X.Pl) (s : Fin (X.G.P.n' v)) (a a' : Fin (NN X.G.P.m X.t j)) (b b' : Fin (NN X.G.P.m X.t (j + 1))) :
     VOf Kc fd c j La' ⟨v, (s, a, b)⟩ ⟨v, (s, a', b')⟩ = if a = a' then uV Kc fd c j La' v s b b' else 0 := by
   unfold VOf uV mk mAt
@@ -397,22 +522,34 @@ theorem vOf_blk (v : X.Pl) (s : Fin (X.G.P.n' v)) (a a' : Fin (NN X.G.P.m X.t j)
       rfl
   · rw [if_neg (fun h => ha h.2.symm), if_neg ha]
 
+/- English proof (translation)
+Unfold `VOf`. Rewrite using `[if_neg (fun h' => h h'.1)]`.
+-/
 theorem vOf_off (x y : X.ZA j) (h : (⟨y.1, y.2.1⟩ : Σ v : X.Pl, Fin (X.G.P.n' v)) ≠ ⟨x.1, x.2.1⟩) :
     VOf Kc fd c j La' x y = 0 := by
   unfold VOf
   rw [if_neg (fun h' => h h'.1)]
 
+/- English proof (translation)
+The claim follows from `aeval_linT_eq _ _ (vOf_blk Kc fd c j La') (vOf_off Kc fd c j La')`.
+-/
 theorem trSub_vOf : trSub X Kc j (VOf Kc fd c j La') = thU X Kc j (uV Kc fd c j La') :=
   aeval_linT_eq _ _ (vOf_blk Kc fd c j La') (vOf_off Kc fd c j La')
 
 variable {Kc fd c j La'} (hF : ∀ v, IsUnit (fd.frM (j + 1) La' v).det) (hc : c ≠ 0)
 include hF
 
+/- English proof (translation)
+Unfold `mk`. Rewrite using `[det_mAt]`. Conclude with `((hF v).map (tw X Kc v s)).ne_zero`.
+-/
 theorem mk_det_ne (v : X.Pl) (s : Fin (X.G.P.n' v)) : (mk Kc fd j La' v s).det ≠ 0 := by
   unfold mk
   rw [det_mAt]
   exact ((hF v).map (tw X Kc v s)).ne_zero
 
+/- English proof (translation)
+Use `(Matrix.inv_eq_right_inv ?_).symm` and prove the remaining obligations. Unfold `mk`. Rewrite using `[mAt_mul, Matrix.mul_nonsing_inv _ (hF v), mAt_one]`.
+-/
 theorem mAt_inv (v : X.Pl) (s : Fin (X.G.P.n' v)) :
     mAt X Kc (j + 1) v s (fd.frM (j + 1) La' v)⁻¹ = (mk Kc fd j La' v s)⁻¹ := by
   refine (Matrix.inv_eq_right_inv ?_).symm
@@ -421,6 +558,11 @@ theorem mAt_inv (v : X.Pl) (s : Fin (X.G.P.n' v)) :
 
 include hc
 
+/- English proof (translation)
+Introduce `v s`. Use `⟨fun ho => ?_, fun ho => ?_⟩` and prove the remaining obligations. Unfold `uV wV`. Rewrite using `[if_neg ho, if_neg ho]`. Unfold `uV wV kV`.
+
+Rewrite using `[if_pos ho, if_pos ho, if_pos ho, mAt_inv hF, Matrix.inv_def, Ring.inverse_eq_inv', Matrix.transpose_smul, Matrix.transpose_transpose, smul_smul]`.
+-/
 theorem frRel_vOf : FrRel X Kc j (uV Kc fd c j La') (wV Kc fd c j La') (kV Kc fd c j La') := by
   intro v s
   refine ⟨fun ho => ?_, fun ho => ?_⟩
@@ -430,6 +572,9 @@ theorem frRel_vOf : FrRel X Kc j (uV Kc fd c j La') (wV Kc fd c j La') (kV Kc fd
     rw [if_pos ho, if_pos ho, if_pos ho, mAt_inv hF, Matrix.inv_def, Ring.inverse_eq_inv', Matrix.transpose_smul,
       Matrix.transpose_transpose, smul_smul]
 
+/- English proof (translation)
+Unfold `wV`. Use `split_ifs`. Conclude with `mk_det_ne hF v s`. Rewrite using `[Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ hc) (mk_det_ne hF v s)`.
+-/
 theorem wV_det_ne (v : X.Pl) (s : Fin (X.G.P.n' v)) : (wV Kc fd c j La' v s).det ≠ 0 := by
   unfold wV
   split_ifs
@@ -437,12 +582,20 @@ theorem wV_det_ne (v : X.Pl) (s : Fin (X.G.P.n' v)) : (wV Kc fd c j La' v s).det
   · rw [Matrix.det_smul]
     exact mul_ne_zero (pow_ne_zero _ hc) (mk_det_ne hF v s)
 
+/- English proof (translation)
+Unfold `kV`. Use `split_ifs`. Conclude with `mul_ne_zero hc (inv_ne_zero (mk_det_ne hF v s))`. Conclude with `one_ne_zero`.
+-/
 theorem kV_ne (v : X.Pl) (s : Fin (X.G.P.n' v)) : kV Kc fd c j La' v s ≠ 0 := by
   unfold kV
   split_ifs
   · exact mul_ne_zero hc (inv_ne_zero (mk_det_ne hF v s))
   · exact one_ne_zero
 
+/- English proof (translation)
+Use `isUnit_iff_ne_zero.2 ?_` and prove the remaining obligations. Unfold `uV`. Use `split_ifs`. Rewrite using `[Matrix.det_smul, Matrix.det_transpose, mAt_inv hF, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Conclude with `mul_ne_zero (pow_ne_zero _ hc) (inv_ne_zero (mk_det_ne hF v s))`.
+
+Rewrite using `[Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ hc) (mk_det_ne hF v s)`.
+-/
 theorem uV_unit (v : X.Pl) (s : Fin (X.G.P.n' v)) : IsUnit (uV Kc fd c j La' v s).det := by
   refine isUnit_iff_ne_zero.2 ?_
   unfold uV
@@ -467,6 +620,9 @@ def tauV (Kc : Type) [Field Kc] [Algebra (Formalism.MainNotions.FormalGroupSyste
   (sS X Kc j (kV Kc fd c j La') * kN X Kc j (wV Kc fd c j La') (kV Kc fd c j La') *
       (kD X Kc j (wV Kc fd c j La') (kV Kc fd c j La'))⁻¹) • (tau0 X Kc j (wV Kc fd c j La')).toLinearMap
 
+/- English proof (translation)
+Introduce `c' L' _ G hG hO n`. Establish `hF' : ∀ v, IsUnit (fd.frM (j + 1) (c', L') v).det` using `fun v => hF (j + 1) (c', L') v`. Rewrite using `[trSub_vOf, thU_polDel (frRel_vOf hF' hc) (wV_det_ne hF' hc) (kV_ne hF' hc) (uV_unit hF' hc) G hG hO, coeff_cD_mapT]`. Both sides reduce to the same expression.
+-/
 theorem equiv_frame_b (Y : Pend X) (fd : Formalism.L2.PairingIndexBounds.F.FData X D) (c : Y.Kc) (hc : c ≠ 0) (hF : FrInv fd) (j : ℕ) :
     DelYEqH Y (fun j La' => VOf Y.Kc fd c j La') (fun j c' L' => tauV Y.Kc fd c j (c', L')) j := by
   intro c' L' _ G hG hO n
@@ -481,6 +637,9 @@ namespace GlobalTheory.FrameB
 open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker Formalism.L2.KerInert.K2 Formalism.L2.KerInert.SecondKernelInstances Formalism.L2.KerInert.SecondKernelDifference Formalism.L2.KerInert.SecondKernelSeries
   Formalism.L2.KerInert.QuadraticBaseChangeGL3 Formalism.L2.KerInert.SecondKernelHermitian
 
+/- English proof (translation)
+Unfold `Formalism.L2.PairingIndexBounds.F.ltC`. Use `inv_ne_zero (mul_ne_zero (Units.ne_zero _) ?_)` and prove the remaining obligations. Conclude with `((Units.isUnit _).map (Formalism.L2.G.Pend.wToC p)).ne_zero`.
+-/
 theorem ltC_ne {p : ℕ} [Fact p.Prime] {g : GL3Theta.G1 p} (hLT : Formalism.L2.G.Pend.LTIso g) : Formalism.L2.PairingIndexBounds.F.ltC g hLT ≠ 0 := by
   unfold Formalism.L2.PairingIndexBounds.F.ltC
   refine inv_ne_zero (mul_ne_zero (Units.ne_zero _) ?_)

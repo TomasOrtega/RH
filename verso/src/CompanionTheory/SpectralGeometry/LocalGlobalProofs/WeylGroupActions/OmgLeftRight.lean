@@ -8,10 +8,20 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Form
 
 namespace GlobalTheory.CompanionTheory.OmgUW
 
+/- English proof (translation)
+Simplify using `[UWset, UH]`.
+-/
 lemma one_mem_UWset (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) :
     (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) ∈ UWset k r z := by
   simp [UWset, UH]
 
+/- English proof (translation)
+Introduce `k r z z' hz hTz hz' hTz' g hg`. Use `⟨fun h hh => ?_, fun h' hh' => ?_⟩` and prove the remaining obligations. Establish `hhU : h ∈ UH (Hpk k r)`. Simplify using `only [UWset, Set.mem_setOf_eq] at hh`. Conclude with `hh.1`.
+
+Establish `hii : h⁻¹⁻¹ = h` using `Matrix.nonsing_inv_nonsing_inv h (Matrix.isUnit_det_of_right_inverse (GlobalTheory.WigSh.OmgEquiv.mul_inv hhU))`. Establish `e` using `GlobalTheory.WigSh.omg_equivariant k r z z' g h⁻¹ 1 hz hTz hz' hTz' hg (GlobalTheory.WigSh.OmgEquiv.inv_mem hh) (one_mem_UWset k r z')`. Rewrite `e` using `[hii, mul_one, inv_one, Matrix.one_mulVec]`. Conclude with `e`. Establish `e` using `GlobalTheory.WigSh.omg_equivariant k r z z' g 1 h' hz hTz hz' hTz' hg (one_mem_UWset k r z) hh'`.
+
+Rewrite `e` using `[inv_one, one_mul]`. Conclude with `e`.
+-/
 theorem omg_left_right : ∀ (k r : ℕ) (z z' : (Fin (2 * r + k + 1) → ℂ)), inWb k r z → 0 < Tz k r z → inWb k r z' → 0 < Tz k r z' → ∀ g ∈ B.GV k r, (∀ h ∈ UWset k r z, GlobalTheory.WigSh.omg k r z z' (h * g) = GlobalTheory.WigSh.omg k r z z' (g)) ∧ ∀ h' ∈ UWset k r z', GlobalTheory.WigSh.omg k r z z' (g * h') = h'⁻¹ *ᵥ GlobalTheory.WigSh.omg k r z z' (g) := by
   intro k r z z' hz hTz hz' hTz' g hg
   refine ⟨fun h hh => ?_, fun h' hh' => ?_⟩

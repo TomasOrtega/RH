@@ -37,6 +37,9 @@ def zp (Ω : Type) [Field Ω] [CharZero Ω] (p : ℕ) [Fact p.Prime] : Subring �
     rintro _ ⟨a, b, hb, rfl⟩
     exact ⟨-a, b, hb, by push_cast; rw [neg_div]⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Conclude with `z.2`. Introduce `hx`. Conclude with `⟨⟨x, hx⟩, rfl⟩`.
+-/
 theorem mem_range_zp (Ω : Type) [Field Ω] [CharZero Ω] (p : ℕ) [Fact p.Prime] (x : Ω) :
     x ∈ (algebraMap (zp Ω p) Ω).range ↔ ∃ (a : ℤ) (b : ℕ), ¬ p ∣ b ∧ x = (a : Ω) / (b : Ω) := by
   constructor
@@ -45,6 +48,11 @@ theorem mem_range_zp (Ω : Type) [Field Ω] [CharZero Ω] (p : ℕ) [Fact p.Prim
   · intro hx
     exact ⟨⟨x, hx⟩, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `hw using Algebra.adjoin_induction with`. Consider the case `mem w hw => exact Algebra.subset_adjoin hw`. Consider the case `algebraMap r`. Take `⟨a, ha⟩` from `hr r`. Rewrite using `[← ha]`.
+
+Conclude with `Subalgebra.algebraMap_mem _ a`. Consider the case `add _ _ _ _ h1 h2 => exact add_mem h1 h2`. Consider the case `mul _ _ _ _ h1 h2 => exact mul_mem h1 h2`.
+-/
 theorem mem_adjoin_of_range_le {o o' : Type} [CommRing o] [CommRing o'] {Ω : Type} [Field Ω] [Algebra o Ω]
     [Algebra o' Ω] (hr : ∀ a : o, algebraMap o Ω a ∈ (algebraMap o' Ω).range) (T : Set Ω)
     {w : Ω} (hw : w ∈ Algebra.adjoin o T) : w ∈ Algebra.adjoin o' T := by
@@ -57,10 +65,20 @@ theorem mem_adjoin_of_range_le {o o' : Type} [CommRing o] [CommRing o'] {Ω : Ty
   | add _ _ _ _ h1 h2 => exact add_mem h1 h2
   | mul _ _ _ _ h1 h2 => exact mul_mem h1 h2
 
+/- English proof (translation)
+The claim follows from `mem_adjoin_of_range_le (o := ℤ) (o' := o) (fun n : ℤ => ⟨((n : ℤ) : o), by rw [map_intCast, eq_intCast]⟩) T hw`.
+-/
 theorem mem_adjoin_of_int (o : Type) [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] (T : Set Ω)
     {w : Ω} (hw : w ∈ Algebra.adjoin ℤ T) : w ∈ Algebra.adjoin o T :=
   mem_adjoin_of_range_le (o := ℤ) (o' := o) (fun n : ℤ => ⟨((n : ℤ) : o), by rw [map_intCast, eq_intCast]⟩) T hw
 
+/- English proof (translation)
+Establish `hbm : (b : A) ∉ m`. Introduce `hbm`. Establish `hcop : IsCoprime (b : ℤ) (p : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.Prime.coprime_iff_not_dvd (Fact.out : p.Prime)).2 hb).symm`. Take `⟨u, v, huv⟩` from `hcop.map (Int.castRingHom A)`. Establish `h1 : (1 : A) ∈ m`.
+
+Rewrite using `[← huv]`. Simplify using `only [eq_intCast, Int.cast_natCast]`. Conclude with `add_mem (m.mul_mem_left _ hbm) (m.mul_mem_left _ hpm)`. Conclude with `(Ideal.IsPrime.ne_top inferInstance) ((Ideal.eq_top_iff_one _).2 h1)`. Use `IsLocalization.map_units O (⟨(b : A), hbm⟩ : m.primeCompl)` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem isUnit_natCast {A O : Type} [CommRing A] [CommRing O] [Algebra A O]
     (m : Ideal A) [m.IsPrime] [IsLocalization.AtPrime O m] (p : ℕ) [Fact p.Prime] (hpm : (p : A) ∈ m) (b : ℕ)
     (hb : ¬ p ∣ b) : IsUnit (b : O) := by
@@ -77,6 +95,17 @@ theorem isUnit_natCast {A O : Type} [CommRing A] [CommRing O] [Algebra A O]
   have := IsLocalization.map_units O (⟨(b : A), hbm⟩ : m.primeCompl)
   simpa using this
 
+/- English proof (translation)
+Proceed by induction on `hw using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact ⟨1, by simpa using Algebra.subset_adjoin hx⟩`. Consider the case `algebraMap r`. Take `⟨⟨a, s⟩, e⟩` from `IsLocalization.surj M r`. Use `⟨s, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[IsScalarTower.algebraMap_apply A O Ω, ← map_mul, e, ← IsScalarTower.algebraMap_apply]`. Conclude with `hA _`. Consider the case `add x y _ _ hx hy`. Take `⟨b, hx⟩` from `hx`. Take `⟨b', hy⟩` from `hy`.
+
+Use `⟨b * b', ?_⟩` and prove the remaining obligations. Establish `: (x + y) * algebraMap A Ω ((b * b' : M) : A) = x * algebraMap A Ω b * algebraMap A Ω b' + y * algebraMap A Ω b' * algebraMap A Ω b`. Rewrite using `[Submonoid.coe_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Conclude with `add_mem (mul_mem hx (hA _)) (mul_mem hy (hA _))`. Consider the case `mul x y _ _ hx hy`. Take `⟨b, hx⟩` from `hx`. Take `⟨b', hy⟩` from `hy`. Use `⟨b * b', ?_⟩` and prove the remaining obligations.
+
+Establish `: (x * y) * algebraMap A Ω ((b * b' : M) : A) = x * algebraMap A Ω b * (y * algebraMap A Ω b')`. Rewrite using `[Submonoid.coe_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `mul_mem hx hy`.
+-/
 theorem exists_denom {o A O Ω : Type} [CommRing o] [CommRing A] [CommRing O] [Field Ω] [Algebra o Ω] [Algebra A Ω]
     [Algebra A O] [Algebra O Ω] [IsScalarTower A O Ω] (M : Submonoid A) [IsLocalization M O] (T : Set Ω)
     (hA : ∀ a : A, algebraMap A Ω a ∈ Algebra.adjoin o T) {w : Ω} (hw : w ∈ Algebra.adjoin O T) :
@@ -106,6 +135,15 @@ theorem exists_denom {o A O Ω : Type} [CommRing o] [CommRing A] [CommRing O] [F
     rw [this]
     exact mul_mem hx hy
 
+/- English proof (translation)
+Set `ψ : B →+* B'` to `(algebraMap B Ω).codRestrict _ fun s => hle _ s.2`. Use `letI : Algebra B B' := ψ.toAlgebra`. Set `M : Submonoid B` to `(IsUnit.submonoid B').comap ψ`. Use `haveI hloc : IsLocalization M B' := by`. Use `⟨fun s => s.2, fun a => ?_, fun {r s} h => ⟨1, ?_⟩⟩` and prove the remaining obligations.
+
+Take `⟨s, hs, ⟨t, ht, e⟩, hws⟩` from `hden a a.2`. Establish `hu : IsUnit (ψ ⟨s, hs⟩)` using `IsUnit.of_mul_eq_one (⟨t, ht⟩ : B') (Subtype.ext e)`. Conclude with `⟨⟨⟨_, hws⟩, ⟨⟨s, hs⟩, hu⟩⟩, Subtype.ext rfl⟩`. Establish `h' : (r : Ω) = s` using `congrArg (fun z : B' => (z : Ω)) h`. Rewrite using `[Subtype.ext h']`.
+
+Establish `hM : M ≤ nonZeroDivisors B`. Introduce `s hs`. Use `mem_nonZeroDivisors_of_ne_zero fun h => ?_` and prove the remaining obligations. Establish `hu : IsUnit (ψ s)` using `hs`. Rewrite `hu` using `[h, map_zero]`.
+
+Conclude with `not_isUnit_zero hu`. Conclude with `isIntegrallyClosed_of_isLocalization B' M hM`.
+-/
 theorem isIntegrallyClosed_of_denom {o O Ω : Type} [CommRing o] [CommRing O] [Field Ω] [Algebra o Ω] [Algebra O Ω]
     (B : Subalgebra o Ω) (B' : Subalgebra O Ω) [IsIntegrallyClosed B] (hle : ∀ w ∈ B, w ∈ B')
     (hden : ∀ w ∈ B', ∃ s ∈ B, (∃ t ∈ B', s * t = 1) ∧ w * s ∈ B) : IsIntegrallyClosed B' := by
@@ -130,6 +168,25 @@ theorem isIntegrallyClosed_of_denom {o O Ω : Type} [CommRing o] [CommRing O] [F
 end PositivityTheory.Xgn.PackingFacts
 
 open PositivityTheory.Xgn.PackingFacts in
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d hV p _ hpS A _ _ _ m _ hpm O _ _ _ _ _ _ _ c' hc'`. Use `haveI hch : CharZero Ω := GlobalTheory.CompanionTheory.Ar.Num.ConstClosure.charZero_of_isArithVar hV`. Take `⟨-, -, -, -, -, -, hchart⟩` from `GlobalTheory.T.hodge_tate_free_integral_models E H D l Xo c O₀ β Y S Ω K J y 𝔐 p hpS (zp Ω p) (mem_range_zp Ω p)`. Take `⟨-, hic, hfr, x₀, hx₀, -⟩` from `hchart c' hc'`. Take `⟨-, -, -, hconst, -⟩` from `GlobalTheory.T.arith_variety_coord_ideal E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hV A`.
+
+Establish `eO` using `PositivityTheory.HtPt.Hcptgen.chartRing_mseg (o := O) y c' hc'`. Establish `eo` using `PositivityTheory.HtPt.Hcptgen.chartRing_mseg (o := zp Ω p) y c' hc'`. Establish `eZ` using `PositivityTheory.HtPt.Hcptgen.chartRing_mseg (o := ℤ) y c' hc'`. Establish `hr : ∀ a : zp Ω p, algebraMap (zp Ω p) Ω a ∈ (algebraMap O Ω).range`. Introduce `a`.
+
+Take `⟨a₁, b, hb, hab⟩` from `(mem_range_zp Ω p _).1 ⟨a, rfl⟩`. Establish `hu` using `isUnit_natCast (O := O) m p hpm b hb`. Use `⟨(a₁ : O) * ↑hu.unit⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[hab, map_mul, map_intCast, div_eq_mul_inv]`. Use `congr 1`.
+
+Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap O Ω) b, ← map_mul, hu.val_inv_mul, map_one]`. Establish `hle : ∀ w ∈ chartRing (zp Ω p) (mseg y) c', w ∈ CR O y c'`. Introduce `w hw`. Conclude with `eO.ge (mem_adjoin_of_range_le hr _ (eo.le hw))`.
+
+Establish `hA : ∀ a : A, algebraMap A Ω a ∈ Algebra.adjoin (zp Ω p) (Set.range fun j => mseg y j / mseg y c')`. Introduce `a`. Establish `h1 : algebraMap A Ω a ∈ chartRing ℤ (mseg y) c'` using `hconst c' hc' a`. Rewrite `h1` using `[eZ]`. Conclude with `mem_adjoin_of_int _ _ h1`.
+
+Use `⟨hch, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `haveI : Algebra.FiniteType O (CR O y c') := by`. Use `(Subalgebra.fg_iff_finiteType _).1 ⟨(Set.finite_range fun j => mseg y j / mseg y c').toFinset, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.Finite.coe_toFinset]`. Conclude with `eO.symm`.
+
+Conclude with `Algebra.FiniteType.isNoetherianRing O _`. Use `isIntegrallyClosed_of_denom (chartRing (zp Ω p) (mseg y) c') (CR O y c') hle fun w hw => ?_` and prove the remaining obligations. Take `⟨s, hs⟩` from `exists_denom m.primeCompl _ hA (eO.le hw)`. Establish `hu` using `IsLocalization.map_units O s`. Use `⟨algebraMap A Ω s, eo.ge (hA _), ⟨algebraMap O Ω ↑hu.unit⁻¹, Subalgebra.algebraMap_mem _ _, ?_⟩, eo.ge hs⟩` and prove the remaining obligations.
+
+Rewrite using `[IsScalarTower.algebraMap_apply A O Ω, ← map_mul, hu.mul_val_inv, map_one]`. Use `IsFractionRing.of_field _ _ fun a => ?_` and prove the remaining obligations. Take `⟨g, h, -, e⟩` from `IsFractionRing.div_surjective (A := chartRing (zp Ω p) (mseg y) c') a`. Conclude with `⟨⟨g, hle _ g.2⟩, ⟨h, hle _ h.2⟩, e.symm⟩`. Set `ψ : chartRing (zp Ω p) (mseg y) c' →+* CR O y c'` to `(algebraMap (chartRing (zp Ω p) (mseg y) c') Ω).codRestrict _ fun s => hle _ s.2`.
+
+Use `⟨spMap ψ ≫ x₀, ?_⟩` and prove the remaining obligations. Establish `e : spMap (algebraMap (CR O y c') Ω) ≫ spMap ψ = spMap ((algebraMap (CR O y c') Ω).comp ψ)` using `(Spec.map_comp _ _).symm`. Rewrite using `[← Category.assoc, e]`. Conclude with `hx₀`.
+-/
 theorem PositivityTheory.Xgn.torsion_packing_facts : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (d : ℕ), IsArithVar (mCoordIdeal y) (d + 1) → ∀ (p : ℕ) [Fact p.Prime], p ∈ S → ∀ (A : Type) [CommRing A] [Algebra A Ω] [IsIntegralClosure A ℤ Ω] (m : Ideal A) [m.IsPrime], (p : A) ∈ m → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra A O] [IsLocalization.AtPrime O m] [Algebra O Ω] [IsScalarTower A O Ω] (c' : ∀ k, J k), mseg y c' ≠ 0 → CharZero Ω ∧ IsNoetherianRing (CR O y c') ∧ IsIntegrallyClosed (CR O y c') ∧ IsFractionRing (CR O y c') Ω ∧ ∃ x : Spec (CommRingCat.of (CR O y c')) ⟶ 𝔐.X, spMap (algebraMap (CR O y c') Ω) ≫ x = 𝔐.ξ := by
   intro E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d hV p _ hpS A _ _ _ m _ hpm O _ _ _ _ _ _ _ c' hc'
   haveI hch : CharZero Ω := GlobalTheory.CompanionTheory.Ar.Num.ConstClosure.charZero_of_isArithVar hV

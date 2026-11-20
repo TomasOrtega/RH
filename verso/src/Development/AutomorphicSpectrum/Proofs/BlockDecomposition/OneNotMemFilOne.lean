@@ -26,6 +26,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
 
 def tw (g : G) (σ : LL →ₐ[Qp] Om) : LL →ₐ[Qp] Om := ((act g).symm : Om →ₐ[Qp] Om).comp σ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem tw_apply (g : G) (σ : LL →ₐ[Qp] Om) (x : LL) : tw act g σ x = (act g).symm (σ x) := rfl
 
 def IsInv (χ : G →* LLˣ) (f : (LL →ₐ[Qp] Om) → BdR) : Prop :=
@@ -34,6 +37,11 @@ def IsInv (χ : G →* LLˣ) (f : (LL →ₐ[Qp] Om) → BdR) : Prop :=
 def IsE (τ : K →ₐ[Qp] LL) (f : (LL →ₐ[Qp] Om) → BdR) : Prop :=
   ∀ (c : K) σ, algebraMap K BdR c * f σ = algebraMap Om BdR (σ (τ c)) * f σ
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, mul_add]`. Consider the case `tmul v b`. Establish `h1 : actVdR PD ρ g (v ⊗ₜ[Qp] b) = (ρ g v) ⊗ₜ[Qp] (PD.actdR g b)` using `rfl`.
+
+Rewrite using `[h1, ev_tmul, ev_tmul, hρ, map_mul, hact]`. Simplify using `[mul_assoc]`.
+-/
 theorem ev_actVdR (hact : ∀ g x, PD.actdR g (algebraMap Om BdR x) = algebraMap Om BdR (act g x))
     {ρ : Representation LL G (Fin 1 → LL)} {χ : G →* LLˣ}
     (hρ : ∀ g v, ρ g v = ((χ g : LLˣ) : LL) • v) (g : G) (σ : LL →ₐ[Qp] Om)
@@ -47,6 +55,11 @@ theorem ev_actVdR (hact : ∀ g x, PD.actdR g (algebraMap Om BdR x) = algebraMap
     rw [h1, ev_tmul, ev_tmul, hρ, map_mul, hact]
     simp [mul_assoc]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, mul_add]`. Consider the case `tmul v b`. Establish `h1 : mulVdR (K` using `K) (BdR := BdR) (V := Fin 1 → LL) (LL := LL) c (v ⊗ₜ[Qp] b) = v ⊗ₜ[Qp] (algebraMap K BdR c * b) := rfl`.
+
+Rewrite using `[h1, ev_tmul, ev_tmul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ev_mulVdR (c : K) (σ : LL →ₐ[Qp] Om)
     (z : (Fin 1 → LL) ⊗[Qp] BdR) :
     ev σ (mulVdR (K := K) (BdR := BdR) (V := Fin 1 → LL) (LL := LL) c z) = algebraMap K BdR c * ev σ z := by
@@ -61,6 +74,13 @@ theorem ev_mulVdR (c : K) (σ : LL →ₐ[Qp] Om)
 
 variable [FiniteDimensional Qp LL] [Algebra.IsSeparable Qp LL] [IsAlgClosed Om]
 
+/- English proof (translation)
+Rewrite using `[mem_DdRE_iff, mem_DdR_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun g σ => ?_, fun c σ => ?_⟩` and prove the remaining obligations. Rewrite using `[← ev_actVdR PD act hact hρ, h1]`.
+
+Rewrite using `[← ev_mulVdR, h2, ev_smul]`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun g => ev_injective (Om := Om) fun σ => ?_, fun c => ev_injective (Om := Om) fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[ev_actVdR PD act hact hρ]`. Conclude with `h1 g σ`.
+
+Rewrite using `[ev_mulVdR, ev_smul]`. Conclude with `h2 c σ`.
+-/
 theorem mem_DdRE_coord (hact : ∀ g x, PD.actdR g (algebraMap Om BdR x) = algebraMap Om BdR (act g x))
     {ρ : Representation LL G (Fin 1 → LL)} {χ : G →* LLˣ}
     (hρ : ∀ g v, ρ g v = ((χ g : LLˣ) : LL) • v) (τ : K →ₐ[Qp] LL) (z : (Fin 1 → LL) ⊗[Qp] BdR) :
@@ -76,6 +96,15 @@ theorem mem_DdRE_coord (hact : ∀ g x, PD.actdR g (algebraMap Om BdR x) = algeb
     · rw [ev_actVdR PD act hact hρ]; exact h1 g σ
     · rw [ev_mulVdR, ev_smul]; exact h2 c σ
 
+/- English proof (translation)
+Establish `hm : ∀ (x : Om) (b : BdR), b ∈ PD.Fil a → algebraMap Om BdR x * b ∈ PD.Fil a` using `fun x b hb => by`. Simplify using `using PD.Fil_mul 0 a _ _ (hOm x) hb`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩ σ`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `tmul v c`. Establish `h1 : AlgebraTensorModule.map (LinearMap.id : (Fin 1 → LL) →ₗ[LL] _) ((PD.Fil a).restrictScalars Qp).subtype (v ⊗ₜ[Qp] c) = v ⊗ₜ[Qp] (c : BdR)` using `rfl`.
+
+Rewrite using `[h1, ev_tmul]`. Conclude with `hm _ _ c.2`. Introduce `h`. Rewrite using `[← coordInv_ev (Om := Om) z]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+
+Establish `hr : ∑ j, algebraMap Om BdR ((embMat Qp Om LL)⁻¹ j i) * ev j z ∈ PD.Fil a` using `Submodule.sum_mem _ fun j _ => hm _ _ (h j)`. Conclude with `⟨(fun _ => embBasis Qp Om LL i) ⊗ₜ[Qp] ⟨_, hr⟩, rfl⟩`.
+-/
 theorem mem_filV_coord (hOm : ∀ x : Om, algebraMap Om BdR x ∈ PD.Fil 0) (a : ℤ)
     (z : (Fin 1 → LL) ⊗[Qp] BdR) :
     z ∈ FilV PD (LL := LL) (V := Fin 1 → LL) a ↔ ∀ σ : LL →ₐ[Qp] Om, ev σ z ∈ PD.Fil a := by
@@ -98,6 +127,13 @@ theorem mem_filV_coord (hOm : ∀ x : Om, algebraMap Om BdR x ∈ PD.Fil 0) (a :
       Submodule.sum_mem _ fun j _ => hm _ _ (h j)
     exact ⟨(fun _ => embBasis Qp Om LL i) ⊗ₜ[Qp] ⟨_, hr⟩, rfl⟩
 
+/- English proof (translation)
+Introduce `h`. Establish `hn : ∀ n : ℕ, (1 : BdR) ∈ PD.Fil n` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simpa using PD.one_mem`. Consider the case `succ n ih`.
+
+Use `PD.Fil_mul n 1 1 1 ih h` as an intermediate fact. Simplify using `using this`. Establish `hA : Antitone PD.Fil` using `antitone_int_of_succ_le PD.Fil_anti`. Use `one_ne_zero (PD.Fil_sep 1 fun a => ?_)` and prove the remaining obligations. Establish `h2 : a ≤ (a.toNat : ℤ)` using `Int.self_le_toNat a`.
+
+Conclude with `hA h2 (hn _)`.
+-/
 theorem one_notMem_fil_one [Nontrivial BdR] : (1 : BdR) ∉ PD.Fil 1 := by
   intro h
   have hn : ∀ n : ℕ, (1 : BdR) ∈ PD.Fil n := fun n => by
@@ -111,6 +147,9 @@ theorem one_notMem_fil_one [Nontrivial BdR] : (1 : BdR) ∉ PD.Fil 1 := by
   have h2 : a ≤ (a.toNat : ℤ) := Int.self_le_toNat a
   exact hA h2 (hn _)
 
+/- English proof (translation)
+Use extensionality with `c`. Establish `h1` using `hE c σ`. Rewrite `h1` using `[hK]`. Conclude with `((algebraMap Om BdR).injective (mul_right_cancel₀ h h1)).symm`.
+-/
 theorem block_of_ne [IsDomain BdR] {τ : K →ₐ[Qp] LL} {κ : K →ₐ[Qp] Om}
     (hK : ∀ c : K, algebraMap K BdR c = algebraMap Om BdR (κ c))
     {f : (LL →ₐ[Qp] Om) → BdR} (hE : IsE (τ := τ) (Om := Om) (BdR := BdR) f) {σ : LL →ₐ[Qp] Om}
@@ -120,6 +159,59 @@ theorem block_of_ne [IsDomain BdR] {τ : K →ₐ[Qp] LL} {κ : K →ₐ[Qp] Om}
   rw [hK] at h1
   exact ((algebraMap Om BdR).injective (mul_right_cancel₀ h h1)).symm
 
+/- English proof (translation)
+Take `⟨z, hzE, hgen, hz1, hz2⟩` from `exists_gen PD ρ τ J h`. Take `⟨hI, hE⟩` from `(mem_DdRE_coord PD act hact hρ τ z).1 hzE`. Use `set f : (LL →ₐ[Qp] Om) → BdR := fun σ => ev σ z with hf`. Establish `hzero : ∀ σ, ¬ σ.comp τ = κ → f σ = 0` using `fun σ hσ => by`. Assume the negation of the conclusion as `h0`.
+
+Conclude with `hσ (block_of_ne hK hE h0)`. Establish `htw : ∀ g (σ : LL →ₐ[Qp] Om), (tw act g σ).comp τ = κ ↔ σ.comp τ = κ` using `fun g σ => by`. Prove the components needed by the constructor for the conclusion. Introduce `h1`. Use extensionality with `c`.
+
+Establish `h2 : (act g).symm (σ (τ c)) = κ c` using `DFunLike.congr_fun h1 c`. Rewrite using `[AlgHom.comp_apply, ← (act g).apply_symm_apply (σ (τ c)), h2, hfix]`. Introduce `h1`. Use extensionality with `c`. Establish `h2 : σ (τ c) = κ c` using `DFunLike.congr_fun h1 c`.
+
+Rewrite using `[AlgHom.comp_apply, tw_apply, h2, AlgEquiv.symm_apply_eq, hfix]`. Establish `htr : ∀ σ σ' (b : ℤ), σ.comp τ = κ → σ'.comp τ = κ → f σ ∈ PD.Fil b → f σ' ∈ PD.Fil b`. Introduce `σ σ' b h1 h2 hb`. Take `⟨g, hg⟩` from `htrans σ σ' h1 h2`. Establish `h3 : tw act g σ' = σ`.
+
+Use extensionality with `x`. Rewrite using `[tw_apply, ← hg, AlgEquiv.symm_apply_apply]`. Establish `h4` using `hI g σ'`. Rewrite `h4` using `[h3]`. Rewrite using `[← h4]`.
+
+Simplify using `using PD.Fil_mul 0 b _ _ (hOm _) (PD.Fil_G g b _ hb)`. Establish `hJ : ∀ σ, f σ ∈ PD.Fil J` using `(mem_filV_coord PD hOm J z).1 hz1`. Establish `hJ1 : ∀ σ, σ.comp τ = κ → f σ ∉ PD.Fil (J + 1)` using `fun σ hσ hm => hz2 ((mem_filV_coord PD hOm (J + 1) z).2 fun σ' => by`. Distinguish the cases in `hσ' : σ'.comp τ = κ`. Conclude with `htr σ σ' _ hσ hσ' hm`.
+
+Express the relevant statement in the definitionally equal form `f σ' ∈ _`. Rewrite using `[hzero σ' hσ']`. Conclude with `Submodule.zero_mem _)`. Establish `hinv : ∀ σ, σ.comp τ = κ → ∃ y ∈ PD.Fil (-J), f σ * y = 1` using `fun σ hσ => hval J _ (hJ σ) (hJ1 σ hσ)`. Use `choose! yv hyv hyv1 using hinv`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨σ₀, hσ₀⟩ : ∃ σ : LL →ₐ[Qp] Om, σ.comp τ = κ := by`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Conclude with `hz2 ((mem_filV_coord PD hOm (J + 1) z).2 fun σ' => by`. Express the relevant statement in the definitionally equal form `f σ' ∈ _`.
+
+Rewrite using `[hzero σ' (hno σ')]`. Conclude with `Submodule.zero_mem _)`. Use `set fi : (LL →ₐ[Qp] Om) → BdR := fun σ => if σ.comp τ = κ then yv σ else 0 with hfi`. Establish `hfi1 : ∀ σ, σ.comp τ = κ → f σ * fi σ = 1` using `fun σ hσ => by`. Simplify using `only [hfi, if_pos hσ]`.
+
+Conclude with `hyv1 σ hσ`. Establish `hfi0 : ∀ σ, ¬ σ.comp τ = κ → fi σ = 0` using `fun σ hσ => by simp only [hfi, if_neg hσ]`. Establish `hfiF : ∀ σ, fi σ ∈ PD.Fil (-J)` using `fun σ => by`. Distinguish the cases in `hσ : σ.comp τ = κ`. Simplify using `only [hfi, if_pos hσ]`.
+
+Conclude with `hyv σ hσ`. Rewrite using `[hfi0 σ hσ]`. Conclude with `Submodule.zero_mem _`. Establish `hcoord : ∀ σ, ev σ (coordInv fi : (Fin 1 → LL) ⊗[Qp] BdR) = fi σ` using `ev_coordInv fi`. Establish `hII : IsInv PD act χ' fi` using `fun g σ => by`.
+
+Distinguish the cases in `hσ : σ.comp τ = κ`. Establish `hσ'` using `(htw g σ).2 hσ`. Establish `e1 : algebraMap Om BdR (σ (χ g : LL)) * algebraMap Om BdR (σ (χ' g : LL)) = 1`. Rewrite using `[← map_mul, ← map_mul, hχ, map_one, map_one]`. Establish `e2 : PD.actdR g (f (tw act g σ)) * PD.actdR g (fi (tw act g σ)) = 1`.
+
+Rewrite using `[← map_mul, hfi1 _ hσ', map_one]`. Establish `e3` using `hI g σ`. Establish `e4` using `hfi1 σ hσ`. Generalize the expression as in `algebraMap Om BdR (σ (χ g : LL)) = u at *`. Generalize the expression as in `algebraMap Om BdR (σ (χ' g : LL)) = u' at *`.
+
+Generalize the expression as in `PD.actdR g (f (tw act g σ)) = gf at *`. Generalize the expression as in `PD.actdR g (fi (tw act g σ)) = gi at *`. Generalize the expression as in `f σ = F at *`. Generalize the expression as in `fi σ = x at *`. Take the linear combination `(-(u' * gi)) * e4 - x * u' * gi * e3 + x * gf * gi * e1 + x * e2`.
+
+Establish `hσ' : ¬ (tw act g σ).comp τ = κ` using `fun h' => hσ ((htw g σ).1 h')`. Rewrite using `[hfi0 σ hσ, hfi0 _ hσ', map_zero, mul_zero]`. Establish `hIE : IsE (τ` using `τ) (Om := Om) (BdR := BdR) fi := fun c σ => by`. Distinguish the cases in `hσ : σ.comp τ = κ`. Establish `: σ (τ c) = κ c` using `DFunLike.congr_fun hσ c`.
+
+Rewrite using `[this, hK]`. Rewrite using `[hfi0 σ hσ, mul_zero, mul_zero]`. Establish `hyE : (coordInv fi : (Fin 1 → LL) ⊗[Qp] BdR) ∈ DdRE PD ρ' τ`. Use `(mem_DdRE_coord PD act hact hρ' τ _).2 ?_` and prove the remaining obligations. Simplify using `only [hcoord]`.
+
+Conclude with `⟨hII, hIE⟩`. Use `multV_of_gen PD ρ' τ (-J) (coordInv fi) hyE (fun w hw => ?_) ?_ ?_ a` and prove the remaining obligations. Take `⟨hIw, hEw⟩` from `(mem_DdRE_coord PD act hact hρ' τ w).1 hw set hh : (LL →ₐ[Qp] Om) → BdR := fun σ => ev σ w with hhh set q : (LL →ₐ[Qp] Om) → BdR := fun σ => hh σ * f σ * f σ with hq`. Establish `hqI : IsInv PD act χ q` using `fun g σ => by`. Establish `e1 : algebraMap Om BdR (σ (χ g : LL)) * algebraMap Om BdR (σ (χ' g : LL)) = 1`.
+
+Rewrite using `[← map_mul, ← map_mul, hχ, map_one, map_one]`. Establish `e2` using `hIw g σ`. Establish `e3` using `hI g σ`. Simplify using `only [hq, map_mul]`. Express the relevant statement in the definitionally equal form `_ = hh σ * f σ * f σ`.
+
+Rewrite using `[← e2, ← e3]`. Generalize the expression as in `algebraMap Om BdR (σ (χ g : LL)) = u at *`. Generalize the expression as in `algebraMap Om BdR (σ (χ' g : LL)) = u' at *`. Generalize the expression as in `PD.actdR g (f (tw act g σ)) = gf at *`. Generalize the expression as in `PD.actdR g (hh (tw act g σ)) = gh at *`.
+
+Take the linear combination `(-(u * gh * gf * gf)) * e1`. Establish `hqE : IsE (τ` using `τ) (Om := Om) (BdR := BdR) q := fun c σ => by`. Establish `e` using `hEw c σ`. Simplify using `only [hq]`. Express the relevant statement in the definitionally equal form `_ * hh σ = _ * hh σ at e`.
+
+Take the linear combination `(f σ * f σ) * e`. Establish `hqD : (coordInv q : (Fin 1 → LL) ⊗[Qp] BdR) ∈ DdRE PD ρ τ`. Use `(mem_DdRE_coord PD act hact hρ τ _).2 ?_` and prove the remaining obligations. Simplify using `only [ev_coordInv]`. Conclude with `⟨hqI, hqE⟩`.
+
+Take `⟨c, hc⟩` from `hgen _ hqD`. Use `⟨c, ev_injective (Om := Om) fun σ => ?_⟩` and prove the remaining obligations. Rewrite using `[ev_smul, hcoord]`. Establish `e : hh σ * f σ * f σ = algebraMap Om BdR (σ c) * f σ`. Use `congrArg (ev σ) hc` as an intermediate fact.
+
+Rewrite `this` using `[ev_coordInv, ev_smul]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `hh σ = _`. Distinguish the cases in `hσ : σ.comp τ = κ`. Establish `d` using `hfi1 σ hσ`. Generalize the expression as in `algebraMap Om BdR (σ c) = C at *`.
+
+Generalize the expression as in `f σ = F at *`. Generalize the expression as in `fi σ = x at *`. Generalize the expression as in `hh σ = y at *`. Take the linear combination `(-(y * (F * x + 1))) * d + x * x * e + C * x * d`. Rewrite using `[hfi0 σ hσ, mul_zero]`.
+
+Assume the negation of the conclusion as `h0`. Conclude with `hσ (block_of_ne hK hEw h0)`. Conclude with `(mem_filV_coord PD hOm _ _).2 fun σ => by rw [hcoord]; exact hfiF σ`. Introduce `hm`. Establish `h1` using `(mem_filV_coord PD hOm _ _).1 hm σ₀`.
+
+Rewrite `h1` using `[hcoord]`. Establish `h2` using `PD.Fil_mul _ _ _ _ (hJ σ₀) h1`. Rewrite `h2` using `[hfi1 σ₀ hσ₀, show J + (-J + 1) = 1 by ring]`. Conclude with `one_notMem_fil_one PD h2`.
+-/
 theorem multV_inv [IsDomain BdR] (κ : K →ₐ[Qp] Om)
     (hK : ∀ c : K, algebraMap K BdR c = algebraMap Om BdR (κ c))
     (hact : ∀ g x, PD.actdR g (algebraMap Om BdR x) = algebraMap Om BdR (act g x))

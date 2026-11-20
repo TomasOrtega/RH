@@ -7,6 +7,9 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.IsEqnI
 open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Opposite
 open ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits GlobalTheory.Cartier
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Hartogs.regAt_of_forall_dvr | exact GlobalTheory.Hartogs.regAt_of_forall_dvr | (intros; apply GlobalTheory.Hartogs.regAt_of_forall_dvr <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.regular_of_regular_at_codim_one : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X],
   (∀ x : X, IsIntegrallyClosed (X.presheaf.stalk x)) →
   ∀ (φ : X.functionField) (x : X),

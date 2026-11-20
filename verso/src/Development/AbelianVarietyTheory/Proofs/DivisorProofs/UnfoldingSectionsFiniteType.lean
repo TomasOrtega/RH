@@ -15,6 +15,11 @@ open scoped ENNReal
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Establish `hL : Reg.EvLaws Xo c` using `(Reg.evLaws_genFr_atlas E H Dw l Xo c).1`. Take `⟨q, χ, y₀, hy₀⟩` from `hL.test C.R C.y`. Use `⟨χ (f q y₀), ?_, fun S _ _ ψ z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[genVal_apply h, evC, ← evR_frBor hf C.bor, evR_eq hf.1 (frMap_comp (χ := C.R.val.comp χ) hy₀ C.gen fun _ => rfl)]`. Both sides reduce to the same expression.
+
+Rewrite using `[evR_eq hf.1 (frMap_comp (χ := ψ.comp χ) hy₀ hz fun _ => rfl), AlgHom.comp_apply]`.
+-/
 theorem fChart_exists_val {h : GenFrEx Xo c} (C : Reg.FChart h) {e : Formalism.L2.Pj.Ix Dw → ℤ} {f : Rul Xo c}
     (hf : f ∈ secZ Xo c e) : ∃ b : C.R, (b : Om C.Z) = ((∏ i, C.t i ^ e i : (Om C.Z)ˣ) : Om C.Z) * genVal C.Z f ∧
       ∀ (S : Type) [CommRing S] [Algebra c.F S] (ψ : C.R →ₐ[c.F] S) (z : FrPt Xo c S), FrMap ψ C.y z →
@@ -27,17 +32,26 @@ theorem fChart_exists_val {h : GenFrEx Xo c} (C : Reg.FChart h) {e : Formalism.L
     rfl
   · rw [evR_eq hf.1 (frMap_comp (χ := ψ.comp χ) hy₀ hz fun _ => rfl), AlgHom.comp_apply]
 
+/- English proof (translation)
+Establish `h : GenFrEx Xo c` using `(Reg.genFrEx_and_genFromTest E H Dw l Xo c).1`. Rewrite using `[genVal_apply h, evC]`. Conclude with `evR_idem (liesOn_genFr h Z) (fromTest_of_isLocalRing _)`.
+-/
 theorem genVal_idem_self (Z : Comp Xo c) : genVal Z (idem Z) = 1 := by
   have h : GenFrEx Xo c := (Reg.genFrEx_and_genFromTest E H Dw l Xo c).1
   rw [genVal_apply h, evC]
   exact evR_idem (liesOn_genFr h Z) (fromTest_of_isLocalRing _)
 
+/- English proof (translation)
+Take `⟨b, hb, hb'⟩` from `fChart_exists_val C (idem_mem_secZ C.Z)`. Establish `: b = 1` using `Subtype.ext (by simpa [genVal_idem_self] using hb)`. Rewrite using `[hb' S ψ z hz, this, map_one]`.
+-/
 theorem fChart_evR_idem {h : GenFrEx Xo c} (C : Reg.FChart h) {S : Type} [CommRing S] [Algebra c.F S]
     {ψ : C.R →ₐ[c.F] S} {z : FrPt Xo c S} (hz : FrMap ψ C.y z) : evR Xo c (idem C.Z) z = 1 := by
   obtain ⟨b, hb, hb'⟩ := fChart_exists_val C (idem_mem_secZ C.Z)
   have : b = 1 := Subtype.ext (by simpa [genVal_idem_self] using hb)
   rw [hb' S ψ z hz, this, map_one]
 
+/- English proof (translation)
+Take `⟨C, ψ, z, t', hz, hb⟩` from `(Reg.evLaws_genFr_atlas E H Dw l Xo c).2.2.2 h (Om Z) (genFr h Z)`. Use `⟨C, by_contra fun hne => ?_⟩` and prove the remaining obligations. Establish `h1 : evR Xo c (idem C.Z) (genFr h Z) = 0` using `evC_eq_zero h (Ne.symm hne) (idem_mem_suppOn C.Z)`. Rewrite `h1` using `[evR_frBor (idem_mem_secZ C.Z) hb, fChart_evR_idem C hz]`. Simplify using `at h1`.
+-/
 theorem exists_fChart (h : GenFrEx Xo c) (Z : Comp Xo c) : ∃ C : Reg.FChart h, C.Z = Z := by
   obtain ⟨C, ψ, z, t', hz, hb⟩ := (Reg.evLaws_genFr_atlas E H Dw l Xo c).2.2.2 h (Om Z) (genFr h Z)
   refine ⟨C, by_contra fun hne => ?_⟩
@@ -45,6 +59,17 @@ theorem exists_fChart (h : GenFrEx Xo c) (Z : Comp Xo c) : ∃ C : Reg.FChart h,
   rw [evR_frBor (idem_mem_secZ C.Z) hb, fChart_evR_idem C hz] at h1
   simp at h1
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c r σ U hU Z`. Establish `h : GenFrEx Xo c` using `(Reg.genFrEx_and_genFromTest E H Dw l Xo c).1`. Take `⟨C, rfl⟩` from `exists_fChart h Z`. Use `haveI := C.sm`. Use `⟨C.R, inferInstance, C.t, fun e f hf => ?_, fun φ hφ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨b, hb, -⟩` from `fChart_exists_val C hf`. Conclude with `hb ▸ b.2`. Use `haveI : IsLocalRing (CAt σ) := inferInstanceAs (IsLocalRing ℂ)`. Set `ψ : C.R →ₐ[c.F] CAt σ` to `{ (φ : C.R →+* CAt σ) with commutes' := fun a => DFunLike.congr_fun hφ a }`. Take `⟨z, hz⟩` from `exists_frMap ψ C.y`.
+
+Take `⟨k, x, s, hs⟩` from `hU.2.2.1 z`. Establish `key : ∀ (e : Formalism.L2.Pj.Ix Dw → ℤ), ∀ f ∈ secZ Xo c e, toC (σ` using `σ) (evR Xo c f z) = ((∏ i, (show ℂˣ from s i) ^ e i : ℂˣ) : ℂ) * rdU U f k x.1 := fun e f hf => by`. Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk, x.2, dif_pos]`. Conclude with `evR_frBor (S := CAt σ) hf hs`. Use `⟨⟨k, x.1⟩, by_contra fun hn => ?_, s, fun e f hf b hb => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `key 0 _ (idem_mem_secZ C.Z)`. Rewrite `h1` using `[rdU_eq_zero U (idem_mem_suppOn C.Z) hn, mul_zero, fChart_evR_idem C hz]`. Conclude with `one_ne_zero (α := ℂ) h1`. Take `⟨b', hb', h2⟩` from `fChart_exists_val C hf`. Take `rfl : b = b'` from `Subtype.ext (hb.trans hb'.symm)`.
+
+Conclude with `(h2 _ ψ z hz).symm.trans (key e f hf)`.
+-/
 theorem exists_chart_read_at_frames : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (σ : c.F →+* ℂ) (U : Unf Xo c σ r), IsUnf U → ∀ Z : Comp Xo c, ∃ (R : Subalgebra c.F (Om Z)) (_ : Algebra.FiniteType c.F R) (t : Formalism.L2.Pj.Ix Dw → (Om Z)ˣ), (∀ (e : Formalism.L2.Pj.Ix Dw → ℤ), ∀ f ∈ secZ Xo c e, ((∏ i, t i ^ e i : (Om Z)ˣ) : Om Z) * genVal Z f ∈ R) ∧ ∀ φ : R →+* ℂ, φ.comp (algebraMap c.F R) = σ → ∃ z ∈ framesOn U Z, ∃ s : Formalism.L2.Pj.Ix Dw → ℂˣ, ∀ (e : Formalism.L2.Pj.Ix Dw → ℤ), ∀ f ∈ secZ Xo c e, ∀ b : R, (b : Om Z) = ((∏ i, t i ^ e i : (Om Z)ˣ) : Om Z) * genVal Z f → φ b = ((∏ i, s i ^ e i : ℂˣ) : ℂ) * rdU U f z.1 z.2 := by
   intro E _ _ _ H Dw l Xo c r σ U hU Z
   have h : GenFrEx Xo c := (Reg.genFrEx_and_genFromTest E H Dw l Xo c).1

@@ -18,6 +18,9 @@ open scoped TensorProduct NNReal Matrix Classical
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl GlobalTheory.Cont PositivityTheory.Rg.Sw
 namespace PositivityTheory.SiegelWeilFormula.Ald
+/- English proof (translation)
+The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.Ald.ldEx_of_leaves_k _root_.PositivityTheory.SiegelWeilFormula.Ald.yFrame_k _root_.PositivityTheory.SiegelWeilFormula.Ald.jEx_k _root_.PositivityTheory.SiegelWeilFormula.Ald.kStd_k _root_.PositivityTheory.SiegelWeilFormula.Ald.hgtPull_k _ …`.
+-/
 theorem ldEx_of_k : _root_.PositivityTheory.SiegelWeilFormula.TAll_k → _root_.PositivityTheory.SiegelWeilFormula.SiegelWeilDatumProperties → _root_.PositivityTheory.SiegelWeilFormula.LDEx_k := _root_.PositivityTheory.SiegelWeilFormula.Ald.ldEx_of_leaves_k _root_.PositivityTheory.SiegelWeilFormula.Ald.yFrame_k _root_.PositivityTheory.SiegelWeilFormula.Ald.jEx_k _root_.PositivityTheory.SiegelWeilFormula.Ald.kStd_k _root_.PositivityTheory.SiegelWeilFormula.Ald.hgtPull_k _root_.PositivityTheory.SiegelWeilFormula.Ald.modelEx_k
 end PositivityTheory.SiegelWeilFormula.Ald
 end

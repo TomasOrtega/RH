@@ -13,6 +13,11 @@ variable {q : ℕ} [Fact q.Prime]
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
+/- English proof (translation)
+Establish `cF` using `(GlobalTheory.T.mahlerCoefficient_norm_le_one_iff_jets_boundedMeasureMoments q ι V κ v F hF).1 mF`. Establish `cG` using `(GlobalTheory.T.mahlerCoefficient_norm_le_one_iff_jets_boundedMeasureMoments q ι V κ v G hG).1 mG`. Use `(GlobalTheory.T.mahlerCoefficient_norm_le_one_iff_jets_boundedMeasureMoments q ι V κ v _ (hF.mul hG)).2 fun n => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.mahlerJetCoefficient_mul V κ v F G hF hG n, map_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, norm_mul]`. Conclude with `mul_le_one₀ (cF k) (norm_nonneg _) (cG _)`.
+-/
 theorem momInt_mul (ι : ℂ ≃+* ℂ_[q]) {κ : Type} [Fintype κ] (v : κ → V) {F G : V → ℂ}
     (hF : ContDiff ℂ ⊤ F) (hG : ContDiff ℂ ⊤ G) (mF : MomInt ι v F) (mG : MomInt ι v G) :
     MomInt ι v (fun z => F z * G z) := by
@@ -25,6 +30,11 @@ theorem momInt_mul (ι : ℂ ≃+* ℂ_[q]) {κ : Type} [Fintype κ] (v : κ →
   rw [map_mul, norm_mul]
   exact mul_le_one₀ (cF k) (norm_nonneg _) (cG _)
 
+/- English proof (translation)
+Take `⟨μ, hμ, eμ⟩` from `mF`. Take `⟨ν, hν, eν⟩` from `mG`. Use `⟨μ + ν, ?_, fun k j f hf => ?_⟩` and prove the remaining obligations. Use `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun f => ?_` and prove the remaining obligations. Rewrite using `[one_mul, ContinuousLinearMap.add_apply]`.
+
+Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Simplify using `using μ.le_of_opNorm_le hμ f`. Simplify using `using ν.le_of_opNorm_le hν f`. Establish `h : iteratedFDeriv ℂ k (fun z => F z + G z) 0 = iteratedFDeriv ℂ k F 0 + iteratedFDeriv ℂ k G 0` using `iteratedFDeriv_add_apply (hF.contDiffAt.of_le (by exact_mod_cast le_top)) (hG.contDiffAt.of_le (by exact_mod_cast le_top))`. Rewrite using `[h, ContinuousMultilinearMap.add_apply, map_add, eμ k j f hf, eν k j f hf, ContinuousLinearMap.add_apply]`.
+-/
 theorem momInt_add (ι : ℂ ≃+* ℂ_[q]) {κ : Type} [Fintype κ] (v : κ → V) {F G : V → ℂ}
     (hF : ContDiff ℂ ⊤ F) (hG : ContDiff ℂ ⊤ G) (mF : MomInt ι v F) (mG : MomInt ι v G) :
     MomInt ι v (fun z => F z + G z) := by
@@ -43,6 +53,11 @@ theorem momInt_add (ι : ℂ ≃+* ℂ_[q]) {κ : Type} [Fintype κ] (v : κ →
     rw [h, ContinuousMultilinearMap.add_apply, map_add, eμ k j f hf, eν k j f hf,
       ContinuousLinearMap.add_apply]
 
+/- English proof (translation)
+Take `⟨μ, hμ, eμ⟩` from `mG`. Use `⟨ι c • μ, ?_, fun k j f hf => ?_⟩` and prove the remaining obligations. Use `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun f => ?_` and prove the remaining obligations. Rewrite using `[one_mul, ContinuousLinearMap.smul_apply, norm_smul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) hc).trans (μ.le_of_opNorm_le hμ f |>.trans (by simp))`.
+
+Establish `h : iteratedFDeriv ℂ k (fun z => c * G z) 0 = c • iteratedFDeriv ℂ k G 0`. Use `iteratedFDeriv_const_smul_apply (𝕜 := ℂ) (a := c) (f := G) (i := k) (x := (0 : V)) (hG.contDiffAt.of_le (by exact_mod_cast le_top))` as an intermediate fact. Simplify `this` using `[Pi.smul_def, smul_eq_mul]`. Rewrite using `[h, ContinuousMultilinearMap.smul_apply, smul_eq_mul, map_mul, eμ k j f hf, ContinuousLinearMap.smul_apply, smul_eq_mul]`.
+-/
 theorem momInt_const_mul (ι : ℂ ≃+* ℂ_[q]) {κ : Type} [Fintype κ] (v : κ → V) {c : ℂ} {G : V → ℂ}
     (hG : ContDiff ℂ ⊤ G) (hc : ‖ι c‖ ≤ 1) (mG : MomInt ι v G) :
     MomInt ι v (fun z => c * G z) := by
@@ -58,21 +73,41 @@ theorem momInt_const_mul (ι : ℂ ≃+* ℂ_[q]) {κ : Type} [Fintype κ] (v : 
     rw [h, ContinuousMultilinearMap.smul_apply, smul_eq_mul, map_mul, eμ k j f hf,
       ContinuousLinearMap.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `κ _ v hv` and use `momInt_mul ι _ hF hG (mF κ v hv) (mG κ v hv)`.
+-/
 theorem latInt_mul (ι : ℂ ≃+* ℂ_[q]) (ω : ℂ_[q]) (Λ : AddSubgroup V) {F G : V → ℂ}
     (hF : ContDiff ℂ ⊤ F) (hG : ContDiff ℂ ⊤ G) (mF : LatInt ι ω Λ F) (mG : LatInt ι ω Λ G) :
     LatInt ι ω Λ (fun z => F z * G z) :=
   fun κ _ v hv => momInt_mul ι _ hF hG (mF κ v hv) (mG κ v hv)
 
+/- English proof (translation)
+Introduce `κ _ v hv` and use `momInt_add ι _ hF hG (mF κ v hv) (mG κ v hv)`.
+-/
 theorem latInt_add (ι : ℂ ≃+* ℂ_[q]) (ω : ℂ_[q]) (Λ : AddSubgroup V) {F G : V → ℂ}
     (hF : ContDiff ℂ ⊤ F) (hG : ContDiff ℂ ⊤ G) (mF : LatInt ι ω Λ F) (mG : LatInt ι ω Λ G) :
     LatInt ι ω Λ (fun z => F z + G z) :=
   fun κ _ v hv => momInt_add ι _ hF hG (mF κ v hv) (mG κ v hv)
 
+/- English proof (translation)
+Introduce `κ _ v hv` and use `momInt_const_mul ι _ hG hc (mG κ v hv)`.
+-/
 theorem latInt_const_mul (ι : ℂ ≃+* ℂ_[q]) (ω : ℂ_[q]) (Λ : AddSubgroup V) {c : ℂ} {G : V → ℂ}
     (hG : ContDiff ℂ ⊤ G) (hc : ‖ι c‖ ≤ 1) (mG : LatInt ι ω Λ G) :
     LatInt ι ω Λ (fun z => c * G z) :=
   fun κ _ v hv => momInt_const_mul ι _ hG hc (mG κ v hv)
 
+/- English proof (translation)
+Introduce `q _ ι V _ _ ω Λ`. Use `⟨fun m _ G hd hl => ?_, fun m s c G hd hc hl => ?_⟩` and prove the remaining obligations. Establish `key : ∀ s : Finset m, ContDiff ℂ ⊤ (fun z => ∏ j ∈ s, G j z) ∧ LatInt ι ω Λ (fun z => ∏ j ∈ s, G j z)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty => simpa using ⟨contDiff_const, latInt_one ι ω Λ⟩`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `⟨(hd a).mul ih.1, latInt_mul ι ω Λ (hd a) ih.1 (hl a) ih.2⟩`. Conclude with `(key Finset.univ).2`.
+
+Establish `key : ∀ t : Finset m, t ⊆ s → ContDiff ℂ ⊤ (fun z => ∑ j ∈ t, c j * G j z) ∧ LatInt ι ω Λ (fun z => ∑ j ∈ t, c j * G j z)`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Introduce `_`.
+
+Simplify using `using ⟨contDiff_const, latInt_zero ι ω Λ⟩`. Consider the case `insert a t ha ih`. Introduce `hts`. Establish `hat : a ∈ s` using `hts (by simp)`. Take `⟨h1, h2⟩` from `ih fun x hx => hts (by simp [hx])`.
+
+Simplify using `only [Finset.sum_insert ha]`. Establish `h3 : ContDiff ℂ ⊤ (fun z => c a * G a z)` using `contDiff_const.mul (hd a hat)`. Conclude with `⟨h3.add h1, latInt_add ι ω Λ h3 h1 (latInt_const_mul ι ω Λ (hd a hat) (hc a hat) (hl a hat)) h2⟩`. Conclude with `(key s subset_rfl).2`.
+-/
 theorem latInt_prod_sum : ∀ (q : ℕ) [Fact q.Prime] (ι : ℂ ≃+* ℂ_[q]) (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V]
     (ω : ℂ_[q]) (Λ : AddSubgroup V),
     (∀ (m : Type) [Fintype m] (G : m → V → ℂ), (∀ j, ContDiff ℂ ⊤ (G j)) → (∀ j, LatInt ι ω Λ (G j)) →

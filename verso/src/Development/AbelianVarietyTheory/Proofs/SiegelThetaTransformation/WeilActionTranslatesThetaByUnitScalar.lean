@@ -26,6 +26,11 @@ namespace GlobalTheory.Ker.RealScalar
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+Establish `key : ∀ a : (A × B) ⊗[F] E, a * (((0, 1) : A × B) ⊗ₜ[F] y) = TensorProduct.map (LinearMap.inr F A B) LinearMap.id (Algebra.TensorProduct.map (AlgHom.snd F A B) (AlgHom.id F E) a * ((1 : B) ⊗ₜ[F] y))`. Introduce `a`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [add_mul, ha, hb, map_add, add_mul, map_add]`.
+
+Consider the case `tmul x e`. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, TensorProduct.map_tmul]`. Use `congr 1`. Conclude with `Prod.ext (mul_zero _) rfl`. Rewrite using `[key, ha, zero_mul, map_zero]`.
+-/
 theorem mul_tmul_eq_zero {F A B E : Type} [Field F] [CommRing A] [CommRing B] [CommRing E] [Algebra F A]
     [Algebra F B] [Algebra F E] {a : (A × B) ⊗[F] E}
     (ha : Algebra.TensorProduct.map (AlgHom.snd F A B) (AlgHom.id F E) a = 0) (y : E) :
@@ -44,6 +49,15 @@ theorem mul_tmul_eq_zero {F A B E : Type} [Field F] [CommRing A] [CommRing B] [C
       exact Prod.ext (mul_zero _) rfl
   rw [key, ha, zero_mul, map_zero]
 
+/- English proof (translation)
+Establish `k : ∀ {l : ℕ} {c : Matrix (Fin l) (Fin l) R}, c.map p = 1 → ∀ i j, p ((c - 1) i j) = 0`. Introduce `l c hc i j`. Establish `h2 : p (c i j) = (1 : Matrix (Fin l) (Fin l) R') i j` using `congrFun (congrFun hc i) j`. Rewrite using `[Matrix.sub_apply, map_sub, h2, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `e1 : (a - 1) * x = 0`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.sum_eq_zero fun l _ => hx _ (k ha i l) _ _`. Establish `e2 : x * (b - 1) = 0`.
+
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.sum_eq_zero fun l _ => by`. Rewrite using `[mul_comm]`. Conclude with `hx _ (k hb l j) _ _`.
+
+Rewrite `e1` using `[Matrix.sub_mul, Matrix.one_mul, sub_eq_zero]`. Rewrite `e2` using `[Matrix.mul_sub, Matrix.mul_one, sub_eq_zero]`. Rewrite using `[e1, e2]`.
+-/
 theorem mul_mul_eq_self {R R' : Type} [CommRing R] [CommRing R'] (p : R →+* R') {m n : ℕ}
     {a : Matrix (Fin m) (Fin m) R} {b : Matrix (Fin n) (Fin n) R} {x : Matrix (Fin m) (Fin n) R}
     (ha : a.map p = 1) (hb : b.map p = 1) (hx : ∀ c, p c = 0 → ∀ i j, c * x i j = 0) : a * x * b = x := by
@@ -66,19 +80,31 @@ theorem mul_mul_eq_self {R R' : Type} [CommRing R] [CommRing R'] (p : R →+* R'
   rw [Matrix.mul_sub, Matrix.mul_one, sub_eq_zero] at e2
   rw [e1, e2]
 
+/- English proof (translation)
+Establish `h1 : finHom V g = 1` using `hg`. Conclude with `congrArg Units.val h1`.
+-/
 theorem map_finPart_mt {V : HSp D} {g : GA D V} (hg : g ∈ GinfC V) : (mt V g).map (finPart D) = 1 := by
   have h1 : finHom V g = 1 := hg
   exact congrArg Units.val h1
 
+/- English proof (translation)
+The claim follows from `mul_mul_eq_self (finPart D) (map_finPart_mt hg) (map_finPart_mt (inv_mem hh)) fun _ hc i j => mul_tmul_eq_zero (F := D.host.F) (A := Ainf D.host.F) (B := Af D.host.F) hc (y j i)`.
+-/
 theorem actO_finW {h : GA D S} (hh : h ∈ GinfC S) {g : GA D T} (hg : g ∈ GinfC T)
     (y : Matrix (Fin S.rank) (Fin T.rank) D.host.E) : actO S T h g (finW S T y) = finW S T y :=
   mul_mul_eq_self (finPart D) (map_finPart_mt hg) (map_finPart_mt (inv_mem hh)) fun _ hc i j =>
     mul_tmul_eq_zero (F := D.host.F) (A := Ainf D.host.F) (B := Af D.host.F) hc (y j i)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `[heisO, symplOH, symplO, hO]`.
+-/
 theorem rho_zero (C : Ctx S T) (f : WO S T → ℂ) : C.rho 0 f = f := by
   funext w
   simp [heisO, symplOH, symplO, hO]
 
+/- English proof (translation)
+Establish `h0 : C.realPt 0 = 0`. Use function extensionality and compare the values at `σ k a`. Simplify using `[Ctx.realPt, compAt]`. Use function extensionality and compare the values at `k i`. Simplify using `[Ctx.zOf, h0, zR, hermC]`.
+-/
 theorem zOf_zero (C : Ctx S T) (x : Frame C.X.Ψ T.rank) : C.zOf x 0 = 0 := by
   have h0 : C.realPt 0 = 0 := by
     funext σ k a
@@ -86,10 +112,20 @@ theorem zOf_zero (C : Ctx S T) (x : Frame C.X.Ψ T.rank) : C.zOf x 0 = 0 := by
   funext k i
   simp [Ctx.zOf, h0, zR, hermC]
 
+/- English proof (translation)
+Simplify using `[gaussR, hx]`.
+-/
 theorem gaussR_zero (C : Ctx S T) (x : Frame C.X.Ψ T.rank) :
     gaussR C.X C.bas C.idx x (0 : Fin S.rank → Fin C.g → ℂ) = 1 := by
   simp [gaussR, hx]
 
+/- English proof (translation)
+Take `⟨a, ha, b, hab⟩` from `GlobalTheory.SW.dbl_zero_and_norm D.host.E T.rank C.X C.g C.bas C.idx S.rank C.sympl C.even`. Take `⟨⟨κ, hκ, hk⟩, -⟩` from `GlobalTheory.Ker.kZero_onFr_const_entire D.host.E T.rank C.X C.g C.q0 C.hr C.bas C.idx S.rank C.sympl C.even`. Use `⟨a * κ, mul_ne_zero ha (by exact_mod_cast hκ.ne'), fun B hB φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨hon, hdom, -⟩` from `(GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).2 B hB`. Establish `h0 : IsRealPt (0 : WO S T)`.
+
+Use extensionality with `i j`. Simplify using the standard rewrite rules. Use `GlobalTheory.T.innerProduct_translated_vacua_eq_gaussianKernel D S T C μ 𝓕 hμ _ hdom _ hdom φ φ hφ hφ 0 0 h0 h0` as an intermediate fact. Establish `e : (fun (k : Fin S.rank) (i : Fin C.g) => conj ((0 : Fin S.rank → Fin C.g → ℂ) k i)) = 0`. Use function extensionality and compare the values at `k i`.
+
+Simplify using the standard rewrite rules. Rewrite `this` using `[rho_zero, zOf_zero, gaussR_zero, e, (hk _ hon).2, (hab.2 φ φ hφ hφ).1]`. Rewrite using `[this]`. Simplify using `only [map_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_ipO_Th (C : Ctx S T) {μ : Measure (WO S T)} {𝓕 : Set (WO S T)}
     (hμ : IsCovolOne (ratL T S) μ 𝓕) : ∃ a : ℂ, a ≠ 0 ∧ ∀ B, C.IsB B → ∀ φ : TF S.rank C.g, SW.IsSB φ →
       ipO μ 𝓕 (C.Th (C.xB B) φ) (C.Th (C.xB B) φ) = a * SW.ip φ φ := by
@@ -111,6 +147,29 @@ theorem exists_ipO_Th (C : Ctx S T) {μ : Measure (WO S T)} {𝓕 : Set (WO S T)
   simp only [map_one]
   ring
 
+/- English proof (translation)
+Introduce `D S T C om hom h hh g hg B hB`. Take `⟨-, hdom, -, -, -, hmv⟩` from `(GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).2 B hB`. Establish `hB' : C.IsB (C.mvB g B)` using `(hmv g).1`. Take `⟨-, hdom', -⟩` from `(GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).2 _ hB'`. Establish `hth : ∀ x ∈ C.X.dom, ∀ φ : TF S.rank C.g, SW.IsSB φ → C.IsTh (C.Th x φ)` using `fun x hx φ hφ => (GlobalTheory.T.adelicZakTheta_exists_unique D S T C x hx φ hφ).1.1`.
+
+Establish `hex : ∀ φ : TF S.rank C.g, ∃ φ' : TF S.rank C.g, SW.IsSB φ → SW.IsSB φ' ∧ om (h, g) (C.Th (C.xB B) φ) = C.Th (C.xB (C.mvB g B)) φ'`. Introduce `φ`. Distinguish the cases in `hφ : SW.IsSB φ`. Take `⟨φ', h'⟩` from `GlobalTheory.T.exists_testFunction_of_fockVacuum_thetaFunction D S T C _ hB' _ (hom.om_pres (h, g) _ (hth _ hdom φ hφ)) (((GlobalTheory.T.weakWeilRep_carries_derivatives_vacua_fockVectors D S T C om hom h g _ (hth _ hdom φ hφ)).2 B hB).1 ((GlobalTheory.T.fockPolynomialVector_test …`. Conclude with `⟨φ', fun _ => h'⟩`.
+
+Conclude with `⟨φ, fun h' => absurd h' hφ⟩`. Use `choose A hA using hex`. Establish `L` using `GlobalTheory.T.thetaKernel_testFunction_map_linear_injective_equivariant D S T C`. Establish `hadd : ∀ φ ψ : TF S.rank C.g, SW.IsSB φ → SW.IsSB ψ → SW.IsSB (φ + ψ)` using `fun φ ψ h h' => (isSB_algebra_haar_linear _ _ _ _ _ h h').1`. Establish `hsm : ∀ (a : ℂ) (φ : TF S.rank C.g), SW.IsSB φ → SW.IsSB (a • φ)` using `fun a φ h => (isSB_algebra_haar_linear _ _ _ _ _ h h).2.1 _`.
+
+Establish `hhe : ∀ (y : Matrix (Fin S.rank) (Fin T.rank) D.host.E) (φ : TF S.rank C.g), SW.IsSB φ → SW.IsSB (heisG C.X C.bas y φ)` using `fun y φ h => ((GlobalTheory.SW.heisG_laws D.host.E T.rank C.X C.g C.bas C.idx S.rank C.sympl C.even).2.2.2 y φ h).1`. Take `⟨c, hc⟩` from `GlobalTheory.Ker.schur_heisG D.host.E T.rank C.X C.g C.q0 C.hr C.bas C.idx S.rank C.sympl C.even A (fun φ hφ => (hA φ hφ).1) (fun φ ψ hφ hψ => by`. Establish `h1` using `hA _ (hadd _ _ hφ hψ)`. Use `((L _ hdom' _ h1.1).1 _ (hadd _ _ (hA φ hφ).1 (hA ψ hψ).1)).2 ?_` and prove the remaining obligations. Rewrite using `[← h1.2, ((L _ hdom _ hφ).1 _ hψ).1, map_add, (hA φ hφ).2, (hA ψ hψ).2, ((L _ hdom' _ (hA φ hφ).1).1 _ (hA ψ hψ).1).1])`.
+
+Use the proof step `(fun a φ hφ => by`. Establish `h1` using `hA _ (hsm a _ hφ)`. Use `((L _ hdom' _ h1.1).1 _ (hsm a _ (hA φ hφ).1)).2 ?_` and prove the remaining obligations. Rewrite using `[← h1.2, (L _ hdom _ hφ).2.1, map_smul, (hA φ hφ).2, (L _ hdom' _ (hA φ hφ).1).2.1])`. Use the proof step `(fun y φ hφ => by`.
+
+Establish `h1` using `hA _ (hhe y _ hφ)`. Use `((L _ hdom' _ h1.1).1 _ (hhe y _ (hA φ hφ).1)).2 ?_` and prove the remaining obligations. Establish `e1` using `(L _ hdom _ hφ).2.2.1 (-y)`. Establish `e2` using `(L _ hdom' _ (hA φ hφ).1).2.2.1 (-y)`. Rewrite `e1`, `e2` using `[neg_neg]`.
+
+Rewrite using `[← h1.2, ← e1, ← e2, ← (hA φ hφ).2, hom.om_heis h g _ _ (hth _ hdom φ hφ), actO_finW hh hg])`. Establish `hc' : ∀ φ : TF S.rank C.g, SW.IsSB φ → om (h, g) (C.Th (C.xB B) φ) = c • (C.Th (C.xB (C.mvB g B)) φ)` using `fun φ hφ => by`. Rewrite using `[(hA φ hφ).2, hc φ hφ, (L _ hdom' _ hφ).2.1]`. Distinguish the cases in `hne : ∃ φ : TF S.rank C.g, SW.IsSB φ ∧ φ ≠ 0`. Take `⟨φ, hφ, h0⟩` from `hne`.
+
+Use `⟨c, ?_, hc'⟩` and prove the remaining obligations. Take `⟨⟨μ, 𝓕, hμ⟩, hip⟩` from `GlobalTheory.T.thetaFunction_fundamentalDomain_innerProduct_basic D S T C`. Take `⟨a, ha, hn⟩` from `exists_ipO_Th C hμ`. Establish `t1` using `hth _ hdom φ hφ`. Establish `t2` using `hth _ hdom' φ hφ`.
+
+Establish `t3 : C.IsTh (c • (C.Th (C.xB (C.mvB g B)) φ))` using `hc' φ hφ ▸ hom.om_pres (h, g) _ t1`. Establish `u` using `((hip μ 𝓕 hμ _ t1).2.2.2 _ t1).2.2.2.2.2 om hom (h, g)`. Rewrite `u` using `[hc' φ hφ, ((hip μ 𝓕 hμ _ t2).2.2.2 _ t3).2.2.1, ((hip μ 𝓕 hμ _ t3).2.2.2 _ t2).2.1, ((hip μ 𝓕 hμ _ t2).2.2.2 _ t2).2.2.1, map_mul, ← ((hip μ 𝓕 hμ _ t2).2.2.2 _ t2).2.1, hn _ hB φ hφ, hn _ hB' φ hφ, ← mul_assoc, Complex.mul_conj']`. Establish `hz` using `mul_ne_zero ha (GlobalTheory.SW.DblZero.ip_self_ne_zero hφ h0)`. Establish `u' : ((‖c‖ : ℂ)) ^ 2 = 1` using `mul_right_cancel₀ hz (by rw [u, one_mul])`.
+
+Establish `u'' : ‖c‖ ^ 2 = 1` using `by exact_mod_cast u'`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg c) two_ne_zero).1 u''`. Use `⟨1, norm_one, fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `h0 : φ = (0 : ℂ) • φ`. Assume the negation of the conclusion as `h0`.
+
+Conclude with `hne ⟨φ, hφ, fun e => h0 (by rw [e, smul_zero])⟩`. Rewrite using `[h0, (L _ hdom _ hφ).2.1, (L _ hdom' _ hφ).2.1]`. Simplify using the standard rewrite rules.
+-/
 theorem om_real_Th : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ), IsWeak C.ψ S T om → ∀ h ∈ GinfC S, ∀ g ∈ GinfC T, ∀ B, C.IsB B → ∃ c : ℂ, ‖c‖ = 1 ∧ ∀ φ : TF S.rank C.g, SW.IsSB φ → om (h, g) (C.Th (C.xB B) φ) = c • (C.Th (C.xB (C.mvB g B)) φ) := by
   intro D S T C om hom h hh g hg B hB
   obtain ⟨-, hdom, -, -, -, hmv⟩ := (GlobalTheory.T.thetaKernel_orthonormalFrame_inDomain_periodLinear D S T C).2 B hB

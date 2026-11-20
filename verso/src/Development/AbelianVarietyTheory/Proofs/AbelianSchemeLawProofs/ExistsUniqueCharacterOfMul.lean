@@ -25,6 +25,13 @@ def IsMultiplicative (u : AddMonoidAlgebra A X) : Prop :=
     AddMonoidAlgebra.mapDomainRingHom A (AddMonoidHom.inl X X) u *
       AddMonoidAlgebra.mapDomainRingHom A (AddMonoidHom.inr X X) u
 
+/- English proof (translation)
+Proceed by induction on `u using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add, add_mul]`. Simplify using `only [AddMonoidAlgebra.coeff_add, Finsupp.add_apply, ha, hb, add_mul]`. Consider the case `single a r`.
+
+Proceed by induction on `v using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add c d hc hd => rw [map_add, mul_add]`. Simplify using `only [AddMonoidAlgebra.coeff_add, Finsupp.add_apply, hc, hd, mul_add]`. Consider the case `single b s`.
+
+Simplify using `only [AddMonoidAlgebra.mapDomainRingHom_apply, AddMonoidAlgebra.mapDomain_single, AddMonoidAlgebra.single_mul_single, AddMonoidAlgebra.coeff_single, Finsupp.single_apply]`. Apply the tactic sequence `by_cases h1 : a = x <;> by_cases h2 : b = y <;> simp [h1, h2]`.
+-/
 lemma coeff_inl_mul_inr (u v : AddMonoidAlgebra A X) (x y : X) :
     (AddMonoidAlgebra.mapDomainRingHom A (AddMonoidHom.inl X X) u *
       AddMonoidAlgebra.mapDomainRingHom A (AddMonoidHom.inr X X) v).coeff (x, y) =
@@ -42,6 +49,11 @@ lemma coeff_inl_mul_inr (u v : AddMonoidAlgebra A X) (x y : X) :
         AddMonoidAlgebra.single_mul_single, AddMonoidAlgebra.coeff_single, Finsupp.single_apply]
       by_cases h1 : a = x <;> by_cases h2 : b = y <;> simp [h1, h2]
 
+/- English proof (translation)
+Proceed by induction on `u using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb`. Rewrite using `[map_add]`. Simplify using `only [AddMonoidAlgebra.coeff_add, Finsupp.add_apply, ha, hb]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Consider the case `single a r`. Simplify using `only [AddMonoidAlgebra.mapDomainRingHom_apply, AddMonoidAlgebra.mapDomain_single, AddMonoidAlgebra.coeff_single, Finsupp.single_apply]`. Apply the tactic sequence `by_cases h1 : a = x <;> by_cases h2 : x = y <;> simp [h1, h2]`. Apply the tactic sequence `all_goals aesop`.
+-/
 lemma coeff_diag (u : AddMonoidAlgebra A X) (x y : X) [Decidable (x = y)] :
     (AddMonoidAlgebra.mapDomainRingHom A ((AddMonoidHom.id X).prod (AddMonoidHom.id X)) u).coeff
       (x, y) = if x = y then u.coeff x else 0 := by
@@ -57,6 +69,11 @@ lemma coeff_diag (u : AddMonoidAlgebra A X) (x y : X) [Decidable (x = y)] :
     by_cases h1 : a = x <;> by_cases h2 : x = y <;> simp [h1, h2]
     all_goals aesop
 
+/- English proof (translation)
+Establish `key : ∀ y, (if x = y then u.coeff x else 0) = u.coeff x * u.coeff y` using `fun y => by`. Rewrite using `[← coeff_diag, ← coeff_inl_mul_inr, hu]`. Use extensionality with `y`. Use `key y` as an intermediate fact. Simplify using `only [AddMonoidAlgebra.coeff_single, Finsupp.single_apply]`.
+
+Apply `hx.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[← this]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 lemma IsMultiplicative.eq_single {u : AddMonoidAlgebra A X} (hu : IsMultiplicative u) {x : X}
     (hx : IsUnit (u.coeff x)) : u = single x 1 := by
   classical
@@ -69,6 +86,11 @@ lemma IsMultiplicative.eq_single {u : AddMonoidAlgebra A X} (hu : IsMultiplicati
   rw [← this]
   split_ifs <;> simp
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `: Nontrivial (A ⧸ p)` using `Ideal.Quotient.nontrivial_iff.2 hp`. Apply `(hu.map (AddMonoidAlgebra.mapRingHom X (Ideal.Quotient.mk p))).ne_zero` to reduce the goal to its premises. Use extensionality with `x`.
+
+Simplify using `[Ideal.Quotient.eq_zero_iff_mem, h]`.
+-/
 lemma exists_coeff_notMem {u : AddMonoidAlgebra A X} (hu : IsUnit u) (p : Ideal A) (hp : p ≠ ⊤) :
     ∃ x, u.coeff x ∉ p := by
   by_contra h
@@ -78,6 +100,9 @@ lemma exists_coeff_notMem {u : AddMonoidAlgebra A X} (hu : IsUnit u) (p : Ideal 
   ext x
   simp [Ideal.Quotient.eq_zero_iff_mem, h]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hxy`. Use `congrArg (fun p => p.coeff x) h` as an intermediate fact. Simplify using `[Ne.symm hxy] at this`.
+-/
 lemma eq_of_single_one_eq [Nontrivial A] {x y : X}
     (h : (single x 1 : AddMonoidAlgebra A X) = single y 1) : x = y := by
   by_contra hxy
@@ -93,10 +118,16 @@ def torusPoint {R : CommRingCat.{0}} (φ : torusRing ZU X ⟶ R) (s : Spec R ⟶
   Over.homMk (pullback.lift (Spec.map φ) s (specULiftZIsTerminal.hom_ext _ _))
     (pullback.lift_snd _ _ _)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 lemma torusPoint_fst {R : CommRingCat.{0}} (φ : torusRing ZU X ⟶ R) (s : Spec R ⟶ S) :
     (torusPoint φ s).left ≫ torusFst S X = Spec.map φ :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `h`. Conclude with `(Over.w g).trans (Over.w g').symm`.
+-/
 lemma torus_hom_ext {Z : Over S} {g g' : Z ⟶ splitTorus S X}
     (h : g.left ≫ torusFst S X = g'.left ≫ torusFst S X) : g = g' := by
   apply Over.OverMorphism.ext
@@ -104,6 +135,9 @@ lemma torus_hom_ext {Z : Over S} {g g' : Z ⟶ splitTorus S X}
   · exact h
   · exact (Over.w g).trans (Over.w g').symm
 
+/- English proof (translation)
+Simplify using `only [Over.pullback_map_left]`. Conclude with `pullback.lift_fst _ _ _`.
+-/
 lemma pullback_map_fst {A B : Over (Spec ZU.{0})} (f : A ⟶ B) :
     ((Over.pullback (toZ S)).map f).left ≫ pullback.fst B.hom (toZ S) =
       pullback.fst A.hom (toZ S) ≫ f.left := by
@@ -111,6 +145,25 @@ lemma pullback_map_fst {A B : Over (Spec ZU.{0})} (f : A ⟶ B) :
   exact pullback.lift_fst _ _ _
 
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+Use `letI : Algebra ZU.{0} R := ULift.algebra' ℤ R`. Apply `torus_hom_ext` to reduce the goal to its premises. Set `a : torusRing ZU X →ₐ[ZU.{0}] R` to `{ φ.hom with commutes' := fun r => RingHom.congr_fun (ringHom_uliftInt_ext (φ.hom.comp (algebraMap ZU.{0} (torusRing ZU X))) (algebraMap ZU.{0} R)) r }`. Set `a' : torusRing ZU X →ₐ[ZU.{0}] R` to `{ φ'.hom with commutes' := fun r => RingHom.congr_fun (ringHom_uliftInt_ext (φ'.hom.comp (algebraMap ZU.{0} (torusRing ZU X))) (algebraMap ZU.{0} R)) r }`. Set `m : torusRing ZU X ⊗[ZU.{0}] torusRing ZU X →ₐ[ZU.{0}] R` to `Algebra.TensorProduct.lift a a' (fun _ _ => Commute.all _ _)`.
+
+Establish `e1 : (lift (torusPoint φ s) (torusPoint φ' s) ≫ Functor.LaxMonoidal.μ (Over.pullback (toZ S)) (splitTorusAff ZU X) (splitTorusAff ZU X)).left ≫ pullback.fst (splitTorusAff ZU X ⊗ splitTorusAff ZU X).hom (toZ S) = Spec.map (CommRingCat.ofHom m.toRingHom) ≫ (pullbackSpecIso ZU.{0} …`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `pullback_map_fst (S := S) (fst (splitTorusAff ZU X) (splitTorusAff ZU X))` as an intermediate fact. Rewrite using `[Category.assoc]`. Use `erw [← this]`.
+
+Rewrite using `[← Category.assoc, ← Over.comp_left, Category.assoc, Functor.Monoidal.μ_fst]`. Use `erw [lift_fst, torusPoint_fst, Category.assoc, pullbackSpecIso_inv_fst]`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises.
+
+Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Simplify using `[m, a]`. Use `pullback_map_fst (S := S) (snd (splitTorusAff ZU X) (splitTorusAff ZU X))` as an intermediate fact. Rewrite using `[Category.assoc]`. Use `erw [← this]`.
+
+Rewrite using `[← Category.assoc, ← Over.comp_left, Category.assoc, Functor.Monoidal.μ_snd]`. Use `erw [lift_snd, torusPoint_fst, Category.assoc, pullbackSpecIso_inv_snd]`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises.
+
+Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Simplify using `[m, a']`. Establish `e2 : μ[splitTorus S X] = Functor.LaxMonoidal.μ (Over.pullback (toZ S)) (splitTorusAff ZU X) (splitTorusAff ZU X) ≫ (Over.pullback (toZ S)).map μ[splitTorusAff ZU X]` using `rfl`. Rewrite using `[Hom.mul_def, e2, ← Category.assoc, Over.comp_left, Category.assoc, torusPoint_fst]`. Use `erw [pullback_map_fst]`.
+
+Rewrite using `[← Category.assoc]`. Use `erw [e1]`. Rewrite using `[mul_spec_asOver_spec_left, Category.assoc, Iso.inv_hom_id_assoc, ← Spec.map_comp]`. Use `congr 1`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises.
+
+Apply `ringHom_ext_ZU` to reduce the goal to its premises. Introduce `x`. Rewrite using `[h]`. Express the relevant statement in the definitionally equal form `m (Coalgebra.comul (R := ZU.{0}) (single x (1 : ZU.{0}) : AddMonoidAlgebra ZU.{0} X)) = _`. Rewrite using `[AddMonoidAlgebra.comul_single]`.
+
+Simplify using `[m, a, a']`.
+-/
 lemma torusPoint_mul {R : CommRingCat.{0}} (φ φ' ψ : torusRing ZU X ⟶ R) (s : Spec R ⟶ S)
     (h : ∀ x : X, ψ.hom (single x 1) = φ.hom (single x 1) * φ'.hom (single x 1)) :
     torusPoint φ s * torusPoint φ' s = torusPoint ψ s := by
@@ -169,6 +222,9 @@ def prodPoint {R : CommRingCat.{0}} (φ : torusRing ZU X ⟶ R) (y : Spec R ⟶ 
     Spec R ⟶ (splitTorus S X ⊗ Y).left :=
   (lift (torusPoint φ (y ≫ Y.hom)) (Over.homMk y rfl : Over.mk (y ≫ Y.hom) ⟶ Y)).left
 
+/- English proof (translation)
+Use `congrArg (fun f => f.left ≫ torusFst S X) (lift_fst (torusPoint φ (y ≫ Y.hom)) (Over.homMk y rfl : Over.mk (y ≫ Y.hom) ⟶ Y))` as an intermediate fact. Simplify using `only [Over.comp_left, Category.assoc, torusPoint_fst] at this`. Conclude with `this`.
+-/
 lemma prodPoint_fst {R : CommRingCat.{0}} (φ : torusRing ZU X ⟶ R) (y : Spec R ⟶ Y.left) :
     prodPoint φ y ≫ (fst (splitTorus S X) Y).left ≫ torusFst S X = Spec.map φ := by
   have := congrArg (fun f => f.left ≫ torusFst S X)
@@ -176,12 +232,18 @@ lemma prodPoint_fst {R : CommRingCat.{0}} (φ : torusRing ZU X ⟶ R) (y : Spec 
   simp only [Over.comp_left, Category.assoc, torusPoint_fst] at this
   exact this
 
+/- English proof (translation)
+The claim follows from `congrArg (fun f => f.left) (lift_snd (torusPoint φ (y ≫ Y.hom)) (Over.homMk y rfl : Over.mk (y ≫ Y.hom) ⟶ Y))`.
+-/
 lemma prodPoint_snd {R : CommRingCat.{0}} (φ : torusRing ZU X ⟶ R) (y : Spec R ⟶ Y.left) :
     prodPoint φ y ≫ (snd (splitTorus S X) Y).left = y :=
   congrArg (fun f => f.left)
     (lift_snd (torusPoint φ (y ≫ Y.hom)) (Over.homMk y rfl : Over.mk (y ≫ Y.hom) ⟶ Y))
 
 variable (X Y) in
+/- English proof (translation)
+Establish `h1 : IsPullback (fst (splitTorus S X) Y).left (snd (splitTorus S X) Y).left (splitTorus S X).hom Y.hom` using `IsPullback.of_hasPullback _ _`. Establish `h2 : IsPullback (torusFst S X) (splitTorus S X).hom (splitTorusAff ZU X).hom (toZ S)` using `IsPullback.of_hasPullback _ _`. Conclude with `h1.paste_horiz h2`.
+-/
 lemma isPullback_prod :
     IsPullback ((fst (splitTorus S X) Y).left ≫ torusFst S X) (snd (splitTorus S X) Y).left
       (splitTorusAff ZU X).hom (Y.hom ≫ toZ S) := by
@@ -191,6 +253,9 @@ lemma isPullback_prod :
     IsPullback.of_hasPullback _ _
   exact h1.paste_horiz h2
 
+/- English proof (translation)
+Apply `(isPullback_prod X Y).hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, prodPoint_fst, prodPoint_fst, Spec.map_comp]`. Rewrite using `[Category.assoc, prodPoint_snd, prodPoint_snd]`.
+-/
 lemma map_prodPoint {R R' : CommRingCat.{0}} (g : R ⟶ R') (φ : torusRing ZU X ⟶ R)
     (y : Spec R ⟶ Y.left) :
     Spec.map g ≫ prodPoint φ y = prodPoint (φ ≫ g) (Spec.map g ≫ y) := by
@@ -202,16 +267,25 @@ def value {R : CommRingCat.{0}} (φ : torusRing ZU X ⟶ R) (y : Spec R ⟶ Y.le
     Γ((splitTorus S X ⊗ Y).left, ⊤) ⟶ R :=
   (prodPoint φ y).appTop ≫ (Scheme.ΓSpecIso R).hom
 
+/- English proof (translation)
+Rewrite using `[value, value, ← map_prodPoint, Scheme.Hom.comp_appTop, Category.assoc, Category.assoc, Scheme.ΓSpecIso_naturality]`.
+-/
 lemma value_comp {R R' : CommRingCat.{0}} (g : R ⟶ R') (φ : torusRing ZU X ⟶ R)
     (y : Spec R ⟶ Y.left) : value φ y ≫ g = value (φ ≫ g) (Spec.map g ≫ y) := by
   rw [value, value, ← map_prodPoint, Scheme.Hom.comp_appTop, Category.assoc, Category.assoc,
     Scheme.ΓSpecIso_naturality]
 
+/- English proof (translation)
+Rewrite using `[TorusInj.charUnit_val, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression.
+-/
 lemma charUnit_val (χ : X) : (charUnit S X χ).val = (torusFst S X).appTop.hom
       ((Scheme.ΓSpecIso (torusRing ZU X)).inv.hom (single χ 1)) := by
   rw [TorusInj.charUnit_val, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]
   rfl
 
+/- English proof (translation)
+Establish `: (Scheme.ΓSpecIso (torusRing ZU X)).inv ≫ (torusFst S X).appTop ≫ (fst (splitTorus S X) Y).left.appTop ≫ value φ y = φ`. Rewrite using `[value, ← Scheme.Hom.comp_appTop_assoc, ← Scheme.Hom.comp_appTop_assoc, prodPoint_fst, Scheme.ΓSpecIso_naturality, Iso.inv_hom_id_assoc]`. Rewrite using `[charUnit_val]`. Conclude with `congrArg (fun f => f.hom (single χ 1)) this`.
+-/
 lemma value_char {R : CommRingCat.{0}} (φ : torusRing ZU X ⟶ R) (y : Spec R ⟶ Y.left) (χ : X) :
     (value φ y).hom ((fst (splitTorus S X) Y).left.appTop.hom (charUnit S X χ).val) =
       φ.hom (single χ 1) := by
@@ -227,6 +301,9 @@ def IsMulLeft (ρ : Γ((splitTorus S X ⊗ Y).left, ⊤)) : Prop :=
     (lift (t * t') y).left.appTop.hom ρ =
       (lift t y).left.appTop.hom ρ * (lift t' y).left.appTop.hom ρ
 
+/- English proof (translation)
+Use `hρ (Over.mk (y ≫ Y.hom)) (torusPoint φ _) (torusPoint φ' _) (Over.homMk y rfl)` as an intermediate fact. Rewrite `this` using `[torusPoint_mul φ φ' ψ _ h]`. Establish `h2` using `congrArg (Scheme.ΓSpecIso R).hom.hom this`. Rewrite `h2` using `[map_mul]`. Conclude with `h2`.
+-/
 lemma IsMulLeft.value_mul {ρ : Γ((splitTorus S X ⊗ Y).left, ⊤)} (hρ : IsMulLeft ρ)
     {R : CommRingCat.{0}} (φ φ' ψ : torusRing ZU X ⟶ R) (y : Spec R ⟶ Y.left)
     (h : ∀ x : X, ψ.hom (single x 1) = φ.hom (single x 1) * φ'.hom (single x 1)) :
@@ -253,6 +330,9 @@ variable (X) in
 def const (R : CommRingCat.{0}) : R ⟶ grpAlg X R :=
   CommRingCat.ofHom (algebraMap R (AddMonoidAlgebra R X))
 
+/- English proof (translation)
+Simplify using `[fromInt]`.
+-/
 lemma fromInt_single (R : CommRingCat.{0}) (x : X) :
     (fromInt X R).hom (single x 1) = single x 1 := by
   simp [fromInt]
@@ -261,11 +341,21 @@ def expand {R : CommRingCat.{0}} (y : Spec R ⟶ Y.left) :
     Γ((splitTorus S X ⊗ Y).left, ⊤) ⟶ grpAlg X R :=
   value (fromInt X R) (Spec.map (const X R) ≫ y)
 
+/- English proof (translation)
+Rewrite using `[expand, value_char, fromInt_single]`.
+-/
 lemma expand_char {R : CommRingCat.{0}} (y : Spec R ⟶ Y.left) (χ : X) :
     (expand y).hom ((fst (splitTorus S X) Y).left.appTop.hom (charUnit S X χ).val) =
       single χ 1 := by
   rw [expand, value_char, fromInt_single]
 
+/- English proof (translation)
+Establish `h` using `value_comp (CommRingCat.ofHom (AddMonoidAlgebra.mapRingHom X g.hom) : grpAlg X R ⟶ grpAlg X R') (fromInt X R) (Spec.map (const X R) ≫ y)`. Establish `h1 : fromInt X R ≫ (CommRingCat.ofHom (AddMonoidAlgebra.mapRingHom X g.hom) : grpAlg X R ⟶ grpAlg X R') = fromInt X R'`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Apply `ringHom_ext_ZU` to reduce the goal to its premises. Introduce `x`.
+
+Rewrite using `[CommRingCat.hom_comp, RingHom.comp_apply, fromInt_single, fromInt_single]`. Simplify using the standard rewrite rules. Establish `h2 : const X R ≫ (CommRingCat.ofHom (AddMonoidAlgebra.mapRingHom X g.hom) : grpAlg X R ⟶ grpAlg X R') = g ≫ const X R'`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Use `RingHom.ext fun r => ?_` and prove the remaining obligations.
+
+Simplify using `[const]`. Rewrite `h` using `[h1, ← Spec.map_comp_assoc, h2, Spec.map_comp, Category.assoc]`. Conclude with `(congrArg (fun f => f.hom ρ) h).symm`.
+-/
 lemma expand_map {R R' : CommRingCat.{0}} (g : R ⟶ R') (y : Spec R ⟶ Y.left)
     (ρ : Γ((splitTorus S X ⊗ Y).left, ⊤)) :
     (expand (Spec.map g ≫ y)).hom ρ = AddMonoidAlgebra.mapRingHom X g.hom ((expand y).hom ρ) := by
@@ -286,6 +376,13 @@ lemma expand_map {R R' : CommRingCat.{0}} (g : R ⟶ R') (y : Spec R ⟶ Y.left)
   rw [h1, ← Spec.map_comp_assoc, h2, Spec.map_comp, Category.assoc] at h
   exact (congrArg (fun f => f.hom ρ) h).symm
 
+/- English proof (translation)
+Set `m (f : X →+ X × X) : grpAlg X R ⟶ grpAlg (X × X) R` to `CommRingCat.ofHom (AddMonoidAlgebra.mapDomainRingHom R f)`. Establish `key (f : X →+ X × X) : AddMonoidAlgebra.mapDomainRingHom R f ((expand y).hom ρ) = (value (fromInt X R ≫ m f) (Spec.map (const (X × X) R) ≫ y)).hom ρ`. Establish `h` using `value_comp (m f) (fromInt X R) (Spec.map (const X R) ≫ y)`. Establish `h2 : const X R ≫ m f = const (X × X) R`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises.
+
+Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Simplify using `[const, m]`. Rewrite `h` using `[← Spec.map_comp_assoc, h2]`. Conclude with `congrArg (fun f => f.hom ρ) h`. Rewrite using `[IsMultiplicative, key, key, key]`.
+
+Apply `hρ.value_mul` to reduce the goal to its premises. Introduce `x`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply]`. Rewrite using `[fromInt_single]`. Simplify using `[m, AddMonoidAlgebra.single_mul_single]`.
+-/
 lemma IsMulLeft.isMultiplicative {ρ : Γ((splitTorus S X ⊗ Y).left, ⊤)} (hρ : IsMulLeft ρ)
     {R : CommRingCat.{0}} (y : Spec R ⟶ Y.left) : IsMultiplicative ((expand y).hom ρ) := by
   let m (f : X →+ X × X) : grpAlg X R ⟶ grpAlg (X × X) R :=
@@ -306,6 +403,11 @@ lemma IsMulLeft.isMultiplicative {ρ : Γ((splitTorus S X ⊗ Y).left, ⊤)} (h�
   rw [fromInt_single]
   simp [m, AddMonoidAlgebra.single_mul_single]
 
+/- English proof (translation)
+Establish `: IsScalarTower ZU.{0} (AddMonoidAlgebra ZU.{0} X) (AddMonoidAlgebra A X)` using `⟨fun r a b => by`. Take `⟨n⟩` from `r`. Use `show (n • a) • b = n • (a • b)`. Simplify using `only [Algebra.smul_def, map_mul, _root_.mul_assoc, eq_intCast, map_intCast]⟩`. Establish `: Algebra.IsPushout ZU.{0} (AddMonoidAlgebra ZU.{0} X) A (AddMonoidAlgebra A X)` using `AddMonoidAlgebra.instIsPushout'`.
+
+Conclude with `CommRingCat.isPushout_of_isPushout ZU.{0} (AddMonoidAlgebra ZU.{0} X) A (AddMonoidAlgebra A X)`.
+-/
 lemma isPushout_grpAlg (A : Type) [CommRing A] :
     IsPushout (CommRingCat.ofHom (algebraMap ZU.{0} (AddMonoidAlgebra ZU.{0} X)))
       (CommRingCat.ofHom (algebraMap ZU.{0} A))
@@ -321,6 +423,11 @@ lemma isPushout_grpAlg (A : Type) [CommRing A] :
   exact CommRingCat.isPushout_of_isPushout ZU.{0} (AddMonoidAlgebra ZU.{0} X) A
     (AddMonoidAlgebra A X)
 
+/- English proof (translation)
+Establish `h0 : IsPushout (CommRingCat.ofHom (algebraMap ZU.{0} (AddMonoidAlgebra ZU.{0} X))) (CommRingCat.ofHom (algebraMap ZU.{0} R)) (fromInt X R) (const X R)` using `isPushout_grpAlg R`. Establish `h1` using `isPullback_SpecMap_of_isPushout _ _ _ _ h0`. Use `IsPullback.of_right ?_ (prodPoint_snd _ _) (isPullback_prod X Y)` and prove the remaining obligations. Rewrite using `[prodPoint_fst]`. Rewrite using `[show y ≫ Y.hom ≫ toZ S = Spec.map (CommRingCat.ofHom (algebraMap ZU.{0} R)) from specULiftZIsTerminal.hom_ext _ _]`.
+
+Conclude with `h1`.
+-/
 lemma isPullback_expand {R : CommRingCat.{0}} (y : Spec R ⟶ Y.left) :
     IsPullback (prodPoint (fromInt X R) (Spec.map (const X R) ≫ y)) (Spec.map (const X R))
       (snd (splitTorus S X) Y).left y := by
@@ -334,6 +441,11 @@ lemma isPullback_expand {R : CommRingCat.{0}} (y : Spec R ⟶ Y.left) :
     specULiftZIsTerminal.hom_ext _ _]
   exact h1
 
+/- English proof (translation)
+Use `choose R y hy hp he using h`. Use `Scheme.OpenCover.ext_elem f g (Scheme.Cover.mkOfCovers Y.left (fun p => Spec (grpAlg X (R p))) (fun p => prodPoint (fromInt X (R p)) (Spec.map (const X (R p)) ≫ y p)) (fun q => ?_) (fun p => ?_)) (fun p => ?_)` and prove the remaining obligations. Take `⟨r, hr⟩` from `hp ((snd (splitTorus S X) Y).left q)`. Take `⟨z, hz, -⟩` from `Scheme.exists_preimage_of_isPullback (isPullback_expand (X := X) (y ((snd (splitTorus S X) Y).left q))) q r hr.symm`. Conclude with `⟨_, z, hz⟩`.
+
+Conclude with `MorphismProperty.of_isPullback (P := @IsOpenImmersion) (isPullback_expand (X := X) (y p)).flip (hy p)`. Conclude with `(Scheme.ΓSpecIso (grpAlg X (R p))).commRingCatIsoToRingEquiv.injective (he p)`.
+-/
 lemma ext_of_expand {f g : Γ((splitTorus S X ⊗ Y).left, ⊤)}
     (h : ∀ p : Y.left, ∃ (R : CommRingCat.{0}) (y : Spec R ⟶ Y.left), IsOpenImmersion y ∧
       p ∈ Set.range y ∧ (expand y).hom f = (expand y).hom g) : f = g := by
@@ -354,6 +466,11 @@ def IsCharNear (ρ : Γ((splitTorus S X ⊗ Y).left, ⊤)) (χ : X) (p : Y.left)
   ∃ (R : CommRingCat.{0}) (y : Spec R ⟶ Y.left), IsOpenImmersion y ∧
     p ∈ Set.range y ∧ (expand y).hom ρ = single χ 1
 
+/- English proof (translation)
+Take `⟨R, y, hy, hp, he⟩` from `h`. Establish `H : Set.range (Y.left.fromSpecResidueField p) ⊆ Set.range y`. Rewrite using `[Scheme.range_fromSpecResidueField]`. Simplify using `using hp`. Rewrite using `[← IsOpenImmersion.lift_fac y _ H, ← Spec.map_preimage (IsOpenImmersion.lift y _ H), expand_map, he]`.
+
+Simplify using the standard rewrite rules.
+-/
 lemma IsCharNear.residueField {ρ : Γ((splitTorus S X ⊗ Y).left, ⊤)} {χ : X} {p : Y.left}
     (h : IsCharNear ρ χ p) : (expand (Y.left.fromSpecResidueField p)).hom ρ = single χ 1 := by
   obtain ⟨R, y, hy, hp, he⟩ := h
@@ -363,10 +480,20 @@ lemma IsCharNear.residueField {ρ : Γ((splitTorus S X ⊗ Y).left, ⊤)} {χ : 
     expand_map, he]
   simp
 
+/- English proof (translation)
+The claim follows from `eq_of_single_one_eq (h.residueField.symm.trans h'.residueField)`.
+-/
 lemma IsCharNear.unique {ρ : Γ((splitTorus S X ⊗ Y).left, ⊤)} {χ χ' : X} {p : Y.left}
     (h : IsCharNear ρ χ p) (h' : IsCharNear ρ χ' p) : χ = χ' :=
   eq_of_single_one_eq (h.residueField.symm.trans h'.residueField)
 
+/- English proof (translation)
+Take `⟨R, y, hy, q, hq⟩ : ∃ (R : CommRingCat.{0}) (y : Spec R ⟶ Y.left), IsOpenImmersion y ∧ p ∈ Set.range y` from `⟨_, Y.left.affineOpenCover.f (Y.left.affineOpenCover.idx p), inferInstance, Y.left.affineOpenCover.covers p⟩`. Take `⟨χ, hχ⟩` from `exists_coeff_notMem (hu.map (expand y).hom) q.asIdeal q.2.ne_top`. Use `set a := ((expand y).hom ρ).coeff χ with ha`. Set `g : R ⟶ CommRingCat.of (Localization.Away a)` to `CommRingCat.ofHom (algebraMap R (Localization.Away a))`. Use `⟨χ, _, Spec.map g ≫ y, inferInstance, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `PrimeSpectrum.localization_away_comap_range (Localization.Away a) a` as an intermediate fact. Choose the witnesses or unpack the hypotheses as in `⟨r, hr⟩ : q ∈ Set.range (PrimeSpectrum.comap (algebraMap R (Localization.Away a))) := by`. Rewrite using `[this]`. Conclude with `hχ`. Use `⟨r, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hq, ← hr]`. Conclude with `Scheme.Hom.comp_apply _ _ _`. Apply `(hρ.isMultiplicative _).eq_single` to reduce the goal to its premises. Rewrite using `[expand_map, AddMonoidAlgebra.coeff_mapRingHom]`. Conclude with `IsLocalization.Away.algebraMap_isUnit a`.
+-/
 lemma IsMulLeft.exists_isCharNear {ρ : Γ((splitTorus S X ⊗ Y).left, ⊤)} (hρ : IsMulLeft ρ)
     (hu : IsUnit ρ) (p : Y.left) : ∃ χ, IsCharNear ρ χ p := by
   obtain ⟨R, y, hy, q, hq⟩ : ∃ (R : CommRingCat.{0}) (y : Spec R ⟶ Y.left), IsOpenImmersion y ∧
@@ -392,6 +519,13 @@ end TorusUnit
 
 open TorusUnit in
 
+/- English proof (translation)
+Use `choose c hc using IsMulLeft.exists_isCharNear (ρ := ρ.val) hρ ρ.isUnit`. Establish `hlc : IsLocallyConstant c`. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `p`. Take `⟨R, y, hy, hp, he⟩` from `hc p`.
+
+Conclude with `⟨Set.range y, y.isOpenEmbedding.isOpen_range, hp, fun p' hp' => (hc p').unique ⟨R, y, hy, hp', he⟩⟩`. Take `⟨p₀⟩ : Nonempty Y.left` from `inferInstance`. Use `⟨c p₀, ext_of_expand fun p => ?_, fun χ hχ => ?_⟩` and prove the remaining obligations. Take `⟨R, y, hy, hp, he⟩` from `hc p`. Use `⟨R, y, hy, hp, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[he, expand_char, hlc.apply_eq_of_preconnectedSpace p p₀]`. Use `(hc p₀).residueField` as an intermediate fact. Rewrite `this` using `[hχ, expand_char]`. Conclude with `eq_of_single_one_eq this`.
+-/
 theorem existsUnique_character_of_mul (S : Scheme.{0}) (X : Type) [AddCommGroup X] (Y : Over S)
     [ConnectedSpace Y.left] (ρ : Γ((splitTorus S X ⊗ Y).left, ⊤)ˣ)
     (hρ : ∀ (Z : Over S) (t t' : Z ⟶ splitTorus S X) (y : Z ⟶ Y),

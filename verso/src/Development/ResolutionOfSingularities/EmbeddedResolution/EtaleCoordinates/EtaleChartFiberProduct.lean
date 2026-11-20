@@ -43,6 +43,9 @@ abbrev chartPullbackFst (c₁ c₂ : EtaleChart q V n) : chartPullback c₁ c₂
 abbrev chartPullbackSnd (c₁ c₂ : EtaleChart q V n) : chartPullback c₁ c₂ ⟶ P :=
   pullback.snd c₁.map c₂.map ≫ V.ι
 
+/- English proof (translation)
+Establish `: AlgebraicGeometry.Etale c₂.map` using `c₂.isEtale`. Use `infer_instance`.
+-/
 theorem etale_pullback_fst_map (c₁ c₂ : EtaleChart q V n) :
     AlgebraicGeometry.Etale (pullback.fst c₁.map c₂.map) := by
   have : AlgebraicGeometry.Etale c₂.map := c₂.isEtale
@@ -52,6 +55,9 @@ instance instEtalePullbackFstChart (c₁ c₂ : EtaleChart q V n) :
     AlgebraicGeometry.Etale (pullback.fst c₁.map c₂.map) :=
   etale_pullback_fst_map c₁ c₂
 
+/- English proof (translation)
+Establish `h1 : AlgebraicGeometry.Etale c₁.map` using `c₁.isEtale`. Establish `h2 : AlgebraicGeometry.Etale c₂.map` using `c₂.isEtale`. Conclude with `inferInstance`.
+-/
 theorem etale_pullback_snd_map (c₁ c₂ : EtaleChart q V n) :
     AlgebraicGeometry.Etale (pullback.snd c₁.map c₂.map) := by
   have h1 : AlgebraicGeometry.Etale c₁.map := c₁.isEtale
@@ -62,6 +68,9 @@ instance instEtalePullbackSndChart (c₁ c₂ : EtaleChart q V n) :
     AlgebraicGeometry.Etale (pullback.snd c₁.map c₂.map) :=
   etale_pullback_snd_map c₁ c₂
 
+/- English proof (translation)
+Use `hf` as an intermediate fact. Use `hg` as an intermediate fact. Use `infer_instance`.
+-/
 private theorem etale_comp {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C)
     (hf : AlgebraicGeometry.Etale f) (hg : AlgebraicGeometry.Etale g) :
     AlgebraicGeometry.Etale (f ≫ g) := by
@@ -69,6 +78,9 @@ private theorem etale_comp {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C)
   have := hg
   infer_instance
 
+/- English proof (translation)
+Establish `h₁ : AlgebraicGeometry.Etale (pullback.fst c₁.map c₂.map)` using `etale_pullback_fst_map c₁ c₂`. Establish `h₂ : AlgebraicGeometry.Etale V.ι` using `inferInstance`. Use `show AlgebraicGeometry.Etale (pullback.fst c₁.map c₂.map ≫ V.ι)`. Conclude with `etale_comp _ _ h₁ h₂`.
+-/
 theorem etale_chartPullbackFst (c₁ c₂ : EtaleChart q V n) :
     AlgebraicGeometry.Etale (chartPullbackFst c₁ c₂) := by
   have h₁ : AlgebraicGeometry.Etale (pullback.fst c₁.map c₂.map) :=
@@ -81,6 +93,9 @@ instance instEtaleChartPairFst (c₁ c₂ : EtaleChart q V n) :
     AlgebraicGeometry.Etale (chartPullbackFst c₁ c₂) :=
   etale_chartPullbackFst c₁ c₂
 
+/- English proof (translation)
+Establish `h₁ : AlgebraicGeometry.Etale (pullback.snd c₁.map c₂.map)` using `etale_pullback_snd_map c₁ c₂`. Establish `h₂ : AlgebraicGeometry.Etale V.ι` using `inferInstance`. Use `show AlgebraicGeometry.Etale (pullback.snd c₁.map c₂.map ≫ V.ι)`. Conclude with `etale_comp _ _ h₁ h₂`.
+-/
 theorem etale_chartPullbackSnd (c₁ c₂ : EtaleChart q V n) :
     AlgebraicGeometry.Etale (chartPullbackSnd c₁ c₂) := by
   have h₁ : AlgebraicGeometry.Etale (pullback.snd c₁.map c₂.map) :=
@@ -93,10 +108,16 @@ instance instEtaleChartPairSnd (c₁ c₂ : EtaleChart q V n) :
     AlgebraicGeometry.Etale (chartPullbackSnd c₁ c₂) :=
   etale_chartPullbackSnd c₁ c₂
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem appTop_comp_apply {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C)
     (x : C.presheaf.obj (op ⊤)) :
     (f ≫ g).appTop.hom x = f.appTop.hom (g.appTop.hom x) := rfl
 
+/- English proof (translation)
+Establish `h : (pullback.fst c₁.map c₂.map ≫ c₁.map).appTop.hom (affineSpaceCoord k n j) = (pullback.snd c₁.map c₂.map ≫ c₂.map).appTop.hom (affineSpaceCoord k n j)`. Rewrite using `[pullback.condition]`. Rewrite `h` using `[appTop_comp_apply, appTop_comp_apply]`. Conclude with `h`.
+-/
 theorem chartPullback_coordTop_eq (c₁ c₂ : EtaleChart q V n) (j : Fin n) :
     (pullback.fst c₁.map c₂.map).appTop.hom (c₁.coordTop j) =
       (pullback.snd c₁.map c₂.map).appTop.hom (c₂.coordTop j) := by
@@ -106,6 +127,9 @@ theorem chartPullback_coordTop_eq (c₁ c₂ : EtaleChart q V n) (j : Fin n) :
   rw [appTop_comp_apply, appTop_comp_apply] at h
   exact h
 
+/- English proof (translation)
+Establish `h : (pullback.fst c₁.map c₂.map ≫ c₁.map) ≫ affineSpaceFinToSpec k n = (pullback.snd c₁.map c₂.map ≫ c₂.map) ≫ affineSpaceFinToSpec k n`. Rewrite using `[pullback.condition]`. Rewrite `h` using `[Category.assoc, Category.assoc]`. Rewrite `h` using `[c₁.comp_struct, c₂.comp_struct]`. Simplify `h` using `only [Category.assoc]`.
+-/
 theorem chartPullbackFst_comp_eq_chartPullbackSnd_comp (c₁ c₂ : EtaleChart q V n) :
     chartPullbackFst c₁ c₂ ≫ q = chartPullbackSnd c₁ c₂ ≫ q := by
   have h : (pullback.fst c₁.map c₂.map ≫ c₁.map) ≫ affineSpaceFinToSpec k n
@@ -115,6 +139,9 @@ theorem chartPullbackFst_comp_eq_chartPullbackSnd_comp (c₁ c₂ : EtaleChart q
   rw [c₁.comp_struct, c₂.comp_struct] at h
   simpa only [Category.assoc] using h
 
+/- English proof (translation)
+Rewrite using `[c₁.coordIdeal_eq_comap_coordSubspaceIdeal S, c₂.coordIdeal_eq_comap_coordSubspaceIdeal S, ← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, pullback.condition]`.
+-/
 theorem chartPullback_comap_coordIdeal_eq (c₁ c₂ : EtaleChart q V n) (S : Finset (Fin n)) :
     (c₁.coordIdeal S).comap (pullback.fst c₁.map c₂.map) =
       (c₂.coordIdeal S).comap (pullback.snd c₁.map c₂.map) := by
@@ -131,24 +158,36 @@ def chartPullbackLift (c₁ c₂ : EtaleChart q V n) (p : ↥P) (hp : p ∈ V)
   pullback.lift (V.toScheme.fromSpecResidueField (pointOfMem V p hp))
     (V.toScheme.fromSpecResidueField (pointOfMem V p hp)) h
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 @[simp] theorem chartPullbackLift_fst (c₁ c₂ : EtaleChart q V n) (p : ↥P) (hp : p ∈ V)
     (h : ChartsAgreeAt c₁ c₂ p hp) :
     chartPullbackLift c₁ c₂ p hp h ≫ pullback.fst c₁.map c₂.map =
       V.toScheme.fromSpecResidueField (pointOfMem V p hp) :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 @[simp] theorem chartPullbackLift_snd (c₁ c₂ : EtaleChart q V n) (p : ↥P) (hp : p ∈ V)
     (h : ChartsAgreeAt c₁ c₂ p hp) :
     chartPullbackLift c₁ c₂ p hp h ≫ pullback.snd c₁.map c₂.map =
       V.toScheme.fromSpecResidueField (pointOfMem V p hp) :=
   pullback.lift_snd _ _ _
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, chartPullbackLift_fst]`.
+-/
 @[simp] theorem chartPullbackLift_fst_assoc {W : Scheme.{u}} (c₁ c₂ : EtaleChart q V n) (p : ↥P)
     (hp : p ∈ V) (h : ChartsAgreeAt c₁ c₂ p hp) (g : V.toScheme ⟶ W) :
     chartPullbackLift c₁ c₂ p hp h ≫ pullback.fst c₁.map c₂.map ≫ g =
       V.toScheme.fromSpecResidueField (pointOfMem V p hp) ≫ g := by
   rw [← Category.assoc, chartPullbackLift_fst]
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, chartPullbackLift_snd]`.
+-/
 @[simp] theorem chartPullbackLift_snd_assoc {W : Scheme.{u}} (c₁ c₂ : EtaleChart q V n) (p : ↥P)
     (hp : p ∈ V) (h : ChartsAgreeAt c₁ c₂ p hp) (g : V.toScheme ⟶ W) :
     chartPullbackLift c₁ c₂ p hp h ≫ pullback.snd c₁.map c₂.map ≫ g =
@@ -159,6 +198,11 @@ def chartPullbackPoint (c₁ c₂ : EtaleChart q V n) (p : ↥P) (hp : p ∈ V)
     (h : ChartsAgreeAt c₁ c₂ p hp) : ↥(chartPullback c₁ c₂) :=
   (chartPullbackLift c₁ c₂ p hp h).base (specResidueFieldPoint (pointOfMem V p hp))
 
+/- English proof (translation)
+Establish `hfs : (V.toScheme.fromSpecResidueField (pointOfMem V p hp)).base (specResidueFieldPoint (pointOfMem V p hp)) = pointOfMem V p hp`. Simplify using the standard rewrite rules. Establish `e : (chartPullbackLift c₁ c₂ p hp h ≫ pullback.fst c₁.map c₂.map).base (specResidueFieldPoint (pointOfMem V p hp)) = pointOfMem V p hp`. Rewrite using `[chartPullbackLift_fst]`. Conclude with `hfs`.
+
+Establish `key : (pullback.fst c₁.map c₂.map).base (chartPullbackPoint c₁ c₂ p hp h) = pointOfMem V p hp` using `e`. Establish `key2 : V.ι.base ((pullback.fst c₁.map c₂.map).base (chartPullbackPoint c₁ c₂ p hp h)) = V.ι.base (pointOfMem V p hp)` using `by rw [key]`. Conclude with `key2`.
+-/
 theorem chartPullbackFst_base_chartPullbackPoint (c₁ c₂ : EtaleChart q V n) (p : ↥P) (hp : p ∈ V)
     (h : ChartsAgreeAt c₁ c₂ p hp) :
     (chartPullbackFst c₁ c₂).base (chartPullbackPoint c₁ c₂ p hp h) = p := by
@@ -175,9 +219,17 @@ theorem chartPullbackFst_base_chartPullbackPoint (c₁ c₂ : EtaleChart q V n) 
       = V.ι.base (pointOfMem V p hp) := by rw [key]
   exact key2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem comp_base_apply {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C)
     (x : ↥A) : (f ≫ g).base x = g.base (f.base x) := rfl
 
+/- English proof (translation)
+Establish `key` using `chartPullbackLift_snd_assoc c₁ c₂ p hp h V.ι`. Establish `e1 : (V.toScheme.fromSpecResidueField (pointOfMem V p hp)).base (specResidueFieldPoint (pointOfMem V p hp)) = pointOfMem V p hp`. Simplify using the standard rewrite rules. Establish `e2 : V.ι.base (pointOfMem V p hp) = p` using `rfl`. Establish `hA` using `comp_base_apply (chartPullbackLift c₁ c₂ p hp h) (pullback.snd c₁.map c₂.map ≫ V.ι) (specResidueFieldPoint (pointOfMem V p hp))`.
+
+Establish `hB` using `comp_base_apply (V.toScheme.fromSpecResidueField (pointOfMem V p hp)) V.ι (specResidueFieldPoint (pointOfMem V p hp))`. Establish `h3 : (chartPullbackLift c₁ c₂ p hp h ≫ pullback.snd c₁.map c₂.map ≫ V.ι).base (specResidueFieldPoint (pointOfMem V p hp)) = (V.toScheme.fromSpecResidueField (pointOfMem V p hp) ≫ V.ι).base (specResidueFieldPoint (pointOfMem V p hp))`. Rewrite using `[key]`. Conclude with `hA.symm.trans (h3.trans (hB.trans ((congrArg (fun z => V.ι.base z) e1).trans e2)))`.
+-/
 theorem chartPullbackSnd_base_chartPullbackPoint (c₁ c₂ : EtaleChart q V n) (p : ↥P) (hp : p ∈ V)
     (h : ChartsAgreeAt c₁ c₂ p hp) :
     (chartPullbackSnd c₁ c₂).base (chartPullbackPoint c₁ c₂ p hp h) = p := by
@@ -198,6 +250,9 @@ theorem chartPullbackSnd_base_chartPullbackPoint (c₁ c₂ : EtaleChart q V n) 
     rw [key]
   exact hA.symm.trans (h3.trans (hB.trans ((congrArg (fun z => V.ι.base z) e1).trans e2)))
 
+/- English proof (translation)
+Apply `AffineSpace.hom_ext` to reduce the goal to its premises. Conclude with `h₁`. Conclude with `h₂`.
+-/
 private theorem affineSpaceFin_hom_ext {K : Type u} [Field K] {m : ℕ} {Z : Scheme.{u}}
     (f g : Z ⟶ affineSpaceFin K m)
     (h₁ : f ≫ affineSpaceFinToSpec K m = g ≫ affineSpaceFinToSpec K m)
@@ -209,10 +264,20 @@ private theorem affineSpaceFin_hom_ext {K : Type u} [Field K] {m : ℕ} {Z : Sch
   · exact h₁
   · exact h₂
 
+/- English proof (translation)
+The claim follows from `(IsLocalRing.mem_maximalIdeal a).mp ha`.
+-/
 private theorem not_isUnit_of_mem_maximalIdeal {R : Type u} [CommRing R] [IsLocalRing R] {a : R}
     (ha : a ∈ IsLocalRing.maximalIdeal R) : ¬ IsUnit a :=
   (IsLocalRing.mem_maximalIdeal a).mp ha
 
+/- English proof (translation)
+Establish `h2 : (Scheme.ΓSpecIso (X.residueField x)).inv.hom ((Scheme.ΓSpecIso (X.residueField x)).hom.hom t) = t`. Establish `e1` using `congrArg CommRingCat.Hom.hom (Iso.hom_inv_id (Scheme.ΓSpecIso (X.residueField x)))`. Rewrite `e1` using `[CommRingCat.hom_comp, CommRingCat.hom_id]`. Conclude with `DFunLike.congr_fun e1 t`. Assume the negation of the conclusion as `hne`.
+
+Establish `hne0 : (Scheme.ΓSpecIso (X.residueField x)).hom.hom t ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[← h2, h0]`. Conclude with `map_zero _`.
+
+Establish `hu : IsUnit ((Scheme.ΓSpecIso (X.residueField x)).hom.hom t)` using `isUnit_iff_ne_zero.mpr hne0`. Establish `hu2 : IsUnit ((Scheme.ΓSpecIso (X.residueField x)).inv.hom ((Scheme.ΓSpecIso (X.residueField x)).hom.hom t))` using `hu.map (Scheme.ΓSpecIso (X.residueField x)).inv.hom`. Rewrite `hu2` using `[h2]`. Conclude with `ht hu2`.
+-/
 private theorem specResidueField_eq_zero_of_not_isUnit {X : Scheme.{u}} (x : ↥X)
     (t : Γ(Spec (X.residueField x), ⊤)) (ht : ¬ IsUnit t) : t = 0 := by
   have h2 : (Scheme.ΓSpecIso (X.residueField x)).inv.hom
@@ -235,6 +300,15 @@ private theorem specResidueField_eq_zero_of_not_isUnit {X : Scheme.{u}} (x : ↥
   rw [h2] at hu2
   exact ht hu2
 
+/- English proof (translation)
+Establish `hxb : x ∉ X.basicOpen s` using `fun hmem => not_isUnit_of_mem_maximalIdeal hs ((X.mem_basicOpen_top s x).1 hmem)`. Establish `hy : (X.fromSpecResidueField x).base (specResidueFieldPoint x) = x` using `by simp`. Establish `hynot : specResidueFieldPoint x ∉ (Spec (X.residueField x)).basicOpen ((X.fromSpecResidueField x).appTop.hom s)`. Introduce `hmem`. Establish `h1 : specResidueFieldPoint x ∈ (X.fromSpecResidueField x) ⁻¹ᵁ (X.basicOpen s)`.
+
+Rewrite using `[Scheme.preimage_basicOpen]`. Conclude with `hmem`. Establish `h2 : (X.fromSpecResidueField x).base (specResidueFieldPoint x) ∈ X.basicOpen s` using `h1`. Rewrite `h2` using `[hy]`. Conclude with `hxb h2`.
+
+Establish `hnu : ¬ IsUnit ((X.fromSpecResidueField x).appTop.hom s)`. Introduce `hu`. Apply `hynot` to reduce the goal to its premises. Rewrite using `[Scheme.mem_basicOpen_top]`. Conclude with `hu.map ((Spec (X.residueField x)).presheaf.germ ⊤ (specResidueFieldPoint x) (by trivial)).hom`.
+
+Conclude with `specResidueField_eq_zero_of_not_isUnit x _ hnu`.
+-/
 private theorem fromSpecResidueField_appTop_eq_zero {X : Scheme.{u}} (x : ↥X)
     (hx : x ∈ (⊤ : X.Opens)) (s : Γ(X, ⊤))
     (hs : (X.presheaf.germ ⊤ x hx).hom s ∈ IsLocalRing.maximalIdeal (X.presheaf.stalk x)) :
@@ -259,6 +333,11 @@ private theorem fromSpecResidueField_appTop_eq_zero {X : Scheme.{u}} (x : ↥X)
       ((Spec (X.residueField x)).presheaf.germ ⊤ (specResidueFieldPoint x) (by trivial)).hom
   exact specResidueField_eq_zero_of_not_isUnit x _ hnu
 
+/- English proof (translation)
+Establish `hover : (V.toScheme.fromSpecResidueField (pointOfMem V p hp) ≫ c₁.map) ≫ affineSpaceFinToSpec k n = (V.toScheme.fromSpecResidueField (pointOfMem V p hp) ≫ c₂.map) ≫ affineSpaceFinToSpec k n`. Rewrite using `[Category.assoc, Category.assoc, c₁.comp_struct, c₂.comp_struct]`. Use `affineSpaceFin_hom_ext _ _ hover ?_` and prove the remaining obligations. Introduce and unpack `⟨j⟩`. Establish `h0` using `fromSpecResidueField_appTop_eq_zero (pointOfMem V p hp) (by trivial) (c₁.coordTop j - c₂.coordTop j) (h j)`.
+
+Rewrite `h0` using `[map_sub, sub_eq_zero]`. Rewrite using `[appTop_comp_apply, appTop_comp_apply]`. Conclude with `h0`.
+-/
 theorem chartsAgreeAt_of_germ_sub_mem_maximalIdeal (c₁ c₂ : EtaleChart q V n) (p : ↥P)
     (hp : p ∈ V)
     (h : ∀ j : Fin n,
@@ -300,6 +379,9 @@ def chartPullbackSndStalkMap (c₁ c₂ : EtaleChart q V n) (p : ↥P) (hp : p �
       (chartPullbackSnd_base_chartPullbackPoint c₁ c₂ p hp h).symm) ≫
     (chartPullbackSnd c₁ c₂).stalkMap (chartPullbackPoint c₁ c₂ p hp h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chartPullbackFstStalkMap_eq (c₁ c₂ : EtaleChart q V n) (p : ↥P) (hp : p ∈ V)
     (h : ChartsAgreeAt c₁ c₂ p hp) :
     chartPullbackFstStalkMap c₁ c₂ p hp h =
@@ -307,6 +389,9 @@ theorem chartPullbackFstStalkMap_eq (c₁ c₂ : EtaleChart q V n) (p : ↥P) (h
           (chartPullbackFst_base_chartPullbackPoint c₁ c₂ p hp h).symm) ≫
         (chartPullbackFst c₁ c₂).stalkMap (chartPullbackPoint c₁ c₂ p hp h) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chartPullbackSndStalkMap_eq (c₁ c₂ : EtaleChart q V n) (p : ↥P) (hp : p ∈ V)
     (h : ChartsAgreeAt c₁ c₂ p hp) :
     chartPullbackSndStalkMap c₁ c₂ p hp h =

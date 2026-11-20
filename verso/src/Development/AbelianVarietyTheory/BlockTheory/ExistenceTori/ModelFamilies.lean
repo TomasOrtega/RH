@@ -45,6 +45,13 @@ structure ModelBase (M : ModelsOf F r) : Prop where
   dom_bor : ∀ k, ∀ x ∈ (M.X k).dom, ∀ b ∈ Bor (M.X k).Ψ r, rmul x b ∈ (M.X k).dom
   dom_gam : ∀ k, ∀ x ∈ (M.X k).dom, ∀ γ ∈ (M.X k).Γ, lact γ x ∈ (M.X k).dom
 
+/- English proof (translation)
+Establish `he : ∀ ρ : E →+* ℂ, Data.emb ρ (v + w) = Data.emb ρ v + Data.emb ρ w` using `fun ρ => by`. Use function extensionality and compare the values at `a`. Simplify using `[Data.emb]`. Unfold `perFr`. Use `split_ifs`.
+
+Rewrite using `[he, Matrix.mulVec_add]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite using `[he]`. Simplify using `[hermC, mul_add, Finset.sum_add_distrib]`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem perFr_add (X : Data E r) (x : Frame X.Ψ r) (v w : Fin r → E) (τ : E →+* ℂ) (i : ℕ) :
     perFr X x (v + w) τ i = perFr X x v τ i + perFr X x w τ i := by
   have he : ∀ ρ : E →+* ℂ, Data.emb ρ (v + w) = Data.emb ρ v + Data.emb ρ w := fun ρ => by
@@ -63,11 +70,19 @@ def pmOf (M : ModelsOf F r) (k : Fin F.n) (x : Frame (M.X k).Ψ r) : (F.Di k).La
     have h : M.vec k (a + b) = M.vec k a + M.vec k b := by simp [ModelsOf.vec]
     rw [h, perFr_add]; rfl)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pmOf_apply (M : ModelsOf F r) (k : Fin F.n) (x : Frame (M.X k).Ψ r) (a : (F.Di k).La) (j : Fin g) :
     pmOf M k x a j = perFr (M.X k) x (M.φ k a : Fin r → E) (relab c σ (e j).1) (e j).2 := rfl
 
 def XiSign (M : ModelsOf F r) : Prop := ∀ k, ∀ τ ∈ (M.X k).Ψ, (τ (M.X k).ξ0).im < 0
 
+/- English proof (translation)
+Introduce `k τ hτ`. Establish `h1` using `(M.X k).κ0_sign ⟨τ, hτ⟩`. Rewrite `h1` using `[h k]`. Establish `h2 : τ 2 = 2` using `map_ofNat τ 2`. Simplify using `[h2] at h1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem xiSign_of_kappa (M : ModelsOf F r) (h : ∀ k, (M.X k).κ0 = 2 * (M.X k).ξ0) : XiSign M := by
   intro k τ hτ
   have h1 := (M.X k).κ0_sign ⟨τ, hτ⟩

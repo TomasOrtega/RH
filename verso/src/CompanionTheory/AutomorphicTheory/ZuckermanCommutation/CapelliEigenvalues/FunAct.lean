@@ -6,6 +6,9 @@ noncomputable section
 
 namespace CompanionTheory.CapEig
 
+/- English proof (translation)
+Establish `hT : ∀ v a b, φ (Tm E v a b) = Tm (fun a b => φ (E a b)) v a b`. Introduce `v a b`. Apply the tactic sequence `by_cases hab : a = b <;> simp [Tm, hab]`. Simplify using `only [qdet, qminor, map_sum, map_mul, map_intCast, map_list_prod, List.map_ofFn, Function.comp_def, hT]`.
+-/
 theorem algHom_qdet {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] (φ : A →ₐ[ℂ] B) {n : ℕ}
     (E : Fin n → Fin n → A) (u : ℂ) : φ (qdet E u) = qdet (fun a b => φ (E a b)) u := by
   have hT : ∀ v a b, φ (Tm E v a b) = Tm (fun a b => φ (E a b)) v a b := by
@@ -13,6 +16,11 @@ theorem algHom_qdet {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ 
     by_cases hab : a = b <;> simp [Tm, hab]
   simp only [qdet, qminor, map_sum, map_mul, map_intCast, map_list_prod, List.map_ofFn, Function.comp_def, hT]
 
+/- English proof (translation)
+Establish `e : FreeAlgebra.lift ℂ f = (MonoidAlgebra.lift ℂ A (FreeMonoid X) (FreeMonoid.lift f)).comp (FreeAlgebra.equivMonoidAlgebraFreeMonoid (R` using `ℂ) (X := X)).toAlgHom := by`. Use extensionality with `x`. Simplify using `[FreeAlgebra.equivMonoidAlgebraFreeMonoid]`. Rewrite using `[e]`. Use `show MonoidAlgebra.lift ℂ A (FreeMonoid X) (FreeMonoid.lift f) (FreeAlgebra.equivMonoidAlgebraFreeMonoid p) = _`.
+
+Rewrite using `[MonoidAlgebra.lift_apply]`. Simplify using `only [FreeMonoid.lift_apply]`.
+-/
 theorem lift_eq_sum {X A : Type} [Ring A] [Algebra ℂ A] (f : X → A) (p : FreeAlgebra ℂ X) :
     FreeAlgebra.lift ℂ f p = (FreeAlgebra.equivMonoidAlgebraFreeMonoid p).coeff.sum
       fun w c => c • (w.toList.map f).prod := by
@@ -30,9 +38,15 @@ section vec
 variable {n : ℕ} {ε : Fin n → Bool} {Hs : Type} [NormedAddCommGroup Hs] [InnerProductSpace ℂ Hs]
   {σ : Matrix (Fin n) (Fin n) ℂ → (Hs →L[ℂ] Hs)}
 
+/- English proof (translation)
+Simplify using `[inUJ]`.
+-/
 theorem inUJ_one : inUJ ε (1 : Matrix (Fin n) (Fin n) ℂ) := by
   simp [inUJ]
 
+/- English proof (translation)
+Establish `e0 : PI.PhMeasCore.dsig σ X v = RdV X (fun x => σ x v) 1`. Unfold `PI.PhMeasCore.dsig RdV`. Simplify using `only [Matrix.one_mul]`. Rewrite using `[e0, (rdVPair n ε Hs Hs (σ g) _ X 1 hv hX inUJ_one).2, io_rd_congr (f' := fun x => σ (g * x) v) (fun x hx => by rw [hm g x hg hx]; rfl) hX inUJ_one, rdLeftV n Hs (fun x => σ x v) X g 1, Matrix.mul_one]`.
+-/
 theorem rd_vec (hm : ∀ a b, inUJ ε a → inUJ ε b → σ (a * b) = (σ a).comp (σ b)) {v : Hs}
     (hv : SmoothOnGV ε fun x => σ x v) {X g : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) (hg : inUJ ε g) :
     RdV X (fun x => σ x v) g = σ g (PI.PhMeasCore.dsig σ X v) := by
@@ -43,6 +57,9 @@ theorem rd_vec (hm : ∀ a b, inUJ ε a → inUJ ε b → σ (a * b) = (σ a).co
     io_rd_congr (f' := fun x => σ (g * x) v) (fun x hx => by rw [hm g x hg hx]; rfl) hX inUJ_one,
     rdLeftV n Hs (fun x => σ x v) X g 1, Matrix.mul_one]
 
+/- English proof (translation)
+Take `⟨h1, h2, -, -⟩` from `cpartMem n ε (Matrix.single a b 1)`. Unfold `EabV EcV dsigC`. Rewrite using `[rd_vec hm hv h1 hg, rd_vec hm hv h2 hg, map_add, map_smul]`. Simplify using `only [cpart1, cpart2, thetaJ, unitM, sub_neg_eq_add, ← sub_eq_add_neg]`.
+-/
 theorem eab_vec (hm : ∀ a b, inUJ ε a → inUJ ε b → σ (a * b) = (σ a).comp (σ b)) {v : Hs}
     (hv : SmoothOnGV ε fun x => σ x v) (a b : Fin n) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     EabV ε a b (fun x => σ x v) g = σ g (dsigC ε σ (unitM (a, b)) v) := by
@@ -51,6 +68,9 @@ theorem eab_vec (hm : ∀ a b, inUJ ε a → inUJ ε b → σ (a * b) = (σ a).c
   rw [rd_vec hm hv h1 hg, rd_vec hm hv h2 hg, map_add, map_smul]
   simp only [cpart1, cpart2, thetaJ, unitM, sub_neg_eq_add, ← sub_eq_add_neg]
 
+/- English proof (translation)
+The claim follows from `| [] => by simpa [dsigCW] using hx | ab :: w => by have ih := word_rep hm hx w have hs : SmoothOnGV ε fun y => σ y (dsigCW ε σ (w.map unitM) v) := io_smooth_congr (fun g hg => (io_rep_ext _ g hg).trans (ih g hg).symm) (io_mem_smooth _) intro g hg simp only [List.map_cons, List.pr …`.
+-/
 theorem word_rep (hm : ∀ a b, inUJ ε a → inUJ ε b → σ (a * b) = (σ a).comp (σ b)) {v : Hs} {x : ioS ε Hs}
     (hx : IORep (fun y => σ y v) x.1) : ∀ w : List (Fin n × Fin n),
     IORep (fun y => σ y (dsigCW ε σ (w.map unitM) v)) ((w.map fun ab => ioE ε Hs ab.1 ab.2).prod x).1
@@ -63,6 +83,11 @@ theorem word_rep (hm : ∀ a b, inUJ ε a → inUJ ε b → σ (a * b) = (σ a).
     simp only [List.map_cons, List.prod_cons, Module.End.mul_apply, dsigCW]
     rw [← ioE_rep ih ab.1 ab.2 g hg, eab_vec hm hs ab.1 ab.2 hg]
 
+/- English proof (translation)
+Introduce `g hg`. Rewrite using `[lift_eq_sum]`. Unfold `actU Finsupp.sum`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← word_rep hm hx w.toList g hg]`.
+-/
 theorem actU_rep (hm : ∀ a b, inUJ ε a → inUJ ε b → σ (a * b) = (σ a).comp (σ b)) {v : Hs} {x : ioS ε Hs}
     (hx : IORep (fun y => σ y v) x.1) (p : FreeAlgebra ℂ (Fin n × Fin n)) :
     IORep (fun y => σ y (actU ε σ p v)) (FreeAlgebra.lift ℂ (fun ab : Fin n × Fin n => ioE ε Hs ab.1 ab.2) p x).1 := by
@@ -74,6 +99,11 @@ theorem actU_rep (hm : ∀ a b, inUJ ε a → inUJ ε b → σ (a * b) = (σ a).
   refine Finset.sum_congr rfl fun w _ => ?_
   rw [← word_rep hm hx w.toList g hg]
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `io_rep_mk hv`. Establish `h1` using `io_qminor_rep id id u hx g hg`. Establish `h2` using `actU_rep hm hx (qdet (Egl n) u) g hg`. Rewrite `h2` using `[algHom_qdet]`. Simplify using `only [Egl, FreeAlgebra.lift_ι_apply] at h2`.
+
+Unfold `capelli qdetOp`. Rewrite using `[h1]`. Conclude with `h2.symm`.
+-/
 theorem capelli_vec (hm : ∀ a b, inUJ ε a → inUJ ε b → σ (a * b) = (σ a).comp (σ b)) {v : Hs}
     (hv : SmoothOnGV ε fun x => σ x v) (u : ℂ) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     capelli ε u (fun x => σ x v) g = σ g (actU ε σ (qdet (Egl n) u) v) := by

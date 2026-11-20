@@ -7,12 +7,26 @@ attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDomain UpperTheory.V.Pr.IsCD.toI
 
 namespace UpperTheory.V.Th.Db
 
+/- English proof (translation)
+Use `haveI := IsAlgClosure.isAlgClosed ℚ (K := Ω)`. Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Conclude with `⟨inferInstance, Algebra.IsAlgebraic.tower_top (K := ℚ) L⟩`.
+-/
 theorem algClo (L Ω : Type) [Field L] [NumberField L] [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [Algebra L Ω] :
     IsAlgClosure L Ω := by
   haveI := IsAlgClosure.isAlgClosed ℚ (K := Ω)
   haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic
   exact ⟨inferInstance, Algebra.IsAlgebraic.tower_top (K := ℚ) L⟩
 
+/- English proof (translation)
+Set `g` to `IsScalarTower.toAlgHom ℚ L Ω`. Set `f` to `IsScalarTower.toAlgHom ℚ K Ω`. Establish `hmem : ∀ x : K, f x ∈ g.range`. Introduce `x`. Establish `hfix : algebraMap K Ω x ∈ IntermediateField.fixedField g.fieldRange.fixingSubgroup`.
+
+Rewrite using `[IntermediateField.mem_fixedField_iff]`. Introduce `σ hσ`. Establish `hL : σ ∈ galOf ℚ L Ω` using `by show ∀ y : L, σ (algebraMap L Ω y) = algebraMap L Ω y`. Introduce `y`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ (g y) ⟨y, rfl⟩`.
+
+Conclude with `(show ∀ z : K, σ (algebraMap K Ω z) = algebraMap K Ω z from h hL) x`. Rewrite `hfix` using `[InfiniteGalois.fixedField_fixingSubgroup]`. Take `⟨y, hy⟩` from `hfix`. Conclude with `⟨y, hy⟩`. Set `e` to `AlgEquiv.ofInjectiveField g`.
+
+Set `φ : K →+* L` to `e.symm.toRingHom.comp (f.codRestrict g.range hmem).toRingHom`. Establish `key : ∀ x, algebraMap L Ω (φ x) = algebraMap K Ω x`. Introduce `x`. Conclude with `congrArg Subtype.val (e.apply_symm_apply ⟨f x, hmem x⟩)`. Use `letI : Algebra K L := φ.toAlgebra`.
+
+Conclude with `⟨this, IsScalarTower.of_algebraMap_eq fun x => (key x).symm⟩`.
+-/
 theorem algKL (K L Ω : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω]
     [Algebra K Ω] [Algebra L Ω] (h : galOf ℚ L Ω ≤ galOf ℚ K Ω) : ∃ _ : Algebra K L, IsScalarTower K L Ω := by
   let g := IsScalarTower.toAlgHom ℚ L Ω
@@ -38,6 +52,9 @@ theorem algKL (K L Ω : Type) [Field K] [NumberField K] [Field L] [NumberField L
   letI : Algebra K L := φ.toAlgebra
   exact ⟨this, IsScalarTower.of_algebraMap_eq fun x => (key x).symm⟩
 
+/- English proof (translation)
+Use `haveI : IsGalois ℚ L := h.toIsGalois`. Use `⟨IsGalois.tower_top_of_isGalois ℚ K L, ?_⟩` and prove the remaining obligations. Use `haveI : Group.IsSolvable (L ≃ₐ[ℚ] L) := isSolvable_of_comm fun a b => h.toIsMulCommutative.is_comm.comm a b`. Set `f : (L ≃ₐ[K] L) →* (L ≃ₐ[ℚ] L)` to `{ toFun := fun σ => σ.restrictScalars ℚ map_one' := rfl map_mul' := fun _ _ => rfl }`. Conclude with `solvable_of_solvable_injective (f := f) fun a b hab => AlgEquiv.ext fun x => DFunLike.congr_fun hab x`.
+-/
 theorem galKL (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] (h : IsAbelianGalois ℚ L) :
     IsGalois K L ∧ IsSolvable (L ≃ₐ[K] L) := by
   haveI : IsGalois ℚ L := h.toIsGalois
@@ -51,6 +68,9 @@ theorem galKL (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [
   exact solvable_of_solvable_injective (f := f) fun a b hab =>
     AlgEquiv.ext fun x => DFunLike.congr_fun hab x
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `h`. Use extensionality with `x`. Apply `j.injective` to reduce the goal to its premises. Use `show j (σ (σ x)) = j x`. Rewrite using `[hj, hj, Complex.conj_conj]`.
+-/
 theorem cc_sq {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] {σ : G F Ω}
     (h : ∃ j : Ω →+* ℂ, ∀ x, j (σ x) = starRingEnd ℂ (j x)) : σ * σ = 1 := by
   obtain ⟨j, hj⟩ := h
@@ -59,10 +79,16 @@ theorem cc_sq {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] {σ : G F Ω}
   show j (σ (σ x)) = j x
   rw [hj, hj, Complex.conj_conj]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galEmb_comp (K L Ω : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Field Ω] [CharZero Ω]
     [Algebra K Ω] [Algebra L Ω] [Algebra K L] [IsScalarTower K L Ω] (s : G L Ω) :
     galEmb ℚ K Ω (galEmb K L Ω s) = galEmb ℚ L Ω s := rfl
 
+/- English proof (translation)
+Use `haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩`. Use `⟨top_ne_bot, fun _ _ _ => trivial, fun W _ hW => ha W fun g hg v hv => ?_⟩` and prove the remaining obligations. Take `⟨s, rfl⟩` from `hφ hg`. Rewrite using `[← hr]`. Conclude with `hW s v hv`.
+-/
 theorem irr_of_matIrr {Γ Γ' k : Type} [Group Γ] [Group Γ'] [Field k] {n : ℕ} (hn : 1 ≤ n) (U : Subgroup Γ)
     (a : Γ → Matrix (Fin n) (Fin n) k) (ha : U3.MatIrr U a) (φ : Γ' →* Γ) (hφ : U ≤ φ.range) (r : Γ' →* GL (Fin n) k)
     (hr : ∀ s, (r s).val = a (φ s)) : Af.IsIrr r := by
@@ -72,6 +98,9 @@ theorem irr_of_matIrr {Γ Γ' k : Type} [Group Γ] [Group Γ'] [Field k] {n : �
   rw [← hr]
   exact hW s v hv
 
+/- English proof (translation)
+Use `haveI := c.dvr`. Use `haveI : FaithfulSMul c.O A := (faithfulSMul_iff_algebraMap_injective c.O A).2 (fun x y hxy => Subtype.ext (congrArg (fun z : A => (z : PadicAlgCl l)) hxy))`. Use `infer_instance`.
+-/
 theorem locHom {l : ℕ} [Fact l.Prime] (c : Coef l) (A : Subalgebra c.O (PadicAlgCl l)) [IsDiscreteValuationRing A]
     [Module.Finite c.O A] : IsLocalHom (algebraMap c.O A) := by
   haveI := c.dvr
@@ -79,6 +108,9 @@ theorem locHom {l : ℕ} [Fact l.Prime] (c : Coef l) (A : Subalgebra c.O (PadicA
     (fun x y hxy => Subtype.ext (congrArg (fun z : A => (z : PadicAlgCl l)) hxy))
   infer_instance
 
+/- English proof (translation)
+The claim follows from `k.gal ▸ inf_le_right`.
+-/
 theorem galL_le {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O]
     {η : G ℚ Ω →* ℤˣ} {Ψ : G ℚ Ω →* Oˣ} {σ g₁ : G ℚ Ω} {B : ValuationSubring Ω} {M : ℕ} {L : Type} [Field L] [NumberField L]
     [Algebra L Ω] {Φ : Fr.Frame l (ResidueField O)} (k : Pr.GalLink η Ψ σ g₁ B M L Φ) : galOf ℚ L Ω ≤ η.ker :=

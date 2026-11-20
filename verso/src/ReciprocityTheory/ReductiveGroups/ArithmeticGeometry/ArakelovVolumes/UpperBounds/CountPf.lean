@@ -4,6 +4,25 @@ namespace ReciprocityTheory.ChartRestriction.G.AR.Up
 
 namespace CountPf
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `hTr : (0 : ℝ) < T` using `by exact_mod_cast hT`.
+
+Establish `hA : ((T + (k + 1)).choose (k + 1) : ℝ) * (k + 1) = (T + k + 1) * ((T + k).choose k : ℝ)`. Establish `h` using `Nat.add_one_mul_choose_eq (T + k) k`. Rewrite using `[show T + (k + 1) = T + k + 1 by ring]`. Establish `h' : ((T + k + 1) * (T + k).choose k : ℕ) = ((T + k + 1).choose (k + 1) * (k + 1) : ℕ)` using `h`. Use `congrArg (fun t : ℕ => (t : ℝ)) h'` as an intermediate fact.
+
+Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : ((T + c + (k + 1)).choose (k + 1) : ℝ) * (k + 1) = (T + c + k + 1) * ((T + c + k).choose k : ℝ)`. Establish `h` using `Nat.add_one_mul_choose_eq (T + c + k) k`. Rewrite using `[show T + c + (k + 1) = T + c + k + 1 by ring]`.
+
+Establish `h' : ((T + c + k + 1) * (T + c + k).choose k : ℕ) = ((T + c + k + 1).choose (k + 1) * (k + 1) : ℕ)` using `h`. Use `congrArg (fun t : ℕ => (t : ℝ)) h'` as an intermediate fact. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk1 : (0 : ℝ) < k + 1` using `by positivity`.
+
+Establish `hBn : (0 : ℝ) ≤ ((T + c + k).choose k : ℝ)` using `Nat.cast_nonneg _`. Establish `hAn : (0 : ℝ) ≤ ((T + k).choose k : ℝ)` using `Nat.cast_nonneg _`. Establish `hc0 : (0 : ℝ) ≤ c` using `Nat.cast_nonneg _`. Use `push_cast`. Rewrite using `[← mul_le_mul_iff_of_pos_right hk1, mul_assoc, hB, hA]`.
+
+Distinguish the cases in `hs : 1 - ((k : ℝ) + 1) * c / T ≤ 0`. Establish `: (1 - ((k : ℝ) + 1) * c / T) * ((T + c + k + 1) * ((T + c + k).choose k : ℝ)) ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg hs (by positivity)`. Establish `: (0 : ℝ) ≤ (T + k + 1) * ((T + k).choose k : ℝ)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Use `push_neg at hs set u := 1 - (k : ℝ) * c / T with hu`.
+
+Establish `hu1 : u ≤ 1`. Establish `: 0 ≤ (k : ℝ) * c / T` using `by positivity`. Rewrite using `[hu]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcT : (c : ℝ) / T * T = c` using `by field_simp`.
+
+Establish `e1 : 1 - ((k : ℝ) + 1) * c / T = u - c / T` using `by rw [hu]; ring`. Rewrite using `[e1]`. Establish `step : (u - c / T) * (T + c + k + 1) ≤ u * (T + k + 1)`. Establish `: (u - c / T) * (T + c + k + 1) = u * (T + k + 1) + (u * c - c / T * T - c / T * (c + k + 1))` using `by ring`. Rewrite using `[this, hcT]`.
+
+Establish `h1 : u * c ≤ c` using `by nlinarith`. Establish `h2 : 0 ≤ (c : ℝ) / T * (c + k + 1)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hupos : 0 ≤ u - c / T` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ratio (T c : ℕ) (hT : 0 < T) : ∀ k : ℕ,
     (1 - (k : ℝ) * c / T) * ((T + c + k).choose k : ℝ) ≤ ((T + k).choose k : ℝ) := by
   intro k

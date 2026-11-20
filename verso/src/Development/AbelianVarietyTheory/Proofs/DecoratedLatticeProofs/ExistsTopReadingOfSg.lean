@@ -14,6 +14,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 open Formalism.MainNotions.S Formalism.IndefR.Mult in
 
+/- English proof (translation)
+Substitute `hpar` using the available equality. Take `⟨j, hj⟩` from `GlobalTheory.Core.Rk.Top.exists_isJ D u M`. Conclude with `⟨j, hj hsg⟩`.
+-/
 theorem GlobalTheory.SeeSaw.exists_isJ_of_par {D : D7} {u : D.what₂.Word}
     (hsg : ∀ (i : Fin (D.R.N D.R.m - 1)) τ, (((D.fm u).sg τ).w i : ℚ) = sgHC D.R (D.hcW u τ) i - rhoVec (D.R.N D.R.m - 1) i)
     {par} (M : DSModel D.sp.X' par) (hpar : par = parB (Ptw D) D.R.m) :
@@ -22,6 +25,9 @@ theorem GlobalTheory.SeeSaw.exists_isJ_of_par {D : D7} {u : D.what₂.Word}
   obtain ⟨j, hj⟩ := GlobalTheory.Core.Rk.Top.exists_isJ D u M
   exact ⟨j, hj hsg⟩
 
+/- English proof (translation)
+Establish `h2` using `(TC.tup_sgHC_eq (B.hcW u τ) i).trans (congrArg (fun P => Formalism.L2.Col.RowPar.sgHC P i) (TC.tup_rowPar_eq B u τ))`. Conclude with `(Formalism.L2.Col.RowPar.sg_eq (B.hc τ) i).trans (congrArg (· - _) h2.symm)`.
+-/
 theorem GlobalTheory.SeeSaw.sg_trueColumns {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word)
     (i : Fin ((I.rec7 l Z).R.N (I.rec7 l Z).R.m - 1)) (τ) :
     ((((I.rec7 l Z).fm u).sg τ).w i : ℚ) =

@@ -7,6 +7,9 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory.PolDet
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y m BD h`. Conclude with `GlobalTheory.CechPic.isLB_dual (GlobalTheory.PolFin.isLB_detLie_of_polOf h.isLB)`.
+-/
 theorem isLB_detOm_of_ample : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (m : ℕ) (BD : GlobalTheory.EffCartierData Y.X), GlobalTheory.IsAmpleLB (polOf Y m BD) → (GlobalTheory.FlagMod.detOm Y).IsLB := by
   intro E _ _ _ H D l Xo c O _ β Y m BD h
   exact GlobalTheory.CechPic.isLB_dual (GlobalTheory.PolFin.isLB_detLie_of_polOf h.isLB)

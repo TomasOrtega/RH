@@ -5,6 +5,23 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 noncomputable section
 namespace GlobalTheory.UPel.HT.Hecke.PullInj
 
+/- English proof (translation)
+Introduce `X X' π Q₁ Q₂ hQ₁ hQ₂ w hw τ hτ`. Establish `hπτ : ∀ x : X, π (τ x) = π x` using `fun x => by`. Rewrite using `[← Scheme.Hom.comp_apply, hτ]`. Establish `hmem : ∀ {x : X} {k : (PUnit → Q₂.ι) × (PUnit → Q₁.ι)}, x ∈ (LB.div (Q₂.pull π) (Q₁.pull π)).U k → τ x ∈ (LB.div (Q₂.pull π) (Q₁.pull π)).U k`. Introduce `x k hx`.
+
+Rewrite `hx`, the goal using `[mem_divPull]`. Rewrite using `[hπτ]`. Conclude with `hx`. Establish `hle : ∀ k, (LB.div (Q₂.pull π) (Q₁.pull π)).U k ≤ τ ⁻¹ᵁ (LB.div (Q₂.pull π) (Q₁.pull π)).U k` using `fun k x hx => hmem hx`. Set `u : ∀ k, Γ(X, (LB.div (Q₂.pull π) (Q₁.pull π)).U k)ˣ` to `fun k => res (hle k) (pullU τ _ (w.s k)) * (w.s k)⁻¹`.
+
+Establish `hu : ∀ (Z : Scheme.{0}) (r : Z ⟶ X) (z : Z) k, r z ∈ (LB.div (Q₂.pull π) (Q₁.pull π)).U k → gm r z _ (u k) = gm (r ≫ τ) z _ (w.s k) * (gm r z _ (w.s k))⁻¹`. Introduce `Z r z k hz`. Use `show gm r z _ (res (hle k) (pullU τ _ (w.s k)) * (w.s k)⁻¹) = _`. Rewrite using `[map_mul, map_inv, gm_res r z (hle k) hz, gm_pull r τ z _ (hmem hz)]`. Establish `hg : ∀ (Z : Scheme.{0}) (r : Z ⟶ X) (z : Z) k l, r z ∈ (LB.div (Q₂.pull π) (Q₁.pull π)).U k → r z ∈ (LB.div (Q₂.pull π) (Q₁.pull π)).U l → gm (r ≫ τ) z _ ((LB.div (Q₂.pull π) (Q₁.pull π)).g k l) = gm r z _ ((LB.div (Q₂.pull π) (Q₁.pull π)).g k l)`.
+
+Introduce `Z r z k l hk hl`. Establish `hk'` using `hmem hk`. Establish `hl'` using `hmem hl`. Rewrite using `[germ_div_g _ _ (r ≫ τ) z hk' hl', germ_div_g _ _ r z hk hl]`. Establish `hk₀` using `mem_divPull.1 hk`.
+
+Establish `hl₀` using `mem_divPull.1 hl`. Establish `hk₁` using `mem_divPull.1 hk'`. Establish `hl₁` using `mem_divPull.1 hl'`. Rewrite using `[gm_pull_g Q₂ π (r ≫ τ) z hk₁.1 hl₁.1, gm_pull_g Q₁ π (r ≫ τ) z hk₁.2 hl₁.2, gm_pull_g Q₂ π r z hk₀.1 hl₀.1, gm_pull_g Q₁ π r z hk₀.2 hl₀.2, Category.assoc, hτ]`. Establish `hc : (⊤ : X.Opens) ≤ iSup (LB.div (Q₂.pull π) (Q₁.pull π)).U`.
+
+Introduce `x _`. Take `⟨i, hi⟩` from `exists_chart hQ₂ (π x)`. Take `⟨j, hj⟩` from `exists_chart hQ₁ (π x)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨(fun _ => i, fun _ => j), mem_divPull.2 ⟨hi, hj⟩⟩`. Take `⟨f, hf⟩` from `glue_unit (⊤ : X.Opens) (LB.div (Q₂.pull π) (Q₁.pull π)).U (fun _ => le_top) hc u (by`.
+
+Introduce `k l x hx`. Rewrite using `[hu _ _ _ k hx.1, hu _ _ _ l hx.2, gen_germ hw (𝟙 X ≫ τ) x (hmem hx.1) (hmem hx.2), gen_germ hw (𝟙 X) x hx.1 hx.2, hg _ _ _ k l hx.1 hx.2]`. Simplify using `only [← div_eq_mul_inv]`. Conclude with `mul_div_mul_left_eq_div _ _ _)`. Use `⟨f, fun Z r z k hz => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← gm_res r z (le_top : (LB.div (Q₂.pull π) (Q₁.pull π)).U k ≤ ⊤) hz f, hf k, hu Z r z k hz, inv_mul_cancel_right]`.
+-/
 theorem gen_transl_ratio : ∀ (X X' : Scheme.{0}) (π : X ⟶ X') (Q₁ Q₂ : LB X'), Q₁.IsLB → Q₂.IsLB →
     ∀ (w : LB.Iso (Q₁.pull π) (Q₂.pull π)), w.IsGen → ∀ τ : X ⟶ X, τ ≫ π = π → ∃ f : Γ(X, ⊤)ˣ,
       ∀ (Z : Scheme.{0}) (r : Z ⟶ X) (z : Z) (k : (PUnit → Q₂.ι) × (PUnit → Q₁.ι)),

@@ -13,6 +13,47 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 
 variable {N : ℕ}
 
+/- English proof (translation)
+Take `⟨C, -, hC⟩` from `qr_lintegral μ`. Establish `hCV : C = volU N` using `qr_const μ C hC`. Substitute `hCV` using the available equality. Establish `hV` using `volU_pos' N`. Take `⟨ε, hε0, hε1, hkey⟩ : ∃ ε : ℝ, 0 < ε ∧ ε < 1 ∧ (1 - ε) * (1 + η) = 1 + ε` from `⟨η / (2 + η), by positivity, by rw [div_lt_one (by linarith)]; linarith, by field_simp; ring⟩`.
+
+Take `⟨δ1, hδ1, hchart⟩` from `chartWR_vol (N := N) ε hε0`. Take `⟨δ2, hδ2, hinj⟩` from `volU_exp_injOn (N := N)`. Take `⟨ρw, hρw, hw⟩` from `Metric.continuousAt_iff.1 (volU_continuous_qrWt (N := N)).continuousAt ε hε0`. Take `⟨ρ, hρ0, hρ1, hρ2, hρ3⟩ : ∃ ρ : ℝ, 0 < ρ ∧ ρ ≤ δ1 ∧ ρ ≤ ρw ∧ ρ ≤ 1` from `⟨min δ1 (min ρw 1), lt_min hδ1 (lt_min hρw one_pos), min_le_left _ _, (min_le_right _ _).trans (min_le_left _ _), (min_le_right _ _).trans (min_le_right _ _)⟩`. Use `⟨min δ1 δ2, lt_min hδ1 hδ2, fun B hB hBs => ?_⟩` and prove the remaining obligations.
+
+Use `show μ (volUSet B) ≤ _ ∧ _ ≤ μ (volUSet B)`. Establish `hBsub : B ⊆ Metric.ball 0 δ2` using `fun x hx => mem_ball_zero_iff.2 ((hBs x hx).trans_le (min_le_right _ _))`. Establish `hA : MeasurableSet (volUSet B)` using `volUSet_measurable hinj hB hBsub`. Establish `hE'pos : Metric.ball (volUOne N) ρ ⊆ triPos N` using `volU_ball_sub_triPos hρ3`. Use `set S := qrMap '' (volUSet B ×ˢ Metric.ball (volUOne N) ρ) with hSdef`.
+
+Establish `hS : MeasurableSet S` using `qrMap_measurableSet_image _ (hA.prod Metric.isOpen_ball.measurableSet) (fun p hp => ⟨Set.mem_univ _, hE'pos hp.2⟩)`. Use `set I := ∫⁻ t in Metric.ball (volUOne N) ρ, ENNReal.ofReal (qrWt t) with hIdef`. Establish `hmem : ∀ k (t : TriCo N), t ∈ triPos N → (qrMap (k, t) ∈ S ↔ k ∈ volUSet B ∧ t ∈ Metric.ball (volUOne N) ρ)`. Introduce `k t ht`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨⟨k', t'⟩, ⟨hk', ht'⟩, heq⟩`. Use `qrMap_injOn ⟨Set.mem_univ _, hE'pos ht'⟩ ⟨Set.mem_univ _, ht⟩ heq` as an intermediate fact. Take `⟨rfl, rfl⟩` from `Prod.mk.inj this`. Conclude with `⟨hk', ht'⟩`. Introduce and unpack `⟨hk, ht'⟩`.
+
+Conclude with `⟨(k, t), ⟨hk, ht'⟩, rfl⟩`. Establish `hin : ∀ k, (∫⁻ t in triPos N, S.indicator 1 (qrMap (k, t)) * ENNReal.ofReal (qrWt t)) = (volUSet B).indicator (fun _ => I) k`. Introduce `k`. Distinguish the cases in `hk : k ∈ volUSet B`. Rewrite using `[Set.indicator_of_mem hk, hIdef, ← Set.inter_eq_left.2 hE'pos, ← setLIntegral_indicator Metric.isOpen_ball.measurableSet]`.
+
+Use `setLIntegral_congr_fun volU_measurableSet_triPos (fun t ht => ?_)` and prove the remaining obligations. Distinguish the cases in `ht' : t ∈ Metric.ball (volUOne N) ρ`. Rewrite using `[Set.indicator_of_mem ((hmem k t ht).2 ⟨hk, ht'⟩), Set.indicator_of_mem ht', Pi.one_apply, one_mul]`. Rewrite using `[Set.indicator_of_notMem (fun h => ht' ((hmem k t ht).1 h).2), Set.indicator_of_notMem ht', zero_mul]`. Rewrite using `[Set.indicator_of_notMem hk]`.
+
+Rewrite using `[setLIntegral_congr_fun volU_measurableSet_triPos (g := fun _ => 0) (fun t ht => by`. Simplify using `only`. Rewrite using `[Set.indicator_of_notMem (fun h => hk ((hmem k t ht).1 h).1), zero_mul])]`. Simplify using the standard rewrite rules. Establish `hSeq : volume S = ENNReal.ofReal (volU N) * (I * μ (volUSet B))`.
+
+Establish `h` using `hC (S.indicator 1) (measurable_one.indicator hS)`. Rewrite `h` using `[lintegral_indicator_one hS]`. Rewrite using `[h, lintegral_congr hin, lintegral_indicator_const hA]`. Establish `: Measure.IsAddHaarMeasure (volume : Measure (TriCo N))` using `by show Measure.IsAddHaarMeasure ((volume : Measure (Fin N → ℝ)).prod (volume : Measure ({ab : Fin N × Fin N // ab.1 < ab.2} → ℂ)))`. Conclude with `Measure.prod.instIsAddHaarMeasure _ _`.
+
+Establish `: Measure.IsAddHaarMeasure (volume : Measure (UCo N))` using `by show Measure.IsAddHaarMeasure ((volume : Measure (Fin N → ℝ)).prod (volume : Measure ({ab : Fin N × Fin N // ab.2 < ab.1} → ℂ)))`. Conclude with `Measure.prod.instIsAddHaarMeasure _ _`. Establish `hE : volume (Metric.ball (volUOne N) ρ) = volume (Metric.ball (0 : TriCo N) ρ)` using `Measure.addHaar_ball_center _ _ _`. Establish `hIlo : ENNReal.ofReal (1 - ε) * volume (Metric.ball (0 : TriCo N) ρ) ≤ I`. Rewrite using `[← hE, ← setLIntegral_const]`.
+
+Use `setLIntegral_mono' Metric.isOpen_ball.measurableSet (fun t ht => ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Use `hw (lt_of_lt_of_le (Metric.mem_ball.1 ht) hρ2)` as an intermediate fact. Rewrite `this` using `[volU_qrWt_one, Real.dist_eq]`. Combine the linear relations using `[neg_abs_le (qrWt t - 1)]`. Establish `hIhi : I ≤ ENNReal.ofReal (1 + ε) * volume (Metric.ball (0 : TriCo N) ρ)`.
+
+Rewrite using `[← hE, ← setLIntegral_const]`. Use `setLIntegral_mono' Metric.isOpen_ball.measurableSet (fun t ht => ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Use `hw (lt_of_lt_of_le (Metric.mem_ball.1 ht) hρ2)` as an intermediate fact. Rewrite `this` using `[volU_qrWt_one, Real.dist_eq]`. Combine the linear relations using `[le_abs_self (qrWt t - 1)]`.
+
+Take `⟨hup, hlo⟩` from `hchart B (Metric.ball 0 ρ) hB Metric.isOpen_ball.measurableSet (fun x hx => (hBs x hx).trans_le (min_le_left _ _)) (fun t ht => (mem_ball_zero_iff.1 ht).trans_le hρ1)`. Rewrite `hup`, `hlo` using `[volU_image_eq, ← hSdef, hSeq]`. Establish `hEpos : 0 < volume (Metric.ball (0 : TriCo N) ρ)` using `Metric.measure_ball_pos _ _ hρ0`. Establish `hEfin : volume (Metric.ball (0 : TriCo N) ρ) ≠ ⊤` using `measure_ball_lt_top.ne`. Establish `hBfin : volume B ≠ ⊤` using `((measure_mono hBsub).trans_lt measure_ball_lt_top).ne`.
+
+Establish `hAfin : μ (volUSet B) ≠ ⊤` using `measure_ne_top μ _`. Establish `hIfin : I ≠ ⊤` using `(hIhi.trans_lt (ENNReal.mul_lt_top ENNReal.ofReal_lt_top hEfin.lt_top)).ne`. Use `set a := (μ (volUSet B)).toReal`. Use `set b := (volume B).toReal`. Use `set e := (volume (Metric.ball (0 : TriCo N) ρ)).toReal`.
+
+Use `set i := I.toReal`. Establish `ha' : μ (volUSet B) = ENNReal.ofReal a` using `(ENNReal.ofReal_toReal hAfin).symm`. Establish `hb' : volume B = ENNReal.ofReal b` using `(ENNReal.ofReal_toReal hBfin).symm`. Establish `he' : volume (Metric.ball (0 : TriCo N) ρ) = ENNReal.ofReal e` using `(ENNReal.ofReal_toReal hEfin).symm`. Establish `hi' : I = ENNReal.ofReal i` using `(ENNReal.ofReal_toReal hIfin).symm`.
+
+Establish `he0 : 0 < e` using `ENNReal.toReal_pos hEpos.ne' hEfin`. Establish `ha0 : 0 ≤ a` using `ENNReal.toReal_nonneg`. Establish `hb0 : 0 ≤ b` using `ENNReal.toReal_nonneg`. Establish `hi0 : 0 ≤ i` using `ENNReal.toReal_nonneg`. Rewrite `hup`, `hlo` using `[ha', hb', he', hi']`.
+
+Rewrite `hIlo`, `hIhi` using `[he', hi']`. Rewrite `hup`, `hlo` using `[← ENNReal.ofReal_mul hi0, ← ENNReal.ofReal_mul hV.le]`. Rewrite `hup` using `[← ENNReal.ofReal_mul hb0, ← ENNReal.ofReal_mul (by linarith)]`. Rewrite `hlo` using `[← ENNReal.ofReal_mul hb0, ← ENNReal.ofReal_mul' (by positivity)]`. Rewrite `hIhi` using `[← ENNReal.ofReal_mul (by linarith)]`.
+
+Rewrite `hIlo` using `[← ENNReal.ofReal_mul' he0.le]`. Establish `h1` using `(ENNReal.ofReal_le_ofReal_iff (by positivity)).1 hup`. Establish `h2` using `(ENNReal.ofReal_le_ofReal_iff (by positivity)).1 hlo`. Establish `h3` using `(ENNReal.ofReal_le_ofReal_iff hi0).1 hIlo`. Establish `h4` using `(ENNReal.ofReal_le_ofReal_iff (by positivity)).1 hIhi`.
+
+Take `⟨r1, r2⟩` from `volU_real hV he0 ha0 hb0 hε0 hε1 hη hkey h1 h2 h3 h4`. Rewrite using `[ha', hb']`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Conclude with `ENNReal.ofReal_le_ofReal r1`.
+
+Rewrite using `[← ENNReal.ofReal_mul' hb0]`. Conclude with `ENNReal.ofReal_le_ofReal r2`.
+-/
 theorem volU_density (μ : Measure (UNgrp N)) [μ.IsHaarMeasure] [IsProbabilityMeasure μ] (η : ℝ) (hη : 0 < η) :
     ∃ δ > 0, ∀ B : Set (UCo N), MeasurableSet B → (∀ x ∈ B, ‖x‖ < δ) →
       μ {k : UNgrp N | ∃ x ∈ B, toM k = NormedSpace.exp (skMat x)} ≤ ENNReal.ofReal ((1 + η) / volU N) * volume B ∧

@@ -24,12 +24,21 @@ def actPt (t : SAB H X) (α : 𝓞 E) (T : Over X) : (T ⟶ t.G) →* (T ⟶ t.G
   haveI := t.act.hom α
   IsMonHom.monoidHom (t.act.act α) T
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem actPt_apply (α : 𝓞 E) {T : Over X} (w : T ⟶ t.G) : actPt t α T w = w ≫ t.act.act α := rfl
 
+/- English proof (translation)
+The claim follows from `map_mul (actPt t α T) w w'`.
+-/
 theorem act_mul (α : 𝓞 E) {T : Over X} (w w' : T ⟶ t.G) :
     (w * w') ≫ t.act.act α = (w ≫ t.act.act α) * (w' ≫ t.act.act α) :=
   map_mul (actPt t α T) w w'
 
+/- English proof (translation)
+Rewrite using `[← actPt_apply, ← map_pow, hw, map_one]`.
+-/
 theorem act_tors (α : 𝓞 E) {T : Over X} {w : T ⟶ t.G} {q : ℕ} (hw : w ^ q = 1) : (w ≫ t.act.act α) ^ q = 1 := by
   rw [← actPt_apply, ← map_pow, hw, map_one]
 
@@ -54,6 +63,19 @@ def zprodChar {O : Type} [CommRing O] {x : Sp O ⟶ X} {q N : ℕ} (c : Fin N �
       exact Finset.prod_congr rfl fun m _ => by rw [map_zpow, h]
     exact congrArg Units.val h2
 
+/- English proof (translation)
+Introduce `E _ _ _ H X _ t K _ _ ξ q hq hζ hs R _ _ _ _ _ _ x hx p _ ψ z hψ hz N χ ch ρ hχ hch α B _ _ _ w hw m`. Take `⟨-, h⟩` from `GlobalTheory.HtChar.induced_chars E H X t K ξ q hq hζ hs R x hx`. Take `⟨-, -, h3⟩` from `h p ψ z hψ hz`. Establish `hev : ∀ k : TorsK t ξ q, (∏ m', χ m' ^ ρ α m m') k = ∏ m', χ m' k ^ ρ α m m'` using `fun k => by`. Rewrite using `[MonoidHom.finset_prod_apply]`.
+
+Conclude with `Finset.prod_congr rfl fun m' _ => MonoidHom.zpow_apply _ _ _`. Use `h3 (∏ m', χ m' ^ ρ α m m') (actChar (ch m) α) (zprodChar ch (ρ α m)) (fun σ k a w hσ hk hw ha => ?_) (fun σ k a w hσ hk hw ha => ?_) B w hw` and prove the remaining obligations. Use `hch m (σ ≫ t.act.act α) ⟨k.1 ≫ t.act.act α, MonoidHom.mem_ker.2 (act_tors α (MonoidHom.mem_ker.1 k.2))⟩ a (w ≫ t.act.act α) (act_tors α hσ) ?_ ?_ ?_` and prove the remaining obligations. Use `show (k.1 ≫ t.act.act α).left = _`. Rewrite using `[Over.comp_left, Over.comp_left, hk, Category.assoc]`.
+
+Rewrite using `[Over.comp_left, Over.comp_left, hw, Category.assoc]`. Rewrite using `[ha, hev, hχ α k _ rfl m]`. Establish `hp : ∀ m', ((χ m' k : Kˣ) : K) ^ q = 1` using `fun m' => by`. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, GlobalTheory.HtChar.ker_pow, map_one, Units.val_one]`. Establish `hr : ∀ m', ∃ b : Rˣ, algebraMap R K b = ((χ m' k : Kˣ) : K)` using `fun m' => by`.
+
+Take `⟨b, hb⟩` from `GlobalTheory.HtChar.root_mem (R := R) hq (hp m')`. Establish `hb' : b ^ q = 1` using `IsFractionRing.injective R K (by rw [map_pow, hb, hp, map_one])`. Conclude with `⟨Units.ofPowEqOne b q hb' hq, hb⟩`. Use `choose b hb using hr`. Establish `h1 : Units.map (algebraMap R K : R →* K) (∏ m', b m' ^ ρ α m m') = ∏ m', χ m' k ^ ρ α m m'`.
+
+Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun m' _ => by rw [map_zpow, show Units.map (algebraMap R K : R →* K) (b m') = χ m' k from Units.ext (hb m')]`. Take `rfl : a = ((∏ m', b m' ^ ρ α m m' : Rˣ) : R)` from `IsFractionRing.injective R K (by`. Rewrite using `[ha, hev, ← h1]`. Use the proof step `rfl)`.
+
+Establish `h2 : (∏ m', (ch m').χ _ w ^ ρ α m m' : (↥(intO ℂ_[p]))ˣ) = Units.map (ψ : R →* ↥(intO ℂ_[p])) (∏ m', b m' ^ ρ α m m')`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun m' _ => by`. Rewrite using `[map_zpow, show (ch m').χ _ w = Units.map (ψ : R →* ↥(intO ℂ_[p])) (b m') from Units.ext (hch m' σ k (b m') w hσ hk hw (hb m'))]`. Conclude with `congrArg Units.val h2`.
+-/
 theorem equivar_induced : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) [IsLocallyNoetherian X] (t : SAB H X) (K : Type) [Field K] [CharZero K]
     (ξ : Sp K ⟶ X) (q : ℕ), q ≠ 0 → (∃ ζ : K, IsPrimitiveRoot ζ q) → SplitK t ξ q →
     ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsLocalRing R] [Algebra R K] [IsFractionRing R K]

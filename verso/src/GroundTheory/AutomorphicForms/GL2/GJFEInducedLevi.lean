@@ -18,12 +18,20 @@ def cosetFamily (p : ℤ × (Fin n × Fin n → F)) : Fin n × Fin n → F → �
   fun ij => cosetInd (LocalField.valBall F p.1) (p.2 ij)
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+The claim follows from `cosetInd_valBall_mem p.1 (p.2 ij)`.
+-/
 theorem cosetFamily_mem (p : ℤ × (Fin n × Fin n → F)) (ij : Fin n × Fin n) :
     cosetFamily p ij ∈ LocalField.schwartzBruhat F :=
   cosetInd_valBall_mem p.1 (p.2 ij)
 
 omit [MeasurableSpace F] [BorelSpace F] in
 
+/- English proof (translation)
+Rewrite using `[isSchwartzBruhat_iff_comp_symm]`. Establish `: matrixTensor g ∘ (matrixCoordHomeomorph (Fin n) F).symm = localTensor g`. Use function extensionality and compare the values at `x`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Conclude with `localTensor_mem hg`.
+-/
 theorem isSchwartzBruhat_matrixTensor {g : Fin n × Fin n → F → ℂ}
     (hg : ∀ ij, g ij ∈ LocalField.schwartzBruhat F) : IsSchwartzBruhat (matrixTensor g) := by
   rw [isSchwartzBruhat_iff_comp_symm]
@@ -35,6 +43,9 @@ theorem isSchwartzBruhat_matrixTensor {g : Fin n × Fin n → F → ℂ}
 
 omit [MeasurableSpace F] [BorelSpace F] in
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 (mem_span_matrixTensor hΦ)`. Use `⟨c.support, c, fun X => ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, Finsupp.sum, Finset.sum_apply]`. Both sides reduce to the same expression.
+-/
 theorem exists_matrixTensor_decomp {Φ : Matrix (Fin n) (Fin n) F → ℂ} (hΦ : IsSchwartzBruhat Φ) :
     ∃ (S : Finset (ℤ × (Fin n × Fin n → F))) (c : ℤ × (Fin n × Fin n → F) → ℂ),
       ∀ X, Φ X = ∑ p ∈ S, c p * matrixTensor (cosetFamily p) X := by
@@ -51,6 +62,11 @@ instance isAddHaarMeasure_matrixMeasure (ψ : AddChar F Circle) :
       LocalField.selfDualMeasure ψ : Measure (Fin n → Fin n → F)).IsAddHaarMeasure := inferInstance
   exact hH
 
+/- English proof (translation)
+Simplify using `only [localMatrixFourier, Finset.sum_mul]`. Rewrite using `[integral_finsetSum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `X`. Expand and normalize the polynomial expressions, which then agree. Introduce `p hp`. Establish `hc : Continuous fun X : Matrix (Fin n) (Fin n) F => (ψ (trace (X * Z)) : ℂ)` using `(continuous_subtype_val.comp hψ).comp (continuous_id.matrix_mul continuous_const).matrix_trace`. Conclude with `(((hT p hp).1.continuous.const_smul (c p)).mul hc).integrable_of_hasCompactSupport (((hT p hp).2.smul_left (f := fun _ => c p)).mul_right)`.
+-/
 theorem localMatrixFourier_sum (ψ : AddChar F Circle) (hψ : Continuous ψ) {ι : Type*}
     (S : Finset ι) (c : ι → ℂ) {T : ι → Matrix (Fin n) (Fin n) F → ℂ}
     (hT : ∀ p ∈ S, IsSchwartzBruhat (T p)) (Z : Matrix (Fin n) (Fin n) F) :
@@ -69,6 +85,13 @@ theorem localMatrixFourier_sum (ψ : AddChar F Circle) (hψ : Continuous ψ) {ι
     exact (((hT p hp).1.continuous.const_smul (c p)).mul hc).integrable_of_hasCompactSupport
       (((hT p hp).2.smul_left (f := fun _ => c p)).mul_right)
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Rewrite using `[← ofReal_norm]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_sum_of_nonneg fun p _ => mul_nonneg (ha p) (norm_nonneg _)]`.
+
+Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_mul (ha p), ofReal_norm]`. Use `_ = ∑ p ∈ S, ENNReal.ofReal (a p) * ∫⁻ x, ‖g p x‖ₑ ∂μ := by`. Rewrite using `[lintegral_finsetSum' _ fun p hp => ((hg p hp).aestronglyMeasurable.enorm).const_mul _]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations.
+
+Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `_ < ⊤ := ENNReal.sum_lt_top.2 fun p hp => ENNReal.mul_lt_top ENNReal.ofReal_lt_top (hg p hp).2`.
+-/
 theorem lintegral_lt_top_of_le_sum {X ι : Type*} [MeasurableSpace X] {μ : Measure X} {f : X → ℂ}
     {S : Finset ι} {g : ι → X → ℂ} {a : ι → ℝ} (ha : ∀ p, 0 ≤ a p)
     (hg : ∀ p ∈ S, Integrable (g p) μ) (hle : ∀ x, ‖f x‖ ≤ ∑ p ∈ S, a p * ‖g p x‖) :
@@ -91,6 +114,9 @@ theorem lintegral_lt_top_of_le_sum {X ι : Type*} [MeasurableSpace X] {μ : Meas
         ENNReal.mul_lt_top ENNReal.ofReal_lt_top (hg p hp).2
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Simplify using `only [leviIntegrand, norm_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_leviIntegrand (κ : levi F n β →* ℝ≥0) (Ψ : Matrix (Fin n) (Fin n) F → ℂ) (w : W)
     (ℓ : Module.Dual ℂ W) (s : ℂ) (m : levi F n β) :
     ‖leviIntegrand σ κ Ψ w ℓ s m‖ = ‖Ψ ((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)‖ *
@@ -99,6 +125,9 @@ theorem norm_leviIntegrand (κ : levi F n β →* ℝ≥0) (Ψ : Matrix (Fin n) 
   ring
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Simplify using `only [leviIntegrandB, norm_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_leviIntegrandB (κ : levi F n β →* ℝ≥0) (Ψ : Matrix (Fin n) (Fin n) F → ℂ) (w : W)
     (ℓ : Module.Dual ℂ W) (s : ℂ) (m : levi F n β) :
     ‖leviIntegrandB σ κ Ψ w ℓ s m‖ = ‖Ψ ((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)‖ *
@@ -115,6 +144,45 @@ instance borelSpace_GL : BorelSpace (GL (Fin n) F) := by
   show MeasurableSpace.comap Units.val _ = _
   rw [hM, ← borel_comap, ← (Measures.isOpenEmbedding_val F n).isEmbedding.eq_induced]
 
+/- English proof (translation)
+Take `⟨S, c, hc⟩` from `exists_matrixTensor_decomp hΦ`. Use `set T : ℤ × (Fin n × Fin n → F) → Matrix (Fin n) (Fin n) F → ℂ := fun p => matrixTensor (cosetFamily p) with hTdef`. Use `set L : ℤ × (Fin n × Fin n → F) → Matrix (Fin n) (Fin n) F → ℂ := fun p => leviTensor β fun s => cosetFamily p s.1 with hLdef`. Use `set Lh : ℤ × (Fin n × Fin n → F) → Matrix (Fin n) (Fin n) F → ℂ := fun p => leviTensorHat β ψ fun s => cosetFamily p s.1 with hLhdef`. Use `set K : ℤ × (Fin n × Fin n → F) → ℂ := fun p => tensorConst β ψ (cosetFamily p) with hKdef`.
+
+Establish `hTsb : ∀ p, IsSchwartzBruhat (T p)` using `fun p => isSchwartzBruhat_matrixTensor fun ij => cosetFamily_mem p ij`. Establish `hLev` using `fun p => hL (fun s => cosetFamily p s.1) (fun s => cosetFamily_mem p s.1) w ℓ hℓ`. Use `choose sA hA using fun p => (hLev p).1`. Use `choose sB hB using fun p => (hLev p).2.1`. Establish `hR` using `fun p => (hLev p).2.2`.
+
+Establish `hΦeq : Φ = fun X => ∑ p ∈ S, c p * T p X` using `funext hc`. Establish `hΨA : ∀ X : Matrix (Fin n) (Fin n) F, (∀ i j, β i ≠ β j → X i j = 0) → ∫ u, Φ (X + unipMatrix F u) ∂unipMeasure β ψ = ∑ p ∈ S, c p * (K p * L p X)`. Introduce `X hX`. Rewrite using `[hΦeq]`. Simplify using `only`.
+
+Rewrite using `[integral_finsetSum _ fun p _ => (integrable_add_unipMatrix (unipMeasure β ψ) (hTsb p) hX).const_mul (c p)]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, integral_matrixTensor_add_unip ψ _ hX]`. Establish `hΦh : ∀ Z, localMatrixFourier ψ Φ Z = ∑ p ∈ S, c p * localMatrixFourier ψ (T p) Z`. Introduce `Z`.
+
+Rewrite using `[hΦeq]`. Conclude with `localMatrixFourier_sum ψ hψ S c (fun p _ => hTsb p) Z`. Establish `hΨB : ∀ X : Matrix (Fin n) (Fin n) F, (∀ i j, β i ≠ β j → X i j = 0) → ∫ u, localMatrixFourier ψ Φ (X + unipMatrix F u) ∂unipMeasure β ψ = ∑ p ∈ S, c p * (K p * Lh p X)`. Introduce `X hX`. Repeatedly rewrite using `[hΦh]`.
+
+Rewrite using `[integral_finsetSum _ fun p _ => (integrable_add_unipMatrix (unipMeasure β ψ) ((hTsb p).localMatrixFourier hψ hψ1) hX).const_mul (c p)]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, integral_fourier_matrixTensor_add_unip hψ hψ1 (fun ij => cosetFamily_mem p ij) hX]`. Use `set s₁ : ℝ := ∑ p ∈ S, (|sA p| + |sB p|) with hs₁`. Establish `hsA : ∀ p ∈ S, sA p ≤ s₁` using `fun p hp => (le_abs_self _).trans ((le_add_of_nonneg_right (abs_nonneg _)).trans (Finset.single_le_sum (f := fun p => |sA p| + |sB p|) (fun p _ => add_nonneg (abs_nonneg _) (abs_nonneg _)) hp))`.
+
+Establish `hsB : ∀ p ∈ S, -s₁ ≤ sB p` using `fun p hp => by`. Establish `h1 : |sB p| ≤ s₁` using `(le_add_of_nonneg_left (abs_nonneg _)).trans (Finset.single_le_sum (f := fun p => |sA p| + |sB p|) (fun p _ => add_nonneg (abs_nonneg _) (abs_nonneg _)) hp)`. Combine the linear relations using `[neg_abs_le (sB p)]`. Establish `hRsum : RatFE F γ (fun s => ∑ p ∈ S, c p * K p * ∫ m, leviIntegrand σ (inducedChar β) (L p) w ℓ s m ∂measureM β ψ) (fun s => ∑ p ∈ S, c p * K p * ∫ m, leviIntegrandB σ (inducedChar β) (Lh p) w ℓ s m ∂measureM β ψ)` using `RatFE.sum S fun p _ => RatFE.const_mul (c p * K p) (hR p)`. Establish `hptA : ∀ s : ℂ, ∀ m : levi F n β, leviIntegrand σ (inducedChar β) (fun X => ∫ u, Φ (X + unipMatrix F u) ∂unipMeasure β ψ) w ℓ s m = ∑ p ∈ S, c p * K p * leviIntegrand σ (inducedChar β) (L p) w ℓ s m`.
+
+Introduce `s m`. Simplify using `only [leviIntegrand]`. Rewrite using `[hΨA _ (mem_levi.1 m.2), Finset.sum_mul, Finset.sum_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun p _ => by ring`. Establish `hptB : ∀ s : ℂ, ∀ m : levi F n β, leviIntegrandB σ (inducedChar β) (fun X => ∫ u, localMatrixFourier ψ Φ (X + unipMatrix F u) ∂unipMeasure β ψ) w ℓ s m = ∑ p ∈ S, c p * K p * leviIntegrandB σ (inducedChar β) (Lh p) w ℓ s m`.
+
+Introduce `s m`. Simplify using `only [leviIntegrandB]`. Rewrite using `[hΨB _ (mem_levi.1 m.2), Finset.sum_mul, Finset.sum_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun p _ => by ring`. Establish `hnA : ∀ m : levi F n β, ∫ u, ‖Φ (((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) + unipMatrix F u)‖ ∂unipMeasure β ψ ≤ ∑ p ∈ S, ‖c p‖ * (‖tensorConst β ψ (fun ij x => ((‖cosetFamily p ij x‖ : ℝ) : ℂ))‖ * ‖L p ((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)‖)`.
+
+Introduce `m`. Establish `hX` using `mem_levi.1 m.2`. Establish `hint : ∀ p, Integrable (fun u => T p (((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) + unipMatrix F u)) (unipMeasure β ψ)` using `fun p => integrable_add_unipMatrix (unipMeasure β ψ) (hTsb p) hX`. Combine the equalities or inequalities in the displayed calculation. Use `integral_mono (integrable_add_unipMatrix (unipMeasure β ψ) hΦ hX).norm (integrable_finsetSum _ fun p _ => (hint p).norm.const_mul _) fun u => ?_` and prove the remaining obligations.
+
+Rewrite using `[hc]`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun p _ => norm_mul _ _`. Use `_ = ∑ p ∈ S, ‖c p‖ * (‖tensorConst β ψ (fun ij x => ((‖cosetFamily p ij x‖ : ℝ) : ℂ))‖ * ‖L p ((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)‖) := by`. Rewrite using `[integral_finsetSum _ fun p _ => (hint p).norm.const_mul _]`.
+
+Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, integral_norm_matrixTensor_add_unip ψ _ hX]`. Use `choose C hC0 hC using fun p => integral_norm_fourier_matrixTensor_add_unip (β := β) (ψ := ψ) (cosetFamily p)`. Establish `hnB : ∀ m : levi F n β, ∫ u, ‖localMatrixFourier ψ Φ (((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) + unipMatrix F u)‖ ∂unipMeasure β ψ ≤ ∑ p ∈ S, ‖c p‖ * (C p * ‖Lh p ((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)‖)`. Introduce `m`.
+
+Establish `hX` using `mem_levi.1 m.2`. Establish `hint : ∀ p, Integrable (fun u => localMatrixFourier ψ (T p) (((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) + unipMatrix F u)) (unipMeasure β ψ)` using `fun p => integrable_add_unipMatrix (unipMeasure β ψ) ((hTsb p).localMatrixFourier hψ hψ1) hX`. Combine the equalities or inequalities in the displayed calculation. Use `integral_mono (integrable_add_unipMatrix (unipMeasure β ψ) (hΦ.localMatrixFourier hψ hψ1) hX).norm (integrable_finsetSum _ fun p _ => (hint p).norm.const_mul _) fun u => ?_` and prove the remaining obligations. Rewrite using `[hΦh]`.
+
+Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun p _ => norm_mul _ _`. Use `_ = ∑ p ∈ S, ‖c p‖ * (C p * ‖Lh p ((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)‖) := by`. Rewrite using `[integral_finsetSum _ fun p _ => (hint p).norm.const_mul _]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[integral_const_mul, hC p hX]`. Establish `hnorm : ∀ (m : levi F n β) (Ξ : Matrix (Fin n) (Fin n) F → ℂ), ‖∫ u, ((‖Ξ (((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) + unipMatrix F u)‖ : ℝ) : ℂ) ∂unipMeasure β ψ‖ = ∫ u, ‖Ξ (((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) + unipMatrix F u)‖ ∂unipMeasure β ψ` using `fun m Ξ => by`. Rewrite using `[integral_complex_ofReal, Complex.norm_real, Real.norm_of_nonneg (integral_nonneg fun _ => norm_nonneg _)]`. Use `⟨⟨s₁, fun s hs => ?_⟩, ⟨-s₁, fun s hs => ?_⟩, hRsum.congr ⟨s₁, fun s hs => ?_⟩ ⟨-s₁, fun s hs => ?_⟩⟩` and prove the remaining obligations. Use `lintegral_lt_top_of_le_sum (S := S) (a := fun p => ‖c p‖ * ‖tensorConst β ψ (fun ij x => ((‖cosetFamily p ij x‖ : ℝ) : ℂ))‖) (fun p => mul_nonneg (norm_nonneg _) (norm_nonneg _)) (fun p hp => hA p s (lt_of_le_of_lt (hsA p hp) hs)) fun m => ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_leviIntegrand, hnorm]`. Use `(mul_le_mul_of_nonneg_right (hnA m) (norm_nonneg _)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[norm_leviIntegrand]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `lintegral_lt_top_of_le_sum (S := S) (a := fun p => ‖c p‖ * C p) (fun p => mul_nonneg (norm_nonneg _) (hC0 p)) (fun p hp => hB p s (lt_of_lt_of_le hs (hsB p hp))) fun m => ?_` and prove the remaining obligations. Rewrite using `[norm_leviIntegrandB, hnorm]`. Use `(mul_le_mul_of_nonneg_right (hnB m) (norm_nonneg _)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[norm_leviIntegrandB]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[hptA s]`. Rewrite using `[integral_finsetSum _ fun p hp => (hA p s (lt_of_le_of_lt (hsA p hp) hs)).const_mul (c p * K p)]`.
+
+Conclude with `Finset.sum_congr rfl fun p _ => integral_const_mul _ _`. Repeatedly rewrite using `[hptB s]`. Rewrite using `[integral_finsetSum _ fun p hp => (hB p s (lt_of_lt_of_le hs (hsB p hp))).const_mul (c p * K p)]`. Conclude with `Finset.sum_congr rfl fun p _ => integral_const_mul _ _`.
+-/
 theorem levi_decomp {ψ : AddChar F Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) {γ : RatFunc ℂ}
     (hL : LeviFE F σ (inducedChar β) (measureM β ψ) ψ γ) {Φ : Matrix (Fin n) (Fin n) F → ℂ}
     (hΦ : IsSchwartzBruhat Φ) (w : W) {ℓ : Module.Dual ℂ W}

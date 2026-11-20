@@ -4,6 +4,11 @@ namespace ReciprocityTheory.MultiplicativeHeights
 
 open Metric Set
 
+/- English proof (translation)
+Establish `habs : Absorbent ℝ s` using `absorbent_nhds_zero (hs.mem_nhds h0)`. Take `⟨b, hb0, hb1, y, hy, rfl⟩` from `exists_lt_of_gauge_lt habs hx`. Establish `: (b : ℂ) • y ∈ s` using `hb.smul_mem (by`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_pos hb0]`. Conclude with `hb1.le) hy`.
+
+Simplify `this` using `[Complex.coe_smul]`.
+-/
 theorem bs_mem_of_gauge_lt_one {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {s : Set E}
     (hs : IsOpen s) (hb : Balanced ℂ s) (h0 : (0 : E) ∈ s) {x : E} (hx : gauge s x < 1) :
     x ∈ s := by
@@ -13,6 +18,15 @@ theorem bs_mem_of_gauge_lt_one {E : Type} [NormedAddCommGroup E] [NormedSpace �
     rw [Complex.norm_real, Real.norm_eq_abs, abs_of_pos hb0]; exact hb1.le) hy
   simpa [Complex.coe_smul] using this
 
+/- English proof (translation)
+Establish `hmaps : MapsTo (fun ζ : ℂ => ζ • z) (ball (0 : ℂ) R) s`. Introduce `ζ hζ`. Rewrite `hζ` using `[mem_ball_zero_iff]`. Apply `bs_mem_of_gauge_lt_one hs hb h0` to reduce the goal to its premises. Rewrite using `[gauge_smul hb]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[le_div_iff₀ (by linarith)]; linarith`. Use `_ < R * (1 / R) := by gcongr`. Use `_ = 1 := by field_simp`. Establish `hd : DifferentiableOn ℂ (fun ζ : ℂ => g (ζ • z)) (ball (0 : ℂ) R)` using `hg.comp (differentiableOn_id.smul_const z) hmaps`.
+
+Establish `hm2 : MapsTo (fun ζ : ℂ => g (ζ • z)) (ball (0 : ℂ) R) (closedBall ((fun ζ : ℂ => g (ζ • z)) 0) (M + ‖g 0‖))`. Introduce `ζ hζ`. Simplify using `only [zero_smul, mem_closedBall, dist_eq_norm]`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : (1 : ℂ) ∈ ball (0 : ℂ) R`.
+
+Rewrite using `[mem_ball_zero_iff, norm_one]`. Conclude with `hR`. Use `Complex.dist_le_div_mul_dist_of_mapsTo_ball hd hm2 h1` as an intermediate fact. Simplify `this` using `[dist_eq_norm]`.
+-/
 theorem bs_key {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (s : Set E) (g : E → ℂ)
     (M : ℝ) (hs : IsOpen s) (hb : Balanced ℂ s) (hg : DifferentiableOn ℂ g s)
     (hM : ∀ w ∈ s, ‖g w‖ ≤ M) (h0 : (0 : E) ∈ s) (z : E) (R : ℝ) (hR : 1 < R)
@@ -41,6 +55,17 @@ theorem bs_key {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (s : Set E)
   have := Complex.dist_le_div_mul_dist_of_mapsTo_ball hd hm2 h1
   simpa [dist_eq_norm] using this
 
+/- English proof (translation)
+Introduce `E _ _ s g M hs hb hg hM z hz`. Establish `h0 : (0 : E) ∈ s` using `by simpa using hb.smul_mem (a := (0 : ℂ)) (by simp) hz`. Establish `ht0 : 0 ≤ gauge s z` using `gauge_nonneg z`. Establish `ht1 : gauge s z < 1` using `gauge_lt_one_of_mem_of_isOpen hs hz`. Establish `hN : 0 ≤ M + ‖g 0‖`.
+
+Use `hM 0 h0` as an intermediate fact. Use `norm_nonneg (g 0)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Break down `ht0.lt_or_eq with hpos | hzero` into its components or cases. Use `bs_key s g M hs hb hg hM h0 z (1 / gauge s z) (by rw [lt_div_iff₀ hpos]; linarith) (by field_simp; rfl)` as an intermediate fact.
+
+Simplify `this` using `[div_eq_mul_inv, mul_comm]`. Rewrite using `[← hzero, mul_zero]`. Assume the negation of the conclusion as `hne'`. Establish `hne` using `not_le.mp hne'`. Use `set d := ‖g z - g 0‖`.
+
+Establish `hR : 1 < (M + ‖g 0‖) / d * 2 + 2`. Establish `: 0 ≤ (M + ‖g 0‖) / d * 2` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Use `bs_key s g M hs hb hg hM h0 z ((M + ‖g 0‖) / d * 2 + 2) hR (by rw [← hzero, mul_zero]; exact zero_le_one)` as an intermediate fact. Rewrite `this` using `[le_div_iff₀ (by linarith)]`.
+
+Establish `h3 : d * ((M + ‖g 0‖) / d * 2 + 2) = 2 * (M + ‖g 0‖) + 2 * d`. Clear the denominators using the available nonvanishing facts. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem balancedSchwarz_holds : BalancedSchwarzStatement := by
   intro E _ _ s g M hs hb hg hM z hz
   have h0 : (0 : E) ∈ s := by simpa using hb.smul_mem (a := (0 : ℂ)) (by simp) hz

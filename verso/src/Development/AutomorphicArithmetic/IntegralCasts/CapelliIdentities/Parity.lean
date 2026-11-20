@@ -3,6 +3,9 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.S
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainPointBound
 
 open ReciprocityTheory.ChartRestriction.G.FD in
+/- English proof (translation)
+Simplify using `only [herm, cc, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem UpperTheory.Reformulated.B.Ue6.herm_smul_right {E : Type} [Field E] [NumberField E]
     [NumberField.IsCMField E] {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (c : E) (x y : Fin r → E) :
     herm G x (c • y) = cc c * herm G x y := by
@@ -10,6 +13,13 @@ private theorem UpperTheory.Reformulated.B.Ue6.herm_smul_right {E : Type} [Field
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   ring
 
+/- English proof (translation)
+Introduce `E _ _ _ r X w0 hw u hu v hv`. Establish `hwv : (w0 : E) • v ∈ X.Λ` using `X.Λ.smul_mem w0 hv`. Take `⟨a, ha⟩` from `X.EF_int u hu _ hwv`. Take `⟨b, hb⟩` from `X.EF_int u hu v hv`. Establish `hc : ReciprocityTheory.ChartRestriction.G.FD.cc ((w0 : E) - ReciprocityTheory.ChartRestriction.G.FD.cc (w0 : E)) = 1 - 2 * (w0 : E)`.
+
+Establish `h1 : ReciprocityTheory.ChartRestriction.G.FD.cc ((w0 : E) - (1 - (w0 : E))) = ReciprocityTheory.ChartRestriction.G.FD.cc (w0 : E) - (1 - ReciprocityTheory.ChartRestriction.G.FD.cc (w0 : E))`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.cc, map_sub, map_one]`. Rewrite using `[hw, h1, hw]`. Expand and normalize the polynomial expressions, which then agree. Unfold `ReciprocityTheory.ChartRestriction.G.FD.EFf at ha hb`.
+
+Rewrite `ha` using `[UpperTheory.Reformulated.B.Ue6.herm_smul_right, hw]`. Use `⟨b - a, ?_⟩` and prove the remaining obligations. Rewrite using `[UpperTheory.Reformulated.B.Ue6.herm_smul_right, hc, Int.cast_sub, ← ha, ← hb, ← map_sub, ← map_sub, two_mul ((Algebra.trace ℚ E) _), ← map_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.Reformulated.B.Ue6.even_im_hermitian_sub :
     ∀ {E : Type} [inst : Field E] [inst_1 : NumberField E] [inst_2 : NumberField.IsCMField E] {r : ℕ}
       (X : ReciprocityTheory.ChartRestriction.G.FD.DataX E r) (w0 : NumberField.RingOfIntegers E),

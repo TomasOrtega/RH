@@ -13,6 +13,9 @@ def TypicalCurveTheory : Prop :=
 
 def PeriodValuationTheory : Prop := OmStatement
 
+/- English proof (translation)
+The claim follows from `om`.
+-/
 theorem a9 : PeriodValuationTheory := om
 
 end ReciprocityTheory.ChartRestriction.G.Sh

@@ -15,9 +15,21 @@ open Polynomial
 def HasValueAt (R : RatFunc ℂ) (x w : ℂ) : Prop :=
   R.denom.eval x ≠ 0 ∧ w = R.eval (RingHom.id ℂ) x
 
+/- English proof (translation)
+The claim follows from `h.2.trans h'.2.symm`.
+-/
 theorem HasValueAt.unique {R : RatFunc ℂ} {x w w' : ℂ} (h : HasValueAt R x w) (h' : HasValueAt R x w') : w = w' :=
   h.2.trans h'.2.symm
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl⟩`. Use `⟨R.num, R.denom, h, (RatFunc.num_div_denom R).symm, ?_⟩` and prove the remaining obligations. Simplify using `only [RatFunc.eval, eval₂_id]`. Conclude with `div_mul_cancel₀ _ h`.
+
+Introduce and unpack `⟨a, b, hb, hR, hw⟩`. Establish `hb0 : b ≠ 0` using `fun e => hb (by simp [e])`. Establish `hd : R.denom.eval x ≠ 0` using `fun e => by`. Take `⟨c, hc⟩` from `(RatFunc.denom_dvd (x := R) hb0).2 ⟨a, hR⟩`. Conclude with `hb (by rw [hc, eval_mul, e, zero_mul])`.
+
+Use `⟨hd, ?_⟩` and prove the remaining obligations. Use `congrArg (eval x) ((RatFunc.num_mul_eq_mul_denom_iff hb0).2 hR)` as an intermediate fact. Simplify using `only [eval_mul] at this`. Simplify using `only [RatFunc.eval, eval₂_id]`. Rewrite using `[eq_div_iff hd]`.
+
+Apply `mul_right_cancel₀ hb` to reduce the goal to its premises. Rewrite using `[this, ← hw]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasValueAt_iff {R : RatFunc ℂ} {x w : ℂ} :
     HasValueAt R x w ↔ ∃ a b : ℂ[X], b.eval x ≠ 0 ∧ R = algebraMap _ _ a / algebraMap _ _ b ∧
       w * b.eval x = a.eval x := by
@@ -39,17 +51,34 @@ theorem hasValueAt_iff {R : RatFunc ℂ} {x w : ℂ} :
     apply mul_right_cancel₀ hb
     rw [this, ← hw]; ring
 
+/- English proof (translation)
+The claim follows from `hasValueAt_iff.2 ⟨p, 1, by simp, by simp, by simp⟩`.
+-/
 theorem hasValueAt_algebraMap (p : ℂ[X]) (x : ℂ) : HasValueAt (algebraMap _ _ p) x (p.eval x) :=
   hasValueAt_iff.2 ⟨p, 1, by simp, by simp, by simp⟩
 
+/- English proof (translation)
+Simplify using `using hasValueAt_algebraMap (C a) x`.
+-/
 theorem hasValueAt_C (a x : ℂ) : HasValueAt (RatFunc.C a) x a := by
   simpa using hasValueAt_algebraMap (C a) x
 
+/- English proof (translation)
+Simplify using `using hasValueAt_C 1 x`.
+-/
 theorem hasValueAt_one (x : ℂ) : HasValueAt 1 x 1 := by simpa using hasValueAt_C 1 x
 
+/- English proof (translation)
+Simplify using `using hasValueAt_algebraMap X x`.
+-/
 theorem hasValueAt_X (x : ℂ) : HasValueAt RatFunc.X x x := by
   simpa using hasValueAt_algebraMap X x
 
+/- English proof (translation)
+Take `⟨a, b, hb, rfl, e⟩` from `hasValueAt_iff.1 h`. Take `⟨c, d, hd, rfl, e'⟩` from `hasValueAt_iff.1 h'`. Establish `hb0 : algebraMap ℂ[X] (RatFunc ℂ) b ≠ 0` using `RatFunc.algebraMap_ne_zero fun e => hb (by simp [e])`. Establish `hd0 : algebraMap ℂ[X] (RatFunc ℂ) d ≠ 0` using `RatFunc.algebraMap_ne_zero fun e => hd (by simp [e])`. Use `hasValueAt_iff.2 ⟨a * d + b * c, b * d, by simp [hb, hd], ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[div_add_div _ _ hb0 hd0]`. Simplify using the standard rewrite rules. Simplify using `only [eval_mul, eval_add, ← e, ← e']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem HasValueAt.add {R S : RatFunc ℂ} {x v w : ℂ} (h : HasValueAt R x v) (h' : HasValueAt S x w) :
     HasValueAt (R + S) x (v + w) := by
   obtain ⟨a, b, hb, rfl, e⟩ := hasValueAt_iff.1 h
@@ -60,6 +89,11 @@ theorem HasValueAt.add {R S : RatFunc ℂ} {x v w : ℂ} (h : HasValueAt R x v) 
   · rw [div_add_div _ _ hb0 hd0]; simp
   · simp only [eval_mul, eval_add, ← e, ← e']; ring
 
+/- English proof (translation)
+Take `⟨a, b, hb, rfl, e⟩` from `hasValueAt_iff.1 h`. Take `⟨c, d, hd, rfl, e'⟩` from `hasValueAt_iff.1 h'`. Use `hasValueAt_iff.2 ⟨a * c, b * d, by simp [hb, hd], ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[div_mul_div_comm]`. Simplify using the standard rewrite rules.
+
+Simplify using `only [eval_mul, ← e, ← e']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem HasValueAt.mul {R S : RatFunc ℂ} {x v w : ℂ} (h : HasValueAt R x v) (h' : HasValueAt S x w) :
     HasValueAt (R * S) x (v * w) := by
   obtain ⟨a, b, hb, rfl, e⟩ := hasValueAt_iff.1 h
@@ -68,29 +102,47 @@ theorem HasValueAt.mul {R S : RatFunc ℂ} {x v w : ℂ} (h : HasValueAt R x v) 
   · rw [div_mul_div_comm]; simp
   · simp only [eval_mul, ← e, ← e']; ring
 
+/- English proof (translation)
+Take `⟨a, b, hb, rfl, e⟩` from `hasValueAt_iff.1 h`. Use `hasValueAt_iff.2 ⟨b, a, e ▸ mul_ne_zero hv hb, inv_div _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, inv_mul_cancel_left₀ hv]`.
+-/
 theorem HasValueAt.inv {R : RatFunc ℂ} {x v : ℂ} (h : HasValueAt R x v) (hv : v ≠ 0) : HasValueAt R⁻¹ x v⁻¹ := by
   obtain ⟨a, b, hb, rfl, e⟩ := hasValueAt_iff.1 h
   refine hasValueAt_iff.2 ⟨b, a, e ▸ mul_ne_zero hv hb, inv_div _ _, ?_⟩
   rw [← e, inv_mul_cancel_left₀ hv]
 
+/- English proof (translation)
+Simplify using `using (hasValueAt_C (-1) x).mul h`.
+-/
 theorem HasValueAt.neg {R : RatFunc ℂ} {x v : ℂ} (h : HasValueAt R x v) : HasValueAt (-R) x (-v) := by
   simpa using (hasValueAt_C (-1) x).mul h
 
+/- English proof (translation)
+Simplify `h.add h'.neg` using `[sub_eq_add_neg]`.
+-/
 theorem HasValueAt.sub {R S : RatFunc ℂ} {x v w : ℂ} (h : HasValueAt R x v) (h' : HasValueAt S x w) :
     HasValueAt (R - S) x (v - w) := by
   simpa [sub_eq_add_neg] using h.add h'.neg
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simpa using hasValueAt_one x`. Consider the case `succ m ih => simpa [pow_succ] using ih.mul h`.
+-/
 theorem HasValueAt.pow {R : RatFunc ℂ} {x v : ℂ} (h : HasValueAt R x v) (m : ℕ) : HasValueAt (R ^ m) x (v ^ m) := by
   induction m with
   | zero => simpa using hasValueAt_one x
   | succ m ih => simpa [pow_succ] using ih.mul h
 
+/- English proof (translation)
+Consider the cases of `m with`. Consider the case `ofNat m => simpa using h.pow m`. Consider the case `negSucc m => simpa using (h.pow (m + 1)).inv (pow_ne_zero _ hv)`.
+-/
 theorem HasValueAt.zpow {R : RatFunc ℂ} {x v : ℂ} (h : HasValueAt R x v) (hv : v ≠ 0) (m : ℤ) :
     HasValueAt (R ^ m) x (v ^ m) := by
   cases m with
   | ofNat m => simpa using h.pow m
   | negSucc m => simpa using (h.pow (m + 1)).inv (pow_ne_zero _ hv)
 
+/- English proof (translation)
+Proceed by induction on `S using Multiset.induction_on with`. Consider the case `empty => simpa using hasValueAt_one x`. Consider the case `cons a S ih`. Simplify using `only [Multiset.map_cons, Multiset.prod_cons]`. Conclude with `(h a (by simp)).mul (ih fun i hi => h i (by simp [hi]))`.
+-/
 theorem HasValueAt.multiset_prod {ι : Type} (S : Multiset ι) {R : ι → RatFunc ℂ} {x : ℂ} {v : ι → ℂ}
     (h : ∀ i ∈ S, HasValueAt (R i) x (v i)) : HasValueAt (S.map R).prod x (S.map v).prod := by
   induction S using Multiset.induction_on with
@@ -99,6 +151,11 @@ theorem HasValueAt.multiset_prod {ι : Type} (S : Multiset ι) {R : ι → RatFu
     simp only [Multiset.map_cons, Multiset.prod_cons]
     exact (h a (by simp)).mul (ih fun i hi => h i (by simp [hi]))
 
+/- English proof (translation)
+Establish `: (R - S).num = 0`. Use `Polynomial.eq_zero_of_infinite_isRoot _ (hT.mono fun x hx => ?_)` and prove the remaining obligations. Take `⟨w, h1, h2⟩` from `h x hx`. Take `⟨h3, h4⟩` from `h1.sub h2`. Simplify using `only [RatFunc.eval, eval₂_id, sub_self] at h4`.
+
+Conclude with `(div_eq_zero_iff.1 h4.symm).resolve_right h3`. Conclude with `sub_eq_zero.1 (RatFunc.num_eq_zero_iff.1 this)`.
+-/
 theorem eq_of_hasValueAt_infinite {R S : RatFunc ℂ} {T : Set ℂ} (hT : T.Infinite)
     (h : ∀ x ∈ T, ∃ w, HasValueAt R x w ∧ HasValueAt S x w) : R = S := by
   have : (R - S).num = 0 := by
@@ -112,6 +169,13 @@ theorem eq_of_hasValueAt_infinite {R S : RatFunc ℂ} {T : Set ℂ} (hT : T.Infi
 def IsRatIn (q : ℕ) (F : ℂ → ℂ) (R : RatFunc ℂ) : Prop :=
   ∃ r : ℝ, ∀ z : ℂ, r < z.re → HasValueAt R ((q : ℂ) ^ (-z)) (F z)
 
+/- English proof (translation)
+Take `⟨r, h⟩` from `h`. Take `⟨s, h'⟩` from `h'`. Establish `hq1 : (1 : ℝ) < q` using `by exact_mod_cast hq`. Establish `hinj : Function.Injective fun t : ℝ => (q : ℂ) ^ (-(t : ℂ))`. Introduce `a b e`.
+
+Use `congrArg norm e` as an intermediate fact. Simplify using `only [Complex.norm_natCast_cpow_of_pos (show 0 < q by omega), Complex.neg_re, Complex.ofReal_re] at this`. Conclude with `neg_injective ((Real.strictMono_rpow_of_base_gt_one hq1).injective this)`. Use `eq_of_hasValueAt_infinite ((Set.Ioi_infinite (max r s)).image hinj.injOn) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ht, rfl⟩`.
+
+Conclude with `⟨F t, h t (by simpa using (max_lt_iff.1 ht).1), h' t (by simpa using (max_lt_iff.1 ht).2)⟩`.
+-/
 theorem IsRatIn.unique {q : ℕ} (hq : 2 ≤ q) {F : ℂ → ℂ} {R S : RatFunc ℂ} (h : IsRatIn q F R) (h' : IsRatIn q F S) :
     R = S := by
   obtain ⟨r, h⟩ := h
@@ -126,12 +190,18 @@ theorem IsRatIn.unique {q : ℕ} (hq : 2 ≤ q) {F : ℂ → ℂ} {R S : RatFunc
   rintro _ ⟨t, ht, rfl⟩
   exact ⟨F t, h t (by simpa using (max_lt_iff.1 ht).1), h' t (by simpa using (max_lt_iff.1 ht).2)⟩
 
+/- English proof (translation)
+Take `⟨r, h⟩` from `h`. Take `⟨s, h'⟩` from `h'`. Conclude with `⟨max r s, fun z hz => (h z (max_lt_iff.1 hz).1).mul (h' z (max_lt_iff.1 hz).2)⟩`.
+-/
 theorem IsRatIn.mul {q : ℕ} {F G : ℂ → ℂ} {R S : RatFunc ℂ} (h : IsRatIn q F R) (h' : IsRatIn q G S) :
     IsRatIn q (fun z => F z * G z) (R * S) := by
   obtain ⟨r, h⟩ := h
   obtain ⟨s, h'⟩ := h'
   exact ⟨max r s, fun z hz => (h z (max_lt_iff.1 hz).1).mul (h' z (max_lt_iff.1 hz).2)⟩
 
+/- English proof (translation)
+Take `⟨r, h⟩` from `h`. Take `⟨s, h'⟩` from `h'`. Conclude with `⟨max r s, fun z hz => (h z (max_lt_iff.1 hz).1).add (h' z (max_lt_iff.1 hz).2)⟩`.
+-/
 theorem IsRatIn.add {q : ℕ} {F G : ℂ → ℂ} {R S : RatFunc ℂ} (h : IsRatIn q F R) (h' : IsRatIn q G S) :
     IsRatIn q (fun z => F z + G z) (R + S) := by
   obtain ⟨r, h⟩ := h
@@ -141,6 +211,9 @@ theorem IsRatIn.add {q : ℕ} {F G : ℂ → ℂ} {R S : RatFunc ℂ} (h : IsRat
 def HasContValue (q : ℕ) (F : ℂ → ℂ) (z₀ w : ℂ) : Prop :=
   ∃ R : RatFunc ℂ, IsRatIn q F R ∧ HasValueAt R ((q : ℂ) ^ (-z₀)) w
 
+/- English proof (translation)
+Take `⟨R, hR, e⟩` from `h`. Take `⟨S, hS, e'⟩` from `h'`. Conclude with `e.unique (hS.unique hq hR ▸ e')`.
+-/
 theorem HasContValue.unique {q : ℕ} (hq : 2 ≤ q) {F : ℂ → ℂ} {z₀ w w' : ℂ} (h : HasContValue q F z₀ w)
     (h' : HasContValue q F z₀ w') : w = w' := by
   obtain ⟨R, hR, e⟩ := h
@@ -154,14 +227,25 @@ def substRat (a : RatFunc ℂ) (ha : Transcendental ℂ a) : RatFunc ℂ →ₐ[
   RatFunc.liftAlgHom (aeval a) fun p hp =>
     mem_nonZeroDivisors_of_ne_zero fun e => nonZeroDivisors.ne_zero hp (transcendental_iff.1 ha p e)
 
+/- English proof (translation)
+Use `RatFunc.liftAlgHom_apply_div (aeval a) (fun p hp => mem_nonZeroDivisors_of_ne_zero fun e => nonZeroDivisors.ne_zero hp (transcendental_iff.1 ha p e)) X 1` as an intermediate fact. Simplify `this` using `[substRat]`.
+-/
 @[simp] theorem substRat_X (a : RatFunc ℂ) (ha : Transcendental ℂ a) : substRat a ha RatFunc.X = a := by
   have := RatFunc.liftAlgHom_apply_div (aeval a) (fun p hp =>
     mem_nonZeroDivisors_of_ne_zero fun e => nonZeroDivisors.ne_zero hp (transcendental_iff.1 ha p e)) X 1
   simpa [substRat] using this
 
+/- English proof (translation)
+The claim follows from `(substRat a ha).commutes c`.
+-/
 @[simp] theorem substRat_C (a : RatFunc ℂ) (ha : Transcendental ℂ a) (c : ℂ) :
     substRat a ha (RatFunc.C c) = RatFunc.C c := (substRat a ha).commutes c
 
+/- English proof (translation)
+Establish `key : ∀ p : ℂ[X], HasValueAt (aeval a p) x (p.eval y)` using `fun p => by`. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p r hp hr => simpa using hp.add hr`. Consider the case `monomial m c => simpa [aeval_monomial] using (hasValueAt_C c x).mul (h.pow m)`. Take `⟨c, d, hd, rfl, e⟩` from `hasValueAt_iff.1 h'`.
+
+Use `(key c).mul ((key d).inv hd)` as an intermediate fact. Rewrite `this` using `[← e, mul_inv_cancel_right₀ hd, ← div_eq_mul_inv]`. Conclude with `(congrArg (HasValueAt · x w) (RatFunc.liftAlgHom_apply_div (aeval a) _ c d)).mpr this`.
+-/
 theorem HasValueAt.substRat {a R : RatFunc ℂ} (ha : Transcendental ℂ a) {x y w : ℂ} (h : HasValueAt a x y)
     (h' : HasValueAt R y w) : HasValueAt (substRat a ha R) x w := by
   have key : ∀ p : ℂ[X], HasValueAt (aeval a p) x (p.eval y) := fun p => by
@@ -173,6 +257,9 @@ theorem HasValueAt.substRat {a R : RatFunc ℂ} (ha : Transcendental ℂ a) {x y
   rw [← e, mul_inv_cancel_right₀ hd, ← div_eq_mul_inv] at this
   exact (congrArg (HasValueAt · x w) (RatFunc.liftAlgHom_apply_div (aeval a) _ c d)).mpr this
 
+/- English proof (translation)
+Use `RatFunc.transcendental_of_ne_C _ ?_` and prove the remaining obligations. Introduce and unpack `⟨c, e⟩`. Establish `h : ∀ x : ℂ, u * x = c` using `fun x => ((hasValueAt_C u x).mul (hasValueAt_X x)).unique (e ▸ hasValueAt_C c x)`. Simplify using `using (h 1).trans (h 0).symm`.
+-/
 theorem transcendental_C_mul_X (u : ℂˣ) : Transcendental ℂ (RatFunc.C (u : ℂ) * RatFunc.X) := by
   refine RatFunc.transcendental_of_ne_C _ ?_
   rintro ⟨c, e⟩
@@ -185,23 +272,46 @@ def scaleRat (u : ℂˣ) : RatFunc ℂ →ₐ[ℂ] RatFunc ℂ := substRat _ (tr
 def reflectRat (u : ℂˣ) : RatFunc ℂ →ₐ[ℂ] RatFunc ℂ :=
   substRat (RatFunc.C (u : ℂ) * RatFunc.X)⁻¹ fun h => transcendental_C_mul_X u (IsAlgebraic.inv_iff.1 h)
 
+/- English proof (translation)
+The claim follows from `substRat_X _ _`.
+-/
 @[simp] theorem scaleRat_X (u : ℂˣ) : scaleRat u RatFunc.X = RatFunc.C (u : ℂ) * RatFunc.X := substRat_X _ _
 
+/- English proof (translation)
+The claim follows from `substRat_X _ _`.
+-/
 @[simp] theorem reflectRat_X (u : ℂˣ) : reflectRat u RatFunc.X = (RatFunc.C (u : ℂ) * RatFunc.X)⁻¹ := substRat_X _ _
 
+/- English proof (translation)
+The claim follows from `substRat_C _ _ _`.
+-/
 @[simp] theorem scaleRat_C (u : ℂˣ) (c : ℂ) : scaleRat u (RatFunc.C c) = RatFunc.C c := substRat_C _ _ _
 
+/- English proof (translation)
+The claim follows from `substRat_C _ _ _`.
+-/
 @[simp] theorem reflectRat_C (u : ℂˣ) (c : ℂ) : reflectRat u (RatFunc.C c) = RatFunc.C c := substRat_C _ _ _
 
 def natUnit (q : ℕ) (hq : q ≠ 0) : ℂˣ := Units.mk0 (q : ℂ) (Nat.cast_ne_zero.2 hq)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem natUnit_val (q : ℕ) (hq : q ≠ 0) : (natUnit q hq : ℂ) = q := rfl
 
 def negPowUnit (q : ℕ) (hq : q ≠ 0) (s : ℂ) : ℂˣ :=
   Units.mk0 ((q : ℂ) ^ (-s)) (by simp [hq])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem negPowUnit_val (q : ℕ) (hq : q ≠ 0) (s : ℂ) : (negPowUnit q hq s : ℂ) = (q : ℂ) ^ (-s) := rfl
 
+/- English proof (translation)
+Establish `hq' : (q : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hq`. Use `HasValueAt.substRat _ ?_ h` and prove the remaining obligations. Establish `e : (q : ℂ) ^ (-(1 - z)) = ((q : ℂ) * (q : ℂ) ^ (-z))⁻¹`. Rewrite using `[Complex.cpow_neg, sub_eq_add_neg, Complex.cpow_add _ _ hq', Complex.cpow_one]`. Rewrite using `[e]`.
+
+Conclude with `((hasValueAt_C _ _).mul (hasValueAt_X _)).inv (by simp [hq])`.
+-/
 theorem HasValueAt.reflectRat {q : ℕ} (hq : q ≠ 0) {R : RatFunc ℂ} {z w : ℂ}
     (h : HasValueAt R ((q : ℂ) ^ (-(1 - z))) w) : HasValueAt (reflectRat (natUnit q hq) R) ((q : ℂ) ^ (-z)) w := by
   have hq' : (q : ℂ) ≠ 0 := Nat.cast_ne_zero.2 hq
@@ -211,6 +321,9 @@ theorem HasValueAt.reflectRat {q : ℕ} (hq : q ≠ 0) {R : RatFunc ℂ} {z w : 
   rw [e]
   exact ((hasValueAt_C _ _).mul (hasValueAt_X _)).inv (by simp [hq])
 
+/- English proof (translation)
+Use `HasValueAt.substRat _ ?_ h` and prove the remaining obligations. Rewrite using `[neg_add_rev, Complex.cpow_add _ _ (Nat.cast_ne_zero.2 hq)]`. Conclude with `(hasValueAt_C _ _).mul (hasValueAt_X _)`.
+-/
 theorem HasValueAt.scaleRat {q : ℕ} (hq : q ≠ 0) {R : RatFunc ℂ} {z s w : ℂ}
     (h : HasValueAt R ((q : ℂ) ^ (-(z + s))) w) :
     HasValueAt (scaleRat (negPowUnit q hq s) R) ((q : ℂ) ^ (-z)) w := by
@@ -218,6 +331,9 @@ theorem HasValueAt.scaleRat {q : ℕ} (hq : q ≠ 0) {R : RatFunc ℂ} {z s w : 
   rw [neg_add_rev, Complex.cpow_add _ _ (Nat.cast_ne_zero.2 hq)]
   exact (hasValueAt_C _ _).mul (hasValueAt_X _)
 
+/- English proof (translation)
+Take `⟨r, h⟩` from `h`. Conclude with `⟨r - s.re, fun z hz => (h (z + s) (by simpa using sub_lt_iff_lt_add.1 hz)).scaleRat hq⟩`.
+-/
 theorem IsRatIn.shift {q : ℕ} (hq : q ≠ 0) {F : ℂ → ℂ} {R : RatFunc ℂ} (h : IsRatIn q F R) (s : ℂ) :
     IsRatIn q (fun z => F (z + s)) (scaleRat (negPowUnit q hq s) R) := by
   obtain ⟨r, h⟩ := h
@@ -227,8 +343,14 @@ def lFactor (S : Multiset ℂˣ) : RatFunc ℂ := (S.map fun a : ℂˣ => (1 - R
 
 def gammaFactor (u : ℂˣ) (S : Multiset ℂˣ) : RatFunc ℂ := reflectRat u (lFactor (S.map (·⁻¹))) / lFactor S
 
+/- English proof (translation)
+Simplify using `[lFactor]`.
+-/
 @[simp] theorem lFactor_zero : lFactor 0 = 1 := by simp [lFactor]
 
+/- English proof (translation)
+Simplify using `[lFactor]`.
+-/
 @[simp] theorem lFactor_singleton (a : ℂˣ) : lFactor {a} = (1 - RatFunc.C (a : ℂ) * RatFunc.X)⁻¹ := by simp [lFactor]
 
 end Rational
@@ -240,8 +362,14 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 def checkFun {G : Type} [Group G] (c : G → ℂ) : G → ℂ := fun x => c x⁻¹
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem checkFun_apply {G : Type} [Group G] (c : G → ℂ) (x : G) : checkFun c x = c x⁻¹ := rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 @[simp] theorem checkFun_checkFun {G : Type} [Group G] (c : G → ℂ) : checkFun (checkFun c) = c := by
   ext x; simp
 
@@ -267,9 +395,15 @@ def HasGJValue (μ : Measure (GL n k)) (Ξ : Matrix n n k → ℂ) (c : GL n k �
 
 variable {μ : Measure (GL n k)} {Ξ : Matrix n n k → ℂ} {c : GL n k → ℂ}
 
+/- English proof (translation)
+The claim follows from `h.2.unique (one_lt_resCard k) h'.2`.
+-/
 theorem HasGJ.unique {R S : RatFunc ℂ} (h : HasGJ μ Ξ c R) (h' : HasGJ μ Ξ c S) : R = S :=
   h.2.unique (one_lt_resCard k) h'.2
 
+/- English proof (translation)
+The claim follows from `h.2.unique (one_lt_resCard k) h'.2`.
+-/
 theorem HasGJValue.unique {z₀ w w' : ℂ} (h : HasGJValue μ Ξ c z₀ w) (h' : HasGJValue μ Ξ c z₀ w') : w = w' :=
   h.2.unique (one_lt_resCard k) h'.2
 
@@ -280,6 +414,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable [MeasurableSpace (GL n k)] in
 variable {μ : Measure (GL n k)} {Ξ : Matrix n n k → ℂ} {c : GL n k → ℂ} in
 omit [MeasurableSpace (GL n k)] in
+/- English proof (translation)
+Use `set A : Matrix n n (valuation k).integer := Matrix.of fun i j => ⟨(y : Matrix n n k) i j, h i j⟩`. Establish `e : (y : Matrix n n k) = ((valuation k).integer.subtype).mapMatrix A`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hd : (GeneralLinearGroup.det y : k) = (valuation k).integer.subtype A.det`.
+
+Rewrite using `[GeneralLinearGroup.val_det_apply, RingHom.map_det, ← e]`. Rewrite using `[hd]`. Conclude with `(Valuation.mem_integer_iff _ _).mp (SetLike.coe_mem _)`.
+-/
 private theorem valuation_det_le_one_of_entries_integer {y : GL n k}
     (h : ∀ i j, (y : Matrix n n k) i j ∈ (valuation k).integer) :
     valuation k (GeneralLinearGroup.det y : k) ≤ 1 := by
@@ -300,6 +439,11 @@ variable [MeasurableSpace (GL n k)] in
 variable {μ : Measure (GL n k)} {Ξ : Matrix n n k → ℂ} {c : GL n k → ℂ} in
 omit [MeasurableSpace (GL n k)] in
 
+/- English proof (translation)
+Rewrite `hx` using `[_root_.GlobalTheory.SplitFlip.mem_KO_iff]`. Apply `_root_.GlobalTheory.SmGL.nabs_eq_one` to reduce the goal to its premises. Establish `h1` using `valuation_det_le_one_of_entries_integer hx.1`. Establish `h2` using `valuation_det_le_one_of_entries_integer hx.2`. Rewrite `h2` using `[map_inv, Units.val_inv_eq_inv_val, map_inv₀]`.
+
+Establish `hpos : 0 < valuation k (GeneralLinearGroup.det x : k)`. Rewrite using `[zero_lt_iff]`. Conclude with `(Valuation.ne_zero_iff _).mpr (Units.ne_zero _)`. Conclude with `le_antisymm h1 ((inv_le_one₀ hpos).mp h2)`.
+-/
 theorem _root_.GlobalTheory.LGrp.nabs_det_of_mem_KO {x : GL n k}
     (hx : x ∈ _root_.GlobalTheory.SplitWeil.KO k n) :
     _root_.GlobalTheory.SplitWeil.nabs k (GeneralLinearGroup.det x) = 1 := by
@@ -319,6 +463,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n : Type} [Fintype n] [DecidableEq n] in
 variable [MeasurableSpace (GL n k)] in
 variable {μ : Measure (GL n k)} {Ξ : Matrix n n k → ℂ} {c : GL n k → ℂ} in
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Simplify using `only [pow_zero, Nat.cast_zero, zero_mul]`. Conclude with `_root_.GlobalTheory.SmGL.ord_eq_zero (by simp)`. Consider the case `succ m ih`.
+
+Rewrite using `[pow_succ, _root_.GlobalTheory.SmGL.ord_mul, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem smGL_ord_pow_eq_mul (x : kˣ) (m : ℕ) :
     _root_.GlobalTheory.SmGL.ord k (x ^ m) = m * _root_.GlobalTheory.SmGL.ord k x := by
   induction m with
@@ -336,6 +485,19 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n : Type} [Fintype n] [DecidableEq n] in
 variable [MeasurableSpace (GL n k)] in
 variable {μ : Measure (GL n k)} {Ξ : Matrix n n k → ℂ} {c : GL n k → ℂ} in
+/- English proof (translation)
+Take `⟨p, hp⟩` from `IsDiscreteValuationRing.exists_irreducible (valuation k).integer`. Establish `hp0 : (p : k) ≠ 0`. Introduce `h`. Conclude with `hp.ne_zero (Subtype.ext h)`. Take `⟨y, hy⟩ : ∃ y : k, valuation k y = uniformizer k` from `valuation_surjective _`.
+
+Establish `hy0 : y ≠ 0`. Introduce `h`. Rewrite `hy` using `[h, map_zero]`. Conclude with `(uniformizer_pos (R := k)).ne hy`. Establish `hyint : y ∈ (valuation k).integer`.
+
+Rewrite using `[Valuation.mem_integer_iff, hy]`. Conclude with `uniformizer_lt_one.le`. Take `⟨m, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (x := (⟨y, hyint⟩ : (valuation k).integer)) (fun h => hy0 (congrArg Subtype.val h)) hp`. Establish `hu0 : ((u : (valuation k).integer) : k) ≠ 0`. Introduce `h`.
+
+Conclude with `u.ne_zero (Subtype.ext h)`. Use `⟨Units.mk0 (p : k) hp0, ?_, _root_.GlobalTheory.SplitWeil.nabs_uniformiser hp rfl⟩` and prove the remaining obligations. Establish `hyo : _root_.GlobalTheory.SmGL.ord k (Units.mk0 y hy0) = 1` using `_root_.GlobalTheory.SmGL.ord_eq_one hy`. Establish `huo : _root_.GlobalTheory.SmGL.ord k (Units.mk0 _ hu0) = 0`. Apply `_root_.GlobalTheory.SmGL.ord_eq_zero` to reduce the goal to its premises.
+
+Conclude with `(Valuation.integer.integers (valuation k)).one_of_isUnit u.isUnit`. Establish `hsplit : Units.mk0 y hy0 = Units.mk0 _ hu0 * Units.mk0 (p : k) hp0 ^ m`. Use `ext`. Use `congrArg Subtype.val hu` as an intermediate fact. Simplify using `using this`.
+
+Rewrite `hyo` using `[hsplit, _root_.GlobalTheory.SmGL.ord_mul, huo, smGL_ord_pow_eq_mul, zero_add]`. Break down `Int.eq_one_or_neg_one_of_mul_eq_one' hyo with ⟨_, h2⟩ | ⟨h1, _⟩` into its components or cases. Conclude with `h2`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem exists_unit_ord_eq_one_and_nabs_eq_inv_resCard :
     ∃ ϖ : kˣ, _root_.GlobalTheory.SmGL.ord k ϖ = 1 ∧
       _root_.GlobalTheory.SplitWeil.nabs k ϖ = (_root_.GlobalTheory.SplitWeil.resCard k : ℝ)⁻¹ := by
@@ -380,6 +542,21 @@ variable [MeasurableSpace (GL n k)] in
 variable {μ : Measure (GL n k)} {Ξ : Matrix n n k → ℂ} {c : GL n k → ℂ} in
 omit [MeasurableSpace (GL n k)] in
 
+/- English proof (translation)
+Take `⟨ϖ, hord, habs⟩` from `exists_unit_ord_eq_one_and_nabs_eq_inv_resCard (k := k)`. Establish `hq : (_root_.GlobalTheory.SplitWeil.resCard k : ℝ) ≠ 0`. Use `_root_.GlobalTheory.SplitWeil.one_lt_resCard k` as an intermediate fact. Check the signs of the components of the expression. Establish `hinv : _root_.GlobalTheory.SplitWeil.nabs k ϖ⁻¹ = _root_.GlobalTheory.SplitWeil.resCard k`.
+
+Establish `h` using `_root_.GlobalTheory.SplitWeil.nabs_mul k ϖ ϖ⁻¹`. Rewrite `h` using `[mul_inv_cancel, _root_.GlobalTheory.SplitWeil.nabs_one, habs]`. Conclude with `((inv_mul_eq_one₀ hq).mp h.symm).symm`. Establish `oinv : _root_.GlobalTheory.SmGL.ord k ϖ⁻¹ = -1`. Establish `h` using `_root_.GlobalTheory.SmGL.ord_mul k ϖ ϖ⁻¹`.
+
+Rewrite `h` using `[mul_inv_cancel, hord, _root_.GlobalTheory.SmGL.ord_eq_zero (x := (1 : kˣ)) (by simp)]`. Use linear arithmetic over natural numbers and integers. Establish `key : ∀ m : ℤ, _root_.GlobalTheory.SplitWeil.nabs k (ϖ ^ m) = (_root_.GlobalTheory.SplitWeil.resCard k : ℝ) ^ (-m) ∧ _root_.GlobalTheory.SmGL.ord k (ϖ ^ m) = m`. Introduce `m`. Use `Int.induction_on m ?_ ?_ ?_` and prove the remaining obligations.
+
+Use `⟨by simp [_root_.GlobalTheory.SplitWeil.nabs_one], ?_⟩` and prove the remaining obligations. Rewrite using `[zpow_zero]`. Conclude with `_root_.GlobalTheory.SmGL.ord_eq_zero (by simp)`. Introduce `i ih`. Rewrite using `[_root_.zpow_add_one, _root_.GlobalTheory.SplitWeil.nabs_mul, _root_.GlobalTheory.SmGL.ord_mul, ih.1, ih.2, habs, hord]`.
+
+Use `⟨?_, rfl⟩` and prove the remaining obligations. Rewrite using `[neg_add, zpow_add₀ hq, _root_.zpow_neg_one]`. Introduce `i ih`. Rewrite using `[_root_.zpow_sub_one, _root_.GlobalTheory.SplitWeil.nabs_mul, _root_.GlobalTheory.SmGL.ord_mul, ih.1, ih.2, hinv, oinv]`. Use `⟨?_, by ring⟩` and prove the remaining obligations.
+
+Rewrite using `[show -(-(i : ℤ) - 1) = -(-(i : ℤ)) + 1 by ring, zpow_add₀ hq, _root_.zpow_one]`. Use `set o := _root_.GlobalTheory.SmGL.ord k x`. Establish `hy : _root_.GlobalTheory.SmGL.ord k (x * ϖ ^ (-o)) = 0`. Rewrite using `[_root_.GlobalTheory.SmGL.ord_mul, (key _).2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hy1 : _root_.GlobalTheory.SplitWeil.nabs k (x * ϖ ^ (-o)) = 1` using `_root_.GlobalTheory.SmGL.nabs_eq_one k (_root_.GlobalTheory.SmGL.ord_eq_zero_iff.mp hy)`. Establish `hx : x * ϖ ^ (-o) * ϖ ^ o = x`. Rewrite using `[mul_assoc, ← _root_.zpow_add, neg_add_cancel, zpow_zero, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[_root_.GlobalTheory.SplitWeil.nabs_mul, hy1, (key o).1, one_mul]`.
+-/
 theorem _root_.GlobalTheory.LGrp.nabs_eq_zpow (x : kˣ) :
     _root_.GlobalTheory.SplitWeil.nabs k x =
       (_root_.GlobalTheory.SplitWeil.resCard k : ℝ) ^ (-_root_.GlobalTheory.SmGL.ord k x) := by
@@ -432,6 +609,13 @@ def cosetInd (g : GL n k) : Matrix n n k → ℂ :=
 
 omit [MeasurableSpace (GL n k)] in
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `Model.secondCountable_and_t2_local_field (k := k)`. Establish `e : {x : GL n k | g⁻¹ * x ∈ KO k n} = (Homeomorph.mulLeft g⁻¹) ⁻¹' (KO k n : Set (GL n k))` using `rfl`. Establish `hc : IsCompact (Units.val '' {x : GL n k | g⁻¹ * x ∈ KO k n})` using `(e ▸ (Homeomorph.isCompact_preimage _).2 SplitFlip.isCompact_KO).image Units.continuous_val`. Establish `hr : IsOpen (Set.range fun x : GL n k => x.val)`. Establish `: (Set.range fun x : GL n k => x.val) = {A | A.det ≠ 0}`.
+
+Use extensionality with `A`. Conclude with `⟨fun ⟨x, hx⟩ => hx ▸ x.det_ne_zero, fun h => ⟨GeneralLinearGroup.mkOfDetNeZero A h, rfl⟩⟩`. Rewrite using `[this]`. Conclude with `isOpen_ne_fun continuous_id.matrix_det continuous_const`. Establish `ho : IsOpen (Units.val '' {x : GL n k | g⁻¹ * x ∈ KO k n})` using `(Topology.IsOpenEmbedding.mk SplitFlip.isEmbedding_val_GL hr).isOpenMap _ (SplitFlip.isOpen_KO.preimage (continuous_const_mul _))`.
+
+Conclude with `⟨(LocallyConstant.charFn ℂ ⟨hc.isClosed, ho⟩).isLocallyConstant, HasCompactSupport.intro hc fun x hx => Set.indicator_of_notMem hx _⟩`.
+-/
 theorem cosetInd_mem_SB (g : GL n k) : cosetInd g ∈ SB (Matrix n n k) := by
   obtain ⟨_, _⟩ := Model.secondCountable_and_t2_local_field (k := k)
   have e : {x : GL n k | g⁻¹ * x ∈ KO k n} = (Homeomorph.mulLeft g⁻¹) ⁻¹' (KO k n : Set (GL n k)) := rfl

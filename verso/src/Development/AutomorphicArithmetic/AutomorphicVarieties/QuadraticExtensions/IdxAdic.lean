@@ -4,12 +4,30 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.ClassNumberBounds.Tota
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Two
 open scoped Pointwise
 
+/- English proof (translation)
+Establish `h` using `(PadicInt.norm_le_pow_iff_mem_span_pow (p := 2) (k : ℤ_[2]) n).symm.trans (PadicInt.norm_int_le_pow_iff_dvd (p := 2) (k := k) (n := n))`. Rewrite `h` using `[Ideal.mem_span_singleton]`. Conclude with `h` after adjusting the coercions.
+-/
 private theorem two_pow_dvd_intCast_padic_iff (k : ℤ) (n : ℕ) : (2 : ℤ_[2]) ^ n ∣ (k : ℤ_[2]) ↔ (2 : ℤ) ^ n ∣ k := by
   have h := (PadicInt.norm_le_pow_iff_mem_span_pow (p := 2) (k : ℤ_[2]) n).symm.trans
     (PadicInt.norm_int_le_pow_iff_dvd (p := 2) (k := k) (n := n))
   rw [Ideal.mem_span_singleton] at h
   exact_mod_cast h
 
+/- English proof (translation)
+Establish `hu2 : ((u ^ 2 : ℤ_[2]ˣ) : ℤ_[2]) - 1 = (((p : ℤ) ^ 2 - 1 : ℤ) : ℤ_[2])`. Move the coercions through the operations in `[Units.val_pow_eq_pow_val, hp]`. Expand and normalize the polynomial expressions, which then agree. Establish `hem : emultiplicity ((2 : ℕ) : ℤ_[2]) (((u ^ 2 : ℤ_[2]ˣ) : ℤ_[2]) - 1) = (a : ℕ∞)`. Rewrite using `[emultiplicity_eq_coe, hu2]`.
+
+Simplify using `only [Nat.cast_ofNat, two_pow_dvd_intCast_padic_iff]`. Conclude with `⟨h1, h2⟩`. Establish `hle : KStar.TotallyRealRoots.princ 2 a ≤ H` using `KStar.TotallyRealRoots.princ_le_of_isClosed (by omega) (fun _ => ha) hH (H.pow_mem hu 2) hem`. Establish `hnot : u ∉ KStar.TotallyRealRoots.princ 2 a`. Rewrite using `[KStar.TotallyRealRoots.mem_princ, hp]`.
+
+Introduce `h`. Apply `h3` to reduce the goal to its premises. Rewrite using `[← two_pow_dvd_intCast_padic_iff]`. Conclude with `h` after adjusting the coercions. Establish `hidx : (KStar.TotallyRealRoots.princ 2 a).index ≤ Nat.totient (2 ^ a)`.
+
+Rewrite using `[KStar.TotallyRealRoots.princ, Subgroup.index_ker, ← ZMod.card_units_eq_totient, ← Nat.card_eq_fintype_card]`. Conclude with `Subgroup.card_le_card_group _`. Establish `hpos : 0 < (KStar.TotallyRealRoots.princ 2 a).index`. Rewrite using `[KStar.TotallyRealRoots.princ, Subgroup.index_ker]`. Conclude with `Nat.card_pos`.
+
+Establish `hr` using `Subgroup.relIndex_mul_index hle`. Establish `hr1 : (KStar.TotallyRealRoots.princ 2 a).relIndex H ≠ 1` using `fun h => hnot (Subgroup.relIndex_eq_one.mp h hu)`. Establish `hr0 : (KStar.TotallyRealRoots.princ 2 a).relIndex H ≠ 0`. Introduce `h`. Rewrite `hr` using `[h, zero_mul]`.
+
+Use linear arithmetic over natural numbers and integers. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Rewrite `hr` using `[h, mul_zero]`. Use linear arithmetic over natural numbers and integers.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem index_closed_dyadic_subgroup (H : Subgroup ℤ_[2]ˣ) (u : ℤ_[2]ˣ) (p a : ℕ) (hH : IsClosed (H : Set ℤ_[2]ˣ))
     (hu : u ∈ H) (hp : (u : ℤ_[2]) = p) (ha : 2 ≤ a) (h1 : (2 : ℤ) ^ a ∣ (p : ℤ) ^ 2 - 1)
     (h2 : ¬ (2 : ℤ) ^ (a + 1) ∣ (p : ℤ) ^ 2 - 1) (h3 : ¬ (2 : ℤ) ^ a ∣ (p : ℤ) - 1) :
@@ -50,6 +68,29 @@ private theorem index_closed_dyadic_subgroup (H : Subgroup ℤ_[2]ˣ) (u : ℤ_[
       _ = (KStar.TotallyRealRoots.princ 2 a).index := hr
       _ ≤ Nat.totient (2 ^ a) := hidx
 
+/- English proof (translation)
+Introduce `H u p c hH hu hp hpc`. Break down `hpc with ⟨hp8, rfl⟩ | ⟨hp16, rfl⟩` into its components or cases. Establish `hk : p = 8 * (p / 8) + 3` using `by omega`. Generalize the expression as in `p / 8 = k at hk`. Substitute `hk` using the available equality.
+
+Establish `e : ((8 * k + 3 : ℕ) : ℤ) ^ 2 - 1 = 16 * (4 * (k : ℤ) ^ 2 + 3 * k) + 8`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `d1 : (2 : ℤ) ^ 3 ∣ ((8 * k + 3 : ℕ) : ℤ) ^ 2 - 1`. Rewrite using `[e]`.
+
+Generalize the expression as in `4 * (k : ℤ) ^ 2 + 3 * k = m`. Conclude with `⟨2 * m + 1, by ring⟩`. Establish `d2 : ¬ (2 : ℤ) ^ (3 + 1) ∣ ((8 * k + 3 : ℕ) : ℤ) ^ 2 - 1`. Rewrite using `[e]`. Generalize the expression as in `4 * (k : ℤ) ^ 2 + 3 * k = m`.
+
+Introduce and unpack `⟨t, ht⟩`. Evaluate the numerical expressions using `at ht`. Use linear arithmetic over natural numbers and integers. Establish `d3 : ¬ (2 : ℤ) ^ 3 ∣ ((8 * k + 3 : ℕ) : ℤ) - 1`. Introduce and unpack `⟨t, ht⟩`.
+
+Move the coercions through the operations in `at ht`. Evaluate the numerical expressions using `at ht`. Use linear arithmetic over natural numbers and integers. Take `⟨h0, h⟩` from `index_closed_dyadic_subgroup H u (8 * k + 3) 3 hH hu hp (by norm_num) d1 d2 d3`. Use `⟨h0, ?_⟩` and prove the remaining obligations.
+
+Establish `ht : Nat.totient (2 ^ 3) = 4` using `by decide`. Use linear arithmetic over natural numbers and integers. Establish `hk : p = 16 * (p / 16) + 7` using `by omega`. Generalize the expression as in `p / 16 = k at hk`. Substitute `hk` using the available equality.
+
+Establish `e : ((16 * k + 7 : ℕ) : ℤ) ^ 2 - 1 = 32 * (8 * (k : ℤ) ^ 2 + 7 * k + 1) + 16`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `d1 : (2 : ℤ) ^ 4 ∣ ((16 * k + 7 : ℕ) : ℤ) ^ 2 - 1`. Rewrite using `[e]`.
+
+Generalize the expression as in `8 * (k : ℤ) ^ 2 + 7 * k + 1 = m`. Conclude with `⟨2 * m + 1, by ring⟩`. Establish `d2 : ¬ (2 : ℤ) ^ (4 + 1) ∣ ((16 * k + 7 : ℕ) : ℤ) ^ 2 - 1`. Rewrite using `[e]`. Generalize the expression as in `8 * (k : ℤ) ^ 2 + 7 * k + 1 = m`.
+
+Introduce and unpack `⟨t, ht⟩`. Evaluate the numerical expressions using `at ht`. Use linear arithmetic over natural numbers and integers. Establish `d3 : ¬ (2 : ℤ) ^ 4 ∣ ((16 * k + 7 : ℕ) : ℤ) - 1`. Introduce and unpack `⟨t, ht⟩`.
+
+Move the coercions through the operations in `at ht`. Evaluate the numerical expressions using `at ht`. Use linear arithmetic over natural numbers and integers. Take `⟨h0, h⟩` from `index_closed_dyadic_subgroup H u (16 * k + 7) 4 hH hu hp (by norm_num) d1 d2 d3`. Use `⟨h0, ?_⟩` and prove the remaining obligations.
+
+Establish `ht : Nat.totient (2 ^ 4) = 8` using `by decide`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.V.Two.idxAdic :
     ∀ (H : Subgroup ℤ_[2]ˣ) (u : ℤ_[2]ˣ) (p c : ℕ), IsClosed (H : Set ℤ_[2]ˣ) → u ∈ H → (u : ℤ_[2]) = p → (p % 8 = 3 ∧ c = 2 ∨ p % 16 = 7 ∧ c = 4) → H.index ≠ 0 ∧ H.index ≤ c := by
   intro H u p c hH hu hp hpc

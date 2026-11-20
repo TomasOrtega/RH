@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.BlockTheory.TwistedDiscreteSeries.Iwahor
 
 namespace GlobalTheory.IndefiniteRowSideFullHecke.RangeTrace
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℂ (LinearMap.range T) := Submodule.finiteDimensional_of_le hT`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ x : Z, (T.restrict (p` using `Z) (q := Z) fun x _ => hT (LinearMap.mem_range_self T x)) x ∈ (LinearMap.range T).comap Z.subtype := fun x => LinearMap.mem_range_self T (x : X)`. Rewrite using `[← LinearMap.trace_restrict_eq_of_forall_mem _ _ hmem, ← LinearMap.trace_conj' _ (Submodule.comapSubtypeEquivOfLe hT)]`. Use `congr 1`.
+-/
 theorem hasFinTrace_of_range_le (X : Type) [AddCommGroup X] [Module ℂ X] (T : X →ₗ[ℂ] X)
     (Z : Submodule ℂ X) [FiniteDimensional ℂ Z] (hT : LinearMap.range T ≤ Z) :
     GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.HasFinTrace T (LinearMap.trace ℂ Z (T.restrict (p := Z) (q := Z)

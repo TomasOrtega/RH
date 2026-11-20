@@ -37,6 +37,9 @@ def LeafAugInj : Prop := ∀ (J : Type) [Preorder J] (D : J ⥤ Scheme.{0}) (X :
   ∀ (hc : Coc (D ⋙ yoneda) fun j => yoneda.map (c j)) (R : Type) [CommRing R] (n : ℕ),
     InjC ((chainsP R).map (aug _ hc)) n
 
+/- English proof (translation)
+Introduce `J _ D X c ho hcov hdir hc R _ n`. Conclude with `h1 R _ _ _ n (hi J D X c ho hcov hdir hc R n) (hs J D X c ho hcov hc R n)`.
+-/
 theorem LeafAugLocal_of (h1 : LeafHomLoc) (hs : LeafAugSurj) (hi : LeafAugInj) : LeafAugLocal := by
   intro J _ D X c ho hcov hdir hc R _ n
   exact h1 R _ _ _ n (hi J D X c ho hcov hdir hc R n) (hs J D X c ho hcov hc R n)

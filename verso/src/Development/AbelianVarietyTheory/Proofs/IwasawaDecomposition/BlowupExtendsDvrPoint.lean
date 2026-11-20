@@ -10,6 +10,21 @@ noncomputable section
 
 namespace GlobalTheory.TorRef
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c X Z Y BY π e J EX n hB W _ _ _ hW χ t mt hr`. Take `⟨-, hZX, hπs, hjQ, -, -, -⟩` from `hB`. Establish `hZY : Z.jQ ≫ e.inv = Y.jQ` using `by rw [← hjQ, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Take `⟨t₀, n₁, n₂, -⟩` from `cmpSt_of_sabExtNormalSt (sabExtNormalSt_of_homExtNormalSt homExtNormal) E H D l Xo c c.F (𝓞 c.F) (RingHom.id c.F) (algebraMap (𝓞 c.F) c.F) Y Z e.inv hZY (ModelRelCompare.normal_genericFibre Z (ModelRelCompare.isDedFrac_in_use c).1).1`. Take `⟨a⟩` from `TraitOrder.cancel (g := χ ≫ e.hom) (h := χ ≫ genι Y) (by rw [Category.assoc, e.hom_inv_id_assoc]) n₂ mt`.
+
+Take `⟨b⟩` from `TraitOrder.comp (h := (χ ≫ e.hom) ≫ genι Z) rfl n₁ a`. Set `ρ : gen Z ⟶ gen X` to `pullback.map Z.s (spMap (algebraMap (𝓞 c.F) c.F)) X.s (spMap (algebraMap (𝓞 c.F) c.F)) π (𝟙 _) (𝟙 _) (by rw [Category.comp_id, hπs]) (by rw [Category.comp_id, Category.id_comp])`. Establish `hρι : ρ ≫ genι X = genι Z ≫ π` using `pullback.lift_fst _ _ _`. Establish `hρ : Z.jQ ≫ ρ = X.jQ`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hρι, ← Category.assoc]`. Conclude with `hZX`. Rewrite using `[Category.assoc, pullback.lift_snd, Category.comp_id, Z.jQ_over, X.jQ_over]`. Take `⟨t₁, m₁, m₂, -⟩` from `cmpSt_of_sabExtNormalSt (sabExtNormalSt_of_homExtNormalSt homExtNormal) E H D l Xo c (𝓞 c.F) (𝓞 c.F) (algebraMap (𝓞 c.F) c.F) (algebraMap (𝓞 c.F) c.F) X Z ρ hρ (ModelRelCompare.normal_genericFibre Z (ModelRelCompare.isDedFrac_in_use c).1).1`. Take `⟨a'⟩` from `TraitOrder.cancel (g := χ ≫ e.hom) rfl m₁ b`.
+
+Take `⟨b'⟩` from `TraitOrder.comp (h := χ ≫ e.hom ≫ genι Z ≫ π) (by simp only [hρι, Category.assoc]) m₂ a'`. Use `⟨⟨b'⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Establish `hz : (jK W ≫ χ) p ∈ Set.range Y.jQ`. Rewrite using `[← Y.ab_gen]`.
+
+Take `⟨q, hq⟩` from `hr ⟨p, rfl⟩`. Use `show (jK W ≫ χ ≫ genι Y) p ∈ abLocus Y.t.G`. Rewrite using `[← hq]`. Use `show genι Y (Y.jQ q) ∈ abLocus Y.t.G`. Rewrite using `[← Set.mem_preimage, Y.ab_gen]`.
+
+Conclude with `⟨q, rfl⟩`. Take `⟨q, hq⟩` from `hz`. Use `⟨q, ?_⟩` and prove the remaining obligations. Rewrite using `[← hZX]`. Use `show (Z.j ≫ π) q = _`.
+
+Rewrite using `[show Z.j = Z.jQ ≫ genι Z from rfl, ← hjQ]`. Simplify using `only [Scheme.Hom.comp_apply] at hq ⊢`. Rewrite using `[hq]`.
+-/
 theorem blow_sabMap_trait : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (X Z : GMod Xo c) (Y : Model Xo c (RingHom.id c.F)) (BY : EffCartierData Y.X) (π : Z.X ⟶ X.X) (e : gen Y ≅ gen Z) (J : X.X.IdealSheafData) (EX : EffCartierData Z.X) (n : ℕ), IsBlowOf X Z Y BY π e J EX n → ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], CDvr W → ∀ (χ : Sp W ⟶ gen Y) (t : SAB H (Sp W)), SABMap t Y.t (χ ≫ genι Y) → Set.range (jK W ≫ χ ≫ genι Y) ⊆ Set.range Y.j → Nonempty (SABMap t X.t (χ ≫ e.hom ≫ genι Z ≫ π)) ∧ Set.range (jK W ≫ χ ≫ e.hom ≫ genι Z ≫ π) ⊆ Set.range X.j := by
   intro E _ _ _ H D l Xo c X Z Y BY π e J EX n hB W _ _ _ hW χ t mt hr
   obtain ⟨-, hZX, hπs, hjQ, -, -, -⟩ := hB

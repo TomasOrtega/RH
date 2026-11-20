@@ -11,6 +11,31 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 open GlobalTheory.ConeSmallUnf
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B n d n₁ X W X₁ M M₂ H j₀ j₁ χX χW om om₂ r s r₁ s₁ r' s' hP hP₂ hH e₁ hEv v t Ψ hΨ`. Take `⟨ei, ev, hei, hev, hfac⟩` from `hEv.loc`. Establish `hx : H.x ≠ 0`. Introduce `h0`. Establish `h1` using `hH.xy`.
+
+Rewrite `h1` using `[h0]`. Simplify using `[form] at h1`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f, ei f ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+
+Conclude with `hei (ContinuousLinearMap.ext hc)`. Establish `hSB : ∀ c ∈ SB (Fin n × Fin d → Fv F v), ∀ w, Function.update M.vac v c w ∈ SB _`. Introduce `c hc w`. Distinguish the cases in `hwv : w = v`. Substitute `hwv` using the available equality.
+
+Rewrite using `[Function.update_self]`. Conclude with `hc`. Rewrite using `[Function.update_of_ne hwv]`. Conclude with `(hP.good.vac w).1`. Establish `hco : ∀ c : (Fin n × Fin d → Fv F v) → ℂ, ∀ᶠ w in cofinite, Function.update M.vac v c w = M.vac w`.
+
+Introduce `c`. Use `filter_upwards [Filter.eventually_cofinite_ne v] with w hw`. Conclude with `Function.update_of_ne hw _ _`. Establish `hup : ∀ c : (Fin n × Fin d → Fv F v) → ℂ, (fun w => ev w (Function.update M.vac v c w)) = Function.update M₂.vac v (ev v c)`. Introduce `c`.
+
+Use function extensionality and compare the values at `w`. Distinguish the cases in `hwv : w = v`. Substitute `hwv` using the available equality. Rewrite using `[Function.update_self, Function.update_self]`. Rewrite using `[Function.update_of_ne hwv, Function.update_of_ne hwv]`.
+
+Conclude with `(hev w).1`. Establish `hloc : ∀ z : Fin d → AE F E, ∀ φ ∈ SB (Fin n × Fin d → Fv F v), ∀ φ₁ ∈ SB (Fin n × Fin d → Fv F v), Acts (evFin F v) (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) z)) φ φ₁ → ev v φ₁ = ev v φ`. Introduce `z φ hφ φ₁ hφ₁ hact₀`. Establish `hstd` using `GlobalTheory.PureFactor.update_eventually M.vac v φ hP.good.std`. Establish `hpure` using `GlobalTheory.TensUniq.pure_mem_schA f _ (hSB φ hφ) hstd`.
+
+Establish `hfin` using `GlobalTheory.PureFactor.mulSupport_finite _ hstd`. Establish `hact : Acts (evFin F v) (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) z)) (Function.update M.vac v φ v) φ₁`. Rewrite using `[Function.update_self]`. Conclude with `hact₀`. Establish `hrho` using `GlobalTheory.ThK.LocalOps.acts_pure v _ f _ φ₁ hpure hfin hact`.
+
+Rewrite `hrho` using `[Function.update_idem]`. Establish `hinv` using `hEv.inv _ ⟨z, rfl⟩ _ hpure`. Rewrite `hinv` using `[hrho, hfac f _ (hSB φ₁ hφ₁) (hco φ₁), hfac f _ (hSB φ hφ) (hco φ), hup, hup]`. Conclude with `GlobalTheory.VanishLocInv.eq_of_pure_update_eq M₂.vac (fun w => (hP₂.good.vac w).2.1) hP₂.good.std (ei f) hf v _ _ hinv`. Establish `hzero : ∀ φ ∈ M.SoLoc B.ψ t, ev v φ = 0`.
+
+Introduce `φ hφ`. Use function extensionality and compare the values at `y`. Conclude with `UpperTheory.local_theta_functional F E σ B n d X W M r s r' s' hP.base hP.herm hP.skew H.x hx v t ((LinearMap.proj y).comp (ev v)) (fun z _ φ hφ φ₁ hφ₁ h => congrFun (hloc z φ hφ φ₁ hφ₁ h) y) φ hφ`. Establish `hle : M.So B.ψ t ≤ LinearMap.ker e₁`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `Φ ⟨g, φ, hφ, hφv, hφs, rfl⟩`. Use `show e₁ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g φ) = 0`. Rewrite using `[hfac g φ hφ hφv]`. Establish `hstd : ∀ᶠ w in cofinite, ev w (φ w) = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1` using `by filter_upwards [hφv, hP₂.good.std] with w h1 h2`. Rewrite using `[h1, (hev w).1, h2]`.
+
+Use function extensionality and compare the values at `x`. Establish `hfin` using `GlobalTheory.PureFactor.mulSupport_finite (fun w => ev w (φ w)) hstd x`. Rewrite using `[GlobalTheory.ThK.LocalOps.pure_split v (ei g) (fun w => ev w (φ w)) (fun w => ev w (φ w)) x hfin (fun _ _ => rfl)]`. Simplify using `only [hzero _ hφs, Pi.zero_apply, zero_mul]`. Conclude with `hle hΨ`.
+-/
 theorem UpperTheory.theta_pair_plane_unipotent :
     GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
                  (n d n₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (M : Model σ X W) (M₂ : Model σ X₁ W) (H : Plane E n n₁) (j₀ j₁ : ℕ)

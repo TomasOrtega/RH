@@ -12,6 +12,9 @@ namespace Formalism.IndefR.NX
 
 section PsiU
 
+/- English proof (translation)
+The claim follows from `tied_U_clauses D θ (fun _ => xiRedNZ D) hθ hU hψ`.
+-/
 theorem psiU_tied (D : D7)
     (θ : ∀ i, ∀ k : Fin 2, Multiplicative (ZMod (D.host.g k)) →* (FractionRing (D.ntw.O i))ˣ)
     (hθ : 2 ≤ D.R.r → ∀ i k, θ i k ≠ 1) (hU : D.nexp.U = U D.nd)
@@ -38,6 +41,9 @@ def bcRep {W₀ : Type} [AddCommGroup W₀] [Module K W₀] (ρ₀ : Representat
   map_one' := by rw [map_one]; exact LinearMap.baseChange_id
   map_mul' γ δ := by rw [map_mul]; exact LinearMap.baseChange_mul _ _
 
+/- English proof (translation)
+The claim follows from `LinearMap.toMatrix_baseChange K' (ρ₀ γ) b b`.
+-/
 theorem toMatrix_bcRep {W₀ : Type} [AddCommGroup W₀] [Module K W₀] {ι : Type} [Fintype ι] [DecidableEq ι]
     (b : Module.Basis ι K W₀) (ρ₀ : Representation K G W₀) (γ : G) :
     LinearMap.toMatrix (Algebra.TensorProduct.basis K' b) (Algebra.TensorProduct.basis K' b) (bcRep (K' := K') ρ₀ γ) =
@@ -58,6 +64,13 @@ section AlgBC
 
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {K K' : Type} [Field K] [Field K'] [Algebra K K']
 
+/- English proof (translation)
+Take `⟨hfd, ι, hι, hdec, bs, κ, hκ, eb, P, hP⟩` from `h`. Use `hfd` as an intermediate fact. Use `⟨inferInstance, ι, hι, hdec, Algebra.TensorProduct.basis K' bs, κ, hκ, eb, fun a a' => MvPolynomial.map (algebraMap K K') (P a a'), fun γ γ₀ hγ => ?_⟩` and prove the remaining obligations. Rewrite using `[toMatrix_bcRep, hP γ γ₀ hγ]`. Use extensionality with `a a'`.
+
+Simplify using `only [MvPolynomial.eval_map]`. Use `show algebraMap K K' (MvPolynomial.eval₂ (RingHom.id K) _ (P a a')) = _`. Rewrite using `[MvPolynomial.eval₂_comp_left, RingHom.comp_id]`. Use `congr 1`. Use function extensionality and compare the values at `p`.
+
+Simplify using `[map_ratCast]`.
+-/
 theorem isAlgWeightF_bc {W₀ : Type} [AddCommGroup W₀] [Module K W₀]
     (ρ₀ : Representation K (GQ L n) W₀) (h : IsAlgWeightF L n K ρ₀) : IsAlgWeightF L n K' (bcRep (K' := K') ρ₀) := by
   obtain ⟨hfd, ι, hι, hdec, bs, κ, hκ, eb, P, hP⟩ := h
@@ -115,6 +128,17 @@ end LevNX
 
 section ChrG
 
+/- English proof (translation)
+Unfold `Formalism.L2.NX.supSum Formalism.L2.Col.supSum`. Establish `hout : ∀ F : Fin n → R, (∀ i : Fin n, r ≤ i.val → F i = 0) → ∑ i : Fin n, F i = ∑ a : Fin r, F (Fin.castLE h a)`. Introduce `F hF`. Use `symm`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.sum_map]`. Both sides reduce to the same expression. Use `_ = ∑ i : Fin n, F i := Finset.sum_subset (Finset.subset_univ _) fun i _ hi => hF i (by`. Assume the negation of the conclusion as `hlt`. Conclude with `hi (Finset.mem_map.2 ⟨⟨i.val, by omega⟩, Finset.mem_univ _, Fin.ext rfl⟩))`.
+
+Rewrite using `[hout]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hout]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.val_castLE, Matrix.submatrix_apply, Finset.mem_range]`.
+
+Establish `hcl` using `c.isLt`. Distinguish the cases in `hc : (c : ℕ) = a + 1`. Rewrite using `[if_pos hc, if_pos ⟨hc.symm, hcl, by omega⟩]`. Rewrite using `[if_neg hc, if_neg fun h' => hc h'.1.symm]`. Introduce `j hj`.
+
+Rewrite using `[if_neg fun ⟨_, h2, _⟩ => by omega]`. Introduce `i hi`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg fun ⟨h1, h2, _⟩ => by omega]`.
+-/
 theorem supSum_block {R : Type} [CommRing R] {r n : ℕ} (h : r ≤ n) (M : Matrix (Fin n) (Fin n) R) :
     Formalism.L2.NX.supSum r (M.submatrix (Fin.castLE h) (Fin.castLE h)) =
       Formalism.L2.Col.supSum r (Finset.range (r - 1)) M := by
@@ -144,6 +168,9 @@ theorem supSum_block {R : Type} [CommRing R] {r n : ℕ} (h : r ≤ n) (M : Matr
     refine Finset.sum_eq_zero fun j _ => ?_
     rw [if_neg fun ⟨h1, h2, _⟩ => by omega]
 
+/- English proof (translation)
+Unfold `Formalism.L2.NX.supSum`. Simplify using `only [map_sum, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem supSum_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {r : ℕ} (A : Matrix (Fin r) (Fin r) R) :
     Formalism.L2.NX.supSum r (A.map f) = f (Formalism.L2.NX.supSum r A) := by
   unfold Formalism.L2.NX.supSum
@@ -159,16 +186,25 @@ local notation3 "L⁺" => NumberField.maximalRealSubfield L
 
 variable {F : Type} [CommRing F]
 
+/- English proof (translation)
+Unfold `intLift`. Rewrite using `[dif_pos h]`.
+-/
 theorem intLift_of_mem (v : HeightOneSpectrum (𝓞 L⁺)) (y : v.adicCompletion L⁺)
     (h : y ∈ v.adicCompletionIntegers L⁺) : intLift v y = ⟨y, h⟩ := by
   unfold intLift
   rw [dif_pos h]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_upperTriangular h.1]`. Simplify using `[h.2]`.
+-/
 theorem isUnit_det_of_uniTri {R : Type} [CommRing R] {r : ℕ} {A : Matrix (Fin r) (Fin r) R} (h : IsUniTri r A) :
     IsUnit A.det := by
   rw [Matrix.det_of_upperTriangular h.1]
   simp [h.2]
 
+/- English proof (translation)
+Simplify using `only [lamGen, MonoidHom.mul_apply, Units.val_mul, supChar_val, MonoidHom.comp_apply, detChar_apply, List.length_singleton, Finset.prod_range_one, zero_add]`.
+-/
 theorem lamGen_val {κ K : Type} [CommRing κ] [Field K] {m r : ℕ} (ψ : AddChar κ K) (ξ : κˣ →* Kˣ) (S : Finset ℕ)
     (M : uniUT m κ r [m - r]) :
     ((lamGen ψ (fun _ => ξ) m r [m - r] S M : Kˣ) : K) =
@@ -185,6 +221,15 @@ variable (D : D7) (i : D.ntw.Tw) (b : Bool) (k : ℕ)
 
 open Classical in
 
+/- English proof (translation)
+Establish `hmem : (Pi.mulSingle kv Gm : G0g D.nd) ∈ D.nexp.U`. Rewrite using `[hU, mem_U]`. Introduce `kv'`. Distinguish the cases in `h : kv' = kv`. Substitute `h` using the available equality.
+
+Rewrite using `[Pi.mulSingle_eq_same]`. Conclude with `⟨fun a c hca => hG.1 hca, hG.2⟩`. Rewrite using `[Pi.mulSingle_eq_of_ne h]`. Use `⟨fun a c hca => ?_, fun a => by simp⟩` and prove the remaining obligations. Establish `hne : a ≠ c` using `fun e => by subst e; exact lt_irrefl _ hca`.
+
+Simplify using `[Matrix.one_apply_ne hne]`. Unfold `psiUTot`. Rewrite using `[dif_pos hmem, hψ ⟨_, hmem⟩, psiUD, psiUOf_apply, Finset.prod_eq_single kv]`. Simplify using `only`. Rewrite using `[Pi.mulSingle_eq_same]`.
+
+Introduce `kv' _ hne dsimp only`. Rewrite using `[Pi.mulSingle_eq_of_ne hne]`. Simplify using `[Formalism.L2.NX.supSum_one]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ kv) h`.
+-/
 theorem psiUTot_single (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (FractionRing (D.ntw.O i))ˣ)
     (hU : D.nexp.U = U D.nd)
     (hψ : ∀ (u : D.nexp.U), D.nexp.psiU i b u = psiUD D i θ b ⟨u.1, by rw [← hU]; exact u.2⟩)
@@ -218,6 +263,9 @@ theorem psiUTot_single (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk))
 
 open Classical in
 
+/- English proof (translation)
+Establish `hU' : IsUnit (red (intLift s.v (detT D.R.r xm)))` using `by rw [hu]; exact u.isUnit`. Unfold `gVal`. Use `show toKk D i k (psiUTot D i b (Pi.mulSingle kv (glOf (redMat s.v red (topR hrn xm))))) * (if h : IsUnit (red (intLift s.v (detT D.R.r xm))) then toKk D i k ((τ' h.unit : (FractionRing (D.ntw.O i))ˣ) : FractionRing (D.ntw.O i)) else 1) = _`. Rewrite using `[hG, dif_pos hU', show hU'.unit = u from Units.ext (by rw [IsUnit.unit_spec, hu])]`.
+-/
 theorem gVal_of (kv : Σ kk : Fin 2, D.nd.PlG kk) (s : SplitPlace D.host.E)
     (red : s.v.adicCompletionIntegers (maximalRealSubfield D.host.E) →+* ZMod (D.host.g kv.1))
     (τ' : (ZMod (D.host.g kv.1))ˣ →* (FractionRing (D.ntw.O i))ˣ)
@@ -252,6 +300,9 @@ def tauNX (i : D.ntw.Tw) (j : ℕ) (b : Bool) (kv : Σ kk : Fin 2, D.nd.PlG kk) 
     (ZMod (D.host.g kv.1))ˣ →* (FractionRing (D.ntw.O i))ˣ :=
   if h : TauTame D i j b kv then h.choose else 1
 
+/- English proof (translation)
+Introduce `i j b kv x u hl hu`. Establish `h` using `hT i j b kv hl`. Rewrite using `[one_mul, tauNX, dif_pos h]`. Conclude with `h.choose_spec x u hu`.
+-/
 theorem twisted_character_value (hT : ∀ i j b kv, pG D kv ∉ placesOver D.host.E (D.ntw.l i) → TauTame D i j b kv) :
     ∀ i j b kv (x : (ZMod (D.host.g kv.1))ˣ) (u : 𝓞 D.host.E), pG D kv ∉ placesOver D.host.E (D.ntw.l i) →
       (((x : ZMod (D.host.g kv.1)).val : 𝓞 D.host.E) - u) ∈ (pG D kv).asIdeal →
@@ -284,6 +335,9 @@ def qpOf (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D
     Finset (PlE D.host) :=
   S.filter fun P => ∀ v, NG.OverPl P v → P = Pq v ∨ Pq v ∉ S
 
+/- English proof (translation)
+Introduce `P hP`. Unfold `qpOf at hP`. Conclude with `(Finset.mem_filter.1 hP).1`.
+-/
 theorem qpOf_sub (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : Finset (PlE D.host)) :
     qpOf D Pq S ⊆ S := by
   classical
@@ -291,6 +345,9 @@ theorem qpOf_sub (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) �
   unfold qpOf at hP
   exact (Finset.mem_filter.1 hP).1
 
+/- English proof (translation)
+Unfold `qpOf at hP`. Conclude with `((Finset.mem_filter.1 hP).2 v hv).resolve_right (not_not.2 hS)`.
+-/
 theorem qpOf_eq (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : Finset (PlE D.host))
     {P : PlE D.host} (hP : P ∈ qpOf D Pq S) {v : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))}
     (hv : NG.OverPl P v) (hS : Pq v ∈ S) : P = Pq v := by

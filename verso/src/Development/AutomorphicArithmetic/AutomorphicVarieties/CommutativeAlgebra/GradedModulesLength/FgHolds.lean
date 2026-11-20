@@ -2,6 +2,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg UpperTheory.V.Alg.M
 
+/- English proof (translation)
+Introduce `O _ _ _ _ _ A _ _ 𝒜 _ _ x hx j`. Take `⟨s, -, hadj⟩` from `hx.gen`. Establish `hadj' : Algebra.adjoin (𝒜 0) (s : Set A) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `y _`.
+
+Establish `hy : y ∈ Algebra.adjoin O ((𝒜 0 : Set A) ∪ ↑s)` using `by rw [hadj]; trivial`. Establish `hle : Algebra.adjoin O ((𝒜 0 : Set A) ∪ ↑s) ≤ (Algebra.adjoin (𝒜 0) (s : Set A)).restrictScalars O`. Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `z (hz | hz)`. Rewrite using `[SetLike.mem_coe, Subalgebra.mem_restrictScalars]`.
+
+Conclude with `(Algebra.adjoin (𝒜 0) (s : Set A)).algebraMap_mem ⟨z, hz⟩`. Rewrite using `[SetLike.mem_coe, Subalgebra.mem_restrictScalars]`. Conclude with `Algebra.subset_adjoin hz`. Conclude with `(Subalgebra.mem_restrictScalars O).1 (hle hy)`. Use `haveI : Algebra.FiniteType (𝒜 0) A := ⟨⟨s, hadj'⟩⟩`.
+
+Use `haveI : IsNoetherianRing A := Algebra.FiniteType.isNoetherianRing (𝒜 0) A`. Establish `hI : (Ideal.span (𝒜 j : Set A)).FG` using `IsNoetherian.noetherian _`. Take `⟨t, ht, hspan⟩` from `(Submodule.fg_span_iff_fg_span_finset_subset _).1 hI`. Use `⟨t, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`.
+
+Conclude with `ht`. Introduce `y hy`. Establish `hyA : y ∈ 𝒜 j` using `hy`. Establish `hy' : y ∈ Submodule.span A (t : Set A)`. Rewrite using `[← hspan]`.
+
+Conclude with `Submodule.subset_span hyA`. Take `⟨f, -, hf⟩` from `Submodule.mem_span_finset.1 hy'`. Establish `hyj : y = (DirectSum.decompose 𝒜 y j : A)` using `(DirectSum.decompose_of_mem_same 𝒜 hyA).symm`. Rewrite using `[hyj, ← hf, DirectSum.decompose_sum, DFinsupp.finset_sum_apply, Submodule.coe_sum]`. Use `Submodule.sum_mem _ fun i hi => ?_` and prove the remaining obligations.
+
+Establish `e : (DirectSum.decompose 𝒜 (f i • i) j : A) = (DirectSum.decompose 𝒜 (f i) 0 : A) * i`. Use `DirectSum.coe_decompose_mul_add_of_right_mem 𝒜 (a := f i) (i := 0) (ht hi)` as an intermediate fact. Rewrite `this` using `[zero_add]`. Conclude with `this`. Rewrite using `[e]`.
+
+Conclude with `Submodule.smul_mem _ (DirectSum.decompose 𝒜 (f i) 0) (Submodule.subset_span hi)`.
+-/
 theorem UpperTheory.V.Alg.M.fg_holds :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O]
       (A : Type) [CommRing A] [Algebra O A] (𝒜 : ℤ → Submodule O A) [GradedAlgebra 𝒜] [IsCO O (𝒜 0)] (x : A →ₐ[O] O), IsWRing 𝒜 x →

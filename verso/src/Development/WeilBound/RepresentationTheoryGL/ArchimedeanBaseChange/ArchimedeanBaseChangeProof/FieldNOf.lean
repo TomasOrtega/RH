@@ -34,6 +34,11 @@ def FullSat : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Un
 def FullTheta : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ)
   (π : Submodule ℂ (UA E n → ℂ)), IsAutRepU π → ∀ D : Pre E n, Full π D → D.ThetaStable
 
+/- English proof (translation)
+Take `⟨k, D, hD, hT⟩` from `h E hE n hn π hπ S hS`. Establish `key : ∃ j, ∀ w, IsUnramU π w → ¬ IsSplitAt w → InertAt π (D j) w`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Use `choose w hw1 hw2 hw3 using hcon`.
+
+Take `⟨j, hj⟩` from `hT (Finset.univ.image w)`. Conclude with `hw3 j (hj (w j) (Finset.mem_image_of_mem w (Finset.mem_univ j)) (hw1 j) (hw2 j))`. Take `⟨j, hj⟩` from `key`. Conclude with `⟨D j, ⟨(hD j).1, hj⟩, (hD j).2⟩`.
+-/
 theorem full_of (h : RunFin) (hE : Unr E) (hn : 1 ≤ n) (π : Submodule ℂ (UA E n → ℂ)) (hπ : IsAutRepU π)
     (S : Finset (HeightOneSpectrum (𝓞 E))) (hS : S.card ≤ 1) :
     ∃ D : Pre E n, Full π D ∧ ∀ w ∈ S, IsSplitAt w → D.SplitAt π w := by
@@ -49,6 +54,19 @@ theorem full_of (h : RunFin) (hE : Unr E) (hn : 1 ≤ n) (π : Submodule ℂ (UA
   exact ⟨D j, ⟨(hD j).1, hj⟩, (hD j).2⟩
 
 open GlobalTheory.PfBCI in
+/- English proof (translation)
+Introduce `E _ _ _ hE n hn π hπ`. Take `⟨D, hDf, -⟩` from `full_of hR hE hn π hπ ∅ (by simp)`. Establish `hReg : ∀ D' : Pre E n, Full π D' → D'.Reg` using `fun D' hD' τ => by`. Take `⟨lam, hlam⟩` from `hW E n π hπ τ`. Conclude with `⟨lam, hD'.1.1 τ lam hlam⟩`.
+
+Establish `hTh : D.ThetaStable` using `hT E hE n π hπ D hDf`. Establish `hplace : ∀ w, ∃ P, GlobalTheory.PfBCI.AtPlace π D.h D.σ w P`. Introduce `w`. Distinguish the cases in `hs : IsSplitAt w`. Take `⟨Dw, hDwf, hDws⟩` from `full_of hR hE hn π hπ {w} (by simp)`.
+
+Take `⟨P, hPsub, hPc⟩` from `hDws w (Finset.mem_singleton_self w) hs`. Take `⟨e, he⟩` from `hL E n D Dw (hReg D hDf) (hReg Dw hDwf) (hS E hE n π hπ D Dw hDf hDwf)`. Conclude with `⟨P, GlobalTheory.PfBCI.split_component D.h D.σ hs P (hP E n D Dw e w (fun i => he i w) P hPsub) (GlobalTheory.PfBCI.split_spherical hπ hs P hPc) hPc⟩`. Distinguish the cases in `hu : IsUnramU π w`. Take `⟨B, hB, hBeq⟩` from `hDf.2 w hu hs`.
+
+Take `⟨b, hb, hbsum⟩` from `hB`. Take `⟨P, hPsub, hPsph, hPsat⟩` from `GlobalTheory.PfBCI.unram_component D.h w (fun i => D.σ i w) b hb`. Use `⟨P, hPsub, fun _ => hPsph, ?_, fun h' => absurd h' hs⟩` and prove the remaining obligations. Introduce `s ϖ q hsc hq α hα`. Rewrite using `[← hBeq s ϖ q hsc hq α hα, ← hbsum]`.
+
+Conclude with `hPsat`. Take `⟨P, hPsub⟩` from `GlobalTheory.PfBCI.local_subquotient D.h w (fun i => D.σ i w)`. Conclude with `⟨P, hPsub, fun h' => absurd h' hu, GlobalTheory.PfBCI.inert_of_not_unram hu P, fun h' => absurd h' hs⟩`. Use `choose P hPl using hplace`. Use `⟨D.c, D.N, D.h, D.V, D.σ, D.m, P, ?_⟩` and prove the remaining obligations.
+
+Conclude with `⟨D.pos, D.discrete, PositivityTheory.Rg.BcB.F.Rig.csdAsc_of h1 h2 D (hReg D hDf) hTh, D.loc, D.inf, fun w => (hPl w).1, fun w => (hPl w).2.1, fun w => (hPl w).2.2.1, fun w => (hPl w).2.2.2, hDf.1.1⟩`.
+-/
 theorem fieldN_of (hR : RunFin) (hS : FullSat) (hT : FullTheta) (hW : WeightEx) (h1 : Strings) (h2 : CuspCsd)
     (hL : LocRigid) (hP : PermSub) : PositivityTheory.Rg.BcN.BaseChangeIsobaricN := by
   intro E _ _ _ hE n hn π hπ

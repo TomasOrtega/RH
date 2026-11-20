@@ -16,6 +16,15 @@ def LimEvT (p : KB.Pl P Wp Wq) (χ : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →
   ∀ w, TBB.AdmW P p.l0 Y w → w.length ≤ N →
     Tendsto (fun ε : ℝ => (p.RR (D.cutF p.T.base χ F ε) 0 w [] []).re) (𝓝[>] 0) (𝓝 (p.RR F 0 w [] []).re)
 
+/- English proof (translation)
+Introduce `w hw hl`. Establish `hE` using `hEv w hw hl`. Establish `hP` using `hPos w hw hl`. Establish `hB` using `hBd w hw hl`. Establish `hN : 0 ≤ TBB.normC nn w`.
+
+Unfold `TBB.normC`. Conclude with `List.prod_nonneg (fun x hx => by`. Take `⟨l, _, rfl⟩` from `List.mem_map.1 hx`. Conclude with `hnn _)`. Distinguish the cases in `hb : 0 < (B.beta p.T.base F F).re`.
+
+Use `⟨(p.RR F 0 w [] []).re / (B.beta p.T.base F F).re, div_nonneg hP hb.le, (div_le_iff₀ hb).2 hB, ?_⟩` and prove the remaining obligations. Rewrite using `[div_mul_cancel₀ _ hb.ne']`. Conclude with `hE`. Establish `hb' : (B.beta p.T.base F F).re ≤ 0` using `not_lt.1 hb`. Establish `hR0 : (p.RR F 0 w [] []).re = 0` using `le_antisymm (hB.trans (mul_nonpos_of_nonneg_of_nonpos hN hb')) hP`.
+
+Use `⟨0, le_refl 0, hN, ?_⟩` and prove the remaining obligations. Rewrite using `[zero_mul]`. Rewrite `hE` using `[hR0]`. Conclude with `hE`.
+-/
 theorem limE_of_partsT (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (χ : ℝ → ℝ) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp))
     (Y : Finset ℝ) (N : ℕ) (hnn : ∀ y, 0 ≤ nn y) (hEv : LimEvT p χ F Y N) (hPos : LimPos p F Y N)
     (hBd : LimBd p nn F Y N) : LimE p nn χ F Y N := by
@@ -42,6 +51,11 @@ theorem limE_of_partsT (p : KB.Pl P Wp Wq) (nn : ℝ → ℝ) (χ : ℝ → ℝ)
 
 end place
 
+/- English proof (translation)
+Take `⟨Cc, hCc⟩` from `Formalism.FourierDecayAlt.P.limit_of_module_forms Cb`. Use `⟨Cc, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p F χ A N Y hDD hχ hF hFA hth hEv w hw hN`. Establish `hcut : ∀ ε : ℝ, 0 < ε → 0 ≤ (p.RR (D.cutF p.T.base χ F ε) 0 w [] []).re`. Introduce `ε hε`.
+
+Take `⟨hcpt, hlim⟩` from `hCc Wp Wq P p F χ ε A N (cutN P.k P.r) hDD hχ hε hF hFA hth (fun _ _ => rfl)`. Establish `hT` using `(Complex.continuous_re.tendsto _).comp (hlim 0 w hw.1 hN [] [])`. Conclude with `ge_of_tendsto hT (Eventually.of_forall fun n => truncated_limit_positivity_holds hA p (hcpt n) Y N w hw hN)`. Conclude with `ge_of_tendsto (hEv w hw hN) (eventually_nhdsWithin_of_forall fun ε hε => hcut ε hε)`.
+-/
 theorem limPos_of_limEvT (hA : P5.ThmPActual) (Cb : ℝ) : ∃ Cc : ℝ, ∀ (Wp Wq : Type) [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp]
     [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (χ : ℝ → ℝ)
@@ -59,6 +73,9 @@ theorem limPos_of_limEvT (hA : P5.ThmPActual) (Cb : ℝ) : ∃ Cc : ℝ, ∀ (Wp
     exact ge_of_tendsto hT (Eventually.of_forall fun n => truncated_limit_positivity_holds hA p (hcpt n) Y N w hw hN)
   exact ge_of_tendsto (hEv w hw hN) (eventually_nhdsWithin_of_forall fun ε hε => hcut ε hε)
 
+/- English proof (translation)
+Take `⟨Cc, hC⟩` from `limPos_of_limEvT hA Cb`. Use `⟨Cc, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p F χ nn A N Y h1 h2 h3 h4 h5 h6 hEv hBd`. Conclude with `limE_of_partsT p nn χ F Y N h3 hEv (hC Wp Wq P p F χ A N Y h1 h2 h4 h5 h6 hEv) hBd`.
+-/
 theorem limE_of_limEvT (hA : P5.ThmPActual) (Cb : ℝ) : ∃ Cc : ℝ, ∀ (Wp Wq : Type) [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp]
     [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (χ nn : ℝ → ℝ)
@@ -74,6 +91,11 @@ theorem limE_of_limEvT (hA : P5.ThmPActual) (Cb : ℝ) : ∃ Cc : ℝ, ∀ (Wp W
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
+/- English proof (translation)
+Take `⟨C₄, c₃, Cc, h⟩` from `thmBpAt_main1 hA Cb C₃ CΛ C₀ hC₃ hCΛ hC₀`. Take `⟨Cc', hL⟩` from `limE_of_limEvT hA Cb`. Use `⟨C₄, c₃, Cc, Cc', ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f b Λ A₀ p₀ χ nn Y K N h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14 h15 h16 h17 h18 h19 hEv hBd`. Establish `hid : B.CkOn ⊤ (B.GV P.k P.r) (fun _ : B.Mat P.k P.r => ContinuousLinearMap.id ℂ Wq)` using `fun _ _ => ⟨Set.univ, fun _ => ContinuousLinearMap.id ℂ Wq, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩`.
+
+Conclude with `h Wp Wq P p f b Λ A₀ p₀ χ nn Y K N h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14 h16 h17 h18 h19 (hL Wp Wq P p (TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀) χ nn (A₀ - (((2 * P.r + 2) * p₀ : ℕ) : ℝ)) N Y h10 h8 (fun y => (h9 y).le) (ckOn_fpm p p₀ h11 hid) (inCC_fpm_i …`.
+-/
 theorem thmBpAt_main2 (hA : P5.ThmPActual) (Cb C₃ CΛ C₀ : ℝ) (hC₃ : 0 ≤ C₃) (hCΛ : 0 ≤ CΛ) (hC₀ : 1 / 2 ≤ C₀) :
     ∃ C₄ c₃ Cc Cc' : ℝ, ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
       [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq)

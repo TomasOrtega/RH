@@ -17,6 +17,19 @@ open Classical
 
 namespace GlobalTheory.ChainOnto.CoefSuppPf
 
+/- English proof (translation)
+Introduce `D _hgap c hc k _hk s s' hs hs' p hp m X hX φ g hg hnot`. Take `⟨ξ, f₀, hvec⟩` from `hp.vec`. Establish `hthf : IsThetaFunO c.ψ s.V s'.V p.f` using `GlobalTheory.VecTheta.isThetaFunO_stepVec hvec`. Take `⟨_hvac, e, he, hth⟩` from `hvec`. Take `⟨hr, ξL, hL⟩` from `hs.lev`.
+
+Establish `hQ : s.L.Q = ∅` using `by rw [hL]; rfl`. Establish `hPg : s.L.Pg = c.Pg` using `by rw [hL]; rfl`. Establish `hrank : s.V.rank ≤ s'.V.rank`. Rewrite using `[hs.rank, hs'.rank]`. Use `show D.R.r + k * D.R.t ≤ D.R.r + (k + 1) * D.R.t`.
+
+Conclude with `Nat.add_le_add_left (Nat.mul_le_mul_right _ (Nat.le_succ k)) _`. Establish `hint : ∀ v, (∀ PP ∈ s.L.Pg, PP.under (𝓞 D.host.F) ≠ v) → GlobalTheory.AdelicU.proj D.sp.cm.sig s.V.gram v g ∈ GlobalTheory.AdelicU.stabLoc D.sp.cm.sig s.V.gram s.Λ v`. Introduce `v hv`. Apply `hg v` to reduce the goal to its premises. Introduce `hmem`.
+
+Simplify using `only [Com.S, Finset.mem_image] at hmem`. Take `⟨PP, hPP, hPPv⟩` from `hmem`. Conclude with `hv PP (hPg ▸ hPP) hPPv`. Establish `hsupp` using `fun x hx => by_contra fun h => hnot (GlobalTheory.T.finitePart_mem_level_of_thetaDatum_ne_zero D s.V s'.V s.Λ s.β s'.β s.L (c.chi (k + 1)) ξ e hs.selfDual hs.frame hrank hQ he g hint x hx h)`. Establish `hsb` using `GlobalTheory.T.thetaChainStep_finiteDatum_isSchwartzBruhat_half D s.V s'.V s.Λ s'.Λ s.β s'.β s.L (c.chi (k + 1)) ξ (s.L.Pg ∪ ∅) e hs.selfDual hs'.selfDual hs.frame hs'.frame he`.
+
+Take `⟨n, a, y, hy, h1, h2⟩` from `GlobalTheory.T.heisenberg_fix_and_kill_theta_off_support_move D c.ψ s.V s'.V hc.std s.Λ s'.Λ hs.selfDual hs'.selfDual (s.L.Pg ∪ ∅) e he f₀ _ p.f hsb hth g hsupp`. Take `⟨H1, -⟩` from `GlobalTheory.T.heisenberg_combination_comm_fockPolynomialVectors D c.ψ c.θ s.V s'.V hc.std hc.inf (cart s.M) (cart s'.M) (onb s.M) (onb s'.M) p.f hthf n a y (fun i => (hy i).1) φ`. Take `⟨H2, H0⟩` from `GlobalTheory.T.heisenberg_combination_comm_fockPolynomialVectors D c.ψ c.θ s.V s'.V hc.std hc.inf (cart s.M) (cart s'.M) (onb s.M) (onb s'.M) p.f hthf n (fun i => conj (a i)) (fun i => actO s.V s'.V g⁻¹ 1 (-(y i))) (fun i => (hy i).2) φ`. Establish `R1 : ∑ i, a i • heisO c.ψ s.V s'.V (y i) (p.pt φ) = p.pt φ` using `by show ∑ i, a i • heisO c.ψ s.V s'.V (y i) (pureTensorO c.ψ c.θ s.V s'.V (cart s.M) (cart s'.M) (onb s.M) (onb s'.M) p.f φ) = _`. Rewrite using `[H1, h1]`.
+
+Both sides reduce to the same expression. Establish `R2 : ∑ i, conj (a i) • heisO c.ψ s.V s'.V (actO s.V s'.V g⁻¹ 1 (-(y i))) (p.pt φ) = 0` using `by show ∑ i, conj (a i) • heisO c.ψ s.V s'.V (actO s.V s'.V g⁻¹ 1 (-(y i))) (pureTensorO c.ψ c.θ s.V s'.V (cart s.M) (cart s'.M) (onb s.M) (onb s'.M) p.f φ) = _`. Rewrite using `[H2, h2, H0]`. Conclude with `GlobalTheory.T.weilMatrixCoefficient_eq_zero_of_heisenberg_relations D c.ψ s.V s'.V (c.chS (k + 1)) (c.chT (k + 1)) p.ω hp.weil m X hX (p.pt φ) (hp.theta φ) g n a y R1 R2`.
+-/
 theorem coefSupp : ∀ D : D7, CoefSupp D := by
   intro D _hgap c hc k _hk s s' hs hs' p hp m X hX φ g hg hnot
   obtain ⟨ξ, f₀, hvec⟩ := hp.vec

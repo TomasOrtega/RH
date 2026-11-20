@@ -9,6 +9,11 @@ namespace Formalism.L2.DIV
 
 open Formalism.DivisionValues Formalism.EigenvalueLevelCeiling Formalism.L2.Indef Formalism.DworkPowerSeriesWeights Formalism.DworkPowerSeriesWeights.OddLevelGainBounds Formalism.IncomingBounds
 
+/- English proof (translation)
+Introduce `K _ _ _ w l _ ι hι a s ha h`. Establish `h0` using `norm_l_pos l`. Establish `h1` using `norm_l_lt_one l`. Rewrite `h` using `[hι a ha, Real.rpow_le_rpow_left_iff_of_base_lt_one h0 h1]`. Establish `hr : (1 : ℤ) ≤ ramw w` using `(Formalism.EigenvalueLevelCeiling.ramBasic K w).2.1`.
+
+Establish `hr' : (0 : ℝ) < (ramw w : ℝ)`. Establish `: (0 : ℤ) < ramw w` using `by omega`. Conclude with `this` after adjusting the coercions. Rewrite `h` using `[le_div_iff₀ hr']`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem embedding_lower_bound : EmbLower := by
   intro K _ _ _ w l _ ι hι a s ha h
   have h0 := norm_l_pos l
@@ -21,6 +26,13 @@ theorem embedding_lower_bound : EmbLower := by
   rw [le_div_iff₀ hr'] at h
   linarith
 
+/- English proof (translation)
+Introduce `K _ _ _ w l _ ι hι a ha`. Distinguish the cases in `h : a = 0`. Rewrite using `[h, map_zero, norm_zero]`. Conclude with `zero_le_one`. Establish `hv : 0 ≤ vw w a` using `ha.resolve_left h`.
+
+Establish `hr : (1 : ℤ) ≤ ramw w` using `(Formalism.EigenvalueLevelCeiling.ramBasic K w).2.1`. Establish `hr' : (0 : ℝ) ≤ (ramw w : ℝ)`. Establish `: (0 : ℤ) ≤ ramw w` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hv' : (0 : ℝ) ≤ (vw w a : ℝ)` using `by exact_mod_cast hv`.
+
+Rewrite using `[hι a h]`. Conclude with `Real.rpow_le_one (norm_l_pos l).le (norm_l_lt_one l).le (div_nonneg hv' hr')`.
+-/
 theorem embeddingIntegral_holds : EmbInt := by
   intro K _ _ _ w l _ ι hι a ha
   by_cases h : a = 0
@@ -35,6 +47,11 @@ theorem embeddingIntegral_holds : EmbInt := by
     rw [hι a h]
     exact Real.rpow_le_one (norm_l_pos l).le (norm_l_lt_one l).le (div_nonneg hv' hr')
 
+/- English proof (translation)
+Establish `h0` using `norm_l_pos l`. Establish `h1` using `norm_l_lt_one l`. Establish `hc0 : c ≠ 0` using `fun h => hD (by rw [h] at hc; exact Nat.eq_zero_of_zero_dvd hc)`. Establish `hle : padicValNat l c ≤ padicValNat l D` using `(padicValNat_dvd_iff_le hD).1 (dvd_trans pow_padicValNat_dvd hc)`. Rewrite using `[norm_inv, norm_natCast_eq_pow_padicValNat hl.out h1 hc0, Real.rpow_neg h0.le, Real.rpow_natCast]`.
+
+Conclude with `inv_anti₀ (pow_pos h0 _) (pow_le_pow_of_le_one h0.le h1.le hle)`.
+-/
 theorem norm_inv_natCast_le_of_dvd (l : ℕ) [hl : Fact l.Prime] {c D : ℕ} (hD : D ≠ 0) (hc : c ∣ D) :
     ‖((c : ℕ) : ℂ_[l])⁻¹‖ ≤ ‖(l : ℂ_[l])‖ ^ (-(padicValNat l D : ℝ)) := by
   have h0 := norm_l_pos l
@@ -45,6 +62,21 @@ theorem norm_inv_natCast_le_of_dvd (l : ℕ) [hl : Fact l.Prime] {c D : ℕ} (hD
   rw [norm_inv, norm_natCast_eq_pow_padicValNat hl.out h1 hc0, Real.rpow_neg h0.le, Real.rpow_natCast]
   exact inv_anti₀ (pow_pos h0 _) (pow_le_pow_of_le_one h0.le h1.le hle)
 
+/- English proof (translation)
+Introduce `K _ l hl J A B _ _ _ _ _ X ι D j1 s φ F hx hy hr he hS hE`. Take `⟨hD, hg, hgP, hg1⟩` from `hS`. Establish `h0` using `norm_l_pos l`. Establish `h1` using `norm_l_lt_one l`. Use `set p : ℝ := ‖(l : ℂ_[l])‖ with hp`.
+
+Use `set v : ℝ := (padicValNat l D : ℝ) with hv`. Unfold `PathData.val`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (Real.rpow_nonneg h0.le _) ?_` and prove the remaining obligations. Introduce `π _`. Establish `hfac : ∀ j, ‖(((X.gam π j : ℕ) : ℂ_[l])⁻¹ * X.eps π j * X.e π j)‖ ≤ p ^ (s j - v) * (if j = j1 then p ^ v else 1)`.
+
+Introduce `j`. Rewrite using `[norm_mul, norm_mul]`. Establish `hs0 : 0 ≤ p ^ (s j)` using `Real.rpow_nonneg h0.le _`. Distinguish the cases in `hj : j = j1`. Rewrite using `[if_pos hj, ← Real.rpow_add h0, sub_add_cancel]`.
+
+Establish `: X.gam π j = 1` using `by rw [hj]; exact hg1 π`. Rewrite using `[this, Nat.cast_one, inv_one, norm_one, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[if_neg hj, mul_one, sub_eq_add_neg, Real.rpow_add h0]`. Establish `hi` using `norm_inv_natCast_le_of_dvd l hD (hg π j)`.
+
+Establish `hv0 : 0 ≤ p ^ (-v)` using `Real.rpow_nonneg h0.le _`. Combine the equalities or inequalities in the displayed calculation. Establish `hprod : ‖∏ j : J, (((X.gam π j : ℕ) : ℂ_[l])⁻¹ * X.eps π j * X.e π j)‖ ≤ p ^ (∑ j, (s j - v)) * p ^ v`. Rewrite using `[norm_prod, Real.rpow_sum_of_pos h0]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.prod_mul_distrib, Finset.prod_ite_eq' Finset.univ j1 (fun _ => p ^ v), if_pos (Finset.mem_univ _)]`. Establish `hiP` using `norm_inv_natCast_le_of_dvd l hD (hgP π)`. Establish `hS0 : 0 ≤ p ^ (∑ j, (s j - v)) * p ^ v` using `mul_nonneg (Real.rpow_nonneg h0.le _) (Real.rpow_nonneg h0.le _)`. Establish `hv0 : 0 ≤ p ^ (-v)` using `Real.rpow_nonneg h0.le _`. Rewrite using `[norm_mul, norm_mul, norm_mul, norm_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul (mul_le_mul (mul_le_mul (hx π) hprod (norm_nonneg _) zero_le_one) (hr π) (norm_nonneg _) (by rw [one_mul]; exact hS0)) (mul_le_mul hiP (hy π) (norm_nonneg _) hv0) (mul_nonneg (norm_nonneg _) (norm_nonneg _)) (by rw [one_mul, mul_one]; exact hS0)` and prove the remaining obligations. Use `_ = p ^ (∑ j, (s j - v)) * (p ^ v * p ^ (-v)) := by ring`. Use `_ = p ^ (∑ j, (s j - v)) := by`. Rewrite using `[← Real.rpow_add h0, add_neg_cancel, Real.rpow_zero, mul_one]`.
+-/
 theorem path_height_bound : PathBound := by
   intro K _ l hl J A B _ _ _ _ _ X ι D j1 s φ F hx hy hr he hS hE
   classical

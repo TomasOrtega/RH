@@ -12,6 +12,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 def fstA (E : Type) [Field E] [NumberField E] : Ad E →+* InfiniteAdeleRing E := RingHom.fst _ _
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((1 : Matrix (Fin n) (Fin n) (InfiniteAdeleRing E × Af E)) i j - ((0 : InfiniteAdeleRing E), (1 : Matrix (Fin n) (Fin n) (Af E)) i j) + ((0 : InfiniteAdeleRing E), algebraMap E (Af E) (γ.val i j))).1 = _`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+-/
 theorem fst_entry (γ : GL (Fin n) E) (i j : Fin n) :
     fstA E ((finGL E n (ratF E n γ)).val i j) = (1 : Matrix (Fin n) (Fin n) (InfiniteAdeleRing E)) i j := by
   change ((1 : Matrix (Fin n) (Fin n) (InfiniteAdeleRing E × Af E)) i j -
@@ -19,6 +22,9 @@ theorem fst_entry (γ : GL (Fin n) E) (i j : Fin n) :
       ((0 : InfiniteAdeleRing E), algebraMap E (Af E) (γ.val i j))).1 = _
   by_cases h : i = j <;> simp [Matrix.one_apply, h]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((1 : Matrix (Fin n) (Fin n) (InfiniteAdeleRing E × Af E)) i j - ((0 : InfiniteAdeleRing E), (1 : Matrix (Fin n) (Fin n) (Af E)) i j) + ((0 : InfiniteAdeleRing E), algebraMap E (Af E) (γ.val i j))).2 = _`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+-/
 theorem snd_entry (γ : GL (Fin n) E) (i j : Fin n) :
     pFin E ((finGL E n (ratF E n γ)).val i j) = algebraMap E (Af E) (γ.val i j) := by
   change ((1 : Matrix (Fin n) (Fin n) (InfiniteAdeleRing E × Af E)) i j -
@@ -26,15 +32,30 @@ theorem snd_entry (γ : GL (Fin n) E) (i j : Fin n) :
       ((0 : InfiniteAdeleRing E), algebraMap E (Af E) (γ.val i j))).2 = _
   by_cases h : i = j <;> simp [Matrix.one_apply, h]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT, h]`.
+-/
 theorem map_cT {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (σ : A →+* A) (τ : B →+* B)
     (h : ∀ x, f (σ x) = τ (f x)) (M : Matrix (Fin n) (Fin n) A) : (cT σ M).map f = cT τ (M.map f) := by
   ext i j; simp [cT, h]
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `Prod.ext (congrFun (congrFun h1 i) j) (congrFun (congrFun h2 i) j)`.
+-/
 theorem ext_ad (M N : Matrix (Fin n) (Fin n) (Ad E)) (h1 : M.map (fstA E) = N.map (fstA E))
     (h2 : M.map (pFin E) = N.map (pFin E)) : M = N := by
   ext i j
   exact Prod.ext (congrFun (congrFun h1 i) j) (congrFun (congrFun h2 i) j)
 
+/- English proof (translation)
+Establish `hγ : cT (IsCMField.complexConj E).toRingEquiv.toRingHom γ.1.val * 1 * γ.1.val = 1` using `γ.2`. Use `show cT (conjAd E) (finGL E n (ratF E n γ.1)).val * 1 * (finGL E n (ratF E n γ.1)).val = 1`. Establish `hf : (finGL E n (ratF E n γ.1)).val.map (fstA E) = 1`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, fst_entry]`.
+
+Establish `hs : (finGL E n (ratF E n γ.1)).val.map (pFin E) = γ.1.val.map (algebraMap E (Af E))`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, snd_entry]`. Both sides reduce to the same expression. Apply `ext_ad` to reduce the goal to its premises.
+
+Rewrite using `[Matrix.map_mul, Matrix.map_mul, map_cT (fstA E) (conjAd E) ((infEq E).toRingHom.comp ((starRingEnd (Cinf E)).comp (infEq E).symm.toRingHom)) (fun x => rfl), hf, Matrix.map_one _ (map_zero _) (map_one _)]`. Use extensionality with `i j`. Simplify using `[cT, Matrix.one_apply]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, map_cT (pFin E) (conjAd E) (conjFin (IsCMField.complexConj E).toRingEquiv) (fun x => rfl), hs, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `: cT (conjFin (IsCMField.complexConj E).toRingEquiv) (γ.1.val.map (algebraMap E (Af E))) = (cT (IsCMField.complexConj E).toRingEquiv.toRingHom γ.1.val).map (algebraMap E (Af E))`.
+
+Use extensionality with `i j`. Simplify using `[cT, conjFin_algebraMap]`. Rewrite using `[this, ← Matrix.map_one (algebraMap E (Af E)) (map_zero _) (map_one _), ← Matrix.map_mul, ← Matrix.map_mul, hγ]`.
+-/
 theorem mem_UA (γ : UE E n) : finGL E n (ratF E n γ.1) ∈ UA E n := by
   have hγ : cT (IsCMField.complexConj E).toRingEquiv.toRingHom γ.1.val * 1 * γ.1.val = 1 := γ.2
   show cT (conjAd E) (finGL E n (ratF E n γ.1)).val * 1 * (finGL E n (ratF E n γ.1)).val = 1
@@ -52,9 +73,17 @@ theorem mem_UA (γ : UE E n) : finGL E n (ratF E n γ.1) ∈ UA E n := by
       ext i j; simp [cT, conjFin_algebraMap]
     rw [this, ← Matrix.map_one (algebraMap E (Af E)) (map_zero _) (map_one _), ← Matrix.map_mul, ← Matrix.map_mul, hγ]
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem toSub_of_mem {G : Type} [Group G] (H : Subgroup G) (g : G) (h : g ∈ H) : toSub H g = ⟨g, h⟩ :=
   dif_pos h
 
+/- English proof (translation)
+Use `show cInf (⟨_, mem_UA γ⟩ : UA E n) = 1`. Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(infEq E).symm (fstA E ((finGL E n (ratF E n γ.1)).val i j)) = (1 : Matrix (Fin n) (Fin n) (Cinf E)) i j`. Rewrite using `[fst_entry]`.
+
+Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+-/
 theorem mem_finU (γ : UE E n) : (⟨_, mem_UA γ⟩ : UA E n) ∈ finU E n := by
   show cInf (⟨_, mem_UA γ⟩ : UA E n) = 1
   apply Units.ext
@@ -63,6 +92,9 @@ theorem mem_finU (γ : UE E n) : (⟨_, mem_UA γ⟩ : UA E n) ∈ finU E n := b
   rw [fst_entry]
   by_cases h : i = j <;> simp [Matrix.one_apply, h]
 
+/- English proof (translation)
+Establish `h1 : toSub (UA E n) (finGL E n (ratF E n γ.1)) = ⟨_, mem_UA γ⟩` using `toSub_of_mem _ _ (mem_UA γ)`. Unfold `finPt`. Rewrite using `[h1, toSub_of_mem _ _ (mem_finU γ)]`.
+-/
 theorem finPt_eq (γ : UE E n) : ((finPt γ : finU E n) : UA E n) = ⟨_, mem_UA γ⟩ := by
   have h1 : toSub (UA E n) (finGL E n (ratF E n γ.1)) = ⟨_, mem_UA γ⟩ := toSub_of_mem _ _ (mem_UA γ)
   unfold finPt
@@ -70,6 +102,11 @@ theorem finPt_eq (γ : UE E n) : ((finPt γ : finU E n) : UA E n) = ⟨_, mem_UA
 
 end GlobalTheory.BCT.FinPtLoc
 
+/- English proof (translation)
+Introduce `E _ _ _ _ n γ w`. Rewrite using `[FinPtLoc.finPt_eq]`. Unfold `locPt`. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises.
+
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pLoc E w (pFin E ((finGL E n (ratF E n γ.1)).val i j)) = algebraMap E _ (γ.1.val i j)`. Rewrite using `[FinPtLoc.snd_entry]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.BCT.locPt_finPt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, ∀ (γ : UE E n) (w : Pl E),
     toSub (UL n w) (cLoc w ((finPt γ : finU E n) : UA E n)) = locPt w γ := by
   intro E _ _ _ _ n γ w

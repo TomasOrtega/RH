@@ -30,6 +30,9 @@ def diagMor : unitsRep ⟶ IdeleLimit.rep :=
     congrArg Additive.ofMul (IdeleLimit.diag_map σ x.toMul)⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem diagMor_hom_apply (x : Additive ℚ̄ˣ) :
     diagMor.hom x = Additive.ofMul (IdeleLimit.diag x.toMul) :=
   rfl
@@ -39,6 +42,9 @@ def toClassMor : IdeleLimit.rep ⟶ classRep :=
     fun x => congrArg Additive.ofMul (IdeleLimit.toClassLimit_smul σ x.toMul)⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toClassMor_hom_apply (x : Additive IdeleLimit) :
     toClassMor.hom x = Additive.ofMul (IdeleLimit.toClassLimit x.toMul) :=
   rfl
@@ -48,6 +54,9 @@ def idelesShortComplex : ShortComplex (Rep ℤ (ℚ̄ ≃ₐ[ℚ] ℚ̄)) :=
     ext x
     exact congrArg Additive.ofMul (IdeleLimit.toClassLimit_diag x.toMul))
 
+/- English proof (translation)
+Rewrite using `[← ShortComplex.exact_map_iff_of_faithful _ (forget₂ (Rep.{u} k G) (ModuleCat.{u} k)), ShortComplex.moduleCat_exact_iff]`. Conclude with `hex`. Use `mono_f := (Rep.mono_iff_injective _).2 hf`. Use `epi_g := (Rep.epi_iff_surjective _).2 hg`.
+-/
 theorem shortExact_of_injective_of_surjective {k G : Type u} [CommRing k] [Group G]
     (S : ShortComplex (Rep.{u} k G)) (hf : Function.Injective S.f.hom)
     (hex : ∀ b, S.g.hom b = 0 → ∃ a, S.f.hom a = b) (hg : Function.Surjective S.g.hom) :
@@ -59,6 +68,9 @@ theorem shortExact_of_injective_of_surjective {k G : Type u} [CommRing k] [Group
   mono_f := (Rep.mono_iff_injective _).2 hf
   epi_g := (Rep.epi_iff_surjective _).2 hg
 
+/- English proof (translation)
+Use `shortExact_of_injective_of_surjective _ (fun x y h => congrArg Additive.ofMul (IdeleLimit.diag_injective (congrArg Additive.toMul h))) (fun z hz => ?_) (fun c => ?_)` and prove the remaining obligations. Take `⟨a, ha⟩` from `(IdeleLimit.mem_range_diag_iff (Additive.toMul z)).2 (congrArg Additive.toMul hz)`. Conclude with `⟨Additive.ofMul a, congrArg Additive.ofMul ha⟩`. Take `⟨z, hz⟩` from `IdeleLimit.toClassLimit_surjective (Additive.toMul c)`. Conclude with `⟨Additive.ofMul z, congrArg Additive.ofMul hz⟩`.
+-/
 theorem idelesShortComplex_shortExact : idelesShortComplex.ShortExact := by
   refine shortExact_of_injective_of_surjective _ (fun x y h =>
     congrArg Additive.ofMul (IdeleLimit.diag_injective (congrArg Additive.toMul h))) (fun z hz => ?_)
@@ -78,6 +90,9 @@ abbrev classLimitRep : Rep ℤ K.1.fixingSubgroup := Rep.res K.1.fixingSubgroup.
 abbrev idelesShortComplexRes : ShortComplex (Rep ℤ K.1.fixingSubgroup) :=
   idelesShortComplex.map (Rep.resFunctor K.1.fixingSubgroup.subtype)
 
+/- English proof (translation)
+The claim follows from `(Rep.shortExact_res _).2 idelesShortComplex_shortExact`.
+-/
 theorem idelesShortComplexRes_shortExact : (idelesShortComplexRes K).ShortExact :=
   (Rep.shortExact_res _).2 idelesShortComplex_shortExact
 

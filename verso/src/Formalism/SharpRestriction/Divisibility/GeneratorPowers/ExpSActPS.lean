@@ -17,6 +17,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)]
 variable {S : Type} [CommRing S] [Algebra c.F S] [Algebra ℚ S] {y : FrPt Xo c S}
 
+/- English proof (translation)
+Establish `hb : MvPowerSeries.HasSubst (actPS (Dw` using `Dw) (S := S) c k) := MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => by simp [actPS]`. Establish `ha : MvPowerSeries.HasSubst (fun p : Fin 1 × Fin d => φ p.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun p => hφ p.2`. Establish `h0 : MvPowerSeries.constantCoeff (-(compL φ g)) = 0`. Rewrite using `[map_neg, ExpGB.const_compL φ hφ g, hg, neg_zero]`. Establish `hcomp : MvPowerSeries.subst (actPS (Dw` using `Dw) (S := S) c k) (-(compL φ g)) = -(compL (φa c φ k) g) := by`.
+
+Rewrite using `[← MvPowerSeries.coe_substAlgHom hb, map_neg, MvPowerSeries.coe_substAlgHom hb]`. Unfold `compL φa`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply ha hb]`. Unfold `Germ.FB.expS PowerSeries.subst`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero h0).const hb]`.
+
+Simplify using `only [hcomp]`.
+-/
 theorem expS_actPS {d : ℕ} (φ : Fin d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S)
     (hφ : ∀ j, MvPowerSeries.constantCoeff (φ j) = 0) (g : MvPowerSeries (Fin 1 × Fin d) S)
     (hg : MvPowerSeries.constantCoeff g = 0) (k : 𝓞 E) :
@@ -37,6 +44,17 @@ theorem expS_actPS {d : ℕ} (φ : Fin d → MvPowerSeries (Fin 1 × Fin (dL Dw)
   rw [MvPowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero h0).const hb]
   simp only [hcomp]
 
+/- English proof (translation)
+Establish `hX : actP (Dw` using `Dw) (S := S) c 1 = fun p => MvPolynomial.X p := by`. Use function extensionality and compare the values at `p`. Simplify using `[actP]`. Establish `hid : jetSubstP m (actP (Dw` using `Dw) (S := S) c 1) = AlgHom.id S _ := by`. Rewrite using `[hX]`.
+
+Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Apply the tactic sequence `simp [jetSubstP, jetMap, liftJet, Ideal.Quotient.lift_mk] <;> rfl`. Establish `hP : actPS (Dw` using `Dw) (S := S) c 1 = MvPowerSeries.X := by`.
+
+Use function extensionality and compare the values at `q`. Simplify using `[actPS]`. Establish `hφ1 : φa c φ 1 = φ`. Use function extensionality and compare the values at `j`. Simplify using `only [φa, hP]`.
+
+Conclude with `congrFun MvPowerSeries.subst_self (φ j)`. Establish `hu : Units.map (AlgHom.id S (Jet S (Fin 1 × Fin (dL Dw)) m)).toMonoidHom (u m) = u m` using `Units.ext rfl`. Establish `h1` using `val_eAt C φ hφ hact τ u hτc m 1 z J hJ`. Rewrite `h1` using `[hφ1, _root_.mul_one]`. Unfold `eAt at h1`.
+
+Rewrite `h1` using `[val_pull, hid, homAt_id, Over.id_left, Category.comp_id, hu]`. Conclude with `h1`. Conclude with `hJ`.
+-/
 theorem val_e (C : ChartAt Xo c y) (φ : Fin C.d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S)
     (hφ : ∀ j, MvPowerSeries.constantCoeff (φ j) = 0)
     (hact : ∀ a j, MvPowerSeries.subst (fun p : Fin 1 × Fin C.d => φ p.2) (C.B.A.act a j) =

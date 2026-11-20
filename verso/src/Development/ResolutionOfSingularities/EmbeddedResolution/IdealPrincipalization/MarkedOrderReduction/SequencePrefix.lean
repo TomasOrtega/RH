@@ -18,10 +18,16 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 private theorem comap_eqToHom_self {X : Scheme.{u}} (h : X = X) (J : X.IdealSheafData) :
     J.comap (eqToHom h) = J := by
   simp
 
+/- English proof (translation)
+Substitute `h1` using the available equality. Substitute `h2` using the available equality. Simplify using the standard rewrite rules.
+-/
 private theorem comap_eqToHom_trans {X Y Z : Scheme.{u}} (h1 : X = Y) (h2 : Y = Z)
     (J : Z.IdealSheafData) :
     (J.comap (eqToHom h2)).comap (eqToHom h1) = J.comap (eqToHom (h1.trans h2)) := by
@@ -29,12 +35,18 @@ private theorem comap_eqToHom_trans {X Y Z : Scheme.{u}} (h1 : X = Y) (h2 : Y = 
   subst h2
   simp
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons a l ih => rw [List.map_cons, ih, comap_eqToHom_self]`.
+-/
 private theorem map_comap_eqToHom_self {X : Scheme.{u}} (h : X = X) (L : List X.IdealSheafData) :
     List.map (fun D => D.comap (eqToHom h)) L = L := by
   induction L with
   | nil => rfl
   | cons a l ih => rw [List.map_cons, ih, comap_eqToHom_self]
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons a l ih`. Rewrite using `[List.map_cons, List.map_cons, List.map_cons, ih, comap_eqToHom_trans]`.
+-/
 private theorem map_comap_eqToHom_trans {X Y Z : Scheme.{u}} (h1 : X = Y) (h2 : Y = Z)
     (L : List Z.IdealSheafData) :
     List.map (fun D => D.comap (eqToHom h1)) (List.map (fun D => D.comap (eqToHom h2)) L)
@@ -44,24 +56,38 @@ private theorem map_comap_eqToHom_trans {X Y Z : Scheme.{u}} (h1 : X = Y) (h2 : 
   | cons a l ih =>
     rw [List.map_cons, List.map_cons, List.map_cons, ih, comap_eqToHom_trans]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Simplify using `only [eqToHom_refl, Category.id_comp] at hg ⊢`. Conclude with `hg.symm`.
+-/
 private theorem eq_eqToHom_comp_of_eq_eqToHom_symm_comp {A B C : Scheme.{u}} (f : A ⟶ C) (g : B ⟶ C) (h : A = B)
     (hg : g = eqToHom h.symm ≫ f) : f = eqToHom h ≫ g := by
   subst h
   simp only [eqToHom_refl, Category.id_comp] at hg ⊢
   exact hg.symm
 
+/- English proof (translation)
+Substitute `hd` using the available equality. Conclude with `(comap_eqToHom_self hobj _).symm`.
+-/
 private theorem blowupSequenceData_center_eq_comap_eqToHom {X : Scheme.{u}} {d d' : BlowupSequenceData X} (hd : d = d')
     (i : ℕ) (hobj : d.obj i = d'.obj i) :
     d.center i = (d'.center i).comap (eqToHom hobj) := by
   subst hd
   exact (comap_eqToHom_self hobj _).symm
 
+/- English proof (translation)
+Substitute `hd` using the available equality. Simplify using the standard rewrite rules.
+-/
 private theorem blowupSequenceData_blowupMorphism_comp_eqToHom {X : Scheme.{u}} {d d' : BlowupSequenceData X} (hd : d = d')
     (i : ℕ) (h0 : d.obj i = d'.obj i) (h1 : d.obj (i + 1) = d'.obj (i + 1)) :
     d.map i ≫ eqToHom h0 = eqToHom h1 ≫ d'.map i := by
   subst hd
   simp
 
+/- English proof (translation)
+Substitute `b` using the available equality. Substitute `c0` using the available equality. Substitute `a` using the available equality. Substitute `c1` using the available equality. Simplify using `only [eqToHom_refl, Category.comp_id, Category.id_comp] at key0 L ⊢`.
+
+Conclude with `L.symm.trans key0.symm`.
+-/
 private theorem comp_eqToHom_eq_eqToHom_comp_of_eqToHom_conj {A B A' B' A'' B'' : Scheme.{u}}
     (f : A ⟶ B) (M : A'' ⟶ B'') (N : A' ⟶ B')
     (c0 : B'' = B') (c1 : A'' = A') (a : A' = A) (b : B = B')
@@ -95,6 +121,13 @@ structure IsPrefix (s t : MarkedBlowupSequenceData p I m E) : Prop where
     s.map i ≫ eqToHom (obj_eq i (Nat.le_of_lt hi)) =
       eqToHom (obj_eq (i + 1) (Nat.succ_le_of_lt hi)) ≫ t.map i
 
+/- English proof (translation)
+Use `⟨le_rfl, fun _ _ => rfl, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Simplify using the standard rewrite rules. Introduce `i hi`. Conclude with `(comap_eqToHom_self _ _).symm`.
+
+Introduce `i hi`. Conclude with `(map_comap_eqToHom_self _ _).symm`. Introduce `i hi`. Conclude with `(comap_eqToHom_self _ _).symm`. Introduce `i hi`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem IsPrefix.refl (s : MarkedBlowupSequenceData p I m E) : s.IsPrefix s := by
   refine ⟨le_rfl, fun _ _ => rfl, ?_, ?_, ?_, ?_, ?_⟩
   · intro i hi
@@ -108,6 +141,13 @@ theorem IsPrefix.refl (s : MarkedBlowupSequenceData p I m E) : s.IsPrefix s := b
   · intro i hi
     simp
 
+/- English proof (translation)
+Establish `hlen : s.length ≤ t.length` using `h.length_le`. Establish `hobj : ∀ i ≤ s.length, s.obj i = r.obj i` using `fun i hi => (h.obj_eq i hi).trans (h'.obj_eq i (hi.trans hlen))`. Use `⟨hlen.trans h'.length_le, hobj, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Rewrite using `[h.proj_eq i hi, h'.proj_eq i (hi.trans hlen), ← Category.assoc, eqToHom_trans]`.
+
+Introduce `i hi`. Rewrite using `[h.ideal_eq i hi, h'.ideal_eq i (hi.trans hlen), comap_eqToHom_trans]`. Introduce `i hi`. Rewrite using `[h.boundary_eq i hi, h'.boundary_eq i (hi.trans hlen), map_comap_eqToHom_trans]`. Introduce `i hi`.
+
+Rewrite using `[h.center_eq i hi, h'.center_eq i (lt_of_lt_of_le hi hlen), comap_eqToHom_trans]`. Introduce `i hi`. Establish `hi' : i < t.length` using `lt_of_lt_of_le hi hlen`. Rewrite using `[← eqToHom_trans (h.obj_eq i (Nat.le_of_lt hi)) (h'.obj_eq i (Nat.le_of_lt hi')), ← eqToHom_trans (h.obj_eq (i + 1) (Nat.succ_le_of_lt hi)) (h'.obj_eq (i + 1) (Nat.succ_le_of_lt hi')), ← Category.assoc, h.map_eq i hi, Category.assoc, h'.map_eq i hi', ← Category.assoc]`.
+-/
 theorem IsPrefix.trans {s t r : MarkedBlowupSequenceData p I m E} (h : s.IsPrefix t)
     (h' : t.IsPrefix r) : s.IsPrefix r := by
   have hlen : s.length ≤ t.length := h.length_le
@@ -129,6 +169,19 @@ theorem IsPrefix.trans {s t r : MarkedBlowupSequenceData p I m E} (h : s.IsPrefi
         (h'.obj_eq (i + 1) (Nat.succ_le_of_lt hi')),
       ← Category.assoc, h.map_eq i hi, Category.assoc, h'.map_eq i hi', ← Category.assoc]
 
+/- English proof (translation)
+Establish `hobj : ∀ i ≤ s.length, s.obj i = (s.append t hinv).obj i` using `fun i hi => (s.append_schemeAt_of_le_length t hinv hi).symm`. Establish `hbd : (s.append t hinv).toBlowupSequenceData = s.appendToBlowupSequenceData t` using `s.append_toBlowupSequenceData t hinv`. Use `⟨?_, hobj, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MarkedBlowupSequenceData.append_length]`. Conclude with `Nat.le_add_right _ _`.
+
+Introduce `i hi`. Establish `key : (s.append t hinv).proj i = eqToHom (hobj i hi).symm ≫ s.proj i`. Rewrite using `[s.append_projectionToBase t hinv i]`. Conclude with `s.appendProjectionToBase_of_le_length t hi`. Conclude with `eq_eqToHom_comp_of_eq_eqToHom_symm_comp (s.proj i) ((s.append t hinv).proj i) (hobj i hi) key`.
+
+Introduce `i hi`. Establish `key : (s.append t hinv).ideal i = (s.ideal i).comap (eqToHom (hobj i hi).symm)`. Rewrite using `[s.append_ideal t hinv i]`. Conclude with `s.appendIdeal_of_le_length t hi`. Rewrite using `[key, comap_eqToHom_trans, comap_eqToHom_self]`.
+
+Introduce `i hi`. Establish `key : (s.append t hinv).boundary i = List.map (fun D => D.comap (eqToHom (hobj i hi).symm)) (s.boundary i)`. Rewrite using `[s.append_boundary t hinv i]`. Conclude with `s.appendBoundary_of_le_length t hi`. Rewrite using `[key, map_comap_eqToHom_trans, map_comap_eqToHom_self]`.
+
+Introduce `i hi`. Rewrite using `[blowupSequenceData_center_eq_comap_eqToHom hbd i (congrArg (fun d => BlowupSequenceData.obj d i) hbd), s.appendToBlowupSequenceData_center_of_lt_length t hi, comap_eqToHom_trans, comap_eqToHom_trans, comap_eqToHom_self]`. Introduce `i hi`. Establish `c0 : (s.append t hinv).obj i = (s.appendToBlowupSequenceData t).obj i` using `congrArg (fun d => BlowupSequenceData.obj d i) hbd`. Establish `c1 : (s.append t hinv).obj (i + 1) = (s.appendToBlowupSequenceData t).obj (i + 1)` using `congrArg (fun d => BlowupSequenceData.obj d (i + 1)) hbd`.
+
+Conclude with `comp_eqToHom_eq_eqToHom_comp_of_eqToHom_conj (s.map i) ((s.append t hinv).map i) ((s.appendToBlowupSequenceData t).map i) c0 c1 _ _ _ _ (blowupSequenceData_blowupMorphism_comp_eqToHom hbd i c0 c1) (s.appendToBlowupSequenceData_blowupMorphism_of_lt_length t hi)`.
+-/
 theorem isPrefix_append (s : MarkedBlowupSequenceData p I m E)
     (t : MarkedBlowupSequenceData (s.proj s.length ≫ p) (s.ideal s.length) m (s.boundary s.length))
     (hinv : ComapIsoInvariance.{u}) : s.IsPrefix (s.append t hinv) := by
@@ -183,6 +236,9 @@ def NonMonomialOrderReductionContinues (T : MarkedIdealWithBoundary.{u})
   T.mult ≤ maxOrderNonMonomial T s ∧
     (orderAtLeastLocus (lastNonMonomialPart T s) (maxOrderNonMonomial T s)).Nonempty
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem nonMonomialOrderReductionContinues_iff (T : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) :
     NonMonomialOrderReductionContinues T s ↔
@@ -198,6 +254,9 @@ def CompanionIdealReductionContinues (T : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) : Prop :=
   1 ≤ maxOrderNonMonomialOnOrderLocus T s
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem companionIdealReductionContinues_iff (T : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) :
     CompanionIdealReductionContinues T s ↔ 1 ≤ maxOrderNonMonomialOnOrderLocus T s :=
@@ -208,6 +267,9 @@ def companionIdeal (T : MarkedIdealWithBoundary.{u})
     (s.obj s.length).IdealSheafData :=
   lastNonMonomialPart T s ^ T.mult ⊔ s.ideal s.length ^ maxOrderNonMonomialOnOrderLocus T s
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tripleAtLength_dim (T : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
     (J : (s.obj s.length).IdealSheafData) (μ : ℕ) :
@@ -226,6 +288,9 @@ def principalizationSeqAtEnd (T : MarkedIdealWithBoundary.{u})
     MarkedSequenceOfBlowups (s.proj s.length ≫ T.structMap) J μ (s.boundary s.length) :=
   rc (tripleAtLength T s J μ) hd
 
+/- English proof (translation)
+Unfold `appendRecursivePrincipalization principalizationSeqAtEnd`. Rewrite using `[dif_pos hd]`.
+-/
 theorem appendRecursivePrincipalization_eq_appendIfMarked (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (rc : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc ≤ T.krullDimSucc → S.SequenceOfBlowups)
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -235,6 +300,11 @@ theorem appendRecursivePrincipalization_eq_appendIfMarked (hinv : ComapIsoInvari
   unfold appendRecursivePrincipalization principalizationSeqAtEnd
   rw [dif_pos hd]
 
+/- English proof (translation)
+Establish `hr : markedDataOfSeq s J μ (principalizationSeqAtEnd T rc s J μ hd) = some ((MarkedBlowupSequenceData.ofMarkedSequence (principalizationSeqAtEnd T rc s J μ hd)).toBlowupSequenceData.toMarkedBlowupSequenceData (s.proj s.length ≫ T.structMap) (s.ideal s.length) T.mult (s.boundary s …`. Unfold `markedDataOfSeq`. Conclude with `dif_pos hm`. Rewrite using `[appendRecursivePrincipalization_eq_appendIfMarked hinv T rc s J μ hd]`. Unfold `appendIfMarked`.
+
+Rewrite using `[hr]`.
+-/
 theorem appendRecursivePrincipalization_eq_append (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (rc : ∀ S : MarkedIdealWithBoundary.{u}, S.krullDimSucc ≤ T.krullDimSucc → S.SequenceOfBlowups)
     (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
@@ -271,20 +341,34 @@ def extendByCompanionIdeal (s : MarkedBlowupSequenceData T.structMap T.ideal T.m
     MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary :=
   appendRecursivePrincipalization hinv T rc s (companionIdeal T s) (T.mult * maxOrderNonMonomialOnOrderLocus T s)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nonMonomialOrderReductionIter_zero :
     nonMonomialOrderReductionIter hinv T rc 0 = emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[nonMonomialOrderReductionIter]`. Conclude with `if_pos h`.
+-/
 theorem nonMonomialOrderReductionIter_succ_of_continues (f : ℕ) (h : NonMonomialOrderReductionContinues T (nonMonomialOrderReductionIter hinv T rc f)) :
     nonMonomialOrderReductionIter hinv T rc (f + 1) = extendByNonMonomialPart hinv T rc (nonMonomialOrderReductionIter hinv T rc f) := by
   rw [nonMonomialOrderReductionIter]
   exact if_pos h
 
+/- English proof (translation)
+Rewrite using `[nonMonomialOrderReductionIter]`. Conclude with `if_neg h`.
+-/
 theorem nonMonomialOrderReductionIter_succ_of_not_continues (f : ℕ) (h : ¬ NonMonomialOrderReductionContinues T (nonMonomialOrderReductionIter hinv T rc f)) :
     nonMonomialOrderReductionIter hinv T rc (f + 1) = nonMonomialOrderReductionIter hinv T rc f := by
   rw [nonMonomialOrderReductionIter]
   exact if_neg h
 
+/- English proof (translation)
+Introduce `g hg`. Proceed by induction on `g, hg using Nat.le_induction with`. Consider the case `base => rfl`. Consider the case `succ n hn ih`. Establish `hn' : ¬ NonMonomialOrderReductionContinues T (nonMonomialOrderReductionIter hinv T rc n)`.
+
+Rewrite using `[ih]`. Conclude with `h`. Rewrite using `[nonMonomialOrderReductionIter_succ_of_not_continues hinv T rc n hn']`. Conclude with `ih`.
+-/
 theorem nonMonomialOrderReductionIter_eq_of_not_continues (f : ℕ) (h : ¬ NonMonomialOrderReductionContinues T (nonMonomialOrderReductionIter hinv T rc f)) :
     ∀ g, f ≤ g → nonMonomialOrderReductionIter hinv T rc g = nonMonomialOrderReductionIter hinv T rc f := by
   intro g hg
@@ -297,15 +381,24 @@ theorem nonMonomialOrderReductionIter_eq_of_not_continues (f : ℕ) (h : ¬ NonM
     rw [nonMonomialOrderReductionIter_succ_of_not_continues hinv T rc n hn']
     exact ih
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem nonMonomialOrderReduction_eq :
     nonMonomialOrderReduction hinv T rc =
       nonMonomialOrderReductionIter hinv T rc (maxOrder (nonMonomialPart T.boundary T.ideal) + 1) :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem companionIdealReductionIter_zero (s₀ : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) :
     companionIdealReductionIter hinv T rc s₀ 0 = s₀ :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[companionIdealReductionIter]`. Conclude with `if_pos h`.
+-/
 theorem companionIdealReductionIter_succ_of_continues (s₀ : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
     (f : ℕ) (h : CompanionIdealReductionContinues T (companionIdealReductionIter hinv T rc s₀ f)) :
     companionIdealReductionIter hinv T rc s₀ (f + 1) =
@@ -313,6 +406,9 @@ theorem companionIdealReductionIter_succ_of_continues (s₀ : MarkedBlowupSequen
   rw [companionIdealReductionIter]
   exact if_pos h
 
+/- English proof (translation)
+Rewrite using `[companionIdealReductionIter]`. Conclude with `if_neg h`.
+-/
 theorem companionIdealReductionIter_succ_of_not_continues
     (s₀ : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
     (f : ℕ) (h : ¬ CompanionIdealReductionContinues T (companionIdealReductionIter hinv T rc s₀ f)) :
@@ -320,6 +416,11 @@ theorem companionIdealReductionIter_succ_of_not_continues
   rw [companionIdealReductionIter]
   exact if_neg h
 
+/- English proof (translation)
+Introduce `g hg`. Proceed by induction on `g, hg using Nat.le_induction with`. Consider the case `base => rfl`. Consider the case `succ n hn ih`. Establish `hn' : ¬ CompanionIdealReductionContinues T (companionIdealReductionIter hinv T rc s₀ n)`.
+
+Rewrite using `[ih]`. Conclude with `h`. Rewrite using `[companionIdealReductionIter_succ_of_not_continues hinv T rc s₀ n hn']`. Conclude with `ih`.
+-/
 theorem companionIdealReductionIter_eq_of_not_continues
     (s₀ : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)
     (f : ℕ) (h : ¬ CompanionIdealReductionContinues T (companionIdealReductionIter hinv T rc s₀ f)) :
@@ -334,12 +435,18 @@ theorem companionIdealReductionIter_eq_of_not_continues
     rw [companionIdealReductionIter_succ_of_not_continues hinv T rc s₀ n hn']
     exact ih
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem companionIdealReduction_eq :
     companionIdealReduction hinv T rc =
       companionIdealReductionIter hinv T rc (nonMonomialOrderReduction hinv T rc)
         (maxOrderNonMonomialOnOrderLocus T (nonMonomialOrderReduction hinv T rc) + 1) :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem orderReductionData_eq :
     orderReductionData hinv T rc =
       (companionIdealReduction hinv T rc).append
@@ -350,6 +457,9 @@ theorem orderReductionData_eq :
         hinv :=
   rfl
 
+/- English proof (translation)
+Unfold `orderReductionSeq`. Rewrite using `[if_neg h.ne_empty]`.
+-/
 theorem orderReductionSeq_eq_of_nonempty (h : (orderAtLeastLocus T.ideal T.mult).Nonempty) :
     orderReductionSeq hinv T rc = (orderReductionData hinv T rc).toMarkedSequenceOfBlowups := by
   unfold orderReductionSeq

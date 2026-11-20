@@ -12,6 +12,9 @@ variable {R : Type} [CommRing R]
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 open scoped DirectSum TensorProduct in
 variable {R : Type} [CommRing R] in
+/- English proof (translation)
+Rewrite using `[mul_left_comm, ← Units.val_mul, Int.units_mul_self, Units.val_one, mul_one]`.
+-/
 theorem _root_.GlobalTheory.EtC.SwapTransfer.negOnePow_sq' (n m : ℤ) :
     (n.negOnePow : ℤ) * ((m.negOnePow : ℤ) * (n.negOnePow : ℤ)) = m.negOnePow := by
   rw [mul_left_comm, ← Units.val_mul, Int.units_mul_self, Units.val_one, mul_one]
@@ -50,6 +53,9 @@ namespace GlobalTheory.EtC
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 open scoped DirectSum TensorProduct in
 variable {R : Type} [CommRing R] in
+/- English proof (translation)
+Rewrite using `[Units.smul_def]`. Both sides reduce to the same expression.
+-/
 private theorem flipPair_mul_eq_negOnePow_smul_mul {I J K : _root_.GlobalTheory.EtC.Cx R} (μ : _root_.GlobalTheory.EtC.Pair I J K) (U : Scheme.{0}) (s t w : ℤ) (h : s + t = w)
     (a : _root_.GlobalTheory.EtC.Sec (I.X s) U) (b : _root_.GlobalTheory.EtC.Sec (J.X t) U) :
     (_root_.GlobalTheory.EtC.SwapTransfer.flipPair μ).mul U t s w (by omega) b a = (s * t).negOnePow • μ.mul U s t w h a b := by
@@ -59,6 +65,9 @@ private theorem flipPair_mul_eq_negOnePow_smul_mul {I J K : _root_.GlobalTheory.
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 open scoped DirectSum TensorProduct in
 variable {R : Type} [CommRing R] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.EtC.SwapTransfer.swapT`. Use `erw [DirectSum.toModule_lof]`. Rewrite using `[Units.smul_def]`. Both sides reduce to the same expression.
+-/
 private theorem koszulSwap_lof_tmul_lemma_5 (I J : _root_.GlobalTheory.EtC.Cx R) (U : Scheme.{0}) {w s t : ℤ} (h : s + t = w)
     (a : _root_.GlobalTheory.EtC.Sec (I.X s) U) (b : _root_.GlobalTheory.EtC.Sec (J.X t) U) :
     _root_.GlobalTheory.EtC.SwapTransfer.swapT I J U w
@@ -76,6 +85,9 @@ private theorem koszulSwap_lof_tmul_lemma_5 (I J : _root_.GlobalTheory.EtC.Cx R)
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 open scoped DirectSum TensorProduct in
 variable {R : Type} [CommRing R] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.EtC.Pair.lift`. Use `erw [DirectSum.toModule_lof]`. Both sides reduce to the same expression.
+-/
 private theorem lift_lof_tmul {I J K : _root_.GlobalTheory.EtC.Cx R} (μ : _root_.GlobalTheory.EtC.Pair I J K) (U : Scheme.{0}) {w s t : ℤ} (h : s + t = w)
     (a : _root_.GlobalTheory.EtC.Sec (I.X s) U) (b : _root_.GlobalTheory.EtC.Sec (J.X t) U) :
     μ.lift U w
@@ -89,6 +101,11 @@ private theorem lift_lof_tmul {I J K : _root_.GlobalTheory.EtC.Cx R} (μ : _root
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 open scoped DirectSum TensorProduct in
 variable {R : Type} [CommRing R] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.EtC.Tens`. Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce and unpack `⟨⟨t, s⟩, h⟩`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `b a`.
+
+Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, LinearMap.comp_apply, koszulSwap_lof_tmul_lemma_5, map_zsmul_unit, lift_lof_tmul, lift_lof_tmul, Units.smul_def, mul_comm t s]`. Both sides reduce to the same expression.
+-/
 private theorem lift_comp_swapT_eq_flipPair_lift {I J K : _root_.GlobalTheory.EtC.Cx R} (μ : _root_.GlobalTheory.EtC.Pair I J K) (U : Scheme.{0}) (w : ℤ) :
     μ.lift U w ∘ₗ _root_.GlobalTheory.EtC.SwapTransfer.swapT J I U w =
       (_root_.GlobalTheory.EtC.SwapTransfer.flipPair μ).lift U w := by
@@ -103,6 +120,11 @@ private theorem lift_comp_swapT_eq_flipPair_lift {I J K : _root_.GlobalTheory.Et
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 open scoped DirectSum TensorProduct in
 variable {R : Type} [CommRing R] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.EtC.Tens`. Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce and unpack `⟨⟨s, t⟩, h⟩`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`.
+
+Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, koszulSwap_lof_tmul_lemma_5, map_zsmul_unit, koszulSwap_lof_tmul_lemma_5, smul_smul, mul_comm t s, Int.units_mul_self, one_smul]`. Both sides reduce to the same expression.
+-/
 private theorem swapT_comp_swapT (I J : _root_.GlobalTheory.EtC.Cx R) (U : Scheme.{0}) (w : ℤ) :
     _root_.GlobalTheory.EtC.SwapTransfer.swapT J I U w ∘ₗ _root_.GlobalTheory.EtC.SwapTransfer.swapT I J U w = LinearMap.id := by
   unfold _root_.GlobalTheory.EtC.Tens
@@ -116,6 +138,9 @@ private theorem swapT_comp_swapT (I J : _root_.GlobalTheory.EtC.Cx R) (U : Schem
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 open scoped DirectSum TensorProduct in
 variable {R : Type} [CommRing R] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.EtC.Tens.res`. Use `erw [DirectSum.lmap_lof]`. Both sides reduce to the same expression.
+-/
 private theorem tensorRestrict_lof_tmul_lemma_7 (I J : _root_.GlobalTheory.EtC.Cx R) {V U : Scheme.{0}} (g : V ⟶ U) {w s t : ℤ} (h : s + t = w)
     (a : _root_.GlobalTheory.EtC.Sec (I.X s) U) (b : _root_.GlobalTheory.EtC.Sec (J.X t) U) :
     _root_.GlobalTheory.EtC.Tens.res g w
@@ -132,6 +157,11 @@ private theorem tensorRestrict_lof_tmul_lemma_7 (I J : _root_.GlobalTheory.EtC.C
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 open scoped DirectSum TensorProduct in
 variable {R : Type} [CommRing R] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.EtC.Tens`. Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce and unpack `⟨⟨s, t⟩, h⟩`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`.
+
+Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, LinearMap.comp_apply, LinearMap.comp_apply, koszulSwap_lof_tmul_lemma_5, map_zsmul_unit, tensorRestrict_lof_tmul_lemma_7, tensorRestrict_lof_tmul_lemma_7, koszulSwap_lof_tmul_lemma_5]`.
+-/
 private theorem res_comp_swapT (I J : _root_.GlobalTheory.EtC.Cx R) {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) :
     _root_.GlobalTheory.EtC.Tens.res g w ∘ₗ _root_.GlobalTheory.EtC.SwapTransfer.swapT I J U w =
       _root_.GlobalTheory.EtC.SwapTransfer.swapT I J V w ∘ₗ _root_.GlobalTheory.EtC.Tens.res g w := by
@@ -145,6 +175,17 @@ private theorem res_comp_swapT (I J : _root_.GlobalTheory.EtC.Cx R) {V U : Schem
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex in
 open scoped DirectSum TensorProduct in
 
+/- English proof (translation)
+Use `⟨_root_.GlobalTheory.EtC.SwapTransfer.flipPair μ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `U s t w h a b`. Conclude with `flipPair_mul_eq_negOnePow_smul_mul μ U s t w h a b`. Introduce `U t s w h b a`. Rewrite using `[flipPair_mul_eq_negOnePow_smul_mul μ U s t w (by omega) a b, smul_smul, mul_comm t s, Int.units_mul_self, one_smul]`.
+
+Introduce and unpack `⟨hsurj, hinj⟩`. Use `⟨fun U w y => ?_, fun U w x hx => ?_⟩` and prove the remaining obligations. Take `⟨S, hS, hP⟩` from `hsurj U w y`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hP V g hg`.
+
+Use `⟨_root_.GlobalTheory.EtC.SwapTransfer.swapT I J V w x, ?_⟩` and prove the remaining obligations. Rewrite using `[← lift_comp_swapT_eq_flipPair_lift, LinearMap.comp_apply, ← LinearMap.comp_apply (_root_.GlobalTheory.EtC.SwapTransfer.swapT J I V w), swapT_comp_swapT, LinearMap.id_apply]`. Conclude with `hx`. Establish `hx' : μ.lift U w (_root_.GlobalTheory.EtC.SwapTransfer.swapT J I U w x) = 0`. Rewrite using `[← LinearMap.comp_apply, lift_comp_swapT_eq_flipPair_lift]`.
+
+Conclude with `hx`. Take `⟨S, hS, hP⟩` from `hinj U w _ hx'`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations. Establish `hV` using `congrArg (_root_.GlobalTheory.EtC.SwapTransfer.swapT I J V w) (hP V g hg)`. Rewrite `hV` using `[← LinearMap.comp_apply (_root_.GlobalTheory.EtC.Tens.res g w), res_comp_swapT, LinearMap.comp_apply, ← LinearMap.comp_apply (_root_.GlobalTheory.EtC.SwapTransfer.swapT I J V w), swapT_comp_swapT, LinearMap.id_apply, map_zero]`.
+
+Conclude with `hV`.
+-/
 theorem _root_.GlobalTheory.EtC.Pair.exists_isFlip (R : Type) [CommRing R]
     {I J K : _root_.GlobalTheory.EtC.Cx R} (μ : _root_.GlobalTheory.EtC.Pair I J K) :
     ∃ ν : _root_.GlobalTheory.EtC.Pair J I K, μ.IsFlip ν ∧ ν.IsFlip μ ∧

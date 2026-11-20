@@ -20,6 +20,21 @@ open scoped TensorProduct NNReal Matrix
 
 namespace GlobalTheory.ThetaLevel
 
+/- English proof (translation)
+Introduce `F _ _ κ _ ψ hψ Φ hΦ`. Take `⟨m₃, hm₃, h3⟩` from `GlobalTheory.PsiTriv.exists_nat_trivial ψ hψ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, g, hg, rfl⟩` from `hx`.
+
+Take `⟨m₁, hm₁, h1⟩` from `GlobalTheory.SBTransl.transInv g hg`. Take `⟨M, hM, h2⟩` from `GlobalTheory.SuppDen.support_bounded_denominators g hg`. Conclude with `⟨2 * m₁ * M * m₃, by positivity, GlobalTheory.PureFix.pureA_fixed ψ g m₁ M m₃ hm₁ hM hm₃ h1 h2 h3 f⟩`. Consider the case `zero`. Use `⟨1, one_pos, fun a b _ _ => ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `x`. Simplify using `[schr]`. Consider the case `add x y _ _ hx hy`. Take `⟨k, hk, hx⟩` from `hx`. Take `⟨l, hl, hy⟩` from `hy`.
+
+Use `⟨k * l, by positivity, fun a b ha hb => ?_⟩` and prove the remaining obligations. Establish `ha' : IsMulInt F k a` using `IsMulInt.mono (k := l) (by rwa [mul_comm] at ha)`. Establish `hb' : IsMulInt F k b` using `IsMulInt.mono (k := l) (by rwa [mul_comm] at hb)`. Establish `e1` using `hx a b ha' hb'`. Establish `e2` using `hy a b ha.mono hb.mono`.
+
+Use function extensionality and compare the values at `z`. Establish `hx1` using `congrFun e1 z`. Establish `hy1` using `congrFun e2 z`. Simplify using `only [schr, Pi.add_apply, mul_add] at hx1 hy1 ⊢`. Rewrite using `[hx1, hy1]`.
+
+Consider the case `smul c x _ hx`. Take `⟨k, hk, hx⟩` from `hx`. Use `⟨k, hk, fun a b ha hb => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Establish `hx1` using `congrFun (hx a b ha hb) z`.
+
+Simplify using `only [schr, Pi.smul_apply, smul_eq_mul] at hx1 ⊢`. Rewrite using `[mul_left_comm, hx1]`.
+-/
 theorem heis_fix : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (ψ : AddChar (AF F) ℂ), Continuous ψ →
     ∀ Φ ∈ schA F κ, ∃ m₀ : ℕ, 0 < m₀ ∧ ∀ a b : κ → AF F, IsMulInt F m₀ a → IsMulInt F m₀ b → schr ψ (a, b) Φ = Φ := by
   intro F _ _ κ _ ψ hψ Φ hΦ
@@ -56,6 +71,37 @@ theorem heis_fix : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype
 
 open Formalism.UG in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n d e`. Use `set Y : Fin n × Fin d → Matrix (Fin n) (Fin d) (AF F ⊗[F] E) := fun j => e.symm (0, fun k => if j = k then 1 else 0) with hY`. Set `f1 : Fin n × Fin d → (Matrix (Fin n) (Fin d) (AF F ⊗[F] E) →ₗ[AF F] AF F)` to `fun i => (LinearMap.proj i).comp ((LinearMap.fst (AF F) _ _).comp e.toLinearMap)`. Set `f2 : Fin n × Fin d → (Matrix (Fin n) (Fin d) (AF F ⊗[F] E) →ₗ[AF F] AF F)` to `fun i => (LinearMap.proj i).comp ((LinearMap.snd (AF F) _ _).comp e.toLinearMap)`. Use `choose K1 hK1f hK11 hK1 using fun i => GlobalTheory.LinFormBound.main (f1 i)`.
+
+Use `choose K2 hK2f hK21 hK2 using fun i => GlobalTheory.LinFormBound.main (f2 i)`. Use `choose KY hKYf hKY1 hKY using fun j => GlobalTheory.FixedBound.exists_entry_absFin_bound (Y j)`. Establish `prod_one : ∀ (K : Fin n × Fin d → HeightOneSpectrum (𝓞 F) → ℝ≥0), (∀ i v, 1 ≤ K i v) → ∀ v, 1 ≤ ∏ i, K i v` using `fun K hK v => Finset.one_le_prod' fun i _ => hK i v`. Establish `prod_fin : ∀ (K : Fin n × Fin d → HeightOneSpectrum (𝓞 F) → ℝ≥0), (∀ i, (Function.mulSupport (K i)).Finite) → (Function.mulSupport fun v => ∏ i, K i v).Finite` using `fun K hK => ((Finset.univ : Finset (Fin n × Fin d)).finite_toSet.biUnion fun i _ => hK i).subset (Finset.mulSupport_prod _ _)`. Establish `single_le : ∀ (K : Fin n × Fin d → HeightOneSpectrum (𝓞 F) → ℝ≥0), (∀ i v, 1 ≤ K i v) → ∀ i v, K i v ≤ ∏ i, K i v` using `fun K hK i v => Finset.single_le_prod' (fun j _ => hK j v) (Finset.mem_univ i)`.
+
+Use `set Ka : HeightOneSpectrum (𝓞 F) → ℝ≥0 := fun v => (∏ i, K1 i v) * (∏ i, K2 i v) * ∏ j, KY j v with hKa`. Establish `hKa1 : ∀ v, 1 ≤ Ka v` using `fun v => one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (prod_one K1 hK11 v) (prod_one K2 hK21 v)) (prod_one KY hKY1 v)`. Establish `hKaf : (Function.mulSupport Ka).Finite` using `((((prod_fin K1 hK1f).union (prod_fin K2 hK2f)).subset (Function.mulSupport_mul _ _)).union (prod_fin KY hKYf)).subset (Function.mulSupport_mul _ _)`. Establish `hle1 : ∀ i j v, K1 i v * KY j v ≤ Ka v` using `fun i j v =>`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_right_comm]`. Conclude with `le_mul_of_one_le_right' (prod_one K2 hK21 v)`. Establish `hle2 : ∀ i j v, K2 i v * KY j v ≤ Ka v` using `fun i j v =>`. Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_le_mul_left (le_mul_of_one_le_left' (prod_one K1 hK11 v)) _`.
+
+Use `⟨((∏ᶠ v, Ka v : ℝ≥0) : ℝ), fun g h => ?_⟩` and prove the remaining obligations. Use `set B : HeightOneSpectrum (𝓞 F) → ℝ≥0 := fun v => Ka v * htFin F v (bc (compFin F E v) g) * htFin F v (bc (compFin F E v) h) with hB`. Establish `hB1 : ∀ v, 1 ≤ B v` using `fun v => one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (hKa1 v) (one_le_htOf _ _)) (one_le_htOf _ _)`. Establish `hgf` using `finite_mulSupport_htFin F g`. Establish `hhf` using `finite_mulSupport_htFin F h`.
+
+Establish `hBf : (Function.mulSupport B).Finite` using `(((hKaf.union hgf).subset (Function.mulSupport_mul _ _)).union hhf).subset (Function.mulSupport_mul _ _)`. Take `⟨N, hN, hNle, hNint⟩` from `GlobalTheory.SmoothForms.denom_global B hB1 hBf`. Establish `hfin : ∀ {m : ℕ} (k : GL (Fin m) (AF F ⊗[F] E)), ∏ᶠ v, htFin F v (bc (compFin F E v) k) ≤ heightGL F k` using `fun k => by`. Unfold `heightGL`. Conclude with `le_mul_of_one_le_left' (Finset.one_le_prod' fun _ _ => one_le_htOf _ _)`.
+
+Use `⟨N, hN, ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : ∏ᶠ v, B v = (∏ᶠ v, Ka v) * (∏ᶠ v, htFin F v (bc (compFin F E v) g)) * ∏ᶠ v, htFin F v (bc (compFin F E v) h)`. Rewrite using `[hB, finprod_mul_distrib ((hKaf.union hgf).subset (Function.mulSupport_mul _ _)) hhf, finprod_mul_distrib hKaf hgf]`. Establish `: (N : ℝ≥0) ≤ (∏ᶠ v, Ka v) * (heightGL F g * heightGL F h)`. Use `hNle.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[e1, mul_assoc]`. Conclude with `mul_le_mul_right (mul_le_mul' (hfin g) (hfin h)) _`. Conclude with `this` after adjusting the coercions. Introduce `M y hy`. Use `set L : (Fin n × Fin d → AF F) →ₗ[AF F] (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F) := e.toLinearMap ∘ₗ sand (g : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) (h : Matrix (Fin d) (Fin d) (AF F ⊗[F] E)) ∘ₗ e.symm.toLinearMap ∘ₗ LinearMap.inr (AF F) _ _ with hL`.
+
+Establish `hLy : e ((g : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) * e.symm (0, y) * (h : Matrix (Fin d) (Fin d) (AF F ⊗[F] E))ᵀ) = ∑ j, y j • L (fun k => if j = k then 1 else 0)` using `LinearMap.pi_apply_eq_sum_univ L y`. Establish `hsz : ∀ j v, (Finset.univ.sup fun p : Fin n × Fin d => absFin F v (compFin F E v (sand (g : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) (h : Matrix (Fin d) (Fin d) (AF F ⊗[F] E)) (Y j) p.1 p.2))) ≤ htFin F v (bc (compFin F E v) g) * KY j v * htFin F v (bc (compFin F E v) h)` using `fun j v => Finset.sup_le fun p _ => (GlobalTheory.absFin_mul_mul_transpose_le g (Y j) h v p.1 p.2).trans (mul_le_mul_left (mul_le_mul_right (hKY j v) _) _)`. Establish `hcomp : ∀ t : Fin n × Fin d → AF F, (∀ j v, ‖evFin F v (t j)‖₊ ≤ B v) → (∑ j, y j * t j).1 = 0 ∧ ∀ v, ‖evFin F v (∑ j, y j * t j)‖ ≤ ‖(M : Fv F v)‖`. Introduce `t ht`. Use `⟨?_, fun v => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `fstA F (∑ j, y j * t j) = 0`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Express the relevant statement in the definitionally equal form `(y j).1 * _ = 0`.
+
+Rewrite using `[hy.1 j, zero_mul]`. Rewrite using `[map_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul]`. Establish `h1` using `hy.2 v j`.
+
+Establish `h2` using `hNint v (evFin F v (t j)) (ht j v)`. Rewrite `h1` using `[Nat.cast_mul, norm_mul]`. Rewrite `h2` using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `htB : ∀ (f : Matrix (Fin n) (Fin d) (AF F ⊗[F] E) →ₗ[AF F] AF F) (K : HeightOneSpectrum (𝓞 F) → ℝ≥0), (∀ X v, ‖evFin F v (f X)‖₊ ≤ K v * Finset.univ.sup fun p : Fin n × Fin d => absFin F v (compFin F E v (X p.1 p.2))) → (∀ j v, K v * KY j v ≤ Ka v) → ∀ j v, ‖evFin F v (f (sand (g …`.
+
+Introduce `f K hf hK j v`. Use `(hf _ v).trans ?_` and prove the remaining obligations. Use `(mul_le_mul_right (hsz j v) _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `⟨⟨fun i => ?_, fun v i => ?_⟩, ⟨fun i => ?_, fun v i => ?_⟩⟩` and prove the remaining obligations.
+
+Apply the tactic sequence `all_goals rw [hLy]`. Apply the tactic sequence `all_goals simp only [Prod.fst_sum, Prod.snd_sum, Finset.sum_apply, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul]`. Conclude with `(hcomp _ fun j v => htB (f1 i) (K1 i) (hK1 i) (fun j v => hle1 i j v) j v).1`. Conclude with `(hcomp _ fun j v => htB (f1 i) (K1 i) (hK1 i) (fun j v => hle1 i j v) j v).2 v`. Conclude with `(hcomp _ fun j v => htB (f2 i) (K2 i) (hK2 i) (fun j v => hle2 i j v) j v).1`.
+
+Conclude with `(hcomp _ fun j v => htB (f2 i) (K2 i) (hK2 i) (fun j v => hle2 i j v) j v).2 v`.
+-/
 theorem transport_denom : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n d : ℕ}
     (e : Matrix (Fin n) (Fin d) (AF F ⊗[F] E) ≃ₗ[AF F] (Fin n × Fin d → AF F) × (Fin n × Fin d → AF F)),
     ∃ C : ℝ, ∀ (g : GL (Fin n) (AF F ⊗[F] E)) (h : GL (Fin d) (AF F ⊗[F] E)), ∃ N : ℕ, 0 < N ∧
@@ -174,6 +220,23 @@ theorem transport_denom : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [
   · exact (hcomp _ fun j v => htB (f2 i) (K2 i) (hK2 i) (fun j v => hle2 i j v) j v).1
   · exact (hcomp _ fun j v => htB (f2 i) (K2 i) (hK2 i) (fun j v => hle2 i j v) j v).2 v
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP Φ hΦ`. Establish `hsp` using `hP.weil.isUSplitting`. Establish `hstd : IsStd B.ψ` using `hP.base.std`. Take `⟨m₀, hm₀, hinv⟩` from `heis_fix B.ψ hstd.1 Φ hΦ`. Take `⟨C, hC⟩` from `transport_denom (M.co.e.trans (LinearEquiv.prodComm (AF F) _ _))`.
+
+Use `⟨m₀ * C, 1, fun g h => ?_⟩` and prove the remaining obligations. Take `⟨N, hN, hNle, hT⟩` from `hC ((g : GL (Fin n) (AF F ⊗[F] E))⁻¹) ((h : GL (Fin d) (AF F ⊗[F] E))⁻¹)`. Rewrite `hNle` using `[heightGL_inv, heightGL_inv]`. Use `⟨m₀ * N, Nat.one_le_iff_ne_zero.2 (by positivity), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one]`.
+
+Establish `: ((m₀ * N : ℕ) : ℝ) = m₀ * N` using `by push_cast; ring`. Rewrite using `[this, mul_assoc (m₀ : ℝ) C]`. Conclude with `mul_le_mul_of_nonneg_left hNle (by positivity)`. Establish `hfix : ∀ y : Fin n × Fin d → AF F, IsMulInt F (m₀ * N) y → schr B.ψ (y, 0) (om (g, h) Φ) = om (g, h) Φ` using `by clear hNle hC`. Introduce `y hy`.
+
+Use `set w' := M.co.e.symm (y, 0) with hw'`. Use `set w := ((g : GL (Fin n) (AF F ⊗[F] E))⁻¹ : GL (Fin n) (AF F ⊗[F] E)).1 * w' * (((h : GL (Fin d) (AF F ⊗[F] E))⁻¹ : GL (Fin d) (AF F ⊗[F] E)).1)ᵀ with hw`. Take `⟨h1, h2⟩` from `hT m₀ y hy`. Establish `hΦw : M.co.rho B.ψ w Φ = Φ` using `hinv _ _ h2 h1`. Establish `hact : actAB (cA σ) (g, h) w = w'`.
+
+Simplify using `only [actAB, hw]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul, Matrix.mul_assoc, ← Matrix.transpose_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.transpose_one, Matrix.mul_one]`. Establish `himpl` using `hsp.impl (g, h) w Φ hΦ`. Rewrite `himpl` using `[hΦw, hact]`. Rewrite `himpl` using `[Darboux.rho, hw', LinearEquiv.apply_symm_apply]`.
+
+Conclude with `himpl.symm`. Introduce `x a ha`. Establish `hy : IsMulInt F (m₀ * N) (((m₀ * N : ℕ) : AF F) • a)`. Use `⟨fun i => ?_, fun v i => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `fstA F (((m₀ * N : ℕ) : AF F) * a i) = 0`.
+
+Rewrite using `[map_mul]`. Establish `h0 : fstA F (a i) = 0`. Conclude with `(InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff.1 (ha i).1`. Rewrite using `[h0, mul_zero]`. Express the relevant statement in the definitionally equal form `‖evFin F v (((m₀ * N : ℕ) : AF F) * a i)‖ ≤ _`.
+
+Rewrite using `[map_mul, map_natCast, norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (Valued.toNormedField.norm_le_one_iff.2 ((ha i).2 v))`. Use `congrFun (hfix _ hy) x` as an intermediate fact. Simplify `this` using `[schr]`.
+-/
 theorem periodic_level : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' → ∀ Φ ∈ schA F (Fin n × Fin d), ∃ (C : ℝ) (k : ℕ), ∀ g h, ∃ m : ℕ, 1 ≤ m ∧ (m : ℝ) ≤ C * ((ht g : ℝ) * ht h) ^ k ∧ ∀ x a : Fin n × Fin d → AF F, (∀ i, evI F (a i) = 0 ∧ ∀ v, evFin F v (a i) ∈ v.adicCompletionIntegers F) → om (g, h) Φ (x + (m : AF F) • a) = om (g, h) Φ x := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP Φ hΦ
   have hsp := hP.weil.isUSplitting

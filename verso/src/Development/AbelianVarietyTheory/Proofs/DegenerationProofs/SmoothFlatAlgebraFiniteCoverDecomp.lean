@@ -23,6 +23,11 @@ section
 variable {R K B C D : Type} [CommRing R] [Field K] [Algebra R K] [CommRing B] [Algebra R B] [CommRing C] [Algebra R C]
   [CommRing D] [Algebra R D]
 
+/- English proof (translation)
+Unfold `GenOpen at *`. Establish `e : spMap (Algebra.TensorProduct.map (AlgHom.id K K) (ψ.comp φ)).toRingHom = spMap (Algebra.TensorProduct.map (AlgHom.id K K) ψ).toRingHom ≫ spMap (Algebra.TensorProduct.map (AlgHom.id K K) φ).toRingHom`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply the tactic sequence `ext x <;> simp`.
+
+Rewrite using `[e]`. Use `infer_instance`.
+-/
 theorem GenOpen.comp {φ : B →ₐ[R] C} {ψ : C →ₐ[R] D} (h : GenOpen K φ) (h' : GenOpen K ψ) : GenOpen K (ψ.comp φ) := by
   unfold GenOpen at *
   have e : spMap (Algebra.TensorProduct.map (AlgHom.id K K) (ψ.comp φ)).toRingHom =
@@ -33,6 +38,11 @@ theorem GenOpen.comp {φ : B →ₐ[R] C} {ψ : C →ₐ[R] D} (h : GenOpen K φ
     ext x <;> simp
   rw [e]; infer_instance
 
+/- English proof (translation)
+Unfold `GenOpen`. Use `letI : Algebra (K ⊗[R] B) (K ⊗[R] Localization.Away f) := (Algebra.TensorProduct.map (AlgHom.id K K) (IsScalarTower.toAlgHom R B (Localization.Away f))).toRingHom.toAlgebra`. Use `haveI : IsScalarTower K (K ⊗[R] B) (K ⊗[R] Localization.Away f) := IsScalarTower.of_algHom (Algebra.TensorProduct.map (AlgHom.id K K) (IsScalarTower.toAlgHom R B (Localization.Away f)))`. Establish `h` using `IsLocalization.tensorProduct_tensorProduct_right R K (Submonoid.powers f) (Localization.Away f) (by`. Use extensionality with `x`.
+
+Simplify using `[RingHom.algebraMap_toAlgebra])`. Rewrite `h` using `[Submonoid.map_powers]`. Conclude with `IsOpenImmersion.of_isLocalization (R := CommRingCat.of (K ⊗[R] B)) (S := CommRingCat.of (K ⊗[R] Localization.Away f)) (Algebra.TensorProduct.includeRight (R := R) (A := K) f)`.
+-/
 theorem genOpen_away (f : B) : GenOpen K (IsScalarTower.toAlgHom R B (Localization.Away f)) := by
   unfold GenOpen
   letI : Algebra (K ⊗[R] B) (K ⊗[R] Localization.Away f) :=
@@ -44,6 +54,15 @@ theorem genOpen_away (f : B) : GenOpen K (IsScalarTower.toAlgHom R B (Localizati
   rw [Submonoid.map_powers] at h
   exact IsOpenImmersion.of_isLocalization (R := CommRingCat.of (K ⊗[R] B)) (S := CommRingCat.of (K ⊗[R] Localization.Away f)) (Algebra.TensorProduct.includeRight (R := R) (A := K) f)
 
+/- English proof (translation)
+Unfold `GenOpen`. Establish `hb : Function.Bijective (Algebra.TensorProduct.map (AlgHom.id K K) φ)`. Prove the components needed by the constructor for the conclusion. Use `haveI : Module.Flat R K := IsLocalization.flat K (nonZeroDivisors R)`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap (M := K) φ.toLinearMap hi`.
+
+Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `add x y hx hy`. Take `⟨x, rfl⟩` from `hx`.
+
+Take `⟨y, rfl⟩` from `hy`. Conclude with `⟨x + y, map_add _ _ _⟩`. Consider the case `tmul k c`. Take `⟨n, b, hb⟩` from `hs c`. Establish `h0 : algebraMap R K (π ^ n) ≠ 0`.
+
+Simplify using `using fun h => absurd h hπ`. Use `⟨(k * (algebraMap R K (π ^ n))⁻¹) ⊗ₜ b, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.map_tmul, ← hb, ← map_pow, ← Algebra.smul_def, ← TensorProduct.smul_tmul, AlgHom.id_apply, Algebra.smul_def, mul_comm, _root_.mul_assoc, inv_mul_cancel₀ h0, _root_.mul_one]`. Establish `: IsIso (CommRingCat.ofHom (Algebra.TensorProduct.map (AlgHom.id K K) φ).toRingHom)` using `(ConcreteCategory.isIso_iff_bijective _).2 hb`. Use `infer_instance`.
+-/
 theorem genOpen_of_inj [IsDomain R] [IsFractionRing R K] {π : R} (hπ : π ≠ 0) (φ : B →ₐ[R] C) (hi : Function.Injective φ)
     (hs : ∀ b' : C, ∃ (n : ℕ) (b : B), algebraMap R C π ^ n * b' = φ b) : GenOpen K φ := by
   unfold GenOpen
@@ -68,6 +87,11 @@ theorem genOpen_of_inj [IsDomain R] [IsFractionRing R K] {π : R} (hπ : π ≠ 
     (ConcreteCategory.isIso_iff_bijective _).2 hb
   infer_instance
 
+/- English proof (translation)
+Set `p` to `algebraMap R B π`. Set `T` to `Localization.Away (algebraMap B (Localization.Away p) f)`. Use `haveI : Algebra.Smooth (Localization.Away p) T := Algebra.Smooth.of_isLocalization_Away (algebraMap B (Localization.Away p) f)`. Use `haveI : Algebra.Smooth R T := Algebra.Smooth.comp R (Localization.Away p) T`. Use `haveI : IsLocalization.Away (f * p) T := inferInstance`.
+
+Use `haveI : IsLocalization.Away (algebraMap B (Localization.Away f) p) (Localization.Away (algebraMap R (Localization.Away f) π)) := by`. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Use `infer_instance`. Use `haveI : IsLocalization.Away (f * p) (Localization.Away (algebraMap R (Localization.Away f) π)) := IsLocalization.Away.mul' (Localization.Away f) _ f p`. Conclude with `Algebra.Smooth.of_equiv ((IsLocalization.algEquiv (Submonoid.powers (f * p)) T (Localization.Away (algebraMap R (Localization.Away f) π))).restrictScalars R)`.
+-/
 theorem smooth_away_away {π : R} (h : Algebra.Smooth R (Localization.Away (algebraMap R B π))) (f : B) :
     Algebra.Smooth R (Localization.Away (algebraMap R (Localization.Away f) π)) := by
   let p := algebraMap R B π
@@ -82,6 +106,15 @@ theorem smooth_away_away {π : R} (h : Algebra.Smooth R (Localization.Away (alge
   exact Algebra.Smooth.of_equiv ((IsLocalization.algEquiv (Submonoid.powers (f * p)) T
     (Localization.Away (algebraMap R (Localization.Away f) π))).restrictScalars R)
 
+/- English proof (translation)
+Use `letI : Algebra B C := φ.toRingHom.toAlgebra`. Use `haveI : IsScalarTower R B C := IsScalarTower.of_algHom φ`. Establish `hφ : ∀ b, algebraMap B (Localization.Away (algebraMap R C π)) b = algebraMap C _ (φ b)` using `fun b => rfl`. Use `haveI : IsLocalization.Away (algebraMap R B π) (Localization.Away (algebraMap R C π)) := by`. Use `IsLocalization.Away.mk _ ?_ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[hφ, φ.commutes]`. Conclude with `IsLocalization.Away.algebraMap_isUnit _`. Introduce `s`. Take `⟨n, c, hc⟩` from `IsLocalization.Away.surj (algebraMap R C π) s`. Take `⟨m, b, hb⟩` from `hs c`.
+
+Use `⟨n + m, b, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ, hφ, φ.commutes, ← hb, map_mul, map_pow, ← hc]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a b hab`. Rewrite `hab` using `[hφ, hφ]`.
+
+Take `⟨n, hn⟩` from `IsLocalization.Away.exists_of_eq (algebraMap R C π) hab`. Use `⟨n, hi ?_⟩` and prove the remaining obligations. Simplify using `using hn`. Conclude with `Algebra.Smooth.of_equiv ((IsLocalization.algEquiv (Submonoid.powers (algebraMap R B π)) (Localization.Away (algebraMap R B π)) (Localization.Away (algebraMap R C π))).restrictScalars R)`.
+-/
 theorem smooth_away_of_inj {π : R} (h : Algebra.Smooth R (Localization.Away (algebraMap R B π)))
     (φ : B →ₐ[R] C) (hi : Function.Injective φ)
     (hs : ∀ b' : C, ∃ (n : ℕ) (b : B), algebraMap R C π ^ n * b' = φ b) :
@@ -113,6 +146,13 @@ def kaehlerAway (R : Type) {B : Type} [CommRing R] [CommRing B] [Algebra R B] (f
     (KaehlerDifferential.tensorKaehlerEquivOfFormallyEtale R B (Localization.Away f)).symm) ≪≫ₗ
     TensorProduct.AlgebraTensorModule.cancelBaseChange B (Localization.Away f) D D _
 
+/- English proof (translation)
+Use `letI := a.toRingHom.toAlgebra`. Use `letI := (a.comp (IsScalarTower.toAlgHom R B (Localization.Away f))).toRingHom.toAlgebra`. Use `haveI : IsScalarTower B (Localization.Away f) D := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Introduce `w hw`. Set `e` to `kaehlerAway R f D`.
+
+Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_smul, map_zero]`. Apply `h` to reduce the goal to its premises. Take `⟨r, hr⟩` from `hw`. Use `⟨r, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hr`, the goal using `[Submonoid.smul_def]`. Rewrite using `[← map_smul, hr, map_zero]`.
+-/
 theorem defect_away (f : B) (a : Localization.Away f →ₐ[R] D) (π : R) (c : ℕ)
     (h : Defect (a.comp (IsScalarTower.toAlgHom R B (Localization.Away f))) π c) : Defect a π c := by
   letI := a.toRingHom.toAlgebra
@@ -128,6 +168,9 @@ theorem defect_away (f : B) (a : Localization.Away f →ₐ[R] D) (π : R) (c : 
   rw [Submonoid.smul_def] at hr ⊢
   rw [← map_smul, hr, map_zero]
 
+/- English proof (translation)
+Use `haveI : Module.Free (Localization.Away f) (Localization.Away f ⊗[C] M) := Module.Free.of_equiv (LocalizedModule.equivTensorProduct (Submonoid.powers f) M)`. Set `e` to `IsLocalization.algEquiv (Submonoid.powers f) (Localization.Away f) D`. Use `letI : Algebra (Localization.Away f) D := e.toAlgHom.toRingHom.toAlgebra`. Use `haveI : IsScalarTower C (Localization.Away f) D := IsScalarTower.of_algHom e.toAlgHom`. Conclude with `Module.Free.of_equiv (TensorProduct.AlgebraTensorModule.cancelBaseChange C (Localization.Away f) D D M)`.
+-/
 theorem free_of_away (f : C) (M : Type) [AddCommGroup M] [Module C M] (D : Type) [CommRing D] [Algebra C D]
     [IsLocalization.Away f D] (h : Module.Free (Localization.Away f) (LocalizedModule (Submonoid.powers f) M)) :
     Module.Free D (D ⊗[C] M) := by
@@ -149,9 +192,17 @@ def Cov (K : Type) {R B : Type} [CommRing R] [Field K] [Algebra R K] [CommRing B
 section
 variable {R K B C : Type} [CommRing R] [Field K] [Algebra R K] [CommRing B] [Algebra R B] [CommRing C] [Algebra R C]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨[], by simp, fun R' _ _ a ha => (h R' a ha).elim⟩`.
+-/
 theorem Cov.empty {E : Pts R B} (h : ∀ (R' : Type) [CommRing R'] [Algebra R R'] (a : B →ₐ[R] R'), ¬ E R' a) : Cov K E :=
   ⟨[], by simp, fun R' _ _ a ha => (h R' a ha).elim⟩
 
+/- English proof (translation)
+Take `⟨l₁, p₁, q₁⟩` from `h₁`. Take `⟨l₂, p₂, q₂⟩` from `h₂`. Use `⟨l₁ ++ l₂, fun x hx => (List.mem_append.1 hx).elim (p₁ x) (p₂ x), fun R' _ _ a ha => ?_⟩` and prove the remaining obligations. Break down `h R' a ha with h | h` into its components or cases. Take `⟨x, hx, r⟩` from `q₁ R' a h`.
+
+Conclude with `⟨x, List.mem_append_left _ hx, r⟩`. Take `⟨x, hx, r⟩` from `q₂ R' a h`. Conclude with `⟨x, List.mem_append_right _ hx, r⟩`.
+-/
 theorem Cov.union {E E₁ E₂ : Pts R B} (h₁ : Cov K E₁) (h₂ : Cov K E₂)
     (h : ∀ (R' : Type) [CommRing R'] [Algebra R R'] (a : B →ₐ[R] R'), E R' a → E₁ R' a ∨ E₂ R' a) : Cov K E := by
   obtain ⟨l₁, p₁, q₁⟩ := h₁
@@ -163,12 +214,20 @@ theorem Cov.union {E E₁ E₂ : Pts R B} (h₁ : Cov K E₁) (h₂ : Cov K E₂
   · obtain ⟨x, hx, r⟩ := q₂ R' a h
     exact ⟨x, List.mem_append_right _ hx, r⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨[⟨CommAlgCat.of R C, φ⟩], fun x hx => by obtain rfl := List.mem_singleton.1 hx exact ⟨hs, ho⟩, fun R' _ _ a ha => ⟨_, List.mem_singleton_self _, h R' a ha⟩⟩`.
+-/
 theorem Cov.single {E : Pts R B} (φ : B →ₐ[R] C) (hs : Algebra.Smooth R C) (ho : GenOpen K φ)
     (h : ∀ (R' : Type) [CommRing R'] [Algebra R R'] (a : B →ₐ[R] R'), E R' a → ∃ a' : C →ₐ[R] R', a'.comp φ = a) : Cov K E :=
   ⟨[⟨CommAlgCat.of R C, φ⟩], fun x hx => by
     obtain rfl := List.mem_singleton.1 hx
     exact ⟨hs, ho⟩, fun R' _ _ a ha => ⟨_, List.mem_singleton_self _, h R' a ha⟩⟩
 
+/- English proof (translation)
+Take `⟨l, p, q⟩` from `h'`. Use `⟨l.map fun x => ⟨x.1, x.2.comp φ⟩, fun x hx => ?_, fun R' _ _ a ha => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hx`. Conclude with `⟨(p y hy).1, ho.comp (p y hy).2⟩`. Take `⟨a', rfl, ha'⟩` from `h R' a ha`.
+
+Take `⟨x, hx, b, rfl⟩` from `q R' a' ha'`. Conclude with `⟨_, List.mem_map_of_mem hx, b, rfl⟩`.
+-/
 theorem Cov.trans {E : Pts R B} {E' : Pts R C} (φ : B →ₐ[R] C) (ho : GenOpen K φ) (h' : Cov K E')
     (h : ∀ (R' : Type) [CommRing R'] [Algebra R R'] (a : B →ₐ[R] R'), E R' a →
       ∃ a' : C →ₐ[R] R', a'.comp φ = a ∧ E' R' a') : Cov K E := by
@@ -186,9 +245,17 @@ def vanish (π : R) (E : Pts R B) : Ideal B where
   zero_mem' R' _ _ a _ := by rw [map_zero]; exact dvd_zero _
   smul_mem' c x hx R' _ _ a ha := by rw [smul_eq_mul, map_mul]; exact (hx R' a ha).mul_left _
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_vanish {π : R} {E : Pts R B} {b : B} : b ∈ vanish π E ↔
     ∀ (R' : Type) [CommRing R'] [Algebra R R'] (a : B →ₐ[R] R'), E R' a → algebraMap R R' π ∣ a b := Iff.rfl
 
+/- English proof (translation)
+Take `⟨_, _, h⟩` from `h`. Distinguish the cases in `hx : IsUnit x`. Conclude with `Or.inl hx`. Use `right`. Rewrite using `[← Ideal.mem_span_singleton, ← h.maximalIdeal_eq]`.
+
+Conclude with `hx`.
+-/
 theorem unit_or_dvd {π : R} {R' : Type} [CommRing R'] [Algebra R R'] (h : Unr π R') (x : R') :
     IsUnit x ∨ algebraMap R R' π ∣ x := by
   obtain ⟨_, _, h⟩ := h
@@ -198,11 +265,17 @@ theorem unit_or_dvd {π : R} {R' : Type} [CommRing R'] [Algebra R R'] (h : Unr �
     rw [← Ideal.mem_span_singleton, ← h.maximalIdeal_eq]
     exact hx
 
+/- English proof (translation)
+Take `⟨_, _, h⟩` from `h`. Conclude with `fun hd => h.not_isUnit (isUnit_of_dvd_unit hd hx)`.
+-/
 theorem not_dvd_of_unit {π : R} {R' : Type} [CommRing R'] [Algebra R R'] (h : Unr π R') {x : R'} (hx : IsUnit x) :
     ¬ algebraMap R R' π ∣ x := by
   obtain ⟨_, _, h⟩ := h
   exact fun hd => h.not_isUnit (isUnit_of_dvd_unit hd hx)
 
+/- English proof (translation)
+Use `⟨IsLocalization.liftAlgHom (M := Submonoid.powers f) (f := a) ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, n, rfl⟩`. Simplify using `using h.pow n`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem exists_lift (f : B) {R' : Type} [CommRing R'] [Algebra R R'] (a : B →ₐ[R] R') (h : IsUnit (a f)) :
     ∃ a' : Localization.Away f →ₐ[R] R', a'.comp (IsScalarTower.toAlgHom R B (Localization.Away f)) = a := by
   refine ⟨IsLocalization.liftAlgHom (M := Submonoid.powers f) (f := a) ?_, ?_⟩
@@ -210,6 +283,13 @@ theorem exists_lift (f : B) {R' : Type} [CommRing R'] [Algebra R R'] (a : B →�
     simpa using h.pow n
   · ext x; simp
 
+/- English proof (translation)
+It suffices to establish `h : ∀ (I : Ideal B) (E : Pts R B), (∀ (R' : Type) [CommRing R'] [Algebra R R'] (a : B →ₐ[R] R'), E R' a → Q R' a) → vanish π E = I → Cov K E from h _ Q (fun _ _ _ _ h => h) rfl`. Introduce `I`. Proceed by induction on `I using IsNoetherian.induction with`. Consider the case `hgt I ih`. Introduce and unpack `E hE rfl`.
+
+Distinguish the cases in `hne : ∃ (R' : Type) (_ : CommRing R') (_ : Algebra R R') (a : B →ₐ[R] R'), E R' a`. Take `⟨f, hf, hc⟩` from `H E hE hne`. Set `E' : Pts R B` to `fun R' _ _ a => E R' a ∧ algebraMap R R' π ∣ a f`. Establish `h' : Cov K E'`. Use `ih (vanish π E') (lt_of_le_of_ne (fun b hb R' _ _ a ha => hb R' a ha.1) fun e => hf ?_) E' (fun R' _ _ a ha => hE R' a ha.1) rfl` and prove the remaining obligations.
+
+Rewrite using `[e]`. Conclude with `fun R' _ _ a ha => ha.2`. Conclude with `hc.union h' fun R' _ _ a ha => (unit_or_dvd (hQ R' a (hE R' a ha)) (a f)).imp (fun h => ⟨ha, h⟩) fun h => ⟨ha, h⟩`. Conclude with `Cov.empty fun R' _ _ a ha => hne ⟨R', _, _, a, ha⟩`.
+-/
 theorem cov_of_generic [IsNoetherianRing B] (π : R) (Q : Pts R B)
     (hQ : ∀ (R' : Type) [CommRing R'] [Algebra R R'] (a : B →ₐ[R] R'), Q R' a → Unr π R')
     (H : ∀ E : Pts R B, (∀ (R' : Type) [CommRing R'] [Algebra R R'] (a : B →ₐ[R] R'), E R' a → Q R' a) →
@@ -233,6 +313,15 @@ theorem cov_of_generic [IsNoetherianRing B] (π : R) (Q : Pts R B)
         (unit_or_dvd (hQ R' a (hE R' a ha)) (a f)).imp (fun h => ⟨ha, h⟩) fun h => ⟨ha, h⟩
     · exact Cov.empty fun R' _ _ a ha => hne ⟨R', _, _, a, ha⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hb`. Establish `: (vanish π E).map (algebraMap B (Localization.Away f)) ≤ vanish π (fun R' _ _ a => E R' (a.comp (IsScalarTower.toAlgHom R B (Localization.Away f))))` using `Ideal.map_le_iff_le_comap.2 fun x hx R' _ _ a ha => hx R' _ ha`. Conclude with `this hb`. Introduce `hb`.
+
+Take `⟨n, x, hx⟩` from `IsLocalization.Away.surj f b`. Establish `h1 : x * f ∈ vanish π E`. Introduce `R' _ _ a ha`. Rewrite using `[map_mul]`. Break down `unit_or_dvd (hE R' a ha) (a f) with h | h` into its components or cases.
+
+Take `⟨a', rfl⟩` from `exists_lift f a h`. Use `Dvd.dvd.mul_right ?_ _` and prove the remaining obligations. Use `show _ ∣ a' (algebraMap B _ x)`. Rewrite using `[← hx, map_mul]`. Conclude with `(hb R' a' ha).mul_right _`.
+
+Conclude with `h.mul_left _`. Establish `h2` using `Ideal.mem_map_of_mem (algebraMap B (Localization.Away f)) h1`. Rewrite `h2` using `[map_mul, ← hx, _root_.mul_assoc, ← pow_succ]`. Conclude with `(Ideal.mul_unit_mem_iff_mem _ ((IsLocalization.Away.algebraMap_isUnit f).pow _)).1 h2`.
+-/
 theorem vanish_away (π : R) (E : Pts R B)
     (hE : ∀ (R' : Type) [CommRing R'] [Algebra R R'] (a : B →ₐ[R] R'), E R' a → Unr π R') (f : B) (b : Localization.Away f) :
     b ∈ (vanish π E).map (algebraMap B (Localization.Away f)) ↔
@@ -260,6 +349,9 @@ theorem vanish_away (π : R) (E : Pts R B)
     rw [map_mul, ← hx, _root_.mul_assoc, ← pow_succ] at h2
     exact (Ideal.mul_unit_mem_iff_mem _ ((IsLocalization.Away.algebraMap_isUnit f).pow _)).1 h2
 
+/- English proof (translation)
+Introduce and unpack `b ⟨n, hn⟩ R' _ _ a ha`. Break down `unit_or_dvd (hE R' a ha) (a b) with h | h` into its components or cases. Conclude with `(not_dvd_of_unit (hE R' a ha) (h.pow n) (map_pow a b n ▸ hn R' a ha)).elim`. Conclude with `h`.
+-/
 theorem vanish_isRadical (π : R) (E : Pts R B)
     (hE : ∀ (R' : Type) [CommRing R'] [Algebra R R'] (a : B →ₐ[R] R'), E R' a → Unr π R') : (vanish π E).IsRadical := by
   rintro b ⟨n, hn⟩ R' _ _ a ha
@@ -273,6 +365,9 @@ variable {R : Type} (K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRin
   {π : R} (hπ : Irreducible π)
 include hπ
 
+/- English proof (translation)
+Use `haveI : IsNoetherianRing B := Algebra.FiniteType.isNoetherianRing R B`. Use `cov_of_generic π _ (fun R' _ _ a h => h.1) ?_` and prove the remaining obligations. Introduce and unpack `E hE ⟨R', _, _, a, ha⟩`. Take `⟨f, hf, hs⟩` from `GlobalTheory.T.exists_smooth_of_defect_zero' R π hπ B hB R' a (hE R' a ha).1 (hE R' a ha).2`. Conclude with `⟨f, fun h => not_dvd_of_unit (hE R' a ha).1 hf (h R' a ha), Cov.single _ hs (genOpen_away f) fun R'' _ _ b hb => exists_lift f b hb.2⟩`.
+-/
 theorem cov_zero (B : Type) [CommRing B] [Algebra R B] [Algebra.FiniteType R B] [Module.Flat R B]
     (hB : Algebra.Smooth R (Localization.Away (algebraMap R B π))) :
     Cov K (fun R' _ _ a => Unr π R' ∧ Defect a π 0 : Pts R B) := by
@@ -283,6 +378,25 @@ theorem cov_zero (B : Type) [CommRing B] [Algebra R B] [Algebra.FiniteType R B] 
   exact ⟨f, fun h => not_dvd_of_unit (hE R' a ha).1 hf (h R' a ha),
     Cov.single _ hs (genOpen_away f) fun R'' _ _ b hb => exists_lift f b hb.2⟩
 
+/- English proof (translation)
+Use `haveI : IsNoetherianRing B := Algebra.FiniteType.isNoetherianRing R B`. Use `cov_of_generic π _ (fun R' _ _ a h => h.1) ?_` and prove the remaining obligations. Introduce and unpack `E hE ⟨R₀, _, _, a₀, ha₀⟩`. Establish `hU : ∀ (R' : Type) [CommRing R'] [Algebra R R'] (a : B →ₐ[R] R'), E R' a → Unr π R'` using `fun R' _ _ a ha => (hE R' a ha).1`. Set `I` to `vanish π E`.
+
+Set `k` to `IsLocalRing.ResidueField R`. Establish `hI : I ≠ ⊤` using `fun h => not_dvd_of_unit (hU R₀ a₀ ha₀) (isUnit_one.map a₀) ((h ▸ Submodule.mem_top : (1 : B) ∈ I) R₀ a₀ ha₀)`. Use `haveI : Nontrivial (B ⧸ I) := Ideal.Quotient.nontrivial_iff.2 hI`. Use `haveI : IsReduced (B ⧸ I) := (Ideal.isRadical_iff_quotient_reduced I).1 (vanish_isRadical π E hU)`. Establish `hm : ∀ r ∈ IsLocalRing.maximalIdeal R, algebraMap R (B ⧸ I) r = 0`.
+
+Introduce `r hr`. Rewrite `hr` using `[hπ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Rewrite using `[IsScalarTower.algebraMap_apply R B, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]`. Introduce `R' _ _ a _`. Rewrite using `[a.commutes]`.
+
+Conclude with `map_dvd _ hr`. Use `letI : Algebra k (B ⧸ I) := (Ideal.Quotient.lift (IsLocalRing.maximalIdeal R) (algebraMap R (B ⧸ I)) hm).toAlgebra`. Use `haveI : IsScalarTower R k (B ⧸ I) := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : Algebra.FiniteType k (B ⧸ I) := Algebra.FiniteType.of_restrictScalars_finiteType R k _`. Take `⟨g, hg, hs, hfree⟩` from `GlobalTheory.T.exists_smooth_free_away' k (B ⧸ I) ((B ⧸ I) ⊗[B] KaehlerDifferential R B)`.
+
+Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective g`. Use `⟨f, fun h => hg (Ideal.Quotient.eq_zero_iff_mem.2 h), ?_⟩` and prove the remaining obligations. Set `L` to `Localization.Away f`. Set `J : Ideal L` to `I.map (algebraMap B L)`. Set `jf` to `IsScalarTower.toAlgHom R B L`.
+
+Use `haveI : IsLocalization.Away (Ideal.Quotient.mk I f) (L ⧸ J) := by`. Establish `: IsLocalization (Algebra.algebraMapSubmonoid (B ⧸ I) (Submonoid.powers f)) (L ⧸ J)` using `inferInstance`. Rewrite `this` using `[Algebra.algebraMapSubmonoid_powers]`. Then use the resulting hypothesis. Use `letI : Algebra k (L ⧸ J) := ((algebraMap (B ⧸ I) (L ⧸ J)).comp (algebraMap k (B ⧸ I))).toAlgebra`. Use `haveI : IsScalarTower k (B ⧸ I) (L ⧸ J) := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+
+Use `haveI : IsScalarTower R k (L ⧸ J) := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `hs' : Algebra.Smooth k (L ⧸ J)` using `Algebra.Smooth.of_equiv ((IsLocalization.algEquiv (Submonoid.powers (Ideal.Quotient.mk I f)) (Localization.Away (Ideal.Quotient.mk I f)) (L ⧸ J)).restrictScalars k)`. Establish `hfree' : Module.Free (L ⧸ J) ((L ⧸ J) ⊗[L] KaehlerDifferential R L)` using `by haveI := free_of_away (Ideal.Quotient.mk I f) _ (L ⧸ J) hfree haveI : Module.Free (L ⧸ J) ((L ⧸ J) ⊗[B] KaehlerDifferential R B) := Module.Free.of_equiv (TensorProduct.AlgebraTensorModule.cancelBaseChange B (B ⧸ I) (L ⧸ J) (L ⧸ J) _)`. Conclude with `Module.Free.of_equiv (kaehlerAway R f (L ⧸ J)).symm`. Use `haveI : Algebra.FiniteType R L := Algebra.FiniteType.trans (S := B) inferInstance inferInstance`.
+
+Use `haveI : Module.Flat R L := Module.Flat.trans R B L`. Take `⟨B', _, _, φ, _, _, hi, hsurj, hpt⟩` from `GlobalTheory.T.unramified_ideal_locus_characterization R π hπ L (fun R' _ _ a => E R' (a.comp jf)) (fun R' _ _ a ha => hU R' _ ha) J (vanish_away π E hU f) k IsLocalRing.residue_surjective hs' hfree'`. Use `Cov.trans (φ.comp jf) ((genOpen_away f).comp (genOpen_of_inj hπ.ne_zero φ hi hsurj)) (ih B' (smooth_away_of_inj (smooth_away_away hB f) φ hi hsurj)) ?_` and prove the remaining obligations. Introduce and unpack `R' _ _ a ⟨ha, hu⟩`. Take `⟨a', rfl⟩` from `exists_lift f a hu`.
+
+Take `⟨a'', rfl, hd⟩` from `hpt R' a' c ha (defect_away f a' π _ (hE R' _ ha).2)`. Conclude with `⟨a'', rfl, hU R' _ ha, hd⟩`.
+-/
 theorem cov_succ (hk : PerfectField (IsLocalRing.ResidueField R)) (c : ℕ)
     (ih : ∀ (B : Type) [CommRing B] [Algebra R B] [Algebra.FiniteType R B] [Module.Flat R B],
       Algebra.Smooth R (Localization.Away (algebraMap R B π)) → Cov K (fun R' _ _ a => Unr π R' ∧ Defect a π c : Pts R B))
@@ -342,6 +456,13 @@ theorem cov_succ (hk : PerfectField (IsLocalRing.ResidueField R)) (c : ℕ)
   exact ⟨a'', rfl, hU R' _ ha, hd⟩
 end
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ _ π hπ hk B _ _ _ _ hB`. Establish `H : ∀ (c : ℕ) (B : Type) [CommRing B] [Algebra R B] [Algebra.FiniteType R B] [Module.Flat R B], Algebra.Smooth R (Localization.Away (algebraMap R B π)) → Cov K (fun R' _ _ a => Unr π R' ∧ Defect a π c : Pts R B)`. Introduce `c`. Proceed by induction on `c with`. Consider the case `zero => exact cov_zero K hπ`.
+
+Consider the case `succ c ih => exact cov_succ K hπ hk c ih`. Take `⟨c, hc⟩` from `GlobalTheory.T.exists_defect_bound_of_smooth_away R π hπ B hB`. Take `⟨l, p, q⟩` from `H c B hB`. Use `⟨l.length, fun i => (l.get i).1, inferInstance, inferInstance, fun i => (l.get i).2, fun i => p _ (List.get_mem l i), fun R' _ _ a hu => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, r⟩` from `q R' a ⟨hu, by haveI := hu.1; exact hc R' a⟩`.
+
+Take `⟨i, rfl⟩` from `List.get_of_mem hx`. Conclude with `⟨i, r⟩`.
+-/
 theorem smoothening : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K] (π : R), Irreducible π → PerfectField (IsLocalRing.ResidueField R) → ∀ (B : Type) [CommRing B] [Algebra R B] [Algebra.FiniteType R B] [Module.Flat R B], Algebra.Smooth R (Localization.Away (algebraMap R B π)) → ∃ (n : ℕ) (C : Fin n → Type) (_ : ∀ i, CommRing (C i)) (_ : ∀ i, Algebra R (C i)) (φ : ∀ i, B →ₐ[R] C i), (∀ i, Algebra.Smooth R (C i) ∧ IsOpenImmersion (spMap (Algebra.TensorProduct.map (AlgHom.id K K) (φ i)).toRingHom)) ∧ ∀ (R' : Type) [CommRing R'] [Algebra R R'] (a : B →ₐ[R] R'), Unr π R' → ∃ (i : Fin n) (a' : C i →ₐ[R] R'), a'.comp (φ i) = a := by
   intro R K _ _ _ _ _ _ π hπ hk B _ _ _ _ hB
   have H : ∀ (c : ℕ) (B : Type) [CommRing B] [Algebra R B] [Algebra.FiniteType R B] [Module.Flat R B],

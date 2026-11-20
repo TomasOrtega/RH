@@ -7,6 +7,29 @@ noncomputable section
 
 namespace GlobalTheory.PolFan
 
+/- English proof (translation)
+Introduce `O _ bar q ψ lab hlab X _ _ _ _ hX b v hv β₀ hβ₀ hp₀ β hβ hp hin c₀ c hc₀ hc hrel`. Take `⟨e, he, he'⟩` from `hin`. Establish `hw : ∀ k, 0 ≤ c₀ * e k + c k` using `fun k => add_nonneg (mul_nonneg hc₀.le (he k)) (hc k)`. Establish `hcomb : toReal β = ∑ k, (c₀ * e k + c k) • toReal (v k)`. Rewrite using `[hrel, he', Finset.smul_sum, ← Finset.sum_add_distrib]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => by rw [smul_smul, add_smul]`. Establish `hβv : InRCone v β` using `⟨_, hw, hcomb⟩`. Establish `hne : ({k : ℕ | ∃ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell bar ψ γ ∧ InRCone γ β ∧ genRank γ = k}).Nonempty` using `⟨_, b, v, hv, hβv, rfl⟩`. Take `⟨m, τ, hτ, hβτ, hrank⟩` from `Nat.sInf_mem hne`. Take `⟨N, ℓ, hN, h1, h2, h3⟩` from `hτ.strict`.
+
+Establish `hψτ : ((ℓ β : ℤ) : ℝ) = N * ψ.evalZ β`. Take `⟨d, hd, hde⟩` from `hβτ`. Rewrite using `[apply_eq_of_toReal_eq hde ℓ]`. Establish `A` using `(linearOn_iff ψ τ).1 hτ.linear d hd`. Rewrite `A` using `[← hde, evalR_toReal]`.
+
+Rewrite using `[A, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [h1 i]; ring`. Establish `hψv : ψ.evalZ β = c₀ * ψ.evalZ β₀ + ∑ k, c k * ψ.evalZ (v k)`. Establish `A` using `(linearOn_iff ψ v).1 hv.linear _ hw`. Rewrite `A` using `[← hcomb, evalR_toReal]`.
+
+Establish `B` using `(linearOn_iff ψ v).1 hv.linear e he`. Rewrite `B` using `[← he', evalR_toReal]`. Rewrite using `[A, B, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Establish `hℓv : ((ℓ β : ℤ) : ℝ) = c₀ * ℓ β₀ + ∑ k, c k * ℓ (v k)`.
+
+Rewrite using `[apply_eq_of_toReal_eq hcomb ℓ, apply_eq_of_toReal_eq he' ℓ, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Establish `hk : ∀ k, (N : ℝ) * ψ.evalZ (v k) ≤ ℓ (v k)` using `fun k => h2 _ (hv.mem k) (hv.nonneg k)`. Establish `h0 : (N : ℝ) * ψ.evalZ β₀ ≤ ℓ β₀` using `h2 _ hβ₀ hp₀`. Establish `heq : (N : ℝ) * ψ.evalZ β₀ = ℓ β₀`.
+
+Establish `hsum : ∑ k, c k * (N * ψ.evalZ (v k)) ≤ ∑ k, c k * (ℓ (v k) : ℝ)` using `Finset.sum_le_sum fun k _ => mul_le_mul_of_nonneg_left (hk k) (hc k)`. Establish `E : c₀ * (ℓ β₀ : ℝ) + ∑ k, c k * (ℓ (v k) : ℝ) = c₀ * (N * ψ.evalZ β₀) + ∑ k, c k * (N * ψ.evalZ (v k))`. Rewrite using `[← hℓv, hψτ, hψv, mul_add, Finset.mul_sum]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Assume the negation of the conclusion as `hne'`. Establish `hlt : (N : ℝ) * ψ.evalZ β₀ < ℓ β₀` using `lt_of_le_of_ne h0 hne'`. Use `mul_lt_mul_of_pos_left hlt hc₀` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨kk, d, hkk, hd⟩` from `h3 β₀ hβ₀ hp₀ heq`. Establish `hβ₀τ : InRCone τ β₀`. Use `⟨fun i => (d i : ℝ) / kk, fun i => by positivity, LinearMap.ext₂ fun a b' => ?_⟩` and prove the remaining obligations. Establish `h` using `LinearMap.congr_fun₂ hd a b'`. Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply, nsmul_eq_mul] at h`.
+
+Establish `hR : (kk : ℝ) * (β₀ a b' : ℝ) = ∑ i, (d i : ℝ) * (τ i a b' : ℝ)` using `by exact_mod_cast h`. Establish `hkR : (kk : ℝ) ≠ 0` using `by positivity`. Simplify using `only [toReal_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hle` using `Nat.sInf_le (s := {k : ℕ | ∃ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell bar ψ γ ∧ InRCone γ β₀ ∧ genRank γ = k}) ⟨m, τ, hτ, hβ₀τ, rfl⟩`.
+
+Rewrite using `[hlab X hX β hβ hp, hlab X hX β₀ hβ₀ hp₀]`. Conclude with `hle.trans hrank.le` after adjusting the coercions.
+-/
 theorem carrierDim_le_of_add_cell : ∀ (O : Type) [CommRing O] (bar : O → O) (q : ℕ) (ψ lab : InvFun O), IsCarrierDim bar q ψ lab → ∀ (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X] [Module.Projective O X], Module.finrank O X ≤ q → ∀ (b : ℕ) (v : Fin b → LinearMap.BilinForm ℤ X), IsCell bar ψ v → ∀ β₀ ∈ balForms bar X, (∀ y, 0 ≤ β₀ y y) → ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → InRCone v β₀ → ∀ (c₀ : ℝ) (c : Fin b → ℝ), 0 < c₀ → (∀ k, 0 ≤ c k) → toReal β = c₀ • toReal β₀ + ∑ k, c k • toReal (v k) → lab.evalZ β₀ ≤ lab.evalZ β := by
   intro O _ bar q ψ lab hlab X _ _ _ _ hX b v hv β₀ hβ₀ hp₀ β hβ hp hin c₀ c hc₀ hc hrel
   obtain ⟨e, he, he'⟩ := hin

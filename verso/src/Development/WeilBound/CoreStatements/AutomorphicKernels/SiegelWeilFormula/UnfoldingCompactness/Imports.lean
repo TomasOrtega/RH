@@ -12,6 +12,9 @@ namespace PositivityTheory.SiegelWeilFormula.kunf
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
   {Y : Spc F E n} {b : GL (Fin n ⊕ Fin n) E}
 
+/- English proof (translation)
+Take `⟨K, hK, hKx⟩` from `PositivityTheory.SiegelWeilFormula.kfour.nF_cocompact (PositivityTheory.SiegelWeilFormula.kfour.sigma_sigma_of_good hB) hb`. Use `⟨K, hK, fun β => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hγK⟩` from `hKx β`. Conclude with `⟨⟨γ, hγ⟩, by rwa [add_comm]⟩`.
+-/
 theorem exists_cover (B : Base F E) (hB : B.IsGood σ) (hb : IsFrame2 σ Y b) :
     ∃ C : Set (nA σ Y b), IsCompact C ∧ ∀ β : nA σ Y b, ∃ ν : nF σ Y b, β + (ν : nA σ Y b) ∈ C := by
   obtain ⟨K, hK, hKx⟩ := PositivityTheory.SiegelWeilFormula.kfour.nF_cocompact (PositivityTheory.SiegelWeilFormula.kfour.sigma_sigma_of_good hB) hb

@@ -18,6 +18,33 @@ noncomputable section
 
 namespace GlobalTheory.ConeSoB
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ L hLSB hheis hinv ι ι₁ hι hι₁ φ hφ l`. Establish `hψ : Continuous B.ψ` using `hT.base.std.1`. Rewrite using `[(locOp_rho G.M'.co hψ B.v₁ (shiftB σ H H' l) hφ).2]`. Take `⟨hPu0, hQu0⟩` from `GlobalTheory.T.seesaw_type_b_triple_hypothesis_form B G G₁ H H' hC X om om' om₁ om₁' hT hT₁`. Establish `hPu : IsUnit (GlobalTheory.PlaneBasis.crdP B.τ₁ H).det`.
+
+Conclude with `Matrix.isUnit_nonsing_inv_det _ (by rwa [Matrix.det_transpose])`. Establish `hQu : IsUnit (GlobalTheory.PlaneBasis.crdQ B.τ₁ H').det`. Conclude with `Matrix.isUnit_nonsing_inv_det _ hQu0`. Use `set P := GlobalTheory.PlaneBasis.crdP B.τ₁ H with hP`. Use `set Q := GlobalTheory.PlaneBasis.crdQ B.τ₁ H' with hQ`.
+
+Establish `hψc : Continuous (GlobalTheory.LatVac.psiAt B.ψ B.v₁)` using `GlobalTheory.SchrSB.continuous_psiAt B.ψ hψ B.v₁`. Establish `hψ1 : GlobalTheory.LatVac.psiAt B.ψ B.v₁ ≠ 1` using `GlobalTheory.PsiNontriv.psiAt_ne_one B.ψ hT.base.std B.v₁`. Establish `hmaps : ∀ φ ∈ SB (Fin (b + 2) × Fin (a + (b + 2)) → Fv F B.v₁), ι φ ∈ SB (Matrix (Fin (b + 2)) (Fin (a + (b + 2))) (Fv F B.v₁))` using `fun φ h => hι.bij.mapsTo h`. Set `Λ : (Matrix (Fin (b + 2)) (Fin (a + (b + 2))) (Fv F B.v₁) → ℂ) → ℂ` to `fun f => ι₁ (L (Function.invFunOn ι (SB (Fin (b + 2) × Fin (a + (b + 2)) → Fv F B.v₁) : Set _) f)) 0`. Establish `hΛ : ∀ φ ∈ SB (Fin (b + 2) × Fin (a + (b + 2)) → Fv F B.v₁), Λ (ι φ) = ι₁ (L φ) 0`.
+
+Introduce `φ hφ`. Establish `hs` using `hι.bij.surjOn (hmaps φ hφ)`. Establish `e : Function.invFunOn ι (SB (Fin (b + 2) × Fin (a + (b + 2)) → Fv F B.v₁) : Set _) (ι φ) = φ` using `hι.bij.injOn (Function.invFunOn_mem hs) hφ (Function.invFunOn_eq hs)`. Express the relevant statement in the definitionally equal form `ι₁ (L (Function.invFunOn ι _ (ι φ))) 0 = _`. Rewrite using `[e]`.
+
+Establish `hadd : ∀ f ∈ SB (Matrix (Fin (b + 2)) (Fin (a + (b + 2))) (Fv F B.v₁)), ∀ g ∈ SB (Matrix (Fin (b + 2)) (Fin (a + (b + 2))) (Fv F B.v₁)), Λ (f + g) = Λ f + Λ g`. Introduce `f hf g hg`. Take `⟨φf, hφf, rfl⟩` from `hι.bij.surjOn hf`. Take `⟨φg, hφg, rfl⟩` from `hι.bij.surjOn hg`. Rewrite using `[← map_add, hΛ _ (add_mem hφf hφg), hΛ _ hφf, hΛ _ hφg, map_add, map_add]`.
+
+Both sides reduce to the same expression. Establish `hsmul : ∀ z : ℂ, ∀ f ∈ SB (Matrix (Fin (b + 2)) (Fin (a + (b + 2))) (Fv F B.v₁)), Λ (z • f) = z * Λ f`. Introduce `z f hf`. Take `⟨φf, hφf, rfl⟩` from `hι.bij.surjOn hf`. Rewrite using `[← map_smul, hΛ _ (Submodule.smul_mem _ z hφf), hΛ _ hφf, map_smul, map_smul]`.
+
+Both sides reduce to the same expression. Establish `htr : ∀ f ∈ SB (Matrix (Fin (b + 2)) (Fin (a + (b + 2))) (Fv F B.v₁)), ∀ (r : Fin (a + (b + 2)) → Fv F B.v₁) (c : Fin b → Fv F B.v₁), Λ (fun Z => f (Z + P * insS (0 : Matrix (Fin b) (Fin (a + b)) (Fv F B.v₁)) r c 0 * Q)) = Λ f`. Introduce `f hf r c`. Take `⟨φf, hφf, rfl⟩` from `hι.bij.surjOn hf`. Take `⟨φ', hφ', hL, hι'⟩` from `GlobalTheory.T.seesaw_type_b_triple_second_form B G G₁ H H' hC X om om' om₁ om₁' hT hT₁ L hLSB hheis hinv ι ι₁ hι hι₁ r c φf hφf`.
+
+Establish `e : (fun Z => ι φf (Z + P * insS (0 : Matrix (Fin b) (Fin (a + b)) (Fv F B.v₁)) r c 0 * Q)) = ι φ'`. Use function extensionality and compare the values at `fun Z => (hι' Z).symm`. Rewrite using `[e, hΛ _ hφ', hΛ _ hφf, hL]`. Establish `hch : ∀ U : Matrix (Fin (b + 2)) (Fin (a + (b + 2))) (Fv F B.v₁), (∀ (r : Fin (a + (b + 2)) → Fv F B.v₁) (c : Fin b → Fv F B.v₁), ∑ i, ∑ j, U i j * insS (0 : Matrix (Fin b) (Fin (a + b)) (Fv F B.v₁)) r c 0 i j = 0) → ∀ f ∈ SB (Matrix (Fin (b + 2)) (Fin (a + (b + 2))) (Fv F B.v₁)) …`. Introduce `U hU f hf f₁ hf₁ hrel`.
+
+Take `⟨φf, hφf, rfl⟩` from `hι.bij.surjOn hf`. Take `⟨φ', hφ', h0, hι'⟩` from `GlobalTheory.T.seesaw_type_b_triple_third_form B G G₁ H H' hC X om om' om₁ om₁' hT hT₁ L hLSB hheis hinv ι ι₁ hι hι₁ U hU φf hφf`. Establish `e : f₁ = ι φ'`. Use function extensionality and compare the values at `Z`. Establish `hZ : P * (P⁻¹ * Z * Q⁻¹) * Q = Z`.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hQu, Matrix.mul_one, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hPu, Matrix.one_mul]`. Rewrite using `[← hZ, hι', hrel]`. Rewrite using `[e, hΛ _ hφ', hΛ _ hφf, h0]`. Take `⟨κ, hκ⟩` from `GlobalTheory.T.invertible_translate_schwartz_functional B.v₁ (GlobalTheory.LatVac.psiAt B.ψ B.v₁) hψc hψ1 P Q hPu hQu Λ hadd hsmul htr hch`. Establish `hφs` using `GlobalTheory.SchrSB.schr_mem_SB B.ψ hψ B.v₁ (GlobalTheory.LatVac.locCo G.M'.co B.v₁ (shiftB σ H H' l)) φ hφ`.
+
+Take `⟨c₀, s, x, hS⟩` from `GlobalTheory.T.seesaw_type_b_triple_fifth_form B G G₁ H H' hC X om om' om₁ om₁' hT hT₁ ι hι φ hφ l`. Use `⟨P, Q, 1, 1, fun r c => κ * c₀ * GlobalTheory.LatVac.psiAt B.ψ B.v₁ (s * r ⟨a, by omega⟩), x, fun Y => ?_⟩` and prove the remaining obligations. Take `⟨φ', hφ', h0, hι'⟩` from `GlobalTheory.T.seesaw_type_b_triple_fourth_form B G G₁ H H' hC X om om' om₁ om₁' hT hT₁ L hLSB hheis hinv ι ι₁ hι hι₁ Y _ hφs`. Rewrite using `[← h0, ← hΛ _ hφ', hκ _ (hmaps _ hφ'), Matrix.one_mul, Matrix.mul_one, ← integral_const_mul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `r`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `c`. Establish `hins : insS (0 : Matrix (Fin b) (Fin (a + b)) (Fv F B.v₁)) r c 0 + insS Y 0 0 0 = insS Y r c 0`.
+
+Use extensionality with `i j`. Simplify using `only [insS, Matrix.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[hι', ← Matrix.add_mul, ← Matrix.mul_add, hins, hS Y r c]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ev_shift_integral : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} (B : Base F E) {a b : ℕ}
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →
     ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W),

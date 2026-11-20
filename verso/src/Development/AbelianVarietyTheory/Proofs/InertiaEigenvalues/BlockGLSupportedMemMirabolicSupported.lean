@@ -19,6 +19,13 @@ open Matrix
 
 namespace GlobalTheory.BlockMirabolic
 
+/- English proof (translation)
+Introduce `E _ _ m r S h hh`. Prove the components needed by the constructor for the conclusion. Introduce `w hw`. Establish `hw1` using `congrArg Units.val (hh w hw)`. Apply `Units.ext` to reduce the goal to its premises.
+
+Simplify using `only [Units.val_one] at hw1 ⊢`. Express the relevant statement in the definitionally equal form `((GroundTheory.Automorphic.FourierWhittaker.blockMat _ h.val).map _) = 1`. Express the relevant statement in the definitionally equal form `(h.val.map _) = 1 at hw1`. Rewrite using `[GroundTheory.Automorphic.FourierWhittaker.map_blockMat, hw1, GroundTheory.Automorphic.FourierWhittaker.blockMat_one]`. Introduce `j`.
+
+Express the relevant statement in the definitionally equal form `GroundTheory.Automorphic.FourierWhittaker.blockMat _ h.val (Fin.last (m + r + 1)) j = _`. Rewrite using `[GroundTheory.Automorphic.FourierWhittaker.blockMat_apply, dif_neg (by simp)]`. Simplify using `only [eq_comm]`.
+-/
 theorem blockGL_mem_mirS : ∀ (E : Type) [Field E] [NumberField E] (m r : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E))),
     ∀ h ∈ GlobalTheory.JSW.supS E (m + 1) S,
       GroundTheory.Automorphic.FourierWhittaker.blockGL (by omega : m + 1 ≤ m + r + 1 + 1) h ∈ GlobalTheory.JSW.mirS E S (m + r + 1) := by

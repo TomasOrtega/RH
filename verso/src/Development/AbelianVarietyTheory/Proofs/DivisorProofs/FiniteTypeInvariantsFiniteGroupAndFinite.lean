@@ -2,6 +2,11 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `letI : MulSemiringAction G C' := MulSemiringAction.compHom C' act`. Use `haveI : Algebra.IsInvariant C C' G := ⟨fun b hb => ⟨⟨b, (hC b).2 fun σ => hb σ⟩, rfl⟩⟩`. Use `haveI : Algebra.IsIntegral C C' := Algebra.IsInvariant.isIntegral C C' G`. Use `haveI : Algebra.FiniteType C C' := Algebra.FiniteType.of_restrictScalars_finiteType R C C'`. Use `haveI hfin : Module.Finite C C' := Algebra.IsIntegral.finite`.
+
+Use `⟨⟨fg_of_fg_of_fg (A := R) (B := C) (C := C') Algebra.FiniteType.out hfin.fg_top Subtype.val_injective⟩, hfin⟩` and prove the remaining obligations.
+-/
 theorem finiteType_invariants_and_finite (R : Type) [CommRing R] [IsNoetherianRing R]
     (C' : Type) [CommRing C'] [Algebra R C'] [Algebra.FiniteType R C']
     (G : Type) [Group G] [Finite G] (act : G →* (C' ≃ₐ[R] C')) (C : Subalgebra R C')

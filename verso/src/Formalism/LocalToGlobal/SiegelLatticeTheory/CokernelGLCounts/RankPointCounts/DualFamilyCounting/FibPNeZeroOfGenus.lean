@@ -15,6 +15,11 @@ variable {K F V : Type} [Field K] [NumberField K] [StarRing K] [Field F] [Number
   [Algebra F K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V]
   [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Use `⟨?_, le_antisymm (Submodule.span_le.mpr fun x hx => hx.2) fun x hx => ?_⟩` and prove the remaining obligations. Use `isNoetherian_of_fg_of_noetherian _ hΛ.fg` as an intermediate fact. Conclude with `Submodule.FG.of_le_of_isNoetherian (inf_le_left : Λ ⊓ X.restrictScalars (𝓞 K) ≤ Λ)`. Take `⟨r, hr, hrx⟩` from `StabilizerLattices.exists_smul_mem hΛ x`. Establish `h1 : r • x ∈ Λ ⊓ X.restrictScalars (𝓞 K)` using `⟨hrx, (X.restrictScalars (𝓞 K)).smul_mem r hx⟩`.
+
+Establish `hr' : algebraMap (𝓞 K) K r ≠ 0` using `by simpa using hr`. Establish `e : x = (algebraMap (𝓞 K) K r)⁻¹ • (r • x)`. Rewrite using `[← algebraMap_smul K r x, smul_smul, inv_mul_cancel₀ hr', one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span h1)`.
+-/
 theorem isLatIn_cut {Λ : Submodule (𝓞 K) V} (hΛ : Submodule.IsLattice K Λ) (X : Submodule K V) :
     IsLatIn X (Λ ⊓ X.restrictScalars (𝓞 K)) := by
   refine ⟨?_, le_antisymm (Submodule.span_le.mpr fun x hx => hx.2) fun x hx => ?_⟩
@@ -28,6 +33,9 @@ theorem isLatIn_cut {Λ : Submodule (𝓞 K) V} (hΛ : Submodule.IsLattice K Λ)
     rw [e]
     exact Submodule.smul_mem _ _ (Submodule.subset_span h1)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Conclude with `hnd`. Introduce `y hy`. Use `hnd y fun x => ?_` and prove the remaining obligations. Rewrite using `[← hs.eq x y, hy x, map_zero]`.
+-/
 theorem nondegenerate_of {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hnd : Nondeg h) :
     h.Nondegenerate := by
   constructor
@@ -36,6 +44,19 @@ theorem nondegenerate_of {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hnd
     refine hnd y fun x => ?_
     rw [← hs.eq x y, hy x, map_zero]
 
+/- English proof (translation)
+Establish `hp` using `h𝔭.isPrime`. Establish `hN` using `isLattice_sup hUc hM hT`. Establish `hD : Submodule.IsLattice K (Formalism.HermitianLatticesTheory.dual h (M ⊔ T))` using `(Formalism.HermitianLatticesTheory.dualLattice (𝓞 K) K V h hs (nondegenerate_of hs hnd) Formalism.HermitianLatticesTheory.star_algebraMap_ringOfIntegers_mem_range _ hN).1`. Establish `hND` using `LIOrb.isLattice_inf hN hD`. Establish `key : ∀ Λ ∈ fibS h U 𝔭 M T, locF 𝔭 (M ⊔ T) ≤ Λ ∧ Λ ≤ locF 𝔭 (Formalism.HermitianLatticesTheory.dual h (M ⊔ T)) ∧ locF 𝔭 Λ = Λ`.
+
+Introduce and unpack `Λ ⟨⟨Λ', -, rfl⟩, h1, h2, h3⟩`. Establish `hle : locF 𝔭 (M ⊔ T) ≤ locF 𝔭 Λ'`. Establish `hs' : M ⊔ T ≤ locF 𝔭 Λ'` using `sup_le ((LocF.le_locF 𝔭 M).trans (h2 ▸ inf_le_left)) ((LocF.le_locF 𝔭 T).trans (h3 ▸ inf_le_left))`. Conclude with `(LocF.locF_mono 𝔭 hs').trans (LocF.locF_idem 𝔭 Λ').le`. Use `⟨hle, ?_, LocF.locF_idem 𝔭 Λ'⟩` and prove the remaining obligations.
+
+Rewrite using `[G7.locF_dual hF h hN.fg hp]`. Combine the equalities or inequalities in the displayed calculation. Use `Set.Finite.of_finite_image (f := fun Λ => Λ ⊓ Formalism.HermitianLatticesTheory.dual h (M ⊔ T)) ((BrB.finite_between hND hD inf_le_right).subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨Λ, hΛ, rfl⟩`. Take `⟨k1, -, -⟩` from `key Λ hΛ`.
+
+Conclude with `⟨inf_le_inf_right _ ((LocF.le_locF 𝔭 _).trans k1), inf_le_right⟩`. Introduce `Λ₁ h1 Λ₂ h2 he`. Take `⟨-, a1, b1⟩` from `key Λ₁ h1`. Take `⟨-, a2, b2⟩` from `key Λ₂ h2`. Establish `e1 : locF 𝔭 (Λ₁ ⊓ Formalism.HermitianLatticesTheory.dual h (M ⊔ T)) = Λ₁`.
+
+Rewrite using `[LIOrb.locF_inf_locF h𝔭, b1]`. Conclude with `inf_eq_left.2 a1`. Establish `e2 : locF 𝔭 (Λ₂ ⊓ Formalism.HermitianLatticesTheory.dual h (M ⊔ T)) = Λ₂`. Rewrite using `[LIOrb.locF_inf_locF h𝔭, b2]`. Conclude with `inf_eq_left.2 a2`.
+
+Rewrite using `[← e1, ← e2]`. Conclude with `congrArg (locF 𝔭) he`.
+-/
 theorem finite_fibS (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hnd : Nondeg h)
     {U : Submodule K V} (hUc : IsCompl U (orthK h U)) {M T : Submodule (𝓞 K) V} (hM : IsLatIn U M)
     (hT : IsLatIn (orthK h U) T) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) :
@@ -71,6 +92,11 @@ theorem finite_fibS (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h
     rw [← e1, ← e2]
     exact congrArg (locF 𝔭) he
 
+/- English proof (translation)
+Establish `hfin` using `finite_fibS hF hs hnd hUc hM hT h𝔭`. Rewrite using `[fibP_eq, Nat.card_ne_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨x, hx⟩, -⟩`. Conclude with `⟨x, hx⟩`.
+
+Introduce and unpack `⟨x, hx⟩`. Conclude with `⟨⟨⟨x, hx⟩⟩, hfin.to_subtype⟩`.
+-/
 theorem fibP_ne_zero_iff (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hnd : Nondeg h)
     {U : Submodule K V} (hUc : IsCompl U (orthK h U)) {M T : Submodule (𝓞 K) V} (hM : IsLatIn U M)
     (hT : IsLatIn (orthK h U) T) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) :
@@ -83,11 +109,17 @@ theorem fibP_ne_zero_iff (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (h
   · rintro ⟨x, hx⟩
     exact ⟨⟨⟨x, hx⟩⟩, hfin.to_subtype⟩
 
+/- English proof (translation)
+Unfold `fibP`. Rewrite using `[e]`.
+-/
 theorem fibP_congr (h : V →ₗ⋆[K] V →ₗ[K] K) (U : Submodule K V) (𝔭 : Ideal (𝓞 F)) (M : Submodule (𝓞 K) V)
     {T T' : Submodule (𝓞 K) V} (e : locF 𝔭 T = locF 𝔭 T') : fibP h U 𝔭 M T = fibP h U 𝔭 M T' := by
   unfold fibP
   rw [e]
 
+/- English proof (translation)
+Take `⟨g, hg, he⟩` from `hg 𝔭 h𝔭`. Establish `hT₀` using `isLatIn_cut hΛ₀.1 (orthK h U)`. Rewrite using `[← fibP_congr h U 𝔭 M (show locF 𝔭 (Formalism.HermitianLatticesTheory.gmap g (Λ₀ ⊓ (orthK h U).restrictScalars (𝓞 K))) = locF 𝔭 T by rw [← LocalizedFibreSets.gmap_locF, he]), G6.fibP_gmap hM 𝔭 _ hg, fibP_ne_zero_iff hF hs hnd hUc hM hT₀ h𝔭]`. Conclude with `⟨_, locF_mem_fibS hF hΛ₀.1 hΛ₀.2.1 hΛ₀.2.2 rfl h𝔭⟩`.
+-/
 theorem fibP_ne_zero_of_genus (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm)
     (hnd : Nondeg h) {U : Submodule K V} (hUc : IsCompl U (orthK h U)) {M : Submodule (𝓞 K) V}
     (hM : IsLatIn U M) {Λ₀ : Submodule (𝓞 K) V} (hΛ₀ : Λ₀ ∈ GlueSet h U M) {T : Submodule (𝓞 K) V}

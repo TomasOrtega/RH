@@ -27,11 +27,21 @@ def Over (y : CxPts C.Y.str (σ.comp e.toRingHom)) : Prop :=
 
 variable {C P}
 
+/- English proof (translation)
+Rewrite using `[← C.π_str, ← Category.assoc, ← Category.assoc, h]`. Conclude with `(Spec.map_comp _ _).symm`.
+-/
 theorem comp_str {p : Sp ℂ ⟶ C.Y.X} (h : (p ≫ C.π) ≫ genStr Z = spMap σ) :
     p ≫ C.Y.str = spMap (σ.comp e.toRingHom) := by
   rw [← C.π_str, ← Category.assoc, ← Category.assoc, h]
   exact (Spec.map_comp _ _).symm
 
+/- English proof (translation)
+Establish `h2 : spMap e.toRingHom ≫ spMap e.symm.toRingHom = 𝟙 _`. Use `(Spec.map_comp _ _).symm.trans ((congrArg Spec.map ?_).trans (Spec.map_id _))` and prove the remaining obligations. Conclude with `CommRingCat.hom_ext (RingHom.ext fun a => e.apply_symm_apply a)`. Establish `h3 : spMap (σ.comp e.toRingHom) ≫ spMap e.symm.toRingHom = spMap σ`. Use `(Spec.map_comp _ _).symm.trans (congrArg Spec.map ?_)` and prove the remaining obligations.
+
+Conclude with `CommRingCat.hom_ext (RingHom.ext fun a => congrArg σ (e.apply_symm_apply a))`. Establish `h4 : y.1 ≫ C.π ≫ genStr Z ≫ spMap e.toRingHom = spMap (σ.comp e.toRingHom)`. Rewrite using `[C.π_str]`. Conclude with `y.2`. Use `Eq.trans ?_ ((congrArg (· ≫ spMap e.symm.toRingHom) h4).trans h3)` and prove the remaining obligations.
+
+Simplify using `only [Category.assoc, h2, Category.comp_id]`.
+-/
 theorem comp_genStr (y : CxPts C.Y.str (σ.comp e.toRingHom)) : (y.1 ≫ C.π) ≫ genStr Z = spMap σ := by
   have h2 : spMap e.toRingHom ≫ spMap e.symm.toRingHom = 𝟙 _ := by
     refine (Spec.map_comp _ _).symm.trans ((congrArg Spec.map ?_).trans (Spec.map_id _))
@@ -48,21 +58,33 @@ variable (C) in
 
 def basePt (y : CxPts C.Y.str (σ.comp e.toRingHom)) : CxPts (genStr Z) σ := ⟨y.1 ≫ C.π, comp_genStr y⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨p, hp, hc⟩ => ⟨⟨p, comp_str (by rw [hp]; exact Horiz.ptF_jQ_over Z P)⟩, hp, hc⟩, fun ⟨y, hy⟩ => ⟨y.1, hy⟩⟩`.
+-/
 theorem carriedC_iff : CarriedC C P ↔ ∃ y, Over C P y :=
   ⟨fun ⟨p, hp, hc⟩ => ⟨⟨p, comp_str (by rw [hp]; exact Horiz.ptF_jQ_over Z P)⟩, hp, hc⟩,
     fun ⟨y, hy⟩ => ⟨y.1, hy⟩⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem carries_frameCast_iff {k : Type} [Field k] {φ : c.F →+* k} {x x' : Sp k ⟶ Z.X} (h : x = x')
     {p : Sp k ⟶ C.Y.X} {g : EigFrame Z φ x} : C.Carries p (Horiz.frameCast h g) ↔ C.Carries p g := by
   subst h
   rfl
 
+/- English proof (translation)
+The claim follows from `and_congr_right fun _ => (carries_frameCast_iff (φ := σ) (Category.assoc _ _ _).symm).symm`.
+-/
 theorem over_iff_cxOf {y : CxPts C.Y.str (σ.comp e.toRingHom)} :
     Over C P y ↔ y.1 ≫ C.π = (Horiz.cxOf Z P).1.1 ∧ C.Carries y.1 (Horiz.cxOf Z P).2 :=
   and_congr_right fun _ => (carries_frameCast_iff (φ := σ) (Category.assoc _ _ _).symm).symm
 
 variable (C P)
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.CxPtsDense.nonempty_and_dense F C.Y _).1`.
+-/
 theorem nonempty_cxPts (σ : c.F →+* ℂ) : Nonempty (CxPts C.Y.str (σ.comp e.toRingHom)) :=
   (GlobalTheory.CxPtsDense.nonempty_and_dense F C.Y _).1
 
@@ -72,6 +94,9 @@ def ptOf : CxPts C.Y.str (σ.comp e.toRingHom) :=
 
 variable {C P}
 
+/- English proof (translation)
+The claim follows from `Classical.epsilon_spec (carriedC_iff.1 hc)`.
+-/
 theorem over_ptOf (hc : CarriedC C P) : Over C P (ptOf C P) :=
   Classical.epsilon_spec (carriedC_iff.1 hc)
 
@@ -86,31 +111,52 @@ open Classical in
 def pr (k : U.Comp) (x : Frame (U.X k).Ψ N) : CxPts (Φ.C k).Y.str (σ.comp e.toRingHom) :=
   if h : x ∈ (U.X k).dom then ptOf (Φ.C k) (U.un k ⟨x, h⟩) else (nonempty_cxPts (Φ.C k) σ).some
 
+/- English proof (translation)
+The claim follows from `dif_pos x.2`.
+-/
 theorem pr_coe (k : U.Comp) (x : (U.X k).dom) : pr Φ k x.1 = ptOf (Φ.C k) (U.un k x) := dif_pos x.2
 
+/- English proof (translation)
+Take `⟨⟨i, p⟩, h, -⟩` from `Φ.lifts ℂ σ (Horiz.cxOf Z P).1.1 (Horiz.cxOf Z P).1.2 (Horiz.cxOf Z P).2`. Conclude with `⟨i, carriedC_iff.2 ⟨⟨p, comp_str (h.1 ▸ (Horiz.cxOf Z P).1.2)⟩, over_iff_cxOf.2 h⟩⟩`.
+-/
 theorem exists_carriedC (P : FrPt Xo c (CAt σ)) : ∃ k, CarriedC (Φ.C k) P := by
   obtain ⟨⟨i, p⟩, h, -⟩ := Φ.lifts ℂ σ (Horiz.cxOf Z P).1.1 (Horiz.cxOf Z P).1.2 (Horiz.cxOf Z P).2
   exact ⟨i, carriedC_iff.2 ⟨⟨p, comp_str (h.1 ▸ (Horiz.cxOf Z P).1.2)⟩, over_iff_cxOf.2 h⟩⟩
 
 variable {Φ} {k : U.Comp} {x : (U.X k).dom}
 
+/- English proof (translation)
+The claim follows from `pr_coe Φ k x ▸ over_ptOf hc`.
+-/
 theorem over_pr (hc : CarriedC (Φ.C k) (U.un k x)) : Over (Φ.C k) (U.un k x) (pr Φ k x.1) :=
   pr_coe Φ k x ▸ over_ptOf hc
 
+/- English proof (translation)
+The claim follows from `(over_pr hc).1`.
+-/
 theorem pr_π (hc : CarriedC (Φ.C k) (U.un k x)) :
     (pr Φ k x.1).1 ≫ (Φ.C k).π = GlobalTheory.AllWt.ptF (S := CAt σ) (U.un k x) ≫ Z.jQ := (over_pr hc).1
 
 variable (Φ)
 
+/- English proof (translation)
+Take `⟨i, h⟩` from `exists_carriedC Φ (U.un k x)`. Conclude with `over_pr (Subsingleton.elim i k ▸ h)`.
+-/
 example [Subsingleton U.Comp] (k : U.Comp) (x : (U.X k).dom) : Over (Φ.C k) (U.un k x) (pr Φ k x.1) := by
   obtain ⟨i, h⟩ := exists_carriedC Φ (U.un k x)
   exact over_pr (Subsingleton.elim i k ▸ h)
 
+/- English proof (translation)
+Rewrite using `[pr_coe, pr_coe, h]`.
+-/
 example (k : U.Comp) (x x' : (U.X k).dom) (h : U.un k x = U.un k x') : pr Φ k x.1 = pr Φ k x'.1 := by
   rw [pr_coe, pr_coe, h]
 
 end Flag
 
+/- English proof (translation)
+The claim follows from `over_pr (carriedC_un s Φ k x)`.
+-/
 example {D : Formalism.BasicNotions.D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp)
     (x : ((s.U κ.σ₀).X k).dom) : Over (Φ.C k) ((s.U κ.σ₀).un k x) (pr Φ k x.1) := over_pr (carriedC_un s Φ k x)
 

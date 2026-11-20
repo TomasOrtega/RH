@@ -16,11 +16,17 @@ def liftSec {q : ℕ} {C : Shv ℤ} (qb : C ⟶ Gm) {E : Spc} (L : E ⟶ ofCat (
     (U : Scheme.{0}) (x : Sx E 1 U) : Sec C U :=
   Function.surjInv (hb U (hE U ⟨x.face 0⟩)).2 (unitSec (lineUnit L x))
 
+/- English proof (translation)
+The claim follows from `Function.surjInv_eq _ _`.
+-/
 theorem liftSec_spec {q : ℕ} {C : Shv ℤ} (qb : C ⟶ Gm) {E : Spc} (L : E ⟶ ofCat (glCat 1)) (hE : GlobalTheory.EtC.Inv q E)
     (hb : ∀ U : Scheme.{0}, IsUnit (q : Γ(U, ⊤)) → Function.Bijective (Sec.map qb (U := U)))
     (U : Scheme.{0}) (x : Sx E 1 U) : Sec.map qb (liftSec qb L hE hb U x) = unitSec (lineUnit L x) :=
   Function.surjInv_eq _ _
 
+/- English proof (translation)
+Apply `(hb V (hE V ⟨(x.res g).face 0⟩)).1` to reduce the goal to its premises. Rewrite using `[← CupSpec.map_res, liftSec_spec, liftSec_spec, PicSpec.unitSec_res, PicSpec.lineUnit_res]`.
+-/
 theorem liftSec_res {q : ℕ} {C : Shv ℤ} (qb : C ⟶ Gm) {E : Spc} (L : E ⟶ ofCat (glCat 1)) (hE : GlobalTheory.EtC.Inv q E)
     (hb : ∀ U : Scheme.{0}, IsUnit (q : Γ(U, ⊤)) → Function.Bijective (Sec.map qb (U := U)))
     {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E 1 U) :
@@ -28,6 +34,9 @@ theorem liftSec_res {q : ℕ} {C : Shv ℤ} (qb : C ⟶ Gm) {E : Spc} (L : E ⟶
   apply (hb V (hE V ⟨(x.res g).face 0⟩)).1
   rw [← CupSpec.map_res, liftSec_spec, liftSec_spec, PicSpec.unitSec_res, PicSpec.lineUnit_res]
 
+/- English proof (translation)
+Apply `(hb U (hE U ⟨(x.face 0).face 0⟩)).1` to reduce the goal to its premises. Rewrite using `[PicSpec.sec_map_add, liftSec_spec, liftSec_spec, liftSec_spec, PicSpec.lineUnit_face, PicSpec.unitSec_mul]`.
+-/
 theorem liftSec_face {q : ℕ} {C : Shv ℤ} (qb : C ⟶ Gm) {E : Spc} (L : E ⟶ ofCat (glCat 1)) (hE : GlobalTheory.EtC.Inv q E)
     (hb : ∀ U : Scheme.{0}, IsUnit (q : Γ(U, ⊤)) → Function.Bijective (Sec.map qb (U := U)))
     (U : Scheme.{0}) (x : Sx E 2 U) :
@@ -42,6 +51,11 @@ def liftFam {q : ℕ} {C : Shv ℤ} (qb : C ⟶ Gm) {E : Spc} (L : E ⟶ ofCat (
       (Sec.map (sglι C) (liftSec qb L hE hb U x))
   | _, _, _, _, _ => 0
 
+/- English proof (translation)
+Use `match p with`. Consider the case `0 => exact map_zero _`. Consider the case `1`. Simplify using `only [liftFam]`. Rewrite using `[CupSpec.map_res, CupSpec.map_res, liftSec_res]`.
+
+Consider the case `p + 2 => exact map_zero _`.
+-/
 theorem liftFam_nat {q : ℕ} {C : Shv ℤ} (qb : C ⟶ Gm) {E : Spc} (L : E ⟶ ofCat (glCat 1)) (hE : GlobalTheory.EtC.Inv q E)
     (hb : ∀ U : Scheme.{0}, IsUnit (q : Γ(U, ⊤)) → Function.Bijective (Sec.map qb (U := U)))
     (p : ℕ) (s : ℤ) (h : -(p : ℤ) + 1 = s) (V U : Scheme.{0}) (g : V ⟶ U) (x : Sx E p U) :
@@ -57,12 +71,22 @@ end GlobalTheory.EtC.KumPic
 
 namespace GlobalTheory.EtC.KumPic
 
+/- English proof (translation)
+Simplify using `[liftFam, Sec.map]`.
+-/
 theorem liftFam_one {q : ℕ} {C : Shv ℤ} (qb : C ⟶ Gm) {E : Spc} (L : E ⟶ ofCat (glCat 1)) (hE : GlobalTheory.EtC.Inv q E)
     (hb : ∀ U : Scheme.{0}, IsUnit (q : Γ(U, ⊤)) → Function.Bijective (Sec.map qb (U := U)))
     (h : -((1 : ℕ) : ℤ) + 1 = 0) (U : Scheme.{0}) (x : Sx E 1 U) :
     liftFam qb L hE hb 1 0 h U x = Sec.map (sglι C) (liftSec qb L hE hb U x) := by
   simp [liftFam, Sec.map]
 
+/- English proof (translation)
+Apply `CupSpec.ev_ext` to reduce the goal to its premises. Introduce `p t ht U x`. Rewrite using `[CupSpec.ev_zero]`. Distinguish the cases in `h0 : t = 0`. Substitute `h0` using the available equality.
+
+Take `rfl : p = 2` from `by omega`. Rewrite using `[CupSpec.ev_δ_succ (by norm_num) α U 1 (-1) 0 (by simp) ht x]`. Simplify using `only [hα]`. Rewrite using `[show liftFam qb L hE hb 2 (-1) (by simp) U x = 0 from rfl, PicSpec.sec_map_zero, zero_add, Fin.sum_univ_three]`. Simplify using `only [liftFam_one]`.
+
+Rewrite using `[liftSec_face, PicSpec.sec_map_add]`. Simplify using `only [Fin.val_zero, Fin.val_one, Fin.val_two]`. Simplify using the standard rewrite rules. Conclude with `PicSpec.sec_eq_zero (HomologicalComplex.isZero_single_obj_X _ _ _ _ h0) _`.
+-/
 theorem liftFam_cocycle {q : ℕ} {C : Shv ℤ} (qb : C ⟶ Gm) {E : Spc} (L : E ⟶ ofCat (glCat 1)) (hE : GlobalTheory.EtC.Inv q E)
     (hb : ∀ U : Scheme.{0}, IsUnit (q : Γ(U, ⊤)) → Function.Bijective (Sec.map qb (U := U)))
     (α : Cochain ((chains ℤ).obj E) (sgl C) 1)
@@ -82,6 +106,9 @@ theorem liftFam_cocycle {q : ℕ} {C : Shv ℤ} (qb : C ⟶ Gm) {E : Spc} (L : E
     simp
   · exact PicSpec.sec_eq_zero (HomologicalComplex.isZero_single_obj_X _ _ _ _ h0) _
 
+/- English proof (translation)
+Introduce `q C qb E L hE hb`. Take `⟨α, hα⟩` from `CupSpec.ev_exists (liftFam qb L hE hb) (liftFam_nat qb L hE hb)`. Use `⟨Cocycle.mk α 2 (by norm_num) (liftFam_cocycle qb L hE hb α hα), fun U x => ⟨liftSec qb L hE hb U x, liftSec_spec qb L hE hb U x, ?_⟩⟩` and prove the remaining obligations. Use `(hα 1 0 _ U x).trans ?_` and prove the remaining obligations. Conclude with `liftFam_one qb L hE hb _ U x`.
+-/
 theorem lift_cocycle : ∀ (q : ℕ) (C : Shv ℤ) (qb : C ⟶ Gm) (E : Spc) (L : E ⟶ ofCat (glCat 1)), Inv q E → (∀ U : Scheme.{0}, IsUnit (q : Γ(U, ⊤)) → Function.Bijective (Sec.map qb (U := U))) → ∃ a : Cocycle ((chains ℤ).obj E) (sgl C) 1, ∀ (U : Scheme.{0}) (x : Sx E 1 U), ∃ c : Sec C U, Sec.map qb c = unitSec (lineUnit L x) ∧ ev a.1 1 0 (by simp) U x = Sec.map (sglι C) c := by
   intro q C qb E L hE hb
   obtain ⟨α, hα⟩ := CupSpec.ev_exists (liftFam qb L hE hb) (liftFam_nat qb L hE hb)

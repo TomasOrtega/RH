@@ -10,12 +10,20 @@ section Adic
 
 variable {R : Type*} [CommRing R] {I : Ideal R} {M : Type*} [AddCommGroup M] [Module R M]
 
+/- English proof (translation)
+Establish `hx` using `x.2 h`. Rewrite `e`, the goal using `[AdicCompletion.eval_apply]`. Rewrite using `[← hx, e, map_zero]`.
+-/
 private lemma ev_le {x : AdicCompletion I M} {s m : ℕ} (h : s ≤ m)
     (e : AdicCompletion.eval I M m x = 0) : AdicCompletion.eval I M s x = 0 := by
   have hx := x.2 h
   rw [AdicCompletion.eval_apply] at e ⊢
   rw [← hx, e, map_zero]
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Establish `h1` using `ev_le (show n + k ≤ n + (k + j) by omega) (hd (k + j))`. Establish `e : d (k + (j + 1)) - d k = (d (k + j + 1) - d (k + j)) + (d (k + j) - d k)`.
+
+Rewrite using `[← add_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, map_add, h1, ih, add_zero]`.
+-/
 private lemma cauchy_far (d : ℕ → AdicCompletion I M) (n : ℕ)
     (hd : ∀ k, AdicCompletion.eval I M (n + k) (d (k + 1) - d k) = 0) (k j : ℕ) :
     AdicCompletion.eval I M (n + k) (d (k + j) - d k) = 0 := by
@@ -27,6 +35,13 @@ private lemma cauchy_far (d : ℕ → AdicCompletion I M) (n : ℕ)
       rw [← add_assoc]; abel
     rw [e, map_add, h1, ih, add_zero]
 
+/- English proof (translation)
+Establish `hc : ∀ s j, AdicCompletion.eval I M s (d (s + j)) = AdicCompletion.eval I M s (d s)` using `fun s j => sub_eq_zero.1 (by`. Rewrite using `[← map_sub]; exact ev_le (by omega) (cauchy_far d n hd s j))`. Choose the witnesses or unpack the hypotheses as in `⟨L, hLe⟩ : ∃ L : AdicCompletion I M, ∀ s, AdicCompletion.eval I M s L = AdicCompletion.eval I M s (d s) := by`. Use `⟨⟨fun s => AdicCompletion.eval I M s (d s), ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Introduce `m p hmp`.
+
+Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hmp`. Establish `hx` using `(d (m + j)).2 hmp`. Establish `hy` using `hc m j`. Simplify using `only [AdicCompletion.eval_apply] at hy ⊢`. Rewrite using `[hx, hy]`.
+
+Use `⟨L, fun k => ?_⟩` and prove the remaining obligations. Establish `h` using `cauchy_far d n hd k n`. Rewrite `h` using `[map_sub, sub_eq_zero, add_comm k n]`. Rewrite using `[map_sub, sub_eq_zero, hLe, h]`.
+-/
 private lemma lim_exists (d : ℕ → AdicCompletion I M) (n : ℕ)
     (hd : ∀ k, AdicCompletion.eval I M (n + k) (d (k + 1) - d k) = 0) :
     ∃ L : AdicCompletion I M, ∀ k, AdicCompletion.eval I M (n + k) (L - d k) = 0 := by
@@ -49,6 +64,15 @@ private lemma lim_exists (d : ℕ → AdicCompletion I M) (n : ℕ)
 
 end Adic
 
+/- English proof (translation)
+Use `set V : Matrix (Fin (w + 1)) (Fin (w + 1)) ℤ_[l] := Matrix.vandermonde (fun j : Fin (w + 1) => ((j : ℕ) : ℤ_[l])) with hV`. Establish `hdet : V.det ≠ 0`. Rewrite using `[hV, Matrix.det_vandermonde_ne_zero_iff]`. Introduce `a b h`. Conclude with `Fin.ext (Nat.cast_injective h)`.
+
+Use `⟨V.det.valuation, fun i j => ((PadicInt.unitCoeff hdet)⁻¹ : (ℤ_[l])ˣ) * V.adjugate i j, ?_⟩` and prove the remaining obligations. Introduce `i i'`. Establish `h1 : (V.adjugate * V) i i' = ∑ j, V.adjugate i j * V j i'` using `Matrix.mul_apply`. Rewrite `h1` using `[Matrix.adjugate_mul]`. Establish `h2` using `PadicInt.unitCoeff_spec hdet`.
+
+Establish `h3 : ∑ j : Fin (w + 1), ((PadicInt.unitCoeff hdet)⁻¹ : (ℤ_[l])ˣ) * V.adjugate i j * (((j : ℕ) : ℤ_[l]) ^ (i' : ℕ)) = ((PadicInt.unitCoeff hdet)⁻¹ : (ℤ_[l])ˣ) * ∑ j, V.adjugate i j * V j i'`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[hV, Matrix.vandermonde_apply, mul_assoc]`. Rewrite using `[h3, ← h1]`.
+
+Distinguish the cases in `hii : i = i'`. Substitute `hii` using the available equality. Simplify using `only [Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one, if_true]`. Conclude with `(Units.inv_mul_eq_iff_eq_mul _).2 h2`. Simplify using `[Matrix.smul_apply, Matrix.one_apply_ne hii, hii]`.
+-/
 private lemma vand (l : ℕ) [Fact l.Prime] (w : ℕ) : ∃ (c : ℕ) (E : Fin (w + 1) → Fin (w + 1) → ℤ_[l]),
     ∀ i i' : Fin (w + 1), ∑ j : Fin (w + 1), E i j * (((j : ℕ) : ℤ_[l]) ^ (i' : ℕ)) =
       if i = i' then (l : ℤ_[l]) ^ c else 0 := by
@@ -77,6 +101,11 @@ private lemma vand (l : ℕ) [Fact l.Prime] (w : ℕ) : ∃ (c : ℕ) (E : Fin (
 
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
+/- English proof (translation)
+Introduce `W hW`. Take `⟨g, hg⟩` from `hf W hW`. Use `⟨(g ^ (l ^ a)) ^ P, ?_⟩` and prove the remaining obligations. Establish `e : (((f ^ P : X.Kˣ) : X.K) / (((g ^ (l ^ a)) ^ P : X.Kˣ) : X.K) ^ (l ^ b)) = ((f : X.K) / (g : X.K) ^ (l ^ (a + b))) ^ P`. Use `push_cast`.
+
+Rewrite using `[div_pow, pow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_pow, hg, one_pow]`.
+-/
 private lemma un_pow (X : Tower Ω ε) {l a b P : ℕ} {f : X.Kˣ} (hf : f ∈ X.Un (l ^ (a + b))) :
     f ^ P ∈ X.Un (l ^ b) := by
   intro W hW
@@ -90,6 +119,9 @@ private lemma un_pow (X : Tower Ω ε) {l a b P : ℕ} {f : X.Kˣ} (hf : f ∈ X
     ring
   rw [e, map_pow, hg, one_pow]
 
+/- English proof (translation)
+Unfold `Tower.cls`. Rewrite using `[← Submodule.Quotient.mk_smul]`. Use `congr 1`. Rewrite using `[ofMul_pow, Nat.cast_smul_eq_nsmul ℤ_[l]]`. Conclude with `map_nsmul (TensorProduct.mk ℤ ℤ_[l] (Additive X.Kˣ) 1) P (Additive.ofMul f)`.
+-/
 private lemma cls_pow (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (s P : ℕ) (f : X.Kˣ) :
     X.cls l s (f ^ P) = (P : ℤ_[l]) • X.cls l s f := by
   unfold Tower.cls
@@ -98,6 +130,9 @@ private lemma cls_pow (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (s P : ℕ) (f 
   rw [ofMul_pow, Nat.cast_smul_eq_nsmul ℤ_[l]]
   exact map_nsmul (TensorProduct.mk ℤ ℤ_[l] (Additive X.Kˣ) 1) P (Additive.ofMul f)
 
+/- English proof (translation)
+Establish `hx` using `x.2 h`. Rewrite `e`, the goal using `[AdicCompletion.eval_apply]`. Rewrite using `[← hx, e]`. Both sides reduce to the same expression.
+-/
 private lemma cls_le (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] {s m : ℕ} (h : s ≤ m) (f : X.Kˣ) {x : X.Khat l}
     (e : AdicCompletion.eval (idl l) (X.Kl l) m x = X.cls l m f) :
     AdicCompletion.eval (idl l) (X.Kl l) s x = X.cls l s f := by
@@ -106,6 +141,9 @@ private lemma cls_le (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] {s m : ℕ} (h :
   rw [← hx, e]
   rfl
 
+/- English proof (translation)
+Rewrite `e`, the goal using `[AdicCompletion.eval_apply]`. Unfold `Tower.kmap`. Simplify using `only [LinearMap.restrictScalars_apply]`. Rewrite using `[AdicCompletion.map_val_apply, e, map_zero]`.
+-/
 private lemma kmap_cong (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (φ : X.K ≃+* X.K) {s : ℕ} {x : X.Khat l}
     (e : AdicCompletion.eval (idl l) (X.Kl l) s x = 0) :
     AdicCompletion.eval (idl l) (X.Kl l) s (X.kmap l φ x) = 0 := by
@@ -116,6 +154,31 @@ private lemma kmap_cong (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (φ : X.K ≃
 
 end UpperTheory.Kd.K4
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X l _ N w`. Take `⟨c, E, hE⟩` from `vand l w`. Use `⟨c, fun n t hP hC hI => ?_⟩` and prove the remaining obligations. Use `choose a hp using hP`. Establish `ht` using `fun k => (hp k).2`.
+
+Establish `hrec : ∀ k i, ((l : ℤ_[l]) ^ c) • a k i = ∑ j : Fin (w + 1), E i j • t k ![((j : ℕ) : ℤ_[l]), 1]`. Introduce `k i`. Establish `e : ∀ j : Fin (w + 1), E i j • t k ![((j : ℕ) : ℤ_[l]), 1] = ∑ i' : Fin (w + 1), (E i j * (((j : ℕ) : ℤ_[l]) ^ (i' : ℕ))) • a k i'`. Introduce `j`. Rewrite using `[ht k, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun i' _ => ?_` and prove the remaining obligations. Simplify using `[smul_smul]`. Repeatedly rewrite using `[e]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul, hE]`.
+
+Simplify using the standard rewrite rules. Establish `hd : ∀ i k, AdicCompletion.eval (idl l) (X.Kl l) (n + k) (((l : ℤ_[l]) ^ c) • a (k + 1) i - ((l : ℤ_[l]) ^ c) • a k i) = 0`. Introduce `i k`. Rewrite using `[hrec, hrec, ← Finset.sum_sub_distrib, map_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← smul_sub, map_smul, hC k _, smul_zero]`. Use `choose L hL using fun i => lim_exists (fun k => ((l : ℤ_[l]) ^ c) • a k i) n (hd i)`. Set `b : X.Fn l` to `fun u => ∑ i : Fin (w + 1), (u 0 ^ (i : ℕ) * u 1 ^ (w - (i : ℕ))) • L i`. Establish `hb : ∀ k u, AdicCompletion.eval (idl l) (X.Kl l) (n + k) (b u - ((l : ℤ_[l]) ^ c) • t k u) = 0`. Introduce `k u`.
+
+Use `show AdicCompletion.eval (idl l) (X.Kl l) (n + k) ((∑ i : Fin (w + 1), (u 0 ^ (i : ℕ) * u 1 ^ (w - (i : ℕ))) • L i) - ((l : ℤ_[l]) ^ c) • t k u) = 0`. Rewrite using `[ht k u, Finset.smul_sum, ← Finset.sum_sub_distrib, map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm ((l : ℤ_[l]) ^ c), ← smul_sub, map_smul, hL i k, smul_zero]`. Establish `hA : ∀ i, L i ∈ X.ASet l`.
+
+Introduce `i s`. Take `⟨f, hf, hr⟩` from `(hp s).1 i`. Use `⟨f ^ (l ^ c), un_pow X hf, ?_⟩` and prove the remaining obligations. Establish `h1` using `ev_le (show s ≤ n + s by omega) (hL i s)`. Rewrite `h1` using `[map_sub, sub_eq_zero, map_smul]`.
+
+Rewrite using `[h1, cls_le X l (show s ≤ n + s by omega) f hr, cls_pow]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hpol : b ∈ X.Pol l w` using `⟨L, fun i => Submodule.subset_span (hA i), fun u => rfl⟩`. Establish `hinv : ∀ γ ∈ Gam N l, X.act l (γ : Matrix (Fin 2) (Fin 2) ℤ) b = b`.
+
+Introduce `γ hγ`. Use function extensionality and compare the values at `u`. Apply `AdicCompletion.ext` to reduce the goal to its premises. Introduce `s`. Establish `h1` using `ev_le (show s ≤ n + s by omega) (hb s u)`.
+
+Establish `h2` using `ev_le (show s ≤ n + s by omega) (hb s (mZl l (γ : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ u))`. Establish `h3` using `kmap_cong X l (X.sl (toGQ (γ : Matrix (Fin 2) (Fin 2) ℤ))).toRingEquiv h2`. Establish `h4` using `ev_le (show s ≤ n + s by omega) (hI s γ hγ u)`. Establish `e : X.act l (γ : Matrix (Fin 2) (Fin 2) ℤ) b u - b u = (X.kmap l (X.sl (toGQ (γ : Matrix (Fin 2) (Fin 2) ℤ))).toRingEquiv (b (mZl l (γ : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ u) - ((l : ℤ_[l]) ^ c) • t s (mZl l (γ : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ u))) + ((l : ℤ_[l]) ^ c) • (X.act l (γ : Mat …` using `by show X.kmap l (X.sl (toGQ (γ : Matrix (Fin 2) (Fin 2) ℤ))).toRingEquiv (b (mZl l (γ : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ u)) - b u = _ + ((l : ℤ_[l]) ^ c) • (X.kmap l (X.sl (toGQ (γ : Matrix (Fin 2) (Fin 2) ℤ))).toRingEquiv (t s (mZl l (γ : Matrix (Fin 2) (Fin 2) ℤ) *ᵥ u)) - t s u) …`. Rewrite using `[map_sub, map_smul, smul_sub]`.
+
+Normalize the expressions using the abelian group laws. Establish `h5 : AdicCompletion.eval (idl l) (X.Kl l) s (X.act l (γ : Matrix (Fin 2) (Fin 2) ℤ) b u - b u) = 0`. Rewrite using `[e, map_sub, map_add, map_smul, h3, h4, h1]`. Simplify using the standard rewrite rules. Rewrite `h5` using `[map_sub, sub_eq_zero]`.
+
+Conclude with `h5`. Conclude with `⟨b, Submodule.subset_span ⟨hpol, hinv⟩, fun u => hb 0 u⟩`.
+-/
 theorem UpperTheory.Kd.K4.lim :
     ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε), ∀ (l : ℕ) [Fact l.Prime] (N w : ℕ), ∃ c : ℕ, ∀ (n : ℕ) (t : ℕ → X.Fn l), (∀ k, PolMod X l w (n + k) (t k)) →
       (∀ k, CgF X l (n + k) (t (k + 1)) (t k)) → (∀ k, ∀ γ ∈ Gam N l, CgF X l (n + k) (X.act l (γ : Matrix (Fin 2) (Fin 2) ℤ) (t k)) (t k)) →

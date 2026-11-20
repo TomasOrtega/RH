@@ -12,6 +12,9 @@ namespace GlobalTheory.NormCubical
 
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ}
 
+/- English proof (translation)
+Establish `key : ∀ a : Pt E g, (fun Q => fderiv ℝ u Q a) =ᶠ[nhds P] (fun Q => fderiv ℝ u' Q a)`. Introduce `a`. Use `filter_upwards [h.eventuallyEq_nhds] with Q hQ`. Rewrite using `[hQ.fderiv_eq]`. Simplify using `only [ddc, (key _).fderiv_eq]`.
+-/
 theorem ddc_congr {u u' : Pt E g → ℝ} {P : Pt E g} (h : u =ᶠ[nhds P] u') (v w : Pt E g) :
     ddc u P v w = ddc u' P v w := by
   have key : ∀ a : Pt E g, (fun Q => fderiv ℝ u Q a) =ᶠ[nhds P] (fun Q => fderiv ℝ u' Q a) := by
@@ -20,11 +23,19 @@ theorem ddc_congr {u u' : Pt E g → ℝ} {P : Pt E g} (h : u =ᶠ[nhds P] u') (
     rw [hQ.fderiv_eq]
   simp only [ddc, (key _).fderiv_eq]
 
+/- English proof (translation)
+Establish `h1 : ContDiffAt ℝ 1 (fderiv ℝ u) P` using `hu.fderiv_right (by norm_num)`. Conclude with `(h1.differentiableAt (by norm_num)).clm_apply (differentiableAt_const a)`.
+-/
 theorem diff_fderiv_apply {u : Pt E g → ℝ} {P : Pt E g} (hu : ContDiffAt ℝ 2 u P) (a : Pt E g) :
     DifferentiableAt ℝ (fun Q => fderiv ℝ u Q a) P := by
   have h1 : ContDiffAt ℝ 1 (fderiv ℝ u) P := hu.fderiv_right (by norm_num)
   exact (h1.differentiableAt (by norm_num)).clm_apply (differentiableAt_const a)
 
+/- English proof (translation)
+Establish `ev : ∀ a : Pt E g, (fun Q => fderiv ℝ (fun Q => u₁ Q - u₂ Q) Q a) =ᶠ[nhds P] (fun Q => fderiv ℝ u₁ Q a - fderiv ℝ u₂ Q a)`. Introduce `a`. Use `filter_upwards [h₁.eventually (by simp), h₂.eventually (by simp)] with Q hQ₁ hQ₂`. Conclude with `congrArg (fun f => f a) ((hQ₁.differentiableAt (by norm_num)).hasFDerivAt.sub (hQ₂.differentiableAt (by norm_num)).hasFDerivAt).fderiv`. Simplify using `only [ddc, (ev _).fderiv_eq]`.
+
+Establish `e : ∀ a : Pt E g, fderiv ℝ (fun Q => fderiv ℝ u₁ Q a - fderiv ℝ u₂ Q a) P = fderiv ℝ (fun Q => fderiv ℝ u₁ Q a) P - fderiv ℝ (fun Q => fderiv ℝ u₂ Q a) P` using `fun a => ((diff_fderiv_apply h₁ a).hasFDerivAt.sub (diff_fderiv_apply h₂ a).hasFDerivAt).fderiv`. Rewrite using `[e, e]`. Simplify using `only [ContinuousLinearMap.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ddc_sub {u₁ u₂ : Pt E g → ℝ} {P : Pt E g} (h₁ : ContDiffAt ℝ 2 u₁ P)
     (h₂ : ContDiffAt ℝ 2 u₂ P) (v w : Pt E g) :
     ddc (fun Q => u₁ Q - u₂ Q) P v w = ddc u₁ P v w - ddc u₂ P v w := by
@@ -42,6 +53,13 @@ theorem ddc_sub {u₁ u₂ : Pt E g → ℝ} {P : Pt E g} (h₁ : ContDiffAt ℝ
   simp only [ContinuousLinearMap.sub_apply]
   ring
 
+/- English proof (translation)
+Establish `hL : Continuous L` using `L.continuous`. Establish `ev : ∀ a : Pt E g, (fun Q => fderiv ℝ (fun Q => u (L Q)) Q (Complex.I • a)) =ᶠ[nhds P] (fun Q => fderiv ℝ u (L Q) (Complex.I • L a))`. Introduce `a`. Establish `: ∀ᶠ Q in nhds P, ContDiffAt ℝ 2 u (L Q)` using `hL.continuousAt.eventually (hu.eventually (by simp))`. Use `filter_upwards [this] with Q hQ`.
+
+Establish `hd : HasFDerivAt (fun Q => u (L Q)) ((fderiv ℝ u (L Q)).comp (L.restrictScalars ℝ)) Q` using `(hQ.differentiableAt (by norm_num)).hasFDerivAt.comp Q (L.restrictScalars ℝ).hasFDerivAt`. Rewrite using `[hd.fderiv]`. Simplify using the standard rewrite rules. Establish `hψ : ∀ a : Pt E g, DifferentiableAt ℝ (fun R => fderiv ℝ u R (Complex.I • L a)) (L P)` using `fun a => diff_fderiv_apply hu _`. Establish `hc : ∀ a b : Pt E g, fderiv ℝ (fun Q => fderiv ℝ u (L Q) (Complex.I • L a)) P b = fderiv ℝ (fun R => fderiv ℝ u R (Complex.I • L a)) (L P) (L b)`.
+
+Introduce `a b`. Establish `hd` using `(hψ a).hasFDerivAt.comp P (L.restrictScalars ℝ).hasFDerivAt`. Rewrite using `[show (fun Q => fderiv ℝ u (L Q) (Complex.I • L a)) = (fun R => fderiv ℝ u R (Complex.I • L a)) ∘ L from rfl, hd.fderiv]`. Both sides reduce to the same expression. Simplify using `only [ddc, (ev _).fderiv_eq, hc]`.
+-/
 theorem ddc_comp_clm (L : Pt E g →L[ℂ] Pt E g) {u : Pt E g → ℝ} {P : Pt E g}
     (hu : ContDiffAt ℝ 2 u (L P)) (v w : Pt E g) :
     ddc (fun Q => u (L Q)) P v w = ddc u (L P) (L v) (L w) := by
@@ -67,6 +85,29 @@ theorem ddc_comp_clm (L : Pt E g →L[ℂ] Pt E g) {u : Pt E g → ℝ} {P : Pt 
     rfl
   simp only [ddc, (ev _).fderiv_eq, hc]
 
+/- English proof (translation)
+Introduce `g E _ _ _ B τ hτ j h r hM hC hR`. Establish `hB : IsOpen B` using `hτ.1`. Establish `hU : IsOpen (cov B g)` using `hB.prod isOpen_univ`. Establish `hzs : ∀ b ∈ B, zeroSec g b ∈ cov B g` using `fun b hb => ⟨hb, trivial⟩`. Establish `hrpos : ∀ b ∈ B, 0 < ‖r b‖ ^ 2` using `fun b hb => pow_pos (norm_pos_iff.2 (hR.2 b hb)) 2`.
+
+Establish `hDpos : ∀ b ∈ B, 0 < h (zeroSec g b) * ‖r b‖ ^ 2` using `fun b hb => mul_pos (hM.2.1 _ (hzs b hb)) (hrpos b hb)`. Establish `two_le : (2 : WithTop ℕ∞) ≤ ∞` using `WithTop.coe_le_coe.2 le_top`. Establish `hr : ContDiffOn ℝ ∞ (fun b => ‖r b‖ ^ 2) B`. Establish `h1 : ContDiffOn ℂ ∞ r B` using `(GlobalTheory.SCV.analyticOnNhd_of_differentiableOn hB hR.1).contDiffOn hB.uniqueDiffOn`. Conclude with `(contDiff_norm_sq ℝ).comp_contDiffOn (h1.restrict_scalars ℝ)`.
+
+Establish `hzsm : ContDiff ℝ ∞ (fun P : Pt E g => zeroSec g P.1)` using `contDiff_fst.prodMk contDiff_const`. Establish `hh0 : ContDiffOn ℝ ∞ (fun P : Pt E g => h (zeroSec g P.1)) (cov B g)` using `hM.1.comp hzsm.contDiffOn fun P hP => hzs P.1 hP.1`. Use `⟨⟨?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hM.1.div (hh0.mul (hr.comp contDiffOn_fst fun P hP => hP.1)) fun P hP => ne_of_gt (hDpos P.1 hP.1)`. Introduce `P hP`.
+
+Conclude with `div_pos (hM.2.1 P hP) (hDpos P.1 hP.1)`. Introduce `l hl P hP show h (transl τ l P) / (h (zeroSec g P.1) * ‖r P.1‖ ^ 2) * ‖j l P‖ ^ 2 = h P / (h (zeroSec g P.1) * ‖r P.1‖ ^ 2)`. Rewrite using `[div_mul_eq_mul_div, hM.2.2 l hl P hP]`. Introduce `P hP v w`. Establish `hP1 : P.1 ∈ B` using `hP.1`.
+
+Set `L : Pt E g →L[ℂ] Pt E g` to `(ContinuousLinearMap.inl ℂ E (Fin g → ℂ)).comp (ContinuousLinearMap.fst ℂ E (Fin g → ℂ))`. Establish `hLQ : ∀ Q : Pt E g, L Q = zeroSec g Q.1` using `fun Q => by simp [L, zeroSec]`. Establish `hu1 : ∀ Q ∈ cov B g, ContDiffAt ℝ 2 (fun Q => Real.log (h Q)) Q` using `fun Q hQ => ((hM.1.contDiffAt (hU.mem_nhds hQ)).log (ne_of_gt (hM.2.1 Q hQ))).of_le two_le`. Establish `hu2 : ContDiffAt ℝ 2 (fun Q : Pt E g => Real.log (h (zeroSec g Q.1))) P`. Use `(hu1 _ (hzs P.1 hP1)).comp P (hzsm.of_le two_le).contDiffAt` as an intermediate fact.
+
+Conclude with `this`. Establish `hu3 : ContDiffAt ℝ 2 (fun Q : Pt E g => Real.log (‖r Q.1‖ ^ 2)) P` using `(((hr.contDiffAt (hB.mem_nhds hP1)).comp P contDiffAt_fst).log (ne_of_gt (hrpos P.1 hP1))).of_le two_le`. Establish `heq : (fun Q => Real.log (h Q / (h (zeroSec g Q.1) * ‖r Q.1‖ ^ 2))) =ᶠ[nhds P] fun Q => (Real.log (h Q) - Real.log (h (zeroSec g Q.1))) - Real.log (‖r Q.1‖ ^ 2)` using `by filter_upwards [hU.mem_nhds hP] with Q hQ`. Rewrite using `[Real.log_div (ne_of_gt (hM.2.1 Q hQ)) (ne_of_gt (hDpos _ hQ.1)), Real.log_mul (ne_of_gt (hM.2.1 _ (hzs _ hQ.1))) (ne_of_gt (hrpos _ hQ.1)), sub_sub]`. Rewrite using `[ddc_congr heq, ddc_sub ((hu1 P hP).sub hu2) hu3, ddc_sub (hu1 P hP) hu2]`.
+
+Establish `h3 : ddc (fun Q : Pt E g => Real.log (‖r Q.1‖ ^ 2)) P v w = 0` using `GlobalTheory.T.log_norm_sq_holomorphic_ddc_zero (cov B g) (fun Q => r Q.1) hU (hR.1.comp differentiableOn_fst fun Q hQ => hQ.1) (fun Q hQ => hR.2 _ hQ.1) P hP v w`. Establish `h2 : ddc (fun Q : Pt E g => Real.log (h (zeroSec g Q.1))) P v w = 0`. Establish `e1 : (fun Q : Pt E g => Real.log (h (zeroSec g Q.1))) = fun Q => (fun R => Real.log (h R)) (L Q)`. Use function extensionality and compare the values at `Q`. Rewrite using `[hLQ]`.
+
+Rewrite using `[e1, ddc_comp_clm L (u := fun R => Real.log (h R)) (by rw [hLQ]; exact hu1 _ (hzs P.1 hP1)) v w]`. Establish `hc` using `hC (L P) (by rw [hLQ]; exact hzs P.1 hP1) (L v) (L w)`. Establish `hfz : fderiv ℝ (zeroSec g) P.1 = ContinuousLinearMap.inl ℝ E (Fin g → ℂ)`. Establish `: zeroSec g = ⇑(ContinuousLinearMap.inl ℝ E (Fin g → ℂ))`. Use function extensionality and compare the values at `b`.
+
+Simplify using `[zeroSec]`. Rewrite using `[this, ContinuousLinearMap.fderiv]`. Establish `ev : (⇑(ContinuousLinearMap.inl ℝ E (Fin g → ℂ)) ∘ ![v.1, w.1]) = ![L v, L w]`. Apply the tactic sequence `funext i; fin_cases i <;> simp [hLQ, zeroSec]`. Establish `h0 : om0 τ (zeroSec g P.1) ![L v, L w] = 0`.
+
+Establish `h00` using `congrArg (fun f => f ![v.1, w.1]) ((GlobalTheory.T.flat_form_mul_pull_zero_section hτ).2 P.1 hP1)`. Simplify using `only [ContinuousAlternatingMap.compContinuousLinearMap_apply, hfz] at h00`. Rewrite using `[← ev]`. Conclude with `h00`. Rewrite `h0` using `[← hLQ P]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[h2, h3, sub_zero, sub_zero]`. Conclude with `hC P hP v w`. Introduce `b hb show h (zeroSec g b) / (h (zeroSec g b) * ‖r b‖ ^ 2) * ‖r b‖ ^ 2 = 1`. Rewrite using `[div_mul_eq_mul_div, div_eq_one_iff_eq (ne_of_gt (hDpos b hb))]`.
+-/
 theorem normalise_cubical : ∀ {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}, IsPeriodMap B τ → ∀ (j : Fl g → Pt E g → ℂ) (h : Pt E g → ℝ) (r : E → ℂ), IsMetric B τ (stdLat g) j h → ChernIsFlat B τ h → IsRigidification B r → IsCubicalMetric B τ j r (fun P => h P / (h (zeroSec g P.1) * ‖r P.1‖ ^ 2)) := by
   intro g E _ _ _ B τ hτ j h r hM hC hR
   have hB : IsOpen B := hτ.1

@@ -21,6 +21,11 @@ namespace GlobalTheory.KerInert
 
 open scoped TensorProduct
 
+/- English proof (translation)
+Establish `h0 : (0 : ℝ) < q` using `by exact_mod_cast Nat.pos_of_ne_zero hq`. Establish `h1 : ((r : ℝ) : ℂ) ≠ 0` using `by rw [hr]; exact_mod_cast (zpow_pos h0 _).ne'`. Rewrite using `[GlobalTheory.Doubling.npow, Complex.cpow_def_of_ne_zero h1, Complex.cpow_def_of_ne_zero (Nat.cast_ne_zero.2 hq), ← Complex.ofReal_log r.coe_nonneg, hr, Real.log_zpow, ← Complex.natCast_log]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem npow_zpow {q : ℕ} (hq : q ≠ 0) (r : ℝ≥0) (m : ℤ) (hr : (r : ℝ) = (q : ℝ) ^ (-(2 * m))) (t : ℂ) :
     GlobalTheory.Doubling.npow r t = (q : ℂ) ^ (-(2 * (m : ℂ) * t)) := by
   have h0 : (0 : ℝ) < q := by exact_mod_cast Nat.pos_of_ne_zero hq
@@ -31,6 +36,13 @@ theorem npow_zpow {q : ℕ} (hq : q ≠ 0) (r : ℝ≥0) (m : ℤ) (hr : (r : �
   push_cast
   ring
 
+/- English proof (translation)
+Take `⟨f, hK, hio, hP, ha⟩` from `GlobalTheory.T.exists_doubling_chart_inert_place F E σ hc n J hJ Q hQ L v w h hw c e he`. Use `⟨fun g => φ (f.symm g), fun p k hk => ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `hp : f.symm p ∈ siegelH (Fv F v) σ Q` using `(hP _).2 (by rw [f.apply_symm_apply]; exact p.2)`. Establish `hk' : f.symm k ∈ KFin σ Q L v` using `(hK _).2 (by rwa [f.apply_symm_apply])`. Establish `e1` using `(mem_degPSH.1 h1).1 ⟨_, hp⟩ 1`.
+
+Establish `e3 : GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.aD c n p = Units.map (GlobalTheory.LFun.toCompl h).toMonoidHom (aH _ σ Q ⟨_, hp⟩)` using `(congrArg _ (Subtype.ext (f.apply_symm_apply _).symm)).trans (ha ⟨_, hp⟩ ((hP _).1 hp))`. Rewrite `e1` using `[mul_one, h3, mul_one, GlobalTheory.T.ideleCharacterFinitePlaceComponent_eq_of_inert F E μ v w h hw, npow_zpow hq _ _ (GlobalTheory.AbsInert.absEv_inert F E σ hc v w h hw _)]`. Use `show φ (f.symm (p * k)) = _`. Rewrite using `[map_mul, h2 _ hk', e3]`. Conclude with `e1`.
+
+Use `show _ = φ (f.symm _)`. Rewrite using `[← hio y, f.symm_apply_apply]`.
+-/
 theorem exists_isSphSec {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (hc : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J)
     {Q : Matrix (Fin (n + n)) (Fin (n + n)) E} (hQ : Q = dblGram finSumFinEquiv J)
@@ -55,6 +67,11 @@ theorem exists_isSphSec {F E : Type} [Field F] [NumberField F] [Field E] [Number
   · show _ = φ (f.symm _)
     rw [← hio y, f.symm_apply_apply]
 
+/- English proof (translation)
+Introduce `D A L hL χ b hχ v w h hw hu s φ hφ c ϖ e hU he`. Establish `h2 : locChar χ⁻¹ w ϖ = (GlobalTheory.LFun.val χ w)⁻¹` using `(hu.inv.locChar_eq_val hU.2.2.2.1).trans (GlobalTheory.LFun.val_inv χ w)`. Establish `hq : qV D.host.F v ≠ 0` using `by have := hU.2.2.2.2.2.1; omega`. Use `⟨hu.inv, h2, ?_, exists_isSphSec (isCMExt_host D) (isHermND_gram A) (gram_hdbl A) L hL.1 χ⁻¹ h hw hq hφ.1 hφ.2.1 hφ.2.2 he⟩` and prove the remaining obligations. Rewrite using `[h2, ((GlobalTheory.LFun.resEta_iff χ b).1 hχ).val_of_isInertAt (isCMExt_host D).2.2.1 hw hu, ← inv_pow, inv_neg_one]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem sphSec_inert : ∀ (D : D7) (A : HSp D) (L : Lat A), IsSelfDualC A L → ∀ (χ : (AE D)ˣ →* Circle) (b : ℕ), ResEta D χ b → ∀ (v : FinPl D) (w : HeightOneSpectrum (𝓞 D.host.E)) (h : w.under (𝓞 D.host.F) = v), IsInertAt D.host.F D.host.E v w → UnrAt χ w → ∀ (s : ℂ) (φ : Gv (dblSp A) v → ℂ), IsSphSecAt A L v χ⁻¹ s φ → ∀ (c : w.adicCompletion D.host.E →+* w.adicCompletion D.host.E) (ϖ : (w.adicCompletion D.host.E)ˣ) (e : Gv A v ≃* GU c A.rank), IsUnramInv (ϖ : w.adicCompletion D.host.E) c (qV D.host.F v) → IsInertChart D.sp.cm.sig A.gram L h c e → GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.IsUnr (locChar χ⁻¹ w) ∧ locChar χ⁻¹ w ϖ = (GlobalTheory.LFun.val χ w)⁻¹ ∧ ((locChar χ⁻¹ w ϖ : ℂˣ) : ℂ) = (-1) ^ b ∧ ∃ Φ, GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.IsSphSec c (qV D.host.F v) A.rank (locChar χ⁻¹ w) s Φ ∧ ∀ y, φ (ioAt A v y) = Φ (GlobalTheory.IndefiniteRowSideFullHecke.SphericalSectionVariables.io1 c A.rank (e y)) := by
   intro D A L hL χ b hχ v w h hw hu s φ hφ c ϖ e hU he
   have h2 : locChar χ⁻¹ w ϖ = (GlobalTheory.LFun.val χ w)⁻¹ :=

@@ -18,12 +18,26 @@ section LinAlg
 
 variable {Ω₀ Ω V₀ V : Type} [Field Ω₀] [Field Ω] [AddCommGroup V₀] [Module Ω₀ V₀] [AddCommGroup V] [Module Ω V]
 
+/- English proof (translation)
+Use `choose T hT using fun k => (Submodule.mem_span_range_iff_exists_fun Ω).1 (h k)`. Establish `he : e = fun k => ∑ l, (Matrix.of T) k l • b l` using `funext fun k => (hT k).symm`. Conclude with `⟨(Matrix.of T).det, by rw [he]; exact GlobalTheory.CompanionTheory.Ar.Lat.wedge_matrix_mul_family Ω V n b _⟩`.
+-/
 theorem exists_wedge_eq_smul {n : ℕ} {e b : Fin n → V} (h : ∀ k, e k ∈ Submodule.span Ω (Set.range b)) :
     ∃ d : Ω, exteriorPower.ιMulti Ω n e = d • exteriorPower.ιMulti Ω n b := by
   choose T hT using fun k => (Submodule.mem_span_range_iff_exists_fun Ω).1 (h k)
   have he : e = fun k => ∑ l, (Matrix.of T) k l • b l := funext fun k => (hT k).symm
   exact ⟨(Matrix.of T).det, by rw [he]; exact GlobalTheory.CompanionTheory.Ar.Lat.wedge_matrix_mul_family Ω V n b _⟩
 
+/- English proof (translation)
+Introduce `b α hab`. Establish `hw` using `WedgeFrame.ιMulti_ne_zero hu`. Establish `hα : α ≠ 0`. Introduce and unpack `rfl`. Rewrite `hab` using `[zero_smul]`.
+
+Conclude with `smul_ne_zero hγ hw hab`. Establish `hbe : exteriorPower.ιMulti Ω₀ n b = (α⁻¹ * γ) • exteriorPower.ιMulti Ω₀ n u`. Rewrite using `[mul_smul, hab, smul_smul, inv_mul_cancel₀ hα, one_smul]`. Establish `hm` using `GlobalTheory.CompanionTheory.WedgeSpan.span_of_wedge_proportional Ω₀ V₀ n b u _ hu (mul_ne_zero (inv_ne_zero hα) hγ) hbe`. Use `choose T hT using fun k => (Submodule.mem_span_range_iff_exists_fun Ω₀).1 (hm k)`.
+
+Establish `hb : b = fun k => ∑ l, (Matrix.of T) k l • u l` using `funext fun k => (hT k).symm`. Establish `h1 : exteriorPower.ιMulti Ω₀ n b = (Matrix.of T).det • exteriorPower.ιMulti Ω₀ n u`. Rewrite using `[hb]`. Conclude with `GlobalTheory.CompanionTheory.Ar.Lat.wedge_matrix_mul_family Ω₀ V₀ n u _`. Establish `h2 : γ = α * (Matrix.of T).det`.
+
+Rewrite `hab` using `[h1, smul_smul]`. Conclude with `smul_left_injective Ω₀ hw hab`. Establish `h3 : (fun k => j (b k)) = fun k => ∑ l, (i.mapMatrix (Matrix.of T)) k l • j (u l)`. Use function extensionality and compare the values at `k`. Rewrite using `[hb]`.
+
+Simplify using `only [map_sum, hj.1]`. Both sides reduce to the same expression. Rewrite using `[h3, GlobalTheory.CompanionTheory.Ar.Lat.wedge_matrix_mul_family Ω V n _ _, ← RingHom.map_det, smul_smul, ← map_mul, ← h2]`.
+-/
 theorem isPullWedge_smul_ιMulti (i : Ω₀ →+* Ω) (j : V₀ →+ V) (hj : IsExtOver i j) {n : ℕ} {u : Fin n → V₀}
     (hu : LinearIndependent Ω₀ u) {γ : Ω₀} (hγ : γ ≠ 0) :
     CptIn.IsPullWedge i j (γ • exteriorPower.ιMulti Ω₀ n u)
@@ -53,6 +67,13 @@ theorem isPullWedge_smul_ιMulti (i : Ω₀ →+* Ω) (j : V₀ →+ V) (hj : Is
 
 end LinAlg
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `WedgeFrame.wedge_eq_span_ιMulti X Ω ξ E L r u x hu`. Establish `h3 : exteriorPower.ιMulti Ω r u ∈ Submodule.span (regAt ξ x) {α • a}`. Rewrite using `[← hw, h1]`. Conclude with `Submodule.mem_span_singleton_self _`. Take `⟨t, ht⟩` from `Submodule.mem_span_singleton.1 h3`.
+
+Establish `ht' : ((t : Ω) * α) • a = exteriorPower.ιMulti Ω r u`. Rewrite using `[mul_smul]`. Conclude with `ht`. Establish `ht0 : (t : Ω) * α ≠ 0`. Introduce `h0`.
+
+Rewrite `ht'` using `[h0, zero_smul]`. Conclude with `h2 ht'.symm`. Conclude with `⟨((t : Ω) * α)⁻¹, inv_ne_zero ht0, by rw [← ht', smul_smul, inv_mul_cancel₀ ht0, one_smul]⟩`.
+-/
 theorem exists_eq_smul_ιMulti {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {E : Type}
     [AddCommGroup E] [Module Ω E] {L : Lat ξ E} {r : ℕ} {u : Fin r → E} {x : Cpt ξ} (hu : L.IsFrameAt u x)
     {a : ⋀[Ω]^r E} {α : Ω} (hα : α ≠ 0) (hw : L.wedge r x = Submodule.span (regAt ξ x) {α • a}) :
@@ -77,6 +98,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {U : Set (Xo.XF c)} {S : Finset ℕ} {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type}
   {y : (Σ k, J k) → Ω}
 
+/- English proof (translation)
+Take `⟨-, -, -, h4⟩` from `h`. Use `𝔐.M.inj (Over.OverMorphism.ext (𝔐.m.cart.1.hom_ext ?_ ((Over.w _).trans (Over.w _).symm)))` and prove the remaining obligations. Rewrite using `[h4, Z.act a e, 𝔐.act a (j e), Over.comp_left, Over.comp_left, Category.assoc, 𝔐.m.act, ← Category.assoc]`. Conclude with `(congrArg (· ≫ Over.Hom.left (Y.t.act.act a)) (h4 e).symm).trans (Category.assoc _ _ _)`.
+-/
 theorem tie_act {Z : CptOver Y U} {𝔐 : HodgeCpt Y S y} {i : Z.Ω →+* Ω} {j : Z.V →+ 𝔐.Li}
     (h : CptIn.IsTie Z 𝔐 i j) (a : 𝓞 E) (e : Z.V) : j (Z.ρ a e) = 𝔐.ρ a (j e) := by
   obtain ⟨-, -, -, h4⟩ := h
@@ -84,6 +108,11 @@ theorem tie_act {Z : CptOver Y U} {𝔐 : HodgeCpt Y S y} {i : Z.Ω →+* Ω} {j
   rw [h4, Z.act a e, 𝔐.act a (j e), Over.comp_left, Over.comp_left, Category.assoc, 𝔐.m.act, ← Category.assoc]
   exact (congrArg (· ≫ Over.Hom.left (Y.t.act.act a)) (h4 e).symm).trans (Category.assoc _ _ _)
 
+/- English proof (translation)
+Establish `hi` using `h.2.1`. Establish `hs` using `h.2.2.1.1`. Simplify using `only [eigSp, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at he ⊢`. Introduce `a`. Rewrite using `[← tie_act h, he a, hs, ← hi]`.
+
+Both sides reduce to the same expression.
+-/
 theorem tie_mem_eigSp {Z : CptOver Y U} {𝔐 : HodgeCpt Y S y} {i : Z.Ω →+* Ω} {j : Z.V →+ 𝔐.Li}
     (h : CptIn.IsTie Z 𝔐 i j) (σ : 𝓞 E →+* c.F) {e : Z.V} (he : e ∈ eigSp Z.ρ (Z.inc.comp σ)) :
     j e ∈ eigSp 𝔐.ρ (𝔐.cst.comp σ) := by
@@ -95,6 +124,13 @@ theorem tie_mem_eigSp {Z : CptOver Y U} {𝔐 : HodgeCpt Y S y} {i : Z.Ω →+* 
   rw [← tie_act h, he a, hs, ← hi]
   rfl
 
+/- English proof (translation)
+Take `⟨γ, hγ, rfl⟩` from `exists_eq_smul_ιMulti hu hα hw`. Establish `hj : IsExtOver i j` using `h.2.2.1`. Establish `hind : LinearIndependent Ω fun k => j (u k)` using `hj.2 r u hu.1`. Establish `hne` using `WedgeFrame.ιMulti_ne_zero hind`. Take `⟨d, hd⟩` from `exists_wedge_eq_smul hB`.
+
+Establish `hd0 : d ≠ 0`. Introduce and unpack `rfl`. Rewrite `hd` using `[zero_smul]`. Conclude with `hne hd`. Establish `hiγ : i γ ≠ 0` using `(map_ne_zero i).2 hγ`.
+
+Conclude with `⟨_, i γ * d, mul_ne_zero hiγ hd0, smul_ne_zero hiγ hne, isPullWedge_smul_ιMulti i j hj hu.1 hγ, by rw [hd, smul_smul]⟩`.
+-/
 theorem exists_side {Z : CptOver Y U} {𝔐 : HodgeCpt Y S y} {i : Z.Ω →+* Ω} {j : Z.V →+ 𝔐.Li}
     (h : CptIn.IsTie Z 𝔐 i j) {L : Lat (Z.ξ₀ ≫ Y.j) Z.V} {r : ℕ} {u : Fin r → Z.V} {x : Cpt (Z.ξ₀ ≫ Y.j)}
     (hu : L.IsFrameAt u x) {a : ⋀[Z.Ω]^r Z.V} {α : Z.Ω} (hα : α ≠ 0)
@@ -117,6 +153,17 @@ theorem exists_side {Z : CptOver Y U} {𝔐 : HodgeCpt Y S y} {i : Z.Ω →+* Ω
 
 end Comparison₂
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c _ Y U Z S Ω _ K _ J _ y 𝔐 Fl τ i j a b hT hL`. Establish `hfr : ∀ x : c.F, ∃ a b : 𝓞 c.F, algebraMap (𝓞 c.F) c.F b ≠ 0 ∧ x * algebraMap (𝓞 c.F) c.F b = algebraMap (𝓞 c.F) c.F a`. Introduce `x`. Take `⟨⟨a, b⟩, hab⟩` from `IsLocalization.surj (nonZeroDivisors (𝓞 c.F)) x`. Conclude with `⟨a, b, IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors b.2, hab⟩`.
+
+Take `⟨h1, h2, -, x, hx⟩` from `isVBOn_eig_genFib E H D l Xo c (𝓞 c.F) (algebraMap (𝓞 c.F) c.F) Y U Z τ.1 ⟨FaithfulSMul.algebraMap_injective _ _, inferInstance, hfr⟩ τ.2`. Take `⟨-, -, hg⟩` from `hL`. Take `⟨α, β, hα, hβ, hwa, hwb, -⟩` from `hg x hx`. Take `⟨W₁, hW₁, u₁, hs₁, hf₁⟩` from `h1 x hx`. Take `⟨W₂, hW₂, u₂, hs₂, hf₂⟩` from `h2 x hx`.
+
+Establish `hu₁` using `hf₁ x hx hW₁`. Establish `hu₂` using `hf₂ x hx hW₂`. Establish `hB₁ : ∀ k, j (u₁ k) ∈ Submodule.span Ω (Set.range (Fl.b (.inl τ)))` using `fun k => by`. Rewrite using `[HodgeCptTest.flag_span 𝔐 Fl]`. Establish `hk : u₁ k ∈ eigSp Z.ρ (Z.inc.comp (tauIn c τ.1))` using `hs₁ ▸ Submodule.subset_span ⟨k, rfl⟩`.
+
+Use `tie_mem_eigSp hT _ hk` as an intermediate fact. Rewrite `this` using `[← CptInputs.labelEmb_inl]`. Then use the resulting hypothesis. Establish `hB₂ : ∀ k, j (u₂ k) ∈ Submodule.span Ω (Set.range (Fl.b (.inr τ)))` using `fun k => by`. Rewrite using `[HodgeCptTest.flag_span 𝔐 Fl]`. Establish `hk : u₂ k ∈ eigSp Z.ρ (Z.inc.comp (tauIn c (ComplexEmbedding.conjugate τ.1)))` using `hs₂ ▸ Submodule.subset_span ⟨k, rfl⟩`.
+
+Use `tie_mem_eigSp hT _ hk` as an intermediate fact. Rewrite `this` using `[← CptInputs.labelEmb_inr]`. Then use the resulting hypothesis. Take `⟨a', d₁, hd₁, ha', hpa, hea⟩` from `exists_side hT hu₁ hα hwa (B := Fl.b (.inl τ)) hB₁`. Take `⟨b', d₂, hd₂, hb', hpb, heb⟩` from `exists_side hT hu₂ hβ hwb (B := Fl.b (.inr τ)) hB₂`. Conclude with `⟨a', b', d₁, d₂, hd₁, hd₂, ha', hb', hpa, hpb, hea, heb⟩`.
+-/
 theorem exists_pullWedge_flag : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) [NumberField c.F] (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (U : Set (Xo.XF c)) (Z : CptOver Y U) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (Fl : 𝔐.Flag) (τ : CMType H) (i : Z.Ω →+* Ω) (j : Z.V →+ 𝔐.Li) (a : ⋀[Z.Ω]^D.p Z.V) (b : ⋀[Z.Ω]^D.q Z.V), CptIn.IsTie Z 𝔐 i j → IsLineGenOn (Z.eig τ.1) (Z.eig (ComplexEmbedding.conjugate τ.1)) D.p D.q a b Z.genFib → ∃ (a' : ⋀[Ω]^D.p 𝔐.Li) (b' : ⋀[Ω]^D.q 𝔐.Li) (d₁ d₂ : Ω), d₁ ≠ 0 ∧ d₂ ≠ 0 ∧ a' ≠ 0 ∧ b' ≠ 0 ∧ CptIn.IsPullWedge i j a a' ∧ CptIn.IsPullWedge i j b b' ∧ a' = d₁ • (exteriorPower.ιMulti Ω _ (Fl.b (.inl τ))) ∧ b' = d₂ • (exteriorPower.ιMulti Ω _ (Fl.b (.inr τ))) := by
   intro E _ _ _ H D l Xo c _ Y U Z S Ω _ K _ J _ y 𝔐 Fl τ i j a b hT hL
   have hfr : ∀ x : c.F, ∃ a b : 𝓞 c.F, algebraMap (𝓞 c.F) c.F b ≠ 0 ∧

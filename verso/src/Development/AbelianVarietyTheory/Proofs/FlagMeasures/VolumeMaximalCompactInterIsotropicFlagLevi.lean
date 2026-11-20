@@ -12,6 +12,9 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.FlagMeas.LeviCompact
 
+/- English proof (translation)
+Establish `hc : Continuous fun g : Formalism.REAL.UJ ε => uMat g` using `Units.continuous_val.comp continuous_subtype_val`. Unfold `Formalism.REAL.hs`. Use `continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun k _ => ?_` and prove the remaining obligations. Conclude with `((continuous_apply k).comp ((continuous_apply i).comp (hc.sub continuous_const))).norm.pow 2`.
+-/
 theorem continuous_hs_uMat {n : ℕ} (ε : Fin n → Bool) :
     Continuous fun g : Formalism.REAL.UJ ε => Formalism.REAL.hs (uMat g - 1) := by
   have hc : Continuous fun g : Formalism.REAL.UJ ε => uMat g :=
@@ -20,6 +23,17 @@ theorem continuous_hs_uMat {n : ℕ} (ε : Fin n → Bool) :
   refine continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun k _ => ?_
   exact ((continuous_apply k).comp ((continuous_apply i).comp (hc.sub continuous_const))).norm.pow 2
 
+/- English proof (translation)
+Take `⟨hE, hR⟩` from `Formalism.REAL.uJEmb N (allPos N)`. Establish `hJ : Formalism.REAL.Jm (allPos N) = 1`. Simplify using `[Formalism.REAL.Jm, allPos, Matrix.diagonal_one]`. Rewrite using `[← isCompact_univ_iff, hE.isCompact_iff, Set.image_univ, hR]`. Establish `hcl : IsClosed {g : Matrix (Fin N) (Fin N) ℂ | Formalism.REAL.inUJ (allPos N) g}`.
+
+Simplify using `only [Formalism.REAL.inUJ]`. Conclude with `isClosed_eq (by fun_prop) continuous_const`. Establish `hK : IsCompact (Set.univ.pi fun _ : Fin N => Set.univ.pi fun _ : Fin N => Metric.closedBall (0 : ℂ) 1)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Use `hK.of_isClosed_subset hcl ?_` and prove the remaining obligations. Introduce `g hg i _ k _`.
+
+Simplify using `only [Formalism.REAL.inUJ, hJ, Matrix.mul_one] at hg`. Establish `h` using `congrFun (congrFun hg k) k`. Simplify using `only [Matrix.one_apply_eq] at h`. Establish `h2 : ∑ r, (Complex.normSq (g r k) : ℂ) = 1`. Rewrite using `[← h]`.
+
+Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Both sides reduce to the same expression. Establish `h3 : ∑ r, Complex.normSq (g r k) = 1` using `by exact_mod_cast h2`. Establish `h4 : Complex.normSq (g i k) ≤ 1` using `h3 ▸ Finset.single_le_sum (fun r _ => Complex.normSq_nonneg (g r k)) (Finset.mem_univ i)`.
+
+Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Establish `h5 : ‖g i k‖ ^ 2 ≤ 1` using `by rw [Complex.sq_norm]; exact h4`. Use polynomial arithmetic with `[norm_nonneg (g i k)]`.
+-/
 theorem compactSpace_allPos (N : ℕ) : CompactSpace (Formalism.REAL.UJ (allPos N)) := by
   obtain ⟨hE, hR⟩ := Formalism.REAL.uJEmb N (allPos N)
   have hJ : Formalism.REAL.Jm (allPos N) = 1 := by
@@ -46,6 +60,19 @@ theorem compactSpace_allPos (N : ℕ) : CompactSpace (Formalism.REAL.UJ (allPos 
   have h5 : ‖g i k‖ ^ 2 ≤ 1 := by rw [Complex.sq_norm]; exact h4
   nlinarith [norm_nonneg (g i k)]
 
+/- English proof (translation)
+Establish `hemb : Topology.IsClosedEmbedding Φ` using `hc.isClosedEmbedding hi`. Establish `hme : MeasurableEmbedding Φ` using `hemb.measurableEmbedding`. Use `set ν' : Measure G := μ.comap Φ with hν'`. Establish `hae : ∀ᵐ x ∂μ, x ∈ Set.range Φ` using `by rw [ae_iff]; exact h0`. Establish `hres : μ.restrict (Set.range Φ) = μ` using `Measure.restrict_eq_self_of_ae_mem hae`.
+
+Establish `hkey : ∀ B, μ B = ν' (Φ ⁻¹' B)`. Introduce `B`. Rewrite using `[hν', ← hme.map_apply, hme.map_comap, hres]`. Establish `hinvG : ν'.IsMulLeftInvariant`. Use `⟨fun g => ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `s hs`. Rewrite using `[Measure.map_apply (measurable_const_mul g) hs]`. Establish `h1 : (fun x => g * x) ⁻¹' s = Φ ⁻¹' ((fun y => Φ g * y) ⁻¹' (Φ '' s))`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, ← map_mul, hi.mem_set_image]`.
+
+Establish `h2 : s = Φ ⁻¹' (Φ '' s)` using `(Set.preimage_image_eq s hi).symm`. Rewrite using `[h1, ← hkey, ← Measure.map_apply (measurable_const_mul (Φ g)) (hme.measurableSet_image.2 hs), hinv _ ⟨g, rfl⟩, hkey, ← h2]`. Establish `hV : IsOpen (Φ ⁻¹' U)` using `hU.preimage hc`. Establish `hVfin : ν' (Φ ⁻¹' U) ≠ ⊤` using `by rw [← hkey]; exact hfin`. Establish `hfinU : ν' Set.univ < ⊤`.
+
+Use `isCompact_univ.measure_lt_top_of_nhdsWithin fun x _ => ⟨(fun y => x⁻¹ * y) ⁻¹' (Φ ⁻¹' U), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[nhdsWithin_univ]`. Conclude with `(hV.preimage (continuous_const.mul continuous_id)).mem_nhds (by simp [h1])`. Rewrite using `[measure_preimage_mul]`. Conclude with `hVfin.lt_top`.
+
+Establish `: IsFiniteMeasure ν'` using `⟨hfinU⟩`. Establish `heq` using `Measure.isMulLeftInvariant_eq_smul ν' ν`. Use `⟨Measure.haarScalarFactor ν' ν, fun A => ?_⟩` and prove the remaining obligations. Establish `h3` using `congrArg (fun m : Measure G => m (Φ ⁻¹' A)) heq`. Rewrite using `[hkey A, h3, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`.
+-/
 theorem exists_eq_mul_preimage {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] [Group H] [TopologicalSpace H]
     [IsTopologicalGroup H] [T2Space H] [MeasurableSpace H] [BorelSpace H] (ν : Measure G) [ν.IsHaarMeasure]
@@ -83,6 +110,35 @@ theorem exists_eq_mul_preimage {G H : Type} [Group G] [TopologicalSpace G] [IsTo
   have h3 := congrArg (fun m : Measure G => m (Φ ⁻¹' A)) heq
   rw [hkey A, h3, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `n ε ι _ m w Φ hw hc hi hhs μ hμ`. Take `⟨h0, hinv, hlim⟩` from `hμ`. Establish `hcpt : ∀ i, CompactSpace (Formalism.REAL.UJ (allPos (m i)))` using `fun i => compactSpace_allPos _`. Use `choose c hcpos hcg _ using fun i => GlobalTheory.GaugeConst.gauge_exists_pos_unique (m i) (allPos (m i))`. Use `set νi : ∀ i, Measure (Formalism.REAL.UJ (allPos (m i))) := fun i => ENNReal.ofReal (c i) • Formalism.REAL.muG (allPos (m i)) with hνi`.
+
+Establish `hfin : ∀ i, IsFiniteMeasure (νi i)` using `fun i => ⟨by`. Simplify using `only [hνi, Measure.smul_apply, smul_eq_mul]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top (measure_lt_top _ _)⟩`. Establish `hhaar : ∀ i, (νi i).IsHaarMeasure` using `fun i => Measure.IsHaarMeasure.smul _ (by simpa using hcpos i) ENNReal.ofReal_ne_top`. Use `set ν : Measure (∀ i, Formalism.REAL.UJ (allPos (m i))) := Measure.pi νi with hν`.
+
+Use `set V := volume (Metric.ball (0 : EuclideanSpace ℝ (Fin (∑ i, m i ^ 2))) 1) with hV`. Establish `hVtop : V ≠ ⊤` using `measure_ball_lt_top.ne`. Establish `hV0 : V ≠ 0` using `(Metric.measure_ball_pos volume _ one_pos).ne'`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr0, hrfin⟩ : ∃ r : ℝ, 0 < r ∧ μ {g | Real.sqrt (Formalism.REAL.hs (uMat g - 1)) ≤ r} ≠ ⊤ := by`. Establish `e1` using `hlim.eventually (gt_mem_nhds (show V < V + 1 from ENNReal.lt_add_right hVtop one_ne_zero))`.
+
+Establish `e2 : ∀ᶠ r : ℝ in nhdsWithin 0 (Set.Ioi 0), 0 < r` using `self_mem_nhdsWithin`. Take `⟨r, h1, h2⟩` from `(e1.and e2).exists`. Use `⟨r, h2, fun htop => ?_⟩` and prove the remaining obligations. Rewrite `h1` using `[htop, ENNReal.top_div_of_ne_top ENNReal.ofReal_ne_top]`. Conclude with `absurd h1 (not_lt.2 le_top)`.
+
+Use `set U := {g : Formalism.REAL.UJ ε | Real.sqrt (Formalism.REAL.hs (uMat g - 1)) < r} with hU`. Establish `hUo : IsOpen U` using `isOpen_lt (Real.continuous_sqrt.comp (continuous_hs_uMat ε)) continuous_const`. Establish `hu1 : uMat (1 : Formalism.REAL.UJ ε) = 1` using `rfl`. Establish `hU1 : (1 : Formalism.REAL.UJ ε) ∈ U` using `by simp [hU, Formalism.REAL.hs, hu1, hr0]`. Establish `hUfin : μ U ≠ ⊤` using `ne_top_of_le_ne_top hrfin (measure_mono fun g (hg : g ∈ U) => by`.
+
+Simplify using `only [hU, Set.mem_setOf_eq] at hg ⊢`. Conclude with `hg.le)`. Take `⟨α, hα⟩` from `exists_eq_mul_preimage ν Φ hc hi μ h0 hinv hUo hU1 hUfin`. Establish `hfac : ∀ i, Filter.Tendsto (fun r : ℝ => νi i {x | Real.sqrt (Formalism.REAL.hs (uMat x - 1)) ≤ r} / ENNReal.ofReal (r ^ (m i ^ 2))) (nhdsWithin 0 (Set.Ioi 0)) (nhds (volume (Metric.ball (0 : EuclideanSpace ℝ (Fin (m i ^ 2))) 1)))`. Introduce `i`.
+
+Establish `hg` using `hcg i`. Unfold `GlobalTheory.Count.IsGauge at hg`. Establish `h1` using `ENNReal.tendsto_ofReal hg`. Rewrite `h1` using `[ENNReal.ofReal_toReal measure_ball_lt_top.ne]`. Use `h1.congr' ?_` and prove the remaining obligations.
+
+Use `filter_upwards [self_mem_nhdsWithin] with r (hr : 0 < r)`. Simplify using `only [hνi, Measure.smul_apply, smul_eq_mul]`. Rewrite using `[ENNReal.ofReal_div_of_pos (pow_pos hr _), ENNReal.ofReal_mul (hcpos i).le, ENNReal.ofReal_toReal (measure_lt_top _ _).ne]`. Establish `hprod` using `GlobalTheory.T.smallBall_asymptotics_pi_weighted ι (fun i => Formalism.REAL.UJ (allPos (m i))) νi (fun i x => Formalism.REAL.hs (uMat x - 1)) (fun i => m i ^ 2) w (fun i => (continuous_hs_uMat _).measurable) (fun i x => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => by …`. Use `set K : ℝ := ∏ i, w i ^ (-(((m i ^ 2 : ℕ) : ℝ) / 2)) with hK`.
+
+Establish `hpre : ∀ r, Φ ⁻¹' {g | Real.sqrt (Formalism.REAL.hs (uMat g - 1)) ≤ r} = {x | Real.sqrt (∑ i, w i * Formalism.REAL.hs (uMat (x i) - 1)) ≤ r}`. Introduce `r`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, hhs]`. Establish `hlim2 : Filter.Tendsto (fun r : ℝ => (α : ENNReal) * (ν {x | Real.sqrt (∑ i, w i * Formalism.REAL.hs (uMat (x i) - 1)) ≤ r} / ENNReal.ofReal (r ^ (∑ i, m i ^ 2)))) (nhdsWithin 0 (Set.Ioi 0)) (nhds V)`.
+
+Use `hlim.congr' (Filter.Eventually.of_forall fun r => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hα, hpre, mul_div_assoc]`. Establish `hlim3` using `ENNReal.Tendsto.const_mul hprod (Or.inr (ENNReal.coe_ne_top (r := α)))`. Establish `heq : V = (α : ENNReal) * (ENNReal.ofReal K * V)` using `tendsto_nhds_unique hlim2 hlim3`.
+
+Establish `h1 : (α : ENNReal) * ENNReal.ofReal K = 1`. Establish `e : V = ((α : ENNReal) * ENNReal.ofReal K) * V` using `by rw [mul_assoc]; exact heq`. Combine the equalities or inequalities in the displayed calculation. Establish `hKpos : 0 < K` using `Finset.prod_pos fun i _ => Real.rpow_pos_of_pos (hw i) _`. Establish `hvol0 : ∀ i, 0 ≤ volU (m i)` using `fun i => by`.
+
+Rewrite using `[← GlobalTheory.T.riemannianHaarGauge_volume_unitaryGroup_eq (m i) (c i) (hcg i)]`. Conclude with `mul_nonneg (hcpos i).le ENNReal.toReal_nonneg`. Establish `hνu : ν Set.univ = ∏ i, ENNReal.ofReal (volU (m i))`. Rewrite using `[hν, Measure.pi_univ]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [hνi, Measure.smul_apply, smul_eq_mul]`. Rewrite using `[← GlobalTheory.T.riemannianHaarGauge_volume_unitaryGroup_eq (m i) (c i) (hcg i), ENNReal.ofReal_mul (hcpos i).le, ENNReal.ofReal_toReal (measure_lt_top _ _).ne]`. Rewrite using `[hα, Set.preimage_univ, hνu, ENNReal.eq_inv_of_mul_eq_one_left h1, ← ENNReal.ofReal_inv_of_pos hKpos, ← ENNReal.ofReal_prod_of_nonneg (fun i _ => hvol0 i), ← ENNReal.ofReal_mul (inv_nonneg.2 hKpos.le)]`. Use `congr 1`. Rewrite using `[Finset.prod_mul_distrib, mul_comm, hK, ← Finset.prod_inv_distrib]`.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Real.rpow_neg (hw i).le, inv_inv]`. Use `push_cast`. Put the polynomial expressions in normal form.
+-/
 theorem volume_range : ∀ (n : ℕ) (ε : Fin n → Bool) (ι : Type) [Fintype ι] (m : ι → ℕ) (w : ι → ℝ) (Φ : (∀ i, Formalism.REAL.UJ (allPos (m i))) →* Formalism.REAL.UJ ε), (∀ i, 0 < w i) → Continuous Φ → Function.Injective Φ → (∀ g, Formalism.REAL.hs (uMat (Φ g) - 1) = ∑ i, w i * Formalism.REAL.hs (uMat (g i) - 1)) → ∀ μ, IsGaugeSub (Set.range Φ) (∑ i, m i ^ 2) μ → μ Set.univ = ENNReal.ofReal (∏ i, volU (m i) * w i ^ (((m i : ℝ)) ^ 2 / 2)) := by
   intro n ε ι _ m w Φ hw hc hi hhs μ hμ
   obtain ⟨h0, hinv, hlim⟩ := hμ
@@ -164,12 +220,28 @@ theorem volume_range : ∀ (n : ℕ) (ε : Fin n → Bool) (ι : Type) [Fintype 
   push_cast
   ring_nf
 
+/- English proof (translation)
+Use extensionality with `r c`. Simplify using `only [Matrix.mul_apply, Matrix.sum_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+-/
 private theorem fintype_sum_matrix_mul_eq_sum_mul {n m : ℕ} {ι : Type} [Fintype ι] (A : ι → Matrix (Fin n) (Fin n) ℂ)
     (B : Matrix (Fin n) (Fin m) ℂ) : (∑ i, A i) * B = ∑ i, A i * B := by
   ext r c
   simp only [Matrix.mul_apply, Matrix.sum_apply, Finset.sum_mul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Introduce `n ε p q hp hq a j W hW`. Take `⟨h0, hmono, hrk, hiso⟩` from `hW`. Take `⟨T, hTT, hTo, hmem⟩` from `GlobalTheory.T.exists_orthonormal_frame_of_flag_alt n a j W h0 hmono hrk`. Establish `hcol : ∀ k (d : Fin (j k)), (fun r => T k r d) ∈ W (Fin.last a)`. Introduce `k d`.
+
+Rewrite using `[hmem]`. Establish `hf : (univ.filter fun i : Fin a => i.val < (Fin.last a).val) = univ` using `Finset.filter_true_of_mem fun i _ => i.isLt`. Rewrite using `[hf]`. Establish `hs : (∑ i, T i * (T i)ᴴ) * T k = T k`. Rewrite using `[fintype_sum_matrix_mul_eq_sum_mul, Finset.sum_eq_single k]`.
+
+Rewrite using `[Matrix.mul_assoc, hTT, Matrix.mul_one]`. Introduce `i _ hik`. Rewrite using `[Matrix.mul_assoc, hTo i k hik, Matrix.mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ k) h`.
+
+Establish `hy : (fun r => T k r d) = T k *ᵥ Pi.single d 1`. Use extensionality with `r`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Rewrite using `[hy, Matrix.mulVec_mulVec, hs]`. Establish `hTJT : ∀ i k, (T i)ᴴ * Formalism.REAL.Jm ε * T k = 0`.
+
+Introduce `i k`. Use extensionality with `c d`. Establish `h` using `hiso _ (hcol i c) _ (hcol k d)`. Rewrite using `[Matrix.zero_apply, ← h]`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, dotProduct, Matrix.mulVec, Pi.star_apply, Finset.sum_mul, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun s _ => by ring`. Take `⟨P, Q, h1, h2, h3, h4, h5, h6, h7⟩` from `GlobalTheory.T.complete_isotropicFrame_signature_eigenvectors n ε p q hp hq a j T hTT hTo hTJT`. Conclude with `⟨T, P, Q, hTT, hTo, hTJT, h1, h2, h3, h4, h5, h6, h7, hmem⟩`.
+-/
 theorem exists_frame : ∀ (n : ℕ) (ε : Fin n → Bool) (p q : ℕ), (univ.filter fun a => ε a = true).card = p → (univ.filter fun a => ε a = false).card = q → ∀ (a : ℕ) (j : Fin a → ℕ) (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)), IsIsoFlag ε j W → ∃ (T : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (P : Matrix (Fin n) (Fin (p - ∑ i, j i)) ℂ) (Q : Matrix (Fin n) (Fin (q - ∑ i, j i)) ℂ), (∀ i, (T i)ᴴ * T i = 1) ∧ (∀ i k, i ≠ k → (T i)ᴴ * T k = 0) ∧ (∀ i k, (T i)ᴴ * Formalism.REAL.Jm ε * T k = 0) ∧ (∀ i, (T i)ᴴ * P = 0) ∧ (∀ i, (T i)ᴴ * Q = 0) ∧ Pᴴ * P = 1 ∧ Qᴴ * Q = 1 ∧ Formalism.REAL.Jm ε * P = P ∧ Formalism.REAL.Jm ε * Q = -Q ∧ (∑ i, (T i * (T i)ᴴ + Formalism.REAL.Jm ε * T i * (T i)ᴴ * Formalism.REAL.Jm ε)) + P * Pᴴ + Q * Qᴴ = 1 ∧ ∀ (l : Fin (a + 1)) (y : Fin n → ℂ), y ∈ W l ↔ (∑ i ∈ univ.filter (fun i : Fin a => i.val < l.val), T i * (T i)ᴴ) *ᵥ y = y := by
   intro n ε p q hp hq a j W hW
   obtain ⟨h0, hmono, hrk, hiso⟩ := hW
@@ -200,6 +272,11 @@ theorem exists_frame : ∀ (n : ℕ) (ε : Fin n → Bool) (p q : ℕ), (univ.fi
   obtain ⟨P, Q, h1, h2, h3, h4, h5, h6, h7⟩ := GlobalTheory.T.complete_isotropicFrame_signature_eigenvectors n ε p q hp hq a j T hTT hTo hTJT
   exact ⟨T, P, Q, hTT, hTo, hTJT, h1, h2, h3, h4, h5, h6, h7, hmem⟩
 
+/- English proof (translation)
+Establish `a1 : ∀ {r : ℕ} (X : Matrix (Fin n) (Fin r) ℂ), J * (J * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, hJJ, Matrix.one_mul]`. Establish `a2 : ∀ {r : ℕ} (X : Matrix (Fin p') (Fin r) ℂ), J * (P * X) = P * X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, hJP]`. Establish `a3 : ∀ {r : ℕ} (X : Matrix (Fin q') (Fin r) ℂ), J * (Q * X) = -(Q * X)` using `fun X => by`.
+
+Rewrite using `[← Matrix.mul_assoc, hJQ, Matrix.neg_mul]`. Simplify using `only [Matrix.conjTranspose_mul, hJH, Matrix.mul_add, Matrix.add_mul, Finset.mul_sum, Finset.sum_mul, Matrix.mul_assoc, a1, a2, a3, e1, e2, hJJ, Matrix.mul_one, Matrix.mul_neg, Matrix.neg_mul, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem levi_lemma {n a p' q' : ℕ} {j : Fin a → ℕ} (J : Matrix (Fin n) (Fin n) ℂ)
     (T : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (P : Matrix (Fin n) (Fin p') ℂ) (Q : Matrix (Fin n) (Fin q') ℂ)
     (K : ∀ i, Matrix (Fin (j i)) (Fin (j i)) ℂ) (U : Matrix (Fin p') (Fin p') ℂ) (V : Matrix (Fin q') (Fin q') ℂ)
@@ -220,6 +297,61 @@ private theorem levi_lemma {n a p' q' : ℕ} {j : Fin a → ℕ} (J : Matrix (Fi
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `n ε p q hp hq a j W hW μ hμ`. Take `⟨T, P, Q, hTT, hTo, hTJT, hTP, hTQ, hPP, hQQ, hJP, hJQ, hsum, hmem⟩` from `exists_frame n ε p q hp hq a j W hW`. Establish `hJJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1` using `Formalism.REAL.Jm_mul_self ε`. Establish `hJH : (Formalism.REAL.Jm ε)ᴴ = Formalism.REAL.Jm ε` using `Formalism.REAL.Jm_conjTranspose ε`. Establish `hJJ' : ∀ {r : ℕ} (X : Matrix (Fin n) (Fin r) ℂ), Formalism.REAL.Jm ε * (Formalism.REAL.Jm ε * X) = X`.
+
+Introduce `r X`. Rewrite using `[← Matrix.mul_assoc, hJJ, Matrix.one_mul]`. Establish `hJP' : ∀ {r : ℕ} (X : Matrix (Fin (p - ∑ i, j i)) (Fin r) ℂ), Formalism.REAL.Jm ε * (P * X) = P * X`. Introduce `r X`. Rewrite using `[← Matrix.mul_assoc, hJP]`.
+
+Establish `hJQ' : ∀ {r : ℕ} (X : Matrix (Fin (q - ∑ i, j i)) (Fin r) ℂ), Formalism.REAL.Jm ε * (Q * X) = -(Q * X)`. Introduce `r X`. Rewrite using `[← Matrix.mul_assoc, hJQ, Matrix.neg_mul]`. Establish `e1 : Pᴴ * Formalism.REAL.Jm ε = Pᴴ`. Rewrite using `[← hJH, ← Matrix.conjTranspose_mul, hJP]`.
+
+Establish `e2 : Qᴴ * Formalism.REAL.Jm ε = -Qᴴ`. Rewrite using `[← hJH, ← Matrix.conjTranspose_mul, hJQ, Matrix.conjTranspose_neg]`. Establish `hPT : ∀ k, Pᴴ * T k = 0`. Introduce `k`. Establish `h` using `congrArg Matrix.conjTranspose (hTP k)`.
+
+Rewrite `h` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_zero]`. Then use the resulting hypothesis. Establish `hQT : ∀ k, Qᴴ * T k = 0`. Introduce `k`. Establish `h` using `congrArg Matrix.conjTranspose (hTQ k)`. Rewrite `h` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_zero]`. Then use the resulting hypothesis.
+
+Establish `hPQ : Pᴴ * Q = 0`. Establish `hx : Pᴴ * Q = -(Pᴴ * Q)`. Combine the equalities or inequalities in the displayed calculation. Use extensionality with `c d`. Establish `h` using `congrFun (congrFun hx c) d`.
+
+Simplify using `only [Matrix.neg_apply] at h`. Rewrite using `[Matrix.zero_apply]`. Take the linear combination `h / 2`. Establish `hQP : Qᴴ * P = 0`. Establish `h` using `congrArg Matrix.conjTranspose hPQ`.
+
+Rewrite `h` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_zero]`. Then use the resulting hypothesis. Set `m : Fin a ⊕ (Unit ⊕ Unit) → ℕ` to `Sum.elim j (Sum.elim (fun _ => p - ∑ i, j i) (fun _ => q - ∑ i, j i))`. Set `π : Fin a ⊕ (Fin a ⊕ (Unit ⊕ Unit)) → Fin a ⊕ (Unit ⊕ Unit)` to `Sum.elim Sum.inl (Sum.elim Sum.inl Sum.inr)`. Set `S : ∀ s, Matrix (Fin n) (Fin (m (π s))) ℂ` to `fun s => match s with`. Consider the case `Sum.inl i => T i`.
+
+Consider the case `Sum.inr (Sum.inl i) => Formalism.REAL.Jm ε * T i`. Consider the case `Sum.inr (Sum.inr (Sum.inl _)) => P`. Consider the case `Sum.inr (Sum.inr (Sum.inr _)) => Q`. Establish `hsurj : Function.Surjective π`. Introduce and unpack `(i | u)`.
+
+Conclude with `⟨Sum.inl i, rfl⟩`. Conclude with `⟨Sum.inr (Sum.inr u), rfl⟩`. Establish `horth : ∀ s, (S s)ᴴ * S s = 1`. Introduce and unpack `(i | i | u | u)`. Conclude with `hTT i`.
+
+Use `show (Formalism.REAL.Jm ε * T i)ᴴ * (Formalism.REAL.Jm ε * T i) = 1`. Rewrite using `[Matrix.conjTranspose_mul, hJH, Matrix.mul_assoc, hJJ', hTT]`. Conclude with `hPP`. Conclude with `hQQ`. Establish `hcross : ∀ s t, s ≠ t → (S s)ᴴ * S t = 0`.
+
+Introduce and unpack `(i | i | u | u) (k | k | v | v) hst`. Conclude with `hTo i k fun h => hst (h ▸ rfl)`. Use `show (T i)ᴴ * (Formalism.REAL.Jm ε * T k) = 0`. Rewrite using `[← Matrix.mul_assoc, hTJT]`. Conclude with `hTP i`.
+
+Conclude with `hTQ i`. Use `show (Formalism.REAL.Jm ε * T i)ᴴ * T k = 0`. Rewrite using `[Matrix.conjTranspose_mul, hJH, hTJT]`. Use `show (Formalism.REAL.Jm ε * T i)ᴴ * (Formalism.REAL.Jm ε * T k) = 0`. Rewrite using `[Matrix.conjTranspose_mul, hJH, Matrix.mul_assoc, hJJ', hTo i k fun h => hst (h ▸ rfl)]`.
+
+Use `show (Formalism.REAL.Jm ε * T i)ᴴ * P = 0`. Rewrite using `[Matrix.conjTranspose_mul, hJH, Matrix.mul_assoc, hJP, hTP]`. Use `show (Formalism.REAL.Jm ε * T i)ᴴ * Q = 0`. Rewrite using `[Matrix.conjTranspose_mul, hJH, Matrix.mul_assoc, hJQ, Matrix.mul_neg, hTQ, neg_zero]`. Conclude with `hPT k`.
+
+Use `show Pᴴ * (Formalism.REAL.Jm ε * T k) = 0`. Rewrite using `[← Matrix.mul_assoc, e1, hPT]`. Conclude with `absurd (by rw [Subsingleton.elim u v]) hst`. Conclude with `hPQ`. Conclude with `hQT k`.
+
+Use `show Qᴴ * (Formalism.REAL.Jm ε * T k) = 0`. Rewrite using `[← Matrix.mul_assoc, e2, Matrix.neg_mul, hQT, neg_zero]`. Conclude with `hQP`. Conclude with `absurd (by rw [Subsingleton.elim u v]) hst`. Establish `hsumS : ∑ s, S s * (S s)ᴴ = 1`.
+
+Simplify using `only [Fintype.sum_sum_type, Fintype.sum_unique]`. Use `show ∑ i, T i * (T i)ᴴ + (∑ i, (Formalism.REAL.Jm ε * T i) * (Formalism.REAL.Jm ε * T i)ᴴ + (P * Pᴴ + Q * Qᴴ)) = 1`. Rewrite using `[← hsum]`. Simplify using `only [Finset.sum_add_distrib, Matrix.conjTranspose_mul, hJH, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
+
+Establish `hcomm : ∀ k : ∀ i, Matrix (Fin (m i)) (Fin (m i)) ℂ, Formalism.REAL.Jm ε * ∑ s, S s * k (π s) * (S s)ᴴ = (∑ s, S s * k (π s) * (S s)ᴴ) * Formalism.REAL.Jm ε`. Introduce `k`. Simplify using `only [Fintype.sum_sum_type, Fintype.sum_unique]`. Conclude with `levi_lemma (Formalism.REAL.Jm ε) T P Q (fun i => k (Sum.inl i)) (k (Sum.inr (Sum.inl default))) (k (Sum.inr (Sum.inr default))) hJJ hJP hJQ e1 e2 hJH`. Take `⟨Φ, hΦc, hΦi, hΦu, hΦhs⟩` from `GlobalTheory.T.exists_blockDiag_unitary_product_hom n ε _ _ π m S hsurj horth hcross hsumS hcomm`.
+
+Establish `hform : ∀ x : ∀ i, Formalism.REAL.UJ (allPos (m i)), uMat (Φ x) = (∑ i, (T i * (show Matrix (Fin (j i)) (Fin (j i)) ℂ from uMat (x (Sum.inl i))) * (T i)ᴴ + Formalism.REAL.Jm ε * T i * (show Matrix (Fin (j i)) (Fin (j i)) ℂ from uMat (x (Sum.inl i))) * (T i)ᴴ * Formalism.REAL.Jm ε …`. Introduce `x`. Rewrite using `[hΦu]`. Simplify using `only [Fintype.sum_sum_type, Fintype.sum_unique]`. Use `show ∑ i, T i * (show Matrix (Fin (j i)) (Fin (j i)) ℂ from uMat (x (Sum.inl i))) * (T i)ᴴ + (∑ i, (Formalism.REAL.Jm ε * T i) * (show Matrix (Fin (j i)) (Fin (j i)) ℂ from uMat (x (Sum.inl i))) * (Formalism.REAL.Jm ε * T i)ᴴ + (P * (show Matrix (Fin (p - ∑ i, j i)) (Fin (p - ∑ i …`.
+
+Simplify using `only [Finset.sum_add_distrib, Matrix.conjTranspose_mul, hJH, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Establish `hrange : Set.range Φ = maxK ε ∩ flagM ε W`. Use extensionality with `g`. Rewrite using `[GlobalTheory.T.mem_maxCompact_inter_levi_iff_frame n ε a j W _ _ T P Q ⟨hTT, hTo, hTJT, hTP, hTQ, hPP, hQQ, hJP, hJQ, hsum, hmem⟩ g]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨fun i => x (Sum.inl i), x (Sum.inr (Sum.inl default)), x (Sum.inr (Sum.inr default)), hform x⟩`. Introduce and unpack `⟨k, u, v, hg⟩`. Set `x : ∀ i, Formalism.REAL.UJ (allPos (m i))` to `fun i => match i with`.
+
+Consider the case `Sum.inl i => k i`. Consider the case `Sum.inr (Sum.inl _) => u`. Consider the case `Sum.inr (Sum.inr _) => v`. Use `⟨x, Subtype.ext (Units.ext ?_)⟩` and prove the remaining obligations. Use `show uMat (Φ x) = uMat g`.
+
+Rewrite using `[hform x, hg]`. Establish `hd : (p - ∑ i, j i) ^ 2 + (q - ∑ i, j i) ^ 2 + ∑ i, j i ^ 2 = ∑ i, m i ^ 2`. Simplify using `only [Fintype.sum_sum_type, Fintype.sum_unique, m, Sum.elim_inl, Sum.elim_inr]`. Expand and normalize the polynomial expressions, which then agree. Establish `hμ' : IsGaugeSub (Set.range Φ) (∑ i, m i ^ 2) μ`.
+
+Rewrite using `[hrange, ← hd]`. Conclude with `hμ`. Set `w : Fin a ⊕ (Unit ⊕ Unit) → ℝ` to `Sum.elim (fun _ => 2) (fun _ => 1)`. Establish `hw : ∀ i, 0 < w i`. Apply the tactic sequence `rintro (i | u | u) <;> norm_num [w]`.
+
+Establish `hhs : ∀ g, Formalism.REAL.hs (uMat (Φ g) - 1) = ∑ i, w i * Formalism.REAL.hs (uMat (g i) - 1)`. Introduce `g`. Rewrite using `[hΦhs]`. Simplify using `only [Fintype.sum_sum_type, Fintype.sum_unique]`. Simplify using `only [π, w, m, Sum.elim_inl, Sum.elim_inr]`.
+
+Rewrite using `[← Finset.mul_sum, two_mul, one_mul, one_mul, add_assoc]`. Both sides reduce to the same expression. Rewrite using `[volume_range n ε _ m w Φ hw hΦc hΦi hhs μ hμ']`. Use `congr 1`. Simplify using `only [Fintype.prod_sum_type, Fintype.prod_unique, m, w, Sum.elim_inl, Sum.elim_inr, Real.one_rpow, mul_one]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem volume_maxK_inter_flagM : ∀ (n : ℕ) (ε : Fin n → Bool) (p q : ℕ), (univ.filter fun a => ε a = true).card = p → (univ.filter fun a => ε a = false).card = q → ∀ (a : ℕ) (j : Fin a → ℕ) (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)), IsIsoFlag ε j W → ∀ μ, IsGaugeSub (maxK ε ∩ flagM ε W) ((p - ∑ i, j i) ^ 2 + (q - ∑ i, j i) ^ 2 + ∑ i, j i ^ 2) μ → μ Set.univ = ENNReal.ofReal ((∏ i, volU (j i) * (2 : ℝ) ^ (((j i : ℝ)) ^ 2 / 2)) * volU (p - ∑ i, j i) * volU (q - ∑ i, j i)) := by
   intro n ε p q hp hq a j W hW μ hμ
   obtain ⟨T, P, Q, hTT, hTo, hTJT, hTP, hTQ, hPP, hQQ, hJP, hJQ, hsum, hmem⟩ :=

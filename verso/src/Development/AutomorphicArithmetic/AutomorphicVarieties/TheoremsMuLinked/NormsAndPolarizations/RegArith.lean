@@ -5,6 +5,13 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HeckeDEqSumO
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.WtBridge
 open IsLocalRing Matrix NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.HV UpperTheory.V.Th UpperTheory.V.Th.Nm GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Establish `key : ∀ t, ‖(ψ t : K)‖ ≤ 1` using `fun t => by`. Take `⟨C, hC⟩` from `(isCompact_range hψ.norm).bddAbove`. Use `not_lt.1 fun hlt => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `pow_unbounded_of_one_lt C hlt`. Establish `h1` using `hC ⟨t ^ m, rfl⟩`.
+
+Simplify using `only [map_pow, Units.val_pow_eq_pow_val, norm_pow] at h1`. Conclude with `absurd hm (not_lt.2 h1)`. Use `le_antisymm (key s) ?_` and prove the remaining obligations. Establish `h2` using `key s⁻¹`. Rewrite `h2` using `[map_inv, Units.val_inv_eq_inv_val, norm_inv]`.
+
+Conclude with `(inv_le_one₀ (norm_pos_iff.2 (ψ s).ne_zero)).1 h2`.
+-/
 private theorem norm_one {Γ K : Type} [Group Γ] [TopologicalSpace Γ] [CompactSpace Γ] [NormedField K]
     (ψ : Γ →* Kˣ) (hψ : Continuous fun s => (ψ s : K)) (s : Γ) : ‖(ψ s : K)‖ = 1 := by
   have key : ∀ t, ‖(ψ t : K)‖ ≤ 1 := fun t => by
@@ -20,6 +27,13 @@ private theorem norm_one {Γ K : Type} [Group Γ] [TopologicalSpace Γ] [Compact
   exact (inv_le_one₀ (norm_pos_iff.2 (ψ s).ne_zero)).1 h2
 
 open GlobalTheory.WeilDeligne GlobalTheory.LocLanglands in
+/- English proof (translation)
+Set `inc` to `Subgroup.inclusion (Weil_le_Dec h)`. Set `ε` to `(cycBar L Ω l).comp (Dec (F := L) A).subtype`. Establish `hεc : Continuous ε` using `((Continuous.units_map ((algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom).toMonoidHom ((continuous_algebraMap ℚ_[l] (Qbar l)).comp continuous_subtype_val)).comp (continuous_cycZ L Ω l)).comp continuous_subtype_val`. Establish `hε : ∀ s : Weil h, (ε (inc s) : Qbar l) = ((normV w : ℕ) : Qbar l) ^ deg s * Hi.algPow w 1 (a s : w.adicCompletion L)` using `UpperTheory.V.Loc.epsArt H h hw a ha`. Assume the negation of the conclusion as `hE`.
+
+Use `haveI : IsEmpty (Emb l w) := not_nonempty_iff.1 hE`. Use `haveI : CompactSpace (Dec (F := L) A) := isCompact_iff_compactSpace.1 (isClosed_Dec A).isCompact`. Establish `h1` using `norm_one ε (Units.continuous_val.comp hεc) (inc (frob h))`. Rewrite `h1` using `[hε, deg_frob, zpow_one, Hi.algPow, finprod_of_isEmpty, mul_one, GlobalTheory.Pst.normV_eq_pow (l := l) hw, Nat.cast_pow, norm_pow]`. Establish `h2` using `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (fun h0 => by`.
+
+Use `one_lt_normV w` as an intermediate fact. Rewrite `this` using `[GlobalTheory.Pst.normV_eq_pow (l := l) hw, h0]`. Conclude with `lt_irrefl _ this)).1 h1`. Conclude with `(GlobalTheory.PlaceBridge.norm_l_lt_one (l := l)).ne h2`.
+-/
 private theorem emb_ne (H : GlobalTheory.Published.GlobalArtinReciprocity) {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] {l : ℕ} [Fact l.Prime] {w : Plc L} {A : ValuationSubring Ω} {h : IsPlaceOver A w}
     {a : Weil h →* (w.adicCompletion L)ˣ} (hw : ((l : ℕ) : 𝓞 L) ∈ w.asIdeal) (ha : IsLocalArtin h a) :
@@ -43,6 +57,29 @@ private theorem emb_ne (H : GlobalTheory.Published.GlobalArtinReciprocity) {L Ω
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField in
 open GlobalTheory.WeilDeligne GlobalTheory.LocLanglands in
+/- English proof (translation)
+Use `haveI := emb_ne H hw ha`. Use `haveI : Finite (Emb l w) := GlobalTheory.HeckeGal.finite_contEmb (l := l) w`. Use `haveI := Fintype.ofFinite (Emb l w)`. Use `haveI : CompactSpace (Ine (F := F) A) := isCompact_iff_compactSpace.1 (isClosed_Ine A).isCompact`. Use `choose ph hph using hψ`.
+
+Set `U : Subgroup (Ine (F` to `F) A) := ⨅ j, (ph j).ker`. Establish `hU : IsOpen (U : Set (Ine (F` using `F) A)) := by`. Simplify using `only [U, Subgroup.coe_iInf]`. Conclude with `isOpen_iInter_of_finite fun j => (hph j).1`. Use `haveI : Finite (Ine (F := F) A ⧸ U) := U.quotient_finite_of_isOpen hU`.
+
+Establish `hN : U.index ≠ 0` using `Subgroup.index_ne_zero_of_finite`. Establish `hl : ValuativeRel.valuation (w.adicCompletion F) (l : w.adicCompletion F) < 1`. Establish `e : (ValuativeRel.valuation (w.adicCompletion F)).IsEquiv (Valued.v : Valuation (w.adicCompletion F) _)` using `by haveI := Valuation.Compatible.ofValuation (Valued.v : Valuation (w.adicCompletion F) _)`. Conclude with `ValuativeRel.isEquiv _ _`. Rewrite using `[e.lt_one_iff_lt_one, ← map_natCast (algebraMap (𝓞 F) (w.adicCompletion F)), IsScalarTower.algebraMap_apply (𝓞 F) F (w.adicCompletion F)]`.
+
+Use `erw [IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `(w.valuation_lt_one_iff_mem _).2 hw`. Establish `hu : ValuativeRel.valuation (w.adicCompletion F) (1 + l : w.adicCompletion F) = 1` using `(ValuativeRel.valuation (w.adicCompletion F)).map_one_add_of_lt hl`. Establish `hu0 : (1 + l : w.adicCompletion F) ≠ 0` using `fun h => by simp [h] at hu`. Take `⟨s, hs⟩` from `ha.surj (Units.mk0 _ hu0)`.
+
+Establish `hd : deg s = 0`. Establish `h2` using `ha.ord_eq s`. Rewrite `h2` using `[hs, GlobalTheory.SmGL.ord_eq_zero_iff.2 hu]`. Use linear arithmetic over natural numbers and integers. Establish `hI : (s : G F Ω) ∈ Ine (F` using `F) A := actsAs_zero_iff.1 (actsAs_of_deg (a := 0) (b := 0) (by simpa using hd))`.
+
+Set `σ : Ine (F` to `F) A := ⟨s, hI⟩`. Use `haveI : U.Normal := Subgroup.normal_iInf_normal fun j => inferInstance`. Establish `hmem : σ ^ U.index ∈ U` using `U.pow_index_mem σ`. Establish `e : ((a (ineIncl h (σ ^ U.index)) : (w.adicCompletion F)ˣ) : w.adicCompletion F) = (1 + l) ^ U.index`. Rewrite using `[map_pow, map_pow, show ineIncl h σ = s from rfl, hs]`.
+
+Simplify using the standard rewrite rules. Set `q : ℕ` to `(1 + l) ^ U.index`. Establish `hq : 1 < q` using `Nat.one_lt_pow hN (by have := (Fact.out : l.Prime).pos; omega)`. Establish `hq0 : (q : Qbar l) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hp : ∀ (T : Finset (Emb l w)) (c : Emb l w → ℤ), ∏ j ∈ T, (q : Qbar l) ^ c j = (q : Qbar l) ^ ∑ j ∈ T, c j` using `fun T c => T.cons_induction (by simp) fun j T hj ih => by rw [Finset.prod_cons, Finset.sum_cons, ih, zpow_add₀ hq0]`.
+
+Establish `key : ∀ j, ((ψ j (Subgroup.inclusion (Weil_le_Dec h) (ineIncl h (σ ^ U.index))) : (Qbar l)ˣ) : Qbar l) = (q : Qbar l) ^ ∑ τ, -wt j τ` using `fun j => by`. Establish `h3` using `(hph j).2 a ha (σ ^ U.index)`. Rewrite `h3` using `[show ph j (σ ^ U.index) = 1 from Subgroup.mem_iInf.1 hmem j, finprod_eq_prod_of_fintype, e, mul_one]`. Rewrite using `[h3, ← hp]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Simplify using `[q]`. Use `⟨Subgroup.inclusion (Weil_le_Dec h) (ineIncl h (σ ^ U.index)), fun i j hij => ?_⟩` and prove the remaining obligations. Establish `h4 : (q : Qbar l) ^ ∑ τ, -wt i τ = (q : Qbar l) ^ ∑ τ, -wt j τ`. Rewrite using `[← key, ← key]`. Conclude with `congrArg Units.val hij`.
+
+Establish `h5 : (q : ℚ) ^ ∑ τ, -wt i τ = (q : ℚ) ^ ∑ τ, -wt j τ`. Apply `Rat.cast_injective (α := Qbar l)` to reduce the goal to its premises. Simplify using `using h4`. Establish `h6` using `zpow_right_injective₀ (a := (q : ℚ)) (by positivity) (by exact_mod_cast hq.ne') h5`. Establish `hs : StrictAnti fun j => ∑ τ, -wt j τ` using `fun i j hij => Finset.sum_lt_sum_of_nonempty Finset.univ_nonempty fun τ _ => neg_lt_neg (hm τ hij)`.
+
+Conclude with `hs.injective h6`.
+-/
 private theorem main (H : GlobalTheory.Published.GlobalArtinReciprocity) {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {w : Plc F} {A : ValuationSubring Ω} (h : IsPlaceOver A w)
     {a : Weil h →* (w.adicCompletion F)ˣ} (hw : ((l : ℕ) : 𝓞 F) ∈ w.asIdeal) (ha : IsLocalArtin h a) {n : ℕ}
@@ -106,6 +143,9 @@ private theorem main (H : GlobalTheory.Published.GlobalArtinReciprocity) {F Ω :
     Finset.sum_lt_sum_of_nonempty Finset.univ_nonempty fun τ _ => neg_lt_neg (hm τ hij)
   exact hs.injective h6
 
+/- English proof (translation)
+Introduce `H l _ L Ω _ _ _ _ _ _ s n h v ψ hI hψ`. Take `⟨a, ha⟩` from `UpperTheory.V.Loc.localArtinReciprocity H (s.hw v)`. Establish `h1` using `(s.hA v.1 ((l : ℕ) : 𝓞 (W.Lp L))).2 v.2`. Conclude with `main H.aut.art (s.hw v) ((s.hw v.1 _).1 (by simpa using h1)) ha (h v) (hI v) ψ hψ`.
+-/
 theorem UpperTheory.V.Th.Nm.regArith :
     GlobalTheory.Mem.LiteralAutomorphy.LitN → ∀ {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) {n : ℕ} (h : s.Wt n) (v : Vl l L) (ψ : Fin n → Dec (F := L) (s.A v) →* (Qbar l)ˣ), h.Incr → (∀ j, IsLocAlg (s.hw v) (ψ j) (h v j)) → ∃ g, Function.Injective fun i => ψ i g := by
   intro H l _ L Ω _ _ _ _ _ _ s n h v ψ hI hψ

@@ -18,10 +18,24 @@ namespace GlobalTheory.NormCover
 
 open GlobalTheory.BplusDescent
 
+/- English proof (translation)
+The claim follows from `((genericPoint_spec X).mem_open_set_iff U.isOpen).2 (by simpa using hU)`.
+-/
 theorem genericPoint_mem {X : Scheme.{0}} [IsIntegral X] {U : X.Opens} (hU : (U : Set X).Nonempty) :
     genericPoint X ∈ U :=
   ((genericPoint_spec X).mem_open_set_iff U.isOpen).2 (by simpa using hU)
 
+/- English proof (translation)
+Use `⟨fun U hU => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hne : (U : Set X).Nonempty`. Establish `hη` using `genericPoint_mem hne haveI : Nonempty U := hne.to_subtype`. Use `letI : Algebra Γ(X, U) Γ((fieldPt ψ).normalization, (fieldPt ψ).fromNormalization ⁻¹ᵁ U) := ((fieldPt ψ).fromNormalization.app U).hom.toAlgebra`. Use `letI : Algebra Γ((fieldPt ψ).normalization, (fieldPt ψ).fromNormalization ⁻¹ᵁ U) L := (normFun ψ hη).hom.toAlgebra`.
+
+Use `letI : Algebra Γ(X, U) L := (X.presheaf.germ U _ hη ≫ ψ).hom.toAlgebra`. Use `letI : Algebra X.functionField L := ψ.hom.toAlgebra`. Use `haveI : IsScalarTower Γ(X, U) Γ((fieldPt ψ).normalization, (fieldPt ψ).fromNormalization ⁻¹ᵁ U) L := .of_algebraMap_eq' (congrArg CommRingCat.Hom.hom (app_normFun ψ hη)).symm`. Use `haveI := functionField_isFractionRing_of_isAffineOpen X U hU`. Use `haveI : IsScalarTower Γ(X, U) X.functionField L := .of_algebraMap_eq' rfl`.
+
+Use `haveI : IsNoetherianRing Γ(X, U) := IsLocallyNoetherian.component_noetherian ⟨U, hU⟩`. Use `haveI : FiniteDimensional X.functionField L := hψ`. Use `haveI : CharZero X.functionField := ψ.hom.charZero`. Use `haveI : IsIntegralClosure Γ((fieldPt ψ).normalization, (fieldPt ψ).fromNormalization ⁻¹ᵁ U) Γ(X, U) L := ⟨(normFun_spec ψ hη hU).1, fun {x} => ((normFun_spec ψ hη hU).2 x).symm⟩`. Conclude with `IsIntegralClosure.finite Γ(X, U) X.functionField L _`.
+
+Use `haveI : Subsingleton Γ((fieldPt ψ).normalization, (fieldPt ψ).fromNormalization ⁻¹ᵁ U) := by`. Use `subsingleton_of_forall_eq 0 fun s => ?_` and prove the remaining obligations. Rewrite using `[← basicOpen_eq_bot_iff]`. Conclude with `eq_bot_iff.2 fun z hz => (hne ⟨_, ((fieldPt ψ).normalization.basicOpen_le s hz :)⟩).elim`. Use `letI := ((fieldPt ψ).fromNormalization.app U).hom.toAlgebra`.
+
+Express the relevant statement in the definitionally equal form `Module.Finite _ _`. Use `infer_instance`.
+-/
 theorem isFinite_fromNormalization_fieldPt {X : Scheme.{0}} [IsIntegral X] [GlobalTheory.IsNormalScheme X]
     [IsLocallyNoetherian X] {L : Type} [Field L] [CharZero L]
     (ψ : X.presheaf.stalk (genericPoint X) ⟶ .of L) (hψ : ψ.hom.Finite) :
@@ -60,6 +74,45 @@ namespace GlobalTheory.NormCover
 
 open GlobalTheory.BplusDescent
 
+/- English proof (translation)
+Introduce `k Ω _ _ _ _ _ M Ω' _ _ _ _ _ hN`. Use `haveI : GlobalTheory.IsNormalScheme M.Z := GlobalTheory.IsNormalScheme.of_pred hN`. Use `haveI := M.lft`. Use `haveI := M.sep`. Use `haveI := M.qc`.
+
+Use `haveI : IsLocallyNoetherian M.Z := LocallyOfFiniteType.isLocallyNoetherian M.s`. Use `haveI : CharZero Ω' := charZero_of_injective_algebraMap (algebraMap Ω Ω').injective`. Set `ρ : M.Z.presheaf.stalk (genericPoint M.Z) ⟶ .of Ω` to `M.Z.presheaf.stalkSpecializes (M.pt_specializes (IsLocalRing.closedPoint Ω) (genericPoint M.Z)) ≫ Scheme.stalkClosedPointTo M.pt`. Establish `hρ : fieldPt ρ = M.pt`. Simplify using `only [fieldPt, ρ, Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk,`.
+
+Use the proof step `]`. Conclude with `Scheme.Spec_stalkClosedPointTo_fromSpecStalk M.pt`. Set `ψ : M.Z.presheaf.stalk (genericPoint M.Z) ⟶ .of Ω'` to `ρ ≫ CommRingCat.ofHom (algebraMap Ω Ω')`. Establish `hψ : fieldPt ψ = spMap (algebraMap Ω Ω') ≫ M.pt`. Rewrite using `[← hρ]`.
+
+Simplify using `only [fieldPt, ψ, Spec.map_comp, Category.assoc]`. Establish `hρs : Function.Surjective ρ.hom`. Introduce `x`. Take `⟨U, f, hU, rfl⟩` from `M.onto x`. Establish `hη` using `genericPoint_mem hU`.
+
+Use `⟨M.Z.presheaf.germ U _ hη f, ?_⟩` and prove the remaining obligations. Establish `key : ∀ (g : Sp Ω ⟶ M.Z) (_ : fieldPt ρ = g) (e : ⊤ ≤ g ⁻¹ᵁ U), g.appLE U ⊤ e ≫ (Scheme.ΓSpecIso (.of Ω)).hom = M.Z.presheaf.germ U _ hη ≫ ρ`. Introduce and unpack `_ rfl e`. Conclude with `fieldPt_appLE ρ hη`. Establish `e` using `M.top_le_preimage_pt hU`.
+
+Rewrite using `[valF, dif_pos e]`. Conclude with `(congrArg (fun g => g.hom f) (key M.pt hρ e)).symm`. Establish `hψfin : ψ.hom.Finite` using `RingHom.Finite.comp (RingHom.finite_algebraMap.2 inferInstance) (RingHom.Finite.of_surjective ρ.hom hρs)`. Use `haveI hfin : IsFinite (fieldPt ψ).fromNormalization := isFinite_fromNormalization_fieldPt ψ hψfin`. Establish `hgen : Set.range (fieldPt ψ).toNormalization = {genericPoint (fieldPt ψ).normalization}`.
+
+Establish `hc : ∀ w : Sp Ω', w = IsLocalRing.closedPoint Ω'` using `fun w => Subsingleton.elim (α := PrimeSpectrum Ω') _ _`. Establish `hr : Set.range (fieldPt ψ).toNormalization = {(fieldPt ψ).toNormalization (IsLocalRing.closedPoint Ω')}`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩`.
+
+Rewrite using `[hc w]`. Both sides reduce to the same expression. Introduce and unpack `rfl`. Conclude with `⟨_, rfl⟩`. Establish `hd : closure (Set.range (fieldPt ψ).toNormalization) = Set.univ` using `(fieldPt ψ).toNormalization.denseRange.closure_range`.
+
+Rewrite `hd`, the goal using `[hr]`. Establish `hg : IsGenericPoint ((fieldPt ψ).toNormalization (IsLocalRing.closedPoint Ω')) ⊤` using `hd`. Rewrite using `[hg.eq (genericPoint_spec (fieldPt ψ).normalization)]`. Establish `hpts : (fieldPt ψ).toNormalization ≫ (fieldPt ψ).fromNormalization ≫ M.s = spMap (algebraMap k Ω')`. Rewrite using `[← Category.assoc, Scheme.Hom.toNormalization_fromNormalization, hψ, Category.assoc, M.pt_s, spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← IsScalarTower.algebraMap_eq]`.
+
+Establish `honto : ∀ x : Ω', ∃ (U : (fieldPt ψ).normalization.Opens) (f : Γ((fieldPt ψ).normalization, U)), (U : Set (fieldPt ψ).normalization).Nonempty ∧ valF (fieldPt ψ).toNormalization U f = x`. Introduce `x`. Take `⟨U, hU, hηU, -⟩` from `exists_isAffineOpen_mem_and_subset (x := genericPoint M.Z) (U := ⊤) trivial`. Use `haveI : Nonempty U := ⟨⟨_, hηU⟩⟩`. Use `letI : Algebra Γ(M.Z, U) Ω' := (M.Z.presheaf.germ U _ hηU ≫ ψ).hom.toAlgebra`.
+
+Use `letI : Algebra M.Z.functionField Ω' := ψ.hom.toAlgebra`. Use `haveI := functionField_isFractionRing_of_isAffineOpen M.Z U hU`. Use `haveI : IsScalarTower Γ(M.Z, U) M.Z.functionField Ω' := .of_algebraMap_eq' rfl`. Use `haveI : FiniteDimensional M.Z.functionField Ω' := hψfin`. Take `⟨⟨a, ha⟩, hax⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization (nonZeroDivisors Γ(M.Z, U)) x (Algebra.IsIntegral.isIntegral (R := M.Z.functionField) x)`.
+
+Establish `ha0 : a ≠ 0` using `nonZeroDivisors.ne_zero ha`. Establish `hηV : genericPoint M.Z ∈ M.Z.basicOpen a`. Use `genericPoint_mem ?_` and prove the remaining obligations. Rewrite using `[Set.nonempty_iff_ne_empty]`. Conclude with `fun h => ha0 ((basicOpen_eq_bot_iff a).1 (SetLike.coe_injective h))`.
+
+Establish `hV : IsAffineOpen (M.Z.basicOpen a)` using `hU.basicOpen a`. Set `r` to `M.Z.presheaf.map (homOfLE (M.Z.basicOpen_le a)).op`. Use `letI : Algebra Γ(M.Z, U) Γ(M.Z, M.Z.basicOpen a) := r.hom.toAlgebra`. Use `letI : Algebra Γ(M.Z, M.Z.basicOpen a) Ω' := (M.Z.presheaf.germ _ _ hηV ≫ ψ).hom.toAlgebra`. Use `haveI : IsScalarTower Γ(M.Z, U) Γ(M.Z, M.Z.basicOpen a) Ω' := .of_algebraMap_eq' (by`.
+
+Establish `e : r ≫ M.Z.presheaf.germ _ _ hηV = M.Z.presheaf.germ U _ hηU` using `TopCat.Presheaf.germ_res _ _ _ _`. Express the relevant statement in the definitionally equal form `(M.Z.presheaf.germ U _ hηU ≫ ψ).hom = (r ≫ M.Z.presheaf.germ _ _ hηV ≫ ψ).hom`. Simplify using `only [← e, Category.assoc])`. Establish `hunit : IsUnit (r.hom a)` using `M.Z.toRingedSpace.isUnit_res_basicOpen a`. Establish `hxV : IsIntegral Γ(M.Z, M.Z.basicOpen a) x`.
+
+Establish `h1 : IsIntegral Γ(M.Z, M.Z.basicOpen a) (algebraMap Γ(M.Z, U) Ω' a * x)`. Use `hax.tower_top (A := Γ(M.Z, M.Z.basicOpen a))` as an intermediate fact. Rewrite `this` using `[Submonoid.smul_def, Algebra.smul_def]`. Then use the resulting hypothesis. Establish `h2 : x = algebraMap Γ(M.Z, M.Z.basicOpen a) Ω' (↑hunit.unit⁻¹ : Γ(M.Z, M.Z.basicOpen a)) * (algebraMap Γ(M.Z, U) Ω' a * x)`. Rewrite using `[IsScalarTower.algebraMap_apply Γ(M.Z, U) Γ(M.Z, M.Z.basicOpen a) Ω' a, ← _root_.mul_assoc, ← map_mul]`.
+
+Establish `: (↑hunit.unit⁻¹ : Γ(M.Z, M.Z.basicOpen a)) * algebraMap Γ(M.Z, U) Γ(M.Z, M.Z.basicOpen a) a = 1` using `hunit.val_inv_mul`. Rewrite using `[this, map_one, _root_.one_mul]`. Rewrite using `[h2]`. Conclude with `isIntegral_algebraMap.mul h1`. Take `⟨c, hc⟩` from `((normFun_spec ψ hηV hV).2 x).2 hxV`.
+
+Establish `hW : ⊤ ≤ (fieldPt ψ).toNormalization ⁻¹ᵁ ((fieldPt ψ).fromNormalization ⁻¹ᵁ M.Z.basicOpen a)`. Introduce `w _`. Use `show (fieldPt ψ).fromNormalization ((fieldPt ψ).toNormalization w) ∈ M.Z.basicOpen a`. Rewrite using `[← Scheme.Hom.comp_apply, Scheme.Hom.toNormalization_fromNormalization, fieldPt_apply]`. Conclude with `hηV`.
+
+Use `⟨(fieldPt ψ).fromNormalization ⁻¹ᵁ M.Z.basicOpen a, c, ⟨_, hW (x := IsLocalRing.closedPoint Ω') trivial⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[valF, dif_pos hW]`. Conclude with `hc`. Set `M' : RatModel k Ω'` to `{ Z := (fieldPt ψ).normalization s := (fieldPt ψ).fromNormalization ≫ M.s sep := inferInstance lft := inferInstance qc := inferInstance pt := (fieldPt ψ).toNormalization pt_s := hpts gen := hgen onto := honto }`. Use `⟨M', (fieldPt ψ).fromNormalization, (GlobalTheory.IsNormalScheme.normalization_of_isIntegral (fieldPt ψ)).pred _, hfin, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(Scheme.Hom.toNormalization_fromNormalization (fieldPt ψ)).trans hψ`.
+-/
 theorem exists_normalization_model : ∀ (k Ω : Type) [CommRing k] [IsNoetherianRing k] [Field Ω] [CharZero Ω] [Algebra k Ω]
     (M : RatModel k Ω) (Ω' : Type) [Field Ω'] [Algebra Ω Ω'] [Algebra k Ω'] [IsScalarTower k Ω Ω']
     [FiniteDimensional Ω Ω'], Geo.Tor.IsNormalScheme M.Z → ∃ (M' : RatModel k Ω') (π : M'.Z ⟶ M.Z),

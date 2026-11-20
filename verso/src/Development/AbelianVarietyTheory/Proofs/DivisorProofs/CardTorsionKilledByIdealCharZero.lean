@@ -18,6 +18,9 @@ section Alg
 variable (F : Type) [Field F] [NumberField F] (M : Type) [AddCommGroup M] [Module (𝓞 F) M] (h : ℕ)
 
 omit [NumberField F] in
+/- English proof (translation)
+Rewrite `hm`, the goal using `[Submodule.mem_torsionBySet_iff]`. Introduce `r`. Rewrite using `[smul_smul]`. Conclude with `hm ⟨(r : 𝓞 F) * b, Ideal.mul_mem_mul r.2 hb⟩`.
+-/
 theorem smul_mem_torsion_left {x y : Ideal (𝓞 F)} {b : 𝓞 F} (hb : b ∈ y) {m : M}
     (hm : m ∈ Submodule.torsionBySet (𝓞 F) M ((x * y : Ideal (𝓞 F)) : Set (𝓞 F))) :
     b • m ∈ Submodule.torsionBySet (𝓞 F) M (x : Set (𝓞 F)) := by
@@ -27,6 +30,9 @@ theorem smul_mem_torsion_left {x y : Ideal (𝓞 F)} {b : 𝓞 F} (hb : b ∈ y)
   exact hm ⟨(r : 𝓞 F) * b, Ideal.mul_mem_mul r.2 hb⟩
 
 omit [NumberField F] in
+/- English proof (translation)
+The claim follows from `Submodule.torsionBySet_le_torsionBySet_of_subset (Ideal.mul_le_inf.trans inf_le_left) hm`.
+-/
 theorem mem_torsion_mul {x y : Ideal (𝓞 F)} {m : M}
     (hm : m ∈ Submodule.torsionBySet (𝓞 F) M (x : Set (𝓞 F))) :
     m ∈ Submodule.torsionBySet (𝓞 F) M ((x * y : Ideal (𝓞 F)) : Set (𝓞 F)) :=
@@ -56,6 +62,23 @@ def torsionMulEquiv {x y : Ideal (𝓞 F)} {a b : 𝓞 F} (ha : a ∈ x) (hb : b
 
 variable {F M h}
 
+/- English proof (translation)
+Establish `hw0nz : P ∈ nonZeroDivisors (Ideal (𝓞 F))` using `mem_nonZeroDivisors_of_ne_zero hne`. Use `set H := orderOf (ClassGroup.mk0 ⟨P, hw0nz⟩) with hH`. Establish `hH0 : 0 < H` using `orderOf_pos _`. Establish `hpowz : P ^ H ∈ nonZeroDivisors (Ideal (𝓞 F))` using `mem_nonZeroDivisors_of_ne_zero (pow_ne_zero _ hne)`. Establish `hprin : Submodule.IsPrincipal (P ^ H)`.
+
+Rewrite using `[← ClassGroup.mk0_eq_one_iff hpowz]`. Establish `: (⟨P ^ H, hpowz⟩ : nonZeroDivisors (Ideal (𝓞 F))) = ⟨P, hw0nz⟩ ^ H` using `rfl`. Rewrite using `[this, map_pow, hH, pow_orderOf_eq_one]`. Take `⟨c, hcgen⟩` from `hprin.principal`. Establish `hspan : P ^ H = Ideal.span {c}` using `hcgen`.
+
+Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Rewrite `hspan` using `[Ideal.span_singleton_eq_bot.mpr rfl]`. Conclude with `pow_ne_zero _ hne hspan`. Establish `hnorm : (Algebra.norm ℤ c).natAbs = Nat.card (𝓞 F ⧸ P) ^ H`.
+
+Rewrite using `[← Ideal.absNorm_span_singleton, ← hspan, map_pow, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `hTH : Nat.card (Submodule.torsionBySet (𝓞 F) M ((P ^ H : Ideal (𝓞 F)) : Set (𝓞 F))) = Nat.card (𝓞 F ⧸ P) ^ (H * h)`. Rewrite using `[hspan, Submodule.torsionBySet_span_singleton_eq, pow_mul, ← hnorm, helt c hc0]`. Establish `hq : 1 < Nat.card (𝓞 F ⧸ P)`. Establish `hfin : Finite (𝓞 F ⧸ P)`.
+
+Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `hne`. Use `letI := Ideal.Quotient.field P`. Conclude with `Finite.one_lt_card`.
+
+Establish `hTHfin : Finite (Submodule.torsionBySet (𝓞 F) M ((P ^ H : Ideal (𝓞 F)) : Set (𝓞 F)))`. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[hTH]`. Conclude with `pow_ne_zero _ (by omega)`. Establish `hsub : Submodule.torsionBySet (𝓞 F) M (P : Set (𝓞 F)) ≤ Submodule.torsionBySet (𝓞 F) M ((P ^ H : Ideal (𝓞 F)) : Set (𝓞 F))` using `Submodule.torsionBySet_le_torsionBySet_of_subset (Ideal.pow_le_self hH0.ne')`.
+
+Establish `hT1fin : Finite (Submodule.torsionBySet (𝓞 F) M (P : Set (𝓞 F)))` using `Finite.of_injective _ (Submodule.inclusion_injective hsub)`. Use `letI := Ideal.Quotient.field P`. Use `haveI : Module.Finite (𝓞 F ⧸ P) (Submodule.torsionBySet (𝓞 F) M (P : Set (𝓞 F))) := Module.Finite.of_finite`. Use `set h' := Module.finrank (𝓞 F ⧸ P) (Submodule.torsionBySet (𝓞 F) M (P : Set (𝓞 F))) with hh'`. Establish `hT1 : Nat.card (Submodule.torsionBySet (𝓞 F) M (P : Set (𝓞 F))) = Nat.card (𝓞 F ⧸ P) ^ h'` using `Module.natCard_eq_pow_finrank`.
+
+Establish `hall` using `GlobalTheory.torsion_pow_card F M P h' hmax hne hdiv hT1 H`. Rewrite `hall` using `[hTH]`. Establish `he : H * h = H * h'` using `Nat.pow_right_injective hq hall`. Establish `he' : h' = h` using `(Nat.eq_of_mul_eq_mul_left hH0 he).symm`. Rewrite using `[hT1, he']`.
+-/
 theorem card_torsion_maximal (hdiv : ∀ c : 𝓞 F, c ≠ 0 → Function.Surjective (fun g : M => c • g))
     (helt : ∀ c : 𝓞 F, c ≠ 0 → Nat.card (Submodule.torsionBy (𝓞 F) M c) = (Algebra.norm ℤ c).natAbs ^ h)
     (P : Ideal (𝓞 F)) (hmax : P.IsMaximal) (hne : P ≠ ⊥) :
@@ -107,6 +130,19 @@ theorem card_torsion_maximal (hdiv : ∀ c : 𝓞 F, c ≠ 0 → Function.Surjec
   have he' : h' = h := (Nat.eq_of_mul_eq_mul_left hH0 he).symm
   rw [hT1, he']
 
+/- English proof (translation)
+Use `UniqueFactorizationMonoid.induction_on_coprime (P := fun I : Ideal (𝓞 F) => I ≠ ⊥ → Nat.card (Submodule.torsionBySet (𝓞 F) M (I : Set (𝓞 F))) = Ideal.absNorm I ^ h) I ?_ ?_ ?_ ?_ hI` and prove the remaining obligations. Introduce `h0`. Conclude with `absurd rfl h0`. Introduce `u hu _`. Rewrite `hu` using `[Ideal.isUnit_iff]`.
+
+Substitute `hu` using the available equality. Establish `hbot : Submodule.torsionBySet (𝓞 F) M ((⊤ : Ideal (𝓞 F)) : Set (𝓞 F)) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `m hm`. Use `(Submodule.mem_torsionBySet_iff _ _).1 hm ⟨1, Submodule.mem_top⟩` as an intermediate fact.
+
+Rewrite using `[Submodule.mem_bot]`. Simplify using `using this`. Rewrite using `[hbot, Ideal.absNorm_top, one_pow]`. Simplify using the standard rewrite rules. Introduce `P i hp _`.
+
+Establish `hpI : P.IsPrime` using `Ideal.isPrime_of_prime hp`. Establish `hne : P ≠ ⊥` using `hp.ne_zero`. Establish `hmax : P.IsMaximal` using `hpI.isMaximal hne`. Rewrite using `[GlobalTheory.torsion_pow_card F M P h hmax hne hdiv (card_torsion_maximal hdiv helt P hmax hne) i, map_pow, Ideal.absNorm_apply P, Submodule.cardQuot_apply, ← pow_mul, mul_comm]`. Introduce `x y hrel hx hy hxy`.
+
+Establish `hx0 : x ≠ ⊥` using `fun h0 => hxy (by rw [h0, Submodule.bot_mul])`. Establish `hy0 : y ≠ ⊥` using `fun h0 => hxy (by rw [h0, Submodule.mul_bot])`. Establish `hsup : x ⊔ y = ⊤`. Establish `hu` using `hrel (Ideal.dvd_iff_le.2 le_sup_left) (Ideal.dvd_iff_le.2 le_sup_right)`. Conclude with `Ideal.isUnit_iff.1 hu`.
+
+Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 (hsup ▸ Submodule.mem_top (x := (1 : 𝓞 F)))`. Rewrite using `[Nat.card_congr (torsionMulEquiv F M ha hb hab), Nat.card_prod, hx hx0, hy hy0, map_mul, mul_pow]`.
+-/
 theorem card_torsion_ideal (hdiv : ∀ c : 𝓞 F, c ≠ 0 → Function.Surjective (fun g : M => c • g))
     (helt : ∀ c : 𝓞 F, c ≠ 0 → Nat.card (Submodule.torsionBy (𝓞 F) M c) = (Algebra.norm ℤ c).natAbs ^ h)
     (I : Ideal (𝓞 F)) (hI : I ≠ ⊥) :
@@ -155,6 +191,13 @@ open GlobalTheory.TanPtMod
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ} {S : Scheme.{0}}
   {s : S ⟶ Sp R}
 
+/- English proof (translation)
+Set `L : 𝓞 D.F →+* Module.End k (Tan x o.A)` to `(actEnd o.act).comp (algebraMap (𝓞 D.F) D.O)`. Establish `hL : ∀ c (u : Tan x o.A), (L c u).hom = u.hom ≫ o.act.act (algebraMap (𝓞 D.F) D.O c)` using `fun _ _ => rfl`. Establish `hmv : v ∈ tanSub x o.A` using `(mem_tanSub_iff x o.A _).mpr hv0`. Establish `hLu : L c (Tan.mk v hmv) = 0` using `Tan.ext (by rw [hL]; exact hv)`. Use `set n := Ideal.absNorm (Ideal.span {c}) with hn`.
+
+Take `⟨d, hd⟩` from `Ideal.mem_span_singleton'.mp (Ideal.absNorm_mem (Ideal.span {c}))`. Establish `hn0 : n ≠ 0`. Rewrite using `[hn, Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hc0`. Establish `h1 : L ((n : ℕ) : 𝓞 D.F) (Tan.mk v hmv) = 0`.
+
+Rewrite using `[← hd, map_mul, Module.End.mul_apply, hLu, map_zero]`. Rewrite `h1` using `[map_natCast, Module.End.natCast_apply, ← Nat.cast_smul_eq_nsmul k]`. Establish `hu : Tan.mk v hmv = 0` using `(smul_eq_zero.mp h1).resolve_left (Nat.cast_ne_zero.mpr hn0)`. Conclude with `congrArg Tan.hom hu`.
+-/
 theorem tan_eq_one_charZero (o : Obj b N s) (k : Type) [Field k] [CharZero k] (x : Sp k ⟶ S) (c : 𝓞 D.F)
     (hc0 : c ≠ 0) (v : epsPtR x ⟶ o.A)
     (hv0 : spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ v.left = (1 : Over.mk x ⟶ o.A).left)
@@ -174,6 +217,9 @@ theorem tan_eq_one_charZero (o : Obj b N s) (k : Type) [Field k] [CharZero k] (x
   have hu : Tan.mk v hmv = 0 := (smul_eq_zero.mp h1).resolve_left (Nat.cast_ne_zero.mpr hn0)
   exact congrArg Tan.hom hu
 
+/- English proof (translation)
+Take `⟨ℓ, hℓ1, hℓ⟩` from `Nat.exists_infinite_primes (p + 1)`. Establish `hℓp : ℓ ≠ p` using `by omega`. Establish `hℓk : (ℓ : k) ≠ 0` using `Nat.cast_ne_zero.mpr hℓ.ne_zero`. Conclude with `GlobalTheory.T.abelianScheme_card_kernel_eq_norm_pow S o.A o.ab D.F (o.act.toF D) k x (D.m * D.n) ℓ hℓ hℓk (GlobalTheory.QuotientCardinalityFinrank.torsion_points_free p D R b N S s o k x ℓ hℓ hℓp) c hc (fun v hv0 hv => tan_eq_one_charZero o k x c hc v hv0 hv)`.
+-/
 theorem card_ker_elt_charZero (o : Obj b N s) (k : Type) [Field k] [IsAlgClosed k] [CharZero k] (x : Sp k ⟶ S)
     (c : 𝓞 D.F) (hc : c ≠ 0) :
     Nat.card {g : Over.mk x ⟶ o.A // g ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1} =
@@ -189,6 +235,27 @@ end GlobalTheory.UPel.HT.ES.CharZeroCount
 
 namespace GlobalTheory.UPel.HT.ES.CharZeroCount
 
+/- English proof (translation)
+Introduce `p _ D R _ b N S s o w hw k _ _ _ x`. Use `letI : CommGroup (Over.mk x ⟶ o.A) := Hom.commGroup`. Establish `act0 : o.act.act 0 = 1`. Establish `h` using `o.act.add 0 0`. Rewrite `h` using `[add_zero]`.
+
+Conclude with `mul_eq_left.mp h.symm`. Use `letI : Module (𝓞 D.F) (Additive (Over.mk x ⟶ o.A)) := { smul := fun c g => Additive.ofMul (g.toMul ≫ o.act.act (algebraMap (𝓞 D.F) D.O c)) one_smul := fun g => by show Additive.ofMul (g.toMul ≫ o.act.act (algebraMap (𝓞 D.F) D.O 1)) = g`. Rewrite using `[map_one, o.act.one, Category.comp_id]`. Both sides reduce to the same expression. Use `mul_smul := fun a b g => by show Additive.ofMul (g.toMul ≫ o.act.act (algebraMap (𝓞 D.F) D.O (a * b))) = Additive.ofMul ((g.toMul ≫ o.act.act (algebraMap (𝓞 D.F) D.O b)) ≫ o.act.act (algebraMap (𝓞 D.F) D.O a))`.
+
+Rewrite using `[map_mul, o.act.mul, Category.assoc]`. Use `smul_zero := fun c => by haveI := o.act.hom (algebraMap (𝓞 D.F) D.O c) show Additive.ofMul ((1 : Over.mk x ⟶ o.A) ≫ o.act.act (algebraMap (𝓞 D.F) D.O c)) = Additive.ofMul 1`. Rewrite using `[MonObj.one_comp]`. Use `smul_add := fun c g g' => by haveI := o.act.hom (algebraMap (𝓞 D.F) D.O c) show Additive.ofMul ((g.toMul * g'.toMul) ≫ o.act.act (algebraMap (𝓞 D.F) D.O c)) = Additive.ofMul ((g.toMul ≫ o.act.act (algebraMap (𝓞 D.F) D.O c)) * (g'.toMul ≫ o.act.act (algebraMap (𝓞 D.F) D.O c)))`. Rewrite using `[MonObj.mul_comp]`.
+
+Use `add_smul := fun a b g => by show Additive.ofMul (g.toMul ≫ o.act.act (algebraMap (𝓞 D.F) D.O (a + b))) = Additive.ofMul ((g.toMul ≫ o.act.act (algebraMap (𝓞 D.F) D.O a)) * (g.toMul ≫ o.act.act (algebraMap (𝓞 D.F) D.O b)))`. Rewrite using `[map_add, o.act.add, MonObj.comp_mul]`. Use `zero_smul := fun g => by show Additive.ofMul (g.toMul ≫ o.act.act (algebraMap (𝓞 D.F) D.O 0)) = Additive.ofMul 1`. Rewrite using `[map_zero, act0, MonObj.comp_one] }`. Establish `hsm : ∀ (c : 𝓞 D.F) (g : Additive (Over.mk x ⟶ o.A)), c • g = Additive.ofMul (g.toMul ≫ o.act.act (algebraMap (𝓞 D.F) D.O c))` using `fun _ _ => rfl`.
+
+Establish `hdiv : ∀ c : 𝓞 D.F, c ≠ 0 → Function.Surjective (fun g : Additive (Over.mk x ⟶ o.A) => c • g)`. Introduce `c hc g`. Use `set n := Ideal.absNorm (Ideal.span {c}) with hn`. Establish `hn0 : 0 < n`. Rewrite using `[hn, Nat.pos_iff_ne_zero, Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`.
+
+Conclude with `hc`. Establish `hmem : ((n : ℕ) : 𝓞 D.F) ∈ Ideal.span {c}` using `Ideal.absNorm_mem _`. Take `⟨c', hc'⟩` from `Ideal.mem_span_singleton'.mp hmem`. Take `⟨g', hg'⟩` from `GlobalTheory.AbDivPt.exists_pow_eq_of_isAlgClosed S o.A o.ab k x n hn0 g.toMul`. Use `⟨c' • Additive.ofMul g', ?_⟩` and prove the remaining obligations.
+
+Use `show c • c' • Additive.ofMul g' = g`. Rewrite using `[smul_smul, mul_comm, hc', Nat.cast_smul_eq_nsmul, ← ofMul_pow, hg']`. Both sides reduce to the same expression. Establish `helt : ∀ c : 𝓞 D.F, c ≠ 0 → Nat.card (Submodule.torsionBy (𝓞 D.F) (Additive (Over.mk x ⟶ o.A)) c) = (Algebra.norm ℤ c).natAbs ^ (D.m * D.n)`. Introduce `c hc`.
+
+Rewrite using `[← card_ker_elt_charZero o k x c hc]`. Use `Nat.card_congr (Equiv.subtypeEquiv Additive.toMul (fun g => ?_))` and prove the remaining obligations. Rewrite using `[Submodule.mem_torsionBy_iff, hsm]`. Conclude with `⟨fun h => congrArg Additive.toMul h, fun h => congrArg Additive.ofMul h⟩`. Rewrite using `[← card_torsion_ideal hdiv helt w hw]`.
+
+Use `(Nat.card_congr (Equiv.subtypeEquiv Additive.ofMul (fun g => ?_)))` and prove the remaining obligations. Rewrite using `[Submodule.mem_torsionBySet_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h c`. Rewrite using `[hsm]`.
+
+Conclude with `congrArg Additive.ofMul (h c.1 c.2)`. Introduce `h c hc`. Use `h ⟨c, hc⟩` as an intermediate fact. Rewrite `this` using `[hsm]`. Conclude with `this`.
+-/
 theorem card_killedBy_charZero : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R)
     (N : ℕ) (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b N s) (w : Ideal (𝓞 D.F)), w ≠ ⊥ →
     ∀ (κ : Type) [Field κ] [IsAlgClosed κ] [CharZero κ] (x : Sp κ ⟶ S),

@@ -8,6 +8,11 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.Shares
 
+/- English proof (translation)
+Take `⟨b, hb, hsp, hli⟩` from `exists_linearIndependent ℂ (v '' S)`. Rewrite `hsp` using `[h]`. Set `bs : Module.Basis b ℂ (Fin δ → ℂ)` to `Module.Basis.mk hli (by rw [Subtype.range_coe, hsp])`. Set `e : Fin δ ≃ b` to `(Pi.basisFun ℂ (Fin δ)).indexEquiv bs`. Use `choose θ hθ hv using fun i : Fin δ => hb (e i).2`.
+
+Use `⟨θ, hθ, ?_⟩` and prove the remaining obligations. Establish `: (fun i => v (θ i)) = (Subtype.val : b → Fin δ → ℂ) ∘ e` using `funext hv`. Rewrite using `[this]`. Conclude with `hli.comp e e.injective`.
+-/
 theorem exists_indep_of_span_image {α : Type} {δ : ℕ} (S : Set α) (v : α → Fin δ → ℂ)
     (h : Submodule.span ℂ (v '' S) = ⊤) :
     ∃ θ : Fin δ → α, (∀ i, θ i ∈ S) ∧ LinearIndependent ℂ fun i => v (θ i) := by
@@ -21,6 +26,11 @@ theorem exists_indep_of_span_image {α : Type} {δ : ℕ} (S : Set α) (v : α �
   rw [this]
   exact hli.comp e e.injective
 
+/- English proof (translation)
+Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero => rw [map_zero, map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add]`.
+
+Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [map_smul, R.ev_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem ev_mem_sp_of_mem_span {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} {X : PJ D B P j} (R : Rdg X)
     (u : WeightFamilies.Wt D j) (s : Set (B.Cusp j u)) (F : B.Cusp j u) (hF : F ∈ Submodule.span B.KO s) :
     R.ev (X.inc u F) ∈ R.sp u s := by
@@ -30,6 +40,13 @@ theorem ev_mem_sp_of_mem_span {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIn
   | add x y _ _ hx hy => rw [map_add, map_add]; exact Submodule.add_mem _ hx hy
   | smul a x _ hx => rw [map_smul, R.ev_smul]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Use `exists_indep_of_span_image Sh (fun F q => R.ev (X.inc wF F) (xs q)) ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `v _`. Take `⟨f, hf, hv⟩` from `hA.interp v`. Establish `h1 : R.sp wF Set.univ ≤ R.sp wF Sh`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨F, -, rfl⟩`. Conclude with `ev_mem_sp_of_mem_span R wF Sh F (hS ▸ Submodule.mem_top)`. Establish `h2 : LinearMap.funLeft ℂ ℂ xs f ∈ (R.sp wF Sh).map (LinearMap.funLeft ℂ ℂ xs)` using `Submodule.mem_map_of_mem (h1 hf)`. Rewrite `h2` using `[Rdg.sp, Submodule.map_span, Set.image_image]`.
+
+Establish `h3 : v = LinearMap.funLeft ℂ ℂ xs f` using `funext fun q => (hv q).symm`. Rewrite using `[h3]`. Conclude with `h2`.
+-/
 theorem exists_valueBasis_in_spanning (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) (j : ℕ) (X : PJ D B P j)
     (ka wL wF : WeightFamilies.Wt D j) (N : ℕ) (w : Fin N → B.Cusp j wL) (R : Rdg X) (t : Idx D j N → ℂ) (T : ℕ)
     (Mg : Submodule B.KO (B.Cusp j ka)) (δ : ℕ) (xs : Fin δ → R.Y) (hA : AnFacts R w t ka wF T Mg xs)

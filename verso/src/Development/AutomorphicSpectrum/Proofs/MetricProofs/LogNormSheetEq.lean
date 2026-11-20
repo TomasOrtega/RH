@@ -13,6 +13,11 @@ open GlobalTheory GlobalTheory.Points GlobalTheory.ArInt GlobalTheory.Cartier Gl
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `k _ X _ p t τ B φ ψ h r hr σ y hy`. Establish `hy' : sheet t τ y ∈ offSupp t τ (divOfRatSec ψ.isLB hr)` using `mem_offSupp.2 (mem_offSupp.1 hy)`. Establish `hi'` using `mem_pick ψ.isLB (sheet t τ y)`. Use `set i := pick ψ.isLB (sheet t τ y)`. Establish `hi : y ∈ ptsIn p σ (B.U i)` using `mem_ptsIn.2 (mem_ptsIn.1 hi')`.
+
+Rewrite using `[logNorm_eq ψ hr hy' hi', logNorm_eq (φ σ) hr hy hi, h σ i y hi]`. Use `congr 3`.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.BaseZ.logNorm_sheet : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (t : X ⟶ Sp ℤ) (τ : ℤ →+* ℂ) (B : LB X) (φ : ∀ σ : k →+* ℂ, Weight p σ B) (ψ : Weight t τ B), WOver φ ψ → ∀ (r : B.ι → X.functionFieldˣ) (hr : IsRatSec B r) (σ : k →+* ℂ) (y : CxPts p σ), y ∈ offSupp p σ (divOfRatSec ψ.isLB hr) → logNorm ψ r (sheet t τ y) = logNorm (φ σ) r y := by
   intro k _ X _ p t τ B φ ψ h r hr σ y hy
   have hy' : sheet t τ y ∈ offSupp t τ (divOfRatSec ψ.isLB hr) := mem_offSupp.2 (mem_offSupp.1 hy)

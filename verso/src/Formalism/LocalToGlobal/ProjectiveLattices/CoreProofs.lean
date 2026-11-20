@@ -39,15 +39,28 @@ section Proofs
 
 variable {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Simplify using `[wchar, map_prod, map_pow, ht]`.
+-/
 theorem valV_wchar_eq_one {T : CDVR} (e : Ix Dw → ℕ) (t : Ix Dw → T.Frˣ)
     (ht : ∀ i, valV T.V ((t i : T.Frˣ) : T.Fr) = 1) : valV T.V (wchar e t) = 1 := by
   simp [wchar, map_prod, map_pow, ht]
 
+/- English proof (translation)
+Unfold `vV`. Rewrite using `[map_mul, hu, one_mul]`.
+-/
 private theorem vV_mul_lemma {T : CDVR} {w x : T.Fr} (hu : valV T.V w = 1) (hx : x ≠ 0) :
     vV T.V (w * x) = vV T.V x := by
   unfold vV
   rw [map_mul, hu, one_mul]
 
+/- English proof (translation)
+Introduce `a n f hf T io y y' t hb e`. Use `letI := io.toAlgebra`. Establish `hw` using `hW a n f hf T.Fr t y.1 y'.1 y.2.1 y'.2.1 hb`. Establish `hu` using `valV_wchar_eq_one (ex Dw a n) t (hU T io y y' t hb)`. Unfold `nval evI`.
+
+Rewrite using `[hw]`. Generalize the expression as in `evR Xo c f y.1 = x at *`. Establish `hne : wchar (ex Dw a n) t ≠ 0`. Introduce `h0`. Rewrite `hu` using `[h0, map_zero]`.
+
+Conclude with `zero_ne_one hu`. Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Rewrite using `[if_neg (mul_ne_zero hne hx), if_neg hx, vV_mul_lemma hu hx]`.
+-/
 theorem unitIndep_of (hW : WtField Xo c) (hU : IntDiagUnit Xo c) : UnitIndep Xo c := by
   intro a n f hf T io y y' t hb e
   letI := io.toAlgebra
@@ -64,6 +77,11 @@ theorem unitIndep_of (hW : WtField Xo c) (hU : IntDiagUnit Xo c) : UnitIndep Xo 
   · simp [hx]
   · rw [if_neg (mul_ne_zero hne hx), if_neg hx, vV_mul_lemma hu hx]
 
+/- English proof (translation)
+Introduce `la`. Take `⟨T, io, e, hO, hF, x, hx⟩` from `hA la`. Take `⟨T', i, r, hr, hv, hF', y, hy⟩` from `hE T io hF x hx`. Unfold `OverLa IntFr.IsAlg at *`. Use `⟨T', i.comp io, r * e, ⟨Nat.mul_pos hr hO.1, fun a => ?_⟩, y, hF'⟩` and prove the remaining obligations.
+
+Rewrite using `[RingHom.comp_apply, hv, hO.2 a]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem intFrNe_of (hA : AlgPtLa Xo c) (hE : IntFrExt Xo c) :
     IntFrNe Xo c (fun _ _ y => IntFr.IsAlg y) := by
   intro la

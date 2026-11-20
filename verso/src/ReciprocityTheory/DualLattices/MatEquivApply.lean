@@ -15,11 +15,17 @@ def matEquiv {d : ℕ} (P : Matrix (Fin d) (Fin d) R) (hP : IsUnit P.det) :
     (by rw [← Matrix.toLin'_mul, mul_nonsing_inv _ hP, Matrix.toLin'_one])
     (by rw [← Matrix.toLin'_mul, nonsing_inv_mul _ hP, Matrix.toLin'_one])
 
+/- English proof (translation)
+Use `show Matrix.toLin' P x = P *ᵥ x`. Rewrite using `[Matrix.toLin'_apply]`.
+-/
 lemma matEquiv_apply {d : ℕ} (P : Matrix (Fin d) (Fin d) R) (hP : IsUnit P.det) (x : Fin d → R) :
     matEquiv P hP x = P *ᵥ x := by
   show Matrix.toLin' P x = P *ᵥ x
   rw [Matrix.toLin'_apply]
 
+/- English proof (translation)
+Use `split_ifs with h`. Rewrite using `[Fintype.sum_eq_single ⟨j, h⟩ (fun k hk => if_neg fun h' => hk (Fin.ext h'))]`. Conclude with `if_pos rfl`. Conclude with `Finset.sum_eq_zero fun k _ => if_neg fun (h' : (k : ℕ) = j) => h (h' ▸ k.isLt)`.
+-/
 lemma sum_val_eq {n : ℕ} (j : ℕ) (f : Fin n → R) :
     ∑ k : Fin n, (if (k : ℕ) = j then f k else 0) = if h : j < n then f ⟨j, h⟩ else 0 := by
   split_ifs with h
@@ -27,17 +33,66 @@ lemma sum_val_eq {n : ℕ} (j : ℕ) (f : Fin n → R) :
     exact if_pos rfl
   · exact Finset.sum_eq_zero fun k _ => if_neg fun (h' : (k : ℕ) = j) => h (h' ▸ k.isLt)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨d, a, ⟨Submodule.quotientPi _⟩, rfl⟩`.
+-/
 lemma hasLen_pi {C : Type} [Field C] (v : Valuation C NNReal) [Algebra R C] {d : ℕ} (a : Fin d → R) :
     HasLen v R ((Fin d → R) ⧸ Submodule.pi Set.univ (fun j => (Ideal.span {a j} : Submodule R R)))
       (∏ j, v (algebraMap R C (a j))) :=
   ⟨d, a, ⟨Submodule.quotientPi _⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨m, c, ⟨e0⟩, hc⟩` from `h`. Conclude with `⟨m, c, ⟨e.symm.trans e0⟩, hc⟩`.
+-/
 private lemma hasLen_of_linearEquiv' {C : Type} [Field C] {v : Valuation C NNReal} [Algebra R C]
     {M M' : Type} [AddCommGroup M] [Module R M] [AddCommGroup M'] [Module R M'] {x : NNReal}
     (h : HasLen v R M x) (e : M ≃ₗ[R] M') : HasLen v R M' x := by
   obtain ⟨m, c, ⟨e0⟩, hc⟩ := h
   exact ⟨m, c, ⟨e.symm.trans e0⟩, hc⟩
 
+/- English proof (translation)
+Take `⟨P, Q, a, hP, hQ, hD⟩` from `Smith.smith_mat hv d n A`. Establish `hPQ : ∀ t : Fin n → R, (P * A * Q) *ᵥ (Q⁻¹ *ᵥ t) = P *ᵥ (A *ᵥ t)`. Introduce `t`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_assoc (P * A), Matrix.mul_nonsing_inv _ hQ, Matrix.mul_one, ← Matrix.mulVec_mulVec]`. Establish `hDv : ∀ (s : Fin n → R) (j : Fin d), ((P * A * Q) *ᵥ s) j = if h : (j : ℕ) < n then a j * s ⟨j, h⟩ else 0`.
+
+Introduce `s j`. Establish `h1` using `sum_val_eq (j : ℕ) (fun k => a j * s k)`. Rewrite using `[← h1]`. Simplify using `only [Matrix.mulVec, dotProduct, hD, ite_mul, zero_mul]`. Establish `hDt : ∀ (y : Fin d → R) (k : Fin n), ((P * A * Q)ᵀ *ᵥ y) k = if h : (k : ℕ) < d then a ⟨k, h⟩ * y ⟨k, h⟩ else 0`.
+
+Introduce `y k`. Establish `h1` using `sum_val_eq (k : ℕ) (fun j => a j * y j)`. Rewrite using `[← h1]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.transpose_apply, hD, ite_mul, zero_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h : (k : ℕ) = (j : ℕ)`. Rewrite using `[if_pos h, if_pos h.symm]`. Rewrite using `[if_neg h, if_neg (Ne.symm h)]`. Establish `hdiv : ∀ j : Fin d, (j : ℕ) < n ∧ ∃ b, a j * b = c`. Introduce `j`.
+
+Take `⟨t, ht⟩` from `hkill (P⁻¹ *ᵥ Pi.single j 1)`. Establish `h1 : (P * A * Q) *ᵥ (Q⁻¹ *ᵥ t) = c • Pi.single j 1`. Rewrite using `[hPQ, ht, Matrix.mulVec_smul, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hP, Matrix.one_mulVec]`. Establish `h2` using `congrFun h1 j`. Rewrite `h2` using `[hDv]`.
+
+Distinguish the cases in `h : (j : ℕ) < n`. Rewrite `h2` using `[dif_pos h]`. Conclude with `⟨h, (Q⁻¹ *ᵥ t) ⟨j, h⟩, by simpa using h2⟩`. Rewrite `h2` using `[dif_neg h]`. Establish `h3 : c = 0` using `by simpa using h2.symm`.
+
+Conclude with `absurd h3 hc`. Use `choose hlt b hb using hdiv`. Establish `ha0 : ∀ j, a j ≠ 0` using `fun j h => hc (by rw [← hb j, h, zero_mul])`. Establish `hcancel : ∀ j (x z : R), a j * x = a j * z → x = z`. Introduce `j x z h`.
+
+Apply `hv.hom_inj` to reduce the goal to its premises. Establish `h'` using `congrArg (algebraMap R C) h`. Rewrite `h'` using `[map_mul, map_mul]`. Establish `hne : algebraMap R C (a j) ≠ 0`. Introduce `h0`.
+
+Apply `ha0 j` to reduce the goal to its premises. Apply `hv.hom_inj` to reduce the goal to its premises. Rewrite using `[h0, map_zero]`. Conclude with `mul_left_cancel₀ hne h'`. Establish `e1 : ((Fin d → R) ⧸ LinearMap.range A.mulVecLin) ≃ₗ[R] ((Fin d → R) ⧸ Submodule.pi Set.univ (fun j => (Ideal.span {a j} : Submodule R R)))`.
+
+Use `Submodule.Quotient.equiv _ _ (matEquiv P hP) ?_` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[Submodule.mem_map, Submodule.mem_pi]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩ j -`.
+
+Take `⟨t, rfl⟩` from `LinearMap.mem_range.mp hy`. Rewrite using `[Ideal.mem_span_singleton']`. Use `⟨(Q⁻¹ *ᵥ t) ⟨j, hlt j⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearEquiv.coe_coe, matEquiv_apply, Matrix.mulVecLin_apply]`. Rewrite using `[← hPQ, hDv, dif_pos (hlt j), mul_comm]`.
+
+Introduce `hx`. Establish `hx' : ∀ j, ∃ s, s * a j = x j` using `fun j => Ideal.mem_span_singleton'.mp (hx j (Set.mem_univ _))`. Use `choose s hs using hx'`. Use `⟨A *ᵥ (Q *ᵥ fun k => if h : (k : ℕ) < d then s ⟨k, h⟩ else 0), LinearMap.mem_range.mpr ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearEquiv.coe_coe, matEquiv_apply]`.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hDv, dif_pos (hlt j)]`. Use `show a j * (if h : (j : ℕ) < d then s ⟨j, h⟩ else 0) = x j`. Rewrite using `[dif_pos j.isLt, mul_comm]`. Conclude with `hs j`.
+
+Establish `hT : ∀ x : Fin d → R, (P * A * Q)ᵀ *ᵥ x = Qᵀ *ᵥ (Aᵀ *ᵥ (Pᵀ *ᵥ x))`. Introduce `x`. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Establish `e2 : ((Fin d → R) ⧸ zSub A c) ≃ₗ[R] ((Fin d → R) ⧸ Submodule.pi Set.univ (fun j => (Ideal.span {b j} : Submodule R R)))`. Establish `hPt : IsUnit Pᵀ.det` using `by rwa [Matrix.det_transpose]`.
+
+Use `Submodule.Quotient.equiv _ _ (matEquiv Pᵀ hPt).symm ?_` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[Submodule.map_equiv_eq_comap_symm, LinearEquiv.symm_symm, Submodule.mem_comap, Submodule.mem_pi]`. Use `show (∃ z, Aᵀ *ᵥ ((matEquiv Pᵀ hPt) x) = c • z) ↔ _`. Rewrite using `[matEquiv_apply]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩ j -`. Establish `h1 : (P * A * Q)ᵀ *ᵥ x = c • (Qᵀ *ᵥ z)` using `by rw [hT, hz, Matrix.mulVec_smul]`. Establish `h2` using `congrFun h1 ⟨j, hlt j⟩`. Rewrite `h2` using `[hDt, dif_pos j.isLt, Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[Ideal.mem_span_singleton']`. Use `⟨(Qᵀ *ᵥ z) ⟨j, hlt j⟩, hcancel j _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm ((Qᵀ *ᵥ z) _) (b j), ← mul_assoc, hb j]`. Conclude with `h2.symm`. Introduce `hx`.
+
+Establish `hx' : ∀ j, ∃ s, s * b j = x j` using `fun j => Ideal.mem_span_singleton'.mp (hx j (Set.mem_univ _))`. Use `choose s hs using hx'`. Establish `h1 : (P * A * Q)ᵀ *ᵥ x = c • (fun k : Fin n => if h : (k : ℕ) < d then s ⟨k, h⟩ else 0)`. Use function extensionality and compare the values at `k`. Rewrite using `[hDt, Pi.smul_apply, smul_eq_mul]`.
+
+Distinguish the cases in `h : (k : ℕ) < d`. Rewrite using `[dif_pos h, dif_pos h, ← hs ⟨k, h⟩, ← hb ⟨k, h⟩]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[dif_neg h, dif_neg h, mul_zero]`. Use `⟨(Q⁻¹)ᵀ *ᵥ (fun k : Fin n => if h : (k : ℕ) < d then s ⟨k, h⟩ else 0), ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hT, Matrix.mulVec_mulVec (M := (Q⁻¹)ᵀ) (N := Qᵀ), ← Matrix.transpose_mul, Matrix.mul_nonsing_inv _ hQ, Matrix.transpose_one, Matrix.one_mulVec]`. Use `_ = _ := by rw [h1, Matrix.mulVec_smul]`. Establish `hA1 : HasLen v R ((Fin d → R) ⧸ LinearMap.range A.mulVecLin) (∏ j, v (algebraMap R C (a j)))` using `hasLen_of_linearEquiv' (hasLen_pi v a) e1.symm`. Establish `hc1` using `hasLen_unique hv hc₁ hA1`.
+
+Use `⟨∏ j, v (algebraMap R C (b j)), hasLen_of_linearEquiv' (hasLen_pi v b) e2.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[hc1, ← Finset.prod_mul_distrib]`. Repeatedly rewrite using `[← map_mul, mul_comm (b _) (a _), hb]`. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+-/
 theorem dualLen_fin {C : Type} [Field C] {v : Valuation C NNReal} [Algebra R C]
     (hv : v.Integers R) {d n : ℕ} (A : Matrix (Fin d) (Fin n) R) (c : R) (hc : c ≠ 0)
     (hkill : ∀ w : Fin d → R, ∃ t, A *ᵥ t = c • w) {c₁ : NNReal}
@@ -164,6 +219,27 @@ theorem dualLen_fin {C : Type} [Field C] {v : Valuation C NNReal} [Algebra R C]
   simp_rw [← map_mul, mul_comm (b _) (a _), hb]
   rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin]
 
+/- English proof (translation)
+Introduce `C _ v R _ _ hv d κ _ _ A c hc hkill c₁ hc₁`. Set `e` to `Fintype.equivFin κ`. Set `A' : Matrix (Fin d) (Fin (Fintype.card κ)) R` to `A.submatrix id e.symm`. Establish `hmv : ∀ t : Fin (Fintype.card κ) → R, A' *ᵥ t = A *ᵥ (t ∘ e)`. Introduce `t`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `(Fintype.sum_equiv e (fun j => A i j * t (e j)) _ (fun j => by simp [A'])).symm`. Establish `hmv' : ∀ y : Fin d → R, A'ᵀ *ᵥ y = (Aᵀ *ᵥ y) ∘ e.symm` using `fun y => by funext k; rfl`. Establish `hrange : LinearMap.range A'.mulVecLin = LinearMap.range A.mulVecLin`.
+
+Use extensionality with `x`. Simplify using `only [LinearMap.mem_range, Matrix.mulVecLin_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩`. Conclude with `⟨t ∘ e, (hmv t).symm⟩`.
+
+Introduce and unpack `⟨t, rfl⟩`. Use `⟨t ∘ e.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[hmv]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Simplify using the standard rewrite rules. Establish `hz : zSub A' c = zSub A c`. Use extensionality with `y`. Use `show (∃ z, A'ᵀ *ᵥ y = c • z) ↔ (∃ z, Aᵀ *ᵥ y = c • z)`. Rewrite using `[hmv']`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Use `⟨z ∘ e, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Establish `h1` using `congrFun hz (e j)`.
+
+Simplify using `using h1`. Introduce and unpack `⟨z, hz⟩`. Use `⟨z ∘ e.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[hz]`. Both sides reduce to the same expression.
+
+Establish `hk : ∀ w : Fin d → R, ∃ t, A' *ᵥ t = c • w`. Introduce `w`. Take `⟨t, ht⟩` from `hkill w`. Establish `h1 : (t ∘ e.symm) ∘ e = t` using `by funext j; simp`. Conclude with `⟨t ∘ e.symm, by rw [hmv, h1, ht]⟩`.
+
+Establish `hc₁' : HasLen v R ((Fin d → R) ⧸ LinearMap.range A'.mulVecLin) c₁`. Rewrite using `[hrange]`. Conclude with `hc₁`. Take `⟨y, hy, hyc⟩` from `dualLen_fin hv A' c hc hk hc₁'`. Rewrite `hy` using `[hz]`.
+
+Conclude with `⟨y, hy, hyc⟩`.
+-/
 theorem dualLen : DualLenStatement := by
   intro C _ v R _ _ hv d κ _ _ A c hc hkill c₁ hc₁
   classical
@@ -212,6 +288,9 @@ theorem dualLen : DualLenStatement := by
   rw [hz] at hy
   exact ⟨y, hy, hyc⟩
 
+/- English proof (translation)
+The claim follows from `lenId_of_B (lenIdB_of dualLen)`.
+-/
 theorem lenId : LenIdStatement := lenId_of_B (lenIdB_of dualLen)
 
 end ReciprocityTheory.PGsh.Up

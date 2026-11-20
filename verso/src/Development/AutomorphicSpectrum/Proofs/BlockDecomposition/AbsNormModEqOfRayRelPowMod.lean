@@ -8,6 +8,13 @@ open NumberField Formalism.MainNotions.ShortIntervalPrimes GlobalTheory.RayZeta 
 
 namespace GlobalTheory.CompanionTheory.RayFacts
 
+/- English proof (translation)
+Establish `hn : 0 < Algebra.norm ℤ a`. Establish `h` using `GlobalTheory.RayRootOfUnity.norm_pos_of_pos_real (x := (a : F)) (by simpa using ha) hpos`. Rewrite `h` using `[← Algebra.coe_norm_int]`. Conclude with `h` after adjusting the coercions. Establish `hc` using `GlobalTheory.Mem.RayNorm.norm_cast_eq F (l ^ m) (x := a) (y := 1) (by`.
+
+Establish `e : ((l ^ m : ℕ) : 𝓞 F) = (l : 𝓞 F) ^ m` using `by push_cast; rfl`. Rewrite using `[e]`. Conclude with `ha1)`. Rewrite `hc` using `[map_one, Int.cast_one]`. Establish `h2` using `congrArg (Int.cast : ℤ → ZMod (l ^ m)) (Int.natAbs_of_nonneg hn.le)`.
+
+Rewrite `h2` using `[Int.cast_natCast]`. Rewrite using `[← ZMod.natCast_eq_natCast_iff, Ideal.absNorm_span_singleton, h2, hc, Nat.cast_one]`.
+-/
 theorem absNorm_span_modEq_one {F : Type} [Field F] [NumberField F] (l m : ℕ) {a : 𝓞 F} (ha : a ≠ 0)
     (ha1 : a - 1 ∈ powMod F l m) (hpos : ∀ σ : F →+* ℝ, 0 < σ (a : F)) :
     Ideal.absNorm (Ideal.span {a}) ≡ 1 [MOD l ^ m] := by
@@ -24,6 +31,11 @@ theorem absNorm_span_modEq_one {F : Type} [Field F] [NumberField F] (l m : ℕ) 
   rw [Int.cast_natCast] at h2
   rw [← ZMod.natCast_eq_natCast_iff, Ideal.absNorm_span_singleton, h2, hc, Nat.cast_one]
 
+/- English proof (translation)
+Introduce `F _ _ l m I J h`. Take `⟨a, b, ha, hb, ha1, hb1, hσ, he⟩` from `h`. Establish `h1` using `absNorm_span_modEq_one l m ha ha1 fun σ => (hσ σ).1`. Establish `h2` using `absNorm_span_modEq_one l m hb hb1 fun σ => (hσ σ).2`. Establish `h3` using `congrArg Ideal.absNorm he`.
+
+Rewrite `h3` using `[map_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem absNorm_modEq_of_rayRel_powMod : ∀ (F : Type) [Field F] [NumberField F] (l m : ℕ) (I J : Ideal (𝓞 F)),
     RayRel F (powMod F l m) I J → Ideal.absNorm I ≡ Ideal.absNorm J [MOD l ^ m] := by
   intro F _ _ l m I J h

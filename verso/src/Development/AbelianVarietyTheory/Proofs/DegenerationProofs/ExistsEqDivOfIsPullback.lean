@@ -4,6 +4,17 @@ open CategoryTheory Limits AlgebraicGeometry
 
 namespace GlobalTheory.SS
 
+/- English proof (translation)
+Introduce `P X Y S _ p q f g H z U U' W hU hU' hW`. Take `⟨V, hV, hpV, hVU⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := U) hU`. Take `⟨V', hV', hpV', hVU'⟩` from `exists_isAffineOpen_mem_and_subset (X := Y) (U := U') hU'`. Establish `hP : IsAffineOpen (p ⁻¹ᵁ V ⊓ q ⁻¹ᵁ V')`. Establish `: IsAffine _` using `hV`.
+
+Establish `: IsAffine _` using `hV'`. Establish `: IsAffine _` using `isAffineOpen_top S`. Conclude with `.of_isIso (Scheme.Hom.isPullback_resLE H (US := ⊤) (UT := V') (UX := V) le_top le_top rfl).isoPullback.hom`. Establish `po` using `(isIso_pushoutSection_iff H (US := ⊤) (UT := V') (UX := V) le_top le_top rfl).1 (isIso_pushoutSection_of_isAffineOpen H _ _ _ (isAffineOpen_top _) hV' hV)`. Establish `hgen` using `CommRingCat.closure_range_union_range_eq_top_of_isPushout po`.
+
+Take `⟨r, hrW, hzr⟩` from `hP.exists_basicOpen_le (V := W) ⟨z, hW⟩ ⟨hpV, hpV'⟩`. Establish `hle : P.basicOpen r ≤ p ⁻¹ᵁ V ⊓ q ⁻¹ᵁ V'` using `P.basicOpen_le r`. Use `⟨V, V', P.basicOpen r, hle.trans inf_le_left, hle.trans inf_le_right, hVU, hVU', hrW, hzr, fun τ => ?_⟩` and prove the remaining obligations. Establish `key : ∀ x : Γ(P, p ⁻¹ᵁ V ⊓ q ⁻¹ᵁ V'), (P.presheaf.map (homOfLE hle).op).hom x ∈ Subring.closure (Set.range (p.appLE V _ (hle.trans inf_le_left)).hom ∪ Set.range (q.appLE V' _ (hle.trans inf_le_right)).hom)`. Introduce `x`.
+
+Establish `hx` using `hgen.ge (Subring.mem_top x)`. Use `Subring.mem_comap.1 (Subring.closure_le.2 ?_ hx)` and prove the remaining obligations. Introduce and unpack `_ (⟨a, rfl⟩ | ⟨a, rfl⟩)`. Use `Subring.subset_closure (Or.inl ⟨a, ?_⟩)` and prove the remaining obligations. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appLE_map]`.
+
+Use `Subring.subset_closure (Or.inr ⟨a, ?_⟩)` and prove the remaining obligations. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appLE_map]`. Establish `hloc` using `hP.isLocalization_basicOpen r`. Take `⟨⟨b, a⟩, hab⟩` from `IsLocalization.surj (Submonoid.powers r) τ`. Conclude with `⟨_, key a, _, key b, IsLocalization.map_units Γ(P, P.basicOpen r) a, hab⟩`.
+-/
 theorem exists_eq_div_of_isPullback : ∀ (P X Y S : Scheme.{0}) [IsAffine S] (p : P ⟶ X) (q : P ⟶ Y) (f : X ⟶ S) (g : Y ⟶ S), IsPullback p q f g → ∀ (z : P) (U : X.Opens) (U' : Y.Opens) (W : P.Opens), p z ∈ U → q z ∈ U' → z ∈ W → ∃ (V : X.Opens) (V' : Y.Opens) (W' : P.Opens) (h₁ : W' ≤ p ⁻¹ᵁ V) (h₂ : W' ≤ q ⁻¹ᵁ V'), V ≤ U ∧ V' ≤ U' ∧ W' ≤ W ∧ z ∈ W' ∧ ∀ τ : Γ(P, W'), ∃ a ∈ Subring.closure (Set.range (p.appLE V W' h₁).hom ∪ Set.range (q.appLE V' W' h₂).hom), ∃ b ∈ Subring.closure (Set.range (p.appLE V W' h₁).hom ∪ Set.range (q.appLE V' W' h₂).hom), IsUnit a ∧ τ * a = b := by
   intro P X Y S _ p q f g H z U U' W hU hU' hW
   obtain ⟨V, hV, hpV, hVU⟩ := exists_isAffineOpen_mem_and_subset (X := X) (U := U) hU

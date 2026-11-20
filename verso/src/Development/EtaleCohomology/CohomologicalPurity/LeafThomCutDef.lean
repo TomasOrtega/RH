@@ -73,7 +73,13 @@ def Pj.line (N k : ℕ) : Pj N k ⟶ ofCat (glCat 1) :=
         obtain rfl : i = j := Subsingleton.elim _ _
         simp }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Pj.incl_line (N : ℕ) : Pj.incl N ≫ Pj.line N 0 = Pj.line N 1 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Pj.tail_line (d : ℕ) : Pj.tail d ≫ Pj.line d 0 = Pj.line (d + 1) 1 := rfl
 
 def Pj.pt {N k : ℕ} {X : Scheme.{0}} (v : Vec N k X) : sch.obj X ⟶ Pj N k where

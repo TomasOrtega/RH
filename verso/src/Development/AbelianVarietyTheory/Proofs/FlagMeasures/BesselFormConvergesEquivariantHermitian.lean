@@ -18,12 +18,21 @@ namespace GlobalTheory.SgInf.BeForm
 variable {k r : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 variable {Wp : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
 
+/- English proof (translation)
+The claim follows from `((uHGroup _ (Hpk k r) (Matrix.isUnit_det_of_right_inverse (hpkFacts k r).2.1)).2.2 g hg).1`.
+-/
 theorem isUnit_det_of_mem {g : Mat k r} (hg : g ∈ GG k r) : IsUnit g.det :=
   ((uHGroup _ (Hpk k r) (Matrix.isUnit_det_of_right_inverse (hpkFacts k r).2.1)).2.2 g hg).1
 
+/- English proof (translation)
+The claim follows from `Matrix.mul_nonsing_inv g (GlobalTheory.SgInf.BeForm.isUnit_det_of_mem hg)`.
+-/
 theorem mul_inv_of_mem {g : Mat k r} (hg : g ∈ GG k r) : g * g⁻¹ = 1 :=
   Matrix.mul_nonsing_inv g (GlobalTheory.SgInf.BeForm.isUnit_det_of_mem hg)
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨w, hw⟩` from `GlobalTheory.SgInf.BeForm.isUnit_det_of_mem hg`. Use `(continuousAt_matrix_inv g ?_).continuousWithinAt` and prove the remaining obligations. Rewrite using `[← hw]`. Conclude with `NormedRing.inverse_continuousAt w`.
+-/
 theorem continuousOn_inv : ContinuousOn (fun g : Mat k r => g⁻¹) (GG k r) := by
   intro g hg
   obtain ⟨w, hw⟩ := GlobalTheory.SgInf.BeForm.isUnit_det_of_mem hg
@@ -31,9 +40,15 @@ theorem continuousOn_inv : ContinuousOn (fun g : Mat k r => g⁻¹) (GG k r) := 
   rw [← hw]
   exact NormedRing.inverse_continuousAt w
 
+/- English proof (translation)
+Conclude with `continuous_id`.
+-/
 theorem continuous_of : Continuous (fun x : Mt k r => (Matrix.of x : Mat k r)) := by
   exact continuous_id
 
+/- English proof (translation)
+Establish `hc : Continuous (fun x : Mt k r => opn (Matrix.of x : Mat k r))` using `(GlobalTheory.T.besselModelUnitaryGroup_opNorm_properties k r).2.2.1.comp GlobalTheory.SgInf.BeForm.continuous_of`. Establish `hm : AEStronglyMeasurable (fun x : Mt k r => opn (Matrix.of x : Mat k r) ^ (-a)) μ` using `(hc.measurable.pow_const (-a)).aestronglyMeasurable`. Use `(lintegral_ofReal_ne_top_iff_integrable hm (Filter.Eventually.of_forall fun x => Real.rpow_nonneg ?_ _)).1 hint.ne` and prove the remaining obligations. Conclude with `norm_nonneg _`.
+-/
 theorem integrable_opn {μ : Measure (Mt k r)} {a : ℝ} (hint : normInt μ a < ⊤) :
     Integrable (fun x : Mt k r => opn (Matrix.of x : Mat k r) ^ (-a)) μ := by
   have hc : Continuous (fun x : Mt k r => opn (Matrix.of x : Mat k r)) :=
@@ -44,6 +59,9 @@ theorem integrable_opn {μ : Measure (Mt k r)} {a : ℝ} (hint : normInt μ a < 
     (Filter.Eventually.of_forall fun x => Real.rpow_nonneg ?_ _)).1 hint.ne
   exact norm_nonneg _
 
+/- English proof (translation)
+Establish `h` using `integral_map (μ := μ) (f := f) hT.aemeasurable (by rw [hmap]; exact hf)`. Rewrite `h` using `[hmap]`. Conclude with `h.symm`.
+-/
 theorem integral_comp_self {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {μ : Measure (Mt k r)} {T : Mt k r → Mt k r} (hT : Measurable T) (hmap : μ.map T = μ)
     {f : Mt k r → E} (hf : AEStronglyMeasurable f μ) : ∫ x, f (T x) ∂μ = ∫ x, f x ∂μ := by
@@ -60,20 +78,32 @@ section Coef
 variable {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsURepOn (GG k r) σ)
 include hσ
 
+/- English proof (translation)
+Set `f : H →ₗᵢ[ℂ] H` to `{ toLinearMap := ((σ t : H →L[ℂ] H) : H →ₗ[ℂ] H), norm_map' := hσ.2.1 t ht }`. Conclude with `f.inner_map_map x y`.
+-/
 theorem inner_act {t : Mat k r} (ht : t ∈ GG k r) (x y : H) : ⟪σ t x, σ t y⟫_ℂ = ⟪x, y⟫_ℂ := by
   let f : H →ₗᵢ[ℂ] H := { toLinearMap := ((σ t : H →L[ℂ] H) : H →ₗ[ℂ] H), norm_map' := hσ.2.1 t ht }
   exact f.inner_map_map x y
 
+/- English proof (translation)
+Establish `h` using `hσ.1.2 t ht t⁻¹ hti`. Rewrite `h` using `[GlobalTheory.SgInf.BeForm.mul_inv_of_mem ht, hσ.1.1]`. Establish `h2` using `congrArg (fun A : H →L[ℂ] H => A x) h`. Simplify using `using h2.symm`.
+-/
 theorem act_inv {t : Mat k r} (ht : t ∈ GG k r) (hti : t⁻¹ ∈ GG k r) (x : H) : σ t (σ t⁻¹ x) = x := by
   have h := hσ.1.2 t ht t⁻¹ hti
   rw [GlobalTheory.SgInf.BeForm.mul_inv_of_mem ht, hσ.1.1] at h
   have h2 := congrArg (fun A : H →L[ℂ] H => A x) h
   simpa using h2.symm
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.SgInf.coef, hσ.1.2 s hs t ht, ContinuousLinearMap.comp_apply]`.
+-/
 theorem coef_act_left {s t : Mat k r} (hs : s ∈ GG k r) (ht : t ∈ GG k r) (u v : H) :
     coef σ (σ t u) v s = coef σ u v (s * t) := by
   simp only [GlobalTheory.SgInf.coef, hσ.1.2 s hs t ht, ContinuousLinearMap.comp_apply]
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.SgInf.coef, hσ.1.2 t⁻¹ hti s hs, ContinuousLinearMap.comp_apply]`. Establish `h` using `GlobalTheory.SgInf.BeForm.inner_act hσ ht v (σ t⁻¹ (σ s u))`. Rewrite `h` using `[GlobalTheory.SgInf.BeForm.act_inv hσ ht hti]`. Conclude with `h`.
+-/
 theorem coef_act_right {s t : Mat k r} (hs : s ∈ GG k r) (ht : t ∈ GG k r) (hti : t⁻¹ ∈ GG k r)
     (hm : t⁻¹ * s ∈ GG k r) (u v : H) :
     coef σ u (σ t v) s = coef σ u v (t⁻¹ * s) := by
@@ -82,6 +112,9 @@ theorem coef_act_right {s t : Mat k r} (hs : s ∈ GG k r) (ht : t ∈ GG k r) (
   rw [GlobalTheory.SgInf.BeForm.act_inv hσ ht hti] at h
   exact h
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.SgInf.coef]`. Establish `h` using `GlobalTheory.SgInf.BeForm.inner_act hσ hs u (σ s⁻¹ v)`. Rewrite `h` using `[GlobalTheory.SgInf.BeForm.act_inv hσ hs hsi]`. Rewrite using `[← h]`. Conclude with `inner_conj_symm _ _`.
+-/
 theorem star_coef {s : Mat k r} (hs : s ∈ GG k r) (hsi : s⁻¹ ∈ GG k r) (u v : H) :
     star (coef σ u v s) = coef σ v u s⁻¹ := by
   simp only [GlobalTheory.SgInf.coef]
@@ -97,9 +130,17 @@ section Main
 variable {S : Set (Mat k r)} {σ : Mat k r → (H →L[ℂ] H)} {P : Mat k r → (Wp →L[ℂ] Wp)}
   {μ : Measure (Mt k r)} {a : ℝ}
 
+/- English proof (translation)
+The claim follows from `ae_iff.2 hμ.2.2.1`.
+-/
 theorem ae_mem (hμ : IsHaarOn S μ) : ∀ᵐ x ∂μ, (Matrix.of x : Mat k r) ∈ S :=
   ae_iff.2 hμ.2.2.1
 
+/- English proof (translation)
+Establish `hSm : MeasurableSet {x : Mt k r | (Matrix.of x : Mat k r) ∈ S}` using `(hS.2.1.preimage GlobalTheory.SgInf.BeForm.continuous_of).measurableSet`. Establish `h1 : ContinuousOn (fun x : Mt k r => σ (Matrix.of x : Mat k r) u) {x : Mt k r | (Matrix.of x : Mat k r) ∈ S}` using `((hσ.2.2 u).mono hS.1).comp GlobalTheory.SgInf.BeForm.continuous_of.continuousOn (fun x hx => hx)`. Establish `h2 : ContinuousOn (fun x : Mt k r => P (Matrix.of x : Mat k r)⁻¹) {x : Mt k r | (Matrix.of x : Mat k r) ∈ S}` using `hPc.comp ((GlobalTheory.SgInf.BeForm.continuousOn_inv.mono hS.1).comp GlobalTheory.SgInf.BeForm.continuous_of.continuousOn (fun x hx => hx)) (fun x hx => hS.2.2.2.2 _ hx)`. Establish `hcont : ContinuousOn (bint σ P u u') {x : Mt k r | (Matrix.of x : Mat k r) ∈ S}` using `by show ContinuousOn (fun x : Mt k r => ⟪u', σ (Matrix.of x : Mat k r) u⟫_ℂ • P (Matrix.of x : Mat k r)⁻¹) _`. Conclude with `(ContinuousOn.inner (𝕜 := ℂ) continuousOn_const h1).smul h2`.
+
+Establish `h3` using `hcont.aestronglyMeasurable (μ := μ) hSm`. Rewrite `h3` using `[Measure.restrict_eq_self_of_ae_mem (s := {x : Mt k r | (Matrix.of x : Mat k r) ∈ S}) (GlobalTheory.SgInf.BeForm.ae_mem hμ)]`. Then use the resulting hypothesis.
+-/
 theorem aesm_bint (hS : IsClosedSub k r S) (hσ : IsURepOn (GG k r) σ) (hPc : ContinuousOn P S)
     (hμ : IsHaarOn S μ) (u u' : H) : AEStronglyMeasurable (bint σ P u u') μ := by
   have hSm : MeasurableSet {x : Mt k r | (Matrix.of x : Mat k r) ∈ S} :=
@@ -117,6 +158,11 @@ theorem aesm_bint (hS : IsClosedSub k r S) (hσ : IsURepOn (GG k r) σ) (hPc : C
   have h3 := hcont.aestronglyMeasurable (μ := μ) hSm
   rwa [Measure.restrict_eq_self_of_ae_mem (s := {x : Mt k r | (Matrix.of x : Mat k r) ∈ S}) (GlobalTheory.SgInf.BeForm.ae_mem hμ)] at h3
 
+/- English proof (translation)
+Use `Integrable.mono' ((GlobalTheory.SgInf.BeForm.integrable_opn hint).const_mul C) (GlobalTheory.SgInf.BeForm.aesm_bint hS hσ hPc hμ u u') ?_` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.SgInf.BeForm.ae_mem hμ] with x hx`. Establish `hP` using `hPb _ (hS.2.2.2.2 _ hx)`. Establish `hc` using `hC _ (hS.1 hx)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[bint, norm_smul]`. Use `_ ≤ ‖coef σ u u' (Matrix.of x)‖ * 1 := by gcongr`. Use `_ ≤ C * opn (Matrix.of x : Mat k r) ^ (-a) := by rw [mul_one]; exact hc`.
+-/
 theorem integrable_bint (hS : IsClosedSub k r S) (hσ : IsURepOn (GG k r) σ) (hPc : ContinuousOn P S)
     (hPb : ∀ s ∈ S, ‖P s‖ ≤ 1) (hμ : IsHaarOn S μ) (hint : normInt μ a < ⊤) {u u' : H} {C : ℝ}
     (hC : ∀ g ∈ GG k r, ‖coef σ u u' g‖ ≤ C * opn g ^ (-a)) : Integrable (bint σ P u u') μ := by
@@ -130,6 +176,13 @@ theorem integrable_bint (hS : IsClosedSub k r S) (hσ : IsURepOn (GG k r) σ) (h
     _ ≤ ‖coef σ u u' (Matrix.of x)‖ * 1 := by gcongr
     _ ≤ C * opn (Matrix.of x : Mat k r) ^ (-a) := by rw [mul_one]; exact hc
 
+/- English proof (translation)
+Establish `htG : t ∈ GG k r` using `hS.1 ht`. Establish `hL` using `ContinuousLinearMap.integral_comp_comm (ContinuousLinearMap.compL ℂ Wp Wp Wp (P t)) hI`. Simplify using `only [ContinuousLinearMap.compL_apply] at hL`. Rewrite using `[← hL]`. Establish `hm : AEStronglyMeasurable (fun s => (P t).comp (bint σ P u u' s)) μ` using `(ContinuousLinearMap.compL ℂ Wp Wp Wp (P t)).continuous.comp_aestronglyMeasurable hI.1`.
+
+Rewrite using `[← GlobalTheory.SgInf.BeForm.integral_comp_self (continuous_rmulM t).measurable (hU.1 t ht) hm]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.SgInf.BeForm.ae_mem hμ] with s hs`. Establish `hsG : (Matrix.of s : Mat k r) ∈ GG k r` using `hS.1 hs`. Establish `hti : t⁻¹ ∈ S` using `hS.2.2.2.2 _ ht`.
+
+Establish `hsi : (Matrix.of s : Mat k r)⁻¹ ∈ S` using `hS.2.2.2.2 _ hs`. Establish `hmem : t⁻¹ * (Matrix.of s : Mat k r)⁻¹ ∈ S` using `hS.2.2.2.1 _ hti _ hsi`. Establish `hof : (Matrix.of (rmulM t s) : Mat k r) = Matrix.of s * t` using `rfl`. Simplify using `only [bint, hof, ContinuousLinearMap.comp_smul]`. Rewrite using `[GlobalTheory.SgInf.BeForm.coef_act_left hσ hsG htG, Matrix.mul_inv_rev, ← hP.1.2 t ht _ hmem, ← mul_assoc, GlobalTheory.SgInf.BeForm.mul_inv_of_mem htG, one_mul]`.
+-/
 theorem be_left (hS : IsClosedSub k r S) (hσ : IsURepOn (GG k r) σ) (hP : IsURepOn S P)
     (hμ : IsHaarOn S μ) (hU : IsUnimod S μ) {u u' : H} (hI : Integrable (bint σ P u u') μ)
     {t : Mat k r} (ht : t ∈ S) :
@@ -152,6 +205,15 @@ theorem be_left (hS : IsClosedSub k r S) (hσ : IsURepOn (GG k r) σ) (hP : IsUR
   rw [GlobalTheory.SgInf.BeForm.coef_act_left hσ hsG htG, Matrix.mul_inv_rev, ← hP.1.2 t ht _ hmem,
     ← mul_assoc, GlobalTheory.SgInf.BeForm.mul_inv_of_mem htG, one_mul]
 
+/- English proof (translation)
+Establish `htG : t ∈ GG k r` using `hS.1 ht`. Establish `hti : t⁻¹ ∈ S` using `hS.2.2.2.2 _ ht`. Establish `htiG : t⁻¹ ∈ GG k r` using `hS.1 hti`. Establish `hL` using `ContinuousLinearMap.integral_comp_comm ((ContinuousLinearMap.compL ℂ Wp Wp Wp).flip (P t⁻¹)) hI`. Simplify using `only [ContinuousLinearMap.flip_apply, ContinuousLinearMap.compL_apply] at hL`.
+
+Rewrite using `[← hL]`. Establish `hm : AEStronglyMeasurable (fun s => (bint σ P u u' s).comp (P t⁻¹)) μ` using `((ContinuousLinearMap.compL ℂ Wp Wp Wp).flip (P t⁻¹)).continuous.comp_aestronglyMeasurable hI.1`. Establish `hTc : Continuous (lmulM t⁻¹ : Mt k r → Mt k r)` using `by show Continuous (fun x : Mt k r => (t⁻¹ * Matrix.of x : Mat k r))`. Conclude with `continuous_const.matrix_mul GlobalTheory.SgInf.BeForm.continuous_of`. Rewrite using `[← GlobalTheory.SgInf.BeForm.integral_comp_self hTc.measurable (hμ.2.2.2 _ hti) hm]`.
+
+Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.SgInf.BeForm.ae_mem hμ] with s hs`. Establish `hsG : (Matrix.of s : Mat k r) ∈ GG k r` using `hS.1 hs`. Establish `hm1 : t⁻¹ * (Matrix.of s : Mat k r) ∈ S` using `hS.2.2.2.1 _ hti _ hs`. Establish `hm2 : (t⁻¹ * (Matrix.of s : Mat k r))⁻¹ ∈ S` using `hS.2.2.2.2 _ hm1`.
+
+Establish `hof : (Matrix.of (lmulM t⁻¹ s) : Mat k r) = t⁻¹ * Matrix.of s` using `rfl`. Simplify using `only [bint, hof, ContinuousLinearMap.smul_comp]`. Rewrite using `[GlobalTheory.SgInf.BeForm.coef_act_right hσ hsG htG htiG (hS.1 hm1)]`. Use `congr 1`. Rewrite using `[← hP.1.2 _ hm2 _ hti, ← Matrix.mul_inv_rev, ← mul_assoc, GlobalTheory.SgInf.BeForm.mul_inv_of_mem htG, one_mul]`.
+-/
 theorem be_right (hS : IsClosedSub k r S) (hσ : IsURepOn (GG k r) σ) (hP : IsURepOn S P)
     (hμ : IsHaarOn S μ) {u u' : H} (hI : Integrable (bint σ P u u') μ)
     {t : Mat k r} (ht : t ∈ S) :
@@ -193,6 +255,13 @@ def adjR (Wp : Type*) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Comple
         simp } 1
     (fun A => by simp)
 
+/- English proof (translation)
+Establish `h1` using `ContinuousLinearMap.integral_comp_comm (adjR Wp) hI`. Express the relevant statement in the definitionally equal form `adjR Wp (∫ s, bint σ P u u' s ∂μ) = _`. Rewrite using `[← h1, ← GlobalTheory.SgInf.BeForm.integral_comp_self measurable_invM hU.2 hI'.1]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.SgInf.BeForm.ae_mem hμ] with s hs`.
+
+Establish `hsG : (Matrix.of s : Mat k r) ∈ GG k r` using `hS.1 hs`. Establish `hsi : (Matrix.of s : Mat k r)⁻¹ ∈ S` using `hS.2.2.2.2 _ hs`. Establish `hsiG : (Matrix.of s : Mat k r)⁻¹ ∈ GG k r` using `hS.1 hsi`. Establish `hof : (Matrix.of (invM s) : Mat k r) = (Matrix.of s : Mat k r)⁻¹` using `rfl`. Express the relevant statement in the definitionally equal form `ContinuousLinearMap.adjoint (bint σ P u u' s) = _`.
+
+Simplify using `only [bint, hof, map_smulₛₗ, hPa _ hsi]`. Use `congr 1`. Conclude with `GlobalTheory.SgInf.BeForm.star_coef hσ hsG hsiG u u'`.
+-/
 theorem be_adjoint (hS : IsClosedSub k r S) (hσ : IsURepOn (GG k r) σ)
     (hPa : ∀ s ∈ S, ContinuousLinearMap.adjoint (P s) = P s⁻¹)
     (hμ : IsHaarOn S μ) (hU : IsUnimod S μ) {u u' : H} (hI : Integrable (bint σ P u u') μ)
@@ -212,6 +281,23 @@ theorem be_adjoint (hS : IsClosedSub k r S) (hσ : IsURepOn (GG k r) σ)
   congr 1
   exact GlobalTheory.SgInf.BeForm.star_coef hσ hsG hsiG u u'
 
+/- English proof (translation)
+Establish `hop` using `GlobalTheory.T.besselModelUnitaryGroup_opNorm_properties k r`. Establish `hdet : IsUnit (Hpk k r).det` using `Matrix.isUnit_det_of_right_inverse (hpkFacts k r).2.1`. Establish `: FirstCountableTopology (Mat k r)` using `inferInstanceAs (FirstCountableTopology (Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → ℂ))`. Introduce `x0 hx0`. Establish `hev : ∀ᶠ x in 𝓝[GG k r] x0, x ∈ GG k r ∧ opn x ≤ opn x0 + 1`.
+
+Establish `h1 : ∀ᶠ x in 𝓝 x0, opn x < opn x0 + 1` using `hop.2.2.1.continuousAt.eventually_lt continuousAt_const (lt_add_one _)`. Use `filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds h1] with x hx hx'`. Conclude with `⟨hx, hx'.le⟩`. Use `continuousWithinAt_of_dominated (bound := fun s : Mt k r => |C| * (opn x0 + 1) ^ a * opn (Matrix.of s : Mat k r) ^ (-a)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `filter_upwards [hev] with x hx`.
+
+Conclude with `GlobalTheory.SgInf.BeForm.aesm_bint hS hσ hPc hμ (σ x u) u'`. Use `filter_upwards [hev] with x hx filter_upwards [GlobalTheory.SgInf.BeForm.ae_mem hμ] with s hs`. Establish `hsG : (Matrix.of s : Mat k r) ∈ GG k r` using `hS.1 hs`. Establish `hsi : (Matrix.of s : Mat k r)⁻¹ ∈ S` using `hS.2.2.2.2 _ hs`. Establish `hxG : x ∈ GG k r` using `hx.1`.
+
+Establish `hsxG : (Matrix.of s : Mat k r) * x ∈ GG k r` using `(uHGroup _ (Hpk k r) hdet).2.1 _ hsG _ hxG`. Establish `hp : 1 ≤ opn (Matrix.of s : Mat k r)` using `(hop.1 _ hsG).2`. Establish `hq : 1 ≤ opn x` using `(hop.1 _ hxG).2`. Establish `hw1 : 1 ≤ opn ((Matrix.of s : Mat k r) * x)` using `(hop.1 _ hsxG).2`. Establish `hw : opn (Matrix.of s : Mat k r) / opn x ≤ opn ((Matrix.of s : Mat k r) * x)` using `(hop.2.2.2.2.2.2.1 _ hsG _ hxG).1`.
+
+Establish `hpq : 0 < opn (Matrix.of s : Mat k r) / opn x` using `div_pos (by linarith) (by linarith)`. Establish `key : opn ((Matrix.of s : Mat k r) * x) ^ (-a) ≤ (opn x0 + 1) ^ a * opn (Matrix.of s : Mat k r) ^ (-a)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.div_rpow (by linarith) (by linarith), Real.rpow_neg (by linarith : (0:ℝ) ≤ opn x), div_inv_eq_mul, mul_comm]`. Use `_ ≤ (opn x0 + 1) ^ a * opn (Matrix.of s : Mat k r) ^ (-a) := mul_le_mul_of_nonneg_right (Real.rpow_le_rpow (by linarith) hx.2 ha.le) (Real.rpow_nonneg (by linarith) _)`.
+
+Establish `hc` using `hC _ hsxG`. Establish `hPn` using `hPb _ hsi`. Establish `hwpos : 0 ≤ opn ((Matrix.of s : Mat k r) * x) ^ (-a)` using `Real.rpow_nonneg (by linarith) _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one, GlobalTheory.SgInf.BeForm.coef_act_left hσ hsG hxG]`.
+
+Use `_ ≤ C * opn ((Matrix.of s : Mat k r) * x) ^ (-a) := hc`. Use `_ ≤ |C| * opn ((Matrix.of s : Mat k r) * x) ^ (-a) := mul_le_mul_of_nonneg_right (le_abs_self C) hwpos`. Use `_ ≤ |C| * ((opn x0 + 1) ^ a * opn (Matrix.of s : Mat k r) ^ (-a)) := mul_le_mul_of_nonneg_left key (abs_nonneg C)`. Use `_ = |C| * (opn x0 + 1) ^ a * opn (Matrix.of s : Mat k r) ^ (-a) := by ring`. Conclude with `(GlobalTheory.SgInf.BeForm.integrable_opn hint).const_mul _`.
+
+Use `Filter.Eventually.of_forall (fun s => ?_) show ContinuousWithinAt (fun x => ⟪u', σ (Matrix.of s : Mat k r) (σ x u)⟫_ℂ • P (Matrix.of s : Mat k r)⁻¹) (GG k r) x0` and prove the remaining obligations. Conclude with `(ContinuousWithinAt.inner (𝕜 := ℂ) continuousWithinAt_const ((σ (Matrix.of s : Mat k r)).continuous.continuousAt.comp_continuousWithinAt ((hσ.2.2 u) x0 hx0))).smul continuousWithinAt_const`.
+-/
 theorem be_continuousOn (hS : IsClosedSub k r S) (hσ : IsURepOn (GG k r) σ) (hPc : ContinuousOn P S)
     (hPb : ∀ s ∈ S, ‖P s‖ ≤ 1) (hμ : IsHaarOn S μ) (hint : normInt μ a < ⊤) (ha : 0 < a)
     {u u' : H} {C : ℝ} (hC : ∀ g ∈ GG k r, ‖coef σ u u' g‖ ≤ C * opn g ^ (-a)) :
@@ -275,6 +361,17 @@ theorem be_continuousOn (hS : IsClosedSub k r S) (hσ : IsURepOn (GG k r) σ) (h
 
 end Main
 
+/- English proof (translation)
+Introduce `k r H _ _ _ Wp _ _ _ _ σ w a μG d z c π μS hStd hSide V hV hDec u hu u' hu'`. Take `⟨hk, hσ, -, -, -, -, ha5, -, -⟩` from `hStd`. Take `⟨hz, hT, hπ, hHaar, -⟩` from `hSide`. Establish `hS : IsClosedSub k r (Sset k r z)` using `(GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z hz hT).2.2.2.1`. Establish `h47` using `GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z c π hz hT hπ`.
+
+Establish `hU : IsUnimod (Sset k r z) μS` using `(GlobalTheory.T.unimodular_besselSubgroups_UW_N k r z hz hT μS).1 hHaar`. Establish `hb` using `GlobalTheory.T.bessel_constant_bounds_of_ge_two_n_pow_five k r a hk ha5`. Establish `hn : (0:ℝ) ≤ 2 * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2` using `by positivity`. Establish `hapos : 0 < a` using `by linarith [hb.1]`. Establish `hint : normInt μS a < ⊤` using `GlobalTheory.T.besselOpNormPowerIntegral_lt_top_closedSubgroup k r _ μS a hS hHaar (by linarith [hb.1])`.
+
+Take `⟨C, hC⟩` from `hDec u hu u' hu'`. Take `⟨C', hC'⟩` from `hDec u' hu' u hu`. Establish `hPc` using `h47.2.2.2.1`. Establish `hPb : ∀ s ∈ Sset k r z, ‖PiS (psiGen k r z c) π s‖ ≤ 1` using `fun s hs => (h47.2.2.1 s hs).1`. Establish `hPa : ∀ s ∈ Sset k r z, ContinuousLinearMap.adjoint (PiS (psiGen k r z c) π s) = PiS (psiGen k r z c) π s⁻¹` using `fun s hs => (h47.2.2.1 s hs).2`.
+
+Establish `hI` using `GlobalTheory.SgInf.BeForm.integrable_bint hS hσ hPc hPb hHaar hint hC`. Establish `hI'` using `GlobalTheory.SgInf.BeForm.integrable_bint hS hσ hPc hPb hHaar hint hC'`. Use `⟨hI, fun t ht => ⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.SgInf.BeForm.be_left hS hσ h47.2.1 hHaar hU hI ht`. Conclude with `GlobalTheory.SgInf.BeForm.be_right hS hσ h47.2.1 hHaar hI ht`.
+
+Conclude with `GlobalTheory.SgInf.BeForm.be_adjoint hS hσ hPa hHaar hU hI hI'`. Conclude with `GlobalTheory.SgInf.BeForm.be_continuousOn hS hσ hPc hPb hHaar hint hapos hC`.
+-/
 theorem be_converges_equivariant_hermitian_continuous : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] [CompleteSpace Wp] (σ : Mat k r → (H →L[ℂ] H)) (w : H) (a : ℝ) (μG : Measure (Mt k r)) (d : ℝ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (π : Mat k r → (Wp →L[ℂ] Wp)) (μS : Measure (Mt k r)) , Std σ w a μG d → Side z π μS → ∀ V : Set H, (∀ g ∈ GG k r, ∀ v ∈ V, σ g v ∈ V) → Decay σ V a → ∀ u ∈ V, ∀ u' ∈ V, Integrable (fun s : Mt k r => coef σ u u' (Matrix.of s) • PiS (psiGen k r z c) π (Matrix.of s)⁻¹) μS ∧ (∀ t ∈ Sset k r z, be (psiGen k r z c) π μS σ (σ t u) u' = (PiS (psiGen k r z c) π t).comp (be (psiGen k r z c) π μS σ u u') ∧ be (psiGen k r z c) π μS σ u (σ t u') = (be (psiGen k r z c) π μS σ u u').comp (PiS (psiGen k r z c) π t⁻¹)) ∧ ContinuousLinearMap.adjoint (be (psiGen k r z c) π μS σ u u') = be (psiGen k r z c) π μS σ u' u ∧ ContinuousOn (fun x => be (psiGen k r z c) π μS σ (σ x u) u') (GG k r) := by
   intro k r H _ _ _ Wp _ _ _ _ σ w a μG d z c π μS hStd hSide V hV hDec u hu u' hu'
   obtain ⟨hk, hσ, -, -, -, -, ha5, -, -⟩ := hStd

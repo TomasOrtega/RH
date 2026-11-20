@@ -16,6 +16,9 @@ namespace HermB
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hV`. Rewrite `hV` using `[not_nontrivial_iff_subsingleton]`. Establish `hne : (⊥ : Subrepresentation ρ) ≠ ⊤` using `bot_ne_top`. Conclude with `hne (Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _))`.
+-/
 theorem nontriv {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)
     (h : ρ.IsIrreducible) : Nontrivial V := by
   by_contra hV
@@ -23,6 +26,9 @@ theorem nontriv {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Rep
   have hne : (⊥ : Subrepresentation ρ) ≠ ⊤ := bot_ne_top
   exact hne (Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _))
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `⟨Representation.Equiv.refl _⟩`.
+-/
 theorem congrProd {h N : ℕ} {x y : Fin h → IrrGL k} (e : x = y) (hx : ∑ a, (x a).1 = N) (hy : ∑ a, (y a).1 = N) :
     Nonempty ((prodIrr x hx).Equiv (prodIrr y hy)) := by
   subst e
@@ -30,11 +36,17 @@ theorem congrProd {h N : ℕ} {x y : Fin h → IrrGL k} (e : x = y) (hx : ∑ a,
 
 def yy (x : IrrGL k) (s : ℝ) : Fin 2 → IrrGL k := ![x.nu (-(s : ℂ)), x.nu (s : ℂ)]
 
+/- English proof (translation)
+The claim follows from `Representation.IntertwiningMap.isIntertwining ρ σ e.toIntertwiningMap g v`.
+-/
 theorem eqv {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (e : ρ.Equiv σ) (g : G) (v : V) :
     e (ρ g v) = σ g (e v) :=
   Representation.IntertwiningMap.isIntertwining ρ σ e.toIntertwiningMap g v
 
+/- English proof (translation)
+Establish `E` using `GlobalTheory.CompanionTheory.LSocle.equiv_contra_comp_thetaW hGK (π.comp (thetaW k N)) (by rw [GlobalTheory.CompanionTheory.LSocle.comp_thetaW_thetaW π]; exact hs) (by rw [GlobalTheory.CompanionTheory.LSocle.comp_thetaW_thetaW π]; exact hi)`. Rewrite `E` using `[GlobalTheory.CompanionTheory.LSocle.comp_thetaW_thetaW π]`. Then use the resulting hypothesis.
+-/
 theorem theta_contra (hGK : GKLocal k) {N : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W]
     (π : Representation ℂ (GL (Fin N) k) W) (hs : IsSmooth π) (hi : π.IsIrreducible) :
     Nonempty (Representation.Equiv (π.comp (thetaW k N)) (contra π)) := by
@@ -42,6 +54,13 @@ theorem theta_contra (hGK : GKLocal k) {N : ℕ} {W : Type} [AddCommGroup W] [Mo
     (by rw [GlobalTheory.CompanionTheory.LSocle.comp_thetaW_thetaW π]; exact hs) (by rw [GlobalTheory.CompanionTheory.LSocle.comp_thetaW_thetaW π]; exact hi)
   rwa [GlobalTheory.CompanionTheory.LSocle.comp_thetaW_thetaW π] at E
 
+/- English proof (translation)
+Take `⟨φ0, hφb, hφi⟩` from `hc`. Set `Φ : V →ₛₗ[starRingEnd ℂ] smoothPart π.dual` to `(e₂.toLinearEquiv.toLinearMap.comp φ0).comp e₁.toLinearEquiv.toLinearMap`. Establish `hΦ : ∀ v, Φ v = e₂ (φ0 (e₁ v))` using `fun _ => rfl`. Establish `hΦb : Function.Injective Φ` using `(e₂.toLinearEquiv.injective.comp hφb.1).comp e₁.toLinearEquiv.injective`. Establish `hΦi : ∀ g v, Φ (π g v) = contra π g (Φ v)` using `fun g v => by rw [hΦ, hΦ, eqv e₁, hφi, eqv e₂]`.
+
+Use `haveI := nontriv _ hi`. Use `⟨LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun v w => (Φ w : Module.Dual ℂ V) v) (fun v v' w => map_add _ v v') (fun c v w => map_smul _ c v) (fun v w w' => by rw [map_add]; rfl) (fun c v w => by rw [map_smulₛₗ]; rfl), ?_, ?_⟩` and prove the remaining obligations. Introduce `hB`. Take `⟨w, hw⟩` from `exists_ne (0 : V)`. Use `hw (hΦb ((Subtype.ext (LinearMap.ext fun v => ?_)).trans (map_zero Φ).symm))` and prove the remaining obligations.
+
+Conclude with `LinearMap.congr_fun₂ hB v w`. Introduce `g v w show (Φ (π g w) : Module.Dual ℂ V) (π g v) = (Φ w : Module.Dual ℂ V) v`. Rewrite using `[hΦi, contra_apply, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem hasSesq_of {G V V₁ V₂ : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V]
     [Module ℂ V] [AddCommGroup V₁] [Module ℂ V₁] [AddCommGroup V₂] [Module ℂ V₂] (π : Representation ℂ G V)
     (π₁ : Representation ℂ G V₁) (π₂ : Representation ℂ G V₂) (hi : π.IsIrreducible) (e₁ : π.Equiv π₁)
@@ -68,6 +87,29 @@ end HermB
 
 set_option maxHeartbeats 2000000 in
 open HermB in
+/- English proof (translation)
+Introduce `x hxu s N hd hirr`. Establish `hA` using `PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top`. Establish `hGK : GKLocal k` using `GlobalTheory.T.local_langlands_of_irreducible_admissible hA`. Express the relevant statement in the definitionally equal form `HasSesq (prodIrr (yy x s) hd)`. Express the relevant statement in the definitionally equal form `(prodIrr (yy x s) hd).IsIrreducible at hirr`.
+
+Take `⟨E5⟩` from `theta_contra hGK (prodIrr (yy x s) hd) (isSmooth_prodIrr _ _) hirr`. Take `⟨hd', ⟨E4⟩⟩` from `GlobalTheory.T.product_transpose_inverse_dual_reverse hA hGK (yy x s) hd`. Set `c : Fin 2 → ℝ` to `![-s, s]`. Establish `hM : ∑ _a : Fin 2, x.1 = N`. Rewrite using `[← hd, Fin.sum_univ_two, Fin.sum_univ_two]`.
+
+Both sides reduce to the same expression. Set `χ : Fin 2 → kˣ →* ℂˣ` to `fun a => absPow k ((c a : ℝ) : ℂ)`. Establish `hχ : ∀ a, IsSmoothChar (χ a)` using `fun a => isSmoothChar_absPow _`. Set `πs : Fin 2 → Representation ℂ (GL (Fin x.1) k) x.2.rep.V` to `fun a => twist x.rep (detChar (Fin x.1) (χ a))`. Set `σs : Fin 2 → Representation ℂ (GL (Fin x.1) k) (smoothPart x.rep.dual)` to `fun a => twist (contra x.rep) (detChar (Fin x.1) (χ a))`.
+
+Establish `hsπ : ∀ a, IsSmooth (πs a)` using `fun a => isSmooth_twist x.2.rep.smooth (hχ a).detChar`. Establish `hiπ : ∀ a, (πs a).IsIrreducible` using `fun a => isIrreducible_twist x.2.rep.irr _`. Establish `hic : (contra x.rep).IsIrreducible` using `GlobalTheory.CompanionTheory.ZcDual.isIrreducible_contra hA _ x.2.rep.smooth x.2.rep.irr`. Establish `hsσ : ∀ a, IsSmooth (σs a)` using `fun a => isSmooth_twist (isSmooth_contra _) (hχ a).detChar`. Establish `hiσ : ∀ a, (σs a).IsIrreducible` using `fun a => isIrreducible_twist hic _`.
+
+Establish `hcj` using `h1 2 N (fun _ => x.1) hM (fun _ => x.2.rep.V) (fun _ => smoothPart x.rep.dual) πs σs (fun a => h2 x.1 x.2.rep.V x.rep x.2.rep.smooth x.2.rep.irr hxu (c a))`. Establish `E1` using `prodIrrEquiv hM πs hsπ hiπ`. Establish `E2` using `prodIrrEquiv hM σs hsσ hiσ`. Establish `e0 : ((-s : ℝ) : ℂ) = -(s : ℂ)` using `by push_cast; ring`. Establish `keyπ : ∀ (t : kˣ →* ℂˣ) (ht : IsSmoothChar t), IrrGL.of (twist x.rep (detChar (Fin x.1) t)) (isSmooth_twist x.2.rep.smooth ht.detChar) (isIrreducible_twist x.2.rep.irr _) = x.tw t ht`.
+
+Introduce `t ht`. Use `IrrGL.tw_of x.rep x.2.rep.smooth x.2.rep.irr t ht` as an intermediate fact. Rewrite `this` using `[IrrGL.of_rep]`. Conclude with `this.symm`. Establish `keyσ : ∀ (t : kˣ →* ℂˣ) (ht : IsSmoothChar t), IrrGL.of (twist (contra x.rep) (detChar (Fin x.1) t)) (isSmooth_twist (isSmooth_contra _) ht.detChar) (isIrreducible_twist hic _) = (dualCl x).tw t ht`.
+
+Introduce `t ht`. Use `IrrGL.tw_of (contra x.rep) (isSmooth_contra _) hic t ht` as an intermediate fact. Rewrite `this` using `[← GlobalTheory.CompanionTheory.ZcDual.dualCl_eq hA x]`. Conclude with `this.symm`. Establish `fπ : (fun a => IrrGL.of (πs a) (hsπ a) (hiπ a)) = yy x s`.
+
+Use function extensionality and compare the values at `a`. Rewrite using `[keyπ _ (hχ a)]`. Use `fin_cases a`. Use `show x.tw (absPow k ((-s : ℝ) : ℂ)) _ = x.nu (-(s : ℂ))`. Simplify using `only [IrrGL.nu, e0]`.
+
+Both sides reduce to the same expression. Establish `fσ : (fun a => IrrGL.of (σs a) (hsσ a) (hiσ a)) = fun a => dualCl (yy x s (Fin.rev a))`. Use function extensionality and compare the values at `a`. Rewrite using `[keyσ _ (hχ a)]`. Use `fin_cases a`.
+
+Use `show (dualCl x).tw (absPow k ((-s : ℝ) : ℂ)) _ = dualCl (x.nu (s : ℂ))`. Rewrite using `[GlobalTheory.T.dual_class_twist_neg hA x (s : ℂ)]`. Simplify using `only [IrrGL.nu, e0]`. Use `show (dualCl x).tw (absPow k ((s : ℝ) : ℂ)) _ = dualCl (x.nu (-(s : ℂ)))`. Rewrite using `[GlobalTheory.T.dual_class_twist_neg hA x (-(s : ℂ)), neg_neg]`.
+
+Both sides reduce to the same expression. Take `⟨E0⟩` from `congrProd fπ.symm hd hM`. Take `⟨E3⟩` from `congrProd fσ hM hd'`. Conclude with `hasSesq_of _ _ _ hirr (E0.trans E1.symm) hcj ((E2.trans E3).trans (E4.symm.trans E5))`.
+-/
 theorem herm_ofB (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (h1 : ConjProd k) (h2 : ConjDual k) : Herm k := by
   intro x hxu s N hd hirr

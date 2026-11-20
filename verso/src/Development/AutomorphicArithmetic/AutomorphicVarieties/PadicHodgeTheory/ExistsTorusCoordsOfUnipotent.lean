@@ -6,6 +6,11 @@ section
 
 variable {B : Type} [CommRing B]
 
+/- English proof (translation)
+Establish `h1` using `Units.inv_mul (t 1)`. Establish `h2` using `Units.inv_mul (t 2)`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [triM, Matrix.mul_apply, Fin.sum_univ_three, div_eq_mul_inv] <;>`.
+
+Use `first`. Consider the case `ring1`. Consider the case `linear_combination (-((t 0 : B) * x' * (s 1 : B))) * h1`. Consider the case `linear_combination (-((t 0 : B) * z' * (s 2 : B)) - (s 2 : B) * x * (t 1 : B) * y') * h2`. Consider the case `linear_combination (-((t 1 : B) * y' * (s 2 : B))) * h2`.
+-/
 private theorem triM_mul (t s : Fin 3 → Bˣ) (x y z x' y' z' : B) :
     triM t x y z * triM s x' y' z' =
       triM (fun i => t i * s i) (x + ((t 0 / t 1 : Bˣ) : B) * x') (y + ((t 1 / t 2 : Bˣ) : B) * y')
@@ -21,6 +26,15 @@ private theorem triM_mul (t s : Fin 3 → Bˣ) (x y z x' y' z' : B) :
     | linear_combination (-((t 0 : B) * z' * (s 2 : B)) - (s 2 : B) * x * (t 1 : B) * y') * h2
     | linear_combination (-((t 1 : B) * y' * (s 2 : B))) * h2
 
+/- English proof (translation)
+Establish `e : ∀ i j, triM t x y z i j = triM s x' y' z' i j` using `fun i j => by rw [h]`. Establish `a0` using `e 0 0`. Establish `a1` using `e 1 1`. Establish `a2` using `e 2 2`. Establish `b1` using `e 0 1`.
+
+Establish `b2` using `e 1 2`. Establish `b3` using `e 0 2`. Simplify using `[triM] at a0 a1 a2 b1 b2 b3`. Establish `ht : t = s`. Use function extensionality and compare the values at `i`.
+
+Use `fin_cases i`. Conclude with `Units.ext a0`. Conclude with `Units.ext a1`. Conclude with `Units.ext a2`. Substitute `ht` using the available equality.
+
+Use `⟨rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using congrArg (· * ((t 1)⁻¹ : Bˣ).val) b1`. Simplify using `using congrArg (· * ((t 2)⁻¹ : Bˣ).val) b2`. Simplify using `using congrArg (· * ((t 2)⁻¹ : Bˣ).val) b3`.
+-/
 private theorem triM_inj {t s : Fin 3 → Bˣ} {x y z x' y' z' : B} (h : triM t x y z = triM s x' y' z') :
     t = s ∧ x = x' ∧ y = y' ∧ z = z' := by
   have e : ∀ i j, triM t x y z i j = triM s x' y' z' i j := fun i j => by rw [h]
@@ -43,6 +57,13 @@ private theorem triM_inj {t s : Fin 3 → Bˣ} {x y z x' y' z' : B} (h : triM t 
   · simpa using congrArg (· * ((t 2)⁻¹ : Bˣ).val) b2
   · simpa using congrArg (· * ((t 2)⁻¹ : Bˣ).val) b3
 
+/- English proof (translation)
+Establish `h1` using `Units.inv_mul (t 1)`. Establish `h2` using `Units.inv_mul (t 2)`. Establish `key : triM (fun i => (t i.rev)⁻¹) (-y) (-x) (x * y - z) * ((theta A)⁻¹ : GL (Fin 3) B) = 1`. Rewrite using `[theta_inv_val, h]`. Use extensionality with `i j`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [triM, Jmat, Matrix.mul_apply, Fin.sum_univ_three, Matrix.one_apply, Fin.rev] <;>`. Use `first`. Consider the case `linear_combination y * h2`. Consider the case `linear_combination z * h2 - x * y * h1`.
+
+Consider the case `linear_combination x * h1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, mul_one]`.
+-/
 private theorem theta_triM {A : GL (Fin 3) B} {t : Fin 3 → Bˣ} {x y z : B}
     (h : (A : Matrix (Fin 3) (Fin 3) B) = triM t x y z) :
     (theta A : Matrix (Fin 3) (Fin 3) B) = triM (fun i => (t i.rev)⁻¹) (-y) (-x) (x * y - z) := by
@@ -64,6 +85,11 @@ private theorem theta_triM {A : GL (Fin 3) B} {t : Fin 3 → Bˣ} {x y z : B}
     _ = triM (fun i => (t i.rev)⁻¹) (-y) (-x) (x * y - z) := by
       rw [mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, mul_one]
 
+/- English proof (translation)
+Establish `z10` using `h 1 0 (by decide)`. Establish `z20` using `h 2 0 (by decide)`. Establish `z21` using `h 2 1 (by decide)`. Establish `hd : IsUnit (A : Matrix (Fin 3) (Fin 3) B).det` using `Matrix.isUnits_det_units A`. Rewrite `hd` using `[Matrix.det_fin_three, z10, z20, z21]`.
+
+Simplify using `only [mul_zero, zero_mul, sub_zero, add_zero, zero_sub, neg_zero, IsUnit.mul_iff] at hd`. Take `⟨⟨h0, h1⟩, h2⟩` from `hd`. Use `⟨![h0.unit, h1.unit, h2.unit], (A : Matrix (Fin 3) (Fin 3) B) 0 1 * ↑h1.unit⁻¹, (A : Matrix (Fin 3) (Fin 3) B) 1 2 * ↑h2.unit⁻¹, (A : Matrix (Fin 3) (Fin 3) B) 0 2 * ↑h2.unit⁻¹, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [triM, z10, z20, z21, mul_assoc]`.
+-/
 private theorem exists_triM (A : GL (Fin 3) B)
     (h : ∀ a b, wt a b < 0 → (A : Matrix (Fin 3) (Fin 3) B) a b = 0) :
     ∃ (t : Fin 3 → Bˣ) (x y z : B), (A : Matrix (Fin 3) (Fin 3) B) = triM t x y z := by
@@ -81,6 +107,29 @@ private theorem exists_triM (A : GL (Fin 3) B)
 
 end
 
+/- English proof (translation)
+Introduce `G B _ _ η h h2 u hm hu`. Establish `ex : ∀ g, ∃ (t : Fin 3 → Bˣ) (x y z : B), (u g).mat = triM t x y z` using `fun g => exists_triM (u g).left (hu g)`. Use `choose t x y z hA using ex`. Establish `step : ∀ g g', ∃ (t' : Fin 3 → Bˣ) (x' y' z' : B), (u (g * g')).mat = triM (t g) (x g) (y g) (z g) * triM t' x' y' z' ∧ ((η g = 1 ∧ t' = t g' ∧ x' = x g' ∧ y' = y g' ∧ z' = z g') ∨ (η g = -1 ∧ t' = (fun i => (t g' i.rev)⁻¹) ∧ x' = -y g' ∧ y' = -x g' ∧ z' = x g' * y g' - z g'))`. Introduce `g g'`.
+
+Establish `hmul : (u (g * g')).mat = (u g).mat * (((sgnAct 3 B) (u g).right) (u g').left : Matrix (Fin 3) (Fin 3) B)`. Rewrite using `[map_mul]`. Use `show (((u g * u g').left : GL (Fin 3) B) : Matrix (Fin 3) (Fin 3) B) = _`. Rewrite using `[SemidirectProduct.mul_left, Units.val_mul]`. Both sides reduce to the same expression.
+
+Rewrite `hmul` using `[hm g]`. Break down `Int.units_eq_one_or (η g) with e | e` into its components or cases. Rewrite `hmul` using `[e, sgnAct_one]`. Conclude with `⟨_, _, _, _, by rw [hmul, hA g]; exact congrArg _ (hA g'), Or.inl ⟨e, rfl, rfl, rfl, rfl⟩⟩`. Rewrite `hmul` using `[e, sgnAct_neg_one]`.
+
+Conclude with `⟨_, _, _, _, by rw [hmul, hA g]; exact congrArg _ (theta_triM (hA g')), Or.inr ⟨e, rfl, rfl, rfl, rfl⟩⟩`. Establish `hne : (-1 : ℤˣ) ≠ 1` using `by decide`. Establish `hab : ∀ g, ((t g 0 / t g 1 : Bˣ) : B) * ((t g 1 / t g 2 : Bˣ) : B) = ((t g 0 / t g 2 : Bˣ) : B)`. Introduce `g`. Rewrite using `[← Units.val_mul, div_mul_div_cancel]`.
+
+Use `⟨⟨t, ?_⟩, fun g => (x g, y g), fun g => z g - h * x g * y g, ⟨hm, fun g => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `g g' i`. Take `⟨t', x', y', z', he, hc⟩` from `step g g'`. Rewrite `he` using `[triM_mul, hA (g * g')]`. Take `⟨ht, -, -, -⟩` from `triM_inj he`.
+
+Break down `hc with ⟨e, rfl, -, -, -⟩ | ⟨e, rfl, -, -, -⟩` into its components or cases. Rewrite using `[ht]`. Simplify using `[e]`. Rewrite using `[ht]`. Simplify using `[e, hne]`.
+
+Rewrite using `[hA g]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Introduce `g g'`. Take `⟨t', x', y', z', he, hc⟩` from `step g g'`.
+
+Rewrite `he` using `[triM_mul, hA (g * g')]`. Take `⟨-, hx, hy, -⟩` from `triM_inj he`. Break down `hc with ⟨e, -, rfl, rfl, -⟩ | ⟨e, -, rfl, rfl, -⟩` into its components or cases. Apply the tactic sequence `ext <;> simp [Tor.adjointSuperdiagRep_apply, e, hx, hy]`. Apply the tactic sequence `ext <;> simp [Tor.adjointSuperdiagRep_apply, e, hne, hx, hy]`.
+
+Introduce `g g'`. Take `⟨t', x', y', z', he, hc⟩` from `step g g'`. Rewrite `he` using `[triM_mul, hA (g * g')]`. Take `⟨-, hx, hy, hz⟩` from `triM_inj he`. Establish `hg` using `hab g`.
+
+Simplify using `only [Tor.χ2_apply, Tor.adjointSuperdiagRep_apply, omg]`. Break down `hc with ⟨e, -, rfl, rfl, rfl⟩ | ⟨e, -, rfl, rfl, rfl⟩` into its components or cases. Simplify using `only [e, if_true]`. Rewrite using `[hx, hy, hz]`. Use `push_cast`.
+
+Take the linear combination `(-(x g * ((t g 1 / t g 2 : Bˣ) : B) * y g')) * h2 - (h * x g' * y g') * hg`. Simplify using `only [e, hne, if_false]`. Rewrite using `[hx, hy, hz]`. Use `push_cast`. Take the linear combination `(((t g 1 / t g 2 : Bˣ) : B) * x g * x g' - ((t g 0 / t g 2 : Bˣ) : B) * x g' * y g') * h2 - (h * x g' * y g') * hg`.
+-/
 theorem UpperTheory.exists_torus_coords_of_unipotent :
     ∀ {G B : Type} [Group G] [CommRing B] {η : G →* ℤˣ} (h : B), 2 * h = 1 → ∀ u : G →* GG 3 B, HasMult η u → (∀ g a b, wt a b < 0 → (u g).mat a b = 0) → ∃ (T : Tor η B) (β : G → B × B) (γ : G → B), T.Coord h β γ u ∧ (∀ g g', β (g * g') = β g + T.M1 g (β g')) ∧ T.IsGam h β γ := by
   intro G B _ _ η h h2 u hm hu

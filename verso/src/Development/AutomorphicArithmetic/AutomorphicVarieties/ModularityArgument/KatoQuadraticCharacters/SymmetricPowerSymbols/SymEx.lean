@@ -9,6 +9,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 namespace UpperTheory.V.Z.Kato.Sym
 
+/- English proof (translation)
+The claim follows from `symEx_of secEx pSymb pCoc pRed pLev pDist pIsog pTop`.
+-/
 theorem symEx : SymEx := symEx_of secEx pSymb pCoc pRed pLev pDist pIsog pTop
 
 end UpperTheory.V.Z.Kato.Sym

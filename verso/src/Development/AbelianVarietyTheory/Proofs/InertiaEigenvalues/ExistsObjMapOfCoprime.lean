@@ -17,6 +17,27 @@ open GlobalTheory.UnifPoint
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {g : ℕ}
 
+/- English proof (translation)
+Establish `hT` using `GlobalTheory.ArcCM.known_holds.theta`. Establish `hL` using `GlobalTheory.ArcCM.known_holds.laws`. Establish `hG` using `hL.globalFns`. Establish `hA : HomAlg` using `GlobalTheory.exists_isMonHom_of_map_lattice hT hL`. Establish `hD : WeilDet` using `GlobalTheory.T.lambdaBundleIso_of_primeToP_weilPairings hL`.
+
+Establish `p₁` using `GlobalTheory.obj_isAbelianScheme_dim_rigidified_sym E H D l _ _ _ _ o₁`. Establish `p₂` using `GlobalTheory.obj_isAbelianScheme_dim_rigidified_sym E H D l _ _ _ _ o₂`. Take `⟨α, hα, hα'⟩ : ∃ α : o₁.t.G ⟶ o₂.t.G, IsMonHom α ∧ ∀ z, e₂ (h z) = e₁ z ≫ α` from `exists_hom hT hA (objPol o₁ p₁) (objPol o₂ p₂) rfl u₁ u₂ h.toLinearMap fun z hz => by`. Take `⟨a, rfl⟩` from `(r₁.1 z).1 hz`. Conclude with `(r₂.1 _).2 ⟨gam a, hh a⟩`.
+
+Take `⟨β, -, hβ'⟩ : ∃ β : o₂.t.G ⟶ o₁.t.G, IsMonHom β ∧ ∀ z, e₁ (h.symm z) = e₂ z ≫ β` from `exists_hom hT hA (objPol o₂ p₂) (objPol o₁ p₁) rfl u₂ u₁ h.symm.toLinearMap fun z hz => by`. Take `⟨a, rfl⟩` from `(r₂.1 z).1 hz`. Use `(r₁.1 _).2 ⟨gam.symm a, h.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← hh, gam.apply_symm_apply]`. Conclude with `(h.apply_symm_apply _).symm`.
+
+Use `p₁.1.smooth` as an intermediate fact. Use `p₂.1.smooth` as an intermediate fact. Use `p₁.1.proper` as an intermediate fact. Use `p₂.1.proper` as an intermediate fact. Establish `: IsReduced o₁.t.G.left` using `isReduced_of_smooth_complex _ o₁.t.G.hom inferInstance`.
+
+Establish `: IsReduced o₂.t.G.left` using `isReduced_of_smooth_complex _ o₂.t.G.hom inferInstance`. Set `ψ : o₁.t.G ≅ o₂.t.G` to `{ hom := α inv := β hom_inv_id := ComplexPoints.over_hom_ext_of_complexPoints fun x => by`. Take `⟨z, rfl⟩` from `s₁ x`. Rewrite using `[← Category.assoc, ← hα', ← hβ', h.symm_apply_apply, Category.comp_id]`. Use `inv_hom_id := ComplexPoints.over_hom_ext_of_complexPoints fun x => by`.
+
+Take `⟨z, rfl⟩` from `s₂ x`. Rewrite using `[← Category.assoc, ← hβ', ← hα', h.apply_symm_apply, Category.comp_id] }`. Establish `hcomm : ∀ (a : 𝓞 E) z, h (fun k => ty₁ k (a : E) * z k) = fun k => ty₂ k (a : E) * h z k` using `fun a z => by`. Establish `k : (h.toLinearMap.restrictScalars ℝ) ∘ₗ LinearMap.mulLeft ℝ (fun k => ty₁ k (a : E)) = LinearMap.mulLeft ℝ (fun k => ty₂ k (a : E)) ∘ₗ (h.toLinearMap.restrictScalars ℝ)`. Use `LinearMap.ext_on_range hP₁.2.2.2.1 fun x => ?_` and prove the remaining obligations.
+
+Use `show h (fun k => ty₁ k (a : E) * P₁ x k) = fun k => ty₂ k (a : E) * h (P₁ x) k`. Rewrite using `[← funext (hP₁.1 a x), ← hh, ← hh, map_smul]`. Conclude with `funext (hP₂.1 a _)`. Conclude with `DFunLike.congr_fun k z`. Establish `hact : ∀ a, o₁.t.act.act a ≫ α = α ≫ o₂.t.act.act a` using `fun a => ComplexPoints.over_hom_ext_of_complexPoints fun x => by`.
+
+Take `⟨z, rfl⟩` from `s₁ x`. Rewrite using `[← Category.assoc, ← Category.assoc, ← r₁.2.1, ← hα', ← hα', ← r₂.2.1, hcomm]`. Establish `hlam` using `hD ℂ (objPol o₁ p₁) (objPol o₂ p₂) α 2 1 hα Nat.prime_two inferInstance fun k x y c hk _ hx hy hw => by`. Take `⟨a, rfl⟩` from `exists_div_of_pow a₁ s₁ r₁.1 hk hx`. Take `⟨a', rfl⟩` from `exists_div_of_pow a₁ s₁ r₁.1 hk hy`.
+
+Establish `w` using `r₁.2.2 k a a' (Units.mk0 _ (Complex.exp_ne_zero _)) hk rfl`. Take `rfl` from `weilIs_unique_fieldPoint _ _ _ o₁.t.PP.isLB ℂ (𝟙 _) k _ _ _ _ hw w`. Establish `w'` using `r₂.2.2 k (gam a) (gam a') (Units.mk0 _ (Complex.exp_ne_zero _)) hk rfl`. Rewrite `w'` using `[hh, hh, ← map_smul h, ← map_smul h, hα', hα', hEF]`. Rewrite using `[pow_one]`.
+
+Conclude with `w'`. Establish `: IsMonHom ψ.hom` using `hα`. Conclude with `⟨⟨CubeMap.ofHom α, isGrpPullback_of_iso ψ, rfl, fun a => congrArg (fun z => z.left) (hact a), HeckePoint.isPullCubical_of_iso hG p₁.1 α o₁.t.cub o₂.t.cub (HeckePoint.iso_of_lam o₁.t o₂.t α hact hlam)⟩, fun z => congrArg (fun q => q.left) (hα' z).symm⟩`.
+-/
 theorem exists_sabMap_types {D D₁ D₂ : Datum H}
     {l : Level H} {b : Base l ℂ} {s : Sp ℂ ⟶ Sp ℂ} (o₁ o₂ : Obj D l b s)
     {ty₁ ty₂ : Fin g → (E →+* ℂ)} {P₁ : D₁.La →+ (Fin g → ℂ)} {P₂ : D₂.La →+ (Fin g → ℂ)} (hP₁ : IsPeriod D₁ ty₁ P₁)
@@ -90,6 +111,13 @@ theorem exists_sabMap_types {D D₁ D₂ : Datum H}
     HeckePoint.isPullCubical_of_iso hG p₁.1 α o₁.t.cub o₂.t.cub (HeckePoint.iso_of_lam o₁.t o₂.t α hact hlam)⟩,
     fun z => congrArg (fun q => q.left) (hα' z).symm⟩
 
+/- English proof (translation)
+Use `⟨⟨m, fun a => ?_, fun a => ?_⟩, rfl⟩` and prove the remaining obligations. Establish `ha : a ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La) ⊔ J • (⊤ : Submodule (𝓞 E) D.La)`. Rewrite using `[← Submodule.sup_smul, hJ, Submodule.top_smul]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.1 ha`.
+
+Rewrite using `[o₁.eta_add, o₂.eta_add, o₁.eta_ker x hx, o₂.eta_ker x hx, _root_.one_mul, _root_.one_mul]`. Conclude with `(h₁ y hy).trans (Category.id_comp _).symm`. Establish `c₁` using `o₁.etaA_ker a`. Establish `c₂` using `o₂.etaA_ker a`. Rewrite `c₁`, `c₂` using `[hA, one_smul]`.
+
+Rewrite using `[c₁, c₂]`. Conclude with `h₂.trans (Category.id_comp _).symm`.
+-/
 theorem exists_objMap_of_coprime {D : Datum H} {l : Level H} (hA : l.A = 1) {B : Type} [CommRing B] {b : Base l B}
     {S : Scheme.{0}} {s : S ⟶ Sp B} (o₁ o₂ : Obj D l b s) (m : SABMap o₁.t o₂.t (𝟙 S)) (J : Ideal (𝓞 E))
     (hJ : l.Mb ⊔ J = ⊤)
@@ -109,6 +137,9 @@ theorem exists_objMap_of_coprime {D : Datum H} {l : Level H} (hA : l.A = 1) {B :
     rw [c₁, c₂]
     exact h₂.trans (Category.id_comp _).symm
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `objMap_unique_of_field GlobalTheory.ArcCM.known_holds.laws.serre m' m`.
+-/
 theorem phi_eq_of_point_eq {D : Datum H} {l : Level H} {B B' : Type} [CommRing B] [CommRing B'] {b : Base l B}
     {b' : Base l B'} {S : Scheme.{0}} {s : S ⟶ Sp B} {s' : Sp ℂ ⟶ Sp B'}
     {o : Obj D l b s} {o₁ : Obj D l b' s'} {y y' : Sp ℂ ⟶ S} (h : y' = y) (m : ObjMap o₁ o y)
@@ -116,12 +147,20 @@ theorem phi_eq_of_point_eq {D : Datum H} {l : Level H} {B B' : Type} [CommRing B
   subst h
   exact objMap_unique_of_field GlobalTheory.ArcCM.known_holds.laws.serre m' m
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨F.ex_add i P hP, F.ex_onto i P hP, GlobalTheory.ArcCM.isHolTo_exp_of_isPeriod F i P hP, (F.ex_diff i P hP).1, (F.ex_diff i P hP).2⟩`.
+-/
 theorem isExp_family {D : Datum H} {l : Level H} {Xo : Moduli D l} {σ : KA l →+* ℂ} {ty : Fin g → (E →+* ℂ)}
     (F : FamilyUnif Xo σ ty) (i : Fin F.n) {P : (F.Di i).La →+ (Fin g → ℂ)} (hP : IsPeriod (F.Di i) ty P) :
     GlobalTheory.UnifPoint.IsExp (F.ex i P) :=
   ⟨F.ex_add i P hP, F.ex_onto i P hP, GlobalTheory.ArcCM.isHolTo_exp_of_isPeriod F i P hP, (F.ex_diff i P hP).1,
     (F.ex_diff i P hP).2⟩
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Use `he 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Rewrite using `[zero_smul, pow_zero]`.
+
+Conclude with `left_eq_mul.1 this`. Consider the case `succ n ih => rw [succ_nsmul, he, ih, pow_succ]`.
+-/
 theorem pow_of_add {V Q : Type} [AddCommGroup V] [Group Q] {e : V → Q} (he : ∀ z w, e (z + w) = e z * e w) (n : ℕ)
     (z : V) : e (n • z) = e z ^ n := by
   induction n with
@@ -132,6 +171,21 @@ theorem pow_of_add {V Q : Type} [AddCommGroup V] [Group Q] {e : V → Q} (he : �
     exact left_eq_mul.1 this
   | succ n ih => rw [succ_nsmul, he, ih, pow_succ]
 
+/- English proof (translation)
+Establish `hM0 : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Establish `hp0 : pd ≠ 0` using `fun h0 => by`. Use `l₂.three_le` as an intermediate fact. Rewrite `this` using `[hM, h0]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hy'` using `F.over_σ k P hP`. Take `⟨o₁, ⟨m₁⟩⟩` from `GlobalTheory.obj_pull E H D l _ ℂ (baseKA l) (baseOfEmb σ) σ _ _ Xo.s (𝟙 _) (F₂.u k₂ P₂ ≫ r) rfl rfl (hy.trans (Category.id_comp _).symm) Xo.univ`. Take `⟨o₂, ⟨m₂⟩⟩` from `GlobalTheory.obj_pull E H D l _ ℂ (baseKA l) (baseOfEmb σ) σ _ _ Xo.s (𝟙 _) (F.u k P) rfl rfl (hy'.trans (Category.id_comp _).symm) Xo.univ`. Take `⟨n, hn⟩` from `(GlobalTheory.sabMap_cancel_and_comp_over E H _ _ _ _ _ _ r _ (F₂.u k₂ P₂) m m₁.toSABMap rfl).1`. Take `⟨e₁, f₁, a₁, s₁, r₁, u₁⟩` from `exists_fibre_unif n hP₂ (isExp_family F₂ k₂ hP₂) ⟨F₂.ex_ker k₂ P₂ hP₂, F₂.ex_lin k₂ P₂ hP₂, F₂.ex_weil k₂ P₂ hP₂⟩`.
+
+Take `⟨e₂, f₂, a₂, s₂, r₂, u₂⟩` from `exists_fibre_unif m₂.toSABMap hP (isExp_family F k hP) ⟨F.ex_ker k P hP, F.ex_lin k P hP, F.ex_weil k P hP⟩`. Take `⟨w, hw⟩` from `exists_sabMap_types o₁ o₂ hP₂ hP a₁ s₁ s₂ r₁ r₂ u₁ u₂ gam h hEF hh`. Establish `hmap : l₂.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) ≤ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)` using `Ideal.map_mono hle`. Take `⟨q, hq⟩` from `exists_objMap_of_coprime hA o₁ o₂ w (l₂.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)) (eq_top_iff.2 (l₂.coprime.symm.le.trans (sup_le_sup_right hle _))) (fun a ha => by`. Establish `j₂` using `F.ex_eta k P hP a (Submodule.smul_mono_left hmap ha)`.
+
+Establish `j₁ : toUnit _ ≫ Xo₂.univ.eta a ^ pd = F₂.ex k₂ P₂ ((l.M : ℂ)⁻¹ • P₂ (F₂.t k₂ a))`. Rewrite using `[MonObj.comp_pow, F₂.ex_eta k₂ P₂ hP₂ a ha, ← pow_of_add (F₂.ex_add k₂ P₂ hP₂), hM, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, Nat.cast_mul, mul_inv, mul_left_comm, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hp0), _root_.mul_one]`. Establish `c₁ : (o₁.eta a).left = (e₁ ((l.M : ℂ)⁻¹ • P₂ (F₂.t k₂ a))).left`. Use `m₁.cart.1.hom_ext ?_ ((Over.w _).trans (Over.w _).symm)` and prove the remaining obligations. Use `(m₁.eta a).trans (Eq.trans ?_ (congrArg (_ ≫ ·) hn))` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc (e₁ _).left, f₁, ← j₁, Category.assoc, ← heta]`. Conclude with `(Category.assoc _ _ _).symm`. Establish `c₂ : (o₂.eta a).left = (e₂ ((l.M : ℂ)⁻¹ • P (F.t k a))).left` using `m₂.cart.1.hom_ext ((m₂.eta a).trans ((congrArg (fun q => q.left) j₂).trans (f₂ _).symm)) ((Over.w _).trans (Over.w _).symm)`. Rewrite using `[c₁, c₂, hw, map_smul h, ← hh, (div_eq_iff hP.2.1 a₂ r₂.1 hM0 _ _).2 (gM a ha)])`. Use the proof step `(by`.
+
+Use `hw 0` as an intermediate fact. Rewrite using `[map_zero, (r₁.1 0).2 (zero_mem _), (r₂.1 0).2 (zero_mem _)] at this)` and apply the resulting hypothesis. Take `⟨q', hq'⟩` from `((GlobalTheory.ObjMaps.id_comp_cancel E H D l _ _ _ _ _ _ _ _ _ _ _ _ Xo.univ o₂ o₁).2 (F.u k P) (𝟙 _) m₂).1 q`. Establish `hyy : F₂.u k₂ P₂ ≫ r = 𝟙 _ ≫ F.u k P` using `(GlobalTheory.moduli_rep_of_base GlobalTheory.ObjMaps.id_comp_cancel E H D l Xo ℂ (baseOfEmb σ) σ _ (𝟙 _) o₁ inferInstance rfl rfl).unique ⟨hy.trans (Category.id_comp _).symm, ⟨m₁⟩⟩ ⟨by rw [Category.id_comp, hy', Category.id_comp], ⟨q'⟩⟩`. Establish `hφ` using `phi_eq_of_point_eq hyy.symm m₁ q'`.
+
+Use `⟨hyy.trans (Category.id_comp _), fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[← f₁, ← f₂, ← hw, Category.assoc, Category.assoc, hn, ← hq, ← hq', hφ]`.
+-/
 theorem ex_comp_eq {D : Datum H} {l l₂ : Level H} {Xo : Moduli D l} {Xo₂ : Moduli D l₂} {r : Xo₂.X ⟶ Xo.X}
     (m : SABMap Xo₂.univ.t Xo.univ.t r) (pd : ℕ) (hA : l.A = 1) (hM : l₂.M = l.M * pd) (hle : l₂.Mb ≤ l.Mb)
     (heta : ∀ a, (Xo₂.univ.eta a ^ pd).left ≫ m.φ = r ≫ (Xo.univ.eta a).left)

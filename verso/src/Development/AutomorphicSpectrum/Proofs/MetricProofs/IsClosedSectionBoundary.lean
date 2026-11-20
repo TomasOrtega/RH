@@ -8,6 +8,9 @@ open scoped ComplexOrder Classical
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.CWeight
 
+/- English proof (translation)
+Introduce `e X _ A L s hS`. Conclude with `ReciprocityTheory.AnForm.P.LeviFormBoundaryTopology.isClosed_bdry hS`.
+-/
 theorem isClosed_bdry_of_isSection : ∀ (e : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas e X) (L : LocPot X) (s : X → X → ℂ), IsSection A L s → IsClosed (bdry s) := by
   intro e X _ A L s hS
   exact ReciprocityTheory.AnForm.P.LeviFormBoundaryTopology.isClosed_bdry hS

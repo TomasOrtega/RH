@@ -11,9 +11,15 @@ namespace TateSys
 
 def sqDeg {l : ℕ} (μ : Fin l × Fin 1 → ℤ) : ℤ := ∑ p, μ p * μ p
 
+/- English proof (translation)
+Simplify using `[qW]`.
+-/
 theorem qW_mul (y : Fin 1 → ℤ) : qW !![1] (LinearMap.mul ℤ ℤ) y = y 0 * y 0 := by
   simp [qW]
 
+/- English proof (translation)
+Simplify using `[lin, qW_mul, sqDeg, Fintype.sum_prod_type]`.
+-/
 theorem lin_mul {l : ℕ} (μ : Fin l × Fin 1 → ℤ) :
     ∑ i : Fin 1, lin !![1] μ ((fun _ => LinearMap.mul ℤ ℤ) i) = sqDeg μ := by
   simp [lin, qW_mul, sqDeg, Fintype.sum_prod_type]
@@ -21,6 +27,11 @@ theorem lin_mul {l : ℕ} (μ : Fin l × Fin 1 → ℤ) :
 def low (N : ℕ) {l : ℕ} (a : Fin l × Fin 1 → ℤ) (n : ℤ) : Set (Fin l × Fin 1 → ℤ) :=
   {μ | μ ∈ orbit ℤ 3 N (LinearMap.id : ℤ →ₗ[ℤ] ℤ) a ∧ sqDeg μ < n}
 
+/- English proof (translation)
+Use `(Set.Finite.pi (t := fun _ : Fin l × Fin 1 => Set.Icc (-n) n) fun _ => Set.finite_Icc _ _).subset ?_` and prove the remaining obligations. Introduce and unpack `μ ⟨-, hμ⟩ p -`. Establish `h1 : μ p * μ p ≤ sqDeg μ` using `Finset.single_le_sum (f := fun p => μ p * μ p) (fun p _ => mul_self_nonneg _) (Finset.mem_univ p)`. Establish `h2 : |μ p| ≤ μ p * μ p`. Break down `eq_or_ne (μ p) 0 with h | h` into its components or cases.
+
+Simplify using `[h]`. Rewrite using `[← abs_mul_abs_self]`. Conclude with `le_mul_of_one_le_left (abs_nonneg _) (Int.one_le_abs h)`. Conclude with `abs_le.1 (by linarith)`.
+-/
 theorem low_finite (N : ℕ) {l : ℕ} (a : Fin l × Fin 1 → ℤ) (n : ℤ) : (low N a n).Finite := by
   refine (Set.Finite.pi (t := fun _ : Fin l × Fin 1 => Set.Icc (-n) n) fun _ => Set.finite_Icc _ _).subset ?_
   rintro μ ⟨-, hμ⟩ p -
@@ -34,10 +45,18 @@ theorem low_finite (N : ℕ) {l : ℕ} (a : Fin l × Fin 1 → ℤ) (n : ℤ) : 
 
 def lowF (N : ℕ) {l : ℕ} (a : Fin l × Fin 1 → ℤ) (n : ℤ) : Finset (Fin l × Fin 1 → ℤ) := (low_finite N a n).toFinset
 
+/- English proof (translation)
+Simplify using `[lowF, low]`.
+-/
 theorem mem_lowF {N l : ℕ} {a : Fin l × Fin 1 → ℤ} {n : ℤ} {μ} :
     μ ∈ lowF N a n ↔ μ ∈ orbit ℤ 3 N (LinearMap.id : ℤ →ₗ[ℤ] ℤ) a ∧ sqDeg μ < n := by
   simp [lowF, low]
 
+/- English proof (translation)
+Simplify using `only [one_mul, mono, qW_mul, Finset.univ_unique, Fin.default_eq_zero, Finset.prod_singleton]`. Rewrite using `[Finset.prod_pow_eq_pow_sum]`. Use `congr 1`. Establish `: sqDeg μ = ((∑ i : Fin l, (μ (i, 0) * μ (i, 0)).toNat : ℕ) : ℤ)`. Rewrite using `[Nat.cast_sum, Finset.sum_congr rfl fun i _ => Int.toNat_of_nonneg (mul_self_nonneg (μ (i, 0)))]`.
+
+Simplify using `[sqDeg, Fintype.sum_prod_type]`. Rewrite using `[this, Int.toNat_natCast]`.
+-/
 theorem term_eq {l : ℕ} (μ : Fin l × Fin 1 → ℤ) :
     (∏ i, (1 : PowerSeries ℚ) * mono !![1] (fun _ : Fin 1 => PowerSeries.X) (fun _ => LinearMap.mul ℤ ℤ)
       (fun v => μ (i, v))) = PowerSeries.X ^ (sqDeg μ).toNat := by
@@ -49,9 +68,15 @@ theorem term_eq {l : ℕ} (μ : Fin l × Fin 1 → ℤ) :
     simp [sqDeg, Fintype.sum_prod_type]
   rw [this, Int.toNat_natCast]
 
+/- English proof (translation)
+Rewrite using `[PowerSeries.maximalIdeal_eq_span_X]`. Conclude with `Ideal.mem_span_singleton_self _`.
+-/
 theorem X_mem : (PowerSeries.X : PowerSeries ℚ) ∈ maximalIdeal (PowerSeries ℚ) := by
   rw [PowerSeries.maximalIdeal_eq_span_X]; exact Ideal.mem_span_singleton_self _
 
+/- English proof (translation)
+Rewrite using `[term_eq]`. Conclude with `Ideal.pow_le_pow_right (by omega) (Ideal.pow_mem_pow X_mem _)`.
+-/
 theorem term_mem {l : ℕ} (μ : Fin l × Fin 1 → ℤ) {e : ℕ} (h : (e : ℤ) ≤ sqDeg μ) :
     (∏ i, (1 : PowerSeries ℚ) * mono !![1] (fun _ : Fin 1 => PowerSeries.X) (fun _ => LinearMap.mul ℤ ℤ)
       (fun v => μ (i, v))) ∈ maximalIdeal (PowerSeries ℚ) ^ e := by
@@ -120,9 +145,15 @@ def VSys.tate : VSys (O := ℤ) id 1 !![1] 3 (PowerSeries ℚ) where
       by_contra h
       exact h2 (mem_lowF.2 ⟨(mem_lowF.1 h1).1, by push_neg at h; exact h⟩)
 
+/- English proof (translation)
+Introduce `_` and use `⟨rfl, fun _ => ⟨rfl, PowerSeries.X_ne_zero⟩⟩`.
+-/
 theorem VSys.tate_nontrivial : ∀ y, VSys.tate.m y = 1 ∧ ∀ i, VSys.tate.t y i = PowerSeries.X ∧ VSys.tate.t y i ≠ 0 :=
   fun _ => ⟨rfl, fun _ => ⟨rfl, PowerSeries.X_ne_zero⟩⟩
 
+/- English proof (translation)
+Establish `h : e 1 * e.symm 1 = 1`. Use `e.apply_symm_apply 1` as an intermediate fact. Rewrite `this` using `[show e.symm 1 = e.symm 1 • (1 : ℤ) by simp, map_smul, smul_eq_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Int.eq_one_or_neg_one_of_mul_eq_one h`.
+-/
 theorem TateSys.unit_eq_one {e : ℤ ≃ₗ[ℤ] ℤ} : e 1 = 1 ∨ e 1 = -1 := by
   have h : e 1 * e.symm 1 = 1 := by
     have := e.apply_symm_apply 1
@@ -130,6 +161,25 @@ theorem TateSys.unit_eq_one {e : ℤ ≃ₗ[ℤ] ℤ} : e 1 = 1 ∨ e 1 = -1 := 
     linarith
   exact Int.eq_one_or_neg_one_of_mul_eq_one h
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `: (1 : ℤ) ∈ Submodule.span ℤ (Set.range fun _ : Fin 1 × Fin 1 => (1 : ℤ))` using `Submodule.subset_span ⟨(0, 0), rfl⟩`. Simplify using `using Submodule.smul_mem _ x this`. Use `le β _ hβ := by`.
+
+Establish `hlin : (lin !![1] (fun _ : Fin 1 × Fin 1 => (1 : ℤ)) β : ℝ) = β 1 1` using `by simp [lin, qW]`. Rewrite using `[hlin, Nat.cast_one, one_mul, InvFun.evalZ, (InvFun.minVal ℤ).eval_eq (n := 1) (r := LinearMap.proj 0) fun x => ⟨fun _ => x, rfl⟩]`. Use `show sInf _ ≤ _`. Establish `hsq : ∀ y : ℤ, β y y = y * y * β 1 1` using `fun y => by`. Establish `h1 : β y y = β (y • 1) (y • 1)` using `by simp`.
+
+Rewrite using `[h1, LinearMap.map_smul₂, LinearMap.map_smul]`. Simplify using `[mul_assoc]`. Distinguish the cases in `h0 : (β 1 1 : ℝ) = 0`. Rewrite using `[h0]`. Use `Real.sInf_nonpos fun x ⟨⟨y, hy⟩, hx⟩ => ?_` and prove the remaining obligations.
+
+It suffices to derive a contradiction. Apply `hx` to reduce the goal to its premises. Rewrite using `[← hy]`. Establish `h00 : β 1 1 = 0` using `by exact_mod_cast h0`. Use `show (β (y 0) (y 0) : ℝ) = (β ((LinearMap.proj 0 : (Fin 1 → ℤ) →ₗ[ℤ] ℤ) 0) ((LinearMap.proj 0 : (Fin 1 → ℤ) →ₗ[ℤ] ℤ) 0) : ℝ)`.
+
+Rewrite using `[hsq (y 0), h00]`. Simplify using the standard rewrite rules. Use `csInf_le ⟨0, ?_⟩ ⟨⟨fun _ => 1, rfl⟩, by` and prove the remaining obligations. Simplify using `only [LinearMap.proj_apply, map_zero, LinearMap.zero_apply, Int.cast_zero]`. Conclude with `h0⟩`.
+
+Introduce and unpack `x ⟨⟨y, rfl⟩, -⟩`. Use `show (0 : ℝ) ≤ (β (y 0) (y 0) : ℝ)`. Conclude with `hβ _` after adjusting the coercions. Use `min e _ j := by`. Simplify using `only [lin, TateSys.qW_mul, Finset.univ_unique, Finset.sum_singleton, LinearMap.mul_apply']`.
+
+Apply the tactic sequence `rcases TateSys.unit_eq_one (e := e) with h | h <;> simp [h]`. Use `strict e he := by`. Introduce and unpack `⟨x, hx⟩`. It suffices to derive a contradiction. Apply `hx` to reduce the goal to its premises.
+
+Establish `h1 : e 1 = 1`. Take `⟨w, hw⟩` from `he 1`. Break down `TateSys.unit_eq_one (e := e) with h | h` into its components or cases. Conclude with `h`. Rewrite `hw` using `[h]`.
+
+Simplify using `at hw`. Use linear arithmetic over natural numbers and integers. Rewrite using `[show x = x • (1 : ℤ) by simp, map_smul, h1]`.
+-/
 theorem dominant_tate : Dominant (O := ℤ) id (InvFun.minVal ℤ) 1 3 !![1] (X := ℤ) (fun _ : Fin 1 => LinearMap.mul ℤ ℤ)
     (fun _ : Fin 1 × Fin 1 => (1 : ℤ)) where
   span := by

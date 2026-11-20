@@ -23,6 +23,11 @@ def hermE (D : D7) (r : ℕ) (b : hermA D r) : HermR (AF D.host.F) D.sp.cm.sig r
     simp only [GlobalTheory.MixModel.adj, Matrix.transpose_apply, Matrix.map_apply] at h
     exact h⟩
 
+/- English proof (translation)
+Set `e : V ≃+ V'` to `{ toFun := g, invFun := k, left_inv := h1, right_inv := h2, map_add' := hadd }`. Set `h : V ≃ₜ V'` to `{ toEquiv := e.toEquiv, continuous_toFun := hc, continuous_invFun := hc' }`. Use `haveI : (μ.map e).IsAddHaarMeasure := e.isAddHaarMeasure_map μ hc hc'`. Establish `hi : Integrable f (μ.map e)` using `(integrable_map_equiv h.toMeasurableEquiv f).2 hf`. Rewrite using `[Measure.isAddLeftInvariant_eq_smul ν (μ.map e)]`.
+
+Conclude with `hi.smul_measure_nnreal`.
+-/
 theorem integrable_of_addEquiv {V V' : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V]
     [MeasurableSpace V] [BorelSpace V] [AddCommGroup V'] [TopologicalSpace V'] [IsTopologicalAddGroup V']
     [MeasurableSpace V'] [BorelSpace V'] [LocallyCompactSpace V'] [SecondCountableTopology V']
@@ -40,6 +45,11 @@ theorem integrable_of_addEquiv {V V' : Type} [AddCommGroup V] [TopologicalSpace 
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Use `haveI : IsTopologicalAddGroup (Mx D r r) := inferInstanceAs (IsTopologicalAddGroup (Fin r → Fin r → AE D))`. Use `haveI i3 : SecondCountableTopology (Mx D r r) := inferInstanceAs (SecondCountableTopology (Fin r → Fin r → AE D))`. Use `haveI : BorelSpace (Mx D r r) := ⟨rfl⟩`. Use `haveI : BorelSpace (hermA D r) := Subtype.borelSpace _`. Use `haveI : SecondCountableTopology (HermR (AF D.host.F) D.sp.cm.sig r) := @Topology.IsInducing.secondCountableTopology _ _ _ _ _ i3 Topology.IsInducing.subtypeVal`.
+
+Conclude with `integrable_of_addEquiv (hermE D r) (fun S => ⟨S.1, Matrix.ext fun a c => S.2 a c⟩) (fun _ => rfl) (fun _ => rfl) (fun _ _ => rfl) (continuous_subtype_val.subtype_mk _) (continuous_subtype_val.subtype_mk _) lam hlam db hdb f hf`.
+-/
 theorem integrable_of_hermE {r : ℕ} (lam : Measure (hermA D r)) (hlam : lam.IsAddHaarMeasure)
     (db : Measure (HermR (AF D.host.F) D.sp.cm.sig r)) (hdb : db.IsAddHaarMeasure)
     (f : HermR (AF D.host.F) D.sp.cm.sig r → ℂ) (hf : Integrable (fun b => f (hermE D r b)) lam) :

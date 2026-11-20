@@ -15,6 +15,27 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `R _ _ _ hR D A G _ _ hG U O _ _ _ o`. Establish `hgen : IsMonHom U.gen.hom` using `U.gen_hom`. Establish `hgeni : IsMonHom U.gen.inv` using `by infer_instance`. Establish `L1 : ∀ a : O, ∃ g : G ⟶ G, IsMonHom g ∧ ActsAs U.toUnifPre (o.onB.act a) (fun χ => star a • χ) g`. Introduce `a`.
+
+Take `⟨f, hf, hfA⟩` from `GlobalTheory.T.exists_genericEndomorphism_mumford_ringAction R hR D A G hG U O o a`. Take `⟨g, hg, hgf⟩` from `GlobalTheory.T.semiAbelian_generic_endomorphism_extends R hR G hG (U.gen.hom ≫ f ≫ U.gen.inv) inferInstance`. Use `⟨g, hg, hfA g hg ?_⟩` and prove the remaining obligations. Rewrite using `[hgf]`. Simplify using the standard rewrite rules.
+
+Establish `L2` using `GlobalTheory.T.uniformisedGroup_endomorphism_unique_of_thickening_action R hR D A G hG U`. Use `choose g hg hgA using L1`. Establish `one : g 1 = 𝟙 G`. Use `L2 _ _ _ _ (hg 1) inferInstance (hgA 1) ?_` and prove the remaining obligations. Use `actsAs_id U.toUnifPre` as an intermediate fact.
+
+Rewrite using `[o.onB.map_one]`. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `χ`. Simplify using the standard rewrite rules. Establish `mul : ∀ a b : O, g (a * b) = g b ≫ g a`.
+
+Introduce `a b`. Use `haveI := hg a`. Use `haveI := hg b`. Use `L2 _ _ _ _ (hg (a * b)) inferInstance (hgA (a * b)) ?_` and prove the remaining obligations. Use `actsAs_comp U.toUnifPre (hgA b) (hgA a)` as an intermediate fact.
+
+Rewrite using `[o.onB.map_mul]`. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `χ`. Simplify using `[star_mul, mul_smul]`. Establish `add : ∀ a b : O, g (a + b) = padd G (g a) (g b)`.
+
+Introduce `a b`. Use `haveI := hg a`. Use `haveI := hg b`. Establish `hp : IsMonHom (padd G (g a) (g b))` using `by unfold padd; infer_instance`. Use `L2 _ _ _ _ (hg (a + b)) hp (hgA (a + b)) ?_` and prove the remaining obligations.
+
+Use `actsAs_padd U.toUnifPre (hgA a) (hgA b)` as an intermediate fact. Rewrite using `[o.onB.map_add]`. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `χ`. Simplify using `[star_add, add_smul]`.
+
+Set `oG : RingAct G O` to `{ act := g, hom := hg, map_one := one, map_mul := mul, map_add := add }`. Set `F` to `Over.pullback (jK R)`. Set `fA : O → (A.A ⟶ A.A)` to `fun a => U.gen.inv ≫ F.map (g a) ≫ U.gen.hom`. Set `oA : A.OAct O` to `{ act := fA hom := fun a => by haveI := hg a; dsimp [fA]; infer_instance map_one := by simp [fA, F, one] map_mul := fun a b => by simp [fA, F, mul] map_add := fun a b => by`. Simplify using `only [fA, F, add, pull_padd]`.
+
+Rewrite using `[padd_comp_hom, padd, padd, comp_lift_assoc]`. Use `rosati := fun a => GlobalTheory.T.rosatiAdjoint_genericFibre_of_acts_star R hR D A G hG U O o a (g a) (g (star a)) (hg a) (hg (star a)) (hgA a) (hgA (star a)) }`. Use `⟨oA, oG, ⟨fun a => ?_, fun e a => (hgA a e).1, fun e a => (hgA a e).2⟩⟩` and prove the remaining obligations. Simplify using `[oA, oG, fA, F]`.
+-/
 theorem exists_oLinear_of_oAct : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ U : Unif (maximalIdeal R) D A G, ∀ (O : Type) [Ring O] [StarRing O] [Module O D.toPre.X] (o : D.toPre.OAct O), ∃ (oA : A.OAct O) (oG : RingAct G O), U.toUnifPre.OLinear O o oA oG := by
   intro R _ _ _ hR D A G _ _ hG U O _ _ _ o
   have hgen : IsMonHom U.gen.hom := U.gen_hom

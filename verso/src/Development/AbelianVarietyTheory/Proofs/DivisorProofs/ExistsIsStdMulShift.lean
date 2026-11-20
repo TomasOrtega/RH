@@ -20,6 +20,21 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.SWLit GlobalTheory.SWWeil GlobalTheory.SWACase GlobalTheory.SWLow
 namespace GlobalTheory.StdRescale
 
+/- English proof (translation)
+Introduce `F _ _ hF ψ h`. Use `haveI := hF`. Take `⟨a₀, ha₀, hinf⟩` from `GlobalTheory.AdeleCharConductor.exists_scaling h`. Establish `him : ∀ (w : InfinitePlace F) (x : F), (w.embedding x).im = 0` using `fun w x => by`. Use `congrArg Complex.im (GlobalTheory.AdeleCharConductor.embedding_re w x)` as an intermediate fact.
+
+Simplify using `using this.symm`. Establish `hkey : ∀ w : InfinitePlace F, (w.embedding a₀).re * (w.embedding (-a₀⁻¹)).re = -1` using `fun w => by`. Use `congrArg Complex.re (show w.embedding (a₀ * -a₀⁻¹) = -1 by rw [mul_neg, mul_inv_cancel₀ ha₀, map_neg, map_one])` as an intermediate fact. Rewrite `this` using `[map_mul, Complex.mul_re, him, him, mul_zero, sub_zero]`. Simplify using `using this`.
+
+Use `⟨-a₀⁻¹, neg_ne_zero.2 (inv_ne_zero ha₀), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `h.1.comp (continuous_const.mul continuous_id)`. Introduce `x`. Rewrite using `[AddChar.mulShift_apply, ← map_mul]`. Conclude with `h.2.2.1 _`.
+
+Introduce `b hb`. Establish `hu : evI F (pairA F 0 1) = 0` using `by show InfiniteAdeleRing.ringEquiv_mixedSpace F 0 = 0`. Conclude with `map_zero _`. Establish `hb2 : b.2 = 0`. Establish `h0` using `congrArg Prod.snd (hb (pairA F 0 1) hu)`.
+
+Express the relevant statement in the definitionally equal form `(1 : Af F) * b.2 = 0 at h0`. Rewrite `h0` using `[one_mul]`. Then use the resulting hypothesis. Establish `e1 : algebraMap F (AF F) (-a₀⁻¹) * b = pairA F (algebraMap F (Ainf F) (-a₀⁻¹) * b.1) 0`. Use `Prod.ext rfl ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(algebraMap F (AF F) (-a₀⁻¹)).2 * b.2 = 0`.
+
+Rewrite using `[hb2, mul_zero]`. Establish `hterm : ∀ w : InfinitePlace F, (w.embedding a₀).re * (InfinitePlace.Completion.extensionEmbedding w ((algebraMap F (Ainf F) (-a₀⁻¹) * b.1) w)).re = -(InfinitePlace.Completion.extensionEmbedding w (b.1 w)).re` using `fun w => by`. Rewrite using `[show (algebraMap F (Ainf F) (-a₀⁻¹) * b.1) w = algebraMap F (Ainf F) (-a₀⁻¹) w * b.1 w from rfl, map_mul, GlobalTheory.AdeleCharConductor.extensionEmbedding_algebraMap, Complex.mul_re, him, zero_mul, sub_zero, ← mul_assoc, hkey, neg_one_mul]`. Rewrite using `[AddChar.mulShift_apply, e1]`. Use `show psiInf F ψ _ = _`.
+
+Rewrite using `[hinf, GlobalTheory.WrongSignPair.trace_evI]`. Simplify using `only [hterm, Finset.sum_neg_distrib]`. Use `push_cast`. Put the polynomial expressions in normal form.
+-/
 theorem exists_isStd_mulShift : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F → ∀ ψ : AddChar (AF F) ℂ, IsCharAF F ψ →
     ∃ a : F, a ≠ 0 ∧ IsStd (ψ.mulShift (algebraMap F (AF F) a)) := by
   intro F _ _ hF ψ h

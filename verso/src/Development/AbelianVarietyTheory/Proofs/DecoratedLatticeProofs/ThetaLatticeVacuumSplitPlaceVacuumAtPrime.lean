@@ -19,6 +19,29 @@ noncomputable section
 
 namespace GlobalTheory.VacSplit
 
+/- English proof (translation)
+Introduce `D v w hvw hw ψ S T f hf`. Use `⟨hf.1, fun e f' he u hu hhalf => ?_⟩` and prove the remaining obligations. Establish `he'` using `he`. Take `⟨hid, rfl⟩` from `GlobalTheory.CentralShift.split_of_primeIdem hw he`. Take `⟨v', ε, hε, hf', hv'⟩` from `GlobalTheory.VacLat.place_of_primeIdem he'`.
+
+Rewrite `hv'` using `[hvw]`. Substitute `hv'` using the available equality. Establish `hfu : ∀ i j, (e + Formalism.L2.Theta.cA D e) * u i j = u i j`. Establish `h1` using `hid.1.1`. Establish `h2` using `hid.1.2.1`.
+
+Establish `h3 : Formalism.L2.Theta.cA D e * Formalism.L2.Theta.cA D e = Formalism.L2.Theta.cA D e` using `by rw [← map_mul, h1]`. Establish `h4 : Formalism.L2.Theta.cA D e * e = 0` using `by rw [mul_comm]; exact h2`. Apply the tactic sequence `rcases hhalf with h | h <;> intro i j`. Establish `h' : e * u i j = u i j` using `h i j`. Rewrite using `[← h', ← mul_assoc, add_mul, h1, h4, add_zero]`.
+
+Establish `h' : Formalism.L2.Theta.cA D e * u i j = u i j` using `h i j`. Rewrite using `[← h', ← mul_assoc, add_mul, h2, h3, zero_add]`. Take `⟨α, rfl, h1, h0⟩` from `hε`. Establish `hα : α ∈ intAf D.host.F` using `fun w' => by`. Distinguish the cases in `hw' : w' = v`.
+
+Substitute `hw'` using the available equality. Rewrite using `[h1]`. Conclude with `one_mem _`. Rewrite using `[h0 w' hw']`. Conclude with `zero_mem _`.
+
+Use `set a₀ := algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α) with ha₀`. Set `φ : WO S T →+ WO S T` to `DistribMulAction.toAddMonoidHom (WO S T) a₀`. Establish `key : latO S T (L0c D S) (L0c D T) (fun _ => True) ≤ (latO S T (frameLat S : Set (Fin S.rank → D.host.E)) (frameLat T : Set (Fin T.rank → D.host.E)) fun u => u = v).comap φ`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨β, hβ, -, a, ha, s, hs, t, ht, rfl⟩`.
+
+Use `AddSubgroup.subset_closure ⟨α * β, GlobalTheory.VacLat.intAf_mul hα hβ, fun v'' hv'' => by rw [map_mul, h0 v'' hv'', zero_mul], a, ha, s, ?_, t, ?_, ?_⟩` and prove the remaining obligations. Use `show S.frame.equivFun.symm s ∈ S.L0`. Rewrite using `[Module.Basis.equivFun_symm_apply]`. Conclude with `hs`. Use `show T.frame.equivFun.symm t ∈ T.L0`.
+
+Rewrite using `[Module.Basis.equivFun_symm_apply]`. Conclude with `ht`. Use extensionality with `i j`. Simplify using `only [φ, DistribMulAction.toAddMonoidHom_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`. Rewrite using `[ha₀, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, Algebra.algebraMap_self, RingHom.id_apply, GlobalTheory.VacLat.pairA_mul]`.
+
+Establish `hum : u ∈ latO S T (frameLat S : Set (Fin S.rank → D.host.E)) (frameLat T : Set (Fin T.rank → D.host.E)) fun u => u = v`. Establish `hk` using `key hu`. Establish `hφ : φ u = u`. Use extensionality with `i j`. Establish `hx` using `hfu i j`.
+
+Rewrite `hx` using `[hf']`. Conclude with `hx`. Rewrite `hk` using `[AddSubgroup.mem_comap, hφ]`. Then use the resulting hypothesis. Break down `hhalf with h | h` into its components or cases. Conclude with `hf.2.2 e hid.1 u hum h`.
+
+Use `hf.2.2 (Formalism.L2.Theta.cA D e) ⟨by rw [← map_mul, hid.1.1], ?_, ?_⟩ u hum h` and prove the remaining obligations. Rewrite using `[GlobalTheory.DualPairCheck.cA_cA, mul_comm]`. Conclude with `hid.1.2.1`. Take `⟨w', η, hη, hwη⟩` from `hid.1.2.2`. Conclude with `⟨w', η, hη, by rw [GlobalTheory.DualPairCheck.cA_cA, add_comm]; exact hwη⟩`.
+-/
 theorem isVacAt_of_vacFin : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)), w.under (𝓞 D.host.F) = v → Formalism.DivisionValues.conjPl w ≠ w → ∀ (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (f : WO S T → ℂ), VacFin ψ S T v f → IsVacAt ψ S T w f := by
   intro D v w hvw hw ψ S T f hf
   refine ⟨hf.1, fun e f' he u hu hhalf => ?_⟩

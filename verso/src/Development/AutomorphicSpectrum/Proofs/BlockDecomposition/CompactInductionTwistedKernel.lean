@@ -11,6 +11,19 @@ namespace GlobalTheory.CompanionTheory.PRep.CIndKer
 variable {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Establish `hvo : IsOpen {g : G | ind H σ g v.1.1 = v.1.1}` using `v.1.2`. Take `⟨K₁, hK₁o, -, hK₁⟩` from `hbasis _ (hvo.mem_nhds (by simp))`. Establish `hinv : ∀ g, ∀ x ∈ K₁, v.1.1.1 (g * x) = v.1.1.1 g`. Introduce `g x hx`. Establish `h : ind H σ x v.1.1 = v.1.1` using `hK₁ hx`.
+
+Conclude with `congrArg (fun u : indSpace H σ => u.1 g) h`. Establish `hind : S.indicator v.1.1.1 ∈ indSpace H σ`. Introduce `h g`. Distinguish the cases in `hg : g ∈ S`. Rewrite using `[Set.indicator_of_mem ((hl h h.2 g).2 hg), Set.indicator_of_mem hg]`.
+
+Conclude with `v.1.1.2 h g`. Rewrite using `[Set.indicator_of_notMem (fun h' => hg ((hl h h.2 g).1 h')), Set.indicator_of_notMem hg, map_zero]`. Establish `hsm : (⟨S.indicator v.1.1.1, hind⟩ : indSpace H σ) ∈ smoothPart (ind H σ)`. Use `GlobalTheory.CompanionTheory.BZMirOnto.isOpen_fixed_of_subgroup (ind H σ) (K₀ ⊓ K₁) (by rw [Subgroup.coe_inf]; exact hK₀.inter hK₁o) _ fun x hx => ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `g`. Use `show S.indicator v.1.1.1 (g * x) = S.indicator v.1.1.1 g`. Distinguish the cases in `hg : g ∈ S`. Rewrite using `[Set.indicator_of_mem ((hr x hx.1 g).2 hg), Set.indicator_of_mem hg, hinv g x hx.2]`. Rewrite using `[Set.indicator_of_notMem (fun h' => hg ((hr x hx.1 g).1 h')), Set.indicator_of_notMem hg]`.
+
+Take `⟨C, hC, hsupp⟩` from `v.2`. Use `⟨⟨⟨⟨S.indicator v.1.1.1, hind⟩, hsm⟩, C, hC, fun g hg => hsupp g fun h0 => hg ?_⟩, fun g => rfl⟩` and prove the remaining obligations. Use `show S.indicator v.1.1.1 g = 0`. Distinguish the cases in `hgS : g ∈ S`. Rewrite using `[Set.indicator_of_mem hgS, h0]`.
+
+Rewrite using `[Set.indicator_of_notMem hgS]`.
+-/
 theorem exists_cut (H : Subgroup G)
     (hbasis : ∀ O : Set G, O ∈ 𝓝 (1 : G) → ∃ K : Subgroup G, IsOpen (K : Set G) ∧
       IsCompact (K : Set G) ∧ (K : Set G) ⊆ O)
@@ -48,6 +61,23 @@ theorem exists_cut (H : Subgroup G)
   · rw [Set.indicator_of_mem hgS, h0]
   · rw [Set.indicator_of_notMem hgS]
 
+/- English proof (translation)
+Unfold `twKer at hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨n, v, rfl⟩` from `hy`. Take `⟨w, hw⟩` from `exists_cut H hbasis σ S hl K₀ hK₀ hr v`.
+
+Use `⟨cInd H σ (n : G) w - w, Submodule.subset_span ⟨n, w, by simp⟩, fun g => ?_⟩` and prove the remaining obligations. Establish `e1 : (cInd H σ (n : G) w - w).1.1.1 g = w.1.1.1 (g * n) - w.1.1.1 g` using `rfl`. Establish `e2 : (cInd H σ (n : G) v - (((1 : U →* ℂˣ) n : ℂˣ) : ℂ) • v).1.1.1 = fun x => v.1.1.1 (x * n) - v.1.1.1 x`. Use function extensionality and compare the values at `x`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul]`.
+
+Both sides reduce to the same expression. Rewrite using `[e1, e2, hw, hw]`. Distinguish the cases in `hg : g ∈ S`. Rewrite using `[Set.indicator_of_mem ((hu n n.2 g).2 hg), Set.indicator_of_mem hg, Set.indicator_of_mem hg]`. Rewrite using `[Set.indicator_of_notMem (fun h' => hg ((hu n n.2 g).1 h')), Set.indicator_of_notMem hg, Set.indicator_of_notMem hg, sub_zero]`.
+
+Consider the case `zero`. Use `⟨0, Submodule.zero_mem _, fun g => ?_⟩` and prove the remaining obligations. Use `show (0 : W) = S.indicator (fun _ => (0 : W)) g`. Simplify using the standard rewrite rules. Consider the case `add a b _ _ ha hb`.
+
+Take `⟨z₁, h₁, e₁⟩` from `ha`. Take `⟨z₂, h₂, e₂⟩` from `hb`. Use `⟨z₁ + z₂, Submodule.add_mem _ h₁ h₂, fun g => ?_⟩` and prove the remaining obligations. Establish `e : (z₁ + z₂).1.1.1 g = z₁.1.1.1 g + z₂.1.1.1 g` using `rfl`. Establish `e' : (a + b).1.1.1 = a.1.1.1 + b.1.1.1` using `rfl`.
+
+Rewrite using `[e, e₁, e₂, e']`. Distinguish the cases in `hg : g ∈ S`. Simplify using `only [Set.indicator_of_mem hg, Pi.add_apply]`. Simplify using `only [Set.indicator_of_notMem hg, add_zero]`. Consider the case `smul t a _ ha`.
+
+Take `⟨z, h, e⟩` from `ha`. Use `⟨t • z, Submodule.smul_mem _ _ h, fun g => ?_⟩` and prove the remaining obligations. Establish `e1 : (t • z).1.1.1 g = t • z.1.1.1 g` using `rfl`. Establish `e' : (t • a).1.1.1 = t • a.1.1.1` using `rfl`. Rewrite using `[e1, e, e']`.
+
+Distinguish the cases in `hg : g ∈ S`. Simplify using `only [Set.indicator_of_mem hg, Pi.smul_apply]`. Simplify using `only [Set.indicator_of_notMem hg, smul_zero]`.
+-/
 theorem cut_mem (H U : Subgroup G)
     (hbasis : ∀ O : Set G, O ∈ 𝓝 (1 : G) → ∃ K : Subgroup G, IsOpen (K : Set G) ∧
       IsCompact (K : Set G) ∧ (K : Set G) ⊆ O)
@@ -101,6 +131,11 @@ theorem cut_mem (H U : Subgroup G)
 
 def dc (H K : Subgroup G) (c : G) : Set G := {g | ∃ b : H, ∃ k ∈ K, g = (b : G) * c * k}
 
+/- English proof (translation)
+Introduce `h hh g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, k, hk, e⟩`. Use `⟨⟨h, hh⟩⁻¹ * b, k, hk, ?_⟩` and prove the remaining obligations. Establish `: g = h⁻¹ * (h * g)` using `by group`.
+
+Rewrite using `[this, e]`. Use `push_cast`. Use `group`. Introduce and unpack `⟨b, k, hk, rfl⟩`. Conclude with `⟨⟨h, hh⟩ * b, k, hk, by push_cast; group⟩`.
+-/
 theorem dc_left (H K : Subgroup G) (c : G) : ∀ h ∈ H, ∀ g, h * g ∈ dc H K c ↔ g ∈ dc H K c := by
   intro h hh g
   constructor
@@ -113,6 +148,11 @@ theorem dc_left (H K : Subgroup G) (c : G) : ∀ h ∈ H, ∀ g, h * g ∈ dc H 
   · rintro ⟨b, k, hk, rfl⟩
     exact ⟨⟨h, hh⟩ * b, k, hk, by push_cast; group⟩
 
+/- English proof (translation)
+Introduce `x hx g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, k, hk, e⟩`. Use `⟨b, k * x⁻¹, mul_mem hk (inv_mem hx), ?_⟩` and prove the remaining obligations. Establish `: g = (g * x) * x⁻¹` using `by group`.
+
+Rewrite using `[this, e]`. Use `group`. Introduce and unpack `⟨b, k, hk, rfl⟩`. Conclude with `⟨b, k * x, mul_mem hk hx, by group⟩`.
+-/
 theorem dc_right (H K : Subgroup G) (c : G) : ∀ x ∈ K, ∀ g, g * x ∈ dc H K c ↔ g ∈ dc H K c := by
   intro x hx g
   constructor
@@ -124,6 +164,11 @@ theorem dc_right (H K : Subgroup G) (c : G) : ∀ x ∈ K, ∀ g, g * x ∈ dc H
   · rintro ⟨b, k, hk, rfl⟩
     exact ⟨b, k * x, mul_mem hk hx, by group⟩
 
+/- English proof (translation)
+Establish `key : ∀ u ∈ U, ∀ g, g ∈ dc H K c → g * u ∈ dc H K c`. Introduce and unpack `u hu g ⟨b, k, hk, rfl⟩`. Establish `hw : (c * k) * u * (c * k)⁻¹ ∈ U` using `‹U.Normal›.conj_mem u hu _`. Use `⟨b * ⟨_, hUH hw⟩, k, hk, ?_⟩` and prove the remaining obligations. Use `push_cast`.
+
+Use `group`. Introduce `u hu g`. Use `⟨fun h => ?_, key u hu g⟩` and prove the remaining obligations. Use `key u⁻¹ (inv_mem hu) _ h` as an intermediate fact. Simplify using `using this`.
+-/
 theorem dc_unip (H U K : Subgroup G) [U.Normal] (hUH : U ≤ H) (c : G) :
     ∀ u ∈ U, ∀ g, g * u ∈ dc H K c ↔ g ∈ dc H K c := by
   have key : ∀ u ∈ U, ∀ g, g ∈ dc H K c → g * u ∈ dc H K c := by
@@ -137,6 +182,23 @@ theorem dc_unip (H U K : Subgroup G) [U.Normal] (hUH : U ≤ H) (c : G) :
   have := key u⁻¹ (inv_mem hu) _ h
   simpa using this
 
+/- English proof (translation)
+Take `⟨O₁, hO₁, e⟩` from `isOpen_induced_iff.1 (hσ a)`. Establish `fix : ∀ h : H, (h : G) ∈ O₁ → σ h a = a` using `fun h hh => by`. Establish `h' : h ∈ (Subtype.val ⁻¹' O₁ : Set H)` using `hh`. Rewrite `h'` using `[e]`. Conclude with `h'`.
+
+Establish `h1 : (1 : G) ∈ O₁`. Establish `h' : (1 : H) ∈ (Subtype.val ⁻¹' O₁ : Set H)`. Rewrite using `[e]`. Simplify using the standard rewrite rules. Conclude with `h'`.
+
+Establish `hc1 : Continuous fun k : G => c * k * c⁻¹` using `by fun_prop`. Establish `hc2 : Continuous fun k : G => (n : G)⁻¹ * (c * k * c⁻¹) * n * (c * k * c⁻¹)⁻¹` using `by fun_prop`. Establish `m1 : (fun k : G => c * k * c⁻¹) ⁻¹' O₁ ∈ 𝓝 (1 : G)` using `(hO₁.preimage hc1).mem_nhds (by simpa using h1)`. Establish `m2 : (fun k : G => (n : G)⁻¹ * (c * k * c⁻¹) * n * (c * k * c⁻¹)⁻¹) ⁻¹' O₁ ∈ 𝓝 (1 : G)` using `(hO₁.preimage hc2).mem_nhds (by simpa using h1)`. Use `⟨_, Filter.inter_mem m1 m2, fun K hKo hKc hKO => ?_⟩` and prove the remaining obligations.
+
+Take `⟨B, hB1, hB0⟩` from `GlobalTheory.CompanionTheory.BZMirOnto.exists_bump H σ K hKo hKc c a (fun b x hx hb => fix b (by rw [hb]; exact (hKO hx).1))`. Establish `hu : c⁻¹ * (n : G) * c⁻¹⁻¹ ∈ U` using `‹U.Normal›.conj_mem _ hn _`. Establish `hu' : c⁻¹ * (n : G) * c ∈ U` using `by simpa using hu`. Use `⟨cInd H σ (c⁻¹ * (n : G) * c) B - B, Submodule.subset_span ⟨⟨_, hu'⟩, B, by simp⟩, fun b k hk => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Establish `e1 : (cInd H σ (c⁻¹ * (n : G) * c) B - B).1.1.1 ((b : G) * c * k) = B.1.1.1 ((b : G) * c * k * (c⁻¹ * (n : G) * c)) - B.1.1.1 ((b : G) * c * k)` using `rfl set κ : G := c * k * c⁻¹ with hκ`.
+
+Establish `hm : κ * (n : G) * κ⁻¹ ∈ U` using `‹U.Normal›.conj_mem _ hn _`. Establish `ht : (n : G)⁻¹ * κ * n * κ⁻¹ ∈ U`. Use `mul_mem (inv_mem hn) hm` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Set `m : H` to `⟨_, hUH hm⟩`.
+
+Set `t : H` to `⟨_, hUH ht⟩`. Establish `hmt : m = n * t`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show κ * (n : G) * κ⁻¹ = n * ((n : G)⁻¹ * κ * n * κ⁻¹)`. Use `group`.
+
+Establish `hfix : σ t a = a` using `fix t (hKO hk).2`. Establish `e2 : (b : G) * c * k * (c⁻¹ * (n : G) * c) = ((b * m : H) : G) * c * k` using `by show (b : G) * c * k * (c⁻¹ * (n : G) * c) = (b : G) * (κ * (n : G) * κ⁻¹) * c * k`. Rewrite using `[hκ]`. Use `group`. Rewrite using `[e1, e2, hB1 _ _ hk, hB1 _ _ hk, hmt, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hfix, map_sub]`.
+
+Establish `e1 : (cInd H σ (c⁻¹ * (n : G) * c) B - B).1.1.1 g = B.1.1.1 (g * (c⁻¹ * (n : G) * c)) - B.1.1.1 g` using `rfl`. Rewrite using `[e1, hB0 _ (fun h => hg ?_), hB0 _ hg, sub_zero]`. Conclude with `(dc_unip H U K hUH c _ hu' g).1 h`.
+-/
 theorem local_gen (H U : Subgroup G) [U.Normal] (hUH : U ≤ H) (σ : Representation ℂ H W)
     (hσ : IsSmooth σ) (c : G) (n : H) (hn : (n : G) ∈ U) (a : W) :
     ∃ O ∈ 𝓝 (1 : G), ∀ K : Subgroup G, IsOpen (K : Set G) → IsCompact (K : Set G) →
@@ -191,6 +253,19 @@ theorem local_gen (H U : Subgroup G) [U.Normal] (hUH : U ≤ H) (σ : Representa
     rw [e1, hB0 _ (fun h => hg ?_), hB0 _ hg, sub_zero]
     exact (dc_unip H U K hUH c _ hu' g).1 h
 
+/- English proof (translation)
+Unfold `twKer at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨n, v, rfl⟩` from `hx`. Use `local_gen H U hUH σ hσ c n.1 (Subgroup.mem_subgroupOf.1 n.2) v` as an intermediate fact.
+
+Simplify using `using this`. Consider the case `zero`. Conclude with `⟨Set.univ, Filter.univ_mem, fun K _ _ _ => ⟨0, Submodule.zero_mem _, fun b k _ => by rw [map_zero]; rfl, fun g _ => rfl⟩⟩`. Consider the case `add p q _ _ hp hq`. Take `⟨O₁, h₁, P₁⟩` from `hp`.
+
+Take `⟨O₂, h₂, P₂⟩` from `hq`. Use `⟨O₁ ∩ O₂, Filter.inter_mem h₁ h₂, fun K hKo hKc hKO => ?_⟩` and prove the remaining obligations. Take `⟨y₁, m₁, a₁, b₁⟩` from `P₁ K hKo hKc (hKO.trans Set.inter_subset_left)`. Take `⟨y₂, m₂, a₂, b₂⟩` from `P₂ K hKo hKc (hKO.trans Set.inter_subset_right)`. Use `⟨y₁ + y₂, Submodule.add_mem _ m₁ m₂, fun b k hk => ?_, fun g hg => ?_⟩` and prove the remaining obligations.
+
+Establish `e : (y₁ + y₂).1.1.1 ((b : G) * c * k) = y₁.1.1.1 ((b : G) * c * k) + y₂.1.1.1 ((b : G) * c * k)` using `rfl`. Rewrite using `[e, a₁ b k hk, a₂ b k hk, map_add]`. Establish `e : (y₁ + y₂).1.1.1 g = y₁.1.1.1 g + y₂.1.1.1 g` using `rfl`. Rewrite using `[e, b₁ g hg, b₂ g hg, add_zero]`. Consider the case `smul t p _ hp`.
+
+Take `⟨O, h, P⟩` from `hp`. Use `⟨O, h, fun K hKo hKc hKO => ?_⟩` and prove the remaining obligations. Take `⟨y, m, a, b⟩` from `P K hKo hKc hKO`. Use `⟨t • y, Submodule.smul_mem _ _ m, fun b' k hk => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Establish `e : (t • y).1.1.1 ((b' : G) * c * k) = t • y.1.1.1 ((b' : G) * c * k)` using `rfl`.
+
+Rewrite using `[e, a b' k hk, map_smul]`. Establish `e : (t • y).1.1.1 g = t • y.1.1.1 g` using `rfl`. Rewrite using `[e, b g hg, smul_zero]`.
+-/
 theorem local_all (H U : Subgroup G) [U.Normal] (hUH : U ≤ H) (σ : Representation ℂ H W)
     (hσ : IsSmooth σ) (c : G) (x : W) (hx : x ∈ twKer σ (U.subgroupOf H) 1) :
     ∃ O ∈ 𝓝 (1 : G), ∀ K : Subgroup G, IsOpen (K : Set G) → IsCompact (K : Set G) →
@@ -228,6 +303,31 @@ theorem local_all (H U : Subgroup G) [U.Normal] (hUH : U ≤ H) (σ : Representa
     · have e : (t • y).1.1.1 g = t • y.1.1.1 g := rfl
       rw [e, b g hg, smul_zero]
 
+/- English proof (translation)
+Introduce `G W _ _ _ _ _ H U _ hUH hbasis σ hσ f hf`. Establish `hfo : IsOpen {g : G | ind H σ g f.1.1 = f.1.1}` using `f.1.2`. Establish `hloc : ∀ c : G, ∃ K : Subgroup G, IsOpen (K : Set G) ∧ ∃ y ∈ twKer (cInd H σ) U 1, ∀ g, y.1.1.1 g = (dc H K c).indicator f.1.1.1 g`. Introduce `c`. Take `⟨O, hO, P⟩` from `local_all H U hUH σ hσ c _ (hf c)`.
+
+Take `⟨K, hKo, hKc, hKO⟩` from `hbasis _ (Filter.inter_mem hO (hfo.mem_nhds (by simp)))`. Take `⟨y, hy, h1, h0⟩` from `P K hKo hKc (hKO.trans Set.inter_subset_left)`. Use `⟨K, hKo, y, hy, fun g => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hg : g ∈ dc H K c`. Rewrite using `[Set.indicator_of_mem hg]`.
+
+Take `⟨b, k, hk, rfl⟩` from `hg`. Establish `hfix : ind H σ k f.1.1 = f.1.1` using `(hKO hk).2`. Establish `e : f.1.1.1 (c * k) = f.1.1.1 c` using `congrArg (fun v : indSpace H σ => v.1 c) hfix`. Rewrite using `[h1 b k hk, mul_assoc, f.1.1.2 b, e]`. Rewrite using `[Set.indicator_of_notMem hg, h0 g hg]`.
+
+Use `choose K hKo y hyY hy using hloc`. Establish `key : ∀ t : Finset G, ∃ S : Set G, (∀ h ∈ H, ∀ g, h * g ∈ S ↔ g ∈ S) ∧ (∀ u ∈ U, ∀ g, g * u ∈ S ↔ g ∈ S) ∧ (∃ K₀ : Subgroup G, IsOpen (K₀ : Set G) ∧ ∀ k ∈ K₀, ∀ g, g * k ∈ S ↔ g ∈ S) ∧ (∀ c ∈ t, ∀ k ∈ K c, c * k ∈ S) ∧ ∃ z ∈ twKer (cInd H σ) U 1, ∀ g, z.1.1.1 g = S.indicator f.1. …`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`.
+
+Conclude with `⟨∅, by simp, by simp, ⟨⊤, by simp, by simp⟩, by simp, 0, Submodule.zero_mem _, fun g => by simp⟩`. Consider the case `insert c t _ ih`. Take `⟨S, hl, hu, ⟨K₀, hK₀, hr⟩, hcov, z, hz, ez⟩` from `ih`. Take `⟨z', hz', ez'⟩` from `cut_mem H U hbasis σ S hl K₀ hK₀ hr hu (y c) (hyY c)`. Use `⟨S ∪ dc H (K c) c, fun h hh g => ?_, fun u hu' g => ?_, ⟨K₀ ⊓ K c, by rw [Subgroup.coe_inf]; exact hK₀.inter (hKo c), fun k hk g => ?_⟩, fun c' hc' k hk => ?_, z + y c - z', Submodule.sub_mem _ (Submodule.add_mem _ hz (hyY c)) hz', fun g => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Set.mem_union, hl h hh g, dc_left H (K c) c h hh g]`. Simplify using `only [Set.mem_union, hu u hu' g, dc_unip H U (K c) hUH c u hu' g]`. Simplify using `only [Set.mem_union, hr k hk.1 g, dc_right H (K c) c k hk.2 g]`. Break down `Finset.mem_insert.1 hc' with rfl | hc'` into its components or cases. Conclude with `Or.inr ⟨1, k, hk, by simp⟩`.
+
+Conclude with `Or.inl (hcov c' hc' k hk)`. Establish `e : (z + y c - z').1.1.1 g = z.1.1.1 g + (y c).1.1.1 g - z'.1.1.1 g` using `rfl`. Establish `hyc : (y c).1.1.1 = (dc H (K c) c).indicator f.1.1.1` using `funext (hy c)`. Rewrite using `[e, ez, ez', hyc]`. Apply the tactic sequence `by_cases h1 : g ∈ S <;> by_cases h2 : g ∈ dc H (K c) c <;>`.
+
+Simplify using `[Set.indicator, h1, h2]`. Take `⟨C, hC, hsupp⟩` from `f.2`. Take `⟨t, -, ht⟩` from `hC.elim_nhds_subcover (fun c => (fun x => c * x) '' (K c : Set G)) (fun c _ => by`. Establish `: (fun x => c⁻¹ * x) ⁻¹' (K c : Set G) ∈ 𝓝 c` using `((hKo c).preimage (continuous_const.mul continuous_id)).mem_nhds (by simp [one_mem])`. Use `filter_upwards [this] with x hx`.
+
+Conclude with `⟨c⁻¹ * x, hx, by group⟩)`. Take `⟨S, hl, -, -, hcov, z, hz, ez⟩` from `key t`. Establish `hfz : f = z`. Use `Subtype.ext (Subtype.ext (Subtype.ext (funext fun g => ?_)))` and prove the remaining obligations. Use `show f.1.1.1 g = z.1.1.1 g`.
+
+Rewrite using `[ez]`. Distinguish the cases in `h0 : f.1.1.1 g = 0`. Rewrite using `[h0]`. Distinguish the cases in `hg : g ∈ S`. Rewrite using `[Set.indicator_of_mem hg, h0]`.
+
+Rewrite using `[Set.indicator_of_notMem hg]`. Take `⟨a, ha, c', hc', e⟩` from `hsupp g h0`. Take `⟨c, hc, hcc⟩` from `Set.mem_iUnion₂.1 (ht hc')`. Take `⟨x, hx, rfl⟩` from `hcc`. Establish `hg : g ∈ S`.
+
+Rewrite using `[e]`. Conclude with `(hl a ha _).2 (hcov c hc x hx)`. Rewrite using `[Set.indicator_of_mem hg]`. Rewrite using `[hfz]`. Conclude with `hz`.
+-/
 theorem mem_twKer_cInd : ∀ {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup W] [Module ℂ W] (H U : Subgroup G) [U.Normal], U ≤ H →
     (∀ O : Set G, O ∈ nhds (1 : G) → ∃ K : Subgroup G, IsOpen (K : Set G) ∧

@@ -9,6 +9,11 @@ open scoped Matrix ComplexOrder
 
 namespace GlobalTheory.DualInt
 
+/- English proof (translation)
+Rewrite `ha`, the goal using `[Submodule.mem_one]`. Take `⟨r, rfl⟩` from `ha`. Establish `hi : IsIntegral ℤ (star (algebraMap (𝓞 K) K r))`. Use `(r.isIntegral_coe).map (starRingAut (R := K) : K ≃+* K).toRingHom.toIntAlgHom` as an intermediate fact. Simplify using `using this`.
+
+Conclude with `⟨⟨_, hi⟩, rfl⟩`.
+-/
 theorem star_mem_one_O {K : Type} [Field K] [NumberField K] [StarRing K] {a : K}
     (ha : a ∈ (1 : Submodule (𝓞 K) K)) : star a ∈ (1 : Submodule (𝓞 K) K) := by
   rw [Submodule.mem_one] at ha ⊢
@@ -18,11 +23,19 @@ theorem star_mem_one_O {K : Type} [Field K] [NumberField K] [StarRing K] {a : K}
     simpa using this
   exact ⟨⟨_, hi⟩, rfl⟩
 
+/- English proof (translation)
+Simplify using `[hform, Matrix.toLinearMapₛₗ₂'_apply, dotProduct, Matrix.mulVec, Finset.mul_sum, starRingEnd_apply, mul_comm]`.
+-/
 theorem hform_eq_dot {K : Type} [Field K] [NumberField K] [StarRing K] {n : ℕ}
     (H : Matrix (Fin n) (Fin n) K) (a b : Fin n → K) :
     hform H a b = star a ⬝ᵥ H *ᵥ b := by
   simp [hform, Matrix.toLinearMapₛₗ₂'_apply, dotProduct, Matrix.mulVec, Finset.mul_sum, starRingEnd_apply, mul_comm]
 
+/- English proof (translation)
+Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap]`. Introduce `x hx`. Express the relevant statement in the definitionally equal form `hform H x (H⁻¹ *ᵥ star y) ∈ (1 : Submodule (𝓞 K) K)`. Rewrite using `[hform_eq_dot, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hH, Matrix.one_mulVec]`. Establish `e : star x ⬝ᵥ star y = star (y ⬝ᵥ x)`.
+
+Simplify using `[dotProduct, mul_comm]`. Rewrite using `[e]`. Conclude with `star_mem_one_O (hy x hx)`.
+-/
 theorem inv_mulVec_star_mem_dual {K : Type} [Field K] [NumberField K] [StarRing K] {n : ℕ}
     (H : Matrix (Fin n) (Fin n) K) (hH : IsUnit H.det) (M : Submodule (𝓞 K) (Fin n → K))
     (y : Fin n → K) (hy : ∀ x ∈ M, y ⬝ᵥ x ∈ (1 : Submodule (𝓞 K) K)) :
@@ -36,6 +49,11 @@ theorem inv_mulVec_star_mem_dual {K : Type} [Field K] [NumberField K] [StarRing 
   rw [e]
   exact star_mem_one_O (hy x hx)
 
+/- English proof (translation)
+Introduce `K _ _ _ n H _ hH M hM y y' hy hy'`. Establish `hz` using `hM (inv_mulVec_star_mem_dual H hH M y hy)`. Establish `e : hform (H⁻¹)ᵀ y y' = y' ⬝ᵥ (H⁻¹ *ᵥ star y)`. Rewrite using `[hform_eq_dot, Matrix.mulVec_transpose, dotProduct_comm, ← Matrix.dotProduct_mulVec]`. Rewrite using `[e]`.
+
+Conclude with `hy' _ hz`.
+-/
 theorem dual_form_integral :
     ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (n : ℕ) (H : Matrix (Fin n) (Fin n) K),
       Hᴴ = H → IsUnit H.det → ∀ M : Submodule (𝓞 K) (Fin n → K),

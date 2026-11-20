@@ -137,6 +137,17 @@ def FibOnto : Prop :=
 def ThetaEx : Prop :=
   ∀ D : D7, ∃ t : D.host.E, IsIntegral ℤ t ∧ t + D.host.conj t = 1
 
+/- English proof (translation)
+Break down `p with (p | b) | (p | a)` into its components or cases. Both sides reduce to the same expression. Both sides reduce to the same expression. Use `all_goals`. Establish `hX : ∀ q, x (Sum.inl q) = x' (Sum.inl q)`.
+
+Introduce `q`. Apply `h` to reduce the goal to its premises. Break down `q with q | c` into its components or cases. Use `q.1.2.isLt` as an intermediate fact. Simplify using `only [cHgt]`.
+
+Use linear arithmetic over natural numbers and integers. Use `c.isLt` as an intermediate fact. Simplify using `only [cHgt]`. Use linear arithmetic over natural numbers and integers. Establish `hH : Hc X u x = Hc X u x'`.
+
+Use function extensionality and compare the values at `v`. Establish `hXc : Xc X x v = Xc X x' v`. Use function extensionality and compare the values at `i j`. Simplify using `only [Xc, hX]`. Establish `hGc : Gc X u x v = Gc X u x' v`.
+
+Use function extensionality and compare the values at `i j`. Simplify using `only [Gc, hX]`. Simplify using `only [Hc, hXc, hGc]`. Simplify using `only [tauQ]`. Rewrite using `[hH]`.
+-/
 theorem tauQ_lower {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (p : CBlk D.R.rS)
     (x x' : BV X) (h : ∀ q, cHgt q < cHgt p → x q = x' q) :
     tauQ X u p x = tauQ X u p x' := by
@@ -166,6 +177,15 @@ theorem tauQ_lower {D : D7} (X : HidaSetting D) (u : D.what₂.Word) (p : CBlk D
     simp only [tauQ]
     rw [hH]
 
+/- English proof (translation)
+Introduce `D X u`. Use `⟨tauQ X u, fun p x x' h => tauQ_lower X u p x x' h, fun x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨s, hs, rfl⟩`. Take `⟨xA, n, hlink, hx1, hn⟩` from `(hR X u s).1 hs`. Establish `hNF : NFl X u n` using `⟨hn.1.1, hn.2.1, hn.2.2⟩`.
+
+Establish `hD` using `hG X u n hNF`. Establish `hLat` using `(hL X u n hNF).1 hn.1.2`. Rewrite using `[← hx1, hP X u xA n hlink hNF]`. Conclude with `(hF X u _ _ _ hD).2 hLat`. Introduce `hx`.
+
+Take `⟨X0, xs, M, hD, rfl⟩` from `hO X u x hx`. Establish `hLat` using `(hF X u X0 xs M hD).1 hx`. Take `⟨n, hNF, h1, h2, h3⟩` from `hE X u X0 xs M hD`. Substitute `h1 h2 h3` using the available equality. Establish `hgm` using `(hL X u n hNF).2 hLat`.
+
+Establish `hn : n ∈ NLam (VS D).L0 (lf D (X.Fu u))` using `⟨⟨hNF.1, hgm⟩, hNF.2.1, hNF.2.2⟩`. Take `⟨xA, hlink⟩` from `ratPt_holds D X n hNF.1`. Conclude with `⟨xA.1, (hR X u xA.1).2 ⟨xA, n, hlink, rfl, hn⟩, hP X u xA n hlink hNF⟩`.
+-/
 theorem nofibLat_of (hR : NOratC) (hG : DictGram) (hL : DictLat) (hE : DictEx) (hP : DictPlace) (hF : FibQ)
     (hO : FibOnto) : NOfibLat := by
   intro D X u

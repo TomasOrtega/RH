@@ -11,6 +11,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling (absE)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IdeleTate.absFin_eq_one_of_mem_stab | exact GlobalTheory.IdeleTate.absFin_eq_one_of_mem_stab | (intros; apply GlobalTheory.IdeleTate.absFin_eq_one_of_mem_stab <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.idele_stabilizer_abs_finite_eq_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E],
     ∀ u ∈ GlobalTheory.IdeleTate.stab F E, GlobalTheory.IdeleTate.absFin F E u = 1 := by
   first | exact @GlobalTheory.IdeleTate.absFin_eq_one_of_mem_stab | exact GlobalTheory.IdeleTate.absFin_eq_one_of_mem_stab | (intros; apply GlobalTheory.IdeleTate.absFin_eq_one_of_mem_stab <;> assumption)

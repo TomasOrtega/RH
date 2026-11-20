@@ -8,6 +8,11 @@ open Finset Equiv
 
 namespace Comb
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `a`. Take `⟨b, hb⟩` from `b`. Simplify using `only [Fin.mk_le_mk] at hab`. Proceed by induction on `b, hab using Nat.le_induction with`. Consider the case `base => exact le_rfl`.
+
+Consider the case `succ n hn ih`. Establish `h1` using `ih (by omega)`. Establish `h2 : f ⟨n + 1, hb⟩ < f ⟨n, by omega⟩` using `hf (by simp [Fin.lt_def])`. Simplify using `only at h1 ⊢`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem add_index_le_of_strictAnti {m : ℕ} {f : Fin m → ℕ} (hf : StrictAnti f) (a b : Fin m)
     (hab : a ≤ b) : f b + (b : ℕ) ≤ f a + (a : ℕ) := by
   obtain ⟨a, ha⟩ := a
@@ -21,6 +26,23 @@ theorem add_index_le_of_strictAnti {m : ℕ} {f : Fin m → ℕ} (hf : StrictAnt
     simp only at h1 ⊢
     omega
 
+/- English proof (translation)
+Introduce `m lam hlam q i hq hinj`. Use `set u := Function.update (fun j => lam j + stair m j) i (lam i + stair m i - q) with hu`. Take `⟨σ, hσ⟩` from `exists_perm_strictAnti hinj`. Establish `hge : ∀ k : Fin m, stair m k ≤ u (σ k)`. Introduce `k`.
+
+Establish `hk` using `add_index_le_of_strictAnti hσ k ⟨m - 1, by have := k.isLt; omega⟩ (by rw [Fin.le_def]; exact Nat.le_sub_one_of_lt k.isLt)`. Simplify using `only [Function.comp_apply] at hk`. Simplify using `only [stair]`. Use linear arithmetic over natural numbers and integers. Use `⟨σ, fun k => u (σ k) - stair m k, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `a b hab`. Establish `h` using `add_index_le_of_strictAnti hσ a b hab`. Establish `ha` using `hge a`. Establish `hb` using `hge b`. Simplify using `only [Function.comp_apply, stair] at h ha hb ⊢`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `k`. Establish `hl : Antitone (fun j => lam j + stair m j)`. Introduce `a b hab`. Use `hlam hab` as an intermediate fact.
+
+Simplify using `only [stair]`. Establish `: (a : ℕ) ≤ b` using `hab`. Use linear arithmetic over natural numbers and integers. Establish `hul : ∀ j, u j ≤ lam j + stair m j`. Introduce `j`.
+
+Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[hu]`. Simplify using `[hu, Function.update_of_ne hj]`. Use `h1 m u (fun j => lam j + stair m j) σ hl hul hσ.antitone k` as an intermediate fact.
+
+Use `show u (σ k) - stair m k ≤ lam k`. Use linear arithmetic over natural numbers and integers. Introduce `k`. Use `hge k` as an intermediate fact. Use `show u (σ k) = u (σ k) - stair m k + stair m k`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem CombSortShift.proof (h1 : CombSortLe.Statement) : CombSortShift.Statement := by
   intro m lam hlam q i hq hinj
   set u := Function.update (fun j => lam j + stair m j) i (lam i + stair m i - q) with hu

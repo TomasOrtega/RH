@@ -17,6 +17,13 @@ section GenAll
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T T' : E}
 
+/- English proof (translation)
+Take `⟨ξ', hξ'⟩` from `hya`. Take `⟨n, hn, m, hm, hfr, hzt⟩` from `hxy`. Take `⟨ξ, hξ, hgx⟩` from `hgx`. Use `⟨ξ', hξ', fun P => ?_⟩` and prove the remaining obligations. Use `haveI := P.isPrime`.
+
+Establish `hB` using `locP_BLat_transport hFl hxl hn hm hfr hzt P.asIdeal`. Prove the components needed by the constructor for the conclusion. Introduce `hP`. Rewrite using `[hB, (hgx P).1 hP, ← locP_gmap]`. Conclude with `(gp_mplus P hFl hFc hxl hxc hyc hn hm hfr hξ hξ' hP).symm`.
+
+Introduce `hP`. Rewrite using `[hB, (hgx P).2 hP, ← locP_gmap, UU_transport hFl hxl hn hm hfr hzt]`.
+-/
 theorem gen_fwd {Λ : Submodule (𝓞 E) S.V} {g : ℕ} {F : LFlag S r T} {x y : LFlag S r T'}
     (hFl : IsLift Λ F) (hFc : IsFixedConv Λ g F) (hxl : IsLift Λ x) (hxc : IsFixedConv Λ g x)
     (hyc : IsFixedConv Λ g y) (hya : IsAdmissible Λ g F y) (hxy : DCRel Λ F x y)
@@ -34,6 +41,11 @@ theorem gen_fwd {Λ : Submodule (𝓞 E) S.V} {g : ℕ} {F : LFlag S r T} {x y :
   · intro hP
     rw [hB, (hgx P).2 hP, ← locP_gmap, UU_transport hFl hxl hn hm hfr hzt]
 
+/- English proof (translation)
+Introduce `x y hxy`. Establish `hxy' : DCRel Λ F x.1 y.1` using `hxy`. Take `⟨hxl, hxa, hxc⟩` from `hPc x.1 x.2`. Take `⟨hyl, hya, hyc⟩` from `hPc y.1 y.2`. Establish `hyx : DCRel Λ F y.1 x.1` using `(dCRelEquivAll_holds E S r T T' Λ F).symm hxy'`.
+
+Conclude with `⟨gen_fwd hFl hFc hxl hxc hyc hya hxy', gen_fwd hFl hFc hyl hyc hxc hxa hyx⟩`.
+-/
 theorem genFun_gen (Λ : Submodule (𝓞 E) S.V) (F : LFlag S r T) (Pc : LFlag S r T' → Prop) (g : ℕ)
     (hFl : IsLift Λ F) (hFc : IsFixedConv Λ g F)
     (hPc : ∀ x, Pc x → IsLift Λ x ∧ IsAdmissible Λ g F x ∧ IsFixedConv Λ g x) :
@@ -51,6 +63,9 @@ section D7
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D u u' F0 Λ hΛ`. Take `⟨-, ⟨-, -, hFl, hFc⟩, -⟩` from `hΛ`. Conclude with `genFun_gen Λ (lf D F0) _ (gS D) hFl hFc fun x hx => ⟨hx.1, hx.2.1, hx.2.2.1⟩`.
+-/
 theorem genericity_constant_double_cosets : GenericityConstantDoubleCosets := by
   intro D u u' F0 Λ hΛ
   obtain ⟨-, ⟨-, -, hFl, hFc⟩, -⟩ := hΛ

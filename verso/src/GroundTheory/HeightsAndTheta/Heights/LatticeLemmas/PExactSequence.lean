@@ -14,6 +14,13 @@ namespace HermitianBundle
 
 variable (M : HermitianBundle K) (F : Submodule (𝓞 K) M.carrier) (hF : M.Saturated F)
 
+/- English proof (translation)
+Use `quot_projective hF` as an intermediate fact. Use `set V := subFibre M.metric σ F`. Use `set z := fibreMap σ (quotSection M F hF) (fibreMap σ F.mkQ x) - x with hzdef`. Establish `hex` using `lTensor_exact (ComplexAt σ) (LinearMap.exact_subtype_mkQ F) F.mkQ_surjective`. Establish `h0 : F.mkQ.lTensor (ComplexAt σ) z = 0`.
+
+Express the relevant statement in the definitionally equal form `fibreMap σ F.mkQ z = 0`. Rewrite using `[hzdef, map_sub, fibreMap_fibreMap, fibreMap_fibreMap, mkQ_comp_quotSection, LinearMap.id_comp, sub_self]`. Take `⟨y, hy⟩` from `(hex z).mp h0`. Establish `hz : FibreSpace.equiv M.metric σ z ∈ V` using `⟨y, congrArg (FibreSpace.equiv M.metric σ) hy⟩`. Establish `hsplit : FibreSpace.equiv M.metric σ (fibreMap σ (quotSection M F hF) (fibreMap σ F.mkQ x)) = FibreSpace.equiv M.metric σ x + FibreSpace.equiv M.metric σ z`.
+
+Rewrite using `[hzdef, map_sub]`. Normalize the expressions using the abelian group laws. Express the relevant statement in the definitionally equal form `Vᗮ.starProjection (FibreSpace.equiv M.metric σ (fibreMap σ (quotSection M F hF) (fibreMap σ F.mkQ x))) = _`. Rewrite using `[hsplit, map_add, Submodule.starProjection_orthogonal_apply_eq_zero hz, add_zero, Submodule.starProjection_eq_self_iff.mpr hx]`.
+-/
 theorem quotFibreMap_mkQ_of_orthogonal (σ : K →+* ℂ) (x : Fibre σ M.carrier)
     (hx : FibreSpace.equiv M.metric σ x ∈ (subFibre M.metric σ F)ᗮ) :
     quotFibreMap M F hF σ (fibreMap σ F.mkQ x) = FibreSpace.equiv M.metric σ x := by
@@ -61,6 +68,9 @@ end HermitianBundle
 
 namespace LatticeLemmas
 
+/- English proof (translation)
+Introduce `K _ _ M F hF`. Simplify using `only [HermitianBundle.deg]`. Rewrite using `[(HermitianBundle.subQuotExtension M F hF).arithDegree_eq_add, add_div]`.
+-/
 theorem ExactSequence.proof : ExactSequence.Statement := by
   intro K _ _ M F hF
   simp only [HermitianBundle.deg]

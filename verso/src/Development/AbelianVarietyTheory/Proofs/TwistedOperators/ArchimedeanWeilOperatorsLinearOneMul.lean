@@ -16,6 +16,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def intInd (κ : Type) : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ :=
   (Set.pi Set.univ fun _ : κ => (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F : Set (FiniteAdeleRing (𝓞 F) F))).indicator 1
 
+/- English proof (translation)
+Establish `hOo : IsOpen (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F : Set (FiniteAdeleRing (𝓞 F) F))`. Unfold `GroundTheory.Global.integralFiniteAdeles`. Conclude with `RestrictedProduct.isOpen_forall_mem (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (fun v => Valued.isOpen_valuationSubring (v.adicCompletion F))`. Establish `hOc : IsCompact (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F : Set (FiniteAdeleRing (𝓞 F) F))` using `GroundTheory.Global.isCompact_integralFiniteAdeles F`. Establish `hOcl : IsClosed (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F : Set (FiniteAdeleRing (𝓞 F) F))` using `hOc.isClosed`.
+
+Establish `hU : IsClopen (Set.pi Set.univ fun _ : κ => (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F : Set (FiniteAdeleRing (𝓞 F) F)))` using `⟨isClosed_set_pi fun _ _ => hOcl, isOpen_set_pi Set.finite_univ fun _ _ => hOo⟩`. Use `show IsLocallyConstant (intInd (F := F) κ) ∧ HasCompactSupport (intInd (F := F) κ)`. Use `⟨(LocallyConstant.indicator (1 : LocallyConstant (κ → FiniteAdeleRing (𝓞 F) F) ℂ) hU).isLocallyConstant, ?_⟩` and prove the remaining obligations. Conclude with `HasCompactSupport.intro' (isCompact_univ_pi fun _ => hOc) hU.isClosed fun x hx => Set.indicator_of_notMem hx _`.
+-/
 theorem intInd_mem (κ : Type) [Fintype κ] :
     intInd (F := F) κ ∈ SB (κ → FiniteAdeleRing (𝓞 F) F) := by
   have hOo : IsOpen (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F : Set (FiniteAdeleRing (𝓞 F) F)) := by
@@ -35,6 +40,11 @@ theorem intInd_mem (κ : Type) [Fintype κ] :
   exact HasCompactSupport.intro' (isCompact_univ_pi fun _ => hOc) hU.isClosed
     fun x hx => Set.indicator_of_notMem hx _
 
+/- English proof (translation)
+Set `u : AF F` to `((0 : InfiniteAdeleRing F), (1 : FiniteAdeleRing (𝓞 F) F))`. Establish `hu : evI F u = 0` using `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)`. Establish `h0 : u * z i = 0` using `congrFun (hz u hu) i`. Establish `h1 : (u * z i).2 = (1 : FiniteAdeleRing (𝓞 F) F) * (z i).2` using `rfl`. Rewrite `h1` using `[h0, one_mul]`.
+
+Conclude with `h1.symm`.
+-/
 theorem snd_eq_zero_of_at {κ : Type} {z : κ → AF F} (hz : At (evI F) z) (i : κ) : (z i).2 = 0 := by
   let u : AF F := ((0 : InfiniteAdeleRing F), (1 : FiniteAdeleRing (𝓞 F) F))
   have hu : evI F u = 0 := map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)
@@ -45,6 +55,11 @@ theorem snd_eq_zero_of_at {κ : Type} {z : κ → AF F} (hz : At (evI F) z) (i :
 
 def refFun (κ : Type) : (κ → AF F) → ℂ := fun x => intInd κ (fun i => (x i).2)
 
+/- English proof (translation)
+Use `⟨fun x z hz => ?_, Submodule.subset_span ⟨f, intInd κ, intInd_mem κ, rfl⟩⟩` and prove the remaining obligations. Use `show intInd κ (fun i => (x i + z i).2) = intInd κ (fun i => (x i).2)`. Use `congr 1`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(x i).2 + (z i).2 = (x i).2`.
+
+Rewrite using `[snd_eq_zero_of_at hz i, add_zero]`.
+-/
 theorem refFun_rest {κ : Type} [Fintype κ] (f : SInf F κ) :
     Rest (evI F) (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (refFun κ) := by
   refine ⟨fun x z hz => ?_, Submodule.subset_span ⟨f, intInd κ, intInd_mem κ, rfl⟩⟩
@@ -54,6 +69,11 @@ theorem refFun_rest {κ : Type} [Fintype κ] (f : SInf F κ) :
   change (x i).2 + (z i).2 = (x i).2
   rw [snd_eq_zero_of_at hz i, add_zero]
 
+/- English proof (translation)
+Use `show intInd κ (fun i => (liftV t i).2) = 1`. Unfold `intInd`. Rewrite using `[Set.indicator_of_mem]`. Both sides reduce to the same expression. Introduce `i _`.
+
+Express the relevant statement in the definitionally equal form `(0 : FiniteAdeleRing (𝓞 F) F) ∈ (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F : Set (FiniteAdeleRing (𝓞 F) F))`. Conclude with `zero_mem _`.
+-/
 theorem refFun_lift {κ : Type} (t : κ → mixedEmbedding.mixedSpace F) : refFun κ (liftV t) = 1 := by
   show intInd κ (fun i => (liftV t i).2) = 1
   unfold intInd
@@ -63,6 +83,9 @@ theorem refFun_lift {κ : Type} (t : κ → mixedEmbedding.mixedSpace F) : refFu
     change (0 : FiniteAdeleRing (𝓞 F) F) ∈ (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F : Set (FiniteAdeleRing (𝓞 F) F))
     exact zero_mem _
 
+/- English proof (translation)
+Use `show φ (fun i => evI F (liftV t i)) * refFun κ (liftV t) = φ t`. Rewrite using `[refFun_lift, mul_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `RingEquiv.apply_symm_apply _ _`.
+-/
 theorem tens_lift {κ : Type} (φ : (κ → mixedEmbedding.mixedSpace F) → ℂ) (t : κ → mixedEmbedding.mixedSpace F) :
     tens (evI F) φ (refFun κ) (liftV t) = φ t := by
   show φ (fun i => evI F (liftV t i)) * refFun κ (liftV t) = φ t
@@ -71,6 +94,9 @@ theorem tens_lift {κ : Type} (φ : (κ → mixedEmbedding.mixedSpace F) → ℂ
   funext i
   exact RingEquiv.apply_symm_apply _ _
 
+/- English proof (translation)
+Use extensionality with `t`. Establish `key` using `congrFun h (liftV t)`. Rewrite `key` using `[tens_lift, tens_lift]`. Then use the resulting hypothesis.
+-/
 theorem eq_of_tens {κ : Type} [Fintype κ] {f₁ f₂ : SInf F κ}
     (h : tens (evI F) (f₁ : (κ → mixedEmbedding.mixedSpace F) → ℂ) (refFun κ) = tens (evI F) (f₂ : _ → ℂ) (refFun κ)) :
     f₁ = f₂ := by
@@ -78,22 +104,34 @@ theorem eq_of_tens {κ : Type} [Fintype κ] {f₁ f₂ : SInf F κ}
   have key := congrFun h (liftV t)
   rwa [tens_lift, tens_lift] at key
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `(f + f') (fun i => evI F (x i)) * r x = f (fun i => evI F (x i)) * r x + f' (fun i => evI F (x i)) * r x`. Rewrite using `[SchwartzMap.add_apply, add_mul]`.
+-/
 theorem tens_add {κ : Type} [Fintype κ] (f f' : SInf F κ) (r : (κ → AF F) → ℂ) :
     tens (evI F) (⇑(f + f') : (κ → mixedEmbedding.mixedSpace F) → ℂ) r = tens (evI F) ⇑f r + tens (evI F) ⇑f' r := by
   funext x
   change (f + f') (fun i => evI F (x i)) * r x = f (fun i => evI F (x i)) * r x + f' (fun i => evI F (x i)) * r x
   rw [SchwartzMap.add_apply, add_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `(c • f) (fun i => evI F (x i)) * r x = c • (f (fun i => evI F (x i)) * r x)`. Rewrite using `[SchwartzMap.smul_apply, smul_mul_assoc]`.
+-/
 theorem tens_smul {κ : Type} [Fintype κ] (c : ℂ) (f : SInf F κ) (r : (κ → AF F) → ℂ) :
     tens (evI F) (⇑(c • f) : (κ → mixedEmbedding.mixedSpace F) → ℂ) r = c • tens (evI F) ⇑f r := by
   funext x
   change (c • f) (fun i => evI F (x i)) * r x = c • (f (fun i => evI F (x i)) * r x)
   rw [SchwartzMap.smul_apply, smul_mul_assoc]
 
+/- English proof (translation)
+The claim follows from `acts_archOp om h f hx _ (refFun_rest f)`.
+-/
 theorem img (om : Rep σ X W) (h : UA σ W.J) (f : SInf F (Fin n × Fin d))
     (hx : ∃ f₁ : SInf F (Fin n × Fin d), Acts (evI F) (om (1, h)) ⇑f ⇑f₁) :
     om (1, h) (tens (evI F) ⇑f (refFun _)) = tens (evI F) ⇑(archOp om h f) (refFun _) := acts_archOp om h f hx _ (refFun_rest f)
 
+/- English proof (translation)
+Apply `eq_of_tens` to reduce the goal to its premises. Rewrite using `[← img om h f ⟨f₁, hA⟩]`. Conclude with `hA _ (refFun_rest f)`.
+-/
 theorem archOp_eq_of_acts (om : Rep σ X W) (h : UA σ W.J) (f f₁ : SInf F (Fin n × Fin d))
     (hA : Acts (evI F) (om (1, h)) ⇑f ⇑f₁) : archOp om h f = f₁ := by
   apply eq_of_tens
@@ -106,6 +144,17 @@ namespace GlobalTheory.ArchLine
 
 open GlobalTheory.ArchLine.Laws in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n d X W M ψ χX χW om _ hex`. Use `⟨fun h hh f f' => ?_, fun h hh c f => ?_, fun f => ?_, fun h hh h' hh' f => ?_⟩` and prove the remaining obligations. Apply `eq_of_tens` to reduce the goal to its premises. Rewrite using `[tens_add, ← img om h (f + f') (hex h hh _), ← img om h f (hex h hh f), ← img om h f' (hex h hh f'), tens_add, map_add]`. Apply `eq_of_tens` to reduce the goal to its premises.
+
+Rewrite using `[tens_smul, ← img om h (c • f) (hex h hh _), ← img om h f (hex h hh f), tens_smul, map_smul]`. Apply `archOp_eq_of_acts` to reduce the goal to its premises. Introduce `r _`. Establish `e1 : om (1, 1) = 1` using `map_one om`. Rewrite using `[e1]`.
+
+Both sides reduce to the same expression. Establish `hmul : h * h' ∈ UAt σ W (evI F)`. Introduce `u hu`. Establish `e : mat (h * h') - 1 = (mat h - 1) * mat h' + (mat h' - 1)`. Express the relevant statement in the definitionally equal form `mat h * mat h' - 1 = _`.
+
+Use `noncomm_ring`. Establish `a1 : u • (mat h - 1) = 0` using `(show ∀ u, evI F u = 0 → u • (mat h - 1) = 0 from hh) u hu`. Establish `a2 : u • (mat h' - 1) = 0` using `(show ∀ u, evI F u = 0 → u • (mat h' - 1) = 0 from hh') u hu`. Rewrite using `[e, smul_add, ← Matrix.smul_mul, a1, a2, zero_mul, add_zero]`. Apply `eq_of_tens` to reduce the goal to its premises.
+
+Rewrite using `[← img om (h * h') f (hex _ hmul f), ← img om h (archOp om h' f) (hex h hh _), ← img om h' f (hex h' hh' f)]`. Establish `e2 : ((1 : UA σ X.J), h * h') = (1, h) * (1, h')` using `by rw [Prod.mk_mul_mk, one_mul]`. Rewrite using `[e2, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem archOp_laws : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),
     M.IsWeil ψ χX χW om → (∀ h ∈ UAt σ W (evI F), ∀ f : SInf F (Fin n × Fin d), ∃ f₁ : SInf F (Fin n × Fin d),

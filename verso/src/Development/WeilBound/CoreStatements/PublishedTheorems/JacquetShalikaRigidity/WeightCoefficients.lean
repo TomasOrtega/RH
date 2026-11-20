@@ -25,13 +25,26 @@ def rhoA (m : ℕ) : Measure (GA E k) := Measure.sum fun ξ : RowT E k m => Meas
 
 def bA (m : ℕ) (β : GA E k → ℝ≥0∞) (g : GA E k) : ℝ≥0∞ := ∑' ξ : RowT E k m, β ((ratGL E k (gam ξ))⁻¹ * g)
 
+/- English proof (translation)
+The claim follows from `(continuous_posU (isNil_blk k m m)).measurable`.
+-/
 theorem meas_blkU (m : ℕ) : Measurable (fun x : UnipotentBlockColumnIndex k m m → Ad E => (blkU x : GA E k)) :=
   (continuous_posU (isNil_blk k m m)).measurable
 
+/- English proof (translation)
+The claim follows from `(hβ.comp (((measurable_fst.inv).mul measurable_snd).mul_const g)).lintegral_prod_right'`.
+-/
 theorem measI {ν : Measure (GA E k)} [SFinite ν] {β : GA E k → ℝ≥0∞} (hβ : Measurable β) (g : GA E k) :
     Measurable fun r : GA E k => ∫⁻ h, β (r⁻¹ * h * g) ∂ν :=
   (hβ.comp (((measurable_fst.inv).mul measurable_snd).mul_const g)).lintegral_prod_right'
 
+/- English proof (translation)
+Establish `hB` using `(hN3 E k).2.1 m hmk.le`. Establish `hP` using `(hN3 E k).1 m hmk`. Use `haveI := hP.1`. Establish `hinvB : ∫⁻ h, β (h * g) ∂nuB E k m = ∫⁻ h, β (h⁻¹ * g) ∂nuB E k m` using `by conv_lhs => rw [← hB.2.1]`. Conclude with `lintegral_map (f := fun h => β (h * g)) (hβ.1.comp (measurable_mul_const g)) measurable_inv`.
+
+Rewrite using `[hinvB, hN4b E k m hmk (fun h => β (h⁻¹ * g)) (hβ.1.comp (measurable_inv.mul_const g))]`. Establish `: ∀ x : UnipotentBlockColumnIndex k m m → Ad E, ∫⁻ h, β (((blkU x : GA E k)⁻¹ * h)⁻¹ * g) ∂nuP E k m = 1`. Introduce `x`. Establish `e : ∀ h : GA E k, ((blkU x : GA E k)⁻¹ * h)⁻¹ * g = h⁻¹ * (blkU x * g)` using `by intro h; group`. Repeatedly rewrite using `[e]`.
+
+Use `conv_lhs => rw [← hP.2.1]`. Use `(lintegral_map (μ := nuP E k m) (f := fun h => β (h⁻¹ * (blkU x * g))) (hβ.1.comp (measurable_inv.mul_const _)) measurable_inv).trans ?_` and prove the remaining obligations. Simplify using `only [inv_inv]`. Conclude with `hβ.2 _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem wtB (hN3 : N3) (hN4b : OneMoreAdelicColumn) {m : ℕ} (hmk : m < k) {β : GA E k → ℝ≥0∞} (hβ : IsWt (nuP E k m) β)
     (g : GA E k) : ∫⁻ h, β (h * g) ∂nuB E k m = 1 := by
   have hB := (hN3 E k).2.1 m hmk.le
@@ -53,6 +66,11 @@ theorem wtB (hN3 : N3) (hN4b : OneMoreAdelicColumn) {m : ℕ} (hmk : m < k) {β 
   calc _ = ∫⁻ x in vecDomain E (UnipotentBlockColumnIndex k m m), (1 : ℝ≥0∞) ∂vecMeasure E (UnipotentBlockColumnIndex k m m) := lintegral_congr fun x => this x
     _ = 1 := by rw [setLIntegral_const, vecMeasure_vecDomain, one_mul]
 
+/- English proof (translation)
+Use `haveI : Countable (RowT E k m) := (hN0 E k m hm1 hmk.le).2.2.2.2.2.2.1`. Use `⟨Measurable.ennreal_tsum fun ξ => hβ.1.comp (measurable_const_mul _), fun g => ?_⟩` and prove the remaining obligations. Use `hN4a E k m hm1 hmk.le (fun h => β (h * g)) (hβ.1.comp (measurable_mul_const g))` as an intermediate fact. Rewrite `this` using `[wtB hN3 hN4b hmk hβ g]`. Rewrite using `[this]`.
+
+Simplify using `only [bA]`. Rewrite using `[lintegral_tsum (f := fun ξ h => β ((ratGL E k (gam ξ))⁻¹ * (h * g))) fun ξ => ((hβ.1.comp (measurable_const_mul _)).comp (measurable_mul_const g)).aemeasurable]`. Simplify using `only [mul_assoc]`.
+-/
 theorem wtA (hN0 : N0) (hN3 : N3) (hN4a : CosetIntegralParabolic) (hN4b : OneMoreAdelicColumn) {m : ℕ} (hm1 : 1 ≤ m) (hmk : m < k)
     {β : GA E k → ℝ≥0∞} (hβ : IsWt (nuP E k m) β) : IsWt (nuP E k (m - 1)) (bA m β) := by
   haveI : Countable (RowT E k m) := (hN0 E k m hm1 hmk.le).2.2.2.2.2.2.1
@@ -65,12 +83,18 @@ theorem wtA (hN0 : N0) (hN3 : N3) (hN4a : CosetIntegralParabolic) (hN4b : OneMor
     fun ξ => ((hβ.1.comp (measurable_const_mul _)).comp (measurable_mul_const g)).aemeasurable]
   simp only [mul_assoc]
 
+/- English proof (translation)
+Use `haveI := ((hN3 E k).1 m hmk).1`. Rewrite using `[rhoB, lintegral_map (measI hβ.1 g) (meas_blkU m)]`. Conclude with `(hN4b E k m hmk _ (hβ.1.comp (measurable_mul_const g))).symm.trans (wtB hN3 hN4b hmk hβ g)`.
+-/
 theorem hypB (hN3 : N3) (hN4b : OneMoreAdelicColumn) {m : ℕ} (hmk : m < k) {β : GA E k → ℝ≥0∞} (hβ : IsWt (nuP E k m) β)
     (g : GA E k) : ∫⁻ r, ∫⁻ h, β (r⁻¹ * h * g) ∂nuP E k m ∂rhoB m = 1 := by
   haveI := ((hN3 E k).1 m hmk).1
   rw [rhoB, lintegral_map (measI hβ.1 g) (meas_blkU m)]
   exact (hN4b E k m hmk _ (hβ.1.comp (measurable_mul_const g))).symm.trans (wtB hN3 hN4b hmk hβ g)
 
+/- English proof (translation)
+Use `haveI := ((hN3 E k).1 (m - 1) (by omega)).1`. Rewrite using `[rhoA, lintegral_sum_measure]`. Use `(tsum_congr fun ξ => lintegral_dirac' _ (measI hβ.1 g)).trans ?_` and prove the remaining obligations. Conclude with `(hN4a E k m hm1 hmk.le _ (hβ.1.comp (measurable_mul_const g))).symm.trans (wtB hN3 hN4b hmk hβ g)`.
+-/
 theorem hypA (hN0 : N0) (hN3 : N3) (hN4a : CosetIntegralParabolic) (hN4b : OneMoreAdelicColumn) {m : ℕ} (hm1 : 1 ≤ m) (hmk : m < k)
     {β : GA E k → ℝ≥0∞} (hβ : IsWt (nuP E k m) β) (g : GA E k) :
     ∫⁻ r, ∫⁻ h, β (r⁻¹ * h * g) ∂nuP E k (m - 1) ∂rhoA m = 1 := by
@@ -79,19 +103,35 @@ theorem hypA (hN0 : N0) (hN3 : N3) (hN4a : CosetIntegralParabolic) (hN4b : OneMo
   refine (tsum_congr fun ξ => lintegral_dirac' _ (measI hβ.1 g)).trans ?_
   exact (hN4a E k m hm1 hmk.le _ (hβ.1.comp (measurable_mul_const g))).symm.trans (wtB hN3 hN4b hmk hβ g)
 
+/- English proof (translation)
+The claim follows from `lintegral_map (hΦ.comp (measurable_mul_const g)) (meas_blkU m)`.
+-/
 theorem lintegral_rhoB {m : ℕ} {Φ : GA E k → ℝ≥0∞} (hΦ : Measurable Φ) (g : GA E k) :
     ∫⁻ r, Φ (r * g) ∂rhoB m = ∫⁻ x in vecDomain E (UnipotentBlockColumnIndex k m m), Φ (blkU x * g) ∂vecMeasure E (UnipotentBlockColumnIndex k m m) :=
   lintegral_map (hΦ.comp (measurable_mul_const g)) (meas_blkU m)
 
+/- English proof (translation)
+The claim follows from `integral_map (meas_blkU m).aemeasurable (hΦ.comp (continuous_mul_right g)).aestronglyMeasurable`.
+-/
 theorem integral_rhoB {m : ℕ} {Φ : GA E k → ℂ} (hΦ : Continuous Φ) (g : GA E k) :
     ∫ r, Φ (r * g) ∂rhoB m = ∫ x in vecDomain E (UnipotentBlockColumnIndex k m m), Φ (blkU x * g) ∂vecMeasure E (UnipotentBlockColumnIndex k m m) :=
   integral_map (meas_blkU m).aemeasurable (hΦ.comp (continuous_mul_right g)).aestronglyMeasurable
 
+/- English proof (translation)
+Rewrite using `[rhoA, lintegral_sum_measure]`. Conclude with `tsum_congr fun ξ => lintegral_dirac' _ (hΦ.comp (measurable_mul_const g))`.
+-/
 theorem lintegral_rhoA {m : ℕ} {Φ : GA E k → ℝ≥0∞} (hΦ : Measurable Φ) (g : GA E k) :
     ∫⁻ r, Φ (r * g) ∂rhoA m = ∑' ξ : RowT E k m, Φ (ratGL E k (gam ξ) * g) := by
   rw [rhoA, lintegral_sum_measure]
   exact tsum_congr fun ξ => lintegral_dirac' _ (hΦ.comp (measurable_mul_const g))
 
+/- English proof (translation)
+Establish `hc : Continuous fun r => Φ (r * g)` using `hΦ.comp (continuous_mul_right g)`. Establish `hn` using `summable_norm_iff.2 hs`. Establish `hint : Integrable (fun r => Φ (r * g)) (rhoA m)`. Use `⟨hc.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Simplify using `only [HasFiniteIntegral, rhoA, lintegral_sum_measure]`.
+
+Rewrite using `[tsum_congr fun ξ => lintegral_dirac' _ (hc.measurable.enorm)]`. Simplify using `only [← ofReal_norm_eq_enorm]`. Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun _ => norm_nonneg _) hn]`. Conclude with `ENNReal.ofReal_lt_top`. Rewrite using `[rhoA, integral_sum_measure hint]`.
+
+Conclude with `tsum_congr fun ξ => integral_dirac' _ _ hc.stronglyMeasurable`.
+-/
 theorem integral_rhoA {m : ℕ} {Φ : GA E k → ℂ} (hΦ : Continuous Φ) (g : GA E k)
     (hs : Summable fun ξ : RowT E k m => Φ (ratGL E k (gam ξ) * g)) :
     ∫ r, Φ (r * g) ∂rhoA m = ∑' ξ : RowT E k m, Φ (ratGL E k (gam ξ) * g) := by
@@ -109,12 +149,18 @@ theorem integral_rhoA {m : ℕ} {Φ : GA E k → ℂ} (hΦ : Continuous Φ) (g :
 
 variable {ψ : AddChar (Ad E) ℂ}
 
+/- English proof (translation)
+Introduce and unpack `h ⟨γ, u, hγ, hu, rfl⟩ g`. Establish `hn : ‖psN ψ u‖ₑ = 1` using `by rw [← ofReal_norm_eq_enorm, (hP2 E k ψ hψ).2.1 u, ENNReal.ofReal_one]`. Rewrite using `[mul_assoc, hf.left γ hγ, (hP2 E k ψ hψ).1 n f hf u hu g, enorm_mul, hn, one_mul]`.
+-/
 theorem inv_sq (hP2 : P2) (hψ : StdPsi ψ) {n : ℕ} {f : GA E k → ℂ} (hf : Pre ψ n f) :
     ∀ h ∈ HS (k := k) n, ∀ g, ‖f (h * g)‖ₑ ^ 2 = ‖f g‖ₑ ^ 2 := by
   rintro h ⟨γ, u, hγ, hu, rfl⟩ g
   have hn : ‖psN ψ u‖ₑ = 1 := by rw [← ofReal_norm_eq_enorm, (hP2 E k ψ hψ).2.1 u, ENNReal.ofReal_one]
   rw [mul_assoc, hf.left γ hγ, (hP2 E k ψ hψ).1 n f hf u hu g, enorm_mul, hn, one_mul]
 
+/- English proof (translation)
+Introduce and unpack `h ⟨γ, u, hγ, hu, rfl⟩ g`. Establish `hn : ‖psN ψ u‖ = 1` using `(hP2 E k ψ hψ).2.1 u`. Rewrite using `[mul_assoc, hf.left γ hγ, hφ.left γ hγ, (hP2 E k ψ hψ).1 n f hf u hu g, (hP2 E k ψ hψ).1 n φ hφ u hu g, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem inv_prod (hP2 : P2) (hψ : StdPsi ψ) {n : ℕ} {f φ : GA E k → ℂ} (hf : Pre ψ n f) (hφ : Pre ψ n φ) :
     ∀ h ∈ HS (k := k) n, ∀ g, f (h * g) * conj (φ (h * g)) = f g * conj (φ g) := by
   rintro h ⟨γ, u, hγ, hu, rfl⟩ g
@@ -123,6 +169,11 @@ theorem inv_prod (hP2 : P2) (hψ : StdPsi ψ) {n : ℕ} {f φ : GA E k → ℂ} 
   calc psN ψ u * f g * (conj (psN ψ u) * conj (φ g)) = (psN ψ u * conj (psN ψ u)) * (f g * conj (φ g)) := by ring
     _ = f g * conj (φ g) := by rw [Complex.mul_conj, Complex.normSq_eq_norm_sq, hn]; simp
 
+/- English proof (translation)
+Establish `hF : Integrable (fun g => ‖f g‖ ^ 2 + ‖φ g‖ ^ 2) ν`. Use `Integrable.add ⟨(hf.norm.pow 2).aestronglyMeasurable, ?_⟩ ⟨(hφ.norm.pow 2).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Simplify `h1` using `only [HasFiniteIntegral, enorm_pow, enorm_norm]`. Simplify `h2` using `only [HasFiniteIntegral, enorm_pow, enorm_norm]`. Use `hF.mono' (hf.mul (Complex.continuous_conj.comp hφ)).aestronglyMeasurable (ae_of_all _ fun g => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, Complex.norm_conj]`. Use polynomial arithmetic with `[norm_nonneg (f g), norm_nonneg (φ g), sq_nonneg (‖f g‖ - ‖φ g‖)]`.
+-/
 theorem int_mul {ν : Measure (GA E k)} {f φ : GA E k → ℂ} (hf : Continuous f) (hφ : Continuous φ)
     (h1 : ∫⁻ g, ‖f g‖ₑ ^ 2 ∂ν < ∞) (h2 : ∫⁻ g, ‖φ g‖ₑ ^ 2 ∂ν < ∞) :
     Integrable (fun g => f g * conj (φ g)) ν := by
@@ -134,6 +185,11 @@ theorem int_mul {ν : Measure (GA E k)} {f φ : GA E k → ℂ} (hf : Continuous
   rw [norm_mul, Complex.norm_conj]
   nlinarith [norm_nonneg (f g), norm_nonneg (φ g), sq_nonneg (‖f g‖ - ‖φ g‖)]
 
+/- English proof (translation)
+Establish `hl : ∀ {F : GA E k → ℂ}, Pre ψ m F → ∀ (c : UnipotentBlockColumnIndex k m m → E) g, F (ratGL E k (blkU c) * g) = F g` using `fun hF c g => hF.left _ (isMir_blkU c) g`. Take `⟨h1, h2, -⟩` from `hP0 E ψ hψ (UnipotentBlockColumnIndex k m m)`. Establish `H` using `h2 _ _ (per_blk hf.cont (hl hf) g) (per_blk hφ.cont (hl hφ) g)`. Establish `hp` using `per_blk (r := m) (m := m) (f := fun g => f g * conj (φ g)) (hf.cont.mul (Complex.continuous_conj.comp hφ.cont)) (fun c g => by simp only [hl hf, hl hφ]) g`. Rewrite `H` using `[h1 _ hp]`.
+
+Conclude with `H`.
+-/
 theorem parseval_gen (hP0 : P0) (hψ : StdPsi ψ) {m : ℕ} {f φ : GA E k → ℂ} (hf : Pre ψ m f) (hφ : Pre ψ m φ)
     (g : GA E k) :
     HasSum (fun ξ : UnipotentBlockColumnIndex k m m → E => coefF ψ m ξ f g * conj (coefF ψ m ξ φ g))
@@ -147,6 +203,11 @@ theorem parseval_gen (hP0 : P0) (hψ : StdPsi ψ) {m : ℕ} {f φ : GA E k → �
   rw [h1 _ hp] at H
   exact H
 
+/- English proof (translation)
+Use `hφ.van m (by omega) le_rfl g` as an intermediate fact. Rewrite using `[← this]`. Unfold `coefF`. Use `congr 1`. Use extensionality with `x`.
+
+Simplify using `[dot]`.
+-/
 theorem coef_zero {m : ℕ} (hm1 : 1 ≤ m) {φ : GA E k → ℂ} (hφ : Good ψ m φ) (g : GA E k) : coefF ψ m 0 φ g = 0 := by
   have := hφ.van m (by omega) le_rfl g
   rw [← this]
@@ -155,6 +216,9 @@ theorem coef_zero {m : ℕ} (hm1 : 1 ≤ m) {φ : GA E k → ℂ} (hφ : Good ψ
   ext x
   simp [dot]
 
+/- English proof (translation)
+Rewrite using `[← (hP1 E k ψ hψ m hm1 hmk f hf).2.1]`. Use `congr 1`. Conclude with `(funext (he ξ)).symm`.
+-/
 theorem row_eq (hP1 : P1) (hψ : StdPsi ψ) {m : ℕ} (hm1 : 1 ≤ m) (hmk : m < k) {f : GA E k → ℂ} (hf : Pre ψ m f)
     (e : RowT E k m ≃ {ξ : UnipotentBlockColumnIndex k m m → E // ξ ≠ 0}) (he : ∀ ξ t, (e ξ).1 t = ξ.1 t.1.1) (ξ : RowT E k m) (g : GA E k) :
     colT ψ m f (ratGL E k (gam ξ) * g) = coefF ψ m (e ξ).1 f g := by
@@ -162,6 +226,11 @@ theorem row_eq (hP1 : P1) (hψ : StdPsi ψ) {m : ℕ} (hm1 : 1 ≤ m) (hmk : m <
   congr 1
   exact (funext (he ξ)).symm
 
+/- English proof (translation)
+Establish `H` using `parseval_gen hP0 hψ hf hφp g`. Take `⟨-, -, -, e, he⟩` from `hP1 E k ψ hψ m hm1 hmk f hf`. Establish `hs : Function.support (fun ξ : UnipotentBlockColumnIndex k m m → E => coefF ψ m ξ f g * conj (coefF ψ m ξ φ g)) ⊆ {ξ | ξ ≠ 0}`. Introduce `ξ hξ`. Introduce and unpack `rfl`.
+
+Conclude with `hξ (by simp [coef_zero hm1 hφ g])`. Rewrite `H` using `[← hasSum_subtype_iff_of_support_subset hs]`. Establish `H2` using `(Equiv.hasSum_iff e (f := fun ξ : {ξ : UnipotentBlockColumnIndex k m m → E // ξ ≠ 0} => coefF ψ m ξ.1 f g * conj (coefF ψ m ξ.1 φ g))).2 H`. Use `H2 using 2 with ξ` and compare the differences between its conclusion and the goal. Simplify using `only [Function.comp_apply, row_eq hP1 hψ hm1 hmk hf e he, row_eq hP1 hψ hm1 hmk hφp e he]`.
+-/
 theorem parseval (hP0 : P0) (hP1 : P1) (hψ : StdPsi ψ) {m : ℕ} (hm1 : 1 ≤ m) (hmk : m < k) {f φ : GA E k → ℂ}
     (hf : Pre ψ m f) (hφ : Good ψ m φ) (hφp : Pre ψ m φ) (g : GA E k) :
     HasSum (fun ξ : RowT E k m => colT ψ m f (ratGL E k (gam ξ) * g) * conj (colT ψ m φ (ratGL E k (gam ξ) * g)))
@@ -178,6 +247,19 @@ theorem parseval (hP0 : P0) (hP1 : P1) (hψ : StdPsi ψ) {m : ℕ} (hm1 : 1 ≤ 
   convert H2 using 2 with ξ
   simp only [Function.comp_apply, row_eq hP1 hψ hm1 hmk hf e he, row_eq hP1 hψ hm1 hmk hφp e he]
 
+/- English proof (translation)
+Distinguish the cases in `hI : ∫⁻ x in vecDomain E (UnipotentBlockColumnIndex k m m), ‖f (blkU x * g)‖ₑ ^ 2 ∂vecMeasure E (UnipotentBlockColumnIndex k m m) = ∞`. Rewrite using `[hI]`. Conclude with `le_top`. Establish `hc : Continuous fun x : UnipotentBlockColumnIndex k m m → Ad E => f (blkU x * g)` using `hf.cont.comp ((continuous_posU (isNil_blk k m m)).mul continuous_const)`. Establish `hI2 : Integrable (fun x => ‖f (blkU x * g)‖ ^ 2) ((vecMeasure E (UnipotentBlockColumnIndex k m m)).restrict (vecDomain E (UnipotentBlockColumnIndex k m m)))`.
+
+Use `⟨(hc.norm.pow 2).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Simplify `lt_top_iff_ne_top.2 hI` using `only [HasFiniteIntegral, enorm_pow, enorm_norm]`. Establish `H` using `parseval_gen hP0 hψ hf hf g`. Take `⟨-, -, -, e, he⟩` from `hP1 E k ψ hψ m hm1 hmk f hf`. Establish `hre : (∫ x in vecDomain E (UnipotentBlockColumnIndex k m m), f (blkU x * g) * conj (f (blkU x * g)) ∂vecMeasure E (UnipotentBlockColumnIndex k m m)) = ((∫ x in vecDomain E (UnipotentBlockColumnIndex k m m), ‖f (blkU x * g)‖ ^ 2 ∂vecMeasure E (UnipotentBlockColumnIndex k m m) : ℝ) …`.
+
+Rewrite using `[← integral_complex_ofReal]`. Use `congr 1`. Use extensionality with `x`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Rewrite `H` using `[hre]`.
+
+Establish `Hr` using `Complex.hasSum_re H`. Simplify using `only [Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.ofReal_re] at Hr`. Establish `hlin : ∫⁻ x in vecDomain E (UnipotentBlockColumnIndex k m m), ‖f (blkU x * g)‖ₑ ^ 2 ∂vecMeasure E (UnipotentBlockColumnIndex k m m) = ENNReal.ofReal (∫ x in vecDomain E (UnipotentBlockColumnIndex k m m), ‖f (blkU x * g)‖ ^ 2 ∂vecMeasure E (UnipotentBlockColumnIndex k m m))`. Rewrite using `[ofReal_integral_eq_lintegral_ofReal hI2 (ae_of_all _ fun _ => by positivity)]`. Use `congr 1`.
+
+Use extensionality with `x`. Rewrite using `[← ofReal_norm_eq_enorm, ENNReal.ofReal_pow (norm_nonneg _)]`. Rewrite using `[hlin, ← Hr.tsum_eq, ENNReal.ofReal_tsum_of_nonneg (fun _ => by positivity) Hr.summable]`. Combine the equalities or inequalities in the displayed calculation. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations.
+
+Rewrite using `[row_eq hP1 hψ hm1 hmk hf e he, ← ofReal_norm_eq_enorm, ENNReal.ofReal_pow (norm_nonneg _)]`. Use `_ ≤ _ := ENNReal.tsum_comp_le_tsum_of_injective (Subtype.val_injective.comp e.injective) (fun ξ : UnipotentBlockColumnIndex k m m → E => ENNReal.ofReal (‖coefF ψ m ξ f g‖ ^ 2))`.
+-/
 theorem bessel (hP0 : P0) (hP1 : P1) (hψ : StdPsi ψ) {m : ℕ} (hm1 : 1 ≤ m) (hmk : m < k) {f : GA E k → ℂ}
     (hf : Pre ψ m f) (g : GA E k) :
     ∑' ξ : RowT E k m, ‖colT ψ m f (ratGL E k (gam ξ) * g)‖ₑ ^ 2 ≤
@@ -215,12 +297,31 @@ theorem bessel (hP0 : P0) (hP1 : P1) (hψ : StdPsi ψ) {m : ℕ} (hm1 : 1 ≤ m)
     _ ≤ _ := ENNReal.tsum_comp_le_tsum_of_injective (Subtype.val_injective.comp e.injective)
         (fun ξ : UnipotentBlockColumnIndex k m m → E => ENNReal.ofReal (‖coefF ψ m ξ f g‖ ^ 2))
 
+/- English proof (translation)
+Unfold `rhoB`. Use `infer_instance`.
+-/
 theorem sf_B (m : ℕ) : SFinite (rhoB (E := E) (k := k) m) := by unfold rhoB; infer_instance
 
+/- English proof (translation)
+Unfold `rhoA`. Use `infer_instance`.
+-/
 theorem sf_A (m : ℕ) [Countable (RowT E k m)] : SFinite (rhoA (E := E) (k := k) m) := by unfold rhoA; infer_instance
 
 end WeightCoefficients
 
+/- English proof (translation)
+Introduce `hQ1 hQ2 hN0 hN3 hN4a hN4b hP0 hP1 hP2`. Introduce `E _ _ _ k μ _ ψ hψ m hm1 hmk β hβ`. Use `haveI : Countable (RowT E k m) := (hN0 E k m hm1 hmk.le).2.2.2.2.2.2.1`. Establish `hPm` using `(hN3 E k).1 m hmk`. Establish `hPm1` using `(hN3 E k).1 (m - 1) (by omega)`.
+
+Use `haveI := hPm.1`. Use `haveI := hPm1.1`. Use `haveI := WeightCoefficients.sf_A (E := E) (k := k) m`. Use `haveI := WeightCoefficients.sf_B (E := E) (k := k) m`. Establish `hwA` using `WeightCoefficients.wtA hN0 hN3 hN4a hN4b hm1 hmk hβ`.
+
+Establish `hA : ∀ f, Pre ψ m f → ∫⁻ g, ‖colT ψ m f g‖ₑ ^ 2 ∂μ.withDensity (WeightCoefficients.bA m β) ≤ ∫⁻ g, ‖f g‖ₑ ^ 2 ∂μ.withDensity β`. Introduce `f hf`. Establish `hcf : Pre ψ (m - 1) (colT ψ m f)` using `(hP1 E k ψ hψ m hm1 hmk f hf).1`. Rewrite using `[hQ1 (GA E k) μ (nuP E k (m - 1)) (WeightCoefficients.rhoA m) (WeightCoefficients.HS (m - 1)) (WeightCoefficients.bA m β) β hPm1.2.1 hPm1.2.2 hwA hβ.1 (WeightCoefficients.hypA hN0 hN3 hN4a hN4b hm1 hmk hβ) (fun g => ‖colT ψ m f g‖ₑ ^ 2) (hcf.cont.measurable.enorm.pow_const 2) (We …`. Use `lintegral_mono fun g => ?_` and prove the remaining obligations.
+
+Rewrite using `[WeightCoefficients.lintegral_rhoA (hcf.cont.measurable.enorm.pow_const 2), WeightCoefficients.lintegral_rhoB (hf.cont.measurable.enorm.pow_const 2)]`. Conclude with `WeightCoefficients.bessel hP0 hP1 hψ hm1 hmk hf g`. Use `⟨WeightCoefficients.bA m β, hwA, hA, ?_⟩` and prove the remaining obligations. Introduce `f φ hf hφ hf2 hφ2`. Establish `hφp : Pre ψ m φ` using `(hP2 E k ψ hψ).2.2.2.2.2.1 m φ hφ`.
+
+Establish `hcf : Pre ψ (m - 1) (colT ψ m f)` using `(hP1 E k ψ hψ m hm1 hmk f hf).1`. Establish `hcφ : Pre ψ (m - 1) (colT ψ m φ)` using `(hP1 E k ψ hψ m hm1 hmk φ hφp).1`. Establish `c1 : Continuous fun g => f g * conj (φ g)` using `hf.cont.mul (Complex.continuous_conj.comp hφp.cont)`. Establish `c2 : Continuous fun g => colT ψ m f g * conj (colT ψ m φ g)` using `hcf.cont.mul (Complex.continuous_conj.comp hcφ.cont)`. Establish `hb` using `(hQ2 (GA E k) μ (nuP E k m) (WeightCoefficients.rhoB m) (WeightCoefficients.HS m) β β hPm.2.1 hPm.2.2 hβ hβ.1 (WeightCoefficients.hypB hN3 hN4b hmk hβ) (fun g => f g * conj (φ g)) c1.measurable (WeightCoefficients.inv_prod hP2 hψ hf hφp) (WeightCoefficients.int_mul hf.cont hφp.co …`.
+
+Establish `ha` using `(hQ2 (GA E k) μ (nuP E k (m - 1)) (WeightCoefficients.rhoA m) (WeightCoefficients.HS (m - 1)) (WeightCoefficients.bA m β) β hPm1.2.1 hPm1.2.2 hwA hβ.1 (WeightCoefficients.hypA hN0 hN3 hN4a hN4b hm1 hmk hβ) (fun g => colT ψ m f g * conj (colT ψ m φ g)) c2.measurable (WeightCoeffic …`. Rewrite using `[hb, ha]`. Use `integral_congr_ae (ae_of_all _ fun g => ?_)` and prove the remaining obligations. Establish `H` using `WeightCoefficients.parseval hP0 hP1 hψ hm1 hmk hf hφ hφp g`. Conclude with `(WeightCoefficients.integral_rhoB c1 g).trans (H.tsum_eq.symm.trans (WeightCoefficients.integral_rhoA c2 g H.summable).symm)`.
+-/
 theorem twistedGeometricSide_unfolding : Q1 → Q2 → N0 → N3 → CosetIntegralParabolic → OneMoreAdelicColumn → P0 → P1 → P2 → U1 := by
   intro hQ1 hQ2 hN0 hN3 hN4a hN4b hP0 hP1 hP2
   intro E _ _ _ k μ _ ψ hψ m hm1 hmk β hβ

@@ -4,6 +4,11 @@ open Formalism.BasicNotions.TH GlobalTheory.FockAlg GlobalTheory.RealLift Global
 
 namespace GlobalTheory.HoweR
 
+/- English proof (translation)
+Introduce `ι M _ _ _ _ s F U U' hU hle hst`. Take `⟨hfin, -, ip, hsym, hpos, hadj⟩` from `hU`. Use `⟨Submodule.finiteDimensional_of_le hle, hst, ip, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx y hy`. Conclude with `hsym x (hle hx) y (hle hy)`.
+
+Introduce `x hx h0`. Conclude with `hpos x (hle hx) h0`. Introduce `a b hab x hx y hy`. Conclude with `hadj a b hab x (hle hx) y (hle hy)`.
+-/
 theorem unitOn_of_le : ∀ (ι M : Type) [Fintype ι] [DecidableEq ι] [AddCommGroup M] [Module ℂ M] (s : ι → Bool)
     (F : ι → ι → Module.End ℂ M), ∀ U U' : Submodule ℂ M, UnitOn s F U → U' ≤ U →
     (∀ a b, s a = s b → ∀ u ∈ U', F a b u ∈ U') → UnitOn s F U' := by

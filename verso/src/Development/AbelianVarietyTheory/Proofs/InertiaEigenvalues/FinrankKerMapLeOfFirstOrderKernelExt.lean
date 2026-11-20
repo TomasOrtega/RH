@@ -2,6 +2,15 @@ import Mathlib
 
 open Polynomial
 namespace GlobalTheory
+/- English proof (translation)
+Use `set q : LinearMap.ker t →ₗ[k] U ⧸ LinearMap.range t := (LinearMap.range t).mkQ ∘ₗ u ∘ₗ (LinearMap.ker t).subtype`. Establish `hq : Module.finrank k (LinearMap.ker q) ≤ e`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Take `⟨f, hf⟩` from `exists_linearIndependent_of_le_finrank (R := k) (M := LinearMap.ker q) (n := e + 1) hlt`.
+
+Establish `hmem : ∀ j, u ((f j : LinearMap.ker t) : V) ∈ LinearMap.range t`. Introduce `j`. Establish `hj : (LinearMap.range t).mkQ (u ((f j : LinearMap.ker t) : V)) = 0` using `LinearMap.mem_ker.mp (f j).2`. Rewrite `hj` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hj`.
+
+Use `choose y hy using fun j => LinearMap.mem_range.mp (hmem j)`. Establish `hli : LinearIndependent k (fun j => ((f j : LinearMap.ker t) : V))` using `(hf.map' _ (Submodule.ker_subtype _)).map' _ (Submodule.ker_subtype _)`. Conclude with `h (fun j => ((f j : LinearMap.ker t) : V)) y (fun j => ⟨LinearMap.mem_ker.mp (f j : LinearMap.ker t).2, hy j⟩) hli`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker t`. Establish `h2` using `LinearMap.finrank_range_add_finrank_ker q`.
+
+Establish `h3` using `Submodule.finrank_le (LinearMap.range q)`. Establish `h4` using `Submodule.finrank_quotient_add_finrank (LinearMap.range t)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_le_of_first_order_kernel (k V U : Type) [Field k] [AddCommGroup V] [Module k V] [Module.Finite k V]
     [AddCommGroup U] [Module k U] [Module.Finite k U] (e : ℕ) (t u : V →ₗ[k] U)
     (h : ∀ x0 x1 : Fin (e + 1) → V, (∀ j, t (x0 j) = 0 ∧ t (x1 j) = u (x0 j)) → ¬ LinearIndependent k x0) :
@@ -32,6 +41,15 @@ theorem finrank_le_of_first_order_kernel (k V U : Type) [Field k] [AddCommGroup 
   have h4 := Submodule.finrank_quotient_add_finrank (LinearMap.range t)
   omega
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `exists_linearIndependent_of_le_finrank (R := k) (M := LinearMap.range Φ.mulVecLin) (n := Φ.rank) le_rfl`. Establish `hv : LinearIndependent k (fun i => ((f i : LinearMap.range Φ.mulVecLin) : Fin a → k))` using `hf.map' _ (Submodule.ker_subtype _)`. Establish `hw : LinearIndependent K (fun i => algebraMap k K ∘ ((f i : LinearMap.range Φ.mulVecLin) : Fin a → k))` using `linearIndependent_algebraMap_comp_iff.mpr hv`. Establish `hmem : ∀ i, algebraMap k K ∘ ((f i : LinearMap.range Φ.mulVecLin) : Fin a → k) ∈ LinearMap.range (Φ.map (algebraMap k K)).mulVecLin`. Introduce `i`.
+
+Take `⟨y, hy⟩` from `LinearMap.mem_range.mp (f i).2`. Use `⟨algebraMap k K ∘ y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`. Use function extensionality and compare the values at `j`. Simplify using `only [Matrix.mulVecLin_apply, Function.comp_apply]`.
+
+Conclude with `(RingHom.map_mulVec _ _ _ j).symm`. Set `g : Fin Φ.rank → LinearMap.range (Φ.map (algebraMap k K)).mulVecLin` to `fun i => ⟨_, hmem i⟩`. Establish `hg : LinearIndependent K g` using `LinearIndependent.of_comp (LinearMap.range _).subtype hw`. Establish `hc` using `hg.fintype_card_le_finrank`. Rewrite `hc` using `[Fintype.card_fin]`.
+
+Conclude with `hc`.
+-/
 theorem rank_le_rank_map_algebraMap (k K : Type) [Field k] [Field K] [Algebra k K] (a : ℕ)
     (Φ : Matrix (Fin a) (Fin a) k) : Φ.rank ≤ (Φ.map (algebraMap k K)).rank := by
   classical
@@ -58,6 +76,11 @@ theorem rank_le_rank_map_algebraMap (k K : Type) [Field k] [Field K] [Algebra k 
   rw [Fintype.card_fin] at hc
   exact hc
 
+/- English proof (translation)
+Introduce `k K _ _ _ a e Φ U _ _ _ t u h`. Establish `h1` using `finrank_le_of_first_order_kernel k (LinearMap.ker Φ.mulVecLin) U e t u h`. Establish `h2` using `rank_le_rank_map_algebraMap k K a Φ`. Establish `hk` using `LinearMap.finrank_range_add_finrank_ker Φ.mulVecLin`. Establish `hK` using `LinearMap.finrank_range_add_finrank_ker (Φ.map (algebraMap k K)).mulVecLin`.
+
+Rewrite `hk`, `hK` using `[Module.finrank_fin_fun]`. Unfold `Matrix.rank at h2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_ker_map_le_of_first_order_kernel : ∀ (k K : Type) [Field k] [Field K] [Algebra k K] (a e : ℕ) (Φ : Matrix (Fin a) (Fin a) k) (U : Type) [AddCommGroup U] [Module k U] [Module.Finite k U] (t u : LinearMap.ker Φ.mulVecLin →ₗ[k] U), (∀ x0 x1 : Fin (e + 1) → LinearMap.ker Φ.mulVecLin, (∀ j, t (x0 j) = 0 ∧ t (x1 j) = u (x0 j)) → ¬ LinearIndependent k x0) → Module.finrank K (LinearMap.ker (Φ.map (algebraMap k K)).mulVecLin) ≤ Module.finrank k U + e := by
   intro k K _ _ _ a e Φ U _ _ _ t u h
   have h1 := finrank_le_of_first_order_kernel k (LinearMap.ker Φ.mulVecLin) U e t u h

@@ -12,6 +12,13 @@ section General
 open NumberField GlobalTheory.InfAdeleCM
 open scoped TensorProduct
 
+/- English proof (translation)
+Set `e : I ≃ InfinitePlace F` to `Equiv.ofBijective _ hb`. Set `r : ∀ v : InfinitePlace F, v.Completion ≃+* ℝ` to `fun v => InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal v)`. Establish `hr : ∀ v, Continuous (r v).symm` using `fun v => (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal v)).symm.continuous`. Use `⟨{ toFun := fun x v => (r v).symm (x (e.symm v)) map_zero' := funext fun v => map_zero (r v).symm map_add' := fun x y => funext fun v => map_add (r v).symm _ _ }, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_pi fun v => (hr v).comp (continuous_apply _)`.
+
+Introduce `x i`. Rewrite using `[ext_eq_ofReal]`. Use `congr 1`. Establish `h` using `(r (e i)).apply_symm_apply (x (e.symm (e i)))`. Use `Eq.trans h ?_` and prove the remaining obligations.
+
+Rewrite using `[e.symm_apply_apply]`. Introduce `a ha`. Use function extensionality and compare the values at `v`. Take `⟨i, rfl⟩` from `hb.2 v`. Conclude with `(InfinitePlace.Completion.extensionEmbedding _).injective ((ha i).trans (map_zero _).symm)`.
+-/
 theorem exists_real_chart_general {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {I : Type}
     (σ : I → (F →+* ℂ)) (hb : Function.Bijective fun i => InfinitePlace.mk (σ i)) :
     ∃ ρ : (I → ℝ) →+ InfiniteAdeleRing F, Continuous ρ ∧ (∀ x i, ext (σ i) (ρ x) = (x i : ℂ)) ∧
@@ -42,6 +49,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 open scoped TensorProduct ContDiff ComplexOrder
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D θ hθ hb`. Use `haveI := D.sp.cm.totReal`. Take `⟨ρ, h1, h2, h3⟩` from `exists_real_chart_general (F := D.host.F) (fun τ : D.what₂.Tau => (tauE D τ).comp (algebraMap D.host.F D.host.E)) hb`. Establish `key : ∀ τ (a : Ainf D.host.F), θ τ (a ⊗ₜ[D.host.F] (1 : D.host.E)) = GlobalTheory.InfAdeleCM.ext ((tauE D τ).comp (algebraMap D.host.F D.host.E)) a` using `fun τ a => by`. Use `GlobalTheory.InfAdeleCM.hom_tmul (tauE D τ) (θ τ) (hθ τ).1 (hθ τ).2 a 1` as an intermediate fact.
+
+Rewrite `this` using `[RingHom.map_one, mul_one]`. Conclude with `this`. Conclude with `⟨ρ, h1, fun x τ => (key τ _).trans (h2 x τ), fun a ha => h3 a fun τ => (key τ a).symm.trans (ha τ)⟩`.
+-/
 theorem exists_real_chart : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → (Function.Bijective fun τ : D.what₂.Tau => NumberField.InfinitePlace.mk ((tauE D τ).comp (algebraMap D.host.F D.host.E))) → ∃ ρ : (D.what₂.Tau → ℝ) →+ Ainf D.host.F, Continuous ρ ∧ (∀ x τ, θ τ (ρ x ⊗ₜ[D.host.F] (1 : D.host.E)) = (x τ : ℂ)) ∧ ∀ a : Ainf D.host.F, (∀ τ, θ τ (a ⊗ₜ[D.host.F] (1 : D.host.E)) = 0) → a = 0 := by
   intro D θ hθ hb
   haveI := D.sp.cm.totReal

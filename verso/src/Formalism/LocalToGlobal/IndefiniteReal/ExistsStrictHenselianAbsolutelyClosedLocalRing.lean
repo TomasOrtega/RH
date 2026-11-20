@@ -17,6 +17,9 @@ section Lin
 variable {K : Type} [Field K] {G : Type} [Group G]
   {T : Type} [AddCommGroup T] [Module K T] [FiniteDimensional K T]
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.RankOneOrbitForms.goal1 .. | (apply Bl.RankOneOrbitForms.goal1 <;> assumption) | (intros; apply Bl.RankOneOrbitForms.goal1 <;> assumption)`.
+-/
 theorem exists_strictHenselian_absolutely_closed_local_ring (τ : Representation K G T)
     (hirr : ∀ W : Submodule K T, (∀ g : G, ∀ w ∈ W, τ g w ∈ W) → W = ⊥ ∨ W = ⊤)
     (ε₀ ε : T →ₗ[K] T) (h1 : finrank K (LinearMap.range ε₀) = 1) :
@@ -37,6 +40,9 @@ variable {K : Type} [Field K] {G : Type} [Group G] [Fintype G]
 
 open Classical in
 
+/- English proof (translation)
+Simplify using `only [← Module.End.mul_eq_comp, epP, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm, map_smul, map_sum, smul_eq_mul, ← map_mul, charOf, mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun h₀ _ => Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul (algebraMap (𝓞 K) K)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trace_formula (τ : Representation K G T) (H₀ H : Subgroup G) (χ₀ : H₀ →* (𝓞 K)ˣ)
     (χ : H →* (𝓞 K)ˣ) (a b : G) :
     LinearMap.trace K T (epP H₀ χ₀ τ ∘ₗ τ a ∘ₗ epP H χ τ ∘ₗ τ b) =
@@ -50,6 +56,11 @@ theorem trace_formula (τ : Representation K G T) (H₀ H : Subgroup G) (χ₀ :
   rw [map_mul (algebraMap (𝓞 K) K)]
   ring
 
+/- English proof (translation)
+Establish `hu : ((χ h : (𝓞 K)ˣ) : 𝓞 K) ^ Nat.card H = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one', map_one, Units.val_one]`. Establish `h2 : σ (((χ h : (𝓞 K)ˣ) : 𝓞 K) : K) ^ Nat.card H = 1`. Use `congrArg (σ.comp (algebraMap (𝓞 K) K)) hu` as an intermediate fact. Rewrite `this` using `[map_pow, map_one]`.
+
+Conclude with `this`. Conclude with `Complex.norm_eq_one_of_pow_eq_one h2 Nat.card_pos.ne'`.
+-/
 theorem norm_chi (H : Subgroup G) [Finite H] (χ : H →* (𝓞 K)ˣ) (h : H) (σ : K →+* ℂ) :
     ‖σ (((χ h : (𝓞 K)ˣ) : 𝓞 K) : K)‖ = 1 := by
   have hu : ((χ h : (𝓞 K)ˣ) : 𝓞 K) ^ Nat.card H = 1 := by
@@ -62,6 +73,15 @@ theorem norm_chi (H : Subgroup G) [Finite H] (χ : H →* (𝓞 K)ˣ) (h : H) (�
 
 variable [NumberField K]
 
+/- English proof (translation)
+Rewrite using `[trace_formula, map_mul, norm_mul]`. Establish `hA : ‖σ ((Nat.card H₀ : K)⁻¹ * (Nat.card H : K)⁻¹)‖ = (Nat.card H₀ : ℝ)⁻¹ * (Nat.card H : ℝ)⁻¹`. Simplify using `[map_mul, map_inv₀, map_natCast, norm_inv]`. Rewrite using `[hA]`. Establish `hB : ‖σ (∑ h₀ : H₀, ∑ h : H, ((((χ₀ h₀⁻¹ : (𝓞 K)ˣ) : 𝓞 K) : K) * (((χ h⁻¹ : (𝓞 K)ˣ) : 𝓞 K) : K)) * charOf τ ((h₀ : G) * a * h * b))‖ ≤ ∑ _h₀ : H₀, ∑ _h : H, (finrank K T : ℝ)`.
+
+Rewrite using `[map_sum]`. Use `norm_sum_le_of_le _ fun h₀ _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `norm_sum_le_of_le _ fun h _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, norm_mul, norm_mul, norm_chi, norm_chi, one_mul, one_mul]`.
+
+Conclude with `((hC K G T τ _).2 σ).2`. Establish `hpos : (0 : ℝ) ≤ (Nat.card H₀ : ℝ)⁻¹ * (Nat.card H : ℝ)⁻¹` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `h0 : (Nat.card H₀ : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Establish `h1 : (Nat.card H : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`.
+
+Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Nat.card_eq_fintype_card]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem norm_trace_le (hC : CharFacts) (τ : Representation K G T) (H₀ H : Subgroup G)
     (χ₀ : H₀ →* (𝓞 K)ˣ) (χ : H →* (𝓞 K)ˣ) (a b : G) (σ : K →+* ℂ) :
     ‖σ (LinearMap.trace K T (epP H₀ χ₀ τ ∘ₗ τ a ∘ₗ epP H χ τ ∘ₗ τ b))‖ ≤ (finrank K T : ℝ) := by
@@ -90,6 +110,15 @@ theorem norm_trace_le (hC : CharFacts) (τ : Representation K G T) (H₀ H : Sub
         simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Nat.card_eq_fintype_card]
         field_simp
 
+/- English proof (translation)
+Rewrite using `[trace_formula]`. Establish `hG0 : (Fintype.card G : K) = (Nat.card H₀ : K) * (H₀.index : K)`. Rewrite using `[← Nat.cast_mul, Subgroup.card_mul_index, Nat.card_eq_fintype_card]`. Establish `hG1 : (Fintype.card G : K) = (Nat.card H : K) * (H.index : K)`. Rewrite using `[← Nat.cast_mul, Subgroup.card_mul_index, Nat.card_eq_fintype_card]`.
+
+Establish `hsq : (Fintype.card G : K) ^ 2 = ((Nat.card H₀ : K) * (H₀.index : K)) * ((Nat.card H : K) * (H.index : K))`. Rewrite using `[sq]`. Use `nth_rw 1 [hG0]`. Rewrite using `[hG1]`. Establish `h0 : (Nat.card H₀ : K) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`.
+
+Establish `h1 : (Nat.card H : K) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Rewrite using `[hsq, show ∀ x : K, (Nat.card H₀ : K) * (H₀.index : K) * ((Nat.card H : K) * (H.index : K)) * ((Nat.card H₀ : K)⁻¹ * (Nat.card H : K)⁻¹ * x) = (H₀.index : K) * (H.index : K) * x from fun x => by field_simp]`. Use `mul_mem (mul_mem (Subalgebra.natCast_mem _ _) (Subalgebra.natCast_mem _ _)) (Subalgebra.sum_mem _ fun h₀ _ => Subalgebra.sum_mem _ fun h _ => mul_mem (mul_mem ?_ ?_) ?_)` and prove the remaining obligations. Conclude with `RingOfIntegers.isIntegral_coe _`. Conclude with `RingOfIntegers.isIntegral_coe _`.
+
+Conclude with `(hC K G T τ _).1`.
+-/
 theorem integral_mem (hC : CharFacts) (τ : Representation K G T) (H₀ H : Subgroup G)
     (χ₀ : H₀ →* (𝓞 K)ˣ) (χ : H →* (𝓞 K)ˣ) (a b : G) :
     (Fintype.card G : K) ^ 2 * LinearMap.trace K T (epP H₀ χ₀ τ ∘ₗ τ a ∘ₗ epP H χ τ ∘ₗ τ b) ∈
@@ -128,6 +157,9 @@ def epA (H : Subgroup G) (χ : H →* (𝓞 K)ˣ) : MonoidAlgebra K G :=
   ((Nat.card H : ℕ) : K)⁻¹ •
     ∑ h : H, MonoidAlgebra.single (h : G) ((((χ h⁻¹ : (𝓞 K)ˣ) : 𝓞 K) : K))
 
+/- English proof (translation)
+Simplify using `only [epA, epP, map_smul, map_sum, Representation.asAlgebraHom_single]`.
+-/
 theorem asAlg_epA (H : Subgroup G) (χ : H →* (𝓞 K)ˣ) {V : Type} [AddCommGroup V] [Module K V]
     (ρ : Representation K G V) : ρ.asAlgebraHom (epA H χ) = epP H χ ρ := by
   simp only [epA, epP, map_smul, map_sum, Representation.asAlgebraHom_single]
@@ -135,6 +167,9 @@ theorem asAlg_epA (H : Subgroup G) (χ : H →* (𝓞 K)ˣ) {V : Type} [AddCommG
 def eA {T : Type} [AddCommGroup T] [Module K T] (τ : Representation K G T) : MonoidAlgebra K G :=
   (charOf τ 1 / (Fintype.card G : K)) • ∑ x : G, MonoidAlgebra.single x (charOf τ x⁻¹)
 
+/- English proof (translation)
+Simplify using `only [eA, eS, map_smul, map_sum, Representation.asAlgebraHom_single]`.
+-/
 theorem asAlg_eA {T : Type} [AddCommGroup T] [Module K T] (τ : Representation K G T)
     {V : Type} [AddCommGroup V] [Module K V] (ρ : Representation K G V) :
     ρ.asAlgebraHom (eA τ) = eS τ ρ := by
@@ -146,6 +181,27 @@ end NormTraceLemmas
 
 open NormTraceLemmas in
 
+/- English proof (translation)
+Introduce `K _ _ G _ _ S T _ _ _ τ H₀ χ₀ H χ hgood hM1 s`. Take `⟨γ, δ, c, hdet, htr, he1, he2⟩` from `exists_strictHenselian_absolutely_closed_local_ring (τ s) (hgood.2.1 s) (epP H₀ χ₀ (τ s)) (epP H χ (τ s)) (hM1 s)`. Use `⟨γ, δ, c, fun i j => ⟨(Fintype.card G : K) ^ 2 * c i j, ?_⟩, hdet, fun i j => rfl, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[htr i j]`. Conclude with `integral_mem hC (τ s) H₀ H χ₀ χ (δ i) (γ j)`.
+
+Introduce `i j σ`. Rewrite using `[htr i j]`. Conclude with `norm_trace_le hC (τ s) H₀ H χ₀ χ (δ i) (γ j) σ`. Introduce `V _ _ ρ`. Set `_ : Module (𝓞 K) V` to `Module.compHom V (algebraMap (𝓞 K) K)`.
+
+Establish `: IsScalarTower (𝓞 K) K V` using `⟨fun x y v => by`. Express the relevant statement in the definitionally equal form `(x • y) • v = (algebraMap (𝓞 K) K x) • (y • v)`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`. Take `⟨hPe, hPε⟩` from `hP K G V ρ`. Take `⟨hcg, hcε, -⟩` from `hPe (T s) (τ s)`.
+
+Establish `ce_g : ∀ g x, eS (τ s) ρ (ρ g x) = ρ g (eS (τ s) ρ x)` using `fun g x => LinearMap.congr_fun (hcg g) x`. Establish `ce₀ : ∀ x, eS (τ s) ρ (epP H₀ χ₀ ρ x) = epP H₀ χ₀ ρ (eS (τ s) ρ x)` using `fun x => LinearMap.congr_fun (hcε H₀ χ₀) x`. Establish `ce : ∀ x, eS (τ s) ρ (epP H χ ρ x) = epP H χ ρ (eS (τ s) ρ x)` using `fun x => LinearMap.congr_fun (hcε H χ) x`. Establish `ii₀ : ∀ x, epP H₀ χ₀ ρ (epP H₀ χ₀ ρ x) = epP H₀ χ₀ ρ x` using `fun x => LinearMap.congr_fun (hPε H₀ χ₀).1 x`. Establish `ii : ∀ x, epP H χ ρ (epP H χ ρ x) = epP H χ ρ x` using `fun x => LinearMap.congr_fun (hPε H χ).1 x`.
+
+Establish `hee : ∀ x, eS (τ s) ρ (eS (τ s) ρ x) = eS (τ s) ρ x`. Introduce `x`. Establish `h0 : (τ s).asAlgebraHom (eA (τ s) - 1) = 0`. Rewrite using `[map_sub, asAlg_eA, (hS K G S T τ hgood).1 s, map_one, Module.End.one_eq_id, sub_self]`. Use `LinearMap.congr_fun (hK K G (T s) (τ s) V ρ _ h0) x` as an intermediate fact.
+
+Simplify using `only [LinearMap.comp_apply, map_sub, asAlg_eA, map_one, LinearMap.sub_apply, Module.End.one_apply, LinearMap.zero_apply, sub_eq_zero] at this`. Conclude with `this`. Prove the components needed by the constructor for the conclusion. Introduce `i j a ha`. Establish `ea : eS (τ s) ρ a = a`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `e0a : epP H₀ χ₀ ρ a = a`. Combine the equalities or inequalities in the displayed calculation. Establish `hx : (τ s).asAlgebraHom (epA H₀ χ₀ * MonoidAlgebra.of K G (δ i) * epA H χ * MonoidAlgebra.of K G (γ j) * epA H₀ χ₀ - c i j • epA H₀ χ₀) = 0`. Simplify using `only [map_sub, map_mul, map_smul, asAlg_epA, Representation.asAlgebraHom_of, Module.End.mul_eq_comp, LinearMap.comp_assoc]`.
+
+Rewrite using `[he1 i j, sub_self]`. Use `LinearMap.congr_fun (hK K G (T s) (τ s) V ρ _ hx) a` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, map_sub, map_mul, map_smul, asAlg_epA, Representation.asAlgebraHom_of, LinearMap.sub_apply, Module.End.mul_apply, LinearMap.smul_apply, LinearMap.zero_apply, ce₀, ce_g, ce, ea, e0a, sub_eq_zero] at this`. Conclude with `this`. Introduce `a ha`.
+
+Establish `ea : eS (τ s) ρ a = a`. Combine the equalities or inequalities in the displayed calculation. Establish `Ea : epP H χ ρ a = a`. Combine the equalities or inequalities in the displayed calculation. Establish `hy : (τ s).asAlgebraHom (∑ j, ∑ i, c⁻¹ j i • (epA H χ * MonoidAlgebra.of K G (γ j) * epA H₀ χ₀ * MonoidAlgebra.of K G (δ i) * epA H χ) - epA H χ) = 0`.
+
+Simplify using `only [map_sub, map_sum, map_mul, map_smul, asAlg_epA, Representation.asAlgebraHom_of, Module.End.mul_eq_comp, LinearMap.comp_assoc]`. Rewrite using `[he2, sub_self]`. Use `LinearMap.congr_fun (hK K G (T s) (τ s) V ρ _ hy) a` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, map_sub, map_sum, map_mul, map_smul, asAlg_epA, Representation.asAlgebraHom_of, LinearMap.sub_apply, LinearMap.sum_apply, Module.End.mul_apply, LinearMap.smul_apply, LinearMap.zero_apply, ce₀, ce_g, ce, ea, Ea, sub_eq_zero] at this`. Conclude with `this`.
+-/
 theorem core_of (hC : CharFacts) (hK : KeyZero) (hS : Schur) (hP : IdemP) : Core := by
   intro K _ _ G _ _ S T _ _ _ τ H₀ χ₀ H χ hgood hM1 s
   obtain ⟨γ, δ, c, hdet, htr, he1, he2⟩ :=

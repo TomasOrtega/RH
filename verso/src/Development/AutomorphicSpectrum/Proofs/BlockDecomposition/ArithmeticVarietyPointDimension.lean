@@ -21,6 +21,9 @@ namespace GlobalTheory.CompanionTheory.MPDict.DimVar
 
 open Topology
 
+/- English proof (translation)
+The claim follows from `RingHom.finiteType_algebraMap.mp <| (HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType) (φ := CommRingCat.ofHom (algebraMap ℤ C))).mp (hj ▸ inferInstance)`.
+-/
 theorem finiteType_of_chart {Y : Scheme.{0}} (f : Y ⟶ Spec (.of ℤ)) [LocallyOfFiniteType f] {C : Type} [CommRing C]
     [Algebra ℤ C] (j : Spec (.of C) ⟶ Y) [IsOpenImmersion j] (hj : j ≫ f = Spec.map (CommRingCat.ofHom (algebraMap ℤ C))) :
     Algebra.FiniteType ℤ C :=
@@ -28,6 +31,13 @@ theorem finiteType_of_chart {Y : Scheme.{0}} (f : Y ⟶ Spec (.of ℤ)) [Locally
     (HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)
       (φ := CommRingCat.ofHom (algebraMap ℤ C))).mp (hj ▸ inferInstance)
 
+/- English proof (translation)
+Take `⟨B, _, _, j, _, q, hq, hj⟩` from `exists_affine_chart_over f y`. Substitute `hq` using the available equality. Use `finiteType_of_chart f j hj` as an intermediate fact. Rewrite using `[← GlobalTheory.T.krull_dim_quotient_eq_trdeg_succ Y B j q inferInstance, ← topologicalKrullDim_range_inter_closure_eq j q]`. Use `le_antisymm (topologicalKrullDim_le_of_forall_exists_isOpen fun z ↦ ?_) (IsEmbedding.inclusion Set.inter_subset_right).isInducing.topologicalKrullDim_le` and prove the remaining obligations.
+
+Take `⟨C, _, _, j', _, y', hy, hj'⟩` from `exists_affine_chart_over f z.1`. Use `finiteType_of_chart f j' hj'` as an intermediate fact. Take `⟨q', hq'⟩` from `(specializes_iff_mem_closure.mpr z.2).mem_open j'.isOpenEmbedding.isOpen_range ⟨y', hy⟩`. Use `⟨Subtype.val ⁻¹' Set.range j', j'.isOpenEmbedding.isOpen_range.preimage continuous_subtype_val, ⟨y', hy⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← topologicalKrullDim_eq_of_isEmbedding (IsEmbedding.subtypeVal.comp IsEmbedding.subtypeVal) (Z := Set.range j' ∩ closure {j q}) (by rw [Set.range_comp, Subtype.range_coe, Subtype.image_preimage_coe, Set.inter_comm])]`.
+
+Rewrite using `[topologicalKrullDim_range_inter_closure_eq j q, GlobalTheory.T.krull_dim_quotient_eq_trdeg_succ Y B j q inferInstance]`. Use `conv_lhs => rw [← hq', topologicalKrullDim_range_inter_closure_eq j' q']`. Establish `h0 : CharZero (Y.residueField (j' q'))` using `hq' ▸ inferInstance`. Rewrite using `[GlobalTheory.T.krull_dim_quotient_eq_trdeg_succ Y C j' q' h0, hq']`.
+-/
 theorem topologicalKrullDim_closure_eq (Y : Scheme.{0}) (f : Y ⟶ Spec (.of ℤ)) [LocallyOfFiniteType f] (y : Y)
     [CharZero (Y.residueField y)] :
     topologicalKrullDim (closure ({y} : Set Y)) =
@@ -52,10 +62,22 @@ theorem topologicalKrullDim_closure_eq (Y : Scheme.{0}) (f : Y ⟶ Spec (.of ℤ
   have h0 : CharZero (Y.residueField (j' q')) := hq' ▸ inferInstance
   rw [GlobalTheory.T.krull_dim_quotient_eq_trdeg_succ Y C j' q' h0, hq']
 
+/- English proof (translation)
+Simplify using `[ptCoord, pullRatio_self]`.
+-/
 theorem ptCoord_chart_ne_zero {m : ℕ} {n : Fin (m + 1) → ℕ} (x : MP ℤ m n) (k : Fin (m + 1)) :
     ptCoord x ⟨k, ptChart x k⟩ ≠ 0 := by
   simp [ptCoord, pullRatio_self]
 
+/- English proof (translation)
+Introduce `m n x d hch hd`. Establish `hdim` using `topologicalKrullDim_closure_eq (MP ℤ m n) (mpStr ℤ m n) x`. Rewrite `hdim` using `[hd]`. Establish `h1 : ((d : ℕ∞)) = (Algebra.trdeg ℤ ((MP ℤ m n).residueField x)).toENat + 1` using `WithBot.coe_injective hdim`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : ℕ, (Algebra.trdeg ℤ ((MP ℤ m n).residueField x)).toENat = t := by`.
+
+Use `⟨(Algebra.trdeg ℤ ((MP ℤ m n).residueField x)).toENat.toNat, (ENat.coe_toNat ?_).symm⟩` and prove the remaining obligations. Introduce `h`. Rewrite `h1` using `[h]`. Conclude with `ENat.coe_ne_top d (by simpa using h1)`. Establish `hdt : d = t + 1`.
+
+Rewrite `h1` using `[ht]`. Conclude with `h1` after adjusting the coercions. Substitute `hdt` using the available equality. Establish `htr : Algebra.trdeg ℤ (blockFnField (ptCoord x)) = t`. Rewrite using `[GlobalTheory.T.function_field_of_point_coords_top m n x, GlobalTheory.CompanionTheory.Ar.PB.FMX.DimY.trdeg_top]`.
+
+Conclude with `Cardinal.toENat_eq_nat.mp ht`. Conclude with `GlobalTheory.CompanionTheory.Ar.PB.FMX.DimY.isArithVar_of_trdeg (ptCoord x) (ptChart x) (ptCoord_chart_ne_zero x) t htr`.
+-/
 theorem isArithVar_ptIdeal : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (x : MP ℤ m n) (d : ℕ), CharZero ((MP ℤ m n).residueField x) → topologicalKrullDim (closure ({x} : Set (MP ℤ m n))) = (d : ℕ) → Geo.IsArithVar (ptIdeal x) d := by
   intro m n x d hch hd
   have hdim := topologicalKrullDim_closure_eq (MP ℤ m n) (mpStr ℤ m n) x

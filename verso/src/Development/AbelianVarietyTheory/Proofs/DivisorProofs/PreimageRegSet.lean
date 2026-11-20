@@ -13,6 +13,13 @@ namespace GlobalTheory.Desc.GaussPt
 
 variable {Y X : Scheme.{0}} [IsIntegral Y] [IsIntegral X]
 
+/- English proof (translation)
+Take `⟨l, h₁, h₂⟩` from `h`. Rewrite `h₁` using `[Category.comp_id]`. Substitute `h₁` using the available equality. Set `sY` to `Y.presheaf.stalkSpecializes (genericPoint_specializes y)`. Set `sX` to `X.presheaf.stalkSpecializes (genericPoint_specializes (π y))`.
+
+Establish `e₁ : Spec.map sY ≫ Y.fromSpecStalk y = gp Y` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk _`. Set `t : X.presheaf.stalk (genericPoint X) ⟶ Y.presheaf.stalk (genericPoint Y)` to `CommRingCat.ofHom θ`. Establish `e₂ : π.stalkMap y ≫ sY = sX ≫ t`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono (X.fromSpecStalk (π y)), Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkMap_fromSpecStalk, ← Category.assoc, e₁, h₂, Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk]`.
+
+Both sides reduce to the same expression. Conclude with `(congrArg (fun f => CommRingCat.Hom.hom f a) e₂).symm`.
+-/
 theorem theta_stalk {π : Y ⟶ X} {θ : X.functionField →+* Y.functionField} (h : PFF (𝟙 _) π θ) (y : Y)
     (a : X.presheaf.stalk (π y)) :
     θ (algebraMap _ X.functionField a) = algebraMap _ Y.functionField (π.stalkMap y a) := by
@@ -32,6 +39,9 @@ theorem theta_stalk {π : Y ⟶ X} {θ : X.functionField →+* Y.functionField} 
     rfl
   exact (congrArg (fun f => CommRingCat.Hom.hom f a) e₂).symm
 
+/- English proof (translation)
+Establish `hU'' : π (genericPoint Y) ∈ U` using `hU'`. Rewrite using `[← algebraMap_germ (x := π (genericPoint Y)) hU'' s, theta_stalk h, Scheme.Hom.germ_stalkMap_apply]`. Conclude with `algebraMap_germ hU' _`.
+-/
 theorem theta_fnOf {π : Y ⟶ X} {θ : X.functionField →+* Y.functionField} (h : PFF (𝟙 _) π θ)
     (U : X.Opens) (hU : genericPoint X ∈ U) (hU' : genericPoint Y ∈ π ⁻¹ᵁ U) (s : Γ(X, U)) :
     θ (fnOf U hU s) = fnOf (π ⁻¹ᵁ U) hU' (π.app U s) := by
@@ -40,16 +50,31 @@ theorem theta_fnOf {π : Y ⟶ X} {θ : X.functionField →+* Y.functionField} (
     Scheme.Hom.germ_stalkMap_apply]
   exact algebraMap_germ hU' _
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hu`. Conclude with `⟨_, (theta_stalk h y a).symm⟩`.
+-/
 theorem regAt_theta {π : Y ⟶ X} {θ : X.functionField →+* Y.functionField} (h : PFF (𝟙 _) π θ) (y : Y)
     {u : X.functionField} (hu : RegAt (π y) u) : RegAt y (θ u) := by
   obtain ⟨a, rfl⟩ := hu
   exact ⟨_, (theta_stalk h y a).symm⟩
 
+/- English proof (translation)
+Take `⟨a, ha, rfl⟩` from `hu`. Conclude with `⟨_, ha.map _, (theta_stalk h y a).symm⟩`.
+-/
 theorem unitAt_theta {π : Y ⟶ X} {θ : X.functionField →+* Y.functionField} (h : PFF (𝟙 _) π θ) (y : Y)
     {u : X.functionField} (hu : UnitAt (π y) u) : UnitAt y (θ u) := by
   obtain ⟨a, ha, rfl⟩ := hu
   exact ⟨_, ha.map _, (theta_stalk h y a).symm⟩
 
+/- English proof (translation)
+Use extensionality with `u`. Use `⟨fun ⟨c, hc⟩ => ?_, fun hu => regAt_theta h y hu⟩` and prove the remaining obligations. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := X.presheaf.stalk (π y)) u`. Establish `hb0 : algebraMap _ X.functionField b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Use `letI := (π.stalkMap y).hom.toAlgebra`.
+
+Establish `: Module.Flat (X.presheaf.stalk (π y)) (Y.presheaf.stalk y)` using `Flat.stalkMap π y`. Establish `: IsLocalHom (algebraMap (X.presheaf.stalk (π y)) (Y.presheaf.stalk y))` using `inferInstanceAs (IsLocalHom (π.stalkMap y).hom)`. Use `Module.FaithfullyFlat.of_flat_of_isLocalHom (A := X.presheaf.stalk (π y)) (B := Y.presheaf.stalk y)` as an intermediate fact. Establish `e : π.stalkMap y a = c * π.stalkMap y b`. Apply `IsFractionRing.injective (Y.presheaf.stalk y) Y.functionField` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, hc, ← theta_stalk h, ← theta_stalk h, ← map_mul, div_mul_cancel₀ _ hb0]`. Establish `hm : a ∈ Ideal.span {b}`. Rewrite using `[← Ideal.comap_map_eq_self_of_faithfullyFlat (B := Y.presheaf.stalk y) (Ideal.span {b}), Ideal.mem_comap, Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton']`. Conclude with `⟨c, e.symm⟩`. Take `⟨d, rfl⟩` from `Ideal.mem_span_singleton'.1 hm`.
+
+Conclude with `⟨d, by rw [map_mul, mul_div_cancel_right₀ _ hb0]⟩`.
+-/
 theorem preimage_regSet {π : Y ⟶ X} [Flat π] {θ : X.functionField →+* Y.functionField}
     (h : PFF (𝟙 _) π θ) (y : Y) : θ ⁻¹' (regSet y) = regSet (π y) := by
   ext u
@@ -73,6 +98,9 @@ theorem preimage_regSet {π : Y ⟶ X} [Flat π] {θ : X.functionField →+* Y.f
   obtain ⟨d, rfl⟩ := Ideal.mem_span_singleton'.1 hm
   exact ⟨d, by rw [map_mul, mul_div_cancel_right₀ _ hb0]⟩
 
+/- English proof (translation)
+Establish `h : p = X.toSpecΓ ≫ Spec.map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ p.appTop)`. Rewrite using `[Spec.map_comp, ← Scheme.toSpecΓ_naturality_assoc, ← SpecMap_ΓSpecIso_hom, ← Spec.map_comp]`. Simplify using the standard rewrite rules. Use `conv_rhs => rw [h, gp, ← Category.assoc, Scheme.fromSpecStalk_toSpecΓ, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_cst {R : Type} [CommRing R] (p : X ⟶ Sp R) : spMap (GlobalTheory.Desc.cst p) = gp X ≫ p := by
   have h : p = X.toSpecΓ ≫ Spec.map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ p.appTop) := by
     rw [Spec.map_comp, ← Scheme.toSpecΓ_naturality_assoc, ← SpecMap_ΓSpecIso_hom, ← Spec.map_comp]
@@ -80,6 +108,13 @@ theorem spMap_cst {R : Type} [CommRing R] (p : X ⟶ Sp R) : spMap (GlobalTheory
   conv_rhs => rw [h, gp, ← Category.assoc, Scheme.fromSpecStalk_toSpecΓ, ← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Take `⟨l, h₁, h₂⟩` from `h`. Establish `: spMap (θ.comp (GlobalTheory.Desc.cst p)) = spMap ((GlobalTheory.Desc.cst q).comp ρ)`. Establish `e1 : spMap (θ.comp (GlobalTheory.Desc.cst p)) = spMap θ ≫ spMap (GlobalTheory.Desc.cst p)`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+
+Establish `e2 : spMap ((GlobalTheory.Desc.cst q).comp ρ) = spMap (GlobalTheory.Desc.cst q) ≫ spMap ρ`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[e1, e2, spMap_cst, spMap_cst, ← Category.assoc, ← h₂, ← h₁]`. Simplify using `only [Category.assoc, w]`.
+
+Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective this)`.
+-/
 theorem comp_cst {V : Scheme.{0}} {R R₁ : Type} [CommRing R] [CommRing R₁] {ρ : R →+* R₁} {p : X ⟶ Sp R}
     {q : Y ⟶ Sp R₁} {i : V ⟶ Y} {φ : V ⟶ X} {θ : X.functionField →+* Y.functionField} (h : PFF i φ θ)
     (w : φ ≫ p = (i ≫ q) ≫ spMap ρ) : θ.comp (GlobalTheory.Desc.cst p) = (GlobalTheory.Desc.cst q).comp ρ := by
@@ -93,9 +128,15 @@ theorem comp_cst {V : Scheme.{0}} {R R₁ : Type} [CommRing R] [CommRing R₁] {
     simp only [Category.assoc, w]
   exact congrArg CommRingCat.Hom.hom (Spec.map_injective this)
 
+/- English proof (translation)
+The claim follows from `regAt_fnOf (U := ⊤) trivial trivial _`.
+-/
 theorem regAt_cst {R : Type} [CommRing R] (p : X ⟶ Sp R) (x : X) (r : R) : RegAt x (GlobalTheory.Desc.cst p r) :=
   regAt_fnOf (U := ⊤) trivial trivial _
 
+/- English proof (translation)
+Use `(unitAt_fnOf_iff (U := ⊤) trivial trivial _).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x ∈ X.basicOpen (p.appTop ((Scheme.ΓSpecIso (CommRingCat.of R)).inv r)) ↔ _`. Rewrite using `[← Scheme.preimage_basicOpen_top, basicOpen_eq_of_affine]`. Both sides reduce to the same expression.
+-/
 theorem unitAt_cst_iff {R : Type} [CommRing R] (p : X ⟶ Sp R) (x : X) (r : R) :
     UnitAt x (GlobalTheory.Desc.cst p r) ↔ r ∉ (p x).asIdeal := by
   refine (unitAt_fnOf_iff (U := ⊤) trivial trivial _).trans ?_

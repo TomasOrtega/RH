@@ -4,6 +4,41 @@ open scoped NNReal TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `l _ A B _ _ _ _ u pr hl hu hH κ _ x hEq hPt hpr`. Set `iL : B →ₐ[A] B ⊗[A] B` to `Algebra.TensorProduct.includeLeft`. Set `iR : B →ₐ[A] B ⊗[A] B` to `Algebra.TensorProduct.includeRight`. Set `U : B ⊗[A] B` to `algebraMap A (B ⊗[A] B) u`. Set `D : κ → B ⊗[A] B` to `fun j => iL (x j) - iR (x j)`.
+
+Establish `hiL : ∀ a, iL (algebraMap A B a) = algebraMap A (B ⊗[A] B) a` using `fun a => iL.commutes a`. Establish `hiR : ∀ a, iR (algebraMap A B a) = algebraMap A (B ⊗[A] B) a` using `fun a => iR.commutes a`. Establish `hlR : ((l : ℕ) : B ⊗[A] B) = 0`. Rewrite using `[← map_natCast iL, hl, map_zero]`. Establish `hUreg : U ∈ nonZeroDivisors (B ⊗[A] B)`.
+
+Establish `hinj : Function.Injective (LinearMap.mulLeft A (algebraMap A B u))`. Introduce `b b' hbb`. Establish `h0 : (b - b') * algebraMap A B u = 0`. Simplify using `only [LinearMap.mulLeft_apply] at hbb`. Rewrite using `[sub_mul, mul_comm b, mul_comm b', hbb, sub_self]`.
+
+Conclude with `sub_eq_zero.mp ((mul_right_mem_nonZeroDivisors_eq_zero_iff hu).mp h0)`. Establish `hinj'` using `Module.Flat.rTensor_preserves_injective_linearMap (M := B) _ hinj`. Establish `hmul : ∀ y : B ⊗[A] B, y * U = LinearMap.rTensor B (LinearMap.mulLeft A (algebraMap A B u)) y`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul b b'`. Simplify using `[U, Algebra.TensorProduct.algebraMap_apply, mul_comm]`. Consider the case `add y z hy hz => rw [add_mul, hy, hz, map_add]`. Rewrite using `[mem_nonZeroDivisors_iff_right]`.
+
+Introduce `y hy`. Rewrite `hy` using `[hmul]`. Conclude with `hinj' (by rw [hy, map_zero])`. Choose the witnesses or unpack the hypotheses as in `⟨h, c', hc'⟩ : ∃ (h : ℕ) (c' : κ → κ → B ⊗[A] B), ∀ j, U ^ h * D j = ∑ i, D i ^ l * c' i j := by`. Set `T` to `Localization.Away U`.
+
+Set `i₁ : B →+* T` to `(algebraMap (B ⊗[A] B) T).comp iL.toRingHom`. Set `i₂ : B →+* T` to `(algebraMap (B ⊗[A] B) T).comp iR.toRingHom`. Establish `hA : ∀ a, i₁ (algebraMap A B a) = i₂ (algebraMap A B a)`. Introduce `a`. Simplify using `only [i₁, i₂, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, hiL, hiR]`.
+
+Establish `hunit : IsUnit (i₁ (algebraMap A B u))`. Simplify using `only [i₁, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, hiL]`. Conclude with `IsLocalization.Away.algebraMap_isUnit U`. Take `⟨c, hc⟩` from `hEq T i₁ i₂ hA hunit`. Take `⟨⟨b, hb⟩, hb'⟩` from `IsLocalization.exist_integer_multiples (Submonoid.powers U) (S := T) (Finset.univ : Finset (κ × κ)) (fun p => c p.1 p.2)`.
+
+Take `⟨h, rfl⟩` from `hb`. Use `choose c' hc'' using fun (p : κ × κ) => hb' p (Finset.mem_univ p)`. Use `⟨h, fun i j => c' (i, j), fun j => ?_⟩` and prove the remaining obligations. Establish `hD : ∀ i, algebraMap (B ⊗[A] B) T (D i) = i₁ (x i) - i₂ (x i)`. Introduce `i`.
+
+Simplify using `[D, i₁, i₂]`. Apply `IsLocalization.injective T (M := Submonoid.powers U) (Submonoid.powers_le.mpr hUreg)` to reduce the goal to its premises. Rewrite using `[map_mul, map_sum, hD, hc j, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_pow, hD]`.
+
+Rewrite using `[hc'' (i, j)]`. Express the relevant statement in the definitionally equal form `_ = _ * ((U ^ h) • c i j)`. Rewrite using `[Algebra.smul_def, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hkey : ∀ (m : ℕ) j, U ^ m ∣ D j`.
+
+Use `GlobalTheory.T.dvd_all_pow_of_frobenius_eq_killed_by_perfect_points l (B ⊗[A] B) U hlR hUreg κ D c' h hc' ?_` and prove the remaining obligations. Introduce `O _ _ _ _ _ f hf0 hfnu hcomp j`. Set `ψ : B →+* O` to `f.comp iL.toRingHom`. Set `ψ' : B →+* O` to `f.comp iR.toRingHom`. Establish `hψ : ψ (algebraMap A B u) = f U`.
+
+Simplify using `only [ψ, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, hiL, U]`. Establish `hagree : ∀ a, ψ (algebraMap A B a) = ψ' (algebraMap A B a)`. Introduce `a`. Simplify using `only [ψ, ψ', RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, hiL, hiR]`. Use `hPt O ψ ψ' (by rw [hψ]; exact hf0) (by rw [hψ]; exact hfnu) (by rw [hψ]; exact hcomp) hagree j` as an intermediate fact.
+
+Simplify using `only [ψ, ψ', RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom] at this`. Simplify using `only [D, map_sub, this, sub_self]`. Set `φ : B ⊗[A] B →ₗ[A] B` to `TensorProduct.lift ((LinearMap.lsmul A B).comp pr)`. Establish `hφ : ∀ b b' : B, φ (b ⊗ₜ b') = pr b • b'` using `fun b b' => by simp [φ]`. Introduce `j`.
+
+Establish `hφD : φ (D j) = algebraMap A B (pr (x j)) - x j`. Simplify using `only [D, map_sub]`. Express the relevant statement in the definitionally equal form `φ (x j ⊗ₜ 1) - φ (1 ⊗ₜ x j) = _`. Rewrite using `[hφ, hφ, hpr, one_smul, Algebra.smul_def, mul_one]`. Establish `hmem : ∀ n : ℕ, algebraMap A B (pr (x j)) - x j ∈ Ideal.span {algebraMap A B u ^ n}`.
+
+Introduce `n`. Take `⟨r, hr⟩` from `hkey n j`. Rewrite using `[← hφD, hr]`. Establish `: U ^ n * r = u ^ n • r` using `by simp [U, Algebra.smul_def, map_pow]`. Rewrite using `[this, LinearMap.map_smul, Algebra.smul_def, map_pow]`.
+
+Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Establish `hz` using `hH.haus (algebraMap A B (pr (x j)) - x j) (fun n => by`. Rewrite using `[SModEq.zero, Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top]`. Conclude with `hmem n)`. Conclude with `(sub_eq_zero.mp hz).symm`.
+-/
 theorem descent_of_points_killed : ∀ (l : ℕ) [Fact l.Prime] (A B : Type) [CommRing A] [CommRing B] [Algebra A B] [Module.Flat A B] (u : A) (pr : B →ₗ[A] A), ((l : ℕ) : B) = 0 → algebraMap A B u ∈ nonZeroDivisors B → IsHausdorff (Ideal.span {algebraMap A B u}) B → ∀ (κ : Type) [Fintype κ] (x : κ → B), (∀ (T : Type) [CommRing T] (i₁ i₂ : B →+* T), (∀ a, i₁ (algebraMap A B a) = i₂ (algebraMap A B a)) → IsUnit (i₁ (algebraMap A B u)) → ∃ c : κ → κ → T, ∀ j, i₁ (x j) - i₂ (x j) = ∑ i, (i₁ (x i) - i₂ (x i)) ^ l * c i j) → (∀ (O : Type) [CommRing O] [IsDomain O] [ValuationRing O] [CharP O l] [PerfectRing O l] (ψ ψ' : B →+* O), ψ (algebraMap A B u) ≠ 0 → ¬ IsUnit (ψ (algebraMap A B u)) → IsAdicComplete (Ideal.span {ψ (algebraMap A B u)}) O → (∀ a, ψ (algebraMap A B a) = ψ' (algebraMap A B a)) → ∀ j, ψ (x j) = ψ' (x j)) → pr 1 = 1 → ∀ j, x j = algebraMap A B (pr (x j)) := by
   intro l _ A B _ _ _ _ u pr hl hu hH κ _ x hEq hPt hpr
   let iL : B →ₐ[A] B ⊗[A] B := Algebra.TensorProduct.includeLeft

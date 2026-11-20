@@ -5,6 +5,25 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC GlobalTheory.Et Gl
 open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.ConjugateSelfDual
 universe u v
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ l _ Gw O iR iA iT Bw τ LL' τ' hτ`. Use `haveI := Bw.Kw.2`. Use `haveI := LL'.2`. Set `τo : ↥Bw.Kw.1 →ₐ[ℚ_[l]] Om l` to `LL'.1.val.comp τ'`. Set `g : GQ l` to `AlgEquiv.ofBijective (τo.liftNormal (Om l)) (Algebra.IsAlgebraic.algHom_bijective _)`.
+
+Establish `hg : ∀ x : ↥Bw.Kw.1, g (x : Om l) = ((τ' x : ↥LL'.1) : Om l)` using `fun x => τo.liftNormal_commutes (Om l) x`. Take `⟨K₁, hK₁⟩ : ∃ K₁ : FinExt l, K₁.1 = Bw.Kw.1.map (g : Om l →ₐ[ℚ_[l]] Om l)` from `⟨⟨Bw.Kw.1.map (g : Om l →ₐ[ℚ_[l]] Om l), LinearEquiv.finiteDimensional (IntermediateField.equivMap Bw.Kw.1 (g : Om l →ₐ[ℚ_[l]] Om l)).toLinearEquiv⟩, rfl⟩`. Establish `hK : ∀ x, x ∈ Bw.Kw.1 ↔ g x ∈ K₁.1` using `GlobalTheory.Pst.BridgeInd.mem_iff_of_map_eq hK₁`. Establish `hcont : Continuous (fun x : Om l => g x)` using `(GlobalTheory.Cyc.Model.isom_gal g).continuous`. Set `c : ↥(GK Bw.Kw) ≃* ↥(GK K₁)` to `{ toFun := fun h => ⟨g * (h : GQ l) * g⁻¹, GlobalTheory.Pst.BridgeInd.mem_GK_conj hK h.2⟩ invFun := fun h => ⟨g⁻¹ * (h : GQ l) * g, GlobalTheory.Pst.BridgeInd.mem_GK_conj_inv hK h.2⟩ left_inv := fun h => Subtype.ext (by simp [mul_assoc]) right_inv := fun h => Subtype.ext (by simp …`.
+
+Establish `c_cont : Continuous c` using `Continuous.subtype_mk ((continuous_const.mul continuous_subtype_val).mul continuous_const) _`. Establish `c_symm_cont : Continuous c.symm` using `Continuous.subtype_mk ((continuous_const.mul continuous_subtype_val).mul continuous_const) _`. Set `Bw' : LocBridge l E Ω Gw O` to `{ Kw := K₁ j := (g : Om l →+* Om l).comp Bw.j j_E := fun x => (hK _).1 (Bw.j_E x) j_dense := by`. Introduce `y hy`. Establish `h1 : g⁻¹ y ∈ Bw.Kw.1` using `(hK _).2 (by simpa using hy)`.
+
+Establish `h2` using `image_closure_subset_closure_image hcont (Set.mem_image_of_mem _ (Bw.j_dense h1))`. Establish `h3 : g (g⁻¹ y) = y` using `g.apply_symm_apply y`. Simplify using `only [h3] at h2`. Use `closure_mono ?_ h2` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨x, rfl⟩, rfl⟩`.
+
+Conclude with `⟨x, rfl⟩`. Use `e := Bw.e.trans c`. Use `e_cont := c_cont.comp Bw.e_cont`. Use `e_symm_cont := Bw.e_symm_cont.comp c_symm_cont`. Use `e_comm := fun h x => by`.
+
+Establish `h1 : g⁻¹ (g (Bw.j x)) = Bw.j x` using `g.symm_apply_apply _`. Establish `h2` using `Bw.e_comm h x`. Express the relevant statement in the definitionally equal form `g (((Bw.e h : ↥(GK Bw.Kw)) : GQ l) (g⁻¹ (g (Bw.j x)))) = g (Bw.j ((h : Ω ≃ₐ[E] Ω) x))`. Rewrite using `[h1, h2]`. Use `LL := Bw.LL`.
+
+Use `LL_split := fun σ x => by`. Establish `hx : g⁻¹ (x : Om l) ∈ Bw.Kw.1` using `(hK _).2 (by simp)`. Set `e₁ : ↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥K₁.1` to `((g : Om l →ₐ[ℚ_[l]] Om l).comp Bw.Kw.1.val).codRestrict K₁.1.toSubalgebra fun c => (hK _).1 c.2`. Establish `he : e₁ ⟨g⁻¹ (x : Om l), hx⟩ = x` using `Subtype.ext (g.apply_symm_apply _)`. Rewrite using `[← he]`.
+
+Conclude with `Bw.LL_split (σ.comp e₁) ⟨g⁻¹ (x : Om l), hx⟩`. Use `eO := Bw.eO`. Use `eO_alg := Bw.eO_alg`. Use `eO_cont := Bw.eO_cont`. Use `eO_symm_cont := Bw.eO_symm_cont }`.
+
+Use `⟨g, O, iR, iA, iT, Bw', ⟨fun x => rfl, fun h => rfl⟩, ?_⟩` and prove the remaining obligations. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Conclude with `(hg ⟨Bw.j (algebraMap E Ω x), Bw.j_E x⟩).trans (hτ x).symm`.
+-/
 theorem UpperTheory.Gal.G3.jConjBridge :
     PositivityTheory.AutomorphicGaloisHodgeTate.G8.ConjBridge := by
   intro E Ω _ _ _ _ _ l _ Gw O iR iA iT Bw τ LL' τ' hτ

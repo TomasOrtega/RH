@@ -7,6 +7,11 @@ open scoped ComplexConjugate ComplexOrder
 
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
+/- English proof (translation)
+Establish `hn : (0 : ℝ) < Fintype.card ι` using `by exact_mod_cast Fintype.card_pos`. Establish `hw : ∑ _i : ι, (1 / (Fintype.card ι : ℝ)) = 1`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Establish `key` using `Real.geom_mean_le_arith_mean_weighted Finset.univ (fun _ => 1 / (Fintype.card ι : ℝ)) z (fun i _ => by positivity) hw (fun i _ => (hz i).le)`.
+
+Rewrite `key` using `[Real.finset_prod_rpow _ _ (fun i _ => (hz i).le), ← Finset.mul_sum]`. Establish `h2 : 1 ≤ (∏ i, z i) ^ (1 / (Fintype.card ι : ℝ))` using `Real.one_le_rpow h1 (by positivity)`. Establish `h3` using `h2.trans key`. Rewrite `h3` using `[one_div, inv_mul_eq_div, le_div_iff₀ hn]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma card_le_sum_of_one_le_prod {ι : Type} [Fintype ι] [Nonempty ι] (z : ι → ℝ) (hz : ∀ i, 0 < z i)
     (h1 : 1 ≤ ∏ i, z i) : (Fintype.card ι : ℝ) ≤ ∑ i, z i := by
   have hn : (0 : ℝ) < Fintype.card ι := by exact_mod_cast Fintype.card_pos
@@ -20,6 +25,13 @@ private lemma card_le_sum_of_one_le_prod {ι : Type} [Fintype ι] [Nonempty ι] 
   rw [one_div, inv_mul_eq_div, le_div_iff₀ hn] at h3
   linarith
 
+/- English proof (translation)
+Establish `hn : (0 : ℝ) < Fintype.card ι` using `by exact_mod_cast Fintype.card_pos`. Establish `hw : ∑ _i : ι, (1 / (Fintype.card ι : ℝ)) = 1`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Establish `key` using `Real.geom_mean_le_arith_mean_weighted Finset.univ (fun _ => 1 / (Fintype.card ι : ℝ)) v (fun i _ => by positivity) hw (fun i _ => (hv i).le)`.
+
+Rewrite `key` using `[Real.finset_prod_rpow _ _ (fun i _ => (hv i).le), ← Finset.mul_sum]`. Establish `h3 : 1 / (Fintype.card ι : ℝ) * ∑ i, v i ≤ 1`. Rewrite using `[one_div, inv_mul_le_iff₀ hn]`. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion as `hgt`.
+
+Use `push_neg at hgt`. Use `Real.one_lt_rpow hgt (by positivity : (0 : ℝ) < 1 / (Fintype.card ι : ℝ))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma prod_le_one_of_sum_le_card {ι : Type} [Fintype ι] [Nonempty ι] (v : ι → ℝ) (hv : ∀ i, 0 < v i)
     (hs : ∑ i, v i ≤ Fintype.card ι) : ∏ i, v i ≤ 1 := by
   have hn : (0 : ℝ) < Fintype.card ι := by exact_mod_cast Fintype.card_pos
@@ -35,6 +47,23 @@ private lemma prod_le_one_of_sum_le_card {ι : Type} [Fintype ι] [Nonempty ι] 
   have := Real.one_lt_rpow hgt (by positivity : (0 : ℝ) < 1 / (Fintype.card ι : ℝ))
   linarith
 
+/- English proof (translation)
+Establish `hn : (0 : ℝ) < Fintype.card ι` using `by exact_mod_cast Fintype.card_pos`. Use `set n : ℝ := (Fintype.card ι : ℝ) with hn_def`. Use `set K : ℝ := 1 / (NC ^ 2 * k0 * ε) with hK`. Establish `hKpos : 0 < K` using `by positivity`. Establish `hR : ∀ i, d i / ν i * K ≤ R i`.
+
+Introduce `i`. Rewrite using `[div_mul_eq_mul_div, div_le_iff₀ (hν i)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hv : ∏ i, (n * ν i / c1) ≤ 1`. Apply `prod_le_one_of_sum_le_card (fun i => n * ν i / c1) (fun i => by have := hν i; positivity)` to reduce the goal to its premises.
+
+Rewrite using `[← Finset.sum_div, ← Finset.mul_sum, div_le_iff₀ hc1]`. Conclude with `mul_le_mul_of_nonneg_left hνs hn.le`. Establish `hvpos : 0 < ∏ i, (n * ν i / c1)` using `Finset.prod_pos fun i _ => by have := hν i; positivity`. Establish `hz : n ≤ ∑ i, (N ^ 2 * d i) / (n * ν i / c1)`. Apply `card_le_sum_of_one_le_prod _ (fun i => by have := hν i; have := hd i; positivity)` to reduce the goal to its premises.
+
+Rewrite using `[Finset.prod_div_distrib]`. Conclude with `(one_le_div hvpos).mpr (hv.trans hprod)`. Establish `hsum : ∑ i, (N ^ 2 * d i) / (n * ν i / c1) = (N ^ 2 * c1 / n) * ∑ i, d i / ν i`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Use `hν i` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite `hz` using `[hsum]`. Establish `hdν : n ^ 2 / (N ^ 2 * c1) ≤ ∑ i, d i / ν i`. Rewrite using `[div_le_iff₀ (by positivity)]`.
+
+Rewrite `hz` using `[div_mul_eq_mul_div, le_div_iff₀ hn]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2K : 1 / (NC ^ 2 * ε) ≤ 2 * K`. Rewrite using `[hK, mul_one_div, div_le_div_iff₀ (by positivity) (by positivity)]`. Establish `: 0 < NC ^ 2 * ε` using `by positivity`.
+
+Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Use `_ ≤ (2 * K) * (n ^ 2 / (N ^ 2 * c1)) := mul_le_mul_of_nonneg_right h2K (by positivity)`. Use `_ ≤ (2 * K) * ∑ i, d i / ν i := mul_le_mul_of_nonneg_left hdν (by positivity)`.
+
+Use `_ = 2 * ∑ i, d i / ν i * K := by rw [← Finset.sum_mul]; ring`. Use `_ ≤ 2 * ∑ i, R i := mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun i _ => hR i) (by norm_num)`.
+-/
 private lemma card_sq_div_le_two_mul_sum_of_bounds {ι : Type} [Fintype ι] [Nonempty ι] (d ν A R : ι → ℝ) (N NC k0 c1 ε : ℝ)
     (hN : 0 < N) (hNC : 0 < NC) (hk0 : 0 < k0) (hk2 : k0 ≤ 2) (hε : 0 < ε) (hc1 : 0 < c1)
     (hd : ∀ i, 0 < d i) (hν : ∀ i, 0 < ν i) (hνs : ∑ i, ν i ≤ c1)
@@ -83,6 +112,63 @@ private lemma card_sq_div_le_two_mul_sum_of_bounds {ι : Type} [Fintype ι] [Non
     _ = 2 * ∑ i, d i / ν i * K := by rw [← Finset.sum_mul]; ring
     _ ≤ 2 * ∑ i, R i := mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun i _ => hR i) (by norm_num)
 
+/- English proof (translation)
+Introduce `r X la P ξ ν c1 w z0 x a ε hS hε hmaj χ hy`. Take `⟨hH, hxL, hxξ, hxx, hne, hu0, hu⟩` from `hS`. Take `⟨_, hSS, hIso, hc1, hνc1, _, _, _, hchar, hz0, _⟩` from `hH`. Establish `hpair` using `FlowIsotropicPairs.isIsoPair_of X hIso hxξ hxx hne`. Establish `hmem` using `FlowIsotropicPairs.mem_pair X hIso hxL`.
+
+Take `⟨y, hyd, hy⟩` from `hy`. Establish `hHF : IsHermFam χ ∧ X.IsFreqZ X.g χ`. Assume the negation of the conclusion as `hn`. Apply `hy` to reduce the goal to its premises. Unfold `Data.fz`.
+
+Rewrite using `[if_neg hn]`. Establish `hSS' : X.IsBddSec la P ∧ _` using `hSS`. Establish `h3` using `h3d r X ![ξ, (X.NC : E) • x] hpair hmem la P hSS'.1.1 hchar ν χ y hyd`. Establish `hy' : X.fz ![ξ, (X.NC : E) • x] X.g χ (X.fj la ((![ξ, (X.NC : E) • x] : Fin 2 → Fin r → E) 0) ν P) y ≠ 0` using `hy`. Rewrite `hy'` using `[h3]`.
+
+Distinguish the cases in `hcond : ∀ τ, χ τ 0 0 = (ν τ : ℂ)`. Use `swap`. Rewrite `hy'` using `[if_neg hcond]`. Conclude with `absurd rfl hy'`. Rewrite `hy'` using `[if_pos hcond]`.
+
+Establish `hPD` using `h5 r X ![ξ, (X.NC : E) • x] hpair hmem la P hSS hchar χ ⟨y, hyd, hy'⟩`. Take `⟨β, -, hβ, hβint⟩` from `(h2 r X ![ξ, (X.NC : E) • x] hpair hmem).2.2 χ hHF.1 hHF.2`. Establish `hne0 : Nonempty X.Ψ` using `Fintype.card_pos_iff.mp (QuadraticCoefficientForms.card_Psi_pos (X := X.toData))`. Establish `hz0dom : z0 ∈ X.dom` using `hz0.1`. Establish `hmpos : ∀ τ, 0 < X.maj z0 τ (X.ucomp z0 ξ (X.embV x) τ)` using `fun τ => X.maj_pos hz0dom τ (hu0 τ)`.
+
+Establish `hck : ∀ τ, X.c τ = X.k0`. Introduce `τ`. Use `show 2 * ‖τ.1 X.ξ0‖ = X.k0`. Rewrite using `[X.ξ0_abs τ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `ha1 : ∀ τ, Complex.normSq (a τ 1) * ((X.NC : ℝ) ^ 2 * X.k0 * X.maj z0 τ (X.ucomp z0 ξ (X.embV x) τ)) = 1`. Introduce `τ`. Take `⟨T, hT, h⟩ : ∃ T : ℂ, T = ((Real.sqrt (X.c τ * X.maj z0 τ (X.ucomp z0 ξ (X.embV x) τ)))⁻¹ : ℂ) ∧ X.uvec ![ξ, (X.NC : E) • x] a τ = T • X.ucomp z0 ξ (X.embV x) τ` from `⟨_, rfl, hu τ⟩`. Establish `hV : X.ucomp z0 ξ (X.embV x) τ = Data.emb τ.1 x - (X.Hf z0 τ (Data.emb τ.1 x) (Data.emb τ.1 ξ) / X.Hf z0 τ (Data.emb τ.1 ξ) (Data.emb τ.1 ξ)) • Data.emb τ.1 ξ` using `rfl`. Establish `hU : X.uvec ![ξ, (X.NC : E) • x] a τ = a τ 0 • Data.emb τ.1 ξ + a τ 1 • ((X.NC : ℂ) • Data.emb τ.1 x)`.
+
+Use extensionality with `i`. Simplify using `[Data.uvec, Data.emb, Fin.sum_univ_two, smul_eq_mul, map_mul, map_natCast]`. Rewrite `h` using `[hU, hV]`. Use `set S := X.Hf z0 τ (Data.emb τ.1 x) (Data.emb τ.1 ξ) / X.Hf z0 τ (Data.emb τ.1 ξ) (Data.emb τ.1 ξ)`. Establish `h0 : (a τ 0 + T * S) • Data.emb τ.1 ξ + (a τ 1 * X.NC - T) • Data.emb τ.1 x = 0`.
+
+Use extensionality with `i`. Establish `hi` using `congrFun h i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.sub_apply, smul_eq_mul, Pi.zero_apply] at hi ⊢`. Take the linear combination `hi`. Establish `hq` using `QuadraticCoefficientForms.coef_zero hIso.2.2 hne τ.1 _ _ h0`.
+
+Establish `hTa : a τ 1 * X.NC = T` using `sub_eq_zero.mp hq`. Establish `hpos : 0 < X.c τ * X.maj z0 τ (X.ucomp z0 ξ (X.embV x) τ)`. Rewrite using `[hck τ]`. Conclude with `mul_pos X.minWeight_pos (hmpos τ)`. Establish `hT2 : Complex.normSq T = (X.c τ * X.maj z0 τ (X.ucomp z0 ξ (X.embV x) τ))⁻¹`.
+
+Rewrite using `[hT, map_inv₀, Complex.normSq_ofReal, Real.mul_self_sqrt hpos.le]`. Establish `h4 : Complex.normSq (a τ 1) * (X.NC : ℝ) ^ 2 = (X.c τ * X.maj z0 τ (X.ucomp z0 ξ (X.embV x) τ))⁻¹`. Rewrite using `[← hT2, ← hTa, Complex.normSq_mul, Complex.normSq_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h4`, `hpos` using `[hck τ]`.
+
+Rewrite using `[show Complex.normSq (a τ 1) * ((X.NC : ℝ) ^ 2 * X.k0 * X.maj z0 τ (X.ucomp z0 ξ (X.embV x) τ)) = (Complex.normSq (a τ 1) * (X.NC : ℝ) ^ 2) * (X.k0 * X.maj z0 τ (X.ucomp z0 ξ (X.embV x) τ)) by ring, h4]`. Conclude with `inv_mul_cancel₀ hpos.ne'`. Establish `hχβ : ∀ (τ : X.Ψ) i k, χ τ i k = τ.1 (β i k)`. Introduce `τ i k`. Rewrite using `[hβ]`.
+
+Both sides reduce to the same expression. Establish `hdpos : ∀ τ, 0 < (Matrix.of (χ τ)).det.re ∧ (Matrix.of (χ τ)).det.im = 0`. Introduce `τ`. Establish `h` using `(hPD τ).det_pos`. Rewrite `h` using `[Complex.lt_def]`.
+
+Conclude with `⟨by simpa using h.1, by simpa using h.2.symm⟩`. Establish `hνpos : ∀ τ, 0 < ν τ`. Introduce `τ`. Establish `h` using `(hPD τ).diag_pos (i := 0)`. Rewrite `h` using `[Matrix.of_apply, hcond τ]`.
+
+Conclude with `h` after adjusting the coercions. Use `set Nn : ℕ := X.g * dEnat E ^ 2 with hNn`. Establish `hdE : dE E = (dEnat E : ℝ)`. Unfold `dE dEnat`. Rewrite using `[Nat.cast_natAbs, Int.cast_abs]`.
+
+Establish `hNpos : 0 < (X.g : ℝ) * dE E ^ 2`. Rewrite using `[hdE]`. Establish `h1 : 0 < dEnat E` using `Int.natAbs_pos.mpr (NumberField.discr_ne_zero E)`. Establish `h2` using `X.g_pos`. Check the signs of the components of the expression.
+
+Establish `hNcast : ((Nn : ℕ) : ℝ) = (X.g : ℝ) * dE E ^ 2`. Rewrite using `[hNn, hdE]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `set γ : E := (((X.g * dEnat E ^ 2 : ℕ) : E) * β 0 0) * (((X.g * dEnat E ^ 2 : ℕ) : E) * β 1 1) - (((X.g * dEnat E ^ 2 : ℕ) : E) * β 0 1) * (((X.g * dEnat E ^ 2 : ℕ) : E) * β 1 0) with hγ`.
+
+Establish `hint : IsIntegral ℤ γ` using `((hβint 0 0).mul (hβint 1 1)).sub ((hβint 0 1).mul (hβint 1 0))`. Establish `hγτ : ∀ τ : X.Ψ, τ.1 γ = ((Nn : ℂ)) ^ 2 * (Matrix.of (χ τ)).det`. Introduce `τ`. Rewrite using `[Matrix.det_fin_two, Matrix.of_apply, Matrix.of_apply, Matrix.of_apply, Matrix.of_apply, hχβ, hχβ, hχβ, hχβ, hγ]`. Simplify using `only [map_sub, map_mul, map_natCast, hNn]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hnorm : ∀ τ : X.Ψ, ‖τ.1 γ‖ = ((X.g : ℝ) * dE E ^ 2) ^ 2 * (Matrix.of (χ τ)).det.re`. Introduce `τ`. Establish `hdet : (Matrix.of (χ τ)).det = (((Matrix.of (χ τ)).det.re : ℝ) : ℂ)` using `Complex.ext (by simp) (by simp [(hdpos τ).2])`.
+
+Rewrite using `[hγτ τ, norm_mul, norm_pow, Complex.norm_natCast, hNcast]`. Use `congr 1`. Use `conv_lhs => rw [hdet]`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (hdpos τ).1.le]`. Establish `hγ0 : γ ≠ 0`.
+
+Introduce `h0`. Take `⟨τ⟩` from `hne0`. Use `hnorm τ` as an intermediate fact. Rewrite `this` using `[h0, map_zero, norm_zero]`. Use `(hdpos τ).1` as an intermediate fact.
+
+Use `hNpos` as an intermediate fact. Use polynomial arithmetic with `[mul_pos (pow_pos hNpos 2) (hdpos τ).1]`. Establish `hp` using `QuadraticCoefficientForms.one_le_prod_norm (X := X.toData) γ hint hγ0`. Rewrite `hp` using `[hnorm]`. Rewrite `hp` using `[Finset.prod_pow]`.
+
+Establish `hprod : 1 ≤ ∏ τ : X.Ψ, (((X.g : ℝ) * dE E ^ 2) ^ 2 * (Matrix.of (χ τ)).det.re)`. Establish `hnn : 0 ≤ ∏ τ : X.Ψ, (((X.g : ℝ) * dE E ^ 2) ^ 2 * (Matrix.of (χ τ)).det.re)` using `Finset.prod_nonneg fun τ _ => by have := (hdpos τ).1; positivity`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Use `pow_lt_one₀ hnn hlt (two_ne_zero)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hq : ∀ τ : X.Ψ, (Matrix.of (χ τ)).det.re * Complex.normSq (a τ 1) ≤ ν τ * (X.chiAt χ a τ).re`. Introduce `τ`. Establish `h` using `QuadraticCoefficientForms.quad2 (Matrix.of (χ τ)) (hPD τ).1 (a τ)`. Simplify using `only [Matrix.of_apply] at h`.
+
+Rewrite `h` using `[hcond τ, Complex.ofReal_re]`. Conclude with `h`. Establish `hA : ∀ τ : X.Ψ, 1 / ((X.NC : ℝ) ^ 2 * X.k0 * ε) ≤ Complex.normSq (a τ 1)`. Introduce `τ`. Establish `h` using `ha1 τ`.
+
+Establish `hm` using `hmpos τ`. Establish `hme` using `hmaj τ`. Establish `hNC : (0 : ℝ) < X.NC` using `by exact_mod_cast X.NC_pos`. Establish `hk` using `X.minWeight_pos`. Rewrite using `[div_le_iff₀ (by positivity)]`.
+
+Establish `hns` using `Complex.normSq_nonneg (a τ 1)`. Establish `: Complex.normSq (a τ 1) * ((X.NC : ℝ) ^ 2 * X.k0 * X.maj z0 τ (X.ucomp z0 ξ (X.embV x) τ)) ≤ Complex.normSq (a τ 1) * ((X.NC : ℝ) ^ 2 * X.k0 * ε)` using `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hme (by positivity)) hns`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `card_sq_div_le_two_mul_sum_of_bounds (fun τ : X.Ψ => (Matrix.of (χ τ)).det.re) ν (fun τ => Complex.normSq (a τ 1)) (fun τ => (X.chiAt χ a τ).re) ((X.g : ℝ) * dE E ^ 2) (X.NC : ℝ) X.k0 c1 ε hNpos (by exact_mod_cast X.NC_pos) X.minWeight_pos X.k0_le hε hc1 (fun τ => (hdpos τ).1) hν …`. Rewrite `key` using `[QuadraticCoefficientForms.card_Psi (X := X.toData)]`.
+
+Conclude with `key`.
+-/
 theorem coefficient_index_lower_bound (h2 : UnipotentLatticeLift (E := E)) (h3d : FourierCoefficientSupport (E := E))
     (h5 : NonvanishingCoefficientPositivity (E := E)) : CoefficientIndexLowerBound (E := E) := by
   intro r X la P ξ ν c1 w z0 x a ε hS hε hmaj χ hy

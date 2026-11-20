@@ -12,6 +12,19 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.EisCT.Indep
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r X Y L a h hS Φ hΦ μ 𝓕 hμ h𝓕 h1 μ' 𝓕' hμ' h𝓕' h1'`. Take `⟨hCM, -, hJ, -, hW, -, -⟩` from `hS`. Establish `hσ : ∀ x, σ (σ x) = x` using `sigma_sigma hCM`. Establish `hC : GlobalTheory.UAut.IsIsoCols σ J (col0 X)`. Establish `e : col0 X = X.submatrix id (Fin.castLE (show 1 ≤ r + 1 by omega))`.
+
+Use extensionality with `i j`. Rewrite using `[Subsingleton.elim j 0]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `GlobalTheory.UAut.isIsoCols_of_isWittFrame hW hσ hJ _`.
+
+Use `haveI := GlobalTheory.UAut.locallyCompact_unipRad hCM hJ hC`. Set `φ : GAd σ J → ℂ` to `fun x => if hx : x ∈ unipRad σ J (col0 X) then Φ ⟨x, hx⟩ else 0`. Establish `e : (ratPts σ J ⊓ unipRad σ J (col0 X)).subgroupOf (unipRad σ J (col0 X)) = (ratPts σ J).subgroupOf (unipRad σ J (col0 X))` using `Subgroup.ext fun u => ⟨fun hu => (Subgroup.mem_subgroupOf.1 hu).1, fun hu => Subgroup.mem_subgroupOf.2 ⟨Subgroup.mem_subgroupOf.1 hu, u.2⟩⟩`. Establish `hφ : GlobalTheory.AutomorphicL2Unitary.LeftInv (ratPts σ J ⊓ unipRad σ J (col0 X)) φ`. Introduce `γ hγ g`.
+
+Distinguish the cases in `hg : g ∈ unipRad σ J (col0 X)`. Establish `hγg : γ * g ∈ unipRad σ J (col0 X)` using `(unipRad σ J (col0 X)).mul_mem hγ.2 hg`. Simplify using `only [φ, dif_pos hg, dif_pos hγg]`. Establish `hν : (⟨γ, hγ.2⟩ : unipRad σ J (col0 X)) ∈ (ratPts σ J).subgroupOf (unipRad σ J (col0 X))` using `Subgroup.mem_subgroupOf.2 hγ.1`. Conclude with `hΦ ⟨_, hν⟩ ⟨g, hg⟩`.
+
+Establish `hγg : γ * g ∉ unipRad σ J (col0 X)` using `fun h' => hg (by simpa using (unipRad σ J (col0 X)).mul_mem ((unipRad σ J (col0 X)).inv_mem hγ.2) h')`. Simplify using `only [φ, dif_neg hg, dif_neg hγg]`. Establish `k1` using `GlobalTheory.Cusp.constTermOn_eq_of_measure_eq_one (e ▸ h𝓕) h1 hφ 1`. Establish `k2` using `GlobalTheory.Cusp.constTermOn_eq_of_measure_eq_one (e ▸ h𝓕') h1' hφ 1`. Establish `hφN : ∀ u : unipRad σ J (col0 X), φ (u * 1) = Φ u` using `fun u => by simp [φ]`.
+
+Simplify using `only [hφN] at k1 k2`. Conclude with `k1.symm.trans k2`.
+-/
 theorem integral_indep : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E) (L : Submodule (𝓞 E) (Fin n → E))
     (a : GL (Fin n) (AF F ⊗[F] E)) (h : GAd σ J → ℝ), HidaSetting σ J X Y L a h →

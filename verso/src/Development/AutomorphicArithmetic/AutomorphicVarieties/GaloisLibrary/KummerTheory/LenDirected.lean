@@ -2,6 +2,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
+/- English proof (translation)
+Introduce `R X _ _ _ W P Bd hP hW hBd`. Rewrite using `[← WithBot.coe_le_coe, Module.coe_length, Order.krullDim, iSup_le_iff]`. Introduce `p`. Establish `hstep : ∀ i : Fin p.length, ∃ x : W, x ∈ p i.succ ∧ x ∉ p i.castSucc`. Introduce `i`.
+
+Conclude with `SetLike.exists_of_lt (p.step i)`. Use `choose x hx1 hx2 using hstep`. Establish `hdir : Directed (· ≤ ·) P` using `hP.directed_le`. Establish `hmem : ∀ i : Fin p.length, ∃ n, (x i : X) ∈ P n`. Introduce `i`.
+
+Conclude with `(Submodule.mem_iSup_of_directed P hdir).mp (hW (x i).2)`. Use `choose m hm using hmem`. Take `⟨n, hn, hlen⟩` from `hBd (Finset.univ.sup m)`. Establish `hxn : ∀ i, (x i : X) ∈ P n`. Introduce `i`.
+
+Conclude with `hP ((Finset.le_sup (Finset.mem_univ i)).trans hn) (hm i)`. Set `f : Submodule R W → Submodule R (P n)` to `fun S => (S.map W.subtype).comap (P n).subtype`. Establish `hfmono : Monotone f`. Introduce `S T hST`. Conclude with `Submodule.comap_mono (Submodule.map_mono hST)`.
+
+Set `q : LTSeries (Submodule R (P n))` to `{ length := p.length toFun := fun i => f (p i) step := by`. Introduce `i`. Use `lt_of_le_of_ne (hfmono (p.step i).le) ?_` and prove the remaining obligations. Introduce `heq`. Establish `h1 : (⟨(x i : X), hxn i⟩ : P n) ∈ f (p i.succ)`.
+
+Simplify using `only [f, Submodule.mem_comap, Submodule.subtype_apply, Submodule.mem_map]`. Conclude with `⟨x i, hx1 i, rfl⟩`. Rewrite `h1` using `[← heq]`. Simplify using `only [f, Submodule.mem_comap, Submodule.subtype_apply, Submodule.mem_map] at h1`. Take `⟨y, hy, hyx⟩` from `h1`.
+
+Establish `: y = x i` using `Subtype.ext hyx`. Conclude with `hx2 i (this ▸ hy) }`. Establish `hq` using `Order.LTSeries.length_le_krullDim q`. Rewrite `hq` using `[← Module.coe_length]`. Conclude with `hq.trans (WithBot.coe_le_coe.mpr hlen)`.
+-/
 theorem UpperTheory.V.Kum.lenDirected :
     ∀ (R X : Type) [CommRing R] [AddCommGroup X] [Module R X] (W : Submodule R X) (P : ℕ → Submodule R X) (Bd : ℕ∞), Monotone P → W ≤ ⨆ n, P n →
     (∀ n₀, ∃ n, n₀ ≤ n ∧ Module.length R (P n) ≤ Bd) → Module.length R W ≤ Bd := by

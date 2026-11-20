@@ -44,15 +44,24 @@ def IsRealPart {D : D7} (V : HSp D) (θ : InfFam D) (A : Frames V) (rp : GA D V 
 
 end Adelic
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[permM, Matrix.mul_apply, Matrix.one_apply, eq_comm]`.
+-/
 theorem permM_mul_transpose {ι : Type} [Fintype ι] [DecidableEq ι] (e : ι ≃ Fin r) : permM e * (permM e)ᵀ = 1 := by
   ext i j
   simp [permM, Matrix.mul_apply, Matrix.one_apply, eq_comm]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, ← e.symm.sum_comp]`. Simplify using `[permM, Matrix.one_apply, eq_comm]`.
+-/
 theorem transpose_mul_permM {ι : Type} [Fintype ι] (e : ι ≃ Fin r) : (permM e)ᵀ * permM e = 1 := by
   ext i j
   rw [Matrix.mul_apply, ← e.symm.sum_comp]
   simp [permM, Matrix.one_apply, eq_comm]
 
+/- English proof (translation)
+Rewrite using `[dg, Matrix.det_diagonal, Finset.prod_update_of_mem (Finset.mem_univ _)]`. Simplify using the standard rewrite rules.
+-/
 theorem det_dg {ι : Type} [Fintype ι] [DecidableEq ι] (a₀ : ι) (z : ℂ) : (dg a₀ z).det = z := by
   rw [dg, Matrix.det_diagonal, Finset.prod_update_of_mem (Finset.mem_univ _)]
   simp

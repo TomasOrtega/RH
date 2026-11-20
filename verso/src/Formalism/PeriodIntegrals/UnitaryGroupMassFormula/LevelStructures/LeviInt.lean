@@ -16,20 +16,32 @@ section Alg
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
+/- English proof (translation)
+Simplify using `only [hR, Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem hermForm_add_right_bis (x y z : Fin n → R ⊗[F] E) :
     hR R σ J x (y + z) = hR R σ J x y + hR R σ J x z := by
   simp only [hR, Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [hR, Formalism.UG.hform, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]`.
+-/
 theorem hermForm_sub_right (x y z : Fin n → R ⊗[F] E) :
     hR R σ J x (y - z) = hR R σ J x y - hR R σ J x z := by
   simp only [hR, Formalism.UG.hform, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Simplify using `only [hR, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermForm_smul_right_alt (c : R ⊗[F] E) (x y : Fin n → R ⊗[F] E) :
     hR R σ J x (c • y) = c * hR R σ J x y := by
   simp only [hR, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on`. Simplify using `only [Finset.sum_empty, hR, Formalism.UG.hform, Pi.zero_apply, mul_zero, Finset.sum_const_zero]`. Name the introduced variables `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hermForm_add_right_bis, hermForm_smul_right_alt, ih]`.
+-/
 theorem hermForm_sum_right_alt {ι : Type} (s : Finset ι) (d : ι → R ⊗[F] E) (v : ι → Fin n → R ⊗[F] E)
     (x : Fin n → R ⊗[F] E) : hR R σ J x (∑ i ∈ s, d i • v i) = ∑ i ∈ s, d i * hR R σ J x (v i) := by
   classical
@@ -38,13 +50,22 @@ theorem hermForm_sum_right_alt {ι : Type} (s : Finset ι) (d : ι → R ⊗[F] 
   · rename_i a s ha ih
     rw [Finset.sum_insert ha, Finset.sum_insert ha, hermForm_add_right_bis, hermForm_smul_right_alt, ih]
 
+/- English proof (translation)
+Simplify using `[sigR, inclR]`.
+-/
 theorem conjTensor_incl (a : E) : sigR R σ (inclR R a) = inclR R (σ a) := by
   simp [sigR, inclR]
 
+/- English proof (translation)
+Simplify using `[hR, hE, Formalism.UG.hform, ratV, JR, conjTensor_incl, map_sum, map_mul]`.
+-/
 theorem hermForm_rational_vectors (x y : Fin n → E) :
     hR R σ J (ratV (F := F) R x) (ratV (F := F) R y) = inclR R (hE σ J x y) := by
   simp [hR, hE, Formalism.UG.hform, ratV, JR, conjTensor_incl, map_sum, map_mul]
 
+/- English proof (translation)
+Simplify using `only [spanR, Set.image_univ] at hy`. Rewrite `hy` using `[Submodule.mem_span_range_iff_exists_fun]`. Take `⟨d, hd⟩` from `hy`. Conclude with `⟨d, hd.symm⟩`.
+-/
 theorem mem_tensor_span_iff {r : ℕ} (Y : Fin r → Fin n → E) (y : Fin n → R ⊗[F] E)
     (hy : y ∈ spanR (F := F) R Y Set.univ) : ∃ d : Fin r → R ⊗[F] E, y = ∑ i, d i • ratV (F := F) R (Y i) := by
   simp only [spanR, Set.image_univ] at hy
@@ -74,6 +95,27 @@ def WbSub {r : ℕ} (P : Frame E n r) : Submodule (R ⊗[F] E) (Fin n → R ⊗[
 
 variable {R σ J}
 
+/- English proof (translation)
+Establish `hax : a - x ∈ spanR (F` using `F) R P.e Set.univ := Submodule.sub_mem _ ha hx`. Take `⟨g, hg⟩` from `mem_tensor_span_iff (R := R) P.e (a - x) hax`. Take `⟨d, hd⟩` from `mem_tensor_span_iff (R := R) P.f c hc`. Establish `hw' : w = a + b + c - x`. Rewrite using `[← h]`.
+
+Normalize the expressions using the abelian group laws. Establish `hwb : w - b = (a - x) + c`. Rewrite using `[hw']`. Normalize the expressions using the abelian group laws. Establish `hd0 : ∀ k, d k = 0`.
+
+Introduce `k`. Establish `h1 : hR R σ J (ratV (F` using `F) R (P.e k)) (w - b) = 0 := by`. Rewrite using `[hermForm_sub_right, (hw k).1, (hb k).1, sub_self]`. Establish `h2 : hR R σ J (ratV (F` using `F) R (P.e k)) (a - x) = 0 := by`. Rewrite using `[hg, hermForm_sum_right_alt]`.
+
+Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hermForm_rational_vectors, hee, map_zero, mul_zero]`. Establish `h3 : hR R σ J (ratV (F` using `F) R (P.e k)) c = d k := by`. Rewrite using `[hd, hermForm_sum_right_alt, Finset.sum_eq_single k]`. Rewrite using `[hermForm_rational_vectors, hef, if_pos rfl, map_one, mul_one]`.
+
+Introduce `i _ hik`. Rewrite using `[hermForm_rational_vectors, hef, if_neg (Ne.symm hik), map_zero, mul_zero]`. Introduce `hk`. Conclude with `absurd (Finset.mem_univ k) hk`. Rewrite `h1` using `[hwb, hermForm_add_right_bis, h2, h3, zero_add]`.
+
+Conclude with `h1`. Establish `hc0 : c = 0`. Rewrite using `[hd]`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [hd0 i, zero_smul]`. Establish `hg0 : ∀ k, g k = 0`.
+
+Introduce `k`. Establish `h1 : hR R σ J (ratV (F` using `F) R (P.f k)) (w - b) = 0 := by`. Rewrite using `[hermForm_sub_right, (hw k).2, (hb k).2, sub_self]`. Establish `h3 : hR R σ J (ratV (F` using `F) R (P.f k)) (a - x) = g k := by`. Rewrite using `[hg, hermForm_sum_right_alt, Finset.sum_eq_single k]`.
+
+Rewrite using `[hermForm_rational_vectors, hfe, if_pos rfl, map_one, mul_one]`. Introduce `i _ hik`. Rewrite using `[hermForm_rational_vectors, hfe, if_neg (Ne.symm hik), map_zero, mul_zero]`. Introduce `hk`. Conclude with `absurd (Finset.mem_univ k) hk`.
+
+Rewrite `h1` using `[hwb, hc0, add_zero, h3]`. Conclude with `h1`. Establish `hax0 : a - x = 0`. Rewrite using `[hg]`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [hg0 i, zero_smul]`.
+
+Establish `hwb0 : w - b = 0`. Rewrite using `[hwb, hax0, hc0, add_zero]`. Conclude with `sub_eq_zero.mp hwb0`.
+-/
 theorem witt_decomposition_unique {r : ℕ} (P : Frame E n r) (hee : ∀ a b, hE σ J (P.e a) (P.e b) = 0)
     (hef : ∀ a b, hE σ J (P.e a) (P.f b) = if a = b then 1 else 0)
     (hfe : ∀ a b, hE σ J (P.f a) (P.e b) = if a = b then 1 else 0)

@@ -4,6 +4,15 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.UPel.HT GlobalTheory.LKTri
 open UpperTheory.Gal.CertificateRingHomMap (GUf Gam0 AfQ Plc sim mat comp rat lev ZU)
 open scoped TensorProduct Classical
 
+/- English proof (translation)
+Introduce `hJ`. Unfold `AtApart`. Introduce `E _ _ _ A n p _ S T hc w hw hp`. Establish `key : ∀ (u : Plc E) (hu : IsSplitAt u) (hpu : (p : 𝓞 E) ∉ u.asIdeal) (x : GL (Fin n) (u.adicCompletion E)), T.sec ((T.at hc u hu hpu).loc x) = UpperTheory.Gal.CertificateRingHomMap.loc hu x`. Introduce `u hu hpu x`.
+
+Apply `(hJ E A n p S T.toAdT T.μ T.mu T.a T.j T.j_mx).1` to reduce the goal to its premises. Introduce `v`. Distinguish the cases in `hv : (p : 𝓞 E) ∈ v.asIdeal`. Rewrite using `[T.sec_p _ v hv, UpperTheory.Gal.CertificateRingHomMap.comp_loc_of_apart hu (apart_of_not_mem hpu hv)]`. Conclude with `(T.j_eq _ _).1 (T.j_sec _) v hv`.
+
+Use `⟨key w hw hp, ?_⟩` and prove the remaining obligations. Introduce `w' hw' hp' hap`. Prove the components needed by the constructor for the conclusion. Introduce `x show comp w (T.sec ((T.at hc w' hw' hp').loc x)) = 1`. Rewrite using `[key w' hw' hp' x]`.
+
+Conclude with `UpperTheory.Gal.CertificateRingHomMap.comp_loc_of_apart hw' hap x`. Introduce `x show comp w' (T.sec ((T.at hc w hw hp).loc x)) = 1`. Rewrite using `[key w hw hp x]`. Conclude with `UpperTheory.Gal.CertificateRingHomMap.comp_loc_of_apart hw (Ne.symm hap) x`.
+-/
 theorem UpperTheory.Gal.W2.Seed.pAtApart :
     JEq → AtApart := by
   intro hJ

@@ -30,6 +30,9 @@ def AutomorphyRankFourPolarized : Prop :=
     ∃ j : ℕ, 1 ≤ j ∧ j ≤ 9 ∧ ∀ (ρ₁ τ : G ℚ Ω →* M2 c₁.O) s, RepIso ρ (mapRep (algebraMap c₁.O (PadicAlgCl l)) ρ₁).toHomUnits →
       TauDat ι K' g0 (m * j) c₁ τ s (κ ^ j) → AutOffS ι K' ρ (tenB ρ₁ τ)
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ ι K' _ h2 hc ρ a b c g0 m c₁ κ d e` and use `let ⟨j, j1, j9, hj⟩ := h Ω l ι K' h2 hc ρ a b c g0 m c₁ κ d e ⟨j, j1, j9, fun ρ₁ τ s x y L _ _ u v _ => hj ρ₁ τ s x y L u v⟩`.
+-/
 theorem AutomorphyRankFour.s (h : AutomorphyRankFour) : AutomorphyRankFourPolarized := fun Ω _ _ _ l _ ι K' _ h2 hc ρ a b c g0 m c₁ κ d e =>
   let ⟨j, j1, j9, hj⟩ := h Ω l ι K' h2 hc ρ a b c g0 m c₁ κ d e
   ⟨j, j1, j9, fun ρ₁ τ s x y L _ _ u v _ => hj ρ₁ τ s x y L u v⟩

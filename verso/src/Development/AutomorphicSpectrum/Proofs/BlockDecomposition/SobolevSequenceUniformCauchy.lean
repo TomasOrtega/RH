@@ -12,9 +12,19 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.PresSobA.RwCauchy
 
+/- English proof (translation)
+The claim follows from `(Matrix.isUnits_det_units y).ne_zero`.
+-/
 theorem val_mem_GLs {n : ℕ} (y : G n) : y.val ∈ GLs n :=
   (Matrix.isUnits_det_units y).ne_zero
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => intro z _`. Both sides reduce to the same expression. Consider the case `cons p w ih`. Introduce `z hz`.
+
+Establish `h1 : Rw (p :: w) (a - b) z = Rd (bs p) (Rw w a - Rw w b) z` using `Rd_congr (f := Rw w (a - b)) (f' := Rw w a - Rw w b) (fun y hy => ih y hy) (bs p) z hz`. Rewrite using `[h1]`. Establish `hU` using `isOpen_GLs.mem_nhds hz`. Establish `da : DifferentiableAt ℝ (Rw w a) z` using `((GlobalTheory.CompanionTheory.SobGL.Smooth.Rw_contDiffOn' ha w).contDiffAt hU).differentiableAt (by simp)`. Establish `db : DifferentiableAt ℝ (Rw w b) z` using `((GlobalTheory.CompanionTheory.SobGL.Smooth.Rw_contDiffOn' hb w).contDiffAt hU).differentiableAt (by simp)`.
+
+Use `show fderiv ℝ (Rw w a - Rw w b) z (z * bs p) = fderiv ℝ (Rw w a) z (z * bs p) - fderiv ℝ (Rw w b) z (z * bs p)`. Establish `e` using `(da.hasFDerivAt.sub db.hasFDerivAt).fderiv`. Conclude with `DFunLike.congr_fun e (z * bs p)`.
+-/
 theorem Rw_sub_on {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {a b : Mat n → V}
     (ha : ContDiffOn ℝ ∞ a (GLs n)) (hb : ContDiffOn ℝ ∞ b (GLs n))
     (w : List (Bool × Fin n × Fin n)) :
@@ -36,6 +46,19 @@ theorem Rw_sub_on {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V
     have e := (da.hasFDerivAt.sub db.hasFDerivAt).fderiv
     exact DFunLike.congr_fun e (z * bs p)
 
+/- English proof (translation)
+Introduce `hS n _ _ μ _ V _ _ _ g x hg hm hc w`. Take `⟨S, C, hC, hsup⟩` from `GlobalTheory.CompanionTheory.PresSobA.SupG.sup_sq_bound hS n μ`. Establish `hbound : ∀ k l, ∀ z ∈ GLs n, ‖Rw w (g k) z - Rw w (g l) z‖ ^ 2 ≤ C * ∑ w' ∈ S, ‖cls μ (Rw (w' ++ w) (g k)) - cls μ (Rw (w' ++ w) (g l))‖ ^ 2`. Introduce `k l z hz`. Establish `sk` using `GlobalTheory.CompanionTheory.SobGL.Smooth.Rw_contDiffOn' (hg k) w`.
+
+Establish `sl` using `GlobalTheory.CompanionTheory.SobGL.Smooth.Rw_contDiffOn' (hg l) w`. Establish `key : ∀ w', ∀ y ∈ GLs n, Rw w' (Rw w (g k) - Rw w (g l)) y = Rw (w' ++ w) (g k) y - Rw (w' ++ w) (g l) y`. Introduce `w' y hy`. Rewrite using `[Rw_sub_on sk sl w' y hy, Rw_append, Rw_append]`. Establish `hcl : ∀ w', MemLp (fun y : G n => Rw w' (Rw w (g k) - Rw w (g l)) y.val) 2 μ ∧ cls μ (Rw w' (Rw w (g k) - Rw w (g l))) = cls μ (Rw (w' ++ w) (g k)) - cls μ (Rw (w' ++ w) (g l))`.
+
+Introduce `w'`. Use `cls_of_ae μ ?_` and prove the remaining obligations. Use `filter_upwards [Lp.coeFn_sub (cls μ (Rw (w' ++ w) (g k))) (cls μ (Rw (w' ++ w) (g l))), coe_cls μ (hm k (w' ++ w)), coe_cls μ (hm l (w' ++ w))] with y h1 h2 h3`. Rewrite using `[h1, Pi.sub_apply, h2, h3, key w' _ (val_mem_GLs y)]`. Use `hsup V (Rw w (g k) - Rw w (g l)) (sk.sub sl) (fun w' => (hcl w').1) z hz` as an intermediate fact.
+
+Simplify using `only [hcl] at this`. Conclude with `this`. Rewrite using `[Metric.uniformCauchySeqOn_iff]`. Introduce `ε hε`. Establish `hT : Tendsto (fun p : ℕ × ℕ => C * ∑ w' ∈ S, ‖cls μ (Rw (w' ++ w) (g p.1)) - cls μ (Rw (w' ++ w) (g p.2))‖ ^ 2) (atTop ×ˢ atTop) (𝓝 0)`.
+
+Establish `h0 : Tendsto (fun p : ℕ × ℕ => C * ∑ w' ∈ S, ‖cls μ (Rw (w' ++ w) (g p.1)) - cls μ (Rw (w' ++ w) (g p.2))‖ ^ 2) (atTop ×ˢ atTop) (𝓝 (C * ∑ w' ∈ S, ‖x (w' ++ w) - x (w' ++ w)‖ ^ 2))`. Use `Tendsto.const_mul _ (tendsto_finsetSum _ fun w' _ => ?_)` and prove the remaining obligations. Conclude with `((((hc _).comp tendsto_fst).sub ((hc _).comp tendsto_snd)).norm).pow 2`. Simplify using `using h0`. Establish `hev` using `hT.eventually (gt_mem_nhds (pow_pos hε 2))`.
+
+Rewrite `hev` using `[prod_atTop_atTop_eq]`. Take `⟨N, hN⟩` from `eventually_atTop_prod_self'.1 hev`. Use `⟨N, fun k hk l hl z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[dist_eq_norm]`. Conclude with `lt_of_pow_lt_pow_left₀ 2 hε.le ((hbound k l z hz).trans_lt (hN k hk l hl))`.
+-/
 theorem uniformCauchy : SobG → ∀ (n : ℕ) [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V] (g : ℕ → Mat n → V) (x : List (Bool × Fin n × Fin n) → Lp V 2 μ), (∀ k, ContDiffOn ℝ ∞ (g k) (GLs n)) → (∀ k w, MemLp (fun y : G n => Rw w (g k) y.val) 2 μ) → (∀ w, Tendsto (fun k => cls μ (Rw w (g k))) atTop (𝓝 (x w))) → ∀ w, UniformCauchySeqOn (fun k => Rw w (g k)) atTop (GLs n) := by
   intro hS n _ _ μ _ V _ _ _ g x hg hm hc w
   obtain ⟨S, C, hC, hsup⟩ := GlobalTheory.CompanionTheory.PresSobA.SupG.sup_sq_bound hS n μ

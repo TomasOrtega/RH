@@ -4,6 +4,9 @@ universe u_1 u_2
 
 namespace Bl.SecondBlockLemmaA
 
+/- English proof (translation)
+Introduce `O _ _ _ ι s a`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.prod_empty, Finset.sum_empty, AddValuation.map_one]`. Consider the case `insert i t hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.sum_insert hi, AddValuation.map_mul, ih]`.
+-/
 theorem goal1 :
   ∀ {O : Type u_1} [inst : CommRing.{u_1} O] [inst_1 : IsDomain.{u_1} O] [inst_2 : IsDiscreteValuationRing.{u_1} O]
   {ι : Type u_2} (s : Finset.{u_2} ι) (a : ι → O),

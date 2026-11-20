@@ -9,6 +9,17 @@ noncomputable section
 
 namespace GlobalTheory.FlatLine
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hb`. Establish `hi : AlgebraicIndepOn K id ({b} : Set Ω)` using `algebraicIndependent_unique_type_iff.2 hb`. Take `⟨T, hT, hbas⟩` from `exists_isTranscendenceBasis_superset hi`. Establish `hw : AlgebraicIndependent K fun i : T => P₀ i` using `hbas.1.map' P₀.injective`. Establish `hw2 : AlgebraicIndependent K fun i : T => Polynomial.aeval (P₀ i) (Polynomial.C (2 : K) * Polynomial.X)` using `hw.polynomial_aeval_of_transcendental fun _ => Polynomial.transcendental _ (by rw [Polynomial.natDegree_C_mul_X _ two_ne_zero]; exact one_ne_zero) (by rw [Polynomial.leadingCoeff_C_mul_X]; exact mem_nonZeroDivisors_of_ne_zero two_ne_zero)`.
+
+Use `letI : Algebra (MvPolynomial T K) Ω := (MvPolynomial.aeval fun i : T => (i : Ω)).toRingHom.toAlgebra`. Use `letI : Algebra (MvPolynomial T K) ℂ := (MvPolynomial.aeval fun i : T => Polynomial.aeval (P₀ i) (Polynomial.C (2 : K) * Polynomial.X)).toRingHom.toAlgebra`. Use `haveI : FaithfulSMul (MvPolynomial T K) Ω := (faithfulSMul_iff_algebraMap_injective _ _).2 hbas.1`. Use `haveI : FaithfulSMul (MvPolynomial T K) ℂ := (faithfulSMul_iff_algebraMap_injective _ _).2 hw2`. Use `haveI : Algebra.IsAlgebraic (MvPolynomial T K) Ω := haveI := hbas.isAlgebraic ⟨fun y => (IsAlgebraic.ringHom_of_comp_eq (f := hbas.1.aevalEquiv.symm.toRingHom) (g := RingHom.id Ω) (Algebra.IsAlgebraic.isAlgebraic y) hbas.1.aevalEquiv.symm.injective (RingHom.ext fun z => by`.
+
+Take `⟨p, rfl⟩` from `hbas.1.aevalEquiv.surjective z`. Simplify using `[RingHom.algebraMap_toAlgebra]))⟩`. Set `Q : Ω →ₐ[MvPolynomial T K] ℂ` to `IsAlgClosed.lift`. Set `P : Ω →ₐ[K] ℂ` to `{ Q.toRingHom with commutes' := fun a => by`. Use `Q.commutes (MvPolynomial.C a)` as an intermediate fact.
+
+Simplify `this }` using `[RingHom.algebraMap_toAlgebra]`. Establish `h1 : P b = 2 * P₀ b` using `by show Q b = _`. Use `Q.commutes (MvPolynomial.X ⟨b, hT rfl⟩)` as an intermediate fact. Simplify `this` using `[RingHom.algebraMap_toAlgebra, map_ofNat]`. Establish `h2` using `h P`.
+
+Rewrite `h2` using `[h1, norm_mul, Complex.norm_two]`. Establish `h3 : P₀ b = 0` using `norm_eq_zero.1 (by linarith)`. Conclude with `hb ((map_eq_zero P₀).1 h3 ▸ isAlgebraic_zero)`.
+-/
 theorem isAlgebraic_of_norm_const {K Ω : Type} [Field K] [CharZero K] [Field Ω] [Algebra K Ω] [Algebra K ℂ]
     (P₀ : Ω →ₐ[K] ℂ) {b : Ω} (h : ∀ P : Ω →ₐ[K] ℂ, ‖P b‖ = ‖P₀ b‖) : IsAlgebraic K b := by
   by_contra hb
@@ -50,6 +61,11 @@ open NumberField IsDedekindDomain AlgebraicGeometry CategoryTheory Limits Recipr
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
 
+/- English proof (translation)
+Establish `e : ptF z = spMap φ.toRingHom ≫ ptF y`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[ptF, pullback.lift_fst, Category.assoc, ptF, pullback.lift_fst, h.1]`. Rewrite using `[ptF, pullback.lift_snd, Category.assoc, ptF, pullback.lift_snd, ← Spec.map_comp]`. Use `congr 1`.
+
+Use extensionality with `a`. Conclude with `(φ.commutes a).symm`. Introduce `s`. Rewrite using `[e, Scheme.Hom.comp_apply]`. Conclude with `hy _`.
+-/
 theorem liesOn_frMap {Z : Comp Xo c} {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T]
     {φ : S →ₐ[c.F] T} {y : FrPt Xo c S} {z : FrPt Xo c T} (h : FrMap φ y z) (hy : LiesOn Z y) : LiesOn Z z := by
   have e : ptF z = spMap φ.toRingHom ≫ ptF y := by
@@ -63,6 +79,11 @@ theorem liesOn_frMap {Z : Comp Xo c} {S T : Type} [CommRing S] [Algebra c.F S] [
   rw [e, Scheme.Hom.comp_apply]
   exact hy _
 
+/- English proof (translation)
+Establish `e : ptF y = ptF z`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[ptF, pullback.lift_fst, ptF, pullback.lift_fst, h.1]`. Rewrite using `[ptF, pullback.lift_snd, ptF, pullback.lift_snd]`. Introduce `s`.
+
+Rewrite using `[e]`. Conclude with `hz s`.
+-/
 theorem liesOn_frBor {Z : Comp Xo c} {S : Type} [CommRing S] [Algebra c.F S] {t : Ix Dw → Sˣ} {y z : FrPt Xo c S}
     (h : FrBor t y z) (hz : LiesOn Z z) : LiesOn Z y := by
   have e : ptF y = ptF z := by
@@ -73,12 +94,28 @@ theorem liesOn_frBor {Z : Comp Xo c} {S : Type} [CommRing S] [Algebra c.F S] {t 
   rw [e]
   exact hz s
 
+/- English proof (translation)
+Rewrite using `[← secZ_nat]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `cases i <;> rfl`.
+-/
 theorem secZ_zero_eq : secZ Xo c 0 = sec Xo c 0 0 := by
   rw [← secZ_nat]
   congr 1
   funext i
   cases i <;> rfl
 
+/- English proof (translation)
+Take `⟨hL, -, h, hA⟩` from `GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c`. Take `⟨⟨P₀⟩, hP⟩` from `GlobalTheory.GenericReading.embedding_read_at_frame E H Dw l Xo c σ r U hσ hU h Z`. Establish `hi` using `idem_mem_secZ Z`. Rewrite `hg`, `hi` using `[secZ_zero_eq]`. Establish `key : ∀ P : Om Z →ₐ[c.F] CAt σ, ‖toC (P (evC h Z g))‖ = b` using `fun P => by`.
+
+Take `⟨k, x, y', t, hm, ht⟩` from `hP P`. Take `⟨w, -, hw⟩` from `GlobalTheory.CompBij.rdU_eq_of_reads U h k Z x P y' t hm ht 0 0`. Establish `hz : (⟨k, x.1⟩ : Σ k, Frame (U.X k).Ψ r) ∈ framesOn U Z` using `⟨x.2, liesOn_frBor ht (liesOn_frMap hm (liesOn_genFr h Z))⟩`. Establish `h1` using `hw _ hi`. Establish `h2 : rdU U (idem Z) k x = 1`.
+
+Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk, x.2, dif_pos]`. Conclude with `evR_idem (S := CAt σ) hz.2 (haveI : IsReduced (CAt σ) := inferInstanceAs (IsReduced ℂ); hL.test _ _)`. Establish `h3 : evC h Z (idem Z) = 1` using `evR_idem (liesOn_genFr h Z) (hL.test _ _)`. Rewrite `h1` using `[h2, h3, map_one, mul_one]`. Rewrite using `[← hw g hg, h1]`.
+
+Conclude with `(congrArg norm (one_mul _)).trans (hb _ hz)`. Use `letI : Algebra c.F ℂ := σ.toAlgebra`. Take `⟨a, ha⟩` from `hF Z _ (isAlgebraic_of_norm_const (K := c.F) (b := evC h Z g) P₀ fun P => (key P).trans (key P₀).symm)`. Use `⟨a, sub_eq_zero.1 (GlobalTheory.Reg.sec_eq_zero_of_generic_values E H Dw l Xo c hL h (hA h) 0 0 _ (sub_mem hg (Submodule.smul_mem _ _ hi)) fun Z' => ?_)⟩` and prove the remaining obligations. Distinguish the cases in `hZ : Z' = Z`.
+
+Substitute `hZ` using the available equality. Establish `h3 : evC h Z' (idem Z') = 1` using `evR_idem (liesOn_genFr h Z') (hL.test _ _)`. Establish `h4` using `evalAt_add (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) g ((-a) • idem Z') (genFr h Z')`. Establish `h5` using `evalAt_smul (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) (-a) (idem Z') (genFr h Z')`. Rewrite using `[sub_eq_add_neg, ← neg_smul]`.
+
+Use `h4.trans ?_` and prove the remaining obligations. Rewrite using `[h5]`. Use `show evC h Z' g + algebraMap _ _ (-a) * evC h Z' (idem Z') = 0`. Rewrite using `[h3, ← ha, map_neg, mul_one, add_neg_cancel]`. Conclude with `evC_eq_zero h hZ (sub_mem hs (Submodule.smul_mem _ _ (idem_mem_suppOn Z)))`.
+-/
 theorem exists_eq_smul_idem {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (hσ : GoodEmb c σ) (hU : IsUnf U)
     (hF : FnAlgClosed Xo c) {Z : Comp Xo c} {g : Rul Xo c} (hg : g ∈ secZ Xo c 0) (hs : g ∈ suppOn Z) {b : ℝ}
     (hb : ∀ z ∈ framesOn U Z, ‖rdU U g z.1 z.2‖ = b) : ∃ a : c.F, g = a • idem Z := by
@@ -120,6 +157,13 @@ theorem exists_eq_smul_idem {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (hσ : Good
 
 variable {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {x : ℝ}
 
+/- English proof (translation)
+Establish `hσ` using `goodEmb_goodOf c c.F.val.toRingHom`. Set `u : ConstSec U x Z 0 0` to `(t.mul s.symm).copy (add_neg_cancel la) (add_neg_cancel δ)`. Take `⟨a, ha⟩` from `exists_eq_smul_idem (U _) hσ (hU _ hσ) hF (g := u.sig) (exOf_zero (Dw := Dw) ▸ u.sig_mem) u.sig_mem_suppOn (b := u.cInf c.F.val.toRingHom) fun z hz => by`. Rewrite using `[← homN_zero _ x, ← wtOf_zero (Dw := Dw)]`. Conclude with `u.homN_eq hz`.
+
+Establish `ha' : t.sig * s.inv = a • idem Z` using `ha`. Establish `h : t.sig = a • s.sig`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, mul_comm s.inv, s.mul_inv, mul_comm, t.idem_sig]`. Use `_ = a • s.sig := by rw [ha', smul_mul_assoc, s.idem_sig]`.
+
+Establish `h0 : a ≠ 0` using `fun h0 => t.sig_ne_zero (by rw [h, h0, zero_smul])`. Conclude with `⟨a, h0, ConstSec.ext h⟩`.
+-/
 theorem ConstSec.exists_eq_smul (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) (hF : FnAlgClosed Xo c) {Z : Comp Xo c}
     {la : Weight Dw} {δ : HeightOneSpectrum (𝓞 c.F) → ℝ} (s t : ConstSec U x Z la δ) :
     ∃ (a : c.F) (ha : a ≠ 0), t = s.smul a ha := by
@@ -136,6 +180,9 @@ theorem ConstSec.exists_eq_smul (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) (hF
   have h0 : a ≠ 0 := fun h0 => t.sig_ne_zero (by rw [h, h0, zero_smul])
   exact ⟨a, h0, ConstSec.ext h⟩
 
+/- English proof (translation)
+Take `⟨a, ha, rfl⟩` from `ConstSec.exists_eq_smul hU hF s t`. Conclude with `ConstSec.deg_smul a ha s`.
+-/
 theorem ConstSec.deg_eq (hU : ∀ σ, GoodEmb c σ → IsUnf (U σ)) (hF : FnAlgClosed Xo c) {Z : Comp Xo c}
     {la : Weight Dw} {δ : HeightOneSpectrum (𝓞 c.F) → ℝ} (s t : ConstSec U x Z la δ) : t.deg = s.deg := by
   obtain ⟨a, ha, rfl⟩ := ConstSec.exists_eq_smul hU hF s t

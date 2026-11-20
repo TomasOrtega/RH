@@ -7,6 +7,11 @@ namespace GlobalTheory.HkB
 
 open Formalism.IndefR.Bridge
 
+/- English proof (translation)
+Take `⟨k₁, k₂, rfl⟩` from `hx`. Prove the components needed by the constructor for the conclusion. Introduce `a ha`. Take `⟨u, v, rfl⟩` from `hA.1 a ha`. Conclude with `⟨u * k₁, k₂ * v, by simp [mul_assoc]⟩`.
+
+Introduce and unpack `_ ⟨u, v, rfl⟩`. Conclude with `hA.2 _ ⟨u * k₁⁻¹, k₂⁻¹ * v, by simp [mul_assoc]⟩`.
+-/
 theorem isDC_of_mem_doubleCoset {G : Type} [Group G] {J : Subgroup G} {x x' : G} {A : Finset G}
     (hA : IsDC J x' A) (hx : ∃ k₁ k₂ : J, x' = (k₁ : G) * x * k₂) : IsDC J x A := by
   obtain ⟨k₁, k₂, rfl⟩ := hx
@@ -17,6 +22,11 @@ theorem isDC_of_mem_doubleCoset {G : Type} [Group G] {J : Subgroup G} {x x' : G}
   · rintro _ ⟨u, v, rfl⟩
     exact hA.2 _ ⟨u * k₁⁻¹, k₂⁻¹ * v, by simp [mul_assoc]⟩
 
+/- English proof (translation)
+Establish `hF' : F ∈ AdForms (1 : G →* G) (1 : G →* Module.End ℂ W) J χ`. Introduce `γ h k`. Simplify using `using hF k h`. Use `⟨dcOp_eq_of_isDC _ _ hχ hA (isDC_of_mem_doubleCoset hA' hx) hAL hAL' hF', fun k h => ?_⟩` and prove the remaining obligations. Establish `h1` using `LocSplit.dcOp_mem (1 : G →* G) (1 : G →* Module.End ℂ W) hs hχ hA hAL hF' 1 h k`.
+
+Simplify using `using h1`.
+-/
 theorem dcOp_eq_and_level {G W : Type} [Group G] [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     (J L : Subgroup G) (χ : J →* ℂˣ) (x x' : G) (A A' : Finset G) (F : G → W)
     (hs : ∀ k ∈ J, ∃ k₁ ∈ J, ∃ k₂ ∈ J, k₁ ∈ L ∧ k = k₁ * k₂ ∧ ∀ l ∈ L, Commute k₂ l)

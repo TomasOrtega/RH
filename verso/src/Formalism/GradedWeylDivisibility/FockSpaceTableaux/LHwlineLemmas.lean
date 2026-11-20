@@ -18,6 +18,13 @@ def lhwline_rowOp (a b : Fin r) (t : K) (x : Fin r × Fin n → K) : Fin r × Fi
 def lhwline_colOp (l j : Fin n) (c : K) (x : Fin r × Fin n → K) : Fin r × Fin n → K :=
   fun v => if v.2 = j then x v + c * x (v.1, l) else x v
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on`. Use `next c =>`. Establish `h1 : rowGen K a b (C c : MvPolynomial (Fin r × Fin n) K) = Polynomial.C (C c)` using `(rowGen (n := n) K a b).commutes c`. Rewrite using `[h1, Polynomial.eval₂_C, MvPolynomial.eval_C, MvPolynomial.eval_C]`. Use `next p q hp hq =>`.
+
+Simplify using `only [map_add, Polynomial.eval₂_add, hp, hq]`. Use `next p v hp =>`. Rewrite using `[map_mul, Polynomial.eval₂_mul, hp, map_mul]`. Use `congr 1`. Simplify using `only [rowGen, aeval_X, eval_X, lhwline_rowOp]`.
+
+Apply the tactic sequence `split_ifs <;> simp <;> ring`.
+-/
 theorem lhwline_eval_rowGen (a b : Fin r) (t : K) (x : Fin r × Fin n → K)
     (g : MvPolynomial (Fin r × Fin n) K) :
     Polynomial.eval₂ (eval x) t (rowGen K a b g) = eval (lhwline_rowOp a b t x) g := by
@@ -34,6 +41,11 @@ theorem lhwline_eval_rowGen (a b : Fin r) (t : K) (x : Fin r × Fin n → K)
     simp only [rowGen, aeval_X, eval_X, lhwline_rowOp]
     split_ifs <;> simp <;> ring
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on`. Use `next c =>`. Simplify using `[colAdd]`. Use `next p q hp hq =>`. Simplify using `only [map_add, hp, hq]`.
+
+Use `next p v hp =>`. Simplify using `only [map_mul, hp, colAdd, aeval_X, lhwline_colOp]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp [lhwline_colOp, *]`.
+-/
 theorem lhwline_eval_colAdd (l j : Fin n) (c : K) (x : Fin r × Fin n → K)
     (g : MvPolynomial (Fin r × Fin n) K) :
     eval x (colAdd K l j c g) = eval (lhwline_colOp l j c x) g := by
@@ -47,6 +59,13 @@ theorem lhwline_eval_colAdd (l j : Fin n) (c : K) (x : Fin r × Fin n → K)
     congr 1
     split_ifs <;> simp [lhwline_colOp, *]
 
+/- English proof (translation)
+Simplify using `only [rowDiv]`. Rewrite using `[← Polynomial.constantCoeff_apply]`. Proceed by induction on `g using MvPolynomial.induction_on`. Use `next c =>`. Establish `h1 : rowGen K a b (C c : MvPolynomial (Fin r × Fin n) K) = Polynomial.C (C c)` using `(rowGen (n := n) K a b).commutes c`.
+
+Rewrite using `[h1, Polynomial.constantCoeff_apply, Polynomial.coeff_C_zero]`. Use `next p q hp hq =>`. Simplify using `only [map_add, hp, hq]`. Use `next p v hp =>`. Simplify using `only [map_mul, hp]`.
+
+Use `congr 1`. Simplify using `only [rowGen, aeval_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem lhwline_rowDiv_zero (a b : Fin r) (g : MvPolynomial (Fin r × Fin n) K) :
     rowDiv K a b 0 g = g := by
   simp only [rowDiv]
@@ -64,6 +83,11 @@ theorem lhwline_rowDiv_zero (a b : Fin r) (g : MvPolynomial (Fin r × Fin n) K) 
     simp only [rowGen, aeval_X]
     split_ifs <;> simp
 
+/- English proof (translation)
+Use `ext1 k`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Establish `h0` using `lhwline_rowDiv_zero a b g`. Simplify using `only [rowDiv] at h0`. Rewrite using `[h0, Polynomial.coeff_C_zero]`.
+
+Establish `h1` using `h k hk`. Simplify using `only [rowDiv] at h1`. Rewrite using `[h1, Polynomial.coeff_C, if_neg (by omega)]`.
+-/
 theorem lhwline_rowGen_eq (a b : Fin r) (g : MvPolynomial (Fin r × Fin n) K)
     (h : ∀ k : ℕ, 1 ≤ k → rowDiv K a b k g = 0) : rowGen K a b g = Polynomial.C g := by
   ext1 k
@@ -81,6 +105,9 @@ def lhwline_RInv (φ : (Fin r × Fin n → K) → K) : Prop :=
 def lhwline_CInv (φ : (Fin r × Fin n → K) → K) : Prop :=
   ∀ (x : Fin r × Fin n → K) (l j : Fin n) (c : K), l < j → φ (lhwline_colOp l j c x) = φ x
 
+/- English proof (translation)
+Introduce `x a b t hab`. Use `show eval (lhwline_rowOp a b t x) g = eval x g`. Rewrite using `[← lhwline_eval_rowGen, h a b hab, Polynomial.eval₂_C]`.
+-/
 theorem lhwline_RInv_of (g : MvPolynomial (Fin r × Fin n) K)
     (h : ∀ a b : Fin r, a < b → rowGen K a b g = Polynomial.C g) :
     lhwline_RInv (fun x => eval x g) := by
@@ -88,6 +115,9 @@ theorem lhwline_RInv_of (g : MvPolynomial (Fin r × Fin n) K)
   show eval (lhwline_rowOp a b t x) g = eval x g
   rw [← lhwline_eval_rowGen, h a b hab, Polynomial.eval₂_C]
 
+/- English proof (translation)
+Introduce `x l j c hlj`. Use `show eval (lhwline_colOp l j c x) g = eval x g`. Rewrite using `[← lhwline_eval_colAdd, h l j hlj c]`.
+-/
 theorem lhwline_CInv_of (g : MvPolynomial (Fin r × Fin n) K)
     (h : ∀ l j : Fin n, l < j → ∀ c : K, colAdd K l j c g = g) :
     lhwline_CInv (fun x => eval x g) := by
@@ -109,6 +139,13 @@ def lhwline_mcol (q : Fin n) (S : Finset (Fin n)) (c : Fin n → K) (x : Fin r �
     Fin r × Fin n → K :=
   fun v => if v.2 ∈ S then x v + c v.2 * x (v.1, q) else x v
 
+/- English proof (translation)
+Use `revert hS`. Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Introduce `_`. Use `congr 1`. Introduce `b S hbS ih hS`.
+
+Establish `hpS : p ∉ S` using `fun hp => lt_irrefl p (hS p (Finset.mem_insert_of_mem hp))`. Establish `hpb : p < b` using `hS b (Finset.mem_insert_self b S)`. Establish `key : lhwline_mrow p (insert b S) t x = lhwline_rowOp p b (t b) (lhwline_mrow p S t x)`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v.1 = b`.
+
+Simplify using `[lhwline_mrow, lhwline_rowOp, hv, hbS, hpS]`. Simplify using `[lhwline_mrow, lhwline_rowOp, hv, hpS]`. Rewrite using `[key, hφ _ p b (t b) hpb, ih (fun c hc => hS c (Finset.mem_insert_of_mem hc))]`.
+-/
 theorem lhwline_mrow_inv (φ : (Fin r × Fin n → K) → K) (hφ : lhwline_RInv φ) (p : Fin r)
     (t : Fin r → K) (x : Fin r × Fin n → K) (S : Finset (Fin r)) (hS : ∀ b ∈ S, p < b) :
     φ (lhwline_mrow p S t x) = φ x := by
@@ -127,6 +164,13 @@ theorem lhwline_mrow_inv (φ : (Fin r × Fin n → K) → K) (hφ : lhwline_RInv
       · simp [lhwline_mrow, lhwline_rowOp, hv, hpS]
     rw [key, hφ _ p b (t b) hpb, ih (fun c hc => hS c (Finset.mem_insert_of_mem hc))]
 
+/- English proof (translation)
+Use `revert hS`. Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Introduce `_`. Use `congr 1`. Introduce `b S hbS ih hS`.
+
+Establish `hqS : q ∉ S` using `fun hq => lt_irrefl q (hS q (Finset.mem_insert_of_mem hq))`. Establish `hqb : q < b` using `hS b (Finset.mem_insert_self b S)`. Establish `key : lhwline_mcol q (insert b S) c x = lhwline_colOp q b (c b) (lhwline_mcol q S c x)`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v.2 = b`.
+
+Simplify using `[lhwline_mcol, lhwline_colOp, hv, hbS, hqS]`. Simplify using `[lhwline_mcol, lhwline_colOp, hv, hqS]`. Rewrite using `[key, hφ _ q b (c b) hqb, ih (fun d hd => hS d (Finset.mem_insert_of_mem hd))]`.
+-/
 theorem lhwline_mcol_inv (φ : (Fin r × Fin n → K) → K) (hφ : lhwline_CInv φ) (q : Fin n)
     (c : Fin n → K) (x : Fin r × Fin n → K) (S : Finset (Fin n)) (hS : ∀ j ∈ S, q < j) :
     φ (lhwline_mcol q S c x) = φ x := by
@@ -149,6 +193,9 @@ def highestWeightLineUpdate (p : Fin r) (q : Fin n) (x : Fin r × Fin n → K) :
   let y := lhwline_mrow p (Finset.univ.filter fun b => p < b) (fun b => -(x (b, q) / x (p, q))) x
   lhwline_mcol q (Finset.univ.filter fun j => q < j) (fun j => -(y (p, j) / y (p, q))) y
 
+/- English proof (translation)
+Simplify using `only [highestWeightLineUpdate]`. Conclude with `(lhwline_mcol_inv φ hC q _ _ _ (fun j hj => (Finset.mem_filter.1 hj).2)).trans (lhwline_mrow_inv φ hR p _ x _ (fun b hb => (Finset.mem_filter.1 hb).2))`.
+-/
 theorem lhwline_step_inv (φ : (Fin r × Fin n → K) → K) (hR : lhwline_RInv φ) (hC : lhwline_CInv φ)
     (p : Fin r) (q : Fin n) (x : Fin r × Fin n → K) : φ (highestWeightLineUpdate p q x) = φ x := by
   simp only [highestWeightLineUpdate]
@@ -161,6 +208,11 @@ def lhwline_elim : ℕ → (Fin r × Fin n → K) → (Fin r × Fin n → K)
     if h : k < r ∧ k < n then highestWeightLineUpdate ⟨k, h.1⟩ ⟨k, h.2⟩ (lhwline_elim k x)
     else lhwline_elim k x
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Simplify using `only [lhwline_elim]`. Use `split_ifs with h`.
+
+Rewrite using `[lhwline_step_inv φ hR hC, ih]`. Conclude with `ih`.
+-/
 theorem lhwline_elim_inv (φ : (Fin r × Fin n → K) → K) (hR : lhwline_RInv φ) (hC : lhwline_CInv φ)
     (k : ℕ) (x : Fin r × Fin n → K) : φ (lhwline_elim k x) = φ x := by
   induction k with
@@ -174,6 +226,9 @@ theorem lhwline_elim_inv (φ : (Fin r × Fin n → K) → K) (hR : lhwline_RInv 
 def lhwline_cleared (k : ℕ) (x : Fin r × Fin n → K) : Prop :=
   ∀ (a : Fin r) (j : Fin n), a.val ≠ j.val → (a.val < k ∨ j.val < k) → x (a, j) = 0
 
+/- English proof (translation)
+Simplify using `only [highestWeightLineUpdate, lhwline_mcol, lhwline_mrow, Finset.mem_filter, Finset.mem_univ, true_and, lt_self_iff_false, if_false]`. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem lhwline_step_apply (p : Fin r) (q : Fin n) (x : Fin r × Fin n → K) (a : Fin r) (j : Fin n) :
     highestWeightLineUpdate p q x (a, j) =
       (if p < a then x (a, j) + -(x (a, q) / x (p, q)) * x (p, j) else x (a, j)) +
@@ -189,6 +244,19 @@ section LHwlineClear
 
 variable {K : Type} [Field K] {r n : ℕ}
 
+/- English proof (translation)
+Introduce `a j haj hak`. Rewrite using `[lhwline_step_apply]`. Establish `hkk` using `hp`. Simplify using `only [Fin.lt_def, Fin.val_mk] at haj hak ⊢`. Break down `lt_trichotomy a.val k with ha | ha | ha` into its components or cases.
+
+Establish `h1 : y (a, j) = 0` using `hy a j haj (Or.inl ha)`. Establish `h2 : y (a, ⟨k, hn⟩) = 0` using `hy a ⟨k, hn⟩ (by simp only [Fin.val_mk]; omega) (Or.inl ha)`. Simplify using `[show ¬ k < a.val by omega, h1, h2]`. Establish `ha' : a = ⟨k, hr⟩` using `Fin.ext ha`. Substitute `ha'` using the available equality.
+
+Simplify using `only [Fin.val_mk] at haj hak ⊢`. Break down `lt_or_gt_of_ne (Ne.symm haj) with hj | hj` into its components or cases. Establish `h1 : y (⟨k, hr⟩, j) = 0` using `hy _ j (by simp only [Fin.val_mk]; omega) (Or.inr hj)`. Simplify using `[h1, show ¬ k < j.val by omega]`. Simplify using `only [lt_self_iff_false, if_false, if_pos hj]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hj : j.val ≤ k` using `by omega`. Simplify using `only [if_pos ha, if_neg (show ¬ k < j.val by omega), add_zero]`. Break down `lt_or_eq_of_le hj with hj | hj` into its components or cases.
+
+Establish `h1 : y (a, j) = 0` using `hy a j haj (Or.inr hj)`. Establish `h2 : y (⟨k, hr⟩, j) = 0` using `hy _ j (by simp only [Fin.val_mk]; omega) (Or.inr hj)`. Simplify using `[h1, h2]`. Establish `hj' : j = ⟨k, hn⟩` using `Fin.ext hj`. Substitute `hj'` using the available equality.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lhwline_step_cleared (k : ℕ) (hr : k < r) (hn : k < n) (y : Fin r × Fin n → K)
     (hy : lhwline_cleared k y) (hp : y (⟨k, hr⟩, ⟨k, hn⟩) ≠ 0) :
     lhwline_cleared (k + 1) (highestWeightLineUpdate ⟨k, hr⟩ ⟨k, hn⟩ y) := by
@@ -220,6 +288,13 @@ theorem lhwline_step_cleared (k : ℕ) (hr : k < r) (hn : k < n) (y : Fin r × F
       field_simp
       ring
 
+/- English proof (translation)
+Introduce `h0`. Apply `hd` to reduce the goal to its premises. Rewrite using `[lpMinor, RingHom.map_det]`. Use `Matrix.det_eq_zero_of_column_eq_zero (Fin.last k) (fun i => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, MvPolynomial.eval_X]`.
+
+Distinguish the cases in `hi : i = Fin.last k`. Substitute `hi` using the available equality. Establish `e1 : Fin.castLE hr (Fin.last k) = ⟨k, hr⟩` using `Fin.ext (by simp)`. Establish `e2 : Fin.castLE hn (Fin.last k) = ⟨k, hn⟩` using `Fin.ext (by simp)`. Rewrite using `[e1, e2]`.
+
+Conclude with `h0`. Establish `hik : i.val < k` using `Fin.val_lt_last hi`. Conclude with `hy _ _ (by rw [Fin.coe_castLE, Fin.coe_castLE, Fin.val_last]; omega) (Or.inl (by rw [Fin.coe_castLE]; exact hik))`.
+-/
 theorem lhwline_pivot_ne (k : ℕ) (hr : k + 1 ≤ r) (hn : k + 1 ≤ n) (y : Fin r × Fin n → K)
     (hy : lhwline_cleared k y) (hd : eval y (lpMinor K (k + 1) hr hn) ≠ 0) :
     y (⟨k, hr⟩, ⟨k, hn⟩) ≠ 0 := by
@@ -238,6 +313,23 @@ theorem lhwline_pivot_ne (k : ℕ) (hr : k + 1 ≤ r) (hn : k + 1 ≤ n) (y : Fi
     exact hy _ _ (by rw [Fin.coe_castLE, Fin.coe_castLE, Fin.val_last]; omega)
       (Or.inl (by rw [Fin.coe_castLE]; exact hik))
 
+/- English proof (translation)
+Introduce `x a b t hab`. Simplify using `only [lpMinor, RingHom.map_det]`. Distinguish the cases in `hb : b.val < s`. Establish `ha : a.val < s` using `lt_trans hab hb`. Establish `hne : (⟨b.val, hb⟩ : Fin s) ≠ ⟨a.val, ha⟩`.
+
+Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Fin.val_mk] at this`. Conclude with `absurd this (ne_of_gt hab)`. Use `Eq.trans ?_ (Matrix.det_updateRow_add_smul_self _ hne t)` and prove the remaining obligations.
+
+Use `congr 1`. Use extensionality with `p q`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, MvPolynomial.eval_X, Matrix.updateRow_apply, lhwline_rowOp, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hp : p = ⟨b.val, hb⟩`. Substitute `hp` using the available equality.
+
+Establish `e1 : Fin.castLE hr (⟨b.val, hb⟩ : Fin s) = b` using `Fin.ext (by simp)`. Establish `e2 : Fin.castLE hr (⟨a.val, ha⟩ : Fin s) = a` using `Fin.ext (by simp)`. Simplify using `[e1, e2]`. Establish `hne2 : Fin.castLE hr p ≠ b`. Introduce `h`.
+
+Apply `hp` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Establish `h'` using `congrArg Fin.val h`. Rewrite `h'` using `[Fin.coe_castLE]`. Simplify using `using h'`.
+
+Simplify using `[hp, hne2]`. Use `congr 1`. Use extensionality with `p q`. Establish `hne2 : Fin.castLE hr p ≠ b`. Introduce `h`.
+
+Apply `hb` to reduce the goal to its premises. Establish `h'` using `congrArg Fin.val h`. Rewrite `h'` using `[Fin.coe_castLE]`. Use `p.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `[lhwline_rowOp, hne2]`.
+-/
 theorem lhwline_minor_RInv (s : ℕ) (hr : s ≤ r) (hn : s ≤ n) :
     lhwline_RInv (fun x : Fin r × Fin n → K => eval x (lpMinor K s hr hn)) := by
   intro x a b t hab
@@ -278,6 +370,23 @@ theorem lhwline_minor_RInv (s : ℕ) (hr : s ≤ r) (hn : s ≤ n) :
       omega
     simp [lhwline_rowOp, hne2]
 
+/- English proof (translation)
+Introduce `x l j c hlj`. Simplify using `only [lpMinor, RingHom.map_det]`. Distinguish the cases in `hj : j.val < s`. Establish `hl : l.val < s` using `lt_trans hlj hj`. Establish `hne : (⟨j.val, hj⟩ : Fin s) ≠ ⟨l.val, hl⟩`.
+
+Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Fin.val_mk] at this`. Conclude with `absurd this (ne_of_gt hlj)`. Use `Eq.trans ?_ (Matrix.det_updateCol_add_smul_self _ hne c)` and prove the remaining obligations.
+
+Use `congr 1`. Use extensionality with `p q`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, MvPolynomial.eval_X, Matrix.updateCol_apply, lhwline_colOp, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hq : q = ⟨j.val, hj⟩`. Substitute `hq` using the available equality.
+
+Establish `e1 : Fin.castLE hn (⟨j.val, hj⟩ : Fin s) = j` using `Fin.ext (by simp)`. Establish `e2 : Fin.castLE hn (⟨l.val, hl⟩ : Fin s) = l` using `Fin.ext (by simp)`. Simplify using `[e1, e2]`. Establish `hne2 : Fin.castLE hn q ≠ j`. Introduce `h`.
+
+Apply `hq` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Establish `h'` using `congrArg Fin.val h`. Rewrite `h'` using `[Fin.coe_castLE]`. Simplify using `using h'`.
+
+Simplify using `[hq, hne2]`. Use `congr 1`. Use extensionality with `p q`. Establish `hne2 : Fin.castLE hn q ≠ j`. Introduce `h`.
+
+Apply `hj` to reduce the goal to its premises. Establish `h'` using `congrArg Fin.val h`. Rewrite `h'` using `[Fin.coe_castLE]`. Use `q.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `[lhwline_colOp, hne2]`.
+-/
 theorem lhwline_minor_CInv [Infinite K] (s : ℕ) (hr : s ≤ r) (hn : s ≤ n) :
     lhwline_CInv (fun x : Fin r × Fin n → K => eval x (lpMinor K s hr hn)) := by
   intro x l j c hlj
@@ -318,6 +427,15 @@ theorem lhwline_minor_CInv [Infinite K] (s : ℕ) (hr : s ≤ r) (hn : s ≤ n) 
       omega
     simp [lhwline_colOp, hne2]
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `_ a j _ h`. Simplify using `at h`.
+
+Consider the case `succ k ih`. Introduce `hk`. Establish `hr : k < r` using `by have := min_le_left r n; omega`. Establish `hn : k < n` using `by have := min_le_right r n; omega`. Establish `hy` using `ih (by omega)`.
+
+Establish `hel : lhwline_elim (k + 1) x = highestWeightLineUpdate ⟨k, hr⟩ ⟨k, hn⟩ (lhwline_elim k x)`. Simplify using `only [lhwline_elim]`. Rewrite using `[dif_pos ⟨hr, hn⟩]`. Rewrite using `[hel]`. Apply `lhwline_step_cleared k hr hn _ hy` to reduce the goal to its premises.
+
+Apply `lhwline_pivot_ne k hr hn _ hy` to reduce the goal to its premises. Establish `hinv` using `lhwline_elim_inv (fun z : Fin r × Fin n → K => eval z (lpMinor K (k + 1) hr hn)) (lhwline_minor_RInv _ _ _) (lhwline_minor_CInv _ _ _) k x`. Introduce `h0`. Conclude with `hx k hr hn (hinv.symm.trans h0)`.
+-/
 theorem lhwline_elim_cleared [Infinite K] (x : Fin r × Fin n → K)
     (hx : ∀ (s : ℕ) (hr : s + 1 ≤ r) (hn : s + 1 ≤ n), eval x (lpMinor K (s + 1) hr hn) ≠ 0) :
     ∀ k, k ≤ min r n → lhwline_cleared k (lhwline_elim k x) := by
@@ -348,6 +466,11 @@ section LHwlineVanish
 
 variable {K : Type} [Field K] {r n : ℕ}
 
+/- English proof (translation)
+Apply `lhwline_elim_cleared x hx (min r n) le_rfl a j h` to reduce the goal to its premises. Break down `le_total r n with hrn | hrn` into its components or cases. Use `left`. Rewrite using `[min_eq_left hrn]`. Conclude with `a.isLt`.
+
+Use `right`. Rewrite using `[min_eq_right hrn]`. Conclude with `j.isLt`.
+-/
 theorem lhwline_elim_offdiag [Infinite K] (x : Fin r × Fin n → K)
     (hx : ∀ (s : ℕ) (hr : s + 1 ≤ r) (hn : s + 1 ≤ n), eval x (lpMinor K (s + 1) hr hn) ≠ 0)
     (a : Fin r) (j : Fin n) (h : a.val ≠ j.val) : lhwline_elim (min r n) x (a, j) = 0 := by
@@ -360,6 +483,19 @@ theorem lhwline_elim_offdiag [Infinite K] (x : Fin r × Fin n → K)
     rw [min_eq_right hrn]
     exact j.isLt
 
+/- English proof (translation)
+Set `I : Fin r × Fin n → K` to `fun v => if (v.1 : ℕ) = v.2 then 1 else 0`. Establish `hmin : ∀ (s : ℕ) (hr : s ≤ r) (hn : s ≤ n), lpMinor K s hr hn ≠ 0`. Introduce `s hr hn h`. Establish `h2` using `congrArg (eval I) h`. Rewrite `h2` using `[map_zero, lpMinor, RingHom.map_det]`.
+
+Establish `h3 : (eval I).mapMatrix (Matrix.of fun p q : Fin s => (X (Fin.castLE hr p, Fin.castLE hn q) : MvPolynomial (Fin r × Fin n) K)) = 1`. Use extensionality with `p q`. Simplify using `[I, Matrix.one_apply, Fin.ext_iff]`. Rewrite `h2` using `[h3, Matrix.det_one]`. Conclude with `one_ne_zero h2`.
+
+Set `Q : MvPolynomial (Fin r × Fin n) K` to `∏ s : Fin (min r n), lpMinor K (s.val + 1) (by have := s.isLt; have := min_le_left r n; omega) (by have := s.isLt; have := min_le_right r n; omega)`. Establish `hQ : Q ≠ 0` using `Finset.prod_ne_zero_iff.mpr (fun s _ => hmin _ _ _)`. Establish `hgQ : g * Q = 0`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`.
+
+Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `hx0 : eval x Q = 0`. Rewrite using `[hx0, mul_zero]`. Establish `hx : ∀ (s : ℕ) (hr : s + 1 ≤ r) (hn : s + 1 ≤ n), eval x (lpMinor K (s + 1) hr hn) ≠ 0`. Introduce `s hr hn`.
+
+Establish `hs : s < min r n` using `lt_min hr hn`. Simplify using `only [Q, map_prod] at hx0`. Conclude with `(Finset.prod_ne_zero_iff.mp hx0) ⟨s, hs⟩ (Finset.mem_univ _)`. Establish `hinv` using `lhwline_elim_inv (fun z : Fin r × Fin n → K => eval z g) (lhwline_RInv_of g hR) (lhwline_CInv_of g hC) (min r n) x`. Rewrite using `[show eval x g = eval (lhwline_elim (min r n) x) g from hinv.symm, hD _ (fun a j h => lhwline_elim_offdiag x hx a j h), zero_mul]`.
+
+Break down `mul_eq_zero.mp hgQ with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hQ`.
+-/
 theorem lhwline_vanish [Infinite K] (g : MvPolynomial (Fin r × Fin n) K)
     (hR : ∀ a b : Fin r, a < b → rowGen K a b g = Polynomial.C g)
     (hC : ∀ l j : Fin n, l < j → ∀ c : K, colAdd K l j c g = g)
@@ -399,12 +535,20 @@ theorem lhwline_vanish [Infinite K] (g : MvPolynomial (Fin r × Fin n) K)
   · exact h
   · exact absurd h hQ
 
+/- English proof (translation)
+Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply, Fintype.sum_prod_type]`. Simplify using `[colW, Pi.single_apply]`.
+-/
 theorem lhwline_weight_col (m : Fin r × Fin n →₀ ℕ) (j : Fin n) :
     Finsupp.weight (colW r n) m j = ∑ a : Fin r, m (a, j) := by
   rw [Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply,
     Fintype.sum_prod_type]
   simp [colW, Pi.single_apply]
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.eval_eq']`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `m hm`. Establish `hw : Finsupp.weight (colW r n) m = ν` using `hg (mem_support_iff.mp hm)`. Establish `hcol : ∑ a : Fin r, m (a, s) ≠ 0`.
+
+Rewrite using `[← lhwline_weight_col, hw]`. Conclude with `Nat.pos_iff_ne_zero.mp hνs`. Take `⟨a, -, ha⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hcol`. Establish `hDa : D (a, s) = 0` using `hD a s (by have := a.isLt; omega)`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ (a, s)) (by rw [hDa, zero_pow ha]), mul_zero]`.
+-/
 theorem lhwline_diag_tall (ν : Fin n → ℕ) (s : Fin n) (hs : r ≤ s.val) (hνs : 0 < ν s)
     (g : MvPolynomial (Fin r × Fin n) K) (hg : IsWeightedHomogeneous (colW r n) g ν)
     (D : Fin r × Fin n → K) (hD : ∀ (a : Fin r) (j : Fin n), a.val ≠ j.val → D (a, j) = 0) :
@@ -423,6 +567,13 @@ theorem lhwline_diag_tall (ν : Fin n → ℕ) (s : Fin n) (hs : r ≤ s.val) (h
 def lhwline_mnu (hn : n ≤ r) (ν : Fin n → ℕ) : Fin r × Fin n →₀ ℕ :=
   ∑ j : Fin n, Finsupp.single (Fin.castLE hn j, j) (ν j)
 
+/- English proof (translation)
+Simplify using `only [lhwline_mnu, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.single_apply]`. Rewrite using `[Finset.sum_eq_single j]`. Distinguish the cases in `h : a.val = j.val`. Establish `: Fin.castLE hn j = a` using `Fin.ext (by rw [Fin.coe_castLE]; exact h.symm)`. Simplify using `[this, h]`.
+
+Establish `: ¬ (Fin.castLE hn j, j) = (a, j)`. Introduce `h'`. Apply `h` to reduce the goal to its premises. Rewrite using `[← (Prod.mk.inj h').1, Fin.coe_castLE]`. Simplify using `[this, h]`.
+
+Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce `h'`. Conclude with `hb (Prod.mk.inj h').2`. Simplify using the standard rewrite rules.
+-/
 theorem lhwline_mnu_apply (hn : n ≤ r) (ν : Fin n → ℕ) (a : Fin r) (j : Fin n) :
     lhwline_mnu hn ν (a, j) = if a.val = j.val then ν j else 0 := by
   simp only [lhwline_mnu, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.single_apply]
@@ -441,6 +592,15 @@ theorem lhwline_mnu_apply (hn : n ≤ r) (ν : Fin n → ℕ) (a : Fin r) (j : F
     exact hb (Prod.mk.inj h').2
   · simp
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hprod`. Apply `hne` to reduce the goal to its premises. Establish `hoff : ∀ (a : Fin r) (j : Fin n), a.val ≠ j.val → m (a, j) = 0`. Introduce `a j h`. Assume the negation of the conclusion as `hm0`.
+
+Conclude with `hprod (Finset.prod_eq_zero (Finset.mem_univ (a, j)) (by rw [hD a j h, zero_pow hm0]))`. Establish `hw : Finsupp.weight (colW r n) m = ν` using `hg (mem_support_iff.mp hm)`. Use extensionality with `⟨a, j⟩`. Rewrite using `[lhwline_mnu_apply]`. Use `split_ifs with h`.
+
+Establish `hc` using `congrFun hw j`. Rewrite `hc` using `[lhwline_weight_col, Finset.sum_eq_single a]`. Conclude with `hc`. Introduce `b _ hb`. Conclude with `hoff b j (by intro hbj; exact hb (Fin.ext (by omega)))`.
+
+Simplify using the standard rewrite rules. Conclude with `hoff a j h`.
+-/
 theorem lhwline_mono_zero (hn : n ≤ r) (ν : Fin n → ℕ)
     (g : MvPolynomial (Fin r × Fin n) K) (hg : IsWeightedHomogeneous (colW r n) g ν)
     (D : Fin r × Fin n → K) (hD : ∀ (a : Fin r) (j : Fin n), a.val ≠ j.val → D (a, j) = 0)
@@ -464,6 +624,11 @@ theorem lhwline_mono_zero (hn : n ≤ r) (ν : Fin n → ℕ)
     · simp
   · exact hoff a j h
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.eval_eq', Finset.sum_eq_single (lhwline_mnu hn ν)]`. Introduce `m hm hne`. Rewrite using `[lhwline_mono_zero hn ν g hg D hD m hm hne, mul_zero]`. Introduce `h`. Simplify using `only [MvPolynomial.mem_support_iff, not_not] at h`.
+
+Rewrite using `[h, zero_mul]`.
+-/
 theorem lhwline_diag (hn : n ≤ r) (ν : Fin n → ℕ)
     (g : MvPolynomial (Fin r × Fin n) K) (hg : IsWeightedHomogeneous (colW r n) g ν)
     (D : Fin r × Fin n → K) (hD : ∀ (a : Fin r) (j : Fin n), a.val ≠ j.val → D (a, j) = 0) :

@@ -88,6 +88,9 @@ def PrimAll {𝒜 : FamClass} (sel : Formalism.L2.TSel 𝒜) {selS : SelS 𝒜 s
   ∀ {eps : ℝ} (Fm : FamP eps) (hc : 𝒜 Fm) (x : ℝ) (hx : Fm.x1 < x) (h : (sel Fm hc).1 ≤ x) (i : Fm.Ix x),
     Formalism.IndefR.Links.PrimRows3 (selI Fm hc x hx h i).Rl (selI Fm hc x hx h i).F ∧ (selP Fm hc x hx h i).1.A3.fam3.TypesSep3
 
+/- English proof (translation)
+Take `⟨hP, hsep⟩` from `hPA Fm hc x hx h i`. Conclude with `(selI Fm hc x hx h i).rowsHold0 (selC Fm hc x hx h i).ok1 hsep hP`.
+-/
 theorem rowsHold0_of {𝒜 : FamClass} {sel : Formalism.L2.TSel 𝒜} {selS : SelS 𝒜 sel} {selP : BaseLevelCompatibleSelection 𝒜 sel} {selDH : SelDH 𝒜 sel}
     {selC : ColumnCompatibleSelection 𝒜 sel selP} {selK : SelK 𝒜 sel} {selI : IndefiniteRealisationChoice 𝒜 sel selS selP selDH selC selK} (hPA : PrimAll sel selI)
     {eps : ℝ} (Fm : FamP eps) (hc : 𝒜 Fm) (x : ℝ) (hx : Fm.x1 < x) (h : (sel Fm hc).1 ≤ x) (i : Fm.Ix x) :
@@ -162,6 +165,9 @@ structure RemainingDivisionBounds {eps : ℝ} (Fm : FamP eps) (Cabs CH : ℝ) : 
   rr : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, (Fm.D x i).RRFull
   la : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, 0 ≤ (Fm.L x i).La
 
+/- English proof (translation)
+Take `⟨x0, h⟩` from `h`. Conclude with `⟨x0, fun x hx i μ _ => Formalism.L2.G.ServJoint.cutUp_of_stable _ μ fun a y hy => h x hx i μ a y hy⟩`.
+-/
 theorem cut_of_stable {eps : ℝ} {Fm : FamP eps}
     (h : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (i : Fm.Ix x) (μ : (Fm.D x i).what₂.Tup) (a : NumberField.RingOfIntegers (Fm.D x i).what₂.LL),
       ∀ y ∈ ((Fm.D x i).what₂.Mtilde μ).carrier, (Fm.D x i).what₂.embLL (a : (Fm.D x i).what₂.LL) • y ∈ ((Fm.D x i).what₂.Mtilde μ).carrier) :
@@ -169,12 +175,18 @@ theorem cut_of_stable {eps : ℝ} {Fm : FamP eps}
   obtain ⟨x0, h⟩ := h
   exact ⟨x0, fun x hx i μ _ => Formalism.L2.G.ServJoint.cutUp_of_stable _ μ fun a y hy => h x hx i μ a y hy⟩
 
+/- English proof (translation)
+Take `⟨x0, h⟩` from `h`. Conclude with `⟨x0, fun x hx i μ hμ => Formalism.L2.G.ServJoint.cutUpOfOTie _ (h x hx i) μ hμ⟩`.
+-/
 theorem cut_of_otie {eps : ℝ} {Fm : FamP eps} (h : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, Formalism.L2.G.ServJoint.OTie (Fm.D x i)) :
     ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, ∀ μ, Formalism.BasicNotions.DV.Used (Fm.D x i) μ → Formalism.L2.G.ServJoint.CutUp (Fm.D x i) μ := by
   obtain ⟨x0, h⟩ := h
   exact ⟨x0, fun x hx i μ hμ => Formalism.L2.G.ServJoint.cutUpOfOTie _ (h x hx i) μ hμ⟩
 
 open Formalism.L2.DIV in
+/- English proof (translation)
+The claim follows from `pkg adm2 := by obtain ⟨x0, a⟩ := a refine ⟨max x0 (Fm.x1 + 1), fun x hx i => a x (le_trans (le_max_left _ _) hx) ?_ i⟩ have := le_trans (le_max_right _ _) hx linarith cut := cut c3 := Formalism.MainNotions.DIV.HookProducts.RBCompl3.rbCompl3 Fm hh := r.hh c2 c2 := c2 c5 := c5 bu : …`.
+-/
 theorem RemainingDivisionBounds.toRows {eps : ℝ} {Fm : FamP eps} {Rt : Σ' x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, DivisionRowsKernel (Fm.ex x hx i)}
     {Cabs CH : ℝ} (r : RemainingDivisionBounds Fm Cabs CH)
     (pkg : DIVinN Fm → ∃ C x0 : ℝ, ∀ x ≥ x0, ∀ (hx : Fm.x1 < x) (h : Rt.1 ≤ x) (i : Fm.Ix x), Nonempty (DivisionPackageKernel (Rt.2 x hx h i) C Cabs))

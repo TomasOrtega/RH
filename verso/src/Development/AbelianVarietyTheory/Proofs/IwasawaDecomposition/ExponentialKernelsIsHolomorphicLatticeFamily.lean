@@ -20,6 +20,21 @@ namespace GlobalTheory.ShFam.Hor.LogCh.KerFam
 
 variable {X : Scheme.{0}} {G : Over X} [GrpObj G]
 
+/- English proof (translation)
+Set `c : V → (Sp ℂ ⟶ pullback G.hom G.hom)` to `fun q => pullback.lift (a q).left (1 : Over.mk (y q) ⟶ G).left ((Over.w (a q)).trans (Over.w (1 : Over.mk (y q) ⟶ G)).symm)`. Establish `hc : IsHolTo D c` using `isHolTo_of_holAt hD fun q hq => holAt_of_isPullback (IsPullback.of_hasPullback G.hom G.hom) (by simpa only [c, pullback.lift_fst] using ha q hq) (by simpa only [c, pullback.lift_snd] using HolAt.one (G := G) (hy q hq))`. Establish `hcont : Continuous fun q : D => c q`. Use `Points.continuous_iff_valAt'.2 fun U => ⟨?_, fun f => ?_⟩` and prove the remaining obligations. Establish `: IsOpen ((fun q : D => (q : V)) ⁻¹' {b ∈ D | ⊤ ≤ c b ⁻¹ᵁ U})` using `(hc U 0).1.preimage continuous_subtype_val`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `q`. Simplify using `[q.2]`. Establish `h` using `(hc U f).2.continuousOn.comp (f := fun q : D => (q : V)) continuous_subtype_val.continuousOn (t := {b ∈ D | ⊤ ≤ c b ⁻¹ᵁ U}) (s := {b : D | ⊤ ≤ c b ⁻¹ᵁ U}) fun q hq => ⟨q.2, hq⟩`. Conclude with `h`.
+
+Establish `hR` using `(Points.isClosedEmbedding_comp (C := ℂ) (pullback.diagonal G.hom)).isClosed_range`. Establish `hop : IsOpen ((fun q : D => c q) ⁻¹' (Set.range fun x : Sp ℂ ⟶ G.left => x ≫ pullback.diagonal G.hom)ᶜ)` using `hR.isOpen_compl.preimage hcont`. Use `hD.isOpenMap_subtype_val _ hop` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `q`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hq, hne⟩`. Use `⟨⟨q, hq⟩, ?_, rfl⟩` and prove the remaining obligations. Introduce and unpack `⟨x, hx⟩`. Use `hne (Over.OverMorphism.ext ?_)` and prove the remaining obligations.
+
+Establish `h1` using `congrArg (· ≫ pullback.fst G.hom G.hom) hx`. Establish `h2` using `congrArg (· ≫ pullback.snd G.hom G.hom) hx`. Simplify using `only [c, Category.assoc, pullback.diagonal_fst, pullback.diagonal_snd, Category.comp_id, pullback.lift_fst, pullback.lift_snd] at h1 h2`. Conclude with `h1.symm.trans h2`. Introduce and unpack `⟨⟨q', hq'⟩, hne, rfl⟩`.
+
+Use `⟨hq', fun h => hne ⟨(a q').left, ?_⟩⟩` and prove the remaining obligations. Use `show (a q').left ≫ pullback.diagonal G.hom = c q'`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.diagonal_fst, Category.comp_id]`. Conclude with `(pullback.lift_fst _ _ _).symm`.
+
+Rewrite using `[Category.assoc, pullback.diagonal_snd, Category.comp_id]`. Conclude with `(congrArg Over.Hom.left h).trans (pullback.lift_snd _ _ _).symm`.
+-/
 theorem isOpen_ne_one [IsSeparated G.hom] {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {D : Set V}
     (hD : IsOpen D) {y : V → (Sp ℂ ⟶ X)} (a : ∀ q, Over.mk (y q) ⟶ G) (hy : ∀ q ∈ D, HolAt y q)
     (ha : ∀ q ∈ D, HolAt (Z := G.left) (fun q => (a q).left) q) : IsOpen {q | q ∈ D ∧ a q ≠ 1} := by
@@ -65,6 +80,31 @@ theorem isOpen_ne_one [IsSeparated G.hom] {V : Type} [NormedAddCommGroup V] [Nor
     · rw [Category.assoc, pullback.diagonal_snd, Category.comp_id]
       exact (congrArg Over.Hom.left h).trans (pullback.lift_snd _ _ _).symm
 
+/- English proof (translation)
+Set `Φ : (Fin m → ℂ) × (Fin g → ℂ) → (Fin m → ℂ) × (Fin g' → ℂ)` to `fun p => (p.1, F p)`. Establish `hΦ : AnalyticAt ℂ Φ (b₀, 0)` using `analyticAt_fst.prod hF`. Establish `hD` using `hF.differentiableAt.hasFDerivAt`. Use `set D := fderiv ℂ F (b₀, 0) with hDdef`. Establish `hTD : fderiv ℂ (fun u => F (b₀, u)) 0 = D.comp (ContinuousLinearMap.inr ℂ _ _)` using `(HasFDerivAt.comp (f := fun u : Fin g → ℂ => (b₀, u)) (0 : Fin g → ℂ) hD (hasFDerivAt_prodMk_right b₀ 0)).fderiv`.
+
+Set `Φ' : ((Fin m → ℂ) × (Fin g → ℂ)) →L[ℂ] ((Fin m → ℂ) × (Fin g' → ℂ))` to `(ContinuousLinearMap.fst ℂ _ _).prod D`. Establish `hsplit : ∀ p : (Fin m → ℂ) × (Fin g → ℂ), D p = D (p.1, 0) + fderiv ℂ (fun u => F (b₀, u)) 0 p.2` using `fun p => by`. Rewrite using `[hTD, ContinuousLinearMap.comp_apply, ← map_add]`. Simplify using the standard rewrite rules. Establish `hbij : Function.Bijective Φ'`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `p p' h`. Establish `h1 : p.1 = p'.1` using `show (Φ' p).1 = (Φ' p').1 by rw [h]`. Establish `h2 : D p = D p'` using `show (Φ' p).2 = (Φ' p').2 by rw [h]`. Rewrite `h2` using `[hsplit p, hsplit p', h1]`.
+
+Conclude with `Prod.ext h1 (hT.1 (add_left_cancel h2))`. Introduce and unpack `⟨b, c⟩`. Take `⟨u, hu⟩` from `hT.2 (c - D (b, 0))`. Use `⟨(b, u), Prod.ext rfl ?_⟩` and prove the remaining obligations. Use `show D (b, u) = c`.
+
+Rewrite using `[hsplit, hu]`. Simplify using the standard rewrite rules. Set `f' : ((Fin m → ℂ) × (Fin g → ℂ)) ≃L[ℂ] ((Fin m → ℂ) × (Fin g' → ℂ))` to `(LinearEquiv.ofBijective (Φ' : _ →ₗ[ℂ] _) hbij).toContinuousLinearEquiv`. Establish `hd : HasFDerivAt Φ (f' : _ →L[ℂ] _) (b₀, 0)`. Establish `: (f' : ((Fin m → ℂ) × (Fin g → ℂ)) →L[ℂ] _) = Φ'` using `ContinuousLinearMap.ext fun _ => rfl`.
+
+Rewrite using `[this]`. Conclude with `hasFDerivAt_fst.prodMk hD`. Establish `hc : ContDiffAt ℂ ⊤ Φ (b₀, 0)` using `hΦ.contDiffAt`. Establish `hinv` using `hc.to_localInverse hd (by simp)`. Establish `hs` using `hc.hasStrictFDerivAt' hd (by simp)`.
+
+Use `set R := hc.localInverse hd (by simp) with hR`. Establish `hΦ0 : Φ (b₀, 0) = (b₀, 0)` using `Prod.ext rfl h0`. Establish `h1 : ∀ᶠ w in 𝓝 (Φ (b₀, 0)), Φ (R w) = w` using `hs.eventually_right_inverse`. Establish `h2 : ∀ᶠ p in 𝓝 ((b₀, 0) : (Fin m → ℂ) × (Fin g → ℂ)), R (Φ p) = p` using `hs.eventually_left_inverse`. Establish `hR0 : R (b₀, 0) = (b₀, 0)`.
+
+Use `h2.self_of_nhds` as an intermediate fact. Rewrite `this` using `[hΦ0]`. Then use the resulting hypothesis. Rewrite `h1` using `[hΦ0]`. Establish `hcur : Filter.Tendsto (fun b : Fin m → ℂ => (b, (0 : Fin g' → ℂ))) (𝓝 b₀) (𝓝 (b₀, 0))` using `(continuous_id.prodMk continuous_const).tendsto b₀`. Establish `hcb : ∀ᶠ b in 𝓝 b₀, Φ (R (b, 0)) = (b, 0)` using `hcur.eventually h1`.
+
+Establish `hRa : AnalyticAt ℂ R (b₀, 0)`. Use `hinv.analyticAt` as an intermediate fact. Rewrite `this` using `[hΦ0]`. Then use the resulting hypothesis. Use `⟨fun b => (R (b, 0)).2, by simp only [hR0], ?_, ?_⟩` and prove the remaining obligations. Establish `: AnalyticAt ℂ (fun b : Fin m → ℂ => R (b, 0)) b₀` using `AnalyticAt.comp (g := R) (f := fun b : Fin m → ℂ => (b, (0 : Fin g' → ℂ))) hRa (analyticAt_id.prod analyticAt_const)`.
+
+Conclude with `AnalyticAt.comp (g := Prod.snd) analyticAt_snd this`. Establish `hfst : Filter.Tendsto (Prod.fst : (Fin m → ℂ) × (Fin g → ℂ) → (Fin m → ℂ)) (𝓝 (b₀, 0)) (𝓝 b₀)` using `continuous_fst.tendsto _ filter_upwards [h2, hfst.eventually hcb] with p hp1 hp2`. Prove the components needed by the constructor for the conclusion. Introduce `hF0`. Establish `: Φ p = (p.1, 0)` using `Prod.ext rfl hF0`.
+
+Rewrite `hp1` using `[this]`. Conclude with `(congrArg (fun r : (Fin m → ℂ) × (Fin g → ℂ) => r.2) hp1).symm`. Introduce `hξ`. Establish `h4 : (R (p.1, 0)).1 = p.1` using `show (Φ (R (p.1, 0))).1 = p.1 by rw [hp2]`. Establish `h5 : F (R (p.1, 0)) = 0` using `show (Φ (R (p.1, 0))).2 = 0 by rw [hp2]`.
+
+Establish `h6 : R (p.1, 0) = p` using `Prod.ext h4 hξ.symm`. Rewrite `h5` using `[h6]`. Then use the resulting hypothesis.
+-/
 theorem exists_analytic_zero_graph {m g g' : ℕ} {F : (Fin m → ℂ) × (Fin g → ℂ) → (Fin g' → ℂ)} {b₀ : Fin m → ℂ}
     (hF : AnalyticAt ℂ F (b₀, 0)) (h0 : F (b₀, 0) = 0)
     (hT : Function.Bijective (fderiv ℂ (fun u => F (b₀, u)) 0)) :
@@ -137,6 +177,19 @@ theorem exists_analytic_zero_graph {m g g' : ℕ} {F : (Fin m → ℂ) × (Fin g
       have h6 : R (p.1, 0) = p := Prod.ext h4 hξ.symm
       rwa [h6] at h5
 
+/- English proof (translation)
+Establish `he : ∀ z, (show Sp ℂ ⟶ G.left from (e z).left) ≫ G.hom = x` using `fun z => Over.w (e z)`. Establish `he' : ∀ z, (show Sp ℂ ⟶ G.left from (e' z).left) ≫ G.hom = x` using `fun z => Over.w (e' z)`. Establish `hU0 : ⊤ ≤ (show Sp ℂ ⟶ G.left from (e 0).left) ⁻¹ᵁ U` using `by rw [h0]; exact hU`. Establish `hU0' : ⊤ ≤ (show Sp ℂ ⟶ G.left from (e' 0).left) ⁻¹ᵁ U` using `by rw [h0']; exact hU`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `w w' hw`. Take `⟨v, Hv⟩` from `exists_isDerivAt0 hol w`. Take `⟨v', Hv'⟩` from `exists_isDerivAt0 hol w'`. Establish `h` using `(top_le_preimage_eps v _ Hv.1 U).2 hU0`. Establish `h'` using `(top_le_preimage_eps v' _ Hv'.1 U).2 hU0`.
+
+Establish `hv` using `isDerivAt0_vertical G.hom x he Hv`. Establish `hv'` using `isDerivAt0_vertical G.hom x he Hv'`. Establish `hvv : v = v'` using `hun v v' h h' (hv.trans hv'.symm) (Hv.1.trans Hv'.1.symm) fun i => by`. Use `TrivSqZeroExt.ext ((fst_evEps v _ Hv.1 U h _).trans (fst_evEps v' _ Hv'.1 U h' _).symm) ?_` and prove the remaining obligations. Rewrite using `[isDerivAt0_snd hol t hU0 Hv h i, isDerivAt0_snd hol t hU0 Hv' h' i, hw]`.
+
+Substitute `hvv` using the available equality. Conclude with `(h3 v hv (Hv.1.trans (congrArg Over.Hom.left h0))).unique Hv Hv'`. Introduce `c`. Take `⟨v, Hv⟩` from `exists_isDerivAt0 hol' c`. Establish `h` using `(top_le_preimage_eps v _ Hv.1 U).2 hU0'`.
+
+Establish `hv` using `isDerivAt0_vertical G.hom x he' Hv`. Take `⟨w, Hw, -⟩` from `h3 v hv (Hv.1.trans (congrArg Over.Hom.left h0'))`. Use `⟨w, funext fun i => ?_⟩` and prove the remaining obligations. Establish `h1` using `isDerivAt0_snd hol t hU0 Hw h i`. Establish `h2` using `isDerivAt0_snd hol' t hU0' Hv h i`.
+
+Rewrite `h2` using `[hd.fderiv]`. Conclude with `h1.symm.trans h2`.
+-/
 theorem bijective_fderiv {x : Sp ℂ ⟶ X} {g g' : ℕ} {e : (Fin g → ℂ) → (Over.mk x ⟶ G)}
     {e' : (Fin g' → ℂ) → (Over.mk x ⟶ G)} (hol : IsHolTo Set.univ fun z => (e z).left)
     (hol' : IsHolTo Set.univ fun z => (e' z).left) (h0 : e 0 = 1) (h0' : e' 0 = 1)
@@ -177,6 +230,31 @@ theorem bijective_fderiv {x : Sp ℂ ⟶ X} {g g' : ℕ} {e : (Fin g → ℂ) �
     rw [hd.fderiv] at h2
     exact h1.symm.trans h2
 
+/- English proof (translation)
+Establish `hy₀ : HolAt y b₀` using `⟨B, hB, hb₀, hy⟩`. Take `⟨g', U, t, n, f, N, O, σ, hN, hO, hU, hO₀, hσ, hσN, hσinv, hunr⟩` from `RelExp.exists_chart_of_smooth m G.left X G.hom B y b₀ (pt (1 : Over.mk (y b₀) ⟶ G)) hB hb₀ hy (Over.w _)`. Take `⟨s, hs1, hs2, hs3⟩` from `exists_centred_chart hy₀ hN hU hO₀ hσ hσN hσinv`. Take `⟨B', e, r, Q, L, hB', hb', hB'B, hr, hQ, hadd', hfib, hinv⟩` from `exists_global_exp exists_param_exp_log_pi (hB.mem_nhds hb₀) hy₀ hO hU hO₀ hs1 hs2 hs3`. Take `⟨k1, -, -, -, k5, -⟩` from `hfib b₀ hb'`.
+
+Establish `hzero : ex b₀ 0 = 1` using `UnifPoint.map_zero_of_add hadd`. Establish `hzero' : e b₀ 0 = 1` using `UnifPoint.map_zero_of_add (hadd' b₀)`. Establish `hD : (B ×ˢ (Set.univ : Set (Fin g → ℂ))) ∈ 𝓝 (b₀, w₀)` using `(hB.prod isOpen_univ).mem_nhds ⟨hb₀, trivial⟩`. Establish `holAtEx : ∀ w, HolAt (Z` using `G.left) (fun q : (Fin m → ℂ) × (Fin g → ℂ) => (ex q.1 q.2).left) (b₀, w) := fun w => ⟨_, hB.prod isOpen_univ, ⟨hb₀, trivial⟩, hex⟩`. Establish `hol : IsHolTo Set.univ fun z => (ex b₀ z).left` using `isHolTo_of_holAt isOpen_univ fun z _ => by`.
+
+Use `HolAt.comp (φ := fun z : Fin g → ℂ => (b₀, z)) (v₀ := z) (holAtEx z) (analyticAt_const.prod analyticAt_id)` as an intermediate fact. Conclude with `this`. Establish `hol' : IsHolTo Set.univ fun z => (e b₀ z).left` using `isHolTo_of_holAt isOpen_univ fun z _ => by`. Use `HolAt.comp (φ := fun z : Fin g' → ℂ => (b₀, z)) (v₀ := z) (k1 z) (analyticAt_const.prod analyticAt_id)` as an intermediate fact. Conclude with `this`.
+
+Establish `hT` using `bijective_fderiv hol hol' hzero hzero' h3 t hU hunr k5`. Set `a : ∀ q : (Fin m → ℂ) × (Fin g → ℂ), Over.mk (y q.1) ⟶ G` to `fun q => ex q.1 (w₀ + q.2)`. Establish `ha : HolAt (Z` using `G.left) (fun q => (a q).left) (b₀, 0) := by`. Use `HolAt.comp (φ := fun q : (Fin m → ℂ) × (Fin g → ℂ) => (q.1, w₀ + q.2)) (v₀ := (b₀, 0)) (holAtEx (w₀ + 0)) (analyticAt_fst.prod (analyticAt_const.add analyticAt_snd))` as an intermediate fact. Conclude with `this`.
+
+Establish `ha1 : a (b₀, 0) = 1` using `by show ex b₀ (w₀ + 0) = 1`. Rewrite using `[add_zero, hw₀]`. Establish `hF` using `HolAt.analyticAt_coordinate_zero (β := Prod.fst) (a := a) (t := t) ha ha1 hU`. Establish `hF0 : crd0 t (a (b₀, 0)) = 0` using `by rw [ha1]; exact sub_self _`. Establish `hfd : fderiv ℂ (fun u => crd0 t (a (b₀, u))) 0 = fderiv ℂ (fun z i => valAt' (ex b₀ z).left U (t i)) 0`.
+
+Establish `: (fun u => crd0 t (a (b₀, u))) = fun u => (fun i => valAt' (ex b₀ u).left U (t i)) - crd U t (pt (1 : Over.mk (y b₀) ⟶ G))`. Use function extensionality and compare the values at `u`. Establish `: a (b₀, u) = ex b₀ u` using `by show ex b₀ (w₀ + u) = _`. Rewrite using `[hadd, hw₀, _root_.one_mul]`. Rewrite using `[this]`.
+
+Rewrite using `[this]`. Conclude with `fderiv_sub_const _`. Take `⟨ξ, hξ0, hξ, hev⟩` from `exists_analytic_zero_graph (F := fun q => crd0 t (a q)) hF hF0 (hfd ▸ hT)`. Use `⟨fun b => w₀ + ξ b, by simp only [hξ0, add_zero], analyticAt_const.add hξ, ?_⟩` and prove the remaining obligations. Establish `hP : Filter.Tendsto (fun q : (Fin m → ℂ) × (Fin g → ℂ) => (q.1, q.2 - w₀)) (𝓝 (b₀, w₀)) (𝓝 (b₀, 0))`.
+
+Establish `: Continuous fun q : (Fin m → ℂ) × (Fin g → ℂ) => (q.1, q.2 - w₀)` using `by fun_prop`. Simplify using `using this.tendsto (b₀, w₀)`. Establish `hfst : Filter.Tendsto (Prod.fst : (Fin m → ℂ) × (Fin g → ℂ) → (Fin m → ℂ)) (𝓝 (b₀, w₀)) (𝓝 b₀)` using `continuous_fst.tendsto _`. Establish `hn1` using `hP.eventually (HolAt.eventually_near (β := Prod.fst) (a := a) (f := f) (O := O) ha continuousAt_fst ha1 hO hU hO₀)`. Establish `hn2` using `hfst.eventually (HolAt.eventually_near (β := fun b => b) (a := fun b => (1 : Over.mk (y b) ⟶ G)) (f := f) (O := O) (HolAt.one hy₀) continuousAt_id rfl hO hU hO₀)`.
+
+Use `filter_upwards [hP.eventually hev, hn1, hn2] with q h1 h2 h4`. Establish `hq : a (q.1, q.2 - w₀) = ex q.1 q.2` using `by show ex q.1 (w₀ + (q.2 - w₀)) = _`. Rewrite using `[add_sub_cancel]`. Simplify using `only [hq] at h1 h2`. Rewrite using `[← sub_eq_iff_eq_add', ← h1]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h]`. Conclude with `sub_self _`. Introduce `h`.
+
+Establish `h5 : crd U t (pt (ex q.1 q.2)) = crd U t (pt (1 : Over.mk (y q.1) ⟶ G))` using `sub_eq_zero.1 h`. Establish `h6` using `(hσinv q.1 _ (Over.w (ex q.1 q.2)) h2.1 h2.2).2`. Establish `h7` using `(hσinv q.1 _ (Over.w (1 : Over.mk (y q.1) ⟶ G)) h4.1 h4.2).2`. Use `Over.OverMorphism.ext (h6.symm.trans ?_)` and prove the remaining obligations. Establish `h8 : (fun i => valAt' (ex q.1 q.2).left U (t i)) = fun i => valAt' (1 : Over.mk (y q.1) ⟶ G).left U (t i)` using `h5`.
+
+Rewrite using `[h8]`. Conclude with `h7`.
+-/
 theorem exists_graph [IsCommMonObj G] (hsm : Smooth G.hom) (hcon : GeometricallyConnected G.hom) {m g : ℕ}
     {B : Set (Fin m → ℂ)} {y : (Fin m → ℂ) → (Sp ℂ ⟶ X)} (ex : ∀ b, (Fin g → ℂ) → (Over.mk (y b) ⟶ G))
     (hB : IsOpen B) (hy : IsHolTo B y)
@@ -264,6 +342,17 @@ namespace GlobalTheory.ShFam.Hor.LogCh
 
 open KerFam
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t m g B y ex hB hex hE`. Use `t.semi.separated` as an intermediate fact. Establish `hD` using `hB.prod (isOpen_univ (X := Fin g → ℂ))`. Establish `holAtEx : ∀ q ∈ B ×ˢ (Set.univ : Set (Fin g → ℂ)), HolAt (Z` using `t.G.left) (fun q : (Fin m → ℂ) × (Fin g → ℂ) => (ex q.1 q.2).left) q := fun q hq => ⟨_, hD, hq, hex⟩`. Establish `hzero : ∀ b ∈ B, ex b 0 = 1` using `fun b hb => UnifPoint.map_zero_of_add (hE b hb).1`.
+
+Establish `hy : IsHolTo B y` using `isHolTo_of_holAt hB fun b hb => by`. Establish `h1` using `HolAt.comp (φ := fun b : Fin m → ℂ => (b, (0 : Fin g → ℂ))) (v₀ := b) (holAtEx (b, 0) ⟨hb, trivial⟩) (analyticAt_id.prod analyticAt_const)`. Conclude with `(h1.post t.G.hom).congr (Filter.Eventually.of_forall fun b => Over.w (ex b 0))`. Use `⟨hB, fun b hb => ?_, ?_, fun b₀ hb₀ w₀ hw₀ => ?_⟩` and prove the remaining obligations. Establish `hadd` using `(hE b hb).1`.
+
+Use `⟨{ carrier := {w | ex b w = 1}, add_mem' := fun {u v} hu hv => ?_, zero_mem' := hzero b hb, neg_mem' := fun {u} hu => ?_ }, rfl⟩` and prove the remaining obligations. Use `show ex b (u + v) = 1`. Rewrite using `[hadd, show ex b u = 1 from hu, show ex b v = 1 from hv, _root_.one_mul]`. Use `show ex b (-u) = 1`. Establish `h` using `hadd (-u) u`.
+
+Rewrite `h` using `[neg_add_cancel, hzero b hb, show ex b u = 1 from hu, _root_.mul_one]`. Conclude with `h.symm`. Establish `h` using `isOpen_ne_one hD (y := fun q : (Fin m → ℂ) × (Fin g → ℂ) => y q.1) (fun q => ex q.1 q.2) (fun q hq => by`. Use `HolAt.comp (a := y) (φ := Prod.fst) (v₀ := q) ⟨B, hB, hq.1, hy⟩ analyticAt_fst` as an intermediate fact. Conclude with `this) holAtEx`.
+
+Use `(congrArg IsOpen (Set.ext fun q => ?_)).mpr h` and prove the remaining obligations. Conclude with `⟨fun hq => ⟨⟨hq.1, trivial⟩, hq.2⟩, fun hq => ⟨hq.1.1, hq.2⟩⟩`. Take `⟨ζ, h1, h2, h3⟩` from `exists_graph t.semi.smooth t.semi.geomConnected ex hB hy hex hb₀ hw₀ (hE b₀ hb₀).1 fun v hv hv' => (hE b₀ hb₀).2.2 v ⟨hv, hv'⟩`. Conclude with `⟨ζ, h1, h2, h3⟩`.
+-/
 theorem isLatFam_ker : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (m g : ℕ) (B : Set (Fin m → ℂ)) (y : (Fin m → ℂ) → (Sp ℂ ⟶ X)) (ex : ∀ b, (Fin g → ℂ) → (Over.mk (y b) ⟶ t.G)), IsOpen B → IsHolTo (B ×ˢ Set.univ) (fun q : (Fin m → ℂ) × (Fin g → ℂ) => (ex q.1 q.2).left) → (∀ b ∈ B, IsExpAt t (y b) (ex b)) → IsLatFam B (fun b => {w | ex b w = 1}) := by
   intro E _ _ _ H X t m g B y ex hB hex hE
   have := t.semi.separated

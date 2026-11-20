@@ -15,31 +15,49 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `(entL a b).contDiff.contDiffAt.comp x h`.
+-/
 theorem contDiffAt_mat {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {A : E → Mat n} {x : E}
     (h : ContDiffAt ℝ ∞ A x) (a b : Fin n) : ContDiffAt ℝ ∞ (fun z => A z a b) x :=
   (entL a b).contDiff.contDiffAt.comp x h
 
+/- English proof (translation)
+Use `contDiffAt_of_entries fun a b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply]`. Conclude with `ContDiffAt.sum fun c _ => (contDiffAt_mat hA a c).mul (contDiffAt_mat hB c b)`.
+-/
 theorem contDiffAt_matmul {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {A B : E → Mat n} {x : E}
     (hA : ContDiffAt ℝ ∞ A x) (hB : ContDiffAt ℝ ∞ B x) : ContDiffAt ℝ ∞ (fun z => A z * B z) x := by
   refine contDiffAt_of_entries fun a b => ?_
   simp only [Matrix.mul_apply]
   exact ContDiffAt.sum fun c _ => (contDiffAt_mat hA a c).mul (contDiffAt_mat hB c b)
 
+/- English proof (translation)
+Use `contDiff_iff_contDiffAt.2 fun x => contDiffAt_of_entries fun a b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.conjTranspose_apply]`. Apply the tactic sequence `exact (Complex.conjCLE.contDiff.comp (contDiff_entry b a)).contDiffAt`.
+-/
 theorem contDiff_conjT : ContDiff ℝ ∞ (fun y : Mat n => yᴴ) := by
   refine contDiff_iff_contDiffAt.2 fun x => contDiffAt_of_entries fun a b => ?_
   simp only [Matrix.conjTranspose_apply]
   exact (Complex.conjCLE.contDiff.comp (contDiff_entry b a)).contDiffAt
 
+/- English proof (translation)
+Use `show (x⁻¹).det ≠ 0`. Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Conclude with `inv_ne_zero hx`.
+-/
 theorem inv_mem {x : Mat n} (hx : x ∈ GLs n) : x⁻¹ ∈ GLs n := by
   show (x⁻¹).det ≠ 0
   rw [Matrix.det_nonsing_inv, Ring.inverse_eq_inv']
   exact inv_ne_zero hx
 
+/- English proof (translation)
+Use `show (xᴴ).det ≠ 0`. Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `star_ne_zero.2 hx`.
+-/
 theorem conjT_mem {x : Mat n} (hx : x ∈ GLs n) : xᴴ ∈ GLs n := by
   show (xᴴ).det ≠ 0
   rw [Matrix.det_conjTranspose]
   exact star_ne_zero.2 hx
 
+/- English proof (translation)
+Use `show (x * y).det ≠ 0`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero hx hy`.
+-/
 theorem mul_mem {x y : Mat n} (hx : x ∈ GLs n) (hy : y ∈ GLs n) : x * y ∈ GLs n := by
   show (x * y).det ≠ 0
   rw [Matrix.det_mul]
@@ -50,6 +68,17 @@ section
 variable {lam : Fin n → ℤ} {E : KMod n} {Fr : Mat n → (E.V →L[ℂ] E.V)} {ε ι : Mat n →ₗ[ℝ] (E.V →L[ℂ] E.V)}
   {S : ℝ → (E.V →L[ℂ] E.V)} {Γ T : E.V →L[ℂ] E.V}
 
+/- English proof (translation)
+Use `set w := x⁻¹ * d * yᴴ⁻¹ with hwdef`. Establish `hw : w ∈ GLs n` using `mul_mem (mul_mem (inv_mem hx) hd) (inv_mem (conjT_mem hy))`. Establish `hkw : DifferentiableAt ℝ k w` using `diffAt_of hk hw`. Establish `hg : ContDiffAt ℝ ∞ (fun x' : Mat n => x'⁻¹ * d * yᴴ⁻¹) x` using `contDiffAt_matmul (contDiffAt_matmul (contDiffAt_inv hx) contDiffAt_const) contDiffAt_const`. Establish `hdiff : DifferentiableAt ℝ (fun x' => Kf Fr k Γ T d x' y) x`.
+
+Unfold `Kf`. Establish `h1 : DifferentiableAt ℝ (fun x' : Mat n => k (x'⁻¹ * d * yᴴ⁻¹)) x` using `hkw.comp x (hg.differentiableAt (by simp))`. Conclude with `((((diffAt_of h.smooth hx).mul h1).mul_const Γ).mul_const T).mul_const (Fr y⁻¹)`. Establish `h1` using `hasDerivAt_fderiv_line hdiff (x * X)`. Establish `hF : HasDerivAt (fun t : ℝ => Fr (x * (1 + t • X))) (Fr x * fderiv ℝ Fr 1 X) 0`.
+
+Use `((hasDerivAt_Fr_line h X).const_mul (Fr x)).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [line_mem X] with t ht`. Conclude with `h.mul x hx _ ht`. Establish `hc : HasDerivAt (fun t : ℝ => (1 + t • X)⁻¹ * w) ((-X) * w) 0` using `(hasDerivAt_matmul (hasDerivAt_lineInv X) (hasDerivAt_const (0 : ℝ) w)).congr_deriv (by simp)`. Establish `hK : HasDerivAt (fun t : ℝ => k ((1 + t • X)⁻¹ * w)) (fderiv ℝ k w ((-X) * w)) 0` using `hkw.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hc (by simp)`.
+
+Establish `h2` using `(((hF.fun_mul hK).mul_const Γ).mul_const T).mul_const (Fr y⁻¹)`. Establish `e : (fun t : ℝ => Kf Fr k Γ T d (x + t • (x * X)) y) = fun t : ℝ => Fr (x * (1 + t • X)) * k ((1 + t • X)⁻¹ * w) * Γ * T * Fr y⁻¹`. Use function extensionality and compare the values at `t`. Establish `e1 : x + t • (x * X) = x * (1 + t • X)` using `by rw [Matrix.mul_add, Matrix.mul_one, Matrix.mul_smul]`. Simplify using `only [Kf, e1, Matrix.mul_inv_rev, hwdef, Matrix.mul_assoc]`.
+
+Rewrite `h1` using `[e]`. Rewrite using `[h1.unique h2]`. Simplify using `only [zero_smul, add_zero, inv_one, Matrix.one_mul, Matrix.mul_one, Ld, neg_mul, map_neg]`. Use `noncomm_ring`.
+-/
 theorem derOne_at (h : CxData lam E Fr ε ι S Γ T) {k : Mat n → (E.V →L[ℂ] E.V)} (hk : ContDiffOn ℝ ∞ k (GLs n))
     {d y : Mat n} (hd : d ∈ GLs n) (hy : y ∈ GLs n) {x : Mat n} (hx : x ∈ GLs n) (X : Mat n) :
     fderiv ℝ (fun x' => Kf Fr k Γ T d x' y) x (x * X) =
@@ -84,6 +113,9 @@ theorem derOne_at (h : CxData lam E Fr ε ι S Γ T) {k : Mat n → (E.V →L[�
   simp only [zero_smul, add_zero, inv_one, Matrix.one_mul, Matrix.mul_one, Ld, neg_mul, map_neg]
   noncomm_ring
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ h _ hk _ _ hd hy _ hx X` and use `derOne_at h hk hd hy hx X`.
+-/
 theorem derOne : DerOne := fun _ _ _ _ _ _ _ _ _ h _ hk _ _ hd hy _ hx X => derOne_at h hk hd hy hx X
 
 end

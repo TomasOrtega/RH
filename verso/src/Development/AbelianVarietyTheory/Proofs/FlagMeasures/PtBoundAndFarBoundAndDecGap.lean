@@ -8,6 +8,9 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.LowestKTypeCompressi
 
 namespace GlobalTheory.Deep
 
+/- English proof (translation)
+The claim follows from `have hd : GlobalTheory.DSId.DecGap := GlobalTheory.DecGapBound.decGap_of_formulaGap GlobalTheory.Jet.FormGapFree.formulaGap have hp : GlobalTheory.Deep.PtBound := GlobalTheory.Deep.ptBound_of_decGap hd ⟨hp, GlobalTheory.FarTerms.farBound_of_ptBound hp, hd⟩`.
+-/
 theorem ptBound_and_farBound_and_decGap :
     GlobalTheory.Deep.PtBound ∧ GlobalTheory.Deep.FarBound ∧ GlobalTheory.DSId.DecGap :=
   have hd : GlobalTheory.DSId.DecGap :=

@@ -59,6 +59,9 @@ def pkOf {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl} {p0 : BaseLevelRowSi
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `(Eq.refl (SX K B f T w Z Wt p0 r col))`.
+-/
 theorem sx_eq {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl} {p0 : BaseLevelRowSide (w.D Z)} (r : RowsT K w Z Wt p0) (col : ColT w Z) :
     SX K B f T w Z Wt p0 r col = (pkOf r).SAt fun u => (col.C.forms u).to0 := (Eq.refl (SX K B f T w Z Wt p0 r col))
 
@@ -84,6 +87,9 @@ def SameCar {D : D7} (F F' : ∀ u, Forms0 D u) : Prop :=
   ∀ u : D.what₂.Word, (F' u).cls0.lev.Lb = (F u).cls0.lev.Lb ∧ (F' u).cls0.lev.U = (F u).cls0.lev.U ∧
     HEq (F' u).cls0.lev.chi (F u).cls0.lev.chi ∧ (F' u).cls0.y = (F u).cls0.y ∧ (F' u).val0.eY = (F u).val0.eY
 
+/- English proof (translation)
+Introduce `_` and use `⟨rfl, rfl, HEq.rfl, rfl, rfl⟩`.
+-/
 theorem SameCar.refl {D : D7} (F : ∀ u, Forms0 D u) : SameCar F F := fun _ => ⟨rfl, rfl, HEq.rfl, rfl, rfl⟩
 
 set_option maxHeartbeats 4000000 in

@@ -6,6 +6,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CechPer
 
+/- English proof (translation)
+Introduce `B M _ _ _ g f hf hp hr hs`. Use `(Module.bijective_of_surjective_of_rankAtStalk_eq hs ?_).1` and prove the remaining obligations. Introduce `m hm`. Establish `: Nontrivial B` using `⟨⟨0, 1, fun h => hm.ne_top (by rw [Ideal.eq_top_iff_one, ← h]; exact m.zero_mem)⟩⟩`. Rewrite using `[hr, Module.rankAtStalk_eq_finrank_of_free]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem injective_of_surjective_of_rankAtStalk_eq : ∀ (B M : Type) [CommRing B] [AddCommGroup M] [Module B M] (g : ℕ) (f : M →ₗ[B] (Fin g → B)), Module.Finite B M → Module.Projective B M → (∀ p : PrimeSpectrum B, Module.rankAtStalk M p = g) → Function.Surjective f → Function.Injective f := by
   intro B M _ _ _ g f hf hp hr hs
   refine (Module.bijective_of_surjective_of_rankAtStalk_eq hs ?_).1

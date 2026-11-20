@@ -20,6 +20,9 @@ noncomputable section
 
 namespace GlobalTheory.TorsSpec
 
+/- English proof (translation)
+Use `⟨AlgebraicClosure (X.residueField g), inferInstance, inferInstance, Spec.map (CommRingCat.ofHom (algebraMap (X.residueField g) _)) ≫ X.fromSpecResidueField g, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Establish `h` using `fun t => X.fromSpecResidueField_apply g (Spec.map (CommRingCat.ofHom (algebraMap (X.residueField g) (AlgebraicClosure (X.residueField g)))) t)`. Simplify using `only [Set.mem_range, Set.mem_singleton_iff, Scheme.Hom.comp_apply]`. Conclude with `⟨fun ⟨t, e⟩ => e.symm.trans (h t), fun e => ⟨IsLocalRing.closedPoint _, (h _).trans e.symm⟩⟩`.
+-/
 theorem exists_geomPt_range_eq_singleton (X : Scheme.{0}) (g : X) :
     ∃ (k : Type) (_ : Field k) (_ : IsAlgClosed k) (z : Sp k ⟶ X), Set.range z = {g} := by
   refine ⟨AlgebraicClosure (X.residueField g), inferInstance, inferInstance,
@@ -31,6 +34,15 @@ theorem exists_geomPt_range_eq_singleton (X : Scheme.{0}) (g : X) :
   exact ⟨fun ⟨t, e⟩ => e.symm.trans (h t),
     fun e => ⟨IsLocalRing.closedPoint _, (h _).trans e.symm⟩⟩
 
+/- English proof (translation)
+Take `⟨p', hp', hfp'⟩` from `Flat.generalizingMap f (genericPoint_specializes (f p))`. Establish `hmem : p' ∈ Set.range (T.fromSpecStalk p)` using `by rw [Scheme.range_fromSpecStalk]; exact hp'`. Take `⟨d, hd⟩` from `hmem`. Take `⟨Ω, hF, hA, y, hy⟩` from `exists_geomPt_range_eq_singleton _ d`. Establish `hgen : genericPoint X' ∈ Set.range ℓ`.
+
+Use `((genericPoint_spec X').mem_open_set_iff (IsOpenImmersion.isOpen_range ℓ)).mpr ?_` and prove the remaining obligations. Conclude with `⟨ℓ (Classical.arbitrary V), trivial, _, rfl⟩`. Establish `hr : Set.range (y ≫ T.fromSpecStalk p ≫ f) ⊆ Set.range ℓ`. Introduce and unpack `_ ⟨t, rfl⟩`. Establish `ht : y t = d`.
+
+Establish `: y t ∈ Set.range y` using `⟨t, rfl⟩`. Rewrite `this` using `[hy]`. Conclude with `this`. Simplify using `only [Scheme.Hom.comp_apply, ht, hd, hfp']`. Conclude with `hgen`.
+
+Conclude with `⟨Ω, hF, hA, y, IsOpenImmersion.lift ℓ _ hr, (IsOpenImmersion.lift_fac _ _ _).symm⟩`.
+-/
 theorem exists_geomPt_stalk_over {X' : Scheme.{0}} [IsIntegral X'] {T : Scheme.{0}} (f : T ⟶ X') [Flat f]
     {V : Scheme.{0}} [Nonempty V] (ℓ : V ⟶ X') [IsOpenImmersion ℓ] (p : T) :
     ∃ (Ω : Type) (_ : Field Ω) (_ : IsAlgClosed Ω) (y : Sp Ω ⟶ Spec (T.presheaf.stalk p)) (z : Sp Ω ⟶ V),
@@ -56,6 +68,11 @@ end GlobalTheory.TorsSpec
 
 namespace GlobalTheory.TorsSpec
 
+/- English proof (translation)
+Substitute `hq` using the available equality. Establish `key` using `Scheme.SpecMap_stalkMap_fromSpecStalk τ.left (x := p)`. Establish `hw : τ.left ≫ (torsion G n).hom = (torsion G n).hom` using `Over.w τ`. Establish `h1` using `h Ω (y ≫ Spec.map (τ.left.stalkMap p)) z (by`. Simplify `hyz)` using `only [Category.assoc, reassoc_of% key, hw]`.
+
+Simplify `h1` using `only [Category.assoc, reassoc_of% key]`.
+-/
 theorem valAt_comp {X' : Scheme.{0}} (G : Over X') [GrpObj G] (n : ℕ) {V : Scheme.{0}} (ℓ : V ⟶ X') {M : Type}
     (w : M → (V ⟶ G.left)) (τ : torsion G n ⟶ torsion G n) (p q : (torsion G n).left) (hq : τ.left p = q) (c : M)
     (h : ValAt G n ℓ w q c) (Ω : Type) [Field Ω] [IsAlgClosed Ω]
@@ -69,6 +86,17 @@ theorem valAt_comp {X' : Scheme.{0}} (G : Over X') [GrpObj G] (n : ℕ) {V : Sch
     simpa only [Category.assoc, reassoc_of% key, hw] using hyz)
   simpa only [Category.assoc, reassoc_of% key] using h1
 
+/- English proof (translation)
+Introduce `E _ X' _ _ G _ _ _ n hn V _ ℓ _ M w hw _ _ hun act hlin K _ _ t P r PT RT hPT hRT x cP cR hcP hcR`. Use `haveI := GrpTangent.etale_torsion G hn`. Use `haveI := mono_torsion_ι G n`. Establish `hι : torsion.ι G n ≫ mulN G n = 1`. Rewrite using `[Hom.one_def]`.
+
+Conclude with `pullback.condition.trans (congrArg (· ≫ (MonObj.one : 𝟙_ (Over X') ⟶ G)) (CartesianMonoidalCategory.toUnit_unique _ _))`. Establish `hτ : (torsion.ι G n ≫ act.act r) ≫ mulN G n = 1` using `by haveI := act.hom r`. Rewrite using `[← act_natCast act n, Category.assoc, ← act.mul, mul_comm, act.mul, ← Category.assoc, act_natCast act n, hι, Hom.one_def, Category.assoc, IsMonHom.one_hom, ← Hom.one_def]`. Take `⟨τ, hτι⟩` from `exists_lift_torsion n _ hτ`. Establish `hτl : τ.left ≫ (torsion.ι G n).left = (torsion.ι G n).left ≫ (act.act r).left`.
+
+Rewrite using `[← Over.comp_left, hτι, Over.comp_left]`. Establish `hPR : PT ≫ τ.left = RT`. Rewrite using `[← cancel_mono (torsion.ι G n).left, Category.assoc, hτl, reassoc_of% hPT, hRT, Over.comp_left]`. Establish `hq : τ.left (PT x) = RT x` using `by rw [← hPR, Scheme.Hom.comp_apply]`. Take `⟨Ω, hF, hA, y, z, hyz⟩` from `exists_geomPt_stalk_over (torsion G n).hom ℓ (PT x)`.
+
+Establish `h1` using `hcP Ω y z hyz`. Establish `h2` using `valAt_comp G n ℓ w τ (PT x) (RT x) hq cR hcR Ω y z hyz`. Rewrite `h2` using `[hτl, reassoc_of% h1]`. Set `A : Over.mk (z ≫ ℓ) ⟶ G` to `Over.homMk (z ≫ w cP) (by rw [Category.assoc, hw]; rfl)`. Set `B : Over.mk (z ≫ ℓ) ⟶ G` to `Over.homMk (z ≫ w (r • cP)) (by rw [Category.assoc, hw]; rfl)`.
+
+Establish `h3` using `congrArg (fun q => q.left) (hlin Ω z cP r A B rfl rfl)`. Simplify using `only [A, B, Over.homMk_left, Over.comp_left] at h3`. Conclude with `(hun Ω z _ _ (h3.trans ((Category.assoc _ _ _).trans h2))).symm`.
+-/
 theorem class_act : ∀ {E : Type} [Field E] {X' : Scheme.{0}} [IsIntegral X'] [GlobalTheory.IsNormalScheme X'] (G : Over X') [GrpObj G] [IsCommMonObj G]
     [Smooth G.hom] (n : ℕ) (hn : IsUnit (n : Γ(X', ⊤))) {V : Scheme.{0}} [Nonempty V] (ℓ : V ⟶ X')
     [IsOpenImmersion ℓ] {M : Type} (w : M → (V ⟶ G.left)) (hw : ∀ c, w c ≫ G.hom = ℓ) [AddCommGroup M] [Module (𝓞 E) M] (hun : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (x : Sp Ω ⟶ V) (c c' : M), x ≫ w c = x ≫ w c' → c = c') (act : OAct (𝓞 E) G)

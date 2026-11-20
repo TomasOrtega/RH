@@ -29,9 +29,17 @@ def cosetInd (K : Subgroup G) (ho : IsOpen (K : Set G)) (hK : IsCompact (K : Set
 
 open Classical in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cosetInd_apply (K : Subgroup G) (ho : IsOpen (K : Set G)) (hK : IsCompact (K : Set G))
     (g x : G) : (cosetInd K ho hK g).1 x = if x * g⁻¹ ∈ K then 1 else 0 := rfl
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `g`. Use `⟨{h | g * h⁻¹ ∈ K}, ho.preimage (continuous_const.mul continuous_inv), by simp, fun h hh => Subtype.ext (funext fun x => ?_)⟩` and prove the remaining obligations. Rewrite using `[cosetInd_apply, cosetInd_apply]`. Establish `: x * h⁻¹ = x * g⁻¹ * (g * h⁻¹)` using `by group`.
+
+Establish `hh' : g * h⁻¹ ∈ K` using `hh`. Rewrite using `[this]`. Conclude with `if_congr (K.mul_mem_cancel_right hh') rfl rfl`.
+-/
 theorem isLocallyConstant_cosetInd (K : Subgroup G) (ho : IsOpen (K : Set G))
     (hK : IsCompact (K : Set G)) : IsLocallyConstant (cosetInd K ho hK) := by
   rw [IsLocallyConstant.iff_exists_open]
@@ -57,6 +65,9 @@ variable [MeasurableSpace G] [BorelSpace G] {μ : Measure G} [μ.IsHaarMeasure]
 omit [T2Space G] in
 open Classical in
 
+/- English proof (translation)
+Establish `hm : MeasurableSet (K : Set G)` using `ho.measurableSet`. Establish `h : (fun g : G => if g ∈ K then c else 0) = (K : Set G).indicator (fun _ => c)`. Use extensionality with `g`. Simplify using `[Set.indicator_apply]`. Rewrite using `[h, integral_indicator_const c hm, Complex.real_smul]`.
+-/
 theorem _root_.GlobalTheory.InvBilinTest.integral_ite (K : Subgroup G) (ho : IsOpen (K : Set G)) (c : ℂ) :
     ∫ g, (if g ∈ K then c else 0) ∂μ = (μ.real K : ℂ) * c := by
   have hm : MeasurableSet (K : Set G) := ho.measurableSet
@@ -65,6 +76,11 @@ theorem _root_.GlobalTheory.InvBilinTest.integral_ite (K : Subgroup G) (ho : IsO
     simp [Set.indicator_apply]
   rw [h, integral_indicator_const c hm, Complex.real_smul]
 
+/- English proof (translation)
+Use `eq_of_forall_dual fun l => ?_` and prove the remaining obligations. Rewrite using `[hπ.map_smoothOp (cosetInd K ho hK 1).2.1 (cosetInd K ho hK 1).2.2, map_smul, smul_eq_mul, ← integral_ite K ho]`. Use `congr 1`. Use extensionality with `g`. Rewrite using `[cosetInd_apply]`.
+
+Distinguish the cases in `hg : g ∈ K`. Simplify using `[hg, hw g hg]`. Simplify using `[hg]`.
+-/
 theorem smoothOp_cosetInd (hπ : IsSmooth π) (K : Subgroup G) (ho : IsOpen (K : Set G))
     (hK : IsCompact (K : Set G)) {w : V} (hw : ∀ k ∈ K, π k w = w) :
     smoothOp π μ (cosetInd K ho hK 1).1 w = (μ.real K : ℂ) • w := by
@@ -78,6 +94,17 @@ theorem smoothOp_cosetInd (hπ : IsSmooth π) (K : Subgroup G) (ho : IsOpen (K :
   · simp [hg, hw g hg]
   · simp [hg]
 
+/- English proof (translation)
+Establish `hF : IsLocallyConstant fun g => φ.1 g • cosetInd K ho hK g` using `φ.2.1.comp₂ (isLocallyConstant_cosetInd K ho hK) (· • ·)`. Establish `hc : HasCompactSupport fun g => φ.1 g • cosetInd K ho hK g` using `HasCompactSupport.intro φ.2.2 fun x hx => by`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx, zero_smul]`. Establish `h1 : lcIntegral μ (fun g => φ.1 g • cosetInd K ho hK g) = (μ.real K : ℂ) • φ`. Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations.
+
+Use `map_lcIntegral (μ := μ) hF hc (LinearMap.proj (R := ℂ) (φ := fun _ : G => ℂ) x ∘ₗ (SB G).subtype)` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Use `show ∫ g, φ.1 g * (cosetInd K ho hK g).1 x ∂μ = (μ.real K : ℂ) * φ.1 x`. Rewrite using `[← integral_ite K ho, ← integral_mul_right_eq_self _ x]`. Use `congr 1`.
+
+Use extensionality with `g`. Rewrite using `[cosetInd_apply]`. Distinguish the cases in `hg : g ∈ K`. Simplify using `[hg, hφ g hg]`. Simplify using `[hg]`.
+
+Use `eq_of_forall_dual fun l => ?_` and prove the remaining obligations. Establish `h2` using `map_lcIntegral (μ := μ) hF hc (l ∘ₗ B.flip v)`. Establish `h3` using `hπ.map_smoothOp (μ := μ) φ.2.1 φ.2.2 (l ∘ₗ B (cosetInd K ho hK 1)) v`. Rewrite `h2` using `[h1]`. Simplify using `only [LinearMap.comp_apply, map_smul, LinearMap.flip_apply] at h2 h3 ⊢`.
+
+Rewrite using `[h2, h3]`. Use `congr 1`. Use extensionality with `g`. Rewrite using `[hB g (cosetInd K ho hK g) (cosetInd K ho hK 1) v fun x => by simp [cosetInd_apply]]`.
+-/
 theorem key [μ.IsMulRightInvariant] (hπ : IsSmooth π) (B : SB G →ₗ[ℂ] V →ₗ[ℂ] Y)
     (hB : ∀ (g : G) (φ ψ : SB G) (v : V), (∀ x, ψ.1 x = φ.1 (x * g)) → B ψ (π g v) = B φ v)
     (K : Subgroup G) (ho : IsOpen (K : Set G)) (hK : IsCompact (K : Set G))
@@ -111,6 +138,21 @@ theorem key [μ.IsMulRightInvariant] (hπ : IsSmooth π) (B : SB G →ₗ[ℂ] V
   ext g
   rw [hB g (cosetInd K ho hK g) (cosetInd K ho hK 1) v fun x => by simp [cosetInd_apply]]
 
+/- English proof (translation)
+Establish `hpos : ∀ K : Subgroup G, IsOpen (K : Set G) → IsCompact (K : Set G) → (μ.real K : ℂ) ≠ 0` using `fun K ho hK => by`. Establish `h1 : μ K ≠ 0` using `(ho.measure_pos μ ⟨1, K.one_mem⟩).ne'`. Establish `h2 : μ.real K ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨h1, hK.measure_ne_top⟩`. Conclude with `h2` after adjusting the coercions. Establish `hle : ∀ (K : Subgroup G) (ho : IsOpen (K : Set G)) (hK : IsCompact (K : Set G)) (L : Subgroup G) (ho' : IsOpen (L : Set G)) (hL : IsCompact (L : Set G)), L ≤ K → ∀ w, (∀ k ∈ K, π k w = w) → (μ.real K : ℂ)⁻¹ • B (cosetInd K ho hK 1) w = (μ.real L : ℂ)⁻¹ • B (cosetInd L ho' hL 1) w`.
+
+Introduce `K ho hK L ho' hL hLK w hw`. Establish `h` using `key (μ := μ) hπ B hB L ho' hL (cosetInd K ho hK 1) (fun k hk g => by classical`. Rewrite using `[cosetInd_apply, cosetInd_apply, mul_assoc]`. Conclude with `if_congr (K.mul_mem_cancel_left (hLK hk)) rfl rfl) w`. Rewrite `h` using `[smoothOp_cosetInd hπ K ho hK hw, map_smul]`.
+
+Rewrite using `[inv_smul_eq_iff₀ (hpos K ho hK), smul_comm, h, inv_smul_smul₀ (hpos L ho' hL)]`. Establish `hex : ∀ w : V, ∃ K : Subgroup G, IsOpen (K : Set G) ∧ IsCompact (K : Set G) ∧ ∀ k ∈ K, π k w = w` using `fun w => by`. Take `⟨K, ho, hK, h⟩` from `hG _ ((hπ w).mem_nhds (show π 1 w = w by simp))`. Conclude with `⟨K, ho, hK, fun k hk => h hk⟩`. Use `choose K ho hK hw using hex`.
+
+Establish `hinter : ∀ (L M : Subgroup G), IsCompact (L : Set G) → IsOpen (M : Set G) → IsCompact ((L ⊓ M : Subgroup G) : Set G)` using `fun L M hL hM => hL.inter_right (M.isClosed_of_isOpen hM)`. Set `b : V → Y` to `fun w => (μ.real (K w) : ℂ)⁻¹ • B (cosetInd (K w) (ho w) (hK w) 1) w`. Establish `hb : ∀ (L : Subgroup G) (ho' : IsOpen (L : Set G)) (hL : IsCompact (L : Set G)) (w : V), (∀ k ∈ L, π k w = w) → b w = (μ.real L : ℂ)⁻¹ • B (cosetInd L ho' hL 1) w`. Introduce `L ho' hL w h`. Establish `h1 : IsOpen ((L ⊓ K w : Subgroup G) : Set G)` using `ho'.inter (ho w)`.
+
+Establish `h2` using `hinter L (K w) hL (ho w)`. Conclude with `(hle _ _ _ _ h1 h2 inf_le_right w (hw w)).trans (hle _ _ _ _ h1 h2 inf_le_left w h).symm`. Use `⟨⟨⟨b, fun v w => ?_⟩, fun c v => ?_⟩, fun φ v => ?_⟩` and prove the remaining obligations. Establish `h1 : IsOpen ((K v ⊓ K w : Subgroup G) : Set G)` using `(ho v).inter (ho w)`. Establish `h2` using `hinter (K v) (K w) (hK v) (ho w)`.
+
+Rewrite using `[hb _ h1 h2 v fun k hk => hw v k hk.1, hb _ h1 h2 w fun k hk => hw w k hk.2, hb _ h1 h2 (v + w) fun k hk => by rw [map_add, hw v k hk.1, hw w k hk.2], map_add, smul_add]`. Use `show b (c • v) = c • b v`. Rewrite using `[hb _ (ho v) (hK v) (c • v) fun k hk => by rw [map_smul, hw v k hk], map_smul, smul_comm]`. Use `show _ = b _`. Take `⟨L, ho', hL, h⟩` from `hG _ ((isOpen_leftStabilizer φ.2.1 φ.2.2).mem_nhds (one_mem _))`.
+
+Establish `hφ : ∀ k ∈ L, ∀ g, φ.1 (k * g) = φ.1 g` using `fun k hk => h hk`. Rewrite using `[hb L ho' hL _ (mem_fixed.1 (hπ.smoothOp_mem_fixed φ.2.1 φ.2.2 hφ v)), key hπ B hB L ho' hL φ hφ, inv_smul_smul₀ (hpos L ho' hL)]`.
+-/
 theorem exists_factor (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
     (hG : ∀ U ∈ nhds (1 : G), ∃ K : Subgroup G,

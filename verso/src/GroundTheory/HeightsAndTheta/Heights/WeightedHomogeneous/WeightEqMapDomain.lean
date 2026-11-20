@@ -14,6 +14,11 @@ namespace AddBlockData
 
 variable {P : ArithVariety n} (D : AddBlockData P)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `o`. Rewrite using `[Finsupp.weight_apply, Finsupp.mapDomain, Finsupp.sum, Finsupp.sum, Finsupp.finsetSum_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun v _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Finsupp.single_apply, Pi.smul_apply, coordDeg, Pi.single_apply, smul_eq_mul]`. Distinguish the cases in `h : v.1 = o`.
+
+Rewrite using `[if_pos h, if_pos h.symm, mul_one]`. Rewrite using `[if_neg h, if_neg (Ne.symm h), mul_zero]`.
+-/
 theorem weight_eq_mapDomain (s : Coord D.extSizes →₀ ℕ) :
     ⇑(s.mapDomain Sigma.fst) = Finsupp.weight (coordDeg D.extSizes) s := by
   funext o
@@ -25,6 +30,9 @@ theorem weight_eq_mapDomain (s : Coord D.extSizes →₀ ℕ) :
   · rw [if_pos h, if_pos h.symm, mul_one]
   · rw [if_neg h, if_neg (Ne.symm h), mul_zero]
 
+/- English proof (translation)
+Establish `hX : (s.prod fun v e ↦ (X v.1 : MvPolynomial (Option ι) P.FunField) ^ e) = monomial (s.mapDomain Sigma.fst) 1`. Rewrite using `[monomial_eq, C_1, one_mul, Finsupp.prod_mapDomain_index (fun _ ↦ pow_zero _) (fun _ _ _ ↦ pow_add _ _ _)]`. Rewrite using `[extMap, coe_eval₂Hom, eval₂_monomial]`. Simplify using `only [mul_pow, Finsupp.prod_mul, ← map_pow]`. Rewrite using `[hX, ← map_finsuppProd, eq_intCast, ← map_intCast (C : P.FunField →+* MvPolynomial (Option ι) P.FunField), ← mul_assoc, ← C_mul, C_mul_monomial, mul_one]`.
+-/
 theorem extMap_monomial (s : Coord D.extSizes →₀ ℕ) (a : ℤ) :
     D.extMap (monomial s a) =
       monomial (s.mapDomain Sigma.fst) ((a : P.FunField) * s.prod fun v e ↦ D.extVal v ^ e) := by
@@ -37,6 +45,15 @@ theorem extMap_monomial (s : Coord D.extSizes →₀ ℕ) (a : ℤ) :
   rw [hX, ← map_finsuppProd, eq_intCast, ← map_intCast (C : P.FunField →+* MvPolynomial (Option ι) P.FunField),
     ← mul_assoc, ← C_mul, C_mul_monomial, mul_one]
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `monomial s a`. Establish `hh` using `isWeightedHomogeneous_monomial (coordDeg D.extSizes) s a rfl`. Rewrite using `[weightedHomogeneousComponent_of_mem (m := m) hh, extMap_monomial, coeff_monomial]`. Distinguish the cases in `h : m = Finsupp.weight (coordDeg D.extSizes) s`.
+
+Establish `h' : s.mapDomain Sigma.fst = Finsupp.equivFunOnFinite.symm m`. Apply `DFunLike.coe_injective` to reduce the goal to its premises. Rewrite using `[Finsupp.coe_equivFunOnFinite_symm, h, weight_eq_mapDomain]`. Rewrite using `[if_pos h, if_pos h', extMap_monomial, h']`. Establish `h' : s.mapDomain Sigma.fst ≠ Finsupp.equivFunOnFinite.symm m`.
+
+Introduce `e`. Apply `h` to reduce the goal to its premises. Rewrite using `[← weight_eq_mapDomain, e]`. Both sides reduce to the same expression. Rewrite using `[if_neg h, if_neg h', map_zero, monomial_zero]`.
+
+Consider the case `add p q hp hq`. Rewrite using `[map_add, map_add, hp, hq, map_add, coeff_add, map_add]`.
+-/
 theorem extMap_component (m : Option ι → ℕ) (f : MvPolynomial (Coord D.extSizes) ℤ) :
     D.extMap (weightedHomogeneousComponent (coordDeg D.extSizes) m f) =
       monomial (Finsupp.equivFunOnFinite.symm m)
@@ -61,6 +78,19 @@ theorem extMap_component (m : Option ι → ℕ) (f : MvPolynomial (Coord D.extS
 
 end AddBlockData
 
+/- English proof (translation)
+Introduce `ι _ _ n P D`. Use `⟨{ ideal := D.extIdeal, isPrime := ?_, homogeneous := ?_, relevant := ?_, horizontal := ?_ }, rfl⟩` and prove the remaining obligations. Conclude with `RingHom.ker_isPrime _`. Introduce `f hf m`. Rewrite `hf`, the goal using `[AddBlockData.extIdeal, RingHom.mem_ker]`.
+
+Rewrite using `[D.extMap_component, hf, coeff_zero, monomial_zero]`. Introduce and unpack `(_ | k)`. Take `⟨c, hc⟩` from `P.exists_chart`. Take `⟨u, -, hu⟩` from `D.generating c hc`. Establish `hj : ∃ j, D.elt j ≠ 0`.
+
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Simplify using `[h] at hu`. Take `⟨j, hj⟩` from `hj`. Use `⟨j, fun hmem ↦ hj ?_⟩` and prove the remaining obligations.
+
+Rewrite `hmem` using `[AddBlockData.extIdeal, RingHom.mem_ker, AddBlockData.extMap, eval₂Hom_X']`. Conclude with `(mul_eq_zero.mp hmem).resolve_right (X_ne_zero _) |> C_eq_zero.mp`. Take `⟨i, hi⟩` from `P.relevant k`. Use `⟨i, fun hmem ↦ hi ?_⟩` and prove the remaining obligations. Rewrite `hmem` using `[AddBlockData.extIdeal, RingHom.mem_ker, AddBlockData.extMap, eval₂Hom_X']`.
+
+Rewrite using `[← P.mkF_eq_zero_iff]`. Conclude with `(mul_eq_zero.mp hmem).resolve_right (X_ne_zero _) |> C_eq_zero.mp`. Introduce `a ha`. Rewrite `ha` using `[AddBlockData.extIdeal, RingHom.mem_ker, AddBlockData.extMap, eval₂Hom_C, eq_intCast]`. Establish `h2 : (a : P.FunField) = 0` using `by rw [← C_eq_zero, map_intCast]; exact ha`.
+
+Establish `h3 : algebraMap P.CoordRing P.FunField (a : P.CoordRing) = 0` using `by rw [map_intCast]; exact h2`. Rewrite `h3` using `[(IsFractionRing.injective P.CoordRing P.FunField).eq_iff' (map_zero _)]`. Conclude with `h3` after adjusting the coercions.
+-/
 theorem ChartPrimality.proof : ChartPrimality.Statement := by
   intro ι _ _ n P D
   refine ⟨{ ideal := D.extIdeal, isPrime := ?_, homogeneous := ?_, relevant := ?_, horizontal := ?_ }, rfl⟩

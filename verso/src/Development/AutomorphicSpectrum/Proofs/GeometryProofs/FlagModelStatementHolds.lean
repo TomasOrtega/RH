@@ -14,6 +14,11 @@ open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar
 variable {X X' : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
   {E E' : Type} [AddCommGroup E] [Module Ω E] [AddCommGroup E'] [Module Ω E']
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p'`. Simplify using `only [Lat.pull, Lat.map, Submodule.map_span]`. Use `congr 1`. Use extensionality with `e'`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h, e, he, rfl⟩`. Take `⟨u, hu, rfl⟩` from `Submodule.mem_map.1 he`. Conclude with `⟨u, ⟨h, u, hu, rfl⟩, rfl⟩`. Introduce and unpack `⟨u, ⟨h, v, hv, huv⟩, rfl⟩`. Conclude with `⟨h, φ v, Submodule.mem_map.2 ⟨v, hv, rfl⟩, congrArg φ huv⟩`.
+-/
 theorem pull_map (L : Lat ξ E) (ξ' : Spec (CommRingCat.of Ω) ⟶ X') (f : X' ⟶ X) (φ : E →ₗ[Ω] E') :
     (L.map φ).pull ξ' f (AddMonoidHom.id E') = (L.pull ξ' f (AddMonoidHom.id E)).map φ := by
   funext p'
@@ -27,6 +32,17 @@ theorem pull_map (L : Lat ξ E) (ξ' : Spec (CommRingCat.of Ω) ⟶ X') (f : X' 
   · rintro ⟨u, ⟨h, v, hv, huv⟩, rfl⟩
     exact ⟨h, φ v, Submodule.mem_map.2 ⟨v, hv, rfl⟩, congrArg φ huv⟩
 
+/- English proof (translation)
+Introduce `p' _`. Take `⟨h, -⟩` from `RegAtDom.regAt_dominates _ _ _ _ _ _ _ _ hd p'`. Take `⟨U, hU, b, hW, hb⟩` from `hL ⟨f p'.1, h⟩ (Set.mem_univ _)`. Use `⟨f ⁻¹ᵁ U, hU, b, hW, fun q' _ hq' => ?_⟩` and prove the remaining obligations. Take `⟨hq, hreg, -⟩` from `RegAtDom.regAt_dominates _ _ _ _ _ _ _ _ hd q'`.
+
+Take `⟨hli, hsp⟩` from `hb ⟨f q'.1, hq⟩ (Set.mem_univ _) hq'`. Use `⟨hli, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `e' ⟨h', e, he, he'⟩`. Establish `he2 : e ∈ Submodule.span (regAt ξ ⟨f q'.1, hq⟩) (Set.range b)` using `hsp ▸ he`.
+
+Establish `hee : e' = e` using `he'`. Rewrite using `[hee]`. Use `clear he he' hee`. Proceed by induction on `he2 using Submodule.span_induction with`. Consider the case `mem u hu => exact Submodule.subset_span hu`.
+
+Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add u v _ _ hu hv => exact Submodule.add_mem _ hu hv`. Consider the case `smul c u _ hu => exact Submodule.smul_mem _ (⟨c.1, hreg c.1 c.2⟩ : regAt ξ' q') hu`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce `e he`.
+
+Conclude with `⟨hq, e, hsp ▸ Submodule.subset_span he, rfl⟩`.
+-/
 theorem pull_vb {L : Lat ξ E} {g : ℕ} {W : Submodule Ω E} (hL : L.IsVB g W) {ξ' : Spec (CommRingCat.of Ω) ⟶ X'}
     {f : X' ⟶ X} (hd : Dominates ξ' ξ f (RingHom.id Ω)) : (L.pull ξ' f (AddMonoidHom.id E)).IsVB g W := by
   intro p' _
@@ -51,6 +67,11 @@ theorem pull_vb {L : Lat ξ E} {g : ℕ} {W : Submodule Ω E} (hL : L.IsVB g W) 
     intro e he
     exact ⟨hq, e, hsp ▸ Submodule.subset_span he, rfl⟩
 
+/- English proof (translation)
+Introduce `p hp`. Take `⟨U, hU, b, -, hb⟩` from `hL p hp`. Use `⟨U, hU, g, φ ∘ b, fun q hq hqU => ?_⟩` and prove the remaining obligations. Simplify using `only [Lat.map]`. Rewrite using `[(hb q hq hqU).2, Submodule.map_span, Set.range_comp]`.
+
+Both sides reduce to the same expression.
+-/
 theorem coh_map {L : Lat ξ E} {g : ℕ} {W : Submodule Ω E} (hL : L.IsVB g W) (φ : E →ₗ[Ω] E') :
     (L.map φ).IsCohOn Set.univ := by
   intro p hp
@@ -60,6 +81,9 @@ theorem coh_map {L : Lat ξ E} {g : ℕ} {W : Submodule Ω E} (hL : L.IsVB g W) 
   rw [(hb q hq hqU).2, Submodule.map_span, Set.range_comp]
   rfl
 
+/- English proof (translation)
+Take `⟨U, hU, b, hW, hb⟩` from `hL p (Set.mem_univ p)`. Simplify using `only [Lat.map]`. Rewrite using `[(hb p (Set.mem_univ p) hU).2, Submodule.map_span, Submodule.span_span_of_tower, ← hW, Submodule.map_span]`. Both sides reduce to the same expression.
+-/
 theorem span_map {L : Lat ξ E} {g : ℕ} {W : Submodule Ω E} (hL : L.IsVB g W) (φ : E →ₗ[Ω] E') (p : Cpt ξ) :
     Submodule.span Ω ((L.map φ) p : Set E') = W.map φ := by
   obtain ⟨U, hU, b, hW, hb⟩ := hL p (Set.mem_univ p)
@@ -67,6 +91,11 @@ theorem span_map {L : Lat ξ E} {g : ℕ} {W : Submodule Ω E} (hL : L.IsVB g W)
   rw [(hb p (Set.mem_univ p) hU).2, Submodule.map_span, Submodule.span_span_of_tower, ← hW, Submodule.map_span]
   rfl
 
+/- English proof (translation)
+Unfold `flagStep`. Use `congr 2`. Use extensionality with `k`. Use `k.2` as an intermediate fact. Simplify using `only [Set.mem_setOf_eq]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem flagStep_min {r : ℕ} (b₀ : Fin r → E) (n : ℕ) : flagStep Ω b₀ (min n r) = flagStep Ω b₀ n := by
   unfold flagStep
   congr 2
@@ -75,6 +104,9 @@ theorem flagStep_min {r : ℕ} (b₀ : Fin r → E) (n : ℕ) : flagStep Ω b₀
   simp only [Set.mem_setOf_eq]
   omega
 
+/- English proof (translation)
+Unfold `flagStep`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, -, rfl⟩`. Conclude with `h k`.
+-/
 theorem flagStep_le {r : ℕ} {b₀ : Fin r → E} {W : Submodule Ω E} (h : ∀ k, b₀ k ∈ W) (n : ℕ) :
     flagStep Ω b₀ n ≤ W := by
   unfold flagStep
@@ -82,6 +114,15 @@ theorem flagStep_le {r : ℕ} {b₀ : Fin r → E} {W : Submodule Ω E} (h : ∀
   rintro _ ⟨k, -, rfl⟩
   exact h k
 
+/- English proof (translation)
+Introduce `o _ _ Ω _ _ κ _ x M A _ κa _ w S _ E _ _ L g r W b₀ hw hL hb hbW`. Take `⟨p₀⟩ : Nonempty (Cpt M.ξ)` from `⟨⟨genPt M.ξ, specializes_rfl⟩⟩`. Use `haveI hfin : ∀ σ, FiniteDimensional Ω (W σ) := fun σ => by`. Take `⟨U, -, b, hW, -⟩` from `hL σ p₀ (Set.mem_univ _)`. Rewrite using `[← hW]`.
+
+Conclude with `FiniteDimensional.span_of_finite Ω (Set.finite_range b)`. Take `⟨κ', hκ', y, M', f, hdom, hnorm, hchart, hvb, hat⟩` from `GlobalTheory.T.flag_model_common_refinement o Ω κ x M A κa w (Σ σ, Fin (r σ + 1)) (fun q => E ⧸ flagStep Ω (b₀ q.1) q.2) (fun q => (L q.1).map (flagStep Ω (b₀ q.1) q.2).mkQ) (fun q => (W q.1).map (flagStep Ω (b₀ q.1) q.2).mkQ) hw (fun q => coh_map (hL q.1) _) (fun q p => span_map …`. Establish `hpull : ∀ σ, ((L σ).pull M'.ξ f (AddMonoidHom.id E)).IsVBOn Set.univ (g σ) (W σ)` using `fun σ => pull_vb (hL σ) hdom`. Establish `hquot : ∀ σ (n : ℕ), ∃ s W', (((L σ).pull M'.ξ f (AddMonoidHom.id E)).map (flagStep Ω (b₀ σ) n).mkQ).IsVBOn Set.univ s W'` using `fun σ n => by`. Rewrite using `[← flagStep_min]`.
+
+Establish `h` using `hvb ⟨σ, ⟨min n (r σ), Nat.lt_succ_of_le (min_le_right _ _)⟩⟩`. Rewrite `h` using `[pull_map]`. Conclude with `⟨_, _, h⟩`. Use `⟨κ', hκ', y, M', f, hdom, hnorm, hchart, fun σ => ?_, fun σ n p' => ?_, fun p hp hfr => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.lattice_flag_vector_bundle _ _ _ _ _ _ _ _ _ _ (hb σ) (hbW σ) (hpull σ) (hquot σ)`.
+
+Take `⟨s, W', h⟩` from `hquot σ n`. Conclude with `(GlobalTheory.T.lattice_sub_quotient_split _ _ _ _ _ _ _ _ _ _ _ (flagStep_le (hbW σ) n) (hpull σ) h).2 p' (Set.mem_univ _)`. Conclude with `hat p hp fun q => hfr q.1 q.2`.
+-/
 theorem flagModel : FlagModelStatement := by
   intro o _ _ Ω _ _ κ _ x M A _ κa _ w S _ E _ _ L g r W b₀ hw hL hb hbW
   obtain ⟨p₀⟩ : Nonempty (Cpt M.ξ) := ⟨⟨genPt M.ξ, specializes_rfl⟩⟩

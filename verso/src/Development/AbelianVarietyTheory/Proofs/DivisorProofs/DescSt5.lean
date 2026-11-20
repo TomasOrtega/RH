@@ -18,6 +18,15 @@ open GlobalTheory.Desc GlobalTheory.SiegJoin
 
 namespace GlobalTheory.SiegDescent
 
+/- English proof (translation)
+Introduce `g _ φ n hn _ F Z z i d S π j _ BD hB hC`. Take `⟨J, -, -, -, ⟨hN, -⟩, hP, hD, -⟩` from `hB`. Establish `hn0 : n ≠ 0` using `by omega`. Use `haveI : IsDedekindDomain (cycAway n) := (arBase_cycAway n hn0).1`. Use `haveI : IsProper (π ≫ z) := GlobalTheory.SchemeWords.isProper_of_isProjOver hP`.
+
+Use `haveI : IsNoetherianRing (CommRingCat.of (cycAway n)) := inferInstanceAs (IsNoetherianRing (cycAway n))`. Use `haveI : IsLocallyNoetherian S := LocallyOfFiniteType.isLocallyNoetherian (π ≫ z)`. Use `haveI : CompactSpace S := QuasiCompact.compactSpace_of_compactSpace (π ≫ z)`. Use `haveI : AlgebraicGeometry.IsNoetherian S := {}`. Establish `hj : IsDominant j` using `⟨hD⟩`.
+
+Establish `hd : SmoothOfRelativeDimension g F.univ.A.hom` using `GlobalTheory.SiegSharpCover.smoothDim F.univ (by omega) (cycBase hn0).ζ.isUnit (isUnit_natCast hn0)`. Take `⟨G, _, e, hG, he, hπ⟩` from `GlobalTheory.T.semiAbelian_descent_from_complete_regular_charts F.X S ((GlobalTheory.isNormalScheme_iff_pred S).1 hN) j hj F.univ.A F.univ.ab F.univ.diag (pull_isLB F.univ.isLB _) F.princ.1 fun x => ⟨(exists_chart (hC x)).choose⟩`. Take `⟨h₁, h₂⟩` from `GlobalTheory.T.descended_group_abelianLocus_and_relDim F.X S j hj F.univ.A G e g F.univ.ab hd hG he fun x => by`. Take `⟨C, hab⟩` from `exists_chart (hC x)`. Take `⟨p, hp, -⟩` from `hπ x C`.
+
+Conclude with `⟨C.R, inferInstance, inferInstance, C.ξ, C.G, inferInstance, p, C.centre, hp, hab⟩`. Conclude with `⟨G, inferInstance, e, hG, h₂, he, h₁⟩`.
+-/
 theorem descSt5 : GlobalTheory.SiegJoin.DescSt5 := by
   intro g _ φ n hn _ F Z z i d S π j _ BD hB hC
   obtain ⟨J, -, -, -, ⟨hN, -⟩, hP, hD, -⟩ := hB

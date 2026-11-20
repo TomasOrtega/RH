@@ -37,6 +37,9 @@ def Killed (n : ℕ) (g : WO S T → ℂ) : Prop :=
 variable (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
 include hψ hθ
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact hg`. Consider the case `cons p l ih => exact GlobalTheory.FockIndep.annih_theta hψ hθ _ _ _ ih`.
+-/
 theorem foldr_theta (l : List (D.what₂.Tau × Matrix (Fin T.rank) (Fin S.rank) ℂ)) {g : WO S T → ℂ}
     (hg : IsThetaFunO ψ S T g) :
     IsThetaFunO ψ S T (l.foldr (fun p f => annih (heisO ψ S T) θ p.1 (cplxO (sS p.1) (sT p.1)) p.2 f) g) := by
@@ -44,6 +47,11 @@ theorem foldr_theta (l : List (D.what₂.Tau × Matrix (Fin T.rank) (Fin S.rank)
   | nil => exact hg
   | cons p l ih => exact GlobalTheory.FockIndep.annih_theta hψ hθ _ _ _ ih
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons p l ih`. Simplify using `only [List.foldr_cons]`. Rewrite using `[ih]`.
+
+Conclude with `GlobalTheory.FockIndep.annih_add hψ hθ _ _ _ (foldr_theta hψ hθ l hg) (foldr_theta hψ hθ l hg')`.
+-/
 theorem foldr_add (l : List (D.what₂.Tau × Matrix (Fin T.rank) (Fin S.rank) ℂ)) {g g' : WO S T → ℂ}
     (hg : IsThetaFunO ψ S T g) (hg' : IsThetaFunO ψ S T g') :
     l.foldr (fun p f => annih (heisO ψ S T) θ p.1 (cplxO (sS p.1) (sT p.1)) p.2 f) (g + g') =
@@ -56,6 +64,11 @@ theorem foldr_add (l : List (D.what₂.Tau × Matrix (Fin T.rank) (Fin S.rank) �
     rw [ih]
     exact GlobalTheory.FockIndep.annih_add hψ hθ _ _ _ (foldr_theta hψ hθ l hg) (foldr_theta hψ hθ l hg')
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons p l ih`. Simplify using `only [List.foldr_cons]`. Rewrite using `[ih]`.
+
+Conclude with `GlobalTheory.FockIndep.annih_smul hψ hθ _ _ _ _ (foldr_theta hψ hθ l hg)`.
+-/
 theorem foldr_smul (l : List (D.what₂.Tau × Matrix (Fin T.rank) (Fin S.rank) ℂ)) (a : ℂ) {g : WO S T → ℂ}
     (hg : IsThetaFunO ψ S T g) :
     l.foldr (fun p f => annih (heisO ψ S T) θ p.1 (cplxO (sS p.1) (sT p.1)) p.2 f) (a • g) =
@@ -67,12 +80,20 @@ theorem foldr_smul (l : List (D.what₂.Tau × Matrix (Fin T.rank) (Fin S.rank) 
     rw [ih]
     exact GlobalTheory.FockIndep.annih_smul hψ hθ _ _ _ _ (foldr_theta hψ hθ l hg)
 
+/- English proof (translation)
+Establish `e : g = (0 : ℂ) • g` using `by rw [zero_smul, h0]`. Rewrite using `[e, foldr_smul hψ hθ l 0 hg, zero_smul]`.
+-/
 theorem foldr_of_eq_zero (l : List (D.what₂.Tau × Matrix (Fin T.rank) (Fin S.rank) ℂ)) {g : WO S T → ℂ}
     (hg : IsThetaFunO ψ S T g) (h0 : g = 0) :
     l.foldr (fun p f => annih (heisO ψ S T) θ p.1 (cplxO (sS p.1) (sT p.1)) p.2 f) g = 0 := by
   have e : g = (0 : ℂ) • g := by rw [zero_smul, h0]
   rw [e, foldr_smul hψ hθ l 0 hg, zero_smul]
 
+/- English proof (translation)
+Introduce `l hl`. Choose the witnesses or unpack the hypotheses as in `⟨p, l', rfl⟩ : ∃ p l', l = p :: l' := by`. Consider the cases of `l with`. Consider the case `nil => simp at hl`. Consider the case `cons p l' => exact ⟨p, l', rfl⟩`.
+
+Simplify using `only [List.length_cons, Nat.add_right_cancel_iff] at hl`. Rewrite using `[List.foldr_cons]`. Conclude with `foldr_of_eq_zero hψ hθ [p] (foldr_theta hψ hθ l' hg) (h l' hl)`.
+-/
 theorem killed_succ {n : ℕ} {g : WO S T → ℂ} (hg : IsThetaFunO ψ S T g) (h : Killed ψ θ sS sT n g) :
     Killed ψ θ sS sT (n + 1) g := by
   intro l hl
@@ -84,6 +105,9 @@ theorem killed_succ {n : ℕ} {g : WO S T → ℂ} (hg : IsThetaFunO ψ S T g) (
   rw [List.foldr_cons]
   exact foldr_of_eq_zero hψ hθ [p] (foldr_theta hψ hθ l' hg) (h l' hl)
 
+/- English proof (translation)
+Proceed by induction on `hnm with`. Consider the case `refl => exact h`. Consider the case `step _ ih => exact killed_succ hψ hθ hg ih`.
+-/
 theorem killed_mono {n m : ℕ} (hnm : n ≤ m) {g : WO S T → ℂ} (hg : IsThetaFunO ψ S T g) (h : Killed ψ θ sS sT n g) :
     Killed ψ θ sS sT m g := by
   induction hnm with
@@ -93,6 +117,17 @@ theorem killed_mono {n m : ℕ} (hnm : n ≤ m) {g : WO S T → ℂ} (hg : IsThe
 variable (hS : ∀ τ, IsCartanInv (gramAt D S τ) (sS τ)) (hT : ∀ τ, IsCartanInv (gramAt D T τ) (sT τ))
 include hS hT
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `g hg h τ' z' l _`. Establish `hg0 : g = 0` using `h [] rfl`. Establish `ha` using `GlobalTheory.FockIndep.aPlus_theta hψ hθ τ' (cplxO (sS τ') (sT τ')) z' hg`.
+
+Use `foldr_of_eq_zero hψ hθ l ha ?_` and prove the remaining obligations. Establish `e : g = (0 : ℂ) • g` using `by rw [zero_smul, hg0]`. Rewrite using `[e, GlobalTheory.FockIndep.aPlus_smul hψ hθ _ _ _ _ hg, zero_smul]`. Consider the case `succ n ih`. Introduce `g hg h τ' z' l hl`.
+
+Break down `List.eq_nil_or_concat l with h0 | ⟨l', q, rfl⟩` into its components or cases. Rewrite `hl` using `[h0, List.length_nil]`. Use linear arithmetic over natural numbers and integers. Use `replace hl : l'.length = n + 1 := by simpa using hl`. Rewrite using `[List.concat_eq_append, List.foldr_append, List.foldr_cons, List.foldr_nil, GlobalTheory.FockIndep.annih_aPlus hψ hθ q.1 q.2 hS hT τ' z' hg]`.
+
+Establish `hq` using `GlobalTheory.FockIndep.annih_theta hψ hθ q.1 (cplxO (sS q.1) (sT q.1)) q.2 hg`. Establish `hk : Killed ψ θ sS sT n (annih (heisO ψ S T) θ q.1 (cplxO (sS q.1) (sT q.1)) q.2 g)`. Introduce `l'' hl''`. Use `h (l'' ++ [q]) (by simp [hl''])` as an intermediate fact. Rewrite `this` using `[List.foldr_append, List.foldr_cons, List.foldr_nil]`. Then use the resulting hypothesis.
+
+Rewrite using `[foldr_add hψ hθ l' (GlobalTheory.FockIndep.aPlus_theta hψ hθ _ _ _ hq) (GlobalTheory.OrientedHeis.theta_smul _ hg), ih hq hk τ' z' l' hl, foldr_smul hψ hθ l' _ hg, h l' hl, smul_zero, zero_add]`.
+-/
 theorem killed_aPlus (n : ℕ) : ∀ {g : WO S T → ℂ}, IsThetaFunO ψ S T g → Killed ψ θ sS sT n g →
     ∀ (τ' : D.what₂.Tau) (z' : Matrix (Fin T.rank) (Fin S.rank) ℂ),
       Killed ψ θ sS sT (n + 1) (aPlus (heisO ψ S T) θ τ' (cplxO (sS τ') (sT τ')) z' g) := by
@@ -119,6 +154,11 @@ theorem killed_aPlus (n : ℕ) : ∀ {g : WO S T → ℂ}, IsThetaFunO ψ S T g 
       rw [foldr_add hψ hθ l' (GlobalTheory.FockIndep.aPlus_theta hψ hθ _ _ _ hq) (GlobalTheory.OrientedHeis.theta_smul _ hg),
         ih hq hk τ' z' l' hl, foldr_smul hψ hθ l' _ hg, h l' hl, smul_zero, zero_add]
 
+/- English proof (translation)
+Establish `key : IsThetaFunO ψ S T (pureTensorO ψ θ S T sS sT BS BT f φ) ∧ ∃ N, Killed ψ θ sS sT N (pureTensorO ψ θ S T sS sT BS BT f φ)`. Use `GlobalTheory.FockIndep.pure_mem (P := fun g => IsThetaFunO ψ S T g ∧ ∃ N, Killed ψ θ sS sT N g) (fun g g' ⟨hg, N, hN⟩ ⟨hg', N', hN'⟩ => ⟨GlobalTheory.OrientedHeis.theta_add hg hg', max N N', fun l hl => ?_⟩) (fun a g ⟨hg, N, hN⟩ => ⟨GlobalTheory.OrientedHeis.theta_smul a hg, N, f …` and prove the remaining obligations. Rewrite using `[foldr_add hψ hθ l hg hg', killed_mono hψ hθ (le_max_left N N') hg hN l hl, killed_mono hψ hθ (le_max_right N N') hg' hN' l hl, add_zero]`. Rewrite using `[foldr_smul hψ hθ l a hg, hN l hl, smul_zero]`. Take `⟨p, rfl⟩` from `List.length_eq_one_iff.1 hl`.
+
+Conclude with `hv p.1 p.2`. Take `⟨h1, N, h2⟩` from `key`. Conclude with `⟨h1, N, h2⟩`.
+-/
 theorem isFockVec_pureTensorO (BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ)
     (BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
     (hv : ∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) f) (φ : MvPolynomial (FVar D T.rank S.rank) ℂ) :
@@ -144,6 +184,15 @@ section Sph
 
 variable {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
 
+/- English proof (translation)
+Take `⟨β, rfl, -, h0⟩` from `hε`. Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨α, hα, hP, a, ha, s, hs, t, ht, rfl⟩` from `hx`. Establish `hβα : β * α = 0`.
+
+Use `RestrictedProduct.ext _ _ fun y => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalV D.host.F y (β * α) = evalV D.host.F y 0`. Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `hy : y = w`. Rewrite using `[hy, hP w hw, mul_zero]`.
+
+Rewrite using `[h0 y hy, zero_mul]`. Establish `hp : pairA D.host.F 0 β * pairA D.host.F 0 α = 0` using `Prod.ext (mul_zero _) hβα`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 : D.host.E)) * (_ ⊗ₜ _) = (0 : AE D)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, hp, TensorProduct.zero_tmul]`.
+
+Consider the case `zero => rw [smul_zero]`. Consider the case `add x x' _ _ h h' => rw [smul_add, h, h', add_zero]`. Consider the case `neg x _ h => rw [smul_neg, h, neg_zero]`.
+-/
 theorem placeIdem_smul_of {P : HeightOneSpectrum (𝓞 D.host.F) → Prop} {w : HeightOneSpectrum (𝓞 D.host.F)}
     {ε : AF D.host.F} (hε : IsPlaceIdem D w ε) (hw : ¬ P w) {u : WO S T} (hu : u ∈ latO S T LS LT P) :
     algebraMap (AF D.host.F) (AE D) ε • u = 0 := by
@@ -166,6 +215,15 @@ theorem placeIdem_smul_of {P : HeightOneSpectrum (𝓞 D.host.F) → Prop} {w : 
   | add x x' _ _ h h' => rw [smul_add, h, h', add_zero]
   | neg x _ h => rw [smul_neg, h, neg_zero]
 
+/- English proof (translation)
+Take `⟨⟨es, hes, rfl⟩, -⟩` from `he`. Establish `key : ∀ PP ∈ Pset, es PP * u a b = 0 ∧ cA D (es PP) * u a b = 0`. Introduce `PP hPP`. Take `⟨⟨a1, a2, w, ε, hε, a3⟩, -⟩` from `hes PP hPP`. Establish `hw : ¬ P w`.
+
+Rewrite using `[← GlobalTheory.IdemUnder.under_eq_of_isIdemAt D _ PP w ε (hes PP hPP) hε a3]`. Conclude with `hv PP hPP`. Establish `h0` using `congrFun (congrFun (placeIdem_smul_of hε hw hu) a) b`. Rewrite `h0` using `[Matrix.smul_apply, smul_eq_mul, ← a3, Matrix.zero_apply]`. Establish `c1 : cA D (es PP) * cA D (es PP) = cA D (es PP)` using `by rw [← map_mul, a1]`.
+
+Establish `c2 : cA D (es PP) * es PP = 0` using `by rw [mul_comm, a2]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take the linear combination `es PP * h0 - u a b * a1 - u a b * a2`. Take the linear combination `cA D (es PP) * h0 - u a b * c1 - u a b * c2`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_eq_zero fun PP hPP => (key PP hPP).1`. Rewrite using `[map_sum, Finset.sum_mul]`. Conclude with `Finset.sum_eq_zero fun PP hPP => (key PP hPP).2`.
+-/
 theorem idemSum_mul_of {P : HeightOneSpectrum (𝓞 D.host.F) → Prop} {e : AE D} {Pset : Finset (Pl D.host.E)}
     (he : IsIdemSum e Pset) (hv : ∀ PP ∈ Pset, ¬ P (PP.under (𝓞 D.host.F))) {u : WO S T}
     (hu : u ∈ latO S T LS LT P) (a : Fin T.rank) (b : Fin S.rank) :
@@ -188,6 +246,9 @@ theorem idemSum_mul_of {P : HeightOneSpectrum (𝓞 D.host.F) → Prop} {e : AE 
   · rw [Finset.sum_mul]; exact Finset.sum_eq_zero fun PP hPP => (key PP hPP).1
   · rw [map_sum, Finset.sum_mul]; exact Finset.sum_eq_zero fun PP hPP => (key PP hPP).2
 
+/- English proof (translation)
+Establish `hle : latO S T LS LT (fun v => v ∉ Sf) ≤ latO S T LS LT fun _ => True` using `GlobalTheory.PlaceTensor.latO_mono fun _ _ => trivial`. Establish `hlat` using `hvac.2.lat`. Establish `fix : ∀ u ∈ latO S T LS LT (fun v => v ∉ Sf), heisO ψ S T u f₀ = f₀ → heisO ψ S T u (pureTensorO ψ θ S T sS sT BS BT f φ) = pureTensorO ψ θ S T sS sT BS BT f φ` using `fun u hu h0 => GlobalTheory.Hk3.FiniteHeis.heisO_pureTensorO_of_finite ψ θ S T hθ sS sT BS BT f hpt u (GlobalTheory.VacGood.infPart_latO (hle hu)) (GlobalTheory.Hk3.heisO_fix_thetaAt_off ψ S T e _ 1 f₀ Φ f hth u (idemSum_mul_of he (fun PP h hn => hn (hP PP h)) hu) h0) φ`. Conclude with `⟨fun u hu => fix (2 • u) (AddSubgroup.nsmul_mem _ hu 2) (hlat.1 u (hle hu)), fun e' he' u hu hh => fix u hu (hlat.2 e' he' u (hle hu) hh)⟩`.
+-/
 theorem isLatVac_pureTensorO_off {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hθ : IsInfFam θ)
     {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}
     (BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)
@@ -214,6 +275,17 @@ end GlobalTheory.FockSph
 
 open GlobalTheory.FockSph in
 
+/- English proof (translation)
+Introduce `D _ c hc k hk s s' hs hs' p hp`. Take `⟨ξ, f₀, hvec⟩` from `hp.vec`. Take `⟨hfθ, -, hfv, hpt⟩` from `(GlobalTheory.T.thetaChainStep_vector_exists_nonzero_vacuum D c hc ⟨k, hk⟩ s s' hs hs').2 ξ f₀ p.f hvec`. Take `⟨hvac, e, he, hth⟩` from `hvec`. Establish `hψ : IsStdChar D c.ψ (-1)` using `hc.std`.
+
+Establish `hθ : IsInfFam c.θ` using `hc.inf`. Use `⟨fun φ => ⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isFockVec_pureTensorO hψ hθ (fun τ => GlobalTheory.AdTh.VecFock.isCartanInv_cart s.M τ) (fun τ => GlobalTheory.AdTh.VecFock.isCartanInv_cart s'.M τ) (onb s.M) (onb s'.M) hfθ hfv φ`. Use `isLatVac_pureTensorO_off hθ (onb s.M) (onb s'.M) hvac he hth c.S (fun PP hPP => ?_) hpt φ` and prove the remaining obligations. Take `⟨hr, ξ', hL⟩` from `hs.lev`.
+
+Rewrite `hPP` using `[Finset.union_empty, hL]`. Conclude with `Finset.mem_image_of_mem _ hPP`. Introduce `w hw`. Establish `hμ : GlobalTheory.LFun.UnrAt (c.μ (k + 1)) w` using `hc.unr ⟨k, hk⟩ w hw`. Establish `hη : GlobalTheory.LFun.UnrAt c.η⁻¹ w` using `(GlobalTheory.LFun.unrAt_of_unramEverywhere hc.chars.2.1 w).inv`.
+
+Establish `hμη : GlobalTheory.LFun.UnrAt (c.μ (k + 1) * c.η⁻¹) w` using `hμ.mul hη`. Unfold `Com.chS Lift.chrStep`. Apply the tactic sequence `split_ifs <;> assumption`. Introduce `w hw`. Establish `hμ : GlobalTheory.LFun.UnrAt (c.μ (k + 1)) w` using `hc.unr ⟨k, hk⟩ w hw`.
+
+Establish `hη : GlobalTheory.LFun.UnrAt c.η⁻¹ w` using `(GlobalTheory.LFun.unrAt_of_unramEverywhere hc.chars.2.1 w).inv`. Establish `hμη : GlobalTheory.LFun.UnrAt (c.μ (k + 1) * c.η⁻¹) w` using `hμ.mul hη`. Unfold `Com.chT Lift.chrStep`. Apply the tactic sequence `split_ifs <;> assumption`.
+-/
 theorem GlobalTheory.ChainOnto.fock_sph : ∀ D : D7, ForStep D fun c k s s' p => (∀ φ, GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.IsFockVec c.ψ c.θ s.V s'.V (cart s.M) (cart s'.M) (p.pt φ) ∧ GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.IsSphOff c.ψ s.V s'.V s.Λ s'.Λ c.S (p.pt φ)) ∧ GlobalTheory.LFun.UnrOff (c.chS (k + 1)) (c.S : Set (HeightOneSpectrum (𝓞 D.host.F))) ∧ GlobalTheory.LFun.UnrOff (c.chT (k + 1)) (c.S : Set (HeightOneSpectrum (𝓞 D.host.F))) := by
   classical
   intro D _ c hc k hk s s' hs hs' p hp

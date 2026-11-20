@@ -6,6 +6,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `Y Y' s I U hiso hE`. Establish `h1 : FinalTheorems.EffCartier ((I.comap s).comap (s ⁻¹ᵁ U).ι)` using `effCartier_comap_of_isOpenImmersion' _ _ hE`. Establish `h2` using `effCartier_comap_of_isOpenImmersion' _ (inv (s ∣_ U)) h1`. Establish `key : inv (s ∣_ U) ≫ (s ⁻¹ᵁ U).ι ≫ s = U.ι`. Rewrite using `[← morphismRestrict_ι, IsIso.inv_hom_id_assoc]`.
+
+Rewrite `h2` using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, Category.assoc, key]`. Conclude with `h2`.
+-/
 theorem effCartier_comap_of_isIso_restrict : ∀ {Y Y' : Scheme.{0}} (s : Y' ⟶ Y) (I : Y.IdealSheafData) (U : Y.Opens), IsIso (s ∣_ U) → FinalTheorems.EffCartier (I.comap s) → FinalTheorems.EffCartier (I.comap U.ι) := by
   intro Y Y' s I U hiso hE
   have h1 : FinalTheorems.EffCartier ((I.comap s).comap (s ⁻¹ᵁ U).ι) :=

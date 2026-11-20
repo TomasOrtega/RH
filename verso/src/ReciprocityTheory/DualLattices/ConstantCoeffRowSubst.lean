@@ -10,14 +10,23 @@ namespace ReciprocityTheory.PGsh
 
 variable {ν : ℕ} {ι : Type*}
 
+/- English proof (translation)
+Simplify using `[rowSubst]`.
+-/
 theorem rowSubst_X (g : Matrix (Fin ν) (Fin ν) ℂ) (p : Fin ν × ι) :
     rowSubst g (X p) = ∑ l, C (g l p.1) * X (l, p.2) := by
   simp [rowSubst]
 
+/- English proof (translation)
+Simplify using `[rowSubst]`.
+-/
 theorem rowSubst_C (g : Matrix (Fin ν) (Fin ν) ℂ) (c : ℂ) :
     rowSubst g (C c : MvPolynomial (Fin ν × ι) ℂ) = C c := by
   simp [rowSubst]
 
+/- English proof (translation)
+Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a => rw [rowSubst_C]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, hp, hq]`. Consider the case `mul_X p n hp => simp [map_mul, hp, rowSubst_X]`.
+-/
 theorem constantCoeff_rowSubst (h : Matrix (Fin ν) (Fin ν) ℂ) (Q : MvPolynomial (Fin ν × ι) ℂ) :
     constantCoeff (rowSubst h Q) = constantCoeff Q := by
   induction Q using MvPolynomial.induction_on with
@@ -25,10 +34,16 @@ theorem constantCoeff_rowSubst (h : Matrix (Fin ν) (Fin ν) ℂ) (Q : MvPolynom
   | add p q hp hq => rw [map_add, map_add, map_add, hp, hq]
   | mul_X p n hp => simp [map_mul, hp, rowSubst_X]
 
+/- English proof (translation)
+Conclude with `constantCoeff_rowSubst h Q`.
+-/
 theorem coeff_zero_rowSubst (h : Matrix (Fin ν) (Fin ν) ℂ) (Q : MvPolynomial (Fin ν × ι) ℂ) :
     coeff 0 (rowSubst h Q) = coeff 0 Q := by
   exact constantCoeff_rowSubst h Q
 
+/- English proof (translation)
+Rewrite using `[rowSubst_X, map_sum]`. Distinguish the cases in `hs : s.2 = a`. Simplify using `[pderiv_C_mul, pderiv_X, Pi.single_apply, hs]`. Simplify using `[pderiv_C_mul, pderiv_X, Pi.single_apply, hs]`.
+-/
 theorem pderiv_rowSubst_X (h : Matrix (Fin ν) (Fin ν) ℂ) (k : Fin ν) (a : ι) (s : Fin ν × ι) :
     pderiv (k, a) (rowSubst h (X s : MvPolynomial (Fin ν × ι) ℂ)) =
       if s.2 = a then C (h k s.1) else 0 := by
@@ -37,6 +52,19 @@ theorem pderiv_rowSubst_X (h : Matrix (Fin ν) (Fin ν) ℂ) (k : Fin ν) (a : �
   · simp [pderiv_C_mul, pderiv_X, Pi.single_apply, hs]
   · simp [pderiv_C_mul, pderiv_X, Pi.single_apply, hs]
 
+/- English proof (translation)
+Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C c => simp [rowSubst_C]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq, mul_add, Finset.sum_add_distrib]`. Consider the case `mul_X p n hp`. Establish `e1 : ∀ m, rowSubst h (pderiv (m, a) (X n : MvPolynomial (Fin ν × ι) ℂ)) = if n = (m, a) then 1 else 0`.
+
+Introduce `m`. Rewrite using `[pderiv_X, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `e2 : ∑ m, C (h k m) * (rowSubst h p * (if n = (m, a) then 1 else 0)) = rowSubst h p * (if n.2 = a then C (h k n.1) else 0)`. Distinguish the cases in `hn : n.2 = a`.
+
+Rewrite using `[if_pos hn, Finset.sum_eq_single n.1]`. Rewrite using `[if_pos (show n = (n.1, a) from Prod.ext rfl hn)]`. Expand and normalize the polynomial expressions, which then agree. Introduce `m _ hm`. Rewrite using `[if_neg (fun h' => hm (congrArg Prod.fst h').symm)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`. Rewrite using `[if_neg hn, mul_zero]`. Use `Finset.sum_eq_zero (fun m _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[if_neg (fun h' => hn (congrArg Prod.snd h'))]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, Derivation.leibniz, hp, pderiv_rowSubst_X, smul_eq_mul, smul_eq_mul, ← e2, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun m _ => ?_)` and prove the remaining obligations. Rewrite using `[Derivation.leibniz, map_add, smul_eq_mul, smul_eq_mul, map_mul, map_mul, e1]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pderiv_rowSubst (h : Matrix (Fin ν) (Fin ν) ℂ) (k : Fin ν) (a : ι)
     (Q : MvPolynomial (Fin ν × ι) ℂ) :
     pderiv (k, a) (rowSubst h Q) = ∑ m, C (h k m) * rowSubst h (pderiv (m, a) Q) := by
@@ -70,6 +98,13 @@ theorem pderiv_rowSubst (h : Matrix (Fin ν) (Fin ν) ℂ) (k : Fin ν) (a : ι)
     rw [Derivation.leibniz, map_add, smul_eq_mul, smul_eq_mul, map_mul, map_mul, e1]
     ring
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on generalizing Q with`. Consider the case `C c`. Rewrite using `[rowSubst_C, fischer_C_left, fischer_C_left, coeff_zero_rowSubst]`. Consider the case `add p q hp hq`. Rewrite using `[map_add, fischer_add_left, fischer_add_left, hp, hq]`.
+
+Consider the case `mul_X p n hp`. Break down `n with ⟨k, a⟩` into its components or cases. Rewrite using `[map_mul, rowSubst_X, Finset.mul_sum, fischer_sum_left, fischer_mul_X, pderiv_rowSubst, fischer_sum_right]`. Use `Finset.sum_congr rfl (fun m _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_left_comm, MvPolynomial.C_mul', fischer_smul_left, fischer_mul_X, hp, MvPolynomial.C_mul', fischer_smul_right]`.
+
+Simplify using `[Matrix.conjTranspose_apply]`.
+-/
 theorem fischer_rowSubst (g : Matrix (Fin ν) (Fin ν) ℂ) (P Q : MvPolynomial (Fin ν × ι) ℂ) :
     fischer (rowSubst g P) Q = fischer P (rowSubst gᴴ Q) := by
   induction P using MvPolynomial.induction_on generalizing Q with

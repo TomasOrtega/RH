@@ -14,28 +14,49 @@ namespace GlobalTheory.Amp.StabMeas
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+The claim follows from `(continuous_const.matrix_mul (continuous_id (X := Mat k r))).matrix_mul continuous_const`.
+-/
 theorem cont_conj (a : Mat k r) : Continuous (conjM a : Mt k r → Mt k r) :=
   (continuous_const.matrix_mul (continuous_id (X := Mat k r))).matrix_mul continuous_const
 
+/- English proof (translation)
+The claim follows from `continuous_const.matrix_mul (continuous_id (X := Mat k r))`.
+-/
 theorem cont_lmul (a : Mat k r) : Continuous (lmulM a : Mt k r → Mt k r) :=
   continuous_const.matrix_mul (continuous_id (X := Mat k r))
 
+/- English proof (translation)
+The claim follows from `(cont_conj a).measurable`.
+-/
 theorem meas_conj (a : Mat k r) : Measurable (conjM a : Mt k r → Mt k r) :=
   (cont_conj a).measurable
 
+/- English proof (translation)
+The claim follows from `(cont_lmul a).measurable`.
+-/
 theorem meas_lmul (a : Mat k r) : Measurable (lmulM a : Mt k r → Mt k r) :=
   (cont_lmul a).measurable
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Use `show a * (b * Matrix.of x * b⁻¹) * a⁻¹ = a * b * Matrix.of x * (a * b)⁻¹`. Rewrite using `[Matrix.mul_inv_rev]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem conj_conj (a b : Mat k r) : (conjM a : Mt k r → Mt k r) ∘ conjM b = conjM (a * b) := by
   funext x
   show a * (b * Matrix.of x * b⁻¹) * a⁻¹ = a * b * Matrix.of x * (a * b)⁻¹
   rw [Matrix.mul_inv_rev]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Use `show (1 : Mat k r) * Matrix.of x * 1⁻¹ = Matrix.of x`. Simplify using the standard rewrite rules.
+-/
 theorem conj_one (x : Mt k r) : conjM 1 x = x := by
   show (1 : Mat k r) * Matrix.of x * 1⁻¹ = Matrix.of x
   simp
 
+/- English proof (translation)
+Rewrite using `[Measure.map_map (meas_conj a) (meas_conj b), conj_conj]`.
+-/
 theorem map_conj_conj (a b : Mat k r) (μ : Measure (Mt k r)) :
     (μ.map (conjM b)).map (conjM a) = μ.map (conjM (a * b)) := by
   rw [Measure.map_map (meas_conj a) (meas_conj b), conj_conj]
@@ -54,10 +75,28 @@ def conjEquiv {a : Mat k r} (ha : IsUnit a.det) : Mt k r ≃ᵐ Mt k r where
   measurable_toFun := meas_conj a
   measurable_invFun := meas_conj a⁻¹
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv _ ha, Matrix.mul_one, Matrix.mul_nonsing_inv_cancel_left _ _ ha]`.
+-/
 theorem conj_back {a : Mat k r} (ha : IsUnit a.det) (s : Mat k r) : a * (a⁻¹ * s * a) * a⁻¹ = s := by
   simp only [Matrix.mul_assoc]
   rw [Matrix.mul_nonsing_inv _ ha, Matrix.mul_one, Matrix.mul_nonsing_inv_cancel_left _ _ ha]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `h`. Take `⟨h5, h6⟩` from `h'`. Establish `hb : ∀ s ∈ S', a⁻¹ * s * a ∈ S` using `fun s hs => (hS _).1 (by rwa [conj_back ha])`. Use `⟨⟨?_, ?_, ?_, fun s hs => ?_⟩, fun s hs => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(conjEquiv ha).measurableEmbedding.sigmaFinite_map`.
+
+Introduce `h0`. Conclude with `h2 ((Measure.map_eq_zero_iff (meas_conj a).aemeasurable).1 h0)`. Use `(conjEquiv ha).map_apply (μ := μ) {x | Matrix.of x ∉ S'}` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[← h3]`.
+
+Use `congr 1`. Use extensionality with `x`. Conclude with `not_congr (hS (Matrix.of x))`. Use `conv_rhs => rw [← h4 _ (hb s hs)]`. Rewrite using `[Measure.map_map (meas_lmul _) (meas_conj a), Measure.map_map (meas_conj a) (meas_lmul _)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Use `show s * (a * Matrix.of x * a⁻¹) = a * (a⁻¹ * s * a * Matrix.of x) * a⁻¹`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ ha]`.
+
+Use `conv_rhs => rw [← h5 _ (hb s hs)]`. Rewrite using `[Measure.map_map (continuous_rmulM _).measurable (meas_conj a), Measure.map_map (meas_conj a) (continuous_rmulM _).measurable]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Use `show (a * Matrix.of x * a⁻¹) * s = a * (Matrix.of x * (a⁻¹ * s * a)) * a⁻¹`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv _ ha, Matrix.mul_one]`. Use `conv_rhs => rw [← h6]`. Rewrite using `[Measure.map_map measurable_invM (meas_conj a), Measure.map_map (meas_conj a) measurable_invM]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `x`. Use `show (a * Matrix.of x * a⁻¹)⁻¹ = a * (Matrix.of x)⁻¹ * a⁻¹`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ ha, Matrix.mul_assoc]`.
+-/
 theorem haar_conj {a : Mat k r} (ha : IsUnit a.det) {S S' : Set (Mat k r)} (hS : ∀ x, a * x * a⁻¹ ∈ S' ↔ x ∈ S)
     {μ : Measure (Mt k r)} (h : IsHaarOn S μ) (h' : IsUnimod S μ) :
     IsHaarOn S' (μ.map (conjM a)) ∧ IsUnimod S' (μ.map (conjM a)) := by
@@ -96,6 +135,13 @@ theorem haar_conj {a : Mat k r} (ha : IsUnit a.det) {S S' : Set (Mat k r)} (hS :
     show (a * Matrix.of x * a⁻¹)⁻¹ = a * (Matrix.of x)⁻¹ * a⁻¹
     rw [Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ ha, Matrix.mul_assoc]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `h`. Take `⟨h5, h6⟩` from `h'`. Use `⟨⟨?_, ?_, ?_, fun s hs => ?_⟩, fun s hs => ?_, ?_⟩` and prove the remaining obligations. Conclude with `inferInstanceAs (SigmaFinite (s.toNNReal • μ))`. Introduce `h0`.
+
+Use `congrArg (fun m : Measure (Mt k r) => m Set.univ) h0` as an intermediate fact. Simplify using `only [Measure.smul_apply, smul_eq_mul, Measure.coe_zero, Pi.zero_apply, mul_eq_zero, ENNReal.ofReal_eq_zero, Measure.measure_univ_eq_zero] at this`. Break down `this with h | h` into its components or cases. Conclude with `absurd h (not_le.2 hs)`. Conclude with `h2 h`.
+
+Rewrite using `[Measure.smul_apply, h3, smul_zero]`. Rewrite using `[Measure.map_smul, h4 s hs]`. Rewrite using `[Measure.map_smul, h5 s hs]`. Rewrite using `[Measure.map_smul, h6]`.
+-/
 theorem haar_smul {S : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn S μ) (h' : IsUnimod S μ) {s : ℝ} (hs : 0 < s) :
     IsHaarOn S (ENNReal.ofReal s • μ) ∧ IsUnimod S (ENNReal.ofReal s • μ) := by
   obtain ⟨h1, h2, h3, h4⟩ := h
@@ -114,6 +160,13 @@ theorem haar_smul {S : Set (Mat k r)} {μ : Measure (Mt k r)} (h : IsHaarOn S μ
   · rw [Measure.map_smul, h5 s hs]
   · rw [Measure.map_smul, h6]
 
+/- English proof (translation)
+Take `⟨n1, n2, n3, n4, n5⟩` from `isClosedSub_Nset (k := k) (r := r)`. Establish `hu` using `isUnit_det_of_mem_GG hγ`. Use `⟨fun x hx => n1 hx.1, ?_, ⟨n3, ?_⟩, fun a ha b hb => ⟨n4 _ ha.1 _ hb.1, ?_⟩, fun a ha => ⟨n5 _ ha.1, ?_⟩⟩` and prove the remaining obligations. Establish `hc : Continuous fun x : Mat k r => γ * x * γ⁻¹` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Use `n2.inter (n2.preimage hc)` as an intermediate fact.
+
+Conclude with `this`. Rewrite using `[Matrix.mul_one, Matrix.mul_nonsing_inv _ hu]` and apply the resulting hypothesis. Use `n4 _ ha.2 _ hb.2 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.nonsing_inv_mul_cancel_left _ _ hu]`.
+
+Use `n5 _ ha.2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hu, Matrix.mul_assoc]`.
+-/
 theorem isClosedSub_Rset {γ : Mat k r} (hγ : γ ∈ GG k r) : IsClosedSub k r (Rset k r γ) := by
   obtain ⟨n1, n2, n3, n4, n5⟩ := isClosedSub_Nset (k := k) (r := r)
   have hu := isUnit_det_of_mem_GG hγ
@@ -129,6 +182,11 @@ theorem isClosedSub_Rset {γ : Mat k r} (hγ : γ ∈ GG k r) : IsClosedSub k r 
   · convert n5 _ ha.2 using 1
     rw [Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hu, Matrix.mul_assoc]
 
+/- English proof (translation)
+Take `⟨n1, -, -, n4, n5⟩` from `isClosedSub_Nset (k := k) (r := r)`. Establish `hu` using `isUnit_det_of_mem_GG (n1 hn)`. Use `⟨fun h => ?_, fun h => n4 _ (n4 _ hn _ h) _ (n5 _ hn)⟩` and prove the remaining obligations. Use `n4 _ (n4 _ (n5 _ hn) _ h) _ hn using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[Matrix.nonsing_inv_mul _ hu, Matrix.mul_one, Matrix.nonsing_inv_mul_cancel_left _ _ hu]`.
+-/
 theorem conj_mem_Nset {n : Mat k r} (hn : n ∈ Nset k r) (x : Mat k r) : n * x * n⁻¹ ∈ Nset k r ↔ x ∈ Nset k r := by
   obtain ⟨n1, -, -, n4, n5⟩ := isClosedSub_Nset (k := k) (r := r)
   have hu := isUnit_det_of_mem_GG (n1 hn)
@@ -137,6 +195,11 @@ theorem conj_mem_Nset {n : Mat k r} (hn : n ∈ Nset k r) (x : Mat k r) : n * x 
   simp only [Matrix.mul_assoc]
   rw [Matrix.nonsing_inv_mul _ hu, Matrix.mul_one, Matrix.nonsing_inv_mul_cancel_left _ _ hu]
 
+/- English proof (translation)
+Establish `hu` using `isUnit_det_of_mem_GG (isClosedSub_Nset.1 h₂)`. Establish `e : n₁ * g * n₂ * (n₂⁻¹ * x * n₂⁻¹⁻¹) * (n₁ * g * n₂)⁻¹ = n₁ * (g * x * g⁻¹) * n₁⁻¹`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ hu, Matrix.mul_inv_rev, Matrix.mul_inv_rev]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ hu, Matrix.mul_nonsing_inv_cancel_left _ _ hu]`.
+
+Use `show (_ ∧ _) ↔ (_ ∧ _)`. Rewrite using `[e, conj_mem_Nset h₁, conj_mem_Nset (isClosedSub_Nset.2.2.2.2 _ h₂)]`.
+-/
 theorem conj_mem_Rset {n₁ n₂ : Mat k r} (h₁ : n₁ ∈ Nset k r) (h₂ : n₂ ∈ Nset k r) (g x : Mat k r) :
     n₂⁻¹ * x * n₂⁻¹⁻¹ ∈ Rset k r (n₁ * g * n₂) ↔ x ∈ Rset k r g := by
   have hu := isUnit_det_of_mem_GG (isClosedSub_Nset.1 h₂)
@@ -147,12 +210,24 @@ theorem conj_mem_Rset {n₁ n₂ : Mat k r} (h₁ : n₁ ∈ Nset k r) (h₂ : n
   show (_ ∧ _) ↔ (_ ∧ _)
   rw [e, conj_mem_Nset h₁, conj_mem_Nset (isClosedSub_Nset.2.2.2.2 _ h₂)]
 
+/- English proof (translation)
+The claim follows from `Formalism.QuantumDeterminants.dInv k r z z' hz hz' n₁ ⟨1, (isClosedSub_UWset z).2.2.1, n₁, h₁, (Matrix.one_mul _).symm⟩ n₂ ⟨1, (isClosedSub_UWset z').2.2.1, n₂, h₂, (Matrix.one_mul _).symm⟩ g l`.
+-/
 theorem dmin_N {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : inWb k r z') {n₁ n₂ : Mat k r}
     (h₁ : n₁ ∈ Nset k r) (h₂ : n₂ ∈ Nset k r) (g : Mat k r) (l : Fin (r + 2)) :
     Dmin k r z z' (n₁ * g * n₂) l = Dmin k r z z' g l :=
   Formalism.QuantumDeterminants.dInv k r z z' hz hz' n₁ ⟨1, (isClosedSub_UWset z).2.2.1, n₁, h₁, (Matrix.one_mul _).symm⟩
     n₂ ⟨1, (isClosedSub_UWset z').2.2.1, n₂, h₂, (Matrix.one_mul _).symm⟩ g l
 
+/- English proof (translation)
+Introduce and unpack `k r j hj z z' γ s μR hs ⟨hz, hz', hT, n₁, h₁, n₂, h₂, g₀, β, c, hg, rfl, rfl⟩`. Take `⟨n1, -, -, n4, n5⟩` from `isClosedSub_Nset (k := k) (r := r)`. Take `⟨a1, -, a3, a4, -, a6, -⟩` from `GlobalTheory.T.normalFormFlagZero_middle_inverse_minor_orthogonal k r j hj z z' g₀ β c hz hz' hT hg`. Take `⟨b1, b2⟩` from `GlobalTheory.T.stabilizer_haar_unimodular_normal k r j hj z z' g₀ β c hz hz' hT hg`. Establish `c1` using `GlobalTheory.T.map_conj_lebesgueCommonStabilizerNormalForm k r j hj z z' g₀ β c hz hz' hT hg`.
+
+Establish `hγ : n₁ * g₀ * n₂ ∈ GG k r` using `isClosedSub_GG.2.2.2.1 _ (isClosedSub_GG.2.2.2.1 _ (n1 h₁) _ hg.1) _ (n1 h₂)`. Establish `hinv : (n₁ * g₀ * n₂)⁻¹ = n₂⁻¹ * g₀⁻¹ * n₁⁻¹`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.mul_assoc]`. Take `⟨d1, d2⟩` from `haar_smul b1 b2 hs`. Take `⟨e1, e2⟩` from `haar_conj (isUnit_det_of_mem_GG (n1 (n5 _ h₂))) (conj_mem_Rset h₁ h₂ g₀) d1 d2`.
+
+Establish `hD : ∀ l, ‖Dmin k r z' z (n₁ * g₀ * n₂)⁻¹ l‖ = ‖Dmin k r z z' (n₁ * g₀ * n₂) l‖` using `fun l => by`. Rewrite using `[hinv, dmin_N hz' hz (n5 _ h₂) (n5 _ h₁), dmin_N hz hz' h₁ h₂, a6]`. Use `⟨hγ, isClosedSub_Rset hγ, e1, e2, ⟨hz', hz, a1 ▸ hT, n₂⁻¹, n5 _ h₂, n₁⁻¹, n5 _ h₁, g₀⁻¹, β, c⁻¹, a3, hinv, ?_⟩, ?_, hD _, fun De h => ⟨h.1, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_conj_conj, Matrix.mul_nonsing_inv_cancel_right _ _ (isUnit_det_of_mem_GG (n1 h₂)), ← map_conj_conj, Measure.map_smul, c1, Matrix.nonsing_inv_nonsing_inv _ (isUnit_det_of_mem_GG (n1 h₁))]`. Unfold `Dj at a4 ⊢`.
+
+Rewrite using `[dmin_N hz hz' h₁ h₂]` and apply the resulting hypothesis. Introduce `l hl h0`. Rewrite using `[hD]`. Use `h.2 l hl fun h' => h0 ?_` and prove the remaining obligations. Rewrite using `[← norm_eq_zero, hD, h', norm_zero]`.
+-/
 theorem stabilizer_measure_normalisation : ∀ (k r j : ℕ) (hj : j ≤ r) (z z' : (Fin (2 * r + k + 1) → ℂ)), ∀ (γ : Mat k r) (s : ℝ) (μR : Measure (Mt k r)), 0 < s → IsNormalFormStabilizerMeasure k r hj z z' γ s μR → γ ∈ GG k r ∧ IsClosedSub k r (Rset k r γ) ∧ IsHaarOn (Rset k r γ) μR ∧ IsUnimod (Rset k r γ) μR ∧ IsNormalFormStabilizerMeasure k r hj z' z γ⁻¹ s (μR.map (conjM γ)) ∧ 0 < Dj k r hj z z' γ ∧ Dj k r hj z' z γ⁻¹ = Dj k r hj z z' γ ∧ ∀ De, DeOK k r z z' γ De → DeOK k r z' z γ⁻¹ De := by
   rintro k r j hj z z' γ s μR hs ⟨hz, hz', hT, n₁, h₁, n₂, h₂, g₀, β, c, hg, rfl, rfl⟩
   obtain ⟨n1, -, -, n4, n5⟩ := isClosedSub_Nset (k := k) (r := r)

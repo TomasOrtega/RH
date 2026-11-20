@@ -6,6 +6,11 @@ open GlobalTheory.SeqCx Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `V F S y hF hy p hlink c hc hbd`. Take `⟨b, hb, hc', hbd'⟩` from `GlobalTheory.T.exists_homologous_cycle_with_entries_in_of_exactAt_links V F S hF p hlink c hc hbd`. Take `⟨b', hb', hbb'⟩` from `GlobalTheory.T.seqChain_cycle_bounded_by_cone V F (linkIn F S []) y hy p (c - bd V b) hc' hbd'`. Use `⟨b + b', Submodule.add_mem _ hb hb', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hbb']`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem exactAt_of_links_cone : ∀ (V : Type) (F : Set (List V)) (S : Set V) (y : V), SubClosed F →
     (∀ l ∈ linkIn F S [], y :: l ∈ F) → ∀ (p : ℕ),
     (∀ τ ∈ F, ∀ x, τ.getLast? = some x → x ∉ S → τ.length ≤ p →

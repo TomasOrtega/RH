@@ -20,6 +20,11 @@ section Generic
 
 variable {S A : Type*} [Ring S] [CommRing A] [Algebra A S]
 
+/- English proof (translation)
+Establish `h1 : (σ Y).unop * (σ ((Y⁻¹ : Sˣ) : S)).unop = 1`. Rewrite using `[← MulOpposite.unop_mul, ← map_mul, Units.inv_mul, map_one, MulOpposite.unop_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Units.val_mul, map_mul, MulOpposite.unop_mul, ← Algebra.smul_def, mul_smul_comm, smul_mul_assoc, mul_assoc]`. Use `_ = algebraMap A S (s * t) := by`.
+
+Rewrite using `[Units.inv_mul, h1, one_mul, mul_one, hx, map_mul, Algebra.smul_def]`.
+-/
 theorem triv_move (σ : S →+* Sᵐᵒᵖ) (b : S) (x Y : Sˣ) (t s : A)
     (hx : (x : S) * b * (σ x).unop = algebraMap A S t) :
     ((x * Y⁻¹ : Sˣ) : S) * (algebraMap A S s * ((Y : S) * b * (σ Y).unop)) * (σ ((x * Y⁻¹ : Sˣ) : S)).unop =
@@ -37,12 +42,21 @@ end Generic
 
 variable {G : HTGroup p}
 
+/- English proof (translation)
+Simplify using `only [sh, map_mul, MulOpposite.unop_mul]`.
+-/
 theorem sh_mul (a b : G.C) : sh G (a * b) = sh G b * sh G a := by
   simp only [sh, map_mul, MulOpposite.unop_mul]
 
+/- English proof (translation)
+Rewrite using `[← sh_mul, Units.inv_mul]`. Simplify using `[sh]`.
+-/
 theorem sh_units (y : G.Cˣ) : sh G (y : G.C) * sh G ((y⁻¹ : G.Cˣ) : G.C) = 1 := by
   rw [← sh_mul, Units.inv_mul]; simp [sh]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Units.val_mul, sh_mul, ← Algebra.smul_def, mul_smul_comm, smul_mul_assoc, mul_assoc]`. Use `_ = _ := by`. Rewrite using `[Units.inv_mul, sh_units, mul_one, mul_one, Algebra.smul_def]`. Simplify using `only [mul_assoc]`.
+-/
 theorem key (y v : G.Cˣ) (β : G.C) (s : ℚ) :
     ((y * v * y⁻¹ : G.Cˣ) : G.C) * (algebraMap ℚ G.C s * (y * β * sh G y)) * sh G ((y * v * y⁻¹ : G.Cˣ) : G.C) =
       algebraMap ℚ G.C s * (y * ((v : G.C) * β * sh G v) * sh G y) := by
@@ -53,11 +67,19 @@ theorem key (y v : G.Cˣ) (β : G.C) (s : ℚ) :
     _ = _ := by
         rw [Units.inv_mul, sh_units, mul_one, mul_one, Algebra.smul_def]; simp only [mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [← Algebra.smul_def, mul_smul_comm, smul_mul_assoc, smul_smul, mul_comm u s]`.
+-/
 theorem scal (y : G.Cˣ) (β : G.C) (s u : ℚ) :
     algebraMap ℚ G.C u * (algebraMap ℚ G.C s * (y * β * sh G y)) =
       algebraMap ℚ G.C s * (y * (algebraMap ℚ G.C u * β) * sh G y) := by
   simp only [← Algebra.smul_def, mul_smul_comm, smul_mul_assoc, smul_smul, mul_comm u s]
 
+/- English proof (translation)
+Establish `h' : (y : G.C) * X * sh G y = y * Z * sh G y`. Use `congrArg (fun w => algebraMap ℚ G.C s⁻¹ * w) h` as an intermediate fact. Simplify `this` using `only [← mul_assoc, ← map_mul, inv_mul_cancel₀ hs, map_one, one_mul]`. Establish `e : ∀ W : G.C, W = ((y⁻¹ : G.Cˣ) : G.C) * (y * W * sh G y) * sh G ((y⁻¹ : G.Cˣ) : G.C)`. Introduce `W`.
+
+Rewrite using `[mul_assoc, mul_assoc, sh_units, mul_one, ← mul_assoc, Units.inv_mul, one_mul]`. Rewrite using `[e X, e Z, h']`.
+-/
 theorem cancel (y : G.Cˣ) (X Z : G.C) (s : ℚ) (hs : s ≠ 0)
     (h : algebraMap ℚ G.C s * (y * X * sh G y) = algebraMap ℚ G.C s * (y * Z * sh G y)) : X = Z := by
   have h' : (y : G.C) * X * sh G y = y * Z * sh G y := by
@@ -70,11 +92,23 @@ theorem cancel (y : G.Cˣ) (X Z : G.C) (s : ℚ) (hs : s ≠ 0)
 
 def cj (y : G.Cˣ) : G.Cˣ × ℚˣ ≃* G.Cˣ × ℚˣ := (MulAut.conj y).prodCongr (MulEquiv.refl ℚˣ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cj_apply (y : G.Cˣ) (v : G.Cˣ × ℚˣ) : cj y v = (y * v.1 * y⁻¹, v.2) := rfl
 
 def innerAlgEquiv (R : Type) {A : Type} [CommRing R] [Ring A] [Algebra R A] (y : Aˣ) : A ≃ₐ[R] A :=
   GlobalTheory.InnerAutomorphism.innerAut R y
 
+/- English proof (translation)
+Take `⟨y, s, _, hβ, hγ⟩` from `h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `minpoly.algEquiv_eq (innerAlgEquiv G.F y) (P.γ : G.C)`. Simplify using `only [DPair.pol, hγ, Units.val_mul]`. Conclude with `h`.
+
+Establish `hy : ∀ X : G.C, sh G (y : G.C) * (sh G ((y⁻¹ : G.Cˣ) : G.C) * X) = X`. Introduce `X`. Rewrite using `[← mul_assoc, sh_units, one_mul]`. Establish `core : (y : G.C) * P.γ * ((y⁻¹ : G.Cˣ) : G.C) * ((y : G.C) * P.β * sh G y) * (sh G ((y⁻¹ : G.Cˣ) : G.C) * (sh G P.γ * sh G y)) = (P.c : ℚ) • ((y : G.C) * P.β * sh G y)`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [mul_assoc, Units.inv_mul_cancel_left, hy]`. Use `_ = _ := by`. Rewrite using `[P.sim, ← Algebra.smul_def]`. Simplify using `only [mul_smul_comm, smul_mul_assoc]`. Establish `key : algebraMap ℚ G.C (Q.c : ℚ) * Q.β = algebraMap ℚ G.C (P.c : ℚ) * Q.β`.
+
+Rewrite using `[← Q.sim, hγ, hβ]`. Simplify using `only [Units.val_mul, sh_mul, ← Algebra.smul_def, mul_smul_comm, smul_mul_assoc]`. Rewrite using `[core, smul_comm]`. Establish `hinj : Function.Injective (algebraMap ℚ G.C)` using `(algebraMap ℚ G.C).injective`. Conclude with `Units.ext (hinj ((Units.mul_left_inj Q.β).mp key))`.
+-/
 theorem rel_pol_c (P Q : DPair G) (h : P.Rel Q) : Q.pol = P.pol ∧ Q.c = P.c := by
   obtain ⟨y, s, _, hβ, hγ⟩ := h
   refine ⟨?_, ?_⟩
@@ -100,6 +134,11 @@ theorem rel_pol_c (P Q : DPair G) (h : P.Rel Q) : Q.pol = P.pol ∧ Q.c = P.c :=
     have hinj : Function.Injective (algebraMap ℚ G.C) := (algebraMap ℚ G.C).injective
     exact Units.ext (hinj ((Units.mul_left_inj Q.β).mp key))
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hv`. Express the relevant statement in the definitionally equal form `v.1 * P.γ = P.γ * v.1 at h1`. Express the relevant statement in the definitionally equal form `(v.1 : G.C) * P.β * sh G v.1 = algebraMap ℚ G.C v.2 * P.β at h2`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y * v.1 * y⁻¹ * Q.γ = Q.γ * (y * v.1 * y⁻¹)`.
+
+Rewrite using `[hγ]`. Combine the equalities or inequalities in the displayed calculation. Express the relevant statement in the definitionally equal form `((y * v.1 * y⁻¹ : G.Cˣ) : G.C) * Q.β * sh G ((y * v.1 * y⁻¹ : G.Cˣ) : G.C) = algebraMap ℚ G.C v.2 * Q.β`. Rewrite using `[hβ, key, h2, scal]`.
+-/
 theorem mem_of (P Q : DPair G) (y : G.Cˣ) (s : ℚ) (hβ : (Q.β : G.C) = algebraMap ℚ G.C s * (y * P.β * sh G y))
     (hγ : Q.γ = y * P.γ * y⁻¹) (v : G.Cˣ × ℚˣ) (hv : v ∈ P.cent) : cj y v ∈ Q.cent := by
   obtain ⟨h1, h2⟩ := hv
@@ -115,6 +154,13 @@ theorem mem_of (P Q : DPair G) (y : G.Cˣ) (s : ℚ) (hβ : (Q.β : G.C) = algeb
       algebraMap ℚ G.C v.2 * Q.β
     rw [hβ, key, h2, scal]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hw`. Use `set v := (cj y).symm w with hv`. Establish `hw' : w = cj y v` using `by rw [hv, MulEquiv.apply_symm_apply]`. Rewrite `h1`, `h2` using `[hw', cj_apply]`. Express the relevant statement in the definitionally equal form `y * v.1 * y⁻¹ * Q.γ = Q.γ * (y * v.1 * y⁻¹) at h1`.
+
+Express the relevant statement in the definitionally equal form `((y * v.1 * y⁻¹ : G.Cˣ) : G.C) * Q.β * sh G ((y * v.1 * y⁻¹ : G.Cˣ) : G.C) = algebraMap ℚ G.C v.2 * Q.β at h2`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `v.1 * P.γ = P.γ * v.1`. Rewrite `h1` using `[hγ]`. Establish `: y * (v.1 * P.γ) * y⁻¹ = y * (P.γ * v.1) * y⁻¹`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `using this`. Express the relevant statement in the definitionally equal form `(v.1 : G.C) * P.β * sh G v.1 = algebraMap ℚ G.C v.2 * P.β`. Rewrite `h2` using `[hβ, key, scal]`. Conclude with `cancel y _ _ s hs h2`.
+-/
 theorem mem_back (P Q : DPair G) (y : G.Cˣ) (s : ℚ) (hs : s ≠ 0)
     (hβ : (Q.β : G.C) = algebraMap ℚ G.C s * (y * P.β * sh G y))
     (hγ : Q.γ = y * P.γ * y⁻¹) (w : G.Cˣ × ℚˣ) (hw : w ∈ Q.cent) : (cj y).symm w ∈ P.cent := by
@@ -137,6 +183,11 @@ theorem mem_back (P Q : DPair G) (y : G.Cˣ) (s : ℚ) (hs : s ≠ 0)
     rw [hβ, key, scal] at h2
     exact cancel y _ _ s hs h2
 
+/- English proof (translation)
+Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `mem_of P Q y s hβ hγ v hv`. Introduce `hw`.
+
+Conclude with `⟨(cj y).symm w, mem_back P Q y s hs hβ hγ w hw, by simp⟩`.
+-/
 theorem cent_map (P Q : DPair G) (y : G.Cˣ) (s : ℚ) (hs : s ≠ 0)
     (hβ : (Q.β : G.C) = algebraMap ℚ G.C s * (y * P.β * sh G y))
     (hγ : Q.γ = y * P.γ * y⁻¹) : P.cent.map (cj y).toMonoidHom = Q.cent := by
@@ -147,21 +198,35 @@ theorem cent_map (P Q : DPair G) (y : G.Cˣ) (s : ℚ) (hs : s ≠ 0)
   · intro hw
     exact ⟨(cj y).symm w, mem_back P Q y s hs hβ hγ w hw, by simp⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toAf_val (P : DPair G) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ) (hx : Triv G (AfP p) P.β x t) (v : P.cent) :
     ((P.toAf x t hx v : G.GAf) : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ) =
       (x * Units.map (inC G (AfP p)).toMonoidHom v.1.1 * x⁻¹, Units.map (algebraMap ℚ (AfP p)).toMonoidHom v.1.2) :=
   rfl
 
+/- English proof (translation)
+Simplify using `[DPair.toQr, carry, MulAut.conj_apply]`.
+-/
 theorem toQr_val (P : DPair G) (r : ℕ) (z : Gr G r) (v : P.cent) :
     P.toQr r z v = z⁻¹ * inclG G r (locC G v.1) * z := by
   simp [DPair.toQr, carry, MulAut.conj_apply]
 
+/- English proof (translation)
+Rewrite using `[← map_inv, ← map_mul, ← map_mul]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp`.
+-/
 theorem locC_conj (y : G.Cˣ) (v : G.Cˣ × ℚˣ) :
     locC G (y * v.1 * y⁻¹, v.2) = locC G (y, 1) * locC G v * (locC G (y, 1))⁻¹ := by
   rw [← map_inv, ← map_mul, ← map_mul]
   congr 1
   ext <;> simp
 
+/- English proof (translation)
+Establish `e1 : inC G (AfP p) (sh G y) = (starT G.star (AfP p) (inC G (AfP p) y)).unop` using `(starT_tmul G.star (AfP p) 1 _).symm`. Establish `e2 : inC G (AfP p) (algebraMap ℚ G.C s) = algebraMap (AfP p) (AfP p ⊗[ℚ] G.C) (algebraMap ℚ (AfP p) s)`. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `(Algebra.TensorProduct.includeRight : G.C →ₐ[ℚ] AfP p ⊗[ℚ] G.C).commutes _`. Unfold `Triv`.
+
+Rewrite using `[hβ, map_mul, map_mul, map_mul, e1, e2]`. Use `triv_move (starT G.star (AfP p)) (inC G (AfP p) P.β) x (Units.map (inC G (AfP p)).toMonoidHom y) (t : AfP p) (algebraMap ℚ (AfP p) s) hx` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+-/
 theorem triv_rel (P Q : DPair G) (y : G.Cˣ) (s : ℚ) (hs : s ≠ 0)
     (hβ : (Q.β : G.C) = algebraMap ℚ G.C s * (y * P.β * sh G y))
     (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ) (hx : Triv G (AfP p) P.β x t) :
@@ -187,6 +252,27 @@ open Polynomial
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Use `letI : Algebra G.F (G.Fw w) := (G.embW w).toAlgebra`. Establish `hg : ∀ a, G.rho w (algebraMap G.F G.C a) = algebraMap G.F (Matrix (Fin G.n) (Fin G.n) (G.Fw w)) a` using `fun a => by rw [G.rho_F, Matrix.algebraMap_eq_diagonal]; rfl`. Set `g : G.C →ₐ[G.F] Matrix (Fin G.n) (Fin G.n) (G.Fw w)` to `{ G.rho w with commutes' := hg }`. Set `L : G.Fw w ⊗[G.F] G.C →ₐ[G.Fw w] Matrix (Fin G.n) (Fin G.n) (G.Fw w)` to `Algebra.TensorProduct.lift (Algebra.ofId (G.Fw w) _) g (fun r _ => Algebra.commute_algebraMap_left r _)`. Use `haveI : Nonempty (Fin G.n) := ⟨⟨0, G.n_pos⟩⟩`.
+
+Establish `hinj : Function.Injective L` using `(IsSimpleRing.injective_ringHom_or_subsingleton_codomain L.toRingHom).resolve_right (not_subsingleton _)`. Establish `hL : ∀ x : G.C, L ((1 : G.Fw w) ⊗ₜ x) = G.rho w x` using `fun x => by show (Algebra.TensorProduct.lift _ g _) ((1 : G.Fw w) ⊗ₜ x) = _ erw [Algebra.TensorProduct.lift_tmul]`. Rewrite using `[map_one, one_mul]`. Both sides reduce to the same expression. Use `set γ : G.C := (P.γ : G.C) with hγ`.
+
+Establish `hdeg : (minpoly G.F γ).natDegree = G.n` using `P.reg.1`. Establish `hli : LinearIndependent G.F (fun i : Fin G.n => γ ^ (i : ℕ))`. Use `linearIndependent_pow (K := G.F) γ` as an intermediate fact. Rewrite `this` using `[hdeg]`. Conclude with `this`.
+
+Establish `hT : LinearIndependent (G.Fw w) (fun i : Fin G.n => (1 : G.Fw w) ⊗ₜ[G.F] (γ ^ (i : ℕ)))` using `Module.Flat.linearIndependent_one_tmul hli`. Establish `hM : LinearIndependent (G.Fw w) (fun i : Fin G.n => (G.rho w γ) ^ (i : ℕ))`. Use `hT.map' L.toLinearMap (LinearMap.ker_eq_bot.2 hinj)` as an intermediate fact. Establish `e : (fun i : Fin G.n => (G.rho w γ) ^ (i : ℕ)) = L.toLinearMap ∘ (fun i : Fin G.n => (1 : G.Fw w) ⊗ₜ[G.F] (γ ^ (i : ℕ)))`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Function.comp_apply, AlgHom.toLinearMap_apply]`. Rewrite using `[hL, map_pow]`. Rewrite using `[e]`. Conclude with `this`. Establish `hint : IsIntegral (G.Fw w) (G.rho w γ)` using `Algebra.IsIntegral.isIntegral _`.
+
+Use `set q := minpoly (G.Fw w) (G.rho w γ) with hq`. Establish `hqm : q.Monic` using `minpoly.monic hint`. Establish `hqdeg : G.n ≤ q.natDegree`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
+
+Establish `h0 : aeval (G.rho w γ) q = 0` using `minpoly.aeval _ _`. Rewrite `h0` using `[Polynomial.aeval_eq_sum_range' hlt, Finset.sum_range]`. Establish `h1` using `Fintype.linearIndependent_iff.1 hM (fun i => q.coeff i) h0 ⟨q.natDegree, hlt⟩`. Establish `h2 : q.coeff q.natDegree = 1` using `hqm.coeff_natDegree`. Rewrite `h1` using `[h2]`.
+
+Conclude with `one_ne_zero h1`. Establish `hpol : aeval (G.rho w γ) (P.pol.map (G.embW w)) = 0`. Establish `h : aeval (g γ) (minpoly G.F γ) = 0` using `by rw [Polynomial.aeval_algHom_apply, minpoly.aeval, map_zero]`. Express the relevant statement in the definitionally equal form `aeval (G.rho w γ) ((minpoly G.F γ).map (algebraMap G.F (G.Fw w))) = 0`. Rewrite using `[Polynomial.aeval_map_algebraMap]`.
+
+Conclude with `h`. Establish `hFint : IsIntegral G.F γ` using `Algebra.IsIntegral.isIntegral _`. Establish `hm1 : (P.pol.map (G.embW w)).Monic` using `(minpoly.monic hFint).map _`. Establish `hn1 : (P.pol.map (G.embW w)).natDegree = G.n`. Rewrite using `[Polynomial.natDegree_map]`.
+
+Conclude with `hdeg`. Establish `e1` using `Polynomial.eq_of_monic_of_dvd_of_natDegree_le hqm hm1 (minpoly.dvd _ _ hpol) (by rw [hn1]; exact hqdeg)`. Establish `e2` using `Polynomial.eq_of_monic_of_dvd_of_natDegree_le hqm (Matrix.charpoly_monic _) (Matrix.minpoly_dvd_charpoly _) (by rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]; exact hqdeg)`. Rewrite using `[e2, e1]`.
+-/
 theorem charpoly_rho_eq_map_pol (G : HTGroup p) (P : DPair G) (w : Fin G.m) :
     (G.rho w (P.γ : G.C)).charpoly = P.pol.map (G.embW w) := by
   letI : Algebra G.F (G.Fw w) := (G.embW w).toAlgebra
@@ -247,6 +333,11 @@ theorem charpoly_rho_eq_map_pol (G : HTGroup p) (P : DPair G) (w : Fin G.m) :
     (Matrix.minpoly_dvd_charpoly _) (by rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]; exact hqdeg)
   rw [e2, e1]
 
+/- English proof (translation)
+Use `⟨fun w => ?_, fun y => ?_⟩` and prove the remaining obligations. Use `show (P.atP.2 w).val.charpoly.Separable`. Rewrite using `[show (P.atP.2 w).val.charpoly = P.pol.map (G.embW w) from charpoly_rho_eq_map_pol G P w]`. Conclude with `P.reg.2.map`. Rewrite using `[Subgroup.mem_centralizer_singleton_iff] show locC G y.1 * locC G (P.γ, P.c) = locC G (P.γ, P.c) * locC G y.1`.
+
+Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Conclude with `Prod.ext y.2.1 (mul_comm _ _)`.
+-/
 theorem atP_regular (G : HTGroup p) (P : DPair G) :
     regular₂ G P.atP ∧ ∀ y : P.cent, locC G y.1 ∈ Subgroup.centralizer {P.atP} := by
   refine ⟨fun w => ?_, fun y => ?_⟩
@@ -259,6 +350,27 @@ theorem atP_regular (G : HTGroup p) (P : DPair G) :
     congr 1
     exact Prod.ext y.2.1 (mul_comm _ _)
 
+/- English proof (translation)
+Establish `hex : ∃ dz : Gr G r × Gr G r, IsNrm G r P.atP dz.1 dz.2` using `⟨(δ, z), hn⟩`. Unfold `DPair.term`. Rewrite using `[dif_pos hex]`. Use `set x₀ := P.trivAf.choose`. Use `set t₀ := P.trivAf.choose_spec.choose`.
+
+Establish `h₀ : Triv G (AfP p) P.β x₀ t₀` using `P.trivAf.choose_spec.choose_spec`. Use `set δ₀ := hex.choose.1`. Use `set z₀ := hex.choose.2`. Establish `hn₀ : IsNrm G r P.atP δ₀ z₀` using `hex.choose_spec`. Take `⟨hreg, hcent⟩` from `atP_regular G P`.
+
+Take `⟨g, hgx⟩` from `GlobalTheory.LKMid.triv_quot p G (AfP p) (P.β : G.C) x x₀ t t₀ hx h₀`. Take `⟨g₂, hδ, hcz⟩` from `GlobalTheory.T.twistedConj_of_twistedNormConj_hermitianTriple_regular p G r P.atP δ z δ₀ z₀ hr hreg hn hn₀`. Establish `htw` using `GlobalTheory.CarryCent.map_centralizer_carry p G r P.atP δ z hr hreg hn`. Establish `hAf : P.toAf x₀ t₀ h₀ = (MulAut.conj g⁻¹⁻¹).toMonoidHom.comp (P.toAf x t hx)`. Use extensionality with `y : 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Establish `e : x₀ = (g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1 * x` using `by rw [hgx, inv_mul_cancel_right]`. Simplify using `only [DPair.toAf, MonoidHom.comp_apply, MonoidHom.codRestrict_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv, Subgroup.coe_mul, Subgroup.coe_inv, Prod.fst_mul, Prod.fst_inv, MonoidHom.prodMap, MonoidHom.prod_apply, Subgroup.coe_subtype]`. Rewrite using `[e]`.
+
+Use `group`. Simplify using `only [DPair.toAf, MonoidHom.comp_apply, MonoidHom.codRestrict_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv, Subgroup.coe_mul, Subgroup.coe_inv, Prod.snd_mul, Prod.snd_inv, MonoidHom.prodMap, MonoidHom.prod_apply, Subgroup.coe_subtype]`. Rewrite using `[mul_comm, inv_mul_cancel_left]`. Establish `hQr : P.toQr r z₀ = (MulAut.conj g₂⁻¹).toMonoidHom.comp (P.toQr r z)`. Use extensionality with `y : 1`.
+
+Use `hcz (locC G y.1) (hcent y)` as an intermediate fact. Simplify using `only [DPair.toQr, MonoidHom.comp_apply, Subgroup.coe_subtype, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv]`. Rewrite using `[this]`. Establish `hself : P.toAf x₀ t₀ h₀ P.self = g⁻¹⁻¹ * P.toAf x t hx P.self * g⁻¹`. Rewrite using `[hAf]`.
+
+Simplify using `[MulAut.conj_apply]`. Unfold `DPair.termAt`. Rewrite using `[hself, hAf, hQr, hδ]`. Use `GlobalTheory.PointSumConj.pointSum_conj_data _ _ _ _ _ _ _ _ _ _ _ hf hφ ?_ ?_` and prove the remaining obligations. Introduce `y`.
+
+Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Conclude with `y.2.1`.
+
+Conclude with `mul_comm _ _`. Introduce `y`. Establish `hm : P.toQr r z y ∈ GlobalTheory.BCT.twCent (sigG G r) δ`. Rewrite using `[← htw]`. Conclude with `⟨locC G y.1, hcent y, rfl⟩`.
+
+Conclude with `hm`.
+-/
 theorem term_eq_termAt (G : HTGroup p) (P : DPair G) (Kf : Subgroup G.GAf) (f : G.GAf → ℂ) (r : ℕ)
     (K : Subgroup (Gr G r)) (φ : Gr G r → ℂ) (hr : 0 < r) (hf : ∀ k ∈ Kf, ∀ g, f (k⁻¹ * g * k) = f g)
     (hφ : ∀ k ∈ K, ∀ g, φ (k⁻¹ * g * sigG G r k) = φ g) (x : (AfP p ⊗[ℚ] G.C)ˣ) (t : (AfP p)ˣ)
@@ -308,6 +420,27 @@ theorem term_eq_termAt (G : HTGroup p) (P : DPair G) (Kf : Subgroup G.GAf) (f : 
       rw [← htw]; exact ⟨locC G y.1, hcent y, rfl⟩
     exact hm
 
+/- English proof (translation)
+Take `⟨y, s, hs, hβ, hγ⟩` from `hPQ`. Establish `hc : Q.c = P.c` using `(rel_pol_c P Q ⟨y, s, hs, hβ, hγ⟩).2`. Establish `hat : Q.atP = locC G (y, 1) * P.atP * (locC G (y, 1))⁻¹`. Use `locC_conj y (P.γ, P.c)` as an intermediate fact. Simplify using `only [DPair.atP, hγ, hc]`.
+
+Conclude with `this`. Establish `hnrm : ∀ δ z, IsNrm G r P.atP δ z → IsNrm G r Q.atP δ (inclG G r (locC G (y, 1)) * z)`. Introduce `δ z h`. Unfold `IsNrm at h ⊢`. Rewrite using `[h, hat, map_mul, map_mul, map_inv]`.
+
+Use `group`. Distinguish the cases in `hP : ∃ dz : Gr G r × Gr G r, IsNrm G r P.atP dz.1 dz.2`. Take `⟨⟨δ, z⟩, hδ⟩` from `hP`. Take `⟨x, t, hx⟩` from `P.trivAf`. Establish `hx'` using `triv_rel P Q y s hs.ne' hβ x t hx`.
+
+Rewrite using `[term_eq_termAt G P Kf f r K φ hr hf hφ x t hx δ z hδ, term_eq_termAt G Q Kf f r K φ hr hf hφ _ _ hx' δ _ (hnrm δ z hδ)]`. Set `e : P.cent ≃* Q.cent` to `((cj y).subgroupMap P.cent).trans (MulEquiv.subgroupCongr (cent_map P Q y s hs.ne' hβ hγ))`. Establish `he : ∀ v : P.cent, ((e v : Q.cent) : G.Cˣ × ℚˣ) = cj y v` using `fun v => rfl`. Establish `hA : (Q.toAf _ _ hx').comp e.toMonoidHom = P.toAf x t hx`. Use extensionality with `v : 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[MonoidHom.comp_apply, toAf_val, toAf_val]`. Simplify using `only [MulEquiv.coe_toMonoidHom, he, cj_apply]`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Simplify using `only [map_mul, map_inv]`.
+
+Use `group`. Establish `hQr : (Q.toQr r (inclG G r (locC G (y, 1)) * z)).comp e.toMonoidHom = P.toQr r z`. Use extensionality with `v : 1`. Rewrite using `[MonoidHom.comp_apply, toQr_val, toQr_val]`. Simplify using `only [MulEquiv.coe_toMonoidHom, he, cj_apply]`.
+
+Rewrite using `[locC_conj, map_mul, map_mul, map_inv]`. Use `group`. Establish `hS : Q.self = e P.self`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[he, cj_apply]`.
+
+Conclude with `Prod.ext hγ hc`. Unfold `DPair.termAt`. Establish `hS' : Q.toAf _ _ hx' (e P.self) = P.toAf x t hx P.self` using `by rw [← hA]; rfl`. Rewrite using `[hS, ← GlobalTheory.pointSum_comp_mulEquiv e, hS', hA, hQr]`. Establish `hQ : ¬ ∃ dz : Gr G r × Gr G r, IsNrm G r Q.atP dz.1 dz.2`.
+
+Introduce and unpack `⟨⟨δ, z⟩, h⟩`. Apply `hP` to reduce the goal to its premises. Use `⟨(δ, (inclG G r (locC G (y, 1)))⁻¹ * z), ?_⟩` and prove the remaining obligations. Unfold `IsNrm at h ⊢`. Rewrite using `[h, hat, map_mul, map_mul, map_inv]`.
+
+Use `group`. Unfold `DPair.term`. Rewrite using `[dif_neg hP, dif_neg hQ]`.
+-/
 theorem term_eq_of_rel (G : HTGroup p) (P Q : DPair G) (Kf : Subgroup G.GAf)
     (f : G.GAf → ℂ) (r : ℕ) (K : Subgroup (Gr G r)) (φ : Gr G r → ℂ) (hr : 0 < r)
     (hf : ∀ k ∈ Kf, ∀ g, f (k⁻¹ * g * k) = f g) (hφ : ∀ k ∈ K, ∀ g, φ (k⁻¹ * g * sigG G r k) = φ g)
@@ -367,6 +500,9 @@ end GlobalTheory.LKDef.DRel
 
 namespace GlobalTheory.LKDef.DPair
 
+/- English proof (translation)
+Introduce `p _ G Q Q' h`. Take `⟨h1, h2⟩` from `GlobalTheory.LKDef.DRel.rel_pol_c Q Q' h`. Use `⟨h1.symm, h2.symm, fun Kf f r K φ hr hf hφ => ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.LKDef.DRel.term_eq_of_rel G Q Q' Kf f r K φ hr hf hφ h).symm`.
+-/
 theorem rel_pol_c_term : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (Q Q' : DPair G), Q.Rel Q' → Q.pol = Q'.pol ∧ Q.c = Q'.c ∧ ∀ (Kf : Subgroup G.GAf) (f : G.GAf → ℂ) (r : ℕ) (K : Subgroup (Gr G r)) (φ : Gr G r → ℂ), 0 < r → (∀ k ∈ Kf, ∀ g, f (k⁻¹ * g * k) = f g) → (∀ k ∈ K, ∀ g, φ (k⁻¹ * g * sigG G r k) = φ g) → Q.term Kf f r K φ = Q'.term Kf f r K φ := by
   intro p _ G Q Q' h
   obtain ⟨h1, h2⟩ := GlobalTheory.LKDef.DRel.rel_pol_c Q Q' h

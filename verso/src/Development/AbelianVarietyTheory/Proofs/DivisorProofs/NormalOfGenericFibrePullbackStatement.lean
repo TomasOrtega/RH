@@ -8,5 +8,8 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open GlobalTheory.FlagCls
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagCls.isNormalScheme_of_isPullback_fractionField | exact GlobalTheory.FlagCls.isNormalScheme_of_isPullback_fractionField | (intros; apply GlobalTheory.FlagCls.isNormalScheme_of_isPullback_fractionField <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.normal_of_generic_fibre_pullback : ∀ (R K : Type) [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K] (N G : Scheme.{0}) (g : N ⟶ Sp R) (j : G ⟶ N) (s : G ⟶ Sp K), IsPullback j s g (spMap (algebraMap R K)) → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme N → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme G := by
   first | exact @GlobalTheory.FlagCls.isNormalScheme_of_isPullback_fractionField | exact GlobalTheory.FlagCls.isNormalScheme_of_isPullback_fractionField | (intros; apply GlobalTheory.FlagCls.isNormalScheme_of_isPullback_fractionField <;> assumption)

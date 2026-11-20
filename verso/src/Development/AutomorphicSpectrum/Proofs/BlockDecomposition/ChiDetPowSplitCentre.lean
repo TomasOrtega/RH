@@ -40,14 +40,27 @@ def ofParts {n c : ℕ} (p : Fin c → Part E) (h : ∑ i, (p i).M = n) : Pre E 
   ⟨c, fun i => (p i).M, h, fun i => (p i).V, fun i => (p i).σ, fun i => (p i).m, fun i => (p i).pos,
     fun i => (p i).discrete, fun i => (p i).loc, fun i => (p i).inf⟩
 
+/- English proof (translation)
+Introduce `x` and use `by rw [pow_val_apply, Units.val_pow_eq_pow_val, norm_pow, hμ.1 x, one_pow]`.
+-/
 theorem isUnitary_pow {μ : HChar E} {e : InfinitePlace E → ℤ} (hμ : IsMu μ e) (k : ℕ) : (μ ^ k).IsUnitary := fun x => by
   rw [pow_val_apply, Units.val_pow_eq_pow_val, norm_pow, hμ.1 x, one_pow]
 
+/- English proof (translation)
+Use `show chiDet a μ _ ^ k = 1`. Rewrite using `[chiDet_splitCentre hμ.2.2.2.2, one_pow]`.
+-/
 theorem chiDet_pow_splitCentre {μ : HChar E} {e : InfinitePlace E → ℤ} (hμ : IsMu μ e) (k a : ℕ) (t : ℝ) :
     chiDet a (μ ^ k) (splitCentre E a t) = 1 := by
   show chiDet a μ _ ^ k = 1
   rw [chiDet_splitCentre hμ.2.2.2.2, one_pow]
 
+/- English proof (translation)
+Introduce `E _ _ _ n a b μ e Pa Pb hμ hn`. Set `p : Fin Pa.c → Part E` to `fun i => (partOf Pa i).twist (μ ^ b) (isUnitary_pow hμ b) (chiDet_pow_splitCentre hμ b)`. Set `q : Fin Pb.c → Part E` to `fun i => (partOf Pb i).twist (μ ^ a) (isUnitary_pow hμ a) (chiDet_pow_splitCentre hμ a)`. Establish `hsum : ∑ i, (Fin.append p q i).M = n`. Rewrite using `[Fin.sum_univ_add]`.
+
+Simplify using `only [Fin.append_left, Fin.append_right]`. Rewrite using `[← hn]`. Conclude with `congrArg₂ (· + ·) Pa.h Pb.h`. Use `⟨ofParts (Fin.append p q) hsum, ?_⟩` and prove the remaining obligations. Establish `h1 : parts (ofParts (Fin.append p q) hsum) = List.map (fun x : Part E => (⟨x.M, x.V⟩ : Σ M : ℕ, Submodule ℂ (Sm E M))) (List.ofFn (Fin.append p q))`.
+
+Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression. Rewrite using `[IsJoin, h1, List.ofFn_fin_append, List.map_append, parts, parts, List.map_ofFn, List.map_ofFn, List.map_ofFn, List.map_ofFn]`. Both sides reduce to the same expression.
+-/
 theorem joinEx : JoinEx := by
   intro E _ _ _ n a b μ e Pa Pb hμ hn
   let p : Fin Pa.c → Part E := fun i =>

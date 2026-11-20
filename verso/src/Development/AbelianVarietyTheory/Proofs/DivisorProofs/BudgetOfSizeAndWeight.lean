@@ -17,6 +17,13 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.CovHt.BudgetPf
 
+/- English proof (translation)
+Establish `hs : (D.host.g 0 * D.host.g 1 * 15 ^ e).primeFactors ⊆ {D.host.g 0, D.host.g 1, 3, 5}`. Introduce `x h`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton]`. Establish `hp` using `Nat.prime_of_mem_primeFactors h`. Break down `(Nat.Prime.dvd_mul hp).1 (Nat.dvd_of_mem_primeFactors h) with h | h` into its components or cases.
+
+Break down `(Nat.Prime.dvd_mul hp).1 h with h | h` into its components or cases. Conclude with `Or.inl ((Nat.prime_dvd_prime_iff_eq hp (D.host.g_prime 0)).1 h)`. Conclude with `Or.inr (Or.inl ((Nat.prime_dvd_prime_iff_eq hp (D.host.g_prime 1)).1 h))`. Break down `(Nat.Prime.dvd_mul (m := 3) (n := 5) hp).1 (hp.dvd_of_dvd_pow h) with h | h` into its components or cases. Conclude with `Or.inr (Or.inr (Or.inl ((Nat.prime_dvd_prime_iff_eq hp (by norm_num)).1 h)))`.
+
+Conclude with `Or.inr (Or.inr (Or.inr ((Nat.prime_dvd_prime_iff_eq hp (by norm_num)).1 h)))`. Conclude with `(Finset.card_le_card hs).trans (Finset.card_le_four.trans (by norm_num))`.
+-/
 theorem few_bad (D : D7) (e : ℕ) : (D.host.g 0 * D.host.g 1 * 15 ^ e).primeFactors.card ≤ 15 := by
   have hs : (D.host.g 0 * D.host.g 1 * 15 ^ e).primeFactors ⊆ {D.host.g 0, D.host.g 1, 3, 5} := by
     intro x h
@@ -31,6 +38,13 @@ theorem few_bad (D : D7) (e : ℕ) : (D.host.g 0 * D.host.g 1 * 15 ^ e).primeFac
       · exact Or.inr (Or.inr (Or.inr ((Nat.prime_dvd_prime_iff_eq hp (by norm_num)).1 h)))
   exact (Finset.card_le_card hs).trans (Finset.card_le_four.trans (by norm_num))
 
+/- English proof (translation)
+Establish `hd : (0 : ℝ) < |(discr D.host.E : ℝ)|`. Rewrite using `[abs_pos]`. Conclude with `discr_ne_zero D.host.E` after adjusting the coercions. Establish `h0 : 0 ≤ Real.log |(discr D.host.E : ℝ)|`. Rewrite using `[Real.log_abs]`.
+
+Conclude with `Real.log_intCast_nonneg _`. Establish `hf : (8 : ℝ) ≤ D.R.f` using `by exact_mod_cast h.f8`. Use `h.disc` as an intermediate fact. Unfold `Formalism.BasicNotions.Host.rdE`. Rewrite using `[Real.log_rpow hd, h.deg]`.
+
+Use `push_cast`. Use `⟨by positivity, ?_⟩` and prove the remaining obligations. Rewrite using `[one_div_mul_eq_div, div_le_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem log_rd {D : D7} {L : SizeData₂ D} {PP A M : ℝ} (h : HostNum D L PP A M) :
     0 ≤ Real.log D.host.rdE ∧ Real.log D.host.rdE ≤ 2 * L.sc.L := by
   have hd : (0 : ℝ) < |(discr D.host.E : ℝ)| := by
@@ -46,6 +60,15 @@ theorem log_rd {D : D7} {L : SizeData₂ D} {PP A M : ℝ} (h : HostNum D L PP A
   rw [one_div_mul_eq_div, div_le_iff₀ (by positivity)]
   linarith
 
+/- English proof (translation)
+Take `⟨r0, r1⟩` from `log_rd h`. Use `⟨add_nonneg r0 (abs_nonneg _), ?_⟩` and prove the remaining obligations. Establish `hL` using `h.big.2.1`. Establish `hpi : 0 < Real.pi` using `Real.pi_pos`. Establish `hrd : 0 < D.host.rdE` using `Real.rpow_pos_of_pos (abs_pos.2 (by exact_mod_cast discr_ne_zero D.host.E)) _`.
+
+Establish `hom : (Formalism.L2.DIV.ofRecord D L Del h0).logOm = Real.eulerMascheroniConstant + (Real.log (2 * Real.pi) - Real.log D.host.rdE) - dlogL D 1` using `by show Real.eulerMascheroniConstant + Real.log (Real.pi / (D.host.rdE / 2)) - dlogL D 1 = _`. Rewrite using `[div_div_eq_mul_div, Real.log_div (by positivity) hrd.ne', mul_comm Real.pi]`. Establish `g0` using `Real.one_half_lt_eulerMascheroniConstant`. Establish `g1` using `Real.eulerMascheroniConstant_lt_two_thirds`. Establish `p0 : 0 ≤ Real.log (2 * Real.pi)` using `Real.log_nonneg (by linarith [Real.pi_gt_three])`.
+
+Establish `p1 : Real.log (2 * Real.pi) ≤ 7`. Combine the linear relations using `[Real.log_le_sub_one_of_pos (show 0 < 2 * Real.pi by positivity), Real.pi_lt_four]`. Rewrite `ho` using `[hom, abs_le]`. Establish `: |dlogL D 1| ≤ 7 * L.sc.L`. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith [ho.1, ho.2]`.
+
+Unfold `ell`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ell_le {D : D7} {L : SizeData₂ D} {PP A M : ℝ} (h : HostNum D L PP A M) (Del h0 : ℕ)
     (ho : |(Formalism.L2.DIV.ofRecord D L Del h0).logOm| ≤ 3 * L.sc.L) : 0 ≤ ell D ∧ ell D ≤ 9 * L.sc.L := by
   obtain ⟨r0, r1⟩ := log_rd h
@@ -68,6 +91,19 @@ theorem ell_le {D : D7} {L : SizeData₂ D} {PP A M : ℝ} (h : HostNum D L PP A
   unfold ell
   linarith
 
+/- English proof (translation)
+Unfold `htCost`. Rewrite using `[htPrimes_eq, finsum_mem_coe_finset]`. Use `set S1 : Finset ℕ := (Finset.range (⌊B⌋₊ + 1)).filter Nat.Prime with hS1`. Express the relevant statement in the definitionally equal form `_ ≤ ∑ p ∈ S1 ∪ (Nat.primeFactors (2 * WeightThresholdDefs.dE D) ∪ l.M'.primeFactors), _ ∧ ∑ p ∈ S1 ∪ (Nat.primeFactors (2 * WeightThresholdDefs.dE D) ∪ l.M'.primeFactors), _ ≤ _`. Use `set S2 : Finset ℕ := Nat.primeFactors (2 * WeightThresholdDefs.dE D) ∪ l.M'.primeFactors with hS2`.
+
+Establish `hp1 : ∀ p ∈ S1, p.Prime` using `fun p hp => (Finset.mem_filter.1 hp).2`. Establish `hp2 : ∀ p ∈ S2, p.Prime` using `fun p hp => by`. Apply the tactic sequence `rcases Finset.mem_union.1 hp with h | h <;> exact Nat.prime_of_mem_primeFactors h`. Establish `hp : ∀ p ∈ S1 ∪ S2, p.Prime` using `fun p hp => by`. Break down `Finset.mem_union.1 hp with h | h` into its components or cases.
+
+Conclude with `hp1 p h`. Conclude with `hp2 p h`. Take `⟨hv0, hvs⟩` from `GlobalTheory.MeanTop.sum_vDiff_mul_log_le D (S1 ∪ S2) hp`. Establish `hterm : ∀ p : ℕ, htEx D.host.E p * Real.log p = Real.log p / ((p : ℝ) - 1) + 40 * (GlobalTheory.MeanTop.vDiff D p * Real.log p)` using `fun p => by`. Unfold `htEx GlobalTheory.MeanTop.vDiff WeightThresholdDefs.dE`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hvl : ∀ p : ℕ, 0 ≤ GlobalTheory.MeanTop.vDiff D p * Real.log p` using `fun p => mul_nonneg (hv0 p) (Real.log_natCast_nonneg p)`. Simplify using `only [hterm]`. Use `⟨Finset.sum_nonneg fun p h => ?_, ?_⟩` and prove the remaining obligations. Conclude with `add_nonneg (GlobalTheory.MeanTop.log_div_pred_mem_of_prime (hp p h)).1 (mul_nonneg (by norm_num) (hvl p))`.
+
+Rewrite using `[Finset.sum_add_distrib, ← Finset.mul_sum]`. Establish `hA` using `GlobalTheory.PrimeLogSum.sum_log_div_pred_le_real B hB`. Establish `hU : ∑ p ∈ S1 ∪ S2, Real.log p / ((p : ℝ) - 1) ≤ ∑ p ∈ S1, Real.log p / ((p : ℝ) - 1) + ∑ p ∈ S2, Real.log p / ((p : ℝ) - 1)`. Rewrite using `[← Finset.sum_union_inter]`. Establish `: 0 ≤ ∑ p ∈ S1 ∩ S2, Real.log p / ((p : ℝ) - 1)` using `Finset.sum_nonneg fun p h => (GlobalTheory.MeanTop.log_div_pred_mem_of_prime (hp1 p (Finset.mem_inter.1 h).1)).1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hC : ∑ p ∈ S2, Real.log p / ((p : ℝ) - 1) ≤ l.M'.primeFactors.card + 2 + 4 * Real.log D.host.rdE` using `D.host.sum_bad_log_div_le l.M'.primeFactors fun p h => Nat.prime_of_mem_primeFactors h`. Establish `h2 : (l.M'.primeFactors.card : ℝ) ≤ 15` using `by exact_mod_cast hcard`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem htCost_le (D : D7) {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} (l : Level H) (B : ℝ) (hB : 1 ≤ B)
     (hcard : l.M'.primeFactors.card ≤ 15) :
     0 ≤ htCost l B ∧ htCost l B ≤ Real.log B + 20 + 44 * Real.log D.host.rdE := by
@@ -106,6 +142,15 @@ theorem htCost_le (D : D7) {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Hos
     have h2 : (l.M'.primeFactors.card : ℝ) ≤ 15 := by exact_mod_cast hcard
     linarith
 
+/- English proof (translation)
+Establish `hkN : W.kc < N` using `hW.kc_lt.trans hW.p_lt`. Establish `hc : (0 : ℝ) ≤ W.c0` using `by exact_mod_cast hW.weightConst_nonneg`. Establish `hN : (0 : ℝ) ≤ N` using `Nat.cast_nonneg _`. Establish `key : ∀ τ, ∑ i, |(W.u τ i : ℝ)| ≤ N * W.S + ((N - W.kc : ℕ) : ℝ) * (2 * W.b)` using `fun τ => by`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Combine the linear relations using `[hW.h5 τ i]`. Establish `h1` using `hW.h3cloud τ i (by simpa [Fin.lt_def] using h)`. Establish `h2 : (0 : ℝ) ≤ W.u τ i` using `by exact_mod_cast h1.1`.
+
+Rewrite using `[abs_of_nonneg h2]`. Combine the linear relations using `[h1.2]`. Use `_ = _ := by`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_ite_mem]`. Simplify using the standard rewrite rules.
+
+Unfold `GlobalTheory.MeanTop.l1`. Simplify `Finset.sum_le_card_nsmul Finset.univ _ _ fun τ _ => key τ` using `[mul_add]`.
+-/
 theorem l1_u_le {ι : Type} [Fintype ι] {N : ℕ} (W : GlobalTheory.MeanTop.Wts ι N) (hW : W.Hyp) (hS : 0 ≤ W.S) :
     GlobalTheory.MeanTop.l1 W.u ≤ Fintype.card ι * (N * W.S + ((N - W.kc : ℕ) : ℝ) * (2 * W.b)) := by
   classical
@@ -133,6 +178,13 @@ open Formalism.L2 Formalism.L2.DIV Formalism.L2.Indef
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
 
+/- English proof (translation)
+Establish `hf : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast (by have := h.f8; omega : 1 ≤ D.R.f)`. Establish `hr : (1 : ℝ) ≤ D.R.r`. Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_add_three_le_k`. Conclude with `(by unfold Ranks.r; omega : 1 ≤ D.R.r)` after adjusting the coercions.
+
+Establish `hL : (1 : ℝ) ≤ L.sc.L` using `by linarith [h.big.2.1]`. Use `⟨le_trans ?_ h.ppLow, h.poly.2.1.trans (by simpa using h.room)⟩` and prove the remaining obligations. Unfold `zBase`. Rewrite using `[mul_pow, mul_pow]`. Use `le_trans ?_ (le_mul_of_one_le_right (by positivity) (one_le_pow₀ hL))` and prove the remaining obligations.
+
+Apply the tactic sequence `gcongr <;> first | assumption | norm_num`.
+-/
 theorem pp_bounds {PP A : ℝ} (h : HostNum D L PP A 1) : (D.R.f : ℝ) ^ 2 * (D.R.r : ℝ) ^ 5 ≤ PP ∧ PP ≤ L.sc.b := by
   have hf : (1 : ℝ) ≤ D.R.f := by exact_mod_cast (by have := h.f8; omega : 1 ≤ D.R.f)
   have hr : (1 : ℝ) ≤ D.R.r := by
@@ -148,6 +200,43 @@ theorem pp_bounds {PP A : ℝ} (h : HostNum D L PP A 1) : (D.R.f : ℝ) ^ 2 * (D
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨hp1, hp2⟩` from `pp_bounds h`. Establish `m2` using `D.R.two_le_m`. Establish `k3` using `D.R.m_add_three_le_k`. Establish `f8` using `h.f8`. Establish `hf : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast (by omega : 1 ≤ D.R.f)`.
+
+Establish `hr : (1 : ℝ) ≤ D.R.r` using `by exact_mod_cast (by unfold Ranks.r; omega : 1 ≤ D.R.r)`. Establish `hm : (1 : ℝ) ≤ D.R.m` using `by exact_mod_cast (by omega : 1 ≤ D.R.m)`. Establish `hk : (1 : ℝ) ≤ D.R.k` using `by exact_mod_cast (by omega : 1 ≤ D.R.k)`. Establish `hb : 0 < L.sc.b` using `Real.exp_pos _`. Establish `hcard : (Fintype.card (Psi p.T.Q.H) : ℝ) = D.R.f` using `by rw [← hw.card, Nat.card_eq_fintype_card]`.
+
+Establish `hN : (((dat p i).p + (dat p i).q : ℕ) : ℝ) = D.R.r` using `by rw [hw.sig.2.2]`. Establish `hDd : (1 : ℝ) ≤ dimFlag (dat p i)`. Rewrite using `[hw.dim]`. Conclude with `Nat.mul_pos (by omega) (Nat.choose_pos (by unfold Ranks.r; omega))` after adjusting the coercions. Establish `hT : (1 : ℝ) ≤ lenT p i PP`.
+
+Establish `: 4 * dimFlag (dat p i) + 4 ≤ lenT p i PP` using `hW.h1`. Conclude with `(by omega : 1 ≤ lenT p i PP)` after adjusting the coercions. Establish `f2 : (D.R.f : ℝ) ≤ (D.R.f : ℝ) ^ 2` using `le_self_pow₀ hf (by norm_num)`. Establish `r2 : (D.R.r : ℝ) ^ 2 ≤ (D.R.r : ℝ) ^ 5` using `pow_le_pow_right₀ hr (by norm_num)`. Establish `r1 : (D.R.r : ℝ) ≤ (D.R.r : ℝ) ^ 2` using `le_self_pow₀ hr (by norm_num)`.
+
+Establish `fr : (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 ≤ PP` using `le_trans (by gcongr) hp1`. Establish `rr : (D.R.r : ℝ) ^ 2 ≤ PP` using `le_trans (le_mul_of_one_le_left (by positivity) hf) fr`. Establish `hPP : 1 ≤ PP` using `by linarith`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨a1, a2, -⟩` from `GlobalTheory.MeanTop.divided_weight_size _ _ _ hW hD`.
+
+Establish `a3` using `l1_u_le _ hW hS`. Establish `e1 : (dat p i).p + (dat p i).q - (wtsAt p i PP h0 S eta u1).kc = D.R.m` using `by show (dat p i).p + (dat p i).q - (D.R.k - 1) = _`. Rewrite using `[hw.sig.2.2]`. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `a3` using `[e1, hcard, hN]`. Rewrite `a1` using `[hcard, hN]`. Express the relevant statement in the definitionally equal form `_ ≤ D.R.f * (D.R.r * S + D.R.m * (2 * (4 * L.sc.b))) at a3`. Express the relevant statement in the definitionally equal form `(lenT p i PP : ℝ) * _ ≤ _ + D.R.f * D.R.r * ((cZero D ((i : ℕ) + 1) : ℤ) + 4 * D.R.r) at a1`. Establish `c1 : ((cZero D ((i : ℕ) + 1) : ℤ) : ℝ) ≤ 22 * (D.R.f : ℝ) ^ 2 * (D.R.r : ℝ) ^ 4`.
+
+Conclude with `(cZero_spec D ((i : ℕ) + 1)).2.2` after adjusting the coercions. Establish `c2 : (D.R.r : ℝ) * ((cZero D ((i : ℕ) + 1) : ℤ) + 4 * D.R.r) ≤ 26 * L.sc.b`. Use `mul_le_mul_of_nonneg_left c1 (by linarith : (0 : ℝ) ≤ D.R.r)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Choose the witnesses or unpack the hypotheses as in `⟨τ⟩ : Nonempty (Psi p.T.Q.H) := by`.
+
+Rewrite using `[← Fintype.card_pos_iff, ← Nat.card_eq_fintype_card, hw.card]`. Use linear arithmetic over natural numbers and integers. Establish `w1 : L.sc.w'' D.R.n ≤ 8 * L.sc.b`. Establish `h1` using `hw.low τ`. Establish `h2 : (anchor (dat p i) (wtA (p.κ i)) (p.κ i).n (D.R.k - 1) τ : ℝ) ≤ 4 * L.sc.b`.
+
+Unfold `anchor`. Use `split_ifs`. Conclude with `(le_abs_self _).trans (hw.up τ _)`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `s1 : (D.R.r : ℝ) * S ≤ 800 * L.sc.b`. Establish `h1 : (D.R.r : ℝ) * S ≤ PP * S` using `mul_le_mul_of_nonneg_right (by linarith) hS`. Use polynomial arithmetic with `[mul_nonneg (by linarith : 0 ≤ PP) he]`. Establish `bm : L.sc.b ≤ D.R.m * L.sc.b` using `le_mul_of_one_le_left hb.le hm`.
+
+Establish `t1` using `mul_le_mul_of_nonneg_left a2 (by linarith : (0 : ℝ) ≤ lenT p i PP)`. Establish `t2 : (D.R.f : ℝ) * ((D.R.r * S + D.R.m * (2 * (4 * L.sc.b))) + D.R.r * ((cZero D ((i : ℕ) + 1) : ℤ) + 4 * D.R.r)) ≤ D.R.f * (834 * (D.R.m * L.sc.b))` using `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set W := wtsAt p i PP h0 S eta u1 with hWd`. Establish `hT0` using `GlobalTheory.MeanTop.DividedSlope.T_pos W hW`.
+
+Establish `hh0` using `GlobalTheory.MeanTop.DividedSlope.pos_dividedSlopeWeights_baseHeight W hW`. Establish `hg` using `GlobalTheory.MeanTop.DividedSlope.g_pos W hW`. Establish `hb0 : W.b = 4 * L.sc.b` using `rfl`. Establish `hPh : PP ≤ W.h0`. Use `le_trans ?_ hh` and prove the remaining obligations.
+
+Establish `: PP * 1 * 1 * 1 ^ 2 * 1 ^ 2 * 1 * 1 ≤ PP * lenT p i PP * D.R.r * (D.R.f : ℝ) ^ 2 * (D.R.m : ℝ) ^ 2 * D.R.k * dimFlag (dat p i)` using `by gcongr`. Simplify using `using this`. Unfold `bndB`. Rewrite using `[hcard, hN]`. Use `set s : ℝ := ⨆ k : Psi p.T.Q.H × Fin ((dat p i).p + (dat p i).q), |(W.u' k.1 k.2 : ℝ)| with hs`.
+
+Establish `hS0 : 0 ≤ s` using `Real.iSup_nonneg fun _ => abs_nonneg _`. Establish `hS1 : s ≤ 2 * W.b / W.T` using `Real.iSup_le (fun x => GlobalTheory.MeanTop.DividedSlope.entry_le W hW hD _ _) (by rw [hb0]; positivity)`. Establish `hH0 : 0 ≤ s / W.g` using `div_nonneg hS0 hg.le`. Establish `hH1 : s / W.g ≤ 8 * W.b / W.h0`. Use `le_trans (div_le_div_of_nonneg_right hS1 hg.le) (le_of_eq ?_)` and prove the remaining obligations.
+
+Unfold `GlobalTheory.MeanTop.Wts.g`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hH2 : 4 * (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * (8 * W.b / W.h0) ≤ 128 * L.sc.b`. Rewrite using `[← mul_div_assoc, div_le_iff₀ hh0, hb0]`.
+
+Combine the linear relations using `[mul_le_mul_of_nonneg_left (fr.trans hPh) hb.le]`. Establish `hA : (1 : ℝ) ≤ (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2` using `one_le_mul_of_one_le_of_one_le hf (one_le_pow₀ hr)`. Establish `hA4 : (0 : ℝ) ≤ 4 * (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2` using `by positivity`. Establish `z1` using `mul_nonneg hA4 hH0`. Establish `z2` using `mul_le_mul_of_nonneg_left hH1 hA4`.
+
+Rewrite using `[mul_add, mul_one]`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem sizes {PP A : ℝ} (h : HostNum D L PP A 1) (hw : WtNum p i PP) (h0 : ℤ) (S eta : ℝ) (hS : 0 ≤ S) (he : 0 ≤ eta)
     (hP : PP * (S + eta) ≤ 100 * L.sc.w'' D.R.n)
     (hh : PP * lenT p i PP * D.R.r * (D.R.f : ℝ) ^ 2 * (D.R.m : ℝ) ^ 2 * D.R.k * dimFlag (dat p i) ≤ h0)
@@ -243,6 +332,33 @@ theorem sizes {PP A : ℝ} (h : HostNum D L PP A 1) (hw : WtNum p i PP) (h0 : �
     rw [mul_add, mul_one]
     constructor <;> linarith
 
+/- English proof (translation)
+Take `⟨h0, S, eta, hS, he, hP, -, hh, hH⟩` from `hw.hyp hi`. Establish `hW` using `hH u1`. Establish `hD` using `(quo_iff p i PP h0 S eta u1).1 hq`. Take `⟨s1, s2, s3⟩` from `sizes p i h hw h0 S eta hS he hP hh u1 hW hD`. Establish `hcard : Y.d.l₂.M'.primeFactors.card ≤ 15`.
+
+Establish `: Y.d.l₂.M' = D.host.g 0 * D.host.g 1 * 15 ^ expL L.sc.L`. Unfold `Level.M'`. Rewrite using `[hY.1.lev.2, Nat.lcm_one_right, hY.1.lev.1.2.1, hY.1.pd, p.fw.laws.pins.2.1.1]`. Rewrite using `[this]`. Conclude with `few_bad D _`.
+
+Use `set W := wtsAt p i PP h0 S eta u1 with hWd`. Establish `hu : uPrime (dat p i) u1 = W.u'`. Use function extensionality and compare the values at `τ k`. Rewrite using `[uPrime_apply]`. Both sides reduce to the same expression.
+
+Establish `hL` using `h.big.2.1`. Establish `hb : 0 < L.sc.b` using `Real.exp_pos _`. Take `⟨e0, e1⟩` from `ell_le h _ _ hw.om`. Take `⟨r0, r1⟩` from `log_rd h`. Take `⟨c0, c1⟩` from `htCost_le D Y.d.l₂ _ s2 hcard`.
+
+Establish `b0 : 0 ≤ Real.log (bndB (Dw` using `dat p i) W.u' W.g) := Real.log_nonneg s2`. Establish `b1 : Real.log (bndB (Dw` using `dat p i) W.u' W.g) ≤ L.sc.L + 22 := by`. Establish `h1` using `Real.log_le_log (by linarith) s3`. Rewrite `h1` using `[Real.log_mul (by norm_num) hb.ne', show Real.log L.sc.b = L.sc.L from Real.log_exp _]`. Establish `h2 : Real.log 132 ≤ Real.log (12 ^ 2)` using `Real.log_le_log (by norm_num) (by norm_num)`.
+
+Rewrite `h2` using `[Real.log_pow]`. Move the coercions through the operations in `at h2`. Combine the linear relations using `[Real.log_le_sub_one_of_pos (show (0 : ℝ) < 12 by norm_num)]`. Establish `l0 : 0 ≤ GlobalTheory.MeanTop.l1 W.u'` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `hT0 : (0 : ℝ) ≤ lenT p i PP` using `Nat.cast_nonneg _`.
+
+Establish `main : ∀ c : ℝ, c ≤ 100 * L.sc.L → lenT p i PP * (c * GlobalTheory.MeanTop.l1 W.u') ≤ 83400 * unitE p` using `fun c hc => by`. Rewrite using `[hw.unit]`. Establish `a0 : 0 ≤ (D.R.f : ℝ) * D.R.m * L.sc.b * L.sc.L` using `by have : 0 ≤ L.sc.L := by linarith`. Check the signs of the components of the expression. Establish `a1` using `le_mul_of_one_le_right a0 h.big.2.2.2`.
+
+Establish `a2` using `mul_le_mul_of_nonneg_right hc (mul_nonneg hT0 l0)`. Establish `a3` using `mul_le_mul_of_nonneg_left s1 (by linarith : 0 ≤ 100 * L.sc.L)`. Use the polynomial consequences of the given equalities and inequalities. Establish `sp1 : ((dat p i).q : ℝ) * ∑ τ, ((⨆ k, (W.u' τ k : ℝ)) - ⨅ k, (W.u' τ k : ℝ)) ≤ 6 * GlobalTheory.MeanTop.l1 W.u'`. Establish `hj : (dat p i).q ≤ (dat p i).p + (dat p i).q - W.kc`.
+
+Establish `: W.kc < (dat p i).p` using `hW.kc_lt`. Use linear arithmetic over natural numbers and integers. Rewrite using `[GlobalTheory.MeanTop.l1, Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun τ _ => GlobalTheory.MeanTop.spread_le_at W hW hD τ _ hj`. Establish `sp0 : 0 ≤ ∑ τ, ((⨆ k, (W.u' τ k : ℝ)) - ⨅ k, (W.u' τ k : ℝ))` using `Finset.sum_nonneg fun τ _ => by`.
+
+Establish `a : Fin ((dat p i).p + (dat p i).q)` using `⟨W.p, hW.p_lt⟩`. Establish `h1` using `ciInf_le (f := fun k => (W.u' τ k : ℝ)) (Set.finite_range _).bddBelow a`. Establish `h2` using `le_ciSup (f := fun k => (W.u' τ k : ℝ)) (Set.finite_range _).bddAbove a`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨hcard, W.g, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hu]`. Establish `hl : GlobalTheory.CovHt.l1 (Dw` using `dat p i) W.u' = GlobalTheory.MeanTop.l1 W.u' := rfl`. Use `⟨⟨GlobalTheory.MeanTop.DividedSlope.g_pos W hW, fun τ a b hab => ?_, fun τ a b ha hab => GlobalTheory.MeanTop.DividedSlope.far W hW hD τ a b ha hab⟩, ?_, ?_, c0, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.MeanTop.DividedSlope.regular W hW hD τ a b hab` as an intermediate fact. Unfold `GlobalTheory.MeanTop.reWt at this`.
+
+Conclude with `this` after adjusting the coercions. Unfold `errX`. Rewrite using `[hl]`. Conclude with `add_nonneg (mul_nonneg (add_nonneg b0 e0) l0) (mul_nonneg (Nat.cast_nonneg _) sp0)`. Use `le_trans (mul_le_mul_of_nonneg_left ?_ hT0) (main (Real.log (bndB (Dw := dat p i) W.u' W.g) + ell D + 6) (by linarith))` and prove the remaining obligations.
+
+Unfold `errX`. Rewrite using `[hl]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hl]`. Conclude with `main _ (by linarith)`.
+-/
 theorem budgetAt {PP A : ℝ} (h : HostNum D L PP A 1) (hw : WtNum p i PP) (hi : (i : ℕ) + 1 < D.R.m) (Y : Cov p i)
     (hY : GoodCov p i Y) (u1 : AllWt.Weight (dat p i)) (hq : Quo p i PP u1) : BudgetAt p i Y PP 83400 u1 := by
   obtain ⟨h0, S, eta, hS, he, hP, -, hh, hH⟩ := hw.hyp hi
@@ -314,6 +430,9 @@ theorem budgetAt {PP A : ℝ} (h : HostNum D L PP A 1) (hw : WtNum p i PP) (hi :
 
 end Point
 
+/- English proof (translation)
+Introduce `hH hW _` and use `Closed.imp (Closed.and (hH 1) hW) fun _ _ _ ⟨⟨_, _, h1⟩, ⟨_, _, h2⟩⟩ => by obtain ⟨x0, h⟩ := h1.and h2 exact ⟨83400, by norm_num, x0, fun x hx hle ι p hp i hi Y hY u1 hq => budgetAt p i ((h x hx hle ι p hp).1 i) ((h x hx hle ι p hp).2 i) hi Y hY u1 hq⟩`.
+-/
 theorem budget : (∀ M, HostN M) → WtN → Size → Budget := fun hH hW _ =>
   Closed.imp (Closed.and (hH 1) hW) fun _ _ _ ⟨⟨_, _, h1⟩, ⟨_, _, h2⟩⟩ => by
     obtain ⟨x0, h⟩ := h1.and h2

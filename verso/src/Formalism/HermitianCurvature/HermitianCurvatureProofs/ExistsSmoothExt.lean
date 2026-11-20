@@ -10,6 +10,9 @@ namespace Formalism.FourierDecayAlt.P.SmoothExtensionClosedSet
 
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt
 
+/- English proof (translation)
+Establish `h0 : Continuous (fun x : Mt k r => (Matrix.of x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ))` using `continuous_id`. Establish `hc : Continuous (fun x : Mt k r => (Matrix.of x)ᴴ * Hpk k r * Matrix.of x)` using `((h0.matrix_conjTranspose).matrix_mul continuous_const).matrix_mul h0`. Conclude with `isClosed_eq hc continuous_const`.
+-/
 theorem isClosed_GVt (k r : ℕ) : IsClosed {x : Mt k r | Matrix.of x ∈ B.GV k r} := by
   have h0 : Continuous (fun x : Mt k r => (Matrix.of x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)) :=
     continuous_id
@@ -17,6 +20,17 @@ theorem isClosed_GVt (k r : ℕ) : IsClosed {x : Mt k r | Matrix.of x ∈ B.GV k
     ((h0.matrix_conjTranspose).matrix_mul continuous_const).matrix_mul h0
   exact isClosed_eq hc continuous_const
 
+/- English proof (translation)
+Use `set s : Set (Mt k r) := {x : Mt k r | Matrix.of x ∈ B.GV k r} with hs`. Establish `hloc : ∀ i : s, ∃ (U : Set (Mt k r)) (f' : Mt k r → E), IsOpen U ∧ (i : Mt k r) ∈ U ∧ ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) f' U ∧ ∀ x ∈ U, Matrix.of x ∈ B.GV k r → F (Matrix.of x) = f' x`. Introduce `i`. Take `⟨U, f', hU, hiU, hf', hfe⟩` from `hF (Matrix.of (i : Mt k r)) i.2`. Conclude with `⟨U, f', hU, hiU, hf', fun x hx hxG => hfe (Matrix.of x) hx hxG⟩`.
+
+Use `choose U f' hU hiU hf' hfe using hloc`. Establish `hcov : s ⊆ ⋃ i : s, U i` using `fun x hx => mem_iUnion.2 ⟨⟨x, hx⟩, hiU ⟨x, hx⟩⟩`. Take `⟨ρ, hρ⟩` from `SmoothPartitionOfUnity.exists_isSubordinate 𝓘(ℝ, Mt k r) (isClosed_GVt k r) U hU hcov`. Use `⟨fun x => ∑ᶠ i, ρ i x • f' i x, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `ρ.contMDiff_finsum_smul (n := (⊤ : ℕ∞)) (g := f') fun i x hx => by`.
+
+Establish `hxU : x ∈ U i` using `hρ i hx`. Conclude with `((hf' i).contDiffAt ((hU i).mem_nhds hxU)).contMDiffAt`. Conclude with `contMDiff_iff_contDiff.1 h`. Introduce `x hx`. Establish `hsum : ∑ᶠ i, ρ i x = 1` using `ρ.sum_eq_one hx`.
+
+Establish `heq : ∀ i, ρ i x • f' i x = ρ i x • F (Matrix.of x)`. Introduce `i`. Distinguish the cases in `h0 : ρ i x = 0`. Simplify using `[h0]`. Establish `hxU : x ∈ U i` using `hρ i (subset_tsupport _ h0)`.
+
+Rewrite using `[hfe i x hxU hx]`. Simplify using `only [heq]`. Rewrite using `[← finsum_smul, hsum, one_smul]`.
+-/
 theorem exists_smoothExt {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (F : B.Mat k r → E) (hF : B.CkOn (⊤ : ℕ∞) (B.GV k r) F) :
     ∃ Ft : Mt k r → E, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) Ft ∧

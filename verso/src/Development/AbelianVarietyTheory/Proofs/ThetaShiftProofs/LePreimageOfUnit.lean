@@ -16,6 +16,9 @@ section General
 
 variable {S : Scheme.{0}} {G T T' : Over S}
 
+/- English proof (translation)
+Establish `e₁ : a' = Over.homMk r hr ≫ a` using `Over.OverMorphism.ext ha`. Establish `e₂ : b' = Over.homMk r hr ≫ b` using `Over.OverMorphism.ext hb`. Rewrite using `[e₁, e₂, ← MonObj.comp_mul]`. Both sides reduce to the same expression.
+-/
 theorem left_mul_of_comp [GrpObj G] (r : T'.left ⟶ T.left) (hr : r ≫ T.hom = T'.hom) {a b : T ⟶ G} {a' b' : T' ⟶ G}
     (ha : a'.left = r ≫ a.left) (hb : b'.left = r ≫ b.left) : (a' * b').left = r ≫ (a * b).left := by
   have e₁ : a' = Over.homMk r hr ≫ a := Over.OverMorphism.ext ha
@@ -23,20 +26,32 @@ theorem left_mul_of_comp [GrpObj G] (r : T'.left ⟶ T.left) (hr : r ≫ T.hom =
   rw [e₁, e₂, ← MonObj.comp_mul]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Hom.one_def, Over.comp_left, Over.toUnit_left]`. Both sides reduce to the same expression.
+-/
 theorem left_one [GrpObj G] : (1 : T ⟶ G).left = T.hom ≫ eSec G := by
   rw [Hom.one_def, Over.comp_left, Over.toUnit_left]
   rfl
 
+/- English proof (translation)
+Use `h 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`.
+-/
 theorem map_zero_eq_one {V M : Type} [AddGroup V] [Group M] (x : V → M) (h : ∀ v v', x (v + v') = x v * x v') :
     x 0 = 1 := by
   have := h 0 0
   rw [add_zero] at this
   exact left_eq_mul.1 this
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp_spMap {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Establish `: IsDominant (spMap j)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical j).2 (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot j).1 hj]`. Conclude with `bot_le)⟩`. Establish `: IsDomain A` using `hj.isDomain j`. Conclude with `Over.OverMorphism.ext (ext_of_isDominant_of_isSeparated (X := Sp A) G.hom ((Over.w a).trans (Over.w b).symm) (spMap j) h)`.
+-/
 theorem ext_of_generic {A K : Type} [CommRing A] [Field K] {j : A →+* K} (hj : Function.Injective j)
     [IsSeparated G.hom] {p : Sp A ⟶ S} {a b : Over.mk p ⟶ G} (h : spMap j ≫ a.left = spMap j ≫ b.left) : a = b := by
   have : IsDominant (spMap j) := ⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical j).2 (by
@@ -45,6 +60,11 @@ theorem ext_of_generic {A K : Type} [CommRing A] [Field K] {j : A →+* K} (hj :
   exact Over.OverMorphism.ext
     (ext_of_isDominant_of_isSeparated (X := Sp A) G.hom ((Over.w a).trans (Over.w b).symm) (spMap j) h)
 
+/- English proof (translation)
+Introduce `p _`. Establish `h₀ : spMap ρ (⊥ : PrimeSpectrum K) ∈ x ⁻¹ᵁ U` using `h (x := (⊥ : PrimeSpectrum K)) trivial`. Establish `hs : (show PrimeSpectrum A from p) ⤳ (show PrimeSpectrum A from spMap ρ (⊥ : PrimeSpectrum K))`. Use `(PrimeSpectrum.le_iff_specializes _ _).1 fun s hs => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ρ s ∈ (⊥ : Ideal K)`.
+
+Rewrite using `[Ideal.mem_bot]`. Assume the negation of the conclusion as `hne`. Conclude with `(show PrimeSpectrum A from p).isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hs (hρ s hne))`. Conclude with `hs.mem_open (x ⁻¹ᵁ U).isOpen h₀`.
+-/
 theorem le_preimage_of_unit {A K : Type} [CommRing A] [Field K] (ρ : A →+* K) (hρ : ∀ s, ρ s ≠ 0 → IsUnit s)
     {X : Scheme.{0}} (x : Sp A ⟶ X) (U : X.Opens) (h : ⊤ ≤ (spMap ρ ≫ x) ⁻¹ᵁ U) : ⊤ ≤ x ⁻¹ᵁ U := by
   intro p _
@@ -57,6 +77,9 @@ theorem le_preimage_of_unit {A K : Type} [CommRing A] [Field K] (ρ : A →+* K)
     exact (show PrimeSpectrum A from p).isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hs (hρ s hne))
   exact hs.mem_open (x ⁻¹ᵁ U).isOpen h₀
 
+/- English proof (translation)
+Use `⟨fun j hj => (h.1 j (le_preimage_of_unit ρ hρ x _ hj)).map ρ, fun j j' hj => ?_⟩` and prove the remaining obligations. Establish `hx` using `le_preimage_of_unit ρ hρ x _ hj`. Rewrite using `[HolHom.valR_spMap ρ x _ hx, ← map_mul, ← h.2 j j' hx]`.
+-/
 theorem isFrm_map {A K : Type} [CommRing A] [Field K] (ρ : A →+* K) (hρ : ∀ s, ρ s ≠ 0 → IsUnit s)
     {X : Scheme.{0}} (L : LB X) (x : Sp A ⟶ X) (τ : L.ι → A) (h : IsFrm L x τ) :
     IsFrm L (spMap ρ ≫ x) (fun j => ρ (τ j)) := by
@@ -70,23 +93,35 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} [StarRi
   {A : AnArc (𝓞 E)} {t : SAB H S} {y : Sp ℂ⸨X⸩ ⟶ S} {Φ : GenPts A t y} {Γ : Germs} (Ψ : SpecPts Φ Γ)
   {w : ℂ} (hw : Ψ.T < w.im)
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, spMap_comp_spMap]`. Conclude with `Ψ.yT_gen`.
+-/
 theorem val_base :
     spMap (Γ.R w).val.toRingHom ≫ spMap (Subalgebra.inclusion (Γ.le Ψ.T w hw)).toRingHom ≫ Ψ.yT = y := by
   rw [← Category.assoc, spMap_comp_spMap]
   exact Ψ.yT_gen
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, spMap_comp_spMap, Ψ.yw_eq w hw]`. Use `congr 2`. Conclude with `RingHom.ext fun s => Γ.ev_eq Ψ.T w hw s`.
+-/
 theorem ev_base :
     spMap (Γ.ev w).toRingHom ≫ spMap (Subalgebra.inclusion (Γ.le Ψ.T w hw)).toRingHom ≫ Ψ.yT = Ψ.yw w := by
   rw [← Category.assoc, spMap_comp_spMap, Ψ.yw_eq w hw]
   congr 2
   exact RingHom.ext fun s => Γ.ev_eq Ψ.T w hw s
 
+/- English proof (translation)
+Use `t.semi.separated` as an intermediate fact. Use `ext_of_generic (j := (Γ.R w).val.toRingHom) Subtype.val_injective ?_` and prove the remaining obligations. Rewrite using `[Ψ.xt_gen, Φ.add]`. Conclude with `left_mul_of_comp (T' := Over.mk y) _ (val_base Ψ hw) (Ψ.xt_gen w hw v).symm (Ψ.xt_gen w hw v').symm`.
+-/
 theorem xt_add (v v' : A.V) : Ψ.xt w hw (v + v') = Ψ.xt w hw v * Ψ.xt w hw v' := by
   have := t.semi.separated
   refine ext_of_generic (j := (Γ.R w).val.toRingHom) Subtype.val_injective ?_
   rw [Ψ.xt_gen, Φ.add]
   exact left_mul_of_comp (T' := Over.mk y) _ (val_base Ψ hw) (Ψ.xt_gen w hw v).symm (Ψ.xt_gen w hw v').symm
 
+/- English proof (translation)
+Use `t.semi.separated` as an intermediate fact. Use `ext_of_generic (j := (Γ.R w).val.toRingHom) Subtype.val_injective ?_` and prove the remaining obligations. Rewrite using `[Ψ.xt_gen, Φ.lin, Over.comp_left, Over.comp_left, ← Ψ.xt_gen w hw v, Category.assoc]`.
+-/
 theorem xt_act (e : 𝓞 E) (v : A.V) : Ψ.xt w hw (A.actV e v) = Ψ.xt w hw v ≫ t.act.act e := by
   have := t.semi.separated
   refine ext_of_generic (j := (Γ.R w).val.toRingHom) Subtype.val_injective ?_
@@ -94,19 +129,35 @@ theorem xt_act (e : 𝓞 E) (v : A.V) : Ψ.xt w hw (A.actV e v) = Ψ.xt w hw v �
 
 include hw
 
+/- English proof (translation)
+Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[Ψ.pi_eq w hw, xt_add]`. Conclude with `(left_mul_of_comp (T' := Over.mk (Ψ.yw w)) _ (ev_base Ψ hw) (Ψ.pi_eq w hw v) (Ψ.pi_eq w hw v')).symm`.
+-/
 theorem pi_add (v v' : A.V) : Ψ.pi w (v + v') = Ψ.pi w v * Ψ.pi w v' := by
   refine Over.OverMorphism.ext ?_
   rw [Ψ.pi_eq w hw, xt_add]
   exact (left_mul_of_comp (T' := Over.mk (Ψ.yw w)) _ (ev_base Ψ hw) (Ψ.pi_eq w hw v) (Ψ.pi_eq w hw v')).symm
 
+/- English proof (translation)
+Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[Ψ.pi_eq w hw, xt_act, Over.comp_left, Over.comp_left, Ψ.pi_eq w hw, Category.assoc]`.
+-/
 theorem pi_act (e : 𝓞 E) (v : A.V) : Ψ.pi w (A.actV e v) = Ψ.pi w v ≫ t.act.act e := by
   refine Over.OverMorphism.ext ?_
   rw [Ψ.pi_eq w hw, xt_act, Over.comp_left, Over.comp_left, Ψ.pi_eq w hw, Category.assoc]
 
+/- English proof (translation)
+Rewrite using `[Ψ.pi_eq w hw]`. Conclude with `isFrm_map (Γ.ev w).toRingHom (Γ.unit w) _ _ _ (Ψ.τt_frm w hw v)`.
+-/
 theorem pi_frm (v : A.V) : IsFrm t.PP.L (Ψ.pi w v).left (fun j => Ψ.fr w j v) := by
   rw [Ψ.pi_eq w hw]
   exact isFrm_map (Γ.ev w).toRingHom (Γ.unit w) _ _ _ (Ψ.τt_frm w hw v)
 
+/- English proof (translation)
+Rewrite `hj` using `[Ψ.pi_eq w hw]`. Establish `h₁ : ⊤ ≤ (Ψ.xt w hw 0).left ⁻¹ᵁ t.PP.L.U j` using `le_preimage_of_unit (Γ.ev w).toRingHom (Γ.unit w) _ _ hj`. Establish `h₂ : ⊤ ≤ (Φ.x 0).left ⁻¹ᵁ t.PP.L.U j`. Rewrite using `[← Ψ.xt_gen w hw 0]`. Conclude with `fun p _ => h₁ (x := spMap (Γ.R w).val.toRingHom p) trivial`.
+
+Establish `h₃ : ⊤ ≤ (spMap (Subalgebra.inclusion (Γ.le Ψ.T w hw)).toRingHom ≫ Ψ.yT) ⁻¹ᵁ (t.PP.L.pull (eSec t.G)).U (fun _ => j)`. Rewrite `h₁` using `[map_zero_eq_one _ (xt_add Ψ hw), left_one]`. Conclude with `fun p hp => Set.mem_iInter.2 fun _ => h₁ hp`. Establish `h₄ : Ψ.τt w 0 j = valR (spMap (Subalgebra.inclusion (Γ.le Ψ.T w hw)).toRingHom ≫ Ψ.yT) ((t.PP.L.pull (eSec t.G)).U (fun _ => j)) (t.PP.rig.s (fun _ => j)).val`. Use `Subtype.ext ?_` and prove the remaining obligations.
+
+Rewrite using `[Ψ.τt_gen w hw 0 j h₁, Φ.rig j h₂]`. Conclude with `(congrArg (fun q => valR q _ _) (val_base Ψ hw).symm).trans (HolHom.valR_spMap (Γ.R w).val.toRingHom _ _ h₃ _)`. Rewrite using `[SpecPts.fr, h₄, HolHom.valAt'_eq_valR, ← ev_base Ψ hw]`. Conclude with `(HolHom.valR_spMap (Γ.ev w).toRingHom _ _ h₃ _).symm`.
+-/
 theorem pi_rig (j : t.PP.L.ι) (hj : ⊤ ≤ (Ψ.pi w 0).left ⁻¹ᵁ t.PP.L.U j) :
     Ψ.fr w j 0 = valAt' (Ψ.yw w) ((t.PP.L.pull (eSec t.G)).U (fun _ => j)) (t.PP.rig.s (fun _ => j)).val := by
   rw [Ψ.pi_eq w hw] at hj
@@ -129,6 +180,9 @@ theorem pi_rig (j : t.PP.L.ι) (hj : ⊤ ≤ (Ψ.pi w 0).left ⁻¹ᵁ t.PP.L.U 
 
 omit hw
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ Ψ _ hw` and use `⟨pi_add Ψ hw, pi_act Ψ hw, pi_frm Ψ hw, pi_rig Ψ hw⟩`.
+-/
 theorem specPts_group : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (B : Type) [CommRing B] (bb : Base l B) (S : Scheme.{0}) [IsLocallyNoetherian S] (s : S ⟶ Sp B) (o : Obj D l bb s) (A : AnArc (𝓞 E)) (y : Sp ℂ⸨X⸩ ⟶ S) (Φ : GenPts A o.t y) (Γ : Germs) (Ψ : SpecPts Φ Γ), ∀ w : ℂ, Ψ.T < w.im → (∀ v v', Ψ.pi w (v + v') = Ψ.pi w v * Ψ.pi w v') ∧ (∀ (e : 𝓞 E) v, Ψ.pi w (A.actV e v) = Ψ.pi w v ≫ o.t.act.act e) ∧ (∀ v, IsFrm o.t.PP.L (Ψ.pi w v).left (fun j => Ψ.fr w j v)) ∧ ∀ j, ⊤ ≤ (Ψ.pi w 0).left ⁻¹ᵁ o.t.PP.L.U j → Ψ.fr w j 0 = valAt' (Ψ.yw w) ((o.t.PP.L.pull (eSec o.t.G)).U (fun _ => j)) (o.t.PP.rig.s (fun _ => j)).val :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ Ψ _ hw =>
     ⟨pi_add Ψ hw, pi_act Ψ hw, pi_frm Ψ hw, pi_rig Ψ hw⟩

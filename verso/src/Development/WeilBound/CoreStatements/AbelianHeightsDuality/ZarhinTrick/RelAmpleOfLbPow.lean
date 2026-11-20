@@ -22,6 +22,9 @@ namespace PositivityTheory.PrwZar
 
 variable {Ω : Type} [Field Ω] [IsAlgClosed Ω]
 
+/- English proof (translation)
+Use `haveI : IsProper G.hom := hG.proper`. Establish `hP : (lbPow M n).IsLB` using `GlobalTheory.isLB_lbPow hM n`. Conclude with `GlobalTheory.PosDefAmple.relAmple_of_nsmul hM hP hn (cls_lbPow hM n hP).symm h`.
+-/
 theorem relAmple_of_lbPow {G : Over (Sp Ω)} [GrpObj G] (hG : IsAbelianScheme G) {M : LB G.left} (hM : M.IsLB)
     (n : ℕ) (hn : 1 ≤ n) (h : Out.RelAmple G (lbPow M n)) : Out.RelAmple G M := by
   haveI : IsProper G.hom := hG.proper

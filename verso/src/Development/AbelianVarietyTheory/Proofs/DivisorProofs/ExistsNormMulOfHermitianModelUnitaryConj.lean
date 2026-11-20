@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.InertUnitOrb
 
+/- English proof (translation)
+Establish `hu' : uᵀ * u.map K.c = 1`. Use `congrArg Matrix.transpose hu` as an intermediate fact. Rewrite `this` using `[transpose_mul, transpose_transpose, transpose_one]`. Then use the resulting hypothesis. Establish `hS : ∀ y z : Fin n → K.E, stdH K n y z = y ⬝ᵥ (fun k => K.c (z k))` using `fun _ _ => rfl`. Establish `hc : (fun k => K.c ((u *ᵥ b) k)) = u.map K.c *ᵥ (fun k => K.c (b k))`.
+
+Use function extensionality and compare the values at `k`. Conclude with `RingHom.map_mulVec (K.c : K.E →+* K.E) u b k`. Rewrite using `[hS, hS, hc, dotProduct_mulVec, ← vecMul_transpose, vecMul_vecMul, hu', vecMul_one]`.
+-/
 theorem stdH_mulVec_eq_of_unitary {K : UQ} {n : ℕ} (u : Matrix (Fin n) (Fin n) K.E)
     (hu : (u.map K.c)ᵀ * u = 1) (a b : Fin n → K.E) :
     stdH K n (u *ᵥ a) (u *ᵥ b) = stdH K n a b := by
@@ -21,6 +26,25 @@ theorem stdH_mulVec_eq_of_unitary {K : UQ} {n : ℕ} (u : Matrix (Fin n) (Fin n)
     exact RingHom.map_mulVec (K.c : K.E →+* K.E) u b k
   rw [hS, hS, hc, dotProduct_mulVec, ← vecMul_transpose, vecMul_vecMul, hu', vecMul_one]
 
+/- English proof (translation)
+Introduce `K B n γ γ' u x x' ψ ψ' ⟨_, hg, hh⟩ ⟨_, hg', hh'⟩ hu hγ hsep`. Establish `hgen` using `GlobalTheory.UnitLemma.InvAlg.exists_aeval_eq_of_separable K B hsep`. Set `φ : B.A →ₗ[K.E] B.A` to `ψ.symm.toLinearMap ∘ₗ Matrix.toLin' u ∘ₗ ψ'.toLinearMap`. Establish `hφ_apply : ∀ y, φ y = ψ.symm (u *ᵥ ψ' y)` using `fun y => by`. Simplify using `[φ, Matrix.toLin'_apply]`.
+
+Establish `hψg : ∀ w, ψ.symm (γ *ᵥ w) = B.g * ψ.symm w` using `fun w => by`. Apply `ψ.injective` to reduce the goal to its premises. Rewrite using `[hg, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Establish `hφg : ∀ y, φ (B.g * y) = B.g * φ y` using `fun y => by`. Rewrite using `[hφ_apply, hφ_apply, hg', mulVec_mulVec, ← hγ, ← mulVec_mulVec, hψg]`.
+
+Establish `hpow : ∀ (k : ℕ) y, φ (B.g ^ k * y) = B.g ^ k * φ y`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro y`. Simplify using the standard rewrite rules.
+
+Consider the case `succ k ih => intro y`. Rewrite using `[pow_succ', mul_assoc, hφg, ih, ← mul_assoc]`. Establish `hφp : ∀ (f : K.E[X]) y, φ (aeval B.g f * y) = aeval B.g f * φ y`. Introduce `f`. Proceed by induction on `f using Polynomial.induction_on' with`.
+
+Consider the case `add p q hp hq => intro y`. Rewrite using `[map_add, add_mul, add_mul, map_add, hp, hq]`. Consider the case `monomial k e`. Introduce `y`. Rewrite using `[aeval_monomial, mul_assoc, ← Algebra.smul_def, map_smul, hpow, Algebra.smul_def, mul_assoc]`.
+
+Establish `hφ : ∀ y, φ y = y * φ 1` using `fun y => by`. Take `⟨f, rfl⟩` from `hgen y`. Simplify using `using hφp f 1`. Establish `hu2 : u * (u.map K.c)ᵀ = 1` using `mul_eq_one_comm.mp hu`. Establish `hy0 : φ (ψ'.symm ((u.map K.c)ᵀ *ᵥ ψ 1)) = 1`.
+
+Rewrite using `[hφ_apply, LinearEquiv.apply_symm_apply, mulVec_mulVec, hu2, one_mulVec, LinearEquiv.symm_apply_apply]`. Establish `hunit : IsUnit (φ 1)`. Establish `h1 : ψ'.symm ((u.map K.c)ᵀ *ᵥ ψ 1) * φ 1 = 1` using `by rw [← hφ, hy0]`. Conclude with `⟨⟨φ 1, ψ'.symm ((u.map K.c)ᵀ *ᵥ ψ 1), by rw [mul_comm]; exact h1, h1⟩, rfl⟩`. Use `⟨hunit.unit, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[IsUnit.unit_spec]`. Establish `hiso : ∀ y z, B.herm x' y z = B.herm x (y * φ 1) (z * φ 1)` using `fun y z => by`. Rewrite using `[← hh', ← stdH_mulVec_eq_of_unitary u hu, ← hh, ← hφ, ← hφ, hφ_apply, hφ_apply, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Establish `key : ∀ y, Algebra.trace K.E B.A (((x' : B.A) - x * (φ 1 * B.σ (φ 1))) * y) = 0` using `fun y => by`. Establish `h1` using `hiso y 1`.
+
+Simplify using `only [InvAlg.herm, map_one, mul_one, one_mul] at h1`. Rewrite using `[sub_mul, map_sub, h1, sub_eq_zero]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Conclude with `sub_eq_zero.mp (GlobalTheory.UnitLemma.TraceNondeg.eq_zero_of_trace_mul_eq_zero K B hsep hgen _ key)`.
+-/
 theorem class_eq_of_conj :
     ∀ (K : GlobalTheory.UnitLemma.UQ) (B : GlobalTheory.UnitLemma.InvAlg K) (n : ℕ) (γ γ' u : Matrix (Fin n) (Fin n) K.E)
       (x x' : B.Aˣ) (ψ ψ' : B.A ≃ₗ[K.E] (Fin n → K.E)), GlobalTheory.InertUnitOrb.IsModel B γ x ψ →

@@ -21,6 +21,9 @@ namespace GlobalTheory.CompanionTheory.SmallSecSupp
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Take `⟨a, ha, rfl⟩` from `GodementJacquet.mem_valBall_iff_exists.1 h`. Establish `ha' : ValuativeRel.valuation F a ≤ 1` using `ha`. Rewrite using `[map_mul, map_pow]`. Conclude with `mul_le_of_le_one_right' ha'`.
+-/
 theorem valuation_le_of_mem_valBall {x : F} {m : ℕ} (h : x ∈ valBall F (m : ℤ)) :
     ValuativeRel.valuation F x ≤ ValuativeRel.valuation F (GLnLocal.uniformizer F : F) ^ m := by
   obtain ⟨a, ha, rfl⟩ := GodementJacquet.mem_valBall_iff_exists.1 h
@@ -28,6 +31,9 @@ theorem valuation_le_of_mem_valBall {x : F} {m : ℕ} (h : x ∈ valBall F (m : 
   rw [map_mul, map_pow]
   exact mul_le_of_le_one_right' ha'
 
+/- English proof (translation)
+Establish `h1 : ValuativeRel.valuation F (x - 1) < 1` using `mem_valBall_one_iff.1 h`. Establish `h2 : ValuativeRel.valuation F (x - 1) < ValuativeRel.valuation F (1 : F)`. Simplify using `using h1`. Simplify using `using Valuation.map_eq_of_sub_lt (ValuativeRel.valuation F) h2`.
+-/
 theorem valuation_eq_one_of_sub_one {x : F} (h : x - 1 ∈ valBall F 1) :
     ValuativeRel.valuation F x = 1 := by
   have h1 : ValuativeRel.valuation F (x - 1) < 1 := mem_valBall_one_iff.1 h
@@ -35,29 +41,62 @@ theorem valuation_eq_one_of_sub_one {x : F} (h : x - 1 ∈ valBall F 1) :
     simpa using h1
   simpa using Valuation.map_eq_of_sub_lt (ValuativeRel.valuation F) h2
 
+/- English proof (translation)
+Use `mem_valBall_zero_iff.2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ValuativeRel.valuation F x⁻¹ ≤ 1`. Rewrite using `[map_inv₀, h, inv_one]`.
+-/
 theorem inv_mem_valBall_zero {x : F} (h : ValuativeRel.valuation F x = 1) :
     x⁻¹ ∈ valBall F 0 := by
   refine mem_valBall_zero_iff.2 ?_
   change ValuativeRel.valuation F x⁻¹ ≤ 1
   rw [map_inv₀, h, inv_one]
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Simplify using `at h`.
+-/
 theorem ne_zero_of_valuation_eq_one {x : F} (h : ValuativeRel.valuation F x = 1) : x ≠ 0 := by
   rintro rfl
   simp at h
 
+/- English proof (translation)
+The claim follows from `valBall_antitone (by positivity) h`.
+-/
 theorem mem_zero_of_nat {x : F} {m : ℕ} (h : x ∈ valBall F (m : ℤ)) : x ∈ valBall F 0 :=
   valBall_antitone (by positivity) h
 
+/- English proof (translation)
+The claim follows from `valBall_antitone (by exact_mod_cast hm) h`.
+-/
 theorem mem_one_of_nat {x : F} {m : ℕ} (hm : 1 ≤ m) (h : x ∈ valBall F (m : ℤ)) :
     x ∈ valBall F 1 :=
   valBall_antitone (by exact_mod_cast hm) h
 
+/- English proof (translation)
+The claim follows from `mem_valBall_zero_iff.2 (one_mem _)`.
+-/
 theorem one_mem_zero : (1 : F) ∈ valBall F 0 := mem_valBall_zero_iff.2 (one_mem _)
 
+/- English proof (translation)
+Simplify using `using add_mem (mem_zero_of_nat h) (one_mem_zero (F := F))`.
+-/
 theorem mem_zero_of_sub_one {x : F} {m : ℕ} (h : x - 1 ∈ valBall F (m : ℤ)) :
     x ∈ valBall F 0 := by
   simpa using add_mem (mem_zero_of_nat h) (one_mem_zero (F := F))
 
+/- English proof (translation)
+Establish `i00 : g.val 0 0 ∈ valBall F 0` using `mem_zero_of_sub_one h00`. Establish `i11 : g.val 1 1 ∈ valBall F 0` using `mem_zero_of_sub_one h11`. Establish `i01 : g.val 0 1 ∈ valBall F 0` using `mem_zero_of_nat h01`. Establish `i10 : g.val 1 0 ∈ valBall F 0` using `mem_zero_of_nat h10`. Establish `hD : g.val.det - 1 ∈ valBall F 1`.
+
+Rewrite using `[Matrix.det_fin_two]`. Establish `e : g.val 0 0 * g.val 1 1 - g.val 0 1 * g.val 1 0 - 1 = (g.val 0 0 - 1) * g.val 1 1 + (g.val 1 1 - 1) - g.val 0 1 * g.val 1 0` using `by ring`. Rewrite using `[e]`. Use `sub_mem (add_mem ?_ (mem_one_of_nat hm h11)) ?_` and prove the remaining obligations. Simplify using `using mul_mem_valBall (mem_one_of_nat hm h00) i11`.
+
+Simplify using `using mul_mem_valBall (mem_one_of_nat hm h01) i10`. Establish `hinv` using `inv_mem_valBall_zero (valuation_eq_one_of_sub_one hD)`. Establish `hinvval : ((g⁻¹ : GL (Fin 2) F)).val = (g.val.det)⁻¹ • Matrix.adjugate g.val`. Rewrite using `[Matrix.coe_units_inv, Matrix.inv_def, Ring.inverse_eq_inv']`. Establish `mulz : ∀ {y : F}, y ∈ valBall F 0 → (g.val.det)⁻¹ * y ∈ 𝒪[F]` using `fun hy => mem_valBall_zero_iff.1 (by simpa using mul_mem_valBall hinv hy)`.
+
+Rewrite using `[GLnLocal.mem_congruenceSubgroup_iff, GLnLocal.mem_integralGL_iff]`. Use `⟨⟨fun i j => ?_, fun i j => ?_⟩, fun i j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `mem_valBall_zero_iff.1 i00`. Conclude with `mem_valBall_zero_iff.1 i01`.
+
+Conclude with `mem_valBall_zero_iff.1 i10`. Conclude with `mem_valBall_zero_iff.1 i11`. Express the relevant statement in the definitionally equal form `((g⁻¹ : GL (Fin 2) F)).val i j ∈ 𝒪[F]`. Rewrite using `[hinvval, Matrix.adjugate_fin_two]`. Apply the tactic sequence `fin_cases i <;> fin_cases j`.
+
+Simplify using `using mulz i11`. Simplify using `using mulz (neg_mem i01)`. Simplify using `using mulz (neg_mem i10)`. Simplify using `using mulz i00`. Apply the tactic sequence `fin_cases i <;> fin_cases j`.
+
+Simplify using `using valuation_le_of_mem_valBall h00`. Simplify using `using valuation_le_of_mem_valBall h01`. Simplify using `using valuation_le_of_mem_valBall h10`. Simplify using `using valuation_le_of_mem_valBall h11`.
+-/
 theorem mem_congruenceSubgroup_of_entries (g : GL (Fin 2) F) {m : ℕ} (hm : 1 ≤ m)
     (h00 : g.val 0 0 - 1 ∈ valBall F (m : ℤ)) (h01 : g.val 0 1 ∈ valBall F (m : ℤ))
     (h10 : g.val 1 0 ∈ valBall F (m : ℤ)) (h11 : g.val 1 1 - 1 ∈ valBall F (m : ℤ)) :
@@ -99,6 +138,11 @@ theorem mem_congruenceSubgroup_of_entries (g : GL (Fin 2) F) {m : ℕ} (hm : 1 �
     · simpa using valuation_le_of_mem_valBall h10
     · simpa using valuation_le_of_mem_valBall h11
 
+/- English proof (translation)
+Establish `hdet : h.val.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 h.isUnit).ne_zero`. Use `⟨Units.mk0 (h.val.det / h.val 1 1) (div_ne_zero hdet hd), Matrix.GeneralLinearGroup.mkOfDetNeZero !![1, 0; h.val 1 0, h.val 1 1] (by simpa [Matrix.det_fin_two] using hd), rfl, rfl, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [uni2, dg2, Matrix.mul_apply, Fin.sum_univ_two, Matrix.GeneralLinearGroup.mkOfDetNeZero, Matrix.det_fin_two, Matrix.GeneralLinearGroup.mk', Matrix.unitOfDetInvertible] <;>`.
+
+Apply the tactic sequence `field_simp <;> ring`.
+-/
 theorem exists_decomp (h : GL (Fin 2) F) (hd : h.val 1 1 ≠ 0) :
     ∃ (a : Fˣ) (k : GL (Fin 2) F), (a : F) = h.val.det / h.val 1 1 ∧
       k.val = !![1, 0; h.val 1 0, h.val 1 1] ∧
@@ -113,6 +157,11 @@ theorem exists_decomp (h : GL (Fin 2) F) (hd : h.val 1 1 ≠ 0) :
       Matrix.det_fin_two, Matrix.GeneralLinearGroup.mk', Matrix.unitOfDetInvertible] <;>
     field_simp <;> ring
 
+/- English proof (translation)
+Establish `hv` using `valuation_eq_one_of_sub_one (mem_one_of_nat hm h11)`. Establish `hd` using `ne_zero_of_valuation_eq_one hv`. Take `⟨a, k, ha, hk, e⟩` from `exists_decomp h hd`. Use `⟨hd, a, k, ha, hk, ?_, e⟩` and prove the remaining obligations. Apply the tactic sequence `refine mem_congruenceSubgroup_of_entries k hm ?_ ?_ ?_ ?_ <;> rw [hk]`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using `using h10`. Simplify using `using h11`.
+-/
 theorem exists_decomp_congruence {m : ℕ} (hm : 1 ≤ m) (h : GL (Fin 2) F)
     (h10 : h.val 1 0 ∈ valBall F (m : ℤ)) (h11 : h.val 1 1 - 1 ∈ valBall F (m : ℤ)) :
     h.val 1 1 ≠ 0 ∧ ∃ (a : Fˣ) (k : GL (Fin 2) F), (a : F) = h.val.det / h.val 1 1 ∧
@@ -128,12 +177,18 @@ theorem exists_decomp_congruence {m : ℕ} (hm : 1 ≤ m) (h : GL (Fin 2) F)
   · simpa using h10
   · simpa using h11
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, hk]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem diag_mul_lower_triangular_val (a : Fˣ) (k : GL (Fin 2) F) {c d : F} (hk : k.val = !![1, 0; c, d]) :
     (dg2 a 1 * k).val = !![(a : F), 0; c, d] := by
   rw [Units.val_mul, hk]
   ext i j
   fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases j <;> simp [uni2, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem unipotent_mul_lower_entries (x : F) (g : GL (Fin 2) F) (j : Fin 2) :
     (uni2 x * g).val 1 j = g.val 1 j := by
   fin_cases j <;> simp [uni2, Matrix.mul_apply, Fin.sum_univ_two]
@@ -141,6 +196,17 @@ theorem unipotent_mul_lower_entries (x : F) (g : GL (Fin 2) F) (j : Fin 2) :
 variable [MeasurableSpace F] [BorelSpace F]
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Establish `hD : ((Matrix.GeneralLinearGroup.det u : Fˣ) : F) - 1 ∈ valBall F 1`. Establish `e` using `fun i j => GodementSectionLocal.sub_one_mem_valBall_of_mem_congruenceSubgroup hu i j`. Establish `h00` using `e 0 0`. Establish `h01` using `e 0 1`. Establish `h10` using `e 1 0`.
+
+Establish `h11` using `e 1 1`. Simplify using `only [Matrix.one_apply_eq, ne_eq, zero_ne_one, one_ne_zero, not_false_eq_true, Matrix.one_apply_ne, sub_zero] at h00 h01 h10 h11`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two]`. Establish `e2 : u.val 0 0 * u.val 1 1 - u.val 0 1 * u.val 1 0 - 1 = (u.val 0 0 - 1) * u.val 1 1 + (u.val 1 1 - 1) - u.val 0 1 * u.val 1 0` using `by ring`. Rewrite using `[e2]`.
+
+Use `sub_mem (add_mem ?_ (mem_one_of_nat hn h11)) ?_` and prove the remaining obligations. Simplify using `using mul_mem_valBall (mem_one_of_nat hn h00) (mem_zero_of_sub_one h11)`. Simplify using `using mul_mem_valBall (mem_one_of_nat hn h01) (mem_zero_of_nat h10)`. Establish `hv` using `valuation_eq_one_of_sub_one hD`. Establish `h1 : ((Matrix.GeneralLinearGroup.det u : Fˣ) : F) ∈ 𝒪[F]`.
+
+Express the relevant statement in the definitionally equal form `ValuativeRel.valuation F _ ≤ 1`. Conclude with `hv.le`. Establish `h2 : (((Matrix.GeneralLinearGroup.det u)⁻¹ : Fˣ) : F) ∈ 𝒪[F]`. Rewrite using `[Units.val_inv_eq_inv_val]`. Conclude with `mem_valBall_zero_iff.1 (inv_mem_valBall_zero hv)`.
+
+Establish `hmod` using `GlobalTheory.CompanionTheory.LocalTestVectors.modulus_eq_one_of_integral h1 h2`. Unfold `mp`. Rewrite using `[hmod]`. Simplify using the standard rewrite rules.
+-/
 theorem mp_det_half_eq_one {n : ℕ} (hn : 1 ≤ n) {u : GL (Fin 2) F}
     (hu : u ∈ GLnLocal.congruenceSubgroup F 2 n) :
     mp (Matrix.GeneralLinearGroup.det u) (1 / 2) = 1 := by
@@ -171,6 +237,31 @@ theorem mp_det_half_eq_one {n : ℕ} (hn : 1 ≤ n) {u : GL (Fin 2) F}
   rw [hmod]
   simp
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ hψ W' W n m C c hn hnm hpsi hinv hC h0 hval hzero`. Establish `hm : 1 ≤ m` using `hn.trans hnm`. Establish `ball : ∀ {x : F}, x ∈ valBall F (m : ℤ) → x ∈ valBall F (n : ℤ)` using `fun h => valBall_antitone (by exact_mod_cast hnm) h`. Use `⟨fun h hne => ?_, fun x u hu u10 u11 => ?_⟩` and prove the remaining obligations. Establish `hrow : h.val 1 0 ∈ valBall F (m : ℤ) ∧ h.val 1 1 - 1 ∈ valBall F (m : ℤ)`.
+
+Assume the negation of the conclusion as `hcon`. Conclude with `hne (hzero h hcon)`. Take `⟨h10, h11⟩` from `hrow`. Take `⟨-, a, k, -, hk, hkm, e⟩` from `exists_decomp_congruence hm h h10 h11`. Establish `hW : W' h ≠ 0`.
+
+Introduce `h00`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hval h h10 h11, h00, mul_zero]`. Establish `hWa : W' (dg2 a 1) ≠ 0`. Introduce `h00`.
+
+Apply `hW` to reduce the goal to its premises. Rewrite using `[e, hpsi, hinv _ k hkm, h00, mul_zero]`. Establish `ha : (a : F) - 1 ∈ valBall F (n : ℤ)`. Assume the negation of the conclusion as `hcon`. Conclude with `hWa (h0 a hcon)`.
+
+Establish `hv` using `diag_mul_lower_triangular_val a k hk`. Use `⟨h.val 0 1 / h.val 1 1, dg2 a 1 * k, ⟨?_, ?_, ?_⟩, e⟩` and prove the remaining obligations. Apply the tactic sequence `refine mem_congruenceSubgroup_of_entries _ hn ?_ ?_ ?_ ?_ <;> rw [hv]`. Simplify using `using ha`. Simplify using the standard rewrite rules.
+
+Simplify using `using ball h10`. Simplify using `using ball h11`. Rewrite using `[hv]`. Simplify using `using h10`. Rewrite using `[hv]`.
+
+Simplify using `using h11`. Establish `e` using `fun i j => GodementSectionLocal.sub_one_mem_valBall_of_mem_congruenceSubgroup hu i j`. Establish `h00` using `e 0 0`. Establish `h01` using `e 0 1`. Simplify using `only [Matrix.one_apply_eq, ne_eq, zero_ne_one, one_ne_zero, not_false_eq_true, Matrix.one_apply_ne, sub_zero] at h00 h01`.
+
+Take `⟨hd, a, k, ha, hk, hkm, ed⟩` from `exists_decomp_congruence hm u u10 u11`. Establish `hv1` using `valuation_eq_one_of_sub_one (mem_one_of_nat hm u11)`. Establish `hdi` using `inv_mem_valBall_zero hv1`. Establish `hy : u.val 0 1 / u.val 1 1 ∈ 𝒪[F]`. Rewrite using `[div_eq_mul_inv]`.
+
+Conclude with `mem_valBall_zero_iff.1 (by simpa using mul_mem_valBall (mem_zero_of_nat h01) hdi)`. Establish `hψy : (ψ (u.val 0 1 / u.val 1 1) : ℂ) = 1` using `GlobalTheory.CompanionTheory.SphOne.coe_eq_one_of_isStd hψ _ hy`. Establish `ha1 : (a : F) - 1 ∈ valBall F (n : ℤ)`. Establish `e3 : (a : F) - 1 = ((u.val 0 0 - 1) * u.val 1 1 - u.val 0 1 * u.val 1 0) * (u.val 1 1)⁻¹`. Rewrite using `[ha, Matrix.det_fin_two]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e3]`. Establish `t1 : (u.val 0 0 - 1) * u.val 1 1 ∈ valBall F (n : ℤ)`. Simplify using `using mul_mem_valBall h00 (mem_zero_of_sub_one u11)`.
+
+Establish `t2 : u.val 0 1 * u.val 1 0 ∈ valBall F (n : ℤ)`. Simplify using `using mul_mem_valBall h01 (mem_zero_of_nat u10)`. Simplify using `using mul_mem_valBall (sub_mem t1 t2) hdi`. Establish `hWu : W' u = C`. Rewrite using `[ed, hpsi, hinv _ k hkm, hC a ha1, hψy, one_mul]`.
+
+Establish `r10 : (uni2 x * u).val 1 0 ∈ valBall F (m : ℤ)` using `by rw [unipotent_mul_lower_entries]; exact u10`. Establish `r11 : (uni2 x * u).val 1 1 - 1 ∈ valBall F (m : ℤ)` using `by rw [unipotent_mul_lower_entries]; exact u11`. Rewrite using `[hval _ r10 r11, GlobalTheory.CompanionTheory.WhittakerPsi.det_left_unipotent_mul, mp_det_half_eq_one hn hu, hpsi, hWu]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem support_and_value : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle), IsStd ψ → ∀ (W' : GL (Fin 2) F → ℂ) (W : GL (Fin 3) F → ℂ) (n m : ℕ) (C c : ℂ), 1 ≤ n → n ≤ m →
   (∀ (y : F) (g : GL (Fin 2) F), W' (uni2 y * g) = (ψ y : ℂ) * W' g) →
   (∀ g, ∀ u ∈ GLnLocal.congruenceSubgroup F 2 m, W' (g * u) = W' g) →

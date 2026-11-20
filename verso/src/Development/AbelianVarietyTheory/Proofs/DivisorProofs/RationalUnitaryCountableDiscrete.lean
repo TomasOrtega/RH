@@ -7,6 +7,13 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.MainNotions.GlobalTheo
 
 namespace GlobalTheory.RatUDisc
 
+/- English proof (translation)
+Use `haveI : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable`. Use `haveI : Countable (Matrix (Fin n) (Fin n) E) := inferInstanceAs (Countable (Fin n → Fin n → E))`. Use `haveI : Countable (GL (Fin n) E) := Units.val_injective.countable`. Use `Function.Injective.countable (f := fun x : ratU σ J => (Classical.choose (Subgroup.mem_subgroupOf.1 x.2) : GL (Fin n) E)) ?_` and prove the remaining obligations. Introduce `x y h`.
+
+Establish `hx` using `Classical.choose_spec (Subgroup.mem_subgroupOf.1 x.2)`. Establish `hy` using `Classical.choose_spec (Subgroup.mem_subgroupOf.1 y.2)`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hx, ← hy]`.
+
+Conclude with `congrArg _ h`.
+-/
 theorem countable_ratU (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) : Countable (ratU σ J) := by
   haveI : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable
@@ -21,6 +28,17 @@ theorem countable_ratU (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
   rw [← hx, ← hy]
   exact congrArg _ h
 
+/- English proof (translation)
+Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing (F := F) (E := E)` as an intermediate fact. Take `⟨U, hU, h⟩` from `GlobalTheory.RationalDiscrete.exists_nhds_zero_inclR (F := F) (E := E)`. Use `discreteTopology_of_isOpen_singleton_one ?_` and prove the remaining obligations. Set `f : ratU σ J → Matrix (Fin n) (Fin n) (AF F ⊗[F] E)` to `fun g => ((g.1.1 : GL (Fin n) (AF F ⊗[F] E)) : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) - 1`. Establish `hf : Continuous f` using `(Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)).sub continuous_const`.
+
+Establish `hf1 : f 1 = 0` using `sub_self _`. Rewrite using `[isOpen_singleton_iff_nhds_eq_pure]`. Use `le_antisymm (fun s hs => Filter.mem_of_superset (x := {1}) ?_ (Set.singleton_subset_iff.2 hs)) (pure_le_nhds _)` and prove the remaining obligations. Establish `hW : (⋂ i, ⋂ j, (fun g => f g i j) ⁻¹' U) ∈ 𝓝 (1 : ratU σ J)` using `Filter.iInter_mem.2 fun i => Filter.iInter_mem.2 fun j => (hf.matrix_elem i j).continuousAt.preimage_mem_nhds (by show U ∈ 𝓝 (f 1 i j)`. Rewrite using `[hf1]`.
+
+Conclude with `hU)`. Use `Filter.mem_of_superset hW fun g hg => ?_` and prove the remaining obligations. Take `⟨γ, hγ⟩` from `Subgroup.mem_subgroupOf.1 g.2`. Establish `hfg : ∀ i j, f g i j = inclR (F` using `F) (AF F) (((γ : Matrix (Fin n) (Fin n) E) - 1 : Matrix (Fin n) (Fin n) E) i j) := by`. Introduce `i j`.
+
+Use `show (((g.1.1 : GL (Fin n) (AF F ⊗[F] E)) : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) - 1) i j = _`. Rewrite using `[← hγ, Matrix.sub_apply, Matrix.sub_apply, map_sub, Matrix.one_apply, Matrix.one_apply, apply_ite (inclR (F := F) (AF F)), map_one, map_zero]`. Both sides reduce to the same expression. Establish `hγ1 : γ = 1`. Use `Units.ext (sub_eq_zero.1 (Matrix.ext fun i j => h _ ?_))` and prove the remaining obligations.
+
+Rewrite using `[Units.val_one, ← hfg]`. Conclude with `Set.mem_iInter.1 (Set.mem_iInter.1 hg i) j`. Use `Subtype.ext (Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[← hγ, hγ1, map_one]`. Both sides reduce to the same expression.
+-/
 theorem discrete_ratU (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) : DiscreteTopology (ratU σ J) := by
   have := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing (F := F) (E := E)
@@ -56,6 +74,9 @@ theorem discrete_ratU (F E : Type) [Field F] [NumberField F] [Field E] [NumberFi
   rw [← hγ, hγ1, map_one]
   rfl
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J` and use `⟨countable_ratU F E σ n J, discrete_ratU F E σ n J⟩`.
+-/
 theorem countable_discrete_ratU : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E), Countable (ratU σ J) ∧ DiscreteTopology (ratU σ J) :=
   fun F E _ _ _ _ _ σ n J => ⟨countable_ratU F E σ n J, discrete_ratU F E σ n J⟩

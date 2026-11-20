@@ -12,30 +12,51 @@ def SecGlue : Prop :=
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Simplify using `[Sec.res]`.
+-/
 lemma res_id {F : Shv R} {U : Scheme.{0}} (a : Sec F U) : Sec.res (𝟙 U) a = a := by
   simp [Sec.res]
 
+/- English proof (translation)
+Simplify using `[Sec.res]`.
+-/
 lemma res_comp {F : Shv R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (a : Sec F U) :
     Sec.res (k ≫ g) a = Sec.res k (Sec.res g a) := by
   simp [Sec.res]
 
+/- English proof (translation)
+The claim follows from `map_add _ _ _`.
+-/
 lemma res_add {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (a b : Sec F U) :
     Sec.res g (a + b) = Sec.res g a + Sec.res g b := map_add _ _ _
 
+/- English proof (translation)
+The claim follows from `map_smul _ _ _`.
+-/
 lemma res_smul {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (r : ULift.{1} R) (a : Sec F U) :
     Sec.res g (r • a) = r • Sec.res g a := map_smul _ _ _
 
+/- English proof (translation)
+Take `⟨S, hS, hSP⟩` from `hP`. Take `⟨S', hS', hSQ⟩` from `hQ`. Conclude with `⟨S ⊓ S', Scheme.etaleTopology.intersection_covering hS hS', fun V g hg => ⟨hSP V g hg.1, hSQ V g hg.2⟩⟩`.
+-/
 lemma loc_inter {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (hP : Loc U P) (hQ : Loc U Q) :
     Loc U fun V g => P V g ∧ Q V g := by
   obtain ⟨S, hS, hSP⟩ := hP
   obtain ⟨S', hS', hSQ⟩ := hQ
   exact ⟨S ⊓ S', Scheme.etaleTopology.intersection_covering hS hS', fun V g hg => ⟨hSP V g hg.1, hSQ V g hg.2⟩⟩
 
+/- English proof (translation)
+Take `⟨S, hS, hSP⟩` from `hP`. Conclude with `⟨S, hS, fun V g hg => h V g (hSP V g hg)⟩`.
+-/
 lemma loc_mono {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (hP : Loc U P)
     (h : ∀ V g, P V g → Q V g) : Loc U Q := by
   obtain ⟨S, hS, hSP⟩ := hP
   exact ⟨S, hS, fun V g hg => h V g (hSP V g hg)⟩
 
+/- English proof (translation)
+Take `⟨S, hS, hSP⟩` from `hP`. Conclude with `⟨S.pullback k, Scheme.etaleTopology.pullback_stable k hS, fun W h hh => hSP W _ hh⟩`.
+-/
 lemma loc_pull {U V : Scheme.{0}} (k : V ⟶ U) {P : ∀ W : Scheme.{0}, (W ⟶ U) → Prop} (hP : Loc U P) :
     Loc V fun W h => P W (h ≫ k) := by
   obtain ⟨S, hS, hSP⟩ := hP
@@ -44,6 +65,13 @@ lemma loc_pull {U V : Scheme.{0}} (k : V ⟶ U) {P : ∀ W : Scheme.{0}, (W ⟶ 
 section
 variable {I J K T M L : Cx R}
 
+/- English proof (translation)
+Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => simp`. Consider the case `of p y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul a b`. Rewrite using `[← DirectSum.lof_eq_of (ULift.{1} R)]`. Simplify using `only [Pair.lift, Tens.res, DirectSum.lmap_lof, DirectSum.toModule_lof, TensorProduct.map_tmul, TensorProduct.lift.tmul]`. Conclude with `(τ.nat g _ _ _ _ a b).symm`. Consider the case `add y y' hy hy' => simp only [map_add, hy, hy']`.
+
+Consider the case `add x x' hx hx' => simp only [map_add, hx, hx']`.
+-/
 lemma lift_res (τ : Pair I J T) {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) (x : Tens I J U w) :
     τ.lift V w (Tens.res g w x) = Sec.res g (τ.lift U w x) := by
   induction x using DirectSum.induction_on with
@@ -59,6 +87,9 @@ lemma lift_res (τ : Pair I J T) {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) (x :
     | add y y' hy hy' => simp only [map_add, hy, hy']
   | add x x' hx hx' => simp only [map_add, hx, hx']
 
+/- English proof (translation)
+Rewrite using `[← DirectSum.lof_eq_of (ULift.{1} R)]`. Simplify using `only [Pair.lift, DirectSum.toModule_lof, TensorProduct.lift.tmul]`.
+-/
 lemma lift_single (τ : Pair I J T) (U : Scheme.{0}) (s t st : ℤ) (h1 : s + t = st) (a : Sec (I.X s) U)
     (b : Sec (J.X t) U) :
     τ.lift U st (DirectSum.of _ (⟨(s, t), h1⟩ : {p : ℤ × ℤ // p.1 + p.2 = st}) (a ⊗ₜ[ULift.{1} R] b)) =
@@ -80,6 +111,9 @@ noncomputable def B (μ' : Pair J K M) (ν' : Pair I M L) (V : Scheme.{0}) (st u
     Tens I J V st →ₗ[ULift.{1} R] (Sec (K.X u) V →ₗ[ULift.{1} R] Sec (L.X w) V) :=
   DirectSum.toModule _ _ _ fun p => TensorProduct.lift (Bp μ' ν' V st u w h2 p)
 
+/- English proof (translation)
+Rewrite using `[← DirectSum.lof_eq_of (ULift.{1} R)]`. Simplify using `only [B, Bp, DirectSum.toModule_lof, TensorProduct.lift.tmul, LinearMap.mk₂_apply, LinearMap.comp_apply]`.
+-/
 lemma B_single (μ' : Pair J K M) (ν' : Pair I M L) (V : Scheme.{0}) (s t st u w : ℤ) (h1 : s + t = st)
     (h2 : st + u = w) (a : Sec (I.X s) V) (b : Sec (J.X t) V) (c : Sec (K.X u) V) :
     B μ' ν' V st u w h2 (DirectSum.of _ (⟨(s, t), h1⟩ : {p : ℤ × ℤ // p.1 + p.2 = st}) (a ⊗ₜ[ULift.{1} R] b)) c =
@@ -87,6 +121,13 @@ lemma B_single (μ' : Pair J K M) (ν' : Pair I M L) (V : Scheme.{0}) (s t st u 
   rw [← DirectSum.lof_eq_of (ULift.{1} R)]
   simp only [B, Bp, DirectSum.toModule_lof, TensorProduct.lift.tmul, LinearMap.mk₂_apply, LinearMap.comp_apply]
 
+/- English proof (translation)
+Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => simp [Sec.res]`. Consider the case `of p y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp [Sec.res]`.
+
+Consider the case `tmul a b`. Rewrite using `[← DirectSum.lof_eq_of (ULift.{1} R)]`. Simplify using `only [B, Bp, Tens.res, DirectSum.lmap_lof, DirectSum.toModule_lof, TensorProduct.map_tmul, TensorProduct.lift.tmul, LinearMap.mk₂_apply, LinearMap.comp_apply]`. Rewrite using `[ν'.nat, μ'.nat]`. Consider the case `add y y' hy hy' => simp only [map_add, LinearMap.add_apply, hy, hy']`.
+
+Consider the case `add x x' hx hx' => simp only [map_add, LinearMap.add_apply, hx, hx']`.
+-/
 lemma B_res (μ' : Pair J K M) (ν' : Pair I M L) {W V : Scheme.{0}} (k : W ⟶ V) (st u w : ℤ) (h2 : st + u = w)
     (x : Tens I J V st) (c : Sec (K.X u) V) :
     Sec.res k (B μ' ν' V st u w h2 x c) = B μ' ν' W st u w h2 (Tens.res k st x) (Sec.res k c) := by
@@ -108,6 +149,9 @@ end
 section
 variable {I J K T M L : Cx R}
 
+/- English proof (translation)
+Establish `h0 : τ.lift V st (x - y) = 0` using `by rw [map_sub, h, sub_self]`. Use `(hg R (L.X w) V).1 _ _ (loc_mono (hτ.2 V st (x - y) h0) fun W k hk => ?_)` and prove the remaining obligations. Rewrite `hk` using `[map_sub, sub_eq_zero]`. Rewrite using `[B_res, B_res, hk]`.
+-/
 lemma B_wd (hg : SecGlue) (τ : Pair I J T) (hτ : τ.IsTensor) (μ' : Pair J K M) (ν' : Pair I M L)
     {V : Scheme.{0}} {st u w : ℤ} {h2 : st + u = w} {x y : Tens I J V st} (c : Sec (K.X u) V)
     (h : τ.lift V st x = τ.lift V st y) : B μ' ν' V st u w h2 x c = B μ' ν' V st u w h2 y c := by
@@ -116,6 +160,13 @@ lemma B_wd (hg : SecGlue) (τ : Pair I J T) (hτ : τ.IsTensor) (μ' : Pair J K 
   rw [map_sub, sub_eq_zero] at hk
   rw [B_res, B_res, hk]
 
+/- English proof (translation)
+Take `⟨S, hS, hP⟩` from `hτ.1 U st a`. Take `⟨m0, hm0⟩` from `(hg R (L.X w) U).2 S hS (fun V g hg' => B μ' ν' V st u w h2 (hP V g hg').choose (Sec.res g c)) (by`. Introduce `V W g k hg'`. Rewrite using `[B_res, res_comp k g c]`. Apply `B_wd hg τ hτ μ' ν'` to reduce the goal to its premises.
+
+Rewrite using `[lift_res, (hP V g hg').choose_spec, (hP W (k ≫ g) (S.downward_closed hg' k)).choose_spec, res_comp])`. Use `⟨m0, fun V g x hx => ?_⟩` and prove the remaining obligations. Apply `(hg R (L.X w) V).1` to reduce the goal to its premises. Use `loc_mono (loc_pull g (P := fun W h => S.arrows h) ⟨S, hS, fun _ _ h => h⟩) fun W k hk => ?_` and prove the remaining obligations. Rewrite using `[← res_comp, hm0 W (k ≫ g) hk, B_res, ← res_comp]`.
+
+Apply `B_wd hg τ hτ μ' ν'` to reduce the goal to its premises. Rewrite using `[lift_res, (hP W (k ≫ g) hk).choose_spec, hx, res_comp]`.
+-/
 lemma exists_m (hg : SecGlue) (τ : Pair I J T) (hτ : τ.IsTensor) (μ' : Pair J K M) (ν' : Pair I M L)
     (U : Scheme.{0}) (st u w : ℤ) (h2 : st + u = w) (a : Sec (T.X st) U) (c : Sec (K.X u) U) :
     ∃ m0 : Sec (L.X w) U, ∀ (V : Scheme.{0}) (g : V ⟶ U) (x : Tens I J V st), τ.lift V st x = Sec.res g a →
@@ -140,11 +191,17 @@ noncomputable def mraw (hg : SecGlue) (τ : Pair I J T) (hτ : τ.IsTensor) (μ'
 
 variable (hg : SecGlue) (τ : Pair I J T) (hτ : τ.IsTensor) (μ' : Pair J K M) (ν' : Pair I M L)
 
+/- English proof (translation)
+The claim follows from `(exists_m hg τ hτ μ' ν' U st u w h2 a c).choose_spec V g x hx`.
+-/
 lemma res_mraw_eq_of_lift {U : Scheme.{0}} {st u w : ℤ} {h2 : st + u = w} (a : Sec (T.X st) U) (c : Sec (K.X u) U)
     {V : Scheme.{0}} (g : V ⟶ U) (x : Tens I J V st) (hx : τ.lift V st x = Sec.res g a) :
     Sec.res g (mraw hg τ hτ μ' ν' U st u w h2 a c) = B μ' ν' V st u w h2 x (Sec.res g c) :=
   (exists_m hg τ hτ μ' ν' U st u w h2 a c).choose_spec V g x hx
 
+/- English proof (translation)
+Apply `(hg R (L.X w) U).1` to reduce the goal to its premises. Use `loc_mono (loc_inter (hτ.1 U st a) (hτ.1 U st a')) fun V g hV => ?_` and prove the remaining obligations. Take `⟨⟨x, hx⟩, ⟨x', hx'⟩⟩` from `hV`. Rewrite using `[res_add, res_mraw_eq_of_lift hg τ hτ μ' ν' (a + a') c g (x + x') (by rw [map_add, hx, hx', res_add]), res_mraw_eq_of_lift hg τ hτ μ' ν' a c g x hx, res_mraw_eq_of_lift hg τ hτ μ' ν' a' c g x' hx', map_add, LinearMap.add_apply]`.
+-/
 lemma mraw_add_a {U : Scheme.{0}} {st u w : ℤ} {h2 : st + u = w} (a a' : Sec (T.X st) U) (c : Sec (K.X u) U) :
     mraw hg τ hτ μ' ν' U st u w h2 (a + a') c = mraw hg τ hτ μ' ν' U st u w h2 a c + mraw hg τ hτ μ' ν' U st u w h2 a' c := by
   apply (hg R (L.X w) U).1
@@ -153,6 +210,9 @@ lemma mraw_add_a {U : Scheme.{0}} {st u w : ℤ} {h2 : st + u = w} (a a' : Sec (
   rw [res_add, res_mraw_eq_of_lift hg τ hτ μ' ν' (a + a') c g (x + x') (by rw [map_add, hx, hx', res_add]),
     res_mraw_eq_of_lift hg τ hτ μ' ν' a c g x hx, res_mraw_eq_of_lift hg τ hτ μ' ν' a' c g x' hx', map_add, LinearMap.add_apply]
 
+/- English proof (translation)
+Apply `(hg R (L.X w) U).1` to reduce the goal to its premises. Use `loc_mono (hτ.1 U st a) fun V g hV => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `hV`. Rewrite using `[res_smul, res_mraw_eq_of_lift hg τ hτ μ' ν' (r • a) c g (r • x) (by rw [map_smul, hx, res_smul]), res_mraw_eq_of_lift hg τ hτ μ' ν' a c g x hx, map_smul, LinearMap.smul_apply]`.
+-/
 lemma mraw_smul_a {U : Scheme.{0}} {st u w : ℤ} {h2 : st + u = w} (r : ULift.{1} R) (a : Sec (T.X st) U) (c : Sec (K.X u) U) :
     mraw hg τ hτ μ' ν' U st u w h2 (r • a) c = r • mraw hg τ hτ μ' ν' U st u w h2 a c := by
   apply (hg R (L.X w) U).1
@@ -161,6 +221,9 @@ lemma mraw_smul_a {U : Scheme.{0}} {st u w : ℤ} {h2 : st + u = w} (r : ULift.{
   rw [res_smul, res_mraw_eq_of_lift hg τ hτ μ' ν' (r • a) c g (r • x) (by rw [map_smul, hx, res_smul]),
     res_mraw_eq_of_lift hg τ hτ μ' ν' a c g x hx, map_smul, LinearMap.smul_apply]
 
+/- English proof (translation)
+Apply `(hg R (L.X w) U).1` to reduce the goal to its premises. Use `loc_mono (hτ.1 U st a) fun V g hV => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `hV`. Rewrite using `[res_add, res_mraw_eq_of_lift hg τ hτ μ' ν' a (c + c') g x hx, res_mraw_eq_of_lift hg τ hτ μ' ν' a c g x hx, res_mraw_eq_of_lift hg τ hτ μ' ν' a c' g x hx, res_add, map_add]`.
+-/
 lemma mraw_add_c {U : Scheme.{0}} {st u w : ℤ} {h2 : st + u = w} (a : Sec (T.X st) U) (c c' : Sec (K.X u) U) :
     mraw hg τ hτ μ' ν' U st u w h2 a (c + c') = mraw hg τ hτ μ' ν' U st u w h2 a c + mraw hg τ hτ μ' ν' U st u w h2 a c' := by
   apply (hg R (L.X w) U).1
@@ -169,6 +232,9 @@ lemma mraw_add_c {U : Scheme.{0}} {st u w : ℤ} {h2 : st + u = w} (a : Sec (T.X
   rw [res_add, res_mraw_eq_of_lift hg τ hτ μ' ν' a (c + c') g x hx, res_mraw_eq_of_lift hg τ hτ μ' ν' a c g x hx,
     res_mraw_eq_of_lift hg τ hτ μ' ν' a c' g x hx, res_add, map_add]
 
+/- English proof (translation)
+Apply `(hg R (L.X w) U).1` to reduce the goal to its premises. Use `loc_mono (hτ.1 U st a) fun V g hV => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `hV`. Rewrite using `[res_smul, res_mraw_eq_of_lift hg τ hτ μ' ν' a (r • c) g x hx, res_mraw_eq_of_lift hg τ hτ μ' ν' a c g x hx, res_smul, map_smul]`.
+-/
 lemma mraw_smul_c {U : Scheme.{0}} {st u w : ℤ} {h2 : st + u = w} (r : ULift.{1} R) (a : Sec (T.X st) U) (c : Sec (K.X u) U) :
     mraw hg τ hτ μ' ν' U st u w h2 a (r • c) = r • mraw hg τ hτ μ' ν' U st u w h2 a c := by
   apply (hg R (L.X w) U).1
@@ -176,6 +242,9 @@ lemma mraw_smul_c {U : Scheme.{0}} {st u w : ℤ} {h2 : st + u = w} (r : ULift.{
   obtain ⟨x, hx⟩ := hV
   rw [res_smul, res_mraw_eq_of_lift hg τ hτ μ' ν' a (r • c) g x hx, res_mraw_eq_of_lift hg τ hτ μ' ν' a c g x hx, res_smul, map_smul]
 
+/- English proof (translation)
+Apply `(hg R (L.X w) V).1` to reduce the goal to its premises. Use `loc_mono (hτ.1 V st (Sec.res g' a)) fun W k hW => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `hW`. Rewrite using `[← res_comp, res_mraw_eq_of_lift hg τ hτ μ' ν' a c (k ≫ g') x (by rw [hx, res_comp]), res_mraw_eq_of_lift hg τ hτ μ' ν' (Sec.res g' a) (Sec.res g' c) k x hx, res_comp]`.
+-/
 lemma mraw_nat {V U : Scheme.{0}} (g' : V ⟶ U) {st u w : ℤ} {h2 : st + u = w} (a : Sec (T.X st) U) (c : Sec (K.X u) U) :
     Sec.res g' (mraw hg τ hτ μ' ν' U st u w h2 a c) = mraw hg τ hτ μ' ν' V st u w h2 (Sec.res g' a) (Sec.res g' c) := by
   apply (hg R (L.X w) V).1
@@ -184,6 +253,9 @@ lemma mraw_nat {V U : Scheme.{0}} (g' : V ⟶ U) {st u w : ℤ} {h2 : st + u = w
   rw [← res_comp, res_mraw_eq_of_lift hg τ hτ μ' ν' a c (k ≫ g') x (by rw [hx, res_comp]),
     res_mraw_eq_of_lift hg τ hτ μ' ν' (Sec.res g' a) (Sec.res g' c) k x hx, res_comp]
 
+/- English proof (translation)
+Substitute `h3` using the available equality. Establish `h` using `res_mraw_eq_of_lift hg τ hτ μ' ν' (h2 := h2) (τ.mul U s t st h1 a b) c (𝟙 U) (DirectSum.of _ (⟨(s, t), h1⟩ : {p : ℤ × ℤ // p.1 + p.2 = st}) (a ⊗ₜ[ULift.{1} R] b)) (by rw [lift_single, res_id])`. Rewrite `h` using `[res_id, res_id]`. Rewrite using `[h, B_single]`.
+-/
 lemma mraw_eq (U : Scheme.{0}) (s t u st tu w : ℤ) (h1 : s + t = st) (h2 : st + u = w) (h3 : t + u = tu)
     (h4 : s + tu = w) (a : Sec (I.X s) U) (b : Sec (J.X t) U) (c : Sec (K.X u) U) :
     mraw hg τ hτ μ' ν' U st u w h2 (τ.mul U s t st h1 a b) c = ν'.mul U s tu w h4 a (μ'.mul U t u tu h3 b c) := by
@@ -205,6 +277,11 @@ end LateralTheory.EtaleFoundations.TensTriFamPf
 
 open LateralTheory.EtaleFoundations.TensTriFamPf in
 
+/- English proof (translation)
+Introduce `R _ I J K T τ hτ M L μ' ν'`. Use `⟨fun U st u w h2 => mfam hglue τ hτ μ' ν' U st u w h2, ?_, ?_⟩` and prove the remaining obligations. Introduce `V U g s t w h a b`. Conclude with `mraw_nat hglue τ hτ μ' ν' g a b`. Introduce `U s t u st tu w h1 h2 h3 h4 a b c`.
+
+Conclude with `mraw_eq hglue τ hτ μ' ν' U s t u st tu w h1 h2 h3 h4 a b c`.
+-/
 theorem LateralTheory.EtaleFoundations.etale_tensor_triple_product_family_of_gluing (hglue : SecGlue) : LateralTheory.EtaleFoundations.EtaleTensorTripleProductFamilyExists := by
   intro R _ I J K T τ hτ M L μ' ν'
   refine ⟨fun U st u w h2 => mfam hglue τ hτ μ' ν' U st u w h2, ?_, ?_⟩

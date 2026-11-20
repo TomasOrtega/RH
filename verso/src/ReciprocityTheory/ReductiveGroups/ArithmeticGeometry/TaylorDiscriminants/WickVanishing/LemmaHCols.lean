@@ -18,6 +18,9 @@ def Mf (mu : Fin n → MvPolynomial ι k →ₗ[k] k) (P : MvPolynomial (ι × F
 
 variable (mu : Fin n → MvPolynomial ι k →ₗ[k] k)
 
+/- English proof (translation)
+Unfold `Mf`. Use `Finset.sum_subset hS (fun mo _ h => ?_)` and prove the remaining obligations. Use `first`. Consider the case `rw [MvPolynomial.notMem_support_iff.mp h, zero_mul]`. Consider the case `rw [MvPolynomial.not_mem_support_iff.mp h, zero_mul]`.
+-/
 theorem Mf_subset (P : MvPolynomial (ι × Fin n) k) (S : Finset (ι × Fin n →₀ ℕ)) (hS : P.support ⊆ S) :
     Mf mu P = ∑ mo ∈ S, P.coeff mo * ∏ b, mu b (monomial (colM mo b) 1) := by
   unfold Mf
@@ -26,6 +29,9 @@ theorem Mf_subset (P : MvPolynomial (ι × Fin n) k) (S : Finset (ι × Fin n �
     | rw [MvPolynomial.notMem_support_iff.mp h, zero_mul]
     | rw [MvPolynomial.not_mem_support_iff.mp h, zero_mul]
 
+/- English proof (translation)
+Rewrite using `[Mf_subset mu (P + Q) (P.support ∪ Q.support) MvPolynomial.support_add, Mf_subset mu P _ Finset.subset_union_left, Mf_subset mu Q _ Finset.subset_union_right, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun mo _ => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_add, add_mul]`.
+-/
 theorem Mf_add (P Q : MvPolynomial (ι × Fin n) k) : Mf mu (P + Q) = Mf mu P + Mf mu Q := by
   classical
   rw [Mf_subset mu (P + Q) (P.support ∪ Q.support) MvPolynomial.support_add,
@@ -34,14 +40,23 @@ theorem Mf_add (P Q : MvPolynomial (ι × Fin n) k) : Mf mu (P + Q) = Mf mu P + 
   refine Finset.sum_congr rfl (fun mo _ => ?_)
   rw [MvPolynomial.coeff_add, add_mul]
 
+/- English proof (translation)
+Rewrite using `[Mf_subset mu (a • P) P.support MvPolynomial.support_smul, Mf, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun mo _ => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul, mul_assoc]`.
+-/
 theorem Mf_smul (a : k) (P : MvPolynomial (ι × Fin n) k) : Mf mu (a • P) = a * Mf mu P := by
   rw [Mf_subset mu (a • P) P.support MvPolynomial.support_smul, Mf, Finset.mul_sum]
   refine Finset.sum_congr rfl (fun mo _ => ?_)
   rw [MvPolynomial.coeff_smul, smul_eq_mul, mul_assoc]
 
+/- English proof (translation)
+Simplify using `[Mf]`.
+-/
 theorem Mf_zero : Mf mu (0 : MvPolynomial (ι × Fin n) k) = 0 := by
   simp [Mf]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [Mf_zero mu]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, Mf_add, ih]`.
+-/
 theorem Mf_sum {α : Type} (s : Finset α) (P : α → MvPolynomial (ι × Fin n) k) :
     Mf mu (∑ a ∈ s, P a) = ∑ a ∈ s, Mf mu (P a) := by
   classical
@@ -49,6 +64,9 @@ theorem Mf_sum {α : Type} (s : Finset α) (P : α → MvPolynomial (ι × Fin n
   | empty => simp [Mf_zero mu]
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, Mf_add, ih]
 
+/- English proof (translation)
+Rewrite using `[Mf_subset mu _ {mo} MvPolynomial.support_monomial_subset, Finset.sum_singleton, MvPolynomial.coeff_monomial, if_pos rfl]`.
+-/
 theorem Mf_monomial (mo : ι × Fin n →₀ ℕ) (a : k) :
     Mf mu (monomial mo a) = a * ∏ b, mu b (monomial (colM mo b) 1) := by
   classical
@@ -58,6 +76,11 @@ theorem Mf_monomial (mo : ι × Fin n →₀ ℕ) (a : k) :
 def combine (f : Fin n → (ι →₀ ℕ)) : ι × Fin n →₀ ℕ :=
   ∑ b, Finsupp.mapDomain (fun l => (l, b)) (f b)
 
+/- English proof (translation)
+Unfold `combine`. Rewrite using `[Finsupp.finset_sum_apply, Finset.sum_eq_single b]`. Conclude with `Finsupp.mapDomain_apply (fun x y h => (Prod.mk.inj h).1) (f b) l`. Introduce `b' _ hb'`. Apply `Finsupp.mapDomain_notin_range` to reduce the goal to its premises.
+
+Introduce and unpack `⟨l', hl'⟩`. Conclude with `hb' (Prod.mk.inj hl').2`. Introduce `h`. Conclude with `absurd (Finset.mem_univ b) h`.
+-/
 theorem combine_apply (f : Fin n → (ι →₀ ℕ)) (l : ι) (b : Fin n) : combine f (l, b) = f b l := by
   classical
   unfold combine
@@ -70,15 +93,24 @@ theorem combine_apply (f : Fin n → (ι →₀ ℕ)) (l : ι) (b : Fin n) : com
   · intro h
     exact absurd (Finset.mem_univ b) h
 
+/- English proof (translation)
+Use extensionality with `l`. Simplify using `[colM, combine_apply]`.
+-/
 theorem colM_combine (f : Fin n → (ι →₀ ℕ)) (b : Fin n) : colM (combine f) b = f b := by
   ext l
   simp [colM, combine_apply]
 
+/- English proof (translation)
+Use extensionality with `⟨l, b⟩`. Rewrite using `[combine_apply]`. Simplify using `[colM]`.
+-/
 theorem combine_colM (mo : ι × Fin n →₀ ℕ) : combine (colM mo) = mo := by
   ext ⟨l, b⟩
   rw [combine_apply]
   simp [colM]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert x s hx ih`. Rewrite using `[Finset.prod_insert hx, ih, MvPolynomial.monomial_mul, Finset.sum_insert hx, Finset.prod_insert hx]`.
+-/
 theorem prod_monomial' {β : Type} (s : Finset β) (g : β → ι × Fin n →₀ ℕ) (a : β → k) :
     ∏ b ∈ s, monomial (g b) (a b) = monomial (∑ b ∈ s, g b) (∏ b ∈ s, a b) := by
   classical
@@ -87,6 +119,9 @@ theorem prod_monomial' {β : Type} (s : Finset β) (g : β → ι × Fin n →�
   | insert x s hx ih =>
     rw [Finset.prod_insert hx, ih, MvPolynomial.monomial_mul, Finset.sum_insert hx, Finset.prod_insert hx]
 
+/- English proof (translation)
+Unfold `prodQ`. Simplify using `only [colE, MvPolynomial.rename_monomial]`. Rewrite using `[prod_monomial']`. Both sides reduce to the same expression.
+-/
 theorem prodQ_monomial (f : Fin n → (ι →₀ ℕ)) (a : Fin n → k) :
     prodQ (fun b => monomial (f b) (a b)) = monomial (combine f) (∏ b, a b) := by
   unfold prodQ
@@ -94,6 +129,15 @@ theorem prodQ_monomial (f : Fin n → (ι →₀ ℕ)) (a : Fin n → k) :
   rw [prod_monomial']
   rfl
 
+/- English proof (translation)
+Establish `hR : ∀ b, colE b (R b) = ∑ α ∈ (R b).support, colE b (monomial α (coeff α (R b)))`. Introduce `b`. Use `conv_lhs => rw [as_sum (R b)]`. Rewrite using `[map_sum]`. Establish `hmu : ∀ b, mu b (R b) = ∑ α ∈ (R b).support, coeff α (R b) * mu b (monomial α 1)`.
+
+Introduce `b`. Use `conv_lhs => rw [as_sum (R b)]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun α _ => by`. Rewrite using `[show monomial α (coeff α (R b)) = coeff α (R b) • monomial α (1 : k) by`.
+
+Rewrite using `[smul_monomial, smul_eq_mul, mul_one], map_smul, smul_eq_mul]`. Rewrite using `[prodQ, Finset.prod_congr rfl (fun b _ => hR b), Finset.prod_univ_sum, Mf_sum, Finset.prod_congr rfl (fun b _ => hmu b), Finset.prod_univ_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Establish `hp` using `prodQ_monomial x (fun b => coeff (x b) (R b))`. Simplify using `only [prodQ] at hp`.
+
+Rewrite using `[hp, Mf_monomial, Finset.prod_mul_distrib]`. Simplify using `only [colM_combine]`.
+-/
 theorem Mf_prodQ (R : Fin n → MvPolynomial ι k) : Mf mu (prodQ R) = ∏ b, mu b (R b) := by
   classical
   have hR : ∀ b, colE b (R b) = ∑ α ∈ (R b).support, colE b (monomial α (coeff α (R b))) := by
@@ -115,6 +159,11 @@ theorem Mf_prodQ (R : Fin n → MvPolynomial ι k) : Mf mu (prodQ R) = ∏ b, mu
   rw [hp, Mf_monomial, Finset.prod_mul_distrib]
   simp only [colM_combine]
 
+/- English proof (translation)
+Establish `hd : ∀ {σ : Type} [Fintype σ] (m : σ →₀ ℕ), m.degree = ∑ i, m i`. Introduce `σ _ m`. Unfold `Finsupp.degree`. Conclude with `Finset.sum_subset (Finset.subset_univ _) (fun i _ hi => Finsupp.notMem_support_iff.mp hi)`. Simplify using `only [hd]`.
+
+Rewrite using `[Fintype.sum_prod_type_right]`. Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Simplify using `[colM]`.
+-/
 theorem degree_colM (mo : ι × Fin n →₀ ℕ) : ∑ b, (colM mo b).degree = mo.degree := by
   classical
   have hd : ∀ {σ : Type} [Fintype σ] (m : σ →₀ ℕ), m.degree = ∑ i, m i := by
@@ -126,6 +175,9 @@ theorem degree_colM (mo : ι × Fin n →₀ ℕ) : ∑ b, (colM mo b).degree = 
   refine Finset.sum_congr rfl (fun b _ => ?_)
   simp [colM]
 
+/- English proof (translation)
+Unfold `MvPolynomial.totalDegree`. Apply `Finset.sup_le` to reduce the goal to its premises. Introduce `s hs`. Rewrite using `[Finset.mem_singleton.mp (MvPolynomial.support_monomial_subset hs)]`. Conclude with `le_rfl`.
+-/
 theorem totalDegree_monomial_one_le (α : ι →₀ ℕ) : (monomial α (1 : k)).totalDegree ≤ α.degree := by
   classical
   unfold MvPolynomial.totalDegree
@@ -134,6 +186,11 @@ theorem totalDegree_monomial_one_le (α : ι →₀ ℕ) : (monomial α (1 : k))
   rw [Finset.mem_singleton.mp (MvPolynomial.support_monomial_subset hs)]
   exact le_rfl
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => intro x`. Simplify using the standard rewrite rules. Consider the case `succ i ih`. Introduce `x`.
+
+Rewrite using `[Function.iterate_succ_apply', ih, pow_succ']`. Both sides reduce to the same expression.
+-/
 theorem iter_linear (c : ι × Fin n → ι × Fin n → k) (i : ℕ) :
     ∀ x : MvPolynomial (ι × Fin n) k, (secondOrder k c)^[i] x = ((soL c) ^ i) x := by
   induction i with
@@ -143,6 +200,9 @@ theorem iter_linear (c : ι × Fin n → ι × Fin n → k) (i : ℕ) :
     rw [Function.iterate_succ_apply', ih, pow_succ']
     rfl
 
+/- English proof (translation)
+Rewrite using `[iter_linear]`. Conclude with `map_zero _`.
+-/
 theorem iter_zero' (c : ι × Fin n → ι × Fin n → k) (i : ℕ) :
     (secondOrder k c)^[i] (0 : MvPolynomial (ι × Fin n) k) = 0 := by
   rw [iter_linear]
@@ -150,6 +210,23 @@ theorem iter_zero' (c : ι × Fin n → ι × Fin n → k) (i : ℕ) :
 
 variable [Algebra ℚ k]
 
+/- English proof (translation)
+Use `set N := P.totalDegree with hN`. Use `set cc : ι × Fin n → ι × Fin n → k := cS κ (Finset.univ : Finset (Fin n)) with hcc`. Establish `hccu : cc = fun p q : ι × Fin n => if p.2 = q.2 then κ p.1 q.1 else 0` using `cS_univ κ`. Establish `hE : ∀ b α, (monomial α (1 : k)).totalDegree ≤ N → lam b α = mu b (E1 κ 1 N (monomial α 1))`. Introduce `b α hα`.
+
+Rewrite using `[hlm, E1, map_sum]`. Use `Finset.sum_subset (Finset.range_subset_range.2 (Nat.succ_le_succ hα)) (fun i hi hi' => ?_) |>.trans ?_` and prove the remaining obligations. Rewrite using `[so_iter_eq_zero κ i _ (by simp only [Finset.mem_range] at hi'; omega), smul_zero, map_zero]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[one_pow, mul_one, ← algebraMap_smul k ((i.factorial : ℚ)⁻¹)]`.
+
+Establish `hmo : ∀ mo ∈ P.support, ∏ b, lam b (colM mo b) = ∑ i ∈ Finset.range (N + 1), (algebraMap ℚ k ((i.factorial : ℚ)⁻¹) * 1 ^ i) * Mf mu ((secondOrder k cc)^[i] (monomial mo 1))`. Introduce `mo hmo`. Establish `hdeg : mo.degree ≤ N`. Use `le_totalDegree hmo` as an intermediate fact. Conclude with `le_of_eq_of_le (by rfl) this`.
+
+Establish `hD : ∀ b, (monomial (colM mo b) (1 : k)).totalDegree ≤ (colM mo b).degree` using `fun b => totalDegree_monomial_one_le _`. Establish `hsum : ∑ b, (colM mo b).degree ≤ N` using `(degree_colM mo).le.trans hdeg`. Establish `hb : ∀ b, (monomial (colM mo b) (1 : k)).totalDegree ≤ N` using `fun b => (hD b).trans ((Finset.single_le_sum (fun b _ => Nat.zero_le _) (Finset.mem_univ b)).trans hsum)`. Rewrite using `[Finset.prod_congr rfl (fun b _ => hE b (colM mo b) (hb b)), ← Mf_prodQ]`. Establish `hx` using `exp_cols κ 1 N (fun b => (colM mo b).degree) hsum Finset.univ (fun b => monomial (colM mo b) 1) hD`.
+
+Simplify using `only [Finset.mem_univ, if_true] at hx`. Rewrite using `[← hx, prodQ_monomial, Finset.prod_const_one, combine_colM, exp_opA_apply _ _ _ _ ((totalDegree_monomial_one_le mo).trans hdeg), Mf_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Mf_smul]`. Rewrite using `[Finset.sum_congr rfl fun mo hmo' => by rw [hmo mo hmo']]`.
+
+Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Establish `hlin : ∀ i, ∑ mo ∈ P.support, P.coeff mo * ((algebraMap ℚ k ((i.factorial : ℚ)⁻¹) * 1 ^ i) * Mf mu ((secondOrder k cc)^[i] (monomial mo 1))) = (algebraMap ℚ k ((i.factorial : ℚ)⁻¹) * 1 ^ i) * Mf mu ((secondOrder k cc)^[i] P)`. Introduce `i`. Use `conv_rhs => rw [as_sum P]`.
+
+Rewrite using `[iter_linear, map_sum, Mf_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun mo _ => ?_` and prove the remaining obligations. Rewrite using `[show monomial mo (P.coeff mo) = P.coeff mo • monomial mo (1 : k) by`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one], map_smul, Mf_smul, ← iter_linear]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Finset.sum_congr rfl fun i _ => hlin i, Finset.sum_range_succ', Finset.sum_eq_zero]`. Simplify using the standard rewrite rules. Introduce `i _`. Rewrite using `[Function.iterate_succ_apply, hccu, hP, iter_zero', Mf_zero, mul_zero]`.
+-/
 theorem colAlg (κ : ι → ι → k) (lam : Fin n → (ι →₀ ℕ) → k)
     (hlm : ∀ b α, lam b α = ∑ i ∈ Finset.range ((monomial α (1 : k)).totalDegree + 1),
         mu b (((i.factorial : ℚ)⁻¹) • (secondOrder k κ)^[i] (monomial α 1)))
@@ -220,6 +297,13 @@ def valL {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O] 
   map_smul' a Q := by
     rw [GE.dpolyOf_smul_P, map_mul, MvPowerSeries.constantCoeff_C, RingHom.id_apply, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `R _ d O _ _ k _ _ _ B h hax m ι π _ _ c s u φ _ hUF hFU n P hP g`. Establish `hP' : secondOrder k (fun p q : ι × Fin n => if p.2 = q.2 then SCPf.kapH m c s u φ p.1 q.1 else 0) P = 0`. Rewrite using `[← hP]`. Use `congr 1`. Use function extensionality and compare the values at `p q`.
+
+Unfold `SCPf.kapH`. Distinguish the cases in `h1 : p.2 = q.2`. Simplify using `[h1]`. Simplify using `[h1]`. Establish `key` using `colAlg (fun b => valL B u (g b)) (SCPf.kapH m c s u φ) (fun b α => MvPowerSeries.constantCoeff (ordNabla k B h m s (fun l => (u l, φ l)) (MvPolynomial.monomial α 1) (liftX k (g b)))) (fun b α => SCPf.ordNabla_value_expand hV hN2 hN3 B h hax m c s u φ hUF hFU _ (g b)) P hP'`.
+
+Conclude with `key`.
+-/
 theorem lemmaHCols_of (hV : ValueSt) (hN2 : ConnectionCommutator) (hN3 : ConnectionKillsSeries) : LemmaHColsSt := by
   intro R _ d O _ _ k _ _ _ B h hax m ι π _ _ c s u φ _ hUF hFU n P hP g
   have hP' : secondOrder k (fun p q : ι × Fin n =>

@@ -15,6 +15,11 @@ def SegreLiftComap.Statement : Prop :=
       segreRels ι F ⊆ W' →
       IsMultiProjPrime (W'.comap (segreIncl ι F)) ∧ W' = segreLift ι F (W'.comap (segreIncl ι F))
 
+/- English proof (translation)
+Establish `: ∀ k, Nonempty (segreIdx (fun _ : Unit => Fin 1) k)` using `fun k => by`. Break down `k with _ | _` into its components or cases. Conclude with `⟨fun _ => (0 : Fin 1)⟩`. Conclude with `⟨(0 : Fin 1)⟩`. Use `⟨NumbersDVR.isMultiProjPrime_bot, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `g ⟨c, d, rfl⟩`. Take `rfl : c = d` from `Subsingleton.elim _ _`. Simplify using the standard rewrite rules.
+-/
 theorem SegreLiftComap.hyps :
     IsMultiProjPrime (⊥ : Ideal (MRing (segreIdx (fun _ : Unit => Fin 1)) ℚ)) ∧
       segreRels (fun _ : Unit => Fin 1) ℚ ⊆
@@ -28,6 +33,9 @@ theorem SegreLiftComap.hyps :
   obtain rfl : c = d := Subsingleton.elim _ _
   simp
 
+/- English proof (translation)
+The claim follows from `h ℚ Unit (fun _ => Fin 1) ⊥ SegreLiftComap.hyps.1 SegreLiftComap.hyps.2`.
+-/
 example (h : SegreLiftComap.Statement) :=
   h ℚ Unit (fun _ => Fin 1) ⊥ SegreLiftComap.hyps.1 SegreLiftComap.hyps.2
 

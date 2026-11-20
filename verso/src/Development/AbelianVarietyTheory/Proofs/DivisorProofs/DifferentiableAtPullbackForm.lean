@@ -12,6 +12,9 @@ open scoped ComplexConjugate ContDiff
 
 namespace GlobalTheory.PullCoefDiff
 
+/- English proof (translation)
+Use `conv_lhs => rw [← (bas n).sum_repr x, ← (bas n).sum_repr y]`. Rewrite using `[Finset.sum_mul_sum]`. Simplify using `only [map_sum, Finsupp.finset_sum_apply, smul_mul_smul_comm, map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+-/
 theorem repr_mul_eq_sum {n : ℕ} (x y : Alt n) (S : Finset (Fin (n + n))) :
     (bas n).repr (x * y) S =
       ∑ A, ∑ B, (bas n).repr x A * (bas n).repr y B * (bas n).repr (bas n A * bas n B) S := by
@@ -19,12 +22,24 @@ theorem repr_mul_eq_sum {n : ℕ} (x y : Alt n) (S : Finset (Fin (n + n))) :
   rw [Finset.sum_mul_sum]
   simp only [map_sum, Finsupp.finset_sum_apply, smul_mul_smul_comm, map_smul, Finsupp.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Simplify using `only [dz, dzb, ← map_smul, ← map_sum, ← map_add]`. Use `congrArg _ (funext ?_)` and prove the remaining obligations. Apply the tactic sequence `rintro (b | b) <;> simp [Pi.single_apply, Finset.sum_apply]`.
+-/
 theorem ι_eq_sum {m : ℕ} (u : Fin m ⊕ Fin m → ℂ) :
     ExteriorAlgebra.ι ℂ u = ∑ a, u (.inl a) • dz a + ∑ a, u (.inr a) • dzb a := by
   simp only [dz, dzb, ← map_smul, ← map_sum, ← map_add]
   refine congrArg _ (funext ?_)
   rintro (b | b) <;> simp [Pi.single_apply, Finset.sum_apply]
 
+/- English proof (translation)
+Proceed by induction on `θ using ExteriorAlgebra.induction generalizing S with`. Consider the case `algebraMap r => simp only [AlgHom.commutes]`. Conclude with `differentiableAt_const _`. Consider the case `ι u`. Rewrite using `[ι_eq_sum]`.
+
+Simplify using `only [map_add, map_sum, map_smul, (pull_dz _ _).1, (pull_dz _ _).2, Finsupp.add_apply, Finsupp.finset_sum_apply, Finsupp.smul_apply, smul_eq_mul]`. Use `DifferentiableAt.add ?_ ?_` and prove the remaining obligations. Conclude with `DifferentiableAt.fun_sum fun a _ => (DifferentiableAt.fun_sum fun b _ => (hL b a).mul_const _).const_mul _`. Use `DifferentiableAt.fun_sum fun a _ => (DifferentiableAt.fun_sum fun b _ => DifferentiableAt.mul_const ?_ _).const_mul _` and prove the remaining obligations. Conclude with `Complex.conjCLE.differentiableAt.comp v (hL b a)`.
+
+Consider the case `mul a b ha hb`. Simplify using `only [map_mul, repr_mul_eq_sum (pull _ a)]`. Conclude with `DifferentiableAt.fun_sum fun A _ => DifferentiableAt.fun_sum fun B _ => ((ha A).mul (hb B)).mul_const _`. Consider the case `add a b ha hb`. Simplify using `only [map_add, Finsupp.add_apply]`.
+
+Conclude with `(ha S).add (hb S)`.
+-/
 theorem differentiableAt_repr_pull {n m : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {L : E → V n →L[ℂ] V m} {v : E} (hL : ∀ b a, DifferentiableAt ℝ (fun x => L x (coordVec b) a) v)
     (θ : Alt m) (S : Finset (Fin (n + n))) :
@@ -47,6 +62,11 @@ theorem differentiableAt_repr_pull {n m : ℕ} {E : Type*} [NormedAddCommGroup E
     simp only [map_add, Finsupp.add_apply]
     exact (ha S).add (hb S)
 
+/- English proof (translation)
+Introduce `n m φ U hU hφ v hv θ S`. Use `differentiableAt_repr_pull (fun b a => ?_) θ S` and prove the remaining obligations. Establish `h₁ : ContDiffAt ℂ 2 φ v` using `GlobalTheory.SCV.contDiffAt_of_differentiableOn hφ (hU.mem_nhds hv) 2`. Establish `h₂ : DifferentiableAt ℂ (fderiv ℂ φ) v` using `(h₁.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `h₃ : DifferentiableAt ℂ (fun x => fderiv ℂ φ x (coordVec b)) v` using `h₂.clm_apply (differentiableAt_const _)`.
+
+Establish `h₄ : DifferentiableAt ℂ (fun x => fderiv ℂ φ x (coordVec b) a) v` using `(EuclideanSpace.proj (𝕜 := ℂ) a).differentiableAt.comp v h₃`. Conclude with `h₄.restrictScalars ℝ`.
+-/
 theorem differentiableAt_repr_pull_fderiv : ∀ {n m : ℕ} {φ : V n → V m} {U : Set (V n)}, IsOpen U →
     DifferentiableOn ℂ φ U → ∀ {v : V n}, v ∈ U → ∀ (θ : Alt m) (S : Finset (Fin (n + n))),
     DifferentiableAt ℝ (fun x => (bas n).repr (pull (fderiv ℂ φ x) θ) S) v := by

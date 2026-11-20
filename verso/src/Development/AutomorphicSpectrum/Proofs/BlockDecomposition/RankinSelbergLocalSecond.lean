@@ -12,11 +12,21 @@ namespace GlobalTheory.CompanionTheory.RSLocal
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [MeasurableSpace F] [BorelSpace F]
 
+/- English proof (translation)
+Unfold `selfDualMeasure`. Rewrite using `[hψ.2.2]`. Simplify using the standard rewrite rules.
+-/
 theorem selfDual_eq {ψ : AddChar F Circle} (hψ : IsStd ψ) : selfDualMeasure ψ = haarIntegers F := by
   unfold selfDualMeasure
   rw [hψ.2.2]
   simp
 
+/- English proof (translation)
+Establish `h` using `integral_multHaar (K := F) (fun x => G x * ((modulus x : ℝ) : ℂ) ^ (1 : ℂ))`. Simplify using `only [mp]`. Rewrite using `[h]`. Establish `e : ∫ x in ({0} : Set F)ᶜ, ((modulus x : ℝ))⁻¹ • (G x * ((modulus x : ℝ) : ℂ) ^ (1 : ℂ)) ∂haarIntegers F = ∫ x in ({0} : Set F)ᶜ, G x ∂haarIntegers F`. Use `setIntegral_congr_fun (measurableSet_singleton 0).compl fun x hx => ?_` and prove the remaining obligations.
+
+Establish `hm : ((modulus x : ℝ) : ℂ) ≠ 0`. Conclude with `(modulus_ne_zero hx)` after adjusting the coercions. Simplify using `only [Complex.cpow_one, Complex.real_smul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[e, Measure.restrict_eq_self_of_ae_mem, Complex.real_smul]`. Conclude with `(measure_eq_zero_iff_ae_notMem.mp haarIntegers_singleton_zero).mono fun x hx => hx`.
+-/
 theorem integral_units (G : F → ℂ) :
     ∫ a : Fˣ, G a * mp a 1 ∂multHaar F = ((multHaarConst F).toReal : ℂ) * ∫ t, G t ∂haarIntegers F := by
   have h := integral_multHaar (K := F) (fun x => G x * ((modulus x : ℝ) : ℂ) ^ (1 : ℂ))
@@ -33,6 +43,15 @@ theorem integral_units (G : F → ℂ) :
   rw [e, Measure.restrict_eq_self_of_ae_mem, Complex.real_smul]
   exact (measure_eq_zero_iff_ae_notMem.mp haarIntegers_singleton_zero).mono fun x hx => hx
 
+/- English proof (translation)
+Establish `hg : Continuous fun u : Fˣ => ((c u : ℂˣ) : ℂ) * mp u s`. Use `(Units.continuous_val.comp hc).mul ?_` and prove the remaining obligations. Use `(Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp (continuous_modulus.comp Units.continuous_val))).cpow continuous_const fun u => ?_` and prove the remaining obligations. Conclude with `Complex.ofReal_mem_slitPlane.mpr (by exact_mod_cast modulus_pos u.ne_zero)`. Establish `e : chF c s = Function.extend (Units.val : Fˣ → F) (fun u => ((c u : ℂˣ) : ℂ) * mp u s) (fun _ => 0)`.
+
+Use function extensionality and compare the values at `t`. Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Rewrite using `[Function.extend_apply' _ _ _ (by rintro ⟨u, hu⟩; exact u.ne_zero hu)]`. Simplify using `[chF]`.
+
+Use `Units.val_injective.extend_apply (f := (Units.val : Fˣ → F)) (fun u => ((c u : ℂˣ) : ℂ) * mp u s) (fun _ => (0 : ℂ)) (Units.mk0 t ht)` as an intermediate fact. Rewrite `this` using `[Units.val_mk0]`. Rewrite using `[this]`. Simplify using `[chF, ht]`. Rewrite using `[e]`.
+
+Conclude with `measurableEmbedding_units_val.measurable_extend hg.measurable measurable_const`.
+-/
 theorem measurable_chF {c : Fˣ →* ℂˣ} (hc : Continuous c) (s : ℂ) : Measurable (chF c s) := by
   have hg : Continuous fun u : Fˣ => ((c u : ℂˣ) : ℂ) * mp u s := by
     refine (Units.continuous_val.comp hc).mul ?_
@@ -52,6 +71,15 @@ theorem measurable_chF {c : Fˣ →* ℂˣ} (hc : Continuous c) (s : ℂ) : Meas
   rw [e]
   exact measurableEmbedding_units_val.measurable_extend hg.measurable measurable_const
 
+/- English proof (translation)
+Use `⟨hG.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `h2` using `h.2`. Unfold `HasFiniteIntegral at h2 ⊢`. Establish `hm : Measurable fun x : F => ‖G x‖ₑ * (modulus x : ℝ≥0∞)` using `hG.enorm.mul measurable_modulus.coe_nnreal_ennreal`. Establish `e1 : ∫⁻ a : Fˣ, ‖G a * mp a 1‖ₑ ∂multHaar F = ∫⁻ a : Fˣ, (fun x : F => ‖G x‖ₑ * (modulus x : ℝ≥0∞)) a ∂multHaar F`.
+
+Use `lintegral_congr fun a => ?_` and prove the remaining obligations. Simplify using `only [mp, Complex.cpow_one]`. Rewrite using `[enorm_mul, ← ofReal_norm (((modulus (a : F) : ℝ) : ℂ)), Complex.norm_real, Real.norm_of_nonneg (NNReal.coe_nonneg _), ENNReal.ofReal_coe_nnreal]`. Rewrite `h2` using `[e1, lintegral_multHaar hm]`. Establish `e2 : ∫⁻ x in ({0} : Set F)ᶜ, ((modulus x : ℝ≥0∞))⁻¹ * (‖G x‖ₑ * (modulus x : ℝ≥0∞)) ∂haarIntegers F = ∫⁻ x in ({0} : Set F)ᶜ, ‖G x‖ₑ ∂haarIntegers F`.
+
+Use `setLIntegral_congr_fun (measurableSet_singleton 0).compl fun x hx => ?_` and prove the remaining obligations. Establish `h0 : (modulus x : ℝ≥0∞) ≠ 0` using `ENNReal.coe_ne_zero.mpr (modulus_ne_zero hx)`. Rewrite using `[mul_comm, mul_assoc, ENNReal.mul_inv_cancel h0 ENNReal.coe_ne_top, mul_one]`. Rewrite `h2` using `[e2, Measure.restrict_eq_self_of_ae_mem]`. Conclude with `(ENNReal.mul_lt_top_iff.mp h2).elim (fun h => h.2) (fun h => h.elim (fun h => absurd h multHaarConst_ne_zero) (fun h => by simp [h]))`.
+
+Conclude with `(measure_eq_zero_iff_ae_notMem.mp haarIntegers_singleton_zero).mono fun x hx => hx`.
+-/
 theorem integrable_of_units {G : F → ℂ} (hG : Measurable G)
     (h : Integrable (fun a : Fˣ => G a * mp a 1) (multHaar F)) : Integrable G (haarIntegers F) := by
   refine ⟨hG.aestronglyMeasurable, ?_⟩
@@ -75,6 +103,17 @@ theorem integrable_of_units {G : F → ℂ} (hG : Measurable G)
 
 def conv (μ : Measure F) (g₁ g₃ : F → ℂ) (τ : F) : ℂ := ∫ x, g₁ x * g₃ (τ - x) ∂μ
 
+/- English proof (translation)
+Take `⟨-, M₁, -, hM₁⟩` from `exists_invariant_of_mem_schwartzBruhat h₁`. Take `⟨N, M₃, hN, hM₃⟩` from `exists_invariant_of_mem_schwartzBruhat h₃`. Use `⟨isLocallyConstant_of_add_valBall (N := N) fun τ h hh => ?_, HasCompactSupport.intro (isCompact_valBall (min M₁ M₃)) fun τ hτ => ?_⟩` and prove the remaining obligations. Unfold `conv`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Use `hN (τ - x) h hh` as an intermediate fact. Use `show g₁ x * g₃ (τ + h - x) = g₁ x * g₃ (τ - x)`. Rewrite using `[show τ + h - x = τ - x + h by ring, this]`. Establish `: (fun x => g₁ x * g₃ (τ - x)) = fun _ => 0`. Use function extensionality and compare the values at `x`.
+
+Assume the negation of the conclusion as `hne`. Establish `a₁ : g₁ x ≠ 0` using `left_ne_zero_of_mul hne`. Establish `a₃ : g₃ (τ - x) ≠ 0` using `right_ne_zero_of_mul hne`. Apply `hτ` to reduce the goal to its premises. Establish `b₁` using `valBall_antitone (min_le_left M₁ M₃) (hM₁ _ a₁)`.
+
+Establish `b₃` using `valBall_antitone (min_le_right M₁ M₃) (hM₃ _ a₃)`. Use `add_mem b₁ b₃` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Unfold `conv`. Rewrite using `[this]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem conv_mem (μ : Measure F) {g₁ g₃ : F → ℂ} (h₁ : g₁ ∈ schwartzBruhat F) (h₃ : g₃ ∈ schwartzBruhat F) :
     conv μ g₁ g₃ ∈ schwartzBruhat F := by
   obtain ⟨-, M₁, -, hM₁⟩ := exists_invariant_of_mem_schwartzBruhat h₁
@@ -100,6 +139,15 @@ theorem conv_mem (μ : Measure F) {g₁ g₃ : F → ℂ} (h₁ : g₁ ∈ schwa
     rw [this]
     simp
 
+/- English proof (translation)
+Establish `i₁` using `integrable_mul_char_of_mem_schwartzBruhat μ hψ h₁ a`. Establish `i₃` using `integrable_mul_char_of_mem_schwartzBruhat μ hψ h₃ a`. Establish `key` using `integral_convolution (L := ContinuousLinearMap.mul ℂ ℂ) (μ := μ) (ν := μ) i₁ i₃`. Establish `e : ∀ τ, ((fun x => g₁ x * (ψ (x * a) : ℂ)) ⋆[ContinuousLinearMap.mul ℂ ℂ, μ] (fun x => g₃ x * (ψ (x * a) : ℂ))) τ = conv μ g₁ g₃ τ * (ψ (τ * a) : ℂ)`. Introduce `τ`.
+
+Rewrite using `[convolution_def]`. Unfold `conv`. Rewrite using `[← integral_mul_const]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Establish `: (ψ (τ * a) : ℂ) = (ψ (x * a) : ℂ) * (ψ ((τ - x) * a) : ℂ)`.
+
+Rewrite using `[← Circle.coe_mul, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [ContinuousLinearMap.mul_apply']`. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e] at key`. Conclude with `key`.
+-/
 theorem conv_fourier (μ : Measure F) [μ.IsAddHaarMeasure] {ψ : AddChar F Circle} (hψ : Continuous ψ)
     {g₁ g₃ : F → ℂ} (h₁ : g₁ ∈ schwartzBruhat F) (h₃ : g₃ ∈ schwartzBruhat F) (a : F) :
     localFourier μ ψ (conv μ g₁ g₃) a = localFourier μ ψ g₁ a * localFourier μ ψ g₃ a := by
@@ -123,6 +171,11 @@ theorem conv_fourier (μ : Measure F) [μ.IsAddHaarMeasure] {ψ : AddChar F Circ
   simp only [e] at key
   exact key
 
+/- English proof (translation)
+Establish `mpr` using `measurePreserving_prod_add μ μ`. Establish `he : MeasurableEmbedding (fun z : F × F => (z.1, z.1 + z.2))` using `(MeasurableEquiv.shearAddRight F).measurableEmbedding`. Establish `h1` using `mpr.integral_comp he (fun p : F × F => g₁ p.1 * g₃ (p.2 - p.1) * k p.2)`. Establish `h2` using `integral_prod_symm _ hi`. Simplify using `only [add_sub_cancel_left] at h1`.
+
+Rewrite using `[h1, h2]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun τ => ?_)` and prove the remaining obligations. Simplify using `only [conv]`. Rewrite using `[integral_mul_const]`.
+-/
 theorem conv_pair (μ : Measure F) [μ.IsAddHaarMeasure] {g₁ g₃ k : F → ℂ}
     (hi : Integrable (fun p : F × F => g₁ p.1 * g₃ (p.2 - p.1) * k p.2) (μ.prod μ)) :
     ∫ τ, conv μ g₁ g₃ τ * k τ ∂μ = ∫ p : F × F, g₁ p.1 * g₃ p.2 * k (p.1 + p.2) ∂(μ.prod μ) := by
@@ -137,6 +190,15 @@ theorem conv_pair (μ : Measure F) [μ.IsAddHaarMeasure] {g₁ g₃ k : F → �
   simp only [conv]
   rw [integral_mul_const]
 
+/- English proof (translation)
+Take `⟨-, M₁, -, hM₁⟩` from `exists_invariant_of_mem_schwartzBruhat h₁`. Take `⟨-, M₃, -, hM₃⟩` from `exists_invariant_of_mem_schwartzBruhat h₃`. Take `⟨C, hC⟩` from `h₃.1.continuous.bounded_above_of_compact_support h₃.2`. Establish `i₁ : Integrable g₁ μ` using `h₁.1.continuous.integrable_of_hasCompactSupport h₁.2`. Establish `i` using `i₁.mul_prod (hb (min M₁ M₃))`.
+
+Establish `c₃ : Continuous fun p : F × F => g₃ (p.2 - p.1)` using `h₃.1.continuous.comp (continuous_snd.sub continuous_fst)`. Use `i.bdd_mul (c := C) c₃.aestronglyMeasurable (Filter.Eventually.of_forall fun p => hC _)` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Distinguish the cases in `a₁ : g₁ p.1 = 0`. Simplify using `[a₁]`.
+
+Distinguish the cases in `a₃ : g₃ (p.2 - p.1) = 0`. Simplify using `[a₃]`. Establish `b₁` using `valBall_antitone (min_le_left M₁ M₃) (hM₁ _ a₁)`. Establish `b₃` using `valBall_antitone (min_le_right M₁ M₃) (hM₃ _ a₃)`. Establish `hm : p.2 ∈ (valBall F (min M₁ M₃) : Set F)`.
+
+Use `add_mem b₁ b₃` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Simplify using `only [Set.indicator_of_mem hm]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integrable_phi (μ : Measure F) [μ.IsAddHaarMeasure] {g₁ g₃ k : F → ℂ} (hk : Measurable k)
     (h₁ : g₁ ∈ schwartzBruhat F) (h₃ : g₃ ∈ schwartzBruhat F)
     (hb : ∀ M : ℤ, Integrable (fun τ => (valBall F M : Set F).indicator (fun _ => (1 : ℂ)) τ * k τ) μ) :
@@ -162,11 +224,17 @@ theorem integrable_phi (μ : Measure F) [μ.IsAddHaarMeasure] {g₁ g₃ k : F �
   simp only [Set.indicator_of_mem hm]
   ring
 
+/- English proof (translation)
+Use `⟨continuous_quasiChar_inv hc.1, fun x => ?_⟩` and prove the remaining obligations. Use `hc.2 x` as an intermediate fact. Simplify using `[this]`.
+-/
 theorem isUnit1_inv {c : Fˣ →* ℂˣ} (hc : IsUnit1 c) : IsUnit1 c⁻¹ := by
   refine ⟨continuous_quasiChar_inv hc.1, fun x => ?_⟩
   have := hc.2 x
   simp [this]
 
+/- English proof (translation)
+Establish `hm : ((modulus (u : F) : ℝ) : ℂ) ≠ 0`. Conclude with `(modulus_ne_zero u.ne_zero)` after adjusting the coercions. Simplify using `only [chF, u.ne_zero, dite_false, Units.mk0_val, mp]`. Rewrite using `[Complex.cpow_add _ _ hm, mul_assoc]`.
+-/
 theorem chF_units (c : Fˣ →* ℂˣ) (s : ℂ) (u : Fˣ) :
     chF c s u * mp u 1 = ((c u : ℂˣ) : ℂ) * ((modulus (u : F) : ℝ) : ℂ) ^ (s + 1) := by
   have hm : ((modulus (u : F) : ℝ) : ℂ) ≠ 0 := by
@@ -174,6 +242,11 @@ theorem chF_units (c : Fˣ →* ℂˣ) (s : ℂ) (u : Fˣ) :
   simp only [chF, u.ne_zero, dite_false, Units.mk0_val, mp]
   rw [Complex.cpow_add _ _ hm, mul_assoc]
 
+/- English proof (translation)
+Establish `hc'` using `isUnit1_inv hc`. Establish `hb : (valBall F M : Set F).indicator (fun _ => (1 : ℂ)) ∈ schwartzBruhat F` using `indicator_valBall_mem_schwartzBruhat M`. Establish `hz` using `integrable_localZeta hb hc'.1 (s := 1 - s) (by`. Rewrite using `[GlobalTheory.CompanionTheory.TateFE.quasiCharExponent_eq_zero_of_unit hc']`. Use `hs.2` as an intermediate fact.
+
+Simplify using the standard rewrite rules. Use the proof step `linarith)`. Use `integrable_of_units ((measurable_const.indicator (measurableSet_valBall M)).mul (measurable_chF hc'.1 _)) (hz.congr (Filter.Eventually.of_forall fun u => ?_))` and prove the remaining obligations. Use `show _ * _ * _ = _ * _ * _`. Rewrite using `[mul_assoc ((valBall F M : Set F).indicator (fun _ => (1 : ℂ)) (u : F)) (chF _ _ _), chF_units, mul_assoc, neg_add_eq_sub]`.
+-/
 theorem integrable_ball {c : Fˣ →* ℂˣ} (hc : IsUnit1 c) {s : ℂ} (hs : Strip s) (M : ℤ) :
     Integrable (fun τ => (valBall F M : Set F).indicator (fun _ => (1 : ℂ)) τ * chF c⁻¹ (-s) τ)
       (haarIntegers F) := by
@@ -191,6 +264,17 @@ theorem integrable_ball {c : Fˣ →* ℂˣ} (hc : IsUnit1 c) {s : ℂ} (hs : St
   rw [mul_assoc ((valBall F M : Set F).indicator (fun _ => (1 : ℂ)) (u : F)) (chF _ _ _), chF_units, mul_assoc,
     neg_add_eq_sub]
 
+/- English proof (translation)
+Establish `hc'` using `isUnit1_inv hc`. Establish `hh` using `conv_mem (selfDualMeasure ψ) h₁ h₃`. Establish `ff` using `GlobalTheory.CompanionTheory.TateFE.first_form hψ hc' hh (s := 1 - s) (by have := hs.2; simp; linarith) (by have := hs.1; simp; linarith)`. Rewrite `ff` using `[inv_inv, sub_sub_cancel]`. Establish `e1 : localZeta (localFourier (selfDualMeasure ψ) ψ (conv (selfDualMeasure ψ) g₁ g₃)) c s = ∫ a : Fˣ, localFourier (selfDualMeasure ψ) ψ g₁ a * localFourier (selfDualMeasure ψ) ψ g₃ a * ((c a : ℂˣ) : ℂ) * mp a s ∂multHaar F`.
+
+Unfold `localZeta`. Use `integral_congr_ae (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Use `show _ * _ * _ = _ * _ * _ * _`. Rewrite using `[conv_fourier _ hψ.1 h₁ h₃]`. Both sides reduce to the same expression.
+
+Establish `e2 : localZeta (conv (selfDualMeasure ψ) g₁ g₃) c⁻¹ (1 - s) = ((multHaarConst F).toReal : ℂ) * ∫ τ, conv (selfDualMeasure ψ) g₁ g₃ τ * chF c⁻¹ (-s) τ ∂selfDualMeasure ψ`. Use `integral_units (F := F) (fun τ => conv (selfDualMeasure ψ) g₁ g₃ τ * chF c⁻¹ (-s) τ)` as an intermediate fact. Rewrite `this` using `[← selfDual_eq hψ]`. Rewrite using `[← this]`. Unfold `localZeta`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Use `show _ * _ * _ = _ * _ * _`. Rewrite using `[mul_assoc (conv _ _ _ _) (chF _ _ _), chF_units, mul_assoc, neg_add_eq_sub]`. Establish `e3` using `conv_pair (selfDualMeasure ψ) (integrable_phi (selfDualMeasure ψ) (measurable_chF hc'.1 (-s)) h₁ h₃ (fun M => by rw [selfDual_eq hψ]; exact integrable_ball hc hs M))`. Rewrite using `[← e1, ff, e2, e3]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem main_conv {ψ : AddChar F Circle} (hψ : IsStd ψ) {c : Fˣ →* ℂˣ} (hc : IsUnit1 c) {s : ℂ} (hs : Strip s)
     {g₁ g₃ : F → ℂ} (h₁ : g₁ ∈ schwartzBruhat F) (h₃ : g₃ ∈ schwartzBruhat F) :
     ∫ a : Fˣ, localFourier (selfDualMeasure ψ) ψ g₁ a * localFourier (selfDualMeasure ψ) ψ g₃ a *
@@ -224,6 +308,13 @@ theorem main_conv {ψ : AddChar F Circle} (hψ : IsStd ψ) {c : Fˣ →* ℂˣ} 
   rw [← e1, ff, e2, e3]
   ring
 
+/- English proof (translation)
+Establish `h` using `integral_comp_mul_left μ b.ne_zero (fun y => f y * (ψ (y * w) : ℂ))`. Establish `hm : ((modulus (b : F) : ℝ) : ℂ) ≠ 0`. Conclude with `(modulus_ne_zero b.ne_zero)` after adjusting the coercions. Establish `e : localFourier μ ψ (fun x => f (b * x)) (b * w) = ∫ x, f (b * x) * (ψ (b * x * w) : ℂ) ∂μ`. Unfold `localFourier`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `show _ * _ = _ * _`. Rewrite using `[show x * (b * w) = b * x * w by ring]`. Rewrite using `[e, h, Complex.real_smul]`. Use `push_cast`.
+
+Rewrite using `[← mul_assoc, mul_inv_cancel₀ hm, one_mul]`.
+-/
 theorem fourier_scale (μ : Measure F) [μ.IsAddHaarMeasure] (ψ : AddChar F Circle) (b : Fˣ) (f : F → ℂ) (w : F) :
     ∫ y, f y * (ψ (y * w) : ℂ) ∂μ =
       ((modulus (b : F) : ℝ) : ℂ) * localFourier μ ψ (fun x => f (b * x)) (b * w) := by
@@ -239,6 +330,15 @@ theorem fourier_scale (μ : Measure F) [μ.IsAddHaarMeasure] (ψ : AddChar F Cir
   push_cast
   rw [← mul_assoc, mul_inv_cancel₀ hm, one_mul]
 
+/- English proof (translation)
+Establish `he : MeasurableEmbedding (Prod.map (fun x : F => (b₁ : F) * x) (fun x : F => (b₃ : F) * x))` using `((Homeomorph.mulLeft₀ (b₁ : F) b₁.ne_zero).prodCongr (Homeomorph.mulLeft₀ (b₃ : F) b₃.ne_zero)).measurableEmbedding`. Establish `hm : Measure.map (Prod.map (fun x : F => (b₁ : F) * x) (fun x : F => (b₃ : F) * x)) (μ.prod μ) = ((modulus (b₁ : F))⁻¹ * (modulus (b₃ : F))⁻¹) • μ.prod μ`. Rewrite using `[← Measure.map_prod_map _ _ (measurable_const_mul _) (measurable_const_mul _), map_mul_left_eq_smul μ b₁.ne_zero, map_mul_left_eq_smul μ b₃.ne_zero, Measure.prod_smul_left, Measure.prod_smul_right, smul_smul]`. Establish `h` using `he.integral_map (μ := μ.prod μ) H`. Rewrite `h` using `[hm, integral_smul_nnreal_measure]`.
+
+Establish `m₁ : ((modulus (b₁ : F) : ℝ) : ℂ) ≠ 0`. Conclude with `(modulus_ne_zero b₁.ne_zero)` after adjusting the coercions. Establish `m₃ : ((modulus (b₃ : F) : ℝ) : ℂ) ≠ 0`. Conclude with `(modulus_ne_zero b₃.ne_zero)` after adjusting the coercions. Establish `h' : ∫ p : F × F, H ((b₁ : F) * p.1, (b₃ : F) * p.2) ∂(μ.prod μ) = ((modulus (b₁ : F) : ℝ) : ℂ)⁻¹ * ((modulus (b₃ : F) : ℝ) : ℂ)⁻¹ * ∫ p, H p ∂(μ.prod μ)`.
+
+Use `h.symm` as an intermediate fact. Simplify using `only [Prod.map] at this`. Rewrite using `[this, NNReal.smul_def, Complex.real_smul]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Rewrite using `[h']`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem prod_scale (μ : Measure F) [μ.IsAddHaarMeasure] (b₁ b₃ : Fˣ) (H : F × F → ℂ) :
     ∫ p, H p ∂(μ.prod μ) = ((modulus (b₁ : F) : ℝ) : ℂ) * ((modulus (b₃ : F) : ℝ) : ℂ) *
       ∫ p : F × F, H ((b₁ : F) * p.1, (b₃ : F) * p.2) ∂(μ.prod μ) := by
@@ -265,10 +365,34 @@ theorem prod_scale (μ : Measure F) [μ.IsAddHaarMeasure] (b₁ b₃ : Fˣ) (H :
   rw [h']
   field_simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hf.1.comp_continuous (continuous_const.mul continuous_id), hf.2.comp_homeomorph (Homeomorph.mulLeft₀ (b : F) b.ne_zero)⟩`.
+-/
 theorem scale_mem {f : F → ℂ} (hf : f ∈ schwartzBruhat F) (b : Fˣ) : (fun x => f (b * x)) ∈ schwartzBruhat F :=
   ⟨hf.1.comp_continuous (continuous_const.mul continuous_id),
     hf.2.comp_homeomorph (Homeomorph.mulLeft₀ (b : F) b.ne_zero)⟩
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ hψ`. Use `⟨((multHaarConst F).toReal : ℂ), ?_, fun G => ?_, ?_⟩` and prove the remaining obligations. Establish `: (multHaarConst F).toReal ≠ 0` using `ENNReal.toReal_ne_zero.mpr ⟨multHaarConst_ne_zero, multHaarConst_ne_top⟩`. Conclude with `this` after adjusting the coercions. Rewrite using `[selfDual_eq hψ]`.
+
+Conclude with `integral_units G`. Introduce `f₁ h₁ f₃ h₃ u₁ u₃ c hc s hs`. Establish `L` using `main_conv hψ hc hs (scale_mem h₁ (-u₁)) (scale_mem h₃ u₃)`. Establish `hR` using `prod_scale (selfDualMeasure ψ) (-u₁) u₃ (fun p => f₁ p.1 * f₃ p.2 * chF c⁻¹ (-s) (p.2 * (u₃⁻¹ : Fˣ) - p.1 * (u₁⁻¹ : Fˣ)))`. Establish `hA : ∀ a : Fˣ, ∫ y, f₁ y * (ψ (-(y * a * (u₁⁻¹ : Fˣ))) : ℂ) ∂selfDualMeasure ψ = ((modulus ((-u₁ : Fˣ) : F) : ℝ) : ℂ) * localFourier (selfDualMeasure ψ) ψ (fun x => f₁ ((-u₁ : Fˣ) * x)) a`.
+
+Introduce `a`. Use `fourier_scale (selfDualMeasure ψ) ψ (-u₁) f₁ (-((a : F) * (u₁⁻¹ : Fˣ)))` as an intermediate fact. Establish `e : ((-u₁ : Fˣ) : F) * (-((a : F) * (u₁⁻¹ : Fˣ))) = a`. Rewrite using `[Units.val_neg, neg_mul_neg, mul_left_comm, Units.mul_inv, mul_one]`. Rewrite `this` using `[e]`.
+
+Rewrite using `[← this]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `show _ * _ = _ * _`. Rewrite using `[show -(y * (a : F) * ((u₁⁻¹ : Fˣ) : F)) = y * -((a : F) * ((u₁⁻¹ : Fˣ) : F)) by ring]`. Establish `hB : ∀ a : Fˣ, ∫ y, f₃ y * (ψ (y * a * (u₃⁻¹ : Fˣ)) : ℂ) ∂selfDualMeasure ψ = ((modulus (u₃ : F) : ℝ) : ℂ) * localFourier (selfDualMeasure ψ) ψ (fun x => f₃ (u₃ * x)) a`.
+
+Introduce `a`. Use `fourier_scale (selfDualMeasure ψ) ψ u₃ f₃ ((a : F) * (u₃⁻¹ : Fˣ))` as an intermediate fact. Establish `e : (u₃ : F) * ((a : F) * (u₃⁻¹ : Fˣ)) = a`. Rewrite using `[mul_left_comm, Units.mul_inv, mul_one]`. Rewrite `this` using `[e]`.
+
+Rewrite using `[← this]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `show _ * _ = _ * _`. Rewrite using `[mul_assoc]`. Simplify using `only [hA, hB]`.
+
+Rewrite using `[hR]`. Establish `e : (fun a : Fˣ => ((modulus ((-u₁ : Fˣ) : F) : ℝ) : ℂ) * localFourier (selfDualMeasure ψ) ψ (fun x => f₁ ((-u₁ : Fˣ) * x)) a * (((modulus (u₃ : F) : ℝ) : ℂ) * localFourier (selfDualMeasure ψ) ψ (fun x => f₃ (u₃ * x)) a) * ((c a : ℂˣ) : ℂ) * mp a s) = fun a : Fˣ => (((modulus ((- …`. Use function extensionality and compare the values at `a`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, integral_const_mul, L]`.
+
+Establish `e' : (fun p : F × F => f₁ (((-u₁ : Fˣ) : F) * p.1) * f₃ ((u₃ : F) * p.2) * chF c⁻¹ (-s) ((u₃ : F) * p.2 * (u₃⁻¹ : Fˣ) - ((-u₁ : Fˣ) : F) * p.1 * (u₁⁻¹ : Fˣ))) = fun p : F × F => f₁ (((-u₁ : Fˣ) : F) * p.1) * f₃ ((u₃ : F) * p.2) * chF c⁻¹ (-s) (p.1 + p.2)`. Use function extensionality and compare the values at `p`. Establish `a₁ : (u₁ : F) * (u₁⁻¹ : Fˣ) = 1` using `Units.mul_inv u₁`. Establish `a₃ : (u₃ : F) * (u₃⁻¹ : Fˣ) = 1` using `Units.mul_inv u₃`. Establish `: (u₃ : F) * p.2 * (u₃⁻¹ : Fˣ) - ((-u₁ : Fˣ) : F) * p.1 * (u₁⁻¹ : Fˣ) = p.1 + p.2`.
+
+Rewrite using `[Units.val_neg]`. Take the linear combination `p.2 * a₃ + p.1 * a₁`. Rewrite using `[this]`. Simplify using `only [] at e' ⊢`. Rewrite using `[e']`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem a2 : A2 := by
   intro F _ _ _ _ _ _ ψ hψ
   refine ⟨((multHaarConst F).toReal : ℂ), ?_, fun G => ?_, ?_⟩

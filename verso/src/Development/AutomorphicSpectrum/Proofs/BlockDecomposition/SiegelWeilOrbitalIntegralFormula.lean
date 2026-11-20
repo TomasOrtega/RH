@@ -37,6 +37,11 @@ def flat (S : Type) [AddCommGroup S] [TopologicalSpace S] (n M : ℕ) :
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨k, Φinf, Φf, hi, hf, hs⟩` from `hΦ`. Use `⟨k, fun i => Φinf i ∘ (flat (Ainf F ⊗[F] E) n M).symm, fun i => Φf i ∘ (flat (Af F ⊗[F] E) n M).symm, fun i => ?_, fun i => ?_, fun Y => ?_⟩` and prove the remaining obligations. Take `⟨N, e, c1, c2, f, hfe⟩` from `hi i`. Set `a : (Fin 1 → Fin (n * M) → Ainf F ⊗[F] E) ≃+ (Fin n → Fin M → Ainf F ⊗[F] E)` to `(flat (Ainf F ⊗[F] E) n M).symm`. Conclude with `⟨N, a.trans e, c1.comp (flat (Ainf F ⊗[F] E) n M).symm.continuous, (flat (Ainf F ⊗[F] E) n M).continuous.comp c2, f, fun X => hfe _⟩`.
+
+Conclude with `⟨(hf i).1.comp_continuous (flat (Af F ⊗[F] E) n M).symm.continuous, (hf i).2.comp_homeomorph (flat (Af F ⊗[F] E) n M).symm.toHomeomorph⟩`. Conclude with `hs _`.
+-/
 theorem isSchwartzBruhat_flat {n M : ℕ} {Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ}
     (hΦ : IsSchwartzBruhat Φ) : IsSchwartzBruhat (Φ ∘ (flat (AF F ⊗[F] E) n M).symm) := by
   obtain ⟨k, Φinf, Φf, hi, hf, hs⟩ := hΦ
@@ -51,6 +56,13 @@ theorem isSchwartzBruhat_flat {n M : ℕ} {Φ : (Fin n → Fin M → AF F ⊗[F]
       (hf i).2.comp_homeomorph (flat (Af F ⊗[F] E) n M).symm.toHomeomorph⟩
   · exact hs _
 
+/- English proof (translation)
+Take `⟨⟨_, _, _⟩, -⟩` from `GlobalTheory.T.adeles_locally_compact_second_countable F`. Take `⟨_, _, _, _, -, -, -, hB, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (AF F)`. Use `haveI := hB n M`. Use `haveI := hB 1 (n * M)`. Set `c` to `flat (AF F ⊗[F] E) n M`.
+
+Use `haveI : (dx.map c).IsAddHaarMeasure := Measure.isAddHaarMeasure_map _ (c : (Fin n → Fin M → AF F ⊗[F] E) ≃+ (Fin 1 → Fin (n * M) → AF F ⊗[F] E)).toAddMonoidHom c.continuous c.surjective c.toHomeomorph.isClosedEmbedding.tendsto_cocompact`. Take `⟨h1, h2⟩` from `GlobalTheory.CompanionTheory.Hypotheses₂.OneV.PoiInt.continuous_integrable_of_isSchwartzBruhat F E σ hCM (n * M) (dx.map c) inferInstance _ (isSchwartzBruhat_flat hΦ)`. Establish `hcomp : (Φ ∘ c.symm) ∘ c = Φ`. Use function extensionality and compare the values at `X`. Simplify using the standard rewrite rules.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h : Continuous ((Φ ∘ c.symm) ∘ c)` using `h1.comp c.continuous`. Rewrite `h` using `[hcomp]`. Then use the resulting hypothesis. Establish `h` using `(c.toHomeomorph.measurableEmbedding.integrable_map_iff).1 h2`. Rewrite `h` using `[show (Φ ∘ c.symm) ∘ c.toHomeomorph = Φ from hcomp]`. Then use the resulting hypothesis.
+-/
 theorem continuous_integrable_tuple (σ : E →ₐ[F] E) [NumberField E] (hCM : IsCMExt F E σ) (M n : ℕ)
     (dx : Measure (Fin n → Fin M → AF F ⊗[F] E)) (hdx : dx.IsAddHaarMeasure)
     (Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ) (hΦ : IsSchwartzBruhat Φ) :
@@ -76,6 +88,17 @@ theorem continuous_integrable_tuple (σ : E →ₐ[F] E) [NumberField E] (hCM : 
   · have h := (c.toHomeomorph.measurableEmbedding.integrable_map_iff).1 h2
     rwa [show (Φ ∘ c.symm) ∘ c.toHomeomorph = Φ from hcomp] at h
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ n _ hM ψ hψ dx hdx db hdb T k Φ hΦ`. Take `⟨⟨_, _, _⟩, -⟩` from `GlobalTheory.T.adeles_locally_compact_second_countable F`. Take `⟨_, _, _, _, -, ht, -, hB, -, hG⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM (AF F)`. Use `haveI := hB n M`. Take `⟨hψc, hψn, -⟩` from `id hψ`.
+
+Establish `hstar : ∀ b, starN σ J ψ dx (fun X => ∑ i, Φ i X) b = ∑ i, starN σ J ψ dx (Φ i) b`. Introduce `b`. Unfold `starN`. Repeatedly rewrite using `[Finset.sum_mul]`. Use `integral_finset_sum _ fun i _ => ?_` and prove the remaining obligations.
+
+Take `⟨hc, hi⟩` from `continuous_integrable_tuple σ hCM M n dx hdx.1 (Φ i) (hΦ i)`. Establish `hq : Continuous fun X : Fin n → Fin M → AF F ⊗[F] E => algebraMap F (AF F) (1 / 2) * Algebra.trace (AF F) (AF F ⊗[F] E) (Matrix.trace ((b : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) * gramR (AF F) σ J X))` using `continuous_const.mul (ht.comp (continuous_const.matrix_mul (hG n M J)).matrix_trace)`. Use `hi.norm.mono' (hc.mul (hψc.comp hq)).aestronglyMeasurable ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall fun x => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, hψn, mul_one]`.
+
+Unfold `coefN`. Repeatedly rewrite using `[hstar, Finset.sum_mul]`. Use `integral_finset_sum _ fun i _ => ?_` and prove the remaining obligations. Establish `hI` using `GlobalTheory.T.siegel_weil_convergent_range F E σ hCM M J hJ n hM ψ hψ dx hdx db hdb (Φ i) (hΦ i)`. Establish `hc : Continuous fun b : HermR (AF F) σ n => ψ (-(algebraMap F (AF F) (1 / 2) * Algebra.trace (AF F) (AF F ⊗[F] E) (Matrix.trace (T.map (inclR (AF F)) * (b : Matrix (Fin n) (Fin n) (AF F ⊗[F] E))))))` using `hψc.comp (continuous_const.mul (ht.comp (continuous_const.matrix_mul continuous_subtype_val).matrix_trace)).neg`.
+
+Use `haveI : BorelSpace (HermR (AF F) σ n) := ⟨rfl⟩`. Use `hI.norm.mono' (hI.1.mul hc.aestronglyMeasurable) ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall fun b => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, hψn, mul_one]`.
+-/
 theorem coefN_finset_sum : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ n : ℕ, 0 < n → 2 * n < M → ∀ ψ : AddChar (AF F) ℂ, IsCharAF F ψ → ∀ dx : Measure (Fin n → Fin M → AF F ⊗[F] E), SdW F E σ M J (AF F) ψ n dx → ∀ db : Measure (HermR (AF F) σ n), SdHerm F E σ (AF F) ψ n db → ∀ (T : Matrix (Fin n) (Fin n) E) (k : ℕ) (Φ : Fin k → (Fin n → Fin M → AF F ⊗[F] E) → ℂ), (∀ i, GlobalTheory.Published.SiegelOneVector.IsSchwartzBruhat (Φ i)) → coefN σ J ψ dx db (fun X => ∑ i, Φ i X) T = ∑ i, coefN σ J ψ dx db (Φ i) T := by
   intro F E _ _ _ _ _ σ hCM M J hJ n _ hM ψ hψ dx hdx db hdb T k Φ hΦ
   obtain ⟨⟨_, _, _⟩, -⟩ := GlobalTheory.T.adeles_locally_compact_second_countable F

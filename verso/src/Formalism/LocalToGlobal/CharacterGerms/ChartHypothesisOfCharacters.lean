@@ -19,6 +19,9 @@ open VP
 variable {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ} {d : ℕ}
   {I : Fin 2 → Type} [∀ g, Fintype (I g)]
 
+/- English proof (translation)
+Introduce `μ`. Conclude with `h _`.
+-/
 theorem integralSeries_uncurry_one {χ : PS C 1 dd} (h : IntS V χ) : IntS V (un1 χ) := by
   intro μ
   exact h _
@@ -26,11 +29,21 @@ theorem integralSeries_uncurry_one {χ : PS C 1 dd} (h : IntS V χ) : IntS V (un
 def lin {Y : FBChart C V O dd} (p : PairData Y d I) (g : Fin 2) (i : Fin dd) : MvPowerSeries (I g) C :=
   ∑ c', p.u g c' i • (MvPowerSeries.X c' : MvPowerSeries (I g) C)
 
+/- English proof (translation)
+Unfold `lin`. Simplify using the standard rewrite rules.
+-/
 theorem cc_lin {Y : FBChart C V O dd} (p : PairData Y d I) (g : Fin 2) (i : Fin dd) :
     MvPowerSeries.constantCoeff (lin p g i) = 0 := by
   unfold lin
   simp
 
+/- English proof (translation)
+Unfold `linF`. Rewrite using `[subst_sum (cc_lin p g)]`. Establish `h1 : ∀ i : Fin dd, MvPowerSeries.subst (lin p g) (dlogC χ i • (MvPowerSeries.X i : MvPowerSeries (Fin dd) C)) = ∑ x : I g, (dlogC χ i * p.u g x i) • (MvPowerSeries.X x : MvPowerSeries (I g) C)`. Introduce `i`. Rewrite using `[subst_smul (cc_lin p g), subst_X (cc_lin p g)]`.
+
+Unfold `lin`. Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun x _ => by rw [smul_smul]`. Rewrite using `[Finset.sum_congr rfl fun i _ => h1 i, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Unfold `PairData.yOf`. Rewrite using `[Finset.sum_smul]`.
+-/
 theorem subst_lin_linF {Y : FBChart C V O dd} (p : PairData Y d I) (g : Fin 2) (χ : PS C 1 dd) :
     MvPowerSeries.subst (lin p g) (linF (dlogC χ)) =
       ∑ x : I g, p.yOf g χ x • (MvPowerSeries.X x : MvPowerSeries (I g) C) := by
@@ -51,6 +64,13 @@ theorem subst_lin_linF {Y : FBChart C V O dd} (p : PairData Y d I) (g : Fin 2) (
 end ChG
 
 open ChG VP in
+/- English proof (translation)
+Introduce `C _ _ V O _ _ dd Y d _ I _ p Hc χ hχ g S t ht`. Take `⟨P, hP0, hPI, -, hPt⟩` from `FormalGermZero.sys_P Y p (Hc g) (S g)`. Establish `ht0 : ∀ g c, MvPowerSeries.constantCoeff (t g c) = 0` using `fun g c => (ht g).1 c`. Establish `hI : IntS V (MvPowerSeries.subst P (un1 χ))` using `IntS.subst hP0 hPI (integralSeries_uncurry_one hχ.1)`. Establish `key : MvPowerSeries.subst (t g) (MvPowerSeries.subst P (un1 χ)) = mvExp (∑ x : I g, p.yOf g χ x • (MvPowerSeries.X x : MvPowerSeries (I g) C))`.
+
+Rewrite using `[subst_subst hP0 (ht0 g)]`. Establish `h1 : (fun j => MvPowerSeries.subst (t g) (P j)) = fun j => MvPowerSeries.subst (lin p g) (e Y j)`. Use function extensionality and compare the values at `j`. Conclude with `hPt (t g) (ht g) j`. Rewrite using `[h1, ← subst_subst (cc_e Y) (cc_lin p g)]`.
+
+Use `show MvPowerSeries.subst (lin p g) (Psi Y χ) = _`. Rewrite using `[chi_exp Y hχ, subst_exp (cc_lin p g) (constantCoeff_linF _), subst_lin_linF]`. Use `⟨upG g (MvPowerSeries.subst P (un1 χ)), ?_, ?_⟩` and prove the remaining obligations. Conclude with `IntS.subst (fun _ => cc_X _) (fun _ => IntS_X _) hI`. Rewrite using `[AbstractGermZero.upG_subst t ht0 g, key]`.
+-/
 theorem charGerm_holds : CharGermSt := by
   intro C _ _ V O _ _ dd Y d _ I _ p Hc χ hχ g S t ht
   obtain ⟨P, hP0, hPI, -, hPt⟩ := FormalGermZero.sys_P Y p (Hc g) (S g)
@@ -76,6 +96,9 @@ open Formalism.L2.Pj NumberField ReciprocityTheory.ChartRestriction.G Reciprocit
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 variable (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)]
 
+/- English proof (translation)
+The claim follows from `chart_hypothesis_of_character Xo c charGerm_holds h`.
+-/
 theorem chart_hypothesis_of_characters (h : CharacterHypothesisCharts Xo c) : CharacterHypothesisAllCharts Xo c :=
   chart_hypothesis_of_character Xo c charGerm_holds h
 

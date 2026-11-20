@@ -27,13 +27,24 @@ def lieJ : Submodule ℝ (Matrix n n ℂ) where
       Matrix.mul_smul] at hX ⊢
     rw [← smul_add, hX, smul_zero]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_lieJ {X : Matrix n n ℂ} : X ∈ lieJ J ↔ Xᴴ * J + J * X = 0 := Iff.rfl
 
 variable {J}
 
+/- English proof (translation)
+The claim follows from `eq_neg_of_add_eq_zero_left hX`.
+-/
 theorem conjTranspose_mul_eq_of_mem {X : Matrix n n ℂ} (hX : X ∈ lieJ J) : Xᴴ * J = -(J * X) :=
   eq_neg_of_add_eq_zero_left hX
 
+/- English proof (translation)
+Establish `hX'` using `conjTranspose_mul_eq_of_mem hX`. Establish `hY'` using `conjTranspose_mul_eq_of_mem hY`. Use `show (X * Y - Y * X)ᴴ * J + J * (X * Y - Y * X) = 0`. Rewrite using `[conjTranspose_sub, conjTranspose_mul, conjTranspose_mul, Matrix.sub_mul, Matrix.mul_assoc Yᴴ Xᴴ J, hX', Matrix.mul_assoc Xᴴ Yᴴ J, hY', Matrix.mul_neg, Matrix.mul_neg, ← Matrix.mul_assoc Yᴴ J X, hY', ← Matrix.mul_assoc Xᴴ J Y, hX']`. Simplify using `only [Matrix.neg_mul, neg_neg, Matrix.mul_sub, Matrix.mul_assoc]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem commutator_mem_lieJ {X Y : Matrix n n ℂ} (hX : X ∈ lieJ J) (hY : Y ∈ lieJ J) :
     X * Y - Y * X ∈ lieJ J := by
   have hX' := conjTranspose_mul_eq_of_mem hX
@@ -53,8 +64,14 @@ def lieSubJ : LieSubalgebra ℝ (Matrix n n ℂ) :=
       rw [Ring.lie_def]
       exact commutator_mem_lieJ hX hY }
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 @[simp] theorem mem_lieSubJ {X : Matrix n n ℂ} : X ∈ lieSubJ J ↔ X ∈ lieJ J := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `(lieSubJ J).lie_mem hX hY`.
+-/
 theorem lie_mem_lieSubJ {X Y : Matrix n n ℂ} (hX : X ∈ lieSubJ J) (hY : Y ∈ lieSubJ J) :
     ⁅X, Y⁆ ∈ lieSubJ J :=
   (lieSubJ J).lie_mem hX hY
@@ -66,12 +83,21 @@ section Involutive
 variable {J : Matrix n n ℂ} (hJ : J * J = 1) (hJh : Jᴴ = J)
 include hJ
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc, hJ, Matrix.mul_one]`.
+-/
 theorem mul_J_J (Z : Matrix n n ℂ) : Z * J * J = Z := by
   rw [Matrix.mul_assoc, hJ, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc, hJ, Matrix.one_mul]`.
+-/
 theorem J_J_mul (Z : Matrix n n ℂ) : J * (J * Z) = Z := by
   rw [← Matrix.mul_assoc, hJ, Matrix.one_mul]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Introduce `h show Xᴴ * J + J * X = 0`. Rewrite using `[h, Matrix.neg_mul, mul_J_J hJ, neg_add_cancel]`.
+-/
 theorem mem_lieJ_iff {X : Matrix n n ℂ} : X ∈ lieJ J ↔ Xᴴ = -(J * X * J) := by
   constructor
   · intro h
@@ -81,15 +107,24 @@ theorem mem_lieJ_iff {X : Matrix n n ℂ} : X ∈ lieJ J ↔ Xᴴ = -(J * X * J)
     show Xᴴ * J + J * X = 0
     rw [h, Matrix.neg_mul, mul_J_J hJ, neg_add_cancel]
 
+/- English proof (translation)
+Rewrite `hX`, the goal using `[mem_lieJ_iff hJ]`. Rewrite using `[conjTranspose_conjTranspose, hX]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, neg_neg, ← Matrix.mul_assoc, hJ, Matrix.one_mul, mul_J_J hJ]`.
+-/
 theorem conjTranspose_mem_lieJ {X : Matrix n n ℂ} (hX : X ∈ lieJ J) : Xᴴ ∈ lieJ J := by
   rw [mem_lieJ_iff hJ] at hX ⊢
   rw [conjTranspose_conjTranspose, hX]
   simp only [Matrix.mul_neg, Matrix.neg_mul, neg_neg, ← Matrix.mul_assoc, hJ, Matrix.one_mul,
     mul_J_J hJ]
 
+/- English proof (translation)
+Rewrite using `[(mem_lieJ_iff hJ).1 hX, neg_neg]`.
+-/
 theorem J_mul_mul_J_of_mem {X : Matrix n n ℂ} (hX : X ∈ lieJ J) : J * X * J = -Xᴴ := by
   rw [(mem_lieJ_iff hJ).1 hX, neg_neg]
 
+/- English proof (translation)
+Rewrite using `[J_mul_mul_J_of_mem hJ hX]`. Conclude with `neg_mem (conjTranspose_mem_lieJ hJ hX)`.
+-/
 theorem J_mul_mul_J_mem {X : Matrix n n ℂ} (hX : X ∈ lieJ J) : J * X * J ∈ lieJ J := by
   rw [J_mul_mul_J_of_mem hJ hX]
   exact neg_mem (conjTranspose_mem_lieJ hJ hX)
@@ -115,17 +150,34 @@ def pJ : Submodule ℝ (Matrix n n ℂ) where
   smul_mem' c X hX := ⟨Submodule.smul_mem _ c hX.1, by
     rw [Matrix.smul_mul, Matrix.mul_smul, hX.2, smul_neg]⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_kJ {X : Matrix n n ℂ} : X ∈ kJ J ↔ X ∈ lieJ J ∧ X * J = J * X := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_pJ {X : Matrix n n ℂ} : X ∈ pJ J ↔ X ∈ lieJ J ∧ X * J = -(J * X) := Iff.rfl
 
+/- English proof (translation)
+Introduce `_ h` and use `h.1`.
+-/
 theorem kJ_le : kJ J ≤ lieJ J := fun _ h => h.1
 
+/- English proof (translation)
+Introduce `_ h` and use `h.1`.
+-/
 theorem pJ_le : pJ J ≤ lieJ J := fun _ h => h.1
 
 variable {J} (hJ : J * J = 1) (hJh : Jᴴ = J)
 include hJ
 
+/- English proof (translation)
+Use `⟨fun h => ⟨h.1, ?_⟩, fun h => ⟨h.1, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[(mem_lieJ_iff hJ).1 h.1, h.2.symm, mul_J_J hJ]`. Establish `e` using `J_mul_mul_J_of_mem hJ h.1`. Rewrite `e` using `[h.2, neg_neg]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← Matrix.mul_assoc J (J * X) J, ← Matrix.mul_assoc J J X, hJ, Matrix.one_mul]`. Use `_ = J * X := by rw [e]`.
+-/
 theorem mem_kJ_iff {X : Matrix n n ℂ} : X ∈ kJ J ↔ X ∈ lieJ J ∧ Xᴴ = -X := by
   refine ⟨fun h => ⟨h.1, ?_⟩, fun h => ⟨h.1, ?_⟩⟩
   · rw [(mem_lieJ_iff hJ).1 h.1, h.2.symm, mul_J_J hJ]
@@ -135,6 +187,11 @@ theorem mem_kJ_iff {X : Matrix n n ℂ} : X ∈ kJ J ↔ X ∈ lieJ J ∧ Xᴴ =
           rw [← Matrix.mul_assoc J (J * X) J, ← Matrix.mul_assoc J J X, hJ, Matrix.one_mul]
       _ = J * X := by rw [e]
 
+/- English proof (translation)
+Use `⟨fun h => ⟨h.1, ?_⟩, fun h => ⟨h.1, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[(mem_lieJ_iff hJ).1 h.1, Matrix.mul_assoc J X J, h.2, Matrix.mul_neg, neg_neg, ← Matrix.mul_assoc, hJ, Matrix.one_mul]`. Establish `e` using `J_mul_mul_J_of_mem hJ h.1`. Rewrite `e` using `[h.2]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← Matrix.mul_assoc J (J * X) J, ← Matrix.mul_assoc J J X, hJ, Matrix.one_mul]`. Use `_ = -(J * X) := by rw [e, Matrix.mul_neg]`.
+-/
 theorem mem_pJ_iff {X : Matrix n n ℂ} : X ∈ pJ J ↔ X ∈ lieJ J ∧ Xᴴ = X := by
   refine ⟨fun h => ⟨h.1, ?_⟩, fun h => ⟨h.1, ?_⟩⟩
   · rw [(mem_lieJ_iff hJ).1 h.1, Matrix.mul_assoc J X J, h.2, Matrix.mul_neg, neg_neg,
@@ -145,6 +202,11 @@ theorem mem_pJ_iff {X : Matrix n n ℂ} : X ∈ pJ J ↔ X ∈ lieJ J ∧ Xᴴ =
           rw [← Matrix.mul_assoc J (J * X) J, ← Matrix.mul_assoc J J X, hJ, Matrix.one_mul]
       _ = -(J * X) := by rw [e, Matrix.mul_neg]
 
+/- English proof (translation)
+Rewrite using `[eq_bot_iff]`. Introduce and unpack `X ⟨hK, hP⟩`. Rewrite using `[Submodule.mem_bot]`. Establish `h1 : J * X = -(J * X)` using `hK.2.symm.trans hP.2`. Establish `h2 : J * X = 0`.
+
+Establish `: (2 : ℂ) • (J * X) = 0` using `by rw [two_smul]; nth_rewrite 1 [h1]; exact neg_add_cancel _`. Conclude with `(smul_eq_zero.1 this).resolve_left two_ne_zero`. Rewrite using `[← J_J_mul hJ X, h2, Matrix.mul_zero]`.
+-/
 theorem kJ_inf_pJ : kJ J ⊓ pJ J = ⊥ := by
   rw [eq_bot_iff]
   rintro X ⟨hK, hP⟩
@@ -155,6 +217,11 @@ theorem kJ_inf_pJ : kJ J ⊓ pJ J = ⊥ := by
     exact (smul_eq_zero.1 this).resolve_left two_ne_zero
   rw [← J_J_mul hJ X, h2, Matrix.mul_zero]
 
+/- English proof (translation)
+Use `le_antisymm (sup_le (kJ_le J) (pJ_le J)) fun X hX => ?_` and prove the remaining obligations. Establish `hX'` using `J_mul_mul_J_mem hJ hX`. Use `Submodule.mem_sup.2 ⟨(1 / 2 : ℝ) • (X + J * X * J), ⟨Submodule.smul_mem _ _ (add_mem hX hX'), ?_⟩, (1 / 2 : ℝ) • (X - J * X * J), ⟨Submodule.smul_mem _ _ (sub_mem hX hX'), ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, mul_J_J hJ, ← Matrix.mul_assoc J (J * X) J, ← Matrix.mul_assoc J J X, hJ, Matrix.one_mul, add_comm (J * X)]`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, mul_J_J hJ, ← Matrix.mul_assoc J (J * X) J, ← Matrix.mul_assoc J J X, hJ, Matrix.one_mul, ← smul_neg, neg_sub]`.
+
+Rewrite using `[← smul_add, add_add_sub_cancel, ← two_smul ℝ X, smul_smul]`. Evaluate the numerical expressions.
+-/
 theorem kJ_sup_pJ : kJ J ⊔ pJ J = lieJ J := by
   refine le_antisymm (sup_le (kJ_le J) (pJ_le J)) fun X hX => ?_
   have hX' := J_mul_mul_J_mem hJ hX
@@ -167,6 +234,9 @@ theorem kJ_sup_pJ : kJ J ⊔ pJ J = lieJ J := by
   · rw [← smul_add, add_add_sub_cancel, ← two_smul ℝ X, smul_smul]
     norm_num
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨commutator_mem_lieJ hX.1 hY.1, by rw [Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc X Y J, hY.2, ← Matrix.mul_assoc X J Y, hX.2, Matrix.mul_assoc Y X J, hX.2, ← Matrix.mul_assoc Y J X, hY.2, Matrix.mul_assoc J X Y, Matrix.mul_assoc J Y X]⟩`.
+-/
 theorem commutator_mem_kJ {X Y : Matrix n n ℂ} (hX : X ∈ kJ J) (hY : Y ∈ kJ J) :
     X * Y - Y * X ∈ kJ J :=
   ⟨commutator_mem_lieJ hX.1 hY.1, by
@@ -174,6 +244,9 @@ theorem commutator_mem_kJ {X Y : Matrix n n ℂ} (hX : X ∈ kJ J) (hY : Y ∈ k
       Matrix.mul_assoc Y X J, hX.2, ← Matrix.mul_assoc Y J X, hY.2, Matrix.mul_assoc J X Y,
       Matrix.mul_assoc J Y X]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨commutator_mem_lieJ hX.1 hY.1, by rw [Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc X Y J, hY.2, Matrix.mul_neg, ← Matrix.mul_assoc X J Y, hX.2, Matrix.mul_assoc Y X J, hX.2, ← Matrix.mul_assoc Y J X, hY.2, Matrix.neg_mul, Matrix.mul_assoc J X Y, Matrix.mul_assoc J Y X, neg_s …`.
+-/
 theorem commutator_mem_pJ {X Y : Matrix n n ℂ} (hX : X ∈ kJ J) (hY : Y ∈ pJ J) :
     X * Y - Y * X ∈ pJ J :=
   ⟨commutator_mem_lieJ hX.1 hY.1, by
@@ -181,6 +254,9 @@ theorem commutator_mem_pJ {X Y : Matrix n n ℂ} (hX : X ∈ kJ J) (hY : Y ∈ p
       ← Matrix.mul_assoc X J Y, hX.2, Matrix.mul_assoc Y X J, hX.2, ← Matrix.mul_assoc Y J X, hY.2,
       Matrix.neg_mul, Matrix.mul_assoc J X Y, Matrix.mul_assoc J Y X, neg_sub_neg, neg_sub]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨commutator_mem_lieJ hX.1 hY.1, by rw [Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc X Y J, hY.2, Matrix.mul_neg, ← Matrix.mul_assoc X J Y, hX.2, Matrix.neg_mul, neg_neg, Matrix.mul_assoc Y X J, hX.2, Matrix.mul_neg, ← Matrix.mul_assoc Y J X, hY.2, Matrix.neg_mul, neg_neg, Mat …`.
+-/
 theorem commutator_mem_kJ_of_pJ {X Y : Matrix n n ℂ} (hX : X ∈ pJ J) (hY : Y ∈ pJ J) :
     X * Y - Y * X ∈ kJ J :=
   ⟨commutator_mem_lieJ hX.1 hY.1, by
@@ -203,24 +279,41 @@ noncomputable def imG (M : Matrix n n ℂ) : Matrix n n ℂ := (-(Complex.I / 2)
 
 variable {J}
 
+/- English proof (translation)
+Simplify using `only [thetaG, conjTranspose_add, Matrix.mul_add, Matrix.add_mul, neg_add]`.
+-/
 theorem thetaG_add (M N : Matrix n n ℂ) : thetaG J (M + N) = thetaG J M + thetaG J N := by
   simp only [thetaG, conjTranspose_add, Matrix.mul_add, Matrix.add_mul, neg_add]
 
+/- English proof (translation)
+Simplify using `only [thetaG, conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul, neg_sub_neg, neg_sub]`.
+-/
 theorem thetaG_sub (M N : Matrix n n ℂ) : thetaG J (M - N) = thetaG J M - thetaG J N := by
   simp only [thetaG, conjTranspose_sub, Matrix.mul_sub, Matrix.sub_mul, neg_sub_neg, neg_sub]
 
+/- English proof (translation)
+Simplify using `only [thetaG, conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, smul_neg]`.
+-/
 theorem thetaG_smul (c : ℂ) (M : Matrix n n ℂ) : thetaG J (c • M) = star c • thetaG J M := by
   simp only [thetaG, conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul, smul_neg]
 
 variable (hJ : J * J = 1) (hJh : Jᴴ = J)
 include hJ hJh
 
+/- English proof (translation)
+Simplify using `only [thetaG, conjTranspose_neg, conjTranspose_mul, hJh, conjTranspose_conjTranspose, Matrix.neg_mul, Matrix.mul_neg, neg_neg, ← Matrix.mul_assoc, hJ, Matrix.one_mul, mul_J_J hJ]`.
+-/
 theorem thetaG_thetaG (M : Matrix n n ℂ) : thetaG J (thetaG J M) = M := by
   simp only [thetaG, conjTranspose_neg, conjTranspose_mul, hJh, conjTranspose_conjTranspose,
     Matrix.neg_mul, Matrix.mul_neg, neg_neg, ← Matrix.mul_assoc, hJ, Matrix.one_mul, mul_J_J hJ]
 
 omit hJh in
 
+/- English proof (translation)
+Rewrite using `[mem_lieJ_iff hJ, thetaG]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, neg_neg, ← Matrix.mul_assoc, hJ, Matrix.one_mul, mul_J_J hJ]`.
+
+Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [← Matrix.mul_assoc, hJ, Matrix.one_mul, mul_J_J hJ]`. Use `_ = -(J * (-(J * Xᴴ * J)) * J) := by simp only [Matrix.mul_neg, Matrix.neg_mul, neg_neg]`. Use `_ = -(J * X * J) := by rw [h]`.
+-/
 theorem mem_lieJ_iff_thetaG {X : Matrix n n ℂ} : X ∈ lieJ J ↔ thetaG J X = X := by
   rw [mem_lieJ_iff hJ, thetaG]
   constructor
@@ -234,12 +327,18 @@ theorem mem_lieJ_iff_thetaG {X : Matrix n n ℂ} : X ∈ lieJ J ↔ thetaG J X =
       _ = -(J * (-(J * Xᴴ * J)) * J) := by simp only [Matrix.mul_neg, Matrix.neg_mul, neg_neg]
       _ = -(J * X * J) := by rw [h]
 
+/- English proof (translation)
+Rewrite using `[mem_lieJ_iff_thetaG hJ, reG, thetaG_smul, thetaG_add, thetaG_thetaG hJ hJh, add_comm (thetaG J M)]`. Use `congr 1`. Simplify using the standard rewrite rules.
+-/
 theorem reG_mem (M : Matrix n n ℂ) : reG J M ∈ lieJ J := by
   rw [mem_lieJ_iff_thetaG hJ, reG, thetaG_smul, thetaG_add, thetaG_thetaG hJ hJh,
     add_comm (thetaG J M)]
   congr 1
   simp
 
+/- English proof (translation)
+Rewrite using `[mem_lieJ_iff_thetaG hJ, imG, thetaG_smul, thetaG_sub, thetaG_thetaG hJ hJh, ← neg_sub M (thetaG J M), smul_neg, ← neg_smul]`. Use `congr 1`. Apply the tactic sequence `simp <;> ring`.
+-/
 theorem imG_mem (M : Matrix n n ℂ) : imG J M ∈ lieJ J := by
   rw [mem_lieJ_iff_thetaG hJ, imG, thetaG_smul, thetaG_sub, thetaG_thetaG hJ hJh,
     ← neg_sub M (thetaG J M), smul_neg, ← neg_smul]
@@ -247,12 +346,20 @@ theorem imG_mem (M : Matrix n n ℂ) : imG J M ∈ lieJ J := by
   simp <;> ring
 
 omit hJ hJh in
+/- English proof (translation)
+Rewrite using `[reG, imG, smul_smul, show Complex.I * -(Complex.I / 2) = 1 / 2 by`. Rewrite using `[mul_neg, ← mul_div_assoc, Complex.I_mul_I, neg_div, neg_neg], ← smul_add,`. Use the proof step `add_add_sub_cancel, ← two_smul ℂ M, smul_smul]`. Evaluate the numerical expressions.
+-/
 theorem reG_add_I_smul_imG (M : Matrix n n ℂ) : M = reG J M + Complex.I • imG J M := by
   rw [reG, imG, smul_smul, show Complex.I * -(Complex.I / 2) = 1 / 2 by
     rw [mul_neg, ← mul_div_assoc, Complex.I_mul_I, neg_div, neg_neg], ← smul_add,
     add_add_sub_cancel, ← two_smul ℂ M, smul_smul]
   norm_num
 
+/- English proof (translation)
+Establish `hM' : thetaG J M = X - Complex.I • Y`. Rewrite using `[hM, thetaG_add, thetaG_smul, (mem_lieJ_iff_thetaG hJ).1 hX, (mem_lieJ_iff_thetaG hJ).1 hY, Complex.star_def, Complex.conj_I, neg_smul, ← sub_eq_add_neg]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[reG, hM', hM, add_add_sub_cancel, ← two_smul ℂ X, smul_smul]`. Evaluate the numerical expressions.
+
+Rewrite using `[imG, hM', hM, add_sub_sub_cancel, ← two_smul ℂ, smul_smul, smul_smul, show -(Complex.I / 2) * 2 * Complex.I = 1 by`. Rewrite using `[neg_mul, neg_mul, div_mul_cancel₀ _ two_ne_zero, Complex.I_mul_I, neg_neg], one_smul]`.
+-/
 theorem eq_reG_imG_of_eq {M X Y : Matrix n n ℂ} (hX : X ∈ lieJ J) (hY : Y ∈ lieJ J)
     (hM : M = X + Complex.I • Y) : X = reG J M ∧ Y = imG J M := by
   have hM' : thetaG J M = X - Complex.I • Y := by
@@ -265,6 +372,9 @@ theorem eq_reG_imG_of_eq {M X Y : Matrix n n ℂ} (hX : X ∈ lieJ J) (hY : Y �
       show -(Complex.I / 2) * 2 * Complex.I = 1 by
         rw [neg_mul, neg_mul, div_mul_cancel₀ _ two_ne_zero, Complex.I_mul_I, neg_neg], one_smul]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(reG J M, imG J M), ⟨reG_mem hJ hJh M, imG_mem hJ hJh M, reG_add_I_smul_imG M⟩, fun XY h => by obtain ⟨h1, h2⟩ := eq_reG_imG_of_eq hJ hJh h.1 h.2.1 h.2.2 exact Prod.ext h1 h2⟩`.
+-/
 theorem existsUnique_complexification (M : Matrix n n ℂ) :
     ∃! XY : Matrix n n ℂ × Matrix n n ℂ, XY.1 ∈ lieJ J ∧ XY.2 ∈ lieJ J ∧ M = XY.1 + Complex.I • XY.2 :=
   ⟨(reG J M, imG J M), ⟨reG_mem hJ hJh M, imG_mem hJ hJh M, reG_add_I_smul_imG M⟩,

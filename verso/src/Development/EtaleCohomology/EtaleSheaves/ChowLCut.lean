@@ -9,6 +9,11 @@ inductive IterLine {S : Scheme.{0}} : ∀ {Y : Scheme.{0}}, (Y ⟶ S) → Prop
   | iso {Y : Scheme.{0}} (e : Y ⟶ S) : IsIso e → IterLine e
   | comp {Y T : Scheme.{0}} (l : Y ⟶ T) (k : T ⟶ S) : IsLine l → IterLine k → IterLine (l ≫ k)
 
+/- English proof (translation)
+Proceed by induction on `hk with`. Consider the case `iso e he => intro X u hu; exact IT.int _ (by infer_instance)`. Consider the case `comp l k hl _ ih`. Introduce `X u hu`. Use `IT.step (u ≫ l) k _ ?_ ⟨_, u, l, hu, hl, rfl⟩ (Category.assoc _ _ _)` and prove the remaining obligations.
+
+Simplify using `using ih (𝟙 _) inferInstance`.
+-/
 theorem IT_of_iterLine {S Y : Scheme.{0}} {k : Y ⟶ S} (hk : IterLine k) :
     ∀ {X : Scheme.{0}} (u : X ⟶ Y), IsIntegralHom u → IT (u ≫ k) := by
   induction hk with
@@ -29,6 +34,11 @@ def ChowGraph : Prop := ∀ (A : Type) [CommRing A] {X₁ : Scheme.{0}} (p₁ : 
     (U : X₁.Opens) (s : U.toScheme ⟶ X'), IterLine q ∧ IsClosedImmersion i ∧ IsClosedImmersion (i ≫ pullback.snd p₁ q) ∧
     (U : Set X₁).Nonempty ∧ s ≫ i ≫ pullback.fst p₁ q = U.ι
 
+/- English proof (translation)
+Introduce `A _ X₁ p₁ _ hX₁`. Take `⟨P, q, X', i, U, s, hq, hi, his, hU, hs⟩` from `hG A p₁ hX₁`. Use `⟨X', i ≫ pullback.fst p₁ q, U, s, hU, hs, IT_of_iterLine (hB q p₁ hq) i inferInstance, ?_⟩` and prove the remaining obligations. Establish `e : (i ≫ pullback.fst p₁ q) ≫ p₁ = (i ≫ pullback.snd p₁ q) ≫ q`. Rewrite using `[Category.assoc, pullback.condition, Category.assoc]`.
+
+Rewrite using `[e]`. Conclude with `IT_of_iterLine hq _ inferInstance`.
+-/
 theorem goal_of (hB : IterBC) (hG : ChowGraph) : LateralTheory.E.ChowCut.ChowL := by
   intro A _ X₁ p₁ _ hX₁
   obtain ⟨P, q, X', i, U, s, hq, hi, his, hU, hs⟩ := hG A p₁ hX₁

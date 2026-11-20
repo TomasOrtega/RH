@@ -24,6 +24,15 @@ namespace GlobalTheory.DistRel
 variable {D : D7} {S T : HSp D}
 open Classical
 
+/- English proof (translation)
+Establish `h1 : (cA D) (Formalism.L2.Theta.mt V g).det * (Formalism.L2.Theta.mt V g).det = 1`. Rewrite using `[mul_comm]`. Conclude with `GlobalTheory.SplitDetCharacter.det_mul_conj V g`. Establish `hd : (1 - (e + cA D e)) * (Formalism.L2.Theta.mt V g).det = (1 - (e + cA D e)) * (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)).det` using `GlobalTheory.WeilSplit.mul_det_eq _ _ _ fun i j => by`. Use `hg i j` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.sub_apply]`. Take the linear combination `(-1 : AE D) * this`. Rewrite `hd` using `[Matrix.det_one, mul_one]`. Establish `e1 : e * e = e` using `he.1`. Establish `e2 : e * cA D e = 0` using `he.2.1`.
+
+Establish `e3 : cA D e * cA D e = cA D e` using `by rw [← map_mul, e1]`. Unfold `IsDetRoot`. Establish `hcx : cA D (x : AE D) = cA D e * cA D (Formalism.L2.Theta.mt V g).det + (1 - cA D e)`. Rewrite using `[hx, map_add, map_mul, map_sub, map_one]`. Rewrite using `[hcx, hx]`.
+
+Express the relevant statement in the definitionally equal form `e * (Formalism.L2.Theta.mt V g).det + (1 - e) = (Formalism.L2.Theta.mt V g).det * (cA D e * cA D (Formalism.L2.Theta.mt V g).det + (1 - cA D e))`. Use `set d := (Formalism.L2.Theta.mt V g).det`. Take the linear combination `(-(cA D e)) * h1 - hd`.
+-/
 theorem isDetRoot_of_detAt {e : AE D} (he : IsSplitIdem D e) {V : HSp D} {g : GA D V} (hg : SuppAt e V g) {x : (AE D)ˣ}
     (hx : IsDetAt e V g x) : IsDetRoot V g x := by
   have h1 : (cA D) (Formalism.L2.Theta.mt V g).det * (Formalism.L2.Theta.mt V g).det = 1 := by
@@ -45,6 +54,13 @@ theorem isDetRoot_of_detAt {e : AE D} (he : IsSplitIdem D e) {V : HSp D} {g : GA
   set d := (Formalism.L2.Theta.mt V g).det
   linear_combination (-(cA D e)) * h1 - hd
 
+/- English proof (translation)
+Establish `he` using `hS.isIdemAt hP`. Establish `h1' : (1 - idemAt P) * ((y⁻¹ : (AE D)ˣ) : AE D) = 1 - idemAt P` using `by conv_lhs => rw [← h1, mul_assoc, Units.mul_inv, mul_one]`. Establish `key : ∀ z : AE D, (1 - idemAt P) * z = 1 - idemAt P → finPart D (idemAt P * z) ∈ intAE D → finPart D z ∈ intAE D` using `fun z a b => by`. Establish `: z = idemAt P * z + 1 - idemAt P` using `by linear_combination a`. Rewrite using `[this, RingHom.map_sub, RingHom.map_add, RingHom.map_one]`.
+
+Conclude with `sub_mem (add_mem b (GlobalTheory.SplitDivisors.one_mem_int D)) (finPart_idem_mem he)`. Establish `hinf : infPart D (y : AE D) = 1`. Establish `h0 : infPart D (idemAt P) = 0` using `GlobalTheory.StepVec.infPart_idemAt he`. Establish `: (y : AE D) = idemAt P * (y : AE D) + (1 - idemAt P)` using `by linear_combination h1`. Rewrite using `[this, RingHom.map_add, RingHom.map_mul, RingHom.map_sub, RingHom.map_one, h0]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `hχ y hinf (key _ h1 h2) (key _ h1' h3) ?_` and prove the remaining obligations. Establish `h0 : idemAt P * (idem Q + cA D (idem Q)) = 0`. Rewrite using `[mul_add, idem, map_sum, Finset.mul_sum, Finset.mul_sum, Finset.sum_eq_zero fun j hj => hS.mul_eq_zero hP (hQ hj) fun e => hn (e ▸ hj), Finset.sum_eq_zero fun j hj => hS.mul_conj hP (hQ hj), add_zero]`. Take the linear combination `(idem Q + cA D (idem Q)) * h1 + ((y : AE D) - 1) * h0`.
+-/
 theorem unram_at_gen {A : Type} [CommGroup A] {χ : (AE D)ˣ →* A} {Q S' : Finset (Pl D.host.E)} (hχ : UnramOutside χ Q)
     (hS : SplitSet S') (hQ : Q ⊆ S') {P : Pl D.host.E} (hP : P ∈ S') (hn : P ∉ Q) (y : (AE D)ˣ)
     (h1 : (1 - idemAt P) * (y : AE D) = 1 - idemAt P) (h2 : finPart D (idemAt P * (y : AE D)) ∈ intAE D)
@@ -76,6 +92,13 @@ variable {D : D7} {S T : HSp D}
 open Classical
 open Formalism.IndefR.Links (PolF)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `⟨GlobalTheory.OrientedHeis.theta_zero, GlobalTheory.FockFiniteHeis.pureTensorO_zero F.ψ F.θ S T hF.vac.1 hF.vac.2.inf _ _ _ _ Pol⟩`. Consider the case `insert i s hi ih`.
+
+Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`. Use `⟨GlobalTheory.OrientedHeis.theta_add (hf i) ih.1, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.FockFiniteHeis.pureTensorO_lin F.ψ F.θ S T hF.vac.1 hF.vac.2.inf (fun _ => 1) (fun τ => (F.BS τ).val) F.sT F.BT 1 (hf i) ih.1 Pol` as an intermediate fact. Rewrite `this` using `[one_smul, one_smul]`. Unfold `Frame.fock`.
+
+Rewrite using `[this]`. Unfold `Frame.fock at ih`. Rewrite using `[ih.2]`.
+-/
 theorem fock_sum {F : Frame S T} (hF : F.Good) {ι : Type} (s : Finset ι) (f : ι → WO S T → ℂ)
     (hf : ∀ i, IsThetaFunO F.ψ S T (f i)) (Pol : PolF D T.rank S.rank) :
     IsThetaFunO F.ψ S T (∑ i ∈ s, f i) ∧ F.fock (∑ i ∈ s, f i) Pol = ∑ i ∈ s, F.fock (f i) Pol := by
@@ -94,15 +117,24 @@ theorem fock_sum {F : Frame S T} (hF : F.Good) {ι : Type} (s : Finset ι) (f : 
     unfold Frame.fock at ih
     rw [ih.2]
 
+/- English proof (translation)
+Simplify using `only [series_apply, (fock_sum hF s f hf Pol).2, map_sum, Finset.sum_apply]`.
+-/
 theorem series_sum {F : Frame S T} (hF : F.Good) (ω : PairRep S T) {ι : Type} (s : Finset ι) (f : ι → WO S T → ℂ)
     (hf : ∀ i, IsThetaFunO F.ψ S T (f i)) (h : GA D S) (Pol : PolF D T.rank S.rank) (g : GA D T) :
     series F ω (∑ i ∈ s, f i) h Pol g = ∑ i ∈ s, series F ω (f i) h Pol g := by
   simp only [series_apply, (fock_sum hF s f hf Pol).2, map_sum, Finset.sum_apply]
 
+/- English proof (translation)
+Simplify using `only [series_apply, Frame.fock, GlobalTheory.FiniteFock.pureTensorO_smul, map_smul, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem series_smul (F : Frame S T) (ω : PairRep S T) (c : ℂ) (f : WO S T → ℂ) (h : GA D S) (Pol : PolF D T.rank S.rank)
     (g : GA D T) : series F ω (c • f) h Pol g = c * series F ω f h Pol g := by
   simp only [series_apply, Frame.fock, GlobalTheory.FiniteFock.pureTensorO_smul, map_smul, Pi.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Establish `k` using `(GlobalTheory.OrientedHeis.om_pureTensorO D F.ψ F.θ S T χS χT ω hω hF.vac.2.inf (fun _ => 1) (fun _ => 1) (fun τ => (F.BS τ).val) (fun τ => (F.BS τ).val) F.sT F.sT F.BT F.BT 1 γ (fun τ => by simp [GlobalTheory.FiniteFock.compAt_mt_of_finite _ τ (one_mem _)]) (fun τ => by simp [Gl …`. Establish `e2 : ((h, g * γ) : GA D S × GA D T) = (h, g) * (1, γ)` using `by simp`. Rewrite using `[series_apply, series_apply, e2, map_mul, Module.End.mul_apply]`. Unfold `Frame.fock`. Rewrite using `[k]`.
+-/
 theorem series_translate {F : Frame S T} (hF : F.Good) {ω : PairRep S T} {χS χT : (AE D)ˣ →* Circle}
     (hω : IsWeilDatumO F.ψ S T χS χT ω) {f : WO S T → ℂ} (hf : IsThetaFunO F.ψ S T f) {γ : GA D T} (hγ : γ ∈ GfC T)
     (h : GA D S) (Pol : PolF D T.rank S.rank) (g : GA D T) :
@@ -124,6 +156,13 @@ namespace GlobalTheory.DistRel
 variable {D : D7} {S T : HSp D}
 open Classical
 
+/- English proof (translation)
+Establish `h` using `(Finset.prod_univ_sum (fun i => if i = i₀ then (Finset.univ : Finset C) else {b i}) f).symm`. Establish `hs : Fintype.piFinset (fun i => if i = i₀ then (Finset.univ : Finset C) else {b i}) = Finset.univ.filter (fun c : ι → C => ∀ i, i ≠ i₀ → c i = b i)`. Use extensionality with `c`. Simplify using `only [Fintype.mem_piFinset, Finset.mem_filter, Finset.mem_univ, true_and]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hi : i = i₀`. Simplify using `[hi]`. Simplify using `[hi]`. Rewrite using `[← hs, h]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hi : i = i₀`. Rewrite using `[if_pos hi, if_pos hi]`. Rewrite using `[if_neg hi, if_neg hi, Finset.sum_singleton]`.
+-/
 theorem sum_ext_prod {ι C : Type} [Fintype ι] [Fintype C] (i₀ : ι) (b : ι → C) (f : ι → C → ℂ) :
     ∑ c ∈ Finset.univ.filter (fun c : ι → C => ∀ i, i ≠ i₀ → c i = b i), ∏ i, f i (c i) =
       ∏ i, (if i = i₀ then ∑ c, f i c else f i (b i)) := by
@@ -142,6 +181,17 @@ theorem sum_ext_prod {ι C : Type} [Fintype ι] [Fintype C] (i₀ : ι) (b : ι 
   · rw [if_pos hi, if_pos hi]
   · rw [if_neg hi, if_neg hi, Finset.sum_singleton]
 
+/- English proof (translation)
+Establish `e1 : ∀ φ : ∀ PP : ↥Q, Matrix (Fin T.rank) (Fin S.rank) (kP PP.1) → ℂ, B.vecAt Q φ = B.F.vecL B.G (B.de.Q ∪ Q) (B.locFn Q φ)` using `fun φ => rfl`. Simplify using `only [e1, ← map_sum]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[Finset.sum_apply]`.
+
+Unfold `Base.locFn`. Rewrite using `[← Finset.mul_sum]`. Use `congr 1`. Establish `hf : Finset.univ.filter (fun c : ↥Q → C => ∀ v : ↥Q, v.1 ≠ P → c v = b v) = Finset.univ.filter (fun c : ↥Q → C => ∀ v, v ≠ ⟨P, hP⟩ → c v = b v)`. Use `Finset.filter_congr fun c _ => forall_congr' fun v => ?_` and prove the remaining obligations.
+
+Conclude with `⟨fun h hv => h fun e => hv (Subtype.ext e), fun h hv => h fun e => hv (congrArg Subtype.val e)⟩`. Rewrite using `[hf]`. Use `sum_ext_prod (⟨P, hP⟩ : ↥Q) b (fun v c => Φ v.1 c (y v.1)) using 1` and compare the differences between its conclusion and the goal. Use `congr 1`. Use extensionality with `c`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `only`. Distinguish the cases in `h : v.1 = P`. Rewrite using `[if_pos (Subtype.ext h), if_pos h]`.
+
+Rewrite using `[if_neg fun e => h (congrArg Subtype.val e), if_neg h]`.
+-/
 theorem vecAt_sum (B : Base S T) {Q : Finset (Pl D.host.E)} {P : Pl D.host.E} (hP : P ∈ Q) {C : Type} [Fintype C]
     (Φ : ∀ PP : Pl D.host.E, C → Matrix (Fin T.rank) (Fin S.rank) (kP PP) → ℂ) (b : ↥Q → C) :
     ∑ c ∈ Finset.univ.filter (fun c : ↥Q → C => ∀ v : ↥Q, v.1 ≠ P → c v = b v), B.vecAt Q (fun PP y => Φ PP.1 (c PP) y) =
@@ -177,16 +227,57 @@ variable {D : D7} {S T : HSp D}
 open Classical
 open Formalism.IndefR.Links (PolF)
 
+/- English proof (translation)
+Apply the tactic sequence `have := series_sum hF ω (Finset.univ : Finset Bool) (fun b => if b then f else f') (fun b => by cases b <;> simp [hf, hf']) h Pol g`. Simplify `this` using `[Fintype.sum_bool]`.
+-/
 theorem series_add {F : Frame S T} (hF : F.Good) (ω : PairRep S T) {f f' : WO S T → ℂ} (hf : IsThetaFunO F.ψ S T f)
     (hf' : IsThetaFunO F.ψ S T f') (h : GA D S) (Pol : PolF D T.rank S.rank) (g : GA D T) :
     series F ω (f + f') h Pol g = series F ω f h Pol g + series F ω f' h Pol g := by
   have := series_sum hF ω (Finset.univ : Finset Bool) (fun b => if b then f else f') (fun b => by cases b <;> simp [hf, hf']) h Pol g
   simpa [Fintype.sum_bool] using this
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.GalLift.Vec.theta_of_thetaAt hB.frame.vac.1 hB.frame.vac.2.inf (Base.isThetaAt_vecAt hB hQ φ) hB.frame.vac.2.theta`.
+-/
 theorem theta_vecAt {B : Base S T} (hB : B.Good) {Q : Finset (Pl D.host.E)} (hQ : B.admitted Q)
     (φ : ∀ PP : ↥Q, Matrix (Fin T.rank) (Fin S.rank) (kP PP.1) → ℂ) : IsThetaFunO B.F.ψ S T (B.vecAt Q φ) :=
   GlobalTheory.GalLift.Vec.theta_of_thetaAt hB.frame.vac.1 hB.frame.vac.2.inf (Base.isThetaAt_vecAt hB hQ φ) hB.frame.vac.2.theta
 
+/- English proof (translation)
+Take `⟨S', -, hq', hS'⟩` from `hQ.1.split`. Establish `he : IsIdemAt (idemAt P) P` using `hS'.isIdemAt (hq' (Finset.mem_union_right _ hP))`. Use `set dQ : ↥Q → C := Multiplicative.toAdd (detChar T (u.delQ Q) g) with hdQ`. Use `set dQ' : ↥Q' → C := Multiplicative.toAdd (detChar T (u'.delQ Q') g) with hdQ'`. Establish `hres : ∀ v : ↥Q', dQ ⟨v.1, hQ' v.2⟩ = dQ' v` using `fun v => by`.
+
+Simplify using `only [hdQ, hdQ', detChar, UnivTwist.delQ, MonoidHom.coe_mk, OneHom.coe_mk, toAdd_ofAdd]`. Rewrite using `[hdel v.1 v.2]`. Use `set b0 : ↥Q → C := fun v => if hv : v.1 ∈ Q' then a' ⟨v.1, hv⟩ - dQ' ⟨v.1, hv⟩ else 0 with hb0`. Use `set Φ : ∀ PP : Pl D.host.E, C → Matrix (Fin T.rank) (Fin S.rank) (kP PP) → ℂ := fun PP c y => ((Base.univFam u β PP c y : ℚ) : ℂ) with hΦ`. Establish `s1 : ∑ c ∈ Finset.univ.filter (fun c : ↥Q → C => ∀ v : ↥Q', c ⟨v.1, hQ' v.2⟩ = a' v), B.xiCoef ω u Q (Base.univFam u β) h Pol c g = ∑ b ∈ Finset.univ.filter (fun c : ↥Q → C => ∀ v : ↥Q, v.1 ≠ P → c v = b0 v), series B.F ω (B.vecAt Q fun PP y => Φ PP.1 (b PP) y) h Pol g`.
+
+Use `Finset.sum_equiv (Equiv.subRight dQ) (fun c => ?_) (fun c _ => ?_)` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Equiv.subRight_apply, Pi.sub_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hc v hv`. Establish `hv'` using `(hQQ v.1 v.2).2 hv`.
+
+Use `hc ⟨v.1, hv'⟩` as an intermediate fact. Simplify using `only [hb0, dif_pos hv']`. Rewrite using `[← this, ← hres ⟨v.1, hv'⟩]`. Introduce `hc w`. Establish `hw : w.1 ≠ P` using `(hQQ w.1 (hQ' w.2)).1 w.2`.
+
+Use `hc ⟨w.1, hQ' w.2⟩ hw` as an intermediate fact. Simplify using `only [hb0, dif_pos w.2, hres] at this`. Rewrite `this` using `[sub_left_inj]`. Conclude with `this`. Rewrite using `[Base.xiCoef_apply]`.
+
+Both sides reduce to the same expression. Establish `htheta : ∀ b : ↥Q → C, IsThetaFunO B.F.ψ S T (B.vecAt Q fun PP y => Φ PP.1 (b PP) y)` using `fun b => theta_vecAt hB hQ _`. Rewrite using `[s1, ← series_sum hB.frame ω _ _ (fun b => htheta b) h Pol g, vecAt_sum B hP Φ b0]`. Use `set φ : ∀ PP : Pl D.host.E, Matrix (Fin T.rank) (Fin S.rank) (kP PP) → ℂ := fun PP y => if hP' : PP ∈ Q then Φ PP (b0 ⟨PP, hP'⟩) y else 0 with hφ`. Establish `hv1 : B.vecAt Q (fun PP y => if PP.1 = P then ∑ c, Φ PP.1 c y else Φ PP.1 (b0 PP) y) = B.vecAt Q (fun PP y => if PP.1 = P then ((prim y : ℚ) : ℂ) else φ PP.1 y)`.
+
+Use `congr 1`. Use function extensionality and compare the values at `PP y`. Distinguish the cases in `hPP : PP.1 = P`. Rewrite using `[if_pos hPP, if_pos hPP]`. Simplify using `only [hΦ, Base.univFam]`.
+
+Rewrite using `[← Rat.cast_sum, GlobalTheory.T.sum_universalDeterminantDatumCoeff_eq_primitive (kP PP.1) C T.rank S.rank B.hr (β PP.1) (u.kap PP.1) y]`. Rewrite using `[if_neg hPP, if_neg hPP, hφ]`. Simplify using `only [dif_pos PP.2]`. Rewrite using `[hv1, vec_rel B hB hbT hω hQ hP φ hϖ1 hϖ2 x hx α R hα]`. Use `set f1 := B.vecAt Q fun PP y => if PP.1 = P then 1 else φ PP.1 y with hf1`.
+
+Establish `hf1' : f1 = B.vecFam Q' (Base.univFam u' β) (a' - dQ')`. Rewrite using `[hf1, Base.vecFam]`. Use `GlobalTheory.T.vacuumVector_drop_auxiliary_places D S T B Q Q' (fun v y => if hv : v ∈ Q' then ((Base.univFam u' β v ((a' - dQ') ⟨v, hv⟩) y : ℚ) : ℂ) else 0) hB hQ hQ'` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `PP y`.
+
+Distinguish the cases in `hPP : PP.1 = P`. Rewrite using `[if_pos hPP, if_neg (fun h => ((hQQ PP.1 PP.2).1 h) hPP)]`. Establish `hm` using `(hQQ PP.1 PP.2).2 hPP`. Rewrite using `[if_neg hPP, if_pos hm, dif_pos hm, hφ]`. Simplify using `only [dif_pos PP.2, hb0, dif_pos hm, hΦ, Base.univFam, hkap PP.1 hm, Pi.sub_apply]`.
+
+Use function extensionality and compare the values at `PP y`. Rewrite using `[dif_pos PP.2]`. Establish `hth1 : IsThetaFunO B.F.ψ S T f1` using `theta_vecAt hB hQ _`. Establish `hom : ∀ γ : GA D T, IsThetaFunO B.F.ψ S T (ω (1, γ) f1)` using `fun γ => hω.om_pres _ _ hth1`. Establish `hlin : series B.F ω (f1 + ∑ k ∈ Finset.Icc 1 T.rank, ((-1 : ℂ) ^ k * ((Ideal.absNorm P.asIdeal : ℕ) : ℂ) ^ (k * (k - 1) / 2) * (((B.mu x : Circle) : ℂ) ^ k * ((Ideal.absNorm P.asIdeal : ℕ) : ℂ) ^ (k * (S.rank / 2)))⁻¹) • ∑ γ ∈ R k, ω (1, γ) f1) h Pol g = series B.F ω f1 h Pol g + …`.
+
+Establish `t1 : ∀ k, IsThetaFunO B.F.ψ S T (∑ γ ∈ R k, ω (1, γ) f1)` using `fun k => (fock_sum hB.frame (R k) _ hom 0).1`. Establish `t2 : ∀ k, IsThetaFunO B.F.ψ S T (((-1 : ℂ) ^ k * ((Ideal.absNorm P.asIdeal : ℕ) : ℂ) ^ (k * (k - 1) / 2) * (((B.mu x : Circle) : ℂ) ^ k * ((Ideal.absNorm P.asIdeal : ℕ) : ℂ) ^ (k * (S.rank / 2)))⁻¹) • ∑ γ ∈ R k, ω (1, γ) f1)` using `fun k => GlobalTheory.OrientedHeis.theta_smul _ (t1 k)`. Rewrite using `[series_add hB.frame ω hth1 (fock_sum hB.frame _ _ t2 0).1, series_sum hB.frame ω _ _ t2]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[series_smul, series_sum hB.frame ω _ _ hom]`. Rewrite using `[hlin, Base.xiCoef_apply, ← hf1']`. Use `congr 1`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun γ hγ => ?_` and prove the remaining obligations. Establish `hγf : γ ∈ GfC T` using `((hα k hk).2.2.1 γ hγ).1`. Rewrite using `[← series_translate hB.frame hω hth1 hγf, Base.xiCoef_apply, hf1', Base.vecFam, Base.vecFam]`. Establish `hsupp` using `(hα k hk).2.1 γ hγ`. Take `⟨-, k₁, hk₁, k₂, hk₂, hγe⟩` from `(hα k hk).2.2.1 γ hγ`.
+
+Establish `hH` using `(GlobalTheory.T.modulus_unramifiedChar_det_heckeDoubleCoset_split D T P (idemAt P) he ϖ hϖ1 hϖ2 x hx k (α k) (hα k hk).1 k₁ hk₁ k₂ hk₂ (GlobalTheory.VecInv.detAt (idemAt P) he.1.1 T γ) (by rw [← hγe]; exact GlobalTheory.VecInv.isDetAt_detAt _ he.1.1 T γ)).2 (Multiplicative (↥Q' → …`. Use extensionality with `v`. Simplify using `only [UnivTwist.delQ, MonoidHom.coe_mk, OneHom.coe_mk, toAdd_ofAdd, toAdd_one, Pi.zero_apply]`. Rewrite using `[hdel v.1 v.2]`. Establish `hv` using `(hu.2 v.1 (hQ' v.2)).unram`.
+
+Use `unram_at_gen hv hu.1 (Finset.singleton_subset_iff.2 (hQ' v.2)) hP (fun hm => ((hQQ v.1 (hQ' v.2)).1 v.2) (Finset.mem_singleton.1 hm).symm) y h1 h2 h3` as an intermediate fact. Rewrite using `[this]`. Use the proof step `rfl)`. Establish `hdet : Multiplicative.toAdd (detChar T (u'.delQ Q') γ) = k • Multiplicative.toAdd (u'.delQ Q' x)`. Rewrite using `[detChar_eq hu'.delQ_real (isDetRoot_of_detAt he.1 hsupp (GlobalTheory.VecInv.isDetAt_detAt _ he.1.1 T γ)), hH, toAdd_pow]`.
+
+Establish `key : a' + k • Multiplicative.toAdd (u'.delQ Q' x) - Multiplicative.toAdd (detChar T (u'.delQ Q') (g * γ)) = a' - dQ'`. Rewrite using `[detChar_mul hu'.delQ_real, toAdd_mul, hdet]`. Normalize the expressions using the abelian group laws. Rewrite using `[key]`.
+-/
 theorem xi_rel (B : Base S T) (hB : B.Good) (hbT : Lev.IsBaseFrame T B.F.βT B.F.ΛT 1) {ω : PairRep S T}
     (hω : B.IsWeil 1 ω) {C : Type} [AddCommGroup C] [Fintype C] (u u' : UnivTwist D C)
     (β : ∀ PP : Pl D.host.E, DetBases (kP PP) T.rank S.rank) {Q Q' : Finset (Pl D.host.E)} (hQ : B.admitted Q) (hu : u.Good Q)

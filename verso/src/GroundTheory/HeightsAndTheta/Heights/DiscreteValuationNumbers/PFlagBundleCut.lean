@@ -12,6 +12,11 @@ noncomputable section
 
 namespace FlagBundleCutProof
 
+/- English proof (translation)
+Establish `hget : (x :: L).get = Fin.cons (α` using `fun _ => K → ℤ) x L.get := by`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) j <;> rfl`. Establish `h` using `FieldNumbers.IntNumSymm.proof F K ι P (L.length + 1) (Fin.cons (α := fun _ => K → ℤ) x L.get) (finRotate _)`. Rewrite using `[intNumL, hget, Fin.snoc_eq_cons_rotate, ← h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem intNumL_cons_eq_snoc {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type}
     [∀ k, Fintype (ι k)] {F : Type} [Field F] (P : Ideal (MRing ι F)) (x : K → ℤ)
     (L : List (K → ℤ)) :
@@ -24,6 +29,9 @@ theorem intNumL_cons_eq_snoc {K : Type} [Fintype K] [DecidableEq K] {ι : K → 
   rw [intNumL, hget, Fin.snoc_eq_cons_rotate, ← h]
   rfl
 
+/- English proof (translation)
+Unfold `cycEval`. Rewrite using `[finsum_eq_single _ Z (fun W hW => by simp [hW])]`. Simplify using the standard rewrite rules.
+-/
 theorem cycEval_single {K : Type} {ι : K → Type} {F : Type} [Field F]
     (n : Ideal (MRing ι F) → ℤ) (Z : Ideal (MRing ι F)) :
     cycEval n (fun W => by classical exact if W = Z then 1 else 0) = n Z := by
@@ -36,6 +44,13 @@ end FlagBundleCutProof
 
 open FlagBundleCutProof in
 
+/- English proof (translation)
+Introduce `F _ Ω _ _ K _ _ ι _ y e hV hdim N E _ _ B w b hB M a φ hφ Φ _ _ t ht i hi L hL`. Take `⟨bf, bg, f, g, hf, hg, hdeg, hfP, hgP, hval⟩` from `hForms F Ω K ι y e hV hdim N E B w b hB M a φ hφ Φ t ht i`. Establish `hdiv` using `hDiv F Ω K ι y e hV hdim N E B w b hB M a φ hφ Φ t ht i hi bf bg f g hf hg hdeg hgP hval`. Take `⟨hP, hrel⟩` from `hDim F Ω K ι y e hV hdim N E B w b hB M a φ hφ Φ t ht ((i : ℕ) + 1) (by omega) i.2`. Establish `hrel' : FieldNumbers.relDim (projIdeal F y w φ (truncCoord t ((i : ℕ) + 1))) = ((L.length + 1 : ℕ) : WithBot (WithTop ℤ))`.
+
+Rewrite using `[hrel]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers. Establish `h` using `hCut F (Option K) (bundleIdx ι M) _ hP L.length hrel' bf bg f g hf hg hfP hgP L.get`. Rewrite using `[intNumL_cons_eq_snoc, ← hdeg, h, funext hdiv, intNumL]`.
+
+Use `cycEval_single (fun W => intNum F W L.get) (projIdeal F y w φ (truncCoord t i))` and compare the differences between its conclusion and the goal.
+-/
 theorem FlagBundleCut.proof (hDim : FlagBundleDim.Statement)
     (hForms : FlagBundleSectionForms.Statement) (hDiv : FlagBundleSectionDiv.Statement)
     (hCut : FieldNumbers.CutRational.Statement.{0}) : FlagBundleCut.Statement := by

@@ -6,6 +6,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry IsLocalRing
 
 namespace GlobalTheory.SmallLift
 
+/- English proof (translation)
+Use `(Scheme.Hom.comp_apply (Spec.map φ) (X.fromSpecStalk x) (closedPoint R)).trans ?_` and prove the remaining obligations. Conclude with `(congrArg (X.fromSpecStalk x) (Spec_closedPoint (f := φ))).trans Scheme.fromSpecStalk_closedPoint`.
+-/
 theorem map_closedPoint {X : Scheme.{0}} {x : X} {R : CommRingCat.{0}} [IsLocalRing R]
     (φ : X.presheaf.stalk x ⟶ R) [IsLocalHom φ.hom] :
     (Spec.map φ ≫ X.fromSpecStalk x) (closedPoint R) = x := by
@@ -13,6 +16,15 @@ theorem map_closedPoint {X : Scheme.{0}} {x : X} {R : CommRingCat.{0}} [IsLocalR
   exact (congrArg (X.fromSpecStalk x) (Spec_closedPoint (f := φ))).trans
     Scheme.fromSpecStalk_closedPoint
 
+/- English proof (translation)
+Establish `e : f.stalkMap x ≫ ψ = π ≫ CommRingCat.ofHom (Ideal.Quotient.mk I)` using `by ext1`. Conclude with `hψ`. Take `⟨l, hl, hs⟩` from `H (Spec.map ψ ≫ X.fromSpecStalk x) (Spec.map π ≫ Y.fromSpecStalk (f x)) (by`. Rewrite using `[Category.assoc, ← Scheme.SpecMap_stalkMap_fromSpecStalk, ← Spec.map_comp_assoc, ← Spec.map_comp_assoc, e])`. Take `⟨⟨x', φ, hφ⟩, rfl⟩` from `(SpecToEquivOfLocalRing X (CommRingCat.of C)).symm.surjective l`.
+
+Rewrite `hs`, `hl` using `[SpecToEquivOfLocalRing_symm_apply]`. Simplify using `only at hs hl`. Establish `hmk : IsLocalHom (CommRingCat.ofHom (Ideal.Quotient.mk I)).hom` using `IsLocalHom.of_surjective (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective`. Establish `hx : x' = x`. Rewrite `hl` using `[← Spec.map_comp_assoc]`.
+
+Establish `: IsLocalHom (φ ≫ CommRingCat.ofHom (Ideal.Quotient.mk I)).hom` using `@RingHom.isLocalHom_comp _ _ _ _ _ _ _ φ.hom hmk hφ`. Establish `h1` using `map_closedPoint (φ ≫ CommRingCat.ofHom (Ideal.Quotient.mk I))`. Rewrite `h1` using `[hl]`. Conclude with `h1.symm.trans (map_closedPoint ψ)`. Substitute `hx` using the available equality.
+
+Rewrite `hs` using `[Category.assoc, ← Scheme.SpecMap_stalkMap_fromSpecStalk, ← Spec.map_comp_assoc]`. Establish `: Mono (Y.fromSpecStalk (f x'))` using `SurjectiveOnStalks.mono_of_injective (Y.fromSpecStalk (f x')).isEmbedding.injective`. Establish `key` using `Spec.map_injective ((cancel_mono _).1 hs)`. Conclude with `⟨φ.hom, hφ, congrArg CommRingCat.Hom.hom key⟩`.
+-/
 theorem step {X Y : Scheme.{0}} (f : X ⟶ Y) (x : X) (C : Type) [CommRing C] [IsLocalRing C]
     (I : Ideal C) [IsLocalRing (C ⧸ I)]
     (H : ∀ (a : Spec (CommRingCat.of (C ⧸ I)) ⟶ X) (b : Spec (CommRingCat.of C) ⟶ Y),
@@ -50,20 +62,32 @@ theorem step {X Y : Scheme.{0}} (f : X ⟶ Y) (x : X) (C : Type) [CommRing C] [I
   have key := Spec.map_injective ((cancel_mono _).1 hs)
   exact ⟨φ.hom, hφ, congrArg CommRingCat.Hom.hom key⟩
 
+/- English proof (translation)
+Introduce `h` and use `(maximalIdeal.isMaximal A).ne_top (top_le_iff.1 (h ▸ Ideal.pow_le_self n.succ_ne_zero))`.
+-/
 theorem pow_ne_top {A : Type} [CommRing A] [IsLocalRing A] (n : ℕ) :
     maximalIdeal A ^ (n + 1) ≠ ⊤ := fun h =>
   (maximalIdeal.isMaximal A).ne_top (top_le_iff.1 (h ▸ Ideal.pow_le_self n.succ_ne_zero))
 
+/- English proof (translation)
+The claim follows from `haveI := Ideal.Quotient.nontrivial_iff.2 (pow_ne_top (A := A) n) IsLocalRing.of_surjective' _ Ideal.Quotient.mk_surjective`.
+-/
 theorem isLocalRing_quot {A : Type} [CommRing A] [IsLocalRing A] (n : ℕ) :
     IsLocalRing (A ⧸ maximalIdeal A ^ (n + 1)) :=
   haveI := Ideal.Quotient.nontrivial_iff.2 (pow_ne_top (A := A) n)
   IsLocalRing.of_surjective' _ Ideal.Quotient.mk_surjective
 
+/- English proof (translation)
+The claim follows from `IsLocalRing.map_maximalIdeal_of_surjective _ Ideal.Quotient.mk_surjective`.
+-/
 theorem map_maximalIdeal_quot {A : Type} [CommRing A] [IsLocalRing A] (J : Ideal A)
     [IsLocalRing (A ⧸ J)] :
     (maximalIdeal A).map (Ideal.Quotient.mk J) = maximalIdeal (A ⧸ J) :=
   IsLocalRing.map_maximalIdeal_of_surjective _ Ideal.Quotient.mk_surjective
 
+/- English proof (translation)
+Use `haveI := isLocalRing_quot (A := A) n`. Rewrite using `[isArtinianRing_iff_isNilpotent_maximalIdeal]`. Use `⟨n + 1, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_maximalIdeal_quot, ← Ideal.map_pow, Ideal.map_quotient_self]`. Both sides reduce to the same expression.
+-/
 theorem isArtinianRing_quot {A : Type} [CommRing A] [IsLocalRing A] [IsNoetherianRing A] (n : ℕ) :
     IsArtinianRing (A ⧸ maximalIdeal A ^ (n + 1)) := by
   haveI := isLocalRing_quot (A := A) n
@@ -72,6 +96,23 @@ theorem isArtinianRing_quot {A : Type} [CommRing A] [IsLocalRing A] [IsNoetheria
   rw [← map_maximalIdeal_quot, ← Ideal.map_pow, Ideal.map_quotient_self]
   rfl
 
+/- English proof (translation)
+Introduce `X Y f H x _ hs n`. It suffices to establish `h : ∃ ψ : X.presheaf.stalk x →+* Y.presheaf.stalk (f x) ⧸ maximalIdeal (Y.presheaf.stalk (f x)) ^ (n + 1), IsLocalHom ψ ∧ ψ.comp (f.stalkMap x).hom = Ideal.Quotient.mk _ from`. Set `⟨ψ, _, h⟩` to `h`. Use the proof step `⟨ψ, h⟩`. Proceed by induction on `n with`.
+
+Consider the case `zero`. Set `e : ResidueField (Y.presheaf.stalk (f x)) ≃+* ResidueField (X.presheaf.stalk x)` to `RingEquiv.ofBijective (f.residueFieldMap x).hom ⟨(f.residueFieldMap x).hom.injective, hs⟩`. Set `q : (Y.presheaf.stalk (f x) ⧸ maximalIdeal (Y.presheaf.stalk (f x)) ^ (0 + 1)) ≃+* ResidueField (Y.presheaf.stalk (f x))` to `Ideal.quotEquivOfEq (by rw [zero_add, pow_one])`. Set `r` to `(q.trans e).symm`. Use `haveI := isLocalRing_quot (A := Y.presheaf.stalk (f x)) 0`.
+
+Use `⟨r.toRingHom.comp (residue _), ?_, ?_⟩` and prove the remaining obligations. Establish `: IsLocalHom r.toRingHom` using `IsLocalHom.of_surjective _ r.surjective infer_instance`. Use extensionality with `a`. Express the relevant statement in the definitionally equal form `r (residue _ ((f.stalkMap x).hom a)) = _`. Rewrite using `[RingEquiv.symm_apply_eq]`.
+
+Both sides reduce to the same expression. Consider the case `succ n ih`. Take `⟨ψ, hψ, h⟩` from `ih`. Use `set A := Y.presheaf.stalk (f x) with hA`. Use `haveI := isLocalRing_quot (A := A) n`.
+
+Use `haveI := isLocalRing_quot (A := A) (n + 1)`. Use `haveI := isArtinianRing_quot (A := A) (n + 1)`. Establish `hle : maximalIdeal A ^ (n + 1 + 1) ≤ maximalIdeal A ^ (n + 1)` using `Ideal.pow_le_pow_right (Nat.le_succ _)`. Set `I : Ideal (A ⧸ maximalIdeal A ^ (n + 1 + 1))` to `(maximalIdeal A ^ (n + 1)).map (Ideal.Quotient.mk _)`. Set `r : (A ⧸ maximalIdeal A ^ (n + 1)) ≃+* ((A ⧸ maximalIdeal A ^ (n + 1 + 1)) ⧸ I)` to `(DoubleQuot.quotQuotEquivQuotOfLE hle).symm`.
+
+Use `haveI : IsLocalRing ((A ⧸ maximalIdeal A ^ (n + 1 + 1)) ⧸ I) := r.isLocalRing`. Establish `h1 : I ≤ maximalIdeal _`. Rewrite using `[← map_maximalIdeal_quot]`. Conclude with `Ideal.map_mono (Ideal.pow_le_self n.succ_ne_zero)`. Establish `h2 : maximalIdeal _ * I = ⊥`.
+
+Rewrite using `[← map_maximalIdeal_quot, ← Ideal.map_mul, ← pow_succ', Ideal.map_quotient_self]`. Establish `: IsLocalHom r.toRingHom` using `IsLocalHom.of_surjective _ r.surjective`. Establish `hl : IsLocalHom (r.toRingHom.comp ψ)` using `inferInstance`. Set `π : A →+* A ⧸ maximalIdeal A ^ (n + 1 + 1)` to `Ideal.Quotient.mk _`. Use `@step X Y f x _ _ _ I _ (H _ I h1 h2) (CommRingCat.ofHom π) (CommRingCat.ofHom (r.toRingHom.comp ψ)) hl ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(r.toRingHom.comp ψ).comp _ = _`. Rewrite using `[RingHom.comp_assoc, h]`. Use extensionality with `a`. Both sides reduce to the same expression.
+-/
 theorem exists_retraction : ∀ {X Y : Scheme.{0}} (f : X ⟶ Y), (∀ (B : Type) [CommRing B] [IsLocalRing B] [IsArtinianRing B] (I : Ideal B), I ≤ IsLocalRing.maximalIdeal B → IsLocalRing.maximalIdeal B * I = ⊥ → ∀ (a : Spec (CommRingCat.of (B ⧸ I)) ⟶ X) (b : Spec (CommRingCat.of B) ⟶ Y), a ≫ f = Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I)) ≫ b → ∃ l : Spec (CommRingCat.of B) ⟶ X, Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I)) ≫ l = a ∧ l ≫ f = b) → ∀ (x : X) [IsNoetherianRing (Y.presheaf.stalk (f x))], Function.Surjective (f.residueFieldMap x).hom → ∀ n : ℕ, ∃ ψ : X.presheaf.stalk x →+* Y.presheaf.stalk (f x) ⧸ maximalIdeal (Y.presheaf.stalk (f x)) ^ (n + 1), ψ.comp (f.stalkMap x).hom = Ideal.Quotient.mk _ := by
   intro X Y f H x _ hs n
   suffices h : ∃ ψ : X.presheaf.stalk x →+*

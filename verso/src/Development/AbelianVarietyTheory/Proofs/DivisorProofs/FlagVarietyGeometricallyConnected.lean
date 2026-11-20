@@ -8,6 +8,23 @@ open CategoryTheory.Limits
 
 namespace GlobalTheory.FlagQ
 
+/- English proof (translation)
+Introduce `ι _ N`. Use `set f := GlobalTheory.FlagZ.flStr ι N with hf`. Use `set g : Sp ℚ ⟶ Sp ℤ := spMap (algebraMap ℤ ℚ) with hg`. Establish `hP : IsProper f`. Take `⟨M, i, hi, e⟩` from `GlobalTheory.FlagZ.isProjOver_str (ι := ι) (N := N) Prod.fst Prod.snd`.
+
+Use `ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str ℤ M` as an intermediate fact. Express the relevant statement in the definitionally equal form `IsProper (GlobalTheory.FlagZ.str Prod.fst Prod.snd)`. Rewrite using `[← e]`. Use `infer_instance`. Establish `hb : IsPreimmersion g` using `IsPreimmersion.of_isLocalization (R := CommRingCat.of ℤ) (S := ℚ) (nonZeroDivisors ℤ)`.
+
+Establish `hbf : Flat g`. Rewrite using `[hg, Flat.SpecMap_iff]`. Conclude with `RingHom.flat_algebraMap_iff.mpr (IsLocalization.flat ℚ (nonZeroDivisors ℤ))`. Establish `h1 : IsPreimmersion (pullback.fst f g)` using `MorphismProperty.of_isPullback (P := @IsPreimmersion) (IsPullback.of_hasPullback _ _).flip hb`. Set `x : Sp ℚ ⟶ GlobalTheory.FlagZ.Fl ι N` to `GlobalTheory.FlagZ.flagPt Prod.fst Prod.snd (fun _ => (1 : GL (Fin N) ℚ))`.
+
+Establish `hx : x ≫ f = g` using `GlobalTheory.FlagZ.toZ_ext _ _`. Set `s : Sp ℚ ⟶ pullback f g` to `pullback.lift x (𝟙 _) (by rw [hx, Category.id_comp])`. Set `ξ` to `genericPoint (GlobalTheory.FlagZ.Fl ι N)`. Set `y : Sp ℚ` to `IsLocalRing.closedPoint ℚ`. Establish `hξ : f ξ ∈ Set.range g`.
+
+Establish `h0 : ξ ⤳ x y` using `(genericPoint_spec (GlobalTheory.FlagZ.Fl ι N)).specializes (Set.mem_univ _)`. Establish `h2 : f ξ ⤳ g y`. Use `h0.map f.continuous` as an intermediate fact. Rewrite `this` using `[← Scheme.Hom.comp_apply, hx]`. Then use the resulting hypothesis. Take `⟨z, -, hz⟩` from `Flat.generalizingMap g h2`.
+
+Conclude with `⟨z, hz⟩`. Establish `hS : _root_.IsPreconnected (Set.range (pullback.fst f g))`. Rewrite using `[Scheme.Pullback.range_fst]`. Use `(IsIrreducible.isConnected (isIrreducible_iff_closure.1 ?_)).isPreconnected` and prove the remaining obligations. Establish `: closure (f ⁻¹' Set.range g) = Set.univ`.
+
+Establish `hcl : closure ({ξ} : Set (GlobalTheory.FlagZ.Fl ι N)) = Set.univ` using `genericPoint_spec (GlobalTheory.FlagZ.Fl ι N)`. Use the proof step `Set.eq_univ_of_univ_subset (hcl ▸ closure_mono (Set.singleton_subset_iff.2 hξ))`. Rewrite using `[this]`. Conclude with `IrreducibleSpace.isIrreducible_univ _`. Establish `hC : ConnectedSpace ↥(Limits.pullback f g)`.
+
+Establish `hp : PreconnectedSpace ↥(Limits.pullback f g)` using `⟨by`. Rewrite using `[← (pullback.fst f g).isEmbedding.isInducing.isPreconnected_image, Set.image_univ]`. Conclude with `hS⟩`. Conclude with `{ toPreconnectedSpace := hp, toNonempty := ⟨s y⟩ }`. Conclude with `GlobalTheory.RatPointConn.geometricallyConnected_of_ratPoint ℚ (Over.mk (pullback.snd f g)) (inferInstanceAs (LocallyOfFiniteType (pullback.snd f g))) (inferInstanceAs (QuasiCompact (pullback.snd f g))) hC ⟨Over.homMk s (pullback.lift_snd _ _ _)⟩`.
+-/
 theorem geometricallyConnected_genericFibre : ∀ (ι : Type) [Fintype ι] (N : ℕ),
     GeometricallyConnected (pullback.snd (GlobalTheory.FlagZ.flStr ι N) (spMap (algebraMap ℤ ℚ))) := by
   intro ι _ N

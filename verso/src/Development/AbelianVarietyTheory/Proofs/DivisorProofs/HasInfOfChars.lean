@@ -25,6 +25,13 @@ open GlobalTheory.Mem.Col2.SplitChar (finIdl)
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `a`. Establish `h1` using `χ.2.2 a`. Rewrite `h1` using `[← GlobalTheory.Mem.ChiLaws.infDiag_mul_finPart, map_mul, ← GlobalTheory.Mem.Col2.SplitChar.finIdl_incU, mul_comm]`. Rewrite `h1` using `[← h (GlobalTheory.NormSum.UnramHecke.incU D a)]`. Establish `h2` using `P.W.chV'.aut a`.
+
+Establish `h3 : ((χ.inf a : ℂˣ) : ℂ) = (((P.W.chV'.f (GlobalTheory.NormSum.UnramHecke.incU D a) : ℂˣ) : ℂ) ^ P.W.ep')⁻¹`. Use `congrArg (Units.val : ℂˣ → ℂ) h1` as an intermediate fact. Rewrite `this` using `[Units.val_mul, Units.val_one, Units.val_zpow_eq_zpow_val]`. Conclude with `eq_inv_of_mul_eq_one_right this`. Establish `hf` using `eq_inv_of_mul_eq_one_left h2`.
+
+Rewrite using `[h3, hf, inv_zpow, inv_inv, ← Finset.prod_zpow]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_mul, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem hasInf_of_chars {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q) (χ : HChar D.host.E)
     (h : ∀ x, P.W.chV'.f x ^ P.W.ep' = χ.1 (finIdl D x)) :
     χ.HasInf (GlobalTheory.Mem.Chr.embTau D) (fun τ => P.W.ep' * P.W.chV'.n τ) := by
@@ -49,6 +56,15 @@ namespace GlobalTheory.BotWeights
 
 open Formalism.L2.Host (HChar)
 
+/- English proof (translation)
+Use `⟨0, fun ε CF _ => ⟨0, 0, fun C _ D large₂ _ _ _ T Lc μ₀ hL G i j δ t0 => ?_⟩⟩` and prove the remaining obligations. Establish `key : ∀ (s : T) (Q : ℕ) (P P' : Pair D ⊤ δ t0 Q), IsBottom G s i j (GlobalTheory.SqTop.modT G s) P P' → ((Lc.C.mu0 j / G.ch.chiH (D.R.m - i))⁻¹ : HChar D.host.E).HasInf (GlobalTheory.Mem.Chr.embTau D) (fun τ => P.W.ep' * P.W.chV'.n τ)`. Introduce `s Q P P' hB k`. Establish `h` using `hasInf_of_chars P _ hB.chars.2 k`. Rewrite using `[← h]`.
+
+Take `⟨n, hn, ho⟩` from `hL.xi_fin s`. Establish `hx` using `GlobalTheory.Mem.Chr.TieModel.inf_eq_one_of_order hn ho k`. Establish `hx' : (Lc.xiH s).inf k = 1` using `hx`. Simplify using `only [nuH, div_eq_mul_inv, Formalism.L2.Host.HChar.inf_inv, Formalism.L2.Host.HChar.inf_mul, hx', mul_one]`. Distinguish the cases in `hex : ∃ (s : T) (Q : ℕ) (P P' : Pair D ⊤ δ t0 Q), IsBottom G s i j (GlobalTheory.SqTop.modT G s) P P'`.
+
+Take `⟨s₀, Q₀, P₀, P₀', h₀⟩` from `hex`. Use `⟨P₀.n, fun s Q P P' hB => funext fun τ => ?_⟩` and prove the remaining obligations. Establish `e` using `congrFun (GlobalTheory.Mem.Chr.TieModel.hasInf_unique _ (GlobalTheory.Mem.Chr.TieModel.embTau_inj D) (GlobalTheory.Mem.Chr.TieModel.embTau_ne_conj D) (key s Q P P' hB) (key s₀ Q₀ P₀ P₀' h₀)) τ`. Establish `w1` using `P.wt τ`. Establish `w2` using `P₀.wt τ`.
+
+Establish `d1 : (P.d : ℤ) = ((botBig D i j + botSmall D i j : ℕ) : ℤ)` using `by exact_mod_cast hB.rank.2.2.1`. Establish `d2 : (P₀.d : ℤ) = ((botBig D i j + botSmall D i j : ℕ) : ℤ)` using `by exact_mod_cast h₀.rank.2.2.1`. Establish `: (P.n τ : ℤ) = P₀.n τ` using `by linarith`. Conclude with `this` after adjusting the coercions. Conclude with `⟨0, fun s Q P P' hB => absurd ⟨s, Q, P, P', hB⟩ hex⟩`.
+-/
 theorem weights_const : GlobalTheory.SqTop.GBig fun {D} T _ _ G _ _ _ _ => ∀ (i j : Fin D.R.m) (δ t0 : ℂ), ∃ n₀ : D.what₂.Tau → ℕ,
       ∀ (s : T) (Q : ℕ) (P P' : Pair D ⊤ δ t0 Q), IsBottom G s i j (GlobalTheory.SqTop.modT G s) P P' → P.n = n₀ := by
   refine ⟨0, fun ε CF _ => ⟨0, 0, fun C _ D large₂ _ _ _ T Lc μ₀ hL G i j δ t0 => ?_⟩⟩

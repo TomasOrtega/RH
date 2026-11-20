@@ -16,6 +16,11 @@ section Algebra
 variable {T : Type*} (K : Type*) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K]
   [Algebra T K] [IsFractionRing T K]
 
+/- English proof (translation)
+Establish `h : Algebra.algebraMapSubmonoid C (nonZeroDivisors T) ≤ IsUnit.submonoid C`. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (nonZeroDivisors.ne_zero ht) hπ`. Express the relevant statement in the definitionally equal form `IsUnit _`. Rewrite using `[map_mul, map_pow]`.
+
+Conclude with `(u.isUnit.map _).mul (hu.pow n)`. Establish `h2 : Function.Bijective (algebraMap C (C ⊗[T] K))` using `(IsLocalization.atUnits C (S := C ⊗[T] K) _ h).bijective`. Conclude with `(Algebra.TensorProduct.comm T C K).bijective.comp h2`.
+-/
 theorem includeRight_bijective {C : Type*} [CommRing C] [Algebra T C] {π : T} (hπ : Irreducible π)
     (hu : IsUnit (algebraMap T C π)) :
     Function.Bijective (Algebra.TensorProduct.includeRight : C →ₐ[T] K ⊗[T] C) := by
@@ -30,6 +35,17 @@ theorem includeRight_bijective {C : Type*} [CommRing C] [Algebra T C] {π : T} (
     (IsLocalization.atUnits C (S := C ⊗[T] K) _ h).bijective
   exact (Algebra.TensorProduct.comm T C K).bijective.comp h2
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible T`. Establish `key : ∀ (P : Ideal B) [P.IsPrime], (((IsScalarTower.toAlgHom T B (Localization.AtPrime P)).comp φ : A →ₐ[T] _) : A →+* Localization.AtPrime P).Flat`. Introduce `P _`. Set `l` to `IsScalarTower.toAlgHom T B (Localization.AtPrime P)`. Establish `hl : (l : B →+* Localization.AtPrime P).Flat` using `RingHom.flat_algebraMap_iff.mpr (IsLocalization.flat _ P.primeCompl)`.
+
+Establish `hbc : ∀ (L : Type _) [CommRing L] [Algebra T L], (Algebra.TensorProduct.map (AlgHom.id T L) φ : L ⊗[T] A →+* L ⊗[T] B).Flat → (Algebra.TensorProduct.map (AlgHom.id T L) (l.comp φ) : L ⊗[T] A →+* L ⊗[T] Localization.AtPrime P).Flat`. Introduce `L _ _ h`. Rewrite using `[Algebra.TensorProduct.map_id_comp]`. Conclude with `h.comp (RingHom.Flat.lTensor (S := T) L hl)`. Distinguish the cases in `hu : IsUnit (algebraMap T (Localization.AtPrime P) π)`.
+
+Use `IsLocalization.flat K (nonZeroDivisors T)` as an intermediate fact. Use `ringHom_flat_of_square (α := (Algebra.TensorProduct.includeRight : A →ₐ[T] K ⊗[T] A)) (β := (Algebra.TensorProduct.includeRight : _ →ₐ[T] K ⊗[T] Localization.AtPrime P)) (φ' := (Algebra.TensorProduct.map (AlgHom.id T K) (l.comp φ) : K ⊗[T] A →+* K ⊗[T] Localization.AtPrime P)) (b …` and prove the remaining obligations. Establish `h1 : (algebraMap A (A ⊗[T] K)).Flat` using `RingHom.flat_algebraMap_iff.mpr inferInstance`. Conclude with `h1.comp (g := (Algebra.TensorProduct.comm T A K : A ⊗[T] K →+* K ⊗[T] A)) (.of_bijective (Algebra.TensorProduct.comm T A K).bijective)`. Rewrite using `[Algebra.TensorProduct.map_id_comp]`.
+
+Conclude with `hK.comp (RingHom.Flat.lTensor (S := T) K hl)`. Establish `: IsLocalHom (algebraMap T (Localization.AtPrime P))`. Use `((local_hom_TFAE (algebraMap T (Localization.AtPrime P))).out 0 2).mpr ?_` and prove the remaining obligations. Rewrite using `[hπ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton, Ideal.span_singleton_le_iff_mem]`. Conclude with `hu`.
+
+Conclude with `flat_of_flat_residueField_baseChange_dvr _ (hbc _ hκ)`. Use `letI := (φ : A →+* B).toAlgebra`. Express the relevant statement in the definitionally equal form `Module.Flat A B`. Use `Module.flat_of_isLocalized_maximal B B (fun P ↦ Localization.AtPrime P) (fun P ↦ Algebra.linearMap B _) fun P _ => ?_` and prove the remaining obligations. Conclude with `RingHom.flat_algebraMap_iff.mp (key P)`.
+-/
 theorem ringHom_flat {A B : Type*} [CommRing A] [CommRing B] [Algebra T A] [Algebra T B]
     [IsNoetherianRing A] [IsNoetherianRing B] [Module.Flat T B] (φ : A →ₐ[T] B)
     (hK : (Algebra.TensorProduct.map (AlgHom.id T K) φ : K ⊗[T] A →+* K ⊗[T] B).Flat)
@@ -83,10 +99,18 @@ def FlatOver {X Y S S' : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ S) (s : S' ⟶ S) 
 
 variable {X Y S S' : Scheme.{0}} {f : X ⟶ Y} {g : Y ⟶ S} {s : S' ⟶ S}
 
+/- English proof (translation)
+Introduce `_ _ a b j h sq' e` and use `H (a ≫ a') b (j ≫ u) h (sq'.paste_horiz sq) (by simpa using e)`.
+-/
 theorem FlatOver.target (H : FlatOver f g s) {X' Y' : Scheme.{0}} {a' : X' ⟶ X} {f' : X' ⟶ Y'}
     {u : Y' ⟶ Y} (sq : IsPullback a' f' f u) : FlatOver f' (u ≫ g) s :=
   fun _ _ a b j h sq' e => H (a ≫ a') b (j ≫ u) h (sq'.paste_horiz sq) (by simpa using e)
 
+/- English proof (translation)
+Introduce `W Z a b j h sq e`. Establish `h1` using `H _ _ j h (IsPullback.of_hasPullback f j) e`. Set `c : W ⟶ pullback f j` to `pullback.lift (a ≫ i) b (by simpa using sq.w)`. Establish `hc : c ≫ pullback.snd f j = b` using `pullback.lift_snd _ _ _`. Establish `sq2 : IsPullback a c i (pullback.fst f j)` using `IsPullback.of_bot (by rw [hc]; exact sq) (pullback.lift_fst _ _ _).symm (IsPullback.of_hasPullback f j)`.
+
+Establish `h2 : Flat c` using `MorphismProperty.of_isPullback sq2 ‹Flat i›`. Rewrite using `[← hc]`. Use `infer_instance`.
+-/
 theorem FlatOver.source (H : FlatOver f g s) {X' : Scheme.{0}} (i : X' ⟶ X) [Flat i] :
     FlatOver (i ≫ f) g s := by
   intro W Z a b j h sq e
@@ -100,6 +124,13 @@ theorem FlatOver.source (H : FlatOver f g s) {X' : Scheme.{0}} (i : X' ⟶ X) [F
   rw [← hc]
   infer_instance
 
+/- English proof (translation)
+Introduce `W Z a b j h sq e`. Establish `sq0 : IsPullback (pullback.fst X.hom s) ((Over.pullback s).map φ).left φ.left (pullback.fst Y.hom s)`. Establish `e1 : ((Over.pullback s).map φ).left ≫ pullback.fst Y.hom s = pullback.fst X.hom s ≫ φ.left` using `pullback.lift_fst _ _ _`. Establish `e2 : ((Over.pullback s).map φ).left ≫ pullback.snd Y.hom s = pullback.snd X.hom s` using `pullback.lift_snd _ _ _`. Use `IsPullback.of_bot ?_ e1.symm (IsPullback.of_hasPullback Y.hom s)` and prove the remaining obligations.
+
+Rewrite using `[e2, Over.w]`. Conclude with `IsPullback.of_hasPullback X.hom s`. Set `j' : Z ⟶ pullback Y.hom s` to `pullback.lift j h e`. Establish `hj : j' ≫ pullback.fst Y.hom s = j` using `pullback.lift_fst _ _ _`. Set `a'` to `sq0.lift a (b ≫ j') (by rw [Category.assoc, hj]; exact sq.w)`.
+
+Establish `sq1 : IsPullback a' b ((Over.pullback s).map φ).left j'` using `IsPullback.of_right (by rw [hj, sq0.lift_fst]; exact sq) (sq0.lift_snd _ _ _) sq0`. Conclude with `MorphismProperty.of_isPullback sq1 H`.
+-/
 theorem flatOver_of_pullback {X Y : Over S} (φ : X ⟶ Y) (s : S' ⟶ S)
     (H : Flat ((Over.pullback s).map φ).left) : FlatOver φ.left Y.hom s := by
   intro W Z a b j h sq e
@@ -119,6 +150,13 @@ theorem flatOver_of_pullback {X Y : Over S} (φ : X ⟶ Y) (s : S' ⟶ S)
     IsPullback.of_right (by rw [hj, sq0.lift_fst]; exact sq) (sq0.lift_snd _ _ _) sq0
   exact MorphismProperty.of_isPullback sq1 H
 
+/- English proof (translation)
+Establish `hA` using `CommRingCat.isPushout_tensorProduct T L A`. Establish `hB` using `CommRingCat.isPushout_tensorProduct T L B`. Establish `sq : IsPushout (CommRingCat.ofHom (φ : A →+* B)) (CommRingCat.ofHom (Algebra.TensorProduct.includeRight : A →ₐ[T] L ⊗[T] A).toRingHom) (CommRingCat.ofHom (Algebra.TensorProduct.includeRight : B →ₐ[T] L ⊗[T] B).toRingHom) (CommRingCat.ofHom (Algebra.TensorProduct.map (AlgHom.id T …`. Use `IsPushout.of_left ?_ ?_ hA.flip` and prove the remaining obligations. Use `hB.flip using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `t`. Simplify using the standard rewrite rules. Use extensionality with `t`. Simplify using the standard rewrite rules. Use extensionality with `t`.
+
+Simplify using the standard rewrite rules. Use `H _ _ _ (Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeLeftRingHom : L →+* L ⊗[T] A))) (isPullback_SpecMap_of_isPushout _ _ _ _ sq) (isPullback_SpecMap_of_isPushout _ _ _ _ hA).w.symm` as an intermediate fact. Conclude with `Flat.SpecMap_iff.mp this`.
+-/
 theorem FlatOver.tensor {T L A B : Type} [CommRing T] [CommRing L] [CommRing A] [CommRing B]
     [Algebra T L] [Algebra T A] [Algebra T B] (φ : A →ₐ[T] B)
     (H : FlatOver (spMap (φ : A →+* B)) (spMap (algebraMap T A)) (spMap (algebraMap T L))) :
@@ -142,6 +180,17 @@ theorem FlatOver.tensor {T L A B : Type} [CommRing T] [CommRing L] [CommRing A] 
   exact Flat.SpecMap_iff.mp this
 
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+Use `wlog hY : ∃ A, Y = Spec A generalizing X Y`. Use `IsZariskiLocalAtTarget.of_openCover Y.affineCover fun i => ?_` and prove the remaining obligations. Establish `sq` using `IsPullback.of_hasPullback f (Y.affineCover.f i)`. Establish `e : pullback.snd f (Y.affineCover.f i) ≫ Y.affineCover.f i ≫ g = pullback.fst f (Y.affineCover.f i) ≫ f ≫ g`. Rewrite using `[← Category.assoc, ← sq.w, Category.assoc]`.
+
+Conclude with `this (pullback.snd f (Y.affineCover.f i)) (Y.affineCover.f i ≫ g) (by rw [e]; infer_instance) (by rw [e]; infer_instance) inferInstance (hK.target sq) (hκ.target sq) ⟨_, rfl⟩`. Take `⟨A, rfl⟩` from `hY`. Use `wlog hX : ∃ B, X = Spec B generalizing X`. Use `IsZariskiLocalAtSource.of_openCover X.affineCover fun i => ?_` and prove the remaining obligations. Conclude with `this (X.affineCover.f i ≫ f) (by rw [Category.assoc]; infer_instance) (by rw [Category.assoc]; infer_instance) (hK.source _) (hκ.source _) ⟨_, rfl⟩`.
+
+Take `⟨B, rfl⟩` from `hX`. Take `⟨f, rfl⟩` from `Spec.map_surjective f`. Take `⟨g, rfl⟩` from `Spec.map_surjective g`. Rewrite `h1`, `h2` using `[← Spec.map_comp]`. Rewrite `h1`, the goal using `[Flat.SpecMap_iff]`.
+
+Rewrite `h2`, `h3` using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Use `letI : Algebra T A := g.hom.toAlgebra`. Use `letI : Algebra T B := (g ≫ f).hom.toAlgebra`. Use `haveI : Module.Flat T B := h1`. Use `haveI : Algebra.FiniteType T B := h2`.
+
+Use `haveI : Algebra.FiniteType T A := h3`. Use `haveI := Algebra.FiniteType.isNoetherianRing T A`. Use `haveI := Algebra.FiniteType.isNoetherianRing T B`. Set `φ : A →ₐ[T] B` to `{ f.hom with commutes' := fun _ => rfl }`. Conclude with `ringHom_flat K φ (FlatOver.tensor φ hK) (FlatOver.tensor φ hκ)`.
+-/
 theorem flat_of_flatOver (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T]
     [Field K] [Algebra T K] [IsFractionRing T K] {X Y : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ Sp T)
     (h1 : Flat (f ≫ g)) (h2 : LocallyOfFiniteType (f ≫ g)) (h3 : LocallyOfFiniteType g)
@@ -179,6 +228,9 @@ theorem flat_of_flatOver (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValua
 
 end FibreFlat
 
+/- English proof (translation)
+Introduce `T K _ _ _ _ _ _ X Y φ h1 _ h2 h3 hK hκ`. Conclude with `FibreFlat.flat_of_flatOver T K φ.left Y.hom (by rwa [Over.w]) (by rwa [Over.w]) h3 (FibreFlat.flatOver_of_pullback φ _ hK) (FibreFlat.flatOver_of_pullback φ _ hκ)`.
+-/
 theorem flat_of_flat_fibres_dvr :
     ∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K]
       [IsFractionRing T K] (X Y : Over (Sp T)) (φ : X ⟶ Y), Flat X.hom → Flat Y.hom →

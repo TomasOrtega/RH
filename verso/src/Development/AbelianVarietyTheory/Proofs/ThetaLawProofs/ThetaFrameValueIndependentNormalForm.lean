@@ -28,6 +28,9 @@ open Matrix ReciprocityTheory.PTheta ReciprocityTheory.ChartRestriction.G.Key Re
 
 variable {g : ℕ}
 
+/- English proof (translation)
+Use `⟨2 * Real.pi * Complex.I * (ofRealVec a ⬝ᵥ ofIntVec m - ofRealVec b ⬝ᵥ ofIntVec n - (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n)) / 2), fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[autFactor, eC, eC, ← Complex.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem autFactor_eq_exp (a b : Fin g → ℝ) (τ : Matrix (Fin g) (Fin g) ℂ) (n m : Fin g → ℤ) :
     ∃ c : ℂ, ∀ z, autFactor a b τ n m z =
       Complex.exp (-(2 * Real.pi * Complex.I) * (ofIntVec n ⬝ᵥ z) + c) := by
@@ -37,6 +40,39 @@ theorem autFactor_eq_exp (a b : Fin g → ℝ) (τ : Matrix (Fin g) (Fin g) ℂ)
   congr 1
   ring
 
+/- English proof (translation)
+Set `m' : Fin g ⊕ Fin g → Fin g → ℤ` to `fun s i => (Pi.single s 1 : Fin g ⊕ Fin g → ℤ) (Sum.inr i)`. Set `n' : Fin g ⊕ Fin g → Fin g → ℤ` to `fun s i => (Pi.single s 1 : Fin g ⊕ Fin g → ℤ) (Sum.inl i)`. Use `choose m n hmn using fun s => hφ (m' s) (n' s)`. Set `p : Fin g ⊕ Fin g → Fin g → ℂ` to `fun s => ofIntVec (m' s) + τ' *ᵥ ofIntVec (n' s)`. Establish `hp : ∀ s, φ (p s) = ofIntVec (m s) + τ *ᵥ ofIntVec (n s)` using `hmn`.
+
+Use `choose c' hc' using fun s => autFactor_eq_exp a' b' τ' (n' s) (m' s)`. Use `choose c hc using fun s => autFactor_eq_exp a b τ (n s) (m s)`. Establish `hφd : Differentiable ℂ φ` using `(LinearMap.toContinuousLinearMap φ).differentiable`. Establish `key` using `alternating_eq_of_equivalent_factors p (fun s => (-(2 * Real.pi * Complex.I) : ℂ) • dotProductBilin ℂ ℂ (ofIntVec (n' s))) (fun s => (-(2 * Real.pi * Complex.I) : ℂ) • (dotProductBilin ℂ ℂ (ofIntVec (n s)) ∘ₗ φ)) c' c he.continuous he0 (fun s v => by`. Establish `hd : ∀ r : Fin g → ℂ, Differentiable ℂ fun z : Fin g → ℂ => r ⬝ᵥ z` using `fun r => by`.
+
+Simplify using `only [dotProduct]`. Use `fun_prop`. Use `entire_eq_zero_or_eq_zero_of_mul_eq_zero (fun z => Complex.exp (-(2 * Real.pi * Complex.I) * (ofIntVec (n' s) ⬝ᵥ z) + c' s) * e z - Complex.exp (-(2 * Real.pi * Complex.I) * (ofIntVec (n s) ⬝ᵥ φ z) + c s) * e (z + p s)) (fun z => theta a' b' z τ') (((((hd _).const_mul _).add_cons …` as an intermediate fact. Establish `h1` using `h (z + p s)`. Rewrite `h1` using `[map_add, hp]`.
+
+Simplify using `only [p] at h1 ⊢`. Rewrite `h1` using `[add_comm (ofIntVec (m' s)), add_comm (ofIntVec (m s)), ← add_assoc, ← add_assoc, thetaQuasiPeriod_holds _ _ _ _ _ _ _ hτ.1, thetaQuasiPeriod_holds _ _ _ _ _ _ _ hτ'.1, hc, hc']`. Rewrite using `[add_comm (ofIntVec (m' s)), ← add_assoc]`. Establish `h2` using `h z`. Take the linear combination `e z * h1 - Complex.exp (-(2 * Real.pi * Complex.I) * (ofIntVec (n s) ⬝ᵥ φ z) + c s) * e (z + τ' *ᵥ ofIntVec (n' s) + ofIntVec (m' s)) * h2)`.
+
+Break down `this with h0 | h0` into its components or cases. Simplify `h0 v` using `[sub_eq_zero]`. Conclude with `absurd (funext h0) (theta_ne_zero hτ' _ _))`. Establish `symm : ∀ {σ : Matrix (Fin g) (Fin g) ℂ}, σ.IsSymm → ∀ x y : Fin g → ℂ, x ⬝ᵥ σ *ᵥ y = y ⬝ᵥ σ *ᵥ x` using `fun {σ} hσ x y => by rw [dotProduct_mulVec, ← mulVec_transpose, hσ.eq, dotProduct_comm]`. Establish `cast : ∀ x y : Fin g → ℤ, ofIntVec x ⬝ᵥ ofIntVec y = ((x ⬝ᵥ y : ℤ) : ℂ)` using `fun x y => by`.
+
+Simplify using `[dotProduct, ofIntVec]`. Establish `alt : ∀ s t, n' s ⬝ᵥ m' t - n' t ⬝ᵥ m' s = n s ⬝ᵥ m t - n t ⬝ᵥ m s` using `fun s t => by`. Establish `h1` using `key s t`. Simplify using `only [LinearMap.smul_apply, LinearMap.comp_apply, hp, dotProductBilin_apply_apply, smul_eq_mul] at h1`. Simplify using `only [p, dotProduct_add, cast, symm hτ.1 (ofIntVec (n s)) (ofIntVec (n t)),`.
+
+Use symmetry as in `hτ'.1 (ofIntVec (n' s)) (ofIntVec (n' t))] at h1`. Establish `h2 : ((n' s ⬝ᵥ m' t - n' t ⬝ᵥ m' s : ℤ) : ℂ) = ((n s ⬝ᵥ m t - n t ⬝ᵥ m s : ℤ) : ℂ)`. Apply `mul_left_cancel₀ Complex.two_pi_I_ne_zero` to reduce the goal to its premises. Use `push_cast`. Take the linear combination `-h1`.
+
+Conclude with `h2` after adjusting the coercions. Set `δ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ` to `Matrix.of fun s => Sum.elim (n s) (m s)`. Establish `hδ : δ ∈ Matrix.symplecticGroup (Fin g) ℤ`. Rewrite using `[SymplecticGroup.mem_iff]`. Use extensionality with `s t`.
+
+Establish `h1 : (δ * J (Fin g) ℤ * δᵀ) s t = -(n s ⬝ᵥ m t - n t ⬝ᵥ m s)`. Simplify using `[δ, Matrix.mul_apply, J, Fintype.sum_sum_type, Matrix.one_apply, dotProduct, mul_comm]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, ← alt]`. Apply the tactic sequence `rcases s with s | s <;> rcases t with t | t <;>`.
+
+Simplify using `[m', n', J, dotProduct, Pi.single_apply, Matrix.one_apply, eq_comm]`. Establish `per : ∀ s, φ (p s) = (jAut δ τ)ᵀ *ᵥ (ofIntVec (m' s) + spAct δ τ *ᵥ ofIntVec (n' s))` using `fun s => by`. Establish `h1` using `SpMove.jAut_transpose_mulVec_period hδ hτ (Pi.single s 1)`. Rewrite using `[hp]`. Use `Eq.trans ?_ h1.symm` and prove the remaining obligations.
+
+Simplify using `only [Matrix.mulVec_single_one]`. Both sides reduce to the same expression. Establish `hl : ∀ z, φ z = (jAut δ τ)ᵀ *ᵥ z`. Establish `: φ = Matrix.mulVecLin (jAut δ τ)ᵀ` using `(Pi.basisFun ℂ (Fin g)).ext fun k => by`. Establish `h1` using `per (Sum.inr k)`.
+
+Establish `e1 : ofIntVec (m' (Sum.inr k)) = Pi.single k 1`. Use function extensionality and compare the values at `i`. Simplify using `[m', ofIntVec, Pi.single_apply]`. Establish `e2 : ofIntVec (n' (Sum.inr k)) = 0`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[n', ofIntVec]`. Simplify using `only [p, e1, e2, mulVec_zero, add_zero] at h1`. Simplify using `using h1`. Introduce `z`. Rewrite using `[this]`.
+
+Both sides reduce to the same expression. Use `⟨δ, hδ, ?_, hl⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (jAut δ τ)ᵀ.mulVec`. Rewrite using `[Matrix.mulVec_injective_iff_isUnit, Matrix.isUnit_iff_isUnit_det, Matrix.det_transpose]`. Conclude with `jAut_isUnit hδ hτ`.
+
+Use extensionality with `i k`. Establish `h1` using `per (Sum.inl k)`. Rewrite `h1` using `[hl]`. Establish `h2` using `hinj h1`. Establish `e1 : ofIntVec (n' (Sum.inl k)) = Pi.single k 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[n', ofIntVec, Pi.single_apply]`. Simplify using `only [p, e1, add_right_inj] at h2`. Simplify using `using congrFun h2 i`.
+-/
 theorem exists_symplectic {τ τ' : Matrix (Fin g) (Fin g) ℂ} (hτ : τ ∈ SiegelH (Fin g)) (hτ' : τ' ∈ SiegelH (Fin g))
     (φ : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ))
     (hφ : ∀ m' n' : Fin g → ℤ, ∃ m n : Fin g → ℤ,
@@ -133,6 +169,25 @@ theorem exists_symplectic {τ τ' : Matrix (Fin g) (Fin g) ℂ} (hτ : τ ∈ Si
   simp only [p, e1, add_right_inj] at h2
   simpa using congrFun h2 i
 
+/- English proof (translation)
+Establish `half : ∀ {a : Fin g → ℂ}, (∀ i, a i = 0 ∨ a i = 1 / 2) → ∃ n : Fin g → ℤ, a = fun i => (n i : ℂ) / 2` using `fun ha => by`. Take `⟨p, -, rfl⟩` from `ThetaCompare.exists_eq_half ha`. Conclude with `⟨p, funext fun i => by simp⟩`. Establish `half' : ∀ {k : Fin g → ℤ}, (∀ i, k i = 0 ∨ k i = 1) → ∀ i, (k i : ℂ) / 2 = 0 ∨ (k i : ℂ) / 2 = 1 / 2` using `fun hk i => (hk i).imp (fun h => by simp [h]) fun h => by simp [h]`. Take `⟨n, rfl⟩` from `half hab.1`.
+
+Take `⟨m, rfl⟩` from `half hab.2`. Take `⟨n', rfl⟩` from `half hab'.1`. Take `⟨m', rfl⟩` from `half hab'.2`. Take `⟨δ, hδ, rfl, hj⟩` from `exists_symplectic hτ hτ' φ hφ (a := halfVec n) (b := halfVec m) (a' := halfVec n') (b' := halfVec m') (e := fun z => c / c' * e z) (he.const_mul _) (fun z => mul_ne_zero (div_ne_zero hc hc') (he0 z)) (fun z => by`. Use `h z` as an intermediate fact.
+
+Rewrite `this` using `[SpMove.thetaChar_half, SpMove.thetaChar_half]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `this)`. Use `⟨_, hj, ?_⟩` and prove the remaining obligations. Take `⟨k, k', hk, hk', hlaw⟩` from `(chiAt_iff_thetaLaw g δ).1 (chi_of hI spGen g δ hδ) n m`.
+
+Take `⟨r, hr, H⟩` from `SpMove.exists_theta_law hδ hlaw hτ`. Establish `hu` using `jAut_isUnit hδ hτ`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`. Conclude with `pow_ne_zero 4 hu.ne_zero (by rw [← hr]; simp)`.
+
+Set `ρ : (Fin g → ℂ) → ℂ` to `fun z => c / (c' * r) * e z * Complex.exp (-(Real.pi * Complex.I * expArg δ τ ((jAut δ τ)ᵀ *ᵥ z)))`. Establish `hρ : Differentiable ℂ ρ`. Simplify using `only [ρ, expArg, dotProduct, mulVec]`. Use `fun_prop`. Establish `hρ0 : ρ 0 = c / (c' * r)` using `by simp [ρ, he1, expArg]`.
+
+Establish `hth : ∀ z, thetaChar (spAct δ τ) (fun i => (n' i : ℂ) / 2) (fun i => (m' i : ℂ) / 2) z = ρ z * thetaChar (spAct δ τ) (fun i => (k i : ℂ) / 2) (fun i => (k' i : ℂ) / 2) z` using `fun z => by`. Establish `h1` using `H ((jAut δ τ)ᵀ *ᵥ z)`. Establish `h2 : zAct δ τ ((jAut δ τ)ᵀ *ᵥ z) = z`. Rewrite using `[zAct, Matrix.mulVec_mulVec, ← Matrix.transpose_mul, Matrix.mul_nonsing_inv _ hu, Matrix.transpose_one, Matrix.one_mulVec]`. Establish `h3` using `h z`.
+
+Rewrite `h1` using `[h2]`. Rewrite `h3` using `[hj, SpMove.thetaChar_half τ]`. Rewrite using `[SpMove.thetaChar_half _ k, h1]`. Simplify using `only [ρ, Complex.exp_neg]`. Use `Complex.exp_ne_zero (Real.pi * Complex.I * expArg δ τ ((jAut δ τ)ᵀ *ᵥ z))` as an intermediate fact.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `h3`. Take `⟨e1, e2⟩` from `ThetaCompare.char_eq_of_thetaChar_eq_mul hτ' hab'.1 hab'.2 (half' hk) (half' hk') hρ (by rw [hρ0]; exact div_ne_zero hc (mul_ne_zero hc' hr0)) hth`. Rewrite `hth` using `[e1, e2]`. Simplify using `only [SpMove.thetaChar_half] at hth`.
+
+Break down `entire_eq_zero_or_eq_zero_of_mul_eq_zero (fun z => ρ z - 1) _ (hρ.sub_const 1) (differentiable_theta hτ' (halfVec n') (halfVec m')) (fun z => by linear_combination -hth z) with h0 | h0` into its components or cases. Establish `h1` using `h0 0`. Rewrite `h1` using `[hρ0, sub_eq_zero, div_eq_one_iff_eq (mul_ne_zero hc' hr0)]`. Rewrite using `[h1, mul_pow, hr]`. Conclude with `absurd (funext h0) (theta_ne_zero hτ' _ _)`.
+-/
 theorem pow_eight_eq (hI : InversionStatement) {τ τ' : Matrix (Fin g) (Fin g) ℂ} (hτ : τ ∈ SiegelH (Fin g))
     (hτ' : τ' ∈ SiegelH (Fin g)) (φ : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ))
     (hφ : ∀ m' n' : Fin g → ℤ, ∃ m n : Fin g → ℤ,
@@ -198,6 +253,23 @@ theorem pow_eight_eq (hI : InversionStatement) {τ τ' : Matrix (Fin g) (Fin g) 
 
 end
 
+/- English proof (translation)
+Establish `cover : ∀ z, ∃ j, ⊤ ≤ (u'.ex z).left ⁻¹ᵁ L.U j` using `fun z => by`. Take `⟨j, hj⟩` from `exists_chart hL ((u'.ex z).left (default : PrimeSpectrum ℂ))`. Conclude with `⟨j, (top_le_preimage_iff_mem _ _).2 hj⟩`. Use `choose J hJ using cover`. Establish `tr : ∀ j z, ⊤ ≤ (u'.ex z).left ⁻¹ᵁ L.U j → ⊤ ≤ (u.ex (φ z)).left ⁻¹ᵁ L.U j` using `fun j z h => by rw [hφ]; exact h`.
+
+Establish `key : ∀ j z, ⊤ ≤ (u'.ex z).left ⁻¹ᵁ L.U j → u.fr j (φ z) = u.fr (J z) (φ z) / u'.fr (J z) z * u'.fr j z` using `fun j z h => by`. Establish `h1 : ⊤ ≤ (u'.ex z).left ⁻¹ᵁ (L.U j ⊓ L.U (J z))` using `(top_le_preimage_inf _ _ _).2 ⟨h, hJ z⟩`. Establish `e1` using `u'.fr_compat j (J z) z h1`. Establish `e2` using `u.fr_compat j (J z) (φ z) (by rw [hφ]; exact h1)`. Rewrite `e2` using `[hφ]`.
+
+Use `u'.fr_ne _ _ (hJ z)` as an intermediate fact. Rewrite using `[e1, e2]`. Clear the denominators using the available nonvanishing facts. Take `⟨ρ, hρ⟩ : ∃ ρ : (Fin g → ℂ) → ℂ, ∀ j z, ⊤ ≤ (u'.ex z).left ⁻¹ᵁ L.U j → u.fr j (φ z) = ρ z * u'.fr j z` from `⟨_, key⟩`. Use `⟨ρ, fun z => ?_, fun z h => u.fr_ne _ _ (tr _ _ (hJ z)) (by rw [hρ _ _ (hJ z), h, zero_mul]), fun rig h h' => ?_, fun s θ θ' h h' z => ?_⟩` and prove the remaining obligations.
+
+Establish `hz` using `(u'.hol (L.U (J z)) 0).1.mem_nhds (hJ z)`. Establish `dl : Differentiable ℂ φ` using `(LinearMap.toContinuousLinearMap φ).differentiable`. Establish `d2 : DifferentiableOn ℂ (fun z' => u.fr (J z) (φ z')) {z' | ⊤ ≤ (u'.ex z').left ⁻¹ᵁ L.U (J z)}` using `(u.fr_hol (J z)).comp dl.differentiableOn (fun z' h => tr _ _ h)`. Establish `d3` using `(d2.mul ((u'.fr_hol (J z)).inv (fun z' h => u'.fr_ne _ _ h))).congr (f₁ := ρ) (fun z' h => by`. Use `u'.fr_ne _ _ h` as an intermediate fact.
+
+Use `show ρ z' = u.fr (J z) (φ z') * (u'.fr (J z) z')⁻¹`. Rewrite using `[hρ _ _ h]`. Use the proof step `field_simp)`. Conclude with `d3.differentiableAt hz`. Establish `h0 : (u'.ex 0).left = eSec A`.
+
+Rewrite using `[(u'.ker 0).2 u'.Λ.zero_mem]`. Express the relevant statement in the definitionally equal form `(toUnit _ ≫ η[A]).left = η[A].left`. Rewrite using `[toUnit_unit, Category.id_comp]`. Establish `hj : ⊤ ≤ (L.pull (eSec A)).U (fun _ => J 0)` using `fun y hy => by`. Rewrite using `[mem_pull, ← h0]`.
+
+Conclude with `hJ 0 hy`. Establish `e` using `hρ _ _ (hJ 0)`. Rewrite `e` using `[map_zero, (h _ hj).trans (h' _ hj).symm]`. Conclude with `(mul_eq_right₀ (u'.fr_ne _ _ (hJ 0))).1 e.symm`. Establish `e1` using `h (J z) (φ z) (tr _ _ (hJ z))`.
+
+Rewrite `e1` using `[hφ, h' (J z) z (hJ z), hρ _ _ (hJ z)]`. Apply `mul_right_cancel₀ (u'.fr_ne _ _ (hJ z))` to reduce the goal to its premises. Rewrite using `[e1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_frame_ratio {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} (hL : L.IsLB) {g : ℕ} (u u' : HolUnif A L g)
     (φ : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (hφ : ∀ z, u.ex (φ z) = u'.ex z) :
     ∃ e : (Fin g → ℂ) → ℂ, Differentiable ℂ e ∧ (∀ z, e z ≠ 0) ∧
@@ -247,6 +319,13 @@ theorem exists_frame_ratio {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} (hL : 
     rw [e1]
     ring
 
+/- English proof (translation)
+Introduce and unpack `hU hI x t t' ⟨τ, M, a, b, c, hab, hc, ⟨u, hs, hp, hΛ, hrig, hfn, hv⟩, rfl⟩ ⟨τ', M', a', b', c', hab', hc', ⟨u', hs', hp', hΛ', hrig', hfn', hv'⟩, rfl⟩`. Take `⟨h1, h2, -⟩` from `AnyUnif.tangent_and_unimodular hU x.P u`. Take `⟨φ, hφ, hl, hd, -⟩` from `HomLinear.exists_linear_of_isMonHom x.P.A x.P.A x.P.isAb x.P.isAb x.P.L x.P.L x.P.g x.P.g u' u h1 h2 (𝟙 x.P.A) inferInstance`. Simplify using `only [Category.comp_id] at hφ hd`. Take `⟨e, he, he0, he1, hθ⟩` from `exists_frame_ratio x.P.isLB u u' φ hφ`.
+
+Take `⟨j, hj, hcc⟩` from `pow_eight_eq hI ⟨hs, hp⟩ ⟨hs', hp'⟩ φ (fun m n => (hΛ _).1 (hl _ ((hΛ' _).2 ⟨m, n, rfl⟩))) hab hab' hc hc' he he0 (he1 _ hrig hrig') (hθ _ _ _ hfn hfn')`. Establish `hM : M = M' * j`. Use extensionality with `i k`. Establish `e1` using `(h1 _ (x.basis.1 i)).unique (hv i) (hd _ _ (x.basis.1 i) (hv' i)).2`. Rewrite `e1` using `[map_smul, hj, Matrix.mulVec_transpose]`.
+
+Conclude with `congrFun (smul_right_injective _ (inv_ne_zero Complex.two_pi_I_ne_zero) e1) k`. Establish `hj0 : j.det ≠ 0` using `fun h => pow_ne_zero 8 hc (by rw [hcc, h]; simp)`. Rewrite using `[hM, Matrix.det_mul, hcc]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem thetaFrame_value_unique : ThetaUnifAV → Key.Chi.InversionStatement → ∀ (x : KeyIn ℂ) (t t' : ℂ), (∃ (τ M : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (a b : Fin x.P.g → ℂ) (c : ℂ), charHalf _ a b ∧ c ≠ 0 ∧ NormalAt x τ M a b c ∧ t = M.det ^ 4 / c ^ 8) → (∃ (τ M : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (a b : Fin x.P.g → ℂ) (c : ℂ), charHalf _ a b ∧ c ≠ 0 ∧ NormalAt x τ M a b c ∧ t' = M.det ^ 4 / c ^ 8) → t = t' := by
   rintro hU hI x t t' ⟨τ, M, a, b, c, hab, hc, ⟨u, hs, hp, hΛ, hrig, hfn, hv⟩, rfl⟩
     ⟨τ', M', a', b', c', hab', hc', ⟨u', hs', hp', hΛ', hrig', hfn', hv'⟩, rfl⟩

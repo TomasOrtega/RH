@@ -7,6 +7,23 @@ open scoped TensorProduct
 
 namespace GlobalTheory.RegSS
 
+/- English proof (translation)
+Unfold `FieldUnitBounded`. Introduce `F B _ _ _ _ _ τ hB hτ`. Take `⟨hTop, hLC, hT2, hSC, _hinj, hdisc, C, hC, hcov⟩` from `hT F B`. Set `: TopologicalSpace (B ⊗[F] AdeleRing (𝓞 F) F)` to `Formalism.BasicNotions.tensTopL (F := F) (E := B) (AdeleRing (𝓞 F) F)`. Use `hTop` as an intermediate fact.
+
+Use `hLC` as an intermediate fact. Use `hT2` as an intermediate fact. Use `hSC` as an intermediate fact. Establish `: Nontrivial B` using `⟨hB.exists_pair_ne⟩`. Establish `: Infinite F` using `Infinite.of_injective (Nat.cast : ℕ → F) Nat.cast_injective`.
+
+Establish `: Infinite B` using `Infinite.of_injective (algebraMap F B) (algebraMap F B).injective`. Establish `: NoncompactSpace (B ⊗[F] AdeleRing (𝓞 F) F)`. Use `⟨fun hU => ?_⟩` and prove the remaining obligations. Establish `hfin` using `hdisc Set.univ hU`. Simplify using `only [Set.mem_univ, Set.ofPred_true] at hfin`.
+
+Conclude with `Set.infinite_univ hfin`. Establish `: Countable F` using `(Module.finBasis ℚ F).equivFun.injective.countable`. Establish `: Countable B` using `(Module.finBasis F B).equivFun.injective.countable`. Set `ι` to `inclE (F := F) (E := B) (AdeleRing (𝓞 F) F)`. Set `Λ : AddSubgroup (B ⊗[F] AdeleRing (𝓞 F) F)` to `ι.toAddMonoidHom.range`.
+
+Establish `hΛ : Countable Λ`. Use `Function.Surjective.countable (f := fun b : B => (⟨ι b, b, rfl⟩ : Λ)) ?_` and prove the remaining obligations. Introduce and unpack `⟨y, b, rfl⟩`. Conclude with `⟨b, rfl⟩`. Establish `hcoc : ∃ C' : Set (B ⊗[F] AdeleRing (𝓞 F) F), IsCompact C' ∧ ∀ x, ∃ l ∈ Λ, x - l ∈ C'`.
+
+Use `⟨C, hC, fun x => ?_⟩` and prove the remaining obligations. Take `⟨β, hβ⟩` from `hcov x`. Conclude with `⟨ι β, ⟨β, rfl⟩, hβ⟩`. Take `⟨D, hD, hDu⟩` from `hP (B ⊗[F] AdeleRing (𝓞 F) F) (sigR τ (AdeleRing (𝓞 F) F)) (continuous_sigR τ (AdeleRing (𝓞 F) F)) (sigR_sigR hτ (AdeleRing (𝓞 F) F)) Λ hΛ hcoc`. Use `⟨D, hD, fun u hu => ?_⟩` and prove the remaining obligations.
+
+Take `⟨β, ⟨b, rfl⟩, hβ0, huβ⟩` from `hDu u hu`. Establish `hb : b ≠ 0`. Introduce and unpack `rfl`. Conclude with `hβ0 (map_zero ι)`. Take `⟨c, hc⟩` from `hB.mul_inv_cancel hb`.
+
+Conclude with `⟨b, ⟨⟨b, c, hc, by rw [mul_comm]; exact hc⟩, rfl⟩, huβ⟩`.
+-/
 theorem fieldUnitBounded_of_packing (hP : NormOnePacking) (hT : TensorLattice) :
     FieldUnitBounded := by
   unfold FieldUnitBounded

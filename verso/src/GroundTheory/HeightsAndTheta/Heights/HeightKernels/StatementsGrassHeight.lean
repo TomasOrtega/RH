@@ -146,11 +146,17 @@ def RootHeight.Statement : Prop :=
       II (Fin f) (plBlocks f j m) (rootPointIdeal ζ) 1 ![fsMulti (plBlocks f j m)] ≤
         grassConst f j m * degC (rootPointIdeal ζ)
 
+/- English proof (translation)
+Introduce `τ a b`. Use `⟨2, by norm_num, ?_⟩` and prove the remaining obligations. Use `fin_cases a`. Use `fin_cases b`. Simplify using the standard rewrite rules.
+-/
 example : IsRootMatrix (fun _ : Fin 1 => (!![-1] : Matrix (Fin 1) (Fin 1) ℂ)) := by
   intro τ a b
   refine ⟨2, by norm_num, ?_⟩
   fin_cases a; fin_cases b; simp
 
+/- English proof (translation)
+The claim follows from `le_rfl`.
+-/
 example : 1 ≤ (1 : ℕ) := le_rfl
 
 def lineExampleCoord : (Σ _ : Unit, Fin 2) → FractionRing (MvPolynomial (Fin 1) ℚ) :=
@@ -159,6 +165,17 @@ def lineExampleCoord : (Σ _ : Unit, Fin 2) → FractionRing (MvPolynomial (Fin 
 def lineExampleT : Fin 1 → FractionRing (MvPolynomial (Fin 1) ℚ) :=
   fun _ => algebraMap _ _ (X 0 : MvPolynomial (Fin 1) ℚ)
 
+/- English proof (translation)
+Use `⟨fun _ => by simp [lineExampleCoord], ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `(MvPolynomial.algebraicIndependent_X (Fin 1) ℚ).map' (f := (IsScalarTower.toAlgHom ℚ (MvPolynomial (Fin 1) ℚ) (FractionRing (MvPolynomial (Fin 1) ℚ)))) (IsFractionRing.injective _ _)`. Establish `e : lineExampleT = (IsScalarTower.toAlgHom ℚ (MvPolynomial (Fin 1) ℚ) (FractionRing (MvPolynomial (Fin 1) ℚ))) ∘ X`. Use function extensionality and compare the values at `i`. Use `fin_cases i`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `h`. Introduce `i`. Apply `IntermediateField.subset_adjoin` to reduce the goal to its premises.
+
+Use `⟨⟨(), 1⟩, ?_⟩` and prove the remaining obligations. Simplify using `[lineExampleCoord, lineExampleT]`. Introduce and unpack `r ⟨p, rfl⟩`. Establish `hr : lineExampleCoord p / lineExampleCoord ⟨p.1, 0⟩ ∈ IntermediateField.adjoin ℚ (Set.range lineExampleT)`. Distinguish the cases in `h : p.2 = 0`.
+
+Simplify using `[lineExampleCoord, h]`. Establish `: lineExampleCoord p / lineExampleCoord ⟨p.1, 0⟩ = lineExampleT 0`. Simplify using `[lineExampleCoord, h, lineExampleT]`. Rewrite using `[this]`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨0, rfl⟩`.
+
+Conclude with `isAlgebraic_algebraMap (R := IntermediateField.adjoin ℚ (Set.range lineExampleT)) (A := FractionRing (MvPolynomial (Fin 1) ℚ)) ⟨_, hr⟩`.
+-/
 example : (∀ k : Unit, lineExampleCoord ⟨k, 0⟩ ≠ 0) ∧ AlgebraicIndependent ℚ lineExampleT ∧
     (∀ i, lineExampleT i ∈ IntermediateField.adjoin ℚ (coneRatios lineExampleCoord fun _ => 0)) ∧
     (∀ r ∈ coneRatios lineExampleCoord (fun _ => 0),
@@ -187,6 +204,11 @@ example : (∀ k : Unit, lineExampleCoord ⟨k, 0⟩ ≠ 0) ∧ AlgebraicIndepen
     exact isAlgebraic_algebraMap (R := IntermediateField.adjoin ℚ (Set.range lineExampleT))
       (A := FractionRing (MvPolynomial (Fin 1) ℚ)) ⟨_, hr⟩
 
+/- English proof (translation)
+Introduce `μ hμ k`. Simplify using `only [rootAnchorSection, Fin.prod_univ_two] at hμ`. Rewrite `hμ` using `[MvPolynomial.support_X_mul]`. Simplify using `only [Finset.mem_map, MvPolynomial.support_X, Finset.mem_singleton] at hμ`. Take `⟨ν, rfl, hν⟩` from `hμ`.
+
+Substitute `hν` using the available equality. Apply the tactic sequence `fin_cases k <;> simp [Finsupp.single_apply]`.
+-/
 example : IsMultiHomog (rootAnchorSection 2 1 1) (fun _ => 1) := by
   intro μ hμ k
   classical

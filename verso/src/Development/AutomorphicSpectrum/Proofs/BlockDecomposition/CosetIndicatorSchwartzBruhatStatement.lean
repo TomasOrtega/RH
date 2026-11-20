@@ -11,5 +11,8 @@ open Ad3 Ad3.K Ad3.K.QuadraticBaseChangeGL3
 open scoped NumberField.AdeleRing ValuativeRel
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WS.Coset.isSB_cosetInd | exact GlobalTheory.CompanionTheory.WS.Coset.isSB_cosetInd | (intros; apply GlobalTheory.CompanionTheory.WS.Coset.isSB_cosetInd <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.coset_indicator_schwartz_bruhat : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (n : ℤ) (x : F × F), GlobalTheory.CompanionTheory.WS.IsSB (GlobalTheory.CompanionTheory.WS.cosetInd n x) := by
   first | exact @GlobalTheory.CompanionTheory.WS.Coset.isSB_cosetInd | exact GlobalTheory.CompanionTheory.WS.Coset.isSB_cosetInd | (intros; apply GlobalTheory.CompanionTheory.WS.Coset.isSB_cosetInd <;> assumption)

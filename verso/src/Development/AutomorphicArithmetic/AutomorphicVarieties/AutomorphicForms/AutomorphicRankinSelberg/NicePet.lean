@@ -4,6 +4,19 @@ open Filter Asymptotics CongruenceSubgroup Matrix.SpecialLinearGroup
 open UpperHalfPlane hiding I
 open scoped MatrixGroups ModularForm Pointwise
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `Asymptotics.isBigO_iff.mp hd`. Take `⟨A, hA⟩` from `(UpperHalfPlane.atImInfty_mem _).mp hc`. Use `set M := max A 0 with hM`. Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hB UpperHalfPlane.I)`. Establish `hM0 : 0 ≤ M` using `le_max_right _ _`.
+
+Use `⟨B * M ^ 3 + |c| * (6 / a ^ 3), fun z => ?_⟩` and prove the remaining obligations. Establish `ht` using `z.im_pos`. Establish `h1 : 0 ≤ B * M ^ 3` using `by positivity`. Establish `h2 : 0 ≤ |c| * (6 / a ^ 3)` using `by positivity`. Break down `le_total z.im M with h | h` into its components or cases.
+
+Establish `: ‖H z‖ * z.im ^ 3 ≤ B * M ^ 3` using `mul_le_mul (hB z) (pow_le_pow_left₀ ht.le h 3) (by positivity) hB0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hz` using `hA z ((le_max_left _ _).trans h)`. Simplify using `only [Set.mem_setOf_eq] at hz`. Rewrite `hz` using `[Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]`.
+
+Establish `hexp : (a * z.im) ^ 3 / 6 ≤ Real.exp (a * z.im)`. Use `Real.pow_div_factorial_le_exp (a * z.im) (by positivity) 3` as an intermediate fact. Simplify `this` using `[Nat.factorial]`. Establish `he` using `Real.exp_pos (a * z.im)`. Establish `hkey : Real.exp (-a * z.im) * z.im ^ 3 ≤ 6 / a ^ 3`.
+
+Rewrite using `[le_div_iff₀ (by positivity), neg_mul, Real.exp_neg, inv_mul_eq_div, div_mul_eq_mul_div, div_le_iff₀ he]`. Rewrite `hexp` using `[mul_pow]`. Use the polynomial consequences of the given equalities and inequalities. Establish `: ‖H z‖ * z.im ^ 3 ≤ |c| * (6 / a ^ 3)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (le_abs_self c) (by positivity)`. Use `_ ≤ |c| * (6 / a ^ 3) := mul_le_mul_of_nonneg_left hkey (abs_nonneg c)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem bounded_petersson_weight (H : ℍ → ℂ) (B a : ℝ) (ha : 0 < a) (hB : ∀ z, ‖H z‖ ≤ B)
     (hd : H =O[atImInfty] fun τ => Real.exp (-a * τ.im)) : ∃ C : ℝ, ∀ z : ℍ, ‖H z‖ * z.im ^ 3 ≤ C := by
   obtain ⟨c, hc⟩ := Asymptotics.isBigO_iff.mp hd
@@ -40,6 +53,17 @@ private theorem bounded_petersson_weight (H : ℍ → ℂ) (B a : ℝ) (ha : 0 <
         _ ≤ |c| * (6 / a ^ 3) := mul_le_mul_of_nonneg_left hkey (abs_nonneg c)
     linarith
 
+/- English proof (translation)
+Introduce `k L _ f g`. Use `⟨by fun_prop, ?_⟩` and prove the remaining obligations. Take `⟨B, hB⟩` from `CuspFormClass.petersson_bounded_left (k : ℤ) (Subgroup.map (mapGL ℝ) (Gamma1 L)) g f`. Establish `hdec : ∀ h : SL(2, ℤ), ∃ a > 0, (fun τ => UpperHalfPlane.petersson (k : ℤ) ⇑g ⇑f (h • τ)) =O[atImInfty] fun τ => Real.exp (-a * τ.im)`. Introduce `h`.
+
+Establish `: ((ConjAct.toConjAct (h : GL (Fin 2) ℝ)⁻¹) • (Subgroup.map (mapGL ℝ) (Gamma1 L))).IsArithmetic`. Simplify using `[(show Rat.castHom ℝ = algebraMap ℚ ℝ by rfl), map_inv, map_mapGL] using! Subgroup.IsArithmetic.conj (Subgroup.map (mapGL ℝ) (Gamma1 L)) (mapGL ℚ h)⁻¹`. Repeatedly rewrite using `[← UpperHalfPlane.petersson_slash_SL]`. Conclude with `(CuspFormClass.zero_at_infty (CuspForm.translate g h)).petersson_exp_decay_left (k : ℤ) _ (ModularForm.translate f h)`. Establish `key : ∀ h : SL(2, ℤ), ∃ C : ℝ, ∀ z : ℍ, ‖UpperHalfPlane.petersson (k : ℤ) ⇑g ⇑f (h • z)‖ * z.im ^ 3 ≤ C`.
+
+Introduce `h`. Take `⟨a, ha, hd⟩` from `hdec h`. Conclude with `bounded_petersson_weight (fun τ => UpperHalfPlane.petersson (k : ℤ) ⇑g ⇑f (h • τ)) B a ha (fun z => hB _) hd`. Use `choose Cf hCf using key`. Set `Γ' : Subgroup SL(2, ℤ)` to `(Subgroup.map (mapGL ℝ) (Gamma1 L)).comap (mapGL ℝ : SL(2, ℤ) →* GL (Fin 2) ℝ)`.
+
+Establish `: Fintype (SL(2, ℤ) ⧸ Γ')` using `Subgroup.fintypeQuotientOfFiniteIndex`. Establish `hinv : ∀ j ∈ Γ', ∀ w : ℍ, ‖UpperHalfPlane.petersson (k : ℤ) ⇑g ⇑f (j • w)‖ = ‖UpperHalfPlane.petersson (k : ℤ) ⇑g ⇑f w‖` using `fun j hj w => SlashInvariantFormClass.norm_petersson_smul (g := mapGL ℝ j) hj`. Use `⟨∑ q : SL(2, ℤ) ⧸ Γ', |Cf (Quotient.out q)⁻¹|, fun γ z _ => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `QuotientGroup.mk_out_eq_mul Γ' γ⁻¹`. Establish `hγ : γ = (j : SL(2, ℤ)) * (Quotient.out (QuotientGroup.mk γ⁻¹ : SL(2, ℤ) ⧸ Γ'))⁻¹`.
+
+Rewrite using `[hj]`. Use `group`. Rewrite using `[hγ, mul_smul, hinv _ j.2]`. Use `(hCf _ z).trans ((le_abs_self _).trans ?_)` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun q : SL(2, ℤ) ⧸ Γ' => |Cf (Quotient.out q)⁻¹|) (fun q _ => abs_nonneg _) (Finset.mem_univ _)`.
+-/
 theorem UpperTheory.V.Af.Rs.nicePet :
     UpperTheory.V.Af.Rs.NicePet := by
   intro k L _ f g

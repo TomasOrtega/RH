@@ -12,6 +12,13 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hU hL K _ σ P P' Φ hg hΦ hs`. Take `⟨hf, hfl, n, hn, hk⟩` from `isogeny_of_surjective_polAV hU hL K σ P P' Φ hg hΦ hs`. Use `P.isAb.comm` as an intermediate fact. Establish `hpow : ∀ m : ℕ, IsMonHom (𝟙 P.A ^ m)` using `fun m => by`. Proceed by induction on `m with`.
+
+Consider the case `zero => rw [pow_zero]`. Conclude with `inferInstanceAs (IsMonHom (toUnit P.A ≫ η[P.A]))`. Consider the case `succ m ih`. Rewrite using `[pow_succ]`. Conclude with `inferInstanceAs (IsMonHom (lift (𝟙 P.A ^ m) (𝟙 P.A) ≫ μ[P.A]))`.
+
+Establish `hm` using `hpow n`. Take `⟨⟨ψ, hψ, e⟩, hE⟩` from `exists_monHom_factor_of_flat_surjective _ P.A P'.A P.A Φ (𝟙 P.A ^ n) hΦ hm hfl hs inferInstance (fun T x hx => by rw [MonObj.comp_pow, Category.comp_id, hk T x hx])`. Use `⟨n, ψ, hn, hψ, e, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_epi Φ, reassoc_of% e, MonObj.pow_comp, MonObj.comp_pow, Category.id_comp, Category.comp_id]`.
+-/
 theorem exists_inverse_isogeny_polAV : ThetaUnifAV → Out.Laws → ∀ (K : Type) [Field K] (σ : K →+* ℂ) (P P' : Out.PolAV (Sp K)) (Φ : P.A ⟶ P'.A), P.g = P'.g → IsMonHom Φ → Surjective Φ.left → ∃ (N : ℕ) (ψ : P'.A ⟶ P.A), 0 < N ∧ IsMonHom ψ ∧ Φ ≫ ψ = 𝟙 P.A ^ N ∧ ψ ≫ Φ = 𝟙 P'.A ^ N := by
   intro hU hL K _ σ P P' Φ hg hΦ hs
   obtain ⟨hf, hfl, n, hn, hk⟩ := isogeny_of_surjective_polAV hU hL K σ P P' Φ hg hΦ hs

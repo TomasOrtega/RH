@@ -22,12 +22,20 @@ local notation "𝔸f" => FiniteAdeleRing (𝓞 ℚ) ℚ
 
 variable {N : ℕ} [NeZero N] {k : ℤ}
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> rw [unipMatrix_apply] <;> simp`.
+-/
 theorem unipMatrix_eval {R : Type*} [CommRing R] (y : R) :
     unipMatrix (n := 2) (r := 1) (fun _ => y) 0 0 = 1 ∧ unipMatrix (n := 2) (r := 1) (fun _ => y) 0 1 = y ∧
       unipMatrix (n := 2) (r := 1) (fun _ => y) 1 0 = 0 ∧
         unipMatrix (n := 2) (r := 1) (fun _ => y) 1 1 = 1 := by
   refine ⟨?_, ?_, ?_, ?_⟩ <;> rw [unipMatrix_apply] <;> simp
 
+/- English proof (translation)
+Establish `hVW : ((w⁻¹ : FiniteAdelicGL ℚ 2) : Matrix (Fin 2) (Fin 2) 𝔸f) * (w : Matrix (Fin 2) (Fin 2) 𝔸f) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `hij` using `congrFun (congrFun hVW i) j`. Rewrite `hij` using `[Matrix.mul_apply, Fin.sum_univ_two]`. Take `⟨u00, u01, u10, u11⟩` from `unipMatrix_eval y`.
+
+Rewrite using `[Units.val_mul, Units.val_mul]`. Express the relevant statement in the definitionally equal form `(((w⁻¹ : FiniteAdelicGL ℚ 2) : Matrix (Fin 2) (Fin 2) 𝔸f) * unipMatrix (n := 2) (r := 1) (fun _ => y) * (w : Matrix (Fin 2) (Fin 2) 𝔸f)) i j = _`. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_two, Matrix.mul_apply, Fin.sum_univ_two, Matrix.mul_apply, Fin.sum_univ_two, u00, u01, u10, u11]`. Take the linear combination `hij`.
+-/
 theorem conj_unipFin_apply (w : FiniteAdelicGL ℚ 2) (y : 𝔸f) (i j : Fin 2) :
     ((w⁻¹ * unipFin y * w : FiniteAdelicGL ℚ 2) : Matrix (Fin 2) (Fin 2) 𝔸f) i j =
       (1 : Matrix (Fin 2) (Fin 2) 𝔸f) i j +
@@ -45,6 +53,9 @@ theorem conj_unipFin_apply (w : FiniteAdelicGL ℚ 2) (y : 𝔸f) (i j : Fin 2) 
     Fin.sum_univ_two, u00, u01, u10, u11]
   linear_combination hij
 
+/- English proof (translation)
+Use `inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[unipFin, unipFin, ← unipGL_add]`. Use `unipGL_zero (n := 2) (r := 1) (R := 𝔸f) using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `_`. Simplify using the standard rewrite rules.
+-/
 theorem unipFin_inv (y : 𝔸f) : (unipFin y)⁻¹ = unipFin (-y) := by
   refine inv_eq_of_mul_eq_one_right ?_
   rw [unipFin, unipFin, ← unipGL_add]
@@ -54,6 +65,25 @@ theorem unipFin_inv (y : 𝔸f) : (unipFin y)⁻¹ = unipFin (-y) := by
 
 variable (N) in
 
+/- English proof (translation)
+Use `set e : Fin 2 × Fin 2 → 𝔸f := fun p => ((w⁻¹ : FiniteAdelicGL ℚ 2) : Matrix (Fin 2) (Fin 2) 𝔸f) p.1 0 * (w : Matrix (Fin 2) (Fin 2) 𝔸f) 1 p.2`. Take `⟨d, hd0, hd⟩` from `exists_mul_mem_integralFiniteAdeles_of_isCompact (K := ℚ) (Set.finite_range e).isCompact`. Use `set z : ℤ := Rat.ringOfIntegersEquiv d`. Establish `hz0 : z ≠ 0`. Introduce `h`.
+
+Conclude with `hd0 (Rat.ringOfIntegersEquiv.injective (by rw [map_zero]; exact h))`. Establish `hdz : algebraMap (𝓞 ℚ) ℚ d = z` using `(Rat.ringOfIntegersEquiv_apply_coe d).symm`. Use `set D : ℕ := z.natAbs`. Establish `hD : 0 < D` using `Int.natAbs_pos.2 hz0`. Establish `hDe : ∀ p, (D : 𝔸f) * e p ∈ integralFiniteAdeles (𝓞 ℚ) ℚ`.
+
+Introduce `p`. Establish `h1` using `hd (e p) ⟨p, rfl⟩`. Rewrite `h1` using `[hdz, map_intCast]`. Break down `Int.natAbs_eq z with h | h` into its components or cases. Establish `hD1 : ((D : ℕ) : ℤ) = z` using `by simp only [D]; omega`.
+
+Rewrite using `[show (D : 𝔸f) = (z : 𝔸f) by rw [← Int.cast_natCast, hD1]]`. Conclude with `h1`. Establish `hD2 : ((D : ℕ) : ℤ) = -z` using `by simp only [D]; omega`. Rewrite using `[show (D : 𝔸f) = -(z : 𝔸f) by rw [← Int.cast_natCast, hD2, Int.cast_neg], neg_mul]`. Conclude with `neg_mem h1`.
+
+Use `⟨N * D, Nat.mul_pos (Nat.pos_of_ne_zero (NeZero.ne N)) hD, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨t, ht, rfl⟩` from `hy`. Establish `hye : ∀ p, ((N * D : ℕ) : 𝔸f) * t * e p ∈ levelIdeal N` using `fun p => ⟨t * ((D : 𝔸f) * e p), mul_mem ht (hDe p), by push_cast; ring⟩`. Establish `hye' : ∀ p, -(((N * D : ℕ) : 𝔸f) * t) * e p ∈ levelIdeal N` using `fun p => by`. Take `⟨s, hs, hs'⟩` from `hye p`.
+
+Conclude with `⟨-s, neg_mem hs, by rw [neg_mul, hs', mul_neg]⟩`. Establish `hinv : (w⁻¹ * unipFin (((N * D : ℕ) : 𝔸f) * t) * w)⁻¹ = w⁻¹ * unipFin (-(((N * D : ℕ) : 𝔸f) * t)) * w`. Rewrite using `[show (w⁻¹ * unipFin (((N * D : ℕ) : 𝔸f) * t) * w)⁻¹ = w⁻¹ * (unipFin (((N * D : ℕ) : 𝔸f) * t))⁻¹ * w by group, unipFin_inv]`. Use `⟨(mem_integralFiniteGL_iff ℚ 2).2 ⟨fun i j => ?_, fun i j => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[conj_unipFin_apply]`.
+
+Use `add_mem ?_ (levelIdeal_subset N (hye (i, j)))` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+
+Rewrite using `[hinv, conj_unipFin_apply]`. Use `add_mem ?_ (levelIdeal_subset N (hye' (i, j)))` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`.
+
+Conclude with `zero_mem _`. Rewrite using `[conj_unipFin_apply, Matrix.one_apply_ne (by decide), zero_add]`. Conclude with `hye (1, 0)`.
+-/
 theorem exists_level_conj (w : FiniteAdelicGL ℚ 2) :
     ∃ M : ℕ, 0 < M ∧ ∀ y ∈ levelIdeal M, w⁻¹ * unipFin y * w ∈ Gamma0Level N := by
   set e : Fin 2 × Fin 2 → 𝔸f := fun p => ((w⁻¹ : FiniteAdelicGL ℚ 2) : Matrix (Fin 2) (Fin 2) 𝔸f) p.1 0 *
@@ -105,6 +135,17 @@ theorem exists_level_conj (w : FiniteAdelicGL ℚ 2) :
   · rw [conj_unipFin_apply, Matrix.one_apply_ne (by decide), zero_add]
     exact hye (1, 0)
 
+/- English proof (translation)
+Use `set G : ℝ → ℂ := fun t => φ (realEmb (unipReal t * h) * finEmb ℚ 2 w)`. Rewrite using `[constantTerm_eq_setIntegral_adele hφ.isLeftInvariant (isAddFundamentalDomain_levelDomain M)]`. Establish `heq : Set.EqOn (fun x : 𝔸[ℚ] => φ (unipAdele x * (realEmb h * finEmb ℚ 2 w))) (fun x => G (RationalIdeles.realEquiv x.1)) (levelDomain M)`. Introduce `x hx`. Establish `e : unipAdele x * (realEmb h * finEmb ℚ 2 w) = realEmb (unipReal (RationalIdeles.realEquiv x.1) * h) * finEmb ℚ 2 w * finEmb ℚ 2 (w⁻¹ * unipFin x.2 * w)`.
+
+Rewrite using `[unipAdele_eq]`. Apply `(prodEquiv ℚ 2).injective` to reduce the goal to its premises. Simplify using `only [map_mul, prodEquiv_realEmb, prodEquiv_finEmb, Prod.mk_mul_mk, mul_one, one_mul]`. Rewrite using `[Prod.mk.injEq]`. Conclude with `⟨rfl, by group⟩`.
+
+Simplify using `only [G]`. Rewrite using `[e, hφ.right_level _ _ (hconj _ hx.2)]`. Rewrite using `[setIntegral_congr_fun (measurableSet_levelDomain M) heq]`. Use `set A : Set (InfiniteAdeleRing ℚ) := RationalIdeles.realEquiv ⁻¹' Set.Ico (0 : ℝ) M`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hf` using `integral_fun_fst (μ := (infiniteAdeleMeasure ℚ).restrict A) (ν := (finiteAdeleMeasure ℚ).restrict (levelIdeal M)) (fun a : InfiniteAdeleRing ℚ => G (RationalIdeles.realEquiv a))`. Rewrite using `[← Measure.prod_restrict]`. Use `hf.trans ?_` and prove the remaining obligations. Rewrite using `[measureReal_restrict_apply_univ, measureReal_def]`. Use `_ = (finiteAdeleMeasure ℚ (levelIdeal M)).toReal • ∫ t in Set.Ico (0 : ℝ) M, G t ∂(infiniteAdeleMeasure ℚ).map realHomeomorph := by`.
+
+Use `congr 1`. Conclude with `(realHomeomorph.measurableEmbedding.setIntegral_map (μ := infiniteAdeleMeasure ℚ) G (Set.Ico (0 : ℝ) M)).symm`. Use `_ = levelConstant M • ∫ t in (0 : ℝ)..M, G t := by`. Rewrite using `[map_infiniteAdeleMeasure, Measure.restrict_smul, integral_smul_nnreal_measure, intervalIntegral.integral_of_le (Nat.cast_nonneg M), integral_Ico_eq_integral_Ioo, ← integral_Ioc_eq_integral_Ioo, levelConstant, NNReal.smul_def, smul_smul]`.
+-/
 theorem constantTerm_realEmb_mul_finEmb_of_conj {φ : AdelicGL ℚ 2 → ℂ} (hφ : IsWeightLevel N k φ)
     (h : GL (Fin 2) ℝ) {w : FiniteAdelicGL ℚ 2} {M : ℕ} [NeZero M]
     (hconj : ∀ y ∈ levelIdeal M, w⁻¹ * unipFin y * w ∈ Gamma0Level N) :
@@ -150,6 +191,9 @@ theorem constantTerm_realEmb_mul_finEmb_of_conj {φ : AdelicGL ℚ 2 → ℂ} (h
 
 def unipRat (q : ℚ) : GL (Fin 2) ℚ := unipGL (n := 2) (r := 1) fun _ => q
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((unipMatrix (n := 2) (r := 1) (fun _ => q) a b : ℚ) : ℝ) = unipMatrix (n := 2) (r := 1) (fun _ => (q : ℝ)) a b`. Rewrite using `[unipMatrix_apply, unipMatrix_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem toReal_unipRat (q : ℚ) : toReal (unipRat q) = unipReal q := by
   refine Units.ext (Matrix.ext fun a b => ?_)
   change ((unipMatrix (n := 2) (r := 1) (fun _ => q) a b : ℚ) : ℝ) =
@@ -157,6 +201,9 @@ theorem toReal_unipRat (q : ℚ) : toReal (unipRat q) = unipReal q := by
   rw [unipMatrix_apply, unipMatrix_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap ℚ 𝔸f (unipMatrix (n := 2) (r := 1) (fun _ => q) a b) = unipMatrix (n := 2) (r := 1) (fun _ => algebraMap ℚ 𝔸f q) a b`. Rewrite using `[unipMatrix_apply, unipMatrix_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem finiteDiagonal_unipRat (q : ℚ) :
     finiteDiagonal ℚ 2 (unipRat q) = unipFin (algebraMap ℚ 𝔸f q) := by
   refine Units.ext (Matrix.ext fun a b => ?_)
@@ -165,6 +212,11 @@ theorem finiteDiagonal_unipRat (q : ℚ) :
   rw [unipMatrix_apply, unipMatrix_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul]`. Express the relevant statement in the definitionally equal form `(!![-1, 0; 0, 1] * unipMatrix (n := 2) (r := 1) (fun _ => q) * !![-1, 0; 0, 1] : Matrix (Fin 2) (Fin 2) ℚ) a b = unipMatrix (n := 2) (r := 1) (fun _ => -q) a b`. Take `⟨u00, u01, u10, u11⟩` from `unipMatrix_eval q`. Take `⟨v00, v01, v10, v11⟩` from `unipMatrix_eval (-q)`.
+
+Establish `hm : (!![-1, 0; 0, 1] * !![1, q; 0, 1] * !![-1, 0; 0, 1] : Matrix (Fin 2) (Fin 2) ℚ) = !![1, -q; 0, 1]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.eta_fin_two (unipMatrix (n := 2) (r := 1) (fun _ => q)), Matrix.eta_fin_two (unipMatrix (n := 2) (r := 1) (fun _ => -q)), u00, u01, u10, u11, v00, v01, v10, v11, hm]`.
+-/
 theorem epsilon_mul_unipRat_mul_epsilon (q : ℚ) : epsilon * unipRat q * epsilon = unipRat (-q) := by
   refine Units.ext (Matrix.ext fun a b => ?_)
   rw [Units.val_mul, Units.val_mul]
@@ -179,6 +231,11 @@ theorem epsilon_mul_unipRat_mul_epsilon (q : ℚ) : epsilon * unipRat q * epsilo
     Matrix.eta_fin_two (unipMatrix (n := 2) (r := 1) (fun _ => -q)), u00, u01, u10, u11, v00, v01,
     v10, v11, hm]
 
+/- English proof (translation)
+Use `Matrix.GeneralLinearGroup.ext fun a b => ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, coe_borelGL, coe_borelGL]`. Express the relevant statement in the definitionally equal form `(unipMatrix (n := 2) (r := 1) (fun _ => t) * !![z.im, z.re; 0, 1]) a b = _`. Take `⟨u00, u01, u10, u11⟩` from `unipMatrix_eval t`. Establish `hre : (t +ᵥ z).re = t + z.re` using `vadd_re t z`.
+
+Establish `him : (t +ᵥ z).im = z.im` using `vadd_im t z`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> (simp [Matrix.mul_apply, Fin.sum_univ_two, u00, u01, u10, u11, hre, him]; try ring)`.
+-/
 theorem unipReal_mul_borelGL (t : ℝ) (z : ℍ) : unipReal t * borelGL z = borelGL (t +ᵥ z) := by
   refine Matrix.GeneralLinearGroup.ext fun a b => ?_
   rw [Units.val_mul, coe_borelGL, coe_borelGL]
@@ -189,6 +246,9 @@ theorem unipReal_mul_borelGL (t : ℝ) (z : ℍ) : unipReal t * borelGL z = bore
   fin_cases a <;> fin_cases b <;>
     (simp [Matrix.mul_apply, Fin.sum_univ_two, u00, u01, u10, u11, hre, him]; try ring)
 
+/- English proof (translation)
+Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply]`. Express the relevant statement in the definitionally equal form `(unipMatrix (n := 2) (r := 1) (fun _ => t)).det = 1`. Take `⟨u00, u01, u10, u11⟩` from `unipMatrix_eval t`. Rewrite using `[Matrix.det_fin_two, u00, u01, u10, u11]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_unipReal (t : ℝ) : (unipReal t).det.val = 1 := by
   rw [Matrix.GeneralLinearGroup.val_det_apply]
   change (unipMatrix (n := 2) (r := 1) (fun _ => t)).det = 1
@@ -196,6 +256,9 @@ theorem det_unipReal (t : ℝ) : (unipReal t).det.val = 1 := by
   rw [Matrix.det_fin_two, u00, u01, u10, u11]
   ring
 
+/- English proof (translation)
+Rewrite using `[map_mul, ← mul_assoc, hφ.right_level _ _ hu, ← hφ.isLeftInvariant γ⁻¹]`. Use `congr 1`. Apply `(prodEquiv ℚ 2).injective` to reduce the goal to its premises. Simplify using `only [map_mul, map_inv, diagonal_eq, prodEquiv_realEmb, prodEquiv_finEmb, Prod.mk_mul_mk, Prod.inv_mk, inv_one, mul_one, one_mul, inv_mul_cancel]`.
+-/
 theorem IsWeightLevel.apply_realEmb_mul_finiteDiagonal {φ : AdelicGL ℚ 2 → ℂ}
     (hφ : IsWeightLevel N k φ) (γ : GL (Fin 2) ℚ) (h : GL (Fin 2) ℝ) {u : FiniteAdelicGL ℚ 2}
     (hu : u ∈ Gamma0Level N) :
@@ -206,6 +269,9 @@ theorem IsWeightLevel.apply_realEmb_mul_finiteDiagonal {φ : AdelicGL ℚ 2 → 
   simp only [map_mul, map_inv, diagonal_eq, prodEquiv_realEmb, prodEquiv_finEmb, Prod.mk_mul_mk,
     Prod.inv_mk, inv_one, mul_one, one_mul, inv_mul_cancel]
 
+/- English proof (translation)
+Use `conv_lhs => rw [eq_borelGL_mul_kGL hpos, ← mul_assoc, unipReal_mul_borelGL]`. Rewrite using `[archLift_mul_kGL k F (det_borelGL_pos _), archLift_borelGL, vadd_im]`.
+-/
 theorem archLift_unipReal_mul (F : ℍ → ℂ) {h : GL (Fin 2) ℝ} (hpos : 0 < h.det.val) (t : ℝ) :
     archLift k F (unipReal t * h) =
       (denom h ((UpperHalfPlane.I : ℍ) : ℂ) / (‖denom h ((UpperHalfPlane.I : ℍ) : ℂ)‖ : ℂ)) ^ (-k) *
@@ -213,6 +279,9 @@ theorem archLift_unipReal_mul (F : ℍ → ℂ) {h : GL (Fin 2) ℝ} (hpos : 0 <
   conv_lhs => rw [eq_borelGL_mul_kGL hpos, ← mul_assoc, unipReal_mul_borelGL]
   rw [archLift_mul_kGL k F (det_borelGL_pos _), archLift_borelGL, vadd_im]
 
+/- English proof (translation)
+Take `⟨u00, u01, u10, u11⟩` from `unipMatrix_eval t`. Rewrite using `[denom]`. Express the relevant statement in the definitionally equal form `((unipMatrix (n := 2) (r := 1) (fun _ => t) 1 0 : ℝ) : ℂ) * w + ((unipMatrix (n := 2) (r := 1) (fun _ => t) 1 1 : ℝ) : ℂ) = 1`. Rewrite using `[u10, u11]`. Simplify using the standard rewrite rules.
+-/
 theorem denom_unipReal (t : ℝ) (w : ℂ) : denom (unipReal t) w = 1 := by
   obtain ⟨u00, u01, u10, u11⟩ := unipMatrix_eval t
   rw [denom]
@@ -221,6 +290,11 @@ theorem denom_unipReal (t : ℝ) (w : ℂ) : denom (unipReal t) w = 1 := by
   rw [u10, u11]
   simp
 
+/- English proof (translation)
+Establish `hpos : 0 < (unipReal t).det.val` using `by rw [det_unipReal]; exact one_pos`. Apply `UpperHalfPlane.ext` to reduce the goal to its premises. Rewrite using `[coe_smul_of_det_pos hpos, denom_unipReal, div_one, num, coe_vadd]`. Take `⟨u00, u01, u10, u11⟩` from `unipMatrix_eval t`. Express the relevant statement in the definitionally equal form `((unipMatrix (n := 2) (r := 1) (fun _ => t) 0 0 : ℝ) : ℂ) * z + ((unipMatrix (n := 2) (r := 1) (fun _ => t) 0 1 : ℝ) : ℂ) = _`.
+
+Rewrite using `[u00, u01]`. Simplify using `[add_comm]`.
+-/
 theorem unipReal_smul (t : ℝ) (z : ℍ) : unipReal t • z = t +ᵥ z := by
   have hpos : 0 < (unipReal t).det.val := by rw [det_unipReal]; exact one_pos
   apply UpperHalfPlane.ext
@@ -231,6 +305,9 @@ theorem unipReal_smul (t : ℝ) (z : ℍ) : unipReal t • z = t +ᵥ z := by
   rw [u00, u01]
   simp [add_comm]
 
+/- English proof (translation)
+Rewrite using `[archLift, archLift, slash_apply, σ_of_det_pos hδ, abs_of_pos hδ, map_mul, Units.val_mul, Real.sqrt_mul hδ.le, Complex.ofReal_mul, mul_zpow, mul_smul, denom_mul_of_det_pos _ hy, mul_zpow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem archLift_mul_left (f : ℍ → ℂ) {δ y : GL (Fin 2) ℝ} (hδ : 0 < δ.det.val) (hy : 0 < y.det.val) :
     (δ.det.val : ℂ) ^ (k - 1) * archLift k f (δ * y) =
       (Real.sqrt δ.det.val : ℂ) ^ k * archLift k (f ∣[k] δ) y := by
@@ -238,6 +315,15 @@ theorem archLift_mul_left (f : ℍ → ℂ) {δ y : GL (Fin 2) ℝ} (hδ : 0 < �
     Real.sqrt_mul hδ.le, Complex.ofReal_mul, mul_zpow, mul_smul, denom_mul_of_det_pos _ hy, mul_zpow]
   ring
 
+/- English proof (translation)
+Establish `hdet : 0 < ((δ * unipRat q * δ⁻¹).det.val : ℚ)`. Establish `h1 : (unipRat q).det.val = 1`. Use `det_unipReal (q : ℝ)` as an intermediate fact. Rewrite `this` using `[← toReal_unipRat, det_toReal]`. Conclude with `this` after adjusting the coercions.
+
+Rewrite using `[map_mul, map_mul, map_inv, Units.val_mul, Units.val_mul, h1, mul_one, Units.val_inv_eq_inv_val, mul_inv_cancel₀ (Units.ne_zero _)]`. Conclude with `one_pos`. Take `⟨s, hs, hsδ⟩` from `exists_mem_Gamma0_of_mem N hmem hdet`. Establish `hreal : Matrix.SpecialLinearGroup.mapGL ℝ s * toReal δ = toReal δ * unipReal q`. Rewrite using `[← toReal_mapGL, hsδ, map_mul, map_mul, map_inv, toReal_unipRat, inv_mul_cancel_right]`.
+
+Establish `hper : (f ∣[k] toReal δ) ∣[k] unipReal q = f ∣[k] toReal δ`. Rewrite using `[← SlashAction.slash_mul, ← hreal, SlashAction.slash_mul, hf _ (Subgroup.mem_map_of_mem _ hs)]`. Establish `hpos : 0 < (unipReal q).det.val` using `by rw [det_unipReal]; exact one_pos`. Use `congrFun hper z` as an intermediate fact. Rewrite `this` using `[slash_apply, σ_of_det_pos hpos, det_unipReal, abs_one, Complex.ofReal_one, _root_.one_zpow, mul_one, denom_unipReal, _root_.one_zpow, mul_one, unipReal_smul]`.
+
+Conclude with `this`.
+-/
 theorem slash_periodic {f : ℍ → ℂ}
     (hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), f ∣[k] γ = f) {δ : GL (Fin 2) ℚ} (q : ℚ)
     (hmem : finiteDiagonal ℚ 2 (δ * unipRat q * δ⁻¹) ∈ Gamma0Level N) (z : ℍ) :
@@ -262,6 +348,11 @@ theorem slash_periodic {f : ℍ → ℂ}
     mul_one, denom_unipReal, _root_.one_zpow, mul_one, unipReal_smul] at this
   exact this
 
+/- English proof (translation)
+Establish `hc : IsCusp (toReal δ • (OnePoint.infty : OnePoint ℝ)) (Gamma0 N : Subgroup (GL (Fin 2) ℝ))`. Rewrite using `[Subgroup.IsArithmetic.isCusp_iff_isCusp_SL2Z, isCusp_SL2Z_iff]`. Use `⟨δ • OnePoint.infty, ?_⟩` and prove the remaining obligations. Rewrite using `[← Rat.coe_castHom, OnePoint.map_smul, OnePoint.map_infty]`. Both sides reduce to the same expression.
+
+Conclude with `f.zero_at_cusps' hc (toReal δ) rfl`.
+-/
 theorem isZeroAtImInfty_slash (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) (δ : GL (Fin 2) ℚ) :
     IsZeroAtImInfty ((f : ℍ → ℂ) ∣[k] toReal δ) := by
   have hc : IsCusp (toReal δ • (OnePoint.infty : OnePoint ℝ)) (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) := by
@@ -271,6 +362,17 @@ theorem isZeroAtImInfty_slash (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ
     rfl
   exact f.zero_at_cusps' hc (toReal δ) rfl
 
+/- English proof (translation)
+Establish `hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), (f : ℍ → ℂ) ∣[k] γ = f` using `fun γ hγ => SlashInvariantForm.slash_action_eqn f γ hγ`. Use `set F := (f : ℍ → ℂ) ∣[k] toReal δ`. Establish `hδR : 0 < (toReal δ).det.val` using `by rw [det_toReal]; exact_mod_cast hδ`. Establish `hdne : ((toReal δ).det.val : ℂ) ^ (k - 1) ≠ 0` using `zpow_ne_zero _ (by exact_mod_cast hδR.ne')`. Use `set j := denom h ((UpperHalfPlane.I : ℍ) : ℂ)`.
+
+Use `set z := h • UpperHalfPlane.I`. Use `set C : ℂ := (((toReal δ).det.val : ℂ) ^ (k - 1))⁻¹ * (Real.sqrt (toReal δ).det.val : ℂ) ^ k * ((j / (‖j‖ : ℂ)) ^ (-k) * (Real.sqrt z.im : ℂ) ^ k)`. Establish `key : ∀ t : ℝ, archLift k f (toReal δ * (unipReal t * h)) = C * F (t +ᵥ z)`. Introduce `t`. Establish `hy : 0 < (unipReal t * h).det.val`.
+
+Rewrite using `[map_mul, Units.val_mul, det_unipReal, one_mul]`. Conclude with `hpos`. Establish `h1` using `archLift_mul_left (k := k) (f : ℍ → ℂ) hδR hy`. Rewrite `h1` using `[archLift_unipReal_mul F hpos t]`. Rewrite using `[eq_inv_mul_iff_mul_eq₀ hdne |>.2 h1]`.
+
+Simplify using `only [C, j, z]`. Expand and normalize the polynomial expressions, which then agree. Establish `hzero : ∫ t in (0 : ℝ)..M, F (t +ᵥ z) = 0`. Use `integral_vadd_eq_zero (f.holo'.slash k (toReal δ)) (by exact_mod_cast hM) (fun z' => ?_) (isZeroAtImInfty_slash f δ) z` and prove the remaining obligations. Use `slash_periodic hf (M : ℚ) hmem z'` as an intermediate fact.
+
+Simplify using `using this`. Repeatedly rewrite using `[key]`. Rewrite using `[intervalIntegral.integral_const_mul, hzero, mul_zero]`.
+-/
 theorem integral_archLift_cuspForm_eq_zero (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     {δ : GL (Fin 2) ℚ} (hδ : 0 < (δ.det.val : ℚ)) {M : ℕ} (hM : 0 < M)
     (hmem : finiteDiagonal ℚ 2 (δ * unipRat M * δ⁻¹) ∈ Gamma0Level N) {h : GL (Fin 2) ℝ}
@@ -303,6 +405,11 @@ theorem integral_archLift_cuspForm_eq_zero (f : CuspForm (Gamma0 N : Subgroup (G
   simp_rw [key]
   rw [intervalIntegral.integral_const_mul, hzero, mul_zero]
 
+/- English proof (translation)
+Establish `he : (toReal epsilon : Matrix (Fin 2) (Fin 2) ℝ) = !![-1, 0; 0, 1]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [epsilon]`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, he]`.
+
+Express the relevant statement in the definitionally equal form `(!![-1, 0; 0, 1] * unipMatrix (n := 2) (r := 1) (fun _ => s) * !![-1, 0; 0, 1] : Matrix (Fin 2) (Fin 2) ℝ) = unipMatrix (n := 2) (r := 1) (fun _ => -s)`. Take `⟨u00, u01, u10, u11⟩` from `unipMatrix_eval s`. Take `⟨v00, v01, v10, v11⟩` from `unipMatrix_eval (-s)`. Rewrite using `[Matrix.eta_fin_two (unipMatrix (n := 2) (r := 1) (fun _ => s)), Matrix.eta_fin_two (unipMatrix (n := 2) (r := 1) (fun _ => -s)), u00, u01, u10, u11, v00, v01, v10, v11]`. Simplify using the standard rewrite rules.
+-/
 theorem toReal_epsilon_mul_unipReal_mul (s : ℝ) :
     toReal epsilon * unipReal s * toReal epsilon = unipReal (-s) := by
   have he : (toReal epsilon : Matrix (Fin 2) (Fin 2) ℝ) = !![-1, 0; 0, 1] := by
@@ -321,6 +428,11 @@ theorem toReal_epsilon_mul_unipReal_mul (s : ℝ) :
 
 variable (N) in
 
+/- English proof (translation)
+Take `⟨γ₀, u₀, hu₀, hw⟩` from `exists_eq_finiteDiagonal_mul N w`. Distinguish the cases in `hs : 0 < ((toReal γ₀)⁻¹ * h).det.val`. Conclude with `⟨γ₀, u₀, hu₀, hw, hs⟩`. Use `⟨γ₀ * epsilon, (finiteDiagonal ℚ 2 epsilon)⁻¹ * u₀, mul_mem (inv_mem (finiteDiagonal_epsilon_mem N)) hu₀, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hw, map_mul, mul_assoc, mul_inv_cancel_left]`.
+
+Establish `hneg : ((toReal γ₀)⁻¹ * h).det.val < 0` using `lt_of_le_of_ne (not_lt.1 hs) (Units.ne_zero _)`. Establish `e : (toReal (γ₀ * epsilon))⁻¹ * h = (toReal epsilon)⁻¹ * ((toReal γ₀)⁻¹ * h)`. Rewrite using `[map_mul, _root_.mul_inv_rev, mul_assoc]`. Rewrite using `[e, map_mul, Units.val_mul, map_inv, Units.val_inv_eq_inv_val, det_toReal_epsilon, inv_neg, inv_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_finiteDiagonal_mul_pos (w : FiniteAdelicGL ℚ 2) (h : GL (Fin 2) ℝ) :
     ∃ γ : GL (Fin 2) ℚ, ∃ u ∈ Gamma0Level N, w = finiteDiagonal ℚ 2 γ * u ∧
       0 < ((toReal γ)⁻¹ * h).det.val := by
@@ -338,6 +450,11 @@ theorem exists_finiteDiagonal_mul_pos (w : FiniteAdelicGL ℚ 2) (h : GL (Fin 2)
         inv_one]
       linarith
 
+/- English proof (translation)
+Establish `hγ : finiteDiagonal ℚ 2 γ = w * u⁻¹` using `by rw [hw, mul_inv_cancel_right]`. Establish `: finiteDiagonal ℚ 2 (γ⁻¹ * unipRat q * γ) = u * (w⁻¹ * unipFin (algebraMap ℚ 𝔸f q) * w) * u⁻¹`. Rewrite using `[map_mul, map_mul, map_inv, finiteDiagonal_unipRat, hγ]`. Use `group`. Rewrite using `[this]`.
+
+Conclude with `mul_mem (mul_mem hu (hconj _ hq)) (inv_mem hu)`.
+-/
 theorem finiteDiagonal_conj_mem {w : FiniteAdelicGL ℚ 2} {M : ℕ}
     (hconj : ∀ y ∈ levelIdeal M, w⁻¹ * unipFin y * w ∈ Gamma0Level N) {γ : GL (Fin 2) ℚ}
     {u : FiniteAdelicGL ℚ 2} (hu : u ∈ Gamma0Level N) (hw : w = finiteDiagonal ℚ 2 γ * u) {q : ℚ}
@@ -351,6 +468,41 @@ theorem finiteDiagonal_conj_mem {w : FiniteAdelicGL ℚ 2} {M : ℕ}
   rw [this]
   exact mul_mem (mul_mem hu (hconj _ hq)) (inv_mem hu)
 
+/- English proof (translation)
+Introduce `r hr hr2 g`. Take `rfl : r = 1` from `by omega`. Use `set φ : AdelicGL ℚ 2 → ℂ := ↑(liftEquiv N k f.toSlashInvariantForm)`. Establish `hφ : IsWeightLevel N k φ` using `(liftEquiv N k f.toSlashInvariantForm).2`. Establish `hf : ∀ γ ∈ (Gamma0 N : Subgroup (GL (Fin 2) ℝ)), (f : ℍ → ℂ) ∣[k] γ = f` using `fun γ hγ => SlashInvariantForm.slash_action_eqn f γ hγ`.
+
+Establish `hφa : ∀ x : GL (Fin 2) ℝ, 0 < x.det.val → φ (realEmb x) = archLift k f x` using `fun x hx => adelicLift_realEmb hf hx`. Use `set h := realPart g`. Use `set w := (prodEquiv ℚ 2 g).2`. Rewrite using `[← realEmb_realPart_mul_finEmb g]`. Take `⟨M, hM, hconj⟩` from `exists_level_conj N w`.
+
+Establish `: NeZero M` using `⟨hM.ne'⟩`. Rewrite using `[constantTerm_realEmb_mul_finEmb_of_conj hφ h hconj]`. Use `smul_eq_zero_of_right _ ?_` and prove the remaining obligations. Take `⟨γ, u, hu, hw, hdet⟩` from `exists_finiteDiagonal_mul_pos N w h`. Establish `hdetn : ∀ t : ℝ, ((toReal γ)⁻¹ * (unipReal t * h)).det.val = ((toReal γ)⁻¹ * h).det.val`.
+
+Introduce `t`. Simplify using `only [map_mul, Units.val_mul, det_unipReal, one_mul]`. Establish `hint : ∀ t : ℝ, φ (realEmb (unipReal t * h) * finEmb ℚ 2 w) = archLift k f ((toReal γ)⁻¹ * (unipReal t * h))`. Introduce `t`. Rewrite using `[hw, hφ.apply_realEmb_mul_finiteDiagonal γ _ hu]`.
+
+Conclude with `hφa _ (by rw [hdetn]; exact hdet)`. Repeatedly rewrite using `[hint]`. Establish `hMmem : algebraMap ℚ 𝔸f (M : ℚ) ∈ levelIdeal M` using `⟨1, one_mem _, by simp⟩`. Establish `hMneg : algebraMap ℚ 𝔸f (-(M : ℚ)) ∈ levelIdeal M` using `⟨-1, neg_mem (one_mem _), by simp⟩`. Establish `hsplit : ((toReal γ)⁻¹ * h).det.val = ((γ.det.val : ℚ) : ℝ)⁻¹ * h.det.val`.
+
+Rewrite using `[map_mul, Units.val_mul, map_inv, Units.val_inv_eq_inv_val, det_toReal]`. Break down `lt_or_gt_of_ne (Units.ne_zero γ.det) with hneg | hpos` into its components or cases. Establish `hh : h.det.val < 0`. Rewrite `hdet` using `[hsplit]`. Establish `: ((γ.det.val : ℚ) : ℝ) < 0` using `by exact_mod_cast hneg`.
+
+Establish `: ((γ.det.val : ℚ) : ℝ)⁻¹ < 0` using `inv_lt_zero.2 this`. Use the polynomial consequences of the given equalities and inequalities. Use `set δ := γ⁻¹ * epsilon`. Establish `hδ : 0 < (δ.det.val : ℚ)`. Simplify using `only [δ, map_mul, map_inv, Units.val_mul, Units.val_inv_eq_inv_val]`.
+
+Establish `hε : (epsilon.det.val : ℚ) = -1`. Use `det_toReal_epsilon` as an intermediate fact. Rewrite `this` using `[det_toReal]`. Conclude with `this` after adjusting the coercions. Rewrite using `[hε]`.
+
+Establish `: (γ.det.val : ℚ)⁻¹ < 0` using `inv_lt_zero.2 hneg`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set h' := toReal epsilon * h`. Establish `hh' : 0 < (unipReal (-(M : ℝ)) * h').det.val`. Simplify using `only [h', map_mul, Units.val_mul, det_unipReal, det_toReal_epsilon, one_mul]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmem : finiteDiagonal ℚ 2 (δ * unipRat M * δ⁻¹) ∈ Gamma0Level N`. Establish `: δ * unipRat M * δ⁻¹ = γ⁻¹ * unipRat (-(M : ℚ)) * γ`. Simplify using `only [δ, _root_.mul_inv_rev, inv_inv, epsilon_inv]`. Rewrite using `[← epsilon_mul_unipRat_mul_epsilon]`.
+
+Use `group`. Rewrite using `[this]`. Conclude with `finiteDiagonal_conj_mem hconj hu hw hMneg`. Establish `hrew : ∀ t : ℝ, archLift k f ((toReal γ)⁻¹ * (unipReal t * h)) = archLift k f (toReal δ * (unipReal (-t) * h'))`. Introduce `t`.
+
+Use `congr 1`. Simplify using `only [δ, h', map_mul, map_inv]`. Establish `e` using `toReal_epsilon_mul_unipReal_mul (-t)`. Rewrite `e` using `[neg_neg]`. Rewrite using `[← e]`.
+
+Use `group`. Repeatedly rewrite using `[hrew]`. Rewrite using `[intervalIntegral.integral_comp_neg (fun s => archLift k f (toReal δ * (unipReal s * h'))), neg_zero]`. Establish `hshift` using `intervalIntegral.integral_comp_sub_right (fun s => archLift k f (toReal δ * (unipReal s * h'))) (M : ℝ) (a := 0) (b := M)`. Simplify using `only [zero_sub, sub_self] at hshift`.
+
+Rewrite using `[← hshift]`. Establish `hsub : ∀ s : ℝ, archLift k f (toReal δ * (unipReal (s - M) * h')) = archLift k f (toReal δ * (unipReal s * (unipReal (-(M : ℝ)) * h')))`. Introduce `s`. Rewrite using `[sub_eq_add_neg, unipReal_add, mul_assoc]`. Repeatedly rewrite using `[hsub]`.
+
+Conclude with `integral_archLift_cuspForm_eq_zero f hδ hM hmem hh'`. Establish `hh : 0 < h.det.val`. Rewrite `hdet` using `[hsplit]`. Establish `: (0 : ℝ) < ((γ.det.val : ℚ) : ℝ)⁻¹` using `inv_pos.2 (by exact_mod_cast hpos)`. Conclude with `pos_of_mul_pos_right hdet this.le`.
+
+Establish `hδ : 0 < ((γ⁻¹).det.val : ℚ)`. Rewrite using `[map_inv, Units.val_inv_eq_inv_val]`. Conclude with `inv_pos.2 hpos`. Establish `hmem : finiteDiagonal ℚ 2 (γ⁻¹ * unipRat M * γ⁻¹⁻¹) ∈ Gamma0Level N`. Rewrite using `[inv_inv]`.
+
+Conclude with `finiteDiagonal_conj_mem hconj hu hw hMmem`. Use `integral_archLift_cuspForm_eq_zero f hδ hM hmem hh` as an intermediate fact. Rewrite `this` using `[map_inv]`. Then use the resulting hypothesis.
+-/
 theorem isCuspidal_liftEquiv_cuspForm (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) :
     IsCuspidal (liftEquiv N k f.toSlashInvariantForm : AdelicGL ℚ 2 → ℂ) := by
   intro r hr hr2 g

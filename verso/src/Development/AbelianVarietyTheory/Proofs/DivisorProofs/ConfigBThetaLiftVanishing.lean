@@ -24,6 +24,9 @@ open Module
 def qProd {V : Type} [AddCommGroup V] [Module ℂ V] {ι : Type} (B : ι → End ℂ V) (s : List (ι × ℂ)) : End ℂ V :=
   (s.map fun q => B q.1 - algebraMap ℂ (End ℂ V) q.2).prod
 
+/- English proof (translation)
+Unfold `qProd`. Use `Commute.list_prod_left _ _ fun x hx => Commute.list_prod_right _ _ fun y hy => ?_` and prove the remaining obligations. Take `⟨q, -, rfl⟩` from `List.mem_map.1 hx`. Take `⟨q', -, rfl⟩` from `List.mem_map.1 hy`. Conclude with `Commute.sub_left ((hc q.1 q'.1).sub_right (Algebra.commute_algebraMap_right q'.2 _)) (Algebra.commute_algebraMap_left q.2 _)`.
+-/
 theorem qProd_commute {V : Type} [AddCommGroup V] [Module ℂ V] {ι : Type} (B : ι → End ℂ V)
     (hc : ∀ i j, Commute (B i) (B j)) (s t : List (ι × ℂ)) : Commute (qProd B s) (qProd B t) := by
   unfold qProd
@@ -33,6 +36,9 @@ theorem qProd_commute {V : Type} [AddCommGroup V] [Module ℂ V] {ι : Type} (B 
   exact Commute.sub_left ((hc q.1 q'.1).sub_right (Algebra.commute_algebraMap_right q'.2 _))
     (Algebra.commute_algebraMap_left q.2 _)
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `nil => simp [qProd]`. Consider the case `cons q s ih`. Simplify using `only [qProd, List.map_cons, List.prod_cons] at ih ⊢`. Rewrite using `[Module.End.mul_apply, ih, map_smul, LinearMap.sub_apply, hv, Module.algebraMap_end_apply, ← sub_smul, smul_smul, mul_comm]`.
+-/
 theorem qProd_eigen {V : Type} [AddCommGroup V] [Module ℂ V] {ι : Type} (B : ι → End ℂ V) (lam : ι → ℂ)
     (v : V) (hv : ∀ i, B i v = lam i • v) (s : List (ι × ℂ)) :
     qProd B s v = (s.map fun q => lam q.1 - q.2).prod • v := by
@@ -43,12 +49,24 @@ theorem qProd_eigen {V : Type} [AddCommGroup V] [Module ℂ V] {ι : Type} (B : 
     rw [Module.End.mul_apply, ih, map_smul, LinearMap.sub_apply, hv, Module.algebraMap_end_apply, ← sub_smul,
       smul_smul, mul_comm]
 
+/- English proof (translation)
+Use `List.prod_ne_zero fun h => ?_` and prove the remaining obligations. Take `⟨q, hq, e⟩` from `List.mem_map.1 h`. Conclude with `hs q hq (sub_eq_zero.1 e).symm`.
+-/
 theorem prod_ne_zero_of {ι : Type} (lam : ι → ℂ) (s : List (ι × ℂ)) (hs : ∀ q ∈ s, q.2 ≠ lam q.1) :
     (s.map fun q => lam q.1 - q.2).prod ≠ 0 := by
   refine List.prod_ne_zero fun h => ?_
   obtain ⟨q, hq, e⟩ := List.mem_map.1 h
   exact hs q hq (sub_eq_zero.1 e).symm
 
+/- English proof (translation)
+Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, c, hc', hx⟩` from `hx`. Use `⟨[(i, c)], by simpa using hc', ?_⟩` and prove the remaining obligations. Simplify using `[qProd, hx]`.
+
+Consider the case `zero => exact ⟨[], by simp, map_zero _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨t, ht, hty⟩` from `hy`. Use `⟨s ++ t, fun q hq => ?_, ?_⟩` and prove the remaining obligations.
+
+Break down `List.mem_append.1 hq with h | h exacts [hs q h, ht q h]` into its components or cases. Establish `e : qProd B (s ++ t) = qProd B s * qProd B t`. Simplify using `[qProd, List.prod_append]`. Rewrite using `[map_add, e, Module.End.mul_apply _ _ y, hty, map_zero, add_zero, (qProd_commute B hc s t).eq, Module.End.mul_apply, hsx, map_zero]`. Consider the case `smul a x _ hx`.
+
+Take `⟨s, hs, hsx⟩` from `hx`. Conclude with `⟨s, hs, by rw [map_smul, hsx, smul_zero]⟩`.
+-/
 theorem exists_qProd_eq_zero {V : Type} [AddCommGroup V] [Module ℂ V] {ι : Type} (B : ι → End ℂ V) (lam : ι → ℂ)
     (hc : ∀ i j, Commute (B i) (B j)) {v : V}
     (hv : v ∈ Submodule.span ℂ {x | ∃ i, ∃ c : ℂ, c ≠ lam i ∧ B i x = c • x}) :
@@ -73,6 +91,19 @@ theorem exists_qProd_eq_zero {V : Type} [AddCommGroup V] [Module ℂ V] {ι : Ty
     obtain ⟨s, hs, hsx⟩ := hx
     exact ⟨s, hs, by rw [map_smul, hsx, smul_zero]⟩
 
+/- English proof (translation)
+Set `B : ι → End ℂ V` to `fun i => (A i).restrict (hmap i)`. Establish `hB : ∀ i (y : V), ((B i y : V) : P) = A i y` using `fun i y => rfl`. Establish `hc : ∀ i j, Commute (B i) (B j)` using `fun i j => LinearMap.ext fun y => Subtype.ext (hcomm i j y y.2)`. Establish `hoff : Submodule.span ℂ {x | x ∈ V ∧ ∃ i, ∃ c : ℂ, c ≠ lam i ∧ A i x = c • x} = (Submodule.span ℂ {y : V | ∃ i, ∃ c : ℂ, c ≠ lam i ∧ B i y = c • y}).map V.subtype`. Rewrite using `[Submodule.map_span]`.
+
+Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, i, c, hc', he⟩`. Conclude with `⟨⟨x, hx⟩, ⟨i, c, hc', Subtype.ext he⟩, rfl⟩`.
+
+Introduce and unpack `⟨y, ⟨i, c, hc', he⟩, rfl⟩`. Conclude with `⟨y.2, i, c, hc', congrArg Subtype.val he⟩`. Rewrite using `[Submodule.disjoint_def, hoff]`. Introduce and unpack `_ hz ⟨v, hv, rfl⟩`. Establish `htw0 : ∀ z ∈ Submodule.span ℂ {x | x ∈ V ∧ ∀ i, A i x = lam i • x}, ∀ i, A i z = lam i • z`.
+
+Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx => exact hx.2`. Consider the case `zero => intro i`. Simplify using the standard rewrite rules.
+
+Consider the case `add x y _ _ hx hy => intro i`. Rewrite using `[map_add, hx, hy, smul_add]`. Consider the case `smul a x _ hx => intro i`. Rewrite using `[map_smul, hx, smul_comm]`. Establish `hv' : ∀ i, B i v = lam i • v` using `fun i => Subtype.ext (htw0 _ hz i)`.
+
+Take `⟨s, hs, hsv⟩` from `exists_qProd_eq_zero B lam hc hv`. Rewrite `hsv` using `[qProd_eigen B lam v hv' s]`. Use `(smul_eq_zero.1 hsv).resolve_left (prod_ne_zero_of lam s hs)` as an intermediate fact. Simplify using `[this]`.
+-/
 theorem disjoint_span_span {P : Type} [AddCommGroup P] [Module ℂ P] (V : Submodule ℂ P)
     {ι : Type} (A : ι → End ℂ P) (lam : ι → ℂ) (hmap : ∀ i, ∀ x ∈ V, A i x ∈ V)
     (hcomm : ∀ i j, ∀ x ∈ V, A i (A j x) = A j (A i x)) :
@@ -115,6 +146,15 @@ section Tens
 
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Use `DFunLike.ext f g fun t => ?_` and prove the remaining obligations. Set `u : κ → AF F` to `fun i => (((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (t i), (0 : FiniteAdeleRing (𝓞 F) F)) : AF F)`. Establish `hev : ∀ i, evI F (u i) = t i` using `fun i => show InfiniteAdeleRing.ringEquiv_mixedSpace F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (t i)) = t i from RingEquiv.apply_symm_apply _ _`. Establish `hat : At (evI F) u`. Introduce `u' hu'`.
+
+Establish `h0 : u'.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu')`. Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show u'.1 * (u i).1 = 0`. Rewrite using `[h0, zero_mul]`.
+
+Use `show u'.2 * (u i).2 = 0`. Simplify using `[u]`. Establish `h1` using `congrFun h u`. Establish `hR' : R u = R 0`. Use `(hR f).1 0 u hat` as an intermediate fact.
+
+Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Establish `hev' : (fun i => evI F (u i)) = t` using `funext hev`. Simplify using `only [tens, hev', hR'] at h1`. Conclude with `mul_right_cancel₀ hR0 h1`.
+-/
 theorem tens_inj {R : (κ → AF F) → ℂ} (hR0 : R 0 ≠ 0) (hR : ∀ f : SInf F κ, Rest (evI F) (⇑f) R)
     {f g : SInf F κ} (h : tens (evI F) (⇑f) R = tens (evI F) (⇑g) R) : f = g := by
   refine DFunLike.ext f g fun t => ?_
@@ -144,6 +184,11 @@ end Tens
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨R, hR0, hR⟩` from `GlobalTheory.ArchRest.exists_rest_arch (F := F) (Fin n × Fin d)`. Use `tens_inj hR0 hR ?_` and prove the remaining obligations. Establish `e1 : tens (evI F) (⇑f₂) R = om (1, k * k') (tens (evI F) (⇑f) R)`. Establish `: ((1 : UA σ Y.J), k * k') = (1, k) * (1, k')` using `by simp`. Rewrite using `[this, map_mul, Module.End.mul_apply, h1 R (hR f), h2 R (hR f₁)]`.
+
+Establish `e2 : tens (evI F) (⇑g₂) R = om (1, k' * k) (tens (evI F) (⇑f) R)`. Establish `: ((1 : UA σ Y.J), k' * k) = (1, k') * (1, k)` using `by simp`. Rewrite using `[this, map_mul, Module.End.mul_apply, h3 R (hR f), h4 R (hR g₁)]`. Rewrite using `[e1, e2, hkk]`.
+-/
 theorem acts_comm' {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} (om : Rep σ Y W) {k k' : UA σ W.J} (hkk : k * k' = k' * k)
     {f f₁ f₂ g₁ g₂ : SInf F (Fin n × Fin d)} (h1 : Acts (evI F) (om (1, k')) (⇑f) (⇑f₁))
     (h2 : Acts (evI F) (om (1, k)) (⇑f₁) (⇑f₂)) (h3 : Acts (evI F) (om (1, k)) (⇑f) (⇑g₁))
@@ -164,6 +209,33 @@ namespace GlobalTheory.WtDisj
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hm hm₁`. Establish `hB` using `hm.triple.base`. Establish `hg` using `hm.triple.geo`. Establish `hop : ∀ k ∈ KInf σ G.W B.emb, ∃ A : SInf F (Fin a × Fin (a + (b + 2))) →ₗ[ℂ] SInf F (Fin a × Fin (a + (b + 2))), ∀ f : SInf F (Fin a × Fin (a + (b + 2))), Acts (evI F) (om (1, k)) (⇑f) (⇑(A f))` using `fun k hk => GlobalTheory.T.exists_archOperator_compact_unitaryW F E σ B _ _ G.V G.W G.M om _ _ hB hg.hM hm.triple.weil k hk`. Establish `hop' : ∀ k ∈ KInf σ G.W B.emb, ∃ A : SInf F (Fin (b + 2) × Fin (a + (b + 2))) →ₗ[ℂ] SInf F (Fin (b + 2) × Fin (a + (b + 2))), ∀ f : SInf F (Fin (b + 2) × Fin (a + (b + 2))), Acts (evI F) (om' (1, k)) (⇑f) (⇑(A f))` using `fun k hk => GlobalTheory.T.exists_archOperator_compact_unitaryW F E σ B _ _ G.V' G.W G.M' om' _ _ hB hg.hM' hm.triple.weil' k hk`.
+
+Establish `hdesc : ∀ k ∈ KInf σ G.W B.emb, ∃ T : R.Pi →ₗ[ℂ] R.Pi, ∀ f ∈ G.M.Pol B.ψ B.emb, ∀ f₁ : SInf F (Fin a × Fin (a + (b + 2))), Acts (evI F) (om (1, k)) (⇑f) (⇑f₁) → R.p f₁ = T (R.p f)`. Introduce `k hk`. Take `⟨A, hA⟩` from `hop k hk`. Take `⟨A', hA'⟩` from `hop' k hk`. Establish `onto : ∀ x, ∃ f ∈ G.M.Pol B.ψ B.emb, R.p f = x`.
+
+Introduce `x`. Establish `: x ∈ (G.M.Pol B.ψ B.emb).map R.p` using `by rw [hm.real.quot.onto]; trivial`. Take `⟨f, hf, e⟩` from `this`. Conclude with `⟨f, hf, e⟩`. Establish `onto' : ∀ x, ∃ f ∈ G.M'.Pol B.ψ B.emb, R.p' f = x`.
+
+Introduce `x`. Establish `: x ∈ (G.M'.Pol B.ψ B.emb).map R.p'` using `by rw [hm.real.quot'.onto]; trivial`. Take `⟨f, hf, e⟩` from `this`. Conclude with `⟨f, hf, e⟩`. Establish `key : ∀ f ∈ G.M.Pol B.ψ B.emb, ∀ f₁ : SInf F _, Acts (evI F) (om (1, k)) (⇑f) (⇑f₁) → ∀ f' ∈ G.M'.Pol B.ψ B.emb, R.p f = R.p' f' → R.p f₁ = R.p' (A' f')` using `fun f hf f₁ h1 f' hf' he => hm.real.cpt k hk f hf f' hf' f₁ (A' f') h1 (hA' f') he`.
+
+Establish `wd : ∀ f' ∈ G.M'.Pol B.ψ B.emb, ∀ g' ∈ G.M'.Pol B.ψ B.emb, R.p' f' = R.p' g' → R.p' (A' f') = R.p' (A' g')`. Introduce `f' hf' g' hg' he`. Take `⟨f, hf, hfx⟩` from `onto (R.p' f')`. Rewrite using `[← key f hf (A f) (hA f) f' hf' hfx, key f hf (A f) (hA f) g' hg' (hfx.trans he)]`. Use `choose g hgP hgx using onto'`.
+
+Use `⟨{ toFun := fun x => R.p' (A' (g x)), map_add' := ?_, map_smul' := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `x y`. Rewrite using `[← map_add, ← map_add]`. Conclude with `wd _ (hgP _) _ (add_mem (hgP x) (hgP y)) (by rw [hgx, map_add, hgx, hgx])`. Introduce `c x`.
+
+Rewrite using `[RingHom.id_apply, ← map_smul, ← map_smul]`. Conclude with `wd _ (hgP _) _ (Submodule.smul_mem _ c (hgP x)) (by rw [hgx, map_smul, hgx])`. Introduce `f hf f₁ h1`. Conclude with `key f hf f₁ h1 _ (hgP _) (hgx _).symm`. Use `choose! A hA using hop`.
+
+Use `choose! T hT using hdesc`. Use `set j₀ := lowDegInf B G.M R.p`. Establish `hstab` using `GlobalTheory.T.weil_action_fock_degree_formula F E σ B _ _ G.V G.W G.M om _ _ _ _ _ _ hB hg.hV hg.hW hg.hM hm.triple.weil`. Establish `hcommG` using `GlobalTheory.T.levi_embedding_mul_of_adapted_plane F E σ B _ _ G.W G₁.W H' a (a + b + 1) _ _ _ _ hB hg.hW hm₁.triple.geo.hW hC.hH'`. Establish `hPol : ∀ f ∈ fockDeg G.M B.ψ B.emb j₀, f ∈ G.M.Pol B.ψ B.emb` using `fun f hf => fockDeg_le_pol _ _ _ _ hf`.
+
+Set `ι` to `{q : UA σ G.W.J × (AE F E)ˣ // q.1 ∈ KInf σ G.W B.emb ∧ IsLevi H' q.2 (1 : UA σ G₁.W.J) q.1}`. Set `lam : ι → ℂ` to `fun i => (X.β i.1.2 : ℂ) * (((absE F E i.1.2 : ℝ) ^ ((a : ℝ) / 2) : ℝ) : ℂ)`. Establish `hTp : ∀ i : ι, ∀ f ∈ fockDeg G.M B.ψ B.emb j₀, T i.1.1 (R.p f) = R.p (A i.1.1 f)` using `fun i f hf => (hT i.1.1 i.2.1 f (hPol f hf) _ (hA i.1.1 i.2.1 f)).symm`. Establish `main` using `disjoint_span_span (lowPartInf B G.M R.p) (fun i : ι => (T i.1.1 : Module.End ℂ R.Pi)) lam ?_ ?_`. Use `main.mono (Submodule.span_mono ?_) (Submodule.span_mono ?_)` and prove the remaining obligations.
+
+Introduce and unpack `x ⟨hx, hxe⟩`. Use `⟨hx, fun i => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, rfl⟩` from `hx`. Use `show T i.1.1 (R.p f) = lam i • R.p f`. Conclude with `(hT i.1.1 i.2.1 f (hPol f hf) _ (hA i.1.1 i.2.1 f)).symm.trans (hxe i.1.1 i.2.1 i.1.2 i.2.2 f (hPol f hf) _ (hA i.1.1 i.2.1 f) rfl)`.
+
+Introduce and unpack `x ⟨hx, k, hk, t, hL, c, hc, hxe⟩`. Use `⟨hx, ⟨(k, t), hk, hL⟩, c, hc, ?_⟩` and prove the remaining obligations. Take `⟨f, hf, rfl⟩` from `hx`. Use `show T k (R.p f) = c • R.p f`. Conclude with `(hT k hk f (hPol f hf) _ (hA k hk f)).symm.trans (hxe f (hPol f hf) _ (hA k hk f) rfl)`.
+
+Introduce and unpack `i x ⟨f, hf, rfl⟩ show T i.1.1 (R.p f) ∈ _`. Rewrite using `[hTp i f hf]`. Conclude with `⟨_, hstab i.1.1 i.2.1 j₀ f hf _ (hA i.1.1 i.2.1 f), rfl⟩`. Introduce and unpack `i i' x ⟨f, hf, rfl⟩`. Establish `hf1` using `hstab i'.1.1 i'.2.1 j₀ f hf _ (hA i'.1.1 i'.2.1 f)`.
+
+Establish `hf2` using `hstab i.1.1 i.2.1 j₀ f hf _ (hA i.1.1 i.2.1 f)`. Use `show T i.1.1 (T i'.1.1 (R.p f)) = T i'.1.1 (T i.1.1 (R.p f))`. Rewrite using `[hTp i' f hf, hTp i _ hf1, hTp i f hf, hTp i' _ hf2]`. Use `congr 1`. Conclude with `acts_comm' om (hcommG _ _ _ _ i.2.2 i'.2.2) (hA i'.1.1 i'.2.1 f) (hA i.1.1 i.2.1 _) (hA i.1.1 i.2.1 f) (hA i'.1.1 i'.2.1 _)`.
+-/
 theorem twPart_disjoint_offPart_beta : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b)
     (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

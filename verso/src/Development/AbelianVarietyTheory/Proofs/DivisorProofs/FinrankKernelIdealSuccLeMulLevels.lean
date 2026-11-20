@@ -14,6 +14,21 @@ namespace GlobalTheory
 
 namespace PDiv
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.T.isHopfIdeal_kerIdeal_of_bialgHom' k A A u`. Use `haveI := GlobalTheory.T.isHopfIdeal_kerIdeal_of_bialgHom' k B B v`. Set `πA : A →ₐc[k] A ⧸ kerIdeal u` to `Bialgebra.Quotient.mkBialgHom (kerIdeal u)`. Set `πB : B →ₐc[k] B ⧸ kerIdeal v` to `Bialgebra.Quotient.mkBialgHom (kerIdeal v)`. Establish `hπA : Function.Surjective πA` using `Ideal.Quotient.mk_surjective`.
+
+Establish `hπB : Function.Surjective πB` using `Ideal.Quotient.mk_surjective`. Establish `hA : ∀ a, πA (u a) = algebraMap k _ (counit a)` using `(kerIdeal_le_ker_iff u (πA : A →ₐ[k] A ⧸ kerIdeal u)).1 fun a ha => Ideal.Quotient.eq_zero_iff_mem.2 ha`. Establish `h1 : kerIdeal v ≤ RingHom.ker (πA.comp m : B →ₐ[k] A ⧸ kerIdeal u)` using `(kerIdeal_le_ker_iff v _).2 fun b => by`. Express the relevant statement in the definitionally equal form `πA (m (v b)) = _`. Rewrite using `[← hm, hA, CoalgHomClass.counit_comp_apply]`.
+
+Set `m' : (B ⧸ kerIdeal v) →ₐc[k] A ⧸ kerIdeal u` to `liftSurj πB hπB (πA.comp m) fun b hb => h1 (Ideal.Quotient.eq_zero_iff_mem.1 hb)`. Establish `hm' : m'.comp πB = πA.comp m` using `BialgHom.ext fun b => liftSurj_apply πB hπB (πA.comp m) (fun b hb => h1 (Ideal.Quotient.eq_zero_iff_mem.1 hb)) b`. Set `q : A →ₐ[k] (A ⧸ kerIdeal u) ⧸ kerIdeal m'` to `(Ideal.Quotient.mkₐ k (kerIdeal m')).comp (πA : A →ₐ[k] A ⧸ kerIdeal u)`. Establish `hq : Function.Surjective q` using `Ideal.Quotient.mk_surjective.comp hπA`. Establish `h2 : RingHom.ker (r : A →ₐ[k] C) ≤ RingHom.ker q` using `fun a ha => by`.
+
+Establish `h3 : πA a ∈ kerIdeal m'`. Rewrite using `[← kerIdeal_comp_of_surjective m' hπB, hm', kerIdeal_comp]`. Conclude with `Ideal.mem_map_of_mem _ (hk ha)`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 h3`. Set `q' : C →ₐ[k] (A ⧸ kerIdeal u) ⧸ kerIdeal m'` to `AlgHom.liftOfSurjective (r : A →ₐ[k] C) hr q h2`.
+
+Establish `hq' : ∀ a, q' (r a) = q a` using `AlgHom.liftOfSurjective_apply (r : A →ₐ[k] C) hr q h2`. Establish `h4 : kerIdeal w ≤ RingHom.ker q'` using `(kerIdeal_le_ker_iff w q').2 fun c => by`. Take `⟨a, rfl⟩` from `hr c`. Rewrite using `[← hw, hq', CoalgHomClass.counit_comp_apply]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mkₐ k (kerIdeal m') (πA (u a)) = _`.
+
+Rewrite using `[hA, AlgHom.commutes]`. Set `q'' : (C ⧸ kerIdeal w) →ₐ[k] (A ⧸ kerIdeal u) ⧸ kerIdeal m'` to `Ideal.Quotient.liftₐ (kerIdeal w) q' h4`. Establish `hq'' : Function.Surjective q''.toLinearMap` using `fun x => by`. Take `⟨a, rfl⟩` from `hq x`. Conclude with `⟨Ideal.Quotient.mk _ (r a), hq' a⟩`.
+
+Rewrite using `[finrank_eq_ker_mul_range k _ _ m']`. Conclude with `Nat.mul_le_mul (LinearMap.finrank_le_finrank_of_surjective hq'') (LinearMap.finrank_range_le _)`.
+-/
 theorem finrank_quot_kerIdeal_le_mul {k A B C : Type} [Field k] [CommRing A] [CommRing B]
     [CommRing C] [HopfAlgebra k A] [HopfAlgebra k B] [HopfAlgebra k C] [Module.Finite k A]
     [Module.Finite k B] [Module.Finite k C] (m : B →ₐc[k] A) (r : A →ₐc[k] C)
@@ -68,12 +83,18 @@ end PDiv
 
 namespace PDivGroup
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [resOne_succ, resOne_succ, res_app, ih]`.
+-/
 theorem resOne_app {p : ℕ} {R : Type} [CommRing R] {G H : PDivGroup p R} (f : G ⟶ H) (n : ℕ)
     (a : H.A (n + 1)) : G.resOne n (f.app (n + 1) a) = f.app 1 (H.resOne n a) := by
   induction n with
   | zero => rfl
   | succ n ih => rw [resOne_succ, resOne_succ, res_app, ih]
 
+/- English proof (translation)
+The claim follows from `finrank_quot_kerIdeal_le_mul (G.mulP n) (G.resOne n) (G.resOne_surjective n) ((G.ker_resOne n).trans (G.kerIdeal_mulP n).symm).le _ _ _ (app_mulP u n) (resOne_app u n)`.
+-/
 theorem finrank_quot_kerIdeal_succ_le (p : ℕ) [Fact p.Prime] (k : Type) [Field k]
     (G : PDivGroup p k) (u : G ⟶ G) (n : ℕ) :
     Module.finrank k (G.A (n + 1) ⧸ kerIdeal (u.app (n + 1))) ≤

@@ -10,6 +10,11 @@ noncomputable section
 
 namespace GlobalTheory.CptCent
 
+/- English proof (translation)
+Establish `inj : Function.Injective (O.subtype.mapMatrix (m` using `Fin n)) := fun A B h => by ext i j; exact congrFun (congrFun h i) j`. Set `A : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨g.val i j, h1 i j⟩`. Set `B : Matrix (Fin n) (Fin n) O` to `fun i j => ⟨(g⁻¹).val i j, h2 i j⟩`. Establish `hA : O.subtype.mapMatrix A = g.val` using `rfl`. Establish `hB : O.subtype.mapMatrix B = (g⁻¹).val` using `rfl`.
+
+Use `⟨⟨A, B, inj ?_, inj ?_⟩, Units.ext rfl⟩` and prove the remaining obligations. Rewrite using `[map_mul, hA, hB, map_one, Units.mul_inv]`. Rewrite using `[map_mul, hA, hB, map_one, Units.inv_mul]`.
+-/
 theorem mem_GLint_of_entries' {K : Type} [Field K] {n : ℕ} (O : Subring K) (g : GL (Fin n) K)
     (h1 : ∀ a b, g.val a b ∈ O) (h2 : ∀ a b, (g⁻¹).val a b ∈ O) : g ∈ Formalism.UG.GLint (Fin n) O := by
   have inj : Function.Injective (O.subtype.mapMatrix (m := Fin n)) :=
@@ -22,15 +27,40 @@ theorem mem_GLint_of_entries' {K : Type} [Field K] {n : ℕ} (O : Subring K) (g 
   · rw [map_mul, hA, hB, map_one, Units.mul_inv]
   · rw [map_mul, hA, hB, map_one, Units.inv_mul]
 
+/- English proof (translation)
+Take `⟨h, rfl⟩` from `hg`. Conclude with `(h.val a b).2`.
+-/
 theorem entry_mem_of_mem_GLint' {K : Type} [Field K] {n : ℕ} (O : Subring K) {g : GL (Fin n) K}
     (hg : g ∈ Formalism.UG.GLint (Fin n) O) (a b : Fin n) : g.val a b ∈ O := by
   obtain ⟨h, rfl⟩ := hg
   exact (h.val a b).2
 
+/- English proof (translation)
+Use `map_zpow (MulAut.conj g⁻¹) t k` as an intermediate fact. Simplify `this.symm` using `[MulAut.conj_apply]`.
+-/
 theorem conj_zpow' {G : Type} [Group G] (g t : G) (k : ℤ) : (g⁻¹ * t * g) ^ k = g⁻¹ * t ^ k * g := by
   have := map_zpow (MulAut.conj g⁻¹) t k
   simpa [MulAut.conj_apply] using this.symm
 
+/- English proof (translation)
+Introduce `E _ _ _ n w P₀ hP₀ γ hγ g hg`. Establish `hgK : ((g⁻¹ * γ * g : UL n w) : GLw n w) ∈ GlobalTheory.LFun.KGL w n` using `(Subgroup.mem_subgroupOf).1 hg`. Use `set A : Matrix (Fin n) (Fin n) (w.adicCompletion E) := ((g⁻¹ * γ * g : UL n w) : GLw n w).val with hAdef`. Establish `hA : ∀ i j, A i j ∈ w.adicCompletionIntegers E` using `fun i j => entry_mem_of_mem_GLint' _ hgK i j`. Establish `hAc : A.charpoly = P₀.map (algebraMap (w.adicCompletionIntegers E) (w.adicCompletion E))`.
+
+Rewrite using `[← hγ, hAdef]`. Establish `: ((g⁻¹ * γ * g : UL n w) : GLw n w).val = ((g : GLw n w)⁻¹).val * (γ : GLw n w).val * (g : GLw n w).val`. Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.coe_units_inv]`. Conclude with `Matrix.charpoly_units_conj' (g : GLw n w) ((γ : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E))`.
+
+Use `show Subgroup.closure _ ≤ _`. Rewrite using `[Subgroup.closure_le]`. Introduce and unpack `t ⟨ht, hcpt⟩`. Establish `htγ : t * γ = γ * t` using `by simpa [twCent] using ht`. Take `⟨B, hB⟩` from `GlobalTheory.T.conj_zpowers_entries_valued_bounded_of_compact_closure E n w t g hcpt`.
+
+Use `set x : UL n w := g⁻¹ * t * g with hx`. Establish `hxA : x * (g⁻¹ * γ * g) = (g⁻¹ * γ * g) * x`. Simplify using `only [hx, mul_assoc, mul_inv_cancel_left]`. Rewrite using `[← mul_assoc t, htγ, mul_assoc]`. Establish `val_pow : ∀ (y : UL n w) (k : ℕ), ((y ^ k : UL n w) : GLw n w).val = ((y : GLw n w).val) ^ k`.
+
+Introduce `y k`. Simplify using the standard rewrite rules. Establish `entries : ∀ (y : UL n w), y * (g⁻¹ * γ * g) = (g⁻¹ * γ * g) * y → (∀ k : ℕ, ∃ m : ℤ, y ^ k = g⁻¹ * t ^ m * g) → ∀ i j, (y : GLw n w).val i j ∈ w.adicCompletionIntegers E`. Introduce `y hy hpow`. Use `GlobalTheory.T.mem_integral_of_commute_separable_reduction E w n P₀ hP₀ A _ hA hAc ?_ ⟨B, fun k i j => ?_⟩` and prove the remaining obligations.
+
+Use `congrArg (fun z : UL n w => (z : GLw n w).val) hy` as an intermediate fact. Simplify `this` using `[Commute, SemiconjBy, hAdef]`. Take `⟨m, hm⟩` from `hpow k`. Rewrite using `[← val_pow, hm]`. Conclude with `hB m i j`.
+
+Establish `hxO` using `entries x hxA (fun k => ⟨k, by rw [hx, ← conj_zpow']; simp⟩)`. Establish `hxiO` using `entries x⁻¹ (by`. Use `congrArg (fun z => x⁻¹ * z * x⁻¹) hxA` as an intermediate fact. Simplify `this.symm)` using `[mul_assoc]`. Use the proof step `(fun k => ⟨-(k : ℤ), by rw [hx, ← conj_zpow', _root_.zpow_neg, zpow_natCast, inv_pow]⟩)`.
+
+Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Use `show x ∈ KL n w`. Use `(Subgroup.mem_subgroupOf).2 (mem_GLint_of_entries' _ _ hxO fun a b => ?_)` and prove the remaining obligations. Use `hxiO a b` as an intermediate fact. Simplify using `using this`.
+
+Simplify using `[hx, MulAut.conj_apply, mul_assoc]`.
+-/
 theorem cptPart_le_conj_KL : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E)
     (P₀ : (w.adicCompletionIntegers E)[X]), IsCoprime P₀ (derivative P₀) →
     ∀ γ : UL n w, γ.1.val.charpoly = P₀.map (algebraMap (w.adicCompletionIntegers E) (w.adicCompletion E)) →

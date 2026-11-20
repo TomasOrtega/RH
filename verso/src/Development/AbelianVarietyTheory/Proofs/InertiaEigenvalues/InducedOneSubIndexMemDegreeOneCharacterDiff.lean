@@ -4,6 +4,43 @@ open GlobalTheory.BI GlobalTheory.BrauerZero
 
 namespace GlobalTheory.BrauerZero
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite G`. Use `haveI hN : K.Normal := ⟨fun n hn g => by`. Establish `h1` using `hK g n`. Establish `: g * n * g⁻¹ = (g * n * g⁻¹ * n⁻¹) * n` using `by group`. Rewrite using `[this]`.
+
+Conclude with `K.mul_mem h1 hn⟩`. Use `letI : CommGroup (G ⧸ K) := { (inferInstance : Group (G ⧸ K)) with mul_comm := by`. Introduce `x y`. Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H a`.
+
+Proceed by induction on `y using QuotientGroup.induction_on with`. Consider the case `H b`. Rewrite using `[← QuotientGroup.mk_mul, ← QuotientGroup.mk_mul, QuotientGroup.eq]`. Use `hK b⁻¹ a⁻¹` as an intermediate fact. Establish `e : (a * b)⁻¹ * (b * a) = b⁻¹ * a⁻¹ * b⁻¹⁻¹ * a⁻¹⁻¹` using `by group`.
+
+Rewrite using `[e]`. Conclude with `this }`. Use `haveI : Fintype (G ⧸ K) := Fintype.ofFinite _`. Set `Q` to `Additive (G ⧸ K)`. Set `F : AddChar Q ℂ → G → ℂ` to `fun ψ g => ψ (Additive.ofMul (QuotientGroup.mk g : G ⧸ K))`.
+
+Establish `hFmul : ∀ ψ : AddChar Q ℂ, ∀ a b : G, F ψ (a * b) = F ψ a * F ψ b`. Introduce `ψ a b`. Simplify using `only [F, QuotientGroup.mk_mul, ofMul_mul, AddChar.map_add_eq_mul]`. Establish `hFone : ∀ ψ : AddChar Q ℂ, F ψ 1 = 1`. Introduce `ψ`.
+
+Simplify using `only [F, QuotientGroup.mk_one, ofMul_one, AddChar.map_zero_eq_one]`. Establish `hgen : ∀ ψ : AddChar Q ℂ, (F ψ - fun _ => (1 : ℂ)) ∈ D0 G`. Introduce `ψ`. Set `f : G →* ℂ` to `{ toFun := F ψ, map_one' := hFone ψ, map_mul' := hFmul ψ }`. Set `χ : (⊤ : Subgroup G) →* ℂˣ` to `(MonoidHom.toHomUnits f).comp (⊤ : Subgroup G).subtype`.
+
+Establish `hcl : ∀ g x : G, F ψ (x⁻¹ * g * x) = F ψ g`. Introduce `g x`. Rewrite using `[hFmul, hFmul, mul_comm (F ψ x⁻¹), mul_assoc, ← hFmul, inv_mul_cancel, hFone, mul_one]`. Establish `h1 : ind (⊤ : Subgroup G) (fun h => (χ h : ℂ)) = F ψ`. Conclude with `(ind_top (F ψ) hcl : _)`.
+
+Establish `h2 : ind (⊤ : Subgroup G) (fun _ => (1 : ℂ)) = fun _ => (1 : ℂ)` using `ind_top (fun _ => (1 : ℂ)) (fun _ _ => rfl)`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Conclude with `⟨⊤, χ, by rw [h1, h2]⟩`. Establish `hind : ∀ g : G, ind K (fun _ => (1 : ℂ)) g = if g ∈ K then (K.index : ℂ) else 0`. Introduce `g`.
+
+Establish `hconj : ∀ x : G, (x⁻¹ * g * x ∈ K ↔ g ∈ K)`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `hN.conj_mem _ h x` as an intermediate fact.
+
+Establish `e : x * (x⁻¹ * g * x) * x⁻¹ = g` using `by group`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Introduce `h`. Use `hN.conj_mem _ h x⁻¹` as an intermediate fact. Establish `e : x⁻¹ * g * x⁻¹⁻¹ = x⁻¹ * g * x` using `by group`.
+
+Rewrite `this` using `[e]`. Then use the resulting hypothesis. Simplify using `only [ind, finsum_eq_sum_of_fintype, ext0]`. Establish `hs : ∀ x : G, (if h : x⁻¹ * g * x ∈ K then (1 : ℂ) else 0) = if g ∈ K then 1 else 0`. Introduce `x`. Distinguish the cases in `hg : g ∈ K`.
+
+Rewrite using `[dif_pos ((hconj x).2 hg), if_pos hg]`. Rewrite using `[dif_neg (fun h => hg ((hconj x).1 h)), if_neg hg]`. Rewrite using `[Finset.sum_congr rfl (fun x _ => hs x), Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Nat.card_eq_fintype_card, ← K.card_mul_index]`. Establish `: (Nat.card K : ℂ) ≠ 0` using `by exact_mod_cast (Nat.card_pos (α := K)).ne'`. Use `split_ifs`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Establish `hsum : ∀ g : G, (∑ ψ : AddChar Q ℂ, F ψ g) = if g ∈ K then (K.index : ℂ) else 0`. Introduce `g`.
+
+Use `AddChar.sum_apply_eq_ite (α := Q) (Additive.ofMul (QuotientGroup.mk g : G ⧸ K))` as an intermediate fact. Simplify using `only [F]`. Rewrite using `[this]`. Establish `hc : (Fintype.card Q : ℂ) = (K.index : ℂ)`. Rewrite using `[Subgroup.index, ← Nat.card_eq_fintype_card]`.
+
+Both sides reduce to the same expression. Establish `he : (Additive.ofMul (QuotientGroup.mk g : G ⧸ K) = 0) ↔ g ∈ K`. Rewrite using `[ofMul_eq_zero, QuotientGroup.eq_one_iff]`. Distinguish the cases in `hg : g ∈ K`. Rewrite using `[if_pos (he.2 hg), if_pos hg, hc]`.
+
+Rewrite using `[if_neg (fun h => hg (he.1 h)), if_neg hg]`. Establish `hcard : (Fintype.card (AddChar Q ℂ) : ℂ) = (K.index : ℂ)`. Rewrite using `[AddChar.card_eq, Subgroup.index, ← Nat.card_eq_fintype_card]`. Both sides reduce to the same expression. Establish `heq : ind K (fun _ => (1 : ℂ)) - (fun _ => (K.index : ℂ)) = ∑ ψ : AddChar Q ℂ, (F ψ - fun _ => (1 : ℂ))`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.sub_apply, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one]`. Rewrite using `[hind g, hsum g, hcard]`. Rewrite using `[heq]`.
+
+Conclude with `AddSubgroup.sum_mem _ (fun ψ _ => hgen ψ)`.
+-/
 theorem ind_one_sub_index_mem_D0 {G : Type} [Group G] [Finite G] (K : Subgroup G)
     (hK : ∀ a b : G, a * b * a⁻¹ * b⁻¹ ∈ K) :
     ind K (fun _ => (1 : ℂ)) - (fun _ => (K.index : ℂ)) ∈ D0 G := by

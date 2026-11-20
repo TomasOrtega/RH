@@ -21,6 +21,9 @@ section VLevel
 
 variable {K : Type} [Field K] [CharZero K] {G : Type} [Group G] [Fintype G]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[← Module.End.mul_apply, hf]`. Introduce `h`. Conclude with `⟨x, h⟩`.
+-/
 lemma mem_range_idem {V : Type} [AddCommGroup V] [Module K V] (f : Module.End K V) (hf : f * f = f) (x : V) :
     x ∈ LinearMap.range f ↔ f x = x := by
   constructor
@@ -33,6 +36,9 @@ variable (T : GoodSet K G) (s : T.S) (P0 P : Pair K G) (cB : MonoidAlgebra K G �
   {V : Type} [AddCommGroup V] [Module K V] (ρ : Representation K G V)
 
 include hlift in
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `hy`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Establish `: eps P0 * a * (eps P0 * eS T s) = eps P0 * a * eps P0 * eS T s` using `by simp only [mul_assoc]`. Rewrite using `[this, hlift, map_smul, LinearMap.smul_apply]`.
+-/
 lemma key_scalar (a : MonoidAlgebra K G) (y : V) (hy : y ∈ LinearMap.range (ρ.asAlgebraHom (eps P0 * eS T s))) :
     ρ.asAlgebraHom (eps P0 * a) y = cB a • y := by
   obtain ⟨z, rfl⟩ := hy
@@ -41,6 +47,11 @@ lemma key_scalar (a : MonoidAlgebra K G) (y : V) (hy : y ∈ LinearMap.range (ρ
   rw [this, hlift, map_smul, LinearMap.smul_apply]
 
 include hlift in
+/- English proof (translation)
+Apply `unit_vec _ hN y` to reduce the goal to its premises. Introduce `j`. Use `congrArg (ρ.asAlgebraHom (eps P0 * MonoidAlgebra.of K G (h j))) h0` as an intermediate fact. Rewrite `this` using `[map_sum, map_zero]`. Rewrite using `[← this]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, show eps P0 * MonoidAlgebra.of K G (h j) * (eps P * MonoidAlgebra.of K G (g i)) = eps P0 * (MonoidAlgebra.of K G (h j) * eps P * MonoidAlgebra.of K G (g i)) by simp only [mul_assoc], key_scalar T s P0 cB hlift ρ _ _ (hy i)]`. Both sides reduce to the same expression.
+-/
 lemma inj_phi (hN : IsUnit (Matrix.of fun j i => cB (MonoidAlgebra.of K G (h j) * eps P * MonoidAlgebra.of K G (g i))))
     (y : Fin (nS T P s) → V) (hy : ∀ i, y i ∈ LinearMap.range (ρ.asAlgebraHom (eps P0 * eS T s)))
     (h0 : ∑ i, ρ.asAlgebraHom (eps P * MonoidAlgebra.of K G (g i)) (y i) = 0) : y = 0 := by
@@ -57,6 +68,27 @@ lemma inj_phi (hN : IsUnit (Matrix.of fun j i => cB (MonoidAlgebra.of K G (h j) 
   rfl
 
 include hlift in
+/- English proof (translation)
+Use `set E0 := ρ.asAlgebraHom (eps P0 * eS T s) with hE0`. Use `set Ep := ρ.asAlgebraHom (eps P * eS T s) with hEp`. Establish `hidem : ∀ Q : Pair K G, ρ.asAlgebraHom (eps Q * eS T s) * ρ.asAlgebraHom (eps Q * eS T s) = ρ.asAlgebraHom (eps Q * eS T s)` using `fun Q => by`. Rewrite using `[← map_mul, mul_idem (eps_idem Q) (eS_idem T s) (eS_comm T s (eps Q)).symm]`. Establish `he : ∀ y ∈ LinearMap.range E0, ρ.asAlgebraHom (eS T s) y = y`.
+
+Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[hE0, ← Module.End.mul_apply, ← map_mul, ← mul_assoc, ← eS_comm, mul_assoc, eS_idem]`. Establish `hmemΦ : ∀ (y : Fin (nS T P s) → LinearMap.range E0), ∑ i, ρ.asAlgebraHom (eps P * MonoidAlgebra.of K G (g i)) ((y i : LinearMap.range E0) : V) ∈ LinearMap.range Ep`. Introduce `y`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mem_range_idem Ep (hidem P)]`. Use `conv_rhs => rw [← he _ (y i).2]`. Rewrite using `[hEp, ← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Combine the equalities or inequalities in the displayed calculation.
+
+Set `Φ : (Fin (nS T P s) → LinearMap.range E0) →ₗ[K] LinearMap.range Ep` to `{ toFun := fun y => ⟨_, hmemΦ y⟩ map_add' := by`. Introduce `y z`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Finset.sum_add_distrib]`. Use the proof step `map_smul' := by`.
+
+Introduce `c y`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Finset.smul_sum] }`. Establish `hΦinj : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+
+Introduce `y hy`. Establish `h1` using `congrArg Subtype.val hy`. Use `inj_phi T s P0 P cB g h hlift ρ hN (fun i => ((y i : LinearMap.range E0) : V)) (fun i => (y i).2) h1` as an intermediate fact. Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Conclude with `congrFun this i`. Establish `hdim : finrank K (Fin (nS T P s) → LinearMap.range E0) = finrank K (LinearMap.range Ep)`. Rewrite using `[Module.finrank_pi_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, hEp, finrank_range_eps_mul_eS_eq_nS_mul T P0 P hM ρ s]`. Establish `hΦsurj : Function.Surjective Φ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).mp hΦinj`. Take `⟨y, hy⟩` from `hΦsurj ⟨x, hx⟩`.
+
+Establish `hxy : x = ∑ i, ρ.asAlgebraHom (eps P * MonoidAlgebra.of K G (g i)) ((y i : LinearMap.range E0) : V)` using `(congrArg Subtype.val hy).symm`. Establish `hsum0 : ∑ i, ρ.asAlgebraHom (eps P * MonoidAlgebra.of K G (g i)) ((y i : LinearMap.range E0) : V) = 0`. Establish `hz : (fun i => ((y i : LinearMap.range E0) : V)) = 0`. Apply `unit_vec _ hN` to reduce the goal to its premises. Introduce `j`.
+
+Use `h0 j` as an intermediate fact. Rewrite `this` using `[hxy, map_sum]`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, show eps P0 * MonoidAlgebra.of K G (h j) * (eps P * MonoidAlgebra.of K G (g i)) = eps P0 * (MonoidAlgebra.of K G (h j) * eps P * MonoidAlgebra.of K G (g i)) by simp only [mul_assoc], key_scalar T s P0 cB hlift ρ _ _ (y i).2]`.
+
+Both sides reduce to the same expression. Establish `hzi : ∀ i, ((y i : LinearMap.range E0) : V) = 0` using `fun i => congrFun hz i`. Simplify using `only [hzi, map_zero, Finset.sum_const_zero]`. Rewrite using `[hxy, hsum0]`.
+-/
 lemma inj_psi (hM : M1 T P0) [FiniteDimensional K V]
     (hN : IsUnit (Matrix.of fun j i => cB (MonoidAlgebra.of K G (h j) * eps P * MonoidAlgebra.of K G (g i))))
     (x : V) (hx : x ∈ LinearMap.range (ρ.asAlgebraHom (eps P * eS T s)))

@@ -14,33 +14,60 @@ section Linear
 
 variable {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Rewrite using `[form, star_star, dualGram, mulVec_mulVec, ← transpose_mul, mul_nonsing_inv _ hM, transpose_one, one_mulVec]`.
+-/
 theorem form_dualGram_star {M : Matrix n n ℂ} (hM : IsUnit M.det) (u y : n → ℂ) :
     form (dualGram M) u (star (Mᵀ *ᵥ y)) = u ⬝ᵥ y := by
   rw [form, star_star, dualGram, mulVec_mulVec, ← transpose_mul, mul_nonsing_inv _ hM,
     transpose_one, one_mulVec]
 
+/- English proof (translation)
+Rewrite using `[dualGram, mulVec_mulVec, ← transpose_mul, nonsing_inv_mul _ hM, transpose_one, one_mulVec, star_star]`.
+-/
 theorem star_mulVec_dualGram {M : Matrix n n ℂ} (hM : IsUnit M.det) (u : n → ℂ) :
     star (Mᵀ *ᵥ (dualGram M *ᵥ star u)) = u := by
   rw [dualGram, mulVec_mulVec, ← transpose_mul, nonsing_inv_mul _ hM, transpose_one, one_mulVec,
     star_star]
 
+/- English proof (translation)
+Rewrite using `[form_dualGram_star hM, form_eq_transpose, star_mulVec, ← dotProduct_mulVec, hH.transpose.eq]`.
+-/
 theorem form_dualGram_star_self {M : Matrix n n ℂ} (hH : M.IsHermitian) (hM : IsUnit M.det)
     (y : n → ℂ) : form (dualGram M) (star (Mᵀ *ᵥ y)) (star (Mᵀ *ᵥ y)) = form M y y := by
   rw [form_dualGram_star hM, form_eq_transpose, star_mulVec, ← dotProduct_mulVec,
     hH.transpose.eq]
 
+/- English proof (translation)
+Rewrite using `[gnorm, gnorm, form_dualGram_star_self hH hM]`.
+-/
 theorem gnorm_dualGram_star {M : Matrix n n ℂ} (hH : M.IsHermitian) (hM : IsUnit M.det)
     (y : n → ℂ) : gnorm (dualGram M) (star (Mᵀ *ᵥ y)) = gnorm M y := by
   rw [gnorm, gnorm, form_dualGram_star_self hH hM]
 
+/- English proof (translation)
+The claim follows from `hM.inv.transpose`.
+-/
 theorem posDef_dualGram {M : Matrix n n ℂ} (hM : M.PosDef) : (dualGram M).PosDef :=
   hM.inv.transpose
 
+/- English proof (translation)
+Break down `hN.eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0]`. Conclude with `ha`. Conclude with `le_of_mul_le_mul_right (by nlinarith) h0`.
+-/
 theorem le_of_sq_le_mul {N a : ℝ} (hN : 0 ≤ N) (ha : 0 ≤ a) (h : N ^ 2 ≤ a * N) : N ≤ a := by
   rcases hN.eq_or_lt with h0 | h0
   · rw [← h0]; exact ha
   · exact le_of_mul_le_mul_right (by nlinarith) h0
 
+/- English proof (translation)
+Establish `hu : IsUnit M.det` using `(isUnit_iff_isUnit_det _).1 hM.isUnit`. Establish `hK` using `posDef_dualGram hM`. Use `opNorm_le_of_bound (opNorm_nonneg _ _ _) fun u => ?_` and prove the remaining obligations. Establish `hx : star (Mᵀ *ᵥ (dualGram M *ᵥ star (Tᵀ *ᵥ u))) = Tᵀ *ᵥ u` using `star_mulVec_dualGram hu _`. Use `set x := Tᵀ *ᵥ u with hxdef`.
+
+Use `set w := dualGram M *ᵥ star x`. Establish `e : form (dualGram M) x x = form (dualGram M) u (star (Mᵀ *ᵥ (T *ᵥ w)))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mulVec_transpose, ← dotProduct_mulVec]`. Use `_ = _ := (form_dualGram_star hu u _).symm`.
+
+Establish `hw : gnorm M w = gnorm (dualGram M) x` using `by rw [← gnorm_dualGram_star hM.isHermitian hu, hx]`. Establish `h1 : gnorm (dualGram M) x ^ 2 ≤ gnorm (dualGram M) u * opNorm M M T * gnorm (dualGram M) x`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[gnorm_dualGram_star hM.isHermitian hu]`. Use `_ ≤ gnorm (dualGram M) u * (opNorm M M T * gnorm M w) := mul_le_mul_of_nonneg_left (gnorm_mulVec_le hM hM.posSemidef T w) (gnorm_nonneg _ _)`.
+
+Use `_ = _ := by rw [hw]; ring`. Rewrite using `[mul_comm]`. Conclude with `le_of_sq_le_mul (gnorm_nonneg _ _) (mul_nonneg (gnorm_nonneg _ _) (opNorm_nonneg _ _ _)) h1`.
+-/
 theorem opNorm_dualGram_transpose_le {M : Matrix n n ℂ} (hM : M.PosDef) (T : Matrix n n ℂ) :
     opNorm (dualGram M) (dualGram M) Tᵀ ≤ opNorm M M T := by
   have hu : IsUnit M.det := (isUnit_iff_isUnit_det _).1 hM.isUnit
@@ -72,6 +99,19 @@ theorem opNorm_dualGram_transpose_le {M : Matrix n n ℂ} (hM : M.PosDef) (T : M
   exact le_of_sq_le_mul (gnorm_nonneg _ _)
     (mul_nonneg (gnorm_nonneg _ _) (opNorm_nonneg _ _ _)) h1
 
+/- English proof (translation)
+Establish `hu : IsUnit M.det` using `(isUnit_iff_isUnit_det _).1 hM.isUnit`. Establish `hu' : IsUnit M'.det` using `(isUnit_iff_isUnit_det _).1 hM'.isUnit`. Establish `hK` using `posDef_dualGram hM`. Establish `hK'` using `posDef_dualGram hM'`. Establish `hy : star (Mᵀ *ᵥ (dualGram M *ᵥ star u)) = u` using `star_mulVec_dualGram hu u`.
+
+Use `set y := dualGram M *ᵥ star u`. Establish `h1 : gnorm (dualGram M) u ^ 2 ≤ gnorm (dualGram M') u * gnorm M' y`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[form_dualGram_star hu, form_dualGram_star hu']`. Use `_ ≤ ‖form (dualGram M') u (star (M'ᵀ *ᵥ y))‖ := Complex.re_le_norm _`.
+
+Use `_ ≤ gnorm (dualGram M') u * gnorm (dualGram M') (star (M'ᵀ *ᵥ y)) := norm_form_le hK'.posSemidef _ _`. Use `_ = _ := by rw [gnorm_dualGram_star hM'.isHermitian hu']`. Establish `h2 : gnorm M' y ^ 2 ≤ c * gnorm (dualGram M) u ^ 2`. Rewrite using `[← hy, gnorm_dualGram_star hM.isHermitian hu, gnorm_sq hM.posSemidef, gnorm_sq hM'.posSemidef]`. Conclude with `h y`.
+
+Rewrite using `[← gnorm_sq hK.posSemidef, ← gnorm_sq hK'.posSemidef]`. Use `set N := gnorm (dualGram M) u`. Use `set N' := gnorm (dualGram M') u`. Use `set P := gnorm M' y`. Establish `hN : 0 ≤ N` using `gnorm_nonneg _ _`.
+
+Establish `hN' : 0 ≤ N'` using `gnorm_nonneg _ _`. Establish `hP : 0 ≤ P` using `gnorm_nonneg _ _`. Establish `h3 : N ^ 2 * N ^ 2 ≤ (c * N' ^ 2) * N ^ 2`. Combine the equalities or inequalities in the displayed calculation. Break down `(sq_nonneg N).eq_or_lt with h0 | h0` into its components or cases.
+
+Rewrite using `[← h0]`. Conclude with `mul_nonneg hc (sq_nonneg _)`. Conclude with `le_of_mul_le_mul_right h3 h0`.
+-/
 theorem form_dualGram_le {M M' : Matrix n n ℂ} (hM : M.PosDef) (hM' : M'.PosDef) {c : ℝ}
     (hc : 0 ≤ c) (h : ∀ y, (form M' y y).re ≤ c * (form M y y).re) (u : n → ℂ) :
     (form (dualGram M) u u).re ≤ c * (form (dualGram M') u u).re := by
@@ -111,6 +151,9 @@ theorem form_dualGram_le {M M' : Matrix n n ℂ} (hM : M.PosDef) (hM' : M'.PosDe
   · rw [← h0]; exact mul_nonneg hc (sq_nonneg _)
   · exact le_of_mul_le_mul_right h3 h0
 
+/- English proof (translation)
+Rewrite using `[form, form, submatrix_mulVec_equiv]`. Simplify using `only [dotProduct, Function.comp_apply]`. Use `conv_lhs => rw [← Equiv.sum_comp e.symm]`. Simplify using `only [Equiv.apply_symm_apply]`. Both sides reduce to the same expression.
+-/
 theorem form_submatrix_equiv (K : Matrix n n ℂ) (e : n ≃ n) (v w : n → ℂ) :
     form (K.submatrix e e) v w = form K (v ∘ e.symm) (w ∘ e.symm) := by
   rw [form, form, submatrix_mulVec_equiv]
@@ -119,10 +162,16 @@ theorem form_submatrix_equiv (K : Matrix n n ℂ) (e : n ≃ n) (v w : n → ℂ
   simp only [Equiv.apply_symm_apply]
   rfl
 
+/- English proof (translation)
+Rewrite using `[gnorm, gnorm, form_submatrix_equiv]`.
+-/
 theorem gnorm_submatrix_equiv (K : Matrix n n ℂ) (e : n ≃ n) (v : n → ℂ) :
     gnorm (K.submatrix e e) v = gnorm K (v ∘ e.symm) := by
   rw [gnorm, gnorm, form_submatrix_equiv]
 
+/- English proof (translation)
+The claim follows from `opNorm_le_of_bound (opNorm_nonneg _ _ _) fun v => by rw [gnorm_submatrix_equiv, gnorm_submatrix_equiv, submatrix_mulVec_equiv] have : ((T *ᵥ (v ∘ e.symm)) ∘ e) ∘ e.symm = T *ᵥ (v ∘ e.symm) := by ext i; simp rw [this] exact gnorm_mulVec_le hK hK.posSemidef T _`.
+-/
 theorem opNorm_submatrix_equiv_le {K : Matrix n n ℂ} (hK : K.PosDef) (e : n ≃ n)
     (T : Matrix n n ℂ) : opNorm (K.submatrix e e) (K.submatrix e e) (T.submatrix e e) ≤ opNorm K K T :=
   opNorm_le_of_bound (opNorm_nonneg _ _ _) fun v => by
@@ -136,13 +185,22 @@ end Linear
 
 variable {q : ℕ}
 
+/- English proof (translation)
+The claim follows from `(posDef_dualGram hM).submatrix Fin.rev_injective`.
+-/
 theorem posDef_dualRev {M : Matrix (Fin q) (Fin q) ℂ} (hM : M.PosDef) : (dualRev M).PosDef :=
   (posDef_dualGram hM).submatrix Fin.rev_injective
 
+/- English proof (translation)
+Rewrite using `[dualRev, dualGram, inv_one, transpose_one]`. Conclude with `submatrix_one_equiv Fin.revPerm`.
+-/
 theorem dualRev_one : dualRev (1 : Matrix (Fin q) (Fin q) ℂ) = 1 := by
   rw [dualRev, dualGram, inv_one, transpose_one]
   exact submatrix_one_equiv Fin.revPerm
 
+/- English proof (translation)
+Establish `hK` using `posDef_dualGram hM`. Combine the equalities or inequalities in the displayed calculation. Use `opNorm_smul_le hK hK.posSemidef (-1) Tᵀ` as an intermediate fact. Simplify using `using this`. Use `_ ≤ opNorm M M T := opNorm_dualGram_transpose_le hM T`.
+-/
 theorem opNorm_dualRev_le {M : Matrix (Fin q) (Fin q) ℂ} (hM : M.PosDef)
     (T : Matrix (Fin q) (Fin q) ℂ) :
     opNorm (dualRev M) (dualRev M) ((-Tᵀ).submatrix Fin.rev Fin.rev) ≤ opNorm M M T := by
@@ -160,10 +218,16 @@ section Frame
 
 variable {e : ℕ} {U : Set (Fin e → ℂ)} {H : (Fin e → ℂ) → Matrix (Fin q) (Fin q) ℂ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.isOpen, fun a b => h.isHermFrame.dual.smooth (Fin.rev a) (Fin.rev b), fun z hz => posDef_dualRev (h.posDef z hz)⟩`.
+-/
 theorem isPosFrame_dualRev (h : IsPosFrame U H) : IsPosFrame U fun z => dualRev (H z) :=
   ⟨h.isOpen, fun a b => h.isHermFrame.dual.smooth (Fin.rev a) (Fin.rev b),
     fun z hz => posDef_dualRev (h.posDef z hz)⟩
 
+/- English proof (translation)
+Use `conn_submatrix_equiv (fun x => dualGram (H x)) Fin.revPerm z ξ` as an intermediate fact. Rewrite `this` using `[conn_dual h hu]`. Conclude with `this`.
+-/
 theorem conn_dualRev {z : Fin e → ℂ} (h : MContDiffAt 1 H z) (hu : IsUnit (H z).det)
     (ξ : Fin e → ℂ) :
     conn (fun x => dualRev (H x)) z ξ = (-(conn H z ξ)ᵀ).submatrix Fin.rev Fin.rev := by
@@ -171,6 +235,9 @@ theorem conn_dualRev {z : Fin e → ℂ} (h : MContDiffAt 1 H z) (hu : IsUnit (H
   rw [conn_dual h hu] at this
   exact this
 
+/- English proof (translation)
+Use `curv_submatrix_equiv (fun x => dualGram (H x)) Fin.revPerm z ξ η` as an intermediate fact. Rewrite `this` using `[curv_dual h hu]`. Conclude with `this`.
+-/
 theorem curv_dualRev {z : Fin e → ℂ} (h : MContDiffAt 2 H z) (hu : IsUnit (H z).det)
     (ξ η : Fin e → ℂ) :
     curv (fun x => dualRev (H x)) z ξ η = (-(curv H z ξ η)ᵀ).submatrix Fin.rev Fin.rev := by
@@ -180,6 +247,21 @@ theorem curv_dualRev {z : Fin e → ℂ} (h : MContDiffAt 2 H z) (hu : IsUnit (H
 
 end Frame
 
+/- English proof (translation)
+Introduce `e q U H hH`. Establish `hF` using `hH.isHermFrame`. Use `⟨isPosFrame_dualRev hH, fun G C h z hz => ?_, fun G C h z hz => ?_, fun H₀ r C h0 hr hc z hz v => ?_⟩` and prove the remaining obligations. Take `⟨-, h2, h3⟩` from `h z hz`. Use `⟨PosDef.one, h2, fun ξ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[conn_dualRev (hF.one hz) (hF.isUnit z hz)]`. Use `opNorm_dualRev_le (PosDef.one (n := Fin q) (R := ℂ)) (conn H z ξ)` as an intermediate fact. Rewrite `this` using `[dualRev_one]`. Conclude with `this.trans (h3 ξ)`. Take `⟨h1, h2, h3⟩` from `h z hz`.
+
+Use `⟨posDef_dualRev h1, h2, fun ξ η => ?_⟩` and prove the remaining obligations. Rewrite using `[curv_dualRev (hF.two hz) (hF.isUnit z hz)]`. Conclude with `(opNorm_dualRev_le h1 _).trans (h3 ξ η)`. Establish `hp` using `hr z hz`. Establish `hb : 0 < r z ^ C` using `Real.rpow_pos_of_pos hp C`.
+
+Establish `hneg : r z ^ (-C) = (r z ^ C)⁻¹` using `Real.rpow_neg hp.le C`. Establish `hM` using `hH.posDef z hz`. Establish `hM₀` using `h0 z hz`. Establish `hs : ∀ (M : Matrix (Fin q) (Fin q) ℂ) (v : Fin q → ℂ), form (dualRev M) v v = form (dualGram M) (v ∘ Fin.revPerm.symm) (v ∘ Fin.revPerm.symm)` using `fun M v => form_submatrix_equiv (dualGram M) Fin.revPerm v v`. Use `show r z ^ (-C) * (form (dualRev (H₀ z)) v v).re ≤ (form (dualRev (H z)) v v).re ∧ (form (dualRev (H z)) v v).re ≤ r z ^ C * (form (dualRev (H₀ z)) v v).re`.
+
+Rewrite using `[hs, hs]`. Use `set u := v ∘ Fin.revPerm.symm`. Prove the components needed by the constructor for the conclusion. Use `form_dualGram_le hM₀ hM hb.le (fun y => (hc z hz y).2) u` as an intermediate fact. Rewrite using `[hneg]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `form_dualGram_le hM hM₀ hb.le (fun y => ?_) u` and prove the remaining obligations. Establish `h1` using `(hc z hz y).1`. Rewrite `h1` using `[hneg]`. Combine the equalities or inequalities in the displayed calculation.
+
+Clear the denominators using the available nonvanishing facts. Use `_ ≤ r z ^ C * (form (H z) y y).re := mul_le_mul_of_nonneg_left h1 hb.le`.
+-/
 theorem dualRev_bounds : ∀ (e q : ℕ) (U : Set (Fin e → ℂ)) (H : (Fin e → ℂ) → Matrix (Fin q) (Fin q) ℂ),
     GlobalTheory.HermFrame.IsPosFrame U H → GlobalTheory.HermFrame.IsPosFrame U (fun z => dualRev (H z)) ∧
     (∀ (G : (Fin e → ℂ) → Matrix (Fin e) (Fin e) ℂ) (C : ℝ),

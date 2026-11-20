@@ -5,5 +5,8 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Formalism.BasicNotions Fo
 open scoped TensorProduct InnerProductSpace ContDiff
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.QuotRegular.exists_isReg | exact GlobalTheory.QuotRegular.exists_isReg | (intros; apply GlobalTheory.QuotRegular.exists_isReg <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.regular_representation_of_finite_pair : ∀ (D : D7) (V : HSp D) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)), FinPair V μ 𝓕 → ∃ ρ, IsReg V μ 𝓕 ρ := by
   first | exact @GlobalTheory.QuotRegular.exists_isReg | exact GlobalTheory.QuotRegular.exists_isReg | (intros; apply GlobalTheory.QuotRegular.exists_isReg <;> assumption)

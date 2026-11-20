@@ -10,6 +10,17 @@ open UpperTheory.V.Lit UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Bor UpperTheory.V
 open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
+/- English proof (translation)
+Introduce `E _ _ _ a ha n e he Ξ r q`. Take `⟨G, hG⟩` from `admEx E a Ξ`. Take `⟨H, hH⟩` from `petEx E a ha r`. Establish `hv : ∀ {k : ℕ} {ω : Co Ξ k}, Val (sqSub E a r) ω → ∀ X, ω X ∈ tens Ξ.d (sqSub E a r)` using `fun h X => mem_tens.2 (h X)`. Establish `hadj` using `ipAdj E a n e _ (smLie Ξ) (smAdj Ξ r) (tform H G) _ (smForm E a Ξ r H G hH hG)`.
+
+Establish `hdef` using `ipDef E a n e he _ (tform H G) _ (tformPos _ _ H _ G hH.pos hG.pos)`. Use `⟨?_, fun ω h1 h2 h3 => ?_⟩` and prove the remaining obligations. Consider the cases of `q with`. Consider the case `zero => exact fun ω _ _ h => h`. Consider the case `succ q`.
+
+Introduce and unpack `ω h1 h2 ⟨η, hη, rfl⟩`. Establish `h3` using `hadj q _ η (hv h1) (hv hη)`. Establish `h4 : del (smAdj Ξ r) e (dCo (smLie Ξ) η) = 0` using `h2`. Use `((hdef (q + 1)).2 _ (hv h1)).2 ?_` and prove the remaining obligations. Rewrite using `[h3, h4]`.
+
+Simplify using `[ip]`. Establish `h4` using `hadj q ω _ (hv h1) (hv h2)`. Rewrite `h4` using `[h3]`. Use `((hdef q).2 _ (hv h2)).2 ?_` and prove the remaining obligations. Establish `h5 : ip e (tform H G) ω 0 = 0` using `by simp [ip]`.
+
+Establish `h6 : ((q : ℂ) + 1) ≠ 0` using `Nat.cast_add_one_ne_zero q`. Conclude with `(mul_eq_zero.1 (h4.symm.trans h5)).resolve_left h6`.
+-/
 theorem UpperTheory.V.Cj.H.sqOrth :
     UpperTheory.V.Cj.H.SqOrth := by
   intro E _ _ _ a ha n e he Ξ r q

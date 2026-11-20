@@ -17,6 +17,9 @@ open Formalism.L2.DIV Formalism.L2.Col
 
 variable {ι : Type} [Fintype ι] {N n : ℕ}
 
+/- English proof (translation)
+Unfold `CSpan Formalism.L2.DIV.VV Formalism.GradedWeylDivisibility.tensorLat`. Use `congr 1`. Use extensionality with `p`. Simplify using `only [Set.mem_ofPred_eq, Formalism.L2.Col.nablaSq_eq_delSq]`. Both sides reduce to the same expression.
+-/
 theorem cSpan_eq_VV {m : ℕ} (lam : ι → DomWeight m) : CSpan lam = Formalism.L2.DIV.VV ℂ lam := by
   unfold CSpan Formalism.L2.DIV.VV Formalism.GradedWeylDivisibility.tensorLat
   congr 1
@@ -24,18 +27,31 @@ theorem cSpan_eq_VV {m : ℕ} (lam : ι → DomWeight m) : CSpan lam = Formalism
   simp only [Set.mem_ofPred_eq, Formalism.L2.Col.nablaSq_eq_delSq]
   rfl
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `congrArg Matrix.det (Matrix.mem_unitaryGroup_iff'.1 hk)`. Rewrite `h1` using `[Matrix.det_mul, h, mul_zero, Matrix.det_one]`. Conclude with `zero_ne_one h1`.
+-/
 theorem det_ne_zero_of_mem_unitary {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Matrix.unitaryGroup (Fin n) ℂ) : k.det ≠ 0 := by
   intro h
   have h1 := congrArg Matrix.det (Matrix.mem_unitaryGroup_iff'.1 hk)
   rw [Matrix.det_mul, h, mul_zero, Matrix.det_one] at h1
   exact zero_ne_one h1
 
+/- English proof (translation)
+Establish `e : (fun τ => (o.1 τ)⁻¹) = (1 : ι → Matrix (Fin N) (Fin N) ℂ)` using `funext fun τ => by rw [ho τ, inv_one]; rfl`. Establish `h` using `Formalism.L2.Col.polOf_fnOf G sh o P`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem polOf_fnOf_frOne (G : ι → Matrix (Fin N) (Fin N) ℂ) (sh : ι → ℤ) (o : Frames G) (ho : ∀ τ, o.1 τ = 1)
     (P : MvPolynomial (ι × Fin N × Fin N) ℂ) : Formalism.L2.Col.polOf G sh o (fnOf G sh 1 P) = P := by
   have e : (fun τ => (o.1 τ)⁻¹) = (1 : ι → Matrix (Fin N) (Fin N) ℂ) := funext fun τ => by rw [ho τ, inv_one]; rfl
   have h := Formalism.L2.Col.polOf_fnOf G sh o P
   rwa [e] at h
 
+/- English proof (translation)
+Establish `e1` using `congrFun (Formalism.L2.Col.fnOf_mul G (shiftOf lam) (fun τ => ((g τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)ᵀ) 1 P) y`. Establish `e2` using `Formalism.L2.Col.fnOf_tr (G := G) (G' := G) (shiftOf lam) 1 (fun τ => ((g τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)ᵀ) P y' y h`. Establish `e3 : (fun τ => (1 : ι → Matrix (Fin n) (Fin n) ℂ) τ * ((g τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)ᵀ) = fun τ => ((g τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)ᵀ * (1 : ι → Matrix (Fin n) (Fin n) ℂ) τ`. Use function extensionality and compare the values at `τ`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e2, e3, e1]`. Establish `e4 : actP lam g P = (∏ τ, ((g τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)ᵀ.det ^ shiftOf lam τ) • Formalism.GradedWeylDivisibility.blockAct ℂ (fun τ => ((g τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)ᵀ) P`. Simplify using `only [actP, detTwK, trAct, LinearMap.smul_apply, AlgHom.toLinearMap_apply]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.det_transpose]`. Simplify using `[detPow, shiftOf, Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply]`. Rewrite using `[e4]`.
+-/
 theorem fnOf_actP_tr (G : ι → Matrix (Fin n) (Fin n) ℂ) (lam : ι → DomWeight n) (g : ι → GL (Fin n) ℂ)
     (P : Pol ℂ ι n) (y y' : Frames G) (h : IsTr (fun τ => ((g τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)ᵀ) y y') :
     fnOf G (shiftOf lam) 1 (actP lam g P) y = fnOf G (shiftOf lam) 1 P y' := by
@@ -54,6 +70,23 @@ theorem fnOf_actP_tr (G : ι → Matrix (Fin n) (Fin n) ℂ) (lam : ι → DomWe
     simp [detPow, shiftOf, Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply]
   rw [e4]
 
+/- English proof (translation)
+Establish `hp` using `polOf_fnOf_frOne G (shiftOf lam) o ho`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨P, -, rfl⟩`. Use `⟨c • (Br.brStdP hN lam sg P : Pol ℂ ι n), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cSpan_eq_VV]`.
+
+Conclude with `(Formalism.L2.DIV.VV ℂ sg).smul_mem c (Br.brStdP hN lam sg P).2`. Simplify using `only [LinearMap.comp_apply, hp, LinearMap.smul_apply, Submodule.subtype_apply]`. Introduce and unpack `k kt hk hb _ ⟨P, hP, rfl⟩ Φ' hΦ' z z' hz`. Establish `hk0 : ∀ τ, (k τ)ᵀ.det ≠ 0` using `fun τ => by`. Rewrite using `[Matrix.det_transpose]`.
+
+Conclude with `det_ne_zero_of_mem_unitary (hk τ)`. Establish `hkt0 : ∀ τ, (kt τ)ᵀ.det ≠ 0` using `fun τ => by`. Rewrite using `[Matrix.det_transpose, (hb τ).det, mul_one, ← Matrix.det_transpose]`. Conclude with `hk0 τ`. Set `g : ι → GL (Fin n) ℂ` to `fun τ => Matrix.GeneralLinearGroup.mkOfDetNeZero _ (hk0 τ)`.
+
+Set `g' : ι → GL (Fin N) ℂ` to `fun τ => Matrix.GeneralLinearGroup.mkOfDetNeZero _ (hkt0 τ)`. Establish `hblk : ∀ τ, GlobalTheory.BranchFormula.IsBlock hN ((g' τ : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ) ((g τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) 1` using `fun τ => (hb τ).transpose`. Establish `hPV : P ∈ Formalism.L2.DIV.VV ℂ lam` using `cSpan_eq_VV lam ▸ hP`. Establish `hE` using `GlobalTheory.BranchFormula.brEquiv_all ℂ hN lam sg hS g g' (fun τ => hblk τ) ⟨P, hPV⟩`. Establish `h2 : (Br.brStdP hN lam sg (actP lam g' P) : Pol ℂ ι n) = actP sg g (Br.brStdP hN lam sg P : Pol ℂ ι n)` using `congrArg Subtype.val hE`.
+
+Establish `hΦe : Φ' = fnOf G (shiftOf lam) 1 (actP lam g' P)`. Use function extensionality and compare the values at `y`. Establish `hd : ∀ τ, IsUnit (kt τ * y.1 τ).det` using `fun τ => by`. Rewrite using `[Matrix.det_mul]`. Use `IsUnit.mul (Ne.isUnit ?_) (y.2 τ)` and prove the remaining obligations.
+
+Rewrite using `[← Matrix.det_transpose]`. Conclude with `hkt0 τ`. Set `y' : Frames G` to `⟨fun τ => kt τ * y.1 τ, hd⟩`. Rewrite using `[hΦ' y y' (fun τ => rfl), fnOf_actP_tr G lam g' P y y' (fun τ => by show kt τ * y.1 τ = ((kt τ)ᵀ)ᵀ * y.1 τ`. Rewrite using `[Matrix.transpose_transpose])]`.
+
+Rewrite using `[hΦe]`. Simplify using `only [LinearMap.comp_apply, hp, LinearMap.smul_apply, Submodule.subtype_apply]`. Rewrite using `[h2, map_smul, map_smul, Pi.smul_apply, Pi.smul_apply, fnOf_actP_tr G' sg g _ z z' (fun τ => by`. Rewrite using `[hz τ]`. Use `show k τ * z.1 τ = ((k τ)ᵀ)ᵀ * z.1 τ`.
+
+Rewrite using `[Matrix.transpose_transpose])]`.
+-/
 theorem brEqv_formula (hN : N = n + 1) (G : ι → Matrix (Fin N) (Fin N) ℂ) (G' : ι → Matrix (Fin n) (Fin n) ℂ)
     (lam : ι → DomWeight N) (sg : ι → DomWeight n) (hS : ∀ τ, Br.SameShift (lam τ) (sg τ)) (c : ℂ) (o : Frames G)
     (ho : ∀ τ, o.1 τ = 1) :
@@ -95,6 +128,13 @@ theorem brEqv_formula (hN : N = n + 1) (G : ι → Matrix (Fin N) (Fin N) ℂ) (
       show k τ * z.1 τ = ((k τ)ᵀ)ᵀ * z.1 τ
       rw [Matrix.transpose_transpose])]
 
+/- English proof (translation)
+Establish `hp` using `polOf_fnOf_frOne G (shiftOf lam) o ho`. Establish `h1` using `GlobalTheory.BranchFormula.onePlace Formalism.L2.DIV.BrJ.branching_interlacing_pairs`. Use `choose f hf hf0 using fun τ => (h1 N n hN (lam τ) (sg τ) (hI τ) (hS τ)).2.2.1`. Establish `hn : ∀ τ, f τ ∈ nablaSq ℂ N (lam τ)` using `fun τ => by rw [Formalism.L2.Col.nablaSq_eq_delSq]; exact hf τ`. Establish `hmem : Formalism.L2.DIV.ten f ∈ Formalism.L2.DIV.VV ℂ lam` using `GlobalTheory.Proof.TensorMapDescent.ten_mem lam f hn`.
+
+Establish `ht` using `GlobalTheory.BranchFormula.tensor ℂ ι N n hN lam sg hI hS f ⟨_, hmem⟩ hn rfl`. Use `⟨fnOf G (shiftOf lam) 1 (Formalism.L2.DIV.ten f), ⟨_, (cSpan_eq_VV lam).symm ▸ hmem, rfl⟩, fun h => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, hp, LinearMap.smul_apply, Submodule.subtype_apply] at h`. Establish `h' : (Br.brStdP hN lam sg (Formalism.L2.DIV.ten f) : Pol ℂ ι n) = Formalism.L2.DIV.ten fun τ => GlobalTheory.IndefiniteRowSideFullHecke.InterlacingEquivariance.brOne ℂ hN (lam τ) (sg τ) (f τ)` using `ht`. Rewrite `h` using `[h', map_smul]`.
+
+Establish `h0` using `Formalism.L2.Col.fnOf_injective G' (shiftOf sg) 1 (fun _ => by simp) ⟨fun _ => 1, fun _ => by simp⟩ (((smul_eq_zero.1 h).resolve_left hc).trans (map_zero _).symm)`. Conclude with `GlobalTheory.Proof.TensorMapDescent.ten_ne_zero _ hf0 h0`.
+-/
 theorem ne_formula (hN : N = n + 1) (G : ι → Matrix (Fin N) (Fin N) ℂ) (G' : ι → Matrix (Fin n) (Fin n) ℂ)
     (lam : ι → DomWeight N) (sg : ι → DomWeight n) (hI : ∀ τ, Br.Interlace hN (lam τ) (sg τ))
     (hS : ∀ τ, Br.SameShift (lam τ) (sg τ)) (c : ℂ) (hc : c ≠ 0) (o : Frames G) (ho : ∀ τ, o.1 τ = 1) :
@@ -121,6 +161,11 @@ section True
 
 variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word)
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `R.t_odd`. Establish `h1 : (R.t + 1) / 2 = a + 1` using `by omega`. Establish `h2 : j * (R.t + 1) / 2 = j * (a + 1)`. Rewrite using `[ha, show j * (2 * a + 1 + 1) = 2 * (j * (a + 1)) by ring]; omega`. Rewrite using `[h1, h2]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem half_mul (R : Ranks) (j : ℕ) : ((j * (R.t + 1) / 2 : ℕ) : ℤ) = (j : ℤ) * (((R.t + 1) / 2 : ℕ) : ℤ) := by
   obtain ⟨a, ha⟩ := R.t_odd
   have h1 : (R.t + 1) / 2 = a + 1 := by omega
@@ -128,9 +173,17 @@ theorem half_mul (R : Ranks) (j : ℕ) : ((j * (R.t + 1) / 2 : ℕ) : ℤ) = (j 
     rw [ha, show j * (2 * a + 1 + 1) = 2 * (j * (a + 1)) by ring]; omega
   rw [h1, h2]; push_cast; ring
 
+/- English proof (translation)
+Consider the cases of `a`. Consider the cases of `b`. Simplify using `only at h`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem domWeight_ext {M : ℕ} {a b : DomWeight M} (h : a.w = b.w) : a = b := by
   cases a; cases b; simp only at h; subst h; rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Apply `domWeight_ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `show (Examples₂.lamOf (B.hcW u τ) j).w i - ((j * (B.R.t + 1) / 2 : ℕ) : ℤ) = (Examples₂.lamOf (B.hcW u τ) j).w i + -((j : ℤ) * (((B.R.t + 1) / 2 : ℕ) : ℤ))`. Rewrite using `[half_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lamT_record (j : ℕ) : Formalism.L2.Forms.lamT (D := I.rec7 l Z) u j = GlobalTheory.Mem.Col2.lamT (B.hcW u) j := by
   funext τ
   apply domWeight_ext
@@ -139,6 +192,11 @@ theorem lamT_record (j : ℕ) : Formalism.L2.Forms.lamT (D := I.rec7 l Z) u j = 
     (Examples₂.lamOf (B.hcW u τ) j).w i + -((j : ℤ) * (((B.R.t + 1) / 2 : ℕ) : ℤ))
   rw [half_mul]; ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Apply `domWeight_ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `show (B.wts.sgW τ).w i - ((B.R.m * (B.R.t + 1) / 2 : ℕ) : ℤ) = (B.wts.sgW τ).w i + -((B.R.m : ℤ) * (((B.R.t + 1) / 2 : ℕ) : ℤ))`. Rewrite using `[half_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sgT_record (a : I.ι) : Formalism.L2.Forms.sgT (D := I.rec7 l Z) u = (I.perIn u a).sgT := by
   funext τ
   apply domWeight_ext
@@ -151,6 +209,15 @@ end True
 
 section Main
 
+/- English proof (translation)
+Introduce `B X I _ _ l Z u hN`. Establish `hM` using `fun τ => GlobalTheory.BranchMembers.members B.fields B.Word B.R B.wts B.wts_isOk u τ`. Establish `hI' : ∀ τ, Formalism.L2.Col.Br.Interlace hN (GlobalTheory.Mem.Col2.lamT (B.hcW u) B.R.m τ) ((I.perIn u I.mu0).sgT τ)` using `fun τ => (hM τ).1`. Establish `hS' : ∀ τ, Formalism.L2.Col.Br.SameShift (GlobalTheory.Mem.Col2.lamT (B.hcW u) B.R.m τ) ((I.perIn u I.mu0).sgT τ)` using `fun τ => (hM τ).2`. Establish `hc : (∏ τ, Formalism.L2.Col.embAt B.embLL B.fields.emb τ (I.perIn u I.mu0).tz ^ (-Formalism.L2.Col.Br.nBr (GlobalTheory.Mem.Col2.lamT (B.hcW u) B.R.m τ) ((I.perIn u I.mu0).sgT τ))) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun τ _ => zpow_ne_zero _ ((map_ne_zero _).2 (l.per u I.mu0).tz_ne)`.
+
+Establish `hlow : lowOf I l Z u = fnOf _ (shiftOf (I.perIn u I.mu0).sgT) 1 ∘ₗ ((∏ τ, Formalism.L2.Col.embAt B.embLL B.fields.emb τ (I.perIn u I.mu0).tz ^ (-Formalism.L2.Col.Br.nBr (GlobalTheory.Mem.Col2.lamT (B.hcW u) B.R.m τ) ((I.perIn u I.mu0).sgT τ))) • ((Formalism.L2.DIV.VV ℂ (I.perIn u …`. Unfold `lowOf`. Rewrite using `[lamT_record I l Z u, sgT_record I l Z u I.mu0]`. Both sides reduce to the same expression. Use `⟨?_, ?_, ?_, fun a z c y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[lamT_record I l Z u, sgT_record I l Z u I.mu0]`. Conclude with `hI'`. Rewrite using `[lamT_record I l Z u, sgT_record I l Z u I.mu0, hlow]`. Conclude with `brEqv_formula hN _ _ _ _ hS' _ _ (fun _ => rfl)`. Rewrite using `[lamT_record I l Z u, hlow]`.
+
+Conclude with `ne_formula hN _ _ _ _ hI' hS' _ hc _ (fun _ => rfl)`. Unfold `lowOf`. Rewrite using `[lamT_record I l Z u, sgT_record I l Z u a]`. Both sides reduce to the same expression.
+-/
 theorem branching_true_columns : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) (hN : B.R.N B.R.m = (B.R.N B.R.m - 1) + 1), (∀ τ, Formalism.L2.Col.Br.Interlace hN (Formalism.L2.Forms.lamT (D := (I.rec7 l Z)) u B.R.m τ) (sgT (D := (I.rec7 l Z)) u τ)) ∧ BrEqv hN _ _ (Formalism.L2.Forms.lamT (D := (I.rec7 l Z)) u B.R.m) (sgT (D := (I.rec7 l Z)) u) (lowOf I l Z u) ∧ (∃ Φ ∈ ValC _ (Formalism.L2.Forms.lamT (D := (I.rec7 l Z)) u B.R.m), lowOf I l Z u Φ ≠ 0) ∧ ∀ (a : I.ι) z c (y : FrN (I.rec7 l Z) (B.R.N B.R.m - 1)), (I.per l u a).lowerMap z c ⟨y.1, y.2⟩ = lowOf I l Z u (fun y' => z c ⟨y'.1, y'.2⟩) y := by
   intro B X I _ _ l Z u hN
   have hM := fun τ => GlobalTheory.BranchMembers.members B.fields B.Word B.R B.wts B.wts_isOk u τ

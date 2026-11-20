@@ -11,6 +11,11 @@ section Modules
 
 variable {A B : Type} [CommRing A] [CommRing B] [Algebra A B]
 
+/- English proof (translation)
+Introduce `g`. Take `⟨f, hf⟩` from `Module.projective_lifting_property (Algebra.linearMap A B) (g.restrictScalars A ∘ₗ TensorProduct.mk A B M 1) hs`. Use `⟨f, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Use `LinearMap.congr_fun hf x` as an intermediate fact.
+
+Simplify `this` using `[Algebra.algebraMap_eq_smul_one]`.
+-/
 theorem dual_baseChange_surjective (hs : Surjective (algebraMap A B)) (M : Type) [AddCommGroup M]
     [Module A M] [Module.Projective A M] :
     Surjective (Module.Dual.baseChange B : Module.Dual A M → Module.Dual B (B ⊗[A] M)) := by
@@ -22,6 +27,13 @@ theorem dual_baseChange_surjective (hs : Surjective (algebraMap A B)) (M : Type)
   have := LinearMap.congr_fun hf x
   simpa [Algebra.algebraMap_eq_smul_one] using this
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Set `b` to `Module.Free.chooseBasis A M`. Rewrite using `[← b.sum_dual_apply_smul_coord f]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul ?_ trivial` and prove the remaining obligations.
+
+Use `LinearMap.congr_fun h (1 ⊗ₜ b i)` as an intermediate fact. Simplify `this` using `[RingHom.mem_ker, Algebra.algebraMap_eq_smul_one]`. Introduce `h`. Use `Submodule.smul_induction_on h (fun r hr x _ => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, ← algebraMap_smul B r, RingHom.mem_ker.mp hr, zero_smul]`.
+
+Rewrite using `[map_add, hx, hy, add_zero]`.
+-/
 theorem dual_baseChange_eq_zero_iff (M : Type) [AddCommGroup M]
     [Module A M] [Module.Free A M] [Module.Finite A M] (f : Module.Dual A M) :
     Module.Dual.baseChange B f = 0 ↔
@@ -38,6 +50,9 @@ theorem dual_baseChange_eq_zero_iff (M : Type) [AddCommGroup M]
     · rw [map_smul, ← algebraMap_smul B r, RingHom.mem_ker.mp hr, zero_smul]
     · rw [map_add, hx, hy, add_zero]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem dual_baseChange_dualMap {M N : Type} [AddCommGroup M] [Module A M] [AddCommGroup N]
     [Module A N] (a : M →ₗ[A] N) (f : Module.Dual A N) :
     Module.Dual.baseChange B (a.dualMap f) =
@@ -45,6 +60,11 @@ theorem dual_baseChange_dualMap {M N : Type} [AddCommGroup M] [Module A M] [AddC
   ext x
   simp
 
+/- English proof (translation)
+Rewrite `hx` using `[← dual_baseChange_eq_zero_iff, dual_baseChange_dualMap]`. Take `⟨y, hy⟩` from `(h _).1 hx`. Take `⟨y, rfl⟩` from `dual_baseChange_surjective hs M₂ y`. Establish `: x = b.dualMap y + (x - b.dualMap y)` using `by abel`. Rewrite using `[this]`.
+
+Use `Submodule.add_mem_sup ⟨y, rfl⟩ ?_` and prove the remaining obligations. Rewrite using `[← dual_baseChange_eq_zero_iff, map_sub, dual_baseChange_dualMap, hy, sub_self]`.
+-/
 theorem mem_sup_of_exact (hs : Surjective (algebraMap A B)) {M₀ M₁ M₂ : Type}
     [AddCommGroup M₀] [Module A M₀] [Module.Free A M₀] [Module.Finite A M₀]
     [AddCommGroup M₁] [Module A M₁] [Module.Free A M₁] [Module.Finite A M₁]
@@ -63,6 +83,17 @@ theorem mem_sup_of_exact (hs : Surjective (algebraMap A B)) {M₀ M₁ M₂ : Ty
 
 end Modules
 
+/- English proof (translation)
+Establish `hfree` using `fun i => (hF i).1`. Establish `hfin` using `fun i => (hF i).2`. Set `` to `π.toAlgebra`. Establish `key` using `GlobalTheory.exact_dualMap_of_exact_fibres_of_isRegularLocalRing B g hg (((ModuleCat.extendScalars π).mapHomologicalComplex _).obj C) (fun i => ⟨inferInstanceAs (Module.Free B (B ⊗[A] C.X i)), inferInstanceAs (Module.Finite B (B ⊗[A] C.X i))⟩) (hn.imp fun n h i hi => (ModuleCat.e …`. Conclude with `mem_sup_of_exact (B := B) hs _ _ key x hx`.
+
+Take `⟨K, _, φ, hφ, hK⟩` from `hex (q.comap π) (by`. Rewrite using `[RingHom.ker_eq_comap_bot]`. Conclude with `Ideal.comap_mono bot_le)`. Establish `hle : RingHom.ker π ≤ RingHom.ker φ`. Rewrite using `[hφ, RingHom.ker_eq_comap_bot]`.
+
+Conclude with `Ideal.comap_mono bot_le`. Take `⟨ψ, rfl⟩ : ∃ ψ : B →+* K, ψ.comp π = φ` from `⟨π.liftOfSurjective hs ⟨φ, hle⟩, π.liftOfSurjective_comp hs _⟩`. Use `⟨K, inferInstance, ψ, ?_, fun j hj => ?_⟩` and prove the remaining obligations. Apply `Ideal.comap_injective_of_surjective π hs` to reduce the goal to its premises. Rewrite using `[RingHom.comap_ker, hφ]`.
+
+Both sides reduce to the same expression. Use `(hK j (hj.imp_left fun h h' => h ?_)).of_iso ((NatIso.mapHomologicalComplex (ModuleCat.extendScalarsComp π ψ) _).app C)` and prove the remaining obligations. Establish `hm : (q.asIdeal.comap π).IsMaximal`. Establish `: q.asIdeal.comap π = IsLocalRing.maximalIdeal A` using `h'`. Rewrite using `[this]`.
+
+Use `infer_instance`. Use `(Ideal.comap_isMaximal_of_surjective π hs (K := IsLocalRing.maximalIdeal B))` as an intermediate fact. Apply `Ideal.comap_injective_of_surjective π hs` to reduce the goal to its premises. Rewrite using `[IsLocalRing.eq_maximalIdeal hm, IsLocalRing.eq_maximalIdeal this]`.
+-/
 theorem mem_sup_of_exact_fibres {A B : Type} [CommRing A] [IsLocalRing A] [CommRing B]
     [IsRegularLocalRing B] (π : A →+* B) (hs : Surjective π) (g : ℕ) (hg : ringKrullDim B = g)
     (C : CochainComplex (ModuleCat.{0} A) ℕ)
@@ -111,6 +142,13 @@ end DualCokernelFlat
 
 open DualCokernelFlat in
 
+/- English proof (translation)
+Introduce `V A _ _ _ _ _ _ _ _ _ g hreg hg C hF hn hex I ⟨e⟩`. Establish `hfree` using `fun i => (hF i).1`. Establish `hfin` using `fun i => (hF i).2`. Establish `hflat : ∀ i, Module.Flat V (Module.Dual A (C.X i))` using `fun i => Module.Flat.trans V A _`. Establish `key` using `mem_sup_of_exact_fibres (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective g hg C hF hn (by rw [Ideal.mk_ker]; exact hex)`.
+
+Rewrite `key` using `[Ideal.mk_ker]`. Establish `h` using `GlobalTheory.flat_coker_of_complex_exact_mod_maximalIdeal V A (fun i => Module.Dual A (C.X i)) (fun i => (C.d i (i + 1)).hom.dualMap) (fun i f => ?_) (hn.imp fun n h i hi => ?_) key`. Conclude with `Module.Flat.of_linearEquiv (e.restrictScalars V).symm`. Use extensionality with `x`. Rewrite using `[LinearMap.dualMap_apply, LinearMap.dualMap_apply, ← LinearMap.comp_apply (C.d _ _).hom, ← ModuleCat.hom_comp, C.d_comp_d]`.
+
+Simplify using the standard rewrite rules. Use `ModuleCat.subsingleton_of_isZero (h i hi) infer_instance` as an intermediate fact.
+-/
 theorem flat_quotient_of_equiv_coker_dualMap_of_exact_fibres :
     ∀ (V A : Type) [CommRing V] [IsNoetherianRing V] [IsLocalRing V] [CommRing A]
       [IsNoetherianRing A] [IsLocalRing A] [Algebra V A] [IsLocalHom (algebraMap V A)]

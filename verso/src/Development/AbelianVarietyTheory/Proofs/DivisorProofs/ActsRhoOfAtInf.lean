@@ -11,8 +11,18 @@ noncomputable def evIHom (F : Type) [Field F] [NumberField F] : AF F →+* mixed
   (InfiniteAdeleRing.ringEquiv_mixedSpace F).toRingHom.comp
     (RingHom.fst (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evI_eq_evIHom {F : Type} [Field F] [NumberField F] (a : AF F) : evI F a = evIHom F a := rfl
 
+/- English proof (translation)
+Establish `hdot : ∀ y : κ → AF F, evIHom F (y ⬝ᵥ b) = ∑ i, locV y i * locV b i`. Introduce `y`. Simplify using `only [dotProduct, map_sum, map_mul, locV, evI_eq_evIHom]`. Establish `h2 : ∀ t : AF F, evIHom F (⅟(2 : AF F) * t) = (1 / 2 : ℝ) • evIHom F t`. Introduce `t`.
+
+Establish `h : (2 : ℝ) • evIHom F (⅟(2 : AF F) * t) = evIHom F t`. Rewrite using `[two_smul, ← map_add, ← two_mul, ← mul_assoc, mul_invOf_self, one_mul]`. Rewrite using `[← h, smul_smul]`. Evaluate the numerical expressions. Rewrite using `[evI_eq_evIHom, map_add, h2, hdot, hdot, map_add, map_smul, trP, trP, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trace_evI_heis {F : Type} [Field F] [NumberField F] [Invertible (2 : AF F)] {κ : Type} [Fintype κ]
     (x a b : κ → AF F) :
     Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F (x ⬝ᵥ b + ⅟(2 : AF F) * a ⬝ᵥ b)) =
@@ -29,6 +39,15 @@ theorem trace_evI_heis {F : Type} [Field F] [NumberField F] [Invertible (2 : AF 
   rw [evI_eq_evIHom, map_add, h2, hdot, hdot, map_add, map_smul, trP, trP, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ W' _ _ Bf κ _ dc w hw f f₁ hf r hr`. Establish `hab : ∀ u : AF F, evI F u = 0 → u • dc.e w = 0` using `fun u hu => by`. Rewrite using `[← map_smul, hw u hu, map_zero]`. Establish `ha : At (evI F) (dc.e w).1` using `fun u hu => congrArg Prod.fst (hab u hu)`. Establish `hb : At (evI F) (dc.e w).2` using `fun u hu => congrArg Prod.snd (hab u hu)`.
+
+Use function extensionality and compare the values at `x`. Establish `ht : At (evI F) (x ⬝ᵥ (dc.e w).2 + ⅟(2 : AF F) * (dc.e w).1 ⬝ᵥ (dc.e w).2)` using `fun u hu => by`. Establish `h : ∀ y : κ → AF F, u * (y ⬝ᵥ (dc.e w).2) = 0` using `fun y => by`. Rewrite using `[← smul_eq_mul, ← dotProduct_smul, hb u hu, dotProduct_zero]`. Rewrite using `[smul_eq_mul, mul_add, h, mul_left_comm, h, mul_zero, add_zero]`.
+
+Establish `hloc : (fun i => evI F ((x + (dc.e w).1) i)) = locV x + locV (dc.e w).1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, locV, evI_eq_evIHom, map_add]`. Simplify using `only [Darboux.rho, schr, tens]`. Rewrite using `[hψ.2.2 _ ht, trace_evI_heis, hr.1 x _ ha, hf, hloc, schrF]`.
+
+Conclude with `(mul_assoc _ _ _).symm`.
+-/
 theorem acts_rho_of_at_inf : ∀ {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ →
     ∀ {W' : Type} [AddCommGroup W'] [Module (AF F) W'] {Bf : W' → W' → AF F} {κ : Type} [Fintype κ]
       (dc : Darboux Bf κ) (w : W'), At (evI F) w → ∀ f f₁ : SInf F κ,

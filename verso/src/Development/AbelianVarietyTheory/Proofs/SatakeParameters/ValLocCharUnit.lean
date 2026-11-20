@@ -13,11 +13,21 @@ open GlobalTheory.IndefiniteRowSideFullHecke.CharacterValuation (StdOver IsFrame
 
 variable {X : Fields} {Pr : Primes X}
 
+/- English proof (translation)
+Rewrite using `[← hPr.piG_norm i]`. Conclude with `P.asIdeal.mul_mem_left _ (GlobalTheory.ColPeriod.mem_divs h)`.
+-/
 theorem g_mem_of_vG (hPr : Pr.Ok) {i : Fin 2} {P : HeightOneSpectrum (𝓞 X.E)} (h : P ∈ Pr.vG i) :
     ((Pr.g i : ℕ) : 𝓞 X.E) ∈ P.asIdeal := by
   rw [← hPr.piG_norm i]
   exact P.asIdeal.mul_mem_left _ (GlobalTheory.ColPeriod.mem_divs h)
 
+/- English proof (translation)
+Establish `h2 : ∃ k, P ∈ Pr.vG k`. Break down `Finset.mem_union.1 h with h2 | h2` into its components or cases. Use `exacts [⟨0, h2⟩, ⟨1, h2⟩]`. Take `⟨k, hk⟩` from `h2`. Establish `hne : Pr.g i ≠ Pr.g k`.
+
+Establish `h0` using `hPr.g_ne`. Apply the tactic sequence `fin_cases i <;> fin_cases k`. Conclude with `absurd hk h'`. Conclude with `h0`. Conclude with `h0.symm`.
+
+Conclude with `absurd hk h'`. Conclude with `natCast_notMem_of_ne (hPr.g_prime i) (hPr.g_prime k) hne P (g_mem_of_vG hPr hk)`.
+-/
 theorem g_notMem_of_vGs (hPr : Pr.Ok) {i : Fin 2} {P : HeightOneSpectrum (𝓞 X.E)} (h : P ∈ Pr.vGs) (h' : P ∉ Pr.vG i) :
     ((Pr.g i : ℕ) : 𝓞 X.E) ∉ P.asIdeal := by
   classical
@@ -34,6 +44,9 @@ theorem g_notMem_of_vGs (hPr : Pr.Ok) {i : Fin 2} {P : HeightOneSpectrum (𝓞 X
     · exact absurd hk h'
   exact natCast_notMem_of_ne (hPr.g_prime i) (hPr.g_prime k) hne P (g_mem_of_vG hPr hk)
 
+/- English proof (translation)
+Use extensionality with `r`. Establish `e : cO X.E (algebraMap (𝓞 X.F) (𝓞 X.E) r) = algebraMap (𝓞 X.F) (𝓞 X.E) r` using `RingOfIntegers.ext (hX.star_F (r : X.F))`. Rewrite using `[Ideal.under_def, Ideal.under_def, Ideal.mem_comap, Ideal.mem_comap, mem_conjP, e]`.
+-/
 theorem under_conjP (hX : X.Ok) (Q : HeightOneSpectrum (𝓞 X.E)) :
     (conjPrime₂ Q).asIdeal.under (𝓞 X.F) = Q.asIdeal.under (𝓞 X.F) := by
   ext r
@@ -43,6 +56,15 @@ theorem under_conjP (hX : X.Ok) (Q : HeightOneSpectrum (𝓞 X.E)) :
 
 variable {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)} {S : Set ℕ} {mu : Tup X.F X.E X.K S}
 
+/- English proof (translation)
+Introduce `h`. Establish `hsub : ∀ Q, Q ∈ Pr.vG k → Q ∈ rowSG Pr sel mu` using `fun Q hQ => Finset.mem_union_left _ (by`. Unfold `Primes.vGs`. Rewrite using `[Finset.mem_union]`. Use `fin_cases k`.
+
+Use `exacts [Or.inl hQ, Or.inr hQ])`. Establish `h0 : X.conjO (Pr.piG k) ≠ 0`. Use `right_ne_zero_of_mul (a := Pr.piG k) ?_` and prove the remaining obligations. Rewrite using `[hPr.piG_norm k]`. Conclude with `(hPr.g_prime k).ne_zero` after adjusting the coercions.
+
+Rewrite `h` using `[← hPr.piG_norm k]`. Break down `(sel v).isPrime.mem_or_mem h with h | h` into its components or cases. Use `hv ⟨conjPrime₂ (sel v), hsub _ ((Formalism.L2.Col.mem_divs h0 _).2 ?_), by rw [under_conjP hX, hsel v]⟩` and prove the remaining obligations. Rewrite using `[mem_conjP]`. Conclude with `(cO_cO (Pr.piG k)).symm ▸ h`.
+
+Conclude with `hv ⟨sel v, hsub _ ((Formalism.L2.Col.mem_divs h0 _).2 h), hsel v⟩`.
+-/
 theorem g_notMem_sel (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) {v : HeightOneSpectrum (𝓞 X.F)}
     (hv : ¬ ∃ P ∈ rowSG Pr sel mu, P.asIdeal.under (𝓞 X.F) = v.asIdeal) (k : Fin 2) :
     ((Pr.g k : ℕ) : 𝓞 X.E) ∉ (sel v).asIdeal := by
@@ -64,6 +86,9 @@ theorem g_notMem_sel (hX : X.Ok) (hPr : Pr.Ok) (hsel : IsSel X sel) {v : HeightO
     exact (cO_cO (Pr.piG k)).symm ▸ h
   · exact hv ⟨sel v, hsub _ ((Formalism.L2.Col.mem_divs h0 _).2 h), hsel v⟩
 
+/- English proof (translation)
+Establish `hu` using `GlobalTheory.LocCharVal.isUnit_redP P _ ha`. Establish `: Finite (𝓞 E ⧸ P.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ P.ne_bot`. Rewrite using `[GlobalTheory.LastSteps.locChar_unit _ _ hu, LocE.unitV, dif_pos hu]`. Conclude with `GlobalTheory.CharVal.unit_of_finOrder (MonoidHom.isOfFinOrder ψ (isOfFinOrder_of_finite _))`.
+-/
 theorem val_locChar_unit {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K))
     (P : HeightOneSpectrum (𝓞 E)) (cq : K) (ψ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {a : E} (ha : P.valuation E a = 1) :
     w.valuation K (LocE.locChar (qOf P) cq ψ a) = 1 := by
@@ -72,6 +97,9 @@ theorem val_locChar_unit {E K : Type} [Field E] [NumberField E] [Field K] [Numbe
   rw [GlobalTheory.LastSteps.locChar_unit _ _ hu, LocE.unitV, dif_pos hu]
   exact GlobalTheory.CharVal.unit_of_finOrder (MonoidHom.isOfFinOrder ψ (isOfFinOrder_of_finite _))
 
+/- English proof (translation)
+Take `⟨z, ζ, hζ, e⟩` from `GlobalTheory.LocCharVal.locChar_eq_zpow_mul E K P (qOf P) cq ψ a (GlobalTheory.CharVal.val_natCast_of_notMem_sq (Ideal.absNorm_mem _) hq) ha`. Rewrite using `[e, map_mul, map_zpow₀, hc, GlobalTheory.CharVal.unit_of_finOrder hζ, one_zpow, one_mul]`.
+-/
 theorem val_locChar {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K))
     (P : HeightOneSpectrum (𝓞 E)) {cq : K} (ψ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (hq : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2)
     (hc : w.valuation K cq = 1) {a : E} (ha : a ≠ 0) : w.valuation K (LocE.locChar (qOf P) cq ψ a) = 1 := by
@@ -85,6 +113,21 @@ namespace GlobalTheory.ColPeriod
 
 open NumberField IsDedekindDomain Formalism.L2.Col Formalism.HermitianLatticesTheory Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Ker Scal
 
+/- English proof (translation)
+Introduce `X Pr R Ch sel S mu cst L G m2 e eta hX hPr hsel hS ht hOk i w hw j hj`. Establish `hH'` using `hH X Pr R.m Ch G.σ₀ (e ⟨j, hj⟩) ⟨j, hj⟩ (G.mu0 ⟨j, hj⟩) hX hPr (ht.mu0 _) (Pr.g i) w`. Establish `hval : ∀ P : HeightOneSpectrum (𝓞 X.E), (∀ k, ((Pr.g k : ℕ) : 𝓞 X.E) ∉ P.asIdeal) → w.valuation X.K (Ch.muVal ⟨j, hj⟩ P : X.K) = 1` using `fun P hP => hH' P (hPr.g_prime i) hw (hP i) (Formalism.L2.Host.unif P) _ (ht.muVal _ P hP)`. Establish `h1 : ∀ P : rowSG Pr sel mu, P.1 ∉ Pr.vG i → w.valuation X.K (cst.muq (j + 1) P) = 1`. Introduce `P hPi`.
+
+Establish `hq` using `(hT X.F X.E X.K S mu P.1 w).2`. Take `⟨hd, hn⟩` from `hL X Pr sel S mu hX hPr hsel P`. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Establish `h1` using `hOk.muqG j hj P hP (Units.mk0 _ (Proof.NormalFormAtPrime.qOf_ne_zero P.1)) rfl`. Establish `h2 : G.σ₀ ((cst.muq (j + 1) P * ((qValC (mu : Chr X.F X.E X.K) P.1 : X.Kˣ) : X.K))⁻¹) = (((G.mu0 ⟨j, hj⟩).locK P.1 (Units.mk0 _ (Proof.NormalFormAtPrime.qOf_ne_zero P.1)) : ℂˣ) : ℂ)`.
+
+Rewrite using `[map_inv₀, map_mul, h1, mul_assoc, ← map_mul, Units.inv_mul, map_one, mul_one, inv_inv]`. Establish `h3` using `hH' P.1 (hPr.g_prime i) hw (g_notMem_of_vGs hPr hP hPi) _ _ h2`. Rewrite `h3` using `[map_inv₀, map_mul, hq, mul_one, inv_eq_one]`. Then use the resulting hypothesis. Establish `hg : ∀ k, ((Pr.g k : ℕ) : 𝓞 X.E) ∉ P.1.asIdeal` using `fun k => natCast_notMem_of_ne (hPr.g_prime k) hd.1 (fun h => hn hP (h ▸ hS k)) P.1 (Ideal.absNorm_mem _)`. Rewrite using `[hOk.muqQ j hj P hP, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, map_mul, map_inv₀, map_inv₀, hq, hval _ hg]`.
+
+Simplify using the standard rewrite rules. Use `⟨h1, fun n N fr _ hN hfr => ?_⟩` and prove the remaining obligations. Establish `h2 : w.valuation X.K (muOff sel (rowSG Pr sel mu) (mUof Ch mu j) N) = 1`. Unfold `muOff`. Use `finprod_induction (fun x => w.valuation X.K x = 1) (map_one _) (fun x y hx hy => by rw [map_mul, hx, hy, one_mul]) fun v => ?_` and prove the remaining obligations.
+
+Use `split_ifs with hv`. Conclude with `map_one _`. Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, mUof, dif_pos hj, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, map_mul, map_inv₀, map_inv₀, hval _ (g_notMem_sel hX hPr hsel hv), (hT X.F X.E X.K S mu _ w).1]`. Simplify using the standard rewrite rules. Rewrite using `[muInvDet, map_mul, h2, one_mul, map_prod]`.
+
+Use `Finset.prod_eq_one fun P _ => ?_` and prove the remaining obligations. Unfold `muAt`. Distinguish the cases in `hP : P.1 ∈ Pr.vG i`. Use `val_locChar_unit w P.1 _ _ ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.coe_det]`.
+
+Use `GlobalTheory.StdReps.val_det_eq fun x => ?_` and prove the remaining obligations. Rewrite using `[← hfr P x, hN P.1 (g_mem_of_vG hPr hP)]`. Conclude with `val_locChar w P.1 _ (hL X Pr sel S mu hX hPr hsel P).1.2 (h1 P hP) (Units.ne_zero _)`.
+-/
 theorem scalarUnit_of (hL : LevelPrimes) (hH : HeckeUnit) (hT : TwistUnit) : ScalarUnit := by
   intro X Pr R Ch sel S mu cst L G m2 e eta hX hPr hsel hS ht hOk i w hw j hj
   have hH' := hH X Pr R.m Ch G.σ₀ (e ⟨j, hj⟩) ⟨j, hj⟩ (G.mu0 ⟨j, hj⟩) hX hPr (ht.mu0 _) (Pr.g i) w

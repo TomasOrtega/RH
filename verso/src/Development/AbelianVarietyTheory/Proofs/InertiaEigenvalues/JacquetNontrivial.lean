@@ -13,6 +13,19 @@ open GlobalTheory.PRep GlobalTheory.SmGL
 
 namespace GlobalTheory.SmGL.JacquetEmptyFirstBlock
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n V _ _ π hπ h`. Establish `key : ∀ x, GlobalTheory.SmGL.blk (two (stdSum h)) x = true`. Introduce `x`. Unfold `GlobalTheory.SmGL.blk`. Take `⟨⟨b, y⟩, hy⟩ : ∃ p, (two (stdSum h)).symm x = p` from `⟨_, rfl⟩`.
+
+Rewrite using `[hy]`. Consider the cases of `b`. Conclude with `Fin.elim0 y`. Both sides reduce to the same expression. Establish `hbot : unipRad k (two (stdSum h)) = ⊥`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨i, j, hij⟩` from `(GlobalTheory.SmGL.CuspMax.unipRad_ne_bot_iff).1 hne`. Rewrite `hij` using `[key i, key j]`. Conclude with `lt_irrefl _ hij`. Establish `hker : twKer π (⊥ : Subgroup (GL (Fin n) k)) 1 = ⊥`.
+
+Unfold `twKer`. Rewrite using `[Submodule.span_eq_bot]`. Introduce and unpack `w ⟨⟨g, hg⟩, v, rfl⟩`. Rewrite `hg` using `[Subgroup.mem_bot]`. Substitute `hg` using the available equality.
+
+Simplify using the standard rewrite rules. Establish `hV : Nontrivial V`. Assume the negation of the conclusion as `hV`. Rewrite `hV` using `[not_nontrivial_iff_subsingleton]`. Establish `: IsSimpleOrder (Subrepresentation π)` using `hπ`.
+
+Conclude with `(bot_ne_top : (⊥ : Subrepresentation π) ≠ ⊤) (Subrepresentation.ext (Subsingleton.elim _ _))`. Rewrite using `[hbot]`. Use `show Nontrivial (V ⧸ twKer π ⊥ 1)`. Rewrite using `[hker]`. Conclude with `(Submodule.quotEquivOfEqBot (⊥ : Submodule ℂ V) rfl).toEquiv.nontrivial`.
+-/
 theorem jacquet_nontrivial : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V),
     π.IsIrreducible → ∀ (h : 0 + n = n), Nontrivial (Jacquet π (unipRad k (two (stdSum h)))) := by

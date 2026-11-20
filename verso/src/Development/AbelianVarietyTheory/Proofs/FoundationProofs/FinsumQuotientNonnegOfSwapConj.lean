@@ -6,6 +6,31 @@ open scoped BigOperators
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set A : Finset Q := Finset.univ.filter (fun x => P x = x) with hA`. Use `set A' : Finset Q := Finset.univ.filter (fun x => P x = 0) with hA'`. Establish `mA : ∀ x, x ∈ A ↔ P x = x` using `by intro x; simp [hA]`. Establish `mA' : ∀ x, x ∈ A' ↔ P x = 0` using `by intro x; simp [hA']`. Establish `h1 : ∑ q : Q, ψ q = ∑ p ∈ A ×ˢ A', ψ p.1 * ψ p.2`.
+
+Use `Finset.sum_nbij' (fun q => (P q, q - P q)) (fun p => p.1 + p.2) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `q _`. Simplify using `[Finset.mem_product, mA, mA', hP]`. Introduce `p _`. Conclude with `Finset.mem_univ _`.
+
+Introduce `q _`. Simplify using the standard rewrite rules. Introduce `p hp`. Rewrite `hp` using `[Finset.mem_product, mA, mA']`. Apply the tactic sequence `ext <;> simp [hp.1, hp.2]`.
+
+Introduce `q _`. Conclude with `hψ q`. Establish `h2 : ∑ x ∈ A', ψ x = ∑ x ∈ A, ψ x`. Use `Finset.sum_nbij' S S ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `x hx`.
+
+Rewrite `hx` using `[mA']`. Rewrite using `[mA]`. Use `hSP x` as an intermediate fact. Rewrite `this` using `[hx, map_zero]`. Conclude with `(sub_eq_zero.mp this.symm).symm`.
+
+Introduce `x hx`. Rewrite `hx` using `[mA]`. Rewrite using `[mA']`. Use `hSP x` as an intermediate fact. Rewrite `this` using `[hx]`.
+
+Conclude with `sub_eq_self.mp this.symm`. Introduce `x _`. Conclude with `hS x`. Introduce `x _`. Conclude with `hS x`.
+
+Introduce `x _`. Conclude with `(hψS x).symm`. Establish `h3 : (starRingEnd ℂ) (∑ x ∈ A, ψ x) = ∑ x ∈ A, ψ x`. Rewrite using `[map_sum]`. Use `Finset.sum_bij (fun x _ => L x) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `x hx`. Rewrite `hx` using `[mA]`. Rewrite using `[mA, ← hLP, hx]`. Introduce `x _ y _ h`. Conclude with `hL h`.
+
+Introduce `y hy`. Take `⟨x, rfl⟩` from `(Finite.injective_iff_surjective.mp hL) y`. Use `⟨x, ?_, rfl⟩` and prove the remaining obligations. Rewrite `hy`, the goal using `[mA]`. Apply `hL` to reduce the goal to its premises.
+
+Rewrite using `[hLP, hy]`. Introduce `x _`. Conclude with `(hψL x).symm`. Take `⟨t, ht⟩` from `Complex.conj_eq_iff_real.mp h3`. Use `⟨t * t, mul_self_nonneg t, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h1, Finset.sum_product, ← Finset.sum_mul_sum, h2, ht]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem sum_nonneg_of_swap_conj_fintype (Q : Type) [AddCommGroup Q] [Fintype Q] (ψ : Q → ℂ)
     (P S L : Q →+ Q) (hL : Function.Injective L)
     (hP : ∀ x, P (P x) = P x) (hS : ∀ x, S (S x) = x)
@@ -72,6 +97,21 @@ theorem sum_nonneg_of_swap_conj_fintype (Q : Type) [AddCommGroup Q] [Fintype Q] 
   push_cast
   rfl
 
+/- English proof (translation)
+Introduce `G _ B _ φ P S L hper hB hLB hP hS hSP hLP hφ hφS hφL`. Use `haveI : Fintype (G ⧸ B) := Fintype.ofFinite _`. Establish `hout : ∀ x : G, φ (QuotientAddGroup.mk x : G ⧸ B).out = φ x`. Introduce `x`. Take `⟨w, hw⟩` from `QuotientAddGroup.mk_out_eq_mul B x`.
+
+Rewrite using `[hw]`. Conclude with `hper x w w.2`. Set `P' : G ⧸ B →+ G ⧸ B` to `QuotientAddGroup.map B B P (fun w hw => (hB w hw).1)`. Set `S' : G ⧸ B →+ G ⧸ B` to `QuotientAddGroup.map B B S (fun w hw => (hB w hw).2)`. Set `L' : G ⧸ B →+ G ⧸ B` to `QuotientAddGroup.map B B L (fun w hw => (hLB w).2 hw)`.
+
+Establish `eP : ∀ x : G, P' (x : G ⧸ B) = (P x : G)` using `fun x => rfl`. Establish `eS : ∀ x : G, S' (x : G ⧸ B) = (S x : G)` using `fun x => rfl`. Establish `eL : ∀ x : G, L' (x : G ⧸ B) = (L x : G)` using `fun x => rfl`. Rewrite using `[finsum_eq_sum_of_fintype]`. Use `sum_nonneg_of_swap_conj_fintype (G ⧸ B) (fun q => φ q.out) P' S' L' ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `q hq`. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H x`. Rewrite `hq` using `[eL, QuotientAddGroup.eq_zero_iff]`.
+
+Conclude with `(QuotientAddGroup.eq_zero_iff x).2 ((hLB x).1 hq)`. Use `all_goals`. Introduce `q`. Proceed by induction on `q using QuotientAddGroup.induction_on with`. Consider the case `H x`.
+
+Simplify using `only [eP, eS, eL, ← QuotientAddGroup.mk_sub, hout]`. Use `first`. Consider the case `rw [hP]`. Consider the case `rw [hS]`. Consider the case `rw [hSP]`.
+
+Consider the case `rw [hLP]`. Consider the case `exact hφ x`. Consider the case `exact hφS x`. Consider the case `exact hφL x`.
+-/
 theorem finsum_quotient_nonneg_of_swap_conj :
     ∀ (G : Type) [AddCommGroup G] (B : AddSubgroup G) [Finite (G ⧸ B)] (φ : G → ℂ) (P S L : G →+ G), (∀ x, ∀ w ∈ B, φ (x + w) = φ x) → (∀ w ∈ B, P w ∈ B ∧ S w ∈ B) → (∀ x, L x ∈ B ↔ x ∈ B) → (∀ x, P (P x) = P x) → (∀ x, S (S x) = x) → (∀ x, S (P x) = S x - P (S x)) → (∀ x, L (P x) = P (L x)) → (∀ x, φ x = φ (P x) * φ (x - P x)) → (∀ x, φ (S x) = φ x) → (∀ x, φ (L x) = (starRingEnd ℂ) (φ x)) → ∃ r : ℝ, 0 ≤ r ∧ ∑ᶠ q : G ⧸ B, φ q.out = (r : ℂ) := by
   intro G _ B _ φ P S L hper hB hLB hP hS hSP hLP hφ hφS hφL

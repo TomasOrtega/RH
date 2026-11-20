@@ -8,6 +8,17 @@ noncomputable section
 
 namespace GlobalTheory.FibreLinInd
 
+/- English proof (translation)
+Establish `hspan : Submodule.span K (Set.range v) = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨φ, hφ0, hφ⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Apply `hφ0` to reduce the goal to its premises. Establish `hφ' : ∀ w : Fin r → K, φ w = ∑ i, φ (Pi.single i 1) * w i` using `fun w => by`.
+
+Rewrite using `[LinearMap.pi_apply_eq_sum_univ]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, mul_comm]`. Use `congr 2`. Use extensionality with `j`.
+
+Simplify using `[Pi.single_apply, eq_comm]`. Use `h (fun i => φ (Pi.single i 1)) fun a => by` as an intermediate fact. Rewrite using `[← hφ']`. Conclude with `hφ (Submodule.subset_span ⟨a, rfl⟩)`. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations.
+
+Rewrite using `[hφ']`. Simplify using `[congrFun this]`. Take `⟨κ, a, -, hs, hli⟩` from `exists_linearIndependent' K v`. Set `b : Module.Basis κ K (Fin r → K)` to `Module.Basis.mk hli (by rw [hs, hspan])`. Set `e : κ ≃ Fin r` to `b.indexEquiv (Pi.basisFun K (Fin r))`.
+
+Use `⟨a ∘ e.symm, ?_⟩` and prove the remaining obligations. Establish `h2 : LinearIndependent K ((v ∘ a) ∘ e.symm)` using `hli.comp _ e.symm.injective`. Establish `h3 : IsUnit (Matrix.of fun k i => v ((a ∘ e.symm) k) i)` using `Matrix.linearIndependent_rows_iff_isUnit.1 h2`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 h3).ne_zero`.
+-/
 theorem exists_det_ne_zero {K A : Type} [Field K] {r : ℕ} (v : A → Fin r → K)
     (h : ∀ c : Fin r → K, (∀ a, ∑ i, c i * v a i = 0) → c = 0) :
     ∃ a : Fin r → A, (Matrix.of fun k i => v (a k) i).det ≠ 0 := by
@@ -38,6 +49,13 @@ theorem exists_det_ne_zero {K A : Type} [Field K] {r : ℕ} (v : A → Fin r →
     Matrix.linearIndependent_rows_iff_isUnit.1 h2
   exact ((Matrix.isUnit_iff_isUnit_det _).1 h3).ne_zero
 
+/- English proof (translation)
+Proceed by induction on `r with`. Consider the case `zero`. Conclude with `⟨Z, 𝟙 Z, Fin.elim0, inferInstance, inferInstance, fun k => k.elim0, fun T x g _ => ⟨x, by simp, fun k => k.elim0⟩⟩`. Consider the case `succ r ih`. Take `⟨P, p, π, h1, h2, h3, h4⟩` from `ih`.
+
+Use `⟨pullback f p, pullback.snd f p ≫ p, Fin.cons (pullback.fst f p) (fun k => pullback.snd f p ≫ π k), inferInstance, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Use `Fin.cases ?_ fun k => ?_` and prove the remaining obligations. Simplify using `using pullback.condition`. Simplify using `[h3]`. Introduce `T x g hg`.
+
+Take `⟨h, hp, hπ⟩` from `h4 T x (fun k => g k.succ) fun k => hg _`. Use `⟨pullback.lift (g 0) h (by rw [hg, hp]), by rw [pullback.lift_snd_assoc, hp], ?_⟩` and prove the remaining obligations. Use `Fin.cases ?_ fun k => ?_` and prove the remaining obligations. Simplify using `[pullback.lift_fst]`. Simplify using `[pullback.lift_snd_assoc, hπ]`.
+-/
 theorem exists_fibrePower {G Z : Scheme.{0}} (f : G ⟶ Z) [UniversallyOpen f]
     [LocallyOfFiniteType f] (r : ℕ) :
     ∃ (P : Scheme.{0}) (p : P ⟶ Z) (π : Fin r → (P ⟶ G)), UniversallyOpen p ∧
@@ -63,6 +81,11 @@ theorem exists_fibrePower {G Z : Scheme.{0}} (f : G ⟶ Z) [UniversallyOpen f]
       · simp [pullback.lift_fst]
       · simp [pullback.lift_snd_assoc, hπ]
 
+/- English proof (translation)
+Take `⟨y, -, -⟩` from `Scheme.Pullback.exists_preimage_pullback w t hw`. Establish `: JacobsonSpace ↥(pullback q x)` using `LocallyOfFiniteType.jacobsonSpace (pullback.snd q x)`. Take `⟨y', -, hy'⟩` from `nonempty_inter_closedPoints (Z := (Set.univ : Set ↥(pullback q x))) ⟨y, trivial⟩ isOpen_univ.isLocallyClosed`. Establish `hc : IsClosed {y'}` using `hy'`. Use `⟨pointOfClosedPoint (pullback.snd q x) y' hc ≫ pullback.fst q x, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, pullback.condition, pointOfClosedPoint_comp_assoc]`.
+-/
 theorem exists_lift {W Z : Scheme.{0}} (q : W ⟶ Z) [LocallyOfFiniteType q] {K : Type} [Field K]
     [IsAlgClosed K] (x : Sp K ⟶ Z) (w : W) (t : Sp K) (hw : q w = x t) :
     ∃ h : Sp K ⟶ W, h ≫ q = x := by
@@ -76,6 +99,9 @@ theorem exists_lift {W Z : Scheme.{0}} (q : W ⟶ Z) [LocallyOfFiniteType q] {K 
 
 variable {K : Type} [Field K] {P G : Scheme.{0}}
 
+/- English proof (translation)
+Establish `: Subsingleton (Sp K)` using `inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Conclude with `⟨fun h => h (show z ∈ (⊤ : (Sp K).Opens) from trivial), fun h y _ => by rw [Subsingleton.elim y z]; exact h⟩`.
+-/
 theorem top_le_iff (x : Sp K ⟶ P) (U : P.Opens) (z : Sp K) : ⊤ ≤ x ⁻¹ᵁ U ↔ x z ∈ U := by
   have : Subsingleton (Sp K) := inferInstanceAs (Subsingleton (PrimeSpectrum K))
   exact ⟨fun h => h (show z ∈ (⊤ : (Sp K).Opens) from trivial),
@@ -84,6 +110,13 @@ theorem top_le_iff (x : Sp K ⟶ P) (U : P.Opens) (z : Sp K) : ⊤ ≤ x ⁻¹�
 def evalHom (h : Sp K ⟶ P) (U : P.Opens) (hU : ⊤ ≤ h ⁻¹ᵁ U) : Γ(P, U) →+* K :=
   (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom.comp (h.appLE U ⊤ hU).hom
 
+/- English proof (translation)
+Establish `e : (Sp K).basicOpen (h.appLE U ⊤ hU D) = h ⁻¹ᵁ P.basicOpen D`. Rewrite using `[Scheme.basicOpen_appLE, top_inf_eq]`. Establish `hinj : Function.Bijective (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom` using `(Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv.bijective`. Express the relevant statement in the definitionally equal form `t ∈ h ⁻¹ᵁ P.basicOpen D ↔ _`. Rewrite using `[← e]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `ht h0`. Establish `: h.appLE U ⊤ hU D = 0` using `hinj.1 (by rw [map_zero]; exact h0)`. Rewrite `ht` using `[this, Scheme.basicOpen_zero]`. Conclude with `ht`.
+
+Introduce `h0`. Establish `: IsUnit (h.appLE U ⊤ hU D)` using `(MulEquiv.isUnit_map (Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv).1 (IsUnit.mk0 _ h0)`. Rewrite using `[Scheme.basicOpen_of_isUnit _ this]`. Discharge the goal by the elementary cases of `trivial`.
+-/
 theorem mem_basicOpen_iff (h : Sp K ⟶ P) (U : P.Opens) (hU : ⊤ ≤ h ⁻¹ᵁ U) (D : Γ(P, U))
     (t : Sp K) : h t ∈ P.basicOpen D ↔ evalHom h U hU D ≠ 0 := by
   have e : (Sp K).basicOpen (h.appLE U ⊤ hU D) = h ⁻¹ᵁ P.basicOpen D := by
@@ -104,6 +137,9 @@ theorem mem_basicOpen_iff (h : Sp K ⟶ P) (U : P.Opens) (hU : ⊤ ≤ h ⁻¹�
     rw [Scheme.basicOpen_of_isUnit _ this]
     trivial
 
+/- English proof (translation)
+Establish `hle : ⊤ ≤ (h ≫ π) ⁻¹ᵁ V` using `fun y hy => hV (hU hy)`. Rewrite using `[valF, dif_pos hle, ← Scheme.Hom.appLE_comp_appLE h π V U ⊤ hV hU]`. Both sides reduce to the same expression.
+-/
 theorem evalHom_appLE (h : Sp K ⟶ P) (U : P.Opens) (hU : ⊤ ≤ h ⁻¹ᵁ U) (π : P ⟶ G) (V : G.Opens)
     (hV : U ≤ π ⁻¹ᵁ V) (a : Γ(G, V)) :
     evalHom h U hU (π.appLE V U hV a) = valF (h ≫ π) V a := by
@@ -111,6 +147,31 @@ theorem evalHom_appLE (h : Sp K ⟶ P) (U : P.Opens) (hU : ⊤ ≤ h ⁻¹ᵁ U)
   rw [valF, dif_pos hle, ← Scheme.Hom.appLE_comp_appLE h π V U ⊤ hV hU]
   rfl
 
+/- English proof (translation)
+Introduce `G Z f _ _ L _ r s`. Take `⟨P, p, π, h1, h2, h3, h4⟩` from `exists_fibrePower f r`. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `z hz`. Set `K` to `AlgebraicClosure (Z.residueField z)`.
+
+Set `x : Sp K ⟶ Z` to `Spec.map (CommRingCat.ofHom (algebraMap (Z.residueField z) K)) ≫ Z.fromSpecResidueField z`. Establish `hxt : ∀ t, x t = z` using `fun t => by`. Rewrite using `[← Set.mem_singleton_iff, ← Scheme.range_fromSpecResidueField, Scheme.Hom.comp_apply]`. Conclude with `⟨_, rfl⟩`. Set `t₀ : Sp K` to `IsLocalRing.closedPoint K`.
+
+Establish `hx : Set.range x = {z}`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩`. Conclude with `hxt t`.
+
+Introduce and unpack `rfl`. Conclude with `⟨t₀, hxt t₀⟩`. Take `⟨a, ha⟩` from `exists_det_ne_zero (fun (a : {g : Sp K ⟶ G // g ≫ f = x} × L.ι) i => valF a.1.1 (L.U a.2) ((s i).f a.2)) fun c hc => hz K x hx c fun g j hg => hc (⟨g, hg⟩, j)`. Set `j : Fin r → L.ι` to `fun k => (a k).2`. Set `U : P.Opens` to `LB.wchart L π j`.
+
+Establish `hU : ∀ k, U ≤ π k ⁻¹ᵁ L.U (j k)` using `LB.wchart_le L π j`. Set `M : Matrix (Fin r) (Fin r) Γ(P, U)` to `Matrix.of fun k i => (π k).appLE (L.U (j k)) U (hU k) ((s i).f (j k))`. Establish `hM : ∀ {K : Type} [Field K] (h : Sp K ⟶ P) (hh : ⊤ ≤ h ⁻¹ᵁ U), evalHom h U hh M.det = (Matrix.of fun k i => valF (h ≫ π k) (L.U (j k)) ((s i).f (j k))).det`. Introduce `K _ h hh`. Rewrite using `[RingHom.map_det]`.
+
+Use `congr 1`. Use extensionality with `k i`. Conclude with `evalHom_appLE h U hh (π k) _ (hU k) _`. Set `O : P.Opens` to `P.basicOpen M.det`. Use `⟨p '' (O : Set P), ?_, p.isOpenMap _ O.isOpen, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨w, hw, rfl⟩ K' _ _ x' hx' c hc`. Set `t : Sp K'` to `IsLocalRing.closedPoint K'`. Establish `ht : x' t = p w`. Rewrite using `[← Set.mem_singleton_iff, ← hx']`. Conclude with `⟨t, rfl⟩`.
+
+Take `⟨h, hh⟩` from `exists_lift (O.ι ≫ p) x' ⟨w, hw⟩ t ht.symm`. Establish `hO : (h ≫ O.ι) t ∈ O` using `(h t).2`. Establish `hle : ⊤ ≤ (h ≫ O.ι) ⁻¹ᵁ U` using `(top_le_iff _ U t).2 (P.basicOpen_le _ hO)`. Establish `hd` using `(mem_basicOpen_iff _ U hle M.det t).1 hO`. Rewrite `hd` using `[hM]`.
+
+Use `Matrix.eq_zero_of_mulVec_eq_zero hd (funext fun k => ?_)` and prove the remaining obligations. Use `hc ((h ≫ O.ι) ≫ π k) (j k) (by rw [Category.assoc, h3, Category.assoc, hh])` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, mul_comm]`. Take `⟨h, hp, hπ⟩` from `h4 (Sp K) x (fun k => (a k).1.1) fun k => (a k).1.2`. Establish `hle : ⊤ ≤ h ⁻¹ᵁ U`.
+
+Introduce `t ht`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations. Establish `hk : ⊤ ≤ (a k).1.1 ⁻¹ᵁ L.U (j k)`. Assume the negation of the conclusion as `hn`. Conclude with `ha (Matrix.det_eq_zero_of_row_eq_zero k fun i => dif_neg hn)`.
+
+Use `hk ht` as an intermediate fact. Rewrite `this` using `[← hπ k]`. Conclude with `this`. Use `⟨h t₀, (mem_basicOpen_iff h U hle M.det t₀).2 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hM]`.
+
+Simplify using `only [hπ]`. Conclude with `ha`. Rewrite using `[← Scheme.Hom.comp_apply, hp, hxt]`.
+-/
 theorem isOpen_setOf_linearIndependent_on_fibres :
     ∀ (G Z : Scheme.{0}) (f : G ⟶ Z) [Flat f] [LocallyOfFinitePresentation f] (L : LB G),
       L.IsLB → ∀ (r : ℕ) (s : Fin r → LB.Sec L), IsOpen {z : Z | ∀ (K : Type) [Field K]

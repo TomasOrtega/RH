@@ -23,16 +23,28 @@ open GlobalTheory.PullHermitian
 
 variable {X Y : Scheme.{0}}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h _ hp => Set.mem_iInter.1 (h hp) PUnit.unit, fun h _ hp => Set.mem_iInter.2 fun _ => h hp⟩`.
+-/
 lemma chart_pull_iff (x : Sp ℂ ⟶ X) (L : LB Y) (f : X ⟶ Y) (j : PUnit → L.ι) :
     ⊤ ≤ x ⁻¹ᵁ (L.pull f).U j ↔ ⊤ ≤ (x ≫ f) ⁻¹ᵁ L.U (j PUnit.unit) :=
   ⟨fun h _ hp => Set.mem_iInter.1 (h hp) PUnit.unit, fun h _ hp => Set.mem_iInter.2 fun _ => h hp⟩
 
+/- English proof (translation)
+The claim follows from `h.trans (fun _ hp => And.left hp)`.
+-/
 lemma le_left {x : Sp ℂ ⟶ X} {U V : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ (U ⊓ V)) : ⊤ ≤ x ⁻¹ᵁ U :=
   h.trans (fun _ hp => And.left hp)
 
+/- English proof (translation)
+The claim follows from `h.trans (fun _ hp => And.right hp)`.
+-/
 lemma le_right {x : Sp ℂ ⟶ X} {U V : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ (U ⊓ V)) : ⊤ ≤ x ⁻¹ᵁ V :=
   h.trans (fun _ hp => And.right hp)
 
+/- English proof (translation)
+Establish `hi` using `(chart_pull_iff x L f i).1 (le_left h)`. Establish `hj` using `(chart_pull_iff x L f j).1 (le_right h)`. Rewrite using `[valAt'_eq_unitVal x h, valAt'_eq_unitVal _ (inf_of _ hi hj)]`. Use `unitVal_linComb x L f 1 (i PUnit.unit) (j PUnit.unit) h (inf_of _ hi hj)` as an intermediate fact. Conclude with `congrArg Units.val (this.trans (zpow_one _))`.
+-/
 lemma valAt'_pull_g (x : Sp ℂ ⟶ X) (L : LB Y) (f : X ⟶ Y) (i j : PUnit → L.ι)
     (h : ⊤ ≤ x ⁻¹ᵁ ((L.pull f).U i ⊓ (L.pull f).U j)) :
     valAt' x ((L.pull f).U i ⊓ (L.pull f).U j) ((L.pull f).g i j).val =
@@ -44,6 +56,11 @@ lemma valAt'_pull_g (x : Sp ℂ ⟶ X) (L : LB Y) (f : X ⟶ Y) (i j : PUnit →
   have := unitVal_linComb x L f 1 (i PUnit.unit) (j PUnit.unit) h (inf_of _ hi hj)
   exact congrArg Units.val (this.trans (zpow_one _))
 
+/- English proof (translation)
+Rewrite using `[differentiable_pi]`. Introduce `i`. Use `Fin.addCases (fun a => ?_) (fun b => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.append_left]`. Conclude with `differentiable_apply a`.
+
+Simplify using `only [Fin.append_right]`. Conclude with `differentiable_const _`.
+-/
 lemma differentiable_append {g : ℕ} (x₀ : Fin g → ℂ) :
     Differentiable ℂ (fun z : Fin g → ℂ => (Fin.append z x₀ : Fin (g + g) → ℂ)) := by
   rw [differentiable_pi]
@@ -52,6 +69,13 @@ lemma differentiable_append {g : ℕ} (x₀ : Fin g → ℂ) :
   · simp only [Fin.append_left]; exact differentiable_apply a
   · simp only [Fin.append_right]; exact differentiable_const _
 
+/- English proof (translation)
+Introduce `A _ L₀ g u L U hU x₀`. Establish `key : ∀ z, u.ex z ≫ lift (𝟙 A) (toUnit A ≫ u.ex x₀) = U.ex (Fin.append z x₀)`. Introduce `z`. Rewrite using `[hU, comp_lift, Category.comp_id, ← Category.assoc, toUnit_unique (u.ex z ≫ toUnit A) (𝟙 _), Category.id_comp]`. Establish `keyl : ∀ z, (u.ex z).left ≫ (lift (𝟙 A) (toUnit A ≫ u.ex x₀)).left = (U.ex (Fin.append z x₀)).left` using `fun z => by rw [← Over.comp_left, key]`.
+
+Establish `hch : ∀ j z, (⊤ ≤ (u.ex z).left ⁻¹ᵁ (L.pull (lift (𝟙 A) (toUnit A ≫ u.ex x₀)).left).U j ↔ ⊤ ≤ (U.ex (Fin.append z x₀)).left ⁻¹ᵁ L.U (j PUnit.unit))` using `fun j z => (chart_pull_iff _ L _ j).trans (iff_of_eq (by rw [keyl z]))`. Use `⟨⟨u.ex, u.ex_add, u.ex_onto, u.Λ, u.ker, u.discrete, u.full, u.hol, fun j z => U.fr (j PUnit.unit) (Fin.append z x₀), fun j => (U.fr_hol (j PUnit.unit)).comp (differentiable_append x₀).differentiableOn (fun z hz => (hch j z).1 hz), fun j z hz => U.fr_ne _ _ ((hch j z).1 hz), fun …` and prove the remaining obligations. Establish `hi` using `(hch i z).1 (le_left h)`. Establish `hj` using `(hch j z).1 (le_right h)`. Use `show U.fr (i PUnit.unit) (Fin.append z x₀) = _ * U.fr (j PUnit.unit) (Fin.append z x₀)`.
+
+Rewrite using `[valAt'_pull_g _ L _ i j h, keyl z]`. Conclude with `U.fr_compat _ _ _ (inf_of _ hi hj)⟩, rfl, hch, fun _ _ => rfl⟩`.
+-/
 theorem exists_holUnif_pull_right : ∀ (A : Over (Sp ℂ)) [GrpObj A] (L₀ : LB A.left) (g : ℕ) (u : HolUnif A L₀ g)
     (L : LB (A ⊗ A).left) (U : HolUnif (A ⊗ A) L (g + g)),
     (∀ x y, U.ex (Fin.append x y) = lift (u.ex x) (u.ex y)) → ∀ x₀ : Fin g → ℂ,

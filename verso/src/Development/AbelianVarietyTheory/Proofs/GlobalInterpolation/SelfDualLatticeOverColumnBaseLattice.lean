@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.MemLocLatOver
 
 namespace GlobalTheory.OverObj
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.OverCompare.overLattice_iff_selfDualOverBase.mp GlobalTheory.OverLat.overLattice`.
+-/
 theorem selfDualOverBase : GlobalTheory.IndefiniteRowSideFullHecke.SplittingProjection.SelfDualOverBase :=
   GlobalTheory.OverCompare.overLattice_iff_selfDualOverBase.mp GlobalTheory.OverLat.overLattice
 

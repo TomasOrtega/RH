@@ -6,6 +6,11 @@ namespace GroundTheory.Heights₂.Heights.FourB
 
 open Finset
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => if a ≤ i ∧ i < b then (1 : ℝ) else 0) n, Finset.sum_boole]`. Use `congr 2`. Establish `: (Finset.range n).filter (fun i => a ≤ i ∧ i < b) = Finset.Ico a b`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_range, Finset.mem_Ico]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[this, Nat.card_Ico]`.
+-/
 theorem card_window_fin (n a b : ℕ) (hb : b ≤ n) :
     ∑ i : Fin n, (if a ≤ i.val ∧ i.val < b then (1 : ℝ) else 0) = ((b - a : ℕ) : ℝ) := by
   rw [Fin.sum_univ_eq_sum_range (fun i => if a ≤ i ∧ i < b then (1 : ℝ) else 0) n,
@@ -15,6 +20,41 @@ theorem card_window_fin (n a b : ℕ) (hb : b ≤ n) :
     ext i; simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_Ico]; omega
   rw [this, Nat.card_Ico]
 
+/- English proof (translation)
+Introduce `f k j j' x g₁ T w hH`. Take `⟨hk, hg, hT, hw, hdec, hacr, hcloud⟩` from `hH`. Introduce `N ρ`. Establish `hN0 : (0 : ℝ) ≤ N` using `Nat.cast_nonneg _`. Establish `hg0 : 0 < g₁` using `lt_of_le_of_lt (by positivity) hg`.
+
+Establish `hδ : DegreeRatio.Hyp (k + j + j' - 1) j' x (3 * N)` using `⟨by positivity, hdec, fun τ i l hil => lt_of_lt_of_le hg (hacr τ i l hil)⟩`. Take `⟨-, -, hle1, hsum⟩` from `h f (k + j + j' - 1) j' x (3 * N) hδ`. Establish `key : ∀ τ, ∑ i : Fin (k + j + j' - 1), ∑ l : Fin (k + j + j' - 1), (if Across (k + j + j' - 1) j' i l then 3 * N / (x τ i - x τ l) else 0) ≤ 3 * N * ((j : ℝ) * j' / g₁ + 2 * ((k : ℝ) - 1) * j' * T / w τ)`. Introduce `τ`. Use `set A : Fin (k + j + j' - 1) → ℝ := fun i => if 0 ≤ i.val ∧ i.val < k - 1 then 1 else 0`.
+
+Use `set C : Fin (k + j + j' - 1) → ℝ := fun i => if k - 1 ≤ i.val ∧ i.val < k + j - 1 then 1 else 0`. Use `set B : Fin (k + j + j' - 1) → ℝ := fun l => if k + j - 1 ≤ l.val ∧ l.val < k + j + j' - 1 then 1 else 0`. Establish `hterm : ∀ i l : Fin (k + j + j' - 1), (if Across (k + j + j' - 1) j' i l then 3 * N / (x τ i - x τ l) else 0) ≤ 3 * N * (2 * T / w τ) * (A i * B l) + 3 * N * (1 / g₁) * (C i * B l)`. Introduce `i l`. Establish `hT' : 0 ≤ 3 * N * (2 * T / w τ)` using `by have := hw τ; positivity`.
+
+Establish `hg' : 0 ≤ 3 * N * (1 / g₁)` using `by positivity`. Apply the tactic sequence `have hA0 : 0 ≤ A i := by simp only [A]; split_ifs <;> norm_num`. Apply the tactic sequence `have hB0 : 0 ≤ B l := by simp only [B]; split_ifs <;> norm_num`. Apply the tactic sequence `have hC0 : 0 ≤ C i := by simp only [C]; split_ifs <;> norm_num`. Distinguish the cases in `hA : Across (k + j + j' - 1) j' i l`.
+
+Rewrite using `[if_pos hA]`. Establish `hd : g₁ ≤ x τ i - x τ l` using `hacr τ i l hA`. Establish `hdpos : 0 < x τ i - x τ l` using `lt_of_lt_of_le hg0 hd`. Establish `hB1 : B l = 1`. Simplify using `only [B]`.
+
+Rewrite using `[if_pos]`. Unfold `Across at hA`. Use `l.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hc : i.val < k - 1`.
+
+Establish `hA1 : A i = 1` using `by simp only [A]; rw [if_pos]; omega`. Establish `hC1 : C i = 0` using `by simp only [C]; rw [if_neg]; omega`. Rewrite using `[hA1, hB1, hC1]`. Establish `hwd : w τ / (2 * T) ≤ x τ i - x τ l` using `hcloud τ i l hc hA`. Establish `hwpos : 0 < w τ / (2 * T)` using `by have := hw τ; positivity`.
+
+Establish `: 1 / (x τ i - x τ l) ≤ 2 * T / w τ`. Rewrite using `[div_le_div_iff₀ hdpos (hw τ)]`. Rewrite `hwd` using `[div_le_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hA1 : A i = 0` using `by simp only [A]; rw [if_neg]; omega`. Establish `hC1 : C i = 1`. Simplify using `only [C]`. Rewrite using `[if_pos]`. Unfold `Across at hA`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hA1, hB1, hC1]`. Establish `: 1 / (x τ i - x τ l) ≤ 1 / g₁` using `one_div_le_one_div_of_le hg0 hd`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[if_neg hA]`.
+
+Check the signs of the components of the expression. Establish `hAs : ∑ i, A i = ((k - 1 - 0 : ℕ) : ℝ)` using `card_window_fin _ 0 (k - 1) (by omega)`. Establish `hCs : ∑ i, C i = ((k + j - 1 - (k - 1) : ℕ) : ℝ)` using `card_window_fin _ _ _ (by omega)`. Establish `hBs : ∑ l, B l = ((k + j + j' - 1 - (k + j - 1) : ℕ) : ℝ)` using `card_window_fin _ _ _ le_rfl`. Establish `e1 : k - 1 - 0 = k - 1` using `by omega`.
+
+Establish `e2 : k + j - 1 - (k - 1) = j` using `by omega`. Establish `e3 : k + j + j' - 1 - (k + j - 1) = j'` using `by omega`. Rewrite `hAs` using `[e1]`. Rewrite `hCs` using `[e2]`. Rewrite `hBs` using `[e3]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_mul_sum]`. Use `_ = _ := by`. Rewrite using `[hAs, hBs, hCs, Nat.cast_sub hk]`. Use `hw τ` as an intermediate fact.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `⟨by simp only [ρ]; linarith, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_le_sum fun τ _ => ?_` and prove the remaining obligations. Establish `hwτ` using `hw τ`. Establish `hk1 : (1 : ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `hj : (0 : ℝ) ≤ j` using `Nat.cast_nonneg _`. Establish `hj' : (0 : ℝ) ≤ j'` using `Nat.cast_nonneg _`.
+
+Establish `h1 : (j : ℝ) * j' / g₁ ≤ 2 * (((j : ℝ) + j') ^ 2 / g₁)`. Rewrite using `[← mul_div_assoc, div_le_div_iff_of_pos_right hg0]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : 2 * ((k : ℝ) - 1) * j' * T / w τ ≤ 2 * (((j : ℝ) + j') * k * T / w τ)`. Rewrite using `[← mul_div_assoc, div_le_div_iff_of_pos_right hwτ]`.
+
+Establish `: ((k : ℝ) - 1) * j' ≤ ((j : ℝ) + j') * k` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem RhoBound.proof (h : DegreeRatio.Statement) : RhoBound.Statement := by
   intro f k j j' x g₁ T w hH
   obtain ⟨hk, hg, hT, hw, hdec, hacr, hcloud⟩ := hH

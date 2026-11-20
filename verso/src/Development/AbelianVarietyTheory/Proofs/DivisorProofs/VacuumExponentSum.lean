@@ -21,6 +21,15 @@ section Lin
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Establish `hi : IsIdempotentElem (Matrix.toLin' P)`. Unfold `IsIdempotentElem`. Rewrite using `[Module.End.mul_eq_comp, ← Matrix.toLin'_mul, hP]`. Establish `hp : LinearMap.IsProj (LinearMap.range (Matrix.toLin' P)) (Matrix.toLin' P)` using `LinearMap.IsIdempotentElem.isProj_range _ hi`. Establish `hr : Module.finrank ℂ (LinearMap.range (Matrix.toLin' P)) = P.rank` using `rfl`.
+
+Use `⟨?_, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.trace_toLin'_eq, hp.trace, hr]`. Rewrite using `[← LinearMap.det_toLin']`. Establish `e` using `hp.eq_conj_prodMap`. Use `set c := (Submodule.prodEquivOfIsCompl _ _ hp.isCompl)`.
+
+Establish `e2 : Matrix.toLin' (u • P + (1 - P)) = c.conj (LinearMap.prodMap (u • LinearMap.id) LinearMap.id)`. Establish `: LinearMap.prodMap (u • LinearMap.id) LinearMap.id = u • LinearMap.prodMap (LinearMap.id : LinearMap.range (Matrix.toLin' P) →ₗ[ℂ] _) (0 : LinearMap.ker (Matrix.toLin' P) →ₗ[ℂ] _) + (1 - LinearMap.prodMap LinearMap.id 0)`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp`. Rewrite using `[this, map_add, map_add, map_smul, map_smul, map_sub, map_sub, ← e, Matrix.toLin'_one]`.
+
+Use `congr 2`. Conclude with `(LinearEquiv.conj_id c).symm`. Rewrite using `[e2, LinearEquiv.conj_apply, LinearMap.comp_assoc, LinearMap.det_conj, LinearMap.det_prodMap, LinearMap.det_smul, LinearMap.det_id, LinearMap.det_id, hr, mul_one, mul_one]`.
+-/
 theorem idem_trace_det (P : Matrix ι ι ℂ) (hP : P * P = P) :
     P.trace = P.rank ∧ ∀ u : ℂ, (u • P + (1 - P)).det = u ^ P.rank := by
   have hi : IsIdempotentElem (Matrix.toLin' P) := by
@@ -46,11 +55,25 @@ theorem idem_trace_det (P : Matrix ι ι ℂ) (hP : P * P = P) :
     rw [e2, LinearEquiv.conj_apply, LinearMap.comp_assoc, LinearMap.det_conj, LinearMap.det_prodMap, LinearMap.det_smul,
       LinearMap.det_id, LinearMap.det_id, hr, mul_one, mul_one]
 
+/- English proof (translation)
+Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, mul_add, add_mul, hs, mul_one, one_mul]`. Use `module`.
+-/
 theorem half_idem {s : Matrix ι ι ℂ} (hs : s * s = 1) :
     ((1 / 2 : ℂ) • (1 + s)) * ((1 / 2 : ℂ) • (1 + s)) = (1 / 2 : ℂ) • (1 + s) := by
   simp only [Matrix.smul_mul, Matrix.mul_smul, mul_add, add_mul, hs, mul_one, one_mul]
   module
 
+/- English proof (translation)
+Use `le_trans ?_ (Matrix.rank_mul_le_left _ B)` and prove the remaining obligations. Establish `hinj : Function.Injective (((1 / 2 : ℂ) • (1 + t)) * B).mulVecLin`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Establish `h1 : B *ᵥ a + t *ᵥ (B *ᵥ a) = 0`.
+
+Rewrite `ha` using `[Matrix.mulVecLin_apply, ← Matrix.mulVec_mulVec, Matrix.smul_mulVec, Matrix.add_mulVec, Matrix.one_mulVec]`. Conclude with `(smul_eq_zero.1 ha).resolve_left (by norm_num)`. Establish `h2 : star (B *ᵥ a) ⬝ᵥ G *ᵥ (B *ᵥ a) = 0`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hB, Matrix.zero_mulVec, dotProduct_zero]`. Establish `h3 : star (B *ᵥ a) ⬝ᵥ (G * s) *ᵥ (B *ᵥ a) = 0`.
+
+Rewrite using `[← Matrix.mulVec_mulVec]`. Break down `ht with rfl | rfl` into its components or cases. Rewrite using `[eq_neg_of_add_eq_zero_right h1, Matrix.mulVec_neg, dotProduct_neg, h2, neg_zero]`. Rewrite `h1` using `[Matrix.neg_mulVec, add_neg_eq_zero]`. Rewrite using `[← h1, h2]`.
+
+Establish `h4 : B *ᵥ a = 0`. Assume the negation of the conclusion as `h`. Conclude with `(hpos.dotProduct_mulVec_pos h).ne' h3`. Rewrite using `[← Matrix.one_mulVec a, ← hC, ← Matrix.mulVec_mulVec, h4, Matrix.mulVec_zero]`. Unfold `Matrix.rank`.
+
+Rewrite using `[LinearMap.finrank_range_of_inj hinj]`. Simplify using the standard rewrite rules.
+-/
 theorem le_rank_half {m : ℕ} {G s t : Matrix ι ι ℂ} (hpos : (G * s).PosDef) (ht : t = s ∨ t = -s)
     (B : Matrix ι (Fin m) ℂ) (C : Matrix (Fin m) ι ℂ) (hC : C * B = 1) (hB : Bᴴ * G * B = 0) :
     m ≤ ((1 / 2 : ℂ) • (1 + t)).rank := by
@@ -78,6 +101,13 @@ theorem le_rank_half {m : ℕ} {G s t : Matrix ι ι ℂ} (hpos : (G * s).PosDef
   rw [LinearMap.finrank_range_of_inj hinj]
   simp
 
+/- English proof (translation)
+Establish `a1` using `le_rank_half hpos (Or.inl rfl) B C hC hB`. Establish `a2` using `le_rank_half hpos (Or.inr rfl) B C hC hB`. Establish `b1` using `(idem_trace_det _ (half_idem hs)).1`. Establish `b2` using `(idem_trace_det _ (half_idem (s := -s) (by rw [neg_mul_neg, hs]))).1`. Rewrite `b1`, `b2` using `[Matrix.trace_smul, Matrix.trace_add, Matrix.trace_one, ← hm, smul_eq_mul]`.
+
+Rewrite `b2` using `[Matrix.trace_neg]`. Establish `c : ((((1 / 2 : ℂ) • (1 + s)).rank + ((1 / 2 : ℂ) • (1 + -s)).rank : ℕ) : ℂ) = (2 * m : ℕ)`. Rewrite using `[Nat.cast_add, ← b1, ← b2]`. Expand and normalize the polynomial expressions, which then agree. Establish `c'` using `Nat.cast_injective c`.
+
+Establish `d : ((1 / 2 : ℂ) • (1 + s)).rank = m` using `by omega`. Rewrite `b1` using `[d]`. Move the coercions through the operations in `at b1`. Take the linear combination `2 * b1`.
+-/
 theorem trace_eq_zero {m : ℕ} {G s : Matrix ι ι ℂ} (hs : s * s = 1) (hpos : (G * s).PosDef) (hm : 2 * m = Fintype.card ι)
     (B : Matrix ι (Fin m) ℂ) (C : Matrix (Fin m) ι ℂ) (hC : C * B = 1) (hB : Bᴴ * G * B = 0) : s.trace = 0 := by
   have a1 := le_rank_half hpos (Or.inl rfl) B C hC hB
@@ -96,6 +126,9 @@ theorem trace_eq_zero {m : ℕ} {G s : Matrix ι ι ℂ} (hs : s * s = 1) (hpos 
 
 end Lin
 
+/- English proof (translation)
+Unfold `GlobalTheory.WeilParts.detPlus`. Rewrite using `[one_smul, one_smul, Matrix.transpose_one, Matrix.one_kronecker_one, mul_one, show (1 / 2 : ℂ) • (1 + sT ⊗ₖ sSᵀ) + (1 / 2 : ℂ) • (1 - sT ⊗ₖ sSᵀ) = 1 by module, Matrix.det_one]`.
+-/
 theorem detPlus_one {m n : ℕ} (sS : Matrix (Fin n) (Fin n) ℂ) (sT : Matrix (Fin m) (Fin m) ℂ) :
     GlobalTheory.WeilParts.detPlus sS sT ((1 : ℂ) • 1) ((1 : ℂ) • 1) = 1 := by
   unfold GlobalTheory.WeilParts.detPlus

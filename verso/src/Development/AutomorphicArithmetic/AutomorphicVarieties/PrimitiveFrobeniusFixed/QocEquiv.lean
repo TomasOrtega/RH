@@ -9,6 +9,19 @@ section
 variable (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O]
   [Module.Finite ℤ_[l] O]
 
+/- English proof (translation)
+Establish `hl : (l : O) ≠ 0`. Introduce `h0`. Establish `hz : ∀ t : O ⊗[ℤ_[l]] (ℚ_[l] ⧸ ZlSub l), t = 0`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`.
+
+Consider the case `zero => rfl`. Consider the case `tmul o q`. Take `⟨r, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Establish `hlq : (l : ℚ_[l]) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Establish `hr : (Submodule.Quotient.mk r : ℚ_[l] ⧸ ZlSub l) = (l : ℤ_[l]) • Submodule.Quotient.mk (r / l)`.
+
+Rewrite using `[← Submodule.Quotient.mk_smul]`. Use `congr 1`. Rewrite using `[Algebra.smul_def, map_natCast, mul_div_cancel₀ _ hlq]`. Rewrite using `[hr, ← TensorProduct.smul_tmul, Algebra.smul_def, map_natCast, h0, zero_mul, TensorProduct.zero_tmul]`. Consider the case `add x y hx hy => rw [hx, hy, add_zero]`.
+
+Use `haveI : Subsingleton (QO l O) := ⟨fun x y => (hz x).trans (hz y).symm⟩`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `h4` using `(UpperTheory.V.Base.qoFacts l O).2.2.2 ϖ`. Rewrite `h4` using `[IsDiscreteValuationRing.addVal_uniformizer hϖ, Module.length_eq_zero]`. Conclude with `zero_ne_one h4`.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `hne`. Rewrite `hx` using `[PadicInt.unitCoeff_spec hne, map_mul, map_pow, map_natCast]`. Break down `mul_eq_zero.mp hx with h | h` into its components or cases.
+
+Conclude with `((PadicInt.unitCoeff hne).isUnit.map (algebraMap ℤ_[l] O)).ne_zero h`. Conclude with `hl ((pow_eq_zero_iff' (M₀ := O)).mp h).1`.
+-/
 private theorem qoc_inj : Function.Injective (algebraMap ℤ_[l] O) := by
   have hl : (l : O) ≠ 0 := by
     intro h0
@@ -40,6 +53,15 @@ private theorem qoc_inj : Function.Injective (algebraMap ℤ_[l] O) := by
   · exact ((PadicInt.unitCoeff hne).isUnit.map (algebraMap ℤ_[l] O)).ne_zero h
   · exact hl ((pow_eq_zero_iff' (M₀ := O)).mp h).1
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `(UpperTheory.V.Base.qoFacts l O).2.1 w`. Use `set I : Ideal O := LinearMap.ker (LinearMap.toSpanSingleton O (QO l O) w) with hI`. Establish `key : ∀ y : O, y • w = 0 ↔ Submodule.IsPrincipal.generator I ∣ y`. Introduce `y`. Rewrite using `[← Ideal.mem_span_singleton, Ideal.span_singleton_generator, hI, LinearMap.mem_ker, LinearMap.toSpanSingleton_apply]`.
+
+Use `⟨Submodule.IsPrincipal.generator I, ?_, key⟩` and prove the remaining obligations. Introduce `h0`. Establish `h1 : ((l : O) ^ n) • w = 0`. Rewrite using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`. Conclude with `hn`.
+
+Rewrite `h1` using `[key, h0, zero_dvd_iff]`. Establish `hl : (l : O) ≠ 0`. Introduce `h`. Apply `(Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero : (l : ℤ_[l]) ≠ 0)` to reduce the goal to its premises. Apply `qoc_inj l O` to reduce the goal to its premises.
+
+Rewrite using `[map_natCast, map_zero]`. Conclude with `h`. Conclude with `hl ((pow_eq_zero_iff' (M₀ := O)).mp h1).1`.
+-/
 private theorem qoc_ann (w : QO l O) : ∃ a : O, a ≠ 0 ∧ ∀ y : O, y • w = 0 ↔ a ∣ y := by
   obtain ⟨n, hn⟩ := (UpperTheory.V.Base.qoFacts l O).2.1 w
   set I : Ideal O := LinearMap.ker (LinearMap.toSpanSingleton O (QO l O) w) with hI
@@ -61,6 +83,19 @@ private theorem qoc_ann (w : QO l O) : ∃ a : O, a ≠ 0 ∧ ∀ y : O, y • w
     exact h
   exact hl ((pow_eq_zero_iff' (M₀ := O)).mp h1).1
 
+/- English proof (translation)
+Distinguish the cases in `hu : IsUnit a`. Conclude with `⟨0, fun y => by simp [hu.dvd]⟩`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hϖa : ϖ ∣ a`. Rewrite using `[← IsDiscreteValuationRing.addVal_le_iff_dvd, IsDiscreteValuationRing.addVal_uniformizer hϖ]`.
+
+Rewrite `hu` using `[← IsDiscreteValuationRing.addVal_eq_zero_iff]`. Conclude with `ENat.one_le_iff_ne_zero.mpr hu`. Take `⟨b, rfl⟩` from `hϖa`. Establish `hb : b ≠ 0` using `right_ne_zero_of_mul ha`. Establish `hT : Module.length O (LinearMap.ker (ϖ • LinearMap.id : QO l O →ₗ[O] QO l O)) = 1`.
+
+Rewrite using `[(UpperTheory.V.Base.qoFacts l O).2.2.2 ϖ, IsDiscreteValuationRing.addVal_uniformizer hϖ]`. Establish `hnt : Nontrivial (LinearMap.ker (ϖ • LinearMap.id : QO l O →ₗ[O] QO l O))`. Rewrite using `[← Module.length_pos_iff (R := O), hT]`. Conclude with `zero_lt_one`. Take `⟨z, hz⟩` from `exists_ne (0 : LinearMap.ker (ϖ • LinearMap.id : QO l O →ₗ[O] QO l O))`.
+
+Establish `hz1 : ϖ • (z : QO l O) = 0` using `LinearMap.mem_ker.mp z.2`. Establish `hz2 : (z : QO l O) ≠ 0` using `fun h => hz (Subtype.ext h)`. Take `⟨w, hw⟩` from `(UpperTheory.V.Base.qoFacts l O).2.2.1 b hb (z : QO l O)`. Take `⟨c, hc, hC⟩` from `qoc_ann l O w`. Use `⟨w, fun y => ?_⟩` and prove the remaining obligations.
+
+Establish `hca : c ∣ ϖ * b` using `(hC _).mp (by rw [mul_smul, hw, hz1])`. Establish `hcb : ¬ c ∣ b` using `fun h => hz2 (by rw [← hw]; exact (hC b).mpr h)`. Establish `hac : ϖ * b ∣ c`. Rewrite `hca`, `hcb`, the goal using `[← IsDiscreteValuationRing.addVal_le_iff_dvd]`. Rewrite using `[IsDiscreteValuationRing.addVal_mul, IsDiscreteValuationRing.addVal_uniformizer hϖ, add_comm]`.
+
+Conclude with `Order.add_one_le_of_lt (not_le.mp hcb)`. Rewrite using `[hC y]`. Conclude with `⟨fun h => hac.trans h, fun h => hca.trans h⟩`.
+-/
 private theorem qoc_ex (a : O) (ha : a ≠ 0) : ∃ w : QO l O, ∀ y : O, y • w = 0 ↔ a ∣ y := by
   by_cases hu : IsUnit a
   · exact ⟨0, fun y => by simp [hu.dvd]⟩
@@ -91,6 +126,9 @@ private theorem qoc_ex (a : O) (ha : a ≠ 0) : ∃ w : QO l O, ∀ y : O, y •
   rw [hC y]
   exact ⟨fun h => hac.trans h, fun h => hca.trans h⟩
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hϖ`. Rewrite using `[Ideal.span_singleton_mul_left_unit u.isUnit, ← Ideal.span_singleton_pow, ← hϖ.maximalIdeal_eq, IsDiscreteValuationRing.length_quotient_pow_maximalIdeal, IsDiscreteValuationRing.addVal_mul, IsDiscreteValuationRing.addVal_eq_zero_iff.mpr u.isUnit, zero_add, IsDiscreteValuationRing …`.
+-/
 private theorem length_quotient_span_eq_addVal' {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     (a : R) (ha : a ≠ 0) :
     Module.length R (R ⧸ Ideal.span {a}) = IsDiscreteValuationRing.addVal R a := by
@@ -101,6 +139,19 @@ private theorem length_quotient_span_eq_addVal' {R : Type} [CommRing R] [IsDomai
     IsDiscreteValuationRing.addVal_eq_zero_iff.mpr u.isUnit, zero_add,
     IsDiscreteValuationRing.addVal_pow, IsDiscreteValuationRing.addVal_uniformizer hϖ, nsmul_one]
 
+/- English proof (translation)
+Use `set T := LinearMap.ker (a • LinearMap.id : QO l O →ₗ[O] QO l O) with hT`. Establish `hTlen : Module.length O T = IsDiscreteValuationRing.addVal O a` using `(UpperTheory.V.Base.qoFacts l O).2.2.2 a`. Establish `hfin : Module.length O T ≠ ⊤`. Rewrite using `[hTlen, Ne, IsDiscreteValuationRing.addVal_eq_top_iff]`. Conclude with `ha`.
+
+Establish `hwT : w ∈ T` using `by simp [hT, (h a).mpr dvd_rfl]`. Set `g : O →ₗ[O] T` to `LinearMap.toSpanSingleton O T ⟨w, hwT⟩`. Establish `hker : LinearMap.ker g = Ideal.span {a}`. Use extensionality with `y`. Rewrite using `[LinearMap.mem_ker, Ideal.mem_span_singleton, ← h y]`.
+
+Simplify using `[g, Subtype.ext_iff]`. Establish `hrange : Module.length O (LinearMap.range g) = Module.length O T`. Rewrite using `[← (LinearMap.quotKerEquivRange g).length_eq, hker, length_quotient_span_eq_addVal' a ha, hTlen]`. Establish `htop : LinearMap.range g = ⊤`. Establish `hfl : IsFiniteLength O T` using `Module.length_ne_top_iff.mp hfin`.
+
+Use `haveI := (isFiniteLength_iff_isNoetherian_isArtinian.mp hfl).1`. Use `haveI := (isFiniteLength_iff_isNoetherian_isArtinian.mp hfl).2`. Assume the negation of the conclusion as `hne`. Establish `hlt` using `Submodule.length_lt hne`. Rewrite `hlt` using `[hrange]`.
+
+Conclude with `lt_irrefl _ hlt`. Establish `hw'T : w' ∈ T` using `by simp [hT, h']`. Establish `hmem : (⟨w', hw'T⟩ : T) ∈ LinearMap.range g`. Rewrite using `[htop]`. Conclude with `Submodule.mem_top`.
+
+Take `⟨y, hy⟩` from `LinearMap.mem_range.mp hmem`. Conclude with `⟨y, by simpa [g] using (congrArg Subtype.val hy).symm⟩`.
+-/
 private theorem qoc_gen (a : O) (w : QO l O) (ha : a ≠ 0) (h : ∀ y : O, y • w = 0 ↔ a ∣ y) (w' : QO l O)
     (h' : a • w' = 0) : ∃ y : O, w' = y • w := by
   set T := LinearMap.ker (a • LinearMap.id : QO l O →ₗ[O] QO l O) with hT
@@ -134,6 +185,15 @@ private theorem qoc_gen (a : O) (w : QO l O) (ha : a ≠ 0) (h : ∀ y : O, y �
 
 end
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ _`. Use `⟨qoc_ann l O, qoc_ex l O, fun a w ha h w' h' => qoc_gen l O a w ha h w' h', ?_, ?_⟩` and prove the remaining obligations. Introduce `w w'`. Take `⟨a, ha, hA⟩` from `qoc_ann l O w`. Take `⟨b, hb, hB⟩` from `qoc_ann l O w'`.
+
+Break down `le_total (IsDiscreteValuationRing.addVal O a) (IsDiscreteValuationRing.addVal O b) with hab | hab` into its components or cases. Rewrite `hab`, `right` using `[IsDiscreteValuationRing.addVal_le_iff_dvd]`. Conclude with `qoc_gen l O b w' hb hB w ((hA b).mpr hab)`. Rewrite `hab`, `left` using `[IsDiscreteValuationRing.addVal_le_iff_dvd]`. Conclude with `qoc_gen l O a w ha hA w' ((hB a).mpr hab)`.
+
+Introduce `V _ _ f y hy`. Establish `hle : LinearMap.range f ≤ LinearMap.ker (y • LinearMap.id : QO l O →ₗ[O] QO l O)`. Introduce and unpack `_ ⟨v, rfl⟩`. Simplify using `[hy v]`. Rewrite using `[Module.length_eq_add_of_exact (LinearMap.ker f).subtype (LinearMap.ker f).mkQ (Submodule.subtype_injective _) (Submodule.mkQ_surjective _) (LinearMap.exact_subtype_mkQ _), (LinearMap.quotKerEquivRange f).length_eq, ← (UpperTheory.V.Base.qoFacts l O).2.2.2 y]`.
+
+Conclude with `add_le_add le_rfl (Module.length_le_of_injective (Submodule.inclusion hle) (Submodule.inclusion_injective hle))`.
+-/
 theorem UpperTheory.V.ML.qoCyc :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O],
     (∀ w : QO l O, ∃ a : O, a ≠ 0 ∧ ∀ y : O, y • w = 0 ↔ a ∣ y) ∧ (∀ a : O, a ≠ 0 → ∃ w : QO l O, ∀ y : O, y • w = 0 ↔ a ∣ y) ∧

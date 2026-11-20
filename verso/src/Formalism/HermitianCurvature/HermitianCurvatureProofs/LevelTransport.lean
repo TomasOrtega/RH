@@ -17,13 +17,22 @@ section id
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rw [LinearMap.comp_id, LinearMap.id_comp], by rw [LinearMap.comp_id, LinearMap.id_comp]⟩`.
+-/
 theorem rel_id (A : Pr V) : Rel (LinearMap.id : V →ₗ[ℂ] V) A A :=
   ⟨by rw [LinearMap.comp_id, LinearMap.id_comp], by rw [LinearMap.comp_id, LinearMap.id_comp]⟩
 
+/- English proof (translation)
+Introduce `_ _` and use `rel_id _`.
+-/
 theorem mrel_id (M : Matrix (Fin 2) (Fin 2) (Pr V)) : MRel (LinearMap.id : V →ₗ[ℂ] V) M M := fun _ _ => rel_id _
 
 end id
 
+/- English proof (translation)
+Unfold `P5.pairAt`. Rewrite using `[integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`.
+-/
 theorem pairAt_smul {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
     {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)} (μ : Measure (Mt k r)) (a : ℝ≥0)
@@ -32,11 +41,23 @@ theorem pairAt_smul {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Ty
   unfold P5.pairAt
   rw [integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Simplify using `[P5.glue, PTie.shiftCf]`.
+-/
 theorem glue_zero' {r : ℕ} (c : Fin r → ℂ) (c'' : Fin (r - 0) → ℂ) :
     P5.glue (⟨0, by omega⟩ : Fin (r + 1)) c (PTie.shiftCf ⟨0, by omega⟩ c'') = c'' := by
   funext l
   simp [P5.glue, PTie.shiftCf]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Unfold `P5.glue PTie.shiftCf consC`. Distinguish the cases in `h1 : j + 1 ≤ l.val`. Rewrite using `[dif_pos (show j ≤ l.val by omega), dif_pos h1]`. Simplify using `only [Fin.val_cast]`.
+
+Rewrite using `[dif_neg (by omega)]`. Use `congr 1`. Distinguish the cases in `h2 : j ≤ l.val`. Rewrite using `[dif_pos h2, dif_neg h1]`. Simplify using `only [Fin.val_cast]`.
+
+Rewrite using `[dif_pos (by omega)]`. Use `congr 1`. Use `ext`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[dif_neg h2, dif_neg h1]`.
+-/
 theorem glue_step {r : ℕ} (j : ℕ) (hj : j + 1 ≤ r) (c : Fin r → ℂ) (c'' : Fin (r - (j + 1)) → ℂ)
     (hn : r - j = 1 + (r - (j + 1))) :
     P5.glue (⟨j, by omega⟩ : Fin (r + 1)) c
@@ -59,6 +80,9 @@ theorem glue_step {r : ℕ} (j : ℕ) (hj : j + 1 ≤ r) (c : Fin r → ℂ) (c'
       omega
     · rw [dif_neg h2, dif_neg h1]
 
+/- English proof (translation)
+Use extensionality with `p q`. Simplify using `only [D.castM, Matrix.reindex_apply, Matrix.submatrix_apply, ιLev, finCongr_symm, finCongr_apply, Fin.val_cast]`. Apply the tactic sequence `split_ifs with h1 h2 <;> first | rfl | (exfalso; omega)`.
+-/
 theorem castM_iota0 {k r : ℕ} (h : 0 + (r - 0) = r) (g : B.Mat k (r - 0)) :
     D.castM h (ιLev k 0 (r - 0) g) = g := by
   ext p q
@@ -66,6 +90,13 @@ theorem castM_iota0 {k r : ℕ} (h : 0 + (r - 0) = r) (g : B.Mat k (r - 0)) :
     Fin.val_cast]
   split_ifs with h1 h2 <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Rewrite `hz`, `hz'` using `[P.JCTx5.castV_rfl]`. Substitute `hz hz'` using the available equality. Take `rfl : πs = fun y => π (ιLev k 1 ρ y)` from `funext fun y => by rw [hπ, P.JCTx5.castM_rfl]`. Take `rfl : πs' = fun y => π' (ιLev k 1 ρ y)` from `funext fun y => by rw [hπ', P.JCTx5.castM_rfl]`.
+
+Rewrite `hlaw` using `[tz_iota, tz_iota]`. Establish `hmap : μs.map (B2.levM k ρ) = μ` using `map_levM_eq hμ hμs _ (zWeight_fin _ _) hlaw hlaws`. Use `⟨trL ht zs zs' π π', fun Φ c g => ?_, fun l => site_ops ht hL hLs l, fun m hm Y => qqi_rel_n ht hzs hzs' hL hLs hst hsts m hm Y, fun Φ Ψ c => ?_⟩` and prove the remaining obligations. Rewrite using `[P.JCTx5.castM_rfl]`. Both sides reduce to the same expression.
+
+Conclude with `pairAt_tr ht hmap Φ Ψ c`.
+-/
 theorem step_cast {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] {k n ρ : ℕ} (hn : n = 1 + ρ)
     {z z' : Fin (2 * n + k + 1) → ℂ} {zs zs' : Fin (2 * ρ + k + 1) → ℂ}

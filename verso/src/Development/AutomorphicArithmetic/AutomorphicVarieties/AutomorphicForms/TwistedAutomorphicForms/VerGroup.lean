@@ -1,5 +1,42 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.TwistedAutomorphicForms.EqOneOfMemLev
 
+/- English proof (translation)
+Unfold `UpperTheory.V.Af.Tw.VerGroup`. Introduce `H Γ B _ _ _ _ _ _ _ _ _ r hr hidx κ hκ`. Use `set R := r.range with hR`. Establish `hinj : Function.Injective r` using `hr.injective`. Establish `hrs : ∀ s, r s ∈ R` using `fun s => MonoidHom.mem_range.mpr ⟨s, rfl⟩`.
+
+Establish `hmem : ∀ a b : Γ, a * b ∈ R ↔ (a ∈ R ↔ b ∈ R)` using `fun a b => Subgroup.mul_mem_iff_of_index_two hidx`. Establish `hnorm : R.Normal` using `Subgroup.normal_of_index_eq_two hidx`. Establish `hsq : ∀ g, g ∉ R → g * g ∈ R` using `fun g _ => (hmem g g).mpr Iff.rfl`. Choose the witnesses or unpack the hypotheses as in `⟨g0, hg0⟩ : ∃ g0 : Γ, g0 ∉ R := by`. Assume the negation of the conclusion as `hcon`.
+
+Use `push_neg at hcon`. Establish `htop : R = ⊤` using `eq_top_iff.mpr fun x _ => hcon x`. Rewrite `hidx` using `[htop, Subgroup.index_top]`. Conclude with `absurd hidx (by norm_num)`. Set `pre : Γ → H` to `fun γ => if h : γ ∈ R then (MonoidHom.mem_range.mp h).choose else 1`.
+
+Establish `hpre : ∀ γ, γ ∈ R → r (pre γ) = γ` using `fun γ h => by dsimp only [pre]`. Rewrite using `[dif_pos h]`. Conclude with `(MonoidHom.mem_range.mp h).choose_spec`. Set `k : Γ → B` to `fun γ => κ (pre γ)`. Establish `kr : ∀ s, k (r s) = κ s` using `fun s => by show κ (pre (r s)) = κ s`.
+
+Rewrite using `[hinj (hpre _ (hrs s))]`. Establish `kmul : ∀ a, a ∈ R → ∀ b, b ∈ R → k (a * b) = k a * k b`. Introduce `a ha b hb`. Take `⟨a, rfl⟩` from `MonoidHom.mem_range.mp ha`. Take `⟨b, rfl⟩` from `MonoidHom.mem_range.mp hb`.
+
+Rewrite using `[← map_mul, kr, kr, kr, map_mul]`. Establish `kinv : ∀ a, a ∈ R → k a⁻¹ = (k a)⁻¹`. Introduce `a ha`. Take `⟨a, rfl⟩` from `MonoidHom.mem_range.mp ha`. Rewrite using `[← map_inv, kr, kr, map_inv]`.
+
+Establish `k1 : k 1 = 1`. Establish `h` using `kr 1`. Rewrite `h` using `[map_one, map_one]`. Then use the resulting hypothesis. Establish `L : ∀ g, g ∉ R → ∀ x, x ∈ R → k (g * x * g⁻¹) = k (g0 * x * g0⁻¹)`. Introduce `g hg x hx`.
+
+Establish `hh : g0⁻¹ * g ∈ R` using `(hmem _ _).mpr (iff_of_false (fun h => hg0 (by simpa using R.inv_mem h)) hg)`. Establish `hc : g0 * (g0⁻¹ * g) * g0⁻¹ ∈ R` using `hnorm.conj_mem _ hh g0`. Establish `hx' : g0 * x * g0⁻¹ ∈ R` using `hnorm.conj_mem _ hx g0`. Establish `e1 : g * x * g⁻¹ = (g0 * (g0⁻¹ * g) * g0⁻¹) * (g0 * x * g0⁻¹) * (g0 * (g0⁻¹ * g) * g0⁻¹)⁻¹` using `by group`. Rewrite using `[e1, kmul _ (R.mul_mem hc hx') _ (R.inv_mem hc), kmul _ hc _ hx', kinv _ hc, mul_inv_cancel_comm]`.
+
+Set `f : Γ → B` to `fun γ => if γ ∈ R then k γ * k (g0 * γ * g0⁻¹) else k (γ * γ)`. Establish `fin : ∀ γ, γ ∈ R → f γ = k γ * k (g0 * γ * g0⁻¹)` using `fun γ h => if_pos h`. Establish `fout : ∀ γ, γ ∉ R → f γ = k (γ * γ)` using `fun γ h => if_neg h`. Establish `fmul : ∀ x y, f (x * y) = f x * f y`. Introduce `x y`.
+
+Apply the tactic sequence `by_cases hx : x ∈ R <;> by_cases hy : y ∈ R`. Establish `hxy` using `R.mul_mem hx hy`. Establish `cx` using `hnorm.conj_mem _ hx g0`. Establish `cy` using `hnorm.conj_mem _ hy g0`. Rewrite using `[fin _ hxy, fin _ hx, fin _ hy, show g0 * (x * y) * g0⁻¹ = (g0 * x * g0⁻¹) * (g0 * y * g0⁻¹) by group, kmul _ hx _ hy, kmul _ cx _ cy, mul_mul_mul_comm]`.
+
+Establish `hxy : x * y ∉ R` using `fun h => hy (((hmem x y).mp h).mp hx)`. Establish `c1 : y * x * y⁻¹ ∈ R` using `hnorm.conj_mem _ hx y`. Rewrite using `[fout _ hxy, fin _ hx, fout _ hy, show x * y * (x * y) = x * (y * x * y⁻¹) * (y * y) by group, kmul _ (R.mul_mem hx c1) _ (hsq y hy), kmul _ hx _ c1, L y hy x hx]`. Establish `hxy : x * y ∉ R` using `fun h => hx (((hmem x y).mp h).mpr hy)`. Establish `c1 : x * y * x⁻¹ ∈ R` using `hnorm.conj_mem _ hy x`.
+
+Rewrite using `[fout _ hxy, fout _ hx, fin _ hy, show x * y * (x * y) = (x * y * x⁻¹) * (x * x) * y by group, kmul _ (R.mul_mem c1 (hsq x hx)) _ hy, kmul _ c1 _ (hsq x hx), L x hx y hy, mul_comm (k (g0 * y * g0⁻¹)), mul_assoc, mul_comm (k (g0 * y * g0⁻¹))]`. Establish `hxy : x * y ∈ R` using `(hmem x y).mpr (iff_of_false hx hy)`. Establish `hyx : y * x ∈ R` using `(hmem y x).mpr (iff_of_false hy hx)`. Establish `hyy` using `hsq y hy`. Establish `hxx` using `hsq x hx`.
+
+Establish `c1 : x * (y * y) * x⁻¹ ∈ R` using `hnorm.conj_mem _ hyy x`. Rewrite using `[fin _ hxy, fout _ hx, fout _ hy, ← L y hy _ hxy, show y * (x * y) * y⁻¹ = y * x by group, ← kmul _ hxy _ hyx, show x * y * (y * x) = x * (y * y) * x⁻¹ * (x * x) by group, kmul _ c1 _ hxx, L x hx _ hyy, ← L y hy _ hyy, show y * (y * y) * y⁻¹ = y * y by group, mul_comm]`. Set `ν : Γ →* B` to `{ toFun := f map_one' := by show f 1 = 1`. Rewrite using `[fin _ R.one_mem, mul_one, mul_inv_cancel, k1, mul_one]`. Use the proof step `map_mul' := fmul }`.
+
+Establish `hσ : Continuous (fun s : H => pre (g0 * r s * g0⁻¹))`. Rewrite using `[hr.toIsEmbedding.toIsInducing.continuous_iff]`. Establish `hcomp : (r ∘ fun s : H => pre (g0 * r s * g0⁻¹)) = fun s => g0 * r s * g0⁻¹`. Use function extensionality and compare the values at `fun s => hpre _ (hnorm.conj_mem _ (hrs s) g0)`. Rewrite using `[hcomp]`.
+
+Conclude with `(continuous_const.mul hr.continuous).mul continuous_const`. Establish `hνr : (ν ∘ r) = fun s => κ s * κ (pre (g0 * r s * g0⁻¹))`. Use function extensionality and compare the values at `s`. Use `show f (r s) = _`. Rewrite using `[fin _ (hrs s), kr]`.
+
+Establish `hcont : Continuous ν`. Apply `continuous_of_continuousAt_one` to reduce the goal to its premises. Establish `h1 : ContinuousAt (ν ∘ r) 1`. Rewrite using `[hνr]`. Conclude with `(hκ.mul (hκ.comp hσ)).continuousAt`.
+
+Rewrite `h1` using `[hr.continuousAt_iff, map_one]`. Conclude with `h1`. Use `⟨ν, hcont, fun g hg => ⟨fun s s' hs => ?_, fun t ht => ?_⟩⟩` and prove the remaining obligations. Use `show κ s * κ s' = f (r s)`. Rewrite using `[fin _ (hrs s), kr, ← L g hg _ (hrs s), ← hs, kr]`.
+
+Use `show κ t = f g`. Rewrite using `[fout _ hg, ← ht, kr]`.
+-/
 theorem UpperTheory.V.Af.Tw.verGroup :
     UpperTheory.V.Af.Tw.VerGroup := by
   unfold UpperTheory.V.Af.Tw.VerGroup

@@ -16,6 +16,13 @@ open GlobalTheory.DefLift
 
 namespace GlobalTheory.DefLiftCusp
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `(hc.prod hC).exists_bound_of_continuousOn hK.continuousOn`. Use `⟨B, fun ⟨z, h⟩ => ?_⟩` and prove the remaining obligations. Take `⟨δ, hδ, c, hcC, rfl⟩` from `hcov h`. Establish `hae : ∀ᵐ z ∂μ, ‖K (z, δ * c)‖ ≤ B` using `by filter_upwards [h𝓕.ae_covers] with z hz`. Take `⟨γ, hγ⟩` from `hz`.
+
+Use `hinv γ⁻¹ (inv_mem γ.2) δ hδ (γ * z) c` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_left]`. Rewrite using `[this]`. Conclude with `hB _ ⟨subset_closure hγ, hcC⟩`. Establish `hcl : IsClosed {z : Z | ‖K (z, δ * c)‖ ≤ B}` using `isClosed_le (hK.comp (Continuous.prodMk_left _)).norm continuous_const`.
+
+Conclude with `hcl.closure_subset (μ.dense_of_ae hae z)`.
+-/
 theorem exists_bound {Z H : Type} [Group Z] [TopologicalSpace Z] [MeasurableSpace Z] [Group H] [TopologicalSpace H]
     (Γ : Subgroup Z) (Δ : Subgroup H) (μ : Measure Z) [μ.IsOpenPosMeasure] (𝓕 : Set Z)
     (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) (hc : IsCompact (closure 𝓕)) (C : Set H) (hC : IsCompact C)
@@ -35,6 +42,9 @@ theorem exists_bound {Z H : Type} [Group Z] [TopologicalSpace Z] [MeasurableSpac
     isClosed_le (hK.comp (Continuous.prodMk_left _)).norm continuous_const
   exact hcl.closure_subset (μ.dense_of_ae hae z)
 
+/- English proof (translation)
+Use `haveI : IsFiniteMeasure (μ.restrict A) := ⟨by rw [Measure.restrict_apply_univ]; exact hA.lt_top⟩`. Use `haveI : IsFiniteMeasure (ν.restrict B) := ⟨by rw [Measure.restrict_apply_univ]; exact hB.lt_top⟩`. Conclude with `integral_integral_swap (f := fun z h => K (z, h)) (Integrable.of_bound hK.aestronglyMeasurable c (Filter.Eventually.of_forall hc))`.
+-/
 theorem swap_of_bound {Z H : Type} [TopologicalSpace Z] [MeasurableSpace Z] [BorelSpace Z] [SecondCountableTopology Z]
     [TopologicalSpace H] [MeasurableSpace H] [BorelSpace H] [SecondCountableTopology H]
     (μ : Measure Z) (ν : Measure H) (A : Set Z) (B : Set H) (hA : μ A ≠ ⊤) (hB : ν B ≠ ⊤)
@@ -45,6 +55,11 @@ theorem swap_of_bound {Z H : Type} [TopologicalSpace Z] [MeasurableSpace Z] [Bor
   exact integral_integral_swap (f := fun z h => K (z, h))
     (Integrable.of_bound hK.aestronglyMeasurable c (Filter.Eventually.of_forall hc))
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℂ X`. Establish `e : (fun q : (GA D S × GA D T) × X => om q.1 (L q.2) 0) = fun q => ∑ i, b.coord i q.2 * om q.1 (L (b i)) 0`. Use function extensionality and compare the values at `q`. Use `conv_lhs => rw [← b.sum_repr q.2, map_sum, map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, map_smul]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `continuous_finset_sum _ fun i _ => ((b.coord i).continuous_of_finiteDimensional.comp continuous_snd).mul ((H.om_cont _ (hL _) 0).comp continuous_fst)`.
+-/
 theorem continuous_family {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (H : IsWeilDatumO ψ S T χS χT om)
     {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X] [FiniteDimensional ℂ X] (L : X →ₗ[ℂ] (WO S T → ℂ))
@@ -63,6 +78,27 @@ theorem continuous_family {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D
     ((b.coord i).continuous_of_finiteDimensional.comp continuous_snd).mul
       ((H.om_cont _ (hL _) 0).comp continuous_fst)
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT om H hpos X _ _ _ L hL F hF hFinv ν 𝓕 hν h𝓕 hav ξ hξ μ 𝓖 hμ h𝓖 g`. Establish `i0` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig S.gram`. Establish `i1` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig T.gram`. Take `⟨_, _, _, _⟩` from `GlobalTheory.TwistAdelicTop.locallyCompact_secondCountable_borel_countable S`. Take `⟨_, _, _, _⟩` from `GlobalTheory.TwistAdelicTop.locallyCompact_secondCountable_borel_countable T`.
+
+Establish `: BorelSpace (ZI T ξ)` using `Subtype.borelSpace _`. Establish `: SecondCountableTopology (ZI T ξ)` using `TopologicalSpace.Subtype.secondCountableTopology _`. Take `⟨θ, hθ⟩` from `GlobalTheory.Member.exists_isInfFam_family D`. Take `⟨⟨μ₀, 𝓖₀, hμ₀, h𝓖₀, hc₀⟩, hfin, -⟩` from `GlobalTheory.TransvMeasure.transvection_measure D θ T hθ ξ hξ`. Take `⟨C, hC, hcov⟩` from `GlobalTheory.definite_unitary_cocompact S hpos`.
+
+Establish `hG : μ 𝓖 ≠ ⊤` using `(hfin μ 𝓖 hμ h𝓖).2`. Establish `hN : ν 𝓕 ≠ ⊤` using `GlobalTheory.TransvMeasure.measure_ne_top_of_cocompact (GQ S) hC (fun x => by`. Take `⟨γ, hγ, c, hc, rfl⟩` from `hcov x`. Conclude with `⟨γ⁻¹, inv_mem hγ, by rwa [inv_mul_cancel_left]⟩) ν h𝓕`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓖) := ⟨by rw [Measure.restrict_apply_univ]; exact hG.lt_top⟩`.
+
+Establish `hint : ∀ f, IsThetaFunO ψ S T f → Integrable (fun z : ZI T ξ => om (1, (z : GA D T)) f 0) (μ.restrict 𝓖)`. Introduce `f hf`. Take `⟨hc, hi⟩` from `GlobalTheory.thetaKO_continuous_and_rat_invariant ψ S T χS χT om H f hf`. Establish `hK : Continuous fun p : ZI T ξ × GA D S => thetaKO om p.2 (p.1 : GA D T) f` using `hc.comp (continuous_snd.prodMk (continuous_subtype_val.comp continuous_fst))`. Take `⟨B, hB⟩` from `exists_bound _ (GQ S) μ₀ 𝓖₀ h𝓖₀ hc₀ C hC hcov _ hK fun γ hγ δ hδ z h => hi δ hδ γ hγ h z`.
+
+Conclude with `Integrable.of_bound (hK.comp (Continuous.prodMk_left 1)).aestronglyMeasurable B (Filter.Eventually.of_forall fun z => hB (z, 1))`. Establish `hin : ∀ h x, ∫ z in 𝓖, thetaKO om h ((z : GA D T) * g) (L x) ∂μ = 0`. Introduce `h x`. Establish `hf : IsThetaFunO ψ S T (om (h, g) (L x))` using `H.om_pres _ _ (hL x)`. Establish `e : ∀ z : ZI T ξ, thetaKO om h ((z : GA D T) * g) (L x) = om (1, (z : GA D T)) (om (h, g) (L x)) 0`.
+
+Introduce `z`. Establish `h1 : om (h, (z : GA D T) * g) = om (1, (z : GA D T)) * om (h, g)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, one_mul]`. Unfold `thetaKO`. Rewrite using `[h1]`.
+
+Both sides reduce to the same expression. Simplify using `only [e]`. Take `⟨n, hn, a, ha⟩` from `hav x h g ξ hξ`. Establish `h1` using `integral_finset_sum (μ := μ.restrict 𝓖) Finset.univ (fun (k : Fin n) _ => hint _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all H.std hf (along S T ξ (a k))))`. Establish `h2 : ∀ z : ZI T ξ, ∑ k, om (1, (z : GA D T)) (heisO ψ S T (along S T ξ (a k)) (om (h, g) (L x))) 0 = 0`.
+
+Introduce `z`. Rewrite using `[← Finset.sum_apply, ← map_sum, ha, map_zero]`. Both sides reduce to the same expression. Simplify using `only [h2, GlobalTheory.T.integral_om_heisO_along_eq_integral_om D ψ S T χS χT om H hpos ξ hξ μ 𝓖 hμ h𝓖 _ hf, integral_zero, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at h1`. Conclude with `(mul_eq_zero.1 h1.symm).resolve_left (Nat.cast_ne_zero.2 hn.ne')`.
+
+Establish `hK : Continuous fun p : ZI T ξ × GA D S => thetaKO om p.2 ((p.1 : GA D T) * g) (L (F p.2))` using `(continuous_family H L hL).comp ((continuous_snd.prodMk ((continuous_subtype_val.comp continuous_fst).mul continuous_const)).prodMk (hF.comp continuous_snd))`. Take `⟨B, hB⟩` from `exists_bound _ (GQ S) μ₀ 𝓖₀ h𝓖₀ hc₀ C hC hcov _ hK fun γ hγ δ hδ z h => by`. Use `(GlobalTheory.thetaKO_continuous_and_rat_invariant ψ S T χS χT om H _ (hL (F h))).2 δ hδ γ hγ h (z * g)` as an intermediate fact. Rewrite using `[← this, ← mul_assoc]`. Simplify using `only [hFinv δ hδ]`.
+
+Both sides reduce to the same expression. Establish `key` using `swap_of_bound μ ν 𝓖 𝓕 hG hN _ hK B hB`. Simplify using `only [hin, integral_zero] at key`. Conclude with `key`.
+-/
 theorem zcusp_lift : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → (∀ τ, (gramAt D S τ).PosDef) → ∀ (X : Type) [NormedAddCommGroup X] [NormedSpace ℂ X] [FiniteDimensional ℂ X] (L : X →ₗ[ℂ] (WO S T → ℂ)), (∀ x, IsThetaFunO ψ S T (L x)) → ∀ F : GA D S → X, Continuous F → (∀ γ ∈ GQ S, ∀ h, F (γ * h) = F h) → ∀ (ν : Measure (GA D S)) (𝓕 : Set (GA D S)), ν.IsHaarMeasure → IsFundamentalDomain (GQ S) 𝓕 ν → (∀ x h g ξ, IsoVec T ξ → ∃ n : ℕ, 0 < n ∧ ∃ a : Fin n → Fin S.rank → AE D, ∑ k, heisO ψ S T (along S T ξ (a k)) (om (h, g) (L x)) = 0) → ZCusp T (lift om ν 𝓕 fun h => L (F h)) := by
   intro D ψ S T χS χT om H hpos X _ _ _ L hL F hF hFinv ν 𝓕 hν h𝓕 hav ξ hξ μ 𝓖 hμ h𝓖 g
   have i0 := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig S.gram

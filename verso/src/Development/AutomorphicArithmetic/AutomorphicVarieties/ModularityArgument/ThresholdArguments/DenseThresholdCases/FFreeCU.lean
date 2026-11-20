@@ -12,16 +12,27 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.LocLanglands GlobalTheory.HeckeGal GlobalTheory.LocGL GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Th
 open scoped Pointwise
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨h, ?_⟩` and prove the remaining obligations. Simplify using `only [← map_inv]`. Conclude with `h.comp continuous_inv`.
+-/
 private theorem cont_units {Γ R : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [Monoid R]
     [TopologicalSpace R] (f : Γ →* Rˣ) (h : Continuous fun s => (f s : R)) : Continuous f := by
   refine Units.continuous_iff.2 ⟨h, ?_⟩
   simp only [← map_inv]
   exact h.comp continuous_inv
+/- English proof (translation)
+Simplify using `only [Units.val_mul, tw_val, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 private theorem conj_tw {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ →* GL (Fin n) k) (χ : Γ →* kˣ)
     (g : GL (Fin n) k) (s : Γ) :
     ((g * tw r χ s * g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) =
       (χ s : k) • ((g * r s * g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) := by
   simp only [Units.val_mul, tw_val, Matrix.mul_smul, Matrix.smul_mul]
+/- English proof (translation)
+Use `⟨g, fun s => ⟨fun i j hij => ?_, fun i => ?_⟩⟩` and prove the remaining obligations. Use `(hg s).1 i j hij show ((g * tw r χ s * g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i j = 0` as an intermediate fact. Rewrite using `[conj_tw, Matrix.smul_apply]`. Conclude with `smul_eq_zero_of_right _ this`. Use `(hg s).2 i show ((g * tw r χ s * g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i i = _` as an intermediate fact.
+
+Rewrite using `[conj_tw, Matrix.smul_apply, smul_eq_mul, this]`. Conclude with `mul_comm _ _`.
+-/
 private theorem flag_tw {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ →* GL (Fin n) k) (χ : Γ →* kˣ) (H : Subgroup Γ)
     (κ : Fin n → ↥H →* kˣ) (g : GL (Fin n) k)
     (hg : ∀ s : ↥H, (∀ i j, j < i → (g * r s * g⁻¹ : GL (Fin n) k) i j = 0) ∧
@@ -36,6 +47,13 @@ private theorem flag_tw {Γ k : Type} [Group Γ] [Field k] {n : ℕ} (r : Γ →
     show ((g * tw r χ s * g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i i = _
     rw [conj_tw, Matrix.smul_apply, smul_eq_mul, this]
     exact mul_comm _ _
+/- English proof (translation)
+Establish `hfin : {ζ : Ω | ζ ^ M = 1}.Finite`. Use `((Polynomial.nthRoots M (1 : Ω)).toFinset.finite_toSet).subset fun ζ hζ => ?_` and prove the remaining obligations. Simplify `hζ` using `[Polynomial.mem_nthRoots (show 0 < M by omega)]`. Use `haveI : Finite {ζ : Ω // ζ ^ M = 1} := hfin`. Set `f : G F Ω →* Equiv.Perm {ζ : Ω // ζ ^ M = 1}` to `{ toFun := fun s => Equiv.Perm.subtypePerm (s : Ω ≃ₐ[F] Ω).toEquiv fun x => by`.
+
+Express the relevant statement in the definitionally equal form `s x ^ M = 1 ↔ x ^ M = 1`. Rewrite using `[← map_pow, map_eq_one_iff _ (s : Ω ≃ₐ[F] Ω).injective]`. Use the proof step `map_one' := rfl`. Use the proof step `map_mul' := fun _ _ => rfl }`. Use `⟨Nat.card (Equiv.Perm {ζ : Ω // ζ ^ M = 1}), Nat.card_pos, fun s ζ hζ => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : f (s ^ Nat.card (Equiv.Perm {ζ : Ω // ζ ^ M = 1})) = 1`. Rewrite using `[map_pow, pow_card_eq_one']`. Conclude with `congrArg (fun p : Equiv.Perm {ζ : Ω // ζ ^ M = 1} => (p ⟨ζ, hζ⟩ : Ω)) h1`.
+-/
 private theorem pow_fixes (F Ω : Type) [Field F] [Field Ω] [Algebra F Ω] {M : ℕ} (hM : 1 ≤ M) :
     ∃ k : ℕ, 0 < k ∧ ∀ (s : G F Ω) (ζ : Ω), ζ ^ M = 1 → (s ^ k) ζ = ζ := by
   classical
@@ -53,6 +71,23 @@ private theorem pow_fixes (F Ω : Type) [Field F] [Field Ω] [Algebra F Ω] {M :
   have h1 : f (s ^ Nat.card (Equiv.Perm {ζ : Ω // ζ ^ M = 1})) = 1 := by
     rw [map_pow, pow_card_eq_one']
   exact congrArg (fun p : Equiv.Perm {ζ : Ω // ζ ^ M = 1} => (p ⟨ζ, hζ⟩ : Ω)) h1
+/- English proof (translation)
+Introduce `P F Ω _ _ _ _ _ _ l _ hl ι n hn r a M m hr haut hM hm hun A' hA'`. Take `⟨w, hw', hw⟩` from `(Formalism.VB.Cmp.exists_over_above_iff (K := F) A' l).2 hA'`. Take `⟨A, hA, κ, ⟨χ, hk, ⟨g, hg⟩, hκ⟩, hne⟩` from `hun w hw`. Establish `hAl : A.valuation (l : Ω) < 1` using `(Formalism.VB.Cmp.exists_over_above_iff (K := F) A l).1 ⟨w, hA, hw⟩`. Take `⟨k, hk0, hkf⟩` from `pow_fixes F Ω hM`.
+
+Establish `hz : Continuous fun s : G F Ω => ((cycZ F Ω l s : ℤ_[l]ˣ) : ℤ_[l])` using `Units.continuous_val.comp (continuous_cycZ F Ω l)`. Establish `hcyc : Continuous fun s : G F Ω => (cycBar F Ω l s : Qbar l)` using `(continuous_algebraMap ℚ_[l] (PadicAlgCl l)).comp (continuous_subtype_val.comp hz)`. Establish `hχ : Continuous fun s : G F Ω => cycBar F Ω l s ^ a` using `(cont_units _ hcyc).zpow a`. Establish `hc : Continuous (tw r (cycBar F Ω l ^ a))`. Use `cont_units _ ?_` and prove the remaining obligations.
+
+Simplify using `only [tw_val]`. Conclude with `(Units.continuous_val.comp hχ).smul (Units.continuous_val.comp hr)`. Take `⟨s, hs1, hs2⟩` from `_root_.UpperTheory.V.Z.Win.RR.exists_cycZ_eq_one_freeRatios_of_ne_mul_cycBar P F Ω l hl ι n hn _ hc haut A hAl (fun i => κ i * (cycBar F Ω l ^ a).comp (Dec (F := F) A).subtype) (fun i => m i + a) k (flag_tw r _ _ κ g hg) (fun i j hij => by have := hm hij; dsimp only; omega) hk0 ( …`. Rewrite using `[hκ i s hs, mul_right_comm _ (χ i s), ← zpow_add, mul_right_comm, ← zpow_add, add_neg_cancel, zpow_zero, one_mul, ← map_pow]`. Conclude with `hk i _ (hkf s))`.
+
+Use the proof step `(by`. Introduce `i j e`. Apply `hne i j` to reduce the goal to its premises. Rewrite `e` using `[mul_right_comm]`. Conclude with `mul_right_cancel e)`.
+
+Establish `hb : cycBar F Ω l s = 1`. Simplify using `only [cycBar, MonoidHom.comp_apply, hs1, map_one]`. Establish `hfr : Pr.FreeRatios fun i => κ i s`. Establish `e : (fun i => (κ i * (cycBar F Ω l ^ a).comp (Dec (F` using `F) A).subtype) s) = fun i => κ i s := by`. Use function extensionality and compare the values at `i`.
+
+Use `show κ i s * cycBar F Ω l s ^ a = κ i s`. Rewrite using `[hb, one_zpow, mul_one]`. Rewrite `hs2` using `[e]`. Then use the resulting hypothesis. Take `⟨t, rfl⟩` from `exists_smul_eq_of_isPlaceOver (F := F) hA hw'`. Use `⟨t * s * t⁻¹, ?_, ?_, fun i => κ i s, hfr, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mem_Dec, mul_smul, inv_smul_smul, mul_smul, mem_Dec.1 s.2]`. Rewrite using `[map_mul, map_mul, hs1, mul_one, map_inv, mul_inv_cancel]`. Establish `e : r (t * s * t⁻¹) = (r t * g⁻¹) * (g * r s * g⁻¹) * (r t * g⁻¹)⁻¹`. Rewrite using `[map_mul, map_mul, map_inv]`. Use `group`.
+
+Use `show (r (t * s * t⁻¹)).val.charpoly = _`. Rewrite using `[e, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj, Matrix.charpoly_of_upperTriangular _ (fun i j hij => (hg s).1 i j hij)]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [(hg s).2 i]`.
+-/
 theorem UpperTheory.V.Z.J.free_at_of_unlinked_of_automorphic_cyclotomic_twist :
     _root_.UpperTheory.V.Af.HypothesesH' → ∀ (F Ω : Type) [Field F] [NumberField F] [IsCMField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime], l ≠ 2 →
         ∀ (ι : Qbar l ≃+* ℂ) (n : ℕ), 1 ≤ n → ∀ (r : G F Ω →* GL (Fin n) (Qbar l)) (a : ℤ) (M : ℕ) (m : Fin n → ℤ), Continuous r →

@@ -12,6 +12,9 @@ open NumberField IsDedekindDomain MeasureTheory ValuativeRel Matrix Formalism.Ba
 noncomputable section
 namespace GlobalTheory.SymBridge.PhiAgreeProof
 
+/- English proof (translation)
+Introduce `F _ _ κ ρ s τ j R`. Conclude with `⟨GlobalTheory.T.iteratedLevelPattern_to_framePlaces F κ ρ s τ j R, GlobalTheory.T.iteratedLevelPattern_of_framePlaces F κ ρ s τ j R⟩`.
+-/
 theorem places_iff_pattern : ∀ (F : Type) [Zero F] [One F] (κ ρ s τ j : ℕ) (R : ℕ → ℕ → F),
     (∀ (a b : Ix (Fin κ ⊕ Fin (s + 1)) (Fin τ) j), ¬ FreeIx ρ a b → R (zPos a) (zPos b) = if a = b then 1 else 0) ↔
     ((∀ p', p' < κ + s + 1 → R p' p' = 1 ∧ ∀ p, p < κ + s + 1 + j * τ → p ≠ p' →
@@ -21,8 +24,16 @@ theorem places_iff_pattern : ∀ (F : Type) [Zero F] [One F] (κ ρ s τ j : ℕ
   intro F _ _ κ ρ s τ j R
   exact ⟨GlobalTheory.T.iteratedLevelPattern_to_framePlaces F κ ρ s τ j R, GlobalTheory.T.iteratedLevelPattern_of_framePlaces F κ ρ s τ j R⟩
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.symLevel_character_by_residueCharacter`.
+-/
 theorem symmetricLevelCharacter_rationalPoint_eq_residue : ∀ (E K k : Type) [Field E] [NumberField E] [StarRing E] [Field K] [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (P : HeightOneSpectrum (𝓞 E)) (q : ℕ) (ι : E →+* k) (σ₀ : K →+* ℂ) (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (s κ : ℕ) (S : SymData k s κ), Comparison₂ P q ι σ₀ ψ₀ χ S → ∀ (M : ℕ → ℕ → E), (∀ p p', p < κ + s + 1 → p' < κ + s + 1 → IntAt P (M p p')) → ∀ (g : S.P.J), (g : GL (Fin κ ⊕ Fin (s + 1)) k).val = Matrix.of (fun a b => ι (M (GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos κ (s + 1) a) (GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos κ (s + 1) b))) → ((S.P.lam g : ℂˣ) : ℂ) = σ₀ (ψ₀ (redP P (∑ i ∈ Finset.range (κ - 1), M i (i + 1) + ∑ i ∈ Finset.range (κ + s + 1 - κ - 1), M (κ + i) (κ + i + 1)))) := GlobalTheory.T.symLevel_character_by_residueCharacter
 
+/- English proof (translation)
+Introduce `κ l τ j`. Use `⟨(Equiv.sumCongr finSumFinEquiv finProdFinEquiv).trans finSumFinEquiv, ?_⟩` and prove the remaining obligations. Introduce and unpack `((a | a) | ⟨i, u⟩)`. Simplify using `[zPos]`. Simplify using `[zPos]`.
+
+Simplify using `[zPos, finProdFinEquiv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zPos_equiv : ∀ (κ l τ j : ℕ), ∃ eqv : Ix (Fin κ ⊕ Fin l) (Fin τ) j ≃ Fin (κ + l + j * τ), ∀ a, (eqv a : ℕ) = zPos a := by
   intro κ l τ j
   refine ⟨(Equiv.sumCongr finSumFinEquiv finProdFinEquiv).trans finSumFinEquiv, ?_⟩
@@ -34,18 +45,32 @@ theorem zPos_equiv : ∀ (κ l τ j : ℕ), ∃ eqv : Ix (Fin κ ⊕ Fin l) (Fin
 section SlopeTestRemainingChoices
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Simplify using `using IntAt.coe P 1`.
+-/
 theorem intAt_one' (P : HeightOneSpectrum (𝓞 E)) : IntAt P (1 : E) := by
   simpa using IntAt.coe P 1
 
+/- English proof (translation)
+Simplify using `using IntAt.coe P 0`.
+-/
 theorem intAt_zero' (P : HeightOneSpectrum (𝓞 E)) : IntAt P (0 : E) := by
   simpa using IntAt.coe P 0
 
+/- English proof (translation)
+Establish `h1 : IntAt P (-1 : E)` using `by simpa using IntAt.coe P (-1)`. Rewrite using `[sub_eq_add_neg, neg_eq_neg_one_mul]`. Conclude with `ha.add (h1.mul hb)`.
+-/
 theorem intAt_sub' {P : HeightOneSpectrum (𝓞 E)} {a b : E} (ha : IntAt P a) (hb : IntAt P b) :
     IntAt P (a - b) := by
   have h1 : IntAt P (-1 : E) := by simpa using IntAt.coe P (-1)
   rw [sub_eq_add_neg, neg_eq_neg_one_mul]
   exact ha.add (h1.mul hb)
 
+/- English proof (translation)
+Establish `e : redP P a = redP P (a - b) + redP P b`. Rewrite using `[← reduction_add (intAt_sub' ha hb) hb, sub_add_cancel]`. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Rewrite using `[h, zero_add]`. Introduce `h`. Simplify using `using h`.
+-/
 theorem redP_eq_iff' {P : HeightOneSpectrum (𝓞 E)} {a b : E} (ha : IntAt P a) (hb : IntAt P b) :
     redP P (a - b) = 0 ↔ redP P a = redP P b := by
   have e : redP P a = redP P (a - b) + redP P b := by
@@ -54,12 +79,21 @@ theorem redP_eq_iff' {P : HeightOneSpectrum (𝓞 E)} {a b : E} (ha : IntAt P a)
   · intro h; rw [h, zero_add]
   · intro h; simpa using h
 
+/- English proof (translation)
+Simplify using `using reduction_coe P 1`.
+-/
 theorem reduction_one' (P : HeightOneSpectrum (𝓞 E)) : redP P (1 : E) = 1 := by
   simpa using reduction_coe P 1
 
+/- English proof (translation)
+Simplify using `using reduction_coe P 0`.
+-/
 theorem redP_zero' (P : HeightOneSpectrum (𝓞 E)) : redP P (0 : E) = 0 := by
   simpa using reduction_coe P 0
 
+/- English proof (translation)
+Simplify using `using IntAt.coe P (q : 𝓞 E)`.
+-/
 theorem intAt_natCast' (P : HeightOneSpectrum (𝓞 E)) (q : ℕ) : IntAt P (q : E) := by
   simpa using IntAt.coe P (q : 𝓞 E)
 
@@ -67,6 +101,11 @@ end SlopeTestRemainingChoices
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `h0 : A.det ≠ 0` using `by intro h; rw [h, map_zero] at hd; exact zero_ne_one hd`. Use `exists_mem_KO_of_mul hA (A' := A⁻¹) ?_ (by rw [Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 h0), sub_self]; exact maxM_zero)` and prove the remaining obligations. Set `A₀ : Matrix n n 𝒪[k]` to `fun i j => ⟨A i j, hA i j⟩`. Establish `hA₀ : (algebraMap 𝒪[k] k).mapMatrix A₀ = A` using `by ext i j; rfl`. Introduce `i j`.
+
+Rewrite using `[Matrix.inv_def, ← hA₀, ← RingHom.map_adjugate, Matrix.smul_apply, smul_eq_mul]`. Use `mul_mem ?_ (by simp [RingHom.mapMatrix_apply]; exact (A₀.adjugate i j).2)` and prove the remaining obligations. Rewrite using `[Ring.inverse_eq_inv', Valuation.mem_integer_iff, map_inv₀, hA₀, hd, inv_one]`.
+-/
 theorem exists_KO_of_det {n : Type} [Fintype n] [DecidableEq n] {A : Matrix n n k} (hA : IntM A)
     (hd : valuation k A.det = 1) : ∃ g ∈ KO k n, g.val = A := by
   have h0 : A.det ≠ 0 := by intro h; rw [h, map_zero] at hd; exact zero_ne_one hd
@@ -78,6 +117,9 @@ theorem exists_KO_of_det {n : Type} [Fintype n] [DecidableEq n] {A : Matrix n n 
   refine mul_mem ?_ (by simp [RingHom.mapMatrix_apply]; exact (A₀.adjugate i j).2)
   rw [Ring.inverse_eq_inv', Valuation.mem_integer_iff, map_inv₀, hA₀, hd, inv_one]
 
+/- English proof (translation)
+Take `⟨eqv, he⟩` from `zPos_equiv κ l τ j`. Rewrite using `[RingHom.map_det, ← Matrix.det_submatrix_equiv_self eqv]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `[he]`.
+-/
 theorem det_zPos {E : Type} [CommRing E] (ι : E →+* k) (κ l τ j : ℕ) (M : ℕ → ℕ → E) :
     (Matrix.of fun a b : Ix (Fin κ ⊕ Fin l) (Fin τ) j => ι (M (zPos a) (zPos b))).det =
       ι (Matrix.of fun p p' : Fin (κ + l + j * τ) => M p p').det := by
@@ -87,10 +129,16 @@ theorem det_zPos {E : Type} [CommRing E] (ι : E →+* k) (κ l τ j : ℕ) (M :
   ext a b
   simp [he]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with (a | a) | ⟨i, u⟩ <;> rfl`.
+-/
 theorem zPos_ixSucc_inl {κ l τ j : ℕ} (a : Ix (Fin κ ⊕ Fin l) (Fin τ) j) :
     zPos (ixSucc (Fin κ ⊕ Fin l) (Fin τ) j (Sum.inl a)) = zPos a := by
   rcases a with (a | a) | ⟨i, u⟩ <;> rfl
 
+/- English proof (translation)
+Set `A₀ : Matrix n n 𝒪[k]` to `fun i j => ⟨A i j, hA i j⟩`. Establish `hA₀ : (algebraMap 𝒪[k] k).mapMatrix A₀ = A` using `by ext i j; rfl`. Rewrite using `[← hA₀, ← RingHom.map_det]`. Conclude with `(A₀.det).2`.
+-/
 theorem det_mem_of_intM {n : Type} [Fintype n] [DecidableEq n] {A : Matrix n n k} (hA : IntM A) :
     A.det ∈ 𝒪[k] := by
   let A₀ : Matrix n n 𝒪[k] := fun i j => ⟨A i j, hA i j⟩
@@ -98,6 +146,55 @@ theorem det_mem_of_intM {n : Type} [Fintype n] [DecidableEq n] {A : Matrix n n k
   rw [← hA₀, ← RingHom.map_det]
   exact (A₀.det).2
 
+/- English proof (translation)
+Introduce `E K k _ _ _ _ _ _ _ _ P q ι σ₀ ψ₀ χ s κ S hT`. Introduce `τ j c h n' c' n c₂ hn' hn hc' hc₂ e' e ho' ho x`. Establish `hent` using `GlobalTheory.T.completionChain_lattice_entries_agree E K k P q ι σ₀ ψ₀ χ s κ S hT τ j c h n' c' n c₂ hn' hn hc' hc₂ e' e ho' ho x`. Substitute `c' c₂` using the available equality. Take `⟨hres1, hres2, hres3, hq0, -, -, -, -⟩` from `GlobalTheory.T.residues_of_completionAtPrimeWithUniformizer E k P q ι S.ϖ hT.compl S.unif`.
+
+Establish `hint : ∀ a : E, ι a ∈ 𝒪[k] ↔ IntAt P a` using `hT.compl.int`. Establish `hNc : n + c = κ + s + 1 + j * τ + τ` using `by subst hn; rw [← h]; ring`. Use `set M := LocE.entB q κ (c + 1) n' c n (fun i => i + 1) (fun i => i + 1) x with hM`. Use `set G : Matrix (Ix (Fin κ ⊕ Fin (s + 1)) (Fin τ) j) (Ix (Fin κ ⊕ Fin (s + 1)) (Fin τ) j) k := Matrix.of fun a b => ι (M (zPos a) (zPos b)) with hG`. Use `set Y : Matrix (Ix (Fin κ ⊕ Fin (s + 1)) (Fin τ) j ⊕ Fin τ) (Ix (Fin κ ⊕ Fin (s + 1)) (Fin τ) j) k := (Matrix.of fun (a : Ix (Fin κ ⊕ Fin (s + 1)) (Fin τ) (j + 1)) (b : Ix (Fin κ ⊕ Fin (s + 1)) (Fin τ) j) => ι (M (zPos a) (zPos b))).submatrix (ixSucc _ _ j) id with hY`.
+
+Establish `hL : (S.T (Fin τ)).Phi j c h (toLoc ι e e' x) = (S.P.iter (Fin τ) S.μ S.tame j).Phi (Fin τ) (S.μ (j + 1)) Y` using `by show (S.P.iter (Fin τ) S.μ S.tame j).Phi (Fin τ) (S.μ (j + 1)) (((typeFrame S.ϖ (stdOrd (Fin κ) (Fin τ) (j + 1) c (by omega))).coords (typeFrame S.ϖ (stdOrd (Fin κ) (Fin τ) j (c + 1) (by omega))) (toLoc ι e e' x)).submatrix (ixSucc _ _ j) id) = _`. Use `congr 2`. Use extensionality with `a b`. Conclude with `hent a b`. Establish `hY1 : Y.toRows₁ = G`.
+
+Use extensionality with `a b`. Simplify using `only [hY, hG, Matrix.toRows₁, Matrix.submatrix_apply, Matrix.of_apply, id, zPos_ixSucc_inl]`. Establish `hY2 : ∀ u b, Y.toRows₂ u b = ι (M (κ + s + 1 + j * τ + u.val) (zPos b))`. Introduce `u b`. Both sides reduce to the same expression.
+
+Rewrite using `[hL]`. Unfold `LocE.PhiGS`. Simplify using `only`. Rewrite using `[show j + 1 - 1 = j by omega]`. Rewrite using `[← hM]`.
+
+Establish `hzb : ∀ a : Ix (Fin κ ⊕ Fin (s + 1)) (Fin τ) j, zPos a < κ + s + 1 + j * τ` using `fun a => by`. Take `⟨eqv, he⟩` from `zPos_equiv κ (s + 1) τ j`. Rewrite using `[← he]`. Conclude with `(eqv a).2`. Establish `hzs : ∀ p, p < κ + s + 1 + j * τ → ∃ a : Ix (Fin κ ⊕ Fin (s + 1)) (Fin τ) j, zPos a = p` using `fun p hp => by`.
+
+Take `⟨eqv, he⟩` from `zPos_equiv κ (s + 1) τ j; exact ⟨eqv.symm ⟨p, hp⟩, by rw [← he]; simp⟩`. Establish `hdetG : G.det = ι (Matrix.of fun p p' : Fin (κ + s + 1 + j * τ) => M p p').det` using `det_zPos ι κ (s + 1) τ j M`. Establish `hpat` using `GlobalTheory.T.symmetricLevelChain_pattern_iterated k s κ S (Fin τ) j`. Establish `htr : (∀ a b : Ix (Fin κ ⊕ Fin (s + 1)) (Fin τ) j, IntAt P (M (zPos a) (zPos b))) → ∀ a b : Ix (Fin κ ⊕ Fin (s + 1)) (Fin τ) j, (valuation k (G a b - (1 : Matrix _ _ k) a b) < 1 ↔ redP P (M (zPos a) (zPos b)) = if a = b then 1 else 0)`. Introduce `hI a b`.
+
+Establish `hI1 : IntAt P (if a = b then (1 : E) else 0)` using `by split_ifs; exacts [intAt_one' P, intAt_zero' P]`. Establish `e1 : G a b - (1 : Matrix _ _ k) a b = ι (M (zPos a) (zPos b) - if a = b then 1 else 0)`. Apply the tactic sequence `simp only [hG, Matrix.of_apply, Matrix.one_apply, map_sub]; split_ifs <;> simp`. Rewrite using `[e1, hres2 _ (intAt_sub' (hI a b) hI1), redP_eq_iff' (hI a b) hI1]`. Apply the tactic sequence `split_ifs <;> simp [reduction_one', redP_zero']`.
+
+Use `split_ifs with hcond`. Take `⟨c1, c2, c3, c4⟩` from `hcond`. Establish `hI : ∀ a b : Ix (Fin κ ⊕ Fin (s + 1)) (Fin τ) j, IntAt P (M (zPos a) (zPos b))` using `fun a b => c1 _ _ (by have := hzb a; omega) (hzb b)`. Establish `hGint : IntM G` using `fun a b => (hint _).2 (hI a b)`. Establish `hmax : MaxM Y.toRows₂` using `fun u b => by`.
+
+Rewrite using `[hY2, hres1]; exact c2 _ _ (by omega) (by have := u.2; omega) (hzb b)`. Establish `hpatG : ∀ a b, ¬ FreeIx S.ρ a b → valuation k (G a b - (1 : Matrix _ _ k) a b) < 1`. Introduce `a b hab`. Rewrite using `[htr hI]`. Conclude with `((places_iff_pattern (𝓞 E ⧸ P.asIdeal) κ S.ρ s τ j (fun p p' => redP P (M p p'))).2 ⟨c3, c4⟩) a b hab`.
+
+Establish `hIdet : IntAt P (Matrix.of fun p p' : Fin (κ + s + 1 + j * τ) => M p p').det` using `(hint _).1 (hdetG ▸ det_mem_of_intM hGint)`. Distinguish the cases in `hu : IsUnit (redP P (Matrix.of fun p p' : Fin (κ + s + 1 + j * τ) => M p p').det)`. Take `⟨g, hgKO, hgv⟩` from `exists_KO_of_det hGint (by rw [hdetG]; exact (hres3 _ hIdet).2 hu)`. Establish `hgJ : g ∈ (S.P.iter (Fin τ) S.μ S.tame j).J` using `(hpat g).2 ⟨hgKO, fun a b hab => by rw [hgv]; exact hpatG a b hab⟩`. Rewrite using `[TypeDatum.Phi_of_mem _ _ ⟨g, hgJ⟩ (by rw [hY1]; exact hgv) hmax]`.
+
+Take `⟨g₀, D, hg₀, hD, hlam⟩` from `GlobalTheory.T.iteratedDepthOneLevel_character_closed_form k (Fin κ ⊕ Fin (s + 1)) (Fin τ) S.P S.μ S.tame j ⟨g, hgJ⟩`. Rewrite using `[hlam]`. Establish `hl0` using `symmetricLevelCharacter_rationalPoint_eq_residue E K k P q ι σ₀ ψ₀ χ s κ S hT M (fun p p' hp hp' => c1 p p' (by omega) (by omega)) g₀ (by`. Rewrite using `[hg₀]`. Use extensionality with `a b`.
+
+Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp [hgv, hG, zPos, GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.framePos])`. Establish `hDi : ∀ i : Fin j, ((S.μ (i.val + 1) (Matrix.GeneralLinearGroup.det (D i)) : ℂˣ) : ℂ) = σ₀ (LocE.unitV (χ i) (Matrix.of fun u u' : Fin τ => M (κ + s + 1 + i.val * τ + u.val) (κ + s + 1 + i.val * τ + u'.val)).det)`. Introduce `i`. Establish `hDv : (D i).val = ι.mapMatrix (Matrix.of fun u u' : Fin τ => M (κ + s + 1 + i.val * τ + u.val) (κ + s + 1 + i.val * τ + u'.val))`. Rewrite using `[(hD i).2]`.
+
+Use extensionality with `u u'`. Simplify using `only [Ix.diagonalBlockOfMatrix, Matrix.submatrix_apply, hgv, hG, Matrix.of_apply, RingHom.mapMatrix_apply, Matrix.map_apply]`. Both sides reduce to the same expression. Establish `hdv : ((Matrix.GeneralLinearGroup.det (D i) : kˣ) : k) = ι (Matrix.of fun u u' : Fin τ => M (κ + s + 1 + i.val * τ + u.val) (κ + s + 1 + i.val * τ + u'.val)).det`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, hDv, RingHom.map_det]`.
+
+Establish `hv1` using `valuation_det_of_mem_KO (hD i).1`. Rewrite `hv1` using `[hdv]`. Establish `hIi : IntAt P (Matrix.of fun u u' : Fin τ => M (κ + s + 1 + i.val * τ + u.val) (κ + s + 1 + i.val * τ + u'.val)).det` using `(hint _).1 (by rw [Valuation.mem_integer_iff, hv1])`. Conclude with `hT.chi i _ _ hIi ((hres3 _ hIi).1 hv1) hdv`. Establish `hdg : ((Matrix.GeneralLinearGroup.det g : kˣ) : k) = ι (Matrix.of fun p p' : Fin (κ + s + 1 + j * τ) => M p p').det`.
+
+Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, hgv, hdetG]`. Establish `hmu` using `hT.chi j _ _ hIdet hu hdg`. Unfold `LocE.lamGvS`. Simplify using `only [Units.val_mul, Units.coe_prod, Units.val_inv_eq_inv_val, map_mul, map_inv₀, map_prod]`. Rewrite using `[hl0, hmu, ← Fin.prod_univ_eq_prod_range]`.
+
+Use `congr 2`. Conclude with `Finset.prod_congr rfl fun i _ => hDi i`. Establish `h0 : LocE.unitV (χ j) (Matrix.of fun p p' : Fin (κ + s + 1 + j * τ) => M p p').det = 0`. Unfold `LocE.unitV`. Rewrite using `[dif_neg hu]`.
+
+Rewrite using `[h0, _root_.inv_zero, mul_zero, map_zero]`. Assume the negation of the conclusion as `hne`. Take `⟨⟨g, hgJ, hgv⟩, -⟩` from `(TypeDatum.Phi_ne_zero_iff _ _).1 hne`. Rewrite `hgv` using `[hY1]`. Establish `hv` using `valuation_det_of_mem_KO ((S.P.iter (Fin τ) S.μ S.tame j).le_KO hgJ)`.
+
+Rewrite `hv` using `[Matrix.GeneralLinearGroup.val_det_apply, hgv, hdetG]`. Conclude with `hu ((hres3 _ hIdet).1 hv)`. Rewrite using `[map_zero]`. Assume the negation of the conclusion as `hne`. Take `⟨⟨g, hgJ, hgv⟩, hmax⟩` from `(TypeDatum.Phi_ne_zero_iff _ _).1 hne`.
+
+Rewrite `hgv` using `[hY1]`. Take `⟨hgKO, hgpat⟩` from `(hpat g).1 hgJ`. Establish `hGint : IntM G` using `hgv ▸ intM_of_mem_KO hgKO`. Establish `hI : ∀ a b : Ix (Fin κ ⊕ Fin (s + 1)) (Fin τ) j, IntAt P (M (zPos a) (zPos b))` using `fun a b => (hint _).1 (hGint a b)`. Establish `hbot : ∀ (u : Fin τ) (b : Ix (Fin κ ⊕ Fin (s + 1)) (Fin τ) j), IntAt P (M (κ + s + 1 + j * τ + u.val) (zPos b) / q)` using `fun u b => (hres1 _).1 (by rw [← hY2]; exact hmax u b)`.
+
+Apply `hcond` to reduce the goal to its premises. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `p p' hp hp'`. Take `⟨b, rfl⟩` from `hzs p' hp'`. Distinguish the cases in `hpa : p < κ + s + 1 + j * τ`.
+
+Take `⟨a, rfl⟩` from `hzs p hpa`. Conclude with `hI a b`. Take `⟨u, hu⟩ : ∃ u : Fin τ, p = κ + s + 1 + j * τ + u.val` from `⟨⟨p - (κ + s + 1 + j * τ), by omega⟩, by simp only; omega⟩`. Substitute `hu` using the available equality. Use `(hbot u b).mul (intAt_natCast' P q)` as an intermediate fact.
+
+Rewrite `this` using `[div_mul_cancel₀ _ hq0]`. Then use the resulting hypothesis. Introduce `p p' hp hp2 hp'`. Take `⟨b, rfl⟩` from `hzs p' hp'`. Take `⟨u, hu⟩ : ∃ u : Fin τ, p = κ + s + 1 + j * τ + u.val` from `⟨⟨p - (κ + s + 1 + j * τ), by omega⟩, by simp only; omega⟩`. Substitute `hu` using the available equality.
+
+Conclude with `hbot u b`. Conclude with `(places_iff_pattern (𝓞 E ⧸ P.asIdeal) κ S.ρ s τ j (fun p p' => redP P (M p p'))).1 (fun a b hab => (htr hI a b).1 (by have := hgpat a b hab; rwa [hgv] at this))`.
+-/
 theorem phiAgree : ∀ (E K k : Type) [Field E] [NumberField E] [StarRing E] [Field K] [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (P : HeightOneSpectrum (𝓞 E)) (q : ℕ) (ι : E →+* k) (σ₀ : K →+* ℂ) (ψ₀ : AddChar (𝓞 E ⧸ P.asIdeal) K) (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (s κ : ℕ) (S : SymData k s κ), Comparison₂ P q ι σ₀ ψ₀ χ S → PhiAgree P q ι σ₀ ψ₀ χ S := by
   intro E K k _ _ _ _ _ _ _ _ P q ι σ₀ ψ₀ χ s κ S hT
   intro τ j c h n' c' n c₂ hn' hn hc' hc₂ e' e ho' ho x

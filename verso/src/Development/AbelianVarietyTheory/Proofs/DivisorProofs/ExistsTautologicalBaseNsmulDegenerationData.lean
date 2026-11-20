@@ -11,6 +11,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.TInjBase
 
+/- English proof (translation)
+Take `⟨t, -, hv⟩` from `exists_gen hM (K' := PEmpty) (φ' := PEmpty.elim) (ε' := PEmpty.elim) (fun U _ h => by`. Use `(Fintype.prod_sum_type _).trans (Eq.trans ?_ (Fintype.prod_empty _).symm)` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib, hF U h, mul_inv_cancel])`. Use the proof step `(LB.mulGen M _ _ _ _ u (LB.invGen M _ _ u')) (DVR.mulGen_isGen _ _ _ _ _ _ _ hu (DVR.invGen_isGen _ _ _ _ hu'))`. Establish `le : (⊤ : Y.Opens) ≤ LB.wchart M (PEmpty.elim : PEmpty → (Y ⟶ X)) PEmpty.elim` using `fun _ _ => Set.mem_iInter.2 fun k => k.elim`.
+
+Take `⟨a, ha⟩ : ∃ a, a = (res le (t.s PEmpty.elim)).val` from `⟨_, rfl⟩`. Establish `key : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (J), Good M z J → (val u r z J * (val u' r z J)⁻¹).val = gs r z ⊤ a`. Introduce `Z r z J hJ`. Rewrite using `[← val_inv, ← val_mul hJ, ← hv Z r z J hJ, val_of t r z J PEmpty.elim (fun k => k.elim)]`. Conclude with `(congrArg Units.val (gm_res r z le trivial _)).symm.trans ((gs_unit r z ⊤ trivial _).symm.trans (congrArg (gs r z ⊤) ha.symm))`.
+
+Establish `a1 : a = 1` using `he ((fn_ext (V := ⊤) fun y _ => by choose I hI using fun χ : Y₀ ⟶ X => exists_chart hM (χ y)`. Use `key _ e y I hI` as an intermediate fact. Rewrite `this` using `[h y I hI, mul_inv_cancel]`. Use `(gs_pull (𝟙 Y₀) e y ⊤ trivial a).trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp, ← this, gs_eq _ y ⊤ trivial, map_one, map_one, Units.val_one]).trans (map_one _).symm)`.
+
+Use `key Z r z J hJ` as an intermediate fact. Rewrite `this` using `[a1, gs_eq _ z ⊤ trivial, map_one, map_one]`. Conclude with `mul_inv_eq_one.1 (Units.ext this)`.
+-/
 theorem val_eq_of_injective {X Y Y₀ : Scheme.{0}} {M : LB X} (hM : M.IsLB) {K K' : Type} [Fintype K] [Fintype K']
     {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ} (hF : FormEq φ ε φ' ε')
     (e : Y₀ ⟶ Y) (he : Function.Injective e.appTop.hom)
@@ -40,6 +49,21 @@ theorem val_eq_of_injective {X Y Y₀ : Scheme.{0}} {M : LB X} (hM : M.IsLB) {K 
   rw [a1, gs_eq _ z ⊤ trivial, map_one, map_one] at this
   exact mul_inv_eq_one.1 (Units.ext this)
 
+/- English proof (translation)
+Take `⟨τ₀, h₀⟩` from `GlobalTheory.DDataGens.main R D hB hU`. Establish `cadd : ∀ a b, D.c (a + b) = D.c a * D.c b` using `D.c_add`. Establish `c0 : D.c 0 = 1` using `mul_eq_left.1 ((cadd 0 0).symm.trans (by rw [add_zero]))`. Establish `ex : ∀ a b : D.X, ∃ t : LB.Gen (LB.LinComb D.P.L (lamPts (D.c a) (D.c b)) negε), t.IsGen ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ _) (z : Z) (J), Good D.P.L z J → val t r z J = val (τ₀ a b) r z J` using `fun a b => exists_gen D.P.isLB (fun U _ h => by`. Simplify using `[lamPts, negε, Fin.prod_univ_four, cadd, c0]) (τ₀ a b) (h₀ a b).1`.
+
+Use `choose τ hτ hv using ex`. Establish `hK : ∀ a b z J, Good D.P.L z J → val (D.tau a b) (𝟙 _) z J = val (τ a b) (toUnit (TK R)).left z J` using `fun a b z J hJ => ((h₀ a b).2 z J hJ).trans (hv a b _ _ z J hJ).symm`. Establish `inj : Function.Injective (toUnit (TK R)).left.appTop.hom`. Rewrite using `[GlobalTheory.DDataGens.toUnit_TK_left]`. Establish `nat` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (algebraMap R (FractionRing R)))`.
+
+Introduce `x y hxy`. Use `(Scheme.ΓSpecIso (CommRingCat.of R)).commRingCatIsoToRingEquiv.injective (IsFractionRing.injective R (FractionRing R) ?_)` and prove the remaining obligations. Conclude with `(congrArg (fun g => g.hom x) nat).symm.trans ((congrArg (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).hom.hom hxy).trans (congrArg (fun g => g.hom y) nat))`. Use `⟨τ, hτ, fun a b z J hJ => ?_, fun a a' b z J hJ => ?_, hK⟩` and prove the remaining obligations. Use `val_eq_of_injective D.P.isLB (fun U _ h => ?_) _ inj (hτ a b) (hτ b a) (fun y J hJ => ?_) _ _ z J hJ` and prove the remaining obligations.
+
+Simplify using `only [Fin.prod_univ_four, lamPts, negε, mul_comm (D.c b) (D.c a)]`. Simplify using `[mul_right_comm]`. Conclude with `(hK a b y J hJ).symm.trans ((GlobalTheory.TauTwist.val_tau_symm (𝟙 (TK R)) hJ a b).trans (hK b a y J hJ))`. Establish `key` using `val_eq_of_injective D.P.isLB (fun U _ h => ?_) _ inj (DVR.mulGen_isGen _ _ _ _ _ _ _ (hτ (a + a') b) (DVR.pullGen_isGen _ _ _ _ D.cub.isGen (lift (D.c a) (lift (D.c a') (D.c b))).left)) (DVR.mulGen_isGen _ _ _ _ _ _ _ (hτ a b) (hτ a' b)) (fun y J hJ => ?_) _ (𝟙 _) z J hJ`. Use `Eq.trans ?_ (key.trans (val_mul hJ _ _ _))` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (val_mul hJ _ _ _).symm` and prove the remaining obligations. Use `congrArg (_ * ·) ?_` and prove the remaining obligations. Use `val_cub D.cub (𝟙 (𝟙_ (Over (Sp R)))) hJ (D.c a) (D.c a') (D.c b)` as an intermediate fact. Simplify using `only [Category.id_comp] at this`. Conclude with `this.symm`.
+
+Use `((Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) rfl (prod_cub (D.c a) (D.c a') (D.c b) h))).trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_four, lamPts, negε, cadd]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `[ofMul_mul, ofMul_inv]`.
+
+Normalize the expressions using the abelian group laws. Use `(val_mul hJ _ _ _).trans (Eq.trans ?_ (val_mul hJ _ _ _).symm)` and prove the remaining obligations. Rewrite using `[← hK _ _ y J hJ, ← hK _ _ y J hJ, ← hK _ _ y J hJ]`. Conclude with `(congrArg (_ * ·) (val_cub D.cub (toUnit (TK R)) hJ _ _ _)).trans (GlobalTheory.TauTwist.val_tau_add (𝟙 (TK R)) hJ hB a a' b)`.
+-/
 theorem exists_gens {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (hB : D.TauBimult)
     (hU : ∀ y, PsiUnitOn D y Set.univ) :
     ∃ τ : ∀ a b : D.X, LB.Gen (LB.LinComb D.P.L (lamPts (D.c a) (D.c b)) negε), (∀ a b, (τ a b).IsGen) ∧
@@ -91,6 +115,15 @@ theorem exists_gens {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (hB : D.
       exact (congrArg (_ * ·) (val_cub D.cub (toUnit (TK R)) hJ _ _ _)).trans
         (GlobalTheory.TauTwist.val_tau_add (𝟙 (TK R)) hJ hB a a' b)
 
+/- English proof (translation)
+Use `(gen_trans ht ρ.left z (hJ'.mem _ _) (hJ.mem _ _)).trans (congrArg (· * _) ?_)` and prove the remaining obligations. Establish `hm : ∀ {J}, Good L z J → (lift (ρ ≫ x) (ρ ≫ y)).left z ∈ (abelian₂ B L).U (fun I => J ((lift (ρ ≫ x) (ρ ≫ y)).left ≫ (psum B (x2 B) I.down).left))` using `fun hJ => hJ.mem _ _`. Use `Eq.trans ?_ (Wit.gw_idPull (abelian₂ B L) _ z _ _ (hm hJ) (hm hJ')).symm` and prove the remaining obligations. Use `Eq.trans ?_ (gm_linComb L _ _ _ z _ _ (hm hJ) (hm hJ')).symm` and prove the remaining obligations. Use `Eq.trans ?_ (GlobalTheory.PrimCocycle.prod_lam (ρ ≫ x) (ρ ≫ y) (fun q => gm q z _ (L.g (J q) (J' q)))).symm` and prove the remaining obligations.
+
+Establish `inv : ∀ q, gm q z _ (L.g (J' q) (J q)) = (gm q z _ (L.g (J q) (J' q)))⁻¹` using `fun q => eq_inv_of_mul_eq_one_left ((gm_cocycle hL q z (hJ' q) (hJ q) (hJ' q)).trans (gm_self hL q z (hJ' q)))`. Use `(Finset.prod_congr rfl fun k _ => congrArg (· ^ negε k) (inv (_ ≫ _))).trans ?_` and prove the remaining obligations. Use `Eq.trans (Finset.prod_congr rfl fun k _ => ?_) (Wit.prod_neg_lamPts _ _ (fun q => gm q z _ (L.g (J q) (J' q))))` and prove the remaining obligations. Establish `: ρ.left ≫ lamPts x y k = 𝟙 _ ≫ lamPts (ρ ≫ x) (ρ ≫ y) k`. Rewrite using `[Category.id_comp]`.
+
+Use `fin_cases k`. Conclude with `congrArg (fun q : T' ⟶ B => q.left) (MonObj.comp_mul ρ _ _)`. Both sides reduce to the same expression. Both sides reduce to the same expression. Conclude with `congrArg (fun q : T' ⟶ B => q.left) (MonObj.comp_one ρ)`.
+
+Conclude with `congrArg (fun q => (gm q z _ (L.g (J q) (J' q)))⁻¹ ^ negε k) this`.
+-/
 theorem val_trans {S : Scheme.{0}} {B : Over S} [GrpObj B] [IsCommMonObj B] {L : LB B.left} (hL : L.IsLB) {T T' : Over S}
     (ρ : T' ⟶ T) (x y : T ⟶ B) {t : LB.Gen (LB.LinComb L (lamPts x y) negε)} (ht : t.IsGen) (z : T'.left) {J J'}
     (hJ : Good L z J) (hJ' : Good L z J') :
@@ -115,6 +148,17 @@ theorem val_trans {S : Scheme.{0}} {B : Over S} [GrpObj B] [IsCommMonObj B] {L :
     · exact congrArg (fun q : T' ⟶ B => q.left) (MonObj.comp_one ρ)
   exact congrArg (fun q => (gm q z _ (L.g (J q) (J' q)))⁻¹ ^ negε k) this
 
+/- English proof (translation)
+Introduce `o W _ _ _ _ b D hB hU n`. Take `⟨τ, hg, hs, ha, hK⟩` from `exists_gens D hB hU`. Take `⟨ib⟩ : Nonempty (D.X ≃+ (Fin (Module.finrank ℤ D.X) → ℤ))` from `⟨(Module.finBasis ℤ D.X).equivFun.toAddEquiv⟩`. Establish `hid : spMap (RingHom.id W) = 𝟙 (Sp W)` using `Spec.map_id _`. Establish `hn : ∀ a : D.X, ib.symm ((n : ℤ) • ib a) = n • a` using `fun a => by`.
+
+Rewrite using `[map_zsmul, ib.symm_apply_apply, natCast_zsmul]`. Set `T : TautBase o W` to `{ b := b B := D.P.A comm := D.P.isAb.comm isAb := D.P.isAb g := D.P.g smoothDim := D.P.smoothDim M := ⟨D.P.L, D.rig, D.P.isLB, D.rig_gen⟩ cub := D.cub ample := D.P.ample ktriv := D.P.ktriv r := Module.finrank ℤ D.X c₀ := fun a => D.c (ib.symm a) c₀_add := fun a a' => by rw [map_a …`. Use `⟨T, ib, 𝟙 _, 𝟙 _, Wit.idPull _, ?_, ⟨(Category.id_comp _).trans (Category.comp_id _).symm, (Category.id_comp _).trans (Category.comp_id _).symm⟩, Wit.idPull_isGen (DVR.linComb_isLB _ D.P.isLB _ _), fun a => ?_, fun (a b : D.X) => ⟨1, by simp, fun z J J' hJ hJ' => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hid]`. Conclude with `Wit.grpPullback_id D.P.A`.
+
+Rewrite using `[hid]`. Conclude with `(Category.comp_id _).trans ((congrArg (fun x => (D.c x).left) (hn a).symm).trans (Category.id_comp _).symm)`. Establish `e₁ : val ((mulDeg D n).tau a b) (𝟙 _) z J' = val (D.tau (n • a) (n • b)) (𝟙 _) z J'`. Use `(GlobalTheory.TauTwist.val_tau (mulDeg D n) a b _ hJ').trans (Eq.trans ?_ (GlobalTheory.TauTwist.val_tau D _ _ _ hJ').symm)` and prove the remaining obligations. Rewrite using `[← nsmul_add]`.
+
+Both sides reduce to the same expression. Establish `e₂ : val (T.τ₀ ((n : ℤ) • ib a) ((n : ℤ) • ib b)) ((TK W).hom ≫ spMap (RingHom.id W)) z J = val (τ (n • a) (n • b)) (toUnit (TK W)).left z J`. Rewrite using `[hid, Category.comp_id, GlobalTheory.DDataGens.toUnit_TK_left]`. Conclude with `congrArg₂ (fun x y => val (τ x y) (jK W) z J) (hn a) (hn b)`. Establish `e₃ : gm (𝟙 (TK W).left) z ⊤ (unitOn (1 : (FractionRing W)ˣ)) = 1` using `(congrArg (gm (𝟙 (TK W).left) z ⊤) (map_one _)).trans (map_one _)`.
+
+Use `e₁.trans ((hK _ _ z J' hJ').trans (Eq.trans ?_ (congrArg₂ (· * ·) e₃ (congrArg (_ * ·) e₂)).symm))` and prove the remaining obligations. Rewrite using `[_root_.one_mul]`. Conclude with `val_trans D.P.isLB (toUnit (TK W)) _ _ (hg (n • a) (n • b)) z hJ hJ'`.
+-/
 theorem main : ∀ {o W : Type} [CommRing o] [CommRing W] [IsDomain W] [IsLocalRing W] (b : o →+* W) (D : DegPre W), D.TauBimult → (∀ y, PsiUnitOn D y Set.univ) → ∀ n : ℕ, ∃ (T : TautBase o W) (ib : D.X ≃+ (Fin T.r → ℤ)) (β : D.P.A.left ⟶ T.B.left) (ββ : (G2 D.P.A).left ⟶ (G2 T.B).left) (w : LB.Iso (abelian₂ D.P.A D.P.L) ((abelian₂ T.B T.M.L).pull ββ)), From T (RingHom.id W) (fun _ : Empty => (1 : W)) (fun _ => 0) n (mulDeg D n) ib β ββ w := by
   intro o W _ _ _ _ b D hB hU n
   obtain ⟨τ, hg, hs, ha, hK⟩ := exists_gens D hB hU

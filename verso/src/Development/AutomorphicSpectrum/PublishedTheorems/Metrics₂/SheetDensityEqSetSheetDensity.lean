@@ -54,16 +54,25 @@ def IsCxVar (Q : Ideal (MRingOver ℂ ι)) (d : ℕ) : Prop :=
   Nonempty K ∧ IsMultiProjPrime Q ∧
     ringKrullDim (MRingOver ℂ ι ⧸ Q) = ((d + Fintype.card K : ℕ) : WithBot ℕ∞)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sheetDensity_eq_setSheetDensity (P : Ideal (MRing ι))
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) :
     sheetDensity P Ψ = setSheetDensity (mcPts P) Ψ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem isGoodProj_eq_isSetGoodProj (P : Ideal (MRing ι))
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) :
     IsGoodProj P Ψ = IsSetGoodProj (mcPts P) Ψ := rfl
 
 end Integral
 
+/- English proof (translation)
+Use extensionality with `z`. Simplify using `only [mcPts, ReciprocityTheory.AnForm.R.conePts, Set.mem_setOf_eq]`. Use `and_congr_right fun _ => ⟨fun h f hf => ?_, fun h f hf => h _ (Ideal.mem_map_of_mem _ hf)⟩` and prove the remaining obligations. Establish `hle : P ≤ Ideal.comap (map (Int.castRingHom ℂ) : MRing ι →+* MRingOver ℂ ι) (RingHom.ker (eval z))` using `fun g hg => Ideal.mem_comap.mpr (RingHom.mem_ker.mpr (h g hg))`. Conclude with `RingHom.mem_ker.mp (Ideal.map_le_of_le_comap hle hf)`.
+-/
 theorem mcPts_eq_conePts {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) :
     mcPts P = ReciprocityTheory.AnForm.R.conePts (P.map (map (Int.castRingHom ℂ) : MRing ι →+* MRingOver ℂ ι)) := by
   ext z

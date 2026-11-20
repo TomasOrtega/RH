@@ -12,6 +12,9 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Nil PositivityTheory.RgUd.T
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+Use `h (f - g) ((supportedIn Set.univ).sub_mem hf hg) fun p hp => by simp [e p hp]` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem supp_congr' {C : Set (Sp k n)} {ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (h : Supp ξ C) {f g : Sp k n → ℂ}
     (hf : f ∈ supportedIn (Set.univ : Set (Sp k n))) (hg : g ∈ supportedIn (Set.univ : Set (Sp k n)))
     (e : ∀ p ∈ C, f p = g p) : ξ f = ξ g := by
@@ -37,6 +40,45 @@ def trH (z : Matrix (Fin n) (Fin n) k) : Sp k n ≃ₜ Sp k n where
   continuous_invFun := (continuous_fst.sub continuous_const).prodMk continuous_snd
 
 variable (k) in
+/- English proof (translation)
+Introduce `hT n Z hZ`. Take `⟨τ, hs, hnd, hnil⟩` from `hT n Z hZ`. Establish `h : Hyp τ Z` using `⟨hs, hnd, hnil⟩`. Use `letI : MeasurableSpace k := borel k`. Use `haveI : BorelSpace k := ⟨rfl⟩`.
+
+Take `⟨ψ, hψ⟩` from `GlobalTheory.SplitWeil.exists_hasConductor_one (k := k)`. Establish `hψc : Continuous ψ` using `(GlobalTheory.T.addChar_conductor_integers_continuous_ne_one k ψ hψ).1`. Set `ν : Measure k` to `Measure.addHaar`. Take `⟨C, hC⟩` from `Submodule.exists_isCompl (supportedIn (Set.univ : Set (Sp k n)))`. Set `Φ : (Sp k n → ℂ) →ₗ[ℂ] (Sp k n → ℂ)` to `LinearMap.ofIsCompl hC (phiS ψ ν h hψc) 0`.
+
+Establish `hΦ : ∀ f (hf : f ∈ supportedIn (Set.univ : Set (Sp k n))), Φ f = phi0 ψ ν h f` using `fun f hf => LinearMap.ofIsCompl_left_apply hC (⟨f, hf⟩ : supportedIn (Set.univ : Set (Sp k n)))`. Establish `h1 : ∀ f ∈ supportedIn (Set.univ : Set (Sp k n)), Φ f ∈ supportedIn (Set.univ : Set (Sp k n))` using `fun f hf => by rw [hΦ f hf]; exact test_vector_mem_schwartz_bruhat ψ ν h hψ hf`. Use `set K : ℂ := ((distribHaarChar k (Matrix.GeneralLinearGroup.det (Gu h)) : ℝ) : ℂ)⁻¹ * ((((ν.real (𝒪[k] : Set k) ^ 2 * nabs k 1) ^ (dd Z) : ℝ)) : ℂ) with hKdef`. Establish `hK : K ≠ 0`. Establish `h1 : 0 < ν.real (𝒪[k] : Set k)` using `ENNReal.toReal_pos ((isOpen_int k).measure_ne_zero ν ⟨0, zero_mem _⟩) (isCompact_int k).measure_lt_top.ne`.
+
+Establish `h2 : 0 < nabs k 1` using `by show (0 : ℝ) < ((distribHaarChar k 1 : NNReal) : ℝ)`. Conclude with `distribHaarChar_pos` after adjusting the coercions. Establish `h3 : ((distribHaarChar k (Matrix.GeneralLinearGroup.det (Gu h)) : ℝ) : ℂ) ≠ 0`. Conclude with `(distribHaarChar_pos).ne'` after adjusting the coercions. Use `mul_ne_zero (inv_ne_zero h3) ?_` and prove the remaining obligations.
+
+Conclude with `(pow_pos (mul_pos (pow_pos h1 2) h2) _).ne'` after adjusting the coercions. Set `Φ' : (Sp k n → ℂ) →ₗ[ℂ] (Sp k n → ℂ)` to `K⁻¹ • (Φ ∘ₗ LinearMap.funLeft ℂ ℂ (Refl τ Z))`. Establish `hR : ∀ f ∈ supportedIn (Set.univ : Set (Sp k n)), (fun q => f (Refl τ Z q)) ∈ supportedIn (Set.univ : Set (Sp k n))` using `fun f hf => by`. Use `PositivityTheory.RgUd.T.Nil.Four.Alg.comp_mem hf { toFun := Refl τ Z, invFun := Refl τ Z, left_inv := Refl_Refl h, right_inv := Refl_Refl h, continuous_toFun := (continuous_fst.sub (((continuous_Pr τ Z).comp continuous_fst).const_smul (2 : k))).prodMk continuous_snd continuous_in …` as an intermediate fact. Conclude with `this`.
+
+Establish `hRU : ∀ f ∈ supportedIn (UU : Set (Sp k n)), (fun q => f (Refl τ Z q)) ∈ supportedIn (UU : Set (Sp k n))` using `fun f hf => ⟨(hR f ⟨hf.1, Set.subset_univ _⟩).1, fun q hq => by`. Use `hf.2 (show Refl τ Z q ∈ Function.support f from hq)` as an intermediate fact. Conclude with `this⟩`. Establish `h1' : ∀ f ∈ supportedIn (Set.univ : Set (Sp k n)), Φ' f ∈ supportedIn (Set.univ : Set (Sp k n))`. Introduce `f hf`.
+
+Use `show K⁻¹ • Φ (fun q => f (Refl τ Z q)) ∈ _`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `h1 _ (hR f hf)`. Establish `hU : ∀ f ∈ supportedIn (UU : Set (Sp k n)), Φ f ∈ supportedIn (UU : Set (Sp k n))`. Introduce `f hf`.
+
+Rewrite using `[hΦ f ⟨hf.1, Set.subset_univ _⟩]`. Conclude with `fourier_transform_preserves_compact ψ ν h hψ hf`. Establish `hU' : ∀ f ∈ supportedIn (UU : Set (Sp k n)), Φ' f ∈ supportedIn (UU : Set (Sp k n))`. Introduce `f hf`. Use `show K⁻¹ • Φ (fun q => f (Refl τ Z q)) ∈ _`.
+
+Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `hU _ (hRU f hf)`. Establish `hinv : ∀ f ∈ supportedIn (Set.univ : Set (Sp k n)), ∀ p, Φ (Φ' f) p = f p`. Introduce `f hf p`. Use `show Φ (K⁻¹ • Φ (fun q => f (Refl τ Z q))) p = f p`.
+
+Rewrite using `[map_smul, hΦ _ (hR f hf), hΦ _ (test_vector_mem_schwartz_bruhat ψ ν h hψ (hR f hf)), Pi.smul_apply, fourier_transform_involution ψ ν h hψ (hR f hf), Refl_Refl h, ← hKdef, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hK, one_mul]`. Establish `cs : ∀ (s : kˣ) (g : Sp k n → ℂ), g ∈ supportedIn (Set.univ : Set (Sp k n)) → (fun q => g (PositivityTheory.RgUd.TP.Nil.hom s q)) ∈ supportedIn (Set.univ : Set (Sp k n))` using `fun s g hg => by`. Use `PositivityTheory.RgUd.T.Nil.Four.Alg.comp_mem hg (homH s)` as an intermediate fact. Conclude with `this`. Set `𝓕 : ((Sp k n → ℂ) →ₗ[ℂ] ℂ) →ₗ[ℂ] ((Sp k n → ℂ) →ₗ[ℂ] ℂ)` to `{ toFun := fun ξ => ξ ∘ₗ Φ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`.
+
+Use `⟨𝓕, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `ξ hξ f hf h0`. Use `hξ _ (h1 f hf) fun p hp => ?_` and prove the remaining obligations. Rewrite using `[hΦ f hf]`. Conclude with `fourier_transform_support ψ ν h f h0 hp`.
+
+Introduce `ξ hξ hi g hg f hf`. Establish `ca : (fun q => f (act g q)) ∈ supportedIn (Set.univ : Set (Sp k n))`. Use `PositivityTheory.RgUd.T.Nil.Four.Alg.comp_mem hf (PositivityTheory.RgUd.T.Nil.Four.Alg.actH g)` as an intermediate fact. Conclude with `this`. Establish `ca' : (fun q => Φ f (act g q)) ∈ supportedIn (Set.univ : Set (Sp k n))`.
+
+Use `PositivityTheory.RgUd.T.Nil.Four.Alg.comp_mem (h1 f hf) (PositivityTheory.RgUd.T.Nil.Four.Alg.actH g)` as an intermediate fact. Conclude with `this`. Use `show ξ (Φ fun q => f (act g q)) = ξ (Φ f)`. Use `(supp_congr' hξ (h1 _ ca) ca' fun p hp => ?_).trans (hi g hg _ (h1 f hf))` and prove the remaining obligations. Rewrite using `[hΦ _ ca, hΦ f hf]`.
+
+Conclude with `fourier_transform_equivariant ψ ν h hg f hp.1`. Introduce `ξ hξ`. Prove the components needed by the constructor for the conclusion. Introduce `hk f hf`. Conclude with `hk _ (hU f hf)`.
+
+Introduce `hk f hf`. Establish `hf' : f ∈ supportedIn (Set.univ : Set (Sp k n))` using `supportedIn_mono (Set.subset_univ _) hf`. Rewrite using `[← supp_congr' hξ (h1 _ (h1' f hf')) hf' fun p _ => hinv f hf' p]`. Conclude with `hk _ (hU' f hf)`. Introduce `ξ h0 f hf`.
+
+Conclude with `h0 _ (h1 f hf)`. Introduce `t ξ hξ f hf`. Establish `hc1` using `cs t _ (h1 f hf)`. Establish `hc2 : ((((nabs k t)⁻¹ ^ dB Z : ℝ)) : ℂ) • Φ (fun q => f (PositivityTheory.RgUd.TP.Nil.hom t⁻¹ q)) ∈ supportedIn (Set.univ : Set (Sp k n))` using `(supportedIn Set.univ).smul_mem _ (h1 _ (cs t⁻¹ f hf))`. Establish `e` using `supp_congr' hξ hc1 hc2 fun p hp => by`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hΦ f hf, hΦ _ (cs t⁻¹ f hf), fourier_transform_homothety ψ ν h t f hp.1, dd_eq]`. Express the relevant statement in the definitionally equal form `ξ (fun q => Φ f (PositivityTheory.RgUd.TP.Nil.hom t q)) = _ * ξ (Φ fun q => f (PositivityTheory.RgUd.TP.Nil.hom t⁻¹ q))`. Rewrite using `[e, map_smul, smul_eq_mul]`. Introduce `ξ hξ z hz f hf`.
+
+Establish `ct : (fun p : Sp k n => f (p.1 + z, p.2)) ∈ supportedIn (Set.univ : Set (Sp k n))`. Use `PositivityTheory.RgUd.T.Nil.Four.Alg.comp_mem hf (trH z)` as an intermediate fact. Conclude with `this`. Use `show ξ (Φ fun p => f (p.1 + z, p.2)) = ξ (Φ f)`. Use `supp_congr' hξ (h1 _ ct) (h1 f hf) fun p hp => ?_` and prove the remaining obligations.
+
+Take `⟨x, v⟩` from `p`. Take `⟨⟨hxB, hxn⟩, -⟩` from `hp`. Rewrite using `[hΦ _ ct, hΦ f hf]`. Use `fourier_transform_translation_invariant ψ ν h hZ f hz hxB ?_ v` and prove the remaining obligations. Conclude with `h.nil _ ⟨mul_mem_Bz Z (PositivityTheory.RgUd.T.Nil.Four.Phi2.Z_le_Bz Z hZ hz) hxB, Commute.isNilpotent_mul_left (hxB z hz) hxn⟩`.
+-/
 theorem fourQ : FourQ k := by
   intro hT n Z hZ
   obtain ⟨τ, hs, hnd, hnil⟩ := hT n Z hZ

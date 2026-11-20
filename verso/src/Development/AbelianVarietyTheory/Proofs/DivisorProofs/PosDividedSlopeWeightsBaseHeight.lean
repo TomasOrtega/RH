@@ -9,6 +9,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions Form
 
 namespace GlobalTheory.MeanTop.DividedSlope
 
+/- English proof (translation)
+Introduce `a b hab`. Take `⟨b, hb⟩` from `b`. Establish `hab' : (a : ℕ) < b` using `hab`. Proceed by induction on `b, hab' using Nat.le_induction with`. Consider the case `base => exact h a _ rfl`.
+
+Consider the case `succ n hn ih`. Establish `h1` using `ih (by omega) (show (a : ℕ) < n from hn)`. Establish `h2` using `h ⟨n, by omega⟩ ⟨n + 1, hb⟩ rfl`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem strictAnti_of_adj {N : ℕ} (v : Fin N → ℝ)
     (h : ∀ a b : Fin N, (b : ℕ) = a + 1 → v b < v a) : ∀ a b : Fin N, a < b → v b < v a := by
   intro a b hab
@@ -24,12 +29,18 @@ theorem strictAnti_of_adj {N : ℕ} (v : Fin N → ℝ)
 variable {ι : Type} [Fintype ι] {N : ℕ} (W : Wts ι N)
 
 omit [Fintype ι] in
+/- English proof (translation)
+Use `hW.h1` as an intermediate fact. Establish `: 0 < W.T` using `by omega`. Conclude with `this` after adjusting the coercions.
+-/
 theorem T_pos (hW : W.Hyp) : (0 : ℝ) < W.T := by
   have := hW.h1
   have : 0 < W.T := by omega
   exact_mod_cast this
 
 omit [Fintype ι] in
+/- English proof (translation)
+Establish `h1` using `hW.h2.1`. Establish `h2` using `hW.weightConst_nonneg`. Establish `: 0 < W.h0` using `by omega`. Conclude with `this` after adjusting the coercions.
+-/
 theorem pos_dividedSlopeWeights_baseHeight (hW : W.Hyp) : (0 : ℝ) < W.h0 := by
   have h1 := hW.h2.1
   have h2 := hW.weightConst_nonneg
@@ -37,6 +48,9 @@ theorem pos_dividedSlopeWeights_baseHeight (hW : W.Hyp) : (0 : ℝ) < W.h0 := by
   exact_mod_cast this
 
 omit [Fintype ι] in
+/- English proof (translation)
+Use `T_pos W hW` as an intermediate fact. Use `pos_dividedSlopeWeights_baseHeight W hW` as an intermediate fact. Unfold `Wts.g`. Check the signs of the components of the expression.
+-/
 theorem g_pos (hW : W.Hyp) : 0 < W.g := by
   have := T_pos W hW
   have := pos_dividedSlopeWeights_baseHeight W hW
@@ -44,6 +58,9 @@ theorem g_pos (hW : W.Hyp) : 0 < W.g := by
   positivity
 
 omit [Fintype ι] in
+/- English proof (translation)
+Establish `hT` using `T_pos W hW`. Establish `hx' : (W.h0 : ℝ) ≤ 4 * W.T * x` using `by exact_mod_cast hx`. Unfold `Wts.g`. Rewrite using `[div_le_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem g_le_of (hW : W.Hyp) {x : ℤ} (hx : W.h0 ≤ 4 * W.T * x) : W.g ≤ (x : ℝ) := by
   have hT := T_pos W hW
   have hx' : (W.h0 : ℝ) ≤ 4 * W.T * x := by exact_mod_cast hx
@@ -51,6 +68,13 @@ theorem g_le_of (hW : W.Hyp) {x : ℤ} (hx : W.h0 ≤ 4 * W.T * x) : W.g ≤ (x 
   rw [div_le_iff₀ (by positivity)]
   linarith
 
+/- English proof (translation)
+Take `⟨-, h2, h3⟩` from `GlobalTheory.T.dividedWeight_gaps_block_and_bar ι N W hW hD τ a b hab`. Establish `hk` using `hW.kc_lt`. Distinguish the cases in `hp : (b : ℕ) = W.p`. Use `g_le_of W hW (h2 hp).2` as an intermediate fact. Establish `ha : (a : ℕ) < W.p` using `by omega`.
+
+Establish `hb' : ¬ (b : ℕ) < W.p` using `by omega`. Simplify using `only [reWt, Wts.u', ha, hb', if_true, if_false]`. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Use `g_le_of W hW (h3 hp (by omega))` as an intermediate fact.
+
+Establish `ha : ¬ (a : ℕ) < W.p` using `by omega`. Establish `hb' : ¬ (b : ℕ) < W.p` using `by omega`. Simplify using `only [reWt, Wts.u', ha, hb', if_false]`. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem adj_ge (hW : W.Hyp) (hD : W.IsDiv) (τ : ι) (a b : Fin N) (hab : (b : ℕ) = a + 1) (hb : W.p ≤ (b : ℕ)) :
     W.g ≤ reWt W.u' τ a - reWt W.u' τ b := by
   obtain ⟨-, h2, h3⟩ := GlobalTheory.T.dividedWeight_gaps_block_and_bar ι N W hW hD τ a b hab
@@ -69,6 +93,13 @@ theorem adj_ge (hW : W.Hyp) (hD : W.IsDiv) (τ : ι) (a b : Fin N) (hab : (b : �
     push_cast at this ⊢
     linarith
 
+/- English proof (translation)
+Distinguish the cases in `hb : W.p ≤ (b : ℕ)`. Use `adj_ge W hW hD τ a b hab hb` as an intermediate fact. Use `g_pos W hW` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨h1, -, -⟩` from `GlobalTheory.T.dividedWeight_gaps_block_and_bar ι N W hW hD τ a b hab`.
+
+Establish `h` using `h1 (by omega)`. Establish `h' : W.u1 τ b < W.u1 τ a` using `by omega`. Establish `ha : (a : ℕ) < W.p` using `by omega`. Establish `hb' : (b : ℕ) < W.p` using `by omega`. Simplify using `only [reWt, Wts.u', ha, hb', if_true]`.
+
+Conclude with `h'` after adjusting the coercions.
+-/
 theorem adj_lt (hW : W.Hyp) (hD : W.IsDiv) (τ : ι) (a b : Fin N) (hab : (b : ℕ) = a + 1) :
     reWt W.u' τ b < reWt W.u' τ a := by
   by_cases hb : W.p ≤ (b : ℕ)
@@ -83,16 +114,29 @@ theorem adj_lt (hW : W.Hyp) (hD : W.IsDiv) (τ : ι) (a b : Fin N) (hab : (b : �
     simp only [reWt, Wts.u', ha, hb', if_true]
     exact_mod_cast h'
 
+/- English proof (translation)
+The claim follows from `strictAnti_of_adj _ (adj_lt W hW hD τ) a b hab`.
+-/
 theorem regular (hW : W.Hyp) (hD : W.IsDiv) (τ : ι) (a b : Fin N) (hab : a < b) :
     reWt W.u' τ b < reWt W.u' τ a :=
   strictAnti_of_adj _ (adj_lt W hW hD τ) a b hab
 
+/- English proof (translation)
+Break down `hab.eq_or_lt with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `(regular W hW hD τ a b h).le`.
+-/
 theorem anti (hW : W.Hyp) (hD : W.IsDiv) (τ : ι) (a b : Fin N) (hab : a ≤ b) :
     reWt W.u' τ b ≤ reWt W.u' τ a := by
   rcases hab.eq_or_lt with h | h
   · rw [h]
   · exact (regular W hW hD τ a b h).le
 
+/- English proof (translation)
+Establish `hk` using `hW.kc_lt`. Break down `lt_or_gt_of_ne hab with h | h` into its components or cases. Establish `h' : (a : ℕ) < b` using `h`. Establish `hb` using `b.2`. Establish `h1` using `adj_ge W hW hD τ a ⟨a + 1, by omega⟩ rfl (by simp only; omega)`.
+
+Establish `h2` using `anti W hW hD τ ⟨a + 1, by omega⟩ b (show (a : ℕ) + 1 ≤ b from h')`. Conclude with `le_trans (by linarith) (le_abs_self _)`. Establish `h' : (b : ℕ) < a` using `h`. Establish `hb` using `a.2`. Establish `h1` using `adj_ge W hW hD τ ⟨a - 1, by omega⟩ a (by simp only; omega) ha`.
+
+Establish `h2` using `anti W hW hD τ b ⟨a - 1, by omega⟩ (show (b : ℕ) ≤ a - 1 by omega)`. Conclude with `le_trans (by linarith) (neg_le_abs _)`.
+-/
 theorem far (hW : W.Hyp) (hD : W.IsDiv) (τ : ι) (a b : Fin N) (ha : W.p ≤ (a : ℕ)) (hab : a ≠ b) :
     W.g ≤ |reWt W.u' τ a - reWt W.u' τ b| := by
   have hk := hW.kc_lt
@@ -108,6 +152,9 @@ theorem far (hW : W.Hyp) (hD : W.IsDiv) (τ : ι) (a b : Fin N) (ha : W.p ≤ (a
     have h2 := anti W hW hD τ b ⟨a - 1, by omega⟩ (show (b : ℕ) ≤ a - 1 by omega)
     exact le_trans (by linarith) (neg_le_abs _)
 
+/- English proof (translation)
+The claim follows from `|reWt W.u' τ i| ≤ 2 * W.b / W.T := by have hT := T_pos W hW have h1 := (GlobalTheory.MeanTop.divided_entries ι N W hW hD τ i).1 have h2 := (GlobalTheory.T.weight_division_l1_bound ι N W hW hD).2.2 τ i have h3 := hW.h5 τ i have h1' : ((W.T : ℝ) + W.Dd + 1) * |(W.u1 τ i : ℝ)| ≤ |(W …`.
+-/
 theorem entry_le (hW : W.Hyp) (hD : W.IsDiv) (τ : ι) (i : Fin N) :
     |reWt W.u' τ i| ≤ 2 * W.b / W.T := by
   have hT := T_pos W hW

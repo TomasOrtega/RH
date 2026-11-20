@@ -20,6 +20,11 @@ def LocalResidueBound : Prop :=
         ∏ j : Fin (numSeg X.TT), psiRes X O S.w g j 0 ^ (X.p ^ segG X.TT j - 1) =
           ∏ j : Fin (numSeg X.TT), psiRes X O S.w g j c.succ ^ (X.p ^ segG X.TT j - 1)
 
+/- English proof (translation)
+Establish `hw0 : Ideal.Quotient.mk (Ideal.span {w}) w = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_span_singleton_self w)`. Unfold `xvL psiRes`. Rewrite using `[map_sum, Finset.sum_eq_single 0]`. Apply the tactic sequence `simp [Formalism.MainNotions.LemmaBAlt.dW, Formalism.MainNotions.ColumnSystems.hhLetters] try ring`. Introduce `b _ hb`.
+
+Establish `hb1 : 1 ≤ b.val` using `Nat.one_le_iff_ne_zero.mpr (fun h => hb (Fin.ext h))`. Simplify using `[Formalism.MainNotions.LemmaBAlt.dW, Formalism.MainNotions.ColumnSystems.hhLetters, hb1, hw0]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ 0) h`.
+-/
 theorem map_xvL (X : Loc) [Fact X.p.Prime] (O : Type) [CommRing O] [IsDomain O] [Algebra (WF X.p X.n') O] (w : O)
     (g : Matrix (Fin (X.m + 1)) (Fin (X.m + 1)) (WF X.p X.n')) (j : Fin (numSeg X.TT)) (a : Fin (X.m + 1)) :
     map (Ideal.Quotient.mk (Ideal.span {w})) (xvL X O w g j a) =
@@ -36,6 +41,13 @@ theorem map_xvL (X : Loc) [Fact X.p.Prime] (O : Type) [CommRing O] [IsDomain O] 
   · intro h
     exact absurd (Finset.mem_univ 0) h
 
+/- English proof (translation)
+Introduce `X _ O _ _ _ _ S hS hD hn j0 g hg hne`. Rewrite using `[MvPolynomial.C_dvd_iff_map_hom_eq_zero (Ideal.Quotient.mk (Ideal.span {S.w})) S.w (fun x => by rw [Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton])]`. Unfold `locExpr`. Simplify using `only [map_mul, map_prod, map_sub, map_pow, map_xvL]`. Break down `h X O S hS hD hn j0 g hg hne with h0 | ⟨c, hc⟩` into its components or cases.
+
+Rewrite using `[h0]`. Simplify using the standard rewrite rules. Apply `mul_eq_zero_of_right` to reduce the goal to its premises. Apply `Finset.prod_eq_zero (Finset.mem_univ c)` to reduce the goal to its premises. Simplify using `only [mul_pow, Finset.prod_mul_distrib, ← map_pow, ← map_prod]`.
+
+Rewrite using `[hc, sub_self]`.
+-/
 theorem loc4Div_of (h : LocalResidueBound) : LocalDivisibilityBound := by
   intro X _ O _ _ _ _ S hS hD hn j0 g hg hne
   rw [MvPolynomial.C_dvd_iff_map_hom_eq_zero (Ideal.Quotient.mk (Ideal.span {S.w})) S.w

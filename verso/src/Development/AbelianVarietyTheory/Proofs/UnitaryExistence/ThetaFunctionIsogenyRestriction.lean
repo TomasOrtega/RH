@@ -11,6 +11,17 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.ThetaTranslJet
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero => simpa using hJ`. Consider the case `succ d ih`. Introduce `y hy`. Rewrite `hy` using `[pow_succ]`.
+
+Use `Submodule.mul_induction_on hy (fun a ha b hb => ?_) ?_` and prove the remaining obligations. Take `⟨A, hA, hA'⟩` from `ih a ha`. Take `⟨s, hs, hs'⟩` from `hJ b hb`. Use `⟨A * s, by rw [pow_succ]; exact Submodule.mul_mem_mul hA hs, ?_⟩` and prove the remaining obligations. Establish `hsm : s ∈ m`.
+
+Simplify using `using m.sub_mem hb (Ideal.pow_le_self two_ne_zero hs')`. Establish `e : a * b - A * s = a * (b - s) + (a - A) * s` using `by ring`. Rewrite using `[e]`. Use `Ideal.add_mem _ ?_ ?_` and prove the remaining obligations. Rewrite using `[pow_add m (d + 1) 2]`.
+
+Conclude with `Ideal.mul_mem_mul ha hs'`. Rewrite using `[pow_succ m (d + 2)]`. Conclude with `Ideal.mul_mem_mul hA' hsm`. Introduce and unpack `x y ⟨A, hA, hA'⟩ ⟨B, hB, hB'⟩`. Use `⟨A + B, add_mem hA hB, ?_⟩` and prove the remaining obligations.
+
+Establish `e : x + y - (A + B) = (x - A) + (y - B)` using `by ring`. Rewrite using `[e]`. Conclude with `Ideal.add_mem _ hA' hB'`.
+-/
 theorem spans_pow {k R : Type*} [CommRing k] [CommRing R] [Algebra k R] (m : Ideal R)
     (J : Submodule k R) (hJ : ∀ y ∈ m, ∃ s ∈ J, y - s ∈ m ^ 2) (d : ℕ) :
     ∀ y ∈ m ^ (d + 1), ∃ A ∈ J ^ (d + 1), y - A ∈ m ^ (d + 2) := by
@@ -40,12 +51,18 @@ noncomputable def pairing {σ : Type} [Fintype σ] (P : MvPolynomial σ ℂ) :
     MvPowerSeries σ ℂ →ₗ[ℂ] ℂ :=
   ∑ m ∈ P.support, (P.coeff m * ((∏ i, (m i).factorial : ℕ) : ℂ)) • MvPowerSeries.coeff m
 
+/- English proof (translation)
+Rewrite using `[dirPolyDeriv_eq_sum_coeff_taylorDir]`. Simplify using `[pairing, LinearMap.sum_apply]`.
+-/
 theorem polyDeriv_eq_pairing {σ W : Type} [Fintype σ] [NormedAddCommGroup W] [NormedSpace ℂ W]
     (P : MvPolynomial σ ℂ) (u : σ → W) (F : W → ℂ) :
     polyDeriv P u F 0 = pairing P (taylorDir u F) := by
   rw [dirPolyDeriv_eq_sum_coeff_taylorDir]
   simp [pairing, LinearMap.sum_apply]
 
+/- English proof (translation)
+Simplify using `only [pairing, LinearMap.sum_apply, LinearMap.smul_apply]`. Use `Finset.sum_eq_zero fun m hm => ?_` and prove the remaining obligations. Establish `h1 : m.degree ≤ P.totalDegree` using `MvPolynomial.le_totalDegree hm`. Rewrite using `[mem_germIdeal_pow_iff.1 hx m (by omega), smul_zero]`.
+-/
 theorem pairing_eq_zero {σ : Type} [Fintype σ] (P : MvPolynomial σ ℂ) {x : MvPowerSeries σ ℂ}
     (hx : x ∈ germIdeal σ ℂ ^ (P.totalDegree + 1)) : pairing P x = 0 := by
   simp only [pairing, LinearMap.sum_apply, LinearMap.smul_apply]
@@ -53,6 +70,11 @@ theorem pairing_eq_zero {σ : Type} [Fintype σ] (P : MvPolynomial σ ℂ) {x : 
   have h1 : m.degree ≤ P.totalDegree := MvPolynomial.le_totalDegree hm
   rw [mem_germIdeal_pow_iff.1 hx m (by omega), smul_zero]
 
+/- English proof (translation)
+Take `⟨m, hm, hd⟩` from `Finset.exists_mem_eq_sup P.support (MvPolynomial.support_nonempty.2 hP) (fun s => s.sum fun _ e => e)`. Establish `hd' : P.totalDegree = m.degree` using `hd`. Use `⟨MvPowerSeries.monomial m 1, mem_germIdeal_pow_iff.2 fun d hd => ?_, ?_⟩` and prove the remaining obligations. Use `MvPowerSeries.coeff_monomial_ne (fun h => ?_) _` and prove the remaining obligations. Substitute `h` using the available equality.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `only [pairing, LinearMap.sum_apply, LinearMap.smul_apply]`. Rewrite using `[Finset.sum_eq_single m (fun d _ hd => by rw [MvPowerSeries.coeff_monomial_ne hd, smul_zero]) (fun h => absurd hm h), MvPowerSeries.coeff_monomial_same, smul_eq_mul, mul_one]`. Conclude with `mul_ne_zero (MvPolynomial.mem_support_iff.1 hm) (cast_prod_factorial_ne_zero m)`.
+-/
 theorem exists_pairing_ne_zero {σ : Type} [Fintype σ] {P : MvPolynomial σ ℂ} (hP : P ≠ 0) :
     ∃ x ∈ germIdeal σ ℂ ^ P.totalDegree, pairing P x ≠ 0 := by
   classical
@@ -67,6 +89,35 @@ theorem exists_pairing_ne_zero {σ : Type} [Fintype σ] {P : MvPolynomial σ ℂ
       (fun h => absurd hm h), MvPowerSeries.coeff_monomial_same, smul_eq_mul, mul_one]
     exact mul_ne_zero (MvPolynomial.mem_support_iff.1 hm) (cast_prod_factorial_ne_zero m)
 
+/- English proof (translation)
+Use `set m := germIdeal σ ℂ with hm`. Establish `hmem : ∀ x : MvPowerSeries σ ℂ, x ∈ m ↔ MvPowerSeries.constantCoeff x = 0` using `fun x => by`. Rewrite using `[← pow_one m, mem_germIdeal_pow_iff]`. Simplify using `[Finsupp.degree_eq_zero_iff]`. Establish `htm : ∀ k, taylorDir u (f k) ∈ m` using `fun k => by simp [hmem, hf0]`.
+
+Use `set J := Submodule.span ℂ (Set.range fun k => taylorDir u (f k)) with hJ`. Establish `hJm : ∀ y ∈ m, ∃ s ∈ J, y - s ∈ m ^ 2`. Introduce `y hy`. Establish `hle : y ∈ J ⊔ (m ^ 2).restrictScalars ℂ`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨φ, hφ0, hφ⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hne inferInstance`. Establish `hφ' : ∀ x ∈ J ⊔ (m ^ 2).restrictScalars ℂ, φ x = 0` using `fun x hx => by`. Use `Submodule.mem_map_of_mem (f := φ) hx` as an intermediate fact. Rewrite `this` using `[hφ, Submodule.mem_bot]`. Then use the resulting hypothesis. Establish `hform : ∀ x ∈ m, φ x = ∑ i, φ (MvPowerSeries.X i) * MvPowerSeries.coeff (Finsupp.single i 1) x`.
+
+Introduce `x hx`. Use `hφ' _ (Submodule.mem_sup_right (ThetaJet.sub_affine_mem_sq x))` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero, (hmem x).1 hx]`. Rewrite using `[this]`. Simplify using `[mul_comm]`.
+
+Distinguish the cases in `hc : (fun i => φ (MvPowerSeries.X i)) = 0`. Apply `hφ0` to reduce the goal to its premises. Rewrite using `[hform y hy]`. Simplify using `[congrFun hc]`. Take `⟨k, hk⟩` from `hsp _ hc`.
+
+Apply `hk` to reduce the goal to its premises. Use `hφ' _ (Submodule.mem_sup_left (Submodule.subset_span ⟨k, rfl⟩))` as an intermediate fact. Rewrite `this` using `[hform _ (htm k)]`. Simplify `this` using `only [ThetaJet.coeff_single_taylorDir u (hf k)]`. Take `⟨s, hs, w, hw, e⟩` from `Submodule.mem_sup.1 hle`.
+
+Conclude with `⟨s, hs, by rw [← e, add_sub_cancel_left]; exact hw⟩`. Establish `hex : ∃ s : Fin P.totalDegree → κ, pairing P (∏ j, taylorDir u (f (s j))) ≠ 0`. Take `⟨x, hx, hx0⟩` from `exists_pairing_ne_zero hP`. Choose the witnesses or unpack the hypotheses as in `⟨A, hA, hA'⟩ : ∃ A ∈ J ^ P.totalDegree, x - A ∈ m ^ (P.totalDegree + 1) := by`. Generalize the expression as in `P.totalDegree = d at hx ⊢`.
+
+Consider the cases of `d with`. Consider the case `zero`. Use `⟨MvPowerSeries.constantCoeff x • 1, Submodule.smul_mem _ _ ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero]`. Conclude with `Submodule.one_le.1 le_rfl`.
+
+Simplify using `[hmem]`. Consider the case `succ d => exact spans_pow m J hJm d x hx`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `h1` using `pairing_eq_zero P hA'`.
+
+Rewrite `h1` using `[map_sub, sub_eq_zero]`. Rewrite `hA` using `[hJ, Submodule.span_pow]`. Use `hx0 (h1.trans ((Submodule.span_le (p := LinearMap.ker (pairing P))).2 ?_ hA))` and prove the remaining obligations. Introduce `a ha`. Take `⟨g, rfl⟩` from `Set.mem_pow.1 ha`.
+
+Use `choose s hs using fun j => (g j).2`. Rewrite using `[List.prod_ofFn]`. Simplify using `only [← hs]`. Conclude with `hcon s`. Take `⟨s, hs⟩` from `hex`.
+
+Use `⟨s, fun h hh h0 => ?_⟩` and prove the remaining obligations. Establish `e` using `taylorDir_mul u (Finset.analyticAt_fun_prod Finset.univ fun j _ => hf (s j)) hh`. Rewrite `e` using `[taylorDir_prod u _ fun j _ => hf (s j)]`. Rewrite using `[polyDeriv_eq_pairing]`. Express the relevant statement in the definitionally equal form `pairing P (taylorDir u ((fun z => ∏ j, f (s j) z) * h)) ≠ 0`.
+
+Establish `h1 : ∏ j, taylorDir u (f (s j)) ∈ m ^ P.totalDegree`. Simplify using `using Ideal.prod_mem_prod (s := Finset.univ) (I := fun _ => m) fun j _ => htm (s j)`. Establish `h2 : taylorDir u h - h 0 • 1 ∈ m` using `by simp [hmem]`. Establish `h3` using `pairing_eq_zero P (x := _) (by rw [pow_succ]; exact Ideal.mul_mem_mul h1 h2)`. Rewrite `h3` using `[mul_sub, map_sub, sub_eq_zero, mul_smul_comm, mul_one, map_smul]`.
+
+Rewrite using `[e, h3]`. Conclude with `mul_ne_zero h0 hs`.
+-/
 theorem exists_prod_ne_zero {σ κ W : Type} [Fintype σ] [NormedAddCommGroup W] [NormedSpace ℂ W]
     (u : σ → W) (f : κ → W → ℂ) (hf : ∀ k, AnalyticAt ℂ (f k) 0) (hf0 : ∀ k, f k 0 = 0)
     (hsp : ∀ c : σ → ℂ, c ≠ 0 → ∃ k, ∑ i, c i * fderiv ℂ (f k) 0 (u i) ≠ 0)
@@ -142,6 +193,11 @@ theorem exists_prod_ne_zero {σ κ W : Type} [Fintype σ] [NormedAddCommGroup W]
   rw [e, h3]
   exact mul_ne_zero h0 hs
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.UpperHalfImaginaryForm.exists_coc`. Consider the case `exact _root_.GlobalTheory.UpperHalfImaginaryForm.exists_coc`. Consider the case `(apply _root_.GlobalTheory.UpperHalfImaginaryForm.exists_coc <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.UpperHalfImaginaryForm.exists_coc <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.UpperHalfImaginaryForm.exists_coc <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.UpperHalfImaginaryForm.exists_coc ..)`.
+-/
 theorem exists_coc {ι : Type} [Fintype ι]
     (b : Module.Basis (Fin (2 * Fintype.card ι)) ℝ (EuclideanSpace ℂ ι))
     (hint : ∀ x y : EuclideanSpace ℂ ι, x ∈ lat b → y ∈ lat b → ∃ k : ℤ, (Hf x y).im = k)
@@ -160,6 +216,27 @@ variable {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ}
 
 open scoped MatrixOrder in
 
+/- English proof (translation)
+Set `L : Submodule ℤ (Fin g → ℂ)` to `AddSubgroup.toIntSubmodule Λ`. Use `haveI hL : DiscreteTopology L := hd`. Establish `hsp : Submodule.span ℝ (L : Set (Fin g → ℂ)) = ⊤` using `ThetaTranslSpan.span_eq_top hH Λ fun v => (hΛ v).1`. Use `haveI : IsZLattice ℝ L := ⟨hsp⟩`. Take `⟨B, hB, hY⟩` from `CStarAlgebra.isStrictlyPositive_iff_eq_star_mul_self.mp hH.isStrictlyPositive`.
+
+Set `Φ : (Fin g → ℂ) ≃ₗ[ℂ] EuclideanSpace ℂ (Fin g)` to `(B.toLinearEquiv' hB.invertible).trans (WithLp.linearEquiv 2 ℂ _).symm`. Establish `hΦ : ∀ v w, Hf (Φ v) (Φ w) = star w ⬝ᵥ Hm.mulVec v` using `fun v w => by`. Establish `: Hf (Φ v) (Φ w) = star (B.mulVec w) ⬝ᵥ B.mulVec v`. Rewrite using `[dotProduct_comm]`. Both sides reduce to the same expression.
+
+Rewrite using `[this, hY, star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, star_eq_conjTranspose]`. Set `b₀` to `(Module.Free.chooseBasis ℤ L).ofZLatticeBasis ℝ L`. Set `b₁` to `b₀.map (Φ.restrictScalars ℝ)`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ L) = Fintype.card (Fin (2 * Fintype.card (Fin g)))`. Rewrite using `[← Module.finrank_eq_card_basis b₁, finrank_real_of_complex]`.
+
+Simplify using the standard rewrite rules. Set `b` to `b₁.reindex (Fintype.equivOfCardEq hcard)`. Establish `hb : ∀ z, Φ z ∈ lat b ↔ z ∈ Λ` using `fun z => by`. Express the relevant statement in the definitionally equal form `_ ↔ z ∈ L`. Rewrite using `[← (Module.Free.chooseBasis ℤ L).ofZLatticeBasis_span ℝ, lat, Module.Basis.range_reindex]`.
+
+Simplify using `only [Module.Basis.mem_span_iff_repr_mem, b₁, Module.Basis.map_repr]`. Simplify using `[b₀]`. Establish `hsk : ∀ z u : Fin g → ℂ, (star u ⬝ᵥ Hm.mulVec z).im = -(star z ⬝ᵥ Hm.mulVec u).im` using `fun z u => by rw [ThetaTranslSpan.herm_swap hH z u]; simp`. Take `⟨Y, hYb, hC⟩` from `exists_coc b (fun x y hx hy => by`. Take `⟨x, rfl⟩` from `Φ.surjective x`.
+
+Take `⟨y, rfl⟩` from `Φ.surjective y`. Rewrite using `[hΦ]`. Conclude with `(hΛ y).2 ((hb y).1 hy) x ((hb x).1 hx)) (fun φ => by`. Set `p : L →+ lat b` to `(Φ.toLinearMap.toAddMonoidHom.comp L.subtype.toAddMonoidHom).codRestrict (lat b) fun a => (hb _).2 a.2`. Take `⟨y, hy⟩` from `ThetaTranslSpan.exists_im_eq_lattice hH L hsp (-((Int.castAddHom ℝ).comp (φ.comp p)).toIntLinearMap)`.
+
+Use `⟨Φ y, (hb y).2 ((hΛ y).1 fun a ha => ⟨-φ (p ⟨a, ha⟩), by rw [hy ⟨a, ha⟩]; simp⟩), ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨x, hx⟩`. Take `⟨x, rfl⟩` from `Φ.surjective x`. Rewrite using `[hΦ, hsk, hy ⟨x, (hb x).1 hx⟩]`. Simplify using `only [LinearMap.neg_apply, neg_neg]`.
+
+Use the proof step `rfl)`. Take `⟨s, ⟨hs, hs'⟩, hs0⟩` from `ThetaExist.exists_sec_ne_zero Y hC`. Use `⟨fun a => Y.ka (Φ a), fun z => s (Φ z), hs.comp Φ.toContinuousLinearEquiv.differentiable, fun h => hs0 ?_, fun a ha => Y.ka_abs _ (hYb ▸ (hb a).2 ha), fun a ha z => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Take `⟨x, rfl⟩` from `Φ.surjective x`.
+
+Conclude with `congrFun h x`. Simplify using `only [map_add]`. Rewrite using `[hs' _ (hYb ▸ (hb a).2 ha), hΦ, hΦ]`. Use `congr 3`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_theta (hH : Hm.PosDef) (Λ : AddSubgroup (Fin g → ℂ)) [hd : DiscreteTopology Λ]
     (hΛ : ∀ v, (∀ a ∈ Λ, ∃ k : ℤ, (star v ⬝ᵥ Hm.mulVec a).im = k) ↔ v ∈ Λ) :
     ∃ χ θ : (Fin g → ℂ) → ℂ, Differentiable ℂ θ ∧ θ ≠ 0 ∧ (∀ a ∈ Λ, ‖χ a‖ = 1) ∧
@@ -219,11 +296,19 @@ theorem exists_theta (hH : Hm.PosDef) (Λ : AddSubgroup (Fin g → ℂ)) [hd : D
     congr 3
     push_cast; ring
 
+/- English proof (translation)
+Simplify using `only [dotProduct, mulVec]`. Use `fun_prop`.
+-/
 theorem differentiable_herm (a : Fin g → ℂ) :
     Differentiable ℂ fun z : Fin g → ℂ => star a ⬝ᵥ Hm.mulVec z := by
   simp only [dotProduct, mulVec]
   fun_prop
 
+/- English proof (translation)
+Establish `e1` using `hθ _ (Λ.add_mem ha hb) z₀`. Rewrite `e1` using `[show z₀ + (a + b) = z₀ + b + a by abel, hθ a ha, hθ b hb, ← mul_assoc]`. Establish `e2` using `mul_right_cancel₀ h0 e1`. Use `mul_right_cancel₀ (Complex.exp_ne_zero _) (e2.symm.trans ?_)` and prove the remaining obligations. Rewrite using `[mul_mul_mul_comm, mul_assoc (χ a * χ b), ← Complex.exp_add, ← Complex.exp_add]`.
+
+Use `congr 2`. Simplify using `only [star_add, mulVec_add, add_dotProduct, dotProduct_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mult_add {Λ : AddSubgroup (Fin g → ℂ)} {χ θ : (Fin g → ℂ) → ℂ} {z₀ : Fin g → ℂ}
     (h0 : θ z₀ ≠ 0)
     (hθ : ∀ a ∈ Λ, ∀ z, θ (z + a) = χ a * Complex.exp (Real.pi * (star a ⬝ᵥ Hm.mulVec z) +
@@ -239,6 +324,11 @@ theorem mult_add {Λ : AddSubgroup (Fin g → ℂ)} {χ θ : (Fin g → ℂ) →
   simp only [star_add, mulVec_add, add_dotProduct, dotProduct_add]
   ring
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Take `⟨x, hx⟩` from `Function.ne_iff.1 h0`. Establish `hd : Differentiable ℂ fun c : Fin g → ℂ => θ (T - p • c)` using `hθ.comp ((differentiable_const T).sub (differentiable_id.const_smul p))`. Establish `han : AnalyticOnNhd ℂ (fun c : Fin g → ℂ => θ (T - p • c)) Set.univ` using `fun x _ => ThetaJet.analyticAt_of_differentiable hd x`.
+
+Establish `h` using `han.eq_of_eventuallyEq (g := 0) (z₀ := x) analyticOnNhd_const (by filter_upwards [(isOpen_ne_fun hθ.continuous continuous_const).mem_nhds hx] with y hy`. Conclude with `hcon y hy)`. Establish `h2` using `congrFun h ((p : ℂ)⁻¹ • (T - x))`. Rewrite `h2` using `[← Nat.cast_smul_eq_nsmul ℂ, smul_inv_smul₀ (Nat.cast_ne_zero.2 hp), sub_sub_cancel]`. Conclude with `hx h2`.
+-/
 theorem exists_two_points {θ : (Fin g → ℂ) → ℂ} (hθ : Differentiable ℂ θ) (h0 : θ ≠ 0)
     (T : Fin g → ℂ) {p : ℕ} (hp : p ≠ 0) : ∃ c, θ c ≠ 0 ∧ θ (T - p • c) ≠ 0 := by
   by_contra hcon
@@ -255,6 +345,17 @@ theorem exists_two_points {θ : (Fin g → ℂ) → ℂ} (hθ : Differentiable �
   rw [← Nat.cast_smul_eq_nsmul ℂ, smul_inv_smul₀ (Nat.cast_ne_zero.2 hp), sub_sub_cancel] at h2
   exact hx h2
 
+/- English proof (translation)
+Take `⟨p, rfl⟩ : ∃ p, M = t.card + (p + 1) + 1` from `⟨M - t.card - 2, by omega⟩`. Take `⟨c, hc, hc'⟩` from `exists_two_points hd h0 (S - ∑ j ∈ t, x j) (p := p + 1) (by omega)`. Use `set c' := S - ∑ j ∈ t, x j - (p + 1) • c with hc'def`. Establish `hS : S = ∑ j ∈ t, x j + (p + 1) • c + c'` using `by rw [hc'def]; abel`. Use `⟨fun z => Complex.exp (-(Real.pi * (star S ⬝ᵥ Hm.mulVec z))) * (θ (z + c) ^ (p + 1) * θ (z + c')), ?_, by simp [hc, hc'], fun a ha z => ?_⟩` and prove the remaining obligations.
+
+Conclude with `((differentiable_herm S).const_mul _).neg.cexp.mul (((hd.comp (differentiable_id.add_const c)).pow _).mul (hd.comp (differentiable_id.add_const c')))`. Use `set j : ℂ := Real.pi * (star a ⬝ᵥ Hm.mulVec z) + Real.pi / 2 * (star a ⬝ᵥ Hm.mulVec a) with hj`. Establish `h1 : ∀ y, θ (z + a + y) = χ a * Complex.exp j * Complex.exp (Real.pi * (star a ⬝ᵥ Hm.mulVec y)) * θ (z + y)` using `fun y => by`. Rewrite using `[add_right_comm, hθ a ha, mul_assoc (χ a) (Complex.exp j), ← Complex.exp_add, hj, mulVec_add, dotProduct_add]`. Use `congr 3`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h2 : Complex.exp (Real.pi * (star a ⬝ᵥ Hm.mulVec S)) = (∏ i ∈ t, Complex.exp (Real.pi * (star a ⬝ᵥ Hm.mulVec (x i)))) * Complex.exp (Real.pi * (star a ⬝ᵥ Hm.mulVec c)) ^ (p + 1) * Complex.exp (Real.pi * (star a ⬝ᵥ Hm.mulVec c'))`. Rewrite using `[← Complex.exp_sum, ← Complex.exp_nat_mul, ← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Use `conv_lhs => rw [hS]`.
+
+Rewrite using `[mulVec_add, mulVec_add, dotProduct_add, dotProduct_add, mulVec_sum, dotProduct_sum, mulVec_smul, dotProduct_smul, ← Finset.mul_sum, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `clear_value j`. Simplify using `only [h1, Finset.prod_mul_distrib, Finset.prod_const]`. Rewrite using `[mul_sub, sub_eq_add_neg, Complex.exp_add, h2, Complex.exp_nat_mul, mulVec_add, dotProduct_add, mul_add, neg_add, Complex.exp_add]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_completion {Λ : AddSubgroup (Fin g → ℂ)} {χ θ : (Fin g → ℂ) → ℂ}
     (hd : Differentiable ℂ θ) (h0 : θ ≠ 0)
     (hθ : ∀ a ∈ Λ, ∀ z, θ (z + a) = χ a * Complex.exp (Real.pi * (star a ⬝ᵥ Hm.mulVec z) +
@@ -297,6 +398,13 @@ theorem exists_completion {Λ : AddSubgroup (Fin g → ℂ)} {χ θ : (Fin g →
       dotProduct_add, mul_add, neg_add, Complex.exp_add]
     ring
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `h` to reduce the goal to its premises. Use `choose N c G hG using fun b => Submodule.mem_span_set'.1 (hF b)`. Establish `e : (fun z : Fin n → V => ∏ b, F b (z b)) = fun z => ∑ p : ∀ b, Fin (N b), ((∏ b, c b (p b)) • fun z : Fin n → V => ∏ b, (G b (p b) : V → ℂ) (z b)) z`.
+
+Use function extensionality and compare the values at `z`. Simplify using `only [← hG, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ]`. Simplify using `only [Finset.prod_mul_distrib]`. Establish `han : ∀ p : ∀ b, Fin (N b), AnalyticAt ℂ (fun z : Fin n → V => ∏ b, (G b (p b) : V → ℂ) (z b)) 0` using `fun p => Finset.analyticAt_fun_prod _ fun b _ => ThetaJet.analyticAt_of_differentiable ((hT _ (G b (p b)).2).comp (differentiable_apply b)) 0`.
+
+Rewrite using `[e, polyDeriv_eq_pairing, taylorDir_sum u _ fun p _ => (han p).const_smul, map_sum]`. Use `Finset.sum_eq_zero fun p _ => ?_` and prove the remaining obligations. Rewrite using `[taylorDir_smul u _ (han p), map_smul, ← polyDeriv_eq_pairing, hcon (fun b => G b (p b)) fun b => (G b (p b)).2, smul_zero]`.
+-/
 theorem exists_mem_ne_zero {σ V : Type} [Fintype σ] [NormedAddCommGroup V] [NormedSpace ℂ V]
     [FiniteDimensional ℂ V] {n : ℕ} (P : MvPolynomial σ ℂ) (u : σ → Fin n → V) (T : Set (V → ℂ))
     (hT : ∀ G ∈ T, Differentiable ℂ G) (F : Fin n → V → ℂ) (hF : ∀ b, F b ∈ Submodule.span ℂ T)
@@ -322,6 +430,39 @@ theorem exists_mem_ne_zero {σ V : Type} [Fintype σ] [NormedAddCommGroup V] [No
   rw [taylorDir_smul u _ (han p), map_smul, ← polyDeriv_eq_pairing,
     hcon (fun b => G b (p b)) fun b => (G b (p b)).2, smul_zero]
 
+/- English proof (translation)
+Introduce `g Hm hH Λ hd hΛ χ θ hθ h0 hχ hθt M Λ₁ hle hΛ₁ n P hP hM`. Establish `hM0 : (M : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hM0' : (M : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Use `haveI hd₁ : DiscreteTopology Λ₁ := DiscreteTopology.of_subset (s := (Λ : Set (Fin g → ℂ))) hd hle`. Use `set H' : Matrix (Fin g) (Fin g) ℂ := (M : ℝ)⁻¹ • Hm with hH'def`.
+
+Establish `hH' : H'.PosDef` using `hH.smul (inv_pos.2 (Nat.cast_pos.2 (by omega)))`. Establish `hHH : ∀ v w : Fin g → ℂ, star v ⬝ᵥ Hm.mulVec w = M * (star v ⬝ᵥ H'.mulVec w)` using `fun v w => by`. Rewrite using `[hH'def, smul_mulVec, dotProduct_smul, Complex.real_smul]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hΛ' : ∀ v, (∀ a ∈ Λ₁, ∃ k : ℤ, (star v ⬝ᵥ H'.mulVec a).im = k) ↔ v ∈ Λ₁` using `fun v => by`. Rewrite using `[← hΛ₁]`. Simplify using `only [hHH, ← Complex.ofReal_natCast, Complex.im_ofReal_mul, mul_right_inj' hM0']`. Take `⟨χ₁, θ₁, hθ₁, h0₁, hχ₁, hθt₁⟩` from `exists_theta hH' Λ₁ hΛ'`. Establish `hχ₁0 : ∀ a ∈ Λ₁, χ₁ a ≠ 0` using `fun a ha h => by simpa [h] using hχ₁ a ha`.
+
+Take `⟨z₀, hz₀⟩` from `Function.ne_iff.1 h0`. Take `⟨z₁, hz₁⟩` from `Function.ne_iff.1 h0₁`. Establish `hadd : ∀ a b : Λ₁, χ (a + b) / χ₁ (a + b) ^ M = χ a / χ₁ a ^ M * (χ b / χ₁ b ^ M)`. Introduce `a b`. Rewrite using `[mult_add hz₀ hθt (hle a.2) (hle b.2), mult_add hz₁ hθt₁ a.2 b.2, mul_pow, mul_pow, ← Complex.exp_nat_mul, hHH, hHH, ← mul_sub, mul_left_comm (M : ℂ), mul_div_mul_right _ _ (Complex.exp_ne_zero _), div_mul_div_comm]`.
+
+Establish `hψ : ∀ a : Λ₁, ‖χ a / χ₁ a ^ M‖ = 1` using `fun a => by`. Rewrite using `[norm_div, norm_pow, hχ _ (hle a.2), hχ₁ _ a.2, one_pow, div_one]`. Set `ψ : AddChar Λ₁ ℂ` to `{ toFun := fun a => χ a / χ₁ a ^ M map_zero_eq_one' := by`. Establish `h` using `hadd 0 0`. Establish `h1 : χ (0 : Λ₁) / χ₁ (0 : Λ₁) ^ M ≠ 0` using `fun h => by`.
+
+Use `hψ 0` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Rewrite `h` using `[← AddSubgroup.coe_add, add_zero]`. Conclude with `(mul_eq_left₀ h1).1 h.symm`.
+
+Use the proof step `map_add_eq_mul' := hadd }`. Set `L : Submodule ℤ (Fin g → ℂ)` to `AddSubgroup.toIntSubmodule Λ₁`. Use `haveI hL : DiscreteTopology L := hd₁`. Use `haveI : Module.Free ℤ Λ₁ := (inferInstance : Module.Free ℤ L)`. Take `⟨φ, hφ⟩` from `ThetaTranslSpan.exists_log_addChar ψ hψ`.
+
+Take `⟨S, hS⟩` from `ThetaTranslSpan.exists_im_eq_lattice hH' L (ThetaTranslSpan.span_eq_top hH' Λ₁ fun v => (hΛ' v).1) (-φ)`. Establish `hSχ : ∀ a ∈ Λ₁, χ₁ a ^ M * Complex.exp (Real.pi * (star a ⬝ᵥ H'.mulVec S - star S ⬝ᵥ H'.mulVec a)) = χ a`. Introduce `a ha`. Establish `e1 : (star S ⬝ᵥ H'.mulVec a).im = -φ ⟨a, ha⟩` using `hS ⟨a, ha⟩`. Establish `e2 : χ a / χ₁ a ^ M = _` using `hφ ⟨a, ha⟩`.
+
+Rewrite `e2` using `[div_eq_iff (pow_ne_zero _ (hχ₁0 a ha))]`. Rewrite using `[e2, mul_comm, ← neg_sub, ThetaTranslSpan.herm_swap hH' S a, Complex.star_def, Complex.sub_conj, e1]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hdf : ∀ (b : Fin n) (a : Fin g → ℂ), Differentiable ℂ fun z : Fin n → Fin g → ℂ => θ₁ (z b + a)` using `fun b a => hθ₁.comp ((differentiable_apply b).add_const a)`. Take `⟨s, hs⟩` from `exists_prod_ne_zero (κ := Fin n × {a // θ₁ a = 0}) (fun q : Fin n × Fin g => (Pi.single q.1 (Pi.single q.2 (1 : ℂ) : Fin g → ℂ) : Fin n → Fin g → ℂ)) (fun k z => θ₁ (z k.1 + k.2)) (fun k => ThetaJet.analyticAt_of_differentiable (hdf _ _) 0) (fun k => by simpa using k.2.2) (fun c …`. Take `⟨⟨b, i⟩, hb⟩` from `Function.ne_iff.1 hc`. Take `⟨a, ha, ha'⟩` from `GlobalTheory.ThetaGauss.exists_zero_fderiv_ne_zero g H' hH' Λ₁ hd₁ hΛ' χ₁ θ₁ hθ₁ h0₁ hχ₁ hθt₁ (fun i => c (b, i)) (Function.ne_iff.2 ⟨i, hb⟩)`. Use `⟨(b, ⟨a, ha⟩), ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : HasFDerivAt (fun z : Fin n → Fin g → ℂ => θ₁ (z b + a)) ((fderiv ℂ θ₁ a).comp (ContinuousLinearMap.proj b)) 0`. Use `HasFDerivAt.comp (f := fun z : Fin n → Fin g → ℂ => z b + a) 0 ?_ ((hasFDerivAt_apply b 0).add_const a)` and prove the remaining obligations. Simplify using `using (hθ₁ a).hasFDerivAt`. Rewrite using `[h1.fderiv]`. Simplify using `only [← smul_eq_mul, ← map_smul, ← map_sum, ContinuousLinearMap.comp_apply]`.
+
+Use `ha' using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i'`. Simplify using `[Fintype.sum_prod_type, Pi.single_apply, ite_apply]) hP`. Use `choose h hh hh0 hht using fun b : Fin n => exists_completion hθ₁ h0₁ hθt₁ M S (Finset.univ.filter fun j => (s j).1 = b) (fun j => ((s j).2 : Fin g → ℂ)) (by have := Finset.card_filter_le Finset.univ fun j => (s j).1 = b`. Rewrite `this` using `[Finset.card_univ, Fintype.card_fin]`.
+
+Use the proof step `omega)`. Establish `hne` using `hs (fun z => ∏ b, h b (z b)) (Finset.analyticAt_fun_prod _ fun b _ => ThetaJet.analyticAt_of_differentiable ((hh b).comp (differentiable_apply b)) 0) (Finset.prod_ne_zero_iff.2 fun b _ => hh0 b)`. Take `⟨G, hG, hG0⟩` from `exists_mem_ne_zero P _ _ (by`. Introduce and unpack `_ ⟨y, -, rfl⟩`. Conclude with `((differentiable_herm y).const_mul _).neg.cexp.mul (hθ.comp (differentiable_id.add_const y)))`.
+
+Use the proof step `(fun b z => (∏ j ∈ Finset.univ.filter fun j => (s j).1 = b, θ₁ (z + (s j).2)) * h b z)`. Use the proof step `(fun b => ThetaTranslSpan.mem_span_translates g Hm hH Λ hd hΛ χ θ hθ h0 hχ hθt M Λ₁ (by omega) hle hΛ₁ _ (Differentiable.mul (fun z => (HasFDerivAt.finsetProd fun j _ => ((hθ₁.comp (differentiable_id.add_const _)) z).hasFDerivAt).differentiableAt) (hh b)) fun a ha z => by`. Rewrite using `[hht b a ha z, hSχ a ha, hHH, hHH]`. Use `congr 3`. Use the proof step `ring)`.
+
+Use the proof step `(by`. Use `ne_of_eq_of_ne (congrArg (fun F => polyDeriv P _ F 0) (funext fun z => ?_)) hne` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, ← Finset.prod_fiberwise Finset.univ (fun j => (s j).1)]`. Use `congr 1`. Use `Finset.prod_congr rfl fun b _ => Finset.prod_congr rfl fun j hj => ?_` and prove the remaining obligations.
+
+Rewrite using `[(Finset.mem_filter.1 hj).2])`. Use `choose y hy hy' using hG`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Simplify `hG0` using `only [hy']`.
+-/
 theorem exists_translates_jet_ne_zero : ∀ (g : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ), Hm.PosDef → ∀ (Λ : AddSubgroup (Fin g → ℂ)), DiscreteTopology Λ → (∀ v, (∀ a ∈ Λ, ∃ k : ℤ, (star v ⬝ᵥ Hm.mulVec a).im = k) ↔ v ∈ Λ) → ∀ (χ θ : (Fin g → ℂ) → ℂ), Differentiable ℂ θ → θ ≠ 0 → (∀ a ∈ Λ, ‖χ a‖ = 1) → (∀ a ∈ Λ, ∀ z, θ (z + a) = χ a * Complex.exp (Real.pi * (star a ⬝ᵥ Hm.mulVec z) + Real.pi / 2 * (star a ⬝ᵥ Hm.mulVec a)) * θ z) → ∀ (M : ℕ) (Λ₁ : AddSubgroup (Fin g → ℂ)), Λ₁ ≤ Λ → (∀ v, (∀ a ∈ Λ₁, ∃ k : ℤ, (star v ⬝ᵥ Hm.mulVec a).im = M * k) ↔ v ∈ Λ₁) → ∀ (n : ℕ) (P : MvPolynomial (Fin n × Fin g) ℂ), P ≠ 0 → P.totalDegree + 2 ≤ M → ∃ y : Fin n → Fin g → ℂ, (∀ b, (M : ℂ) • y b ∈ Λ₁) ∧ ReciprocityTheory.ChartRestriction.G.I2.polyDeriv P (fun q => (Pi.single q.1 (Pi.single q.2 (1 : ℂ) : Fin g → ℂ) : Fin n → Fin g → ℂ)) (fun z : Fin n → Fin g → ℂ => ∏ b, Complex.exp (-(Real.pi * (star (y b) ⬝ᵥ Hm.mulVec (z b)))) * θ (z b + y b)) 0 ≠ 0 := by
   intro g Hm hH Λ hd hΛ χ θ hθ h0 hχ hθt M Λ₁ hle hΛ₁ n P hP hM
   classical

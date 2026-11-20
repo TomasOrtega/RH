@@ -9,6 +9,9 @@ namespace Formalism.IndefR.Eqv.G5
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `h : ((γ : HR (AF F) σ J) : GL (Fin M) (AF F ⊗[F] E)) ∈ (Formalism.UG.UJ (σ : E →+* E) J).map (Formalism.UG.bc (inclR (AF F)))` using `γ.2`. Take `⟨g, -, hg⟩` from `Subgroup.mem_map.1 h`. Conclude with `⟨g, hg⟩`.
+-/
 theorem hfin_exists_mat (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (γ : HFinIn (AF F) σ J) :
     ∃ g : GL (Fin M) E, Formalism.UG.bc (inclR (AF F)) g = ((γ : HR (AF F) σ J) : GL (Fin M) (AF F ⊗[F] E)) := by
@@ -17,12 +20,28 @@ theorem hfin_exists_mat (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin 
   obtain ⟨g, -, hg⟩ := Subgroup.mem_map.1 h
   exact ⟨g, hg⟩
 
+/- English proof (translation)
+Simplify using `[Formalism.UG.bc]`.
+-/
 theorem hfin_entry {M : ℕ} (g : GL (Fin M) E) (i j : Fin M) :
     ((Formalism.UG.bc (inclR (F := F) (AF F)) g : GL (Fin M) (AF F ⊗[F] E)) :
       Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) i j =
       inclR (AF F) ((g : Matrix (Fin M) (Fin M) E) i j) := by
   simp [Formalism.UG.bc]
 
+/- English proof (translation)
+Use `tns_isTopologicalAddGroup (F := F) (E := E)` as an intermediate fact. Take `⟨V, hVo, hV0, hV⟩` from `tns_disc (F := F) (E := E)`. Use `discreteTopology_iff_isOpen_singleton.2 fun γ => ?_` and prove the remaining obligations. Set `ent : HR (AF F) σ J → Matrix (Fin M) (Fin M) (AF F ⊗[F] E)` to `fun h => ((h : GL (Fin M) (AF F ⊗[F] E)) : Matrix (Fin M) (Fin M) _)`. Establish `hent : Continuous ent` using `Units.continuous_val.comp continuous_subtype_val`.
+
+Use `isOpen_induced_iff.2 ⟨{h | ∀ i j, ent h i j - ent γ i j ∈ V}, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.ofPred_forall]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => hVo.preimage ((hent.matrix_elem i j).sub continuous_const)`. Use extensionality with `γ'`. Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq, Set.mem_singleton_iff]`.
+
+Take `⟨g', hg'⟩` from `hfin_exists_mat σ J γ'`. Take `⟨g, hg⟩` from `hfin_exists_mat σ J γ`. Establish `e' : ∀ i j, ent γ' i j = inclR (AF F) ((g' : Matrix (Fin M) (Fin M) E) i j)` using `fun i j => by show ((γ' : HR (AF F) σ J) : GL (Fin M) (AF F ⊗[F] E)) i j = _`. Rewrite using `[← hg', hfin_entry]`. Establish `e : ∀ i j, ent γ i j = inclR (AF F) ((g : Matrix (Fin M) (Fin M) E) i j)` using `fun i j => by show ((γ : HR (AF F) σ J) : GL (Fin M) (AF F ⊗[F] E)) i j = _`.
+
+Rewrite using `[← hg, hfin_entry]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hmat : ent γ' = ent γ`. Use extensionality with `i j`.
+
+Use `h i j` as an intermediate fact. Rewrite `this` using `[e' i j, e i j, ← map_sub]`. Rewrite using `[e' i j, e i j, sub_eq_zero.1 (hV _ this)]`. Conclude with `Subtype.ext (Subtype.ext (Units.ext hmat))`. Introduce and unpack `rfl i j`.
+
+Rewrite using `[sub_self]`. Conclude with `hV0`.
+-/
 theorem hfin_disc (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) :
     DiscreteTopology (HFinIn (AF F) σ J) := by
   have := tns_isTopologicalAddGroup (F := F) (E := E)
@@ -56,6 +75,9 @@ theorem hfin_disc (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) 
     · rintro rfl i j
       rw [sub_self]; exact hV0
 
+/- English proof (translation)
+Establish `hE : Countable E` using `Function.Injective.countable (Module.finBasis ℚ E).equivFun.injective`. Establish `hGL : Countable (GL (Fin M) E)` using `Function.Injective.countable (f := fun g : GL (Fin M) E => fun i j => (g : Matrix (Fin M) (Fin M) E) i j) (fun g g' h => Units.ext (Matrix.ext fun i j => congrFun (congrFun h i) j))`. Use `choose g hg using hfin_exists_mat σ J`. Conclude with `Function.Injective.countable (f := g) fun γ γ' h => Subtype.ext (Subtype.ext (by rw [← hg γ, ← hg γ', h]))`.
+-/
 theorem hfin_countable (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) :
     Countable (HFinIn (AF F) σ J) := by
   have hE : Countable E :=
@@ -67,6 +89,9 @@ theorem hfin_countable (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M
   exact Function.Injective.countable (f := g) fun γ γ' h =>
     Subtype.ext (Subtype.ext (by rw [← hg γ, ← hg γ', h]))
 
+/- English proof (translation)
+Take `⟨K, hK, hKy⟩` from `tns_cocompact (F := F) (E := E)`. Use `⟨Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => K, isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hK, fun Y => ?_⟩` and prove the remaining obligations. Use `choose X hX using fun a i => hKy (Y a i)`. Conclude with `⟨X, fun a _ i _ => hX a i⟩`.
+-/
 theorem tup_cocompact (M n : ℕ) : ∃ K : Set (Fin n → Fin M → AF F ⊗[F] E), IsCompact K ∧
     ∀ Y, ∃ X : Fin n → Fin M → E, Y - ratTup (F := F) (AF F) X ∈ K := by
   obtain ⟨K, hK, hKy⟩ := tns_cocompact (F := F) (E := E)

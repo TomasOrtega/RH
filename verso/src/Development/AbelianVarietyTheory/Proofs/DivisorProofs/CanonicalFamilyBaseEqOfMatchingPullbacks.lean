@@ -16,24 +16,46 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 noncomputable section
 
+/- English proof (translation)
+Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+-/
 theorem GlobalTheory.UCanon.PairBase.spMap_comp {A B C' : Type} [CommRing A] [CommRing B] [CommRing C'] (f : B →+* C') (g : A →+* B) :
     spMap (f.comp g) = spMap f ≫ spMap g := by
   simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
 namespace GlobalTheory.UCanon.PairBase
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero, MonObj.comp_one]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]`.
+-/
 theorem comp_pow {S : Scheme.{0}} {X Y M : Over S} [MonObj M] (f : X ⟶ Y) (g : Y ⟶ M) (n : ℕ) :
     f ≫ g ^ n = (f ≫ g) ^ n := by
   induction n with
   | zero => rw [pow_zero, pow_zero, MonObj.comp_one]
   | succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]
 
+/- English proof (translation)
+Establish `eu : u = toUnit T ≫ D.c y` using `Over.OverMorphism.ext (by rw [hu, Over.comp_left, Over.toUnit_left])`. Establish `ev : v = toUnit T ≫ D.c (n • y)` using `Over.OverMorphism.ext (by rw [hv, Over.comp_left, Over.toUnit_left])`. Rewrite using `[eu, ev, GlobalTheory.UCanon.LevLift.degPre_cocharPoint_nsmul_eq_pow_levelLift, comp_pow]`.
+-/
 theorem c_pow {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (T : Over (Sp R)) (y : D.X) (n : ℕ)
     (u v : T ⟶ D.P.A) (hu : u.left = T.hom ≫ (D.c y).left) (hv : v.left = T.hom ≫ (D.c (n • y)).left) : u ^ n = v := by
   have eu : u = toUnit T ≫ D.c y := Over.OverMorphism.ext (by rw [hu, Over.comp_left, Over.toUnit_left])
   have ev : v = toUnit T ≫ D.c (n • y) := Over.OverMorphism.ext (by rw [hv, Over.comp_left, Over.toUnit_left])
   rw [eu, ev, GlobalTheory.UCanon.LevLift.degPre_cocharPoint_nsmul_eq_pow_levelLift, comp_pow]
 
+/- English proof (translation)
+Establish `h0 : L.o.etaA 0 = 1`. Establish `h` using `L.o.etaA_add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel (a := L.o.etaA 0) (by rw [_root_.mul_one]; exact h.symm)`. Establish `hn : ∀ n : ℕ, L.o.etaA (n • a) = L.o.etaA a ^ n`.
+
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => rw [zero_smul, pow_zero, h0]`. Consider the case `succ n ih => rw [succ_nsmul, L.o.etaA_add, ih, pow_succ]`. Establish `hη : L.o.etaA a ^ l.M' = 1`.
+
+Rewrite using `[← hn]`. Conclude with `L.o.etaA_ker a`. Set `x : T ⟶ L.o.t.G` to `toUnit T ≫ L.o.etaA a`. Establish `hx : x ^ l.M' = 1`. Rewrite using `[← comp_pow, hη, MonObj.comp_one]`.
+
+Establish `hw : (x.left ≫ L.φB) ≫ L.D.P.A.hom = (Over.mk (T.hom ≫ 𝟙 _)).hom`. Rewrite using `[Category.assoc, L.ab.1.1.w, ← Category.assoc, Over.w x]`. Both sides reduce to the same expression. Set `x₀ : Over.mk (T.hom ≫ 𝟙 _) ⟶ L.D.P.A` to `Over.homMk (x.left ≫ L.φB) hw`. Establish `hp` using `GlobalTheory.FamTorsion.pow_left_of_isGrpPullback L.ab.1 x x₀ rfl l.M'`.
+
+Establish `hx₀ : x₀ ^ l.M' = 1` using `Over.OverMorphism.ext (by`. Rewrite using `[hp, hx, GlobalTheory.FamTorsion.one_left_of_isGrpPullback L.ab.1 T])`. Set `e : T ⟶ Over.mk (T.hom ≫ 𝟙 _)` to `Over.homMk (𝟙 _) (by simp)`. Establish `hue : u = e ≫ x₀` using `Over.OverMorphism.ext (by`. Rewrite using `[hu, Over.comp_left]`.
+
+Simplify using `[e, x₀, x, Over.toUnit_left])`. Rewrite using `[hue, ← comp_pow, hx₀, MonObj.comp_one]`.
+-/
 theorem etaA_pow {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D' : Datum H} {l : Geo.Tor.Level H}
     {c : Coeff l} (L : LowBase D' c) (T : Over (Sp L.W)) (a : D'.La) (u : T ⟶ L.D.P.A)
     (hu : u.left = T.hom ≫ (L.o.etaA a).left ≫ L.φB) : u ^ l.M' = 1 := by
@@ -67,6 +89,53 @@ theorem etaA_pow {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 end GlobalTheory.UCanon.PairBase
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c φ R _ _ _ hR C Cn V _ _ _ _ hV f₁ f₂ hi₁ hi₂ hl₁ hl₂ D₁ D₂ hD₁ hD₂ j₁ j₂ b φ' hE₁ hE₂ hM hpts hact hφ hb`. Take `⟨g, hD, hg, hxe, hoa⟩` from `Cn.data`. Establish `hβ : IsGrpPullback C.P.D.toPre.P.A Cn.L.D.P.A (spMap (Cn.ψ.comp MvPolynomial.C)) (hD.e.hom.left ≫ pullback.fst Cn.L.D.P.A.hom (specOf (Cn.ψ.comp MvPolynomial.C)))` using `pull_grp hD`. Use `set β : C.P.D.toPre.P.A.left ⟶ Cn.L.D.P.A.left := hD.e.hom.left ≫ pullback.fst Cn.L.D.P.A.hom (specOf (Cn.ψ.comp MvPolynomial.C)) with hβdef`. Use `set π₁ : D₁.toPre.P.A.left ⟶ Cn.L.D.P.A.left := prj hD₁ ≫ β with hπ₁`.
+
+Use `set π₂ : D₁.toPre.P.A.left ⟶ Cn.L.D.P.A.left := b.left ≫ prj hD₂ ≫ β with hπ₂`. Establish `hp₁ : IsGrpPullback D₁.toPre.P.A Cn.L.D.P.A (spMap (f₁.comp (Cn.ψ.comp MvPolynomial.C))) π₁` using `((pull_grp hD₁).comp hβ).congr (GlobalTheory.UCanon.PairBase.spMap_comp _ _).symm rfl`. Use `haveI := hM.2.1`. Use `haveI : IsMonHom (asIso b).hom := hM.1`. Establish `hp₂ : IsGrpPullback D₁.toPre.P.A Cn.L.D.P.A (spMap (f₂.comp (Cn.ψ.comp MvPolynomial.C))) π₂` using `((isGrpPullback_of_iso (asIso b)).comp ((pull_grp hD₂).comp hβ)).congr (by rw [Category.id_comp]; exact (GlobalTheory.UCanon.PairBase.spMap_comp f₂ _).symm) (by rw [hπ₂, asIso_hom])`.
+
+Use `letI := H.starRing`. Establish `hsq : ∀ {R' : Type} [CommRing R'] [IsDomain R'] {θ : R →+* R'} {D' : DegPre R'} (h : IsPullDeg θ C.P.D.toPre D') (f : C.P.D.toPre.P.A ⟶ C.P.D.toPre.P.A) (f' : D'.P.A ⟶ D'.P.A), f' ≫ h.e.hom = h.e.hom ≫ (Over.pullback (specOf θ)).map f → f'.left ≫ prj h = prj h ≫ f.left` using `fun h f f' e => (GlobalTheory.PullDegTop.main.2.1 h f f').1 e`. Establish `hoa' : letI` using `H.starRing`. Use the proof step `∀ x, (C.P.oD.onB.act x).left ≫ β = β ≫ (Cn.L.oa.onB.act x).left := fun x => (hoa x).trans (Category.assoc _ _ _).symm`. Establish `hLB0` using `GlobalTheory.T.lineBundleIso_of_action_compatible_match Xo c φ R hR C Cn V hV f₁ f₂ hi₁ hi₂ hl₁ hl₂ D₁ D₂ hD₁ hD₂ j₁ j₂ b φ' hE₁ hE₂ hM hact`.
+
+Establish `hβL : LBIso C.P.D.toPre.P.L (Cn.L.D.P.L.pull β)` using `⟨hD.w, hD.w_gen⟩`. Establish `hC` using `C.P.D.toPre.P.isLB`. Establish `hLD` using `Cn.L.D.P.isLB`. Establish `hW₁ : LBIso D₁.toPre.P.L (Cn.L.D.P.L.pull π₁)` using `LBIso.trans D₁.toPre.P.isLB (pull_isLB hC _) (pull_isLB hLD _) ⟨hD₁.w, hD₁.w_gen⟩ (GlobalTheory.PolDeg.lbIso_pull_comp hβL (prj hD₁) rfl)`. Establish `hW₂ : LBIso D₂.toPre.P.L (Cn.L.D.P.L.pull (prj hD₂ ≫ β))` using `LBIso.trans D₂.toPre.P.isLB (pull_isLB hC _) (pull_isLB hLD _) ⟨hD₂.w, hD₂.w_gen⟩ (GlobalTheory.PolDeg.lbIso_pull_comp hβL (prj hD₂) rfl)`.
+
+Establish `hLB : LBIso (Cn.L.D.P.L.pull π₁) (Cn.L.D.P.L.pull π₂)` using `LBIso.trans (pull_isLB hLD _) D₁.toPre.P.isLB (pull_isLB hLD _) hW₁.symm (LBIso.trans D₁.toPre.P.isLB (pull_isLB D₂.toPre.P.isLB _) (pull_isLB hLD _) hLB0 (GlobalTheory.PolDeg.lbIso_pull_comp hW₂ b.left hπ₂))`. Use `choose a₁ a₂ ha₁ ha₂ hab using hact`. Establish `hA₁ : letI` using `H.starRing; ∀ x, (a₁ x).left ≫ π₁ = π₁ ≫ (Cn.L.oa.onB.act x).left := by`. Introduce `x`. Establish `e1` using `hsq hD₁ _ _ (ha₁ x)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hA₂ : letI` using `H.starRing; ∀ x, (a₁ x).left ≫ π₂ = π₂ ≫ (Cn.L.oa.onB.act x).left := by`. Introduce `x`. Establish `e1` using `hsq hD₂ _ _ (ha₂ x)`. Establish `e3 : (a₁ x).left ≫ b.left = b.left ≫ (a₂ x).left` using `by rw [← Over.comp_left, hab x, Over.comp_left]`.
+
+Establish `e3r : ∀ {Z : Scheme.{0}} (k : D₂.toPre.P.A.left ⟶ Z), (a₁ x).left ≫ b.left ≫ k = b.left ≫ (a₂ x).left ≫ k` using `fun k => by rw [← Category.assoc, e3, Category.assoc]`. Establish `e1r : ∀ {Z : Scheme.{0}} (k : C.P.D.toPre.P.A.left ⟶ Z), (a₂ x).left ≫ prj hD₂ ≫ k = prj hD₂ ≫ (C.P.oD.onB.act x).left ≫ k` using `fun k => by rw [← Category.assoc, e1, Category.assoc]`. Rewrite using `[hπ₂, e3r, e1r, hoa' x]`. Simplify using `only [Category.assoc]`. Establish `hA₀ : ∀ x, (a₁ x).left ≫ D₁.toPre.P.A.hom = D₁.toPre.P.A.hom` using `fun x => Over.w (a₁ x)`.
+
+Establish `hM1 : 1 ≤ l.M'` using `(GlobalTheory.LowDat.lowLevel l).A_pos`. Set `F₀` to `AlgebraicClosure (FractionRing R)`. Set `F` to `AlgebraicClosure (FractionRing V)`. Set `j : V →+* F` to `(algebraMap (FractionRing V) F).comp (algebraMap V (FractionRing V))`. Establish `hj : Function.Injective j` using `(algebraMap (FractionRing V) F).injective.comp (IsFractionRing.injective V (FractionRing V))`.
+
+Establish `hTF : (TF (R` using `V) F).hom = spMap j := (GlobalTheory.UCanon.PairBase.spMap_comp _ _).symm`. Establish `hExt : ∀ (fi : R →+* V) (ji : F₀ →+* F), TInj.Ext fi ji → spMap ji ≫ (TF (R` using `R) F₀).hom = spMap j ≫ spMap fi := by`. Introduce `fi ji hE`. Establish `e : ji.comp ((algebraMap (FractionRing R) F₀).comp (algebraMap R (FractionRing R))) = j.comp fi` using `RingHom.ext fun r => hE r`. Establish `e1 : (TF (R` using `R) F₀).hom = spMap ((algebraMap (FractionRing R) F₀).comp (algebraMap R (FractionRing R))) := (GlobalTheory.UCanon.PairBase.spMap_comp _ _).symm`.
+
+Rewrite using `[e1, ← GlobalTheory.UCanon.PairBase.spMap_comp, e, GlobalTheory.UCanon.PairBase.spMap_comp]`. Establish `hz : ∀ (y' : C.P.D.toPre.X) (x : TF (R` using `R) F₀ ⟶ C.P.D.toPre.P.A) (u : Sp R ⟶ Cn.L.D.P.A.left), x ^ l.M' = DegPre.cF C.P.D.toPre F₀ y' → x.left ≫ β = (TF (R := R) F₀).hom ≫ u → ∃ z : Sp F ⟶ D₁.toPre.P.A.left, z ≫ D₁.toPre.P.A.hom = spMap j ∧ z ≫ π₁ = spMap j ≫ spMap f₁ ≫ u ∧ z ≫ π₂ = spMap j ≫ spMap f₂ ≫ u := by`. Introduce `y' x u hx hxu`. Take `⟨z, hz₁, hz₂⟩` from `GlobalTheory.T.divisionPoints_correspond_matched_pullbacks R V C.P.D.toPre D₁.toPre D₂.toPre C.P.D.tau_bimult D₂.tau_bimult f₁ f₂ hD₁ hD₂ F₀ F j₁ j₂ b φ' l.M' hM1 hpts hφ y' x hx`. Establish `hz₁' : z.left ≫ prj hD₁ = spMap j₁ ≫ x.left` using `hz₁`.
+
+Establish `hz₂' : z.left ≫ b.left ≫ prj hD₂ = spMap j₂ ≫ x.left` using `hz₂`. Use `⟨z.left, by rw [Over.w z, hTF], ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hlift : ∀ (y' : C.P.D.toPre.X) (u : Sp R ⟶ Cn.L.D.P.A.left), u ≫ Cn.L.D.P.A.hom = spMap (Cn.ψ.comp MvPolynomial.C) → (∀ w w' : Over.mk ((TF (R` using `R) F₀).hom ≫ spMap (Cn.ψ.comp MvPolynomial.C)) ⟶ Cn.L.D.P.A, w.left = (TF (R := R) F₀).hom ≫ u → w'.left = (TF (R := R) F₀).hom ≫ spMap (Cn.ψ.comp MvPolynomial.C) ≫ (Cn.L.D.c (l.M' • Cn.e y')).left → w ^ l.M' = w') → ∃ x : TF (R := R) F₀ ⟶ C.P.D.toPre.P.A, x ^ l.M' = DegPre.cF C. …`.
+
+Introduce `y' u hu H'`. Establish `hw0 : ((TF (R` using `R) F₀).hom ≫ u) ≫ Cn.L.D.P.A.hom = (TF (R := R) F₀).hom ≫ spMap (Cn.ψ.comp MvPolynomial.C) := by rw [Category.assoc, hu]`. Set `x : TF (R` to `R) F₀ ⟶ C.P.D.toPre.P.A := Over.homMk (hβ.1.lift _ _ hw0) (hβ.1.lift_snd _ _ _)`. Establish `hxβ : x.left ≫ β = (TF (R` using `R) F₀).hom ≫ u := hβ.1.lift_fst _ _ _`. Use `⟨x, ?_, hxβ⟩` and prove the remaining obligations.
+
+Set `w : Over.mk ((TF (R` to `R) F₀).hom ≫ spMap (Cn.ψ.comp MvPolynomial.C)) ⟶ Cn.L.D.P.A := Over.homMk ((TF (R := R) F₀).hom ≫ u) hw0`. Establish `hc0 : ((TF (R` using `R) F₀).hom ≫ spMap (Cn.ψ.comp MvPolynomial.C) ≫ (Cn.L.D.c (l.M' • Cn.e y')).left) ≫ Cn.L.D.P.A.hom = (TF (R := R) F₀).hom ≫ spMap (Cn.ψ.comp MvPolynomial.C) := by`. Simplify using `only [Category.assoc]`. Use `erw [Over.w (Cn.L.D.c (l.M' • Cn.e y'))]`. Simplify using the standard rewrite rules.
+
+Set `w' : Over.mk ((TF (R` to `R) F₀).hom ≫ spMap (Cn.ψ.comp MvPolynomial.C)) ⟶ Cn.L.D.P.A := Over.homMk _ hc0`. Establish `hw` using `H' w w' rfl rfl`. Establish `hpow` using `GlobalTheory.FamTorsion.pow_left_of_isGrpPullback hβ x w hxβ.symm l.M'`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hβ.1.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[← hpow, hw]`. Establish `hcp` using `hD.c_pr y'`. Use `show (TF (R := R) F₀).hom ≫ spMap (Cn.ψ.comp MvPolynomial.C) ≫ (Cn.L.D.c (l.M' • Cn.e y')).left = (toUnit (TF (R := R) F₀) ≫ C.P.D.toPre.c y').left ≫ β`. Rewrite using `[Over.comp_left, Over.toUnit_left, Category.assoc]`. Use `erw [hcp]`.
+
+Rewrite using `[hxe]`. Both sides reduce to the same expression. Rewrite using `[Over.w, Over.w]`. Establish `hEta : ∀ a, ∃ z : Sp F ⟶ D₁.toPre.P.A.left, z ≫ D₁.toPre.P.A.hom = spMap j ∧ z ≫ π₁ = spMap j ≫ spMap (f₁.comp (Cn.ψ.comp MvPolynomial.C)) ≫ (Cn.L.o.etaA a).left ≫ Cn.L.φB ∧ z ≫ π₂ = spMap j ≫ spMap (f₂.comp (Cn.ψ.comp MvPolynomial.C)) ≫ (Cn.L.o.etaA a).left ≫ Cn.L.φB`. Introduce `a`.
+
+Establish `hu : (spMap (Cn.ψ.comp MvPolynomial.C) ≫ (Cn.L.o.etaA a).left ≫ Cn.L.φB) ≫ Cn.L.D.P.A.hom = spMap (Cn.ψ.comp MvPolynomial.C)`. Rewrite using `[Category.assoc, Category.assoc, Cn.L.ab.1.1.w, Category.comp_id, Over.w (Cn.L.o.etaA a)]`. Simplify using the standard rewrite rules. Take `⟨x, hx, hxu⟩` from `hlift 0 _ hu (fun w w' hw hw' => by`. Establish `e1 : w ^ l.M' = 1` using `GlobalTheory.UCanon.PairBase.etaA_pow Cn.L _ a w (by rw [hw]; simp only [Over.mk_hom, Category.assoc])`.
+
+Establish `h0 : w'.left = (Over.mk ((TF (R` using `R) F₀).hom ≫ spMap (Cn.ψ.comp MvPolynomial.C))).hom ≫ (Cn.L.D.c 0).left := by`. Rewrite using `[hw', map_zero, smul_zero]`. Simplify using `only [Over.mk_hom, Category.assoc]`. Establish `e2` using `GlobalTheory.UCanon.PairBase.c_pow Cn.L.D _ 0 0 w' w' h0 (by rw [h0, zero_smul])`. Rewrite `e2` using `[pow_zero]`.
+
+Rewrite using `[e1, e2])`. Take `⟨z, hz0, hz1, hz2⟩` from `hz 0 x _ hx hxu`. Use `⟨z, hz0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hz1, GlobalTheory.UCanon.PairBase.spMap_comp f₁ (Cn.ψ.comp MvPolynomial.C)]`. Simplify using `only [Category.assoc]`.
+
+Rewrite using `[hz2, GlobalTheory.UCanon.PairBase.spMap_comp f₂ (Cn.ψ.comp MvPolynomial.C)]`. Simplify using `only [Category.assoc]`. Establish `hCp : ∀ y, ∃ z : Sp F ⟶ D₁.toPre.P.A.left, z ≫ D₁.toPre.P.A.hom = spMap j ∧ z ≫ π₁ = spMap j ≫ spMap (f₁.comp (Cn.ψ.comp MvPolynomial.C)) ≫ (Cn.L.D.c y).left ∧ z ≫ π₂ = spMap j ≫ spMap (f₂.comp (Cn.ψ.comp MvPolynomial.C)) ≫ (Cn.L.D.c y).left`. Introduce `y`. Establish `hu : (spMap (Cn.ψ.comp MvPolynomial.C) ≫ (Cn.L.D.c y).left) ≫ Cn.L.D.P.A.hom = spMap (Cn.ψ.comp MvPolynomial.C)`.
+
+Rewrite using `[Category.assoc, Over.w (Cn.L.D.c y)]`. Simplify using the standard rewrite rules. Take `⟨x, hx, hxu⟩` from `hlift (Cn.e.symm y) _ hu (fun w w' hw hw' => GlobalTheory.UCanon.PairBase.c_pow Cn.L.D _ y l.M' w w' (by rw [hw]; simp only [Over.mk_hom, Category.assoc]) (by rw [hw', Cn.e.apply_symm_apply]; simp only [Over.mk_hom, Category.assoc]))`. Take `⟨z, hz0, hz1, hz2⟩` from `hz _ x _ hx hxu`. Use `⟨z, hz0, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hz1, GlobalTheory.UCanon.PairBase.spMap_comp f₁ (Cn.ψ.comp MvPolynomial.C)]`. Simplify using `only [Category.assoc]`. Rewrite using `[hz2, GlobalTheory.UCanon.PairBase.spMap_comp f₂ (Cn.ψ.comp MvPolynomial.C)]`. Simplify using `only [Category.assoc]`. Establish `hbase : (f₁.comp (Cn.ψ.comp MvPolynomial.C)).comp Cn.L.b = (f₂.comp (Cn.ψ.comp MvPolynomial.C)).comp Cn.L.b`.
+
+Establish `e : ∀ f : R →+* V, (f.comp (Cn.ψ.comp MvPolynomial.C)).comp Cn.L.b = f.comp C.b` using `fun f => by`. Rewrite using `[← Cn.base]`. Both sides reduce to the same expression. Rewrite using `[e, e, hb]`. Conclude with `(GlobalTheory.UCanon.FineAgree.main Cn.L V _ _ hbase D₁.toPre.P.A π₁ π₂ (fun x => (a₁ x).left) hp₁ hp₂ hA₁ hA₂ hA₀ hLB F j hj hEta hCp).1`.
+-/
 theorem GlobalTheory.UCanon.PairBase.base_eq_of_match : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (C : MonoFam Xo c φ R) (Cn : Canon C) (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V], IsAdicComplete (maximalIdeal V) V → ∀ f₁ f₂ : R →+* V, Function.Injective f₁ → Function.Injective f₂ → IsLocalHom f₁ → IsLocalHom f₂ → ∀ (D₁ D₂ : DegData V (maximalIdeal V)) (hD₁ : IsPullDeg f₁ C.P.D.toPre D₁.toPre) (hD₂ : IsPullDeg f₂ C.P.D.toPre D₂.toPre) (j₁ j₂ : (AlgebraicClosure (FractionRing R)) →+* (AlgebraicClosure (FractionRing V))) (b : D₁.toPre.P.A ⟶ D₂.toPre.P.A) (φ' : D₁.toPre.X ≃+ D₂.toPre.X), GlobalTheory.TInj.Ext f₁ j₁ → GlobalTheory.TInj.Ext f₂ j₂ → GlobalTheory.TInj.Match D₁.toPre D₂.toPre b φ' (AlgebraicClosure (FractionRing V)) → (∀ p₀ : QkPt C.P.D.toPre (AlgebraicClosure (FractionRing R)) l.M', ∃ (p₁ : QkPt D₁.toPre (AlgebraicClosure (FractionRing V)) l.M') (p₂ : QkPt D₂.toPre (AlgebraicClosure (FractionRing V)) l.M'), p₁.y = hD₁.xe.symm p₀.y ∧ GlobalTheory.TInj.Tr f₁ hD₁ j₁ p₀.g p₁.g ∧ p₂.y = hD₂.xe.symm p₀.y ∧ GlobalTheory.TInj.Tr f₂ hD₂ j₂ p₀.g p₂.g ∧ GlobalTheory.TInj.QImg b φ' p₁ p₂) → (letI := H.starRing; ∀ x : 𝓞 E, ∃ (a₁ : D₁.toPre.P.A ⟶ D₁.toPre.P.A) (a₂ : D₂.toPre.P.A ⟶ D₂.toPre.P.A), a₁ ≫ hD₁.e.hom = hD₁.e.hom ≫ (Over.pullback (specOf f₁)).map (C.P.oD.onB.act x) ∧ a₂ ≫ hD₂.e.hom = hD₂.e.hom ≫ (Over.pullback (specOf f₂)).map (C.P.oD.onB.act x) ∧ a₁ ≫ b = b ≫ a₂) → (∀ y : C.P.D.toPre.X, hD₂.xe (φ' (hD₁.xe.symm y)) = y) → f₁.comp C.b = f₂.comp C.b → f₁.comp (Cn.ψ.comp MvPolynomial.C) = f₂.comp (Cn.ψ.comp MvPolynomial.C) := by
   intro E _ _ _ H Dw l Xo c φ R _ _ _ hR C Cn V _ _ _ _ hV f₁ f₂ hi₁ hi₂ hl₁ hl₂ D₁ D₂ hD₁ hD₂ j₁ j₂ b φ' hE₁ hE₂ hM hpts hact hφ hb
   obtain ⟨g, hD, hg, hxe, hoa⟩ := Cn.data

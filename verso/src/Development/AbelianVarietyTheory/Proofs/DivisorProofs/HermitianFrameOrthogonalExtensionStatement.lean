@@ -6,6 +6,9 @@ open scoped Matrix
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.RealLift Formalism.BasicNotions.TH Matrix
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FrameAssemble.assemble | exact GlobalTheory.FrameAssemble.assemble | (intros; apply GlobalTheory.FrameAssemble.assemble <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hermitian_frame_orthogonal_extension : ∀ {n n₁ r₁ s₁ : ℕ} (M θ : Matrix (Fin n) (Fin n) ℂ) (θ₁ : Matrix (Fin n₁) (Fin n₁) ℂ)
     (ι : Matrix (Fin n) (Fin n₁) ℂ) (C₁ : Matrix (Fin n₁) (Ix r₁ s₁) ℂ) (e f : Fin n → ℂ),
     (r₁ + 1) + (s₁ + 1) = n → IsFrame (ιᵀ * M * ι.map star) C₁ → θ₁ * C₁ = C₁ * Jm r₁ s₁ →

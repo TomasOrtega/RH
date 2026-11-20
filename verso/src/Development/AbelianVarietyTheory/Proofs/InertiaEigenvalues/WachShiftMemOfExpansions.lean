@@ -29,6 +29,15 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
+/- English proof (translation)
+Establish `hd' : LB m d` using `hd`. Establish `hu0 : PowerSeries.constantCoeff (u ^ y) ≠ 0` using `((hu.pow y).map PowerSeries.constantCoeff).ne_zero`. Establish `e : conv ((u * PowerSeries.X) ^ y) d = fun k => smulS (u ^ y) d (k - y)` using `by show smulS ((u * PowerSeries.X) ^ y) d = _`. Rewrite using `[mul_comm, mul_pow, smulS_mul hd', smulS_X_pow (LB_smulS hd' _)]`. Rewrite using `[e]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h k`. Establish `h1 : Dg Fl (-(y : ℤ)) (smulS (u ^ y) d)` using `fun j => by`. Use `h (j + y)` as an intermediate fact. Simplify using `only [add_sub_cancel_right] at this`.
+
+Rewrite using `[show -(y : ℤ) - j = -(j + y) by ring]` and apply the resulting hypothesis. Establish `h2` using `Dg_smulS hF (LB_smulS hd' _) h1 (u ^ y)⁻¹ k`. Rewrite `h2` using `[smulS_inv hd' _ hu0]`. Rewrite using `[show -k - (y : ℤ) = -(y : ℤ) - k by ring]` and apply the resulting hypothesis. Introduce `h k`.
+
+Establish `h1 : Dg Fl (-(y : ℤ)) d` using `fun j => by`. Rewrite using `[show -(y : ℤ) - j = -j - y by ring]; exact h j`. Establish `h2` using `Dg_smulS hF hd' h1 (u ^ y) (k - y)`. Rewrite `h2` using `[show -(y : ℤ) - (k - y) = -k by ring]`. Then use the resulting hypothesis.
+-/
 theorem wachExp_diag_shift_iff {M : Type} [AddCommGroup M] [Module LL M] {Fl : ℤ → Submodule LL M}
     (hF : Antitone Fl) {m : ℤ} {d : ℤ → M} (hd : ∀ k < m, d k = 0) (u : PowerSeries LL)
     (hu : IsUnit u) (y : ℕ) :
@@ -55,6 +64,13 @@ theorem wachExp_diag_shift_iff {M : Type} [AddCommGroup M] [Module LL M] {Fl : �
     have h2 := Dg_smulS hF hd' h1 (u ^ y) (k - y)
     rwa [show -(y : ℤ) - (k - y) = -k by ring] at h2
 
+/- English proof (translation)
+Establish `hK : Module.finrank K₀ K = 1` using `Formalism.MainNotions.UnusedSlot80.SatW.finrank_one_of_bij' hA.1`. Take `⟨h9r, -⟩` from `(h9 T hT hA.2.1 hA.2.2).2.2 hK`. Establish `hR` using `Formalism.MainNotions.LiftingTheory.lifta_ring_of W h9r`. Establish `hqΔ` using `Formalism.MainNotions.LiftingTheory.lifta_qΔ W hR.πΔ`. Establish `hDL : DL W T i (qp W ^ y • x)`.
+
+Use `⟨by rw [smul_comm, hx.1], fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[γD_smul', map_pow, hqΔ δ hδ, hx.2 δ hδ]`. Take `⟨⟨u, hu, hq⟩, -, -⟩` from `hRg hA i ζ hζ`. Establish `hE` using `(hRu hA T hT i ζ hζ).2.2.2.2.1 (qp W ^ y) x d hd`. Establish `hN : qp W ^ Y • (qp W ^ y • x) ∈ W.N T`.
+
+Rewrite using `[smul_comm]`. Conclude with `(W.N T).smul_mem _ hY`. Rewrite using `[(hCr hA T hT i ζ hζ _ _ hDL hE).1 ⟨Y, hN⟩, map_pow, hq]`. Take `⟨m, hm⟩` from `hd.1`. Conclude with `wachExp_diag_shift_iff (Formalism.MainNotions.UnusedSlot80.LevR.filLev_anti W T i 0) hm u hu y`.
+-/
 theorem wachExp_mem_iff (W : LocWach PD LL O v n) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (hRg : ExpRing W)
     (hRu : ExpRules W) (hCr : ExpCrit W) (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (T : LocLat G Qp LL O)
     (hT : IsCrys PD T.ρ) (i : ZMod n) (ζ : LL) (hζ : IsPrimitiveRoot ζ PD.p)
@@ -76,6 +92,37 @@ theorem wachExp_mem_iff (W : LocWach PD LL O v n) (h9 : Formalism.MainNotions.De
   obtain ⟨m, hm⟩ := hd.1
   exact wachExp_diag_shift_iff (Formalism.MainNotions.UnusedSlot80.LevR.filLev_anti W T i 0) hm u hu y
 
+/- English proof (translation)
+Establish `hU` using `Formalism.MainNotions.UnusedSlot35.DssRec.π₀_unit W h9 hA T hT`. Establish `hDS` using `rToolMod_dStab W h9`. Establish `hQ : ∀ k ≤ xs.length, QLattice W T i Y (seq k)`. Introduce `k`. Proceed by induction on `k with`.
+
+Consider the case `zero => exact fun _ => ⟨h0, h0N⟩`. Consider the case `succ k ih`. Introduce `hk`. Establish `hk' : k < xs.length` using `hk`. Establish `e : seq (k + 1) = derivationOnWachModule W T (seq k) + (-cO (xs.getD k 0)) • seq k`.
+
+Establish `h1 : seq (k + 1) + cO (xs.getD k 0) • seq k = derivationOnWachModule W T (seq k)` using `Formalism.MainNotions.UnusedSlot35.DssRec.smul_inj W.π₀ hU (by rw [hrec k hk', uniformizer_smul_derivation W T hU]; rfl)`. Rewrite using `[← h1, neg_smul, add_neg_cancel_right]`. Rewrite using `[e]`. Conclude with `qLattice_add W T (qLattice_derivation W T hDS hA hT i Y (ih hk'.le)) (qLattice_smul W T _ (ih hk'.le))`. Use `⟨(hQ _ le_rfl).1, ?_⟩` and prove the remaining obligations.
+
+Take `⟨⟨u, hu, hq⟩, hπ0, -⟩` from `hRg hA i ζ hζ`. Take `⟨hex, -, hadd, hsO, hsA, hγ, -⟩` from `hRu hA T hT i ζ hζ`. Establish `hqne : W.lev i ζ (qp W ^ Y) ≠ 0`. Rewrite using `[map_pow, hq]`. Conclude with `pow_ne_zero _ (mul_ne_zero hu.ne_zero PowerSeries.X_ne_zero)`.
+
+Establish `hf : ∀ k : ℕ, ∃ d : ℤ → T.V ⊗[Qp] BdR, (∃ m : ℤ, ∀ j < m, d j = 0) ∧ (k ≤ xs.length → IsExp W T i ζ (seq k) d)`. Introduce `k`. Distinguish the cases in `hk : k ≤ xs.length`. Take `⟨d, hd, -⟩` from `hex (seq k) _ (hQ k hk).2 hqne`. Conclude with `⟨d, hd.1, fun _ => hd⟩`.
+
+Conclude with `⟨0, ⟨0, fun _ _ => rfl⟩, fun h => absurd h hk⟩`. Use `choose f hfb hfe using hf`. Rewrite using `[wachExp_mem_iff W h9 hRg hRu hCr hA T hT i ζ hζ _ _ (hQ _ le_rfl).1 (hfe _ le_rfl) Y (hQ _ le_rfl).2 y']`. Establish `hf0` using `(wachExp_mem_iff W h9 hRg hRu hCr hA T hT i ζ hζ _ _ h0 (hfe 0 (Nat.zero_le _)) Y h0N Y).1 h0N`. Set `uL : LLˣ` to `Units.map (algebraMap O LL : O →* LL) (W.χΓ W.gam)`.
+
+Use `filtLaurent_shift_line LL _ (fun a => FilLev W T i 0 a) (Formalism.MainNotions.UnusedSlot80.LevR.filLev_anti W T i 0) uL (W.lev i ζ W.π₀) (fun x => algebraMap O LL (cO x)) (by rw [hπ0]; exact neg_ne_zero.2 hp) (fun x => ?_) y' Y xs (fun a j ha hj hj' => ?_) f hfb (fun m hm k => ? …` and prove the remaining obligations. Establish `h1` using `congrArg (algebraMap O LL) (hc x)`. Rewrite `h1` using `[map_mul, map_natCast, map_sub, map_one]`. Establish `h2 : ((uL ^ (-x) : LLˣ) : LL) = algebraMap O LL (((W.χΓ W.gam) ^ (-x) : Oˣ) : O)`. Rewrite using `[← map_zpow]`.
+
+Both sides reduce to the same expression. Rewrite using `[hπ0, h2]`. Take the linear combination `-h1`. Set `e : K₀ ≃ₐ[Qp] K` to `AlgEquiv.ofBijective (IsScalarTower.toAlgHom Qp K₀ K) hA.1`. Set `τ : K →ₐ[Qp] LL` to `(W.emb i).comp e.symm.toAlgHom`.
+
+Establish `hτ : Formalism.MainNotions.LiftingTheory.Over W τ i`. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `z`. Use `show W.emb i (e.symm (e z)) = W.emb i z`. Rewrite using `[e.symm_apply_apply]`.
+
+Establish `hF : ∀ b : ℤ, FildR PD T.ρ τ b = FilLev W T i 0 b`. Introduce `b`. Rewrite using `[((hD hA.1 T.V T.ρ hT).2 τ).2.2 b, show τ.comp (IsScalarTower.toAlgHom Qp K₀ K) = W.emb i from hτ]`. Unfold `FilLev`. Simplify using `only [Nat.cast_zero, sub_zero, pow_zero, Module.End.one_eq_id, Submodule.map_id]`.
+
+Use `hxs τ a j hτ ?_ hj hj'` and prove the remaining obligations. Unfold `IsJumpV`. Rewrite using `[hF, hF]`. Conclude with `ha`. Establish `e1` using `hfe m hm.le`.
+
+Establish `e2` using `hfe (m + 1) hm`. Establish `hL` using `hsA W.π₀ _ _ (hadd _ _ _ _ e2 (hsO (cO (xs.getD m 0)) _ _ e1))`. Establish `hR` using `hadd _ _ _ _ (hγ _ _ e1) (hsO (-1) _ _ e1)`. Establish `ex : W.γ T (seq m) + (-1 : O) • seq m = W.π₀ • (seq (m + 1) + cO (xs.getD m 0) • seq m)`. Rewrite using `[hrec m hm, neg_one_smul, ← sub_eq_add_neg]`.
+
+Both sides reduce to the same expression. Rewrite `hR` using `[ex]`. Establish `hN : qp W ^ Y • (W.π₀ • (seq (m + 1) + cO (xs.getD m 0) • seq m)) ∈ W.N T`. Rewrite using `[smul_comm]`. Conclude with `(W.N T).smul_mem _ (qLattice_add W T (hQ (m + 1) hm) (qLattice_smul W T _ (hQ m hm.le))).2`.
+
+Establish `h3` using `congrFun ((hex _ _ hN hqne).unique hL hR) k`. Establish `h2 : ((uL ^ k : LLˣ) : LL) = (algebraMap O LL (W.χΓ W.gam : O)) ^ k`. Rewrite using `[Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression. Rewrite using `[h2, sub_smul, one_smul]`.
+
+Use `Eq.trans ?_ (h3.trans ?_)` and prove the remaining obligations. Both sides reduce to the same expression. Simplify using `[sub_eq_add_neg]`.
+-/
 theorem wachShift_mem_of_exp [NeZero n] (W : LocWach PD LL O v n) (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W)
     (hRg : ExpRing W) (hRu : ExpRules W) (hCr : ExpCrit W) (hD : Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris PD LL)
     (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (hp : (PD.p : LL) ≠ 0) (ζ : LL) (hζ : IsPrimitiveRoot ζ PD.p)
@@ -172,6 +219,11 @@ theorem wachShift_mem_of_exp [NeZero n] (W : LocWach PD LL O v n) (h9 : Formalis
 
 end Core
 
+/- English proof (translation)
+Introduce `D HW l _ K LL hA h9 hRg hRu hCr hD T hT i y' Y cO hc xs hxs seq h0 h0N hrec`. Establish `hp : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`. Use `haveI : FiniteDimensional ℚ_[l] ↥(K0 K) := ((D.loc l).PD K).finK₀`. Use `haveI : NeZero (Module.finrank ℚ_[l] ↥(K0 K)) := ⟨Module.finrank_pos.ne'⟩`. Take `⟨ζ, hζ⟩` from `Formalism.MainNotions.UnusedSlot80.exists_prim_of_good D hA.2.2`.
+
+Use `wachShift_mem_of_exp _ h9 hRg hRu hCr hD (Formalism.MainNotions.UnusedSlot80.caseA_of_le_Kur_of_ne_two (D.loc l) (HW l) hA.2.2 hA.1 hA.2.1) ?_ ζ (by rw [hp]; exact hζ) T hT i y' Y cO (fun x => by rw [hp]; exact hc x) xs hxs seq h0 h0N hrec` and prove the remaining obligations. Rewrite using `[hp]`. Conclude with `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`.
+-/
 theorem wachShift_mem_of_expansions : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc), ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hA : Loc.CaseA K LL), Formalism.MainNotions.DeltaInvariantLattices.P9W ((HW l).W K 1 LL hA.2.2) → Formalism.MainNotions.RamifiedCoefficientChains.Sh.ExpRing ((HW l).W K 1 LL hA.2.2) → Formalism.MainNotions.RamifiedCoefficientChains.Sh.ExpRules ((HW l).W K 1 LL hA.2.2) → Formalism.MainNotions.RamifiedCoefficientChains.Sh.ExpCrit ((HW l).W K 1 LL hA.2.2) → Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris ((D.loc l).PD K) ↥LL.1 → ∀ (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)), IsCrys ((D.loc l).PD K) T.ρ → ∀ (i : ZMod (Module.finrank ℚ_[l] ↥(K0 K))) (y' Y : ℕ) (cO : ℤ → ↥(OL LL)), (∀ x : ℤ, ((l : ℕ) : ↥(OL LL)) * cO x = 1 - (((((HW l).W K 1 LL hA.2.2).χΓ ((HW l).W K 1 LL hA.2.2).gam) ^ (-x) : (↥(OL LL))ˣ) : ↥(OL LL))) → ∀ xs : List ℤ, (∀ (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (a : ℤ) (j : ℕ), Formalism.MainNotions.LiftingTheory.Over ((HW l).W K 1 LL hA.2.2) τ i → IsJumpV ((D.loc l).PD K) T.ρ τ a → y' < j → j ≤ Y → a + (j : ℤ) ∈ xs) → ∀ seq : ℕ → ((HW l).W K 1 LL hA.2.2).DD T, Formalism.MainNotions.CrystallineLiftingInputs.DL ((HW l).W K 1 LL hA.2.2) T i (seq 0) → Formalism.MainNotions.LiftingTheory.qp ((HW l).W K 1 LL hA.2.2) ^ Y • seq 0 ∈ ((HW l).W K 1 LL hA.2.2).N T → (∀ k < xs.length, ((HW l).W K 1 LL hA.2.2).π₀ • (seq (k + 1) + cO (xs.getD k 0) • seq k) = ((HW l).W K 1 LL hA.2.2).γD T ((HW l).W K 1 LL hA.2.2).gam (seq k) - seq k) → Formalism.MainNotions.CrystallineLiftingInputs.DL ((HW l).W K 1 LL hA.2.2) T i (seq xs.length) ∧ Formalism.MainNotions.LiftingTheory.qp ((HW l).W K 1 LL hA.2.2) ^ y' • seq xs.length ∈ ((HW l).W K 1 LL hA.2.2).N T := by
   intro D HW l _ K LL hA h9 hRg hRu hCr hD T hT i y' Y cO hc xs hxs seq h0 h0N hrec
   have hp : ((D.loc l).PD K).p = l := (D.loc l).PD_p K

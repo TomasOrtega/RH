@@ -20,12 +20,21 @@ def ofRealVec (a : ι → ℝ) : ι → ℂ := fun i => (a i : ℂ)
 
 def ofIntVec (n : ι → ℤ) : ι → ℂ := fun i => (n i : ℂ)
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[ofIntVec]`.
+-/
 theorem ofIntVec_add (n m : ι → ℤ) : ofIntVec (n + m) = ofIntVec n + ofIntVec m := by
   ext i; simp [ofIntVec]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[ofIntVec]`.
+-/
 theorem ofIntVec_neg (n : ι → ℤ) : ofIntVec (-n) = -ofIntVec n := by
   ext i; simp [ofIntVec]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[ofIntVec]`.
+-/
 theorem ofIntVec_zero : ofIntVec (0 : ι → ℤ) = 0 := by
   ext i; simp [ofIntVec]
 

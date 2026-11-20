@@ -6,6 +6,9 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 
 open MvPolynomial Finset
 
+/- English proof (translation)
+Introduce `f r a c`. Take `⟨Q, hQ, hF⟩` from `h1 ℚ f (r + a) (topDegree f (r + a) + 1) (restPolynomial f r a c) (h2 f r a c) (by unfold Coinv.coinvTop topDegree; omega)`. Conclude with `⟨Q, hF, hQ⟩`.
+-/
 theorem RestPolynomialHomogeneousDecomposition.proof (h1 : CoinvAboveTop.Statement)
     (h2 : RestPolynomialHomogeneous.Statement) :
     RestPolynomialHomogeneousDecomposition.Statement := by

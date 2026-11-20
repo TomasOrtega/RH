@@ -21,6 +21,9 @@ def gsDecomp (v : {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S}) :
       galUnramifiedOutside K.1 ℚ̄ S :=
   decompHomS (v.1.adicCompletion K.1) S (ιs.fin v.1)
 
+/- English proof (translation)
+The claim follows from `continuous_decompHomS (Kv := v.1.adicCompletion K.1) S _`.
+-/
 theorem continuous_gsDecomp (v : {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S}) :
     Continuous (gsDecomp K S ιs v) :=
   continuous_decompHomS (Kv := v.1.adicCompletion K.1) S _
@@ -32,6 +35,11 @@ instance isDiscreteRep_gsDiv (A : Type) [AddCommGroup A] : IsDiscreteRep (gsDiv 
   have := galUnramifiedOutside_isProfinite (F := K.1) (Ω := ℚ̄) S
   isDiscreteRep_divFunRep _ _
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `ho` using `isOpen_stabilizer (galUnits.{0} K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) (Additive.ofMul y)`. Establish `hn` using `(ho.preimage (continuous_const_mul x⁻¹)).mem_nhds (show x⁻¹ * x ∈ (stabilizer (galUnits.{0} K.1 (maxUnramifiedOutside K.1 ℚ̄ S)).ρ (Additive.ofMul y) : Set (galUnramifiedOutside K.1 ℚ̄ S)) by rw [inv_mul_cancel]; exact one_mem _)`. Use `filter_upwards [hn] with x' hx'`.
+
+Establish `hs' : galUnitsHom K.1 _ (x⁻¹ * x') y = y` using `congrArg Additive.toMul ((mem_stabilizer _ _ _).1 hx')`. Establish `: x' = x * (x⁻¹ * x')` using `by rw [mul_inv_cancel_left]`. Rewrite using `[this, map_mul]`. Express the relevant statement in the definitionally equal form `galUnitsHom K.1 _ x (galUnitsHom K.1 _ (x⁻¹ * x') y) = _`. Rewrite using `[hs']`.
+-/
 theorem isLocallyConstant_galUnitsHom_apply (y : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) :
     IsLocallyConstant fun x : galUnramifiedOutside K.1 ℚ̄ S => galUnitsHom K.1 _ x y := by
   rw [IsLocallyConstant.iff_eventually_eq]
@@ -58,6 +66,9 @@ def unitsDivFun (y : Additive (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : divFun (gs
       rw [map_mul]
       exact ordEmb_decompHomS S (ιs.fin v.1) v.2 σ _⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_unitsDivFun (y : Additive (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) :
     (unitsDivFun K S ιs y : {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S} → galUnramifiedOutside K.1 ℚ̄ S → ℤ) =
       fun v x => ordEmb S (ιs.fin v.1) v.2 (Additive.ofMul (galUnitsHom K.1 _ x y.toMul)) :=
@@ -82,12 +93,18 @@ def unitsDiv : galUnits K.1 (maxUnramifiedOutside K.1 ℚ̄ S) ⟶ gsDiv K S ιs
       rw [map_mul]
       rfl)⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_unitsDiv_hom_apply (y : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) :
     (((unitsDiv K S ιs).hom (Additive.ofMul y) : divFun (gsDecomp K S ιs) ℤ) :
       {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S} → galUnramifiedOutside K.1 ℚ̄ S → ℤ) =
       fun v x => ordEmb S (ιs.fin v.1) v.2 (Additive.ofMul (galUnitsHom K.1 _ x y)) :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[divFunEval_hom_apply]`. Express the relevant statement in the definitionally equal form `ordEmb S (ιs.fin v.1) v.2 (Additive.ofMul (galUnitsHom K.1 _ 1 y.toMul)) = _`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+-/
 theorem divFunEval_unitsDiv (v : {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S})
     (y : Additive (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) :
     (divFunEval (gsDecomp K S ιs) ℤ v).hom ((unitsDiv K S ιs).hom y) = ordEmb S (ιs.fin v.1) v.2 y := by
@@ -96,6 +113,11 @@ theorem divFunEval_unitsDiv (v : {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S})
   rw [map_one]
   rfl
 
+/- English proof (translation)
+Rewrite using `[mem_sUnitsMax_iff_ordEmb S ιs]`. Prove the components needed by the constructor for the conclusion. Introduce `h v hv σ`. Use `congrFun (congrFun (congrArg Subtype.val h) ⟨v, hv⟩) σ` as an intermediate fact. Conclude with `this`.
+
+Introduce `h`. Conclude with `Subtype.ext (funext fun v => funext fun x => h v.1 v.2 x)`.
+-/
 theorem unitsDiv_eq_zero_iff (y : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) :
     (unitsDiv K S ιs).hom (Additive.ofMul y) = 0 ↔ y ∈ sUnitsMax K.1 ℚ̄ S := by
   rw [mem_sUnitsMax_iff_ordEmb S ιs]
@@ -106,6 +128,9 @@ theorem unitsDiv_eq_zero_iff (y : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) :
   · intro h
     exact Subtype.ext (funext fun v => funext fun x => h v.1 v.2 x)
 
+/- English proof (translation)
+Introduce `y hy` and use `(unitsDiv_eq_zero_iff K S ιs y.toMul).2 hy`.
+-/
 theorem sUnitsSubmodule_le_ker_unitsDiv :
     sUnitsSubmodule K.1 ℚ̄ S ≤ LinearMap.ker (unitsDiv K S ιs).hom.toLinearMap := fun y hy =>
   (unitsDiv_eq_zero_iff K S ιs y.toMul).2 hy
@@ -118,6 +143,9 @@ def sUnitsQuotDiv : galUnitsModSUnits K.1 ℚ̄ S ⟶ gsDiv K S ιs ℤ :=
     intro y
     exact congrArg (fun f : _ →ₗ[ULift ℤ] _ => f y) ((unitsDiv K S ιs).hom.isIntertwining' σ)⟩
 
+/- English proof (translation)
+Apply `Rep.hom_ext` to reduce the goal to its premises. Apply `Representation.IntertwiningMap.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Both sides reduce to the same expression.
+-/
 theorem sUnitsQuotSequence_g_comp_sUnitsQuotDiv :
     (sUnitsQuotSequence K.1 ℚ̄ S).g ≫ sUnitsQuotDiv K S ιs = unitsDiv K S ιs := by
   apply Rep.hom_ext
@@ -126,6 +154,9 @@ theorem sUnitsQuotSequence_g_comp_sUnitsQuotDiv :
   intro y
   rfl
 
+/- English proof (translation)
+Establish `h : LinearMap.ker (sUnitsQuotDiv K S ιs).hom.toLinearMap = ⊥` using `Submodule.ker_liftQ_eq_bot _ _ _ fun y hy => (unitsDiv_eq_zero_iff K S ιs y.toMul).1 hy`. Conclude with `LinearMap.ker_eq_bot.1 h`.
+-/
 theorem sUnitsQuotDiv_injective : Function.Injective (sUnitsQuotDiv K S ιs).hom := by
   have h : LinearMap.ker (sUnitsQuotDiv K S ιs).hom.toLinearMap = ⊥ :=
     Submodule.ker_liftQ_eq_bot _ _ _ fun y hy => (unitsDiv_eq_zero_iff K S ιs y.toMul).1 hy
@@ -134,6 +165,9 @@ theorem sUnitsQuotDiv_injective : Function.Injective (sUnitsQuotDiv K S ιs).hom
 def principalDivSubmodule : Submodule (ULift.{0} ℤ) (gsDiv K S ιs ℤ) :=
   LinearMap.range (sUnitsQuotDiv K S ιs).hom.toLinearMap
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨p, rfl⟩`. Use `⟨(galUnitsModSUnits K.1 ℚ̄ S).ρ σ p, ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun f : _ →ₗ[ULift ℤ] _ => f p) ((sUnitsQuotDiv K S ιs).hom.isIntertwining' σ)`.
+-/
 theorem principalDivSubmodule_le_comap (σ : galUnramifiedOutside K.1 ℚ̄ S) :
     principalDivSubmodule K S ιs ≤ (principalDivSubmodule K S ιs).comap ((gsDiv K S ιs ℤ).ρ σ) := by
   rintro _ ⟨p, rfl⟩
@@ -149,6 +183,9 @@ instance isDiscreteRep_picInfRep : IsDiscreteRep (picInfRep K S ιs) :=
 def picQuot : gsDiv K S ιs ℤ ⟶ picInfRep K S ιs :=
   Rep.mkQ _ (principalDivSubmodule K S ιs) (principalDivSubmodule_le_comap K S ιs)
 
+/- English proof (translation)
+The claim follows from `Submodule.mkQ_surjective _`.
+-/
 theorem picQuot_surjective : Function.Surjective (picQuot K S ιs).hom :=
   Submodule.mkQ_surjective _
 
@@ -160,6 +197,11 @@ def picSequence : ShortComplex (Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.
     intro p
     exact (Submodule.Quotient.mk_eq_zero _).2 ⟨p, rfl⟩)
 
+/- English proof (translation)
+Apply `shortComplex_exact_of_forall_exists` to reduce the goal to its premises. Introduce `f hf`. Take `⟨p, hp⟩` from `(Submodule.Quotient.mk_eq_zero _).1 hf`. Conclude with `⟨p, hp⟩`. Use `mono_f := (Rep.mono_iff_injective _).2 (sUnitsQuotDiv_injective K S ιs)`.
+
+Use `epi_g := (Rep.epi_iff_surjective _).2 (picQuot_surjective K S ιs)`.
+-/
 theorem picSequence_shortExact : (picSequence K S ιs).ShortExact where
   exact := by
     apply shortComplex_exact_of_forall_exists
@@ -177,10 +219,18 @@ def Good (ℓ : ℕ) (f : {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S} → galU
   ∃ N : ℕ, N.Coprime ℓ ∧ ∃ y : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ, ∀ v x,
     ordEmb S (ιs.fin v.1) v.2 (Additive.ofMul (galUnitsHom K.1 _ x y)) = N * f v x
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, Nat.coprime_one_left ℓ, 1, fun v x => by rw [map_one, ofMul_one, map_zero, Pi.zero_apply, Pi.zero_apply, mul_zero]⟩`.
+-/
 theorem good_zero (ℓ : ℕ) : Good (S := S) (ιs := ιs) ℓ 0 :=
   ⟨1, Nat.coprime_one_left ℓ, 1, fun v x => by
     rw [map_one, ofMul_one, map_zero, Pi.zero_apply, Pi.zero_apply, mul_zero]⟩
 
+/- English proof (translation)
+Take `⟨N₁, h₁, y₁, hy₁⟩` from `hf`. Take `⟨N₂, h₂, y₂, hy₂⟩` from `hg`. Use `⟨N₁ * N₂, Nat.Coprime.mul_left h₁ h₂, y₁ ^ N₂ * y₂ ^ N₁, fun v x => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_pow, ofMul_mul, ofMul_pow, ofMul_pow, map_add, map_nsmul, map_nsmul, hy₁, hy₂, Pi.add_apply, Pi.add_apply, nsmul_eq_mul, nsmul_eq_mul]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Good.add {ℓ : ℕ}
     {f g : {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S} → galUnramifiedOutside K.1 ℚ̄ S → ℤ}
     (hf : Good (ιs := ιs) ℓ f) (hg : Good (ιs := ιs) ℓ g) : Good (ιs := ιs) ℓ (f + g) := by
@@ -192,6 +242,9 @@ theorem Good.add {ℓ : ℕ}
   push_cast
   ring
 
+/- English proof (translation)
+Take `⟨N, h, y, hy⟩` from `hf`. Use `⟨N, h, y ^ c, fun v x => ?_⟩` and prove the remaining obligations. Rewrite using `[map_zpow, ofMul_zpow, map_zsmul, hy, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Good.zsmul {ℓ : ℕ} {f : {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S} → galUnramifiedOutside K.1 ℚ̄ S → ℤ}
     (hf : Good (ιs := ιs) ℓ f) (c : ℤ) : Good (ιs := ιs) ℓ (c • f) := by
   obtain ⟨N, h, y, hy⟩ := hf
@@ -199,6 +252,11 @@ theorem Good.zsmul {ℓ : ℕ} {f : {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S
   rw [map_zpow, ofMul_zpow, map_zsmul, hy, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty]`. Conclude with `good_zero ℓ`. Consider the case `insert a T ha ih`. Rewrite using `[Finset.sum_insert ha]`.
+
+Conclude with `(hf a (Finset.mem_insert_self a T)).add (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem good_sum {ℓ : ℕ} {ι : Type} (T : Finset ι)
     (f : ι → {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S} → galUnramifiedOutside K.1 ℚ̄ S → ℤ)
     (hf : ∀ i ∈ T, Good (ιs := ιs) ℓ (f i)) : Good (ιs := ιs) ℓ (∑ i ∈ T, f i) := by
@@ -209,6 +267,9 @@ theorem good_sum {ℓ : ℕ} {ι : Type} (T : Finset ι)
     rw [Finset.sum_insert ha]
     exact (hf a (Finset.mem_insert_self a T)).add (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Take `⟨N, h, y, hy⟩` from `hf`. Use `⟨N, h, galUnitsHom K.1 _ g y, fun v x => ?_⟩` and prove the remaining obligations. Rewrite using `[← hy v (x * g), map_mul]`. Both sides reduce to the same expression.
+-/
 theorem Good.translate {ℓ : ℕ}
     {f : {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S} → galUnramifiedOutside K.1 ℚ̄ S → ℤ}
     (hf : Good (ιs := ιs) ℓ f) (g : galUnramifiedOutside K.1 ℚ̄ S) :
@@ -218,6 +279,11 @@ theorem Good.translate {ℓ : ℕ}
   rw [← hy v (x * g), map_mul]
   rfl
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hn` using `(hU.preimage (continuous_const_mul x⁻¹)).mem_nhds (show x⁻¹ * x ∈ (U : Set (galUnramifiedOutside K.1 ℚ̄ S)) by rw [inv_mul_cancel]; exact one_mem _)`. Use `filter_upwards [hn] with x' hx'`. Establish `: x' = x * (x⁻¹ * x')` using `by rw [mul_inv_cancel_left]`.
+
+Rewrite using `[this]`. Conclude with `h x _ hx'`.
+-/
 theorem isLocallyConstant_of_mul_right {U : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)}
     (hU : IsOpen (U : Set (galUnramifiedOutside K.1 ℚ̄ S))) {φ : galUnramifiedOutside K.1 ℚ̄ S → ℤ}
     (h : ∀ x, ∀ u ∈ U, φ (x * u) = φ x) : IsLocallyConstant φ := by
@@ -244,6 +310,39 @@ noncomputable def zuInd (v : {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S})
 
 open Classical in
 
+/- English proof (translation)
+Establish `: Finite (galUnramifiedOutside K.1 ℚ̄ S ⧸ U)` using `Subgroup.quotient_finite_of_isOpen U hU`. Use `Fintype.ofFinite (galUnramifiedOutside K.1 ℚ̄ S ⧸ U)` as an intermediate fact. Use `set Z := (gsDecomp K S ιs v).range with hZ`. Use the proof step `induction' hn : (Finset.univ.filter (fun q : galUnramifiedOutside K.1 ℚ̄ S ⧸ U => ∃ x : galUnramifiedOutside K.1 ℚ̄ S, (x : galUnramifiedOutside K.1 ℚ̄ S ⧸ U) = q ∧ φ x ≠ 0)).card using Nat.strong_induction_on with n ih generalizing φ`. Distinguish the cases in `h0 : ∀ x, φ x = 0`.
+
+Establish `: φ = 0` using `funext h0`. Rewrite using `[this, Pi.single_zero]`. Conclude with `good_zero ℓ`. Simplify using `only [not_forall] at h0`. Take `⟨x₀, hx₀⟩` from `h0`.
+
+Take `⟨χ, hχ⟩ : ∃ χ : galUnramifiedOutside K.1 ℚ̄ S → ℤ, χ = fun g => zuInd (ιs` from `ιs) v U (g * x₀⁻¹) := ⟨_, rfl⟩`. Establish `hmemD : ∀ g, (∃ z ∈ Z, ∃ u ∈ U, g * x₀⁻¹ = z * u) ↔ ∃ z ∈ Z, ∃ u ∈ U, g = z * x₀ * u`. Introduce `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, u, hu, h⟩`.
+
+Use `⟨z, hz, x₀⁻¹ * u * x₀, hUn.conj_mem' u hu x₀, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨z, hz, u, hu, rfl⟩`. Use `⟨z, hz, x₀ * u * x₀⁻¹, hUn.conj_mem u hu x₀, by group⟩` and prove the remaining obligations. Establish `hφD : ∀ z ∈ Z, ∀ u ∈ U, φ (z * x₀ * u) = φ x₀`.
+
+Introduce `z hz u hu`. Rewrite using `[hφU _ u hu, hφZ z hz]`. Take `⟨ψ, hψ⟩ : ∃ ψ : galUnramifiedOutside K.1 ℚ̄ S → ℤ, ψ = fun g => φ g - φ x₀ * χ g` from `⟨_, rfl⟩`. Establish `hχ1 : ∀ g, χ g = if ∃ z ∈ Z, ∃ u ∈ U, g = z * x₀ * u then 1 else 0`. Introduce `g`.
+
+Simplify using `only [hχ, zuInd, ← hZ, hmemD g]`. Establish `hsplit : Pi.single v φ = Pi.single v ψ + (φ x₀) • fun v' x => (Pi.single v (zuInd (ιs` using `ιs) v U) : {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S} → galUnramifiedOutside K.1 ℚ̄ S → ℤ) v' (x * x₀⁻¹) := by`. Use function extensionality and compare the values at `v' x`. Distinguish the cases in `hv : v' = v`. Substitute `hv` using the available equality.
+
+Simplify using `[hψ, hχ]`. Simplify using `[Pi.single_eq_of_ne hv]`. Rewrite using `[hsplit]`. Use `Good.add ?_ ((hbase.translate x₀⁻¹).zsmul (φ x₀))` and prove the remaining obligations. Use `ih _ ?_ ψ ?_ ?_ rfl` and prove the remaining obligations.
+
+Rewrite using `[← hn]`. Apply `Finset.card_lt_card` to reduce the goal to its premises. Use `⟨fun q hq => ?_, fun hsub => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hq ⊢`. Take `⟨x, rfl, hx⟩` from `hq`.
+
+Use `⟨x, rfl, fun hφx => hx ?_⟩` and prove the remaining obligations. Establish `: χ x = 0`. Rewrite using `[hχ1]`. Use `split_ifs with hD`. Take `⟨z, hz, u, hu, rfl⟩` from `hD`.
+
+Conclude with `absurd (hφD z hz u hu ▸ hφx) hx₀`. Both sides reduce to the same expression. Simplify using `[hψ, hφx, this]`. Use `hsub (Finset.mem_filter.2 ⟨Finset.mem_univ _, x₀, rfl, hx₀⟩)` as an intermediate fact. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at this`.
+
+Take `⟨x, hx, hψx⟩` from `this`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu, rfl⟩ : ∃ u ∈ U, x = x₀ * u := by`. Establish `h` using `QuotientGroup.eq.1 hx`. Use `⟨x₀⁻¹ * x, ?_, by group⟩` and prove the remaining obligations. Use `U.inv_mem h` as an intermediate fact.
+
+Rewrite `this` using `[mul_inv_rev, inv_inv]`. Then use the resulting hypothesis. Apply `hψx` to reduce the goal to its premises. Establish `hD : ∃ z ∈ Z, ∃ u' ∈ U, x₀ * u = z * x₀ * u'` using `⟨1, Z.one_mem, u, hu, by rw [one_mul]⟩`. Simplify using `only [hψ, hχ1, if_pos hD, hφU x₀ u hu, mul_one, sub_self]`. Introduce `x u hu`.
+
+Establish `hAB : (∃ z ∈ Z, ∃ u' ∈ U, x * u = z * x₀ * u') ↔ ∃ z ∈ Z, ∃ u' ∈ U, x = z * x₀ * u'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, u', hu', h⟩`. Use `⟨z, hz, u' * u⁻¹, U.mul_mem hu' (U.inv_mem hu), ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← h, mul_inv_cancel_right]`.
+
+Introduce and unpack `⟨z, hz, u', hu', rfl⟩`. Conclude with `⟨z, hz, u' * u, U.mul_mem hu' hu, mul_assoc _ _ _⟩`. Simplify using `only [hψ, hφU x u hu, hχ1, hAB]`. Introduce `z hz x`. Establish `hAB : (∃ z' ∈ Z, ∃ u' ∈ U, z * x = z' * x₀ * u') ↔ ∃ z' ∈ Z, ∃ u' ∈ U, x = z' * x₀ * u'`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z', hz', u', hu', h⟩`. Use `⟨z⁻¹ * z', Z.mul_mem (Z.inv_mem hz) hz', u', hu', ?_⟩` and prove the remaining obligations. Simplify using `only [mul_assoc] at h ⊢`. Rewrite using `[← h, inv_mul_cancel_left]`.
+
+Introduce and unpack `⟨z', hz', u', hu', rfl⟩`. Conclude with `⟨z * z', Z.mul_mem hz hz', u', hu', by simp only [mul_assoc]⟩`. Simplify using `only [hψ, hφZ z hz, hχ1, hAB]`.
+-/
 theorem good_single_of_base {ℓ : ℕ} (v : {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S})
     (U : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) [hUn : U.Normal]
     (hU : IsOpen (U : Set (galUnramifiedOutside K.1 ℚ̄ S)))
@@ -344,6 +443,9 @@ namespace PicInf
 
 variable {K S ιs}
 
+/- English proof (translation)
+Use `(galUnramifiedOutside_isProfinite (F := K.1) (Ω := ℚ̄) S).1` as an intermediate fact. Take `⟨V, hV, hVφ⟩` from `exists_mem_nhds_one_forall_mul_eq hφ`. Take `⟨E, hEf, hEn, hEV⟩` from `(krullTopology_mem_nhds_one_iff_of_normal K.1 _ V).1 hV`. Conclude with `⟨E, hEf, hEn, fun x u hu => hVφ x u (hEV hu)⟩`.
+-/
 theorem exists_normal_level (φ : galUnramifiedOutside K.1 ℚ̄ S → ℤ) (hφ : IsLocallyConstant φ) :
     ∃ L : IntermediateField K.1 (maxUnramifiedOutside K.1 ℚ̄ S), FiniteDimensional K.1 L ∧ Normal K.1 L ∧
       ∀ x, ∀ u ∈ L.fixingSubgroup, φ (x * u) = φ x := by
@@ -354,6 +456,9 @@ theorem exists_normal_level (φ : galUnramifiedOutside K.1 ℚ̄ S → ℤ) (hφ
 
 open Classical in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Rewrite using `[Finset.sum_apply, Finset.sum_pi_single]`. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `hT v h`.
+-/
 theorem eq_sum_single (f : {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S} → galUnramifiedOutside K.1 ℚ̄ S → ℤ)
     (T : Finset {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S}) (hT : ∀ v ∉ T, f v = 0) :
     f = ∑ v ∈ T, Pi.single v (f v) := by
@@ -365,6 +470,11 @@ theorem eq_sum_single (f : {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S} → gal
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨L, hLf, hLn, hL⟩` from `exists_normal_level _ hφ`. Establish `: IsGalois K.1 L` using `⟨⟩`. Establish `: IsGalois K.1 (maxUnramifiedOutside K.1 ℚ̄ S)` using `isGalois_maxUnramifiedOutside S`. Conclude with `good_single_of_base v L.fixingSubgroup (L.fixingSubgroup_isOpen) (hbase v L) φ hL (fun z hz x => by`. Take `⟨σ, rfl⟩` from `hz`.
+
+Conclude with `hZ σ x)`.
+-/
 theorem good_single {ℓ : ℕ}
     (hbase : ∀ (v : {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S})
       (L : IntermediateField K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) [FiniteDimensional K.1 L] [Normal K.1 L],
@@ -394,6 +504,11 @@ instance fact_le_levelWith (L : IntermediateField K.1 (maxUnramifiedOutside K.1 
     [FiniteDimensional K.1 L] (α : ℚ̄) : Fact (K ≤ levelWith L α) :=
   ⟨le_trans (fact_le_levelOf α).out (le_sup_left (a := (levelOf K α).1))⟩
 
+/- English proof (translation)
+Establish `h1 : (levelOf K α).1 ≤ (maxUnramifiedOutside K.1 ℚ̄ S).restrictScalars ℚ`. Use `sup_le (fun z hz => ?_) ?_` and prove the remaining obligations. Conclude with `(maxUnramifiedOutside K.1 ℚ̄ S).algebraMap_mem ⟨z, hz⟩`. Rewrite using `[IntermediateField.adjoin_le_iff, Set.singleton_subset_iff]`. Conclude with `hα`.
+
+Establish `h2 : (levelOfField L).1 ≤ (maxUnramifiedOutside K.1 ℚ̄ S).restrictScalars ℚ` using `fun z hz => mem_maxUnramifiedOutside_of_mem_levelOfField L hz`. Conclude with `fun z hz => (sup_le h1 h2) hz`.
+-/
 theorem levelWith_le (L : IntermediateField K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) [FiniteDimensional K.1 L]
     {α : ℚ̄} (hα : α ∈ maxUnramifiedOutside K.1 ℚ̄ S) :
     ∀ z ∈ (levelWith L α).1, z ∈ maxUnramifiedOutside K.1 ℚ̄ S := by
@@ -406,6 +521,17 @@ theorem levelWith_le (L : IntermediateField K.1 (maxUnramifiedOutside K.1 ℚ̄ 
     fun z hz => mem_maxUnramifiedOutside_of_mem_levelOfField L hz
   exact fun z hz => (sup_le h1 h2) hz
 
+/- English proof (translation)
+Use `set a : ℚ̄ := ((α : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄) with ha`. Establish `haS : a ∈ maxUnramifiedOutside K.1 ℚ̄ S` using `(α : maxUnramifiedOutside K.1 ℚ̄ S).2`. Set `πq : ℚ̄ˣ` to `Units.map ((levelOfField L).1.val.toRingHom.toMonoidHom) π`. Establish `hπq : (πq : ℚ̄) = ((π : (levelOfField L).1) : ℚ̄)` using `rfl`. Establish `hπL : (πq : ℚ̄) ∈ (levelOfField L).1` using `(π : (levelOfField L).1).2`.
+
+Establish `e1` using `valuation_placeOfEmbedding_eq S ι hv (levelOfField L) (fun z hz => mem_maxUnramifiedOutside_of_mem_levelOfField L hz) πq hπL`. Establish `hF` using `levelWith_le L haS`. Establish `haF : ((maxUnitsToUnits S α : ℚ̄ˣ) : ℚ̄) ∈ (levelWith L a).1` using `(le_sup_left (a := (levelOf K a).1)) (mem_levelOf a)`. Establish `hπF : (πq : ℚ̄) ∈ (levelWith L a).1` using `(le_sup_right (a := (levelOf K a).1)) hπL`. Establish `e2` using `valuation_placeOfEmbedding_eq S ι hv (levelWith L a) hF (maxUnitsToUnits S α) haF`.
+
+Establish `e3` using `valuation_placeOfEmbedding_eq S ι hv (levelWith L a) hF πq hπF`. Establish `hpow : (⟨(πq : ℚ̄), hπF⟩ : (levelWith L a).1) = ⟨((maxUnitsToUnits S α : ℚ̄ˣ) : ℚ̄), haF⟩ ^ M`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [SubmonoidClass.coe_pow]`. Conclude with `hα.symm`.
+
+Rewrite `e3` using `[hpow, map_pow, e2, ← WithZero.exp_nsmul]`. Establish `e4` using `congrArg WithZero.log e3`. Rewrite `e4` using `[WithZero.log_exp, WithZero.log_exp]`. Establish `e5 : -WithZero.log ((placeOfEmbedding ι (levelOfField L)).1.valuation (levelOfField L).1 (π : (levelOfField L).1)) = ordEmbFun ι πq`. Establish `: (⟨(πq : ℚ̄), hπL⟩ : (levelOfField L).1) = (π : (levelOfField L).1)` using `rfl`.
+
+Rewrite using `[← this, e1, WithZero.log_exp, neg_neg]`. Rewrite using `[e5]`. Simplify using `only [smul_neg, nsmul_eq_mul] at e4`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ordEmbFun_root (L : IntermediateField K.1 (maxUnramifiedOutside K.1 ℚ̄ S)) [FiniteDimensional K.1 L]
     {v : HeightOneSpectrum (𝓞 K.1)} (ι : ℚ̄ →ₐ[K.1] AlgebraicClosure (v.adicCompletion K.1)) (hv : v ∉ S)
     (M : ℕ) (π : (levelOfField L).1ˣ) (α : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ)
@@ -451,6 +577,25 @@ variable {K S ιs}
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨a, N, hN, hh⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (classNumber_ne_zero (levelOfField L).1) ℓ hℓ.one_lt.ne'`. Establish `hval : ∀ W : HeightOneSpectrum (𝓞 (levelOfField L).1), W.valuation (levelOfField L).1 (Global.SUnit.placeUnit (placeOfEmbedding (ιs.fin v.1) (levelOfField L)).1 : (levelOfField L).1) = if W = (placeOfEmbedding (ιs.fin v.1) (levelOfField L)).1 then WithZero.exp (-(classNumber (lev …`. Introduce `W`. Rewrite using `[← HeightOneSpectrum.valuationOfNeZero_eq, Global.SUnit.valuationOfNeZero_placeUnit]`. Apply the tactic sequence `split_ifs <;> rfl`.
+
+Establish `hMS : ∀ w ∉ S, ((ℓ ^ a : ℕ) : 𝓞 K.1) ∉ w.asIdeal`. Introduce `w hw hmem`. Rewrite `hmem` using `[Nat.cast_pow]`. Conclude with `hw (hS w (w.isPrime.mem_of_pow_mem _ hmem))`. Establish `hdvd : ∀ W : HeightOneSpectrum (𝓞 (levelOfField L).1), ((ℓ ^ a : ℕ) : ℤ) ∣ WithZero.log (W.valuation (levelOfField L).1 (Global.SUnit.placeUnit (placeOfEmbedding (ιs.fin v.1) (levelOfField L)).1 : (levelOfField L).1))`.
+
+Introduce `W`. Rewrite using `[hval W]`. Use `split_ifs`. Rewrite using `[WithZero.log_exp, hh]`. Conclude with `⟨-(N : ℤ), by push_cast; ring⟩`.
+
+Rewrite using `[WithZero.log_one]`. Conclude with `dvd_zero _`. Take `⟨α, hα⟩` from `exists_pow_eq_of_dvd_log_valuation L (ℓ ^ a) (pow_ne_zero a hℓ.ne_zero) hMS (Global.SUnit.placeUnit (placeOfEmbedding (ιs.fin v.1) (levelOfField L)).1) hdvd`. Use `⟨N, (Nat.coprime_comm.1 ((Nat.Prime.coprime_iff_not_dvd hℓ).2 hN)), α, fun v' x => ?_⟩` and prove the remaining obligations. Set `x' : ℚ̄ →ₐ[K.1] ℚ̄` to `((x : maxUnramifiedOutside K.1 ℚ̄ S ≃ₐ[K.1] maxUnramifiedOutside K.1 ℚ̄ S).liftNormal ℚ̄)`.
+
+Establish `hx' : ∀ z : maxUnramifiedOutside K.1 ℚ̄ S, x' z = ((x z : maxUnramifiedOutside K.1 ℚ̄ S) : ℚ̄)` using `fun z => AlgEquiv.liftNormal_commutes _ _ z`. Rewrite using `[ordEmb_galUnitsHom_eq (ιs.fin v'.1) v'.2 x x' hx' α]`. Establish `hroot` using `ordEmbFun_root L ((ιs.fin v'.1).comp x') v'.2 (ℓ ^ a) (Global.SUnit.placeUnit (placeOfEmbedding (ιs.fin v.1) (levelOfField L)).1) α hα`. Rewrite `hroot` using `[hval]`. Establish `hiff` using `placeOfEmbedding_comp_eq_iff L ιs v.1 v'.1 x x' hx'`.
+
+Establish `hM0 : ((ℓ ^ a : ℕ) : ℤ) ≠ 0` using `by exact_mod_cast pow_ne_zero a hℓ.ne_zero`. Distinguish the cases in `hpl : (placeOfEmbedding ((ιs.fin v'.1).comp x') (levelOfField L)).1 = (placeOfEmbedding (ιs.fin v.1) (levelOfField L)).1`. Rewrite `hroot` using `[if_pos hpl, WithZero.log_exp, neg_neg, hh]`. Take `⟨hvv, z, hz, u, hu, hxzu⟩` from `hiff.1 hpl`. Establish `hvv' : v' = v` using `Subtype.ext hvv`.
+
+Substitute `hvv'` using the available equality. Rewrite using `[Pi.single_eq_same, zuInd, if_pos ⟨z, hz, u, hu, hxzu⟩, mul_one]`. Move the coercions through the operations in `at hroot`. Establish `hM0' : ((ℓ : ℤ)) ^ a ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hℓ.ne_zero)`. Conclude with `mul_left_cancel₀ hM0' hroot`.
+
+Rewrite `hroot` using `[if_neg hpl, WithZero.log_one, neg_zero]`. Establish `h0` using `(mul_eq_zero.1 hroot).resolve_left hM0`. Rewrite using `[h0]`. Distinguish the cases in `hvv : v' = v`. Substitute `hvv` using the available equality.
+
+Rewrite using `[Pi.single_eq_same, zuInd, if_neg, mul_zero]`. Conclude with `fun hx => hpl (hiff.2 ⟨rfl, hx⟩)`. Rewrite using `[Pi.single_eq_of_ne hvv, Pi.zero_apply, mul_zero]`.
+-/
 theorem good_base (ℓ : ℕ) (hℓ : ℓ.Prime)
     (hS : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)
     (v : {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S})
@@ -516,6 +661,15 @@ end PicInf
 
 open PicInf Classical in
 
+/- English proof (translation)
+Take `⟨f, rfl⟩` from `picQuot_surjective K S ιs m`. Establish `hgood : Good (ιs` using `ιs) ℓ (f : {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S} → galUnramifiedOutside K.1 ℚ̄ S → ℤ) := by`. Establish `hf` using `(mem_divFun _ _).1 f.2`. Rewrite using `[eq_sum_single (f : {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S} → galUnramifiedOutside K.1 ℚ̄ S → ℤ) hf.1.toFinset (fun v hv => by simpa using hv)]`. Use `good_sum _ _ fun v _ => ?_` and prove the remaining obligations.
+
+Conclude with `good_single (fun v L _ _ => good_base ℓ hℓ hS v L) v _ (hf.2 v).1 (hf.2 v).2`. Take `⟨N, hN, y, hy⟩` from `hgood`. Use `⟨N, hN, ?_⟩` and prove the remaining obligations. Establish `hdiv : N • f = (unitsDiv K S ιs).hom (Additive.ofMul y)`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `v x`. Establish `e` using `congrFun (congrFun (AddSubgroup.coe_nsmul _ f N) v) x`. Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[coe_unitsDiv_hom_apply]`. Express the relevant statement in the definitionally equal form `N • (f : {v : HeightOneSpectrum (𝓞 K.1) // v ∉ S} → galUnramifiedOutside K.1 ℚ̄ S → ℤ) v x = _`.
+
+Rewrite using `[nsmul_eq_mul]`. Conclude with `(hy v x).symm`. Rewrite using `[← map_nsmul, hdiv, ← sUnitsQuotSequence_g_comp_sUnitsQuotDiv]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ⟨(sUnitsQuotSequence K.1 ℚ̄ S).g.hom (Additive.ofMul y), rfl⟩`.
+-/
 theorem exists_coprime_smul_picInfRep (ℓ : ℕ) (hℓ : ℓ.Prime)
     (hS : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)
     (m : (picInfRep K S ιs).V) : ∃ N : ℕ, N.Coprime ℓ ∧ N • m = 0 := by

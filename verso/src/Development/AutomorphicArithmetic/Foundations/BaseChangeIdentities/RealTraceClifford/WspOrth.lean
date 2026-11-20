@@ -9,6 +9,11 @@ open PositivityTheory.RgTw (Mat)
 open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.RealD UpperTheory.RealTr
 open Formalism.REAL (GlRel IsWeight KHighest Cas)
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `Function.ne_iff.1 h`. Establish `h1` using `hF.unit a a x y`. Establish `hx' : F a a x = (μ a : ℂ) • x` using `hx a`. Establish `hy' : F a a y = (ν a : ℂ) • y` using `hy a`. Rewrite `h1` using `[hx', hy', inner_smul_left, inner_smul_right, Complex.conj_ofReal]`.
+
+Establish `h2 : ((μ a : ℂ) - (ν a : ℂ)) * ⟪x, y⟫_ℂ = 0` using `by rw [sub_mul, h1, sub_self]`. Establish `h3 : (μ a : ℂ) - (ν a : ℂ) ≠ 0`. Rewrite using `[sub_ne_zero]`. Conclude with `fun e => ha (Complex.ofReal_injective e)`. Conclude with `(mul_eq_zero.1 h2).resolve_left h3`.
+-/
 private theorem wsp_orth {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     {F : Fin n → Fin n → Module.End ℂ V} (hF : UF F) {μ ν : Wt n} (h : μ ≠ ν) {x y : V}
     (hx : x ∈ wsp F μ) (hy : y ∈ wsp F ν) : ⟪x, y⟫_ℂ = 0 := by
@@ -23,6 +28,37 @@ private theorem wsp_orth {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProdu
     exact fun e => ha (Complex.ofReal_injective e)
   exact (mul_eq_zero.1 h2).resolve_left h3
 
+/- English proof (translation)
+Introduce `n V _ _ F hF S hSfin hS`. Establish `hind : iSupIndep fun μ => wsp F μ ⊓ S`. Use `OrthogonalFamily.independent (OrthogonalFamily.of_pairwise fun μ ν hne => ?_)` and prove the remaining obligations. Use `show (wsp F μ ⊓ S) ⟂ (wsp F ν ⊓ S)`. Rewrite using `[Submodule.isOrtho_iff_inner_eq]`.
+
+Introduce `x hx y hy`. Conclude with `wsp_orth hF hne hx.1 hy.1`. Set `T : Fin n → Module.End ℂ S` to `fun a => (F a a).restrict (fun x hx => hS a a x hx)`. Establish `hT : ∀ a, (T a).IsSymmetric`. Introduce `a x y`.
+
+Rewrite using `[Submodule.coe_inner, Submodule.coe_inner]`. Conclude with `hF.unit a a x y`. Establish `hcomm : Pairwise fun a b => Commute (T a) (T b)`. Introduce `a b hab`. Establish `h0 : F a a * F b b = F b b * F a a`.
+
+Use `hF.gl a a b b` as an intermediate fact. Rewrite `this` using `[if_neg hab, if_neg (Ne.symm hab), sub_zero, sub_eq_zero]`. Conclude with `this`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show F a a (F b b (x : V)) = F b b (F a a (x : V))`. Conclude with `LinearMap.congr_fun h0 (x : V)`. Establish `htop` using `LinearMap.IsSymmetric.iSup_iInf_eq_top_of_commute hT hcomm`. Establish `hkey : ∀ χ : Fin n → ℂ, ∀ v : S, v ∈ (⨅ i, Module.End.eigenspace (T i) (χ i)) → (v : V) ∈ wsp F (fun i => (χ i).re) ⊓ S`.
+
+Introduce `χ v hv`. Use `⟨?_, v.2⟩` and prove the remaining obligations. Use `show ∀ i, F i i (v : V) = (((χ i).re : ℝ) : ℂ) • (v : V)`. Introduce `i`. Establish `hvi : T i v = χ i • v` using `Module.End.mem_eigenspace_iff.mp ((Submodule.mem_iInf _).mp hv i)`.
+
+Distinguish the cases in `h0 : v = 0`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Establish `hre : (((χ i).re : ℝ) : ℂ) = χ i`. Establish `hs` using `hT i v v`.
+
+Rewrite `hs` using `[hvi, inner_smul_left, inner_smul_right]`. Establish `hvv : ⟪v, v⟫_ℂ ≠ 0` using `inner_self_ne_zero.mpr h0`. Conclude with `Complex.conj_eq_iff_re.mp (mul_right_cancel₀ hvv hs)`. Rewrite using `[hre]`. Conclude with `congrArg Subtype.val hvi`.
+
+Establish `hspan : S ≤ ⨆ μ : Wt n, wsp F μ ⊓ S`. Establish `hle : Submodule.map S.subtype (⨆ χ : Fin n → ℂ, ⨅ i, Module.End.eigenspace (T i) (χ i)) ≤ ⨆ μ : Wt n, wsp F μ ⊓ S`. Rewrite using `[Submodule.map_iSup]`. Use `iSup_le fun χ => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+
+Conclude with `le_iSup (fun μ : Wt n => wsp F μ ⊓ S) (fun i => (χ i).re) (hkey χ v hv)`. Rewrite `hle` using `[htop, Submodule.map_top, Submodule.range_subtype]`. Conclude with `hle`. Establish `hfin : Set.Finite {μ : Wt n | wsp F μ ⊓ S ≠ ⊥}`. Set `W' : Wt n → Submodule ℂ S` to `fun μ => (wsp F μ).comap S.subtype`.
+
+Establish `hind' : iSupIndep W'`. Use `OrthogonalFamily.independent (OrthogonalFamily.of_pairwise fun μ ν hne => ?_)` and prove the remaining obligations. Use `show W' μ ⟂ W' ν`. Rewrite using `[Submodule.isOrtho_iff_inner_eq]`. Introduce `x hx y hy`.
+
+Rewrite using `[Submodule.coe_inner]`. Conclude with `wsp_orth hF hne hx hy`. Use `haveI := hind'.fintypeNeBotOfFiniteDimensional`. Use `(Set.finite_range (fun i : {μ // W' μ ≠ ⊥} => (i : Wt n))).subset ?_` and prove the remaining obligations. Introduce `μ hμ`.
+
+Use `⟨⟨μ, fun h => hμ ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[inf_comm, ← Submodule.map_comap_subtype]`. Express the relevant statement in the definitionally equal form `Submodule.map S.subtype (W' μ) = ⊥`. Rewrite using `[h, Submodule.map_bot]`. Use `⟨hfin.toFinset, ?_, ?_, hind⟩` and prove the remaining obligations.
+
+Introduce `μ hμ`. Assume the negation of the conclusion as `h`. Conclude with `hμ (hfin.mem_toFinset.mpr h)`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `iSup₂_le fun μ _ => inf_le_right`.
+
+Use `hspan.trans (iSup_le fun μ => ?_)` and prove the remaining obligations. Distinguish the cases in `h : wsp F μ ⊓ S = ⊥`. Rewrite using `[h]`. Conclude with `bot_le`. Conclude with `le_iSup₂_of_le μ (hfin.mem_toFinset.mpr h) le_rfl`.
+-/
 theorem UpperTheory.RealTr.wtDec :
     ∀ (n : ℕ) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (F : Fin n → Fin n → Module.End ℂ V), UF F → ∀ S : Submodule ℂ V, FiniteDimensional ℂ S → Stb F S → ∃ s : Finset (Wt n), (∀ μ ∉ s, wsp F μ ⊓ S = ⊥) ∧ (⨆ μ ∈ s, wsp F μ ⊓ S) = S ∧ iSupIndep fun μ => wsp F μ ⊓ S := by
   intro n V _ _ F hF S hSfin hS

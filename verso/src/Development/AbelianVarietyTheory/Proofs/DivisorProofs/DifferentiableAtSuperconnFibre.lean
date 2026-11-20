@@ -10,6 +10,11 @@ set_option autoImplicit false
 
 namespace GlobalTheory.SuperconnFibreDiff
 
+/- English proof (translation)
+Introduce `E _ _ _ g n B τ h hτ hh hpos β u f hf b hb z`. Establish `hU` using `GlobalTheory.TorsionForm.SuperconnSmooth.isOpen_cov (g := g) hτ`. Establish `hs : ContDiffOn ℝ ∞ (fun P : Pt E g => f P.2) (cov B g)` using `(hf.comp contDiff_snd).contDiffOn`. Establish `hc` using `GlobalTheory.TorsionForm.SuperconnSmooth.superconn_contDiffOn E g n B τ h β u _ hτ hh hpos hs`. Establish `hmem : ((b, z) : Pt E g) ∈ cov B g`.
+
+Simplify using `[cov, hb]`. Conclude with `(hc.contDiffAt (hU.mem_nhds hmem)).differentiableAt (by simp)`.
+-/
 theorem superconn_fibre_differentiableAt : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] {g n : ℕ} {B : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} {h : Pt E g → ℝ}, IsPeriodMap B τ → ContDiffOn ℝ ∞ h (cov B g) → (∀ P ∈ cov B g, 0 < h P) → ∀ (β : Fin n → E) (u : ℝ) (f : (Fin g → ℂ) → Ext (n + n + g)), ContDiff ℝ ∞ f → ∀ (b : E), b ∈ B → ∀ (z : Fin g → ℂ), DifferentiableAt ℝ (superconn τ h β u fun P => f P.2) (b, z) := by
   intro E _ _ _ g n B τ h hτ hh hpos β u f hf b hb z
   have hU := GlobalTheory.TorsionForm.SuperconnSmooth.isOpen_cov (g := g) hτ

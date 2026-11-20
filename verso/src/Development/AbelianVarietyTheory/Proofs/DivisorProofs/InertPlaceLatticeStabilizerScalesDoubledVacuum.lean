@@ -27,6 +27,13 @@ namespace GlobalTheory.DblVacEigen
 
 open MeasureTheory
 
+/- English proof (translation)
+Establish `cl : Continuous fun x : κ ⊕ κ' → k => x ∘ Sum.inl` using `continuous_pi fun i => continuous_apply _`. Establish `cr : Continuous fun x : κ ⊕ κ' → k => x ∘ Sum.inr` using `continuous_pi fun i => continuous_apply _`. Use `⟨(h₁.1.comp_continuous cl).mul (h₂.1.comp_continuous cr), ?_⟩` and prove the remaining obligations. Set `e` to `(Homeomorph.sumArrowHomeomorphProdArrow (X := k) (ι := κ) (ι' := κ'))`. Use `HasCompactSupport.intro ((h₁.2.prod h₂.2).image e.symm.continuous) fun x hx => ?_` and prove the remaining obligations.
+
+Establish `hx' : e x ∉ tsupport φ₁ ×ˢ tsupport φ₂` using `fun h => hx ⟨e x, h, e.symm_apply_apply x⟩`. Rewrite `hx'` using `[Homeomorph.sumArrowHomeomorphProdArrow_apply, Set.mem_prod, not_and_or]`. Simplify using `only [boxFun]`. Break down `hx' with h | h` into its components or cases. Rewrite using `[image_eq_zero_of_notMem_tsupport h, zero_mul]`.
+
+Rewrite using `[image_eq_zero_of_notMem_tsupport h, mul_zero]`.
+-/
 theorem sb_boxFun {k : Type} [CommRing k] [TopologicalSpace k] [T2Space k] {κ κ' : Type}
     {φ₁ : (κ → k) → ℂ} {φ₂ : (κ' → k) → ℂ} (h₁ : φ₁ ∈ SB (κ → k)) (h₂ : φ₂ ∈ SB (κ' → k)) :
     boxFun φ₁ φ₂ ∈ SB (κ ⊕ κ' → k) := by
@@ -42,9 +49,35 @@ theorem sb_boxFun {k : Type} [CommRing k] [TopologicalSpace k] [T2Space k] {κ �
   · rw [image_eq_zero_of_notMem_tsupport h, zero_mul]
   · rw [image_eq_zero_of_notMem_tsupport h, mul_zero]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.comp (fun z : ℂ => star z), h.2.comp_left (g := fun z : ℂ => star z) (star_zero _)⟩`.
+-/
 theorem sb_star {X : Type} [TopologicalSpace X] {φ : X → ℂ} (h : φ ∈ SB X) : (fun x => star (φ x)) ∈ SB X :=
   ⟨h.1.comp (fun z : ℂ => star z), h.2.comp_left (g := fun z : ℂ => star z) (star_zero _)⟩
 
+/- English proof (translation)
+Establish `hfib` using `GlobalTheory.T.isometry_commuting_heisenberg_acts_fibrewise v ψ T hψ (GlobalTheory.T.standardAdelicAddChar_nontrivial_finitePlace ψ hψ) hkeep hunit hcomm`. Establish `htr : ∀ u : AF F, evFin F v u = 0 → ∀ p : κ → AF F, ∀ Φ ∈ schA F κ, T (fun y => Φ (y + u • p)) = fun y => T Φ (y + u • p)`. Introduce `u hu p Φ hΦ`. Establish `h` using `hcomm u hu p 0 Φ hΦ`. Establish `e1 : ∀ Ψ : (κ → AF F) → ℂ, schr ψ (u • p, u • (0 : κ → AF F)) Ψ = fun y => Ψ (y + u • p)` using `fun Ψ => by`.
+
+Use function extensionality and compare the values at `y`. Simplify using `[schr]`. Rewrite `h` using `[e1, e1]`. Conclude with `h`. Take `⟨R, hR0, hR⟩` from `GlobalTheory.T.exists_complementary_adelicSchwartz_restFunction κ v`.
+
+Use `⟨fun φ t => (R 0)⁻¹ * T (tens (evFin F v) φ R) (fun i => GlobalTheory.LatVac.liftV v (t i)), fun φ hφ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `h4` using `GlobalTheory.T.adelicSchwartz_restrict_finitePlace_mem_schwartzBruhat v _ (hkeep _ (hR φ hφ).2)`. Conclude with `(SB _).smul_mem (R 0)⁻¹ h4`. Introduce `r hr`. Use function extensionality and compare the values at `y`.
+
+Use `set u : AF F := 1 - GlobalTheory.LatVac.liftV v 1 with hudef`. Establish `hu : evFin F v u = 0` using `by simp [hudef, GlobalTheory.LatVac.evFin_liftV]`. Use `set p : κ → AF F := fun i => GlobalTheory.LatVac.liftV v (evFin F v (y i)) with hpdef`. Establish `hyp : y + u • (-y) = p`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul, hudef, hpdef]`. Rewrite using `[← GlobalTheory.WeilLocality.liftV_one_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpat : At (evFin F v) p`. Introduce `u' hu'`.
+
+Use function extensionality and compare the values at `i`. Conclude with `GlobalTheory.LatVac.at_liftV v _ u' hu'`. Use `set Φ₀ := tens (evFin F v) φ R with hΦ₀`. Use `set Φ₁ := tens (evFin F v) φ r with hΦ₁`. Use `set Φ₂ : (κ → AF F) → ℂ := (r y / R 0) • (fun w => Φ₀ (w + u • (-y))) with hΦ₂`.
+
+Establish `hm₀ : Φ₀ ∈ schA F _` using `(hR φ hφ).2`. Establish `hm₂ : Φ₂ ∈ schA F _` using `Submodule.smul_mem _ _ (GlobalTheory.T.adelicSchwartzSpace_translate_mem_of_mem _ _ hm₀)`. Establish `hfz : ∀ z, At (evFin F v) z → (Φ₁ - Φ₂) (y + z) = 0`. Introduce `z hz`. Establish `e1 : r (y + z) = r y` using `hr.1 y z hz`.
+
+Establish `e2 : y + z + u • (-y) = p + z` using `by rw [← hyp]; abel`. Establish `hpz : At (evFin F v) (p + z)` using `fun u' hu' => by`. Rewrite using `[smul_add, hpat u' hu', hz u' hu', add_zero]`. Establish `e3 : R (p + z) = R 0` using `by simpa using (hR φ hφ).1 0 (p + z) hpz`. Establish `e4 : (fun i => evFin F v ((y + z + u • (-y)) i)) = fun i => evFin F v ((y + z) i)`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[hu]`. Simplify using `only [Pi.sub_apply, hΦ₂, hΦ₁, hΦ₀, Pi.smul_apply, smul_eq_mul, tens]`. Rewrite using `[e4, e2, e3, e1]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h0` using `hfib (Φ₁ - Φ₂) (sub_mem hr.2 hm₂) y hfz`. Rewrite `h0` using `[map_sub, Pi.sub_apply, sub_eq_zero]`. Establish `h2 : T Φ₂ y = (r y / R 0) * T Φ₀ p`. Rewrite using `[hΦ₂, map_smul, htr u hu (-y) Φ₀ hm₀, Pi.smul_apply, smul_eq_mul, hyp]`.
+
+Rewrite using `[h0, h2]`. Simplify using `only [tens, hpdef]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem locality_op {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : Pl F) (ψ : AddChar (AF F) ℂ)
     (T : Module.End ℂ ((κ → AF F) → ℂ)) (hψ : IsStd ψ) (hkeep : ∀ Φ ∈ schA F κ, T Φ ∈ schA F κ)
     (hunit : ∀ μ : @Measure (κ → AF F) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →
@@ -113,6 +146,43 @@ end GlobalTheory.DblVacEigen
 noncomputable section
 namespace GlobalTheory.DblVacEigen
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v w hw hv dd omd hdc hsp r hr g hg`. Distinguish the cases in `hr0 : ∀ x, r x = 0`. Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `h0 : boxFun (tens (evFin F v) (G.M.vac v) r) (fun x => star (tens (evFin F v) (G.M.vac v) r x)) = 0`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[boxFun, tens, hr0]`. Rewrite using `[h0, map_zero, smul_zero]`. Use `push_neg at hr0`. Take `⟨x₀, hx₀⟩` from `hr0`. Take `⟨hvSB, hv0, θ, hθ, hvac⟩` from `hT.geo.hM.vac v`.
+
+Establish `hψ1 : ∀ t, ‖B.ψ t‖ = 1` using `GlobalTheory.StdCharFromIsStd.norm_psi hT.base.std`. Use `set vac := G.M.vac v with hvacdef`. Use `set V₀ := tens (evFin F v) vac r with hV₀`. Use `set S := boxFun V₀ (fun x => star (V₀ x)) with hS`. Use `set vd : ((Fin a × Fin (a + a')) ⊕ (Fin a × Fin (a + a')) → Fv F v) → ℂ := boxFun vac (fun x => star (vac x)) with hvd`.
+
+Use `set R : ((Fin a × Fin (a + a')) ⊕ (Fin a × Fin (a + a')) → AF F) → ℂ := boxFun r (fun x => star (r x)) with hR`. Establish `hSt : S = tens (evFin F v) vd R`. Use function extensionality and compare the values at `x`. Simplify using `only [hS, hvd, hR, hV₀, boxFun, tens, star_mul', Function.comp_def]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hSA : S ∈ schA F _` using `GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ V₀ hr.2 _ (GlobalTheory.T.conj_mem_adelicSchwartzSpaceNumberField_of_mem _ V₀ hr.2)`. Establish `hRinv : ∀ x z, At (evFin F v) z → R (x + z) = R x`. Introduce `x z hz`. Establish `hl : At (evFin F v) (z ∘ Sum.inl)` using `fun u hu => by funext i; exact congrFun (hz u hu) (Sum.inl i)`. Establish `hr' : At (evFin F v) (z ∘ Sum.inr)` using `fun u hu => by funext i; exact congrFun (hz u hu) (Sum.inr i)`.
+
+Simplify using `only [hR, boxFun]`. Rewrite using `[show (x + z) ∘ Sum.inl = x ∘ Sum.inl + z ∘ Sum.inl from rfl, show (x + z) ∘ Sum.inr = x ∘ Sum.inr + z ∘ Sum.inr from rfl, hr.1 _ _ hl, hr.1 _ _ hr']`. Establish `hRest : Rest (evFin F v) vd R` using `⟨hRinv, hSt ▸ hSA⟩`. Establish `hvdSB : vd ∈ SB _` using `sb_boxFun hvSB (sb_star hvSB)`. Establish `hvd0 : vd ≠ 0`.
+
+Take `⟨y, hy⟩` from `Function.ne_iff.mp hv0`. Introduce `h`. Establish `h1` using `congrFun h (Sum.elim y y)`. Simplify using `only [hvd, boxFun, Sum.elim_comp_inl, Sum.elim_comp_inr, Pi.zero_apply] at h1 hy`. Conclude with `mul_ne_zero hy (star_ne_zero.mpr hy) h1`.
+
+Establish `hRx : R (Sum.elim x₀ x₀) ≠ 0`. Simplify using `only [hR, boxFun, Sum.elim_comp_inl, Sum.elim_comp_inr]`. Conclude with `mul_ne_zero hx₀ (star_ne_zero.mpr hx₀)`. Establish `hspl` using `hsp.2.1`. Establish `hcomm : ∀ u : AF F, evFin F v u = 0 → ∀ p q : (Fin a × Fin (a + a')) ⊕ (Fin a × Fin (a + a')) → AF F, ∀ Φ ∈ schA F _, omd g (schr B.ψ (u • p, u • q) Φ) = schr B.ψ (u • p, u • q) (omd g Φ)`.
+
+Introduce `u hu p q Φ hΦ`. Use `set w' := dd.e.symm (p, q) with hw'`. Establish `he : dd.e (u • w') = (u • p, u • q)`. Rewrite using `[LinearEquiv.map_smul, hw', LinearEquiv.apply_symm_apply, Prod.smul_mk]`. Establish `h0 : u • (GlobalTheory.DblVac.matD g - 1) = 0` using `hg.1 u hu`.
+
+Establish `hact : actB (cA σ) g (u • w') = u • w'`. Establish `h1 : (u • w') * (GlobalTheory.DblVac.matD g)ᵀ - u • w' = w' * (u • (GlobalTheory.DblVac.matD g - 1))ᵀ`. Rewrite using `[Matrix.transpose_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.transpose_sub, Matrix.transpose_one, Matrix.mul_sub, Matrix.mul_one, smul_sub]`. Rewrite `h1` using `[h0, Matrix.transpose_zero, Matrix.mul_zero, sub_eq_zero]`. Conclude with `h1`.
+
+Establish `h2` using `hspl.impl g (u • w') Φ hΦ`. Simplify using `only [Darboux.rho, he, hact] at h2`. Conclude with `h2`. Take `⟨Tl, hTl⟩` from `locality_op v B.ψ (omd g) hT.base.std (fun Φ hΦ => hspl.pres g Φ hΦ) (fun μ hμ Φ hΦ => hspl.unit μ hμ g Φ hΦ) hcomm`. Establish `hgS : omd g S = tens (evFin F v) (Tl vd) R` using `by rw [hSt]; exact (hTl vd hvdSB).2 R hRest`.
+
+Establish `hV₀eig : ∀ γ ∈ (latAtV G.V G.W v : Set _), G.M.co.rho B.ψ γ V₀ = B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F` using `F) (AF F) (θ : E)) (incM F G.V.J) (incM F G.W.J) γ γ) • V₀ := by`. Introduce `γ hγ`. Rewrite using `[hV₀, hvac γ hγ r hr]`. Use function extensionality and compare the values at `x`. Simplify using `[tens, mul_assoc]`.
+
+Establish `hSeig : ∀ γ ∈ latDbl G.V G.W v, dd.rho B.ψ γ S = B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F` using `F) (AF F) (θ : E)) (incM F G.V.J) (dbl (incM F G.W.J)) γ γ) • S := fun γ hγ => GlobalTheory.T.heisenbergEigen_doubledCoords_productFunction (cA σ) (-1) (inclR (F := F) (AF F) (θ : E)) _ _ G.M.co dd hdc B.ψ hψ1 _ V₀ hV₀eig γ hγ.1 hγ.2`. Establish `hgSeig : ∀ γ ∈ latDbl G.V G.W v, dd.rho B.ψ γ (omd g S) = B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F` using `F) (AF F) (θ : E)) (incM F G.V.J) (dbl (incM F G.W.J)) γ γ) • omd g S := by`. Introduce `γ hγ`. Establish `hK` using `(GlobalTheory.T.doubledVacuumLatticeStabilizer_preserves_doubledSpaceLattice F E σ G.V G.W v g hg γ hγ).2`. Establish `h1` using `hspl.impl g (actB (cA σ) g⁻¹ γ) S hSA`.
+
+Establish `h2 : actB (cA σ) g (actB (cA σ) g⁻¹ γ) = γ`. Simplify using `only [actB, Matrix.mul_assoc, ← Matrix.transpose_mul]`. Establish `e : ((g : GL (Fin (a + a') ⊕ Fin (a + a')) (AE F E)) : Matrix (Fin (a + a') ⊕ Fin (a + a')) (Fin (a + a') ⊕ Fin (a + a')) (AE F E)) * (((g⁻¹ : GlobalTheory.DblVac.UD σ G.W) : GL (Fin (a + a') ⊕ Fin (a + a')) (AE F E)) : Matrix (Fin (a + a') ⊕ Fin (a + a')) (Fin (a + a') ⊕ Fin (a …`. Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, mul_inv_cancel, Subgroup.coe_one, Units.val_one]`. Rewrite using `[e, Matrix.transpose_one, Matrix.mul_one]`.
+
+Rewrite `h1` using `[h2]`. Rewrite using `[← h1, hSeig (actB (cA σ) g⁻¹ γ) hK, map_smul, GlobalTheory.T.traceSymplecticForm_unitaryGroupAction_invariant]`. Set `Λd` to `(latDbl G.V G.W v).map (GlobalTheory.LatVac.locCo dd v)`. Set `χ : (((Fin a × Fin (a + a')) ⊕ (Fin a × Fin (a + a')) → Fv F v) × ((Fin a × Fin (a + a')) ⊕ (Fin a × Fin (a + a')) → Fv F v)) → ℂ` to `fun l => if h : ∃ γ ∈ latDbl G.V G.W v, GlobalTheory.LatVac.locCo dd v γ = l then B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V.J) (dbl (incM F G.W.J)) h.choose h.choose) else 0`. Establish `loc : ∀ f : ((Fin a × Fin (a + a')) ⊕ (Fin a × Fin (a + a')) → Fv F v) → ℂ, (∀ γ ∈ latDbl G.V G.W v, dd.rho B.ψ γ (tens (evFin F v) f R) = B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F` using `F) (AF F) (θ : E)) (incM F G.V.J) (dbl (incM F G.W.J)) γ γ) • tens (evFin F v) f R) → ∀ l ∈ Λd, ∀ ξ, GlobalTheory.LatVac.psiAt B.ψ v (ξ ⬝ᵥ l.2 + (2 : Fv F v)⁻¹ * (l.1 ⬝ᵥ l.2)) * f (ξ + l.1) = χ l * f ξ := by`.
+
+Introduce `f hf l hl ξ`. Establish `h : ∃ γ ∈ latDbl G.V G.W v, GlobalTheory.LatVac.locCo dd v γ = l` using `AddSubgroup.mem_map.mp hl`. Establish `key` using `GlobalTheory.T.localIdentity_of_tensorHeisenbergEigen v dd B.ψ h.choose f R _ (at_of_mem_latDbl _ _ _ h.choose_spec.1) hRinv (Sum.elim x₀ x₀) hRx (hf _ h.choose_spec.1) ξ`. Simplify using `only [χ, dif_pos h]`. Rewrite `key` using `[h.choose_spec.2]`.
+
+Conclude with `key`. Establish `hloc1` using `loc vd (fun γ hγ => hSt ▸ hSeig γ hγ)`. Establish `hloc2` using `loc (Tl vd) (fun γ hγ => hgS ▸ hgSeig γ hγ)`. Take `⟨c, hc⟩` from `GlobalTheory.T.heisenbergEigen_proportional_localField (GlobalTheory.LatVac.psiAt B.ψ v) Λd χ vd (Tl vd) hloc1 hloc2 hvd0 (GlobalTheory.T.doubled_lattice_local_image_full_at_inert_place F E σ B a a' G X om om' hT v w hw dd hdc)`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hgS, hc, hSt]`. Use function extensionality and compare the values at `x`. Simplify using `[tens, mul_assoc]`.
+-/
 theorem eigen_box : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w → v ∉ X.T →

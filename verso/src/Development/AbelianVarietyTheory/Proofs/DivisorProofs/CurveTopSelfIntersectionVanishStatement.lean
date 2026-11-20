@@ -11,6 +11,9 @@ open scoped ENNReal Classical
 open Limits
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CurveReduce.contracted_or_multiple | exact GlobalTheory.CurveReduce.contracted_or_multiple | (intros; apply GlobalTheory.CurveReduce.contracted_or_multiple <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.curve_top_self_intersection_vanish : ∀ (k : Type) [CommRing k] [Module.Finite ℤ k] (X X' : Scheme.{0}) (p : X ⟶ Sp k) (p' : X' ⟶ Sp k),
   IsProjOver p → IsProjOver p' → ∀ (ρ : X' ⟶ X), ρ ≫ p = p' → ∀ (r : ℕ) [Fact r.Prime]
   (Z : Scheme.{0}) (i : Z ⟶ X') [IsClosedImmersion i] [IsIntegral Z] [Algebra (ZMod r) Γ(Z, ⊤)],

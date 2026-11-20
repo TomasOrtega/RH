@@ -4,6 +4,21 @@ import Formalism.SuccessiveMinima.SuccessiveMinimaProofs.NewtonSlope
 namespace Formalism.FN
 open Filter Topology
 
+/- English proof (translation)
+Take `⟨h0, hM⟩` from `wdeg_spec b r hr hc hb`. Rewrite `h0` using `[hw, pow_zero, mul_one]`. Use `⟨h0, hM, ?_⟩` and prove the remaining obligations. Establish `hle : ∀ k, ‖b k‖ * r ^ k ≤ gNorm b r` using `fun k => le_ciSup (gNorm_bdd_of_conv b r hc) k`. Take `⟨k0, hk0⟩` from `eventually_atTop.1 ((hc : Tendsto (fun k : ℕ => ‖b k‖ * r ^ k) atTop (𝓝 0)).eventually (gt_mem_nhds (half_pos hM)))`.
+
+Establish `hlt : ∀ k, 1 ≤ k → ‖b k‖ * r ^ k < gNorm b r`. Introduce `k hk`. Break down `(hle k).lt_or_eq with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction.
+
+Establish `hB : BddAbove {k : ℕ | ‖b k‖ * r ^ k = gNorm b r}`. Use `⟨k0, fun j hj => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc'`. Use `push Not at hc'`. Establish `h1` using `hk0 j hc'.le`.
+
+Establish `e : ‖b j‖ * r ^ j = gNorm b r` using `hj`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : k ≤ wdeg b r` using `le_csSup hB h`. Use linear arithmetic over natural numbers and integers. Take `⟨j, -, hj⟩` from `Finset.exists_max_image (Finset.range (k0 + 1)) (fun k => ‖b (k + 1)‖ * r ^ (k + 1)) ⟨0, by simp⟩`.
+
+Use `⟨max (1 / 2) (‖b (j + 1)‖ * r ^ (j + 1) / gNorm b r), le_max_of_le_left (by norm_num), max_lt (by norm_num) ((div_lt_one hM).2 (hlt _ (by omega))), ?_⟩` and prove the remaining obligations. Introduce `k hk`. Rewrite using `[max_mul_of_nonneg _ _ hM.le]`. Distinguish the cases in `hkk : k ≤ k0 + 1`. Apply `le_max_of_le_right` to reduce the goal to its premises.
+
+Rewrite using `[div_mul_cancel₀ _ hM.ne']`. Take `⟨k', rfl⟩ : ∃ k', k = k' + 1` from `⟨k - 1, by omega⟩`. Conclude with `hj k' (by simp; omega)`. Apply `le_max_of_le_left` to reduce the goal to its premises. Use `hk0 k (by omega)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma unit_eps {K : Type*} [NormedField K] (b : ℕ → K) (r : ℝ) (hr : 0 < r) (hc : ConvOn b r)
     (hb : b ≠ 0) (hw : wdeg b r = 0) :
     ‖b 0‖ = gNorm b r ∧ 0 < gNorm b r ∧
@@ -44,6 +59,15 @@ lemma unit_eps {K : Type*} [NormedField K] (b : ℕ → K) (r : ℝ) (hr : 0 < r
     have := hk0 k (by omega)
     linarith
 
+/- English proof (translation)
+Take `⟨h0, hM, ε, hε0, hε1, hε⟩` from `unit_eps b r hr hc hb hw`. Establish `hterm : ∀ k, ‖b k * x ^ k‖ ≤ ‖b k‖ * r ^ k` using `fun k => by`. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (norm_nonneg _) hx k) (norm_nonneg _)`. Establish `hsum : Summable (fun k => b k * x ^ k)`.
+
+Apply `NonarchimedeanAddGroup.summable_of_tendsto_cofinite_zero` to reduce the goal to its premises. Rewrite using `[Nat.cofinite_eq_atTop, tendsto_zero_iff_norm_tendsto_zero]`. Conclude with `squeeze_zero (fun k => norm_nonneg _) hterm hc`. Establish `htail : ‖∑' k, b (k + 1) * x ^ (k + 1)‖ ≤ ε * gNorm b r` using `IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg (by positivity) (fun k => (hterm (k + 1)).trans (hε (k + 1) (by omega)))`. Establish `hlt : ε * gNorm b r < gNorm b r` using `mul_lt_of_lt_one_left hM hε1`.
+
+Unfold `evalS`. Rewrite using `[hsum.tsum_eq_zero_add, pow_zero, mul_one]`. Rewrite using `[IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm, h0]`. Conclude with `max_eq_left (htail.trans hlt.le)`. Rewrite using `[h0]`.
+
+Conclude with `ne_of_gt (htail.trans_lt hlt)`.
+-/
 lemma unit_norm {K : Type} [NontriviallyNormedField K] [CompleteSpace K] [IsUltrametricDist K]
     (b : ℕ → K) (r : ℝ) (hr : 0 < r) (hc : ConvOn b r) (hb : b ≠ 0) (hw : wdeg b r = 0)
     (x : K) (hx : ‖x‖ ≤ r) : ‖evalS b x‖ = gNorm b r := by
@@ -65,6 +89,39 @@ lemma unit_norm {K : Type} [NontriviallyNormedField K] [CompleteSpace K] [IsUltr
   · exact max_eq_left (htail.trans hlt.le)
   · rw [h0]; exact ne_of_gt (htail.trans_lt hlt)
 
+/- English proof (translation)
+Take `⟨h0, hM, ε, hε0, hε1, hε⟩` from `unit_eps b r hr hc hb hw`. Establish `hb0 : b 0 ≠ 0`. Introduce `h`. Rewrite `h0` using `[h, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `set M := gNorm b r with hMdef`. Use `set B : PowerSeries K := PowerSeries.mk b with hB`. Use `set u : ℕ → K := fun n => PowerSeries.coeff n B⁻¹ with hu`. Establish `hmul : cmul b u = fun n => if n = 0 then 1 else 0`. Use function extensionality and compare the values at `n`.
+
+Establish `h` using `congrArg (PowerSeries.coeff n) (PowerSeries.mul_inv_cancel B (by rw [hB, PowerSeries.constantCoeff_mk]; exact hb0))`. Rewrite `h` using `[PowerSeries.coeff_mul, PowerSeries.coeff_one, Finset.Nat.sum_antidiagonal_eq_sum_range_succ (fun i j => PowerSeries.coeff i B * PowerSeries.coeff j B⁻¹)]`. Simplify `h` using `[cmul, u, B, PowerSeries.coeff_mk]`. Use `⟨u, ?_, hmul⟩` and prove the remaining obligations. Establish `key : ∀ n, 1 ≤ n → ∀ C : ℝ, 0 ≤ C → (∀ i < n, (‖b (i + 1)‖ * r ^ (i + 1)) * (‖u (n - (i + 1))‖ * r ^ (n - (i + 1))) ≤ C) → M * (‖u n‖ * r ^ n) ≤ C`.
+
+Introduce `n hn C hC h`. Establish `hrec : b 0 * u n = -∑ i ∈ Finset.range n, b (i + 1) * u (n - (i + 1))`. Establish `e` using `congrFun hmul n`. Simplify using `only [cmul, if_neg (show n ≠ 0 by omega)] at e`. Rewrite `e` using `[Finset.sum_range_succ', Nat.sub_zero]`.
+
+Take the linear combination `e`. Establish `hrn : 0 < r ^ n` using `pow_pos hr n`. Establish `hs : ‖∑ i ∈ Finset.range n, b (i + 1) * u (n - (i + 1))‖ ≤ C / r ^ n`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (div_nonneg hC hrn.le)` to reduce the goal to its premises. Introduce `i hi`.
+
+Establish `hi'` using `Finset.mem_range.1 hi`. Rewrite using `[le_div_iff₀ hrn, norm_mul]`. Establish `e : r ^ n = r ^ (i + 1) * r ^ (n - (i + 1))`. Rewrite using `[← pow_add]`. Use `congr 1`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : M * ‖u n‖ ≤ C / r ^ n`. Rewrite using `[← h0, ← norm_mul, hrec, norm_neg]`.
+
+Conclude with `hs`. Rewrite `h3` using `[le_div_iff₀ hrn]`. Combine the equalities or inequalities in the displayed calculation. Establish `hu0 : M * (‖u 0‖ * r ^ 0) = 1`. Establish `e : b 0 * u 0 = 1` using `by simpa [cmul] using congrFun hmul 0`.
+
+Rewrite using `[pow_zero, mul_one, ← h0, ← norm_mul, e, norm_one]`. Establish `decay : ∀ δ : ℝ, 0 ≤ δ → δ ≤ 1 → ∀ k0 : ℕ, 1 ≤ k0 → (∀ k, k0 ≤ k → ‖b k‖ * r ^ k ≤ δ * M) → ∀ n, M * (‖u n‖ * r ^ n) ≤ max δ (ε ^ (n / k0))`. Introduce `δ hδ0 hδ1 k0 hk0 hbk n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`.
+
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Rewrite using `[hu0]`. Simplify using the standard rewrite rules. Apply `key n hn _ (le_max_of_le_left hδ0)` to reduce the goal to its premises. Introduce `i hi`.
+
+Establish `hv : 0 ≤ ‖u (n - (i + 1))‖ * r ^ (n - (i + 1))` using `by positivity`. Establish `hIH` using `ih (n - (i + 1)) (by omega)`. Distinguish the cases in `hik : k0 ≤ i + 1`. Establish `hX1 : max δ (ε ^ ((n - (i + 1)) / k0)) ≤ 1` using `max_le hδ1 (pow_le_one₀ hε0 hε1.le)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hm : n / k0 ≤ (n - (i + 1)) / k0 + 1`. Rewrite using `[← Nat.add_div_right _ (by omega : 0 < k0)]`. Conclude with `Nat.div_le_div_right (by omega)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_max_of_nonneg _ _ hε0, pow_succ']`.
+
+Use `_ ≤ max δ (ε ^ (n / k0)) := max_le_max (mul_le_of_le_one_left hδ0 hε1.le) (pow_le_pow_of_le_one hε0 hε1.le hm)`. Use `show Tendsto (fun k : ℕ => ‖u k‖ * r ^ k) atTop (𝓝 0)`. Rewrite using `[Metric.tendsto_atTop]`. Introduce `η hη`. Establish `hηM : 0 < η * M / 2` using `by positivity`.
+
+Use `set δ := min 1 (η * M / 2) with hδ`. Establish `hδ0 : 0 < δ` using `lt_min one_pos hηM`. Take `⟨K1, hK1⟩` from `eventually_atTop.1 ((hc : Tendsto (fun k : ℕ => ‖b k‖ * r ^ k) atTop (𝓝 0)).eventually (gt_mem_nhds (mul_pos hδ0 hM)))`. Use `set k0 := max K1 1 with hk0`. Take `⟨m, hm⟩` from `exists_pow_lt_of_lt_one hηM hε1`.
+
+Use `⟨m * k0, fun n hn => ?_⟩` and prove the remaining obligations. Establish `hD` using `decay δ hδ0.le (min_le_left _ _) k0 (le_max_right _ _) (fun k hk => (hK1 k (le_trans (le_max_left _ _) hk)).le) n`. Establish `hmn : m ≤ n / k0` using `(Nat.le_div_iff_mul_le (by omega)).2 hn`. Establish `hpow : ε ^ (n / k0) ≤ ε ^ m` using `pow_le_pow_of_le_one hε0 hε1.le hmn`. Establish `hv : 0 ≤ ‖u n‖ * r ^ n` using `by positivity`.
+
+Rewrite using `[Real.dist_eq, sub_zero, abs_of_nonneg hv]`. Establish `hbound : M * (‖u n‖ * r ^ n) < η * M`. Combine the equalities or inequalities in the displayed calculation. Use the polynomial consequences of the given equalities and inequalities.
+-/
 lemma unit_inv {K : Type} [NontriviallyNormedField K] [IsUltrametricDist K]
     (b : ℕ → K) (r : ℝ) (hr : 0 < r) (hc : ConvOn b r) (hb : b ≠ 0) (hw : wdeg b r = 0) :
     ∃ u : ℕ → K, ConvOn u r ∧ cmul b u = fun n => if n = 0 then 1 else 0 := by

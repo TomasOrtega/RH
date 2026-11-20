@@ -14,6 +14,27 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.IndepDiscrep
 
+/- English proof (translation)
+Introduce `Y _ _ q n _ hn y U hy ω hω J _ a ha v c hind hv hc E hE`. Use `haveI := SmoothOfRelativeDimension.smooth n q`. Use `haveI : GlobalTheory.IsNormalScheme Y := GlobalTheory.ModifSections.isNormalScheme_of_smooth q`. Take `⟨U', hy', z, e, he, hze, hz⟩` from `GlobalTheory.AdaptedFrame.exists_adapted_frame (p := q) (n := n) y a ha hind`. Establish `h0 : formOf U (gen_mem hy) ω ≠ 0` using `fun h => one_ne_zero ((isFreeGen_formOf (gen_mem hy) hω).1 (a₁ := 1) (a₂ := 0) (by simp [h]))`.
+
+Establish `h0' : formOf U' (gen_mem hy') (dOn q z) ≠ 0` using `fun h => one_ne_zero ((isFreeGen_formOf (gen_mem hy') hz).1 (a₁ := 1) (a₂ := 0) (by simp [h]))`. Take `⟨f, hf⟩` from `(isFreeGen_formOf (gen_mem hy') hz).2 (formOf U (gen_mem hy) ω)`. Establish `hf0 : f ≠ 0` using `fun h => h0 (by rw [← hf, h]; exact zero_smul _ _)`. Use `set u : Y.functionFieldˣ := Units.mk0 f hf0 with hu`. Establish `hfu : ((u : Y.functionField) • formOf U' (gen_mem hy') (dOn q z)) = formOf U (gen_mem hy) ω` using `by rw [hu, Units.val_mk0]; exact hf`.
+
+Establish `hF (Fd : DivOver q) : Fd.formOrd (formOf U (gen_mem hy) ω) = Fd.ord u + Fd.formOrd (formOf U' (gen_mem hy') (dOn q z))`. Rewrite using `[← Fd.formOrd_smul hn h0' u, hfu]`. Establish `h0z : ∀ w, w ⤳ y → ∀ Fd : DivOver q, Fd.IsAt w → Fd.ord u = 0`. Introduce `w hw Fd hFd`. Establish `h1` using `hF Fd`.
+
+Establish `a1` using `DivOver.formOrd_formOf_eq_zero (hw.mem_open U.isOpen hy) hFd hω`. Establish `a2` using `DivOver.formOrd_formOf_eq_zero (hw.mem_open U'.isOpen hy') hFd hz`. Rewrite `h1` using `[a1, a2]`. Use linear arithmetic over natural numbers and integers. Establish `reg : ∀ w : Y.functionFieldˣ, (∀ x, x ⤳ y → ∀ Fd : DivOver q, Fd.IsAt x → 0 ≤ Fd.ord w) → 0 ≤ E.ord w` using `fun w hw => (E.ord_nonneg_iff w).2 (hE _ (regAt_of_forall_coheight_eq_one fun x hx h1 =>`.
+
+Establish `⟨Fd, hFd⟩` using `DivOver.exists_isAt_of_coheight_eq_one (p := q) h1`. Use the proof step `(hFd _).1 ((Fd.ord_nonneg_iff w).1 (hw x hx Fd hFd))))`. Establish `hu1` using `reg u fun x hx Fd hFd => (h0z x hx Fd hFd).ge`. Establish `hu2` using `reg u⁻¹ fun x hx Fd hFd => by rw [Fd.ord_inv, h0z x hx Fd hFd, neg_zero]`. Rewrite `hu2` using `[E.ord_inv]`.
+
+Establish `hu0 : E.ord u = 0` using `by omega`. Establish `hA` using `DivOver.sum_ord_sub_one_le_formOrd_dOn hn E hy' hE z h0' e he v fun j => by`. Rewrite using `[hv, ← hze j, algebraMap_germ]`. Establish `hN` using `DivOver.formOrd_formOf_nonneg hn hy' hE (dOn q z) h0'`. Establish `hnn : ∀ j, 0 ≤ E.ord (v j)` using `fun j => (E.ord_nonneg_iff _).2 (hE _ ⟨a j, (hv j).symm⟩)`.
+
+Rewrite using `[hF E, hu0, zero_add]`. Establish `hAq : (∑ j, (E.ord (v j) : ℚ)) - 1 ≤ (E.formOrd (formOf U' (gen_mem hy') (dOn q z)) : ℚ)`. Conclude with `hA` after adjusting the coercions. Establish `hNq : (0 : ℚ) ≤ (E.formOrd (formOf U' (gen_mem hy') (dOn q z)) : ℚ)` using `by exact_mod_cast hN`. Establish `hle : ∀ j, c j * (E.ord (v j) : ℚ) ≤ E.ord (v j)` using `fun j => by`.
+
+Establish `: (0 : ℚ) ≤ E.ord (v j)` using `by exact_mod_cast hnn j`. Use polynomial arithmetic with `[hc j]`. Distinguish the cases in `h : ∃ j, 0 < E.ord (v j)`. Take `⟨j, hj⟩` from `h`. Establish `hlt : ∑ j, c j * (E.ord (v j) : ℚ) < ∑ j, (E.ord (v j) : ℚ)` using `Finset.sum_lt_sum (fun j _ => hle j) ⟨j, Finset.mem_univ _, by`.
+
+Establish `: (0 : ℚ) < E.ord (v j)` using `by exact_mod_cast hj`. Use polynomial arithmetic with `[hc j]⟩`. Combine the linear equalities and inequalities to obtain the conclusion. Use `push_neg at h`. Establish `h' : ∀ j, E.ord (v j) = 0` using `fun j => le_antisymm (h j) (hnn j)`.
+
+Simplify using `only [h', Int.cast_zero, mul_zero, Finset.sum_const_zero, sub_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem neg_one_lt_formOrd_sub_sum : ∀ (Y : Scheme.{0}) [IsIntegral Y] [IsLocallyNoetherian Y] (q : Y ⟶ Sp ℂ) (n : ℕ) [SmoothOfRelativeDimension n q], topologicalKrullDim Y = n → ∀ (y : Y) (U : Y.Opens) (hy : y ∈ U) (ω : FormsOn q n U), IsFrame ω → ∀ (J : Type) [Fintype J] (a : J → Y.presheaf.stalk y) (ha : ∀ j, a j ∈ IsLocalRing.maximalIdeal (Y.presheaf.stalk y)) (v : J → Y.functionFieldˣ) (c : J → ℚ), LinearIndependent (IsLocalRing.ResidueField (Y.presheaf.stalk y)) (fun j : J => ((IsLocalRing.maximalIdeal (Y.presheaf.stalk y)).toCotangent ⟨a j, ha j⟩ : IsLocalRing.CotangentSpace (Y.presheaf.stalk y))) → (∀ j, (v j : Y.functionField) = algebraMap (Y.presheaf.stalk y) Y.functionField (a j)) → (∀ j, c j < 1) → ∀ E : DivOver q, E.Through y → -1 < (E.formOrd (formOf U (gen_mem hy) ω) : ℚ) - ∑ j, c j * E.ord (v j) := by
   classical
   intro Y _ _ q n _ hn y U hy ω hω J _ a ha v c hind hv hc E hE

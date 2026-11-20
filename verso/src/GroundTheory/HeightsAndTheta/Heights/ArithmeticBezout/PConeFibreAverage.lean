@@ -10,6 +10,9 @@ open scoped ENNReal
 
 noncomputable section
 
+/- English proof (translation)
+Rewrite using `[RCLike.real_smul_eq_coe_smul (K := ℂ)]`. Introduce `q hq`. Rewrite using `[HermNorm.pointOf_smul']`. Conclude with `PointLine.smul_mem_zeroSet hJ.isHomog hy (t : ℂ) q hq`.
+-/
 theorem real_smul_mem_coneSet {n : ℕ} (h : HermNorm n) {J : Ideal (MvPolynomial (Fin n) ℂ)}
     (hJ : IsProjPrime J) {y : EuclideanSpace ℂ (Fin n)} (hy : y ∈ coneSet h J) (t : ℝ) :
     t • y ∈ coneSet h J := by
@@ -18,6 +21,11 @@ theorem real_smul_mem_coneSet {n : ℕ} (h : HermNorm n) {J : Ideal (MvPolynomia
   rw [HermNorm.pointOf_smul']
   exact PointLine.smul_mem_zeroSet hJ.isHomog hy (t : ℂ) q hq
 
+/- English proof (translation)
+Establish `hlt : (finrank ℝ (EuclideanSpace ℂ (Fin n)) : ℝ) < ((2 * m : ℕ) : ℝ)`. Rewrite using `[finrank_real_of_complex, finrank_euclideanSpace_fin]`. Conclude with `(by omega : 2 * n < 2 * m)` after adjusting the coercions. Rewrite using `[Real.hausdorffMeasure_of_finrank_lt hlt, Measure.coe_zero, Pi.zero_apply, mul_zero]`. Establish `hin : ∀ π : Fin m → Fin n → ℂ, ∫⁻ w in Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1, (fibreCount h J π w : ℝ≥0∞) = 0`.
+
+Introduce `π`. Rewrite using `[lintegral_congr_ae (g := fun _ => 0) (ae_restrict_of_ae (by filter_upwards [ae_fibreCount_eq_zero hnm h J π] with w hw`. Simplify using `[hw])), lintegral_zero]`. Simplify using `[hin]`.
+-/
 theorem coneFibreAverage_of_lt {n m : ℕ} (hnm : n < m) (h : HermNorm n)
     (J : Ideal (MvPolynomial (Fin n) ℂ)) :
     ∫⁻ π : Fin m → Fin n → ℂ, matGauss π *
@@ -36,6 +44,25 @@ theorem coneFibreAverage_of_lt {n m : ℕ} (hnm : n < m) (h : HermNorm n)
         simp [hw])), lintegral_zero]
   simp [hin]
 
+/- English proof (translation)
+Establish `: (volume : Measure (Fin 0 → Fin n → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Establish `: (ae (volume : Measure (Fin 0 → Fin n → ℂ))).NeBot` using `ae_neBot.2 (NeZero.ne _)`. Establish `: (ae (volume : Measure (EuclideanSpace ℂ (Fin 0)))).NeBot` using `ae_neBot.2 (NeZero.ne _)`. Establish `hcount : ∀ (π : Fin 0 → Fin n → ℂ) (w : EuclideanSpace ℂ (Fin 0)), fibreCount h J π w = (coneSet h J).encard`. Introduce `π w`.
+
+Rewrite using `[fibreCount]`. Use `congr 1`. Use extensionality with `y`. Simplify using `[Subsingleton.elim (linProj π y) w]`. Take `⟨π₀, hπ₀⟩` from `hfib.exists`.
+
+Take `⟨w₀, hw₀⟩` from `hπ₀.exists`. Rewrite `hw₀` using `[hcount]`. Establish `hsub : coneSet h J ⊆ {0}`. Introduce `y hy`. Assume the negation of the conclusion as `hy0`.
+
+Rewrite `hy0` using `[Set.mem_singleton_iff]`. Establish `hinf : (Set.range fun t : ℂ => t • y).Infinite` using `Set.infinite_range_of_injective (smul_left_injective ℂ hy0)`. Establish `hsub' : (Set.range fun t : ℂ => t • y) ⊆ coneSet h J`. Introduce and unpack `_ ⟨t, rfl⟩ q hq`. Rewrite using `[HermNorm.pointOf_smul']`.
+
+Conclude with `PointLine.smul_mem_zeroSet hJ.isHomog hy t q hq`. Conclude with `hw₀ (hinf.mono hsub').encard_eq`. Establish `hset : {y : EuclideanSpace ℂ (Fin n) | ‖y‖ < 1 ∧ y ∈ coneSet h J} = coneSet h J`. Use extensionality with `y`. Use `⟨fun hy => hy.2, fun hy => ⟨?_, hy⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[Set.mem_singleton_iff.1 (hsub hy)]`. Simplify using the standard rewrite rules. Establish `hmass : Measure.hausdorffMeasure ((2 * 0 : ℕ) : ℝ) (coneSet h J) = ((coneSet h J).encard : ℝ≥0∞)`. Break down `Set.subset_singleton_iff_eq.1 hsub with h0 | h0` into its components or cases. Rewrite using `[h0]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h0, Nat.mul_zero, Nat.cast_zero, Measure.hausdorffMeasure_zero_singleton, Set.encard_singleton]`. Simplify using the standard rewrite rules. Establish `hgauss : ∀ π : Fin 0 → Fin n → ℂ, matGauss π = 1`. Introduce `π`.
+
+Simplify using `[matGauss]`. Establish `huniv : (volume : Measure (Fin 0 → Fin n → ℂ)) Set.univ = 1`. Rewrite using `[volume_pi, Measure.pi_univ]`. Simplify using the standard rewrite rules. Repeatedly rewrite using `[hgauss, hcount, one_mul, setLIntegral_const]`.
+
+Rewrite using `[lintegral_const, huniv, mul_one, hset, hmass, mul_comm]`.
+-/
 theorem coneFibreAverage_zero {n : ℕ} (h : HermNorm n) (J : Ideal (MvPolynomial (Fin n) ℂ))
     (hJ : IsProjPrime J)
     (hfib : ∀ᵐ π : Fin 0 → Fin n → ℂ, ∀ᵐ w : EuclideanSpace ℂ (Fin 0), fibreCount h J π w ≠ ⊤) :
@@ -90,6 +117,33 @@ theorem coneFibreAverage_zero {n : ℕ} (h : HermNorm n) (J : Ideal (MvPolynomia
   simp_rw [hgauss, hcount, one_mul, setLIntegral_const]
   rw [lintegral_const, huniv, mul_one, hset, hmass, mul_comm]
 
+/- English proof (translation)
+Introduce `n m`. Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Use `⟨volume (Metric.ball (0 : EuclideanSpace ℂ (Fin 0)) 1), Metric.measure_ball_pos _ _ one_pos, measure_ball_lt_top, fun h J hJ hfib => coneFibreAverage_zero h J hJ hfib⟩` and prove the remaining obligations. Distinguish the cases in `hmn : m ≤ n`. Use `swap`.
+
+Conclude with `⟨1, one_pos, ENNReal.one_lt_top, fun h J _ _ => coneFibreAverage_of_lt (by omega) h J⟩`. Take `⟨hkm, hkanti, hkpos, hM0, hMtop⟩` from `hG n m hm hmn`. Use `set μ := Measure.hausdorffMeasure (X := EuclideanSpace ℂ (Fin n)) ((2 * m : ℕ) : ℝ) with hμ`. Use `set k := tangentGaussProfile n m with hk`. Use `set M := ∫⁻ r in Set.Ioi (0 : ℝ), k r * ENNReal.ofReal (2 * m * r ^ (2 * m - 1)) with hM`.
+
+Establish `hd : ((2 * m : ℕ) : ℝ) = (finrank ℝ (EuclideanSpace ℂ (Fin m)) : ℝ)`. Rewrite using `[finrank_real_of_complex, finrank_euclideanSpace_fin]`. Take `⟨H, hHdef⟩ : ∃ H, Measure.hausdorffMeasure ((2 * m : ℕ) : ℝ) (Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1) = H` from `⟨_, rfl⟩`. Take `⟨V, hVdef⟩ : ∃ V, volume (Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1) = V` from `⟨_, rfl⟩`. Establish `hH0 : H ≠ 0`.
+
+Rewrite using `[← hHdef, hd]`. Conclude with `(Metric.measure_ball_pos _ _ one_pos).ne'`. Establish `hHtop : H ≠ ⊤`. Rewrite using `[← hHdef, hd]`. Conclude with `measure_ball_lt_top.ne`.
+
+Establish `hV0 : V ≠ 0` using `hVdef ▸ (Metric.measure_ball_pos _ _ one_pos).ne'`. Establish `hVtop : V ≠ ⊤` using `hVdef ▸ measure_ball_lt_top.ne`. Establish `hc0 : H⁻¹ * V ≠ 0` using `mul_ne_zero (ENNReal.inv_ne_zero.2 hHtop) hV0`. Establish `hctop : H⁻¹ * V ≠ ⊤` using `ENNReal.mul_ne_top (ENNReal.inv_ne_top.2 hH0) hVtop`. Use `⟨H⁻¹ * V * M, ENNReal.mul_pos hc0 hM0.ne', ENNReal.mul_lt_top hctop.lt_top hMtop, ?_⟩` and prove the remaining obligations.
+
+Introduce `h J hJ hfib`. Establish `hin : ∀ π : Fin m → Fin n → ℂ, ∫⁻ w in Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1, (fibreCount h J π w : ℝ≥0∞) = H⁻¹ * V * ∫⁻ y in coneSet h J, (Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1).indicator 1 (linProj π y) * ENNReal.ofReal (coneJac h J π y) ∂μ`. Introduce `π`. Establish `harea` using `hA n m h J hJ hm hmn hfib π ((Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1).indicator 1) (measurable_one.indicator Metric.isOpen_ball.measurableSet)`. Establish `hind : ∫⁻ w, (fibreCount h J π w : ℝ≥0∞) * (Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1).indicator 1 w = ∫⁻ w in Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1, (fibreCount h J π w : ℝ≥0∞)`.
+
+Rewrite using `[← lintegral_indicator Metric.isOpen_ball.measurableSet]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Apply the tactic sequence `by_cases hw : w ∈ Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1 <;> simp [hw]`. Rewrite `harea` using `[hind, hVdef, hHdef]`.
+
+Rewrite using `[mul_assoc, harea, ← mul_assoc, ENNReal.inv_mul_cancel hH0 hHtop, one_mul]`. Establish `hlhs : ∫⁻ π : Fin m → Fin n → ℂ, matGauss π * ∫⁻ w in Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1, (fibreCount h J π w : ℝ≥0∞) = H⁻¹ * V * ∫⁻ y in coneSet h J, k ‖y‖ ∂μ`. Rewrite using `[← hT n m h J hJ hm hmn hfib, ← lintegral_const_mul' _ _ hctop]`. Use `lintegral_congr fun π => ?_` and prove the remaining obligations. Rewrite using `[hin π]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hlhs]`. Distinguish the cases in `hfin : μ {y | ‖y‖ < 1 ∧ y ∈ coneSet h J} < ⊤`. Rewrite using `[hR n m hm (coneSet h J) (fun y hy t _ => real_smul_mem_coneSet h hJ hy t) hfin k hkm]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `hfin` using `[not_lt, top_le_iff]`. Rewrite using `[hfin, ENNReal.mul_top (ENNReal.mul_pos hc0 hM0.ne').ne']`. Establish `hball : MeasurableSet {y : EuclideanSpace ℂ (Fin n) | ‖y‖ < 1}` using `measurableSet_lt measurable_norm measurable_const`. Establish `hge : k 1 * ⊤ ≤ ∫⁻ y in coneSet h J, k ‖y‖ ∂μ`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[lintegral_indicator_const hball, Measure.restrict_apply hball]`. Use `congr 1`. Conclude with `hfin.symm`. Use `_ ≤ ∫⁻ y in coneSet h J, k ‖y‖ ∂μ := by`. Use `lintegral_mono fun y => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hy : ‖y‖ < 1`. Rewrite using `[Set.indicator_of_mem (show y ∈ {y : EuclideanSpace ℂ (Fin n) | ‖y‖ < 1} from hy)]`. Conclude with `hkanti (Set.mem_Ici.2 (norm_nonneg y)) (Set.mem_Ici.2 zero_le_one) hy.le`. Rewrite using `[Set.indicator_of_notMem (show y ∉ {y : EuclideanSpace ℂ (Fin n) | ‖y‖ < 1} from hy)]`. Conclude with `bot_le`.
+
+Rewrite `hge` using `[ENNReal.mul_top (hkpos 1).ne', top_le_iff]`. Rewrite using `[hge, ENNReal.mul_top hc0]`.
+-/
 theorem ConeFibreAverage.proof (hA : ConeAreaFormula.Statement) (hT : ConeTangentAverage.Statement)
     (hR : ConeRadialIntegral.Statement) (hG : TangentGaussMoment.Statement) :
     ConeFibreAverage.Statement := by

@@ -11,6 +11,17 @@ section
 open private cc_ex from Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.BaseChangeUnits.CentralResidueGroups.CcEx
 open UpperTheory.GalN.V
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Z.Bc
+/- English proof (translation)
+Use `letI : Algebra K L := (IntermediateField.inclusion hle).toRingHom.toAlgebra`. Use `haveI : IsScalarTower K L Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower ℚ K L := IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)`. Use `haveI : IsGalois K L := IsGalois.tower_top_of_isGalois ℚ K L`. Use `haveI : Group.IsSolvable (L ≃ₐ[ℚ] L) := hsol`.
+
+Establish `s2 : IsSolvable (L ≃ₐ[K] L)` using `Group.isSolvable_of_isSolvable_injective (f := (AlgEquiv.restrictScalarsHom ℚ : (L ≃ₐ[K] L) →* (L ≃ₐ[ℚ] L))) (AlgEquiv.restrictScalars_injective ℚ)`. Establish `e : (r.comp (resG ℚ K Ω)).comp (resG K L Ω) = r.comp (resG ℚ L Ω)` using `rfl`. Establish `i2 : IsIrr ((r.comp (resG ℚ K Ω)).comp (resG K L Ω))` using `e ▸ hirr`. Establish `i1 : IsIrr (r.comp (resG ℚ K Ω))` using `(UpperTheory.galoisRep_irreducibility_criterion.1 _ _ _ n _).1 _ i2`. Take `⟨c, hc⟩` from `cc_ex Ω`.
+
+Take `⟨P, hP⟩` from `id hd`. Establish `hp : IsPairing c (r.comp (resG ℚ K Ω)) (θ.comp (resG ℚ K Ω)) (P * r c⁻¹)` using `fun s s' h => by`. Establish `h' : resG ℚ K Ω s' = c * resG ℚ K Ω s * c⁻¹` using `h`. Establish `e0 : r c⁻¹ * r (resG ℚ K Ω s') = r (resG ℚ K Ω s) * r c⁻¹` using `by rw [h', ← map_mul, ← map_mul]; congr 1; group`. Establish `e'` using `congrArg Units.val e0`.
+
+Establish `h1` using `hP (resG ℚ K Ω s)`. Simplify using `only [Units.val_mul, MonoidHom.comp_apply] at e' ⊢`. Rewrite using `[← Matrix.smul_mul, ← h1]`. Simplify using `only [Matrix.mul_assoc, e']`. Use `_root_.UpperTheory.GalN.V.ofOne0_alt H third (_root_.UpperTheory.V.Z.Bc.across_alt H hS biQuad) K Ω hK l ι n hn r θ hθ hd i1 ?_` and prove the remaining obligations.
+
+Conclude with `(hS ℚ K L Ω s2 ⟨inferInstance, Or.inr ⟨hK, inferInstance⟩⟩ inferInstance inferInstance l ι n hn _ θ (hr.comp (continuous_restrictScalarsHom ℚ K Ω)) i2 hθ (Ws.auSign _) ⟨c, _, hc, hp⟩).2 (e ▸ haut)`.
+-/
 theorem UpperTheory.GalN.V.isAutomorphicOverImagQuad_of_restriction_aut_irr (H : _root_.UpperTheory.V.Af.HypothesesH') (hS : SolC) (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω]
     (K L : IntermediateField ℚ Ω) [NumberField K] [NumberField L] [IsCMField K] [IsCMField L] (hle : K ≤ L)
     (hK : Module.finrank ℚ K = 2) (hgal : IsGalois ℚ L) (hsol : IsSolvable (L ≃ₐ[ℚ] L)) (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ)

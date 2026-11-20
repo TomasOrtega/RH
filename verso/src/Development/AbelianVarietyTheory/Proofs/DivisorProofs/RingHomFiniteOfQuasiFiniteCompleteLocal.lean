@@ -14,6 +14,21 @@ noncomputable section
 
 namespace GlobalTheory.QuasiFiniteLocal
 
+/- English proof (translation)
+Establish `key : ∀ N : ℕ, ∃ F : Submodule A S, F.FG ∧ F ⊔ (I ^ N).restrictScalars A = ⊤`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero => exact ⟨⊥, Submodule.fg_bot, by simp⟩`. Consider the case `succ N ih`.
+
+Take `⟨F, hF, hF'⟩` from `ih`. Take `⟨G, hG⟩ : (I ^ N).FG` from `IsNoetherian.noetherian _`. Use `⟨F ⊔ Submodule.span A (Set.image2 (· * ·) T (G : Set S)), hF.sup (Submodule.fg_span (hT.image2 _ G.finite_toSet)), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← hF', sup_assoc]`. Use `sup_le_sup_left (fun x hx => ?_) _` and prove the remaining obligations.
+
+Establish `hx' : x ∈ Submodule.span S (G : Set S)` using `hG.ge hx`. Take `⟨c, -, rfl⟩` from `Submodule.mem_span_finset.1 hx'`. Use `sum_mem fun y hy => ?_` and prove the remaining obligations. Take `⟨t, ht, ha⟩` from `h (c y)`. Establish `e : c y • y = t * y + y * (c y - t)` using `by rw [smul_eq_mul]; ring`.
+
+Rewrite using `[e]`. Use `Submodule.add_mem_sup ?_ ?_` and prove the remaining obligations. Establish `hmul : ∀ u ∈ Submodule.span A T, u * y ∈ Submodule.span A (Set.image2 (· * ·) T (G : Set S))`. Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`.
+
+Consider the case `mem u hu => exact Submodule.subset_span (Set.mem_image2_of_mem hu hy)`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => rw [add_mul]`. Conclude with `add_mem hu hv`. Consider the case `smul a u _ hu => rw [smul_mul_assoc]`.
+
+Conclude with `Submodule.smul_mem _ _ hu`. Conclude with `hmul t ht`. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mem_mul (hG.le (Ideal.subset_span hy)) ha`. Take `⟨F, hF, hF'⟩` from `key N`.
+
+Establish `: Module.Finite A F` using `Module.Finite.iff_fg.2 hF`. Use `Module.Finite.of_surjective ((Ideal.Quotient.mkₐ A J).toLinearMap ∘ₗ F.subtype) fun s => ?_` and prove the remaining obligations. Take `⟨s, rfl⟩` from `Ideal.Quotient.mk_surjective s`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 (hF'.ge (Submodule.mem_top (x := s)))`. Conclude with `⟨⟨y, hy⟩, Ideal.Quotient.eq.2 (by simpa using hN hz)⟩`.
+-/
 theorem finite_quotient_of_pow_le_of_span {A S : Type} [CommRing A] [CommRing S] [Algebra A S]
     [IsNoetherianRing S] {I J : Ideal S} (T : Set S) (hT : T.Finite)
     (h : ∀ s : S, ∃ t ∈ Submodule.span A T, s - t ∈ I) {N : ℕ}
@@ -54,6 +69,21 @@ theorem finite_quotient_of_pow_le_of_span {A S : Type} [CommRing A] [CommRing S]
   obtain ⟨y, hy, z, hz, rfl⟩ := Submodule.mem_sup.1 (hF'.ge (Submodule.mem_top (x := s)))
   exact ⟨⟨y, hy⟩, Ideal.Quotient.eq.2 (by simpa using hN hz)⟩
 
+/- English proof (translation)
+Introduce `A R _ _ _ _ _ _ b _ hc hq hres`. Use `letI : Algebra A R := b.toAlgebra`. Establish `hb : algebraMap A R = b` using `rfl`. Establish `hle : (maximalIdeal A).map (algebraMap A R) ≤ maximalIdeal R`. Use `Ideal.map_le_iff_le_comap.2 fun a ha => ?_` and prove the remaining obligations.
+
+Rewrite using `[Ideal.mem_comap, hb, mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `fun h => (mem_maximalIdeal _).1 ha (isUnit_of_map_unit b a h)`. Establish `hrad : maximalIdeal R ≤ ((maximalIdeal A).map (algebraMap A R)).radical`. Rewrite using `[Ideal.radical_eq_sInf]`. Conclude with `le_sInf fun p ⟨hJp, hp⟩ => (hq p hp hJp).ge`.
+
+Take `⟨N, hN⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg hrad (IsNoetherian.noetherian _)`. Choose the witnesses or unpack the hypotheses as in `⟨T0, hT0⟩ : (⊤ : Submodule A (ResidueField R)).FG := by`. Use `letI : Algebra A (ResidueField R) := ((residue R).comp b).toAlgebra`. Conclude with `hres.fg_top`. Set `lift : ResidueField R → R` to `Function.surjInv (residue_surjective (R := R))`.
+
+Establish `hlift : ∀ t, residue R (lift t) = t` using `Function.surjInv_eq _`. Set `L : R →ₗ[A] ResidueField R` to `{ toFun := residue R map_add' := map_add _ map_smul' := fun a x => by show residue R (b a * x) = residue R (b a) * residue R x`. Conclude with `map_mul _ _ _ }`. Establish `hfin : Module.Finite A (R ⧸ (maximalIdeal A).map (algebraMap A R))`. Use `finite_quotient_of_pow_le_of_span (I := maximalIdeal R) (lift '' (T0 : Set _)) ((T0.finite_toSet).image _) (fun s => ?_) hN` and prove the remaining obligations.
+
+Establish `hs : residue R s ∈ Submodule.map L (Submodule.span A (lift '' (T0 : Set _)))`. Rewrite using `[Submodule.map_span, ← Set.image_comp]`. Establish `e : (⇑L ∘ lift) = id` using `funext fun t => hlift t`. Rewrite using `[e, Set.image_id, hT0]`. Discharge the goal by the elementary cases of `trivial`.
+
+Take `⟨t, ht, hts⟩` from `hs`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[← residue_eq_zero_iff, map_sub]`. Conclude with `sub_eq_zero.2 hts.symm`. Establish `: IsHausdorff ((maximalIdeal A).map (algebraMap A R)) R` using `IsHausdorff.of_isLocalRing _ _ (ne_top_of_le_ne_top (maximalIdeal.isMaximal _).ne_top hle)`.
+
+Use `haveI := hc`. Conclude with `GlobalTheory.FormalIsogeny.finite_of_finite_quotient_map (maximalIdeal A)`.
+-/
 theorem finite_of_quasiFinite : ∀ (A R : Type) [CommRing A] [IsLocalRing A] [IsNoetherianRing A] [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (b : A →+* R) [IsLocalHom b], IsAdicComplete (maximalIdeal A) A → (∀ p : Ideal R, p.IsPrime → (maximalIdeal A).map b ≤ p → p = maximalIdeal R) → ((residue R).comp b).Finite → b.Finite := by
   intro A R _ _ _ _ _ _ b _ hc hq hres
   letI : Algebra A R := b.toAlgebra

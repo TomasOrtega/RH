@@ -22,26 +22,44 @@ section Generic
 
 variable {A : Type} [CommRing A] {n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+-/
 private theorem cT_add_twisted_operators {A : Type} [CommRing A] {m k : Type} (σ : A →+* A) (X Y : Matrix m k A) :
     Formalism.UG.cT σ (X + Y) = Formalism.UG.cT σ X + Formalism.UG.cT σ Y := by
   ext i j; simp [Formalism.UG.cT]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+-/
 private theorem cT_smul_twisted_operators {A : Type} [CommRing A] {m k : Type} (σ : A →+* A) (c : A) (X : Matrix m k A) :
     Formalism.UG.cT σ (c • X) = σ c • Formalism.UG.cT σ X := by
   ext i j; simp [Formalism.UG.cT]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, hσ]`.
+-/
 private theorem cT_cT_of_involutive' {A : Type} [CommRing A] {m k : Type} (σ : A →+* A) (hσ : ∀ x, σ (σ x) = x)
     (X : Matrix m k A) : Formalism.UG.cT σ (Formalism.UG.cT σ X) = X := by
   ext i j; simp [Formalism.UG.cT, hσ]
 
+/- English proof (translation)
+Simplify using `[Formalism.UG.cT, Matrix.map_mul, Matrix.transpose_mul]`.
+-/
 private theorem cT_mul_twisted_operators {A : Type} [CommRing A] {m k l : Type} [Fintype k] (σ : A →+* A) (X : Matrix m k A)
     (Y : Matrix k l A) : Formalism.UG.cT σ (X * Y) = Formalism.UG.cT σ Y * Formalism.UG.cT σ X := by
   simp [Formalism.UG.cT, Matrix.map_mul, Matrix.transpose_mul]
 
+/- English proof (translation)
+Simplify using `[Formalism.UG.cT, Matrix.map_one]`.
+-/
 private theorem cT_one_twisted_operators {A : Type} [CommRing A] {m : Type} [DecidableEq m] (σ : A →+* A) :
     Formalism.UG.cT σ (1 : Matrix m m A) = 1 := by
   simp [Formalism.UG.cT, Matrix.map_one]
 
+/- English proof (translation)
+Establish `hfe : f * e = 0` using `by rw [mul_comm]; exact hef`. Establish `hge : g * e = 0` using `by rw [mul_comm]; exact heg`. Establish `hgf : g * f = 0` using `by rw [mul_comm]; exact hfg`. Simplify using `only [add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, he, hf, hg, hef, heg, hfg, hfe, hge, hgf, zero_smul, add_zero, zero_add]`.
+-/
 private theorem orthogonal_idempotent_combination_mul {A : Type} [CommRing A] {m : Type} [Fintype m] {e f g : A} (he : e * e = e) (hf : f * f = f)
     (hg : g * g = g) (hef : e * f = 0) (heg : e * g = 0) (hfg : f * g = 0) (X Y Z X' Y' Z' : Matrix m m A) :
     (e • X + f • Y + g • Z) * (e • X' + f • Y' + g • Z') = e • (X * X') + f • (Y * Y') + g • (Z * Z') := by
@@ -51,6 +69,13 @@ private theorem orthogonal_idempotent_combination_mul {A : Type} [CommRing A] {m
   simp only [add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, he, hf, hg, hef, heg, hfg, hfe, hge, hgf,
     zero_smul, add_zero, zero_add]
 
+/- English proof (translation)
+Establish `hqq : τ p * τ p = τ p` using `by rw [← map_mul, hp]`. Establish `hqp : τ p * p = 0` using `by rw [mul_comm]; exact hq`. Establish `hrr : (1 - p - τ p) * (1 - p - τ p) = 1 - p - τ p` using `by linear_combination hp + hqq + 2 * hq`. Establish `hpr : p * (1 - p - τ p) = 0` using `by linear_combination -hp - hq`. Establish `hqr : τ p * (1 - p - τ p) = 0` using `by linear_combination -hqq - hqp`.
+
+Establish `hτr : τ (1 - p - τ p) = 1 - p - τ p` using `by simp [hτ]; ring`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hc : Formalism.UG.cT τ (p • a.val + τ p • Formalism.UG.cT τ (a⁻¹).val + (1 - p - τ p) • 1) = p • (a⁻¹).val + τ p • Formalism.UG.cT τ a.val + (1 - p - τ p) • 1`. Rewrite using `[cT_add_twisted_operators, cT_add_twisted_operators, cT_smul_twisted_operators, cT_smul_twisted_operators, cT_smul_twisted_operators, cT_cT_of_involutive' τ hτ, cT_one_twisted_operators, hτ, hτr]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[hc, orthogonal_idempotent_combination_mul hp hqq hrr hq hpr hqr, ← cT_mul_twisted_operators, Units.inv_mul, cT_one_twisted_operators, Matrix.mul_one, ← add_smul, ← add_smul, show p + τ p + (1 - p - τ p) = 1 by ring, one_smul]`. Simplify using `only [smul_add, smul_smul, hp, hq, hpr, zero_smul, add_zero]`.
+-/
 private theorem cT_mul_self_eq_one_and_smul_eq_of_idempotent {A : Type} [CommRing A] {n : ℕ} (τ : A →+* A) (hτ : ∀ x, τ (τ x) = x) {p : A}
     (hp : p * p = p) (hq : p * τ p = 0) (a : GL (Fin n) A) :
     Formalism.UG.cT τ (p • a.val + τ p • Formalism.UG.cT τ (a⁻¹).val + (1 - p - τ p) • 1) *
@@ -71,11 +96,63 @@ private theorem cT_mul_self_eq_one_and_smul_eq_of_idempotent {A : Type} [CommRin
       ← add_smul, ← add_smul, show p + τ p + (1 - p - τ p) = 1 by ring, one_smul]
   · simp only [smul_add, smul_smul, hp, hq, hpr, zero_smul, add_zero]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply]`. Conclude with `S.sum_mem fun k _ => S.mul_mem (u i k).2 (hx k)`.
+-/
 theorem mulVec_int (S : Subring A) {m : ℕ} (u : Matrix (Fin m) (Fin n) S) (x : Fin n → A) (hx : ∀ i, x i ∈ S) (i : Fin m) :
     (u.map S.subtype).mulVec x i ∈ S := by
   simp only [Matrix.mulVec, dotProduct, Matrix.map_apply]
   exact S.sum_mem fun k _ => S.mul_mem (u i k).2 (hx k)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Take `⟨b, hb⟩ : ∃ b, b = β * Formalism.UG.bc S.subtype u` from `⟨_, rfl⟩`. Take `⟨b', hb'⟩ : ∃ b', b' = β' * Formalism.UG.bc S.subtype u'` from `⟨_, rfl⟩`. Rewrite `hu` using `[← hb]`. Rewrite `hu'` using `[← hb']`.
+
+Establish `hbcS : ∀ (w : GL (Fin n) S) i k, (Formalism.UG.bc S.subtype w).val i k ∈ S` using `fun w i k => (w.val i k).2`. Establish `hmul : ∀ X Y : Matrix (Fin n) (Fin n) A, (∀ i k, X i k ∈ S) → (∀ i k, Y i k ∈ S) → ∀ i k, (X * Y) i k ∈ S` using `fun X Y hX hY i k => by`. Rewrite using `[Matrix.mul_apply]`. Conclude with `S.sum_mem fun l _ => S.mul_mem (hX i l) (hY l k)`. Establish `hpA : (p : A) * p = p` using `by rw [← Subring.coe_mul, hp]`.
+
+Use `set a := Formalism.UG.bc S.subtype (u'⁻¹ * u) with ha`. Use `set y := (p : A) • a.val + σ p • Formalism.UG.cT σ (a⁻¹).val + (1 - (p : A) - σ p) • 1 with hydef`. Take `⟨hy, hpy⟩` from `cT_mul_self_eq_one_and_smul_eq_of_idempotent σ hσ hpA hq a`. Rewrite `hy`, `hpy` using `[← hydef]`. Establish `hy' : y * Formalism.UG.cT σ y = 1` using `mul_eq_one_comm.mp hy`.
+
+Establish `hyS : ∀ i k, y i k ∈ S`. Introduce `i k`. Establish `hai : ∀ i k, (a⁻¹).val i k ∈ S`. Introduce `i k`. Rewrite using `[ha, ← map_inv]`.
+
+Conclude with `hbcS _ i k`. Simplify using `only [hydef, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply]`. Use `S.add_mem (S.add_mem (S.mul_mem p.2 (hbcS _ i k)) (S.mul_mem (hS _ p.2) (hS _ (hai k i)))) (S.mul_mem (S.sub_mem (S.sub_mem S.one_mem p.2) (hS _ p.2)) ?_)` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`.
+
+Use `exacts [S.one_mem, S.zero_mem]`. Establish `hcyS : ∀ i k, Formalism.UG.cT σ y i k ∈ S` using `fun i k => hS _ (hyS k i)`. Establish `hcuS : ∀ i k, ((Formalism.UG.bc S.subtype u)⁻¹).val i k ∈ S`. Introduce `i k`. Rewrite using `[← map_inv]`.
+
+Conclude with `hbcS _ i k`. Establish `hcuS' : ∀ i k, ((Formalism.UG.bc S.subtype u')⁻¹).val i k ∈ S`. Introduce `i k`. Rewrite using `[← map_inv]`. Conclude with `hbcS _ i k`.
+
+Use `set U0 := (Formalism.UG.bc S.subtype u').val * y * ((Formalism.UG.bc S.subtype u)⁻¹).val with hU0`. Use `set V0 := (Formalism.UG.bc S.subtype u).val * Formalism.UG.cT σ y * ((Formalism.UG.bc S.subtype u')⁻¹).val with hV0`. Establish `hU0S : ∀ i k, U0 i k ∈ S` using `hmul _ _ (hmul _ _ (hbcS u') hyS) hcuS`. Establish `hV0S : ∀ i k, V0 i k ∈ S` using `hmul _ _ (hmul _ _ (hbcS u) hcyS) hcuS'`. Use `set j := b'.val * y * (b⁻¹).val with hj`.
+
+Use `set j' := b.val * Formalism.UG.cT σ y * (b'⁻¹).val with hj'`. Establish `h1 : j * j' = 1`. Simplify using `only [hj, hj', Matrix.mul_assoc, Units.inv_mul_cancel_left]`. Rewrite using `[← Matrix.mul_assoc y, hy', Matrix.one_mul, Units.mul_inv]`. Establish `h2 : j' * j = 1`.
+
+Simplify using `only [hj, hj', Matrix.mul_assoc, Units.inv_mul_cancel_left]`. Rewrite using `[← Matrix.mul_assoc (Formalism.UG.cT σ y), hy, Matrix.one_mul, Units.mul_inv]`. Establish `hjβ : j * β.val = β'.val * U0`. Simplify using `only [hj, hU0, hb, hb', _root_.mul_inv_rev, Units.val_mul, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`. Establish `hj'β : j' * β'.val = β.val * V0`.
+
+Simplify using `only [hj', hV0, hb, hb', _root_.mul_inv_rev, Units.val_mul, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`. Establish `hβj : (β'⁻¹).val * j = U0 * (β⁻¹).val`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc (β'⁻¹).val, Matrix.mul_assoc j, Units.mul_inv, Matrix.mul_one]`. Use `_ = U0 * (β⁻¹).val := by rw [hjβ, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`.
+
+Establish `hβj' : (β⁻¹).val * j' = V0 * (β'⁻¹).val`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc (β⁻¹).val, Matrix.mul_assoc j', Units.mul_inv, Matrix.mul_one]`. Use `_ = V0 * (β'⁻¹).val := by rw [hj'β, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Set `US : Matrix (Fin n) (Fin n) S` to `Matrix.of fun i k => ⟨U0 i k, hU0S i k⟩`.
+
+Set `VS : Matrix (Fin n) (Fin n) S` to `Matrix.of fun i k => ⟨V0 i k, hV0S i k⟩`. Establish `hUmap : US.map S.subtype = U0` using `by ext i k; rfl`. Establish `hVmap : VS.map S.subtype = V0` using `by ext i k; rfl`. Establish `hJ : J = Formalism.UG.cT σ (b⁻¹).val * (b⁻¹).val`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Units.mul_inv, cT_one_twisted_operators, Matrix.one_mul, Matrix.mul_one]`. Use `_ = Formalism.UG.cT σ (b⁻¹).val * (Formalism.UG.cT σ b.val * J * b.val) * (b⁻¹).val := by`. Rewrite using `[cT_mul_twisted_operators]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hu, Matrix.mul_one]`.
+
+Establish `hu2 : ∀ X : Matrix (Fin n) (Fin n) A, Formalism.UG.cT σ b'.val * (J' * (b'.val * X)) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hu', Matrix.one_mul]`. Establish `hy2 : ∀ X : Matrix (Fin n) (Fin n) A, Formalism.UG.cT σ y * (y * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, hy, Matrix.one_mul]`. Establish `hpU : (p : A) • U0 = (p : A) • 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hU0, Matrix.mul_smul, Matrix.smul_mul]`. Use `_ = (Formalism.UG.bc S.subtype u').val * ((p : A) • a.val) * ((Formalism.UG.bc S.subtype u)⁻¹).val := by rw [hpy]`. Use `_ = (p : A) • 1 := by`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, ha, map_mul, map_inv, Units.val_mul, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul, Units.mul_inv]`.
+
+Use `⟨j, US, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `x x' hxx`. Use `congrArg j'.mulVec hxx` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h2, Matrix.one_mulVec, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+
+Introduce `x'`. Conclude with `⟨j'.mulVec x', by rw [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]⟩`. Rewrite using `[hJ, hj, cT_mul_twisted_operators, cT_mul_twisted_operators]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hu2, hy2]`.
+
+Use extensionality with `x'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Rewrite using `[hH']`. Introduce `i`.
+
+Rewrite using `[Matrix.mulVec_mulVec, hβj, ← Matrix.mulVec_mulVec, ← hUmap]`. Conclude with `mulVec_int S US _ ((hH x).1 hx) i`. Introduce `hx'`. Use `⟨j'.mulVec x', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hH]`.
+
+Introduce `i`. Rewrite using `[Matrix.mulVec_mulVec, hβj', ← Matrix.mulVec_mulVec, ← hVmap]`. Conclude with `mulVec_int S VS _ ((hH' x').1 hx') i`. Rewrite using `[Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Rewrite using `[hUmap, hjβ]`.
+
+Introduce `a' b''`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subring.coe_mul, Subring.coe_mul]`. Establish `e` using `congrFun (congrFun hpU a') b''`. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at e`.
+
+Use `show (p : A) * U0 a' b'' = (p : A) * ((if a'.val = b''.val then 1 else 0 : S) : A)`. Rewrite using `[e, Matrix.one_apply]`. Use `split_ifs with h1 h2 h2`. Simplify using the standard rewrite rules. Conclude with `absurd (congrArg Fin.val h1) h2`.
+
+Conclude with `absurd (Fin.ext h2) h1`. Simplify using the standard rewrite rules.
+-/
 theorem exists_isom (S : Subring A) (σ : A →+* A) (hσ : ∀ x, σ (σ x) = x) (hS : ∀ x ∈ S, σ x ∈ S) {n' : ℕ} (h : n = n')
     (J : Matrix (Fin n) (Fin n) A) (J' : Matrix (Fin n') (Fin n') A) (β : GL (Fin n) A) (β' : GL (Fin n') A)
     (u : GL (Fin n) S) (u' : GL (Fin n') S)
@@ -209,6 +286,33 @@ variable {D : D7}
 set_option maxHeartbeats 800000 in
 open GlobalTheory.IdemSupport GlobalTheory.LevSplit in
 
+/- English proof (translation)
+Take `⟨Φ, hΦ⟩` from `exists_comp D`. Take `⟨z, hz0, hzs⟩` from `hΦ.surj ((Formalism.L2.DIV.idemAd (F := D.host.E) (fun Q => Q ∈ T) : _) : FiniteAdeleRing (𝓞 D.host.E) D.host.E)`. Establish `hzQ : ∀ Q, Φ z Q = if Q ∈ T then 1 else 0`. Introduce `Q`. Rewrite using `[hzs]`.
+
+Distinguish the cases in `hQ : Q ∈ T`. Rewrite using `[if_pos hQ]`. Conclude with `Formalism.L2.DIV.idemAd_pos hQ`. Rewrite using `[if_neg hQ]`. Conclude with `Formalism.L2.DIV.idemAd_neg hQ`.
+
+Establish `hzz : z * z = z` using `hΦ.ext' (by rw [map_mul, hz0, mul_zero]) (fun Q => by`. Apply the tactic sequence `rw [ev_mul, hzQ]; split_ifs <;> simp)`. Establish `hconjT : ∀ Q ∈ T, cP Q ∉ T` using `fun Q hQ hc => hT Q hQ (cP Q) hc ((isConjPl_iff Q _).2 rfl)`. Establish `hzc : z * cA D z = 0`. Apply `hΦ.ext' (by rw [map_mul, hz0, zero_mul, map_zero])` to reduce the goal to its premises.
+
+Introduce `Q`. Rewrite using `[ev_mul, ev_zero, hzQ]`. Use `split_ifs with hQ`. Take `⟨e, he⟩` from `exists_delta hΦ Q`. Establish `hce` using `delta_conj hΦ he`.
+
+Establish `h0 : z * cA D e = 0` using `hΦ.ext' (by rw [map_mul, hce.1, mul_zero, map_zero]) (fun Q' => by`. Rewrite using `[ev_mul, ev_zero, hzQ]`. Distinguish the cases in `hQ' : Q' = cP Q`. Substitute `hQ'` using the available equality. Rewrite using `[if_neg (hconjT Q hQ), zero_mul]`.
+
+Rewrite using `[hce.2.2 Q' hQ', mul_zero])`. Establish `h1 : cA D z * e = 0`. Use `congrArg (cA D) h0` as an intermediate fact. Rewrite `this` using `[map_mul, cA_cA, map_zero]`. Then use the resulting hypothesis. Establish `h2` using `congrArg (fun w => Φ w Q) h1`.
+
+Simplify using `only [ev_mul, ev_zero, he.2.1, mul_one] at h2`. Rewrite using `[one_mul]`. Conclude with `h2`. Rewrite using `[zero_mul]`. Establish `hzint : finPart D z ∈ intAE D` using `(hΦ.int z).2 (fun Q => by`.
+
+Rewrite using `[hzQ]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _])`. Use `set p : Formalism.L2.Herm.intAf D.host.F D.host.E := ⟨finSw D z, swapAE_int hzint⟩ with hpdef`. Use `⟨p, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext show finSw D z * finSw D z = finSw D z` to reduce the goal to its premises. Rewrite using `[← map_mul, hzz]`. Use `show finSw D z * Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) (finSw D z) = 0`. Establish `hsw : Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) (finSw D z) = finSw D (cA D z)` using `by show Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) (Formalism.IndefR.Lev.swapAE D (finPart D z)) = Formalism.IndefR.Lev.swapAE D (finPart D (cA D z))`. Rewrite using `[(parts_cA z).2]`.
+
+Generalize the expression as in `finPart D z = w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp [Formalism.UG.sigR, Formalism.IndefR.Lev.swapAE, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+
+Rewrite using `[hsw, ← map_mul, hzc, map_zero]`. Introduce `P hP`. Take `⟨e, he⟩` from `GlobalTheory.ParahoricLift.exists_isIdemAt (hT P hP P hP)`. Take `⟨q, hq, -, hq1⟩` from `GlobalTheory.ParahoricLift.exists_idem_int he`. Establish `hd : IsDelta Φ P e` using `(tie_iff hΦ he.1.1 (GlobalTheory.SplitScalar.infPart_splitIdem he.1) P).1 he.2`.
+
+Establish `hze : z * e = e` using `hΦ.ext' (by rw [map_mul, hd.1, mul_zero]) (fun Q => by`. Rewrite using `[ev_mul]`. Distinguish the cases in `hQ : Q = P`. Substitute `hQ` using the available equality. Rewrite using `[hzQ, if_pos hP, one_mul]`.
+
+Rewrite using `[hd.2.2 Q hQ, mul_zero])`. Establish `hmul : p * q = q` using `Subtype.ext (by show finSw D z * (q : EAf D) = q`. Rewrite using `[hq, ← map_mul, hze])`. Use `congrArg (resS D.host.F P) hmul` as an intermediate fact. Rewrite `this` using `[map_mul, hq1, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem exists_idem_set {T : Set (Pl D.host.E)} (hT : OnePlaceOver T) :
     ∃ p : Formalism.L2.Herm.intAf D.host.F D.host.E, p * p = p ∧
       (p : EAf D) * Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) p = 0 ∧ ∀ P ∈ T, resS D.host.F P p = 1 := by
@@ -280,6 +384,9 @@ theorem exists_idem_set {T : Set (Pl D.host.E)} (hT : OnePlaceOver T) :
     have := congrArg (resS D.host.F P) hmul
     rwa [map_mul, hq1, mul_one] at this
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [Formalism.UG.sigR, CMData.sig]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem sigR_sigR (z : EAf D) : Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)
     (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) z) = z := by
   induction z using TensorProduct.induction_on with
@@ -288,6 +395,19 @@ theorem sigR_sigR (z : EAf D) : Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Take `⟨p, hp, hq, hT1⟩` from `exists_idem_set hT`. Take `⟨u, hu⟩` from `GlobalTheory.AdelicOrthFrame.exists_orthonormal_baseFrame V β Λ N hβ`. Take `⟨u', hu'⟩` from `GlobalTheory.AdelicOrthFrame.exists_orthonormal_baseFrame V' β' Λ' N' hβ'`. Establish `hS : ∀ x ∈ Formalism.L2.Herm.intAf D.host.F D.host.E, Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) x ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Introduce `x hx`.
+
+Express the relevant statement in the definitionally equal form `x ∈ Subring.closure _ at hx`. Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem y hy => show _ ∈ Subring.closure _`. Apply `Subring.subset_closure` to reduce the goal to its premises. Break down `hy with ⟨⟨z, hz⟩, rfl⟩ | ⟨w, rfl⟩` into its components or cases.
+
+Take `⟨r, rfl⟩` from `hz`. Use `Or.inl ⟨⟨algebraMap (𝓞 D.host.E) D.host.E (GlobalTheory.IdemSupport.cO D r), GlobalTheory.IdemSupport.cO D r, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `[Formalism.UG.sigR, CMData.sig, GlobalTheory.IdemSupport.cO_coe]`. Both sides reduce to the same expression. Conclude with `Or.inr ⟨w, by simp [Formalism.UG.sigR]⟩`.
+
+Consider the case `zero => simp`. Consider the case `one => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`.
+
+Conclude with `neg_mem hx`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`. Take `⟨j, U, hbij, hiso, himg, hU, hpU⟩` from `exists_isom (Formalism.L2.Herm.intAf D.host.F D.host.E) (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) (sigR_sigR (D := D)) hS h (V.gram.map (Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F))) (V'.gram.map (Formalism.UG.inclE (F := D.host.F) (Fo …`. Use `⟨j, ⟨⟨hbij, hiso⟩, himg⟩, U, hU, ?_⟩` and prove the remaining obligations.
+
+Introduce `PP hPP a b`. Establish `e` using `congrArg (Formalism.L2.DIV.resS D.host.F PP) (hpU a b)`. Rewrite `e` using `[map_mul, map_mul, hT1 PP hPP, one_mul, one_mul]`. Rewrite using `[e]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem exists_latIsom (V V' : HSp D) (h : V.rank = V'.rank)
     (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (Λ' : Submodule (𝓞 D.host.E) (Fin V'.rank → D.host.E))
     (β : GL (Fin V.rank) (EAf D)) (β' : GL (Fin V'.rank) (EAf D)) (N N' : ℕ)
@@ -328,12 +448,28 @@ theorem exists_latIsom (V V' : HSp D) (h : V.rank = V'.rank)
   rw [e]
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `V V' h Λ Λ' β β' N N' hβ hβ' T hT`. Take `⟨c, hc⟩` from `hβ`. Take `⟨c', hc'⟩` from `hβ'`. Conclude with `exists_latIsom V V' h Λ Λ' β β' _ _ hc hc' T hT`.
+-/
 theorem globalIsometry (D : D7) : GlobalIsometry D := by
   intro V V' h Λ Λ' β β' N N' hβ hβ' T hT
   obtain ⟨c, hc⟩ := hβ
   obtain ⟨c', hc'⟩ := hβ'
   exact exists_latIsom V V' h Λ Λ' β β' _ _ hc hc' T hT
 
+/- English proof (translation)
+Unfold `Formalism.IndefR.Datum.IsSelfDualC at h`. Take `⟨hlat, hsd⟩` from `h`. Take `⟨β, hβ⟩` from `Formalism.L2.DIV.frame_exists_alt D.host.F D.host.E V.rank Λ hlat`. Establish `hCfg : (GlobalTheory.Member.latC V).FG` using `V.standardTuple_isLattice.fg.map _`. Establish `hCspan : Submodule.span D.host.E (GlobalTheory.Member.latC V : Set (Fin V.rank → D.host.E)) = ⊤`.
+
+Rewrite using `[GlobalTheory.Member.latC, Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image, V.standardTuple_isLattice.span_eq_top, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `V.frame.equivFun.surjective`. Take `⟨N1, hN1, h1⟩` from `PI.SqPairW.exists_den_le hCfg hlat.span_eq_top`. Take `⟨N2, hN2, h2⟩` from `PI.SqPairW.exists_den_le hlat.fg hCspan`. Establish `hcast : ∀ (k : ℕ) (x : Fin V.rank → D.host.E), ((k : D.host.E)) • x = (k : ℤ) • x` using `fun k x => by`.
+
+Rewrite using `[← Int.cast_smul_eq_zsmul D.host.E]`. Simplify using the standard rewrite rules. Establish `hsplit : ∀ x : Fin V.rank → D.host.E, ((N1 * N2 : ℕ) : D.host.E) • x = (N2 : ℤ) • ((N1 : ℤ) • x)` using `fun x => by`. Rewrite using `[← hcast, ← hcast, ← mul_smul, ← Nat.cast_mul, mul_comm]`. Establish `hsplit' : ∀ x : Fin V.rank → D.host.E, ((N1 * N2 : ℕ) : D.host.E) • x = (N1 : ℤ) • ((N2 : ℤ) • x)` using `fun x => by`.
+
+Rewrite using `[← hcast, ← hcast, ← mul_smul, ← Nat.cast_mul]`. Establish `hdual : Formalism.BasicNotions.dualSet (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram Λ = Λ`. Use extensionality with `y`. Rewrite using `[SetLike.mem_coe, hsd y]`. Conclude with `Iff.rfl`.
+
+Use `⟨β, N1 * N2, hβ, ?_, Nat.mul_pos hN1 hN2, ?_, ?_⟩` and prove the remaining obligations. Unfold `Formalism.L2.Herm.dualL`. Rewrite using `[hdual, Submodule.span_eq]`. Introduce `x hx`. Rewrite using `[hsplit]`.
+
+Conclude with `zsmul_mem (h1 x ((GlobalTheory.ParahoricLift.mem_L0c_iff_mem_intVec_of_span_frame V x).1 hx)) _`. Introduce `x hx`. Rewrite using `[hsplit']`. Conclude with `(GlobalTheory.ParahoricLift.mem_L0c_iff_mem_intVec_of_span_frame V _).2 (zsmul_mem (h2 x hx) _)`.
+-/
 theorem exists_baseFrame (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (h : Formalism.IndefR.Datum.IsSelfDualC V Λ) : ∃ β N, IsBaseFrame V β Λ N := by
   unfold Formalism.IndefR.Datum.IsSelfDualC at h
@@ -367,6 +503,13 @@ theorem exists_baseFrame (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank
     rw [hsplit']
     exact (GlobalTheory.ParahoricLift.mem_L0c_iff_mem_intVec_of_span_frame V _).2 (zsmul_mem (h2 x hx) _)
 
+/- English proof (translation)
+Set `e` to `LinearEquiv.ofBijective (Matrix.mulVecLin j) h`. Establish `he : ∀ y, j.mulVec (e.symm y) = y` using `fun y => e.apply_symm_apply y`. Establish `he' : ∀ x, e.symm (j.mulVec x) = x` using `fun x => e.symm_apply_apply x`. Use `⟨LinearMap.toMatrix' (e.symm : (Fin m → A) →ₗ[A] (Fin n → A)), ?_, ?_⟩` and prove the remaining obligations. Apply `Matrix.toLin'.injective` to reduce the goal to its premises.
+
+Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, LinearMap.toMatrix'_mulVec, Matrix.one_mulVec]`. Conclude with `he y`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, LinearMap.toMatrix'_mulVec, Matrix.one_mulVec]`. Conclude with `he' x`.
+-/
 theorem exists_inv {A : Type} [CommRing A] {m n : ℕ} {j : Matrix (Fin m) (Fin n) A} (h : Function.Bijective j.mulVec) :
     ∃ j' : Matrix (Fin n) (Fin m) A, j * j' = 1 ∧ j' * j = 1 := by
   let e := LinearEquiv.ofBijective (Matrix.mulVecLin j) h
@@ -386,6 +529,31 @@ section Loc
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {m n : ℕ}
 
+/- English proof (translation)
+Establish `hint : ∀ s ∈ Formalism.L2.Herm.intAf F E, Formalism.UG.prV (E` using `E) v s ∈ Formalism.BasicNotions.intV E v := by`. Introduce `s hs`. Express the relevant statement in the definitionally equal form `s ∈ Subring.closure _ at hs`. Proceed by induction on `hs using Subring.closure_induction with`. Consider the case `mem y hy => show _ ∈ Subring.closure _`.
+
+Apply `Subring.subset_closure` to reduce the goal to its premises. Break down `hy with ⟨z, rfl⟩ | ⟨w, rfl⟩` into its components or cases. Conclude with `Or.inl ⟨z, by rw [Formalism.UG.P.afsplit_prV_tmul]; rfl⟩`. Conclude with `Or.inr ⟨⟨(w : Formalism.L2.Herm.Af F) v, (show ∀ v', (w : Formalism.L2.Herm.Af F) v' ∈ v'.adicCompletionIntegers F from w.2) v⟩, by rw [Formalism.UG.P.afsplit_prV_tmul]⟩`. Consider the case `zero => simp`.
+
+Consider the case `one => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `neg_mem hx`.
+
+Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`. Establish `hlat : ∀ (k : ℕ) (M : Submodule (𝓞 E) (Fin k → E)) (y : Fin k → E ⊗[F] Formalism.L2.Herm.Af F), y ∈ Formalism.L2.Herm.hatL (F` using `F) M → (fun i => Formalism.UG.prV (E := E) v (y i)) ∈ Formalism.L2.Herm.locL v M := by`. Introduce `k M y hy`. Express the relevant statement in the definitionally equal form `y ∈ Submodule.span _ _ at hy`.
+
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨l, hl, rfl⟩` from `hz`. Use `show _ ∈ Submodule.span _ _`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+
+Conclude with `⟨l, hl, by funext i; simp only [Formalism.UG.P.afsplit_prV_inclE]⟩`. Consider the case `zero`. Use `(Formalism.L2.Herm.locL v M).zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Consider the case `add x y _ _ hx hy`. Use `add_mem hx hy using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `smul c x _ hx`.
+
+Use `Submodule.smul_mem _ (⟨_, hint c c.2⟩ : Formalism.BasicNotions.intV E v) hx using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[Subring.smul_def, map_mul]`. Establish `hm : ∀ w : Fin n → E ⊗[F] Formalism.L2.Herm.Af F, (j.map (Formalism.UG.prV (E` using `E) v)).mulVec (fun i => Formalism.UG.prV (E := E) v (w i)) = fun i => Formalism.UG.prV (E := E) v (j.mulVec w i) := fun w => by`. Use function extensionality and compare the values at `i`.
+
+Conclude with `(RingHom.map_mulVec _ _ _ i).symm`. Introduce `x hx`. Express the relevant statement in the definitionally equal form `x ∈ Submodule.span _ _ at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz`.
+
+Take `⟨l, hl, rfl⟩` from `hz`. Establish `hg : (fun i => Formalism.UG.inclE (F` using `F) (v.adicCompletion F) (l i)) = fun i => Formalism.UG.prV (E := E) v ((fun i => Formalism.UG.inclE (F := F) (Formalism.L2.Herm.Af F) (l i)) i) := by`. Use function extensionality and compare the values at `i`. Rewrite using `[Formalism.UG.P.afsplit_prV_inclE]`. Simplify using `only`.
+
+Rewrite using `[hg, hm]`. Conclude with `hlat _ Λ' _ (h _ (Submodule.subset_span ⟨l, hl, rfl⟩))`. Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`. Rewrite using `[Subring.smul_def, Matrix.mulVec_smul, ← Subring.smul_def]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem loc_maps (v : HeightOneSpectrum (𝓞 F)) (Λ : Submodule (𝓞 E) (Fin n → E)) (Λ' : Submodule (𝓞 E) (Fin m → E))
     (j : Matrix (Fin m) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))
     (h : ∀ x ∈ Formalism.L2.Herm.hatL (F := F) Λ, j.mulVec x ∈ Formalism.L2.Herm.hatL (F := F) Λ') :
@@ -451,6 +619,13 @@ theorem loc_maps (v : HeightOneSpectrum (𝓞 F)) (Λ : Submodule (𝓞 E) (Fin 
 
 end Loc
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Use `⟨fun x hx => ⟨x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]` and apply the resulting hypothesis.
+
+Introduce and unpack `⟨hf, hb⟩`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hf x hx`.
+
+Introduce `hy`. Conclude with `⟨j'.mulVec y, hb y hy, by rw [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]⟩`.
+-/
 theorem image_iff {A : Type} [CommRing A] {m n : ℕ} {j : Matrix (Fin m) (Fin n) A} {j' : Matrix (Fin n) (Fin m) A}
     (h1 : j * j' = 1) (h2 : j' * j = 1) (H : Set (Fin n → A)) (H' : Set (Fin m → A)) :
     j.mulVec '' H = H' ↔ (∀ x ∈ H, j.mulVec x ∈ H') ∧ ∀ x ∈ H', j'.mulVec x ∈ H := by
@@ -467,6 +642,11 @@ theorem image_iff {A : Type} [CommRing A] {m n : ℕ} {j : Matrix (Fin m) (Fin n
     · intro hy
       exact ⟨j'.mulVec y, hb y hy, by rw [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Use `congrArg j'.mulVec hxy` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h2, Matrix.one_mulVec, Matrix.one_mulVec]`. Then use the resulting hypothesis. Introduce `y`.
+
+Conclude with `⟨j'.mulVec y, by rw [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]⟩`.
+-/
 theorem bij_of_inv {A : Type} [CommRing A] {m n : ℕ} {j : Matrix (Fin m) (Fin n) A} {j' : Matrix (Fin n) (Fin m) A}
     (h1 : j * j' = 1) (h2 : j' * j = 1) : Function.Bijective j.mulVec := by
   constructor
@@ -476,6 +656,9 @@ theorem bij_of_inv {A : Type} [CommRing A] {m n : ℕ} {j : Matrix (Fin m) (Fin 
   · intro y
     exact ⟨j'.mulVec y, by rw [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]⟩
 
+/- English proof (translation)
+Establish `hc : Formalism.UG.cT τ (j.map ψ) = (Formalism.UG.cT σ j).map ψ`. Use extensionality with `a b`. Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply]`. Conclude with `(RingHom.congr_fun h (j b a)).symm`. Rewrite using `[hc, ← Matrix.map_mul, ← Matrix.map_mul, hj]`.
+-/
 theorem isom_map {A B : Type} [CommRing A] [CommRing B] {m n : ℕ} (ψ : A →+* B) (σ : A →+* A) (τ : B →+* B)
     (h : ψ.comp σ = τ.comp ψ) {j : Matrix (Fin m) (Fin n) A} {J : Matrix (Fin n) (Fin n) A} {J' : Matrix (Fin m) (Fin m) A}
     (hj : Formalism.UG.cT σ j * J' * j = J) : Formalism.UG.cT τ (j.map ψ) * J'.map ψ * j.map ψ = J.map ψ := by
@@ -485,6 +668,13 @@ theorem isom_map {A B : Type} [CommRing A] [CommRing B] {m n : ℕ} (ψ : A →+
     exact (RingHom.congr_fun h (j b a)).symm
   rw [hc, ← Matrix.map_mul, ← Matrix.map_mul, hj]
 
+/- English proof (translation)
+Take `⟨j', h1, h2⟩` from `exists_inv hb`. Establish `hc : (Formalism.UG.prV (E` using `E) v).comp (Formalism.UG.sigR σ (Formalism.L2.Herm.Af F)) = (Formalism.UG.sigR σ (v.adicCompletion F)).comp (Formalism.UG.prV (E := E) v) := Formalism.UG.P.afsplit_prV_comp_sigR σ v`. Establish `hG : ∀ {k : ℕ} (M : Matrix (Fin k) (Fin k) E), (M.map (Formalism.UG.inclE (F` using `F) (Formalism.L2.Herm.Af F))).map (Formalism.UG.prV (E := E) v) = M.map (Formalism.UG.inclE (F := F) (v.adicCompletion F)) := fun M => by`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Formalism.UG.P.afsplit_prV_inclE]`.
+
+Establish `h1v : j.map (Formalism.UG.prV (E` using `E) v) * j'.map (Formalism.UG.prV (E := E) v) = 1 := by`. Rewrite using `[← Matrix.map_mul, h1, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h2v : j'.map (Formalism.UG.prV (E` using `E) v) * j.map (Formalism.UG.prV (E := E) v) = 1 := by`. Rewrite using `[← Matrix.map_mul, h2, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `⟨⟨bij_of_inv h1v h2v, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Use `isom_map (Formalism.UG.prV (E := E) v) (Formalism.UG.sigR σ (Formalism.L2.Herm.Af F)) (Formalism.UG.sigR σ (v.adicCompletion F)) hc hi` as an intermediate fact. Rewrite `this` using `[hG, hG]`. Then use the resulting hypothesis. Establish `hl'` using `(image_iff h1 h2 _ _).1 hl`. Rewrite using `[image_iff h1v h2v]`. Conclude with `⟨loc_maps v Λ Λ' j hl'.1, loc_maps v Λ' Λ j' hl'.2⟩`.
+-/
 theorem loc_gen {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {m n : ℕ} (σ : E →ₐ[F] E)
     (v : HeightOneSpectrum (𝓞 F)) (Λ : Submodule (𝓞 E) (Fin n → E)) (Λ' : Submodule (𝓞 E) (Fin m → E))
     (G : Matrix (Fin n) (Fin n) E) (G' : Matrix (Fin m) (Fin m) E) (j : Matrix (Fin m) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))
@@ -515,6 +705,9 @@ theorem loc_gen {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     rw [image_iff h1v h2v]
     exact ⟨loc_maps v Λ Λ' j hl'.1, loc_maps v Λ' Λ j' hl'.2⟩
 
+/- English proof (translation)
+Take `⟨⟨hb, hi⟩, hl⟩` from `h`. Conclude with `loc_gen D.sp.cm.sig v Λ Λ' V.gram V'.gram j hb hi hl`.
+-/
 theorem isLocLatIsom_map {V V' : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     {Λ' : Submodule (𝓞 D.host.E) (Fin V'.rank → D.host.E)} {j : Matrix (Fin V'.rank) (Fin V.rank) (EAf D)}
     (h : IsLatIsom V V' Λ Λ' j) (v : HeightOneSpectrum (𝓞 D.host.F)) :

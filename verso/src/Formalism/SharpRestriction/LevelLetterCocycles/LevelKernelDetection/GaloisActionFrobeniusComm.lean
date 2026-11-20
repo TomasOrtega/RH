@@ -20,6 +20,11 @@ section Letters
 
 variable {T : LocLat G Qp LL O}
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x b => simp [actVB, φVB, PD.φ_comm]`. Consider the case `add x y hx hy`. Simplify using `only [map_add]`.
+
+Rewrite using `[hx, hy]`.
+-/
 theorem galois_action_frobenius_comm (g : G) (z : T.V ⊗[Qp] B) :
     actVB PD T.ρ g (φVB PD (LL := LL) (V := T.V) z) = φVB PD (LL := LL) (V := T.V) (actVB PD T.ρ g z) := by
   induction z using TensorProduct.induction_on with
@@ -29,6 +34,11 @@ theorem galois_action_frobenius_comm (g : G) (z : T.V ⊗[Qp] B) :
     simp only [map_add]
     rw [hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x b => simp [mulVB, φVB, map_mul, PD.φ_K₀]`. Consider the case `add x y hx hy`. Simplify using `only [map_add]`.
+
+Rewrite using `[hx, hy]`.
+-/
 theorem scalar_mul_frobenius_comm (k : K₀) (z : T.V ⊗[Qp] B) :
     mulVB (K₀ := K₀) (B := B) (V := T.V) (LL := LL) (PD.σ k) (φVB PD (LL := LL) (V := T.V) z) =
       φVB PD (LL := LL) (V := T.V) (mulVB (K₀ := K₀) (B := B) (V := T.V) (LL := LL) k z) := by
@@ -39,6 +49,11 @@ theorem scalar_mul_frobenius_comm (k : K₀) (z : T.V ⊗[Qp] B) :
     simp only [map_add]
     rw [hx, hy]
 
+/- English proof (translation)
+Rewrite `hz`, the goal using `[DcrisL, Submodule.mem_inf]`. Take `⟨hz1, hz2⟩` from `hz`. Simplify using `only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at hz1 hz2 ⊢`. Use `⟨fun g => ?_, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[galois_action_frobenius_comm, hz1 g]`.
+
+Take `⟨k', rfl⟩` from `PD.σ_bij.2 k`. Establish `he : W.emb (i + 1) (PD.σ k') = W.emb i k'`. Use `congrArg (fun f : K₀ →ₐ[Qp] LL => f k') (W.emb_σ i)` as an intermediate fact. Simplify `this` using `only [AlgHom.comp_apply]`. Rewrite using `[scalar_mul_frobenius_comm, hz2 k', map_smul, he]`.
+-/
 theorem frobenius_maps_letter_succ (i : ZMod n) (z : T.V ⊗[Qp] B) (hz : z ∈ DcrisL PD T.ρ (W.emb i)) :
     φVB PD (LL := LL) (V := T.V) z ∈ DcrisL PD T.ρ (W.emb (i + 1)) := by
   rw [DcrisL, Submodule.mem_inf] at hz ⊢
@@ -53,6 +68,9 @@ theorem frobenius_maps_letter_succ (i : ZMod n) (z : T.V ⊗[Qp] B) (hz : z ∈ 
       simpa only [AlgHom.comp_apply] using this
     rw [scalar_mul_frobenius_comm, hz2 k', map_smul, he]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simpa using hz`. Consider the case `succ m ih`. Rewrite using `[pow_succ', Module.End.mul_apply, Nat.cast_succ, ← add_assoc]`. Conclude with `frobenius_maps_letter_succ _ _ ih`.
+-/
 theorem frobenius_pow_maps_letter (m : ℕ) (i : ZMod n) (z : T.V ⊗[Qp] B) (hz : z ∈ DcrisL PD T.ρ (W.emb i)) :
     ((φVB PD (LL := LL) (V := T.V) : Module.End LL (T.V ⊗[Qp] B)) ^ m) z ∈
       DcrisL PD T.ρ (W.emb (i + (m : ZMod n))) := by
@@ -62,6 +80,9 @@ theorem frobenius_pow_maps_letter (m : ℕ) (i : ZMod n) (z : T.V ⊗[Qp] B) (hz
     rw [pow_succ', Module.End.mul_apply, Nat.cast_succ, ← add_assoc]
     exact frobenius_maps_letter_succ _ _ ih
 
+/- English proof (translation)
+Establish `h1 : (⟨_, hx⟩ : ↥(W.N T)) = (letE (c - (ell : ZMod n)) : LetA O n) • ⟨_, hx⟩` using `Subtype.ext (C.t_letter _ x).symm`. Establish `h2` using `frobenius_pow_maps_letter ell _ _ (W.cmp_letter T (c - (ell : ZMod n)) ⟨_, hx⟩)`. Rewrite `h2` using `[sub_add_cancel]`. Rewrite using `[h1]`. Conclude with `h2`.
+-/
 theorem lambda_mem_dcris_letter (C : Coord W (baseIdOf hR) T) (c : ZMod n) (ell : ℕ) (x : C.V)
     (hx : C.t (c - (ell : ZMod n)) x ∈ W.N T) :
     ((φVB PD (LL := LL) (V := T.V) : Module.End LL (T.V ⊗[Qp] B)) ^ ell) (W.cmp T ⟨_, hx⟩) ∈
@@ -73,6 +94,9 @@ theorem lambda_mem_dcris_letter (C : Coord W (baseIdOf hR) T) (c : ZMod n) (ell 
   rw [h1]
   exact h2
 
+/- English proof (translation)
+Unfold `lamOf`. Rewrite using `[dif_pos hk, dif_pos (lambda_mem_dcris_letter C c ell (e k) hk)]`.
+-/
 theorem lambda_coe_eq_frobenius_pow (C : Coord W (baseIdOf hR) T) (c : ZMod n) (ell : ℕ) {r : ℕ} (e : Fin r → C.V)
     (k : Fin r) (hk : C.t (c - (ell : ZMod n)) (e k) ∈ W.N T) :
     ((lamOf C c ell e k : Dc W T c) : T.V ⊗[Qp] B) =
@@ -86,6 +110,9 @@ section Coords
 
 variable {T : LocLat G Qp LL O}
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [Coord.t_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, Coord.t_add, ih]`.
+-/
 theorem coord_t_sum (C : Coord W (baseIdOf hR) T) (i : ZMod n) {ι : Type} (s : Finset ι) (g : ι → C.V) :
     C.t i (∑ l ∈ s, g l) = ∑ l ∈ s, C.t i (g l) := by
   classical
@@ -93,11 +120,19 @@ theorem coord_t_sum (C : Coord W (baseIdOf hR) T) (i : ZMod n) {ι : Type} (s : 
   | empty => simp [Coord.t_zero]
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, Coord.t_add, ih]
 
+/- English proof (translation)
+Rewrite using `[C.t_smul, show PowerSeries.C a = algebraMap O (PowerSeries O) a from rfl, AlgHom.commutes, algebraMap_smul]`.
+-/
 theorem coord_t_const_smul (C : Coord W (baseIdOf hR) T) (i : ZMod n) (a : O) (x : C.V) :
     C.t i (PowerSeries.C a • x) = a • C.t i x := by
   rw [C.t_smul, show PowerSeries.C a = algebraMap O (PowerSeries O) a from rfl, AlgHom.commutes,
     algebraMap_smul]
 
+/- English proof (translation)
+Take `⟨w, -, hw⟩` from `π₀₁_eq hR`. Establish `hp : 1 ≤ PD.p - 1`. Use `PD.hp.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `⟨fun _ => w * PowerSeries.X ^ (PD.p - 1 - 1), ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `j`. Use `show W.π₀₁ = PowerSeries.X * (w * PowerSeries.X ^ (PD.p - 1 - 1))`. Rewrite using `[hw]`. Use `conv_lhs => rw [← Nat.sub_add_cancel hp, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_pi0_eq_letPi_mul (hR : Ring9 W) : ∃ u : LetA O n, W.π₀ = (letπ : LetA O n) * u := by
   obtain ⟨w, -, hw⟩ := π₀₁_eq hR
   have hp : 1 ≤ PD.p - 1 := by
@@ -110,6 +145,9 @@ theorem exists_pi0_eq_letPi_mul (hR : Ring9 W) : ∃ u : LetA O n, W.π₀ = (le
   conv_lhs => rw [← Nat.sub_add_cancel hp, pow_succ]
   ring
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `exists_pi0_eq_letPi_mul hR`. Rewrite using `[hu, mul_smul]`. Conclude with `W.cmp_π T (u • y)`.
+-/
 theorem comparison_pi0_smul_eq_zero (hR : Ring9 W) (y : ↥(W.N T)) : W.cmp T (W.π₀ • y) = 0 := by
   obtain ⟨u, hu⟩ := exists_pi0_eq_letPi_mul hR
   rw [hu, mul_smul]
@@ -122,6 +160,21 @@ section ThetaShiftProofs
 variable {T₁ T₂ : LocLat G Qp LL O} {C₁ : Coord W (baseIdOf hR) T₁} {C₂ : Coord W (baseIdOf hR) T₂}
   {F : LatHom T₁.L T₂.L} {c : ZMod n} {ell : ℕ} {r₁ r₂ : ℕ}
 
+/- English proof (translation)
+Introduce `k`. Take `⟨y, hy, hyx⟩` from `Submodule.mem_map.1 (prLIs k)`. Establish `hX` using `hyx`. Rewrite `hX` using `[LinearMap.lsmul_apply]`. Express the relevant statement in the definitionally equal form `(PowerSeries.X : PowerSeries O) • y = hC.f (e₁ k) - ∑ l, PowerSeries.C (LinearMap.toMatrix' P l k) • e₂ l at hX`.
+
+Establish `hfe : hC.f (e₁ k) = ∑ l, PowerSeries.C (LinearMap.toMatrix' P l k) • e₂ l + (PowerSeries.X : PowerSeries O) • y`. Rewrite using `[hX]`. Normalize the expressions using the abelian group laws. Establish `ht : C₂.t (c - (ell : ZMod n)) (hC.f (e₁ k)) = ∑ l, (LinearMap.toMatrix' P l k) • C₂.t (c - (ell : ZMod n)) (e₂ l) + W.π₀ • C₂.t (c - (ell : ZMod n)) y`. Rewrite using `[hfe, Coord.t_add, coord_t_sum, C₂.t_smul, BaseId.d_X]`.
+
+Simplify using `only [coord_t_const_smul]`. Establish `hy' : C₂.t (c - (ell : ZMod n)) y ∈ W.N T₂` using `hy`. Establish `hx : W.map F (C₁.t (c - (ell : ZMod n)) (e₁ k)) ∈ W.N T₂` using `W.map_N F hC.crys hC.crys' _ (he₁ k)`. Establish `hsplit : (⟨W.map F (C₁.t (c - (ell : ZMod n)) (e₁ k)), hx⟩ : ↥(W.N T₂)) = ∑ l, (LinearMap.toMatrix' P l k) • (⟨C₂.t (c - (ell : ZMod n)) (e₂ l), he₂ l⟩ : ↥(W.N T₂)) + W.π₀ • (⟨C₂.t (c - (ell : ZMod n)) y, hy'⟩ : ↥(W.N T₂))`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show W.map F (C₁.t (c - (ell : ZMod n)) (e₁ k)) = _`. Rewrite using `[← hC.coord_hom_map_trace, ht]`. Simplify using `only [Submodule.coe_add, Submodule.coe_sum, Submodule.coe_smul_of_tower]`. Establish `hcmp : W.cmp T₂ ⟨W.map F (C₁.t (c - (ell : ZMod n)) (e₁ k)), hx⟩ = ∑ l, algebraMap O LL (LinearMap.toMatrix' P l k) • W.cmp T₂ ⟨C₂.t (c - (ell : ZMod n)) (e₂ l), he₂ l⟩`. Rewrite using `[hsplit, map_add, map_sum, comparison_pi0_smul_eq_zero hR, add_zero]`.
+
+Simplify using `only [W.cmp_smul]`. Establish `hL : ∀ l, ((lamOf C₂ c ell e₂ l : Dc W T₂ c) : T₂.V ⊗[Qp] B) = ((φVB PD (LL` using `LL) (V := T₂.V) : Module.End LL (T₂.V ⊗[Qp] B)) ^ ell) (W.cmp T₂ ⟨_, he₂ l⟩) := fun l => lambda_coe_eq_frobenius_pow C₂ c ell e₂ l (he₂ l)`. Apply `Subtype.ext` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← lambda_coe_eq_frobenius_pow C₁ c ell e₁ k (he₁ k)]`.
+
+Both sides reduce to the same expression. Use `_ = ((φVB PD (LL := LL) (V := T₂.V) : Module.End LL (T₂.V ⊗[Qp] B)) ^ ell) (W.cmp T₂ ⟨W.map F (C₁.t (c - (ell : ZMod n)) (e₁ k)), hx⟩) := by`. Rewrite using `[← pfMapFl_φpow F ell, ← W.cmp_map F hC.crys hC.crys' ⟨_, he₁ k⟩ hx]`. Use `_ = ∑ l, algebraMap O LL (LinearMap.toMatrix' P l k) • ((φVB PD (LL := LL) (V := T₂.V) : Module.End LL (T₂.V ⊗[Qp] B)) ^ ell) (W.cmp T₂ ⟨_, he₂ l⟩) := by`. Rewrite using `[hcmp, map_sum]`.
+
+Simplify using `only [map_smul]`. Use `_ = _ := by`. Rewrite using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul, hL]`.
+-/
 theorem lambda_of_matrixCongruences (hC : CoordHom C₁ C₂ F) (hD : MemD W F c) (e₁ : Fin r₁ → C₁.V)
     (e₂ : Fin r₂ → C₂.V) (P : (Fin r₁ → O) →ₗ[O] (Fin r₂ → O))
     (he₁ : ∀ k, e₁ k ∈ (latOf C₁).N (c - (ell : ZMod n)))

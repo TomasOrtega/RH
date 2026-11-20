@@ -2,6 +2,15 @@ import Mathlib
 
 namespace GlobalTheory.ConductorAdicCompletion
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hz`. Establish `hz1 : z - 1 ≠ 0` using `sub_ne_zero.mpr hz`. Establish `hpos : 0 < ‖z - 1‖` using `norm_pos_iff.mpr hz1`. Establish `hre : ∀ k : ℕ, 1 / 2 ≤ (z ^ k).re`. Introduce `k`.
+
+Establish `h2` using `(Complex.abs_re_le_norm (z ^ k - 1)).trans (h k)`. Rewrite `h2` using `[Complex.sub_re, Complex.one_re]`. Establish `h3` using `(abs_le.mp h2).1`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨N, hN⟩` from `exists_nat_gt (1 / ‖z - 1‖)`.
+
+Establish `hsum : ∑ k ∈ Finset.range N, z ^ k = (z ^ N - 1) / (z - 1)` using `geom_sum_eq hz N`. Establish `hlow : (N : ℝ) / 2 ≤ (∑ k ∈ Finset.range N, z ^ k).re`. Rewrite using `[Complex.re_sum]`. Combine the equalities or inequalities in the displayed calculation. Establish `hup : (∑ k ∈ Finset.range N, z ^ k).re ≤ 1 / 2 / ‖z - 1‖`.
+
+Use `(Complex.re_le_norm _).trans ?_` and prove the remaining obligations. Rewrite using `[hsum, norm_div]`. Conclude with `div_le_div_of_nonneg_right (h N) (norm_nonneg _)`. Establish `he : 1 / 2 / ‖z - 1‖ = (1 / ‖z - 1‖) / 2` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem eq_one_of_pow_near_one (z : ℂ) (h : ∀ k : ℕ, ‖z ^ k - 1‖ ≤ 1 / 2) : z = 1 := by
   by_contra hz
   have hz1 : z - 1 ≠ 0 := sub_ne_zero.mpr hz
@@ -26,6 +35,17 @@ theorem eq_one_of_pow_near_one (z : ℂ) (h : ∀ k : ℕ, ‖z ^ k - 1‖ ≤ 1
   have he : 1 / 2 / ‖z - 1‖ = (1 / ‖z - 1‖) / 2 := by ring
   linarith
 
+/- English proof (translation)
+Establish `hmem : {x : K | ‖ψ x - 1‖ < 1 / 2} ∈ nhds (0 : K)`. Apply `IsOpen.mem_nhds` to reduce the goal to its premises. Conclude with `isOpen_lt (by fun_prop) continuous_const`. Simplify using the standard rewrite rules. Take `⟨γ, hγ⟩` from `Valued.mem_nhds_zero.mp hmem`.
+
+Use `set g : WithZero (Multiplicative ℤ) := MonoidWithZeroHom.ValueGroup₀.embedding γ.1 with hg`. Establish `hg0 : g ≠ 0`. Rewrite using `[hg]`. Conclude with `(map_ne_zero _).mpr γ.ne_zero`. Use `⟨WithZero.log g - 1, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Establish `hlt : WithZero.exp (WithZero.log g - 1) < g` using `(WithZero.lt_log_iff_exp_lt hg0).mp (by omega)`. Apply `eq_one_of_pow_near_one` to reduce the goal to its premises. Introduce `k`. Rewrite using `[← AddChar.map_nsmul_eq_pow]`. Establish `hk : Valued.v (k • x) ≤ WithZero.exp (WithZero.log g - 1)`.
+
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[succ_nsmul]`. Conclude with `Valuation.map_add_le _ ih hx`.
+
+Establish `: k • x ∈ {x : K | ‖ψ x - 1‖ < 1 / 2}`. Apply `hγ` to reduce the goal to its premises. Conclude with `(Valuation.restrict_lt_iff_lt_embedding _).mpr (hk.trans_lt hlt)`. Conclude with `le_of_lt this`.
+-/
 theorem exists_ball_trivial {K : Type*} [Field K] [Valued K (WithZero (Multiplicative ℤ))]
     (ψ : AddChar K ℂ) (hc : Continuous ψ) :
     ∃ m : ℤ, ∀ x : K, Valued.v x ≤ WithZero.exp m → ψ x = 1 := by
@@ -55,6 +75,17 @@ theorem exists_ball_trivial {K : Type*} [Field K] [Valued K (WithZero (Multiplic
     exact (Valuation.restrict_lt_iff_lt_embedding _).mpr (hk.trans_lt hlt)
   exact le_of_lt this
 
+/- English proof (translation)
+Take `⟨t₀, ht₀⟩` from `hne`. Take `⟨n, hn, hmax⟩` from `Int.exists_greatest_of_bdd (P := fun m : ℤ => ∀ x : K, Valued.v x ≤ WithZero.exp m → ψ x = 1) ⟨WithZero.log (Valued.v t₀ : WithZero (Multiplicative ℤ)), fun m hm => by`. Establish `h1 : WithZero.exp m < Valued.v t₀` using `lt_of_not_ge fun h => ht₀ (hm _ h)`. Conclude with `((WithZero.lt_log_iff_exp_lt (ne_zero_of_lt h1)).mpr h1).le⟩`. Use the proof step `(exists_ball_trivial ψ hc)`.
+
+Use `⟨n, fun t => ⟨fun h => ?_, fun h s hs => ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Establish `h1 : WithZero.exp n < Valued.v t` using `lt_of_not_ge hlt`. Establish `hv0 : (Valued.v t : WithZero (Multiplicative ℤ)) ≠ 0` using `ne_zero_of_lt h1`. Establish `ht : t ≠ 0` using `fun h0 => hv0 (by simp [h0])`.
+
+Establish `h2` using `(WithZero.lt_log_iff_exp_lt hv0).mpr h1`. Establish `h3` using `hmax (WithZero.log (Valued.v t : WithZero (Multiplicative ℤ))) (fun x hx => by`. Rewrite `hx` using `[WithZero.exp_log hv0]`. Establish `h4` using `h (x / t) (by`. Rewrite using `[map_div₀]`.
+
+Conclude with `div_le_one_of_le₀ hx zero_le)`. Rewrite using `[mul_div_cancel₀ _ ht] at h4)` and apply the resulting hypothesis. Use linear arithmetic over natural numbers and integers. Apply `hn` to reduce the goal to its premises. Rewrite using `[map_mul]`.
+
+Conclude with `(mul_le_of_le_one_right' hs).trans h`.
+-/
 theorem exists_conductor {K : Type*} [Field K] [Valued K (WithZero (Multiplicative ℤ))]
     (ψ : AddChar K ℂ) (hc : Continuous ψ) (hne : ∃ t, ψ t ≠ 1) :
     ∃ n : ℤ, ∀ t : K, (∀ s : K, Valued.v s ≤ (1 : WithZero (Multiplicative ℤ)) → ψ (t * s) = 1) ↔
@@ -83,6 +114,9 @@ theorem exists_conductor {K : Type*} [Field K] [Valued K (WithZero (Multiplicati
     rw [map_mul]
     exact (mul_le_of_le_one_right' hs).trans h
 
+/- English proof (translation)
+Introduce `F _ _ v ψ hc _ hne`. Conclude with `exists_conductor ψ hc hne`.
+-/
 theorem exists_conductor_adicCompletion :
     ∀ (F : Type) [Field F] [NumberField F]
       (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F))

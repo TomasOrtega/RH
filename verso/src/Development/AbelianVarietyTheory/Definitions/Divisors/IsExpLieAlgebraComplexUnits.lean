@@ -21,6 +21,11 @@ def solG (P : Polynomial ℂ) : Submodule ℂ (G → ℂ) :=
   (LinearMap.ker (Polynomial.aeval (∑ i, h.rightDerivEnd (F := ℂ) (b i) * h.rightDerivEnd (F := ℂ) (b i)) P)).map
     (h.smoothFuns (F := ℂ)).subtype
 
+/- English proof (translation)
+Simplify using `only [solG, Submodule.mem_map, LinearMap.mem_ker, Submodule.subtype_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `⟨g.2, hg⟩`. Introduce and unpack `⟨hf, h0⟩`.
+
+Conclude with `⟨⟨f, hf⟩, h0, rfl⟩`.
+-/
 theorem mem_solG {P : Polynomial ℂ} {f : G → ℂ} : f ∈ solG h b P ↔ ∃ hf : h.IsSmoothFun f,
     Polynomial.aeval (∑ i, h.rightDerivEnd (F := ℂ) (b i) * h.rightDerivEnd (F := ℂ) (b i)) P
       (⟨f, hf⟩ : h.smoothFuns (F := ℂ)) = 0 := by

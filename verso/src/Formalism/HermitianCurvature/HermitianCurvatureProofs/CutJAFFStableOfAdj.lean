@@ -7,6 +7,9 @@ namespace Formalism.FourierDecayAlt.P.CutMP.JA.FFS
 
 open Formalism.FourierDecayAlt.P.CutMP.JA
 
+/- English proof (translation)
+The claim follows from `jAFFStable_of_parts germ_operators_holds extension_locality_holds smooth_operators_holds hA equivariant_operators_holds positive_domain_condition_holds`.
+-/
 theorem jAFFStable_of_adjComm (hA : AdjComm) : JAFFStable :=
   jAFFStable_of_parts germ_operators_holds extension_locality_holds smooth_operators_holds hA equivariant_operators_holds positive_domain_condition_holds
 

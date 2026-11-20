@@ -18,6 +18,11 @@ set_option maxHeartbeats 800000
 
 namespace GlobalTheory.MtLev
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Unfold `Formalism.L2.DIV.blkOf Formalism.L2.DIV.blk2`. Use `split_ifs with h`. Both sides reduce to the same expression. Establish `: (a.val - r) / (n - r) = 0` using `Nat.div_eq_of_lt (by omega)`.
+
+Rewrite using `[this]`.
+-/
 theorem blockSizes_sub_eq_twoBlock {n : ℕ} (r : ℕ) : (Formalism.L2.DIV.blkOf (n := n) r (n - r)) = Formalism.L2.DIV.blk2 r := by
   funext a
   unfold Formalism.L2.DIV.blkOf Formalism.L2.DIV.blk2
@@ -26,6 +31,9 @@ theorem blockSizes_sub_eq_twoBlock {n : ℕ} (r : ℕ) : (Formalism.L2.DIV.blkOf
   · have : (a.val - r) / (n - r) = 0 := Nat.div_eq_of_lt (by omega)
     rw [this]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_levJ_iff {D : D7} {S T : HSp D} {n : ℕ} (B : Base S T) (t : Twist D Circle) (P : principalLevelFrame.RowPsi S n) (g : GAf D.host.E n) :
     frameEquiv P g ∈ B.levJ t ↔ Lev.finE S (P.ψ g) ∈ Formalism.L2.DIV.lev D.sp.cm S.gram B.F.βS (B.levS t) := Iff.rfl
 
@@ -35,6 +43,9 @@ namespace GlobalTheory.MtLev
 
 variable {D : D7} {V : HSp D} {n : ℕ} {hF : D.host.F = maximalRealSubfield D.host.E} {P : principalLevelFrame.RowPsi V n}
 
+/- English proof (translation)
+Establish `h` using `((GlobalTheory.T.frameKeepsMatrices_splitPlace_reduction_local D V n hF P hP hn κ).2 s hκ a c).2 0`. Simplify using `only [map_zero, zero_sub, Valuation.map_neg] at h`. Conclude with `h`.
+-/
 theorem loc_zero (hP : IdFrame hF P) (hn : V.rank = n) {κ : GAf D.host.E n} (hκ : κ ∈ ReciprocityTheory.Aut.Umax D.host.E n)
     (s : ReciprocityTheory.Aut.SplitPlace D.host.E) (a c : Fin V.rank) :
     Valued.v (NX.locM s κ (Fin.cast hn a) (Fin.cast hn c)) < 1 ↔
@@ -43,6 +54,9 @@ theorem loc_zero (hP : IdFrame hF P) (hn : V.rank = n) {κ : GAf D.host.E n} (h�
   simp only [map_zero, zero_sub, Valuation.map_neg] at h
   exact h
 
+/- English proof (translation)
+Establish `h` using `((GlobalTheory.T.frameKeepsMatrices_splitPlace_reduction_local D V n hF P hP hn κ).2 s hκ a a).2 1`. Simplify using `only [map_one] at h`. Rewrite `h` using `[Valuation.map_sub_swap]`. Conclude with `h`.
+-/
 theorem loc_one (hP : IdFrame hF P) (hn : V.rank = n) {κ : GAf D.host.E n} (hκ : κ ∈ ReciprocityTheory.Aut.Umax D.host.E n)
     (s : ReciprocityTheory.Aut.SplitPlace D.host.E) (a : Fin V.rank) :
     Valued.v (NX.locM s κ (Fin.cast hn a) (Fin.cast hn a) - 1) < 1 ↔
@@ -52,9 +66,21 @@ theorem loc_one (hP : IdFrame hF P) (hn : V.rank = n) {κ : GAf D.host.E n} (hκ
   rw [Valuation.map_sub_swap] at h
   exact h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Fin.cast hn.symm a, by simp⟩`.
+-/
 theorem cast_surj (hn : V.rank = n) (a : Fin n) : ∃ a' : Fin V.rank, Fin.cast hn a' = a :=
   ⟨Fin.cast hn.symm a, by simp⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩ i j hij`. Unfold `Formalism.L2.DIV.blk2 at hij`. Apply the tactic sequence `split_ifs at hij with h1 h2 <;> try omega`. Conclude with `(loc_zero hP hn hκ s i j).1 (h _ _ (by simpa using h2) (by simpa using h1))`.
+
+Introduce `h`. Use `⟨fun a b => ?_, fun a b ha hb => ?_⟩` and prove the remaining obligations. Take `⟨a', rfl⟩` from `cast_surj hn a`. Take `⟨b', rfl⟩` from `cast_surj hn b`. Conclude with `((GlobalTheory.T.frameKeepsMatrices_splitPlace_reduction_local D V n hF P hP hn κ).2 s hκ a' b').1`.
+
+Take `⟨a', rfl⟩` from `cast_surj hn a`. Take `⟨b', rfl⟩` from `cast_surj hn b`. Use `(loc_zero hP hn hκ s a' b').2 (Formalism.L2.DIV.mem_blockTri.1 h a' b' ?_)` and prove the remaining obligations. Simplify using `only [Fin.coe_cast] at ha hb`. Unfold `Formalism.L2.DIV.blk2`.
+
+Rewrite using `[if_pos hb, if_neg (by omega)]`. Conclude with `Nat.zero_lt_one`.
+-/
 theorem inParah_iff (hP : IdFrame hF P) (hn : V.rank = n) {κ : GAf D.host.E n} (hκ : κ ∈ ReciprocityTheory.Aut.Umax D.host.E n)
     (s : ReciprocityTheory.Aut.SplitPlace D.host.E) (r : ℕ) :
     NX.InParah s.v r (NX.locM s κ) ↔ Formalism.L2.DIV.redFn 1 s.w (Lev.finE V (P.ψ κ)) ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 r) := by
@@ -85,6 +111,13 @@ variable {D : D7} {V : HSp D} {n : ℕ} {hF : D.host.F = maximalRealSubfield D.h
 def UT {m : ℕ} {k : Type} [CommRing k] (r : ℕ) (M : Matrix (Fin m) (Fin m) k) : Prop :=
   ∀ a c : Fin m, (a : ℕ) < r → (c : ℕ) < r → (c < a → M a c = 0) ∧ (a = c → M a c = 1)
 
+/- English proof (translation)
+Unfold `NX.InLevG`. Use `and_congr (inParah_iff hP hn hκ s r) ⟨fun h a c ha hc => ?_, fun h a b ha hb => ?_⟩` and prove the remaining obligations. Establish `h'` using `h (Fin.cast hn a) (Fin.cast hn c) (by simpa using ha) (by simpa using hc)`. Use `⟨fun hca => (loc_zero hP hn hκ s a c).1 (h'.1 hca), fun hac => ?_⟩` and prove the remaining obligations. Substitute `hac` using the available equality.
+
+Conclude with `(loc_one hP hn hκ s a).1 (h'.2 rfl)`. Take `⟨a', rfl⟩` from `cast_surj hn a`. Take `⟨b', rfl⟩` from `cast_surj hn b`. Establish `h'` using `h a' b' (by simpa using ha) (by simpa using hb)`. Use `⟨fun hba => (loc_zero hP hn hκ s a' b').2 (h'.1 hba), fun hab => ?_⟩` and prove the remaining obligations.
+
+Establish `e : a' = b'` using `by simpa using hab`. Substitute `e` using the available equality. Conclude with `(loc_one hP hn hκ s a').2 (h'.2 rfl)`.
+-/
 theorem inLevG_iff (hP : IdFrame hF P) (hn : V.rank = n) {κ : GAf D.host.E n} (hκ : κ ∈ ReciprocityTheory.Aut.Umax D.host.E n)
     (s : ReciprocityTheory.Aut.SplitPlace D.host.E) (r : ℕ) :
     NX.InLevG s.v r (NX.locM s κ) ↔ Formalism.L2.DIV.redFn 1 s.w (Lev.finE V (P.ψ κ)) ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 r) ∧
@@ -103,6 +136,11 @@ theorem inLevG_iff (hP : IdFrame hF P) (hn : V.rank = n) {κ : GAf D.host.E n} (
     subst e
     exact (loc_one hP hn hκ s a').2 (h'.2 rfl)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h a c`. Establish `h'` using `h (Fin.castLE hr a) (Fin.castLE hr c) a.2 c.2`. Conclude with `⟨fun hca => h'.1 hca, fun hac => h'.2 (by rw [hac])⟩`. Introduce `h a c ha hc`.
+
+Establish `h'` using `h ⟨a, ha⟩ ⟨c, hc⟩`. Establish `ea : Fin.castLE hr ⟨a, ha⟩ = a` using `Fin.ext rfl`. Establish `ec : Fin.castLE hr ⟨c, hc⟩ = c` using `Fin.ext rfl`. Rewrite `h'` using `[ea, ec]`. Use `⟨fun hca => h'.1 hca, fun hac => h'.2 (by subst hac; rfl)⟩` and prove the remaining obligations.
+-/
 theorem UT_iff {m r : ℕ} {k : Type} [CommRing k] (hr : r ≤ m) (M : Matrix (Fin m) (Fin m) k) :
     UT r M ↔ ∀ a c : Fin r, (c < a → M (Fin.castLE hr a) (Fin.castLE hr c) = 0) ∧
       (a = c → M (Fin.castLE hr a) (Fin.castLE hr c) = 1) := by
@@ -121,6 +159,21 @@ end GlobalTheory.MtLev
 
 namespace GlobalTheory.MtLev
 
+/- English proof (translation)
+Use `set y : G0 B.G.Pg (Wc D j).rank := Formalism.L2.DIV.rTup 1 (B.levS t) x with hy`. Establish `key : ∀ kv (h : NX.pG D kv ∈ B.G.Pg) (a c : Fin (Wc D j).rank), ((eG.symm y) kv).val (Fin.cast (FWT.rank_Wc j) a) (Fin.cast (FWT.rank_Wc j) c) = (iso kv).symm ((Formalism.L2.DIV.redFn 1 (NX.pG D kv) x : Matrix (Fin (Vc D j).rank) (Fin (Vc D j).rank) (kP (NX.pG D kv))) (Fin.castLE …`. Introduce `kv h a c`. Establish `e` using `hiso (eG.symm y) kv h a c`. Rewrite `e` using `[MulEquiv.apply_symm_apply]`.
+
+Rewrite using `[RingEquiv.eq_symm_apply, ← e]`. Establish `e2 : (y ⟨NX.pG D kv, h⟩ : Matrix (Fin (Wc D j).rank) (Fin (Wc D j).rank) (kP (NX.pG D kv))) = (Formalism.L2.DIV.upperLeftBlock B.hr (Formalism.L2.DIV.redFn 1 (NX.pG D kv) x) : Matrix (Fin (Wc D j).rank) (Fin (Wc D j).rank) (kP (NX.pG D kv)))` using `rfl`. Rewrite using `[e2, Formalism.L2.DIV.upper_block_val_submatrix B.hr (hblk kv)]`. Both sides reduce to the same expression. Establish `hmem` using `hH (eG.symm y)`.
+
+Rewrite `hmem` using `[MulEquiv.apply_symm_apply]`. Use `hmem.trans ?_` and prove the remaining obligations. Rewrite using `[hU, NX.mem_Uup]`. Use `forall_congr' fun kv => ?_` and prove the remaining obligations. Establish `h : NX.pG D kv ∈ B.G.Pg` using `(hPg _).2 ⟨kv, rfl⟩`.
+
+Establish `hc : ∀ a' : Fin D.R.r, ∃ a : Fin (Wc D j).rank, Fin.cast (FWT.rank_Wc j) a = a'` using `fun a' => ⟨Fin.cast (FWT.rank_Wc j).symm a', by simp⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ a c`. Use `⟨fun hca => ?_, fun hac => ?_⟩` and prove the remaining obligations. Establish `e : ((eG.symm y) kv).val (Fin.cast (FWT.rank_Wc j) a) (Fin.cast (FWT.rank_Wc j) c) = 0` using `h1 hca`.
+
+Rewrite `e` using `[key kv h]`. Conclude with `(map_eq_zero_iff _ (iso kv).symm.injective).1 e`. Substitute `hac` using the available equality. Establish `e` using `h2 (Fin.cast (FWT.rank_Wc j) a)`. Rewrite `e` using `[key kv h]`.
+
+Conclude with `(iso kv).symm.injective (by rw [e, map_one])`. Introduce `H`. Use `⟨fun a' c' hca => ?_, fun a' => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hc a'`. Take `⟨c, rfl⟩` from `hc c'`.
+
+Rewrite using `[key kv h, (H a c).1 hca, map_zero]`. Take `⟨a, rfl⟩` from `hc a'`. Rewrite using `[key kv h, (H a a).2 rfl, map_one]`.
+-/
 theorem rTup_mem_iff (D : D7) (j : Fin D.R.m) (B : Base (Vc D j) (Wc D j)) (t : Twist D Circle)
     (x : GL (Fin (Vc D j).rank) (Lev.EAf D)) (hPg : ∀ PP, PP ∈ B.G.Pg ↔ ∃ kv, PP = NX.pG D kv)
     (iso : ∀ kv : (Σ kk : Fin 2, D.nd.PlG kk), ZMod (D.host.g kv.1) ≃+* kP (NX.pG D kv))
@@ -175,6 +228,25 @@ end GlobalTheory.MtLev
 
 namespace GlobalTheory.MtLev
 
+/- English proof (translation)
+Introduce `D i j b k Q ψ e W₀ _ _ ρ₀ τ M B t hF P hP hβ hPg hinj htQ hdQ iso eG hiso hH hU g`. Take `⟨hn, -⟩` from `id hP`. Establish `hrW : (Wc D j).rank = D.R.r` using `FWT.rank_Wc j`. Establish `hSt` using `(GlobalTheory.T.frameKeepsMatrices_splitPlace_reduction_local D (Vc D j) D.R.nV hF P hP hn g).1`. Establish `hUA` using `GlobalTheory.LevSplit.finE_mem_UA (Vc D j) (P.ψ g)`.
+
+Establish `levG_iff : ∀ (hU' : g ∈ ReciprocityTheory.Aut.Umax D.host.E D.R.nV) kv, NX.InLevG (M.sp (NX.pG D kv)).v D.R.r (NX.locM (M.sp (NX.pG D kv)) g) ↔ Formalism.L2.DIV.redFn 1 (NX.pG D kv) (Lev.finE (Vc D j) (P.ψ g)) ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 (Wc D j).rank) ∧ UT …`. Introduce `hU' kv`. Establish `h` using `inLevG_iff hP hn hU' (M.sp (NX.pG D kv)) D.R.r`. Rewrite `h` using `[M.sp_w _ (Or.inr (Or.inr ⟨kv, rfl⟩))]`. Rewrite using `[h, hrW]`.
+
+Establish `par_iff : ∀ (hU' : g ∈ ReciprocityTheory.Aut.Umax D.host.E D.R.nV) PP, (PP ∈ M.QP ∨ PP ∈ M.DP) → (NX.InParah (M.sp PP).v D.R.r (NX.locM (M.sp PP) g) ↔ Formalism.L2.DIV.redFn 1 PP (Lev.finE (Vc D j) (P.ψ g)) ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 (Wc D j).rank))`. Introduce `hU' PP hPP`. Establish `h` using `inParah_iff hP hn hU' (M.sp PP) D.R.r`. Rewrite `h` using `[M.sp_w _ (hPP.elim Or.inl (fun h => Or.inr (Or.inl h)))]`. Rewrite using `[h, hrW]`.
+
+Establish `hblkOf : Formalism.L2.DIV.blkOf (n` using `(Vc D j).rank) (Wc D j).rank ((Vc D j).rank - (Wc D j).rank) = Formalism.L2.DIV.blk2 (Wc D j).rank := blockSizes_sub_eq_twoBlock _`. Rewrite using `[M.J_mem, mem_levJ_iff, hβ, Formalism.L2.DIV.mem_lev, Formalism.L2.DIV.mem_parLev]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hU', hG, hQ, hD⟩`. Establish `hGk` using `fun kv => (levG_iff hU' kv).1 (hG kv)`.
+
+Establish `hblk : ∀ kv, Formalism.L2.DIV.redFn 1 (NX.pG D kv) (Lev.finE (Vc D j) (P.ψ g)) ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 (Wc D j).rank)` using `fun kv => (hGk kv).1`. Use `⟨⟨hUA, hSt.1 hU', fun PP hPP => ?_, fun PP hPP => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨kv, rfl⟩` from `(hPg PP).1 hPP`. Express the relevant statement in the definitionally equal form `_ ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf (Wc D j).rank ((Vc D j).rank - (Wc D j).rank))`. Rewrite using `[hblkOf]`.
+
+Conclude with `hblk kv`. Express the relevant statement in the definitionally equal form `PP ∈ B.de.Q ∪ t.Q at hPP`. Rewrite `hPP` using `[hdQ, htQ]`. Break down `Finset.mem_union.1 hPP with h | h` into its components or cases. Conclude with `(par_iff hU' PP (Or.inr h)).1 (hD PP h)`.
+
+Conclude with `(par_iff hU' PP (Or.inl h)).1 (hQ PP h)`. Conclude with `(rTup_mem_iff D j B t _ hPg iso eG hiso hH hU hblk).2 fun kv => (UT_iff B.hr _).1 (hGk kv).2`. Introduce and unpack `⟨⟨-, hSt', hPg', hQ'⟩, hR⟩`. Establish `hU'` using `hSt.2 hSt'`. Establish `hblk : ∀ kv, Formalism.L2.DIV.redFn 1 (NX.pG D kv) (Lev.finE (Vc D j) (P.ψ g)) ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 (Wc D j).rank)` using `fun kv => by`.
+
+Establish `h` using `hPg' (NX.pG D kv) ((hPg _).2 ⟨kv, rfl⟩)`. Express the relevant statement in the definitionally equal form `_ ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blkOf (Wc D j).rank ((Vc D j).rank - (Wc D j).rank)) at h`. Rewrite `h` using `[hblkOf]`. Then use the resulting hypothesis. Establish `hR'` using `(rTup_mem_iff D j B t _ hPg iso eG hiso hH hU hblk).1 hR`. Establish `hQm : ∀ PP, PP ∈ M.QP ∨ PP ∈ M.DP → PP ∈ (B.levS t).Q` using `fun PP h => by`.
+
+Express the relevant statement in the definitionally equal form `PP ∈ B.de.Q ∪ t.Q`. Rewrite using `[hdQ, htQ]`. Conclude with `h.elim (Finset.mem_union_right _) (Finset.mem_union_left _)`. Use `⟨hU', fun kv => (levG_iff hU' kv).2 ⟨hblk kv, (UT_iff B.hr _).2 (hR' kv)⟩, fun PP hPP => (par_iff hU' PP (Or.inl hPP)).2 (hQ' PP (hQm PP (Or.inl hPP))), fun PP hPP => (par_iff hU' PP (Or.inr hPP)).2 (hQ' PP (hQm PP (Or.inr hPP)))⟩` and prove the remaining obligations.
+-/
 theorem levMem : ∀ (D : D7) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (k : ℕ) (Q : Finset (PlE D.host)) (ψ : G D.host.E D.nd.Om →* (D.ntw.Ok i k)ˣ) (e : ℤ) (W₀ : Type) [AddCommGroup W₀] [Module (FractionRing (D.ntw.O i)) W₀] (ρ₀ : Representation (FractionRing (D.ntw.O i)) (ReciprocityTheory.Aut.GQ D.host.E D.R.nV) W₀) (τ : ∀ kv : (Σ kk : Fin 2, D.nd.PlG kk), (ZMod (D.host.g kv.1))ˣ →* (FractionRing (D.ntw.O i))ˣ) (M : NX.MtVReal D i (j.1 + 1) b k Q ψ e W₀ ρ₀ τ) (B : GlobalTheory.ExportSeries.Base (Vc D j) (Wc D j)) (t : Twist D Circle) (hF : D.host.F = maximalRealSubfield D.host.E) (P : principalLevelFrame.RowPsi (Vc D j) D.R.nV), IdFrame hF P → B.F.βS = 1 → (∀ PP, PP ∈ B.G.Pg ↔ ∃ kv, PP = NX.pG D kv) → Function.Injective (NX.pG D) → t.Q = M.QP → B.de.Q = M.DP → ∀ (iso : ∀ kv : (Σ kk : Fin 2, D.nd.PlG kk), ZMod (D.host.g kv.1) ≃+* kP (NX.pG D kv)) (eG : G0g D.nd ≃* G0 B.G.Pg (Wc D j).rank), (∀ (g : G0g D.nd) kv (h : NX.pG D kv ∈ B.G.Pg) (a c : Fin (Wc D j).rank), (eG g ⟨NX.pG D kv, h⟩).val a c = iso kv ((g kv).val (Fin.cast (FWT.rank_Wc j) a) (Fin.cast (FWT.rank_Wc j) c))) → (∀ g, eG g ∈ B.G.P.H ↔ g ∈ D.nexp.U) → D.nexp.U = NX.Uup (fun kv : (Σ kk : Fin 2, D.nd.PlG kk) => D.host.g kv.1) D.R.r → ∀ g, g ∈ M.J ↔ frameEquiv P g ∈ B.levJ t := by
   intro D i j b k Q ψ e W₀ _ _ ρ₀ τ M B t hF P hP hβ hPg hinj htQ hdQ iso eG hiso hH hU g
   classical

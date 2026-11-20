@@ -16,6 +16,17 @@ open GlobalTheory.Cusp
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨T, hT, hinj, hd⟩` from `hcopy`. Establish `hTm` using `mem_homTensorPi.1 hT`. Set `f : homIn π ρ U →ₗ[ℂ] (W →ₗ[ℂ] ContinuousMultilinearMap ℂ M.H K)` to `{ toFun := fun A => (ContinuousLinearMap.compContinuousMultilinearMapL ℂ M.H H K (A : H →L[ℂ] K)).toLinearMap ∘ₗ T map_add' := fun A B => by ext w y; simp map_smul' := fun c A => by ext w y; simp }`. Establish `hmem : ∀ A, f A ∈ homFinDS σ M ρ U` using `fun A => by`. Use `mem_homTensorPi.2 ⟨fun w y => ?_, fun g w y => ?_, fun i g w y => ?_⟩` and prove the remaining obligations.
+
+Conclude with `A.2.1 _`. Express the relevant statement in the definitionally equal form `(A : H →L[ℂ] K) (T (σ g w) y) = _`. Conclude with `(congrArg (A : H →L[ℂ] K) (hTm.2.1 g w y)).trans (A.2.2 _ _)`. Express the relevant statement in the definitionally equal form `(A : H →L[ℂ] K) (T w _) = _`. Conclude with `(congrArg (A : H →L[ℂ] K) (hTm.2.2 i g w y)).trans (A.2.2 _ _)`.
+
+Set `F : homIn π ρ U →ₗ[ℂ] homFinDS σ M ρ U` to `f.codRestrict _ hmem`. Establish `hdense : Dense ((Submodule.span ℂ {v | ∃ w y, v = T w y} : Submodule ℂ H) : Set H)` using `(Submodule.dense_iff_topologicalClosure_eq_top).2 hd`. Establish `hbij : Function.Bijective F`. Prove the components needed by the constructor for the conclusion. Introduce `A B hAB`.
+
+Establish `e : ∀ w y, (A : H →L[ℂ] K) (T w y) = (B : H →L[ℂ] K) (T w y)` using `fun w y => congrArg (fun Φ : homFinDS σ M ρ U => ((Φ : W →ₗ[ℂ] ContinuousMultilinearMap ℂ M.H K) w) y) hAB`. Use `Subtype.ext (ContinuousLinearMap.ext_on hdense ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨w, y, rfl⟩`. Conclude with `e w y`. Introduce `Φ`.
+
+Take `⟨A, hA, hAe⟩` from `GlobalTheory.TrExt.exists_homIn_extend D V S M W σ hirr hadm H π hπ T hT hinj hd K ρ hρ U hU Φ.1 Φ.2`. Conclude with `⟨⟨A, hA⟩, Subtype.ext (LinearMap.ext fun w => ContinuousMultilinearMap.ext fun y => hAe w y)⟩`. Conclude with `(LinearEquiv.ofBijective F hbij).rank_eq`.
+-/
 theorem rank_homIn_eq_rank_homFinDS {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S} {H : Type}
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {π : GA D V →* (H →L[ℂ] H)} (hπ : IsUnitaryRep π)
     {W : Type} [AddCommGroup W] [Module ℂ W] {σ : Representation ℂ (GfC V) W} (hirr : σ.IsIrreducible)
@@ -53,6 +64,9 @@ theorem rank_homIn_eq_rank_homFinDS {D : D7} {V : HSp D} {S : D.what₂.Tau → 
 
 open Classical in
 
+/- English proof (translation)
+Introduce `D V S M μ _ _ H _ _ π hπ W _ _ σ hirr hadm hcopy`. Use `haveI : CompleteSpace H := hπ.complete`. Conclude with `rank_homIn_eq_rank_homFinDS hπ.unitary hirr hadm hcopy (isUnitaryRep_RG V μ) (isSubrep_L2cusp V μ).1`.
+-/
 theorem mCusp_eq_mCuspDS : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (π : GA D V →* (H →L[ℂ] H)), IsIrrUnitary π → ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GfC V) W), σ.IsIrreducible → IsAdmissible σ → IsCopyFinDS σ M π ⊤ → mCusp V μ π = mCuspDS μ σ M := by
   intro D V S M μ _ _ H _ _ π hπ W _ _ σ hirr hadm hcopy
   haveI : CompleteSpace H := hπ.complete

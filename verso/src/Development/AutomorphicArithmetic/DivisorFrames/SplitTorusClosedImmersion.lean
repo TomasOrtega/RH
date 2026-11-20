@@ -9,6 +9,13 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.TorusPart
 
+/- English proof (translation)
+Establish `hb : algebraMap R K b * algebraMap R K (b⁻¹ : Rˣ) = 1` using `by rw [← map_mul, Units.mul_inv, map_one]`. Establish `ha : algebraMap R K a * algebraMap R K (a⁻¹ : Rˣ) = 1` using `by rw [← map_mul, Units.mul_inv, map_one]`. Establish `hx : (x : K) ^ n * ((x⁻¹ : Kˣ) : K) ^ n = 1` using `by rw [← mul_pow, Units.mul_inv, one_pow]`. Establish `h₁ : (x : K) ^ n = algebraMap R K (a * (b⁻¹ : Rˣ))`. Rewrite using `[map_mul, h, _root_.mul_assoc, hb, _root_.mul_one]`.
+
+Establish `h₂ : ((x⁻¹ : Kˣ) : K) ^ n = algebraMap R K (b * (a⁻¹ : Rˣ))`. Rewrite using `[map_mul]`. Take the linear combination `(-((x⁻¹ : Kˣ) : K) ^ n) * ha + ((x⁻¹ : Kˣ) : K) ^ n * algebraMap R K (a⁻¹ : Rˣ) * h + algebraMap R K b * algebraMap R K (a⁻¹ : Rˣ) * hx`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.exists_algebraMap_eq_of_isIntegral_pow (R := R) hn (h₁ ▸ isIntegral_algebraMap)`. Take `⟨z, hz⟩` from `IsIntegrallyClosed.exists_algebraMap_eq_of_isIntegral_pow (R := R) hn (h₂ ▸ isIntegral_algebraMap)`.
+
+Establish `hyz : y * z = 1` using `IsFractionRing.injective R K (by rw [map_mul, hy, hz, Units.mul_inv, map_one])`. Conclude with `⟨⟨y, z, hyz, (mul_comm z y).trans hyz⟩, hy⟩`.
+-/
 private theorem unit_of_pow {R K : Type} [CommRing R] [IsDomain R] [ValuationRing R] [Field K] [Algebra R K]
     [IsFractionRing R K] (x : Kˣ) {n : ℕ} (hn : 0 < n) (a b : Rˣ)
     (h : algebraMap R K a = (x : K) ^ n * algebraMap R K b) : ∃ y : Rˣ, algebraMap R K y = x := by
@@ -28,16 +35,27 @@ private theorem unit_of_pow {R K : Type} [CommRing R] [IsDomain R] [ValuationRin
   have hyz : y * z = 1 := IsFractionRing.injective R K (by rw [map_mul, hy, hz, Units.mul_inv, map_one])
   exact ⟨⟨y, z, hyz, (mul_comm z y).trans hyz⟩, hy⟩
 
+/- English proof (translation)
+The claim follows from `congrArg (fun q => q.hom r) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ))`.
+-/
 private theorem appTop_nat {R K : Type} [CommRing R] [CommRing K] (φ : R →+* K) (r : Γ(Spec (.of R), ⊤)) :
     (Scheme.ΓSpecIso (.of K)).hom.hom ((Spec.map (CommRingCat.ofHom φ)).appTop.hom r) =
       φ ((Scheme.ΓSpecIso (.of R)).hom.hom r) :=
   congrArg (fun q => q.hom r) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ))
 
+/- English proof (translation)
+Introduce `a b e` and use `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (.of R)).hom).1 (h ((appTop_nat φ a).symm.trans ((congrArg _ e).trans (appTop_nat φ b))))`.
+-/
 private theorem appTop_inj {R K : Type} [CommRing R] [CommRing K] (φ : R →+* K) (h : Function.Injective φ) :
     Function.Injective (Spec.map (CommRingCat.ofHom φ)).appTop.hom := fun a b e =>
   (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (.of R)).hom).1
     (h ((appTop_nat φ a).symm.trans ((congrArg _ e).trans (appTop_nat φ b))))
 
+/- English proof (translation)
+Establish `h'` using `congrArg (Scheme.ΓSpecIso (.of K)).hom.hom h`. Rewrite `h'` using `[map_mul, map_pow, appTop_nat, appTop_nat]`. Take `⟨y, hy⟩` from `unit_of_pow (R := R) (Units.map (Scheme.ΓSpecIso (.of K)).hom.hom.toMonoidHom x) hn (Units.map (Scheme.ΓSpecIso (.of R)).hom.hom.toMonoidHom a) (Units.map (Scheme.ΓSpecIso (.of R)).hom.hom.toMonoidHom b) h'`. Use `⟨Units.map (Scheme.ΓSpecIso (.of R)).inv.hom.toMonoidHom y, ?_⟩` and prove the remaining obligations. Apply `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (.of K)).hom).1` to reduce the goal to its premises.
+
+Use `(appTop_nat _ _).trans (Eq.trans ?_ hy)` and prove the remaining obligations. Conclude with `congrArg (algebraMap R K) (congrArg (fun q => q.hom y.val) (Scheme.ΓSpecIso (.of R)).inv_hom_id)`.
+-/
 private theorem unit_of_pow' {R K : Type} [CommRing R] [IsDomain R] [ValuationRing R] [Field K] [Algebra R K]
     [IsFractionRing R K] (x : Γ(Spec (.of K), ⊤)ˣ) {n : ℕ} (hn : 0 < n) (a b : Γ(Spec (.of R), ⊤)ˣ)
     (h : (Spec.map (CommRingCat.ofHom (algebraMap R K))).appTop.hom a.val =
@@ -53,6 +71,9 @@ private theorem unit_of_pow' {R K : Type} [CommRing R] [IsDomain R] [ValuationRi
   refine (appTop_nat _ _).trans (Eq.trans ?_ hy)
   exact congrArg (algebraMap R K) (congrArg (fun q => q.hom y.val) (Scheme.ΓSpecIso (.of R)).inv_hom_id)
 
+/- English proof (translation)
+Use `choose ψ hψ using h`. Use `⟨MonoidHom.mk' ψ fun a b => Units.ext (hρ ?_), hψ⟩` and prove the remaining obligations. Rewrite using `[hψ, Units.val_mul, map_mul ρ, hψ, hψ, map_mul, Units.val_mul]`.
+-/
 private theorem exists_lift_units {M A B : Type} [Group M] [CommRing A] [CommRing B] (ρ : A →+* B)
     (hρ : Function.Injective ρ) (φ : M →* Bˣ) (h : ∀ m, ∃ y : Aˣ, ρ y.val = (φ m).val) :
     ∃ ψ : M →* Aˣ, ∀ m, ρ (ψ m).val = (φ m).val := by
@@ -60,6 +81,15 @@ private theorem exists_lift_units {M A B : Type} [Group M] [CommRing A] [CommRin
   refine ⟨MonoidHom.mk' ψ fun a b => Units.ext (hρ ?_), hψ⟩
   rw [hψ, Units.val_mul, map_mul ρ, hψ, hψ, map_mul, Units.val_mul]
 
+/- English proof (translation)
+Use `choose V hV hPV using hP`. Take `⟨_, ⟨U, hU, rfl⟩, hsU, -⟩` from `S.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (s (IsLocalRing.closedPoint R))) isOpen_univ`. Establish `hc : IsCompact ((G.hom ⁻¹ᵁ U : G.left.Opens) : Set G.left)` using `QuasiCompact.isCompact_preimage _ U.isOpen hU.isCompact`. Take `⟨F, -, hF⟩` from `hc.elim_nhds_subcover (fun x => (V x : Set G.left)) fun x _ => (V x).isOpen.mem_nhds (hV x)`. Establish `: ∀ n, ∃ x : F, g n (IsLocalRing.closedPoint R) ∈ V x` using `fun n => by`.
+
+Establish `: g n (IsLocalRing.closedPoint R) ∈ ((G.hom ⁻¹ᵁ U : G.left.Opens) : Set G.left)` using `by show (g n ≫ G.hom) (IsLocalRing.closedPoint R) ∈ U`. Rewrite using `[hg]`. Conclude with `hsU`. Take `⟨x, hx, h⟩` from `Set.mem_iUnion₂.1 (hF this)`. Conclude with `⟨⟨x, hx⟩, h⟩`.
+
+Use `choose c hc using this`. Take `⟨n, m, hnm, e⟩` from `Finite.exists_ne_map_eq_of_infinite c`. Establish `top : ∀ n, ⊤ ≤ g n ⁻¹ᵁ V (c n)` using `fun n => (Scheme.preimage_eq_top_of_closedPoint_mem (g n) (hc n)).ge`. Break down `lt_or_gt_of_ne hnm with h | h` into its components or cases. Conclude with `⟨m, n, _, h, hPV _, top m, e ▸ top n⟩`.
+
+Conclude with `⟨n, m, _, h, hPV _, top n, e ▸ top m⟩`.
+-/
 private theorem pigeon {S : Scheme.{0}} (G : Over S) [QuasiCompact G.hom] (P : G.left.Opens → Prop)
     (hP : ∀ x : G.left, ∃ V, x ∈ V ∧ P V) {R : Type} [CommRing R] [IsLocalRing R] (s : Spec (.of R) ⟶ S)
     (g : ℕ → (Spec (.of R) ⟶ G.left)) (hg : ∀ n, g n ≫ G.hom = s) :
@@ -86,6 +116,9 @@ private theorem pigeon {S : Scheme.{0}} (G : Over S) [QuasiCompact G.hom] (P : G
   · exact ⟨m, n, _, h, hPV _, top m, e ▸ top n⟩
   · exact ⟨n, m, _, h, hPV _, top n, e ▸ top m⟩
 
+/- English proof (translation)
+Substitute `e` using the available equality. Use `Scheme.Hom.appLE_comp_appLE j g V ⊤ ⊤ h le_top` as an intermediate fact. Rewrite using `[← this, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression.
+-/
 private theorem appLE_comp {Y Z W : Scheme.{0}} (j : W ⟶ Z) (g : Z ⟶ Y) (g' : W ⟶ Y) (e : g' = j ≫ g) (V : Y.Opens)
     (h : ⊤ ≤ g ⁻¹ᵁ V) (h' : ⊤ ≤ g' ⁻¹ᵁ V) (f : Γ(Y, V)) :
     (g'.appLE V ⊤ h').hom f = j.appTop.hom ((g.appLE V ⊤ h).hom f) := by
@@ -94,6 +127,17 @@ private theorem appLE_comp {Y Z W : Scheme.{0}} (j : W ⟶ Z) (g : Z ⟶ Y) (g' 
   rw [← this, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]
   rfl
 
+/- English proof (translation)
+Take `⟨n, m, V, hmn, ⟨-, -, f, hf⟩, hn, hm⟩` from `pigeon G (GoodOpen u) hu s (fun n => (g ^ n).left) fun n => Over.w (g ^ n)`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_lt hmn`. Establish `e : ((t ^ (d + 1)) ≫ u) * (j ≫ g ^ m) = j ≫ g ^ (m + d + 1)`. Rewrite using `[MonObj.pow_comp, w, MonObj.comp_pow, MonObj.comp_pow, ← pow_add]`. Use `congr 1`.
+
+Use linear arithmetic over natural numbers and integers. Establish `e₁ : (((t ^ (d + 1)) ≫ u) * (j ≫ g ^ m)).left = j.left ≫ (g ^ (m + d + 1)).left` using `by rw [e]; rfl`. Establish `key : ∀ χ : Multiplicative X, ∃ y : Γ(Spec (.of R), ⊤)ˣ, (Spec.map (CommRingCat.ofHom (algebraMap R K))).appTop.hom y.val = (splitTorusPointsEquiv S X _ t χ).val` using `fun χ => by`. Establish `h₁ : ⊤ ≤ (((t ^ (d + 1)) ≫ u) * (j ≫ g ^ m)).left ⁻¹ᵁ V`. Rewrite using `[e₁]`.
+
+Conclude with `fun x _ => hn (x := j.left x) trivial`. Establish `h₂ : ⊤ ≤ (j ≫ g ^ m).left ⁻¹ᵁ V` using `fun x _ => hm (x := j.left x) trivial`. Establish `h` using `hf χ.toAdd _ (t ^ (d + 1)) (j ≫ g ^ m) h₁ h₂`. Rewrite `h` using `[appLE_comp j.left _ _ e₁ V hn, appLE_comp j.left (g ^ m).left (j ≫ g ^ m).left rfl V hm, ← splitTorusPointsEquiv_val, map_pow, hj]`. Conclude with `unit_of_pow' _ d.succ_pos (Units.map ((g ^ (m + d + 1)).left.appLE V ⊤ hn).hom.toMonoidHom (f χ)) (Units.map ((g ^ m).left.appLE V ⊤ hm).hom.toMonoidHom (f χ)) h`.
+
+Take `⟨ψ, hψ⟩` from `exists_lift_units _ (appTop_inj _ (IsFractionRing.injective R K)) _ key`. Use `⟨(splitTorusPointsEquiv S X (Over.mk s)).symm ψ, ?_⟩` and prove the remaining obligations. Use `(splitTorusPointsEquiv S X _).injective (MonoidHom.ext fun χ => Units.ext ?_)` and prove the remaining obligations. Use `(splitTorusPointsEquiv_val S X _ _ χ.toAdd).trans (Eq.trans ?_ (hψ χ))` and prove the remaining obligations. Rewrite using `[Over.comp_left, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply, ← splitTorusPointsEquiv_val, MulEquiv.apply_symm_apply, hj]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem exists_ext {S : Scheme.{0}} (G : Over S) [GrpObj G] [QuasiCompact G.hom]
     {X : Type} [AddCommGroup X] (u : splitTorus S X ⟶ G) [IsMonHom u] (hu : GoodCover u)
     {R K : Type} [CommRing R] [IsDomain R] [ValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K]
@@ -130,6 +174,15 @@ private theorem exists_ext {S : Scheme.{0}} (G : Over S) [GrpObj G] [QuasiCompac
     ← splitTorusPointsEquiv_val, MulEquiv.apply_symm_apply, hj]
   rfl
 
+/- English proof (translation)
+Introduce `S G _ hs hq X _ _ _ u hm hmono hu`. Establish `hw : u.left ≫ G.hom = (splitTorus S X).hom` using `Over.w u`. Establish `: Mono u.left` using `inferInstanceAs (Mono ((Over.forget S).map u))`. Establish `: LocallyOfFiniteType (u.left ≫ G.hom)` using `by rw [hw]; infer_instance`. Establish `: LocallyOfFiniteType u.left` using `locallyOfFiniteType_of_comp u.left G.hom`.
+
+Establish `: QuasiCompact (u.left ≫ G.hom)` using `by rw [hw]; infer_instance`. Establish `: QuasiCompact u.left` using `QuasiCompact.of_comp u.left G.hom`. Establish `: UniversallyClosed u.left`. Use `UniversallyClosed.of_valuativeCriterion u.left fun Q => ?_` and prove the remaining obligations. Establish `w` using `Q.commSq.w`.
+
+Take `⟨l, hl⟩` from `exists_ext G u hu (R := Q.R) (K := Q.K) (Q.i₂ ≫ G.hom) (Over.homMk Q.i₂ rfl) (Over.homMk Q.i₁ (by rw [← hw, reassoc_of% w]; rfl)) (Over.homMk (Spec.map (CommRingCat.ofHom (algebraMap Q.R Q.K))) rfl) rfl (Over.OverMorphism.ext w)`. Establish `e₁ : Spec.map (CommRingCat.ofHom (algebraMap Q.R Q.K)) ≫ l.left = Q.i₁` using `congrArg (·.left) hl`. Use `⟨⟨l.left, e₁, ?_⟩⟩` and prove the remaining obligations. Establish `hU` using `IsSeparated.valuativeCriterion G.hom { R := Q.R, K := Q.K, i₁ := Q.i₁ ≫ u.left, i₂ := Q.i₂ ≫ G.hom, commSq := ⟨by rw [w, Category.assoc]⟩ }`. Conclude with `congrArg CommSq.LiftStruct.l (@Subsingleton.elim _ hU ⟨l.left ≫ u.left, (Category.assoc _ _ _).symm.trans (congrArg (· ≫ u.left) e₁), (Category.assoc _ _ _).trans ((congrArg (l.left ≫ ·) hw).trans (Over.w l))⟩ ⟨Q.i₂, w.symm, rfl⟩)`.
+
+Establish `: IsProper u.left` using `{}`. Conclude with `(IsClosedImmersion.iff_isProper_and_mono u.left).2 ⟨inferInstance, inferInstance⟩`.
+-/
 theorem UpperTheory.split_torus_closed_immersion :
     ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G], IsSeparated G.hom → QuasiCompact G.hom →
         ∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (u : splitTorus S X ⟶ G), IsMonHom u → Mono u → GoodCover u → IsClosedImmersion u.left := by

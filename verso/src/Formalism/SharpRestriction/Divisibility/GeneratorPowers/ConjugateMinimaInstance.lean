@@ -13,6 +13,17 @@ namespace ConjugateMinimaInstance
 
 open NumberField Formalism.MainNotions.ModuliIntegralCharts Formalism.BasicNotions
 
+/- English proof (translation)
+Establish `hd : D.host.d % 16 = 7` using `D.host.hyp.2.2.2.1`. Establish `hcc : (((D.host.gal D.host.conj).1.2 : ℤˣ) : ℤ) = -1`. Establish `hg : D.host.gal D.host.conj = Formalism.HC.Frame.cc _`. Simplify using `[Formalism.HC.HostRaw.conj]`. Rewrite using `[hg]`.
+
+Apply the tactic sequence `simp only [Formalism.HC.Frame.cc] <;> decide`. Establish `hc : D.host.conj D.host.sqd = -D.host.sqd`. Rewrite using `[D.host.gal_sqd, hcc]`. Simplify using the standard rewrite rules. Take `⟨m, hm⟩ : ∃ m : ℕ, D.host.d = 4 * m + 3` from `⟨D.host.d / 4, by omega⟩`.
+
+Establish `hs : D.host.sqd ^ 2 = -(4 * (m : D.host.E) + 3)`. Establish `h0` using `D.host.sqd_sq`. Rewrite `h0` using `[hm]`. Move the coercions through the operations in `at h0`. Conclude with `h0`.
+
+Establish `hint : IsIntegral ℤ ((1 + D.host.sqd) / 2)`. Use `⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C ((m : ℤ) + 1), by monicity!, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.aeval_def]`. Simplify using `only [map_add, map_sub, map_pow, map_one, map_natCast, Polynomial.aeval_X, Polynomial.aeval_C, algebraMap_int_eq, eq_intCast, Int.cast_add, Int.cast_natCast, Int.cast_one]`. Take the linear combination `(1 / 4 : D.host.E) * hs`.
+
+Use `⟨⟨(1 + D.host.sqd) / 2, hint⟩, ?_⟩` and prove the remaining obligations. Use `show (1 + D.host.sqd) / 2 + D.host.conj ((1 + D.host.sqd) / 2) = 1`. Rewrite using `[map_div₀, map_add, map_one, hc, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem scalar_frame_w_zero_exists (D : D7) : ∃ w₀ : 𝓞 D.host.E, (w₀ : D.host.E) + D.host.conj w₀ = 1 := by
   have hd : D.host.d % 16 = 7 := D.host.hyp.2.2.2.1
   have hcc : (((D.host.gal D.host.conj).1.2 : ℤˣ) : ℤ) = -1 := by
@@ -40,9 +51,17 @@ theorem scalar_frame_w_zero_exists (D : D7) : ∃ w₀ : 𝓞 D.host.E, (w₀ : 
   rw [map_div₀, map_add, map_one, hc, map_ofNat]
   ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨D.host.conj c, c.isIntegral_coe.map (((D.host.conj : D.host.E ≃ₐ[ℚ] D.host.E) : D.host.E →ₐ[ℚ] D.host.E).restrictScalars ℤ)⟩, rfl⟩`.
+-/
 theorem conj_int (D : D7) (c : 𝓞 D.host.E) : ∃ c' : 𝓞 D.host.E, (c' : D.host.E) = D.host.conj c :=
   ⟨⟨D.host.conj c, c.isIntegral_coe.map (((D.host.conj : D.host.E ≃ₐ[ℚ] D.host.E) : D.host.E →ₐ[ℚ] D.host.E).restrictScalars ℤ)⟩, rfl⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `h1 : D.host.conj = 1` using `AlgEquiv.ext h`. Establish `h2 : Formalism.HC.Frame.cc D.R.toFrame = 1`. Use `congrArg D.host.gal h1` as an intermediate fact.
+
+Simplify `this` using `[Formalism.HC.HostRaw.conj]`. Establish `h3` using `congrArg Prod.fst h2`. Simplify using `only [Formalism.HC.Frame.cc, Prod.fst_one] at h3`. Use `revert h3`. Evaluate the decidable proposition.
+-/
 theorem conj_ne (D : D7) : ∃ z : D.host.E, D.host.conj z ≠ z := by
   by_contra h
   push_neg at h
@@ -55,6 +74,9 @@ theorem conj_ne (D : D7) : ∃ z : D.host.E, D.host.conj z ≠ z := by
   revert h3
   decide
 
+/- English proof (translation)
+Use `conv_lhs => rw [← b.sum_repr a]`. Simplify using `only [map_sum, LinearMap.sum_apply, map_zsmul, LinearMap.smul_apply, zsmul_eq_mul, Finset.mul_sum]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem bil_expand_lemma {Y ι : Type} [AddCommGroup Y] [Fintype ι] (f : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ)
     (b : Module.Basis ι ℤ Y) (a : Y) :
     f a a = ∑ i, ∑ k, ((b.repr a i : ℤ) : ℝ) * ((b.repr a k : ℤ) : ℝ) * f (b i) (b k) := by
@@ -65,6 +87,13 @@ private theorem bil_expand_lemma {Y ι : Type} [AddCommGroup Y] [Fintype ι] (f 
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_
   ring
 
+/- English proof (translation)
+Take `⟨ι, hι, b, hb⟩` from `hpd`. Distinguish the cases in `ha : a = 0`. Simplify using `[ha]`. Establish `hc : (fun i => ((b.repr a i : ℤ) : ℝ)) ≠ 0`. Introduce `h0`.
+
+Apply `ha` to reduce the goal to its premises. Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Use `congrFun h0 i` as an intermediate fact. Simplify using `using this`.
+
+Establish `hpos` using `hb _ hc`. Establish `hexp` using `bil_expand_lemma f b a`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem quad_nonneg_lemma {Y : Type} [AddCommGroup Y] (f : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ)
     (hpd : ∃ (ι : Type) (_ : Fintype ι) (b : Module.Basis ι ℤ Y),
       ∀ c : ι → ℝ, c ≠ 0 → 0 < ∑ i, ∑ k, c i * c k * f (b i) (b k)) (a : Y) : 0 ≤ f a a := by
@@ -82,6 +111,11 @@ private theorem quad_nonneg_lemma {Y : Type} [AddCommGroup Y] (f : Y →ₗ[ℤ]
     have hexp := bil_expand_lemma f b a
     linarith
 
+/- English proof (translation)
+Take `⟨w₀, hw⟩` from `scalar_frame_w_zero_exists D`. Use `⟨w₀, hw, ?_⟩` and prove the remaining obligations. Introduce `r j p L Z y k x hx`. Establish `hnn : ∀ a : L.Ylat y, 0 ≤ L.be y a a` using `fun a => quad_nonneg_lemma (L.be y) (L.be_posDef y) a`. Establish `h` using `phiCSpan_holds`.
+
+Unfold `PhiCSpanStatement at h`. Conclude with `h D.host.E (fun z => D.host.conj z) (conj_int D) (L.Ylat y) w₀ hw ⟨L.be y, L.be_symm y, L.be_bal y⟩ hnn k x hx`.
+-/
 theorem phiCSpan_loc (D : D7) : ∃ w₀ : 𝓞 D.host.E, (w₀ : D.host.E) + D.host.conj w₀ = 1 ∧
     ∀ {r j p : ℕ} (L : Loc D r j p) {Z : L.Mdl} (y : L.Pt Z) (k : ℕ) (x : Fin k → L.Ylat y),
       (∀ u : L.Ylat y, ∃ n : ℕ, 0 < n ∧ n • u ∈ Submodule.span (𝓞 D.host.E) (Set.range x)) →
@@ -95,6 +129,9 @@ theorem phiCSpan_loc (D : D7) : ∃ w₀ : 𝓞 D.host.E, (w₀ : D.host.E) + D.
   exact h D.host.E (fun z => D.host.conj z) (conj_int D) (L.Ylat y) w₀ hw
     ⟨L.be y, L.be_symm y, L.be_bal y⟩ hnn k x hx
 
+/- English proof (translation)
+Take `⟨w₀, hw⟩` from `scalar_frame_w_zero_exists D`. Take `⟨ι, hι, b, -⟩` from `L.be_posDef y`. Conclude with `phiCMinima_holds D.host.E (fun z => D.host.conj z) (fun φ z => WeightFamilies.emb_conj D φ z) (conj_ne D) w₀ hw (L.Ylat y) (L.beS y) ⟨ι, hι, b, L.gram_posDef y b⟩`.
+-/
 theorem phiCMinima_loc (D : D7) {r j p : ℕ} (L : Loc D r j p) {Z : L.Mdl} (y : L.Pt Z) :
     ∃ v : Fin (Module.finrank ℤ (L.Ylat y)) → L.Ylat y, LinearIndependent ℤ v ∧
       ∀ i, L.be y (v i) (v i) / 2 ≤
@@ -105,11 +142,19 @@ theorem phiCMinima_loc (D : D7) {r j p : ℕ} (L : Loc D r j p) {Z : L.Mdl} (y :
   exact phiCMinima_holds D.host.E (fun z => D.host.conj z) (fun φ z => WeightFamilies.emb_conj D φ z) (conj_ne D) w₀ hw
     (L.Ylat y) (L.beS y) ⟨ι, hι, b, L.gram_posDef y b⟩
 
+/- English proof (translation)
+Simplify using `[WeightAlgebra.PJ.phiC, hj]`.
+-/
 theorem phiC_rec_eq {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} (X : WeightAlgebra.PJ D B P j) (hj : j < D.R.m)
     (la : IsDedekindDomain.HeightOneSpectrum (𝓞 B.KO)) (y : X.Pt la) :
     X.phiC la y = (eWL B.KO la : ℝ) * (P.loc X.dat (WeightAlgebra.resCh la)).phiCy (X.pt66 la y) := by
   simp [WeightAlgebra.PJ.phiC, hj]
 
+/- English proof (translation)
+Take `⟨v, hv, hb⟩` from `phiCMinima_loc D (P.loc X.dat (WeightAlgebra.resCh la)) (X.pt66 la y)`. Use `⟨v, hv, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[phiC_rec_eq X hj la y]`. Establish `he : (0 : ℝ) ≤ (eWL B.KO la : ℝ)` using `by positivity`. Use `mul_le_mul_of_nonneg_left (hb i) he` as an intermediate fact.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem phiCMinima_rec {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} (X : WeightAlgebra.PJ D B P j) (hj : j < D.R.m)
     (la : IsDedekindDomain.HeightOneSpectrum (𝓞 B.KO)) (y : X.Pt la) :
     ∃ v : Fin (Module.finrank ℤ ((P.loc X.dat (WeightAlgebra.resCh la)).Ylat (X.pt66 la y))) →

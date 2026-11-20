@@ -11,6 +11,13 @@ namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.Sec.FrameReg
 
 open GlobalTheory.CompanionTheory.Ar.PB.CovMap.LocImg.FrameChange
 
+/- English proof (translation)
+Introduce `e`. Establish `hi` using `i.2`. Distinguish the cases in `h : (i : ℕ) + 1 ≤ j`. Establish `: (⟨N - j, by omega⟩ : Fin N) ∈ stepCols N j i`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, if_pos h]`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `[e] at this`. Establish `: (⟨0, by omega⟩ : Fin N) ∈ stepCols N j i`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, if_neg h]`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `[e] at this`.
+-/
 theorem stepCols_ne_empty {N j : ℕ} (i : Fin N) : stepCols N j i ≠ ∅ := by
   intro e
   have hi := i.2
@@ -24,6 +31,11 @@ theorem stepCols_ne_empty {N j : ℕ} (i : Fin N) : stepCols N j i ≠ ∅ := by
       omega
     simp [e] at this
 
+/- English proof (translation)
+Unfold `minorIJ`. Rewrite using `[dif_pos (by simp)]`. Use `haveI : Unique (Fin ({b} : Finset (Fin N)).card) := inferInstanceAs (Unique (Fin 1))`. Rewrite using `[det_unique]`. Use `show h _ _ = _`.
+
+Use `congr 1`. Conclude with `Finset.mem_singleton.1 (Finset.orderEmbOfFin_mem _ _ _)`. Conclude with `Finset.mem_singleton.1 (Finset.orderEmbOfFin_mem _ _ _)`.
+-/
 theorem minor_singleton {R : Type} [CommRing R] {N : ℕ} (h : Matrix (Fin N) (Fin N) R) (a b : Fin N) :
     minorIJ h {a} {b} = h a b := by
   unfold minorIJ
@@ -35,6 +47,9 @@ theorem minor_singleton {R : Type} [CommRing R] {N : ℕ} (h : Matrix (Fin N) (F
   · exact Finset.mem_singleton.1 (Finset.orderEmbOfFin_mem _ _ _)
   · exact Finset.mem_singleton.1 (Finset.orderEmbOfFin_mem _ _ _)
 
+/- English proof (translation)
+Unfold `minorIJ`. Rewrite using `[dif_pos rfl]`. Use `haveI : IsEmpty (Fin (∅ : Finset (Fin N)).card) := inferInstanceAs (IsEmpty (Fin 0))`. Conclude with `det_isEmpty`.
+-/
 theorem minor_empty {R : Type} [CommRing R] {N : ℕ} (h : Matrix (Fin N) (Fin N) R) :
     minorIJ h ∅ ∅ = 1 := by
   unfold minorIJ
@@ -42,6 +57,9 @@ theorem minor_empty {R : Type} [CommRing R] {N : ℕ} (h : Matrix (Fin N) (Fin N
   haveI : IsEmpty (Fin (∅ : Finset (Fin N)).card) := inferInstanceAs (IsEmpty (Fin 0))
   exact det_isEmpty
 
+/- English proof (translation)
+Use extensionality with `a`. Use `a.2` as an intermediate fact. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton, Fin.ext_iff]`. Rewrite using `[if_pos (by omega)]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem stepCols_eq_singleton_of_zero {N j : ℕ} (i : Fin N) (hi : (i : ℕ) = 0) (hj : 1 ≤ j) (hN : j ≤ N) :
     stepCols N j i = {⟨N - j, by omega⟩} := by
   ext a
@@ -50,6 +68,9 @@ theorem stepCols_eq_singleton_of_zero {N j : ℕ} (i : Fin N) (hi : (i : ℕ) = 
   rw [if_pos (by omega)]
   omega
 
+/- English proof (translation)
+Use extensionality with `a`. Use `a.2` as an intermediate fact. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton, Fin.ext_iff]`. Rewrite using `[if_neg (by omega)]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem stepCols_om {N j : ℕ} (i : Fin N) (hi : (i : ℕ) = j) :
     stepCols N j i = {⟨0, by have := i.2; omega⟩} := by
   ext a
@@ -58,6 +79,9 @@ theorem stepCols_om {N j : ℕ} (i : Fin N) (hi : (i : ℕ) = j) :
   rw [if_neg (by omega)]
   omega
 
+/- English proof (translation)
+Use `⟨by rw [stepCols_eq_singleton_of_zero i hi (by omega) hN]; simp, ?_⟩` and prove the remaining obligations. Rewrite using `[if_pos (by omega), Finset.singleton_subset_iff]`. Simplify using `only [wIdx, Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `hr`.
+-/
 theorem isStepRows_singleton_low {N j : ℕ} (i : Fin N) (hi : (i : ℕ) = 0) (hj : 2 ≤ j) (hN : j ≤ N) (r : Fin N)
     (hr : N - j ≤ (r : ℕ)) : IsStepRows N j i {r} := by
   refine ⟨by rw [stepCols_eq_singleton_of_zero i hi (by omega) hN]; simp, ?_⟩
@@ -65,6 +89,9 @@ theorem isStepRows_singleton_low {N j : ℕ} (i : Fin N) (hi : (i : ℕ) = 0) (h
   simp only [wIdx, Finset.mem_filter, Finset.mem_univ, true_and]
   exact hr
 
+/- English proof (translation)
+Use `⟨by rw [stepCols_om i hi]; simp, ?_⟩` and prove the remaining obligations. Rewrite using `[if_neg (by omega), Finset.singleton_subset_iff]`. Simplify using `only [omIdx, Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `hr`.
+-/
 theorem isStepRows_om {N j : ℕ} (i : Fin N) (hi : (i : ℕ) = j) (r : Fin N)
     (hr : (r : ℕ) < N - j) : IsStepRows N j i {r} := by
   refine ⟨by rw [stepCols_om i hi]; simp, ?_⟩
@@ -77,6 +104,11 @@ section Reg
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
   {x : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ}
 
+/- English proof (translation)
+Establish `a : s ∈ regRing x z` using `h`. Establish `b : s⁻¹ ∈ regRing x z` using `h'`. Use `show s ^ n ∈ regRing x z`. Take `⟨n, rfl | rfl⟩` from `n.eq_nat_or_neg`. Rewrite using `[zpow_natCast]`.
+
+Conclude with `Subring.pow_mem _ a n`. Rewrite using `[_root_.zpow_neg, zpow_natCast, ← inv_pow]`. Conclude with `Subring.pow_mem _ b n`.
+-/
 theorem regAt_zpow {s : Ω} (h : RegAt x (mCoordIdeal z) s) (h' : RegAt x (mCoordIdeal z) s⁻¹) (n : ℤ) :
     RegAt x (mCoordIdeal z) (s ^ n) := by
   have a : s ∈ regRing x z := h
@@ -86,11 +118,17 @@ theorem regAt_zpow {s : Ω} (h : RegAt x (mCoordIdeal z) s) (h' : RegAt x (mCoor
   · rw [zpow_natCast]; exact Subring.pow_mem _ a n
   · rw [_root_.zpow_neg, zpow_natCast, ← inv_pow]; exact Subring.pow_mem _ b n
 
+/- English proof (translation)
+Use `ValRing.aeval_ne_zero_of_notMem hz (isMultiHomog_X_single q) hq` as an intermediate fact. Simplify using `using this`.
+-/
 theorem coord_ne (hz : z ∈ mcPts (mCoordIdeal x)) {q : Σ k, ι k} (hq : (X q : MRing ι) ∉ mCoordIdeal z) :
     x q ≠ 0 := by
   have := ValRing.aeval_ne_zero_of_notMem hz (isMultiHomog_X_single q) hq
   simpa using this
 
+/- English proof (translation)
+Establish `hx` using `coord_ne hz hb`. Use `⟨_, X ⟨k, a⟩, X ⟨k, b⟩, isMultiHomog_X_single _, isMultiHomog_X_single _, hb, ?_⟩` and prove the remaining obligations. Simplify using `[div_mul_cancel₀ _ hx]`.
+-/
 theorem regAt_ratio (hz : z ∈ mcPts (mCoordIdeal x)) {k : K} (a b : ι k)
     (hb : (X ⟨k, b⟩ : MRing ι) ∉ mCoordIdeal z) : RegAt x (mCoordIdeal z) (x ⟨k, a⟩ / x ⟨k, b⟩) := by
   have hx := coord_ne hz hb
@@ -107,6 +145,11 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : 
 
 include M in
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_div_distrib]`. Use `Subring.prod_mem (regRing M.x zb) fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← div_zpow]`. Use `regAt_zpow (regAt_ratio hz _ _ (hG₁.1 k)) ?_ _` and prove the remaining obligations. Rewrite using `[inv_div]`.
+
+Conclude with `regAt_ratio hz _ _ (hG₂.1 k)`.
+-/
 theorem twist_ratio (hz : zb ∈ mcPts (mCoordIdeal M.x)) (hG₁ : M.GoodAt F₁ (mCoordIdeal zb))
     (hG₂ : M.GoodAt F₂ (mCoordIdeal zb)) (p : Ψ × Fin N) :
     RegAt M.x (mCoordIdeal zb)
@@ -118,6 +161,19 @@ theorem twist_ratio (hz : zb ∈ mcPts (mCoordIdeal M.x)) (hG₁ : M.GoodAt F₁
   rw [inv_div]
   exact regAt_ratio hz _ _ (hG₂.1 k)
 
+/- English proof (translation)
+Establish `hT₁` using `hF₁.1 p.1`. Establish `hT₂` using `hF₂.1 p.1`. Establish `hu₁ : IsUnit (F₁.T p.1).det` using `hT₁.2.isUnit`. Establish `hC : IsBlockDiag j ((F₁.T p.1)⁻¹ * F₂.T p.1)` using `(hT₁.1.inv hu₁).mul hT₂.1`. Establish `hm` using `((GlobalTheory.T.block_diagonal_minor_vanishing M.Ω N j p.2 M.j_le).2.2.2 _ _ hT₁.1 hC).2`.
+
+Rewrite `hm` using `[Matrix.mul_nonsing_inv_cancel_left _ _ hu₁]`. Establish `e₁` using `hF₁.2.2.2 p hp`. Establish `e₂` using `hF₂.2.2.2 p hp`. Establish `hr` using `twist_ratio M hz hG₁ hG₂ p`. Establish `hr'` using `twist_ratio M hz hG₂ hG₁ p`.
+
+Establish `hl` using `M.lam_ne_zero p hp`. Establish `hd₁` using `detFac_ne_zero M.j_le p.2 hT₁.1 hT₁.2`. Establish `hA₁ : (∏ k', M.x ⟨k', F₁.c k'⟩ ^ M.b p k') ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k' _ => zpow_ne_zero _ (coord_ne hz (hG₁.1 k'))`. Establish `hA₂ : (∏ k', M.x ⟨k', F₂.c k'⟩ ^ M.b p k') ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k' _ => zpow_ne_zero _ (coord_ne hz (hG₂.1 k'))`. Take `⟨v₁, rv₁, ri₁⟩` from `hG₁.2.2 p hp`.
+
+Take `⟨v₂, rv₂, ri₂⟩` from `hG₂.2.2 p hp`. Generalize the expression as in `detFac j p.2 ((F₁.T p.1)⁻¹ * F₂.T p.1) = D at *`. Generalize the expression as in `detFac j p.2 (F₂.T p.1) = d₂ at *`. Generalize the expression as in `detFac j p.2 (F₁.T p.1) = d₁ at *`. Generalize the expression as in `(∏ k', M.x ⟨k', F₁.c k'⟩ ^ M.b p k') = A₁ at *`.
+
+Generalize the expression as in `(∏ k', M.x ⟨k', F₂.c k'⟩ ^ M.b p k') = A₂ at *`. Establish `key : A₁ * F₁.υ p * D = A₂ * F₂.υ p` using `by rw [← e₁, ← e₂, hm]; ring`. Establish `hD : D = A₂ / A₁ * (F₂.υ p * (F₁.υ p)⁻¹)`. Clear the denominators using the available nonvanishing facts. Take the linear combination `key`.
+
+Establish `hD' : D⁻¹ = A₁ / A₂ * (F₁.υ p * (F₂.υ p)⁻¹)`. Rewrite using `[hD]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hD', hD]`. Conclude with `⟨ValRing.regAt_mul hr (ValRing.regAt_mul rv₂ ri₁), ValRing.regAt_mul hr' (ValRing.regAt_mul rv₁ ri₂)⟩`.
+-/
 theorem detFac_improper (hz : zb ∈ mcPts (mCoordIdeal M.x)) (hF₁ : M.IsFrame F₁) (hF₂ : M.IsFrame F₂)
     (hG₁ : M.GoodAt F₁ (mCoordIdeal zb)) (hG₂ : M.GoodAt F₂ (mCoordIdeal zb)) (p : Ψ × Fin N)
     (hp : M.blk p = none) :
@@ -164,6 +220,31 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : 
   {y : (Σ k, ι k) → Φ} {Ψ : Type} {N j : ℕ} (M : FlagModel y Ψ N j)
   {zb : (Σ k, baseIdx ι M.blk k) → ℂ} {F₁ F₂ : FrameData ι Ψ N M.Ω M.blk}
 
+/- English proof (translation)
+Establish `hj` using `M.j_le`. Establish `hT₁` using `hF₁.1 p.1`. Establish `hT₂` using `hF₂.1 p.1`. Establish `hu₁ : IsUnit (F₁.T p.1).det` using `hT₁.2.isUnit`. Establish `hi` using `GlobalTheory.T.block_diagonal_minor_vanishing M.Ω N j p.2 hj`.
+
+Establish `hC : IsBlockDiag j ((F₁.T p.1)⁻¹ * F₂.T p.1)` using `(hT₁.1.inv hu₁).mul hT₂.1`. Establish `hdet : ((F₁.T p.1)⁻¹ * F₂.T p.1).det ≠ 0`. Rewrite using `[Matrix.det_mul, Matrix.det_nonsing_inv]`. Conclude with `mul_ne_zero (by simpa using hT₁.2) hT₂.2`. Establish `hD` using `detFac_ne_zero hj p.2 hC hdet`.
+
+Establish `hd₁` using `detFac_ne_zero hj p.2 hT₁.1 hT₁.2`. Establish `hm` using `(hi.2.2.2 _ _ hT₁.1 hC).2`. Rewrite `hm` using `[Matrix.mul_nonsing_inv_cancel_left _ _ hu₁]`. Establish `hA₁ : (∏ k', M.x ⟨k', F₁.c k'⟩ ^ M.b p k') ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k' _ => zpow_ne_zero _ (coord_ne hz (hG₁.1 k'))`. Establish `hE : IsBlockDiag j (unitCols I' (stepCols N j p.2) hI'.1 : Matrix (Fin N) (Fin N) M.Ω)` using `unitCols_blockDiag _ _ _ (stepRows_same_side hI')`.
+
+Establish `hmin : ∀ I, minorIJ ((F₁.T p.1)⁻¹ * F₂.T p.1 * unitCols I' (stepCols N j p.2) hI'.1) I (stepCols N j p.2) = minorIJ ((F₁.T p.1)⁻¹ * F₂.T p.1) I I'` using `fun I => by`. Rewrite using `[hi.1]`. Simplify using `only [minor_unitCols, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `hr : ∀ m : ι k, ∑ I, F₂.u ⟨k, m⟩ I * minorIJ (unitCols I' (stepCols N j p.2) hI'.1) I (stepCols N j p.2) = F₂.u ⟨k, m⟩ I'` using `fun m => by`. Simplify using `only [minor_unitCols, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+
+Establish `rel : ∀ m : ι k, detFac j p.2 (F₂.T p.1) * (∏ k', M.x ⟨k', F₁.c k'⟩ ^ M.b p k') * ∑ I, F₁.u ⟨k, m⟩ I * minorIJ ((F₁.T p.1)⁻¹ * F₂.T p.1) I I' = detFac j p.2 (F₁.T p.1) * (∏ k', M.x ⟨k', F₂.c k'⟩ ^ M.b p k') * F₂.u ⟨k, m⟩ I'` using `fun m => by`. Establish `e1` using `hF₁.2.1 p k hp m _ (hC.mul hE)`. Establish `e2` using `hF₂.2.1 p k hp m _ hE`. Rewrite `e1` using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hu₁]`. Simplify using `only [hmin] at e1`.
+
+Rewrite `e2` using `[hr m]`. Take the linear combination `(-detFac j p.2 (F₂.T p.1)) * e1 + detFac j p.2 (F₁.T p.1) * e2`. Establish `hread : ∑ m : ι k, F₁.u' I₀ ⟨k, m⟩ * ∑ I, F₁.u ⟨k, m⟩ I * minorIJ ((F₁.T p.1)⁻¹ * F₂.T p.1) I I' = minorIJ ((F₁.T p.1)⁻¹ * F₂.T p.1) I₀ I'`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Establish `: ∀ I, ∑ m : ι k, F₁.u' I₀ ⟨k, m⟩ * (F₁.u ⟨k, m⟩ I * minorIJ ((F₁.T p.1)⁻¹ * F₂.T p.1) I I') = if I₀ = I then minorIJ ((F₁.T p.1)⁻¹ * F₂.T p.1) I I' else 0` using `fun I => by`. Distinguish the cases in `hI : IsStepRows N j p.2 I`. Establish `e` using `hF₁.2.2.1 p k hp I₀ I hI₀ hI`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun m _ => (mul_assoc _ _ _).symm`. Apply the tactic sequence `_ = _ := by rw [e]; split_ifs <;> simp`. Establish `h0 : minorIJ ((F₁.T p.1)⁻¹ * F₂.T p.1) I I' = 0`. Rewrite using `[← hmin I]`. Conclude with `(hi.2.1 _ I (hC.mul hE) hI).resolve_right (stepCols_ne_empty p.2)`.
+
+Simplify using `[h0]`. Simplify using `only [this]`. Simplify using the standard rewrite rules. Establish `hsum : detFac j p.2 (F₂.T p.1) * (∏ k', M.x ⟨k', F₁.c k'⟩ ^ M.b p k') * minorIJ ((F₁.T p.1)⁻¹ * F₂.T p.1) I₀ I' = detFac j p.2 (F₁.T p.1) * (∏ k', M.x ⟨k', F₂.c k'⟩ ^ M.b p k') * ∑ m : ι k, F₁.u' I₀ ⟨k, m⟩ * F₂.u ⟨k, m⟩ I'`. Rewrite using `[← hread, Finset.mul_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Take the linear combination `F₁.u' I₀ ⟨k, m⟩ * rel m`. Rewrite `hsum` using `[hm]`. Generalize the expression as in `detFac j p.2 ((F₁.T p.1)⁻¹ * F₂.T p.1) = D at *`. Generalize the expression as in `detFac j p.2 (F₁.T p.1) = d₁ at *`.
+
+Generalize the expression as in `(∏ k', M.x ⟨k', F₁.c k'⟩ ^ M.b p k') = A₁ at *`. Clear the denominators using the available nonvanishing facts. Establish `h2 : d₁ * (D * A₁ * minorIJ ((F₁.T p.1)⁻¹ * F₂.T p.1) I₀ I') = d₁ * ((∏ k', M.x ⟨k', F₂.c k'⟩ ^ M.b p k') * ∑ m : ι k, F₁.u' I₀ ⟨k, m⟩ * F₂.u ⟨k, m⟩ I')`. Take the linear combination `hsum`. Establish `h3` using `mul_left_cancel₀ hd₁ h2`.
+
+Take the linear combination `h3`.
+-/
 theorem minor_change (hz : zb ∈ mcPts (mCoordIdeal M.x)) (hF₁ : M.IsFrame F₁) (hF₂ : M.IsFrame F₂)
     (hG₁ : M.GoodAt F₁ (mCoordIdeal zb)) (hG₂ : M.GoodAt F₂ (mCoordIdeal zb)) (p : Ψ × Fin N) (k : K)
     (hp : M.blk p = some k) {I₀ I' : Finset (Fin N)} (hI₀ : IsStepRows N j p.2 I₀)
@@ -243,6 +324,9 @@ theorem minor_change (hz : zb ∈ mcPts (mCoordIdeal M.x)) (hF₁ : M.IsFrame F�
   have h3 := mul_left_cancel₀ hd₁ h2
   linear_combination h3
 
+/- English proof (translation)
+Rewrite using `[minor_change M hz hF₁ hF₂ hG₁ hG₂ p k hp hI₀ hI']`. Conclude with `ValRing.regAt_mul (ValRing.regAt_mul hD (twist_ratio M hz hG₁ hG₂ p)) (reg_sum hz _ _ fun m _ => ValRing.regAt_mul (hG₁.2.1 _ _).2 (hG₂.2.1 _ _).1).1`.
+-/
 theorem minor_reg (hz : zb ∈ mcPts (mCoordIdeal M.x)) (hF₁ : M.IsFrame F₁) (hF₂ : M.IsFrame F₂)
     (hG₁ : M.GoodAt F₁ (mCoordIdeal zb)) (hG₂ : M.GoodAt F₂ (mCoordIdeal zb)) (p : Ψ × Fin N) (k : K)
     (hp : M.blk p = some k) {I₀ I' : Finset (Fin N)} (hI₀ : IsStepRows N j p.2 I₀)
@@ -253,6 +337,15 @@ theorem minor_reg (hz : zb ∈ mcPts (mCoordIdeal M.x)) (hF₁ : M.IsFrame F₁)
   exact ValRing.regAt_mul (ValRing.regAt_mul hD (twist_ratio M hz hG₁ hG₂ p))
     (reg_sum hz _ _ fun m _ => ValRing.regAt_mul (hG₁.2.1 _ _).2 (hG₂.2.1 _ _).1).1
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos j with rfl | hj` into its components or cases. Establish `e : wIdx N 0 = ∅`. Use extensionality with `a`. Use `a.2` as an intermediate fact. Simplify using `only [wIdx, Finset.mem_filter, Finset.mem_univ, true_and, Finset.notMem_empty, iff_false]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[e, minor_empty, inv_one]`. Conclude with `⟨ValRing.regAt_one _ _, ValRing.regAt_one _ _⟩`. Set `i : Fin N` to `⟨j - 1, by omega⟩`. Establish `hi : (i : ℕ) + 1 = j` using `by show j - 1 + 1 = j; omega`.
+
+Establish `hp : M.blk (τ, i) = none` using `(M.blk_none _).2 fun h => h.1 hi`. Establish `h` using `detFac_improper M hz hF₁ hF₂ hG₁ hG₂ (τ, i) hp`. Establish `e : detFac j i ((F₁.T τ)⁻¹ * F₂.T τ) = minorIJ ((F₁.T τ)⁻¹ * F₂.T τ) (wIdx N j) (wIdx N j)`. Unfold `detFac`. Rewrite using `[if_pos (by omega), if_neg (by omega), mul_one]`.
+
+Rewrite using `[← e]`. Conclude with `h`.
+-/
 theorem detW_reg (hz : zb ∈ mcPts (mCoordIdeal M.x)) (hF₁ : M.IsFrame F₁) (hF₂ : M.IsFrame F₂)
     (hG₁ : M.GoodAt F₁ (mCoordIdeal zb)) (hG₂ : M.GoodAt F₂ (mCoordIdeal zb)) (τ : Ψ) (hjN : j < N) :
     RegAt M.x (mCoordIdeal zb) (minorIJ ((F₁.T τ)⁻¹ * F₂.T τ) (wIdx N j) (wIdx N j)) ∧
@@ -277,6 +370,41 @@ theorem detW_reg (hz : zb ∈ mcPts (mCoordIdeal M.x)) (hF₁ : M.IsFrame F₁) 
 
 end Model2
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M zb F₁ F₂ hz hF₁ hF₂ hG₁ hG₂ τ r s`. Establish `hjN` using `M.j_le`. Establish `hT₁` using `hF₁.1 τ`. Establish `hT₂` using `hF₂.1 τ`. Establish `hu₁ : IsUnit (F₁.T τ).det` using `hT₁.2.isUnit`.
+
+Establish `hC : IsBlockDiag j ((F₁.T τ)⁻¹ * F₂.T τ)` using `(hT₁.1.inv hu₁).mul hT₂.1`. Establish `hr₀` using `r.2`. Establish `hs₀` using `s.2`. Distinguish the cases in `hrs : ((r : ℕ) < N - j ↔ (s : ℕ) < N - j)`. Use `swap`.
+
+Rewrite using `[hC r s hrs]`. Conclude with `ValRing.regAt_zero _ _`. Establish `proper : ∀ i : Fin N, IsProperStep N j i → ∃ k, M.blk (τ, i) = some k` using `fun i hi => by`. Break down `h : M.blk (τ, i) with _ | k` into its components or cases. Conclude with `absurd hi ((M.blk_none _).1 h)`.
+
+Conclude with `⟨k, rfl⟩`. Distinguish the cases in `hr : (r : ℕ) < N - j`. Establish `hs` using `hrs.1 hr`. Take `⟨hW, hW'⟩` from `detW_reg M hz hF₁ hF₂ hG₁ hG₂ τ (by omega : j < N)`. Distinguish the cases in `h2 : 2 ≤ N - j`.
+
+Set `i : Fin N` to `⟨j, by omega⟩`. Take `⟨k, hk⟩` from `proper i ⟨by show j + 1 ≠ j; omega, by show j + 1 ≠ N; omega⟩`. Establish `e : detFac j i ((F₁.T τ)⁻¹ * F₂.T τ) = minorIJ ((F₁.T τ)⁻¹ * F₂.T τ) (wIdx N j) (wIdx N j)`. Unfold `detFac`. Rewrite using `[if_pos (by show j ≤ j + 1; omega), if_neg (by show ¬ j + 1 = N; omega), mul_one]`.
+
+Use `minor_reg M hz hF₁ hF₂ hG₁ hG₂ (τ, i) k hk (isStepRows_om i rfl r hr) (isStepRows_om i rfl s hs) (by show RegAt _ _ (detFac j i _)⁻¹; rw [e]; exact hW')` as an intermediate fact. Rewrite `this` using `[minor_singleton]`. Then use the resulting hypothesis. Establish `hNj : j + 1 = N` using `by omega`. Set `i : Fin N` to `⟨N - 1, by omega⟩`. Establish `hp : M.blk (τ, i) = none` using `(M.blk_none _).2 fun h => h.2 (by show N - 1 + 1 = N; omega)`.
+
+Establish `h` using `(detFac_improper M hz hF₁ hF₂ hG₁ hG₂ (τ, i) hp).1`. Establish `hd : minorIJ ((F₁.T τ)⁻¹ * F₂.T τ) (wIdx N j) (wIdx N j) * ((F₁.T τ)⁻¹ * F₂.T τ) r s = detFac j i ((F₁.T τ)⁻¹ * F₂.T τ)`. Establish `e : omIdx N j = {r}`. Use extensionality with `a`. Use `a.2` as an intermediate fact.
+
+Simplify using `only [omIdx, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Establish `ers : r = s` using `Fin.ext (by omega)`. Unfold `detFac`. Rewrite using `[if_pos (by show j ≤ N - 1 + 1; omega), if_pos (by show N - 1 + 1 = N; omega), e, minor_singleton, ers]`.
+
+Establish `hdet : ((F₁.T τ)⁻¹ * F₂.T τ).det ≠ 0`. Rewrite using `[Matrix.det_mul, Matrix.det_nonsing_inv]`. Conclude with `mul_ne_zero (by simpa using hT₁.2) hT₂.2`. Establish `hne` using `detFac_ne_zero hjN i hC hdet`. Establish `hW0 : minorIJ ((F₁.T τ)⁻¹ * F₂.T τ) (wIdx N j) (wIdx N j) ≠ 0` using `fun h0 => hne (by`.
+
+Rewrite using `[← hd, h0, zero_mul])`. Establish `e2 : ((F₁.T τ)⁻¹ * F₂.T τ) r s = (minorIJ ((F₁.T τ)⁻¹ * F₂.T τ) (wIdx N j) (wIdx N j))⁻¹ * detFac j i ((F₁.T τ)⁻¹ * F₂.T τ)`. Rewrite using `[← hd, inv_mul_cancel_left₀ hW0]`. Rewrite using `[e2]`. Conclude with `ValRing.regAt_mul hW' h`.
+
+Establish `hs : ¬ (s : ℕ) < N - j` using `fun h => hr (hrs.2 h)`. Distinguish the cases in `h2 : 2 ≤ j`. Set `i : Fin N` to `⟨0, by omega⟩`. Take `⟨k, hk⟩` from `proper i ⟨by show 0 + 1 ≠ j; omega, by show 0 + 1 ≠ N; omega⟩`. Establish `e : detFac j i ((F₁.T τ)⁻¹ * F₂.T τ) = 1`.
+
+Unfold `detFac`. Rewrite using `[if_neg (by show ¬ j ≤ 0 + 1; omega), if_neg (by show ¬ 0 + 1 = N; omega), mul_one]`. Use `minor_reg M hz hF₁ hF₂ hG₁ hG₂ (τ, i) k hk (isStepRows_singleton_low i rfl h2 hjN r (by omega)) (isStepRows_singleton_low i rfl h2 hjN s (by omega)) (by show RegAt _ _ (detFac j i _)⁻¹; rw [e, inv_one]; exact ValRing.regAt_one _ _)` as an intermediate fact. Rewrite `this` using `[minor_singleton]`. Then use the resulting hypothesis. Establish `hj1 : j = 1` using `by omega`.
+
+Substitute `hj1` using the available equality. Set `i : Fin N` to `⟨0, by omega⟩`. Establish `hp : M.blk (τ, i) = none` using `(M.blk_none _).2 fun h => h.1 rfl`. Establish `h` using `(detFac_improper M hz hF₁ hF₂ hG₁ hG₂ (τ, i) hp).1`. Establish `e : detFac 1 i ((F₁.T τ)⁻¹ * F₂.T τ) = ((F₁.T τ)⁻¹ * F₂.T τ) r s`.
+
+Establish `ew : wIdx N 1 = {r}`. Use extensionality with `a`. Use `a.2` as an intermediate fact. Simplify using `only [wIdx, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `ers : r = s` using `Fin.ext (by omega)`. Unfold `detFac`. Rewrite using `[if_pos (by show 1 ≤ 0 + 1; omega), ew, minor_singleton, ← ers]`. Use `split_ifs with hN1`. Establish `eo : omIdx N 1 = ∅`.
+
+Use extensionality with `a`. Use `a.2` as an intermediate fact. Establish `hN1' : 0 + 1 = N` using `hN1`. Simplify using `only [omIdx, Finset.mem_filter, Finset.mem_univ, true_and, Finset.notMem_empty, iff_false]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[eo, minor_empty, mul_one]`. Rewrite using `[mul_one]`. Rewrite using `[← e]`. Conclude with `h`.
+-/
 theorem change_regular : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (zb : (Σ k, baseIdx ι M.blk k) → ℂ) (F₁ F₂ : FrameData ι Ψ N M.Ω M.blk), zb ∈ mcPts (mCoordIdeal M.x) → M.IsFrame F₁ → M.IsFrame F₂ → M.GoodAt F₁ (mCoordIdeal zb) → M.GoodAt F₂ (mCoordIdeal zb) → ∀ (τ : Ψ) (r s : Fin N), RegAt M.x (mCoordIdeal zb) (((F₁.T τ)⁻¹ * F₂.T τ) r s) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M zb F₁ F₂ hz hF₁ hF₂ hG₁ hG₂ τ r s
   have hjN := M.j_le

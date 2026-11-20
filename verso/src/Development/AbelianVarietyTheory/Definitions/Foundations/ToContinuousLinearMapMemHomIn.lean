@@ -46,10 +46,16 @@ def hTensor (p₁ : G →* G₁) (p₂ : G →* G₂) (π₁ : G₁ →* (H₁ �
 variable {p₁ : G →* G₁} {p₂ : G →* G₂} {π₁ : G₁ →* (H₁ →L[ℂ] H₁)} {π₂ : G₂ →* (H₂ →L[ℂ] H₂)} {π : G →* (H →L[ℂ] H)}
   {J : H₁ ⊗[ℂ] H₂ →ₗᵢ[ℂ] H}
 
+/- English proof (translation)
+The claim follows from `ContinuousLinearMap.completion_apply_coe _ a`.
+-/
 theorem hTensor_coe (g : G) (a : H₁ ⊗[ℂ] H₂) :
     hTensor p₁ p₂ π₁ π₂ g a = TensorProduct.mapL (π₁ (p₁ g)) (π₂ (p₂ g)) a :=
   ContinuousLinearMap.completion_apply_coe _ a
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => exact h.2 g x y`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem IsTensorMap.apply (h : IsTensorMap p₁ p₂ π₁ π₂ π J) (g : G) (a : H₁ ⊗[ℂ] H₂) :
     π g (J a) = J (TensorProduct.mapL (π₁ (p₁ g)) (π₂ (p₂ g)) a) := by
   induction a using TensorProduct.induction_on with
@@ -57,6 +63,13 @@ theorem IsTensorMap.apply (h : IsTensorMap p₁ p₂ π₁ π₂ π J) (g : G) (
   | tmul x y => exact h.2 g x y
   | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+Use `⟨h1, fun v => ?_⟩` and prove the remaining obligations. Establish `h3 : ∀ v ∈ Submodule.span ℂ A, Continuous fun g => π g v` using `fun v hv => by`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv => exact h2 v hv`. Consider the case `zero => simpa only [map_zero] using continuous_const`.
+
+Consider the case `add a b _ _ ha hb => simp only [map_add]`. Conclude with `ha.add hb`. Consider the case `smul c a _ ha => simp only [map_smul]`. Conclude with `ha.const_smul c`. Establish `hv : v ∈ closure (Submodule.span ℂ A : Set H)` using `hA.ge Submodule.mem_top`.
+
+Use `TendstoUniformly.continuous (F := fun w g => π g w) (p := nhds v) ?_ ((mem_closure_iff_frequently.1 hv).mono h3)` and prove the remaining obligations. Use `Metric.tendstoUniformly_iff.2 fun ε hε => ?_` and prove the remaining obligations. Use `filter_upwards [Metric.ball_mem_nhds v hε] with w h g`. Rewrite using `[dist_eq_norm, ← map_sub, h1, ← dist_eq_norm, dist_comm]`. Conclude with `h`.
+-/
 theorem isUnitaryRep_of_dense [TopologicalSpace G] (h1 : ∀ g v, ‖π g v‖ = ‖v‖) {A : Set H}
     (hA : (Submodule.span ℂ A).topologicalClosure = ⊤) (h2 : ∀ v ∈ A, Continuous fun g => π g v) : IsUnitaryRep π := by
   refine ⟨h1, fun v => ?_⟩
@@ -73,6 +86,9 @@ theorem isUnitaryRep_of_dense [TopologicalSpace G] (h1 : ∀ g v, ‖π g v‖ =
   rw [dist_eq_norm, ← map_sub, h1, ← dist_eq_norm, dist_comm]
   exact h
 
+/- English proof (translation)
+The claim follows from `eq_top_iff.2 fun v _ => closure_mono (s := Set.range J) (by rintro _ ⟨a, rfl⟩ induction a using TensorProduct.induction_on with | zero => rw [map_zero]; exact zero_mem _ | tmul x y => exact Submodule.subset_span ⟨x, y, rfl⟩ | add a b ha hb => rw [map_add]; exact add_mem ha hb) (h …`.
+-/
 theorem IsTensorMap.dense_span (h : IsTensorMap p₁ p₂ π₁ π₂ π J) :
     (Submodule.span ℂ {v | ∃ x y, v = J (x ⊗ₜ y)}).topologicalClosure = ⊤ :=
   eq_top_iff.2 fun v _ => closure_mono (s := Set.range J) (by
@@ -82,6 +98,11 @@ theorem IsTensorMap.dense_span (h : IsTensorMap p₁ p₂ π₁ π₂ π J) :
     | tmul x y => exact Submodule.subset_span ⟨x, y, rfl⟩
     | add a b ha hb => rw [map_add]; exact add_mem ha hb) (h.1 v)
 
+/- English proof (translation)
+Use `isUnitaryRep_of_dense (fun g v => ?_) h.dense_span ?_` and prove the remaining obligations. Use `h.1.induction_on v (isClosed_eq (π g).continuous.norm continuous_norm) fun a => ?_` and prove the remaining obligations. Rewrite using `[h.apply, J.norm_map, J.norm_map, TensorProduct.mapL_apply]`. Conclude with `TensorProduct.norm_map (⟨(π₁ (p₁ g) : H₁ →ₗ[ℂ] H₁), h₁.norm_apply _⟩ : H₁ →ₗᵢ[ℂ] H₁) (⟨(π₂ (p₂ g) : H₂ →ₗ[ℂ] H₂), h₂.norm_apply _⟩ : H₂ →ₗᵢ[ℂ] H₂) a`. Introduce and unpack `_ ⟨x, y, rfl⟩`.
+
+Simplify using `only [h.2]`. Conclude with `J.continuous.comp ((TensorProduct.mkL ℂ H₁ H₂).continuous₂.comp (((h₁.continuous_apply x).comp hp₁).prodMk ((h₂.continuous_apply y).comp hp₂)))`.
+-/
 theorem IsTensorMap.isUnitaryRep [TopologicalSpace G] [TopologicalSpace G₁] [TopologicalSpace G₂]
     (h : IsTensorMap p₁ p₂ π₁ π₂ π J) (hp₁ : Continuous p₁) (hp₂ : Continuous p₂) (h₁ : IsUnitaryRep π₁)
     (h₂ : IsUnitaryRep π₂) : IsUnitaryRep π := by
@@ -95,6 +116,9 @@ theorem IsTensorMap.isUnitaryRep [TopologicalSpace G] [TopologicalSpace G₁] [T
     exact J.continuous.comp ((TensorProduct.mkL ℂ H₁ H₂).continuous₂.comp
       (((h₁.continuous_apply x).comp hp₁).prodMk ((h₂.continuous_apply y).comp hp₂)))
 
+/- English proof (translation)
+Set `e : HTensor H₁ H₂ →ₗᵢ[ℂ] H` to `⟨J.toContinuousLinearMap.fromCompletion.toLinearMap, fun z => Completion.induction_on z (isClosed_eq J.toContinuousLinearMap.fromCompletion.continuous.norm continuous_norm) fun a => by simp⟩`. Establish `he : ∀ a : H₁ ⊗[ℂ] H₂, e a = J a` using `J.toContinuousLinearMap.fromCompletion_apply_coe`. Use `⟨.ofSurjective e fun v => h.1.induction_on v e.isometry.isClosedEmbedding.isClosed_range fun a => ⟨a, he a⟩, fun g z => Completion.induction_on z (isClosed_eq (by fun_prop) (by fun_prop)) fun a => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e _ = π g (e a)`. Rewrite using `[hTensor_coe, he, he, h.apply]`.
+-/
 theorem IsTensorMap.uEquiv [CompleteSpace H] (h : IsTensorMap p₁ p₂ π₁ π₂ π J) : UEquiv (hTensor p₁ p₂ π₁ π₂) π := by
   let e : HTensor H₁ H₂ →ₗᵢ[ℂ] H := ⟨J.toContinuousLinearMap.fromCompletion.toLinearMap, fun z =>
     Completion.induction_on z (isClosed_eq J.toContinuousLinearMap.fromCompletion.continuous.norm continuous_norm)
@@ -126,6 +150,9 @@ structure IsRestrTensor (p : ∀ i, G →* Γ i) (δ : ∀ i, Γ i →* (Hs i �
 
   apply_pure : ∀ g y, Restr ξ y → π g (B y) = B fun i => δ i (p i g) (y i)
 
+/- English proof (translation)
+The claim follows from `(Set.Finite.union hy hf).subset fun i hi => by by_contra hn simp only [Set.mem_union, Set.mem_setOf_eq, Set.mem_compl_iff, not_or, not_not] at hn exact hi ((congrArg (f i) hn.1).trans hn.2)`.
+-/
 theorem restr_map {M : ι → Type} {ξ y : ∀ i, M i} {f : ∀ i, M i → M i} (hf : ∀ᶠ i in cofinite, f i (ξ i) = ξ i)
     (hy : Restr ξ y) : Restr ξ fun i => f i (y i) :=
   (Set.Finite.union hy hf).subset fun i hi => by
@@ -133,11 +160,17 @@ theorem restr_map {M : ι → Type} {ξ y : ∀ i, M i} {f : ∀ i, M i → M i}
     simp only [Set.mem_union, Set.mem_setOf_eq, Set.mem_compl_iff, not_or, not_not] at hn
     exact hi ((congrArg (f i) hn.1).trans hn.2)
 
+/- English proof (translation)
+Simplify using `[Restr]`.
+-/
 theorem restr_self {M : ι → Type} (ξ : ∀ i, M i) : Restr ξ ξ := by simp [Restr]
 
 variable {p : ∀ i, G →* Γ i} {δ : ∀ i, Γ i →* (Hs i →L[ℂ] Hs i)} {ξ y y' : ∀ i, Hs i} {π : G →* (H →L[ℂ] H)}
   {B : (∀ i, Hs i) → H}
 
+/- English proof (translation)
+The claim follows from `((Set.Finite.union hy hy').union h.unit).subset fun i hi => by by_contra hn simp only [Set.mem_union, Set.mem_setOf_eq, Set.mem_compl_iff, not_or, not_not] at hn exact hi (by beta_reduce; rw [hn.1.1, hn.1.2, inner_self_eq_norm_sq_to_K, hn.2]; simp)`.
+-/
 theorem IsRestrTensor.finite_mulSupport (h : IsRestrTensor p δ ξ π B) (hy : Restr ξ y) (hy' : Restr ξ y') :
     (Function.mulSupport fun i => ⟪y' i, y i⟫_ℂ).Finite :=
   ((Set.Finite.union hy hy').union h.unit).subset fun i hi => by
@@ -145,10 +178,16 @@ theorem IsRestrTensor.finite_mulSupport (h : IsRestrTensor p δ ξ π B) (hy : R
     simp only [Set.mem_union, Set.mem_setOf_eq, Set.mem_compl_iff, not_or, not_not] at hn
     exact hi (by beta_reduce; rw [hn.1.1, hn.1.2, inner_self_eq_norm_sq_to_K, hn.2]; simp)
 
+/- English proof (translation)
+Rewrite using `[h.apply_pure g y hy, h.inner_pure _ _ (restr_map (f := fun i => δ i (p i g)) (h.fixed g) hy) hy']`.
+-/
 theorem IsRestrTensor.inner_apply (h : IsRestrTensor p δ ξ π B) (hy : Restr ξ y) (hy' : Restr ξ y') (g : G) :
     ⟪B y', π g (B y)⟫_ℂ = ∏ᶠ i, ⟪y' i, δ i (p i g) (y i)⟫_ℂ := by
   rw [h.apply_pure g y hy, h.inner_pure _ _ (restr_map (f := fun i => δ i (p i g)) (h.fixed g) hy) hy']
 
+/- English proof (translation)
+Establish `: (Submodule.span ℂ {v | ∃ y, Restr ξ y ∧ v = B y}).topologicalClosure ≤ (ℂ ∙ (v - w))ᗮ` using `Submodule.topologicalClosure_minimal _ (Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `Submodule.mem_orthogonal_singleton_iff_inner_left.2 (by rw [inner_sub_right, e y hy, sub_self])))`. Use the proof step `(Submodule.isClosed_orthogonal _)`. Conclude with `sub_eq_zero.1 (inner_self_eq_zero.1 (Submodule.mem_orthogonal_singleton_iff_inner_left.1 (this (h.dense.ge Submodule.mem_top))))`.
+-/
 theorem IsRestrTensor.ext (h : IsRestrTensor p δ ξ π B) {v w : H} (e : ∀ y, Restr ξ y → ⟪B y, v⟫_ℂ = ⟪B y, w⟫_ℂ) :
     v = w := by
   have : (Submodule.span ℂ {v | ∃ y, Restr ξ y ∧ v = B y}).topologicalClosure ≤ (ℂ ∙ (v - w))ᗮ :=
@@ -159,6 +198,9 @@ theorem IsRestrTensor.ext (h : IsRestrTensor p δ ξ π B) {v w : H} (e : ∀ y,
   exact sub_eq_zero.1 (inner_self_eq_zero.1
     (Submodule.mem_orthogonal_singleton_iff_inner_left.1 (this (h.dense.ge Submodule.mem_top))))
 
+/- English proof (translation)
+Rewrite using `[h.inner_pure _ _ (restr_update hy i x) hy', ← mul_finprod_cond_ne i (h.finite_mulSupport (restr_update hy i x) hy'), Function.update_self]`. Use `congr 1`. Conclude with `finprod_congr fun j => finprod_congr fun hj => by rw [Function.update_of_ne hj]`.
+-/
 theorem IsRestrTensor.inner_update [DecidableEq ι] (h : IsRestrTensor p δ ξ π B) (hy : Restr ξ y) (hy' : Restr ξ y')
     (i : ι) (x : Hs i) :
     ⟪B y', B (Function.update y i x)⟫_ℂ = ⟪y' i, x⟫_ℂ * ∏ᶠ (j) (_ : j ≠ i), ⟪y' j, y j⟫_ℂ := by
@@ -167,6 +209,9 @@ theorem IsRestrTensor.inner_update [DecidableEq ι] (h : IsRestrTensor p δ ξ �
   congr 1
   exact finprod_congr fun j => finprod_congr fun hj => by rw [Function.update_of_ne hj]
 
+/- English proof (translation)
+The claim follows from `h.ext fun z hz => by simp only [inner_add_right, inner_smul_right, h.inner_update hy hz] ring`.
+-/
 theorem IsRestrTensor.pure_update [DecidableEq ι] (h : IsRestrTensor p δ ξ π B) (hy : Restr ξ y) (i : ι) (c : ℂ)
     (a b : Hs i) : B (Function.update y i (c • a + b)) = c • B (Function.update y i a) + B (Function.update y i b) :=
   h.ext fun z hz => by
@@ -189,6 +234,9 @@ def restrRep (p : ∀ i, G →* Γ i) (σ : ∀ i, Representation ℂ (Γ i) (N 
     map_mul' := fun g g' => LinearMap.ext fun z => Subtype.ext (funext fun l => congrArg z.1 (Subtype.ext
       (funext fun i => by simp only [a, map_mul]; rfl))) }
 
+/- English proof (translation)
+Introduce `e` and use `by choose l hl using fun i => Module.Projective.exists_dual_eq_one ℂ (h0 i) obtain ⟨Λ, hΛ⟩ := pureT_sep s l (Set.Finite.subset hy fun i hi e' => hi (e' ▸ hl i)) have := hΛ y hy simp [e, hl] at this`.
+-/
 theorem pureT_ne_zero {s y : ∀ i, N i} (hy : Restr s y) (h0 : ∀ i, y i ≠ 0) : pureT s y ≠ 0 := fun e => by
   choose l hl using fun i => Module.Projective.exists_dual_eq_one ℂ (h0 i)
   obtain ⟨Λ, hΛ⟩ := pureT_sep s l (Set.Finite.subset hy fun i hi e' => hi (e' ▸ hl i))
@@ -229,11 +277,19 @@ def IsTensorCopy (j₁ : G₁ →* G) (j₂ : G₂ →* G) (σ : Representation 
 variable {j₁ : G₁ →* G} {j₂ : G₂ →* G} {σ : Representation ℂ G₁ W} {δ : G₂ →* (H →L[ℂ] H)} {ρ : G →* (K →L[ℂ] K)}
   {U U' : Submodule ℂ K} {T : W →ₗ[ℂ] (H →L[ℂ] K)}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨fun w => (h.1 w).1, fun g w y => DFunLike.congr_fun (h.2 g w) y, fun g w => (h.1 w).2 g⟩, fun h => ⟨fun w => ⟨h.1 w, fun g => h.2.2 g w⟩, fun g w => ContinuousLinearMap.ext (h.2.1 g w)⟩⟩`.
+-/
 theorem mem_homTensor : T ∈ homTensor j₁ j₂ σ δ ρ U ↔ (∀ w y, T w y ∈ U) ∧
     (∀ g w y, T (σ g w) y = ρ (j₁ g) (T w y)) ∧ ∀ g w y, T w (δ g y) = ρ (j₂ g) (T w y) :=
   ⟨fun h => ⟨fun w => (h.1 w).1, fun g w y => DFunLike.congr_fun (h.2 g w) y, fun g w => (h.1 w).2 g⟩,
     fun h => ⟨fun w => ⟨h.1 w, fun g => h.2.2 g w⟩, fun g w => ContinuousLinearMap.ext (h.2.1 g w)⟩⟩
 
+/- English proof (translation)
+Break down `eq_bot_or_eq_top (f.intertwiningMap_of_isIntertwiningMap σ τ hf.2).ker with e | e` into its components or cases. Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Establish `: x ∈ (f.intertwiningMap_of_isIntertwiningMap σ τ hf.2).ker` using `hx`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Use `absurd (LinearMap.ext fun x => ?_) h0` and prove the remaining obligations.
+
+Establish `: x ∈ (f.intertwiningMap_of_isIntertwiningMap σ τ hf.2).ker` using `by rw [e]; trivial`. Conclude with `this`.
+-/
 theorem injective_of_mem_homInto {X : Type} [AddCommGroup X] [Module ℂ X] {τ : Representation ℂ G₁ X}
     {C : Submodule ℂ X} {f : W →ₗ[ℂ] X} (hσ : σ.IsIrreducible) (hf : f ∈ homInto σ τ C) (h0 : f ≠ 0) :
     Function.Injective f := by
@@ -245,6 +301,9 @@ theorem injective_of_mem_homInto {X : Type} [AddCommGroup X] [Module ℂ X] {τ 
     have : x ∈ (f.intertwiningMap_of_isIntertwiningMap σ τ hf.2).ker := by rw [e]; trivial
     exact this
 
+/- English proof (translation)
+Establish `key : ∀ {W W' : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W'] {σ : Representation ℂ G₁ W} {σ' : Representation ℂ G₁ W'}, σ.Equiv σ' → Module.rank ℂ (homInto σ' τ C) ≤ Module.rank ℂ (homInto σ τ C)` using `fun {W W'} _ _ _ _ σ σ' e => LinearMap.rank_le_of_injective (M := homInto σ' τ C) (M₁ := homInto σ τ C) { toFun := fun T => ⟨T.1 ∘ₗ e.toLinearMap, fun x => T.2.1 _, fun g x => (congrArg T.1 (DFunLike.congr_fun (e.isIntertwining' g) x)).trans (T.2.2 g _)⟩ map_add' := fun _ _ => rf …`. Take `⟨x, rfl⟩` from `e.surjective y`. Conclude with `DFunLike.congr_fun (congrArg Subtype.val h) x)`. Conclude with `le_antisymm (key e.symm) (key e)`.
+-/
 theorem rank_homInto_congr {W' X : Type} [AddCommGroup W'] [Module ℂ W'] [AddCommGroup X] [Module ℂ X]
     {σ' : Representation ℂ G₁ W'} (e : σ.Equiv σ') (τ : Representation ℂ G₁ X) (C : Submodule ℂ X) :
     Module.rank ℂ (homInto σ τ C) = Module.rank ℂ (homInto σ' τ C) := by
@@ -304,11 +363,17 @@ variable {j : G₁ →* G} {e : ∀ i, Γ i →* G} {σ : Representation ℂ G�
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_homPi : Φ ∈ homPi e δ ρ U ↔
     (∀ y, Φ y ∈ U) ∧ ∀ i g y, Φ (Function.update y i (δ i g (y i))) = ρ (e i g) (Φ y) := Iff.rfl
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨fun w => (h.1 w).1, fun g w y => DFunLike.congr_fun (h.2 g w) y, fun i g w => (h.1 w).2 i g⟩, fun h => ⟨fun w => ⟨h.1 w, fun i g => h.2.2 i g w⟩, fun g w => ContinuousMultilinearMap.ext (h.2.1 g w)⟩⟩`.
+-/
 theorem mem_homTensorPi : T ∈ homTensorPi j e σ δ ρ U ↔ (∀ w y, T w y ∈ U) ∧
     (∀ g w y, T (σ g w) y = ρ (j g) (T w y)) ∧
       ∀ i g w y, T w (Function.update y i (δ i g (y i))) = ρ (e i g) (T w y) :=
@@ -317,16 +382,25 @@ theorem mem_homTensorPi : T ∈ homTensorPi j e σ δ ρ U ↔ (∀ w y, T w y �
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Introduce `_ hT` and use `⟨fun w => ⟨fun y => h ((hT.1 w).1 y), (hT.1 w).2⟩, hT.2⟩`.
+-/
 theorem homTensorPi_mono (h : U ≤ U') : homTensorPi j e σ δ ρ U ≤ homTensorPi j e σ δ ρ U' :=
   fun _ hT => ⟨fun w => ⟨fun y => h ((hT.1 w).1 y), (hT.1 w).2⟩, hT.2⟩
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+The claim follows from `rank_homInto_congr f _ _`.
+-/
 theorem multTensorPi_congr {W' : Type} [AddCommGroup W'] [Module ℂ W'] {σ' : Representation ℂ G₁ W'} (f : σ.Equiv σ') :
     multTensorPi j e σ δ ρ U = multTensorPi j e σ' δ ρ U := rank_homInto_congr f _ _
 
 omit [Fintype ι] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => h.1 _, fun g x => by have := h.2 i g (Function.update y i x) rwa [Function.update_self, Function.update_idem] at this⟩`.
+-/
 theorem toContinuousLinearMap_mem_homIn (h : Φ ∈ homPi e δ ρ U) (y : ∀ i, Hs i) (i : ι) :
     Φ.toContinuousLinearMap y i ∈ homIn (δ i) (ρ.comp (e i)) U :=
   ⟨fun _ => h.1 _, fun g x => by
@@ -335,6 +409,13 @@ theorem toContinuousLinearMap_mem_homIn (h : Φ ∈ homPi e δ ρ U) (y : ∀ i,
 
 variable [TopologicalSpace G] [∀ i, TopologicalSpace (Γ i)] [CompleteSpace K]
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset ι, ⟪Φ' y', Φ y⟫_ℂ = ⟪Φ' (s.piecewise (fun i => unitVec (Hs i)) y'), Φ (s.piecewise (fun i => unitVec (Hs i)) y)⟫_ℂ * ∏ i ∈ s, ⟪y' i, y i⟫_ℂ` using `fun s => by`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih`. Use `(hδ i).complete` as an intermediate fact.
+
+Establish `h1` using `inner_eq_be_of_norm (hδ i).unitary.norm_apply (hδ i).irred (fun g => hρ.norm_apply (e i g)) (toContinuousLinearMap_mem_homIn h (s.piecewise (fun i => unitVec (Hs i)) y) i) (toContinuousLinearMap_mem_homIn h' (s.piecewise (fun i => unitVec (Hs i)) y') i) (y i) (y' i)`. Rewrite using `[Finset.prod_insert hi, Finset.piecewise_insert, Finset.piecewise_insert, ← mul_assoc, ih]`. Use `congr 1`. Use `Eq.trans ?_ h1` and prove the remaining obligations. Simplify using `only [ContinuousMultilinearMap.toContinuousLinearMap_apply]`.
+
+Rewrite using `[← s.piecewise_eq_of_notMem (fun i => unitVec (Hs i)) y hi, ← s.piecewise_eq_of_notMem (fun i => unitVec (Hs i)) y' hi, Function.update_eq_self, Function.update_eq_self]`. Simplify `key Finset.univ` using `only [Finset.piecewise_univ, bePi]`.
+-/
 theorem inner_eq_bePi (hδ : ∀ i, IsIrrUnitary (δ i)) (hρ : IsUnitaryRep ρ) (h : Φ ∈ homPi e δ ρ U)
     (h' : Φ' ∈ homPi e δ ρ U') (y y' : ∀ i, Hs i) : ⟪Φ' y', Φ y⟫_ℂ = bePi Φ Φ' * ∏ i, ⟪y' i, y i⟫_ℂ := by
   have key : ∀ s : Finset ι, ⟪Φ' y', Φ y⟫_ℂ = ⟪Φ' (s.piecewise (fun i => unitVec (Hs i)) y'),
@@ -354,6 +435,9 @@ theorem inner_eq_bePi (hδ : ∀ i, IsIrrUnitary (δ i)) (hρ : IsUnitaryRep ρ)
         ← s.piecewise_eq_of_notMem (fun i => unitVec (Hs i)) y' hi, Function.update_eq_self, Function.update_eq_self]
   simpa only [Finset.piecewise_univ, bePi] using key Finset.univ
 
+/- English proof (translation)
+The claim follows from `(re_inner_self_pos (𝕜 := ℂ)).2 fun e => h0 (ContinuousMultilinearMap.ext fun y => inner_self_eq_zero.1 (by rw [inner_eq_bePi hδ hρ h h, bePi, e, inner_zero_left, zero_mul]))`.
+-/
 theorem bePi_self_pos (hδ : ∀ i, IsIrrUnitary (δ i)) (hρ : IsUnitaryRep ρ) (h : Φ ∈ homPi e δ ρ U) (h0 : Φ ≠ 0) :
     0 < (bePi Φ Φ).re :=
   (re_inner_self_pos (𝕜 := ℂ)).2 fun e => h0 (ContinuousMultilinearMap.ext fun y => inner_self_eq_zero.1 (by
@@ -361,6 +445,9 @@ theorem bePi_self_pos (hδ : ∀ i, IsIrrUnitary (δ i)) (hρ : IsUnitaryRep ρ)
 
 end MixedPi
 
+/- English proof (translation)
+The claim follows from `.of_forall fun _ => norm_one fixed g := (h g).mono fun i hi => by simp [charRep, hi] inner_pure y y' hy hy' := by have h' : (Function.mulSupport fun i => conj (y' i)).Finite := Set.Finite.subset hy' fun i hi e => hi (by simp [e]) simp only [RCLike.inner_apply] rw [finprod_mul_dis …`.
+-/
 theorem isRestrTensor_charRep {ι G : Type} {Γ : ι → Type} [Group G] [∀ i, Group (Γ i)] (p : ∀ i, G →* Γ i)
     (χ : ∀ i, Γ i →* Circle) (ψ : G →* Circle) (h : ∀ g, ∀ᶠ i in cofinite, χ i (p i g) = 1)
     (hψ : ∀ g, (ψ g : ℂ) = ∏ᶠ i, (χ i (p i g) : ℂ)) :
@@ -378,6 +465,9 @@ theorem isRestrTensor_charRep {ι G : Type} {Γ : ι → Type} [Group G] [∀ i,
     change (ψ g : ℂ) * ∏ᶠ i, y i = ∏ᶠ i, (χ i (p i g) : ℂ) * y i
     rw [finprod_mul_distrib (Set.Finite.subset (h g) fun i hi e => hi (by simp [show χ i (p i g) = 1 from e])) hy, hψ]
 
+/- English proof (translation)
+Rewrite using `[hTensor_coe, TensorProduct.mapL_tmul, ← TensorProduct.smul_tmul_smul]`. Both sides reduce to the same expression.
+-/
 example {G₁ G₂ : Type} [Group G₁] [Group G₂] (χ : G₁ →* Circle) (ψ : G₂ →* Circle) (g : G₁ × G₂) :
     hTensor (.fst _ _) (.snd _ _) (charRep χ) (charRep ψ) g ((1 : ℂ) ⊗ₜ[ℂ] (1 : ℂ) : ℂ ⊗[ℂ] ℂ) =
       (((χ g.1 : ℂ) * ψ g.2) • (1 : ℂ) ⊗ₜ[ℂ] (1 : ℂ) : ℂ ⊗[ℂ] ℂ) := by

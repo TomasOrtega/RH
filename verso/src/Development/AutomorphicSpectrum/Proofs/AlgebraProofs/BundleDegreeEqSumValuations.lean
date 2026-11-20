@@ -6,6 +6,11 @@ open GlobalTheory.CompanionTheory.Ar.Crv
 
 namespace GlobalTheory.CompanionTheory.Ar.Crv.DegFormula
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `hL.2`. Use `(hc.union (C.fin _ (b₀.isUnit_det c).ne_zero)).subset fun i hi => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hn`. Use `hi ?_` and prove the remaining obligations.
+
+Rewrite using `[← Module.Basis.det_mul_det _ c, map_mul, Inhab.v_det C hn.1 (h i), hn.2, mul_one]`.
+-/
 theorem finite_det {K : Type} [Field K] (C : ACurve K) {V : Type} [AddCommGroup V] [Module K V]
     {L : C.I → AddSubgroup V} (b₀ : Module.Basis (Fin (Module.finrank K V)) K V)
     (b : C.I → Module.Basis (Fin (Module.finrank K V)) K V) (hL : IsBun C L)
@@ -17,6 +22,13 @@ theorem finite_det {K : Type} [Field K] (C : ACurve K) {V : Type} [AddCommGroup 
   refine hi ?_
   rw [← Module.Basis.det_mul_det _ c, map_mul, Inhab.v_det C hn.1 (h i), hn.2, mul_one]
 
+/- English proof (translation)
+Introduce `K _ C V _ _ _ L n b₀ b hL h`. Establish `hn : n = Module.finrank K V`. Simplify using `using (Module.finrank_eq_card_basis b₀).symm`. Substitute `hn` using the available equality. Establish `hf` using `finite_det C b₀ b hL h`.
+
+Use `⟨hf, ?_⟩` and prove the remaining obligations. Rewrite using `[Inhab.deg_eq C b h]`. Establish `hx : (Module.finBasis K V).det b₀ ≠ 0` using `((Module.finBasis K V).isUnit_det b₀).ne_zero`. Establish `key : ∀ i, (C.w i : ℤ) * WithZero.log (C.v i ((Module.finBasis K V).det (b i))) = (C.w i : ℤ) * WithZero.log (C.v i ((Module.finBasis K V).det b₀)) + (C.w i : ℤ) * WithZero.log (C.v i (b₀.det (b i)))`. Introduce `i`.
+
+Rewrite using `[← Module.Basis.det_mul_det _ b₀, map_mul, WithZero.log_mul ((Valuation.ne_zero_iff _).2 hx) ((Valuation.ne_zero_iff _).2 (b₀.isUnit_det (b i)).ne_zero), mul_add]`. Simplify using `only [key]`. Rewrite using `[finsum_add_distrib ((C.fin _ hx).subset fun i hi h1 => hi (by simp [h1])) (hf.subset fun i hi h1 => hi (by simp [h1])), C.prod _ hx, zero_add]`.
+-/
 theorem deg_formula : ∀ (K : Type) [Field K] (C : ACurve K) (V : Type) [AddCommGroup V]
     [Module K V] [FiniteDimensional K V] (L : C.I → AddSubgroup V) (n : ℕ)
     (b₀ : Module.Basis (Fin n) K V) (b : C.I → Module.Basis (Fin n) K V), IsBun C L →

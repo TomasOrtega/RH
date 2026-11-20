@@ -5,6 +5,33 @@ set_option maxSynthPendingDepth 1
 
 namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close
 
+/- English proof (translation)
+Introduce `Λ _ _ _ nrm B hB0 htri hhom hsep`. Use `set R := Module.finrank ℤ Λ`. Set `b` to `Module.finBasis ℤ Λ`. Use `set m : ℕ := ⌊2 * Real.exp B⌋₊ + 1 with hm`. Establish `hm0 : m ≠ 0` using `Nat.succ_ne_zero _`.
+
+Establish `: NeZero m` using `⟨hm0⟩`. Establish `hmgt : 2 * Real.exp B < m`. Rewrite using `[hm]`. Use `push_cast`. Conclude with `Nat.lt_floor_add_one _`.
+
+Establish `hexp1 : 1 ≤ Real.exp B` using `Real.one_le_exp hB0`. Establish `hmle : (m : ℝ) ≤ 5 * Real.exp B`. Rewrite using `[hm]`. Use `push_cast`. Use `Nat.floor_le (show 0 ≤ 2 * Real.exp B by positivity)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hneg : ∀ y, nrm (-y) = nrm y` using `fun y ↦ by`. Use `hhom (-1) y` as an intermediate fact. Simplify using `using this`. Set `f : Λ → (Fin R → ZMod m)` to `fun x i ↦ ((b.repr x i : ℤ) : ZMod m)`.
+
+Establish `hinj : Set.InjOn f {x | nrm x ≤ 1}`. Introduce `x hx y hy hxy`. Assume the negation of the conclusion as `hne`. Establish `hdvd : ∀ i, (m : ℤ) ∣ b.repr (x - y) i` using `fun i ↦ by`. Establish `h` using `congrFun hxy i`.
+
+Simplify using `only [f] at h`. Rewrite `h` using `[ZMod.intCast_eq_intCast_iff_dvd_sub]`. Rewrite using `[map_sub, Finsupp.sub_apply]`. Establish `h'` using `dvd_neg.mpr h`. Rewrite `h'` using `[neg_sub]`. Then use the resulting hypothesis.
+
+Set `z : Λ` to `∑ i, (b.repr (x - y) i / m) • b i`. Establish `hz : (m : ℤ) • z = x - y` using `by conv_rhs => rw [← b.sum_repr (x - y)]`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[smul_smul, Int.mul_ediv_cancel' (hdvd i)]`.
+
+Establish `hz0 : z ≠ 0`. Introduce and unpack `h0`. Rewrite `hz` using `[h0, smul_zero]`. Conclude with `hne (sub_eq_zero.mp hz.symm)`. Establish `h1 : nrm (x - y) ≤ 2`.
+
+Use `htri x (-y)` as an intermediate fact. Rewrite `this` using `[hneg, ← sub_eq_add_neg]`. Establish `hx' : nrm x ≤ 1` using `hx`. Establish `hy' : nrm y ≤ 1` using `hy`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h2 : nrm (x - y) = m * nrm z`. Rewrite using `[← hz, hhom]; push_cast; rw [abs_of_nonneg (by positivity)]`. Establish `h3` using `hsep z hz0`. Establish `h4 : 2 < (m : ℝ) * Real.exp (-B)`. Rewrite using `[Real.exp_neg, ← div_eq_mul_inv, lt_div_iff₀ (Real.exp_pos B)]`.
+
+Conclude with `hmgt`. Establish `: (m : ℝ) * Real.exp (-B) ≤ m * nrm z` using `mul_le_mul_of_nonneg_left h3 (Nat.cast_nonneg m)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfin : {x | nrm x ≤ 1}.Finite` using `Set.Finite.of_finite_image (Set.toFinite _) hinj`. Use `⟨hfin, ?_⟩` and prove the remaining obligations.
+
+Establish `hcard : {x | nrm x ≤ 1}.ncard ≤ m ^ R`. Use `Set.ncard_le_ncard_of_injOn f (t := Set.univ) (fun _ _ ↦ Set.mem_univ _) hinj (Set.toFinite _)` as an intermediate fact. Rewrite `this` using `[Set.ncard_univ, Nat.card_eq_fintype_card, Fintype.card_fun, ZMod.card, Fintype.card_fin]`. Conclude with `this`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Real.exp_nat_mul, Real.exp_add, Real.exp_log (by norm_num)]`.
+-/
 theorem LatticePacking.intersectionNumber_baseChange : LatticePacking.Statement := by
   intro Λ _ _ _ nrm B hB0 htri hhom hsep
   set R := Module.finrank ℤ Λ
@@ -73,6 +100,15 @@ theorem LatticePacking.intersectionNumber_baseChange : LatticePacking.Statement 
     _ = Real.exp (R * (B + Real.log 5)) := by
       rw [Real.exp_nat_mul, Real.exp_add, Real.exp_log (by norm_num)]
 
+/- English proof (translation)
+Use `⟨fun _ ↦ LatticePacking.intersectionNumber_baseChange, fun hB ↦ ?_⟩` and prove the remaining obligations. Introduce `V _ _ L hL B hB0 hsep`. Establish `: Module.Finite ℤ L` using `Module.Finite.iff_fg.mpr hL`. Establish `: Module.IsTorsionFree ℤ V` using `Module.IsTorsionFree.trans_faithfulSMul ℤ ℝ V`. Establish `: Module.Free ℤ L` using `inferInstance`.
+
+Take `⟨hfin, hcard⟩` from `hB L (fun x ↦ ‖(x : V)‖) B hB0 (fun x y ↦ norm_add_le _ _) (fun k x ↦ by`. Express the relevant statement in the definitionally equal form `‖((k • x : L) : V)‖ = _`. Rewrite using `[Submodule.coe_smul, norm_zsmul ℝ k (x : V), Real.norm_eq_abs])`. Use the proof step `(fun x hx ↦ hsep x x.2 fun h ↦ hx (Subtype.ext h))`. Establish `himg : {x : V | x ∈ L ∧ ‖x‖ ≤ 1} = Subtype.val '' {x : L | ‖(x : V)‖ ≤ 1}`.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hn⟩`. Conclude with `⟨⟨x, hx⟩, hn, rfl⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Conclude with `⟨y.2, hy⟩`. Rewrite using `[himg, Set.ncard_image_of_injective _ Subtype.val_injective]`. Conclude with `⟨hfin.image _, hcard⟩`.
+-/
 theorem LatticePacking.equiv :
     GroundTheory.Heights₂.Heights.LatticePacking.Statement ↔
       GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close.LatticePacking.Statement := by

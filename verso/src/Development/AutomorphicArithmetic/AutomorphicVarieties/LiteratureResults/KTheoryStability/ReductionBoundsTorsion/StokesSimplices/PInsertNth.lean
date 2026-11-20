@@ -11,6 +11,13 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 def I {q : ℕ} (ω : V → V [⋀^Fin q]→L[ℝ] ℝ) (y : Fin (q + 1) → V) : ℝ :=
   ∫ t in Δ q, ω (y 0 + ∑ j, t j • (y j.succ - y 0)) fun j => y j.succ - y 0
 
+/- English proof (translation)
+Establish `hsub : Δ m ⊆ Set.pi Set.univ (fun _ : Fin m => Set.Icc (0 : ℝ) 1)`. Introduce `t ht i _`. Use `⟨ht.1 i, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hcl : IsClosed (Δ m)`.
+
+Establish `h1 : IsClosed {t : Fin m → ℝ | ∀ j, 0 ≤ t j}`. Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun j => isClosed_le continuous_const (continuous_apply j)`. Establish `h2 : IsClosed {t : Fin m → ℝ | ∑ j, t j ≤ 1}` using `isClosed_le (continuous_finset_sum _ fun j _ => continuous_apply j) continuous_const`. Conclude with `h1.inter h2`.
+
+Conclude with `(isCompact_univ_pi fun _ => isCompact_Icc).of_isClosed_subset hcl hsub`.
+-/
 lemma isCompact_Δ' (m : ℕ) : IsCompact (Δ m) := by
   have hsub : Δ m ⊆ Set.pi Set.univ (fun _ : Fin m => Set.Icc (0 : ℝ) 1) := by
     intro t ht i _
@@ -26,6 +33,11 @@ lemma isCompact_Δ' (m : ℕ) : IsCompact (Δ m) := by
     exact h1.inter h2
   exact (isCompact_univ_pi fun _ => isCompact_Icc).of_isClosed_subset hcl hsub
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, Fin.succ_zero_eq_one]`. Establish `key : ∀ j : Fin q, s j • (y j.succ.succ - y 0) = s j • (y j.succ.succ - y 1) + s j • (y 1 - y 0)`. Introduce `j`. Rewrite using `[← smul_add]`.
+
+Use `congr 1`. Normalize the expressions using the abelian group laws. Rewrite using `[Finset.sum_congr rfl (fun j _ => key j), Finset.sum_add_distrib, ← Finset.sum_smul, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+-/
 lemma P_cons {q : ℕ} (y : Fin (q + 2) → V) (s : Fin q → ℝ) :
     y 0 + ∑ j, (Fin.cons (1 - ∑ k, s k) s : Fin (q + 1) → ℝ) j • (y j.succ - y 0) =
       y 1 + ∑ j, s j • (y j.succ.succ - y 1) := by
@@ -39,6 +51,9 @@ lemma P_cons {q : ℕ} (y : Fin (q + 2) → V) (s : Fin q → ℝ) :
   rw [Finset.sum_congr rfl (fun j _ => key j), Finset.sum_add_distrib, ← Finset.sum_smul, sub_smul, one_smul]
   abel
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_succAbove _ i]`. Simplify using `only [Fin.insertNth_apply_same, Fin.insertNth_apply_succAbove]`. Rewrite using `[add_assoc]`.
+-/
 lemma P_insertNth {q : ℕ} (y : Fin (q + 2) → V) (i : Fin (q + 1)) (x : ℝ) (s : Fin q → ℝ) :
     y 0 + ∑ j, (i.insertNth x s : Fin (q + 1) → ℝ) j • (y j.succ - y 0) =
       y 0 + x • (y i.succ - y 0) + ∑ j, s j • (y (i.succAbove j).succ - y 0) := by
@@ -46,6 +61,9 @@ lemma P_insertNth {q : ℕ} (y : Fin (q + 2) → V) (i : Fin (q + 1)) (x : ℝ) 
   simp only [Fin.insertNth_apply_same, Fin.insertNth_apply_succAbove]
   rw [add_assoc]
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_succAbove _ i, Fin.sum_univ_succAbove (fun j => t j • (y j.succ - y 0)) i]`. Establish `hne : ∀ j : Fin q, Function.update t i x (i.succAbove j) = t (i.succAbove j)` using `fun j => Function.update_of_ne (Fin.succAbove_ne i j) _ _`. Simplify using `only [hne, Function.update_self, sub_smul]`. Normalize the expressions using the abelian group laws.
+-/
 lemma P_update {q : ℕ} (y : Fin (q + 2) → V) (t : Fin (q + 1) → ℝ) (i : Fin (q + 1)) (x : ℝ) :
     y 0 + ∑ j, (Function.update t i x) j • (y j.succ - y 0) =
       (y 0 + ∑ j, t j • (y j.succ - y 0)) + (x - t i) • (y i.succ - y 0) := by
@@ -55,6 +73,43 @@ lemma P_update {q : ℕ} (y : Fin (q + 2) → V) (t : Fin (q + 1) → ℝ) (i : 
   simp only [hne, Function.update_self, sub_smul]
   abel
 
+/- English proof (translation)
+Establish `hmem : ∀ (m : ℕ) (z : Fin (m + 1) → V), (∀ j, z j ∈ U) → ∀ t ∈ Δ m, z 0 + ∑ j, t j • (z j.succ - z 0) ∈ U`. Introduce `m z hz t ht`. Establish `hw0 : ∀ j ∈ (Finset.univ : Finset (Fin (m + 1))), 0 ≤ (Fin.cons (1 - ∑ k, t k) t : Fin (m + 1) → ℝ) j`. Introduce `j _`. Use `Fin.cases ?_ (fun k => ?_) j` and prove the remaining obligations.
+
+Simplify using `only [Fin.cons_zero]`. Combine the linear relations using `[ht.2]`. Simplify using `only [Fin.cons_succ]`. Conclude with `ht.1 k`. Establish `hw1 : ∑ j, (Fin.cons (1 - ∑ k, t k) t : Fin (m + 1) → ℝ) j = 1`.
+
+Rewrite using `[Fin.sum_univ_succ]`. Simplify using the standard rewrite rules. Establish `hc` using `hUc.sum_mem hw0 hw1 (fun j _ => hz j)`. Use `hc using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Fin.sum_univ_succ]`.
+
+Simplify using `only [Fin.cons_zero, Fin.cons_succ, smul_sub, Finset.sum_sub_distrib, ← Finset.sum_smul, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws. Establish `hφ : ∀ r : Fin q → V, ContDiffOn ℝ 1 (fun z => ω z r) U` using `fun r => (ContinuousAlternatingMap.apply ℝ V ℝ r).contDiff.comp_contDiffOn hω`. Establish `hφd : ∀ r : Fin q → V, ∀ z ∈ U, HasFDerivAt (fun z => ω z r) (fderiv ℝ (fun z => ω z r) z) z` using `fun r z hz => (((hφ r).differentiableOn one_ne_zero z hz).differentiableAt (hU.mem_nhds hz)).hasFDerivAt`. Establish `hφc : ∀ r : Fin q → V, ContinuousOn (fun z => ω z r) U` using `fun r => (hφ r).continuousOn`.
+
+Establish `hφdc : ∀ r : Fin q → V, ContinuousOn (fderiv ℝ (fun z => ω z r)) U` using `fun r => (hφ r).continuousOn_fderiv_of_isOpen hU le_rfl`. Use `set P : (Fin (q + 1) → ℝ) → V := fun t => y 0 + ∑ j, t j • (y j.succ - y 0) with hP`. Establish `hPc : Continuous P` using `continuous_const.add (continuous_finset_sum _ fun j _ => (continuous_apply j).smul continuous_const)`. Establish `hW : IsOpen (P ⁻¹' U)` using `hU.preimage hPc`. Establish `hΔW : Δ (q + 1) ⊆ P ⁻¹' U` using `fun t ht => hmem (q + 1) y hy t ht`.
+
+Establish `hmeas : ∀ m, MeasurableSet (Δ m)` using `fun m => (isCompact_Δ' m).isClosed.measurableSet`. Establish `hslice : ∀ i : Fin (q + 1), ∫ t in Δ (q + 1), fderiv ℝ (fun z => ω z (i.removeNth fun j => y j.succ - y 0)) (P t) (y i.succ - y 0) = (∫ s in Δ q, ω (y 1 + ∑ j, s j • (y j.succ.succ - y 1)) (i.removeNth fun j => y j.succ - y 0)) - I ω (fun j => y (i.succ.succAbove j))`. Introduce `i`. Use `set r : Fin q → V := i.removeNth fun j => y j.succ - y 0 with hr`. Establish `hder : ∀ t ∈ P ⁻¹' U, HasDerivAt (fun x => ω (P (Function.update t i x)) r) (fderiv ℝ (fun z => ω z r) (P t) (y i.succ - y 0)) (t i)`.
+
+Introduce `t ht`. Establish `hx : HasDerivAt (fun x => P (Function.update t i x)) (y i.succ - y 0) (t i)`. Establish `he : (fun x => P (Function.update t i x)) = fun x => P t + (x - t i) • (y i.succ - y 0)`. Use function extensionality and compare the values at `x`. Conclude with `P_update y t i x`.
+
+Rewrite using `[he]`. Simplify using `using (((hasDerivAt_id (t i)).sub_const (t i)).smul_const (y i.succ - y 0)).const_add (P t)`. Conclude with `(hφd r (P t) ht).comp_hasDerivAt_of_eq (t i) hx (by simp)`. Establish `h` using `hS q i (fun t => ω (P t) r) (fun t => fderiv ℝ (fun z => ω z r) (P t) (y i.succ - y 0)) (P ⁻¹' U) hW hΔW ((hφc r).comp hPc.continuousOn (fun t ht => ht)) (((hφdc r).comp hPc.continuousOn (fun t ht => ht)).clm_apply continuousOn_const) hder`. Rewrite using `[h, hH q (fun t => ω (P t) r) i]`.
+
+Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `s`. Simplify using `only [hP]`. Rewrite using `[P_cons]`.
+
+Simplify using `only [I]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Simplify using `only [hP]`. Rewrite using `[P_insertNth, zero_smul, add_zero]`.
+
+Simplify using `only [Fin.succ_succAbove_zero, Fin.succ_succAbove_succ, hr]`. Both sides reduce to the same expression. Establish `hext : Set.EqOn (fun t => extDeriv ω (P t) (fun j => y j.succ - y 0)) (fun t => ∑ i : Fin (q + 1), (-1 : ℝ) ^ (i : ℕ) * fderiv ℝ (fun z => ω z (i.removeNth fun j => y j.succ - y 0)) (P t) (y i.succ - y 0)) (Δ (q + 1))`. Introduce `t ht`. Use `show extDeriv ω (P t) (fun j => y j.succ - y 0) = _`.
+
+Rewrite using `[extDeriv_apply ((hω.differentiableOn one_ne_zero _ (hΔW ht)).differentiableAt (hU.mem_nhds (hΔW ht))) (fun j => y j.succ - y 0)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[zsmul_eq_mul]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Establish `hR : I (extDeriv ω) y = ∑ i : Fin (q + 1), (-1 : ℝ) ^ (i : ℕ) * ∫ t in Δ (q + 1), fderiv ℝ (fun z => ω z (i.removeNth fun j => y j.succ - y 0)) (P t) (y i.succ - y 0)` using `by show ∫ t in Δ (q + 1), extDeriv ω (P t) (fun j => y j.succ - y 0) = _`. Rewrite using `[setIntegral_congr_fun (hmeas _) hext, integral_finset_sum]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← integral_const_mul]`.
+
+Introduce `i _`. Establish `hc` using `(((hφdc (i.removeNth fun j => y j.succ - y 0)).comp hPc.continuousOn (fun t ht => ht)).clm_apply (continuousOn_const (c := y i.succ - y 0))).mono hΔW`. Conclude with `(continuousOn_const.mul hc).integrableOn_compact (isCompact_Δ' _)`. Establish `hface0 : I ω (fun j => y ((0 : Fin (q + 2)).succAbove j)) = ∑ i : Fin (q + 1), (-1 : ℝ) ^ (i : ℕ) * ∫ s in Δ q, ω (y 1 + ∑ j, s j • (y j.succ.succ - y 1)) (i.removeNth fun j => y j.succ - y 0)`. Establish `hQ : ∀ s ∈ Δ q, y 1 + ∑ j, s j • (y j.succ.succ - y 1) ∈ U` using `fun s hs => hmem q (fun j => y j.succ) (fun j => hy _) s hs`.
+
+Establish `e1 : I ω (fun j => y ((0 : Fin (q + 2)).succAbove j)) = ∫ s in Δ q, ∑ i : Fin (q + 1), (-1 : ℝ) ^ (i : ℕ) * ω (y 1 + ∑ j, s j • (y j.succ.succ - y 1)) (i.removeNth fun j => y j.succ - y 0)`. Simplify using `only [I, Fin.succAbove_zero, Fin.succ_zero_eq_one]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Rewrite using `[← hA V q]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `only [Fin.succ_zero_eq_one, sub_sub_sub_cancel_right]`. Rewrite using `[e1, integral_finset_sum]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[integral_const_mul]`. Introduce `i _`. Establish `hc : ContinuousOn (fun s : Fin q → ℝ => y 1 + ∑ j, s j • (y j.succ.succ - y 1)) (Δ q)` using `(continuous_const.add (continuous_finset_sum _ fun j _ => (continuous_apply j).smul continuous_const)).continuousOn`. Conclude with `(continuousOn_const.mul ((hφc (i.removeNth fun j => y j.succ - y 0)).comp hc hQ)).integrableOn_compact (isCompact_Δ' _)`.
+
+Rewrite using `[hR, Fin.sum_univ_succ]`. Simplify using `only [hslice, mul_sub, Finset.sum_sub_distrib, ← hface0, Fin.val_zero, pow_zero, one_mul, Fin.val_succ, pow_succ, mul_neg, mul_one, neg_mul, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem asm (hA : StokesSimplexSubdivision) (hH : SubHyp) (hS : SubSlice) (U : Set V) (hU : IsOpen U)
     (hUc : Convex ℝ U) (q : ℕ) (ω : V → V [⋀^Fin q]→L[ℝ] ℝ) (hω : ContDiffOn ℝ 1 ω U)
     (y : Fin (q + 2) → V) (hy : ∀ j, y j ∈ U) :

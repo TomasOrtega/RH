@@ -18,15 +18,28 @@ def chartIdeal (w : (Σ k, J k) → K) (c : ∀ k, J k) (hc : ∀ k, w ⟨k, c k
   zero_mem' := ⟨0, 0, fun m hm => by simp at hm, U.zero_mem, by simp⟩
   smul_mem' a _ hb := chartPrime_mul w hc a.2 hb
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_chartIdeal {w : (Σ k, J k) → K} {c : ∀ k, J k} {hc : ∀ k, w ⟨k, c k⟩ ≠ 0} {U : Ideal (MRing J)}
     {r : chartRingZ w c} : r ∈ chartIdeal w c hc U ↔ (r : K) ∈ chartPrime w c U :=
   Iff.rfl
 
+/- English proof (translation)
+Introduce and unpack `r ⟨e, g, hg, hgU, hr⟩`. Conclude with `⟨e, g, hg, h hgU, hr⟩`.
+-/
 theorem chartIdeal_mono {w : (Σ k, J k) → K} {c : ∀ k, J k} (hc : ∀ k, w ⟨k, c k⟩ ≠ 0)
     {U U' : Ideal (MRing J)} (h : U ≤ U') : chartIdeal w c hc U ≤ chartIdeal w c hc U' := by
   rintro r ⟨e, g, hg, hgU, hr⟩
   exact ⟨e, g, hg, h hgU, hr⟩
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.ne_top_iff_one]`. Introduce `h`. Establish `h1` using `(mem_chartPrime_iff w hVU hU hXU (r := ((1 : chartRingZ w c) : K)) (e := 0) (k := 1) GroundTheory.Heights₂.Heights.Inter.AvoidRing.isMultiHomog_one (by simp)).mp (mem_chartIdeal.mp h)`. Conclude with `hU.ne_top ((Ideal.eq_top_iff_one U).mpr h1)`.
+
+Introduce `a b hab`. Take `⟨e, k, hk, ha⟩` from `exists_rep w hc a.2`. Take `⟨e', k', hk', hb⟩` from `exists_rep w hc b.2`. Establish `hkk : k * k' ∈ U` using `(mem_chartPrime_iff w hVU hU hXU (r := ((a * b : chartRingZ w c) : K)) (GroundTheory.Heights₂.Heights.Inter.AvoidRing.isMultiHomog_mul hk hk') (by`. Rewrite using `[MulMemClass.coe_mul, map_mul, prod_pow_add]`.
+
+Take the linear combination `((b : K) * ∏ k, w ⟨k, c k⟩ ^ e' k) * ha + (aeval w k) * hb)).mp`. Use the proof step `(mem_chartIdeal.mp hab)`. Break down `hU.mem_or_mem hkk with h | h` into its components or cases. Conclude with `Or.inl ⟨e, k, hk, h, ha⟩`. Conclude with `Or.inr ⟨e', k', hk', h, hb⟩`.
+-/
 theorem chartIdeal_isPrime (w : (Σ k, J k) → K) {c : ∀ k, J k} (hc : ∀ k, w ⟨k, c k⟩ ≠ 0)
     {U : Ideal (MRing J)} (hVU : mCoordIdeal w ≤ U) (hU : U.IsPrime)
     (hXU : ∀ k, (X ⟨k, c k⟩ : MRing J) ∉ U) : (chartIdeal w c hc U).IsPrime := by
@@ -48,6 +61,21 @@ theorem chartIdeal_isPrime (w : (Σ k, J k) → K) {c : ∀ k, J k} (hc : ∀ k,
     · exact Or.inl ⟨e, k, hk, h, ha⟩
     · exact Or.inr ⟨e', k', hk', h, hb⟩
 
+/- English proof (translation)
+Establish `hIW : mCoordIdeal w ⊔ Ideal.span {(X ⟨k, c₀⟩ : MRing J)} ≤ W` using `sup_le hVW ((Ideal.span_singleton_le_iff_mem _).2 hx)`. Use `⟨⟨hWp, hIW⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `Q ⟨hQp, hIQ⟩ hQW`. Establish `hwc : ∀ j, w ⟨j, c j⟩ ≠ 0` using `fun j h => hXc j (hVW ((X_mem_iff w j (c j)).2 h))`. Establish `hVQ : mCoordIdeal w ≤ Q` using `le_sup_left.trans hIQ`.
+
+Establish `hxQ : (X ⟨k, c₀⟩ : MRing J) ∈ Q` using `hIQ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Establish `hXQ : ∀ j, (X ⟨j, c j⟩ : MRing J) ∉ Q` using `fun j h => hXc j (hQW h)`. Establish `hpW` using `chartIdeal_isPrime w hwc hVW hWp hXc`. Establish `hpQ` using `chartIdeal_isPrime w hwc hVQ hQp hXQ`. Set `r : chartRingZ w c` to `⟨w ⟨k, c₀⟩ / w ⟨k, c k⟩, Algebra.subset_adjoin ⟨⟨k, c₀⟩, rfl⟩⟩`.
+
+Establish `hr : r ∈ chartIdeal w c hwc Q`. Use `⟨Pi.single k 1, X ⟨k, c₀⟩, GroundTheory.Heights₂.Heights.Inter.regularityLocalFlat_holds.homog_X k c₀, hxQ, ?_⟩` and prove the remaining obligations. Establish `hprod : ∏ j, w ⟨j, c j⟩ ^ (Pi.single k 1 : B → ℕ) j = w ⟨k, c k⟩`. Rewrite using `[Fintype.prod_eq_single k (fun j hj => by simp [Pi.single_eq_of_ne hj])]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hprod, aeval_X]`. Conclude with `div_mul_cancel₀ _ (hwc k)`. Establish `hne : chartIdeal w c hwc Q ≠ ⊥`. Introduce `h0`. Establish `h1 : r = 0` using `by simpa [h0] using hr`.
+
+Conclude with `div_ne_zero hw (hwc k) (congrArg Subtype.val h1)`. Establish `hmax` using `chart_prime_isMaximal (p := p) w hbir c hwc _ hpQ hne`. Establish `heq` using `hmax.eq_of_le hpW.ne_top (chartIdeal_mono hwc hQW)`. Take `⟨S, hS, hSe⟩` from `hWh`. Establish `hSW : Ideal.span S ≤ W` using `hSe.ge`.
+
+Rewrite using `[hSe, Ideal.span_le]`. Introduce `g hg`. Take `⟨e, he⟩` from `hS g hg`. Establish `hprod : (∏ j, w ⟨j, c j⟩ ^ e j) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun j _ => pow_ne_zero _ (hwc j)`. Establish `hrep : aeval w g * (∏ j, w ⟨j, c j⟩ ^ e j)⁻¹ * ∏ j, w ⟨j, c j⟩ ^ e j = aeval w g` using `inv_mul_cancel_right₀ hprod _`.
+
+Set `t : chartRingZ w c` to `⟨_, form_div_mem_chart w c he⟩`. Establish `htW : t ∈ chartIdeal w c hwc W` using `⟨e, g, he, hSW (Ideal.subset_span hg), hrep⟩`. Rewrite `htW` using `[← heq]`. Conclude with `(mem_chartPrime_iff w hVQ hQp hXQ he hrep).1 (mem_chartIdeal.1 htW)`.
+-/
 theorem mem_minimalPrimes_of_coord (B : Type) [Fintype B] (J : B → Type) [∀ k, Fintype (J k)] (p : ℕ) [Fact p.Prime]
     (K : Type) [Field K] [Algebra (ZMod p) K] [IsFunctionField (ZMod p) K] (w : (Σ k, J k) → K)
     (hbir : Birational w) (W : Ideal (MRing J)) (c : ∀ k, J k) (hWp : W.IsPrime) (hWh : IsMultiHomogIdeal W)

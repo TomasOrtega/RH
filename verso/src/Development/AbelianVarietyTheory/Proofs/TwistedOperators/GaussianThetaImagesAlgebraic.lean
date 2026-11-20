@@ -18,6 +18,11 @@ namespace GlobalTheory.ThetaGaussAlg
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `only [fockF, pureTensorO, pureTensorL]`. Establish `h1 : (1 : MvPolynomial (FVar D X.rank M.rank) ℂ) = MvPolynomial.basisMonomials (FVar D X.rank M.rank) ℂ 0`. Rewrite using `[MvPolynomial.coe_basisMonomials]`. Both sides reduce to the same expression. Rewrite using `[h1, Module.Basis.constr_basis]`.
+
+Simplify using `[opPow]`.
+-/
 theorem fockF_one (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (ε : Bool) {M X : HSp D} (A : Fr M) (B : Fr X)
     (f : WO M X → ℂ) : fockF ψ θ ε A B f 1 = f := by
   simp only [fockF, pureTensorO, pureTensorL]
@@ -27,6 +32,13 @@ theorem fockF_one (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (ε : Bool) {
   rw [h1, Module.Basis.constr_basis]
   simp [opPow]
 
+/- English proof (translation)
+Introduce `hdet`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Establish `hb : ∀ i, V.hT (V.frame i) (∑ j, v j • V.frame j) = 0`. Introduce `i`. Establish `hi : V.hT (V.frame i) (∑ j, v j • V.frame j) = (V.gram *ᵥ v) i`.
+
+Simplify using `only [map_sum, map_smul, smul_eq_mul, Matrix.mulVec, dotProduct, Formalism.BasicNotions.HSpace.gram]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Rewrite using `[hi, hv]`. Both sides reduce to the same expression. Establish `hy : (∑ j, v j • V.frame j) = 0`.
+
+Use `V.nondeg.2 _ fun x => ?_` and prove the remaining obligations. Rewrite using `[← V.frame.sum_repr x, map_sum V.hT, LinearMap.sum_apply]`. Conclude with `Finset.sum_eq_zero fun i _ => by rw [map_smulₛₗ, LinearMap.smul_apply, hb, smul_zero]`. Conclude with `hv0 (funext (Fintype.linearIndependent_iff.mp V.frame.linearIndependent v hy))`.
+-/
 theorem det_gram_ne_zero (V : HSp D) : V.gram.det ≠ 0 := by
   intro hdet
   obtain ⟨v, hv0, hv⟩ := Matrix.exists_mulVec_eq_zero_iff.mpr hdet
@@ -44,6 +56,9 @@ theorem det_gram_ne_zero (V : HSp D) : V.gram.det ≠ 0 := by
     exact Finset.sum_eq_zero fun i _ => by rw [map_smulₛₗ, LinearMap.smul_apply, hb, smul_zero]
   exact hv0 (funext (Fintype.linearIndependent_iff.mp V.frame.linearIndependent v hy))
 
+/- English proof (translation)
+Establish `hu : IsUnit S.gram.det` using `isUnit_iff_ne_zero.mpr (det_gram_ne_zero S)`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ hu, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ hu, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem incM_gram_inv (S : HSp D) :
     GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM S.gram * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM S.gram⁻¹ = 1 ∧
       GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM S.gram⁻¹ * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM S.gram = 1 := by
@@ -72,6 +87,13 @@ def crd (S X : HSp D) {k : ℕ} (e : Fin k ≃ Fin X.rank) : Matrix (Fin S.rank)
     rw [← Matrix.add_mul]
     rfl
 
+/- English proof (translation)
+Introduce `_ _ D ψ θ _ hθ W W₁ X A A₁ B α β _ ωA ωB _ _ e Bs Γ Xc om om' h _ _ R Rf hM f₀ φ hg hφ hvac`. Take `⟨f, hf, hd⟩` from `GlobalTheory.T.thetaTransform_gaussianVacuum_isFiniteDatum D ψ θ hθ false W₁ X A₁ B e.symm Bs hM.triple.base h.ψ Γ.V' Γ.W Γ.q (W₁.rank - Γ.q) (W.rank + W₁.rank - (Γ.p + Γ.q)) (Γ.p + Γ.q) (by rw [h.JW₁]; simp) (by rw [h.JX, Matrix.reindex_apply, Equiv.symm_symm]) hM.triple.geo.hV' …`. Take `⟨τ, h1, -, h3, h4⟩` from `h.cart w`. Conclude with `⟨τ, h1, by rw [h3]; simp, by rw [h4, Matrix.reindex_apply, Equiv.symm_symm]⟩)`. Use the proof step `Γ.M' hM.triple.geo.hM' (crd W₁ X e) (fun u => by simp [crd]) f₀ φ hg hφ hvac`.
+
+Establish `key : GlobalTheory.TripleRead.thO Γ.M' ψ (sgn false W₁).gram e (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f₀ φ) = f`. Use function extensionality and compare the values at `x`. Establish `hx : crd W₁ X e (GlobalTheory.TripleRead.ptO W₁.gram e x) = x` using `(crd W₁ X e).apply_symm_apply x`. Establish `hθx` using `hd.2 (GlobalTheory.TripleRead.ptO W₁.gram e x)`. Rewrite `hθx` using `[hx]`.
+
+Conclude with `hθx`. Rewrite using `[key]`. Conclude with `Submodule.subset_span ⟨f, 1, hf, (fockF_one ψ θ false A₁ B f).symm⟩`.
+-/
 theorem thO_pure_gauss_mem_algF : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →

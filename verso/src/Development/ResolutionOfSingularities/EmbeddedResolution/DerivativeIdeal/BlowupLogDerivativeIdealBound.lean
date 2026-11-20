@@ -32,22 +32,42 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem ideal_mul_apply {Y : Scheme.{u}} (A B : Y.IdealSheafData) (V : Y.affineOpens) :
     (A * B).ideal V = A.ideal V * B.ideal V := rfl
 
+/- English proof (translation)
+The claim follows from `congrFun (Scheme.IdealSheafData.ideal_pow A n) V`.
+-/
 private theorem ideal_pow_apply {Y : Scheme.{u}} (A : Y.IdealSheafData) (n : ℕ)
     (V : Y.affineOpens) : (A ^ n).ideal V = A.ideal V ^ n :=
   congrFun (Scheme.IdealSheafData.ideal_pow A n) V
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 private theorem ideal_top_eq_top {Y : Scheme.{u}} (V : Y.affineOpens) :
     (⊤ : Y.IdealSheafData).ideal V = ⊤ := by simp
 
+/- English proof (translation)
+The claim follows from `Scheme.IdealSheafData.comap_top _`.
+-/
 private theorem restrictIdeal_top_eq_top {Y : Scheme.{u}} (V : Y.Opens) :
     restrictIdeal (⊤ : Y.IdealSheafData) V = ⊤ := Scheme.IdealSheafData.comap_top _
 
+/- English proof (translation)
+The claim follows from `h V`.
+-/
 private theorem ideal_le_ideal_of_le {Y : Scheme.{u}} {A B : Y.IdealSheafData} (h : A ≤ B)
     (V : Y.affineOpens) : A.ideal V ≤ B.ideal V := h V
 
+/- English proof (translation)
+Use `le_antisymm ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, h x]`. Conclude with `Ideal.mem_map_of_mem _ hx`.
+
+Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, ← h x]`. Conclude with `Ideal.mem_map_of_mem _ hx`.
+-/
 private theorem ideal_map_congr {R S : Type u} [CommRing R] [CommRing S] {F G : Type u}
     [FunLike F R S] [RingHomClass F R S] [FunLike G R S] [RingHomClass G R S]
     (f : F) (g : G) (h : ∀ x, f x = g x) (I : Ideal R) :
@@ -62,6 +82,9 @@ private theorem ideal_map_congr {R S : Type u} [CommRing R] [CommRing S] {F G : 
     rw [Ideal.mem_comap, ← h x]
     exact Ideal.mem_map_of_mem _ hx
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem logDerivIdealSheafIterate_congr_hom (k : Type u) [CommRing k]
     [IsNoetherianRing k] {Y : Scheme.{u}} {q q' : Y ⟶ Spec (CommRingCat.of k)}
     [LocallyOfFiniteType q] [LocallyOfFiniteType q'] (h : q = q') (P : Y.IdealSheafData) (r : ℕ)
@@ -70,6 +93,17 @@ private theorem logDerivIdealSheafIterate_congr_hom (k : Type u) [CommRing k]
   subst h
   rfl
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨⟨V, hVaff⟩, hxV, hVU⟩ : ∃ V : X₁.affineOpens, x₁ ∈ V.1 ∧ V.1 ≤ π ⁻¹ᵁ W := by`. Apply `AlgebraicGeometry.Scheme.exists_affineOpens_mem_le` to reduce the goal to its premises. Conclude with `hx₁`. Use `⟨⟨V, hVaff⟩, hxV, hVU, ?_⟩` and prove the remaining obligations. Establish `: IsOpenImmersion (π ∣_ W)` using `inferInstance`.
+
+Establish `: LocallyOfFiniteType (W.ι ≫ p)` using `inferInstance`. Establish `: LocallyOfFiniteType ((π ∣_ W) ≫ (W.ι ≫ p))` using `inferInstance`. Establish `: LocallyOfFiniteType ((π ⁻¹ᵁ W).ι ≫ (π ≫ p))` using `inferInstance`. Establish `hq : (π ∣_ W) ≫ (W.ι ≫ p) = (π ⁻¹ᵁ W).ι ≫ (π ≫ p)`. Rewrite using `[← Category.assoc, morphismRestrict_ι, Category.assoc]`.
+
+Establish `hP : (P.comap W.ι).comap (π ∣_ W) = (P.comap π).comap (π ⁻¹ᵁ W).ι`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, morphismRestrict_ι]`. Establish `hKc : (K.comap W.ι).comap (π ∣_ W) = (K.comap π).comap (π ⁻¹ᵁ W).ι`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, morphismRestrict_ι]`. Establish `e1 : ((logDerivIdealSheafIterate k p P a K).comap π).comap (π ⁻¹ᵁ W).ι = ((logDerivIdealSheafIterate k p P a K).comap W.ι).comap (π ∣_ W)`.
+
+Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, morphismRestrict_ι]`. Establish `e2 : ((logDerivIdealSheafIterate k p P a K).comap W.ι).comap (π ∣_ W) = (logDerivIdealSheafIterate k (W.ι ≫ p) (P.comap W.ι) a (K.comap W.ι)).comap (π ∣_ W)`. Rewrite using `[logDerivIdealSheafIterate_comap_of_isOpenImmersion k p W.ι P K a]`. Establish `e3 : (logDerivIdealSheafIterate k (W.ι ≫ p) (P.comap W.ι) a (K.comap W.ι)).comap (π ∣_ W) = logDerivIdealSheafIterate k ((π ∣_ W) ≫ (W.ι ≫ p)) ((P.comap W.ι).comap (π ∣_ W)) a ((K.comap W.ι).comap (π ∣_ W))` using `logDerivIdealSheafIterate_comap_of_isOpenImmersion k (W.ι ≫ p) (π ∣_ W) (P.comap W.ι) (K.comap W.ι) a`. Establish `e4 : logDerivIdealSheafIterate k ((π ∣_ W) ≫ (W.ι ≫ p)) ((P.comap W.ι).comap (π ∣_ W)) a ((K.comap W.ι).comap (π ∣_ W)) = logDerivIdealSheafIterate k ((π ⁻¹ᵁ W).ι ≫ (π ≫ p)) ((P.comap π).comap (π ⁻¹ᵁ W).ι) a ((K.comap π).comap (π ⁻¹ᵁ W).ι)`.
+
+Rewrite using `[hP, hKc]`. Conclude with `logDerivIdealSheafIterate_congr_hom k hq _ _ _`. Establish `e5 : (logDerivIdealSheafIterate k (π ≫ p) (P.comap π) a (K.comap π)).comap (π ⁻¹ᵁ W).ι = logDerivIdealSheafIterate k ((π ⁻¹ᵁ W).ι ≫ (π ≫ p)) ((P.comap π).comap (π ⁻¹ᵁ W).ι) a ((K.comap π).comap (π ⁻¹ᵁ W).ι)` using `logDerivIdealSheafIterate_comap_of_isOpenImmersion k (π ≫ p) (π ⁻¹ᵁ W).ι (P.comap π) (K.comap π) a`. Establish `hmain : restrictIdeal ((logDerivIdealSheafIterate k p P a K).comap π) (π ⁻¹ᵁ W) = restrictIdeal (logDerivIdealSheafIterate k (π ≫ p) (P.comap π) a (K.comap π)) (π ⁻¹ᵁ W)` using `e1.trans (e2.trans (e3.trans (e4.trans e5.symm)))`. Conclude with `ideal_eq_of_restrictIdeal_eq _ _ ⟨V, hVaff⟩ (FunctorialResolution.EmbeddedResolution.restrictIdeal_eq_of_le_of_eq hVU hmain)`.
+-/
 theorem exists_affineOpen_comap_logDerivIdealSheafIterate_eq (k : Type u) [Field k] [CharZero k]
     {X X₁ : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
     (π : X₁ ⟶ X) [AlgebraicGeometry.Smooth (π ≫ p)] (W : X.Opens)
@@ -122,6 +156,9 @@ theorem exists_affineOpen_comap_logDerivIdealSheafIterate_eq (k : Type u) [Field
     e1.trans (e2.trans (e3.trans (e4.trans e5.symm)))
   exact ideal_eq_of_restrictIdeal_eq _ _ ⟨V, hVaff⟩ (FunctorialResolution.EmbeddedResolution.restrictIdeal_eq_of_le_of_eq hVU hmain)
 
+/- English proof (translation)
+The claim follows from `smooth_comp_of_isBlowupAlongIdealSheaf hsnc hπ ∃ V : X₁.affineOpens, x₁ ∈ V.1 ∧ ((logDerivIdealSheafIterate k p H a K).comap π).ideal V ≤ (Blowup.exceptionalIdeal π Z ^ (c - a) * logDerivIdealSheafIterate k (π ≫ p) (Blowup.strictTransform π Z H) a (controlledTransform π Z K c hπ …`.
+-/
 theorem exists_affineOpen_comap_logDerivIdealSheafIterate_le (k : Type u) [Field k] [CharZero k]
     {X X₁ : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
     (π : X₁ ⟶ X) [IsLocallyNoetherian X₁] (Z H : X.IdealSheafData) (E : List X.IdealSheafData)
@@ -292,6 +329,9 @@ theorem exists_affineOpen_comap_logDerivIdealSheafIterate_le (k : Type u) [Field
           logDerivIdealSheafIterate_ideal, hSTideal, Ideal.span_singleton_pow]
         exact key
 
+/- English proof (translation)
+The claim follows from `smooth_comp_of_isBlowupAlongIdealSheaf hsnc hπ (logDerivIdealSheafIterate k p H a K).comap π ≤ Blowup.exceptionalIdeal π Z ^ (c - a) * logDerivIdealSheafIterate k (π ≫ p) (Blowup.strictTransform π Z H) a (controlledTransform π Z K c hπ hK) := by have hsm : AlgebraicGeometry.Smoot …`.
+-/
 theorem comap_logDerivIdealSheafIterate_le_exceptionalIdeal_pow_mul (k : Type u) [Field k] [CharZero k]
     {X X₁ : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
     (π : X₁ ⟶ X) [IsLocallyNoetherian X₁] (Z H : X.IdealSheafData) (E : List X.IdealSheafData)

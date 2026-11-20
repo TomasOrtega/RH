@@ -6,6 +6,21 @@ namespace MassDataIdxEmb
 
 open Metric
 
+/- English proof (translation)
+Establish `hnorm : ∀ x : K, ‖x‖ ≤ ‖c0‖ → ‖c1 + x‖ = 1`. Introduce `x hx`. Establish `hne : ‖c1‖ ≠ ‖x‖` using `by rw [h1]; exact (lt_of_le_of_lt hx h0).ne'`. Rewrite using `[IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm hne, h1]`. Conclude with `max_eq_left (hx.trans h0.le)`.
+
+Establish `hne0 : ∀ x : K, ‖x‖ ≤ ‖c0‖ → c1 + x ≠ 0` using `fun x hx h => by`. Establish `h'` using `hnorm x hx`. Rewrite `h'` using `[h, norm_zero]`. Conclude with `zero_ne_one h'`. Use `set f : K → K := fun x => -c0 / (c1 + x) with hf`.
+
+Establish `hmaps : Set.MapsTo f (closedBall 0 ‖c0‖) (closedBall 0 ‖c0‖)`. Introduce `x hx`. Rewrite `hx`, the goal using `[mem_closedBall_zero_iff]`. Simplify using `only [hf, norm_div, norm_neg, hnorm x hx, div_one, le_refl]`. Use `haveI : IsClosed (closedBall (0 : K) ‖c0‖) := isClosed_closedBall`.
+
+Use `haveI : CompleteSpace (closedBall (0 : K) ‖c0‖) := IsClosed.completeSpace_coe`. Use `haveI : Nonempty (closedBall (0 : K) ‖c0‖) := ⟨⟨0, mem_closedBall_self (norm_nonneg _)⟩⟩`. Establish `hcon : ContractingWith ⟨‖c0‖, norm_nonneg _⟩ (hmaps.restrict f _ _)`. Use `⟨NNReal.coe_lt_coe.1 (by rw [NNReal.coe_one]; exact h0), LipschitzWith.of_dist_le_mul fun a b => ?_⟩` and prove the remaining obligations. Establish `ha` using `mem_closedBall_zero_iff.1 a.2`.
+
+Establish `hb` using `mem_closedBall_zero_iff.1 b.2`. Rewrite using `[Subtype.dist_eq, Subtype.dist_eq, dist_eq_norm, dist_eq_norm]`. Use `show ‖f a - f b‖ ≤ ‖c0‖ * ‖(a : K) - b‖`. Establish `he : f a - f b = c0 * ((a : K) - b) / ((c1 + a) * (c1 + b))`. Simplify using `only [hf]`.
+
+Clear denominators, using `[hne0 _ ha, hne0 _ hb]` for the nonvanishing conditions. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he, norm_div, norm_mul, norm_mul, hnorm _ ha, hnorm _ hb, mul_one, div_one]`. Take `⟨x0, hx0e⟩ : ∃ x0 : closedBall (0 : K) ‖c0‖, hmaps.restrict f _ _ x0 = x0` from `⟨_, hcon.fixedPoint_isFixedPt⟩`. Establish `hfix : f (x0 : K) = x0` using `congrArg Subtype.val hx0e`.
+
+Use `⟨(x0 : K), ?_⟩` and prove the remaining obligations. Establish `hx0` using `hne0 _ (mem_closedBall_zero_iff.1 x0.2)`. Simplify using `only [hf] at hfix`. Rewrite `hfix` using `[div_eq_iff hx0]`. Take the linear combination `-hfix`.
+-/
 theorem quad_root {K : Type*} [NormedField K] [IsUltrametricDist K] [CompleteSpace K]
     (c0 c1 : K) (h1 : ‖c1‖ = 1) (h0 : ‖c0‖ < 1) :
     ∃ x : K, x * x + c1 * x + c0 = 0 := by

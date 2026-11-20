@@ -28,6 +28,9 @@ def toH0OfCocycle (φ : M →ₗ[R] Cech.Cochain G 0) (hφ : ∀ m, Cech.d G ρ 
   Submodule.mkQ _ ∘ₗ LinearMap.codRestrict (LinearMap.ker (Cech.d G ρ 0)) φ
     (fun m => LinearMap.mem_ker.mpr (hφ m))
 
+/- English proof (translation)
+Establish `e : toH0OfCocycle φ hφ m = (Submodule.Quotient.mk (⟨φ m, LinearMap.mem_ker.mpr (hφ m)⟩ : LinearMap.ker (Cech.d G ρ 0)) : Cech.H G ρ 0)` using `rfl`. Rewrite using `[e]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).trans (Submodule.mem_comap.trans (Submodule.mem_bot R))`.
+-/
 theorem toH0OfCocycle_eq_zero_iff (φ : M →ₗ[R] Cech.Cochain G 0) (hφ : ∀ m, Cech.d G ρ 0 (φ m) = 0) (m : M) :
     toH0OfCocycle φ hφ m = 0 ↔ φ m = 0 := by
   have e : toH0OfCocycle φ hφ m = (Submodule.Quotient.mk (⟨φ m, LinearMap.mem_ker.mpr (hφ m)⟩ :
@@ -35,6 +38,11 @@ theorem toH0OfCocycle_eq_zero_iff (φ : M →ₗ[R] Cech.Cochain G 0) (hφ : ∀
   rw [e]
   exact (Submodule.Quotient.mk_eq_zero _).trans (Submodule.mem_comap.trans (Submodule.mem_bot R))
 
+/- English proof (translation)
+Introduce `ξ`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ ξ`. Take `⟨m, hm⟩` from `h z (LinearMap.mem_ker.mp z.2)`. Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `e : toH0OfCocycle φ hφ m = (Submodule.Quotient.mk (⟨φ m, LinearMap.mem_ker.mpr (hφ m)⟩ : LinearMap.ker (Cech.d G ρ 0)) : Cech.H G ρ 0)` using `rfl`.
+
+Rewrite using `[e]`. Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext hm)`.
+-/
 theorem toH0OfCocycle_surjective (φ : M →ₗ[R] Cech.Cochain G 0) (hφ : ∀ m, Cech.d G ρ 0 (φ m) = 0)
     (h : ∀ z : Cech.Cochain G 0, Cech.d G ρ 0 z = 0 → ∃ m, φ m = z) : Function.Surjective (toH0OfCocycle φ hφ) := by
   intro ξ
@@ -46,6 +54,9 @@ theorem toH0OfCocycle_surjective (φ : M →ₗ[R] Cech.Cochain G 0) (hφ : ∀ 
   rw [e]
   exact congrArg Submodule.Quotient.mk (Subtype.ext hm)
 
+/- English proof (translation)
+Establish `hker : LinearMap.ker (toH0OfCocycle φ hφ) = K`. Use extensionality with `m`. Rewrite using `[LinearMap.mem_ker, toH0OfCocycle_eq_zero_iff, hK]`. Rewrite using `[← hker]`. Conclude with `(LinearMap.quotKerEquivOfSurjective _ (toH0OfCocycle_surjective φ hφ h)).length_eq`.
+-/
 theorem length_quotient_eq_length_H0 (φ : M →ₗ[R] Cech.Cochain G 0) (hφ : ∀ m, Cech.d G ρ 0 (φ m) = 0)
     (h : ∀ z : Cech.Cochain G 0, Cech.d G ρ 0 z = 0 → ∃ m, φ m = z) (K : Submodule R M)
     (hK : ∀ m, φ m = 0 ↔ m ∈ K) : Module.length R (M ⧸ K) = Module.length R (Cech.H G ρ 0) := by
@@ -55,6 +66,9 @@ theorem length_quotient_eq_length_H0 (φ : M →ₗ[R] Cech.Cochain G 0) (hφ : 
   rw [← hker]
   exact (LinearMap.quotKerEquivOfSurjective _ (toH0OfCocycle_surjective φ hφ h)).length_eq
 
+/- English proof (translation)
+Rewrite using `[Cech.sgn, ← mul_pow]`. Evaluate the numerical expressions.
+-/
 theorem sgn_mul_self' (L : Finset (Fin n)) (j : Fin n) : Cech.sgn L j * Cech.sgn L j = 1 := by
   rw [Cech.sgn, ← mul_pow]
   norm_num
@@ -66,6 +80,9 @@ section Quot
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ}
   {x : Fin (N + 1) → Ω} {E : Type w} [AddCommGroup E] [Module Ω E] [Module S E] [IsScalarTower S Ω E]
 
+/- English proof (translation)
+The claim follows from `(Submodule.mem_iInf _).mp ht I`.
+-/
 theorem mem_sub_of_mem_secs {F : SubSystem S x E} {t : E} (ht : t ∈ F.secs) (I : Chart x) :
     t ∈ F.sub I :=
   (Submodule.mem_iInf _).mp ht I
@@ -84,6 +101,9 @@ def qres (F₁ F₂ : SubSystem S x E) (I J : Chart x) (h : I.1 ⊆ J.1) :
 def toCochain (F₁ F₂ : SubSystem S x E) :=
   cochainOf (R := S) (G := fun I => F₁.sub I ⧸ SubSystem.quotSub F₁ F₂ I) (fun I => secsTo F₁ F₂ I)
 
+/- English proof (translation)
+Establish `hv : ∀ (I J : Chart x) (h : I.1 ⊆ J.1), qres F₁ F₂ I J h (secsTo F₁ F₂ I t) = secsTo F₁ F₂ J t` using `fun _ _ _ => rfl`. Conclude with `Cech.d_zero_of_compat (fun I => secsTo F₁ F₂ I t) hv`.
+-/
 theorem d_toCochain (F₁ F₂ : SubSystem S x E) (t : F₁.secs) :
     Cech.d (fun I => F₁.sub I ⧸ SubSystem.quotSub F₁ F₂ I) (qres F₁ F₂) 0
       (toCochain F₁ F₂ t) = 0 := by
@@ -94,11 +114,21 @@ theorem d_toCochain (F₁ F₂ : SubSystem S x E) (t : F₁.secs) :
 def sing {a : Fin (N + 1)} (ha : a ∈ support x) : Cech.Idx (support x) 0 :=
   ⟨⟨{a}, Finset.singleton_nonempty a, Finset.singleton_subset_iff.mpr ha⟩, Finset.card_singleton a⟩
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `Finset.card_eq_one.mp I.2`. Establish `hmem : a ∈ support x` using `I.1.2.2 (by rw [ha]; exact Finset.mem_singleton_self a)`. Conclude with `⟨a, hmem, Subtype.ext (Subtype.ext ha)⟩`.
+-/
 theorem eq_sing (I : Cech.Idx (support x) 0) : ∃ (a : Fin (N + 1)) (ha : a ∈ support x), I = sing ha := by
   obtain ⟨a, ha⟩ := Finset.card_eq_one.mp I.2
   have hmem : a ∈ support x := I.1.2.2 (by rw [ha]; exact Finset.mem_singleton_self a)
   exact ⟨a, hmem, Subtype.ext (Subtype.ext ha)⟩
 
+/- English proof (translation)
+Rewrite using `[Submodule.mem_comap, Submodule.subtype_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[SubSystem.secs, Submodule.mem_iInf]`. Introduce `T`.
+
+Take `⟨a, haT⟩` from `T.2.1`. Establish `ha : a ∈ support x` using `T.2.2 haT`. Establish `h1 : (Submodule.Quotient.mk (⟨(t : E), mem_sub_of_mem_secs t.2 _⟩ : F₁.sub (sing ha).1) : F₁.sub (sing ha).1 ⧸ SubSystem.quotSub F₁ F₂ (sing ha).1) = 0` using `congrFun h (sing ha)`. Establish `h2 : (t : E) ∈ F₂.sub (sing ha).1` using `(Submodule.Quotient.mk_eq_zero (SubSystem.quotSub F₁ F₂ (sing ha).1)).mp h1`. Conclude with `F₂.mono _ T (Finset.singleton_subset_iff.mpr haT) _ h2`.
+
+Introduce `h`. Use function extensionality and compare the values at `I`. Use `show (Submodule.Quotient.mk (⟨(t : E), mem_sub_of_mem_secs t.2 _⟩ : F₁.sub I.1) : F₁.sub I.1 ⧸ SubSystem.quotSub F₁ F₂ I.1) = 0`. Conclude with `(Submodule.Quotient.mk_eq_zero (SubSystem.quotSub F₁ F₂ I.1)).mpr (mem_sub_of_mem_secs h I.1)`.
+-/
 theorem toCochain_eq_zero_iff (F₁ F₂ : SubSystem S x E) (t : F₁.secs) :
     toCochain F₁ F₂ t = 0 ↔ t ∈ F₂.secs.comap F₁.secs.subtype := by
   rw [Submodule.mem_comap, Submodule.subtype_apply]
@@ -119,6 +149,11 @@ theorem toCochain_eq_zero_iff (F₁ F₂ : SubSystem S x E) (t : F₁.secs) :
         F₁.sub I.1 ⧸ SubSystem.quotSub F₁ F₂ I.1) = 0
     exact (Submodule.Quotient.mk_eq_zero (SubSystem.quotSub F₁ F₂ I.1)).mpr (mem_sub_of_mem_secs h I.1)
 
+/- English proof (translation)
+Rewrite using `[Cech.d_apply]`. Establish `: (⟨∑ j : J.1.1, Cech.sgn J.1.1 j • u (Cech.face J j), Submodule.sum_mem _ fun j _ => zsmul_mem (F₁.mono _ _ (Cech.face_subset J j) _ (hu (Cech.face J j))) _⟩ : F₁.sub J.1) = ∑ j : J.1.1, Cech.sgn J.1.1 j • F₁.res _ J.1 (Cech.face_subset J j) ⟨u (Cech.face J j), hu _⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[SubSystem.res]`. Rewrite using `[this, ← Submodule.mkQ_apply, map_sum]`.
+
+Simplify using `only [map_zsmul]`. Both sides reduce to the same expression.
+-/
 theorem d_mk (F₁ F₂ : SubSystem S x E) (u : Cech.Idx (support x) 0 → E) (hu : ∀ I, u I ∈ F₁.sub I.1)
     (J : Cech.Idx (support x) 1) :
     Cech.d (fun I => F₁.sub I ⧸ SubSystem.quotSub F₁ F₂ I) (qres F₁ F₂) 0
@@ -139,6 +174,35 @@ theorem d_mk (F₁ F₂ : SubSystem S x E) (u : Cech.Idx (support x) 0 → E) (h
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hrep : ∀ I : Cech.Idx (support x) 0, ∃ v : E, ∃ hv : v ∈ F₁.sub I.1, (Submodule.Quotient.mk ⟨v, hv⟩ : F₁.sub I.1 ⧸ SubSystem.quotSub F₁ F₂ I.1) = z I`. Introduce `I`. Take `⟨⟨v, hv⟩, h⟩` from `Submodule.Quotient.mk_surjective _ (z I)`. Conclude with `⟨v, hv, h⟩`. Use `choose v hv hvz using hrep`.
+
+Establish `hz' : z = fun I => Submodule.Quotient.mk ⟨v I, hv I⟩` using `funext fun I => (hvz I).symm`. Establish `hpair : ∀ J : Cech.Idx (support x) 1, ∑ j : J.1.1, Cech.sgn J.1.1 j • v (Cech.face J j) ∈ F₂.sub J.1`. Introduce `J`. Establish `e` using `congrFun hz J`. Rewrite `e` using `[hz', d_mk]`.
+
+Conclude with `(Submodule.Quotient.mk_eq_zero (SubSystem.quotSub F₁ F₂ J.1)).mp e`. Set `V : Finset (Fin (N + 1)) → E` to `fun T => if h : (T.Nonempty ∧ T ⊆ support x) ∧ T.card = 0 + 1 then v ⟨⟨T, h.1⟩, h.2⟩ else 0`. Establish `hV : ∀ I : Cech.Idx (support x) 0, V I.1.1 = v I` using `fun I => by`. Simplify using `only [V]`. Rewrite using `[dif_pos ⟨I.1.2, I.2⟩]`.
+
+Establish `hVpair : ∀ (a b : Fin (N + 1)) (ha : a ∈ support x) (hb : b ∈ support x) (T : Chart x), a ∈ T.1 → b ∈ T.1 → V {a} - V {b} ∈ F₂.sub T`. Introduce `a b ha hb T haT hbT`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[sub_self]`.
+
+Conclude with `Submodule.zero_mem _`. Establish `hsupp : ({a, b} : Finset (Fin (N + 1))) ⊆ support x`. Rewrite using `[Finset.insert_subset_iff, Finset.singleton_subset_iff]`. Conclude with `⟨ha, hb⟩`. Set `J : Cech.Idx (support x) 1` to `⟨⟨{a, b}, Finset.insert_nonempty _ _, hsupp⟩, Finset.card_pair hab⟩`.
+
+Establish `e` using `hpair J`. Establish `hj : ∀ j : J.1.1, v (Cech.face J j) = V (J.1.1.erase j)` using `fun j => (hV (Cech.face J j)).symm`. Simplify using `only [hj] at e`. Establish `e2` using `Cech.sum_sgn_of_card_two (J := ({a, b} : Finset (Fin (N + 1)))) (Finset.card_pair hab)`. Rewrite `e` using `[Finset.sum_coe_sort ({a, b} : Finset (Fin (N + 1))) (fun j => Cech.sgn {a, b} j • V (({a, b} : Finset (Fin (N + 1))).erase j))]`.
+
+Rewrite `e`, `e2` using `[Finset.sum_pair hab]`. Establish `ea : ({a, b} : Finset (Fin (N + 1))).erase a = {b}` using `Finset.erase_insert (by simpa using hab)`. Establish `eb : ({a, b} : Finset (Fin (N + 1))).erase b = {a}`. Rewrite using `[Finset.pair_comm]`. Conclude with `Finset.erase_insert (by simpa using Ne.symm hab)`.
+
+Rewrite `e` using `[ea, eb, eq_neg_of_add_eq_zero_right e2, neg_smul, ← sub_eq_add_neg, ← smul_sub]`. Establish `e3` using `zsmul_mem e (Cech.sgn {a, b} a)`. Rewrite `e3` using `[smul_smul, sgn_mul_self', one_smul]`. Establish `e4 : V {a} - V {b} ∈ F₂.sub J.1`. Rewrite using `[← neg_sub]`.
+
+Conclude with `neg_mem e3`. Use `F₂.mono J.1 T ?_ _ e4` and prove the remaining obligations. Rewrite using `[Finset.insert_subset_iff, Finset.singleton_subset_iff]`. Conclude with `⟨haT, hbT⟩`. Set `s : Chart x → E` to `fun I => V {I.1.min' I.2.1}`.
+
+Establish `hs : ∀ I, s I ∈ F₁.sub I`. Introduce `I`. Establish `hm` using `I.1.min'_mem I.2.1`. Establish `h1 : V {I.1.min' I.2.1} ∈ F₁.sub (sing (I.2.2 hm)).1`. Rewrite using `[show V {I.1.min' I.2.1} = v (sing (I.2.2 hm)) from hV (sing (I.2.2 hm))]`.
+
+Conclude with `hv _`. Conclude with `F₁.mono _ I (Finset.singleton_subset_iff.mpr hm) _ h1`. Establish `hcomp : ∀ I₁ I₂ : Chart x, I₁.1 ⊆ I₂.1 → s I₁ - s I₂ ∈ F₂.sub I₂`. Introduce `I₁ I₂ h`. Conclude with `hVpair _ _ (I₁.2.2 (I₁.1.min'_mem I₁.2.1)) (I₂.2.2 (I₂.1.min'_mem I₂.2.1)) I₂ (h (I₁.1.min'_mem I₁.2.1)) (I₂.1.min'_mem I₂.2.1)`.
+
+Take `⟨t, ht, hts⟩` from `hlift s hs hcomp`. Use `⟨⟨t, ht⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hz']`. Use function extensionality and compare the values at `I`. Take `⟨a, ha, rfl⟩` from `eq_sing I`.
+
+Express the relevant statement in the definitionally equal form `(Submodule.Quotient.mk (⟨t, mem_sub_of_mem_secs ht _⟩ : F₁.sub (sing ha).1) : F₁.sub (sing ha).1 ⧸ SubSystem.quotSub F₁ F₂ (sing ha).1) = Submodule.Quotient.mk ⟨v (sing ha), hv _⟩`. Rewrite using `[Submodule.Quotient.eq]`. Express the relevant statement in the definitionally equal form `t - v (sing ha) ∈ F₂.sub (sing ha).1`. Establish `hsa : s (sing ha).1 = v (sing ha)`. Establish `hmin : ({a} : Finset (Fin (N + 1))).min' (Finset.singleton_nonempty a) = a` using `Finset.min'_singleton a`.
+
+Express the relevant statement in the definitionally equal form `V {({a} : Finset (Fin (N + 1))).min' _} = v (sing ha)`. Rewrite using `[hmin]`. Conclude with `hV (sing ha)`. Rewrite using `[← hsa]`. Conclude with `hts _`.
+-/
 theorem exists_toCochain_eq (F₁ F₂ : SubSystem S x E)
     (hlift : ∀ s : Chart x → E, (∀ I, s I ∈ F₁.sub I) →
       (∀ I₁ I₂ : Chart x, I₁.1 ⊆ I₂.1 → s I₁ - s I₂ ∈ F₂.sub I₂) →
@@ -230,6 +294,9 @@ theorem exists_toCochain_eq (F₁ F₂ : SubSystem S x E)
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `h` using `length_quotient_eq_length_H0 (R := S) (G := fun I => ↥(F₁.sub I) ⧸ SubSystem.quotSub F₁ F₂ I) (ρ := qres F₁ F₂) (M := F₁.secs) (toCochain F₁ F₂) (fun t => by exact d_toCochain F₁ F₂ t) (fun z hz => by exact exists_toCochain_eq F₁ F₂ hlift z hz) (F₂.secs.comap F₁.secs.subtype) (fu …`. Conclude with `h`.
+-/
 theorem length_secs_eq (F₁ F₂ : SubSystem S x E)
     (hlift : ∀ s : Chart x → E, (∀ I, s I ∈ F₁.sub I) →
       (∀ I₁ I₂ : Chart x, I₁.1 ⊆ I₂.1 → s I₁ - s I₂ ∈ F₂.sub I₂) →
@@ -252,6 +319,9 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {K' K
   [Field K'] [Algebra S K'] [Field K''] [Algebra S K''] {N : ℕ}
   {x : Fin (N + 1) → Ω} {y : Fin (N + 1) → K'} {z : Fin (N + 1) → K''}
 
+/- English proof (translation)
+The claim follows from `h2.mem I _ (h1.mem (liftChart hyz I) q hq) add I q hq q' hq' := by simp only [Function.comp_apply] rw [h1.add (liftChart hyz I) q hq q' hq', h2.add I _ (h1.mem (liftChart hyz I) q hq) _ (h1.mem (liftChart hyz I) q' hq')] smul I q hq f s e hs hf hse := by simp only [Function.comp_ …`.
+-/
 theorem restrictData_comp {hxy : ∀ i, y i ≠ 0 → x i ≠ 0} {hyz : ∀ i, z i ≠ 0 → y i ≠ 0}
     {Q : SubSystem S x Ω} {Q' : SubSystem S y K'} {Q'' : SubSystem S z K''} {r : Ω → K'}
     {r' : K' → K''} (h1 : RestrictData Q hxy Q' r) (h2 : RestrictData Q' hyz Q'' r') :
@@ -319,6 +389,9 @@ def redHom (hsp : primeOf (S := k) x ≤ primeOf (S := k) y) (hxy : ∀ i, y i �
     (chartRing_sub_locAt hsp hxy (singleChart hyj) b.2).1).2
   commutes' c := Subtype.ext (locAt_algebraMap hsp c).2
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show redAt k x y (x i / x j) = y i / y j`. Establish `h` using `redAt_eq hsp (isHomogeneous_X k i) (isHomogeneous_X k j) (show aeval y (X j : Poly k N) ≠ 0 by rw [aeval_X]; exact hyj)`. Simplify `h` using `only [aeval_X]`.
+-/
 theorem redHom_ratio (hsp : primeOf (S := k) x ≤ primeOf (S := k) y) (hxy : ∀ i, y i ≠ 0 → x i ≠ 0)
     {j : Fin (N + 1)} (hyj : y j ≠ 0) (i : Fin (N + 1)) :
     redHom hsp hxy hyj (ratio (hxy j hyj) i) = ratio hyj i := by
@@ -328,6 +401,11 @@ theorem redHom_ratio (hsp : primeOf (S := k) x ≤ primeOf (S := k) y) (hxy : �
     (show aeval y (X j : Poly k N) ≠ 0 by rw [aeval_X]; exact hyj)
   simpa only [aeval_X] using h
 
+/- English proof (translation)
+Use extensionality with `a`. Take `⟨f, s, e, hs, hf, hse, ha⟩` from `a.2`. Establish `hsy : aeval y s ≠ 0` using `eval_ne_zero_of_mem_monos (singleChart hyj) hs`. Establish `hred : ((redHom hsp hxy hyj a : chartRing k y (singleChart hyj)) : K') = aeval y f / aeval y s` using `by show redAt k x y (a : Ω) = _`. Rewrite using `[ha]`.
+
+Conclude with `redAt_eq hsp hf hse hsy`. Rewrite using `[RingHom.mem_ker, AlgHom.comp_apply, ← RingHom.mem_ker (f := ψ), hker, mem_chartPrime_iff hyj hle hX hf hs hse hred, mem_chartPrime_iff (hxy j hyj) (hsp.trans hle) hX hf hs hse ha]`.
+-/
 theorem ker_comp_redHom (hsp : primeOf (S := k) x ≤ primeOf (S := k) y) (hxy : ∀ i, y i ≠ 0 → x i ≠ 0)
     {j : Fin (N + 1)} (hyj : y j ≠ 0) (pp : Ideal (Poly k N)) [pp.IsPrime]
     (hle : primeOf (S := k) y ≤ pp) (hX : (X j : Poly k N) ∉ pp) {K'' : Type w} [Field K'']
@@ -348,6 +426,9 @@ theorem ker_comp_redHom (hsp : primeOf (S := k) x ≤ primeOf (S := k) y) (hxy :
 
 end Red
 
+/- English proof (translation)
+Use `⟨FractionRing (R ⧸ P), inferInstance, inferInstance, (IsScalarTower.toAlgHom k (R ⧸ P) (FractionRing (R ⧸ P))).comp (Ideal.Quotient.mkₐ k P), ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Rewrite using `[RingHom.mem_ker, AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk, IsScalarTower.coe_toAlgHom', ← map_zero (algebraMap (R ⧸ P) (FractionRing (R ⧸ P))), (IsFractionRing.injective (R ⧸ P) (FractionRing (R ⧸ P))).eq_iff, Ideal.Quotient.eq_zero_iff_mem]`.
+-/
 theorem exists_residue {k : Type u} [Field k] {R : Type w} [CommRing R] [Algebra k R] (P : Ideal R)
     [P.IsPrime] : ∃ (K : Type w) (_ : Field K) (_ : Algebra k K) (ψ : R →ₐ[k] K), RingHom.ker ψ = P := by
   refine ⟨FractionRing (R ⧸ P), inferInstance, inferInstance,
@@ -359,6 +440,21 @@ theorem exists_residue {k : Type u} [Field k] {R : Type w} [CommRing R] [Algebra
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `k _ Ω _ _ N x K' _ _ y hxy hsp pp e hW Q Q' r hr`. Use `hW.isPrime` as an intermediate fact. Take `⟨j, hjX⟩` from `hW.relevant`. Establish `hyj : y j ≠ 0` using `fun h0 => hjX (hW.le ((mem_primeOf_of_isHomogeneous y (isHomogeneous_X k j)).mpr (by rw [aeval_X, h0])))`. Establish `hxj : x j ≠ 0` using `hxy j hyj`.
+
+Establish `hle : primeOf (S` using `k) x ≤ pp := hsp.trans hW.le`. Establish `: (chartPrime pp hyj).IsPrime` using `(PrimeFiltration.Point.proof k K' N y pp hW.isPrime hW.homog hW.le j hyj hjX).1`. Take `⟨K'', _, _, ψ, hker⟩` from `exists_residue (k := k) (chartPrime pp hyj)`. Establish `hyz : ∀ i, ψ (ratio hyj i) ≠ 0 → y i ≠ 0`. Introduce `i hi h0`.
+
+Apply `hi` to reduce the goal to its premises. Establish `: ratio (S` using `k) hyj i = 0 := Subtype.ext (show y i / y j = 0 by rw [h0, zero_div])`. Rewrite using `[this, map_zero]`. Take `⟨QW, rW, hQW⟩` from `PrimeFiltration.Restrict.proof k K' N y pp hW.isPrime hW.homog hW.le j hyj hjX K'' ψ hker hyz Q'`. Establish `hRW : RestrictData Q'.toSubSystem hyz QW.toSubSystem rW` using `⟨fun I => (hQW I).1, fun I => (hQW I).2.1, fun I => (hQW I).2.2.1, fun I => (hQW I).2.2.2⟩`.
+
+Establish `hRxW` using `restrictData_comp hr hRW`. Establish `hkerx` using `ker_comp_redHom hsp hxy hyj pp hW.le hjX ψ hker`. Establish `hpt : (fun i => (ψ.comp (redHom hsp hxy hyj)) (ratio hxj i)) = fun i => ψ (ratio hyj i)`. Use function extensionality and compare the values at `i`. Rewrite using `[AlgHom.comp_apply, redHom_ratio]`.
+
+Establish `key : ∀ (zz : Fin (N + 1) → K''), (fun i => (ψ.comp (redHom hsp hxy hyj)) (ratio hxj i)) = zz → ∀ (hxz : ∀ i, zz i ≠ 0 → x i ≠ 0) (QW' : LineBundle k zz) (rr : Ω → K''), RestrictData Q.toSubSystem hxz QW'.toSubSystem rr → ∀ c : ℤ, Nonempty (SubSystem.quotH (Q.twist (twistSys k x …`. Introduce and unpack `zz rfl hxz QW' rr hR c`. Conclude with `hRQ k Ω N x pp hW.isPrime hW.homog hle j hxj hjX K'' (ψ.comp (redHom hsp hxy hyj)) hkerx hxz Q QW' rr hR c 0`. Take `⟨c₁, hc₁⟩` from `hSC k Ω N x Q pp hW.homog`. Take `⟨c₂, hc₂⟩` from `hSC k K' N y Q' pp hW.homog`.
+
+Use `Filter.eventually_atTop.mpr ⟨max c₁.toNat c₂.toNat, fun c hc => ?_⟩` and prove the remaining obligations. Establish `h1 : c₁ ≤ (c : ℤ)` using `(Int.self_le_toNat c₁).trans (by exact_mod_cast (le_max_left _ _).trans hc)`. Establish `h2 : c₂ ≤ (c : ℤ)` using `(Int.self_le_toNat c₂).trans (by exact_mod_cast (le_max_right _ _).trans hc)`. Take `⟨ex⟩` from `key _ hpt _ QW (rW ∘ r) hRxW c`. Take `⟨ey⟩` from `hRQ k K' N y pp hW.isPrime hW.homog hW.le j hyj hjX K'' ψ hker hyz Q' QW rW hRW c 0`.
+
+Rewrite using `[restrLen, restrLen, length_secs_eq _ _ (hc₂ c h2), length_secs_eq _ _ (hc₁ c h1), ey.length_eq, ex.length_eq]`.
+-/
 theorem proof (hSC : SurjectiveClosed.Statement.{u, w})
     (hRQ : PrimeFiltration.RestrictQuot.Statement.{u, w}) : RestrLenRestrict.Statement.{u, w} := by
   intro k _ Ω _ _ N x K' _ _ y hxy hsp pp e hW Q Q' r hr

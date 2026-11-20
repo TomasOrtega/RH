@@ -4,6 +4,17 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `C _ O _ _ V _ _ _ _ h π hπ`. Establish `key : ∀ x : Fin h → C, π x = ∑ i, x i • π (Pi.single i 1)`. Introduce `x`. Use `conv_lhs => rw [pi_eq_sum_univ' x]`. Simplify using `only [map_sum, map_smul]`.
+
+Use `⟨fun i => π (Pi.single i 1), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `v -`. Take `⟨x, rfl⟩` from `hπ v`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`.
+
+Conclude with `⟨x, (key x).symm⟩`. Use extensionality with `v`. Simplify using `only [Set.mem_range, SetLike.mem_coe, Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩`.
+
+Use `⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Simplify using `only [algebraMap_smul]`. Introduce and unpack `⟨t, rfl⟩`. Use `⟨t, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[key]`. Simplify using `only [algebraMap_smul]`.
+-/
 theorem image_integral_points_eq_span_of_surjective :
     ∀ (C : Type) [Field C] (O : Type) [CommRing O] [Algebra O C] (V : Type) [AddCommGroup V]
       [Module C V] [Module O V] [IsScalarTower O C V] (h : ℕ) (π : (Fin h → C) →ₗ[C] V),

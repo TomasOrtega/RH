@@ -2,6 +2,15 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨j₀, hj₀⟩ : ∃ j, c j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hc (funext h)`. Take `⟨k, -, hk⟩` from `Finset.exists_max_image Finset.univ (fun j => ‖c j‖) ⟨j₀, Finset.mem_univ _⟩`.
+
+Establish `hpos : 0 < ‖c k‖` using `lt_of_lt_of_le (norm_pos_iff.2 hj₀) (hk j₀ (Finset.mem_univ _))`. Establish `hrow : (M.map emb).mulVec c k = μ * c k`. Rewrite using `[hM]`. Simplify using the standard rewrite rules. Establish `hsum : ‖(M.map emb).mulVec c k‖ ≤ ‖c k‖`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hsum` using `[hrow, norm_mul]`.
+
+Establish `: ‖μ‖ * ‖c k‖ ≤ 1 * ‖c k‖` using `by rwa [one_mul]`. Conclude with `le_of_mul_le_mul_right this hpos`.
+-/
 theorem norm_eigenvalue_le_one_of_integral_matrix (O K : Type) [CommRing O] [NormedField K]
     [IsUltrametricDist K] (emb : O →+* K) (hemb : ∀ c, ‖emb c‖ ≤ 1) (n : ℕ)
     (M : Matrix (Fin n) (Fin n) O) (μ : K) (c : Fin n → K) (hc : c ≠ 0)
@@ -26,6 +35,9 @@ theorem norm_eigenvalue_le_one_of_integral_matrix (O K : Type) [CommRing O] [Nor
   have : ‖μ‖ * ‖c k‖ ≤ 1 * ‖c k‖ := by rwa [one_mul]
   exact le_of_mul_le_mul_right this hpos
 
+/- English proof (translation)
+Introduce `O K _ _ _ emb hemb n M μ c hc hM` and use `norm_eigenvalue_le_one_of_integral_matrix O K emb hemb n M μ c hc hM`.
+-/
 theorem eigenvalue_integral_matrix_norm_le_one :
     ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] (emb : O →+* K),
       (∀ c, ‖emb c‖ ≤ 1) → ∀ (n : ℕ) (M : Matrix (Fin n) (Fin n) O) (μ : K) (c : Fin n → K),

@@ -11,6 +11,11 @@ open GlobalTheory.TopVol GlobalTheory.FinPl
 
 namespace GlobalTheory.TopVol.TwistPlaces
 
+/- English proof (translation)
+Unfold `Formalism.L2.Col.QE at h`. Use `split_ifs at h with hf`. Take `⟨v, -, rfl⟩` from `Finset.mem_image.1 h`. Establish `e : (sel v).under (𝓞 X.F) = v` using `HeightOneSpectrum.ext (hsel v)`. Rewrite using `[e]`.
+
+Conclude with `absurd h (Finset.notMem_empty _)`.
+-/
 theorem sel_under {X : Formalism.L2.Col.Fields} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)}
     (hsel : Formalism.L2.Col.IsSel X sel) {ξ : Formalism.L2.DIV.Chr X.F X.E X.K} {P : HeightOneSpectrum (𝓞 X.E)}
     (h : P ∈ Formalism.L2.Col.QE sel ξ) : sel (P.under (𝓞 X.F)) = P := by
@@ -21,6 +26,11 @@ theorem sel_under {X : Formalism.L2.Col.Fields} {sel : HeightOneSpectrum (𝓞 X
     rw [e]
   · exact absurd h (Finset.notMem_empty _)
 
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a _ _ t J hJ i i' hv`. Establish `hv : (J.G i).q.v = (J.G i').q.v` using `hv`. Establish `und : ∀ n, (J.pl n).under (𝓞 (I.rec7 l Z).host.F) = (J.G n).q.v` using `fun n => by`. Take `⟨ε, hε, hε'⟩` from `(J.G n).q.above`. Conclude with `GlobalTheory.IdemUnder.under_eq_of_isIdemAt _ _ _ _ ε (J.G n).idem hε hε'`.
+
+Establish `hs : ∀ n, I.sel (J.G n).q.v = J.pl n` using `fun n => by`. Rewrite using `[← und n]`. Conclude with `sel_under hW.tr.ok.sel_ok ((hW.tq.Q t _).1 (J.mem n))`. Apply `hJ.inj` to reduce the goal to its premises. Rewrite using `[← hs i, ← hs i', hv]`.
+-/
 theorem places_injective : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ (t : W.P.T) (J : QJ a t), J.Reads → Function.Injective fun i => (J.G i).q.v := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a _ _ t J hJ i i' hv
   have hv : (J.G i).q.v = (J.G i').q.v := hv

@@ -5,6 +5,17 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.CrysPrism
 
+/- English proof (translation)
+Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ t F hF τ i`. Take `⟨w, hw, hF⟩` from `hF`. Establish `key : ∀ n, ‖coeff n ((i.factorial : K⟦X⟧) * coeff i (F τ))‖ * wS K e n = ‖algebraMap O K (emb t τ (w (i, n)))‖` using `fun n => by`. Rewrite using `[← hF τ i n, wS, ← norm_mul, ← nsmul_eq_mul, map_nsmul, nsmul_eq_mul, Nat.cast_mul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mem_S]`. Simplify using `only [key]`. Use `⟨fun n => norm_algebraMap_le _, ?_⟩` and prove the remaining obligations. Rewrite using `[Metric.tendsto_nhds]`.
+
+Introduce `ε hε`. Take `⟨r, hr⟩` from `exists_pow_lt_of_lt_one hε (norm_l_lt_one (K := K) l)`. Establish `h : ∀ᶠ n in cofinite, (l : Wq l a) ^ r ∣ w (i, n)`. Establish `h` using `hw r`. Rewrite `h`, the goal using `[Filter.eventually_cofinite]`.
+
+Conclude with `h.preimage (f := fun n : ℕ => (i, n)) (fun _ _ _ _ h => by simpa using h)`. Rewrite `h` using `[Nat.cofinite_eq_atTop]`. Use `filter_upwards [h] with n hn`. Take `⟨c, hc⟩` from `hn`. Rewrite using `[Real.dist_eq, sub_zero, abs_norm, hc, map_mul, map_mul, map_pow, map_pow, map_natCast, map_natCast, norm_mul, norm_pow]`.
+
+Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right (by positivity) (norm_algebraMap_le _)) hr`.
+-/
 theorem factorial_mul_coeff_mem_S : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] (t : Wq l a →ₐ[ℤ_[l]] O), ∀ F ∈ PPSet t K e, ∀ (τ : ZMod a) (i : ℕ), (i.factorial : K⟦X⟧) * coeff i (F τ) ∈ S O K e := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ t F hF τ i
   obtain ⟨w, hw, hF⟩ := hF

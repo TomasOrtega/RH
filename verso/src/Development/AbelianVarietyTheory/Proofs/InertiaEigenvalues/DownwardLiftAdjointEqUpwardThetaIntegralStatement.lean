@@ -11,5 +11,8 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RawLift
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AdjUp.adjFormula_holds | exact GlobalTheory.AdjUp.adjFormula_holds | (intros; apply GlobalTheory.AdjUp.adjFormula_holds <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.downwardLift_adjoint_eq_upwardThetaIntegral : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → R.FullP → ∀ i t, AdjFormula R i t := by
   first | exact @GlobalTheory.AdjUp.adjFormula_holds | exact GlobalTheory.AdjUp.adjFormula_holds | (intros; apply GlobalTheory.AdjUp.adjFormula_holds <;> assumption)

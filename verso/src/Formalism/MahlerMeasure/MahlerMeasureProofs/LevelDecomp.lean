@@ -8,6 +8,17 @@ open MvPolynomial Finset
 section
 variable {k σ : Type} [Field k] {r : ℕ} {w e : Fin r → σ}
 
+/- English proof (translation)
+Unfold `BiHom`. Introduce `m hm`. Rewrite `hm` using `[MvPolynomial.mem_support_iff]`. Establish `hterm : ∀ i : σ, MvPolynomial.coeff m (X i * pderiv i g) = (m i : k) * MvPolynomial.coeff m g`. Introduce `i`.
+
+Rewrite using `[MvPolynomial.coeff_X_mul']`. Use `split_ifs with hs`. Establish `hmi : 1 ≤ m i` using `Nat.one_le_iff_ne_zero.mpr (Finsupp.mem_support_iff.mp hs)`. Establish `e1 : m - Finsupp.single i 1 + Finsupp.single i 1 = m` using `tsub_add_cancel_of_le (Finsupp.single_le_iff.mpr hmi)`. Establish `e2 : (((m - Finsupp.single i 1 : σ →₀ ℕ) i : ℕ) : k) + 1 = (m i : k)`.
+
+Rewrite using `[Finsupp.tsub_apply, Finsupp.single_eq_same, ← Nat.cast_add_one, Nat.sub_add_cancel hmi]`. Rewrite using `[MvPolynomial.coeff_pderiv, e1, e2, mul_comm]`. Simplify using `at hs`. Simplify using `[hs]`. Establish `key : ∀ (v : Fin r → σ) (n : ℕ), ∑ c, X (v c) * pderiv (v c) g = (n : k) • g → ∑ c, m (v c) = n`.
+
+Introduce `v n hv`. Establish `hcoef` using `congrArg (MvPolynomial.coeff m) hv`. Rewrite `hcoef` using `[MvPolynomial.coeff_sum, MvPolynomial.coeff_smul, smul_eq_mul]`. Simplify using `only [hterm] at hcoef`. Rewrite `hcoef` using `[← Finset.sum_mul]`.
+
+Establish `hc` using `mul_right_cancel₀ hm hcoef`. Conclude with `hc` after adjusting the coercions. Conclude with `⟨key w a hW, key e b hE⟩`.
+-/
 theorem ld_biHom_of_euler [CharZero k] {a b : ℕ} {g : MvPolynomial σ k}
     (hW : ∑ c, X (w c) * pderiv (w c) g = (a : k) • g)
     (hE : ∑ c, X (e c) * pderiv (e c) g = (b : k) • g) : BiHom w e a b g := by

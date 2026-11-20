@@ -20,11 +20,17 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks}
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
 
+/- English proof (translation)
+Establish `h` using `P.2`. Simplify using `only [rowSG, uSG, hQ, Finset.union_empty] at h`. Conclude with `h`.
+-/
 theorem mem_good_primes_of_no_exceptional (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (P : rowSG Pr sel mu) : P.1 ∈ Pr.vGs := by
   have h := P.2
   simp only [rowSG, uSG, hQ, Finset.union_empty] at h
   exact h
 
+/- English proof (translation)
+Establish `: IsEmpty {P // P ∈ QE sel (mu : Chr X.F X.E X.K)}` using `⟨fun P => by simpa [hQ] using P.2⟩`. Simplify using `[LevQFam.chr, piChar]`. Both sides reduce to the same expression.
+-/
 theorem levelQ_char_eq_one_of_empty (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) {n : ℕ} (Θ : LevQFam X.E X.K n (QE sel (mu : Chr X.F X.E X.K))) (c : ↥Θ.grp) :
     Θ.chr c = 1 := by
   have : IsEmpty {P // P ∈ QE sel (mu : Chr X.F X.E X.K)} := ⟨fun P => by simpa [hQ] using P.2⟩
@@ -32,6 +38,9 @@ theorem levelQ_char_eq_one_of_empty (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) {
   rfl
 
 open Classical in
+/- English proof (translation)
+Use `Fintype.prod_equiv { toFun := fun P => ⟨P.1, mem_good_primes_of_no_exceptional sel mu hQ P⟩ invFun := fun w => ⟨w.1, Finset.mem_union_left _ w.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl } _ _ (fun _ => rfl)` and prove the remaining obligations.
+-/
 theorem prod_selected_good_eq_prod_good_of_no_exceptional (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) {M : Type} [CommMonoid M] (f : {w // w ∈ Pr.vGs} → M) :
     ∏ P : rowSG Pr sel mu, f ⟨P.1, mem_good_primes_of_no_exceptional sel mu hQ P⟩ = ∏ w : {w // w ∈ Pr.vGs}, f w := by
   refine Fintype.prod_equiv
@@ -42,6 +51,9 @@ theorem prod_selected_good_eq_prod_good_of_no_exceptional (hQ : QE sel (mu : Chr
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨y, -, rfl⟩` from `hY`. Establish `e : a - a' = (a - y) - (a' - y)` using `by abel`. Rewrite using `[e]`. Conclude with `sub_mem ha ha'`.
+-/
 theorem sub_mem_of_ybSet {n : ℕ} {N : Submodule (𝓞 X.E) (Sp X.E n)} {Y : Set (Sp X.E n)} (hY : Y ∈ ybSet sel mu cst N)
     {a a' : Sp X.E n} (ha : a ∈ Y) (ha' : a' ∈ Y) :
     a - a' ∈ locLat (rowSG Pr sel mu) N (fun P => if P.1 ∈ Pr.vGs then 0 else (cst.M : ℤ)) := by
@@ -52,6 +64,9 @@ theorem sub_mem_of_ybSet {n : ℕ} {N : Submodule (𝓞 X.E) (Sp X.E n)} {Y : Se
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨y, -, rfl⟩` from `hY`. Use `⟨y, ?_⟩` and prove the remaining obligations. Use `show y - y ∈ locLat (rowSG Pr sel mu) N _`. Rewrite using `[sub_self]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem nonempty_of_ybSet {n : ℕ} {N : Submodule (𝓞 X.E) (Sp X.E n)} {Y : Set (Sp X.E n)} (hY : Y ∈ ybSet sel mu cst N) :
     Y.Nonempty := by
   obtain ⟨y, -, rfl⟩ := hY
@@ -64,6 +79,9 @@ end Helpers
 
 section Alg
 
+/- English proof (translation)
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [inFr, LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Simplify using `only [LinearEquiv.mul_apply, LinearEquiv.symm_apply_apply, LinearEquiv.apply_symm_apply]`.
+-/
 theorem inFr_move1 {E : Type} [Field E] {a b : ℕ} (γ F κ : Sp E a ≃ₗ[E] Sp E a) (γ' F' κ' : Sp E b ≃ₗ[E] Sp E b) (x : HomE E a b) :
     inFr (γ * F * κ) (γ' * F' * κ') (γ'.toLinearMap ∘ₗ x ∘ₗ γ.symm.toLinearMap) = κ'.symm.toLinearMap ∘ₗ inFr F F' x ∘ₗ κ.toLinearMap := by
   apply LinearMap.ext
@@ -72,11 +90,17 @@ theorem inFr_move1 {E : Type} [Field E] {a b : ℕ} (γ F κ : Sp E a ≃ₗ[E] 
   rw [LinearEquiv.symm_apply_eq]
   simp only [LinearEquiv.mul_apply, LinearEquiv.symm_apply_apply, LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Rewrite using `[LinearEquiv.symm_apply_eq]`. Simplify using `only [LinearEquiv.mul_apply, LinearEquiv.apply_symm_apply]`.
+-/
 theorem mul_three_symm_apply {E : Type} [Field E] {n : ℕ} (a b c : Sp E n ≃ₗ[E] Sp E n) (v : Sp E n) :
     (a * b * c).symm v = c.symm (b.symm (a.symm v)) := by
   rw [LinearEquiv.symm_apply_eq]
   simp only [LinearEquiv.mul_apply, LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Establish `e : ∏ i, a i * z i = ∏ i, b i * y i` using `Finset.prod_congr rfl fun i _ => h i`. Rewrite `e` using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem prod_mul_eq_of_pointwise_cross {ι K : Type} [Fintype ι] [CommRing K] (a b y z : ι → K) (φ : K) (h : ∀ i, a i * z i = b i * y i) :
     (∏ i, a i) * (φ * ∏ i, z i) = (∏ i, b i) * (φ * ∏ i, y i) := by
   have e : ∏ i, a i * z i = ∏ i, b i * y i := Finset.prod_congr rfl fun i _ => h i
@@ -85,6 +109,9 @@ theorem prod_mul_eq_of_pointwise_cross {ι K : Type} [Fintype ι] [CommRing K] (
     _ = φ * ((∏ i, b i) * ∏ i, y i) := by rw [e]
     _ = _ := by ring
 
+/- English proof (translation)
+Unfold `piChar`. Rewrite using `[MonoidHom.finsetProd_apply, Units.coe_prod]`. Both sides reduce to the same expression.
+-/
 theorem piChar_apply_coe {K : Type} [Field K] {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (G i)] (H : ∀ i, Subgroup (G i))
     (lam : ∀ i, ↥(H i) →* Kˣ) (x : ↥(Subgroup.pi Set.univ H)) :
     ((piChar H lam x : Kˣ) : K) = ∏ i, ((lam i ⟨x.1 i, x.2 i (Set.mem_univ i)⟩ : Kˣ) : K) := by
@@ -92,6 +119,9 @@ theorem piChar_apply_coe {K : Type} [Field K] {ι : Type} [Fintype ι] {G : ι �
   rw [MonoidHom.finsetProd_apply, Units.coe_prod]
   rfl
 
+/- English proof (translation)
+The claim follows from `piChar_apply_coe _ _ x`.
+-/
 theorem levelChar_apply_coe {E K : Type} [Field E] [NumberField E] [Field K] {n : ℕ} {SG : Finset (HeightOneSpectrum (𝓞 E))}
     (Λ : LevFam E K n SG) (x : ↥Λ.grp) :
     ((Λ.chr x : Kˣ) : K) = ∏ w, (((Λ w).lam ⟨x.1 w, x.2 w (Set.mem_univ w)⟩ : Kˣ) : K) :=
@@ -101,6 +131,9 @@ end Alg
 
 section Inv1
 
+/- English proof (translation)
+Unfold `divs at h`. Use `split_ifs at h with hf`. Conclude with `hf.mem_toFinset.mp h`. Simplify using `at h`.
+-/
 theorem mem_prime_of_mem_divisors {A : Type} [CommRing A] [IsDedekindDomain A] {a : A} {P : HeightOneSpectrum A} (h : P ∈ divs a) :
     a ∈ P.asIdeal := by
   unfold divs at h
@@ -113,6 +146,9 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K)))
   {u : Pr.Word}
 
+/- English proof (translation)
+Unfold `frsF`. Rewrite using `[dif_pos hP]`. Conclude with `(Deco.liftFr_spec (p.deco.2.hasLift ⟨P.1, hP⟩)).1 v`.
+-/
 theorem frame_mem_lattice_iff_std {j : ℕ} (p : ChPt (R := R) sel mu u j) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs) (v : Sp X.E (R.N j)) :
     frsF sel mu p P v ∈ p.deco.1.at P.1 ↔ v ∈ stdAt X.E (R.N j) P.1 := by
   unfold frsF
@@ -121,6 +157,9 @@ theorem frame_mem_lattice_iff_std {j : ℕ} (p : ChPt (R := R) sel mu u j) (P : 
 
 open Classical in
 
+/- English proof (translation)
+Establish `h1 : frsF sel mu p P (Pi.single s 1) ∈ p.deco.1.at P.1` using `(frame_mem_lattice_iff_std sel mu p P hP _).2 (xqSingle_mem (P := P.1) s)`. Establish `h2` using `hw P.1 (Finset.mem_union_right _ P.2) _ h1`. Establish `h3 : (frsF sel mu p' P).symm (w (frsF sel mu p P (Pi.single s 1))) ∈ stdAt X.E (R.N (i + 1)) P.1` using `(frame_mem_lattice_iff_std sel mu p' P hP _).1 (by rwa [LinearEquiv.apply_symm_apply])`. Conclude with `(xqMem_stdAt (P := P.1) _).1 h3 l`.
+-/
 theorem frame_inclusion_integral {i : ℕ} (p : ChPt (R := R) sel mu u i) (p' : ChPt (R := R) sel mu u (i + 1)) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs)
     (w : HomE X.E (R.N i) (R.N (i + 1))) (hw : w ∈ homAt (Sall sel mu u) p.deco.1.N p'.deco.1.N) (s : Fin (R.N i)) (l : Fin (R.N (i + 1))) :
     IntAt P.1 ((inFr (frsF sel mu p P) (frsF sel mu p' P) w) (Pi.single s 1) l) := by
@@ -132,6 +171,11 @@ theorem frame_inclusion_integral {i : ℕ} (p : ChPt (R := R) sel mu u i) (p' : 
 
 open Classical in
 
+/- English proof (translation)
+Establish `hq : (Col.qOf P.1 : X.E) ≠ 0` using `by exact_mod_cast (qOf_pos P.1).ne'`. Establish `e : ((cBof sel mu cst u : ℕ) : X.E) = (Col.qOf P.1 : X.E) ^ cst.B * (((Pr.T u * (∏ P' ∈ Finset.univ.erase P, Col.qOf P'.1) ^ cst.B : ℕ)) : X.E)`. Unfold `cBof`. Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun P' : rowSG Pr sel mu => Col.qOf P'.1) (Finset.mem_univ P)]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hq), one_mul]`. Use `xqIntAt_intCast (P := P.1) ((Pr.T u * (∏ P' ∈ Finset.univ.erase P, Col.qOf P'.1) ^ cst.B : ℕ) : ℤ)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem modulus_div_prime_pow_integral_bad (P : rowSG Pr sel mu) :
     IntAt P.1 (((Col.qOf P.1 : X.E) ^ cst.B)⁻¹ * ((cBof sel mu cst u : ℕ) : X.E)) := by
   have hq : (Col.qOf P.1 : X.E) ≠ 0 := by exact_mod_cast (qOf_pos P.1).ne'
@@ -147,6 +191,17 @@ theorem modulus_div_prime_pow_integral_bad (P : rowSG Pr sel mu) :
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨w, hw, rfl⟩` from `(mem_mulLat _ _ _).1 hz`. Establish `hphi : phiT X.K p₀.deco.1 p.deco.1 (x + ((cBof sel mu cst u : ℕ) : 𝓞 X.E) • w) = phiT X.K p₀.deco.1 p.deco.1 x`. Use `phiT_add_mul X.K p₀.deco p.deco (Sall sel mu u) (fun P => Finset.mem_union_left _ P.2) (Pr.T u) (fun P => ?_) x _ ?_` and prove the remaining obligations. Establish `h1 : Pr.piT u ∈ P.1.asIdeal` using `mem_prime_of_mem_divisors P.2`. Rewrite using `[← hPr.piT_norm u]`.
+
+Conclude with `P.1.asIdeal.mul_mem_right _ h1`. Use `(mem_mulLat _ _ _).2 ⟨(((∏ P : rowSG Pr sel mu, Col.qOf P.1) ^ cst.B : ℕ) : 𝓞 X.E) • w, Submodule.smul_mem _ _ hw, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul]`. Unfold `cBof`. Use `push_cast`.
+
+Both sides reduce to the same expression. Establish `hpsi : ∀ P : rowSG Pr sel mu, PsiAt Ch sel mu cst m2 P (L.h m2 al P) (inFr (frsF sel mu p₀ P) (frsF sel mu p P) (x + ((cBof sel mu cst u : ℕ) : 𝓞 X.E) • w)) ((frsF sel mu p P).symm (repY Y)) = PsiAt Ch sel mu cst m2 P (L.h m2 al P) (inFr (frsF sel mu p₀ P) (frsF sel mu p P) x) (( …`. Introduce `P`. Establish `hP` using `mem_good_primes_of_no_exceptional (Pr := Pr) sel mu hQ P`. Establish `e : inFr (frsF sel mu p₀ P) (frsF sel mu p P) (x + ((cBof sel mu cst u : ℕ) : 𝓞 X.E) • w) = inFr (frsF sel mu p₀ P) (frsF sel mu p P) x + inFr (frsF sel mu p₀ P) (frsF sel mu p P) (((cBof sel mu cst u : ℕ) : 𝓞 X.E) • w)`.
+
+Simplify using `only [inFr, LinearMap.add_comp, LinearMap.comp_add]`. Rewrite using `[e]`. Use `hL.psiInvX al P _ _ _ fun s l => ?_` and prove the remaining obligations. Establish `e2 : (inFr (frsF sel mu p₀ P) (frsF sel mu p P) (((cBof sel mu cst u : ℕ) : 𝓞 X.E) • w)) (Pi.single s 1) l = ((cBof sel mu cst u : ℕ) : X.E) * (inFr (frsF sel mu p₀ P) (frsF sel mu p P) w) (Pi.single s 1) l`. Simplify using `only [inFr, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearMap.smul_apply]`.
+
+Rewrite using `[← algebraMap_smul X.E (((cBof sel mu cst u : ℕ) : 𝓞 X.E)), map_smul, Pi.smul_apply, smul_eq_mul, map_natCast]`. Rewrite using `[e2, ← mul_assoc]`. Conclude with `(modulus_div_prime_pow_integral_bad sel mu cst P).mul (frame_inclusion_integral sel mu p₀ p P hP w hw s l)`. Unfold `XiCpl1`. Rewrite using `[hphi, Finset.prod_congr rfl fun P _ => hpsi P]`.
+-/
 theorem xiCpl1_inv (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (hPr : Pr.Ok) {G : ChGlob X R.m} {m2 : ℕ} (hL : L.Ok Ch sel mu cst G m2)
     (al : L.β m2) (p₀ : ChPt (R := R) sel mu u m2) (p : ChPt (R := R) sel mu u (m2 + 1)) (Y : Set (Sp X.E (R.N (m2 + 1))))
     (x z : HomE X.E (R.N m2) (R.N (m2 + 1)))
@@ -183,6 +238,9 @@ theorem xiCpl1_inv (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (hPr : Pr.Ok) {G :
   unfold XiCpl1
   rw [hphi, Finset.prod_congr rfl fun P _ => hpsi P]
 
+/- English proof (translation)
+Rewrite using `[prod_selected_good_eq_prod_good_of_no_exceptional sel mu hQ (fun w => (((Λ' w).lam ⟨(x' : GLG X.E n' Pr.vGs) w, x'.2 _ (Set.mem_univ _)⟩ : X.Kˣ) : X.K) * ((((Λ w).lam ⟨(x : GLG X.E n Pr.vGs) w, x.2 _ (Set.mem_univ _)⟩)⁻¹ : X.Kˣ) : X.K))]`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, levelChar_apply_coe, levelChar_apply_coe, Finset.prod_mul_distrib]`. Simplify using `only [Units.val_inv_eq_inv_val, Finset.prod_inv_distrib]`.
+-/
 theorem chr_ratio_prod1 (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) {n n' : ℕ} (Λ : LevFam X.E X.K n Pr.vGs) (Λ' : LevFam X.E X.K n' Pr.vGs)
     (x : ↥Λ.grp) (x' : ↥Λ'.grp) :
     (((Λ'.chr x' * (Λ.chr x)⁻¹ : X.Kˣ)) : X.K) =
@@ -197,6 +255,15 @@ theorem chr_ratio_prod1 (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) {n n' : ℕ} 
 
 open Classical in
 
+/- English proof (translation)
+Establish `hP` using `mem_good_primes_of_no_exceptional (Pr := Pr) sel mu hQ P`. Establish `hrepY : γ.symm (repY ((fun v => γ v) '' Y)) ∈ Y`. Take `⟨v, hv, hve⟩ : repY ((fun v => γ v) '' Y) ∈ (fun v => γ v) '' Y` from `Classical.epsilon_spec ((nonempty_of_ybSet sel mu cst hY).image _)`. Rewrite using `[← hve, LinearEquiv.symm_apply_apply]`. Conclude with `hv`.
+
+Establish `hrep0 : repY Y ∈ Y` using `Classical.epsilon_spec (nonempty_of_ybSet sel mu cst hY)`. Establish `hdiff` using `sub_mem_of_ybSet sel mu cst hY hrepY hrep0`. Establish `hwP : γ.symm (repY ((fun v => γ v) '' Y)) - repY Y ∈ p.deco.1.at P.1`. Use `(mem_locLat _ _ _ _).1 hdiff P` as an intermediate fact. Simplify `this` using `[if_pos hP]`.
+
+Establish `hz : (frsF sel mu p P).symm (γ.symm (repY ((fun v => γ v) '' Y)) - repY Y) ∈ stdAt X.E (R.N (m2 + 1)) P.1` using `(frame_mem_lattice_iff_std sel mu p P hP _).1 (by rw [LinearEquiv.apply_symm_apply]; exact hwP)`. Establish `hz'` using `(xqMem_stdAt (P := P.1) _).1 hz`. Establish `e : (frsF sel mu p P).symm (γ.symm (repY ((fun v => γ v) '' Y))) = (frsF sel mu p P).symm (repY Y) + (frsF sel mu p P).symm (γ.symm (repY ((fun v => γ v) '' Y)) - repY Y)`. Rewrite using `[← map_add, add_sub_cancel]`. Rewrite using `[e]`.
+
+Use `hL.psiInv al P x₀ _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[if_pos hP, pow_zero, inv_one, one_mul]`. Conclude with `hz' i`.
+-/
 theorem psi_at_coupling_representative (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) {G : ChGlob X R.m} {m2 : ℕ} (hL : L.Ok Ch sel mu cst G m2)
     (al : L.β m2) (p : ChPt (R := R) sel mu u (m2 + 1)) (γ : Sp X.E (R.N (m2 + 1)) ≃ₗ[X.E] Sp X.E (R.N (m2 + 1)))
     (Y : Set (Sp X.E (R.N (m2 + 1)))) (hY : Y ∈ ybSet sel mu cst p.deco.1.N) (P : rowSG Pr sel mu)
@@ -234,6 +301,21 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K)))
   (A : Amb X) (u : Pr.Word) (m2 : ℕ)
 
+/- English proof (translation)
+Introduce `al g₀ g p₀ p (Y : Set (Sp X.E (R.N (m2 + 1)))) hYm`. Establish `hG` using `mem_good_primes_of_no_exceptional (Pr := Pr) sel mu hQ`. Establish `hYm0 : Y ∈ ybSet sel mu cst p.deco.1.N` using `hYm`. Establish `hY1 : (fun v => g.1.1 v) '' Y ∈ ybSet sel mu cst (g • p).deco.1.N` using `(ybSet_gmap sel mu cst p.deco.1.N g.1.1 Y).2 hYm0`. Use `choose κ₀ hκ₀ hκr₀ using fun P : rowSG Pr sel mu => frsF_smul sel mu p₀ (L.levG m2 al) (L.levQ m2 al) g₀ P (hG P)`.
+
+Use `choose κ hκ hκr using fun P : rowSG Pr sel mu => frsF_smul sel mu p (L.levG (m2 + 1) b) (L.levQ (m2 + 1) b) g P (hG P)`. Establish `hfr₀ : frsF sel mu (g₀ • p₀) = fun P => g₀.1.1 * frsF sel mu p₀ P * (κ₀ P).1` using `funext hκ₀`. Establish `hfr : frsF sel mu (g • p) = fun P => g.1.1 * frsF sel mu p P * (κ P).1` using `funext hκ`. Establish `hN₀ : IsSdLat p₀.deco.1.N` using `⟨p₀.deco.2.lat, p₀.deco.2.uni⟩`. Establish `hN : IsSdLat p.deco.1.N` using `⟨p.deco.2.lat, p.deco.2.uni⟩`.
+
+Establish `hdeco₀ : (g₀ • p₀).deco = (g₀.1, (g₀.2.1 : GLG X.E (R.N m2) Pr.vGs)) • p₀.deco` using `rfl`. Establish `hdeco : (g • p).deco = (g.1, (g.2.1 : GLG X.E (R.N (m2 + 1)) Pr.vGs)) • p.deco` using `rfl`. Establish `hrep` using `psi_at_coupling_representative Ch sel mu cst L hQ hL al p g.1.1 Y hYm0`. Establish `hΞ : ∀ x, (∏ P : rowSG Pr sel mu, rhoS Ch sel mu m2 P (LinearEquiv.det (κ₀ P).1 : X.Eˣ) * rhoT Ch sel mu m2 P (LinearEquiv.det (κ P).1 : X.Eˣ)) * XiCpl1 Ch sel mu cst L m2 al (g₀ • p₀) (g • p) ((fun v => g.1.1 v) '' Y) (g.1.1.toLinearMap ∘ₗ x ∘ₗ g₀.1.1.symm.toLinearMap) = ((((L.l …`. Introduce `x`.
+
+Unfold `XiCpl1`. Rewrite using `[hfr₀, hfr, hdeco₀, hdeco, phiT_smul]`. Simplify using `only [inFr_move1, mul_three_symm_apply]`. Establish `hloc : ∀ P : rowSG Pr sel mu, rhoS Ch sel mu m2 P (LinearEquiv.det (κ₀ P).1 : X.Eˣ) * rhoT Ch sel mu m2 P (LinearEquiv.det (κ P).1 : X.Eˣ) * PsiAt Ch sel mu cst m2 P (L.h m2 al P) ((κ P).1.symm.toLinearMap ∘ₗ inFr (frsF sel mu p₀ P) (frsF sel mu p P) x ∘ₗ (κ₀ P).1.toLinearMap) (( …` using `fun P => by`. Rewrite using `[← hrep P (inFr (frsF sel mu p₀ P) (frsF sel mu p P) x)]`.
+
+Conclude with `hPsi al P (hG P) _ _ (κ₀ P) (κ P) (hκr₀ P) (hκr P) _ _`. Establish `hc` using `chr_ratio_prod1 sel mu hQ (L.levG m2 al) (L.levG (m2 + 1) b) g₀.2.1 g.2.1`. Rewrite using `[hc]`. Conclude with `prod_mul_eq_of_pointwise_cross _ _ _ _ _ hloc`. Establish `key` using `kerOf_move (hOk.th m2 le_rfl) (cBof_pos sel mu cst u hT) hN₀ hN (frsF sel mu p₀) (frsF sel mu p) g₀.1 g.1 κ₀ κ (XiCpl1 Ch sel mu cst L m2 al p₀ p Y) (XiCpl1 Ch sel mu cst L m2 al (g₀ • p₀) (g • p) ((fun v => g.1.1 v) '' Y)) _ (hinv al p₀ p Y) hΞ`.
+
+Use `show cp1K W Ch sel mu cst L (chTh W Ch sel mu cst A u m2) al (g₀ • p₀) (g • p) ((fun v => g.1.1 v) '' Y) = (frmRho (colValF W sel mu u (m2 + 1)) (L.levG (m2 + 1) b) (L.levQ (m2 + 1) b) g) ∘ₗ cp1K W Ch sel mu cst L (chTh W Ch sel mu cst A u m2) al p₀ p Y ∘ₗ (frmRho (colValF W sel …`. Unfold `cp1K`. Rewrite using `[if_pos hY1, if_pos hYm0, hfr₀, hfr]`. Use `key.trans ?_` and prove the remaining obligations. Simplify using `only [frmRho, MonoidHom.coe_mk, OneHom.coe_mk, levelQ_char_eq_one_of_empty sel mu hQ, mul_one, Prod.fst_inv, Prod.snd_inv, map_inv, LinearMap.smul_comp, LinearMap.comp_smul, smul_smul]`.
+
+Use `congr 1`. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cp1EquivOn_of_inv (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (hT : 0 < Pr.T u)
     (hOk : ChTh.Ok (Ch := Ch) cst (chTh W Ch sel mu cst A u m2))
     {G : ChGlob X R.m} (hL : L.Ok Ch sel mu cst G m2)
@@ -297,6 +379,9 @@ theorem cp1EquivOn_of_inv (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (hT : 0 < P
   simp only [Units.val_mul, Units.val_inv_eq_inv_val]
   ring
 
+/- English proof (translation)
+The claim follows from `cp1EquivOn_of_inv W Ch sel mu cst L A u m2 hQ hT hOk hL b hY (fun al p₀ p Y x z hz => xiCpl1_inv Ch sel mu cst L hQ hPr hL al p₀ p Y x z hz) hPsi`.
+-/
 theorem cp1EquivOn_of (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (hT : 0 < Pr.T u) (hPr : Pr.Ok)
     (hOk : ChTh.Ok (Ch := Ch) cst (chTh W Ch sel mu cst A u m2))
     {G : ChGlob X R.m} (hL : L.Ok Ch sel mu cst G m2)

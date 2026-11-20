@@ -34,6 +34,13 @@ def inumRec (F : Type*) [Field F] (ι : K → Type*) [∀ k, Fintype (ι k)] : (
 def inum (F : Type*) [Field F] (ι : K → Type*) [∀ k, Fintype (ι k)] : IFamily F ι :=
   fun V n L => inumRec F ι n V L
 
+/- English proof (translation)
+Establish `hr` using `hV.2.2`. Use `⟨fun k => (a k).toNat, fun k => (-a k).toNat, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [secNum, dif_pos hr]`. Conclude with `isMultiHomog_coordProd _ _`. Simplify using `only [secDen, dif_pos hr]`.
+
+Conclude with `isMultiHomog_coordProd _ _`. Simplify using `only [secNum, dif_pos hr]`. Conclude with `coordProd_not_mem hV.1 _ (fun k => (hr k).choose_spec) _`. Simplify using `only [secDen, dif_pos hr]`. Conclude with `coordProd_not_mem hV.1 _ (fun k => (hr k).choose_spec) _`.
+
+Introduce `k`. Simplify using the standard rewrite rules.
+-/
 theorem isRatSection_sec {V : Ideal (MRingOver F ι)} (hV : IsMultiProjPrime V) (a : K → ℤ) :
     IsRatSection V a (secNum F ι V a) (secDen F ι V a) := by
   classical
@@ -50,6 +57,11 @@ theorem isRatSection_sec {V : Ideal (MRingOver F ι)} (hV : IsMultiProjPrime V) 
   · intro k
     simp
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_or]`. Apply `h` to reduce the goal to its premises. Establish `hf : divCycle V f W = 0`. Assume the negation of the conclusion as `h'`.
+
+Conclude with `hc.1 (mem_divSupp_of_divCycle_ne_zero h')`. Establish `hg : divCycle V g W = 0`. Assume the negation of the conclusion as `h'`. Conclude with `hc.2 (mem_divSupp_of_divCycle_ne_zero h')`. Simplify using `[ratDiv, hf, hg]`.
+-/
 theorem mem_of_ratDiv_ne_zero {V W : Ideal (MRingOver F ι)} {f g : MRingOver F ι}
     (h : ratDiv V f g W ≠ 0) : W ∈ divSupp V f ∨ W ∈ divSupp V g := by
   by_contra hc

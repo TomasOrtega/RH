@@ -11,6 +11,15 @@ noncomputable section
 
 namespace GlobalTheory.CompactIntertwiner
 
+/- English proof (translation)
+Establish `hsp : Submodule.span ℂ (Set.range l) = ⊤`. Establish `h1 : (Submodule.span ℂ (Set.range l)).dualCoannihilator = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Rewrite `hx` using `[Submodule.mem_dualCoannihilator]`.
+
+Conclude with `hl x fun z => hx _ (Submodule.subset_span ⟨z, rfl⟩)`. Establish `h2` using `Subspace.dualCoannihilator_dualAnnihilator_eq (W := Submodule.span ℂ (Set.range l))`. Rewrite `h2` using `[h1, Submodule.dualAnnihilator_bot]`. Conclude with `h2.symm`. Establish `hf : f ∈ Submodule.span ℂ (Set.range l)` using `hsp ▸ Submodule.mem_top`.
+
+Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem g hg => obtain ⟨z, rfl⟩ := hg`. Conclude with `h z`. Consider the case `zero => simpa using hasDerivAt_const (0 : ℝ) (0 : ℂ)`. Consider the case `add g g' _ _ hg hg' => exact hg.fun_add hg'`.
+
+Consider the case `smul a g _ hg => simpa using hg.const_mul a`.
+-/
 theorem hasDerivAt_dual_of_sep {F Z : Type*} [AddCommGroup F] [Module ℂ F] [FiniteDimensional ℂ F]
     (l : Z → F →ₗ[ℂ] ℂ) (hl : ∀ x, (∀ z, l z x = 0) → x = 0) (c : ℝ → F) (y : F)
     (h : ∀ z, HasDerivAt (fun t => l z (c t)) (l z y) 0) (f : F →ₗ[ℂ] ℂ) :
@@ -31,6 +40,9 @@ theorem hasDerivAt_dual_of_sep {F Z : Type*} [AddCommGroup F] [Module ℂ F] [Fi
   | add g g' _ _ hg hg' => exact hg.fun_add hg'
   | smul a g _ hg => simpa using hg.const_mul a
 
+/- English proof (translation)
+The claim follows from `hasDerivAt_dual_of_sep (F := F) (fun z => l z ∘ₗ F.subtype) (fun x hx => Subtype.ext (hl x hx)) (fun t => ⟨c t, hc t⟩) ⟨y, hy⟩ h (f ∘ₗ F.subtype)`.
+-/
 theorem hasDerivAt_dual_of_sep_sub {E Z : Type*} [AddCommGroup E] [Module ℂ E] (F : Submodule ℂ E)
     [FiniteDimensional ℂ F] (l : Z → E →ₗ[ℂ] ℂ) (hl : ∀ x, (∀ z, l z x = 0) → x = 0) (c : ℝ → E) (y : E)
     (hc : ∀ t, c t ∈ F) (hy : y ∈ F)
@@ -39,6 +51,13 @@ theorem hasDerivAt_dual_of_sep_sub {E Z : Type*} [AddCommGroup E] [Module ℂ E]
   hasDerivAt_dual_of_sep (F := F) (fun z => l z ∘ₗ F.subtype) (fun x hx => Subtype.ext (hl x hx))
     (fun t => ⟨c t, hc t⟩) ⟨y, hy⟩ h (f ∘ₗ F.subtype)
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℂ G`. Establish `e : ∀ a u, B a u = ∑ i, B.flip (b i) a * b.coord i u`. Introduce `a u`. Use `conv_lhs => rw [← b.sum_repr u, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression. Use `HasDerivAt.fun_sum (u := Finset.univ) fun i _ => (hc (B.flip (b i))).mul (hx (b.coord i))` as an intermediate fact. Simplify using `only [e]`. Rewrite using `[← Finset.sum_add_distrib]`.
+
+Conclude with `this`.
+-/
 theorem hasDerivAt_bilin {E G : Type*} [AddCommGroup E] [Module ℂ E] [AddCommGroup G] [Module ℂ G]
     [FiniteDimensional ℂ G] (B : E →ₗ[ℂ] G →ₗ[ℂ] ℂ) (c : ℝ → E) (c' : E) (x : ℝ → G) (x' : G)
     (hc : ∀ f : E →ₗ[ℂ] ℂ, HasDerivAt (fun t => f (c t)) (f c') 0)
@@ -58,15 +77,28 @@ theorem hasDerivAt_bilin {E G : Type*} [AddCommGroup E] [Module ℂ E] [AddCommG
 
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
 
+/- English proof (translation)
+Simplify using `[ellT]`.
+-/
 theorem ellT_tprod (M : DSModel V S) (w v : ∀ τ, M.H τ) :
     ellT M w (PiTensorProduct.tprod ℂ v) = ∏ τ, inner ℂ (w τ) (v τ) := by
   simp [ellT]
 
+/- English proof (translation)
+Conclude with `Module.Finite.of_basis (Basis.piTensorProduct fun τ => Module.finBasis ℂ (M.H τ))`.
+-/
 theorem finite_tensor (M : DSModel V S) (h : ∀ τ, FiniteDimensional ℂ (M.H τ)) :
     FiniteDimensional ℂ (⨂[ℂ] τ, M.H τ) := by
   classical
   exact Module.Finite.of_basis (Basis.piTensorProduct fun τ => Module.finBasis ℂ (M.H τ))
 
+/- English proof (translation)
+Set `o` to `fun τ => stdOrthonormalBasis ℂ (M.H τ)`. Set `b` to `Basis.piTensorProduct fun τ => (o τ).toBasis`. Establish `key : ∀ i, b.coord i = ellT M fun τ => o τ (i τ)`. Introduce `i`. Use `PiTensorProduct.ext (MultilinearMap.ext fun v => ?_)` and prove the remaining obligations.
+
+Simplify using `only [LinearMap.compMultilinearMap_apply, ellT_tprod, Module.Basis.coord_apply, b]`. Rewrite using `[Basis.piTensorProduct_repr_tprod_apply]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `[OrthonormalBasis.repr_apply_apply]`. Use `b.ext_elem fun i => ?_` and prove the remaining obligations.
+
+Use `hx fun τ => o τ (i τ)` as an intermediate fact. Rewrite `this` using `[← key]`. Simplify using `using this`.
+-/
 theorem ellT_sep (M : DSModel V S) (h : ∀ τ, FiniteDimensional ℂ (M.H τ)) (x : ⨂[ℂ] τ, M.H τ)
     (hx : ∀ w, ellT M w x = 0) : x = 0 := by
   classical
@@ -84,6 +116,9 @@ theorem ellT_sep (M : DSModel V S) (h : ∀ τ, FiniteDimensional ℂ (M.H τ)) 
   rw [← key] at this
   simpa using this
 
+/- English proof (translation)
+Establish `: inclT M = (PiTensorProduct.congr fun τ => LinearEquiv.ofTop (M.sm τ) (h τ)).toLinearMap`. Use `PiTensorProduct.ext (MultilinearMap.ext fun v => ?_)` and prove the remaining obligations. Simplify using `[inclT]`. Rewrite using `[this]`. Conclude with `LinearEquiv.bijective _`.
+-/
 theorem inclT_bij (M : DSModel V S) (h : ∀ τ, M.sm τ = ⊤) : Function.Bijective (inclT M) := by
   have : inclT M = (PiTensorProduct.congr fun τ => LinearEquiv.ofTop (M.sm τ) (h τ)).toLinearMap := by
     refine PiTensorProduct.ext (MultilinearMap.ext fun v => ?_)
@@ -91,6 +126,11 @@ theorem inclT_bij (M : DSModel V S) (h : ∀ τ, M.sm τ = ⊤) : Function.Bijec
   rw [this]
   exact LinearEquiv.bijective _
 
+/- English proof (translation)
+Rewrite using `[← M.fr_gram τ]`. Use `((M.fr_unit τ).star.mul ?_).mul (M.fr_unit τ)` and prove the remaining obligations. Use `IsUnit.of_mul_eq_one (Formalism.REAL.Jm (M.ε τ)) ?_` and prove the remaining obligations. Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem isUnit_gram (M : DSModel V S) (τ : D.what₂.Tau) : IsUnit (gramAt D V τ) := by
   rw [← M.fr_gram τ]
   refine ((M.fr_unit τ).star.mul ?_).mul (M.fr_unit τ)
@@ -101,6 +141,11 @@ theorem isUnit_gram (M : DSModel V S) (τ : D.what₂.Tau) : IsUnit (gramAt D V 
   funext a
   split_ifs <;> simp
 
+/- English proof (translation)
+Set `o` to `fun τ => Module.finBasis ℂ (M.H τ)`. Set `b` to `Basis.piTensorProduct o`. Establish `e : ∀ v : ∀ τ, M.H τ, f (PiTensorProduct.tprod ℂ v) = ∑ i, (∏ τ, (o τ).coord (i τ) (v τ)) * f (b i)`. Introduce `v`. Use `conv_lhs => rw [← b.sum_repr (PiTensorProduct.tprod ℂ v), map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, Basis.piTensorProduct_repr_tprod_apply]`. Both sides reduce to the same expression. Simplify using `only [e]`. Conclude with `continuous_finsetSum _ fun i _ => (continuous_finsetProd _ fun τ _ => ((o τ).coord (i τ)).continuous_of_finiteDimensional.comp (continuous_apply τ)).mul continuous_const`.
+-/
 theorem continuous_tprod (M : DSModel V S) (h : ∀ τ, FiniteDimensional ℂ (M.H τ)) (f : (⨂[ℂ] τ, M.H τ) →ₗ[ℂ] ℂ) :
     Continuous fun v : ∀ τ, M.H τ => f (PiTensorProduct.tprod ℂ v) := by
   classical
@@ -116,9 +161,15 @@ theorem continuous_tprod (M : DSModel V S) (h : ∀ τ, FiniteDimensional ℂ (M
   exact continuous_finsetSum _ fun i _ => (continuous_finsetProd _ fun τ _ =>
     ((o τ).coord (i τ)).continuous_of_finiteDimensional.comp (continuous_apply τ)).mul continuous_const
 
+/- English proof (translation)
+Simplify using `[Formalism.QuantumDeterminants.UH]`.
+-/
 theorem one_mem_UH {n : ℕ} (G : Matrix (Fin n) (Fin n) ℂ) : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ Formalism.QuantumDeterminants.UH G := by
   simp [Formalism.QuantumDeterminants.UH]
 
+/- English proof (translation)
+The claim follows from `hasDerivAt_dual_of_sep_sub (MvPolynomial.restrictTotalDegree σ ℂ (max N y.totalDegree)) (fun z => LinearMap.proj z ∘ₗ pt) (fun x hx => hpt (by rw [map_zero]; exact funext hx)) c y (fun t => (MvPolynomial.mem_restrictTotalDegree _ _ _).2 ((hc t).trans (le_max_left _ _))) ((MvPolyn …`.
+-/
 theorem hasDerivAt_pol {σ Z : Type} [Finite σ] (pt : MvPolynomial σ ℂ →ₗ[ℂ] (Z → ℂ)) (hpt : Function.Injective pt)
     (c : ℝ → MvPolynomial σ ℂ) (N : ℕ) (hc : ∀ t, (c t).totalDegree ≤ N) (y : MvPolynomial σ ℂ)
     (h : ∀ z, HasDerivAt (fun t => pt (c t) z) (pt y z) 0) (f : MvPolynomial σ ℂ →ₗ[ℂ] ℂ) :
@@ -128,6 +179,29 @@ theorem hasDerivAt_pol {σ Z : Type} [Finite σ] (pt : MvPolynomial σ ℂ →�
     (fun t => (MvPolynomial.mem_restrictTotalDegree _ _ _).2 ((hc t).trans (le_max_left _ _)))
     ((MvPolynomial.mem_restrictTotalDegree _ _ _).2 (le_max_right _ _)) h f
 
+/- English proof (translation)
+Introduce `D V W S S' θ M M' I ρ ρ' hθ hM hM' hI hd hd' hρ hρ'`. Establish `fM` using `finite_tensor M fun τ => (hM τ).1`. Establish `fM'` using `finite_tensor M' fun τ => (hM' τ).1`. Set `e` to `LinearEquiv.ofBijective (inclT M) (inclT_bij M fun τ => (hM τ).2)`. Set `e'` to `LinearEquiv.ofBijective (inclT M') (inclT_bij M' fun τ => (hM' τ).2)`.
+
+Establish `he : ∀ x, inclT M (e.symm x) = x` using `fun x => e.apply_symm_apply x`. Establish `he' : ∀ x, inclT M' (e'.symm x) = x` using `fun x => e'.apply_symm_apply x`. Set `It : PolF D W.rank V.rank →ₗ[ℂ] SmT M' →ₗ[ℂ] SmT M` to `(I.compl₂ (inclT M')).compr₂ e.symm.toLinearMap`. Establish `hIt : ∀ φ v, inclT M (It φ v) = I φ (inclT M' v)` using `fun φ v => he _`. Establish `hinj : Function.Injective (inclT M)` using `e.injective`.
+
+Use `⟨It, fun ω pt hpt hω hω' => ⟨?_, ?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `h0`. Use `hI (LinearMap.ext fun φ => LinearMap.ext fun x => ?_)` and prove the remaining obligations. Use `hIt φ (e'.symm x)` as an intermediate fact. Rewrite `this` using `[he', h0]`.
+
+Simplify using `using this.symm`. Introduce `φ w haveI := fun τ => (hM' τ).1`. Set `m : MultilinearMap ℂ (fun τ => M'.H τ) ℂ` to `(ellT M w ∘ₗ I φ).compMultilinearMap (PiTensorProduct.tprod ℂ)`. Take `⟨c, -, hc⟩` from `m.exists_bound_of_continuous (continuous_tprod M' this (ellT M w ∘ₗ I φ))`. Use `⟨c, fun v => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hIt]`. Use `hc fun τ => (v τ : M'.H τ)` as an intermediate fact. Simplify `this` using `[m, inclT]`. Introduce `τ g hg φ φ' h v`. Rewrite `h` using `[hω τ g hg]`.
+
+Rewrite using `[hpt h, hIt, hIt, hρ τ g hg]`. Introduce `τ X hX φ φ' h v w`. Establish `hm : ∀ t : ℝ, NormedSpace.exp (t • X) ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)` using `fun t => GlobalTheory.GardingVec.exp_mem (isUnit_gram M τ) hX t`. Simplify using `only [oneP, hω τ _ (hm _)] at h`. Use `hasDerivAt_pol pt hpt (fun t : ℝ => ρ τ (NormedSpace.exp (t • X)) φ) _ (fun t => hd τ _ φ) φ' h (ellT M w ∘ₗ I.flip (inclT M' v))` as an intermediate fact.
+
+Simplify using `only [hIt, ← hρ τ _ (hm _)]`. Conclude with `this`. Introduce `τ g hg φ φ' v v' h h'`. Rewrite `h` using `[hω' τ g hg]`. Apply `hinj` to reduce the goal to its premises.
+
+Rewrite using `[hpt h, hIt, hIt, h', hρ' τ g hg]`. Introduce `τ X hX φ φ' v v' h h'`. Establish `hm : ∀ t : ℝ, NormedSpace.exp (t • X) ∈ Formalism.QuantumDeterminants.UH (gramAt D W τ)` using `fun t => GlobalTheory.GardingVec.exp_mem (isUnit_gram M' τ) hX t`. Simplify using `only [oneP, hω' τ _ (hm _)] at h`. Establish `h1 : ∀ ψ, ρ' τ 1 ψ = ψ` using `fun ψ => hpt (by`.
+
+Rewrite using `[← hω' τ 1 (one_mem_UH _), GlobalTheory.PointAtPlaceHom.atTau_one hθ]`. Conclude with `congrArg (fun f : Module.End ℂ (WO V W → ℂ) => f (pt ψ)) (map_one ω))`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_add, hIt, hIt, map_zero]`. Use `ellT_sep M (fun τ => (hM τ).1) _ fun w => ?_` and prove the remaining obligations.
+
+Establish `hB` using `hasDerivAt_bilin (I.compr₂ (ellT M w)) (fun t : ℝ => ρ' τ (NormedSpace.exp (t • X)) φ) φ' (fun t : ℝ => actT M' τ (NormedSpace.exp (t • X)) (inclT M' v)) (inclT M' v') (hasDerivAt_pol pt hpt _ _ (fun t => hd' τ _ φ) φ' h) (hasDerivAt_dual_of_sep (ellT M') (ellT_sep M' fun τ => (h …`. Simplify using `only [LinearMap.compr₂_apply, hρ' τ _ (hm _), zero_smul, NormedSpace.exp_zero, h1] at hB`. Establish `h2` using `hρ' τ 1 (one_mem_UH _) φ' (inclT M' v)`. Rewrite `h2` using `[h1]`. Rewrite `hB` using `[h2]`.
+
+Rewrite using `[map_add]`. Conclude with `hB.unique (hasDerivAt_const _ _)`.
+-/
 theorem exists_isItW : ∀ (D : D7) (V W : HSp D) (S S' : D.what₂.Tau → SPar) (θ : InfFam D) (M : DSModel V S) (M' : DSModel W S') (I : PolF D W.rank V.rank →ₗ[ℂ] (⨂[ℂ] τ, M'.H τ) →ₗ[ℂ] ⨂[ℂ] τ, M.H τ) (ρ : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ → PolF D W.rank V.rank → PolF D W.rank V.rank) (ρ' : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ → PolF D W.rank V.rank → PolF D W.rank V.rank), IsInfFam θ → (∀ τ, FiniteDimensional ℂ (M.H τ) ∧ M.sm τ = ⊤) → (∀ τ, FiniteDimensional ℂ (M'.H τ) ∧ M'.sm τ = ⊤) → I ≠ 0 → (∀ τ g φ, (ρ τ g φ).totalDegree ≤ φ.totalDegree) → (∀ τ h φ, (ρ' τ h φ).totalDegree ≤ φ.totalDegree) → (∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ φ x, I (ρ τ g φ) x = actT M τ g (I φ x)) → (∀ τ, ∀ h ∈ Formalism.QuantumDeterminants.UH (gramAt D W τ), ∀ φ x, I (ρ' τ h φ) (actT M' τ h x) = I φ x) → ∃ It : PolF D W.rank V.rank →ₗ[ℂ] SmT M' →ₗ[ℂ] SmT M, ∀ (ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (pt : PolF D W.rank V.rank →ₗ[ℂ] (WO V W → ℂ)), Function.Injective pt → (∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ φ, ω (atTau θ V τ g, 1) (pt φ) = pt (ρ τ g φ)) → (∀ τ, ∀ h ∈ Formalism.QuantumDeterminants.UH (gramAt D W τ), ∀ φ, ω (1, atTau θ W τ h) (pt φ) = pt (ρ' τ h φ)) → IsItW θ M M' ω pt It := by
   intro D V W S S' θ M M' I ρ ρ' hθ hM hM' hI hd hd' hρ hρ'
   have fM := finite_tensor M fun τ => (hM τ).1

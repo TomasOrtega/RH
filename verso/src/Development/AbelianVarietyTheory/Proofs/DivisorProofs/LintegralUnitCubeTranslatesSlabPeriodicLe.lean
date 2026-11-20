@@ -13,6 +13,21 @@ noncomputable section
 
 namespace GlobalTheory.ArchDecay
 
+/- English proof (translation)
+Use `set S : Set G := {w | w - ι (π w) ∈ U} with hSdef`. Set `ν : Measure (Fin N → ℝ)` to `(μ.restrict S).map π`. Establish `hν : ∀ A, MeasurableSet A → ν A = μ (π ⁻¹' A ∩ S)` using `fun A hA => by`. Rewrite using `[Measure.map_apply hπ.measurable hA, Measure.restrict_apply (hπ.measurable hA)]`. Establish `: IsFiniteMeasureOnCompacts ν` using `⟨fun A hA => by`.
+
+Rewrite using `[hν A hA.measurableSet]`. Conclude with `lt_top_iff_ne_top.2 (hfin A hA)⟩`. Establish `: ν.IsAddLeftInvariant` using `(forall_measure_preimage_add_iff ν).1 fun t A hA => by`. Rewrite using `[hν A hA, hν _ (measurable_const_add t hA), ← measure_preimage_add μ (ι t) (π ⁻¹' A ∩ S)]`. Use `congr 1`.
+
+Use extensionality with `w`. Simplify using `only [hSdef, Set.mem_inter_iff, Set.mem_preimage, Set.mem_setOf_eq, map_add, hπι, add_sub_add_left_eq_sub]`. Take `⟨c, hc⟩ : ∃ c : NNReal, ν = c • volume` from `⟨_, Measure.isAddLeftInvariant_eq_smul ν volume⟩`. Establish `hcube : MeasurableSet (cube N)` using `MeasurableSet.univ_pi fun _ => measurableSet_Icc`. Establish `hvol : volume (cube N) = 1`.
+
+Simplify using `[cube, Real.volume_Icc_pi]`. Establish `hνc : μ (π ⁻¹' cube N ∩ S) = c`. Rewrite using `[← hν _ hcube, hc, Measure.smul_apply, hvol]`. Simplify using the standard rewrite rules. Establish `hf : Measurable fun t => φ (y + ι t)` using `hφ.comp (measurable_const_add y |>.comp hι.measurable)`.
+
+Establish `e1 : ∫⁻ t in cube N, φ (y + ι t) ∂ν = c * ∫⁻ t in cube N, φ (y + ι t)`. Rewrite using `[hc, Measure.restrict_smul, lintegral_smul_measure]`. Both sides reduce to the same expression. Rewrite using `[hνc, ← e1, setLIntegral_map hcube hf hπ.measurable, Measure.restrict_restrict (hπ.measurable hcube)]`. Establish `e2 : ∫⁻ w in π ⁻¹' cube N ∩ S, φ (y + ι (π w)) ∂μ = ∫⁻ w in π ⁻¹' cube N ∩ S, φ (y + w) ∂μ`.
+
+Use `setLIntegral_congr_fun ((hπ.measurable hcube).inter hS) fun w hw => ?_` and prove the remaining obligations. Use `hper (y + ι (π w)) _ hw.2` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e2]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lintegral_cube_slab_le {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsAddLeftInvariant] {N : ℕ} (ι : (Fin N → ℝ) →+ G)
     (π : G →+ (Fin N → ℝ)) (hι : Continuous ι) (hπ : Continuous π) (hπι : ∀ t, π (ι t) = t) (U : Set G)

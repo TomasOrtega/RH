@@ -4,6 +4,41 @@ noncomputable section
 
 namespace Formalism.HermitianLattices.Ext.SupplyAP
 
+/- English proof (translation)
+Use `set a : ℝ := (n : ℝ) with ha`. Establish `ha1 : 1 ≤ a` using `by rw [ha]; exact_mod_cast hn`. Use `set D : ℝ := 24 / c₀ with hD`. Use `set B : ℝ := 2 * C / c₀ with hB`. Establish `hD0 : 0 < D` using `by positivity`.
+
+Establish `hB0 : 0 ≤ B` using `by positivity`. Establish `hcD : c₀ * D = 24` using `by rw [hD]; field_simp`. Establish `hcB : c₀ * B = 2 * C` using `by rw [hB]; field_simp`. Establish `hA4 : 4 ≤ R` using `by linarith`. Establish `hAl : R ≤ R * l` using `by nlinarith`.
+
+Establish `hAl1 : 1 ≤ R * l` using `by linarith`. Establish `hAl2 : R * l ≤ R ^ 2 * l ^ 2` using `by nlinarith`. Establish `hTA : R * l ≤ T` using `le_trans hAl2 hT`. Establish `hs : R * l ≤ Real.sqrt T`. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hcs : c * (R * l) ≤ c * Real.sqrt T` using `mul_le_mul_of_nonneg_left hs hc.le`. Establish `hcAl : (a + B) * l ≤ c * (R * l)`. Use `mul_le_mul_of_nonneg_right hA2 (by linarith : (0 : ℝ) ≤ l)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hBl : B ≤ B * l` using `by nlinarith`. Establish `hal : l ≤ a * l` using `by nlinarith`. Establish `hM2 : M ^ n ≤ Real.exp (a * l)`. Establish `: Real.exp (a * l) = Real.exp l ^ n`. Rewrite using `[ha, Real.exp_nat_mul]`.
+
+Rewrite using `[this]`. Conclude with `pow_le_pow_left₀ hM.le hMl n`. Establish `hE : 0 < Real.exp T` using `Real.exp_pos T`. Use `⟨by linarith, ?_, ?_⟩` and prove the remaining obligations. Use `le_trans hMl (Real.exp_le_exp.mpr ?_)` and prove the remaining obligations.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hT4 : T ≤ 4 * Real.exp (T / 4)`. Use `Real.add_one_le_exp (T / 4)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hDle : D ≤ T / 4 - a * l`.
+
+Establish `h1 : (4 * a + 4 * D) * l ≤ R * l` using `mul_le_mul_of_nonneg_right hA1 (by linarith : (0 : ℝ) ≤ l)`. Establish `h2 : D ≤ D * l` using `by nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hDexp : D ≤ Real.exp (T / 4 - a * l)`. Use `Real.add_one_le_exp (T / 4 - a * l)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hprod : Real.exp (T / 4 - a * l) * (Real.exp (T / 2) * Real.exp (T / 4) * Real.exp (a * l)) = Real.exp T`. Rewrite using `[← Real.exp_add, ← Real.exp_add, ← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `set Q : ℝ := Real.exp (T / 2) * Real.exp (T / 4) * Real.exp (a * l) with hQ`. Establish `hQ0 : 0 < Q` using `by positivity`. Establish `P1 : 3 * (Real.exp (T / 2) * T) * M ^ n ≤ c₀ / 2 * Real.exp T`. Establish `h1 : 3 * (Real.exp (T / 2) * T) * M ^ n ≤ 12 * Q`. Establish `hx : Real.exp (T / 2) * T ≤ Real.exp (T / 2) * (4 * Real.exp (T / 4))` using `mul_le_mul_of_nonneg_left hT4 (Real.exp_pos _).le`.
+
+Establish `hb : Real.exp (T / 2) * T * M ^ n ≤ Real.exp (T / 2) * (4 * Real.exp (T / 4)) * Real.exp (a * l)` using `mul_le_mul hx hM2 (by positivity) (by positivity)`. Rewrite using `[hQ]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : 12 * Q ≤ c₀ / 2 * Real.exp T`. Rewrite using `[← hprod]`.
+
+Establish `: D * Q ≤ Real.exp (T / 4 - a * l) * Q` using `mul_le_mul_of_nonneg_right hDexp hQ0.le`. Establish `h3 : c₀ / 2 * (D * Q) ≤ c₀ / 2 * (Real.exp (T / 4 - a * l) * Q)` using `mul_le_mul_of_nonneg_left this (by positivity)`. Establish `h4 : c₀ / 2 * (D * Q) = 12 * Q`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `le_trans h1 h2`. Establish `hexp2 : Real.exp (-c * Real.sqrt T) * Real.exp (a * l) ≤ Real.exp (-B)`. Rewrite using `[← Real.exp_add]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hBexp : B * Real.exp (-B) ≤ 1`. Establish `h1 : B ≤ Real.exp B`. Use `Real.add_one_le_exp B` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hCexp : C * Real.exp (-B) ≤ c₀ / 2`. Establish `: C = c₀ / 2 * B` using `by linarith`. Rewrite using `[this]`. Combine the equalities or inequalities in the displayed calculation. Establish `P2 : C * Real.exp T * Real.exp (-c * Real.sqrt T) * M ^ n ≤ c₀ / 2 * Real.exp T`.
+
+Establish `h1 : Real.exp (-c * Real.sqrt T) * M ^ n ≤ Real.exp (-B)` using `le_trans (mul_le_mul_of_nonneg_left hM2 (Real.exp_pos _).le) hexp2`. Establish `h2 : C * (Real.exp (-c * Real.sqrt T) * M ^ n) ≤ c₀ / 2` using `le_trans (mul_le_mul_of_nonneg_left h1 hC) hCexp`. Combine the equalities or inequalities in the displayed calculation. Establish `hM2pos : 0 < M ^ n` using `by positivity`. Rewrite using `[le_sub_iff_add_le, le_div_iff₀ hM2pos]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem constsOf_core (n : ℕ) (c c₀ C R l T M : ℝ) (hn : 1 ≤ n) (hc : 0 < c) (hc₀ : 0 < c₀)
     (hC : 0 ≤ C)
     (hA1 : 4 * (n : ℝ) + 4 * (24 / c₀) ≤ R) (hA2 : (n : ℝ) + 2 * C / c₀ ≤ c * R) (hl : 1 ≤ l)
@@ -110,6 +145,21 @@ theorem constsOf_core (n : ℕ) (c c₀ C R l T M : ℝ) (hn : 1 ≤ n) (hc : 0 
     rw [le_sub_iff_add_le, le_div_iff₀ hM2pos]
     linarith
 
+/- English proof (translation)
+Establish `hn : 1 ≤ A + 1` using `Nat.le_add_left 1 A`. Use `set a : ℝ := ((A + 1 : ℕ) : ℝ) with ha`. Establish `ha1 : 1 ≤ a` using `by rw [ha]; exact_mod_cast hn`. Use `set R : ℝ := 4 * a + 4 * (24 / c₀) + (a + 2 * C / c₀) / c with hR`. Establish `h1 : 0 ≤ 4 * (24 / c₀)` using `by positivity`.
+
+Establish `h2 : 0 ≤ (a + 2 * C / c₀) / c` using `by positivity`. Establish `hA1 : 4 * a + 4 * (24 / c₀) ≤ R` using `by linarith`. Establish `hA2 : a + 2 * C / c₀ ≤ c * R`. Establish `h3 : c * ((a + 2 * C / c₀) / c) = a + 2 * C / c₀` using `by field_simp`. Establish `h4 : 0 ≤ c * (4 * a + 4 * (24 / c₀))` using `by positivity`.
+
+Establish `h5 : c * R = c * (4 * a + 4 * (24 / c₀)) + c * ((a + 2 * C / c₀) / c)` using `by rw [hR]; ring`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨R ^ 2, by nlinarith, ?_⟩` and prove the remaining obligations. Introduce `m x hm hx hK`. Establish `hm1 : (1 : ℝ) ≤ m` using `by exact_mod_cast hm`.
+
+Establish `hm0 : (0 : ℝ) < m` using `by linarith`. Establish `h3m : (0 : ℝ) < 3 * m` using `by linarith`. Establish `hl : 1 ≤ Real.log (3 * m)`. Rewrite using `[Real.le_log_iff_exp_le h3m]`. Use `Real.exp_one_lt_d9` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hMl : (m : ℝ) ≤ Real.exp (Real.log (3 * m))`. Rewrite using `[Real.exp_log h3m]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `constsOf_core (A + 1) c c₀ C R (Real.log (3 * m)) (Real.log x) m hn hc hc₀ hC hA1 hA2 hl hK hm0 hMl`.
+
+Establish `hsq : Real.exp (Real.log x / 2) = Real.sqrt x`. Rewrite using `[Real.sqrt_eq_rpow, Real.rpow_def_of_pos hx]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `key` using `[hsq, Real.exp_log hx]`.
+
+Conclude with `key`.
+-/
 theorem constsOf (A : ℕ) (c c₀ C : ℝ) (hc : 0 < c) (hc₀ : 0 < c₀) (hC : 0 ≤ C) : ∃ K : ℝ, 4 ≤ K ∧
     ∀ (m : ℕ) (x : ℝ), 1 ≤ m → 0 < x → K * Real.log (3 * m) ^ 2 ≤ Real.log x →
       4 ≤ Real.log x ∧ (m : ℝ) ≤ Real.exp (c * Real.sqrt (Real.log x)) ∧

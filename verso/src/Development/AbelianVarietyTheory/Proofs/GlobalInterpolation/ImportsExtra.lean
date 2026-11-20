@@ -2,6 +2,13 @@ import Mathlib
 
 namespace GlobalTheory.PrimeOrderModule
 
+/- English proof (translation)
+Use `haveI : Fact T.Prime := ⟨hT⟩`. Establish `hZ : Nat.card (ZMod T) = T` using `Nat.card_zmod T`. Set `e : M ≃+ ZMod T` to `addEquivOfPrimeCardEq hM hZ`. Establish `key : ∀ (a : S) (m : M), e (a • m) = e (a • e.symm 1) * e m`. Introduce `a m`.
+
+Establish `hm : m = (e m).val • e.symm 1`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_nsmul, e.apply_symm_apply, nsmul_eq_mul, mul_one, ZMod.natCast_zmod_val]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[nsmul_eq_mul, ZMod.natCast_zmod_val, mul_comm]`.
+
+Set `χ : S →+* ZMod T` to `{ toFun := fun a => e (a • e.symm 1) map_one' := by simp map_mul' := fun a b => by rw [mul_smul, key] map_zero' := by simp map_add' := fun a b => by rw [add_smul, map_add] }`. Use `⟨χ, fun a m h => ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Establish `h' : e (a • e.symm 1) = 0` using `h`. Rewrite using `[key, h', zero_mul, map_zero]`.
+-/
 theorem exists_character (S M : Type) [CommRing S] [AddCommGroup M] [Module S M] (T : ℕ)
     (hT : T.Prime) (hM : Nat.card M = T) :
     ∃ χ : S →+* ZMod T, ∀ (a : S) (m : M), χ a = 0 → a • m = 0 := by

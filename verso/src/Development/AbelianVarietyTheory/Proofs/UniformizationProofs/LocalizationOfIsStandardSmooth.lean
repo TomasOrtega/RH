@@ -7,6 +7,11 @@ open CategoryTheory AlgebraicGeometry
 
 namespace GlobalTheory.StabFlat
 
+/- English proof (translation)
+Set `_` to `σ.toAlgebra`. Express the relevant statement in the definitionally equal form `Module.Flat V C`. Rewrite using `[Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, eq_bot_iff]`. Introduce and unpack `a ⟨⟨v, hv⟩, hva⟩`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (nonZeroDivisors.ne_zero hv) hϖ`.
+
+Establish `h1 : σ (u * ϖ ^ n) * a = 0` using `hva`. Rewrite `h1` using `[map_mul, mul_assoc, map_pow]`. Conclude with `(h.pow n).right_eq_zero_of_smul (((u.isUnit.map σ).mul_right_eq_zero).1 h1)`.
+-/
 theorem flat_of_regular {V C : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CommRing C] {ϖ : V}
     (hϖ : Irreducible ϖ) (σ : V →+* C) (h : IsSMulRegular C (σ ϖ)) : σ.Flat := by
   let _ := σ.toAlgebra
@@ -19,6 +24,25 @@ theorem flat_of_regular {V C : Type} [CommRing V] [IsDomain V] [IsDiscreteValuat
   rw [map_mul, mul_assoc, map_pow] at h1
   exact (h.pow n).right_eq_zero_of_smul (((u.isUnit.map σ).mul_right_eq_zero).1 h1)
 
+/- English proof (translation)
+Introduce `V _ _ _ ϖ hϖ X H f j hj hI`. Use `Flat.of_stalkMap _ fun h => ?_` and prove the remaining obligations. Take `⟨σ, hσ⟩` from `Spec.map_surjective (X.fromSpecStalk (j h) ≫ f)`. Establish `reg : IsSMulRegular (H.presheaf.stalk h) ((j.stalkMap h).hom (σ.hom ϖ))`. Distinguish the cases in `hu : IsUnit (σ.hom ϖ)`.
+
+Conclude with `(hu.map _).isRegular.left.isSMulRegular`. Take `⟨I, hr, hI⟩` from `hI h σ.hom hσ.symm hu`. Establish `h₁ : I ≤ RingHom.ker (j.stalkMap h).hom` using `(hI (H.presheaf.stalk h) (j.stalkMap h).hom).1 ⟨H.fromSpecStalk h, (Scheme.SpecMap_stalkMap_fromSpecStalk j).symm⟩`. Establish `: Nontrivial (X.presheaf.stalk (j h) ⧸ I)` using `Ideal.Quotient.nontrivial_iff.2 (ne_top_of_le_ne_top (RingHom.ker_ne_top _) h₁)`. Establish `: IsLocalRing (X.presheaf.stalk (j h) ⧸ I)` using `IsLocalRing.of_surjective' (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective`.
+
+Take `⟨y, hy⟩` from `(hI (X.presheaf.stalk (j h) ⧸ I) (Ideal.Quotient.mk I)).2 Ideal.mk_ker.ge`. Establish `hl : IsLocalHom (Ideal.Quotient.mk I)` using `IsLocalHom.of_surjective _ Ideal.Quotient.mk_surjective`. Establish `e : y (IsLocalRing.closedPoint _) = h`. Apply `j.isClosedEmbedding.injective` to reduce the goal to its premises. Use `(congrArg (fun q => q (IsLocalRing.closedPoint _)) hy).trans ?_` and prove the remaining obligations.
+
+Conclude with `(congrArg (X.fromSpecStalk (j h)) (IsLocalRing.comap_closedPoint (Ideal.Quotient.mk I))).trans Scheme.fromSpecStalk_closedPoint`. Set `ψ` to `H.presheaf.stalkSpecializes (specializes_of_eq e) ≫ Scheme.stalkClosedPointTo y`. Establish `hψ : j.stalkMap h ≫ ψ = CommRingCat.ofHom (Ideal.Quotient.mk I)`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono (X.fromSpecStalk (j h)), ← hy, Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkMap_fromSpecStalk, Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk_assoc, Scheme.Spec_stalkClosedPointTo_fromSpecStalk_assoc]`.
+
+Establish `hψ' : ∀ a, ψ.hom ((j.stalkMap h).hom a) = Ideal.Quotient.mk I a` using `fun a => congrArg (fun q => q.hom a) hψ`. Use `IsSMulRegular.of_right_eq_zero_of_smul fun b hb => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `j.stalkMap_surjective h b`. Use `h₁ (Ideal.Quotient.eq_zero_iff_mem.1 (hr.right_eq_zero_of_smul ?_))` and prove the remaining obligations. Use `congrArg ψ.hom hb` as an intermediate fact.
+
+Rewrite `this` using `[smul_eq_mul, map_mul, hψ', hψ', map_zero]`. Conclude with `this`. Establish `fl : (σ ≫ j.stalkMap h).hom.Flat` using `flat_of_regular hϖ _ reg`. Establish `e : σ ≫ j.stalkMap h = StructureSheaf.toStalk V ((j ≫ f) h) ≫ (j ≫ f).stalkMap h`. Apply `Spec.map_injective` to reduce the goal to its premises.
+
+Use `Eq.trans ?_ (Spec.map_comp _ _).symm` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (_ ≫ ·) (Spec.fromSpecStalk_eq' (CommRingCat.of V) ((j ≫ f) h)))` and prove the remaining obligations. Rewrite using `[Spec.map_comp, hσ, Scheme.SpecMap_stalkMap_fromSpecStalk_assoc]`. Conclude with `(Scheme.SpecMap_stalkMap_fromSpecStalk (j ≫ f)).symm`. Set `S` to `(Spec (CommRingCat.of V)).presheaf.stalk ((j ≫ f) h)`.
+
+Use `letI : Algebra V S := StructureSheaf.stalkAlgebra V ((j ≫ f) h)`. Establish `: ((j ≫ f) h).asIdeal.IsPrime` using `PrimeSpectrum.isPrime (R := V) _`. Establish `: IsLocalization.AtPrime S ((j ≫ f) h).asIdeal` using `StructureSheaf.IsLocalization.to_stalk V _`. Use `letI : Algebra V (H.presheaf.stalk h) := (σ ≫ j.stalkMap h).hom.toAlgebra`. Use `letI : Algebra S (H.presheaf.stalk h) := ((j ≫ f).stalkMap h).hom.toAlgebra`.
+
+Establish `: IsScalarTower V S (H.presheaf.stalk h)` using `IsScalarTower.of_algebraMap_eq' (congrArg (·.hom) e)`. Conclude with `(Module.flat_iff_of_isLocalization S ((j ≫ f) h).asIdeal.primeCompl (H.presheaf.stalk h)).2 fl`.
+-/
 theorem flat_of_ideals : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ → ∀ (X H : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of V)) (j : H ⟶ X), IsClosedImmersion j → (∀ (h : H) (σ : V →+* X.presheaf.stalk (j h)), X.fromSpecStalk (j h) ≫ f = Spec.map (CommRingCat.ofHom σ) → ¬ IsUnit (σ ϖ) → ∃ I : Ideal (X.presheaf.stalk (j h)), IsSMulRegular (X.presheaf.stalk (j h) ⧸ I) (σ ϖ) ∧ ∀ (R : Type) [CommRing R] [IsLocalRing R] (φ : X.presheaf.stalk (j h) →+* R), (∃ y : Spec (CommRingCat.of R) ⟶ H, y ≫ j = Spec.map (CommRingCat.ofHom φ) ≫ X.fromSpecStalk (j h)) ↔ I ≤ RingHom.ker φ) → Flat (j ≫ f) := by
   intro V _ _ _ ϖ hϖ X H f j hj hI
   refine Flat.of_stalkMap _ fun h => ?_
@@ -70,6 +94,13 @@ theorem flat_of_ideals : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteVal
   have : IsScalarTower V S (H.presheaf.stalk h) := IsScalarTower.of_algebraMap_eq' (congrArg (·.hom) e)
   exact (Module.flat_iff_of_isLocalization S ((j ≫ f) h).asIdeal.primeCompl (H.presheaf.stalk h)).2 fl
 
+/- English proof (translation)
+Establish `: Nontrivial B`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`. Conclude with `hm.ne_top (Subsingleton.elim _ _)`. Use `le_antisymm (Ideal.height_le_ringKrullDim_of_isPrime.trans (SmoothDim.ringKrullDim_of_etale_mvPolynomial K B g).le) ?_` and prove the remaining obligations.
+
+Use `letI : Algebra K B := ((algebraMap (MvPolynomial (Fin g) K) B).comp (algebraMap K (MvPolynomial (Fin g) K))).toAlgebra`. Use `haveI : IsScalarTower K (MvPolynomial (Fin g) K) B := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : Algebra.FiniteType K B := Algebra.FiniteType.trans (S := MvPolynomial (Fin g) K) inferInstance inferInstance`. Use `haveI : IsNoetherianRing B := Algebra.FiniteType.isNoetherianRing K B`. Use `haveI hp := SmoothDim.isMaximal_under_of_finiteType K (MvPolynomial (Fin g) K) B m`.
+
+Establish `h1` using `ReciprocityTheory.CA.height_add_ringKrullDim_quotient_mvPolynomial_field K g (m.under (MvPolynomial (Fin g) K))`. Use `letI := Ideal.Quotient.field (m.under (MvPolynomial (Fin g) K))`. Rewrite `h1` using `[ringKrullDim_eq_zero_of_field, add_zero]`. Rewrite using `[← h1, WithBot.coe_le_coe, Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown (m.under (MvPolynomial (Fin g) K)) m]`. Conclude with `le_self_add`.
+-/
 theorem height_of_etale_mvPolynomial (K B : Type*) [Field K] [CommRing B] (g : ℕ)
     [Algebra (MvPolynomial (Fin g) K) B] [Algebra.Etale (MvPolynomial (Fin g) K) B] (m : Ideal B) [hm : m.IsMaximal] :
     (m.height : WithBot ℕ∞) = g := by
@@ -94,6 +125,23 @@ theorem height_of_etale_mvPolynomial (K B : Type*) [Field K] [CommRing B] (g : �
     (m.under (MvPolynomial (Fin g) K)) m]
   exact le_self_add
 
+/- English proof (translation)
+Establish `hq : (Ideal.quotientMap ((Ideal.span {ϖ}).map ρ) ρ Ideal.le_comap_map).IsStandardSmoothOfRelativeDimension g`. Use `RingHom.isStableUnderCobaseChange_toMorphismProperty_iff.2 (RingHom.isStandardSmoothOfRelativeDimension_isStableUnderBaseChange.{0} g)` as an intermediate fact. Conclude with `MorphismProperty.of_isPushout (P := RingHom.toMorphismProperty (@RingHom.IsStandardSmoothOfRelativeDimension g)) (NilpotentLift.isPushout_quotient_map (Ideal.span {ϖ}) (CommRingCat.ofHom ρ)).flip hρ`. Use `letI := ρ.toAlgebra`. Establish `: Algebra.IsStandardSmoothOfRelativeDimension g V R` using `hρ`.
+
+Establish `: Algebra.IsStandardSmooth V R` using `Algebra.IsStandardSmoothOfRelativeDimension.isStandardSmooth g`. Establish `: IsNoetherianRing R` using `Algebra.FiniteType.isNoetherianRing V R`. Use `⟨IsLocalization.isNoetherianRing n.primeCompl A inferInstance, ?_, ?_⟩` and prove the remaining obligations. Establish `h₁ : IsSMulRegular R ϖ` using `Module.Flat.isSMulRegular_of_nonZeroDivisors h₀`. Use `IsLocalization.map_nonZeroDivisors_le n.primeCompl A ⟨ρ ϖ, ?_, rfl⟩` and prove the remaining obligations.
+
+Conclude with `mem_nonZeroDivisors_iff_left.2 fun x hx => h₁.right_eq_zero_of_smul hx`. Use `letI := Ideal.Quotient.field (Ideal.span {ϖ})`. Use `set J := (Ideal.span {ϖ}).map ρ with hJ`. Take `⟨φ, -, hφ⟩` from `hq.exists_etale_mvPolynomial`. Establish `hJ' : J = Ideal.span {ρ ϖ}` using `by rw [hJ, Ideal.map_span, Set.image_singleton]`.
+
+Establish `hJn : RingHom.ker (Ideal.Quotient.mk J) ≤ n`. Rewrite using `[Ideal.mk_ker, hJ', Ideal.span_singleton_le_iff_mem]` and apply the resulting hypothesis. Use `letI := φ.toAlgebra`. Establish `: Algebra.Etale (MvPolynomial (Fin g) (V ⧸ Ideal.span {ϖ})) (R ⧸ J)` using `hφ.toAlgebra`. Establish `: IsRegularRing (R ⧸ J)` using `isRegularRing_of_etale (MvPolynomial (Fin g) (V ⧸ Ideal.span {ϖ})) _`.
+
+Establish `hm : (n.map (Ideal.Quotient.mk J)).IsMaximal` using `Ideal.IsMaximal.map_of_surjective_of_ker_le Ideal.Quotient.mk_surjective hJn`. Establish `hle : J ≤ (Ideal.span {algebraMap R A (ρ ϖ)}).comap (algebraMap R A)`. Rewrite using `[hJ', Ideal.span_singleton_le_iff_mem]`. Conclude with `Ideal.mem_span_singleton_self _`. Use `letI : Algebra (R ⧸ J) (A ⧸ Ideal.span {algebraMap R A (ρ ϖ)}) := (Ideal.quotientMap _ _ hle).toAlgebra`.
+
+Establish `hl` using `IsLocalization.of_surjective n.primeCompl A (S' := A ⧸ Ideal.span {algebraMap R A (ρ ϖ)}) (Ideal.Quotient.mk J) Ideal.Quotient.mk_surjective (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective rfl (by rw [Ideal.mk_ker, Ideal.mk_ker, hJ', Ideal.map_span, Set.image_singleton])`. Establish `e : n.primeCompl.map (Ideal.Quotient.mk J) = (n.map (Ideal.Quotient.mk J)).primeCompl`. Establish `hc : (n.map (Ideal.Quotient.mk J)).comap (Ideal.Quotient.mk J) = n`. Rewrite using `[Ideal.comap_map_of_surjective' _ Ideal.Quotient.mk_surjective, sup_eq_left.2 hJn]`. Use extensionality with `y`.
+
+Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x', hx', e⟩ hx`. Conclude with `hx' (hc.le (show Ideal.Quotient.mk J x' ∈ _ from e ▸ hx))`. Conclude with `fun hx => ⟨x, fun h => hx (Ideal.mem_map_of_mem _ h), rfl⟩`.
+
+Rewrite `hl` using `[e]`. Use `⟨?_, (IsLocalization.AtPrime.ringKrullDim_eq_height (n.map (Ideal.Quotient.mk J)) _).trans (height_of_etale_mvPolynomial (V ⧸ Ideal.span {ϖ}) (R ⧸ J) g _)⟩` and prove the remaining obligations. Use `IsRegularRing.isRegularLocalRing_localization (n.map (Ideal.Quotient.mk J))` as an intermediate fact. Conclude with `IsRegularLocalRing.of_ringEquiv (IsLocalization.algEquiv (n.map (Ideal.Quotient.mk J)).primeCompl (Localization.AtPrime (n.map (Ideal.Quotient.mk J))) _).toRingEquiv`.
+-/
 theorem localization_of_isStandardSmooth {V R A : Type} [CommRing V] [IsNoetherianRing V] [CommRing R] [CommRing A]
     {ϖ : V} (h₀ : ϖ ∈ nonZeroDivisors V) [(Ideal.span {ϖ}).IsMaximal] {g : ℕ} {ρ : V →+* R}
     (hρ : ρ.IsStandardSmoothOfRelativeDimension g) (n : Ideal R) [n.IsMaximal] [Algebra R A]
@@ -149,6 +197,17 @@ theorem localization_of_isStandardSmooth {V R A : Type} [CommRing V] [IsNoetheri
   exact IsRegularLocalRing.of_ringEquiv (IsLocalization.algEquiv (n.map (Ideal.Quotient.mk J)).primeCompl
     (Localization.AtPrime (n.map (Ideal.Quotient.mk J))) _).toRingEquiv
 
+/- English proof (translation)
+Introduce `V _ _ _ ϖ hϖ X f g hg x hx σ hσ hn`. Take `⟨U, hU, W, hW, hxW, e, H⟩` from `hg.exists_isStandardSmoothOfRelativeDimension x`. Establish `hfx : f x = IsLocalRing.closedPoint V`. Use `((congrArg f Scheme.fromSpecStalk_closedPoint.symm).trans (congrArg (fun q => q (IsLocalRing.closedPoint _)) hσ)).trans ?_` and prove the remaining obligations. Use `PrimeSpectrum.ext (Eq.symm ((IsLocalRing.maximalIdeal.isMaximal V).eq_of_le (PrimeSpectrum.isPrime _).ne_top ?_))` and prove the remaining obligations.
+
+Rewrite using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_le_iff_mem]`. Conclude with `hn`. Take `rfl : U = ⊤` from `(IsLocalRing.closedPoint_mem_iff U).1 (hfx ▸ e hxW)`. Set `ρ` to `(Scheme.ΓSpecIso (CommRingCat.of V)).inv ≫ f.appLE ⊤ W e`. Establish `hρ : ρ.hom.IsStandardSmoothOfRelativeDimension g` using `(RingHom.isStandardSmoothOfRelativeDimension_respectsIso.cancel_left_isIso _ _).2 H`.
+
+Establish `hc : ρ ≫ X.presheaf.germ W x hxW = CommRingCat.ofHom σ`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← hσ, ← hW.fromSpecStalk_eq_fromSpecStalk hxW, Spec.map_comp, Spec.map_comp, IsAffineOpen.fromSpecStalk, Category.assoc, ← IsAffineOpen.SpecMap_appLE_fromSpec f hU hW e, IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Use `letI : Algebra Γ(X, W) (X.presheaf.stalk x) := X.presheaf.algebra_section_stalk ⟨x, hxW⟩`. Establish `hl : IsLocalization.AtPrime (X.presheaf.stalk x) (hW.primeIdealOf ⟨x, hxW⟩).asIdeal` using `hW.isLocalization_stalk ⟨x, hxW⟩`.
+
+Use `haveI := hW.primeIdealOf_isMaximal_of_isClosed ⟨x, hxW⟩ hx`. Establish `hs : algebraMap Γ(X, W) (X.presheaf.stalk x) (ρ.hom ϖ) = σ ϖ` using `congrArg (fun q => q.hom ϖ) hc`. Use `haveI : (Ideal.span {ϖ}).IsMaximal := hϖ.maximalIdeal_eq ▸ IsLocalRing.maximalIdeal.isMaximal V`. Rewrite using `[← hs]`. Use `localization_of_isStandardSmooth (mem_nonZeroDivisors_of_ne_zero hϖ.ne_zero) hρ (hW.primeIdealOf ⟨x, hxW⟩).asIdeal ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hm`. Conclude with `hn (hs ▸ IsLocalization.map_units (X.presheaf.stalk x) (⟨_, hm⟩ : (hW.primeIdealOf ⟨x, hxW⟩).asIdeal.primeCompl))`.
+-/
 theorem stalk_of_smooth : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ → ∀ (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of V)) (g : ℕ), SmoothOfRelativeDimension g f → ∀ x : X, IsClosed ({x} : Set X) → ∀ σ : V →+* X.presheaf.stalk x, X.fromSpecStalk x ≫ f = Spec.map (CommRingCat.ofHom σ) → ¬ IsUnit (σ ϖ) → IsNoetherianRing (X.presheaf.stalk x) ∧ σ ϖ ∈ nonZeroDivisors (X.presheaf.stalk x) ∧ IsRegularLocalRing (X.presheaf.stalk x ⧸ Ideal.span {σ ϖ}) ∧ ringKrullDim (X.presheaf.stalk x ⧸ Ideal.span {σ ϖ}) = g := by
   intro V _ _ _ ϖ hϖ X f g hg x hx σ hσ hn
   obtain ⟨U, hU, W, hW, hxW, e, H⟩ := hg.exists_isStandardSmoothOfRelativeDimension x

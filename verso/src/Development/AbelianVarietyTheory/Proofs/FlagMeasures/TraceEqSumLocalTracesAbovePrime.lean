@@ -12,11 +12,19 @@ section Local
 
 variable {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
 
+/- English proof (translation)
+Set `` to `IsTopologicalAddGroup.rightUniformSpace K`. Use `isUniformAddGroup_of_addCommGroup (G := K)` as an intermediate fact. Use `infer_instance`.
+-/
 theorem t2 : T2Space K := by
   let := IsTopologicalAddGroup.rightUniformSpace K
   have := isUniformAddGroup_of_addCommGroup (G := K)
   infer_instance
 
+/- English proof (translation)
+Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x hx`. Establish `hγ : γ ≠ 0` using `(lt_of_le_of_lt zero_le hx).ne'`. Use `(IsValuativeTopology.hasBasis_nhds' x).mem_iff.2 ⟨γ, hγ, fun y hy => ?_⟩` and prove the remaining obligations. Use `(valuation K).map_add_lt (x := y - x) (y := x) hy hx` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem isOpen_lt (γ : ValueGroupWithZero K) : IsOpen {x : K | valuation K x < γ} := by
   rw [isOpen_iff_mem_nhds]
   intro x hx
@@ -25,6 +33,11 @@ theorem isOpen_lt (γ : ValueGroupWithZero K) : IsOpen {x : K | valuation K x < 
   have := (valuation K).map_add_lt (x := y - x) (y := x) hy hx
   simpa using this
 
+/- English proof (translation)
+Rewrite using `[(IsValuativeTopology.hasBasis_nhds_zero' K).tendsto_right_iff]`. Introduce `γ hγ`. Establish `: MulArchimedean (ValueGroupWithZero K)` using `ValuativeRel.isRankLeOne_iff_mulArchimedean.mp inferInstance`. Take `⟨n, hn⟩` from `exists_pow_lt₀ h (Units.mk0 γ hγ)`. Use `filter_upwards [eventually_ge_atTop n] with m hm`.
+
+Rewrite using `[map_pow]`. Conclude with `lt_of_le_of_lt (pow_le_pow_right_of_le_one' h.le hm) hn`.
+-/
 theorem tendsto_pow {x : K} (h : valuation K x < 1) :
     Tendsto (fun n : ℕ => x ^ n) atTop (𝓝 0) := by
   rw [(IsValuativeTopology.hasBasis_nhds_zero' K).tendsto_right_iff]
@@ -38,17 +51,26 @@ theorem tendsto_pow {x : K} (h : valuation K x < 1) :
 
 variable {l : ℕ} [Fact l.Prime] [Algebra ℚ_[l] K]
 
+/- English proof (translation)
+The claim follows from `continuousSMul_of_algebraMap _ _ hc`.
+-/
 theorem contSMul (hc : Continuous (algebraMap ℚ_[l] K)) : ContinuousSMul ℚ_[l] K :=
   continuousSMul_of_algebraMap _ _ hc
 
 variable {Ω : Type} [NormedField Ω] [NormedAlgebra ℚ_[l] Ω]
 
+/- English proof (translation)
+Use `contSMul hc` as an intermediate fact. Establish `: T2Space K` using `t2`. Conclude with `τ.toLinearMap.continuous_of_finiteDimensional`.
+-/
 theorem continuous_algHom [FiniteDimensional ℚ_[l] K] (hc : Continuous (algebraMap ℚ_[l] K))
     (τ : K →ₐ[ℚ_[l]] Ω) : Continuous τ := by
   have := contSMul hc
   have : T2Space K := t2
   exact τ.toLinearMap.continuous_of_finiteDimensional
 
+/- English proof (translation)
+Establish `h1` using `((continuous_algHom hc τ).tendsto 0).comp (tendsto_pow h)`. Rewrite using `[← tendsto_pow_atTop_nhds_zero_iff_norm_lt_one]`. Simplify `h1` using `[Function.comp_def]`.
+-/
 theorem norm_lt_one [FiniteDimensional ℚ_[l] K] (hc : Continuous (algebraMap ℚ_[l] K))
     (τ : K →ₐ[ℚ_[l]] Ω) {x : K} (h : valuation K x < 1) : ‖τ x‖ < 1 := by
   have h1 := ((continuous_algHom hc τ).tendsto 0).comp (tendsto_pow h)
@@ -61,6 +83,9 @@ section Place
 
 variable {F : Type} [Field F] [NumberField F] {Ω : Type} [NormedField Ω] [IsUltrametricDist Ω]
 
+/- English proof (translation)
+Establish `h : IsIntegral ℤ (σ a)` using `a.isIntegral_coe.map σ.toIntAlgHom`. Establish `h2 : IsIntegral (NormedField.valuation (K` using `Ω)).integer (σ a) := h.tower_top`. Use `(Valuation.integer.integers _).mem_of_integral h2` as an intermediate fact. Conclude with `this`.
+-/
 theorem norm_int_le (σ : F →+* Ω) (a : 𝓞 F) : ‖σ a‖ ≤ 1 := by
   have h : IsIntegral ℤ (σ a) := a.isIntegral_coe.map σ.toIntAlgHom
   have h2 : IsIntegral (NormedField.valuation (K := Ω)).integer (σ a) := h.tower_top
@@ -79,8 +104,16 @@ def ker (σ : F →+* Ω) : Ideal (𝓞 F) where
     simp only [Set.mem_setOf_eq, smul_eq_mul, RingOfIntegers.coe_eq_algebraMap, map_mul, norm_mul] at *
     exact lt_of_le_of_lt (mul_le_of_le_one_left (norm_nonneg _) (norm_int_le σ c)) ha
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_ker (σ : F →+* Ω) (a : 𝓞 F) : a ∈ ker σ ↔ ‖σ a‖ < 1 := Iff.rfl
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.ne_top_iff_one, mem_ker]`. Simplify using the standard rewrite rules. Introduce `a b hab`. Rewrite `hab` using `[mem_ker]`.
+
+Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_or, mem_ker, mem_ker, not_lt, not_lt]`. Simplify using `only [RingOfIntegers.coe_eq_algebraMap, map_mul, norm_mul] at hab`. Use polynomial arithmetic with `[h.1, h.2]`.
+-/
 theorem ker_isPrime (σ : F →+* Ω) : (ker σ).IsPrime := by
   refine ⟨?_, ?_⟩
   · rw [Ideal.ne_top_iff_one, mem_ker]; simp
@@ -91,6 +124,11 @@ theorem ker_isPrime (σ : F →+* Ω) : (ker σ).IsPrime := by
     simp only [RingOfIntegers.coe_eq_algebraMap, map_mul, norm_mul] at hab
     nlinarith [h.1, h.2]
 
+/- English proof (translation)
+Take `⟨n, d, h⟩` from `p.exists_primeCompl_mul_eq_of_integer a ha`. Establish `hd : ¬ ‖σ (d : 𝓞 F)‖ < 1`. Rewrite using `[← mem_ker, ← hp]`. Conclude with `d.2`. Establish `h1 : ‖σ a‖ * ‖σ (d : 𝓞 F)‖ = ‖σ n‖`.
+
+Rewrite using `[← norm_mul, ← map_mul]`. Conclude with `congrArg (fun x => ‖σ x‖) h`. Establish `h2` using `norm_int_le σ n`. Use polynomial arithmetic with `[norm_nonneg (σ a), not_lt.1 hd]`.
+-/
 theorem norm_le_one (σ : F →+* Ω) (p : HeightOneSpectrum (𝓞 F)) (hp : p.asIdeal = ker σ)
     {a : F} (ha : p.valuation F a ≤ 1) : ‖σ a‖ ≤ 1 := by
   obtain ⟨n, d, h⟩ := p.exists_primeCompl_mul_eq_of_integer a ha
@@ -109,11 +147,39 @@ variable {F : Type} [Field F] [NumberField F] {l : ℕ} [Fact l.Prime]
   {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
   [Algebra ℚ_[l] K] {Ω : Type} [NormedField Ω] [NormedAlgebra ℚ_[l] Ω]
 
+/- English proof (translation)
+Establish `: (l : Ω) = algebraMap ℚ_[l] Ω l` using `by simp`. Rewrite using `[this, norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`.
+-/
 theorem norm_l_lt : ‖(l : Ω)‖ < 1 := by
   have : (l : Ω) = algebraMap ℚ_[l] Ω l := by simp
   rw [this, norm_algebraMap']
   exact Padic.norm_p_lt_one
 
+/- English proof (translation)
+Use `contSMul hc` as an intermediate fact. Establish `: T2Space K` using `t2`. Establish `: CharZero K` using `charZero_of_injective_algebraMap (algebraMap ℚ_[l] _).injective`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap ℚ_[l] _).injective`. Set `φ : ℚ_[l] ⊗[ℚ] F →ₐ[ℚ_[l]] K` to `Algebra.TensorProduct.lift (Algebra.ofId _ _) ι.toRatAlgHom (fun _ _ => .all _ _)`.
+
+Set `ψ : ℚ_[l] ⊗[ℚ] F →ₐ[ℚ_[l]] Ω` to `Algebra.TensorProduct.lift (Algebra.ofId _ _) σ.toRatAlgHom (fun _ _ => .all _ _)`. Establish `hφ : ∀ c a, φ (c ⊗ₜ a) = c • ι a` using `fun c a => by simp [φ, Algebra.smul_def]`. Establish `hψ : ∀ c a, ψ (c ⊗ₜ a) = c • σ a` using `fun c a => by simp [ψ, Algebra.smul_def]`. Establish `hsurj : Function.Surjective φ`. Establish `hcl : IsClosed (LinearMap.range φ.toLinearMap : Set K)` using `Submodule.closed_of_finiteDimensional _`.
+
+Introduce `x`. Establish `: x ∈ (LinearMap.range φ.toLinearMap : Set K)`. Use `hι.induction_on x hcl fun a => ⟨1 ⊗ₜ a, ?_⟩` and prove the remaining obligations. Simplify using `[hφ]`. Conclude with `this`.
+
+Set `G : AddSubgroup (K × Ω)` to `((ι.prod σ).toAddMonoidHom.range).topologicalClosure`. Establish `hG : ∀ z, (φ z, ψ z) ∈ G`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`.
+
+Conclude with `G.zero_mem`. Consider the case `add x y hx hy => simpa using G.add_mem hx hy`. Consider the case `tmul c a`. Rewrite using `[hφ, hψ]`. Use `(Padic.denseRange_ratCast l).induction_on c ?_ fun q => ?_` and prove the remaining obligations.
+
+Conclude with `(AddSubgroup.isClosed_topologicalClosure _).preimage (f := fun c : ℚ_[l] => (c • ι a, c • σ a)) (by fun_prop)`. Use `AddSubgroup.le_topologicalClosure _ ⟨(q : F) * a, ?_⟩` and prove the remaining obligations. Simplify using `[Algebra.smul_def]`. Establish `hl : (l : K) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Establish `hl' : (l : Ω) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`.
+
+Establish `hker : ∀ z, φ z = 0 → ψ z = 0`. Introduce `z hz`. Establish `hb : ∀ k : ℕ, ‖ψ z‖ ≤ ‖(l : Ω)‖ ^ k`. Introduce `k`. Establish `hcl : IsClosed ({w : K × Ω | valuation K w.1 < valuation K ((l : K) ^ k)}ᶜ ∪ {w : K × Ω | ‖w.2‖ ≤ ‖(l : Ω)‖ ^ k})` using `(((isOpen_lt _).preimage continuous_fst).isClosed_compl).union (isClosed_le (by fun_prop) continuous_const)`.
+
+Establish `hsub` using `closure_minimal (s := ((ι.prod σ).toAddMonoidHom.range : Set (K × Ω))) ?_ hcl`. Break down `hsub (hG z) with h1 | h1` into its components or cases. It suffices to derive a contradiction. Apply `h1` to reduce the goal to its premises. Simplify using `only [Set.mem_setOf_eq, hz, map_zero]`.
+
+Conclude with `zero_lt_iff.2 (by simp [hl])`. Conclude with `h1`. Introduce and unpack `_ ⟨a, rfl⟩`. Distinguish the cases in `ha : valuation K (ι a) < valuation K ((l : K) ^ k)`. Use `right`.
+
+Establish `h2` using `h (a / (l : F) ^ k) (by`. Rewrite using `[map_div₀, map_div₀, div_lt_one₀ (zero_lt_iff.2 (by simp [hl]))]`. Simplify using `using ha)`. Rewrite `h2` using `[map_div₀, norm_div, div_le_one (by simp [hl'])]`. Simplify using `using h2`.
+
+Use `left`. Conclude with `ha`. Use `ge_of_tendsto' (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) (norm_l_lt (l := l) (Ω := Ω))) hb` as an intermediate fact. Conclude with `norm_le_zero_iff.1 this`. Use `⟨AlgHom.liftOfSurjective φ hsurj ψ (fun z hz => hker z hz), fun a => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : ι a = φ (1 ⊗ₜ a)` using `by simp [hφ]`. Rewrite using `[h1]`. Conclude with `(AlgHom.liftOfSurjective_apply φ hsurj ψ _ _).trans (by rw [hψ, one_smul])`.
+-/
 theorem exists_ext (hc : Continuous (algebraMap ℚ_[l] K)) (ι : F →+* K) (hι : DenseRange ι)
     (σ : F →+* Ω) (h : ∀ a : F, valuation K (ι a) < 1 → ‖σ a‖ ≤ 1) :
     ∃ τ : K →ₐ[ℚ_[l]] Ω, ∀ a, τ (ι a) = σ a := by
@@ -184,6 +250,25 @@ theorem exists_ext (hc : Continuous (algebraMap ℚ_[l] K)) (ι : F →+* K) (h�
 
 end Ext
 
+/- English proof (translation)
+Introduce `F _ _ l _ S hS K _ _ _ _ _ ι hK hc hι hv a`. Set `Ω` to `PadicAlgCl l`. Establish `hv' : ∀ p (x : F), valuation (K p) (ι p x) < 1 ↔ p.1.valuation F x < 1`. Introduce `p x`. Rewrite using `[← not_le, ← not_le, not_iff_not, ← map_one (valuation (K p)), ← map_one (ι p), ← Valuation.Compatible.vle_iff_le (v := valuation (K p)), hv, map_one]`.
+
+Establish `hch : ∀ p, CharZero (K p)` using `fun p => charZero_of_injective_algebraMap (algebraMap ℚ_[l] _).injective`. Establish `hker : ∀ (p : S) (τ : K p →ₐ[ℚ_[l]] Ω), p.1.asIdeal = ker (τ.toRingHom.comp (ι p))`. Introduce `p τ`. Use `p.1.isMaximal.eq_of_le (ker_isPrime _).ne_top fun x hx => ?_` and prove the remaining obligations. Rewrite using `[mem_ker]`.
+
+Conclude with `norm_lt_one (hc p) τ ((hv' p x).2 ((p.1.valuation_lt_one_iff_mem x).2 hx))`. Set `e : (Σ p : S, (K p →ₐ[ℚ_[l]] Ω)) → (F →ₐ[ℚ] Ω)` to `fun t => (t.2.toRingHom.comp (ι t.1)).toRatAlgHom`. Establish `he : Function.Bijective e`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, τ⟩ ⟨q, τ'⟩ h`.
+
+Establish `h1 : τ.toRingHom.comp (ι p) = τ'.toRingHom.comp (ι q)` using `RingHom.ext fun x => DFunLike.congr_fun h x`. Establish `hpq : p = q`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Rewrite using `[hker p τ, hker q τ', h1]`.
+
+Substitute `hpq` using the available equality. Use `congr 1`. Apply `DFunLike.coe_injective` to reduce the goal to its premises. Conclude with `(hι p).equalizer (continuous_algHom (hc p) τ) (continuous_algHom (hc p) τ') (funext fun x => DFunLike.congr_fun h1 x)`. Introduce `σ`.
+
+Establish `hl : (l : 𝓞 F) ∈ ker σ.toRingHom`. Rewrite using `[mem_ker]`. Simplify using `using norm_l_lt (l := l) (Ω := Ω)`. Set `p : HeightOneSpectrum (𝓞 F)` to `⟨ker σ.toRingHom, ker_isPrime _, fun h => by`. Rewrite `hl` using `[h, Ideal.mem_bot]`.
+
+Conclude with `(Fact.out : l.Prime).ne_zero (by exact_mod_cast hl)⟩`. Establish `hp : p ∈ S` using `(hS p).2 hl`. Take `⟨τ, hτ⟩` from `exists_ext (hc ⟨p, hp⟩) (ι ⟨p, hp⟩) (hι _) σ.toRingHom (fun x hx => norm_le_one _ p rfl ((hv' ⟨p, hp⟩ x).1 hx).le)`. Conclude with `⟨⟨⟨p, hp⟩, τ⟩, AlgHom.ext hτ⟩`. Apply `(algebraMap ℚ_[l] Ω).injective` to reduce the goal to its premises.
+
+Rewrite using `[map_sum, map_ratCast]`. Establish `h1` using `trace_eq_sum_embeddings (K := ℚ) Ω (x := a)`. Rewrite `h1` using `[eq_ratCast]`. Rewrite using `[h1, ← he.sum_comp, Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[trace_eq_sum_embeddings Ω]`. Both sides reduce to the same expression.
+-/
 theorem sum_trace_eq : ∀ {F : Type} [Field F] [NumberField F] (l : ℕ) [Fact l.Prime] (S : Finset (HeightOneSpectrum (𝓞 F))), (∀ p, p ∈ S ↔ (l : 𝓞 F) ∈ p.asIdeal) → ∀ (K : S → Type) [∀ p, Field (K p)] [∀ p, Algebra ℚ_[l] (K p)] [∀ p, FiniteDimensional ℚ_[l] (K p)] [∀ p, ValuativeRel (K p)] [∀ p, TopologicalSpace (K p)] (ι : ∀ p, F →+* K p), (∀ p, IsNonarchimedeanLocalField (K p)) → (∀ p, Continuous (algebraMap ℚ_[l] (K p))) → (∀ p, DenseRange (ι p)) → (∀ p (x y : F), (ι p x ≤ᵥ ι p y) ↔ p.1.valuation F x ≤ p.1.valuation F y) → ∀ a : F, ∑ p, Algebra.trace ℚ_[l] (K p) (ι p a) = ((Algebra.trace ℚ F a : ℚ) : ℚ_[l]) := by
   intro F _ _ l _ S hS K _ _ _ _ _ ι hK hc hι hv a
   classical

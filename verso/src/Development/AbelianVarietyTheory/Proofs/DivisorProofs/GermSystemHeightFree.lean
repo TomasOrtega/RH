@@ -11,6 +11,9 @@ namespace GlobalTheory.UPel.HT.ES
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {S : Scheme.{0}} {N : ℕ}
   {s : S ⟶ Sp R}
 
+/- English proof (translation)
+Establish `h` using `o.act.add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_eq_left.mp h.symm`.
+-/
 theorem act_zero_eq_one_wvs (o : Obj b N s) : o.act.act 0 = 1 := by
   have h := o.act.add 0 0
   rw [add_zero] at h
@@ -44,6 +47,9 @@ def ptModuleWvs (o : Obj b N s) (T : Over S) : Module (𝓞 D.F) (Additive (T �
 
 attribute [local instance] ptModuleWvs
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smul_toMul_wvs (o : Obj b N s) (T : Over S) (a : 𝓞 D.F) (g : Additive (T ⟶ o.A)) :
     (a • g).toMul = g.toMul ≫ o.act.act (algebraMap (𝓞 D.F) D.O a) := rfl
 
@@ -72,6 +78,15 @@ def kerWSubWvs (o o' : Obj b N s) (ψ : o.A ⟶ o'.A) [IsMonHom ψ]
       rw [Category.assoc, ← o.act.mul, ← map_mul, mul_comm, map_mul, o.act.mul, ← Category.assoc, hg.2 a ha,
         one_comp]
 
+/- English proof (translation)
+Introduce `p _ D R _ b S N s o o' ψ hψ hl w hw k _ y hfin`. Use `haveI := hψ`. Set `K` to `kerWSubWvs o o' ψ hl w (Over.mk y)`. Set `e : K ≃ {g : Over.mk y ⟶ o.A // g ≫ ψ = 1 ∧ KilledBy o w g}` to `{ toFun := fun x => ⟨x.1.toMul, x.2⟩ invFun := fun g => ⟨Additive.ofMul g.1, g.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Use `haveI : Finite K := Finite.of_equiv _ e.symm`.
+
+Establish `htor : Module.IsTorsionBySet (𝓞 D.F) K (w : Set (𝓞 D.F))`. Introduce `x a`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show Additive.ofMul (x.1.toMul ≫ o.act.act (algebraMap _ _ a.1)) = Additive.ofMul 1`. Rewrite using `[x.2.2 a.1 a.2]`.
+
+Use `letI := Ideal.Quotient.field w`. Use `letI : Module (𝓞 D.F ⧸ w) K := htor.module`. Establish `hne : w ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hw (NumberField.RingOfIntegers.not_isField D.F)`. Use `haveI : Finite (𝓞 D.F ⧸ w) := Ideal.finiteQuotientOfFreeOfNeBot w hne`. Use `letI := Fintype.ofFinite (𝓞 D.F ⧸ w)`.
+
+Use `letI := Fintype.ofFinite K`. Use `⟨Module.finrank (𝓞 D.F ⧸ w) K, ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.card_congr e, Nat.card_eq_fintype_card, Module.card_eq_pow_finrank (K := 𝓞 D.F ⧸ w), Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_eq_fintype_card]`.
+-/
 theorem card_kerW_eq_pow : ∀ {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R}
     {S : Scheme.{0}} {N : ℕ} {s : S ⟶ Sp R} (o o' : Obj b N s) (ψ : o.A ⟶ o'.A), IsMonHom ψ →
     (∀ a : 𝓞 D.F, o.act.act (algebraMap (𝓞 D.F) D.O a) ≫ ψ = ψ ≫ o'.act.act (algebraMap (𝓞 D.F) D.O a)) →

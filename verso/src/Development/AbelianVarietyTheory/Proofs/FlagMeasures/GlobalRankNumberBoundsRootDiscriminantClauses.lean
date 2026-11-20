@@ -5,6 +5,41 @@ open GlobalTheory.Diag.PG
 
 namespace GlobalTheory.Diag.PG
 
+/- English proof (translation)
+Introduce `eps CD heps _ _ C hC`. Use `set M : ℝ := max C 3 with hMdef`. Establish `hM3 : 3 ≤ M` using `le_max_right _ _`. Establish `hMC : C ≤ M` using `le_max_left _ _`. Establish `hM0 : 0 ≤ M` using `by linarith`.
+
+Use `⟨max (max 1 C) (M ^ (2 / eps)), ?_⟩` and prove the remaining obligations. Introduce `x hx m f k lrd Del h`. Establish `hx1 : 1 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx`. Establish `hxC : C ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx`. Establish `hxM : M ^ (2 / eps) ≤ x` using `le_trans (le_max_right _ _) hx`.
+
+Establish `hx0 : 0 < x` using `by linarith`. Use `set X : ℝ := x ^ (eps / 2) with hXdef`. Establish `hXM : M ≤ X`. Establish `h1 : (M ^ (2 / eps)) ^ (eps / 2) ≤ x ^ (eps / 2)` using `Real.rpow_le_rpow (Real.rpow_nonneg hM0 _) hxM (by linarith)`. Rewrite `h1` using `[← Real.rpow_mul hM0]`.
+
+Establish `h2 : 2 / eps * (eps / 2) = 1` using `by field_simp`. Rewrite `h1` using `[h2, Real.rpow_one]`. Conclude with `h1`. Establish `hYX : x ^ eps = X * X`. Rewrite using `[hXdef, ← Real.rpow_add hx0]`.
+
+Put the polynomial expressions in normal form. Establish `hX3 : 3 ≤ X` using `le_trans hM3 hXM`. Establish `hXC : C ≤ X` using `le_trans hMC hXM`. Establish `hm1 : 1 ≤ m` using `le_trans (Real.one_le_rpow hx1 (by norm_num)) h.m_lo`. Establish `hm4 : x ≤ m ^ 4`.
+
+Establish `h1 : (x ^ ((1 : ℝ) / 4)) ^ 4 = x`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hx0.le]`. Evaluate the numerical expressions. Combine the equalities or inequalities in the displayed calculation. Establish `hf : x ≤ f` using `le_trans hm4 h.mf`.
+
+Establish `hf1 : 1 ≤ f` using `le_trans hx1 hf`. Establish `hm0 : 0 ≤ m` using `by linarith`. Establish `hm2 : 1 ≤ m ^ 2` using `one_le_pow₀ hm1`. Establish `hm3 : 1 ≤ m ^ 3` using `one_le_pow₀ hm1`. Establish `hm4' : 1 ≤ m ^ 4` using `one_le_pow₀ hm1`.
+
+Establish `hk : X * (m ^ 5 * f * (X * X)) ≤ k`. Use `h.k_lo` as an intermediate fact. Rewrite `this` using `[hYX]`. Conclude with `this`. Establish `hlrd : lrd ≤ X` using `h.lrd_hi`.
+
+Establish `hlog2 : 0 ≤ Real.log 2` using `Real.log_nonneg (by norm_num)`. Establish `hlrd0 : 0 ≤ lrd` using `le_trans hlog2 h.lrd_lo`. Establish `hX0 : 0 ≤ X` using `by linarith`. Establish `hXX : X ≤ X * X` using `by nlinarith`. Establish `hA : C ≤ m ^ 4 * f * (X * X)`.
+
+Establish `h1 : 1 ≤ m ^ 4 * f` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation. Establish `hB : C ≤ m ^ 2 * f`. Combine the equalities or inequalities in the displayed calculation. Establish `hkX : X ≤ k`.
+
+Establish `h1 : 1 ≤ m ^ 5 * f * (X * X)`. Establish `: 1 ≤ m ^ 5` using `one_le_pow₀ hm1`. Establish `: 1 ≤ X * X` using `by nlinarith`. Establish `: 1 ≤ m ^ 5 * f` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hk0 : 0 < k` using `by linarith`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left _ hC.le` to reduce the goal to its premises.
+
+Apply `mul_le_mul_of_nonneg_left _ hm0` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = (m * X) * C := by ring`. Use `_ ≤ (m * X) * (m ^ 4 * f * (X * X)) := mul_le_mul_of_nonneg_left hA (by positivity)`. Use `_ = X * (m ^ 5 * f * (X * X)) := by ring`.
+
+Use `_ ≤ k := hk`. Establish `hlogk : 1 ≤ Real.log k`. Rewrite using `[Real.le_log_iff_exp_le hk0]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hl2 : 1 ≤ Real.log k ^ 2` using `one_le_pow₀ hlogk`. Rewrite using `[hYX]`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left _ hC.le` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_left hlrd (by positivity)` to reduce the goal to its premises.
+
+Use `_ = (m ^ 3 * (X * X) * X) * C := by ring`. Use `_ ≤ (m ^ 3 * (X * X) * X) * (m ^ 2 * f) := mul_le_mul_of_nonneg_left hB (by positivity)`. Use `_ = X * (m ^ 5 * f * (X * X)) := by ring`. Use `_ ≤ k := hk`. Use `_ = k * 1 := by ring`.
+
+Use `_ ≤ k * Real.log k ^ 2 := mul_le_mul_of_nonneg_left hl2 hk0.le`. Rewrite using `[hYX, le_div_iff₀ hC]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rankNums_rootDisc :
     ∀ eps CD : ℝ, 0 < eps → eps < 1 / 52 → 3 ≤ CD → ∀ C : ℝ, 0 < C → ∃ x0 : ℝ, ∀ x, x0 ≤ x →
       ∀ m f k lrd Del : ℝ, RankNums x eps CD m f k lrd Del →

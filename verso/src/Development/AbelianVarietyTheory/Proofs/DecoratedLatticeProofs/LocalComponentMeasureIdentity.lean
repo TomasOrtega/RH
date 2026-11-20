@@ -29,6 +29,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Fam.LatShape
 
+/- English proof (translation)
+Use extensionality with `r (a | u)`. Rewrite using `[h.1, h'.1]`. Consider the cases of `u`. Rewrite using `[h.2, h'.2]`.
+-/
 theorem coreFrame_beta_eq {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : Place D k) {n : Type} [Fintype n] [DecidableEq n] {ρ : ℕ} (B : BesLev D ρ) (s : k) (FA : Frame k B.A.rank n)
     {F F' : Frame k B.V₀.rank (n ⊕ Unit)} (h : p.IsCoreFrame B s FA F) (h' : p.IsCoreFrame B s FA F') : F.β = F'.β := by
@@ -37,6 +40,41 @@ theorem coreFrame_beta_eq {D : D7} {k : Type} [Field k] [ValuativeRel k] [Topolo
   · cases u
     rw [h.2, h'.2]
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W u hP a y m b₀ k _ _ _ _ ι v o l bas hc hTau hT0 hvτ hvNT hoζ hLT hgP htP hdisj hPre hLZ hbas FY sc hFY`. Establish `hfin` using `GlobalTheory.T.level_places_finite W hP`. Establish `hsep` using `GlobalTheory.T.level_places_under_eq W hP`. Establish `hsc : ∀ PP hP j, sc PP hP j ≠ 0`. Introduce `PP hP j h0`.
+
+Use `(hFY PP hP).1 j` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `zero_ne_one this`. Establish `hxi : ∀ PP hP, (ofSplit (l PP hP).q).xi ≠ 0`. Introduce `PP hP h0`.
+
+Establish `e` using `(hFY PP hP).2.1 0`. Establish `v2` using `(hFY PP hP).1 (0 + 1 + 1)`. Rewrite `v2` using `[e, h0, mul_zero, map_zero]`. Conclude with `zero_ne_one v2`. Set `I` to `{PP : Pl D.host.E // PP ∈ (pk W).Pg ∨ QAll W PP}`.
+
+Use `haveI : Finite I := hfin.to_subtype`. Establish `hinj : ∀ i i' : I, (l i.1 i.2).q.v = (l i'.1 i'.2).q.v → i = i'`. Introduce `i i' e`. Rewrite `e` using `[(l i.1 i.2).under, (l i'.1 i'.2).under]`. Conclude with `Subtype.ext (hsep _ _ i.2 i'.2 e)`.
+
+Establish `hA : ∀ j, ∃ N' : GlobalTheory.FinPl.Lat (Yc D j), (j < D.R.m → IsSelfDualC (Yc D j) N') ∧ ∀ PP h c hc, IntIn (l PP h).q (Yc D j) (FY PP h j c hc) N'`. Introduce `j`. Distinguish the cases in `hj : j < D.R.m`. Take `⟨L₀, hL₀⟩` from `GlobalTheory.T.exists_self_dual_lattice_chain W hP j hj`. Take `⟨N', hsd, hint⟩` from `GlobalTheory.T.exists_move_selfDual_lattice_split_frames D (Yc D j) L₀ hL₀ I (fun i => (l i.1 i.2).k) (fun i => (l i.1 i.2).q) (fun _ => XIx (Fin D.R.k) (Fin D.R.t) j ⊕ Fin (D.R.m - 1 - j)) (fun i => FY i.1 i.2 j (D.R.m - 1 - j) (by have := (l i.1 i.2).hs; omega)) hinj`.
+
+Use `⟨N', fun _ => hsd, fun PP h c hc => ?_⟩` and prove the remaining obligations. Take `rfl : c = D.R.m - 1 - j` from `by have := (l PP h).hs; omega`. Conclude with `hint ⟨PP, h⟩`. Use `⟨⊥, fun h => absurd h hj, fun PP h c hc => ?_⟩` and prove the remaining obligations. It suffices to derive a contradiction.
+
+Use `(l PP h).hs` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `choose N₁ hN₁sd hN₁int using hA`. Establish `hB : ∀ j ρ h, ∃ M' : GlobalTheory.FinPl.Lat (y.bes j ρ h).V₀, IsSelfDualC (y.bes j ρ h).V₀ M' ∧ ∀ PP hP (hj : j ≤ (l PP hP).s + 1) (F₀ : Frame (l PP hP).k ((y.bes j ρ h).lev (a.x j).vol).V₀.rank (XIx (Fin D.R.k) (Fin D.R.t) j ⊕ Unit)), (ofSplit (l PP hP).q).IsCoreFrame ((y.bes j …`. Introduce `j ρ h`.
+
+Take `⟨L₀, hL₀⟩` from `GlobalTheory.T.local_component_measure_relation W u hP a y m b₀ k ι v o l bas hc hTau hT0 hvτ hvNT hoζ hLT hgP htP hdisj hPre hLZ hbas FY sc hFY j ρ h`. Establish `hj : ∀ i : I, j ≤ (l i.1 i.2).s + 1` using `fun i => by have := (l i.1 i.2).hs; omega`. Establish `hex : ∀ i : I, ∃ F : Frame (l i.1 i.2).k ((y.bes j ρ h).lev (a.x j).vol).V₀.rank (XIx (Fin D.R.k) (Fin D.R.t) j ⊕ Unit), (ofSplit (l i.1 i.2).q).IsCoreFrame ((y.bes j ρ h).lev (a.x j).vol) (sc i.1 i.2 j) ((l i.1 i.2).FX j (hj i)) F`. Introduce `i`. Conclude with `((@GlobalTheory.LocMod.normalFrames_and_basePoint_exist D (l i.1 i.2).k _ _ _ _ (ofSplit (l i.1 i.2).q) (hxi i.1 i.2)).1 _ ρ _ _ _ (hsc i.1 i.2 j)).1`.
+
+Use `choose F hF using hex`. Take `⟨M', hsd, hint⟩` from `GlobalTheory.T.exists_move_selfDual_lattice_split_frames D (y.bes j ρ h).V₀ L₀ hL₀ I (fun i => (l i.1 i.2).k) (fun i => (l i.1 i.2).q) (fun _ => XIx (Fin D.R.k) (Fin D.R.t) j ⊕ Unit) F hinj`. Use `⟨M', hsd, fun PP hP hj' F₀ hF₀ => ?_⟩` and prove the remaining obligations. Establish `e` using `coreFrame_beta_eq _ _ _ _ (hF ⟨PP, hP⟩) hF₀`. Introduce `z`.
+
+Rewrite using `[← e]`. Conclude with `hint ⟨PP, hP⟩ z`. Use `choose M₁ hM₁sd hM₁int using hB`. Establish `hoffT` using `GlobalTheory.T.local_component_measure_value W u hP a y m b₀ k ι v o l bas hc hTau hT0 hvτ hvNT hoζ hLT hgP htP hdisj hPre hLZ hbas FY sc hFY`. Establish `hbf` using `GlobalTheory.T.local_component_measure_bound W u hP a y m b₀ k ι v o l bas hc hTau hT0 hvτ hvNT hoζ hLT hgP htP hdisj hPre hLZ hbas FY sc hFY N₁ M₁ hN₁sd (fun PP h j c hc => hN₁int j PP h c hc) hM₁sd (fun PP hP j ρ h hj F₀ hF₀ => hM₁int j ρ h PP hP hj F₀ hF₀)`.
+
+Establish `hfb` using `GlobalTheory.T.local_component_measure_scalar W u hP a y m b₀ k ι v o l bas hc hTau hT0 hvτ hvNT hoζ hLT hgP htP hdisj hPre hLZ hbas FY sc hFY N₁ M₁ hN₁sd (fun PP h j c hc => hN₁int j PP h c hc) hM₁sd (fun PP hP j ρ h hj F₀ hF₀ => hM₁int j ρ h PP hP hj F₀ hF₀)`. Establish `hsp` using `GlobalTheory.T.local_component_measure_equation W u hP a y m b₀ k ι v o l bas hc hTau hT0 hvτ hvNT hoζ hLT hgP htP hdisj hPre hLZ hbas FY sc hFY N₁ M₁ hN₁sd (fun PP h j c hc => hN₁int j PP h c hc) hM₁sd (fun PP hP j ρ h hj F₀ hF₀ => hM₁int j ρ h PP hP hj F₀ hF₀)`. Set `G' : Finset (GlobalTheory.FinPl.Pl D)` to `hfin.toFinset.image (fun PP => PP.under (𝓞 D.host.F))`. Establish `hG' : ∀ x, x ∈ G' ↔ ∃ PP, (PP ∈ (pk W).Pg ∨ QAll W PP) ∧ PP.under (𝓞 D.host.F) = x`. Introduce `x`.
+
+Simplify using `only [G', Finset.mem_image, Set.Finite.mem_toFinset, Set.mem_setOf_eq]`. Establish `hdisj' : Disjoint G' v.tP`. Rewrite using `[Finset.disjoint_left]`. Introduce `x hx hxT`. Take `⟨PP, hPP, rfl⟩` from `(hG' x).1 hx`.
+
+Break down `hPP with hg | hq` into its components or cases. Conclude with `Finset.disjoint_left.1 hdisj ((hgP _).2 ⟨PP, hg, rfl⟩) hxT`. Conclude with `hoffT PP hq hxT`. Take `⟨N, dT, M, β₀, hN, -, hC, hS⟩` from `GlobalTheory.T.seeSawLatticeShapeExists_proof D (commOf (pk W) u (mkGeo m b₀)) { v with gP := G', N := N₁ } k ι { o with M := M₁ } hc hdisj' (by show IsSelfDualC D.sp.X' v.NT; rw [hvNT]; exact hLT) ⟨hPre.nodup, hPre.all, hPre.inj, hPre.tP, hPre.char, hPre.latT, hPre.line, hPre.ta …`. Take `⟨PP, hPP, rfl⟩` from `(hG' x).1 hx`.
+
+Conclude with `⟨⟨hbf PP hPP, hfb PP hPP⟩, ⟨(hsp PP hPP).core, (hsp PP hPP).top⟩⟩)`. Use the proof step `(fun n h x hx => by`. Take `⟨LZ, h1, h2⟩` from `hLZ n h x hx`. Use `⟨LZ, h1, ?_⟩` and prove the remaining obligations. Use `show GlobalTheory.FinPl.OrthAt _ _ v.NT LZ x`.
+
+Rewrite using `[hvNT]`. Conclude with `h2)`. Use `⟨N, dT, M, β₀, ?_, hC, fun j hj => (hN j hj).1, ?_⟩` and prove the remaining obligations. Conclude with `⟨⟨hS.pre.nodup, hS.pre.all, hS.pre.inj, hS.pre.tP, hS.pre.char, hS.pre.latT, hS.pre.line, hS.pre.tau, hS.pre.lam, hS.pre.normT, hS.pre.topT⟩, fun x => ⟨(hS.good x).bf, (hS.good x).fb⟩, fun x hx => ⟨(hS.split x hx).core, (hS.split x hx).top⟩, hS.glued, hS.rep, hS.ram⟩`. Introduce `PP h j c hc`.
+
+Establish `hj : j < D.R.m` using `by have := (l PP h).hs; omega`. Establish `hx : (l PP h).q.v ∈ G'` using `by rw [(l PP h).under]; exact (hG' _).2 ⟨PP, h, rfl⟩`. Establish `e : GlobalTheory.FinPl.latV (Yc D j) (N j) (· = (l PP h).q.v) = GlobalTheory.FinPl.latV (Yc D j) (N₁ j) (· = (l PP h).q.v)` using `(hN j hj).2 _ hx`. Introduce `z`. Rewrite using `[e]`.
+
+Conclude with `hN₁int j PP h c hc z`.
+-/
 theorem exists_shape_integral_in_normal_frames : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex) (u : D.what₂.Word), PkHyp W → ∀ (a : XGeo D) (y : YRat a) (m : YMeas y) (b₀ : ∀ j, GA D (Yc D j)) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (v : VCom (commOf (pk W) u (mkGeo m b₀))) (o : TDat (commOf (pk W) u (mkGeo m b₀)) k ι) (l : ∀ PP, PP ∈ (pk W).Pg ∨ QAll W PP → LocX a (pk W).βX PP) (bas : ∀ PP h j c, j + c = (l PP h).s + 1 → GL (XIx (Fin D.R.k) (Fin D.R.t) j ⊕ Fin c) (l PP h).k), (commOf (pk W) u (mkGeo m b₀)).Is → y.Tau (-D.host.xi0 ^ (D.R.m / 2)) → star a.ζ₀ ⬝ᵥ a.Lz.gram *ᵥ a.ζ₀ = (((D.mem u).A.T : ℕ) : D.host.E) → v.τ = y.τ → v.NT = a.LT → o.ζ₀ = a.ζ₀ → IsSelfDualC D.sp.X' a.LT → (∀ p, p ∈ v.gP ↔ ∃ PP ∈ (pk W).Pg, p = PP.under (𝓞 D.host.F)) → (∀ p, p ∈ v.tP ↔ (((D.mem u).A.T : ℕ) : 𝓞 D.host.F) ∈ p.asIdeal) → Disjoint v.gP v.tP → PreT v o → (∀ n (h : n = D.R.m) x, x ∉ v.tP → ∃ LZ : GlobalTheory.FinPl.Lat a.Lz, IsSelfDualC _ LZ ∧ GlobalTheory.FinPl.OrthAt (a.oT n h) (a.x n).L a.LT LZ x) → (∀ PP h, PP ∉ (pk W).Pg → ∀ j c hc, bas PP h j c hc = 1) → ∀ (FY : ∀ PP h, FYFam (l PP h)) (sc : ∀ PP h, ℕ → (l PP h).k), (∀ PP h, IsNormalFr (l PP h) y (FY PP h) (sc PP h)) → ∃ (N : ∀ j, GlobalTheory.FinPl.Lat (Yc D j)) (dT : ∀ j, WO (D.sp.X j) (D.sp.X (j + 1)) →₀ ℂ) (M : ∀ j ρ h, GlobalTheory.FinPl.Lat (y.bes j ρ h).V₀) (β₀ : ∀ j ρ h i, GlobalTheory.FinPl.Frame (o.p i) (y.bes j ρ h).V₀ (Fin (D.sp.X j).rank ⊕ Fin 1)), ShapeOff { v with N := N, dT := dT, RamAd := o.Ram } { o with M := M, β₀ := β₀ } ∧ (∀ j, GlobalTheory.FinPl.CombAt (· ∈ v.tP) (dT j)) ∧ (∀ j, j < D.R.m → IsSelfDualC (Yc D j) (N j)) ∧ ∀ PP h j c hc, IntIn (l PP h).q (Yc D j) (FY PP h j c hc) (N j) := by
   intro D L hT Gi Gl Kc Yd cX ex W u hP a y m b₀ k _ _ _ _ ι v o l bas hc hTau hT0 hvτ hvNT hoζ hLT hgP htP hdisj hPre hLZ hbas FY sc hFY
   have hfin := GlobalTheory.T.level_places_finite W hP

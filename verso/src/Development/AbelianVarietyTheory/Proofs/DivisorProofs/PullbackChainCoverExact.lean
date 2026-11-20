@@ -30,21 +30,35 @@ variable {A A' : Type} [CommRing A] [CommRing A'] {p h o : ℕ} {π : A} {γ : �
 def imJ (C : RChain p A h o π γ Lie Om) : Submodule A (Fin h → A) :=
   ((LinearMap.range C.j).comap (Submodule.mkQ _)).map (C.L 0).subtype
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨_, h1, h2⟩ => (Subtype.ext h2 : _ = y) ▸ h1, fun k => ⟨y, k, rfl⟩⟩`.
+-/
 theorem mem_imJ (C : RChain p A h o π γ Lie Om) (y : C.L 0) :
     y.1 ∈ imJ C ↔ (Submodule.Quotient.mk y : Qt (C.L 0) (baseOf π h)) ∈ LinearMap.range C.j :=
   ⟨fun ⟨_, h1, h2⟩ => (Subtype.ext h2 : _ = y) ▸ h1, fun k => ⟨y, k, rfl⟩⟩
 
+/- English proof (translation)
+Introduce `x hx` and use `(mem_imJ C ⟨x, C.base_le 0 hx⟩).2 (by rw [(Submodule.Quotient.mk_eq_zero _).2 (show (⟨x, C.base_le 0 hx⟩ : C.L 0) ∈ (baseOf π h).comap (C.L 0).subtype from hx)] exact zero_mem _)`.
+-/
 theorem base_le_imJ (C : RChain p A h o π γ Lie Om) : baseOf π h ≤ imJ C := fun x hx =>
   (mem_imJ C ⟨x, C.base_le 0 hx⟩).2 (by
     rw [(Submodule.Quotient.mk_eq_zero _).2 (show (⟨x, C.base_le 0 hx⟩ : C.L 0) ∈ (baseOf π h).comap (C.L 0).subtype from hx)]
     exact zero_mem _)
 
+/- English proof (translation)
+Rewrite using `[Submodule.Quotient.eq, ← Submodule.Quotient.mk_sub, ← mem_imJ]`. Both sides reduce to the same expression.
+-/
 theorem mk_mk_eq_iff (C : RChain p A h o π γ Lie Om) (y y' : C.L 0) :
     (Submodule.Quotient.mk (Submodule.Quotient.mk y) : Qt (C.L 0) (baseOf π h) ⧸ LinearMap.range C.j) =
       Submodule.Quotient.mk (Submodule.Quotient.mk y') ↔ y.1 - y'.1 ∈ imJ C := by
   rw [Submodule.Quotient.eq, ← Submodule.Quotient.mk_sub, ← mem_imJ]
   rfl
 
+/- English proof (translation)
+Establish `H : LinearMap.range C.j ≤ (S.comap (C.L 0).subtype).map (Submodule.mkQ _)`. Rewrite using `[← Submodule.map_top, ← hG, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Take `⟨y, h1, h2⟩` from `k s hs`. Conclude with `⟨y, h2, h1.symm⟩`.
+
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨y', h1, h2⟩` from `H hy`. Establish `h3 : y'.1 - y.1 ∈ baseOf π h` using `(Submodule.Quotient.eq ((baseOf π h).comap (C.L 0).subtype)).1 h2`. Simplify using `using S.sub_mem h1 (hb h3)`.
+-/
 theorem imJ_le (C : RChain p A h o π γ Lie Om) (S : Submodule A (Fin h → A)) (hb : baseOf π h ≤ S) (G : Set Lie)
     (hG : Submodule.span A G = ⊤) (k : ∀ s ∈ G, ∃ y : C.L 0, C.j s = Submodule.Quotient.mk y ∧ y.1 ∈ S) : imJ C ≤ S := by
   have H : LinearMap.range C.j ≤ (S.comap (C.L 0).subtype).map (Submodule.mkQ _) := by
@@ -57,15 +71,26 @@ theorem imJ_le (C : RChain p A h o π γ Lie Om) (S : Submodule A (Fin h → A))
   have h3 : y'.1 - y.1 ∈ baseOf π h := (Submodule.Quotient.eq ((baseOf π h).comap (C.L 0).subtype)).1 h2
   simpa using S.sub_mem h1 (hb h3)
 
+/- English proof (translation)
+Rewrite using `[mv, Matrix.map_one _ Int.cast_zero Int.cast_one, Matrix.one_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem mv_one (φ : A →+* A') (x : Fin h → A) : mv φ 1 x = piMap φ (Fin h) x := by
   rw [mv, Matrix.map_one _ Int.cast_zero Int.cast_one, Matrix.one_mulVec]; rfl
 
+/- English proof (translation)
+Take `⟨y, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hx`. Rewrite using `[map_smulₛₗ]`. Conclude with `Submodule.smul_mem_pointwise_smul _ _ _ trivial`.
+-/
 theorem piMap_mem_baseOf (φ : A →+* A') {x : Fin h → A} (hx : x ∈ baseOf π h) :
     piMap φ (Fin h) x ∈ baseOf (φ π) h := by
   obtain ⟨y, -, rfl⟩ := (Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hx
   rw [map_smulₛₗ]
   exact Submodule.smul_mem_pointwise_smul _ _ _ trivial
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨y, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hx`. Establish `e : φ π • y = ∑ i, y i • piMap φ (Fin h) (π • Pi.single i 1)`. Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply, apply_ite φ, mul_comm]`.
+
+Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hN (Submodule.smul_mem_pointwise_smul _ _ _ trivial), rfl⟩)`.
+-/
 theorem baseOf_le_span (φ : A →+* A') (N : Submodule A (Fin h → A)) (hN : baseOf π h ≤ N) :
     baseOf (φ π) h ≤ Submodule.span A' (piMap φ (Fin h) '' (N : Set (Fin h → A))) := by
   intro x hx
@@ -80,12 +105,20 @@ theorem baseOf_le_span (φ : A →+* A') (N : Submodule A (Fin h → A)) (hN : b
 variable {π' : A'} {γ' : ℕ → A'} {Lie' Om' : Type} [AddCommGroup Lie'] [Module A' Lie'] [AddCommGroup Om'] [Module A' Om']
   {C : RChain p A h o π γ Lie Om} {C' : RChain p A' h o π' γ' Lie' Om'} {φ : A →+* A'} {l : Lie → Lie'} {m : Om → Om'}
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective _ (C.j s)`. Conclude with `⟨⟨_, k.mem 0 y.1 y.2⟩, hs ▸ k.j _ y ⟨_, k.mem 0 y.1 y.2⟩ rfl hy.symm, Submodule.subset_span ⟨y.1, (mem_imJ _ _).2 ⟨_, hy.symm⟩, (mv_one _ _).symm⟩⟩`.
+-/
 theorem map_j (k : C.Map C' φ 1 l m) (s : Lie) (s' : Lie') (hs : l s = s') : ∃ y : C'.L 0,
     C'.j s' = Submodule.Quotient.mk y ∧ y.1 ∈ Submodule.span A' (piMap φ (Fin h) '' (imJ C : Set (Fin h → A))) := by
   obtain ⟨y, hy⟩ := Submodule.Quotient.mk_surjective _ (C.j s)
   exact ⟨⟨_, k.mem 0 y.1 y.2⟩, hs ▸ k.j _ y ⟨_, k.mem 0 y.1 y.2⟩ rfl hy.symm,
     Submodule.subset_span ⟨y.1, (mem_imJ _ _).2 ⟨_, hy.symm⟩, (mv_one _ _).symm⟩⟩
 
+/- English proof (translation)
+Establish `h4` using `k.ρ _ y ⟨_, k.mem 0 y.1 y.2⟩ rfl hy`. Rewrite `h4` using `[hs, hy']`. Establish `h9` using `add_mem ((mk_mk_eq_iff _ _ _).1 h4.symm) hx`. Rewrite `h9` using `[sub_add_sub_cancel]`. Rewrite using `[map_sub, ← mv_one φ y.1]`.
+
+Conclude with `h9`.
+-/
 theorem map_ρ (k : C.Map C' φ 1 l m) (s : Om) (s' : Om') (hs : m s = s') (y : C.L 0) (y' : C'.L 0)
     (hy : C.ρ s = Submodule.Quotient.mk (Submodule.Quotient.mk y))
     (hy' : C'.ρ s' = Submodule.Quotient.mk (Submodule.Quotient.mk y')) (x : Fin h → A)
@@ -100,6 +133,9 @@ theorem map_ρ (k : C.Map C' φ 1 l m) (s : Om) (s' : Om') (hs : m s = s') (y : 
 def IsVal (C : RChain p A h o π γ Lie Om) (s : Om) (y : C.L 0) : Prop :=
   C.ρ s = Submodule.Quotient.mk (Submodule.Quotient.mk y)
 
+/- English proof (translation)
+Take `⟨y₁, hy₁⟩` from `Submodule.Quotient.mk_surjective _ (C.ρ s)`. Take `⟨y₀, rfl⟩` from `Submodule.Quotient.mk_surjective _ y₁`. Conclude with `⟨y₀, hy₁.symm⟩`.
+-/
 theorem exists_ρ (C : RChain p A h o π γ Lie Om) (s : Om) :
     ∃ y : C.L 0, IsVal C s y := by
   obtain ⟨y₁, hy₁⟩ := Submodule.Quotient.mk_surjective _ (C.ρ s)
@@ -114,12 +150,26 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B B' 
   {p h o : ℕ} {Lie Om : AM B Λ} {π : Γ(B.X, ⊤)} {γ : ℕ → Γ(B.X, ⊤)} {C : ChainsBp p h o Lie Om π γ}
   {M : Λ →+* Matrix (Fin h) (Fin h) ℤ} {f : Vert.Model.Hom B' B} {g : ∀ U : AffOp B.X, Γ(B'.X, f.f ⁻¹ᵁ U.1) →+* U.Bp}
 
+/- English proof (translation)
+Establish `e : resG B.X le_top a = resG B.X hle (resG B.X (le_top : U.1 ≤ ⊤) a)` using `(res_res_ring le_top hle a).symm`. Rewrite using `[cstBp, cstBp, e]`. Conclude with `Subtype.ext (congrArg (algebraMap B.X.functionField (GlobalTheory.GroupBplus.Kbar B.X)) (B.X.presheaf.germ_res_apply (homOfLE hle) _ _ _).symm)`.
+-/
 theorem res_cstBp {U U' : AffOp B.X} (hle : U'.1 ≤ U.1) (a : Γ(B.X, ⊤)) : AffOp.res hle (cstBp U a) = cstBp U' a := by
   have e : resG B.X le_top a = resG B.X hle (resG B.X (le_top : U.1 ≤ ⊤) a) := (res_res_ring le_top hle a).symm
   rw [cstBp, cstBp, e]
   exact Subtype.ext
     (congrArg (algebraMap B.X.functionField (GlobalTheory.GroupBplus.Kbar B.X)) (B.X.presheaf.germ_res_apply (homOfLE hle) _ _ _).symm)
 
+/- English proof (translation)
+Use `set S := Submodule.span U'.Bp (Set.range fun s : Γ(F, U.1) => ((1 : U'.Bp) ⊗ₜ resM F hle s : SecBp F U'))`. Establish `H : ∀ s : Γ(F, U'.1), ((1 : U'.Bp) ⊗ₜ s : SecBp F U') ∈ S`. Use `letI := resAlgebra hle`. Use `letI := resModule F hle`. Use `haveI := res_isScalarTower F hle`.
+
+Introduce `s`. Proceed by induction on `s using (isBaseChange_resLinear F U.2.1 U'.2.1 hle).inductionOn with`. Consider the case `zero => rw [TensorProduct.tmul_zero]`. Conclude with `zero_mem _`. Consider the case `tmul s => exact Submodule.subset_span ⟨s, rfl⟩`.
+
+Consider the case `smul a s hs`. Rewrite using `[TensorProduct.tmul_smul, ← algebraMap_smul U'.Bp]`. Conclude with `S.smul_mem _ hs`. Consider the case `add s s' hs hs' => rw [TensorProduct.tmul_add]`. Conclude with `add_mem hs hs'`.
+
+Rewrite using `[eq_top_iff]`. Introduce and unpack `x -`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact zero_mem _`. Consider the case `tmul a s`.
+
+Establish `e : (a ⊗ₜ s : SecBp F U') = a • ((1 : U'.Bp) ⊗ₜ s)` using `by rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[e]`. Conclude with `S.smul_mem _ (H s)`. Consider the case `add x y hx hy => exact add_mem hx hy`.
+-/
 theorem span_tmul_resM (F : B.X.Modules) [F.IsQuasicoherent] {U U' : AffOp B.X} (hle : U'.1 ≤ U.1) :
     Submodule.span U'.Bp (Set.range fun s : Γ(F, U.1) => ((1 : U'.Bp) ⊗ₜ resM F hle s : SecBp F U')) = ⊤ := by
   set S := Submodule.span U'.Bp (Set.range fun s : Γ(F, U.1) => ((1 : U'.Bp) ⊗ₜ resM F hle s : SecBp F U'))
@@ -145,6 +195,11 @@ theorem span_tmul_resM (F : B.X.Modules) [F.IsQuasicoherent] {U U' : AffOp B.X} 
     exact S.smul_mem _ (H s)
   | add x y hx hy => exact add_mem hx hy
 
+/- English proof (translation)
+Take `⟨-, l, m, hl, -, hM⟩` from `hS.1 U U' hle`. Use `imJ_le _ _ ?_ _ (span_tmul_resM Lie.V hle) ?_` and prove the remaining obligations. Rewrite using `[← res_cstBp hle]`. Conclude with `baseOf_le_span _ _ (base_le_imJ _)`. Introduce and unpack `_ ⟨s, rfl⟩`.
+
+Conclude with `map_j hM _ _ (hl s)`.
+-/
 theorem imJ_le_span [Lie.V.IsQuasicoherent] (hS : IsSys C M) {U U' : AffOp B.X} (hle : U'.1 ≤ U.1) :
     imJ (C U') ≤ Submodule.span U'.Bp (piMap (AffOp.res hle) (Fin h) '' (imJ (C U) : Set (Fin h → U.Bp))) := by
   obtain ⟨-, l, m, hl, -, hM⟩ := hS.1 U U' hle
@@ -156,6 +211,11 @@ theorem imJ_le_span [Lie.V.IsQuasicoherent] (hS : IsSys C M) {U U' : AffOp B.X} 
 
 variable {E : B'.X.Modules} {ι : E ⟶ freeModule B'.X (Fin h)} {Q : AM B' Λ} {t : E ⟶ Q.V} {j : (pullA f.f).obj Lie ⟶ Q}
 
+/- English proof (translation)
+Establish `e : (cokernel.π u).hom ≫ (Examples₂.cokV u).hom = cokernel.π u.hom` using `PreservesCokernel.π_iso_hom (Action.forget B.X.Modules Λ) u`. Establish `e' : (cokernel.π u).hom = cokernel.π u.hom ≫ (Examples₂.cokV u).inv`. Rewrite using `[← e, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Establish `b : Function.Bijective ((Examples₂.cokV u).inv.app W)` using `((sections W).mapIso (Examples₂.cokV u).symm).toLinearEquiv.bijective`. Rewrite using `[e']`.
+
+Use `⟨fun y => ?_, b.2.comp (surjective_cokernel_π_app u.hom hW)⟩` and prove the remaining obligations. Rewrite using `[← exact_cokernel_π_app u.hom hW y, ← app_app]`. Conclude with `map_eq_zero_iff (appLinear (Examples₂.cokV u).inv W) b.1`.
+-/
 theorem exact_coker {F G : AM B Λ} [F.V.IsQuasicoherent] [G.V.IsQuasicoherent] (u : F ⟶ G) {W : B.X.Opens}
     (hW : IsAffineOpen W) : Function.Exact (u.hom.app W) ((cokernel.π u).hom.app W) ∧
       Function.Surjective ((cokernel.π u).hom.app W) := by
@@ -170,6 +230,21 @@ theorem exact_coker {F G : AM B Λ} [F.V.IsQuasicoherent] [G.V.IsQuasicoherent] 
   rw [← exact_cokernel_π_app u.hom hW y, ← app_app]
   exact map_eq_zero_iff (appLinear (Examples₂.cokV u).inv W) b.1
 
+/- English proof (translation)
+Use `haveI := hQ.1`. Use `haveI : ((pullA f.f).obj Lie).V.IsQuasicoherent := isQuasicoherent_pullback f.f Lie.V`. Establish `H : ∀ z : Γ((Scheme.Modules.pullback f.f).obj Lie.V, f.f ⁻¹ᵁ U.1), ∃ x' : Γ(E, f.f ⁻¹ᵁ U.1), appLinear j.hom _ z = appLinear t _ x' ∧ piMap (g U) (Fin h) (crd ι _ x') ∈ imJ (C U)`. Use `letI := appLEAlgebra f.f (le_rfl : f.f ⁻¹ᵁ U.1 ≤ _)`. Use `letI := appLEModule f.f ((Scheme.Modules.pullback f.f).obj Lie.V) (le_rfl : f.f ⁻¹ᵁ U.1 ≤ _)`.
+
+Use `haveI := appLE_isScalarTower f.f ((Scheme.Modules.pullback f.f).obj Lie.V) (le_rfl : f.f ⁻¹ᵁ U.1 ≤ _)`. Introduce `z`. Proceed by induction on `z using (isBaseChange_pullbackSections f.f Lie.V (hC.isAffineOpen U) U.2.1 le_rfl).inductionOn with`. Consider the case `zero => exact ⟨0, (map_zero _).trans (map_zero _).symm, by rw [map_zero, map_zero]; exact zero_mem _⟩`. Consider the case `tmul s`.
+
+Take `⟨x', y, h1, h2, h3⟩` from `hJ s`. Conclude with `⟨x', h3, h1 ▸ (mem_imJ _ _).2 ⟨_, h2⟩⟩`. Consider the case `smul a s hs`. Take `⟨x', h1, h2⟩` from `hs`. Use `⟨a • x', ((appLinear j.hom _).map_smul a s).trans (by rw [map_smul]; exact congrArg _ h1), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_smul, map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ h2`. Consider the case `add s s' hs hs'`. Take `⟨x', h1, h2⟩` from `hs`. Take `⟨x'', h1', h2'⟩` from `hs'`.
+
+Use `⟨x' + x'', ((appLinear j.hom _).map_add s s').trans (by rw [map_add]; exact congrArg₂ _ h1 h1'), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add]`. Conclude with `add_mem h2 h2'`. Take `⟨z, hz⟩` from `((exact_coker j (hC.isAffineOpen U)).1 (t.app _ x)).1 hx`. Take `⟨x', h1, h2⟩` from `H z`.
+
+Establish `h3 : t.app _ (x - x') = 0`. Rewrite using `[← appLinear_apply, map_sub, ← h1, sub_eq_zero]`. Conclude with `hz.symm`. Establish `h4` using `piMap_mem_baseOf (g U) (((hQ.2 _ (hC.isAffineOpen U)).2.1 _).1 h3)`. Rewrite `h4` using `[hC.map_cst, map_sub, map_sub]`.
+
+Simplify using `using add_mem (base_le_imJ (C U) h4) h2`.
+-/
 theorem crd_mem_imJ [Lie.V.IsQuasicoherent] (hC : IsCov f g) (hQ : IsQuot M ι (baseOn h (f.f.appTop π)) Q t)
     (U : AffOp B.X) (hJ : JUp C f g U ι t j.hom) (x : Γ(E, f.f ⁻¹ᵁ U.1))
     (hx : (t ≫ (cokernel.π j).hom).app _ x = 0) : piMap (g U) (Fin h) (crd ι _ x) ∈ imJ (C U) := by
@@ -206,16 +281,25 @@ theorem crd_mem_imJ [Lie.V.IsQuasicoherent] (hC : IsCov f g) (hQ : IsQuot M ι (
   rw [hC.map_cst, map_sub, map_sub] at h4
   simpa using add_mem (base_le_imJ (C U) h4) h2
 
+/- English proof (translation)
+Take `⟨_, ⟨V, hV, rfl⟩, hzV, hVle⟩` from `B.X.isBasis_affineOpens.exists_subset_of_mem_open hz W.2`. Conclude with `⟨⟨V, hV, ⟨⟨z, hzV⟩⟩⟩, hzV, hVle⟩`.
+-/
 theorem exists_affOp_le {W : B.X.Opens} {z : B.X} (hz : z ∈ W) : ∃ U : AffOp B.X, z ∈ U.1 ∧ U.1 ≤ W := by
   obtain ⟨_, ⟨V, hV, rfl⟩, hzV, hVle⟩ := B.X.isBasis_affineOpens.exists_subset_of_mem_open hz W.2
   exact ⟨⟨V, hV, ⟨⟨z, hzV⟩⟩⟩, hzV, hVle⟩
 
+/- English proof (translation)
+Rewrite using `[crd_resM]`. Conclude with `funext fun i => hC.2.2.2.2 U U' hle _`.
+-/
 theorem piMap_crd_resM (hC : IsCov f g) {U U' : AffOp B.X} (hle : U'.1 ≤ U.1) (x : Γ(E, f.f ⁻¹ᵁ U.1)) :
     piMap (g U') (Fin h) (crd ι _ (resM E (f.f.preimage_mono hle) x)) =
       piMap (AffOp.res hle) (Fin h) (piMap (g U) (Fin h) (crd ι _ x)) := by
   rw [crd_resM]
   exact funext fun i => hC.2.2.2.2 U U' hle _
 
+/- English proof (translation)
+Rewrite using `[← appLinear_apply, map_sub, sub_eq_zero, appLinear_apply, appLinear_apply, ← hx', GlobalTheory.Twist.app_resM, ← hx, ← GlobalTheory.Twist.app_resM]`. Conclude with `congrArg _ ((pullbackSections_res a F le_rfl hle s).trans (res_pullbackSections a F le_rfl _ s).symm)`.
+-/
 theorem app_sub_resM {X Y : Scheme.{0}} (a : X ⟶ Y) {F : Y.Modules} {G R : X.Modules} (u : G ⟶ R)
     (r : (Scheme.Modules.pullback a).obj F ⟶ R) {U U' : Y.Opens} (hle : U' ≤ U) (s : Γ(F, U)) (x : Γ(G, a ⁻¹ᵁ U))
     (x' : Γ(G, a ⁻¹ᵁ U')) (hx : r.app _ (pullbackSections a F le_rfl s) = u.app _ x)
@@ -225,6 +309,9 @@ theorem app_sub_resM {X Y : Scheme.{0}} (a : X ⟶ Y) {F : Y.Modules} {G R : X.M
     ← GlobalTheory.Twist.app_resM]
   exact congrArg _ ((pullbackSections_res a F le_rfl hle s).trans (res_pullbackSections a F le_rfl _ s).symm)
 
+/- English proof (translation)
+Take `⟨x', y', h1, h2, h3⟩` from `hR (resM Om.V hle s)`. Take `⟨-, l, m, -, hm, hM⟩` from `hS.1 U U' hle`. Establish `h7` using `crd_mem_imJ hC hQ U' hJ _ (app_sub_resM f.f _ ρ hle s x x' hx h3)`. Rewrite `h7` using `[map_sub, map_sub, ← h1, piMap_crd_resM hC hle]`. Conclude with `map_ρ hM _ _ (hm s) y y' hy h2 _ h7`.
+-/
 theorem res_sub_mem_imJ [Lie.V.IsQuasicoherent] (hS : IsSys C M) (hC : IsCov f g)
     (hQ : IsQuot M ι (baseOn h (f.f.appTop π)) Q t) {ρ : (Scheme.Modules.pullback f.f).obj Om.V ⟶ (cokernel j).V}
     {U U' : AffOp B.X} (hle : U'.1 ≤ U.1) (hJ : JUp C f g U' ι t j.hom) (hR : RUp C f g U' ι (t ≫ (cokernel.π j).hom) ρ)
@@ -242,6 +329,15 @@ end Geo
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `O _ _ _ p B B' Λ _ h o Lie Om π γ M C f g E ι Q t j ρ hL hS hC hι hQ hJ hR U s`. Use `haveI := hQ.1`. Use `haveI : ((pullA f.f).obj Lie).V.IsQuasicoherent := isQuasicoherent_pullback f.f Lie.V`. Establish `hs : Function.Surjective ((t ≫ (cokernel.π j).hom).app (f.f ⁻¹ᵁ U.1))` using `(exact_coker j (hC.isAffineOpen U)).2.comp (hQ.2 _ (hC.isAffineOpen U)).1`. Take `⟨x, hq⟩` from `hs (ρ.hom.app _ (pullbackSections f.f Om.V le_rfl s))`.
+
+Establish `hx : piMap (g U) (Fin h) (crd (ι 0) _ x) ∈ (C U).L 0`. Establish `k : crd (ι 0) _ x ∈ latOf (ι 0) (f.f ⁻¹ᵁ U.1)` using `⟨x, rfl⟩`. Rewrite `k` using `[((hι 0).2.2 U).1, Nat.zero_min]`. Conclude with `k`. Use `(exists_ρ (C U) (1 ⊗ₜ s)).elim fun y₀ hy₀ => ?_` and prove the remaining obligations.
+
+Establish `key : y₀.1 - piMap (g U) (Fin h) (crd (ι 0) _ x) ∈ imJ (C U)`. Use `GlobalTheory.ChainDesc.mem_of_locally_mem_span B.X U h _ _ fun z hz => ?_` and prove the remaining obligations. Take `⟨U₀, hz₀, hU₀⟩` from `hR z`. Take `⟨U', hzU, hle⟩` from `exists_affOp_le (W := U.1 ⊓ U₀.1) ⟨hz, hz₀⟩`. Establish `h1 : U'.1 ≤ U.1` using `hle.trans inf_le_left`.
+
+Establish `h2` using `res_sub_mem_imJ (ι := ι 0) (ρ := ρ.hom) hS hC hQ h1 (hJ U') (hU₀ U' (hle.trans inf_le_right)) s x hq.symm y₀`. Conclude with `⟨U', h1, hzU, imJ_le_span hS h1 (h2 hy₀)⟩`. Conclude with `⟨x, ⟨_, hx⟩, rfl, Eq.trans hy₀ ((mk_mk_eq_iff (C U) y₀ ⟨_, hx⟩).2 key), hq.symm⟩`.
+-/
 theorem rUp_of_local : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) (B B' : GlobalTheory.Vert.Model O) (Λ : Type) [CommRing Λ] (h o : ℕ) (Lie Om : AM B Λ) (π : Γ(B.X, ⊤)) (γ : ℕ → Γ(B.X, ⊤)) (M : Λ →+* Matrix (Fin h) (Fin h) ℤ) (C : ChainsBp p h o Lie Om π γ) (f : GlobalTheory.Vert.Model.Hom B' B) (g : ∀ U : AffOp B.X, Γ(B'.X, f.f ⁻¹ᵁ U.1) →+* U.Bp) (E : ℕ → B'.X.Modules) (ι : ∀ n, E n ⟶ freeModule B'.X (Fin h)) (Q : AM B' Λ) (t : E 0 ⟶ Q.V) (j : (pullA f.f).obj Lie ⟶ Q) (ρ : (pullA f.f).obj Om ⟶ cokernel j), Lie.V.IsQuasicoherent → IsSys C M → IsCov f g → IsLatOf C f g ι → IsQuot M (ι 0) (baseOn h (f.f.appTop π)) Q t → (∀ U : AffOp B.X, JUp C f g U (ι 0) t j.hom) → (∀ z : B.X, ∃ U : AffOp B.X, z ∈ U.1 ∧ ∀ U' : AffOp B.X, U'.1 ≤ U.1 → RUp C f g U' (ι 0) (t ≫ (cokernel.π j).hom) ρ.hom) → ∀ U : AffOp B.X, RUp C f g U (ι 0) (t ≫ (cokernel.π j).hom) ρ.hom := by
   intro O _ _ _ p B B' Λ _ h o Lie Om π γ M C f g E ι Q t j ρ hL hS hC hι hQ hJ hR U s
   haveI := hQ.1

@@ -4,6 +4,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.TwistedTraceFormula.Ha
 
 namespace GlobalTheory.FourClauses
 
+/- English proof (translation)
+Introduce `h k _ _ _ _ _ _ _` and use `⟨fun V _ _ π hs hl => (h k).2.1 _ _ _ _ V π hs hl, fun W _ _ ρ hs hl => (h k).2.2.1 _ _ _ _ W ρ hs hl⟩`.
+-/
 theorem len : GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.StandardFunctorsFiniteLength :=
   fun h k _ _ _ _ _ _ _ => ⟨fun V _ _ π hs hl => (h k).2.1 _ _ _ _ V π hs hl, fun W _ _ ρ hs hl => (h k).2.2.1 _ _ _ _ W ρ hs hl⟩
 

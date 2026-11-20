@@ -6,6 +6,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `haveI : Algebra.FormallyUnramified ℤ ℚ := Algebra.FormallyUnramified.of_isLocalization (nonZeroDivisors ℤ)`. Use `haveI : Algebra.FormallyUnramified ℚ F := Algebra.FormallyUnramified.of_isSeparable ℚ F`. Use `haveI : Algebra.FormallyUnramified ℤ F := Algebra.FormallyUnramified.comp ℤ ℚ F`. Use `haveI : Algebra.EssFiniteType ℤ ℚ := Algebra.EssFiniteType.of_isLocalization ℚ (nonZeroDivisors ℤ)`. Use `haveI : Algebra.EssFiniteType ℤ F := Algebra.EssFiniteType.comp ℤ ℚ F`.
+
+Use `haveI : Algebra.FormallyUnramified K (K ⊗[ℤ] F) := inferInstance`. Use `haveI : Algebra.EssFiniteType K (K ⊗[ℤ] F) := inferInstance`. Conclude with `Algebra.FormallyUnramified.isReduced_of_field K (K ⊗[ℤ] F)`.
+-/
 theorem isReduced_tensor_int_numberField (F K : Type) [Field F] [NumberField F] [Field K] :
     IsReduced (K ⊗[ℤ] F) := by
   haveI : Algebra.FormallyUnramified ℤ ℚ := Algebra.FormallyUnramified.of_isLocalization (nonZeroDivisors ℤ)

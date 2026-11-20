@@ -9,6 +9,49 @@ namespace Formalism.FX
 
 open LFunctionPartialSum in
 
+/- English proof (translation)
+Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hB 0)`. Establish `hc : 0 ≤ ‖s‖ / s.re` using `div_nonneg (norm_nonneg _) hs.le`. Establish `hs0 : s ≠ 0`. Introduce `h`. Rewrite `hs` using `[h, Complex.zero_re]`.
+
+Conclude with `lt_irrefl _ hs`. Establish `K1 : ∀ x : ℝ, 1 ≤ x → ‖(x : ℂ) ^ (-s) - ((x : ℂ) + 1) ^ (-s)‖ ≤ ‖s‖ / s.re * (x ^ (-s.re) - (x + 1) ^ (-s.re))`. Introduce `x hx`. Establish `hx0 : 0 < x` using `by linarith`. Establish `hI : Set.uIcc x (x + 1) = Set.Icc x (x + 1)` using `Set.uIcc_of_le (by linarith)`.
+
+Establish `h0 : (0 : ℝ) ∉ Set.uIcc x (x + 1)`. Rewrite using `[hI]`. Introduce `h`. Combine the linear relations using `[h.1]`. Establish `hderiv : ∀ t ∈ Set.uIcc x (x + 1), HasDerivAt (fun y : ℝ => (y : ℂ) ^ (-s)) ((-s) * (t : ℂ) ^ (-s - 1)) t`.
+
+Introduce `t ht`. Rewrite `ht` using `[hI]`. Establish `ht0 : 0 < t` using `by linarith [ht.1]`. Establish `hr : -s - 1 ≠ -1`. Introduce `h`.
+
+Apply `hs0` to reduce the goal to its premises. Take the linear combination `-h`. Use `first`. Consider the case `exact hasDerivAt_ofReal_cpow_const ht0.ne' (neg_ne_zero.mpr hs0)`. Consider the case `(have h1 := hasDerivAt_ofReal_cpow_const ht0.ne' hr`.
+
+Establish `e : -s - 1 + 1 = -s` using `by ring`. Rewrite `h1` using `[e]`. Conclude with `h1)`. Establish `hint : IntervalIntegrable (fun t : ℝ => (-s) * (t : ℂ) ^ (-s - 1)) MeasureTheory.volume x (x + 1)`. Apply `ContinuousOn.intervalIntegrable` to reduce the goal to its premises.
+
+Introduce `t ht`. Rewrite `ht` using `[hI]`. Establish `ht0 : 0 < t` using `by linarith [ht.1]`. Apply `ContinuousAt.continuousWithinAt` to reduce the goal to its premises. Conclude with `continuousAt_const.mul ((Complex.continuous_ofReal.continuousAt).cpow continuousAt_const (Complex.ofReal_mem_slitPlane.mpr ht0))`.
+
+Establish `hFTC` using `intervalIntegral.integral_eq_sub_of_hasDerivAt hderiv hint`. Establish `e2 : (x : ℂ) ^ (-s) - ((x : ℂ) + 1) ^ (-s) = -(∫ t in x..(x + 1), (-s) * (t : ℂ) ^ (-s - 1))`. Rewrite using `[hFTC]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hr' : -s.re - 1 ≠ -1`. Introduce `h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hgi : IntervalIntegrable (fun t : ℝ => ‖s‖ * t ^ (-s.re - 1)) MeasureTheory.volume x (x + 1)`. Apply `ContinuousOn.intervalIntegrable` to reduce the goal to its premises.
+
+Introduce `t ht`. Rewrite `ht` using `[hI]`. Establish `ht0 : 0 < t` using `by linarith [ht.1]`. Apply `ContinuousAt.continuousWithinAt` to reduce the goal to its premises. Conclude with `continuousAt_const.mul (Real.continuousAt_rpow_const _ _ (Or.inl ht0.ne'))`.
+
+Rewrite using `[e2, norm_neg]`. Combine the equalities or inequalities in the displayed calculation. Use `intervalIntegral.norm_integral_le_of_norm_le (by linarith) (MeasureTheory.ae_of_all _ (fun t ht => ?_)) hgi` and prove the remaining obligations. Establish `ht0 : 0 < t` using `by linarith [ht.1]`. Rewrite using `[norm_mul, norm_neg, Complex.norm_cpow_eq_rpow_re_of_pos ht0]`.
+
+Simplify using the standard rewrite rules. Use `_ = ‖s‖ / s.re * (x ^ (-s.re) - (x + 1) ^ (-s.re)) := by`. Rewrite using `[intervalIntegral.integral_const_mul, integral_rpow (Or.inr ⟨hr', h0⟩)]`. Establish `e3 : -s.re - 1 + 1 = -s.re` using `by ring`. Rewrite using `[e3]`.
+
+Establish `hsr : s.re ≠ 0` using `hs.ne'`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hterm : ∀ i : ℕ, ‖dterm χ s (i + (N + 1))‖ ≤ B * (‖s‖ / s.re * ((((i + (N + 1) : ℕ) : ℝ)) ^ (-s.re) - (((i + 1 + (N + 1) : ℕ) : ℝ)) ^ (-s.re)))`. Introduce `i`.
+
+Establish `hx : (1 : ℝ) ≤ ((i + (N + 1) : ℕ) : ℝ)`. Conclude with `(show 1 ≤ i + (N + 1) by omega)` after adjusting the coercions. Establish `h1` using `K1 _ hx`. Rewrite `h1` using `[Complex.ofReal_natCast]`. Establish `e : (((i + 1 + (N + 1) : ℕ) : ℝ)) = ((i + (N + 1) : ℕ) : ℝ) + 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Unfold `dterm`. Rewrite using `[norm_mul]`.
+
+Conclude with `mul_le_mul (hB _) h1 (norm_nonneg _) hB0`. Establish `hf0 : ∀ i : ℕ, 0 ≤ B * (‖s‖ / s.re * ((((i + (N + 1) : ℕ) : ℝ)) ^ (-s.re) - (((i + 1 + (N + 1) : ℕ) : ℝ)) ^ (-s.re)))`. Introduce `i`. Use `mul_nonneg hB0 (mul_nonneg hc (sub_nonneg.mpr ?_))` and prove the remaining obligations. Establish `hle : (((i + (N + 1) : ℕ) : ℝ)) ≤ (((i + 1 + (N + 1) : ℕ) : ℝ))`.
+
+Conclude with `(show i + (N + 1) ≤ i + 1 + (N + 1) by omega)` after adjusting the coercions. Establish `hpos : (0 : ℝ) < (((i + (N + 1) : ℕ) : ℝ))`. Conclude with `(show 0 < i + (N + 1) by omega)` after adjusting the coercions. Use `first`. Consider the case `exact Real.rpow_le_rpow_of_nonpos hpos hle (by linarith)`.
+
+Consider the case `exact Real.rpow_le_rpow_of_exponent_nonpos hpos hle (by linarith)`. Consider the case `(rw [Real.rpow_neg hpos.le, Real.rpow_neg (hpos.le.trans hle)]`. Conclude with `inv_anti₀ (Real.rpow_pos_of_pos hpos _) (Real.rpow_le_rpow hpos.le hle hs.le))`. Establish `hpart : ∀ n : ℕ, ∑ i ∈ Finset.range n, B * (‖s‖ / s.re * ((((i + (N + 1) : ℕ) : ℝ)) ^ (-s.re) - (((i + 1 + (N + 1) : ℕ) : ℝ)) ^ (-s.re))) ≤ B * (‖s‖ / s.re) * ((N : ℝ) + 1) ^ (-s.re)`. Introduce `n`.
+
+Rewrite using `[← Finset.mul_sum, ← Finset.mul_sum, Finset.sum_range_sub']`. Establish `hv0 : (((0 + (N + 1) : ℕ) : ℝ)) ^ (-s.re) = ((N : ℝ) + 1) ^ (-s.re)`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hv0]`. Establish `hvn : 0 ≤ (((n + (N + 1) : ℕ) : ℝ)) ^ (-s.re)` using `Real.rpow_nonneg (Nat.cast_nonneg _) _`. Establish `hm` using `mul_nonneg (mul_nonneg hB0 hc) hvn`. Use the polynomial consequences of the given equalities and inequalities. Establish `hsf` using `summable_of_sum_range_le hf0 hpart`.
+
+Establish `hsn : Summable (fun i : ℕ => ‖dterm χ s (i + (N + 1))‖)` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) hterm hsf`. Combine the equalities or inequalities in the displayed calculation. Consider the case `exact Summable.tsum_le_tsum hterm hsn hsf`. Consider the case `exact tsum_le_tsum hterm hsn hsf`. Use `_ ≤ B * (‖s‖ / s.re) * ((N : ℝ) + 1) ^ (-s.re) := Real.tsum_le_of_sum_range_le hf0 hpart`.
+-/
 lemma LFunctionPartialSum.norm_tail_le {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) {B : ℝ}
     (hB : ∀ M, ‖Ap χ M‖ ≤ B) {s : ℂ} (hs : 0 < s.re) (N : ℕ) :
     ‖∑' i, dterm χ s (i + (N + 1))‖ ≤ B * (‖s‖ / s.re) * ((N : ℝ) + 1) ^ (-s.re) := by
@@ -133,6 +176,17 @@ lemma LFunctionPartialSum.norm_tail_le {q : ℕ} [NeZero q] (χ : DirichletChara
     _ ≤ B * (‖s‖ / s.re) * ((N : ℝ) + 1) ^ (-s.re) := Real.tsum_le_of_sum_range_le hf0 hpart
 
 open LFunctionPartialSum in
+/- English proof (translation)
+Introduce `q _ χ hχ B hB s hs N hN`. Establish `hB' : ∀ M, ‖Ap χ M‖ ≤ B` using `hB`. Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hB' 0)`. Rewrite using `[LFunction_eq_G χ hχ hB' hs, ← partial_identity χ s N]`. Establish `hsum` using `summable_dterm χ hB' hs`.
+
+Establish `hG : LFunctionPartialSum.G χ s = ∑ n ∈ Finset.range (N + 1), dterm χ s n + ∑' i, dterm χ s (i + (N + 1))` using `(hsum.sum_add_tsum_nat_add (N + 1)).symm`. Rewrite using `[hG]`. Establish `e : ∑ n ∈ Finset.range (N + 1), dterm χ s n + ∑' i, dterm χ s (i + (N + 1)) - (∑ n ∈ Finset.range (N + 1), dterm χ s n + Ap χ N * ((N : ℂ) + 1) ^ (-s)) = ∑' i, dterm χ s (i + (N + 1)) - Ap χ N * ((N : ℂ) + 1) ^ (-s)` using `by ring`. Rewrite using `[e]`. Establish `h1` using `norm_tail_le χ hB' hs N`.
+
+Establish `h2 : ‖Ap χ N * ((N : ℂ) + 1) ^ (-s)‖ ≤ B * ((N : ℝ) + 1) ^ (-s.re)`. Rewrite using `[norm_mul, natCast_add_one_eq, Complex.norm_cpow_eq_rpow_re_of_pos (by positivity)]`. Simplify using `only [Complex.neg_re]`. Conclude with `mul_le_mul_of_nonneg_right (hB' N) (Real.rpow_nonneg (by positivity) _)`. Establish `hNpos : (0 : ℝ) < N` using `by exact_mod_cast hN`.
+
+Establish `h3 : ((N : ℝ) + 1) ^ (-s.re) ≤ (N : ℝ) ^ (-s.re)` using `Real.rpow_le_rpow_of_nonpos hNpos (by linarith) (by linarith)`. Establish `hq : 0 ≤ ‖s‖ / s.re` using `div_nonneg (norm_nonneg _) hs.le`. Establish `h4 : 0 ≤ (N : ℝ) ^ (-s.re)` using `Real.rpow_nonneg hNpos.le _`. Establish `h5 : 0 ≤ ((N : ℝ) + 1) ^ (-s.re)` using `Real.rpow_nonneg (by positivity) _`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `: 0 ≤ B * (1 + ‖s‖ / s.re) * (N : ℝ) ^ (-s.re)` using `mul_nonneg (mul_nonneg hB0 (by linarith)) h4`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem l_function_partial_sum : LPartialSum := by
   intro q _ χ hχ B hB s hs N hN
   have hB' : ∀ M, ‖Ap χ M‖ ≤ B := hB

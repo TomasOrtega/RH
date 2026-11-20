@@ -16,9 +16,15 @@ section Ring
 
 variable {R : Type} [CommRing R] (s : R →+* R) {n : ℕ} (A : Matrix (Fin n) (Fin n) R)
 
+/- English proof (translation)
+Use extensionality with `i k`. Simplify using `[cT]`.
+-/
 theorem cT_add' {p q : Type} (M N : Matrix p q R) : cT s (M + N) = cT s M + cT s N := by
   ext i k; simp [cT]
 
+/- English proof (translation)
+Use extensionality with `i k`. Simplify using `[cT]`.
+-/
 theorem cT_sub' {p q : Type} (M N : Matrix p q R) : cT s (M - N) = cT s M - cT s N := by
   ext i k; simp [cT]
 
@@ -27,26 +33,44 @@ def gr {p q : ℕ} (X : Matrix (Fin n) (Fin p) R) (Y : Matrix (Fin n) (Fin q) R)
 
 variable {p q k : ℕ}
 
+/- English proof (translation)
+Simplify using `[gr, cT_add', Matrix.add_mul]`.
+-/
 theorem gr_add_left (X X' : Matrix (Fin n) (Fin p) R) (Y : Matrix (Fin n) (Fin q) R) :
     gr s A (X + X') Y = gr s A X Y + gr s A X' Y := by
   simp [gr, cT_add', Matrix.add_mul]
 
+/- English proof (translation)
+Simplify using `[gr, cT_sub', Matrix.sub_mul]`.
+-/
 theorem gr_sub_left (X X' : Matrix (Fin n) (Fin p) R) (Y : Matrix (Fin n) (Fin q) R) :
     gr s A (X - X') Y = gr s A X Y - gr s A X' Y := by
   simp [gr, cT_sub', Matrix.sub_mul]
 
+/- English proof (translation)
+Simplify using `[gr, Matrix.mul_add]`.
+-/
 theorem gr_add_right (X : Matrix (Fin n) (Fin p) R) (Y Y' : Matrix (Fin n) (Fin q) R) :
     gr s A X (Y + Y') = gr s A X Y + gr s A X Y' := by
   simp [gr, Matrix.mul_add]
 
+/- English proof (translation)
+Simplify using `[gr, Matrix.mul_sub]`.
+-/
 theorem gr_sub_right (X : Matrix (Fin n) (Fin p) R) (Y Y' : Matrix (Fin n) (Fin q) R) :
     gr s A X (Y - Y') = gr s A X Y - gr s A X Y' := by
   simp [gr, Matrix.mul_sub]
 
+/- English proof (translation)
+Simplify using `[gr, Formalism.UG.cT_mul, Matrix.mul_assoc]`.
+-/
 theorem gr_mul_left (X : Matrix (Fin n) (Fin k) R) (M : Matrix (Fin k) (Fin p) R) (Y : Matrix (Fin n) (Fin q) R) :
     gr s A (X * M) Y = cT s M * gr s A X Y := by
   simp [gr, Formalism.UG.cT_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Simplify using `[gr, Matrix.mul_assoc]`.
+-/
 theorem gr_mul_right (X : Matrix (Fin n) (Fin p) R) (Y : Matrix (Fin n) (Fin k) R) (M : Matrix (Fin k) (Fin q) R) :
     gr s A X (Y * M) = gr s A X Y * M := by
   simp [gr, Matrix.mul_assoc]
@@ -55,29 +79,49 @@ end Ring
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
 
+/- English proof (translation)
+Use extensionality with `i k`. Simplify using `[cT, adMat, sigR, inclR]`.
+-/
 theorem cT_adMat {p q : Type} (X : Matrix p q E) :
     cT (sigR (AF F) σ) (adMat F X) = adMat F (cT (σ : E →+* E) X) := by
   ext i k; simp [cT, adMat, sigR, inclR]
 
+/- English proof (translation)
+Simplify using `only [gr, cT_adMat, adMat, Matrix.map_mul]`.
+-/
 theorem gr_adMat {n p q : ℕ} (J : Matrix (Fin n) (Fin n) E) (X : Matrix (Fin n) (Fin p) E) (Y : Matrix (Fin n) (Fin q) E) :
     gr (sigR (AF F) σ) (adMat F J) (adMat F X) (adMat F Y) = adMat F (cT (σ : E →+* E) X * J * Y) := by
   simp only [gr, cT_adMat, adMat, Matrix.map_mul]
 
+/- English proof (translation)
+Set `τ : E →+* ℂ` to `(IsAlgClosed.lift (R := ℚ) (M := ℂ) (S := E)).toRingHom`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+-/
 theorem invol (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   let τ : E →+* ℂ := (IsAlgClosed.lift (R := ℚ) (M := ℂ) (S := E)).toRingHom
   apply τ.injective
   rw [h.2.2.2, h.2.2.2, star_star]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [sigR, invol σ h]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem sigR_invol (h : IsCMExt F E σ) (x : AF F ⊗[F] E) : sigR (AF F) σ (sigR (AF F) σ x) = x := by
   induction x using TensorProduct.induction_on with
   | zero => simp
   | tmul a e => simp [sigR, invol σ h]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Use extensionality with `i k`. Simplify using `[cT, sigR_invol σ h]`.
+-/
 theorem cT_cT (h : IsCMExt F E σ) {p q : Type} (M : Matrix p q (AF F ⊗[F] E)) :
     cT (sigR (AF F) σ) (cT (sigR (AF F) σ) M) = M := by
   ext i k; simp [cT, sigR_invol σ h]
 
+/- English proof (translation)
+Establish `hJ : cT (σ : E →+* E) J₀ = J₀`. Use extensionality with `i k`. Simplify using `[cT, h.1]`. Establish `hu : IsUnit J₀.det` using `isUnit_iff_ne_zero.mpr h.2`. Establish `e : cT (σ : E →+* E) J₀⁻¹ * J₀ = 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `(Matrix.inv_eq_left_inv e).symm`.
+-/
 theorem cT_inv_herm {m : ℕ} (J₀ : Matrix (Fin m) (Fin m) E) (h : IsHermND σ J₀) :
     cT (σ : E →+* E) J₀⁻¹ = J₀⁻¹ := by
   have hJ : cT (σ : E →+* E) J₀ = J₀ := by
@@ -89,6 +133,25 @@ theorem cT_inv_herm {m : ℕ} (J₀ : Matrix (Fin m) (Fin m) E) (h : IsHermND σ
       _ = 1 := by rw [Matrix.mul_nonsing_inv _ hu, Formalism.UG.cT_one]
   exact (Matrix.inv_eq_left_inv e).symm
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J j m C D Z J₀ hF b c hc`. Use `set s := sigR (AF F) σ with hs`. Use `set p := plus σ J₀ b with hp`. Establish `hu : IsUnit J₀.det` using `isUnit_iff_ne_zero.mpr hF.herm₀.2`. Establish `key : cT s p * adMat F J₀ = b`.
+
+Rewrite using `[hp, plus, Formalism.UG.cT_mul, cT_cT σ hF.cm, cT_adMat, cT_inv_herm σ J₀ hF.herm₀, Matrix.mul_assoc, adMat, adMat, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ hu, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`. Establish `g0 : ∀ {p q : ℕ} (X : Matrix (Fin n) (Fin p) E) (Y : Matrix (Fin n) (Fin q) E), cT (σ : E →+* E) X * J * Y = 0 → gr s (adMat F J) (adMat F X) (adMat F Y) = 0`. Introduce `p q X Y h`. Rewrite using `[gr_adMat, h]`. Simplify using the standard rewrite rules.
+
+Establish `g1 : ∀ (X Y : Matrix (Fin n) (Fin j) E), cT (σ : E →+* E) X * J * Y = 1 → gr s (adMat F J) (adMat F X) (adMat F Y) = 1`. Introduce `X Y h`. Rewrite using `[gr_adMat, h]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `gzz : gr s (adMat F J) (adMat F Z) (adMat F Z) = adMat F J₀` using `by rw [gr_adMat, hF.zz]`.
+
+Establish `hcc` using `g0 C C hF.cc`. Establish `hdd` using `g0 D D hF.dd`. Establish `hcz` using `g0 C Z hF.cz`. Establish `hdz` using `g0 D Z hF.dz`. Establish `hzc` using `g0 Z C hF.zc`.
+
+Establish `hzd` using `g0 Z D hF.zd`. Establish `hcd` using `g1 C D hF.cd`. Establish `hdc` using `g1 D C hF.dc`. Establish `Ecd : cT s (adMat F C) * adMat F J * (adMat F D - adMat F Z * p + adMat F C * c) = 1` using `by show gr s (adMat F J) _ _ = 1`. Simplify using `only [gr_add_right, gr_sub_right, gr_mul_right, hcd, hcz, hcc]`.
+
+Simplify using the standard rewrite rules. Establish `Ecz : cT s (adMat F C) * adMat F J * (adMat F Z + adMat F C * b) = 0` using `by show gr s (adMat F J) _ _ = 0`. Simplify using `only [gr_add_right, gr_mul_right, hcz, hcc]`. Simplify using the standard rewrite rules. Establish `Ezz : cT s (adMat F Z + adMat F C * b) * adMat F J * (adMat F Z + adMat F C * b) = adMat F J₀` using `by show gr s (adMat F J) _ _ = _`.
+
+Simplify using `only [gr_add_right, gr_add_left, gr_mul_right, gr_mul_left, hcz, hcc, hzc, gzz]`. Simplify using the standard rewrite rules. Establish `Edz : cT s (adMat F D - adMat F Z * p + adMat F C * c) * adMat F J * (adMat F Z + adMat F C * b) = 0` using `by show gr s (adMat F J) _ _ = 0`. Simplify using `only [gr_add_right, gr_add_left, gr_sub_left, gr_mul_right, gr_mul_left, hcz, hcc, hzc, gzz, hdz, hdc]`. Simplify using `[key]`.
+
+Establish `Edd : cT s (adMat F D - adMat F Z * p + adMat F C * c) * adMat F J * (adMat F D - adMat F Z * p + adMat F C * c) = 0` using `by show gr s (adMat F J) _ _ = 0`. Simplify using `only [gr_add_right, gr_add_left, gr_sub_left, gr_sub_right, gr_mul_right, gr_mul_left, hcz, hcc, hzc, gzz, hdz, hdc, hcd, hdd, hzd]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, sub_zero, zero_add, add_zero, zero_sub, sub_neg_eq_add, key]`. Simplify using `only [Matrix.neg_mul, sub_neg_eq_add]`. Rewrite using `[← hc]`.
+
+Normalize the expressions using the abelian group laws. Take `⟨g, h1, h2, h3⟩` from `GlobalTheory.T.exists_unitaryAdelicPoint_prescribed_frameImages F E σ n J j m C D Z J₀ hF (adMat F C) (adMat F D - adMat F Z * p + adMat F C * c) (adMat F Z + adMat F C * b) hcc Edd Ecd Ecz Edz Ezz`. Conclude with `⟨g, (GlobalTheory.T.mem_isotropicUnipotentRadical_iff_frame F E σ n J j m C D Z J₀ hF g).mpr ⟨h1, b, h2⟩, h1, h2, h3⟩`.
+-/
 theorem exists_unipRad_crd : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (j m : ℕ) (C D : Matrix (Fin n) (Fin j) E) (Z : Matrix (Fin n) (Fin m) E) (J₀ : Matrix (Fin m) (Fin m) E), Fr σ J C D Z J₀ → ∀ (b : Matrix (Fin j) (Fin m) (AF F ⊗[F] E)) (c : Matrix (Fin j) (Fin j) (AF F ⊗[F] E)), c + cT (sigR (AF F) σ) c + b * plus σ J₀ b = 0 → ∃ u ∈ unipRad σ J C, Crd σ J C D Z J₀ u b c := by
   intro F E _ _ _ _ _ σ n J j m C D Z J₀ hF b c hc
   set s := sigR (AF F) σ with hs

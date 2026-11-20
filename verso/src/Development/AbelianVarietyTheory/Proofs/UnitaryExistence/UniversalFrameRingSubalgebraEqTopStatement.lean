@@ -13,5 +13,8 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.Frames GlobalTheory.FrameUnif
 open scoped Matrix nonZeroDivisors
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.frameRing_subalgebra_eq_top | exact GlobalTheory.frameRing_subalgebra_eq_top | (intros; apply GlobalTheory.frameRing_subalgebra_eq_top <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.universalFrameRing_subalgebra_eq_top : ∀ (K : Type) [Field K] (J : Type) (m : J → ℕ) (R A : Type) [CommRing R] [Algebra K R] [CommRing A] [Algebra K A] (π : R →ₐ[K] A) (X : ∀ τ, Matrix (Fin (m τ)) (Fin (m τ)) A) (s : Aˣ), FrameRing m π X s → ∀ A' : Subalgebra K A, (∀ t, π t ∈ A') → (∀ τ i j, X τ i j ∈ A') → (s : A) ∈ A' → ((s⁻¹ : Aˣ) : A) ∈ A' → (∀ τ, ∃ d ∈ A', d * (X τ).det = 1) → A' = ⊤ := by
   first | exact @GlobalTheory.frameRing_subalgebra_eq_top | exact GlobalTheory.frameRing_subalgebra_eq_top | (intros; apply GlobalTheory.frameRing_subalgebra_eq_top <;> assumption)

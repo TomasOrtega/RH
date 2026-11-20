@@ -6,14 +6,27 @@ open Matrix
 
 variable {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cj]`.
+-/
 theorem cj_smul {R : Type} [CommRing R] (s : R →+* R) {m p : Type} (r : R) (M : Matrix m p R) :
     cj s (r • M) = s r • cj s M := by
   ext i j; simp [cj]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cj, h]`.
+-/
 theorem map_cj {R S : Type} [CommRing R] [CommRing S] (σ : R →+* R) (s : S →+* S) (π : R →+* S)
     (h : ∀ x, π (σ x) = s (π x)) {m p : Type} (M : Matrix m p R) : (cj σ M).map π = cj s (M.map π) := by
   ext i j; simp [cj, h]
 
+/- English proof (translation)
+Establish `hu : cj σ (d + c * b) = cj σ d + b * cj σ c` using `by rw [cj_add, cj_mul, hb]`. Establish `e : fromBlocks a (a * b + b0) c (d + c * b) * fromBlocks (cj σ (d + c * b)) 0 (-cj σ c) 1 = fromBlocks 1 (a * b + b0) 0 (d + c * b)`. Rewrite using `[fromBlocks_multiply, hu]`. Use `congr 1`. Rewrite using `[← R1]`.
+
+Use `noncomm_ring`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Simplify using the standard rewrite rules. Use `congrArg Matrix.det e` as an intermediate fact.
+
+Rewrite `this` using `[det_mul, det_fromBlocks_zero₁₂, det_fromBlocks_zero₂₁]`. Simplify using `using this`.
+-/
 theorem det_jacobi {R : Type} [CommRing R] (σ : R →+* R) (a b0 c d b : Matrix n n R)
     (R1 : a * cj σ d - b0 * cj σ c = 1) (R2 : c * cj σ d = d * cj σ c) (hb : cj σ b = b) :
     (fromBlocks a (a * b + b0) c (d + c * b)).det * (cj σ (d + c * b)).det = (d + c * b).det := by
@@ -31,6 +44,39 @@ theorem det_jacobi {R : Type} [CommRing R] (σ : R →+* R) (a b0 c d b : Matrix
   rw [det_mul, det_fromBlocks_zero₁₂, det_fromBlocks_zero₂₁] at this
   simpa using this
 
+/- English proof (translation)
+Use `letI : Field (R ⧸ 𝔭) := Ideal.Quotient.field 𝔭`. Use `set π : R →+* R ⧸ 𝔭 := Ideal.Quotient.mk 𝔭 with hπ`. Establish `hsurj : Function.Surjective π` using `Ideal.Quotient.mk_surjective`. Use `set lift : R ⧸ 𝔭 → R := Function.surjInv hsurj with hlift`. Establish `hl : ∀ y, π (lift y) = y` using `Function.surjInv_eq hsurj`.
+
+Establish `hXY : c * (-cj σ b0) + d * cj σ a = 1` using `by rw [← R3]; noncomm_ring`. Establish `hXY' : c.map π * (-cj σ b0).map π + d.map π * (cj σ a).map π = 1`. Use `congrArg π.mapMatrix hXY` as an intermediate fact. Simplify `this` using `only [map_add, map_mul, map_one, RingHom.mapMatrix_apply]`. Establish `key : ∃ b : Matrix n n R, cj σ b = b ∧ (d + c * b).det ∉ 𝔭`.
+
+Establish `hdet : ∀ b : Matrix n n R, ((d + c * b).map π).det ≠ 0 → (d + c * b).det ∉ 𝔭`. Introduce `b hb hm`. Apply `hb` to reduce the goal to its premises. Rewrite `hm` using `[← Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[← hm, RingHom.map_det]`.
+
+Both sides reduce to the same expression. Distinguish the cases in `hst : ∀ x ∈ 𝔭, σ x ∈ 𝔭`. Use `set s : R ⧸ 𝔭 →+* R ⧸ 𝔭 := Ideal.quotientMap 𝔭 σ (fun x hx => hst x hx) with hs`. Establish `hsπ : ∀ x, π (σ x) = s (π x)` using `fun x => (Ideal.quotientMap_mk).symm`. Establish `hss : ∀ y, s (s y) = y`.
+
+Introduce `y`. Take `⟨x, rfl⟩` from `hsurj y`. Rewrite using `[← hsπ, ← hsπ, hσ]`. Establish `hlag : c.map π * cj s (d.map π) = d.map π * cj s (c.map π)`. Rewrite using `[← map_cj σ s π hsπ, ← map_cj σ s π hsπ]`.
+
+Use `congrArg π.mapMatrix R2` as an intermediate fact. Simplify `this` using `only [map_mul, RingHom.mapMatrix_apply]`. Take `⟨B, hBh, hBd⟩` from `fieldA s hss _ _ _ _ hXY' hlag`. Use `set B' := B.map lift with hB'`. Use `⟨(↑h2.unit⁻¹ : R) • (B' + cj σ B'), ?_, hdet _ ?_⟩` and prove the remaining obligations.
+
+Establish `hinv : σ (↑h2.unit⁻¹ : R) = ↑h2.unit⁻¹`. Establish `e1 : σ (↑h2.unit⁻¹ : R) * 2 = 1`. Establish `: σ ((↑h2.unit⁻¹ : R) * 2) = 1`. Rewrite using `[show (↑h2.unit⁻¹ : R) * 2 = ↑h2.unit⁻¹ * ↑h2.unit from rfl, Units.inv_mul, map_one]`. Rewrite `this` using `[map_mul, map_ofNat]`. Then use the resulting hypothesis.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show (2 : R) * ↑h2.unit⁻¹ = ↑h2.unit * ↑h2.unit⁻¹ from rfl, Units.mul_inv, mul_one]`. Use `_ = ↑h2.unit⁻¹ := by rw [← mul_assoc, e1, one_mul]`. Rewrite using `[cj_smul, cj_add, cj_cj σ hσ, hinv, add_comm]`. Establish `hmap : ((↑h2.unit⁻¹ : R) • (B' + cj σ B')).map π = B`.
+
+Use extensionality with `i j`. Establish `hij` using `congrFun (congrFun hBh i) j`. Rewrite `hij` using `[cj_apply]`. Establish `h2π : π (↑h2.unit⁻¹ : R) * 2 = 1`. Rewrite using `[← map_ofNat π 2, ← map_mul, show (↑h2.unit⁻¹ : R) * 2 = ↑h2.unit⁻¹ * ↑h2.unit from rfl, Units.inv_mul, map_one]`.
+
+Simplify using `only [Matrix.map_apply, Matrix.smul_apply, Matrix.add_apply, smul_eq_mul, map_mul, map_add, cj_apply, hB', hsπ, hl, hij]`. Take the linear combination `(B i j) * h2π`. Establish `: (d + c * ((↑h2.unit⁻¹ : R) • (B' + cj σ B'))).map π = d.map π + c.map π * B`. Rewrite using `[← hmap]`. Simplify using `[Matrix.map_add, Matrix.map_mul]`.
+
+Rewrite using `[this]`. Conclude with `hBd`. Use `push_neg at hst`. Take `⟨y, hy, hσy⟩` from `hst`. Take `⟨r, i, hi, hri⟩` from `h𝔭.exists_inv hσy`.
+
+Take `⟨B, hBd⟩` from `fieldB _ _ _ _ hXY'`. Use `set B' := B.map lift with hB'`. Use `set x := r * σ y with hx`. Establish `hπx : π x = 1`. Establish `: π (x + i) = 1` using `by rw [hx, hri, map_one]`.
+
+Rewrite `this` using `[map_add, (Ideal.Quotient.eq_zero_iff_mem).2 hi, add_zero]`. Then use the resulting hypothesis. Establish `hπσx : π (σ x) = 0`. Rewrite using `[hx, map_mul, hσ, map_mul, (Ideal.Quotient.eq_zero_iff_mem).2 hy, mul_zero]`. Use `⟨x • B' + cj σ (x • B'), ?_, hdet _ ?_⟩` and prove the remaining obligations. Rewrite using `[cj_add, cj_cj σ hσ, add_comm]`.
+
+Establish `hmap : (x • B' + cj σ (x • B')).map π = B`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, cj_apply, map_add, map_mul, hπx, hπσx, hB', hl]`. Expand and normalize the polynomial expressions, which then agree. Establish `: (d + c * (x • B' + cj σ (x • B'))).map π = d.map π + c.map π * B`.
+
+Rewrite using `[← hmap]`. Simplify using `[Matrix.map_add, Matrix.map_mul]`. Rewrite using `[this]`. Conclude with `hBd`. Take `⟨b, hb, hb𝔭⟩` from `key`.
+
+Use `⟨b, hb, hU _ hb𝔭 fun hσ𝔭 => hb𝔭 ?_⟩` and prove the remaining obligations. Rewrite using `[← det_jacobi σ a b0 c d b R1 R2 hb, det_cj]`. Conclude with `Ideal.mul_mem_left _ _ hσ𝔭`.
+-/
 theorem core {R : Type} [CommRing R] (σ : R →+* R) (hσ : ∀ x, σ (σ x) = x) (𝔭 : Ideal R) [h𝔭 : 𝔭.IsMaximal]
     (h2 : IsUnit (2 : R)) (hU : ∀ x, x ∉ 𝔭 → σ x ∉ 𝔭 → IsUnit x) (a b0 c d : Matrix n n R)
     (R1 : a * cj σ d - b0 * cj σ c = 1) (R2 : c * cj σ d = d * cj σ c) (R3 : d * cj σ a - c * cj σ b0 = 1) :

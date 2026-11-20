@@ -11,6 +11,9 @@ open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.Invariant
 
 section General
 
+/- English proof (translation)
+Use `integral_integral_swap (Continuous.integrable_of_hasCompactSupport hf (HasCompactSupport.intro (isCompact_univ.prod hT) ?_))` and prove the remaining obligations. Introduce and unpack `⟨x, y⟩ hp`. Assume the negation of the conclusion as `hne`. Conclude with `hp ⟨trivial, h0 x y hne⟩`.
+-/
 private theorem swapC {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] [MeasurableSpace X] [MeasurableSpace Y]
     [BorelSpace X] [BorelSpace Y] [SecondCountableTopology X] [CompactSpace X] [T2Space X] [T2Space Y]
     (κ : Measure X) [IsProbabilityMeasure κ] (ρ : Measure Y) [SFinite ρ] [IsFiniteMeasureOnCompacts ρ]
@@ -22,6 +25,9 @@ private theorem swapC {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] [Me
   by_contra hne
   exact hp ⟨trivial, h0 x y hne⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Measure.haarMeasure ⊤, ⟨by simpa using Measure.haarMeasure_self (G := B) (K₀ := ⊤)⟩, fun b => measurePreserving_mul_left _ b⟩`.
+-/
 private theorem haarP (B : Type) [Group B] [TopologicalSpace B] [IsTopologicalGroup B] [CompactSpace B] [MeasurableSpace B]
     [BorelSpace B] : ∃ l : Measure B, IsProbabilityMeasure l ∧ ∀ b, MeasurePreserving (b * ·) l l :=
   ⟨Measure.haarMeasure ⊤, ⟨by simpa using Measure.haarMeasure_self (G := B) (K₀ := ⊤)⟩,
@@ -31,6 +37,15 @@ variable {A B G : Type} [Group A] [Group B] [Group G] [TopologicalSpace A] [Topo
   [IsTopologicalGroup G] [MeasurableSpace A] [MeasurableSpace B] [MeasurableSpace G] [BorelSpace A] [BorelSpace B]
   [BorelSpace G] [SecondCountableTopology A] [SecondCountableTopology G] [CompactSpace A] [CompactSpace B] [T2Space G]
 
+/- English proof (translation)
+Establish `hmm : Measurable m` using `hm.measurable`. Use `⟨(κ.prod l).map m, Measure.isProbabilityMeasure_map hmm.aemeasurable, ?_, ?_, fun F f hF h => ?_⟩` and prove the remaining obligations. Use `(ae_map_iff hmm.aemeasurable ?_).2 (Eventually.of_forall fun p => ⟨p, rfl⟩)` and prove the remaining obligations. Conclude with `(isCompact_range hm).isClosed.measurableSet`. Introduce and unpack `_ ⟨p, rfl⟩`.
+
+Establish `h1` using `(hκ p.1).prod (hl p.2)`. Use `⟨measurable_const_mul _, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_map (measurable_const_mul _) hmm]`. Use `conv_rhs => rw [← h1.map_eq, Measure.map_map hmm h1.measurable]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `q`. Conclude with `(m.map_mul p q).symm`. Rewrite using `[integral_map hmm.aemeasurable hF.aestronglyMeasurable]`. Simplify using `only [h]`. Rewrite using `[integral_fun_fst]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem pushT (m : A × B →* G) (hm : Continuous m) (κ : Measure A) [IsProbabilityMeasure κ]
     (hκ : ∀ a, MeasurePreserving (a * ·) κ κ) (l : Measure B) [IsProbabilityMeasure l]
     (hl : ∀ b, MeasurePreserving (b * ·) l l) :
@@ -59,10 +74,16 @@ section SlopeTestRemainingChoices
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `(AdelicGLn.mem_integralFiniteGL_iff_forall K n).2 hg.2`.
+-/
 private theorem fin_mem {g : AdelicGLn.AdelicGL K n} (hg : g ∈ (Reduction.maxCompact : Subgroup (AdelicGLn.AdelicGL K n))) :
     CuspidalSpectrum.finPart K n g ∈ AdelicGLn.integralFiniteGL K n :=
   (AdelicGLn.mem_integralFiniteGL_iff_forall K n).2 hg.2
 
+/- English proof (translation)
+Establish `h` using `mul_mem hg (inv_mem (finEmb_mem_maxCompact (fin_mem hg)))`. Rewrite `h` using `[← infEmb_infPart_mul_finEmb_finPart g]`. Simplify using `only [map_mul, finPart_infEmb, finPart_finEmb, one_mul, mul_inv_cancel_right] at h`. Conclude with `h`.
+-/
 private theorem inf_mem {g : AdelicGLn.AdelicGL K n} (hg : g ∈ (Reduction.maxCompact : Subgroup (AdelicGLn.AdelicGL K n))) :
     infPart K n g ∈ AutomorphicForm.archCompact K n := by
   have h := mul_mem hg (inv_mem (finEmb_mem_maxCompact (fin_mem hg)))
@@ -70,16 +91,25 @@ private theorem inf_mem {g : AdelicGLn.AdelicGL K n} (hg : g ∈ (Reduction.maxC
   simp only [map_mul, finPart_infEmb, finPart_finEmb, one_mul, mul_inv_cancel_right] at h
   exact h
 
+/- English proof (translation)
+Establish `h : detModule K n (infEmb K n (k : archGroup K n)) = 1` using `mem_normOneGL_iff_detModule.1 (maxCompact_le_normOneGL k.2)`. Rewrite using `[arc1, ← retract_infEmb, coe_retractOne, h, map_one, inv_one, mul_one]`.
+-/
 private theorem coe_arc (k : AutomorphicForm.archCompact K n) :
     (arc1 k : AdelicGLn.AdelicGL K n) = infEmb K n (k : archGroup K n) := by
   have h : detModule K n (infEmb K n (k : archGroup K n)) = 1 :=
     mem_normOneGL_iff_detModule.1 (maxCompact_le_normOneGL k.2)
   rw [arc1, ← retract_infEmb, coe_retractOne, h, map_one, inv_one, mul_one]
 
+/- English proof (translation)
+Rewrite using `[fin1, MultiplicityOne.coe_finProj, detModule_finEmb hu, map_one, inv_one, mul_one]`.
+-/
 private theorem coe_fin {u : FA K n} (hu : u ∈ AdelicGLn.integralFiniteGL K n) :
     (fin1 u : AdelicGLn.AdelicGL K n) = finEmb K n u := by
   rw [fin1, MultiplicityOne.coe_finProj, detModule_finEmb hu, map_one, inv_one, mul_one]
 
+/- English proof (translation)
+The claim follows from `MultiplicityOne.finProj_mul_archProj_comm u _`.
+-/
 private theorem arc_fin_comm (k : AutomorphicForm.archCompact K n) (u : FA K n) : fin1 u * arc1 k = arc1 k * fin1 u :=
   MultiplicityOne.finProj_mul_archProj_comm u _
 
@@ -91,22 +121,39 @@ private noncomputable def prM (U : Subgroup (FA K n)) : AutomorphicForm.archComp
     simp only [arc1, fin1, Prod.fst_mul, Prod.snd_mul, Subgroup.coe_mul, map_mul] at h ⊢
     rw [mul_assoc, mul_assoc, ← mul_assoc (MultiplicityOne.finProj K n p.2), h, mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem prM_apply (U : Subgroup (FA K n)) (p : AutomorphicForm.archCompact K n × U) :
     prM U p = arc1 p.1 * fin1 (p.2 : FA K n) := rfl
 
+/- English proof (translation)
+The claim follows from `(continuous_archP.comp (continuous_subtype_val.comp continuous_fst)).mul (MultiplicityOne.continuous_finProj.comp (continuous_subtype_val.comp continuous_snd))`.
+-/
 private theorem cont_prM (U : Subgroup (FA K n)) : Continuous (prM U) :=
   (continuous_archP.comp (continuous_subtype_val.comp continuous_fst)).mul
     (MultiplicityOne.continuous_finProj.comp (continuous_subtype_val.comp continuous_snd))
 
+/- English proof (translation)
+Rewrite using `[prM_apply, Subgroup.coe_mul, coe_arc, coe_fin (hU p.2.2), map_mul, infPart_infEmb, infPart_finEmb, mul_one]`.
+-/
 private theorem inf_prM {U : Subgroup (FA K n)} (hU : U ≤ AdelicGLn.integralFiniteGL K n)
     (p : AutomorphicForm.archCompact K n × U) : infPart K n (prM U p : AdelicGLn.AdelicGL K n) = p.1 := by
   rw [prM_apply, Subgroup.coe_mul, coe_arc, coe_fin (hU p.2.2), map_mul, infPart_infEmb, infPart_finEmb, mul_one]
 
+/- English proof (translation)
+Rewrite using `[prM_apply, Subgroup.coe_mul, coe_arc, coe_fin (hU p.2.2), map_mul, finPart_infEmb, finPart_finEmb, one_mul]`.
+-/
 private theorem fin_prM {U : Subgroup (FA K n)} (hU : U ≤ AdelicGLn.integralFiniteGL K n)
     (p : AutomorphicForm.archCompact K n × U) :
     CuspidalSpectrum.finPart K n (prM U p : AdelicGLn.AdelicGL K n) = p.2 := by
   rw [prM_apply, Subgroup.coe_mul, coe_arc, coe_fin (hU p.2.2), map_mul, finPart_infEmb, finPart_finEmb, one_mul]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, rfl⟩`. Use `⟨by rw [fin_prM hU]; exact p.2.2, ?_⟩` and prove the remaining obligations. Rewrite using `[prM_apply, Subgroup.coe_mul, coe_arc, coe_fin (hU p.2.2)]`. Conclude with `mul_mem p.1.2 (finEmb_mem_maxCompact (hU p.2.2))`.
+
+Introduce and unpack `⟨h1, h2⟩`. Use `⟨(⟨_, inf_mem h2⟩, ⟨_, h1⟩), Subtype.ext (ext_parts ?_ ?_)⟩` and prove the remaining obligations. Rewrite using `[inf_prM hU]`. Rewrite using `[fin_prM hU]`.
+-/
 private theorem mem_range {U : Subgroup (FA K n)} (hU : U ≤ AdelicGLn.integralFiniteGL K n) (g : G1 K n) :
     g ∈ (prM U).range ↔ CuspidalSpectrum.finPart K n (g : AdelicGLn.AdelicGL K n) ∈ U ∧
       (g : AdelicGLn.AdelicGL K n) ∈ (Reduction.maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) := by
@@ -120,6 +167,13 @@ private theorem mem_range {U : Subgroup (FA K n)} (hU : U ≤ AdelicGLn.integral
     · rw [inf_prM hU]
     · rw [fin_prM hU]
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `hs : ∀ a : archGroup K 0, a = 1` using `fun a => Subtype.ext (Units.ext (funext fun i => i.elim0))`. Establish `h1 : ∀ a : archGroup K 0, β a = β 1` using `fun a => by rw [hs a]`. Simplify using `only [kbar, h1]`. Rewrite using `[integral_mul_const, integral_mul_const, integral_const_mul]`.
+
+Simplify using `only [kbar, ← integral_const_mul]`. Establish `hβ : Continuous β` using `β.continuous`. Establish `hT : IsCompact ((fun p : {r : ℝ // 0 < r} × AutomorphicForm.archCompact K n => p.1 * (detA K n (F p.2))⁻¹) '' ((detA K n '' tsupport β) ×ˢ Set.univ))` using `((β.hasCompactSupport.isCompact.image continuous_detA).prod isCompact_univ).image (continuous_fst.mul (continuous_detA.comp (hF.comp continuous_snd)).inv)`. Use `swapC κ posRealMeasure (fun k s => c k * β (F k * zInf K n s)) ((hc.comp continuous_fst).mul (hβ.comp ((hF.comp continuous_fst).mul (continuous_zInf.comp continuous_snd)))) hT fun k s hne => ?_` and prove the remaining obligations. Use `⟨(s * detA K n (F k), k), ⟨mem_of_kernel_ne_zero hn (right_ne_zero_of_mul hne), trivial⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [mul_inv_cancel_right]`.
+-/
 private theorem kbar_swap (κ : Measure (AutomorphicForm.archCompact K n)) [IsProbabilityMeasure κ]
     (c : AutomorphicForm.archCompact K n → ℂ) (hc : Continuous c) (F : AutomorphicForm.archCompact K n → archGroup K n)
     (hF : Continuous F) (β : TI K n) :
@@ -142,6 +196,49 @@ private theorem kbar_swap (κ : Measure (AutomorphicForm.archCompact K n)) [IsPr
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `K _ _ n κ e he U hU hUo`. Use `haveI := he.haar.prob`. Use `haveI : CompactSpace U := isCompact_iff_compactSpace.1 ((AdelicGLn.isCompact_integralFiniteGL K n).of_isClosed_subset (U.isClosed_of_isOpen hUo) hU)`. Take `⟨l, hl1, hl⟩` from `haarP U`. Take `⟨ν, hν, hs, hinv, hint⟩` from `pushT (prM U) (cont_prM U) κ he.haar.left l hl`.
+
+Establish `hcl : IsClosed (AutomorphicForm.archCompact K n : Set (archGroup K n))` using `(isCompact_iff_compactSpace.2 (inferInstanceAs (CompactSpace (AutomorphicForm.archCompact K n)))).isClosed`. Take `⟨E, hE⟩` from `ContinuousMap.exists_restrict_eq hcl (⟨e, he.cont⟩ : C(AutomorphicForm.archCompact K n, ℂ))`. Establish `hEe : ∀ k : AutomorphicForm.archCompact K n, E (k : archGroup K n) = e k` using `fun k => DFunLike.congr_fun hE k`. Take `⟨ε, hε, hεd⟩ : ∃ ε : G1 K n → ℂ, Continuous ε ∧ ∀ g, ε g = E (infPart K n (g : AdelicGLn.AdelicGL K n))` from `⟨_, E.continuous.comp (continuous_infPart.comp continuous_subtype_val), fun _ => rfl⟩`. Establish `hεm : ∀ p, ε (prM U p) = e p.1` using `fun p => by rw [hεd, inf_prM hU, hEe]`.
+
+Establish `hfin : ∀ u : U, fin1 (u : FA K n) = prM U (1, u)` using `fun k => by simp [prM_apply, arc1]`. Set `D : TypeDat K n` to `{ U := (prM U).range isOpen := ⟨_, hUo.preimage CuspidalSpectrum.continuous_finPart, mem_range hU⟩ ν := ν prob := hν supp := hs inv := hinv e := ε cont := hε star := by`. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[← map_inv, hεm, hεm]`. Conclude with `he.star p.1`.
+
+Use `idem := by`. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[hεm, ← he.idem p.1]`. Use `hint (fun h => ε h * ε (h⁻¹ * prM U p)) (fun h => e h * e (h⁻¹ * p.1)) (hε.mul (hε.comp (continuous_inv.mul continuous_const))) fun q => ?_` and prove the remaining obligations. Establish `h : (prM U q)⁻¹ * prM U p = prM U (q⁻¹ * p)` using `by rw [map_mul, map_inv]`.
+
+Simplify using `only [h, hεm]`. Use `rfl }`. Establish `hfix : ∀ f : G1 K n → ℂ, Continuous f → FixF U f → ∀ g, ∫ k, ε k * f (g * k) ∂ν = ∫ k, e k * f (g * arc1 k) ∂κ` using `fun f hf hF g => hint _ _ (hε.mul (hf.comp (continuous_const.mul continuous_id))) fun q => by`. Rewrite using `[hεm, prM_apply, ← mul_assoc, hF _ q.2.2]`. Establish `hεl : ∀ (u : U), ∀ k ∈ (prM U).range, ε (prM U (1, u) * k) = ε k`.
+
+Introduce and unpack `u _ ⟨p, rfl⟩`. Rewrite using `[← map_mul, hεm, hεm]`. Simplify using the standard rewrite rules. Use `⟨D, ⟨⟨fun k hk => ?_, fun k hk hk' => ?_, ?_⟩, fun f hf => ⟨fun h => ?_, fun h g => ?_⟩, fun β φ hβ hφ g => ?_⟩, fun μ _ θ h1 h2 h3 => ?_⟩` and prove the remaining obligations. Use `(mem_range hU k).trans ⟨fun h => h.1, fun h => ⟨h, ?_⟩⟩` and prove the remaining obligations.
+
+Establish `h1 : infPart K n (k : AdelicGLn.AdelicGL K n) = 1` using `by rw [infPart_apply, hk, map_one]`. Rewrite using `[← infEmb_infPart_mul_finEmb_finPart (k : AdelicGLn.AdelicGL K n), h1, map_one, one_mul]`. Conclude with `finEmb_mem_maxCompact (hU h)`. Use `(mem_range hU k).2 ⟨?_, hk'⟩` and prove the remaining obligations. Rewrite using `[finPart_apply, hk]`.
+
+Conclude with `U.one_mem`. Introduce `k _ hk u _`. Establish `h1 : infPart K n (k : AdelicGLn.AdelicGL K n) = 1` using `by rw [infPart_apply, hk, map_one]`. Express the relevant statement in the definitionally equal form `ε (k * u) = ε u`. Rewrite using `[hεd, hεd, Subgroup.coe_mul, (infPart K n).map_mul, h1, one_mul]`.
+
+Establish `hF : FixF U f` using `fun u hu g => by`. Establish `hp` using `hinv _ ⟨(1, ⟨u, hu⟩), rfl⟩`. Rewrite using `[← h g, ← h (g * fin1 u)]`. Express the relevant statement in the definitionally equal form `∫ k, ε k * f (g * fin1 u * k) ∂ν = ∫ k, ε k * f (g * k) ∂ν`. Establish `hcf : Continuous fun k => ε k * f (g * k)` using `hε.mul (hf.comp (continuous_const.mul continuous_id))`.
+
+Use `conv_rhs => rw [← hp.map_eq]`. Rewrite using `[integral_map hp.measurable.aemeasurable hcf.aestronglyMeasurable]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hs] with k hk`. Use `show ε k * f (g * fin1 u * k) = ε (prM U (1, ⟨u, hu⟩) * k) * f (g * (prM U (1, ⟨u, hu⟩) * k))`.
+
+Rewrite using `[hεl _ k hk, ← hfin ⟨u, hu⟩, mul_assoc]`. Conclude with `⟨fun g => (hfix f hf hF g).symm.trans (h g), hF⟩`. Conclude with `(hfix f hf h.2 g).trans (h.1 g)`. Establish `hcc : Continuous (tens β φ)` using `(tens β φ).continuous`. Distinguish the cases in `hc : Continuous (tensFun β φ) ∧ HasCompactSupport (tensFun β φ)`.
+
+Use `swap`. Simplify using `[tens, hc]`. Establish `ht : ∀ x, tens β φ x = kbar β (infPart K n (x : AdelicGLn.AdelicGL K n)) * φ (CuspidalSpectrum.finPart K n (x : AdelicGLn.AdelicGL K n))` using `fun x => by`. Rewrite using `[tens, dif_pos hc]`. Both sides reduce to the same expression.
+
+Establish `c1 : Continuous fun k : G1 K n => ε k * tens β φ (k⁻¹ * g)` using `hε.mul (hcc.comp (continuous_inv.mul continuous_const))`. Establish `c2 : Continuous fun k : G1 K n => tens β φ (g * k⁻¹) * ε k` using `(hcc.comp (continuous_const.mul continuous_inv)).mul hε`. Establish `h3 : ∀ (a : archGroup K n) s, ∫ k, e k * β ((k : archGroup K n)⁻¹ * a * zInf K n s) ∂κ = β (a * zInf K n s)`. Introduce `a s`. Simplify `(hβ (a * zInf K n s)).1` using `only [mul_assoc]`.
+
+Establish `h4 : ∀ (a : archGroup K n) s, ∫ k, e k * β (a * (k : archGroup K n)⁻¹ * zInf K n s) ∂κ = β (a * zInf K n s)`. Introduce `a s`. Use `conv_rhs => rw [← (hβ (a * zInf K n s)).2]`. Use `integral_congr_ae (Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Use `show e k * β (a * (k : archGroup K n)⁻¹ * zInf K n s) = β (a * zInf K n s * (k : archGroup K n)⁻¹) * e k`.
+
+Rewrite using `[mul_comm (e k), mul_assoc a, mul_assoc a, zInf_mul_comm]`. Prove the components needed by the constructor for the conclusion. Express the relevant statement in the definitionally equal form `∫ k, ε k * tens β φ (k⁻¹ * g) ∂ν = _`. Establish `e1 : ∫ k, ε k * tens β φ (k⁻¹ * g) ∂ν = ∫ k, e k * kbar β ((k : archGroup K n)⁻¹ * infPart K n (g : AdelicGLn.AdelicGL K n)) * φ (CuspidalSpectrum.finPart K n (g : AdelicGLn.AdelicGL K n)) ∂κ`. Use `hint _ _ c1 fun p => ?_` and prove the remaining obligations.
+
+Rewrite using `[hεm, ht]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv, inf_prM hU, fin_prM hU]`. Rewrite using `[(hφ _ (U.inv_mem p.2.2) _).1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, integral_mul_const, kbar_swap κ e he.cont (fun k => (k : archGroup K n)⁻¹ * infPart K n (g : AdelicGLn.AdelicGL K n)) (continuous_subtype_val.inv.mul continuous_const), ht]`.
+
+Simplify using `only [h3]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `∫ k, tens β φ (g * k⁻¹) * ε k ∂ν = _`. Establish `e1 : ∫ k, tens β φ (g * k⁻¹) * ε k ∂ν = ∫ k, e k * kbar β (infPart K n (g : AdelicGLn.AdelicGL K n) * (k : archGroup K n)⁻¹) * φ (CuspidalSpectrum.finPart K n (g : AdelicGLn.AdelicGL K n)) ∂κ`. Use `hint _ _ c2 fun p => ?_` and prove the remaining obligations.
+
+Rewrite using `[hεm, ht]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv, inf_prM hU, fin_prM hU]`. Rewrite using `[(hφ _ (U.inv_mem p.2.2) _).2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, integral_mul_const, kbar_swap κ e he.cont (fun k => infPart K n (g : AdelicGLn.AdelicGL K n) * (k : archGroup K n)⁻¹) (continuous_const.mul continuous_subtype_val.inv), ht]`.
+
+Simplify using `only [h4]`. Both sides reduce to the same expression. Establish `key : ∀ p, ∃ q, θ.e (prM U p) = prM U q ∧ e q.1 = e p.1` using `fun p => by`. Take `⟨k', hk', hek⟩` from `h1 p.1`. Take `⟨u', hu', hu⟩` from `h2 _ p.2.2`.
+
+Conclude with `⟨(k', ⟨u', hu'⟩), by rw [prM_apply, map_mul, hk', hu, prM_apply], hek⟩`. Establish `hin : ∀ k ∈ (prM U).range, θ.e k ∈ (prM U).range`. Introduce and unpack `_ ⟨p, rfl⟩`. Take `⟨q, hq, -⟩` from `key p`. Conclude with `⟨q, hq.symm⟩`.
+
+Use `⟨fun k => ⟨fun h => h3 k ▸ hin _ h, hin k⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Take `⟨q, hq, hqe⟩` from `key p`. Express the relevant statement in the definitionally equal form `ε (θ.e (prM U p)) = ε (prM U p)`. Rewrite using `[hq, hεm, hεm, hqe]`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.typeOf :
     TypeOf := by
   intro K _ _ n κ e he U hU hUo

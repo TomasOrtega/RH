@@ -5,6 +5,9 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 
 namespace Formalism.L2.SG.Pf.NcReal.JX
 
+/- English proof (translation)
+The claim follows from `coordCovol_of_cut hL kapSurj_holds hN hB (fun X u => cVal_prod X u)`.
+-/
 theorem coordCovol_of (hL : KapLaw) (hN : NOfib) (hB : BlockCovol) : Formalism.L2.SG.Pf.LsNc5.CoordCovol :=
   coordCovol_of_cut hL kapSurj_holds hN hB (fun X u => cVal_prod X u)
 

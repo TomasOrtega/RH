@@ -28,6 +28,9 @@ def swapSum (P Q : ℕ → Cx.{w} K) (c n : ℕ) :
       ((DirectSum.lof K _ (fun t : Idx c n => (Q t.a).H t.i ⊗[K] (P t.a').H t.j) t.swap).comp
         (TensorProduct.comm K ((P t.a).H t.i) ((Q t.a').H t.j)).toLinearMap)
 
+/- English proof (translation)
+Unfold `swapSum`. Rewrite using `[DirectSum.toModule_lof]`. Both sides reduce to the same expression.
+-/
 theorem swapSum_lof (P Q : ℕ → Cx.{w} K) (c n : ℕ) (t : Idx c n) (u : (P t.a).H t.i) (v : (Q t.a').H t.j) :
     swapSum P Q c n (DirectSum.lof K _ (fun t : Idx c n => (P t.a).H t.i ⊗[K] (Q t.a').H t.j) t (u ⊗ₜ v)) =
       ((-1 : ℤ) ^ (t.i * t.j)) •
@@ -36,6 +39,13 @@ theorem swapSum_lof (P Q : ℕ → Cx.{w} K) (c n : ℕ) (t : Idx c n) (u : (P t
   rw [DirectSum.toModule_lof]
   rfl
 
+/- English proof (translation)
+Establish `key : (swapSum Q P c n).comp (swapSum P Q c n) = LinearMap.id`. Use `DirectSum.linearMap_ext K fun t => TensorProduct.ext' fun u v => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply, swapSum_lof, map_zsmul]`. Establish `hs : ((-1 : ℤ) ^ (t.i * t.j)) * ((-1 : ℤ) ^ (t.swap.i * t.swap.j)) = 1`. Express the relevant statement in the definitionally equal form `((-1 : ℤ) ^ (t.i * t.j)) * ((-1 : ℤ) ^ (t.j * t.i)) = 1`.
+
+Rewrite using `[Nat.mul_comm t.j t.i, ← mul_pow]`. Simplify using the standard rewrite rules. Use `(congrArg (fun w => ((-1 : ℤ) ^ (t.i * t.j)) • w) (swapSum_lof Q P c n t.swap v u)).trans ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[smul_smul, hs, one_smul]`.
+
+Conclude with `LinearMap.congr_fun key z`.
+-/
 theorem swapSum_swapSum (P Q : ℕ → Cx.{w} K) (c n : ℕ) (z) :
     swapSum Q P c n (swapSum P Q c n z) = z := by
   have key : (swapSum Q P c n).comp (swapSum P Q c n) = LinearMap.id := by
@@ -50,6 +60,13 @@ theorem swapSum_swapSum (P Q : ℕ → Cx.{w} K) (c n : ℕ) (z) :
     rw [smul_smul, hs, one_smul]
   exact LinearMap.congr_fun key z
 
+/- English proof (translation)
+Introduce `c n`. Take `⟨e, he⟩` from `h c n`. Set `σ : (⨁ t : Idx c n, (Q t.a).H t.i ⊗[K] (P t.a').H t.j) ≃ₗ[K] (⨁ t : Idx c n, (P t.a).H t.i ⊗[K] (Q t.a').H t.j)` to `LinearEquiv.ofLinear (swapSum Q P c n) (swapSum P Q c n) (LinearMap.ext fun z => swapSum_swapSum P Q c n z) (LinearMap.ext fun z => swapSum_swapSum Q P c n z)`. Use `⟨σ.trans e, fun t x y hx hy hz => ?_⟩` and prove the remaining obligations. Establish `hz' : (T c).d n ((pr (show t.a' + t.a = c by have` using `t.ha; omega)).μ (show t.j + t.i = n by have := t.h; omega) y x) = 0 := by`.
+
+Establish `e0` using `(pr (show t.a' + t.a = c by have := t.ha; omega)).leib (show t.j + t.i = n by have := t.h; omega) y x`. Rewrite using `[e0, hx, hy]`. Simplify using the standard rewrite rules. Establish `e1` using `he t.swap y x hy hx hz'`. Express the relevant statement in the definitionally equal form `e (swapSum Q P c n (DirectSum.lof K _ (fun t : Idx c n => (Q t.a).H t.i ⊗[K] (P t.a').H t.j) t ((Q t.a).cls x hx ⊗ₜ (P t.a').cls y hy))) = _`.
+
+Rewrite using `[swapSum_lof, map_zsmul]`. Use `(congrArg _ e1).trans ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+-/
 theorem kunE_swap {P Q T : ℕ → Cx.{1} K} (pr : ∀ {a a' c : ℕ}, a + a' = c → CxPairing (P a) (Q a') (T c)) (h : KunE pr) :
     KunE (P := Q) (Q := P) (T := T) (fun {a a' c} ha => swapPr pr ha) := by
   intro c n

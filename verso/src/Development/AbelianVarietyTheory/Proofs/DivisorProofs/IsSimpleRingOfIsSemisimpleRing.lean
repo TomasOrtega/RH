@@ -7,6 +7,11 @@ open scoped TensorProduct
 namespace GlobalTheory.UPel.HT
 variable {p : ℕ} [Fact p.Prime] (D : Datum p)
 
+/- English proof (translation)
+Use `haveI := D.freeLa`. Establish `hinj : Function.Injective (LinearMap.rTensor D.La (Algebra.linearMap ℤ ℚ))` using `Module.Flat.rTensor_preserves_injective_linearMap _ (fun a b h => by`. Simplify using `only [Algebra.linearMap_apply, algebraMap_int_eq, eq_intCast] at h`. Conclude with `h)` after adjusting the coercions. Introduce `x y h`.
+
+Apply `(TensorProduct.lid ℤ D.La).symm.injective` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Simplify using `using h`.
+-/
 theorem Datum.tmul_one_injective : Function.Injective (fun x : D.La => (1 : ℚ) ⊗ₜ[ℤ] x) := by
   haveI := D.freeLa
   have hinj : Function.Injective (LinearMap.rTensor D.La (Algebra.linearMap ℤ ℚ)) :=
@@ -17,6 +22,11 @@ theorem Datum.tmul_one_injective : Function.Injective (fun x : D.La => (1 : ℚ)
   apply hinj
   simpa using h
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `b hb`. Apply `GlobalTheory.HTFaith.faithful p D b` to reduce the goal to its premises. Introduce `y`. Apply `D.tmul_one_injective` to reduce the goal to its premises.
+
+Use `congrArg (fun f : Module.End ℚ D.VQ => f (1 ⊗ₜ y)) hb` as an intermediate fact. Simplify `this` using `[D.actQ_tmul]`.
+-/
 theorem Datum.actQ_injective : Function.Injective D.actQ := by
   rw [injective_iff_map_eq_zero]
   intro b hb
@@ -26,6 +36,15 @@ theorem Datum.actQ_injective : Function.Injective D.actQ := by
   have := congrArg (fun f : Module.End ℚ D.VQ => f (1 ⊗ₜ y)) hb
   simpa [D.actQ_tmul] using this
 
+/- English proof (translation)
+Proceed by induction on `hg using Algebra.adjoin_induction with`. Consider the case `mem g hg => obtain ⟨x, rfl⟩ := hg; exact ⟨1, x, by rw [one_smul]⟩`. Consider the case `algebraMap r => exact ⟨r, 1, by rw [map_one, Algebra.algebraMap_eq_smul_one]⟩`. Consider the case `add g h _ _ hg hh`. Take `⟨q, x, rfl⟩` from `hg`.
+
+Take `⟨q', x', rfl⟩` from `hh`. Use `⟨1 / (q.den * q'.den), (q.num * q'.den : ℤ) • x + (q'.num * q.den : ℤ) • x', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_zsmul, map_zsmul, smul_add, ← Int.cast_smul_eq_zsmul ℚ, ← Int.cast_smul_eq_zsmul ℚ, smul_smul, smul_smul]`. Use `congr 2`. Use `push_cast`.
+
+Use `conv_lhs => rw [← Rat.num_div_den q]`. Clear the denominators using the available nonvanishing facts. Use `push_cast`. Use `conv_lhs => rw [← Rat.num_div_den q']`. Clear the denominators using the available nonvanishing facts.
+
+Consider the case `mul g h _ _ hg hh`. Take `⟨q, x, rfl⟩` from `hg`. Take `⟨q', x', rfl⟩` from `hh`. Conclude with `⟨q * q', x * x', by rw [smul_mul_smul_comm, map_mul]⟩`.
+-/
 theorem Datum.exists_of_mem_algO {g : Module.End ℚ D.VQ} (hg : g ∈ D.algO) :
     ∃ (q : ℚ) (x : D.O), g = q • D.actQ x := by
   induction hg using Algebra.adjoin_induction with
@@ -51,6 +70,15 @@ end GlobalTheory.UPel.HT
 open NumberField
 namespace GlobalTheory.UPel.HT
 variable {p : ℕ} [Fact p.Prime]
+/- English proof (translation)
+Take `⟨q, x, rfl⟩` from `D.exists_of_mem_algO hg`. Break down `eq_or_ne q 0 with hq | hq` into its components or cases. Conclude with `⟨0, by rw [hq, zero_smul, map_zero]; rfl⟩`. Establish `hx : ∀ y, x * y = y * x`. Introduce `y`.
+
+Establish `h` using `hc (D.actQ y) (D.actQ_mem_algO y)`. Rewrite `h` using `[mul_smul_comm, smul_mul_assoc]`. Establish `h'` using `smul_right_injective _ hq h`. Apply `D.actQ_injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul]`.
+
+Conclude with `h'.symm`. Take `⟨c, e, he, hce⟩` from `D.central x hx`. Use `⟨(q / e) • ((c : 𝓞 D.F) : D.F), ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, D.actF_coe, Subalgebra.coe_smul, D.coe_actInt, ← hce, map_zsmul, ← Int.cast_smul_eq_zsmul ℚ, smul_smul]`. Use `congr 1`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem Datum.center_algO (D : Datum p) (g : Module.End ℚ D.VQ) (hg : g ∈ D.algO)
     (hc : ∀ h ∈ D.algO, h * g = g * h) : ∃ c : D.F, g = ((D.actF c : D.endO) : Module.End ℚ D.VQ) := by
   obtain ⟨q, x, rfl⟩ := D.exists_of_mem_algO hg
@@ -72,6 +100,17 @@ end GlobalTheory.UPel.HT
 
 namespace GlobalTheory.UPel.HT
 variable {p : ℕ} [Fact p.Prime]
+/- English proof (translation)
+Use `haveI := D.freeO`. Use `haveI := D.finO`. Set `b` to `Module.Free.chooseBasis ℤ D.O`. Set `v : Module.Free.ChooseBasisIndex ℤ D.O → Module.End ℚ D.VQ` to `fun i => D.actQ (b i)`. Set `f : D.O →ₗ[ℤ] Module.End ℚ D.VQ` to `D.actQ.toAddMonoidHom.toIntLinearMap`.
+
+Establish `hf : Function.Injective f` using `D.actQ_injective`. Establish `hZ : LinearIndependent ℤ v` using `b.linearIndependent.map' f (LinearMap.ker_eq_bot.2 hf)`. Establish `hQ : LinearIndependent ℚ v` using `(LinearIndependent.iff_fractionRing ℤ ℚ).1 hZ`. Establish `hspan : Submodule.span ℚ (Set.range v) = Subalgebra.toSubmodule D.algO`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `D.actQ_mem_algO _`. Introduce `g hg`. Take `⟨q, x, rfl⟩` from `D.exists_of_mem_algO hg`.
+
+Use `Submodule.smul_mem _ q ?_` and prove the remaining obligations. Establish `hx : D.actQ x = f x` using `rfl`. Rewrite using `[hx, ← b.sum_repr x, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, ← Int.cast_smul_eq_zsmul ℚ]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[← Subalgebra.finrank_toSubmodule, ← hspan, finrank_span_eq_card hQ, ← Module.finrank_eq_card_chooseBasisIndex, D.rankO]`.
+-/
 theorem Datum.finrank_algO (D : Datum p) : Module.finrank ℚ D.algO = D.m ^ 2 * Module.finrank ℚ D.F := by
   haveI := D.freeO; haveI := D.finO
   let b := Module.Free.chooseBasis ℤ D.O
@@ -105,8 +144,14 @@ variable {p : ℕ} [Fact p.Prime]
 def Datum.toReal (D : Datum p) : D.VQ →ₗ[ℤ] ℝ ⊗[ℤ] D.La :=
   ((Algebra.linearMap ℚ ℝ).restrictScalars ℤ).rTensor D.La
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Datum.toReal_tmul (D : Datum p) (q : ℚ) (x : D.La) : D.toReal (q ⊗ₜ x) = (q : ℝ) ⊗ₜ x := rfl
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [smul_add, map_add, ha, hb, map_add, smul_add]`. Consider the case `tmul q' x`. Rewrite using `[TensorProduct.smul_tmul', D.toReal_tmul, D.toReal_tmul, TensorProduct.smul_tmul', smul_eq_mul, smul_eq_mul, Rat.cast_mul]`.
+-/
 theorem Datum.toReal_smul (D : Datum p) (q : ℚ) (t : D.VQ) : D.toReal (q • t) = (q : ℝ) • D.toReal t := by
   induction t using TensorProduct.induction_on with
   | zero => simp
@@ -115,6 +160,9 @@ theorem Datum.toReal_smul (D : Datum p) (q : ℚ) (t : D.VQ) : D.toReal (q • t
     rw [TensorProduct.smul_tmul', D.toReal_tmul, D.toReal_tmul, TensorProduct.smul_tmul', smul_eq_mul, smul_eq_mul,
       Rat.cast_mul]
 
+/- English proof (translation)
+Use `haveI := D.freeLa`. Conclude with `Module.Flat.rTensor_preserves_injective_linearMap _ (fun a b h => by`. Simplify using `using h)`.
+-/
 theorem Datum.toReal_injective (D : Datum p) : Function.Injective D.toReal := by
   haveI := D.freeLa
   exact Module.Flat.rTensor_preserves_injective_linearMap _ (fun a b h => by
@@ -123,14 +171,25 @@ theorem Datum.toReal_injective (D : Datum p) : Function.Injective D.toReal := by
 def Datum.actReal (D : Datum p) (x : D.O) : ℝ ⊗[ℤ] D.La →ₗ[ℝ] ℝ ⊗[ℤ] D.La :=
   LinearMap.baseChange ℝ (DistribMulAction.toLinearMap ℤ D.La x)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Datum.actReal_tmul (D : Datum p) (x : D.O) (r : ℝ) (y : D.La) : D.actReal x (r ⊗ₜ y) = r ⊗ₜ (x • y) := rfl
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb, map_add, map_add]`. Consider the case `tmul q y => rw [D.actQ_tmul, D.toReal_tmul, D.toReal_tmul, D.actReal_tmul]`.
+-/
 theorem Datum.toReal_actQ (D : Datum p) (x : D.O) (t : D.VQ) : D.toReal (D.actQ x t) = D.actReal x (D.toReal t) := by
   induction t using TensorProduct.induction_on with
   | zero => simp
   | add a b ha hb => rw [map_add, map_add, ha, hb, map_add, map_add]
   | tmul q y => rw [D.actQ_tmul, D.toReal_tmul, D.toReal_tmul, D.actReal_tmul]
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a a' h h' => simp only [map_add, LinearMap.add_apply, h, h']`. Consider the case `tmul r y`. Proceed by induction on `c using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add c c' h h' => simp only [map_add, h, h']`. Consider the case `tmul r' z => rw [D.actReal_tmul, D.actReal_tmul, LinearMap.BilinForm.baseChange_tmul, LinearMap.BilinForm.baseChange_tmul, D.adj]`.
+-/
 theorem Datum.ER_actReal (D : Datum p) (x : D.O) (a c : ℝ ⊗[ℤ] D.La) :
     D.EF.baseChange ℝ (D.actReal x a) c = D.EF.baseChange ℝ a (D.actReal (D.star x).unop c) := by
   induction a using TensorProduct.induction_on with
@@ -143,6 +202,13 @@ theorem Datum.ER_actReal (D : Datum p) (x : D.O) (a c : ℝ ⊗[ℤ] D.La) :
     | tmul r' z => rw [D.actReal_tmul, D.actReal_tmul, LinearMap.BilinForm.baseChange_tmul,
         LinearMap.BilinForm.baseChange_tmul, D.adj]
 
+/- English proof (translation)
+Take `⟨J, -, -, hJpos, hJO, -⟩` from `D.dom`. Use `⟨fun u w => D.EF.baseChange ℝ (J (D.toReal u)) (D.toReal w), fun u hu => ?_, fun x u w => ?_, fun q u w => ?_, fun q u w => ?_⟩` and prove the remaining obligations. Use `hJpos _ fun h => hu (D.toReal_injective ?_)` and prove the remaining obligations. Rewrite using `[h, map_zero]`. Establish `hc : J ∘ₗ D.actReal x = D.actReal x ∘ₗ J` using `hJO x (D.actReal x) fun y => rfl`.
+
+Simplify using `only`. Rewrite using `[D.toReal_actQ, D.toReal_actQ, ← LinearMap.comp_apply J, hc, LinearMap.comp_apply, D.ER_actReal]`. Simplify using `only`. Rewrite using `[D.toReal_smul, map_smul, LinearMap.map_smul₂, smul_eq_mul]`. Simplify using `only`.
+
+Rewrite using `[D.toReal_smul, map_smul, smul_eq_mul]`.
+-/
 theorem Datum.exists_form (D : Datum p) : ∃ φ : D.VQ → D.VQ → ℝ,
   (∀ u, u ≠ 0 → 0 < φ u u) ∧
   (∀ (x : D.O) (u w : D.VQ), φ (D.actQ x u) w = φ u (D.actQ (D.star x).unop w)) ∧
@@ -167,6 +233,33 @@ end
 namespace GlobalTheory.UPel.HT
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Establish `hB : ∀ h ∈ D.algO, D.adjE h ∈ D.algO ∧ ∀ u w, φ (h u) w = φ u (D.adjE h w)`. Introduce `h hh`. Take `⟨q, x, rfl⟩` from `D.exists_of_mem_algO hh`. Rewrite using `[D.adjE_smul, D.adjE_actQ]`. Use `⟨Subalgebra.smul_mem _ (D.actQ_mem_algO _) q, fun u w => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, hl, hr, hadj]`. Establish `h0 : ∀ u, φ u 0 = 0` using `fun u => by`. Use `hr 0 u 0` as an intermediate fact. Rewrite `this` using `[zero_smul, Rat.cast_zero, zero_mul]`. Then use the resulting hypothesis. Establish `hzero : ∀ z : Module.End ℚ D.VQ, (∀ u, φ (z u) (z u) = 0) → z = 0`.
+
+Introduce `z hz`. Use `LinearMap.ext fun u => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `(hpos _ hne).ne' (hz u)`. Establish `hsq : ∀ z ∈ D.algO, D.adjE z = z → z * z = 0 → z = 0`.
+
+Introduce `z hz hs hzz`. Apply `hzero` to reduce the goal to its premises. Introduce `u`. Rewrite using `[(hB z hz).2, hs, ← Module.End.mul_apply, hzz, LinearMap.zero_apply, h0]`. Establish `hnil : ∀ y ∈ D.algO, D.adjE y = y → ∀ j : ℕ, y ^ (2 ^ j) = 0 → y = 0`.
+
+Introduce `y hy hs j`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Introduce `hj`.
+
+Apply `ih` to reduce the goal to its premises. Establish `hpow : ∀ k : ℕ, D.adjE (y ^ k) = y ^ k`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, D.adjE_one]`.
+
+Consider the case `succ k ihk => rw [pow_succ, D.adjE_mul, ihk, hs]`. Conclude with `(pow_mul_comm' y k).symm`. Use `hsq _ (Subalgebra.pow_mem _ hy _) (hpow _) ?_` and prove the remaining obligations. Rewrite using `[← pow_add, ← two_mul, ← pow_succ']`. Conclude with `hj`.
+
+Use `haveI : IsArtinianRing D.algO := IsArtinianRing.of_finite ℚ D.algO`. Rewrite using `[IsArtinianRing.isSemisimpleRing_iff_jacobson, eq_bot_iff]`. Introduce `g hg`. Take `⟨n, hn⟩` from `IsArtinianRing.isNilpotent_jacobson_bot (R := D.algO)`. Rewrite `hn` using `[Ideal.jacobson_bot]`.
+
+Rewrite using `[Ideal.mem_bot]`. Take `⟨hgB, hgadj⟩` from `hB g g.2`. Set `y : D.algO` to `⟨D.adjE g, hgB⟩ * g`. Establish `hyJ : y ∈ Ring.jacobson D.algO` using `Ideal.mul_mem_left _ _ hg`. Establish `hp` using `Ideal.pow_mem_pow hyJ n`.
+
+Rewrite `hp` using `[hn, Ideal.zero_eq_bot, Ideal.mem_bot]`. Establish `hys : D.adjE (y : Module.End ℚ D.VQ) = y` using `by show D.adjE (D.adjE g * g) = D.adjE g * g`. Rewrite using `[D.adjE_mul, D.adjE_adjE]`. Establish `hy0 : (y : Module.End ℚ D.VQ) = 0`. Use `hnil _ y.2 hys n ?_` and prove the remaining obligations.
+
+Establish `h2 : (y : Module.End ℚ D.VQ) ^ n = 0`. Use `congrArg Subtype.val hp` as an intermediate fact. Simplify using `using this`. Conclude with `pow_eq_zero_of_le (Nat.lt_two_pow_self).le h2`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show (g : Module.End ℚ D.VQ) = 0`. Apply `hzero` to reduce the goal to its premises. Introduce `u`. Rewrite using `[hgadj, ← Module.End.mul_apply]`. Establish `: D.adjE g * g = (y : Module.End ℚ D.VQ)` using `rfl`.
+
+Rewrite using `[this, hy0, LinearMap.zero_apply, h0]`.
+-/
 theorem Datum.isSemisimpleRing_algO_of_form (D : Datum p) (φ : D.VQ → D.VQ → ℝ)
     (hpos : ∀ u, u ≠ 0 → 0 < φ u u)
     (hadj : ∀ (x : D.O) (u w : D.VQ), φ (D.actQ x u) w = φ u (D.actQ (D.star x).unop w))
@@ -241,6 +334,9 @@ end GlobalTheory.UPel.HT
 namespace GlobalTheory.UPel.HT
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Take `⟨φ, h1, h2, h3, h4⟩` from `D.exists_form`. Conclude with `D.isSemisimpleRing_algO_of_form φ h1 h2 h3 h4`.
+-/
 theorem Datum.isSemisimpleRing_algO (D : Datum p) : IsSemisimpleRing D.algO := by
   obtain ⟨φ, h1, h2, h3, h4⟩ := D.exists_form
   exact D.isSemisimpleRing_algO_of_form φ h1 h2 h3 h4
@@ -249,6 +345,21 @@ end GlobalTheory.UPel.HT
 namespace GlobalTheory.UPel.HT
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Take `⟨n, K, d, _, hd, ⟨φ⟩⟩` from `IsSemisimpleRing.exists_ringEquiv_pi_matrix_divisionRing R`. Break down `Nat.lt_or_ge n 2 with hn | hn` into its components or cases. Use `interval_cases n`. Conclude with `absurd (φ.injective (Subsingleton.elim _ _) : (0 : R) = 1) zero_ne_one`. Conclude with `IsSimpleRing.of_ringEquiv (φ.trans (RingEquiv.piUnique _)).symm inferInstance`.
+
+Set `i0 : Fin n` to `⟨0, by omega⟩`. Set `i1 : Fin n` to `⟨1, by omega⟩`. Establish `h01 : i0 ≠ i1` using `by simp [i0, i1, Fin.ext_iff]`. Set `e : (Π i, Matrix (Fin (d i)) (Fin (d i)) (K i))` to `Pi.single i0 1`. Establish `hcen : ∀ x : R, φ.symm e * x = x * φ.symm e`.
+
+Introduce `x`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, RingEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = i0`.
+
+Substitute `hi` using the available equality. Simplify using `[e]`. Simplify using `[e, Pi.single_apply, hi]`. Establish `hid : φ.symm e * φ.symm e = φ.symm e`. Rewrite using `[← map_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = i0`. Substitute `hi` using the available equality. Simplify using `[e]`.
+
+Simplify using `[e, Pi.single_apply, hi]`. Break down `h _ hcen hid with h0 | h1` into its components or cases. Use `congrFun (congrArg φ h0) i0` as an intermediate fact. Simplify using `[e] at this`. Use `congrFun (congrArg φ h1) i1` as an intermediate fact.
+
+Simplify using `[e, Pi.single_apply, h01.symm] at this`.
+-/
 theorem isSimpleRing_of_isSemisimpleRing {R : Type} [Ring R] [Nontrivial R] [IsSemisimpleRing R]
     (h : ∀ e : R, (∀ x : R, e * x = x * e) → e * e = e → e = 0 ∨ e = 1) : IsSimpleRing R := by
   classical
@@ -280,6 +391,9 @@ theorem isSimpleRing_of_isSemisimpleRing {R : Type} [Ring R] [Nontrivial R] [IsS
     · have := congrFun (congrArg φ h1) i1
       simp [e, Pi.single_apply, h01.symm] at this
 
+/- English proof (translation)
+Use `haveI : Nontrivial D.endO := by`. Use `⟨⟨0, 1, fun h => ?_⟩⟩` and prove the remaining obligations. Use `congrArg Subtype.val h` as an intermediate fact. Conclude with `zero_ne_one this`. Conclude with `D.actF.toRingHom.injective`.
+-/
 theorem Datum.actF_injective (D : Datum p) : Function.Injective D.actF := by
   haveI : Nontrivial D.endO := by
     refine ⟨⟨0, 1, fun h => ?_⟩⟩
@@ -287,6 +401,17 @@ theorem Datum.actF_injective (D : Datum p) : Function.Injective D.actF := by
     exact zero_ne_one this
   exact D.actF.toRingHom.injective
 
+/- English proof (translation)
+Use `haveI := D.isSemisimpleRing_algO`. Apply `isSimpleRing_of_isSemisimpleRing` to reduce the goal to its premises. Introduce `e he hid`. Take `⟨c, hc⟩` from `D.center_algO e e.2 fun h hh => (congrArg Subtype.val (he ⟨h, hh⟩)).symm`. Establish `hcc : c * c = c`.
+
+Apply `D.actF_injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[map_mul, Subalgebra.coe_mul, ← hc]`. Conclude with `congrArg Subtype.val hid`. Establish `hc01 : c = 0 ∨ c = 1`.
+
+Break down `eq_or_ne c 0 with h0 | h0` into its components or cases. Conclude with `Or.inl h0`. Conclude with `Or.inr (mul_left_cancel₀ h0 (hcc.trans (mul_one c).symm))`. Break down `hc01 with h0 | h1` into its components or cases. Use `left`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hc, h0, map_zero]`. Both sides reduce to the same expression. Use `right`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[hc, h1, map_one]`. Both sides reduce to the same expression.
+-/
 theorem Datum.algO_simple (D : Datum p) : IsSimpleRing D.algO := by
   haveI := D.isSemisimpleRing_algO
   apply isSimpleRing_of_isSemisimpleRing
@@ -305,6 +430,19 @@ theorem Datum.algO_simple (D : Datum p) : IsSimpleRing D.algO := by
   · left; apply Subtype.ext; rw [hc, h0, map_zero]; rfl
   · right; apply Subtype.ext; rw [hc, h1, map_one]; rfl
 
+/- English proof (translation)
+Introduce `p _ D`. Use `haveI : IsSimpleRing D.algO := D.algO_simple`. Use `haveI : IsSimpleRing (Module.End ℚ D.VQ) := GroundTheory.Brauer.isSimpleRing_end ℚ ℚ D.VQ`. Establish `hs` using `GroundTheory.Brauer.isSimpleRing_centralizer D.algO`. Establish `hdim` using `GroundTheory.Brauer.finrank_mul_finrank_centralizer D.algO`.
+
+Establish `hcc` using `GroundTheory.Brauer.centralizer_centralizer D.algO`. Rewrite `hs`, `hdim`, `hcc` using `[D.centralizer_algO]`. Use `haveI := D.freeLa`. Use `haveI := D.finLa`. Establish `hV : Module.finrank ℚ D.VQ = D.m * D.n * Module.finrank ℚ D.F`.
+
+Rewrite using `[Module.finrank_baseChange, D.rankLa]`. Rewrite `hdim` using `[Module.finrank_linearMap, hV, D.finrank_algO]`. Establish `hd : 0 < Module.finrank ℚ D.F` using `Module.finrank_pos`. Establish `hm` using `D.m_pos`. Establish `hC : Module.finrank ℚ D.endO = D.n ^ 2 * Module.finrank ℚ D.F`.
+
+Establish `h2 : D.m ^ 2 * Module.finrank ℚ D.F * Module.finrank ℚ D.endO = D.m ^ 2 * Module.finrank ℚ D.F * (D.n ^ 2 * Module.finrank ℚ D.F)` using `by rw [hdim]; ring`. Conclude with `Nat.eq_of_mul_eq_mul_left (by positivity) h2`. Establish `htow` using `Module.finrank_mul_finrank ℚ D.F D.endO`. Use `⟨⟨fun z hz => ?_⟩, hs, ?_⟩` and prove the remaining obligations. Establish `hz' : (z : Module.End ℚ D.VQ) ∈ D.algO`.
+
+Rewrite using `[← hcc, Subalgebra.mem_centralizer_iff]`. Introduce `y hy`. Conclude with `congrArg Subtype.val (Subalgebra.mem_center_iff.1 hz ⟨y, hy⟩)`. Establish `hz2 : (z : Module.End ℚ D.VQ) ∈ Subalgebra.centralizer ℚ (D.algO : Set (Module.End ℚ D.VQ))`. Rewrite using `[D.centralizer_algO]`.
+
+Conclude with `z.2`. Take `⟨c, hc⟩` from `D.center_algO z hz' fun h hh => (Subalgebra.mem_centralizer_iff ℚ).1 hz2 h hh`. Conclude with `⟨c, Subtype.ext hc.symm⟩`. Rewrite `htow` using `[hC]`. Conclude with `Nat.eq_of_mul_eq_mul_left hd (by rw [htow, mul_comm])`.
+-/
 theorem endO_centralSimple : ∀ {p : ℕ} [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p),
     Algebra.IsCentral D.F D.endO ∧ IsSimpleRing D.endO ∧ Module.finrank D.F D.endO = D.n ^ 2 := by
   intro p _ D

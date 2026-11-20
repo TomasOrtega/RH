@@ -11,6 +11,11 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology
 open ReciprocityTheory.AnForm (levi)
 open scoped ContDiff
 
+/- English proof (translation)
+Establish `h1 : ContDiffOn ℝ 1 (fun y => fderiv ℝ f y) W` using `hf.fderiv_of_isOpen hW (by norm_num)`. Establish `h2 : ContinuousOn (fderiv ℝ (fderiv ℝ f)) W` using `h1.continuousOn_fderiv_of_isOpen hW le_rfl`. Establish `hH : ContinuousOn (fun p : (Fin n → ℂ) × (Fin n → ℂ) => fderiv ℝ (fderiv ℝ f) p.1) (W ×ˢ Set.univ)` using `h2.comp continuousOn_fst fun p hp => hp.1`. Establish `hI : ContinuousOn (fun p : (Fin n → ℂ) × (Fin n → ℂ) => Complex.I • p.2) (W ×ˢ Set.univ)` using `continuousOn_snd.const_smul Complex.I`. Unfold `levi`.
+
+Conclude with `(((hH.clm_apply continuousOn_snd).clm_apply continuousOn_snd).add ((hH.clm_apply hI).clm_apply hI)).div_const 4`.
+-/
 theorem continuousOn_levi_of_contDiffOn {n : ℕ} {f : (Fin n → ℂ) → ℝ} {W : Set (Fin n → ℂ)} (hW : IsOpen W)
     (hf : ContDiffOn ℝ 2 f W) :
     ContinuousOn (fun p : (Fin n → ℂ) × (Fin n → ℂ) => levi f p.1 p.2) (W ×ˢ Set.univ) := by
@@ -24,6 +29,21 @@ theorem continuousOn_levi_of_contDiffOn {n : ℕ} {f : (Fin n → ℂ) → ℝ} 
   exact (((hH.clm_apply continuousOn_snd).clm_apply continuousOn_snd).add
     ((hH.clm_apply hI).clm_apply hI)).div_const 4
 
+/- English proof (translation)
+Introduce `II Ψ _ _ K _ ι _ Ω _ _ E _ _ D O Lt _ _ _ X k`. Use `set e := X.S.R.chart k with he`. Establish `hloc : ∀ y : Fin D.n → ℂ, ∃ W : Set (Fin D.n → ℂ), ∃ f : (Fin D.n → ℂ) → ℝ, y ∈ e.target → IsOpen W ∧ y ∈ W ∧ ContDiffOn ℝ ∞ f W ∧ ∀ z ∈ mcPts (mCoordIdeal D.y), X.M.proj z ∈ e.source → e (X.M.proj z) ∈ W → ∀ w v, IsChartVel X.M e z w v → levi (fun y => Real.log (D.A'.h y)) z w = …`. Introduce `y`. Distinguish the cases in `hy : y ∈ e.target`.
+
+Take `⟨W, hW, hyW, f, hf, hrep⟩` from `hL II Ψ K ι Ω E D O Lt X k y hy`. Conclude with `⟨W, f, fun _ => ⟨hW, hyW, hf, hrep⟩⟩`. Conclude with `⟨∅, 0, fun h => absurd h hy⟩`. Use `choose W f hWf using hloc`. Establish `hagree : ∀ y₁ ∈ e.target, ∀ y ∈ e.target, y ∈ W y₁ → ∀ v, levi (f y₁) y v = levi (f y) y v`.
+
+Introduce `y₁ hy₁ y hy hyW v`. Break down `eq_or_ne v 0 with rfl | hv` into its components or cases. Simplify using `[levi]`. Take `⟨z, hz, hpz, w, hw, -, -⟩` from `hV II Ψ K ι Ω E D O Lt X k y hy v hv`. Establish `hs : X.M.proj z ∈ e.source` using `by rw [hpz]; exact e.map_target hy`.
+
+Establish `hez : e (X.M.proj z) = y` using `by rw [hpz]; exact e.right_inv hy`. Establish `h1` using `(hWf y₁ hy₁).2.2.2 z hz hs (by rw [hez]; exact hyW) w v hw`. Establish `h2` using `(hWf y hy).2.2.2 z hz hs (by rw [hez]; exact (hWf y hy).2.1) w v hw`. Rewrite `h1`, `h2` using `[hez]`. Rewrite using `[← h1, ← h2]`.
+
+Use `⟨fun y v => levi (f y) y v, ?_, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Take `⟨hW, hyW, hf, -⟩` from `hWf p.1 hp.1`. Establish `hN : W p.1 ∩ e.target ∈ 𝓝 p.1` using `inter_mem (hW.mem_nhds hyW) (e.open_target.mem_nhds hp.1)`. Establish `hc : ContinuousAt (fun q : (Fin D.n → ℂ) × (Fin D.n → ℂ) => levi (f p.1) q.1 q.2) p` using `(continuousOn_levi_of_contDiffOn hW (hf.of_le (WithTop.coe_le_coe.2 le_top))).continuousAt (prod_mem_nhds (hW.mem_nhds hyW) univ_mem)`.
+
+Use `(hc.congr ?_).continuousWithinAt` and prove the remaining obligations. Use `filter_upwards [prod_mem_nhds hN univ_mem] with q hq`. Conclude with `hagree p.1 hp.1 q.1 hq.1.2 hq.1.1 q.2`. Introduce `z hz hs w v hw`. Establish `hy : e (X.M.proj z) ∈ e.target` using `e.map_source hs`.
+
+Conclude with `(hWf _ hy).2.2.2 z hz hs (hWf _ hy).2.1 w v hw`.
+-/
 theorem APrimeChartLevi.proof (hL : APrimeChartLeviLocal.Statement) (hV : ChartVelLift.Statement) :
     APrimeChartLevi.Statement := by
   intro II Ψ _ _ K _ ι _ Ω _ _ E _ _ D O Lt _ _ _ X k

@@ -15,8 +15,14 @@ namespace PositivityTheory.PRW.GKD
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Measure.haar, inferInstance⟩`.
+-/
 theorem exists_haar_GA : ∃ μ : Measure (GA E a), μ.IsHaarMeasure := ⟨Measure.haar, inferInstance⟩
 
+/- English proof (translation)
+Introduce `φ hφ`. Use `haveI := GlobalTheory.CovolGL.isFiniteMeasure_quotMeasure E a μ`. Establish `h` using `π.cusp φ hφ`. Take `⟨C, hC⟩` from `hB E a φ h fun t g => by rw [hπ φ hφ t g]`. Conclude with `GlobalTheory.CuspQuot.memL2_of_bound (ContAut.continuous_of_isOpen_stab E a φ h.1.level) (leftInv_latticeGL h.1.left (hπ φ hφ)) hC`.
+-/
 theorem memL2_normalised_cusp_form (hB : GlobalTheory.Published.CuspFormsBoundedGL) (μ : Measure (GA E a)) [μ.IsHaarMeasure]
     {π : CuspSub E a} (hπ : IsNormalised π) : ∀ φ ∈ π.V, MemL2Quotient (latticeGL E a) μ φ.1 := by
   intro φ hφ
@@ -26,9 +32,15 @@ theorem memL2_normalised_cusp_form (hB : GlobalTheory.Published.CuspFormsBounded
   exact GlobalTheory.CuspQuot.memL2_of_bound (ContAut.continuous_of_isOpen_stab E a φ h.1.level)
     (leftInv_latticeGL h.1.left (hπ φ hφ)) hC
 
+/- English proof (translation)
+Introduce `φ hφ` and use `ContAut.continuous_of_isOpen_stab E a φ (π.cusp φ hφ).1.level`.
+-/
 theorem continuous_of_mem {π : CuspSub E a} : ∀ φ ∈ π.V, Continuous φ.1 := fun φ hφ =>
   ContAut.continuous_of_isOpen_stab E a φ (π.cusp φ hφ).1.level
 
+/- English proof (translation)
+The claim follows from `LinearIsometry.inner_map_map { toLinearMap := (R (latticeGL E a) μ g : L2 (latticeGL E a) μ →L[ℂ] L2 (latticeGL E a) μ).toLinearMap norm_map' := norm_R g } F F'`.
+-/
 theorem inner_R (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (g : GA E a)
     (F F' : L2 (latticeGL E a) μ) :
     ⟪R (latticeGL E a) μ g F, R (latticeGL E a) μ g F'⟫_ℂ = ⟪F, F'⟫_ℂ :=

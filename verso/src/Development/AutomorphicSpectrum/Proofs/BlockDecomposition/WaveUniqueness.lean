@@ -17,6 +17,9 @@ namespace Uniq
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `: GLs n = (fun g : Mat n => g.det) ⁻¹' {0}ᶜ` using `rfl`. Rewrite using `[this]`. Conclude with `isOpen_compl_singleton.preimage (Continuous.matrix_det continuous_id)`.
+-/
 theorem isOpen_GLs : IsOpen (GLs n) := by
   have : GLs n = (fun g : Mat n => g.det) ⁻¹' {0}ᶜ := rfl
   rw [this]
@@ -26,11 +29,17 @@ section Rd
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
+/- English proof (translation)
+Establish `e : f =ᶠ[𝓝 g] f'` using `Filter.eventuallyEq_of_mem (isOpen_GLs.mem_nhds hg) h`. Simplify using `only [Rd, e.fderiv_eq]`.
+-/
 theorem rd_congr (X : Mat n) {f f' : Mat n → V} (h : ∀ y ∈ GLs n, f y = f' y) {g : Mat n} (hg : g ∈ GLs n) :
     Rd X f g = Rd X f' g := by
   have e : f =ᶠ[𝓝 g] f' := Filter.eventuallyEq_of_mem (isOpen_GLs.mem_nhds hg) h
   simp only [Rd, e.fderiv_eq]
 
+/- English proof (translation)
+Establish `ho` using `isOpen_GLs.mem_nhds hg`. Establish `d1 : DifferentiableAt ℝ f g` using `(hf.contDiffAt ho).differentiableAt (by simp)`. Establish `d2 : DifferentiableAt ℝ f' g` using `(hf'.contDiffAt ho).differentiableAt (by simp)`. Establish `e` using `(d1.hasFDerivAt.sub d2.hasFDerivAt).fderiv`. Conclude with `DFunLike.congr_fun e (g * X)`.
+-/
 theorem rd_sub (X : Mat n) {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (hf' : ContDiffOn ℝ ∞ f' (GLs n))
     {g : Mat n} (hg : g ∈ GLs n) : Rd X (f - f') g = Rd X f g - Rd X f' g := by
   have ho := isOpen_GLs.mem_nhds hg
@@ -39,12 +48,20 @@ theorem rd_sub (X : Mat n) {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs 
   have e := (d1.hasFDerivAt.sub d2.hasFDerivAt).fderiv
   exact DFunLike.congr_fun e (g * X)
 
+/- English proof (translation)
+Rewrite using `[rd_congr X (f' := Rd Y f - Rd Y f') (fun y hy => rd_sub Y hf hf' hy) hg]`. Conclude with `rd_sub X (((hR n).1 V f hf).1 Y) (((hR n).1 V f' hf').1 Y) hg`.
+-/
 theorem rd_rd_sub (hR : RCalc) (X Y : Mat n) {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n))
     (hf' : ContDiffOn ℝ ∞ f' (GLs n)) {g : Mat n} (hg : g ∈ GLs n) :
     Rd X (Rd Y (f - f')) g = Rd X (Rd Y f) g - Rd X (Rd Y f') g := by
   rw [rd_congr X (f' := Rd Y f - Rd Y f') (fun y hy => rd_sub Y hf hf' hy) hg]
   exact rd_sub X (((hR n).1 V f hf).1 Y) (((hR n).1 V f' hf').1 Y) hg
 
+/- English proof (translation)
+Establish `hs : ContDiffOn ℝ ∞ (f - f') (GLs n)` using `hf.sub hf'`. Rewrite using `[hO n V _ hs g hg, hO n V f hf g hg, hO n V f' hf' g hg, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[rd_rd_sub hR _ _ hf hf' hg, rd_rd_sub hR _ _ hf hf' hg]`. Normalize the expressions using the abelian group laws.
+-/
 theorem om_sub (hO : OmFormula) (hR : RCalc) {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n))
     (hf' : ContDiffOn ℝ ∞ f' (GLs n)) {g : Mat n} (hg : g ∈ GLs n) : Om (f - f') g = Om f g - Om f' g := by
   have hs : ContDiffOn ℝ ∞ (f - f') (GLs n) := hf.sub hf'
@@ -57,12 +74,22 @@ theorem om_sub (hO : OmFormula) (hR : RCalc) {f f' : Mat n → V} (hf : ContDiff
 
 end Rd
 
+/- English proof (translation)
+Establish `h` using `hu.1.comp (contDiff_prodMk_left (𝕜 := ℝ) (n := ∞) g).contDiffOn (s := Set.univ) (fun s _ => ⟨trivial, hg⟩)`. Conclude with `contDiffOn_univ.1 h`.
+-/
 theorem wave_line {E : KMod n} {u : ℝ → Mat n → E.V} (hu : IsWave E u) {g : Mat n} (hg : g ∈ GLs n) :
     ContDiff ℝ ∞ (fun s => u s g) := by
   have h := hu.1.comp (contDiff_prodMk_left (𝕜 := ℝ) (n := ∞) g).contDiffOn (s := Set.univ)
     (fun s _ => ⟨trivial, hg⟩)
   exact contDiffOn_univ.1 h
 
+/- English proof (translation)
+Use `⟨hu.1.sub hu'.1, fun t => ⟨(hu.2.1 t).1.sub (hu'.2.1 t).1, fun g hg k => ?_⟩, fun t g hg => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Use `show u t (g * k.1) - u' t (g * k.1) = E.ρ k⁻¹ (u t g - u' t g)`. Rewrite using `[(hu.2.1 t).2 g hg k, (hu'.2.1 t).2 g hg k, map_sub]`. Establish `l` using `wave_line hu hg`. Establish `l'` using `wave_line hu' hg`.
+
+Establish `e : (fun s => (u s - u' s) g) = (fun s => u s g) - (fun s => u' s g)` using `rfl`. Rewrite using `[e, iteratedDeriv_sub (contDiff_infty.1 l 2).contDiffAt (contDiff_infty.1 l' 2).contDiffAt, om_sub hO hR (hu.2.1 t).1 (hu'.2.1 t).1 hg, hu.2.2.1 t g hg, hu'.2.2.1 t g hg]`. Establish `d` using `(wave_line hu hg).differentiable (by simp)`. Establish `d'` using `(wave_line hu' hg).differentiable (by simp)`. Establish `e : (fun s => (u s - u' s) g) = (fun s => u s g) - (fun s => u' s g)` using `rfl`.
+
+Rewrite using `[e, deriv_sub (d 0) (d' 0), hu.2.2.2 g hg, hu'.2.2.2 g hg, sub_zero]`.
+-/
 theorem wave_sub (hO : OmFormula) (hR : RCalc) {E : KMod n} {u u' : ℝ → Mat n → E.V} (hu : IsWave E u)
     (hu' : IsWave E u') : IsWave E (fun t => u t - u' t) := by
   refine ⟨hu.1.sub hu'.1, fun t => ⟨(hu.2.1 t).1.sub (hu'.2.1 t).1, fun g hg k => ?_⟩, fun t g hg => ?_, fun g hg => ?_⟩
@@ -80,6 +107,11 @@ theorem wave_sub (hO : OmFormula) (hR : RCalc) {E : KMod n} {u u' : ℝ → Mat 
 
 end Uniq
 
+/- English proof (translation)
+Introduce `hS hC hR n E u u' hu hu' h0 t x hx`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, hO, -, -⟩` from `hC`. Take `⟨c, hc⟩` from `hS n`. Establish `h` using `hc E _ (Uniq.wave_sub hO hR hu hu') t x hx (fun y hy _ => by`. Establish `hxy : x * y ∈ GLs n` using `by show (x * y).det ≠ 0`.
+
+Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero hx hy`. Conclude with `sub_eq_zero.2 (h0 _ hxy))`. Conclude with `sub_eq_zero.1 h`.
+-/
 theorem waveUniq : WaveUniq := by
   intro hS hC hR n E u u' hu hu' h0 t x hx
   obtain ⟨-, -, -, -, -, -, -, -, -, -, -, -, hO, -, -⟩ := hC

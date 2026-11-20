@@ -6,6 +6,11 @@ namespace GlobalTheory
 
 open scoped MatrixOrder Matrix.Norms.L2Operator in
 
+/- English proof (translation)
+Establish `h1 : (‖A‖ • (1 : Matrix (Fin r) (Fin r) ℂ) - A).PosSemidef`. Establish `h` using `IsSelfAdjoint.le_algebraMap_norm_self (a := A) hA`. Rewrite `h` using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `Matrix.le_iff.1 h`. Use `⟨1 + ‖A‖, by linarith [norm_nonneg A], ?_⟩` and prove the remaining obligations.
+
+Establish `e : ((1 + ‖A‖ : ℝ) : ℂ) • (1 : Matrix (Fin r) (Fin r) ℂ) - A = 1 + (‖A‖ • (1 : Matrix (Fin r) (Fin r) ℂ) - A)`. Rewrite using `[Complex.coe_smul, add_smul, one_smul, add_sub_assoc]`. Rewrite using `[e]`. Conclude with `Matrix.PosSemidef.one.add h1`.
+-/
 theorem exists_scalar_sub_posSemidef {r : ℕ} (A : Matrix (Fin r) (Fin r) ℂ) (hA : A.IsHermitian) :
     ∃ c : ℝ, 1 ≤ c ∧ ((c : ℂ) • (1 : Matrix (Fin r) (Fin r) ℂ) - A).PosSemidef := by
   have h1 : (‖A‖ • (1 : Matrix (Fin r) (Fin r) ℂ) - A).PosSemidef := by
@@ -19,6 +24,11 @@ theorem exists_scalar_sub_posSemidef {r : ℕ} (A : Matrix (Fin r) (Fin r) ℂ) 
   rw [e]
   exact Matrix.PosSemidef.one.add h1
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hd`. Establish `hu : IsUnit (Nᴴ * N)` using `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 hd)`. Establish `h1` using `Matrix.rank_of_isUnit _ hu`. Establish `h2` using `(Matrix.rank_mul_le_right Nᴴ N).trans (Matrix.rank_le_card_height N)`. Rewrite `h2` using `[h1, Fintype.card_fin]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem gram_det_eq_zero_of_lt_card {r : ℕ} {ι : Type} [Fintype ι] [DecidableEq ι]
     (N : Matrix (Fin r) ι ℂ) (h : r < Fintype.card ι) : (Nᴴ * N).det = 0 := by
   by_contra hd
@@ -28,6 +38,17 @@ theorem gram_det_eq_zero_of_lt_card {r : ℕ} {ι : Type} [Fintype ι] [Decidabl
   rw [h1, Fintype.card_fin] at h2
   omega
 
+/- English proof (translation)
+Introduce `H r a`. Take `⟨c, hc1, hc⟩` from `exists_scalar_sub_posSemidef (aᴴ * a) (Matrix.isHermitian_conjTranspose_mul_self a)`. Use `⟨c ^ r, one_le_pow₀ hc1, ?_⟩` and prove the remaining obligations. Introduce `ι _ _ M`. Distinguish the cases in `hι : r < Fintype.card ι`.
+
+Rewrite using `[gram_det_eq_zero_of_lt_card (a * M) hι, gram_det_eq_zero_of_lt_card M hι]`. Simplify using the standard rewrite rules. Use `push Not at hι`. Establish `hP : (Mᴴ * (aᴴ * a) * M).PosSemidef` using `(Matrix.posSemidef_conjTranspose_mul_self a).conjTranspose_mul_mul_same M`. Establish `hQ : (Mᴴ * ((c : ℂ) • 1 - aᴴ * a) * M).PosSemidef` using `hc.conjTranspose_mul_mul_same M`.
+
+Take `⟨-, hle, -⟩` from `H ι _ _ hP hQ`. Establish `hM0 : 0 ≤ (Mᴴ * M).det.re` using `(H ι _ _ (Matrix.posSemidef_conjTranspose_mul_self M) (Matrix.posSemidef_conjTranspose_mul_self M)).1`. Establish `e1 : (a * M)ᴴ * (a * M) = Mᴴ * (aᴴ * a) * M`. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Establish `e2 : Mᴴ * (aᴴ * a) * M + Mᴴ * ((c : ℂ) • 1 - aᴴ * a) * M = (c : ℂ) • (Mᴴ * M)`. Rewrite using `[← Matrix.add_mul, ← Matrix.mul_add, add_sub_cancel, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul]`. Rewrite using `[e1]`. Use `hle.trans ?_` and prove the remaining obligations. Rewrite using `[e2, Matrix.det_smul, ← Complex.ofReal_pow, Complex.re_ofReal_mul]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (pow_le_pow_right₀ hc1 hι) hM0`.
+-/
 theorem gram_det_mul_le :
     (∀ (n : Type) [Fintype n] [DecidableEq n] (P Q : Matrix n n ℂ), P.PosSemidef → Q.PosSemidef → 0 ≤ P.det.re ∧ P.det.re ≤ (P + Q).det.re ∧ (P.det ≠ 0 → (P + Q).det.re ≤ P.det.re → Q = 0)) → (∀ (r : ℕ) (a : Matrix (Fin r) (Fin r) ℂ), ∃ ω : ℝ, 1 ≤ ω ∧ ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (M : Matrix (Fin r) ι ℂ), (((a * M)ᴴ * (a * M)).det.re) ≤ ω * (((M)ᴴ * (M)).det.re)) := by
   intro H r a

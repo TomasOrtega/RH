@@ -8,17 +8,26 @@ namespace GlobalTheory.RealPartDet
 
 open Matrix
 
+/- English proof (translation)
+Simplify using `only [dotProduct, mulVec, Finset.mul_sum, Pi.star_apply, Complex.star_def]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem quad_eq_sum {ι : Type} [Fintype ι] (G : Matrix ι ι ℂ) (c : ι → ℂ) :
     star c ⬝ᵥ G *ᵥ c = ∑ i, ∑ j, (starRingEnd ℂ) (c i) * c j * G i j := by
   simp only [dotProduct, mulVec, Finset.mul_sum, Pi.star_apply, Complex.star_def]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Simplify using `only [dotProduct, mulVec, Finset.mul_sum, Pi.star_apply, Complex.star_def, transpose_apply]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem quad_transpose_eq_sum {ι : Type} [Fintype ι] (G : Matrix ι ι ℂ) (c : ι → ℂ) :
     star c ⬝ᵥ Gᵀ *ᵥ c = ∑ i, ∑ j, c i * (starRingEnd ℂ) (c j) * G i j := by
   simp only [dotProduct, mulVec, Finset.mul_sum, Pi.star_apply, Complex.star_def, transpose_apply]
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `h` using `hG.apply j i`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, Matrix.add_apply, transpose_apply, smul_eq_mul, ← h, Complex.star_def, Complex.re_eq_add_conj]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem map_re_map_ofReal {ι : Type} [Fintype ι] {G : Matrix ι ι ℂ} (hG : G.IsHermitian) :
     (G.map Complex.re).map (fun r : ℝ => (r : ℂ)) = (2 : ℂ)⁻¹ • (G + Gᵀ) := by
   ext i j
@@ -27,6 +36,9 @@ theorem map_re_map_ofReal {ι : Type} [Fintype ι] {G : Matrix ι ι ℂ} (hG : 
     Complex.star_def, Complex.re_eq_add_conj]
   ring
 
+/- English proof (translation)
+Rewrite using `[Matrix.smul_mulVec, dotProduct_smul, Matrix.add_mulVec, dotProduct_add, smul_eq_mul]`. Simplify using `[Complex.mul_re]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem quad_half_re {ι : Type} [Fintype ι] (G : Matrix ι ι ℂ) (c : ι → ℂ) :
     (star c ⬝ᵥ ((2 : ℂ)⁻¹ • (G + Gᵀ)) *ᵥ c).re
       = ((star c ⬝ᵥ G *ᵥ c).re + (star c ⬝ᵥ Gᵀ *ᵥ c).re) / 2 := by
@@ -34,11 +46,17 @@ theorem quad_half_re {ι : Type} [Fintype ι] (G : Matrix ι ι ℂ) (c : ι →
   simp [Complex.mul_re]
   ring
 
+/- English proof (translation)
+Simplify using `[dotProduct, mulVec, Complex.ofReal_sum, Complex.ofReal_mul]`.
+-/
 theorem quad_ofReal {ι : Type} [Fintype ι] (A : Matrix ι ι ℝ) (x : ι → ℝ) :
     star (fun i => (x i : ℂ)) ⬝ᵥ (A.map (fun r : ℝ => (r : ℂ))) *ᵥ (fun i => (x i : ℂ))
       = ((x ⬝ᵥ A *ᵥ x : ℝ) : ℂ) := by
   simp [dotProduct, mulVec, Complex.ofReal_sum, Complex.ofReal_mul]
 
+/- English proof (translation)
+The claim follows from `|Real.log (G.map Complex.re).det - Real.log G.det.re| ≤ Fintype.card ι * Real.log (2 * κ) := by intro ι _ _ G κ hG hκ h set A := G.map Complex.re with hAdef set Ac := A.map (fun r : ℝ => (r : ℂ)) with hAcdef have hAc : Ac = (2 : ℂ)⁻¹ • (G + Gᵀ) := map_re_map_ofReal hG.isHermitian …`.
+-/
 theorem main : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (G : Matrix ι ι ℂ) (κ : ℝ), G.PosDef → 1 ≤ κ →
     (∀ c : ι → ℂ, (∑ i, ∑ j, (starRingEnd ℂ) (c i) * c j * G i j).re ≤
       κ * (∑ i, ∑ j, c i * (starRingEnd ℂ) (c j) * G i j).re) →

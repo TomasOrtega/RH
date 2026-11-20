@@ -14,6 +14,11 @@ open CompanionTheory.RgExh CompanionTheory.RgExh.Dec ReciprocityTheory.ChartRest
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `h1 : ‖∑ a, γ a * h a‖ ≤ |B| * ∑ a, ‖h a‖`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right ((hγ a).trans (le_abs_self B)) (norm_nonneg _)`. Use `_ = _ := (Finset.mul_sum _ _ _).symm`.
+
+Establish `h2` using `sq_sum_le_card_mul_sum_sq (s := Finset.univ) (f := fun a => ‖h a‖)`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left ?_ (sq_nonneg B)` and prove the remaining obligations. Simplify using `using h2`. Use `_ = _ := by ring`.
+-/
 theorem kr_dom {ι : Type} [Fintype ι] (γ h : ι → ℂ) (B : ℝ) (hγ : ∀ a, ‖γ a‖ ≤ B) :
     ‖∑ a, γ a * h a‖ ^ 2 ≤ (Fintype.card ι * B ^ 2) * ∑ a, ‖h a‖ ^ 2 := by
   have h1 : ‖∑ a, γ a * h a‖ ≤ |B| * ∑ a, ‖h a‖ := by
@@ -30,12 +35,26 @@ theorem kr_dom {ι : Type} [Fintype ι] (γ h : ι → ℂ) (B : ℝ) (hγ : ∀
         simpa using h2
     _ = _ := by ring
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem kr_img {ι κ : Type} [Fintype ι] [DecidableEq κ] (p : ι → κ) (f : κ → ℝ) (hf : ∀ q, 0 ≤ f q) :
     ∑ a, f (p a) ≤ Fintype.card ι * ∑ q ∈ Finset.univ.image p, f q := by
   calc ∑ a, f (p a) ≤ ∑ _a : ι, ∑ q ∈ Finset.univ.image p, f q :=
         sum_le_sum fun a _ => Finset.single_le_sum (fun q _ => hf q) (Finset.mem_image_of_mem p (Finset.mem_univ a))
     _ = _ := by simp
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ D E hK χ ss hU i u`. Establish `hL` using `leftExp_path (leftExp_base hK hU) χ ss`. Establish `hC` using `contFam_path (contFam_base hK hU) χ ss`. Establish `hR` using `rightEq_path (baseAct hK hU) (rightEq_base hK hU) χ ss`. Use `⟨hC i u, ?_⟩` and prove the remaining obligations.
+
+Take `⟨r, is, β, B, hβ, hLi⟩` from `hL i`. Take `⟨r', w, a, B', ha, hw⟩` from `rightExp (pathAct (baseAct hK hU) χ ss) u`. Set `p : Fin r × Fin r' → (D × List (Fin n)) × (path ⟨D, E, hK.gl⟩ χ ss).V` to `fun q => (is q.1, w q.2)`. Use `⟨Finset.univ.image p, Fintype.card (Fin r × Fin r') * (|B| * |B'|) ^ 2 * Fintype.card (Fin r × Fin r'), fun g k k' => ?_⟩` and prove the remaining obligations. Establish `e1 : famP σ D E hK.gl χ ss i u (S7.toMK k * S7.toM g * S7.toMK k') = ∑ q : Fin r × Fin r', (β q.1 k * a q.2 k') * famP σ D E hK.gl χ ss (p q).1 (p q).2 (S7.toM g)`.
+
+Establish `h1` using `hR i u ((k : S7.UJ ε) * g) k'`. Establish `h2` using `hLi ((pathAct (baseAct hK hU) χ ss).ρ k' u) g k`. Establish `e0 : S7.toM ((k : S7.UJ ε) * g) = S7.toMK k * S7.toM g` using `rfl`. Rewrite `h1` using `[e0]`. Simplify using `only [famP]`.
+
+Rewrite using `[h1, h2, hw k', Fintype.sum_prod_type]`. Use `sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, p]`. Conclude with `sum_congr rfl fun m _ => by ring`. Rewrite using `[e1]`.
+
+Use `(kr_dom _ _ (|B| * |B'|) fun q => ?_).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul ((hβ _ _).trans (le_abs_self B)) ((ha _ _).trans (le_abs_self B')) (norm_nonneg _) (abs_nonneg B)`. Establish `h3` using `kr_img p (fun q => ‖famP σ D E hK.gl χ ss q.1 q.2 (S7.toM g)‖ ^ 2) (fun q => sq_nonneg _)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem kRight : KRight := by
   intro n ε H _ _ _ σ D E hK χ ss hU i u
   classical

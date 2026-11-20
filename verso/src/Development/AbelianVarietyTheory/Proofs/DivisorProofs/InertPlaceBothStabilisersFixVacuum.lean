@@ -13,6 +13,11 @@ open scoped TensorProduct Matrix
 
 namespace GlobalTheory.InertSph
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v w hin hvT k hk`. Take `⟨hSB, hne, θ, hθ, hfix⟩` from `hT.geo.hM.vac v`. Take `⟨φ₁, hφ₁, hact⟩` from `GlobalTheory.T.weilRepresentationLocality_unitaryGroupV_pairVW F E σ B a a' G X om om' hT v k hk.1 _ hSB`. Establish `hfix₁` using `GlobalTheory.T.weilOperator_latticeStabiliser_left_preserves_vacuumType F E σ B a a' G X om om' hT v k hk θ hθ _ hSB φ₁ hφ₁ hfix hact`. Take `⟨c, rfl⟩` from `GlobalTheory.T.heisenbergSelfDualLattice_fixedFunctions_line F E σ B a a' G X om om' hT v (hT.base.inert v w hin).2.2 (GlobalTheory.T.tensorLattice_inertPlace_selfDual F E σ B a a' G X om om' hT v w hin) θ hθ _ hSB hne hfix φ₁ hφ₁ hfix₁`.
+
+Establish `hc` using `GlobalTheory.T.latticeStabiliser_vacuum_eigenvalue_one_inert_place F E σ B a a' G X om om' hT v w hin hvT k hk c hact`. Rewrite `hact` using `[hc, one_smul]`. Conclude with `hact`.
+-/
 theorem vacV_fixed : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w → v ∉ X.T →
@@ -27,6 +32,11 @@ theorem vacV_fixed : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
   rw [hc, one_smul] at hact
   exact hact
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v w hin hvT k hk k' hk' r hr`. Establish `h1` using `vacV_fixed F E σ B a a' G X om om' hT v w hin hvT k hk`. Establish `h2` using `GlobalTheory.T.inert_place_lattice_stabiliser_fixes_vacuum F E σ B a a' G X om om' hT v w hin hvT k' hk'`. Establish `e : om (k, k') = om (k, 1) * om (1, k')`. Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one, one_mul]`.
+
+Rewrite using `[e, Module.End.mul_apply, h2 r hr, h1 r hr]`.
+-/
 theorem vac_fixed_pair : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w → v ∉ X.T →

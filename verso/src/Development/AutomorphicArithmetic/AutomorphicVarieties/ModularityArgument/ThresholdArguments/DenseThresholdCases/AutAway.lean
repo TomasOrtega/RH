@@ -24,6 +24,25 @@ set_option synthInstance.maxHeartbeats 200000
 open UpperTheory.V.Z UpperTheory.V.Z.Ord UpperTheory.Gal.projectedFormsSystemPart UpperTheory.GalN.V
 open private au_isTeich au_open from Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.AuTeichEx
 open private absPt ss_comp iso_of_det ss_of_irr irr_of_comp irr_iso from Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.IrrOfComp
+/- English proof (translation)
+Introduce `lam _ d ξ hξ F hF hK hI`. Take `⟨e, he⟩` from `hξ`. Take `⟨t, ht⟩` from `au_isTeich c r`. Establish `hop : IsOpen (τ₀.ker : Set (KT n (wt s)))` using `au_open _ (ι.injective.comp Subtype.val_injective) τ₀ (hτ t ht).1`. Establish `h1` using `decompU l L Ω s n hn V Q c m τ₀ ι hop lam d e ξ he F hF hK hI`.
+
+Use `SetLike.le_def.1 (iSup_le fun σ => ?_) h1` and prove the remaining obligations. Distinguish the cases in `h0 : YOf Q ι τ₀ e ξ σ.1 = ⊥`. Rewrite using `[h0]`. Conclude with `bot_le`. Take `⟨Y, hY, hP⟩` from `hL l L Ω s n hn V Q c r ι m τ₀ hτ lam d e ξ he σ.1 σ.2 h0`.
+
+Rewrite using `[← hY]`. Use `le_iSup (fun Y : {Y : (hset Q τ₀).PartAltAlt ι lam ξ // Af.IsIrr (Y.r.comp V.pr) → AwayOk s ι (Y.r.comp V.pr)} => Y.1.Y) ⟨Y, fun hi => ?_⟩` and prove the remaining obligations. Take `⟨π, p1, p2, p3, p4, p5⟩` from `hP hi`. Use `⟨π, p1, p2, p3, fun w hw hw0 => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hwS : w.under (𝓞 (Lp L)) ∈ V.S'`.
+
+Use `swap`. Take `⟨B, hB⟩` from `p4 w (partUR2Unr l L Ω s n hn V Q c ι m τ₀ lam d e ξ he σ.1 σ.2 h0 w hwS)`. Conclude with `ImaginaryQuadraticEtaCharacter.sphUnl L n hn π w B hB`. Take `⟨hwv, hsp⟩` from `UpperTheory.under_chosen_place_and_isSplitAt_of_decomp_le l L Ω s`. Rewrite `hwS` using `[hS]`.
+
+Establish `hu : w.under (𝓞 (Lp L)) ∈ s.St`. Break down `hwS with h | h | h` into its components or cases. Use `absurd ?_ hw` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap (𝓞 (Lp L)) (𝓞 L))]`. Conclude with `h`.
+
+Conclude with `h`. Conclude with `absurd h hw0`. Use `hC L n hn π p2 (s.w (w.under (𝓞 (Lp L)))) w (hwv _).symm ?_` and prove the remaining obligations. Use `(ImaginaryQuadraticEtaCharacter.plainIff L n hn π _).1 fun τ hτ' => ?_` and prove the remaining obligations. Establish `hs : ∀ u : s.St, IsSplitAt (s.w u)` using `fun u => hsp _ (by`.
+
+Rewrite using `[hwv]`. Conclude with `s.split _ (Or.inr (Or.inl u.2)))`. Use `choose loc hloc using fun u : s.St => (_root_.UpperTheory.V.Af.local_comp_complex_of_printed_results PH.toClassicalTheorems L n π (s.w u)).1`. Take `⟨rc, hrc⟩` from `PH.toClassicalTheorems.exists_reciprocity_dense (s.hw (w.under (𝓞 (Lp L))))`. Establish `k` using `_root_.UpperTheory.V.Hi.partUR2Type_alt l L Ω s n hn V Q c ι m τ₀ lam d e ξ he σ.1 σ.2 h0 _ (hτ t ht) (Function.update loc ⟨_, hu⟩ τ) (fun u' => p5 _ (hs u') _ (by`.
+
+Distinguish the cases in `e : u' = ⟨_, hu⟩`. Substitute `e` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne e]`. Conclude with `hloc _)) ⟨_, hu⟩ rc hrc`.
+
+Rewrite `k` using `[Function.update_self]`. Conclude with `typePlain L Ω n hn π _ _ (s.hw _) τ hτ' rc (_root_.UpperTheory.V.Z.Desc.W.isRecT_of_isRecT PH.toClassicalTheorems hrc) (fun i => W.pushCh (ι.toRingHom.comp (algebraMap c.O (Qbar l))) ((t i).comp V.pr)) k`.
+-/
 theorem UpperTheory.Gal.projectedFormsSystemPart.autAway_alt (PH : _root_.UpperTheory.V.Af.HypothesesH') (hL : _root_.UpperTheory.Gal.projectedFormsSystemPart.PartLinkAlt) (hC : ConjTor) {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L]
     [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) {n : ℕ} (hn : 1 ≤ n) (V : s.Lev)
     (Q : QData V) (c : Coef l) (r : Resid V.frame c.O n) (ι : Qbar l ≃+* ℂ) (m : ℕ) (τ₀ : KT n (wt s) →* GL (Fin m) c.O)

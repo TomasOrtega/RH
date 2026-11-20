@@ -25,6 +25,17 @@ open scoped TensorProduct
 set_option synthInstance.maxHeartbeats 400000
 noncomputable section
 namespace GlobalTheory.CovTop.HodgeSteps
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `hn`. Establish `h1` using `(((GlobalTheory.T.flatLine_thetaRoot_twist_twistingSection hP.p5 D T.Q.H (T.Q.Dw j) Y.d.l₂ Y.d.Xo₂ Y.d.c₂ D.R.r Y.U _ Y.dict hC hY.geo hpq hl hF (_root_.GlobalTheory.T.unramified_points_of_deep_cover hP D T j Y e o hL hj hY) (anchor (T.Q.Dw j) a (m + m) kc) m).2 _ 0).2 h).1`. Establish `e1 : uWt (T.Q.Dw j) a (m + m) kc + s • hodgeWt (T.Q.Dw j) + GlobalTheory.FlatLine.parWt (T.Q.Dw j) (anchor (T.Q.Dw j) a (m + m) kc) = laOf (T.Q.Dw j) a (m + m) + s • hodgeWt (T.Q.Dw j)`. Rewrite using `[add_right_comm, uWt_add_anchor]`. Rewrite `h1` using `[e1, add_comm (0 : ℤ), AllWt.wtOf_add]`.
+
+Establish `e2 : exZ (T.Q.Dw j) (wtOf (T.Q.Dw j) (laOf (T.Q.Dw j) a (m + m)) m + wtOf (T.Q.Dw j) (s • hodgeWt (T.Q.Dw j)) 0) = exZ (T.Q.Dw j) (shiftG (T.Q.Dw j) a (m + m) s)`. Rewrite using `[shiftG, FlatTw.exZ_add_eq, FlatTw.exZ_add_eq]`. Use `congr 1`. Use `AllWt.exOf_weightOf (Dw := T.Q.Dw j) (fun x => (a x : ℤ)) m` as an intermediate fact. Rewrite `this` using `[AllWt.exOf]`.
+
+Rewrite using `[laOf, show (m + m) / 2 = m by omega, this, wtZ]`. Use `push_cast`. Rewrite using `[two_mul]`. Establish `e3 : cuspW Y.d.Xo₂ Y.d.c₂ Y.U (wtOf (T.Q.Dw j) (laOf (T.Q.Dw j) a (m + m)) m + wtOf (T.Q.Dw j) (s • hodgeWt (T.Q.Dw j)) 0) = cuspW Y.d.Xo₂ Y.d.c₂ Y.U (shiftG (T.Q.Dw j) a (m + m) s)`. Use extensionality with `f`.
+
+Rewrite using `[AllWt.mem_cuspW, AllWt.mem_cuspW, e2]`. Conclude with `and_congr_right fun _ => forall₂_congr fun σ hσ => by`. Rewrite using `[AllWt.modelWt_congr (Y.U σ) hσ (hY.unf σ hσ) e2]`. Establish `key : ∀ C C' : Submodule Y.d.c₂.F (Rul Y.d.Xo₂ Y.d.c₂), C = C' → ((AllWt.supLat C).FG ∧ Submodule.span Y.d.c₂.F (AllWt.supLat C : Set C) = ⊤) → (AllWt.supLat C').FG ∧ Submodule.span Y.d.c₂.F (AllWt.supLat C' : Set C') = ⊤`. Introduce and unpack `C _ rfl h`.
+
+Conclude with `h`. Conclude with `⟨hasGram_nrm_of_good D _ j Y e o hY _, key _ _ e3 h1.2⟩`.
+-/
 theorem covering_goodAt_shift (hP : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems) (D : D7) (T : CoreJ D) (hL : LawsJ T) (j : ℕ) (hj : InR D j) (Y : Deep T.toCore j) (e : ℕ)
     (o : ℝ) (hY : Y.Good e o) (hpq : 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q)
     (hC : GlobalTheory.IndefiniteRowSideFullHecke.ComponentMassSum.IsComplexData Y.U (fun _ => D.sp.W j) Y.dict) (hl : ∀ q : ℕ, q.Prime → Y.d.l₂.GoodAt q)
@@ -60,6 +71,49 @@ theorem covering_goodAt_shift (hP : _root_.GlobalTheory.CovTop.PublishedHodgeBun
     rintro C _ rfl h
     exact h
   exact ⟨hasGram_nrm_of_good D _ j Y e o hY _, key _ _ e3 h1.2⟩
+/- English proof (translation)
+Introduce `hX hP hSi hTo hG hQ hN hDG hS hFD hDeg hSh`. Use `((((((((((hDG.and hS).and hFD).and hDeg).and hSh).and (GlobalTheory.T.weight_parameter_strict_antitone hS)).and (GlobalTheory.T.size_bounds_for_family hS)).and (_root_.GlobalTheory.T.valuation_multiplicity_run_estimate hP hG hQ hSi hTo hN hDG hS hFD)).and (GlobalTheory.T.flat_lin …` and prove the remaining obligations. Take `⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨_, -, a1⟩, A, -, a2⟩, _, -, a3⟩, _, -, a4⟩, _, -, a5⟩, _, -, a6⟩, _, -, a7⟩, _, -, a8⟩, _, -, a9⟩, _, -, a10⟩, _, -, a11⟩` from `h`. Take `⟨x0, h⟩` from `(((((((((a1.and a2).and a3).and a4).and a5).and a6).and a7).and a8).and a9).and a10).and a11`. Use `⟨0, le_rfl, x0, fun x hx hle ι p hp i hi Y hY s hs1 hs2 => ?_⟩` and prove the remaining obligations.
+
+Take `⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨b1, b2⟩, b3⟩, b4⟩, b5⟩, b6⟩, b7⟩, b8⟩, b9⟩, b10⟩, b11⟩` from `h x hx hle ι p hp`. Use `clear h a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11`. Take `⟨-, g1, -, -, -, hfin, -, -⟩` from `b1 i hi Y hY`. Take `⟨hb1, -, -, -, -, hbk, hq⟩` from `b2 i`. Take `⟨⟨u1, hu⟩, hq⟩` from `hq hi`.
+
+Take `⟨-, hρ0, hρ1, -⟩` from `hq u1 hu`. Take `⟨δ, hδ, hdg⟩` from `b4 i hi Y hY u1 hu`. Establish `hsh` using `b5 i hi Y hY u1 hu`. Take `⟨hp1, hq1, hf, hu1, hA, -, hanti⟩` from `b6 i hi`. Take `⟨hL, hj, hL1, -, -, -, -, -, hf8, hr100, -, -, hPP, -, hz1, hz2, -⟩` from `b7 i hi Y hY`.
+
+Establish `hval` using `b8 i hi Y hY`. Take `⟨hC, hl, hF, -⟩` from `b9 i hi Y hY`. Establish `hgap` using `(b10 i hi).gaps`. Establish `hdom` using `(b11 i).dom`. Establish `hfl` using `b3 i hi Y hY`.
+
+Use `clear b1 b2 b3 b4 b5 b6 b7 b8 b9 b10 b11 hq`. Rewrite `hA`, `hanti`, `hz1`, `hz2`, `hval`, `hgap` using `[← hu1 u1 hu]`. Use `clear hu1`. Generalize the expression as in `(Fm.parT x hx ι).PP = PP at *`. Rewrite `hgap` using `[← CompHS.dimFlag_eq]`.
+
+Establish `hd3 : 3 ≤ CompHt.dimFlag (dat p i)`. Rewrite using `[CompHS.dimFlag_eq, FlagTan.dimFlag]`. Conclude with `le_trans hf (Nat.le_mul_of_pos_right _ (Nat.choose_pos (by omega)))`. Establish `hPP100 : 100 ≤ PP`. Use `le_trans ?_ hPP` and prove the remaining obligations.
+
+Establish `c1 : (8 : ℝ) ≤ (Fm.D x ι).R.f` using `by exact_mod_cast hf8`. Establish `c2 : (100 : ℝ) ≤ (Fm.D x ι).R.r` using `by exact_mod_cast hr100`. Establish `c3 : (8 * 100 * 1 : ℝ) ≤ zBase (Fm.L x ι)`. Unfold `zBase`. Use `gcongr`.
+
+Conclude with `le_trans (by linarith) (le_self_pow₀ (by linarith) (by norm_num))`. Establish `hT : 1000 * (CompHt.dimFlag (dat p i) : ℝ) ^ 2 ≤ lenT p i PP`. Use `le_trans ?_ (Nat.le_ceil _)` and prove the remaining obligations. Establish `c1` using `(Fm.D x ι).R.two_le_m`. Establish `c2` using `(Fm.D x ι).R.m_add_three_le_k`.
+
+Establish `c3 : (0 : ℝ) < (Fm.D x ι).R.m` using `by exact_mod_cast (by omega : 0 < (Fm.D x ι).R.m)`. Establish `c4 : ((Fm.D x ι).R.m : ℝ) ≤ (Fm.D x ι).R.k` using `by exact_mod_cast (by omega : (Fm.D x ι).R.m ≤ (Fm.D x ι).R.k)`. Establish `c5 : 1000 ≤ PP ^ 2` using `by nlinarith`. Rewrite using `[le_div_iff₀ c3]`. Use `gcongr`.
+
+Take `⟨a, ha1, ha2⟩` from `exists_jet_order _ _ _ (by omega) hT hρ0 hz2`. Establish `hbir` using `_root_.GlobalTheory.T.birOn_wtOf_of_consecutive_gap_bound hX hG hQ hSi (_root_.GlobalTheory.T.covering_topology_refinement hP) hP.q15 hP.q16 _ p.T hL _ hp1 hq1 Y _ _ hY.1 u1 fun τ a b hb => by`. Rewrite using `[← gap_eq _ hb]`. Use `le_trans ?_ (hgap τ a (hb ▸ b.2))` and prove the remaining obligations. Conclude with `bir_gap_le _ _ hd3` after adjusting the coercions.
+
+Establish `hboth` using `GlobalTheory.T.componentImageDegree_between_of_proportionality _ _ _ _ _ _ _ Y.U hY.1.unf (_root_.GlobalTheory.T.proportionality_principle_compactification hP hSi hTo hN _ p.T hL _ hp1 hq1 hf hj Y _ _ hY.1).1 (_root_.GlobalTheory.T.compactification_top_chern_eq_volume hP hSi hTo …`. Establish `hc0 : 1 ≤ cZero (Fm.D x ι) ((i : ℕ) + 1)`. Use `(cZeroN_isLeast (Fm.D x ι) ((i : ℕ) + 1)).1.2.2` as an intermediate fact. Unfold `cZero`. Use linear arithmetic over natural numbers and integers.
+
+Establish `ew : uW p i + (s * cZero (Fm.D x ι) ((i : ℕ) + 1)) • hodgeWt (dat p i) = fun τ => uM p i τ + (((s + 1 : ℕ) : ℤ) * cZero (Fm.D x ι) ((i : ℕ) + 1)) • hodgeWt (dat p i) τ`. Use function extensionality and compare the values at `τ k`. Simplify using `only [uM, uW, uMinus, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `em : uW p i + (-(cZero (Fm.D x ι) ((i : ℕ) + 1))) • hodgeWt (dat p i) = uM p i`. Rewrite using `[neg_smul, ← sub_eq_add_neg]`. Both sides reduce to the same expression. Establish `hl1 : ∀ τ, Antitone ((uW p i + (s * cZero (Fm.D x ι) ((i : ℕ) + 1)) • hodgeWt (dat p i)) τ)` using `fun τ => by`. Rewrite using `[ew]`.
+
+Conclude with `(hanti (s + 1) (by omega) τ).1`. Establish `hl2 : ∀ τ, Antitone (((lenT p i PP + CompHt.dimFlag (dat p i) + 4 : ℕ) : ℤ) • u1 τ - (uW p i + (s * cZero (Fm.D x ι) ((i : ℕ) + 1)) • hodgeWt (dat p i)) τ)` using `fun τ => by`. Rewrite using `[ew]`. Use `(hanti (s + 1) (by omega) τ).2` as an intermediate fact. Rewrite `this` using `[if_neg (Nat.succ_ne_zero s)]`. Then use the resulting hypothesis.
+
+Establish `hl3 : ∀ τ, 1 ≤ gap ((uW p i + (s * cZero (Fm.D x ι) ((i : ℕ) + 1)) • hodgeWt (dat p i)) τ) ((dat p i).p - 1)` using `fun τ => by`. Rewrite using `[ew]`. Use `le_trans ?_ (le_gap_bar (dat p i) hp1 hq1 (uM p i) τ ?_ _)` and prove the remaining obligations. Use `push_cast`. Use polynomial arithmetic with `[Int.natCast_nonneg s]`.
+
+Simplify using `using (hanti 0 (by omega) τ).1`. Establish `hev : Even (p.κ i).n` using `(p.κ i).n_even`. Establish `g2 : Y.GoodAt (Gs p i (s * cZero (Fm.D x ι) ((i : ℕ) + 1)))` using `_root_.GlobalTheory.CovTop.HodgeSteps.covering_goodAt_shift hP _ p.T hL _ hj Y _ _ hY.1 (le_add_right hp1) hC hl hF _ _ ((Fm.D x ι).R.k - 1) _ hev (_root_.GlobalTheory.T.covering_domain_lattice_regularity hP _ p.T hL _ hp1 hq1 hf hj Y _ _ hY.1 _ hl1 hl3).1`. Establish `htw` using `((_root_.GlobalTheory.T.twisted_flat_bundle_ranks hP _ p.T hL _ hp1 hq1 hf hj Y _ _ hY.1 _ hfl).2 _ (p.κ i).n ((Fm.D x ι).R.k - 1) · hdom hev)`. Rewrite using `[htw _ g1, htw _ g2]`.
+
+Establish `hk : 0 < PP * kap p i` using `by linarith`. Establish `hz : zed p i PP u1 ≤ min (1 / 2) ((Fm.L x ι).sc.b / (PP * kap p i))` using `le_min hz2 ((le_div_iff₀ hk).2 hz1)`. Establish `hz0 : 0 ≤ zed p i PP u1`. Unfold `zed`. Check the signs of the components of the expression.
+
+Use `first`. Consider the case `have hJ := _root_.GlobalTheory.T.jet_rank_complex_le hX hP hSi hTo hG hQ hN`. Consider the case `have hJ := _root_.GlobalTheory.T.jet_rank_complex_le hP hSi hTo hG hQ hN`. Use `letI := Fintype.ofFinite (Comp Y.d.Xo₂ Y.d.c₂)`. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Finset.mul_sum]`.
+
+Use `Finset.sum_le_sum fun Z _ => ?_` and prove the remaining obligations. Establish `d0 : 0 < Y.dg u1 Z` using `hδ.trans_le (hdg Z).1`. Establish `d1 : (1 - CompHt.rhoB (dat p i) u1) * CompHt.topDeg Y.U Z u1 ≤ Y.dg u1 Z` using `(CompHt.delPrime_eq Y.U Z (CompHt.vdm_pos fun τ => (hA τ).1).ne').ge.trans (hboth Z Z).1`. Establish `d2` using `hJ _ p.T hL _ hp1 hq1 hf hj Y _ _ hY.1 Z u1 _ _ a hgap hl1 hl2 (by`. Establish `h1 : 0 < 1 - CompHt.rhoB (dat p i) u1` using `by linarith`.
+
+Use `lt_of_mul_lt_mul_left ?_ h1.le` and prove the remaining obligations. Establish `e1` using `mul_le_mul_of_nonneg_left d1 (Nat.cast_nonneg (lenT p i PP + CompHt.dimFlag (dat p i) + 4))`. Establish `e2` using `mul_lt_mul_of_pos_right ha1 d0`. Use the proof step `linarith)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hsh Z).1 (by linarith)`. Use `_ ≤ _ := by`. Rewrite using `[← em]`. Conclude with `mul_le_mul_of_nonneg_right (by linarith) (Nat.cast_nonneg _)`.
+-/
 theorem rk_le_one_add_min_mul_rk_neg : GlobalTheory.CovTop.HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SemiAbelianLieSeminegative → DeepGood → Size → FlatDeg → Deg → Share → Covers fun Fm x _ ι p i Y PP _ => ∀ s : ℕ, 1 ≤ s → s ≤ 2 → (Y.rk (Gs p i (s * cZero (Fm.D x ι) ((i : ℕ) + 1))) : ℝ) ≤ (1 + min (1 / 2) ((Fm.L x ι).sc.b / (PP * kap p i))) * Y.rk (Gs p i (-(cZero (Fm.D x ι) ((i : ℕ) + 1)))) := by
   intro hX hP hSi hTo hG hQ hN hDG hS hFD hDeg hSh
   refine ((((((((((hDG.and hS).and hFD).and hDeg).and hSh).and (GlobalTheory.T.weight_parameter_strict_antitone hS)).and (GlobalTheory.T.size_bounds_for_family hS)).and
@@ -192,6 +246,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.HodgeSteps.rk_le_one_add_min_mul_rk_neg | exact _root_.GlobalTheory.CovTop.HodgeSteps.rk_le_one_add_min_mul_rk_neg | (intros; apply _root_.GlobalTheory.CovTop.HodgeSteps.rk_le_one_add_min_mul_rk_neg <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.rk_small_scale_le_of_share : GlobalTheory.CovTop.HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SemiAbelianLieSeminegative → DeepGood → Size → FlatDeg → Deg → Share → Covers fun Fm x _ ι p i Y PP _ => ∀ s : ℕ, 1 ≤ s → s ≤ 2 → (Y.rk (Gs p i (s * cZero (Fm.D x ι) ((i : ℕ) + 1))) : ℝ) ≤ (1 + min (1 / 2) ((Fm.L x ι).sc.b / (PP * kap p i))) * Y.rk (Gs p i (-(cZero (Fm.D x ι) ((i : ℕ) + 1)))) := by
   first | exact @_root_.GlobalTheory.CovTop.HodgeSteps.rk_le_one_add_min_mul_rk_neg | exact _root_.GlobalTheory.CovTop.HodgeSteps.rk_le_one_add_min_mul_rk_neg | (intros; apply _root_.GlobalTheory.CovTop.HodgeSteps.rk_le_one_add_min_mul_rk_neg <;> assumption)
 end

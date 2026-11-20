@@ -13,6 +13,9 @@ open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[UpperTheory.ConvolutionTheory.RankTwoDescent.em, Matrix.GeneralLinearGroup.map_apply]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aE, h]`.
+-/
 private theorem em_aE {E : Type} [Field E] [NumberField E] (y : (A ℚ)ˣ) (z : (A E)ˣ)
     (h : (z : A E) = AdeleBaseChange.adeleMap ℚ E (y : A ℚ)) : em E (aE y) = aE z := by
   apply Units.ext
@@ -20,6 +23,25 @@ private theorem em_aE {E : Type} [Field E] [NumberField E] (y : (A ℚ)ˣ) (z : 
   rw [UpperTheory.ConvolutionTheory.RankTwoDescent.em, Matrix.GeneralLinearGroup.map_apply]
   fin_cases i <;> fin_cases j <;> simp [aE, h]
 
+/- English proof (translation)
+Introduce `E _ _ _ D P ω χ _ _ L N φ hA hG a hIs v hv w hw hI`. Take `⟨-, B, hsat, hEig⟩` from `hG.fix w (by rw [hw]; exact hv)`. Take `⟨α, β, rfl⟩` from `Multiset.card_eq_two.1 (GlobalTheory.LFun.HasSatGL.card ((CG.hasSat_mk P w B).1 hsat))`. Take `⟨-, -, hleft, -⟩` from `UpperTheory.whittakerFunction_continuous_bounded_equivariant E D ω φ hA`. Establish `hEw` using `UpperTheory.eigAt_cmDatumOperator_of_eigAt E D φ w _ hA.cont hEig`.
+
+Take `⟨χw, hχ, hχe⟩` from `UpperTheory.exists_good_character_of_inert_CMDatum E D v w (hG.pl v hv) hI`. Establish `hnl : ∀ b h, Wo D φ (H.lc w (H.nL b) * h) = χw b * Wo D φ h` using `fun b h => by`. Take `⟨u, t, e1, e2⟩` from `hχe b`. Rewrite using `[(H.lcLaws E w).1, e1, ← e2]`. Conclude with `hleft ![u, t] h`.
+
+Take `⟨ϖ', hϖ', hz, -⟩` from `hI.unif (atFin v (unif v)) (unif_spec v)`. Establish `hem : ∀ k : ℕ, em E (aE (pv v ^ k)) = aE (H.idl w ϖ' ^ k)` using `fun k => by`. Use `em_aE _ _ ?_` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, map_pow, hz, Dat.mkE, map_zero, zero_mul, add_zero]`. Both sides reduce to the same expression.
+
+Establish `hnv : 1 < normV v`. Use `GlobalTheory.LFun.one_lt_absNorm v` as an intermediate fact. Simplify `this` using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `hqw : H.q w = (normV v : ℂ) ^ 2`. Establish `: H.q w = (normV w : ℂ)` using `by simp [H.q, normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+
+Rewrite using `[this, hI.norm]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hqv : (normV v : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hsq : H.q w ^ (1 / 2 : ℂ) = (normV v : ℂ)`.
+
+Rewrite using `[hqw]`. Establish `e : ((normV v : ℂ) ^ 2) = ((((normV v : ℝ) ^ 2 : ℝ)) : ℂ)` using `by push_cast; rfl`. Rewrite using `[e, show (1 / 2 : ℂ) = ((1 / 2 : ℝ) : ℂ) by push_cast; rfl, ← Complex.ofReal_cpow (by positivity), ← Real.sqrt_eq_rpow, Real.sqrt_sq (by positivity)]`. Simplify using the standard rewrite rules. Use `⟨fun k => ((normV v : ℂ) ^ k)⁻¹ * ∑ i ∈ Finset.range (k + 1), (α : ℂ) ^ i * (β : ℂ) ^ (k - i), by simp, fun k g hg => ?_, fun _ => ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `UpperTheory.eigenform_shintani_formula_at_place E w ϖ' hϖ' χw hχ α β _ hEw hnl g (hg w hw) k`. Rewrite `h` using `[hsq]`. Rewrite using `[hem, mul_assoc, ← h, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero k hqv), one_mul]`. Establish `h1` using `hIs.inert v hv w hw hI.norm α β hsat`. Establish `h2` using `UpperTheory.powerSeries_completeHomogeneous_two_mul_eq_one ((α * χ.val v : ℂˣ) : ℂ) ((β * χ.val v : ℂˣ) : ℂ)`.
+
+Establish `h3 : (PowerSeries.mk fun k => ((normV v ^ k : ℕ) : ℂ) * ((χ.val v : ℂˣ) : ℂ) ^ k * (((normV v : ℂ) ^ k)⁻¹ * ∑ i ∈ Finset.range (k + 1), (α : ℂ) ^ i * (β : ℂ) ^ (k - i))) = PowerSeries.mk fun k : ℕ => ∑ i ∈ Finset.range (k + 1), ((α * χ.val v : ℂˣ) : ℂ) ^ i * ((β * χ.val v : ℂˣ) : …`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[Nat.cast_pow, mul_comm ((normV v : ℂ) ^ k), mul_assoc, ← mul_assoc ((normV v : ℂ) ^ k), mul_inv_cancel₀ (pow_ne_zero k hqv), one_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+
+Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi))`. Rewrite using `[Nat.add_sub_cancel_left, Units.val_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3]`. Take the linear combination `(PowerSeries.mk fun k : ℕ => ∑ i ∈ Finset.range (k + 1), ((α * χ.val v : ℂˣ) : ℂ) ^ i * ((β * χ.val v : ℂˣ) : ℂ) ^ (k - i)) * h1 - (PowerSeries.mk fun k => a (normV v ^ k)) * (1 - PowerSeries.X ^ 2) * h2`.
+-/
 theorem UpperTheory.exists_whittaker_heckeEigenvalues_at_inert_place :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (D : Dat ℚ E) (P : CuspSub E 2) (ω χ : HChar ℚ),
           CenN P ω → (∀ a, (χ.1 a * ω.1 a) ^ 2 = 1) → ∀ (L N : ℕ) φ, admitted D ω φ → Gd D P L N φ → ∀ a, IsAs P χ N a → ∀ v : H.P ℚ, ¬ Bad N v → ∀ w : H.P E, w.under (𝓞 ℚ) = v → H.Inert D v w →

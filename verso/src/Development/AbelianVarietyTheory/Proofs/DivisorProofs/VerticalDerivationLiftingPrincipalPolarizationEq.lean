@@ -27,6 +27,13 @@ noncomputable section
 namespace GlobalTheory.HeatConn.Vert
 open GlobalTheory.KS
 
+/- English proof (translation)
+Take `⟨hd, hcov, hle, htr⟩` from `hc`. Establish `le : ∀ W : A.left.Opens, (e ≫ m₀) ⁻¹ᵁ W ≤ e ⁻¹ᵁ (m₀ ⁻¹ᵁ W)` using `fun W => le_rfl`. Establish `app : ∀ W (f : Γ(A.left, W)), pbT e ((m₀.app W).hom f) ((e ≫ m₀) ⁻¹ᵁ W) = ((e ≫ m₀).app W).hom f`. Introduce `W f`. Rewrite using `[AdjDlog.app_eq_pbT m₀, AdjDlog.app_eq_pbT (e ≫ m₀), AdjDlog.pbT_pbT e m₀ le_rfl (le W)]`.
+
+Use `⟨⟨fun W _ f f' => ?_, fun W _ f f' => ?_, fun W W' h _ f => ?_, fun W _ r => ?_⟩, hcov, hle, fun i i' => ?_⟩` and prove the remaining obligations. Simplify using `only [hd.add W le_top, pbT_add]`. Rewrite using `[hd.mul W le_top, pbT_add, pbT_mul, pbT_mul, app, app]`. Use `show pbT e (v W' (resG A.left h f)) _ = rsT (pbT e (v W f) _) _`. Rewrite using `[hd.res W W' h le_top, pbT_rsT e (m₀.preimage_mono h) (le W'), rsT_pbT e (le W) ((e ≫ m₀).preimage_mono h)]`.
+
+Use `show pbT e (v W (constFn A.hom W r)) _ = _`. Rewrite using `[hd.base W le_top, pbT_constFn A₀.hom e (le W), he]`. Use `show pbT e (v (V i ⊓ V i') _) _ = _`. Rewrite using `[htr i i', pbT_mul, pbT_sub, AdjDlog.pbT_pbT e m₀ (m₀.preimage_mono (le_inf (inf_le_left.trans (hle i)) (inf_le_right.trans (hle i')))) (le _), pbT_rsT e (m₀.preimage_mono inf_le_left) (le _), pbT_rsT e (m₀.preimage_mono inf_le_right) (le _), rsT_pbT e (le _) ((e ≫ m₀).preimage_m …`.
+-/
 theorem transport {k : Type} [Field k] {R : Type} [CommRing R] (A : Over (Sp R)) (L : LB A.left)
     (A₀ B₀ : Over (Sp k)) (m₀ : A₀.left ⟶ A.left) (e : B₀.left ⟶ A₀.left) (he : e ≫ A₀.hom = B₀.hom)
     (D' : R → k) {J : Type} (V : J → A.left.Opens) (jj : J → L.ι)
@@ -51,6 +58,15 @@ theorem transport {k : Type} [Field k] {R : Type} [CommRing R] (A : Over (Sp R))
       pbT_rsT e (m₀.preimage_mono inf_le_left) (le _), pbT_rsT e (m₀.preimage_mono inf_le_right) (le _),
       rsT_pbT e (le _) ((e ≫ m₀).preimage_mono inf_le_left), rsT_pbT e (le _) ((e ≫ m₀).preimage_mono inf_le_right)]
 
+/- English proof (translation)
+Establish `hs : Smooth P₀.A.hom` using `P₀.isAb.smooth`. Establish `hU : IsAffineOpen (⊤ : (Sp R).Opens)` using `isAffineOpen_top _`. Take `⟨c0, hc0, -⟩` from `GlobalTheory.KSUniq.coeff_id hs hu hdd (spMap x₀) P.A.hom θ hθ hU ⊤ (fun _ _ => trivial) v (fun W _ => hv.add W le_top) (fun W _ => hv.mul W le_top) (fun W W' h _ => hv.res W W' h le_top) (fun W _ r => by`. Establish `e1 : pbT P.A.hom r W = constFn P.A.hom W ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom r)`. Rewrite using `[pbT_of_le _ (by simp)]`.
+
+Simplify using `[constFn]`. Rewrite using `[e1, hv.base W le_top]`. Simplify using `[constFn])`. Establish `hGF` using `GlobalTheory.allSixLaws.1.globalFns`. Use `choose s hs' using fun a => (hGF _ P₀.A P₀.isAb).2 (rsT (c0 a) ⊤)`.
+
+Use `⟨fun a => (Scheme.ΓSpecIso (CommRingCat.of k)).hom.hom (s a), fun W f => ?_⟩` and prove the remaining obligations. Rewrite using `[hc0 W le_top f]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← rsT_rsT (O₁ := ⊤) (by simp) le_top, ← hs' a, rsT_of_le le_top]`.
+
+Simplify using `[constFn]`. Both sides reduce to the same expression.
+-/
 theorem coeff_const (k : Type) [Field k] (R : Type) [CommRing R] (P : PolAV (Sp R)) (x₀ : R →+* k)
     (P₀ : PolAV (Sp k)) (θ : P₀.A.left ⟶ P.A.left) (hθ : IsPullback θ P₀.A.hom P.A.hom (spMap x₀))
     {n : ℕ} (u : Fin n → (epsR k ⟶ P₀.A)) (hu : IsLieBasis u)
@@ -77,6 +93,19 @@ theorem coeff_const (k : Type) [Field k] (R : Type) [CommRing R] (P : PolAV (Sp 
   simp [constFn]
   rfl
 
+/- English proof (translation)
+Take `⟨-, hcov, hle, htr⟩` from `hc`. Establish `hres : ∀ a, ∀ W W' (f : Γ(P₀.A.left, W)), W' ≤ W → dd a W' (rsT f W') = rsT (dd a W f) W'` using `fun a => ((GlobalTheory.KS.InvField.main k P₀.A (u a) (hu.1 a)).2 (dd a) (hdd a)).2.2.1`. Establish `hcovθ : ⨆ p, θ ⁻¹ᵁ V p = ⊤`. Use `eq_top_iff.2 fun z _ => ?_` and prove the remaining obligations. Establish `hz : θ z ∈ ⨆ i, V i` using `by rw [hcov]; trivial`.
+
+Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hz`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, hi⟩`. Use `GlobalTheory.T.isCechOneCoboundary_of_refinement (fun i => θ ⁻¹ᵁ P.L.U i) (lc P₀.A.hom c φ) (GlobalTheory.KSUniq.isCoc_lc _ _ _ hcoc) (fun p => θ ⁻¹ᵁ V p) jj (fun p => θ.preimage_mono (hle p)) hcovθ q (fun p p' => ?_)` and prove the remaining obligations. Establish `hWU : V p ⊓ V p' ≤ P.L.U (jj p) ⊓ P.L.U (jj p')` using `le_inf (inf_le_left.trans (hle p)) (inf_le_right.trans (hle p'))`. Establish `hOU : θ ⁻¹ᵁ (V p ⊓ V p') ≤ θ ⁻¹ᵁ P.L.U (jj p) ⊓ θ ⁻¹ᵁ P.L.U (jj p')` using `θ.preimage_mono hWU`.
+
+Express the relevant statement in the definitionally equal form `rsT (lc P₀.A.hom c φ (jj p) (jj p')) (θ ⁻¹ᵁ (V p ⊓ V p')) = rsT (q p') (θ ⁻¹ᵁ (V p ⊓ V p')) - rsT (q p) (θ ⁻¹ᵁ (V p ⊓ V p'))`. Establish `E` using `htr p p'`. Rewrite `E` using `[hcv]`. Use `set g := (P.L.g (jj p) (jj p')).val with hg`. Establish `r1 : rsT (pbT θ g (θ ⁻¹ᵁ P.L.U (jj p) ⊓ θ ⁻¹ᵁ P.L.U (jj p'))) (θ ⁻¹ᵁ (V p ⊓ V p')) = pbT θ g (θ ⁻¹ᵁ (V p ⊓ V p'))` using `rsT_pbT θ (O₀ := P.L.U (jj p) ⊓ P.L.U (jj p')) (O₁ := θ ⁻¹ᵁ P.L.U (jj p) ⊓ θ ⁻¹ᵁ P.L.U (jj p')) le_rfl hOU _`.
+
+Establish `e1 : (θ.app (V p ⊓ V p')).hom (rsT g (V p ⊓ V p')) = rsT (pbT θ g (θ ⁻¹ᵁ P.L.U (jj p) ⊓ θ ⁻¹ᵁ P.L.U (jj p'))) (θ ⁻¹ᵁ (V p ⊓ V p'))`. Rewrite using `[AdjDlog.app_eq_pbT, pbT_rsT θ hWU le_rfl, r1]`. Establish `e2 : ∀ a, dd a (θ ⁻¹ᵁ (V p ⊓ V p')) ((θ.app (V p ⊓ V p')).hom (rsT g (V p ⊓ V p'))) = pbT θ g (θ ⁻¹ᵁ (V p ⊓ V p')) * rsT (φ a (jj p) (jj p')) (θ ⁻¹ᵁ (V p ⊓ V p'))` using `fun a => by`. Rewrite using `[e1, hres a _ _ _ hOU, ← hφ a (jj p) (jj p'), rsT_mul, r1]`. Simplify using `only [e2] at E`.
+
+Establish `hunit : IsUnit (pbT θ g (θ ⁻¹ᵁ (V p ⊓ V p')))` using `AdjDlog.isUnit_pbT θ (θ.preimage_mono hWU) _`. Use `(hunit.mul_left_cancel ?_).symm` and prove the remaining obligations. Rewrite using `[← E, lc, rsT_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[rsT_mul, rsT_constFn _ hOU]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cob_of_conn (k : Type) [Field k] (R : Type) [CommRing R] (P : PolAV (Sp R))
     (P₀ : PolAV (Sp k)) (θ : P₀.A.left ⟶ P.A.left)
     {n : ℕ} (u : Fin n → (epsR k ⟶ P₀.A)) (hu : IsLieBasis u)
@@ -120,6 +149,11 @@ theorem cob_of_conn (k : Type) [Field k] (R : Type) [CommRing R] (P : PolAV (Sp 
   rw [rsT_mul, rsT_constFn _ hOU]
   ring
 
+/- English proof (translation)
+Use `haveI : IsCommMonObj P₀.A := P₀.isAb.comm`. Take `⟨u, hu⟩` from `GlobalTheory.CM.TenDim.exists_isLieBasis P₀.A P₀.smoothDim`. Use `choose dd hdd using fun a => (GlobalTheory.KS.InvField.main k P₀.A (u a) (hu.1 a)).1`. Take `⟨⟨φ, hφ⟩, hind⟩` from `GlobalTheory.KS.DlogPol.dlog_independent k P₀ P₀.g u dd hu hdd _ θ P.L P.isLB hiso`. Take `⟨hcoc, hcob⟩` from `hind φ hφ`.
+
+Take `⟨c, hcv⟩` from `coeff_const k R P x₀ P₀ θ hθ u hu dd hdd v hc.1`. Establish `c0` using `hcob c (cob_of_conn k R P P₀ θ u hu dd hdd φ hφ hcoc V jj v q hc c hcv)`. Rewrite using `[hcv]`. Simplify using `[c0, constFn]`.
+-/
 theorem vert_polAV (k : Type) [Field k] (R : Type) [CommRing R] (P : PolAV (Sp R)) (x₀ : R →+* k)
     (P₀ : PolAV (Sp k)) (θ : P₀.A.left ⟶ P.A.left) (hθ : IsPullback θ P₀.A.hom P.A.hom (spMap x₀))
     (hiso : LBIso P₀.L (P.L.pull θ)) {J : Type} (V : J → P.A.left.Opens) (jj : J → P.L.ι)
@@ -136,6 +170,13 @@ theorem vert_polAV (k : Type) [Field k] (R : Type) [CommRing R] (P : PolAV (Sp R
   rw [hcv]
   simp [c0, constFn]
 
+/- English proof (translation)
+Introduce `k _ R _ P x₀ A₀ _ m₀ hm J V jj v q hc W f`. Take `⟨P₀, θ, hθ, hiso⟩` from `GlobalTheory.UniformisedModel.exists_polBaseChange GlobalTheory.allSixLaws.1.polBaseChange (spMap x₀) P`. Take `⟨e, -, he⟩` from `grpPullback_iso hθ hm`. Substitute `he` using the available equality. Establish `hw : e.hom.left ≫ A₀.hom = P₀.A.hom` using `Over.w e.hom`.
+
+Establish `hc'` using `transport P.A P.L A₀ P₀.A m₀ e.hom.left hw (fun _ => 0) V jj v q hc`. Establish `h0` using `vert_polAV k R P x₀ P₀ _ hθ.1 hiso V jj _ _ hc' W f`. Use `haveI : IsIso e.hom.left := ⟨⟨e.inv.left, by rw [← Over.comp_left, e.hom_inv_id, Over.id_left], by rw [← Over.comp_left, e.inv_hom_id, Over.id_left]⟩⟩`. Establish `hle : m₀ ⁻¹ᵁ W ≤ (inv e.hom.left) ⁻¹ᵁ ((e.hom.left ≫ m₀) ⁻¹ᵁ W)`. Rewrite using `[← Scheme.Hom.comp_preimage, IsIso.inv_hom_id_assoc]`.
+
+Establish `key` using `congrArg (fun s => pbT (inv e.hom.left) s (m₀ ⁻¹ᵁ W)) h0`. Rewrite `key` using `[AdjDlog.pbT_pbT (inv e.hom.left) e.hom.left (U := m₀ ⁻¹ᵁ W) (V := (e.hom.left ≫ m₀) ⁻¹ᵁ W) le_rfl hle, IsIso.inv_hom_id, LinDir.pbT_id, pbT_zero]`. Conclude with `key`.
+-/
 theorem vert_eq_zero : ∀ (k : Type) [Field k] (R : Type) [CommRing R] (P : PolAV (Sp R)) (x₀ : R →+* k) (A₀ : Over (Sp k)) [GrpObj A₀] (m₀ : A₀.left ⟶ P.A.left), IsGrpPullback A₀ P.A (spMap x₀) m₀ → ∀ {J : Type} (V : J → P.A.left.Opens) (jj : J → P.L.ι) (v : ∀ W : P.A.left.Opens, Γ(P.A.left, W) → Γ(A₀.left, m₀ ⁻¹ᵁ W)) (q : ∀ i, Γ(A₀.left, m₀ ⁻¹ᵁ V i)), GlobalTheory.HeatConn.IsConnK P.A P.L A₀ m₀ (fun _ => 0) V jj v q → ∀ (W : P.A.left.Opens) (f : Γ(P.A.left, W)), v W f = 0 := by
   intro k _ R _ P x₀ A₀ _ m₀ hm J V jj v q hc W f
   obtain ⟨P₀, θ, hθ, hiso⟩ := GlobalTheory.UniformisedModel.exists_polBaseChange GlobalTheory.allSixLaws.1.polBaseChange (spMap x₀) P

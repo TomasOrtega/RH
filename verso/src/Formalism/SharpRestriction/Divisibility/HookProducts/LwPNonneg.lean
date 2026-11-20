@@ -15,16 +15,39 @@ variable {D : D7} {L : SizeData₂ D}
 
 def gC (L : SizeData₂ D) (C : ℝ) (p : ℕ) : ℝ := if (p : ℝ) ≤ L.sc.X'' D.R.n then C / (p : ℝ) else 0
 
+/- English proof (translation)
+Unfold `gC`. Use `split_ifs`. Conclude with `div_nonneg hC (Nat.cast_nonneg _)`. Conclude with `le_refl 0`.
+-/
 theorem gC_nonneg (L : SizeData₂ D) {C : ℝ} (hC : 0 ≤ C) (p : ℕ) : 0 ≤ gC L C p := by
   unfold gC
   split_ifs
   · exact div_nonneg hC (Nat.cast_nonneg _)
   · exact le_refl 0
 
+/- English proof (translation)
+Simplify using `only [SizeData₂.lwP, lw]`. Conclude with `div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)`.
+-/
 theorem logWeight_nonneg' (w : D.what₂.places.Pl) : 0 ≤ SizeData₂.lwP w := by
   simp only [SizeData₂.lwP, lw]
   exact div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)
 
+/- English proof (translation)
+Establish `ha` using `a_nonneg L`. Establish `hX0 : 0 ≤ L.sc.X'' D.R.n`. Unfold `Scale.X''`. Conclude with `div_nonneg ha w''_nonneg`. Establish `s1 : ∑ w ∈ L.supp, SizeData₂.sz w (y w) ≤ 2 * ∑ w ∈ L.supp, SizeData₂.lwP w * (D.what₂.places.ramIdx w : ℝ) * gC L C (D.what₂.places.resChar w)`.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun w _ => ?_` and prove the remaining obligations. Unfold `SizeData₂.sz`. Establish `hc : 0 ≤ 2 * SizeData₂.lwP w * (D.what₂.places.ramIdx w : ℝ)` using `mul_nonneg (mul_nonneg zero_le_two (logWeight_nonneg' w)) (Nat.cast_nonneg _)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `s2` using `Formalism.MainNotions.G.TopChoiceBounds.bt_sum_by_prime L.supp (gC L C) (gC_nonneg L hC)`. Use `set P' : Finset ℕ := (Finset.range ⌈L.sc.X'' D.R.n + 1⌉₊).filter Nat.Prime with hP'`. Establish `hf0 : ∀ p : ℕ, 0 ≤ C * (Real.log p / p)` using `fun p => mul_nonneg hC (div_nonneg (Real.log_natCast_nonneg p) (Nat.cast_nonneg p))`. Establish `hpt : ∀ p ∈ L.supp.image D.what₂.places.resChar, Real.log (p : ℝ) * gC L C p ≤ if p ∈ P' then C * (Real.log p / p) else 0`. Introduce `p hp`.
+
+Take `⟨w, _, rfl⟩` from `Finset.mem_image.1 hp`. Establish `hpr` using `D.what₂.places.resChar_prime w`. Unfold `gC`. Use `split_ifs with h1 h2 h2`. Apply `le_of_eq` to reduce the goal to its premises.
+
+Expand and normalize the polynomial expressions, which then agree. It suffices to derive a contradiction. Apply `h2` to reduce the goal to its premises. Rewrite using `[hP', Finset.mem_filter, Finset.mem_range]`. Conclude with `⟨Nat.lt_ceil.2 (by linarith), hpr⟩`.
+
+Rewrite using `[mul_zero]`. Conclude with `hf0 _`. Rewrite using `[mul_zero]`. Establish `s3 : ∑ p ∈ L.supp.image D.what₂.places.resChar, Real.log (p : ℝ) * gC L C p ≤ ∑ p ∈ P', C * (Real.log p / p)`. Use `le_trans (Finset.sum_le_sum hpt) ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_ite_mem]`. Conclude with `Finset.sum_le_sum_of_subset_of_nonneg Finset.inter_subset_right (fun p _ _ => hf0 p)`. Establish `s4 : ∑ p ∈ P', C * (Real.log p / p) ≤ C * (2 * Real.log (L.sc.X'' D.R.n + 1))`. Rewrite using `[← Finset.mul_sum]`. Conclude with `mul_le_mul_of_nonneg_left (hM _ (by linarith)) hC`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sumSz_le (C : ℝ) (hC : 0 ≤ C) (y : D.what₂.places.Pl → ℝ)
     (hy : ∀ w, y w ≤ gC L C (D.what₂.places.resChar w)) (hM : Formalism.MainNotions.CornerGLContinuity.MertensBound D) :
     ∑ w ∈ L.supp, SizeData₂.sz w (y w) ≤ 4 * C * Real.log (L.sc.X'' D.R.n + 1) := by
@@ -73,6 +96,11 @@ theorem sumSz_le (C : ℝ) (hC : 0 ≤ C) (y : D.what₂.places.Pl → ℝ)
     exact mul_le_mul_of_nonneg_left (hM _ (by linarith)) hC
   linarith
 
+/- English proof (translation)
+Unfold `wj`. Use `split_ifs with h`. Conclude with `e_bounds hN hK hLa hBot hEta τ ⟨j - 1, h⟩`. Establish `hP1` using `one_le_szPol L`. Establish `hb1` using `one_le_b L`.
+
+Conclude with `⟨le_rfl, by positivity⟩`.
+-/
 theorem wj_bounds (hN : SizeN L) (hK : SizeK L) (hLa : SizeLa L) (hBot : SizeBot L) (hEta : SizeEta L)
     (j : ℕ) (τ : D.what₂.Tau) :
     0 ≤ wj D j τ ∧ wj D j τ ≤ 4 * Formalism.MainNotions.DIV.Proofs.szPol L ^ 5 * L.sc.b := by
@@ -83,6 +111,31 @@ theorem wj_bounds (hN : SizeN L) (hK : SizeK L) (hLa : SizeLa L) (hBot : SizeBot
     have hb1 := one_le_b L
     exact ⟨le_rfl, by positivity⟩
 
+/- English proof (translation)
+Use `set Pz := Formalism.MainNotions.DIV.Proofs.szPol L with hPz`. Establish `hP1 : 1 ≤ Pz` using `one_le_szPol L`. Establish `hk0 : 0 ≤ (D.R.k : ℝ) - 1` using `by linarith`. Establish `hp2 : (2 : ℝ) ≤ p` using `by exact_mod_cast hp.two_le`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`.
+
+Establish `hq : (p : ℝ) ≤ (p : ℝ) ^ 2 - 1` using `by nlinarith`. Establish `hq0 : (0 : ℝ) < (p : ℝ) ^ 2 - 1` using `by linarith`. Establish `hA : 0 ≤ ((D.R.k : ℝ) - 1) * W` using `mul_nonneg hk0 hW0`. Unfold `FInert`. Use `split_ifs with hc`.
+
+Establish `hterm : ∀ τ : D.what₂.Tau, ((D.R.k : ℝ) - 1) * wj D j τ / ((p : ℝ) ^ 2 - 1) ≤ ((D.R.k : ℝ) - 1) * W / p`. Introduce `τ`. Rewrite using `[div_le_div_iff₀ hq0 hp0]`. Establish `h1 : ((D.R.k : ℝ) - 1) * wj D j τ ≤ ((D.R.k : ℝ) - 1) * W` using `mul_le_mul_of_nonneg_left (hW τ).2 hk0`. Establish `h2 : 0 ≤ ((D.R.k : ℝ) - 1) * wj D j τ` using `mul_nonneg hk0 (hW τ).1`.
+
+Use the polynomial consequences of the given equalities and inequalities. Use `le_trans (Finset.sum_le_sum fun τ _ => hterm τ) ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Establish `hc1 : ((Finset.univ : Finset D.what₂.Tau).card : ℝ) ≤ Pz` using `card_Tau (L := L)`. Establish `hB : 0 ≤ ((D.R.k : ℝ) - 1) * W / p` using `div_nonneg hA hp0.le`.
+
+Establish `e : 4 * Pz * ((D.R.k : ℝ) - 1) * W / p = 4 * Pz * (((D.R.k : ℝ) - 1) * W / p)` using `by ring`. Rewrite using `[e]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hn0 : (0 : ℝ) < nP D p` using `by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne _)`. Establish `hg : (p : ℝ) / ((p : ℝ) ^ 2 - 1) ≤ 2 / p`.
+
+Rewrite using `[div_le_div_iff₀ hq0 hp0]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hg0 : 0 ≤ (p : ℝ) / ((p : ℝ) ^ 2 - 1)` using `div_nonneg hp0.le hq0.le`. Establish `horb : ∀ z : Bool × HH D, FOrb D j p z ≤ 2 / p * ((nP D p : ℝ) * (((D.R.k : ℝ) - 1) * W))`. Introduce `z`.
+
+Unfold `FOrb`. Use `le_trans (Formalism.MainNotions.WeilJacquetShalikaLaw.Proof.sz_lpF_le _ _ _) ?_` and prove the remaining obligations. Establish `hs : ∑ s : ZMod (nP D p), ((D.R.k : ℝ) - 1) * wPl D j (posPl D p z s.val) ≤ (nP D p : ℝ) * (((D.R.k : ℝ) - 1) * W)`. Use `le_trans (Finset.sum_le_sum fun s _ => mul_le_mul_of_nonneg_left (hW _).2 hk0) ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.card_univ, ZMod.card, nsmul_eq_mul]`.
+
+Establish `hs0 : 0 ≤ (nP D p : ℝ) * (((D.R.k : ℝ) - 1) * W)` using `mul_nonneg hn0.le hA`. Combine the equalities or inequalities in the displayed calculation. Establish `hsum : ∑ z : Bool × HH D, FOrb D j p z ≤ (Fintype.card (Bool × HH D) : ℝ) * (2 / p * ((nP D p : ℝ) * (((D.R.k : ℝ) - 1) * W)))`. Use `le_trans (Finset.sum_le_sum fun z _ => horb z) ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+
+Establish `hcard : (Fintype.card (Bool × HH D) : ℝ) ≤ Pz`. Rewrite using `[Fintype.card_prod, Fintype.card_bool, Formalism.HC.Frame.card_A]`. Establish `hfe : (D.R.f : ℝ) = 2 * D.R.n` using `Formalism.MainNotions.DIV.Proofs.HHParts.f_eq`. Establish `hn : (D.R.n : ℝ) = (D.R.ord : ℝ)` using `rfl`. Use `push_cast`.
+
+Rewrite using `[← hn]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[div_le_iff₀ hn0]`. Establish `hB : 0 ≤ 2 / p * ((nP D p : ℝ) * (((D.R.k : ℝ) - 1) * W))` using `mul_nonneg (div_nonneg zero_le_two hp0.le) (mul_nonneg hn0.le hA)`. Establish `h1 : (Fintype.card (Bool × HH D) : ℝ) * (2 / p * ((nP D p : ℝ) * (((D.R.k : ℝ) - 1) * W))) ≤ Pz * (2 / p * ((nP D p : ℝ) * (((D.R.k : ℝ) - 1) * W)))` using `mul_le_mul_of_nonneg_right hcard hB`.
+
+Establish `e : 4 * Pz * ((D.R.k : ℝ) - 1) * W / p * (nP D p : ℝ) = 2 * (Pz * (2 / p * ((nP D p : ℝ) * (((D.R.k : ℝ) - 1) * W))))`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `hPB : 0 ≤ Pz * (2 / p * ((nP D p : ℝ) * (((D.R.k : ℝ) - 1) * W)))` using `mul_nonneg (by linarith) hB`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem FInert_le (j : ℕ) (W : ℝ) (hW0 : 0 ≤ W) (hW : ∀ τ, 0 ≤ wj D j τ ∧ wj D j τ ≤ W) (hk : 1 ≤ (D.R.k : ℝ))
     (hf : (D.R.f : ℝ) ≤ Formalism.MainNotions.DIV.Proofs.szPol L) (p : ℕ) (hp : p.Prime) :
     FInert D j p ≤ 4 * Formalism.MainNotions.DIV.Proofs.szPol L * ((D.R.k : ℝ) - 1) * W / p := by
@@ -152,6 +205,25 @@ theorem FInert_le (j : ℕ) (W : ℝ) (hW0 : 0 ≤ W) (hW : ∀ τ, 0 ≤ wj D j
     have hPB : 0 ≤ Pz * (2 / p * ((nP D p : ℝ) * (((D.R.k : ℝ) - 1) * W))) := mul_nonneg (by linarith) hB
     linarith
 
+/- English proof (translation)
+Take `⟨hN, -, hK, -, -, -, -, -, hLa, -, hBot, -, -, hEta, -⟩` from `hS`. Use `set Pz := Formalism.MainNotions.DIV.Proofs.szPol L with hPz`. Establish `hP1 : 1 ≤ Pz` using `one_le_szPol L`. Establish `hb1` using `one_le_b L`. Establish `hC : 0 ≤ 16 * Pz ^ 7 * L.sc.b` using `by positivity`.
+
+Establish `hW` using `wj_bounds hN hK hLa hBot hEta j`. Establish `hW0 : 0 ≤ 4 * Pz ^ 5 * L.sc.b` using `by positivity`. Establish `hk : 1 ≤ (D.R.k : ℝ)` using `k_one hK`. Establish `hkP : (D.R.k : ℝ) ≤ Pz` using `k_le L`. Establish `hp` using `D.what₂.places.resChar_prime w`.
+
+Establish `hp0 : (0 : ℝ) < D.what₂.places.resChar w` using `by exact_mod_cast hp.pos`. Establish `hg0` using `gC_nonneg L hC (D.what₂.places.resChar w)`. Rewrite using `[hFD j hj w]`. Unfold `Fval FvalP`. Use `split_ifs with h1 h2 h3`.
+
+Unfold `FTypeG`. Establish `hd : (0 : ℝ) ≤ (fockDeg D j : ℝ)`. Establish `: (0 : ℤ) ≤ fockDeg D j`. Unfold `fockDeg`. Conclude with `Finset.sum_nonneg fun τ _ => add_nonneg (Finset.sum_nonneg fun a _ => abs_nonneg _) (Finset.sum_nonneg fun a _ => abs_nonneg _)`.
+
+Conclude with `this` after adjusting the coercions. Establish `: -((fockDeg D j : ℝ)) / 2 ≤ 0` using `by linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `FRamD`. Establish `hs : 0 ≤ ∑ t : HH D, min (wPl D j (false, t)) (wPl D j (true, t))` using `Finset.sum_nonneg fun t _ => le_min (hW _).1 (hW _).1`.
+
+Establish `: -(((D.R.k : ℝ) - 1) / 2) * ∑ t : HH D, min (wPl D j (false, t)) (wPl D j (true, t)) ≤ 0`. Establish `hk2 : 0 ≤ ((D.R.k : ℝ) - 1) / 2` using `by linarith`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hI` using `FInert_le j (4 * Pz ^ 5 * L.sc.b) hW0 hW hk (f_le L) _ hp`.
+
+Unfold `gC`. Rewrite using `[if_pos h3.2]`. Use `le_trans hI ?_` and prove the remaining obligations. Rewrite using `[div_le_div_iff_of_pos_right hp0]`. Establish `hk0 : 0 ≤ (D.R.k : ℝ) - 1` using `by linarith`.
+
+Establish `e1 : ((D.R.k : ℝ) - 1) ≤ Pz` using `by linarith`. Establish `e2 : 4 * Pz * ((D.R.k : ℝ) - 1) ≤ 4 * Pz * Pz` using `by nlinarith`. Establish `e3 : 4 * Pz * ((D.R.k : ℝ) - 1) * (4 * Pz ^ 5 * L.sc.b) ≤ 4 * Pz * Pz * (4 * Pz ^ 5 * L.sc.b)` using `mul_le_mul_of_nonneg_right e2 hW0`. Establish `e4 : 4 * Pz * Pz * (4 * Pz ^ 5 * L.sc.b) = 16 * Pz ^ 7 * L.sc.b` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `hg0`.
+-/
 theorem F_le (hFD : L.FDef) (hS : SizesAt L) (j : ℕ) (hj : j ∈ SizeData₂.lifts D) (w : D.what₂.places.Pl) :
     L.F j w ≤ gC L (16 * Formalism.MainNotions.DIV.Proofs.szPol L ^ 7 * L.sc.b) (D.what₂.places.resChar w) := by
   classical
@@ -203,6 +275,21 @@ theorem F_le (hFD : L.FDef) (hS : SizesAt L) (j : ℕ) (hj : j ∈ SizeData₂.l
     linarith
   · exact hg0
 
+/- English proof (translation)
+Establish `hx1` using `L.sc.one_lt_alt`. Establish `hx0 : 0 < L.sc.x` using `lt_trans zero_lt_one hx1`. Establish `hb : 0 < L.sc.b`. Simplify using `only [Scale.b]`. Conclude with `Real.exp_pos _`.
+
+Establish `hL0 : 0 ≤ L.sc.L`. Simplify using `only [Scale.L]`. Conclude with `Real.rpow_nonneg hx0.le _`. Establish `hf : (0 : ℝ) ≤ (D.R.f : ℝ)` using `by positivity`. Establish `hk0 : (0 : ℝ) ≤ (D.R.k : ℝ)` using `by positivity`.
+
+Establish `hm0 : (0 : ℝ) ≤ (D.R.m : ℝ)` using `by positivity`. Establish `ht : (0 : ℝ) ≤ (D.R.t : ℝ)` using `by positivity`. Establish `hNm : (0 : ℝ) ≤ (D.R.N D.R.m : ℝ)` using `by positivity`. Establish `hmP : (D.R.m : ℝ) ≤ Formalism.MainNotions.DIV.Proofs.szPol L`. Unfold `Formalism.MainNotions.DIV.Proofs.szPol`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hQ1 : 1 ≤ Formalism.MainNotions.DIV.Proofs.szPol L`. Unfold `Formalism.MainNotions.DIV.Proofs.szPol`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hQ0 : 0 ≤ Formalism.MainNotions.DIV.Proofs.szPol L` using `by linarith`.
+
+Establish `hC0 : 0 ≤ 16 * Formalism.MainNotions.DIV.Proofs.szPol L ^ 7 * L.sc.b` using `mul_nonneg (mul_nonneg (by norm_num) (pow_nonneg hQ0 7)) hb.le`. Establish `hj : ∀ j ∈ SizeData₂.lifts D, ∑ w ∈ L.supp, SizeData₂.sz w (L.F j w) ≤ 4 * (16 * Formalism.MainNotions.DIV.Proofs.szPol L ^ 7 * L.sc.b) * Real.log (L.sc.X'' D.R.n + 1)` using `fun j hj => sumSz_le _ hC0 (fun w => L.F j w) (fun w => F_le hFD hS j hj w) hM`. Establish `hsum : L.Fo ≤ ∑ j ∈ SizeData₂.lifts D, 4 * (16 * Formalism.MainNotions.DIV.Proofs.szPol L ^ 7 * L.sc.b) * Real.log (L.sc.X'' D.R.n + 1)`. Unfold `SizeData₂.Fo`. Conclude with `Finset.sum_le_sum hj`.
+
+Rewrite `hsum` using `[Finset.sum_const, nsmul_eq_mul, Formalism.MainNotions.DIV.HookProducts.Row4.card_lifts_eq]`. Establish `hlog` using `Formalism.MainNotions.DIV.HookProducts.Row4.logX_le hS.1 hS.2.2.1`. Establish `hC4 : 0 ≤ 4 * (16 * Formalism.MainNotions.DIV.Proofs.szPol L ^ 7 * L.sc.b)` using `by linarith`. Establish `s1 : (D.R.m : ℝ) * (4 * (16 * Formalism.MainNotions.DIV.Proofs.szPol L ^ 7 * L.sc.b) * Real.log (L.sc.X'' D.R.n + 1)) ≤ (D.R.m : ℝ) * (4 * (16 * Formalism.MainNotions.DIV.Proofs.szPol L ^ 7 * L.sc.b) * (4 * Formalism.MainNotions.DIV.Proofs.szPol L))` using `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hlog hC4) hm0`. Establish `s2 : (D.R.m : ℝ) * (4 * (16 * Formalism.MainNotions.DIV.Proofs.szPol L ^ 7 * L.sc.b) * (4 * Formalism.MainNotions.DIV.Proofs.szPol L)) ≤ Formalism.MainNotions.DIV.Proofs.szPol L * (4 * (16 * Formalism.MainNotions.DIV.Proofs.szPol L ^ 7 * L.sc.b) * (4 * Formalism.MainNotions.DIV.P …` using `mul_le_mul_of_nonneg_right hmP (mul_nonneg hC4 (by linarith))`.
+
+Combine the linear relations using `[hsum, s1, s2]`.
+-/
 theorem fo_le_pol (hFD : L.FDef) (hS : SizesAt L) (hM : Formalism.MainNotions.CornerGLContinuity.MertensBound D) :
     L.Fo ≤ 256 * Formalism.MainNotions.DIV.Proofs.szPol L ^ 9 * L.sc.b := by
   have hx1 := L.sc.one_lt_alt
@@ -247,6 +334,11 @@ theorem fo_le_pol (hFD : L.FDef) (hS : SizesAt L) (hM : Formalism.MainNotions.Co
     mul_le_mul_of_nonneg_right hmP (mul_nonneg hC4 (by linarith))
   linarith [hsum, s1, s2]
 
+/- English proof (translation)
+Use `⟨256, fun x hx hx1 i => ?_⟩` and prove the remaining obligations. Establish `h` using `fo_le_pol (Fm.ex x hx1 i).fdef (Fm.sizes x hx1 i) (Formalism.MainNotions.G.Joints.Lit.mertens_bound _)`. Establish `hX : (Fm.L x i).sc.x = x` using `Fm.L_x x i hx1`. Establish `hCt : (Fm.L x i).Ct = Fm.Ct` using `Fm.Ct_eq x i`. Establish `hb` using `Formalism.MainNotions.DIV.Proofs.bPol_le (Fm.sizes x hx1 i) 256 9 (by rw [hX]; norm_num; linarith)`.
+
+Rewrite `hb` using `[hX, hCt]`. Establish `e : ((9 : ℕ) : ℝ) * (max Fm.Ct 5 + 3) + 1 = 9 * (max Fm.Ct 5 + 3) + 1` using `by norm_num`. Rewrite `hb` using `[e]`. Conclude with `h.trans hb`.
+-/
 theorem fo_pow {eps : ℝ} (Fm : FamP eps) :
     ∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ i : Fm.Ix x,
       (Fm.L x i).Fo ≤ x ^ (9 * (max Fm.Ct 5 + 3) + 1) * (Fm.L x i).sc.b := by

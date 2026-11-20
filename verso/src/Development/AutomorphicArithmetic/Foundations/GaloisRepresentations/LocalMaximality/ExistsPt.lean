@@ -16,6 +16,11 @@ end IntegralMvPolynomialLemmas
 
 end UpperTheory.Gal.productCup_of_system
 
+/- English proof (translation)
+Take `⟨M, hM, hIM⟩` from `Ideal.exists_le_maximal I hI`. Use `letI := Ideal.Quotient.field M`. Use `haveI : Module.Finite ℂ (B ⧸ M) := finite_of_finite_type_of_isJacobsonRing ℂ (B ⧸ M)`. Use `haveI : Algebra.IsIntegral ℂ (B ⧸ M) := Algebra.IsIntegral.of_finite ℂ _`. Establish `hbij : Function.Bijective (algebraMap ℂ (B ⧸ M))` using `IsAlgClosed.algebraMap_bijective_of_isIntegral`.
+
+Set `φ` to `AlgEquiv.ofBijective (Algebra.ofId ℂ (B ⧸ M)) hbij`. Use `⟨φ.symm.toAlgHom.comp (Ideal.Quotient.mkₐ ℂ M), fun b hb => ?_⟩` and prove the remaining obligations. Establish `h0 : Ideal.Quotient.mk M b = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (hIM hb)`. Simplify using `[h0]`.
+-/
 private theorem lG_of_lemma {L : Type} [Field L] [Algebra ℂ L] (B : Subalgebra ℂ L)
     [Algebra.FiniteType ℂ B] (I : Ideal B) (hI : I ≠ ⊤) :
     ∃ e : B →ₐ[ℂ] ℂ, ∀ b ∈ I, e b = 0 := by
@@ -30,6 +35,13 @@ private theorem lG_of_lemma {L : Type} [Field L] [Algebra ℂ L] (B : Subalgebra
   have h0 : Ideal.Quotient.mk M b = 0 := Ideal.Quotient.eq_zero_iff_mem.mpr (hIM hb)
   simp [h0]
 
+/- English proof (translation)
+Use `⟨{ carrier := {x | ∃ b : B, e b ≠ 0 ∧ (b : L) • x ∈ N} add_mem' := ?_ zero_mem' := ⟨1, by simp, by simp⟩ smul_mem' := ?_ }, fun x hx => hx, fun x hx => hx⟩` and prove the remaining obligations. Introduce and unpack `x y ⟨b1, h1, hx⟩ ⟨b2, h2, hy⟩`. Use `⟨b1 * b2, by simp [h1, h2], ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Apply `N.add_mem` to reduce the goal to its premises.
+
+Rewrite using `[Subalgebra.coe_mul, mul_comm (b1 : L), mul_smul]`. Conclude with `hN b2 _ hx`. Rewrite using `[Subalgebra.coe_mul, mul_smul]`. Conclude with `hN b1 _ hy`. Introduce and unpack `c x ⟨b, hb, hx⟩`.
+
+Conclude with `⟨b, hb, by rw [smul_comm]; exact N.smul_mem c hx⟩`.
+-/
 private theorem lG_of_lemma_2 {L W : Type} [Field L] [Algebra ℂ L] (B : Subalgebra ℂ L)
     [AddCommGroup W] [Module L W] [Module ℂ W] [IsScalarTower ℂ L W] (N : Submodule ℂ W)
     (hN : ∀ b : B, ∀ v ∈ N, (b : L) • v ∈ N) (e : B →ₐ[ℂ] ℂ) :
@@ -50,6 +62,13 @@ private theorem lG_of_lemma_2 {L W : Type} [Field L] [Algebra ℂ L] (B : Subalg
   · rintro c x ⟨b, hb, hx⟩
     exact ⟨b, hb, by rw [smul_comm]; exact N.smul_mem c hx⟩
 
+/- English proof (translation)
+Set `I : Ideal B` to `{ carrier := {b | (b : L) • x ∈ N} add_mem' := fun {a c} ha hc => by`. Simplify using `only [Set.mem_setOf_eq, Subalgebra.coe_add, add_smul] at *`. Conclude with `N.add_mem ha hc`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun c {b} hb => by`.
+
+Simplify using `only [Set.mem_setOf_eq, smul_eq_mul, Subalgebra.coe_mul, mul_smul] at *`. Conclude with `hN c _ hb }`. Distinguish the cases in `hI : I = ⊤`. Establish `h1 : (1 : B) ∈ I` using `by rw [hI]; exact Submodule.mem_top`. Express the relevant statement in the definitionally equal form `((1 : B) : L) • x ∈ N at h1`.
+
+Simplify using `using h1`. Take `⟨e, he⟩` from `lG_of_lemma B I hI`. Take `⟨b, hb, hbx⟩` from `hx e`. Conclude with `absurd (he b hbx) hb`.
+-/
 private theorem lG_of_lemma_3 {L W : Type} [Field L] [Algebra ℂ L] (B : Subalgebra ℂ L)
     [Algebra.FiniteType ℂ B] [AddCommGroup W] [Module L W] [Module ℂ W] [IsScalarTower ℂ L W]
     (N : Submodule ℂ W) (hN : ∀ b : B, ∀ v ∈ N, (b : L) • v ∈ N) (x : W)
@@ -71,6 +90,43 @@ private theorem lG_of_lemma_3 {L W : Type} [Field L] [Algebra ℂ L] (B : Subalg
     obtain ⟨b, hb, hbx⟩ := hx e
     exact absurd (he b hbx) hb
 
+/- English proof (translation)
+Introduce `L _ _ B _ V σ _ _ _ _ _ _ A w hA`. Establish `hAs : ∀ s, ∀ b : B, ∀ v ∈ A s, (b : L) • v ∈ A s` using `fun s b v hv => by`. Simplify using `using hA s (b : L) b.2 v hv`. Establish `hloc : ∀ (e : B →ₐ[ℂ] ℂ) (N : Submodule ℂ V), (∀ b : B, ∀ v ∈ N, (b : L) • v ∈ N) → ∀ v ∈ locM B e N, ∃ b : B, e b ≠ 0 ∧ (b : L) • v ∈ N`. Introduce `e N hN v hv`.
+
+Take `⟨S, hS1, hS2⟩` from `lG_of_lemma_2 B N hN e`. Establish `hle : locM B e N ≤ S`. Unfold `locM`. Rewrite using `[Submodule.span_le]`. Introduce `u hu`.
+
+Conclude with `hS2 u hu`. Conclude with `hS1 v (hle hv)`. Prove the components needed by the constructor for the conclusion. Introduce `n c hc`. Establish `hwd : ∀ (b : L) (x : Finset σ → V), wd (fun i => Algebra.lsmul ℂ ℂ V (w i)) (b • x) = b • wd (fun i => Algebra.lsmul ℂ ℂ V (w i)) x`.
+
+Introduce `b x`. Use function extensionality and compare the values at `t`. Simplify using `[wd, Finset.smul_sum, smul_comm b]`. Establish `hC : ∀ (A' : Finset σ → Submodule ℂ V) (x : Finset σ → V), x ∈ (acx A' fun i => Algebra.lsmul ℂ ℂ V (w i)).C (n - 1) ↔ ∀ s, x s ∈ (if (s.card : ℤ) = n - 1 then A' s else ⊥)`. Introduce `A' x`.
+
+Simplify using `[acx, Submodule.mem_pi]`. Establish `hB : ∀ (A' : Finset σ → Submodule ℂ V) (c : Finset σ → V), c ∈ (acx A' fun i => Algebra.lsmul ℂ ℂ V (w i)).B n ↔ ∃ x ∈ (acx A' fun i => Algebra.lsmul ℂ ℂ V (w i)).C (n - 1), wd (fun i => Algebra.lsmul ℂ ℂ V (w i)) x = c`. Introduce `A' c`. Simplify using `[Cx.B, acx]`. Establish `hCstab : ∀ b : B, ∀ x ∈ (acx A fun i => Algebra.lsmul ℂ ℂ V (w i)).C (n - 1), (b : L) • x ∈ (acx A fun i => Algebra.lsmul ℂ ℂ V (w i)).C (n - 1)`.
+
+Introduce `b x hx`. Rewrite `hx`, the goal using `[hC]`. Introduce `s`. Establish `hxs` using `hx s`. Simplify using `only [Pi.smul_apply]`.
+
+Use `split_ifs at hxs ⊢ with h`. Conclude with `hAs s b _ hxs`. Rewrite `hxs`, the goal using `[Submodule.mem_bot]`. Simplify using `[hxs]`. Establish `hNstab : ∀ b : B, ∀ c ∈ (acx A fun i => Algebra.lsmul ℂ ℂ V (w i)).B n, (b : L) • c ∈ (acx A fun i => Algebra.lsmul ℂ ℂ V (w i)).B n`.
+
+Introduce `b c hc`. Rewrite `hc`, the goal using `[hB]`. Take `⟨x, hx, rfl⟩` from `hc`. Conclude with `⟨_, hCstab b x hx, hwd _ _⟩`. Use `lG_of_lemma_3 B _ hNstab c fun e => ?_` and prove the remaining obligations.
+
+Take `⟨x, hx, rfl⟩` from `(hB _ _).1 (hc e)`. Take `⟨S, hS1, hS2⟩` from `lG_of_lemma_2 B _ hCstab e`. Establish `hxS : x ∈ S`. Rewrite using `[← Finset.univ_sum_single x]`. Use `S.sum_mem fun s _ => ?_` and prove the remaining obligations.
+
+Establish `hxs` using `(hC _ x).1 hx s`. Use `split_ifs at hxs with h`. Take `⟨b, hb, hbv⟩` from `hloc e (A s) (hAs s) _ hxs`. Apply `hS2` to reduce the goal to its premises. Use `⟨b, hb, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hC]`. Introduce `t`. Distinguish the cases in `hts : t = s`. Substitute `hts` using the available equality. Simplify `hbv` using `[h]`.
+
+Simplify using `[hts]`. Rewrite `hxs` using `[Submodule.mem_bot]`. Rewrite using `[hxs, Pi.single_zero]`. Conclude with `S.zero_mem`. Take `⟨b, hb, hbx⟩` from `hS1 x hxS`.
+
+Conclude with `⟨b, hb, (hB _ _).2 ⟨_, hbx, hwd _ _⟩⟩`. Introduce `m hm`. Establish `hmem : ∀ r ∈ Set.range w, ∀ u ∈ A ∅, r • u ∈ sm (Algebra.lsmul ℂ ℂ V) (A ∅) (Set.range w)`. Introduce `r hr u hu`. Unfold `sm`.
+
+Conclude with `(le_iSup₂ (f := fun r (_ : r ∈ Set.range w) => Submodule.map (Algebra.lsmul ℂ ℂ V r) (A ∅)) r hr) (Submodule.mem_map_of_mem hu)`. Establish `hstab : ∀ b : B, ∀ v ∈ sm (Algebra.lsmul ℂ ℂ V) (A ∅) (Set.range w), (b : L) • v ∈ sm (Algebra.lsmul ℂ ℂ V) (A ∅) (Set.range w)`. Introduce `b v hv`. Establish `hle : sm (Algebra.lsmul ℂ ℂ V) (A ∅) (Set.range w) ≤ (sm (Algebra.lsmul ℂ ℂ V) (A ∅) (Set.range w)).comap (Algebra.lsmul ℂ ℂ V (b : L))` using `by conv_lhs => unfold sm`. Use `iSup₂_le fun r hr => ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨u, hu, rfl⟩`. Rewrite using `[Submodule.mem_comap]`. Simplify using `only [Algebra.lsmul_coe]`. Rewrite using `[smul_comm]`. Conclude with `hmem r hr _ (hAs ∅ b u hu)`.
+
+Simplify using `using hle hv`. Use `lG_of_lemma_3 B _ hstab m fun e => ?_` and prove the remaining obligations. Take `⟨S, hS1, hS2⟩` from `lG_of_lemma_2 B _ hstab e`. Apply `hS1` to reduce the goal to its premises. Establish `hle : sm (Algebra.lsmul ℂ ℂ V) (locM B e (A ∅)) (Set.range w) ≤ S` using `by conv_lhs => unfold sm`.
+
+Use `iSup₂_le fun r hr => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Take `⟨b, hb, hbv⟩` from `hloc e (A ∅) (hAs ∅) v hv`. Apply `hS2` to reduce the goal to its premises. Use `⟨b, hb, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Algebra.lsmul_coe]`. Rewrite using `[smul_comm]`. Conclude with `hmem r hr _ hbv`. Conclude with `hle (hm e)`.
+-/
 theorem UpperTheory.Gal.productCup_of_system.lG_of :
     LG := by
   intro L _ _ B _ V σ _ _ _ _ _ _ A w hA

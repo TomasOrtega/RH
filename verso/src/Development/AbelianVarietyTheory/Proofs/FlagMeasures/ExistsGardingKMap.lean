@@ -16,6 +16,37 @@ namespace GlobalTheory.SmoothKType
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
+/- English proof (translation)
+Establish `: (muG ε).IsMulRightInvariant` using `⟨fun g => indefinite_unitary_unimodular n ε g⟩`. Take `⟨v, hvS, hv0, -⟩` from `hK.2.2.2.1`. Establish `humat : Continuous (fun g : UJ ε => umat g)` using `(isClosedEmbeddingMatrix n ε).1.continuous`. Establish `hcont : ∀ s : H, Continuous (fun g : UJ ε => σ (umat g) s)` using `fun s => (hσ.2.2 s).comp_continuous humat (fun g => g.2)`. Establish `hre : Continuous (fun g : UJ ε => (⟪v, σ (umat g) v⟫_ℂ).re)` using `Complex.continuous_re.comp (continuous_const.inner (hcont v))`.
+
+Establish `hone : 0 < (⟪v, σ (umat (1 : UJ ε)) v⟫_ℂ).re`. Establish `: σ (umat (1 : UJ ε)) = 1` using `hσ.1.1`. Rewrite using `[this]`. Conclude with `re_inner_self_pos (𝕜 := ℂ).2 hv0`. Take `⟨a, ha, ha0, ha1, hac, haU, haK⟩` from `exists_conjInvariant_bump n ε {g | 0 < (⟪v, σ (umat g) v⟫_ℂ).re} ((isOpen_lt continuous_const hre).mem_nhds hone)`.
+
+Establish `hacont : Continuous (fun g : UJ ε => a (umat g))` using `ha.continuous.comp humat`. Establish `hacC : Continuous (fun g : UJ ε => (a (umat g) : ℂ))` using `Complex.continuous_ofReal.comp hacont`. Establish `hsuppC : HasCompactSupport (fun g : UJ ε => (a (umat g) : ℂ))` using `hac.comp_left (g := fun x : ℝ => (x : ℂ)) (by simp)`. Establish `hint : ∀ s : H, Integrable (fun g : UJ ε => (a (umat g) : ℂ) • σ (umat g) s) (muG ε)` using `fun s => (hacC.smul (hcont s)).integrable_of_hasCompactSupport hsuppC.smul_right`. Set `T : S →ₗ[ℂ] H` to `{ toFun := fun s => ∫ g : UJ ε, (a (umat g) : ℂ) • σ (umat g) s ∂(muG ε) map_add' := by`.
+
+Introduce `s t`. Rewrite using `[← integral_add (hint s) (hint t)]`. Simplify using `only [Submodule.coe_add, map_add, smul_add]`. Use the proof step `map_smul' := by`. Introduce `c s`.
+
+Rewrite using `[RingHom.id_apply, ← integral_smul]`. Simplify using `only [Submodule.coe_smul, map_smul, smul_comm c] }`. Establish `hT : ∀ (s : S) (u : H), ⟪u, T s⟫_ℂ = ∫ g : UJ ε, (a (umat g) : ℂ) * ⟪u, σ (umat g) s⟫_ℂ ∂(muG ε)`. Introduce `s u`. Use `show ⟪u, ∫ g : UJ ε, (a (umat g) : ℂ) • σ (umat g) s ∂(muG ε)⟫_ℂ = _`.
+
+Rewrite using `[← integral_inner (hint s)]`. Simplify using `only [inner_smul_right]`. Use `⟨fun y => (a y : ℂ), T, ?_, hsuppC, hT, ?_, ?_⟩` and prove the remaining obligations. Introduce `g₀ _`. Use `⟨Set.univ, fun y => (a y : ℂ), isOpen_univ, trivial, ?_, fun _ _ _ => rfl⟩` and prove the remaining obligations.
+
+Conclude with `(Complex.ofRealCLM.contDiff.comp ha).contDiffOn`. Introduce `k hk s s' hs'`. Establish `hu : k ∈ Set.range (fun g : UJ ε => umat g)`. Rewrite using `[(isClosedEmbeddingMatrix n ε).2]`. Conclude with `(maximal_compact_facts n ε).1 k hk`.
+
+Take `⟨κ, rfl⟩` from `hu`. Use `show ∫ g : UJ ε, (a (umat g) : ℂ) • σ (umat g) s' ∂(muG ε) = σ (umat κ) (∫ g : UJ ε, (a (umat g) : ℂ) • σ (umat g) s ∂(muG ε))`. Rewrite using `[← ContinuousLinearMap.integral_comp_comm _ (hint s), hs']`. Establish `e1 : ∫ g : UJ ε, (a (umat g) : ℂ) • σ (umat g) (σ (umat κ) s) ∂(muG ε) = ∫ g : UJ ε, (a (umat (g * κ⁻¹)) : ℂ) • σ (umat g) s ∂(muG ε)`. Rewrite using `[← integral_mul_right_eq_self (fun g : UJ ε => (a (umat (g * κ⁻¹)) : ℂ) • σ (umat g) (s : H)) κ]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `g`. Establish `: σ (umat (g * κ)) = _` using `hσ.1.2 (umat g) g.2 (umat κ) κ.2`. Rewrite using `[this, mul_inv_cancel_right]`. Both sides reduce to the same expression.
+
+Establish `e2 : ∫ g : UJ ε, σ (umat κ) ((a (umat g) : ℂ) • σ (umat g) s) ∂(muG ε) = ∫ g : UJ ε, (a (umat (κ⁻¹ * g)) : ℂ) • σ (umat g) s ∂(muG ε)`. Rewrite using `[← integral_mul_left_eq_self (fun g : UJ ε => (a (umat (κ⁻¹ * g)) : ℂ) • σ (umat g) (s : H)) κ]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Establish `: σ (umat (κ * g)) = _` using `hσ.1.2 (umat κ) κ.2 (umat g) g.2`.
+
+Rewrite using `[this, inv_mul_cancel_left, map_smul]`. Both sides reduce to the same expression. Use `e1.trans (Eq.trans ?_ e2.symm)` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `g`.
+
+Establish `hk' : umat κ⁻¹ ∈ Kset ε` using `(KG ε).inv_mem (x := κ) hk`. Establish `: a (umat (κ⁻¹ * g)) = a (umat (g * κ⁻¹))` using `haK _ hk' (umat g)`. Rewrite using `[this]`. Introduce `h0`. Establish `h1` using `hT ⟨v, hvS⟩ v`.
+
+Rewrite `h1` using `[h0, LinearMap.zero_apply, inner_zero_right]`. Establish `hi : Integrable (fun g : UJ ε => (a (umat g) : ℂ) * ⟪v, σ (umat g) v⟫_ℂ) (muG ε)` using `(hacC.mul (continuous_const.inner (hcont v))).integrable_of_hasCompactSupport hsuppC.mul_right`. Establish `h2` using `congrArg Complex.re h1`. Establish `h3` using `integral_re (𝕜 := ℂ) hi`. Simplify using `only [RCLike.re_to_complex, Complex.re_ofReal_mul] at h3`.
+
+Rewrite `h2` using `[← h3]`. Establish `h4 : 0 < ∫ g : UJ ε, a (umat g) * (⟪v, σ (umat g) v⟫_ℂ).re ∂(muG ε)`. Use `Continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 1) (hacont.mul hre) hac.mul_right ?_ (mul_ne_zero ha1 hone.ne')` and prove the remaining obligations. Introduce `g`. Distinguish the cases in `h : a (umat g) = 0`.
+
+Simplify using `[h]`. Conclude with `mul_nonneg (ha0 _) (le_of_lt (haU g h))`. Rewrite `h4` using `[← h2]`. Simplify using `at h4`.
+-/
 theorem exists_garding_kMap (n : ℕ) (ε : Fin n → Bool) (μ : Fin n → ℝ) (H : Type) [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (S : Submodule ℂ H)
     (hσ : IsURepOn (UJset ε) σ) (hK : IsKTypeOf ε σ μ S) :
@@ -113,6 +144,23 @@ theorem exists_garding_kMap (n : ℕ) (ε : Fin n → Bool) (μ : Fin n → ℝ)
     rw [← h2] at h4
     simp at h4
 
+/- English proof (translation)
+Introduce `n ε μ H _ _ _ σ S hσ hK`. Set `G : Set H` to `{v | ∃ (α : Matrix (Fin n) (Fin n) ℂ → ℂ) (s : H), SmoothOnG ε α ∧ HasCompactSupport (fun g : UJ ε => α (umat g)) ∧ ∀ y : H, ∫ g : UJ ε, α (umat g) * ⟪y, σ (umat g) s⟫_ℂ ∂(muG ε) = ⟪y, v⟫_ℂ}`. Establish `hder : ∀ v ∈ Submodule.span ℂ G, ∀ X : Matrix (Fin n) (Fin n) ℂ, inG ε X → ∃ v' ∈ Submodule.span ℂ G, HasDerivAt (fun t : ℝ => σ (NormedSpace.exp ((t : ℂ) • X)) v) v' 0`. Introduce `v hv X hX`. Proceed by induction on `hv using Submodule.span_induction with`.
+
+Consider the case `mem v hv`. Take `⟨α, s, h1, h2, h3⟩` from `hv`. Take `⟨β, v', k1, k2, k3, k4⟩` from `(GlobalTheory.GardingStep.garding_step n ε H σ α s v hσ h1 h2 h3).2 X hX`. Conclude with `⟨v', Submodule.subset_span ⟨β, s, k1, k2, k3⟩, k4⟩`. Consider the case `zero => exact ⟨0, zero_mem _, by simpa using hasDerivAt_const (0 : ℝ) (0 : H)⟩`.
+
+Consider the case `add a b _ _ ha hb`. Take `⟨a', ha', hda⟩` from `ha`. Take `⟨b', hb', hdb⟩` from `hb`. Use `⟨a' + b', add_mem ha' hb', ?_⟩` and prove the remaining obligations. Simplify using `only [map_add]`.
+
+Conclude with `hda.add hdb`. Consider the case `smul c a _ ha`. Take `⟨a', ha', hda⟩` from `ha`. Use `⟨c • a', Submodule.smul_mem _ c ha', ?_⟩` and prove the remaining obligations. Simplify using `only [map_smul]`.
+
+Conclude with `hda.const_smul c`. Establish `hzero` using `GlobalTheory.DerEx.smoothOnG_zero ε`. Establish `hsm : ∀ v ∈ Submodule.span ℂ G, ∀ y : H, SmoothOnG ε (fun g => ⟪y, σ g v⟫_ℂ)`. Introduce `v hv y`. Proceed by induction on `hv using Submodule.span_induction with`.
+
+Consider the case `mem v hv`. Take `⟨α, s, h1, h2, h3⟩` from `hv`. Conclude with `(GlobalTheory.GardingStep.garding_step n ε H σ α s v hσ h1 h2 h3).1 y`. Consider the case `zero => simpa using hzero`. Consider the case `add a b _ _ ha hb => simpa [inner_add_right] using GlobalTheory.DerEx.smoothOnG_comb 1 ha hb`.
+
+Consider the case `smul c a _ ha => simpa [inner_smul_right] using GlobalTheory.DerEx.smoothOnG_comb c ha hzero`. Take `⟨E, hE⟩` from `GlobalTheory.DerOf.exists_isDer n ε H σ (Submodule.span ℂ G) hσ hder hsm`. Take `⟨α, T, h1, h2, h3, h4, h5⟩` from `exists_garding_kMap n ε μ H σ S hσ hK`. Use `haveI := hK.1`. Use `⟨_, E, _, hE, GlobalTheory.Dec.FormF.rangeType n ε μ H σ S H σ (LinearMap.toContinuousLinearMap T) hK h4 (fun h => h5 (LinearMap.ext fun x => DFunLike.congr_fun h x)), ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `Submodule.subset_span ⟨α, s, h1, h2, fun y => (h3 s y).symm⟩`.
+-/
 theorem exists_isDer_kType : ∀ (n : ℕ) (ε : Fin n → Bool) (μ : Fin n → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (S : Submodule ℂ H), IsURepOn (UJset ε) σ → IsKTypeOf ε σ μ S → ∃ (V : Submodule ℂ H) (E : Fin n → Fin n → Module.End ℂ V) (S' : Submodule ℂ H), IsDer ε σ V E ∧ IsKTypeOf ε σ μ S' ∧ S' ≤ V := by
   intro n ε μ H _ _ _ σ S hσ hK
   let G : Set H := {v | ∃ (α : Matrix (Fin n) (Fin n) ℂ → ℂ) (s : H), SmoothOnG ε α ∧

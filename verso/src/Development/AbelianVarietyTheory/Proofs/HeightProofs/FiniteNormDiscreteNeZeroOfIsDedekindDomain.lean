@@ -8,6 +8,23 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := S) g`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hb1 : algebraMap S L b ≠ 0` using `fun h => hb0 (IsFractionRing.injective S L (by rw [h, map_zero]))`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`.
+
+Simplify using `at hg`. Establish `hI : Ideal.span {a * b} ≠ (⊥ : Ideal S)`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `mul_ne_zero ha0 hb0`. Use `((Ideal.finite_factors hI).image (ValPl.addv L)).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `w ⟨hw, h0, hwg⟩`. Set `Q : Ideal S` to `{ carrier := {b | 0 < w (algebraMap S L b)} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_ofPred_eq, map_add] at ha hb ⊢`. Conclude with `lt_of_lt_of_le (lt_min ha hb) (w.map_add _ _)`. Use the proof step `zero_mem' := by simp`.
+
+Use the proof step `smul_mem' := fun c b hb => by`. Simplify using `only [Set.mem_ofPred_eq, smul_eq_mul, map_mul, AddValuation.map_mul] at hb ⊢`. Conclude with `lt_of_lt_of_le hb (le_add_of_nonneg_left (h0 c)) }`. Establish `hz : ∀ s : S, s ∉ Q → w (algebraMap S L s) = 0` using `fun s hs => le_antisymm (not_lt.1 (hs : ¬ 0 < w (algebraMap S L s))) (h0 s)`. Establish `hprime : Q.IsPrime`.
+
+Use `⟨fun htop => ?_, fun {a b} hab => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : S) ∈ Q` using `htop ▸ Submodule.mem_top`. Simplify using `[Q] at h1`. Express the relevant statement in the definitionally equal form `0 < w (algebraMap _ L (a * b)) at hab`. Rewrite `hab` using `[map_mul, AddValuation.map_mul]`.
+
+Assume the negation of the conclusion as `hno`. Rewrite `hno` using `[not_or]`. Rewrite `hab` using `[hz a hno.1, hz b hno.2, add_zero]`. Conclude with `lt_irrefl _ hab`. Establish `hab : a * b ∈ Q`.
+
+Assume the negation of the conclusion as `hno`. Establish `ha` using `hz a fun h => hno (Q.mul_mem_right _ h)`. Establish `hb` using `hz b fun h => hno (Q.mul_mem_left _ h)`. Establish `h` using `w.map_mul (algebraMap S L a / algebraMap S L b) (algebraMap S L b)`. Rewrite `h` using `[div_mul_cancel₀ _ hb1, ha, hb, add_zero]`.
+
+Conclude with `hwg h.symm`. Establish `hne : Q ≠ ⊥` using `fun h => mul_ne_zero ha0 hb0 (by rwa [h, Ideal.mem_bot] at hab)`. Use `⟨⟨Q, hprime, hne⟩, ?_, (ValPl.eq_addv _ w hw h0 (fun s => Iff.rfl)).symm⟩` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.mpr hab`.
+-/
 theorem finite_normDiscrete_ne_zero_of_isDedekindDomain {S L : Type*} [CommRing S]
     [IsDedekindDomain S] [Field L] [Algebra S L] [IsFractionRing S L] (g : L) (hg : g ≠ 0) :
     {w : AddValuation L (WithTop ℤ) |
@@ -58,6 +75,23 @@ theorem finite_normDiscrete_ne_zero_of_isDedekindDomain {S L : Type*} [CommRing 
 
 open scoped IntermediateField.algebraAdjoinAdjoin in
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ t hfg htr ht g hg`. Establish `hind : AlgebraicIndependent F (fun _ : Unit => t)` using `algebraicIndependent_unique_type_iff.mpr ht`. Establish `hbasis : IsTranscendenceBasis F (fun _ : Unit => t)` using `hind.isTranscendenceBasis_of_lift_trdeg_le_of_finite (by rw [htr]; simp)`. Establish `halg : Algebra.IsAlgebraic (IntermediateField.adjoin F ({t} : Set Ω)) Ω`. Establish `h` using `hbasis.isAlgebraic_field`.
+
+Rewrite `h` using `[Set.range_const]`. Then use the resulting hypothesis. Establish `: Algebra.EssFiniteType F Ω` using `IntermediateField.fg_top_iff.mp hfg`. Establish `: Algebra.EssFiniteType (IntermediateField.adjoin F ({t} : Set Ω)) Ω` using `.of_comp F _ _`. Establish `: FiniteDimensional (IntermediateField.adjoin F ({t} : Set Ω)) Ω` using `Algebra.finite_of_essFiniteType_of_isAlgebraic`. Establish `: IsPrincipalIdealRing (Algebra.adjoin F ({t} : Set Ω))` using `IsPrincipalIdealRing.of_surjective (Polynomial.algEquivOfTranscendental F t ht).toRingEquiv.toRingHom (Polynomial.algEquivOfTranscendental F t ht).surjective`.
+
+Establish `: IsDedekindDomain (integralClosure (Algebra.adjoin F ({t} : Set Ω)) Ω)` using `integralClosure.isDedekindDomain _ (IntermediateField.adjoin F ({t} : Set Ω)) Ω`. Establish `: IsFractionRing (integralClosure (Algebra.adjoin F ({t} : Set Ω)) Ω) Ω` using `integralClosure.isFractionRing_of_finite_extension (IntermediateField.adjoin F ({t} : Set Ω)) Ω`. Use `(finite_normDiscrete_ne_zero_of_isDedekindDomain (S := integralClosure (Algebra.adjoin F ({t} : Set Ω)) Ω) g hg).subset ?_` and prove the remaining obligations. Introduce and unpack `w ⟨hw, hF, hwt, hwg⟩`. Use `⟨hw, fun b => ?_, hwg⟩` and prove the remaining obligations.
+
+Establish `hA : ∀ x ∈ Algebra.adjoin F ({t} : Set Ω), x ∈ vRing w`. Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Rewrite using `[Set.mem_singleton_iff.mp hx]`.
+
+Conclude with `hwt`. Consider the case `algebraMap r`. Distinguish the cases in `hr : r = 0`. Rewrite using `[hr, map_zero]`. Conclude with `zero_mem _`.
+
+Conclude with `(hF r hr).ge`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `mul x y _ _ hx hy => exact mul_mem hx hy`. Establish `hb : IsIntegral (Algebra.adjoin F ({t} : Set Ω)) (b : Ω)` using `b.2`. Set `: Algebra (Algebra.adjoin F ({t} : Set Ω)) (vRing w)` to `((algebraMap (Algebra.adjoin F ({t} : Set Ω)) Ω).codRestrict (vRing w) (fun x => hA x x.2)).toAlgebra`.
+
+Establish `: IsScalarTower (Algebra.adjoin F ({t} : Set Ω)) (vRing w) Ω` using `IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `hb' : IsIntegral (vRing w) (b : Ω)` using `hb.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hb'`. Express the relevant statement in the definitionally equal form `0 ≤ w (b : Ω)`. Rewrite using `[← hy]`.
+
+Conclude with `y.2`.
+-/
 theorem finite_zeros_poles_of_trdeg_one :
     ∀ (F Ω : Type) [Field F] [CharZero F] [Field Ω] [Algebra F Ω] (t : Ω),
       (⊤ : IntermediateField F Ω).FG → Algebra.trdeg F Ω = 1 → Transcendental F t →

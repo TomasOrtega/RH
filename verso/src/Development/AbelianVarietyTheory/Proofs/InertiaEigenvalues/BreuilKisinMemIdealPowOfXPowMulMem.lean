@@ -11,6 +11,15 @@ namespace GlobalTheory.BSP.BK
 
 variable {l : ℕ} [Fact l.Prime] {K : FinExt l}
 
+/- English proof (translation)
+Establish `hdvd : Polynomial.C (l : Wq l bk.a) ∣ bk.Ep - Polynomial.X ^ bk.Ep.natDegree`. Rewrite using `[Polynomial.C_dvd_iff_dvd_coeff]`. Introduce `i`. Rewrite using `[Polynomial.coeff_sub, Polynomial.coeff_X_pow]`. Break down `lt_trichotomy i bk.Ep.natDegree with h | h | h` into its components or cases.
+
+Rewrite using `[if_neg h.ne, sub_zero]`. Conclude with `bk.dvd_coeff i h`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, bk.monic.coeff_natDegree, sub_self]`. Conclude with `dvd_zero _`.
+
+Rewrite using `[if_neg h.ne', Polynomial.coeff_eq_zero_of_natDegree_lt h, sub_zero]`. Conclude with `dvd_zero _`. Take `⟨q, hq⟩` from `hdvd`. Establish `h1` using `congrArg (fun p : Polynomial (Wq l bk.a) => (p : bk.S)) hq`. Simplify using `only [Polynomial.coe_sub, Polynomial.coe_pow, Polynomial.coe_X, Polynomial.coe_mul, Polynomial.coe_C] at h1`.
+
+Rewrite `h1` using `[map_natCast]`. Establish `h2 : (X : bk.S) ^ bk.Ep.natDegree = bk.E - (l : bk.S) * (q : bk.S)`. Take the linear combination `-h1`. Rewrite using `[h2]`. Conclude with `Ideal.sub_mem _ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)) (Ideal.mem_sup_left (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)))`.
+-/
 theorem X_pow_natDegree_mem_lE (bk : BK K) : (X : bk.S) ^ bk.Ep.natDegree ∈ bk.J := by
   have hdvd : Polynomial.C (l : Wq l bk.a) ∣ bk.Ep - Polynomial.X ^ bk.Ep.natDegree := by
     rw [Polynomial.C_dvd_iff_dvd_coeff]
@@ -31,6 +40,9 @@ theorem X_pow_natDegree_mem_lE (bk : BK K) : (X : bk.S) ^ bk.Ep.natDegree ∈ bk
   exact Ideal.sub_mem _ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))
     (Ideal.mem_sup_left (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)))
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `bk.coeff_zero`. Establish `hc : constantCoeff bk.E = (l : Wq l bk.a) * w`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, Polynomial.coeff_coe, hw]`. Rewrite using `[eq_shift_mul_X_add_const bk.E, hc, map_mul, map_natCast]`. Conclude with `Ideal.add_mem _ (Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))) (Ideal.mem_sup_left (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)))`.
+-/
 theorem E_mem_span_l_X (bk : BK K) : bk.E ∈ Ideal.span {(l : bk.S)} ⊔ Ideal.span {(X : bk.S)} := by
   obtain ⟨w, hw⟩ := bk.coeff_zero
   have hc : constantCoeff bk.E = (l : Wq l bk.a) * w := by
@@ -41,6 +53,19 @@ theorem E_mem_span_l_X (bk : BK K) : bk.E ∈ Ideal.span {(l : bk.S)} ⊔ Ideal.
 
 end GlobalTheory.BSP.BK
 
+/- English proof (translation)
+Introduce `l _ K bk N`. Use `⟨N, fun m => ⟨N + (m + bk.Ep.natDegree * N), fun s hs => ?_⟩⟩` and prove the remaining obligations. Establish `hJ : bk.J ≤ Ideal.span {(l : bk.S)} ⊔ Ideal.span {(X : bk.S)}` using `sup_le le_sup_left (Ideal.span_singleton_le_iff_mem _ |>.2 (BK.E_mem_span_l_X bk))`. Establish `h1 : bk.J ^ (N + (m + bk.Ep.natDegree * N)) ≤ Ideal.span {(l : bk.S) ^ N} ⊔ Ideal.span {(X : bk.S) ^ (m + bk.Ep.natDegree * N)}`. Use `(Ideal.pow_right_mono hJ _).trans ?_` and prove the remaining obligations.
+
+Use `Ideal.sup_pow_add_le_pow_sup_pow (I := Ideal.span {(l : bk.S)}) (J := Ideal.span {(X : bk.S)}) (n := N) (m := m + bk.Ep.natDegree * N)` as an intermediate fact. Rewrite `this` using `[Ideal.span_singleton_pow, Ideal.span_singleton_pow]`. Then use the resulting hypothesis. Establish `hs'` using `(sup_le h1 le_sup_left : _ ≤ Ideal.span {(l : bk.S) ^ N} ⊔ Ideal.span {(X : bk.S) ^ (m + bk.Ep.natDegree * N)}) hs`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 hs'`. Take `⟨h, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`.
+
+Take `⟨g, rfl⟩` from `Ideal.mem_span_singleton'.1 hz`. Use `set t := s - (X : bk.S) ^ (bk.Ep.natDegree * N) * g with ht`. Establish `htm : (X : bk.S) ^ m * t = C ((l : Wq l bk.a) ^ N) * h`. Rewrite using `[ht, map_pow, map_natCast, mul_sub, ← hyz]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `ht' : t = C ((l : Wq l bk.a) ^ N) * PowerSeries.mk (fun k => coeff (k + m) h)`. Use extensionality with `k`. Use `congrArg (coeff (k + m)) htm` as an intermediate fact. Rewrite `this` using `[coeff_X_pow_mul', if_pos (Nat.le_add_left m k), Nat.add_sub_cancel, coeff_C_mul]`. Rewrite using `[this, coeff_C_mul, coeff_mk]`.
+
+Establish `hs2 : s = ((X : bk.S) ^ bk.Ep.natDegree) ^ N * g + (l : bk.S) ^ N * PowerSeries.mk (fun k => coeff (k + m) h)`. Establish `: s = t + (X : bk.S) ^ (bk.Ep.natDegree * N) * g` using `by rw [ht]; ring`. Rewrite using `[this, ht', map_pow, map_natCast, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs2]`.
+
+Conclude with `Ideal.add_mem _ (Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow (BK.X_pow_natDegree_mem_lE bk) N)) (Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow (Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)) N))`.
+-/
 theorem GlobalTheory.BSP.BK.mem_J_pow_of_X_pow_mul_mem : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (N : ℕ),
     ∃ n : ℕ, ∀ m : ℕ, ∃ n' : ℕ, ∀ s : bk.S,
       (X : bk.S) ^ m * s ∈ bk.J ^ n' ⊔ Ideal.span {(l : bk.S) ^ n} → s ∈ bk.J ^ N := by

@@ -9,6 +9,11 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatt
 
 namespace GlobalTheory.Proof.level_eq_parahoric_category
 
+/- English proof (translation)
+Establish `hr1 : r ∈ Loc.R1 k n c` using `hr.1`. Use `⟨(mul_mem (mul_mem (inv_mem hρ) hr1) hρ : ρ⁻¹ * r * ρ ∈ Loc.R1 k n c), ?_⟩` and prove the remaining obligations. Establish `h2 : (ρ * h)⁻¹ * r * (ρ * h)⁻¹⁻¹ ∈ J` using `hr.2`. Use `show h⁻¹ * (ρ⁻¹ * r * ρ) * h⁻¹⁻¹ ∈ J`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+
+Use `group`.
+-/
 theorem cbe_mul {k : Type} [CommRing k] {n c : ℕ} (J : Subgroup ((Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)))
     {ρ h r : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)} (hρ : ρ ∈ Loc.R1 k n c) (hr : r ∈ Loc.Cbe J (ρ * h)) :
     ρ⁻¹ * r * ρ ∈ Loc.Cbe J h := by
@@ -19,6 +24,9 @@ theorem cbe_mul {k : Type} [CommRing k] {n c : ℕ} (J : Subgroup ((Fin (n + c) 
   convert h2 using 1
   group
 
+/- English proof (translation)
+Use `show ρ.symm (r (ρ _)) = Loc.inX k n c (γ.symm (g (γ x)))`. Rewrite using `[hγ, hg, LinearEquiv.symm_apply_eq, hγ, LinearEquiv.apply_symm_apply]`.
+-/
 theorem conj_res {k : Type} [CommRing k] {n c : ℕ} {ρ r : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)}
     {γ g : (Fin n → k) ≃ₗ[k] (Fin n → k)} (hγ : ∀ x, ρ (Loc.inX k n c x) = Loc.inX k n c (γ x))
     (hg : ∀ x, r (Loc.inX k n c x) = Loc.inX k n c (g x)) (x : Fin n → k) :
@@ -26,6 +34,9 @@ theorem conj_res {k : Type} [CommRing k] {n c : ℕ} {ρ r : (Fin (n + c) → k)
   show ρ.symm (r (ρ _)) = Loc.inX k n c (γ.symm (g (γ x)))
   rw [hγ, hg, LinearEquiv.symm_apply_eq, hγ, LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Establish `h1` using `unipotentCharacterArgument_mul_stabilizer hρ.1 (mul_mem (mul_mem (inv_mem hρ) hr) hρ).1`. Establish `h2` using `unipotentCharacterArgument_mul_stabilizer hr.1 hρ.1`. Establish `e : ρ * (ρ⁻¹ * r * ρ) = r * ρ` using `by group`. Rewrite `h1` using `[e, h2]`. Take the linear combination `-h1`.
+-/
 theorem n1Arg_conj_eq {F : Type} [Field F] {n c : ℕ} {ρ r : (Fin (n + c) → F) ≃ₗ[F] (Fin (n + c) → F)}
     (hρ : ρ ∈ Loc.R1 F n c) (hr : r ∈ Loc.R1 F n c) : Loc.n1Arg (ρ⁻¹ * r * ρ) = Loc.n1Arg r := by
   have h1 := unipotentCharacterArgument_mul_stabilizer hρ.1 (mul_mem (mul_mem (inv_mem hρ) hr) hρ).1
@@ -34,6 +45,17 @@ theorem n1Arg_conj_eq {F : Type} [Field F] {n c : ℕ} {ρ r : (Fin (n + c) → 
   rw [e, h2] at h1
   linear_combination -h1
 
+/- English proof (translation)
+Introduce `X Pr R Ch sel S mu cst j P h ρ lev hρ hle hH hlam`. Take `⟨γ, hγ⟩` from `exists_res hρ`. Use `set H' := (prCat (Pr := Pr) cst.sharp j P.1 (ρ * h)).subgroupOf (GLint X.E (R.N j) P.1) with hH'`. Establish `hmem : ∀ g : H', γ⁻¹ * g.1.1 * γ ∈ prCat (Pr` using `Pr) cst.sharp j P.1 h := by`. Introduce `g`.
+
+Take `⟨r, hr, hg⟩` from `Subgroup.mem_subgroupOf.1 g.2`. Conclude with `⟨_, cbe_mul _ hρ hr, conj_res hγ hg⟩`. Establish `hmem2 : ∀ g : H', (⟨γ⁻¹ * g.1.1 * γ, hle (hmem g)⟩ : GLint X.E (R.N j) P.1) ∈ lev.H`. Introduce `g`. Rewrite using `[hH]`.
+
+Conclude with `Subgroup.mem_subgroupOf.2 (hmem g)`. Set `φ : H' →* lev.H` to `MonoidHom.mk' (fun g => ⟨⟨γ⁻¹ * g.1.1 * γ, hle (hmem g)⟩, hmem2 g⟩) (by`. Introduce `a b`. Use `Subtype.ext (Subtype.ext ?_)` and prove the remaining obligations. Use `show γ⁻¹ * (a.1.1 * b.1.1) * γ = (γ⁻¹ * a.1.1 * γ) * (γ⁻¹ * b.1.1 * γ)`.
+
+Use the proof step `group)`. Use `⟨⟨H', lev.lam.comp φ⟩, rfl, fun g r hr hg => ?_⟩` and prove the remaining obligations. Establish `h1` using `hlam (φ g) (ρ⁻¹ * r * ρ) (cbe_mul _ hρ hr) (conj_res hγ hg)`. Use `h1.trans ?_` and prove the remaining obligations. Establish `e : h⁻¹ * (ρ⁻¹ * r * ρ) * h = (ρ * h)⁻¹ * r * (ρ * h)` using `by group`.
+
+Unfold `chiInv`. Rewrite using `[n1Arg_conj_eq hρ hr.1, e]`.
+-/
 theorem main : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S : Set ℕ) (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (j : ℕ) (P : rowSG Pr sel mu) (h ρ : AutY X R j) (lev : LevI X.E X.K (R.N j) P.1), ρ ∈ Loc.R1 X.E (R.N j) (cOf R j) → prCat (Pr := Pr) cst.sharp j P.1 h ≤ GLint X.E (R.N j) P.1 → lev.H = (prCat (Pr := Pr) cst.sharp j P.1 h).subgroupOf (GLint X.E (R.N j) P.1) → (∀ (g : ↥lev.H) (r : AutY X R j), r ∈ Loc.Cbe (Jat (Pr := Pr) cst.sharp j P.1) h → (∀ x, r (Loc.inX X.E (R.N j) (cOf R j) x) = Loc.inX X.E (R.N j) (cOf R j) (g.1.1 x)) → ((lev.lam g : X.Kˣ) : X.K) = chiInv Ch sel mu cst j P h r) → ∃ lev' : LevI X.E X.K (R.N j) P.1, lev'.H = (prCat (Pr := Pr) cst.sharp j P.1 (ρ * h)).subgroupOf (GLint X.E (R.N j) P.1) ∧ (∀ (g : ↥lev'.H) (r : AutY X R j), r ∈ Loc.Cbe (Jat (Pr := Pr) cst.sharp j P.1) (ρ * h) → (∀ x, r (Loc.inX X.E (R.N j) (cOf R j) x) = Loc.inX X.E (R.N j) (cOf R j) (g.1.1 x)) → ((lev'.lam g : X.Kˣ) : X.K) = chiInv Ch sel mu cst j P (ρ * h) r) := by
   intro X Pr R Ch sel S mu cst j P h ρ lev hρ hle hH hlam
   obtain ⟨γ, hγ⟩ := exists_res hρ

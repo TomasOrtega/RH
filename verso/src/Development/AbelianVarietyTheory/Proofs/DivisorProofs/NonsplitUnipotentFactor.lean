@@ -14,6 +14,9 @@ namespace GlobalTheory.IwasawaLineInert
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Introduce `u hu`. Establish `e : mat (g * h) - 1 = mat g * (mat h - 1) + (mat g - 1)`. Rewrite using `[show mat (g * h) = mat g * mat h from rfl, Matrix.mul_sub, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, smul_add, ← Matrix.mul_smul, hh u hu, hg u hu, Matrix.mul_zero, add_zero]`.
+-/
 theorem uAt_mul {σ : E →ₐ[F] E} {d : ℕ} {W : Spc F E d} {v : Pl F} {g h : UA σ W.J}
     (hg : g ∈ UAt σ W (evFin F v)) (hh : h ∈ UAt σ W (evFin F v)) : g * h ∈ UAt σ W (evFin F v) := by
   intro u hu
@@ -21,6 +24,9 @@ theorem uAt_mul {σ : E →ₐ[F] E} {d : ℕ} {W : Spc F E d} {v : Pl F} {g h :
     rw [show mat (g * h) = mat g * mat h from rfl, Matrix.mul_sub, Matrix.mul_one]; abel
   rw [e, smul_add, ← Matrix.mul_smul, hh u hu, hg u hu, Matrix.mul_zero, add_zero]
 
+/- English proof (translation)
+Introduce `u hu`. Establish `e : mat g⁻¹ - 1 = -(mat g⁻¹ * (mat g - 1))`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, show mat g⁻¹ * mat g = 1 from Units.inv_mul g.1]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, smul_neg, ← Matrix.mul_smul, hg u hu, Matrix.mul_zero, neg_zero]`.
+-/
 theorem uAt_inv {σ : E →ₐ[F] E} {d : ℕ} {W : Spc F E d} {v : Pl F} {g : UA σ W.J}
     (hg : g ∈ UAt σ W (evFin F v)) : g⁻¹ ∈ UAt σ W (evFin F v) := by
   intro u hu
@@ -28,6 +34,11 @@ theorem uAt_inv {σ : E →ₐ[F] E} {d : ℕ} {W : Spc F E d} {v : Pl F} {g : U
     rw [Matrix.mul_sub, Matrix.mul_one, show mat g⁻¹ * mat g = 1 from Units.inv_mul g.1]; abel
   rw [e, smul_neg, ← Matrix.mul_smul, hg u hu, Matrix.mul_zero, neg_zero]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B d d₁ W W₁ H' i₀ i₁ r s r₁ s₁ hB hW hW₁ hH v hv g hg`. Establish `hx0 : H'.x ≠ 0`. Introduce `h0`. Use `hH.xy` as an intermediate fact. Rewrite `this` using `[h0]`.
+
+Simplify using `[form] at this`. Take `⟨k, hk, t, ht⟩` from `GlobalTheory.T.iwasawa_nonsplit_isotropic_line F E σ B d W r s hB hW H'.x hx0 hH.xx v hv g hg`. Establish `hp : g * k⁻¹ ∈ UAt σ W (evFin F v)` using `uAt_mul hg (uAt_inv hk.1)`. Take `⟨u, hu, huA, h₁, m, hl, hm, hh₁, e⟩` from `GlobalTheory.T.parabolic_eigenline_local_split F E σ B d d₁ W W₁ H' i₀ i₁ r s r₁ s₁ hB hW hW₁ hH v _ hp t ht`. Conclude with `⟨u, hu, huA, t, h₁, m, hl, hm, hh₁, k, hk, by rw [← e, inv_mul_cancel_right]⟩`.
+-/
 theorem iwasawa_line_inert : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (d d₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ r s r₁ s₁ : ℕ),
     B.IsGood σ → W.IsSkew σ B r s → W₁.IsSkew σ B r₁ s₁ → H'.IsAdapted σ B W W₁ i₀ i₁ →

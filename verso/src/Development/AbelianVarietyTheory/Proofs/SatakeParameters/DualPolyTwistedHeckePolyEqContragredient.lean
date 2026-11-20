@@ -15,6 +15,9 @@ noncomputable section
 
 namespace GlobalTheory.Hk3.DualHecke
 
+/- English proof (translation)
+Unfold `Formalism.L2.DIV.dualPoly`. Rewrite using `[mul_comp, C_comp, comp_assoc, mul_comp, C_comp, X_comp, C_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem comp_C_mul_X_dualPoly {K : Type} [Field K] (t u : K) (R : K[X]) :
     (Formalism.L2.DIV.dualPoly t R).comp (C u * X) = Formalism.L2.DIV.dualPoly (t * u) R := by
   unfold Formalism.L2.DIV.dualPoly
@@ -22,6 +25,17 @@ theorem comp_C_mul_X_dualPoly {K : Type} [Field K] (t u : K) (R : K[X]) :
   congr 2
   ring
 
+/- English proof (translation)
+Introduce `K _ n q a b s s' hq hs hn h0 h`. Establish `han : a n ≠ 0`. Introduce `h1`. Establish `e` using `h n le_rfl`. Rewrite `e` using `[Nat.sub_self, h0, h1, mul_zero]`.
+
+Conclude with `zero_ne_one e`. Establish `hbn : b n * a n = 1`. Establish `e` using `h n le_rfl`. Rewrite `e` using `[Nat.sub_self, h0]`. Then use the resulting hypothesis. Establish `hb0 : b 0 = 1`.
+
+Establish `e` using `h 0 (Nat.zero_le _)`. Rewrite `e` using `[Nat.sub_zero]`. Conclude with `mul_right_cancel₀ han (by rw [e, one_mul])`. Establish `hdual : ∀ k ≤ n, b n * a k = b (n - k)`. Introduce `k hk`.
+
+Establish `e` using `h (n - k) (Nat.sub_le _ _)`. Rewrite `e` using `[Nat.sub_sub_self hk]`. Rewrite using `[← e]`. Take the linear combination `b (n - k) * hbn`. Establish `H` using `GlobalTheory.PartsCompare.heckePolyOf_dual (n := n) (q := q) hq (a := b) (b := a) hb0 hdual`.
+
+Establish `hc` using `GlobalTheory.PartsCompare.dualPoly_comp (inv_ne_zero hs) (s * s' * (q : K) ^ (n - 1)) (Formalism.L2.Col.heckePolyOf n q b)`. Rewrite `hc` using `[inv_inv]`. Rewrite using `[hc, H, comp_C_mul_X_dualPoly]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem dualPoly_heckePolyOf_comp : ∀ (K : Type) [Field K] (n q : ℕ) (a b : ℕ → K) (s s' : K), (q : K) ≠ 0 → s ≠ 0 → 0 < n → a 0 = 1 → (∀ j, j ≤ n → b j * a n = a (n - j)) → dualPoly (s * s' * (q : K) ^ (n - 1)) ((Formalism.L2.Col.heckePolyOf n q b).comp (C s * X)) = (Formalism.L2.Col.heckePolyOf n q a).comp (C s' * X) := by
   intro K _ n q a b s s' hq hs hn h0 h
   have han : a n ≠ 0 := by

@@ -19,11 +19,19 @@ def piPlacesOverCoord {ι : Type*} [Fintype ι] [DecidableEq ι] (b : Module.Bas
   ((Algebra.TensorProduct.basis v.Completion b).coord i).comp
     (tensorPiEquiv (L := L) v).symm.toLinearMap
 
+/- English proof (translation)
+The claim follows from `LinearMap.continuous_of_finiteDimensional _`.
+-/
 theorem continuous_piPlacesOverCoord {ι : Type*} [Fintype ι] [DecidableEq ι]
     (b : Module.Basis ι K L) (v : InfinitePlace K) (i : ι) :
     Continuous (piPlacesOverCoord b v i) :=
   LinearMap.continuous_of_finiteDimensional _
 
+/- English proof (translation)
+Establish `h` using `(Algebra.TensorProduct.basis v.Completion b).sum_repr ((tensorPiEquiv (L := L) v).symm y)`. Establish `h2` using `congrArg (fun z => tensorPiEquiv (L := L) v z w) h`. Simplify using `only [AlgEquiv.apply_symm_apply] at h2`. Rewrite using `[← h2, map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Algebra.TensorProduct.basis_apply, map_smul, Pi.smul_apply, tensorPiEquiv_apply, tensorPiHom_tmul, map_one, one_mul, Algebra.smul_def]`. Both sides reduce to the same expression.
+-/
 theorem sum_piPlacesOverCoord {ι : Type*} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι K L)
     (v : InfinitePlace K) (y : PiPlacesOver (L := L) v) (w : v.placesOver L) :
     ∑ i, algebraMap v.Completion _ (piPlacesOverCoord b v i y) *
@@ -42,11 +50,19 @@ def adeleCoord {ι : Type*} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι K
     (y : InfiniteAdeleRing L) : InfiniteAdeleRing K :=
   fun v => piPlacesOverCoord b v i (fun w => y w)
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun v => (continuous_piPlacesOverCoord b v i).comp (continuous_pi fun w => continuous_apply (w : InfinitePlace L))`.
+-/
 theorem continuous_adeleCoord {ι : Type*} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι K L)
     (i : ι) : Continuous (adeleCoord b i) :=
   continuous_pi fun v => (continuous_piPlacesOverCoord b v i).comp
     (continuous_pi fun w => continuous_apply (w : InfinitePlace L))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Establish `ev : ∀ f : ι → InfiniteAdeleRing L, (∑ i, f i) w = ∑ i, f i w` using `fun f => map_sum (Pi.evalAddMonoidHom (fun w : InfinitePlace L => w.Completion) w) f Finset.univ`. Rewrite using `[map_sum, ev]`. Repeatedly rewrite using `[tensorInfiniteAdeleRingEquiv_tmul]`. Use `sum_piPlacesOverCoord b (w.comap (algebraMap K L)) (fun w' => y w') ⟨w, liesOver_comap w⟩` as an intermediate fact.
+
+Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem tensorInfiniteAdeleRingEquiv_sum_adeleCoord {ι : Type*} [Fintype ι] [DecidableEq ι]
     (b : Module.Basis ι K L) (y : InfiniteAdeleRing L) :
     tensorInfiniteAdeleRingEquiv (∑ i, b i ⊗ₜ[K] adeleCoord b i y) = y := by
@@ -97,6 +113,9 @@ def tensorInfiniteAdeleRingHomeomorph :
           (continuous_adeleCoord b i) }
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensorInfiniteAdeleRingHomeomorph_apply (x : L ⊗[K] InfiniteAdeleRing K) :
     tensorInfiniteAdeleRingHomeomorph x = tensorInfiniteAdeleRingEquiv x := rfl
 

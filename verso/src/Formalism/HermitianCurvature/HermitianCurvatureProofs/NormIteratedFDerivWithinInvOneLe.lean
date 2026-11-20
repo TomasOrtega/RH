@@ -12,6 +12,13 @@ namespace Formalism.FourierDecayAlt.P5.HerC.Fou
 
 variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
 
+/- English proof (translation)
+Break down `j with _ | _ | m` into its components or cases. Rewrite using `[norm_iteratedFDeriv_zero]`. Simplify using the standard rewrite rules. Rewrite using `[norm_iteratedFDeriv_one, fderiv_id]`. Conclude with `(ContinuousLinearMap.norm_id_le).trans (by linarith [norm_nonneg x])`.
+
+Rewrite using `[iteratedFDeriv_succ_eq_comp_right]`. Establish `e : (fun y : V => fderiv ℝ (id : V → V) y) = fun _ => ContinuousLinearMap.id ℝ V`. Use function extensionality and compare the values at `y`. Conclude with `fderiv_id`. Rewrite using `[e, iteratedFDeriv_const_of_ne (by omega : m + 1 ≠ 0)]`.
+
+Simplify using the standard rewrite rules. Check the signs of the components of the expression.
+-/
 theorem norm_iteratedFDeriv_id_le (j : ℕ) (x : V) : ‖iteratedFDeriv ℝ j (id : V → V) x‖ ≤ 1 + ‖x‖ := by
   rcases j with _ | _ | m
   · rw [norm_iteratedFDeriv_zero]
@@ -26,6 +33,17 @@ theorem norm_iteratedFDeriv_id_le (j : ℕ) (x : V) : ‖iteratedFDeriv ℝ j (i
     simp
     positivity
 
+/- English proof (translation)
+Establish `hB` using `(innerSL ℝ : V →L[ℝ] V →L[ℝ] ℝ).norm_iteratedFDeriv_le_of_bilinear (f := (id : V → V)) (g := (id : V → V)) (N := ⊤) contDiff_id contDiff_id x (n := n) le_top`. Establish `e : (fun y : V => (innerSL ℝ : V →L[ℝ] V →L[ℝ] ℝ) (id y) (id y)) = fun y : V => inner ℝ y y`. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules. Rewrite `hB` using `[e]`.
+
+Establish `hnB : ‖(innerSL ℝ : V →L[ℝ] V →L[ℝ] ℝ)‖ ≤ 1` using `norm_innerSL_le ℝ`. Establish `hsum : ∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ) * ‖iteratedFDeriv ℝ i (id : V → V) x‖ * ‖iteratedFDeriv ℝ (n - i) (id : V → V) x‖ ≤ 2 ^ n * (1 + ‖x‖) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `h1` using `norm_iteratedFDeriv_id_le i x`.
+
+Establish `h2` using `norm_iteratedFDeriv_id_le (n - i) x`. Establish `hc : (0 : ℝ) ≤ (n.choose i : ℝ)` using `Nat.cast_nonneg _`. Use `gcongr`. Use `_ = 2 ^ n * (1 + ‖x‖) ^ 2 := by`. Rewrite using `[← Finset.sum_mul, ← Finset.sum_mul]`.
+
+Establish `: (∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ)) = 2 ^ n`. Conclude with `Nat.sum_range_choose n` after adjusting the coercions. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hS0 : 0 ≤ ∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ) * ‖iteratedFDeriv ℝ i (id : V → V) x‖ * ‖iteratedFDeriv ℝ (n - i) (id : V → V) x‖` using `Finset.sum_nonneg fun i _ => by positivity`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_iteratedFDeriv_inner_self_le (n : ℕ) (x : V) :
     ‖iteratedFDeriv ℝ n (fun y : V => inner ℝ y y) x‖ ≤ 2 ^ n * (1 + ‖x‖) ^ 2 := by
   have hB := (innerSL ℝ : V →L[ℝ] V →L[ℝ] ℝ).norm_iteratedFDeriv_le_of_bilinear
@@ -57,6 +75,9 @@ theorem norm_iteratedFDeriv_inner_self_le (n : ℕ) (x : V) :
     _ ≤ 1 * (2 ^ n * (1 + ‖x‖) ^ 2) := mul_le_mul hnB hsum hS0 zero_le_one
     _ = 2 ^ n * (1 + ‖x‖) ^ 2 := one_mul _
 
+/- English proof (translation)
+Rewrite using `[norm_iteratedFDerivWithin_eq_norm_iteratedDerivWithin, (iteratedDerivWithin_of_isOpen isOpen_Ioi) (show (1 : ℝ) ∈ Ioi 0 by norm_num), iteratedDeriv_eq_iterate]`. Establish `e : (fun t : ℝ => t⁻¹) = Inv.inv` using `rfl`. Rewrite using `[e, iter_deriv_inv]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_iteratedFDerivWithin_inv_one_le (i : ℕ) :
     ‖iteratedFDerivWithin ℝ i (fun t : ℝ => t⁻¹) (Ioi 0) 1‖ ≤ i ! := by
   rw [norm_iteratedFDerivWithin_eq_norm_iteratedDerivWithin,
@@ -65,6 +86,27 @@ theorem norm_iteratedFDerivWithin_inv_one_le (i : ℕ) :
   rw [e, iter_deriv_inv]
   simp
 
+/- English proof (translation)
+Use `set q₀ : ℝ := 1 + ‖x₀‖ ^ 2 with hq₀`. Establish `hq₀pos : 0 < q₀` using `by positivity`. Use `set f : V → ℝ := fun y => q₀⁻¹ * (1 + inner ℝ y y) with hf`. Establish `hfpos : ∀ y, 0 < f y` using `fun y => by`. Simplify using `only [hf, real_inner_self_eq_norm_sq]`.
+
+Check the signs of the components of the expression. Establish `hfc : ContDiff ℝ k f` using `contDiff_const.mul (contDiff_const.add (contDiff_id.inner ℝ contDiff_id))`. Establish `hfx : f x₀ = 1`. Simplify using `only [hf, real_inner_self_eq_norm_sq]`. Rewrite using `[← hq₀]`.
+
+Conclude with `inv_mul_cancel₀ hq₀pos.ne'`. Establish `hu : (fun y : V => (1 + ‖y‖ ^ 2)⁻¹) = q₀⁻¹ • ((fun t : ℝ => t⁻¹) ∘ f)`. Use function extensionality and compare the values at `y`. Simplify using `only [hf, Pi.smul_apply, Function.comp, real_inner_self_eq_norm_sq, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hgc : ContDiff ℝ k ((fun t : ℝ => t⁻¹) ∘ f)` using `hfc.inv fun y => (hfpos y).ne'`. Rewrite using `[hu, iteratedFDeriv_const_smul_apply (hgc.contDiffAt), norm_smul, Real.norm_eq_abs, abs_of_pos (inv_pos.2 hq₀pos), mul_comm]`. Use `gcongr`. Establish `hD : ∀ i, 1 ≤ i → i ≤ k → ‖iteratedFDeriv ℝ i f x₀‖ ≤ 4 ^ i`. Introduce `i hi _`.
+
+Establish `e : f = (fun _ : V => q₀⁻¹) + q₀⁻¹ • (fun y : V => inner ℝ y y)`. Use function extensionality and compare the values at `y`. Simplify using `only [hf, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hin : ContDiff ℝ i (fun y : V => inner ℝ y y)` using `contDiff_id.inner ℝ contDiff_id`.
+
+Establish `hc2 : ContDiffAt ℝ i (q₀⁻¹ • (fun y : V => inner ℝ y y)) x₀` using `((hin.const_smul q₀⁻¹ : ContDiff ℝ i (q₀⁻¹ • (fun y : V => inner ℝ y y)))).contDiffAt`. Establish `hc1 : ContDiffAt ℝ i (fun _ : V => q₀⁻¹) x₀` using `contDiffAt_const`. Rewrite using `[e, iteratedFDeriv_add_apply hc1 hc2, iteratedFDeriv_const_of_ne (by omega), Pi.zero_apply, zero_add, iteratedFDeriv_const_smul_apply hin.contDiffAt, norm_smul, Real.norm_eq_abs, abs_of_pos (inv_pos.2 hq₀pos)]`. Establish `h1` using `norm_iteratedFDeriv_inner_self_le i x₀`. Establish `h2 : (1 + ‖x₀‖) ^ 2 ≤ 2 * q₀`.
+
+Rewrite using `[hq₀]`. Use polynomial arithmetic with `[sq_nonneg (‖x₀‖ - 1)]`. Establish `h3 : (2 : ℝ) ^ i * 2 ≤ 4 ^ i`. Establish `: (4 : ℝ) ^ i = 2 ^ i * 2 ^ i` using `by rw [← mul_pow]; norm_num`. Rewrite using `[this]`.
+
+Use `gcongr`. Conclude with `le_self_pow₀ (by norm_num) (by omega)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `h1.trans (by gcongr)`. Use `_ = 2 ^ i * 2 := by field_simp`.
+
+Use `_ ≤ 4 ^ i := h3`. Establish `hC : ∀ i, i ≤ k → ‖iteratedFDerivWithin ℝ i (fun t : ℝ => t⁻¹) (Ioi 0) (f x₀)‖ ≤ k !`. Introduce `i hi`. Rewrite using `[hfx]`. Conclude with `(norm_iteratedFDerivWithin_inv_one_le i).trans (by exact_mod_cast Nat.factorial_le hi)`.
+
+Establish `hmain` using `norm_iteratedFDeriv_comp_le' (N := (k : ℕ∞)) (t := Ioi (0 : ℝ)) (by rintro _ ⟨y, rfl⟩; exact hfpos y) (uniqueDiffOn_Ioi 0) (ContDiffOn.mono (contDiffOn_inv (𝕜 := ℝ)) (fun t (ht : t ∈ Ioi (0 : ℝ)) => (ne_of_gt ht : t ≠ 0))) hfc le_rfl x₀ hC hD`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_iteratedFDeriv_u_le (k : ℕ) (x₀ : V) :
     ‖iteratedFDeriv ℝ k (fun y : V => (1 + ‖y‖ ^ 2)⁻¹) x₀‖ ≤ (k ! * k ! * 4 ^ k) * (1 + ‖x₀‖ ^ 2)⁻¹ := by
   set q₀ : ℝ := 1 + ‖x₀‖ ^ 2 with hq₀

@@ -17,6 +17,9 @@ section
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 omit [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Consider the cases of `A`. Consider the cases of `B`. Simplify using `only at ha hh`. Substitute `ha hh` using the available equality. Both sides reduce to the same expression.
+-/
 theorem hermLine_ext {A B : HermLine ι} (ha : A.a = B.a) (hh : A.h = B.h) : A = B := by
   cases A
   cases B
@@ -36,9 +39,17 @@ noncomputable def indLine (ι : K → Type) [∀ k, Fintype (ι k)] : HermLine �
     simp only [this]
     simp
 
+/- English proof (translation)
+The claim follows from `(contDiffOn_const (c := (1 : ℝ))).congr fun _ hz => if_pos hz`.
+-/
 theorem indLine_smooth : IsSmoothHerm (indLine ι) :=
   (contDiffOn_const (c := (1 : ℝ))).congr fun _ hz => if_pos hz
 
+/- English proof (translation)
+Use `hermLine_ext (by simp [HermLine.tensor, ha]) (funext fun z => ?_)` and prove the remaining obligations. Distinguish the cases in `hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0`. Use `show A.h z * _ = B.h z * _`. Rewrite using `[hh z hz]`. Establish `: (indLine ι).h z = 0` using `if_neg hz show A.h z * _ = B.h z * _`.
+
+Rewrite using `[this, mul_zero, mul_zero]`.
+-/
 theorem tensor_indLine {A B : HermLine ι} (ha : A.a = B.a)
     (hh : ∀ z : (Σ k, ι k) → ℂ, (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → A.h z = B.h z) :
     A.tensor (indLine ι) = B.tensor (indLine ι) := by
@@ -50,6 +61,9 @@ theorem tensor_indLine {A B : HermLine ι} (ha : A.a = B.a)
     show A.h z * _ = B.h z * _
     rw [this, mul_zero, mul_zero]
 
+/- English proof (translation)
+Establish `h1` using `hφ A _ hA indLine_smooth`. Establish `h2` using `hφ B _ hB indLine_smooth`. Rewrite `h1` using `[tensor_indLine ha hh]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem additive_congr (φ : HermLine ι → ℝ)
     (hφ : ∀ A B, IsSmoothHerm A → IsSmoothHerm B → φ (A.tensor B) = φ A + φ B)
     {A B : HermLine ι} (hA : IsSmoothHerm A) (hB : IsSmoothHerm B) (ha : A.a = B.a)
@@ -59,6 +73,9 @@ theorem additive_congr (φ : HermLine ι → ℝ)
   rw [tensor_indLine ha hh] at h1
   linarith
 
+/- English proof (translation)
+Use `hermLine_ext ?_ (funext fun z => ?_)` and prove the remaining obligations. Use `show ∑ i, (Pi.single j 1 : J → ℤ) i • (ℓ i).a = _`. Apply the tactic sequence `rw [Finset.sum_eq_single j] <;> simp +contextual`. Use `show ∏ i, (ℓ i).h z ^ (Pi.single j 1 : J → ℤ) i = _`. Apply the tactic sequence `rw [Finset.prod_eq_single j] <;> simp +contextual`.
+-/
 theorem combLine_single {J : Type} [Fintype J] [DecidableEq J] (ℓ : J → HermLine ι) (j : J) :
     combLine ℓ (Pi.single j 1) = ℓ j := by
   refine hermLine_ext ?_ (funext fun z => ?_)
@@ -67,9 +84,21 @@ theorem combLine_single {J : Type} [Fintype J] [DecidableEq J] (ℓ : J → Herm
   · show ∏ i, (ℓ i).h z ^ (Pi.single j 1 : J → ℤ) i = _
     rw [Finset.prod_eq_single j] <;> simp +contextual
 
+/- English proof (translation)
+The claim follows from `ContDiffOn.mul hA hB`.
+-/
 theorem tensor_smooth {A B : HermLine ι} (hA : IsSmoothHerm A) (hB : IsSmoothHerm B) :
     IsSmoothHerm (A.tensor B) := ContDiffOn.mul hA hB
 
+/- English proof (translation)
+Establish `hs : ∀ m, IsSmoothHerm (combLine ℓ m)` using `fun m => (combLine_smooth_conj_invariant K ι J ℓ m).1 hℓ`. Set `ψ : (J → ℤ) →+ ℝ` to `AddMonoidHom.mk' (fun m => φ (combLine ℓ m)) (fun m m' => by show φ _ = φ _ + φ _`. Rewrite using `[← hφ _ _ (hs m) (hs m')]`. Use `additive_congr φ hφ (hs _) (tensor_smooth (hs m) (hs m')) ?_ fun z hz => ?_` and prove the remaining obligations. Use `show ∑ i, (m + m') i • (ℓ i).a = ∑ i, m i • (ℓ i).a + ∑ i, m' i • (ℓ i).a`.
+
+Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib]`. Use `show ∏ i, (ℓ i).h z ^ (m + m') i = (∏ i, (ℓ i).h z ^ m i) * ∏ i, (ℓ i).h z ^ m' i`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => zpow_add₀ ((ℓ i).pos z hz).ne' _ _)`. Establish `hn : n = ∑ j, n j • (Pi.single j 1 : J → ℤ)`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `show ψ n = _`. Use `conv_lhs => rw [hn]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, zsmul_eq_mul]`. Use `show _ * φ (combLine ℓ (Pi.single j 1)) = _`. Rewrite using `[combLine_single]`.
+-/
 theorem additive_comb (φ : HermLine ι → ℝ)
     (hφ : ∀ A B, IsSmoothHerm A → IsSmoothHerm B → φ (A.tensor B) = φ A + φ B)
     {J : Type} [Fintype J] (ℓ : J → HermLine ι) (hℓ : ∀ j, IsSmoothHerm (ℓ j)) (n : J → ℤ) :
@@ -101,6 +130,9 @@ end
 end Ii
 
 open Ii in
+/- English proof (translation)
+Introduce `II hII K _ ι _ P d L k J _ ℓ n hP hL hℓ`. Conclude with `additive_comb (fun A => II K ι P d (Function.update L k A)) (fun A B hA hB => hII.2.1 K ι P d L k A B hP hL hA hB) ℓ hℓ n`.
+-/
 theorem intersection_multilinear_one_position : ∀ II : IntersectionSystem, IsFullIntersectionSystem II → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) (d : ℕ) (L : Fin d → HermLine ι) (k : Fin d) (J : Type) [Fintype J] (ℓ : J → HermLine ι) (n : J → ℤ), IsArithVar P d → (∀ i, IsSmoothHerm (L i)) → (∀ j, IsSmoothHerm (ℓ j)) → II K ι P d (Function.update L k (combLine ℓ n)) = ∑ j, (n j : ℝ) * II K ι P d (Function.update L k (ℓ j)) := by
   intro II hII K _ ι _ P d L k J _ ℓ n hP hL hℓ
   exact additive_comb (fun A => II K ι P d (Function.update L k A))

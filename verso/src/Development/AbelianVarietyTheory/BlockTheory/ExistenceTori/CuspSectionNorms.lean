@@ -31,6 +31,9 @@ def IsCuspSec {X : ι → Data E r} (la : FamWt X) (F : Fn X) : Prop :=
 def ZeroOff {X : ι → Data E r} (F : Fn X) : Prop :=
   ∀ c, ∀ x, x ∉ (X c).dom → F c x = 0
 
+/- English proof (translation)
+Unfold `ptNorm Data.pnorm`. Rewrite using `[← add_mul]`. Conclude with `mul_le_mul_of_nonneg_right (norm_add_le _ _) (Finset.prod_nonneg fun _ _ => Finset.prod_nonneg fun _ _ => Real.rpow_nonneg (norm_nonneg _) _)`.
+-/
 theorem ptNorm_add_le {X : ι → Data E r} (la : FamWt X) (F G : Fn X) (p : FramePt X) :
     ptNorm la (F + G) p ≤ ptNorm la F p + ptNorm la G p := by
   unfold ptNorm Data.pnorm
@@ -39,6 +42,9 @@ theorem ptNorm_add_le {X : ι → Data E r} (la : FamWt X) (F G : Fn X) (p : Fra
     (Finset.prod_nonneg fun _ _ => Finset.prod_nonneg fun _ _ =>
       Real.rpow_nonneg (norm_nonneg _) _)
 
+/- English proof (translation)
+Unfold `ptNorm Data.pnorm`. Simplify using `only [Pi.smul_apply, smul_eq_mul, norm_mul, mul_assoc]`.
+-/
 theorem ptNorm_smul {X : ι → Data E r} (la : FamWt X) (a : ℂ) (F : Fn X) (p : FramePt X) :
     ptNorm la (a • F) p = ‖a‖ * ptNorm la F p := by
   unfold ptNorm Data.pnorm
@@ -68,6 +74,9 @@ def supE {X : ι → Data E r} (la : FamWt X) (F : Fn X) : ℝ≥0∞ :=
 def supN {X : ι → Data E r} (la : FamWt X) (F : cuspSpace la) : ℝ :=
   (supE la (F : Fn X)).toReal
 
+/- English proof (translation)
+Use `⟨fun h => h.1, fun h => ⟨h, ?_⟩⟩` and prove the remaining obligations. Use `choose C hC using fun c => (h c).1.2`. Take `⟨M, hM⟩` from `(Set.finite_range C).bddAbove`. Conclude with `⟨M, fun p => (hC p.1 p.2.1 p.2.2).trans (hM ⟨p.1, rfl⟩)⟩`.
+-/
 theorem isCuspSec_iff_of_finite [Finite ι] {X : ι → Data E r} (la : FamWt X) (F : Fn X) :
     IsCuspSec la F ↔ ∀ c, F c ∈ (X c).SS (la c) := by
   refine ⟨fun h => h.1, fun h => ⟨h, ?_⟩⟩

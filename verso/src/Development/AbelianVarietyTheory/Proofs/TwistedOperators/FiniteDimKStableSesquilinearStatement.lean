@@ -19,6 +19,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open scoped TensorProduct
 open Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.KTypeAdm.finiteDimensional_typeSpan | exact GlobalTheory.KTypeAdm.finiteDimensional_typeSpan | (intros; apply GlobalTheory.KTypeAdm.finiteDimensional_typeSpan <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finite_dim_K_stable_sesquilinear : GlobalTheory.FunPr.Hypotheses₂ → ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
     (S : D.what₂.Tau → SPar) (M : Formalism.IndefR.Mult.DSModel V S), IsInfFam (D := D) θ →
     ∀ ψ : GA D V → ℂ, IsAutFunSm θ V ψ → IsCuspFun V ψ →

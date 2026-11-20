@@ -29,6 +29,13 @@ namespace GlobalTheory.Heat.FieldCompat
 
 open GlobalTheory.CechKS GlobalTheory.LogKSBal
 
+/- English proof (translation)
+Take `⟨x₁, v₁, a, b, rfl⟩` from `hy`. Apply the tactic sequence `have dc : (dualMap φ).comp (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR x₀) = dualMap (φ.comp x₀) := RingHom.ext fun c ↦ by ext <;> simp [dualMap, ReciprocityTheory.ChartRestriction.G.Chart.dualMapR]`. Take `⟨p, q, h₁, h₂, h₃⟩` from `exists_mul_of_isGrpPullback hm _ x₁ v₁ (spMap (algebraMap B (DualNumber B)) ≫ (x ≫ m) ≫ G.hom) (by`. Express the relevant statement in the definitionally equal form `_ = spMap ((algebraMap B (DualNumber B)).comp φ) ≫ spMap x₀`. Rewrite using `[Category.assoc, hm.1.w, ← Category.assoc x, hx, ← Category.assoc, GlobalTheory.LogKSLoc.spMap_comp'])`.
+
+Use `⟨p, q, ?_, ?_, h₃⟩` and prove the remaining obligations. Rewrite using `[h₁, a]`. Conclude with `Category.assoc _ _ _`. Rewrite using `[h₂, b, ← dc, ← GlobalTheory.LogKSLoc.spMap_comp' (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR x₀) (dualMap φ)]`. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hv]`. Conclude with `(Category.assoc (spMap (dualMap φ)) (spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR x₀)) _).symm`.
+-/
 theorem isTr_comp {R : Type} [CommRing R] {K : Type} [Field K] (x₀ : R →+* K) {G : Over (Sp R)} [GrpObj G]
     {A : Over (Sp K)} [GrpObj A] (m : A.left ⟶ G.left) (hm : IsGrpPullback A G (spMap x₀) m)
     (w : TanM (𝟙 (Sp R)) G) (v : epsR K ⟶ A)
@@ -49,6 +56,11 @@ theorem isTr_comp {R : Type} [CommRing R] {K : Type} [Field K] (x₀ : R →+* K
     rw [hv]
     exact (Category.assoc (spMap (dualMap φ)) (spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR x₀)) _).symm
 
+/- English proof (translation)
+Introduce `R _ K _ x₀ G _ _ A _ _ m hm w e he v hvt hv dd hdd O f`. Use `ext_valR _ _ fun B _ y hy => ?_` and prove the remaining obligations. Establish `hb : y ≫ A.hom = spMap (Spec.preimage (y ≫ A.hom)).hom` using `(Spec.map_preimage _).symm`. Generalize the expression as in `(Spec.preimage (y ≫ A.hom)).hom = β at hb`. Take `⟨y', hy'⟩` from `exists_isTransl β y hb v`.
+
+Establish `hO : ⊤ ≤ y' ⁻¹ᵁ (m ⁻¹ᵁ O)` using `le_preimage_of_red (hy'.red hvt) hy`. Rewrite using `[← snd_valR_transl hvt hdd hy' hy, CoeffWt.valR_app _ _ _ hO, valR_pbT y m le_rfl hy]`. Use `he.2 B (β.comp x₀) (y ≫ m) (y' ≫ m) O f ?_ hy (isTr_comp x₀ m hm w v hv β y hb y' hy')` and prove the remaining obligations. Rewrite using `[Category.assoc, hm.1.w, ← Category.assoc, hb, GlobalTheory.LogKSLoc.spMap_comp']`.
+-/
 theorem invField_baseChange : ∀ {R : Type} [CommRing R] {K : Type} [Field K] (x₀ : R →+* K) {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {A : Over (Sp K)} [GrpObj A] [IsCommMonObj A] (m : A.left ⟶ G.left), IsGrpPullback A G (spMap x₀) m → ∀ (w : TanM (𝟙 (Sp R)) G) (e : Fld G.left), IsInv G w e → ∀ (v : epsR K ⟶ A), IsTangent v → v.left ≫ m = spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR x₀) ≫ (tv w).left → ∀ (dd : ∀ O : A.left.Opens, Γ(A.left, O) → Γ(A.left, O)), GlobalTheory.KS.IsInvDer v dd → ∀ (O : G.left.Opens) (f : Γ(G.left, O)), dd (m ⁻¹ᵁ O) ((m.app O).hom f) = pbT m (e O f) (m ⁻¹ᵁ O) := by
   intro R _ K _ x₀ G _ _ A _ _ m hm w e he v hvt hv dd hdd O f
   refine ext_valR _ _ fun B _ y hy => ?_

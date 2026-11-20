@@ -3,6 +3,33 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitDetOfIsOrth
 open NumberField MeasureTheory Matrix Filter Topology GlobalTheory.SUVol GlobalTheory.RiemConst ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up ReciprocityTheory.L2DbarEstimates GlobalTheory.TorusFrame
 open scoped ENNReal
 
+/- English proof (translation)
+Introduce `r b s hs hdet hup hJ`. Use `set J : Matrix (Fin r) (Fin r) ℂ := diagonal (fun a => (s a : ℂ)) with hJdef`. Establish `hss : ∀ a, (s a : ℂ) * (s a : ℂ) = 1`. Apply the tactic sequence `intro a; rcases hs a with h | h <;> simp [h]`. Establish `hJJ : J * J = 1`.
+
+Rewrite using `[hJdef, diagonal_mul_diagonal]`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[hss]`.
+
+Simplify using `[diagonal_apply_ne _ hij, one_apply_ne hij]`. Establish `hbt : BlockTriangular b id` using `fun i j hij => hup i j hij`. Use `haveI : Invertible b := b.invertibleOfIsUnitDet hdet`. Establish `hinv : BlockTriangular b⁻¹ id` using `blockTriangular_inv_of_blockTriangular hbt`. Establish `hright : bᵀ * (J * b.map (starRingEnd ℂ) * J) = 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hJ, hJJ]`. Establish `heq : J * b.map (starRingEnd ℂ) * J = (bᵀ)⁻¹` using `(Matrix.inv_eq_right_inv hright).symm`. Rewrite `heq` using `[← Matrix.transpose_nonsing_inv]`.
+
+Establish `hoff : ∀ a c : Fin r, a < c → b a c = 0`. Introduce `a c hac`. Establish `h1` using `congrFun (congrFun heq a) c`. Establish `h2 : (b⁻¹)ᵀ a c = 0`. Rewrite using `[transpose_apply]`.
+
+Conclude with `hinv hac`. Rewrite `h1` using `[h2, hJdef, mul_diagonal, diagonal_mul]`. Simplify using `only [map_apply] at h1`. Apply the tactic sequence `have hsa : (s a : ℂ) ≠ 0 := by rcases hs a with h | h <;> simp [h]`. Apply the tactic sequence `have hsc : (s c : ℂ) ≠ 0 := by rcases hs c with h | h <;> simp [h]`.
+
+Establish `: (starRingEnd ℂ) (b a c) = 0`. Break down `mul_eq_zero.mp h1 with h | h` into its components or cases. Break down `mul_eq_zero.mp h with h | h` into its components or cases. Conclude with `absurd h hsa`. Conclude with `h`.
+
+Conclude with `absurd h hsc`. Simplify using `using this`. Establish `hdiag : ∀ a c : Fin r, a ≠ c → b a c = 0`. Introduce `a c hac`. Break down `lt_or_gt_of_ne hac with h | h` into its components or cases.
+
+Conclude with `hoff a c h`. Conclude with `hup a c h`. Use `⟨hdiag, fun a => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun hJ a) a`. Rewrite `h1` using `[Matrix.mul_apply, Finset.sum_eq_single a]`.
+
+Establish `hJaa : J a a = (s a : ℂ)` using `by simp [hJdef]`. Rewrite `h1` using `[mul_diagonal, transpose_apply, map_apply, hJaa]`. Apply the tactic sequence `have hsa : (s a : ℂ) ≠ 0 := by rcases hs a with h | h <;> simp [h]`. Establish `h2 : b a a * (starRingEnd ℂ) (b a a) = 1`. Establish `: (s a : ℂ) * (b a a * (starRingEnd ℂ) (b a a)) = (s a : ℂ) * 1`.
+
+Take the linear combination `h1`. Conclude with `mul_left_cancel₀ hsa this`. Rewrite `h2` using `[Complex.mul_conj]`. Establish `h3 : Complex.normSq (b a a) = 1` using `by exact_mod_cast h2`. Rewrite `h3` using `[Complex.normSq_eq_norm_sq]`.
+
+Establish `h4 : 0 ≤ ‖b a a‖` using `norm_nonneg _`. Use polynomial arithmetic with `[sq_nonneg (‖b a a‖ - 1), sq_nonneg (‖b a a‖ + 1)]`. Introduce `k _ hk`. Rewrite using `[mul_diagonal, transpose_apply, map_apply, hdiag k a hk]`. Simplify using the standard rewrite rules.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+-/
 theorem GlobalTheory.upperTriangular_signForm_diagonal : ∀ (r : ℕ) (b : Matrix (Fin r) (Fin r) ℂ) (s : Fin r → ℝ), (∀ a, s a = 1 ∨ s a = -1) → IsUnit b.det → (∀ a c : Fin r, c < a → b a c = 0) → bᵀ * diagonal (fun a => (s a : ℂ)) * b.map (starRingEnd ℂ) = diagonal (fun a => (s a : ℂ)) → (∀ a c : Fin r, a ≠ c → b a c = 0) ∧ ∀ a, ‖b a a‖ = 1 := by
   intro r b s hs hdet hup hJ
   classical

@@ -10,6 +10,13 @@ open Formalism.REAL Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Qr
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `V₁ _ _ _ V₂ _ _ _ n E₁ E₂ m g₁ g₂ i₁ i₂ c₁ c₂`. Use `haveI := i₁.1`. Use `haveI := i₂.1`. Take `⟨ν₁, v₁, -, hv₁, hw₁, -⟩` from `Formalism.FourierDecayAlt.P.exists_singular_maximal_vector V₁ n E₁ g₁ ⊤ (fun _ _ _ _ => Submodule.mem_top) top_ne_bot`. Take `⟨ν₂, v₂, -, hv₂, hw₂, -⟩` from `Formalism.FourierDecayAlt.P.exists_singular_maximal_vector V₂ n E₂ g₂ ⊤ (fun _ _ _ _ => Submodule.mem_top) top_ne_bot`.
+
+Establish `p₁` using `Formalism.FourierDecayAlt.P.HighestWeightPolynomials.hw_cpol (m := m) g₁ (mem_CapSp.2 fun w => c₁ w v₁) hv₁ hw₁`. Establish `p₂` using `Formalism.FourierDecayAlt.P.HighestWeightPolynomials.hw_cpol (m := m) g₂ (mem_CapSp.2 fun w => c₂ w v₂) hv₂ hw₂`. Establish `s₁` using `Formalism.FourierDecayAlt.P.HighestWeightPolynomials.sdec_shift (Formalism.FourierDecayAlt.P.singular_dominant V₁ n E₁ ν₁ v₁ g₁ hw₁ hv₁)`. Establish `s₂` using `Formalism.FourierDecayAlt.P.HighestWeightPolynomials.sdec_shift (Formalism.FourierDecayAlt.P.singular_dominant V₂ n E₂ ν₂ v₂ g₂ hw₂ hv₂)`. Establish `h` using `(Formalism.FourierDecayAlt.P.separating_polynomials n _ _ (fun w => (p₁ w).symm.trans (p₂ w)) s₂).2 s₁`.
+
+Establish `hν : ν₁ = ν₂`. Use function extensionality and compare the values at `j`. Conclude with `sub_left_injective (congrFun h j)`. Substitute `hν` using the available equality. Conclude with `exists_linearEquiv_of_irreducible_isHW V₁ V₂ n E₁ E₂ ν₁ v₁ v₂ g₁ g₂ i₁.2 i₂.2 hw₁ hw₂ hv₁ hv₂`.
+-/
 theorem exists_linearEquiv_of_irreducible_capelli :
     ∀ (V₁ : Type) [AddCommGroup V₁] [Module ℂ V₁] [FiniteDimensional ℂ V₁] (V₂ : Type) [AddCommGroup V₂]
       [Module ℂ V₂] [FiniteDimensional ℂ V₂] (n : ℕ) (E₁ : Fin n → Fin n → Module.End ℂ V₁)

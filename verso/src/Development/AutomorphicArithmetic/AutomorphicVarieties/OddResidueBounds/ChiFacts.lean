@@ -6,6 +6,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Bern
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Bern UpperTheory.V.B4 UpperTheory.V.B5 UpperTheory.V.Odd
 
+/- English proof (translation)
+Introduce `E _ _ N _ ρ hρ l _ O`. Use `⟨fun ψ ψ' h => ?_, fun ψ k => ⟨fun hk => ?_, ?_⟩⟩` and prove the remaining obligations. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Take `⟨b, rfl⟩` from `hρ g`. Establish `hb` using `congrArg (fun χ : DirichletCharacter (PadicAlgCl l) N => χ (b : ZMod N)) h`.
+
+Simplify using `only [chiOf_unit] at hb`. Conclude with `Units.ext (Subtype.ext hb)`. Simplify using `only [charSet, parE, Set.mem_setOf_eq, Set.mem_inter_iff]`. Use `⟨?_, (b_parity k _).1.2 hk⟩` and prove the remaining obligations. Introduce `b hb`.
+
+Rewrite `hb`, the goal using `[MonoidHom.mem_ker]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[MulChar.coe_toUnitHom, chiOf_unit, hb]`. Simplify using the standard rewrite rules. Establish `h` using `(b_primmem k (chiOf ρ ψ)).2.1 O.toSubring (fun u => by`.
+
+Rewrite using `[chiOf_unit]`. Conclude with `(ψ (ρ u) : O).2)`. Conclude with `⟨⟨_, h⟩, rfl⟩`.
+-/
 theorem UpperTheory.V.Odd.chiFacts :
     ∀ (E : Type) [Field E] [NumberField E] (N : ℕ) [NeZero N] (ρ : (ZMod N)ˣ →* (E ≃ₐ[ℚ] E)), Function.Surjective ρ → ∀ (l : ℕ) [Fact l.Prime] (O : Subalgebra ℤ_[l] (PadicAlgCl l)), Function.Injective (fun ψ : (E ≃ₐ[ℚ] E) →* Oˣ => chiOf ρ ψ) ∧ ∀ (ψ : (E ≃ₐ[ℚ] E) →* Oˣ) (k : ℕ), (chiOf ρ ψ (-1) = (-1) ^ k → chiOf ρ ψ ∈ charSet (PadicAlgCl l) (parE ρ k)) ∧ ∃ a : O, (a : PadicAlgCl l) = alN k (chiOf ρ ψ) := by
   intro E _ _ N _ ρ hρ l _ O

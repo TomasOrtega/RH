@@ -22,6 +22,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompHS.WeightGapAntitone
 
+/- English proof (translation)
+Consider the cases of `N with`. Consider the case `zero => exact fun a => a.elim0`. Consider the case `succ n`. Use `Fin.antitone_iff_succ_le.2 fun i => ?_` and prove the remaining obligations. Use `h i (by omega)` as an intermediate fact.
+
+Rewrite `this` using `[gap, dif_pos (by omega)]`. Establish `e1 : (⟨(i : ℕ), by omega⟩ : Fin (n + 1)) = Fin.castSucc i` using `rfl`. Establish `e2 : (⟨(i : ℕ) + 1, by omega⟩ : Fin (n + 1)) = i.succ` using `rfl`. Rewrite `this` using `[e1, e2]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem antitone_of_gap_nonneg {N : ℕ} (v : Fin N → ℤ) (h : ∀ k, k + 1 < N → 0 ≤ gap v k) : Antitone v := by
   cases N with
   | zero => exact fun a => a.elim0
@@ -36,6 +41,13 @@ theorem antitone_of_gap_nonneg {N : ℕ} (v : Fin N → ℤ) (h : ∀ k, k + 1 <
 
 end GlobalTheory.CompHS.WeightGapAntitone
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw P j hu hD hp hq τ`. Establish `key : ∀ k (h : k + 1 < Dw.p + Dw.q), 1 ≤ gap (P.wt j τ) k`. Introduce `k h`. Establish `hr` using `(P.gap_rem τ k).1`. Establish `hu1 : P.u₁ τ ⟨k + 1, h⟩ < P.u₁ τ ⟨k, by omega⟩` using `hu τ (Fin.mk_lt_mk.2 (Nat.lt_succ_self k))`.
+
+Establish `hk : -2 ≤ FlagTan.kap Dw τ ⟨k, by omega⟩ - FlagTan.kap Dw τ ⟨k + 1, h⟩`. Simplify using `only [FlagTan.kap, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> push_cast <;> omega`. Rewrite `hr`, the goal using `[gap, dif_pos h]`. Simplify using `only [WtPar.wt, WtPar.uc, WtPar.u₂, Pi.add_apply, Pi.smul_apply] at hr ⊢`.
+
+Simplify using `only [nsmul_eq_mul] at hr ⊢`. Establish `hD' : (2 : ℤ) ≤ (FlagTan.dimFlag Dw : ℤ) + (j : ℤ)` using `by exact_mod_cast hD`. Use polynomial arithmetic with `[mul_nonneg (show (0 : ℤ) ≤ (FlagTan.dimFlag Dw : ℤ) + j - 2 by linarith) (show (0 : ℤ) ≤ P.u₁ τ ⟨k, by omega⟩ - P.u₁ τ ⟨k + 1, h⟩ - 1 by linarith)]`. Conclude with `⟨WeightGapAntitone.antitone_of_gap_nonneg _ fun k h => by have := key k h; omega, key _ (by omega)⟩`.
+-/
 theorem GlobalTheory.CompHS.WtPar.antitone_wt_gap_bar : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H) (P : WtPar Dw) (j : ℕ), (∀ τ, StrictAnti (P.u₁ τ)) →
     2 ≤ GlobalTheory.FlagTan.dimFlag Dw + j → 1 ≤ Dw.p → 1 ≤ Dw.q →

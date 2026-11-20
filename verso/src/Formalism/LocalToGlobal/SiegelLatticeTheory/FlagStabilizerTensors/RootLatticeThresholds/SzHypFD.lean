@@ -18,12 +18,18 @@ def DsigHC : Prop :=
   ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT : ℝ), Ties D → StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT → 1 ≤ Cl * large₂.sc.L →
     ∀ τ : D.what₂.Tau, D.dsig τ = Formalism.QuantumDeterminants.fdegHC (lamSH D.R (D.hc τ))
 
+/- English proof (translation)
+The claim follows from `hF.out D large₂ C' Cl Cg cb Cu cT CT hT hH hCL τ`.
+-/
 theorem dsig_eq [hF : Fact DsigHC] {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT : ℝ} (hT : Ties D) (hH : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT)
     (hCL : 1 ≤ Cl * large₂.sc.L) (τ : D.what₂.Tau) :
     D.dsig τ = Formalism.QuantumDeterminants.fdegHC (lamSH D.R (D.hc τ)) := hF.out D large₂ C' Cl Cg cb Cu cT CT hT hH hCL τ
 
 variable [Fact Formalism.L2.SG.Pf.SzHypFD.DsigHC] in
 
+/- English proof (translation)
+Establish `hanti` using `Formalism.MainNotions.BridgeLemma.szh_anti hH τ`. Establish `hSF : (0 : ℝ) < ∏ i ∈ range (2 * D.R.rS + D.R.k + 1), (i.factorial : ℝ)` using `Finset.prod_pos fun i _ => by exact_mod_cast Nat.factorial_pos i`. Unfold `VV`. Rewrite using `[dsig_eq hT hH hCL τ, Formalism.MainNotions.BridgeLemma.szh_fdegHC _ hanti, ← dimS_eq]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem vv_eq_vand {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT : ℝ} (hT : Ties D) (hH : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT)
     (hCL : 1 ≤ Cl * large₂.sc.L) (τ : D.what₂.Tau) : VV D τ = vand (lamSH D.R (D.hc τ)) := by
   have hanti := Formalism.MainNotions.BridgeLemma.szh_anti hH τ
@@ -35,6 +41,9 @@ theorem vv_eq_vand {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT : ℝ} (hT :
 
 variable [Fact Formalism.L2.SG.Pf.SzHypFD.DsigHC] in
 
+/- English proof (translation)
+Unfold `Sz.FormalDegreeLower`. Rewrite using `[Formalism.MainNotions.BridgeLemma.Vand_lam D τ, vv_eq_vand hT hH hCL τ]`. Establish `h0 : 0 ≤ vand (lamSH D.R (D.hc τ))` using `Formalism.MainNotions.BridgeLemma.szh_vand_nonneg _ (Formalism.MainNotions.BridgeLemma.szh_anti hH τ)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem fdl_of_ties {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT : ℝ} (hT : Ties D) (hH : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT)
     (hCL : 1 ≤ Cl * large₂.sc.L) (τ : D.what₂.Tau) :
     Sz.FormalDegreeLower (Formalism.MainNotions.BridgeLemma.cfgOf D τ) (1 / 2) (VV D τ) := by

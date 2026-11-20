@@ -14,12 +14,58 @@ open scoped Classical
 
 namespace GlobalTheory.Shin
 
+/- English proof (translation)
+Unfold `shLift`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem shLift_const_mul {F F' : Type} [Field F] [Field F'] [Algebra F F'] (s : F' ≃ₐ[F] F') {n : ℕ}
     (a : ℂ) (f : GL (Fin n) F → ℂ) (δ : GL (Fin n) F') :
     shLift s (fun x => a * f x) δ = a * shLift s f δ := by
   unfold shLift
   split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `F F' _ _ _ _ s hl hs ι θ hθ n k hn hln hreg`. Use `haveI : Finite F := Finite.of_injective (algebraMap F F') (algebraMap F F').injective`. Use `haveI : Module.Finite F F' := Module.Finite.of_finite`. Use `haveI : IsGalois F F' := inferInstance`. Establish `hΓ : Nat.card (F' ≃ₐ[F] F') = Module.finrank F F'` using `IsGalois.card_aut_eq_finrank F F'`.
+
+Use `haveI : Finite (F' ≃ₐ[F] F') := Nat.finite_of_card_ne_zero (by rw [hΓ]; exact hl.ne_zero)`. Use `letI : Fintype (F' ≃ₐ[F] F') := Fintype.ofFinite _`. Use `haveI : Fact (Nat.card (F' ≃ₐ[F] F')).Prime := ⟨hΓ ▸ hl⟩`. Establish `hgen : ∀ t : F' ≃ₐ[F] F', t ∈ Subgroup.zpowers s`. Introduce `t`.
+
+Break down `Subgroup.eq_bot_or_eq_top_of_prime_card (Subgroup.zpowers s) with h | h` into its components or cases. Conclude with `absurd (Subgroup.zpowers_eq_bot.1 h) hs`. Rewrite using `[h]`. Conclude with `Subgroup.mem_top t`. Establish `hθ' : ∀ x y : AlgebraicClosure F, x ≠ 0 → y ≠ 0 → pullθ ι θ x = pullθ ι θ y → x = y`.
+
+Introduce `x y hx hy hxy`. Apply `ι.toRingHom.injective` to reduce the goal to its premises. Conclude with `hθ (ι x) (ι y) ((map_ne_zero ι.toRingHom).2 hx) ((map_ne_zero ι.toRingHom).2 hy) hxy`. Use `set l := Module.finrank F F' with hldef`. Use `set q := Nat.card F with hqdef`.
+
+Establish `hq2 : 2 ≤ q` using `Finite.one_lt_card`. Establish `hcardF' : Nat.card F' = q ^ l` using `Module.natCard_eq_pow_finrank`. Take `⟨X, hX, hXg, hXs⟩` from `GlobalTheory.T.exists_virtualCharacter_shintani_psi_lift F F' s hl hs ι θ hθ k n`. Use `set c : ℂ := (-1) ^ (n - 1) with hc`. Establish `hc2 : c = 1 ∨ c = -1` using `neg_one_pow_eq_or ℂ (n - 1)`.
+
+Use `set X' : GHat F F' n → ℂ := fun g => c * X g with hX'`. Establish `hX'v : X' ∈ Virt ℂ ℂ (GHat F F' n)`. Break down `hc2 with h | h` into its components or cases. Establish `: X' = X` using `by funext g; simp [hX', h]`. Rewrite using `[this]`.
+
+Conclude with `hX`. Establish `: X' = -X` using `by funext g; simp [hX', h]`. Rewrite using `[this]`. Conclude with `neg_mem hX`. Establish `hcusp : cusp (pullθ ι θ) n k = fun x => c * psiG (rootSum (pullθ ι θ) k) n x` using `rfl`.
+
+Establish `hX's : ∀ δ, X' (inl δ * inr s) = shLift s (cusp (pullθ ι θ) n k) δ`. Introduce `δ`. Rewrite using `[hcusp, shLift_const_mul, ← hXs δ]`. Take `⟨hchar, hnorm⟩` from `GlobalTheory.T.cuspidalCharacterGL_isCharacter_norm_one_of_regular F (pullθ ι θ) hθ' n k hn hreg`. Establish `hclc : IsCl (cusp (pullθ ι θ) n k)`.
+
+Introduce `x y`. Rewrite using `[hcusp]`. Simplify using `only`. Rewrite using `[((GlobalTheory.T.twistedHarishChandraInductionGL_isTwistedClassFunction F (RingHom.id F) 0 0 n (fun _ => 0) (fun _ => 0)).2.2 (rootSum (pullθ ι θ) k)).1 x y]`. Apply the tactic sequence `have hiso := GlobalTheory.T.shintaniLiftClassFunction_isometry F F' s hgen n _ _ hclc hclc`.
+
+Rewrite `hiso` using `[hnorm]`. Establish `hGne : (Nat.card (GL (Fin n) F) : ℂ) ≠ 0`. Conclude with `(Nat.card_pos (α := GL (Fin n) F)).ne'` after adjusting the coercions. Establish `hnorm' : ∑ᶠ δ, X' (inl δ * inr s) * star (X' (inl δ * inr s)) = (Nat.card (GL (Fin n) F') : ℂ)`. Simplify using `only [hX's]`.
+
+Apply `mul_left_cancel₀ hGne` to reduce the goal to its premises. Rewrite using `[hiso, mul_comm]`. Take `⟨hdeg, hlift⟩` from `GlobalTheory.T.deg_liftL_and_reg_pow q l [(n, k)] hq2 hl.pos (by`. Introduce `p hp`. Simplify using `only [List.mem_singleton] at hp`.
+
+Substitute `hp` using the available equality. Conclude with `⟨hn, hln, hreg⟩)`. Establish `hdegn : deg (liftL q l [(n, k)]) = n` using `by rw [hdeg]; simp [deg]`. Establish `hYchar : IsChar ℂ ℂ (J θ (liftL q l [(n, k)]) n)`. Apply `GlobalTheory.T.isCharacter_harishChandraProductCuspidalGL_of_regular F' θ hθ _ _ n hdegn.symm` to reduce the goal to its premises.
+
+Introduce `p hp`. Rewrite using `[hcardF']`. Conclude with `hlift p hp`. Establish `hYst : ∀ g, J θ (liftL q l [(n, k)]) n (galAct F F' n s g) = J θ (liftL q l [(n, k)]) n g` using `GlobalTheory.T.harishChandraProduct_shintaniLift_galois F F' θ s [(n, k)] n hdegn.symm`. Take `⟨m, hm⟩` from `hln`.
+
+Establish `hm0 : 0 < m`. Break down `Nat.eq_zero_or_pos m with h | h` into its components or cases. Substitute `h` using the available equality. Simplify using `at hm`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `h`. Take `⟨z, hz, hzsum⟩` from `GlobalTheory.T.cuspidal_galois_pairing_eq_pm_one_prime_degree F F' s hl hs ι θ hθ m k n hm0 hm hreg`. Establish `hpair : ∑ᶠ g, X' (inl g) * star (J θ (liftL q l [(n, k)]) n g) = ((if c = 1 then z else -z : ℤ) : ℂ) * (Nat.card (GL (Fin n) F') : ℂ)`. Establish `: (fun g : GL (Fin n) F' => X' (inl g) * star (J θ (liftL q l [(n, k)]) n g)) = fun g => c * (X (inl g) * star (J θ (liftL q l [(n, k)]) n g))`. Use function extensionality and compare the values at `g`.
+
+Simplify using `only [hX']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, ← mul_finsum]`. Simplify using `only [hXg]`. Rewrite using `[hzsum]`.
+
+Break down `hc2 with h | h` into its components or cases. Rewrite using `[h]`. Simplify using the standard rewrite rules. Rewrite using `[h]; have : (-1 : ℂ) ≠ 1 := by norm_num`. Simplify using `[this]`.
+
+Establish `hndvd : ¬ ((Nat.card (F' ≃ₐ[F] F') : ℤ) ∣ (if c = 1 then z else -z))`. Rewrite using `[hΓ]`. Introduce `hd`. Establish `hd' : (l : ℤ) ∣ z` using `by split_ifs at hd`. Conclude with `hd`.
+
+Conclude with `(dvd_neg).1 hd`. Establish `h1 : (l : ℤ) ∣ 1`. Break down `hz with h | h` into its components or cases. Rewrite `hd'` using `[h]`. Then use the resulting hypothesis. Rewrite `hd'` using `[h]`.
+
+Conclude with `(dvd_neg).1 hd'`. Establish `: l ∣ 1` using `by exact_mod_cast h1`. Conclude with `hl.one_lt.ne' (Nat.dvd_one.1 this)`. Establish `hK` using `GlobalTheory.T.twisted_virtualCharacter_norm_one_support (GL (Fin n) F') (F' ≃ₐ[F] F') (galAct F F' n) s (hΓ ▸ hl) hs X' hX'v hnorm' (J θ (liftL q l [(n, k)]) n) hYchar hYst _ hpair hndvd`. Establish `hfun : (fun δ => X' (inl δ * inr s)) = shLift s (cusp (pullθ ι θ) n k)` using `funext hX's`.
+
+Rewrite `hK` using `[hfun]`. Conclude with `hK`.
+-/
 theorem shLift_cusp_kills_J : ∀ (F F' : Type) [Field F] [Field F'] [Algebra F F'] [Finite F'] (s : F' ≃ₐ[F] F'),
     (Module.finrank F F').Prime → s ≠ 1 → ∀ (ι : AlgebraicClosure F →ₐ[F] AlgebraicClosure F')
     (θ : AlgebraicClosure F' →* ℂ), (∀ x y : AlgebraicClosure F', x ≠ 0 → y ≠ 0 → θ x = θ y → x = y) →

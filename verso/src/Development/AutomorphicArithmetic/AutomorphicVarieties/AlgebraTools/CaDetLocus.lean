@@ -7,6 +7,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaDet
 
 open IsLocalRing UpperTheory.V.AlgebraTools
 
+/- English proof (translation)
+Introduce `P _ _ ι _ _ z m hc Z hZ hrel hm hdim Q hQ hdet`. Establish `hdZ : detIdeal z m ≤ Z` using `det_mem_of_rel P ι z m Z hZ hrel hm`. Distinguish the cases in `hne : Nonempty ι`. Use `swap`. It suffices to derive a contradiction.
+
+Establish `: IsEmpty ι` using `not_nonempty_iff.1 hne`. Apply `hQ.ne_top` to reduce the goal to its premises. Rewrite using `[eq_top_iff]`. Use `le_trans ?_ hdet` and prove the remaining obligations. Simplify using `[detIdeal, Matrix.det_isEmpty]`.
+
+Take `⟨K, hK, hKdet, hKmin⟩` from `exists_least_prime_detIdeal P ι z m hc hne`. Use `haveI := hK`. Use `haveI := hZ`. Use `le_trans ?_ (hKmin Q hQ hdet)` and prove the remaining obligations. Establish `hKZ : K ≤ Z` using `hKmin Z hZ hdZ`.
+
+Assume the negation of the conclusion as `hnot`. Take `⟨x, hxZ, hxK⟩` from `Set.not_subset.1 hnot`. Establish `hrK : relIdeal z m ≤ K` using `le_trans (le_sup_left : relIdeal z m ≤ relIdeal z m ⊔ Ideal.span {z.det}) hKdet`. Establish `h1 : ringKrullDim (P ⧸ Z) + 1 ≤ ringKrullDim (P ⧸ K)`. Use `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.factor hKZ) (Ideal.Quotient.factor_surjective hKZ) (r := Ideal.Quotient.mk K x) ?_ ?_` and prove the remaining obligations.
+
+Conclude with `mem_nonZeroDivisors_of_ne_zero (by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem])`. Simplify `hxZ` using `[Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`. Establish `h2 : ringKrullDim (P ⧸ K) ≤ ringKrullDim (P ⧸ relIdeal z m)` using `ringKrullDim_le_of_surjective (Ideal.Quotient.factor hrK) (Ideal.Quotient.factor_surjective hrK)`. Establish `h3` using `dim_relIdeal_le P ι z m hc`. Establish `hfin : ringKrullDim (P ⧸ Z) < ⊤` using `lt_of_le_of_lt (ringKrullDim_quotient_le Z) ringKrullDim_lt_top`.
+
+Establish `hbot : ringKrullDim (P ⧸ Z) ≠ ⊥` using `ne_bot_of_le_ne_bot (by simp) ringKrullDim_nonneg_of_nontrivial`. Establish `h12` using `h1.trans h2`. Establish `key : ringKrullDim (P ⧸ Z) + 1 + (Fintype.card ι : ℕ) ≤ ringKrullDim (P ⧸ Z) + (Fintype.card ι : ℕ)`. Use `le_trans ?_ (h3.trans hdim)` and prove the remaining obligations. Use `gcongr`.
+
+Generalize the expression as in `ringKrullDim (P ⧸ Z) = d at key hfin hbot`. Generalize the expression as in `Fintype.card ι = c at key`. Proceed by induction on `d using WithBot.recBotCoe with`. Consider the case `bot => exact hbot rfl`. Consider the case `coe d`.
+
+Proceed by induction on `d using ENat.recTopCoe with`. Consider the case `top => simp at hfin`. Consider the case `coe d`. Normalize the coercions in `at key`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.V.AlgebraTools.le_of_detIdeal_le :
     ∀ (P : Type) [CommRing P] [IsRegularLocalRing P] (ι : Type) [Fintype ι] [DecidableEq ι] (z : Matrix ι ι P) (m : ι → P),
       CotInd P (Sum.elim (fun ij : ι × ι => z ij.1 ij.2) m) →

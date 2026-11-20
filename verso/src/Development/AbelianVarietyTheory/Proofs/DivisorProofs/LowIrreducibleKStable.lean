@@ -6,6 +6,17 @@ open MvPolynomial Formalism.BasicNotions.TH
 
 namespace GlobalTheory.LowStable
 
+/- English proof (translation)
+Establish `key : ∀ m ∈ (pderiv v g).support, (m.sum fun _ e => e) + 1 ≤ g.totalDegree`. Introduce `m hm`. Establish `hc : coeff (m + Finsupp.single v 1) g ≠ 0`. Rewrite `hm` using `[mem_support_iff, coeff_pderiv]`. Introduce `h`.
+
+Rewrite `hm` using `[h, zero_mul]`. Conclude with `hm rfl`. Establish `h1` using `le_totalDegree (mem_support_iff.2 hc)`. Establish `h2 : ((m + Finsupp.single v 1).sum fun _ e => e) = (m.sum fun _ e => e) + 1`. Rewrite using `[Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl), Finsupp.sum_single_index rfl]`.
+
+Rewrite `h1` using `[h2]`. Conclude with `h1`. Distinguish the cases in `h0 : pderiv v g = 0`. Rewrite using `[h0, mul_zero, totalDegree_zero]`. Conclude with `Nat.zero_le _`.
+
+Take `⟨m, hm⟩` from `(support_nonempty).2 h0`. Establish `hm1` using `key m hm`. Establish `hle : (pderiv v g).totalDegree ≤ g.totalDegree - 1` using `Finset.sup_le fun m' hm' => by have := key m' hm'; show (m'.sum fun _ e => e) ≤ _; omega`. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_X]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem X_mul_pderiv_totalDegree_le {σ : Type} (u v : σ) (g : MvPolynomial σ ℂ) :
     (X u * pderiv v g).totalDegree ≤ g.totalDegree := by
   classical
@@ -31,6 +42,11 @@ theorem X_mul_pderiv_totalDegree_le {σ : Type} (u v : σ) (g : MvPolynomial σ 
     rw [totalDegree_X]
     omega
 
+/- English proof (translation)
+Establish `hN` using `(mem_restrictTotalDegree _ _ _).1 hg`. Establish `hXd : ∀ a b : Ln P Q R S, X a * pderiv b g ∈ restrictTotalDegree (Ln P Q R S) ℂ D` using `fun a b => (mem_restrictTotalDegree _ _ _).2 ((X_mul_pderiv_totalDegree_le a b g).trans hN)`. Consider the cases of `hu : linePos u`. Rewrite using `[GlobalTheory.CompactHarm.omE_nn u v hu (h ▸ hu) g]`. Conclude with `Submodule.sub_mem _ (Submodule.neg_mem _ (hXd v u)) (Submodule.smul_mem _ _ hg)`.
+
+Rewrite using `[GlobalTheory.CompactHarm.omE_pp u v hu (h ▸ hu) g]`. Conclude with `Submodule.add_mem _ (hXd u v) (Submodule.smul_mem _ _ hg)`.
+-/
 theorem omE_mem_restrictTotalDegree {P Q R S : ℕ} (D : ℕ) (u v : Ln P Q R S) (h : linePos u = linePos v)
     (g : Pol P Q R S) (hg : g ∈ restrictTotalDegree (Ln P Q R S) ℂ D) :
     omE u v g ∈ restrictTotalDegree (Ln P Q R S) ℂ D := by
@@ -43,6 +59,11 @@ theorem omE_mem_restrictTotalDegree {P Q R S : ℕ} (D : ℕ) (u v : Ln P Q R S)
   · rw [GlobalTheory.CompactHarm.omE_pp u v hu (h ▸ hu) g]
     exact Submodule.add_mem _ (hXd u v) (Submodule.smul_mem _ _ hg)
 
+/- English proof (translation)
+Use `conv_lhs => rw [Matrix.matrix_eq_sum_single Z]`. Simplify using `only [map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Establish `: Matrix.single c d (Z c d) = Z c d • (Eab c d : Mat R S)`. Rewrite using `[Eab, Matrix.smul_single, smul_eq_mul, mul_one]`.
+
+Rewrite using `[this, map_smul, LinearMap.smul_apply, fockAct2_Eab, LinearMap.sum_apply]`.
+-/
 theorem fockAct2_apply_eq {P Q R S : ℕ} (Z : Mat R S) (g : Pol P Q R S) :
     fockAct2 P Q R S Z g = ∑ c, ∑ d, Z c d • ∑ a, omE (a, c) (a, d) g := by
   conv_lhs => rw [Matrix.matrix_eq_sum_single Z]
@@ -52,6 +73,11 @@ theorem fockAct2_apply_eq {P Q R S : ℕ} (Z : Mat R S) (g : Pol P Q R S) :
     rw [Eab, Matrix.smul_single, smul_eq_mul, mul_one]
   rw [this, map_smul, LinearMap.smul_apply, fockAct2_Eab, LinearMap.sum_apply]
 
+/- English proof (translation)
+Rewrite using `[fockAct2_apply_eq]`. Use `Submodule.sum_mem _ fun c _ => Submodule.sum_mem _ fun d _ => ?_` and prove the remaining obligations. Distinguish the cases in `hcd : sameBlock c d`. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun a _ => ?_)` and prove the remaining obligations. Use `omE_mem_restrictTotalDegree D _ _ ?_ g hg` and prove the remaining obligations.
+
+Apply the tactic sequence `rcases a with a | a <;> rcases c with c | c <;> rcases d with d | d <;> first | rfl | exact absurd hcd (by simp [sameBlock])`. Rewrite using `[hZ c d hcd, zero_smul]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem fockAct2_mem_restrictTotalDegree {P Q R S : ℕ} (D : ℕ) (Z : Mat R S) (hZ : IsKC Z)
     (g : Pol P Q R S) (hg : g ∈ restrictTotalDegree (Ln P Q R S) ℂ D) :
     fockAct2 P Q R S Z g ∈ restrictTotalDegree (Ln P Q R S) ℂ D := by
@@ -65,6 +91,11 @@ theorem fockAct2_mem_restrictTotalDegree {P Q R S : ℕ} (D : ℕ) (Z : Mat R S)
   · rw [hZ c d hcd, zero_smul]
     exact Submodule.zero_mem _
 
+/- English proof (translation)
+Introduce `P Q R S x k k' _ _ Z hZ f hf`. Rewrite `hf`, the goal using `[GlobalTheory.KFixIrr.lowOne, Submodule.mem_inf]`. Use `⟨?_, fockAct2_mem_restrictTotalDegree _ Z hZ f hf.2⟩` and prove the remaining obligations. Rewrite `hf`, the goal using `[GlobalTheory.KFixIrr.mem_chiOne]`. Introduce `X hX`.
+
+Establish `hc` using `LinearMap.congr_fun ((GlobalTheory.FockAlg.fock_lie_and_commute P Q R S).2.2.2 X Z) f`. Rewrite `hc` using `[Module.End.mul_apply, Module.End.mul_apply]`. Rewrite using `[hc, hf.1 X hX, map_smul]`.
+-/
 theorem lowOne_stable : ∀ (P Q R S : ℕ) (x : ℚ) (k k' : ℕ), x - Formalism.BasicNotions.TH.cPair R S = k →
     x + Formalism.BasicNotions.TH.cPair R S = k' → ∀ Z : Formalism.BasicNotions.TH.Mat R S, Formalism.BasicNotions.TH.IsKC Z →
     ∀ f ∈ GlobalTheory.KFixIrr.lowOne P Q R S x (P * k + Q * k'),

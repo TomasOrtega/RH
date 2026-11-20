@@ -29,6 +29,15 @@ open GlobalTheory.KS (rsT_add rsT_mul rsT_zero)
 
 variable {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Establish `: GlobalTheory.SqZero.lieExp (fun i => tvE (u i)) e (fun i => he i i) * z = z`. Simplify using `[GlobalTheory.SqZero.lieExp]`. Rewrite using `[this]`.
+
+Conclude with `⟨h, fun f => by simp⟩`. Consider the case `succ m ih`. Take `⟨h₁, H₁⟩` from `ih (fun i => u i.succ) (fun i => dd i.succ) (fun i => hd i.succ) (fun i => e i.succ) (fun i j => he _ _)`. Take `⟨h₂, H₂⟩` from `GlobalTheory.T.value_at_invariantField_translate_sqZero (hd 0) (e 0) (he 0 0) _ O h₁`. Establish `: GlobalTheory.SqZero.lieExp (fun i => tvE (u i)) e (fun i => he i i) * z = (ReciprocityTheory.ChartRestriction.G.Chart.spMap (GlobalTheory.SqZero.epsTo R (e 0) (he 0 0)) ≫ tvE (u 0)) * (GlobalTheory.SqZero.lieExp (fun i => tvE (u i.succ)) (fun i => e i.succ) (fun i => he i.succ …`.
+
+Rewrite using `[GlobalTheory.SqZero.lieExp, GlobalTheory.SqZero.lieExp, Fin.prod_univ_succ, _root_.mul_assoc]`. Rewrite using `[this]`. Use `⟨h₂, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[H₂, H₁, H₁, Fin.sum_univ_succ, mul_add, Finset.mul_sum]`. Simplify using `only [← _root_.mul_assoc, he, zero_mul, Finset.sum_const_zero]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem evalPt_lieExp {m : ℕ} (u : Fin m → TanM (𝟙 (Sp R)) G) (dd : Fin m → Fld G.left)
     (hd : ∀ i, IsInv G (u i) (dd i)) (B : Type) [CommRing B] [Algebra R B] (e : Fin m → B)
     (he : ∀ i j, e i * e j = 0) (z : ReciprocityTheory.ChartRestriction.G.Chart.sp (R₀ := R) B ⟶ G) (O : G.left.Opens)
@@ -55,6 +64,9 @@ theorem evalPt_lieExp {m : ℕ} (u : Fin m → TanM (𝟙 (Sp R)) G) (dd : Fin m
     simp only [← _root_.mul_assoc, he, zero_mul, Finset.sum_const_zero]
     ring
 
+/- English proof (translation)
+Introduce `R _ G _ _ hs n v dd hd W δ hδ hc`. Establish `hb` using `GlobalTheory.T.isLieBasis_dualPoints_of_tangentModule_basis v`. Use `GlobalTheory.T.exists_vectorField_coeffs_glued_from_affineOpens W δ dd hδ (fun a => (hd a).1) fun V V' hV hV' hVW hV'V => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.T.existsUnique_lieBasis_coeffs_of_derivation_affineOpen _ hb dd (fun B _ _ e he z O h => evalPt_lieExp v dd hd B e he z O h) V V' hV hV' hV'V (fun f => rsT (δ V f) V') (fun f f' => by simp only [hδ.1 V hVW, rsT_add]) (fun f f' => by simp only [hδ.2.1 V hVW, rsT_add, …`.
+-/
 theorem exists_coeff : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], Smooth G.hom →
     ∀ (n : ℕ) (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) G)) (dd : Fin n → Fld G.left), (∀ a, IsInv G (v a) (dd a)) →
     ∀ (W : G.left.Opens) (δ : Fld G.left), IsField W δ → (∀ O, O ≤ W → ∀ r, δ O (constFn G.hom O r) = 0) →

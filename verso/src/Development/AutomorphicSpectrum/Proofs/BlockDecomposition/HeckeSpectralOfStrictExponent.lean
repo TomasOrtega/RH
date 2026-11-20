@@ -11,6 +11,11 @@ open Filter Topology MeasureTheory GlobalTheory.PRep GlobalTheory.SplitWeil Glob
 
 namespace GlobalTheory.CompanionTheory.HeckeBound
 
+/- English proof (translation)
+Establish `hq' : (0 : ℝ) < q` using `by exact_mod_cast hq`. Establish `hre : (((e : ℂ) / 2)).re = (e : ℝ) / 2`. Establish `: ((e : ℂ) / 2) = (((e : ℝ) / 2 : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[this, Complex.ofReal_re]`. Rewrite `h` using `[norm_mul, Complex.norm_natCast_cpow_of_pos hq, hre]`.
+
+Establish `hp : 0 < (q : ℝ) ^ ((e : ℝ) / 2)` using `Real.rpow_pos_of_pos hq' _`. Rewrite using `[Real.rpow_neg hq'.le, ← one_div, lt_div_iff₀ hp]`. Conclude with `h`.
+-/
 theorem norm_lt_of_norm_mul_cpow_lt (q e : ℕ) (hq : 0 < q) (μ : ℂ)
     (h : ‖μ * (q : ℂ) ^ ((e : ℂ) / 2)‖ < 1) : ‖μ‖ < (q : ℝ) ^ (-((e : ℝ) / 2)) := by
   have hq' : (0 : ℝ) < q := by exact_mod_cast hq
@@ -22,6 +27,25 @@ theorem norm_lt_of_norm_mul_cpow_lt (q e : ℕ) (hq : 0 < q) (μ : ℂ)
   rw [Real.rpow_neg hq'.le, ← one_div, lt_div_iff₀ hp]
   exact h
 
+/- English proof (translation)
+Introduce `m hm j hj hjN T hT μ hμ`. Establish `hq : 0 < Nat.card 𝓀[k]` using `Nat.card_pos`. Distinguish the cases in `hμ0 : μ = 0`. Substitute `hμ0` using the available equality. Simplify using `using Real.rpow_pos_of_pos (by exact_mod_cast hq : (0 : ℝ) < (Nat.card 𝓀[k] : ℝ)) _`.
+
+Take `⟨w, hw⟩` from `hμ.exists_hasEigenvector`. Set `d : Fin 2 → ℕ` to `![j, N - j]`. Establish `hd : ∑ a, d a = N`. Simplify using `only [d, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `d0 : d 0 = j` using `rfl`. Establish `d1 : d 1 = N - j` using `rfl`. Establish `hd0 : 0 < d 0` using `hj`. Establish `hd1 : 0 < d 1` using `by rw [d1]; omega`. Establish `hT' : Zls.IsHeckeOp π m (Zls.diagPow k N (Zls.omegaVec N (d 0))) T` using `hT`.
+
+Establish `hTw : T w = μ • w` using `hw.apply_eq_smul`. Establish `hmk : (Submodule.Quotient.mk (w : V) : Jacquet π (unipRad k (stdBlocks d hd))) ≠ 0`. Introduce `h0`. Take `⟨r, hr⟩` from `GlobalTheory.T.hecke_operator_jacquet_eigen_left k N V π hs m hm d hd hd0 hd1 T hT' w h0`. Rewrite `hr` using `[hw.pow_apply r]`.
+
+Conclude with `(smul_ne_zero (pow_ne_zero r hμ0) hw.2) hr`. Establish `hjac` using `GlobalTheory.T.hecke_operator_jacquet_eigen_right k N V π hs m hm d hd hd0 hd1 T hT' w`. Establish `heig : (Submodule.Quotient.mk (π (Zls.diagPow k N (Zls.omegaVec N (d 0))) (w : V)) : Jacquet π (unipRad k (stdBlocks d hd))) = μ • (Submodule.Quotient.mk (w : V) : Jacquet π (unipRad k (stdBlocks d hd)))`. Rewrite using `[← hjac, hTw]`. Both sides reduce to the same expression.
+
+Take `⟨x, hx, hxd, hjm, hs0, c1, hs1⟩` from `GlobalTheory.T.jacquet_quotient_eigenvector k N V π hs hi hA hF d hd hd0 hd1 μ w hmk heig`. Establish `hpos : ∀ a, 0 < (x a).1`. Introduce `a`. Rewrite using `[hxd a]`. Use `fin_cases a`.
+
+Conclude with `hd0`. Conclude with `hd1`. Establish `hE` using `hM x hx hpos hjm`. Establish `hc` using `(hE (Zls.unifU k) (GlobalTheory.T.uniformizer_pow_tendsto_zero k) ![μ * (Nat.card 𝓀[k] : ℂ) ^ (((d 0 * d 1 : ℕ) : ℂ) / 2), c1] (by`. Introduce `i`.
+
+Use `fin_cases i`. Conclude with `hs0`. Conclude with `hs1)).1 0 (by simp)`. Establish `hfil : Finset.univ.filter (· ≤ (0 : Fin 2)) = {0}` using `by decide`. Rewrite `hc` using `[hfil, Finset.prod_singleton]`.
+
+Use `norm_lt_of_norm_mul_cpow_lt (Nat.card 𝓀[k]) (d 0 * d 1) hq μ hc` as an intermediate fact. Simplify `this` using `[d0, d1]`.
+-/
 theorem heckeSpectral_of_maxExpStrict (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (N : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin N) k) V) (hs : IsSmooth π) (hi : π.IsIrreducible)

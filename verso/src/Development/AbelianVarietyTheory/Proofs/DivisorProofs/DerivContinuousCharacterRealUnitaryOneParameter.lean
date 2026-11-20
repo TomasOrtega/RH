@@ -11,6 +11,27 @@ namespace GlobalTheory.HoweD
 open scoped Matrix
 open GlobalTheory.RealLift.OneParam GlobalTheory.RealLift.CharTrace
 
+/- English proof (translation)
+Establish `upd : ∀ w (a : Mat (R w) (S w)), aᴴ * Jm (R w) (S w) * a = Jm (R w) (S w) → ∀ v, (Function.update (1 : ∀ w, Mat (R w) (S w)) w a v)ᴴ * Jm (R v) (S v) * Function.update (1 : ∀ w, Mat (R w) (S w)) w a v = Jm (R v) (S v)`. Introduce `w a ha v`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality. Simplify using `using ha`.
+
+Rewrite using `[Function.update_of_ne hv]`. Conclude with `mem_one`. Establish `key : ∀ w, ∃ n : ℤ, ∀ a : Mat (R w) (S w), aᴴ * Jm (R w) (S w) * a = Jm (R w) (S w) → χ (Function.update (1 : ∀ w, Mat (R w) (S w)) w a) = a.det ^ n`. Introduce `w`. Use `charUpq (R w) (S w) (fun a => χ (Function.update (1 : ∀ w, Mat (R w) (S w)) w a)) ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `a b ha hb`. Establish `e : Function.update (1 : ∀ w, Mat (R w) (S w)) w (a * b) = Function.update (1 : ∀ w, Mat (R w) (S w)) w a * Function.update (1 : ∀ w, Mat (R w) (S w)) w b`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hv]`. Rewrite using `[e]`. Conclude with `hmul _ _ (upd w a ha) (upd w b hb)`. Conclude with `hc.comp (show Continuous (Function.update (1 : ∀ w, Mat (R w) (S w)) w) from continuous_const.update w continuous_id).continuousOn fun a ha => upd w a ha`.
+
+Introduce `a ha`. Conclude with `hne _ (upd w a ha)`. Use `choose n hn using key`. Use `⟨n, fun g hg => ?_⟩` and prove the remaining obligations. Establish `h1 : χ 1 = 1`.
+
+Establish `e` using `hmul 1 1 (fun _ => mem_one) (fun _ => mem_one)`. Rewrite `e` using `[mul_one]`. Establish `hz` using `hne 1 (fun _ => mem_one)`. Conclude with `mul_left_cancel₀ hz (e.symm.trans (mul_one _).symm)`. Establish `pc : ∀ (s : Finset ι) v, (s.piecewise g 1 v)ᴴ * Jm (R v) (S v) * s.piecewise g 1 v = Jm (R v) (S v)`.
+
+Introduce `s v`. Distinguish the cases in `hv : v ∈ s`. Rewrite using `[Finset.piecewise_eq_of_mem _ _ _ hv]`. Conclude with `hg v`. Rewrite using `[Finset.piecewise_eq_of_notMem _ _ _ hv]`.
+
+Conclude with `mem_one`. Establish `ind : ∀ s : Finset ι, χ (s.piecewise g 1) = ∏ w ∈ s, (g w).det ^ n w`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using h1`.
+
+Consider the case `insert a s ha ih`. Establish `e : (insert a s).piecewise g 1 = Function.update (1 : ∀ w, Mat (R w) (S w)) a (g a) * s.piecewise g 1`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v = a`. Substitute `hv` using the available equality.
+
+Simplify using `[Finset.piecewise, ha]`. Simplify using `[Finset.piecewise, hv, Function.update_of_ne hv]`. Rewrite using `[e, hmul _ _ (upd a (g a) (hg a)) (pc s), hn a (g a) (hg a), ih, Finset.prod_insert ha]`. Simplify using `using ind Finset.univ`.
+-/
 theorem prod_charD {ι : Type} [Fintype ι] [DecidableEq ι] {R S : ι → ℕ} (χ : (∀ w, Mat (R w) (S w)) → ℂ)
     (hmul : ∀ g h : ∀ w, Mat (R w) (S w), (∀ w, (g w)ᴴ * Jm (R w) (S w) * g w = Jm (R w) (S w)) → (∀ w, (h w)ᴴ * Jm (R w) (S w) * h w = Jm (R w) (S w)) →
       χ (g * h) = χ g * χ h)
@@ -64,6 +85,59 @@ theorem prod_charD {ι : Type} [Fintype ι] [DecidableEq ι] {R S : ι → ℕ} 
       rw [e, hmul _ _ (upd a (g a) (hg a)) (pc s), hn a (g a) (hg a), ih, Finset.prod_insert ha]
   simpa using ind Finset.univ
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ β _ _ R S τ J b C hCM hC ν hmul hcont hne`. Use `hCM.1` as an intermediate fact. Take `⟨ξ, hξ⟩` from `exists_moved hCM`. Establish `hξ' : ∀ w, ((τ w).1 ξ).im ≠ 0` using `fun w => im_ne_zero hCM hξ (τ w).1`. Use `choose C' hC' using fun w => (hC w).2`.
+
+Establish `hL : ∀ w, C' w * C w = 1` using `fun w => frame_inv (hC w).1 (hC' w)`. Use `haveI : ContinuousAdd (AE F E) := IsModuleTopology.toContinuousAdd (AF F) (AE F E)`. Use `set U : Set (∀ w : InfinitePlace F, Mat (R w) (S w)) := {h | ∀ w, (h w)ᴴ * Jm (R w) (S w) * h w = Jm (R w) (S w)} with hU`. Use `set Λ : (∀ w : InfinitePlace F, Mat (R w) (S w)) → Matrix β β (AE F E) := fun h => 1 + liftM τ ξ (fun w => C w * h w * C' w - 1) with hΛ`. Establish `Λπ : ∀ h w, (Λ h).map (piInf (τ w)) = C w * h w * C' w` using `fun h w => by`.
+
+Rewrite using `[hΛ, Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _), OneParam.liftM_map τ hξ', add_sub_cancel]`. Establish `Λat : ∀ h, At (evI F) (Λ h - 1)` using `fun h => by`. Rewrite using `[hΛ, add_sub_cancel_left]`. Conclude with `at_liftM τ ξ _`. Establish `Λmul : ∀ h h', Λ (h * h') = Λ h * Λ h'` using `fun h h' => by`.
+
+Use `(eq_of_at hCM τ ?_ fun w => ?_).symm` and prove the remaining obligations. Establish `e : Λ h * Λ h' - Λ (h * h') = (Λ h - 1) * Λ h' + (Λ h' - 1) - (Λ (h * h') - 1)` using `by noncomm_ring`. Rewrite using `[e]`. Conclude with `at_sub (at_add (at_mul_right (Λat h) _) (Λat h')) (Λat _)`. Rewrite using `[Matrix.map_mul, Λπ, Λπ, Λπ, Pi.mul_apply]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hL, Matrix.mul_one]; simp only [Matrix.mul_assoc]`. Establish `Λone : Λ 1 = 1` using `eq_of_at hCM τ (Λat 1) fun w => by`. Rewrite using `[Λπ, Pi.one_apply, Matrix.mul_one, hC' w, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Establish `ΛU : ∀ h ∈ U, (Λ h)ᵀ * J * (Λ h).map (cA σ) = J` using `fun h hh => by`. Use `eq_of_at hCM τ ?_ fun w => ?_` and prove the remaining obligations. Establish `e : (Λ h)ᵀ * J * (Λ h).map (cA σ) - J = (Λ h - 1)ᵀ * J * (Λ h).map (cA σ) + J * (Λ h - 1).map (cA σ)`. Establish `e1 : (Λ h - 1).map (cA σ) = (Λ h).map (cA σ) - 1`. Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Rewrite using `[e1, Matrix.transpose_sub, Matrix.transpose_one, Matrix.sub_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_sub, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `at_add (at_mul_right (at_mul_right (at_transpose (Λat h)) _) _) (at_mul_left (at_map_cA σ (Λat h)) _)`. Establish `hc : ((Λ h).map (cA σ)).map (piInf (τ w)) = (C w * h w * C' w).map star`.
+
+Rewrite using `[← Λπ h w, Matrix.map_map, Matrix.map_map]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Conclude with `piInf_cA hCM (τ w) z`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hc, Matrix.transpose_map, Λπ]`.
+
+Distinguish the cases in `hb : b = 0`. Use `haveI := isEmpty_of_zero (hb ▸ (hC w).1) (hC' w)`. Use extensionality with `i`. Conclude with `isEmptyElim i`. Establish `h1` using `conj_unit (hC w).1 (hC' w) ((form_iff (h w)).1 (hh w))`.
+
+Rewrite `h1` using `[Matrix.mul_smul, Matrix.smul_mul]`. Conclude with `smul_right_injective _ hb h1`. Use `set hinv : (∀ w : InfinitePlace F, Mat (R w) (S w)) → ∀ w : InfinitePlace F, Mat (R w) (S w) := fun h w => Jm (R w) (S w) * (h w)ᴴ * Jm (R w) (S w) with hhinv`. Establish `inv_mul : ∀ h ∈ U, hinv h * h = 1` using `fun h hh => by`. Use function extensionality and compare the values at `w`.
+
+Rewrite using `[Pi.mul_apply, hhinv, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc _ (Jm (R w) (S w)) (h w), hh w, jm_mul_self, Pi.one_apply]`. Establish `mul_inv : ∀ h ∈ U, h * hinv h = 1` using `fun h hh => by`. Use function extensionality and compare the values at `w`. Use `congrFun (inv_mul h hh) w` as an intermediate fact. Rewrite `this`, the goal using `[Pi.mul_apply, Pi.one_apply]`.
+
+Conclude with `mul_eq_one_comm.1 this`. Establish `Λinv1 : ∀ h ∈ U, Λ h * Λ (hinv h) = 1` using `fun h hh => by rw [← Λmul, mul_inv h hh, Λone]`. Establish `Λinv2 : ∀ h ∈ U, Λ (hinv h) * Λ h = 1` using `fun h hh => by rw [← Λmul, inv_mul h hh, Λone]`. Set `G : U → UG (cA σ) J` to `fun h => ⟨⟨Λ h, Λ (hinv h), Λinv1 h h.2, Λinv2 h h.2⟩, ΛU h h.2⟩`. Establish `LevelValuationRings : ∀ h, At (evI F) (((G h).1 : Matrix β β (AE F E)) - 1)` using `fun h => Λat h`.
+
+Establish `Gmul : ∀ h h' : U, ∀ hm : (h : ∀ w : InfinitePlace F, Mat (R w) (S w)) * h' ∈ U, G ⟨_, hm⟩ = G h * G h'` using `fun h h' hm => Subtype.ext (Units.ext (Λmul h h'))`. Establish `Λc : Continuous Λ` using `continuous_const.add ((continuous_liftM τ ξ).comp (continuous_pi fun w => (((continuous_const.matrix_mul (continuous_apply w)).matrix_mul continuous_const).sub continuous_const)))`. Establish `hinvc : Continuous hinv` using `continuous_pi fun w => (continuous_const.matrix_mul (continuous_apply w).matrix_conjTranspose).matrix_mul continuous_const`. Establish `Gc : Continuous G`. Establish `hu : Continuous fun h : U => ((G h).1 : GL β (AE F E))` using `Units.continuous_iff.2 ⟨Λc.comp continuous_subtype_val, (Λc.comp hinvc).comp continuous_subtype_val⟩`.
+
+Conclude with `hu.subtype_mk _`. Set `χ : (∀ w : InfinitePlace F, Mat (R w) (S w)) → ℂ` to `fun h => if hh : h ∈ U then ν (G ⟨h, hh⟩) else 0`. Establish `χG : ∀ h : U, χ h = ν (G h)` using `fun h => by simp only [χ, dif_pos h.2]`. Establish `memU : ∀ h h' : ∀ w : InfinitePlace F, Mat (R w) (S w), h ∈ U → h' ∈ U → h * h' ∈ U` using `fun h h' hh hh' w => mem_mul (hh w) (hh' w)`. Take `⟨n, hn⟩` from `prod_charD (R := R) (S := S) χ (fun g h hg hh => by`.
+
+Rewrite using `[χG ⟨g, hg⟩, χG ⟨h, hh⟩, χG ⟨g * h, memU g h hg hh⟩, Gmul ⟨g, hg⟩ ⟨h, hh⟩]`. Conclude with `hmul _ _ (LevelValuationRings _) (LevelValuationRings _))`. Use the proof step `(by`. Rewrite using `[continuousOn_iff_continuous_restrict]`. Use `hcont.comp_continuous Gc LevelValuationRings using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `h`. Conclude with `χG h)`. Use the proof step `(fun g hg => by rw [χG ⟨g, hg⟩]; exact hne _ (LevelValuationRings _))`. Use `⟨fun w => (n w : ℂ), fun γ hγ Y hY => ?_⟩` and prove the remaining obligations. Use `set e : ℝ → ∀ w : InfinitePlace F, Mat (R w) (S w) := fun t w => NormedSpace.exp (t • Y w) with he`.
+
+Establish `hγw : ∀ t w, ((γ (Multiplicative.ofAdd t)).1 : Matrix β β (AE F E)).map (piInf (τ w)) = C w * e t w * C' w` using `fun t w => by`. Rewrite using `[he]`. Simplify using `only`. Rewrite using `[← hY t w, Matrix.mul_assoc, hC' w, Matrix.mul_one]`. Establish `heU : ∀ t, e t ∈ U` using `fun t w => by`.
+
+Rewrite using `[form_iff]`. Use `set g := ((γ (Multiplicative.ofAdd t)).1 : Matrix β β (AE F E)).map (piInf (τ w)) with hg`. Establish `hgU : gᵀ * (b • J.map (piInf (τ w))) * g.map star = b • J.map (piInf (τ w))`. Establish `hu : ((γ (Multiplicative.ofAdd t)).1 : Matrix β β (AE F E))ᵀ * J * ((γ (Multiplicative.ofAdd t)).1 : Matrix β β (AE F E)).map (cA σ) = J` using `(γ (Multiplicative.ofAdd t)).2`. Use `congrArg (fun X => X.map (piInf (τ w))) hu` as an intermediate fact.
+
+Simplify using `only [Matrix.map_mul, Matrix.transpose_map] at this`. Establish `hc : (((γ (Multiplicative.ofAdd t)).1 : Matrix β β (AE F E)).map (cA σ)).map (piInf (τ w)) = g.map star`. Rewrite using `[hg, Matrix.map_map, Matrix.map_map]`. Use `congr 1`. Use function extensionality and compare the values at `z`.
+
+Conclude with `piInf_cA hCM (τ w) z`. Rewrite `this` using `[hc]`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, this]`. Establish `hee : e t w = C' w * g * C w`. Rewrite using `[hg, hγw, Matrix.mul_assoc, Matrix.mul_assoc, hL, Matrix.mul_one, ← Matrix.mul_assoc, hL, Matrix.one_mul]`.
+
+Establish `t1 : (C' w)ᵀ * (C w)ᵀ = 1` using `by rw [← Matrix.transpose_mul, hC' w, Matrix.transpose_one]`. Establish `t2 : (C w).map star * (C' w).map star = 1`. Rewrite using `[← map_star_mul, hC' w]`. Conclude with `Matrix.map_one _ (star_zero _) (star_one _)`. Rewrite using `[hee, ← (hC w).1]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_star_mul, map_star_mul, Matrix.transpose_mul, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (C w)ᵀ * (b • J.map (piInf (τ w))) * (C w).map star := by`. Rewrite using `[t1, t2, Matrix.one_mul, Matrix.mul_one, hgU]`.
+
+Establish `hγe : ∀ t, γ (Multiplicative.ofAdd t) = G ⟨e t, heU t⟩` using `fun t => by`. Use `Subtype.ext (Units.ext (eq_of_at hCM τ ?_ fun w => ?_))` and prove the remaining obligations. Establish `e1 : ((γ (Multiplicative.ofAdd t)).1 : Matrix β β (AE F E)) - Λ (e t) = (((γ (Multiplicative.ofAdd t)).1 : Matrix β β (AE F E)) - 1) - (Λ (e t) - 1)` using `by abel show At (evI F) (((γ (Multiplicative.ofAdd t)).1 : Matrix β β (AE F E)) - Λ (e t))`. Rewrite using `[e1]`. Conclude with `at_sub (hγ.2 _) (Λat _)`.
+
+Use `show ((γ (Multiplicative.ofAdd t)).1 : Matrix β β (AE F E)).map (piInf (τ w)) = (Λ (e t)).map (piInf (τ w))`. Rewrite using `[hγw, Λπ]`. Establish `hval : ∀ t : ℝ, ν (γ (Multiplicative.ofAdd t)) = Complex.exp ((t : ℂ) * ∑ w, (n w : ℂ) * (Y w).trace)` using `fun t => by`. Rewrite using `[hγe t, ← χG, hn _ (heU t), Finset.mul_sum, Complex.exp_sum]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[he]`. Simplify using `only`. Rewrite using `[GlobalTheory.DetSqrtCover.det_exp, ← Complex.exp_int_mul, Matrix.trace_smul]`. Use `congr 1`. Simplify using `only [Complex.real_smul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hd : HasDerivAt (fun t : ℝ => Complex.exp ((t : ℂ) * ∑ w, (n w : ℂ) * (Y w).trace)) (∑ w, (n w : ℂ) * (Y w).trace) 0`. Establish `h0` using `((Complex.ofRealCLM.hasDerivAt (x := (0 : ℝ))).mul_const (∑ w, (n w : ℂ) * (Y w).trace)).cexp`. Simplify using `using h0`. Conclude with `hd.congr_of_eventuallyEq (Filter.Eventually.of_forall hval)`.
+-/
 theorem deriv_charD :
   ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (β : Type) [Fintype β]
     [DecidableEq β] (R S : InfinitePlace F → ℕ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (J : Matrix β β (AE F E)) (b : ℂ)

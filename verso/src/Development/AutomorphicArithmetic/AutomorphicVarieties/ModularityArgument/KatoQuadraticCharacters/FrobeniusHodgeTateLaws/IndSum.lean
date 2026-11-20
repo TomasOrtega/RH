@@ -3,9 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open UpperTheory.V.Z.Kato.Joint GlobalTheory.EisM GlobalTheory.KummerEisensteinGalois
 
+/- English proof (translation)
+Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules.
+-/
 private theorem pm_one {R : Type*} [CommRing R] {K : Type*} [Field K] (χ : MulChar R K) : χ (-1) * χ (-1) = 1 := by
   rw [← map_mul]; simp
 
+/- English proof (translation)
+Distinguish the cases in `hB : IsUnit B`. Take `⟨w, rfl⟩` from `hB`. Establish `h : ∀ u : (ZMod N)ˣ, ((w : ZMod N) = (u : ZMod N) * v) ↔ w * v⁻¹ = u` using `fun u => by`. Rewrite using `[← Units.val_mul, Units.val_inj, mul_inv_eq_iff_eq_mul]`. Simplify using `only [h, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, Units.val_mul, map_mul]`.
+
+Rewrite using `[mul_comm, MulChar.inv_apply_eq_inv']`. Use `congr 1`. Use `eq_inv_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[MulChar.map_nonunit _ hB, mul_zero]`. Use `Finset.sum_eq_zero fun u _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg, mul_zero]`. Introduce and unpack `rfl`. Conclude with `hB (u * v).isUnit`.
+-/
 private theorem ind_sum {N : ℕ} [NeZero N] (ν : DirichletCharacter ℂ N) (v : (ZMod N)ˣ) (B : ZMod N) :
     ∑ u : (ZMod N)ˣ, ν u * (if B = (u : ZMod N) * v then 1 else 0) = ν⁻¹ v * ν B := by
   by_cases hB : IsUnit B
@@ -23,6 +33,11 @@ private theorem ind_sum {N : ℕ} [NeZero N] (ν : DirichletCharacter ℂ N) (v 
     rintro rfl
     exact hB (u * v).isUnit
 
+/- English proof (translation)
+Take `⟨v, hv⟩ : IsUnit (b : ZMod N)` from `(ZMod.coe_int_isUnit_iff_isCoprime b N).mpr hb.symm`. Establish `h1` using `ind_sum (θ * χ) v B`. Establish `h2` using `ind_sum (θ * χ) v (-B)`. Establish `h3 : (θ * χ) (-(B : ZMod N)) = -θ (-1) * (θ * χ) B`. Rewrite using `[← neg_one_mul (B : ZMod N), map_mul, MulChar.mul_apply θ χ (-1), hχ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [neg_eq_iff_eq_neg] at h2`. Simplify using `only [twb, ch, Int.cast_mul, Int.cast_natCast, ZMod.natCast_zmod_val, ← hv, mul_sub, Finset.sum_sub_distrib, mul_left_comm _ (θ (-1)), ← Finset.mul_sum]`. Rewrite using `[h1, h2, h3]`. Take the linear combination `((θ * χ)⁻¹ v * (θ * χ) B) * pm_one θ`.
+-/
 private theorem twb_sum {N : ℕ} [NeZero N] (θ χ : DirichletCharacter ℂ N) (hχ : χ (-1) = -1) (b : ℤ) (hb : IsCoprime b N) (B : ℤ) :
     ∑ u : (ZMod N)ˣ, (θ * χ) u * twb N (θ (-1)) (((u : ZMod N).val : ℤ) * b) B =
       2 * (θ * χ)⁻¹ (b : ZMod N) * ch (θ * χ) B := by
@@ -37,6 +52,13 @@ private theorem twb_sum {N : ℕ} [NeZero N] (θ χ : DirichletCharacter ℂ N) 
   rw [h1, h2, h3]
   linear_combination ((θ * χ)⁻¹ v * (θ * χ) B) * pm_one θ
 
+/- English proof (translation)
+Simplify using `only [Zm, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Use `split_ifs`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring`. Use `_ = _ := by rw [h]; ring`.
+-/
 private theorem Zm_sum {ι : Type*} (S : Finset ι) (k l : ℕ) (u : ℤ → ℂ) (c : ι → ℂ) (v : ι → ℤ → ℂ) (e : ℂ) (w : ℤ → ℂ)
     (F : ℕ → ℕ → ℂ) (h : ∀ B, ∑ j ∈ S, c j * v j B = e * w B) (n : ℕ) :
     ∑ j ∈ S, c j * Zm k l u (v j) F n = e * Zm k l u w F n := by
@@ -53,6 +75,21 @@ private theorem Zm_sum {ι : Type*} (S : Finset ι) (k l : ℕ) (u : ℤ → ℂ
           rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring
       _ = _ := by rw [h]; ring
 
+/- English proof (translation)
+Introduce `l _ ι N _ θ χ m k ψ a b _ _ hk ho hχ ha hb`. Use `⟨fun hne => ?_, fun a' b' haa hbb => ?_, fun hs i => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Apply `ι.injective` to reduce the goal to its premises. Establish `h1 : ι (ψ (-1)) * ι (ψ (-1)) = 1` using `by rw [← map_mul, pm_one, map_one]`.
+
+Establish `h2` using `pm_one θ`. Establish `h3 : ι (ψ (-1)) + θ (-1) = 0`. Use `(mul_eq_zero.mp ?_).resolve_left (sub_ne_zero.mpr hne)` and prove the remaining obligations. Take the linear combination `h1 - h2`. Establish `h4 : 1 + ι (ψ (-1)) * θ (-1) = 0` using `by linear_combination θ (-1) * h3 - h2`.
+
+Rewrite using `[ser_eq_Zm ι N θ m k ψ a b hk ho ha, h4]`. Simplify using the standard rewrite rules. Establish `e1 : (a : ZMod N) = a'` using `(ZMod.intCast_eq_intCast_iff _ _ _).mpr haa`. Establish `e2 : (b : ZMod N) = b'` using `(ZMod.intCast_eq_intCast_iff _ _ _).mpr hbb`. Establish `ha' : IsCoprime a' N`.
+
+Use `((ZMod.coe_int_isUnit_iff_isCoprime a' N).mp ?_).symm` and prove the remaining obligations. Rewrite using `[← e1]`. Conclude with `(ZMod.coe_int_isUnit_iff_isCoprime a N).mpr ha.symm`. Establish `e3 : twb N (ι (ψ (-1))) b = twb N (ι (ψ (-1))) b'`. Use function extensionality and compare the values at `B`.
+
+Simplify using `only [twb, e2]`. Use function extensionality and compare the values at `i`. Apply `ι.injective` to reduce the goal to its premises. Rewrite using `[ser_eq_Zm ι N θ m k ψ a b hk ho ha, ser_eq_Zm ι N θ m k ψ a' b' hk ho ha', e1, e3]`. Establish `hu : ∀ u : (ZMod N)ˣ, IsCoprime (((u : ZMod N).val : ℤ) * a) N` using `fun u => IsCoprime.mul_left (Nat.isCoprime_iff_coprime.mpr (ZMod.val_coe_unit_coprime u)) ha`.
+
+Establish `key` using `Zm_sum Finset.univ k l (hat θ) _ _ _ _ (fun A d => ι (ψ ((A : ZMod (l ^ m)) * (d : ZMod (l ^ m))⁻¹))) (twb_sum θ χ hχ b hb) (l ^ m * i)`. Simplify using `only [ser_eq_Zm_of_parity ι N θ m k ψ _ _ hk ho (hu _) hs, frm, Uo_iterate]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Int.cast_mul, Int.cast_natCast, ZMod.natCast_zmod_val, map_mul θ, MulChar.mul_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [key]; ring`.
+-/
 theorem UpperTheory.V.Z.Kato.Joint.avgEq :
     UpperTheory.V.Z.Kato.Joint.AvgEq := by
   intro l _ ι N _ θ χ m k ψ a b _ _ hk ho hχ ha hb

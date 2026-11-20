@@ -18,6 +18,19 @@ open scoped Topology
 variable {B V : Type*} [NormedAddCommGroup B] [NormedSpace ℂ B] [FiniteDimensional ℂ B]
   [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V]
 
+/- English proof (translation)
+Establish `hd` using `hF.differentiableAt.hasFDerivAt`. Establish `hA' : (fderiv ℂ F (b₀, 0)).comp (ContinuousLinearMap.inr ℂ B V) = A` using `(HasFDerivAt.comp (f := fun x : V => (b₀, x)) (0 : V) hd (hasFDerivAt_prodMk_right b₀ (0 : V))).unique hA`. Establish `hΨ : AnalyticAt ℂ (fun q : B × V => (q.1, F q)) (b₀, 0)` using `analyticAt_fst.prod hF`. Establish `hdΨ : HasFDerivAt (fun q : B × V => (q.1, F q)) ((ContinuousLinearMap.fst ℂ B V).prod (fderiv ℂ F (b₀, 0))) (b₀, 0)` using `hasFDerivAt_fst.prodMk hd`. Take `⟨Φ, hΦ, hs, ha⟩` from `AffinePoints.exists_openPartialHomeomorph_analytic rfl hΨ (by`.
+
+Rewrite using `[hdΨ.fderiv, injective_iff_map_eq_zero]`. Introduce and unpack `⟨u, v⟩ huv`. Establish `hu : u = 0` using `congrArg Prod.fst huv`. Substitute `hu` using the available equality. Establish `hv : A v = A 0`.
+
+Rewrite using `[map_zero, ← hA']`. Conclude with `congrArg Prod.snd huv`. Rewrite using `[hinj hv]`. Use the proof step `rfl)`. Establish `hfix : Φ (b₀, 0) = (b₀, 0)` using `by rw [hΦ]; simp [h0]`.
+
+Establish `ht : ((b₀, 0) : B × V) ∈ Φ.target` using `hfix ▸ Φ.map_source hs`. Use `⟨fun q => (Φ.symm q).2, analyticAt_snd.comp (ha _ ht), ?_, ?_⟩` and prove the remaining obligations. Use `Φ.left_inv hs` as an intermediate fact. Rewrite `this` using `[hfix]`. Simplify using `[this]`.
+
+Use `filter_upwards [Φ.eventually_left_inverse hs, Φ.eventually_right_inverse ht] with q h1 h2`. Rewrite `h1`, `h2` using `[hΦ]`. Use `⟨congrArg Prod.snd h1, ?_⟩` and prove the remaining obligations. Establish `h3 : (Φ.symm q).1 = q.1` using `by simpa using congrArg Prod.fst h2`. Establish `h4 : F (Φ.symm q) = q.2` using `congrArg Prod.snd h2`.
+
+Rewrite using `[← h3]`. Conclude with `h4`.
+-/
 theorem exists_analytic_param_inverse {F : B × V → V} {b₀ : B} {A : V →L[ℂ] V}
     (hF : AnalyticAt ℂ F (b₀, 0)) (h0 : F (b₀, 0) = 0)
     (hA : HasFDerivAt (fun x => F (b₀, x)) A 0) (hinj : Function.Injective A) :
@@ -57,6 +70,9 @@ theorem exists_analytic_param_inverse {F : B × V → V} {b₀ : B} {A : V →L[
 
 omit [FiniteDimensional ℂ B] [FiniteDimensional ℂ V] in
 
+/- English proof (translation)
+Take `⟨s, hs, hsa⟩` from `Metric.eventually_nhds_iff_ball.mp hF.eventually_analyticAt`. Rewrite `hsa` using `[← ball_prod_same]`. Use `filter_upwards [prod_mem_nhds (Filter.inter_mem h (ball_mem_nhds b₀ hs)) (ball_mem_nhds 0 hs)] with ⟨b, w⟩ ⟨⟨hb, hbs⟩, hw⟩`. Establish `ha : AnalyticOnNhd ℂ (fun w => F (b, w)) (ball 0 s)` using `fun x hx => AnalyticAt.comp (f := fun x : W => (b, x)) (hsa (b, x) ⟨hbs, hx⟩) (analyticAt_const.prod analyticAt_id)`. Conclude with `ha.eqOn_zero_of_preconnected_of_eventuallyEq_zero (convex_ball 0 s).isPreconnected (mem_ball_self hs) hb hw`.
+-/
 theorem eventually_eq_zero_of_slices {W : Type*} [NormedAddCommGroup W] [NormedSpace ℂ W]
     [CompleteSpace V] {F : B × W → V} {b₀ : B} (hF : AnalyticAt ℂ F (b₀, 0))
     (h : ∀ᶠ b in 𝓝 b₀, ∀ᶠ w in 𝓝 (0 : W), F (b, w) = 0) :
@@ -71,6 +87,27 @@ theorem eventually_eq_zero_of_slices {W : Type*} [NormedAddCommGroup W] [NormedS
   exact ha.eqOn_zero_of_preconnected_of_eventuallyEq_zero (convex_ball 0 s).isPreconnected
     (mem_ball_self hs) hb hw
 
+/- English proof (translation)
+Establish `: CompleteSpace V` using `FiniteDimensional.complete ℂ V`. Use `set K : ℝ := ‖ε (b₀, 0)‖ + 1 with hK`. Establish `hK0 : 0 < K` using `by positivity`. Take `⟨s, hs, hsa⟩` from `Metric.eventually_nhds_iff_ball.mp (ha.eventually_analyticAt.and ((ha.continuousAt.norm.eventually (gt_mem_nhds (lt_add_one _))).and ((continuous_fst.tendsto' (b₀, (0 : V)) b₀ rfl).eventually h)))`. Rewrite `hsa` using `[← ball_prod_same]`.
+
+Use `set C : ℝ := 4 * K / s ^ 2 with hCdef`. Establish `hC0 : 0 < C` using `by positivity`. Establish `hCs : ∀ b ∈ ball b₀ s, ∀ x ∈ ball (0 : V) s, ‖ε (b, x) - (2 : ℂ)⁻¹ • x‖ ≤ C * ‖x‖ ^ 2`. Introduce `b hb x hx`. Establish `hO` using `(hsa (b, 0) ⟨hb, mem_ball_self hs⟩).2.2`.
+
+Establish `hd : DifferentiableOn ℂ (fun x => ε (b, x)) (ball 0 s)` using `fun y hy => (DifferentiableAt.comp (f := fun x : V => (b, x)) y (hsa (b, y) ⟨hb, hy⟩).1.differentiableAt (by fun_prop)).differentiableWithinAt`. Establish `h1` using `SCV.norm_sub_sub_fderiv_le_of_ball hd (fun y hy => (hsa (b, y) ⟨hb, hy⟩).2.1.le) hx`. Establish `h2 : ε (b, 0) = 0` using `map_zero_of_isBigO_sq (f := fun x => ε (b, x)) (L := (2 : ℂ)⁻¹ • ContinuousLinearMap.id ℂ V) hO`. Establish `h3` using `(hasFDerivAt_of_isBigO_sq (f := fun x => ε (b, x)) (L := (2 : ℂ)⁻¹ • ContinuousLinearMap.id ℂ V) hO).fderiv`. Rewrite `h1` using `[h3, h2, sub_zero, sub_zero]`.
+
+Use `le_of_le_of_eq h1 ?_` and prove the remaining obligations. Rewrite using `[hCdef, div_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `set r : ℝ := min s (1 / (8 * C)) with hr`. Establish `hr0 : 0 < r` using `lt_min hs (by positivity)`.
+
+Establish `hrs : r ≤ s` using `min_le_left _ _`. Establish `hC : ∀ b ∈ ball b₀ s, ∀ x ∈ ball (0 : V) r, ‖ε (b, x) - (2 : ℂ)⁻¹ • x‖ ≤ C * ‖x‖ ^ 2` using `fun b hb x hx => hCs b hb x (ball_subset_ball hrs hx)`. Establish `hc : ∀ b ∈ ball b₀ s, ∀ x ∈ ball (0 : V) r, ‖ε (b, x)‖ ≤ 5 / 8 * ‖x‖`. Introduce `b hb x hx`. Establish `h1` using `hC b hb x hx`.
+
+Establish `h2 : ‖x‖ ≤ 1 / (8 * C)` using `(mem_ball_zero_iff.mp hx).le.trans (min_le_right _ _)`. Rewrite `h2` using `[le_div_iff₀ (by positivity)]`. Establish `h3 : ‖(2 : ℂ)⁻¹ • x‖ = 1 / 2 * ‖x‖` using `by simp [norm_smul]`. Establish `h4` using `norm_le_norm_sub_add (ε (b, x)) ((2 : ℂ)⁻¹ • x)`. Use polynomial arithmetic with `[norm_nonneg x]`.
+
+Establish `hd : ∀ j : ℕ, DifferentiableOn ℂ (fun q : B × V => (fun x => ε (q.1, x))^[j] q.2) (ball b₀ s ×ˢ ball 0 r)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => exact differentiableOn_snd`. Consider the case `succ j ih`.
+
+Simplify using `only [Function.iterate_succ_apply']`. Introduce `q hq`. Conclude with `DifferentiableAt.comp_differentiableWithinAt (f := fun q : B × V => (q.1, (fun x => ε (q.1, x))^[j] q.2)) q (hsa (q.1, (fun x => ε (q.1, x))^[j] q.2) ⟨hq.1, ball_subset_ball hrs (iterate_mem_ball_of_contraction (hc q.1 hq.1) hq.2 j)⟩).1.differentiableAt (differentiableWithinAt_fs …`. Establish `hu : TendstoUniformlyOn (fun (j : ℕ) (q : B × V) => (2 : ℂ) ^ j • (fun x => ε (q.1, x))^[j] q.2) (fun q : B × V => doublingLog (fun x => ε (q.1, x)) q.2) atTop (ball b₀ s ×ˢ ball 0 r)`. Rewrite using `[Metric.tendstoUniformlyOn_iff]`.
+
+Introduce `η hη`. Establish `h0 : Tendsto (fun j : ℕ => 64 / 7 * C * r ^ 2 * (25 / 32 : ℝ) ^ j) atTop (𝓝 0)`. Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one (r := (25 / 32 : ℝ)) (by norm_num) (by norm_num)).const_mul (64 / 7 * C * r ^ 2)`. Use `filter_upwards [h0.eventually (gt_mem_nhds hη)] with j hj q hq`. Rewrite using `[dist_comm]`.
+
+Use `((dist_doublingLog_le_of_contraction (hc q.1 hq.1) hC0.le (hC q.1 hq.1) hq.2 j).trans ?_).trans_lt hj` and prove the remaining obligations. Use `(mem_ball_zero_iff.mp hq.2).le` as an intermediate fact. Use `gcongr`. Conclude with `SCV.analyticAt_of_differentiableOn (SCV.differentiableOn_of_tendstoLocallyUniformlyOn (isOpen_ball.prod isOpen_ball) hu.tendstoLocallyUniformlyOn (Eventually.of_forall fun j => (hd j).const_smul _)) (prod_mem_nhds (ball_mem_nhds b₀ hs) (ball_mem_nhds 0 hr0))`.
+-/
 theorem analyticAt_param_doublingLog {ε : B × V → V} {b₀ : B} (ha : AnalyticAt ℂ ε (b₀, 0))
     (h : ∀ᶠ b in 𝓝 b₀, (fun x => ε (b, x) - (2 : ℂ)⁻¹ • x) =O[𝓝 0] fun x => ‖x‖ ^ 2) :
     AnalyticAt ℂ (fun q : B × V => doublingLog (fun x => ε (q.1, x)) q.2) (b₀, 0) := by
@@ -144,6 +181,23 @@ theorem analyticAt_param_doublingLog {ε : B × V → V} {b₀ : B} (ha : Analyt
       hu.tendstoLocallyUniformlyOn (Eventually.of_forall fun j => (hd j).const_smul _))
     (prod_mem_nhds (ball_mem_nhds b₀ hs) (ball_mem_nhds 0 hr0))
 
+/- English proof (translation)
+Establish `: CompleteSpace V` using `FiniteDimensional.complete ℂ V`. Establish `hlaw : ∀ᶠ b in 𝓝 b₀, IsLocalCommGroupLaw fun p : V × V => M (b, p)` using `by filter_upwards [hM.eventually_analyticAt.curry_nhds, hu.curry_nhds, hc.curry_nhds, hs.curry_nhds] with b h1 h2 h3 h4`. Conclude with `IsLocalCommGroupLaw.of_unit (AnalyticAt.comp (f := fun p : V × V => (b, p)) h1.self_of_nhds (analyticAt_const.prod analyticAt_id)) h2 h3 h4`. Establish `h₀` using `hlaw.self_of_nhds`. Establish `hM0 : M (b₀, 0, 0) = 0` using `h₀.map_zero`.
+
+Take `⟨ε, hεa, -, hε⟩` from `exists_analytic_param_inverse (F := fun q : B × V => M (q.1, q.2, q.2)) (b₀ := b₀) (AnalyticAt.comp (f := fun q : B × V => (q.1, q.2, q.2)) hM (analyticAt_fst.prod (analyticAt_snd.prod analyticAt_snd))) hM0 h₀.hasFDerivAt_doubling (IsLocalCommGroupLaw.twoEquiv V).injective`. Establish `hε' : ∀ᶠ b in 𝓝 b₀, ∀ᶠ x in 𝓝 (0 : V), ε (b, M (b, x, x)) = x` using `(hε.mono fun q hq => hq.1).curry_nhds`. Use `set L : B × V → V := fun q => doublingLog (fun x => ε (q.1, x)) q.2 with hL`. Establish `hLa : AnalyticAt ℂ L (b₀, 0)` using `analyticAt_param_doublingLog hεa (by filter_upwards [hlaw, hε'] with b h1 h2`. Conclude with `h1.isBigO_inverse (ε := fun x => ε (b, x)) h2)`.
+
+Establish `hLb : ∀ᶠ b in 𝓝 b₀, L (b, 0) = 0 ∧ HasFDerivAt (fun x => L (b, x)) (ContinuousLinearMap.id ℂ V) 0 ∧ ∀ᶠ p in 𝓝 (0 : V × V), L (b, M (b, p)) - (L (b, p.1) + L (b, p.2)) = 0` using `by filter_upwards [hlaw, hε'] with b h1 h2`. Conclude with `⟨h1.doublingLog_zero (ε := fun x => ε (b, x)) h2, h1.hasFDerivAt_doublingLog (ε := fun x => ε (b, x)) h2, (h1.doublingLog_law (ε := fun x => ε (b, x)) h2).mono fun p hp => sub_eq_zero.mpr hp⟩`. Establish `hadd : ∀ᶠ q : B × V × V in 𝓝 (b₀, 0), L (q.1, M q) - (L (q.1, q.2.1) + L (q.1, q.2.2)) = 0`. Use `eventually_eq_zero_of_slices (F := fun q : B × V × V => L (q.1, M q) - (L (q.1, q.2.1) + L (q.1, q.2.2))) ?_ (hLb.mono fun b hb => hb.2.2)` and prove the remaining obligations. Use `AnalyticAt.sub ?_ (AnalyticAt.add ?_ ?_)` and prove the remaining obligations.
+
+Conclude with `AnalyticAt.comp_of_eq (f := fun q : B × V × V => (q.1, M q)) hLa (analyticAt_fst.prod hM) (Prod.ext rfl hM0)`. Conclude with `AnalyticAt.comp_of_eq (f := fun q : B × V × V => (q.1, q.2.1)) hLa (analyticAt_fst.prod (analyticAt_fst.comp analyticAt_snd)) rfl`. Conclude with `AnalyticAt.comp_of_eq (f := fun q : B × V × V => (q.1, q.2.2)) hLa (analyticAt_fst.prod (analyticAt_snd.comp analyticAt_snd)) rfl`. Take `⟨E, hEa, hE0, hE⟩` from `exists_analytic_param_inverse hLa hLb.self_of_nhds.1 hLb.self_of_nhds.2.1 Function.injective_id`. Use `⟨E, L, hEa, hLa, ?_, hE.mono fun q hq => hq.symm, ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [hLb, hE.curry_nhds, hEa.eventually_analyticAt.curry_nhds] with b h1 h2 h3`. Establish `h4 : E (b, 0) = 0` using `by simpa [h1.1] using h2.self_of_nhds.1`. Use `⟨h4, ?_⟩` and prove the remaining obligations. Establish `h5 : HasFDerivAt (fun v => E (b, v)) (fderiv ℂ (fun v => E (b, v)) 0) 0` using `(DifferentiableAt.comp (f := fun v : V => (b, v)) 0 h3.self_of_nhds.differentiableAt (by fun_prop)).hasFDerivAt`. Establish `h6` using `HasFDerivAt.comp (g := fun x => L (b, x)) (f := fun v => E (b, v)) 0 (by simpa only [h4] using h1.2.1) h5`.
+
+Establish `h7` using `h6.unique ((hasFDerivAt_id (0 : V)).congr_of_eventuallyEq (h2.mono fun v hv => hv.2))`. Rewrite `h7` using `[ContinuousLinearMap.id_comp]`. Rewrite `h5` using `[h7]`. Then use the resulting hypothesis. Establish `tE : Tendsto E (𝓝 (b₀, 0)) (𝓝 0)`. Simplify `hEa.continuousAt.tendsto` using `only [hE0]`.
+
+Establish `tM : Tendsto M (𝓝 (b₀, 0, 0)) (𝓝 0)`. Simplify `hM.continuousAt.tendsto` using `only [hM0]`. Establish `t0 : Tendsto (fun q : B × V × V => q.1) (𝓝 (b₀, 0, 0)) (𝓝 b₀)` using `continuous_fst.tendsto' _ _ rfl`. Establish `t1 : Tendsto (fun q : B × V × V => (q.1, q.2.1)) (𝓝 (b₀, 0, 0)) (𝓝 (b₀, 0))` using `Continuous.tendsto' (by fun_prop) _ _ rfl`. Establish `t2 : Tendsto (fun q : B × V × V => (q.1, q.2.2)) (𝓝 (b₀, 0, 0)) (𝓝 (b₀, 0))` using `Continuous.tendsto' (by fun_prop) _ _ rfl`.
+
+Establish `t3` using `t0.prodMk_nhds ((tE.comp t1).prodMk_nhds (tE.comp t2))`. Use `filter_upwards [t3.eventually hadd, t1.eventually hE, t2.eventually hE, (t3.eventually (((continuous_fst.tendsto' _ _ rfl).prodMk_nhds tM).eventually hE))] with q h1 h2 h3 h4`. Simplify using `only [Function.comp] at h1 h2 h3 h4`. Rewrite `h1` using `[sub_eq_zero, h2.2, h3.2]`. Rewrite using `[← h1, h4.1]`.
+-/
 theorem exists_param_exp_log {b₀ : B} {M : B × V × V → V} (hM : AnalyticAt ℂ M (b₀, 0, 0))
     (hu : ∀ᶠ q : B × V in 𝓝 (b₀, 0), M (q.1, q.2, 0) = q.2)
     (hc : ∀ᶠ q : B × V × V in 𝓝 (b₀, 0, 0), M (q.1, q.2.1, q.2.2) = M (q.1, q.2.2, q.2.1))
@@ -233,6 +287,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj TensorProduct
 
+/- English proof (translation)
+Introduce `_ _ _ _ hM hu hc hs` and use `exists_param_exp_log hM hu hc hs`.
+-/
 theorem exists_param_exp_log_pi : ∀ (m g : ℕ) (b₀ : Fin m → ℂ) (M : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) → (Fin g → ℂ)), AnalyticAt ℂ M (b₀, 0, 0) → (∀ᶠ q : (Fin m → ℂ) × (Fin g → ℂ) in nhds (b₀, 0), M (q.1, q.2, 0) = q.2) → (∀ᶠ q : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) in nhds (b₀, 0, 0), M (q.1, q.2.1, q.2.2) = M (q.1, q.2.2, q.2.1)) → (∀ᶠ q : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) in nhds (b₀, 0, 0, 0), M (q.1, M (q.1, q.2.1, q.2.2.1), q.2.2.2) = M (q.1, q.2.1, M (q.1, q.2.2.1, q.2.2.2))) → ∃ E L : (Fin m → ℂ) × (Fin g → ℂ) → (Fin g → ℂ), AnalyticAt ℂ E (b₀, 0) ∧ AnalyticAt ℂ L (b₀, 0) ∧ (∀ᶠ b in nhds b₀, E (b, 0) = 0 ∧ HasFDerivAt (fun v => E (b, v)) (ContinuousLinearMap.id ℂ (Fin g → ℂ)) 0) ∧ (∀ᶠ q : (Fin m → ℂ) × (Fin g → ℂ) in nhds (b₀, 0), L (q.1, E q) = q.2 ∧ E (q.1, L q) = q.2) ∧ ∀ᶠ q : (Fin m → ℂ) × (Fin g → ℂ) × (Fin g → ℂ) in nhds (b₀, 0, 0), E (q.1, q.2.1 + q.2.2) = M (q.1, E (q.1, q.2.1), E (q.1, q.2.2)) :=
   fun _ _ _ _ hM hu hc hs => exists_param_exp_log hM hu hc hs
 

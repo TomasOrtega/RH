@@ -15,6 +15,17 @@ open GlobalTheory.Mem.R3.Rw.GeoTies
 
 namespace UpperTheory.Mem.GeoExt
 
+/- English proof (translation)
+Introduce `B B' f f' T T' w w' Z Z' hX hX' Wt Wt' z hE hf hp hS core' alg' eH el ec eD eX ex eι Xg tr R' cG' hP hL hB hW κ' v₀' ht`. Take `⟨O', k1, k2⟩` from `OmExt.exists_omPins_enl z hE hf hp hS core' eH el ec eD eX ex eι R' cG' hP hL hB hW.1 κ' v₀' ht`. Use `⟨O', k1, fun i i' hi => ?_⟩` and prove the remaining obligations. Establish `k3` using `(k2 i i' hi).2`. Establish `eHV` using `(hW.2 i i' hi).2.2.1`.
+
+Take `⟨-, -, -, -, -, -, eβV, -, -, ePg, -, -, hcV, -⟩` from `hW.1`. Establish `e1` using `(hcV i i' hi).1`. Establish `e2` using `(hcV i i' hi).2.2.1`. Establish `e3` using `(hcV i i' hi).2.2.2.1`. Establish `h1` using `hP.char.base.lev`.
+
+Establish `hinj` using `OmExt.normalisedData_coefficientMap_injective (z.geo.O i) (z.geo.pins i).1 (z.geo.pins i).2`. Use `clear hcV hP hL hB hS hW k1 k2`. Take `⟨hPre, -, -, hLL⟩` from `hE`. Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at hPre`.
+
+Substitute `hPre` using the available equality. Take `rfl` from `eq_of_heq hf`. Take `⟨px', I', ok', C_eq', S_eq', xi_range', pins', l', l0', δ', exact', fld', val'⟩` from `w'`. Simplify using `only at hp`. Take `rfl` from `eq_of_heq hp`.
+
+Conclude with `(by with_unfolding_all exact ((OmExt.omOver_of_isBCOf (w.st Z) _ (((Eq.refl B.toPre))) z.core core' z.R.toRealDat R'.toRealDat eH el ec eD eX ePg eβV z.pins.char.base.lev h1 i i' hi e1 e2 e3 eHV (z.geo.O i) (O' i') (z.geo.pins i).2 hinj k3) : _))`.
+-/
 theorem exists_omOver : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T}
     {w' : ColW B' f' T'} {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl} {Wt' : Set B'.places.Pl}
     (z : Dat (w.st Z) w.I hX T Wt), Enl0 B B' → HEq f' f → HEq w'.px w.px → z.Std →

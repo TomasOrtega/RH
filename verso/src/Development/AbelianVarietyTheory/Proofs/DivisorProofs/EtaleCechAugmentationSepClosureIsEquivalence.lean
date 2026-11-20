@@ -14,6 +14,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.SepCech
 
+/- English proof (translation)
+Apply `NatTrans.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `n`. Simplify using `[cechAug, SimplicialObject.cechNerve, Arrow.mapCechNerve, Arrow.augmentedCechNerve]`. Use `erw [NatTrans.comp_app, WidePullback.lift_base]`.
+-/
 theorem aug_comm {Y Y' X : Scheme.{0}} (f : Y ⟶ X) (g : Y' ⟶ X) (u : yoneda.obj Y ⟶ yoneda.obj Y')
     (w : u ≫ yoneda.map g = yoneda.map f ≫ 𝟙 _) :
     SimplicialObject.cechNerve.map (Arrow.homMk u (𝟙 _) w : Arrow.mk (yoneda.map f) ⟶ Arrow.mk (yoneda.map g)) ≫ cechAug g =
@@ -22,6 +25,11 @@ theorem aug_comm {Y Y' X : Scheme.{0}} (f : Y ⟶ X) (g : Y' ⟶ X) (u : yoneda.
   simp [cechAug, SimplicialObject.cechNerve, Arrow.mapCechNerve, Arrow.augmentedCechNerve]
   erw [NatTrans.comp_app, WidePullback.lift_base]
 
+/- English proof (translation)
+Take `⟨hc⟩` from `GlobalTheory.T.isColimit_finiteSubextensionRingCocone K Ω`. Take `⟨hl⟩` from `GlobalTheory.T.isLimit_finiteSubextensionSpecArrowCone K Ω hc`. Use `GlobalTheory.T.isCohomologyContinuousOnCone_of_levelwise R F _ _ _ (fun k => ?_)` and prove the remaining obligations. Take `⟨hk⟩` from `GlobalTheory.T.cechNerve_level_preserves_cofiltered_limit _ _ _ hl (fun _ _ _ => show IsIso (𝟙 _) from inferInstance) (fun _ => show IsIso (𝟙 _) from inferInstance) k`. Use `GlobalTheory.T.continuity_cofiltered_limit_represented_affine R F hF _ _ _ hk (fun L => ?_) ?_` and prove the remaining obligations.
+
+Take `⟨Z, π, e, hπ, -⟩` from `GlobalTheory.T.exists_representable_cech_level_of_stable @IsAffineHom _ _ (Spec.map (CommRingCat.ofHom (algebraMap K L.unop.1))) inferInstance k haveI := hπ`. Conclude with `⟨Z, isAffine_of_isAffineHom π, ⟨e⟩⟩`. Take `⟨Z, π, e, -, -⟩` from `GlobalTheory.T.exists_representable_cech_level_of_stable @IsAffineHom _ _ (Spec.map (CommRingCat.ofHom (algebraMap K Ω))) inferInstance k`. Conclude with `⟨Z, ⟨e⟩⟩`.
+-/
 theorem cont (R : Type) [CommRing R] (F : Shv R) (hF : Finitary F) (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω]
     [Algebra.IsAlgebraic K Ω] : ContCone R F (cechCone K Ω) := by
   obtain ⟨hc⟩ := GlobalTheory.T.isColimit_finiteSubextensionRingCocone K Ω
@@ -36,6 +44,17 @@ theorem cont (R : Type) [CommRing R] (F : Shv R) (hF : Finitary F) (K Ω : Type)
   · obtain ⟨Z, π, e, -, -⟩ := GlobalTheory.T.exists_representable_cech_level_of_stable @IsAffineHom _ _ (Spec.map (CommRingCat.ofHom (algebraMap K Ω))) inferInstance k
     exact ⟨Z, ⟨e⟩⟩
 
+/- English proof (translation)
+Introduce `R _ F hF K Ω _ _ _ _`. Use `haveI : Algebra.IsSeparable K Ω := IsSepClosure.separable`. Establish `hc` using `cont R F hF K Ω`. Establish `hA : ∀ L : (FinSub K Ω)ᵒᵖ, Eqv R (cechAug (Spec.map (CommRingCat.ofHom (algebraMap K L.unop.1)))) F`. Introduce `L`.
+
+Use `haveI := L.unop.2`. Use `haveI : Algebra.IsSeparable K L.unop.1 := Algebra.isSeparable_tower_bot_of_isSeparable K L.unop.1 Ω`. Take `⟨h1, h2⟩` from `GlobalTheory.T.smooth_and_surjective_spec_map_of_isSeparable K L.unop.1`. Conclude with `GlobalTheory.T.etC_a2 R _ F`. Establish `hw : ∀ L : (FinSub K Ω)ᵒᵖ, (cechCone K Ω).π.app L ≫ cechAug (Spec.map (CommRingCat.ofHom (algebraMap K L.unop.1))) = cechAug (Spec.map (CommRingCat.ofHom (algebraMap K Ω)))` using `fun L => aug_comm _ _ _ _`.
+
+Establish `hw2 : ∀ ⦃L L' : (FinSub K Ω)ᵒᵖ⦄ (f : L ⟶ L'), (arr K Ω ⋙ SimplicialObject.cechNerve).map f ≫ cechAug (Spec.map (CommRingCat.ofHom (algebraMap K L'.unop.1))) = cechAug (Spec.map (CommRingCat.ofHom (algebraMap K L.unop.1)))` using `fun L L' f => aug_comm _ _ _ _`. Introduce `n`. Prove the components needed by the constructor for the conclusion. Use `(injective_iff_map_eq_zero (pull R _ F n)).mpr (fun z hz => ?_)` and prove the remaining obligations. Set `L0 : (FinSub K Ω)ᵒᵖ` to `op ⟨⊥, inferInstance⟩`.
+
+Establish `h0 : pull R ((cechCone K Ω).π.app L0) F n (pull R (cechAug (Spec.map (CommRingCat.ofHom (algebraMap K L0.unop.1)))) F n z) = 0` using `(pull_comp R _ _ F n z).symm.trans ((congrArg (fun g => pull R g F n z) (hw L0)).trans hz)`. Take `⟨L1, f, hf⟩` from `(hc n).2 L0 _ h0`. Establish `hf' : pull R (cechAug (Spec.map (CommRingCat.ofHom (algebraMap K L1.unop.1)))) F n z = 0` using `(congrArg (fun g => pull R g F n z) (hw2 f)).symm.trans ((pull_comp R ((arr K Ω ⋙ SimplicialObject.cechNerve).map f) (cechAug (Spec.map (CommRingCat.ofHom (algebraMap K L0.unop.1)))) F n z).trans hf)`. Conclude with `((injective_iff_map_eq_zero (pull R _ F n)).mp (hA L1 n).1) z hf'`. Introduce `x`.
+
+Take `⟨L, y, hy⟩` from `(hc n).1 x`. Take `⟨z, rfl⟩` from `(hA L n).2 y`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`. Conclude with `(congrArg (fun g => pull R g F n z) (hw L)).symm.trans (pull_comp R _ _ F n z)`.
+-/
 theorem cechAug_sepClosure_eqv : ∀ (R : Type) [CommRing R] (F : Shv R), Finitary F → ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω]
     [IsSepClosure K Ω], Eqv R (cechAug (Spec.map (CommRingCat.ofHom (algebraMap K Ω)))) F := by
   intro R _ F hF K Ω _ _ _ _

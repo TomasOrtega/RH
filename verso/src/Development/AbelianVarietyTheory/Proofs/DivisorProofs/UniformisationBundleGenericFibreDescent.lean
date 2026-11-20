@@ -17,23 +17,38 @@ namespace GenericBundleDescent
 
 variable {X X' Y Z : Scheme.{0}}
 
+/- English proof (translation)
+The claim follows from `LBIso.chartPull (chartPullSame M _ _ _ h fun _ => ea) (chartPullSame N _ _ _ h fun _ => eb) H`.
+-/
 theorem pull_both {M : LB X} {N : LB X'} {a : Y ⟶ X} {b : Y ⟶ X'} (H : LBIso (M.pull a) (N.pull b)) (h : Z ⟶ Y)
     {a' : Z ⟶ X} {b' : Z ⟶ X'} (ea : a' = h ≫ a) (eb : b' = h ≫ b) : LBIso (M.pull a') (N.pull b') :=
   LBIso.chartPull (chartPullSame M _ _ _ h fun _ => ea) (chartPullSame N _ _ _ h fun _ => eb) H
 
+/- English proof (translation)
+The claim follows from `LBIso.chartPull (Geo.Tor.chartPullPull M h h rfl) (chartPullSame N _ _ _ h fun _ => eb) H`.
+-/
 theorem pull_right {M : LB Y} {N : LB X'} {b : Y ⟶ X'} (H : LBIso M (N.pull b)) (h : Z ⟶ Y)
     {b' : Z ⟶ X'} (eb : b' = h ≫ b) : LBIso (M.pull h) (N.pull b') :=
   LBIso.chartPull (Geo.Tor.chartPullPull M h h rfl) (chartPullSame N _ _ _ h fun _ => eb) H
 
+/- English proof (translation)
+The claim follows from `LBIso.chartPull (chartPullLinComb M a (fun _ : PUnit => h) (fun _ => h ≫ a) (fun _ => 1) (𝟙 Z) fun _ => (Category.id_comp _).symm) (chartPullId N) H`.
+-/
 theorem pull_pull {M : LB X} {N : LB Z} {a : Y ⟶ X} {h : Z ⟶ Y} (H : LBIso (M.pull (h ≫ a)) N) :
     LBIso ((M.pull a).pull h) N :=
   LBIso.chartPull (chartPullLinComb M a (fun _ : PUnit => h) (fun _ => h ≫ a) (fun _ => 1) (𝟙 Z)
     fun _ => (Category.id_comp _).symm) (chartPullId N) H
 
+/- English proof (translation)
+Establish `: IsPreimmersion (jK R)` using `IsPreimmersion.of_isLocalization (nonZeroDivisors R)`. Use `infer_instance`.
+-/
 theorem mono_jK (R : Type) [CommRing R] : Mono (jK R) := by
   have : IsPreimmersion (jK R) := IsPreimmersion.of_isLocalization (nonZeroDivisors R)
   infer_instance
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [← Spec.map_comp]; rfl
@@ -42,6 +57,31 @@ end GenericBundleDescent
 
 open GenericBundleDescent in
 
+/- English proof (translation)
+Introduce `R W R₂ W₂ K' Ω' _ _ _ _ _ _ _ _ _ _ _ _ _ _ φ ρ σ φ₂ io j l i j₂ _ _ _ _ _ _ _ hj₂σ hj₂φ G _ _ A gen GW _ _ βW DW AW UW α _ hα A₁ α₁ p hA₁ hp₁ hp₂ hLp G₂ _ _ β A₂ gen₂ q _ hq hLq hgq GW' _ _ βW' τ DW' AW' UW' κ hβW' hτ hsq hκ hL`. Use `mono_jK R` as an intermediate fact. Use `mono_jK R₂` as an intermediate fact. Set `π` to `pullback.fst (pullback.snd GW'.hom (jK W₂)) (spMap j₂)`. Set `s` to `pullback.snd (pullback.snd GW'.hom (jK W₂)) (spMap j₂)`.
+
+Establish `hπ : π ≫ pullback.fst GW'.hom (jK W₂) ≫ GW'.hom = s ≫ spMap j₂ ≫ jK W₂`. Rewrite using `[pullback.condition, pullback.condition_assoc]`. Establish `e₁ : spMap j₂ ≫ jK W₂ ≫ spMap σ = spMap j ≫ jK W`. Rewrite using `[sp_comp, sp_comp, sp_comp]`. Conclude with `congrArg spMap (RingHom.ext hj₂σ)`.
+
+Establish `e₂ : spMap j₂ ≫ jK W₂ ≫ spMap φ₂ = spMap (l.comp i.symm.toRingHom) ≫ jK R₂`. Rewrite using `[sp_comp, sp_comp, sp_comp]`. Conclude with `congrArg spMap (RingHom.ext hj₂φ)`. Establish `e₃ : spMap (l.comp i.symm.toRingHom) ≫ spMap i.toRingHom = spMap l`. Rewrite using `[sp_comp]`.
+
+Conclude with `congrArg spMap (RingHom.ext fun x => by simp)`. Take `⟨ℓ, hℓ₁, hℓ₂⟩ : ∃ ℓ : _ ⟶ pullback GW.hom (jK W), ℓ ≫ pullback.fst _ _ = π ≫ pullback.fst GW'.hom (jK W₂) ≫ τ ∧ ℓ ≫ pullback.snd _ _ = s ≫ spMap j` from `⟨pullback.lift _ _ (by`. Rewrite using `[Category.assoc, Category.assoc, hτ.1.w, reassoc_of% hπ, e₁, Category.assoc]),`. Use the proof step `pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`. Establish `wW : UW.gen.hom.left ≫ AW.A.hom = pullback.snd GW.hom (jK W)` using `Over.w UW.gen.hom`.
+
+Establish `w₂ : gen₂.hom.left ≫ A₂.A.hom = pullback.snd G₂.hom (jK R₂)` using `Over.w gen₂.hom`. Set `gW : pullback GW.hom (jK W) ⟶ AW.A.left` to `UW.gen.hom.left`. Set `g₂ : pullback G₂.hom (jK R₂) ⟶ A₂.A.left` to `gen₂.hom.left`. Set `gi : A.A.left ⟶ pullback G.hom (jK R)` to `gen.inv.left`. Establish `wW' : gW ≫ AW.A.hom = pullback.snd GW.hom (jK W)` using `wW`.
+
+Establish `w₂' : g₂ ≫ A₂.A.hom = pullback.snd G₂.hom (jK R₂)` using `w₂`. Establish `hα' : gW ≫ α ≫ gi ≫ pullback.fst G.hom (jK R) = pullback.fst GW.hom (jK W) ≫ βW`. Establish `c : UW.gen.hom.left ≫ UW.gen.inv.left = 𝟙 _` using `congrArg Over.Hom.left UW.gen.hom_inv_id`. Conclude with `(congrArg (UW.gen.hom.left ≫ ·) hα.symm).trans (by rw [reassoc_of% c])`. Establish `hgq' : g₂ ≫ q ≫ α₁ ≫ gi ≫ pullback.fst G.hom (jK R) = pullback.fst G₂.hom (jK R₂) ≫ β`.
+
+Establish `c : gen₂.hom.left ≫ gen₂.inv.left = 𝟙 _` using `congrArg Over.Hom.left gen₂.hom_inv_id`. Conclude with `(congrArg (gen₂.hom.left ≫ ·) hgq.symm).trans (by rw [reassoc_of% c])`. Take `⟨n, hn₁, hn₂⟩ : ∃ n : _ ⟶ pullback AW.A.hom (spMap j), n ≫ pullback.fst _ _ = ℓ ≫ gW ∧ n ≫ pullback.snd _ _ = s` from `⟨pullback.lift _ _ (by rw [Category.assoc, wW', hℓ₂]), pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`. Establish `: IsIso gi` using `inferInstanceAs (IsIso ((Over.forget _).map gen.inv))`. Establish `hm : n ≫ p = π ≫ κ ≫ g₂ ≫ q`.
+
+Use `hA₁.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[← cancel_mono gi, ← cancel_mono (pullback.fst G.hom (jK R))]`. Simplify using `only [Category.assoc]`. Rewrite using `[reassoc_of% hp₁, reassoc_of% hn₁, hα', reassoc_of% hℓ₁, hgq', reassoc_of% hκ, hsq]`. Establish `k : π ≫ κ ≫ pullback.snd G₂.hom (jK R₂) = s ≫ spMap (l.comp i.symm.toRingHom)`.
+
+Rewrite using `[← cancel_mono (jK R₂)]`. Simplify using `only [Category.assoc]`. Rewrite using `[← pullback.condition, reassoc_of% hκ, hβW'.1.w, reassoc_of% hπ, e₂]`. Simplify using `only [Category.assoc]`. Rewrite using `[hp₂, reassoc_of% hn₂, hq.1.w, reassoc_of% w₂', reassoc_of% k, e₃]`.
+
+Establish `H₁ : LBIso (AW.L.pull (ℓ ≫ gW)) (UW.LG.L.pull (π ≫ pullback.fst GW'.hom (jK W₂) ≫ τ))` using `pull_both (a := gW) UW.ext ℓ rfl hℓ₁.symm`. Establish `H₂ : LBIso (AW.L.pull (ℓ ≫ gW)) (A₁.L.pull (n ≫ p))` using `pull_both hLp n hn₁.symm rfl`. Establish `H₃ : LBIso (A₂.L.pull ((π ≫ κ) ≫ g₂)) (A₁.L.pull (n ≫ p))` using `pull_right hLq _ (by simp only [hm, Category.assoc])`. Establish `hG` using `UW.LG.isLB`. Establish `H : LBIso ((UW.LG.L.pull (pullback.fst GW'.hom (jK W₂) ≫ τ)).pull π) (((A₂.L.pull g₂).pull κ).pull π)` using `pull_pull (pull_pull (pull_pull (LBIso.trans (pull_isLB A₂.isLB _) (pull_isLB A₁.isLB _) (pull_isLB hG _) H₃ (LBIso.trans (pull_isLB A₁.isLB _) (pull_isLB AW.isLB _) (pull_isLB hG _) H₂.symm H₁)))).symm`.
+
+Set `g' : pullback GW'.hom (jK W₂) ⟶ AW'.A.left` to `UW'.gen.hom.left`. Establish `: IsIso g'` using `inferInstanceAs (IsIso ((Over.forget _).map UW'.gen.hom))`. Establish `w' : g' ≫ AW'.A.hom = pullback.snd GW'.hom (jK W₂)` using `Over.w UW'.gen.hom`. Use `AW'.isAb.smooth` as an intermediate fact. Use `AW'.isAb.proper` as an intermediate fact.
+
+Establish `hc` using `AW'.isAb.geomConnected`. Establish `hD` using `(lb_gen_iso_descend_field (FractionRing W₂) Ω' j₂ _ _ (pullback.snd GW'.hom (jK W₂)) s π (by rw [← w']; infer_instance) (by rw [← w']; infer_instance) (by rw [← w']; exact (MorphismProperty.of_isPullback (P := @GeometricallyConnected) (IsPullback.of_horiz_isIso ⟨(Category.comp_id …`. Conclude with `LBIso.trans (pull_isLB UW'.LG.isLB _) (pull_isLB hG _) (pull_isLB (pull_isLB A₂.isLB _) _) hL hD`.
+-/
 theorem unif_bundle_generic_descent : ∀ (R W R₂ W₂ K' Ω' : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CommRing W] [IsDomain W] [IsLocalRing W] [CommRing R₂] [IsDomain R₂] [IsLocalRing R₂] [CommRing W₂] [IsDomain W₂] [IsLocalRing W₂] [Field K'] [Field Ω'] (φ : R →+* W) (ρ : R →+* R₂) (σ : W →+* W₂) (φ₂ : R₂ →+* W₂) (io : FractionRing R →+* K') (j : FractionRing W →+* Ω') (l : K' →+* Ω') (i : K' ≃+* FractionRing R₂) (j₂ : FractionRing W₂ →+* Ω'), Function.Injective φ → Function.Injective ρ → Function.Injective σ → Function.Injective φ₂ → φ₂.comp ρ = σ.comp φ → (∀ r, l (io (algebraMap R _ r)) = j (algebraMap W _ (φ r))) → (∀ r, i (io (algebraMap R _ r)) = algebraMap R₂ _ (ρ r)) → (∀ w, j₂ (algebraMap W₂ _ (σ w)) = j (algebraMap W _ w)) → (∀ r, j₂ (algebraMap W₂ _ (φ₂ r)) = l (i.symm (algebraMap R₂ _ r))) → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (A : PolAV (Sp (FractionRing R))) (gen : ((Over.pullback (jK R)).obj G) ≅ A.A) (GW : Over (Sp W)) [GrpObj GW] [IsCommMonObj GW] (βW : GW.left ⟶ G.left) (DW : DegData W (maximalIdeal W)) (AW : PolAV (Sp (FractionRing W))) (UW : Unif (maximalIdeal W) DW AW GW) (α : AW.A.left ⟶ A.A.left), IsGrpPullback GW G (spMap φ) βW → UW.gen.inv.left ≫ pullback.fst GW.hom (jK W) ≫ βW = α ≫ gen.inv.left ≫ pullback.fst G.hom (jK R) → ∀ (A₁ : PolAV (Sp K')) (α₁ : A₁.A.left ⟶ A.A.left) (p : pullback AW.A.hom (spMap j) ⟶ A₁.A.left), IsGrpPullback A₁.A A.A (spMap io) α₁ → p ≫ α₁ = pullback.fst _ _ ≫ α → p ≫ A₁.A.hom = pullback.snd _ _ ≫ spMap l → LBIso (AW.L.pull (pullback.fst AW.A.hom (spMap j))) (A₁.L.pull p) → ∀ (G₂ : Over (Sp R₂)) [GrpObj G₂] [IsCommMonObj G₂] (β : G₂.left ⟶ G.left) (A₂ : PolAV (Sp (FractionRing R₂))) (gen₂ : ((Over.pullback (jK R₂)).obj G₂) ≅ A₂.A) (q : A₂.A.left ⟶ A₁.A.left), IsGrpPullback G₂ G (spMap ρ) β → IsGrpPullback A₂.A A₁.A (spMap i.toRingHom) q → LBIso A₂.L (A₁.L.pull q) → gen₂.inv.left ≫ pullback.fst G₂.hom (jK R₂) ≫ β = q ≫ α₁ ≫ gen.inv.left ≫ pullback.fst G.hom (jK R) → ∀ (GW' : Over (Sp W₂)) [GrpObj GW'] [IsCommMonObj GW'] (βW' : GW'.left ⟶ G₂.left) (τ : GW'.left ⟶ GW.left) (DW' : DegData W₂ (maximalIdeal W₂)) (AW' : PolAV (Sp (FractionRing W₂))) (UW' : Unif (maximalIdeal W₂) DW' AW' GW') (κ : pullback GW'.hom (jK W₂) ⟶ pullback G₂.hom (jK R₂)), IsGrpPullback GW' G₂ (spMap φ₂) βW' → IsGrpPullback GW' GW (spMap σ) τ → βW' ≫ β = τ ≫ βW → κ ≫ pullback.fst _ _ = pullback.fst _ _ ≫ βW' → LBIso (UW'.LG.L.pull (pullback.fst GW'.hom (jK W₂))) (UW.LG.L.pull (pullback.fst GW'.hom (jK W₂) ≫ τ)) → LBIso (UW'.LG.L.pull (pullback.fst GW'.hom (jK W₂))) ((A₂.L.pull gen₂.hom.left).pull κ) := by
   intro R W R₂ W₂ K' Ω' _ _ _ _ _ _ _ _ _ _ _ _ _ _ φ ρ σ φ₂ io j l i j₂ _ _ _ _ _ _ _ hj₂σ hj₂φ G _ _ A gen GW _ _ βW DW
     AW UW α _ hα A₁ α₁ p hA₁ hp₁ hp₂ hLp G₂ _ _ β A₂ gen₂ q _ hq hLq hgq GW' _ _ βW' τ DW' AW' UW' κ hβW' hτ hsq hκ hL

@@ -18,11 +18,17 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+The claim follows from `Units.ext (by change ((g.val)ᵀ)ᵀ = g.val; exact transpose_transpose _)`.
+-/
 theorem invT_invT (g : GA E a) : invT a (Ad E) (invT a (Ad E) g) = g :=
   Units.ext (by change ((g.val)ᵀ)ᵀ = g.val; exact transpose_transpose _)
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun g : GA E a => ((g⁻¹ : GA E a).val)ᵀ`. Conclude with `(Units.continuous_val.comp continuous_inv).matrix_transpose`. Express the relevant statement in the definitionally equal form `Continuous fun g : GA E a => (g.val)ᵀ`. Conclude with `Units.continuous_val.matrix_transpose`.
+-/
 theorem continuous_invT : Continuous (invT a (Ad E)) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
   · change Continuous fun g : GA E a => ((g⁻¹ : GA E a).val)ᵀ
@@ -30,6 +36,15 @@ theorem continuous_invT : Continuous (invT a (Ad E)) := by
   · change Continuous fun g : GA E a => (g.val)ᵀ
     exact Units.continuous_val.matrix_transpose
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hF (Set.univ.pi fun _ => (GroundTheory.Global.integralFiniteAdeles (𝓞 E) E : Set (Af E))) (isCompact_univ_pi fun _ => GroundTheory.Global.isCompact_integralFiniteAdeles E) {1} isCompact_singleton 0`. Use `⟨C, fun g => ?_⟩` and prove the remaining obligations. Use `set e : Fin a → E := Pi.single ⟨0, ha⟩ 1`. Take `⟨d, hd, hmem⟩` from `GlobalTheory.AdelicMatLat.exists_nat_mul_mem_family E (fun i => pFin E (((fun j => algebraMap E (Ad E) (e j)) ᵥ* g.val) i))`. Establish `hξ : (fun j => (d : E) * e j) ≠ 0`.
+
+Introduce `h`. Use `congrFun h ⟨0, ha⟩` as an intermediate fact. Simplify using `[e] at this`. Use linear arithmetic over natural numbers and integers. Establish `key` using `hC g 1 rfl (fun j => (d : E) * e j) hξ (fun i _ => by`.
+
+Establish `h1 : pFin E (((fun j => algebraMap E (Ad E) ((d : E) * e j)) ᵥ* g.val) i) = (d : Af E) * pFin E (((fun j => algebraMap E (Ad E) (e j)) ᵥ* g.val) i)`. Simplify using `only [vecMul, dotProduct, map_mul, map_natCast, Finset.mul_sum, map_sum, mul_assoc]`. Use `show pFin E _ ∈ _`. Rewrite using `[h1]`. Conclude with `hmem i)`.
+
+Simplify using `using key`.
+-/
 theorem bounded_of_decays (ha : 0 < a) {F : GA E a → ℂ} (hF : Decays F) : ∃ C, ∀ g, ‖F g‖ ≤ C := by
   obtain ⟨C, hC⟩ := hF (Set.univ.pi fun _ => (GroundTheory.Global.integralFiniteAdeles (𝓞 E) E : Set (Af E)))
     (isCompact_univ_pi fun _ => GroundTheory.Global.isCompact_integralFiniteAdeles E) {1} isCompact_singleton 0
@@ -51,6 +66,15 @@ theorem bounded_of_decays (ha : 0 < a) {F : GA E a → ℂ} (hF : Decays F) : �
     exact hmem i)
   simpa using key
 
+/- English proof (translation)
+Introduce `L hL C₀ hC₀ N`. Establish `hK : IsCompact ((fun y : GL (Fin a) (Cinf E) => toL y.val) ⁻¹' tsupport f)` using `GlobalTheory.CuspQuot.isOpenEmbedding_val.isInducing.isCompact_preimage' hc fun x hx => hs hx`. Take `⟨C, h⟩` from `hF L hL _ (hC₀.mul ((hK.image GlobalTheory.CuspQuot.continuous_infGL).image continuous_invT)) N`. Use `haveI : IsFiniteMeasureOnCompacts (volume : Measure (Lie E a)) := MeasureTheory.Measure.pi.isFiniteMeasureOnCompacts _`. Establish `hi : Integrable f` using `hf.integrable_of_hasCompactSupport hc`.
+
+Use `⟨(∫ x, ‖f x‖) * C, fun g c hcC ξ hξ hm => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, ← integral_mul_const]`. Use `norm_integral_le_of_norm_le (hi.norm.mul_const _) (.of_forall fun x => ?_)` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ tsupport f`. Take `⟨u, hu⟩` from `hs hx`.
+
+Take `rfl : x = toL u.val` from `hu.symm`. Rewrite using `[norm_mul, chart_val]`. Establish `e : invT a (Ad E) (g * c) * infGL E a u = invT a (Ad E) (g * (c * invT a (Ad E) (infGL E a u)))`. Rewrite using `[map_mul, map_mul, map_mul, invT_invT, mul_assoc]`. Rewrite using `[e]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (h g _ (Set.mul_mem_mul hcC ⟨_, ⟨u, hx, rfl⟩, rfl⟩) ξ hξ hm) (norm_nonneg _)`. Simplify using `[image_eq_zero_of_notMem_tsupport hx]`.
+-/
 theorem decays_smoothInf_invT {F : GA E a → ℂ} (hF : Decays fun g => F (invT a (Ad E) g)) {f : Lie E a → ℂ}
     (hf : Continuous f) (hc : HasCompactSupport f) (hs : tsupport f ⊆ invSet E a) :
     Decays fun g => GlobalTheory.JSW.smoothInf f F (invT a (Ad E) g) := by
@@ -83,6 +107,11 @@ def goodFns : Submodule ℂ (GA E a → ℂ) where
   add_mem' := fun h h' => ⟨h.1.add h'.1, h.2.1.add h'.2.1, h.2.2.add h'.2.2⟩
   smul_mem' := fun z _ h => ⟨h.1.const_smul z, h.2.1.smul z, h.2.2.smul z⟩
 
+/- English proof (translation)
+Establish `hV : ∀ φ ∈ π.V, φ.1 ∈ goodFns (E` using `E) a := fun φ hφ => ⟨ContAut.continuous_of_isOpen_stab E a φ (π.cusp φ hφ).1.level, decays_of_mem hπ hφ, decays_of_mem hπ.contra (show UpperTheory.V.TC.dualFn E a φ ∈ π.contra.V from ⟨φ, hφ, rfl⟩)⟩`. Use `(sup_le ?_ (Submodule.span_le.2 ?_) : _ ≤ goodFns a) hF` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, hφ, rfl⟩`. Conclude with `hV φ hφ`. Introduce and unpack `_ ⟨f, φ, hf, hφ, rfl⟩`.
+
+Take `⟨h1, h2, h3⟩` from `hV φ hφ`. Take `⟨C, hC⟩` from `bounded_of_decays ha h2`. Conclude with `⟨(GlobalTheory.CuspQuot.continuous_smoothing (volume : Measure (Lie E a)) ⟨hf.1, hf.2⟩ h1 hC :), h2.smoothInf hf.1.continuous hf.2.1 hf.2.2, decays_smoothInf_invT h3 hf.1.continuous hf.2.1 hf.2.2⟩`.
+-/
 theorem mem_goodFns (ha : 0 < a) {π : CuspSub E a} (hπ : π.IsUnitary) {F : GA E a → ℂ}
     (hF : F ∈ π.V.map (Sm E a).subtype ⊔ GlobalTheory.JSW.smoothSpan π) : F ∈ goodFns a := by
   have hV : ∀ φ ∈ π.V, φ.1 ∈ goodFns (E := E) a := fun φ hφ =>
@@ -109,6 +138,9 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a n m : ℕ}
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Rewrite using `[mul_apply, ← one_mul B, mul_apply]`. Simplify using `only [hA, one_mul]`.
+-/
 theorem mul_apply_of_row {R : Type} [CommRing R] {A B : Matrix (Fin n) (Fin n) R} {j : Fin n}
     (hA : ∀ t, A j t = (1 : Matrix (Fin n) (Fin n) R) j t) (l : Fin n) : (A * B) j l = B j l := by
   rw [mul_apply, ← one_mul B, mul_apply]
@@ -116,6 +148,9 @@ theorem mul_apply_of_row {R : Type} [CommRing R] {A B : Matrix (Fin n) (Fin n) R
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Rewrite using `[mul_apply]`. Simplify using `only [hB]`. Rewrite using `[← mul_apply, mul_one]`.
+-/
 theorem mul_apply_of_col {R : Type} [CommRing R] {A B : Matrix (Fin n) (Fin n) R} {l : Fin n}
     (hB : ∀ t, B t l = (1 : Matrix (Fin n) (Fin n) R) t l) (i : Fin n) : (A * B) i l = A i l := by
   rw [mul_apply]
@@ -124,6 +159,9 @@ theorem mul_apply_of_col {R : Type} [CommRing R] {A B : Matrix (Fin n) (Fin n) R
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Rewrite using `[colGL, coe_uGL, uMat_apply, one_apply]`. Use `split_ifs with h1 h2`. Both sides reduce to the same expression. Conclude with `absurd h2 (by rw [Fin.lt_def]; omega)`. Both sides reduce to the same expression.
+-/
 theorem colGL_row_last {R : Type} [CommRing R] (k : ℕ) (y : Fin k → R) {j : Fin n} (hj : j.val + 1 = n) (t : Fin n) :
     (colGL (n := n) k y : Matrix (Fin n) (Fin n) R) j t = (1 : Matrix (Fin n) (Fin n) R) j t := by
   rw [colGL, coe_uGL, uMat_apply, one_apply]
@@ -134,6 +172,9 @@ theorem colGL_row_last {R : Type} [CommRing R] (k : ℕ) (y : Fin k → R) {j : 
 
 omit [IsTotallyComplex E] in
 
+/- English proof (translation)
+Rewrite using `[colGL, coe_uGL, uMat_apply, one_apply]`. Use `split_ifs with h1 h2`. Both sides reduce to the same expression. Rewrite using `[colX_apply, dif_neg (by simp only; omega)]`. Both sides reduce to the same expression.
+-/
 theorem colGL_col {R : Type} [CommRing R] {k : ℕ} (hk : k ≠ m) (y : Fin k → R) {l : Fin n} (hl : l.val = m)
     (i : Fin n) : (colGL (n := n) k y : Matrix (Fin n) (Fin n) R) i l = (1 : Matrix (Fin n) (Fin n) R) i l := by
   rw [colGL, coe_uGL, uMat_apply, one_apply]
@@ -143,22 +184,34 @@ theorem colGL_col {R : Type} [CommRing R] {k : ℕ} (hk : k ≠ m) (y : Fin k �
   · rfl
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Rewrite using `[coe_blockGL, blockMat_apply, dif_neg (by omega), one_apply]`.
+-/
 theorem blockGL_row_last {R : Type} [CommRing R] (hmn : m < n) (h : GL (Fin m) R) {j : Fin n} (hj : j.val + 1 = n)
     (t : Fin n) : (blockGL hmn.le h : Matrix (Fin n) (Fin n) R) j t = (1 : Matrix (Fin n) (Fin n) R) j t := by
   rw [coe_blockGL, blockMat_apply, dif_neg (by omega), one_apply]
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Rewrite using `[coe_blockGL, blockMat_apply, one_apply]`. Apply the tactic sequence `split_ifs with h1 h2 h3 <;> first | rfl | omega | (subst h3; omega)`.
+-/
 theorem blockGL_col {R : Type} [CommRing R] (hmn : m < n) (h : GL (Fin m) R) {l : Fin n} (hl : l.val = m)
     (i : Fin n) : (blockGL hmn.le h : Matrix (Fin n) (Fin n) R) i l = (1 : Matrix (Fin n) (Fin n) R) i l := by
   rw [coe_blockGL, blockMat_apply, one_apply]
   split_ifs with h1 h2 h3 <;> first | rfl | omega | (subst h3; omega)
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+The claim follows from `Units.ext (by rw [GeneralLinearGroup.val_det_apply, colGL, coe_uGL, det_uMat, Units.val_one])`.
+-/
 theorem det_colGL {R : Type} [CommRing R] (k : ℕ) (y : Fin k → R) :
     GeneralLinearGroup.det (colGL (n := n) k y) = 1 :=
   Units.ext (by rw [GeneralLinearGroup.val_det_apply, colGL, coe_uGL, det_uMat, Units.val_one])
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[GeneralLinearGroup.val_det_apply, GeneralLinearGroup.val_det_apply, coe_blockGL, blockMat, det_submatrix_equiv_self, det_fromBlocks_zero₂₁, det_one, mul_one]`.
+-/
 theorem det_blockGL {R : Type} [CommRing R] (hmn : m ≤ n) (h : GL (Fin m) R) :
     GeneralLinearGroup.det (blockGL hmn h) = GeneralLinearGroup.det h := by
   refine Units.ext ?_
@@ -166,6 +219,13 @@ theorem det_blockGL {R : Type} [CommRing R] (hmn : m ≤ n) (h : GL (Fin m) R) :
     det_submatrix_equiv_self, det_fromBlocks_zero₂₁, det_one, mul_one]
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Establish `hc : ∀ M : GA E m → Matrix (Fin m) (Fin m) (Ad E), Continuous M → Continuous fun h => blockMat (n` using `n) hmn (M h) := fun M hM => by`. Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Simplify using `only [blockMat_apply]`. Use `split_ifs`. Conclude with `hM.matrix_elem _ _`.
+
+Apply the tactic sequence `all_goals exact continuous_const`. Use `Units.continuous_iff.2 ⟨hc _ Units.continuous_val, ?_⟩` and prove the remaining obligations. Establish `e : (fun h : GA E m => ((blockGL hmn h)⁻¹ : GA E n).val) = fun h => blockMat hmn (h⁻¹ : GA E m).val`. Use function extensionality and compare the values at `h`. Rewrite using `[← map_inv, coe_blockGL]`.
+
+Rewrite using `[e]`. Conclude with `hc _ (Units.continuous_val.comp continuous_inv)`.
+-/
 theorem continuous_blockGL (hmn : m ≤ n) : Continuous fun h : GA E m => (blockGL hmn h : GA E n) := by
   have hc : ∀ M : GA E m → Matrix (Fin m) (Fin m) (Ad E), Continuous M →
       Continuous fun h => blockMat (n := n) hmn (M h) := fun M hM => by
@@ -191,16 +251,28 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a n m : ℕ}
 def detAbs (g : GA E a) : ℝ := (ideleModule E (GeneralLinearGroup.det g) : ℝ)
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+The claim follows from `(ideleModule E _).2`.
+-/
 theorem detAbs_pos (g : GA E a) : 0 < detAbs g := (ideleModule E _).2
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Simplify using `only [detAbs, map_mul, Positive.val_mul]`.
+-/
 theorem detAbs_mul (g h : GA E a) : detAbs (g * h) = detAbs g * detAbs h := by
   simp only [detAbs, map_mul, Positive.val_mul]
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+The claim follows from `continuous_subtype_val.comp (continuous_ideleModule.comp (AdelicGLn.continuous_det E a))`.
+-/
 theorem continuous_detAbs : Continuous (detAbs (E := E) (a := a)) :=
   continuous_subtype_val.comp (continuous_ideleModule.comp (AdelicGLn.continuous_det E a))
 
+/- English proof (translation)
+Establish `h : GeneralLinearGroup.det (invT a (Ad E) g) = (GeneralLinearGroup.det g)⁻¹`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[GeneralLinearGroup.val_det_apply, invT_val_eq, det_nonsing_inv, det_transpose, ← GeneralLinearGroup.val_det_apply, Ring.inverse_unit]`. Rewrite using `[detAbs, h, map_inv, Positive.coe_inv]`. Both sides reduce to the same expression.
+-/
 theorem detAbs_invT (g : GA E a) : detAbs (invT a (Ad E) g) = (detAbs g)⁻¹ := by
   have h : GeneralLinearGroup.det (invT a (Ad E) g) = (GeneralLinearGroup.det g)⁻¹ := by
     refine Units.ext ?_
@@ -210,10 +282,16 @@ theorem detAbs_invT (g : GA E a) : detAbs (invT a (Ad E) g) = (detAbs g)⁻¹ :=
   rfl
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Rewrite using `[detAbs, det_colGL, map_one]`. Both sides reduce to the same expression.
+-/
 theorem detAbs_colGL (k : ℕ) (y : Fin k → Ad E) : detAbs (colGL (n := a) k y) = 1 := by
   rw [detAbs, det_colGL, map_one]; rfl
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Rewrite using `[detAbs, detAbs, det_blockGL]`.
+-/
 theorem detAbs_blockGL (hmn : m ≤ n) (h : GA E m) : detAbs (blockGL hmn h : GA E n) = detAbs h := by
   rw [detAbs, detAbs, det_blockGL]
 
@@ -223,6 +301,11 @@ def InS (g : GA E n) : Prop :=
   (∀ j t : Fin n, j.val + 1 = n → g.val j t = (1 : Matrix (Fin n) (Fin n) (Ad E)) j t) ∧
     ∀ i l : Fin n, l.val = m → g.val i l = (1 : Matrix (Fin n) (Fin n) (Ad E)) i l
 
+/- English proof (translation)
+Establish `: (fun i => algebraMap E (Ad E) ((Pi.single j 1 : Fin n → E) i)) = Pi.single j 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[h]`. Rewrite using `[this, single_one_vecMul]`. Both sides reduce to the same expression.
+-/
 theorem single_vecMul_eq (j : Fin n) (M : Matrix (Fin n) (Fin n) (Ad E)) :
     (fun i => algebraMap E (Ad E) ((Pi.single j 1 : Fin n → E) i)) ᵥ* M = fun t => M j t := by
   have : (fun i => algebraMap E (Ad E) ((Pi.single j 1 : Fin n → E) i)) = Pi.single j 1 := by
@@ -232,6 +315,45 @@ theorem single_vecMul_eq (j : Fin n) (M : Matrix (Fin n) (Fin n) (Ad E)) :
   rw [this, single_one_vecMul]
   rfl
 
+/- English proof (translation)
+Use `set last : Fin n := ⟨n - 1, by omega⟩`. Use `set mm : Fin n := ⟨m, hmn⟩`. Use `set d := n * Module.finrank ℚ E`. Use `set r : Fin n → Ad E := fun t => (1 : Matrix (Fin n) (Fin n) (Ad E)) last t`. Use `set Φ : (Fin m → Af E) → (Fin n → Af E) := fun v t => if t = mm then 1 else if h : t.val < m then -v ⟨t, h⟩ else 0`.
+
+Establish `hΦ : Continuous Φ` using `continuous_pi fun t => by`. Simplify using `only [Φ]`. Use `split_ifs`. Conclude with `continuous_const`. Conclude with `(continuous_apply _).neg`.
+
+Conclude with `continuous_const`. Take `⟨C₁, h₁⟩` from `hφ.2.1 {fun i => pFin E (r i)} isCompact_singleton {1} isCompact_singleton N`. Take `⟨C₂, h₂⟩` from `hφ.2.2 (Φ '' L) (hL.image hΦ) {1} isCompact_singleton N`. Use `⟨max (max C₁ C₂) 0, le_max_right _ _, fun g hg x hx => ?_⟩` and prove the remaining obligations. Use `set T := detAbs g`.
+
+Establish `hT : 0 < T` using `detAbs_pos g`. Use `set X := ‖fun i => pInf E (x i)‖`. Establish `hX : 0 ≤ X` using `norm_nonneg _`. Use `set u := (colGL (n := n) m x : GA E n)`. Establish `hTu : detAbs (g * u) = T` using `by rw [detAbs_mul, detAbs_colGL, mul_one]`.
+
+Establish `hrow : (fun i => algebraMap E (Ad E) ((Pi.single last 1 : Fin n → E) i)) ᵥ* (g * u).val = r`. Rewrite using `[single_vecMul_eq]`. Use function extensionality and compare the values at `t`. Rewrite using `[Units.val_mul, mul_apply_of_row (fun t => hg.1 last t (by simp only [last]; omega))]`. Conclude with `colGL_row_last m x (by simp only [last]; omega) t`.
+
+Establish `hne1 : (Pi.single last 1 : Fin n → E) ≠ 0` using `fun h => by simpa using congrFun h last`. Establish `b1` using `h₁ (g * u) 1 rfl _ hne1 (by rw [hrow]; rfl)`. Rewrite `b1` using `[mul_one, hrow]`. Express the relevant statement in the definitionally equal form `‖φ (g * u)‖ ≤ C₁ * (_ / detAbs (g * u)) ^ N at b1`. Rewrite `b1` using `[hTu]`.
+
+Establish `hr : ‖fun i => pInf E (r i)‖ ≤ 1`. Use `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun t => ?_` and prove the remaining obligations. Simplify using `only [r, one_apply]`. Use `split_ifs`. Rewrite using `[map_one]`.
+
+Conclude with `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun w => by simp`. Simplify using the standard rewrite rules. Establish `b1' : ‖φ (g * u)‖ ≤ max (max C₁ C₂) 0 * T⁻¹ ^ N`. Use `b1.trans ?_` and prove the remaining obligations. Establish `e1 : (‖fun i => pInf E (r i)‖ ^ d / T) ^ N ≤ T⁻¹ ^ N`.
+
+Use `pow_le_pow_left₀ (by positivity) ?_ N` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv]`. Conclude with `mul_le_of_le_one_left (by positivity) (pow_le_one₀ (norm_nonneg _) hr)`. Combine the equalities or inequalities in the displayed calculation. Use `set w : Fin n → Ad E := fun t => ((colGL (n := n) m (-x) : GA E n) : Matrix (Fin n) (Fin n) (Ad E)) t mm`.
+
+Establish `hginv : ∀ t, ((g⁻¹ : GA E n) : Matrix (Fin n) (Fin n) (Ad E)) t mm = (1 : Matrix (Fin n) (Fin n) (Ad E)) t mm`. Introduce `t`. Use `mul_apply_of_col (A := ((g⁻¹ : GA E n) : Matrix (Fin n) (Fin n) (Ad E))) (B := g.val) (l := mm) (fun t => hg.2 t mm rfl) t` as an intermediate fact. Rewrite `this` using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Conclude with `this.symm`.
+
+Establish `hcol : (fun i => algebraMap E (Ad E) ((Pi.single mm 1 : Fin n → E) i)) ᵥ* (invT n (Ad E) (g * u)).val = w`. Rewrite using `[single_vecMul_eq]`. Use function extensionality and compare the values at `t`. Express the relevant statement in the definitionally equal form `(((g * u)⁻¹ : GA E n) : Matrix (Fin n) (Fin n) (Ad E))ᵀ mm t = _`. Rewrite using `[transpose_apply, _root_.mul_inv_rev, Units.val_mul, mul_apply_of_col hginv]`.
+
+Simplify using `only [w, u]`. Rewrite using `[← GroundTheory.Automorphic.FourierWhittaker.colGL_neg]`. Establish `hne2 : (Pi.single mm 1 : Fin n → E) ≠ 0` using `fun h => by simpa using congrFun h mm`. Establish `hmm : mm.val = m` using `rfl`. Establish `hw : (fun t => pFin E (w t)) = Φ fun i => pFin E (x i)`.
+
+Use function extensionality and compare the values at `t`. Simplify using `only [w, Φ, colGL, coe_uGL, uMat_apply, colX_apply]`. Apply the tactic sequence `split_ifs <;> first | (simp; done) | (exfalso; simp only [Fin.lt_def] at *; omega) | (simp only [Fin.lt_def] at *; omega)`. Establish `b2` using `h₂ (invT n (Ad E) (g * u)) 1 rfl _ hne2 (by rw [hcol, hw]; exact ⟨_, hx, rfl⟩)`. Rewrite `b2` using `[mul_one, hcol]`.
+
+Express the relevant statement in the definitionally equal form `‖φ (invT n (Ad E) (invT n (Ad E) (g * u)))‖ ≤ C₂ * (_ / detAbs (invT n (Ad E) (g * u))) ^ N at b2`. Rewrite `b2` using `[invT_invT, detAbs_invT, hTu]`. Establish `hw' : ‖fun t => pInf E (w t)‖ ≤ 1 + X`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun t => ?_` and prove the remaining obligations. Simplify using `only [w, colGL, coe_uGL, uMat_apply, colX_apply]`.
+
+Use `split_ifs with h1 h2 h3`. Rewrite using `[map_one]`. Conclude with `((pi_norm_le_iff_of_nonneg zero_le_one).2 fun w => by simp).trans (le_add_of_nonneg_right hX)`. Rewrite using `[Pi.neg_apply, map_neg, norm_neg]`. Conclude with `(norm_le_pi_norm (fun i => pInf E (x i)) _).trans (le_add_of_nonneg_left zero_le_one)`.
+
+Simplify using `only [map_zero, norm_zero]`. Check the signs of the components of the expression. Establish `b2' : ‖φ (g * u)‖ ≤ max (max C₁ C₂) 0 * (1 + X) ^ (d * N) * T ^ N`. Use `b2.trans ?_` and prove the remaining obligations. Establish `e2 : (‖fun t => pInf E (w t)‖ ^ d / T⁻¹) ^ N ≤ (1 + X) ^ (d * N) * T ^ N`.
+
+Rewrite using `[div_inv_eq_mul, mul_pow, ← pow_mul]`. Conclude with `mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (norm_nonneg _) hw' _) (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Establish `hX1 : 1 ≤ (1 + X) ^ (d * N)` using `one_le_pow₀ (le_add_of_nonneg_right hX)`. Break down `le_total T 1 with hT1 | hT1` into its components or cases.
+
+Rewrite using `[min_eq_left (hT1.trans ((one_le_inv₀ hT).mpr hT1))]`. Conclude with `b2'`. Rewrite using `[min_eq_right (by exact (inv_le_one_of_one_le₀ hT1).trans hT1)]`. Use `b1'.trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`.
+
+Use `mul_le_mul_of_nonneg_left ?_ (le_max_right _ _)` and prove the remaining obligations. Conclude with `le_mul_of_one_le_left (by positivity) hX1`.
+-/
 theorem norm_le_of_inS (hmn : m < n) {φ : GA E n → ℂ} (hφ : φ ∈ goodFns n) {L : Set (Fin m → Af E)}
     (hL : IsCompact L) (N : ℕ) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ g : GA E n, InS m g → ∀ x : Fin m → Ad E, (fun i => pFin E (x i)) ∈ L →
@@ -346,6 +468,9 @@ open GroundTheory.Automorphic.FourierWhittaker (partialCoeff_self partialCoeff_o
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a n m : ℕ}
 
+/- English proof (translation)
+Use `⟨fun j t hj => ?_, fun i l hl => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, mul_apply_of_row (fun t => colGL_row_last k y hj t)]`. Conclude with `hg.1 j t hj`. Rewrite using `[Units.val_mul, mul_apply_of_col (fun t => hg.2 t l hl)]`. Conclude with `colGL_col hk y hl i`.
+-/
 theorem inS_colGL_mul {k : ℕ} (hk : k ≠ m) (y : Fin k → Ad E) {g : GA E n} (hg : InS m g) :
     InS m (colGL (n := n) k y * g) := by
   refine ⟨fun j t hj => ?_, fun i l hl => ?_⟩
@@ -354,6 +479,9 @@ theorem inS_colGL_mul {k : ℕ} (hk : k ≠ m) (y : Fin k → Ad E) {g : GA E n}
   · rw [Units.val_mul, mul_apply_of_col (fun t => hg.2 t l hl)]
     exact colGL_col hk y hl i
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun j t hj => blockGL_row_last hmn h hj t, fun i l hl => blockGL_col hmn h hl i⟩`.
+-/
 theorem inS_blockGL (hmn : m < n) (h : GA E m) : InS m (blockGL hmn.le h : GA E n) :=
   ⟨fun j t hj => blockGL_row_last hmn h hj t, fun i l hl => blockGL_col hmn h hl i⟩
 
@@ -362,6 +490,9 @@ variable (m) in
 def colSmooth (F : (Fin m → Ad E) → ℂ) (φ : GA E n → ℂ) (g : GA E n) : ℂ :=
   ∫ x, F x * φ (g * colGL m x) ∂GJMatrix.adeleMeasurePi E
 
+/- English proof (translation)
+The claim follows from `continuous_of_dominated (bound := fun x => ‖F x‖ * C) (fun g => ((GJMatrix.continuous_of_mem_schwartzBruhatPi hF).mul (hc.comp (continuous_const.mul (continuous_colGL m)))).aestronglyMeasurable) (fun g => .of_forall fun x => (norm_mul _ _).trans_le (mul_le_mul_of_nonneg_left (hC …`.
+-/
 theorem continuous_colSmooth {F : (Fin m → Ad E) → ℂ} (hF : F ∈ GJMatrix.schwartzBruhatPi E (Fin m))
     {φ : GA E n → ℂ} (hc : Continuous φ) {C : ℝ} (hC : ∀ g, ‖φ g‖ ≤ C) : Continuous (colSmooth m F φ) :=
   continuous_of_dominated (bound := fun x => ‖F x‖ * C)
@@ -371,6 +502,13 @@ theorem continuous_colSmooth {F : (Fin m → Ad E) → ℂ} (hF : F ∈ GJMatrix
     ((GJMatrix.integrable_of_mem_schwartzBruhatPi hF).norm.mul_const C)
     (.of_forall fun x => continuous_const.mul (hc.comp (continuous_id.mul continuous_const)))
 
+/- English proof (translation)
+Take `⟨⟨L, hL, hsupp⟩, hint⟩` from `GlobalTheory.T.schwartz_bruhat_integrable_moments E m F hF`. Take `⟨C, hC0, hC⟩` from `norm_le_of_inS hmn hφ hL N`. Use `set k := n * Module.finrank ℚ E * N`. Use `⟨C * ∫ x, ‖F x‖ * (1 + ‖fun i => pInf E (x i)‖) ^ k ∂GJMatrix.adeleMeasurePi E, fun g hg => ?_⟩` and prove the remaining obligations. Use `set W := (min (detAbs g) (detAbs g)⁻¹) ^ N`.
+
+Establish `hW : 0 ≤ W` using `pow_nonneg (le_min (detAbs_pos g).le (inv_nonneg.2 (detAbs_pos g).le)) N`. Use `(norm_integral_le_of_norm_le ((hint k).mul_const (C * W)) (.of_forall fun x => ?_)).trans_eq ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Distinguish the cases in `hx : F x = 0`. Rewrite using `[hx, norm_zero, zero_mul, zero_mul, zero_mul]`.
+
+Rewrite using `[mul_assoc]`. Use `mul_le_mul_of_nonneg_left ((hC g hg x (hsupp x hx)).trans_eq ?_) (norm_nonneg _)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[integral_mul_const]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem colSmooth_bound (hmn : m < n) {φ : GA E n → ℂ} (hφ : φ ∈ goodFns n) {F : (Fin m → Ad E) → ℂ}
     (hF : F ∈ GJMatrix.schwartzBruhatPi E (Fin m)) (N : ℕ) :
     ∃ C : ℝ, ∀ g, InS m g → ‖colSmooth m F φ g‖ ≤ C * (min (detAbs g) (detAbs g)⁻¹) ^ N := by
@@ -390,6 +528,15 @@ theorem colSmooth_bound (hmn : m < n) {φ : GA E n → ℂ} (hφ : φ ∈ goodFn
   · rw [integral_mul_const]
     ring
 
+/- English proof (translation)
+Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `j hj _ g hg`. Rewrite `hj` using `[add_zero]`.
+
+Substitute `hj` using the available equality. Rewrite using `[partialCoeff_self]`. Conclude with `hG g hg`. Consider the case `succ i ih`. Introduce `j hj hmj g hg`.
+
+Establish `hjn : j < n` using `by omega`. Rewrite using `[partialCoeff_of_lt G hjn]`. Establish `hb : 0 ≤ b (detAbs g)` using `(norm_nonneg _).trans (hG g hg)`. Use `(norm_setIntegral_le_of_norm_le_const (C := b (detAbs g)) (by rw [vecMeasure_vecDomain]; exact ENNReal.one_lt_top) fun x _ => ?_).trans_eq ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Circle.norm_coe, mul_one]`.
+
+Use `ih (j + 1) (by omega) (by omega) _ (inS_colGL_mul (by omega) x hg)` as an intermediate fact. Rewrite `this` using `[detAbs_mul, detAbs_colGL, one_mul]`. Then use the resulting hypothesis. Rewrite using `[measureReal_def, vecMeasure_vecDomain, ENNReal.toReal_one, mul_one]`.
+-/
 theorem partialCoeff_bound (hmn : m < n) {G : GA E n → ℂ} {b : ℝ → ℝ}
     (hG : ∀ g, InS m g → ‖G g‖ ≤ b (detAbs g)) :
     ∀ i j, j + i = n → m + 1 ≤ j → ∀ g, InS m g → ‖partialCoeff G j g‖ ≤ b (detAbs g) := by

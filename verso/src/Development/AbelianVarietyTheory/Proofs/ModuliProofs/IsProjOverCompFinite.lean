@@ -11,6 +11,9 @@ open scoped CategoryTheory.Obj TensorProduct Pointwise
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ X Y f s hf hs`. Conclude with `GlobalTheory.isProjOver_comp_of_isFinite f hs`.
+-/
 theorem isProjOver_comp_of_finite :
     ∀ (R : Type) [CommRing R] (X Y : Scheme.{0}) (f : Y ⟶ X) (s : X ⟶ Sp R), IsFinite f → IsProjOver s → IsProjOver (f ≫ s) := by
   intro R _ X Y f s hf hs

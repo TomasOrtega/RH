@@ -274,6 +274,9 @@ def ThmOne (C : ℝ) : Prop :=
 
 end Loc1
 
+/- English proof (translation)
+Take `⟨j', rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`. Simplify using `only [Formalism.BasicNotions.Ranks.N, Nat.add_sub_cancel, Nat.succ_mul]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem N_pred_lt (R : Formalism.BasicNotions.Ranks) (j : ℕ) (h : 1 ≤ j) : R.N (j - 1) < R.N j := by
   obtain ⟨j', rfl⟩ : ∃ j', j = j' + 1 := ⟨j - 1, by omega⟩
   simp only [Formalism.BasicNotions.Ranks.N, Nat.add_sub_cancel, Nat.succ_mul]

@@ -14,18 +14,33 @@ section Mat
 
 variable {n : Type*} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Establish `h` using `hA.det_nonneg`. Rewrite `h` using `[Complex.nonneg_iff]`. Conclude with `⟨Complex.ext (by simp) (by simp [← h.2]), h.1⟩`.
+-/
 lemma psd_det_real {A : Matrix n n ℂ} (hA : A.PosSemidef) :
     A.det = ((A.det.re : ℝ) : ℂ) ∧ 0 ≤ A.det.re := by
   have h := hA.det_nonneg
   rw [Complex.nonneg_iff] at h
   exact ⟨Complex.ext (by simp) (by simp [← h.2]), h.1⟩
 
+/- English proof (translation)
+Establish `h` using `hA.det_pos`. Rewrite `h` using `[Complex.lt_def]`. Use `⟨Complex.ext (by simp) (by simp [← h.2]), by simpa using h.1⟩` and prove the remaining obligations.
+-/
 lemma pd_det_real {A : Matrix n n ℂ} (hA : A.PosDef) :
     A.det = ((A.det.re : ℝ) : ℂ) ∧ 0 < A.det.re := by
   have h := hA.det_pos
   rw [Complex.lt_def] at h
   refine ⟨Complex.ext (by simp) (by simp [← h.2]), by simpa using h.1⟩
 
+/- English proof (translation)
+Establish `hH` using `hN.isHermitian`. Establish `hs` using `hH.spectral_theorem`. Use `set U := hH.eigenvectorUnitary with hUdef`. Establish `hU : (U : Matrix n n ℂ) * star (U : Matrix n n ℂ) = 1` using `Unitary.mul_star_self_of_mem U.2`. Establish `key : 1 + N = (U : Matrix n n ℂ) * (1 + diagonal (RCLike.ofReal ∘ hH.eigenvalues)) * star (U : Matrix n n ℂ)` using `by conv_lhs => rw [hs]`.
+
+Rewrite using `[Unitary.conjStarAlgAut_apply, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, hU]`. Establish `hdU : (U : Matrix n n ℂ).det * (star (U : Matrix n n ℂ)).det = 1`. Rewrite using `[← det_mul, hU, det_one]`. Use `⟨∏ i, (1 + hH.eigenvalues i), ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[key, det_mul, det_mul]`. Establish `h1 : (1 + diagonal (RCLike.ofReal ∘ hH.eigenvalues) : Matrix n n ℂ) = diagonal (fun i => ((1 + hH.eigenvalues i : ℝ) : ℂ))`. Rewrite using `[← diagonal_one, diagonal_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h1, det_diagonal]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma det_one_add_psd {N : Matrix n n ℂ} (hN : N.PosSemidef) :
     ∃ t : ℝ, 1 ≤ t ∧ (1 + N).det = (t : ℂ) := by
   have hH := hN.isHermitian
@@ -54,12 +69,44 @@ lemma det_one_add_psd {N : Matrix n n ℂ} (hN : N.PosSemidef) :
           (star (U : Matrix n n ℂ)).det) := by ring
       _ = _ := by rw [hdU, mul_one]; push_cast; rfl
 
+/- English proof (translation)
+Introduce `a b hab` and use `sub_eq_zero.1 (h _ (by rw [mulVec_sub, hab, sub_self]))`.
+-/
 lemma mulVec_injective_of_ker {m k : Type*} [Fintype k] {P : Matrix m k ℂ}
     (h : ∀ v, P *ᵥ v = 0 → v = 0) : Function.Injective P.mulVec := fun a b hab =>
   sub_eq_zero.1 (h _ (by rw [mulVec_sub, hab, sub_self]))
 
 variable {m : Type*} [Fintype m] [DecidableEq m]
 
+/- English proof (translation)
+Establish `hP` using `posSemidef_conjTranspose_mul_self P`. Establish `hQ` using `posSemidef_conjTranspose_mul_self Q`. Take `⟨_, hP0⟩` from `psd_det_real hP`. Take `⟨_, hQ0⟩` from `psd_det_real hQ`. Distinguish the cases in `hB : (Pᴴ * Q).det = 0`.
+
+Rewrite using `[hB, norm_zero]`. Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow]`. Conclude with `mul_nonneg hP0 hQ0`. Establish `hPinj : Function.Injective P.mulVec` using `mulVec_injective_of_ker fun v hv => by`. Assume the negation of the conclusion as `hne`.
+
+Apply `hB` to reduce the goal to its premises. Establish `h1 : (Pᴴ * Q)ᴴ *ᵥ v = 0`. Rewrite using `[conjTranspose_mul, conjTranspose_conjTranspose, ← mulVec_mulVec, hv, mulVec_zero]`. Establish `h0 : (Pᴴ * Q)ᴴ.det = 0` using `(exists_mulVec_eq_zero_iff).1 ⟨v, hne, h1⟩`. Rewrite `h0` using `[det_conjTranspose, star_eq_zero]`. Then use the resulting hypothesis.
+
+Use `set A := Pᴴ * P with hAdef`. Use `set B := Pᴴ * Q with hBdef`. Use `set D := Qᴴ * Q with hDdef`. Establish `hApd : A.PosDef` using `PosDef.conjTranspose_mul_self P hPinj`. Take `⟨hAr, hA0⟩` from `pd_det_real hApd`.
+
+Establish `hAu : IsUnit A.det` using `isUnit_iff_ne_zero.2 (by`. Introduce `h0`. Rewrite `hA0` using `[h0]`. Simplify using `at hA0)`. Establish `hBinj : Function.Injective B.mulVec` using `(mulVec_injective_iff_isUnit).2 ((isUnit_iff_isUnit_det B).2 (isUnit_iff_ne_zero.2 hB))`.
+
+Use `set X := A⁻¹ * B with hXdef`. Establish `hAX : A * X = B`. Rewrite using `[hXdef, ← Matrix.mul_assoc, mul_nonsing_inv _ hAu, Matrix.one_mul]`. Use `set R := Q - P * X with hRdef`. Establish `hRR : Rᴴ * R = D - Bᴴ * X`.
+
+Establish `e1 : Qᴴ * (P * X) = Bᴴ * X`. Rewrite using `[hBdef, conjTranspose_mul, conjTranspose_conjTranspose, Matrix.mul_assoc]`. Establish `e2 : Xᴴ * Pᴴ * Q = Xᴴ * B` using `by rw [hBdef, Matrix.mul_assoc]`. Establish `e3 : Xᴴ * Pᴴ * (P * X) = Xᴴ * B`. Rewrite using `[← hAX, hAdef, Matrix.mul_assoc, Matrix.mul_assoc]`.
+
+Rewrite using `[hRdef, conjTranspose_sub, conjTranspose_mul, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_sub, e1, e2, e3, hDdef]`. Normalize the expressions using the abelian group laws. Use `set C := Bᴴ * X with hCdef`. Establish `hCpd : C.PosDef`. Use `(hApd.inv).conjTranspose_mul_mul_same hBinj` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.mul_assoc]`. Then use the resulting hypothesis. Establish `hCu : IsUnit C.det` using `isUnit_iff_ne_zero.2 (hCpd.det_pos.ne')`. Establish `hD : D = C * (1 + (C⁻¹ * Rᴴ) * R)`. Rewrite using `[Matrix.mul_add, Matrix.mul_one, ← Matrix.mul_assoc, ← Matrix.mul_assoc, mul_nonsing_inv _ hCu, Matrix.one_mul, hRR]`. Normalize the expressions using the abelian group laws.
+
+Establish `hN : (R * (C⁻¹ * Rᴴ)).PosSemidef`. Use `hCpd.inv.posSemidef.mul_mul_conjTranspose_same R` as an intermediate fact. Rewrite `this` using `[Matrix.mul_assoc]`. Then use the resulting hypothesis. Take `⟨t, ht1, ht⟩` from `det_one_add_psd hN`. Use `set a := A.det.re with ha`.
+
+Establish `hbb : star B.det * B.det = ((‖B.det‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression. Establish `hdetC : C.det = star B.det * B.det / (a : ℂ)`.
+
+Rewrite using `[hCdef, hXdef, det_mul, det_mul, det_conjTranspose, det_nonsing_inv, Ring.inverse_eq_inv', hAr]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdetD : D.det = ((‖B.det‖ ^ 2 / a * t : ℝ) : ℂ)`. Rewrite using `[hD, det_mul, det_one_add_mul_comm, ht, hdetC, hbb]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hdetD, Complex.ofReal_re]`. Establish `hb0 : 0 ≤ ‖B.det‖ ^ 2` using `sq_nonneg _`. Establish `: a * (‖B.det‖ ^ 2 / a * t) = ‖B.det‖ ^ 2 * t` using `by field_simp`. Rewrite using `[this]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem gram_cs {k : Type*} [Fintype k] [DecidableEq k] (P Q : Matrix m k ℂ) :
     ‖(Pᴴ * Q).det‖ ^ 2 ≤ (Pᴴ * P).det.re * (Qᴴ * Q).det.re := by
   have hP := posSemidef_conjTranspose_mul_self P
@@ -126,6 +173,21 @@ theorem gram_cs {k : Type*} [Fintype k] [DecidableEq k] (P Q : Matrix m k ℂ) :
   rw [this]
   nlinarith
 
+/- English proof (translation)
+Use `set B := fromCols Uc Zc with hBdef`. Use `set Rm : Matrix (k ⊕ d) (k ⊕ d) ℂ := fromBlocks 1 T.toRows₁ 0 T.toRows₂ with hRm`. Establish `hBR : B * Rm = fromCols Uc Ac`. Rewrite using `[hBdef, hRm, fromCols_mul_fromBlocks, hT, ← fromRows_toRows T, fromCols_mul_fromRows]`. Simplify using the standard rewrite rules.
+
+Establish `e1 : (fromCols Uc Ac)ᴴ * B = fromBlocks (Ucᴴ * Uc) (Ucᴴ * Zc) 0 (Acᴴ * Zc)`. Rewrite using `[conjTranspose_fromCols_eq_fromRows_conjTranspose, hBdef, fromRows_mul_fromCols, hAU]`. Establish `e2 : (fromCols Uc Ac)ᴴ * fromCols Uc Ac = fromBlocks (Ucᴴ * Uc) (Ucᴴ * Ac) 0 (Acᴴ * Ac)`. Rewrite using `[conjTranspose_fromCols_eq_fromRows_conjTranspose, fromRows_mul_fromCols, hAU]`. Establish `f1 : (Ucᴴ * Uc).det * (Acᴴ * Zc).det = star Rm.det * (Bᴴ * B).det`.
+
+Rewrite using `[← det_fromBlocks_zero₂₁ (Ucᴴ * Uc) (Ucᴴ * Zc) (Acᴴ * Zc), ← e1, ← hBR]`. Establish `: (B * Rm)ᴴ * B = Rmᴴ * (Bᴴ * B)` using `by rw [conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[this, det_mul, det_conjTranspose]`. Establish `f2 : (Ucᴴ * Uc).det * (Acᴴ * Ac).det = star Rm.det * (Bᴴ * B).det * Rm.det`. Rewrite using `[← det_fromBlocks_zero₂₁ (Ucᴴ * Uc) (Ucᴴ * Ac) (Acᴴ * Ac), ← e2, ← hBR]`.
+
+Establish `: (B * Rm)ᴴ * (B * Rm) = Rmᴴ * (Bᴴ * B) * Rm`. Rewrite using `[conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[this, det_mul, det_mul, det_conjTranspose]`. Establish `hgs : star (Ucᴴ * Uc).det = (Ucᴴ * Uc).det`.
+
+Rewrite using `[← det_conjTranspose, conjTranspose_mul, conjTranspose_conjTranspose]`. Establish `hGs : star (Bᴴ * B).det = (Bᴴ * B).det`. Rewrite using `[← det_conjTranspose, conjTranspose_mul, conjTranspose_conjTranspose]`. Use `set g := (Ucᴴ * Uc).det`. Use `set p := (Acᴴ * Zc).det`.
+
+Use `set a := (Acᴴ * Ac).det`. Use `set G := (Bᴴ * B).det`. Use `set r := Rm.det`. Establish `h3 : g * star p = r * G`. Use `congrArg star f1` as an intermediate fact.
+
+Rewrite `this` using `[star_mul', star_mul', hgs, hGs, star_star]`. Take the linear combination `this`. Apply `mul_left_cancel₀ hg` to reduce the goal to its premises. Take the linear combination `(g * star p) * f1 + (star r * G) * h3 - G * f2`.
+-/
 theorem gram_block {k d : Type*} [Fintype k] [DecidableEq k] [Fintype d] [DecidableEq d]
     (Uc : Matrix m k ℂ) (Zc Ac : Matrix m d ℂ) (T : Matrix (k ⊕ d) d ℂ)
     (hT : Ac = fromCols Uc Zc * T) (hAU : Acᴴ * Uc = 0) (hg : (Ucᴴ * Uc).det ≠ 0) :
@@ -182,12 +244,18 @@ def hmat (A : HLat K) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K) (φ : K →+* ℂ) 
 
 def rho (φ : K →+* ℂ) : K →+* ℂ := (starRingEnd ℂ).comp (φ.comp (starRingEnd K))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma rho_apply (φ : K →+* ℂ) (x : K) : rho φ x = star (φ (star x)) := rfl
 
 def gmat (A : HLat K) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K) (φ : K →+* ℂ) {m : ℕ} (f : Fin m → A.V) :
     Matrix (Fin m) (Fin m) ℂ :=
   (cmat A φ f)ᴴ * hmat A h φ * cmat A φ f
 
+/- English proof (translation)
+Use extensionality with `a c`. Simplify using `[Formalism.HN.gramPl, Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord, Formalism.HermitianLatticesTheory.vecAt, cmat, Matrix.mul_apply, Matrix.mulVec, dotProduct, conjTranspose_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
+-/
 lemma gramPl_eq (A : HLat K) (v : InfinitePlace K) {m : ℕ} (f : Fin m → A.V) :
     Formalism.HN.gramPl A.b A.X v f =
       ((A.X v)⁻¹ * cmat A v.embedding f)ᴴ * ((A.X v)⁻¹ * cmat A v.embedding f) := by
@@ -198,6 +266,9 @@ lemma gramPl_eq (A : HLat K) (v : InfinitePlace K) {m : ℕ} (f : Fin m → A.V)
   congr 1
   exact Finset.sum_congr rfl fun _ _ => mul_comm _ _
 
+/- English proof (translation)
+Use extensionality with `k l`. Simplify using `[Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord, Formalism.HermitianLatticesTheory.vecAt, Matrix.mul_apply, Matrix.mulVec, dotProduct, conjTranspose_apply, Finsupp.single_apply, apply_ite]`.
+-/
 lemma frame_majAt (A : HLat K) (v : InfinitePlace K) :
     ((A.X v)⁻¹)ᴴ * (A.X v)⁻¹ =
       Matrix.of fun k l => Formalism.HermitianLatticesTheory.majAt A.b A.X v (A.b k) (A.b l) := by
@@ -205,6 +276,9 @@ lemma frame_majAt (A : HLat K) (v : InfinitePlace K) :
   simp [Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord, Formalism.HermitianLatticesTheory.vecAt, Matrix.mul_apply, Matrix.mulVec,
     dotProduct, conjTranspose_apply, Finsupp.single_apply, apply_ite]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← A.b.sum_repr x, ← A.b.sum_repr y]`. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, map_smul, smul_eq_mul, starRingEnd_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 lemma h_expand (A : HLat K) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K) (x y : A.V) :
     h x y = ∑ k, ∑ l, star (A.b.repr x k) * A.b.repr y l * h (A.b k) (A.b l) := by
   conv_lhs => rw [← A.b.sum_repr x, ← A.b.sum_repr y]
@@ -213,6 +287,9 @@ lemma h_expand (A : HLat K) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K) (x y : A.V) :
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [of_apply, h_expand A h (f i) (g j), map_sum, map_mul, Matrix.mul_apply, conjTranspose_apply, cmat, hmat, rho_apply, star_star, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 lemma hmatrix_eq (A : HLat K) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K) (φ : K →+* ℂ) {m m' : ℕ}
     (f : Fin m → A.V) (g : Fin m' → A.V) :
     (Matrix.of fun i j => φ (h (f i) (g j))) = (cmat A (rho φ) f)ᴴ * hmat A h φ * cmat A φ g := by
@@ -222,6 +299,9 @@ lemma hmatrix_eq (A : HLat K) (h : A.V →ₗ⋆[K] A.V →ₗ[K] K) (φ : K →
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 lemma map_det_of (φ : K →+* ℂ) {d : ℕ} (F : Fin d → Fin d → K) :
     φ (Matrix.of F).det = (Matrix.of fun i j => φ (F i j)).det := by
   rw [RingHom.map_det]; rfl
@@ -235,31 +315,51 @@ variable (hC1 : ∀ i j, IsCM (h (A.b i) (A.b j)))
     Formalism.HermitianLatticesTheory.majAt A.b A.X v (A.b i) (A.b j) = v.embedding (h (A.b i) (A.b j)))
 include hC3
 
+/- English proof (translation)
+Rewrite using `[frame_majAt]`. Use extensionality with `k l`. Simplify using `[hmat, hC3]`.
+-/
 lemma frame_hmat (v : InfinitePlace K) : ((A.X v)⁻¹)ᴴ * (A.X v)⁻¹ = hmat A h v.embedding := by
   rw [frame_majAt]; ext k l; simp [hmat, hC3]
 
+/- English proof (translation)
+Rewrite using `[hmatrix_eq, ← frame_hmat A h hC3, conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 lemma sigma_hmatrix (v : InfinitePlace K) {m m' : ℕ} (f : Fin m → A.V) (g : Fin m' → A.V) :
     (Matrix.of fun i j => v.embedding (h (f i) (g j))) =
       ((A.X v)⁻¹ * cmat A (rho v.embedding) f)ᴴ * ((A.X v)⁻¹ * cmat A v.embedding g) := by
   rw [hmatrix_eq, ← frame_hmat A h hC3, conjTranspose_mul]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[gramPl_eq, gmat, ← frame_hmat A h hC3, conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 lemma gmat_place (v : InfinitePlace K) {m : ℕ} (f : Fin m → A.V) :
     gmat A h v.embedding f = Formalism.HN.gramPl A.b A.X v f := by
   rw [gramPl_eq, gmat, ← frame_hmat A h hC3, conjTranspose_mul]
   simp only [Matrix.mul_assoc]
 
 omit hC3 in
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[gmat, cmat, hmat, Matrix.mul_apply, conjTranspose_apply, map_sum]`.
+-/
 lemma gmat_conj (φ : K →+* ℂ) {m : ℕ} (f : Fin m → A.V) :
     gmat A h (ComplexEmbedding.conjugate φ) f = (gmat A h φ f).map (starRingEnd ℂ) := by
   ext i j
   simp [gmat, cmat, hmat, Matrix.mul_apply, conjTranspose_apply, map_sum]
 
 omit hC3 in
+/- English proof (translation)
+Rewrite using `[gramPl_eq]`. Conclude with `posSemidef_conjTranspose_mul_self _`.
+-/
 lemma gramPl_psd (v : InfinitePlace K) {m : ℕ} (f : Fin m → A.V) :
     (Formalism.HN.gramPl A.b A.X v f).PosSemidef := by
   rw [gramPl_eq]; exact posSemidef_conjTranspose_mul_self _
 
+/- English proof (translation)
+Establish `hreal` using `(psd_det_real (gramPl_psd A (InfinitePlace.mk φ) f)).1`. Break down `InfinitePlace.embedding_mk_eq φ with h1 | h1` into its components or cases. Rewrite using `[← gmat_place A h hC3, h1]`. Establish `hφ : φ = ComplexEmbedding.conjugate (InfinitePlace.mk φ).embedding`. Rewrite using `[h1]`.
+
+Use extensionality with `x`. Simplify using the standard rewrite rules. Use `conv_lhs => rw [hφ]`. Rewrite using `[gmat_conj, ← RingHom.mapMatrix_apply, ← RingHom.map_det, gmat_place A h hC3, hreal]`. Simplify using the standard rewrite rules.
+-/
 lemma det_gmat (φ : K →+* ℂ) {m : ℕ} (f : Fin m → A.V) :
     (gmat A h φ f).det = (Formalism.HN.gramPl A.b A.X (InfinitePlace.mk φ) f).det := by
   have hreal := (psd_det_real (gramPl_psd A (InfinitePlace.mk φ) f)).1
@@ -273,12 +373,20 @@ lemma det_gmat (φ : K →+* ℂ) {m : ℕ} (f : Fin m → A.V) :
 
 omit hC3 in
 include hC1 in
+/- English proof (translation)
+Use extensionality with `k l`. Simplify using `only [hmat, of_apply, rho_apply]`. Rewrite using `[hC1 k l φ, star_star]`.
+-/
 lemma hmat_rho (φ : K →+* ℂ) : hmat A h (rho φ) = hmat A h φ := by
   ext k l
   simp only [hmat, of_apply, rho_apply]
   rw [hC1 k l φ, star_star]
 
 include hC1 in
+/- English proof (translation)
+Establish `e1 : ((A.X v)⁻¹ * cmat A (rho v.embedding) f)ᴴ * ((A.X v)⁻¹ * cmat A (rho v.embedding) f) = gmat A h (rho v.embedding) f`. Rewrite using `[gmat, hmat_rho A h hC1, ← frame_hmat A h hC3, conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Establish `e2 : rho v.embedding = ComplexEmbedding.conjugate (v.embedding.comp (starRingEnd K))`. Use extensionality with `x`.
+
+Simplify using `only [rho_apply, ComplexEmbedding.conjugate_coe_eq, RingHom.coe_comp, Function.comp_apply, starRingEnd_apply]`. Rewrite using `[e1, det_gmat A h hC3, e2, InfinitePlace.mk_conjugate_eq]`.
+-/
 lemma rhoGram_det (v : InfinitePlace K) {m : ℕ} (f : Fin m → A.V) :
     (((A.X v)⁻¹ * cmat A (rho v.embedding) f)ᴴ * ((A.X v)⁻¹ * cmat A (rho v.embedding) f)).det =
       (Formalism.HN.gramPl A.b A.X (InfinitePlace.mk (v.embedding.comp (starRingEnd K))) f).det := by
@@ -296,6 +404,13 @@ end Hyp
 
 def piv (v : InfinitePlace K) : InfinitePlace K := InfinitePlace.mk (v.embedding.comp (starRingEnd K))
 
+/- English proof (translation)
+Introduce `v`. Simplify using `only [piv]`. Apply the tactic sequence `rcases InfinitePlace.embedding_mk_eq (v.embedding.comp (starRingEnd K)) with h1 | h1 <;> rw [h1]`. Establish `: (v.embedding.comp (starRingEnd K)).comp (starRingEnd K) = v.embedding`. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this, InfinitePlace.mk_embedding]`. Establish `: (ComplexEmbedding.conjugate (v.embedding.comp (starRingEnd K))).comp (starRingEnd K) = ComplexEmbedding.conjugate v.embedding`. Use extensionality with `x`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]`.
+
+Rewrite using `[this, InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]`.
+-/
 lemma piv_involutive : Function.Involutive (piv (K := K)) := by
   intro v
   simp only [piv]
@@ -308,9 +423,25 @@ lemma piv_involutive : Function.Involutive (piv (K := K)) := by
       ext x; simp [ComplexEmbedding.conjugate_coe_eq]
     rw [this, InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]
 
+/- English proof (translation)
+The claim follows from `Equiv.sum_comp (Function.Involutive.toPerm _ piv_involutive) F`.
+-/
 lemma sum_piv (F : InfinitePlace K → ℝ) : ∑ v, F (piv v) = ∑ v, F v :=
   Equiv.sum_comp (Function.Involutive.toPerm _ piv_involutive) F
 
+/- English proof (translation)
+Use `set Y : Matrix A.ι (Fin m) K := Matrix.of fun k i => A.b.repr (f i) k with hY`. Establish `hYc : ∀ c : Fin m → K, Y *ᵥ c = ⇑(A.b.repr (∑ i, c i • f i))`. Introduce `c`. Use extensionality with `k`. Simplify using `[hY, Matrix.mulVec, dotProduct, map_sum, Finsupp.finsetSum_apply, mul_comm]`.
+
+Establish `hker : LinearMap.ker (Matrix.mulVecLin Y) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `c hc`. Establish `h0 : A.b.repr (∑ i, c i • f i) = 0`. Use extensionality with `k`.
+
+Use `congrFun hc k` as an intermediate fact. Rewrite `this` using `[Matrix.mulVecLin_apply, hYc]`. Simplify using `using this`. Establish `h1 : ∑ i, c i • f i = 0` using `A.b.repr.injective (by rw [h0, map_zero])`. Conclude with `funext (Fintype.linearIndependent_iff.1 hf c h1)`.
+
+Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective _ hker`. Use `set L := LinearMap.toMatrix' g`. Establish `hLY : L * Y = 1`. Use `congrArg LinearMap.toMatrix' hg` as an intermediate fact. Establish `hYY : LinearMap.toMatrix' (Matrix.mulVecLin Y) = Y`.
+
+Use extensionality with `i j`. Simplify using `[LinearMap.toMatrix'_apply]`. Rewrite `this` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_id, hYY]`. Then use the resulting hypothesis. Establish `hmap : L.map σ * cmat A σ f = 1`. Establish `: cmat A σ f = Y.map σ` using `by ext; simp [cmat, hY]`.
+
+Rewrite using `[this, ← Matrix.map_mul, hLY, Matrix.map_one _ (map_zero σ) (map_one σ)]`. Introduce `a b hab`. Use `congrArg (L.map σ).mulVec hab` as an intermediate fact. Simplify `this` using `[mulVec_mulVec, hmap]`.
+-/
 lemma cmat_injective (A : HLat K) (σ : K →+* ℂ) {m : ℕ} (f : Fin m → A.V)
     (hf : LinearIndependent K f) : Function.Injective (cmat A σ f).mulVec := by
   set Y : Matrix A.ι (Fin m) K := Matrix.of fun k i => A.b.repr (f i) k with hY
@@ -338,6 +469,11 @@ lemma cmat_injective (A : HLat K) (σ : K →+* ℂ) {m : ℕ} (f : Fin m → A.
   have := congrArg (L.map σ).mulVec hab
   simpa [mulVec_mulVec, hmap] using this
 
+/- English proof (translation)
+Rewrite using `[gramPl_eq]`. Apply `PosDef.conjTranspose_mul_self` to reduce the goal to its premises. Establish `hXi : Function.Injective ((A.X v)⁻¹).mulVec` using `(mulVec_injective_iff_isUnit).2 ((isUnit_iff_isUnit_det _).2 (isUnit_nonsing_inv_det _ hX))`. Introduce `a b hab`. Simplify using `only [← mulVec_mulVec] at hab`.
+
+Conclude with `cmat_injective A v.embedding f hf (hXi hab)`.
+-/
 lemma gramPl_posDef (A : HLat K) (v : InfinitePlace K) (hX : IsUnit (A.X v).det) {m : ℕ}
     (f : Fin m → A.V) (hf : LinearIndependent K f) : (Formalism.HN.gramPl A.b A.X v f).PosDef := by
   rw [gramPl_eq]
@@ -348,10 +484,18 @@ lemma gramPl_posDef (A : HLat K) (v : InfinitePlace K) (hX : IsUnit (A.X v).det)
   simp only [← mulVec_mulVec] at hab
   exact cmat_injective A v.embedding f hf (hXi hab)
 
+/- English proof (translation)
+The claim follows from `(pd_det_real (gramPl_posDef A v hX f hf)).2`.
+-/
 lemma gramPl_pos (A : HLat K) (v : InfinitePlace K) (hX : IsUnit (A.X v).det) {m : ℕ}
     (f : Fin m → A.V) (hf : LinearIndependent K f) : 0 < (Formalism.HN.gramPl A.b A.X v f).det.re :=
   (pd_det_real (gramPl_posDef A v hX f hf)).2
 
+/- English proof (translation)
+Establish `h` using `InfinitePlace.prod_eq_abs_norm x`. Rewrite using `[← Rat.cast_abs, ← h, Real.log_prod]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Establish `hm : v.mult = 2` using `InfinitePlace.mult_isComplex ⟨v, IsTotallyComplex.isComplex v⟩`. Rewrite using `[Real.log_pow, InfinitePlace.norm_embedding_eq, hm]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `v _`. Conclude with `pow_ne_zero _ (InfinitePlace.pos_iff.2 hx).ne'`.
+-/
 lemma log_abs_norm [IsTotallyComplex K] (x : K) (hx : x ≠ 0) :
     Real.log |((Algebra.norm ℚ x : ℚ) : ℝ)| = ∑ v : InfinitePlace K, 2 * Real.log ‖v.embedding x‖ := by
   have h := InfinitePlace.prod_eq_abs_norm x
@@ -362,6 +506,17 @@ lemma log_abs_norm [IsTotallyComplex K] (x : K) (hx : x ≠ 0) :
   · intro v _
     exact pow_ne_zero _ (InfinitePlace.pos_iff.2 hx).ne'
 
+/- English proof (translation)
+Establish `hc : ∀ l, ∃ c : Fin N → K, ∑ j, c j • w j = e (A.b l)` using `fun l => by`. Establish `: e (A.b l) ∈ Submodule.span K (Set.range w)` using `hw ▸ LinearMap.mem_range_self e _`. Conclude with `(Submodule.mem_span_range_iff_exists_fun K).1 this`. Use `choose c hc using hc`. Use `⟨Matrix.of fun j i => ∑ l, σ (c l j) * rho σ (A.b.repr (y i) l), ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `k i`. Establish `hyi : e (y i) = y i`. Take `⟨x, hx⟩` from `hy i`. Rewrite using `[← hx, ← Module.End.mul_apply, he]`. Establish `h1 : A.b.repr (y i) k = ∑ l, A.b.repr (e (A.b l)) k * A.b.repr (y i) l` using `by conv_lhs => rw [← hyi]`.
+
+Rewrite using `[← LinearMap.toMatrix_mulVec_repr A.b A.b e]`. Simplify using `[Matrix.mulVec, dotProduct, LinearMap.toMatrix_apply]`. Establish `h2 : ∀ l, A.b.repr (e (A.b l)) k = ∑ j, c l j * A.b.repr (w j) k` using `fun l => by`. Rewrite using `[← hc l]`. Simplify using `[map_sum, Finsupp.finsetSum_apply]`.
+
+Establish `h3 : ∀ l, rho σ (A.b.repr (e (A.b l)) k) = σ (A.b.repr (e (A.b l)) k)` using `fun l => by`. Rewrite using `[rho_apply, hCe k l σ, star_star]`. Simplify using `only [cmat, of_apply, Matrix.mul_apply]`. Rewrite using `[h1, map_sum]`. Repeatedly rewrite using `[map_mul, h3, h2, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 lemma cmat_rho_range (A : HLat K) (e : Module.End K A.V) (he : e * e = e)
     (hCe : ∀ i j, IsCM (A.b.repr (e (A.b j)) i)) (σ : K →+* ℂ) {N m : ℕ} (w : Fin N → A.V)
     (hw : Submodule.span K (Set.range w) = LinearMap.range e) (y : Fin m → A.V)
@@ -395,6 +550,23 @@ end GramDeterminantPositive
 
 open NumberField Formalism.BasicNotions PI.Dv GramDeterminantPositive Matrix
 
+/- English proof (translation)
+Introduce `K _ _ _ _ _ A e n h hyp d y hy`. Take `⟨hS, hP, _, hC1, _, hC3⟩` from `hyp`. Establish `hX : ∀ v, IsUnit (A.X v).det` using `hP.1.1`. Use `set Hm : Matrix (Fin d) (Fin d) K := Matrix.of fun i j => h (y i) (y j) with hHm`. Establish `hG : ∀ v, 0 < (Formalism.HN.gramPl A.b A.X v y).det.re` using `fun v => gramPl_pos A v (hX v) y hy`.
+
+Establish `hσ : ∀ v : InfinitePlace K, v.embedding Hm.det = (((A.X v)⁻¹ * cmat A (rho v.embedding) y)ᴴ * ((A.X v)⁻¹ * cmat A v.embedding y)).det`. Introduce `v`. Rewrite using `[hHm, map_det_of, sigma_hmatrix A h hC3]`. Establish `hne : Hm.det ≠ 0`. Take `⟨σ0, hσ0⟩` from `hS`.
+
+Establish `hrho : rho (InfinitePlace.mk σ0).embedding = (InfinitePlace.mk σ0).embedding`. Use extensionality with `x`. Rewrite using `[rho_apply]`. Apply the tactic sequence `rcases InfinitePlace.embedding_mk_eq σ0 with h1 | h1 <;> rw [h1]`. Rewrite using `[hσ0, star_star]`.
+
+Simplify using `[ComplexEmbedding.conjugate_coe_eq, hσ0]`. Introduce `h0`. Establish `h1` using `hσ (InfinitePlace.mk σ0)`. Rewrite `h1` using `[h0, map_zero, hrho, ← gramPl_eq]`. Establish `h2` using `hG (InfinitePlace.mk σ0)`.
+
+Rewrite `h2` using `[← h1]`. Simplify using `at h2`. Establish `hv : ∀ v : InfinitePlace K, 2 * Real.log ‖v.embedding Hm.det‖ ≤ Real.log (Formalism.HN.gramPl A.b A.X (piv v) y).det.re + Real.log (Formalism.HN.gramPl A.b A.X v y).det.re`. Introduce `v`. Establish `hcs` using `gram_cs ((A.X v)⁻¹ * cmat A (rho v.embedding) y) ((A.X v)⁻¹ * cmat A v.embedding y)`.
+
+Rewrite `hcs` using `[← hσ v, rhoGram_det A h hC1 hC3, ← gramPl_eq]`. Establish `hpos : 0 < ‖v.embedding Hm.det‖` using `norm_pos_iff.2 ((map_ne_zero _).2 hne)`. Rewrite using `[← Real.log_mul (hG _).ne' (hG _).ne']`. Establish `h2 : 2 * Real.log ‖v.embedding Hm.det‖ = Real.log (‖v.embedding Hm.det‖ ^ 2)`. Rewrite using `[Real.log_pow]`.
+
+Evaluate the numerical expressions. Rewrite using `[h2]`. Conclude with `Real.log_le_log (by positivity) hcs`. Use `⟨hne, ?_⟩` and prove the remaining obligations. Rewrite using `[log_abs_norm _ hne]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_add_distrib, sum_piv (fun v => Real.log (Formalism.HN.gramPl A.b A.X v y).det.re)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gram_cauchy_schwarz : GramCS := by
   intro K _ _ _ _ _ A e n h hyp d y hy
   obtain ⟨hS, hP, _, hC1, _, hC3⟩ := hyp
@@ -439,6 +611,35 @@ theorem gram_cauchy_schwarz : GramCS := by
         rw [Finset.sum_add_distrib, sum_piv (fun v => Real.log (Formalism.HN.gramPl A.b A.X v y).det.re)]
         ring
 
+/- English proof (translation)
+Introduce `K _ _ _ _ _ A e n h hyp U hU k d u z y hli hspan hu hy hyr hyU`. Take `⟨_, hP, _, hC1, hC2, hC3⟩` from `hyp`. Establish `hX : ∀ v, IsUnit (A.X v).det` using `hP.1.1`. Establish `he : e * e = e` using `hP.2.2.1`. Establish `hu_li : LinearIndependent K u`.
+
+Use `hli.comp (Fin.castAdd d) (Fin.castAdd_injective k d)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Use `set Hm : Matrix (Fin d) (Fin d) K := Matrix.of fun i j => h (y i) (z j) with hHm`.
+
+Establish `hv : ∀ v : InfinitePlace K, Real.log (Formalism.HN.gramPl A.b A.X v (Fin.append u z)).det.re - Real.log (Formalism.HN.gramPl A.b A.X v u).det.re + Real.log (Formalism.HN.gramPl A.b A.X (piv v) y).det.re = 2 * Real.log ‖v.embedding Hm.det‖`. Introduce `v`. Use `set Uc := (A.X v)⁻¹ * cmat A v.embedding u with hUc`. Use `set Zc := (A.X v)⁻¹ * cmat A v.embedding z with hZc`. Use `set Ac := (A.X v)⁻¹ * cmat A (rho v.embedding) y with hAc`.
+
+Use `set Wc := (A.X v)⁻¹ * cmat A v.embedding (Fin.append u z) with hWc`. Establish `hAU : Acᴴ * Uc = 0`. Rewrite using `[hAc, hUc, ← sigma_hmatrix A h hC3]`. Use extensionality with `i j`. Simplify using `only [of_apply, Matrix.zero_apply]`.
+
+Rewrite using `[hyU i (u j) (hu ▸ Submodule.subset_span ⟨j, rfl⟩), map_zero]`. Take `⟨T0, hT0⟩` from `cmat_rho_range A e he hC2 v.embedding (Fin.append u z) hspan y hyr`. Establish `hB : fromCols Uc Zc = Wc.submatrix id finSumFinEquiv`. Apply the tactic sequence `ext i j; rcases j with j | j <;> simp [hUc, hZc, hWc, cmat, Matrix.mul_apply]`. Establish `hT : Ac = fromCols Uc Zc * T0.submatrix finSumFinEquiv id`.
+
+Rewrite using `[hB, Matrix.submatrix_mul_equiv, Matrix.submatrix_id_id, hAc, hWc, hT0, Matrix.mul_assoc]`. Establish `hgu` using `pd_det_real (gramPl_posDef A v (hX v) u hu_li)`. Establish `hgw` using `pd_det_real (gramPl_posDef A v (hX v) _ hli)`. Establish `hgy` using `pd_det_real (gramPl_posDef A (piv v) (hX _) y hy)`. Establish `hUU : Ucᴴ * Uc = Formalism.HN.gramPl A.b A.X v u` using `by rw [gramPl_eq]`.
+
+Establish `hg : (Ucᴴ * Uc).det ≠ 0`. Rewrite using `[hUU, hgu.1]`. Conclude with `hgu.2.ne'` after adjusting the coercions. Establish `key` using `gram_block Uc Zc Ac _ hT hAU hg`. Establish `hBB : ((fromCols Uc Zc)ᴴ * fromCols Uc Zc).det = (Formalism.HN.gramPl A.b A.X v (Fin.append u z)).det`.
+
+Rewrite using `[hB, gramPl_eq, ← hWc]`. Establish `: (Wc.submatrix id finSumFinEquiv)ᴴ * Wc.submatrix id finSumFinEquiv = (Wcᴴ * Wc).submatrix finSumFinEquiv finSumFinEquiv`. Use extensionality with `p q`. Simplify using `[Matrix.mul_apply, conjTranspose_apply]`. Rewrite using `[this, det_submatrix_equiv_self]`.
+
+Establish `hAA : (Acᴴ * Ac).det = (Formalism.HN.gramPl A.b A.X (piv v) y).det`. Rewrite using `[hAc]`. Conclude with `rhoGram_det A h hC1 hC3 v y`. Establish `hAZ : (Acᴴ * Zc).det = v.embedding Hm.det`. Rewrite using `[hAc, hZc, ← sigma_hmatrix A h hC3, hHm, map_det_of]`.
+
+Rewrite `key` using `[hUU, hBB, hAA, hAZ, hgu.1, hgy.1, hgw.1, Complex.star_def, Complex.mul_conj']`. Use `set p := v.embedding Hm.det`. Establish `key' : (Formalism.HN.gramPl A.b A.X v u).det.re * ‖p‖ ^ 2 = (Formalism.HN.gramPl A.b A.X (piv v) y).det.re * (Formalism.HN.gramPl A.b A.X v (Fin.append u z)).det.re`. Conclude with `key` after adjusting the coercions. Establish `hp : 0 < ‖p‖`.
+
+Assume the negation of the conclusion as `hp0`. Establish `: ‖p‖ = 0` using `le_antisymm (not_lt.1 hp0) (norm_nonneg _)`. Rewrite `key'` using `[this]`. Use `mul_pos hgy.2 hgw.2` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hl` using `congrArg Real.log key'`. Rewrite `hl` using `[Real.log_mul hgu.2.ne' (by positivity), Real.log_mul hgy.2.ne' hgw.2.ne', Real.log_pow]`. Move the coercions through the operations in `at hl`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : ∑ v, Real.log (Formalism.HN.gramPl A.b A.X v (Fin.append u z)).det.re - ∑ v, Real.log (Formalism.HN.gramPl A.b A.X v u).det.re + ∑ v, Real.log (Formalism.HN.gramPl A.b A.X v y).det.re = ∑ v : InfinitePlace K, 2 * Real.log ‖v.embedding Hm.det‖`.
+
+Rewrite using `[← sum_piv (fun v => Real.log (Formalism.HN.gramPl A.b A.X v y).det.re), ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun v _ => hv v`. Rewrite using `[hsum]`. Distinguish the cases in `hD : Hm.det = 0`. Rewrite using `[hD]`.
+
+Simplify using `[Algebra.norm_zero]`. Rewrite using `[log_abs_norm _ hD]`.
+-/
 theorem archimedean_identity : ArchIdentity := by
   intro K _ _ _ _ _ A e n h hyp U hU k d u z y hli hspan hu hy hyr hyU
   obtain ⟨_, hP, _, hC1, hC2, hC3⟩ := hyp

@@ -12,6 +12,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.HeightCounting.FormsStep
 
+/- English proof (translation)
+Take `⟨p, hp, hpf⟩` from `LinearMap.exists_monic_and_aeval_eq_zero O f`. Establish `hev : (Module.End.baseChangeHom O (FractionRing O) M f).HasEigenvector c x` using `⟨Module.End.mem_eigenspace_iff.mpr h, hx⟩`. Establish `key` using `Module.End.aeval_apply_of_hasEigenvector (p := p.map (algebraMap O (FractionRing O))) hev`. Rewrite `key` using `[Polynomial.aeval_map_algebraMap, Polynomial.aeval_algHom_apply, hpf, map_zero, Polynomial.eval_map_algebraMap]`. Establish `h0 : Polynomial.aeval c p = 0`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hx ((smul_eq_zero.mp key.symm).resolve_left hne)`. Conclude with `IsIntegrallyClosed.isIntegral_iff.mp ⟨p, hp, by rwa [← Polynomial.aeval_def]⟩`.
+-/
 theorem eigenvalue_integral_of_baseChange {O M : Type} [CommRing O] [IsDomain O] [IsIntegrallyClosed O]
     [AddCommGroup M] [Module O M] [Module.Finite O M] (f : Module.End O M)
     (x : FractionRing O ⊗[O] M) (hx : x ≠ 0) (c : FractionRing O)
@@ -48,12 +53,18 @@ open Classical in
 def sigEig (i : T.Tw) (x : SigIdx D T In i) (k : ℕ) (P : PlE D.host) : T.O i :=
   if h : sigVal D T i k P then (x.2.2.2.2 k P h).choose else 1
 
+/- English proof (translation)
+Unfold `sigEig`. Rewrite using `[dif_pos h]`. Conclude with `(x.2.2.2.2 k P h).choose_spec`.
+-/
 theorem sigEig_on (i : T.Tw) (x : SigIdx D T In i) (k : ℕ) (P : PlE D.host) (h : sigVal D T i k P) :
     algebraMap (T.O i) (FractionRing (T.O i)) (sigEig D T In i x k P) = sigLam D T In i x.1.1 x.1.2.1 x.1.2.2 k P := by
   unfold sigEig
   rw [dif_pos h]
   exact (x.2.2.2.2 k P h).choose_spec
 
+/- English proof (translation)
+Unfold `sigEig`. Rewrite using `[dif_neg h]`.
+-/
 theorem sigEig_off (i : T.Tw) (x : SigIdx D T In i) (k : ℕ) (P : PlE D.host) (h : ¬ sigVal D T i k P) :
     sigEig D T In i x k P = 1 := by
   unfold sigEig
@@ -76,10 +87,16 @@ def sigDataOf : SigData D T where
 
 end SigMake
 
+/- English proof (translation)
+The claim follows from `s.2.choose_spec`.
+-/
 theorem sigDataOf_spec (D : D7) (T : TwR D.LL0 D.nd) {S : RatDat D.ntw} (In : RatIn D S) (i : T.Tw)
     (s : (sigDataOf D T In).Sig i) :
     sigSys D T In i s.2.choose = s.1 := s.2.choose_spec
 
+/- English proof (translation)
+Unfold `hkB`. Rewrite using `[dif_pos ⟨h1, h2, hv⟩]`. Both sides reduce to the same expression.
+-/
 theorem hkB_coe_of_val (D : D7) (T : TwR D.LL0 D.nd) {S : RatDat D.ntw} (In : RatIn D S) (hst : HkStab D T S In)
     (i : T.Tw) (j : ℕ) (b : Bool) (k : ℕ) (P : PlE D.host) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (hv : sigVal D T i k P)
     (x : ↥(BI D T S In i j b)) :
@@ -88,6 +105,17 @@ theorem hkB_coe_of_val (D : D7) (T : TwR D.LL0 D.nd) {S : RatDat D.ntw} (In : Ra
   rw [dif_pos ⟨h1, h2, hv⟩]
   rfl
 
+/- English proof (translation)
+Take `⟨e, he_inj, he_rng, he_tm'⟩ : ∃ e : FractionRing (T.O i) ⊗[T.O i] ↥(BI D T S In i j b) →ₗ[FractionRing (T.O i)] FmT D T S i j b, Function.Injective e ∧ LinearMap.range e = V0T D T S In.rho In.chi In.θ i j b ∧ ∀ (c : FractionRing (T.O i)) (x : ↥(BI D T S In i j b)), e (c ⊗ₜ[T.O i] …` from `GlobalTheory.T.exists_injective_baseChange_inf_restrictScalars_range_eq (BsupT D T S i j b) (hsp i j b) (V0T D T S In.rho In.chi In.θ i j b)`. Establish `hcomm : ∀ k P, sigVal D T i k P → ∀ y : FractionRing (T.O i) ⊗[T.O i] ↥(BI D T S In i j b), e ((hkB D T S In hst i j b k P).baseChange (FractionRing (T.O i)) y) = hkT D T S In i j b k P (e y)`. Introduce `k P hv y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul c x => rw [LinearMap.baseChange_tmul, he_tm', he_tm', map_smul, hkB_coe_of_val D T In hst i j b k P h1 h2 hv]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Establish `key : V0T D T S In.rho In.chi In.θ i j b ≤ Submodule.map e (Submodule.span (FractionRing (T.O i)) {y : FractionRing (T.O i) ⊗[T.O i] ↥(BI D T S In i j b) | ∃ σ : D.what₂.FT, (D.what₂.isot j σ ≠ ⊥ ∧ D.nd.goodRow σ) ∧ ∀ k P, sigVal D T i k P → (hkB D T S In hst i j b k P).baseChang …`. Use `le_trans (GlobalTheory.T.lattice_in_isotypic_sup D cf jE A S In b0 b1 Sx T Sp hSb hstar i j b h1 h2) ?_` and prove the remaining obligations. Use `iSup₂_le fun σ hσ => ?_` and prove the remaining obligations.
+
+Introduce `x hx`. Take `⟨hx0, hx1⟩` from `Submodule.mem_inf.mp hx`. Rewrite `hx0` using `[← he_rng]`. Take `⟨y, rfl⟩` from `LinearMap.mem_range.mp hx0`. Use `Submodule.mem_map_of_mem (Submodule.subset_span ⟨σ, hσ, fun k P hv => he_inj ?_⟩)` and prove the remaining obligations.
+
+Rewrite using `[hcomm k P hv, map_smul]`. Simplify using `only [Submodule.mem_iInf] at hx1`. Conclude with `Module.End.mem_eigenspace_iff.mp (hx1 k P hv)`. Rewrite using `[eq_top_iff]`. Introduce `y _`.
+
+Establish `hy : e y ∈ Submodule.map e _` using `key (he_rng ▸ LinearMap.mem_range_self e y)`. Take `⟨z, hz, hze⟩` from `Submodule.mem_map.mp hy`. Rewrite using `[← he_inj hze]`. Conclude with `hz`.
+-/
 theorem span_eig_BI (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : SideA D cf jE) (S : RatDat D.ntw)
     (In : RatIn D S) (b0 b1 : Big D) (Sx : Finset (PlE D.host)) (T : TwR D.LL0 D.nd) (Sp : RingSpec D cf b0 b1 Sx T)
     (hst : HkStab D T S In) (hSb : In.Sb ⊆ Sx) (hstar : ∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0)
@@ -129,6 +157,27 @@ theorem span_eig_BI (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : Si
   rw [← he_inj hze]
   exact hz
 
+/- English proof (translation)
+Introduce `D cf jE A S In b0 b1 Sx T Sp hst hSb hstar`. Use `⟨sigDataOf D T In, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j b h1 h2 haveI : Module.Finite (T.O i) ↥(BI D T S In i j b) := Module.Finite.iff_fg.mpr (fg_BI D T S In (fun i j b => (hfg D S In T i j b).1) i j b)`. Rewrite using `[eq_top_iff, ← span_eig_BI D cf jE A S In b0 b1 Sx T Sp hst hSb hstar (fun i j b => (hfg D S In T i j b).2) i j b h1 h2]`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations.
+
+Introduce and unpack `y ⟨σ, hσ, hy⟩`. Distinguish the cases in `hy0 : y = 0`. Rewrite using `[hy0]`. Conclude with `Submodule.zero_mem _`. Establish `hint : ∀ k P, sigVal D T i k P → ∃ a : T.O i, algebraMap (T.O i) (FractionRing (T.O i)) a = sigLam D T In i j b σ k P` using `fun k P hv => eigenvalue_integral_of_baseChange _ y hy0 _ (hy k P hv)`.
+
+Set `x : SigIdx D T In i` to `⟨(⟨j, Nat.lt_succ_of_le h2⟩, b, σ), h1, hσ.1, hσ.2, hint⟩`. Use `Submodule.subset_span ⟨⟨sigSys D T In i x, x, rfl⟩, rfl, rfl, fun k P hk1 hk2 hsp hP => ?_⟩` and prove the remaining obligations. Rewrite using `[hy k P ⟨hk1, hk2, hsp, hP⟩]`. Use `congr 1`. Conclude with `(sigEig_on D T In i x k P ⟨hk1, hk2, hsp, hP⟩).symm`.
+
+Introduce `i s s' h1 h2 h3`. Establish `e1` using `sigDataOf_spec D T In i s`. Establish `e2` using `sigDataOf_spec D T In i s'`. Apply `Subtype.ext` to reduce the goal to its premises. Use `Prod.ext h1 (Prod.ext h2 ?_)` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `k P`. Distinguish the cases in `hv : sigVal D T i k P`. Conclude with `h3 k P hv.1 hv.2.1 hv.2.2.1 hv.2.2.2`. Express the relevant statement in the definitionally equal form `s.1.2.2 k P = s'.1.2.2 k P`. Rewrite using `[← e1, ← e2]`.
+
+Express the relevant statement in the definitionally equal form `sigEig D T In i _ k P = sigEig D T In i _ k P`. Rewrite using `[sigEig_off D T In i _ k P hv, sigEig_off D T In i _ k P hv]`. Introduce `i s`. Establish `e1` using `sigDataOf_spec D T In i s`. Establish `hj : s.1.1 = (s.2.choose.1.1 : ℕ)` using `(congrArg Prod.fst e1).symm`.
+
+Use `show D.what₂.isot s.1.1 s.2.choose.1.2.2 ≠ ⊥ ∧ D.nd.goodRow s.2.choose.1.2.2`. Rewrite using `[hj]`. Conclude with `⟨s.2.choose.2.2.1, s.2.choose.2.2.2.1⟩`. Introduce `i s k P hk1 hk2 hsp hP`. Establish `e1` using `sigDataOf_spec D T In i s`.
+
+Establish `hj : s.1.1 = (s.2.choose.1.1 : ℕ)` using `(congrArg Prod.fst e1).symm`. Establish `hb : s.1.2.1 = s.2.choose.1.2.1` using `(congrArg (fun p => p.2.1) e1).symm`. Establish `hh : s.1.2.2 = sigEig D T In i s.2.choose` using `(congrArg (fun p => p.2.2) e1).symm`. Use `show algebraMap (T.O i) (FractionRing (T.O i)) (s.1.2.2 k P) = algebraMap (T.O i) (FractionRing (T.O i)) (cHkT D T i s.1.2.1 P : T.O i) ^ k * readT D T i s.1.2.1 (In.eig s.1.1 s.2.choose.1.2.2 k P)`. Rewrite using `[hh, hj, hb]`.
+
+Conclude with `sigEig_on D T In i _ k P ⟨hk1, hk2, hsp, hP⟩`. Introduce `i s P`. Establish `e1` using `sigDataOf_spec D T In i s`. Establish `hh : s.1.2.2 = sigEig D T In i s.2.choose` using `(congrArg (fun p => p.2.2) e1).symm`. Use `show s.1.2.2 0 P = 1`.
+
+Rewrite using `[hh]`. Conclude with `sigEig_off D T In i _ 0 P (fun h => absurd h.1 (by omega))`.
+-/
 theorem sig_of_fg (hfg : ∀ (D : D7) (S : RatDat D.ntw) (In : RatIn D S) (T : TwR D.LL0 D.nd) (i : T.Tw) (j : ℕ) (b : Bool),
     (BsupT D T S i j b).FG ∧
       Submodule.span (FractionRing (T.O i)) (BsupT D T S i j b : Set (FmT D T S i j b)) = ⊤) : ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : SideA D cf jE) (S : RatDat D.ntw)
@@ -203,6 +252,9 @@ theorem sig_of_fg (hfg : ∀ (D : D7) (S : RatDat D.ntw) (In : RatIn D S) (T : T
     rw [hh]
     exact sigEig_off D T In i _ 0 P (fun h => absurd h.1 (by omega))
 
+/- English proof (translation)
+The claim follows from `sig_of_fg bsupT_fg_span_all`.
+-/
 theorem sigData_exists : ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : SideA D cf jE) (S : RatDat D.ntw)
     (In : RatIn D S) (b0 b1 : Big D) (Sx : Finset (PlE D.host)) (T : TwR D.LL0 D.nd) (Sp : RingSpec D cf b0 b1 Sx T)
     (hst : HkStab D T S In), In.Sb ⊆ Sx → (∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) →

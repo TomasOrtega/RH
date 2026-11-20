@@ -9,6 +9,23 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Introduce `z hz hfl`. Establish `hN` using `X.pointNorm_nonneg la (fun _ => (1 : ℂ)) z`. Establish `hC : 0 ≤ (2 : ℝ) ^ (w / 2)` using `by positivity`. Establish `htn : 0 ≤ ∑' j : ↥{χ | ∃ y ∈ X.dom, F χ y ≠ 0}, Real.exp (-Real.pi * T j.1)` using `tsum_nonneg fun _ => (Real.exp_pos _).le`. Rewrite using `[X.pointNorm_eq_norm_mul la Q z]`.
+
+Break down `hN.eq_or_lt with hN0 | hNpos` into its components or cases. Rewrite using `[← hN0, mul_zero]`. Conclude with `mul_nonneg (mul_nonneg hC htn) hS10`. Establish `hpt' : ∀ χ, ‖F χ z‖ * X.pnorm la (fun _ => (1 : ℂ)) z ≤ 2 ^ (w / 2) * Real.exp (-Real.pi * T χ) * S1` using `fun χ => by`. Rewrite using `[← X.pointNorm_eq_norm_mul la (F χ) z]`.
+
+Conclude with `hpt χ z hz hfl`. Establish `hb : ∀ χ, ‖F χ z‖ ≤ 2 ^ (w / 2) * S1 / X.pnorm la (fun _ => (1 : ℂ)) z * Real.exp (-Real.pi * T χ)`. Introduce `χ`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hNpos]`. Combine the linear relations using `[hpt' χ]`.
+
+Establish `hzero : ∀ χ, χ ∉ {χ | ∃ y ∈ X.dom, F χ y ≠ 0} → F χ z = 0` using `fun χ hχ => by`. Assume the negation of the conclusion as `h`. Conclude with `hχ ⟨z, hz, h⟩`. Establish `hsupp : Function.support (fun χ => ‖F χ z‖) ⊆ {χ | ∃ y ∈ X.dom, F χ y ≠ 0}`. Introduce `χ hχ`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hχ (by simp only [hzero χ h, norm_zero])`. Establish `hsumS : Summable (fun j : ↥{χ | ∃ y ∈ X.dom, F χ y ≠ 0} => ‖F j.1 z‖)` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun j => hb j.1) (hsum.mul_left _)`. Establish `hsumAll : Summable (fun χ => ‖F χ z‖)`. Use `(Function.Injective.summable_iff Subtype.val_injective fun χ hχ => ?_).1 hsumS` and prove the remaining obligations.
+
+Rewrite using `[norm_eq_zero]`. Conclude with `hzero χ fun h => hχ ⟨⟨χ, h⟩, rfl⟩`. Establish `hQ` using `hexp z hz hsumAll`. Establish `hnorm : ‖Q z‖ ≤ ∑' χ, ‖F χ z‖`. Rewrite using `[← hQ.tsum_eq]`.
+
+Conclude with `norm_tsum_le_tsum_norm hsumAll`. Rewrite `hnorm` using `[← tsum_subtype_eq_of_support_subset hsupp]`. Establish `hsum2 : Summable (fun j : ↥{χ | ∃ y ∈ X.dom, F χ y ≠ 0} => 2 ^ (w / 2) * S1 / X.pnorm la (fun _ => (1 : ℂ)) z * Real.exp (-Real.pi * T j.1))` using `hsum.mul_left _`. Establish `hle : ∑' j : ↥{χ | ∃ y ∈ X.dom, F χ y ≠ 0}, ‖F j.1 z‖ ≤ 2 ^ (w / 2) * S1 / X.pnorm la (fun _ => (1 : ℂ)) z * ∑' j : ↥{χ | ∃ y ∈ X.dom, F χ y ≠ 0}, Real.exp (-Real.pi * T j.1)`. Rewrite using `[← tsum_mul_left]`.
+
+Conclude with `hsumS.tsum_le_tsum (fun j => hb j.1) hsum2`. Establish `hm` using `mul_le_mul_of_nonneg_right (hnorm.trans hle) hN`. Rewrite `hm` using `[div_mul_eq_mul_div, div_mul_eq_mul_div, mul_div_assoc, div_self hNpos.ne', mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem pointwise_sum_bound {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) (Q : Frame X.Ψ r → ℂ)
     (F : (X.Ψ → Fin 2 → Fin 2 → ℂ) → Frame X.Ψ r → ℂ) (T : (X.Ψ → Fin 2 → Fin 2 → ℂ) → ℝ)
     (w S1 : ℝ) (hS10 : 0 ≤ S1) (z0 : Frame X.Ψ r)
@@ -63,6 +80,11 @@ theorem pointwise_sum_bound {r : ℕ} (X : Data E r) (la : Wt X.Ψ r) (Q : Frame
   rw [div_mul_eq_mul_div, div_mul_eq_mul_div, mul_div_assoc, div_self hNpos.ne', mul_one] at hm
   linarith
 
+/- English proof (translation)
+Establish `hG' : ∀ a b, IsCMField.complexConj E (G a b) = G b a` using `hG`. Simplify using `only [herm, cc, map_sum, map_mul, IsCMField.complexConj_apply_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hG' a b]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem herm_swap_eq_cc_of_conj_symm {r : ℕ} (G : Matrix (Fin r) (Fin r) E)
     (hG : ∀ a b, cc (G a b) = G b a) (x y : Fin r → E) : herm G y x = cc (herm G x y) := by
   have hG' : ∀ a b, IsCMField.complexConj E (G a b) = G b a := hG
@@ -72,6 +94,9 @@ private theorem herm_swap_eq_cc_of_conj_symm {r : ℕ} (G : Matrix (Fin r) (Fin 
   rw [hG' a b]
   ring
 
+/- English proof (translation)
+Simplify using `only [herm, cc, Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem herm_add_smul_self_expand {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) (c : E) :
     herm G (x + c • y) (x + c • y) =
       herm G x x + c * herm G y x + cc c * herm G x y + c * cc c * herm G y y := by
@@ -80,6 +105,33 @@ private theorem herm_add_smul_self_expand {r : ℕ} (G : Matrix (Fin r) (Fin r) 
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   ring
 
+/- English proof (translation)
+Introduce `r X la P ξ ν c1 w z0 hH x hxL hxξ hxE`. Establish `hH0` using `hH`. Take `⟨-, hSS, hiso, hc1, -, -, hw1, -, hχ, hz0, hsup⟩` from `hH`. Assume the negation of the conclusion as `hcon`. Simplify using `only [not_exists, not_le] at hcon`.
+
+Take `⟨hep_pos, hep_le, hep_spec⟩` from `epsilonZero_spec X c1 w hc1 hw1`. Take `⟨hxx, α, hx'L, hx'ξ, hucomp, -, hmajNC⟩` from `h10 r X ξ hiso z0 hz0 x hxL hxξ hxE fun τ => lt_of_lt_of_le (hcon τ) hep_le`. Use `set x' := x + ((X.NA : E) * (α : E)) • ξ with hx'`. Establish `hx'E : ∀ e : E, x' ≠ e • ξ`. Introduce `e he`.
+
+Conclude with `hxE (e - (X.NA : E) * (α : E)) (by rw [sub_smul, ← he, hx']; abel)`. Establish `hx'x' : herm X.Gm x' x' = 0`. Rewrite using `[hx', herm_add_smul_self_expand, herm_swap_eq_cc_of_conj_symm X.Gm X.Gm_herm x ξ, hxξ, hiso.2.1, hxx]`. Simplify using `[cc]`. Take `⟨a, hset⟩` from `short_vector_setting_exists X hH0 hx'L hx'ξ hx'x' hx'E`.
+
+Take `⟨hpair, hmem⟩` from `isotropic_pair_in_lattice X hiso hx'L hx'ξ hx'x' hx'E`. Choose the witnesses or unpack the hypotheses as in `⟨ε, hε0, hεlt, hεmaj⟩ : ∃ ε : ℝ, 0 < ε ∧ ε < flowEpsilonBound X.g (dE E) (fdeg E) X.NA X.NC c1 w ∧ ∀ τ, X.maj z0 τ (X.ucomp z0 ξ (X.embV x') τ) ≤ ε := by`. Set `s : Finset ℝ` to `(Finset.univ.image fun τ => X.maj z0 τ (X.ucomp z0 ξ (X.embV x) τ)) ∪ {flowEpsilonBound X.g (dE E) (fdeg E) X.NA X.NC c1 w / 2}`. Establish `hs : s.Nonempty` using `⟨_, Finset.mem_union_right _ (Finset.mem_singleton_self _)⟩`. Use `⟨s.max' hs, lt_of_lt_of_le (half_pos hep_pos) (s.le_max' _ (Finset.mem_union_right _ (Finset.mem_singleton_self _))), ?_, fun τ => ?_⟩` and prove the remaining obligations.
+
+Establish `hm` using `s.max'_mem hs`. Break down `Finset.mem_union.1 hm with h | h` into its components or cases. Take `⟨τ, -, hτ⟩` from `Finset.mem_image.1 h`. Rewrite using `[← hτ]`. Conclude with `hcon τ`.
+
+Rewrite using `[Finset.mem_singleton.1 h]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hucomp]`. Conclude with `s.le_max' _ (Finset.mem_union_left _ (Finset.mem_image_of_mem _ (Finset.mem_univ τ)))`. Take `⟨hQd, hQb, hQz⟩` from `h3q r X ![ξ, (X.NC : E) • x'] hpair hmem la P hSS hχ ν`.
+
+Establish `hL3` using `h3 r X.toData ![ξ, (X.NC : E) • x'] X.g hpair X.g_pos la (X.fj la ξ ν P) hQd hQb hQz`. Establish `hK : 1 ≤ 1 + X.g * dE E ^ 2 * ((X.NC : ℝ) ^ 2 * (2 + 4 * (fdeg E : ℝ) ^ 4 * rdE E ^ 2 * (X.NA : ℝ) ^ 2)) * (2 * c1 + 1)`. Establish `h1 : 0 < 2 * c1 + 1` using `by linarith`. Establish `h2 : 0 ≤ (X.g : ℝ) * dE E ^ 2 * ((X.NC : ℝ) ^ 2 * (2 + 4 * (fdeg E : ℝ) ^ 4 * rdE E ^ 2 * (X.NA : ℝ) ^ 2)) * (2 * c1 + 1)` using `mul_nonneg (by positivity) h1.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hN : (1 : ℝ) ≤ ((4 * fdeg E : ℕ) : ℝ)`. Use `one_le_field_half_degree (E := E)` as an intermediate fact. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlow : ∀ j : ↥{χ : X.Ψ → Fin 2 → Fin 2 → ℂ | ∃ y ∈ X.dom, X.fz ![ξ, (X.NC : E) • x'] X.g χ (X.fj la ξ ν P) y ≠ 0}, w + ((4 * fdeg E : ℕ) : ℝ) * Real.log (2 * (1 + X.g * dE E ^ 2 * ((X.NC : ℝ) ^ 2 * (2 + 4 * (fdeg E : ℝ) ^ 4 * rdE E ^ 2 * (X.NA : ℝ) ^ 2)) * (2 * c1 + 1)) * ((4 * f …` using `fun j => lt_of_lt_of_le (hep_spec ε hε0 hεlt) (h7 r X la P ξ ν c1 w z0 x' a ε hset hε0 hεmaj j.1 j.2)`.
+
+Establish `hcount : ∀ t0 : ℝ, 1 ≤ t0 → {j : ↥{χ : X.Ψ → Fin 2 → Fin 2 → ℂ | ∃ y ∈ X.dom, X.fz ![ξ, (X.NC : E) • x'] X.g χ (X.fj la ξ ν P) y ≠ 0} | 2 * ∑ τ, (X.chiAt j.1 a τ).re ≤ t0}.Finite ∧ ({j : ↥{χ : X.Ψ → Fin 2 → Fin 2 → ℂ | ∃ y ∈ X.dom, X.fz ![ξ, (X.NC : E) • x'] X.g χ (X.fj la ξ ν P) …`. Introduce `t0 ht0`. Take `⟨hfin, hcard⟩` from `h8 r X la P ξ ν c1 w z0 x' a hset hmajNC t0 ht0`. Establish `hpre : {j : ↥{χ : X.Ψ → Fin 2 → Fin 2 → ℂ | ∃ y ∈ X.dom, X.fz ![ξ, (X.NC : E) • x'] X.g χ (X.fj la ξ ν P) y ≠ 0} | 2 * ∑ τ, (X.chiAt j.1 a τ).re ≤ t0} = Subtype.val ⁻¹' {χ | (∃ y ∈ X.dom, X.fz ![ξ, (X.NC : E) • x'] X.g χ (X.fj la ξ ν P) y ≠ 0) ∧ 2 * ∑ τ, (X.chiAt χ a τ).re ≤ t0}`. Use extensionality with `j`.
+
+Conclude with `⟨fun h => ⟨j.2, h⟩, fun h => h.2⟩`. Rewrite using `[hpre]`. Use `⟨hfin.preimage Subtype.val_injective.injOn, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.ncard_preimage_of_injective_subset_range Subtype.val_injective (fun χ hχ => ⟨⟨χ, hχ.1⟩, rfl⟩), Real.rpow_natCast]`. Conclude with `hcard`.
+
+Establish `hw0 : 0 ≤ w` using `le_trans zero_le_one hw1`. Take `⟨hsumT, hlt⟩` from `h9 _ _ w hK hN hw0 ↥{χ : X.Ψ → Fin 2 → Fin 2 → ℂ | ∃ y ∈ X.dom, X.fz ![ξ, (X.NC : E) • x'] X.g χ (X.fj la ξ ν P) y ≠ 0} (fun j => 2 * ∑ τ, (X.chiAt j.1 a τ).re) hlow hcount`. Establish `hS10 : 0 ≤ sSup {t | ∃ y ∈ X.FramesOverBasis ξ, t = X.hatN la (X.fj la ξ ν P) y}` using `Real.sSup_nonneg fun t ⟨y, _, ht⟩ => ht ▸ X.hatNorm_nonneg la _ y`. Establish `hbound` using `pointwise_sum_bound X.toData la (X.fj la ξ ν P) (fun χ => X.fz ![ξ, (X.NC : E) • x'] X.g χ (X.fj la ξ ν P)) (fun χ => 2 * ∑ τ, (X.chiAt χ a τ).re) w _ hS10 z0 (hL3 0).2.2 (fun χ z hz hfl => h6p r X la P ξ ν c1 w z0 x' a hset χ z hz hfl) hsumT`. Establish `hhat : X.hatN la (X.fj la ξ ν P) z0 ≤ 2 ^ (w / 2) * (∑' j : ↥{χ : X.Ψ → Fin 2 → Fin 2 → ℂ | ∃ y ∈ X.dom, X.fz ![ξ, (X.NC : E) • x'] X.g χ (X.fj la ξ ν P) y ≠ 0}, Real.exp (-Real.pi * (2 * ∑ τ, (X.chiAt j.1 a τ).re))) * sSup {t | ∃ y ∈ X.FramesOverBasis ξ, t = X.hatN la (X.fj la ξ …`.
+
+Unfold `Data.hatN`. Use `csSup_le ⟨_, z0, hz0.1, fun τ => rfl, rfl⟩ ?_` and prove the remaining obligations. Introduce and unpack `t ⟨z, hz, hfl, rfl⟩`. Conclude with `hbound z hz hfl`. Establish `hm` using `mul_le_mul_of_nonneg_right hlt.le hS10`.
+
+Combine the linear relations using `only [hsup, hhat, hm]`.
+-/
 theorem shortVectorBound_of_coefficient_bounds (h3 : FourierCoefficientProperties (E := E)) (h3q : CuspCoefficientBound (E := E)) (h6p : FlowCoefficientDecay (E := E))
     (h7 : CoefficientIndexLowerBound (E := E)) (h8 : CoefficientHeightBound (E := E)) (h9 : CountingExponentialSum)
     (h10 : IsotropicOutsideLine (E := E)) : ShortVectorBound (E := E) := by

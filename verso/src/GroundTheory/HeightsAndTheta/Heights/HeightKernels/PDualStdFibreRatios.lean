@@ -9,6 +9,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction
 
 namespace StandardDualFibreRatios
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hT`. Rewrite `hT` using `[not_nonempty_iff]`. Establish `h` using `DualArithmeticVariety.span_basis (K := K) b`. Rewrite `h` using `[Set.range_eq_empty, Submodule.span_empty]`. Establish `h1 : (Pi.single (⟨0, hi⟩ : Fin i) 1 : Fin i → K) ∈ (⊥ : Submodule K (Fin i → K))` using `h ▸ Submodule.mem_top`.
+
+Rewrite `h1` using `[Submodule.mem_bot]`. Establish `h2` using `congrFun h1 ⟨0, hi⟩`. Simplify using `at h2`.
+-/
 theorem nonempty_of_basis {K : Type} [Field K] [NumberField K] {i : ℕ} {F : HermLattice K i} {T : Type} [Fintype T]
     (b : Module.Basis T ℤ (dualLattice F)) (hi : 1 ≤ i) : Nonempty T := by
   by_contra hT
@@ -24,6 +29,11 @@ end StandardDualFibreRatios
 
 open StandardDualFibreRatios in
 
+/- English proof (translation)
+Introduce `K _ _ i T _ _ b G hi`. Take `⟨c⟩` from `nonempty_of_basis b hi`. Set `Φ₀ : Subfield (dualStdModelField K i)` to `Subfield.closure (Set.range (dualStdModelPt b ∘ inrV (ι := dualBlocks T) (ι₂ := PBlk i)))`. Establish `hΦ₀ : (algebraMap Φ₀ (dualStdModelField K i)).fieldRange = Φ₀` using `Subfield.fieldRange_subtype _`. Take `⟨h0, hrk, htr⟩` from `hTr Unit (PBlk i) (Unit ⊕ Unit) (Sum.elim (dualBlocks T) (PBlk i)) (inrV (ι := dualBlocks T) (ι₂ := PBlk i)) (graphIdeal (dualIdeal b) (linForm (ι₂ := PBlk i) (dualStdCoordMat b))) G (dualStdModelField K i) (dualStdModelPt b) (hMod K i T b) Φ₀ hΦ₀ T (fun t => (⟨Sum.inl (), t⟩ : Σ …`.
+
+Take `⟨hz, hrk₀⟩` from `hRk K i T b Φ₀ hΦ₀ hi c`. Use `⟨c, fun h => hz (h0.mp h), ?_, ?_⟩` and prove the remaining obligations. Conclude with `hrk.trans hrk₀`. Conclude with `htr.mpr (hTc K i T b Φ₀ hΦ₀ hi c)`.
+-/
 theorem DualStdFibreRatios.proof (hTr : GenFibreModelTransport.Statement) (hMod : DualStdGraphModel.Statement)
     (hRk : DualStdModelRank.Statement) (hTc : DualStdModelTransc.Statement) : DualStdFibreRatios.Statement := by
   intro K _ _ i T _ _ b G hi

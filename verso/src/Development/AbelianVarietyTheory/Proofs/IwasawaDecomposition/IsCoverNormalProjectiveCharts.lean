@@ -14,6 +14,37 @@ open Formalism.MainNotions.DIV.Cons (intO)
 
 namespace GlobalTheory.FlagModel
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ _ _ X s T _ m M B _ V α c D hP hN hC`. Take `⟨P, p0, p, h, hPlk⟩` from `GlobalTheory.T.exists_pluckerFlagEmbedding_of_projective_base O K _ X s T m M B V α c D hP hC`. Take `⟨F, f, i, hf, hi, hif, hcov⟩` from `GlobalTheory.T.flagCells_glue_locallyClosed_pluckerProduct O K _ X s T m M B V α c D P p0 p h hP hN hC hPlk`. Establish `hXn : IsLocallyNoetherian X`. Take `⟨N, ι, _, rfl⟩` from `hP`.
+
+Conclude with `LocallyOfFiniteType.isLocallyNoetherian (ι ≫ PSpace.str O N)`. Take `⟨hFc, hFn, hFnoe⟩` from `GlobalTheory.T.compact_normal_noetherian_of_flagCell_cover X T m B V F i hN hi hcov`. Establish `hbase : ∀ b w, i b w ≫ f ≫ p0 ≫ s = spMap ((MvPolynomial.C : Γ(X, (V b).1) →+* CR m (V b)).comp ((α b).comp (algebraMap O K)))`. Introduce `b w`. Rewrite using `[← Category.assoc, hif, ← Category.assoc, hPlk.base, cbase, Category.assoc, hC.ovr, ← Spec.map_comp]`.
+
+Both sides reduce to the same expression. Establish `hrange : Set.range (f ≫ (p0 ≫ s)) ⊆ Set.range (spMap (algebraMap O K))`. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨b, w, y, rfl⟩` from `hcov x`. Use `⟨spMap ((MvPolynomial.C : Γ(X, (V b).1) →+* CR m (V b)).comp (α b)) y, ?_⟩` and prove the remaining obligations.
+
+Establish `e` using `congrArg (fun φ => φ y) (hbase b w)`. Establish `e2 : spMap ((MvPolynomial.C : Γ(X, (V b).1) →+* CR m (V b)).comp ((α b).comp (algebraMap O K))) = spMap ((MvPolynomial.C : Γ(X, (V b).1) →+* CR m (V b)).comp (α b)) ≫ spMap (algebraMap O K)` using `by rw [← Spec.map_comp]; rfl`. Rewrite `e` using `[e2]`. Simplify using `only [Scheme.Hom.comp_apply] at e ⊢`. Conclude with `e.symm`.
+
+Take `⟨n, I, ν, j, hν, hIn, hIf, hj, hjν, hdense⟩` from `GlobalTheory.NormClosure.exists_normal_closure O K P F (p0 ≫ s) f hPlk.proj hf hFc hFn hrange`. Establish `hsep : IsSeparated (ν ≫ p0)`. Establish `: IsProper (PSpace.str O n)` using `isProper_str O n`. Establish `: IsProper ((ν ≫ p0) ≫ s)` using `by rw [Category.assoc, hν]; infer_instance`. Conclude with `IsSeparated.of_comp (ν ≫ p0) s`.
+
+Establish `hcover` using `GlobalTheory.T.preimage_iUnion_opens_eq_range_flagCells O K _ X s T m M B V α c D P p0 p h hC hPlk F I.subscheme f i j ν hf hi hif hcov hj hjν hdense hFnoe hsep`. Use `⟨n, I, ν ≫ p0, fun en => ν ≫ p en, fun b w => i b w ≫ j, by rw [Category.assoc, hν], ?_⟩` and prove the remaining obligations. Establish `hflat : Flat ((ν ≫ p0) ≫ s)` using `by rw [Category.assoc]; exact hIf`. Establish `hdense' : Dense ((ν ≫ p0) ⁻¹' ⋃ b, ((V b).1 : Set X))` using `by rw [hcover]; exact hdense`. Use `⟨⟨?_, ?_⟩, hIn, hflat, ?_, ?_, hdense', ?_⟩` and prove the remaining obligations.
+
+Introduce `b w`. Rewrite using `[Category.assoc, ← Category.assoc j, hjν, ← Category.assoc, hif, hPlk.base]`. Introduce `b w en`. Take `⟨hu, e⟩` from `hPlk.plk b w en`. Conclude with `⟨hu, by rw [Category.assoc, ← Category.assoc j, hjν, ← Category.assoc, hif, e]⟩`.
+
+Introduce `b w`. Use `hi b w` as an intermediate fact. Use `infer_instance`. Rewrite using `[hcover]`. Use extensionality with `z`.
+
+Simplify using `only [Set.mem_iUnion, Set.mem_range, Scheme.Hom.comp_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, w, y, rfl⟩`. Conclude with `⟨_, rfl⟩`. Introduce and unpack `⟨x, rfl⟩`.
+
+Take `⟨b, w, y, rfl⟩` from `hcov x`. Conclude with `⟨b, w, y, rfl⟩`. Introduce `k _ z z' hz e1 e2`. Establish `hr : ∀ y, (ν ≫ p0) (z y) ∈ ⋃ b, ((V b).1 : Set X)` using `fun y => hz ⟨y, (Scheme.Hom.comp_apply _ _ _)⟩`. Establish `hz1 : Set.range z ⊆ Set.range j`.
+
+Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[← hcover]`. Conclude with `hr y`. Establish `hz2 : Set.range z' ⊆ Set.range j`. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Rewrite using `[← hcover]`. Establish `e` using `congrArg (fun φ => φ y) e1`. Simplify using `only [Scheme.Hom.comp_apply] at e`. Use `show (ν ≫ p0) (z' y) ∈ ⋃ b, ((V b).1 : Set X)`. Simplify using `only [Scheme.Hom.comp_apply] at hr ⊢`.
+
+Rewrite using `[← e]`. Conclude with `hr y`. Set `z₀` to `IsOpenImmersion.lift j z hz1`. Set `z₀'` to `IsOpenImmersion.lift j z' hz2`. Establish `f₀ : z₀ ≫ j = z` using `IsOpenImmersion.lift_fac _ _ _`.
+
+Establish `f₀' : z₀' ≫ j = z'` using `IsOpenImmersion.lift_fac _ _ _`. Establish `key : z₀ ≫ f = z₀' ≫ f`. Use `hPlk.ext _ _ _ ?_ fun en => ?_` and prove the remaining obligations. Rewrite using `[← hjν, ← Category.assoc, ← Category.assoc, f₀, f₀', Category.assoc, Category.assoc]`. Conclude with `e1`.
+
+Rewrite using `[← hjν, ← Category.assoc, ← Category.assoc, f₀, f₀', Category.assoc, Category.assoc]`. Conclude with `e2 en`. Use `hf` as an intermediate fact. Rewrite using `[← f₀, ← f₀', (cancel_mono f).1 key]`.
+-/
 theorem exists_flagModel : ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Field K] [Algebra O K] [IsFractionRing O K] (X : Scheme.{0}) (s : X ⟶ Sp O) (T : Type) [Finite T] (m : T → ℕ) (M : ℕ) (B : Type) [Finite B] (V : B → X.affineOpens) (α : ∀ b, K →+* Γ(X, (V b).1)) (c D : ∀ b, Let m → Fin (M + 1) → Γ(X, (V b).1)), IsProjOver s → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X → IsCover (algebraMap O K) s V α c D → ∃ (n : ℕ) (I : (PSpace O n).IdealSheafData) (π : I.subscheme ⟶ X) (g : ∀ en : En m, I.subscheme ⟶ PSpace O (plN M en.1)) (κ : ∀ b, Pm m → (Sp (CR m (V b)) ⟶ I.subscheme)), π ≫ s = I.subschemeι ≫ PSpace.str O n ∧ IsFlagModel (algebraMap O K) s V α c π g κ := by
   intro O K _ _ _ _ _ _ _ X s T _ m M B _ V α c D hP hN hC
   obtain ⟨P, p0, p, h, hPlk⟩ := GlobalTheory.T.exists_pluckerFlagEmbedding_of_projective_base O K _ X s T m M B V α c D hP hC

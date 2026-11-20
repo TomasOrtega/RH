@@ -13,6 +13,13 @@ open scoped Classical
 
 variable {g : ℕ} [Fact g.Prime]
 
+/- English proof (translation)
+Use `Supp.ext_entN fun i j hi hj => ?_` and prove the remaining obligations. Rewrite using `[ParInd.blk_val, entN, dif_pos ⟨hi, hj⟩, ParInd.dg]`. Simplify using `only`. Apply the tactic sequence `by_cases h1 : i < a <;> by_cases h2 : j < a`. Rewrite using `[(Supp.entN_par _ _ _ i j).1 h1 h2, if_pos ⟨h1, h2⟩]`.
+
+Rewrite using `[(Supp.entN_par _ _ _ i j).2.2.2 rfl h1 (by omega), if_neg (by omega), if_neg (by omega)]`. Rewrite using `[(Supp.entN_par _ _ _ i j).2.1 (by omega) h2, if_neg (by omega), if_neg (by omega)]`. Take `⟨i, rfl⟩` from `Nat.exists_eq_add_of_le (not_lt.1 h1)`. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le (not_lt.1 h2)`. Rewrite using `[(Supp.entN_par _ _ _ i j).2.2.1, if_neg (by omega), if_pos (by omega)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem blk_eq_par {a b : ℕ} (x : Gn g a) (y : Gn g b) : blk a b (a + b) x y = par finSumFinEquiv x 0 y := by
   refine Supp.ext_entN fun i j hi hj => ?_
   rw [ParInd.blk_val, entN, dif_pos ⟨hi, hj⟩, ParInd.dg]

@@ -34,6 +34,13 @@ noncomputable def packK_alt {D : D7} {O : Obj D} {R : _root_.Formalism.L2.RecTAl
   letI := k.B.alg
   { R := R, S := S, P := k.P, Dcf := k.Dc, Spf := k.Sp, Zscf := k.Zsc, Ks := k.B.T.Q.c.F, Q := k.B.Q }
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Introduce `hL p K q c b hw`. Take `⟨x, a, ax, y, -, -, -, -, -, -, -, -, -⟩` from `hw`. Establish `hx : a.x = x` using `eq_of_heq ax`. Substitute `hx` using the available equality. Establish `main : ∀ t PP, PP ∈ (_root_.GlobalTheory.Fam.pk_z (_root_.GlobalTheory.Fam.packK_alt (_root_.GlobalTheory.Mem.Top.Bl.realPackageOfRealInput y.y))).Q t ↔ PP ∈ Formalism.L2.Col.QE q.w.I.sel (q.w.I.tup ((_root_.GlobalTheory.Mem.Top.Bl.realPackageOfRealInput y.y).P.I.tup t) : Formali …`.
+
+Introduce `t PP`. Take `⟨-, -, hl, -⟩` from `GlobalTheory.Mem.R3.twArgs_lev K q.B q.f q.T q.w q.Z _ _ _ _ _ _ _ _ q.O.ex q.x.what₂ a`. Establish `h1` using `(hl _ (_root_.GlobalTheory.Fam.Inhab.used0_tupP_packOf_and_tupT_eq y.y t).1).1`. Rewrite `h1` using `[(_root_.GlobalTheory.Fam.Inhab.used0_tupP_packOf_and_tupT_eq y.y t).2]`. Conclude with `Iff.of_eq (congrArg (PP ∈ ·) (eq_of_heq h1))`.
+
+Use `show (fun k : _root_.GlobalTheory.Mem.Top.Bl.RealPackage b.R b.S => ∀ t PP, PP ∈ (_root_.GlobalTheory.Fam.pk_z (_root_.GlobalTheory.Fam.packK_alt k)).Q t ↔ PP ∈ Formalism.L2.Col.QE q.w.I.sel (q.w.I.tup (k.P.I.tup t) : Formalism.L2.DIV.Chr q.B.fields.F q.B.fields.E q.B.fields.K)) …`. Rewrite using `[y.eq]`. Conclude with `main`.
+-/
 theorem mem_Q_packB_iff_mem_QE_of_bWit : ∀ {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c), _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b → ∀ t PP, PP ∈ (_root_.GlobalTheory.Fam.pk_z (_root_.GlobalTheory.Fam.packB_alt b)).Q t ↔ PP ∈ Formalism.L2.Col.QE q.w.I.sel (q.w.I.tup (b.P.I.tup t) : Formalism.L2.DIV.Chr q.B.fields.F q.B.fields.E q.B.fields.K) := by
   intro hL p K q c b hw
   obtain ⟨x, a, ax, y, -, -, -, -, -, -, -, -, -⟩ := hw

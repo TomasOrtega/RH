@@ -4,6 +4,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.CA UpperTheory.V.Pa Polynomial
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `l _ F n O _ _ _ hc _ r B _ _ _ u hΦ`. Use `haveI := hc.finite`. Use `haveI := hc.char`. Set `e : ResidueField O ≃+* ResidueField B` to `RingEquiv.ofBijective _ (resMap_bijective O B)`. Use `haveI hfin : Finite (ResidueField B) := Finite.of_equiv _ e.toEquiv`.
+
+Use `haveI hch : CharP (ResidueField B) l := charP_of_injective_ringHom (f := e.toRingHom) e.injective l`. Use `haveI : CompactSpace F.G₀ := isCompact_iff_compactSpace.1 (F.η.ker.isClosed_of_isOpen F.η_open).isCompact`. Set `χ : Fin n → F.G₀ →* (ResidueField B)ˣ` to `fun i => pushCh e.toRingHom (r.chib i)`. Establish `hU : Function.Injective (Units.map (e.toRingHom : ResidueField O →* ResidueField B))` using `Units.map_injective e.injective`. Establish `hop : ∀ i, IsOpen ((χ i).ker : Set F.G₀)` using `fun i => by`.
+
+Establish `: (χ i).ker = (r.chib i).ker` using `MonoidHom.ker_comp_of_injective _ _ hU`. Rewrite using `[this]`. Conclude with `r.chib_open i`. Establish `hinj : Function.Injective χ` using `fun i j hij => r.chib_inj (MonoidHom.ext fun g => hU (DFunLike.congr_fun hij g))`. Take `⟨h, hh⟩` from `exists_multFree_of_phiCond_of_injective_chars l χ hΦ hop hinj`.
+
+Use `⟨hfin, ?_, h, χ, ?_, hh⟩` and prove the remaining obligations. Rewrite using `[← residue_eq_zero_iff, map_natCast]`. Conclude with `CharP.cast_eq_zero _ l`. Establish `h1 : residue B = e.toRingHom.comp (res O B : B →+* ResidueField O)` using `RingHom.ext fun b => (e.apply_symm_apply (residue B b)).symm`. Rewrite using `[h1, ← (d_gmap u.D).2.1, u.red, Resid.Dbar, (d_gmap r.Dbar).2.2.2]`.
+
+Unfold `GDet.ofChars`. Use `congr 1`. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Matrix.diagonal fun i => ((r.chib i g : (ResidueField O)ˣ) : ResidueField O)).map e.toRingHom = _`. Rewrite using `[Matrix.diagonal_map (map_zero _)]`.
+
+Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Pa.pair_mf :
     ∀ {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] {r : Resid F O n} {B : Type} [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B), PhiCond F.G₀ l → Finite (ResidueField B) ∧ (l : B) ∈ maximalIdeal B ∧ ∃ (h : ℕ) (χ : Fin n → F.G₀ →* (ResidueField B)ˣ), u.D.map (residue B) = GDet.ofChars χ ∧ MultFree χ h := by
   intro l _ F n O _ _ _ hc _ r B _ _ _ u hΦ

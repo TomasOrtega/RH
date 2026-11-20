@@ -19,6 +19,17 @@ noncomputable section
 
 namespace GlobalTheory.HodgeLocCoord
 
+/- English proof (translation)
+Introduce `F _ _ Y σ e c' p0 hp0 Δ a U hU hE f hf`. Establish `hu : UnitAt (under p0) (f * (a : Y.Fn))` using `((hE _ hU).generatesAt_iff).1 hf`. Take `⟨W, hW, s, hs⟩` from `hu.regAt.exists_fnOf`. Establish `hWo : IsOpen (ptsIn Y.str σ W)` using `isOpen_ptsIn W`. Establish `hUo : IsOpen (ptsIn Y.str σ U)` using `isOpen_ptsIn U`.
+
+Establish `hA : AnalyticOnNhd ℂ (ev Y.str σ W s ∘ c'.finChart.symm) (c'.finChart.target ∩ c'.finChart.symm ⁻¹' ptsIn Y.str σ W)` using `(c'.analyticOnNhd_finChart_iff hWo _).2 (c'.holo W s)`. Establish `hl : c'.finChart.symm (c'.finChart p0) = p0` using `c'.finChart.left_inv hp0`. Establish `hp0W : p0 ∈ ptsIn Y.str σ W` using `mem_ptsIn.2 hW`. Establish `hp0U : p0 ∈ ptsIn Y.str σ U` using `mem_ptsIn.2 hU`. Use `⟨ev Y.str σ W s ∘ c'.finChart.symm, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show ev Y.str σ W s (c'.finChart.symm (c'.finChart p0)) ≠ 0`. Rewrite using `[hl, ← ratVal_fnOf hp0W (gen_mem hW), hs]`. Conclude with `ratVal_ne_zero hu`. Establish `hN : IsOpen (c'.finChart.target ∩ c'.finChart.symm ⁻¹' (ptsIn Y.str σ W ∩ ptsIn Y.str σ U))` using `c'.finChart.isOpen_inter_preimage_symm (hWo.inter hUo)`. Establish `hm : c'.finChart p0 ∈ c'.finChart.target ∩ c'.finChart.symm ⁻¹' (ptsIn Y.str σ W ∩ ptsIn Y.str σ U)` using `⟨c'.finChart.map_source hp0, by rw [Set.mem_preimage, hl]; exact ⟨hp0W, hp0U⟩⟩`.
+
+Use `filter_upwards [hN.mem_nhds hm] with v hv`. Establish `hvW : c'.finChart.symm v ∈ ptsIn Y.str σ W` using `hv.2.1`. Establish `hvE : c'.finChart.symm v ∈ Var.eqnSet σ Δ a` using `hE _ (mem_ptsIn.1 hv.2.2)`. Use `⟨hA v ⟨hv.1, hvW⟩, hvE, fun m => ?_⟩` and prove the remaining obligations. Use `show Var.pn Y σ Δ m (Var.cx Y σ f) (c'.finChart.symm v) = _`.
+
+Rewrite using `[Var.pn_eq (m := (m : Var.Met Y σ Δ)) hvE, Var.fval_cx, ← hs, ratVal_fnOf hvW (gen_mem hW)]`. Both sides reduce to the same expression.
+-/
 theorem pn_eq_normSq_mul_near : ∀ {F : Type} [Field F] [NumberField F] (Y : Var F) (σ : F →+* ℂ) {e : ℕ} (c' : AlgChart Y.str σ e)
     (p0 : Y.pts σ), p0 ∈ c'.finChart.source → ∀ (Δ : Y.Dv) (a : Y.Fnˣ) (U : Y.X.Opens), under p0 ∈ U →
     (∀ y' ∈ U, Δ.IsEqn y' a) → ∀ f : Y.Fn, Δ.GeneratesAt (under p0) f →

@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Pr UpperTheory.V.Fr UpperTheory.V
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Conclude with `hv ((Module.forall_dual_apply_eq_zero_iff K v).mp fun φ => by`. Rewrite using `[Subsingleton.elim φ 0]`.
+
+Use the proof step `rfl)`.
+-/
 private theorem dual_nontriv (K V : Type) [Field K] [AddCommGroup V] [Module K V] [Nontrivial V] :
     Nontrivial (Module.Dual K V) := by
   obtain ⟨v, hv⟩ := exists_ne (0 : V)
@@ -11,6 +16,23 @@ private theorem dual_nontriv (K V : Type) [Field K] [AddCommGroup V] [Module K V
     rw [Subsingleton.elim φ 0]
     rfl)
 
+/- English proof (translation)
+Introduce `hFin hTate hEuler Ω _ _ _ l hl M _ _ _ _ _ _ A v hv hlv hcyc ρ htriv`. Use `haveI : Fact (l ^ 1).Prime := ⟨by rw [pow_one]; exact hl.out⟩`. Establish `hcont : ReciprocityTheory.Gal.ContAction ρ` using `by show Continuous fun p : Dec (F := ℚ) A × M => ρ p.1 p.2`. Simplify using `only [htriv]`. Conclude with `continuous_snd`.
+
+Establish `hF` using `hFin ℚ Ω l 1 M A ρ v one_pos hv hcont`. Establish `hE` using `(hEuler ℚ Ω l 1 M A ρ v one_pos hv hcont).2 hlv`. Take `⟨⟨e⟩, -, -, -, hbij⟩` from `hTate ℚ Ω l 1 M A ρ v one_pos hv hcont`. Use `haveI : Finite (H2 ρ) := hF.2.2.1`. Use `haveI : Finite (H0 ρ) := hF.1`.
+
+Establish `hinv : ∀ φ : TDual (ZMod (l ^ 1)) M, φ ∈ H0 ((twDual ((cycMod ℚ Ω l 1).comp (Dec (F` using `ℚ) A).subtype) ρ).comp (MonoidHom.id _)) := by`. Introduce `φ g`. Apply `TDual.ext` to reduce the goal to its premises. Introduce `m`. Simplify using `[twDual, hcyc g.1 g.2]`.
+
+Use `show φ (ρ g⁻¹ m) = φ m`. Rewrite using `[htriv]`. Use `haveI : Nontrivial (TDual (ZMod (l ^ 1)) M) := dual_nontriv (ZMod (l ^ 1)) M`. Take `⟨φ0, hφ0⟩` from `exists_ne (0 : TDual (ZMod (l ^ 1)) M)`. Use `set X := H0 ((twDual ((cycMod ℚ Ω l 1).comp (Dec (F := ℚ) A).subtype) ρ).comp (MonoidHom.id _))`.
+
+Establish `hx0 : (⟨φ0, hinv φ0⟩ : X) ≠ 0` using `fun h => hφ0 (congrArg Subtype.val h)`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Module.Dual (ZMod (l ^ 1)) X, f ⟨φ0, hinv φ0⟩ ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hx0 ((Module.forall_dual_apply_eq_zero_iff (ZMod (l ^ 1)) _).mp h)`.
+
+Set `ψ : X →ₗ[ZMod (l ^ 1)] H2 ((charRep ((cycMod ℚ Ω l 1).comp (Dec (F` to `ℚ) A).subtype)).comp (MonoidHom.id _)) := e.symm.toLinearMap ∘ₗ f`. Establish `hψ : ψ ≠ 0`. Introduce `h`. Establish `h1 : ψ ⟨φ0, hinv φ0⟩ = 0` using `by rw [h]; rfl`. Conclude with `hf (e.symm.map_eq_zero_iff.mp h1)`.
+
+Take `⟨y, hy⟩` from `hbij.2 ψ`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Conclude with `hψ (by rw [← hy, map_zero])`. Use `haveI : Nontrivial (H2 ρ) := ⟨⟨y, 0, hy0⟩⟩`.
+
+Rewrite using `[hE]`. Conclude with `lt_mul_of_one_lt_right (Nat.card_pos) Finite.one_lt_card`.
+-/
 theorem UpperTheory.V.Fr.st_loc :
     LocalFiniteness → LocalTateDuality → LocalEulerChar → ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M] [Module (ZMod (l ^ 1)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M] [Nontrivial M] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 ℚ)), IsPlaceOver A v → ((l : ℕ) : 𝓞 ℚ) ∉ v.asIdeal → (∀ g ∈ Dec (F := ℚ) A, cycMod ℚ Ω l 1 g = 1) → ∀ ρ : Representation (ZMod (l ^ 1)) (Dec (F := ℚ) A) M, (∀ g m, ρ g m = m) → Nat.card (H0 ρ) < Nat.card (H1 ρ) := by
   intro hFin hTate hEuler Ω _ _ _ l hl M _ _ _ _ _ _ A v hv hlv hcyc ρ htriv

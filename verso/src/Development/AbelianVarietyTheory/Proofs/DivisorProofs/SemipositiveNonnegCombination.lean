@@ -18,6 +18,9 @@ namespace Weight
 
 variable {A B : LB X}
 
+/- English proof (translation)
+Introduce `i c y hy ξ` and use `by have h1 := (mem_ptsIn_inf.1 hy.2).1 have h2 := (mem_ptsIn_inf.1 hy.2).2 have e := ReciprocityTheory.L2DbarEstimates.Y.LocalMaximumSecondDerivative.leviV_ofReal_add (hψ.contDiffAt c hy.1 h1) (hφ.contDiffAt c hy.1 h2) ξ have := add_nonneg (hψ' i.1 c y ⟨hy.1, h1⟩ ξ) (hφ' i.2 c y …`.
+-/
 theorem SemiPosReg.tens {ψ : Weight p σ A} {φ : Weight p σ B} (hψ : ψ.IsCInf) (hφ : φ.IsCInf)
     (hψ' : ψ.SemiPosReg D) (hφ' : φ.SemiPosReg D) : (ψ.tens φ).SemiPosReg D := fun i c y hy ξ => by
   have h1 := (mem_ptsIn_inf.1 hy.2).1
@@ -28,6 +31,9 @@ theorem SemiPosReg.tens {ψ : Weight p σ A} {φ : Weight p σ B} (hψ : ψ.IsCI
   rw [← Complex.add_re, ← e] at this
   exact this
 
+/- English proof (translation)
+Introduce `i c' y hy ξ` and use `by have h1 := hj i y hy.2 have hf : (fun v => ((ψ.φ i (c'.e.symm v) : ℝ) : ℂ)) = fun v => ((c * φ.φ (j i) (c'.e.symm v) : ℝ) : ℂ) := funext fun v => by rw [he] rw [hf, ReciprocityTheory.L2DbarEstimates.Y.LocalMaximumSecondDerivative.leviV_ofReal_const_mul c (hφ.contDiffAt c' hy.1 …`.
+-/
 theorem SemiPosReg.of_mul {E : LB X} (ψ : Weight p σ E) {φ : Weight p σ B} (hφ : φ.IsCInf)
     (hφ' : φ.SemiPosReg D) (c : ℝ) (hc : 0 ≤ c) (j : E.ι → B.ι)
     (hj : ∀ i y, y ∈ ptsIn p σ (E.U i) → y ∈ ptsIn p σ (B.U (j i)))
@@ -45,13 +51,22 @@ namespace HermLB
 
 variable {L M : HermLB p}
 
+/- English proof (translation)
+Introduce `σ` and use `Weight.SemiPosReg.tens (L.cInf σ) (M.cInf σ) (hL σ) (hM σ)`.
+-/
 theorem SemiPos.tens (hL : L.SemiPos D) (hM : M.SemiPos D) : (L.tens M).SemiPos D := fun σ =>
   Weight.SemiPosReg.tens (L.cInf σ) (M.cInf σ) (hL σ) (hM σ)
 
+/- English proof (translation)
+Introduce `σ` and use `Weight.SemiPosReg.of_mul _ (L.cInf σ) (hL σ) ((m : ℤ) : ℝ) (by positivity) (fun j => j PUnit.unit) (fun _ _ h => mem_pow_iff.1 h) fun j y => (L.φ σ).zpow_φ (m : ℤ) j y`.
+-/
 theorem SemiPos.pow (hL : L.SemiPos D) (m : ℕ) : (L.pow m).SemiPos D := fun σ =>
   Weight.SemiPosReg.of_mul _ (L.cInf σ) (hL σ) ((m : ℤ) : ℝ) (by positivity) (fun j => j PUnit.unit)
     (fun _ _ h => mem_pow_iff.1 h) fun j y => (L.φ σ).zpow_φ (m : ℤ) j y
 
+/- English proof (translation)
+Introduce `σ` and use `Weight.SemiPosReg.of_mul _ (L.cInf σ) (hL σ) 0 le_rfl (fun j => j PUnit.unit) (fun _ _ h => (mem_pow_iff (n := ((0 : ℕ) : ℤ))).1 h) fun j y => (congrArg (fun t : ℝ => -t) ((L.φ σ).zpow_φ ((0 : ℕ) : ℤ) j y)).trans (by simp)`.
+-/
 theorem semiPos_dual_pow_zero (hL : L.SemiPos D) : ((L.pow 0).dual).SemiPos D := fun σ =>
   Weight.SemiPosReg.of_mul _ (L.cInf σ) (hL σ) 0 le_rfl (fun j => j PUnit.unit)
     (fun _ _ h => (mem_pow_iff (n := ((0 : ℕ) : ℤ))).1 h) fun j y =>
@@ -63,12 +78,18 @@ namespace ArInt
 
 variable {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Establish `h0 : (-n).toNat = 0` using `Int.toNat_eq_zero.2 (by omega)`. Unfold `zp`. Rewrite using `[h0]`. Conclude with `(hL.pow _).tens (HermLB.semiPos_dual_pow_zero hL)`.
+-/
 theorem semiPos_zp {L : HermLB p} (hL : L.SemiPos D) {n : ℤ} (hn : 0 ≤ n) : (zp L n).SemiPos D := by
   have h0 : (-n).toNat = 0 := Int.toNat_eq_zero.2 (by omega)
   unfold zp
   rw [h0]
   exact (hL.pow _).tens (HermLB.semiPos_dual_pow_zero hL)
 
+/- English proof (translation)
+Unfold `comb`. Proceed by induction on `(Finset.univ : Finset ι).toList with`. Consider the case `nil => exact (HermLB.isNef_triv p D).semiPos`. Consider the case `cons i l ih => exact (semiPos_zp (hL i) (hn i)).tens ih`.
+-/
 theorem semiPos_comb (ι : Type) [Fintype ι] (L : ι → HermLB p) (n : ι → ℤ) (D : ℕ)
     (hL : ∀ i, (L i).SemiPos D) (hn : ∀ i, 0 ≤ n i) : (comb L n).SemiPos D := by
   unfold comb
@@ -76,6 +97,9 @@ theorem semiPos_comb (ι : Type) [Fintype ι] (L : ι → HermLB p) (n : ι → 
   | nil => exact (HermLB.isNef_triv p D).semiPos
   | cons i l ih => exact (semiPos_zp (hL i) (hn i)).tens ih
 
+/- English proof (translation)
+The claim follows from `@semiPos_comb`.
+-/
 example : ∀ {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} (ι : Type) [Fintype ι]
     (L : ι → GlobalTheory.HermLB p) (n : ι → ℤ) (D : ℕ), (∀ i, (L i).SemiPos D) → (∀ i, 0 ≤ n i) →
     (GlobalTheory.ArInt.comb L n).SemiPos D := @semiPos_comb

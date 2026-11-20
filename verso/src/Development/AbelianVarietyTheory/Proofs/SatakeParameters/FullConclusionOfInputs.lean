@@ -29,6 +29,15 @@ noncomputable section
 
 namespace GlobalTheory.CoreFacts
 
+/- English proof (translation)
+Introduce `hP hc hd hw hs hF hT hE hL D I hJ`. Establish `R : GlobalTheory.NRows.Rows D` using `GlobalTheory.T.rows_of_inputs_and_jumps hP hc hd hL D I hJ`. Establish `at' : SumRepresentations.AdmAt D` using `I.admAt R.a R.b`. Establish `p1 : SumRepresentations.Conclusion1 D` using `I.Conclusion1 (GlobalTheory.T.parts_give_dimension D) R.a R.b`. Establish `g3 : AdmissibleThreePrime.LabelDegreeHypotheses D` using `GlobalTheory.AdmTame.main D R.a.tie0 R.a.a2 R.a.a5 (GlobalTheory.TieLabAt.main hL D I.P).2.1`.
+
+Establish `rb : ResidualIrreducibleRankR D` using `Formalism.MainNotions.AdmissibleThreePrime.residual_irreducible_of_theorem_three_prime D ⟨R.a.tieLab, g3⟩ R.a.a5 (GlobalTheory.BrauerNesbittIrr.litBNIrr _) R.c.rho R.c.dz`. Establish `adm : SumRepresentations.admitted D` using `⟨at', (residualIrreducibility_forms_equivalent D).2 rb, I.isot⟩`. Establish `ex : GlobalTheory.StringRepresentationDecomposition.RbEx D` using `GlobalTheory.T.residualRankPartExists_of_jointCondition D R.c.rho`. Establish `g5 : SumRepresentations.ConclusionG5 D` using `GlobalTheory.T.conclusionG5_of_local_duality hF hT hE D adm ex`. Establish `g6 : SumRepresentations.ConclusionG6 D` using `GlobalTheory.T.conclusionG6_of_admissible D adm ex`.
+
+Establish `z : SumRepresentations.ConclusionZ D` using `(SumRepresentations.multiplicity_statement_iff_reduced D I.isot p1.2.2).2 (GlobalTheory.T.reduced_form_of_local_inputs hL D I R)`. Establish `wt : GlobalTheory.IndefiniteRowSideFullHecke.JumpDictionary.WeightParam D` using `GlobalTheory.T.weight_parameter hL D I.P`. Establish `bl : GlobalTheory.IndefiniteRowSideFullHecke.JumpDictionary.BlockCharParam D` using `GlobalTheory.BlockCharInf.main D I.P.cf I.P.C I.P.tp I.P.chr`. Establish `rm : ∀ i : D.nd.Loc, Nonempty (RowMod D I.P.rep (D.nd.j i))` using `fun i => by`. Establish `hj` using `D.nd.j_range i`.
+
+Take `⟨Y, -⟩` from `GlobalTheory.RowModCanon.main hc hd hL D I.P I.X I.agree ⟨D.nd.j i - 1, by omega⟩ (D.nd.j i) (by simp only; omega)`. Conclude with `⟨Y⟩`. Conclude with `{ what₂ := R adm := adm Conclusion1 := p1 Conclusion2 := ⟨g5, g6, z⟩ rhoBar := rb g3p := g3 weight := wt block := bl g2 := GlobalTheory.T.admG2_pair_of_admissible D R.a.tie0 I.adm1 R.a.a2 R.a.a5 admJ := fun L h => GlobalTheory.T.admissible_J_of_params D L R.a.tie0 I.adm1 R.a.a2 R …`.
+-/
 theorem main : GlobalTheory.NRows.Hypotheses₂ → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.DepthZeroWild →
     GlobalTheory.Published.DepthZeroSupport → LocalFiniteness → LocalTateDuality → LocalEulerChar →
     ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7), GlobalTheory.NRows.Inputs hL D → JumpsCard D.nd D.naut → Core D := by

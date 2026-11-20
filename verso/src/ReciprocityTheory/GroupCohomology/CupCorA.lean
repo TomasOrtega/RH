@@ -19,26 +19,46 @@ section Retr
 
 variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (U : Subgroup G)
 
+/- English proof (translation)
+The claim follows from `Quotient.eq.trans QuotientGroup.rightRel_apply`.
+-/
 theorem mkR_eq {a b : G} :
     Quotient.mk (QuotientGroup.rightRel U) a = Quotient.mk _ b ↔ b * a⁻¹ ∈ U :=
   Quotient.eq.trans QuotientGroup.rightRel_apply
 
+/- English proof (translation)
+Unfold `rep`. Use `congr 1`. Rewrite using `[mkR_eq]`. Simplify `U.inv_mem x.2` using `[mul_inv_rev]`.
+-/
 theorem rep_mul (x : U) (g : G) : rep U ((x : G) * g) = rep U g := by
   unfold rep
   congr 1
   rw [mkR_eq]
   simpa [mul_inv_rev] using U.inv_mem x.2
 
+/- English proof (translation)
+Unfold `rep`. Conclude with `Quotient.out_eq _`.
+-/
 theorem mk_rep (g : G) : (Quotient.mk (QuotientGroup.rightRel U) (rep U g)) = Quotient.mk _ g := by
   unfold rep
   exact Quotient.out_eq _
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [retr, rep_mul, Subgroup.coe_mul, mul_assoc]`.
+-/
 theorem retr_mul (x : U) (g : G) : retr U ((x : G) * g) = x * retr U g := by
   apply Subtype.ext
   simp only [retr, rep_mul, Subgroup.coe_mul, mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem retr_spec (g : G) : (retr U g : G) = g * (rep U g)⁻¹ := rfl
 
+/- English proof (translation)
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `g`. Establish `hmem : (fun y => y * g⁻¹) ⁻¹' (U : Set G) ∈ nhds g`. Apply `(hU.preimage (continuous_mul_right g⁻¹)).mem_nhds` to reduce the goal to its premises. Simplify using `[U.one_mem]`.
+
+Apply `(continuousAt_const (y := rep U g)).congr` to reduce the goal to its premises. Use `filter_upwards [hmem] with y hy`. Establish `h1 : rep U ((⟨y * g⁻¹, hy⟩ : U) * g) = rep U g` using `rep_mul U ⟨y * g⁻¹, hy⟩ g`. Simplify using `using h1.symm`.
+-/
 theorem continuous_rep (hU : IsOpen (U : Set G)) : Continuous (rep U) := by
   rw [continuous_iff_continuousAt]
   intro g
@@ -50,6 +70,9 @@ theorem continuous_rep (hU : IsOpen (U : Set G)) : Continuous (rep U) := by
   have h1 : rep U ((⟨y * g⁻¹, hy⟩ : U) * g) = rep U g := rep_mul U ⟨y * g⁻¹, hy⟩ g
   simpa using h1.symm
 
+/- English proof (translation)
+The claim follows from `Continuous.subtype_mk (continuous_id.mul (continuous_rep U hU).inv) _`.
+-/
 theorem continuous_retr (hU : IsOpen (U : Set G)) : Continuous (retr U) :=
   Continuous.subtype_mk (continuous_id.mul (continuous_rep U hU).inv) _
 
@@ -59,6 +82,11 @@ instance finite_rightRel [U.FiniteIndex] : Finite (Quotient (QuotientGroup.right
 def cosetMul (g : G) (c : Quotient (QuotientGroup.rightRel U)) : Quotient (QuotientGroup.rightRel U) :=
   Quotient.mk _ (c.out * g)
 
+/- English proof (translation)
+Establish `key : ∀ h : G, ∀ c, cosetMul U h⁻¹ (cosetMul U h c) = c`. Introduce `h c`. Unfold `cosetMul`. Use `conv_rhs => rw [← Quotient.out_eq c]`. Rewrite using `[mkR_eq]`.
+
+Establish `hw : (c.out * h) * (Quotient.mk (QuotientGroup.rightRel U) (c.out * h)).out⁻¹ ∈ U` using `QuotientGroup.rightRel_apply.mp (Quotient.mk_out (c.out * h))`. Simplify `hw` using `[mul_inv_rev, mul_assoc]`. Conclude with `⟨Function.LeftInverse.injective (key g), Function.RightInverse.surjective (fun c => by`. Simplify using `using key g⁻¹ c)⟩`.
+-/
 theorem cosetMul_bij (g : G) : Bijective (cosetMul U g) := by
   have key : ∀ h : G, ∀ c, cosetMul U h⁻¹ (cosetMul U h c) = c := by
     intro h c
@@ -71,6 +99,9 @@ theorem cosetMul_bij (g : G) : Bijective (cosetMul U g) := by
   exact ⟨Function.LeftInverse.injective (key g), Function.RightInverse.surjective (fun c => by
     simpa using key g⁻¹ c)⟩
 
+/- English proof (translation)
+Rewrite using `[retr_spec]`. Simplify using `[rep, cosetMul]`.
+-/
 theorem out_mul (g : G) (c : Quotient (QuotientGroup.rightRel U)) :
     c.out * g = (retr U (c.out * g) : G) * (cosetMul U g c).out := by
   rw [retr_spec]
@@ -86,14 +117,31 @@ variable {R : Type u} [CommRing R] {G : Type u} [Group G] [TopologicalSpace G] [
 def normF (n : ℕ) (F : (Fin (n + 1) → G) → M.V) (x : Fin (n + 1) → G) : M.V :=
   ∑ᶠ c : Quotient (QuotientGroup.rightRel U), M.rho c.out⁻¹ (F fun i => c.out * x i)
 
+/- English proof (translation)
+The claim follows from `finsum_eq_sum_of_fintype _`.
+-/
 theorem normF_eq [Fintype (Quotient (QuotientGroup.rightRel U))] (n : ℕ) (F : (Fin (n + 1) → G) → M.V)
     (x : Fin (n + 1) → G) :
     normF M U n F x = ∑ c : Quotient (QuotientGroup.rightRel U), M.rho c.out⁻¹ (F fun i => c.out * x i) :=
   finsum_eq_sum_of_fintype _
 
+/- English proof (translation)
+The claim follows from `M.cont.comp (continuous_const.prodMk continuous_id)`.
+-/
 theorem continuous_rho (s : G) : Continuous (M.rho s) :=
   M.cont.comp (continuous_const.prodMk continuous_id)
 
+/- English proof (translation)
+Use `haveI : Fintype (Quotient (QuotientGroup.rightRel U)) := Fintype.ofFinite _`. Use `⟨?_, fun g x => ?_⟩` and prove the remaining obligations. Establish `: normF M U n F = fun x => ∑ c : Quotient (QuotientGroup.rightRel U), M.rho c.out⁻¹ (F fun i => c.out * x i)` using `funext (normF_eq M U n F)`. Rewrite using `[this]`. Use `continuous_finset_sum _ fun c _ => (continuous_rho M _).comp (hF.1.comp ?_)` and prove the remaining obligations.
+
+Conclude with `continuous_pi fun i => continuous_const.mul (continuous_apply i)`. Rewrite using `[normF_eq, normF_eq, map_sum]`. Establish `key : ∀ c : Quotient (QuotientGroup.rightRel U), M.rho c.out⁻¹ (F fun i => c.out * (g • x i)) = M.rho g (M.rho (cosetMul U g c).out⁻¹ (F fun i => (cosetMul U g c).out * x i))`. Introduce `c`. Establish `e` using `out_mul U g c`.
+
+Establish `h1 : (fun i => c.out * (g • x i)) = fun i => retr U (c.out * g) • ((cosetMul U g c).out * x i)`. Use function extensionality and compare the values at `i`. Use `show c.out * (g * x i) = (retr U (c.out * g) : G) * ((cosetMul U g c).out * x i)`. Rewrite using `[← mul_assoc, ← mul_assoc, ← e]`. Rewrite using `[h1, hF.2]`.
+
+Use `show M.rho c.out⁻¹ (M.rho (retr U (c.out * g) : G) _) = _`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Rewrite using `[show (retr U (c.out * g) : G) = c.out * g * ((cosetMul U g c).out)⁻¹ by`. Rewrite using `[eq_mul_inv_iff_mul_eq]`.
+
+Conclude with `e.symm]`. Use `group`. Simplify using `only [key]`. Conclude with `Fintype.sum_bijective _ (cosetMul_bij U g) _ _ fun _ => rfl`.
+-/
 theorem normF_mem (n : ℕ) (F : (Fin (n + 1) → G) → M.V) (hF : F ∈ hcoch (M.resSub U) G n) :
     normF M U n F ∈ hcoch M G n := by
   classical
@@ -125,6 +173,9 @@ theorem normF_mem (n : ℕ) (F : (Fin (n + 1) → G) → M.V) (hF : F ∈ hcoch 
     simp only [key]
     exact Fintype.sum_bijective _ (cosetMul_bij U g) _ _ fun _ => rfl
 
+/- English proof (translation)
+Use `haveI : Fintype (Quotient (QuotientGroup.rightRel U)) := Fintype.ofFinite _`. Use function extensionality and compare the values at `x`. Simplify using `only [normF_eq, hd, map_sum, map_zsmul, Finset.smul_sum]`. Conclude with `Finset.sum_comm`.
+-/
 theorem normF_hd (n : ℕ) (F : (Fin (n + 1) → G) → M.V) :
     normF M U (n + 1) (hd n F) = hd n (normF M U n F) := by
   classical
@@ -133,6 +184,9 @@ theorem normF_hd (n : ℕ) (F : (Fin (n + 1) → G) → M.V) :
   simp only [normF_eq, hd, map_sum, map_zsmul, Finset.smul_sum]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Use `haveI : Fintype (Quotient (QuotientGroup.rightRel U)) := Fintype.ofFinite _`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, normF_eq, map_add, Finset.sum_add_distrib]`.
+-/
 theorem normF_add (n : ℕ) (F F' : (Fin (n + 1) → G) → M.V) :
     normF M U n (F + F') = normF M U n F + normF M U n F' := by
   classical
@@ -140,6 +194,9 @@ theorem normF_add (n : ℕ) (F F' : (Fin (n + 1) → G) → M.V) :
   funext x
   simp only [Pi.add_apply, normF_eq, map_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use `haveI : Fintype (Quotient (QuotientGroup.rightRel U)) := Fintype.ofFinite _`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, normF_eq, map_smul, Finset.smul_sum]`.
+-/
 theorem normF_smul (n : ℕ) (r : R) (F : (Fin (n + 1) → G) → M.V) :
     normF M U n (r • F) = r • normF M U n F := by
   classical

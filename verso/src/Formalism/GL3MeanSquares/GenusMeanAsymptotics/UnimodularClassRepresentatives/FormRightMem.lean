@@ -31,12 +31,18 @@ def fixS (x : V) : Subgroup (V ≃ₗ[K] V) where
     rw [LinearEquiv.symm_apply_eq]
     exact ha.symm
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_fixS {x : V} {g : V ≃ₗ[K] V} : g ∈ fixS x ↔ g x = x := Iff.rfl
 
 def tube (D : Subgroup (V ≃ₗ[K] V)) (A : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F)) (J : ℕ) (x : V) :
     Set V :=
   {y | ∃ g ∈ D, y - g x ∈ ((extP K 𝔭) ^ J • A : Submodule (𝓞 K) V)}
 
+/- English proof (translation)
+Establish `: Module.Finite (𝓞 K) ↥A₀` using `Module.Finite.iff_fg.2 hA₀.fg`. Establish `: Finite (𝓞 K ⧸ extP K 𝔭 ^ k)` using `idealPowerSpanBounds.finite_quot h𝔭 k`. Establish `: Module.Finite (𝓞 K ⧸ extP K 𝔭 ^ k) (↥A₀ ⧸ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥A₀))` using `Module.Finite.of_restrictScalars_finite (𝓞 K) _ _`. Establish `: Finite (↥A₀ ⧸ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥A₀))` using `Module.finite_of_finite (𝓞 K ⧸ extP K 𝔭 ^ k)`. Conclude with `Finite.of_equiv _ (localizedQuotients.quotLocF h𝔭 A₀ k).toEquiv`.
+-/
 theorem finite_quot {A₀ : Submodule (𝓞 K) V} (hA₀ : Submodule.IsLattice K A₀) {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) (k : ℕ) :
     Finite (↥(locF 𝔭 A₀) ⧸ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥(locF 𝔭 A₀))) := by
   have : Module.Finite (𝓞 K) ↥A₀ := Module.Finite.iff_fg.2 hA₀.fg
@@ -48,6 +54,9 @@ theorem finite_quot {A₀ : Submodule (𝓞 K) V} (hA₀ : Submodule.IsLattice K
     Module.finite_of_finite (𝓞 K ⧸ extP K 𝔭 ^ k)
   exact Finite.of_equiv _ (localizedQuotients.quotLocF h𝔭 A₀ k).toEquiv
 
+/- English proof (translation)
+Unfold `cnt`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun x => exists_congr fun y => and_congr_right fun _ => and_congr_right fun hc => hΩ y y.2 hc)`.
+-/
 theorem cnt_congr (h : V →ₗ⋆[K] V →ₗ[K] K) (A : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F)) (k : ℕ)
     (n : 𝓞 F) {Ω Ω' : Set V}
     (hΩ : ∀ y ∈ A, CongrP 𝔭 k (h y y) (algebraMap F K (n : F)) → (y ∈ Ω ↔ y ∈ Ω')) :
@@ -56,6 +65,9 @@ theorem cnt_congr (h : V →ₗ⋆[K] V →ₗ[K] K) (A : Submodule (𝓞 K) V) 
   exact Nat.card_congr (Equiv.subtypeEquivRight fun x =>
     exists_congr fun y => and_congr_right fun _ => and_congr_right fun hc => hΩ y y.2 hc)
 
+/- English proof (translation)
+Unfold `cnt nkCount`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun x => exists_congr fun y => and_congr_right fun _ => ⟨fun h => h.1, fun hc => ⟨hc, hΩ y y.2 hc⟩⟩)`.
+-/
 theorem cnt_eq_nkCount (h : V →ₗ⋆[K] V →ₗ[K] K) (A : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F)) (k : ℕ)
     (n : 𝓞 F) {Ω : Set V}
     (hΩ : ∀ y ∈ A, CongrP 𝔭 k (h y y) (algebraMap F K (n : F)) → y ∈ Ω) :
@@ -64,6 +76,19 @@ theorem cnt_eq_nkCount (h : V →ₗ⋆[K] V →ₗ[K] K) (A : Submodule (𝓞 K
   exact Nat.card_congr (Equiv.subtypeEquivRight fun x =>
     exists_congr fun y => and_congr_right fun _ => ⟨fun h => h.1, fun hc => ⟨hc, hΩ y y.2 hc⟩⟩)
 
+/- English proof (translation)
+Use `Fintype.ofFinite (↥A ⧸ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥A))` as an intermediate fact. Unfold `cnt`. Simplify using `only [Nat.card_eq_fintype_card, Fintype.card_subtype]`. Rewrite using `[← Finset.card_biUnion]`. Use `congr 1`.
+
+Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_biUnion, Set.mem_iUnion]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, e, hc, i, hi, hy⟩`. Conclude with `⟨i, hi, y, e, hc, hy⟩`.
+
+Introduce and unpack `⟨i, hi, y, e, hc, hy⟩`. Conclude with `⟨y, e, hc, i, hi, hy⟩`. Introduce `i hi j hj hij`. Express the relevant statement in the definitionally equal form `Disjoint _ _`. Rewrite using `[Finset.disjoint_left]`.
+
+Introduce `x hx hx'`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hx hx'`. Take `⟨y, e, -, hy⟩` from `hx`. Take `⟨y', e', -, hy'⟩` from `hx'`. Establish `h1 : y' - y ∈ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥A)`.
+
+Rewrite using `[← Submodule.Quotient.eq, e, e']`. Rewrite `h1` using `[Submodule.mem_smul_top_iff]`. Establish `h2` using `hst i hi y hy _ h1`. Establish `h3 : (y : V) + ((y' - y : ↥A) : V) = y'`. Simplify using the standard rewrite rules.
+
+Rewrite `h2` using `[h3]`. Conclude with `Set.disjoint_left.1 (hdis i hi j hj hij) h2 hy'`.
+-/
 theorem cnt_biUnion (h : V →ₗ⋆[K] V →ₗ[K] K) (A : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F)) (k : ℕ)
     (n : 𝓞 F) (hfin : Finite (↥A ⧸ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥A)))
     {ι : Type*} (s : Finset ι) (Ω : ι → Set V)
@@ -99,6 +124,17 @@ theorem cnt_biUnion (h : V →ₗ⋆[K] V →ₗ[K] K) (A : Submodule (𝓞 K) V
     rw [h3] at h2
     exact Set.disjoint_left.1 (hdis i hi j hj hij) h2 hy'
 
+/- English proof (translation)
+Set `e : ↥A ≃ₗ[𝓞 K] ↥(Formalism.HermitianLatticesTheory.gmap g A)` to `(g.restrictScalars (𝓞 K)).submoduleMap A`. Establish `he : ∀ y : ↥A, ((e y : ↥(Formalism.HermitianLatticesTheory.gmap g A)) : V) = g y` using `fun y => rfl`. Establish `hmap : ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥A).map (e : ↥A →ₗ[𝓞 K] ↥(Formalism.HermitianLatticesTheory.gmap g A)) = ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥(Formalism.HermitianLatticesTheory.gmap g A))`. Rewrite using `[Submodule.map_smul'', Submodule.map_top, LinearEquiv.range]`. Set `E` to `Submodule.Quotient.equiv _ _ e hmap`.
+
+Establish `hE : ∀ y : ↥A, E (Submodule.Quotient.mk y) = Submodule.Quotient.mk (e y)` using `fun y => rfl`. Use `(Nat.card_congr (Equiv.subtypeEquiv E.toEquiv fun x => ?_)).symm` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl, hc, hy⟩`. Use `⟨e y, (hE y).symm, ?_, y, hy, (he y).symm⟩` and prove the remaining obligations.
+
+Rewrite using `[he, hg]`. Conclude with `hc`. Introduce and unpack `⟨y', e', hc, w, hw, hwy⟩`. Take `⟨y, rfl⟩` from `e.surjective y'`. Use `⟨y, E.injective ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hE]`. Conclude with `e'`. Rewrite `hc` using `[he, hg]`. Conclude with `hc`. Rewrite `hwy` using `[he]`.
+
+Rewrite using `[← g.injective hwy]`. Conclude with `hw`.
+-/
 theorem cnt_gmap {h : V →ₗ⋆[K] V →ₗ[K] K} {g : V ≃ₗ[K] V} (hg : g ∈ Formalism.HermitianLatticesTheory.isom h)
     (A : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F)) (k : ℕ) (n : 𝓞 F) (Ω : Set V) :
     cnt h (Formalism.HermitianLatticesTheory.gmap g A) 𝔭 k n (g '' Ω) = cnt h A 𝔭 k n Ω := by
@@ -125,6 +161,11 @@ theorem cnt_gmap {h : V →ₗ⋆[K] V →ₗ[K] K} {g : V ≃ₗ[K] V} (hg : g 
       rw [← g.injective hwy]
       exact hw
 
+/- English proof (translation)
+Take `⟨π, hπ, hπ'⟩` from `D2.exists_unif h𝔭`. Rewrite `hz` using `[← hA]`. Take `⟨w, hw, rfl⟩` from `(D2.mem_smul_iff_unif h𝔭 hπ hπ' A).1 hz`. Rewrite `hw` using `[hA]`. Rewrite using `[map_smul, smul_eq_mul]`.
+
+Establish `h1` using `hAi y hy w hw`. Rewrite `h1` using `[D2.locF_one_eq]`. Simplify using `using D2.mul_mem_pK h𝔭 (D2.unif_pow_mem_pK (K := K) hπ k) h1`.
+-/
 theorem form_right_mem {h : V →ₗ⋆[K] V →ₗ[K] K} {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
     {A : Submodule (𝓞 K) V} (hA : locF 𝔭 A = A) (hAi : IsIntegralAt 𝔭 h A) {k : ℕ} {y z : V}
     (hy : y ∈ A) (hz : z ∈ ((extP K 𝔭) ^ k • A : Submodule (𝓞 K) V)) : h y z ∈ D2.pK K 𝔭 k := by
@@ -137,6 +178,11 @@ theorem form_right_mem {h : V →ₗ⋆[K] V →ₗ[K] K} {𝔭 : Ideal (𝓞 F)
   rw [D2.locF_one_eq] at h1
   simpa using D2.mul_mem_pK h𝔭 (D2.unif_pow_mem_pK (K := K) hπ k) h1
 
+/- English proof (translation)
+Take `⟨π, hπ, hπ'⟩` from `D2.exists_unif h𝔭`. Rewrite `hz` using `[← hA]`. Take `⟨w, hw, rfl⟩` from `(D2.mem_smul_iff_unif h𝔭 hπ hπ' A).1 hz`. Rewrite `hw` using `[hA]`. Rewrite using `[map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, star_pow, MeanB.star_algebraMap hF]`.
+
+Establish `h1` using `hAi w hw y hy`. Rewrite `h1` using `[D2.locF_one_eq]`. Simplify using `using D2.mul_mem_pK h𝔭 (D2.unif_pow_mem_pK (K := K) hπ k) h1`.
+-/
 theorem form_left_mem (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) {A : Submodule (𝓞 K) V} (hA : locF 𝔭 A = A) (hAi : IsIntegralAt 𝔭 h A)
     {k : ℕ} {y z : V} (hy : y ∈ A) (hz : z ∈ ((extP K 𝔭) ^ k • A : Submodule (𝓞 K) V)) :
@@ -151,6 +197,11 @@ theorem form_left_mem (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} {𝔭
   rw [D2.locF_one_eq] at h1
   simpa using D2.mul_mem_pK h𝔭 (D2.unif_pow_mem_pK (K := K) hπ k) h1
 
+/- English proof (translation)
+Rewrite `hc`, the goal using `[D2.congrP_algebraMap_iff_sub_mem h𝔭]`. Establish `hzA : z ∈ A` using `Submodule.smul_le_right hz`. Establish `e : h (y + z) (y + z) - c = (h y y - c) + h y z + h z y + h z z`. Simplify using `only [map_add, LinearMap.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `add_mem (add_mem (add_mem hc (form_right_mem h𝔭 hA hAi hy hz)) (form_left_mem hF h𝔭 hA hAi hy hz)) (form_right_mem h𝔭 hA hAi hzA hz)`.
+-/
 theorem congrP_add_of_mem (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) {A : Submodule (𝓞 K) V} (hA : locF 𝔭 A = A) (hAi : IsIntegralAt 𝔭 h A)
     {k : ℕ} {y z : V} (hy : y ∈ A) (hz : z ∈ ((extP K 𝔭) ^ k • A : Submodule (𝓞 K) V)) {c : K}
@@ -164,6 +215,39 @@ theorem congrP_add_of_mem (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} {
   exact add_mem (add_mem (add_mem hc (form_right_mem h𝔭 hA hAi hy hz))
     (form_left_mem hF h𝔭 hA hAi hy hz)) (form_right_mem h𝔭 hA hAi hzA hz)
 
+/- English proof (translation)
+Take `⟨π, hπ, hπ'⟩` from `D2.exists_unif h𝔭`. Take `⟨c, hc⟩ : ∃ c : K, c = algebraMap F K (π : F) ^ k` from `⟨_, rfl⟩`. Establish `hc0 : c ≠ 0` using `by rw [hc]; exact pow_ne_zero _ (D2.unif_ne_zero hπ')`. Establish `memA : ∀ x : V, x ∈ ((extP K 𝔭) ^ k • A : Submodule (𝓞 K) V) ↔ ∃ y ∈ A, x = c • y`. Introduce `x`.
+
+Use `D2.mem_smul_iff_unif h𝔭 hπ hπ' A (k := k) (x := x)` as an intermediate fact. Rewrite `this` using `[hA, ← hc]`. Then use the resulting hypothesis. Establish `memB : ∀ x : V, x ∈ ((extP K 𝔭) ^ k • B : Submodule (𝓞 K) V) ↔ ∃ y ∈ B, x = c • y`. Introduce `x`. Use `D2.mem_smul_iff_unif h𝔭 hπ hπ' B (k := k) (x := x)` as an intermediate fact.
+
+Rewrite `this` using `[hB, ← hc]`. Then use the resulting hypothesis. Set `m : ↥A →ₗ[𝓞 K] ↥B` to `LinearMap.codRestrict B (((LinearMap.lsmul K V c).restrictScalars (𝓞 K)).comp A.subtype) (fun a => hk ((memA _).2 ⟨a, a.2, rfl⟩))`. Establish `hm : ∀ a : ↥A, ((m a : ↥B) : V) = c • (a : V)` using `fun a => rfl`. Set `ψ : ↥A →ₗ[𝓞 K] (↥B ⧸ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥B))` to `(Submodule.mkQ _).comp m`. Establish `hψ : ∀ a : ↥A, ψ a = Submodule.Quotient.mk (m a)` using `fun a => rfl`.
+
+Establish `hker : LinearMap.ker ψ = B.submoduleOf A`. Use extensionality with `a`. Rewrite using `[LinearMap.mem_ker, hψ, Submodule.Quotient.mk_eq_zero, Submodule.mem_smul_top_iff, hm, memB]`. Express the relevant statement in the definitionally equal form `_ ↔ (a : V) ∈ B`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy, e⟩`. Rewrite using `[smul_right_injective V hc0 e]`. Conclude with `hy`. Introduce `ha`. Conclude with `⟨a, ha, rfl⟩`.
+
+Set `ψb : (↥A ⧸ B.submoduleOf A) →ₗ[𝓞 K] (↥B ⧸ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥B))` to `Submodule.liftQ _ ψ hker.ge`. Establish `hψb : ∀ a : ↥A, ψb (Submodule.Quotient.mk a) = Submodule.Quotient.mk (m a)` using `fun a => rfl`. Establish `ψb_inj : Function.Injective ψb`. Rewrite using `[← LinearMap.ker_eq_bot]`. Conclude with `Submodule.ker_liftQ_eq_bot _ _ _ hker.le`.
+
+Set `φ : (↥B ⧸ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥B)) →ₗ[𝓞 K] (↥A ⧸ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥A))` to `Submodule.mapQ _ _ (Submodule.inclusion hBA) (by`. Introduce `y hy`. Rewrite using `[Submodule.mem_comap, Submodule.mem_smul_top_iff]`. Rewrite `hy` using `[Submodule.mem_smul_top_iff]`. Conclude with `Submodule.smul_mono le_rfl hBA hy)`.
+
+Establish `hφ : ∀ y : ↥B, φ (Submodule.Quotient.mk y) = Submodule.Quotient.mk (Submodule.inclusion hBA y)` using `fun y => rfl`. Establish `hφψ : ∀ q, φ (ψb q) = 0`. Introduce `q`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite using `[hψb, hφ, Submodule.Quotient.mk_eq_zero, Submodule.mem_smul_top_iff]`.
+
+Conclude with `(memA _).2 ⟨a, a.2, rfl⟩`. Use `choose y0 hy0 using fun x : {x : ↥A ⧸ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥A) // ∃ y : ↥A, Submodule.Quotient.mk y = x ∧ CongrP 𝔭 k (h (y : V) (y : V)) (algebraMap F K (n : F)) ∧ (y : V) ∈ Ω} => x.2`. Set `yB : {x : ↥A ⧸ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥A) // ∃ y : ↥A, Submodule.Quotient.mk y = x ∧ CongrP 𝔭 k (h (y : V) (y : V)) (algebraMap F K (n : F)) ∧ (y : V) ∈ Ω} → ↥B` to `fun x => ⟨y0 x, hΩB (hy0 x).2.2⟩`. Establish `hφy : ∀ x, φ (Submodule.Quotient.mk (yB x)) = x.1` using `fun x => (hy0 x).1`. Set `Fn : (↥A ⧸ B.submoduleOf A) × {x : ↥A ⧸ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥A) // ∃ y : ↥A, Submodule.Quotient.mk y = x ∧ CongrP 𝔭 k (h (y : V) (y : V)) (algebraMap F K (n : F)) ∧ (y : V) ∈ Ω} → {x : ↥B ⧸ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥B) // ∃ y : ↥B, Submodule.Quotien …` to `fun p => ⟨Submodule.Quotient.mk (yB p.2) + ψb p.1, by`.
+
+Take `⟨q, x⟩` from `p`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Establish `hz : c • (a : V) ∈ ((extP K 𝔭) ^ k • A : Submodule (𝓞 K) V)` using `(memA _).2 ⟨a, a.2, rfl⟩`. Conclude with `⟨yB x + m a, rfl, congrP_add_of_mem hF h𝔭 hA hAi (y0 x).2 hz (hy0 x).2.1, hΩ _ (hy0 x).2.2 _ hz⟩⟩`. Establish `hFn : ∀ p, (Fn p).1 = Submodule.Quotient.mk (yB p.2) + ψb p.1` using `fun p => rfl`.
+
+Establish `hbij : Function.Bijective Fn`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, x⟩ ⟨q', x'⟩ e`. Establish `e1` using `congrArg Subtype.val e`. Rewrite `e1` using `[hFn, hFn]`.
+
+Establish `e2` using `congrArg φ e1`. Simplify using `only [map_add, hφψ, hφy, add_zero] at e2`. Establish `e3 : x = x'` using `Subtype.ext e2`. Substitute `e3` using the available equality. Establish `e4 : q = q'` using `ψb_inj (add_left_cancel e1)`.
+
+Rewrite using `[e4]`. Introduce and unpack `⟨_, y, rfl, hcy, hyΩ⟩`. Set `x : {x : ↥A ⧸ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥A) // ∃ y : ↥A, Submodule.Quotient.mk y = x ∧ CongrP 𝔭 k (h (y : V) (y : V)) (algebraMap F K (n : F)) ∧ (y : V) ∈ Ω}` to `⟨Submodule.Quotient.mk (Submodule.inclusion hBA y), _, rfl, hcy, hyΩ⟩`. Establish `h1 : Submodule.inclusion hBA y - y0 x ∈ ((extP K 𝔭) ^ k • ⊤ : Submodule (𝓞 K) ↥A)`. Rewrite using `[← Submodule.Quotient.eq]`.
+
+Conclude with `(hy0 x).1.symm`. Rewrite `h1` using `[Submodule.mem_smul_top_iff, memA]`. Take `⟨a, ha, e⟩` from `h1`. Use `⟨(Submodule.Quotient.mk ⟨a, ha⟩, x), Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hFn, hψb, ← Submodule.Quotient.mk_add]`.
+
+Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((y0 x : ↥A) : V) + c • a = y`. Rewrite using `[← e]`. Express the relevant statement in the definitionally equal form `((y0 x : ↥A) : V) + ((y : V) - (y0 x : ↥A)) = y`.
+
+Normalize the expressions using the abelian group laws. Conclude with `(Nat.card_congr (Equiv.ofBijective Fn hbij)).symm.trans (Nat.card_prod _ _)`.
+-/
 theorem cnt_sub (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
     {A B : Submodule (𝓞 K) V} (hA : locF 𝔭 A = A) (hB : locF 𝔭 B = B)
     (hAi : IsIntegralAt 𝔭 h A) (hBA : B ≤ A) {k : ℕ}

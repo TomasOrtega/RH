@@ -12,10 +12,16 @@ open GroundTheory.PAdicHodge Formalism.Per6 DividedPowers CrystallineSemistableC
 
 namespace GlobalTheory.CompanionTheory.LatCHc
 
+/- English proof (translation)
+Use `Ideal.Quotient.subsingleton_iff.2 ?_` and prove the remaining obligations. Rewrite using `[pow_zero, Ideal.span_singleton_one]`.
+-/
 theorem subsingleton_Bk_zero (l : ℕ) [Fact l.Prime] : Subsingleton (Lat.Bk l 0) := by
   refine Ideal.Quotient.subsingleton_iff.2 ?_
   rw [pow_zero, Ideal.span_singleton_one]
 
+/- English proof (translation)
+Introduce `l _ M k`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Introduce `x _ n haveI := subsingleton_Bk_zero l`. Conclude with `⟨0, Subsingleton.elim _ _⟩`. Conclude with `GlobalTheory.CompanionTheory.LatDP.dpClosed _ _ l M k (GlobalTheory.CompanionTheory.LatCHyp.hyp_k l k hk)`.
+-/
 theorem hc_k : ∀ (l : ℕ) [Fact l.Prime] (M k : ℕ),
     Lat.DPClosed (Lat.ι (Lat.fk l k) (xi0 l) l M) (Lat.γB (Lat.fk l k) (xi0 l)) := by
   intro l _ M k

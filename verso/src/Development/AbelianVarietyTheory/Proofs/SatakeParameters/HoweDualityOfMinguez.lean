@@ -16,6 +16,13 @@ section General
 
 variable {G V V' : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
 
+/- English proof (translation)
+Set `E : Subrepresentation (twist π χ) ≃o Subrepresentation π` to `{ toFun := fun U => ⟨U.toSubmodule, fun g v hv => by`. Establish `h1` using `U.toSubmodule.smul_mem (((χ g)⁻¹ : ℂˣ) : ℂ) (U.apply_mem_toSubmodule g hv)`. Rewrite using `[twist_apply, smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul] at h1⟩` and apply the resulting hypothesis. Use `invFun := fun U => ⟨U.toSubmodule, fun g v hv => by`. Rewrite using `[twist_apply]`.
+
+Conclude with `U.toSubmodule.smul_mem _ (U.apply_mem_toSubmodule g hv)⟩`. Use `left_inv := fun _ => rfl`. Use `right_inv := fun _ => rfl`. Use the proof step `map_rel_iff' := Iff.rfl }`. Use `haveI : IsSimpleOrder (Subrepresentation π) := h`.
+
+Conclude with `E.isSimpleOrder`.
+-/
 theorem irr_twist {π : Representation ℂ G V} (h : π.IsIrreducible) (χ : G →* ℂˣ) :
     (twist π χ).IsIrreducible := by
   let E : Subrepresentation (twist π χ) ≃o Subrepresentation π :=
@@ -31,6 +38,11 @@ theorem irr_twist {π : Representation ℂ G V} (h : π.IsIrreducible) (χ : G �
   haveI : IsSimpleOrder (Subrepresentation π) := h
   exact E.isSimpleOrder
 
+/- English proof (translation)
+Set `E : Subrepresentation (π.comp φ : Representation ℂ G V) ≃o Subrepresentation π` to `{ toFun := fun U => ⟨U.toSubmodule, fun g v hv => by`. Take `⟨g, rfl⟩` from `hφ g`. Conclude with `U.apply_mem_toSubmodule g hv⟩`. Use `invFun := fun U => ⟨U.toSubmodule, fun g v hv => U.apply_mem_toSubmodule (φ g) hv⟩`. Use `left_inv := fun _ => rfl`.
+
+Use `right_inv := fun _ => rfl`. Use the proof step `map_rel_iff' := Iff.rfl }`. Use `haveI : IsSimpleOrder (Subrepresentation π) := h`. Conclude with `E.isSimpleOrder`.
+-/
 theorem irr_comp {π : Representation ℂ G V} (φ : G →* G) (hφ : Function.Surjective φ)
     (h : π.IsIrreducible) : Representation.IsIrreducible (π.comp φ : Representation ℂ G V) := by
   let E : Subrepresentation (π.comp φ : Representation ℂ G V) ≃o Subrepresentation π :=
@@ -44,6 +56,11 @@ theorem irr_comp {π : Representation ℂ G V} (φ : G →* G) (hφ : Function.S
   haveI : IsSimpleOrder (Subrepresentation π) := h
   exact E.isSimpleOrder
 
+/- English proof (translation)
+Use `⟨Representation.Equiv.mk e.toLinearEquiv fun g => LinearMap.ext fun v => ?_⟩` and prove the remaining obligations. Establish `h1` using `Representation.IntertwiningMap.isIntertwining _ _ e.toIntertwiningMap g v`. Simplify using `only [LinearMap.comp_apply]`. Express the relevant statement in the definitionally equal form `e.toIntertwiningMap (σ g v) = σ' g (e.toIntertwiningMap v)`. Rewrite `h1` using `[twist_apply, twist_apply, map_smul]`.
+
+Conclude with `smul_right_injective V' (Units.ne_zero (χ g)) h1`.
+-/
 theorem equiv_of_twist {σ : Representation ℂ G V} {σ' : Representation ℂ G V'} (χ : G →* ℂˣ)
     (e : (twist σ χ).Equiv (twist σ' χ)) : Nonempty (σ.Equiv σ') := by
   refine ⟨Representation.Equiv.mk e.toLinearEquiv fun g => LinearMap.ext fun v => ?_⟩
@@ -53,6 +70,9 @@ theorem equiv_of_twist {σ : Representation ℂ G V} {σ' : Representation ℂ G
   rw [twist_apply, twist_apply, map_smul] at h1
   exact smul_right_injective V' (Units.ne_zero (χ g)) h1
 
+/- English proof (translation)
+Use `⟨Representation.Equiv.mk e.toLinearEquiv fun g => LinearMap.ext fun v => ?_⟩` and prove the remaining obligations. Establish `h1` using `Representation.IntertwiningMap.isIntertwining _ _ e.toIntertwiningMap (θ g) v`. Simplify using `only [LinearMap.comp_apply]`. Express the relevant statement in the definitionally equal form `e.toIntertwiningMap (σ g v) = σ' g (e.toIntertwiningMap v)`. Simplify `h1` using `[MonoidHom.coe_comp, Function.comp_apply, hθ]`.
+-/
 theorem equiv_of_comp {σ : Representation ℂ G V} {σ' : Representation ℂ G V'} (θ : G →* G)
     (hθ : ∀ g, θ (θ g) = g) (e : Representation.Equiv (σ.comp θ : Representation ℂ G V) (σ'.comp θ : Representation ℂ G V')) :
     Nonempty (σ.Equiv σ') := by
@@ -64,6 +84,13 @@ theorem equiv_of_comp {σ : Representation ℂ G V} {σ' : Representation ℂ G 
 
 end General
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis ℂ V`. Set `e` to `TensorProduct.equivFinsuppOfBasisLeft (N := W) b`. Establish `key : ∀ i (y : V ⊗[ℂ] W), TensorProduct.lid ℂ W (TensorProduct.map (b.coord i) LinearMap.id y) = e y i`. Introduce `i y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul v w`. Simplify using `[e, TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply]`. Consider the case `add y z hy hz => rw [map_add, map_add, hy, hz, map_add, Finsupp.add_apply]`. Establish `hne : e x ≠ 0` using `fun h => hx (e.injective (h.trans (map_zero e).symm))`.
+
+Take `⟨i, hi⟩` from `Finsupp.ne_iff.1 hne`. Conclude with `⟨b.coord i, by rw [key]; simpa using hi⟩`.
+-/
 theorem exists_form_ne_zero {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {x : V ⊗[ℂ] W} (hx : x ≠ 0) :
     ∃ ℓ : V →ₗ[ℂ] ℂ, TensorProduct.lid ℂ W (TensorProduct.map ℓ LinearMap.id x) ≠ 0 := by
@@ -103,17 +130,39 @@ def invT (n : ℕ) : GL (Fin n) k →* GL (Fin n) k where
     apply Units.ext
     simp only [Units.val_mul, mul_inv_rev, Matrix.transpose_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem invT_val (n : ℕ) (g : GL (Fin n) k) : (invT n g).val = (g⁻¹).val.transpose := rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `show ((invT n g)⁻¹).val.transpose = g.val`. Use `show (g.val.transpose).transpose = g.val`. Rewrite using `[Matrix.transpose_transpose]`.
+-/
 theorem invT_invT (n : ℕ) (g : GL (Fin n) k) : invT n (invT n g) = g := by
   apply Units.ext
   show ((invT n g)⁻¹).val.transpose = g.val
   show (g.val.transpose).transpose = g.val
   rw [Matrix.transpose_transpose]
 
+/- English proof (translation)
+The claim follows from `Units.continuous_iff.2 ⟨Units.continuous_coe_inv.matrix_transpose, Units.continuous_val.matrix_transpose⟩`.
+-/
 theorem continuous_invT (n : ℕ) : Continuous (invT (k := k) n) :=
   Units.continuous_iff.2 ⟨Units.continuous_coe_inv.matrix_transpose, Units.continuous_val.matrix_transpose⟩
 
+/- English proof (translation)
+Distinguish the cases in `h0 : r = 0 ∨ n = 0`. Take `⟨⟨a⟩, -⟩` from `GlobalTheory.T.om_quotient_trivial_rank_zero k r n V W σ τ h0 hσi hτi h1`. Take `⟨⟨b⟩, -⟩` from `GlobalTheory.T.om_quotient_trivial_rank_zero k r n V' W σ' τ h0 hσ'i hτi h2`. Conclude with `⟨a.trans b.symm⟩`. Use `push_neg at h0`.
+
+Take `⟨F, hF0, hF⟩` from `h1`. Choose the witnesses or unpack the hypotheses as in `⟨Φ₀, hΦ₀⟩ : ∃ Φ, F Φ ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hF0 (LinearMap.ext h)`.
+
+Take `⟨ℓ, hℓ⟩` from `exists_form_ne_zero hΦ₀`. Set `f : SB (Matrix (Fin n) (Fin r) k) →ₗ[ℂ] W` to `(TensorProduct.lid ℂ W).toLinearMap ∘ₗ TensorProduct.map ℓ LinearMap.id ∘ₗ F`. Establish `hf0 : f ≠ 0` using `fun h => hℓ (LinearMap.congr_fun h Φ₀)`. Establish `hf : ∀ (h : GL (Fin n) k) (Φ Φ' : SB (Matrix (Fin n) (Fin r) k)), (Φ' : Matrix (Fin n) (Fin r) k → ℂ) = om 1 (1 : GL (Fin r) k) h Φ → f Φ' = τ h (f Φ)`. Introduce `h Φ Φ' hΦ`.
+
+Establish `e1` using `hF 1 h Φ Φ' hΦ`. Simplify using `only [f, LinearMap.comp_apply, LinearEquiv.coe_coe, e1, map_one]`. Generalize the expression as in `F Φ = x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul v w => simp`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Take `⟨V0, _, _, π', -, -, -, hU, -⟩` from `hM k n r (Nat.one_le_iff_ne_zero.2 h0.2) (Nat.one_le_iff_ne_zero.2 h0.1) W τ hτ hτi ⟨f, hf0, hf⟩`. Take `⟨a⟩` from `hU V σ hσ hσi ⟨F, hF0, hF⟩`. Take `⟨b⟩` from `hU V' σ' hσ' hσ'i h2`.
+
+Conclude with `⟨a.trans b.symm⟩`.
+-/
 theorem uniq_left (hM : GlobalTheory.Published.MinguezThetaGL) (r n : ℕ) {V V' W : Type} [AddCommGroup V] [Module ℂ V]
     [AddCommGroup V'] [Module ℂ V'] [AddCommGroup W] [Module ℂ W]
     (σ : Representation ℂ (GL (Fin r) k) V) (σ' : Representation ℂ (GL (Fin r) k) V')
@@ -159,6 +208,15 @@ open scoped TensorProduct
 
 namespace GlobalTheory.HoweBridge
 
+/- English proof (translation)
+Introduce `hM k _ _ _ _ r n μ hμ`. Establish `hr : IsSmoothChar (detChar (Fin r) μ⁻¹)` using `hμ.inv.detChar`. Establish `hn : IsSmoothChar (detChar (Fin n) μ)` using `hμ.detChar`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `V W W' _ _ _ _ _ _ σ τ τ' hσ hσi hτ hτi hτ' hτ'i h1 h2`.
+
+Establish `h1'` using `(GlobalTheory.T.om_quotient_twist_det k r n μ V W σ τ).1 h1`. Establish `h2'` using `(GlobalTheory.T.om_quotient_twist_det k r n μ V W' σ τ').1 h2`. Establish `t1` using `GlobalTheory.T.om_quotient_transpose_inverse k r n V W _ _ (invT r) (invT n) (fun _ => rfl) (fun _ => rfl) h1'`. Establish `t2` using `GlobalTheory.T.om_quotient_transpose_inverse k r n V W' _ _ (invT r) (invT n) (fun _ => rfl) (fun _ => rfl) h2'`. Establish `hs : ∀ m : ℕ, Function.Surjective (invT (k` using `k) m) := fun m g => ⟨invT m g, invT_invT m g⟩`.
+
+Take `⟨e⟩` from `uniq_left hM n r _ _ _ (isSmooth_comp (isSmooth_twist hτ hn) _ (continuous_invT n)) (irr_comp _ (hs n) (irr_twist hτi _)) (isSmooth_comp (isSmooth_twist hτ' hn) _ (continuous_invT n)) (irr_comp _ (hs n) (irr_twist hτ'i _)) (isSmooth_comp (isSmooth_twist hσ hr) _ (continuous_invT …`. Take `⟨e'⟩` from `equiv_of_comp (invT n) (invT_invT n) e`. Conclude with `equiv_of_twist _ e'`. Introduce `V V' W _ _ _ _ _ _ σ σ' τ hσ hσi hσ' hσ'i hτ hτi h1 h2`. Establish `h1'` using `(GlobalTheory.T.om_quotient_twist_det k r n μ V W σ τ).1 h1`.
+
+Establish `h2'` using `(GlobalTheory.T.om_quotient_twist_det k r n μ V' W σ' τ).1 h2`. Take `⟨e⟩` from `uniq_left hM r n _ _ _ (isSmooth_twist hσ hr) (irr_twist hσi _) (isSmooth_twist hσ' hr) (irr_twist hσ'i _) (isSmooth_twist hτ hn) (irr_twist hτi _) h1' h2'`. Conclude with `equiv_of_twist _ e`.
+-/
 theorem main : GlobalTheory.Published.MinguezThetaGL → GlobalTheory.Published.HoweDualityGL := by
   intro hM k _ _ _ _ r n μ hμ
   have hr : IsSmoothChar (detChar (Fin r) μ⁻¹) := hμ.inv.detChar

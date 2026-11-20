@@ -26,6 +26,13 @@ section Rank
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A)
 
+/- English proof (translation)
+Introduce `w h1`. Take `⟨c, hc⟩` from `exists_w0C_eq R F i h1`. Establish `h0 : ∀ y, (R.toCx F).θ' i t ((R.toCx F).jL i t (F.cr.toL (R.toCx F).zs false i t y)) ∈ Tw.sub (twAt D.what₂.embLL A.v0) N`. Introduce `y`. Take `⟨x, hx⟩` from `exists_srcForm_eq F hX i t ((R.toCx F).zs.Zl i t) y`.
+
+Establish `k5 : ∀ u u' : A.fam.amb.FL i t, u = u' → R.thG i t (jVx R i t u) ∈ N → R.thG i t (jVx R i t u') ∈ N` using `fun u u' h hu => h ▸ hu`. Establish `k4` using `k5 _ _ hx (hN x)`. Establish `k3` using `out_lift_toL R F i t y`. Conclude with `(congrArg (fun u : (R.HW i (sg0 D A)).H => u ∈ N) k3).mpr k4`. Establish `h2` using `goodFormsCoordinateMap_mem_of_lifts_mem (R.toCx F) F.cr false h5 i t _ h0 c`.
+
+Conclude with `(congrArg (· ∈ N) hc).mp h2`.
+-/
 theorem ws_le_base (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) (h5 : (R.toCx F).H5 F.cr false) (i : Fin D.R.m) (t : T0)
     (N : Submodule ℂ (R.HW i (sg0 D A)).H) (hN : ∀ x, R.thG i t (jVx R i t (OnTies.srcForm A i t F.P0 F.ψ0⁻¹ x)) ∈ N) :
     R.WS F false i (sg0 D A) ≤ N := by
@@ -43,6 +50,11 @@ theorem ws_le_base (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) (h5 : (R.toCx F).H5 F.
   have h2 := goodFormsCoordinateMap_mem_of_lifts_mem (R.toCx F) F.cr false h5 i t _ h0 c
   exact (congrArg (· ∈ N) hc).mp h2
 
+/- English proof (translation)
+Introduce `θ hθ z hz`. Use `mem_of_mem_span_image ((R.FW i).j (sg0 D A)) (hU i _).1 _ ?_` and prove the remaining obligations. Establish `h1 : (R.FW i).j (sg0 D A) z ∈ Submodule.span ℂ (Set.range fun x => R.thG i t (jVx R i t (OnTies.srcForm A i t F.P0 F.ψ0⁻¹ x)))`. Use `ws_le_base R F hX h5 i t _ (fun x => Submodule.subset_span (Set.mem_range_self x)) ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.LevelForms.ws_eq_span]`.
+
+Conclude with `Submodule.subset_span ⟨z, hz, rfl⟩`. Use `Submodule.span_le.2 ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Use `(Submodule.smul_mem_iff _ hph).1 ?_` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨_, ⟨x, rfl⟩, j_eOp_of_adForm R hW hG hU i t ph _ _ (hθ x)⟩`.
+-/
 theorem goodLiftOnto_of_base (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) (hW : R.models_HW) (hG : R.thP_thG) (hU : R.LUnif)
     (h5 : (R.toCx F).H5 F.cr false) (i : Fin D.R.m) (t : T0) (ph : ℂ) (hph : ph ≠ 0) :
     GoodLiftOnto R i t F.P0 F.ψ0⁻¹ ph := by
@@ -62,6 +74,13 @@ end Rank
 
 attribute [local instance] GlobalTheory.BigOn.runAlg'
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A J inst R F κ v₀ fw L Pm Tp hK EX r c O hrec s hOk hC hU hB hrat`. Take `⟨hc, hinj, z, act, y, ht⟩` from `hrec.tied`. Establish `hinc : F.P0 ≤ (mirIncl R).range` using `fun g hg => by`. Take `⟨u, -, e⟩` from `(mem_base_iff hC.grp.levels g).1 hg`. Conclude with `⟨u, e⟩`.
+
+Establish `main : ∀ v, (∀ j, ClassSumRational R j (R.mu v) F.P0 F.ψ0⁻¹ 1) → ∀ j, IsLatIn (O.Zg j) (O.X₃ v j) ∧ IsLatIn (O.Zg j) (O.Im v j) ∧ Formalism.HermitianLatticesTheory.localization₂ v.asIdeal (O.X₃ v j) ≤ Formalism.HermitianLatticesTheory.localization₂ v.asIdeal (O.Im v j)`. Introduce `v h3 j`. Use `lattices_of_tie (T := (r.used v).full) (inst := inst) (R := R) (ht v j).1 (ht v j).2 hinc (chi_eq_one_of_mem_base R F hC.grp j) ⟨hC.lev, hC.grp.red_L, hC.fam.tie, hC.models, hC.thP, hU, ⟨_, (fw.hv₀ j _).1⟩, (hOk.lifts _ _).act, GlobalTheory.T.weilAction_liftPair_stepVector_invLev …` as an intermediate fact. Conclude with `⟨this.1, this.2.1, Formalism.L2.DIV.localization_mono _ this.2.2⟩`. Introduce `w hw`.
+
+Conclude with `⟨main w (hrat w hw), main _ (by rw [hC.tup.mu_conj w]; exact hrat w hw)⟩`.
+-/
 theorem leafTW2_of_isRec : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (J : CoreJ D) [Algebra J.Q.c.F D.what₂.LL] (R : RealDat D A J.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (fw : FWTie J R κ v₀) (L : SizeData₂ D) (Pm : ParameterChoice' D L) (Tp : ParamsT D L Pm) (hK : DV.KapDef D) (EX : ErrX D) (r : TwoRuns J G) (c : OnConst) (O : OnObj ((R.toCx F).data F.cr false) (Mir R) c), IsRec Tp hK EX F fw r O → ∀ s : ℕ, A.fam.Ok s → R.Char F → R.LUnif → BaseLinks R F → TwistedRational R F (fun _ => 1) → LeafTW2 O := by
   intro D G _ _ Pl0 T0 A J inst R F κ v₀ fw L Pm Tp hK EX r c O hrec s hOk hC hU hB hrat
   obtain ⟨hc, hinj, z, act, y, ht⟩ := hrec.tied

@@ -20,6 +20,9 @@ def pullInv {A B : LB Y} {A' B' : LB Y'} {h : Y' ⟶ Y} (a : ChartPull A' A h) (
       B'.U p.1 ⊓ A'.U p.2 ≤ h ⁻¹ᵁ (A.U (a.idx p.2) ⊓ B.U (b.idx p.1)))
     (pullU h _ (w.s (a.idx p.2, b.idx p.1))))⁻¹
 
+/- English proof (translation)
+The claim follows from `(map_inv _ _).trans (congrArg (·⁻¹) ((gm_res r z _ hz _).trans (gm_pull r h z _ (show h (r z) ∈ A.U (a.idx p.2) ⊓ B.U (b.idx p.1) from ⟨a.le _ hz.2, b.le _ hz.1⟩) _)))`.
+-/
 theorem gm_pullInv {Z : Scheme.{0}} {A B : LB Y} {A' B' : LB Y'} {h : Y' ⟶ Y} (a : ChartPull A' A h)
     (b : ChartPull B' B h) (w : LB.Iso B A) (r : Z ⟶ Y') (z : Z) (p : B'.ι × A'.ι) (hz : r z ∈ B'.U p.1 ⊓ A'.U p.2) :
     gm r z (B'.U p.1 ⊓ A'.U p.2) ((pullInv a b w).s p) =
@@ -27,6 +30,9 @@ theorem gm_pullInv {Z : Scheme.{0}} {A B : LB Y} {A' B' : LB Y'} {h : Y' ⟶ Y} 
   (map_inv _ _).trans (congrArg (·⁻¹) ((gm_res r z _ hz _).trans
     (gm_pull r h z _ (show h (r z) ∈ A.U (a.idx p.2) ⊓ B.U (b.idx p.1) from ⟨a.le _ hz.2, b.le _ hz.1⟩) _)))
 
+/- English proof (translation)
+Introduce `p q` and use `unit_ext fun y hy => by have val : ∀ p : B'.ι × A'.ι, y ∈ B'.U p.1 ⊓ A'.U p.2 → gm (𝟙 Y') y _ ((pullInv a b w).s p) = (gm h y (A.U (a.idx p.2) ⊓ B.U (b.idx p.1)) (w.s (a.idx p.2, b.idx p.1)))⁻¹ := fun p hp => (gm_pullInv a b w (𝟙 Y') y p hp).trans (by rw [Category.id_comp]) have …`.
+-/
 theorem pullInv_isGen {A B : LB Y} {A' B' : LB Y'} {h : Y' ⟶ Y} (a : ChartPull A' A h) (b : ChartPull B' B h)
     {w : LB.Iso B A} (hw : w.IsGen) : (pullInv a b w).IsGen := fun p q => unit_ext fun y hy => by
   have val : ∀ p : B'.ι × A'.ι, y ∈ B'.U p.1 ⊓ A'.U p.2 →
@@ -51,10 +57,16 @@ theorem pullInv_isGen {A B : LB Y} {A' B' : LB Y'} {h : Y' ⟶ Y} (a : ChartPull
   simp only [mul_inv, inv_inv]
   ac_rfl
 
+/- English proof (translation)
+Substitute `hr hi` using the available equality. Both sides reduce to the same expression.
+-/
 theorem gm_gen_congr {M : LB X} (t : LB.Gen M) {r r' : Y ⟶ X} (hr : r = r') (y : Y) {i i' : M.ι} (hi : i = i') :
     gm r y (M.U i) (t.s i) = gm r' y (M.U i') (t.s i') := by
   subst hr hi; rfl
 
+/- English proof (translation)
+Substitute `hi hj` using the available equality. Both sides reduce to the same expression.
+-/
 theorem gm_g_congr (L : LB X) (f : Y ⟶ X) (y : Y) {i i' j j' : L.ι} (hi : i = i') (hj : j = j') :
     gm f y (L.U i ⊓ L.U j) (L.g i j) = gm f y (L.U i' ⊓ L.U j') (L.g i' j') := by
   subst hi hj; rfl
@@ -88,6 +100,13 @@ section Sums
 
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G]
 
+/- English proof (translation)
+Establish `hnd : ((List.finRange n).filter (· ∈ I)).Nodup` using `(List.nodup_finRange n).filter _`. Combine the equalities or inequalities in the displayed calculation. Unfold `psum`. Generalize the expression as in `((List.finRange n).filter (· ∈ I)) = l`. Proceed by induction on `l with`.
+
+Consider the case `nil => rfl`. Consider the case `cons k l ih => rw [List.foldr_cons, ih, List.map_cons, List.prod_cons]`. Both sides reduce to the same expression. Use `_ = ∏ i ∈ I, x i := by`. Rewrite using `[← List.prod_toFinset x hnd]`.
+
+Use `congr 1`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+-/
 theorem psum_eq_prod {T : Over S} {n : ℕ} (x : Fin n → (T ⟶ G)) (I : Finset (Fin n)) :
     psum G x I = ∏ i ∈ I, x i := by
   have hnd : ((List.finRange n).filter (· ∈ I)).Nodup := (List.nodup_finRange n).filter _
@@ -103,6 +122,9 @@ theorem psum_eq_prod {T : Over S} {n : ℕ} (x : Fin n → (T ⟶ G)) (I : Finse
         ext i
         simp
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem psum_perm {T T' : Over S} (σ : T' ⟶ T) {n : ℕ} (x : Fin n → (T ⟶ G)) (x' : Fin n → (T' ⟶ G))
     (π : Equiv.Perm (Fin n)) (hx : ∀ i, x' i = σ ≫ x (π i)) (I : Finset (Fin n)) :
     psum G x' I = σ ≫ psum G x (I.map π.toEmbedding) := by
@@ -117,6 +139,9 @@ end Sums
 def swapIdx : ULift.{0} (Finset (Fin 2)) ≃ ULift.{0} (Finset (Fin 2)) :=
   Equiv.ulift.trans ((Equiv.swap (0 : Fin 2) 1).finsetCongr.trans Equiv.ulift.symm)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem swapIdx_down (I : ULift.{0} (Finset (Fin 2))) :
     (swapIdx I).down = I.down.map (Equiv.swap (0 : Fin 2) 1).toEmbedding := rfl
 
@@ -126,6 +151,19 @@ namespace GlobalTheory.MumFam
 
 open AdjSwap in
 
+/- English proof (translation)
+Introduce `R _ _ Q₁ Q₂ a a' h h' ⟨ha, ha', hc, hc', w, hw, hv⟩`. Set `σ : Q₂.B ⊗ Q₁.B ⟶ Q₁.B ⊗ Q₂.B` to `lift (snd Q₂.B Q₁.B) (fst Q₂.B Q₁.B)`. Establish `hA : ∀ K : ULift.{0} (Finset (Fin 2)), (psum Q₁.B ![fst Q₂.B Q₁.B ≫ a', snd Q₂.B Q₁.B] K.down).left = σ.left ≫ (psum Q₁.B ![fst Q₁.B Q₂.B, snd Q₁.B Q₂.B ≫ a'] (swapIdx K).down).left` using `fun K => by`. Apply the tactic sequence `rw [swapIdx_down, psum_perm σ ![fst Q₁.B Q₂.B, snd Q₁.B Q₂.B ≫ a'] _ (Equiv.swap 0 1) (fun i => by fin_cases i <;> simp [σ]) K.down, Over.comp_left]`. Establish `hB : ∀ K : ULift.{0} (Finset (Fin 2)), (psum Q₂.B ![fst Q₂.B Q₁.B, snd Q₂.B Q₁.B ≫ a] K.down).left = σ.left ≫ (psum Q₂.B ![fst Q₁.B Q₂.B ≫ a, snd Q₁.B Q₂.B] (swapIdx K).down).left` using `fun K => by`.
+
+Apply the tactic sequence `rw [swapIdx_down, psum_perm σ ![fst Q₁.B Q₂.B ≫ a, snd Q₁.B Q₂.B] _ (Equiv.swap 0 1) (fun i => by fin_cases i <;> simp [σ]) K.down, Over.comp_left]`. Establish `hε : ∀ K : ULift.{0} (Finset (Fin 2)), ((-1 : ℤ) ^ (2 - (swapIdx K).down.card)) = (-1) ^ (2 - K.down.card)` using `fun K => by rw [swapIdx_down, Finset.card_map]`. Set `cA : ChartPull (cubeLB Q₁.B ![fst Q₂.B Q₁.B ≫ a', snd Q₂.B Q₁.B] Q₁.M.L) (cubeLB Q₁.B ![fst Q₁.B Q₂.B, snd Q₁.B Q₂.B ≫ a'] Q₁.M.L) σ.left` to `chartPullPerm Q₁.M.L _ _ _ σ.left swapIdx hA hε`. Set `cB : ChartPull (cubeLB Q₂.B ![fst Q₂.B Q₁.B, snd Q₂.B Q₁.B ≫ a] Q₂.M.L) (cubeLB Q₂.B ![fst Q₁.B Q₂.B ≫ a, snd Q₁.B Q₂.B] Q₂.M.L) σ.left` to `chartPullPerm Q₂.M.L _ _ _ σ.left swapIdx hB hε`. Use `⟨ha', ha, hc', hc, pullInv cA cB w, pullInv_isGen cA cB hw, fun y y' z J₁ J₂ hJ₁ hJ₂ => ?_⟩` and prove the remaining obligations.
+
+Establish `hp : (lift (toUnit (TK R) ≫ Q₂.c y) (toUnit (TK R) ≫ Q₁.c y')).left ≫ σ.left = (lift (toUnit (TK R) ≫ Q₁.c y') (toUnit (TK R) ≫ Q₂.c y)).left`. Rewrite using `[← Over.comp_left]`. Use `congr 1`. Simplify using `[σ]`. Establish `key : adjVal (pullInv cA cB w) (lift (toUnit (TK R) ≫ Q₂.c y) (toUnit (TK R) ≫ Q₁.c y')).left z J₁ J₂ = (adjVal w (lift (toUnit (TK R) ≫ Q₁.c y') (toUnit (TK R) ≫ Q₂.c y)).left z J₂ J₁)⁻¹`.
+
+Set `p'` to `(lift (toUnit (TK R) ≫ Q₂.c y) (toUnit (TK R) ≫ Q₁.c y')).left`. Establish `m₁` using `hJ₁.mem (fun I : ULift.{0} (Finset (Fin 2)) => (psum Q₂.B ![fst Q₂.B Q₁.B, snd Q₂.B Q₁.B ≫ a] I.down).left) p'`. Establish `m₂` using `hJ₂.mem (fun I : ULift.{0} (Finset (Fin 2)) => (psum Q₁.B ![fst Q₂.B Q₁.B ≫ a', snd Q₂.B Q₁.B] I.down).left) p'`. Establish `e1` using `gm_pullInv cA cB w p' z (fun I => J₁ (p' ≫ (psum Q₂.B ![fst Q₂.B Q₁.B, snd Q₂.B Q₁.B ≫ a] I.down).left), fun I => J₂ (p' ≫ (psum Q₁.B ![fst Q₂.B Q₁.B ≫ a', snd Q₂.B Q₁.B] I.down).left)) ⟨m₁, m₂⟩`. Establish `i₁ : ∀ k : ULift.{0} (Finset (Fin 2)), p' ≫ (psum Q₁.B ![fst Q₂.B Q₁.B ≫ a', snd Q₂.B Q₁.B] (swapIdx.symm k).down).left = (lift (toUnit (TK R) ≫ Q₁.c y') (toUnit (TK R) ≫ Q₂.c y)).left ≫ (psum Q₁.B ![fst Q₁.B Q₂.B, snd Q₁.B Q₂.B ≫ a'] k.down).left` using `fun k => by`.
+
+Rewrite using `[hA, Equiv.apply_symm_apply, ← Category.assoc, hp]`. Establish `i₂ : ∀ k : ULift.{0} (Finset (Fin 2)), p' ≫ (psum Q₂.B ![fst Q₂.B Q₁.B, snd Q₂.B Q₁.B ≫ a] (swapIdx.symm k).down).left = (lift (toUnit (TK R) ≫ Q₁.c y') (toUnit (TK R) ≫ Q₂.c y)).left ≫ (psum Q₂.B ![fst Q₁.B Q₂.B ≫ a, snd Q₁.B Q₂.B] k.down).left` using `fun k => by`. Rewrite using `[hB, Equiv.apply_symm_apply, ← Category.assoc, hp]`. Establish `e2` using `gm_gen_congr w hp z (Prod.ext (funext fun k => congrArg J₂ (i₁ k)) (funext fun k => congrArg J₁ (i₂ k)) : ((cA.idx (fun I => J₂ (p' ≫ (psum Q₁.B ![fst Q₂.B Q₁.B ≫ a', snd Q₂.B Q₁.B] I.down).left)), cB.idx (fun I => J₁ (p' ≫ (psum Q₂.B ![fst Q₂.B Q₁.B, snd Q₂.B Q₁.B ≫ a] I.down).l …`. Conclude with `e1.trans (congrArg (·⁻¹) e2)`.
+
+Establish `o` using `hv y' y z J₂ J₁ hJ₂ hJ₁`. Rewrite `o` using `[Q₂.tau_symm (h y') y z J₁ hJ₁, Q₁.tau_symm y' (h' y) z J₂ hJ₂]`. Rewrite using `[key, o, inv_mul_cancel_left]`.
+-/
 theorem adj_symm : ∀ (R : Type) [CommRing R] [IsDomain R] (Q₁ Q₂ : Data R) (a : Q₁.B ⟶ Q₂.B) (a' : Q₂.B ⟶ Q₁.B)
     (h : Q₁.X →+ Q₂.X) (h' : Q₂.X →+ Q₁.X), Adj Q₁ Q₂ a a' h h' → Adj Q₂ Q₁ a' a h' h := by
   intro R _ _ Q₁ Q₂ a a' h h' ⟨ha, ha', hc, hc', w, hw, hv⟩

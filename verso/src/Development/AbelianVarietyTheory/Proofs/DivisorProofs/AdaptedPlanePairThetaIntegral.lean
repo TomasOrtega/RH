@@ -15,6 +15,39 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.MixXUnip
 
+/- English proof (translation)
+Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he u hu`. Establish `hS` using `IsUWeilPair.isUSplitting hP.weil`. Establish `pres : ∀ g Φ, Φ ∈ schA F (Fin n × Fin d) → om g Φ ∈ schA F (Fin n × Fin d)` using `fun g Φ h => hS.pres g Φ h`. Establish `omul : ∀ g h : UA σ X.J, ∀ Φ, om (g * h, 1) Φ = om (g, 1) (om (h, 1) Φ)` using `fun g h Φ => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+
+Establish `om1 : ∀ Φ, om (1, 1) Φ = Φ` using `fun Φ => by`. Rewrite using `[show ((1 : UA σ X.J), (1 : UA σ W.J)) = 1 from rfl, map_one, Module.End.one_apply]`. Establish `twist : ∀ (g : UA σ X.J) (a : AE F E), mat g *ᵥ incV F H.x = a • incV F H.x → (∀ z : Fin n₁ → AE F E, ∃ b : AE F E, mat g *ᵥ (incM F H.ι *ᵥ z) = incM F H.ι *ᵥ z + b • incV F H.x) → ∃ c : ℂ, ∀ Φ ∈ schA F (Fin n × Fin d), e (om (g, 1) Φ) = c • e Φ`. Introduce `g a ha hb`. Take `⟨h1, h2⟩` from `GlobalTheory.T.hermitian_adapted_pair_of_pair F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he g a ha hb`.
+
+Use `GlobalTheory.T.hermitian_adapted_plane_local hPr F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he (e ∘ₗ om (g, 1)) h1 h2 fun y => ?_` and prove the remaining obligations. Use `hS.adm (g, 1) _ (GlobalTheory.T.hermitian_adapted_pair_converse F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he y)` as an intermediate fact. Rewrite `this` using `[LinearMap.comp_assoc]`. Then use the resulting hypothesis. Distinguish the cases in `h0 : ∀ Φ ∈ schA F (Fin n × Fin d), e Φ = 0`. Introduce `Φ hΦ`.
+
+Rewrite using `[h0 _ (pres _ _ hΦ), h0 _ hΦ]`. Use `push_neg at h0`. Take `⟨Φ₀, hΦ₀, hne⟩` from `h0`. Set `Q : UA σ X.J → ℂ → Prop` to `fun g c => ∀ Φ ∈ schA F (Fin n × Fin d), e (om (g, 1) Φ) = c • e Φ`. Establish `Quniq : ∀ g c c', Q g c → Q g c' → c = c'` using `fun g c c' h h' => smul_left_injective ℂ hne ((h Φ₀ hΦ₀).symm.trans (h' Φ₀ hΦ₀))`.
+
+Establish `Qmul : ∀ g h c c', Q g c → Q h c' → Q (g * h) (c * c')` using `fun g h c c' hg hh Φ hΦ => by`. Rewrite using `[omul, hg _ (pres _ _ hΦ), hh _ hΦ, smul_smul]`. Establish `Qone : Q 1 1` using `fun Φ _ => by rw [om1, one_smul]`. Establish `Qinv : ∀ g c, Q g c → c ≠ 0 ∧ Q g⁻¹ c⁻¹`. Introduce `g c hg`.
+
+Establish `key : ∀ Φ ∈ schA F (Fin n × Fin d), e Φ = c • e (om (g⁻¹, 1) Φ)` using `fun Φ hΦ => by`. Rewrite using `[← hg _ (pres _ _ hΦ), ← omul, mul_inv_cancel, om1]`. Establish `hc : c ≠ 0` using `fun h => hne (by rw [key _ hΦ₀, h, zero_smul])`. Conclude with `⟨hc, fun Φ hΦ => by rw [key Φ hΦ, smul_smul, inv_mul_cancel₀ hc, one_smul]⟩`. Establish `Qpow : ∀ g c, Q g c → ∀ k : ℕ, Q (g ^ k) (c ^ k)`.
+
+Introduce `g c hg k`. Proceed by induction on `k with`. Consider the case `zero => simpa using Qone`. Consider the case `succ k ih => rw [pow_succ, pow_succ]`. Conclude with `Qmul _ _ _ _ ih hg`.
+
+Establish `gen : ∀ g : UA σ X.J, mat g *ᵥ incV F H.x = incV F H.x → (∀ z : Fin n₁ → AE F E, ∃ a : AE F E, mat g *ᵥ (incM F H.ι *ᵥ z) = incM F H.ι *ᵥ z + a • incV F H.x) → Q g 1`. Introduce `g hgx hgz`. Take `⟨cu, hcu⟩` from `twist g 1 (by rw [one_smul]; exact hgx) hgz`. Establish `scl : ∀ t : ℕ, t ≠ 0 → ∃ m : UA σ X.J, (mat m *ᵥ incV F H.x = (t : AE F E) • incV F H.x ∧ (t : AE F E) • (mat m *ᵥ incV F H.y) = incV F H.y ∧ ∀ z : Fin n₁ → AE F E, mat m *ᵥ (incM F H.ι *ᵥ z) = incM F H.ι *ᵥ z) ∧ ∃ c, Q m c`. Introduce `t ht`.
+
+Take `⟨m, h1, h2, h3⟩` from `GlobalTheory.T.exists_unitary_scaling_vector F E σ B n n₁ X X₁ H j₀ j₁ r s r₁ s₁ hH hP.herm hP₁.herm (GlobalTheory.PlaneLevi.invol_of_good hP.base) t ht`. Conclude with `⟨m, ⟨h1, h2, h3⟩, twist m _ h1 fun z => ⟨0, by rw [zero_smul, add_zero, h3]⟩⟩`. Take `⟨m, ⟨hm1, hm2, hm3⟩, cm, hcm⟩` from `scl 2 two_ne_zero`. Establish `hm1' : mat m *ᵥ incV F H.x = (2 : AE F E) • incV F H.x` using `by exact_mod_cast hm1`. Establish `hm2' : (2 : AE F E) • (mat m *ᵥ incV F H.y) = incV F H.y` using `by exact_mod_cast hm2`.
+
+Take `⟨hcm0, hcmi⟩` from `Qinv _ _ hcm`. Take `⟨hcu0, hcui⟩` from `Qinv _ _ hcu`. Use `set v := g⁻¹ * g⁻¹ * (m * g * m⁻¹) with hv`. Establish `hQv : Q v (cu⁻¹ * cu⁻¹ * (cm * cu * cm⁻¹))` using `Qmul _ _ _ _ (Qmul _ _ _ _ hcui hcui) (Qmul _ _ _ _ (Qmul _ _ _ _ hcm hcu) hcmi)`. Use `set cv := cu⁻¹ * cu⁻¹ * (cm * cu * cm⁻¹) with hcv`.
+
+Establish `hcv' : cv = cu⁻¹` using `by rw [hcv]; field_simp`. Establish `step : ∀ t : ℕ, t ≠ 0 → cv ^ (t ^ 2) = cv`. Introduce `t ht`. Take `⟨m', ⟨h1, h2, h3⟩, cm', hcm'⟩` from `scl t ht`. Take `⟨hcm0', hcmi'⟩` from `Qinv _ _ hcm'`.
+
+Establish `e1` using `Qmul _ _ _ _ (Qmul _ _ _ _ hcm' hQv) hcmi'`. Rewrite `e1` using `[GlobalTheory.T.unitary_fixing_vector_preserves F E σ B n n₁ X X₁ H j₀ j₁ r s r₁ s₁ hH hP.herm hP₁.herm g hgx hgz m m' t hm1' hm2' hm3 h1 h2 h3]`. Use `Quniq _ _ _ (Qpow _ _ hQv (t ^ 2)) e1` as an intermediate fact. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hcv0 : cv ≠ 0` using `by rw [hcv']; exact inv_ne_zero hcu0`. Establish `s2` using `step 2 two_ne_zero`. Establish `s3` using `step 3 three_ne_zero`. Evaluate the numerical expressions using `at s2 s3`. Establish `c3 : cv ^ 3 = 1`.
+
+Establish `: cv * (cv ^ 3 - 1) = 0` using `by linear_combination s2`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp this).resolve_left hcv0)`. Establish `c1 : cv = 1` using `by rw [← s3, show 9 = 3 * 3 from rfl, pow_mul, c3, one_pow]`. Establish `: cu = 1` using `by rw [hcv', inv_eq_one] at c1; exact c1`. Rewrite using `[← this]`.
+
+Conclude with `hcu`. Establish `hcl : ∀ g ∈ unip σ X H, Q g 1`. Introduce `g hg`. Proceed by induction on `hg using Subgroup.closure_induction with`. Consider the case `mem g hg => exact gen g hg.1 hg.2`.
+
+Consider the case `one => exact Qone`. Consider the case `mul g h _ _ ihg ihh => simpa using Qmul _ _ _ _ ihg ihh`. Consider the case `inv g _ ih => simpa using (Qinv _ _ ih).2`. Introduce `Φ hΦ`. Simplify using `using hcl u hu Φ hΦ`.
+-/
 theorem unip_trivial : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (n₁ : ℕ) (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ : ℕ) (M₁ : Model σ X₁ W) (om₁ : Rep σ X₁ W) (r₁ s₁ : ℕ),

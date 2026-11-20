@@ -6,9 +6,35 @@ open UpperTheory.V.W UpperTheory.V.Pr
 
 namespace UpperTheory.V.J
 
+/- English proof (translation)
+The claim follows from `Subtype.val_injective`.
+-/
 private theorem coef_inj {l : ℕ} [Fact l.Prime] (c : Coef l) : Function.Injective (algebraMap c.O (Qbar l)) :=
   Subtype.val_injective
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c η Ψ σ g₁ B M L _ _ _ _ _ Φ k c₁ _ f ka R φ hφ hs J ξ w hJ hTI har hirr hann D hD D' hD' h1 h2`. Establish `key : ∀ E ∈ PtDer ξ (↥c₁.O), (∀ (v : (Φ.ext f).V) (i : Fin 3), ∀ g ∈ (Φ.ext f).Iv v, E ((R.S.ρ.ψ v i) g : R.S.R) = 0) → ∀ a ∈ R.S.B, E a = 0`. Introduce `E hE hI a ha`. Establish `hmul : ∀ x y : R.S.R, E (x * y) = ξ x * E y + ξ y * E x` using `fun x y => hE x y`. Establish `hone : E 1 = 0`.
+
+Establish `h` using `hmul 1 1`. Simplify using `at h`. Conclude with `h`. Establish `halg : ∀ (r : ↥c₁.O), E (algebraMap (↥c₁.O) R.S.R r) = 0`. Introduce `r`.
+
+Rewrite using `[Algebra.algebraMap_eq_smul_one, map_smul, hone, smul_zero]`. Establish `hJa : ∀ a ∈ J, ξ ((φ a : R.S.B) : R.S.R) = 0 ∧ E ((φ a : R.S.B) : R.S.R) = 0`. Introduce `x hx`. Take `⟨s, hs1, hs2⟩` from `hann x hx`. Establish `e : (s : R.S.R) * ((φ x : R.S.B) : R.S.R) = 0`.
+
+Establish `h` using `congrArg Subtype.val hs2`. Simplify `h` using `[Fr.Space.inc]`. Establish `hξs : ξ (s : R.S.R) ≠ 0`. Introduce `h0`. Apply `hs1` to reduce the goal to its premises.
+
+Simplify using `[ptA, h0]`. Establish `hξ : ξ ((φ x : R.S.B) : R.S.R) = 0`. Establish `h` using `congrArg ξ e`. Rewrite `h` using `[map_mul, map_zero]`. Conclude with `(mul_eq_zero.mp h).resolve_left hξs`.
+
+Use `⟨hξ, ?_⟩` and prove the remaining obligations. Establish `h` using `hmul (s : R.S.R) ((φ x : R.S.B) : R.S.R)`. Rewrite `h` using `[e, map_zero, hξ, zero_mul, add_zero]`. Conclude with `(mul_eq_zero.mp h.symm).resolve_left hξs`. Set `δ : R.B₀.B →ₗ[↥c₁.O] Qbar l` to `(Algebra.ofId (↥c₁.O) (Qbar l)).toLinearMap ∘ₗ E ∘ₗ (R.S.B.val.comp φ).toLinearMap`.
+
+Establish `hδ : δ ∈ PtDer (ptOf R φ ξ) (Qbar l)`. Introduce `x y`. Simplify using `[δ, ptOf, hmul]`. Establish `hle : J ≤ RingHom.ker (ptOf R φ ξ)`. Introduce `x hx`.
+
+Simplify using `[ptOf, (hJa x hx).1]`. Establish `hδJ : ∀ x ∈ J, δ x = 0`. Introduce `x hx`. Simplify using `[δ, (hJa x hx).2]`. Establish `hδψ : ∀ (v : R.V.frame.Vl) (i : Fin 3), ∀ g ∈ R.V.frame.Iv v, δ ((R.B₀.u.ψ v i) g : R.B₀.B) = 0`.
+
+Introduce `v i g hg`. Establish `hm` using `congrArg (fun χ => ((χ g : (R.S.R)ˣ) : R.S.R)) (hφ.2 v i)`. Simplify using `only [pushCh, TwLink.twψ, TwLink.κA] at hm`. Establish `hm' : ((φ ((R.B₀.u.ψ v i) g : R.B₀.B) : R.S.B) : R.S.R) = ((R.S.ρ.ψ (R.K.e v) i ((R.K.lam v) g) : R.S.Rˣ) : R.S.R) * algebraMap (↥c₁.O) R.S.R ((R.K.κ (R.V.frame.φ v g) : (↥c₁.O)ˣ) : ↥c₁.O)` using `hm`. Establish `hin : (R.K.lam v) g ∈ (Φ.ext f).Iv (R.K.e v)` using `(R.K.lam_I v g).mpr hg`.
+
+Simplify using `only [δ, LinearMap.coe_comp, Function.comp_apply, AlgHom.toLinearMap_apply, AlgHom.coe_comp, Subalgebra.coe_val]`. Rewrite using `[hm', hmul, halg, hI _ _ _ hin]`. Simplify using the standard rewrite rules. Establish `h0` using `hJ (ptOf R φ ξ) w hle har hirr δ hδ hδJ hδψ`. Take `⟨b, hb⟩` from `hs ⟨a, ha⟩`.
+
+Establish `h` using `LinearMap.congr_fun h0 b`. Establish `h' : algebraMap (↥c₁.O) (Qbar l) (E a) = 0`. Simplify `h` using `[δ, hb]`. Conclude with `coef_inj c₁ (by rw [h', map_zero])`. Conclude with `tor l (↥c₁.O) (Φ.ext f) R.S ξ hTI D hD D' hD' (key D hD h1) (key D' hD' h2)`.
+-/
 theorem endJ : End := by
   intro Ω _ _ _ l _ c η Ψ σ g₁ B M L _ _ _ _ _ Φ k c₁ _ f ka R φ hφ hs J ξ w hJ hTI har hirr hann D hD D' hD' h1 h2
   have key : ∀ E ∈ PtDer ξ (↥c₁.O),

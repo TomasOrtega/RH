@@ -9,6 +9,13 @@ namespace GlobalTheory.CompanionTheory.SiegelFrame.StdCompact
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n}
 
+/- English proof (translation)
+Establish `e : U.map (starRingEnd ℂ) * (U.map (starRingEnd ℂ))ᴴ = (U * Uᴴ).map (starRingEnd ℂ)`. Rewrite using `[Matrix.map_mul]`. Use `congr 1`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Rewrite `h` using `[e]`. Establish `h2 : ((U * Uᴴ).map (starRingEnd ℂ)).map (starRingEnd ℂ) = (1 : Matrix ι ι ℂ).map (starRingEnd ℂ)` using `by rw [h]`. Establish `e2 : ((U * Uᴴ).map (starRingEnd ℂ)).map (starRingEnd ℂ) = U * Uᴴ`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Complex.conj_conj]`.
+
+Rewrite `h2` using `[e2, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `h2`. Introduce `h`. Rewrite using `[e, h]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem conj_unit_iff {ι : Type} [Fintype ι] [DecidableEq ι] (U : Matrix ι ι ℂ) :
     U.map (starRingEnd ℂ) * (U.map (starRingEnd ℂ))ᴴ = 1 ↔ U * Uᴴ = 1 := by
   have e : U.map (starRingEnd ℂ) * (U.map (starRingEnd ℂ))ᴴ = (U * Uᴴ).map (starRingEnd ℂ) := by
@@ -27,6 +34,9 @@ theorem conj_unit_iff {ι : Type} [Fintype ι] [DecidableEq ι] (U : Matrix ι �
     rw [e, h]
     exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Establish `hinv : (bA (F` using `F) b)⁻¹ = bA (F := F) b⁻¹ := (map_inv (Matrix.GeneralLinearGroup.map (n := Fin n ⊕ Fin n) (inclR (F := F) (E := E) (AF F))) b).symm`. Rewrite using `[frameEquiv_val, hinv]`. Both sides reduce to the same expression.
+-/
 theorem inFrame_eq (χ : Chr F E) (ε : ℤˣ) (b : GL (Fin n ⊕ Fin n) E)
     (hb : b.1ᵀ * dbl Y.J * b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) (x : G2 σ Y) :
     inFrame b x = (((frameEquiv χ ε b hb x).1 : GL (Fin n ⊕ Fin n) (AE F E)) :
@@ -36,10 +46,24 @@ theorem inFrame_eq (χ : Chr F E) (ε : ℤˣ) (b : GL (Fin n ⊕ Fin n) E)
   rw [frameEquiv_val, hinv]
   rfl
 
+/- English proof (translation)
+The claim follows from `(hD F E).2.2.2.1 y`.
+-/
 theorem mem_O_iff (hD : Dict) (χ : Chr F E) (y : AE F E) :
     y ∈ (adCM σ χ).O ↔ finOne F • y ∈ intHat F E :=
   (hD F E).2.2.2.1 y
 
+/- English proof (translation)
+Establish `key : ∀ (τ : AE F E →+* ℂ) (w' : InfinitePlace E), ((∀ z, τ z = (adStd E).φ w' (eqv F E z)) ∨ ∀ z, τ z = starRingEnd ℂ ((adStd E).φ w' (eqv F E z))) → (M.map τ * (M.map τ)ᴴ = 1 ↔ M.map ((adCM σ χ).φ w') ∈ Matrix.unitaryGroup (Fin n ⊕ Fin n) ℂ)`. Introduce `τ w' h`. Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose]`. Break down `h with h | h` into its components or cases. Establish `e : M.map τ = M.map ((adCM σ χ).φ w')`.
+
+Use extensionality with `i j`. Conclude with `h _`. Rewrite using `[e]`. Establish `e : M.map τ = (M.map ((adCM σ χ).φ w')).map (starRingEnd ℂ)`. Use extensionality with `i j`.
+
+Conclude with `h _`. Rewrite using `[e]`. Conclude with `conj_unit_iff _`. Take `⟨h1, h2⟩` from `(hI F E σ hcm).2 B.emb`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h w'`. Take `⟨w, hw⟩` from `h2 w'`. Conclude with `(key _ w' hw).1 (h w)`. Introduce `h w`. Take `⟨w', hw⟩` from `h1 w`.
+
+Conclude with `(key _ w' hw).2 (h w')`.
+-/
 theorem unit_iff (hI : DictInf) (hcm : IsCMExt F E σ) (χ : Chr F E) (B : Base F E)
     (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) :
     (∀ w, M.map (piInf (B.emb w)) * (M.map (piInf (B.emb w)))ᴴ = 1) ↔
@@ -68,6 +92,15 @@ theorem unit_iff (hI : DictInf) (hcm : IsCMExt F E σ) (χ : Chr F E) (B : Base 
     obtain ⟨w', hw⟩ := h1 w
     exact (key _ w' hw).2 (h w')
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n Y hD hI hcm χ ε b hb B K hK x`. Establish `hinv : inFrame b x⁻¹ = ((((frameEquiv χ ε b hb x).1)⁻¹ : GL (Fin n ⊕ Fin n) (AE F E)) : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E))`. Rewrite using `[inFrame_eq χ ε b hb x⁻¹, map_inv]`. Both sides reduce to the same expression. Establish `hx` using `inFrame_eq χ ε b hb x`.
+
+Rewrite using `[hK x]`. Use `show _ ↔ (frameEquiv χ ε b hb x).1 ∈ (adCM σ χ).kGL (Fin n ⊕ Fin n)`. Use `show _ ↔ (∀ r c, (((frameEquiv χ ε b hb x).1 : GL (Fin n ⊕ Fin n) (AE F E)) : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) r c ∈ (adCM σ χ).O ∧ (((((frameEquiv χ ε b hb x).1)⁻¹ : GL (Fin n ⊕ Fin n) (AE F E))) : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) r c ∈ (adCM σ χ) …`. Rewrite using `[← hinv, ← hx, ← unit_iff hI hcm χ B, and_comm]`. Use `and_congr ?_ Iff.rfl` and prove the remaining obligations.
+
+Simplify using `only [mem_O_iff (σ := σ) hD χ]`. Prove the components needed by the constructor for the conclusion. Introduce `h r c`. Conclude with `⟨h x (by simp) r c, h x⁻¹ (by simp) r c⟩`. Introduce `h k' hk' r c`.
+
+Break down `hk' with rfl | hk'` into its components or cases. Conclude with `(h r c).1`. Rewrite `hk'` using `[Set.mem_singleton_iff]`. Substitute `hk'` using the available equality. Conclude with `(h r c).2`.
+-/
 theorem mem_isStdK_iff : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (Y : Spc F E n), Dict → DictInf → IsCMExt F E σ → ∀ (χ : Chr F E) (ε : ℤˣ) (b : GL (Fin n ⊕ Fin n) E) (hb : b.1ᵀ * dbl Y.J * b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) (B : Base F E) (K : Subgroup (G2 σ Y)), IsStdK (σ := σ) (Y := Y) B b K → ∀ x : G2 σ Y, x ∈ K ↔ frameEquiv χ ε b hb x ∈ (adCM σ χ).uK ε (Fin n) := by
   intro F E _ _ _ _ _ σ n Y hD hI hcm χ ε b hb B K hK x
   have hinv : inFrame b x⁻¹ = ((((frameEquiv χ ε b hb x).1)⁻¹ : GL (Fin n ⊕ Fin n) (AE F E)) :

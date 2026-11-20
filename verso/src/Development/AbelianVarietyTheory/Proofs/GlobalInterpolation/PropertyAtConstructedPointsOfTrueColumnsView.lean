@@ -8,6 +8,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Fc.Cv
 
+/- English proof (translation)
+Introduce `R H K β hβ`. Establish `hS` using `GlobalTheory.Fc.Sg.baseSigns_of_bPt K β`. Use `positionOf_ind (P := fun _ _ _ _ w Z c => ColView w Z c.O.tw c.O.nch) (R := fun K X f T c => ∀ (Y : Lay X.toD7), layObj Y = c.O → ∀ p : LedPart K.C Y, GlobalTheory.LvT.WtSign.BaseSigns X.B → Formalism.L2.Theta.RealTied X.toD7 → R p.pt.D (Obj.ofPt p.pt)) ?_ hβ β.Y β.hY β.p hS β.c. …` and prove the remaining obligations. Introduce `K B f T w Z c hv Y hY p hS hreal`. Set `Z' : w.Lt` to `{ Z with V := { Z.V with div := (setDiv (w.D Z) (nPrime p.L) p.ht).div } }`.
+
+Establish `etw : Y.tw = w.tw Z` using `(congrArg Obj2.tw hY).trans hv.tw_eq`. Take `⟨tp, htp⟩` from `hv.tup`. Use `H B f T w Z' (Obj.ofPt p.pt) (nchTr (nPrime p.L) p.ht c.O.nch) ⟨hv.jets, ⟨hv.rowInt.ref, hv.rowInt.tw⟩, ?_, ⟨{ tp with }, htp⟩⟩ hS ⟨hreal.cdScale, hreal.dsig, hreal.dsig_all, hreal.vol⟩` and prove the remaining obligations. Use `show twTr (nPrime p.L) p.ht Y.tw = w.tw Z'`. Rewrite using `[etw]`.
+
+Both sides reduce to the same expression.
+-/
 theorem view_at_built : ∀ (R : ∀ D : D7, Obj D → Prop), (∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (O : Obj (w.D Z)) (nch : NChoice (w.D Z)), ColView w Z O.ex.tw nch → GlobalTheory.LvT.WtSign.BaseSigns B → Formalism.L2.Theta.RealTied (w.D Z) → R (w.D Z) O) → ∀ (K : Ctx) (β : BPt K), β.Is HasCols → R β.D β.O := by
   intro R H K β hβ
   have hS := GlobalTheory.Fc.Sg.baseSigns_of_bPt K β

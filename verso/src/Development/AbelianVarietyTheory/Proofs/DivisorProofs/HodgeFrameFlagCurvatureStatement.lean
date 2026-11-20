@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.HermitianCurvatu
 open Matrix Complex ComplexConjugate GlobalTheory.HermFrame GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram
 open scoped ComplexOrder ContDiff
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HodgeHoriz.hodge_horiz | exact GlobalTheory.HodgeHoriz.hodge_horiz | (intros; apply GlobalTheory.HodgeHoriz.hodge_horiz <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hodge_frame_flag_curvature : GlobalTheory.IndefiniteRowSideFullHecke.HermitianCurvatureForms.SubQuotCurvature →
   ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E]
     [FiniteDimensional ℂ E] (ι : Type) [Fintype ι] (p q : ℕ) (U : Set (ι → ℂ))

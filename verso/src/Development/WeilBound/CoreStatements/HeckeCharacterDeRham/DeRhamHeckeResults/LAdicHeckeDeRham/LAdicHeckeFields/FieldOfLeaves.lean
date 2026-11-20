@@ -47,17 +47,31 @@ def ProductLeaf : Prop :=  ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (χ : ↥
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+The claim follows from `GroundTheory.PAdicHodge.gal_smul_algClToBdR (Formalism.Per6.toBot g) x`.
+-/
 theorem actB_rB (g : GQ l) (x : Om l) : actB g (rB l x) = rB l (g x) :=
   GroundTheory.PAdicHodge.gal_smul_algClToBdR (Formalism.Per6.toBot g) x
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Formalism.Per6.toBot g • (GroundTheory.PAdicHodge.wittToBDeRhamPlus _ l (WittVector.teichmuller l x)) = _`. Rewrite using `[GroundTheory.PAdicHodge.gal_smul_wittToBDeRhamPlus, GroundTheory.PAdicHodge.AInf.gal_smul_teichmuller]`. Both sides reduce to the same expression.
+-/
 theorem actB_tch (g : GQ l) (x : Tl l) : actB g (tch l x) = tch l (actT g x) := by
   change Formalism.Per6.toBot g • (GroundTheory.PAdicHodge.wittToBDeRhamPlus _ l (WittVector.teichmuller l x)) = _
   rw [GroundTheory.PAdicHodge.gal_smul_wittToBDeRhamPlus, GroundTheory.PAdicHodge.AInf.gal_smul_teichmuller]
   rfl
 
+/- English proof (translation)
+The claim follows from `GroundTheory.PAdicHodge.thetaAlgHom_algClToBdR l x`.
+-/
 theorem thB_rB (x : Om l) : thB l (rB l x) = ((x : Om l) : ℂ_[l]) :=
   GroundTheory.PAdicHodge.thetaAlgHom_algClToBdR l x
 
+/- English proof (translation)
+Establish `h` using `GroundTheory.PAdicHodge.thetaBDeRhamPlusField_gal_smul (Formalism.Per6.toBot g) x`. Establish `h2 : GroundTheory.PAdicHodge.IsPerfectoidField.thetaBDeRhamPlusField l x = 0`. Rewrite using `[← hx]`. Conclude with `(GroundTheory.PAdicHodge.thetaAlgHom_apply l x).symm`. Rewrite `h` using `[h2, smul_zero]`.
+
+Rewrite using `[← h]`. Conclude with `GroundTheory.PAdicHodge.thetaAlgHom_apply l _`.
+-/
 theorem thB_actB_zero (g : GQ l) {x : Formalism.Per6.BdRp l} (hx : thB l x = 0) : thB l (actB g x) = 0 := by
   have h := GroundTheory.PAdicHodge.thetaBDeRhamPlusField_gal_smul (Formalism.Per6.toBot g) x
   have h2 : GroundTheory.PAdicHodge.IsPerfectoidField.thetaBDeRhamPlusField l x = 0 := by
@@ -66,6 +80,9 @@ theorem thB_actB_zero (g : GQ l) {x : Formalism.Per6.BdRp l} (hx : thB l x = 0) 
   rw [← h]
   exact GroundTheory.PAdicHodge.thetaAlgHom_apply l _
 
+/- English proof (translation)
+Establish `h1 : Ideal.map (actB g) (RingHom.ker (thB l)) ≤ RingHom.ker (thB l)` using `Ideal.map_le_iff_le_comap.2 fun y hy => thB_actB_zero g hy`. Establish `h2` using `Ideal.mem_map_of_mem (actB g) hx`. Rewrite `h2` using `[FB, Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono h1 k h2`.
+-/
 theorem actB_FB (g : GQ l) (k : ℕ) (x : Formalism.Per6.BdRp l) (hx : x ∈ FB l k) : actB g x ∈ FB l k := by
   have h1 : Ideal.map (actB g) (RingHom.ker (thB l)) ≤ RingHom.ker (thB l) :=
     Ideal.map_le_iff_le_comap.2 fun y hy => thB_actB_zero g hy
@@ -73,9 +90,17 @@ theorem actB_FB (g : GQ l) (k : ℕ) (x : Formalism.Per6.BdRp l) (hx : x ∈ FB 
   rw [FB, Ideal.map_pow] at h2
   exact Ideal.pow_right_mono h1 k h2
 
+/- English proof (translation)
+Simplify using `only [tch, map_pow]`.
+-/
 theorem tch_pow (x : Tl l) (n : ℕ) : tch l (x ^ n) = tch l x ^ n := by
   simp only [tch, map_pow]
 
+/- English proof (translation)
+Take `⟨s, hs, e⟩` from `h`. Take `⟨c, hc⟩` from `sub_dvd_pow_sub_pow (⟨a, ha⟩ : ↥S) ⟨b, hb⟩ M`. Use `⟨s * c, S.mul_mem hs c.2, ?_⟩` and prove the remaining obligations. Establish `h3 : a ^ M - b ^ M = (a - b) * (c : B)` using `by simpa using congrArg Subtype.val hc`. Rewrite using `[h3, e]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem near_pow_of_sub {B : Type} [CommRing B] {S : Subring B} {ϖ : B} {a b : B} (ha : a ∈ S) (hb : b ∈ S)
     (h : ∃ s ∈ S, a - b = ϖ * s) (M : ℕ) : ∃ s ∈ S, a ^ M - b ^ M = ϖ * s := by
   obtain ⟨s, hs, e⟩ := h
@@ -84,6 +109,13 @@ theorem near_pow_of_sub {B : Type} [CommRing B] {S : Subring B} {ϖ : B} {a b : 
   have h3 : a ^ M - b ^ M = (a - b) * (c : B) := by simpa using congrArg Subtype.val hc
   rw [h3, e]; ring
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa [ltIter] using ⟨hQ, h⟩`. Consider the case `succ n ih`. Take `⟨h1, h2⟩` from `ih`. Establish `e : ltIter ϖ q (n + 1) Q = ϖ * ltIter ϖ q n Q + ltIter ϖ q n Q ^ q`.
+
+Simplify using `only [ltIter, Function.iterate_succ_apply']`. Establish `hbn : b ^ (q ^ n) ∈ S` using `S.pow_mem hb _`. Take `⟨s, hs, e2⟩` from `near_pow_of_sub h1 hbn h2 q`. Use `⟨by rw [e]; exact S.add_mem (S.mul_mem hϖ h1) (S.pow_mem h1 _), ltIter ϖ q n Q + s, S.add_mem h1 hs, ?_⟩` and prove the remaining obligations. Rewrite using `[e, pow_succ q n, pow_mul]`.
+
+Take the linear combination `e2`.
+-/
 theorem iter_near {B : Type} [CommRing B] {S : Subring B} {ϖ : B} (hϖ : ϖ ∈ S) (q : ℕ) {Q b : B} (hQ : Q ∈ S)
     (hb : b ∈ S) (h : ∃ s ∈ S, Q - b = ϖ * s) (n : ℕ) :
     ltIter ϖ q n Q ∈ S ∧ ∃ s ∈ S, ltIter ϖ q n Q - b ^ (q ^ n) = ϖ * s := by
@@ -105,6 +137,51 @@ end PositivityTheory.SecR.Hladr2
 namespace PositivityTheory.SecR.Hladr2
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `hπ : Irreducible π` using `hD.1`. Take `⟨hq2, hlq, hπl, hnπ, hnμ⟩` from `GlobalTheory.T.uniformizer_properties_residue K π hπ`. Use `haveI : FiniteDimensional ℚ_[l] ↥K.1 := K.2`. Set `K' : IntermediateField ℚ_[l] (Om l)` to `IntermediateField.normalClosure ℚ_[l] ↥K.1 (Om l)`. Use `haveI : FiniteDimensional ℚ_[l] K' := inferInstance`.
+
+Use `haveI : Normal ℚ_[l] K' := inferInstance`. Take `⟨S, hW, hO, hG, hI, hE⟩` from `GlobalTheory.CompanionTheory.LTPer.lattice_main K'`. Establish `hμK : ∀ x, μ x ∈ K'` using `fun x => AlgHom.fieldRange_le_normalClosure μ ⟨x, rfl⟩`. Establish `hint : ∀ c : ↥(OL K), IsIntegral ℤ_[l] (μ (c : ↥K.1))` using `fun c => IsIntegral.map (μ.restrictScalars ℤ_[l]) c.2`. Establish `hoB : ∀ c, oB K μ c ∈ S` using `fun c => hO _ (hμK _) (hint c)`.
+
+Establish `hne : μ (π : ↥K.1) ≠ 0`. Establish `h0 : (π : ↥K.1) ≠ 0` using `fun h => hπ.ne_zero (Subtype.ext h)`. Conclude with `(map_ne_zero_iff μ μ.toRingHom.injective).2 h0`. Take `⟨E, hnot⟩` from `hE _ (hμK _) (hint π) hne (hnμ μ)`. Establish `hϖe : rB l (μ (π : ↥K.1)) = oB K μ π` using `rfl`.
+
+Rewrite `E`, `hnot` using `[hϖe]`. Take `⟨ϖ', hϖ'⟩` from `E.unit.exists_right_inv`. Use `set ϖ := oB K μ π with hϖ`. Take `⟨r, v, hvq, hv0, hv1, hr, hrg, hrz⟩` from `HT K χ π z hD μ`. Use `set q := qOf π with hq`.
+
+Establish `hqd : ∃ s ∈ S, (q : Formalism.Per6.BdRp l) = ϖ * s`. Take `⟨d, hd⟩` from `hπl`. Take `⟨q', hq'⟩` from `hlq`. Use `⟨oB K μ (d * (q' : ↥(OL K))), hoB _, ?_⟩` and prove the remaining obligations. Rewrite using `[hϖ, ← map_mul, ← mul_assoc, ← hd, hq']`.
+
+Simplify using the standard rewrite rules. Establish `hvS : ∀ n, tch l (v n) ∈ S` using `fun n => hW _`. Establish `hvB : ∀ n, tch l (v (n + 1)) ^ q = tch l (v n)` using `fun n => by rw [← tch_pow, hvq]`. Take `⟨Q, hQS, hQ⟩` from `GlobalTheory.T.lubin_tate_iterate_limit_congruence E q hq2 hqd (fun n => tch l (v n)) hvS hvB`. Establish `hθϖ : ‖thB l ϖ‖ < 1`.
+
+Rewrite using `[← hϖe, thB_rB]`. Conclude with `hnμ μ`. Establish `hθϖ0 : thB l ϖ ≠ 0`. Rewrite using `[← hϖe, thB_rB]`. Conclude with `(map_ne_zero_iff (UniformSpace.Completion.coeRingHom : Om l →+* ℂ_[l]) (RingHom.injective _)).2 hne`.
+
+Establish `hnil0` using `GlobalTheory.T.teichmuller_near_power_exists S hW ϖ hθϖ0 (v 0) hv1`. Establish `hQ0 : ∃ s ∈ S, Q - tch l (v 0) = ϖ * s`. Take `⟨a, ha, e⟩` from `hQ 0`. Conclude with `⟨a, ha, by simpa [ltIter] using e⟩`. Establish `hnilQ : ∃ M : ℕ, 0 < M ∧ Near S ϖ (FB l 1) 1 (Q ^ M)`.
+
+Take `⟨M, hM, s, hs, e⟩` from `hnil0`. Take `⟨s', hs', e'⟩` from `near_pow_of_sub hQS (hvS 0) hQ0 M`. Use `⟨M, hM, s + s', S.add_mem hs hs', ?_⟩` and prove the remaining obligations. Establish `: Q ^ M - ϖ ^ 1 * (s + s') = tch l (v 0) ^ M - ϖ ^ 1 * s`. Rewrite `*` using `[pow_one]`.
+
+Take the linear combination `e'`. Rewrite using `[this]` and apply the resulting hypothesis. Take `⟨t, ht⟩` from `GlobalTheory.T.lubin_tate_scaled_iterate_tends E ϖ' hϖ' q hq2 Q hQS hnilQ`. Establish `hkerF : ∀ x, thB l x = 0 ↔ x ∈ FB l 1` using `fun x => by`. Rewrite using `[FB, pow_one, RingHom.mem_ker]`.
+
+Use `⟨t, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Take `⟨n, hn⟩` from `GlobalTheory.T.lubin_tate_iterate_eventually_zero E ϖ' hϖ' (thB l) hkerF hI hθϖ q hq2 Q hQS hnilQ ht`. Take `⟨-, s, hs, e⟩` from `iter_near E.mem q hQS (hvS 0) hQ0 n`. Rewrite `e` using `[hn, zero_sub, ← tch_pow]`.
+
+Use `hnot (v 0 ^ (q ^ n)) (pow_ne_zero _ hv0) (-s) (S.neg_mem hs) ?_` and prove the remaining obligations. Rewrite using `[mul_neg, ← e, neg_neg]`. Introduce `g hg hfix`. Take `⟨a, ha⟩` from `GlobalTheory.T.character_values_integral K χ hc ⟨g, hg⟩`. Take `⟨φ, hφ0, hφ1, hφc⟩` from `GlobalTheory.T.lubin_tate_endomorphism_series_exists K π hπ a`.
+
+Establish `hφ1' : ((PowerSeries.coeff 1 φ : ↥(OL K)) : ↥K.1) = ((χ ⟨g, hg⟩ : (↥K.1)ˣ) : ↥K.1)`. Rewrite using `[hφ1, ha]`. Establish `hσϖ : actB g ϖ = ϖ`. Rewrite using `[← hϖe, actB_rB, hfix]`. Establish `hnil : ∀ n, ‖thB l (tch l (v n))‖ < 1` using `fun n => by`.
+
+Establish `h1 : ∀ n, tch l (v n) ^ (q ^ n) = tch l (v 0)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', pow_mul, hvB, ih]`.
+
+Establish `h2 : ‖thB l (tch l (v n))‖ ^ (q ^ n) < 1`. Rewrite using `[← norm_pow, ← map_pow, h1]`. Conclude with `hv1`. Assume the negation of the conclusion as `h3`. Conclude with `absurd h2 (not_lt.2 (one_le_pow₀ (not_lt.1 h3)))`.
+
+Establish `hev1 : ∀ n, EvalMod S (FB l) ϖ (oB K μ) φ (tch l (v n)) (actB g (tch l (v n))) 1` using `fun n => by`. Rewrite using `[actB_tch]`. Conclude with `GlobalTheory.T.lubin_tate_series_de_rham_period K μ π S hW hoB E hπl r hr (v n) (actT g (v n)) (hnil n) φ (fun D => hrg g hg φ hφ0 hφ1' hφc n D)`. Establish `hevQ` using `GlobalTheory.T.lubin_tate_commuting_series_unique E (oB K μ) hoB π rfl q hq2 hqd φ hφ0 hφc (actB g) (hG g) (fun k x hx => actB_FB g k x hx) hσϖ (fun n => tch l (v n)) hvS hvB hnil0 Q hQS hQ hev1`. Use `GlobalTheory.T.lubin_tate_series_commute_linear E ϖ' hϖ' (oB K μ) hoB π rfl q hq2 hqd φ hφ0 hφc (actB g) (hG g) (fun k x hx => actB_FB g k x hx) hσϖ Q hQS hnilQ hevQ t ht` as an intermediate fact.
+
+Rewrite using `[this]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `rB l (μ (algebraMap ↥(OL K) ↥K.1 (PowerSeries.coeff 1 φ))) = _`. Use `congr 2`. Introduce `hμ`.
+
+Establish `hθQ : thB l Q = 0`. Use `GlobalTheory.T.lubin_tate_torsion_approximation E (thB l) hI hθϖ0 hθϖ q hq2 ?_ (fun n => tch l (v n)) hvS (fun n => ((z n : Om l) : ℂ_[l])) ?_ ?_ ?_ Q hQS hQ` and prove the remaining obligations. Take `⟨s, hs, e⟩` from `hqd`. Rewrite using `[← map_natCast (thB l), e, map_mul, norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (hI s hs)`.
+
+Use `hD.2.1` as an intermediate fact. Rewrite using `[this]`. Simplify using the standard rewrite rules. Introduce `n`. Establish `h` using `hD.2.2.2.1 n`.
+
+Establish `h2` using `congrArg (UniformSpace.Completion.coeRingHom : Om l →+* ℂ_[l]) h`. Rewrite `h2` using `[map_add, map_mul, map_pow]`. Establish `e : thB l ϖ = (((π : ↥K.1) : Om l) : ℂ_[l])`. Rewrite using `[← hϖe, thB_rB, hμ]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `h2`. Introduce `n`. Establish `e : thB l ϖ = (((π : ↥K.1) : Om l) : ℂ_[l])`. Rewrite using `[← hϖe, thB_rB, hμ]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hrz hμ n`. Conclude with `GlobalTheory.T.lubin_tate_limit_kernel_zero E ϖ' hϖ' (thB l) hkerF hI hθϖ q hq2 Q hθQ t ht`.
+-/
 theorem pre_period (HT : TiltLeaf) (K : FinExt l) (χ : ↥(GK K) →* (↥K.1)ˣ) (π : ↥(OL K)) (z : ℕ → Om l)
     (hD : LTData K χ π z) (hc : Continuous (fun g => (((χ g : (↥K.1)ˣ) : ↥K.1) : Om l)))
     (μ : ↥K.1 →ₐ[ℚ_[l]] Om l) : ∃ t, PrePer K χ μ t := by
@@ -223,21 +300,43 @@ end PositivityTheory.SecR.Hladr2
 namespace PositivityTheory.SecR.Hladr2
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[RingHom.mem_ker, RingHom.mem_ker]`. Conclude with `iff_of_eq (congrArg (· = (0 : ℂ_[l])) (GroundTheory.PAdicHodge.thetaAlgHom_apply l x))`.
+-/
 theorem ker_thB : RingHom.ker (thB l) = RingHom.ker (Formalism.Per6.θD l) := by
   ext x
   rw [RingHom.mem_ker, RingHom.mem_ker]
   exact iff_of_eq (congrArg (· = (0 : ℂ_[l])) (GroundTheory.PAdicHodge.thetaAlgHom_apply l x))
 
+/- English proof (translation)
+The claim follows from `GroundTheory.PAdicHodge.galBdRField_algebraMap (Formalism.Per6.toBot g) y`.
+-/
 theorem σD_algebraMap (g : GQ l) (y : Formalism.Per6.BdRp l) :
     Formalism.Per6.σD g (algebraMap (Formalism.Per6.BdRp l) (Formalism.Per6.BdR l) y) =
       algebraMap (Formalism.Per6.BdRp l) (Formalism.Per6.BdR l) (actB g y) :=
   GroundTheory.PAdicHodge.galBdRField_algebraMap (Formalism.Per6.toBot g) y
 
+/- English proof (translation)
+Rewrite using `[PositivityTheory.LocInh.filq_tie_fil T K n h, FB, ker_thB]`.
+-/
 theorem fil_iff {P : LocPrime l} {AI : LocAinf l P} (T : LocTied6 l P AI) (K : FinExt l) (n : ℕ) {x : P.R.BdR}
     {y : Formalism.Per6.BdRp l} (h : T.eD x = algebraMap (Formalism.Per6.BdRp l) (Formalism.Per6.BdR l) y) :
     x ∈ (P.PD K).Fil (n : ℤ) ↔ y ∈ FB l n := by
   rw [PositivityTheory.LocInh.filq_tie_fil T K n h, FB, ker_thB]
 
+/- English proof (translation)
+Take `⟨T⟩` from `hT`. Establish `hN` using `GlobalTheory.T.lubin_tate_norm_cyclotomic K χ hLT hc`. Take `⟨π, z, hD⟩` from `hLT`. Use `choose t ht using fun μ => pre_period HT K χ π z hD hc μ`. Establish `hP` using `HP K χ hN t ht`.
+
+Introduce `μ`. Take `⟨y, hy⟩ : ∃ y : P.R.BdR, T.eD y = algebraMap (Formalism.Per6.BdRp l) (Formalism.Per6.BdR l) (t μ)` from `⟨_, T.eD.apply_symm_apply _⟩`. Establish `f1` using `fil_iff T K 1 hy`. Establish `f2` using `fil_iff T K 2 hy`. Establish `f0` using `fil_iff T K 0 hy`.
+
+Rewrite `f1` using `[Nat.cast_one]`. Rewrite `f2` using `[Nat.cast_ofNat]`. Rewrite `f0` using `[Nat.cast_zero]`. Establish `hF1 : thB l (t μ) = 0 → t μ ∈ FB l 1` using `fun h => by`. Rewrite using `[FB, pow_one]`.
+
+Conclude with `h`. Use `⟨y, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg hfix`. Apply `T.eD.injective` to reduce the goal to its premises. Rewrite using `[T.actD, map_mul, hy, PositivityTheory.LocInh.tie_o, σD_algebraMap, (ht μ).2.1 g hg hfix, map_mul]`.
+
+Both sides reduce to the same expression. Introduce `hμ`. Conclude with `⟨f1.2 (hF1 ((ht μ).2.2 hμ)), fun h => (hP μ).1 hμ (f2.1 h)⟩`. Introduce `hμ`. Use `⟨f0.2 ?_, fun h => (hP μ).2 hμ (f1.1 h)⟩` and prove the remaining obligations.
+
+Rewrite using `[FB, pow_zero, Ideal.one_eq_top]`. Conclude with `Submodule.mem_top`.
+-/
 theorem hasPeriods_main (HT : TiltLeaf) (HP : ProductLeaf) {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (hT : Nonempty (LocTied6 l P AI))
     (K : FinExt l) (χ : ↥(GK K) →* (↥K.1)ˣ) (hLT : IsLTChar K χ)
     (hc : Continuous (fun g => (((χ g : (↥K.1)ˣ) : ↥K.1) : Om l))) : HasPeriods P K χ := by
@@ -270,6 +369,9 @@ theorem hasPeriods_main (HT : TiltLeaf) (HP : ProductLeaf) {l : ℕ} [Fact l.Pri
 
 end PositivityTheory.SecR.Hladr2
 
+/- English proof (translation)
+The claim follows from `PositivityTheory.SecR.Hladr.field_of_ltPeriods fun P AI hT K χ hLT hc => PositivityTheory.SecR.Hladr2.hasPeriods_main HT HP P AI hT K χ hLT hc`.
+-/
 theorem PositivityTheory.SecR.Hladr2.field_of_leaves (HT : PositivityTheory.SecR.Hladr2.TiltLeaf) (HP : PositivityTheory.SecR.Hladr2.ProductLeaf) :
     GlobalTheory.Published.HeckeLAdicCharacterDeRham :=
   PositivityTheory.SecR.Hladr.field_of_ltPeriods fun P AI hT K χ hLT hc => PositivityTheory.SecR.Hladr2.hasPeriods_main HT HP P AI hT K χ hLT hc

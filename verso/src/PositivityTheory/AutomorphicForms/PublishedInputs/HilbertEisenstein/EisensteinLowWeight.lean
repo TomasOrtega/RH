@@ -27,6 +27,11 @@ def facY (x y : ℝ) : ℂ :=
   (Complex.I - 2 * (Real.pi : ℂ) * (y : ℂ) * ((x : ℂ) + Complex.I * (y : ℂ))) *
     Complex.exp (-(Real.pi : ℂ) * ((x : ℂ) ^ 2 + (y : ℂ) ^ 2))
 
+/- English proof (translation)
+Establish `hXc` using `hX.ofReal_comp`. Establish `hYc` using `hY.ofReal_comp`. Establish `h1` using `hXc.add (hYc.const_mul Complex.I)`. Establish `h2` using `((hXc.pow 2).add (hYc.pow 2)).const_mul (-(Real.pi : ℂ))`. Unfold `fac facX facY`.
+
+Use `(h1.mul h2.cexp).congr_deriv ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.pow_apply]`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasDerivAt_fac {X Y : ℝ → ℝ} {X' Y' s : ℝ} (hX : HasDerivAt X X' s) (hY : HasDerivAt Y Y' s) :
     HasDerivAt (fun s => fac (X s) (Y s)) (X' * facX (X s) (Y s) + Y' * facY (X s) (Y s)) s := by
   have hXc := hX.ofReal_comp
@@ -39,6 +44,9 @@ theorem hasDerivAt_fac {X Y : ℝ → ℝ} {X' Y' s : ℝ} (hX : HasDerivAt X X'
   norm_num
   ring
 
+/- English proof (translation)
+Unfold `fac facX facY`. Use `push_cast`. Simplify using `only [neg_sq]`. Use `set E := Complex.exp (-(Real.pi : ℂ) * ((x : ℂ) ^ 2 + (y : ℂ) ^ 2))`. Take the linear combination `(-(x : ℂ) * E + 4 * (Real.pi : ℂ) * (x : ℂ) * (y : ℂ) ^ 2 * E) * Complex.I_sq`.
+-/
 theorem low_identity (x y : ℝ) :
     (x * facX x y + (-y) * facY x y) - Complex.I * (y * facX x y + x * facY x y) =
       (x * facX x (-y) + (-y) * facY x (-y)) + fac x (-y) := by
@@ -109,21 +117,35 @@ def XB (v : InfinitePlace F) : UpperTheory.V.TR.Lie F 2 :=
 def XZ (v : InfinitePlace F) : UpperTheory.V.TR.Lie F 2 :=
   UpperTheory.V.TR.toL (Matrix.single 0 0 (Pi.single v 1)) + UpperTheory.V.TR.toL (Matrix.single 1 1 (Pi.single v 1))
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j w`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [kA, atv]`.
+-/
 theorem kA_zero (v : InfinitePlace F) : kA v 0 = 1 := by
   refine Units.ext ?_
   ext i j w
   fin_cases i <;> fin_cases j <;> simp [kA, atv]
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j w`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [kB, atv]`.
+-/
 theorem kB_zero (v : InfinitePlace F) : kB v 0 = 1 := by
   refine Units.ext ?_
   ext i j w
   fin_cases i <;> fin_cases j <;> simp [kB, atv]
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j w`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [kZ, atv]`.
+-/
 theorem kZ_zero (v : InfinitePlace F) : kZ v 0 = 1 := by
   refine Units.ext ?_
   ext i j w
   fin_cases i <;> fin_cases j <;> simp [kZ, atv]
 
+/- English proof (translation)
+Use `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => hasDerivAt_pi.2 fun u => ?_` and prove the remaining obligations. Distinguish the cases in `hu : u = v`. Apply the tactic sequence `subst hu fin_cases i <;> fin_cases j`. Simplify `Real.hasDerivAt_exp 0` using `[XA, kA, atv]`. Simplify using `[XA, kA, atv, hasDerivAt_const]`.
+
+Simplify using `[XA, kA, atv, hasDerivAt_const]`. Simplify `(hasDerivAt_neg (0 : ℝ)).exp` using `[XA, kA, atv]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [XA, kA, atv, hu, hasDerivAt_const]`.
+-/
 theorem kA_deriv (v : InfinitePlace F) :
     HasDerivAt (fun s : ℝ => UpperTheory.V.TR.toL (kA v s).val) (XA v) 0 := by
   refine hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => hasDerivAt_pi.2 fun u => ?_
@@ -136,6 +158,11 @@ theorem kA_deriv (v : InfinitePlace F) :
     · simpa [XA, kA, atv] using (hasDerivAt_neg (0 : ℝ)).exp
   · fin_cases i <;> fin_cases j <;> simp [XA, kA, atv, hu, hasDerivAt_const]
 
+/- English proof (translation)
+Use `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => hasDerivAt_pi.2 fun u => ?_` and prove the remaining obligations. Distinguish the cases in `hu : u = v`. Apply the tactic sequence `subst hu fin_cases i <;> fin_cases j`. Simplify `Real.hasDerivAt_cosh 0` using `[XB, kB, atv]`. Simplify `Real.hasDerivAt_sinh 0` using `[XB, kB, atv]`.
+
+Simplify `Real.hasDerivAt_sinh 0` using `[XB, kB, atv]`. Simplify `Real.hasDerivAt_cosh 0` using `[XB, kB, atv]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [XB, kB, atv, hu, hasDerivAt_const]`.
+-/
 theorem kB_deriv (v : InfinitePlace F) :
     HasDerivAt (fun s : ℝ => UpperTheory.V.TR.toL (kB v s).val) (XB v) 0 := by
   refine hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => hasDerivAt_pi.2 fun u => ?_
@@ -148,6 +175,11 @@ theorem kB_deriv (v : InfinitePlace F) :
     · simpa [XB, kB, atv] using Real.hasDerivAt_cosh 0
   · fin_cases i <;> fin_cases j <;> simp [XB, kB, atv, hu, hasDerivAt_const]
 
+/- English proof (translation)
+Use `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => hasDerivAt_pi.2 fun u => ?_` and prove the remaining obligations. Distinguish the cases in `hu : u = v`. Apply the tactic sequence `subst hu fin_cases i <;> fin_cases j`. Simplify `Real.hasDerivAt_exp 0` using `[XZ, kZ, atv]`. Simplify using `[XZ, kZ, atv, hasDerivAt_const]`.
+
+Simplify using `[XZ, kZ, atv, hasDerivAt_const]`. Simplify `Real.hasDerivAt_exp 0` using `[XZ, kZ, atv]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [XZ, kZ, atv, hu, hasDerivAt_const]`.
+-/
 theorem kZ_deriv (v : InfinitePlace F) :
     HasDerivAt (fun s : ℝ => UpperTheory.V.TR.toL (kZ v s).val) (XZ v) 0 := by
   refine hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => hasDerivAt_pi.2 fun u => ?_
@@ -166,9 +198,17 @@ def finInd (c : HeightOneSpectrum (𝓞 F) → ℕ) (a b : Af F) : ℂ :=
 
 def pI (η : Fin 2 → Ad F) : Fin 2 → UpperTheory.V.TR.Rinf F := fun j => UpperTheory.V.TR.pInf F (η j)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phi_eq (c : HeightOneSpectrum (𝓞 F) → ℕ) (η : Fin 2 → Ad F) :
     Phi c η = arch (pI η 0) (pI η 1) * finInd c (pFin F (η 0)) (pFin F (η 1)) := rfl
 
+/- English proof (translation)
+Use `set M := ((UpperTheory.V.TR.infGL F 2 y : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F))`. Establish `hI : M.map (UpperTheory.V.TR.pInf F) = (y : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F))` using `congrArg Units.val (UpperTheory.V.TR.pInf_infGL y)`. Establish `hF : M.map (pFin F) = 1` using `congrArg Units.val (UpperTheory.V.TR.pFin_infGL y)`. Establish `eI : ∀ i, UpperTheory.V.TR.pInf F ((η ᵥ* M) i) = (pI η ᵥ* (y : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F))) i` using `fun i => by rw [RingHom.map_vecMul, hI]; rfl`. Establish `eF : ∀ i, pFin F ((η ᵥ* M) i) = pFin F (η i)` using `fun i => by`.
+
+Rewrite using `[RingHom.map_vecMul, hF, Matrix.vecMul_one]`. Both sides reduce to the same expression. Rewrite using `[phi_eq, eF 0, eF 1]`. Simplify using `only [pI] at eI ⊢`. Rewrite using `[eI 0, eI 1]`.
+-/
 theorem phi_infGL (c : HeightOneSpectrum (𝓞 F) → ℕ) (η : Fin 2 → Ad F) (y : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) :
     Phi c (η ᵥ* ((UpperTheory.V.TR.infGL F 2 y : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F))) =
       arch ((pI η ᵥ* (y : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F))) 0)
@@ -186,6 +226,9 @@ theorem phi_infGL (c : HeightOneSpectrum (𝓞 F) → ℕ) (η : Fin 2 → Ad F)
   simp only [pI] at eI ⊢
   rw [eI 0, eI 1]
 
+/- English proof (translation)
+Unfold `arch`. Conclude with `(Finset.mul_prod_erase Finset.univ (fun w => fac (x w) (y w)) (Finset.mem_univ v)).symm`.
+-/
 theorem arch_split (v : InfinitePlace F) (x y : UpperTheory.V.TR.Rinf F) :
     arch x y = fac (x v) (y v) * ∏ w ∈ Finset.univ.erase v, fac (x w) (y w) := by
   unfold arch
@@ -193,10 +236,18 @@ theorem arch_split (v : InfinitePlace F) (x y : UpperTheory.V.TR.Rinf F) :
 
 def rest (v : InfinitePlace F) (p : Fin 2 → UpperTheory.V.TR.Rinf F) : ℂ := ∏ w ∈ Finset.univ.erase v, fac (p 0 w) (p 1 w)
 
+/- English proof (translation)
+Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`.
+-/
 theorem vecMul_apply2 (p : Fin 2 → UpperTheory.V.TR.Rinf F) (y : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)) (i : Fin 2)
     (w : InfinitePlace F) : (p ᵥ* y) i w = p 0 w * y 0 i w + p 1 w * y 1 i w := by
   simp [Matrix.vecMul, dotProduct, Fin.sum_univ_two]
 
+/- English proof (translation)
+Rewrite using `[phi_infGL, arch_split v, mul_assoc]`. Use `congr 2`. Unfold `rest`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations. Establish `hw'` using `Finset.ne_of_mem_erase hw`.
+
+Establish `h : ∀ i, (pI η ᵥ* (y : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F))) i w = pI η i w` using `fun i => by`. Rewrite using `[vecMul_apply2, hy w hw' 0 i, hy w hw' 1 i]`. Apply the tactic sequence `fin_cases i <;> simp [Matrix.one_apply]`. Rewrite using `[h 0, h 1]`.
+-/
 theorem phi_curve (c : HeightOneSpectrum (𝓞 F) → ℕ) (v : InfinitePlace F) (η : Fin 2 → Ad F)
     (y : GL (Fin 2) (UpperTheory.V.TR.Rinf F))
     (hy : ∀ w, w ≠ v → ∀ i j, (y : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)) i j w =
@@ -221,24 +272,36 @@ def DB (x y : ℝ) : ℂ := (y : ℂ) * facX x y + (x : ℂ) * facY x y
 
 def DZ (x y : ℝ) : ℂ := (x : ℂ) * facX x (-y) + (-(y : ℂ)) * facY x (-y)
 
+/- English proof (translation)
+Establish `h` using `low_identity x y`. Unfold `DA DB DZ`. Use `push_cast`. Take the linear combination `h`.
+-/
 theorem low_identity' (x y : ℝ) : DA x y - Complex.I * DB x y = DZ x y + fac x (-y) := by
   have h := low_identity x y
   unfold DA DB DZ
   push_cast
   linear_combination h
 
+/- English proof (translation)
+Introduce `w hw i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [kA, atv, hw]`.
+-/
 theorem hyA (v : InfinitePlace F) (s : ℝ) : ∀ w, w ≠ v → ∀ i j,
     ((kA v s : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)) i j w =
       (1 : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)) i j w := by
   intro w hw i j
   fin_cases i <;> fin_cases j <;> simp [kA, atv, hw]
 
+/- English proof (translation)
+Introduce `w hw i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [kB, atv, hw]`.
+-/
 theorem hyB (v : InfinitePlace F) (s : ℝ) : ∀ w, w ≠ v → ∀ i j,
     ((kB v s : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)) i j w =
       (1 : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)) i j w := by
   intro w hw i j
   fin_cases i <;> fin_cases j <;> simp [kB, atv, hw]
 
+/- English proof (translation)
+Introduce `w hw i j`. Rewrite using `[Units.val_mul]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [eps, kZ, atv, hw, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem hyEZ (v : InfinitePlace F) (s : ℝ) : ∀ w, w ≠ v → ∀ i j,
     ((eps v * kZ v s : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)) i j w =
       (1 : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)) i j w := by
@@ -246,6 +309,9 @@ theorem hyEZ (v : InfinitePlace F) (s : ℝ) : ∀ w, w ≠ v → ∀ i j,
   rw [Units.val_mul]
   fin_cases i <;> fin_cases j <;> simp [eps, kZ, atv, hw, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Introduce `w hw i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [eps, atv, hw]`.
+-/
 theorem hyE (v : InfinitePlace F) : ∀ w, w ≠ v → ∀ i j,
     ((eps v : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)) i j w =
       (1 : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)) i j w := by
@@ -255,6 +321,13 @@ theorem hyE (v : InfinitePlace F) : ∀ w, w ≠ v → ∀ i j,
 def Rt (c : HeightOneSpectrum (𝓞 F) → ℕ) (v : InfinitePlace F) (η : Fin 2 → Ad F) : ℂ :=
   rest v (pI η) * finInd c (pFin F (η 0)) (pFin F (η 1))
 
+/- English proof (translation)
+Use `set x := pI η 0 v`. Use `set y := pI η 1 v`. Establish `e : (fun s => Phi c (η ᵥ* ((UpperTheory.V.TR.infGL F 2 (kA v s) : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)))) = fun s => fac (x * Real.exp s) (y * Real.exp (-s)) * Rt c v η`. Use function extensionality and compare the values at `s`. Rewrite using `[phi_curve c v η (kA v s) (hyA v s), vecMul_apply2, vecMul_apply2]`.
+
+Simplify using `[kA, atv, x, y, Rt]`. Rewrite using `[e]`. Establish `hX : HasDerivAt (fun s => x * Real.exp s) x 0` using `by simpa using (Real.hasDerivAt_exp 0).const_mul x`. Establish `hY : HasDerivAt (fun s => y * Real.exp (-s)) (-y) 0`. Simplify using `using ((hasDerivAt_neg (0 : ℝ)).exp).const_mul y`.
+
+Establish `h` using `(hasDerivAt_fac hX hY).mul_const (Rt c v η)`. Use `h.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [Real.exp_zero, mul_one, neg_zero, DA]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem term_A (c : HeightOneSpectrum (𝓞 F) → ℕ) (v : InfinitePlace F) (η : Fin 2 → Ad F) :
     HasDerivAt (fun s => Phi c (η ᵥ* ((UpperTheory.V.TR.infGL F 2 (kA v s) : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F))))
       (DA (pI η 0 v) (pI η 1 v) * Rt c v η) 0 := by
@@ -275,6 +348,15 @@ theorem term_A (c : HeightOneSpectrum (𝓞 F) → ℕ) (v : InfinitePlace F) (�
   push_cast
   ring
 
+/- English proof (translation)
+Use `set x := pI η 0 v`. Use `set y := pI η 1 v`. Establish `e : (fun s => Phi c (η ᵥ* ((UpperTheory.V.TR.infGL F 2 (kB v s) : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)))) = fun s => fac (x * Real.cosh s + y * Real.sinh s) (x * Real.sinh s + y * Real.cosh s) * Rt c v η`. Use function extensionality and compare the values at `s`. Rewrite using `[phi_curve c v η (kB v s) (hyB v s), vecMul_apply2, vecMul_apply2]`.
+
+Simplify using `[kB, atv, x, y, Rt]`. Rewrite using `[e]`. Establish `hX : HasDerivAt (fun s => x * Real.cosh s + y * Real.sinh s) y 0`. Use `(((Real.hasDerivAt_cosh 0).const_mul x).add ((Real.hasDerivAt_sinh 0).const_mul y)).congr_deriv ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Establish `hY : HasDerivAt (fun s => x * Real.sinh s + y * Real.cosh s) x 0`. Use `(((Real.hasDerivAt_sinh 0).const_mul x).add ((Real.hasDerivAt_cosh 0).const_mul y)).congr_deriv ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `h` using `(hasDerivAt_fac hX hY).mul_const (Rt c v η)`. Use `h.congr_deriv ?_` and prove the remaining obligations.
+
+Simplify using `only [Real.cosh_zero, Real.sinh_zero, mul_one, mul_zero, add_zero, zero_add, DB]`. Apply the tactic sequence `all_goals (push_cast; ring)`.
+-/
 theorem term_B (c : HeightOneSpectrum (𝓞 F) → ℕ) (v : InfinitePlace F) (η : Fin 2 → Ad F) :
     HasDerivAt (fun s => Phi c (η ᵥ* ((UpperTheory.V.TR.infGL F 2 (kB v s) : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F))))
       (DB (pI η 0 v) (pI η 1 v) * Rt c v η) 0 := by
@@ -297,6 +379,13 @@ theorem term_B (c : HeightOneSpectrum (𝓞 F) → ℕ) (v : InfinitePlace F) (�
   simp only [Real.cosh_zero, Real.sinh_zero, mul_one, mul_zero, add_zero, zero_add, DB]
   all_goals (push_cast; ring)
 
+/- English proof (translation)
+Use `set x := pI η 0 v`. Use `set y := pI η 1 v`. Establish `e : (fun s => Phi c (η ᵥ* ((UpperTheory.V.TR.infGL F 2 (eps v * kZ v s) : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)))) = fun s => fac (x * Real.exp s) (-y * Real.exp s) * Rt c v η`. Use function extensionality and compare the values at `s`. Rewrite using `[phi_curve c v η (eps v * kZ v s) (hyEZ v s), vecMul_apply2, vecMul_apply2, Units.val_mul]`.
+
+Simplify using `[eps, kZ, atv, x, y, Rt, Matrix.mul_apply, Fin.sum_univ_two]`. Rewrite using `[e]`. Establish `hX : HasDerivAt (fun s => x * Real.exp s) x 0` using `by simpa using (Real.hasDerivAt_exp 0).const_mul x`. Establish `hY : HasDerivAt (fun s => -y * Real.exp s) (-y) 0` using `by simpa using (Real.hasDerivAt_exp 0).const_mul (-y)`. Establish `h` using `(hasDerivAt_fac hX hY).mul_const (Rt c v η)`.
+
+Use `h.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [Real.exp_zero, mul_one, DZ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem term_Z (c : HeightOneSpectrum (𝓞 F) → ℕ) (v : InfinitePlace F) (η : Fin 2 → Ad F) :
     HasDerivAt (fun s => Phi c (η ᵥ* ((UpperTheory.V.TR.infGL F 2 (eps v * kZ v s) : GA F 2) :
         Matrix (Fin 2) (Fin 2) (Ad F))))
@@ -318,12 +407,18 @@ theorem term_Z (c : HeightOneSpectrum (𝓞 F) → ℕ) (v : InfinitePlace F) (�
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[phi_curve c v η (eps v) (hyE v), vecMul_apply2, vecMul_apply2]`. Simplify using `[eps, atv, Rt]`.
+-/
 theorem term_eps (c : HeightOneSpectrum (𝓞 F) → ℕ) (v : InfinitePlace F) (η : Fin 2 → Ad F) :
     Phi c (η ᵥ* ((UpperTheory.V.TR.infGL F 2 (eps v) : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F))) =
       fac (pI η 0 v) (-(pI η 1 v)) * Rt c v η := by
   rw [phi_curve c v η (eps v) (hyE v), vecMul_apply2, vecMul_apply2]
   simp [eps, atv, Rt]
 
+/- English proof (translation)
+Rewrite using `[term_eps]`. Take the linear combination `Rt c v η * low_identity' (pI η 0 v) (pI η 1 v)`.
+-/
 theorem term_low (c : HeightOneSpectrum (𝓞 F) → ℕ) (v : InfinitePlace F) (η : Fin 2 → Ad F) :
     DA (pI η 0 v) (pI η 1 v) * Rt c v η - Complex.I * (DB (pI η 0 v) (pI η 1 v) * Rt c v η) =
       DZ (pI η 0 v) (pI η 1 v) * Rt c v η +
@@ -331,6 +426,9 @@ theorem term_low (c : HeightOneSpectrum (𝓞 F) → ℕ) (v : InfinitePlace F) 
   rw [term_eps]
   linear_combination Rt c v η * low_identity' (pI η 0 v) (pI η 1 v)
 
+/- English proof (translation)
+Establish `h` using `(InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).symm.dist_eq r 0`. Establish `h0 : ((InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).symm 0 : w.Completion) = 0` using `map_zero _`. Rewrite using `[← dist_zero_right, ← Real.norm_eq_abs, ← dist_zero_right, ← h0]`. Conclude with `h`.
+-/
 theorem norm_infEq (w : InfinitePlace F) (r : ℝ) :
     ‖((InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).symm r : w.Completion)‖ = |r| := by
   have h := (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).symm.dist_eq r 0
@@ -339,6 +437,13 @@ theorem norm_infEq (w : InfinitePlace F) (r : ℝ) :
   rw [← dist_zero_right, ← Real.norm_eq_abs, ← dist_zero_right, ← h0]
   exact h
 
+/- English proof (translation)
+Rewrite using `[ideleModule_eq]`. Establish `h1 : ((UpperTheory.V.TR.infId F u : Ideles F) : Ad F).1 = UpperTheory.V.TR.infEq F u.val` using `by show (1 : InfiniteAdeleRing F) - UpperTheory.V.TR.infEq F 1 + UpperTheory.V.TR.infEq F u.val = _`. Simplify using the standard rewrite rules. Establish `h2 : ((UpperTheory.V.TR.infId F u : Ideles F) : Ad F).2 = 1` using `by show (1 : Af F) - 0 + 0 = 1`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h1, h2]`. Establish `h3 : ∏ᶠ v : HeightOneSpectrum (𝓞 F), ‖(1 : Af F) v‖ = 1` using `finprod_eq_one_of_forall_eq_one fun v => by simp`. Rewrite using `[h3, mul_one]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[(IsTotallyReal.isReal w).mult_eq_one, pow_one]`.
+
+Conclude with `norm_infEq w (u.val w)`.
+-/
 theorem ideleModule_infId (u : (UpperTheory.V.TR.Rinf F)ˣ) :
     (IdeleGroup.ideleModule F (UpperTheory.V.TR.infId F u) : ℝ) = ∏ w, |u.val w| := by
   rw [ideleModule_eq]
@@ -356,16 +461,25 @@ theorem ideleModule_infId (u : (UpperTheory.V.TR.Rinf F)ˣ) :
   rw [(IsTotallyReal.isReal w).mult_eq_one, pow_one]
   exact norm_infEq w (u.val w)
 
+/- English proof (translation)
+Unfold `absD`. Rewrite using `[map_mul, UpperTheory.V.TR.det_infGL, map_mul, Positive.val_mul, ideleModule_infId]`.
+-/
 theorem absD_mul_infGL (g : GA F 2) (y : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) :
     absD (g * UpperTheory.V.TR.infGL F 2 y) = absD g * ∏ w, |(Matrix.GeneralLinearGroup.det y).val w| := by
   unfold absD
   rw [map_mul, UpperTheory.V.TR.det_infGL, map_mul, Positive.val_mul, ideleModule_infId]
 
+/- English proof (translation)
+Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Simplify using `[kA, Matrix.det_fin_two, atv]`. Apply the tactic sequence `split_ifs <;> simp [← Real.exp_add]`.
+-/
 theorem det_kA (v : InfinitePlace F) (s : ℝ) : ∏ w, |(Matrix.GeneralLinearGroup.det (kA v s)).val w| = 1 := by
   refine Finset.prod_eq_one fun w _ => ?_
   simp [kA, Matrix.det_fin_two, atv]
   split_ifs <;> simp [← Real.exp_add]
 
+/- English proof (translation)
+Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Simplify using `[kB, Matrix.det_fin_two, atv]`. Use `split_ifs`. Rewrite using `[← sq, ← sq, Real.cosh_sq_sub_sinh_sq, abs_one]`. Simplify using the standard rewrite rules.
+-/
 theorem det_kB (v : InfinitePlace F) (s : ℝ) : ∏ w, |(Matrix.GeneralLinearGroup.det (kB v s)).val w| = 1 := by
   refine Finset.prod_eq_one fun w _ => ?_
   simp [kB, Matrix.det_fin_two, atv]
@@ -373,11 +487,17 @@ theorem det_kB (v : InfinitePlace F) (s : ℝ) : ∏ w, |(Matrix.GeneralLinearGr
   · rw [← sq, ← sq, Real.cosh_sq_sub_sinh_sq, abs_one]
   · simp
 
+/- English proof (translation)
+Use `Finset.prod_eq_one fun w _ => ?_` and prove the remaining obligations. Simplify using `[eps, Matrix.det_fin_two, atv]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem det_eps (v : InfinitePlace F) : ∏ w, |(Matrix.GeneralLinearGroup.det (eps v)).val w| = 1 := by
   refine Finset.prod_eq_one fun w _ => ?_
   simp [eps, Matrix.det_fin_two, atv]
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[Fintype.prod_eq_single v (fun w hw => by simp [kZ, Matrix.det_fin_two, atv, hw])]`. Simplify using `[kZ, Matrix.det_fin_two, atv]`.
+-/
 theorem det_kZ (v : InfinitePlace F) (s : ℝ) :
     ∏ w, |(Matrix.GeneralLinearGroup.det (kZ v s)).val w| = Real.exp s * Real.exp s := by
   rw [Fintype.prod_eq_single v (fun w hw => by simp [kZ, Matrix.det_fin_two, atv, hw])]
@@ -389,6 +509,9 @@ def eu (v : InfinitePlace F) (s : ℝ) : (UpperTheory.V.TR.Rinf F)ˣ where
   val_inv := by funext w; simp only [atv, Pi.mul_apply, Pi.one_apply]; split_ifs <;> simp [← Real.exp_add]
   inv_val := by funext w; simp only [atv, Pi.mul_apply, Pi.one_apply]; split_ifs <;> simp [← Real.exp_add]
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Matrix.GeneralLinearGroup.coe_scalar]`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin 2) (Fin 2) (Ad F)) i j - UpperTheory.V.TR.sInf F ((1 : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)) i j) + UpperTheory.V.TR.sInf F (((kZ v s : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)) i j) = Matrix.scalar (Fin …`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [kZ]`.
+-/
 theorem infGL_kZ (v : InfinitePlace F) (s : ℝ) :
     UpperTheory.V.TR.infGL F 2 (kZ v s) = Matrix.GeneralLinearGroup.scalar (Fin 2) (UpperTheory.V.TR.infId F (eu v s)) := by
   refine Units.ext ?_
@@ -399,6 +522,13 @@ theorem infGL_kZ (v : InfinitePlace F) (s : ℝ) :
     Matrix.scalar (Fin 2) (1 - UpperTheory.V.TR.sInf F 1 + UpperTheory.V.TR.sInf F (atv v (Real.exp s) 1)) i j
   fin_cases i <;> fin_cases j <;> simp [kZ]
 
+/- English proof (translation)
+Take `⟨n, hn, hpow⟩` from `(isOfFinOrder_iff_pow_eq_one).1 hω`. Establish `e : eu v s = (eu v (s / n)) ^ n`. Use `Units.ext (funext fun w => ?_)` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, Pi.pow_apply]`. Simplify using `only [eu, atv]`.
+
+Use `split_ifs`. Rewrite using `[← Real.exp_nat_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+
+Establish `h` using `congrArg (fun χ : HChar F => χ.1 (UpperTheory.V.TR.infId F (eu v (s / n)))) hpow`. Rewrite using `[e, map_pow, map_pow]`. Establish `h' : (ω ^ n).1 (UpperTheory.V.TR.infId F (eu v (s / n))) = (ω.1 (UpperTheory.V.TR.infId F (eu v (s / n)))) ^ n` using `rfl`. Rewrite using `[← h', h]`. Both sides reduce to the same expression.
+-/
 theorem omega_eu (ω : HChar F) (hω : IsOfFinOrder ω) (v : InfinitePlace F) (s : ℝ) :
     ((ω.1 (UpperTheory.V.TR.infId F (eu v s)) : ℂˣ) : ℂ) = 1 := by
   obtain ⟨n, hn, hpow⟩ := (isOfFinOrder_iff_pow_eq_one).1 hω
@@ -417,12 +547,20 @@ theorem omega_eu (ω : HChar F) (hω : IsOfFinOrder ω) (v : InfinitePlace F) (s
   rw [← h', h]
   rfl
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.GeneralLinearGroup.coe_scalar]`. Conclude with `((Matrix.scalar_commute _ (fun r => Commute.all _ r) _).eq).symm`.
+-/
 theorem mul_scalar_comm (h : GA F 2) (z : Ideles F) :
     h * Matrix.GeneralLinearGroup.scalar (Fin 2) z = Matrix.GeneralLinearGroup.scalar (Fin 2) z * h := by
   refine Units.ext ?_
   rw [Units.val_mul, Units.val_mul, Matrix.GeneralLinearGroup.coe_scalar]
   exact ((Matrix.scalar_commute _ (fun r => Commute.all _ r) _).eq).symm
 
+/- English proof (translation)
+Establish `h1` using `UpperTheory.V.TR.hasDerivAt_curve ⟨Eis ω (Phi c), hs⟩ h (kZ v) (XZ v) (kZ_zero v) (kZ_deriv v)`. Establish `e : (fun t => (⟨Eis ω (Phi c), hs⟩ : UpperTheory.V.TR.Sm F 2).1 (h * UpperTheory.V.TR.infGL F 2 (kZ v t))) = fun _ => Eis ω (Phi c) h`. Use function extensionality and compare the values at `t`. Use `show Eis ω (Phi c) (h * UpperTheory.V.TR.infGL F 2 (kZ v t)) = Eis ω (Phi c) h`. Rewrite using `[infGL_kZ, mul_scalar_comm, central_character_holds hP hI hS F ω c H, omega_eu ω H.fin, one_mul]`.
+
+Rewrite `h1` using `[e]`. Conclude with `h1.unique (hasDerivAt_const 0 _)`.
+-/
 theorem lieD_XZ_eq_zero (hP : SPois) (hI : SInt) (hS : SSmooth) {ω : HChar F} {c : HeightOneSpectrum (𝓞 F) → ℕ}
     (H : Hyp ω c) (hs : Eis ω (Phi c) ∈ UpperTheory.V.TR.Sm F 2) (v : InfinitePlace F) (h : GA F 2) :
     UpperTheory.V.TR.lieD (XZ v) (Eis ω (Phi c)) h = 0 := by
@@ -435,6 +573,9 @@ theorem lieD_XZ_eq_zero (hP : SPois) (hI : SInt) (hS : SSmooth) {ω : HChar F} {
   rw [e] at h1
   exact h1.unique (hasDerivAt_const 0 _)
 
+/- English proof (translation)
+Unfold `eisInt`. Rewrite using `[absD_mul_infGL, ← mul_assoc (Matrix.GeneralLinearGroup.scalar (Fin 2) (moduleSection (w0 F) t * (u : Ideles F)))]`.
+-/
 theorem eisInt_curve (ω : HChar F) (Ψ : (Fin 2 → Ad F) → ℂ) (g : GA F 2) (y : GL (Fin 2) (UpperTheory.V.TR.Rinf F))
     (t : {r : ℝ // 0 < r}) (u : normOneSubgroup F) :
     eisInt ω Ψ (g * UpperTheory.V.TR.infGL F 2 y) t u =
@@ -445,19 +586,59 @@ theorem eisInt_curve (ω : HChar F) (Ψ : (Fin 2 → Ad F) → ℂ) (g : GA F 2)
   unfold eisInt
   rw [absD_mul_infGL, ← mul_assoc (Matrix.GeneralLinearGroup.scalar (Fin 2) (moduleSection (w0 F) t * (u : Ideles F)))]
 
+/- English proof (translation)
+The claim follows from `(IdeleGroup.ideleModule F _).2.le`.
+-/
 theorem absD_nonneg' (g : GA F 2) : 0 ≤ absD g := (IdeleGroup.ideleModule F _).2.le
 
+/- English proof (translation)
+Rewrite using `[Real.mul_rpow ha (by positivity), ← Real.exp_add, ← Real.exp_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sqrt_exp (a s : ℝ) (ha : 0 ≤ a) :
     (a * (Real.exp s * Real.exp s)) ^ ((1 : ℝ) / 2) = a ^ ((1 : ℝ) / 2) * Real.exp s := by
   rw [Real.mul_rpow ha (by positivity), ← Real.exp_add, ← Real.exp_mul]
   congr 2
   ring
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, Matrix.vecMul_vecMul]`.
+-/
 theorem rowA_vecMul_mul (ξ : Fin 2 → F) (M N : GA F 2) :
     rowA ξ ᵥ* ((M * N : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)) =
       (rowA ξ ᵥ* (M : Matrix (Fin 2) (Fin 2) (Ad F))) ᵥ* (N : Matrix (Fin 2) (Fin 2) (Ad F)) := by
   rw [Units.val_mul, Matrix.vecMul_vecMul]
 
+/- English proof (translation)
+Use `set f : GA F 2 → ℂ := fun g' => eisInt ω (Phi c) g' t u with hf`. Use `set A := moduleSection (w0 F) t * (u : Ideles F)`. Use `set M := Matrix.GeneralLinearGroup.scalar (Fin 2) A * g with hM`. Use `set K : ℂ := ((ω.1 A : ℂˣ) : ℂ)⁻¹ * ((t : ℝ) : ℂ) * ((absD g ^ ((1 : ℝ) / 2) : ℝ) : ℂ) with hK`. Take `⟨DAf, hDA, sA, hθA⟩` from `UpperTheory.HilbertEisensteinWeightOne.SLowLib.thetaS_curve c g A (kA v) (XA v) (kA_zero v) (kA_deriv v)`.
+
+Simplify using `only [← hM] at hDA hθA`. Establish `dA` using `UpperTheory.HilbertEisensteinWeightOne.Fresh.hasDerivAt_chart_curve f g (UpperTheory.HilbertEisensteinWeightOne.SLowLib.chart_eisInt_differentiableAt ω c g t u) (kA v) (XA v) (kA_zero v) (kA_deriv v)`. Establish `eA : (fun s => f (g * UpperTheory.V.TR.infGL F 2 (kA v s))) = fun s => thetaS (Phi c) (M * UpperTheory.V.TR.infGL F 2 (kA v s)) * K`. Use function extensionality and compare the values at `s`. Simplify using `only [hf]`.
+
+Rewrite using `[eisInt_curve, det_kA, mul_one, hK]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `dA` using `[eA]`. Establish `vA` using `dA.unique (hθA.mul_const K)`. Take `⟨DBf, hDB, sB, hθB⟩` from `UpperTheory.HilbertEisensteinWeightOne.SLowLib.thetaS_curve c g A (kB v) (XB v) (kB_zero v) (kB_deriv v)`.
+
+Simplify using `only [← hM] at hDB hθB`. Establish `dB` using `UpperTheory.HilbertEisensteinWeightOne.Fresh.hasDerivAt_chart_curve f g (UpperTheory.HilbertEisensteinWeightOne.SLowLib.chart_eisInt_differentiableAt ω c g t u) (kB v) (XB v) (kB_zero v) (kB_deriv v)`. Establish `eB : (fun s => f (g * UpperTheory.V.TR.infGL F 2 (kB v s))) = fun s => thetaS (Phi c) (M * UpperTheory.V.TR.infGL F 2 (kB v s)) * K`. Use function extensionality and compare the values at `s`. Simplify using `only [hf]`.
+
+Rewrite using `[eisInt_curve, det_kB, mul_one, hK]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `dB` using `[eB]`. Establish `vB` using `dB.unique (hθB.mul_const K)`. Use `set M' := M * UpperTheory.V.TR.infGL F 2 (eps v) with hM'`.
+
+Take `⟨DZf, hDZ, sZ, hθZ⟩` from `UpperTheory.HilbertEisensteinWeightOne.SLowLib.thetaS_curve c (g * UpperTheory.V.TR.infGL F 2 (eps v)) A (kZ v) (XZ v) (kZ_zero v) (kZ_deriv v)`. Establish `hMM : Matrix.GeneralLinearGroup.scalar (Fin 2) A * (g * UpperTheory.V.TR.infGL F 2 (eps v)) = M'`. Rewrite using `[hM', hM, mul_assoc]`. Simplify using `only [hMM] at hDZ hθZ`. Establish `dZ` using `UpperTheory.HilbertEisensteinWeightOne.Fresh.hasDerivAt_chart_curve f (g * UpperTheory.V.TR.infGL F 2 (eps v)) (UpperTheory.HilbertEisensteinWeightOne.SLowLib.chart_eisInt_differentiableAt ω c _ t u) (kZ v) (XZ v) (kZ_zero v) (kZ_deriv v)`.
+
+Establish `eZ : (fun s => f (g * UpperTheory.V.TR.infGL F 2 (eps v) * UpperTheory.V.TR.infGL F 2 (kZ v s))) = fun s => thetaS (Phi c) (M' * UpperTheory.V.TR.infGL F 2 (kZ v s)) * (K * ((Real.exp s : ℝ) : ℂ))`. Use function extensionality and compare the values at `s`. Simplify using `only [hf]`. Rewrite using `[eisInt_curve, det_kZ, absD_mul_infGL, det_eps, mul_one, sqrt_exp _ _ (absD_nonneg' g), hK, ← mul_assoc (Matrix.GeneralLinearGroup.scalar (Fin 2) A) g]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `dZ` using `[eZ]`. Establish `hE : HasDerivAt (fun s : ℝ => K * ((Real.exp s : ℝ) : ℂ)) K 0`. Use `((Real.hasDerivAt_exp 0).ofReal_comp.const_mul K).congr_deriv ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Establish `vZ` using `dZ.unique (hθZ.mul hE)`. Rewrite `vZ` using `[kZ_zero, map_one, mul_one, Real.exp_zero, Complex.ofReal_one, mul_one]`. Establish `tA : ∀ ξ, DAf ξ = DA (pI (rowA ξ.1 ᵥ* (M : Matrix (Fin 2) (Fin 2) (Ad F))) 0 v) (pI (rowA ξ.1 ᵥ* (M : Matrix (Fin 2) (Fin 2) (Ad F))) 1 v) * Rt c v (rowA ξ.1 ᵥ* (M : Matrix (Fin 2) (Fin 2) (Ad F)))`. Introduce `ξ`. Establish `h` using `hDA ξ`.
+
+Simplify using `only [rowA_vecMul_mul] at h`. Conclude with `h.unique (term_A c v _)`. Establish `tB : ∀ ξ, DBf ξ = DB (pI (rowA ξ.1 ᵥ* (M : Matrix (Fin 2) (Fin 2) (Ad F))) 0 v) (pI (rowA ξ.1 ᵥ* (M : Matrix (Fin 2) (Fin 2) (Ad F))) 1 v) * Rt c v (rowA ξ.1 ᵥ* (M : Matrix (Fin 2) (Fin 2) (Ad F)))`. Introduce `ξ`. Establish `h` using `hDB ξ`.
+
+Simplify using `only [rowA_vecMul_mul] at h`. Conclude with `h.unique (term_B c v _)`. Establish `tZ : ∀ ξ, DZf ξ = DZ (pI (rowA ξ.1 ᵥ* (M : Matrix (Fin 2) (Fin 2) (Ad F))) 0 v) (pI (rowA ξ.1 ᵥ* (M : Matrix (Fin 2) (Fin 2) (Ad F))) 1 v) * Rt c v (rowA ξ.1 ᵥ* (M : Matrix (Fin 2) (Fin 2) (Ad F)))`. Introduce `ξ`. Establish `h` using `hDZ ξ`.
+
+Simplify using `only [hM', mul_assoc, ← map_mul, rowA_vecMul_mul] at h`. Conclude with `h.unique (term_Z c v _)`. Establish `tE : ∀ ξ : {ξ : Fin 2 → F // ξ ≠ 0}, Phi c (rowA ξ.1 ᵥ* (M' : Matrix (Fin 2) (Fin 2) (Ad F))) = Phi c ((rowA ξ.1 ᵥ* (M : Matrix (Fin 2) (Fin 2) (Ad F))) ᵥ* ((UpperTheory.V.TR.infGL F 2 (eps v) : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)))` using `fun ξ => by`. Rewrite using `[hM', rowA_vecMul_mul]`. Establish `h1` using `sA.hasSum.sub (sB.hasSum.mul_left Complex.I)`.
+
+Establish `h2` using `sZ.hasSum.add (hsum M').hasSum`. Establish `h3 : (fun ξ => DAf ξ - Complex.I * DBf ξ) = fun ξ => DZf ξ + Phi c (rowA ξ.1 ᵥ* (M' : Matrix (Fin 2) (Fin 2) (Ad F)))`. Use function extensionality and compare the values at `ξ`. Rewrite using `[tA, tB, tZ, tE]`. Conclude with `term_low c v _`.
+
+Rewrite `h1` using `[h3]`. Establish `key` using `h1.unique h2`. Rewrite using `[vA, vB, vZ]`. Establish `hθ : thetaS (Phi c) M' = ∑' ξ : {ξ : Fin 2 → F // ξ ≠ 0}, Phi c (rowA ξ.1 ᵥ* (M' : Matrix (Fin 2) (Fin 2) (Ad F)))`. Both sides reduce to the same expression.
+
+Rewrite using `[hθ]`. Take the linear combination `K * key`.
+-/
 theorem pointwise (c : HeightOneSpectrum (𝓞 F) → ℕ) (ω : HChar F) (v : InfinitePlace F) (g : GA F 2)
     (t : {r : ℝ // 0 < r}) (u : normOneSubgroup F)
     (hsum : ∀ h : GA F 2, Summable (fun ξ : {ξ : Fin 2 → F // ξ ≠ 0} =>
@@ -558,6 +739,17 @@ theorem pointwise (c : HeightOneSpectrum (𝓞 F) → ℕ) (ω : HChar F) (v : I
 end UpperTheory.HilbertEisensteinWeightOne.eisensteinLowWeight
 
 open UpperTheory.HilbertEisensteinWeightOne.eisensteinLowWeight in
+/- English proof (translation)
+Introduce `hP hI hS F _ _ _ ω c H hs v`. Use `set φ : UpperTheory.V.TR.Sm F 2 := ⟨Eis ω (Phi c), hs⟩`. Establish `hA : UpperTheory.V.TR.Eop v 0 0 φ - UpperTheory.V.TR.Eop v 1 1 φ = UpperTheory.V.TR.lie F 2 (XA v) φ`. Unfold `UpperTheory.V.TR.Eop`. Rewrite using `[← LinearMap.sub_apply, ← map_sub]`.
+
+Both sides reduce to the same expression. Establish `hB : UpperTheory.V.TR.Eop v 0 1 φ + UpperTheory.V.TR.Eop v 1 0 φ = UpperTheory.V.TR.lie F 2 (XB v) φ`. Unfold `UpperTheory.V.TR.Eop`. Rewrite using `[← LinearMap.add_apply, ← map_add]`. Both sides reduce to the same expression.
+
+Rewrite using `[hA, hB]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `show UpperTheory.V.TR.lieD (XA v) (Eis ω (Phi c)) g = Complex.I * UpperTheory.V.TR.lieD (XB v) (Eis ω (Phi c)) g`. Take `⟨iA, eA⟩` from `UpperTheory.HilbertEisensteinWeightOne.lieD_Eis_eq_integral hP hI H g (XA v)`.
+
+Take `⟨iB, eB⟩` from `UpperTheory.HilbertEisensteinWeightOne.lieD_Eis_eq_integral hP hI H g (XB v)`. Take `⟨-, eZ⟩` from `UpperTheory.HilbertEisensteinWeightOne.lieD_Eis_eq_integral hP hI H (g * UpperTheory.V.TR.infGL F 2 (eps v)) (XZ v)`. Establish `hZ0` using `lieD_XZ_eq_zero hP hI hS H hs v (g * UpperTheory.V.TR.infGL F 2 (eps v))`. Establish `hsum : ∀ h : GA F 2, Summable (fun ξ : {ξ : Fin 2 → F // ξ ≠ 0} => Phi c (rowA ξ.1 ᵥ* (h : Matrix (Fin 2) (Fin 2) (Ad F))))` using `fun h => ((hP F ω c H).choose_spec h).1.of_norm`. Establish `hint` using `integral_sub iA (iB.const_mul Complex.I)`.
+
+Rewrite `hint` using `[integral_const_mul]`. Establish `hpt : (fun p : {r : ℝ // 0 < r} × normOneSubgroup F => UpperTheory.V.TR.lieD (XA v) (fun g' => eisInt ω (Phi c) g' p.1 p.2) g - Complex.I * UpperTheory.V.TR.lieD (XB v) (fun g' => eisInt ω (Phi c) g' p.1 p.2) g) = fun p => UpperTheory.V.TR.lieD (XZ v) (fun g' => eisInt ω (Phi c) …`. Use function extensionality and compare the values at `fun p => pointwise c ω v g p.1 p.2 hsum`. Rewrite `hint` using `[hpt, ← eZ, hZ0, ← eA, ← eB]`. Take the linear combination `-hint`.
+-/
 theorem UpperTheory.HilbertEisensteinWeightOne.low_weight_holds : SPois → SInt → SSmooth → SLow := by
   intro hP hI hS F _ _ _ ω c H hs v
   set φ : UpperTheory.V.TR.Sm F 2 := ⟨Eis ω (Phi c), hs⟩

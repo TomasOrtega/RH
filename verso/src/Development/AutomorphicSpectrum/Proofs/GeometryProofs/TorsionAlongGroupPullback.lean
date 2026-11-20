@@ -13,12 +13,18 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.CompanionTheory.Ar.TorPull
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[Over.OverMorphism.ext hx]`.
+-/
 theorem pow_eq_one_congr {S X : Scheme.{0}} {G : Over S} [GrpObj G] {a b : X ⟶ S} (h : a = b)
     (x : Over.mk a ⟶ G) (x' : Over.mk b ⟶ G) (hx : x.left = x'.left) (N : ℕ) :
     x ^ N = 1 ↔ x' ^ N = 1 := by
   subst h
   rw [Over.OverMorphism.ext hx]
 
+/- English proof (translation)
+Introduce `x y e`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `h.1.hom_ext` to reduce the goal to its premises. Conclude with `congrArg (fun z => z.left) e`. Rewrite using `[Over.w, Over.w]`.
+-/
 theorem pushHom_injective {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (T : Over S') :
     Function.Injective (pushHom h T) := by
@@ -28,6 +34,25 @@ theorem pushHom_injective {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpOb
   · exact congrArg (fun z => z.left) e
   · rw [Over.w, Over.w]
 
+/- English proof (translation)
+Introduce `R _ _ T _ Γ S S' G G' _ _ f φ x' y N i₁ h e hT`. Substitute `e` using the available equality. Establish `hw : i₁ ≫ G.hom = (Γ.G.hom ≫ x') ≫ f` using `by rw [hT.isOver, Category.assoc]`. Establish `hfst : h.1.lift i₁ (Γ.G.hom ≫ x') hw ≫ φ = i₁` using `h.1.lift_fst _ _ _`. Establish `hsnd : h.1.lift i₁ (Γ.G.hom ≫ x') hw ≫ G'.hom = Γ.G.hom ≫ x'` using `h.1.lift_snd _ _ _`.
+
+Generalize the expression as in `h.1.lift i₁ (Γ.G.hom ≫ x') hw = i' at hfst hsnd`. Establish `mk : ∀ (Y : Over (Spec (CommRingCat.of R))) (g : Over.mk (Y.hom ≫ x') ⟶ G'), (g.left ≫ φ) ≫ G.hom = Y.hom ≫ x' ≫ f` using `fun Y g => by`. Establish `w₁ : g.left ≫ G'.hom = Y.hom ≫ x'` using `Over.w g`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, w₁, Category.assoc]`. Use `⟨i', hfst, ⟨hsnd, ?_, ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Introduce `Y a b a₀ b₀ ha hb`. Establish `ea : (Over.homMk (a₀.left ≫ φ) (mk Y a₀) : Over.mk (Y.hom ≫ x' ≫ f) ⟶ G).left = a.left ≫ i₁`. Simplify using `[ha, ← hfst]`. Establish `eb : (Over.homMk (b₀.left ≫ φ) (mk Y b₀) : Over.mk (Y.hom ≫ x' ≫ f) ⟶ G).left = b.left ≫ i₁`. Simplify using `[hb, ← hfst]`.
+
+Establish `e₁` using `hT.mul Y a b _ _ ea eb`. Establish `e₂` using `h.2 (Over.mk (Y.hom ≫ x')) a₀ b₀ (pushPt h.1.w a₀) (pushPt h.1.w b₀) rfl rfl`. Establish `e₃` using `mul_left_congr (Category.assoc Y.hom x' f) (pushPt h.1.w a₀) (pushPt h.1.w b₀) (Over.homMk (a₀.left ≫ φ) (mk Y a₀)) (Over.homMk (b₀.left ≫ φ) (mk Y b₀)) rfl rfl`. Apply `h.1.hom_ext` to reduce the goal to its premises. Rewrite using `[← e₂, e₃, e₁, Category.assoc, hfst]`.
+
+Establish `w₁ : (a₀ * b₀).left ≫ G'.hom = Y.hom ≫ x'` using `Over.w (a₀ * b₀)`. Establish `w₂ : (a * b).left ≫ Γ.G.hom = Y.hom` using `Over.w (a * b)`. Rewrite using `[w₁, Category.assoc, hsnd, ← Category.assoc, w₂]`. Introduce `Y a b e`. Apply `hT.inj Y a b` to reduce the goal to its premises.
+
+Rewrite using `[← hfst, ← Category.assoc, ← Category.assoc, e]`. Introduce `Y g`. Set `g₁ : Over.mk (Y.hom ≫ x' ≫ f) ⟶ G` to `Over.homMk (g.left ≫ φ) (mk Y g)`. Establish `hp : g ^ N = 1 ↔ g₁ ^ N = 1`. Rewrite using `[← pow_eq_one_congr (Category.assoc Y.hom x' f) (pushHom h (Over.mk (Y.hom ≫ x')) g) g₁ rfl N, ← map_pow, ← map_one (pushHom h (Over.mk (Y.hom ≫ x')))]`.
+
+Conclude with `(pushHom_injective h _).eq_iff.symm`. Rewrite using `[hp, hT.kernel Y g₁]`. Use `exists_congr fun a => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `e`.
+
+Apply `h.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hfst]`. Conclude with `e`. Establish `w₁ : g.left ≫ G'.hom = Y.hom ≫ x'` using `Over.w g`. Establish `w₂ : a.left ≫ Γ.G.hom = Y.hom` using `Over.w a`.
+
+Rewrite using `[w₁, Category.assoc, hsnd, ← Category.assoc, w₂]`. Introduce `e show a.left ≫ i₁ = g.left ≫ φ`. Rewrite using `[← e, ← hfst, Category.assoc]`.
+-/
 theorem exists_lift_isTorsionAlong : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] (Γ : BT.QFGroup R T) (S S' : Scheme.{0}) (G : Over S) (G' : Over S') [GrpObj G] [GrpObj G'] (f : S' ⟶ S) (φ : G'.left ⟶ G.left) (x' : Sp R ⟶ S') (y : Sp R ⟶ S) (N : ℕ) (i₁ : Γ.G.left ⟶ G.left), IsGrpPullback G' G f φ → x' ≫ f = y → Γ.IsTorsionAlong G y N i₁ → ∃ i' : Γ.G.left ⟶ G'.left, i' ≫ φ = i₁ ∧ Γ.IsTorsionAlong G' x' N i' := by
   intro R _ _ T _ Γ S S' G G' _ _ f φ x' y N i₁ h e hT
   subst e

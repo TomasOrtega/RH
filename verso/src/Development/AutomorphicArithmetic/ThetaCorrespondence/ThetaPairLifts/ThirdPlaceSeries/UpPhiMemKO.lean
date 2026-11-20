@@ -19,6 +19,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.StepData GlobalTheory.SplitWeil
 noncomputable section
 namespace GlobalTheory.LevProd
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hTr j hj t J hJ g hg i`. Unfold `_root_.GlobalTheory.LevProd.upperLevelSubgroup at hg`. Use `split_ifs at hg with h`. Take `⟨⟨hsup, hgf⟩, hphi⟩` from `Subgroup.mem_inf.1 hg |>.imp_left Subgroup.mem_inf.1`. Distinguish the cases in `hv : _root_.GlobalTheory.LevProd.quadraticTwistAtPlace h.choose_spec.choose (J.G i).q.v`.
+
+Take `⟨i₀, hi₀⟩` from `hv`. Conclude with `_root_.GlobalTheory.T.true_geometry_lattice_closed_alt W hW u a ha hTr j hj _ _ h.choose_spec.choose_spec.1 t J hJ i₀ i hi₀ g hgf ((Subgroup.mem_pi _).1 (Subgroup.mem_comap.1 hphi) i₀ (Set.mem_univ _))`. Establish `hle : h.choose_spec.choose.A.U j (h.choose_spec.choose.ι j h.choose_spec.choose_spec.2.some) ⊔ GlobalTheory.FinPl.grpAt _ (_root_.GlobalTheory.LevProd.quadraticTwistAtPlace h.choose_spec.choose) ≤ (KO (J.G i).k _).comap ((Pi.evalMonoidHom _ i).comp (_root_.GlobalTheory.LevProd.lo …`. Use `sup_le (fun x hx => ?_) (fun x hx => ?_)` and prove the remaining obligations. Conclude with `_root_.GlobalTheory.T.true_geometry_lattice_final_alt W hW u a ha hTr j hj _ _ h.choose_spec.choose_spec.1 _ t J hJ i hv x hx`.
+
+Rewrite using `[Subgroup.mem_comap, MonoidHom.comp_apply, Pi.evalMonoidHom_apply]`. Express the relevant statement in the definitionally equal form `GlobalTheory.LevIdx.locHom (J.G i).q _ _ x ∈ KO (J.G i).k _`. Rewrite using `[locHom_eq_one_of_grpAt _ _ _ hv hx]`. Conclude with `one_mem _`. Conclude with `hle hsup`.
+
+Rewrite using `[Subgroup.mem_bot.1 hg, map_one]`. Conclude with `one_mem _`.
+-/
 theorem up_phi_mem_KO_alt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u), a.Is → a.True → ∀ j (hj : j + 2 ≤ B.R.m), ∀ t (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t), J.Reads → ∀ g ∈ _root_.GlobalTheory.LevProd.upperLevelSubgroup a j hj, ∀ i, _root_.GlobalTheory.LevProd.localHomProduct J j hj g i ∈ KO (J.G i).k _ := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hTr j hj t J hJ g hg i
   unfold _root_.GlobalTheory.LevProd.upperLevelSubgroup at hg

@@ -10,6 +10,13 @@ open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum Matrix
 open scoped TensorProduct
 open Formalism.MainNotions.S PI.ScRefExists
 
+/- English proof (translation)
+Establish `h1 : ((g : v.adicCompletion F)) = (((algebraMap (𝓞 F) F (g : 𝓞 F)) : F) : v.adicCompletion F)`. Rewrite using `[map_natCast (algebraMap (𝓞 F) F)]`. Use `first`. Consider the case `exact (map_natCast (algebraMap F (v.adicCompletion F)) g).symm`. Consider the case `(rw [← map_natCast (algebraMap F (v.adicCompletion F)) g]; rfl)`.
+
+Rewrite using `[h1]`. Use `first`. Consider the case `rw [IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `(IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_mem v _).mpr hg`. Consider the case `rw [IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation]`.
+
+Conclude with `(IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_mem v _).mpr hg`. Consider the case `simpa [IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_mem] using hg`.
+-/
 theorem val_natCast_lt_one (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (g : ℕ)
     (hg : (g : 𝓞 F) ∈ v.asIdeal) : Valued.v ((g : v.adicCompletion F)) < 1 := by
   have h1 : ((g : v.adicCompletion F)) = (((algebraMap (𝓞 F) F (g : 𝓞 F)) : F) : v.adicCompletion F) := by
@@ -25,6 +32,13 @@ theorem val_natCast_lt_one (F : Type) [Field F] [NumberField F] (v : HeightOneSp
     exact (IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_mem v _).mpr hg
   | simpa [IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_mem] using hg
 
+/- English proof (translation)
+Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Take `⟨w, hw⟩` from `hu.exists_right_inv`. Establish `h1` using `val_natCast_lt_one F v g hg`. Establish `h2 : Valued.v ((w : v.adicCompletion F)) ≤ 1` using `w.2`.
+
+Establish `h3 : (g : v.adicCompletion F) * (w : v.adicCompletion F) = 1`. Use `congrArg Subtype.val hw` as an intermediate fact. Simplify using `using this`. Establish `h4` using `congrArg Valued.v h3`. Rewrite `h4` using `[map_mul, map_one]`.
+
+Establish `h5 : Valued.v ((g : v.adicCompletion F)) * Valued.v ((w : v.adicCompletion F)) < 1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(ne_of_lt h5) h4`.
+-/
 theorem natCast_mem_max (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (g : ℕ)
     (hg : (g : 𝓞 F) ∈ v.asIdeal) :
     (g : v.adicCompletionIntegers F) ∈ IsLocalRing.maximalIdeal (v.adicCompletionIntegers F) := by
@@ -45,20 +59,38 @@ theorem natCast_mem_max (F : Type) [Field F] [NumberField F] (v : HeightOneSpect
       _ < 1 := h1
   exact (ne_of_lt h5) h4
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [PI.FinKW.vecV, Pi.smul_apply, smul_eq_mul, map_mul]`.
+-/
 theorem vecV_smul' (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (a : I.E ⊗[I.F] Af I.F)
     (x : Fin I.n → I.E ⊗[I.F] Af I.F) :
     PI.FinKW.vecV I v (a • x) = PI.FinKW.psiV I v a • PI.FinKW.vecV I v x := by
   funext i
   simp only [PI.FinKW.vecV, Pi.smul_apply, smul_eq_mul, map_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [PI.FinKW.vecV, Pi.add_apply, map_add]`.
+-/
 theorem vecV_add' (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (x y : Fin I.n → I.E ⊗[I.F] Af I.F) :
     PI.FinKW.vecV I v (x + y) = PI.FinKW.vecV I v x + PI.FinKW.vecV I v y := by
   funext i
   simp only [PI.FinKW.vecV, Pi.add_apply, map_add]
 
+/- English proof (translation)
+The claim follows from `map_natCast _ m`.
+-/
 theorem psiV_natCast (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (m : ℕ) :
     PI.FinKW.psiV I v (m : I.E ⊗[I.F] Af I.F) = (m : RV I v) := map_natCast _ m
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x', hx', rfl⟩` from `hy`. Use `⟨PI.FinKW.vecV I v x', PI.FinKW.LocTo.mem_local_lattice_iff I x' hx' v, ?_⟩` and prove the remaining obligations. Rewrite using `[vecV_smul', psiV_natCast]`.
+
+Consider the case `zero`. Use `⟨0, Submodule.zero_mem _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[PI.FinKW.vecV]`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨w1, hw1, h1⟩` from `hx`. Take `⟨w2, hw2, h2⟩` from `hy`. Use `⟨w1 + w2, Submodule.add_mem _ hw1 hw2, ?_⟩` and prove the remaining obligations. Rewrite using `[vecV_add', h1, h2, smul_add]`. Consider the case `smul c x _ hx`.
+
+Take `⟨w, hw, h⟩` from `hx`. Use `⟨PI.FinKW.psiV I v (c : I.E ⊗[I.F] Af I.F) • w, PI.FinKW.LocTo.intAf_le_mulSet I v c.2 w hw, ?_⟩` and prove the remaining obligations. Use `show PI.FinKW.vecV I v ((c : I.E ⊗[I.F] Af I.F) • x) = _`. Rewrite using `[vecV_smul', h, smul_comm]`.
+-/
 theorem vecV_mL (I : AutInst) (v : HeightOneSpectrum (𝓞 I.F)) (m : ℕ) (x : Fin I.n → I.E ⊗[I.F] Af I.F)
     (hx : x ∈ mL I m) :
     ∃ w ∈ Formalism.L2.SG.Sub.latLoc v (I.L : Set (Fin I.n → I.E)), PI.FinKW.vecV I v x = (m : RV I v) • w := by

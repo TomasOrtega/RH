@@ -8,6 +8,9 @@ open MeasureTheory Filter NumberField IsDedekindDomain Formalism.MainNotions.Glo
 open scoped Matrix GlobalTheory.VacAny
 attribute [local instance] GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.measFv GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.borelFv
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThK.EvLocHeis.ev_schr_heis | exact GlobalTheory.ThK.EvLocHeis.ev_schr_heis | (intros; apply GlobalTheory.ThK.EvLocHeis.ev_schr_heis <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.eigen_relation_continuous : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d n₁ d₁ : ℕ}
     {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁} (B : Base F E) (M : Model σ X W) (M₁ : Model σ X₁ W₁)
     (ι : Matrix (Fin n) (Fin n₁) E) (ι' : Matrix (Fin d) (Fin d₁) E) (I : Set (Matrix (Fin n) (Fin d) (AE F E)))

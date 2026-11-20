@@ -18,6 +18,9 @@ namespace GlobalTheory.FlipStart.Col
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨a1, a2, a3, a4, a5, -, a7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Conclude with `⟨h1.integrableOn_iff h2 fun γ g => hf γ γ.2 g, h1.setIntegral_eq h2 fun γ g => hf γ γ.2 g⟩`.
+-/
 theorem fund_exch {V : HSp D} {μ : Measure (GA D V)} [μ.IsHaarMeasure] {Fd Fd' : Set (GA D V)}
     (h1 : IsFundamentalDomain (GQ V) Fd μ) (h2 : IsFundamentalDomain (GQ V) Fd' μ) (f : GA D V → ℂ)
     (hf : ∀ γ ∈ GQ V, ∀ g, f (γ * g) = f g) :
@@ -25,6 +28,11 @@ theorem fund_exch {V : HSp D} {μ : Measure (GA D V)} [μ.IsHaarMeasure] {Fd Fd'
   obtain ⟨a1, a2, a3, a4, a5, -, a7⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V
   exact ⟨h1.integrableOn_iff h2 fun γ g => hf γ γ.2 g, h1.setIntegral_eq h2 fun γ g => hf γ γ.2 g⟩
 
+/- English proof (translation)
+Substitute `hS hT` using the available equality. Take `rfl` from `eq_of_heq hω`. Take `rfl` from `eq_of_heq hs`. Take `rfl` from `eq_of_heq hμ`. Take `rfl` from `eq_of_heq hF`.
+
+Use `haveI := hH`. Conclude with `⟨fun h => (fund_exch h1 h2 _ (hinv h)).1.2 (hint h), heq_of_eq (funext fun h => (fund_exch h1 h2 _ (hinv h)).2)⟩`.
+-/
 theorem step_heq {S S₀ T T₀ : HSp D} (hS : S = S₀) (hT : T = T₀)
     {ω : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} {ω₀ : GA D S₀ × GA D T₀ →* Module.End ℂ (WO S₀ T₀ → ℂ)} (hω : HEq ω ω₀)
     {s : WO S T → ℂ} {s₀ : WO S₀ T₀ → ℂ} (hs : HEq s s₀)
@@ -44,6 +52,11 @@ theorem step_heq {S S₀ T T₀ : HSp D} (hS : S = S₀) (hT : T = T₀)
   exact ⟨fun h => (fund_exch h1 h2 _ (hinv h)).1.2 (hint h),
     heq_of_eq (funext fun h => (fund_exch h1 h2 _ (hinv h)).2)⟩
 
+/- English proof (translation)
+Substitute `hψ hθ hS hT` using the available equality. Take `rfl` from `eq_of_heq ha`. Take `rfl` from `eq_of_heq hb`. Take `rfl` from `eq_of_heq hc`. Take `rfl` from `eq_of_heq hd`.
+
+Take `rfl` from `eq_of_heq hf`. Take `rfl` from `eq_of_heq hP`. Both sides reduce to the same expression.
+-/
 theorem pt_heq {ψ ψ₀ : AddChar (AF D.host.F) ℂ} {θ θ₀ : InfFam D} (hψ : ψ = ψ₀) (hθ : θ = θ₀) {S S₀ T T₀ : HSp D} (hS : S = S₀)
     (hT : T = T₀)
     {a : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {a₀ : D.what₂.Tau → Matrix (Fin S₀.rank) (Fin S₀.rank) ℂ} (ha : HEq a a₀)
@@ -61,6 +74,9 @@ theorem pt_heq {ψ ψ₀ : AddChar (AF D.host.F) ℂ} {θ θ₀ : InfFam D} (hψ
   obtain rfl := eq_of_heq hP
   rfl
 
+/- English proof (translation)
+Substitute `hV` using the available equality. Take `rfl` from `eq_of_heq hK`. Conclude with `heq_of_eq (GlobalTheory.FunObjModel.isMeasLevW_unique (fun _ _ e => e.1) h.1 h₀.1)`.
+-/
 theorem measFD_heq {V V₀ : HSp D} (hV : V = V₀) {K : Subgroup (GL (Fin V.rank) (Lev.EAf D))}
     {K₀ : Subgroup (GL (Fin V₀.rank) (Lev.EAf D))} (hK : HEq K K₀) {μ : Measure (GA D V)} {μ₀ : Measure (GA D V₀)}
     {F : Set (GA D V)} {F₀ : Set (GA D V₀)} (h : Lev.IsMeasFD V K μ F) (h₀ : Lev.IsMeasFD V₀ K₀ μ₀ F₀) : HEq μ μ₀ := by
@@ -68,6 +84,9 @@ theorem measFD_heq {V V₀ : HSp D} (hV : V = V₀) {K : Subgroup (GL (Fin V.ran
   obtain rfl := eq_of_heq hK
   exact heq_of_eq (GlobalTheory.FunObjModel.isMeasLevW_unique (fun _ _ e => e.1) h.1 h₀.1)
 
+/- English proof (translation)
+Substitute `hV` using the available equality. Take `rfl` from `eq_of_heq hK`. Conclude with `heq_of_eq (GlobalTheory.FunObjModel.isMeasLevW_unique (fun _ _ e => e.1) h.1 h₀.1)`.
+-/
 theorem measDef_heq {V V₀ : HSp D} (hV : V = V₀) {K : Subgroup (GL (Fin V.rank) (Lev.EAf D))}
     {K₀ : Subgroup (GL (Fin V₀.rank) (Lev.EAf D))} (hK : HEq K K₀) {μ : Measure (GA D V)} {μ₀ : Measure (GA D V₀)}
     {F : Set (GA D V)} {F₀ : Set (GA D V₀)} (h : IsMeasDef V K μ F) (h₀ : IsMeasDef V₀ K₀ μ₀ F₀) : HEq μ μ₀ := by
@@ -75,12 +94,26 @@ theorem measDef_heq {V V₀ : HSp D} (hV : V = V₀) {K : Subgroup (GL (Fin V.ra
   obtain rfl := eq_of_heq hK
   exact heq_of_eq (GlobalTheory.FunObjModel.isMeasLevW_unique (fun _ _ e => e.1) h.1 h₀.1)
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cast_fun_heq {A B : Type} (e : A = B) (φ : B → ℂ) : HEq (fun x => φ (cast e x)) φ := by
   subst e; rfl
 
 variable {T : Type} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
+/- English proof (translation)
+Substitute `hs` using the available equality. Establish `hS : ch.G.V (.grid 0 j) = Yc D j` using `congrArg LSp.sp (colY_lt R.toLevCh (by omega))`. Establish `hT : ch.G.V (.grid 0 (j + 1)) = Yc D (j + 1)` using `congrArg LSp.sp (colY_lt R.toLevCh hj)`. Establish `hs : HEq (ch.W.fock (.mu t 0 j) fj P) (R.ptY t j P₀)` using `pt_heq hW.ψ hW.θ hS hT (hW.cartY j (by omega)) (hW.cartY (j + 1) hj) (hW.onbY j (by omega)) (hW.onbY (j + 1) hj) hfj hP`. Establish `hAt` using `hM.vtx (.grid 0 (j + 1)) ⟨Nat.zero_le _, by omega⟩`.
+
+Establish `hfund` using `hAt.haar_fund`. Establish `hK : HEq (levJ ch.G t (.grid 0 (j + 1))) (lev D.sp.cm (Yc D (j + 1)).gram (R.βY (j + 1)) (R.datYt t (j + 1) R.triv))` using `levCol_lt R.toLevCh t hj`. Establish `key : HEq (M.ν (.grid 0 (j + 1))) (R.νY t (j + 1)) ∧ (R.νY t (j + 1)).IsHaarMeasure ∧ IsFundamentalDomain (GQ (Yc D (j + 1))) (R.fdY t (j + 1)) (R.νY t (j + 1))`. Unfold `Vol.IsAt at hAt`. Break down `Nat.lt_or_ge (j + 1 + 1) D.R.m with h | h` into its components or cases.
+
+Establish `hc` using `hmod.νY t (j + 1) h`. Rewrite `hAt` using `[if_neg (show ¬ (Node.grid 0 (j + 1)).neg D.R.m = 0 by simp only [Node.neg]; omega)]`. Conclude with `⟨measFD_heq hT hK hAt hc, hc.1.1, hc.2⟩`. Establish `e : j + 1 = D.R.m - 1` using `by omega`. Establish `hc` using `hmod.νY' t`.
+
+Rewrite `hc` using `[← e]`. Rewrite `hAt` using `[if_pos (show (Node.grid 0 (j + 1)).neg D.R.m = 0 by simp only [Node.neg]; omega)]`. Conclude with `⟨measDef_heq hT hK hAt hc, hc.1.1, hc.2⟩`. Establish `hker` using `(GlobalTheory.thetaKO_rat_left_and_eigen_right _ _ _ _ _ (R.ωY t j) (hch.ωY t j hj) _ (hch.ptY t j hj P₀)).1`. Conclude with `step_heq hS hT (hW.omY t j hj) hs key.1 key.2.1 hfund.2 key.2.2 hF (fun h γ hγ g => by`.
+
+Establish `h1` using `hker 1 (one_mem _) γ hγ h g`. Rewrite `h1` using `[one_mul]`. Rewrite using `[h1, hinv γ hγ g]) hint`.
+-/
 theorem stepY {ch : Choice R} (hW : ch.W.Over R) (hch : R.IsChain) (hmod : R.IsModels) {t : T} {M : Vol ch.G} (hM : M.Is t)
     {j : ℕ} (hj : j + 1 < D.R.m) {fj : Sch ch.G (.down t 0 j)} (hfj : HEq fj (R.vY t j))
     {P : PolF D (ch.G.V (.grid 0 (j + 1))).rank (ch.G.V (.grid 0 j)).rank} {P₀ : PolF D (Yc D (j + 1)).rank (Yc D j).rank}
@@ -118,6 +151,19 @@ theorem stepY {ch : Choice R} (hW : ch.W.Over R) (hch : R.IsChain) (hmod : R.IsM
       rw [one_mul] at h1
       rw [h1, hinv γ hγ g]) hint
 
+/- English proof (translation)
+Substitute `hs` using the available equality. Establish `e : D.R.m - 1 = j` using `by omega`. Establish `hS : ch.G.V (.grid 0 j) = Yc D (D.R.m - 1)`. Rewrite using `[e]; exact congrArg LSp.sp (colY_lt R.toLevCh (by omega))`. Establish `hT : ch.G.V (.grid 0 (j + 1)) = D.sp.X'` using `by show (columnBlock R.toLevCh (j + 1)).sp = _`.
+
+Rewrite using `[hj, colY_m]`. Establish `hcS : HEq (ch.W.cart (.grid 0 j)) (cart (R.MY (D.R.m - 1)))`. Rewrite using `[e]; exact hW.cartY j (by omega)`. Establish `hoS : HEq (ch.W.onb (.grid 0 j)) (onb (R.MY (D.R.m - 1)))`. Rewrite using `[e]; exact hW.onbY j (by omega)`.
+
+Establish `hcT : HEq (ch.W.cart (.grid 0 (j + 1))) (cart R.MX)`. Rewrite using `[hj]`. Conclude with `hW.cartX`. Establish `hoT : HEq (ch.W.onb (.grid 0 (j + 1))) (onb R.MX)`. Rewrite using `[hj]`.
+
+Conclude with `hW.onbX`. Establish `hs : HEq (ch.W.fock (.mu t 0 j) fj P) (R.ptX t P₀)` using `pt_heq hW.ψ hW.θ hS hT hcS hcT hoS hoT hfj hP`. Establish `hAt` using `hM.vtx (.grid 0 (j + 1)) ⟨Nat.zero_le _, by omega⟩`. Establish `hfund` using `hAt.haar_fund`. Establish `hK : HEq (levJ ch.G t (.grid 0 (j + 1))) (lev D.sp.cm D.sp.X'.gram R.βX (R.datXt t))` using `levCol_top R.toLevCh t (by omega)`.
+
+Unfold `Vol.IsAt at hAt`. Rewrite `hAt` using `[if_pos (show (Node.grid 0 (j + 1)).neg D.R.m = 0 by simp only [Node.neg]; omega)]`. Establish `hc` using `hmod.νX t`. Establish `hker` using `(GlobalTheory.thetaKO_rat_left_and_eigen_right _ _ _ _ _ (R.ωX t) (hch.ωX t) _ (hch.ptX t P₀)).1`. Conclude with `step_heq hS hT (hW.omX t j hj) hs (measDef_heq hT hK hAt hc) hc.1.1 hfund.2 hc.2 hF (fun h γ hγ g => by`.
+
+Establish `h1` using `hker 1 (one_mem _) γ hγ h g`. Rewrite `h1` using `[one_mul]`. Rewrite using `[h1, hinv γ hγ g]) hint`.
+-/
 theorem stepX {ch : Choice R} (hW : ch.W.Over R) (hch : R.IsChain) (hmod : R.IsModels) {t : T} {M : Vol ch.G} (hM : M.Is t)
     {j : ℕ} (hj : j + 1 = D.R.m) {fj : Sch ch.G (.down t 0 j)} (hfj : HEq fj (R.vX t))
     {P : PolF D (ch.G.V (.grid 0 (j + 1))).rank (ch.G.V (.grid 0 j)).rank} {P₀ : PolF D D.sp.X'.rank (Yc D (D.R.m - 1)).rank}
@@ -157,6 +203,9 @@ theorem stepX {ch : Choice R} (hW : ch.W.Over R) (hch : R.IsChain) (hmod : R.IsM
       rw [one_mul] at h1
       rw [h1, hinv γ hγ g]) hint
 
+/- English proof (translation)
+The claim follows from `| 0, _, _, _, _, _, _, hF => ⟨trivial, hF⟩ | n + 1, hn, g, hg, F, F₀, v, hF => by obtain ⟨fj, hfj, hgj⟩ := hg (Fin.last n) have hgj' : g (Fin.last n) = ch.W.fock (.mu t 0 n) fj (q n) := hgj have hio := hch.ioY t n (by omega) have hst := stepY hW hch hmod hM (j := n) (by omega) hf …`.
+-/
 theorem col_ind {ch : Choice R} (hW : ch.W.Over R) (hch : R.IsChain) (hmod : R.IsModels) {t : T}
     {q : ∀ j : ℕ, PolF D (ch.G.V (.grid 0 (j + 1))).rank (ch.G.V (.grid 0 j)).rank} (hq : ChainPols ch q)
     {M : Vol ch.G} (hM : M.Is t) : ∀ n, n + 1 ≤ D.R.m → ∀ (g : ∀ j : Fin n, Sch ch.G (.down t 0 j)),
@@ -184,6 +233,9 @@ theorem col_ind {ch : Choice R} (hW : ch.W.Over R) (hch : R.IsChain) (hmod : R.I
     show _ = ch.cv.dnFun t n _
     rw [e1]
 
+/- English proof (translation)
+Establish `hmem : (R.HX t).e y ∈ Bridge.AdForms (Bridge.ratF D.sp.X') R.cX.coef.ρ (levEnv _ R.βX (R.datXt t)).J (levEnv _ R.βX (R.datXt t)).χ` using `SetLike.le_def.1 (hmod.HX t).2.1.le (LinearMap.mem_range_self _ y)`. Use `GlobalTheory.ThetaIntegrand.ext_invariant R.cX hmem` as an intermediate fact. Introduce `γ hγ g`. Unfold `ChainVec.formX`. Simplify using `only [CoefA.toMap, LinearMap.coe_mk, AddHom.coe_mk, this γ hγ g]`.
+-/
 theorem formX_inv (hmod : R.IsModels) (d : ChainVec R) (t : T) (y : (R.HX t).H) :
     ∀ γ ∈ GQ D.sp.X', ∀ g, d.formX t y (γ * g) = d.formX t y g := by
   have hmem : (R.HX t).e y ∈ Bridge.AdForms (Bridge.ratF D.sp.X') R.cX.coef.ρ (levEnv _ R.βX (R.datXt t)).J
@@ -193,6 +245,9 @@ theorem formX_inv (hmod : R.IsModels) (d : ChainVec R) (t : T) (y : (R.HX t).H) 
   unfold ChainVec.formX
   simp only [CoefA.toMap, LinearMap.coe_mk, AddHom.coe_mk, this γ hγ g]
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Conclude with `col_ind hW hch hmod hq hM n hn1 g hg F F₀ v hF`.
+-/
 theorem col_ind' {ch : Choice R} (hW : ch.W.Over R) (hch : R.IsChain) (hmod : R.IsModels) {t : T}
     {q : ∀ j : ℕ, PolF D (ch.G.V (.grid 0 (j + 1))).rank (ch.G.V (.grid 0 j)).rank} (hq : ChainPols ch q)
     {M : Vol ch.G} (hM : M.Is t) {n n' : ℕ} (hn : n = n') (hn1 : n + 1 ≤ D.R.m) (g : ∀ j : Fin n, Sch ch.G (.down t 0 j))
@@ -203,6 +258,9 @@ theorem col_ind' {ch : Choice R} (hW : ch.W.Over R) (hch : R.IsChain) (hmod : R.
   subst hn
   exact col_ind hW hch hmod hq hM n hn1 g hg F F₀ v hF
 
+/- English proof (translation)
+The claim follows from `| 0, h, _, _, _, _ => absurd h (by have := D.R.two_le_m; omega) | k + 1, hk, g, hg, F, hF => by obtain ⟨fj, hfj, hgj⟩ := (hg (Fin.last k)).2 (by simp only [Fin.val_last]; omega) have hgj' : g (Fin.last k) = ch.W.fock (.mu t 0 k) fj (q k) := hgj have hio := hch.ioX t have hst := s …`.
+-/
 theorem col_top {ch : Choice R} (hW : ch.W.Over R) (hch : R.IsChain) (hmod : R.IsModels) {t : T}
     {q : ∀ j : ℕ, PolF D (ch.G.V (.grid 0 (j + 1))).rank (ch.G.V (.grid 0 j)).rank} (hq : ChainPols ch q)
     {M : Vol ch.G} (hM : M.Is t) (y : (R.HX t).H) : ∀ N, N = D.R.m → ∀ (g : ∀ j : Fin N, Sch ch.G (.down t 0 j)),
@@ -236,6 +294,9 @@ end GlobalTheory.FlipStart.Col
 
 open GlobalTheory.FlipStart GlobalTheory.FlipStart.Col in
 
+/- English proof (translation)
+Introduce `_ _`. Use `⟨0, fun _ _ _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ => ?_⟩⟩` and prove the remaining obligations. Introduce `t f q hf hq M hM y`. Establish `h` using `col_top hch.weil s.core.chain s.core.models hq hM y D.R.m rfl (fun j => ch.W.fock (.mu t 0 j) (f j) (q j)) (fun j => ⟨fun h => ⟨f j, (hf j).1 h, rfl⟩, fun h => ⟨f j, (hf j).2 h, rfl⟩⟩) (formTop ch t y) (by unfold formTop; exact cast_fun_heq _ _)`. Conclude with `⟨h.1, eq_of_heq h.2⟩`.
+-/
 theorem GlobalTheory.FlipStart.column : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → GlobalTheory.RowClaim.Big fun {D} _ _ _ _ {T} _ _ _ _ _ {R} ch => ∀ (t : T) (f : ∀ j : Fin D.R.m, Sch ch.G (.down t 0 j)) (q : ∀ j : ℕ, PolF D (ch.G.V (.grid 0 (j + 1))).rank (ch.G.V (.grid 0 j)).rank), GlobalTheory.FlipStart.ChainVecs ch t f → GlobalTheory.FlipStart.ChainPols ch q → ∀ M : Vol ch.G, M.Is t → ∀ y : (R.HX t).H, PathConv ch.W M (downPath t 0 D.R.m) (GlobalTheory.FlipStart.colPure ch.W t f fun j => q j) (formTop ch t y) ∧ liftP ch.W M (downPath t 0 D.R.m) (GlobalTheory.FlipStart.colPure ch.W t f fun j => q j) (formTop ch t y) = ch.cv.lift t y := by
   intro _ _
   refine ⟨0, fun _ _ _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ => ?_⟩⟩

@@ -18,6 +18,11 @@ section Chart
 
 variable {n m : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin m) (Fin n) ℂ}
 
+/- English proof (translation)
+Establish `h2 : ∀ k, fderiv ℝ (fderiv ℝ (F k)) y = fderiv ℝ (fderiv ℝ (G k)) y` using `fun k => ((h k).fderiv (𝕜 := ℝ)).fderiv_eq`. Establish `h3 : (fun k => ReciprocityTheory.AnForm.hessC (F k) y) = fun k => ReciprocityTheory.AnForm.hessC (G k) y`. Use function extensionality and compare the values at `k`. Use extensionality with `i j`. Simplify using `only [ReciprocityTheory.AnForm.hessC]`.
+
+Rewrite using `[h2 k]`. Unfold `ReciprocityTheory.AnForm.maDens`. Rewrite using `[h3]`.
+-/
 theorem maDens_congr_germ {F G : Fin m → (Fin m → ℂ) → ℝ} {y : Fin m → ℂ}
     (h : ∀ k, F k =ᶠ[𝓝 y] G k) : ReciprocityTheory.AnForm.maDens F y = ReciprocityTheory.AnForm.maDens G y := by
   have h2 : ∀ k, fderiv ℝ (fderiv ℝ (F k)) y = fderiv ℝ (fderiv ℝ (G k)) y :=
@@ -30,6 +35,9 @@ theorem maDens_congr_germ {F G : Fin m → (Fin m → ℂ) → ℝ} {y : Fin m �
   unfold ReciprocityTheory.AnForm.maDens
   rw [h3]
 
+/- English proof (translation)
+The claim follows from `|chartDens J A w φ y| ≤ C * chartAbsDens J A f φ y := by have hfin : (fibre J A y).Finite := FiniteProjectionCluster.fibre_finite J A hA y unfold chartDens chartAbsDens sheetSum rw [finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.mul_sum …`.
+-/
 theorem abs_chartDens_le (hA : IsFiniteProjection J A) {w f : (Fin n → ℂ) → ℝ} {C : ℝ} (hC : 0 ≤ C)
     (hw : ∀ z, |w z| ≤ C * f z) (φ : Fin m → (Fin n → ℂ) → ℝ) (y : Fin m → ℂ) :
     |chartDens J A w φ y| ≤ C * chartAbsDens J A f φ y := by
@@ -47,6 +55,11 @@ theorem abs_chartDens_le (hA : IsFiniteProjection J A) {w f : (Fin n → ℂ) �
       _ = C * (|f z| * |ReciprocityTheory.AnForm.maDens (fun k => φ k ∘ h.choose) y|) := by ring
   · simp
 
+/- English proof (translation)
+Establish `hfin : (fibre J A y).Finite` using `FiniteProjectionCluster.fibre_finite J A hA y`. Unfold `chartDens sheetSum`. Simplify using `only [finsum_mem_eq_finite_toFinset_sum _ hfin]`. Use `tendsto_finsetSum _ fun z _ => ?_` and prove the remaining obligations. Use `split_ifs with h`.
+
+Conclude with `(hw z).mul_const _`. Conclude with `tendsto_const_nhds`.
+-/
 theorem tendsto_chartDens (hA : IsFiniteProjection J A) {w : ℕ → (Fin n → ℂ) → ℝ} {w' : (Fin n → ℂ) → ℝ}
     (hw : ∀ z, Tendsto (fun k => w k z) atTop (𝓝 (w' z))) (φ : Fin m → (Fin n → ℂ) → ℝ) (y : Fin m → ℂ) :
     Tendsto (fun k => chartDens J A (w k) φ y) atTop (𝓝 (chartDens J A w' φ y)) := by
@@ -58,6 +71,13 @@ theorem tendsto_chartDens (hA : IsFiniteProjection J A) {w : ℕ → (Fin n → 
   · exact (hw z).mul_const _
   · exact tendsto_const_nhds
 
+/- English proof (translation)
+Unfold `chartDens sheetSum`. Use `finsum_congr fun z => finsum_congr fun hz => ?_` and prove the remaining obligations. Use `split_ifs with h`. Use `beta_reduce`. Distinguish the cases in `hw : w z = 0`.
+
+Rewrite using `[hw, zero_mul, zero_mul]`. Take `⟨U, hU, hAz, hdiff, hsz, -, -⟩` from `h.choose_spec`. Establish `hcont : ContinuousAt h.choose (A *ᵥ z)` using `(hdiff.differentiableAt (hU.mem_nhds hAz)).continuousAt`. Establish `hy : A *ᵥ z = y` using `hz.2`. Rewrite using `[← hy]`.
+
+Use `congrArg (w z * ·) (maDens_congr_germ fun k => ?_)` and prove the remaining obligations. Establish `hk` using `hloc z hz.1 hw k`. Rewrite `hk` using `[← hsz]`. Conclude with `hcont.eventually hk`. Both sides reduce to the same expression.
+-/
 theorem chartDens_congr_fun {w : (Fin n → ℂ) → ℝ} {φ φ' : Fin m → (Fin n → ℂ) → ℝ}
     (hloc : ∀ z ∈ zeroSet J, w z ≠ 0 → ∀ k, φ k =ᶠ[𝓝 z] φ' k) (y : Fin m → ℂ) :
     chartDens J A w φ y = chartDens J A w φ' y := by
@@ -78,6 +98,9 @@ theorem chartDens_congr_fun {w : (Fin n → ℂ) → ℝ} {φ φ' : Fin m → (F
       exact hcont.eventually hk
   · rfl
 
+/- English proof (translation)
+Establish `hfin : (fibre J A y).Finite` using `FiniteProjectionCluster.fibre_finite J A hA y`. Unfold `chartDens sheetSum`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem chartDens_sub' (hA : IsFiniteProjection J A) (c₁ c₂ : ℝ) (w₁ w₂ : (Fin n → ℂ) → ℝ)
     (φ : Fin m → (Fin n → ℂ) → ℝ) (y : Fin m → ℂ) :
     chartDens J A (fun z => c₁ * w₁ z - c₂ * w₂ z) φ y =
@@ -89,6 +112,9 @@ theorem chartDens_sub' (hA : IsFiniteProjection J A) (c₁ c₂ : ℝ) (w₁ w�
   refine Finset.sum_congr rfl fun z _ => ?_
   split_ifs <;> ring
 
+/- English proof (translation)
+Establish `hfin : (fibre J A y).Finite` using `FiniteProjectionCluster.fibre_finite J A hA y`. Unfold `chartDens sheetSum`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem chartDens_const_mul (hA : IsFiniteProjection J A) (c : ℝ) (w : (Fin n → ℂ) → ℝ)
     (φ : Fin m → (Fin n → ℂ) → ℝ) (y : Fin m → ℂ) :
     chartDens J A (fun z => c * w z) φ y = c * chartDens J A w φ y := by
@@ -102,6 +128,9 @@ variable (hCM : ChartMassCompact.Statement) (hJ : J.IsPrime)
   (hdim : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) = (m : ℕ)) (hA : IsFiniteProjection J A)
 include hCM hJ hdim hA
 
+/- English proof (translation)
+The claim follows from `((hCM n m J A f φ hJ hdim hA hf.continuousOn hφ (Or.inl hfc)).const_mul C).mono' (SheetSumMeasurable.proof n m J A w φ hJ hdim hA hwm hφ).1.aestronglyMeasurable (Eventually.of_forall fun y => by rw [Real.norm_eq_abs]; exact abs_chartDens_le hA hC hb φ y)`.
+-/
 theorem integrable_chartDens {φ : Fin m → (Fin n → ℂ) → ℝ} (hφ : ∀ k, SmoothNear (zeroSet J) (φ k))
     {f : (Fin n → ℂ) → ℝ} (hf : Continuous f) (hfc : HasCompactSupport f) {C : ℝ} (hC : 0 ≤ C)
     {w : (Fin n → ℂ) → ℝ} (hwm : Measurable w) (hb : ∀ z, |w z| ≤ C * f z) :
@@ -110,6 +139,9 @@ theorem integrable_chartDens {φ : Fin m → (Fin n → ℂ) → ℝ} (hφ : ∀
     (SheetSumMeasurable.proof n m J A w φ hJ hdim hA hwm hφ).1.aestronglyMeasurable
     (Eventually.of_forall fun y => by rw [Real.norm_eq_abs]; exact abs_chartDens_le hA hC hb φ y)
 
+/- English proof (translation)
+The claim follows from `tendsto_integral_of_dominated_convergence (fun y => C * chartAbsDens J A f φ y) (fun k => (SheetSumMeasurable.proof n m J A (w k) φ hJ hdim hA (hwm k) hφ).1.aestronglyMeasurable) ((hCM n m J A f φ hJ hdim hA hf.continuousOn hφ (Or.inl hfc)).const_mul C) (fun k => Eventually.of_fo …`.
+-/
 theorem tendsto_integral_chartDens {φ : Fin m → (Fin n → ℂ) → ℝ} (hφ : ∀ k, SmoothNear (zeroSet J) (φ k))
     {f : (Fin n → ℂ) → ℝ} (hf : Continuous f) (hfc : HasCompactSupport f) {C : ℝ} (hC : 0 ≤ C)
     {w : ℕ → (Fin n → ℂ) → ℝ} {w' : (Fin n → ℂ) → ℝ} (hwm : ∀ k, Measurable (w k))
@@ -126,12 +158,25 @@ end Chart
 
 section Radial
 
+/- English proof (translation)
+The claim follows from `continuous_const.mul (continuous_pow _)`.
+-/
 theorem continuous_kernel (e : ℕ) : Continuous fun τ : ℝ => ((e + 1 : ℕ) : ℝ) * τ ^ (e + 1 - 1) :=
   continuous_const.mul (continuous_pow _)
 
+/- English proof (translation)
+Check the signs of the components of the expression.
+-/
 theorem kernel_nonneg (e : ℕ) {w : ℝ} (hw : 0 ≤ w) : 0 ≤ ((e + 1 : ℕ) : ℝ) * w ^ (e + 1 - 1) := by
   positivity
 
+/- English proof (translation)
+Establish `hρ2 : ρ ^ 2 ≠ 0` using `pow_ne_zero 2 hρ`. Take `⟨G, hG⟩ : ∃ G : ℝ → ℝ, G = fun w => h w * (((e + 1 : ℕ) : ℝ) * w ^ (e + 1 - 1))` from `⟨_, rfl⟩`. Establish `key : ∀ τ : ℝ, h (τ / ρ ^ 2) * (((e + 1 : ℕ) : ℝ) * τ ^ (e + 1 - 1)) = ρ ^ (2 * e) * G (τ / ρ ^ 2)`. Introduce `τ`. Rewrite using `[hG]`.
+
+Simplify using `only [Nat.add_sub_cancel]`. Rewrite using `[div_pow, ← pow_mul]`. Clear the denominators using the available nonvanishing facts. Establish `key2 : ∀ w : ℝ, h w * (((e + 1 : ℕ) : ℝ) * w ^ (e + 1 - 1)) = G w` using `fun w => by rw [hG]`. Simplify using `only [key, key2]`.
+
+Rewrite using `[intervalIntegral.integral_const_mul, intervalIntegral.integral_comp_div G hρ2, zero_div, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integral_comp_div_sq (e : ℕ) (h : ℝ → ℝ) {ρ : ℝ} (hρ : ρ ≠ 0) (t : ℝ) :
     ∫ τ in (0 : ℝ)..t, h (τ / ρ ^ 2) * (((e + 1 : ℕ) : ℝ) * τ ^ (e + 1 - 1)) =
       ρ ^ (2 * (e + 1)) * ∫ w in (0 : ℝ)..t / ρ ^ 2, h w * (((e + 1 : ℕ) : ℝ) * w ^ (e + 1 - 1)) := by
@@ -149,6 +194,11 @@ theorem integral_comp_div_sq (e : ℕ) (h : ℝ → ℝ) {ρ : ℝ} (hρ : ρ �
   rw [intervalIntegral.integral_const_mul, intervalIntegral.integral_comp_div G hρ2, zero_div, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Unfold `radialTransform`. Use `beta_reduce`. Rewrite using `[integral_comp_div_sq e h hρ t]`. Establish `ht : t ^ (e + 1) = ρ ^ (2 * (e + 1)) * (t / ρ ^ 2) ^ (e + 1)`. Rewrite using `[div_pow, ← pow_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[ht]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem radialTransform_comp_div (e : ℕ) (h : ℝ → ℝ) {ρ : ℝ} (hρ : ρ ≠ 0) (t : ℝ) :
     radialTransform (e + 1) (fun τ => h (τ / ρ ^ 2)) t =
       ρ ^ (2 * (e + 1)) * radialTransform (e + 1) h (t / ρ ^ 2) := by
@@ -161,6 +211,11 @@ theorem radialTransform_comp_div (e : ℕ) (h : ℝ → ℝ) {ρ : ℝ} (hρ : �
   rw [ht]
   ring
 
+/- English proof (translation)
+Unfold `radialTransform`. Use `beta_reduce`. Establish `e1 : ∀ τ : ℝ, (c₁ * f₁ τ - c₂ * f₂ τ) * (((e + 1 : ℕ) : ℝ) * τ ^ (e + 1 - 1)) = c₁ * (f₁ τ * (((e + 1 : ℕ) : ℝ) * τ ^ (e + 1 - 1))) - c₂ * (f₂ τ * (((e + 1 : ℕ) : ℝ) * τ ^ (e + 1 - 1)))` using `fun τ => by ring`. Simplify using `only [e1]`. Rewrite using `[intervalIntegral.integral_sub (f := fun τ => c₁ * (f₁ τ * (((e + 1 : ℕ) : ℝ) * τ ^ (e + 1 - 1)))) (g := fun τ => c₂ * (f₂ τ * (((e + 1 : ℕ) : ℝ) * τ ^ (e + 1 - 1)))) ((continuous_const.mul (h₁.mul (continuous_kernel e))).intervalIntegrable _ _) ((continuous_const.mul (h₂.mul (co …`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem radialTransform_sub (e : ℕ) {f₁ f₂ : ℝ → ℝ} (h₁ : Continuous f₁) (h₂ : Continuous f₂)
     (c₁ c₂ t : ℝ) :
     radialTransform (e + 1) (fun τ => c₁ * f₁ τ - c₂ * f₂ τ) t =
@@ -178,6 +233,9 @@ theorem radialTransform_sub (e : ℕ) {f₁ f₂ : ℝ → ℝ} (h₁ : Continuo
     intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul]
   ring
 
+/- English proof (translation)
+Unfold `radialTransform`. Conclude with `(hc.mul (continuous_pow _)).sub (intervalIntegral.continuous_primitive (fun a b => (hc.mul (continuous_kernel e)).intervalIntegrable a b) 0)`.
+-/
 theorem continuous_radialTransform (e : ℕ) {h : ℝ → ℝ} (hc : Continuous h) :
     Continuous (radialTransform (e + 1) h) := by
   unfold radialTransform
@@ -188,30 +246,54 @@ def pk (k : ℕ) : ℝ := 1 - 1 / ((k : ℝ) + 1) / 2
 
 def qk (k : ℕ) : ℝ := 1 - 1 / ((k : ℝ) + 1) / 4
 
+/- English proof (translation)
+Check the signs of the components of the expression.
+-/
 theorem inv_succ_pos (k : ℕ) : 0 < 1 / ((k : ℝ) + 1) := by positivity
 
+/- English proof (translation)
+The claim follows from `(div_le_one (by positivity)).2 (by linarith [(k.cast_nonneg : (0 : ℝ) ≤ k)])`.
+-/
 theorem inv_succ_le_one (k : ℕ) : 1 / ((k : ℝ) + 1) ≤ 1 :=
   (div_le_one (by positivity)).2 (by linarith [(k.cast_nonneg : (0 : ℝ) ≤ k)])
 
+/- English proof (translation)
+Use `inv_succ_le_one k` as an intermediate fact. Unfold `pk`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem half_le_pk (k : ℕ) : 1 / 2 ≤ pk k := by
   have := inv_succ_le_one k
   unfold pk
   linarith
 
+/- English proof (translation)
+The claim follows from `lt_of_lt_of_le (by norm_num) (half_le_pk k)`.
+-/
 theorem pk_pos (k : ℕ) : 0 < pk k := lt_of_lt_of_le (by norm_num) (half_le_pk k)
 
+/- English proof (translation)
+Use `inv_succ_pos k` as an intermediate fact. Unfold `pk qk`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem pk_lt_qk (k : ℕ) : pk k < qk k := by
   have := inv_succ_pos k
   unfold pk qk
   linarith
 
+/- English proof (translation)
+Use `inv_succ_pos k` as an intermediate fact. Unfold `qk`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem qk_lt_one (k : ℕ) : qk k < 1 := by
   have := inv_succ_pos k
   unfold qk
   linarith
 
+/- English proof (translation)
+The claim follows from `((pk_lt_qk k).trans (qk_lt_one k)).le`.
+-/
 theorem pk_le_one (k : ℕ) : pk k ≤ 1 := ((pk_lt_qk k).trans (qk_lt_one k)).le
 
+/- English proof (translation)
+Establish `h` using `(tendsto_const_nhds (x := (1 : ℝ))).sub ((tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ)).div_const 2)`. Rewrite `h` using `[zero_div, sub_zero]`. Conclude with `h`.
+-/
 theorem tendsto_pk : Tendsto pk atTop (𝓝 1) := by
   have h := (tendsto_const_nhds (x := (1 : ℝ))).sub
     ((tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ)).div_const 2)
@@ -220,25 +302,42 @@ theorem tendsto_pk : Tendsto pk atTop (𝓝 1) := by
 
 def hk (k : ℕ) : ContDiffBump (0 : ℝ) := ⟨pk k, qk k, pk_pos k, pk_lt_qk k⟩
 
+/- English proof (translation)
+The claim follows from `(hk k).one_of_mem_closedBall (by rw [Metric.mem_closedBall, Real.dist_eq, sub_zero, abs_of_nonneg h0] exact hv)`.
+-/
 theorem hk_one {k : ℕ} {v : ℝ} (h0 : 0 ≤ v) (hv : v ≤ pk k) : hk k v = 1 :=
   (hk k).one_of_mem_closedBall (by
     rw [Metric.mem_closedBall, Real.dist_eq, sub_zero, abs_of_nonneg h0]
     exact hv)
 
+/- English proof (translation)
+The claim follows from `(hk k).zero_of_le_dist (by rw [Real.dist_eq, sub_zero] exact hv.trans (le_abs_self v))`.
+-/
 theorem hk_zero {k : ℕ} {v : ℝ} (hv : qk k ≤ v) : hk k v = 0 :=
   (hk k).zero_of_le_dist (by
     rw [Real.dist_eq, sub_zero]
     exact hv.trans (le_abs_self v))
 
+/- English proof (translation)
+The claim follows from `hk_zero ((qk_lt_one k).le.trans hv)`.
+-/
 theorem hk_zero_of_one_le {k : ℕ} {v : ℝ} (hv : 1 ≤ v) : hk k v = 0 :=
   hk_zero ((qk_lt_one k).le.trans hv)
 
 def Ik (e k : ℕ) : ℝ := ∫ w in (0 : ℝ)..1, hk k w * (((e + 1 : ℕ) : ℝ) * w ^ (e + 1 - 1))
 
+/- English proof (translation)
+The claim follows from `(hk k).continuous.mul (continuous_kernel e)`.
+-/
 theorem continuous_hk_kernel (e k : ℕ) :
     Continuous fun w : ℝ => hk k w * (((e + 1 : ℕ) : ℝ) * w ^ (e + 1 - 1)) :=
   (hk k).continuous.mul (continuous_kernel e)
 
+/- English proof (translation)
+Rewrite using `[← intervalIntegral.integral_add_adjacent_intervals (b := 1) ((continuous_hk_kernel e k).intervalIntegrable _ _) ((continuous_hk_kernel e k).intervalIntegrable _ _)]`. Establish `h0 : ∫ w in (1 : ℝ)..v, hk k w * (((e + 1 : ℕ) : ℝ) * w ^ (e + 1 - 1)) = 0`. Rewrite using `[intervalIntegral.integral_congr (g := fun _ => (0 : ℝ)) fun w hw => ?_]`. Simplify using the standard rewrite rules. Rewrite `hw` using `[Set.uIcc_of_le hv]`.
+
+Simplify using `only`. Rewrite using `[hk_zero_of_one_le hw.1, zero_mul]`. Rewrite using `[h0, add_zero, Ik]`.
+-/
 theorem integral_hk_of_one_le (e k : ℕ) {v : ℝ} (hv : 1 ≤ v) :
     ∫ w in (0 : ℝ)..v, hk k w * (((e + 1 : ℕ) : ℝ) * w ^ (e + 1 - 1)) = Ik e k := by
   rw [← intervalIntegral.integral_add_adjacent_intervals (b := 1)
@@ -251,20 +350,32 @@ theorem integral_hk_of_one_le (e k : ℕ) {v : ℝ} (hv : 1 ≤ v) :
       rw [hk_zero_of_one_le hw.1, zero_mul]
   rw [h0, add_zero, Ik]
 
+/- English proof (translation)
+The claim follows from `radialTransform_eq_zero_of_const e (hk k) (t₀ := pk k) (fun τ hτ => by rw [hk_one hτ.1 hτ.2, hk_one le_rfl (pk_pos k).le]) ⟨h0, hv⟩`.
+-/
 theorem radialTransform_hk_of_le (e k : ℕ) {v : ℝ} (h0 : 0 ≤ v) (hv : v ≤ pk k) :
     radialTransform (e + 1) (hk k) v = 0 :=
   radialTransform_eq_zero_of_const e (hk k) (t₀ := pk k)
     (fun τ hτ => by rw [hk_one hτ.1 hτ.2, hk_one le_rfl (pk_pos k).le]) ⟨h0, hv⟩
 
+/- English proof (translation)
+Unfold `radialTransform`. Rewrite using `[hk_zero_of_one_le hv, zero_mul, integral_hk_of_one_le e k hv, zero_sub]`.
+-/
 theorem radialTransform_hk_of_one_le (e k : ℕ) {v : ℝ} (hv : 1 ≤ v) :
     radialTransform (e + 1) (hk k) v = -Ik e k := by
   unfold radialTransform
   rw [hk_zero_of_one_le hv, zero_mul, integral_hk_of_one_le e k hv, zero_sub]
 
+/- English proof (translation)
+Rewrite using `[integral_const_mul_dpow, one_mul]`.
+-/
 theorem integral_kernel (e : ℕ) (t : ℝ) :
     ∫ w in (0 : ℝ)..t, 1 * (((e + 1 : ℕ) : ℝ) * w ^ (e + 1 - 1)) = t ^ (e + 1) := by
   rw [integral_const_mul_dpow, one_mul]
 
+/- English proof (translation)
+Rewrite using `[← integral_kernel e v]`. Conclude with `intervalIntegral.integral_mono_on h0 ((continuous_hk_kernel e k).intervalIntegrable _ _) ((continuous_const.mul (continuous_kernel e)).intervalIntegrable _ _) fun w hw => mul_le_mul_of_nonneg_right (hk k).le_one (kernel_nonneg e hw.1)`.
+-/
 theorem integral_hk_le (e k : ℕ) {v : ℝ} (h0 : 0 ≤ v) :
     ∫ w in (0 : ℝ)..v, hk k w * (((e + 1 : ℕ) : ℝ) * w ^ (e + 1 - 1)) ≤ v ^ (e + 1) := by
   rw [← integral_kernel e v]
@@ -272,15 +383,26 @@ theorem integral_hk_le (e k : ℕ) {v : ℝ} (h0 : 0 ≤ v) :
     ((continuous_const.mul (continuous_kernel e)).intervalIntegrable _ _)
     fun w hw => mul_le_mul_of_nonneg_right (hk k).le_one (kernel_nonneg e hw.1)
 
+/- English proof (translation)
+The claim follows from `intervalIntegral.integral_nonneg h0 fun _ hw => mul_nonneg (hk k).nonneg (kernel_nonneg e hw.1)`.
+-/
 theorem integral_hk_nonneg (e k : ℕ) {v : ℝ} (h0 : 0 ≤ v) :
     0 ≤ ∫ w in (0 : ℝ)..v, hk k w * (((e + 1 : ℕ) : ℝ) * w ^ (e + 1 - 1)) :=
   intervalIntegral.integral_nonneg h0 fun _ hw => mul_nonneg (hk k).nonneg (kernel_nonneg e hw.1)
 
+/- English proof (translation)
+Use `integral_hk_le e k zero_le_one` as an intermediate fact. Rewrite `this` using `[one_pow]`. Conclude with `this`.
+-/
 theorem Ik_le_one (e k : ℕ) : Ik e k ≤ 1 := by
   have := integral_hk_le e k zero_le_one
   rw [one_pow] at this
   exact this
 
+/- English proof (translation)
+Unfold `Ik`. Rewrite using `[← intervalIntegral.integral_add_adjacent_intervals (b := pk k) ((continuous_hk_kernel e k).intervalIntegrable _ _) ((continuous_hk_kernel e k).intervalIntegrable _ _)]`. Establish `h1 : ∫ w in (0 : ℝ)..pk k, hk k w * (((e + 1 : ℕ) : ℝ) * w ^ (e + 1 - 1)) = pk k ^ (e + 1)`. Rewrite using `[← integral_kernel e (pk k)]`. Use `intervalIntegral.integral_congr fun w hw => ?_` and prove the remaining obligations.
+
+Rewrite `hw` using `[Set.uIcc_of_le (pk_pos k).le]`. Rewrite using `[hk_one hw.1 hw.2]`. Establish `h2 : 0 ≤ ∫ w in pk k..1, hk k w * (((e + 1 : ℕ) : ℝ) * w ^ (e + 1 - 1))` using `intervalIntegral.integral_nonneg (pk_le_one k) fun w hw => mul_nonneg (hk k).nonneg (kernel_nonneg e ((pk_pos k).le.trans hw.1))`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem pk_pow_le_Ik (e k : ℕ) : pk k ^ (e + 1) ≤ Ik e k := by
   unfold Ik
   rw [← intervalIntegral.integral_add_adjacent_intervals (b := pk k)
@@ -295,8 +417,14 @@ theorem pk_pow_le_Ik (e k : ℕ) : pk k ^ (e + 1) ≤ Ik e k := by
       fun w hw => mul_nonneg (hk k).nonneg (kernel_nonneg e ((pk_pos k).le.trans hw.1))
   linarith
 
+/- English proof (translation)
+The claim follows from `(pow_nonneg (pk_pos k).le _).trans (pk_pow_le_Ik e k)`.
+-/
 theorem Ik_nonneg (e k : ℕ) : 0 ≤ Ik e k := (pow_nonneg (pk_pos k).le _).trans (pk_pow_le_Ik e k)
 
+/- English proof (translation)
+The claim follows from `|radialTransform (e + 1) (hk k) v| ≤ 1 := by rcases le_or_gt 1 v with h1 | h1 · rw [radialTransform_hk_of_one_le e k h1, abs_neg, abs_of_nonneg (Ik_nonneg e k)] exact Ik_le_one e k · unfold radialTransform have hv1 : v ^ (e + 1) ≤ 1 := pow_le_one₀ h0 h1.le have ha0 : 0 ≤ hk k v * …`.
+-/
 theorem abs_radialTransform_hk_le (e k : ℕ) {v : ℝ} (h0 : 0 ≤ v) :
     |radialTransform (e + 1) (hk k) v| ≤ 1 := by
   rcases le_or_gt 1 v with h1 | h1
@@ -311,11 +439,17 @@ theorem abs_radialTransform_hk_le (e k : ℕ) {v : ℝ} (h0 : 0 ≤ v) :
     rw [abs_le]
     constructor <;> linarith
 
+/- English proof (translation)
+Establish `hp : Tendsto (fun k => pk k ^ (e + 1)) atTop (𝓝 1)`. Simplify using `using tendsto_pk.pow (e + 1)`. Conclude with `tendsto_of_tendsto_of_tendsto_of_le_of_le hp tendsto_const_nhds (pk_pow_le_Ik e) (Ik_le_one e)`.
+-/
 theorem tendsto_Ik (e : ℕ) : Tendsto (Ik e) atTop (𝓝 1) := by
   have hp : Tendsto (fun k => pk k ^ (e + 1)) atTop (𝓝 1) := by
     simpa using tendsto_pk.pow (e + 1)
   exact tendsto_of_tendsto_of_tendsto_of_le_of_le hp tendsto_const_nhds (pk_pow_le_Ik e) (Ik_le_one e)
 
+/- English proof (translation)
+The claim follows from `((tendsto_order.1 tendsto_pk).1 v hv).mono fun _ h => h.le`.
+-/
 theorem eventually_le_pk {v : ℝ} (hv : v < 1) : ∀ᶠ k in atTop, v ≤ pk k :=
   ((tendsto_order.1 tendsto_pk).1 v hv).mono fun _ h => h.le
 
@@ -325,22 +459,40 @@ section Ball
 
 variable {n : ℕ} (x : Fin n → ℂ)
 
+/- English proof (translation)
+The claim follows from `(contDiff_euclPot n).continuous.comp (continuous_id.sub continuous_const)`.
+-/
 theorem continuous_distSq : Continuous fun z : Fin n → ℂ => euclPot (z - x) :=
   (contDiff_euclPot n).continuous.comp (continuous_id.sub continuous_const)
 
+/- English proof (translation)
+The claim follows from `(contDiff_euclPot n).comp (contDiff_id.sub contDiff_const)`.
+-/
 theorem contDiff_distSq : ContDiff ℝ ∞ fun z : Fin n → ℂ => euclPot (z - x) :=
   (contDiff_euclPot n).comp (contDiff_id.sub contDiff_const)
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => sq_nonneg _`.
+-/
 theorem distSq_nonneg (z : Fin n → ℂ) : 0 ≤ euclPot (z - x) :=
   Finset.sum_nonneg fun _ _ => sq_nonneg _
 
+/- English proof (translation)
+The claim follows from `Real.sqrt_lt' hρ`.
+-/
 theorem mem_euclBall_iff_sq {ρ : ℝ} (hρ : 0 < ρ) (z : Fin n → ℂ) :
     z ∈ euclBall x ρ ↔ euclPot (z - x) < ρ ^ 2 :=
   Real.sqrt_lt' hρ
 
+/- English proof (translation)
+The claim follows from `(isOpen_lt (continuous_distSq x).sqrt continuous_const).measurableSet`.
+-/
 theorem measurableSet_euclBall (ρ : ℝ) : MeasurableSet (euclBall x ρ) :=
   (isOpen_lt (continuous_distSq x).sqrt continuous_const).measurableSet
 
+/- English proof (translation)
+Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun j => ?_` and prove the remaining obligations. Establish `hj : ‖(z - x) j‖ ^ 2 ≤ euclPot (z - x)` using `Finset.single_le_sum (f := fun j => ‖(z - x) j‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ j)`. Use `Real.abs_le_sqrt hj` as an intermediate fact. Rewrite `this` using `[abs_norm]`. Then use the resulting hypothesis.
+-/
 theorem norm_sub_le_sqrt (z : Fin n → ℂ) : ‖z - x‖ ≤ Real.sqrt (euclPot (z - x)) := by
   refine (pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun j => ?_
   have hj : ‖(z - x) j‖ ^ 2 ≤ euclPot (z - x) :=
@@ -353,17 +505,31 @@ def bigBump (s : ℝ) : ContDiffBump (0 : ℝ) :=
 
 def majorant (s : ℝ) (z : Fin n → ℂ) : ℝ := bigBump s (euclPot (z - x))
 
+/- English proof (translation)
+The claim follows from `(bigBump s).continuous.comp (continuous_distSq x)`.
+-/
 theorem continuous_majorant (s : ℝ) : Continuous (majorant x s) :=
   (bigBump s).continuous.comp (continuous_distSq x)
 
+/- English proof (translation)
+The claim follows from `(bigBump s).nonneg`.
+-/
 theorem majorant_nonneg (s : ℝ) (z : Fin n → ℂ) : 0 ≤ majorant x s z := (bigBump s).nonneg
 
+/- English proof (translation)
+The claim follows from `(bigBump s).one_of_mem_closedBall (by rw [Metric.mem_closedBall, Real.dist_eq, sub_zero, abs_of_nonneg (distSq_nonneg x z)] show euclPot (z - x) ≤ s ^ 2 + 1 linarith)`.
+-/
 theorem majorant_one {s : ℝ} {z : Fin n → ℂ} (hz : euclPot (z - x) ≤ s ^ 2) : majorant x s z = 1 :=
   (bigBump s).one_of_mem_closedBall (by
     rw [Metric.mem_closedBall, Real.dist_eq, sub_zero, abs_of_nonneg (distSq_nonneg x z)]
     show euclPot (z - x) ≤ s ^ 2 + 1
     linarith)
 
+/- English proof (translation)
+Use `HasCompactSupport.intro (isCompact_closedBall x (2 * (s ^ 2 + 1))) fun z hz => ?_` and prove the remaining obligations. Rewrite `hz` using `[Metric.mem_closedBall, dist_eq_norm, not_le]`. Establish `hR : 1 ≤ 2 * (s ^ 2 + 1)` using `by nlinarith [sq_nonneg s]`. Establish `h1 : 2 * (s ^ 2 + 1) < Real.sqrt (euclPot (z - x))` using `hz.trans_le (norm_sub_le_sqrt x z)`. Establish `h2 : (2 * (s ^ 2 + 1)) ^ 2 < euclPot (z - x)` using `(Real.lt_sqrt (by linarith)).1 h1`.
+
+Use `(bigBump s).zero_of_le_dist ?_` and prove the remaining obligations. Rewrite using `[Real.dist_eq, sub_zero, abs_of_nonneg (distSq_nonneg x z)]`. Use `show 2 * (s ^ 2 + 1) ≤ euclPot (z - x)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem hasCompactSupport_majorant (s : ℝ) : HasCompactSupport (majorant x s) := by
   refine HasCompactSupport.intro (isCompact_closedBall x (2 * (s ^ 2 + 1))) fun z hz => ?_
   rw [Metric.mem_closedBall, dist_eq_norm, not_le] at hz
@@ -375,6 +541,9 @@ theorem hasCompactSupport_majorant (s : ℝ) : HasCompactSupport (majorant x s) 
   show 2 * (s ^ 2 + 1) ≤ euclPot (z - x)
   nlinarith
 
+/- English proof (translation)
+Break down `le_or_gt (s ^ 2) (euclPot (z - x)) with h | h` into its components or cases. Rewrite using `[h0 z h, abs_zero]`. Conclude with `mul_nonneg hC (majorant_nonneg x s z)`. Rewrite using `[majorant_one x h.le, mul_one]`. Conclude with `hw z`.
+-/
 theorem abs_le_majorant {s C : ℝ} (hC : 0 ≤ C) {w : (Fin n → ℂ) → ℝ} (hw : ∀ z, |w z| ≤ C)
     (h0 : ∀ z, s ^ 2 ≤ euclPot (z - x) → w z = 0) (z : Fin n → ℂ) : |w z| ≤ C * majorant x s z := by
   rcases le_or_gt (s ^ 2) (euclPot (z - x)) with h | h
@@ -389,6 +558,13 @@ def smallBump {r : ℝ} (hr : 0 < r) : ContDiffBump (0 : ℝ) :=
 def logDistSmooth {r : ℝ} (hr : 0 < r) (z : Fin n → ℂ) : ℝ :=
   Real.log (euclPot (z - x) + r ^ 2 * smallBump hr (euclPot (z - x)))
 
+/- English proof (translation)
+Establish `h0` using `distSq_nonneg x z`. Establish `hr2` using `pow_pos hr 2`. Break down `le_or_gt (euclPot (z - x)) (r ^ 2 / 8) with h | h` into its components or cases. Establish `h1 : smallBump hr (euclPot (z - x)) = 1` using `(smallBump hr).one_of_mem_closedBall (by`. Rewrite using `[Metric.mem_closedBall, Real.dist_eq, sub_zero, abs_of_nonneg h0]`.
+
+Conclude with `h)`. Rewrite using `[h1]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(smallBump hr).nonneg (x := euclPot (z - x))` as an intermediate fact. Establish `: 0 ≤ r ^ 2 * smallBump hr (euclPot (z - x))` using `mul_nonneg hr2.le this`.
+
+Combine the linear relations using `[pow_pos hr 2]`.
+-/
 theorem distSq_add_pos {r : ℝ} (hr : 0 < r) (z : Fin n → ℂ) :
     0 < euclPot (z - x) + r ^ 2 * smallBump hr (euclPot (z - x)) := by
   have h0 := distSq_nonneg x z
@@ -404,10 +580,18 @@ theorem distSq_add_pos {r : ℝ} (hr : 0 < r) (z : Fin n → ℂ) :
     have : 0 ≤ r ^ 2 * smallBump hr (euclPot (z - x)) := mul_nonneg hr2.le this
     linarith [pow_pos hr 2]
 
+/- English proof (translation)
+The claim follows from `((contDiff_distSq x).add (contDiff_const.mul ((smallBump hr).contDiff.comp (contDiff_distSq x)))).log fun z => (distSq_add_pos x hr z).ne'`.
+-/
 theorem contDiff_logDistSmooth {r : ℝ} (hr : 0 < r) : ContDiff ℝ ∞ (logDistSmooth x hr) :=
   ((contDiff_distSq x).add (contDiff_const.mul ((smallBump hr).contDiff.comp (contDiff_distSq x)))).log
     fun z => (distSq_add_pos x hr z).ne'
 
+/- English proof (translation)
+Use `Filter.eventuallyEq_of_mem ((isOpen_lt continuous_const (continuous_distSq x)).mem_nhds hz) fun z' hz' => ?_` and prove the remaining obligations. Establish `h0 : smallBump hr (euclPot (z' - x)) = 0` using `(smallBump hr).zero_of_le_dist (by`. Rewrite using `[Real.dist_eq, sub_zero, abs_of_nonneg (distSq_nonneg x z')]`. Conclude with `(le_of_lt hz'))`. Simplify using `only [logDistSmooth, logDistSq]`.
+
+Rewrite using `[h0, mul_zero, add_zero]`.
+-/
 theorem logDistSmooth_eventuallyEq {r : ℝ} (hr : 0 < r) {z : Fin n → ℂ} (hz : r ^ 2 / 4 < euclPot (z - x)) :
     logDistSmooth x hr =ᶠ[𝓝 z] logDistSq x := by
   refine Filter.eventuallyEq_of_mem ((isOpen_lt continuous_const (continuous_distSq x)).mem_nhds hz)
@@ -419,6 +603,11 @@ theorem logDistSmooth_eventuallyEq {r : ℝ} (hr : 0 < r) {z : Fin n → ℂ} (h
   simp only [logDistSmooth, logDistSq]
   rw [h0, mul_zero, add_zero]
 
+/- English proof (translation)
+Establish `hρ2` using `pow_pos hρ 2`. Establish `hv0 : 0 ≤ euclPot (z - x) / ρ ^ 2` using `div_nonneg (distSq_nonneg x z) hρ2.le`. Distinguish the cases in `hz : euclPot (z - x) < ρ ^ 2`. Rewrite using `[Set.indicator_of_mem ((mem_euclBall_iff_sq x hρ z).2 hz)]`. Establish `hv : euclPot (z - x) / ρ ^ 2 < 1` using `(div_lt_one hρ2).2 hz`.
+
+Conclude with `tendsto_const_nhds.congr' ((eventually_le_pk hv).mono fun k hk' => (hk_one hv0 hk').symm)`. Rewrite using `[Set.indicator_of_notMem (fun h => hz ((mem_euclBall_iff_sq x hρ z).1 h))]`. Establish `hv : 1 ≤ euclPot (z - x) / ρ ^ 2` using `(one_le_div hρ2).2 (not_lt.1 hz)`. Simplify using `only [hk_zero_of_one_le hv]`. Conclude with `tendsto_const_nhds`.
+-/
 theorem tendsto_hk_indicator {ρ : ℝ} (hρ : 0 < ρ) (z : Fin n → ℂ) :
     Tendsto (fun k => hk k (euclPot (z - x) / ρ ^ 2)) atTop
       (𝓝 ((euclBall x ρ).indicator (fun _ => (1 : ℝ)) z)) := by
@@ -442,10 +631,16 @@ variable {r s : ℝ} (e : ℕ)
 def annWeight (r s : ℝ) (e k : ℕ) (t : ℝ) : ℝ :=
   r ^ (2 * (e + 1)) * hk k (t / s ^ 2) - s ^ (2 * (e + 1)) * hk k (t / r ^ 2)
 
+/- English proof (translation)
+The claim follows from `(contDiff_const.mul ((hk k).contDiff.comp (contDiff_id.div_const _))).sub (contDiff_const.mul ((hk k).contDiff.comp (contDiff_id.div_const _)))`.
+-/
 theorem contDiff_annWeight (k : ℕ) : ContDiff ℝ ∞ (annWeight r s e k) :=
   (contDiff_const.mul ((hk k).contDiff.comp (contDiff_id.div_const _))).sub
     (contDiff_const.mul ((hk k).contDiff.comp (contDiff_id.div_const _)))
 
+/- English proof (translation)
+Establish `hr2` using `pow_pos hr 2`. Establish `hs2 : r ^ 2 ≤ s ^ 2` using `pow_le_pow_left₀ hr.le hrs 2`. Unfold `annWeight`. Rewrite using `[hk_zero_of_one_le ((one_le_div (hr2.trans_le hs2)).2 ht), hk_zero_of_one_le ((one_le_div hr2).2 (hs2.trans ht))]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem annWeight_zero_of_le (hr : 0 < r) (hrs : r ≤ s) (k : ℕ) {t : ℝ} (ht : s ^ 2 ≤ t) :
     annWeight r s e k t = 0 := by
   have hr2 := pow_pos hr 2
@@ -455,6 +650,11 @@ theorem annWeight_zero_of_le (hr : 0 < r) (hrs : r ≤ s) (k : ℕ) {t : ℝ} (h
     hk_zero_of_one_le ((one_le_div hr2).2 (hs2.trans ht))]
   ring
 
+/- English proof (translation)
+Establish `hr2` using `pow_pos hr 2`. Establish `hs2 : r ^ 2 ≤ s ^ 2` using `pow_le_pow_left₀ hr.le hrs 2`. Establish `h1 : t / r ^ 2 ≤ pk k` using `(div_le_iff₀ hr2).2 ht.2`. Establish `h2 : t / s ^ 2 ≤ t / r ^ 2` using `div_le_div_of_nonneg_left ht.1 hr2 hs2`. Unfold `annWeight`.
+
+Rewrite using `[hk_one (div_nonneg ht.1 (hr2.trans_le hs2).le) (h2.trans h1), hk_one (div_nonneg ht.1 hr2.le) h1, zero_div, zero_div, hk_one le_rfl (pk_pos k).le]`.
+-/
 theorem annWeight_const (hr : 0 < r) (hrs : r ≤ s) (k : ℕ) {t : ℝ} (ht : t ∈ Set.Icc 0 (pk k * r ^ 2)) :
     annWeight r s e k t = annWeight r s e k 0 := by
   have hr2 := pow_pos hr 2
@@ -465,6 +665,9 @@ theorem annWeight_const (hr : 0 < r) (hrs : r ≤ s) (k : ℕ) {t : ℝ} (ht : t
   rw [hk_one (div_nonneg ht.1 (hr2.trans_le hs2).le) (h2.trans h1), hk_one (div_nonneg ht.1 hr2.le) h1,
     zero_div, zero_div, hk_one le_rfl (pk_pos k).le]
 
+/- English proof (translation)
+The claim follows from `|annWeight r s e k t| ≤ r ^ (2 * (e + 1)) + s ^ (2 * (e + 1)) := by have hb : ∀ (c v : ℝ), 0 ≤ c → |c * hk k v| ≤ c := fun c v hc => by rw [abs_mul, abs_of_nonneg hc, abs_of_nonneg (hk k).nonneg] exact mul_le_of_le_one_right hc (hk k).le_one exact (abs_sub _ _).trans (add_le_add …`.
+-/
 theorem abs_annWeight_le (hr : 0 < r) (hs : 0 < s) (k : ℕ) (t : ℝ) :
     |annWeight r s e k t| ≤ r ^ (2 * (e + 1)) + s ^ (2 * (e + 1)) := by
   have hb : ∀ (c v : ℝ), 0 ≤ c → |c * hk k v| ≤ c := fun c v hc => by
@@ -472,6 +675,9 @@ theorem abs_annWeight_le (hr : 0 < r) (hs : 0 < s) (k : ℕ) (t : ℝ) :
     exact mul_le_of_le_one_right hc (hk k).le_one
   exact (abs_sub _ _).trans (add_le_add (hb _ _ (pow_nonneg hr.le _)) (hb _ _ (pow_nonneg hs.le _)))
 
+/- English proof (translation)
+Rewrite using `[show annWeight r s e k = (fun τ => r ^ (2 * (e + 1)) * hk k (τ / s ^ 2) - s ^ (2 * (e + 1)) * hk k (τ / r ^ 2)) from rfl, radialTransform_sub e (f₁ := fun τ => hk k (τ / s ^ 2)) (f₂ := fun τ => hk k (τ / r ^ 2)) ((hk k).continuous.comp (continuous_id.div_const _)) ((hk k).contin …`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem radialTransform_annWeight (hr : 0 < r) (hs : 0 < s) (k : ℕ) (t : ℝ) :
     radialTransform (e + 1) (annWeight r s e k) t =
       r ^ (2 * (e + 1)) * s ^ (2 * (e + 1)) *
@@ -483,6 +689,9 @@ theorem radialTransform_annWeight (hr : 0 < r) (hs : 0 < s) (k : ℕ) (t : ℝ) 
     radialTransform_comp_div e (hk k) hs.ne', radialTransform_comp_div e (hk k) hr.ne']
   ring
 
+/- English proof (translation)
+Establish `hr2` using `pow_pos hr 2`. Establish `hs2 : r ^ 2 ≤ s ^ 2` using `pow_le_pow_left₀ hr.le hrs 2`. Establish `h1 : t / r ^ 2 ≤ pk k` using `(div_le_iff₀ hr2).2 ht`. Establish `h2 : t / s ^ 2 ≤ t / r ^ 2` using `div_le_div_of_nonneg_left h0 hr2 hs2`. Rewrite using `[radialTransform_hk_of_le e k (div_nonneg h0 (hr2.trans_le hs2).le) (h2.trans h1), radialTransform_hk_of_le e k (div_nonneg h0 hr2.le) h1, sub_self]`.
+-/
 theorem radialTransform_diff_of_le (hr : 0 < r) (hrs : r ≤ s) (k : ℕ) {t : ℝ} (h0 : 0 ≤ t)
     (ht : t ≤ pk k * r ^ 2) :
     radialTransform (e + 1) (hk k) (t / s ^ 2) - radialTransform (e + 1) (hk k) (t / r ^ 2) = 0 := by
@@ -493,6 +702,9 @@ theorem radialTransform_diff_of_le (hr : 0 < r) (hrs : r ≤ s) (k : ℕ) {t : �
   rw [radialTransform_hk_of_le e k (div_nonneg h0 (hr2.trans_le hs2).le) (h2.trans h1),
     radialTransform_hk_of_le e k (div_nonneg h0 hr2.le) h1, sub_self]
 
+/- English proof (translation)
+Establish `hr2` using `pow_pos hr 2`. Establish `hs2 : r ^ 2 ≤ s ^ 2` using `pow_le_pow_left₀ hr.le hrs 2`. Rewrite using `[radialTransform_hk_of_one_le e k ((one_le_div (hr2.trans_le hs2)).2 ht), radialTransform_hk_of_one_le e k ((one_le_div hr2).2 (hs2.trans ht)), sub_self]`.
+-/
 theorem radialTransform_diff_of_ge (hr : 0 < r) (hrs : r ≤ s) (k : ℕ) {t : ℝ} (ht : s ^ 2 ≤ t) :
     radialTransform (e + 1) (hk k) (t / s ^ 2) - radialTransform (e + 1) (hk k) (t / r ^ 2) = 0 := by
   have hr2 := pow_pos hr 2
@@ -502,6 +714,15 @@ theorem radialTransform_diff_of_ge (hr : 0 < r) (hrs : r ≤ s) (k : ℕ) {t : �
 
 variable {n : ℕ} (x : Fin n → ℂ)
 
+/- English proof (translation)
+Establish `hs : 0 < s` using `hr.trans_le hrs`. Establish `hr2` using `pow_pos hr 2`. Establish `hs2 : r ^ 2 ≤ s ^ 2` using `pow_le_pow_left₀ hr.le hrs 2`. Establish `h0` using `distSq_nonneg x z`. Break down `lt_or_ge (euclPot (z - x)) (r ^ 2) with h1 | h1` into its components or cases.
+
+Rewrite using `[Set.indicator_of_notMem (fun h => h.2 ((mem_euclBall_iff_sq x hr z).2 h1))]`. Use `tendsto_const_nhds.congr' ((eventually_le_pk ((div_lt_one hr2).2 h1)).mono fun k hk' => ?_)` and prove the remaining obligations. Conclude with `(radialTransform_diff_of_le e hr hrs k h0 ((div_le_iff₀ hr2).1 hk')).symm`. Break down `lt_or_ge (euclPot (z - x)) (s ^ 2) with h2 | h2` into its components or cases. Rewrite using `[Set.indicator_of_mem (show z ∈ euclBall x s \ euclBall x r from ⟨(mem_euclBall_iff_sq x hs z).2 h2, fun h => (not_lt.2 h1) ((mem_euclBall_iff_sq x hr z).1 h)⟩)]`.
+
+Establish `hv : euclPot (z - x) / s ^ 2 < 1` using `(div_lt_one (hr2.trans_le hs2)).2 h2`. Use `(tendsto_Ik e).congr' ((eventually_le_pk hv).mono fun k hk' => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[radialTransform_hk_of_le e k (div_nonneg h0 (hr2.trans_le hs2).le) hk', radialTransform_hk_of_one_le e k ((one_le_div hr2).2 h1)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Set.indicator_of_notMem (fun h => (not_lt.2 h2) ((mem_euclBall_iff_sq x hs z).1 h.1))]`. Simplify using `only [radialTransform_diff_of_ge e hr hrs _ h2]`. Conclude with `tendsto_const_nhds`.
+-/
 theorem tendsto_radialTransform_diff (hr : 0 < r) (hrs : r ≤ s) (z : Fin n → ℂ) :
     Tendsto (fun k => radialTransform (e + 1) (hk k) (euclPot (z - x) / s ^ 2) -
         radialTransform (e + 1) (hk k) (euclPot (z - x) / r ^ 2)) atTop
@@ -533,6 +754,43 @@ end RegLelongAnnulus
 
 open RegLelongAnnulus in
 
+/- English proof (translation)
+Introduce `n d J A u ε x r s hJ hdim hAf hε hr hrs`. Establish `hs : 0 < s` using `hr.trans_le hrs`. Establish `hr2 : 0 < r ^ 2` using `pow_pos hr 2`. Establish `hs2 : r ^ 2 ≤ s ^ 2` using `pow_le_pow_left₀ hr.le hrs 2`. Establish `hφσ : ∀ k, SmoothNear (zeroSet J) ((vecCons (logReg u ε) fun _ => euclPot : Fin (d + 1) → (Fin n → ℂ) → ℝ) k)`.
+
+Introduce `k`. Use `Fin.cases ?_ (fun i => ?_) k` and prove the remaining obligations. Simplify using `using smoothNear_of_contDiff (S := zeroSet J) (contDiff_logReg u hε)`. Simplify using `using smoothNear_of_contDiff (S := zeroSet J) (contDiff_euclPot n)`. Establish `hball : ∀ ρ, 0 < ρ → ρ ≤ s → Integrable (chartDens J A ((euclBall x ρ).indicator fun _ => (1 : ℝ)) (vecCons (logReg u ε) fun _ => euclPot))`.
+
+Introduce `ρ hρ hρs`. Use `integrable_chartDens hCM hJ hdim hAf hφσ (continuous_majorant x s) (hasCompactSupport_majorant x s) zero_le_one (measurable_const.indicator (measurableSet_euclBall x ρ)) (abs_le_majorant x zero_le_one (fun z => ?_) (fun z hz => ?_))` and prove the remaining obligations. Apply the tactic sequence `by_cases h : z ∈ euclBall x ρ <;> simp [h]`. Use `Set.indicator_of_notMem (fun h => ?_) _` and prove the remaining obligations. Establish `h1` using `(mem_euclBall_iff_sq x hρ z).1 h`.
+
+Establish `h2 : ρ ^ 2 ≤ s ^ 2` using `pow_le_pow_left₀ hρ.le hρs 2`. Combine the linear equalities and inequalities to obtain the conclusion. Break down `d with _ | e` into its components or cases. Establish `hφ : (fun _ : Fin 0 => logDistSq x) = fun _ => euclPot` using `Subsingleton.elim _ _`. Rewrite using `[hφ]`.
+
+Establish `hsub : ((euclBall x s \ euclBall x r).indicator fun _ => (1 : ℝ)) = fun z => 1 * (euclBall x s).indicator (fun _ => (1 : ℝ)) z - 1 * (euclBall x r).indicator (fun _ => (1 : ℝ)) z`. Use function extensionality and compare the values at `z`. Distinguish the cases in `h1 : z ∈ euclBall x r`. Establish `h2 : z ∈ euclBall x s` using `(mem_euclBall_iff_sq x hs z).2 (((mem_euclBall_iff_sq x hr z).1 h1).trans_le hs2)`. Simplify using `[h1, h2]`.
+
+Apply the tactic sequence `by_cases h2 : z ∈ euclBall x s <;> simp [h1, h2]`. Rewrite using `[hsub]`. Simplify using `only [chartDens_sub' hAf]`. Rewrite using `[integral_sub ((hball s hs le_rfl).const_mul 1) ((hball r hr hrs).const_mul 1), integral_const_mul, integral_const_mul]`. Simplify using the standard rewrite rules.
+
+Establish `hc0 : 0 ≤ r ^ (2 * (e + 1)) * s ^ (2 * (e + 1))` using `mul_nonneg (pow_nonneg hr.le _) (pow_nonneg hs.le _)`. Establish `hEq : ∀ k, ∫ y, chartDens J A (fun z => annWeight r s e k (euclPot (z - x))) (vecCons (logReg u ε) fun _ => euclPot) y = ∫ y, chartDens J A (fun z => r ^ (2 * (e + 1)) * s ^ (2 * (e + 1)) * (radialTransform (e + 1) (hk k) (euclPot (z - x) / s ^ 2) - radialTransform (e + 1) (hk k) …`. Introduce `k`. Establish `hT : (∫ τ in (0 : ℝ)..s ^ 2, annWeight r s e k τ * (((e + 1 : ℕ) : ℝ) * τ ^ (e + 1 - 1))) = 0`. Establish `h` using `radialTransform_annWeight e hr hs k (s ^ 2)`.
+
+Rewrite `h` using `[div_self (pow_pos hs 2).ne', radialTransform_hk_of_one_le e k le_rfl, radialTransform_hk_of_one_le e k ((one_le_div hr2).2 hs2), sub_self, mul_zero]`. Unfold `radialTransform at h`. Rewrite `h` using `[annWeight_zero_of_le e hr hrs k le_rfl, zero_mul, zero_sub, neg_eq_zero]`. Conclude with `h`. Establish `h` using `hRW n (e + 1) J A u ε x (annWeight r s e k) (pk k * r ^ 2) (s ^ 2) hJ hdim hAf hε (contDiff_annWeight e k) (mul_pos (pk_pos k) hr2) (fun t ht => annWeight_const e hr hrs k ht) (fun t ht => annWeight_zero_of_le e hr hrs k ht) hT`.
+
+Establish `hw : (fun z => radialTransform (e + 1) (annWeight r s e k) (euclPot (z - x))) = fun z => r ^ (2 * (e + 1)) * s ^ (2 * (e + 1)) * (radialTransform (e + 1) (hk k) (euclPot (z - x) / s ^ 2) - radialTransform (e + 1) (hk k) (euclPot (z - x) / r ^ 2))`. Use function extensionality and compare the values at `fun z => radialTransform_annWeight e hr hs k _`. Rewrite using `[h, hw]`. Establish `hL : Tendsto (fun k => ∫ y, chartDens J A (fun z => annWeight r s e k (euclPot (z - x))) (vecCons (logReg u ε) fun _ => euclPot) y) atTop (𝓝 (r ^ (2 * (e + 1)) * (∫ y, chartDens J A ((euclBall x s).indicator fun _ => 1) (vecCons (logReg u ε) fun _ => euclPot) y) - s ^ (2 * (e + 1 …`. Establish `h` using `tendsto_integral_chartDens hCM hJ hdim hAf hφσ (continuous_majorant x s) (hasCompactSupport_majorant x s) (C := r ^ (2 * (e + 1)) + s ^ (2 * (e + 1))) (add_nonneg (pow_nonneg hr.le _) (pow_nonneg hs.le _)) (w := fun k z => annWeight r s e k (euclPot (z - x))) (w' := fun z => r ^ …`.
+
+Establish `hlim : ∫ y, chartDens J A (fun z => r ^ (2 * (e + 1)) * (euclBall x s).indicator (fun _ => (1 : ℝ)) z - s ^ (2 * (e + 1)) * (euclBall x r).indicator (fun _ => (1 : ℝ)) z) (vecCons (logReg u ε) fun _ => euclPot) y = r ^ (2 * (e + 1)) * (∫ y, chartDens J A ((euclBall x s).indicator …`. Simplify using `only [chartDens_sub' hAf]`. Rewrite using `[integral_sub ((hball s hs le_rfl).const_mul _) ((hball r hr hrs).const_mul _), integral_const_mul, integral_const_mul]`. Rewrite using `[← hlim]`. Conclude with `h`.
+
+Establish `hφτ : ∀ k, SmoothNear (zeroSet J) ((vecCons (logReg u ε) fun _ => logDistSmooth x hr : Fin (e + 1 + 1) → (Fin n → ℂ) → ℝ) k)`. Introduce `k`. Use `Fin.cases ?_ (fun i => ?_) k` and prove the remaining obligations. Simplify using `using smoothNear_of_contDiff (S := zeroSet J) (contDiff_logReg u hε)`. Simplify using `using smoothNear_of_contDiff (S := zeroSet J) (contDiff_logDistSmooth x hr)`.
+
+Establish `hgerm : ∀ z : Fin n → ℂ, r ^ 2 / 4 < euclPot (z - x) → ∀ i : Fin (e + 1 + 1), (vecCons (logReg u ε) fun _ => logDistSq x : Fin (e + 1 + 1) → (Fin n → ℂ) → ℝ) i =ᶠ[𝓝 z] (vecCons (logReg u ε) fun _ => logDistSmooth x hr : Fin (e + 1 + 1) → (Fin n → ℂ) → ℝ) i`. Introduce `z hz i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [Matrix.cons_val_zero]`. Conclude with `Filter.EventuallyEq.rfl`.
+
+Simplify using `only [Matrix.cons_val_succ]`. Conclude with `(logDistSmooth_eventuallyEq x hr hz).symm`. Establish `hloc : ∀ k y, chartDens J A (fun z => r ^ (2 * (e + 1)) * s ^ (2 * (e + 1)) * (radialTransform (e + 1) (hk k) (euclPot (z - x) / s ^ 2) - radialTransform (e + 1) (hk k) (euclPot (z - x) / r ^ 2))) (vecCons (logReg u ε) fun _ => logDistSq x) y = chartDens J A (fun z => r ^ (2 * (e …`. Introduce `k y`. Use `chartDens_congr_fun (fun z _ hz => hgerm z ?_) y` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hle`. Use `replace hle := not_lt.1 hle`. Apply `hz` to reduce the goal to its premises. Establish `hp` using `half_le_pk k`. Rewrite using `[radialTransform_diff_of_le e hr hrs k (distSq_nonneg x z) (by nlinarith), mul_zero]`.
+
+Establish `hloc' : ∀ y, chartDens J A (fun z => r ^ (2 * (e + 1)) * s ^ (2 * (e + 1)) * (euclBall x s \ euclBall x r).indicator (fun _ => (1 : ℝ)) z) (vecCons (logReg u ε) fun _ => logDistSq x) y = chartDens J A (fun z => r ^ (2 * (e + 1)) * s ^ (2 * (e + 1)) * (euclBall x s \ euclBall x r) …`. Introduce `y`. Use `chartDens_congr_fun (fun z _ hz => hgerm z ?_) y` and prove the remaining obligations. Assume the negation of the conclusion as `hle`. Use `replace hle := not_lt.1 hle`.
+
+Apply `hz` to reduce the goal to its premises. Rewrite using `[Set.indicator_of_notMem (fun h => h.2 ((mem_euclBall_iff_sq x hr z).2 (by linarith))), mul_zero]`. Establish `hR : Tendsto (fun k => ∫ y, chartDens J A (fun z => r ^ (2 * (e + 1)) * s ^ (2 * (e + 1)) * (radialTransform (e + 1) (hk k) (euclPot (z - x) / s ^ 2) - radialTransform (e + 1) (hk k) (euclPot (z - x) / r ^ 2))) (vecCons (logReg u ε) fun _ => logDistSq x) y) atTop (𝓝 (r ^ (2 * (e …`. Establish `h` using `tendsto_integral_chartDens hCM hJ hdim hAf hφτ (continuous_majorant x s) (hasCompactSupport_majorant x s) (C := 2 * (r ^ (2 * (e + 1)) * s ^ (2 * (e + 1)))) (by positivity) (w := fun k z => r ^ (2 * (e + 1)) * s ^ (2 * (e + 1)) * (radialTransform (e + 1) (hk k) (euclPot (z - x) / …`. Establish `hl : ∀ y, chartDens J A (fun z => r ^ (2 * (e + 1)) * s ^ (2 * (e + 1)) * (euclBall x s \ euclBall x r).indicator (fun _ => (1 : ℝ)) z) (vecCons (logReg u ε) fun _ => logDistSq x) y = r ^ (2 * (e + 1)) * s ^ (2 * (e + 1)) * chartDens J A ((euclBall x s \ euclBall x r).indicator f …` using `fun y => chartDens_const_mul hAf _ _ _ y`.
+
+Rewrite using `[← integral_const_mul]`. Simplify using `only [← hl, hloc', hloc]`. Conclude with `h`. Establish `h1` using `abs_radialTransform_hk_le e k (div_nonneg (distSq_nonneg x z) (pow_pos hs 2).le)`. Establish `h2` using `abs_radialTransform_hk_le e k (div_nonneg (distSq_nonneg x z) hr2.le)`.
+
+Rewrite using `[abs_mul, abs_of_nonneg hc0]`. Establish `h3` using `abs_sub (radialTransform (e + 1) (hk k) (euclPot (z - x) / s ^ 2)) (radialTransform (e + 1) (hk k) (euclPot (z - x) / r ^ 2))`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `tendsto_nhds_unique hL (hR.congr fun k => (hEq k).symm)`.
+-/
 theorem RegLelongAnnulus.proof (hRW : RegRadialWeight.Statement) (hCM : ChartMassCompact.Statement) :
     RegLelongAnnulus.Statement := by
   intro n d J A u ε x r s hJ hdim hAf hε hr hrs

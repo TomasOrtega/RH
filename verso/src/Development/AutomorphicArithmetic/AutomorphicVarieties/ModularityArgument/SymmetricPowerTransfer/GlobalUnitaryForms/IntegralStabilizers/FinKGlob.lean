@@ -7,16 +7,28 @@ namespace UpperTheory.V.Z.Sym.Glob.FK
 
 open NumberField IsDedekindDomain Matrix Loc
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lmap_re {K K' : Type} [Field K] [Field K'] (f : K →+* K') {Δ : K} (x : Lsq K Δ) : (lmap f Δ x).re = f x.re := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lmap_im {K K' : Type} [Field K] [Field K'] (f : K →+* K') {Δ : K} (x : Lsq K Δ) : (lmap f Δ x).im = f x.im := rfl
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Rewrite using `[IsIntegrallyClosed.isIntegral_iff]`. Conclude with `⟨fun ⟨y, hy⟩ => hy ▸ y.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩`.
+-/
 theorem int_iff (v : Pl F) (x : Kv v) : IsIntegral (Ov v) x ↔ x ∈ v.adicCompletionIntegers F := by
   rw [IsIntegrallyClosed.isIntegral_iff]
   exact ⟨fun ⟨y, hy⟩ => hy ▸ y.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩
 
+/- English proof (translation)
+Simplify using `only [int_iff]`. Use `⟨fun h v => HeightOneSpectrum.coe_algebraMap_mem (𝓞 F) F v ⟨x, h⟩, fun h => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 F) F x fun v => (GroundTheory.Global.coe_mem_adicCompletionIntegers_iff v x).1 (h v)`. Rewrite using `[← hz]`. Conclude with `RingOfIntegers.isIntegral_coe z`.
+-/
 theorem int_glob (x : F) : IsIntegral ℤ x ↔ ∀ v : Pl F, IsIntegral (Ov v) (cv v x) := by
   simp only [int_iff]
   refine ⟨fun h v => HeightOneSpectrum.coe_algebraMap_mem (𝓞 F) F v ⟨x, h⟩, fun h => ?_⟩
@@ -25,6 +37,11 @@ theorem int_glob (x : F) : IsIntegral ℤ x ↔ ∀ v : Pl F, IsIntegral (Ov v) 
   rw [← hz]
   exact RingOfIntegers.isIntegral_coe z
 
+/- English proof (translation)
+Take `⟨m, hm0, hm⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ F).2 (Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x)).exists_integral_multiple`. Use `⟨m.natAbs, Int.natAbs_ne_zero.2 hm0, ?_⟩` and prove the remaining obligations. Rewrite `hm` using `[zsmul_eq_mul]`. Break down `Int.natAbs_eq m with h | h` into its components or cases. Rewrite `hm` using `[h]`.
+
+Simplify using `using hm`. Rewrite `hm` using `[h]`. Simplify using `using hm.neg`.
+-/
 theorem den_glob (x : F) : ∃ c : ℕ, c ≠ 0 ∧ IsIntegral ℤ ((c : F) * x) := by
   obtain ⟨m, hm0, hm⟩ := ((IsFractionRing.isAlgebraic_iff ℤ ℚ F).2 (Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x)).exists_integral_multiple
   refine ⟨m.natAbs, Int.natAbs_ne_zero.2 hm0, ?_⟩
@@ -33,6 +50,11 @@ theorem den_glob (x : F) : ∃ c : ℕ, c ≠ 0 ∧ IsIntegral ℤ ((c : F) * x)
   · rw [h] at hm; simpa using hm
   · rw [h] at hm; simpa using hm.neg
 
+/- English proof (translation)
+Set `b : FiniteAdeleRing (𝓞 F) F` to `⟨fun v => cv v e * a v, Filter.Eventually.of_forall fun v => (int_iff v _).1 (ha v)⟩`. Take `⟨k, hk⟩` from `GroundTheory.Global.exists_sub_mem_integralFiniteAdeles (algebraMap F (FiniteAdeleRing (𝓞 F) F) (e * f)⁻¹ * b)`. Use `⟨f * k, fun v => ⟨cv v (e * f)⁻¹ * (cv v e * a v) - cv v k, (int_iff v _).2 (hk v), ?_⟩⟩` and prove the remaining obligations. Establish `h1 : cv v e ≠ 0` using `(map_ne_zero _).2 he`. Establish `h2 : cv v f ≠ 0` using `(map_ne_zero _).2 hf`.
+
+Rewrite using `[map_inv₀, map_mul, map_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem approx_F (a : ∀ v : Pl F, Kv v) {e f : F} (he : e ≠ 0) (hf : f ≠ 0) (ha : ∀ v, IsIntegral (Ov v) (cv v e * a v)) :
     ∃ x : F, ∀ v, ∃ r, IsIntegral (Ov v) r ∧ a v = cv v x + cv v f * r := by
   let b : FiniteAdeleRing (𝓞 F) F := ⟨fun v => cv v e * a v, Filter.Eventually.of_forall fun v => (int_iff v _).1 (ha v)⟩
@@ -44,6 +66,11 @@ theorem approx_F (a : ∀ v : Pl F, Kv v) {e f : F} (he : e ≠ 0) (hf : f ≠ 0
   field_simp
   ring
 
+/- English proof (translation)
+Establish `hU : IsOpen {w : Kv v | x - w ∈ v.adicCompletionIntegers F}` using `(Valued.isOpen_valuationSubring (Kv v)).preimage (continuous_const.sub continuous_id)`. Take `⟨z, hz⟩` from `(HeightOneSpectrum.denseRange_algebraMap (K := F) v).exists_mem_open hU ⟨x, by simp⟩`. Take `⟨n, hn, h⟩` from `den_glob z`. Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Establish `h1` using `(int_glob _).1 h v`.
+
+Rewrite `h1` using `[map_mul, map_natCast]`. Establish `e : (n : Kv v) * x = n * cv v z + n * (x - cv v z)` using `by ring`. Rewrite using `[e]`. Conclude with `h1.add ((isIntegral_natCast (R := Ov v) (B := Kv v) n).mul ((int_iff v _).2 hz))`.
+-/
 theorem den_loc (v : Pl F) (x : Kv v) : ∃ n : ℕ, n ≠ 0 ∧ IsIntegral (Ov v) ((n : Kv v) * x) := by
   have hU : IsOpen {w : Kv v | x - w ∈ v.adicCompletionIntegers F} :=
     (Valued.isOpen_valuationSubring (Kv v)).preimage (continuous_const.sub continuous_id)
@@ -58,10 +85,22 @@ theorem den_loc (v : Pl F) (x : Kv v) : ∃ n : ℕ, n ≠ 0 ∧ IsIntegral (Ov 
 
 variable {Δ : F}
 
+/- English proof (translation)
+Establish `h1` using `(int_glob _).1 hc v`. Rewrite `h1` using `[map_mul, map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem int_cD {c : ℕ} (hc : IsIntegral ℤ ((c : F) * Δ)) (v : Pl F) : IsIntegral (Ov v) ((c : Kv v) * cv v Δ) := by
   have h1 := (int_glob _).1 hc v
   rwa [map_mul, map_natCast] at h1
 
+/- English proof (translation)
+Take `⟨c, hc0, hc⟩` from `den_glob Δ`. Establish `hn' : (n : F) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Establish `hc' : (c : F) ≠ 0` using `Nat.cast_ne_zero.2 hc0`. Take `⟨x, hx⟩` from `approx_F (fun v => (a v).re) (e := 2) two_ne_zero hn' fun v => by`. Rewrite using `[map_ofNat]`.
+
+Conclude with `int_re _ (ha v)`. Take `⟨y, hy⟩` from `approx_F (fun v => (a v).im) (e := 2 * c * Δ) (by simp [hc0, hΔ]) (mul_ne_zero hn' hc') fun v => by`. Rewrite using `[map_mul, map_mul, map_ofNat, map_natCast]`. Conclude with `int_im _ (int_cD hc v) (ha v)`. Use `⟨⟨x, y⟩, fun v => ?_⟩` and prove the remaining obligations.
+
+Take `⟨r, hr, e1⟩` from `hx v`. Take `⟨s, hs, e2⟩` from `hy v`. Use `⟨_, int_mk _ (int_cD hc v) hr hs, ?_⟩` and prove the remaining obligations. Use extensionality with `: 1`. Rewrite using `[e1]`.
+
+Simplify using `[lmap]`. Rewrite using `[e2]`. Simplify using `[lmap, mul_assoc]`.
+-/
 theorem approx_L (hΔ : Δ ≠ 0) (a : ∀ v : Pl F, Lsq (Kv v) (cv v Δ)) (ha : ∀ v, IsIntegral (Ov v) (a v)) {n : ℕ} (hn : n ≠ 0) :
     ∃ x : Lsq F Δ, ∀ v, ∃ r, IsIntegral (Ov v) r ∧ a v = lmap (cv v) Δ x + n • r := by
   obtain ⟨c, hc0, hc⟩ := den_glob Δ
@@ -89,18 +128,35 @@ def jj : Matrix (Fin 2) (Fin 2) (Lsq F Δ) →+* MM Δ := Pi.ringHom fun v => (l
 
 variable {Δ}
 
+/- English proof (translation)
+The claim follows from `Subring.mem_iInf`.
+-/
 theorem mem_RR {m : MM Δ} : m ∈ RR Δ ↔ ∀ v, m v ∈ RL (cv v Δ) (Ov v) := Subring.mem_iInf
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem jj_apply (y : Matrix (Fin 2) (Fin 2) (Lsq F Δ)) (v : Pl F) : jj Δ y v = y.map (lmap (cv v) Δ) := rfl
 
+/- English proof (translation)
+Take `⟨I, hI⟩` from `Ideal.exists_maximal (𝓞 F)`. Conclude with `⟨⟨I, hI.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hI (RingOfIntegers.not_isField F)⟩⟩`.
+-/
 theorem pl_ne : Nonempty (Pl F) := by
   obtain ⟨I, hI⟩ := Ideal.exists_maximal (𝓞 F)
   exact ⟨⟨I, hI.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hI (RingOfIntegers.not_isField F)⟩⟩
 
+/- English proof (translation)
+Take `⟨v⟩` from `pl_ne (F := F)`. Conclude with `shape_of_map (cv v) (mem_RR.1 h v).1`.
+-/
 theorem lam_shape {y : Matrix (Fin 2) (Fin 2) (Lsq F Δ)} (h : y ∈ (RR Δ).comap (jj Δ)) : Shape y := by
   obtain ⟨v⟩ := pl_ne (F := F)
   exact shape_of_map (cv v) (mem_RR.1 h v).1
 
+/- English proof (translation)
+Establish `h1 : ∀ v : Pl F, IsIntegral (Ov v) (lmap (cv v) Δ (y i j))` using `fun v => by`. Establish `h2` using `(mem_RR.1 (Subring.mem_comap.1 h) v).2 i j`. Rewrite `h2` using `[jj_apply, Matrix.map_apply]`. Then use the resulting hypothesis. Use `⟨(int_glob _).2 fun v => ?_, (int_glob _).2 fun v => ?_⟩` and prove the remaining obligations. Establish `h2` using `int_re _ (h1 v)`.
+
+Rewrite `h2` using `[lmap_re]`. Rewrite using `[map_mul, map_ofNat]` and apply the resulting hypothesis. Establish `h2` using `int_im _ (int_cD hc v) (h1 v)`. Rewrite `h2` using `[lmap_im]`. Rewrite using `[map_mul, map_mul, map_mul, map_ofNat, map_natCast]` and apply the resulting hypothesis.
+-/
 theorem lam_int {c : ℕ} (hc : IsIntegral ℤ ((c : F) * Δ)) {y : Matrix (Fin 2) (Fin 2) (Lsq F Δ)} (h : y ∈ (RR Δ).comap (jj Δ)) (i j : Fin 2) :
     IsIntegral ℤ (2 * (y i j).re) ∧ IsIntegral ℤ (2 * c * Δ * (y i j).im) := by
   have h1 : ∀ v : Pl F, IsIntegral (Ov v) (lmap (cv v) Δ (y i j)) := fun v => by
@@ -114,6 +170,11 @@ theorem lam_int {c : ℕ} (hc : IsIntegral ℤ ((c : F) * Δ)) {y : Matrix (Fin 
     rw [lmap_im] at h2
     rwa [map_mul, map_mul, map_mul, map_ofNat, map_natCast]
 
+/- English proof (translation)
+Take `⟨c, hc0, hc⟩` from `den_glob Δ`. Set `ψ : (RR Δ).comap (jj Δ) →+ (Fin 2 → Fin 2 → 𝓞 F × 𝓞 F)` to `AddMonoidHom.mk' (fun y i j => (⟨_, (lam_int hc y.2 i j).1⟩, ⟨_, (lam_int hc y.2 i j).2⟩)) fun x y => by`. Use function extensionality and compare the values at `i j`. Use `Prod.ext (Subtype.ext ?_) (Subtype.ext ?_)` and prove the remaining obligations. Conclude with `mul_add _ _ _`.
+
+Conclude with `mul_add _ _ _`. Use `Module.Finite.of_injective ψ.toIntLinearMap fun x y h => Subtype.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun h i) j`. Conclude with `QuadraticAlgebra.ext (mul_left_cancel₀ two_ne_zero (congrArg Subtype.val (congrArg Prod.fst h1))) (mul_left_cancel₀ (by simp [hc0, hΔ]) (congrArg Subtype.val (congrArg Prod.snd h1)))`.
+-/
 theorem lam_fg (hΔ : Δ ≠ 0) : Module.Finite ℤ ((RR Δ).comap (jj Δ)) := by
   obtain ⟨c, hc0, hc⟩ := den_glob Δ
   let ψ : (RR Δ).comap (jj Δ) →+ (Fin 2 → Fin 2 → 𝓞 F × 𝓞 F) := AddMonoidHom.mk'
@@ -127,6 +188,13 @@ theorem lam_fg (hΔ : Δ ≠ 0) : Module.Finite ℤ ((RR Δ).comap (jj Δ)) := b
   exact QuadraticAlgebra.ext (mul_left_cancel₀ two_ne_zero (congrArg Subtype.val (congrArg Prod.fst h1)))
     (mul_left_cancel₀ (by simp [hc0, hΔ]) (congrArg Subtype.val (congrArg Prod.snd h1)))
 
+/- English proof (translation)
+Introduce `m hm n hn`. Take `⟨a, ha⟩` from `approx_L hΔ (fun v => m v 0 0) (fun v => (mem_RR.1 hm v).2 0 0) hn`. Take `⟨b, hb⟩` from `approx_L hΔ (fun v => m v 0 1) (fun v => (mem_RR.1 hm v).2 0 1) hn`. Use `choose r hr ha using ha`. Use `choose s hs hb using hb`.
+
+Establish `h1 : (fun v => qm (r v) (s v) : MM Δ) ∈ RR Δ` using `mem_RR.2 fun v => qm_mem _ (hr v) (hs v)`. Establish `e : m = jj Δ (qm a b) + (n : MM Δ) * fun v => qm (r v) (s v)`. Use function extensionality and compare the values at `v`. Rewrite using `[← nsmul_eq_mul, Pi.add_apply, Pi.smul_apply, jj_apply, qm_map, (mem_RR.1 hm v).1.eq, ha v, hb v]`. Use extensionality with `i j : 1`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [qm, add_comm]`. Use `⟨qm a b, ?_, _, h1, e⟩` and prove the remaining obligations. Rewrite using `[Subring.mem_comap, ← sub_eq_of_eq_add e]`. Conclude with `sub_mem hm (mul_mem (natCast_mem _ n) h1)`.
+-/
 theorem approx_R (hΔ : Δ ≠ 0) : ∀ m ∈ RR Δ, ∀ n : ℕ, n ≠ 0 → ∃ x ∈ (RR Δ).comap (jj Δ), ∃ r ∈ RR Δ, m = jj Δ x + (n : MM Δ) * r := by
   intro m hm n hn
   obtain ⟨a, ha⟩ := approx_L hΔ (fun v => m v 0 0) (fun v => (mem_RR.1 hm v).2 0 0) hn
@@ -143,6 +211,9 @@ theorem approx_R (hΔ : Δ ≠ 0) : ∀ m ∈ RR Δ, ∀ n : ℕ, n ≠ 0 → �
   rw [Subring.mem_comap, ← sub_eq_of_eq_add e]
   exact sub_mem hm (mul_mem (natCast_mem _ n) h1)
 
+/- English proof (translation)
+Establish `h` using `hneg σ`. Establish `h1 : 0 ≤ -σ Δ * σ a.im ^ 2` using `mul_nonneg (by linarith) (sq_nonneg _)`. Establish `h2 : 0 ≤ -σ Δ * σ b.im ^ 2` using `mul_nonneg (by linarith) (sq_nonneg _)`. Simplify using `only [map_add, map_sub, map_mul, map_pow]`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> nlinarith [sq_nonneg (σ a.re), sq_nonneg (σ b.re)]`.
+-/
 theorem form_pos (hneg : ∀ σ : F →+* ℝ, σ Δ < 0) (σ : F →+* ℝ) (a b : Lsq F Δ) :
     let d := σ (a.re ^ 2 - Δ * a.im ^ 2 + b.re ^ 2 - Δ * b.im ^ 2)
     σ a.re ^ 2 ≤ d ∧ σ b.re ^ 2 ≤ d ∧ -σ Δ * σ a.im ^ 2 ≤ d ∧ -σ Δ * σ b.im ^ 2 ≤ d := by
@@ -152,9 +223,19 @@ theorem form_pos (hneg : ∀ σ : F →+* ℝ, σ Δ < 0) (σ : F →+* ℝ) (a 
   simp only [map_add, map_sub, map_mul, map_pow]
   refine ⟨?_, ?_, ?_, ?_⟩ <;> nlinarith [sq_nonneg (σ a.re), sq_nonneg (σ b.re)]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(IsTotallyReal.complexEmbedding_isReal φ).embedding, fun x => ComplexEmbedding.IsReal.coe_embedding_apply _ x⟩`.
+-/
 theorem real_emb [IsTotallyReal F] (φ : F →+* ℂ) : ∃ σ : F →+* ℝ, ∀ x, (σ x : ℂ) = φ x :=
   ⟨(IsTotallyReal.complexEmbedding_isReal φ).embedding, fun x => ComplexEmbedding.IsReal.coe_embedding_apply _ x⟩
 
+/- English proof (translation)
+Rewrite using `[h.eq]`. Use `exists_DX fun hd => h0 ?_` and prove the remaining obligations. Take `⟨φ⟩ : Nonempty (F →+* ℂ)` from `inferInstance`. Take `⟨σ, -⟩` from `real_emb φ`. Use `form_pos hneg σ (y 0 0) (y 0 1)` as an intermediate fact.
+
+Rewrite `this` using `[hd, map_zero]`. Take `⟨h1, h2, h3, h4⟩` from `this`. Establish `hσ` using `hneg σ`. Establish `z : ∀ x : F, σ x ^ 2 ≤ 0 → x = 0` using `fun x hx => (map_eq_zero σ).1 (pow_eq_zero_iff two_ne_zero |>.1 (le_antisymm hx (sq_nonneg _)))`. Establish `a0 : y 0 0 = 0` using `QuadraticAlgebra.ext (z _ h1) (z _ (by nlinarith [sq_nonneg (σ (y 0 0).im)]))`.
+
+Establish `b0 : y 0 1 = 0` using `QuadraticAlgebra.ext (z _ h2) (z _ (by nlinarith [sq_nonneg (σ (y 0 1).im)]))`. Rewrite using `[h.eq, a0, b0]`. Use extensionality with `i j : 1`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [qm]`.
+-/
 theorem unit_of_shape [IsTotallyReal F] (hneg : ∀ σ : F →+* ℝ, σ Δ < 0) {y : Matrix (Fin 2) (Fin 2) (Lsq F Δ)} (h : Shape y) (h0 : y ≠ 0) :
     ∃ g : DX Δ, mt g = y := by
   rw [h.eq]
@@ -172,6 +253,11 @@ theorem unit_of_shape [IsTotallyReal F] (hneg : ∀ σ : F →+* ℝ, σ Δ < 0)
   ext i j : 1
   fin_cases i <;> fin_cases j <;> simp [qm]
 
+/- English proof (translation)
+Establish `h` using `Embeddings.finite_of_norm_le F ℂ (∑ φ : F →+* ℂ, (‖φ d‖ + 1))`. Use `(h.preimage (f := fun x : F => e * x) (mul_right_injective₀ he).injOn).subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hA⟩`. Use `⟨hx, fun φ => ?_⟩` and prove the remaining obligations. Use `le_trans ?_ (Finset.single_le_sum (f := fun φ : F →+* ℂ => ‖φ d‖ + 1) (fun _ _ => by positivity) (Finset.mem_univ φ))` and prove the remaining obligations.
+
+Take `⟨σ, hσ⟩` from `real_emb φ`. Establish `h1` using `hA σ`. Rewrite using `[← hσ, ← hσ, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs, Real.norm_eq_abs]`. Rewrite `h1` using `[← sq_abs]`. Use polynomial arithmetic with `[le_abs_self (σ d), abs_nonneg (σ (e * x)), sq_nonneg (|σ (e * x)| - 1), abs_nonneg (σ d)]`.
+-/
 theorem box_fin [IsTotallyReal F] {e : F} (he : e ≠ 0) (d : F) :
     {x : F | IsIntegral ℤ (e * x) ∧ ∀ σ : F →+* ℝ, σ (e * x) ^ 2 ≤ σ d}.Finite := by
   have h := Embeddings.finite_of_norm_le F ℂ (∑ φ : F →+* ℂ, (‖φ d‖ + 1))
@@ -185,6 +271,15 @@ theorem box_fin [IsTotallyReal F] {e : F} (he : e ≠ 0) (d : F) :
   rw [← sq_abs] at h1
   nlinarith [le_abs_self (σ d), abs_nonneg (σ (e * x)), sq_nonneg (|σ (e * x)| - 1), abs_nonneg (σ d)]
 
+/- English proof (translation)
+Take `⟨c, hc0, hc⟩` from `den_glob Δ`. Establish `h1` using `box_fin (F := F) (e := 2) two_ne_zero (4 * d.re)`. Establish `h2` using `box_fin (F := F) (e := 2 * c * Δ) (by simp [hc0, hΔ]) (-(4 * c ^ 2 * Δ) * d.re)`. Use `((((h1.prod h2).prod (h1.prod h2)).image fun p => qm ⟨p.1.1, p.1.2⟩ ⟨p.2.1, p.2.2⟩)).subset ?_` and prove the remaining obligations. Introduce and unpack `y ⟨hy, hd⟩`.
+
+Establish `hs` using `lam_shape hy`. Use `⟨(((y 0 0).re, (y 0 0).im), ((y 0 1).re, (y 0 1).im)), ?_, hs.eq.symm⟩` and prove the remaining obligations. Rewrite `hd` using `[hs.eq, det_qm]`. Establish `hd' : d.re = (y 0 0).re ^ 2 - Δ * (y 0 0).im ^ 2 + (y 0 1).re ^ 2 - Δ * (y 0 1).im ^ 2` using `by rw [← hd]; rfl`. Establish `k1 : ∀ (σ : F →+* ℝ) (x : F), σ x ^ 2 ≤ σ d.re → σ (2 * x) ^ 2 ≤ σ (4 * d.re)` using `fun σ x h => by`.
+
+Simplify using `only [map_mul, map_ofNat]`. Use the polynomial consequences of the given equalities and inequalities. Establish `k2 : ∀ (σ : F →+* ℝ) (x : F), -σ Δ * σ x ^ 2 ≤ σ d.re → σ (2 * c * Δ * x) ^ 2 ≤ σ (-(4 * c ^ 2 * Δ) * d.re)` using `fun σ x h => by`. Simplify using `only [map_mul, map_ofNat, map_neg, map_pow, map_natCast]`. Use `mul_le_mul_of_nonneg_left h (show 0 ≤ 4 * (c : ℝ) ^ 2 * -σ Δ from mul_nonneg (by positivity) (by linarith [hneg σ]))` as an intermediate fact.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `f` using `fun σ => form_pos hneg σ (y 0 0) (y 0 1)`. Rewrite `f` using `[← hd']`. Conclude with `⟨⟨⟨(lam_int hc hy 0 0).1, fun σ => k1 σ _ (f σ).1⟩, (lam_int hc hy 0 0).2, fun σ => k2 σ _ (f σ).2.2.1⟩, ⟨(lam_int hc hy 0 1).1, fun σ => k1 σ _ (f σ).2.1⟩, (lam_int hc hy 0 1).2, fun σ => k2 σ _ (f σ).2.2.2⟩`.
+-/
 theorem det_fin [IsTotallyReal F] (hneg : ∀ σ : F →+* ℝ, σ Δ < 0) (hΔ : Δ ≠ 0) (d : Lsq F Δ) :
     {y : Matrix (Fin 2) (Fin 2) (Lsq F Δ) | y ∈ (RR Δ).comap (jj Δ) ∧ y.det = d}.Finite := by
   obtain ⟨c, hc0, hc⟩ := den_glob Δ
@@ -214,6 +309,11 @@ def rho : DA Δ →* MM Δ where
   map_one' := rfl
   map_mul' _ _ := rfl
 
+/- English proof (translation)
+Take `⟨c, hc0, hc⟩` from `den_glob Δ`. Establish `hT : {v : Pl F | g.1 v ∉ KD (cv v Δ) (Ov v)}.Finite` using `Filter.eventually_cofinite.1 g.2`. Use `choose n hn0 hn using fun v : Pl F => den_mat (Ov v) (c := c) (by rw [← map_natCast (cv v)]; exact (map_ne_zero _).2 (Nat.cast_ne_zero.2 hc0)) (int_cD hc v) (den_loc v) (shape_mt (g.1 v))`. Use `⟨∏ v ∈ hT.toFinset, n v, Finset.prod_ne_zero_iff.2 fun v _ => hn0 v, mem_RR.2 fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[← nsmul_eq_mul, Pi.smul_apply]`.
+
+Distinguish the cases in `hv : g.1 v ∈ KD (cv v Δ) (Ov v)`. Conclude with `nsmul_mem ((mem_KD _ _).1 hv).1 _`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem n (hT.mem_toFinset.2 hv)`. Rewrite using `[hk, mul_nsmul, nsmul_eq_mul (n v)]`. Conclude with `nsmul_mem (hn v) k`.
+-/
 theorem den_rho (g : DA Δ) : ∃ n : ℕ, n ≠ 0 ∧ (n : MM Δ) * rho Δ g ∈ RR Δ := by
   obtain ⟨c, hc0, hc⟩ := den_glob Δ
   have hT : {v : Pl F | g.1 v ∉ KD (cv v Δ) (Ov v)}.Finite := Filter.eventually_cofinite.1 g.2

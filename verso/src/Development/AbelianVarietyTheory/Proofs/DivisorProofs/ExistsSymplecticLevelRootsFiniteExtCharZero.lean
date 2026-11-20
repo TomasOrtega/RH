@@ -18,6 +18,11 @@ namespace GlobalTheory.FieldLevel
 
 open GlobalTheory.TorsionGenerators
 
+/- English proof (translation)
+Establish `hz : z ^ omegaStd a b = ∏ i, z ^ (a (.inl i) * b (.inr i) - a (.inr i) * b (.inl i))` using `(map_prod (zpowersHom U z) (fun i => Multiplicative.ofAdd (a (.inl i) * b (.inr i) - a (.inr i) * b (.inl i))) Finset.univ)`. Apply the tactic sequence `have hi : ∀ (p : Prop) [Decidable p] (u : U) (m : ℤ), (if p then u else 1) ^ m = if p then u ^ m else 1 := fun p _ u m => by split_ifs <;> simp`. Rewrite using `[hz]`. Simplify using `only [map_prod, map_zpow, MonoidHom.finset_prod_apply, MonoidHom.zpow_apply, Fintype.prod_sum_type, map_mul, MonoidHom.mul_apply, h₁, h₂, h₃, h₄, one_zpow, Finset.prod_const_one, _root_.one_mul, _root_.mul_one, hi, Finset.prod_ite_eq, Finset.prod_ite_eq', Finset.mem_univ, if_true …`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [← zpow_mul, inv_zpow', ← zpow_add, zpow_sub, ← zpow_neg]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pairing_prod {H U : Type} [CommGroup H] [CommGroup U] (e : H →* H →* U) (z : U) {g : ℕ}
     (x : Fin g ⊕ Fin g → H) (h₁ : ∀ i j, e (x (.inl i)) (x (.inl j)) = 1)
     (h₂ : ∀ i j, e (x (.inr i)) (x (.inr j)) = 1)
@@ -38,9 +43,23 @@ theorem pairing_prod {H U : Type} [CommGroup H] [CommGroup U] (e : H →* H →*
   congr 1
   ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem stdSymp_mk {g p q : ℕ} (hp : p < 2 * g) (hq : q < 2 * g) : stdSymp g ⟨p, hp⟩ ⟨q, hq⟩ =
     if p < g ∧ q = p + g then 1 else if q < g ∧ p = q + g then -1 else 0 := rfl
 
+/- English proof (translation)
+Take `⟨x, hx, hw⟩` from `ConstThetaLevel.exists_symplectic_points hL K P hg M hM ze hz`. Take `⟨w₁, w₂, w₃, -⟩` from `hL.weil _ P M (baseOver (Sp K))`. Set `H : Subgroup (baseOver (Sp K) ⟶ P.A)` to `(powMonoidHom M).ker`. Establish `hH : ∀ x : H, x.1 ^ M = 1` using `fun x => x.2`. Use `choose c hc hu using fun x y : H => w₁ x.1 y.1 (hH x) (hH y)`.
+
+Establish `l : ∀ x x' y, c (x * x') y = c x y * c x' y` using `fun x x' y => (hu _ _ _ (w₂ _ _ _ _ _ (hc x y) (hc x' y))).symm`. Establish `s : ∀ x y, c y x = (c x y)⁻¹` using `fun x y => (hu _ _ _ (CommPairing.weilIs_symm P.isLB (hc x y))).symm`. Set `e : H →* H →* Γ(Sp K, ⊤)ˣ` to `MonoidHom.mk' (fun x => MonoidHom.mk' (c x) fun y y' => by`. Rewrite using `[s (y * y'), l, mul_inv, ← s, ← s]) fun x x' => MonoidHom.ext fun y => l x x' y`. Set `κ : Fin g ⊕ Fin g → Fin (2 * g)` to `Sum.elim (fun i => ⟨i, by omega⟩) (fun i => ⟨i + g, by omega⟩)`.
+
+Set `y : Fin g ⊕ Fin g → H` to `fun i => ⟨x (κ i), hx _⟩`. Establish `he : ∀ i j, e (y i) (y j) = ze ^ stdSymp g (κ i) (κ j)` using `fun i j => (hu (y i) (y j) _ (hw _ _)).symm`. Use `⟨fun i => (y i).1, fun i => hH _, fun a b => ?_⟩` and prove the remaining obligations. Establish `E` using `pairing_prod e ze y (fun i j => ?_) (fun i j => ?_) (fun i j => ?_) (fun i j => ?_) a b`. Establish `h` using `hc (∏ i, y i ^ a i) (∏ i, y i ^ b i)`.
+
+Rewrite `h` using `[show c (∏ i, y i ^ a i) (∏ i, y i ^ b i) = _ from E]`. Simplify `h` using `only [SubmonoidClass.coe_finset_prod, SubgroupClass.coe_zpow]`. Use `all_goals`. Establish `hi` using `i.2`. Establish `hj` using `j.2`.
+
+Rewrite using `[he]`. Simplify using `only [κ, Sum.elim_inl, Sum.elim_inr, Fin.ext_iff]`. Rewrite using `[stdSymp_mk]`. Apply the tactic sequence `split_ifs <;> first | omega | (simp; done)`.
+-/
 theorem exists_points (hL : Laws) (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Sp K)) [IsCommMonObj P.A] {g : ℕ}
     (hg : g = P.g) (M : ℕ) (hM : (M : K) ≠ 0) (ze : Γ(Sp K, ⊤)ˣ) (hz : IsPrimitiveRoot ze M) :
     ∃ x : Fin g ⊕ Fin g → (baseOver (Sp K) ⟶ P.A), (∀ i, x i ^ M = 1) ∧
@@ -70,6 +89,31 @@ theorem exists_points (hL : Laws) (K : Type) [Field K] [IsAlgClosed K] (P : PolA
     rw [stdSymp_mk]
     split_ifs <;> first | omega | (simp; done)
 
+/- English proof (translation)
+Introduce `R _ P K _ _ j n hn ζ hζ r c`. Establish `hL : Laws` using `GlobalTheory.abelianSchemeLaws_all.1`. Use `P.isAb.comm` as an intermediate fact. Use `P.isAb.smooth` as an intermediate fact. Set `Q` to `AlgebraicClosure K`.
+
+Set `t : R →+* Q` to `(algebraMap K Q).comp j`. Establish `hnQ : (n : Q) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Establish `hz : IsPrimitiveRoot (Units.map (algebraMap K Q).toMonoidHom ζ) n` using `hζ.map_of_injective (unitsMap_injective _)`. Take `⟨P', φ', β, h, -, H⟩` from `exists_fibre hL P t`. Use `P'.isAb.comm` as an intermediate fact.
+
+Take `⟨x, hx, hw⟩` from `exists_points hL Q P' h.1.symm n hnQ _ (ZH.RealDimOne.isPrimitiveRoot_unitOn hz)`. Establish `hroot : ∀ p : Over.mk (spMap t) ⟶ P.A, ∃ q, q ^ n = p` using `fun p => by`. Take `⟨p, rfl⟩` from `β.surjective p`. Take `⟨q, hq⟩` from `ReciprocityTheory.ChartRestriction.G.H1.SectionDivision.exists_div hL.mulN P' p n hn`. Conclude with `⟨β q, (map_pow β _ _).symm.trans (congrArg β hq)⟩`.
+
+Use `choose d hd using fun i => hroot (toUnit _ ≫ c i)`. Set `z : (Fin P.g ⊕ Fin P.g) ⊕ Fin r → (Over.mk (spMap t) ⟶ P.A)` to `Sum.elim (fun i => β (x i)) d`. Use `choose s hs hb using fun i => exists_finite_coordinates P.A.hom t (z i).left (Over.w _)`. Set `s' : Set Q` to `⋃ i, s i`. Establish `: Finite s'` using `(Set.finite_iUnion hs).to_subtype`.
+
+Set `L` to `IntermediateField.adjoin K s'`. Establish `: FiniteDimensional K L` using `IntermediateField.finiteDimensional_adjoin fun y _ => (Algebra.IsAlgebraic.isAlgebraic y).isIntegral`. Set `io : L →+* Q` to `algebraMap L Q`. Set `j' : R →+* L` to `(algebraMap K L).comp j`. Establish `hj : io.comp j' = t` using `rfl`.
+
+Use `choose b hb' using fun i => hb i L io io.injective (fun c => ⟨j' c, rfl⟩) (fun y hy => ⟨⟨y, IntermediateField.subset_adjoin K s' (Set.mem_iUnion.2 ⟨i, hy⟩)⟩, rfl⟩)`. Establish `hbw : ∀ i, b i ≫ P.A.hom = spMap j'` using `fun i => by`. Use `TorsionSeparable.epi_specMap io` as an intermediate fact. Rewrite using `[← cancel_epi (spMap io), ← Category.assoc, hb', spMap_comp_spMap]`. Conclude with `Over.w (z i)`.
+
+Set `y : _ → (Over.mk (spMap j') ⟶ P.A)` to `fun i => Over.homMk (b i) (hbw i)`. Establish `hy : ∀ i, extPt hj ≫ y i = z i` using `fun i => Over.OverMorphism.ext (hb' i)`. Set `F : (Over.mk (spMap j') ⟶ P.A) →* (Over.mk (spMap t) ⟶ P.A)` to `MonoidHom.mk' (fun p => extPt hj ≫ p) fun p q => comp_mul _ _ _`. Establish `hF : ∀ a : Fin P.g ⊕ Fin P.g → ℤ, extPt hj ≫ (∏ i, y (.inl i) ^ a i) = β (∏ i, x i ^ a i)` using `fun a => by show F _ = _`. Rewrite using `[map_prod, map_prod]`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow, map_zpow]`. Conclude with `congrArg (· ^ a i) (hy (.inl i))`. Establish `hyM : ∀ i, y (.inl i) ^ n = 1` using `fun i => by`. Rewrite using `[← extPt_eq_one_iff hj, comp_pow, hy]`.
+
+Conclude with `(map_pow β _ _).symm.trans ((congrArg β (hx i)).trans (map_one β))`. Establish `hT : ∀ a : Fin P.g ⊕ Fin P.g → ℤ, (∏ i, y (.inl i) ^ a i) ^ n = 1` using `fun a => by`. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_mul, _root_.mul_comm, zpow_mul, zpow_natCast, hyM, one_zpow]`.
+
+Use `⟨L, inferInstance, inferInstance, this, fun a => ∏ i, y (.inl i) ^ a i, fun i => y (.inr i), fun a a' => ?_, hT, fun a a' => ?_, fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, zpow_add, Finset.prod_mul_distrib]`. Take `⟨u, hu⟩` from `exists_weilIs hL P j' (hT a) (hT a')`. Establish `H₁` using `weilIs_extPt hL P hj hu`. Rewrite `H₁` using `[hF, hF]`.
+
+Establish `e` using `CommutatorPairing.weilIs_unique hL.globalFns P.isAb P.isLB H₁ (H _ _ _ _ (hw a a'))`. Establish `hζ' : Units.map (algebraMap K Q).toMonoidHom ζ = Units.map io.toMonoidHom (Units.map (algebraMap K L).toMonoidHom ζ)` using `Units.ext rfl`. Rewrite `e` using `[← ZH.RealDimOne.unitOn_zpow, hζ', ← map_zpow]`. Rewrite using `[← unitsMap_injective io (unitOn_injective e)]` and apply the resulting hypothesis. Apply `extPt_injective hj` to reduce the goal to its premises.
+
+Rewrite using `[comp_pow, hy, ← Category.assoc, comp_toUnit]`. Conclude with `hd i`.
+-/
 theorem exists_level_and_roots : ∀ (R : Type) [CommRing R] (P : PolAV (Sp R)) (K : Type) [Field K] [CharZero K] (j : R →+* K) (n : ℕ), 0 < n → ∀ (ζ : Kˣ), IsPrimitiveRoot ζ n → ∀ (r : ℕ) (c : Fin r → (𝟙_ (Over (Sp R)) ⟶ P.A)), ∃ (L : Type) (_ : Field L) (_ : Algebra K L) (_ : FiniteDimensional K L) (lev : (Fin P.g ⊕ Fin P.g → ℤ) → (Over.mk (spMap ((algebraMap K L).comp j)) ⟶ P.A)) (d : Fin r → (Over.mk (spMap ((algebraMap K L).comp j)) ⟶ P.A)), (∀ x y, lev (x + y) = lev x * lev y) ∧ (∀ x, lev x ^ n = 1) ∧ (∀ x y, Out.WeilIs P.A P.L n (lev x) (lev y) (unitOn (Units.map (algebraMap K L).toMonoidHom ζ ^ omegaStd x y))) ∧ ∀ i, d i ^ n = toUnit _ ≫ c i := by
   intro R _ P K _ _ j n hn ζ hζ r c
   have hL : Laws := GlobalTheory.abelianSchemeLaws_all.1

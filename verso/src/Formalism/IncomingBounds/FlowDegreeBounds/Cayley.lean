@@ -10,6 +10,11 @@ open MvPolynomial Matrix
 section Der
 variable {R A : Type*} [CommRing R] [CommRing A] [Algebra R A] (D : Derivation R A A)
 
+/- English proof (translation)
+Use `Finset.induction_on s (by simp) ?_` and prove the remaining obligations. Introduce `a s ha ih`. Rewrite using `[Finset.prod_insert ha, Derivation.leibniz, ih, Finset.sum_insert ha, Finset.erase_insert ha, smul_eq_mul, smul_eq_mul, Finset.mul_sum]`. Establish `key : ∀ i ∈ s, D (g i) * ∏ j ∈ (insert a s).erase i, g j = g a * (D (g i) * ∏ j ∈ s.erase i, g j)`. Introduce `i hi`.
+
+Establish `hne : a ≠ i` using `fun h => ha (h ▸ hi)`. Rewrite using `[Finset.erase_insert_of_ne hne, Finset.prod_insert (fun h => ha (Finset.mem_of_mem_erase h))]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl key]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem der_prod {ι : Type*} [DecidableEq ι] (s : Finset ι) (g : ι → A) :
     D (∏ j ∈ s, g j) = ∑ i ∈ s, D (g i) * ∏ j ∈ s.erase i, g j := by
   refine Finset.induction_on s (by simp) ?_
@@ -26,6 +31,15 @@ theorem der_prod {ι : Type*} [DecidableEq ι] (s : Finset ι) (g : ι → A) :
   rw [Finset.sum_congr rfl key]
   ring
 
+/- English proof (translation)
+Establish `hcol : ∀ i, ∑ p, adjugate N i p * D (N p i) = (N.updateCol i fun p => D (N p i)).det`. Introduce `i`. Rewrite using `[← cramer_apply, cramer_eq_adjugate_mulVec]`. Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl fun i _ => hcol i]`.
+
+Simplify using `only [det_apply']`. Rewrite using `[map_sum, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Derivation.leibniz, Derivation.map_intCast, smul_zero, add_zero, smul_eq_mul, der_prod, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ i)]`. Use `congr 1`. Simplify using the standard rewrite rules. Use `Finset.prod_congr rfl fun x hx => ?_` and prove the remaining obligations.
+
+Simplify using `[Finset.ne_of_mem_erase hx]`.
+-/
 theorem der_det {n : Type*} [Fintype n] [DecidableEq n] (N : Matrix n n A) :
     D N.det = ∑ i, ∑ p, adjugate N i p * D (N p i) := by
   have hcol : ∀ i, ∑ p, adjugate N i p * D (N p i) = (N.updateCol i fun p => D (N p i)).det := by
@@ -46,6 +60,9 @@ theorem der_det {n : Type*} [Fintype n] [DecidableEq n] (N : Matrix n n A) :
   · refine Finset.prod_congr rfl fun x hx => ?_
     simp [Finset.ne_of_mem_erase hx]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply, Matrix.add_apply, map_sum, Derivation.leibniz, smul_eq_mul]`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+-/
 theorem map_mul_der {n : Type*} [Fintype n] (X Y : Matrix n n A) :
     (X * Y).map D = X.map D * Y + X * Y.map D := by
   ext i j
@@ -54,6 +71,15 @@ theorem map_mul_der {n : Type*} [Fintype n] (X Y : Matrix n n A) :
   rw [← Finset.sum_add_distrib]
   exact Finset.sum_congr rfl fun k _ => by ring
 
+/- English proof (translation)
+Establish `h1 : (adjugate N).map D * N + adjugate N * N.map D = D N.det • (1 : Matrix n n A)`. Rewrite using `[← map_mul_der, adjugate_mul]`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h]`. Establish `h2 : N.det • (adjugate N).map D + adjugate N * (N.map D * adjugate N) = D N.det • adjugate N`. Establish `h3` using `congrArg (fun M => M * adjugate N) h1`. Simplify using `only [Matrix.add_mul, Matrix.mul_assoc, mul_adjugate, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, Matrix.one_mul] at h3`.
+
+Conclude with `h3`. Establish `h4` using `congrFun (congrFun h2 a) b`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Matrix.map_apply] at h4`. Establish `h5 : (adjugate N * (N.map D * adjugate N)) a b = ∑ p, ∑ q, adjugate N a p * D (N p q) * adjugate N q b`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Finset.mul_sum, mul_assoc]`.
+
+Rewrite `h4` using `[h5]`. Rewrite using `[eq_sub_iff_add_eq]`. Conclude with `h4`.
+-/
 theorem der_adj {n : Type*} [Fintype n] [DecidableEq n] (N : Matrix n n A) (a b : n) :
     N.det * D (adjugate N a b) =
       D N.det * adjugate N a b - ∑ p, ∑ q, adjugate N a p * D (N p q) * adjugate N q b := by
@@ -80,6 +106,19 @@ theorem der_adj {n : Type*} [Fintype n] [DecidableEq n] (N : Matrix n n A) (a b 
 
 end Der
 
+/- English proof (translation)
+Establish `hcol : ∀ q : Fin (k+1), ∑ p : Fin (k+1), adjugate (B.submatrix j.succAbove Fin.succ) q p * B (j.succAbove p) 0 = (-1 : R) ^ (q : ℕ) * (B.submatrix j.succAbove q.succ.succAbove).det`. Introduce `q`. Establish `h1 : ∑ p : Fin (k+1), adjugate (B.submatrix j.succAbove Fin.succ) q p * B (j.succAbove p) 0 = cramer (B.submatrix j.succAbove Fin.succ) (fun p => B (j.succAbove p) 0) q`. Rewrite using `[cramer_eq_adjugate_mulVec]`. Both sides reduce to the same expression.
+
+Establish `h2 : (B.submatrix j.succAbove Fin.succ).updateCol q (fun p => B (j.succAbove p) 0) = (B.submatrix j.succAbove q.succ.succAbove).submatrix id q.cycleRange`. Use extensionality with `x y`. Simplify using `only [Matrix.updateCol_apply, Matrix.submatrix_apply, id_eq, Fin.succAbove_cycleRange, Equiv.swap_apply_def]`. Distinguish the cases in `hy : y = q`. Substitute `hy` using the available equality.
+
+Simplify using the standard rewrite rules. Establish `hs : y.succ ≠ q.succ` using `fun h => hy (Fin.succ_injective _ h)`. Simplify using `[hy, hs, Fin.succ_ne_zero]`. Rewrite using `[h1, cramer_apply, h2, det_permute', Fin.sign_cycleRange]`. Simplify using the standard rewrite rules.
+
+Establish `hL : ∑ q : Fin (k+1), ∑ p : Fin (k+1), adjugate (B.submatrix j.succAbove Fin.succ) q p * B (j.succAbove p) 0 * B j q.succ = ∑ q : Fin (k+1), (-1 : R) ^ (q : ℕ) * (B.submatrix j.succAbove q.succ.succAbove).det * B j q.succ`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, hcol q]`. Rewrite using `[hL, det_succ_row B j, Fin.sum_univ_succ (n := k+1), Fin.succAbove_zero]`. Simplify using `only [Fin.val_zero, Fin.val_succ, add_zero, mul_add, Finset.mul_sum]`.
+
+Establish `e1 : (-1 : R) ^ (j : ℕ) * (-1) ^ (j : ℕ) = 1` using `by rw [← mul_pow]; simp`. Establish `hsum : ∑ q : Fin (k+1), (-1 : R) ^ (j : ℕ) * ((-1) ^ ((j : ℕ) + ((q : ℕ) + 1)) * B j q.succ * (B.submatrix j.succAbove q.succ.succAbove).det) = -∑ q : Fin (k+1), (-1 : R) ^ (q : ℕ) * (B.submatrix j.succAbove q.succ.succAbove).det * B j q.succ`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Take the linear combination `(-(-1 : R) ^ (q : ℕ) * B j q.succ * (B.submatrix j.succAbove q.succ.succAbove).det) * e1`.
+
+Rewrite using `[hsum]`. Take the linear combination `(B j 0 * (B.submatrix j.succAbove Fin.succ).det) * e1`.
+-/
 theorem bord {R : Type*} [CommRing R] (k : ℕ) (B : Matrix (Fin (k+2)) (Fin (k+2)) R) (j : Fin (k+2)) :
     ∑ q : Fin (k+1), ∑ p : Fin (k+1),
         adjugate (B.submatrix j.succAbove Fin.succ) q p * B (j.succAbove p) 0 * B j q.succ
@@ -133,11 +172,19 @@ variable {K : Type} [Field K] [CharZero K]
 section SupSum
 variable {σ M : Type} [AddCommMonoid M] (f : (σ →₀ ℕ) → K → M)
 
+/- English proof (translation)
+Use `Finset.sum_subset hS fun a _ ha => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.notMem_support_iff.mp ha, h0]`.
+-/
 theorem supp_sum_superset (h0 : ∀ a, f a 0 = 0) (p : MvPolynomial σ K) (S : Finset (σ →₀ ℕ))
     (hS : p.support ⊆ S) : ∑ a ∈ p.support, f a (coeff a p) = ∑ a ∈ S, f a (coeff a p) := by
   refine Finset.sum_subset hS fun a _ ha => ?_
   rw [MvPolynomial.notMem_support_iff.mp ha, h0]
 
+/- English proof (translation)
+Establish `hpq : (p + q).support ⊆ p.support ∪ q.support` using `fun a ha => by`. Rewrite using `[Finset.mem_union]`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_or]`. Rewrite `ha` using `[MvPolynomial.mem_support_iff, coeff_add, MvPolynomial.notMem_support_iff.mp hn.1, MvPolynomial.notMem_support_iff.mp hn.2, add_zero]`.
+
+Conclude with `ha rfl`. Rewrite using `[supp_sum_superset f h0 (p + q) (p.support ∪ q.support) hpq, supp_sum_superset f h0 p (p.support ∪ q.support) (fun _ h => Finset.mem_union_left _ h), supp_sum_superset f h0 q (p.support ∪ q.support) (fun _ h => Finset.mem_union_right _ h), ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => by rw [coeff_add, hadd]`.
+-/
 theorem supp_sum_add (h0 : ∀ a, f a 0 = 0) (hadd : ∀ a x y, f a (x + y) = f a x + f a y)
     (p q : MvPolynomial σ K) :
     ∑ a ∈ (p + q).support, f a (coeff a (p + q)) =
@@ -156,6 +203,9 @@ theorem supp_sum_add (h0 : ∀ a, f a 0 = 0) (hadd : ∀ a x y, f a (x + y) = f 
     ← Finset.sum_add_distrib]
   exact Finset.sum_congr rfl fun a _ => by rw [coeff_add, hadd]
 
+/- English proof (translation)
+Rewrite using `[supp_sum_superset f h0 _ {s} MvPolynomial.support_monomial_subset, Finset.sum_singleton, coeff_monomial, if_pos rfl]`.
+-/
 theorem supp_sum_monomial (h0 : ∀ a, f a 0 = 0) (s : σ →₀ ℕ) (c : K) :
     ∑ a ∈ (monomial s c).support, f a (coeff a (monomial s c)) = f s c := by
   classical
@@ -168,6 +218,11 @@ def dm {σ : Type} (m : σ →₀ ℕ) (Q : MvPolynomial σ K) : MvPolynomial σ
   ∑ a ∈ Q.support,
     if m ≤ a then monomial (a - m) (coeff a Q * ((mfact a : K) / (mfact (a - m) : K))) else 0
 
+/- English proof (translation)
+Unfold `Formalism.IncomingBounds.diffOp dm`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs`.
+
+Rewrite using `[smul_monomial, smul_eq_mul, mul_assoc]`. Rewrite using `[smul_zero]`.
+-/
 theorem diffOp_eq {σ : Type} (P Q : MvPolynomial σ K) :
     diffOp P Q = ∑ m ∈ P.support, coeff m P • dm m Q := by
   unfold Formalism.IncomingBounds.diffOp dm
@@ -178,6 +233,9 @@ theorem diffOp_eq {σ : Type} (P Q : MvPolynomial σ K) :
   · rw [smul_monomial, smul_eq_mul, mul_assoc]
   · rw [smul_zero]
 
+/- English proof (translation)
+Unfold `dm`. Apply the tactic sequence `exact supp_sum_add (fun a x => if m ≤ a then monomial (a - m) (x * ((Formalism.IncomingBounds.mfact a : K) / (Formalism.IncomingBounds.mfact (a - m) : K))) else 0) (fun a => by simp) (fun a x y => by by_cases h : m ≤ a <;> simp [h, add_mul]) Q Q'`.
+-/
 theorem dm_add {σ : Type} (m : σ →₀ ℕ) (Q Q' : MvPolynomial σ K) :
     dm m (Q + Q') = dm m Q + dm m Q' := by
   unfold dm
@@ -185,6 +243,9 @@ theorem dm_add {σ : Type} (m : σ →₀ ℕ) (Q Q' : MvPolynomial σ K) :
       monomial (a - m) (x * ((Formalism.IncomingBounds.mfact a : K) / (Formalism.IncomingBounds.mfact (a - m) : K))) else 0)
     (fun a => by simp) (fun a x y => by by_cases h : m ≤ a <;> simp [h, add_mul]) Q Q'
 
+/- English proof (translation)
+Unfold `dm`. Conclude with `supp_sum_monomial (fun b x => if m ≤ b then monomial (b - m) (x * ((Formalism.IncomingBounds.mfact b : K) / (Formalism.IncomingBounds.mfact (b - m) : K))) else 0) (fun b => by simp) a c`.
+-/
 theorem dm_monomial {σ : Type} (m a : σ →₀ ℕ) (c : K) :
     dm m (monomial a c) =
       if m ≤ a then monomial (a - m) (c * ((mfact a : K) / (mfact (a - m) : K))) else 0 := by
@@ -193,25 +254,44 @@ theorem dm_monomial {σ : Type} (m a : σ →₀ ℕ) (c : K) :
       monomial (b - m) (x * ((Formalism.IncomingBounds.mfact b : K) / (Formalism.IncomingBounds.mfact (b - m) : K))) else 0)
     (fun b => by simp) a c
 
+/- English proof (translation)
+Rewrite using `[diffOp_eq, diffOp_eq, diffOp_eq]`. Conclude with `supp_sum_add (fun m x => x • dm m Q) (fun _ => zero_smul _ _) (fun _ x y => add_smul x y _) P P'`.
+-/
 theorem diffOp_add {σ : Type} (P P' Q : MvPolynomial σ K) :
     diffOp (P + P') Q = diffOp P Q + diffOp P' Q := by
   rw [diffOp_eq, diffOp_eq, diffOp_eq]
   exact supp_sum_add (fun m x => x • dm m Q) (fun _ => zero_smul _ _)
     (fun _ x y => add_smul x y _) P P'
 
+/- English proof (translation)
+Rewrite using `[diffOp_eq]`. Conclude with `supp_sum_monomial (fun m' x => x • dm m' Q) (fun _ => zero_smul _ _) m c`.
+-/
 theorem diffOp_monomial {σ : Type} (m : σ →₀ ℕ) (c : K) (Q : MvPolynomial σ K) :
     diffOp (monomial m c) Q = c • dm m Q := by
   rw [diffOp_eq]
   exact supp_sum_monomial (fun m' x => x • dm m' Q) (fun _ => zero_smul _ _) m c
 
+/- English proof (translation)
+Rewrite using `[diffOp_eq, MvPolynomial.support_zero, Finset.sum_empty]`.
+-/
 theorem diffOp_zero {σ : Type} (Q : MvPolynomial σ K) : diffOp (0 : MvPolynomial σ K) Q = 0 := by
   rw [diffOp_eq, MvPolynomial.support_zero, Finset.sum_empty]
 
+/- English proof (translation)
+Rewrite using `[Nat.cast_ne_zero]`. Unfold `Formalism.IncomingBounds.mfact Finsupp.prod`. Conclude with `Finset.prod_ne_zero_iff.mpr fun _ _ => Nat.factorial_ne_zero _`.
+-/
 theorem mfact_ne {σ : Type} (b : σ →₀ ℕ) : (mfact b : K) ≠ 0 := by
   rw [Nat.cast_ne_zero]
   unfold Formalism.IncomingBounds.mfact Finsupp.prod
   exact Finset.prod_ne_zero_iff.mpr fun _ _ => Nat.factorial_ne_zero _
 
+/- English proof (translation)
+Establish `hxs : x ∈ b.support` using `Finsupp.mem_support_iff.mpr (Nat.pos_iff_ne_zero.mp hx)`. Establish `hsub : (b - Finsupp.single x 1).support ⊆ b.support`. Introduce `y hy`. Rewrite `hy`, the goal using `[Finsupp.mem_support_iff]`. Introduce `hb`.
+
+Apply `hy` to reduce the goal to its premises. Rewrite using `[Finsupp.tsub_apply, hb, Nat.zero_sub]`. Establish `key : ∀ e : σ →₀ ℕ, e.support ⊆ b.support → Formalism.IncomingBounds.mfact e = ∏ y ∈ b.support, (e y).factorial` using `fun e he => Finsupp.prod_of_support_subset e he (fun _ k => k.factorial) (fun _ _ => Nat.factorial_zero)`. Rewrite using `[key b (Finset.Subset.refl _), key _ hsub, ← Finset.mul_prod_erase _ _ hxs, ← Finset.mul_prod_erase _ _ hxs, ← mul_assoc]`. Use `congr 1`.
+
+Rewrite using `[Finsupp.tsub_apply, Finsupp.single_eq_same]`. Conclude with `(Nat.mul_factorial_pred (Nat.pos_iff_ne_zero.mp hx)).symm`. Use `Finset.prod_congr rfl fun y hy => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.tsub_apply, Finsupp.single_eq_of_ne (Finset.ne_of_mem_erase hy), Nat.sub_zero]`.
+-/
 theorem mfact_step {σ : Type} (b : σ →₀ ℕ) (x : σ) (hx : 0 < b x) :
     mfact b = b x * mfact (b - Finsupp.single x 1) := by
   classical
@@ -234,12 +314,32 @@ theorem mfact_step {σ : Type} (b : σ →₀ ℕ) (x : σ) (hx : 0 < b x) :
   · refine Finset.prod_congr rfl fun y hy => ?_
     rw [Finsupp.tsub_apply, Finsupp.single_eq_of_ne (Finset.ne_of_mem_erase hy), Nat.sub_zero]
 
+/- English proof (translation)
+Unfold `dm`. Use `conv_rhs => rw [MvPolynomial.as_sum Q]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[if_pos zero_le, tsub_zero, div_self (mfact_ne a), mul_one]`.
+-/
 theorem dm_zero {σ : Type} (Q : MvPolynomial σ K) : dm 0 Q = Q := by
   unfold dm
   conv_rhs => rw [MvPolynomial.as_sum Q]
   refine Finset.sum_congr rfl fun a _ => ?_
   rw [if_pos zero_le, tsub_zero, div_self (mfact_ne a), mul_one]
 
+/- English proof (translation)
+Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial a c`. Rewrite using `[dm_monomial, dm_monomial]`. Distinguish the cases in `hma : m ≤ a`. Rewrite using `[if_pos hma, pderiv_monomial]`.
+
+Distinguish the cases in `hbx : (a - m) x = 0`. Establish `hn : ¬ (Finsupp.single x 1 + m ≤ a)`. Introduce `h`. Establish `h'` using `(Finsupp.le_def.mp h) x`. Rewrite `hbx` using `[Finsupp.tsub_apply]`.
+
+Simplify using `only [Finsupp.coe_add, Pi.add_apply, Finsupp.single_eq_same] at h'`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hn, hbx, Nat.cast_zero, mul_zero, MvPolynomial.monomial_zero]`. Establish `hle : Finsupp.single x 1 + m ≤ a`. Rewrite using `[Finsupp.le_def]`.
+
+Introduce `i`. Establish `hmi` using `(Finsupp.le_def.mp hma) i`. Rewrite `hbx` using `[Finsupp.tsub_apply]`. Distinguish the cases in `hxi : x = i`. Substitute `hxi` using the available equality.
+
+Simplify using `only [Finsupp.coe_add, Pi.add_apply, Finsupp.single_eq_same]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Finsupp.coe_add, Pi.add_apply, Finsupp.single_eq_of_ne (Ne.symm hxi)]`. Use linear arithmetic over natural numbers and integers. Establish `hsub : a - (Finsupp.single x 1 + m) = a - m - Finsupp.single x 1`.
+
+Rewrite using `[add_comm (Finsupp.single x 1) m, tsub_add_eq_tsub_tsub]`. Rewrite using `[if_pos hle, hsub]`. Use `congr 1`. Establish `hfp` using `mfact_step (a - m) x (Nat.pos_of_ne_zero hbx)`. Establish `h1 : (Formalism.IncomingBounds.mfact (a - m - Finsupp.single x 1) : K) ≠ 0` using `mfact_ne _`.
+
+Establish `h2 : (((a - m) x : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.mpr hbx`. Rewrite using `[hfp, Nat.cast_mul]`. Use `first`. Consider the case `(field_simp; ring)`. Consider the case `field_simp`.
+
+Establish `hn : ¬ (Finsupp.single x 1 + m ≤ a)` using `fun h => hma (le_trans le_add_self h)`. Rewrite using `[if_neg hma, if_neg hn, map_zero]`. Consider the case `add p q hp hq => rw [dm_add, dm_add, hp, hq, map_add]`.
+-/
 theorem dm_succ {σ : Type} (x : σ) (m : σ →₀ ℕ) (Q : MvPolynomial σ K) :
     dm (Finsupp.single x 1 + m) Q = pderiv x (dm m Q) := by
   induction Q using MvPolynomial.induction_on' with
@@ -281,6 +381,11 @@ theorem dm_succ {σ : Type} (x : σ) (m : σ →₀ ℕ) (Q : MvPolynomial σ K)
       rw [if_neg hma, if_neg hn, map_zero]
   | add p q hp hq => rw [dm_add, dm_add, hp, hq, map_add]
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial u a`. Establish `hX : (X x : MvPolynomial σ K) * monomial u a = monomial (Finsupp.single x 1 + u) a`. Rewrite using `[X, monomial_mul, one_mul]`. Rewrite using `[hX, diffOp_monomial, diffOp_monomial, dm_succ, Derivation.map_smul]`.
+
+Consider the case `add p q hp hq => rw [mul_add, diffOp_add, diffOp_add, hp, hq, map_add]`.
+-/
 theorem diffOp_X_mul {σ : Type} (x : σ) (P Q : MvPolynomial σ K) :
     diffOp (X x * P) Q = pderiv x (diffOp P Q) := by
   induction P using MvPolynomial.induction_on' with
@@ -290,6 +395,9 @@ theorem diffOp_X_mul {σ : Type} (x : σ) (P Q : MvPolynomial σ K) :
     rw [hX, diffOp_monomial, diffOp_monomial, dm_succ, Derivation.map_smul]
   | add p q hp hq => rw [mul_add, diffOp_add, diffOp_add, hp, hq, map_add]
 
+/- English proof (translation)
+Rewrite using `[C_mul']`. Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial u a`. Rewrite using `[smul_monomial, smul_eq_mul, diffOp_monomial, diffOp_monomial, mul_smul]`. Consider the case `add p q hp hq => rw [smul_add, diffOp_add, diffOp_add, hp, hq, smul_add]`.
+-/
 theorem diffOp_C_mul {σ : Type} (c : K) (P Q : MvPolynomial σ K) :
     diffOp (MvPolynomial.C c * P) Q = c • diffOp P Q := by
   rw [C_mul']
@@ -298,9 +406,15 @@ theorem diffOp_C_mul {σ : Type} (c : K) (P Q : MvPolynomial σ K) :
     rw [smul_monomial, smul_eq_mul, diffOp_monomial, diffOp_monomial, mul_smul]
   | add p q hp hq => rw [smul_add, diffOp_add, diffOp_add, hp, hq, smul_add]
 
+/- English proof (translation)
+Rewrite using `[← C_1, C_apply, diffOp_monomial, one_smul, dm_zero]`.
+-/
 theorem diffOp_one {σ : Type} (Q : MvPolynomial σ K) : diffOp (1 : MvPolynomial σ K) Q = Q := by
   rw [← C_1, C_apply, diffOp_monomial, one_smul, dm_zero]
 
+/- English proof (translation)
+Use `Finset.induction_on s (by rw [Finset.sum_empty, Finset.sum_empty, diffOp_zero]) ?_` and prove the remaining obligations. Introduce `b s hb ih`. Rewrite using `[Finset.sum_insert hb, Finset.sum_insert hb, diffOp_add, ih]`.
+-/
 theorem diffOp_sum {σ ι : Type} (s : Finset ι) (f : ι → MvPolynomial σ K) (Q : MvPolynomial σ K) :
     diffOp (∑ b ∈ s, f b) Q = ∑ b ∈ s, diffOp (f b) Q := by
   classical
@@ -319,6 +433,11 @@ variable {K : Type} [Field K] [CharZero K]
 def Mg (K : Type) [Field K] (n : ℕ) : Matrix (Fin n) (Fin n) (MvPolynomial (PVar n) K) :=
   Matrix.of fun i j => X (Sum.inl (i, j))
 
+/- English proof (translation)
+Rewrite using `[show Mg K n p q = X (Sum.inl (p, q)) from rfl, pderiv_X, Pi.single_apply]`. Distinguish the cases in `h : p = i ∧ q = j`. Take `⟨rfl, rfl⟩` from `h`. Simplify using the standard rewrite rules. Establish `h' : (Sum.inl (p, q) : Formalism.IncomingBounds.PVar n) ≠ Sum.inl (i, j)`.
+
+Introduce `e`. Apply `h` to reduce the goal to its premises. Simplify using `using e`. Rewrite using `[if_neg h, if_neg h']`.
+-/
 theorem dMg {n : ℕ} (i j p q : Fin n) :
     pderiv (Sum.inl (i, j)) (Mg K n p q) = if p = i ∧ q = j then 1 else 0 := by
   classical
@@ -332,6 +451,13 @@ theorem dMg {n : ℕ} (i j p q : Fin n) :
       simpa using e
     rw [if_neg h, if_neg h']
 
+/- English proof (translation)
+Rewrite using `[der_det]`. Simplify using `only [dMg]`. Rewrite using `[Finset.sum_eq_single j, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Simplify using `[hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `b _ hb`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations.
+
+Simplify using `[hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem ddet {n : ℕ} (i j : Fin n) :
     pderiv (Sum.inl (i, j)) (Mg K n).det = adjugate (Mg K n) j i := by
   rw [der_det]
@@ -348,6 +474,13 @@ theorem ddet {n : ℕ} (i j : Fin n) :
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Rewrite using `[der_adj, ddet]`. Use `congr 1`. Simplify using `only [dMg]`. Rewrite using `[Finset.sum_eq_single i, Finset.sum_eq_single j]`. Simplify using the standard rewrite rules.
+
+Introduce `c _ hc`. Simplify using `[hc]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `p' _ hp`.
+
+Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Simplify using `[hp]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem dadj {n : ℕ} (i j a b : Fin n) :
     (Mg K n).det * pderiv (Sum.inl (i, j)) (adjugate (Mg K n) a b) =
       adjugate (Mg K n) j i * adjugate (Mg K n) a b - adjugate (Mg K n) a i * adjugate (Mg K n) j b := by
@@ -366,6 +499,9 @@ theorem dadj {n : ℕ} (i j a b : Fin n) :
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Rewrite using `[det_succ_row_zero, diffOp_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `e2 : ((-1 : MvPolynomial (Formalism.IncomingBounds.PVar n) K) ^ (j : ℕ)) = MvPolynomial.C ((-1 : K) ^ (j : ℕ))`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.submatrix_submatrix, e2, Matrix.submatrix_apply, mul_assoc, diffOp_C_mul, show Mg K n (r 0) (c j) = X (Sum.inl (r 0, c j)) from rfl, diffOp_X_mul]`.
+-/
 theorem omega_step {n k : ℕ} (r c : Fin (k+2) → Fin n) (Q : MvPolynomial (PVar n) K) :
     diffOp ((Mg K n).submatrix r c).det Q =
       ∑ j : Fin (k+2), ((-1 : K) ^ (j : ℕ)) •
@@ -377,6 +513,13 @@ theorem omega_step {n k : ℕ} (r c : Fin (k+2) → Fin n) (Q : MvPolynomial (PV
   rw [Matrix.submatrix_submatrix, e2, Matrix.submatrix_apply, mul_assoc, diffOp_C_mul,
     show Mg K n (r 0) (c j) = X (Sum.inl (r 0, c j)) from rfl, diffOp_X_mul]
 
+/- English proof (translation)
+Establish `hpow : ∀ m : ℕ, d * D (d ^ m) = (m : A') * d ^ m * α`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`.
+
+Rewrite using `[pow_succ, Derivation.leibniz, smul_eq_mul, smul_eq_mul, hd]`. Use `push_cast`. Take the linear combination `d * ih`. Establish `h1` using `congrArg D IH`. Rewrite `h1` using `[Derivation.leibniz, Derivation.leibniz, Derivation.leibniz, hCP, smul_zero, add_zero]`.
+
+Simplify using `only [smul_eq_mul] at h1`. Take the linear combination `d * h1 - F * hpow k + CP * Dm * hpow s - (k : A') * α * IH + CP * d ^ s * E3`.
+-/
 theorem step_der {R' A' : Type*} [CommRing R'] [CommRing A'] [Algebra R' A'] (D : Derivation R' A' A')
     (d α Dm F W CP : A') (k s : ℕ) (hCP : D CP = 0) (hd : D d = α)
     (IH : d ^ k * F = CP * (d ^ s * Dm)) (E3 : d * D Dm = α * ((k : A') + 1) * Dm - W) :
@@ -394,6 +537,9 @@ theorem step_der {R' A' : Type*} [CommRing R'] [CommRing A'] [Algebra R' A'] (D 
   simp only [smul_eq_mul] at h1
   linear_combination d * h1 - F * hpow k + CP * Dm * hpow s - (k : A') * α * IH + CP * d ^ s * E3
 
+/- English proof (translation)
+The claim follows from `| 0, r, c => by rw [pow_zero, one_mul, det_fin_one, det_fin_one] have hx : ((Mg K n).submatrix r c) 0 0 = X (Sum.inl (r 0, c 0)) := rfl rw [hx, ← mul_one (X _), diffOp_X_mul, diffOp_one, Derivation.leibniz_pow, ddet] simp only [submatrix_apply, Finset.prod_range_succ, Finset.prod …`.
+-/
 theorem gen (n s : ℕ) : ∀ (k : ℕ) (r c : Fin (k+1) → Fin n),
     (Mg K n).det ^ k * diffOp ((Mg K n).submatrix r c).det ((Mg K n).det ^ (s+1)) =
       MvPolynomial.C (∏ a ∈ Finset.range (k+1), ((s : K) + 1 + a)) *
@@ -469,6 +615,11 @@ theorem gen (n s : ℕ) : ∀ (k : ℕ) (r c : Fin (k+1) → Fin n),
     push_cast
     ring
 
+/- English proof (translation)
+Set `φ : Formalism.IncomingBounds.PVar n → K` to `Sum.elim (fun p => if p.1 = p.2 then 1 else 0) (fun _ => 0)`. Establish `h3 : (MvPolynomial.eval φ).mapMatrix (Mg K n) = 1`. Use extensionality with `i j`. Simplify using `[φ, Mg, Matrix.one_apply, RingHom.mapMatrix_apply]`. Establish `key : MvPolynomial.eval φ (Mg K n).det = 1`.
+
+Rewrite using `[RingHom.map_det, h3, det_one]`. Introduce `h`. Rewrite `key` using `[h, map_zero]`. Conclude with `zero_ne_one key`.
+-/
 theorem det_ne (n : ℕ) : (Mg K n).det ≠ 0 := by
   let φ : Formalism.IncomingBounds.PVar n → K := Sum.elim (fun p => if p.1 = p.2 then 1 else 0) (fun _ => 0)
   have h3 : (MvPolynomial.eval φ).mapMatrix (Mg K n) = 1 := by
@@ -486,6 +637,15 @@ namespace Formalism.IncomingBounds
 
 open MvPolynomial Matrix
 
+/- English proof (translation)
+Introduce `F _ _ n0 s`. Establish `hdl : detL F n0 = (Formalism.IncomingBounds.Cay.Mg F n0).det` using `rfl`. Rewrite using `[hdl]`. Consider the cases of `n0 with`. Consider the case `zero`.
+
+Rewrite using `[Matrix.det_isEmpty, one_pow, one_pow, Formalism.IncomingBounds.Cay.diffOp_one, Finset.range_zero, Finset.prod_empty, one_smul]`. Consider the case `succ k`. Establish `h` using `Formalism.IncomingBounds.Cay.gen (K := F) (k+1) s k id id`. Establish `hsub : (Formalism.IncomingBounds.Cay.Mg F (k+1)).submatrix id id = Formalism.IncomingBounds.Cay.Mg F (k+1)` using `Matrix.submatrix_id_id _`. Establish `hadj : ((adjugate (Formalism.IncomingBounds.Cay.Mg F (k+1))).submatrix id id).det = (Formalism.IncomingBounds.Cay.Mg F (k+1)).det ^ k`.
+
+Rewrite using `[Matrix.submatrix_id_id, det_adjugate, Fintype.card_fin, Nat.add_sub_cancel]`. Rewrite `h` using `[hsub, hadj]`. Establish `hne : (Formalism.IncomingBounds.Cay.Mg F (k+1)).det ^ k ≠ 0` using `pow_ne_zero _ (Formalism.IncomingBounds.Cay.det_ne (K := F) (k+1))`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[h, smul_eq_C_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cayleyIdentity : CayleyId := by
   intro F _ _ n0 s
   have hdl : detL F n0 = (Formalism.IncomingBounds.Cay.Mg F n0).det := rfl

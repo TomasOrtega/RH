@@ -14,6 +14,9 @@ section Chain
 
 variable {ι : Type} [Fintype ι] {a b : ℕ}
 
+/- English proof (translation)
+Establish `e : ∀ c, {a // f a = c} ≃ {b // l b = c}` using `fun c => Fintype.equivOfCardEq (by rw [Fintype.card_subtype, Fintype.card_subtype]; exact h c)`. Use `⟨Equiv.ofFiberEquiv e, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Conclude with `(Equiv.ofFiberEquiv_map e a).symm`.
+-/
 theorem perm_of_cnt {κ : Type} [DecidableEq κ] {k : ℕ} (f l : Fin k → κ)
     (h : ∀ i, (Finset.univ.filter fun j => f j = i).card = (Finset.univ.filter fun j => l j = i).card) :
     ∃ σ : Equiv.Perm (Fin k), f = l ∘ σ := by
@@ -23,6 +26,13 @@ theorem perm_of_cnt {κ : Type} [DecidableEq κ] {k : ℕ} (f l : Fin k → κ)
   funext a
   exact (Equiv.ofFiberEquiv_map e a).symm
 
+/- English proof (translation)
+Use `set l := fun j : Fin (Multiset.card α.toMultiset) => α.toMultiset.toList.get ⟨j, by simpa using j.2⟩`. Establish `hmap : Multiset.map l Finset.univ.val = α.toMultiset`. Rewrite using `[Fin.univ_val_map]`. Establish `: List.ofFn l = α.toMultiset.toList`. Use `List.ext_get (by simp) ?_` and prove the remaining obligations.
+
+Introduce `n h1 h2`. Simplify using `[l]`. Rewrite using `[this, Multiset.coe_toList]`. Establish `h` using `congrArg (Multiset.count i) hmap`. Rewrite `h` using `[Multiset.count_map, Finsupp.count_toMultiset]`.
+
+Rewrite using `[← h, Finset.card_def, Finset.filter_val]`. Use `congr 1`. Conclude with `Multiset.filter_congr fun j _ => eq_comm`.
+-/
 theorem cnt_toList {κ : Type} [DecidableEq κ] (α : κ →₀ ℕ) (i : κ) :
     (Finset.univ.filter fun j : Fin (Multiset.card α.toMultiset) =>
       α.toMultiset.toList.get ⟨j, by simpa using j.2⟩ = i).card = α i := by
@@ -42,6 +52,11 @@ theorem cnt_toList {κ : Type} [DecidableEq κ] (α : κ →₀ ℕ) (i : κ) :
 
 open Classical in
 
+/- English proof (translation)
+Substitute `hk` using the available equality. Take `⟨σ, hσ⟩` from `perm_of_cnt r (fun j => m.toMultiset.toList.get ⟨j, by simpa using j.2⟩) (fun i => (hr i).trans (cnt_toList m i).symm)`. Unfold `derivAt0`. Establish `h` using `(hG.contDiffAt (x := 0)).iteratedFDeriv_comp_perm (fun i : Fin (Multiset.card m.toMultiset) => (coordX (m.toMultiset.toList.get ⟨i, by simpa using i.2⟩) : VCx ι a b)) σ`. Rewrite using `[← h]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j`. Rewrite using `[hσ]`. Both sides reduce to the same expression.
+-/
 theorem iter_eq_derivAt0 (G : VCx ι a b → ℂ) (hG : ContDiff ℂ ⊤ G) (m : DVar ι a b →₀ ℕ) (k : ℕ) (hk : k = Multiset.card m.toMultiset)
     (r : Fin k → DVar ι a b) (hr : ∀ i, (Finset.univ.filter fun j => r j = i).card = m i) :
     iteratedFDeriv ℂ k G 0 (fun j => coordX (r j)) = derivAt0 G m := by
@@ -57,6 +72,11 @@ theorem iter_eq_derivAt0 (G : VCx ι a b → ℂ) (hG : ContDiff ℂ ⊤ G) (m :
   rw [hσ]
   rfl
 
+/- English proof (translation)
+Establish `h1 : (∏ j, X (r j) : MvPolynomial (DVar ι a b) ℂ) = monomial (∑ j, Finsupp.single (r j) 1) 1` using `(monomial_sum_one Finset.univ fun j => Finsupp.single (r j) 1).symm`. Rewrite using `[h1, atZero_monomial, one_mul]`. Use `symm`. Use `iter_eq_derivAt0 G hG _ k ?_ r ?_` and prove the remaining obligations. Rewrite using `[map_sum]`.
+
+Simplify using `[Finsupp.toMultiset_single, Multiset.card_sum]`. Introduce `i`. Rewrite using `[Finsupp.finsetSum_apply, Finset.card_filter]`. Simplify using `only [Finsupp.single_apply]`.
+-/
 theorem atZero_prodX (G : VCx ι a b → ℂ) (hG : ContDiff ℂ ⊤ G) {k : ℕ} (r : Fin k → DVar ι a b) :
     atZero G (∏ j, X (r j)) = iteratedFDeriv ℂ k G 0 (fun j => coordX (r j)) := by
   classical
@@ -71,6 +91,11 @@ theorem atZero_prodX (G : VCx ι a b → ℂ) (hG : ContDiff ℂ ⊤ G) {k : ℕ
     rw [Finsupp.finsetSum_apply, Finset.card_filter]
     simp only [Finsupp.single_apply]
 
+/- English proof (translation)
+Establish `hGL : ContDiff ℂ ⊤ (fun z => G (L z))` using `hG.comp (LinearMap.toContinuousLinearMap L).contDiff`. Rewrite using `[atZero_prodX _ hGL]`. Establish `h : (fun z => G (L z)) = G ∘ (LinearMap.toContinuousLinearMap L)`. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h, ContinuousLinearMap.iteratedFDeriv_comp_right _ hG _ le_top]`. Simplify using `only [ContinuousMultilinearMap.compContinuousLinearMap_apply, map_zero, LinearMap.coe_toContinuousLinearMap', hL]`. Rewrite using `[ContinuousMultilinearMap.map_sum, Finset.prod_univ_sum, map_sum, Fintype.piFinset_univ]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousMultilinearMap.map_smul_univ, Finset.prod_mul_distrib, ← map_prod, C_mul', map_smul, atZero_prodX G hG]`.
+-/
 theorem atZero_comp_prodX {κ : Type} [Fintype κ] (G : VCx ι a b → ℂ) (hG : ContDiff ℂ ⊤ G) (L : VCx ι a b →ₗ[ℂ] VCx ι a b)
     (c : DVar ι a b → κ → ℂ) (e : DVar ι a b → κ → DVar ι a b) (hL : ∀ k, L (coordX k) = ∑ p, c k p • coordX (e k p))
     {k : ℕ} (r : Fin k → DVar ι a b) :
@@ -86,6 +111,13 @@ theorem atZero_comp_prodX {κ : Type} [Fintype κ] (G : VCx ι a b → ℂ) (hG 
   refine Finset.sum_congr rfl fun s _ => ?_
   rw [ContinuousMultilinearMap.map_smul_univ, Finset.prod_mul_distrib, ← map_prod, C_mul', map_smul, atZero_prodX G hG]
 
+/- English proof (translation)
+Establish `hl : ∃ l : List κ, (monomial m 1 : MvPolynomial κ ℂ) = (l.map X).prod`. Proceed by induction on `m using Finsupp.induction with`. Consider the case `zero => exact ⟨[], by simp⟩`. Consider the case `single_add x n f _ _ ih`. Take `⟨l, hl⟩` from `ih`.
+
+Use `⟨List.replicate n x ++ l, ?_⟩` and prove the remaining obligations. Rewrite using `[monomial_single_add, hl]`. Simplify using the standard rewrite rules. Take `⟨l, hl⟩` from `hl`. Use `⟨l.length, fun j => l.get j, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hl, ← List.prod_ofFn]`. Use `congr 1`. Use `List.ext_get (by simp) ?_` and prove the remaining obligations. Introduce `n h1 h2`. Simplify using the standard rewrite rules.
+-/
 theorem exists_prodX {κ : Type} (m : κ →₀ ℕ) : ∃ (k : ℕ) (r : Fin k → κ), (monomial m 1 : MvPolynomial κ ℂ) = ∏ j, X (r j) := by
   classical
   have hl : ∃ l : List κ, (monomial m 1 : MvPolynomial κ ℂ) = (l.map X).prod := by
@@ -104,6 +136,11 @@ theorem exists_prodX {κ : Type} (m : κ →₀ ℕ) : ∃ (k : ℕ) (r : Fin k 
   intro n h1 h2
   simp
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial m x`. Take `⟨k, r, hr⟩` from `exists_prodX m`. Establish `h : (monomial m x : MvPolynomial (DVar ι a b) ℂ) = x • ∏ j, X (r j)`. Rewrite using `[← hr, smul_monomial, smul_eq_mul, mul_one]`.
+
+Establish `h2 : aeval (fun k => ∑ p, C (c k p) * X (e k p)) (∏ j, X (r j) : MvPolynomial (DVar ι a b) ℂ) = ∏ j, ∑ p, (C (c (r j) p) * X (e (r j) p) : MvPolynomial (DVar ι a b) ℂ)`. Rewrite using `[map_prod]`. Simplify using `only [aeval_X]`. Rewrite using `[h, map_smul, map_smul, map_smul, h2, atZero_comp_prodX G hG L c e hL r]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, hp, hq]`.
+-/
 theorem atZero_comp {κ : Type} [Fintype κ] (G : VCx ι a b → ℂ) (hG : ContDiff ℂ ⊤ G) (L : VCx ι a b →ₗ[ℂ] VCx ι a b)
     (c : DVar ι a b → κ → ℂ) (e : DVar ι a b → κ → DVar ι a b) (hL : ∀ k, L (coordX k) = ∑ p, c k p • coordX (e k p))
     (P : MvPolynomial (DVar ι a b) ℂ) :
@@ -126,11 +163,19 @@ section Pull
 
 variable {K : Type} [Field K] {ι : Type} [Fintype ι] {a b : ℕ}
 
+/- English proof (translation)
+Apply `(basisMonomials ((ι × Fin b × Fin b) ⊕ DVar ι a b) K).ext` to reduce the goal to its premises. Introduce `m`. Simplify using `only [coe_basisMonomials, jetLin_monomial, one_mul, LinearMap.smul_apply, smul_monomial, smul_eq_mul]`.
+-/
 theorem jetLin_smul (κ : K) (J : (DVar ι a b →₀ ℕ) → K) : jetLin (fun m => κ * J m) = κ • jetLin J := by
   apply (basisMonomials ((ι × Fin b × Fin b) ⊕ DVar ι a b) K).ext
   intro m
   simp only [coe_basisMonomials, jetLin_monomial, one_mul, LinearMap.smul_apply, smul_monomial, smul_eq_mul]
 
+/- English proof (translation)
+Proceed by induction on `R using MvPolynomial.induction_on with`. Consider the case `C c => simp [Formalism.GradedWeylDivisibility.blockAct]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, hp, hq]`. Consider the case `mul_X p v hp`. Rewrite using `[map_mul, map_mul, map_mul, hp, eval_X]`.
+
+Use `congr 1`. Simplify using `[Formalism.GradedWeylDivisibility.blockAct]`.
+-/
 theorem eval_blockAct {n : ℕ} (h : ι → Matrix (Fin n) (Fin n) K) (y : ι × Fin n × Fin n → K) (R : Pol K ι n) :
     eval y (Formalism.GradedWeylDivisibility.blockAct K h R) = eval (fun v => ∑ β, h v.1 v.2.1 β * y (v.1, β, v.2.2)) R := by
   induction R using MvPolynomial.induction_on with
@@ -141,6 +186,11 @@ theorem eval_blockAct {n : ℕ} (h : ι → Matrix (Fin n) (Fin n) K) (y : ι ×
     congr 1
     simp [Formalism.GradedWeylDivisibility.blockAct]
 
+/- English proof (translation)
+Proceed by induction on `R using MvPolynomial.induction_on with`. Consider the case `C c => simp [Formalism.GradedWeylDivisibility.blockAct]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, map_add, hp, hq]`. Consider the case `mul_X p v hp`. Rewrite using `[map_mul, map_mul, map_mul, map_mul, hp, map_X]`.
+
+Use `congr 1`. Simplify using `[Formalism.GradedWeylDivisibility.blockAct]`.
+-/
 theorem map_blockAct {L : Type} [Field L] (σ : K →+* L) {n : ℕ} (h : ι → Matrix (Fin n) (Fin n) K) (R : Pol K ι n) :
     MvPolynomial.map σ (Formalism.GradedWeylDivisibility.blockAct K h R) = Formalism.GradedWeylDivisibility.blockAct L (fun τ => (h τ).map σ) (MvPolynomial.map σ R) := by
   induction R using MvPolynomial.induction_on with
@@ -151,6 +201,9 @@ theorem map_blockAct {L : Type} [Field L] (σ : K →+* L) {n : ℕ} (h : ι →
     congr 1
     simp [Formalism.GradedWeylDivisibility.blockAct]
 
+/- English proof (translation)
+Unfold `frDet`. Rewrite using `[AlgHom.map_det, RingHom.map_det, ← Matrix.det_mul]`. Use `congr 1`. Use extensionality with `α s`. Simplify using `[Formalism.GradedWeylDivisibility.blockAct, Matrix.mul_apply]`.
+-/
 theorem blockAct_frDet (g : ι → Matrix (Fin a) (Fin a) K) (τ : ι) :
     Formalism.GradedWeylDivisibility.blockAct K g (frDet K a τ) = C (g τ).det * frDet K a τ := by
   unfold frDet
@@ -163,6 +216,13 @@ def subC (g : ι → Matrix (Fin a) (Fin a) ℂ) (h : ι → Matrix (Fin b) (Fin
     MvPolynomial (DVar ι a b) ℂ →ₐ[ℂ] MvPolynomial (DVar ι a b) ℂ :=
   aeval fun k => ∑ p : Fin b × Fin a, C (h k.1 p.1 k.2.1 * g k.1 k.2.2 p.2) * X ((k.1, p.1, p.2) : DVar ι a b)
 
+/- English proof (translation)
+Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨τ, α, s⟩`. Simplify using `only [AlgHom.comp_apply, polDx, subC, Formalism.GradedWeylDivisibility.blockAct, aeval_X, map_sum, map_mul, algHom_C, algebraMap_eq]`. Distinguish the cases in `hs : s.1 < b`. Simplify using `only [dif_pos hs, Fintype.sum_prod_type, Finset.mul_sum]`.
+
+Simplify using `only [map_sum, Finset.mul_sum, Finset.sum_mul]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `conv_rhs => enter [2, k]`. Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun β _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [dif_neg hs, mul_zero, map_zero, zero_mul, Finset.sum_const_zero]`.
+-/
 theorem subC_polDx (cD : ι → ℂ) (g : ι → Matrix (Fin a) (Fin a) ℂ) (h : ι → Matrix (Fin b) (Fin b) ℂ) (y' : ι × Fin b × Fin b → ℂ) :
     (subC g h).comp (polDx (a := a) cD y') =
       (polDx (a := a) cD fun v => ∑ β, h v.1 v.2.1 β * y' (v.1, β, v.2.2)).comp (Formalism.GradedWeylDivisibility.blockAct ℂ g) := by
@@ -180,6 +240,9 @@ theorem subC_polDx (cD : ι → ℂ) (g : ι → Matrix (Fin a) (Fin a) ℂ) (h 
     ring
   · simp only [dif_neg hs, mul_zero, map_zero, zero_mul, Finset.sum_const_zero]
 
+/- English proof (translation)
+Establish `h0` using `atZero_comp (κ := Fin b × Fin a) G hG L (fun k p => h k.1 p.1 k.2.1 * g k.1 k.2.2 p.2) (fun k p => ((k.1, p.1, p.2) : DVar ι a b)) hL P`. Unfold `subC`. Conclude with `h0`.
+-/
 theorem atZero_subC (G : VCx ι a b → ℂ) (hG : ContDiff ℂ ⊤ G) (L : VCx ι a b →ₗ[ℂ] VCx ι a b)
     (g : ι → Matrix (Fin a) (Fin a) ℂ) (h : ι → Matrix (Fin b) (Fin b) ℂ)
     (hL : ∀ k : DVar ι a b, L (coordX k) =
@@ -190,6 +253,9 @@ theorem atZero_subC (G : VCx ι a b → ℂ) (hG : ContDiff ℂ ⊤ G) (L : VCx 
   unfold subC
   exact h0
 
+/- English proof (translation)
+Rewrite using `[Shape.map_jetMap, funext h₀, jetLin_smul, LinearMap.smul_apply, smul_eval, eval_jetLin, ← evY_subD]`. Both sides reduce to the same expression.
+-/
 theorem eval_map_jetMap (σ : K →+* ℂ) (cD : ι → ℂ) (n : ι → ℕ) (J₀ : (DVar ι a b →₀ ℕ) → K) (κ₀ : ℂ) (G₀ : VCx ι a b → ℂ)
     (h₀ : ∀ m, σ (J₀ m) = κ₀ * jetC cD G₀ m) (Q : Pol K ι a) (y : ι × Fin b × Fin b → ℂ) :
     eval y (MvPolynomial.map σ (jetMap J₀ n Q)) =
@@ -197,6 +263,21 @@ theorem eval_map_jetMap (σ : K →+* ℂ) (cD : ι → ℂ) (n : ι → ℕ) (J
   rw [Shape.map_jetMap, funext h₀, jetLin_smul, LinearMap.smul_apply, smul_eval, eval_jetLin, ← evY_subD]
   rfl
 
+/- English proof (translation)
+Apply `MvPolynomial.map_injective σ σ.injective` to reduce the goal to its premises. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `y'`. Take `⟨gc, hgc⟩ : ∃ gc : ι → Matrix (Fin a) (Fin a) ℂ, gc = fun τ => (g τ).map σ` from `⟨_, rfl⟩`. Take `⟨hc, hhc⟩ : ∃ hc : ι → Matrix (Fin b) (Fin b) ℂ, hc = fun τ => (h τ).map σ` from `⟨_, rfl⟩`.
+
+Establish `hL' : ∀ k : DVar ι a b, L (coordX k) = ∑ p : Fin b × Fin a, (hc k.1 p.1 k.2.1 * gc k.1 k.2.2 p.2) • coordX ((k.1, p.1, p.2) : DVar ι a b)`. Introduce `k`. Rewrite using `[hL k, hgc, hhc]`. Simplify using `only [Matrix.map_apply]`. Establish `e1 : ∀ T : Pol K ι a, MvPolynomial.map σ (Formalism.GradedWeylDivisibility.blockAct K g T) = Formalism.GradedWeylDivisibility.blockAct ℂ gc (MvPolynomial.map σ T)`.
+
+Introduce `T`. Rewrite using `[map_blockAct, hgc]`. Establish `e2 : ∀ T : Pol K ι b, MvPolynomial.map σ (Formalism.GradedWeylDivisibility.blockAct K h T) = Formalism.GradedWeylDivisibility.blockAct ℂ hc (MvPolynomial.map σ T)`. Introduce `T`. Rewrite using `[map_blockAct, hhc]`.
+
+Establish `hdet : ∀ τ, (gc τ).det = σ (g τ).det`. Introduce `τ`. Rewrite using `[hgc, RingHom.map_det]`. Both sides reduce to the same expression. Establish `hR : ∀ (x : K) (T : Pol K ι b), eval y' (MvPolynomial.map σ (x • T)) = σ x * eval y' (MvPolynomial.map σ T)`.
+
+Introduce `x T`. Rewrite using `[smul_eq_C_mul, map_mul, map_C, map_mul, eval_C]`. Establish `h2 : Formalism.GradedWeylDivisibility.blockAct ℂ gc (MvPolynomial.map σ P * ∏ τ, frDet ℂ a τ ^ n τ) = (∏ τ, (gc τ).det ^ n τ) • (Formalism.GradedWeylDivisibility.blockAct ℂ gc (MvPolynomial.map σ P) * ∏ τ, frDet ℂ a τ ^ n τ)`. Rewrite using `[← C_mul', map_mul, map_prod]`. Simplify using `only [map_pow, blockAct_frDet, mul_pow, Finset.prod_mul_distrib, map_prod]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `AlgHom.congr_fun (subC_polDx cD gc hc y') (MvPolynomial.map σ P * ∏ τ, frDet ℂ a τ ^ n τ)`. Rewrite `h1` using `[AlgHom.comp_apply, AlgHom.comp_apply, h2, map_smul]`. Rewrite using `[hR, e2, eval_blockAct, eval_map_jetMap σ cD n J κ G hJ, e1, eval_map_jetMap σ cD n J' κ' _ hJ' P y', atZero_subC G hG L gc hc hL', h1, map_smul, smul_eq_mul, hr]`. Establish `h3 : σ (r * ∏ τ, (g τ).det ^ n τ) = σ r * ∏ τ, (gc τ).det ^ n τ`.
+
+Rewrite using `[map_mul, map_prod]`. Simplify using `only [map_pow, hdet]`. Rewrite using `[h3]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem jetMap_pull (σ : K →+* ℂ) (cD : ι → ℂ) (G : VCx ι a b → ℂ) (hG : ContDiff ℂ ⊤ G)
     (g : ι → Matrix (Fin a) (Fin a) K) (h : ι → Matrix (Fin b) (Fin b) K) (L : VCx ι a b →ₗ[ℂ] VCx ι a b)
     (hL : ∀ k : DVar ι a b, L (coordX k) =
@@ -259,9 +340,23 @@ def mulL (h : ι → Matrix (Fin b) (Fin b) ℂ) (g : ι → Matrix (Fin a) (Fin
     refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
     ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulL_apply (h : ι → Matrix (Fin b) (Fin b) ℂ) (g : ι → Matrix (Fin a) (Fin a) ℂ) (z : VCx ι a b) (τ : ι) (i : Fin b) (j : Fin a) :
     mulL h g z τ i j = ∑ k : Fin b, ∑ l : Fin a, h τ i k * z τ k l * g τ l j := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i j`. Rewrite using `[mulL_apply]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, coordX]`. Distinguish the cases in `hτ : τ = k.1`. Rewrite using `[← Finset.sum_product', Finset.sum_eq_single (k.2.1, k.2.2), Finset.sum_eq_single (i, j)]`.
+
+Rewrite using `[if_pos ⟨hτ, rfl, rfl⟩, if_pos ⟨hτ, rfl, rfl⟩, hτ]`. Expand and normalize the polynomial expressions, which then agree. Introduce `p _ hp`. Rewrite using `[if_neg (fun hh => hp (Prod.ext hh.2.1.symm hh.2.2.symm)), mul_zero]`. Introduce `hh`.
+
+Conclude with `absurd (Finset.mem_univ _) hh`. Introduce `p _ hp`. Rewrite using `[if_neg (fun hh => hp (Prod.ext hh.2.1 hh.2.2)), mul_zero, zero_mul]`. Introduce `hh`. Conclude with `absurd (Finset.mem_product.2 ⟨Finset.mem_univ _, Finset.mem_univ _⟩) hh`.
+
+Rewrite using `[Finset.sum_eq_zero, Finset.sum_eq_zero]`. Introduce `p _`. Rewrite using `[if_neg (fun hh => hτ hh.1), mul_zero]`. Introduce `k' _`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[if_neg (fun hh => hτ hh.1), mul_zero, zero_mul]`.
+-/
 theorem mulL_coordX (h : ι → Matrix (Fin b) (Fin b) ℂ) (g : ι → Matrix (Fin a) (Fin a) ℂ) (k : DVar ι a b) :
     mulL h g (coordX k) = ∑ p : Fin b × Fin a, (h k.1 p.1 k.2.1 * g k.1 k.2.2 p.2) • coordX ((k.1, p.1, p.2) : DVar ι a b) := by
   funext τ i j

@@ -10,6 +10,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `h1 : pushPt h.1.w (1 : T ⟶ G') = 1`. Establish `e` using `h.2 T 1 1 (pushPt h.1.w 1) (pushPt h.1.w 1) rfl rfl`. Establish `e' : pushPt h.1.w (1 : T ⟶ G') * pushPt h.1.w 1 = pushPt h.1.w 1` using `Over.OverMorphism.ext (by rw [e, _root_.mul_one]; rfl)`. Conclude with `mul_eq_left.1 e'`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero, h1]`. Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ, ← ih]`. Conclude with `(Over.OverMorphism.ext (h.2 T (x ^ n) x (pushPt h.1.w (x ^ n)) (pushPt h.1.w x) rfl rfl)).symm`.
+-/
 theorem TorsionLift.pushPt_pow {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S} [GrpObj G]
     {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) {T : Over S'} (x : T ⟶ G') :
     ∀ n : ℕ, pushPt h.1.w (x ^ n) = (pushPt h.1.w x) ^ n := by
@@ -25,6 +30,23 @@ theorem TorsionLift.pushPt_pow {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G
     rw [pow_succ, pow_succ, ← ih]
     exact (Over.OverMorphism.ext (h.2 T (x ^ n) x (pushPt h.1.w (x ^ n)) (pushPt h.1.w x) rfl rfl)).symm
 
+/- English proof (translation)
+Introduce `R _ _ π hnil G _ _ _ G₀ _ i hG N hN p hp`. Establish `hn : IsUnit (N : Γ(Sp R, ⊤))`. Set `f : ℂ →+* Γ(Sp R, ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom.comp (algebraMap ℂ R)`. Rewrite using `[← map_natCast f N]`. Conclude with `(IsUnit.mk0 (N : ℂ) (by exact_mod_cast (show N ≠ 0 by omega))).map f`.
+
+Use `GrpTangent.etale_torsion G hn` as an intermediate fact. Establish `hP` using `GrpTangent.isPullback_torsion G N`. Establish `e : ∀ {T : Scheme.{0}} (q : T ⟶ Sp R), (1 : Over.mk q ⟶ G).left = q ≫ η[G].left`. Introduce `T q`. Rewrite using `[Hom.one_def, Over.comp_left]`.
+
+Both sides reduce to the same expression. Set `y₀` to `pushPt hG.1.w p`. Establish `hy₀ : y₀ ^ N = 1`. Rewrite using `[← TorsionLift.pushPt_pow hG p N, hp]`. Use `TorsionLift.pushPt_pow hG (1 : 𝟙_ (Over (Sp ℂ)) ⟶ G₀) 0` as an intermediate fact.
+
+Rewrite `this` using `[pow_zero, pow_zero]`. Then use the resulting hypothesis. Establish `w : y₀.left ≫ (mulN G N).left = (𝟙 (Sp ℂ) ≫ spMap (π : R →+* ℂ)) ≫ η[G].left`. Rewrite using `[← Over.comp_left, GrpTangent.comp_mulN, hy₀, e]`. Both sides reduce to the same expression. Set `x₀ : Sp ℂ ⟶ (torsion G N).left` to `hP.lift y₀.left _ w`.
+
+Establish `hx₀₁ : x₀ ≫ (torsion G N).hom = 𝟙 (Sp ℂ) ≫ spMap (π : R →+* ℂ)` using `hP.lift_snd _ _ w`. Establish `hx₀₂ : x₀ ≫ (torsion.ι G N).left = p.left ≫ i` using `hP.lift_fst _ _ w`. Establish `hsurj : Function.Surjective π` using `fun c => ⟨algebraMap ℂ R c, by simp⟩`. Take `⟨U, V, hU, hV, hVU, -, hxV⟩` from `exists_isAffineOpen_pair (torsion G N).hom (x₀ (IsLocalRing.closedPoint ℂ)) (O := ⊤) trivial`. Take `⟨x, hx₁, hx₂⟩` from `exists_lift_of_smooth_of_isAffineOpen (torsion G N).hom (isAffineOpen_top _) hV (fun _ _ => trivial) (CommRingCat.ofHom (π : R →+* ℂ)) (𝟙 _) x₀ (by rw [hx₀₁]; rfl) (fun _ _ => trivial) (range_subset_opens_of_isLocalRing x₀ hxV) (by`.
+
+Introduce `R' A _ _ _ _ _ _ π' hπ' φ`. Establish `: Algebra.FormallySmooth R' A` using `inferInstance`. Conclude with `ReciprocityTheory.ChartRestriction.G.Pdiv.FiniteLocalHoms.exists_lift_nil π' (fun c => (hsurj c).imp fun b hb => (hπ' b).trans hb) (fun a ha => hnil a (by rw [RingHom.mem_ker] at ha ⊢; rw [← ha]; exact (hπ' a).symm)) φ)`. Set `q : 𝟙_ (Over (Sp R)) ⟶ G` to `Over.homMk (U := 𝟙_ (Over (Sp R))) (x ≫ (torsion.ι G N).left) (by`. Rewrite using `[Category.assoc, Over.w]`.
+
+Conclude with `hx₂)`. Use `⟨q, ?_, ?_⟩` and prove the remaining obligations. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[← GrpTangent.comp_mulN, Over.comp_left, e]`. Express the relevant statement in the definitionally equal form `(x ≫ (torsion.ι G N).left) ≫ _ = _`.
+
+Rewrite using `[Category.assoc, hP.w, ← Category.assoc, hx₂]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `_ = _ ≫ x ≫ (torsion.ι G N).left`. Rewrite using `[← Category.assoc, hx₁, hx₀₂]`.
+-/
 theorem TorsionLift.exists_torsion_lift : ∀ {R : Type} [CommRing R] [Algebra ℂ R] (π : R →ₐ[ℂ] ℂ), (∀ x ∈ RingHom.ker π, IsNilpotent x) →
     ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] [Smooth G.hom]
     (G₀ : Over (Sp ℂ)) [GrpObj G₀] (i : G₀.left ⟶ G.left), IsGrpPullback G₀ G (spMap (π : R →+* ℂ)) i →

@@ -53,6 +53,13 @@ variable {T : Type} [CommRing T] {d : ℕ}
 def psJet {n : ℕ} (m : ℕ) (f : PS T n d) : JetR T (Fin n × Fin d) m :=
   Ideal.Quotient.mk _ (MvPowerSeries.trunc T (Finsupp.equivFunOnFinite.symm fun _ => m + 1) f)
 
+/- English proof (translation)
+Rewrite using `[← Set.image_univ, MvPolynomial.mem_ideal_span_X_image]`. Introduce `a ha`. Rewrite `ha` using `[MvPolynomial.mem_support_iff, MvPowerSeries.coeff_trunc]`. Use `split_ifs at ha with h`. Assume the negation of the conclusion as `hne push_neg at hne`.
+
+Establish `h0 : a = 0`. Use extensionality with `i`. Simplify using `using hne i (Set.mem_univ i)`. Substitute `h0` using the available equality. Apply `ha` to reduce the goal to its premises.
+
+Simplify `hf` using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `absurd rfl ha`.
+-/
 theorem trunc_mem_span {n : ℕ} (m : ℕ) (f : PS T n d) (hf : constantCoeff f = 0) :
     MvPowerSeries.trunc T (Finsupp.equivFunOnFinite.symm fun _ => m + 1) f ∈
       Ideal.span (Set.range (MvPolynomial.X : Fin n × Fin d → MvPolynomial (Fin n × Fin d) T)) := by
@@ -70,6 +77,13 @@ theorem trunc_mem_span {n : ℕ} (m : ℕ) (f : PS T n d) (hf : constantCoeff f 
     simpa [MvPowerSeries.coeff_zero_eq_constantCoeff_apply] using hf
   · exact absurd rfl ha
 
+/- English proof (translation)
+Introduce `a ha`. Establish `h1 : Ideal.map (MvPolynomial.aeval g : MvPolynomial σ T →ₐ[T] S) (Ideal.span (Set.range (MvPolynomial.X : σ → MvPolynomial σ T))) ≤ J`. Rewrite using `[Ideal.map_span, Ideal.span_le]`. Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`. Simplify using `using hg i`.
+
+Establish `h2 : MvPolynomial.aeval g a ∈ J ^ (m + 1)`. Establish `h3` using `Ideal.mem_map_of_mem (MvPolynomial.aeval g : MvPolynomial σ T →ₐ[T] S) ha`. Rewrite `h3` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono h1 (m + 1) h3`. Rewrite `h2` using `[hJ]`.
+
+Conclude with `(Ideal.mem_bot).mp h2`.
+-/
 theorem aeval_kill {σ S : Type} [CommRing S] [Algebra T S] (m : ℕ) (g : σ → S) (J : Ideal S)
     (hg : ∀ i, g i ∈ J) (hJ : J ^ (m + 1) = ⊥) :
     ∀ a ∈ (Ideal.span (Set.range (MvPolynomial.X : σ → MvPolynomial σ T))) ^ (m + 1),
@@ -87,6 +101,9 @@ theorem aeval_kill {σ S : Type} [CommRing S] [Algebra T S] (m : ℕ) (g : σ �
   rw [hJ] at h2
   exact (Ideal.mem_bot).mp h2
 
+/- English proof (translation)
+Rewrite using `[← Ideal.map_pow, Ideal.map_quotient_self]`.
+-/
 theorem jet_aug_pow (κ : Type) (m : ℕ) :
     ((Ideal.span (Set.range (MvPolynomial.X : κ → MvPolynomial κ T))).map
       (Ideal.Quotient.mk ((Ideal.span (Set.range (MvPolynomial.X : κ → MvPolynomial κ T))) ^ (m + 1)))) ^ (m + 1) = ⊥ := by

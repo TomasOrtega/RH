@@ -12,10 +12,18 @@ open GlobalTheory.LBDescent GlobalTheory.DescNorm
 
 namespace GlobalTheory.PolRoot
 
+/- English proof (translation)
+The claim follows from `(gm_pull (𝟙 T) r t ⊤ trivial a).trans (by rw [Category.id_comp])`.
+-/
 private theorem gm_charPullTop {X T : Scheme.{0}} (r : T ⟶ X) (t : T) (a : Γ(X, ⊤)ˣ) :
     gm (𝟙 T) t ⊤ (GlobalTheory.CharKer.pullTop r a) = gm r t ⊤ a :=
   (gm_pull (𝟙 T) r t ⊤ trivial a).trans (by rw [Category.id_comp])
 
+/- English proof (translation)
+Establish `e₁ : tri f a b c h₁ h₂ ≫ pullback.fst (pullback.snd f f) (pullback.fst f f) = pullback.lift a b h₁` using `pullback.lift_fst _ _ _`. Establish `e₂ : tri f a b c h₁ h₂ ≫ pullback.snd (pullback.snd f f) (pullback.fst f f) = pullback.lift b c h₂` using `pullback.lift_snd _ _ _`. Establish `e₃ : tri f a b c h₁ h₂ ≫ pr13 f = pullback.lift a c (h₁.trans h₂)`. Apply `pullback.hom_ext` to reduce the goal to its premises. Apply the tactic sequence `rw [pr13, Category.assoc, pullback.lift_fst, reassoc_of% e₁, pullback.lift_fst] try rw [pullback.lift_fst]`.
+
+Apply the tactic sequence `rw [pr13, Category.assoc, pullback.lift_snd, reassoc_of% e₂, pullback.lift_snd] try rw [pullback.lift_snd]`. Use `h T (tri f a b c h₁ h₂) t i j k (by rw [← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, reassoc_of% e₁, pullback.lift_fst]; exact hi) (by rw [← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, reassoc_of% e₁, pullback.lift_snd]; exact hj) (by rw [← Scheme.Hom.comp_apply, ← Schem …` as an intermediate fact. Rewrite `this` using `[e₁, e₂, e₃]`. Then use the resulting hypothesis.
+-/
 theorem defect_tri {X Y T : Scheme.{0}} {f : X ⟶ Y} {M : LB X} {φ : ∀ i j, Γ(pullback f f, chart f M i j)ˣ}
     {D : Γ(Triple f, ⊤)ˣ} (h : Defect f M φ D) (a b c : T ⟶ X) (h₁ : a ≫ f = b ≫ f) (h₂ : b ≫ f = c ≫ f)
     (t : T) (i j k : M.ι) (hi : a t ∈ M.U i) (hj : b t ∈ M.U j) (hk : c t ∈ M.U k) :
@@ -37,6 +45,13 @@ theorem defect_tri {X Y T : Scheme.{0}} {f : X ⟶ Y} {M : LB X} {φ : ∀ i j, 
     (by rw [← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, reassoc_of% e₂, pullback.lift_snd]; exact hk)
   rwa [e₁, e₂, e₃] at this
 
+/- English proof (translation)
+Introduce `X Y f M hM φ D h T a b c d h₁ h₂ h₃`. Use `unit_ext fun t _ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_chart hM (a t)`. Take `⟨j, hj⟩` from `exists_chart hM (b t)`. Take `⟨k, hk⟩` from `exists_chart hM (c t)`.
+
+Take `⟨l, hl⟩` from `exists_chart hM (d t)`. Establish `e₁` using `defect_tri h a b c h₁ h₂ t i j k hi hj hk`. Establish `e₂` using `defect_tri h a c d (h₁.trans h₂) h₃ t i k l hi hk hl`. Establish `e₃` using `defect_tri h b c d h₂ h₃ t j k l hj hk hl`. Establish `e₄` using `defect_tri h a b d h₁ (h₂.trans h₃) t i j l hi hj hl`.
+
+Rewrite using `[map_mul, map_mul, gm_charPullTop, gm_charPullTop, gm_charPullTop, gm_charPullTop]`. Apply `mul_right_cancel (b := gm (pullback.lift a d ((h₁.trans h₂).trans h₃)) t _ (φ i l))` to reduce the goal to its premises. Rewrite using `[_root_.mul_assoc, _root_.mul_assoc, e₂, e₄, ← _root_.mul_assoc, e₁, _root_.mul_left_comm, e₃, _root_.mul_assoc]`.
+-/
 theorem triCocycle_of_defect : ∀ (X Y : Scheme.{0}) (f : X ⟶ Y) (M : LB X), M.IsLB → ∀ (φ : ∀ i j, Γ(pullback f f, chart f M i j)ˣ) (D : Γ(Triple f, ⊤)ˣ), Defect f M φ D → TriCocycle f D := by
   intro X Y f M hM φ D h T a b c d h₁ h₂ h₃
   refine unit_ext fun t _ => ?_

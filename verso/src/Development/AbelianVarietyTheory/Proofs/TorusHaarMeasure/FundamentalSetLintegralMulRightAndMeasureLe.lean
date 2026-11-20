@@ -4,6 +4,17 @@ open scoped ComplexOrder ENNReal Pointwise
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ ν _ Γ _ F hF hex`. Establish `hFD : IsFundamentalDomain Γ F ν` using `IsFundamentalDomain.mk' hF.nullMeasurableSet (fun g => hex g)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `h hh φ hφ hinv`. Establish `hmeas : MeasurableSet {g : G | g * h⁻¹ ∈ F}` using `(measurable_mul_const h⁻¹) hF`.
+
+Establish `hFD' : IsFundamentalDomain Γ {g : G | g * h⁻¹ ∈ F} ν`. Use `IsFundamentalDomain.mk' hmeas.nullMeasurableSet (fun g => ?_)` and prove the remaining obligations. Use `hex (g * h⁻¹)` as an intermediate fact. Simplify `this` using `[Subgroup.smul_def, mul_assoc]`. Establish `h1 : ∫⁻ g in {g : G | g * h⁻¹ ∈ F}, φ g ∂ν = ∫⁻ g in F, φ (g * h) ∂ν` using `by conv_lhs => rw [← hh]`.
+
+Rewrite using `[setLIntegral_map hmeas hφ (measurable_mul_const h)]`. Use `congr 2`. Use extensionality with `g`. Simplify using the standard rewrite rules. Rewrite using `[← h1]`.
+
+Conclude with `hFD'.setLIntegral_eq hFD φ (fun γ g => hinv γ γ.2 g)`. Introduce `K hK`. Rewrite using `[hFD.measure_eq_tsum K]`. Use `le_trans (measure_mono ?_) (measure_iUnion_le _)` and prove the remaining obligations. Introduce and unpack `g ⟨hg, γ, hγ, k, hk, rfl⟩`.
+
+Conclude with `Set.mem_iUnion.2 ⟨⟨γ, hγ⟩, ⟨k, hk, rfl⟩, hg⟩`.
+-/
 theorem fundamentalSet_lintegral_mul_right_and_measure_le :
     (∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (ν : Measure G) [ν.IsHaarMeasure] (Γ : Subgroup G) [Countable Γ] (F : Set G), MeasurableSet F → (∀ g : G, ∃! γ : Γ, (γ : G) * g ∈ F) → (∀ h : G, ν.map (fun g => g * h) = ν → ∀ φ : G → ℝ≥0∞, Measurable φ → (∀ γ ∈ Γ, ∀ g, φ (γ * g) = φ g) → ∫⁻ g in F, φ (g * h) ∂ν = ∫⁻ g in F, φ g ∂ν) ∧ ∀ K : Set G, MeasurableSet K → ν (F ∩ {g | ∃ γ ∈ Γ, ∃ k ∈ K, g = γ * k}) ≤ ν K) := by
   intro G _ _ _ _ _ _ _ _ ν _ Γ _ F hF hex

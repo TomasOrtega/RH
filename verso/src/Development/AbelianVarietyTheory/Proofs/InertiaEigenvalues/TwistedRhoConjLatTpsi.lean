@@ -7,6 +7,13 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace GlobalTheory.PtCore
 
+/- English proof (translation)
+Establish `h1 : ρ g * U⁻¹ = U⁻¹ * mapRep f ρ₀ g`. Rewrite using `[eq_inv_mul_iff_mul_eq, ← mul_assoc, ← hU, mul_inv_cancel_right]`. Establish `h2 : ((ρ g : GL (Fin k) B) : Matrix (Fin k) (Fin k) B) * ((U⁻¹ : GL (Fin k) B) : Matrix (Fin k) (Fin k) B) = ((U⁻¹ : GL (Fin k) B) : Matrix (Fin k) (Fin k) B) * ((ρ₀ g : GL (Fin k) A) : Matrix (Fin k) (Fin k) A).map f` using `congrArg Units.val h1`. Establish `h3 : mapM f (twistM ((Units.coeHom _).comp ρ₀) χ₀⁻¹) g = f (((χ₀ g)⁻¹ : Aˣ) : A) • ((ρ₀ g : GL (Fin k) A) : Matrix (Fin k) (Fin k) A).map f`. Use extensionality with `i j`.
+
+Conclude with `map_mul f _ _`. Establish `h4 : (((χ g)⁻¹ : Bˣ) : B) = (((ψ g)⁻¹ : Bˣ) : B) * f (((χ₀ g)⁻¹ : Aˣ) : A)`. Rewrite using `[hχ, MonoidHom.mul_apply, mul_inv_rev, Units.val_mul, MonoidHom.comp_apply, ← map_inv]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `((((χ g)⁻¹ : Bˣ) : B) • ((ρ g : GL (Fin k) B) : Matrix (Fin k) (Fin k) B)) * _ = _ * ((((ψ g)⁻¹ : Bˣ) : B) • mapM f (twistM ((Units.coeHom _).comp ρ₀) χ₀⁻¹) g)`.
+
+Rewrite using `[h3, smul_smul, ← h4, Matrix.smul_mul, Matrix.mul_smul, h2]`.
+-/
 theorem twist_conj {Γ A B : Type} [Group Γ] [CommRing A] [CommRing B] {k : ℕ} (f : A →+* B)
     (ρ : Γ →* GL (Fin k) B) (ρ₀ : Γ →* GL (Fin k) A) (χ₀ : Γ →* Aˣ) (ψ χ : Γ →* Bˣ)
     (hχ : χ = (Units.map (f : A →* B)).comp χ₀ * ψ) (U : GL (Fin k) B)
@@ -30,6 +37,11 @@ theorem twist_conj {Γ A B : Type} [Group Γ] [CommRing A] [CommRing B] {k : ℕ
     _ * ((((ψ g)⁻¹ : Bˣ) : B) • mapM f (twistM ((Units.coeHom _).comp ρ₀) χ₀⁻¹) g)
   rw [h3, smul_smul, ← h4, Matrix.smul_mul, Matrix.mul_smul, h2]
 
+/- English proof (translation)
+Introduce `hC D a π ρ s Sg hρ hP hT hirr`. Establish `htr` using `GlobalTheory.T.trace_rankRPart_eq_trace_baseChangeTriple hC D a π (ρ π) s Sg hρ hP hT`. Take `⟨U, hU⟩` from `GlobalTheory.T.exists_conj_of_trace_eq_residually_absIrreducible_DVR (D.nd.O a) (Formalism.MainNotions.N.GE D.nd) D.R.r (ρ π) (mapRep (D.ntw.twist₂ a) (D.ntw.rhoS _ s)) hirr (fun g => by`. Rewrite using `[htr g]`. Conclude with `(AddMonoidHom.map_trace (D.ntw.twist₂ a) _))`.
+
+Use `⟨U⁻¹, fun g => ?_⟩` and prove the remaining obligations. Use `twist_conj (D.ntw.twist₂ a) (ρ π) (D.ntw.rhoS _ s) _ (D.ntw.psiL a) (D.nd.chi a 1) ?_ U hU g` and prove the remaining obligations. Rewrite using `[hT.1, hT.2.1]`. Conclude with `D.ntw.chi_tw a`.
+-/
 theorem twistedRho_conj_latTpsi : GlobalTheory.TwSys.Cheb → ∀ (D : D7) (a : D.nd.Loc) (π : D.nd.X a) (ρ : D.nd.X a → (Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.r) (D.nd.O a))) (s : D.ntw.Sig (D.ntw.twOf a)) (Sg : List (Part D.naut.CG)), GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.IsRhoPt D a π (ρ π) → HasParamX D.nd D.naut a π Sg → GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.IsTriple D a s Sg → AbsIrrSub (redRep D.nd a (ρ π)) ⊤ → ∃ U : GL (Fin D.R.r) (D.nd.O a), ∀ g, WpO D.nd a ρ π g * (U : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O a)) = (U : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O a)) * GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.latTpsi D.ntw _ s (D.ntw.twist₂ a) (D.ntw.psiL a) g := by
   intro hC D a π ρ s Sg hρ hP hT hirr
   have htr := GlobalTheory.T.trace_rankRPart_eq_trace_baseChangeTriple hC D a π (ρ π) s Sg hρ hP hT

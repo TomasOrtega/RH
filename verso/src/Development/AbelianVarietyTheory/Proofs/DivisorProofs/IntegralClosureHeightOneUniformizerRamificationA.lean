@@ -5,6 +5,29 @@ open GlobalTheory.PD GlobalTheory.CechDR KaehlerDifferential
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `L` to `Localization.AtPrime Q`. Use `haveI : IsDiscreteValuationRing L := isDiscreteValuationRing_of_height_eq_one Q hQ L`. Establish `hle : Q.primeCompl ≤ nonZeroDivisors B` using `Q.primeCompl_le_nonZeroDivisors`. Establish `hinj : Function.Injective (algebraMap B L)` using `IsLocalization.injective L hle`. Establish `hcomap : (IsLocalRing.maximalIdeal L).comap (algebraMap B L) = Q` using `IsLocalization.AtPrime.comap_maximalIdeal L Q`.
+
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible L`. Take `⟨⟨s, r0⟩, hs⟩` from `IsLocalization.surj Q.primeCompl ϖ`. Simplify using `only at hs`. Establish `hu0 : IsUnit (algebraMap B L r0)` using `IsLocalization.map_units L r0`. Establish `hsirr : Irreducible (algebraMap B L s)`.
+
+Rewrite using `[← hs]`. Conclude with `(irreducible_mul_isUnit hu0).mpr hϖ`. Establish `hmax` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer _).mp hsirr`. Establish `hsQ : s ∈ Q`. Rewrite using `[← hcomap, Ideal.mem_comap, hmax]`.
+
+Conclude with `Ideal.subset_span rfl`. Use `⟨s, ?_⟩` and prove the remaining obligations. Establish `hxL : algebraMap B L x ≠ 0`. Rewrite using `[Ne, ← map_zero (algebraMap B L)]`. Conclude with `fun h => hx0 (hinj h)`.
+
+Take `⟨n, w, hw⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hxL hsirr`. Establish `hxm : algebraMap B L x ∈ IsLocalRing.maximalIdeal L`. Rewrite using `[← Ideal.mem_comap, hcomap]`. Conclude with `hxQ`. Use `⟨n, ?_, hsQ, ?_, ?_⟩` and prove the remaining obligations.
+
+Break down `Nat.eq_zero_or_pos n with h | h` into its components or cases. It suffices to derive a contradiction. Rewrite `hw` using `[h, pow_zero, mul_one]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp hxm (hw ▸ w.isUnit)`. Conclude with `h`.
+
+Introduce `y hy`. Establish `hym : algebraMap B L y ∈ Ideal.span {algebraMap B L s}`. Rewrite using `[← hmax, ← Ideal.mem_comap, hcomap]`. Conclude with `hy`. Take `⟨z, hz⟩` from `Ideal.mem_span_singleton'.mp hym`.
+
+Take `⟨⟨c, r⟩, hcr⟩` from `IsLocalization.surj Q.primeCompl z`. Simplify using `only at hcr`. Use `⟨c, r, r.2, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ← hz, ← hcr]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨⟨a, r⟩, har⟩` from `IsLocalization.surj Q.primeCompl (w : L)`. Simplify using `only at har`. Establish `hau : IsUnit (algebraMap B L a)`. Rewrite using `[← har]`. Conclude with `w.isUnit.mul (IsLocalization.map_units L r)`.
+
+Use `⟨a, r, ?_, r.2, hinj ?_⟩` and prove the remaining obligations. Introduce `haQ`. Establish `: algebraMap B L a ∈ IsLocalRing.maximalIdeal L`. Rewrite using `[← Ideal.mem_comap, hcomap]`. Conclude with `haQ`.
+
+Conclude with `(IsLocalRing.mem_maximalIdeal _).mp this hau`. Rewrite using `[map_mul, map_mul, map_pow, ← har, hw]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_localUniformizer_and_order {B : Type} [CommRing B] [IsDomain B]
     [IsNoetherianRing B] [IsIntegrallyClosed B] (Q : Ideal B) [Q.IsPrime] (hQ : Q.height = 1)
     (x : B) (hx0 : x ≠ 0) (hxQ : x ∈ Q) :
@@ -56,6 +79,19 @@ theorem exists_localUniformizer_and_order {B : Type} [CommRing B] [IsDomain B]
       exact (IsLocalRing.mem_maximalIdeal _).mp this hau
     · rw [map_mul, map_mul, map_pow, ← har, hw]; ring
 
+/- English proof (translation)
+Introduce `k F K _ _ _ _ _ _ _ _ _ d u hu A _ hA B hB p _ t ht hpt Q _ hQ hlie`. Establish `hN : IsNoetherianRing A`. Substitute `hA` using the available equality. Conclude with `isNoetherianRing_of_ringEquiv _ hu.aevalEquiv.toRingEquiv`. Establish `hI : IsIntegrallyClosed A`.
+
+Substitute `hA` using the available equality. Establish `: IsIntegrallyClosed (MvPolynomial (Fin d) k)` using `UniqueFactorizationMonoid.instIsIntegrallyClosed`. Conclude with `IsIntegrallyClosed.of_equiv hu.aevalEquiv.toRingEquiv`. Establish `: CharZero F` using `charZero_of_injective_algebraMap (algebraMap k F).injective`. Substitute `hB` using the available equality.
+
+Establish `hNB : IsNoetherianRing (integralClosure A K)` using `IsIntegralClosure.isNoetherianRing A F K _`. Establish `hIB : IsIntegrallyClosed (integralClosure A K)` using `integralClosure.isIntegrallyClosedOfFiniteExtension F`. Use `haveI : IsNoetherianRing ((integralClosure A K).restrictScalars k) := hNB`. Use `haveI : IsIntegrallyClosed ((integralClosure A K).restrictScalars k) := hIB`. Establish `hmem : algebraMap F K (t : F) ∈ (integralClosure A K).restrictScalars k`.
+
+Rewrite using `[Subalgebra.mem_restrictScalars, mem_integralClosure_iff]`. Conclude with `isIntegral_algebraMap (x := t)`. Set `x : (integralClosure A K).restrictScalars k` to `⟨_, hmem⟩`. Establish `hxQ : x ∈ Q` using `(hlie t x rfl).mpr (hpt ▸ Ideal.subset_span rfl)`. Establish `hx0 : x ≠ 0`.
+
+Introduce `h`. Establish `h' : algebraMap F K (t : F) = 0` using `congrArg Subtype.val h`. Rewrite `h'` using `[map_eq_zero_iff _ (algebraMap F K).injective, ZeroMemClass.coe_eq_zero]`. Conclude with `ht.ne_zero h'`. Take `⟨s, e, he, hs, hgen, a, r, ha, hr, hrx⟩` from `exists_localUniformizer_and_order Q hQ x hx0 hxQ`.
+
+Use `⟨s, e, he, hs, hgen, a, r, ha, hr, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hrx` as an intermediate fact. Simplify using `using this`.
+-/
 theorem integralClosure_height_one_uniformizer_ramification :
     ∀ (k F K : Type) [Field k] [CharZero k] [Field F] [Field K] [Algebra k F] [Algebra k K] [Algebra F K] [IsScalarTower k F K] [FiniteDimensional F K] (d : ℕ) (u : Fin d → F), AlgebraicIndependent k u → ∀ (A : Subalgebra k F) [IsFractionRing A F], A = Algebra.adjoin k (Set.range u) → ∀ (B : Subalgebra k K), B = (integralClosure A K).restrictScalars k → ∀ (p : Ideal A), p.IsPrime → ∀ t : A, Irreducible t → p = Ideal.span {t} → ∀ Q : Ideal B, Q.IsPrime → Q.height = 1 → (∀ a : A, ∀ b : B, (b : K) = algebraMap F K a → (b ∈ Q ↔ a ∈ p)) → ∃ (s : B) (e : ℕ), 1 ≤ e ∧ s ∈ Q ∧ (∀ y ∈ Q, ∃ c r : B, r ∉ Q ∧ r * y = c * s) ∧ (∃ a r : B, a ∉ Q ∧ r ∉ Q ∧ (r : K) * algebraMap F K t = a * s ^ e) := by
   intro k F K _ _ _ _ _ _ _ _ _ d u hu A _ hA B hB p _ t ht hpt Q _ hQ hlie

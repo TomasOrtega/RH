@@ -21,6 +21,35 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL] [CommRing O] [Algebra O LL]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Take `⟨r, b, hbS, hu⟩` from `hfree`. Establish `hbN : ∀ m, b m ∈ W.N T` using `fun m => Nl_le_N W T c (hbS m)`. Establish `hFa : Antitone (FilV PD (LL` using `LL) (V := T.V)) := filVB_anti PD`. Establish `hfl : ∀ a, Formalism.MainNotions.WachCoordinates.FilLev W T c 0 a = Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c ⊓ FilV PD (LL` using `LL) (V := T.V) a := fun a => Formalism.MainNotions.UnusedSlot80.LevR.filLev_zero W T c a`. Take `⟨a₀, h₀⟩` from `exists_le_filV PD (Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c)`.
+
+Take `⟨a₁, h₁⟩` from `exists_inf_filV_eq_bot PD (Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c)`. Set `e : Fin r → ℤ → T.V ⊗[Qp] BdR` to `fun m => W.levN T c ζ ⟨b m, hbN m⟩`. Establish `he : ∀ m k, e m k ∈ Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c ⊓ FilV PD (LL` using `LL) (V := T.V) (-k) := fun m k => hfl (-k) ▸ h4.1 _ k`. Establish `hLB : ∀ m, LB (1 - a₁) (e m)`. Introduce `m i hi`.
+
+Establish `h` using `he m i`. Establish `h' : e m i ∈ Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c ⊓ FilV PD (LL` using `LL) (V := T.V) a₁ := ⟨(Submodule.mem_inf.1 h).1, hFa (by omega) (Submodule.mem_inf.1 h).2⟩`. Rewrite `h'` using `[h₁]`. Conclude with `(Submodule.mem_bot LL).1 h'`. Establish `hF : ∀ m k, e m k ∈ FilV PD (LL` using `LL) (V := T.V) (-k) := fun m k => (Submodule.mem_inf.1 (he m k)).2`.
+
+Establish `hexpand : ∀ (x : W.DD T) (hx : x ∈ W.N T), (letE c : LetA O n) • x = x → ∃ β : Fin r → PowerSeries O, x = ∑ m, (Pi.single c (β m) : LetA O n) • b m ∧ ∀ j, W.levN T c ζ ⟨x, hx⟩ j = ∑ m, smulS (W.lev c ζ (Pi.single c (β m))) (e m) j`. Introduce `x hx hxc`. Take `⟨β, hβ, -⟩` from `hu x (mem_Nl_of W hx hxc)`. Use `⟨β, hβ, fun j => ?_⟩` and prove the remaining obligations. Establish `hs : ∑ m, (Pi.single c (β m) : LetA O n) • b m ∈ W.N T` using `hβ ▸ hx`.
+
+Establish `e1 : (⟨x, hx⟩ : ↥(W.N T)) = ⟨_, hs⟩` using `Subtype.ext hβ`. Rewrite using `[e1]`. Conclude with `levN_sum W c ζ hbN _ hs j`. Establish `hS : ∀ k : ℤ, ∀ w ∈ Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c ⊓ FilV PD (LL` using `LL) (V := T.V) (-k), ∃ γ : Fin r → LL, (∀ j < k, ∑ m, γ m • e m j ∈ FilV PD (LL := LL) (V := T.V) (-j + 1)) ∧ ∑ m, γ m • e m k - w ∈ FilV PD (LL := LL) (V := T.V) (-k + 1) := by`. Introduce `k w hw`.
+
+Rewrite `hw` using `[← hfl]`. Take `⟨x, α, hα, hlow, hk⟩` from `h4.2 k w hw`. Establish `hx'N : (letE c : LetA O n) • (x : W.DD T) ∈ W.N T` using `(W.N T).smul_mem _ x.2`. Establish `hx'c : (letE c : LetA O n) • ((letE c : LetA O n) • (x : W.DD T)) = (letE c : LetA O n) • (x : W.DD T)` using `by rw [smul_smul, letE_mul_self]`. Take `⟨β, -, hβ⟩` from `hexpand _ hx'N hx'c`.
+
+Establish `hxe : ∀ j, W.levN T c ζ x j = ∑ m, smulS (W.lev c ζ (Pi.single c (β m))) (e m) j`. Introduce `j`. Rewrite using `[← hβ j, ← Formalism.MainNotions.UnusedSlot80.LevR.levN_letE W T c ζ x j]`. Both sides reduce to the same expression. Set `γ : Fin r → LL` to `fun m => α * PowerSeries.constantCoeff (W.lev c ζ (Pi.single c (β m)))`.
+
+Establish `key : ∀ j, α • W.levN T c ζ x j - ∑ m, γ m • e m j ∈ FilV PD (LL` using `LL) (V := T.V) (-j + 1) := by`. Introduce `j`. Establish `e2 : α • W.levN T c ζ x j - ∑ m, γ m • e m j = ∑ m, α • (smulS (W.lev c ζ (Pi.single c (β m))) (e m) j - PowerSeries.constantCoeff (W.lev c ζ (Pi.single c (β m))) • e m j)`. Rewrite using `[hxe j, Finset.smul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_sub, mul_smul]`. Rewrite using `[e2]`. Conclude with `Submodule.sum_mem _ fun m _ => Submodule.smul_mem _ _ (smulS_sub_cc hFa (hLB m) (hF m) _ j)`. Use `⟨γ, fun j hj => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : α • W.levN T c ζ x j ∈ FilV PD (LL` using `LL) (V := T.V) (-j + 1) := by`.
+
+Use `hlow j hj` as an intermediate fact. Rewrite `this` using `[hfl]`. Conclude with `(Submodule.mem_inf.1 this).2`. Use `Submodule.sub_mem _ h1 (key j)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis.
+
+Establish `h1 : α • W.levN T c ζ x k - w ∈ FilV PD (LL` using `LL) (V := T.V) (-k + 1) := by`. Rewrite `hk` using `[hfl]`. Conclude with `(Submodule.mem_inf.1 hk).2`. Use `Submodule.sub_mem _ h1 (key k)` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_left]`. Then use the resulting hypothesis.
+
+Establish `hr` using `rank_le W hFr T c hbS hu h3`. Establish `hind` using `indep_of_span hFa (Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c) a₀ a₁ h₀ h₁ he hS hr`. Take `⟨β, hβ, hyβ⟩` from `hexpand y hy hyc`. Establish `hdg : ∀ j : ℤ, ∑ m, smulS (W.lev c ζ (Pi.single c (β m))) (e m) j ∈ FilV PD (LL` using `LL) (V := T.V) ((k : ℤ) - j) := by`. Introduce `j`.
+
+Use `hexp j` as an intermediate fact. Rewrite `this` using `[hyβ j, hfl]`. Conclude with `(Submodule.mem_inf.1 this).2`. Establish `hdvd` using `dvd_of_dg hFa (Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c) a₁ h₁ he hind k _ hdg`. Rewrite using `[hβ]`.
+
+Use `Submodule.sum_mem _ fun m _ => Submodule.smul_mem_smul ?_ (hbN m)` and prove the remaining obligations. Use `show W.lev c ζ (Pi.single c (β m)) ∈ Ideal.span {(PowerSeries.X : PowerSeries LL) ^ k}`. Conclude with `Ideal.mem_span_singleton.2 (hdvd m)`.
+-/
 theorem mem_vanI_at (hFr : IsFractionRing O LL) (T : LocLat G Qp LL O) (c : ZMod n) (ζ : LL)
     (hfree : Formalism.MainNotions.DeltaInvariantLattices.FreeLetter W T (W.Nl T c) c) (h3 : Formalism.MainNotions.DeltaInvariantLattices.p3 W T)
     (h4 : Formalism.MainNotions.UnusedSlot80.LevR.Lv1 W T c 0 ζ ∧ Formalism.MainNotions.UnusedSlot80.LevR.Lv2 W T c 0 ζ)
@@ -118,6 +147,9 @@ theorem mem_vanI_at (hFr : IsFractionRing O LL) (T : LocLat G Qp LL O) (c : ZMod
 def tauOf (hbij : Function.Bijective (algebraMap K₀ K)) (i : ZMod n) : K →ₐ[Qp] LL :=
   (W.emb i).comp (AlgEquiv.ofBijective (IsScalarTower.toAlgHom Qp K₀ K) hbij).symm.toAlgHom
 
+/- English proof (translation)
+Use `show W.emb i ((AlgEquiv.ofBijective (IsScalarTower.toAlgHom Qp K₀ K) hbij).symm (algebraMap K₀ K x)) = W.emb i x`. Use `congr 1`. Conclude with `(AlgEquiv.symm_apply_eq _).2 rfl`.
+-/
 theorem tauOf_over (hbij : Function.Bijective (algebraMap K₀ K)) (i : ZMod n) (x : K₀) :
     tauOf W hbij i (algebraMap K₀ K x) = W.emb i x := by
   show W.emb i ((AlgEquiv.ofBijective (IsScalarTower.toAlgHom Qp K₀ K) hbij).symm
@@ -125,6 +157,9 @@ theorem tauOf_over (hbij : Function.Bijective (algebraMap K₀ K)) (i : ZMod n) 
   congr 1
   exact (AlgEquiv.symm_apply_eq _).2 rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Take `⟨y, rfl⟩` from `hbij.2 x`. Rewrite using `[tauOf_over]`. Conclude with `congrArg (fun f : K₀ →ₐ[Qp] LL => f y) hτ`.
+-/
 theorem tauOf_unique (hbij : Function.Bijective (algebraMap K₀ K)) (i : ZMod n)
     (τ : K →ₐ[Qp] LL) (hτ : Formalism.MainNotions.DeltaInvariantLattices.OverLetter W τ i) : τ = tauOf W hbij i := by
   ext x
@@ -132,6 +167,9 @@ theorem tauOf_unique (hbij : Function.Bijective (algebraMap K₀ K)) (i : ZMod n
   rw [tauOf_over]
   exact congrArg (fun f : K₀ →ₐ[Qp] LL => f y) hτ
 
+/- English proof (translation)
+Use `((hD hA.1 T.V T.ρ hT).2 (tauOf W hA.1 c)).1` as an intermediate fact. Conclude with `Submodule.finiteDimensional_of_le (Formalism.MainNotions.UnusedSlot80.LevR.ιDi_le W T c (tauOf W hA.1 c) (tauOf_over W hA.1 c) hA.1.2)`.
+-/
 theorem fd_ιDi (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (hD : Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris PD LL)
     (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ) (c : ZMod n) :
     FiniteDimensional LL ↥(Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c) := by
@@ -139,6 +177,17 @@ theorem fd_ιDi (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (hD : Formali
   exact Submodule.finiteDimensional_of_le
     (Formalism.MainNotions.UnusedSlot80.LevR.ιDi_le W T c (tauOf W hA.1 c) (tauOf_over W hA.1 c) hA.1.2)
 
+/- English proof (translation)
+Establish `hex : ∀ i : ZMod n, ∃ a₀ a₁ : ℤ, DdRE PD T.ρ (tauOf W hA.1 i) ≤ FilV PD (LL` using `LL) (V := T.V) a₀ ∧ DdRE PD T.ρ (tauOf W hA.1 i) ⊓ FilV PD (LL := LL) (V := T.V) a₁ = ⊥ := by`. Introduce `i`. Use `((hD hA.1 T.V T.ρ hT).2 (tauOf W hA.1 i)).1` as an intermediate fact. Take `⟨a₀, h₀⟩` from `exists_le_filV PD (DdRE PD T.ρ (tauOf W hA.1 i))`. Take `⟨a₁, h₁⟩` from `exists_inf_filV_eq_bot PD (DdRE PD T.ρ (tauOf W hA.1 i))`.
+
+Conclude with `⟨a₀, a₁, h₀, h₁⟩`. Use `choose a₀ a₁ h₀ h₁ using hex`. Use `⟨fun i => (-(a₀ i)).toNat, fun i => (a₁ i).toNat, fun τ i hτ a ha => ?_⟩` and prove the remaining obligations. Take `rfl` from `tauOf_unique W hA.1 i τ hτ`. Establish `hFa : Antitone (FilV PD (LL` using `LL) (V := T.V)) := filVB_anti PD`.
+
+Unfold `IsJumpV FildR at ha`. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion as `hlt`. Apply `ha` to reduce the goal to its premises. Establish `hle : a + 1 ≤ a₀ i` using `by have := Int.self_le_toNat (-(a₀ i)); push Not at hlt; omega`.
+
+Rewrite using `[inf_eq_left.2 ((h₀ i).trans (hFa hle)), inf_eq_left.2 ((h₀ i).trans (hFa (by omega)))]`. Assume the negation of the conclusion as `hlt`. Apply `ha` to reduce the goal to its premises. Establish `hle : a₁ i ≤ a` using `by have := Int.self_le_toNat (a₁ i); push Not at hlt; omega`. Establish `e1 : DdRE PD T.ρ (tauOf W hA.1 i) ⊓ FilV PD (LL` using `LL) (V := T.V) a = ⊥ := eq_bot_iff.2 ((inf_le_inf_left _ (hFa hle)).trans (h₁ i).le)`.
+
+Establish `e2 : DdRE PD T.ρ (tauOf W hA.1 i) ⊓ FilV PD (LL` using `LL) (V := T.V) (a + 1) = ⊥ := eq_bot_iff.2 ((inf_le_inf_left _ (hFa (by omega))).trans (h₁ i).le)`. Rewrite using `[e1, e2]`.
+-/
 theorem jumpsLet_exists (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (hD : Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris PD LL)
     (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ) :
     ∃ M h : ZMod n → ℕ, Formalism.MainNotions.DeltaInvariantLattices.JumpsLet W T M h := by
@@ -169,6 +218,23 @@ theorem jumpsLet_exists (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (hD :
       eq_bot_iff.2 ((inf_le_inf_left _ (hFa (by omega))).trans (h₁ i).le)
     rw [e1, e2]
 
+/- English proof (translation)
+Take `⟨u, hu0, hq⟩` from `lev_q_eq W c hζ hp`. Establish `hQ : W.lev c ζ W.Q = PowerSeries.X * u` using `by rw [Q_eq_q W hs]; exact hq`. Establish `hFl : Antitone (Formalism.MainNotions.WachCoordinates.FilLev W T c 0)` using `Formalism.MainNotions.UnusedSlot80.LevR.filLev_anti W T c 0`. Establish `hlevsmul : ∀ (a : LetA O n) (z : ↥(W.N T)), W.levN T c ζ (a • z) = smulS (W.lev c ζ a) (W.levN T c ζ z)`. Introduce `a z`.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[W.levN_smul]`. Both sides reduce to the same expression. Establish `hud : ∀ d : ℕ, PowerSeries.constantCoeff (u ^ d) ≠ 0` using `fun d => by`. Rewrite using `[map_pow]`.
+
+Conclude with `pow_ne_zero _ hu0`. Break down `le_total k' k with hle | hle` into its components or cases. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hle`. Establish `e1 : (⟨W.Q ^ (k' + d) • x, hk⟩ : ↥(W.N T)) = W.Q ^ d • ⟨W.Q ^ k' • x, hk'⟩` using `Subtype.ext (by simp only [SetLike.val_smul]; rw [smul_smul, ← pow_add, add_comm])`. Take `⟨M, hM⟩` from `W.levN_supp T c ζ ⟨W.Q ^ k' • x, hk'⟩`.
+
+Establish `hg : LB M (W.levN T c ζ ⟨W.Q ^ k' • x, hk'⟩)` using `hM`. Establish `hexp' : ∀ j : ℤ, smulS (u ^ d) (W.levN T c ζ ⟨W.Q ^ k' • x, hk'⟩) j ∈ Formalism.MainNotions.WachCoordinates.FilLev W T c 0 ((k' : ℤ) - j)`. Introduce `j`. Use `hexp (j + d)` as an intermediate fact. Rewrite `this` using `[e1, hlevsmul, map_pow, hQ, mul_pow, smulS_mul hg, smulS_X_pow (LB_smulS hg _)]`.
+
+Simplify using `only at this`. Rewrite `this` using `[show j + (d : ℤ) - (d : ℤ) = j by ring, show ((k' + d : ℕ) : ℤ) - (j + d) = (k' : ℤ) - j by push_cast; ring]`. Conclude with `this`. Introduce `j`. Rewrite using `[← smulS_inv hg (u ^ d) (hud d)]`.
+
+Conclude with `Dg_smulS hFl (LB_smulS hg _) hexp' _ j`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hle`. Establish `e1 : (⟨W.Q ^ (k + d) • x, hk'⟩ : ↥(W.N T)) = W.Q ^ d • ⟨W.Q ^ k • x, hk⟩` using `Subtype.ext (by simp only [SetLike.val_smul]; rw [smul_smul, ← pow_add, add_comm])`. Take `⟨M, hM⟩` from `W.levN_supp T c ζ ⟨W.Q ^ k • x, hk⟩`. Establish `hg : LB M (W.levN T c ζ ⟨W.Q ^ k • x, hk⟩)` using `hM`.
+
+Establish `hD` using `Dg_smulS hFl hg hexp (u ^ d)`. Introduce `j`. Rewrite using `[e1, hlevsmul, map_pow, hQ, mul_pow, smulS_mul hg, smulS_X_pow (LB_smulS hg _)]`. Simplify using `only`. Use `hD (j - d)` as an intermediate fact.
+
+Rewrite `this` using `[show (k : ℤ) - (j - d) = ((k + d : ℕ) : ℤ) - j by push_cast; ring]`. Then use the resulting hypothesis.
+-/
 theorem shift_exp (hs : W.s = 1) (hp : (PD.p : LL) ≠ 0) (T : LocLat G Qp LL O) (c : ZMod n)
     {ζ : LL} (hζ : IsPrimitiveRoot ζ PD.p) (x : W.DD T) (k : ℕ) (hk : W.Q ^ k • x ∈ W.N T)
     (hexp : ∀ j : ℤ, W.levN T c ζ ⟨W.Q ^ k • x, hk⟩ j ∈ Formalism.MainNotions.WachCoordinates.FilLev W T c 0 ((k : ℤ) - j))
@@ -215,6 +281,17 @@ theorem shift_exp (hs : W.s = 1) (hp : (PD.p : LL) ≠ 0) (T : LocLat G Qp LL O)
     have := hD (j - d)
     rwa [show (k : ℤ) - (j - d) = ((k + d : ℕ) : ℤ) - j by push_cast; ring] at this
 
+/- English proof (translation)
+Introduce `T hT c x k hk hxc hexp`. Establish `hs : W.s = 1` using `hA.2.1`. Establish `hp : (PD.p : LL) ≠ 0`. Introduce `h0`. Use `W.v_l` as an intermediate fact.
+
+Rewrite `this` using `[h0, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_coe this`. Take `⟨M, h, hJ⟩` from `jumpsLet_exists W hA hD T hT`. Establish `h5T` using `(h5 T M h hT hJ).2.2 x ⟨k, hk⟩`. Use `h5T.2 fun i ζ hQ k' hk' => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hic : i = c`. Substitute `hic` using the available equality. Establish `hζ` using `qroot_prim W hs hp hQ`. Use `fd_ιDi W hA hD T hT i` as an intermediate fact. Conclude with `mem_vanI_at W hFr T i ζ ((h1 T hT).2 i) (h3 T hT) (h4 T hT i 0 ζ (by rwa [zero_add, pow_one])) (W.Q ^ k' • x) hk' (by rw [smul_comm, hxc]) k' (shift_exp W hs hp T i hζ x k hk (hexp ζ hζ) k' hk')`.
+
+Establish `hl : (letE c : LetA O n) ∈ Formalism.MainNotions.DeltaInvariantLattices.vanI W i ζ k'` using `by show W.lev i ζ (letE c) ∈ Ideal.span {(PowerSeries.X : PowerSeries LL) ^ k'}`. Rewrite using `[W.lev_letter i ζ _ (by simp [letE, Pi.single_eq_of_ne hic])]`. Conclude with `Ideal.zero_mem _`. Establish `e1 : W.Q ^ k' • x = (letE c : LetA O n) • (W.Q ^ k' • x)` using `by rw [smul_comm, hxc]`. Rewrite using `[e1]`.
+
+Conclude with `Submodule.smul_mem_smul hl hk'`.
+-/
 theorem memCrit_of [NeZero n] (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (hFr : IsFractionRing O LL)
     (h1 : Formalism.MainNotions.DeltaInvariantLattices.WachLatticeFree W) (h3 : Formalism.MainNotions.DeltaInvariantLattices.P3W W) (h4 : Formalism.MainNotions.WachCoordinates.LevelMapHodgeFiltration W)
     (h5 : Formalism.MainNotions.DeltaInvariantLattices.P5W W) (hD : Formalism.MainNotions.RamifiedCoefficientChains.DdREqDcris PD LL) : MemCrit W := by

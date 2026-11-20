@@ -11,12 +11,22 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.ResidueEisenstein
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Subgroup.mem_subgroupOf, Subgroup.mem_inf]`. Conclude with `⟨fun e => e.1, fun e => ⟨e, h x.2⟩⟩`.
+-/
 theorem inf_subgroupOf_of_le' {G : Type} [Group G] {Γ P H : Subgroup G} (h : H ≤ P) :
     (Γ ⊓ P).subgroupOf H = Γ.subgroupOf H := by
   ext x
   simp only [Subgroup.mem_subgroupOf, Subgroup.mem_inf]
   exact ⟨fun e => e.1, fun e => ⟨e, h x.2⟩⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r X Y h hJ hW ν DN hν hDN h1`. Take `⟨π, DM, hπ, hDM⟩` from `GlobalTheory.StdPar.exists_haar_leviOne (X := X) (Y := Y) {Fin.last r} h hJ hW`. Take `⟨f1, f2, f3, f4, f5, f6, f7⟩` from `GlobalTheory.T.wittFrameLevi_normalizes_radical_properties F E σ n J r X Y h hJ hW`. Establish `hN : unipRad σ J X ≤ GlobalTheory.StdPar.frameStab σ J X ⊤` using `fun u hu => ⟨1, trivial, f3 u hu⟩`. Establish `hM : GlobalTheory.StdPar.leviOne σ J X Y {Fin.last r} ≤ GlobalTheory.StdPar.frameStab σ J X ⊤` using `fun m hm => by`.
+
+Take `⟨β, e, -⟩` from `f4 m hm`. Conclude with `⟨β, trivial, e⟩`. Use `⟨π, DM, { closedN := (GlobalTheory.T.wittFrameUnipotentRadical_closed_fundDomain_mass_one F E σ n J r X Y h hJ hW).1 closedM := f7 norm := fun m hm => f1 m (f6 hm) disj := fun g hg hg' => f2 g hg (f6 hg') dec := ?_ haarN := hν haarM := hπ domN := by rw [inf_subgroupOf_of_le' hN]; …` and prove the remaining obligations. Introduce and unpack `γ ⟨hγ, β, -, e⟩`. Take `⟨u, hu, m, -, hp, -, hr, ho⟩` from `GlobalTheory.T.leviDecomposition_wittFrameStabilizer F E σ n J r X Y h hJ hW γ β e`.
+
+Establish `hm` using `ho (f5 γ hγ β e)`. Use `⟨u, hu, m, hm, ⟨?_, hN hu⟩, ⟨hr hγ, hM hm⟩, hp⟩` and prove the remaining obligations. Establish `: u = γ * m⁻¹` using `by rw [hp, mul_inv_cancel_right]`. Rewrite using `[this]`. Conclude with `(ratPts σ J).mul_mem hγ ((ratPts σ J).inv_mem (hr hγ))`.
+-/
 theorem semiLat_frameGrp : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E), IsCMExt F E σ → IsHermND σ J →
     IsWittFrame σ J X Y → ∀ (ν : Measure (unipRad σ J X)) (DN : Set (unipRad σ J X)), ν.IsHaarMeasure →

@@ -14,6 +14,9 @@ namespace GlobalTheory.StabOff
 
 set_option synthInstance.maxHeartbeats 200000
 
+/- English proof (translation)
+Rewrite using `[Algebra.TensorProduct.comm_tmul]`. Simplify using `only [Formalism.UG.prV, GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.compFin, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, Algebra.TensorProduct.comm_tmul]`. Both sides reduce to the same expression.
+-/
 theorem prV_comm_tmul {D : D7} (v : Pl D) (a : Af ↥D.host.F) (e : D.host.E) :
     Formalism.UG.prV (E := D.host.E) v ((Algebra.TensorProduct.comm (↥D.host.F) (Af ↥D.host.F) D.host.E) (a ⊗ₜ e)) =
       (Algebra.TensorProduct.comm _ _ _) (GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.compFin D v (a ⊗ₜ e)) := by
@@ -22,6 +25,11 @@ theorem prV_comm_tmul {D : D7} (v : Pl D) (a : Af ↥D.host.F) (e : D.host.E) :
     Algebra.TensorProduct.map_tmul, AlgHom.id_apply, Algebra.TensorProduct.comm_tmul]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, map_zero, map_zero]`. Consider the case `tmul a e => exact prV_comm_tmul v a e`. Consider the case `add a b ha hb`. Simplify using `only [map_add]`.
+
+Conclude with `congrArg₂ (· + ·) ha hb`.
+-/
 theorem prV_comm {D : D7} (v : Pl D) (z : Af ↥D.host.F ⊗[↥D.host.F] D.host.E) :
     Formalism.UG.prV (E := D.host.E) v ((Algebra.TensorProduct.comm (↥D.host.F) (Af ↥D.host.F) D.host.E) z) =
       (Algebra.TensorProduct.comm _ _ _) (GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.compFin D v z) := by
@@ -32,6 +40,11 @@ theorem prV_comm {D : D7} (v : Pl D) (z : Af ↥D.host.F ⊗[↥D.host.F] D.host
     simp only [map_add]
     exact congrArg₂ (· + ·) ha hb
 
+/- English proof (translation)
+Unfold `FinPl.compAt at h`. Unfold `toEAf`. Simplify using `only [RingHom.comp_apply] at h ⊢`. Generalize the expression as in `finPart D y = z at h ⊢`. Use `(prV_comm v z).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[h, map_zero]`.
+-/
 theorem prV_toEAf_eq_zero {D : D7} (v : Pl D) (y : AE D) (h : FinPl.compAt D v y = 0) :
     Formalism.UG.prV (E := D.host.E) v (toEAf D y) = 0 := by
   unfold FinPl.compAt at h
@@ -41,6 +54,13 @@ theorem prV_toEAf_eq_zero {D : D7} (v : Pl D) (y : AE D) (h : FinPl.compAt D v y
   refine (prV_comm v z).trans ?_
   rw [h, map_zero]
 
+/- English proof (translation)
+Establish `hmem : β.gl g ∈ grpAt S (· = p.v)` using `((GlobalTheory.T.splitPlaceHermitianFrame_properties D k p S n β).1 _).2 ⟨g, rfl⟩`. Unfold `grpAt congGrp at hmem`. Rewrite `hmem` using `[MonoidHom.mem_ker, MonoidHom.comp_apply]`. Establish `h1` using `congrArg (fun u => u.1 i j) hmem`. Simplify using `only [GeneralLinearGroup.map_apply, Units.val_one] at h1`.
+
+Establish `h2 : Ideal.Quotient.mk (idAt D (· = p.v)) (Formalism.L2.Theta.mt S (β.gl g) i j) = Ideal.Quotient.mk (idAt D (· = p.v)) ((1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) i j)`. Use `h1.trans ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Rewrite `h2` using `[Ideal.Quotient.eq]`. Unfold `idAt at h2`.
+
+Rewrite `h2` using `[Ideal.mem_inf]`. Establish `h3` using `h2.2`. Rewrite `h3` using `[Submodule.mem_iInf]`. Conclude with `(RingHom.mem_ker).1 (h3 ⟨v, hv⟩)`.
+-/
 theorem compAt_mt {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {p : SplitPt D k} {S : HSp D} {n : Type} [Fintype n] [DecidableEq n] (β : Frame p S n) (g : GL n k) (v : Pl D)
     (hv : v ≠ p.v) (i j : Fin S.rank) :
@@ -61,6 +81,13 @@ theorem compAt_mt {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpa
   rw [Submodule.mem_iInf] at h3
   exact (RingHom.mem_ker).1 (h3 ⟨v, hv⟩)
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p S n _ _ β g m hm x hx v hv`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `Formalism.UG.prV (E := D.host.E) v (x.1 i j) = (1 : Matrix (Fin m) (Fin m) _) i j`. Rewrite using `[hx]`.
+
+Simplify using `only [GlobalTheory.AdForm.finM, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.map_apply]`. Establish `h` using `prV_toEAf_eq_zero v _ (compAt_mt β g v hv ((finCongr hm).symm i) ((finCongr hm).symm j))`. Rewrite `h` using `[map_sub, map_sub, sub_eq_zero]`. Rewrite using `[h]`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using `[Matrix.one_apply]`. Establish `hij' : (finCongr hm).symm i ≠ (finCongr hm).symm j` using `fun e => hij ((finCongr hm).symm.injective e)`. Simplify using `[Matrix.one_apply, hij, hij']`.
+-/
 theorem bc_prV_finM_eq_one : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (S : HSp D) (n : Type) [Fintype n] [DecidableEq n] (β : Frame p S n) (g : GL n k) (m : ℕ) (hm : S.rank = m) (x : GL (Fin m) (EF D)), x.1 = finM S hm (β.gl g) → ∀ v : Pl D, v ≠ p.v → Formalism.UG.bc (Formalism.UG.prV (E := D.host.E) v) x = 1 := by
   intro D k _ _ _ _ p S n _ _ β g m hm x hx v hv
   apply Units.ext

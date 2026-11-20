@@ -12,6 +12,9 @@ open ModularForm (E₄ E₆)
 
 namespace GlobalTheory.QFam
 
+/- English proof (translation)
+Take `⟨ρ, hρ⟩` from `GlobalTheory.T.exists_perm_of_sum_monomial_eq' ι S (fun i s => g (f s i τ₀ / ω₀ ^ m s)) (fun i s => f' s i τ₁ / ω₁ ^ m s) (GlobalTheory.T.transport_power_sums_modular_families g ι S act N m f f' τ₀ τ₁ ω₀ ω₁ hN hact hf hc h4 h6)`. Conclude with `⟨ρ, fun s i => congrFun (hρ i) s⟩`.
+-/
 theorem exists_perm_transport_families (g : ℂ ≃+* ℂ) (ι S : Type) [Fintype ι] [Fintype S]
     (act : ι → SL(2, ℤ) → ι) (N : ℕ) (m : S → ℕ) (f f' : S → ι → ℍ → ℂ) (τ₀ τ₁ : ℍ)
     (ω₀ ω₁ : ℂ) (hN : 0 < N) (hact : ActBij act) (hf : ∀ s, IsFam act (m s) (f s))

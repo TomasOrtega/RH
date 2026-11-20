@@ -23,6 +23,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CompanionTheory.AmpleForm
 
+/- English proof (translation)
+Introduce `K _ _ B _ hB M L hM hL ha hk hlam`. Use `hB.comm` as an intermediate fact. Take `⟨O, hO, eO⟩` from `CechPic.cls_surj (cls M hM - cls L hL)`. Establish `hlam0 : lam (cls O hO) (fst B B) (snd B B) = 0`. Rewrite using `[eO, PrimitiveOverField.lam_sub, hlam, sub_self]`.
+
+Take `⟨x, hx⟩` from `GlobalTheory.PointTranslate.exists_point_cls_eq_lam K B hB L hL hk O hO hlam0`. Establish `hN : (RigidTranslate.rigTransl L x).IsLB` using `DVR.linComb_isLB _ hL _ _`. Establish `hA` using `RigidTranslate.relAmple_rigTransl_point K B hB L hL x ha`. Establish `e1` using `PrimitiveOverField.lam_const (cls L hL) x (𝟙 B)`. Establish `e2 : ((toUnit B ≫ x) * 𝟙 B) = PolTranslate.transl x`.
+
+Rewrite using `[PolTranslate.transl, _root_.mul_comm]`. Establish `e3 : CechPic.pull (toUnit B ≫ x).left (cls L hL) = 0`. Rewrite using `[Over.comp_left, CechPic.pull_comp, ThetaExtend.pic_local (CechPic.pull x.left (cls L hL)), map_zero]`. Establish `e : cls M hM = cls _ hN`. Rewrite using `[CechPic.cls_linComb hL, Fin.sum_univ_two]`.
+
+Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, one_smul, neg_smul, e3, neg_zero, add_zero]`. Rewrite `e1` using `[e2, Over.id_left, CechPic.pull_id]`. Conclude with `sub_left_inj.1 (eO.symm.trans (hx.trans e1))`. Establish `hN'` using `pull_isLB hN (𝟙 _)`. Establish `e' : cls M hM = cls _ hN'`.
+
+Rewrite using `[CechPic.cls_pull hN, CechPic.pull_id]`. Conclude with `e`. Take `⟨w, hw⟩` from `(CechPic.cls_eq_iff hM hN').1 e'`. Conclude with `relAmple_pull (A' := B) (A := B) (φ := 𝟙 _) (f := 𝟙 _) (IsPullback.of_horiz_isIso ⟨(Category.id_comp _).trans (Category.comp_id _).symm⟩) hN hM ((isGen_iff w).1 hw) ⊤ (isAffineOpen_top _) (fun _ => trivial) hA`.
+-/
 theorem relAmple_of_lam_eq : ∀ (K : Type) [Field K] [IsAlgClosed K] (B : Over (Sp K)) [GrpObj B], IsAbelianScheme B →
     ∀ (M L : LB B.left) (hM : M.IsLB) (hL : L.IsLB), Out.RelAmple B L → Out.KTriv B L →
     lam (cls M hM) (fst B B) (snd B B) = lam (cls L hL) (fst B B) (snd B B) → Out.RelAmple B M := by

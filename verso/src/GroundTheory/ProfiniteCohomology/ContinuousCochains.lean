@@ -16,12 +16,20 @@ def locallyConstantCochains (A : Rep.{u} k G) (n : ℕ) : Submodule k ((Fin n �
   add_mem' hf hg := IsLocallyConstant.add hf hg
   smul_mem' r _ hf := hf.comp (r • ·)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_locallyConstantCochains (A : Rep.{u} k G) {n : ℕ} (f : (Fin n → G) → A) :
     f ∈ locallyConstantCochains A n ↔ IsLocallyConstant f :=
   Iff.rfl
 
 variable [IsTopologicalGroup G]
 
+/- English proof (translation)
+Use `continuous_pi fun i => ?_` and prove the remaining obligations. Simplify using `only [Fin.contractNth]`. Use `split_ifs`. Conclude with `continuous_apply _`. Conclude with `(continuous_apply _).mul (continuous_apply _)`.
+
+Conclude with `continuous_apply _`.
+-/
 theorem continuous_contractNth {n : ℕ} (j : Fin (n + 1)) :
     Continuous fun g : Fin (n + 1) → G => Fin.contractNth j (· * ·) g := by
   refine continuous_pi fun i => ?_
@@ -31,6 +39,15 @@ theorem continuous_contractNth {n : ℕ} (j : Fin (n + 1)) :
   · exact (continuous_apply _).mul (continuous_apply _)
   · exact continuous_apply _
 
+/- English proof (translation)
+Establish `h1 : IsLocallyConstant fun g : Fin (n + 1) → G => A.ρ (g 0) (f fun i => g i.succ)`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g`. Establish `htail : Continuous fun g : Fin (n + 1) → G => fun i : Fin n => g i.succ` using `continuous_pi fun i => continuous_apply _`. Establish `hev1 : ∀ᶠ y in nhds g, f (fun i => y i.succ) = f (fun i => g i.succ)` using `htail.continuousAt.eventually (hf.eventually_eq _)`.
+
+Establish `hev2 : ∀ᶠ y in nhds g, A.ρ (y 0) (f fun i => g i.succ) = A.ρ (g 0) (f fun i => g i.succ)` using `(continuous_apply 0).continuousAt.eventually ((isLocallyConstant_apply A (f fun i => g i.succ)).eventually_eq (g 0))`. Use `filter_upwards [hev1, hev2] with y h1 h2`. Rewrite using `[h1, h2]`. Establish `h2 : ∀ j : Fin (n + 1), IsLocallyConstant fun g : Fin (n + 1) → G => (-1 : k) ^ ((j : ℕ) + 1) • f (Fin.contractNth j (· * ·) g)` using `fun j => (hf.comp_continuous (continuous_contractNth j)).comp _`. Establish `h3 : IsLocallyConstant fun g : Fin (n + 1) → G => Finset.univ.sum fun j : Fin (n + 1) => (-1 : k) ^ ((j : ℕ) + 1) • f (Fin.contractNth j (· * ·) g)`.
+
+Establish `: (fun g : Fin (n + 1) → G => Finset.univ.sum fun j : Fin (n + 1) => (-1 : k) ^ ((j : ℕ) + 1) • f (Fin.contractNth j (· * ·) g)) = Finset.univ.sum fun j : Fin (n + 1) => fun g : Fin (n + 1) → G => (-1 : k) ^ ((j : ℕ) + 1) • f (Fin.contractNth j (· * ·) g)`. Use extensionality with `g`. Simplify using `[Finset.sum_apply]`. Rewrite using `[this]`. Conclude with `Finset.sum_induction _ IsLocallyConstant (fun _ _ ha hb => ha.add hb) (IsLocallyConstant.const 0) fun j _ => h2 j`.
+
+Establish `: (inhomogeneousCochains.d A n).hom f = fun g => A.ρ (g 0) (f fun i => g i.succ) + Finset.univ.sum fun j : Fin (n + 1) => (-1 : k) ^ ((j : ℕ) + 1) • f (Fin.contractNth j (· * ·) g)`. Use extensionality with `g`. Simplify using `[inhomogeneousCochains.d_hom_apply]`. Rewrite using `[this]`. Conclude with `h1.add h3`.
+-/
 theorem isLocallyConstant_d (A : Rep.{u} k G) [IsDiscreteRep A] {n : ℕ}
     {f : (Fin n → G) → A} (hf : IsLocallyConstant f) :
     IsLocallyConstant ((inhomogeneousCochains.d A n).hom f) := by
@@ -69,6 +86,9 @@ theorem isLocallyConstant_d (A : Rep.{u} k G) [IsDiscreteRep A] {n : ℕ}
   rw [this]
   exact h1.add h3
 
+/- English proof (translation)
+The claim follows from `isLocallyConstant_d A hf`.
+-/
 theorem d_mem_locallyConstantCochains (A : Rep.{u} k G) [IsDiscreteRep A] {n : ℕ}
     {f : (Fin n → G) → A} (hf : f ∈ locallyConstantCochains A n) :
     (inhomogeneousCochains.d A n).hom f ∈ locallyConstantCochains A (n + 1) :=
@@ -80,12 +100,18 @@ noncomputable def dLocallyConstant (A : Rep.{u} k G) [IsDiscreteRep A] (n : ℕ)
   ModuleCat.ofHom ((inhomogeneousCochains.d A n).hom.restrict
     fun _ hf => d_mem_locallyConstantCochains A hf)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dLocallyConstant_hom_apply (A : Rep.{u} k G) [IsDiscreteRep A] (n : ℕ)
     (f : locallyConstantCochains A n) :
     ((dLocallyConstant A n).hom f : (Fin (n + 1) → G) → A) =
       (inhomogeneousCochains.d A n).hom f :=
   rfl
 
+/- English proof (translation)
+Use extensionality with `f : 2`. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg (fun φ => φ.hom f.1) (inhomogeneousCochains.d_comp_d (A := A) (n := n))` as an intermediate fact. Conclude with `this`.
+-/
 theorem dLocallyConstant_comp (A : Rep.{u} k G) [IsDiscreteRep A] (n : ℕ) :
     dLocallyConstant A n ≫ dLocallyConstant A (n + 1) = 0 := by
   ext f : 2
@@ -98,10 +124,16 @@ noncomputable def cochainsComplex (A : Rep.{u} k G) [IsDiscreteRep A] :
   CochainComplex.of (fun n => ModuleCat.of k (locallyConstantCochains A n))
     (fun n => dLocallyConstant A n) fun n => dLocallyConstant_comp A n
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cochainsComplex_X (A : Rep.{u} k G) [IsDiscreteRep A] (n : ℕ) :
     (cochainsComplex A).X n = ModuleCat.of k (locallyConstantCochains A n) :=
   rfl
 
+/- English proof (translation)
+Simplify using `[cochainsComplex]`.
+-/
 theorem cochainsComplex_d (A : Rep.{u} k G) [IsDiscreteRep A] (n : ℕ) :
     (cochainsComplex A).d n (n + 1) = dLocallyConstant A n := by
   simp [cochainsComplex]
@@ -113,6 +145,9 @@ noncomputable def cochainsComplexι (A : Rep.{u} k G) [IsDiscreteRep A] :
     ext f : 2
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cochainsComplexι_f_hom_apply (A : Rep.{u} k G) [IsDiscreteRep A] (n : ℕ)
     (f : locallyConstantCochains A n) :
     ((cochainsComplexι A).f n).hom f = (f : (Fin n → G) → A) :=

@@ -6,5 +6,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.Cartier GlobalTheory.ArInt GlobalTheory.MixHt
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DimDeg.dim_le_and_residueDegree_ne_zero_iff | exact GlobalTheory.DimDeg.dim_le_and_residueDegree_ne_zero_iff | (intros; apply GlobalTheory.DimDeg.dim_le_and_residueDegree_ne_zero_iff <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.pointClosureDim_le_and_residueDegree_ne_zero_iff : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ Sp k), IsAmb p → IsAmb q → ∀ (π : Y ⟶ X), π ≫ p = q → ∀ (y : Y) (d d' : ℕ), HasDim y d → HasDim (π y) d' → d' ≤ d ∧ (π.residueDegree y ≠ 0 ↔ d = d') := by
   first | exact @GlobalTheory.DimDeg.dim_le_and_residueDegree_ne_zero_iff | exact GlobalTheory.DimDeg.dim_le_and_residueDegree_ne_zero_iff | (intros; apply GlobalTheory.DimDeg.dim_le_and_residueDegree_ne_zero_iff <;> assumption)

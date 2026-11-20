@@ -9,6 +9,13 @@ open GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.SmGL GlobalTheory.
 
 namespace PositivityTheory.Rg.Rs.SliceTensor
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `GlobalTheory.CompanionTheory.CTFin.UniSol.exists_finset_separating A`. Set `ev : A →ₗ[ℂ] (S → ℂ)` to `LinearMap.pi fun κ => (LinearMap.proj κ.1 : (K → ℂ) →ₗ[ℂ] ℂ) ∘ₗ A.subtype`. Establish `hinj : LinearMap.ker ev = ⊥`. Use `LinearMap.ker_eq_bot'.2 fun c hc => Subtype.ext (hS c.1 c.2 fun κ hκ => ?_)` and prove the remaining obligations. Conclude with `congrFun hc ⟨κ, hκ⟩`.
+
+Take `⟨P, hP⟩` from `ev.exists_leftInverse_of_injective hinj`. Use `⟨S, fun κ => P (Pi.single κ 1), fun c hc => ?_⟩` and prove the remaining obligations. Establish `h1 : P (ev ⟨c, hc⟩) = ⟨c, hc⟩` using `LinearMap.congr_fun hP _`. Establish `h2 : ev ⟨c, hc⟩ = ∑ κ : S, c κ.1 • (Pi.single κ 1 : S → ℂ)`. Use function extensionality and compare the values at `κ'`.
+
+Simplify using `[Finset.sum_apply, Pi.single_apply, ev]`. Establish `h3` using `congrArg Subtype.val h1`. Rewrite `h3` using `[h2, map_sum]`. Simplify using `only [map_smul, Submodule.coe_sum, Submodule.coe_smul] at h3`. Conclude with `h3.symm`.
+-/
 theorem interp {K : Type} (A : Submodule ℂ (K → ℂ)) [FiniteDimensional ℂ A] :
     ∃ (S : Finset K) (a : S → A), ∀ c ∈ A, c = ∑ κ : S, c κ.1 • (a κ : K → ℂ) := by
   classical
@@ -30,6 +37,19 @@ theorem interp {K : Type} (A : Submodule ℂ (K → ℂ)) [FiniteDimensional ℂ
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
+/- English proof (translation)
+Set `h : GA E (r + s)` to `lev (Ad E) r s (1, m₂) * finGL E (r + s) t * infGL E (r + s) (Unitary.toUnits κ)`. Set `F'` to `rt E (r + s) h F`. Establish `hcoef : ∀ g : GA E r, (fun k : Kinf E r => (cptRep E r k G).1 g) ∈ GlobalTheory.Published.AutFin.coeffSpan (ρ.comp (Slice1.levK E r s))`. Introduce `g`. Establish `key` using `Slice1.coeff_comp ρ (Slice1.levK E r s) κ (hC (lev (Ad E) r s (g, m₂) * finGL E (r + s) t))`.
+
+Use `key using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Express the relevant statement in the definitionally equal form `G.1 (g * infGL E r (Unitary.toUnits k)) = F.1 (lev (Ad E) r s (g, m₂) * finGL E (r + s) t * infGL E (r + s) (Unitary.toUnits (Slice1.levK E r s k * κ)))`. Rewrite using `[hGv, Slice1.lev_infGL_right, ← Slice1.toUnits_levK (s := s), ← map_mul (Unitary.toUnits : _ →* (Matrix (Fin (r + s)) (Fin (r + s)) (Cinf E))ˣ)]`. Establish `hle : (Slice1.levelOne s L t : Set (GL (Fin r) (Af E))) ⊆ {k | finRep E r k G = G}`.
+
+Introduce `k hk`. Use `Subtype.ext (funext fun m => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `G.1 (m * finGL E r k) = G.1 m`. Rewrite using `[hGv, hGv]`. Establish `hk' : F.1 (lev (Ad E) r s (m, m₂) * finGL E (r + s) t * infGL E (r + s) (Unitary.toUnits κ) * finGL E (r + s) (t⁻¹ * lev (Af E) r s (k, 1) * t)) = F.1 (lev (Ad E) r s (m, m₂) * finGL E (r + s) t * infGL E (r + s) (Unitary.toUnits κ))` using `congrFun (congrArg Subtype.val (hLv _ (Slice1.mem_levelOne.1 hk))) _`.
+
+Rewrite using `[← hk', Slice1.lev_finGL_right]`. Establish `hkill : ∀ z ∈ J₁, z G = 0`. Use `H3 F' (fun x g => ?_) (fun z hz => ?_) G (fun m => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `F.1 (unip x * g * h) = F.1 (g * h)`. Rewrite using `[mul_assoc, hN]`.
+
+Express the relevant statement in the definitionally equal form `z (rt E (r + s) h F) = 0`. Rewrite using `[← Module.End.mul_apply, (Slice1.commute_rt_of_mem_Zalg (hJ hz) h).eq, Module.End.mul_apply, hZ z hz, map_zero]`. Rewrite using `[hGv]`. Express the relevant statement in the definitionally equal form `_ = F.1 (lev (Ad E) r s (m, 1) * h)`. Establish `e : (m, m₂) = ((m, 1) * (1, m₂) : GA E r × GA E s)` using `by simp`.
+
+Rewrite using `[e, map_mul]`. Simplify using `only [h, mul_assoc]`. Conclude with `⟨hA, fun k hk => hle hk, hcoef, hkill⟩`.
+-/
 theorem slice_mem {r s : ℕ} {L : Subgroup (GL (Fin (r + s)) (Af E))} {W : Type} [AddCommGroup W] [Module ℂ W]
     (ρ : Representation ℂ (Kinf E (r + s)) W) {J : Set (Module.End ℂ (Sm E (r + s)))} (hJ : J ⊆ Zalg E (r + s))
     {J₁ : Set (Module.End ℂ (Sm E r))}

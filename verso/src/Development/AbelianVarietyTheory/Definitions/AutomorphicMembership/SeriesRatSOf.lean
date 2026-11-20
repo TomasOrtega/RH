@@ -38,11 +38,17 @@ def UntwRatS : Prop :=
           ∀ w ∈ ratVec R i (c0L i) C.σ₂.fieldRange,
             IsRat T i hV C (κ i) (fun g => ph * thetaKO (R.ωP i A.μ0) s g (harmVec R i u w f))
 
+/- English proof (translation)
+Use `first`. Consider the case `exact h`. Consider the case `exact fun D G _ _ Pl0 T0 A T _ R F κ v₀ a b c d e f g i hV hp _ => h D G Pl0 T0 A T R F κ v₀ a b c d e f g i hV hp`.
+-/
 theorem seriesRatS_of (h : SeriesRat) : SeriesRatS := by
   first
     | exact h
     | exact fun D G _ _ Pl0 T0 A T _ R F κ v₀ a b c d e f g i hV hp _ => h D G Pl0 T0 A T R F κ v₀ a b c d e f g i hV hp
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ a b c d e f g i hV hp hs gR cR cL hF u hu`. Take `⟨ph, h1, h2⟩` from `h D G Pl0 T0 A T R F κ v₀ a b c d e f g i hV hp hs gR cR cL hF u hu`. Conclude with `⟨ph, h1, fun C hC s hs f hf w hw => (h2 C hC s hs f hf w hw).1⟩`.
+-/
 theorem SeriesRatS.untw (h : SeriesRatS) : UntwRatS := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ a b c d e f g i hV hp hs gR cR cL hF u hu
   obtain ⟨ph, h1, h2⟩ := h D G Pl0 T0 A T R F κ v₀ a b c d e f g i hV hp hs gR cR cL hF u hu

@@ -13,6 +13,9 @@ variable {K F E M : FiniteSubfield} [Fact (K ≤ F)] [Fact (K ≤ E)] [Fact (K �
   [Fact (E ≤ M)] [Fact (F ≤ M)] [F.1.fixingSubgroup.Normal] [E.1.fixingSubgroup.Normal]
   [M.1.fixingSubgroup.Normal]
 
+/- English proof (translation)
+Use extensionality with `x`. Establish `h1` using `congrArg Subtype.val (coe_levelRestrict_apply (K := K) (F := F) (E := E) (levelRestrict K E M τ) x)`. Establish `h2` using `congrArg Subtype.val (coe_levelRestrict_apply (K := K) (F := E) (E := M) τ (algebraMap F.1 E.1 x))`. Establish `h3` using `congrArg Subtype.val (coe_levelRestrict_apply (K := K) (F := F) (E := M) τ x)`. Conclude with `h1.trans (h2.trans h3.symm)`.
+-/
 theorem levelRestrict_levelRestrict (τ : M.1 ≃ₐ[K.1] M.1) :
     levelRestrict K F E (levelRestrict K E M τ) = levelRestrict K F M τ := by
   ext x
@@ -25,6 +28,11 @@ theorem levelRestrict_levelRestrict (τ : M.1 ≃ₐ[K.1] M.1) :
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Unfold `levelTransition cohomologyMapAlong`. Use `(HomologicalComplex.homologyMap_comp _ _ n).symm.trans ?_` and prove the remaining obligations. Use `congr 1`. Use extensionality with `m x : 3`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `Additive.ofMul (ideleMap (Fact.out : E ≤ M) (ideleMap (Fact.out : F ≤ E) ((x.1 fun i => levelRestrict K F E (levelRestrict K E M (g i))).toMul))) = Additive.ofMul (ideleMap (Fact.out : F ≤ M) ((x.1 fun i => levelRestrict K F M (g i)).toMul))`. Establish `hfun : (fun i => levelRestrict K F E (levelRestrict K E M (g i))) = fun i => levelRestrict K F M (g i)` using `funext fun i => levelRestrict_levelRestrict (g i)`. Use `(congrArg Additive.ofMul (ideleMap_ideleMap (Fact.out : F ≤ E) (Fact.out : E ≤ M) _)).trans ?_` and prove the remaining obligations. Rewrite using `[hfun]`.
+-/
 theorem levelTransition_comp_levelTransition (n : ℕ) :
     levelTransition K F E n ≫ levelTransition K E M n = levelTransition K F M n := by
   unfold levelTransition cohomologyMapAlong

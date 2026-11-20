@@ -11,6 +11,15 @@ open scoped TensorProduct ENNReal NNReal Matrix
 
 namespace GlobalTheory.CompanionTheory.SW.StageF
 
+/- English proof (translation)
+Set `C : ℕ → Set β` to `disjointed K`. Establish `hCm : ∀ k, MeasurableSet (C k)` using `fun k => MeasurableSet.disjointed (fun i => (hK i).measurableSet) k`. Establish `hCd : Pairwise (Function.onFun Disjoint C)` using `disjoint_disjointed _`. Establish `hCu : ⋃ k, C k = U`. Simplify using `only [C, iUnion_disjointed]`.
+
+Conclude with `hU`. Establish `hk : ∀ k, ProbabilityTheory.IsSFiniteKernel (ProbabilityTheory.Kernel.restrict κ (hCm k))` using `fun k => isSFiniteKernel_of_forall_univ_lt_top _ (fun a => by`. Rewrite using `[ProbabilityTheory.Kernel.restrict_apply]`. Simplify using `using (measure_mono (disjointed_subset _ k)).trans_lt (hf a k))`. Establish `hsum : κ = ProbabilityTheory.Kernel.sum fun k => ProbabilityTheory.Kernel.restrict κ (hCm k)`.
+
+Use extensionality with `a s hs`. Rewrite using `[ProbabilityTheory.Kernel.sum_apply]`. Simplify using `only [ProbabilityTheory.Kernel.restrict_apply]`. Rewrite using `[← Measure.restrict_iUnion hCd hCm, hCu, Measure.restrict_eq_self_of_ae_mem (mem_ae_iff.2 (hc a))]`. Rewrite using `[hsum]`.
+
+Use `infer_instance`.
+-/
 theorem isSFiniteKernel_of_compact_open {α β : Type} [MeasurableSpace α] [TopologicalSpace β]
     [MeasurableSpace β] [BorelSpace β] [T2Space β] (κ : ProbabilityTheory.Kernel α β)
     {K : ℕ → Set β} (hK : ∀ k, IsCompact (K k)) {U : Set β} (hU : (⋃ k, K k) = U)
@@ -35,6 +44,21 @@ theorem isSFiniteKernel_of_compact_open {α β : Type} [MeasurableSpace α] [Top
   rw [hsum]
   infer_instance
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM N n J₂ hJ R _ _ _ _ _ hR d b lam hlam m hm`. Take `⟨iTR, iLC, iSC, iT2, -⟩` from `id hR`. Use `haveI := iTR`. Use `haveI := iLC`. Use `haveI := iSC`.
+
+Use `haveI := iT2`. Take `⟨kTR, kLC, kSC, kT2, -, -, -, kB, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM R`. Use `haveI := kTR`. Use `haveI := kLC`. Use `haveI := kSC`.
+
+Use `haveI := kT2`. Use `haveI := kB n N`. Take `⟨hLC, hSC, hT2, hB, -⟩` from `GlobalTheory.T.hermitian_matrices_locally_compact_borel F E σ hCM R n`. Use `haveI := hLC`. Use `haveI := hSC`.
+
+Use `haveI := hT2`. Use `haveI := hB`. Establish `hU : IsOpen {X : Fin n → Fin N → R ⊗[F] E | LinearIndependent (R ⊗[F] E) X}` using `GlobalTheory.T.linearly_independent_frames_open F E σ hCM R hR n N`. Take `⟨h1, -, h3⟩` from `hm`. Establish `hbf : GlobalTheory.CompanionTheory.SW.FibreFam.BumpFamily {X : Fin n → Fin N → R ⊗[F] E | LinearIndependent (R ⊗[F] E) X} (Set.univ : Set (HermR R σ n)) m` using `⟨fun S hS => absurd (Set.mem_univ S) hS, h3⟩`.
+
+Establish `hUc : ∀ S, m S {X : Fin n → Fin N → R ⊗[F] E | LinearIndependent (R ⊗[F] E) X}ᶜ = 0` using `fun S => measure_mono_null (Set.compl_subset_compl.2 Set.inter_subset_right) (h1 S)`. Establish `hmeas : ∀ A : Set (Fin n → Fin N → R ⊗[F] E), MeasurableSet A → Measurable fun S => m S A` using `fun A hA => hbf.measurable_apply isOpen_univ hU hUc hA`. Set `κ : ProbabilityTheory.Kernel (HermR R σ n) (Fin n → Fin N → R ⊗[F] E)` to `⟨m, Measure.measurable_of_measurable_coe _ hmeas⟩`. Take `⟨K, W, hK, -, -, hKU, -, -, hKun, -⟩` from `GlobalTheory.CompanionTheory.SW.FibreFam.exists_exhaustion hU`. Use `haveI hκ : ProbabilityTheory.IsSFiniteKernel κ := isSFiniteKernel_of_compact_open κ hK hKun hUc (fun S k => hbf.lt_top hU (hK k) (hKU k) S)`.
+
+Use `⟨fun S => (inferInstance : SFinite (κ S)), ⟨κ, hκ, fun _ => rfl⟩, ?_, fun S => ?_⟩` and prove the remaining obligations. Introduce `C D hC hCU hD`. Take `⟨φ, hc, hcs, hs, h0, -, hone⟩` from `GlobalTheory.CompanionTheory.SW.FibreFam.exists_bump hC hU hCU`. Take `⟨hi, hco⟩` from `h3 φ hc hcs hs`. Take `⟨M, hM⟩` from `hD.exists_bound_of_continuousOn (hco.mono (Set.subset_univ D))`.
+
+Use `⟨M.toNNReal, fun S hS => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `: ∀ᵐ X ∂(m S), X ∈ gramR R σ J₂ ⁻¹' {((S : HermR R σ n) : Matrix (Fin n) (Fin n) (R ⊗[F] E))} ∩ {X : Fin n → Fin N → R ⊗[F] E | LinearIndependent (R ⊗[F] E) X}` using `mem_ae_iff.2 (h1 S) filter_upwards [this] with X hX`. Conclude with `⟨hX.1, hX.2⟩`.
+-/
 theorem gramFibFree_basic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (N n : ℕ) (J₂ : Matrix (Fin N) (Fin N) E), IsHermND σ J₂ → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure R), lam.IsAddHaarMeasure → ∀ m : HermR R σ n → Measure (Fin n → Fin N → R ⊗[F] E), IsGramFibFree R σ J₂ n (coordW R b lam n N) (coordHerm R σ b lam n) m → (∀ S, SFinite (m S)) ∧ (∃ κ : ProbabilityTheory.Kernel (HermR R σ n) (Fin n → Fin N → R ⊗[F] E), ProbabilityTheory.IsSFiniteKernel κ ∧ ∀ S, κ S = m S) ∧ (∀ (C : Set (Fin n → Fin N → R ⊗[F] E)) (D : Set (HermR R σ n)), IsCompact C → C ⊆ {X | LinearIndependent (R ⊗[F] E) X} → IsCompact D → ∃ c : ℝ≥0, ∀ S ∈ D, m S C ≤ c) ∧ ∀ S : HermR R σ n, ∀ᵐ X ∂(m S), gramR R σ J₂ X = (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) ∧ LinearIndependent (R ⊗[F] E) X := by
   intro F E _ _ _ _ _ σ hCM N n J₂ hJ R _ _ _ _ _ hR d b lam hlam m hm
   obtain ⟨iTR, iLC, iSC, iT2, -⟩ := id hR

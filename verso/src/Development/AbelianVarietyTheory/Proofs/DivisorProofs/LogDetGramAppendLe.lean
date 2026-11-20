@@ -12,6 +12,13 @@ namespace GlobalTheory
 
 open Matrix in
 
+/- English proof (translation)
+Establish `hY : Y = Xᴴ` using `(isHermitian_fromBlocks_iff.mp h.1).2.1.symm`. Substitute `hY` using the available equality. Establish `: Invertible A` using `hA.isUnit.invertible`. Establish `hS : (D - B - Xᴴ * A⁻¹ * X).PosSemidef` using `(PosDef.fromBlocks₁₁ X (D - B) hA).mp h`. Establish `hdet : (fromBlocks A X Xᴴ D).det = A.det * (D - Xᴴ * A⁻¹ * X).det`.
+
+Rewrite using `[det_fromBlocks₁₁, invOf_eq_nonsing_inv]`. Establish `hS' : (D - Xᴴ * A⁻¹ * X - B).PosSemidef`. Rewrite using `[sub_right_comm]` and apply the resulting hypothesis. Establish `hmono` using `gramSt_det_re_le_of_sub hB hS'`. Take `⟨hAre, hAim⟩` from `Complex.pos_iff.mp hA.det_pos`.
+
+Rewrite using `[hdet, Complex.mul_re, ← hAim, zero_mul, sub_zero]`. Conclude with `mul_le_mul_of_nonneg_left hmono hAre.le`.
+-/
 theorem det_mul_det_le_of_fromBlocks_sub_posSemidef {m k : Type*} [Fintype m] [DecidableEq m]
     [Fintype k] [DecidableEq k] {A : Matrix m m ℂ} {X : Matrix m k ℂ} {Y : Matrix k m ℂ}
     {D B : Matrix k k ℂ} (hA : A.PosDef) (hB : B.PosDef)
@@ -32,6 +39,19 @@ theorem det_mul_det_le_of_fromBlocks_sub_posSemidef {m k : Type*} [Fintype m] [D
 
 open Matrix in
 
+/- English proof (translation)
+Establish `ha : LinearIndependent K a`. Use `hab.comp (Fin.castAdd t) (Fin.castAdd_injective s t)` as an intermediate fact. Establish `e : Fin.append a b ∘ Fin.castAdd t = a` using `by funext i; simp`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Establish `hA : (h.gram σ a).PosDef` using `h.posDef σ _ _ ha`.
+
+Establish `hM : (h.gram σ (Fin.append a b)).PosDef` using `h.posDef σ _ _ hab`. Establish `hB : (h'.gram σ (q ∘ b)).PosDef` using `h'.posDef σ _ _ hqb`. Establish `hz : ∀ x, h'.form σ x 0 = 0` using `fun x => by`. Simplify using `using h'.smul_right σ 0 x 0`. Establish `hz' : ∀ x, h'.form σ 0 x = 0` using `fun x => by`.
+
+Rewrite using `[← h'.conj_symm, hz, map_zero]`. Establish `hCc : (0 : ℂ) < (C : ℂ)` using `by exact_mod_cast hC`. Use `set N := (C : ℂ) • h.gram σ (Fin.append a b) with hN`. Establish `hE : N.submatrix finSumFinEquiv finSumFinEquiv = fromBlocks ((C : ℂ) • h.gram σ a) (N.submatrix (Fin.castAdd t) (Fin.natAdd s)) (N.submatrix (Fin.natAdd s) (Fin.castAdd t)) (N.submatrix (Fin.natAdd s) (Fin.natAdd s))`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [hN, HermFam.gram]`.
+
+Establish `hE' : (N - h'.gram σ (q ∘ Fin.append a b)).submatrix finSumFinEquiv finSumFinEquiv = fromBlocks ((C : ℂ) • h.gram σ a) (N.submatrix (Fin.castAdd t) (Fin.natAdd s)) (N.submatrix (Fin.natAdd s) (Fin.castAdd t)) (N.submatrix (Fin.natAdd s) (Fin.natAdd s) - h'.gram σ (q ∘ b))`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [hN, HermFam.gram, hqa, hz, hz']`. Establish `hP` using `hpsd.submatrix (finSumFinEquiv : Fin s ⊕ Fin t → Fin (s + t))`. Rewrite `hP` using `[hE']`. Establish `key` using `det_mul_det_le_of_fromBlocks_sub_posSemidef (hA.smul hCc) hB hP`.
+
+Rewrite `key` using `[← hE, det_submatrix_equiv_self, hN, det_smul, det_smul, Fintype.card_fin, Fintype.card_fin, ← Complex.ofReal_pow, ← Complex.ofReal_pow, Complex.re_ofReal_mul, Complex.re_ofReal_mul, pow_add]`. Establish `pA` using `(posDef_det_re_pos hA).1`. Establish `pB` using `(posDef_det_re_pos hB).1`. Establish `pM` using `(posDef_det_re_pos hM).1`. Establish `key2 : (h.gram σ a).det.re * (h'.gram σ (q ∘ b)).det.re ≤ (h.gram σ (Fin.append a b)).det.re * C ^ t`.
+
+Use `le_of_mul_le_mul_left ?_ (pow_pos hC s)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.log_mul pA.ne' pB.ne', ← Real.log_pow, ← Real.log_mul pM.ne' (pow_pos hC t).ne']`. Conclude with `Real.log_le_log (mul_pos pA pB) key2`.
+-/
 theorem log_det_gram_add_le_of_adapted_frame (K : Type) [Field K] [NumberField K] (m m' : ℕ)
     (h : HermFam K (Fin m → K)) (h' : HermFam K (Fin m' → K))
     (q : (Fin m → K) →ₗ[K] (Fin m' → K)) (C : ℝ) (hC : 0 < C) (σ : K →+* ℂ) (s t : ℕ)

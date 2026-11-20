@@ -12,10 +12,16 @@ namespace GlobalTheory.KerTrans
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
+/- English proof (translation)
+Apply the tactic sequence `cases p <;> simp [GridData.toPair]`.
+-/
 theorem toPair_fin (p : Pair T) (k : FinPt G p.small) :
     (G.toPair p k.1 1).1 ∈ GfC (G.pS p) ∧ (G.toPair p k.1 1).2 ∈ GfC (G.pT p) := by
   cases p <;> simp [GridData.toPair]
 
+/- English proof (translation)
+Establish `e : G.toPair p (g * k) h = G.toPair p g h * G.toPair p k 1`. Rewrite using `[← GlobalTheory.RowClaim.toPair_mul, mul_one]`. Unfold `GridData.Weil.ker`. Rewrite using `[e]`. Simplify using `only [thetaKO, Prod.mk.eta, map_mul, Module.End.mul_apply]`.
+-/
 theorem ker_mul_fin (W : G.Weil) (p : Pair T) (F : WO (G.pS p) (G.pT p) → ℂ) (g k : GA D (G.V p.small))
     (h : GA D (G.V p.big)) : W.ker p F (g * k) h = W.ker p (W.om p (G.toPair p k 1) F) g h := by
   have e : G.toPair p (g * k) h = G.toPair p g h * G.toPair p k 1 := by
@@ -24,6 +30,11 @@ theorem ker_mul_fin (W : G.Weil) (p : Pair T) (F : WO (G.pS p) (G.pT p) → ℂ)
   rw [e]
   simp only [thetaKO, Prod.mk.eta, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Introduce `D T L sc G W B p hp f hf g k h`. Establish `hk` using `toPair_fin p k`. Unfold `fockComp`. Use `congr 1`. Use function extensionality and compare the values at `m`.
+
+Unfold `jetTab kerFin`. Rewrite using `[Subgroup.coe_mul, ker_mul_fin]`. Use `congr 1`. Conclude with `GlobalTheory.OrientedHeis.om_fin_pureTensorO W.ψ _ _ _ _ (W.om p) (W.om_is p hp) W.θ W.θ_is _ hk.1 _ hk.2 _ _ _ _ f _ hf`.
+-/
 theorem fockComp_mul_fin : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (B : VertexFrames G)
     {p : Pair T}, p.InRange D.R.m → ∀ (f : WO (G.pS p) (G.pT p) → ℂ), IsThetaFunO W.ψ (G.pS p) (G.pT p) f →
     ∀ (g k : FinPt G p.small) (h : FinPt G p.big),

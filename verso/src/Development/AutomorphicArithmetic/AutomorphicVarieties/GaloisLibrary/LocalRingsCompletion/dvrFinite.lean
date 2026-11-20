@@ -4,6 +4,11 @@ open PowerSeries IsLocalRing UpperTheory.V.abelian₂
 open IsDiscreteValuationRing (addVal)
 open scoped Pointwise TensorProduct Topology
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx i`. Use `Submodule.smul_induction_on hx (fun r hr m _ => ?_) (fun a c ha hc => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `I.mul_mem_right _ hr`.
+
+Rewrite using `[map_add, Finsupp.add_apply]`. Conclude with `I.add_mem ha hc`. Introduce `h`. Rewrite using `[← b.sum_repr x]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (h i) trivial`.
+-/
 private theorem mem_smul_top_iff_repr {R M ι : Type*} [CommRing R] [AddCommGroup M] [Module R M]
     [Fintype ι] (b : Module.Basis ι R M) (I : Ideal R) (x : M) :
     x ∈ I • (⊤ : Submodule R M) ↔ ∀ i, b.repr x i ∈ I := by
@@ -18,6 +23,9 @@ private theorem mem_smul_top_iff_repr {R M ι : Type*} [CommRing R] [AddCommGrou
     rw [← b.sum_repr x]
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (h i) trivial
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun f hf => by let b := Module.Free.chooseBasis R M have key : ∀ i, ∃ L : R, ∀ k, b.repr (f k) i - L ∈ I ^ k := fun i => by obtain ⟨L, hL⟩ := IsPrecomplete.prec' (I := I) (fun k => b.repr (f k) i) (fun {m n} hmn => by have h := hf hmn rw [SModEq.sub_mem, mem_smul_top_iff_repr b] …`.
+-/
 private theorem prec_free {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M]
     [Module.Free R M] [Module.Finite R M] (I : Ideal R) [IsPrecomplete I R] :
     IsPrecomplete I M := ⟨fun f hf => by
@@ -41,6 +49,9 @@ private theorem prec_free {R M : Type*} [CommRing R] [AddCommGroup M] [Module R 
   rw [map_sub, Finsupp.sub_apply, this]
   exact hL i n⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun f hf => by simp only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top] at hf ⊢ obtain ⟨L, hL⟩ := IsPrecomplete.prec' (I := J) (fun k => f ((e + 1) * k)) (fun {m n} hmn => by rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top] have h := hf (Nat.mul_le_mul_left (e + 1) hmn) rw [pow_mul …`.
+-/
 private theorem prec_cofinal {R : Type*} [CommRing R] {I J : Ideal R} (hJI : J ≤ I) {e : ℕ}
     (he : I ^ e ≤ J) (hJ : IsPrecomplete J R) : IsPrecomplete I R := ⟨fun f hf => by
   simp only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top] at hf ⊢
@@ -56,6 +67,19 @@ private theorem prec_cofinal {R : Type*} [CommRing R] {I J : Ideal R} (hJI : J �
   have h2 := hf (m := n) (n := (e + 1) * n) (Nat.le_mul_of_pos_left n (Nat.succ_pos e))
   simpa using (I ^ n).add_mem h2 (Ideal.pow_right_mono hJI n h1)⟩
 
+/- English proof (translation)
+Introduce `l hl O _ _ _ _ _ _`. Establish `hl0 : (l : O) ≠ 0` using `Nat.cast_ne_zero.2 hl.out.ne_zero`. Establish `hinj : Function.Injective (algebraMap ℤ_[l] O)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+
+Assume the negation of the conclusion as `h0`. Rewrite `hx` using `[PadicInt.unitCoeff_spec h0, map_mul, map_pow, map_natCast]`. Conclude with `mul_ne_zero ((PadicInt.unitCoeff h0).isUnit.map _).ne_zero (pow_ne_zero _ hl0) hx`. Establish `: FaithfulSMul ℤ_[l] O` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hinj`. Establish `hfree : Module.Free ℤ_[l] O` using `Module.free_of_finite_type_torsion_free'`.
+
+Establish `hloc : IsLocalHom (algebraMap ℤ_[l] O)` using `inferInstance`. Establish `hlm : (l : O) ∈ maximalIdeal O`. Establish `h : (l : ℤ_[l]) ∈ maximalIdeal ℤ_[l]`. Rewrite using `[PadicInt.maximalIdeal_eq_span_p]`. Conclude with `Ideal.mem_span_singleton_self _`.
+
+Use `map_nonunit (algebraMap ℤ_[l] O) _ h` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hres : Finite (ResidueField O)`. Establish `: Finite (ResidueField ℤ_[l])` using `Finite.of_equiv _ (PadicInt.residueField (p := l)).symm.toEquiv`. Conclude with `Module.finite_of_finite (ResidueField ℤ_[l])`.
+
+Use `⟨?_, hres, hlm, hinj, hfree, hloc⟩` and prove the remaining obligations. Establish `hP : IsPrecomplete (maximalIdeal O) O`. Establish `h1 : IsPrecomplete ((maximalIdeal ℤ_[l]).map (algebraMap ℤ_[l] O)) O` using `IsPrecomplete.map_algebraMap_iff.2 (prec_free _)`. Rewrite `h1` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.map_span, Set.image_singleton, map_natCast]`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`.
+
+Take `⟨e, he⟩` from `IsDiscreteValuationRing.ideal_eq_span_pow_irreducible (s := Ideal.span {(l : O)}) (by simpa using hl0) hϖ`. Use `prec_cofinal ((Ideal.span_singleton_le_iff_mem _).2 hlm) (e := e) ?_ h1` and prove the remaining obligations. Rewrite using `[he, hϖ.maximalIdeal_eq, Ideal.span_singleton_pow]`. Conclude with `{ toIsHausdorff := inferInstance, toIsPrecomplete := hP }`.
+-/
 theorem UpperTheory.V.abelian₂.dvr_finite :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O]
       [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O],

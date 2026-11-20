@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality. Rewrite using `[map_zero, Nat.sub_zero, pow_one, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, ← MvPowerSeries.isUnit_iff_constantCoeff]`. Conclude with `hg`. Establish `h1 : Finsupp.degree b ≠ 0` using `fun h => hb ((Finsupp.degree_eq_zero_iff b).1 h)`.
+
+Establish `h2 : 1 - Finsupp.degree b = 0` using `by omega`. Rewrite using `[h2, pow_zero, Ideal.one_eq_top]`. Conclude with `Submodule.mem_top`.
+-/
 private theorem coeff_mem_of_mem_maximalIdeal {O σ : Type} [CommRing O] [IsLocalRing O]
     {g : MvPowerSeries σ O} (hg : g ∈ IsLocalRing.maximalIdeal (MvPowerSeries σ O))
     (b : σ →₀ ℕ) :
@@ -14,6 +19,17 @@ private theorem coeff_mem_of_mem_maximalIdeal {O σ : Type} [CommRing O] [IsLoca
     rw [h2, pow_zero, Ideal.one_eq_top]
     exact Submodule.mem_top
 
+/- English proof (translation)
+Introduce `O σ _ _ N`. Proceed by induction on `N with`. Consider the case `zero`. Introduce `h _ a`. Rewrite using `[Nat.zero_sub, pow_zero, Ideal.one_eq_top]`.
+
+Conclude with `Submodule.mem_top`. Consider the case `succ N ih`. Introduce `h hh`. Rewrite `hh` using `[pow_succ]`. Use `Submodule.mul_induction_on hh ?_ ?_` and prove the remaining obligations.
+
+Introduce `f hf g hg a`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `Submodule.sum_mem _ fun p hp => ?_` and prove the remaining obligations. Establish `hsum : Finsupp.degree p.1 + Finsupp.degree p.2 = Finsupp.degree a`. Rewrite using `[← map_add, Finset.HasAntidiagonal.mem_antidiagonal.1 hp]`.
+
+Establish `hmul` using `Ideal.mul_mem_mul (ih f hf p.1) (coeff_mem_of_mem_maximalIdeal hg p.2)`. Rewrite `hmul` using `[← pow_add]`. Conclude with `Ideal.pow_le_pow_right (by omega) hmul`. Introduce `f g hf hg a`. Rewrite using `[map_add]`.
+
+Conclude with `Submodule.add_mem _ (hf a) (hg a)`.
+-/
 theorem UpperTheory.Reformulated.B.PreservedCoefficient.pres_new_coeff :
     ∀ {O σ : Type} [inst : CommRing O] [inst_1 : IsLocalRing O]
     (N : ℕ),

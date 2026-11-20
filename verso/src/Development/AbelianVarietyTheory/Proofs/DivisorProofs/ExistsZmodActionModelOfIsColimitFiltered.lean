@@ -5,6 +5,9 @@ open CategoryTheory Limits TensorProduct
 
 namespace GlobalTheory.TorsorColim
 
+/- English proof (translation)
+Use `letI := Fintype.ofFinite I`. Take `⟨c'⟩` from `IsFiltered.cocone_nonempty (WidePushoutShape.wideSpan k l f)`. Conclude with `⟨c'.pt, c'.ι.app none, fun i => c'.ι.app (some i), fun i => c'.w (.init i)⟩`.
+-/
 theorem exists_common_under {K : Type} [SmallCategory K] [IsFiltered K] {I : Type} [Finite I]
     (k : K) (l : I → K) (f : ∀ i, k ⟶ l i) :
     ∃ (m : K) (p : k ⟶ m) (r : ∀ i, l i ⟶ m), ∀ i, f i ≫ r i = p := by
@@ -13,6 +16,11 @@ theorem exists_common_under {K : Type} [SmallCategory K] [IsFiltered K] {I : Typ
   obtain ⟨c'⟩ := IsFiltered.cocone_nonempty (WidePushoutShape.wideSpan k l f)
   exact ⟨c'.pt, c'.ι.app none, fun i => c'.ι.app (some i), fun i => c'.w (.init i)⟩
 
+/- English proof (translation)
+Use `choose l f₁ f₂ h using fun i => RingHom.EssFiniteType.exists_comp_map_eq_of_isColimit R E α φ c hc hφ (a i) (ha i) (b i) (hb i) (hab i)`. Take `⟨m, p, r, hr⟩` from `exists_common_under k (fun i => IsFiltered.coeq (f₁ i) (f₂ i)) (fun i => f₁ i ≫ IsFiltered.coeqHom (f₁ i) (f₂ i))`. Use `⟨m, p, fun i => ?_⟩` and prove the remaining obligations. Establish `h2 : (f₂ i ≫ IsFiltered.coeqHom (f₁ i) (f₂ i)) ≫ r i = p`. Rewrite using `[← IsFiltered.coeq_condition]`.
+
+Conclude with `hr i`. Use `conv_lhs => rw [← hr i]`. Use `conv_rhs => rw [← h2]`. Simplify using `only [E.map_comp, Category.assoc]`. Rewrite using `[reassoc_of% (h i)]`.
+-/
 theorem exists_stage_eq {K : Type} [SmallCategory K] [IsFiltered K] {I : Type} [Finite I]
     {R S : CommRingCat.{0}} (E : K ⥤ CommRingCat.{0}) (α : (Functor.const _).obj R ⟶ E)
     (φ : R ⟶ S) (c : Cocone E) (hc : IsColimit c) (hφ : φ.hom.EssFiniteType) {k : K}
@@ -31,6 +39,11 @@ theorem exists_stage_eq {K : Type} [SmallCategory K] [IsFiltered K] {I : Type} [
   simp only [E.map_comp, Category.assoc]
   rw [reassoc_of% (h i)]
 
+/- English proof (translation)
+Use `choose l s h₁ h₂ using fun i => RingHom.EssFiniteType.exists_eq_comp_ι_app_of_isColimit R E α φ c hc hφ (a i) (ha i)`. Use `letI := Fintype.ofFinite I`. Take `⟨m, hm⟩` from `IsFiltered.sup_objs_exists (Finset.univ.image l)`. Establish `r : ∀ i, l i ⟶ m` using `fun i => (hm (Finset.mem_image_of_mem l (Finset.mem_univ i))).some`. Use `⟨m, fun i => s i ≫ E.map (r i), fun i => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[reassoc_of% (h₁ i), ← α.naturality]`. Conclude with `Category.id_comp _`. Rewrite using `[Category.assoc, c.w, ← h₂]`.
+-/
 theorem exists_stage_factor {K : Type} [SmallCategory K] [IsFiltered K] {I : Type} [Finite I]
     {R S : CommRingCat.{0}} (E : K ⥤ CommRingCat.{0}) (α : (Functor.const _).obj R ⟶ E)
     (φ : R ⟶ S) (c : Cocone E) (hc : IsColimit c) (hφ : φ.hom.FinitePresentation)
@@ -47,6 +60,29 @@ theorem exists_stage_factor {K : Type} [SmallCategory K] [IsFiltered K] {I : Typ
     exact Category.id_comp _
   · rw [Category.assoc, c.w, ← h₂]
 
+/- English proof (translation)
+Set `α : (Functor.const K).obj R ⟶ E` to `(Functor.const K).map φ ≫ v`. Set `w : ∀ k, S ⟶ E.obj k` to `fun k => v.app k`. Set `ι : ∀ k, E.obj k ⟶ c.pt` to `fun k => c.ι.app k`. Establish `hα : ∀ k, α.app k = φ ≫ w k` using `fun k => rfl`. Establish `hι : ∀ {k l} (f : k ⟶ l), E.map f ≫ ι l = ι k` using `fun f => c.w f`.
+
+Establish `hw : ∀ {k l} (f : k ⟶ l), w k ≫ E.map f = w l` using `fun f => (v.naturality f).symm.trans (Category.id_comp _)`. Establish `hpo' : ∀ k, IsPushout φ (β k) (w k) (u.app k)` using `hpo`. Establish `τu' : ∀ g k, u.app k ≫ ι k ≫ τ g = u.app k ≫ ι k` using `τu`. Establish `k₀ : K` using `IsFiltered.nonempty.some`. Establish `hwι : ∀ k, w k ≫ ι k = w k₀ ≫ ι k₀` using `fun k => by`.
+
+Rewrite using `[← hι (IsFiltered.leftToMax k k₀), ← hι (IsFiltered.rightToMax k k₀), reassoc_of% hw, reassoc_of% hw]`. Take `⟨k, s, hs⟩` from `exists_stage_factor E α φ c hc hφ (fun g : G => w k₀ ≫ ι k₀ ≫ τ g) (fun g k => by`. Express the relevant statement in the definitionally equal form `φ ≫ w k₀ ≫ ι k₀ ≫ τ g = (φ ≫ w k) ≫ ι k`. Rewrite using `[← reassoc_of% (hwι k), (hpo' k).w, reassoc_of% (hpo' k).w, τu', Category.assoc])`. Establish `hs1 : ∀ g, φ ≫ s g = φ ≫ w k` using `fun g => (hs g).1`.
+
+Establish `hs2 : ∀ g, s g ≫ ι k = w k₀ ≫ ι k₀ ≫ τ g` using `fun g => (hs g).2`. Set `σ : ∀ {l} (_ : k ⟶ l), G → (E.obj l ⟶ E.obj l)` to `fun {l} f g => (hpo' l).desc (s g ≫ E.map f) (u.app l) (by`. Rewrite using `[reassoc_of% hs1, hw, (hpo' l).w])`. Establish `σw : ∀ {l} (f : k ⟶ l) g, w l ≫ σ f g = s g ≫ E.map f` using `fun f g => (hpo' _).inl_desc _ _ _`. Establish `σu : ∀ {l} (f : k ⟶ l) g, u.app l ≫ σ f g = u.app l` using `fun f g => (hpo' _).inr_desc _ _ _`.
+
+Establish `σι : ∀ {l} (f : k ⟶ l) g, σ f g ≫ ι l = ι l ≫ τ g` using `fun {l} f g => by`. Apply `(hpo' l).hom_ext` to reduce the goal to its premises. Rewrite using `[reassoc_of% σw, hι, hs2, reassoc_of% (hwι l)]`. Rewrite using `[reassoc_of% σu, τu']`. Establish `σmap : ∀ {l} (f : k ⟶ l) g, σ (𝟙 k) g ≫ E.map f = E.map f ≫ σ f g` using `fun {l} f g => by`.
+
+Apply `(hpo' k).hom_ext` to reduce the goal to its premises. Rewrite using `[reassoc_of% σw, reassoc_of% hw, σw, E.map_id, Category.id_comp]`. Rewrite using `[reassoc_of% σu, ← u.naturality_assoc, σu, u.naturality]`. Take `⟨m, p, hp⟩` from `exists_stage_eq (I := Option (G × G)) E α φ c hc (RingHom.FiniteType.essFiniteType (RingHom.FiniteType.of_finitePresentation hφ)) (k := k) (fun i => i.elim (s 1) (fun x => s (x.1 * x.2))) (fun i => i.elim (w k) (fun x => s x.2 ≫ σ (𝟙 k) x.1)) (by`. Introduce and unpack `(_ | x)`.
+
+Conclude with `hs1 _`. Conclude with `hs1 _)`. Use the proof step `(by`. Introduce and unpack `(_ | x)`. Both sides reduce to the same expression.
+
+Express the relevant statement in the definitionally equal form `φ ≫ s x.2 ≫ σ (𝟙 k) x.1 = φ ≫ w k`. Rewrite using `[reassoc_of% hs1, σw, E.map_id, Category.comp_id, hs1])`. Use the proof step `(by`. Introduce and unpack `(_ | x)`. Express the relevant statement in the definitionally equal form `s 1 ≫ ι k = w k ≫ ι k`.
+
+Rewrite using `[hs2, τ1, Category.comp_id, hwι k]`. Express the relevant statement in the definitionally equal form `s (x.1 * x.2) ≫ ι k = (s x.2 ≫ σ (𝟙 k) x.1) ≫ ι k`. Rewrite using `[Category.assoc, σι, reassoc_of% hs2, hs2, τm])`. Use `⟨m, σ p, ?_, fun g h => ?_, σu p, σι p⟩` and prove the remaining obligations. Apply `(hpo' m).hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[σw, Category.comp_id, ← hw p]`. Conclude with `hp none`. Rewrite using `[σu, Category.comp_id]`. Apply `(hpo' m).hom_ext` to reduce the goal to its premises. Rewrite using `[σw, reassoc_of% σw, ← σmap, ← Category.assoc]`.
+
+Conclude with `hp (some (g, h))`. Rewrite using `[σu, reassoc_of% σu, σu]`.
+-/
 theorem exists_stage_action {K : Type} [SmallCategory K] [IsFiltered K] {G : Type} [Monoid G]
     [Finite G] {R S : CommRingCat.{0}} (P E : K ⥤ CommRingCat.{0})
     (β : ∀ k, R ⟶ P.obj k) (φ : R ⟶ S) (hφ : φ.hom.FinitePresentation)
@@ -118,6 +154,9 @@ theorem exists_stage_action {K : Type} [SmallCategory K] [IsFiltered K] {G : Typ
       exact hp (some (g, h))
     · rw [σu, reassoc_of% σu, σu]
 
+/- English proof (translation)
+Use `algebraize [φ.hom, β.hom, v.hom, u.hom, v.hom.comp φ.hom]`. Establish `: IsScalarTower R R' S'` using `IsScalarTower.of_algebraMap_eq' (congrArg CommRingCat.Hom.hom h.w)`. Establish `: Algebra.IsPushout R S R' S'` using `CommRingCat.isPushout_iff_isPushout.1 h`. Conclude with `RingHom.finitePresentation_isStableUnderBaseChange R S R' S' hφ`.
+-/
 theorem finitePresentation_of_isPushout {R S R' S' : CommRingCat.{0}} {φ : R ⟶ S} {β : R ⟶ R'}
     {v : S ⟶ S'} {u : R' ⟶ S'} (h : IsPushout φ β v u) (hφ : φ.hom.FinitePresentation) :
     u.hom.FinitePresentation := by
@@ -126,6 +165,9 @@ theorem finitePresentation_of_isPushout {R S R' S' : CommRingCat.{0}} {φ : R �
   have : Algebra.IsPushout R S R' S' := CommRingCat.isPushout_iff_isPushout.1 h
   exact RingHom.finitePresentation_isStableUnderBaseChange R S R' S' hφ
 
+/- English proof (translation)
+Use `algebraize [ι, (algebraMap C D).comp (algebraMap R C)]`. Establish `: IsScalarTower R B D` using `IsScalarTower.of_algebraMap_eq' (congrArg CommRingCat.Hom.hom h.w)`. Establish `: Algebra.IsPushout R C B D` using `CommRingCat.isPushout_iff_isPushout.1 h`. Conclude with `⟨Algebra.IsPushout.equiv R C B D, fun x y => Algebra.IsPushout.equiv_tmul R C B D x y⟩`.
+-/
 theorem exists_algEquiv_of_isPushout {R C B D : Type} [CommRing R] [CommRing C] [CommRing B]
     [CommRing D] [Algebra R C] [Algebra R B] [Algebra C D] (ι : B →+* D)
     (h : IsPushout (CommRingCat.ofHom (algebraMap R C)) (CommRingCat.ofHom (algebraMap R B))
@@ -136,6 +178,29 @@ theorem exists_algEquiv_of_isPushout {R C B D : Type} [CommRing R] [CommRing C] 
   have : Algebra.IsPushout R C B D := CommRingCat.isPushout_iff_isPushout.1 h
   exact ⟨Algebra.IsPushout.equiv R C B D, fun x y => Algebra.IsPushout.equiv_tmul R C B D x y⟩
 
+/- English proof (translation)
+Introduce `J _ _ F c hc q hq j A _ _ _ D _ _ act`. Use `letI : Algebra (F.obj j) c.pt := (c.ι.app j).hom.toAlgebra`. Introduce and unpack `⟨e₀⟩`. Use `haveI : NeZero q := ⟨hq.ne'⟩`. Set `φ : F.obj j ⟶ CommRingCat.of A` to `CommRingCat.ofHom (algebraMap (F.obj j) A)`.
+
+Establish `hφ : φ.hom.FinitePresentation` using `RingHom.finitePresentation_algebraMap.2 inferInstance`. Set `g₀ : c.pt ⟶ CommRingCat.of D` to `CommRingCat.ofHom (algebraMap c.pt D)`. Set `h₀ : CommRingCat.of A ⟶ CommRingCat.of D` to `CommRingCat.ofHom (e₀.toRingEquiv.toRingHom.comp (Algebra.TensorProduct.includeRight (R := F.obj j) (A := c.pt) (B := A)).toRingHom)`. Set `ιc : ∀ k, F.obj k ⟶ c.pt` to `fun k => c.ι.app k`. Establish `hsq : IsPushout φ (ιc j) h₀ g₀`.
+
+Use `(CommRingCat.isPushout_tensorProduct (F.obj j) c.pt A).flip.of_iso (Iso.refl _) (Iso.refl _) (Iso.refl _) e₀.toRingEquiv.toCommRingCatIso ?_ ?_ ?_ ?_` and prove the remaining obligations. Both sides reduce to the same expression. Both sides reduce to the same expression. Both sides reduce to the same expression. Use extensionality with `x`.
+
+Conclude with `e₀.commutes x`. Take `⟨E, ι, u, v, ⟨hE⟩, hk⟩` from `GlobalTheory.BaseChangeColim.exists_isColimit_pushout_under J F c hc j _ _ φ h₀ g₀ hsq`. Set `τ : Multiplicative (ZMod q) → (CommRingCat.of D ⟶ CommRingCat.of D)` to `fun g => CommRingCat.ofHom (act g).toRingEquiv.toRingHom`. Establish `hτ : ∀ g, g₀ ≫ τ g = g₀` using `fun g => by`. Use extensionality with `x`.
+
+Conclude with `(act g).commutes x`. Set `ι' : ∀ k, E.obj k ⟶ CommRingCat.of D` to `fun k => ι.app k`. Set `u' : ∀ k : Under j, F.obj k.right ⟶ E.obj k` to `fun k => u.app k`. Set `v' : ∀ k : Under j, CommRingCat.of A ⟶ E.obj k` to `fun k => v.app k`. Establish `hu : ∀ k, u' k ≫ ι' k = ιc k.right ≫ g₀` using `fun k => (hk k).2.2`.
+
+Establish `hv : ∀ k, v' k ≫ ι' k = h₀` using `fun k => (hk k).2.1`. Establish `hpo : ∀ k : Under j, IsPushout φ (F.map k.hom) (v' k) (u' k)` using `fun k => (hk k).1`. Take `⟨m, σ, σ1, σm, σu, σι⟩` from `exists_stage_action (Under.forget j ⋙ F) E (fun k => F.map k.hom) φ hφ u v hpo (Cocone.mk _ ι) hE τ (by`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `act 1 x = x`.
+
+Use the proof step `simp)`. Use the proof step `(fun g h => by`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `act (g * h) x = act g (act h x)`. Use the proof step `simp)`.
+
+Use the proof step `(fun g k => by`. Express the relevant statement in the definitionally equal form `u' k ≫ ι' k ≫ τ g = u' k ≫ ι' k`. Rewrite using `[reassoc_of% hu, hτ, hu])`. Use `letI : Algebra (F.obj m.right) (E.obj m) := (u' m).hom.toAlgebra`. Use `letI : Algebra (F.obj m.right) c.pt := (c.ι.app m.right).hom.toAlgebra`.
+
+Set `σ' : Multiplicative (ZMod q) →* (E.obj m →ₐ[F.obj m.right] E.obj m)` to `{ toFun := fun g => ⟨(σ g).hom, fun x => congr(($(σu g)).hom x)⟩ map_one' := AlgHom.ext fun x => congr(($σ1).hom x) map_mul' := fun g h => AlgHom.ext fun x => congr(($(σm g h)).hom x) }`. Establish `hsq' : IsPushout (u' m) (ιc m.right) (ι' m) g₀`. Establish `hcw : F.map m.hom ≫ ιc m.right = ιc j` using `c.w m.hom`. Use `IsPushout.of_top ?_ (hu m) (hpo m)` and prove the remaining obligations. Rewrite using `[hv]`.
+
+Conclude with `hcw ▸ hsq`. Take `⟨e, he⟩` from `exists_algEquiv_of_isPushout (R := F.obj m.right) (C := c.pt) (B := E.obj m) (D := D) (ι' m).hom hsq'.flip`. Use `⟨m.right, E.obj m, inferInstance, inferInstance, finitePresentation_of_isPushout (hpo m) hφ, (AlgEquiv.algHomUnitsEquiv _ _).toMonoidHom.comp σ'.toHomUnits, e, fun g x => ?_⟩` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul s b`. Rewrite using `[bcAct_tmul, he, he, map_mul, AlgEquiv.commutes]`. Use `congr 1`. Conclude with `congr(($(σι g)).hom b)`.
+-/
 theorem exists_action_model_of_isColimit : ∀ (J : Type) [SmallCategory J] [IsFiltered J] (F : J ⥤ CommRingCat.{0}) (c : Cocone F),
     IsColimit c → ∀ (q : ℕ), 0 < q → ∀ (j : J) (A : Type) [CommRing A] [Algebra (F.obj j) A]
     [Algebra.FinitePresentation (F.obj j) A] (D : Type) [CommRing D] [Algebra c.pt D]

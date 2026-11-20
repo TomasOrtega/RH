@@ -10,9 +10,15 @@ open GlobalTheory.SmGL
 
 namespace GlobalTheory.DetEqv.BlockForm
 
+/- English proof (translation)
+Use `ext`. Simplify using `[GlobalTheory.ThK.MidJac.e2, finSigmaFinEquiv_apply]`.
+-/
 theorem blockIndex_zero (x m : ℕ) (j : Fin x) : GlobalTheory.ThK.MidJac.e2 x m ⟨0, j⟩ = Fin.castAdd m j := by
   ext; simp [GlobalTheory.ThK.MidJac.e2, finSigmaFinEquiv_apply]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[GlobalTheory.ThK.MidJac.e2, finSigmaFinEquiv_apply]`.
+-/
 theorem blockIndex_one (x m : ℕ) (j : Fin m) : GlobalTheory.ThK.MidJac.e2 x m ⟨1, j⟩ = Fin.natAdd x j := by
   ext; simp [GlobalTheory.ThK.MidJac.e2, finSigmaFinEquiv_apply]
 
@@ -38,6 +44,9 @@ def splitCols (n x m : ℕ) : Matrix (Fin n) (Fin (x + m)) k ≃ₜ Matrix (Fin 
       exact (continuous_apply j).comp ((continuous_apply i).comp continuous_snd)
 
 omit [TopologicalSpace k] in
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Fin.sum_univ_add]`. Simplify using `[h0, h1, Matrix.one_apply]`.
+-/
 theorem mul_apply_castAdd {n x m : ℕ} (X : Matrix (Fin n) (Fin (x + m)) k) (M : Matrix (Fin (x + m)) (Fin (x + m)) k)
     (i : Fin n) (j : Fin x) (h1 : ∀ l : Fin m, M (Fin.natAdd x l) (Fin.castAdd m j) = 0)
     (h0 : ∀ l : Fin x, M (Fin.castAdd m l) (Fin.castAdd m j) = (1 : Matrix (Fin x) (Fin x) k) l j) :
@@ -46,6 +55,9 @@ theorem mul_apply_castAdd {n x m : ℕ} (X : Matrix (Fin n) (Fin (x + m)) k) (M 
   simp [h0, h1, Matrix.one_apply]
 
 omit [TopologicalSpace k] in
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Fin.sum_univ_add]`. Simplify using `[h0, h1]`.
+-/
 theorem mul_apply_natAdd {n x m : ℕ} (X : Matrix (Fin n) (Fin (x + m)) k) (M : Matrix (Fin (x + m)) (Fin (x + m)) k)
     (g : Matrix (Fin m) (Fin m) k) (i : Fin n) (j : Fin m)
     (h0 : ∀ l : Fin x, M (Fin.castAdd m l) (Fin.natAdd x j) = 0)
@@ -55,6 +67,11 @@ theorem mul_apply_natAdd {n x m : ℕ} (X : Matrix (Fin n) (Fin (x + m)) k) (M :
   simp [h0, h1]
 
 omit [TopologicalSpace k] in
+/- English proof (translation)
+Use `mul_apply_castAdd X _ i j (fun l => ?_) (fun l => ?_)` and prove the remaining obligations. Establish `h` using `leviEmb_apply_ne k (GlobalTheory.ThK.MidJac.e2 x m) (Pi.mulSingle (1 : Fin 2) g) (by decide : (1 : Fin 2) ≠ 0) l j`. Conclude with `(congrArg₂ _ (blockIndex_one x m l).symm (blockIndex_zero x m j).symm).trans h`. Establish `h` using `leviEmb_apply_same k (GlobalTheory.ThK.MidJac.e2 x m) (Pi.mulSingle (1 : Fin 2) g) 0 l j`. Rewrite `h` using `[Pi.mulSingle_eq_of_ne (by decide : (0 : Fin 2) ≠ 1)]`.
+
+Conclude with `(congrArg₂ _ (blockIndex_zero x m l).symm (blockIndex_zero x m j).symm).trans h`.
+-/
 theorem mul_leviEmb_castAdd (n x m : ℕ) (X : Matrix (Fin n) (Fin (x + m)) k) (g : GL (Fin (![x, m] 1)) k)
     (i : Fin n) (j : Fin x) :
     (X * ((leviEmb k (GlobalTheory.ThK.MidJac.e2 x m) (Pi.mulSingle (1 : Fin 2) g) : GL (Fin (x + m)) k) :
@@ -68,6 +85,11 @@ theorem mul_leviEmb_castAdd (n x m : ℕ) (X : Matrix (Fin n) (Fin (x + m)) k) (
     exact (congrArg₂ _ (blockIndex_zero x m l).symm (blockIndex_zero x m j).symm).trans h
 
 omit [TopologicalSpace k] in
+/- English proof (translation)
+Use `mul_apply_natAdd X _ g.val i j (fun l => ?_) (fun l => ?_)` and prove the remaining obligations. Establish `h` using `leviEmb_apply_ne k (GlobalTheory.ThK.MidJac.e2 x m) (Pi.mulSingle (1 : Fin 2) g) (by decide : (0 : Fin 2) ≠ 1) l j`. Conclude with `(congrArg₂ _ (blockIndex_zero x m l).symm (blockIndex_one x m j).symm).trans h`. Establish `h` using `leviEmb_apply_same k (GlobalTheory.ThK.MidJac.e2 x m) (Pi.mulSingle (1 : Fin 2) g) 1 l j`. Rewrite `h` using `[Pi.mulSingle_eq_same]`.
+
+Conclude with `(congrArg₂ _ (blockIndex_one x m l).symm (blockIndex_one x m j).symm).trans h`.
+-/
 theorem mul_leviEmb_natAdd (n x m : ℕ) (X : Matrix (Fin n) (Fin (x + m)) k) (g : GL (Fin (![x, m] 1)) k)
     (i : Fin n) (j : Fin m) :
     (X * ((leviEmb k (GlobalTheory.ThK.MidJac.e2 x m) (Pi.mulSingle (1 : Fin 2) g) :
@@ -87,9 +109,21 @@ def pullSB {A B : Type} [TopologicalSpace A] [TopologicalSpace B] (e : A ≃ₜ 
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullSB_apply {A B : Type} [TopologicalSpace A] [TopologicalSpace B] (e : A ≃ₜ B)
     (F : GlobalTheory.SplitWeil.SB B) (a : A) : (pullSB e F : A → ℂ) a = (F : B → ℂ) (e a) := rfl
 
+/- English proof (translation)
+Introduce `k _ _ _ _ x m n hV hnm μ hμ L hL`. Establish `key : L ∘ₗ pullSB (splitCols (k` using `k) n x m) = 0 := by`. Use `hV (Matrix (Fin n) (Fin x) k) m hnm μ hμ _ fun g Φ Φ' h => ?_` and prove the remaining obligations. Use `hL (show GL (Fin (![x, m] 1)) k from g) _ _ fun X => ?_` and prove the remaining obligations. Rewrite using `[pullSB_apply, pullSB_apply]`.
+
+Use `(h _ _).trans (congrArg _ (Prod.ext ?_ ?_))` and prove the remaining obligations. Use function extensionality and compare the values at `i j`. Conclude with `(mul_leviEmb_castAdd n x m X _ i j).symm`. Use function extensionality and compare the values at `i j`. Conclude with `(mul_leviEmb_natAdd n x m X g i j).symm`.
+
+Use extensionality with `Φ`. Establish `hΦ : Φ = pullSB (splitCols (k` using `k) n x m) (pullSB (splitCols (k := k) n x m).symm Φ) := by`. Use extensionality with `X`. Rewrite using `[pullSB_apply, pullSB_apply, Homeomorph.symm_apply_apply]`. Rewrite using `[hΦ]`.
+
+Conclude with `LinearMap.congr_fun key _`.
+-/
 theorem eq_zero_of_vanishAt : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (x m n : ℕ), GlobalTheory.DetEqv.VanishAt k n → n < m → ∀ μ : kˣ →* ℂˣ, (∀ t : ℝ, μ ≠ GlobalTheory.SmGL.absPow k (t : ℂ)) →
     ∀ L : GlobalTheory.SplitWeil.SB (Matrix (Fin n) (Fin (x + m)) k) →ₗ[ℂ] ℂ,
       (∀ (g : GL (Fin (![x, m] 1)) k) (Φ Φ' : GlobalTheory.SplitWeil.SB (Matrix (Fin n) (Fin (x + m)) k)),

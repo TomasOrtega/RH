@@ -17,9 +17,15 @@ section SlopeTestRemainingChoices
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+The claim follows from `(IsUltrametricDist.norm_add_le_max x y).trans_lt (max_lt hx hy)`.
+-/
 private theorem add_lt {x y : Qbar l} (hx : ‖x‖ < 1) (hy : ‖y‖ < 1) : ‖x + y‖ < 1 :=
   (IsUltrametricDist.norm_add_le_max x y).trans_lt (max_lt hx hy)
 
+/- English proof (translation)
+Establish `h1 : ‖x - 1‖ ≠ ‖(1 : Qbar l)‖` using `by rw [norm_one]; exact h.ne`. Establish `h2` using `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h1`. Rewrite `h2` using `[sub_add_cancel, norm_one, max_eq_right h.le]`. Then use the resulting hypothesis.
+-/
 private theorem norm_one_of {x : Qbar l} (h : ‖x - 1‖ < 1) : ‖x‖ = 1 := by
   have h1 : ‖x - 1‖ ≠ ‖(1 : Qbar l)‖ := by rw [norm_one]; exact h.ne
   have h2 := IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h1
@@ -47,6 +53,11 @@ private def oneU (l : ℕ) [Fact l.Prime] : Subgroup (Qbar l)ˣ where
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
 
 omit [NumberField F] in
+/- English proof (translation)
+Establish `e : ((cycBar F Ω l s ^ (l - 1) : (Qbar l)ˣ) : Qbar l) - 1 = algebraMap ℚ_[l] (Qbar l) ((((cycZ F Ω l s : ℤ_[l]) ^ (l - 1) - 1 : ℤ_[l])) : ℚ_[l])`. Rewrite using `[Units.val_pow_eq_pow_val]`. Express the relevant statement in the definitionally equal form `(algebraMap ℚ_[l] (Qbar l) ((cycZ F Ω l s : ℤ_[l]) : ℚ_[l])) ^ _ - 1 = _`. Simplify using the standard rewrite rules. Use `show ‖_‖ < 1`.
+
+Rewrite using `[e, norm_algebraMap']`. Express the relevant statement in the definitionally equal form `‖(cycZ F Ω l s : ℤ_[l]) ^ (l - 1) - 1‖ < 1`. Rewrite using `[← PadicInt.mem_nonunits, ← IsLocalRing.mem_maximalIdeal, ← PadicInt.ker_toZMod, RingHom.mem_ker, map_sub, map_pow, map_one, ZMod.pow_card_sub_one_eq_one, sub_self]`. Conclude with `((cycZ F Ω l s).isUnit.map _).ne_zero`.
+-/
 private theorem cyc_mem (s : G F Ω) : cycBar F Ω l s ^ (l - 1) ∈ oneU l := by
   have e : ((cycBar F Ω l s ^ (l - 1) : (Qbar l)ˣ) : Qbar l) - 1 =
       algebraMap ℚ_[l] (Qbar l) ((((cycZ F Ω l s : ℤ_[l]) ^ (l - 1) - 1 : ℤ_[l])) : ℚ_[l]) := by

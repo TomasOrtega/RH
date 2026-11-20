@@ -18,6 +18,9 @@ def dualProj (b : Module.Basis T ℤ (dualLattice F))
     (dualRecover b hb).toLinearMap ∘ₗ (LinearMap.pi fun t : T => LinearMap.proj fun _ : Unit => t)
 
 omit [Fintype T] [DecidableEq T] in
+/- English proof (translation)
+Simplify using `[dualProj]`. Both sides reduce to the same expression.
+-/
 theorem dualProj_apply (b : Module.Basis T ℤ (dualLattice F))
     (hb : Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b)))
     (s : ((k : Unit) → dualBlocks T k) → ℂ) (j : Fin i) :
@@ -50,16 +53,28 @@ def DualStdMassAt.Statement : Prop :=
     ptsIntegralAt (e := D) (dualIdeal b) (dualProj b hb)
       (fun _ z => Real.log ((dualLine F b hb).h z)) (fun _ => 1) = Fintype.card (K →+* ℂ)
 
+/- English proof (translation)
+The claim follows from `dualProj dualBasisStandard dualEmbMatrix_standard_bijective`.
+-/
 example : (((k : Unit) → dualBlocks Unit k) → ℂ) →ₗ[ℂ] (Fin 1 → ℂ) :=
   dualProj dualBasisStandard dualEmbMatrix_standard_bijective
 
+/- English proof (translation)
+The claim follows from `dualPlanePt dualBasisStandard (Rat.castHom ℂ) fun _ => 1`.
+-/
 example : (Σ _ : Unit, Unit) → ℂ := dualPlanePt dualBasisStandard (Rat.castHom ℂ) fun _ => 1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨dualBasisStandard, dualEmbMatrix_standard_bijective, Rat.castHom ℂ, fun _ => 1, fun h => one_ne_zero (congrFun h 0)⟩`.
+-/
 example : ∃ (b : Module.Basis Unit ℤ (dualLattice (HermLattice.standard ℚ 1)))
     (_ : Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b))) (_ : ℚ →+* ℂ) (v : Fin 1 → ℂ), v ≠ 0 :=
   ⟨dualBasisStandard, dualEmbMatrix_standard_bijective, Rat.castHom ℂ, fun _ => 1,
     fun h => one_ne_zero (congrFun h 0)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨dualBasisStandard, dualEmbMatrix_standard_bijective, fun _ => rfl⟩`.
+-/
 example : ∃ (b : Module.Basis Unit ℤ (dualLattice (HermLattice.standard ℚ (0 + 1))))
     (_ : Function.Bijective (Matrix.mulVecLin (dualEmbMatrix b))),
     ∀ σ, (HermLattice.standard ℚ (0 + 1)).metric σ = 1 :=

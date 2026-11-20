@@ -22,6 +22,17 @@ namespace GlobalTheory.OneCosetGood
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hu'` using `mem_UX.1 hu`. Establish `hρ : 0 < ρ` using `Fin.pos j`. Use `set m : Fin ρ := ⟨ρ - 1, by omega⟩ with hmdef`. Establish `hm : m.1 + 1 = ρ` using `by rw [hmdef]; simp only; omega`. Establish `hne : ∀ b : Fin ρ, b ≠ m → ¬ (b.1 + 1 = ρ)` using `fun b hb h => hb (Fin.ext (by rw [hmdef]; simp only; omega))`.
+
+Rewrite using `[Finset.sum_eq_single m]`. Rewrite using `[show ell D ρ m = 1 from if_pos hm, one_mul]`. Distinguish the cases in `hj : j = m`. Rewrite using `[hj, (hu' m m).2, show ell D ρ m = 1 from if_pos hm]`. Establish `hlt : j < m`.
+
+Rewrite using `[Fin.lt_iff_val_lt_val]`. Establish `h1` using `j.2`. Establish `h2 : j.1 ≠ m.1` using `fun h => hj (Fin.ext h)`. Rewrite `h2`, the goal using `[hmdef]`. Simplify using `only at h2 ⊢`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[(hu' m j).1 hlt, show ell D ρ j = 0 from if_neg (hne j hj)]`. Introduce `b _ hb`. Rewrite using `[show ell D ρ b = 0 from if_neg (hne b hb), zero_mul]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem ell_mul {ρ : ℕ} (u : GL (Fin ρ) (AE D)) (hu : u ∈ UX D ρ) (j : Fin ρ) :
     ∑ l, ell D ρ l * u.1 l j = ell D ρ j := by
   have hu' := mem_UX.1 hu
@@ -45,6 +56,9 @@ theorem ell_mul {ρ : ℕ} (u : GL (Fin ρ) (AE D)) (hu : u ∈ UX D ρ) (j : Fi
     rw [show ell D ρ b = 0 from if_neg (hne b hb), zero_mul]
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Use extensionality with `k j`. Simplify using `only [yZero, zEll, Matrix.neg_mul, Matrix.neg_apply, Matrix.mul_apply, vecMulVec_apply, neg_mul, Finset.sum_neg_distrib, neg_inj]`. Repeatedly rewrite using `[mul_assoc]`. Rewrite using `[← Finset.mul_sum, ell_mul u hu j]`.
+-/
 theorem yZero_mul {V₀ : HSp D} {ρ : ℕ} (z : Fin V₀.rank → D.host.E) (u : GL (Fin ρ) (AE D)) (hu : u ∈ UX D ρ) :
     yZero V₀ ρ z ⬝ u.1 = yZero V₀ ρ z := by
   ext k j
@@ -55,6 +69,27 @@ theorem yZero_mul {V₀ : HSp D} {ρ : ℕ} (z : Fin V₀.rank → D.host.E) (u 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D ψ V₀ W W₀ ρ dW p z P r g hr H`. Establish `hr' : r⁻¹ ∈ Rgrp W (xZero dW)` using `inv_mem hr`. Take `⟨u, hu, hru⟩` from `hr`. Take `⟨u', hu', hru'⟩` from `hr'`. Establish `hinv : mt W (r * g)⁻¹ = mt W g⁻¹ ⬝ mt W r⁻¹` using `by rw [_root_.mul_inv_rev, mt_mul]`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨w, a, ha, hw⟩` from `H.pt`. Use `⟨⟨u' * w.1, mul_mem hu' w.2⟩, a, ha, ?_⟩` and prove the remaining obligations. Establish `e : mt W (r * g)⁻¹ ⬝ (xZero dW ⬝ w.1.1) = mt W g⁻¹ ⬝ (xZero dW ⬝ (u' * w.1).1)`. Rewrite using `[hinv, Matrix.mul_assoc, ← Matrix.mul_assoc (mt W r⁻¹), hru', Units.val_mul, Matrix.mul_assoc]`.
+
+Rewrite using `[← e]`. Conclude with `hw`. Introduce `N hN hup hmem`. Establish `hU` using `mem_UX.1 (inv_mem hu')`. Establish `h1 : MxAt P ((u'⁻¹).1 ⬝ N)` using `fun i j => by`.
+
+Simplify using `only [Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _ (hN k j)`. Establish `h2 : ∀ i j, j ≤ i → ((u'⁻¹).1 ⬝ N) i j = 0`. Introduce `i j hij`. Simplify using `only [Matrix.mul_apply]`.
+
+Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k < i`. Rewrite using `[(hU i k).1 hk, zero_mul]`. Rewrite using `[hup k j (le_trans hij (not_lt.1 hk)), mul_zero]`. Establish `h3 : mt W (r * g)⁻¹ ⬝ (xZero dW ⬝ ((u'⁻¹).1 ⬝ N)) = mt W g⁻¹ ⬝ (xZero dW ⬝ N)`.
+
+Rewrite using `[hinv, Matrix.mul_assoc, ← Matrix.mul_assoc (mt W r⁻¹), hru']`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (u'.1) ((u'⁻¹).1) N, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`. Establish `h4 : upSum ((u'⁻¹).1 ⬝ N) = upSum N`. Unfold `upSum`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hj`. Simplify using `only [Matrix.mul_apply]`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[(hU i i).2, one_mul]`.
+
+Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with hk | hk` into its components or cases. Rewrite using `[(hU i k).1 hk, zero_mul]`. Rewrite using `[hup k j (by rw [Fin.le_iff_val_le_val]; have := Fin.lt_iff_val_lt_val.1 hk; omega), mul_zero]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`. Both sides reduce to the same expression. Rewrite using `[← h4]`. Conclude with `H.shift _ h1 h2 (h3 ▸ hmem)`. Introduce `ξ hξ ξ' hP he`.
+
+Establish `e : mt W (r * g) ⬝ dW.incX V₀ ξ = dW.incX V₀ (u.1 ⬝ ξ')`. Rewrite using `[mt_mul, Matrix.mul_assoc, he, HypDec.incX_apply, HypDec.incX_apply, ← Matrix.mul_assoc, show mt W r ⬝ dW.jX = dW.jX ⬝ u.1 from hru, Matrix.mul_assoc]`. Rewrite using `[← H.iso ξ hξ (u.1 ⬝ ξ') hP e]`. Use `congr 1`. Rewrite using `[GlobalTheory.OrientedHeis.symplO_skew (dW.incX V₀ ξ') (dW.incAdj V₀ _), GlobalTheory.OrientedHeis.symplO_skew (dW.incX V₀ (u.1 ⬝ ξ')) (dW.incAdj V₀ _), HypDec.symplO_incX_incAdj, HypDec.symplO_incX_incAdj, ← Matrix.mul_assoc, yZero_mul z u hu]`.
+-/
 theorem cond_red : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V₀ W W₀ : HSp D) (ρ : ℕ) (dW : HypDec W W₀ ρ) (p : Pieces V₀ W W₀ ρ ρ) (z : Fin V₀.rank → D.host.E) (P : GlobalTheory.FinPl.Pl D → Prop) (r g : GA D W), r ∈ Rgrp W (xZero dW) → Cond dW p (xZero dW) (yZero V₀ ρ z) ψ P (r * g) → Cond dW p (xZero dW) (yZero V₀ ρ z) ψ P g := by
   intro D ψ V₀ W W₀ ρ dW p z P r g hr H
   have hr' : r⁻¹ ∈ Rgrp W (xZero dW) := inv_mem hr
@@ -116,6 +151,15 @@ open GlobalTheory.FinPl (Lat idAt intAt grpAt InK)
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D ψ hψ V V₀ W W₀ ρ dV dW p z LV LV₀ LW LW₀ v hG hS hlast h hh hC`. Take `⟨n, hnN, hnG, t, ht, htG, γ, hγ, κ, hκ, rfl⟩` from `GlobalTheory.IwaPlace.iwasawa_at_place D W W₀ ρ dW LW LW₀ v (GlobalTheory.FinPl.TamePlaces.tame D v) hG.sdW hG.sdW₀ hG.monoW h hh`. Establish `hR : Rgrp W (xZero dW) = jacGrp dW` using `(GlobalTheory.Unf.base_point D W W₀ ρ dW).2.2.2.1`. Establish `hr : n * dW.emb0 γ ∈ Rgrp W (xZero dW)`. Rewrite using `[hR]`.
+
+Conclude with `Subgroup.mul_mem _ (Subgroup.mem_sup_left hnN) (Subgroup.mem_sup_right ⟨γ, rfl⟩)`. Establish `heq : n * dW.levi t * dW.emb0 γ * κ * κ⁻¹ = n * dW.emb0 γ * dW.levi t`. Rewrite using `[mul_inv_cancel_right, mul_assoc n, ← dW.wittHyperbolic_anisotropic_commute_levi, mul_assoc]`. Establish `hc` using `cond_red D ψ V₀ W W₀ ρ dW p z (· = v) _ _ hr (heq ▸ hC κ⁻¹ (inK_inv hκ))`. Establish `hinv` using `GlobalTheory.T.goodPlace_pointCondition_torus_inverseDiag_integral D ψ hψ V V₀ W W₀ ρ dV dW p LV LV₀ LW LW₀ v hG hS t ht htG hc.pt`.
+
+Establish `hint : ∀ i : Fin ρ, t.1 i i - 1 ∈ intAt D (· = v)`. Introduce `i`. Distinguish the cases in `hi : i.1 + 1 < ρ`. Conclude with `GlobalTheory.T.goodPlace_shiftCondition_torus_diag_integral D ψ hψ V V₀ W W₀ ρ dV dW p LV LV₀ LW LW₀ v hG hS t ht htG hc.shift i ⟨i.1 + 1, hi⟩ rfl`. Conclude with `GlobalTheory.T.isotropic_condition_last_torus_diagonal_integral D ψ hψ V V₀ W W₀ ρ dV dW p z LV LV₀ LW LW₀ v hG hS hlast t ht htG hc.iso i (by omega)`.
+
+Establish `hK` using `GlobalTheory.FinPl.LeviUnitK.inK_levi D W W₀ ρ dW LW LW₀ v hG.sdW hG.monoW t ht htG (fun i => ⟨hint i, hinv i⟩)`. Use `⟨n * dW.emb0 γ, hr, ?_, dW.levi t * κ, inK_mul hK hκ, ?_⟩` and prove the remaining obligations. Conclude with `Subgroup.mul_mem _ hnG (GlobalTheory.OneCosetEmb.wittCoreEmbedding_mem_unitaryAdelicSupportedSubgroup D W W₀ ρ dW (· = v) γ hγ)`. Rewrite using `[mul_assoc n (dW.levi t), ← dW.wittHyperbolic_anisotropic_commute_levi γ t]`. Simplify using `only [mul_assoc]`.
+-/
 theorem oneCoset_good : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (V V₀ W W₀ : HSp D) (ρ : ℕ) (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ ρ) (p : Pieces V₀ W W₀ ρ ρ) (z : Fin V₀.rank → D.host.E) (LV : Lat V) (LV₀ : Lat V₀) (LW : Lat W) (LW₀ : Lat W₀) (v : GlobalTheory.FinPl.Pl D), GoodAt dV dW (xZero dW) ψ LV LV₀ LW LW₀ v → StdAt dV dW p LV LW v → (0 < ρ → ∀ a ∈ idAt D (· = v), dW.incAdj V₀ (a • yZero V₀ ρ z) ∈ latO V₀ W (LV₀ : Set _) (LW : Set _) (· = v) ↔ a ∈ intAt D (· = v)) → ∀ h ∈ grpAt W (· = v), (∀ κ, GlobalTheory.FinPl.InK W LW (· = v) κ → Cond dW p (xZero dW) (yZero V₀ ρ z) ψ (· = v) (h * κ)) → CosetAt W (Rgrp W (xZero dW)) LW v h := by
   intro D ψ hψ V V₀ W W₀ ρ dV dW p z LV LV₀ LW LW₀ v hG hS hlast h hh hC
   obtain ⟨n, hnN, hnG, t, ht, htG, γ, hγ, κ, hκ, rfl⟩ :=

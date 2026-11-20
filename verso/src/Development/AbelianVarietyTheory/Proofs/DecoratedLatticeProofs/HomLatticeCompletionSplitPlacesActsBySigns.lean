@@ -16,9 +16,41 @@ noncomputable section
 
 namespace GlobalTheory.FinPl.VacSign
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun w => h w)`.
+-/
 theorem af_ext' {D : D7} {x y : Af D.host.F} (h : ∀ w, evalV D.host.F w x = evalV D.host.F w y) : x = y :=
   Subtype.ext (funext fun w => h w)
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ ι p I P hP ψ hψ S T LS LT hS hT x hx`. Establish `hΛ : ∀ u ∈ latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) P, ∀ u' ∈ latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) P, ψ (symplO S T u u') = 1` using `fun u hu u' hu' => (GlobalTheory.SelfDualAt.latO_ann_at D ψ hψ S T LS LT hS hT P u (GlobalTheory.FinPl.LatMem.latO_mxAt hu)).1 hu u' hu'`. Set `G` to `GlobalTheory.LatVac.signGroup ψ _ hΛ (IsLatVac (heisO ψ S T) (latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) P))`. Establish `half : ∀ e, IsSplitIdem D e → ∀ u ∈ latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) P, IsHalf e u → u ∈ G` using `fun e he u hu hh => ⟨hu, 1, one_mul _, fun f hf => by rw [hf.2 e he u hu hh, one_smul]⟩`. Establish `splitC : ∀ e, IsSplitIdem D e → IsSplitIdem D (cA D e)`.
+
+Introduce and unpack `e ⟨he1, he2, v, ε, hpl, he3⟩`. Conclude with `⟨by rw [← RingHom.map_mul, he1], by rw [GlobalTheory.LatVac.cA_cA, mul_comm, he2], v, ε, hpl, by rw [GlobalTheory.LatVac.cA_cA, add_comm, he3]⟩`. Establish `hsub : ∀ i, latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (· = (p i).v) ≤ latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) P`. Introduce `i`. Apply `AddSubgroup.closure_mono` to reduce the goal to its premises.
+
+Introduce and unpack `w ⟨α, hα, hs, rest⟩`. Conclude with `⟨α, hα, fun v hv => hs v fun h => hv ((hP.mem v).2 ⟨i, h⟩), rest⟩`. Establish `piece : ∀ i, ∀ w ∈ latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (· = (p i).v), w ∈ G`. Introduce `i w hw`. Take `⟨h1, h2⟩` from `GlobalTheory.SplitVac.idem_latO D k (p i) S T LS LT w hw`.
+
+Establish `he` using `(p i).split`. Establish `hee : (p i).e * (p i).e = (p i).e` using `he.1`. Establish `hz : (Matrix.of fun a b => cA D (p i).e * w a b : WO S T) = w - Matrix.of fun a b => (p i).e * w a b`. Use extensionality with `a b`. Rewrite using `[Matrix.of_apply, Matrix.sub_apply, Matrix.of_apply, eq_sub_iff_add_eq', ← add_mul, h2]`.
+
+Establish `hyG : (Matrix.of fun a b => (p i).e * w a b : WO S T) ∈ G` using `half _ he _ (hsub i h1) fun a b => by rw [Matrix.of_apply, ← mul_assoc, hee]`. Establish `hzG : (Matrix.of fun a b => cA D (p i).e * w a b : WO S T) ∈ G`. Use `half _ (splitC _ he) _ ?_ fun a b => ?_` and prove the remaining obligations. Rewrite using `[hz]`. Conclude with `sub_mem (hsub i hw) (hsub i h1)`.
+
+Rewrite using `[Matrix.of_apply, ← mul_assoc, ← RingHom.map_mul, hee]`. Rewrite `hzG` using `[hz]`. Simplify using `using add_mem hyG hzG`. Establish `hxG : x ∈ G`. Proceed by induction on `hx using AddSubgroup.closure_induction with`.
+
+Consider the case `mem w hw`. Take `⟨α, hα, hsupp, a, ha, s, hs, t, ht, rfl⟩` from `hw`. Establish `hdec : α = ∑ i ∈ I.toFinset, GlobalTheory.FinPl.LatMem.indP D.host.F (· = (p i).v) * α`. Apply `af_ext'` to reduce the goal to its premises. Introduce `v`.
+
+Rewrite using `[map_sum]`. Simplify using `only [map_mul, GlobalTheory.FinPl.LatMem.evalV_indP]`. Distinguish the cases in `hv : P v`. Take `⟨i, rfl⟩` from `(hP.mem v).1 hv`. Rewrite using `[Finset.sum_eq_single i]`.
+
+Simplify using the standard rewrite rules. Introduce `j _ hj`. Rewrite using `[if_neg (fun h => hj (hP.inj h).symm), zero_mul]`. Introduce `h`. Conclude with `absurd (List.mem_toFinset.2 (hP.all i)) h`.
+
+Rewrite using `[hsupp v hv]`. Simplify using the standard rewrite rules. Rewrite using `[hdec]`. Use `Finset.sum_induction _ (fun β : Af D.host.F => (Matrix.of fun i j => (pairA D.host.F 0 β) ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * S.gram k j) : WO S T) ∈ G) (fun β γ hβ hγ => ?_) ?_ (fun i _ => ?_)` and prove the remaining obligations. Establish `e : (Matrix.of fun i j => (pairA D.host.F 0 (β + γ)) ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * S.gram k j) : WO S T) = (Matrix.of fun i j => (pairA D.host.F 0 β) ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * S.gram k j)) + Matrix.of fun i j => (pairA D.host.F 0 γ) ⊗ₜ[D.host.F] (a * t …`.
+
+Use extensionality with `i j`. Rewrite using `[Matrix.add_apply, Matrix.of_apply, Matrix.of_apply, Matrix.of_apply, GlobalTheory.LatVac.pair_add, TensorProduct.add_tmul]`. Rewrite using `[e]`. Conclude with `add_mem hβ hγ`. Establish `e : (Matrix.of fun i j => (pairA D.host.F 0 (0 : Af D.host.F)) ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * S.gram k j) : WO S T) = 0`.
+
+Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, Matrix.zero_apply]`. Conclude with `TensorProduct.zero_tmul _ _`. Rewrite using `[e]`. Conclude with `zero_mem _`.
+
+Use `piece i _ (AddSubgroup.subset_closure ⟨_, GlobalTheory.LatVac.mul_mem_intAf (GlobalTheory.FinPl.LatMem.indicatorAdele_mem_integralAdeles' D.host.F _) hα, fun v hv => ?_, a, ha, s, hs, t, ht, rfl⟩)` and prove the remaining obligations. Rewrite using `[map_mul, GlobalTheory.FinPl.LatMem.indicatorAdele_supported D.host.F _ v hv, zero_mul]`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `neg x _ hx => exact neg_mem hx`.
+
+Take `⟨-, ε, hε, h⟩` from `hxG`. Conclude with `⟨ε, hε, fun f hf => h f hf.2⟩`.
+-/
 theorem latO_acts_by_signs : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (p : ι → SplitPt D k) (I : List ι) (P : Pl D → Prop), Places p I P → ∀ (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (LS : Lat S) (LT : Lat T), IsSelfDualC S LS → IsSelfDualC T LT → ∀ x ∈ latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) P, ∃ ε : ℂ, ε * ε = 1 ∧ ∀ f, Vac ψ S T LS LT P f → heisO ψ S T x f = ε • f := by
   intro D k _ _ _ _ ι p I P hP ψ hψ S T LS LT hS hT x hx
   classical

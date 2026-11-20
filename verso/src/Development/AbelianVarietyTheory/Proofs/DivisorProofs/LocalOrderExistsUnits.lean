@@ -12,6 +12,13 @@ namespace GlobalTheory.UnrTate
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `w₀.intValuation_exists_uniformizer`. Take `⟨y, hy⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := S) (fun w : HeightOneSpectrum (𝓞 E) => w.asIdeal) (fun _ => 2) (fun w _ => w.prime) (fun w _ w' _ h h' => h (HeightOneSpectrum.ext h')) (fun w => if w.1 = w₀ then π else 1)`. Use `⟨y, fun w hw => ?_⟩` and prove the remaining obligations. Establish `h` using `hy w hw`. Establish `h2 : w.intValuation (y - if w = w₀ then π else 1) ≤ WithZero.exp (-((2 : ℕ) : ℤ))` using `(w.intValuation_le_pow_iff_mem _ 2).2 h`.
+
+Establish `h3 : w.intValuation (if w = w₀ then π else 1) = WithZero.exp (if w = w₀ then (-1 : ℤ) else 0)` using `by split_ifs with hh`. Substitute `hh` using the available equality. Conclude with `hπ`. Simplify using the standard rewrite rules. Establish `h4 : w.intValuation (y - if w = w₀ then π else 1) < w.intValuation (if w = w₀ then π else 1)`.
+
+Use `lt_of_le_of_lt h2 ?_` and prove the remaining obligations. Rewrite using `[h3, WithZero.exp_lt_exp]`. Apply the tactic sequence `split_ifs <;> norm_num`. Rewrite using `[← h3]`. Conclude with `Valuation.map_eq_of_sub_lt _ h4`.
+-/
 theorem exists_uniformizer_unit_off {E : Type} [Field E] [NumberField E] (S : Finset (HeightOneSpectrum (𝓞 E)))
     (w₀ : HeightOneSpectrum (𝓞 E)) :
     ∃ y : 𝓞 E, ∀ w ∈ S, w.intValuation y = WithZero.exp (if w = w₀ then (-1 : ℤ) else 0) := by
@@ -35,6 +42,15 @@ theorem exists_uniformizer_unit_off {E : Type} [Field E] [NumberField E] (S : Fi
   rw [← h3]
   exact Valuation.map_eq_of_sub_lt _ h4
 
+/- English proof (translation)
+Use `choose y hy using exists_uniformizer_unit_off S`. Establish `key : ∀ w ∈ S, w.valuation E (∏ u ∈ S, (algebraMap (𝓞 E) E (y u)) ^ k u) = WithZero.exp (-k w)`. Introduce `w hw`. Rewrite using `[map_prod, Finset.prod_eq_single w]`. Rewrite using `[map_zpow₀, HeightOneSpectrum.valuation_of_algebraMap, hy w w hw, if_pos rfl, ← WithZero.exp_zsmul]`.
+
+Simplify using the standard rewrite rules. Introduce `u _ hne`. Rewrite using `[map_zpow₀, HeightOneSpectrum.valuation_of_algebraMap, hy u w hw, if_neg (Ne.symm hne)]`. Simplify using the standard rewrite rules. Introduce `h`.
+
+Conclude with `absurd hw h`. Distinguish the cases in `h0 : (∏ u ∈ S, (algebraMap (𝓞 E) E (y u)) ^ k u) = 0`. Use `⟨1, fun w hw => ?_⟩` and prove the remaining obligations. Use `key w hw` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`.
+
+Conclude with `absurd this.symm WithZero.exp_ne_zero`. Conclude with `⟨Units.mk0 _ h0, key⟩`.
+-/
 theorem exists_valuation_eq_exp {E : Type} [Field E] [NumberField E] (S : Finset (HeightOneSpectrum (𝓞 E)))
     (k : HeightOneSpectrum (𝓞 E) → ℤ) :
     ∃ b : Eˣ, ∀ w ∈ S, w.valuation E (b : E) = WithZero.exp (-k w) := by
@@ -56,6 +72,11 @@ theorem exists_valuation_eq_exp {E : Type} [Field E] [NumberField E] (S : Finset
     exact absurd this.symm WithZero.exp_ne_zero
   · exact ⟨Units.mk0 _ h0, key⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ v k`. Take `⟨b, hb⟩` from `exists_valuation_eq_exp (Formalism.L2.Host.aboveF (L := E) F v) k`. Use `⟨Units.map (Algebra.TensorProduct.includeRight : E →ₐ[F] Fv F v ⊗[F] E).toMonoidHom b, fun w hw => ?_⟩` and prove the remaining obligations. Establish `h` using `valAt_one_tmul v w (GlobalTheory.LFun.mem_aboveF.1 hw) b`. Establish `h' : Valued.v (algebraMap E (w.adicCompletion E) b) = w.valuation E (b : E)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w (b : E)`.
+
+Rewrite `h` using `[valAt_eq_exp, h', hb w hw]`. Conclude with `neg_injective (WithZero.exp_injective h)`.
+-/
 theorem exists_unit_ordAt_eq :
     ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : Pl F) (k : HeightOneSpectrum (𝓞 E) → ℤ), ∃ x : (Fv F v ⊗[F] E)ˣ, ∀ w ∈ Formalism.L2.Host.aboveF (L := E) F v, GlobalTheory.UnrTate.ordAt v w x = k w := by
   intro F E _ _ _ _ _ v k

@@ -17,6 +17,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FrameRead
 
+/- English proof (translation)
+Use `choose M hM using fun a b => (h a b).1`. Use `choose M' hM' using fun a b => (h a b).2`. Establish `e1 : φ.mapMatrix (Matrix.of M) = u.val` using `by ext a b; simp [hM]`. Establish `e2 : φ.mapMatrix (Matrix.of M') = (u⁻¹).val` using `by ext a b; simp [hM']`. Establish `inj : Function.Injective (φ.mapMatrix : Matrix (Fin n) (Fin n) O →+* Matrix (Fin n) (Fin n) C)` using `fun A B hAB => by`.
+
+Use extensionality with `a b`. Conclude with `hφ (congrFun (congrFun hAB a) b)`. Establish `h1 : Matrix.of M * Matrix.of M' = 1` using `inj (by rw [map_mul, map_one, e1, e2, Units.mul_inv])`. Establish `h2 : Matrix.of M' * Matrix.of M = 1` using `inj (by rw [map_mul, map_one, e1, e2, Units.inv_mul])`. Use `⟨⟨Matrix.of M, Matrix.of M', h1, h2⟩, Units.ext ?_⟩` and prove the remaining obligations.
+
+Conclude with `e1`.
+-/
 theorem exists_gl_preimage {O C : Type} [CommRing O] [CommRing C] (φ : O →+* C) (hφ : Function.Injective φ) {n : ℕ}
     (u : GL (Fin n) C) (h : ∀ a b, u.val a b ∈ Set.range φ ∧ (u⁻¹).val a b ∈ Set.range φ) :
     ∃ u0 : GL (Fin n) O, Matrix.GeneralLinearGroup.map φ u0 = u := by
@@ -31,11 +38,23 @@ theorem exists_gl_preimage {O C : Type} [CommRing O] [CommRing C] (φ : O →+* 
   refine ⟨⟨Matrix.of M, Matrix.of M', h1, h2⟩, Units.ext ?_⟩
   exact e1
 
+/- English proof (translation)
+Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.map, RingHom.map_det]`.
+-/
 theorem det_map_gl {O C : Type} [CommRing O] [CommRing C] (φ : O →+* C) {n : ℕ} (g : GL (Fin n) O) :
     Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map φ g) = Units.map φ.toMonoidHom (Matrix.GeneralLinearGroup.det g) := by
   ext
   simp [Matrix.GeneralLinearGroup.map, RingHom.map_det]
 
+/- English proof (translation)
+Introduce `l _ ι _ _ n lamW c F hinj hlam u hu z`. Use `choose u0 hu0 using fun τ => exists_gl_preimage F.emb hinj (u τ) (hu τ)`. Establish `hu' : u = fun τ => Matrix.GeneralLinearGroup.map F.emb (u0 τ)` using `funext fun τ => (hu0 τ).symm`. Substitute `hu'` using the available equality. Establish `hs : ((∏ τ, Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map F.emb (u0 τ)) ^ c τ : (PadicAlgCl l)ˣ) : PadicAlgCl l) = F.emb ((∏ τ, Matrix.GeneralLinearGroup.det (u0 τ) ^ c τ : F.Oˣ) : F.O)`.
+
+Simplify using `only [det_map_gl, ← map_zpow, ← map_prod]`. Both sides reduce to the same expression. Establish `key : ∀ x, lamG (PadicAlgCl l) n lamW c (fun τ => Matrix.GeneralLinearGroup.map F.emb (u0 τ)) (GlobalTheory.LatBC.bc F.emb n lamW x) = GlobalTheory.LatBC.bc F.emb n lamW (((∏ τ, Matrix.GeneralLinearGroup.det (u0 τ) ^ c τ : F.Oˣ) : F.O) • grp F.O n lamW u0 x)`. Introduce `x`. Rewrite using `[lamG_apply, hs, ← GlobalTheory.LatBC.bc_grp, LinearMap.map_smulₛₗ]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hz`. Take `⟨x, rfl⟩` from `(GlobalTheory.LatBC.latN_iff F lamW _).1 hz`. Conclude with `(GlobalTheory.LatBC.latN_iff F lamW _).2 ⟨_, (key x).symm⟩`. Introduce `hz`.
+
+Take `⟨x, hx, rfl⟩` from `(GlobalTheory.LatBC.latD_iff F lamW hlam _).1 hz`. Use `(GlobalTheory.LatBC.latD_iff F lamW hlam _).2 ⟨_, ?_, (key x).symm⟩` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ _ (Formalism.CohomologicalDescent.RealLocalDeltaNabla.nablaRep_mem_delta F.O ι (fun _ => n) (fun _ => n) (fun _ => le_rfl) (fun τ => res n (lamW τ)) u0 x hx)`.
+-/
 theorem lamG_mem_lattices : ∀ (l : ℕ) [Fact l.Prime] (ι : Type) [Fintype ι] [DecidableEq ι] (n : ℕ) (lamW : ι → ℕ → ℕ) (c : ι → ℤ) (F : Frame l ι n), Function.Injective F.emb → (∀ τ, Antitone (res n (lamW τ))) → ∀ u : ι → GL (Fin n) (PadicAlgCl l), (∀ τ a b, (u τ).val a b ∈ Set.range F.emb ∧ (u τ)⁻¹.val a b ∈ Set.range F.emb) → ∀ z, (z ∈ F.latN lamW → lamG (PadicAlgCl l) n lamW c u z ∈ F.latN lamW) ∧ (z ∈ F.latD lamW → lamG (PadicAlgCl l) n lamW c u z ∈ F.latD lamW) := by
   intro l _ ι _ _ n lamW c F hinj hlam u hu z
   choose u0 hu0 using fun τ => exists_gl_preimage F.emb hinj (u τ) (hu τ)

@@ -8,6 +8,9 @@ open NumberField IsDedekindDomain Matrix MeasureTheory Filter Topology Polynomia
 open GlobalTheory.CuspRep GlobalTheory.UnitaryBC PositivityTheory.Rg.Rs GlobalTheory.CompanionTheory.Conc
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.AutomorphicForm
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Conc.ubnd_ctn_step | exact GlobalTheory.CompanionTheory.Conc.ubnd_ctn_step | (intros; apply GlobalTheory.CompanionTheory.Conc.ubnd_ctn_step <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.uniform_bound_constant_term : ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (ι : Type) (f : ι → AdelicGLn.AdelicGL K n → ℂ) (m : ℕ → ℝ) (r D : ℕ) (κ' κ : ℝ) (p : ι → ℂ[X]),
   0 < r → r < n → UFam f → UBnd f m → κ' < κ →
   (∀ i, (p i).Monic ∧ (p i).natDegree ≤ D ∧ An.Kill r (f i) (p i) ∧ ∀ z, (p i).IsRoot z → ‖z‖ ≤ Real.exp κ') →

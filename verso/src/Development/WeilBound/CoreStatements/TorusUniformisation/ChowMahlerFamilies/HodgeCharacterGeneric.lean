@@ -14,6 +14,13 @@ open Polynomial GlobalTheory.CompanionTheory.Ar.HT GlobalTheory.CompanionTheory.
 
 variable {E : Type} [Field E] [NumberField E] {K : Type} [Field K] [CharZero K]
 
+/- English proof (translation)
+Use `letI : CharZero (AlgebraicClosure K) := charZero_of_injective_algebraMap (algebraMap K (AlgebraicClosure K)).injective`. Set `f : (E →+* K) → (E →ₐ[ℚ] AlgebraicClosure K)` to `fun s => ((algebraMap K (AlgebraicClosure K)).comp s).toRatAlgHom`. Establish `hf : Function.Injective f`. Introduce `s t hst`. Use extensionality with `y`.
+
+Use `congrArg (fun g : E →ₐ[ℚ] AlgebraicClosure K => g y) hst` as an intermediate fact. Conclude with `(algebraMap K (AlgebraicClosure K)).injective this`. Establish `hcard : Fintype.card (E →+* K) = Fintype.card (E →ₐ[ℚ] AlgebraicClosure K)`. Rewrite using `[AlgHom.card, ← h, Nat.card_eq_fintype_card]`. Establish `hb : Function.Bijective f` using `(Fintype.bijective_iff_injective_and_card f).mpr ⟨hf, hcard⟩`.
+
+Apply `(algebraMap K (AlgebraicClosure K)).injective` to reduce the goal to its premises. Rewrite using `[map_sum]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sum_emb [Fintype (E →+* K)] (h : Nat.card (E →+* K) = Module.finrank ℚ E) (x : E) :
     ∑ s : E →+* K, s x = algebraMap ℚ K (Algebra.trace ℚ E x) := by
   classical
@@ -39,6 +46,15 @@ theorem sum_emb [Fintype (E →+* K)] (h : Nat.card (E →+* K) = Module.finrank
 
 variable {V : Type} [AddCommGroup V] [Module K V]
 
+/- English proof (translation)
+Use `set b := RingOfIntegers.basis E with hb`. Establish `h1 : (1 : E) = ∑ j, ((b.repr 1 j : ℤ) : E) * integralBasis E j`. Use `congrArg (algebraMap (𝓞 E) E) (b.sum_repr 1)` as an intermediate fact. Simplify `this.symm` using `[integralBasis_apply, map_sum, zsmul_eq_mul]`. Establish `hrep : ∀ k, Algebra.trace ℚ E (dualInt E k) = ((b.repr 1 k : ℤ) : ℚ)`.
+
+Introduce `k`. Use `conv_lhs => rw [← mul_one (dualInt E k), h1, Finset.mul_sum, map_sum]`. Repeatedly rewrite using `[mul_left_comm (dualInt E _), ← zsmul_eq_mul, map_zsmul, trace_dualInt]`. Simplify using the standard rewrite rules. Simplify using `only [eigProj]`.
+
+Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul, sum_emb h, hrep]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zsmul, map_intCast, Int.cast_smul_eq_zsmul]`. Use `_ = 1 := by rw [b.sum_repr, map_one]`.
+-/
 theorem sum_eigProj [Fintype (E →+* K)] (h : Nat.card (E →+* K) = Module.finrank ℚ E)
     (ρ : 𝓞 E →+* Module.End K V) : ∑ s, eigProj ρ s = 1 := by
   classical
@@ -60,6 +76,13 @@ theorem sum_eigProj [Fintype (E →+* K)] (h : Nat.card (E →+* K) = Module.fin
         rw [map_zsmul, map_intCast, Int.cast_smul_eq_zsmul]
     _ = 1 := by rw [b.sum_repr, map_one]
 
+/- English proof (translation)
+Rewrite using `[DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]`. Prove the components needed by the constructor for the conclusion. Introduce `s`. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hy`.
+
+Establish `hk : (⨆ j, ⨆ (_ : j ≠ s), HT.eigSp ρ j) ≤ LinearMap.ker (eigProj ρ s)` using `iSup₂_le fun j hj y hy => eigProj_of_ne hj.symm hy`. Rewrite using `[← eigProj_of_mem hx]`. Conclude with `hk hy`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+
+Establish `: x = ∑ s, eigProj ρ s x`. Rewrite using `[← LinearMap.sum_apply, sum_eigProj h]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun s _ => Submodule.mem_iSup_of_mem s (eigProj_mem ρ s x)`.
+-/
 theorem isInternal [Fintype (E →+* K)] [DecidableEq (E →+* K)] (h : Nat.card (E →+* K) = Module.finrank ℚ E)
     (ρ : 𝓞 E →+* Module.End K V) : DirectSum.IsInternal (HT.eigSp ρ) := by
   rw [DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]
@@ -78,6 +101,13 @@ theorem isInternal [Fintype (E →+* K)] [DecidableEq (E →+* K)] (h : Nat.card
     rw [this]
     exact Submodule.sum_mem _ fun s _ => Submodule.mem_iSup_of_mem s (eigProj_mem ρ s x)
 
+/- English proof (translation)
+Set `b` to `(isInternal h ρ).collectedBasis fun s => Module.finBasis K (HT.eigSp ρ s)`. Establish `hb : ∀ i, b i ∈ HT.eigSp ρ i.1` using `fun i => (isInternal h ρ).collectedBasis_mem _ i`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Establish `hm : LinearMap.toMatrix b b (ρ a) = Matrix.diagonal fun i => i.1 (a : E)`. Use extensionality with `i j`.
+
+Rewrite using `[LinearMap.toMatrix_apply, mem_eigSp.1 (hb j) a, map_smul, b.repr_self, Matrix.diagonal_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij, Finsupp.single_apply, Ne.symm hij]`.
+
+Rewrite using `[← LinearMap.charpoly_toMatrix _ b, hm, Matrix.charpoly_diagonal, Fintype.prod_sigma]`. Simplify using the standard rewrite rules. Rewrite using `[Module.finrank_eq_card_basis b]`. Simplify using the standard rewrite rules.
+-/
 theorem charpoly_eq [Fintype (E →+* K)] [FiniteDimensional K V]
     (h : Nat.card (E →+* K) = Module.finrank ℚ E) (ρ : 𝓞 E →+* Module.End K V) :
     (∀ a : 𝓞 E, (ρ a).charpoly =
@@ -98,6 +128,13 @@ theorem charpoly_eq [Fintype (E →+* K)] [FiniteDimensional K V]
   · rw [Module.finrank_eq_card_basis b]
     simp
 
+/- English proof (translation)
+Introduce `h0`. Establish `hne : Nonempty (Module.Free.ChooseBasisIndex ℤ (𝓞 E))`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nonempty_iff]`. Use `sum_dualInt_mul (E := E)` as an intermediate fact.
+
+Simplify using `[Finset.univ_eq_empty] at this`. Take `⟨k⟩` from `hne`. Simplify using `only [eigProj, LinearMap.sum_apply, LinearMap.smul_apply, regAct_basis] at h0`. Establish `hk` using `Fintype.linearIndependent_iff.mp (Algebra.TensorProduct.basis K (RingOfIntegers.basis E)).linearIndependent _ h0 k`. Establish `hd : dualInt E k = 0`.
+
+Rewrite `hk` using `[← map_zero σ]`. Conclude with `σ.injective hk`. Establish `ht` using `trace_dualInt (E := E) k k`. Simplify using `[hd] at ht`.
+-/
 theorem reg_ne (σ : E →+* K) : eigProj (regAct K E) σ 1 ≠ 0 := by
   classical
   intro h0
@@ -116,6 +153,15 @@ theorem reg_ne (σ : E →+* K) : eigProj (regAct K E) σ 1 ≠ 0 := by
   have ht := trace_dualInt (E := E) k k
   simp [hd] at ht
 
+/- English proof (translation)
+Establish `hfr : Module.finrank K (K ⊗[ℤ] 𝓞 E) = Module.finrank ℚ E`. Rewrite using `[Module.finrank_baseChange, RingOfIntegers.rank]`. Take `⟨hc, hs⟩` from `charpoly_eq h (regAct K E)`. Establish `hpos : ∀ s : E →+* K, 1 ≤ Module.finrank K (HT.eigSp (regAct K E) s)` using `fun s => Module.finrank_pos_iff_exists_ne_zero.mpr ⟨⟨_, eigProj_mem _ s 1⟩, fun h0 => reg_ne s (congrArg Subtype.val h0)⟩`. Establish `hone : ∀ s, Module.finrank K (HT.eigSp (regAct K E) s) = 1`.
+
+Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Take `⟨t, ht⟩` from `hn`. Establish `hlt : ∑ _s : E →+* K, 1 < ∑ s, Module.finrank K (HT.eigSp (regAct K E) s)` using `Finset.sum_lt_sum (fun s _ => hpos s) ⟨t, Finset.mem_univ _, lt_of_le_of_ne (hpos t) (Ne.symm ht)⟩`. Rewrite `hlt` using `[hs, hfr, ← h, Finset.sum_const, Finset.card_univ, smul_eq_mul]`.
+
+Simplify using `[Nat.card_eq_fintype_card] at hlt`. Establish `hbc : regAct K E a = (Algebra.lmul ℤ (𝓞 E) a).baseChange K`. Apply `TensorProduct.AlgebraTensorModule.curry_injective` to reduce the goal to its premises. Use extensionality with `c y`. Simplify using `[regAct]`.
+
+Rewrite using `[← algebraMap_int_eq, ← LinearMap.charpoly_baseChange, ← hbc, hc a]`. Simplify using `[hone]`.
+-/
 theorem charpoly_lmul [Fintype (E →+* K)] (h : Nat.card (E →+* K) = Module.finrank ℚ E) (a : 𝓞 E) :
     (Algebra.lmul ℤ (𝓞 E) a : Module.End ℤ (𝓞 E)).charpoly.map (Int.castRingHom K) =
       ∏ s : E →+* K, (X - Polynomial.C (s (a : E))) := by
@@ -142,6 +188,11 @@ theorem charpoly_lmul [Fintype (E →+* K)] (h : Nat.card (E →+* K) = Module.f
   rw [← algebraMap_int_eq, ← LinearMap.charpoly_baseChange, ← hbc, hc a]
   simp [hone]
 
+/- English proof (translation)
+Set `b` to `(Pi.basisFun K (Fin d)).prod (Pi.basisFun K (Fin d))`. Establish `hM : LinearMap.toMatrix b b (rhoH B a) = Matrix.fromBlocks (rho B a) 0 (-Matrix.transpose (bil (B.ad a) 1 1)) (Matrix.transpose (rho B (star a)))`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `[b, LinearMap.toMatrix_apply, rhoH, Matrix.toLin'_apply, Matrix.mulVec_single_one]`.
+
+Rewrite using `[← LinearMap.charpoly_toMatrix (rhoH B a) b, hM, Matrix.charpoly_fromBlocks_zero₁₂, Matrix.charpoly_transpose]`.
+-/
 theorem charpoly_rhoH {O : Type} [CommRing O] [StarRing O] {d : ℕ} (B : Germ.FB K d O) (a : O) :
     (rhoH B a).charpoly = (rho B a).charpoly * (rho B (star a)).charpoly := by
   classical
@@ -157,6 +208,17 @@ theorem charpoly_rhoH {O : Type} [CommRing O] [StarRing O] {d : ℕ} (B : Germ.F
 
 end PositivityTheory.Xgn.HodgeCharacterGeneric
 
+/- English proof (translation)
+Introduce `E _ _ _ K _ _ d r B ρ hρ h hdim`. Establish `hinj : ∀ s : E →+* K, Function.Injective (s.comp ((algebraMap (𝓞 E) E).comp (starRingEnd (𝓞 E))))` using `fun s x y hxy => star_injective (IsFractionRing.injective (𝓞 E) E (s.injective hxy))`. Set `φ : (E →+* K) → (E →+* K)` to `fun s => IsFractionRing.lift (hinj s)`. Establish `hφ : ∀ s (x : 𝓞 E), φ s (algebraMap (𝓞 E) E x) = s (algebraMap (𝓞 E) E (star x))` using `fun s x => IsFractionRing.lift_algebraMap (hinj s) x`. Establish `hφφ : ∀ s, φ (φ s) = s` using `fun s => IsFractionRing.ringHom_ext (A := 𝓞 E) fun x => by rw [hφ, hφ, star_star]`.
+
+Establish `hbij : Function.Bijective φ` using `Function.Involutive.bijective hφφ`. Establish `hsum : ∀ s, Module.finrank K (HT.eigSp ρ s) + Module.finrank K (HT.eigSp ρ (φ s)) = r` using `fun s => hdim s (φ s) fun a => hφ s a`. Establish `hrho : ∀ a, (rho B a).charpoly = (ρ a).charpoly`. Introduce `a`. Rewrite using `[← Matrix.charpoly_toLin']`.
+
+Use `congr 1`. Conclude with `LinearMap.ext fun v => by rw [Matrix.toLin'_apply, hρ]`. Take `⟨hc, -⟩` from `PositivityTheory.Xgn.HodgeCharacterGeneric.charpoly_eq h ρ`. Introduce `a`. Rewrite using `[PositivityTheory.Xgn.HodgeCharacterGeneric.charpoly_rhoH, hrho, hrho, hc, hc, PositivityTheory.Xgn.HodgeCharacterGeneric.charpoly_lmul h, ← Finset.prod_pow]`.
+
+Establish `h2 : ∏ s : E →+* K, (Polynomial.X - Polynomial.C (s ((star a : 𝓞 E) : E))) ^ Module.finrank K (HT.eigSp ρ s) = ∏ s : E →+* K, (Polynomial.X - Polynomial.C (s (a : E))) ^ Module.finrank K (HT.eigSp ρ (φ s))`. Use `symm`. Use `Fintype.prod_bijective φ hbij _ _ fun s => ?_` and prove the remaining obligations. Use `hφ s (star a)` as an intermediate fact. Rewrite `this` using `[star_star]`.
+
+Simplify using `only [this]`. Rewrite using `[h2, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_add, hsum s]`.
+-/
 theorem PositivityTheory.Xgn.hodge_character_generic : ∀ (E : Type) [Field E] [NumberField E] [StarRing (𝓞 E)] (K : Type) [Field K] [CharZero K] (d r : ℕ) (B : Germ.FB K d (𝓞 E)) (ρ : 𝓞 E →+* Module.End K (Fin d → K)), (∀ a v, ρ a v = (rho B a).mulVec v) → Nat.card (E →+* K) = Module.finrank ℚ E → (∀ s s' : E →+* K, (∀ a : 𝓞 E, s' (a : E) = s ((star a : 𝓞 E) : E)) → Module.finrank K (HT.eigSp ρ s) + Module.finrank K (HT.eigSp ρ s') = r) → HChar B r := by
   classical
   intro E _ _ _ K _ _ d r B ρ hρ h hdim

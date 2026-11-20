@@ -15,11 +15,17 @@ def ClassSec : Prop := ∀ (R : Type) [CommRing R] (X : Scheme.{0})
   ∀ (F : Shv R) (n : ℤ),
   Nonempty (CohomologyClass (LateralTheory.E.LocSecPf.pt R X) (res R F) n ≃+ (LateralTheory.E.LeafLocPf.secCx F X).homology n)
 
+/- English proof (translation)
+Introduce `R _ X F n`. Take `⟨e, he⟩` from `h1 R X`. Conclude with `h2 R X e he F n`.
+-/
 theorem locSecB_of (h1 : HomSec) (h2 : ClassSec) : LateralTheory.E.LocSecPf.LocSecB := by
   intro R _ X F n
   obtain ⟨e, he⟩ := h1 R X
   exact h2 R X e he F n
 
+/- English proof (translation)
+The claim follows from `LateralTheory.E.LocSecPf.LocSec_of LateralTheory.E.LocSecPfA.locSecA (locSecB_of h1 h2)`.
+-/
 theorem LocSec_of (h1 : HomSec) (h2 : ClassSec) : LateralTheory.E.LeafLocPf.LocSec :=
   LateralTheory.E.LocSecPf.LocSec_of LateralTheory.E.LocSecPfA.locSecA (locSecB_of h1 h2)
 

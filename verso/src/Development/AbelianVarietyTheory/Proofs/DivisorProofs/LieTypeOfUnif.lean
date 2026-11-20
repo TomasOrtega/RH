@@ -11,6 +11,11 @@ namespace GlobalTheory.LieEigenspaceFinrank
 
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] {y : Sp ℂ ⟶ S} {g : ℕ} {e : (Fin g → ℂ) → (Over.mk y ⟶ G)}
 
+/- English proof (translation)
+Rewrite using `[mem_eigSp]`. Prove the components needed by the constructor for the conclusion. Introduce `h c`. Rewrite using `[hτ]`. Conclude with `(expDer_eigen_iff he (φ c) (act.act c) (hM c) (τ' c) w).1 (h.2 c)`.
+
+Introduce `h`. Use `⟨expDer_base he w, fun c => ?_⟩` and prove the remaining obligations. Conclude with `(expDer_eigen_iff he (φ c) (act.act c) (hM c) (τ' c) w).2 (by rw [← hτ]; exact h c)`.
+-/
 theorem isLieEigen_iff (he : IsExp y e) {F : Type} [Field F] [NumberField F]
     (φ : 𝓞 F →+* Matrix (Fin g) (Fin g) ℂ) (act : OAct (𝓞 F) G)
     (hM : ∀ c z, e (φ c *ᵥ z) = e z ≫ act.act c) (τ : F →+* ℂ) (τ' : 𝓞 F →+* ℂ)
@@ -25,6 +30,11 @@ theorem isLieEigen_iff (he : IsExp y e) {F : Type} [Field F] [NumberField F]
     refine ⟨expDer_base he w, fun c => ?_⟩
     exact (expDer_eigen_iff he (φ c) (act.act c) (hM c) (τ' c) w).2 (by rw [← hτ]; exact h c)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, hz⟩`. Establish `hu' : u = fun i => expDer he (c i • w i)`. Use function extensionality and compare the values at `i`. Conclude with `Over.OverMorphism.ext (by rw [hu i, expDer_smul he])`.
+
+Rewrite `hz` using `[hu', expDer_prod he (fun i => c i • w i)]`. Conclude with `expDer_injective he hz`. Introduce `hz`. Use `⟨fun i => expDer he (c i • w i), fun i => expDer_smul he _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[expDer_prod he (fun i => c i • w i), hz]`.
+-/
 theorem comb_iff (he : IsExp y e) {n : ℕ} (w : Fin n → Fin g → ℂ) (c : Fin n → ℂ) (z : Fin g → ℂ) :
     (∃ u : Fin n → (epsPt y ⟶ G), (∀ i, (u i).left = spMap (epsScale (c i)) ≫ (expDer he (w i)).left) ∧
       expDer he z = (List.ofFn u).prod) ↔ z = ∑ i, c i • w i := by
@@ -39,6 +49,15 @@ theorem comb_iff (he : IsExp y e) {n : ℕ} (w : Fin n → Fin g → ℂ) (c : F
     refine ⟨fun i => expDer he (c i • w i), fun i => expDer_smul he _ _, ?_⟩
     rw [expDer_prod he (fun i => c i • w i), hz]
 
+/- English proof (translation)
+Take `⟨v, hv, hb⟩` from `h`. Use `choose w hw using fun i => expDer_surj he (v i) (hv i).1`. Take `rfl : v = fun i => expDer he (w i)` from `funext fun i => (hw i).symm`. Establish `hwm : ∀ i, w i ∈ eigSp φ τ` using `fun i => (isLieEigen_iff he φ act hM τ τ' hτ _).1 (hv i)`. Establish `key : ∀ z ∈ eigSp φ τ, ∃! c : Fin n → ℂ, z = ∑ i, c i • w i`.
+
+Introduce `z hz`. Use `hb _ ((isLieEigen_iff he φ act hM τ τ' hτ z).2 hz)` as an intermediate fact. Simplify `this` using `only [comb_iff he w]`. Set `L : (Fin n → ℂ) →ₗ[ℂ] eigSp φ τ` to `Fintype.linearCombination ℂ (fun i => (⟨w i, hwm i⟩ : eigSp φ τ))`. Establish `hL : ∀ c, (L c : Fin g → ℂ) = ∑ i, c i • w i`.
+
+Introduce `c`. Simplify using `[L, Fintype.linearCombination_apply]`. Establish `hbij : Function.Bijective L`. Rewrite using `[Function.bijective_iff_existsUnique]`. Introduce `z`.
+
+Take `⟨c, hc, hu⟩` from `key z.1 z.2`. Use `⟨c, Subtype.ext (by rw [hL]; exact hc.symm), fun c' hc' => hu c' ?_⟩` and prove the remaining obligations. Conclude with `(congrArg Subtype.val hc').symm.trans (hL c')`. Rewrite using `[← (LinearEquiv.ofBijective L hbij).finrank_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem finrank_eigSp (he : IsExp y e) {F : Type} [Field F] [NumberField F]
     (φ : 𝓞 F →+* Matrix (Fin g) (Fin g) ℂ) (act : OAct (𝓞 F) G)
     (hM : ∀ c z, e (φ c *ᵥ z) = e z ≫ act.act c) (τ : F →+* ℂ) (τ' : 𝓞 F →+* ℂ)
@@ -65,6 +84,13 @@ theorem finrank_eigSp (he : IsExp y e) {F : Type} [Field F] [NumberField F]
   rw [← (LinearEquiv.ofBijective L hbij).finrank_eq]
   simp
 
+/- English proof (translation)
+Establish `he : IsExp (G` using `o.A) (𝟙 (Sp ℂ)) e := hU.2.2.1`. Establish `hM : ∀ (a : D.O) z, e (ρ a *ᵥ z) = e z ≫ o.act.act a` using `hU.2.2.2.2.1`. Establish `hx : 𝟙 (Sp ℂ) ≫ spMap σ = spMap σ` using `Category.id_comp _`. Establish `hM' : ∀ (c : 𝓞 D.F) z, e ((ρ.comp (algebraMap (𝓞 D.F) D.O)) c *ᵥ z) = e z ≫ (o.act.toF D).act c` using `fun c z => hM _ z`. Use `⟨fun i => ?_, fun u hu => ?_⟩` and prove the remaining obligations.
+
+Conclude with `finrank_eigSp (G := o.A) he _ (o.act.toF D) hM' (τ i) (σ.comp (b.t i)) (hτ i) _ (o.lieRank ℂ (𝟙 _) σ hx i)`. Take `⟨v, hv, hprod⟩` from `o.lie ℂ σ (𝟙 _) hx (expDer (G := o.A) he u) ⟨expDer_base he u, (expDer_eigen_iff (G := o.A) he _ _ (hM _) (σ b.ρ) u).2 hu⟩ choose w hw using fun i => expDer_surj (G := o.A) he (v i) (hv i 0).1`. Take `rfl : v = fun i => expDer (G` from `o.A) he (w i) := funext fun i => (hw i).symm`. Establish `hu' : u = ∑ i, w i` using `expDer_injective he (hprod.trans (expDer_prod he w))`. Rewrite using `[hu']`.
+
+Use `Submodule.sum_mem _ fun i _ => Submodule.mem_iSup_of_mem i ?_` and prove the remaining obligations. Conclude with `(isLieEigen_iff (G := o.A) he _ (o.act.toF D) hM' (τ i) (σ.comp (b.t i)) (hτ i) _).1 ⟨(hv i 0).1, fun c => (hv i c).2⟩`.
+-/
 theorem lie_type_of_unif (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ)
     (σ : R →+* ℂ) (ρ : D.O →+* Matrix (Fin D.g) (Fin D.g) ℂ) (o : Obj b N (spMap σ))
     (h : SmoothOfRelativeDimension D.g o.A.hom) (hL : (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left).IsLB)

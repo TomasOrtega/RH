@@ -15,10 +15,16 @@ def ordAt (y : (Af E)ˣ) (w : HeightOneSpectrum (𝓞 E)) : ℕ := (-WithZero.lo
 
 def idealOf (y : (Af E)ˣ) : Ideal (𝓞 E) := ∏ᶠ w : HeightOneSpectrum (𝓞 E), w.asIdeal ^ ordAt y w
 
+/- English proof (translation)
+Use `filter_upwards [(FiniteAdeleRing.isUnit_iff.1 y.isUnit).2] with w hw`. Simplify using `[ordAt, hw]`.
+-/
 theorem ordAt_eventually (y : (Af E)ˣ) : ∀ᶠ w in Filter.cofinite, ordAt y w = 0 := by
   filter_upwards [(FiniteAdeleRing.isUnit_iff.1 y.isUnit).2] with w hw
   simp [ordAt, hw]
 
+/- English proof (translation)
+Use `ordAt_eventually y` as an intermediate fact. Rewrite `this` using `[Filter.eventually_cofinite]`. Use `this.subset fun v hv h1 => hv ?_` and prove the remaining obligations. Simplify using `[h1]`.
+-/
 theorem finite_pow (y : (Af E)ˣ) :
     (Function.mulSupport fun w : HeightOneSpectrum (𝓞 E) => w.asIdeal ^ ordAt y w).Finite := by
   have := ordAt_eventually y
@@ -26,6 +32,11 @@ theorem finite_pow (y : (Af E)ˣ) :
   refine this.subset fun v hv h1 => hv ?_
   simp [h1]
 
+/- English proof (translation)
+Establish `h0` using `IdeleModule.coord_ne y w`. Establish `: WithZero.log (Valued.v ((y : Af E) w)) ≤ 0`. Rewrite using `[← WithZero.exp_le_exp, WithZero.exp_log h0, WithZero.exp_zero]`. Conclude with `h`. Unfold `ordAt`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem ordAt_cast {y : (Af E)ˣ} {w : HeightOneSpectrum (𝓞 E)} (h : Valued.v ((y : Af E) w) ≤ 1) :
     (ordAt y w : ℤ) = -WithZero.log (Valued.v ((y : Af E) w)) := by
   have h0 := IdeleModule.coord_ne y w
@@ -34,6 +45,11 @@ theorem ordAt_cast {y : (Af E)ˣ} {w : HeightOneSpectrum (𝓞 E)} (h : Valued.v
   unfold ordAt
   omega
 
+/- English proof (translation)
+Unfold `idealOf modF`. Rewrite using `[map_finprod Ideal.absNorm (finite_pow y)]`. Establish `hf : (Function.mulSupport fun w : HeightOneSpectrum (𝓞 E) => Ideal.absNorm (w.asIdeal ^ ordAt y w)).Finite` using `(finite_pow y).subset fun w hw h1 => hw (by simp only [h1, map_one])`. Use `map_finprod (Nat.castRingHom ℝ) hf` as an intermediate fact. Simplify using `only [eq_natCast] at this`.
+
+Rewrite using `[this, ← finprod_inv_distrib]`. Use `finprod_congr fun w => ?_` and prove the remaining obligations. Rewrite using `[map_pow, Nat.cast_pow, ← zpow_natCast, ordAt_cast (h w), zpow_neg, inv_inv]`.
+-/
 theorem modF_eq {y : (Af E)ˣ} (h : ∀ w, Valued.v ((y : Af E) w) ≤ 1) :
     modF y = ((Ideal.absNorm (idealOf y) : ℕ) : ℝ)⁻¹ := by
   unfold idealOf modF
@@ -46,6 +62,11 @@ theorem modF_eq {y : (Af E)ˣ} (h : ∀ w, Valued.v ((y : Af E) w) ≤ 1) :
   refine finprod_congr fun w => ?_
   rw [map_pow, Nat.cast_pow, ← zpow_natCast, ordAt_cast (h w), zpow_neg, inv_inv]
 
+/- English proof (translation)
+Establish `h1 : (idealOf y : FractionalIdeal (𝓞 E)⁰ E) = ∏ᶠ v : HeightOneSpectrum (𝓞 E), (v.asIdeal : FractionalIdeal (𝓞 E)⁰ E) ^ (ordAt y v : ℤ)`. Use `map_finprod (FractionalIdeal.coeIdealHom (𝓞 E)⁰ E) (finite_pow y)` as an intermediate fact. Simplify using `only [map_pow, FractionalIdeal.coeIdealHom_apply] at this`. Simplify using `only [zpow_natCast]`. Conclude with `this`.
+
+Rewrite using `[h1, FractionalIdeal.count_finprod]`. Use `filter_upwards [ordAt_eventually y] with v hv`. Simplify using `[hv]`.
+-/
 theorem count_idealOf (y : (Af E)ˣ) (w : HeightOneSpectrum (𝓞 E)) :
     FractionalIdeal.count E w (idealOf y : FractionalIdeal (𝓞 E)⁰ E) = ordAt y w := by
   have h1 : (idealOf y : FractionalIdeal (𝓞 E)⁰ E) =
@@ -58,6 +79,9 @@ theorem count_idealOf (y : (Af E)ˣ) (w : HeightOneSpectrum (𝓞 E)) :
   filter_upwards [ordAt_eventually y] with v hv
   simp [hv]
 
+/- English proof (translation)
+Establish `h1` using `count_idealOf y w`. Rewrite `h1` using `[e, count_idealOf, ordAt_cast (h w), ordAt_cast (h' w), neg_inj]`. Rewrite using `[← WithZero.exp_log (IdeleModule.coord_ne y w), ← h1, WithZero.exp_log (IdeleModule.coord_ne y' w)]`.
+-/
 theorem val_eq_of_idealOf_eq {y y' : (Af E)ˣ} (h : ∀ w, Valued.v ((y : Af E) w) ≤ 1)
     (h' : ∀ w, Valued.v ((y' : Af E) w) ≤ 1) (e : idealOf y = idealOf y') (w : HeightOneSpectrum (𝓞 E)) :
     Valued.v ((y : Af E) w) = Valued.v ((y' : Af E) w) := by
@@ -69,6 +93,9 @@ end GlobalTheory.CMVal.IdeleIdeal
 
 open GlobalTheory.CMVal.IdeleIdeal in
 
+/- English proof (translation)
+Introduce `E _ _`. Use `⟨fun J => if h : ∃ y : (Af E)ˣ, (∀ w, Valued.v ((y : Af E) w) ≤ 1) ∧ idealOf y = J then h.choose else 1, fun y hy => ⟨idealOf y, modF_eq hy, fun w => ?_⟩⟩` and prove the remaining obligations. Establish `h : ∃ y' : (Af E)ˣ, (∀ w, Valued.v ((y' : Af E) w) ≤ 1) ∧ idealOf y' = idealOf y` using `⟨y, hy, rfl⟩`. Simplify using `only [dif_pos h]`. Rewrite using `[Units.val_mul, mul_coord, inv_coord, map_mul, map_inv₀, val_eq_of_idealOf_eq h.choose_spec.1 hy h.choose_spec.2 w, inv_mul_cancel₀ (IdeleModule.coord_ne y w)]`.
+-/
 theorem GlobalTheory.CMVal.exists_idele_section_of_ideal : ∀ (E : Type) [Field E] [NumberField E] , ∃ g : Ideal (𝓞 E) → (Af E)ˣ, ∀ y : (Af E)ˣ, (∀ w, Valued.v ((y : Af E) w) ≤ 1) → ∃ J : Ideal (𝓞 E), modF y = ((Ideal.absNorm J : ℕ) : ℝ)⁻¹ ∧ ∀ w, Valued.v ((((g J)⁻¹ * y : (Af E)ˣ) : Af E) w) = 1 := by
   intro E _ _
   classical

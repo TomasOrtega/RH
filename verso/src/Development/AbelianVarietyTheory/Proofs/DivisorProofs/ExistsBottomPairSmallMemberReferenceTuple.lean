@@ -28,6 +28,21 @@ namespace GlobalTheory.BotPairSmall
 
 open GlobalTheory.BotPairSmall in
 
+/- English proof (translation)
+Introduce `D T L sc μ₀ hL G hb δ t0 hc ht i j χα hα χν hν hn`. Take `⟨h1, h2, h3⟩` from `ranks_exact D i j`. Establish `hd : Even (botBig D i j + botSmall D i j)` using `⟨halfRank D i j - (D.R.m - (j + 1)) / 2 - (D.R.m - j) / 2, by omega⟩`. Take `⟨e0, hv, h0⟩` from `GlobalTheory.Vacuum.exists_vacuum D ⊤ δ hc t0 ht (botSmall D i j) (botBig D i j + botSmall D i j) (hd.mul_left _)`. Take `⟨W, hW1, hW2, hW3, hW4⟩` from `GlobalTheory.FinWeil.exists_weil_of_vacuum D ⊤ δ hc _ _ e0 hv.1 h0 χα χν`.
+
+Establish `hm` using `condE_ne_bot G.pl`. Establish `hcop` using `GlobalTheory.FunObj.SqNum.condE_sup_conj G.pl`. Establish `hcond : ∀ u : (AE D)ˣ, IntU D u → (u : AE D) - 1 ∈ hatId D (condE G.pl * D.host.conj • condE G.pl) → W.chV'.f u = 1`. Introduce `u hu h`. Rewrite using `[hW2, hν, GlobalTheory.BotPairSmall.CondNu.nuH_inv_eq_one_of_cong hL G i j u hu h]`.
+
+Take `⟨R, hR1, hR2⟩` from `GlobalTheory.CongReps.exists_reps D (botSmall D i j) _ (conj_smul_ne_bot D hm)`. Establish `hTT` using `GlobalTheory.BotPairSmall.cvec_conj_mem_TT D δ t0 hc ht _ _ hd e0 hv W hW3 hW4 _ hm hcop hcond (botBig D i j) rfl`. Establish `hK` using `GlobalTheory.T.weilAction_cosetVector_fixed_principalCongruence D δ t0 hc ht _ _ hd e0 hv W hW3 hW4 _ hm hcop hcond (botBig D i j) rfl`. Establish `hS` using `GlobalTheory.StdSumFix.stdSum_fix_eig D δ _ _ e0 W _ _ hTT hK R hR1 hR2`. Establish `hN` using `GlobalTheory.ModulusNorm.absNorm_condE G.pl`.
+
+Establish `hidx` using `GlobalTheory.BotPairSmall.blockJ_relIndex D (condE G.pl) hm (botBig D i j) (botBig D i j + botSmall D i j)`. Establish `hQ : 1 ≤ levQ G.pl`. Rewrite using `[← hN]`. Conclude with `Nat.one_le_iff_ne_zero.2 (Ideal.absNorm_eq_zero_iff.not.2 hm)`. Establish `heig : ∀ h ∈ blockJ D (condE G.pl) (botBig D i j) (botBig D i j + botSmall D i j), ∃ c : ℂ, ‖c‖ = 1 ∧ W.Om 1 h (∑ r ∈ R, W.Om r 1 (cvec D δ (D.host.conj • condE G.pl) (botBig D i j) (botSmall D i j) (botBig D i j + botSmall D i j) e0)) = c • ∑ r ∈ R, W.Om r 1 (cvec D δ (D.host.co …`.
+
+Introduce `h hh`. Take `⟨k, hk, c, hc1, e⟩` from `GlobalTheory.T.cosetVector_blockLevel_unimodular_eigen D δ t0 hc ht _ _ hd e0 hv W hW3 hW4 _ hm hcop hcond (botBig D i j) rfl h hh`. Conclude with `⟨c, hc1, hS.2 h k c hk e⟩`. Use `⟨{ crv := hc, pt0 := ht, a := botSmall D i j, d := botBig D i j + botSmall D i j, a_le := Nat.le_add_left _ _, d_even := hd, e0 := e0, vac := hv, W := W, n := fun τ => ((χν.n τ - ((botBig D i j + botSmall D i j : ℕ) : ℤ)) / 2).toNat, wt := ?_, F := ∑ r ∈ R, W.Om r 1 (cvec D δ (D. …` and prove the remaining obligations. Introduce `τ show 2 * (((χν.n τ - ((botBig D i j + botSmall D i j : ℕ) : ℤ)) / 2).toNat : ℤ) = W.ep' * W.chV'.n τ - _`.
+
+Rewrite using `[hW4, hW2]`. Take `⟨r, hr⟩` from `χν.par τ`. Use `hn τ` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `show W.chV.f x ^ W.ep = _`.
+
+Rewrite using `[hW3, zpow_one, hW1, hα]`. Use `show W.chV'.f x ^ W.ep' = _`. Rewrite using `[hW4, zpow_one, hW2, hν]`.
+-/
 theorem smallPair_exists : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T}, L.Is μ₀ → ∀ (G : GridData L sc), IsCoprime (D.host.conj • condE G.pl) D.host.𝔟 → ∀ {δ t0 : ℂ}, Crv D ⊤ δ → GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D ⊤ δ) t0 → ∀ (i j : Fin D.R.m) (χα : HeckeU D (botSmall D i j)), (∀ x, χα.f x = (alphaH L μ₀ i j).1 (finIdl D x)) → ∀ (χν : HeckeU D (botBig D i j + botSmall D i j)), (∀ x, χν.f x = (nuH G μ₀ i j)⁻¹.1 (finIdl D x)) → (∀ τ, ((botBig D i j + botSmall D i j : ℕ) : ℤ) ≤ χν.n τ) → ∃ P' : GlobalTheory.NormSum.Pair D ⊤ δ t0 (levQ G.pl), P'.a = botSmall D i j ∧ P'.d = botBig D i j + botSmall D i j ∧ HasChars P' (alphaH L μ₀ i j) (nuH G μ₀ i j)⁻¹ ∧ IsStdDatum P' (D.host.conj • condE G.pl) (botBig D i j) ∧ IsBlockLevel P' (condE G.pl) (botBig D i j) := by
   intro D T L sc μ₀ hL G hb δ t0 hc ht i j χα hα χν hν hn
   obtain ⟨h1, h2, h3⟩ := ranks_exact D i j

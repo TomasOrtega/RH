@@ -20,6 +20,11 @@ noncomputable section
 
 namespace GlobalTheory.TrueGeo.ReadPts
 
+/- English proof (translation)
+Introduce `F _ _ Y P M π hπ y x hx hxy`. Take `⟨y', hy', rfl⟩` from `GlobalTheory.TrueGeo.NefModel.exists_isClosed P hx`. Establish `: IsPreimmersion (spMap (algebraMap (𝓞 F) F))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 F))`. Establish `: IsPreimmersion M.j` using `MorphismProperty.of_isPullback M.pb.flip this`. Establish `h : M.j y' = M.j y`.
+
+Rewrite using `[← hxy, ← hπ, Scheme.Hom.comp_apply]`. Take `rfl` from `M.j.isEmbedding.injective h`. Conclude with `⟨rfl, hy'⟩`.
+-/
 theorem eq_j_and_isClosed : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (P M : TrueGeo.Model Y) (π : P.X ⟶ M.X), P.j ≫ π = M.j → ∀ (y : Y.X) (x : P.X), IsAlgPt x → π x = M.j y → x = P.j y ∧ IsClosed ({y} : Set Y.X) := by
   intro F _ _ Y P M π hπ y x hx hxy
   obtain ⟨y', hy', rfl⟩ := GlobalTheory.TrueGeo.NefModel.exists_isClosed P hx

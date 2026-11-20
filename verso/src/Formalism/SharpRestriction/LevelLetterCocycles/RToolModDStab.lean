@@ -22,11 +22,17 @@ section DStab
 
 variable (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
+/- English proof (translation)
+Use `show W.γD T g (a • x) = letγ (W.γ₀ g) a • W.γD T g x`. Rewrite using `[← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul]`.
+-/
 theorem γD_smul' (g : W.Gam) (a : LetA O n) (x : W.DD T) :
     W.γD T g (a • x) = W.γA g a • W.γD T g x := by
   show W.γD T g (a • x) = letγ (W.γ₀ g) a • W.γD T g x
   rw [← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ m ih`. Take `⟨g, hg⟩` from `ih`. Conclude with `⟨1 + g + a * g, by rw [pow_succ, hg]; ring⟩`.
+-/
 theorem rToolMod_geom (a : LetA O n) (m : ℕ) : ∃ g : LetA O n, (1 + a) ^ m = 1 + a * g := by
   induction m with
   | zero => exact ⟨0, by simp⟩
@@ -34,6 +40,13 @@ theorem rToolMod_geom (a : LetA O n) (m : ℕ) : ∃ g : LetA O n, (1 + a) ^ m =
     obtain ⟨g, hg⟩ := ih
     exact ⟨1 + g + a * g, by rw [pow_succ, hg]; ring⟩
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `hπ`. Establish `hp : 2 ≤ PD.p`. Assume the negation of the conclusion as `h`. Establish `hv` using `W.v_l`. Apply the tactic sequence `rcases (show PD.p = 0 ∨ PD.p = 1 by omega) with h0 | h0 <;> rw [h0] at hv`.
+
+Rewrite `hv` using `[Nat.cast_zero, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_coe (show (⊤ : WithTop ℚ) = ((1 : ℚ) : WithTop ℚ) from hv)`. Rewrite `hv` using `[Nat.cast_one, AddValuation.map_one]`. Establish `h01 : ((0 : ℚ) : WithTop ℚ) = ((1 : ℚ) : WithTop ℚ)` using `hv`. Conclude with `absurd (WithTop.coe_inj.mp h01) (by norm_num)`.
+
+Establish `hp1 : PD.p - 1 ≠ 0` using `by omega`. Use `IsUnit.pow m ?_` and prove the remaining obligations. Use `Pi.isUnit_iff.mpr fun i => ?_` and prove the remaining obligations. Use `PowerSeries.isUnit_iff_constantCoeff.mpr ?_` and prove the remaining obligations. Simplify using `[hw, letπ, zero_pow hp1]`.
+-/
 theorem rToolMod_unit (hπ : ∃ w : (LetA O n)ˣ, W.π₀ = (w : LetA O n) * letπ ^ (PD.p - 1))
     (t : LetA O n) (m : ℕ) : IsUnit ((1 + W.π₀ * t) ^ m) := by
   obtain ⟨w, hw⟩ := hπ
@@ -52,12 +65,64 @@ theorem rToolMod_unit (hπ : ∃ w : (LetA O n)ˣ, W.π₀ = (w : LetA O n) * le
   refine PowerSeries.isUnit_iff_constantCoeff.mpr ?_
   simp [hw, letπ, zero_pow hp1]
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul W.EE (Formalism.MainNotions.LiftingTheory.qp W ^ m) x, smul_smul, map_pow, ← mul_pow, Ring.inverse_mul_cancel _ hqU, one_pow, one_smul]`.
+-/
 theorem rToolMod_qi_q (hqU : IsUnit (algebraMap (LetA O n) W.EE (Formalism.MainNotions.LiftingTheory.qp W))) (m : ℕ)
     (x : W.DD T) :
     Ring.inverse (algebraMap (LetA O n) W.EE (Formalism.MainNotions.LiftingTheory.qp W)) ^ m • (Formalism.MainNotions.LiftingTheory.qp W ^ m • x) = x := by
   rw [← algebraMap_smul W.EE (Formalism.MainNotions.LiftingTheory.qp W ^ m) x, smul_smul, map_pow, ← mul_pow,
     Ring.inverse_mul_cancel _ hqU, one_pow, one_smul]
 
+/- English proof (translation)
+Unfold `DerivationPreservesQLattice`. Introduce `hA T' hT i k x hx`. Take `⟨hbij, hs, hp2⟩` from `hA`. Establish `hfin : Module.finrank K₀ K = 1`. Rewrite using `[← (LinearEquiv.ofBijective (Algebra.linearMap K₀ K) hbij).finrank_eq, Module.finrank_self]`.
+
+Take `⟨-, -, h9⟩` from `hP9 T' hT hs hp2`. Take `⟨hring, hmod⟩` from `h9 hfin`. Take `⟨-, hmod2⟩` from `hmod`. Take `⟨hπΔ, -, ⟨w₁, hw₁⟩, -, -, -, ⟨w₂, hw₂⟩, -⟩` from `hring`. Establish `hΔπ : ∀ δ ∈ W.DelF, W.γA δ W.π₀ = W.π₀` using `hπΔ`.
+
+Establish `hEat : Formalism.MainNotions.DeltaInvariantLattices.Eat (fun _ => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O)) W.π₀ = Formalism.MainNotions.LiftingTheory.qp W`. Use function extensionality and compare the values at `j`. Simplify using `[Formalism.MainNotions.DeltaInvariantLattices.Eat, Formalism.MainNotions.LiftingTheory.qp]`. Establish `hγπ : W.γA W.gam W.π₀ = W.π₀ + (w₂ : LetA O n) * W.π₀ * Formalism.MainNotions.LiftingTheory.qp W`. Rewrite using `[← hEat, ← hw₂]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hγq : W.γA W.gam (Formalism.MainNotions.LiftingTheory.qp W) = Formalism.MainNotions.LiftingTheory.qp W * (1 + W.π₀ * (w₂ : LetA O n))`. Establish `e1 : W.γA W.gam (Formalism.MainNotions.LiftingTheory.qp W) = W.γA W.gam W.π₀ + ((PD.p : ℕ) : LetA O n)`. Simplify using `only [Formalism.MainNotions.LiftingTheory.qp, map_add, map_natCast]`. Rewrite using `[e1, hγπ]`.
+
+Simplify using `only [Formalism.MainNotions.LiftingTheory.qp]`. Expand and normalize the polynomial expressions, which then agree. Establish `hΔq : ∀ δ ∈ W.DelF, W.γA δ (Formalism.MainNotions.LiftingTheory.qp W) = Formalism.MainNotions.LiftingTheory.qp W`. Introduce `δ hδ`. Simplify using `only [Formalism.MainNotions.LiftingTheory.qp, map_add, map_natCast, hΔπ δ hδ]`.
+
+Establish `ha : IsUnit (algebraMap (LetA O n) W.EE W.π₀)`. Rewrite using `[hw₁, map_mul, map_pow]`. Conclude with `(w₁.isUnit.map _).mul (W.EE_π.pow _)`. Establish `hqU : IsUnit (algebraMap (LetA O n) W.EE (Formalism.MainNotions.LiftingTheory.qp W))` using `by haveI := W.EE_complete`. Establish `hI : ((PD.p : ℕ) : W.EE) * Ring.inverse (algebraMap (LetA O n) W.EE W.π₀) ∈ Ideal.span {((PD.p : ℕ) : W.EE)}` using `Ideal.mem_span_singleton.mpr (dvd_mul_right _ _)`.
+
+Establish `hJ : ((PD.p : ℕ) : W.EE) * Ring.inverse (algebraMap (LetA O n) W.EE W.π₀) ∈ (⊥ : Ideal W.EE).jacobson` using `by first`. Consider the case `exact IsAdicComplete.le_jacobson_bot (Ideal.span {((PD.p : ℕ) : W.EE)}) hI`. Consider the case `exact IsAdicComplete.le_jacobson_bot (I := Ideal.span {((PD.p : ℕ) : W.EE)}) hI`. Consider the case `exact HenselianRing.jac (I := Ideal.span {((PD.p : ℕ) : W.EE)}) hI`. Establish `h1` using `Ideal.mem_jacobson_bot.mp hJ 1`.
+
+Establish `hinv` using `Ring.mul_inverse_cancel _ ha`. Establish `h2 : algebraMap (LetA O n) W.EE (Formalism.MainNotions.LiftingTheory.qp W) = algebraMap (LetA O n) W.EE W.π₀ * (((PD.p : ℕ) : W.EE) * Ring.inverse (algebraMap (LetA O n) W.EE W.π₀) * 1 + 1)`. Simplify using `only [Formalism.MainNotions.LiftingTheory.qp, map_add, map_natCast]`. Take the linear combination `(-((PD.p : ℕ) : W.EE)) * hinv`. Rewrite using `[h2]`.
+
+Conclude with `ha.mul h1`. Take `⟨e, he⟩ : ∃ e, e = Ring.inverse (algebraMap (LetA O n) W.EE W.π₀)` from `⟨_, rfl⟩`. Establish `hcan1 : ∀ z : W.DD T', W.π₀ • (e • z) = z`. Introduce `z`. Rewrite using `[he, ← algebraMap_smul W.EE W.π₀, smul_smul, Ring.mul_inverse_cancel _ ha, one_smul]`.
+
+Establish `hcan2 : ∀ z : W.DD T', e • (W.π₀ • z) = z`. Introduce `z`. Rewrite using `[he, ← algebraMap_smul W.EE W.π₀ z, smul_smul, Ring.inverse_mul_cancel _ ha, one_smul]`. Establish `hinj : ∀ z₁ z₂ : W.DD T', W.π₀ • z₁ = W.π₀ • z₂ → z₁ = z₂`. Introduce `z₁ z₂ h`.
+
+Rewrite using `[← hcan2 z₁, h, hcan2]`. Establish `hcomm : ∀ (b : LetA O n) (z : W.DD T'), b • (e • z) = e • (b • z)`. Introduce `b z`. Rewrite using `[← algebraMap_smul W.EE b (e • z), ← algebraMap_smul W.EE b z, smul_smul, smul_smul, mul_comm]`. Establish `hγE : ∀ δ ∈ W.DelF, W.γE δ e = e`.
+
+Introduce `δ hδ`. Establish `h3 : W.γE δ (algebraMap (LetA O n) W.EE W.π₀) = algebraMap (LetA O n) W.EE W.π₀`. Rewrite using `[W.γE_ext]`. Conclude with `congrArg (algebraMap (LetA O n) W.EE) (hΔπ δ hδ)`. Rewrite using `[he]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Ring.mul_inverse_cancel _ ha, mul_one]`. Use `_ = W.γE δ (Ring.inverse (algebraMap (LetA O n) W.EE W.π₀) * algebraMap (LetA O n) W.EE W.π₀) * Ring.inverse (algebraMap (LetA O n) W.EE W.π₀) := by rw [map_mul, h3]; ring`. Use `_ = Ring.inverse (algebraMap (LetA O n) W.EE W.π₀) := by`. Rewrite using `[Ring.inverse_mul_cancel _ ha, map_one, one_mul]`.
+
+Establish `hγsm : ∀ (g : W.Gam) (b : LetA O n) (z : W.DD T'), W.γD T' g (b • z) = W.γA g b • W.γD T' g z` using `γD_smul' W T'`. Establish `hdOp : ∀ z, Formalism.MainNotions.CrystallineLiftingInputs.dOp W T' z = e • (W.γD T' W.gam z - z)` using `fun z => by rw [he]; rfl`. Establish `hγy : ∀ (m : ℕ) (z : W.DD T'), W.γD T' W.gam (Formalism.MainNotions.LiftingTheory.qp W ^ m • z) = (1 + W.π₀ * (w₂ : LetA O n)) ^ m • (Formalism.MainNotions.LiftingTheory.qp W ^ m • W.γD T' W.gam z)`. Introduce `m z`. Rewrite using `[hγsm, map_pow, hγq, mul_pow, smul_smul, mul_comm (Formalism.MainNotions.LiftingTheory.qp W ^ m)]`.
+
+Take `⟨⟨hEx, hΔx⟩, hq⟩` from `hx`. Establish `hγE_i : W.γA W.gam (letE i : LetA O n) = letE i`. Use function extensionality and compare the values at `j`. Use `show W.γ₀ W.gam ((letE i : LetA O n) j) = (letE i : LetA O n) j`. Simplify using `only [letE, Pi.single_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Unfold `Formalism.MainNotions.CrystallineLiftingInputs.InQN Formalism.MainNotions.CrystallineLiftingInputs.DL`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hEγ : (letE i : LetA O n) • W.γD T' W.gam x = W.γD T' W.gam x`. Rewrite using `[← hγE_i, ← hγsm, hEx]`.
+
+Rewrite using `[hdOp, hcomm, smul_sub, hEγ, hEx]`. Introduce `δ hδ`. Rewrite using `[hdOp, W.γD_smul, hγE δ hδ, map_sub, ← W.γD_mul, mul_comm, W.γD_mul, hΔx δ hδ]`. Use `split_ifs at hq ⊢ with hk`. Take `⟨g, hg⟩` from `rToolMod_geom (W.π₀ * (w₂ : LetA O n)) k.toNat`.
+
+Establish `hu` using `rToolMod_unit W ⟨w₁, hw₁⟩ (w₂ : LetA O n) k.toNat`. Establish `hpg : W.π₀ * ((w₂ : LetA O n) * g) = (1 + W.π₀ * (w₂ : LetA O n)) ^ k.toNat - 1`. Rewrite using `[hg]`. Expand and normalize the polynomial expressions, which then agree. Establish `hyΔ : Formalism.MainNotions.LiftingTheory.qp W ^ k.toNat • x ∈ W.NΔ T'` using `show Formalism.MainNotions.LiftingTheory.qp W ^ k.toNat • x ∈ W.N T' ∧ ∀ δ ∈ W.DelF, W.γD T' δ (Formalism.MainNotions.LiftingTheory.qp W ^ k.toNat • x) = Formalism.MainNotions.LiftingTheory.qp W ^ k.toNat • x from ⟨hq, fun δ hδ => by rw [hγsm, map_pow, hΔq δ hδ, hΔx δ hδ]⟩`.
+
+Take `⟨x', ⟨hx'N, -⟩, hx'⟩` from `hmod2 _ hyΔ`. Establish `hx'' : W.γD T' W.gam (Formalism.MainNotions.LiftingTheory.qp W ^ k.toNat • x) - Formalism.MainNotions.LiftingTheory.qp W ^ k.toNat • x = W.π₀ • x'` using `hx'`. Establish `key : Formalism.MainNotions.LiftingTheory.qp W ^ k.toNat • Formalism.MainNotions.CrystallineLiftingInputs.dOp W T' x = (↑hu.unit⁻¹ : LetA O n) • (x' - ((w₂ : LetA O n) * g) • (Formalism.MainNotions.LiftingTheory.qp W ^ k.toNat • x))`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hdOp, smul_comm W.π₀ (Formalism.MainNotions.LiftingTheory.qp W ^ k.toNat), hcan1, smul_comm W.π₀ (↑hu.unit⁻¹ : LetA O n), smul_sub W.π₀, ← hx'', hγy, smul_smul W.π₀, hpg, sub_smul, one_smul]`.
+
+Simplify using `only [smul_sub, smul_smul, ← mul_assoc, hu.val_inv_mul, one_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[key]`. Conclude with `(W.N T').smul_mem _ ((W.N T').sub_mem hx'N ((W.N T').smul_mem _ hq))`. Take `⟨y, hyN, rfl⟩` from `hq`.
+
+Take `⟨g, hg⟩` from `rToolMod_geom (W.π₀ * (w₂ : LetA O n)) (-k).toNat`. Establish `hpg : W.π₀ * ((w₂ : LetA O n) * g) = (1 + W.π₀ * (w₂ : LetA O n)) ^ (-k).toNat - 1`. Rewrite using `[hg]`. Expand and normalize the polynomial expressions, which then agree. Establish `hyΔ' : ∀ δ ∈ W.DelF, W.γD T' δ y = y`.
+
+Introduce `δ hδ`. Establish `h1` using `hΔx δ hδ`. Rewrite `h1` using `[hγsm, map_pow, hΔq δ hδ]`. Rewrite using `[← rToolMod_qi_q W T' hqU (-k).toNat (W.γD T' δ y), h1, rToolMod_qi_q W T' hqU]`. Establish `hyΔ : y ∈ W.NΔ T'` using `show y ∈ W.N T' ∧ ∀ δ ∈ W.DelF, W.γD T' δ y = y from ⟨hyN, hyΔ'⟩`.
+
+Take `⟨x', ⟨hx'N, -⟩, hx'⟩` from `hmod2 _ hyΔ`. Establish `hx'' : W.γD T' W.gam y - y = W.π₀ • x'` using `hx'`. Use `⟨(1 + W.π₀ * (w₂ : LetA O n)) ^ (-k).toNat • x' + ((w₂ : LetA O n) * g) • y, (W.N T').add_mem ((W.N T').smul_mem _ hx'N) ((W.N T').smul_mem _ hyN), ?_⟩` and prove the remaining obligations. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hdOp, hcan1, hγy, smul_comm W.π₀ (Formalism.MainNotions.LiftingTheory.qp W ^ (-k).toNat), smul_add W.π₀, smul_comm W.π₀ ((1 + W.π₀ * (w₂ : LetA O n)) ^ (-k).toNat), ← hx'', smul_smul W.π₀, hpg, sub_smul, one_smul]`.
+
+Simplify using `only [smul_sub, smul_add, smul_smul, mul_comm]`. Normalize the expressions using the abelian group laws.
+-/
 theorem rToolMod_dStab [NeZero n] (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) : DerivationPreservesQLattice W := by
   unfold DerivationPreservesQLattice
   intro hA T' hT i k x hx

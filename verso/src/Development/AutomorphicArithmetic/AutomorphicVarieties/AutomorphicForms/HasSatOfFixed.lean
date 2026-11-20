@@ -11,6 +11,11 @@ namespace UpperTheory.V.Af
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Use `Subring.mem_iInf.2 fun v => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Pi.single w (x : w.adicCompletion F) : ∀ v : HeightOneSpectrum (𝓞 F), v.adicCompletion F) v ∈ v.adicCompletionIntegers F`. Distinguish the cases in `h : v = w`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`.
+
+Conclude with `x.2`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `zero_mem _`.
+-/
 private theorem sLoc_mem (w : HeightOneSpectrum (𝓞 F)) (x : Ov F w) : sLoc F w x ∈ Ohat F := by
   classical
   refine Subring.mem_iInf.2 fun v => ?_
@@ -29,6 +34,9 @@ private def sInt (w : HeightOneSpectrum (𝓞 F)) : Ov F w →ₙ+* Ohat F where
   map_zero' := Subtype.ext (map_zero (sLoc F w))
   map_add' x y := Subtype.ext (map_add (sLoc F w) x.1 y.1)
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.HasFixedVector.hasFixed h hU hf`.
+-/
 theorem LocIsotypic.hasFixed {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ (GL (Fin n) (Af F)) V} {w : HeightOneSpectrum (𝓞 F)}
     {σ : SmIrr (GL (Fin n) (w.adicCompletion F))} (h : LocIsotypic ρ w σ)

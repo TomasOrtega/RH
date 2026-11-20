@@ -12,6 +12,11 @@ section pw
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i a`. Simplify using `only [U.hMat, U.wP, C2.monoP, Matrix.mul_diagonal, Matrix.of_apply]`. Distinguish the cases in `h : σ i = a`. Establish `h' : i = σ.symm a` using `by rw [← h, Equiv.symm_apply_apply]`. Simplify using `[h, h']`.
+
+Establish `h' : ¬ i = σ.symm a` using `fun hh => h (by rw [hh, Equiv.apply_symm_apply])`. Simplify using `[h, h']`.
+-/
 theorem hMat_monoP (σ : Equiv.Perm (Fin r)) (d : Fin r → ℂ) : U.hMat σ d = C2.monoP σ.symm d := by
   ext i a
   simp only [U.hMat, U.wP, C2.monoP, Matrix.mul_diagonal, Matrix.of_apply]
@@ -21,18 +26,27 @@ theorem hMat_monoP (σ : Equiv.Perm (Fin r)) (d : Fin r → ℂ) : U.hMat σ d =
   · have h' : ¬ i = σ.symm a := fun hh => h (by rw [hh, Equiv.apply_symm_apply])
     simp [h, h']
 
+/- English proof (translation)
+Establish `h` using `StabilizerDisintegration.UC.permutationMatrix_mul_lowerUnipotent (σ := σ) (fun q => v (StabilizerDisintegration.UC.iota σ q))`. Simplify using `only [Equiv.apply_symm_apply] at h`. Rewrite using `[U.headH, h, Matrix.mul_assoc (StabilizerDisintegration.lowP σ.symm _) (U.wP σ), ← U.hMat, hMat_monoP]`.
+-/
 theorem headH_eq (σ : Equiv.Perm (Fin r)) (d : Fin r → ℂ) (v : U.LW σ → ℂ) (u : G.UT r → ℂ) :
     U.headH σ d v u = StabilizerDisintegration.lowP σ.symm (fun q => v (StabilizerDisintegration.UC.iota σ q)) * C2.monoP σ.symm d * G.upper u := by
   have h := StabilizerDisintegration.UC.permutationMatrix_mul_lowerUnipotent (σ := σ) (fun q => v (StabilizerDisintegration.UC.iota σ q))
   simp only [Equiv.apply_symm_apply] at h
   rw [U.headH, h, Matrix.mul_assoc (StabilizerDisintegration.lowP σ.symm _) (U.wP σ), ← U.hMat, hMat_monoP]
 
+/- English proof (translation)
+Unfold `C2.psiC`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Simplify using `only [mul_add, Complex.add_re, Complex.ofReal_add]`.
+-/
 theorem psiC_add (c x y : ℂ) : C2.psiC c (x + y) = C2.psiC c x * C2.psiC c y := by
   unfold C2.psiC
   rw [← Complex.exp_add]
   congr 1
   simp only [mul_add, Complex.add_re, Complex.ofReal_add]
 
+/- English proof (translation)
+Establish `key : ∀ t : ℝ, Complex.exp (Complex.I * t) * star (Complex.exp (Complex.I * t)) = 1`. Introduce `t`. Rewrite using `[Complex.star_def, ← Complex.exp_conj, ← Complex.exp_add, map_mul, Complex.conj_I, Complex.conj_ofReal]`. Rewrite using `[show Complex.I * (t : ℂ) + -Complex.I * (t : ℂ) = 0 by ring, Complex.exp_zero]`. Conclude with `key _`.
+-/
 theorem psiC_star_mul (c x : ℂ) : C2.psiC c x * star (C2.psiC c x) = 1 := by
   have key : ∀ t : ℝ, Complex.exp (Complex.I * t) * star (Complex.exp (Complex.I * t)) = 1 := by
     intro t
@@ -50,6 +64,13 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
 def Amat (σ : Equiv.Perm (Fin r)) (d : Fin r → ℂ) (x0 : C2.Lstidx σ.symm → ℂ) : Matrix (Fin r) (Fin r) ℂ :=
   (C2.monoP σ.symm d)⁻¹ * StabilizerDisintegration.lowS σ.symm x0 * C2.monoP σ.symm d
 
+/- English proof (translation)
+Use `⟨fun i j hji => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l _`. Break down `lt_or_ge l i with hl | hl` into its components or cases.
+
+Rewrite using `[hA.1 i l hl, zero_mul]`. Rewrite using `[hB.1 l j (lt_of_lt_of_le hji hl), mul_zero]`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[hA.2 i, hB.2 i, mul_one]`. Introduce `l _ hl`.
+
+Break down `lt_or_gt_of_ne hl with hl' | hl'` into its components or cases. Rewrite using `[hA.1 i l hl', zero_mul]`. Rewrite using `[hB.1 l i hl', mul_zero]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`.
+-/
 private theorem mul_mem_utset_of_mem {m : ℕ} {A B : Matrix (Fin m) (Fin m) ℂ} (hA : A ∈ C2.UTset m)
     (hB : B ∈ C2.UTset m) : A * B ∈ C2.UTset m := by
   refine ⟨fun i j hji => ?_, fun i => ?_⟩
@@ -68,6 +89,37 @@ private theorem mul_mem_utset_of_mem {m : ℕ} {A B : Matrix (Fin m) (Fin m) ℂ
     · intro hi
       exact absurd (Finset.mem_univ i) hi
 
+/- English proof (translation)
+Take `⟨x0, ⟨⟨y, y'⟩, ⟨⟨a, b⟩, ⟨v, u⟩⟩⟩⟩` from `p`. Establish `hhL : Matrix.of h ∈ UWset k (r + 0) (liftVec k r 0 z0)` using `hz ▸ hh`. Establish `hhL' : Matrix.of h' ∈ UWset k (r + 0) (liftVec k r 0 z0')` using `hz' ▸ hh'`. Establish `hY` using `uw_mid r 0 z0 _ hhL`. Establish `hY'` using `uw_mid r 0 z0' _ hhL'`.
+
+Establish `hYu : IsUnit (midB r 0 (Matrix.of h)).det` using `Formalism.FourierDecayAlt.P.PBG.isUnit_det_of_UH hY.1`. Establish `hY'u : IsUnit (midB r 0 (Matrix.of h')).det` using `Formalism.FourierDecayAlt.P.PBG.isUnit_det_of_UH hY'.1`. Establish `hAm : Amat σ d x0 ∈ C2.UTset r` using `conjS_UT hd x0`. Establish `hAmi : (Amat σ d x0)⁻¹ ∈ C2.UTset r` using `ut_inv_mem hAm`. Establish `hup : G.upper u ∈ C2.UTset r` using `StabilizerDisintegration.UC.upper_mem u`.
+
+Establish `hprod : (Amat σ d x0)⁻¹ * G.upper u ∈ C2.UTset r` using `mul_mem_utset_of_mem hAmi hup`. Establish `hV' : G.upper (StabilizerDisintegration.utc ((Amat σ d x0)⁻¹ * G.upper u)) = (Amat σ d x0)⁻¹ * G.upper u` using `ut_of_mem hprod`. Establish `hAmu : IsUnit (Amat σ d x0).det` using `ut_det hAm`. Establish `hZu : IsUnit (U.hMat σ d).det`. Rewrite using `[U.hMat, Matrix.det_mul, Matrix.det_diagonal]`.
+
+Conclude with `(Formalism.FourierDecayAlt.P.Dx2.SL.isUnit_wP σ).mul (isUnit_iff_ne_zero.mpr (Finset.prod_ne_zero_iff.mpr fun a _ => hd a))`. Establish `hγ0u : IsUnit γ0.det` using `gv_unit hγ0`. Establish `hmat : (G.upper (StabilizerDisintegration.UC.fSp σ.symm (x0, (fun q => v (StabilizerDisintegration.UC.iota σ q)))))ᴴ * U.hMat σ d * G.upper (StabilizerDisintegration.utc ((Amat σ d x0)⁻¹ * G.upper u)) = U.headH σ d v u`. Rewrite using `[hMat_monoP, orbit_split hd, headH_eq, hV']`. Use `show _ * _ * G.upper (StabilizerDisintegration.utc (Amat σ d x0 * ((Amat σ d x0)⁻¹ * G.upper u))) = _`.
+
+Rewrite using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hAmu, Matrix.one_mul, StabilizerDisintegration.UC.utc_upper]`. Establish `hsgs : B.sgs ((h, psiR k r (rnAct (midB r 0 (Matrix.of h)) y, StabilizerDisintegration.UC.fSp σ.symm (x0, (fun q => v (StabilizerDisintegration.UC.iota σ q))))), (h', psiR k r (rnAct (midB r 0 (Matrix.of h')) y', StabilizerDisintegration.utc ((Amat σ d x0)⁻¹ * G.upper u)))) (U.mM …`. Rewrite using `[sgs_formula z0 z0' h h' hhL hhL', rnAct_inv_rnAct hYu, rnAct_inv_rnAct hY'u, hmat, gaXi_zero]`. Establish `hθ : theta0 S.z σ.symm ((h, psiR k r (rnAct (midB r 0 (Matrix.of h)) y, StabilizerDisintegration.UC.fSp σ.symm (x0, (fun q => v (StabilizerDisintegration.UC.iota σ q))))), (h', psiR k r (rnAct (midB r 0 (Matrix.of h')) y', StabilizerDisintegration.utc ((Amat σ d x0)⁻¹ * G.upper u …`. Simplify using `only [theta0, psiR, Equiv.apply_symm_apply, blkU_uMap_muP_Rn, x0c, StabilizerDisintegration.UC.utc_upper]`.
+
+Use `show chiL σ.symm ((StabilizerDisintegration.UC.eSp σ.symm).symm (StabilizerDisintegration.UC.eSp σ.symm (x0, (fun q => v (StabilizerDisintegration.UC.iota σ q))))).1 = chiL σ.symm x0`. Rewrite using `[MeasurableEquiv.symm_apply_apply]`. Establish `hUU : ∀ w : G.UT r → ℂ, Formalism.DoubleCosetMeasures.IsUpUni (G.upper w)` using `fun w => ⟨fun i j hij => (StabilizerDisintegration.UC.upper_mem w).1 i j hij, (StabilizerDisintegration.UC.upper_mem w).2⟩`. Establish `hr1 : psi k r S.z cStd (U.Rn k r 0 (rnAct (midB r 0 (Matrix.of h)) y)) = psi k r S.z cStd (U.Rn k r 0 y)`. Establish `e` using `psi_rnAct z0 cStd _ hY (rnAct (midB r 0 (Matrix.of h)) y)`.
+
+Rewrite `e` using `[rnAct_inv_rnAct hYu]`. Rewrite using `[hz]`. Conclude with `e.symm`. Establish `hr2 : psi k r S.z' cStd (U.Rn k r 0 (rnAct (midB r 0 (Matrix.of h')) y')) = psi k r S.z' cStd (U.Rn k r 0 y')`. Establish `e` using `psi_rnAct z0' cStd _ hY' (rnAct (midB r 0 (Matrix.of h')) y')`.
+
+Rewrite `e` using `[rnAct_inv_rnAct hY'u]`. Rewrite using `[hz']`. Conclude with `e.symm`. Establish `hs1 : C2.simpleUp (G.upper (StabilizerDisintegration.UC.fSp σ.symm (x0, (fun q => v (StabilizerDisintegration.UC.iota σ q))))) = C2.simpleUp (StabilizerDisintegration.lowS σ.symm x0)ᴴ + C2.simpleUp (StabilizerDisintegration.lowP σ.symm (fun q => v (StabilizerDisintegration.UC.iot …`. Rewrite using `[StabilizerDisintegration.UC.upper_fSp]`.
+
+Conclude with `simpleUp_mul (StabilizerDisintegration.UC.LT_ct (StabilizerDisintegration.UC.lowS_mem σ.symm x0).1) (StabilizerDisintegration.UC.LT_ct (StabilizerDisintegration.UC.lowerUnipotent_mem σ.symm _).1)`. Establish `hs2 : C2.simpleUp (G.upper (StabilizerDisintegration.utc ((Amat σ d x0)⁻¹ * G.upper u))) = C2.simpleUp (Amat σ d x0)⁻¹ + C2.simpleUp (G.upper u)`. Rewrite using `[hV']`. Conclude with `simpleUp_mul hAmi hup`. Establish `hMu : IsUnit (C2.monoP σ.symm d).det` using `hMat_monoP σ d ▸ hZu`.
+
+Establish `hinv : (U.hMat σ d)⁻¹ * ((StabilizerDisintegration.lowS σ.symm x0)ᴴᴴ)⁻¹ * U.hMat σ d = (Amat σ d x0)⁻¹`. Rewrite using `[Matrix.conjTranspose_conjTranspose, hMat_monoP]`. Use `show _ = ((C2.monoP σ.symm d)⁻¹ * StabilizerDisintegration.lowS σ.symm x0 * C2.monoP σ.symm d)⁻¹`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hMu]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Establish `hrelU : C2.psiC cStd (C2.simpleUp (StabilizerDisintegration.lowS σ.symm x0)ᴴ) = C2.psiC cStd (C2.simpleUp (Amat σ d x0)⁻¹)`. Establish `hQ : (StabilizerDisintegration.lowS σ.symm x0)ᴴ ∈ C2.UTset r` using `StabilizerDisintegration.UC.LT_ct (StabilizerDisintegration.UC.lowS_mem σ.symm x0).1`. Establish `hQ' : (U.hMat σ d)⁻¹ * ((StabilizerDisintegration.lowS σ.symm x0)ᴴᴴ)⁻¹ * U.hMat σ d ∈ C2.UTset r`. Rewrite using `[hinv]`. Conclude with `hAmi`.
+
+Rewrite using `[relevance_U S (U.hMat σ d) hZu γ0 hγ0u hrel _ hQ hQ', hinv]`. Establish `hw : U.wP σ * U.lowW σ v * (U.wP σ)⁻¹ = StabilizerDisintegration.lowP σ.symm (fun q => v (StabilizerDisintegration.UC.iota σ q))`. Establish `e` using `StabilizerDisintegration.UC.conj_lowW σ (fun q => v (StabilizerDisintegration.UC.iota σ q))`. Simplify using `only [Equiv.apply_symm_apply] at e`. Conclude with `e`.
+
+Establish `hright : G.psi U.betaU (U.subS (U.wP σ * U.lowW σ v * (U.wP σ)⁻¹) + U.supS (G.upper u)) = C2.psiC cStd (C2.simpleUp (StabilizerDisintegration.lowP σ.symm (fun q => v (StabilizerDisintegration.UC.iota σ q)))ᴴ) * star (C2.psiC cStd (C2.simpleUp (G.upper u)))`. Rewrite using `[StabilizerDisintegration.UC.psi_conj, map_add, psiC_add, hw, ← StabilizerDisintegration.UC.subS_eq, ← StabilizerDisintegration.UC.psi_conj, StabilizerDisintegration.UC.psi_star, StabilizerDisintegration.UC.supS_eq]`. Establish `hstar` using `psiC_star_mul cStd (C2.simpleUp (Amat σ d x0)⁻¹)`. Establish `hxi : B.xiTau S (1, 1) ((h, psiR k r (rnAct (midB r 0 (Matrix.of h)) y, StabilizerDisintegration.UC.fSp σ.symm (x0, (fun q => v (StabilizerDisintegration.UC.iota σ q))))), (h', psiR k r (rnAct (midB r 0 (Matrix.of h')) y', StabilizerDisintegration.utc ((Amat σ d x0)⁻¹ * G.upper u …`. Rewrite using `[xiTau_one, psiStar_zero]`.
+
+Simplify using `only [psiR, Equiv.apply_symm_apply]`. Rewrite using `[Formalism.FourierDecayAlt.P.PBG.psi_mul_nset S.z S.z_mem cStd (Formalism.FourierDecayAlt.P.BigCellDiagonalMap.leviElement_nset _ (hUU _)) (Formalism.FourierDecayAlt.P.Ux3.rn_nset _), Formalism.FourierDecayAlt.P.PBG.psi_mul_nset S.z' S.z'_mem cStd (Formalism.FourierDecayAlt.P.Big …`. Take the linear combination `(C2.psiC cStd (C2.simpleUp (StabilizerDisintegration.lowP σ.symm (fun q => v (StabilizerDisintegration.UC.iota σ q)))ᴴ) * psi k r S.z cStd (U.Rn k r 0 y) * star (C2.psiC cStd (C2.simpleUp (G.upper u))) * star (psi k r S.z' cStd (U.Rn k r 0 y'))) * hstar`. Establish `hphi : phiC σ (midB r 0 (Matrix.of h)) (midB r 0 (Matrix.of h')) (Amat σ d) (x0, ((y, y'), ((a, b), (v, u)))) = ((rnAct (midB r 0 (Matrix.of h)) y, StabilizerDisintegration.UC.fSp σ.symm (x0, (fun q => v (StabilizerDisintegration.UC.iota σ q)))), (rnAct (midB r 0 (Matrix.of h')) …` using `rfl`. Rewrite using `[hphi]`.
+
+Simplify using `only`. Rewrite using `[show TN k r ((h, (rnAct (midB r 0 (Matrix.of h)) y, StabilizerDisintegration.UC.fSp σ.symm (x0, (fun q => v (StabilizerDisintegration.UC.iota σ q))))), (h', (rnAct (midB r 0 (Matrix.of h')) y', StabilizerDisintegration.utc ((Amat σ d x0)⁻¹ * G.upper u)))) = ((h, psiR k r (rnAct …`. Simplify using `only`. Rewrite using `[hθ, hxi, hsgs, ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul]`.
+-/
 theorem integrand_pw (S : B.RealPlaceData k r Wp Wq) (z0 z0' : Fin (2 * 0 + k + 1) → ℂ)
     (hz : S.z = liftVec k r 0 z0) (hz' : S.z' = liftVec k r 0 z0')
     (σ : Equiv.Perm (Fin r)) (d : Fin r → ℂ) (hd : ∀ a, d a ≠ 0) (γ0 : B.Mat k 0) (hγ0 : γ0 ∈ B.GV k 0)

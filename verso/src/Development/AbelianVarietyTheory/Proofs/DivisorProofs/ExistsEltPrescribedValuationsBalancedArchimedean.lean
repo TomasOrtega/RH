@@ -15,6 +15,13 @@ namespace GlobalTheory.CovHt
 open NumberField.InfinitePlace NumberField.mixedEmbedding
 open scoped nonZeroDivisors
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_fiberwise Finset.univ (fun σ : K →+* ℂ => InfinitePlace.mk σ)]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `h : ∀ σ ∈ Finset.univ.filter (fun σ : K →+* ℂ => InfinitePlace.mk σ = w), g σ = g w.embedding`. Introduce `σ hσ`. Rewrite `hσ` using `[Finset.mem_filter]`.
+
+Rewrite using `[← hσ.2]`. Break down `embedding_mk_eq σ with h | h` into its components or cases. Rewrite using `[h]`. Rewrite using `[h]`. Establish `: ComplexEmbedding.conjugate σ = (starRingEnd ℂ).comp σ` using `RingHom.ext fun x => ComplexEmbedding.conjugate_coe_eq σ x`.
+
+Rewrite using `[this, hg]`. Rewrite using `[Finset.sum_congr rfl h, Finset.sum_const, card_filter_mk_eq, nsmul_eq_mul]`.
+-/
 theorem sum_embeddings_eq_sum_places {K : Type} [Field K] [NumberField K] (g : (K →+* ℂ) → ℝ)
     (hg : ∀ σ, g ((starRingEnd ℂ).comp σ) = g σ) :
     ∑ σ, g σ = ∑ w : InfinitePlace K, (w.mult : ℝ) * g w.embedding := by
@@ -32,6 +39,9 @@ theorem sum_embeddings_eq_sum_places {K : Type} [Field K] [NumberField K] (g : (
       rw [this, hg]
   rw [Finset.sum_congr rfl h, Finset.sum_const, card_filter_mk_eq, nsmul_eq_mul]
 
+/- English proof (translation)
+Break down `embedding_mk_eq σ with h | h` into its components or cases. Rewrite using `[h]`. Establish `: ComplexEmbedding.conjugate σ = (starRingEnd ℂ).comp σ` using `RingHom.ext fun x => ComplexEmbedding.conjugate_coe_eq σ x`. Rewrite using `[h, this, ht]`.
+-/
 theorem t_embedding_mk {K : Type} [Field K] (t : (K →+* ℂ) → ℝ)
     (ht : ∀ σ, t ((starRingEnd ℂ).comp σ) = t σ) (σ : K →+* ℂ) : t (InfinitePlace.mk σ).embedding = t σ := by
   rcases embedding_mk_eq σ with h | h
@@ -40,6 +50,9 @@ theorem t_embedding_mk {K : Type} [Field K] (t : (K →+* ℂ) → ℝ)
       RingHom.ext fun x => ComplexEmbedding.conjugate_coe_eq σ x
     rw [h, this, ht]
 
+/- English proof (translation)
+Unfold `minkowskiBound`. Rewrite using `[volume_fundamentalDomain_fractionalIdealLatticeBasis, volume_fundamentalDomain_fractionalIdealLatticeBasis]`. Simplify using `[mul_assoc]`.
+-/
 theorem minkowskiBound_eq_absNorm_mul {K : Type} [Field K] [NumberField K] (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     minkowskiBound K I = ENNReal.ofReal (FractionalIdeal.absNorm (I : FractionalIdeal (𝓞 K)⁰ K) : ℝ) *
       minkowskiBound K 1 := by
@@ -54,6 +67,47 @@ namespace GlobalTheory.CovHt
 open NumberField.InfinitePlace NumberField.mixedEmbedding
 open scoped nonZeroDivisors
 
+/- English proof (translation)
+Introduce `K _ _ e t ht`. Establish `hNpos : ∀ la : HeightOneSpectrum (𝓞 K), (0 : ℝ) < (Ideal.absNorm la.asIdeal : ℝ)`. Introduce `la`. Establish `: Ideal.absNorm la.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`.
+
+Conclude with `la.ne_bot`. Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions. Establish `hNone : ∀ la : HeightOneSpectrum (𝓞 K), (1 : ℝ) ≤ (Ideal.absNorm la.asIdeal : ℝ)`. Introduce `la`. Establish `h` using `hNpos la`.
+
+Establish `: (1 : ℕ) ≤ Ideal.absNorm la.asIdeal` using `by exact_mod_cast h`. Conclude with `this` after adjusting the coercions. Establish `hn : (1 : ℝ) ≤ (Module.finrank ℚ K : ℝ)` using `by exact_mod_cast Module.finrank_pos`. Use `set S : ℝ := e.sum fun la a => a * Real.log (Ideal.absNorm la.asIdeal : ℝ) with hS`. Use `set A : ℝ := ∑ la ∈ e.support, Real.log (Ideal.absNorm la.asIdeal : ℝ) with hA`.
+
+Establish `hA0 : 0 ≤ A` using `Finset.sum_nonneg fun la _ => Real.log_nonneg (hNone la)`. Use `set V0 : ℝ := (minkowskiBound K 1).toReal with hV0`. Establish `hV0nn : 0 ≤ V0` using `ENNReal.toReal_nonneg`. Use `set c : ℝ := |Real.log V0| + A + 1 with hc`. Use `⟨c, fun τ => ?_⟩` and prove the remaining obligations.
+
+Use `set m : HeightOneSpectrum (𝓞 K) → ℤ := fun la => ⌈(τ : ℝ) * e la⌉ with hm`. Establish `hm0 : ∀ la, la ∉ e.support → m la = 0`. Introduce `la hla`. Rewrite `hla` using `[Finsupp.notMem_support_iff]`. Simplify using `[hm, hla]`.
+
+Establish `hmfin : ∀ᶠ v in Filter.cofinite, m v = 0`. Rewrite using `[Filter.eventually_cofinite]`. Use `e.support.finite_toSet.subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hv (hm0 v h)`.
+
+Use `set I : (FractionalIdeal (𝓞 K)⁰ K)ˣ := ∏ᶠ v, GroundTheory.Global.primeIdealUnit v ^ m v with hI`. Establish `hcount : ∀ v, FractionalIdeal.count K v (I : FractionalIdeal (𝓞 K)⁰ K) = m v` using `GroundTheory.Global.count_finprod_primeIdealUnit_zpow m hmfin`. Establish `hnorm : ((FractionalIdeal.absNorm (I : FractionalIdeal (𝓞 K)⁰ K) : ℚ) : ℝ) = ∏ la ∈ e.support, (Ideal.absNorm la.asIdeal : ℝ) ^ m la`. Rewrite using `[hI, GroundTheory.Global.coe_finprod_primeIdealUnit_zpow m hmfin, finprod_eq_prod_of_mulSupport_subset (s := e.support)]`. Rewrite using `[map_prod, Rat.cast_prod]`.
+
+Use `Finset.prod_congr rfl fun la _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, FractionalIdeal.coeIdeal_absNorm, Rat.cast_zpow, Rat.cast_natCast]`. Introduce `v hv`. Assume the negation of the conclusion as `h`. Conclude with `hv (by simp [hm0 v h])`.
+
+Establish `hnormle : ((FractionalIdeal.absNorm (I : FractionalIdeal (𝓞 K)⁰ K) : ℚ) : ℝ) ≤ Real.exp (τ * S + A)`. Rewrite using `[hnorm]`. Establish `hS' : S = ∑ la ∈ e.support, e la * Real.log (Ideal.absNorm la.asIdeal : ℝ)` using `rfl`. Rewrite using `[hS', hA, Finset.mul_sum, ← Finset.sum_add_distrib, Real.exp_sum]`. Use `Finset.prod_le_prod (fun la _ => by positivity) fun la _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Real.rpow_intCast, Real.rpow_def_of_pos (hNpos la)]`. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Establish `h1 : ((m la : ℤ) : ℝ) ≤ τ * e la + 1` using `(Int.ceil_lt_add_one _).le`. Establish `h2` using `Real.log_nonneg (hNone la)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use `set g : InfinitePlace K → ℝ := fun w => (τ : ℝ) * (cost e t - t w.embedding) + c with hg`. Use `set f : InfinitePlace K → NNReal := fun w => ⟨Real.exp (g w), (Real.exp_pos _).le⟩ with hf`. Establish `hsum : ∑ w : InfinitePlace K, (w.mult : ℝ) * g w = τ * S + (Module.finrank ℚ K : ℝ) * c`. Establish `h` using `sum_embeddings_eq_sum_places (K := K) (fun σ => (τ : ℝ) * (cost e t - t σ) + c) (fun σ => by simp only [ht])`. Rewrite using `[show (∑ w : InfinitePlace K, (w.mult : ℝ) * g w) = ∑ w : InfinitePlace K, (w.mult : ℝ) * ((τ : ℝ) * (cost e t - t w.embedding) + c) from rfl, ← h]`.
+
+Rewrite using `[Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_sub_distrib, Finset.sum_const, Finset.sum_const, Finset.card_univ, NumberField.Embeddings.card, nsmul_eq_mul, nsmul_eq_mul]`. Establish `hn0 : (Module.finrank ℚ K : ℝ) ≠ 0` using `by positivity`. Establish `hcost : (Module.finrank ℚ K : ℝ) * cost e t = S + ∑ σ, t σ`. Rewrite using `[cost, mul_div_cancel₀ _ hn0]`. Rewrite using `[hcost]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hprod : ((∏ w, f w ^ w.mult : NNReal) : ℝ) = Real.exp (τ * S + (Module.finrank ℚ K : ℝ) * c)`. Rewrite using `[NNReal.coe_prod, ← hsum, Real.exp_sum]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[NNReal.coe_pow, Real.exp_nat_mul]`.
+
+Both sides reduce to the same expression. Establish `hmink : minkowskiBound K I < MeasureTheory.volume (convexBodyLT K f)`. Rewrite using `[convexBodyLT_volume, minkowskiBound_eq_absNorm_mul]`. Establish `h1 : minkowskiBound K 1 = ENNReal.ofReal V0` using `(ENNReal.ofReal_toReal (minkowskiBound_lt_top K 1).ne).symm`. Rewrite using `[h1, ← ENNReal.ofReal_mul (by`.
+
+Rewrite using `[hnorm]; exact Finset.prod_nonneg fun la _ => by positivity)]`. Use `lt_of_lt_of_le ?_ (le_mul_of_one_le_left zero_le' (by exact_mod_cast one_le_convexBodyLTFactor K))` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_coe_nnreal, ENNReal.ofReal_lt_ofReal_iff (by rw [hprod]; positivity), hprod]`. Establish `hV : V0 ≤ Real.exp |Real.log V0|`. Break down `hV0nn.eq_or_lt with h | h` into its components or cases.
+
+Rewrite using `[← h]`. Check the signs of the components of the expression. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Use `Real.exp_lt_exp.2 ?_` and prove the remaining obligations.
+
+Establish `hc0 : 0 ≤ c` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨α, hαI, hα0, hlt⟩` from `exists_ne_zero_mem_ideal_lt K I hmink`. Use `⟨α, hα0, fun la => ?_, fun σ => ?_⟩` and prove the remaining obligations. Establish `hsp : FractionalIdeal.spanSingleton (𝓞 K)⁰ α ≠ 0` using `FractionalIdeal.spanSingleton_ne_zero_iff.2 hα0`.
+
+Establish `hle` using `FractionalIdeal.count_mono K la hsp (FractionalIdeal.spanSingleton_le_iff_mem.2 hαI)`. Rewrite `hle` using `[hcount, GroundTheory.Global.count_spanSingleton la hα0]`. Establish `hv : vLa la α = -WithZero.log (la.valuation K α)` using `rfl`. Combine the equalities or inequalities in the displayed calculation. Establish `h` using `hlt (InfinitePlace.mk σ)`.
+
+Rewrite `h` using `[InfinitePlace.apply]`. Establish `hpos : 0 < ‖σ α‖` using `norm_pos_iff.2 ((map_ne_zero σ).2 hα0)`. Establish `: Real.log ‖σ α‖ ≤ Real.log (f (InfinitePlace.mk σ) : ℝ)` using `Real.log_le_log hpos h.le`. Rewrite `this` using `[show ((f (InfinitePlace.mk σ)) : ℝ) = Real.exp (g (InfinitePlace.mk σ)) from rfl, Real.log_exp]`. Rewrite `this` using `[hg]`.
+
+Simplify using `only [t_embedding_mk t ht σ] at this`. Conclude with `this`.
+-/
 theorem exists_elt_balanced : ∀ (K : Type) [Field K] [NumberField K] (e : HeightOneSpectrum (𝓞 K) →₀ ℝ)
     (t : (K →+* ℂ) → ℝ), (∀ σ, t ((starRingEnd ℂ).comp σ) = t σ) → ∃ C : ℝ, ∀ τ : ℕ, ∃ α : K, α ≠ 0 ∧
       (∀ la, (τ : ℝ) * e la ≤ (vLa la α : ℝ)) ∧ ∀ σ : K →+* ℂ, Real.log ‖σ α‖ ≤ τ * (cost e t - t σ) + C := by

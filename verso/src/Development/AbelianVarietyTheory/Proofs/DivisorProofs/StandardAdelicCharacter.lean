@@ -5,6 +5,19 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory.LKCx
 
+/- English proof (translation)
+Introduce `p _ G v β y`. Take `⟨⟨u, s⟩, hy, _⟩` from `y`. Express the relevant statement in the definitionally equal form `(u : G.C) * β * sh G u = algebraMap ℚ G.C s * β at hy`. Establish `hV : ((toV G v β ⟨(u, s), hy, ‹_›⟩ : GL (Fin G.n) ℂ) : Matrix (Fin G.n) (Fin G.n) ℂ) = G.psi v (u : G.C)` using `rfl`. Rewrite using `[hV]`.
+
+Express the relevant statement in the definitionally equal form `(G.psi v (u : G.C))ᴴ * (G.gram v * G.psi v ((β⁻¹ : G.Cˣ) : G.C)) * G.psi v (u : G.C) = ((s : ℚ) : ℂ) • (G.gram v * G.psi v ((β⁻¹ : G.Cˣ) : G.C))`. Establish `hgu : IsUnit (G.gram v).det` using `isUnit_iff_ne_zero.mpr (G.gram_det v)`. Establish `hgg : G.gram v * (G.gram v)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hgu`. Establish `hgg' : (G.gram v)⁻¹ * G.gram v = 1` using `Matrix.nonsing_inv_mul _ hgu`. Establish `hH : ∀ x : G.C, (G.psi v x)ᴴ = G.gram v * G.psi v (sh G x) * (G.gram v)⁻¹`.
+
+Introduce `x`. Establish `e : G.psi v (sh G x) = (G.gram v)⁻¹ * (G.psi v x)ᴴ * G.gram v` using `G.psi_star v x`. Rewrite using `[e, ← mul_assoc, ← mul_assoc, hgg, one_mul, mul_assoc, hgg, mul_one]`. Establish `hu : sh G (u : G.C) * ((β⁻¹ : G.Cˣ) : G.C) * u = algebraMap ℚ G.C (s : ℚ) * ((β⁻¹ : G.Cˣ) : G.C)`. Apply `(Units.mul_right_inj (u * β)).mp` to reduce the goal to its premises.
+
+Rewrite using `[Units.val_mul, ← Algebra.smul_def]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = (s : ℚ) • ((β : G.C) * ((β⁻¹ : G.Cˣ) : G.C) * u) := by`. Rewrite using `[hy, ← Algebra.smul_def]`.
+
+Simplify using `only [smul_mul_assoc]`. Use `_ = (s : ℚ) • ((u : G.C) * β * ((β⁻¹ : G.Cˣ) : G.C)) := by`. Rewrite using `[Units.mul_inv, one_mul, mul_assoc, Units.mul_inv, mul_one]`. Use `_ = _ := by rw [mul_smul_comm, mul_assoc]`. Rewrite using `[hH]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hgg', mul_one, map_mul, map_mul]`. Use `_ = G.gram v * (((s : ℚ) : ℚ) • G.psi v ((β⁻¹ : G.Cˣ) : G.C)) := by`. Rewrite using `[hu, map_mul, RingHom.map_rat_algebraMap, ← Algebra.smul_def]`. Use `_ = _ := by rw [mul_smul_comm, Rat.cast_smul_eq_qsmul]`.
+-/
 theorem grp_similitude_herm : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (v : InfinitePlace G.F) (β : G.Cˣ)
     (y : grp G β), ((toV G v β y : Matrix (Fin G.n) (Fin G.n) ℂ))ᴴ * herm G v β *
       (toV G v β y : Matrix (Fin G.n) (Fin G.n) ℂ) = (((((y : G.Cˣ × ℚˣ).2 : ℚˣ) : ℚ) : ℂ)) • herm G v β := by

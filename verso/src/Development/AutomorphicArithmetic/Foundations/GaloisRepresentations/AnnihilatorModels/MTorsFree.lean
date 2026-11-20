@@ -10,6 +10,15 @@ open GlobalTheory.AbDual (evc IsAdditive swap)
 attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
+/- English proof (translation)
+Introduce `h k _ A B _ _ _ _ hA hB L hL hadd hadd' c hc hcls`. Take `⟨D, instD, Q, hD, -, hQ, hQ'⟩` from `GlobalTheory.dualAbelianScheme _ A hA`. Establish `hcomm : IsCommMonObj D` using `hD.comm`. Take `⟨x, hx, hx'⟩` from `GlobalTheory.BirigidLift.exists_hom hQ hQ'.additive hL hadd hadd'`. Establish `hone : IsMonHom (1 : B ⟶ D)` using `inferInstance`.
+
+Establish `hev : ∀ (Y : Over (Sp k)) (a : Y ⟶ A) (b b' : Y ⟶ D), evc hQ.isLB a (b * b') = evc hQ.isLB a b + evc hQ.isLB a b'` using `(GlobalTheory.BirigidLift.isAdditive_swap_iff hQ.isLB).1 hQ'.additive`. Establish `hpow : ∀ (n : ℕ) (b : B ⟶ D), evc hQ.isLB (fst A B) (snd A B ≫ b ^ n) = n • evc hQ.isLB (fst A B) (snd A B ≫ b)`. Introduce `n b`. Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, MonObj.comp_one, zero_smul, GlobalTheory.AbDual.evc_one_right hQ.isLB hQ.zero]`.
+
+Consider the case `succ n ih => rw [pow_succ, MonObj.comp_mul, hev, ih, succ_nsmul]`. Establish `h1 : evc hQ.isLB (fst A B) (snd A B ≫ x ^ c) = evc hQ.isLB (fst A B) (snd A B ≫ (1 : B ⟶ D))`. Rewrite using `[hpow, ← hx', hcls, MonObj.comp_one, GlobalTheory.AbDual.evc_one_right hQ.isLB hQ.zero]`. Establish `h2 : x ^ c = 1` using `GlobalTheory.BirigidLift.dual_ext hQ h1`. Establish `h3 : x = 1` using `(h (Sp k) B D hB c hc).2 x 1 hx hone (by rw [h2, one_pow])`.
+
+Rewrite using `[hx', h3, MonObj.comp_one, GlobalTheory.AbDual.evc_one_right hQ.isLB hQ.zero]`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.Mod.torsFree_of :
     DivC → TorsFree := by
   intro h k _ A B _ _ _ _ hA hB L hL hadd hadd' c hc hcls

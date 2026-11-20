@@ -10,11 +10,31 @@ open scoped TensorProduct
 
 namespace GlobalTheory.FieldExtDim
 
+/- English proof (translation)
+The claim follows from `Order.krullDim_le_of_strictMono (PrimeSpectrum.comap (algebraMap R S)) fun I J h => Ideal.IsIntegral.comap_lt_comap (I := I.asIdeal) (J := J.asIdeal) h`.
+-/
 theorem ringKrullDim_le_of_isIntegral (R S : Type) [CommRing R] [CommRing S] [Algebra R S]
     [Algebra.IsIntegral R S] : ringKrullDim S ≤ ringKrullDim R :=
   Order.krullDim_le_of_strictMono (PrimeSpectrum.comap (algebraMap R S))
     fun I J h => Ideal.IsIntegral.comap_lt_comap (I := I.asIdeal) (J := J.asIdeal) h
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial A with hA | hA` into its components or cases. Establish `: Subsingleton (K ⊗[k] A)`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Establish `h0 : (1 : K ⊗[k] A) = 0`. Rewrite using `[Algebra.TensorProduct.one_def, Subsingleton.elim (1 : A) 0, TensorProduct.tmul_zero]`.
+
+Rewrite using `[← mul_one x, ← mul_one y, h0, mul_zero, mul_zero]`. Rewrite using `[ringKrullDim_eq_bot_of_subsingleton]`. Conclude with `bot_le`. Take `⟨s, g, hinj, hfin⟩` from `exists_finite_inj_algHom_of_fg k A`. Set `P` to `MvPolynomial (Fin s) k`.
+
+Use `letI : Algebra P A := g.toRingHom.toAlgebra`. Establish `hiA : Algebra.IsIntegral P A` using `⟨hfin.to_isIntegral⟩`. Establish `: FaithfulSMul P A` using `(faithfulSMul_iff_algebraMap_injective P A).2 hinj`. Establish `hdA : ringKrullDim A = s`. Rewrite using `[GlobalTheory.ringKrullDim_eq_of_isIntegral P A, MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, zero_add, Nat.card_eq_fintype_card, Fintype.card_fin]`.
+
+Set `B` to `K ⊗[k] P`. Establish `hdB : ringKrullDim B = s`. Rewrite using `[ringKrullDim_eq_of_ringEquiv (MvPolynomial.scalarRTensorAlgEquiv (R := k) (N := K) (σ := Fin s)).toRingEquiv, MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, zero_add, Nat.card_eq_fintype_card, Fintype.card_fin]`. Set `φ : B →ₐ[K] K ⊗[k] A` to `Algebra.TensorProduct.map (AlgHom.id K K) g`. Use `letI : Algebra B (K ⊗[k] A) := φ.toRingHom.toAlgebra`.
+
+Establish `hcomp : (algebraMap B (K ⊗[k] A)).comp (Algebra.TensorProduct.includeRight : P →ₐ[k] B).toRingHom = (Algebra.TensorProduct.includeRight : A →ₐ[k] K ⊗[k] A).toRingHom.comp (algebraMap P A)`. Use `RingHom.ext fun p => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ ((1 : K) ⊗ₜ[k] p) = (1 : K) ⊗ₜ[k] g p`. Rewrite using `[Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+
+Establish `hint : Algebra.IsIntegral B (K ⊗[k] A)` using `⟨fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact isIntegral_zero`. Consider the case `tmul c a`. Establish `h1 : IsIntegral B ((Algebra.TensorProduct.includeRight : A →ₐ[k] K ⊗[k] A) a)` using `IsIntegral.map_of_comp_eq _ _ hcomp (Algebra.IsIntegral.isIntegral a)`.
+
+Establish `h2 : IsIntegral B (algebraMap B (K ⊗[k] A) (c ⊗ₜ 1))` using `isIntegral_algebraMap`. Establish `he : c ⊗ₜ[k] a = algebraMap B (K ⊗[k] A) (c ⊗ₜ 1) * (Algebra.TensorProduct.includeRight : A →ₐ[k] K ⊗[k] A) a`. Express the relevant statement in the definitionally equal form `c ⊗ₜ[k] a = φ (c ⊗ₜ[k] (1 : P)) * ((1 : K) ⊗ₜ[k] a)`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Both sides reduce to the same expression.
+
+Rewrite using `[he]`. Conclude with `h2.mul h1`. Consider the case `add x y hx hy => exact hx.add hy⟩`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ringKrullDim_tensor_le (k K A : Type) [Field k] [Field K] [Algebra k K] [CommRing A]
     [Algebra k A] [Algebra.FiniteType k A] : ringKrullDim (K ⊗[k] A) ≤ ringKrullDim A := by
   rcases subsingleton_or_nontrivial A with hA | hA
@@ -66,6 +86,13 @@ theorem ringKrullDim_tensor_le (k K A : Type) [Field k] [Field K] [Algebra k K] 
   calc ringKrullDim (K ⊗[k] A) ≤ ringKrullDim B := ringKrullDim_le_of_isIntegral B _
     _ = ringKrullDim A := hdB.trans hdA.symm
 
+/- English proof (translation)
+Introduce `k K _ _ _ X X' f _ f' π H`. Use `topologicalKrullDim_le_of_forall_exists_isOpen fun x' => ?_` and prove the remaining obligations. Take `⟨A, _, _, j, _, q, hq, hj⟩` from `exists_affine_chart_over f (π x')`. Take `⟨j₀, _, H₀⟩` from `exists_affine_chart_of_isPullback H j hj`. Establish `hft : Algebra.FiniteType k A`.
+
+Establish `: LocallyOfFiniteType (Spec.map (CommRingCat.ofHom (algebraMap k A)))`. Rewrite using `[← hj]`. Use `infer_instance`. Conclude with `RingHom.finiteType_algebraMap.mp ((HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).mp this)`. Establish `hs : Function.Surjective H₀.isoPullback.hom` using `H₀.isoPullback.hom.homeomorph.surjective`.
+
+Establish `hrange : Set.range j₀ = π ⁻¹' Set.range j`. Rewrite using `[← H₀.isoPullback_hom_fst, Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, hs.range_eq, Set.image_univ, Scheme.Pullback.range_fst]`. Use `⟨Set.range j₀, j₀.isOpenEmbedding.isOpen_range, hrange ▸ ⟨q, hq⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[topologicalKrullDim_eq_of_isEmbedding j₀.isOpenEmbedding.isEmbedding rfl]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem topologicalKrullDim_baseChange_le :
     ∀ (k K : Type) [Field k] [Field K] [Algebra k K] (X X' : Scheme.{0}) (f : X ⟶ Sp k)
       [LocallyOfFiniteType f] (f' : X' ⟶ Sp K) (π : X' ⟶ X),

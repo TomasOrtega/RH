@@ -17,12 +17,24 @@ def kpair {A : Type} [CommRing A] (q : ℕ) [NeZero q] (c : A) (hc : c * q = 1) 
       rw [C_mul, pow_succ]; ring]
     rw [hc, C_1, one_mul]⟩
 
+/- English proof (translation)
+Establish `h : aeval (kpair q c hc u).X (X ^ q - C u) = 0` using `(kpair q c hc u).hasMap_X.1`. Rewrite `h` using `[map_sub, map_pow, aeval_X, aeval_C, sub_eq_zero]`. Conclude with `h`.
+-/
 theorem kpair_root {A : Type} [CommRing A] (q : ℕ) [NeZero q] (c : A) (hc : c * q = 1) (u : A) :
     (kpair q c hc u).X ^ q = algebraMap A (kpair q c hc u).Ring u := by
   have h : aeval (kpair q c hc u).X (X ^ q - C u) = 0 := (kpair q c hc u).hasMap_X.1
   rw [map_sub, map_pow, aeval_X, aeval_C, sub_eq_zero] at h
   exact h
 
+/- English proof (translation)
+Introduce `p`. Set `K` to `p.asIdeal.ResidueField`. Set `Ω` to `AlgebraicClosure K`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap A Ω u) (Nat.pos_of_ne_zero (NeZero.ne q))`. Establish `hu : IsUnit (algebraMap A Ω u)` using `u.isUnit.map _`.
+
+Establish `hzu : IsUnit z`. Rewrite `hu` using `[← hz]`. Conclude with `(isUnit_pow_iff (NeZero.ne q)).mp hu`. Establish `hm : (kpair q c hc (u : A)).HasMap z`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[kpair, hz]`. Simplify `hzu` using `[kpair]`. Set `ψ` to `(kpair q c hc (u : A)).lift z hm`. Use `⟨⟨RingHom.ker ψ.toRingHom, RingHom.ker_isPrime _⟩, ?_⟩` and prove the remaining obligations. Use `ext1`.
+
+Express the relevant statement in the definitionally equal form `Ideal.comap _ (RingHom.ker ψ.toRingHom) = p.asIdeal`. Rewrite using `[RingHom.comap_ker, show ψ.toRingHom.comp (algebraMap A _) = algebraMap A Ω from ψ.comp_algebraMap]`. Rewrite using `[IsScalarTower.algebraMap_eq A K Ω, ← RingHom.comap_ker, (RingHom.injective_iff_ker_eq_bot _).mp (algebraMap K Ω).injective, ← RingHom.ker_eq_comap_bot, Ideal.ker_algebraMap_residueField]`.
+-/
 theorem kpair_surj {A : Type} [CommRing A] (q : ℕ) [NeZero q] (c : A) (hc : c * q = 1) (u : Aˣ) :
     Function.Surjective (PrimeSpectrum.comap (algebraMap A (kpair q c hc (u : A)).Ring)) := by
   intro p
@@ -45,6 +57,9 @@ theorem kpair_surj {A : Type} [CommRing A] (q : ℕ) [NeZero q] (c : A) (hc : c 
     (RingHom.injective_iff_ker_eq_bot _).mp (algebraMap K Ω).injective, ← RingHom.ker_eq_comap_bot,
     Ideal.ker_algebraMap_residueField]
 
+/- English proof (translation)
+Set `𝒰 : U.Cover (Scheme.precoverage @Etale)` to `Scheme.Cover.mkOfCovers PUnit.{1} (fun _ => Y) (fun _ => π) (fun x => ⟨PUnit.unit, π.surjective x⟩) inferInstance`. Use `⟨Sieve.ofArrows 𝒰.X 𝒰.f, Scheme.Cover.mem_grothendieckTopology 𝒰, ?_⟩` and prove the remaining obligations. Introduce `V g hg`. Take `⟨i, h, rfl⟩` from `(Sieve.mem_ofArrows_iff _ _ _).mp hg`. Conclude with `hP V h`.
+-/
 theorem loc_of_cover {U Y : Scheme.{0}} (π : Y ⟶ U) [Etale π] [Surjective π]
     (P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop) (hP : ∀ (V : Scheme.{0}) (h : V ⟶ Y), P V (h ≫ π)) : Loc U P := by
   let 𝒰 : U.Cover (Scheme.precoverage @Etale) :=
@@ -55,6 +70,15 @@ theorem loc_of_cover {U Y : Scheme.{0}} (π : Y ⟶ U) [Etale π] [Surjective π
   obtain ⟨i, h, rfl⟩ := (Sieve.mem_ofArrows_iff _ _ _).mp hg
   exact hP V h
 
+/- English proof (translation)
+Introduce `q _ U hq u`. Take `⟨c, hc⟩` from `hq.exists_left_inv`. Set `P` to `kpair q c hc (u : Γ(U, ⊤))`. Set `B : CommRingCat.{0}` to `CommRingCat.of P.Ring`. Set `φ : Γ(U, ⊤) ⟶ B` to `CommRingCat.ofHom (algebraMap _ P.Ring)`.
+
+Establish `: Etale (Spec.map φ)`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Etale)]`. Conclude with `RingHom.etale_algebraMap.mpr inferInstance`. Establish `: Surjective (Spec.map φ)` using `⟨kpair_surj q c hc u⟩`. Use `loc_of_cover (pullback.fst U.toSpecΓ (Spec.map φ)) _ fun V h => ?_` and prove the remaining obligations.
+
+Establish `hX : IsUnit P.X` using `(isUnit_pow_iff (NeZero.ne q)).mp (by rw [kpair_root]; exact u.isUnit.map _)`. Establish `e : (h ≫ pullback.snd _ _) ≫ Spec.map φ = (h ≫ pullback.fst _ _) ≫ U.toSpecΓ`. Simplify using `[pullback.condition]`. Establish `hcomp : φ ≫ (Scheme.ΓSpecIso B).inv ≫ (h ≫ pullback.snd _ _).appTop = (h ≫ pullback.fst _ _).appTop`. Rewrite using `[← Category.assoc, Scheme.ΓSpecIso_inv_naturality, Category.assoc, ← Scheme.Hom.comp_appTop, e, Scheme.Hom.comp_appTop, Scheme.toSpecΓ_appTop, ← Category.assoc, Iso.inv_hom_id, Category.id_comp]`.
+
+Use `⟨Units.map ((h ≫ pullback.snd _ _).appTop.hom.comp (Scheme.ΓSpecIso B).inv.hom).toMonoidHom hX.unit, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `only [Units.val_pow_eq_pow_val, Units.coe_map, IsUnit.unit_spec, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]`. Rewrite using `[← map_pow, kpair_root]`. Conclude with `congrArg (fun f => f.hom (u : Γ(U, ⊤))) hcomp`.
+-/
 theorem LeafRootLoc_of : LateralTheory.E.ChernClassRootLocalization.LeafRootLoc := by
   intro q _ U hq u
   obtain ⟨c, hc⟩ := hq.exists_left_inv

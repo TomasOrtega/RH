@@ -8,6 +8,11 @@ open NumberField Matrix Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTh
 
 namespace GlobalTheory.CompanionTheory.Ar.ProjReal
 
+/- English proof (translation)
+Introduce `g k Hm _ u _ hproj hu z hz`. Take `⟨c, hc⟩` from `hproj z`. Use `⟨fun i => (c i).re, fun j => ?_⟩` and prove the remaining obligations. Establish `h` using `hc j`. Simplify using `only [sub_dotProduct, sum_dotProduct, smul_dotProduct, smul_eq_mul] at h ⊢`.
+
+Apply `Complex.ext` to reduce the goal to its premises. Establish `h'` using `congrArg Complex.re h`. Simplify using `only [Complex.sub_re, Complex.re_sum, Complex.mul_re, hu, mul_zero, sub_zero, Complex.zero_re] at h'`. Simplify `h'` using `[Complex.sub_re, Complex.re_sum, Complex.mul_re, hu]`. Simplify using `[Complex.sub_im, Complex.im_sum, Complex.mul_im, hu, hz]`.
+-/
 theorem orthogonal_projection_real_coefficients :
     ∀ (g k : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ),
       (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ Hm *ᵥ star z).re) →

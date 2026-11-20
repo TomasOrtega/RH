@@ -9,13 +9,30 @@ open AlgebraicGeometry CategoryTheory TopologicalSpace Limits NumberField Recipr
   ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Reg GlobalTheory.FlagEmb GlobalTheory.ProjSpace GlobalTheory.FlagMod
 open GlobalTheory.FlagMod.LowRank (ECh Proj str)
 
+/- English proof (translation)
+The claim follows from `hg.comp hf`.
+-/
 theorem isOpenMap_scheme_comp {X₁ X₂ X₃ : Scheme.{0}} {f : X₁ ⟶ X₂} {g : X₂ ⟶ X₃} (hf : IsOpenMap f)
     (hg : IsOpenMap g) : IsOpenMap (f ≫ g) := hg.comp hf
 
+/- English proof (translation)
+Use `haveI : IsOpenImmersion U.2.fromSpec := IsAffineOpen.isOpenImmersion_fromSpec U.2`. Conclude with `isOpenMap_scheme_comp (MvPolynomial.isOpenMap_comap_C) U.2.fromSpec.isOpenEmbedding.isOpenMap`.
+-/
 theorem isOpenMap_cbase {X : Scheme.{0}} {T : Type} (m : T → ℕ) (U : X.affineOpens) : IsOpenMap (cbase m U) := by
   haveI : IsOpenImmersion U.2.fromSpec := IsAffineOpen.isOpenImmersion_fromSpec U.2
   exact isOpenMap_scheme_comp (MvPolynomial.isOpenMap_comap_C) U.2.fromSpec.isOpenEmbedding.isOpenMap
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y p A Z π g κ _ hZ`. Establish `hcell : ∀ b w, IsOpenMap (κ b w ≫ π)` using `fun b w => by`. Rewrite using `[hZ.plk.base b w]`. Conclude with `isOpenMap_cbase _ _`. Establish `hπ : IsOpenMap π`.
+
+Introduce `O hO`. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Take `⟨b, w, y, rfl⟩` from `hZ.cover z`. Use `⟨(κ b w ≫ π) '' (κ b w ⁻¹' O), ?_, hcell b w _ (hO.preimage (κ b w).continuous), y, hz, rfl⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨y', hy', rfl⟩`. Conclude with `⟨κ b w y', hy', rfl⟩`. Establish `hid : IsIso (spMap (RingHom.id c.F))`. Rewrite using `[spMap, CommRingCat.ofHom_id, Spec.map_id]`. Use `infer_instance`.
+
+Establish `he : genMap π = pullback.fst (π ≫ Y.s) (spMap (RingHom.id c.F)) ≫ π ≫ inv (pullback.fst Y.s (spMap (RingHom.id c.F)))`. Rewrite using `[← cancel_mono (pullback.fst Y.s (spMap (RingHom.id c.F)))]`. Simplify using `only [genMap, Category.assoc, IsIso.inv_hom_id, Category.comp_id]`. Conclude with `pullback.lift_fst _ _ _`. Establish `hgen : IsOpenMap (genMap π)`.
+
+Rewrite using `[he]`. Conclude with `isOpenMap_scheme_comp (pullback.fst (π ≫ Y.s) (spMap (RingHom.id c.F))).isOpenEmbedding.isOpenMap (isOpenMap_scheme_comp hπ (inv (pullback.fst Y.s (spMap (RingHom.id c.F)))).isOpenEmbedding.isOpenMap)`. Conclude with `Y.jQ_dense.preimage hgen`.
+-/
 theorem dense_genMap_preimage : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (p : Proj (RingHom.id c.F)) (A : Atlas Y p) (Z : Scheme.{0}) (π : Z ⟶ Y.X) (g : ∀ en : En Dw.mult, Z ⟶ PSpace c.F (plN A.N en.1)) (κ : ∀ b, Pm Dw.mult → (Sp (CR Dw.mult (A.V b)) ⟶ Z)) [∀ b w, IsOpenImmersion (κ b w)] (hZ : Cells A π g κ), Dense (genMap π ⁻¹' Set.range Y.jQ) := by
   intro E _ _ _ H Dw l Xo c Y p A Z π g κ _ hZ
   have hcell : ∀ b w, IsOpenMap (κ b w ≫ π) := fun b w => by

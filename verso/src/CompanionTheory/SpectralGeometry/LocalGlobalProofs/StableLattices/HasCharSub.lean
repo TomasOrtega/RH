@@ -21,11 +21,19 @@ def actML {M : Type} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n → Mo
   map_add' X Y := by simp only [actM, Matrix.add_apply, add_smul, sum_add_distrib]
   map_smul' c X := by simp only [actM, Matrix.smul_apply, smul_eq_mul, mul_smul, RingHom.id_apply, smul_sum]
 
+/- English proof (translation)
+Simplify using `[actM, Matrix.single_apply, ite_and, Finset.sum_ite_eq, ite_smul]`.
+-/
 theorem actM_single {M : Type} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n → Module.End ℂ M) (a b : Fin n) :
     actM E (Matrix.single a b 1) = E a b := by
   classical
   simp [actM, Matrix.single_apply, ite_and, Finset.sum_ite_eq, ite_smul]
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.CapelliLowest.glRel_conj n (actML X.E) ⟨B.U, B.Ui, B.hU, B.hUi⟩ (by`. Establish `: (fun i j => actML X.E (Matrix.single i j 1)) = X.E`. Use function extensionality and compare the values at `i j`. Conclude with `actM_single X.E i j`. Rewrite using `[this]`.
+
+Conclude with `X.gl)`. Conclude with `h`.
+-/
 theorem glRel_Eb (X : GMod n) {A : Matrix (Fin n) (Fin n) ℂ} (B : GradBasis A) : GlRel (Eb X B) := by
   have h := GlobalTheory.CapelliLowest.glRel_conj n (actML X.E) ⟨B.U, B.Ui, B.hU, B.hUi⟩ (by
     have : (fun i j => actML X.E (Matrix.single i j 1)) = X.E := by
@@ -77,6 +85,9 @@ def leviSub (P : GMod n) (d : Fin 3 → ℕ) (h : ∑ i, d i = n) (χ : Fin n �
     exact ⟨fun a b hab => by rw [map_smul, hx a b hab, smul_zero],
       fun i Y => by rw [map_smul, hx', smul_comm]⟩
 
+/- English proof (translation)
+The claim follows from `| 0, _, _, _, x => by simp | t + 1, g, g', h, x => by rw [List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, Module.End.mul_apply, Module.End.mul_apply, h, ofFn_lin f (fun k => g k.succ) (fun k => g' k.succ) (fun k x => h k.succ x)]`.
+-/
 theorem ofFn_lin {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] (f : V →ₗ[ℂ] V') :
     ∀ {t : ℕ} (g : Fin t → Module.End ℂ V) (g' : Fin t → Module.End ℂ V'), (∀ k x, f (g k x) = g' k (f x)) → ∀ x,
       f ((List.ofFn g).prod x) = (List.ofFn g').prod (f x)
@@ -85,6 +96,11 @@ theorem ofFn_lin {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V']
     rw [List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, Module.End.mul_apply, Module.End.mul_apply, h,
       ofFn_lin f (fun k => g k.succ) (fun k => g' k.succ) (fun k x => h k.succ x)]
 
+/- English proof (translation)
+Establish `hT : ∀ (v : ℂ) (a b : Fin m) (y : V), f (Tm E v a b y) = Tm E' v a b (f y)`. Introduce `v a b y`. Unfold `Tm`. Apply the tactic sequence `by_cases hab : a = b <;> simp [hab, h]`. Unfold `qdet qminor`.
+
+Simplify using `only [LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, Module.End.intCast_apply, map_zsmul]`. Rewrite using `[ofFn_lin f _ _ (fun k y => hT _ _ _ y)]`.
+-/
 theorem qdet_lin {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] (f : V →ₗ[ℂ] V') {m : ℕ}
     (E : Fin m → Fin m → Module.End ℂ V) (E' : Fin m → Fin m → Module.End ℂ V')
     (h : ∀ a b x, f (E a b x) = E' a b (f x)) (u : ℂ) (x : V) : f (qdet E u x) = qdet E' u (f x) := by
@@ -98,6 +114,9 @@ theorem qdet_lin {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V']
   simp only [Module.End.mul_apply, Module.End.intCast_apply, map_zsmul]
   rw [ofFn_lin f _ _ (fun k y => hT _ _ _ y)]
 
+/- English proof (translation)
+Proceed by induction on `k generalizing x with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, h]`.
+-/
 theorem pow_lin {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] (f : V →ₗ[ℂ] V')
     (T : Module.End ℂ V) (T' : Module.End ℂ V') (h : ∀ x, f (T x) = T' (f x)) (k : ℕ) (x : V) :
     f ((T ^ k) x) = (T' ^ k) (f x) := by
@@ -105,11 +124,17 @@ theorem pow_lin {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] 
   | zero => simp
   | succ k ih => rw [pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, h]
 
+/- English proof (translation)
+Simplify using `[h]`.
+-/
 theorem shift_lin {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] (f : V →ₗ[ℂ] V')
     (T : Module.End ℂ V) (T' : Module.End ℂ V') (h : ∀ x, f (T x) = T' (f x)) (c : ℂ) (x : V) :
     f ((T - c • (1 : Module.End ℂ V)) x) = (T' - c • (1 : Module.End ℂ V')) (f x) := by
   simp [h]
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `hY`. Use `⟨k, fun c => LinearMap.ext fun x => ?_⟩` and prove the remaining obligations. Establish `e` using `pow_lin (V := S) S.subtype _ _ (shift_lin (V := S) S.subtype (qdet (Y.sub S h).E (c + ((n : ℂ) - 1) / 2)) (qdet Y.E (c + ((n : ℂ) - 1) / 2)) (fun y => qdet_lin (V := S) S.subtype (Y.sub S h).E Y.E (fun a b x => rfl) _ y) (Formalism.QuantumDeterminants.capP χ c)) k x`. Rewrite `e` using `[hk c]`. Conclude with `S.injective_subtype (e.trans (by simp; rfl))`.
+-/
 theorem hasChar_sub (Y : GMod n) (S : Submodule ℂ Y.V) (h : ∀ a b, ∀ x ∈ S, Y.E a b x ∈ S) {χ : Fin n → ℂ}
     (hY : HasChar Y χ) : HasChar (Y.sub S h) χ := by
   obtain ⟨k, hk⟩ := hY
@@ -120,6 +145,11 @@ theorem hasChar_sub (Y : GMod n) (S : Submodule ℂ Y.V) (h : ∀ a b, ∀ x ∈
   rw [hk c] at e
   exact S.injective_subtype (e.trans (by simp; rfl))
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `hY`. Use `⟨k, fun c => LinearMap.ext fun q => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective S q`. Establish `e` using `pow_lin (V' := Y.V ⧸ S) S.mkQ _ _ (shift_lin (V' := Y.V ⧸ S) S.mkQ (qdet Y.E (c + ((n : ℂ) - 1) / 2)) (qdet (quoMod Y S h).E (c + ((n : ℂ) - 1) / 2)) (fun y => qdet_lin (V' := Y.V ⧸ S) S.mkQ Y.E (quoMod Y S h).E (fun a b x => rfl) _ y) (Formalism.QuantumDeterminants.capP χ c)) k …`. Rewrite `e` using `[hk c]`.
+
+Conclude with `e.symm.trans (by simp; rfl)`.
+-/
 theorem hasChar_quo (Y : GMod n) (S : Submodule ℂ Y.V) (h : ∀ a b, ∀ x ∈ S, Y.E a b x ∈ S) {χ : Fin n → ℂ}
     (hY : HasChar Y χ) : HasChar (quoMod Y S h) χ := by
   obtain ⟨k, hk⟩ := hY

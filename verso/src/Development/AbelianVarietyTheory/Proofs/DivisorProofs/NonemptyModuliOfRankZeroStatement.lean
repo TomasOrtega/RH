@@ -7,5 +7,8 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan Gl
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UCanon.RankZero.nonempty_moduli | exact GlobalTheory.UCanon.RankZero.nonempty_moduli | (intros; apply GlobalTheory.UCanon.RankZero.nonempty_moduli <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.nonempty_moduli_of_rank_zero : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Geo.Tor.Level H), D.p + D.q = 0 → Nonempty (Moduli D l) := by
   first | exact @GlobalTheory.UCanon.RankZero.nonempty_moduli | exact GlobalTheory.UCanon.RankZero.nonempty_moduli | (intros; apply GlobalTheory.UCanon.RankZero.nonempty_moduli <;> assumption)

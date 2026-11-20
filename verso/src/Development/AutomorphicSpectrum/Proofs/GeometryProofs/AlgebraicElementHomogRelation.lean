@@ -9,10 +9,18 @@ namespace GlobalTheory.CompanionTheory.Ar.AlgPoly
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Introduce `m hm`. Simplify using `at hm`.
+-/
 theorem form_zero (a : K → ℕ) : IsMultiHomog (0 : MRing ι) a := by
   intro m hm
   simp at hm
 
+/- English proof (translation)
+Introduce `m hm k`. Rewrite `hm` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_one]`. Use `split_ifs at hm with h0`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules.
+
+Conclude with `absurd rfl hm`.
+-/
 theorem form_one : IsMultiHomog (1 : MRing ι) (0 : K → ℕ) := by
   classical
   intro m hm k
@@ -22,6 +30,9 @@ theorem form_one : IsMultiHomog (1 : MRing ι) (0 : K → ℕ) := by
     simp
   · exact absurd rfl hm
 
+/- English proof (translation)
+Introduce `m hm k`. Take `⟨m1, hm1, m2, hm2, rfl⟩` from `Finset.mem_add.1 (MvPolynomial.support_mul f g hm)`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, hf m1 hm1 k, hg m2 hm2 k]`.
+-/
 theorem form_mul {f g : MRing ι} {a b : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g b) :
     IsMultiHomog (f * g) (a + b) := by
   classical
@@ -29,6 +40,9 @@ theorem form_mul {f g : MRing ι} {a b : K → ℕ} (hf : IsMultiHomog f a) (hg 
   obtain ⟨m1, hm1, m2, hm2, rfl⟩ := Finset.mem_add.1 (MvPolynomial.support_mul f g hm)
   simp only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, hf m1 hm1 k, hg m2 hm2 k]
 
+/- English proof (translation)
+Introduce `m hm k`. Break down `Finset.mem_union.1 (MvPolynomial.support_add hm) with h | h` into its components or cases. Conclude with `hf m h k`. Conclude with `hg m h k`.
+-/
 theorem form_add {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g a) :
     IsMultiHomog (f + g) a := by
   classical
@@ -37,21 +51,33 @@ theorem form_add {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : 
   · exact hf m h k
   · exact hg m h k
 
+/- English proof (translation)
+Introduce `m hm`. Rewrite `hm` using `[MvPolynomial.support_neg]`. Conclude with `hf m hm`.
+-/
 theorem form_neg {f : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) : IsMultiHomog (-f) a := by
   intro m hm
   rw [MvPolynomial.support_neg] at hm
   exact hf m hm
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Conclude with `form_add hf (form_neg hg)`.
+-/
 theorem form_sub {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g a) :
     IsMultiHomog (f - g) a := by
   rw [sub_eq_add_neg]
   exact form_add hf (form_neg hg)
 
+/- English proof (translation)
+Conclude with `Finset.sum_induction f (fun p => IsMultiHomog p a) (fun _ _ h1 h2 => form_add h1 h2) (form_zero a) hf`.
+-/
 theorem form_sum {σ : Type*} (s : Finset σ) (f : σ → MRing ι) {a : K → ℕ}
     (hf : ∀ x ∈ s, IsMultiHomog (f x) a) : IsMultiHomog (∑ x ∈ s, f x) a := by
   exact Finset.sum_induction f (fun p => IsMultiHomog p a) (fun _ _ h1 h2 => form_add h1 h2)
     (form_zero a) hf
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simpa using form_zero a`. Consider the case `succ n ih`. Rewrite using `[Nat.cast_succ, mul_add, mul_one]`. Conclude with `form_add ih hf`.
+-/
 theorem form_natCast_mul {f : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (n : ℕ) :
     IsMultiHomog (f * (n : MRing ι)) a := by
   induction n with
@@ -60,6 +86,15 @@ theorem form_natCast_mul {f : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) 
     rw [Nat.cast_succ, mul_add, mul_one]
     exact form_add ih hf
 
+/- English proof (translation)
+Establish `key : ∀ v ∈ h.support, mConeMap y (monomial v (coeff v h)) = MvPolynomial.C (aeval y (monomial v (coeff v h))) * ∏ k, (X k : MvPolynomial K Ω) ^ d k`. Introduce `v hv`. Establish `hX : (v.prod fun p e => (X p.1 : MvPolynomial K Ω) ^ e) = ∏ k, (X k : MvPolynomial K Ω) ^ d k`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fintype.prod_sigma]`. Conclude with `Finset.prod_congr rfl fun k _ => by simp only [Finset.prod_pow_eq_pow_sum, hh v hv k]`.
+
+Establish `h1 : (v.prod fun p e => (MvPolynomial.C (y p) * X p.1 : MvPolynomial K Ω) ^ e) = MvPolynomial.C (v.prod fun p e => y p ^ e) * v.prod fun p e => (X p.1 : MvPolynomial K Ω) ^ e`. Rewrite using `[map_finsuppProd, ← Finsupp.prod_mul]`. Conclude with `Finsupp.prod_congr fun p _ => by simp only [mul_pow, map_pow]`. Use `show (aeval fun p => MvPolynomial.C (y p) * (X p.1 : MvPolynomial K Ω)) (monomial v (coeff v h)) = _`. Simplify using `only [MvPolynomial.aeval_monomial]`.
+
+Rewrite using `[h1, hX, map_mul]`. Simplify using `only [algebraMap_int_eq, eq_intCast, Int.coe_castRingHom, map_intCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h.as_sum]`. Simplify using `only [map_sum, Finset.sum_mul]`.
+
+Conclude with `Finset.sum_congr rfl key`.
+-/
 theorem cone_form (y : (Σ k, ι k) → Ω) {h : MRing ι} {d : K → ℕ} (hh : IsMultiHomog h d) :
     mConeMap y h = MvPolynomial.C (aeval y h) * ∏ k, (X k : MvPolynomial K Ω) ^ d k := by
   classical
@@ -82,11 +117,19 @@ theorem cone_form (y : (Σ k, ι k) → Ω) {h : MRing ι} {d : K → ℕ} (hh :
   simp only [map_sum, Finset.sum_mul]
   exact Finset.sum_congr rfl key
 
+/- English proof (translation)
+Use `show h ∈ RingHom.ker (mConeMap y)`. Rewrite using `[RingHom.mem_ker, cone_form y hh, h0, map_zero, zero_mul]`.
+-/
 theorem mem_of_aeval_eq_zero {y : (Σ k, ι k) → Ω} {h : MRing ι} {d : K → ℕ} (hh : IsMultiHomog h d)
     (h0 : aeval y h = 0) : h ∈ mCoordIdeal y := by
   show h ∈ RingHom.ker (mConeMap y)
   rw [RingHom.mem_ker, cone_form y hh, h0, map_zero, zero_mul]
 
+/- English proof (translation)
+Introduce `hmem`. Express the relevant statement in the definitionally equal form `h ∈ RingHom.ker (mConeMap y) at hmem`. Rewrite `hmem` using `[RingHom.mem_ker, cone_form y hh]`. Break down `mul_eq_zero.1 hmem with h1 | h1` into its components or cases. Conclude with `h0 (MvPolynomial.C_eq_zero.1 h1)`.
+
+Conclude with `(Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (MvPolynomial.X_ne_zero k)) h1`.
+-/
 theorem notMem_of_aeval_ne_zero {y : (Σ k, ι k) → Ω} {h : MRing ι} {d : K → ℕ} (hh : IsMultiHomog h d)
     (h0 : aeval y h ≠ 0) : h ∉ mCoordIdeal y := by
   intro hmem
@@ -96,6 +139,11 @@ theorem notMem_of_aeval_ne_zero {y : (Σ k, ι k) → Ω} {h : MRing ι} {d : K 
   · exact h0 (MvPolynomial.C_eq_zero.1 h1)
   · exact (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (MvPolynomial.X_ne_zero k)) h1
 
+/- English proof (translation)
+Use `Finset.induction_on s ⟨0, 1, form_one, by simp, fun x hx => by simp at hx⟩ ?_` and prove the remaining obligations. Introduce `x s _ ih`. Take `⟨b, H, hH, hH0, hg⟩` from `ih`. Take `⟨d, g, h, hgd, hhd, hh0, hgh⟩` from `hy x`. Use `⟨b + d, H * h, form_mul hH hhd, by rw [map_mul]; exact mul_ne_zero hH0 hh0, fun z hz => ?_⟩` and prove the remaining obligations.
+
+Break down `Finset.mem_insert.1 hz with rfl | hz` into its components or cases. Conclude with `⟨H * g, form_mul hH hgd, by rw [map_mul, map_mul, hgh]; ring⟩`. Take `⟨g', hg', hg'e⟩` from `hg z hz`. Conclude with `⟨g' * h, form_mul hg' hhd, by rw [map_mul, map_mul, hg'e]; ring⟩`.
+-/
 theorem common_denominator {y : (Σ k, ι k) → Ω} (hy : Birational y) (s : Finset Ω) :
     ∃ (b : K → ℕ) (H : MRing ι), IsMultiHomog H b ∧ aeval y H ≠ 0 ∧
       ∀ x ∈ s, ∃ g : MRing ι, IsMultiHomog g b ∧ aeval y g = x * aeval y H := by
@@ -110,6 +158,13 @@ theorem common_denominator {y : (Σ k, ι k) → Ω} (hy : Birational y) (s : Fi
   · obtain ⟨g', hg', hg'e⟩ := hg z hz
     exact ⟨g' * h, form_mul hg' hhd, by rw [map_mul, map_mul, hg'e]; ring⟩
 
+/- English proof (translation)
+Use `choose! g hg using hP`. Use `⟨∑ j ∈ P.support, Polynomial.monomial j (g j), fun j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.finsetSum_coeff]`. Simplify using `only [Polynomial.coeff_monomial, Finset.sum_ite_eq']`. Use `split_ifs with hj`.
+
+Conclude with `(hg j hj).1`. Conclude with `form_zero b`. Use extensionality with `n`. Simplify using `only [Polynomial.coeff_map, Polynomial.finsetSum_coeff, Polynomial.coeff_monomial, Finset.sum_ite_eq', Polynomial.coeff_C_mul]`. Use `split_ifs with hn`.
+
+Conclude with `((hg n hn).2).trans (mul_comm _ _)`. Establish `hc : P.coeff n = 0` using `by simpa using hn`. Rewrite using `[map_zero, hc, mul_zero]`.
+-/
 theorem lift_poly {y : (Σ k, ι k) → Ω} {b : K → ℕ} {H : MRing ι} (P : Polynomial Ω)
     (hP : ∀ j, j ∈ P.support → ∃ g : MRing ι, IsMultiHomog g b ∧ aeval y g = P.coeff j * aeval y H) :
     ∃ L : Polynomial (MRing ι), (∀ j, IsMultiHomog (L.coeff j) b) ∧
@@ -130,11 +185,17 @@ theorem lift_poly {y : (Σ k, ι k) → Ω} {b : K → ℕ} {H : MRing ι} (P : 
     · have hc : P.coeff n = 0 := by simpa using hn
       rw [map_zero, hc, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[Polynomial.derivative_eval, Polynomial.sum_over_range' _ (fun _ => by simp) (n + 1) (Nat.lt_succ_of_le hn)]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem sum_derivative (q : Polynomial ℂ) (n : ℕ) (hn : q.natDegree ≤ n) (τ : ℂ) :
     ∑ j ∈ Finset.range (n + 1), (j : ℂ) * q.coeff j * τ ^ (j - 1) = (Polynomial.derivative q).eval τ := by
   rw [Polynomial.derivative_eval, Polynomial.sum_over_range' _ (fun _ => by simp) (n + 1) (Nat.lt_succ_of_le hn)]
   exact Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Conclude with `(Polynomial.eval_eq_sum_range' (Nat.lt_succ_of_le hn) τ).symm`.
+-/
 theorem sum_eval (q : Polynomial ℂ) (n : ℕ) (hn : q.natDegree ≤ n) (τ : ℂ) :
     ∑ j ∈ Finset.range (n + 1), q.coeff j * τ ^ j = q.eval τ := by
   exact (Polynomial.eval_eq_sum_range' (Nat.lt_succ_of_le hn) τ).symm
@@ -142,9 +203,33 @@ theorem sum_eval (q : Polynomial ℂ) (n : ℕ) (hn : q.natDegree ≤ n) (τ : �
 def evalAt (w : (Σ k, ι k) → ℂ) : MRing ι →+* ℂ :=
   (MvPolynomial.eval w).comp (MvPolynomial.map (Int.castRingHom ℂ))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evalAt_apply (w : (Σ k, ι k) → ℂ) (f : MRing ι) :
     evalAt w f = eval w (map (Int.castRingHom ℂ) f) := rfl
 
+/- English proof (translation)
+Take `⟨u, v, huv⟩` from `hsep`. Take `⟨b, H, hH, hH0, hg⟩` from `common_denominator hy (m.support.image m.coeff ∪ u.support.image u.coeff ∪ v.support.image v.coeff)`. Take `⟨M, hMh, hMm⟩` from `lift_poly (y := y) (H := H) m (fun j hj => hg _ (Finset.mem_union_left _ (Finset.mem_union_left _ (Finset.mem_image_of_mem _ hj))))`. Take `⟨U, hUh, hUm⟩` from `lift_poly (y := y) (H := H) u (fun j hj => hg _ (Finset.mem_union_left _ (Finset.mem_union_right _ (Finset.mem_image_of_mem _ hj))))`. Take `⟨V, hVh, hVm⟩` from `lift_poly (y := y) (H := H) v (fun j hj => hg _ (Finset.mem_union_right _ (Finset.mem_image_of_mem _ hj)))`.
+
+Establish `hDh : ∀ j, IsMultiHomog ((Polynomial.derivative M).coeff j) b` using `fun j => by`. Rewrite using `[Polynomial.coeff_derivative]`. Conclude with `form_natCast_mul (hMh (j + 1)) (j + 1)` after adjusting the coercions. Establish `hEh : ∀ j, IsMultiHomog ((U * M + V * Polynomial.derivative M - Polynomial.C (H * H)).coeff j) (b + b)`. Introduce `j`.
+
+Rewrite using `[Polynomial.coeff_sub, Polynomial.coeff_add, Polynomial.coeff_mul, Polynomial.coeff_mul, Polynomial.coeff_C]`. Use `form_sub (form_add (form_sum _ _ fun x _ => form_mul (hUh _) (hMh _)) (form_sum _ _ fun x _ => form_mul (hVh _) (hDh _))) ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `form_mul hH hH`. Conclude with `form_zero _`.
+
+Establish `hEm : (U * M + V * Polynomial.derivative M - Polynomial.C (H * H)).map (aeval y : MRing ι →ₐ[ℤ] Ω).toRingHom = 0`. Rewrite using `[Polynomial.map_sub, Polynomial.map_add, Polynomial.map_mul, Polynomial.map_mul, ← Polynomial.derivative_map, Polynomial.map_C, hUm, hVm, hMm, Polynomial.derivative_C_mul]`. Simplify using `only [map_mul, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Take the linear combination `(Polynomial.C (aeval y H) * Polynomial.C (aeval y H)) * huv`. Establish `hEmem : ∀ j, (U * M + V * Polynomial.derivative M - Polynomial.C (H * H)).coeff j ∈ mCoordIdeal y`.
+
+Introduce `j`. Use `mem_of_aeval_eq_zero (hEh j) ?_` and prove the remaining obligations. Establish `h2` using `congrArg (fun p => Polynomial.coeff p j) hEm`. Simplify using `only [Polynomial.coeff_map, Polynomial.coeff_zero] at h2`. Conclude with `h2`.
+
+Use `⟨M.natDegree, fun j => M.coeff j, b, H, b, hMh, hH, notMem_of_aeval_ne_zero hH hH0, ?_, ?_⟩` and prove the remaining obligations. Establish `hdeg : (M.map (aeval y : MRing ι →ₐ[ℤ] Ω).toRingHom).natDegree < M.natDegree + 1` using `Nat.lt_succ_of_le Polynomial.natDegree_map_le`. Establish `h1` using `Polynomial.eval₂_eq_sum_range' i hdeg α`. Simplify using `only [Polynomial.coeff_map] at h1`. Rewrite `h1` using `[hMm, Polynomial.eval₂_mul, Polynomial.eval₂_C, hroot, mul_zero]`.
+
+Conclude with `h1.symm`. Introduce `w hw hG τ hτ hder`. Establish `key : ∀ j, eval w (map (Int.castRingHom ℂ) ((U * M + V * Polynomial.derivative M - Polynomial.C (H * H)).coeff j)) = 0` using `fun j => hw.2 _ (hEmem j)`. Establish `hE0 : (U * M + V * Polynomial.derivative M - Polynomial.C (H * H)).map (evalAt w) = 0`. Use extensionality with `j`.
+
+Rewrite using `[Polynomial.coeff_map, Polynomial.coeff_zero, evalAt_apply]`. Conclude with `key j`. Rewrite `hE0` using `[Polynomial.map_sub, Polynomial.map_add, Polynomial.map_mul, Polynomial.map_mul, ← Polynomial.derivative_map, Polynomial.map_C]`. Establish `hMe : (M.map (evalAt w)).eval τ = 0`. Rewrite using `[← sum_eval (M.map (evalAt w)) M.natDegree Polynomial.natDegree_map_le τ]`.
+
+Simplify `hτ` using `only [Polynomial.coeff_map, evalAt_apply]`. Establish `hDe : (Polynomial.derivative (M.map (evalAt w))).eval τ = 0`. Rewrite using `[← sum_derivative (M.map (evalAt w)) M.natDegree Polynomial.natDegree_map_le τ]`. Simplify `hder` using `only [Polynomial.coeff_map, evalAt_apply]`. Establish `h3` using `congrArg (Polynomial.eval τ) hE0`.
+
+Simplify using `only [Polynomial.eval_sub, Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_C, hMe, hDe, mul_zero, add_zero, zero_sub, Polynomial.eval_zero, neg_eq_zero, map_mul] at h3`. Establish `hGH : evalAt w H ≠ 0`. Rewrite using `[evalAt_apply]`. Conclude with `hG`. Conclude with `hGH (mul_self_eq_zero.1 h3)`.
+-/
 theorem core {Ω' : Type} [Field Ω'] {y : (Σ k, ι k) → Ω} (hy : Birational y) (i : Ω →+* Ω') (α : Ω')
     (m : Polynomial Ω) (hsep : IsCoprime m (Polynomial.derivative m)) (hroot : Polynomial.eval₂ i α m = 0) :
     ∃ (n : ℕ) (c : ℕ → MRing ι) (a : K → ℕ) (G : MRing ι) (b : K → ℕ),
@@ -220,6 +305,11 @@ theorem core {Ω' : Type} [Field Ω'] {y : (Σ k, ι k) → Ω} (hy : Birational
       exact hG
     exact hGH (mul_self_eq_zero.1 h3)
 
+/- English proof (translation)
+Introduce `K₀ _ J₀ _ Ω₀ Ω _ _ _ y₀ i α hy hα`. Use `letI := i.toAlgebra`. Use `haveI : CharZero Ω₀ := RingHom.charZero i`. Establish `hα' : IsAlgebraic Ω₀ α` using `hα`. Establish `hint : IsIntegral Ω₀ α` using `hα'.isIntegral`.
+
+Establish `hsep : (minpoly Ω₀ α).Separable` using `(minpoly.irreducible hint).separable`. Establish `hroot : Polynomial.eval₂ i α (minpoly Ω₀ α) = 0`. Establish `h` using `minpoly.aeval Ω₀ α`. Rewrite `h` using `[Polynomial.aeval_def, RingHom.algebraMap_toAlgebra]`. Then use the resulting hypothesis. Conclude with `core hy i α (minpoly Ω₀ α) hsep hroot`.
+-/
 theorem algebraic_form_poly : ∀ (K₀ : Type) [Fintype K₀] (J₀ : K₀ → Type) [∀ k, Fintype (J₀ k)] (Ω₀ Ω : Type)
     [Field Ω₀] [Field Ω] [CharZero Ω] (y₀ : (Σ k, J₀ k) → Ω₀) (i : Ω₀ →+* Ω) (α : Ω), Birational y₀ →
     (letI := i.toAlgebra; IsAlgebraic Ω₀ α) →

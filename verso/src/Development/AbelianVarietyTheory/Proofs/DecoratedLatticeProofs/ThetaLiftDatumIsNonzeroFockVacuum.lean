@@ -19,6 +19,27 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.LiftFockVac
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F i t σ s P cμ cη m ω BW f₀ f c io h μ 𝓧 hμ`. Establish `hθf` using `(GlobalTheory.FinZeta.levVec_vacFin R F i t σ s P cμ cη m ω BW f₀ f c io h).1`. Take `⟨hC, -, -, -, -, hW, -, hlv, -, -, -⟩` from `h`. Take `⟨⟨hψ, hv⟩, e, he, hth⟩` from `hlv`. Establish `hinf : infPart D (cA D e) = 0` using `GlobalTheory.PlaceVec.infPart_cA (GlobalTheory.PlaceVec.idemSum_infPart he)`.
+
+Establish `hinf' : infPart D (cA D (cA D e)) = 0`. Rewrite using `[GlobalTheory.DualPairCheck.cA_cA]`. Conclude with `GlobalTheory.PlaceVec.idemSum_infPart he`. Establish `hS` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hC.lev.βV i)`. Establish `hT` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hC.lev.βW i)`.
+
+Establish `hr : (Wc D i).rank ≤ (Vc D i).rank` using `(D.sp.W_rank _ (Nat.le_add_left _ _) i.2).trans_le (r_le_V i)`. Establish `hf0 : f ≠ 0`. Establish `h00 : f₀ ≠ 0`. Introduce and unpack `rfl`. Take `⟨⟨p, hp⟩, h2⟩` from `hv.norm`.
+
+Use `h2 p hp` as an intermediate fact. Simplify using `[nrm2] at this`. Take `⟨⟨Tm, hTm⟩, hall⟩` from `hth`. Rewrite using `[hall Tm hTm]`. Establish `ho` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum he`.
+
+Establish `hee : e * e = e` using `ho.idem`. Take `⟨-, hFS, -⟩` from `hC.lev.βV i`. Take `⟨-, hFT, -⟩` from `hC.lev.βW i`. Establish `hSB` using `GlobalTheory.FinZeta.isSBHalf_levDatum D _ _ _ _ _ _ (R.datWp i P) (R.Q t) m _ e hS hT hFS hFT he`. Use `GlobalTheory.PlaceModelInj.placeModel_ne_zero D R.ψ _ _ _ _ (cA D e) f₀ _ Tm hψ hS hT ho.conj.idem (by rw [GlobalTheory.DualPairCheck.cA_cA, mul_comm, he.2]) hinf hTm h00 hSB ?_` and prove the remaining obligations.
+
+Take `⟨x, hx, hx'⟩` from `GlobalTheory.AdjDatumNe.exists_half_frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) hee (GlobalTheory.AdjDatumNe.rectOne _ _ _)`. Take `⟨hi, hres⟩` from `GlobalTheory.AdjDatumNe.idemSum_res he`. Establish `hint : IsIntM (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) x)`. Rewrite using `[hx']`. Conclude with `GlobalTheory.AdjDatumNe.isIntM_smul_rectOne hi _ _`.
+
+Establish `hred : ∀ PP ∈ (R.datWp i P).Pg ∪ R.Q t, redM PP (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) x) = GlobalTheory.Chain.StepVac.rectOne (kP PP) _ _`. Introduce `PP hPP`. Rewrite using `[hx', GlobalTheory.AdjDatumNe.redM_smul_rectOne hi PP (hres PP hPP)]`. Both sides reduce to the same expression. Introduce `hz`.
+
+Use `congrFun hz x` as an intermediate fact. Rewrite `this` using `[if_pos ⟨hx, hint⟩, GlobalTheory.PlaceDatum.omegaG_congr _ m _ (fun PP => GlobalTheory.Chain.StepVac.rectOne (kP PP) _ _) fun PP hP => hred PP (Finset.mem_union_left _ hP), GlobalTheory.PlaceVec.omegaQ_congr _ _ _ _ (y' := fun PP => GlobalTheory.Chain.StepVac.rectOne (kP PP) _ _) …`. Conclude with `mul_ne_zero (GlobalTheory.Chain.StepVac.omegaG_rectOne hr _ m) (GlobalTheory.Chain.StepVac.omegaQ_rectOne le_rfl hr _ m _) this`. Use `⟨?_, hθf, fun τ => GlobalTheory.RawLift.isCartanInv_one_of_onb (hC.models.BV i τ), fun τ => ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.RawLift.VecNonzero.thetaInner_self_ne_zero hW.std hθf hf0 hμ`.
+
+Establish `e1 : l2 μ 𝓧 f f = GlobalTheory.RawLift.thetaIP μ 𝓧 f f` using `by show (∫ w in 𝓧, f w * starRingEnd ℂ (f w) ∂μ) = ∫ w in 𝓧, star (f w) * f w ∂μ`. Use `congr 1`. Use function extensionality and compare the values at `w`. Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+
+Rewrite using `[e1]`. Conclude with `h1`. Conclude with `GlobalTheory.DatumFock.isFockVacAt_of_isThetaAt hψ.1.1 hv.inf hinf hinf' hth hv.theta hθf (hv.fock τ)`.
+-/
 theorem levVec_fockVac : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), ∀ i t σ s P cμ cη m ω BW f₀ f c io, IsLiftDataC R F i t σ s P cμ cη m ω BW f₀ f c io → ∀ (μ : Measure (WO (Vc D i) (Wc D i))) (𝓧 : Set (WO (Vc D i) (Wc D i))), IsCovolOne (ratL (Wc D i) (Vc D i)) μ 𝓧 → l2 μ 𝓧 f f ≠ 0 ∧ IsThetaFunO R.ψ (Vc D i) (Wc D i) f ∧ (∀ τ, IsCartanInv (gramAt D (Vc D i) τ) 1) ∧ ∀ τ, IsFockVacAt (heisO R.ψ (Vc D i) (Wc D i)) R.θ τ (cplxO 1 (cart (R.MW i σ) τ)) f := by
   classical
   intro D G _ _ Pl0 T A Ks _ _ _ R F i t σ s P cμ cη m ω BW f₀ f c io h μ 𝓧 hμ

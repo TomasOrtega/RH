@@ -13,6 +13,9 @@ open scoped Matrix
 
 namespace GlobalTheory.CompanionTheory.ThetaProd
 
+/- English proof (translation)
+Use `Finset.sum_bij (fun b _ => Fin.castLE c.2.le b) (fun b _ => ?_) (fun b _ b' _ hb => ?_) (fun b hb => ?_) (fun b _ => rfl)` and prove the remaining obligations. Conclude with `Finset.mem_filter.2 ⟨Finset.mem_univ _, Fin.lt_def.2 b.2⟩`. Conclude with `Fin.castLE_injective _ hb`. Conclude with `⟨⟨b, Fin.lt_def.1 (Finset.mem_filter.1 hb).2⟩, Finset.mem_univ _, Fin.ext rfl⟩`.
+-/
 theorem sum_castLE {h : ℕ} (f : Fin h → ℕ) (c : Fin h) :
     ∑ b : Fin c, f (Fin.castLE c.2.le b) = ∑ b with b < c, f b := by
   refine Finset.sum_bij (fun b _ => Fin.castLE c.2.le b) (fun b _ => ?_) (fun b _ b' _ hb => ?_)
@@ -21,6 +24,11 @@ theorem sum_castLE {h : ℕ} (f : Fin h → ℕ) (c : Fin h) :
   · exact Fin.castLE_injective _ hb
   · exact ⟨⟨b, Fin.lt_def.1 (Finset.mem_filter.1 hb).2⟩, Finset.mem_univ _, Fin.ext rfl⟩
 
+/- English proof (translation)
+Establish `hc : d c = ∑ b, if b = c then d b else 0` using `by simp`. Rewrite using `[Finset.sum_filter, Finset.sum_filter, hc, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Break down `lt_trichotomy b c with hb | rfl | hb` into its components or cases. Simplify using `[hb, hb.ne, not_lt.2 hb.le]`.
+
+Simplify using the standard rewrite rules. Simplify using `[hb, hb.ne', not_lt.2 hb.le]`.
+-/
 theorem sum_split {h : ℕ} (d : Fin h → ℕ) (c : Fin h) :
     ∑ b, d b = (∑ b with b < c, d b) + d c + ∑ b with c < b, d b := by
   have hc : d c = ∑ b, if b = c then d b else 0 := by simp
@@ -31,6 +39,9 @@ theorem sum_split {h : ℕ} (d : Fin h → ℕ) (c : Fin h) :
   · simp
   · simp [hb, hb.ne', not_lt.2 hb.le]
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_filter, Finset.sum_filter, ← Equiv.sum_comp Fin.revPerm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.revPerm_apply, Fin.rev_rev]`. Use `congr 1`. Conclude with `propext ⟨fun hb => by simpa using Fin.rev_lt_rev.2 hb, fun hb => by simpa using Fin.rev_lt_rev.2 hb⟩`.
+-/
 theorem sum_lt_rev {h : ℕ} (d : Fin h → ℕ) (a : Fin h) :
     ∑ b with b < a, d (Fin.rev b) = ∑ b with Fin.rev a < b, d b := by
   rw [Finset.sum_filter, Finset.sum_filter, ← Equiv.sum_comp Fin.revPerm]
@@ -39,6 +50,11 @@ theorem sum_lt_rev {h : ℕ} (d : Fin h → ℕ) (a : Fin h) :
   congr 1
   exact propext ⟨fun hb => by simpa using Fin.rev_lt_rev.2 hb, fun hb => by simpa using Fin.rev_lt_rev.2 hb⟩
 
+/- English proof (translation)
+Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[Fin.val_rev (stdBlocks (fun a => d (Fin.rev a)) hd' ⟨a, j⟩)]`. Simplify using `only [stdBlocks_val, sum_castLE d]`. Rewrite using `[sum_castLE (fun b => d (Fin.rev b)) a, sum_lt_rev, Fin.val_rev j]`. Establish `h1` using `sum_split d (Fin.rev a)`.
+
+Establish `h2` using `j.2`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rev_stdBlocks {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (hd' : ∑ a, d (Fin.rev a) = N)
     (a : Fin h) (j : Fin (d (Fin.rev a))) :
     Fin.rev (stdBlocks (fun a => d (Fin.rev a)) hd' ⟨a, j⟩) = stdBlocks d hd ⟨Fin.rev a, Fin.rev j⟩ := by
@@ -50,6 +66,13 @@ theorem rev_stdBlocks {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (hd'
   have h2 := j.2
   omega
 
+/- English proof (translation)
+Unfold `modExp`. Simplify using `only [Fintype.card_fin]`. Establish `h1 : ∑ b with Fin.rev a < b, (d (Fin.rev b) : ℤ) = ∑ b with b < a, (d b : ℤ)`. Rewrite using `[Finset.sum_filter, Finset.sum_filter, ← Equiv.sum_comp Fin.revPerm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Fin.revPerm_apply, Fin.rev_rev, Fin.rev_lt_rev]`. Establish `h2 : ∑ b with b < Fin.rev a, (d (Fin.rev b) : ℤ) = ∑ b with a < b, (d b : ℤ)`. Rewrite using `[Finset.sum_filter, Finset.sum_filter, ← Equiv.sum_comp Fin.revPerm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.revPerm_apply, Fin.rev_rev, Fin.rev_lt_rev]`.
+
+Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem modExp_rev {h : ℕ} (d : Fin h → ℕ) (a : Fin h) :
     modExp (fun b => Fin (d (Fin.rev b))) (Fin.rev a) = -modExp (fun b => Fin (d b)) a := by
   unfold modExp
@@ -65,6 +88,9 @@ theorem modExp_rev {h : ℕ} (d : Fin h → ℕ) (a : Fin h) :
   rw [h1, h2]
   ring
 
+/- English proof (translation)
+Take `⟨⟨a, j⟩, hj⟩` from `(stdBlocks (fun a => d (Fin.rev a)) hd').surjective (Fin.rev i)`. Establish `h1` using `rev_stdBlocks d hd hd' a j`. Rewrite `h1` using `[hj, Fin.rev_rev]`. Rewrite using `[← hj, blk_apply, h1, blk_apply, Fin.rev_rev]`.
+-/
 theorem blk_rev {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (hd' : ∑ a, d (Fin.rev a) = N) (i : Fin N) :
     blk (stdBlocks (fun a => d (Fin.rev a)) hd') (Fin.rev i) = Fin.rev (blk (stdBlocks d hd) i) := by
   obtain ⟨⟨a, j⟩, hj⟩ := (stdBlocks (fun a => d (Fin.rev a)) hd').surjective (Fin.rev i)
@@ -74,6 +100,11 @@ theorem blk_rev {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (hd' : ∑
 
 variable {A : Type} [CommRing A]
 
+/- English proof (translation)
+Rewrite using `[← inv_mem_iff (x := g), mem_parab, mem_parab]`. Prove the components needed by the constructor for the conclusion. Introduce `H i j hij`. Use `H (Fin.rev j) (Fin.rev i) (by rw [blk_rev d hd hd', blk_rev d hd hd']; exact Fin.rev_lt_rev.2 hij)` as an intermediate fact. Rewrite `this` using `[GlobalTheory.CompanionTheory.ThetaInv.thetaW_val_apply, Fin.rev_rev, Fin.rev_rev]`. Then use the resulting hypothesis.
+
+Introduce `H i j hij`. Rewrite using `[GlobalTheory.CompanionTheory.ThetaInv.thetaW_val_apply]`. Use `H _ _ ?_` and prove the remaining obligations. Rewrite `hij` using `[← Fin.rev_rev i, ← Fin.rev_rev j, blk_rev d hd hd', blk_rev d hd hd']`. Conclude with `Fin.rev_lt_rev.1 hij`.
+-/
 theorem thetaW_mem_parab_iff {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (hd' : ∑ a, d (Fin.rev a) = N)
     (g : GL (Fin N) A) :
     thetaW A N g ∈ parab A (stdBlocks (fun a => d (Fin.rev a)) hd') ↔ g ∈ parab A (stdBlocks d hd) := by
@@ -92,6 +123,11 @@ def thetaL {h : ℕ} (d : Fin h → ℕ) :
     Levi A (fun a => Fin (d a)) →* Levi A (fun a => Fin (d (Fin.rev a))) :=
   MonoidHom.pi fun a => (thetaW A (d (Fin.rev a))).comp (Pi.evalMonoidHom (fun b => GL (Fin (d b)) A) (Fin.rev a))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Use extensionality with `i j`. Rewrite using `[leviProj_apply]`. Use `show (thetaW A N (p : GL (Fin N) A)).1 _ _ = (thetaW A (d (Fin.rev a)) (leviProj A (stdBlocks d hd) p (Fin.rev a))).1 i j`. Rewrite using `[GlobalTheory.CompanionTheory.ThetaInv.thetaW_val_apply, GlobalTheory.CompanionTheory.ThetaInv.thetaW_val_apply, rev_stdBlocks d hd hd', rev_stdBlocks d hd hd']`.
+
+Establish `e1 : (leviProj A (stdBlocks d hd) p (Fin.rev a))⁻¹ = leviProj A (stdBlocks d hd) p⁻¹ (Fin.rev a)`. Rewrite using `[map_inv]`. Both sides reduce to the same expression. Rewrite using `[e1, leviProj_apply]`. Both sides reduce to the same expression.
+-/
 theorem leviProj_thetaW {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (hd' : ∑ a, d (Fin.rev a) = N)
     (p : parab A (stdBlocks d hd)) :
     leviProj A (stdBlocks (fun a => d (Fin.rev a)) hd') ⟨thetaW A N p, (thetaW_mem_parab_iff d hd hd' _).2 p.2⟩ =
@@ -107,6 +143,9 @@ theorem leviProj_thetaW {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (h
   rw [e1, leviProj_apply]
   rfl
 
+/- English proof (translation)
+Establish `h1 : Matrix.GeneralLinearGroup.det (thetaW A N g) = Matrix.GeneralLinearGroup.det g⁻¹`. Use `ext`. Simplify using `[thetaW, invT, Matrix.reindexAlgEquiv_apply, Matrix.reindex_apply, Matrix.det_submatrix_equiv_self, Matrix.det_transpose]`. Rewrite using `[h1, map_inv]`.
+-/
 theorem det_thetaW (N : ℕ) (g : GL (Fin N) A) :
     Matrix.GeneralLinearGroup.det (thetaW A N g) = (Matrix.GeneralLinearGroup.det g)⁻¹ := by
   have h1 : Matrix.GeneralLinearGroup.det (thetaW A N g) = Matrix.GeneralLinearGroup.det g⁻¹ := by
@@ -115,6 +154,11 @@ theorem det_thetaW (N : ℕ) (g : GL (Fin N) A) :
       Matrix.det_transpose]
   rw [h1, map_inv]
 
+/- English proof (translation)
+Establish `hT : Continuous (invT : GL (Fin N) A → GL (Fin N) A)`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Units.continuous_coe_inv.matrix_transpose`. Conclude with `Units.continuous_val.matrix_transpose`. Establish `hR : Continuous ((Matrix.reindexAlgEquiv A A (Fin.revPerm : Equiv.Perm (Fin N))).toAlgHom.toMonoidHom)` using `by show Continuous fun m : Matrix (Fin N) (Fin N) A => Matrix.reindexAlgEquiv A A (Fin.revPerm : Equiv.Perm (Fin N)) m`.
+
+Simplify using `only [Matrix.reindexAlgEquiv_apply, Matrix.reindex_apply]`. Conclude with `continuous_id.matrix_submatrix _ _`. Conclude with `(Continuous.units_map _ hR).comp hT`.
+-/
 theorem continuous_thetaW [TopologicalSpace A] [IsTopologicalRing A] (N : ℕ) :
     Continuous (thetaW A N) := by
   have hT : Continuous (invT : GL (Fin N) A → GL (Fin N) A) := by
@@ -131,6 +175,11 @@ section Modulus
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Rewrite using `[deltaHalf_apply, deltaHalf_apply]`. Establish `hg : ∀ a, Matrix.GeneralLinearGroup.det (thetaL d g a) = (Matrix.GeneralLinearGroup.det (g (Fin.rev a)))⁻¹` using `fun a => det_thetaW _ _`. Simplify using `only [hg]`. Rewrite using `[← Equiv.prod_comp Fin.revPerm]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Fin.revPerm_apply, Fin.rev_rev, modExp_rev, Int.cast_neg, neg_div, absPow_neg, map_inv, MonoidHom.inv_apply, inv_inv]`. Conclude with `congrArg (fun b => (absPow k ((modExp (fun b => Fin (d b)) a : ℂ) / 2)) (Matrix.GeneralLinearGroup.det (g b))) (Fin.rev_rev a)`.
+-/
 theorem deltaHalf_thetaL {h : ℕ} (d : Fin h → ℕ) (g : Levi k (fun a => Fin (d a))) :
     deltaHalf k (fun a => Fin (d (Fin.rev a))) (thetaL d g) = deltaHalf k (fun a => Fin (d a)) g := by
   rw [deltaHalf_apply, deltaHalf_apply]
@@ -157,6 +206,9 @@ def revTensor {h : ℕ} (X : Fin h → Type) [∀ a, AddCommGroup (X a)] [∀ a,
     (⨂[ℂ] a, X a) ≃ₗ[ℂ] ⨂[ℂ] a, X (Fin.rev a) :=
   PiTensorProduct.reindex ℂ X Fin.revPerm
 
+/- English proof (translation)
+The claim follows from `PiTensorProduct.reindex_tprod _ _`.
+-/
 theorem revTensor_tprod {h : ℕ} {X : Fin h → Type} [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)]
     (x : ∀ a, X a) : revTensor X (PiTensorProduct.tprod ℂ x) = PiTensorProduct.tprod ℂ fun a => x (Fin.rev a) :=
   PiTensorProduct.reindex_tprod _ _
@@ -195,6 +247,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 abbrev dualOf (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (y : IrrGL k) : IrrGL k := ⟨y.1, dualClass hA y⟩
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.CompanionTheory.Zcore.dualCl_eq_of hA y, dualOf, dualClass]`. Both sides reduce to the same expression.
+-/
 theorem dualOf_eq (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (y : IrrGL k) : dualOf hA y = dualCl y := by
   rw [GlobalTheory.CompanionTheory.Zcore.dualCl_eq_of hA y, dualOf, dualClass]
   rfl
@@ -207,10 +262,16 @@ def dualOfEquiv (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (y : IrrGL
 abbrev dualRev (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {h : ℕ} (x : Fin h → IrrGL k) : Fin h → IrrGL k :=
   fun a => dualOf hA (x (Fin.rev a))
 
+/- English proof (translation)
+The claim follows from `funext fun _ => dualOf_eq hA _`.
+-/
 theorem dualRev_eq (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {h : ℕ} (x : Fin h → IrrGL k) :
     dualRev hA x = fun a => dualCl (x (Fin.rev a)) :=
   funext fun _ => dualOf_eq hA _
 
+/- English proof (translation)
+The claim follows from `(Equiv.sum_comp Fin.revPerm fun a => (x a).1).trans hd`.
+-/
 theorem sum_dualRev (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {h N : ℕ} (x : Fin h → IrrGL k)
     (hd : ∑ a, (x a).1 = N) : ∑ a, (dualRev hA x a).1 = N :=
   (Equiv.sum_comp Fin.revPerm fun a => (x a).1).trans hd
@@ -222,6 +283,15 @@ def blockEquiv (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hGK : GKLo
   have e2 := dualOfEquiv hA (x (Fin.rev a))
   exact equivCompOfInv (GlobalTheory.CompanionTheory.ThetaInv.thetaW_thetaW _) (e1.trans e2)
 
+/- English proof (translation)
+Use `GlobalTheory.SmGL.Relabel.smInd_equiv_comp (thetaW k N) (thetaW k N) (continuous_thetaW N) (continuous_thetaW N) (GlobalTheory.CompanionTheory.ThetaInv.thetaW_thetaW N) (GlobalTheory.CompanionTheory.ThetaInv.thetaW_thetaW N) (fun q => ?_) (fun p => ?_)` and prove the remaining obligations. Set `p : parab k (stdBlocks d hd)` to `⟨thetaW k N q, (thetaW_mem_parab_iff d hd hd' _).1 (by rw [GlobalTheory.CompanionTheory.ThetaInv.thetaW_thetaW]; exact q.2)⟩`. Establish `hq : leviProj k (stdBlocks (fun a => d (Fin.rev a)) hd') q = thetaL d (leviProj k (stdBlocks d hd) p)`. Establish `hpq : (⟨thetaW k N p, (thetaW_mem_parab_iff d hd hd' _).2 p.2⟩ : parab k (stdBlocks (fun a => d (Fin.rev a)) hd')) = q` using `Subtype.ext (GlobalTheory.CompanionTheory.ThetaInv.thetaW_thetaW N (q : GL (Fin N) k))`. Rewrite using `[← hpq, leviProj_thetaW d hd hd' p]`.
+
+Use `⟨p, rfl, ?_⟩` and prove the remaining obligations. Use `show twist (ρ'.comp (thetaL d)) (deltaHalf k _) (leviProj k _ p) = twist ρ' (deltaHalf k _) (leviProj k _ q)`. Rewrite using `[hq]`. Use extensionality with `v`. Simplify using `only [twist_apply, MonoidHom.comp_apply, deltaHalf_thetaL]`.
+
+Use `⟨⟨thetaW k N p, (thetaW_mem_parab_iff d hd hd' _).2 p.2⟩, rfl, ?_⟩` and prove the remaining obligations. Establish `hl` using `leviProj_thetaW d hd hd' p`. Use `show twist ρ' (deltaHalf k _) (leviProj k _ _) = twist (ρ'.comp (thetaL d)) (deltaHalf k _) (leviProj k _ p)`. Rewrite using `[hl]`. Use extensionality with `v`.
+
+Simplify using `only [twist_apply, MonoidHom.comp_apply, deltaHalf_thetaL]`.
+-/
 theorem parInd_thetaW {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (hd' : ∑ a, d (Fin.rev a) = N) {W : Type}
     [AddCommGroup W] [Module ℂ W] (ρ' : Representation ℂ (Levi k fun a => Fin (d (Fin.rev a))) W) :
     Nonempty ((parInd (stdBlocks d hd) (ρ'.comp (thetaL d))).Equiv
@@ -251,6 +321,9 @@ theorem parInd_thetaW {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (hd'
     ext v
     simp only [twist_apply, MonoidHom.comp_apply, deltaHalf_thetaL]
 
+/- English proof (translation)
+Use `MonoidHom.ext fun g => PiTensorProduct.ext (MultilinearMap.ext fun v => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.compMultilinearMap_apply, MonoidHom.comp_apply, piTensor_tprod]`. Both sides reduce to the same expression.
+-/
 theorem piTensor_comp_thetaL {h : ℕ} (d : Fin h → ℕ) {Y : Fin h → Type} [∀ a, AddCommGroup (Y a)]
     [∀ a, Module ℂ (Y a)] (σ : ∀ a, Representation ℂ (GL (Fin (d (Fin.rev a))) k) (Y a)) :
     (piTensor fun a => (σ a).comp (thetaW k (d (Fin.rev a)))).comp (revPi fun a => GL (Fin (d a)) k) =
@@ -263,6 +336,11 @@ def equivOfEq {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {ρ σ : Re
     ρ.Equiv σ :=
   .mk (LinearEquiv.refl ℂ V) fun g => by rw [h]; rfl
 
+/- English proof (translation)
+Establish `hd' : ∑ a, (x (Fin.rev a)).1 = N` using `sum_dualRev hA x hd`. Establish `φ₂` using `(parInd_thetaW (k := k) (fun a => (x a).1) hd hd' (piTensor fun a => (dualRev hA x a).rep)).some`. Establish `T1` using `piTensorRevEquiv (fun a => (x a).rep)`. Establish `T2` using `compEquiv (piTensorEquiv fun a => blockEquiv hA hGK x a) (revPi fun a => GL (Fin (x a).1) k)`. Establish `T3` using `equivOfEq (piTensor_comp_thetaL (k := k) (fun a => (x a).1) fun a => (dualRev hA x a).rep)`.
+
+Establish `T` using `(T1.trans T2).trans T3`. Establish `φ₁` using `parIndEquiv (stdBlocks (fun a => (x a).1) hd) T`. Conclude with `⟨equivOfCompInv (GlobalTheory.CompanionTheory.ThetaInv.thetaW_thetaW N) (φ₁.trans φ₂)⟩`.
+-/
 theorem product_compose_transpose_inverse (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hGK : GKLocal k) {h N : ℕ}
     (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N) :
     Nonempty (Representation.Equiv ((prodIrr x hd).comp (thetaW k N))
@@ -276,12 +354,18 @@ theorem product_compose_transpose_inverse (hA : GlobalTheory.Published.Irreducib
   have φ₁ := parIndEquiv (stdBlocks (fun a => (x a).1) hd) T
   exact ⟨equivOfCompInv (GlobalTheory.CompanionTheory.ThetaInv.thetaW_thetaW N) (φ₁.trans φ₂)⟩
 
+/- English proof (translation)
+Substitute `hyz` using the available equality. Conclude with `⟨hy, H⟩`.
+-/
 theorem exists_equiv_prodIrr_of_eq {h N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {R : Representation ℂ (GL (Fin N) k) V} {y z : Fin h → IrrGL k} (hyz : y = z) (hy : ∑ a, (y a).1 = N)
     (H : Nonempty (R.Equiv (prodIrr y hy))) : ∃ hz : ∑ a, (z a).1 = N, Nonempty (R.Equiv (prodIrr z hz)) := by
   subst hyz
   exact ⟨hy, H⟩
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hA hGK h N x hd`. Conclude with `exists_equiv_prodIrr_of_eq (dualRev_eq hA x) _ (product_compose_transpose_inverse hA hGK x hd)`.
+-/
 theorem prodIrr_comp_thetaW : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], GlobalTheory.Published.IrreducibleAdmissibleGL → GKLocal k →
     ∀ {h N : ℕ} (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N),

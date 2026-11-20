@@ -22,11 +22,17 @@ def BcrisPlus.liftFracWitt (g : WittVector p k →+* R) :
 
 variable {p}
 
+/- English proof (translation)
+The claim follows from `fracWittLift_algebraMap p _ _ a`.
+-/
 @[simp] theorem BcrisPlus.liftFracWitt_algebraMap (g : WittVector p k →+* R) (a : WittVector p k) :
     BcrisPlus.liftFracWitt p g (algebraMap _ _ a) =
       algebraMap (Acris p R) _ (algebraMap (Ainf p R) _ (Ainf.liftWitt p g a)) :=
   fracWittLift_algebraMap p _ _ a
 
+/- English proof (translation)
+The claim follows from `RingHom.congr_fun (fracWitt_hom_ext (f := (BcrisPlus.map p e).comp (BcrisPlus.liftFracWitt p g)) (g := BcrisPlus.liftFracWitt p (e.comp g)) (by simp [Ainf.map_liftWitt])) x`.
+-/
 theorem BcrisPlus.map_liftFracWitt (e : R →+* S) (g : WittVector p k →+* R)
     (x : FractionRing (WittVector p k)) :
     BcrisPlus.map p e (BcrisPlus.liftFracWitt p g x) = BcrisPlus.liftFracWitt p (e.comp g) x :=
@@ -34,12 +40,18 @@ theorem BcrisPlus.map_liftFracWitt (e : R →+* S) (g : WittVector p k →+* R)
     (f := (BcrisPlus.map p e).comp (BcrisPlus.liftFracWitt p g))
     (g := BcrisPlus.liftFracWitt p (e.comp g)) (by simp [Ainf.map_liftWitt])) x
 
+/- English proof (translation)
+Rewrite using `[WittVector.FractionRing.frobenius, IsFractionRing.ringEquivOfRingEquiv_algebraMap]`. Both sides reduce to the same expression.
+-/
 theorem fracWitt_frobenius_algebraMap (a : WittVector p k) :
     WittVector.FractionRing.frobenius p k (algebraMap _ _ a) =
       algebraMap _ _ (WittVector.frobenius a) := by
   rw [WittVector.FractionRing.frobenius, IsFractionRing.ringEquivOfRingEquiv_algebraMap]
   rfl
 
+/- English proof (translation)
+The claim follows from `RingHom.congr_fun (fracWitt_hom_ext (f := (BcrisPlus.frob p R).comp (BcrisPlus.liftFracWitt p g)) (g := (BcrisPlus.liftFracWitt p g).comp (WittVector.FractionRing.frobenius p k).toRingHom) (by simp [Ainf.frob_liftWitt, fracWitt_frobenius_algebraMap])) x`.
+-/
 theorem BcrisPlus.frob_liftFracWitt (g : WittVector p k →+* R)
     (x : FractionRing (WittVector p k)) :
     BcrisPlus.frob p R (BcrisPlus.liftFracWitt p g x) =
@@ -49,6 +61,9 @@ theorem BcrisPlus.frob_liftFracWitt (g : WittVector p k →+* R)
     (g := (BcrisPlus.liftFracWitt p g).comp (WittVector.FractionRing.frobenius p k).toRingHom)
     (by simp [Ainf.frob_liftWitt, fracWitt_frobenius_algebraMap])) x
 
+/- English proof (translation)
+The claim follows from `RingHom.congr_fun (fracWitt_hom_ext (f := (AinfInv.frob p R).comp (AinfInv.liftFracWitt p g)) (g := (AinfInv.liftFracWitt p g).comp (WittVector.FractionRing.frobenius p k).toRingHom) (by simp [Ainf.frob_liftWitt, fracWitt_frobenius_algebraMap])) x`.
+-/
 theorem AinfInv.frob_liftFracWitt (g : WittVector p k →+* R)
     (x : FractionRing (WittVector p k)) :
     AinfInv.frob p R (AinfInv.liftFracWitt p g x) =

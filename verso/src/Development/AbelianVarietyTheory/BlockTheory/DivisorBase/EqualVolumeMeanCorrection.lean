@@ -47,6 +47,9 @@ def SlopesMean (C : ℝ) : Prop :=
         meanC Y sl = atWt Y Φ u / (((dimY Y : ℝ) + 1) * geoDeg Y u)) ∧
       -(C * bracket Y u g) ≤ meanC Y sl
 
+/- English proof (translation)
+The claim follows from `tendsto_nhds_unique ha.2 hb.2`.
+-/
 theorem IsSlope.unique {B : ℝ} {u : D.what₂.Tau → Fin Y.N → ℝ} {c : Y.Comp} {a b : ℝ}
     (ha : IsSlope Y B u c a) (hb : IsSlope Y B u c b) : a = b :=
   tendsto_nhds_unique ha.2 hb.2

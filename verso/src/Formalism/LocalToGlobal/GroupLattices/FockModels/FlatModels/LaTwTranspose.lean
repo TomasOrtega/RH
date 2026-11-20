@@ -27,18 +27,41 @@ def thF (h : HidaSetting p n' W Qq O Kf ι σ j w) (m : ℕ) (vec : S → Bool)
     MvPolynomial (S × (Fin (m + 1) × Fin (m + 1))) Kf :=
   Th0 Kf m vec (Lin (fun x => Aa (vec x) (hs x)⁻¹) (map (kapR h) F))
 
+/- English proof (translation)
+Use extensionality with `m`. Simplify using `only [MvPolynomial.coeff_map, MvPolynomial.coeff_smul]`. Conclude with `map_smul (kap h) a (F.coeff m)`.
+-/
 theorem map_kap_smul (h : HidaSetting p n' W Qq O Kf ι σ j w) {τ : Type} (a : O) (F : MvPolynomial τ (KK O)) :
     map (kapR h) (a • F) = a • map (kapR h) F := by
   ext m
   simp only [MvPolynomial.coeff_map, MvPolynomial.coeff_smul]
   exact map_smul (kap h) a (F.coeff m)
 
+/- English proof (translation)
+Unfold `thF`. Rewrite using `[map_kap_smul, ← algebraMap_smul Kf a (map (kapR h) F), map_smul, map_smul, algebraMap_smul]`.
+-/
 theorem thF_smul (h : HidaSetting p n' W Qq O Kf ι σ j w) (m : ℕ) (vec : S → Bool)
     (hs : S → Matrix (Fin (m + 1)) (Fin (m + 1)) Kf) (a : O) (F : MvPolynomial (S × Fin (m + 1)) (KK O)) :
     thF h m vec hs (a • F) = a • thF h m vec hs F := by
   unfold thF
   rw [map_kap_smul, ← algebraMap_smul Kf a (map (kapR h) F), map_smul, map_smul, algebraMap_smul]
 
+/- English proof (translation)
+Set `f : ↥((Pol (KK O) (m + 1) d).restrictScalars O) →ₗ[O] ↥(VS Kf m vec d)` to `{ toFun := fun F => ⟨thF h m vec hs F.1, (mem_tens_dw Kf m hm vec d _).2 ⟨_, Lin_Pol _ _ ((pol_iff h _ _ _).1 F.2), rfl⟩⟩ map_add' := by`. Introduce `F G`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show thF h m vec hs (F.1 + G.1) = thF h m vec hs F.1 + thF h m vec hs G.1`. Simplify using `only [thF, map_add]`.
+
+Use the proof step `map_smul' := by`. Introduce `a F`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `thF_smul h m vec hs a F.1 }`. Establish `hinj : Function.Injective f`.
+
+Introduce `F G hFG`. Establish `h1 : thF h m vec hs F.1 = thF h m vec hs G.1` using `congrArg Subtype.val hFG`. Establish `h2` using `Th0_inj Kf m hm vec d _ _ (Lin_Pol _ _ ((pol_iff h _ _ _).1 F.2)) (Lin_Pol _ _ ((pol_iff h _ _ _).1 G.2)) h1`. Establish `h3` using `congrArg (Lin (fun x => Aa (vec x) (hs x))) h2`. Rewrite `h3` using `[Lin_comp, Lin_comp]`.
+
+Simplify using `only [Aa_inv_mul _ _ (hhs _)] at h3`. Rewrite `h3` using `[Lin_one, Lin_one]`. Conclude with `Subtype.ext (map_injective _ (kapR_inj h) h3)`. Establish `hsurj : Function.Surjective f`. Introduce and unpack `⟨y, hy⟩`.
+
+Take `⟨F1, hF1, rfl⟩` from `(mem_tens_dw Kf m hm vec d y).1 hy`. Use `set F2 := Lin (fun x => Aa (vec x) (hs x)) F1 with hF2`. Establish `hcomp : (kapR h).comp (((kap h).symm : Kf ≃ₐ[O] KK O) : Kf →+* KK O) = RingHom.id Kf`. Use extensionality with `x`. Simplify using `[kapR]`.
+
+Establish `hmap : map (kapR h) (map (((kap h).symm : Kf ≃ₐ[O] KK O) : Kf →+* KK O) F2) = F2`. Rewrite using `[map_map, hcomp, MvPolynomial.map_id]`. Use `⟨⟨map (((kap h).symm : Kf ≃ₐ[O] KK O) : Kf →+* KK O) F2, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show _ ∈ Pol (KK O) (m + 1) d`. Rewrite using `[pol_iff h, hmap]`.
+
+Conclude with `Lin_Pol _ _ hF1`. Apply `Subtype.ext show thF h m vec hs _ = _` to reduce the goal to its premises. Unfold `thF`. Rewrite using `[hmap, hF2, Lin_comp]`. Simplify using `only [Aa_mul_inv _ _ (hhs _)]`.
+
+Rewrite using `[Lin_one]`. Conclude with `⟨LinearEquiv.ofBijective f ⟨hinj, hsurj⟩, fun F => rfl⟩`.
+-/
 theorem gen_equiv (h : HidaSetting p n' W Qq O Kf ι σ j w) (m : ℕ) (hm : 1 ≤ m) (vec : S → Bool) (d : S → ℕ)
     (hs : S → Matrix (Fin (m + 1)) (Fin (m + 1)) Kf) (hhs : ∀ x, IsUnit (hs x).det) :
     ∃ Θ : ↥((Pol (KK O) (m + 1) d).restrictScalars O) ≃ₗ[O] ↥(VS Kf m vec d),
@@ -87,6 +110,9 @@ theorem gen_equiv (h : HidaSetting p n' W Qq O Kf ι σ j w) (m : ℕ) (hm : 1 �
       rw [Lin_one]
   exact ⟨LinearEquiv.ofBijective f ⟨hinj, hsurj⟩, fun F => rfl⟩
 
+/- English proof (translation)
+Use `haveI := h.frac_O`. Unfold `Pol at hP ⊢`. Rewrite `hP`, the goal using `[MvPolynomial.mem_restrictSupport_iff]`. Rewrite `hP` using `[MvPolynomial.support_map_of_injective _ (IsFractionRing.injective O Kf)]`. Then use the resulting hypothesis.
+-/
 theorem pol_of_map (h : HidaSetting p n' W Qq O Kf ι σ j w) {k : ℕ} {d : S → ℕ} (P : MvPolynomial (S × Fin k) O)
     (hP : map (algebraMap O Kf) P ∈ Pol Kf k d) : P ∈ Pol O k d := by
   haveI := h.frac_O
@@ -94,6 +120,13 @@ theorem pol_of_map (h : HidaSetting p n' W Qq O Kf ι σ j w) {k : ℕ} {d : S �
   rw [MvPolynomial.mem_restrictSupport_iff] at hP ⊢
   rwa [MvPolynomial.support_map_of_injective _ (IsFractionRing.injective O Kf)] at hP
 
+/- English proof (translation)
+Establish `hF'` using `(pol_iff h _ _ _).1 hF`. Establish `key` using `key_iff O Kf m hm vec d hs hs hhs 1 _ hF'`. Simplify using `only [Aa_inv_mul _ _ (hhs _), one_smul] at key`. Rewrite `key` using `[Lin_one]`. Rewrite using `[inA_iff h]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨P0, hP0⟩`. Take `⟨y, hy, hxy⟩` from `key.2 ⟨P0, pol_of_map h P0 (hP0 ▸ hF'), hP0⟩`. Unfold `thF`. Rewrite using `[hxy]`.
+
+Conclude with `hy`. Introduce `hx`. Take `⟨G, -, hG⟩` from `key.1 ⟨_, hx, rfl⟩`. Conclude with `⟨G, hG⟩`.
+-/
 theorem gen_A (h : HidaSetting p n' W Qq O Kf ι σ j w) (m : ℕ) (hm : 1 ≤ m) (vec : S → Bool) (d : S → ℕ)
     (hs : S → Matrix (Fin (m + 1)) (Fin (m + 1)) Kf) (hhs : ∀ x, IsUnit (hs x).det)
     (F : MvPolynomial (S × Fin (m + 1)) (KK O)) (hF : F ∈ Pol (KK O) (m + 1) d) :
@@ -123,14 +156,23 @@ def Mx (ι : Qq →+* Kf) (σ : Qq ≃+* Qq) (w : O) (φ : WF p n' ≃+* W) (r :
     Matrix (Fin (m + 1)) (Fin (m + 1)) Kf :=
   la_tw ι σ (pos x).val (hmat * ((matQ φ g)⁻¹).transpose) * lb_D (m + 1) r (algebraMap O Kf w)
 
+/- English proof (translation)
+Unfold `la_tw`. Conclude with `map_mul _ A B`.
+-/
 theorem la_tw_mul {k : ℕ} (s : ℕ) (A B : Matrix (Fin k) (Fin k) Qq) :
     la_tw ι σ s (A * B) = la_tw ι σ s A * la_tw ι σ s B := by
   unfold la_tw
   exact map_mul _ A B
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem la_tw_transpose {k : ℕ} (s : ℕ) (A : Matrix (Fin k) (Fin k) Qq) :
     la_tw ι σ s A.transpose = (la_tw ι σ s A).transpose := rfl
 
+/- English proof (translation)
+Use `symm`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[← la_tw_mul, Matrix.mul_nonsing_inv _ hA]`. Unfold `la_tw`. Conclude with `map_one _`.
+-/
 theorem la_tw_inv {k : ℕ} (s : ℕ) (A : Matrix (Fin k) (Fin k) Qq) (hA : IsUnit A.det) :
     la_tw ι σ s A⁻¹ = (la_tw ι σ s A)⁻¹ := by
   symm
@@ -139,6 +181,11 @@ theorem la_tw_inv {k : ℕ} (s : ℕ) (A : Matrix (Fin k) (Fin k) Qq) (hA : IsUn
   unfold la_tw
   exact map_one _
 
+/- English proof (translation)
+Unfold `lb_D`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+
+Apply the tactic sequence `split_ifs <;> simp [hc]`.
+-/
 theorem lb_D_inv {K : Type} [Field K] (k r : ℕ) (c : K) (hc : c ≠ 0) :
     (lb_D k r c)⁻¹ = Matrix.diagonal fun a : Fin k => if a.val < r then c else 1 := by
   unfold lb_D
@@ -148,6 +195,21 @@ theorem lb_D_inv {K : Type} [Field K] (k r : ℕ) (c : K) (hc : c ≠ 0) :
   funext a
   split_ifs <;> simp [hc]
 
+/- English proof (translation)
+Establish `hf : ∀ M : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq, (la_tw ι σ (pos x).val M).det = (ι.comp ((σ ^ (pos x).val : Qq ≃+* Qq) : Qq →+* Qq)) M.det` using `fun M => by`. Unfold `la_tw`. Conclude with `(RingHom.map_det _ M).symm`. Establish `hA` using `la_tw_det ι σ (pos x).val hmat hh`. Establish `hQ` using `matQ_tw_det (ι := ι) (σ := σ) φ g hg (pos x).val`.
+
+Establish `hQq : IsUnit (matQ (Qq` using `Qq) φ g).det := by`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Rewrite `hQ` using `[hf, h0, map_zero]`. Conclude with `not_isUnit_zero hQ`.
+
+Establish `hMx : Mx ι σ w φ r pos hmat g x = la_tw ι σ (pos x).val hmat * ((la_tw ι σ (pos x).val (matQ φ g))⁻¹).transpose * lb_D (m + 1) r (algebraMap O Kf w)`. Unfold `Mx`. Rewrite using `[la_tw_mul, la_tw_transpose, la_tw_inv _ _ hQq]`. Establish `key1 : ∀ A Q D : Matrix (Fin (m + 1)) (Fin (m + 1)) Kf, IsUnit A.det → IsUnit Q.det → ((A⁻¹)⁻¹).transpose * ((A * (Q⁻¹).transpose * D)⁻¹).transpose = Q * (D⁻¹).transpose`. Introduce `A Q D hA hQ`.
+
+Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ hA, Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.transpose_nonsing_inv, Matrix.nonsing_inv_nonsing_inv _ (by rwa [Matrix.det_transpose]), Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, ← mul_assoc, ← mul_assoc, ← Matrix …`. Establish `key2 : ∀ A Q D : Matrix (Fin (m + 1)) (Fin (m + 1)) Kf, IsUnit A.det → A⁻¹ * (A * (Q⁻¹).transpose * D) = (Q⁻¹).transpose * D`. Introduce `A Q D hA`. Rewrite using `[← mul_assoc, ← mul_assoc, Matrix.nonsing_inv_mul _ hA, one_mul]`. Establish `hDinv` using `lb_D_inv (m + 1) r (algebraMap O Kf w) hw`.
+
+Rewrite using `[hMx]`. Use extensionality with `c b`. Consider the cases of `hv : vec x`. Simplify using `only [Bm, hv, Aa, Bool.false_eq_true, ↓reduceIte, one_smul]`. Rewrite using `[key1 _ _ _ hA hQ, hDinv, Matrix.diagonal_transpose, Matrix.mul_diagonal, mul_comm]`.
+
+Simplify using `only [Bm, hv, Aa, ↓reduceIte]`. Rewrite using `[key2 _ _ _ hA, Matrix.smul_apply, smul_eq_mul]`. Unfold `lb_D`. Rewrite using `[Matrix.mul_diagonal, Matrix.transpose_apply]`. Distinguish the cases in `hb : b.val < r`.
+
+Establish `hb' : ¬ r ≤ b.val` using `by omega`. Simplify using `only [hb, hb', ↓reduceIte]`. Rewrite using `[mul_comm (algebraMap O Kf w), mul_assoc, inv_mul_cancel₀ hw, mul_one, one_mul]`. Establish `hb' : r ≤ b.val` using `by omega`. Simplify using `only [hb, hb', ↓reduceIte, mul_one]`.
+-/
 theorem Bm_eq (hw : algebraMap O Kf w ≠ 0) (φ : WF p n' ≃+* W) (r : ℕ) {m : ℕ} (vec : S → Bool) (pos : S → Fin n')
     (hmat : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq) (hh : IsUnit hmat.det)
     (g : Matrix (Fin (m + 1)) (Fin (m + 1)) (WF p n')) (hg : IsGLW g) (x : S) :
@@ -195,6 +257,13 @@ theorem Bm_eq (hw : algebraMap O Kf w ≠ 0) (φ : WF p n' ≃+* W) (r : ℕ) {m
     · have hb' : r ≤ b.val := by omega
       simp only [hb, hb', ↓reduceIte, mul_one]
 
+/- English proof (translation)
+Establish `hf : ∀ M : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq, (la_tw ι σ (pos x).val M).det = (ι.comp ((σ ^ (pos x).val : Qq ≃+* Qq) : Qq →+* Qq)) M.det` using `fun M => by`. Unfold `la_tw`. Conclude with `(RingHom.map_det _ M).symm`. Establish `hQ` using `matQ_tw_det (ι := ι) (σ := σ) φ g hg (pos x).val`. Unfold `Mx`.
+
+Rewrite using `[Matrix.det_mul, isUnit_iff_ne_zero, mul_ne_zero_iff]`. Use `⟨?_, (lb_D_det _ _ _ hw).ne_zero⟩` and prove the remaining obligations. Rewrite using `[hf, Matrix.det_mul, Matrix.det_transpose, Matrix.det_nonsing_inv, map_mul]`. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Rewrite using `[← hf]`.
+
+Conclude with `(la_tw_det ι σ _ hmat hh).ne_zero`. Rewrite using `[Ring.inverse_eq_inv, map_inv₀]`. Apply `inv_ne_zero` to reduce the goal to its premises. Rewrite using `[← hf]`. Conclude with `hQ.ne_zero`.
+-/
 theorem Mx_det (hw : algebraMap O Kf w ≠ 0) (φ : WF p n' ≃+* W) (r : ℕ) {m : ℕ} (pos : S → Fin n')
     (hmat : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq) (hh : IsUnit hmat.det)
     (g : Matrix (Fin (m + 1)) (Fin (m + 1)) (WF p n')) (hg : IsGLW g) (x : S) :
@@ -216,6 +285,25 @@ theorem Mx_det (hw : algebraMap O Kf w ≠ 0) (φ : WF p n' ≃+* W) (r : ℕ) {
     rw [← hf]
     exact hQ.ne_zero
 
+/- English proof (translation)
+Use `letI : Algebra (WF p n') O := algOfIdent j φ`. Establish `hw` using `w_ne h`. Use `set c := algebraMap O Kf w with hc`. Establish `hF'` using `(pol_iff h _ _ _).1 hF`. Establish `key` using `key_iff O Kf m hm LL.vec d (fun x => la_tw ι σ (pos x).val hmat) (Mx ι σ w φ r pos hmat g) (Mx_det hw φ r pos hmat hh g hg) (c ^ ((i : ℤ) - (Avec LL.vec d : ℤ))) _ hF'`.
+
+Unfold `thF`. Rewrite using `[key]`. Unfold `InWjRg`. Rewrite using `[inWj_iff h, lift_eq h φ hφ r LL pos hpos g hg]`. Establish `hB : Bm ι σ w φ r LL.vec pos g = fun x => (if LL.vec x then c else 1) • (Aa (LL.vec x) (la_tw ι σ (pos x).val hmat)⁻¹ * Aa (LL.vec x) (Mx ι σ w φ r pos hmat g x))`.
+
+Use function extensionality and compare the values at `fun x => Bm_eq hw φ r LL.vec pos hmat hh g hg x`. Rewrite using `[hB, Lin_smul _ _ _ hF']`. Establish `hprod : ∏ x, (if LL.vec x then c else 1) ^ d x = c ^ Avec LL.vec d`. Unfold `Avec`. Rewrite using `[← Finset.prod_pow_eq_pow_sum]`.
+
+Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `x _`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[hprod]`. Use `set Z := Lin (fun x => Aa (LL.vec x) (la_tw ι σ (pos x).val hmat)⁻¹ * Aa (LL.vec x) (Mx ι σ w φ r pos hmat g x)) (map (kapR h) F) with hZ`.
+
+Establish `hZP : Z ∈ Pol Kf (m + 1) d` using `Lin_Pol _ _ hF'`. Establish `hc0 : c ^ ((i : ℤ) - (Avec LL.vec d : ℤ)) ≠ 0` using `zpow_ne_zero _ hw`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨P0, hP0⟩`. Establish `h1 : Z = c ^ ((i : ℤ) - (Avec LL.vec d : ℤ)) • map (algebraMap O Kf) P0`.
+
+Establish `h2` using `congrArg (fun t => (c ^ Avec LL.vec d)⁻¹ • t) hP0`. Simplify using `only [smul_smul, inv_mul_cancel₀ (pow_ne_zero _ hw), one_smul] at h2`. Rewrite using `[h2, zpow_sub₀ hw, zpow_natCast, zpow_natCast]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+
+Both sides reduce to the same expression. Use `⟨P0, pol_of_map h P0 ?_, h1⟩` and prove the remaining obligations. Establish `h3 : map (algebraMap O Kf) P0 = (c ^ ((i : ℤ) - (Avec LL.vec d : ℤ)))⁻¹ • Z`. Rewrite using `[h1, smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Rewrite using `[h3]`.
+
+Conclude with `Submodule.smul_mem _ _ hZP`. Introduce and unpack `⟨G, -, hG⟩`. Use `⟨G, ?_⟩` and prove the remaining obligations. Rewrite using `[hG, smul_smul, zpow_sub₀ hw, zpow_natCast, zpow_natCast]`. Use `congr 1`.
+
+Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression.
+-/
 theorem gen_R (h : HidaSetting p n' W Qq O Kf ι σ j w) (φ : WF p n' ≃+* W) (hφ : IsWittIdent σ φ) (m : ℕ) (hm : 1 ≤ m)
     (r : ℕ) (LL : LiftLetters S) (pos : S → Fin n') (hpos : ∀ x, LL.pos x = ((pos x).val : ℤ)) (d : S → ℕ)
     (hmat : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq) (hh : IsUnit hmat.det)

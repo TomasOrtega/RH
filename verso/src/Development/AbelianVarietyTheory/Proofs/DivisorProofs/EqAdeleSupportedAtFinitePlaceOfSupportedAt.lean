@@ -19,6 +19,17 @@ open scoped GlobalTheory.VacAny
 
 namespace GlobalTheory.VacAny
 
+/- English proof (translation)
+Introduce `h`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Establish `h1` using `h ((1 : Ainf F), (0 : Af F)) (by`. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (0 : Af F) = 0`. Conclude with `map_zero _)`.
+
+Establish `h2` using `congrArg Prod.fst h1`. Express the relevant statement in the definitionally equal form `(1 : Ainf F) * a.1 = 0 at h2`. Rewrite `h2` using `[one_mul]`. Rewrite using `[h2]`. Both sides reduce to the same expression.
+
+Use `GlobalTheory.AdelicU.af_ext fun w => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w a.2 = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w (GlobalTheory.AdelicU.singleFin v (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v a.2))`. Distinguish the cases in `e : w = v`. Substitute `e` using the available equality. Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_self]`.
+
+Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_ne e]`. Establish `h1` using `h ((0 : Ainf F), GlobalTheory.AdelicU.singleFin w 1) (by`. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (GlobalTheory.AdelicU.singleFin w 1) = 0`. Conclude with `GlobalTheory.AdelicU.evalV_singleFin_ne (Ne.symm e) 1)`. Establish `h2` using `congrArg (fun x : AF F => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w x.2) h1`.
+
+Express the relevant statement in the definitionally equal form `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w (GlobalTheory.AdelicU.singleFin w 1 * a.2) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F w 0 at h2`. Rewrite `h2` using `[map_mul, GlobalTheory.AdelicU.evalV_singleFin_self, one_mul, map_zero]`. Conclude with `h2`.
+-/
 theorem eq_atPlace_of_at {F : Type} [Field F] [NumberField F] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (a : AF F) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.AdelicU.evFin F v) a → a = GlobalTheory.EmbChart.atPlace v (GlobalTheory.AdelicU.evFin F v a) := by
   intro h

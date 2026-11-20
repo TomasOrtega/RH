@@ -10,5 +10,8 @@ open scoped CategoryTheory.Obj TensorProduct
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.KeyPow GlobalTheory.KeyFam GlobalTheory.ZM GlobalTheory.AbLaw
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.KeyFam.connFam_of_polFam | exact GlobalTheory.KeyFam.connFam_of_polFam | (intros; apply GlobalTheory.KeyFam.connFam_of_polFam <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.keyDatumConnectedFamily_of_polarizedArithmeticFamily : Out.Laws → Out.Laws2 → PolFam → GlobalTheory.KeyKa.ConnFam := by
   first | exact @GlobalTheory.KeyFam.connFam_of_polFam | exact GlobalTheory.KeyFam.connFam_of_polFam | (intros; apply GlobalTheory.KeyFam.connFam_of_polFam <;> assumption)

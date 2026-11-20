@@ -6,6 +6,9 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.CuspQuot GlobalTheory.AutGrow
 
 namespace GlobalTheory.CuspRapid
 
+/- English proof (translation)
+Take `⟨C, hC, h⟩` from `(Module.finBasis ℝ V).exists_opNorm_le (F := ℂ)`. Use `⟨Finset.univ.image (Module.finBasis ℝ V), C, hC.le, fun L X M hB hM => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖L‖ ≤ C * M` using `h hM fun i => hB _ (Finset.mem_image_of_mem _ (Finset.mem_univ i))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_finset_clm_bound (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] :
     ∃ (B : Finset V) (C : ℝ), 0 ≤ C ∧ ∀ (L : V →L[ℝ] ℂ) (X : V) (M : ℝ),
       (∀ Y ∈ B, ‖L Y‖ ≤ M) → 0 ≤ M → ‖L X‖ ≤ C * ‖X‖ * M := by
@@ -17,6 +20,9 @@ theorem exists_finset_clm_bound (V : Type) [NormedAddCommGroup V] [NormedSpace �
     _ ≤ C * M * ‖X‖ := mul_le_mul_of_nonneg_right h1 (norm_nonneg _)
     _ = C * ‖X‖ * M := by ring
 
+/- English proof (translation)
+Introduce `E _ _ _ a`. Take `⟨B, C, hC, h⟩` from `exists_finset_clm_bound (Lie E a)`. Conclude with `⟨B, C, hC, fun ψ g X M hB hM => h (fderiv ℝ (chart ψ g) (oneL E a)) X M hB hM⟩`.
+-/
 theorem lieD_le_of_basis : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), ∃ (B : Finset (Lie E a)) (C : ℝ), 0 ≤ C ∧ ∀ (ψ : GA E a → ℂ) (g : GA E a) (X : Lie E a) (M : ℝ), (∀ Y ∈ B, ‖lieD Y ψ g‖ ≤ M) → 0 ≤ M → ‖lieD X ψ g‖ ≤ C * ‖X‖ * M := by
   intro E _ _ _ a
   obtain ⟨B, C, hC, h⟩ := exists_finset_clm_bound (Lie E a)

@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.JSW.WhitNorm
 
+/- English proof (translation)
+Introduce `E _ _ _ a F hF hl`. Use `⟨?_, fun u hu g => ?_⟩` and prove the remaining obligations. Establish `e : GlobalTheory.JSW.whit F = GroundTheory.Automorphic.FourierWhittaker.partialCoeff F 0`. Use function extensionality and compare the values at `fun g => GroundTheory.Automorphic.FourierWhittaker.whittaker_eq_partialCoeff_zero hF g`. Rewrite using `[e]`.
+
+Conclude with `GroundTheory.Automorphic.FourierWhittaker.continuous_partialCoeff hF 0`. Establish `hu' : u ∈ GlobalTheory.JSW.NA E a` using `(GlobalTheory.SmGL.mem_unipB _).1 hu`. Rewrite using `[GlobalTheory.JSW.WhitModel.whit_mul hF hl hu' g, norm_mul, GlobalTheory.JSW.psiN, Circle.norm_coe, one_mul]`.
+-/
 theorem continuous_whit_and_norm_mul : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (F : GA E a → ℂ), Continuous F →
     (∀ γ g, F (ratGL E a γ * g) = F g) →
     Continuous (GlobalTheory.JSW.whit F) ∧ ∀ u ∈ GlobalTheory.CellDec.NA E a, ∀ g, ‖GlobalTheory.JSW.whit F (u * g)‖ = ‖GlobalTheory.JSW.whit F g‖ := by

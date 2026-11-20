@@ -18,6 +18,9 @@ variable (v : HeightOneSpectrum (𝓞 K))
 
 omit [NumberField K] [NumberField L] [NumberField M] in
 
+/- English proof (translation)
+The claim follows from `(below_eq_iff _ v).1 (by rw [below_below, (below_eq_iff u.1 v).2 inferInstance])`.
+-/
 theorem liesOver_below_of_placesOver (u : PlacesOver M v) :
     (below L u.1).asIdeal.LiesOver v.asIdeal :=
   (below_eq_iff _ v).1 (by rw [below_below, (below_eq_iff u.1 v).2 inferInstance])
@@ -26,6 +29,9 @@ def belowPlace (u : PlacesOver M v) : PlacesOver L v :=
   ⟨below L u.1, liesOver_below_of_placesOver L M v u⟩
 
 omit [NumberField K] [NumberField L] [NumberField M] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem belowPlace_val (u : PlacesOver M v) : (belowPlace L M v u).1 = below L u.1 :=
   rfl
 
@@ -40,6 +46,9 @@ def completionAlgHom (u : PlacesOver M v) :
   { completionMap (belowPlace L M v u).1 u.1 with
     commutes' := fun a ↦ completionMap_completionMap v (belowPlace L M v u).1 u.1 a }
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `completionMap _ u.1 _ = _`. Rewrite using `[completionMap_algebraMap, IsScalarTower.algebraMap_apply L M (u.1.adicCompletion M)]`.
+-/
 theorem completionAlgHom_algebraMap (u : PlacesOver M v) (l : L) :
     completionAlgHom L M v u (algebraMap L ((belowPlace L M v u).1.adicCompletion L) l) =
       algebraMap M (u.1.adicCompletion M) (algebraMap L M l) := by
@@ -49,6 +58,13 @@ theorem completionAlgHom_algebraMap (u : PlacesOver M v) (l : L) :
 variable [IsGalois K L] [IsGalois K M] [IsMulCommutative (L ≃ₐ[K] L)]
   [IsMulCommutative (M ≃ₐ[K] M)]
 
+/- English proof (translation)
+Take `⟨u⟩` from `nonempty_placesOver M v`. Take `⟨τ, hτ⟩` from `exists_mk_eq_localReciprocityLimit (k := v.adicCompletion K) x`. Establish `key : ∀ l : L, localSymbol M v x (algebraMap L M l) = algebraMap L M (localSymbol L v x l)`. Introduce `l`. Apply `(algebraMap M (u.1.adicCompletion M)).injective` to reduce the goal to its premises.
+
+Apply `(residueEmbedding (v.adicCompletion K) (u.1.adicCompletion M)).toRingHom.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `residueEmbedding _ _ (algebraMap M _ (localSymbol M v x (algebraMap L M l))) = residueEmbedding _ _ (algebraMap M _ (algebraMap L M (localSymbol L v x l)))`. Rewrite using `[algebraMap_localSymbol_apply M v u, residueEmbedding_normResidueSymbol hτ, ← completionAlgHom_algebraMap, ← completionAlgHom_algebraMap, algebraMap_localSymbol_apply L v (belowPlace L M v u)]`. Conclude with `(normResidueSymbol_spec ((residueEmbedding (v.adicCompletion K) (u.1.adicCompletion M)).comp (completionAlgHom L M v u)) hτ _).symm`. Use extensionality with `l`.
+
+Apply `(algebraMap L M).injective` to reduce the goal to its premises. Rewrite using `[AlgEquiv.restrictNormal_commutes, key]`.
+-/
 theorem restrictNormal_localSymbol (x : (v.adicCompletion K)ˣ) :
     (localSymbol M v x).restrictNormal L = localSymbol L v x := by
   obtain ⟨u⟩ := nonempty_placesOver M v
@@ -76,6 +92,9 @@ section Infinite
 
 omit [NumberField K] [NumberField L] in
 
+/- English proof (translation)
+Distinguish the cases in `hw : w.IsReal`. Rewrite using `[conjAt_of_isReal hw]`. Conclude with `isConj_one_iff.2 (isReal_iff.1 hw)`. Conclude with `isConj_conjAt (isRamified_iff.2 ⟨not_isReal_iff_isComplex.1 hw, hv⟩)`.
+-/
 theorem isConj_conjAt_of_isReal [IsGalois K L] {w : InfinitePlace L}
     (hv : (w.comap (algebraMap K L)).IsReal) : IsConj w.embedding (conjAt K w) := by
   by_cases hw : w.IsReal
@@ -85,6 +104,11 @@ theorem isConj_conjAt_of_isReal [IsGalois K L] {w : InfinitePlace L}
 
 omit [NumberField K] [NumberField L] [NumberField M] in
 
+/- English proof (translation)
+Establish `h` using `isConj_conjAt_of_isReal M hv`. Establish `hr : IsConj (w.embedding.comp (algebraMap L M)) ((conjAt K w).restrictNormal L)`. Rewrite using `[isConj_iff_forall]`. Introduce `l`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, AlgEquiv.restrictNormal_commutes]`.
+
+Conclude with `h.eq _`. Establish `hmk : mk (w.embedding.comp (algebraMap L M)) = mk (w.comap (algebraMap L M)).embedding`. Rewrite using `[mk_embedding, ← comap_mk, mk_embedding]`. Conclude with `(conjOfEmbedding_eq ((isConj_iff_of_mk_eq hmk _).1 hr)).symm`.
+-/
 theorem restrictNormal_conjAt [IsGalois K L] [IsGalois K M] (w : InfinitePlace M)
     (hv : (w.comap (algebraMap K M)).IsReal) :
     (conjAt K w).restrictNormal L = conjAt K (w.comap (algebraMap L M)) := by
@@ -101,6 +125,13 @@ theorem restrictNormal_conjAt [IsGalois K L] [IsGalois K M] (w : InfinitePlace M
 variable [IsGalois K L] [IsGalois K M] [IsMulCommutative (L ≃ₐ[K] L)]
   [IsMulCommutative (M ≃ₐ[K] M)]
 
+/- English proof (translation)
+Establish `h1 : (1 : M ≃ₐ[K] M).restrictNormal L = 1` using `map_one (AlgEquiv.restrictNormalHom (F := K) (K₁ := M) L)`. Distinguish the cases in `hv : v.IsReal`. Take `⟨w⟩` from `IdeleNorm.nonempty_infinitePlacesOver M v`. Establish `hwv : (w : InfinitePlace M).comap (algebraMap K M) = v` using `(GroundTheory.Global.InfinitePlace.liesOver_iff_comap_eq v _).1 w.2`. Establish `hw' : ((w : InfinitePlace M).comap (algebraMap L M)).LiesOver v` using `(GroundTheory.Global.InfinitePlace.liesOver_iff_comap_eq v _).2 (by`.
+
+Rewrite using `[← comap_comp, ← IsScalarTower.algebraMap_eq, hwv])`. Rewrite using `[infiniteLocalSymbol_apply M v hv w, infiniteLocalSymbol_apply L v hv ⟨_, hw'⟩]`. Use `split_ifs`. Conclude with `restrictNormal_conjAt L M (w : InfinitePlace M) (by rw [hwv]; exact hv)`. Conclude with `h1`.
+
+Rewrite using `[infiniteLocalSymbol_of_not_isReal M v hv, infiniteLocalSymbol_of_not_isReal L v hv]`. Conclude with `h1`.
+-/
 theorem restrictNormal_infiniteLocalSymbol (v : InfinitePlace K) (x : v.Completionˣ) :
     (infiniteLocalSymbol M v x).restrictNormal L = infiniteLocalSymbol L v x := by
   have h1 : (1 : M ≃ₐ[K] M).restrictNormal L = 1 :=
@@ -124,6 +155,11 @@ end Infinite
 variable [IsGalois K L] [IsGalois K M] [IsMulCommutative (L ≃ₐ[K] L)]
   [IsMulCommutative (M ≃ₐ[K] M)]
 
+/- English proof (translation)
+Establish `h` using `eq_ideleSymbol L (ψ := (AlgEquiv.restrictNormalHom (F := K) (K₁ := M) L).comp (ideleSymbol K M)) ((continuous_of_discreteTopology : Continuous (AlgEquiv.restrictNormalHom (F := K) (K₁ := M) L)).comp (continuous_ideleSymbol M)) (fun v a ↦ by`. Rewrite using `[MonoidHom.comp_apply, ideleSymbol_finiteEmbedding]`. Conclude with `restrictNormal_localSymbol L M v a)`. Use the proof step `(fun w a ↦ by`. Rewrite using `[MonoidHom.comp_apply, ideleSymbol_infiniteEmbedding]`.
+
+Conclude with `restrictNormal_infiniteLocalSymbol L M w a)`. Conclude with `congrArg (fun f : IdeleGroup K →* (L ≃ₐ[K] L) ↦ f x) h`.
+-/
 theorem restrictNormal_ideleSymbol (x : IdeleGroup K) :
     (ideleSymbol K M x).restrictNormal L = ideleSymbol K L x := by
   have h := eq_ideleSymbol L (ψ := (AlgEquiv.restrictNormalHom (F := K) (K₁ := M) L).comp

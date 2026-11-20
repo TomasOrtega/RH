@@ -6,6 +6,13 @@ open Formalism.MainNotions.S
 
 namespace GlobalTheory.LocCoef
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.S.LocNG.FrameD.Fj at hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, hb, rfl⟩` from `hx`. Establish `hb' : b.val < a.val` using `hb`.
+
+Establish `hba : b ≠ a` using `fun h => by subst h; exact lt_irrefl _ hb'`. Unfold `Formalism.MainNotions.S.LocNG.FrameD.e`. Rewrite using `[Fr.h_es b a, if_neg hba]`. Consider the case `zero => exact H.h_zero_left _`. Consider the case `add x y _ _ hx hy => rw [H.h_add_left, hx, hy, add_zero]`.
+
+Consider the case `smul c x _ hx => rw [H.h_smul_left, hx, mul_zero]`.
+-/
 theorem h_es_eq_zero_of_mem_Fj {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E]
     [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] {M : Formalism.MainNotions.S.Loc.Model F E} {V : Type}
     [AddCommGroup V] [Module E V] {H : Formalism.MainNotions.S.Loc.HermSp M V} {r : ℕ} (Fr : Formalism.MainNotions.S.LocNG.FrameD H r)
@@ -22,6 +29,13 @@ theorem h_es_eq_zero_of_mem_Fj {F : Type} [Field F] [ValuativeRel F] [Topologica
   | add x y _ _ hx hy => rw [H.h_add_left, hx, hy, add_zero]
   | smul c x _ hx => rw [H.h_smul_left, hx, mul_zero]
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.S.LocNG.FrameD.LamStd at hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx => exact hx.1 a`. Consider the case `zero => rw [H.h_zero_left]`. Conclude with `M.L.O.zero_mem`.
+
+Consider the case `add x y _ _ hx hy => rw [H.h_add_left]`. Conclude with `M.L.O.add_mem hx hy`. Consider the case `smul c x _ hx`. Establish `: H.h (c • x) (Fr.es a) = (c : E) * H.h x (Fr.es a)` using `H.h_smul_left (c : E) x _`. Rewrite using `[this]`.
+
+Conclude with `M.L.O.mul_mem c.2 hx`.
+-/
 theorem h_es_mem_O_of_mem_LamStd {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E]
     [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] {M : Formalism.MainNotions.S.Loc.Model F E} {V : Type}
     [AddCommGroup V] [Module E V] {H : Formalism.MainNotions.S.Loc.HermSp M V} {r : ℕ} (Fr : Formalism.MainNotions.S.LocNG.FrameD H r)
@@ -38,6 +52,13 @@ theorem h_es_mem_O_of_mem_LamStd {F : Type} [Field F] [ValuativeRel F] [Topologi
 
 end GlobalTheory.LocCoef
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M V _ _ H r Fr n hn L a v hv hvimg`. Unfold `Formalism.MainNotions.S.LocNG.img at hvimg`. Take `⟨w, hw, hwv⟩` from `Submodule.mem_map.mp hvimg`. Establish `hwv' : n w = v` using `hwv`. Establish `hu` using `(GlobalTheory.T.unipotentRadical_isotropicFlag_moves_step_into_prev Fr n hn (a.val + 1) (Nat.succ_le_of_lt a.isLt) v hv).2`.
+
+Simplify using `only [Nat.add_sub_cancel] at hu`. Establish `hsymm : n.symm v = w` using `by rw [← hwv']; exact n.symm_apply_apply w`. Rewrite `hu` using `[hsymm]`. Establish `h0` using `GlobalTheory.LocCoef.h_es_eq_zero_of_mem_Fj Fr a (w - v) hu`. Establish `hwO` using `GlobalTheory.LocCoef.h_es_mem_O_of_mem_LamStd Fr L a w hw`.
+
+Establish `hdecomp : H.h w (Fr.es a) = H.h (w - v) (Fr.es a) + H.h v (Fr.es a)`. Rewrite using `[← H.h_add_left, sub_add_cancel]`. Rewrite `hwO` using `[hdecomp, h0, zero_add]`. Conclude with `hwO`.
+-/
 theorem GlobalTheory.locCoef_integral : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] {M : Formalism.MainNotions.S.Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] {H : Formalism.MainNotions.S.Loc.HermSp M V} {r : ℕ} (Fr : Formalism.MainNotions.S.LocNG.FrameD H r) (n : V ≃ₗ[E] V), n ∈ Fr.N → ∀ (L : Submodule M.L.O (H.Wb Fr.f)) (a : Fin r) (v : V), v ∈ Fr.Fj (a.val + 1) → v ∈ Formalism.MainNotions.S.LocNG.img n (Fr.LamStd L) → H.h v (Fr.es a) ∈ M.L.O := by
   intro F _ _ _ E _ _ _ _ M V _ _ H r Fr n hn L a v hv hvimg
   unfold Formalism.MainNotions.S.LocNG.img at hvimg

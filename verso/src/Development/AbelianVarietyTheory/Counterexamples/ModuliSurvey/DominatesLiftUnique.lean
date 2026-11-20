@@ -11,15 +11,24 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
   {Xo : Moduli D l} {c : Coeff l}
 
+/- English proof (translation)
+Unfold `Model.j`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, Y.jQ_over]`.
+-/
 theorem j_over {O : Type} [CommRing O] {β : O →+* c.F} (Y : Model Xo c β) :
     Y.j ≫ Y.s = pullback.snd _ _ ≫ spMap β := by
   unfold Model.j
   rw [Category.assoc, pullback.condition, ← Category.assoc, Y.jQ_over]
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Take `⟨π', -, r, h₁, h₂, -, h₃, -⟩` from `h`. Establish `e : π ≫ Y.s = Y₂.s ≫ spMap b`. Rewrite using `[← h₁, ← h₂, Category.assoc, Category.assoc, pullback.condition]`. Use `⟨e, r, h₃, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono (spMap β), Category.assoc, Category.assoc, ← j_over, ← Category.assoc, ← h₃, Category.assoc, e, ← Category.assoc, j_over, Category.assoc, spMap_comp, spMap_comp, hσ]`.
+-/
 theorem transition_over {l₂ : Level H} {Xo₂ : Moduli D l₂} {c₂ : Coeff l₂} {O O₂ : Type} [CommRing O] [CommRing O₂]
     {β : O →+* c.F} {β₂ : O₂ →+* c₂.F} (Y : Model Xo c β) (Y₂ : Model Xo₂ c₂ β₂) (b : O →+* O₂) (π : Y₂.X ⟶ Y.X)
     (h : IsTransition Y Y₂ b π) [Mono (spMap β)] (σ : c.F →+* c₂.F) (hσ : σ.comp β = β₂.comp b) :

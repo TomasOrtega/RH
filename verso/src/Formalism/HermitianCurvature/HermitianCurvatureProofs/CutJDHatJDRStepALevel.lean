@@ -13,6 +13,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Unfold `v0 e0`. Introduce `h`. Simplify using `[Fin.ext_iff] at h`.
+-/
 theorem base_index_ne_first_index (l : Fin r) (j : Fin (mdim k r l.succ)) : v0 k l j ≠ e0 k l := by
   unfold v0 e0
   intro h
@@ -35,6 +38,9 @@ variable (R : Rules) (hz : inWb k r z) (hz' : inWb k r z') (hD : IsDom k r z z' 
   (hJ : SmoothLev k r l.castSucc D J) (hl : LeftEq k r z l.castSucc D J) (hr : RightEq k r z' l.castSucc D J)
 
 include hz hz' hl hr in
+/- English proof (translation)
+Rewrite using `[quantum_minor_border_expansion_first _ (e0 k l) (v0 k l ∘ f) (v0 k l ∘ b) (level_generators_gl_relations R.gl l.castSucc hD.1) (fun _ => base_index_ne_first_index l _) (fun _ => base_index_ne_first_index l _) u]`. Establish `hJ0` using `restricted_function_mem_left_space hD hJ hl`. Use `IntJ.sub (((int_Tee R.w R.ep R.rt hD u).mul (int_minor R.w R.ep R.q hD f b (u - 1))).toJ hJ0) (IntJ.sum _ fun w _ => IntJ.sum _ fun x _ => IntJ.intMul ?_ _)` and prove the remaining obligations. Conclude with `((int_we R.w R.ep R.rl hz hD (f w)).mul (int_minor R.w R.ep R.q hD (f ∘ skip1 w) (b ∘ skip1 x) (u - 2))).mulJ (intJ_eig hJ0 (eig_ex R.rr hz' hD.1 hJ hr (b x)))`.
+-/
 theorem evaluation_bordered_minor_first {m : ℕ} (f b : Fin m → Fin (mdim k r l.succ)) (u : ℂ) :
     IntJ (rho E R.w l hD.1) (VLeft z l.castSucc hD.1) (J0 hD.1 hJ)
       (qminor (E0 E l.castSucc hD.1) (bE (e0 k l) (v0 k l ∘ f)) (bE (e0 k l) (v0 k l ∘ b)) u)
@@ -50,6 +56,9 @@ theorem evaluation_bordered_minor_first {m : ℕ} (f b : Fin m → Fin (mdim k r
 
 include hz hz' hl hr in
 
+/- English proof (translation)
+The claim follows from `stp_evalPt R.w hD.1 hJ (evaluation_bordered_minor_first R hz hz' hD hJ hl hr f b u) hc hg hgD`.
+-/
 theorem quantum_minor_point_evaluation {m : ℕ} (f b : Fin m → Fin (mdim k r l.succ)) (u : ℂ) {c : Fin r → ℂ} (hc : c ∈ OmX r) {g : Mx k r}
     (hg : g ∈ Glev k r l.succ) (hgD : g ∈ Dc1 l D c) :
     qminorOp (EH k r) (posL k r l.castSucc ∘ bE (e0 k l) (v0 k l ∘ f)) (posL k r l.castSucc ∘ bE (e0 k l) (v0 k l ∘ b))
@@ -60,21 +69,35 @@ end Level
 
 section Comb
 
+/- English proof (translation)
+Unfold `sg2`. Establish `hne : (a : ℕ) ≠ b` using `fun h' => h (Fin.ext h')`. Apply the tactic sequence `split_ifs <;> first | omega | ring`.
+-/
 theorem sign_antisymmetric {m : ℕ} {a b : Fin m} (h : a ≠ b) : sg2 a b = -sg2 b a := by
   unfold sg2
   have hne : (a : ℕ) ≠ b := fun h' => h (Fin.ext h')
   split_ifs <;> first | omega | ring
 
+/- English proof (translation)
+Unfold `skip1`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 private theorem skip1_val_eq_ite {n : ℕ} (a : Fin n) (b : Fin (n - 1)) :
     ((skip1 a b : Fin n) : ℕ) = if (b : ℕ) < a then (b : ℕ) else b + 1 := by
   unfold skip1
   split_ifs <;> rfl
 
+/- English proof (translation)
+Unfold `skip2`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 private theorem skip2_val_eq_ite {n : ℕ} (a b : Fin n) (j : Fin (n - 2)) :
     ((skip2 a b j : Fin n) : ℕ) = if (j : ℕ) < a then (j : ℕ) else if (j : ℕ) + 1 < b then j + 1 else j + 2 := by
   unfold skip2
   split_ifs <;> rfl
 
+/- English proof (translation)
+Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[skip1_val_eq_ite]`. Distinguish the cases in `h : (w : ℕ) < s`. Rewrite using `[if_pos h, Fin.succAbove_of_castSucc_lt s w (by rw [Fin.lt_def, Fin.coe_castSucc]; exact h)]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[if_neg h, Fin.succAbove_of_le_castSucc s w (by rw [Fin.le_def, Fin.coe_castSucc]; omega)]`. Simplify using the standard rewrite rules.
+-/
 private theorem skip1_eq_succAbove {t : ℕ} (s : Fin (t + 1)) (w : Fin t) : skip1 s w = s.succAbove w := by
   apply Fin.ext
   rw [skip1_val_eq_ite]
@@ -84,6 +107,13 @@ private theorem skip1_eq_succAbove {t : ℕ} (s : Fin (t + 1)) (w : Fin t) : ski
   · rw [if_neg h, Fin.succAbove_of_le_castSucc s w (by rw [Fin.le_def, Fin.coe_castSucc]; omega)]
     simp
 
+/- English proof (translation)
+Establish `hmin : ((min (skip1 s w) s : Fin (t + 1)) : ℕ) = min ((skip1 s w : Fin (t + 1)) : ℕ) (s : ℕ)`. Break down `_root_.le_total (skip1 s w) s with h | h` into its components or cases. Rewrite using `[_root_.min_eq_left h, _root_.min_eq_left (Fin.le_def.mp h)]`. Rewrite using `[_root_.min_eq_right h, _root_.min_eq_right (Fin.le_def.mp h)]`. Establish `hmax : ((max (skip1 s w) s : Fin (t + 1)) : ℕ) = max ((skip1 s w : Fin (t + 1)) : ℕ) (s : ℕ)`.
+
+Break down `_root_.le_total (skip1 s w) s with h | h` into its components or cases. Rewrite using `[_root_.max_eq_right h, _root_.max_eq_right (Fin.le_def.mp h)]`. Rewrite using `[_root_.max_eq_left h, _root_.max_eq_left (Fin.le_def.mp h)]`. Establish `hj` using `j.isLt`. Establish `hw` using `w.isLt`.
+
+Establish `hs` using `s.isLt`. Rewrite using `[skip2_val_eq_ite, hmin, hmax, skip1_val_eq_ite s (skip1 w j), skip1_val_eq_ite s w, skip1_val_eq_ite w j]`. Simplify using `only [Nat.min_def, Nat.max_def]`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 private theorem skip1_skip1_val_eq_skip2_min_max {t : ℕ} (s : Fin (t + 1)) (w : Fin t) (j : Fin (t + 1 - 2)) :
     ((skip1 s (skip1 w j) : Fin (t + 1)) : ℕ) = (skip2 (min (skip1 s w) s) (max (skip1 s w) s) j : ℕ) := by
   have hmin : ((min (skip1 s w) s : Fin (t + 1)) : ℕ) = min ((skip1 s w : Fin (t + 1)) : ℕ) (s : ℕ) := by
@@ -107,6 +137,11 @@ section Alg
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {l : Fin r} {D : Set (Mx k r)}
   (hD : IsOpen D) (z z' : Fin (2 * r + k + 1) → ℂ) (Y : ℂ)
 
+/- English proof (translation)
+Establish `h` using `P_mulB_of (E := E) (ho1 l hD) l (sf_aY z t) 0 (fun c _ g => by`. Rewrite using `[zero_mul]`. Conclude with `pOp_const l _ c)`. Rewrite `h` using `[zero_smul, add_zero]`. Unfold `bTee`.
+
+Rewrite using `[mul_add, add_mul, h, mul_smul_comm, smul_mul_assoc, mul_one, one_mul]`.
+-/
 theorem aY_comm_bTee (t : Fin (mdim k r l.succ)) (u : ℂ) :
     mulB E l.succ (ho1 l hD) (aY z l.succ t) * bTee E l hD u = bTee E l hD u * mulB E l.succ (ho1 l hD) (aY z l.succ t) := by
   have h := P_mulB_of (E := E) (ho1 l hD) l (sf_aY z t) 0 (fun c _ g => by
@@ -115,6 +150,9 @@ theorem aY_comm_bTee (t : Fin (mdim k r l.succ)) (u : ℂ) :
   unfold bTee
   rw [mul_add, add_mul, h, mul_smul_comm, smul_mul_assoc, mul_one, one_mul]
 
+/- English proof (translation)
+Rewrite using `[stp_uC_succ, ← mul_neg, ← signed_expansion_block10, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, aY_comm_bTee, mul_assoc, mul_smul_comm]`.
+-/
 theorem capelli_key_first_term :
     (∑ s : Fin (mdim k r l.succ), ∑ t : Fin (mdim k r l.succ),
       ((((-1 : ℤ) ^ ((s : ℕ) + (t : ℕ)) : ℤ) : ℂ) * xbv k r z' l.succ s) •
@@ -131,6 +169,21 @@ end Alg
 
 section Comb2
 
+/- English proof (translation)
+Use `conv_rhs => rw [Finset.sum_comm]`. Use `conv_rhs => arg 1`. Use `arg 2`. Use extensionality with `w'`. Rewrite using `[Finset.sum_comm]`.
+
+Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Simplify using `only [ite_and]`.
+
+Rewrite using `[Fin.sum_univ_succAbove _ s]`. Simplify using `only [ne_eq, not_true_eq_false, ↓reduceIte, Finset.sum_const_zero, zero_add, Fin.succAbove_ne, not_false_eq_true]`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_succAbove _ T]`.
+
+Simplify using `only [not_true_eq_false, ↓reduceIte, zero_add]`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hTj : ¬T = T.succAbove j` using `(Fin.succAbove_ne T j).symm`. Rewrite using `[if_pos hTj, ← skip1_eq_succAbove s i, ← skip1_eq_succAbove T j]`.
+
+Establish `h1 : (skip1 s ∘ skip1 i : Fin (t + 1 - 2) → Fin (t + 1)) = skip2 (min (skip1 s i) s) (max (skip1 s i) s)`. Use function extensionality and compare the values at `fun k => Fin.ext (skip1_skip1_val_eq_skip2_min_max s i k)`. Establish `h2 : (skip1 T ∘ skip1 j : Fin (t + 1 - 2) → Fin (t + 1)) = skip2 (min T (skip1 T j)) (max T (skip1 T j))`. Rewrite using `[_root_.min_comm, _root_.max_comm]`. Conclude with `funext fun k => Fin.ext (skip1_skip1_val_eq_skip2_min_max T j k)`.
+
+Establish `hne : s ≠ skip1 s i`. Rewrite using `[skip1_eq_succAbove s i]`. Conclude with `(Fin.succAbove_ne s i).symm`. Rewrite using `[h1, h2, sign_antisymmetric hne, ← neg_smul]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem comb {M : Type*} [AddCommGroup M] [Module ℂ M] {t : ℕ} (β α' : Fin (t + 1) → ℂ)
     (Θ : Fin (t + 1) → Fin (t + 1) → (Fin (t + 1 - 2) → Fin (t + 1)) → (Fin (t + 1 - 2) → Fin (t + 1)) → M) :
     (∑ s : Fin (t + 1), ∑ T : Fin (t + 1), ∑ w : Fin t, ∑ x : Fin t,
@@ -170,6 +223,11 @@ theorem comb {M : Type*} [AddCommGroup M] [Module ℂ M] {t : ℕ} (β α' : Fin
   push_cast
   ring
 
+/- English proof (translation)
+Unfold `sg2 skip1`. Distinguish the cases in `hw : (w : ℕ) < s`. Simplify using `[hw]`. Establish `h2 : ¬ ((w : ℕ) + 1 < s)` using `by omega`. Simplify using `only [hw, h2, ↓reduceIte, Fin.val_mk]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sign_skip_eq_power_at_level (L : Fin (r + 1)) (s : Fin (mdim k r L)) (w : Fin (mdim k r L - 1)) :
     sg2 s (skip1 s w) = (-1) ^ ((s : ℕ) + (w : ℕ)) := by
   unfold sg2 skip1
@@ -185,6 +243,11 @@ section Alg2
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {l : Fin r} {D : Set (Mx k r)}
   (hD : IsOpen D) (z z' : Fin (2 * r + k + 1) → ℂ) (Y : ℂ)
 
+/- English proof (translation)
+Unfold `scaledRowVectorOperator`. Rewrite using `[sign_skip_eq_power_at_level, sign_skip_eq_power_at_level]`. Establish `c1 : mulB E l.succ (ho1 l hD) (aY z l.succ t) * mulB E l.succ (ho1 l hD) (aCi k l) = mulB E l.succ (ho1 l hD) (aCi k l) * mulB E l.succ (ho1 l hD) (aY z l.succ t)` using `(mulB_comm (E := E) (ho1 l hD) (sf_aY z t) (sf_aCi l)).eq`. Establish `c2 : mulB E l.succ (ho1 l hD) (aY z l.succ t) * mulB E l.succ (ho1 l hD) (aYb z l.succ (skip1 s w)) = mulB E l.succ (ho1 l hD) (aYb z l.succ (skip1 s w)) * mulB E l.succ (ho1 l hD) (aY z l.succ t)` using `(mulB_comm (E := E) (ho1 l hD) (sf_aY z t) (sf_aYb z (skip1 s w))).eq`. Simplify using `only [mul_smul_comm, smul_mul_assoc, smul_smul, mul_one, mul_assoc]`.
+
+Rewrite using `[← mul_assoc (mulB E l.succ (ho1 l hD) (aY z l.succ t)) (mulB E l.succ (ho1 l hD) (aCi k l)), c1, mul_assoc, ← mul_assoc (mulB E l.succ (ho1 l hD) (aY z l.succ t)) (mulB E l.succ (ho1 l hD) (aYb z l.succ (skip1 s w))), c2, mul_assoc]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem capelli_key_second_term (s t : Fin (mdim k r l.succ)) (w x : Fin (mdim k r l.succ - 1)) (u : ℂ) :
     ((((-1 : ℤ) ^ ((s : ℕ) + (t : ℕ)) : ℤ) : ℂ) * xbv k r z' l.succ s) •
       (mulB E l.succ (ho1 l hD) (aY z l.succ t) *
@@ -209,6 +272,11 @@ theorem capelli_key_second_term (s t : Fin (mdim k r l.succ)) (w x : Fin (mdim k
   push_cast
   ring
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.mul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun t _ => Finset.sum_congr rfl fun w _ => Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Conclude with `capelli_key_second_term hD z z' s t w x _`. Use `_ = mulB E l.succ (ho1 l hD) (aCi k l) * -(∑ w : Fin (mdim k r l.succ), ∑ w' : Fin (mdim k r l.succ), ∑ x : Fin (mdim k r l.succ), ∑ x' : Fin (mdim k r l.succ), if w ≠ w' ∧ x ≠ x' then (((sg2 w w' * sg2 x x' : ℤ) : ℂ) * (xv k r z' l.succ x' * xbv k r z' l.succ w')) • (mulB E l.su …`.
+
+Conclude with `congrArg (fun S => mulB E l.succ (ho1 l hD) (aCi k l) * S) (comb (fun s => xbv k r z' l.succ s) (fun x => xv k r z' l.succ x) (fun w x f b => mulB E l.succ (ho1 l hD) (aYb z l.succ w) * (mulB E l.succ (ho1 l hD) (aY z l.succ x) * mB E l.succ (ho1 l hD) f b (uC k r l.castSucc Y - …`. Use `_ = mulB E l.succ (ho1 l hD) (aCi k l) * tB E l.succ (ho1 l hD) z z' Y 1 1 := by`. Rewrite using `[stp_uC_succ2, signed_double_expansion_block11, neg_neg]`.
+-/
 theorem capelli_key_second_identity :
     (∑ s : Fin (mdim k r l.succ), ∑ t : Fin (mdim k r l.succ),
       ((((-1 : ℤ) ^ ((s : ℕ) + (t : ℕ)) : ℤ) : ℂ) * xbv k r z' l.succ s) •

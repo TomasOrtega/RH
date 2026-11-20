@@ -110,6 +110,17 @@ structure DivisionPackageKernel' (Q : _root_.Formalism.L2.DIV.DivisionKernelData
   evTie : ∀ t (F : Fin ((Q.P.A3.side3 Q.P.Ps Q.P.ψs Pk.Zs).nV t) → D.what₂.LL),
     HEq (eV t F) (Q.P.I.jA t ((rV0 D Q.P.A3.A Q.P.Ps Q.P.ψs t).mulVec F))
   wuTie : ∀ u, HEq (wU u) u
+/- English proof (translation)
+Take `⟨C', NuC', I', hT', hC', -, hI'⟩` from `ColTie3.transport R.colTie hR`. Establish `hS0 : HEq R.P.S0 Pk.core.base.toIndefData`. Establish `key : ∀ (Z1 Z2 : DefSub R.P.A3.fam3.amb3) (R1 : IndefRows (R.P.A3.side3 R.P.P0 R.P.ψ0 Z1)) (R2 : IndefRows (R.P.A3.side3 R.P.P0 R.P.ψ0 Z2)), Z1 = Z2 → HEq R1 R2 → HEq R1.toIndefData R2.toIndefData`. Introduce and unpack `Z1 _ R1 R2 rfl h`. Consider the cases of `h`.
+
+Both sides reduce to the same expression. Establish `h1` using `key _ _ _ _ hZs hRows`. Rewrite `h1` using `[Classical.choose_spec R.hr.rows0]`. Conclude with `h1.symm`. Establish `hF2 : ∀ Z1 Z2 : DefSub R.P.A3.fam3.amb3, Z1 = Z2 → HEq (R.c.face Z1) (R.c.face Z2) ∧ HEq (R.Sp Z1) (R.Sp Z2)`.
+
+Introduce and unpack `_ _ rfl`. Conclude with `⟨HEq.rfl, HEq.rfl⟩`. Take `⟨NuC'', I'', hT'', -, hI''⟩` from `divTied3_congr hZs.symm hS0 hS1.symm (hF2 _ _ hZs.symm).1 (hF2 _ _ hZs.symm).2 (hC'.trans hCol.symm) hT'`. Establish `hII : HEq I'' R.P.I` using `hI''.trans hI'`. Take `⟨htup, hjA, hwU⟩` from `divTieDat3_heq hZs hS0.symm hS1 ((hF2 _ _ hZs).1.trans (heq_of_eq R.colTie.1)) hII`.
+
+Take `⟨hbr, inp, hQ, h0c⟩` from `hOpen NuC'' I'' hT'' hII`. Set `x` to `DivisionPackageColumns.ofTied R.P R.hr R.X R.e R.c R.Sp R.Zsc C Cabs Cp CHp cf Pk hZs hRows NuC'' I'' hT'' hbr Del h0 lam0 C0 ce Ch Sw C1 eJ H inp hQ h0c hN Z hk tH hh hF hC0 hC1 hC2 hCabs hLa`. Use `⟨{ toDivisionPackageFace := x.toDivisionPackageFace, hQ := x.hQ, h0 := x.h0, tupTie := ?_, evTie := ?_, wuTie := ?_ }⟩` and prove the remaining obligations. Conclude with `fun t => congrFun htup t`. Conclude with `fun t F => hjA t _`.
+
+Conclude with `fun u => (hwU u).trans (R.wTie u)`.
+-/
 theorem pkg_of_rowsK_alt (R : _root_.Formalism.L2.DIV.DivisionKernelData ex)
     (hR : DivRows3 D R.P.A3 R.P.P0 R.P.ψ0 R.P.Ps R.P.ψs R.P.Zs R.P.S0 R.P.S1 ex.p0 R.P.C R.P.NuC R.P.I) (C Cabs Cp CHp : ℝ) (cf : ConvFace R.P.A3.fam3.base3)
     (Pk : IndefPkgR R.P.A3.fam3.amb3 (Formalism.IndefR.Cx.faceOf3 R.P.A3 R.P.P0 R.P.ψ0 R.P.Ps R.P.ψs R.c.face R.Sp R.Zsc) cf Cp CHp)
@@ -175,6 +186,9 @@ structure DivisionKernelConstantBounds {eps : ℝ} (Fm : FamP eps)
   bu : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, (Fm.D x i).BuRational
   rr : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, (Fm.D x i).RRFull
   la : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, 0 ≤ (Fm.L x i).La
+/- English proof (translation)
+Introduce `hN` and use `by obtain ⟨C, x0, h⟩ := B.pkg hN exact ⟨C, x0, fun x hx0 hx h' i => (h x hx0 hx h' i).map _root_.Formalism.L2.DIV.DivisionPackageKernel'.toDivisionPackageColumns⟩ adm2 := B.adm2 cut := B.cut c3 := B.c3 hh := B.hh c2 := B.c2 c5 := B.c5 bu := B.bu rr := B.rr la := B.la`.
+-/
 theorem DivisionKernelConstantBounds.toT {eps : ℝ} {Fm : FamP eps}
     {Rk : Σ' x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, _root_.Formalism.L2.DIV.DivisionKernelData (Fm.ex x hx i)} {Cabs CH : ℝ}
     (B : _root_.Formalism.L2.DIV.DivisionKernelConstantBounds Fm Rk Cabs CH) : BridgeRowsT Fm (_root_.Formalism.L2.DIV.divisionKernelToColumns Rk) Cabs CH where
@@ -190,10 +204,16 @@ theorem DivisionKernelConstantBounds.toT {eps : ℝ} {Fm : FamP eps}
   bu := B.bu
   rr := B.rr
   la := B.la
+/- English proof (translation)
+The claim follows from `linkDIVt_of_rowsT Fm (_root_.Formalism.L2.DIV.divisionKernelToColumns Rk) Cabs CH B.toT`.
+-/
 theorem linkDIVt_of_bridge_kernel {eps : ℝ} (Fm : FamP eps)
     (Rk : Σ' x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, _root_.Formalism.L2.DIV.DivisionKernelData (Fm.ex x hx i)) (Cabs CH : ℝ)
     (B : _root_.Formalism.L2.DIV.DivisionKernelConstantBounds Fm Rk Cabs CH) : LinkDIVt Fm Cabs CH :=
   linkDIVt_of_rowsT Fm (_root_.Formalism.L2.DIV.divisionKernelToColumns Rk) Cabs CH B.toT
+/- English proof (translation)
+Take `⟨e1, he1, hP⟩` from `h`. Use `⟨e1, he1, fun e he hle => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `hP e he hle`. Conclude with `⟨K, fun Fm CH hc hL hT hG => _root_.Formalism.L2.DIV.linkDIVt_of_bridge_kernel Fm (Rk Fm hc) Cabs CH (hK Fm CH hc hL hc hT hG)⟩`.
+-/
 theorem closed_linkDIVt_of_closed_bridge_kernel (𝒟 : FamClass) (Cabs : ℝ)
     (Rk : ∀ {eps : ℝ} (Fm : FamP eps), 𝒟 Fm →
       Σ' x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, _root_.Formalism.L2.DIV.DivisionKernelData (Fm.ex x hx i))

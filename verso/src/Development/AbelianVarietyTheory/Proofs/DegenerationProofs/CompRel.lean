@@ -39,6 +39,11 @@ def comp (I : NumD.Hom f N N') (I' : NumD.Hom g N' N'') : NumD.Hom (g.comp f) N 
       Units.map g.toMonoidHom (Units.map f.toMonoidHom (N.ψ χ)) := rfl
     rw [c, ← I.ψ_eq, map_mul, ← I'.ψ_eq, I.c_eq, AddEquiv.trans_apply, mul_assoc]
 
+/- English proof (translation)
+Use `⟨h'.1.trans (congrArg I'.φ h.1), fun χ => ?_⟩` and prove the remaining obligations. Establish `u` using `congrArg (fun v => Additive.ofMul (Units.map g.toMonoidHom v)) (h.2 χ)`. Establish `v` using `congrArg Additive.ofMul (h'.2 (I.e χ))`. Establish `w : Units.map (g.comp f).toMonoidHom (a.s χ) = Units.map g.toMonoidHom (Units.map f.toMonoidHom (a.s χ))` using `rfl`. Rewrite `v` using `[I.c_eq, h.1]`.
+
+Use `show c.s (I'.e (I.e χ)) * (I'.h (I.φ _) * Units.map g.toMonoidHom (I.h _)) = _ * (I'.h (I.φ _) * Units.map g.toMonoidHom (I.h _)) * (I'.h (I.φ _) * Units.map g.toMonoidHom (I.h _))`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [w, map_mul, ofMul_mul] at u v ⊢`. Take the linear combination `(norm := abel) u + v`.
+-/
 theorem comp_rel {I : NumD.Hom f N N'} {I' : NumD.Hom g N' N''} {a : N.Gt} {b : N'.Gt} {c : N''.Gt} (h : I.Rel a b)
     (h' : I'.Rel b c) : (comp I I').Rel a c := by
   refine ⟨h'.1.trans (congrArg I'.φ h.1), fun χ => ?_⟩
@@ -83,6 +88,11 @@ def inv {M M' : NumD O} (I : NumD.Iso M' M) : NumD.Hom (RingHom.id O) M M' where
     show _ = M.ψ _
     rw [AddEquiv.symm_apply_apply, I.c_eq, MulEquiv.symm_apply_apply, ← I.ψ_eq, mul_inv_cancel_right]
 
+/- English proof (translation)
+Use `⟨(I.φ.symm_apply_eq.2 h.1).symm, fun χ => ?_⟩` and prove the remaining obligations. Take `⟨χ, rfl⟩` from `I.e.surjective χ`. Establish `u` using `congrArg Additive.ofMul (h.2 χ)`. Use `show a.s (I.e.symm _) * (I.h (I.φ.symm _))⁻¹ = b.s _ * (I.h (I.φ.symm _))⁻¹ * (I.h (I.φ.symm _))⁻¹`. Rewrite using `[AddEquiv.symm_apply_apply, I.c_eq, h.1, ← map_mul]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, MulEquiv.symm_apply_apply] at u ⊢`. Take the linear combination `(norm := abel) -u`.
+-/
 theorem inv_rel {M M' : NumD O} {I : NumD.Iso M' M} {a : M'.Gt} {b : M.Gt} (h : I.Rel a b) : (inv I).Rel b a := by
   refine ⟨(I.φ.symm_apply_eq.2 h.1).symm, fun χ => ?_⟩
   obtain ⟨χ, rfl⟩ := I.e.surjective χ

@@ -21,6 +21,11 @@ def A13ContinuousOffNull : Prop :=
         ∑ᶠ P ∈ d.ST Z sg (fun i j => (t i : EuclideanSpace ℂ (Fin (d.N + 1))) j),
           Real.log (d.nrm Z G f P)) Sᶜ
 
+/- English proof (translation)
+Introduce `Z sg G f hf hf0`. Take `⟨S, hSm, hS0, hcont⟩` from `hc Z sg hf hf0`. Establish `h1` using `hcont.aemeasurable (μ := d.sphMeasure) hSm.compl`. Establish `h2 : d.sphMeasure.restrict Sᶜ = d.sphMeasure` using `Measure.restrict_eq_self_of_ae_mem (compl_mem_ae_iff.2 hS0)`. Rewrite `h1` using `[h2]`.
+
+Conclude with `h1`.
+-/
 theorem lawA13_of_continuous (hc : A13ContinuousOffNull d) : A13Measurable d := by
   intro Z sg G f hf hf0
   obtain ⟨S, hSm, hS0, hcont⟩ := hc Z sg hf hf0
@@ -44,6 +49,9 @@ def NrmContOff (h : GenFrEx Xo c) (fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt �
             P (ratio (Ω := Om Z) (valG h uL (wR j) Z) (valG h uL (wR (jc Z)) Z)) = 0},
           Real.log (nrmC fn (yP Z) G f P)) Sᶜ
 
+/- English proof (translation)
+The claim follows from `lawA13_of_continuous _ hc`.
+-/
 theorem lawA13_of_data (h : GenFrEx Xo c)
     (δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (WithTop ℤ) → Ix Dw → ℤ)
     (fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) → Ix Dw → ℝ)

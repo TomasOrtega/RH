@@ -28,6 +28,9 @@ instance : Algebra (KZero p K) K :=
   (fracWittLift p ((unitBall K).subtype.comp (wittToInteger p K))
     (IsUnit.mk0 _ (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero))).toAlgebra
 
+/- English proof (translation)
+The claim follows from `fracWittLift_algebraMap p _ _ a`.
+-/
 theorem KZero.algebraMap_algebraMap (a : WittVector p (ResK K)) :
     algebraMap (KZero p K) K (algebraMap _ _ a) = wittToInteger p K a :=
   fracWittLift_algebraMap p _ _ a
@@ -73,9 +76,15 @@ instance : Algebra.IsAlgebraic (KZero p K) (AlgCl K) := Algebra.IsAlgebraic.tran
 
 def wittToOCK : WittVector p (ResK K) →+* OCK K := (OCK.ofInteger K).comp (wittToInteger p K)
 
+/- English proof (translation)
+The claim follows from `OCK.smul_ofInteger K g _`.
+-/
 theorem smul_wittToOCK (g : GalK K) (a : WittVector p (ResK K)) :
     g • wittToOCK p K a = wittToOCK p K a := OCK.smul_ofInteger K g _
 
+/- English proof (translation)
+The claim follows from `RingHom.ext (smul_wittToOCK p K g)`.
+-/
 theorem toRingHom_comp_wittToOCK (g : GalK K) :
     (MulSemiringAction.toRingHom (GalK K) (OCK K) g).comp (wittToOCK p K) = wittToOCK p K :=
   RingHom.ext (smul_wittToOCK p K g)
@@ -91,14 +100,23 @@ def kZeroToBcris : KZero p K →+* Bcris p (OCK K) :=
 def kZeroToBst : KZero p K →+* Bst p (OCK K) :=
   (algebraMap (Bcris p (OCK K)) _).comp (kZeroToBcris p K)
 
+/- English proof (translation)
+Simplify using `[kZeroToBcris, kZeroToBcrisPlus, BcrisPlus.frob_liftFracWitt]`.
+-/
 theorem frob_kZeroToBcris (x : KZero p K) : Bcris.frob p _ (kZeroToBcris p K x) =
     kZeroToBcris p K (WittVector.FractionRing.frobenius p (ResK K) x) := by
   simp [kZeroToBcris, kZeroToBcrisPlus, BcrisPlus.frob_liftFracWitt]
 
+/- English proof (translation)
+Simplify using `[kZeroToBst, frob_kZeroToBcris]`.
+-/
 theorem frob_kZeroToBst (x : KZero p K) : Bst.frob p _ (kZeroToBst p K x) =
     kZeroToBst p K (WittVector.FractionRing.frobenius p (ResK K) x) := by
   simp [kZeroToBst, frob_kZeroToBcris]
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply (KZero p K) K (AlgCl K), KZero.algebraMap_algebraMap]`. Both sides reduce to the same expression.
+-/
 theorem algebraMap_wittVector_eq (a : WittVector p (ResK K)) :
     algebraMap (AlgCl K) (CK K) (algebraMap (KZero p K) (AlgCl K) (algebraMap _ _ a)) =
       wittToOCK p K a := by
@@ -108,15 +126,24 @@ theorem algebraMap_wittVector_eq (a : WittVector p (ResK K)) :
 def algClToBdRPlus : AlgCl K →+* BdRPlus p (OCK K) :=
   BdRPlus.wittSection (wittToOCK p K) (algebraMap (AlgCl K) (CK K)) (algebraMap_wittVector_eq p K)
 
+/- English proof (translation)
+The claim follows from `BdRPlus.thetaC_wittSection _ _ _ x`.
+-/
 @[simp] theorem thetaC_algClToBdRPlus (x : AlgCl K) :
     BdRPlus.thetaC p (OCK K) (algClToBdRPlus p K x) = (x : CK K) :=
   BdRPlus.thetaC_wittSection _ _ _ x
 
+/- English proof (translation)
+The claim follows from `BdRPlus.wittSection_algebraMap _ _ _ a`.
+-/
 theorem algClToBdRPlus_algebraMap (a : KZero p K) :
     algClToBdRPlus p K (algebraMap _ _ a) =
       algebraMap _ _ (AinfInv.liftFracWitt p (wittToOCK p K) a) :=
   BdRPlus.wittSection_algebraMap _ _ _ a
 
+/- English proof (translation)
+The claim follows from `BdRPlus.hom_ext_thetaC (F := KZero p K) (fun a => by rw [h₂, algClToBdRPlus_algebraMap]) (fun x => by rw [h₁, thetaC_algClToBdRPlus])`.
+-/
 theorem eq_algClToBdRPlus (s : AlgCl K →+* BdRPlus p (OCK K))
     (h₁ : ∀ x, BdRPlus.thetaC p (OCK K) (s x) = (x : CK K))
     (h₂ : ∀ a : KZero p K, s (algebraMap _ _ a) =

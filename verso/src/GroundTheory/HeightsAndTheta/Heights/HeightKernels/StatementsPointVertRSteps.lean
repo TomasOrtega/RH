@@ -17,6 +17,9 @@ def curveRing (y : (Σ k, ι k) → Ω) : Subring Ω :=
   ⨅ (c : ∀ k, ι k) (_ : ∀ k, y ⟨k, c k⟩ ≠ 0), (chartRingZ y c).toSubring
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Simplify using `[curveRing, Subring.mem_iInf]`.
+-/
 theorem mem_curveRing {y : (Σ k, ι k) → Ω} {b : Ω} :
     b ∈ curveRing y ↔ ∀ c : ∀ k, ι k, (∀ k, y ⟨k, c k⟩ ≠ 0) → b ∈ chartRingZ y c := by
   simp [curveRing, Subring.mem_iInf]
@@ -51,6 +54,9 @@ def SectionIndexNorm.Statement : Prop :=
           Real.log (genIndex (Submodule.span (𝓞 K') (Set.range y)).toAddSubgroup
             (1 : Submodule (𝓞 K') K').toAddSubgroup)
 
+/- English proof (translation)
+Use `eq_bot_iff.mpr (Algebra.adjoin_le ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Simplify using `[IndefiniteRowSideFullHecke.HeightsSet.yPt]`.
+-/
 theorem chartRingZ_yPt (c : ∀ _ : Unit, PBlk 1 ()) :
     chartRingZ IndefiniteRowSideFullHecke.HeightsSet.yPt c = ⊥ := by
   refine eq_bot_iff.mpr (Algebra.adjoin_le ?_)

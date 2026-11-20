@@ -10,6 +10,17 @@ namespace GlobalTheory.AeHoloGlue
 variable {n : ℕ} {Y : Type} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y]
   [MeasurableSpace Y] [BorelSpace Y] {ι La : Type} [AddCommGroup La]
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `hne`. Establish `hW : IsOpen (O ∩ (A.chart (A.pick y)).source)` using `hO.inter (A.chart (A.pick y)).open_source`. Establish `hWs : O ∩ (A.chart (A.pick y)).source ⊆ (A.chart (A.pick y)).source` using `Set.inter_subset_right`. Establish `hS : IsOpen (A.chart (A.pick y) '' (O ∩ (A.chart (A.pick y)).source))` using `(A.chart (A.pick y)).isOpen_image_of_subset_source hW hWs`. Establish `hSne : (A.chart (A.pick y) '' (O ∩ (A.chart (A.pick y)).source)).Nonempty` using `⟨_, Set.mem_image_of_mem _ ⟨hy, A.mem_pick y⟩⟩`.
+
+Establish `hSt : A.chart (A.pick y) '' (O ∩ (A.chart (A.pick y)).source) ⊆ (A.chart (A.pick y)).target`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `(A.chart (A.pick y)).map_source hx.2`. Introduce `h0`. Establish `h1 : A.mu (O ∩ (A.chart (A.pick y)).source) = 0` using `measure_mono_null Set.inter_subset_left h0`.
+
+Rewrite `h1` using `[A.mu_chart _ _ hW.measurableSet hWs]`. Establish `hc : ContinuousOn (fun v => ENNReal.ofReal (Real.exp (A.ph A.kap (A.pick y) ((A.chart (A.pick y)).symm v)))) (A.chart (A.pick y) '' (O ∩ (A.chart (A.pick y)).source))`. Use `(A.smooth_ph A.kap (A.pick y)).continuousOn.mono hSt` as an intermediate fact. Conclude with `ENNReal.continuous_ofReal.comp_continuousOn (Real.continuous_exp.comp_continuousOn this)`. Rewrite `h1` using `[lintegral_eq_zero_iff' (hc.aemeasurable hS.measurableSet)]`.
+
+Establish `h3` using `ae_iff.mp h1`. Establish `hu : {v | ¬ (fun v => ENNReal.ofReal (Real.exp (A.ph A.kap (A.pick y) ((A.chart (A.pick y)).symm v)))) v = (0 : V n → ℝ≥0∞) v} = Set.univ`. Use extensionality with `v`. Simplify using `[ENNReal.ofReal_eq_zero, Real.exp_pos]`. Rewrite `h3` using `[hu, Measure.restrict_apply_univ]`.
+
+Conclude with `hS.measure_ne_zero volume hSne h3`.
+-/
 theorem mu_ne_zero_of_open (A : WeightedAtlas n Y ι La) {O : Set Y} (hO : IsOpen O)
     (hne : O.Nonempty) : A.mu O ≠ 0 := by
   obtain ⟨y, hy⟩ := hne
@@ -36,6 +47,17 @@ theorem mu_ne_zero_of_open (A : WeightedAtlas n Y ι La) {O : Set Y} (hO : IsOpe
   rw [hu, Measure.restrict_apply_univ] at h3
   exact hS.measure_ne_zero volume hSne h3
 
+/- English proof (translation)
+Rewrite `h` using `[Filter.EventuallyEq, ae_restrict_iff' measurableSet_ball]`. Take `⟨T, hET, hTm, hT0⟩` from `exists_measurable_superset_of_null (ae_iff.mp h)`. Establish `hφ : Measurable ((A.chart i).source.piecewise (A.chart i) (fun _ => (0 : V n)))` using `ContinuousOn.measurable_piecewise (A.chart i).continuousOn continuousOn_const (A.chart i).open_source.measurableSet`. Use `⟨(A.chart i).source ∩ (A.chart i).source.piecewise (A.chart i) (fun _ => (0 : V n)) ⁻¹' T, ?_, ?_⟩` and prove the remaining obligations. Establish `hm : MeasurableSet ((A.chart i).source ∩ (A.chart i).source.piecewise (A.chart i) (fun _ => (0 : V n)) ⁻¹' T)` using `(A.chart i).open_source.measurableSet.inter (hφ hTm)`.
+
+Rewrite using `[A.mu_chart i _ hm Set.inter_subset_left]`. Use `le_antisymm ?_ (by simp)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Apply `lintegral_mono_set` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, ⟨hx1, hx2⟩, rfl⟩`.
+
+Establish `: (A.chart i).source.piecewise (A.chart i) (fun _ => (0 : V n)) x = A.chart i x` using `Set.piecewise_eq_of_mem _ _ _ hx1`. Simplify `hx2` using `[this]`. Use `_ = 0 := setLIntegral_measure_zero _ _ hT0`. Introduce `y hy hb hM`. Assume the negation of the conclusion as `hne`.
+
+Apply `hM` to reduce the goal to its premises. Use `⟨hy, ?_⟩` and prove the remaining obligations. Use `show (A.chart i).source.piecewise (A.chart i) (fun _ => (0 : V n)) y ∈ T`. Rewrite using `[Set.piecewise_eq_of_mem _ _ _ hy]`. Apply `hET` to reduce the goal to its premises.
+
+Simplify using `only [Set.mem_setOf_eq, _root_.not_imp]`. Use `⟨hb, ?_⟩` and prove the remaining obligations. Simplify `hne` using `[Function.comp, (A.chart i).left_inv hy]`.
+-/
 theorem exists_null (A : WeightedAtlas n Y ι La) (i : ι) (c : V n) (r : ℝ) (u : V n → ℂ)
     (f : Y → ℂ) (h : u =ᵐ[volume.restrict (ball c r)] f ∘ (A.chart i).symm) :
     ∃ M : Set Y, A.mu M = 0 ∧ ∀ y ∈ (A.chart i).source, A.chart i y ∈ ball c r → y ∉ M →
@@ -71,6 +93,11 @@ theorem exists_null (A : WeightedAtlas n Y ι La) (i : ι) (c : V n) (r : ℝ) (
     refine ⟨hb, ?_⟩
     simpa [Function.comp, (A.chart i).left_inv hy] using hne
 
+/- English proof (translation)
+Establish `h1 : ContinuousOn (A.g la i j ∘ (A.chart i).symm ∘ A.chart i) ((A.chart i).source ∩ (A.chart j).source)`. Use `(A.holo_g la i j).continuousOn.comp ((A.chart i).continuousOn.mono Set.inter_subset_left) ?_` and prove the remaining obligations. Introduce `y hy`. Conclude with `⟨(A.chart i).map_source hy.1, by simpa [(A.chart i).left_inv hy.1] using hy.2⟩`. Use `h1.congr ?_` and prove the remaining obligations.
+
+Introduce `y hy`. Simplify using `[(A.chart i).left_inv hy.1]`.
+-/
 theorem continuousOn_g (A : WeightedAtlas n Y ι La) (la : La) (i j : ι) :
     ContinuousOn (A.g la i j) ((A.chart i).source ∩ (A.chart j).source) := by
   have h1 : ContinuousOn (A.g la i j ∘ (A.chart i).symm ∘ A.chart i)
@@ -82,6 +109,27 @@ theorem continuousOn_g (A : WeightedAtlas n Y ι La) (la : La) (i j : ι) :
   intro y hy
   simp [(A.chart i).left_inv hy.1]
 
+/- English proof (translation)
+Introduce `n Y _ _ _ _ _ ι La _ A C la f u hf hu hae`. Establish `hBo : ∀ a, IsOpen ((A.chart (C.idx a)).source ∩ A.chart (C.idx a) ⁻¹' ball (C.c a) (C.r a))` using `fun a => (A.chart (C.idx a)).isOpen_inter_preimage isOpen_ball`. Establish `hcov : ∀ y, ∃ a, y ∈ (A.chart (C.idx a)).source ∩ A.chart (C.idx a) ⁻¹' ball (C.c a) (C.r a)`. Introduce `y`. Assume the negation of the conclusion as `hno`.
+
+Use `push_neg at hno`. Establish `h0 : ∀ a, C.chi a y = 0` using `fun a => by`. Assume the negation of the conclusion as `hne`. Conclude with `hno a (C.supp a (subset_tsupport _ hne))`. Use `C.sum_one y` as an intermediate fact.
+
+Simplify using `[h0] at this`. Use `choose M hM0 hM using fun a => exists_null A (C.idx a) (C.c a) (C.r a) (u a) (f (C.idx a)) (hae a)`. Establish `hM0' : A.mu (⋃ a, M a) = 0` using `measure_iUnion_null hM0`. Establish `hoff : ∀ a y, y ∈ (A.chart (C.idx a)).source ∩ A.chart (C.idx a) ⁻¹' ball (C.c a) (C.r a) → y ∉ ⋃ a, M a → u a (A.chart (C.idx a) y) = f (C.idx a) y` using `fun a y hy hn => hM a y hy.1 hy.2 (fun h => hn (Set.mem_iUnion.mpr ⟨a, h⟩))`. Establish `hcu : ∀ a, ContinuousOn (fun y => u a (A.chart (C.idx a) y)) ((A.chart (C.idx a)).source ∩ A.chart (C.idx a) ⁻¹' ball (C.c a) (C.r a))` using `fun a => (hu a).continuousOn.comp ((A.chart (C.idx a)).continuousOn.mono Set.inter_subset_left) (fun y hy => hy.2)`.
+
+Establish `hagree : ∀ a b y, y ∈ (A.chart (C.idx a)).source ∩ A.chart (C.idx a) ⁻¹' ball (C.c a) (C.r a) → y ∈ (A.chart (C.idx b)).source ∩ A.chart (C.idx b) ⁻¹' ball (C.c b) (C.r b) → u a (A.chart (C.idx a) y) = A.g la (C.idx a) (C.idx b) y * u b (A.chart (C.idx b) y)`. Introduce `a b y hya hyb`. Use `set D := ((A.chart (C.idx a)).source ∩ A.chart (C.idx a) ⁻¹' ball (C.c a) (C.r a)) ∩ ((A.chart (C.idx b)).source ∩ A.chart (C.idx b) ⁻¹' ball (C.c b) (C.r b)) with hD`. Establish `hcont : ContinuousOn (fun y => u a (A.chart (C.idx a) y) - A.g la (C.idx a) (C.idx b) y * u b (A.chart (C.idx b) y)) D` using `((hcu a).mono Set.inter_subset_left).sub (((continuousOn_g A la (C.idx a) (C.idx b)).mono (fun z hz => ⟨hz.1.1, hz.2.1⟩)).mul ((hcu b).mono Set.inter_subset_right))`. Establish `hop` using `hcont.isOpen_inter_preimage ((hBo a).inter (hBo b)) (isOpen_compl_singleton (x := (0 : ℂ)))`.
+
+Establish `hsub : D ∩ (fun y => u a (A.chart (C.idx a) y) - A.g la (C.idx a) (C.idx b) y * u b (A.chart (C.idx b) y)) ⁻¹' {0}ᶜ ⊆ ⋃ a, M a`. Introduce `z ⟨hz, hz0⟩`. Assume the negation of the conclusion as `hn`. Apply `hz0` to reduce the goal to its premises. Simplify using `only [Set.mem_singleton_iff]`.
+
+Rewrite using `[hoff a z hz.1 hn, hoff b z hz.2 hn, hf _ _ z hz.1.1 hz.2.1]`. Expand and normalize the polynomial expressions, which then agree. Assume the negation of the conclusion as `hne`. Conclude with `mu_ne_zero_of_open A hop ⟨y, ⟨hya, hyb⟩, by simpa [sub_eq_zero] using hne⟩ (measure_mono_null hsub hM0')`. Use `choose α hα using hcov`.
+
+Use `⟨fun i y => A.g la i (C.idx (α y)) y * u (α y) (A.chart (C.idx (α y)) y), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `i v hv`. Establish `hvs : (A.chart i).symm v ∈ (A.chart i).source` using `(A.chart i).map_target hv.1`. Use `set a0 := α ((A.chart i).symm v)`. Establish `hO : IsOpen ((A.chart i).target ∩ (A.chart i).symm ⁻¹' ((A.chart (C.idx a0)).source ∩ A.chart (C.idx a0) ⁻¹' ball (C.c a0) (C.r a0)))` using `(A.chart i).isOpen_inter_preimage_symm (hBo a0)`.
+
+Establish `hvO : v ∈ (A.chart i).target ∩ (A.chart i).symm ⁻¹' ((A.chart (C.idx a0)).source ∩ A.chart (C.idx a0) ⁻¹' ball (C.c a0) (C.r a0))` using `⟨hv.1, hα _⟩`. Establish `hOovl : (A.chart i).target ∩ (A.chart i).symm ⁻¹' ((A.chart (C.idx a0)).source ∩ A.chart (C.idx a0) ⁻¹' ball (C.c a0) (C.r a0)) ⊆ ovl A.chart i (C.idx a0)` using `fun w hw => ⟨hw.1, hw.2.1⟩`. Establish `hG : DifferentiableOn ℂ (fun w => A.g la i (C.idx a0) ((A.chart i).symm w) * u a0 ((A.chart (C.idx a0) ∘ (A.chart i).symm) w)) ((A.chart i).target ∩ (A.chart i).symm ⁻¹' ((A.chart (C.idx a0)).source ∩ A.chart (C.idx a0) ⁻¹' ball (C.c a0) (C.r a0)))` using `((A.holo_g la i (C.idx a0)).mono hOovl).mul ((hu a0).comp ((A.holo_trans i (C.idx a0)).mono hOovl) (fun w hw => hw.2.2))`. Establish `hloc : (fun w => A.g la i (C.idx a0) ((A.chart i).symm w) * u a0 ((A.chart (C.idx a0) ∘ (A.chart i).symm) w)) =ᶠ[𝓝 v] ((fun i y => A.g la i (C.idx (α y)) y * u (α y) (A.chart (C.idx (α y)) y)) i ∘ (A.chart i).symm)` using `by filter_upwards [hO.mem_nhds hvO] with w hw`. Establish `hws : (A.chart i).symm w ∈ (A.chart i).source` using `(A.chart i).map_target hw.1`.
+
+Simplify using `only [Function.comp]`. Rewrite using `[hagree (α ((A.chart i).symm w)) a0 _ (hα _) hw.2, ← mul_assoc, ← A.g_cocycle la i _ _ _ hws (hα _).1 hw.2.1]`. Conclude with `((hG.differentiableAt (hO.mem_nhds hvO)).congr_of_eventuallyEq hloc.symm).differentiableWithinAt`. Introduce `i j y _ hi hj`. Simplify using `only`.
+
+Rewrite using `[A.g_cocycle la i j (C.idx (α y)) y hi hj (hα y).1]`. Expand and normalize the polynomial expressions, which then agree. Use `filter_upwards [measure_eq_zero_iff_ae_notMem.mp hM0'] with y hy`. Rewrite using `[hoff _ y (hα y) hy, ← hf _ _ y (A.mem_pick y) (hα y).1]`.
+-/
 theorem main : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y]
     [MeasurableSpace Y] [BorelSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La),
     ∀ (C : Cover A) (la : La) (f : ι → Y → ℂ) (u : Fin C.m → V n → ℂ),

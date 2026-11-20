@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.EtaleCohomology.Good
 noncomputable section
 open IsLocalRing UpperTheory.Et
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `h2 : e * e = e` using `he`. Rewrite using `[pow_succ, ih, pow_succ]`.
+
+Take the linear combination `(((1 + c) ^ n - 1) * c) * h2`.
+-/
 private theorem one_add_mul_idem_pow {S : Type} [CommRing S] {e : S} (he : IsIdempotentElem e)
     (c : S) (n : ℕ) : (1 + c * e) ^ n = 1 + ((1 + c) ^ n - 1) * e := by
   induction n with
@@ -13,6 +18,37 @@ private theorem one_add_mul_idem_pow {S : Type} [CommRing S] {e : S} (he : IsIde
     rw [pow_succ, ih, pow_succ]
     linear_combination (((1 + c) ^ n - 1) * c) * h2
 
+/- English proof (translation)
+Introduce `S _ q _ ζ hζ`. Take `⟨hq1, hunit, hsplit⟩` from `hζ`. Establish `notmem : ∀ (a b : ZMod q) (p : PrimeSpectrum S), a ≠ b → ζ ^ a.val - ζ ^ b.val ∉ p.asIdeal`. Introduce `a b p hab hmem`. Conclude with `p.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hmem (hunit a b hab))`.
+
+Use `⟨fun g => ?_, fun w hw => ?_, fun a b p h => ?_⟩` and prove the remaining obligations. Establish `hfib : ∀ a : ZMod q, ∃ e : S, IsIdempotentElem e ∧ ∀ p : PrimeSpectrum S, (g p = a ↔ e ∉ p.asIdeal)`. Introduce `a`. Take `⟨e, he, hs⟩` from `PrimeSpectrum.isClopen_iff.1 (g.isLocallyConstant.isClopen_fiber a)`. Use `⟨e, he, fun p => ?_⟩` and prove the remaining obligations.
+
+Use `congrArg (p ∈ ·) hs` as an intermediate fact. Simplify `this` using `[PrimeSpectrum.mem_basicOpen]`. Use `choose e he hge using hfib`. Use `⟨∏ a : ZMod q, (1 + (ζ ^ a.val - 1) * e a), ?_, fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_pow]`.
+
+Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Rewrite using `[one_add_mul_idem_pow (he a)]`. Establish `hz : (1 + (ζ ^ a.val - 1)) ^ q = 1`. Rewrite using `[add_sub_cancel, ← pow_mul, mul_comm, pow_mul, hq1, one_pow]`. Rewrite using `[hz, sub_self, zero_mul, add_zero]`.
+
+Establish `h0 : ∀ b, b ≠ g p → Ideal.Quotient.mk p.asIdeal (e b) = 0`. Introduce `b hb`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Assume the negation of the conclusion as `h`. Conclude with `hb ((hge b p).2 h).symm`.
+
+Establish `h1 : Ideal.Quotient.mk p.asIdeal (e (g p)) = 1`. Establish `hn : e (g p) ∉ p.asIdeal` using `(hge (g p) p).1 rfl`. Establish `hm : e (g p) * (1 - e (g p)) ∈ p.asIdeal`. Rewrite using `[mul_sub, mul_one, (he (g p)).eq, sub_self]`. Conclude with `p.asIdeal.zero_mem`.
+
+Establish `h1m : 1 - e (g p) ∈ p.asIdeal` using `(p.isPrime.mem_or_mem hm).resolve_left hn`. Rewrite using `[← sub_eq_zero, ← map_one (Ideal.Quotient.mk p.asIdeal), ← map_sub, Ideal.Quotient.eq_zero_iff_mem]`. Use `p.asIdeal.neg_mem h1m` as an intermediate fact. Simplify using `using this`. Rewrite using `[← Ideal.Quotient.eq, map_prod, Finset.prod_eq_single (g p)]`.
+
+Simplify using `[h1]`. Introduce `b _ hb`. Simplify using `[h0 b hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+
+Establish `hprod : ∏ a ∈ Finset.range q, (w - ζ ^ a) = 0`. Use `hsplit S (RingHom.id S) w` as an intermediate fact. Simplify using `only [RingHom.id_apply, hw, sub_self] at this`. Conclude with `this.symm`. Establish `hex : ∀ p : PrimeSpectrum S, ∃ a : ZMod q, w - ζ ^ a.val ∈ p.asIdeal`.
+
+Introduce `p`. Establish `h0 : ∏ a ∈ Finset.range q, (w - ζ ^ a) ∈ p.asIdeal`. Rewrite using `[hprod]`. Conclude with `p.asIdeal.zero_mem`. Take `⟨a, ha, hmem⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := p.isPrime)).1 h0`.
+
+Use `⟨(a : ZMod q), ?_⟩` and prove the remaining obligations. Rewrite using `[ZMod.val_natCast, Nat.mod_eq_of_lt (Finset.mem_range.1 ha)]` and apply the resulting hypothesis. Use `choose g0 hg0 using hex`. Establish `hiff : ∀ (p : PrimeSpectrum S) (a : ZMod q), g0 p = a ↔ ∀ b, b ≠ a → w - ζ ^ b.val ∉ p.asIdeal`. Introduce `p a`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl b hb hmem`. Apply `notmem b (g0 p) p hb` to reduce the goal to its premises. Establish `e1 : ζ ^ b.val - ζ ^ (g0 p).val = (w - ζ ^ (g0 p).val) - (w - ζ ^ b.val)` using `by ring`. Rewrite using `[e1]`.
+
+Conclude with `p.asIdeal.sub_mem (hg0 p) hmem`. Introduce `h`. Assume the negation of the conclusion as `hne`. Conclude with `h (g0 p) hne (hg0 p)`. Use `⟨⟨g0, ?_⟩, hg0⟩` and prove the remaining obligations.
+
+Rewrite using `[IsLocallyConstant.iff_isOpen_fiber]`. Introduce `a`. Establish `hset : g0 ⁻¹' {a} = ⋂ b : ZMod q, ⋂ (_ : b ≠ a), (PrimeSpectrum.basicOpen (w - ζ ^ b.val) : Set (PrimeSpectrum S))`. Use extensionality with `p`. Simplify using `[hiff, PrimeSpectrum.mem_basicOpen]`.
+
+Rewrite using `[hset]`. Conclude with `isOpen_iInter_of_finite fun b => isOpen_iInter_of_finite fun _ => (PrimeSpectrum.basicOpen _).isOpen`. Assume the negation of the conclusion as `hab`. Conclude with `notmem a b p hab h`.
+-/
 theorem UpperTheory.roots_of_unity_eq_locallyConstant_powers_spectrum :
     ∀ (S : Type) [CommRing S] (q : ℕ) [NeZero q] (ζ : S), GoodRoot q ζ →
       (∀ g : LocallyConstant (PrimeSpectrum S) (ZMod q), ∃ w : S, w ^ q = 1 ∧ ∀ p : PrimeSpectrum S, w - ζ ^ (g p).val ∈ p.asIdeal) ∧

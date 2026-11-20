@@ -18,6 +18,13 @@ namespace GlobalTheory.FinPl.SplitHalves
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Apply `GlobalTheory.FinPlLoc.eq_zero_of_comp` to reduce the goal to its premises. Rewrite using `[map_sub, map_sum]`. Simplify using `only [GlobalTheory.FinPlLoc.idem, GlobalTheory.FinPlLoc.infPart_pair, Finset.sum_const_zero, sub_zero]`. Introduce `w`.
+
+Rewrite using `[map_sub, map_sum]`. Simplify using `only [GlobalTheory.FinPlLoc.compAt_idem]`. Distinguish the cases in `hw : P w`. Take `⟨j, rfl⟩` from `(hP.mem w).1 hw`. Rewrite using `[Finset.sum_eq_single j (fun i _ hij => if_neg (fun h => hij (hP.inj h.symm))) (fun hj => absurd (List.mem_toFinset.2 (hP.all j)) hj), if_pos rfl, if_pos hw, sub_self]`.
+
+Rewrite using `[Finset.sum_eq_zero (fun i _ => if_neg (fun h => hw ((hP.mem w).2 ⟨i, h⟩))), if_neg hw, sub_self]`.
+-/
 theorem sum_idem {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {ι : Type}
     {p : ι → SplitPt D k} {I : List ι} {P : Pl D → Prop} [DecidableEq ι] (hP : Places p I P) :
     ∑ i ∈ I.toFinset, GlobalTheory.FinPlLoc.idem D (· = (p i).v) = GlobalTheory.FinPlLoc.idem D P := by
@@ -35,6 +42,19 @@ theorem sum_idem {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsN
         (fun hj => absurd (List.mem_toFinset.2 (hP.all j)) hj), if_pos rfl, if_pos hw, sub_self]
     · rw [Finset.sum_eq_zero (fun i _ => if_neg (fun h => hw ((hP.mem w).2 ⟨i, h⟩))), if_neg hw, sub_self]
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ ι p I P hP a`. Establish `hsec1 : ∀ i, (p i).sec 1 ∈ intAt D (· = (p i).v)` using `fun i => by`. Simplify using `using (GlobalTheory.Core.Mi.LatMatch.mul_sec_mem_intAt_iff (p i) 1 1).2 (by simp)`. Establish `hcsec1 : ∀ i, cA D ((p i).sec 1) ∈ intAt D (· = (p i).v)` using `fun i => by`. Simplify using `using (GlobalTheory.Core.Mi.LatMatch.mul_cA_sec_mem_intAt_iff (p i) 1 1).2 (by simp)`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hr` using `(GlobalTheory.IwaIdeals.mem_intAt_iff.1 h).2`. Use `⟨h.1, fun i => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `h1 : a * (p i).sec 1 ∈ intAt D (· = (p i).v)` using `GlobalTheory.IwaIdeals.mem_intAt_iff.2 ⟨Ideal.mul_mem_left _ _ (GlobalTheory.FinPl.FrameLat.sec_mem_idAt _ _), mul_mem hr (GlobalTheory.IwaIdeals.mem_intAt_iff.1 (hsec1 i)).2⟩`.
+
+Simplify using `using (GlobalTheory.Core.Mi.LatMatch.mul_sec_mem_intAt_iff (p i) a 1).1 h1`. Establish `h1 : a * cA D ((p i).sec 1) ∈ intAt D (· = (p i).v)` using `GlobalTheory.IwaIdeals.mem_intAt_iff.2 ⟨Ideal.mul_mem_left _ _ (GlobalTheory.FinPl.FrameLat.csec_mem_idAt (p := p i) 1), mul_mem hr (GlobalTheory.IwaIdeals.mem_intAt_iff.1 (hcsec1 i)).2⟩`. Simplify using `using (GlobalTheory.Core.Mi.LatMatch.mul_cA_sec_mem_intAt_iff (p i) a 1).1 h1`. Introduce and unpack `⟨hid, hh⟩`. Use `⟨hid, ?_⟩` and prove the remaining obligations.
+
+Establish `ha : a = ∑ i ∈ I.toFinset, (a * (p i).sec 1 + a * cA D ((p i).sec 1))` using `by conv_lhs => rw [← (GlobalTheory.FinPlLoc.mem_idAt_iff P a).1 hid, ← sum_idem hP, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `set ε := GlobalTheory.FinPlLoc.idem D (· = (p i).v)`. Establish `h1 : ε * a ∈ idAt D (· = (p i).v)` using `Ideal.mul_mem_right _ _ (GlobalTheory.FinPlLoc.idem_mem_idAt _)`. Establish `h2` using `(GlobalTheory.FinPl.FrameLat.idem_iff (p i) _).1 h1`.
+
+Establish `he : ε * (p i).sec 1 = (p i).sec 1` using `(GlobalTheory.FinPlLoc.mem_idAt_iff _ _).1 (GlobalTheory.FinPl.FrameLat.sec_mem_idAt _ _)`. Establish `hce : ε * cA D ((p i).sec 1) = cA D ((p i).sec 1)` using `(GlobalTheory.FinPlLoc.mem_idAt_iff _ _).1 (GlobalTheory.FinPl.FrameLat.csec_mem_idAt (p := p i) 1)`. Rewrite `he`, `hce`, the goal using `[GlobalTheory.FinPl.FrameLat.sec_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_mul, mul_left_comm, ← mul_assoc, mul_left_comm (cA D (p i).e), ← mul_assoc]`.
+
+Use `_ = a * (p i).e + a * cA D (p i).e := by rw [he, hce, mul_comm (p i).e, mul_comm (cA D (p i).e)]`. Rewrite using `[ha, map_sum]`. Use `AddSubgroup.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_add]`. Conclude with `add_mem ((GlobalTheory.Core.Mi.LatMatch.mul_sec_mem_intAt_iff (p i) a 1).2 (by simpa using (hh i).1)).2 ((GlobalTheory.Core.Mi.LatMatch.mul_cA_sec_mem_intAt_iff (p i) a 1).2 (by simpa using (hh i).2)).2`.
+-/
 theorem mem_intAt_iff_halves : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (p : ι → SplitPt D k) (I : List ι) (P : Pl D → Prop), Places p I P → ∀ a : AE D, a ∈ intAt D P ↔ a ∈ idAt D P ∧ ∀ i, (p i).pr a ∈ 𝒪[k] ∧ (p i).pr (cA D a) ∈ 𝒪[k] := by
   intro D k _ _ _ _ ι p I P hP a
   classical

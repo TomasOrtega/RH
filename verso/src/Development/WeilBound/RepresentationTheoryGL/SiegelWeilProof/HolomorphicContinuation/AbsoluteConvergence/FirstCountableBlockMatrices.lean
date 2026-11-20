@@ -10,6 +10,9 @@ namespace PositivityTheory.Rg.Sw.AbsSt.BasisPf
 
 open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.AbsSt
 
+/- English proof (translation)
+Introduce `m n ε c t p q e sL ρ hL Q Q' hQ y`. Take `⟨pp, k, hp, hk, rfl⟩` from `hI n y`. Rewrite using `[hL.law Q pp k hp, hL.law Q' pp k hp, hQ k hk]`.
+-/
 theorem flatEq_of (hI : Iwa) : FlatEq := by
   intro m n ε c t p q e sL ρ hL Q Q' hQ y
   obtain ⟨pp, k, hp, hk, rfl⟩ := hI n y
@@ -22,9 +25,19 @@ def secK (sL : PX m n →ₗ[ℂ] (GR n → ℂ)) (hc : ∀ Q, Continuous (sL Q)
   map_add' Q Q' := by ext k; simp
   map_smul' a Q := by ext k; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem secK_apply (sL : PX m n →ₗ[ℂ] (GR n → ℂ)) (hc : ∀ Q, Continuous (sL Q)) (Q : PX m n) (k : KR n) :
     secK sL hc Q k = sL Q (k : GR n) := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `u v h`. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg (fun k : KR n => ((k : GR n) : GL (Fin n ⊕ Fin n) ℂ).1) h` as an intermediate fact. Conclude with `this`.
+
+Introduce `k`. Use `⟨⟨mR (k : GR n), ⟨k.2.2, k.2.1⟩⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+
+Both sides reduce to the same expression.
+-/
 theorem bij_toK : Function.Bijective (toK (n := n)) := by
   constructor
   · intro u v h
@@ -51,6 +64,9 @@ section Op
 
 variable [MeasurableSpace (KR n)] [BorelSpace (KR n)] (ν : Measure (KR n)) [IsFiniteMeasure ν]
 
+/- English proof (translation)
+The claim follows from `integrableOn_univ.1 (hf.continuousOn.integrableOn_compact isCompact_univ)`.
+-/
 theorem integrable_of_cont {f : KR n → ℂ} (hf : Continuous f) : Integrable f ν :=
   integrableOn_univ.1 (hf.continuousOn.integrableOn_compact isCompact_univ)
 
@@ -64,6 +80,9 @@ def piFun (κ : C(KR n, ℂ)) (h : C(KR n, ℂ)) : C(KR n, ℂ) :=
       exact mul_le_mul (κ.norm_coe_le_norm k) (h.norm_coe_le_norm _) (norm_nonneg _) (norm_nonneg _)
     exact continuous_const.mul (h.continuous.comp (continuous_id.mul continuous_const))⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piFun_apply (κ h : C(KR n, ℂ)) (k' : KR n) : piFun ν κ h k' = ∫ k, κ k * h (k' * k) ∂ν := rfl
 
 def piL (κ : C(KR n, ℂ)) : C(KR n, ℂ) →L[ℂ] C(KR n, ℂ) :=
@@ -88,6 +107,9 @@ def piL (κ : C(KR n, ℂ)) : C(KR n, ℂ) →L[ℂ] C(KR n, ℂ) :=
             exact mul_le_mul (κ.norm_coe_le_norm k) (h.norm_coe_le_norm _) (norm_nonneg _) (norm_nonneg _)
         _ = ‖κ‖ * ν.real univ * ‖h‖ := by ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piL_apply (κ h : C(KR n, ℂ)) (k' : KR n) : piL ν κ h k' = ∫ k, κ k * h (k' * k) ∂ν := rfl
 
 end Op

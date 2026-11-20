@@ -9,6 +9,15 @@ open scoped Formalism.Per
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K _ _ f hf hc`. Establish `hc0 : constantCoeff f ≠ 0`. Introduce `h`. Rewrite `hc` using `[h, norm_zero]`. Conclude with `zero_ne_one hc`.
+
+Use `⟨f⁻¹, ?_, PowerSeries.mul_inv_cancel f hc0⟩` and prove the remaining obligations. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Rewrite using `[PowerSeries.coeff_inv]`.
+
+Use `split_ifs with hn`. Rewrite using `[norm_inv, hc, inv_one]`. Rewrite using `[norm_mul, norm_neg, norm_inv, hc, inv_one, one_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun x hx => ?_` and prove the remaining obligations. Use `split_ifs with hlt`.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hf _) (norm_nonneg _) (ih _ hlt)`. Rewrite using `[norm_zero]`. Conclude with `zero_le_one`.
+-/
 theorem powerSeries_inv_coeff_norm_le_one :
     ∀ (K : Type) [NormedField K] [IsUltrametricDist K] (f : K⟦X⟧), (∀ n, ‖coeff n f‖ ≤ 1) →
       ‖constantCoeff f‖ = 1 → ∃ g : K⟦X⟧, (∀ n, ‖coeff n g‖ ≤ 1) ∧ f * g = 1 := by

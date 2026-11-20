@@ -14,6 +14,17 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open ReciprocityTheory.ChartRestriction.T2 (PadicCoeff FracTop IsFGTop cupFG IsCycOn)
 
 set_option maxHeartbeats 8000000 in
+/- English proof (translation)
+Introduce `ℓ _ O _ _ _ _ _ _ _ _ _ X X' T T' Z p q b h1 h2 d _ _ R' _ _ _ _ _ hdet Tc _ _ _ _ Ek Ω _ _ _ _ _ r χ E e₁ δ ι _ _ colIdx hinj Aw pl Av j e' hE2 he1 π' ρπ hρπ t ht bl hbl ρk hsurj hblk _ _ _ _ hcard1 sE tE δO what₂ qs s H0 Sha uT wT sT mT dT UT hEsum hF cols eO cB vδ N h0 c1 L _ …`. Establish `hrow : ∀ w ∈ cols, conj w ∈ what₂` using `fun w hw => hrows ▸ Finset.mem_image_of_mem conj hw`. Take `⟨f1, f2, f3, f4, f6, f7, f8, f9, f11⟩` from `hFix`. Establish `hres : ∀ (c : Fin (t + 1)) (w : ℕ), lcH1 (uRep O (M` using `blockRestrictedRepresentationType bl ρk c) r χ) ≤ (lcH1 (resRep (uRep O (M := blockRestrictedRepresentationType bl ρk c) r χ) (decs Ek Aw w))).comap (resH1 (uRep O (M := blockRestrictedRepresentationType bl ρk c) r χ) (decs Ek Aw w)) := fun c w => resLC O _ _ (uRep O (M := blockR …`. Establish `hFix' : InRhoFixReal (blockRestrictedRepresentationType bl ρk 0) r χ E e₁ colIdx (decs Ek Aw) j what₂ s tens v₁ κ iL qV Ff κz (lcH1 (uRep O (M` using `blockRestrictedRepresentationType bl ρk 0) r χ)) (F 0) Io ε ρ₁ ρ₂ inc π γ lam Dat uD huD vD Fs Im := by`.
+
+Use `⟨f1, f2, f3, f4, fun w hw => ?_, f6, f7, f8, f9, fun w hw => ?_, f11⟩` and prove the remaining obligations. Rewrite using `[kRowRange O (VT w) (VT' w) _ (Dat w) _ _ (uD w) (huD w) (hRows w hw).2.2.2.1.openT]`. Conclude with `hres 0 w`. Conclude with `inRowReal_of ℓ r χ E (decs Ek Aw w) ρ₁ inc π (Dat w) (vD w) (hπD w) (heD w) (Fs w) (Hf₁ w) hO hA hinc (hur.comp continuous_subtype_val) (hRows w hw).2.2.2.2.2.2.2.2.2`. Establish `hRows' : ∀ w ∈ what₂, (Aw w).valuation (ℓ : Ω) < 1 ∧ IsPlaceOver (Aw w) (pl w) ∧ (∀ g : decs Ek Aw w, (Dat w).ε g = ε g) ∧ RealLat (Dat w) ∧ (∀ (g : decs Ek Aw w) t, vD w (ρ₂ g t) = (Dat w).ρTl' g (vD w t)) ∧ (∀ t m, γ t m = pairKO (Dat w).bT (Dat w).T (uD w m) (vD w t)) ∧ (∀ a, …`.
+
+Introduce `w hw`. Take `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, -⟩` from `hRows w hw`. Conclude with `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9⟩`. Use `realization_basic_form ℓ O X X' T T' Z p q b h1 h2 d R' hdet Tc Ek Ω r χ E e₁ δ ι colIdx hinj Aw pl Av j e' hE2 he1 π' ρπ hρπ t ht bl hbl ρk hsurj hblk hcard1 sE tE δO what₂ qs s H0 Sha uT wT sT mT dT UT hEsum hF L tens v₁ κ V iL qV Ff κz (fun c => lcH1 (uRep O (M := blockRestric …` and prove the remaining obligations. Introduce `c hc`.
+
+Take `⟨g1, g2, g3, g4, g5, ⟨i1, i3, i4⟩, i5⟩` from `hC c hc`. Conclude with `⟨g1, g2, g3, g4, g5, i1, fun w _ => hres c w, i3, i4, i5⟩`. Take `⟨o1, o2, o3, o4, o5, o6, o7, ⟨i1, i3, i4⟩, o10⟩` from `hOne`. Use `⟨o1, o2, o3, o4, o5, o6, o7, ⟨i1, fun w _ => hres c1 w, i3, i4⟩, ?_, o10⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`.
+
+Conclude with `⟨c, rfl, hc⟩`. Introduce `w hw`. Conclude with `classMapReal O (VT (conj w)) (VT' (conj w)) _ (Dat (conj w)) T₂ (resRep ρ₂ (decs Ek Aw (conj w))) (vD (conj w)) (hRows' _ (hrow w hw)).2.2.2.2.1 (Fs (conj w))`. Introduce `w hw a ha`. Conclude with `clsVReal O (VT (conj w)) (VT' (conj w)) _ (Dat (conj w)) T₂ V₂ (resRep ρV (decs Ek Aw (conj w))) iV (vD (conj w)) (wD (conj w)) (hwD w hw).1 (hwD w hw).2 a ha`.
+-/
 theorem realization_second_form : StatReal2F := by
   intro ℓ _ O _ _ _ _ _ _ _ _ _ X X' T T' Z p q b h1 h2 d _ _ R' _ _ _ _ _ hdet Tc _ _ _ _ Ek Ω _ _ _ _ _
     r χ E e₁ δ ι _ _ colIdx hinj

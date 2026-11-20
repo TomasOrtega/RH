@@ -11,6 +11,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Chain.RealLineKFin
 
+/- English proof (translation)
+Establish `hclosed : IsClosed {x : H | ⟪v - w, x⟫_ℂ = 0}` using `isClosed_eq (continuous_const.inner continuous_id) continuous_const`. Establish `hsub : (E : Set H) ⊆ {x : H | ⟪v - w, x⟫_ℂ = 0}`. Introduce `x hx`. Simplify using `only [Set.mem_ofPred_eq, inner_sub_left, h ⟨x, hx⟩, sub_self]`. Establish `hall` using `closure_minimal hsub hclosed`.
+
+Rewrite `hall` using `[hE.closure_eq]`. Establish `hz : ⟪v - w, v - w⟫_ℂ = 0` using `hall (Set.mem_univ _)`. Conclude with `sub_eq_zero.mp (inner_self_eq_zero.mp hz)`.
+-/
 private theorem eq_of_inner_eq_on_dense {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {E : Submodule ℂ H} (hE : Dense (E : Set H)) {v w : H}
     (h : ∀ y : E, ⟪v, (y : H)⟫_ℂ = ⟪w, (y : H)⟫_ℂ) : v = w := by
@@ -24,6 +29,15 @@ private theorem eq_of_inner_eq_on_dense {H : Type} [NormedAddCommGroup H] [Inner
   have hz : ⟪v - w, v - w⟫_ℂ = 0 := hall (Set.mem_univ _)
   exact sub_eq_zero.mp (inner_self_eq_zero.mp hz)
 
+/- English proof (translation)
+Establish `hrep : ∀ φ, ∃ v : H, ∀ y : E, F φ y = ⟪v, (y : H)⟫_ℂ`. Introduce `φ`. Take `⟨c, hc⟩` from `hF φ`. Establish `hden : DenseRange (E.subtype : E →ₗ[ℂ] H)`. Simplify using `using hE.denseRange_val`.
+
+Set `g : H →L[ℂ] ℂ` to `(F φ).extendOfNorm E.subtype`. Use `⟨(InnerProductSpace.toDual ℂ H).symm g, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[InnerProductSpace.toDual_symm_apply]`. Use `LinearMap.extendOfNorm_eq (f := F φ) hden ⟨c, fun y => by simpa using hc y⟩ y` as an intermediate fact. Simplify `this.symm` using `[g]`.
+
+Use `choose v hv using hrep`. Use `⟨{ toFun := v, map_add' := ?_, map_smul' := ?_ }, hv⟩` and prove the remaining obligations. Introduce `φ ψ`. Use `eq_of_inner_eq_on_dense hE fun y => ?_` and prove the remaining obligations. Rewrite using `[← hv, inner_add_left, ← hv, ← hv, map_add, LinearMap.add_apply]`.
+
+Introduce `c φ`. Use `eq_of_inner_eq_on_dense hE fun y => ?_` and prove the remaining obligations. Rewrite using `[← hv, inner_smul_left, ← hv, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_riesz {H P : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     [AddCommGroup P] [Module ℂ P] {E : Submodule ℂ H} (hE : Dense (E : Set H)) (F : P →ₗ[ℂ] E →ₗ[ℂ] ℂ)
     (hF : ∀ φ, ∃ c : ℝ, ∀ y : E, ‖F φ y‖ ≤ c * ‖(y : H)‖) :
@@ -48,6 +62,9 @@ theorem exists_riesz {H P : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ 
     rw [← hv, inner_smul_left, ← hv, map_smul, LinearMap.smul_apply, smul_eq_mul]
     simp
 
+/- English proof (translation)
+Establish `hT : (T : Submodule ℂ P).FG` using `Module.Finite.iff_fg.mp inferInstance`. Conclude with `Module.Finite.iff_fg.mpr (hT.map b)`.
+-/
 theorem finite_map {H P : Type} [AddCommGroup H] [Module ℂ H] [AddCommGroup P] [Module ℂ P]
     (b : P →ₛₗ[starRingEnd ℂ] H) (T : Submodule ℂ P) [FiniteDimensional ℂ T] : FiniteDimensional ℂ (T.map b) := by
   have hT : (T : Submodule ℂ P).FG := Module.Finite.iff_fg.mp inferInstance
@@ -55,11 +72,22 @@ theorem finite_map {H P : Type} [AddCommGroup H] [Module ℂ H] [AddCommGroup P]
 
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span (GlobalTheory.ConjExt.smooth_translate M τ ⟨y, hy⟩ hg)`.
+-/
 theorem sm_stable (M : DSModel V S) (τ : D.what₂.Tau) {g : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hg : g ∈ Formalism.MainNotions.S.UJset (M.ε τ)) {y : M.H τ} (hy : y ∈ M.sm τ) : M.σ τ g y ∈ M.sm τ := Submodule.subset_span (GlobalTheory.ConjExt.smooth_translate M τ ⟨y, hy⟩ hg)
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LowTypeDetermined.dense_of_irred (M.ds τ).2.2.2.1 (fun _ hg _ hy => sm_stable M τ hg hy) (GlobalTheory.GardingVec.sm_ne_bot D V S M τ)`.
+-/
 theorem dense_sm (M : DSModel V S) (τ : D.what₂.Tau) : Dense (M.sm τ : Set (M.H τ)) := GlobalTheory.LowTypeDetermined.dense_of_irred (M.ds τ).2.2.2.1 (fun _ hg _ hy => sm_stable M τ hg hy) (GlobalTheory.GardingVec.sm_ne_bot D V S M τ)
 
+/- English proof (translation)
+Take `⟨hu, hc⟩` from `hk`. Use `⟨Matrix.mem_unitaryGroup_iff.mpr (by rw [star_star]; exact Matrix.mem_unitaryGroup_iff'.mp hu), ?_⟩` and prove the remaining obligations. Establish `hJ : star (Formalism.REAL.Jm ε) = Formalism.REAL.Jm ε`. Rewrite using `[Matrix.star_eq_conjTranspose]`. Conclude with `Formalism.REAL.Jm_conjTranspose ε`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem kset_star {n : ℕ} {ε : Fin n → Bool} {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Formalism.REAL.Kset ε) :
     star k ∈ Formalism.REAL.Kset ε := by
   obtain ⟨hu, hc⟩ := hk
@@ -70,6 +98,9 @@ theorem kset_star {n : ℕ} {ε : Fin n → Bool} {k : Matrix (Fin n) (Fin n) �
     _ = star (k * Formalism.REAL.Jm ε) := by rw [hc]
     _ = Formalism.REAL.Jm ε * star k := by rw [star_mul, hJ]
 
+/- English proof (translation)
+Take `⟨hu, hc⟩` from `hk`. Establish `hkk : star k * k = 1` using `Matrix.mem_unitaryGroup_iff'.mp hu`. Simplify using `only [Formalism.MainNotions.S.UJset, Set.mem_ofPred_eq, Formalism.REAL.inUJ]`. Rewrite using `[← Matrix.star_eq_conjTranspose, Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, hkk, Matrix.one_mul]`.
+-/
 private theorem mem_UJset_of_mem_Kset_twisted_operators {n : ℕ} {ε : Fin n → Bool} {k : Matrix (Fin n) (Fin n) ℂ}
     (hk : k ∈ Formalism.REAL.Kset ε) : k ∈ Formalism.MainNotions.S.UJset ε := by
   obtain ⟨hu, hc⟩ := hk
@@ -77,6 +108,9 @@ private theorem mem_UJset_of_mem_Kset_twisted_operators {n : ℕ} {ε : Fin n �
   simp only [Formalism.MainNotions.S.UJset, Set.mem_ofPred_eq, Formalism.REAL.inUJ]
   rw [← Matrix.star_eq_conjTranspose, Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, hkk, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `hks1 : k * star k = 1` using `Matrix.mem_unitaryGroup_iff.mp hk.1`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hσ.1.2 k (mem_UJset_of_mem_Kset_twisted_operators hk) (star k) (mem_UJset_of_mem_Kset_twisted_operators (kset_star hk)), hks1, hσ.1.1]`. Both sides reduce to the same expression.
+-/
 private theorem subst_subst_eq_of_subst_eq_X {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ)
     {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Formalism.REAL.Kset ε) (y : H) : σ k (σ (star k) y) = y := by
@@ -85,6 +119,9 @@ private theorem subst_subst_eq_of_subst_eq_X {n : ℕ} {ε : Fin n → Bool} {H 
     hks1, hσ.1.1]
   rfl
 
+/- English proof (translation)
+Set `L : H →ₗᵢ[ℂ] H` to `⟨(σ k).toLinearMap, hσ.2.1 k (mem_UJset_of_mem_Kset_twisted_operators hk)⟩`. Use `conv_lhs => rw [← subst_subst_eq_of_subst_eq_X hσ hk y]`. Conclude with `L.inner_map_map x (σ (star k) y)`.
+-/
 private theorem inner_urep_apply_eq_inner_star_of_mem_Kset {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ)
     {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Formalism.REAL.Kset ε) (x y : H) :
@@ -93,6 +130,19 @@ private theorem inner_urep_apply_eq_inner_star_of_mem_Kset {n : ℕ} {ε : Fin n
   conv_lhs => rw [← subst_subst_eq_of_subst_eq_X hσ hk y]
   exact L.inner_map_map x (σ (star k) y)
 
+/- English proof (translation)
+Introduce `D V W S S' M M' τ aS aT A hA`. Establish `: CompleteSpace (M'.H τ)` using `(M'.ds τ).1`. Use `⟨fun φ y => ?_, fun φ u => ?_⟩` and prove the remaining obligations. Use `⟨(MvPolynomial.restrictTotalDegree _ ℂ φ.totalDegree).map (A.flip y), ?_, ⟨φ, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `Module.Finite.iff_fg.mpr ((Module.Finite.iff_fg.mp inferInstance).map _)`.
+
+Conclude with `(MvPolynomial.mem_restrictTotalDegree _ _ _).mpr le_rfl`. Introduce `g hg v hv`. Take `⟨ψ, hψ, rfl⟩` from `hv`. Take `⟨ψ', hdeg, heq⟩` from `hA.eqK g hg ψ`. Use `⟨ψ', (MvPolynomial.mem_restrictTotalDegree _ _ _).mpr (hdeg.trans ((MvPolynomial.mem_restrictTotalDegree _ _ _).mp hψ)), ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [LinearMap.flip_apply, heq y]`. Set `F : PolF D W.rank V.rank →ₗ[ℂ] M'.sm τ →ₗ[ℂ] ℂ` to `A.compr₂ (innerSL ℂ u).toLinearMap`. Establish `hFapp : ∀ ψ y, F ψ y = ⟪u, A ψ y⟫_ℂ` using `fun ψ y => by simp [F]`. Take `⟨b, hb⟩` from `exists_riesz (dense_sm M' τ) F fun ψ => by`. Take `⟨c, hc⟩` from `hA.bdd ψ u`.
+
+Conclude with `⟨c, fun y => by rw [hFapp]; exact hc y⟩`. Establish `hσ` using `(M'.ds τ).2.2.1`. Set `T : Submodule ℂ (PolF D W.rank V.rank)` to `MvPolynomial.restrictTotalDegree _ ℂ φ.totalDegree`. Use `⟨b φ, ⟨T.map b, finite_map b T, ⟨φ, (MvPolynomial.mem_restrictTotalDegree _ _ _).mpr le_rfl, rfl⟩, ?_⟩, fun y => by rw [← hFapp, hb]⟩` and prove the remaining obligations. Introduce `k hk v hv`.
+
+Take `⟨ψ, hψ, rfl⟩` from `hv`. Take `⟨ψ', hdeg, heq⟩` from `hA.invK k hk ψ`. Establish `key : M'.σ τ k (b ψ) = b ψ'`. Use `eq_of_inner_eq_on_dense (dense_sm M' τ) fun y => ?_` and prove the remaining obligations. Establish `hmem : M'.σ τ (star k) y ∈ M'.sm τ` using `sm_stable M' τ (mem_UJset_of_mem_Kset_twisted_operators (kset_star hk)) y.2`.
+
+Rewrite using `[inner_urep_apply_eq_inner_star_of_mem_Kset hσ hk]`. Establish `e1 : F ψ ⟨_, hmem⟩ = ⟪b ψ, M'.σ τ (star k) y⟫_ℂ` using `hb ψ ⟨_, hmem⟩`. Rewrite using `[← e1, ← hb ψ' y, hFapp, hFapp, heq ⟨_, hmem⟩ y (subst_subst_eq_of_subst_eq_X hσ hk y).symm]`. Rewrite using `[key]`. Conclude with `⟨ψ', (MvPolynomial.mem_restrictTotalDegree _ _ _).mpr (hdeg.trans ((MvPolynomial.mem_restrictTotalDegree _ _ _).mp hψ)), rfl⟩`.
+-/
 theorem kfin : ∀ (D : D7) (V W : HSp D) (S S' : D.what₂.Tau → SPar) (M : DSModel V S) (M' : DSModel W S') (τ : D.what₂.Tau) (aS aT : ℚ) (A : PolF D W.rank V.rank →ₗ[ℂ] M'.sm τ →ₗ[ℂ] M.H τ), SemiW M M' τ aS aT A → (∀ φ y, Formalism.MainNotions.S.IsKFin (M.ε τ) (M.σ τ) (A φ y)) ∧ ∀ φ u, ∃ b : M'.H τ, Formalism.MainNotions.S.IsKFin (M'.ε τ) (M'.σ τ) b ∧ ∀ y : M'.sm τ, ⟪u, A φ y⟫_ℂ = ⟪b, (y : M'.H τ)⟫_ℂ := by
   intro D V W S S' M M' τ aS aT A hA
   have : CompleteSpace (M'.H τ) := (M'.ds τ).1

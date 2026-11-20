@@ -8,6 +8,23 @@ namespace Formalism.RepresentationBoundsCohomology.JN
 
 open Formalism.CoboundaryTransfers Formalism.RepresentationBoundsCohomology.N1 Formalism.RepresentationBoundsCohomology.N2
 
+/- English proof (translation)
+Introduce `ℓ _ A _ _ S hℓ`. Take `⟨-, h2, h3⟩` from `base_wach_holds ℤ_[ℓ] A S`. Take `⟨⟨tX, hX⟩, ⟨tQ, hQ⟩, -, -, -, -⟩` from `base_facts_holds ℤ_[ℓ] A S`. Establish `hs0 : S.s ≠ 0` using `by have := S.hs; omega`. Establish `hu1 : S.u - 1 = (ℓ : ℤ_[ℓ]) ^ S.s * S.c₀` using `by simp [HidaSetting.u, hℓ]`.
+
+Use `⟨hℓ, S.φ_X, h2, h3, S.hs, fun h => S.hs2 (hℓ.trans h), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : IsUnit (S.u + -((ℓ : ℤ_[ℓ]) ^ S.s * S.c₀))`. Rewrite using `[← hu1]`. Simplify using the standard rewrite rules. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add h1 with h | h` into its components or cases.
+
+Conclude with `h`. It suffices to derive a contradiction. Establish `h' : IsUnit ((ℓ : ℤ_[ℓ]) ^ S.s * S.c₀)` using `by simpa using h`. Establish `h''` using `isUnit_of_mul_isUnit_left h'`. Conclude with `PadicInt.prime_p.not_isUnit ((isUnit_pow_iff hs0).1 h'')`.
+
+Introduce `hc`. Rewrite using `[hu1, PadicInt.valuation_p_pow_mul _ _ hc.ne_zero]`. Take `⟨d, hd⟩` from `hc.exists_right_inv`. Establish `hd0 : d ≠ 0` using `by rintro rfl; simp at hd`. Use `PadicInt.valuation_mul hc.ne_zero hd0` as an intermediate fact.
+
+Rewrite `this` using `[hd, PadicInt.valuation_one]`. Use linear arithmetic over natural numbers and integers. Use `show S.Q ∈ mI S`. Rewrite using `[hQ, hX]`. Use `(mI S).add_mem (Ideal.subset_span (by simp)) ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc]`. Conclude with `(mI S).mul_mem_right _ (Ideal.subset_span (by simp))`. Introduce `a ha show S.φ a ∈ mI S`. Establish `: mI S ≤ (mI S).comap (S.φ : A →+* A)`. Unfold `mI`.
+
+Rewrite using `[Ideal.span_le]`. Introduce and unpack `x (rfl | rfl)`. Use `show (S.φ : A →+* A) (S.ℓ : A) ∈ Ideal.span {(S.ℓ : A), S.π}`. Rewrite using `[map_natCast]`. Conclude with `Ideal.subset_span (by simp)`.
+
+Use `show S.φ S.π ∈ Ideal.span {(S.ℓ : A), S.π}`. Rewrite using `[S.φπ, HidaSetting.one_add_pow_sub_one]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span (by simp))`. Conclude with `this ha`.
+-/
 theorem base_case_b : StatBaseB := by
   intro ℓ _ A _ _ S hℓ
   obtain ⟨-, h2, h3⟩ := base_wach_holds ℤ_[ℓ] A S
@@ -49,6 +66,19 @@ theorem base_case_b : StatBaseB := by
         exact Ideal.mul_mem_right _ _ (Ideal.subset_span (by simp))
     exact this ha
 
+/- English proof (translation)
+Introduce `ℓ _ A _ _ S ι pr D _ _ _ _ W M₀ V hℓ hV`. Take `⟨hN, hφ, hγ⟩` from `hV`. Establish `hmem : ∀ x, x ∈ V.N ↔ ∀ i, x i ∈ W.N i`. Introduce `x`. Rewrite using `[hN]`.
+
+Simplify using `[Submodule.mem_pi]`. Establish `hl : ∀ d : D, (ℓ : ℤ_[ℓ]) • d = (S.ℓ : A) • d`. Introduce `d`. Rewrite using `[hℓ, ← algebraMap_smul A (ℓ : ℤ_[ℓ]) d, map_natCast]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨-, -, hsat, -⟩ n hn ⟨m, hm, h⟩ choose m' hm' using fun i => W.Q_bij.2 (m i)`. Establish `hn' : ∀ i, n i = (ℓ : ℤ_[ℓ]) • m' i`. Introduce `i`. Apply `W.Q_bij.1` to reduce the goal to its premises. Use `show S.Q • n i = S.Q • ((ℓ : ℤ_[ℓ]) • m' i)`.
+
+Establish `h1 : S.Q • m' i = m i` using `hm' i`. Rewrite using `[smul_comm, h1]`. Conclude with `congrFun h i`. Use `⟨m', (hmem _).2 fun i => hsat i _ ?_, funext hn'⟩` and prove the remaining obligations. Rewrite using `[← hl, ← hn']`.
+
+Conclude with `(hmem _).1 hn i`. Introduce `hreg n hn ⟨m, hm, h⟩ choose m' hm' hm'' using fun i => hreg i (n i) ((hmem _).1 hn i) ⟨m i, (hmem _).1 hm i, congrFun h i⟩`. Conclude with `⟨m', (hmem _).2 hm', funext hm''⟩`. Introduce `h x hx`. Use function extensionality and compare the values at `i`.
+
+Conclude with `h _ (congrFun hx i)`.
+-/
 theorem wach_lattice_holds : StatLattice := by
   intro ℓ _ A _ _ S ι pr D _ _ _ _ W M₀ V hℓ hV
   obtain ⟨hN, hφ, hγ⟩ := hV
@@ -77,6 +107,17 @@ theorem wach_lattice_holds : StatLattice := by
     funext i
     exact h _ (congrFun hx i)
 
+/- English proof (translation)
+Introduce `ℓ _ A _ _ S ι pr D _ _ _ _ W M₀ V R P ρ κ _ _ _ _ _ _ _ L u jumps hRad hV hH hT hj y hy`. Take `⟨hN, hφ, hγ⟩` from `hV`. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9⟩` from `hH`. Establish `hGQ` using `(base_wach_holds ℤ_[ℓ] A S).2.2 hRad`. Establish `hmem : ∀ x, x ∈ V.N ↔ ∀ i, x i ∈ W.N i`.
+
+Introduce `x`. Rewrite using `[hN]`. Simplify using `[Submodule.mem_pi]`. Set `loc' : ρ → (ι → D) →ₗ[ℤ_[ℓ]] P` to `fun x => (L.loc x).comp (LinearMap.proj (L.lt x))`. Use `consequence_two_top ℤ_[ℓ] A R S.base M₀ (ι → D) P V u M₀ (eigSet jumps M₀) ρ κ L.t L.γR L.locA loc' L.γl L.n L.a hGQ h1 h2 h3 h4 ?_ ?_ h7 ?_ h9 ?_ ?_ y hy` and prove the remaining obligations.
+
+Introduce and unpack `x b d ⟨k, hk⟩`. Conclude with `h5 x b (d (L.lt x)) ⟨k, (hmem _).1 hk _⟩`. Introduce and unpack `x d ⟨k, hk⟩ show L.loc x (V.γ d (L.lt x)) = _`. Rewrite using `[hγ]`. Conclude with `h6 x (d (L.lt x)) ⟨k, (hmem _).1 hk _⟩`.
+
+Introduce `x d hd`. Conclude with `h8 x _ ((hmem d).1 hd _)`. Introduce and unpack `d ⟨k, hk⟩ hall`. Use `(hmem d).2 fun i => hT i (d i) ⟨k, (hmem _).1 hk i⟩ ?_` and prove the remaining obligations. Introduce and unpack `x rfl`.
+
+Conclude with `hall x`. Introduce `x k j hj'`. Conclude with `Finset.mem_image.2 ⟨(L.a x k, j), Finset.mem_product.2 ⟨hj x k, hj'⟩, rfl⟩`.
+-/
 theorem semilinear_case_b : StatSemiB := by
   intro ℓ _ A _ _ S ι pr D _ _ _ _ W M₀ V R P ρ κ _ _ _ _ _ _ _ L u jumps hRad hV hH hT hj y hy
   obtain ⟨hN, hφ, hγ⟩ := hV
@@ -102,6 +143,9 @@ theorem semilinear_case_b : StatSemiB := by
   · intro x k j hj'
     exact Finset.mem_image.2 ⟨(L.a x k, j), Finset.mem_product.2 ⟨hj x k, hj'⟩, rfl⟩
 
+/- English proof (translation)
+Introduce `O A _ _ _ S ι _ pr D₀ D₁ D₂ _ _ _ _ _ _ _ _ _ _ _ _ W₀ W₁ W₂ E M h M₀ H hR hD a0 a1 a2 b0 b1 b2 c0 c1 c2 hP6 hM hH`. Take `⟨-, -, -, -, V₀, V₁, V₂, Sq, n0, n1, n2, p0, g0, p1, g1, p2, g2, hi, hp, -, hX, -⟩` from `wach_top_statement O A S ι pr D₀ D₁ D₂ W₀ W₁ W₂ E M h M₀ H H hR hD a0 a1 a2 b0 b1 b2 c0 c1 c2 hP6 hM (fun i => by have := hH i; omega) hH`. Conclude with `⟨V₀, V₁, V₂, Sq, ⟨n0, p0, g0⟩, ⟨n1, p1, g1⟩, ⟨n2, p2, g2⟩, hi, hp, hX⟩`.
+-/
 theorem short_exact_sequence_holds : StatSES := by
   intro O A _ _ _ S ι _ pr D₀ D₁ D₂ _ _ _ _ _ _ _ _ _ _ _ _ W₀ W₁ W₂ E M h M₀ H hR hD a0 a1 a2 b0 b1
     b2 c0 c1 c2 hP6 hM hH
@@ -110,6 +154,9 @@ theorem short_exact_sequence_holds : StatSES := by
       (fun i => by have := hH i; omega) hH
   exact ⟨V₀, V₁, V₂, Sq, ⟨n0, p0, g0⟩, ⟨n1, p1, g1⟩, ⟨n2, p2, g2⟩, hi, hp, hX⟩
 
+/- English proof (translation)
+Consider the cases of `V`. Consider the cases of `V'`. Simplify using `only at h1 h2 h3`. Substitute `h1 h2 h3` using the available equality. Both sides reduce to the same expression.
+-/
 theorem wach_ext {O A : Type} [CommRing O] [CommRing A] [Algebra O A] {B : Base O A} {M : ℕ}
     {D : Type} [AddCommGroup D] [Module A D] [Module O D] [IsScalarTower O A D]
     (V V' : WachMod B M D) (h1 : V.N = V'.N) (h2 : V.φ = V'.φ) (h3 : V.γ = V'.γ) : V = V' := by
@@ -118,6 +165,9 @@ theorem wach_ext {O A : Type} [CommRing O] [CommRing A] [Algebra O A] {B : Base 
   subst h1 h2 h3
   rfl
 
+/- English proof (translation)
+Introduce `O A _ _ _ S ι pr D _ _ _ _ W M₀ V V' hV hV'`. Take `⟨a, b, c⟩` from `hV`. Take `⟨a', b', c'⟩` from `hV'`. Conclude with `wach_ext V V' (a.trans a'.symm) (LinearMap.ext fun x => funext fun i => (b x i).trans (b' x i).symm) (LinearMap.ext fun x => funext fun i => (c x i).trans (c' x i).symm)`.
+-/
 theorem product_unique_holds : StatProdUnique := by
   intro O A _ _ _ S ι pr D _ _ _ _ W M₀ V V' hV hV'
   obtain ⟨a, b, c⟩ := hV
@@ -126,6 +176,19 @@ theorem product_unique_holds : StatProdUnique := by
     (LinearMap.ext fun x => funext fun i => (b x i).trans (b' x i).symm)
     (LinearMap.ext fun x => funext fun i => (c x i).trans (c' x i).symm)
 
+/- English proof (translation)
+Introduce `ℓ _ A _ _ S ι _ pr D _ _ _ _ W M₀ V Hh _ _ cl Hf M h H hR hD hV hP2 hP5 hL hM hH hE κ hκ`. Take `⟨Dp, Dt, i1, i2, i3, i4, i5, i6, i7, i8, Wp, Wt, E, e, p2p, p2t, p5p, p5t, lp, lt, p6, he, hφe, hγe, hdict⟩` from `hE κ hκ`. Take `⟨V₀, Vp, Vt, Sq, v0, vp, vt, hi, hp, hX⟩` from `short_exact_sequence_holds ℤ_[ℓ] A S ι pr D Dp Dt W Wp Wt E M h M₀ H hR hD hP2 p2p p2t hP5 p5p p5t hL lp lt p6 hM hH`. Take `rfl : V₀ = V` from `product_unique_holds _ _ S ι pr D W M₀ V₀ V v0 hV`. Use `⟨{ Dp := ι → Dp, Dt := ι → Dt, Wp := Vp, Wt := Vt, S := Sq, e := e, e_mem := ?_, φe := ?_, γe := ?_ }, hX, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[vt.1]`. Simplify `he` using `[Submodule.mem_pi]`. Use function extensionality and compare the values at `i`. Conclude with `(vt.2.1 e i).trans (hφe i)`. Use function extensionality and compare the values at `i`.
+
+Conclude with `(vt.2.2 e i).trans (hγe i)`. Introduce `c x p h1 h2 h3`. Use `hdict c x p (fun i => ?_) (fun i => ?_) (fun i => ?_)` and prove the remaining obligations. Use `congrFun h1 i` as an intermediate fact. Rewrite `this` using `[hp]`.
+
+Conclude with `this`. Use `congrFun h2 i` as an intermediate fact. Rewrite `this` using `[hi]`. Rewrite using `[this]`. Use `show Vp.φ x i - x i = _`.
+
+Rewrite using `[vp.2.1]`. Use `congrFun h3 i` as an intermediate fact. Rewrite `this` using `[hi]`. Rewrite using `[this]`. Use `show Vp.γ x i - x i = _`.
+
+Rewrite using `[vp.2.2]`.
+-/
 theorem extension_holds : StatExt := by
   intro ℓ _ A _ _ S ι _ pr D _ _ _ _ W M₀ V Hh _ _ cl Hf M h H hR hD hV hP2 hP5 hL hM hH hE κ hκ
   obtain ⟨Dp, Dt, i1, i2, i3, i4, i5, i6, i7, i8, Wp, Wt, E, e, p2p, p2t, p5p, p5t, lp, lt, p6, he,

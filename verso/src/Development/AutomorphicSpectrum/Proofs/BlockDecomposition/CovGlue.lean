@@ -37,6 +37,9 @@ def Ex (K : DCx.{w} R) (a : ℕ) : Prop :=
   ∀ p, (0 < a → Function.Injective (K.dv p 0)) ∧
     ∀ q, q + 1 < a → ∀ x, K.dv p (q + 1) x = 0 → ∃ y, K.dv p q y = x
 
+/- English proof (translation)
+Introduce `p`. Use `⟨fun ha x y hxy => (h (p + 1)).1 ha (neg_injective hxy), fun q hq x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `(h (p + 1)).2 q hq x (neg_eq_zero.1 hx)`. Conclude with `⟨-y, by simp [shC, hy]⟩`.
+-/
 theorem Ex.sh {K : DCx.{w} R} {a : ℕ} (h : Ex K a) : Ex (shC K) a := by
   intro p
   refine ⟨fun ha x y hxy => (h (p + 1)).1 ha (neg_injective hxy), fun q hq x hx => ?_⟩
@@ -49,6 +52,11 @@ def un (K : DCx.{w} R) (y : ∀ p q, (shC K).X p q) : ∀ p q, K.X p q
   | 0, _ => 0
   | p + 1, q => y p q
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p q`. Apply the tactic sequence `rcases p with _ | p <;> rcases q with _ | q`. Simplify using `[DCx.D_apply, DCx.Dh, DCx.Dv, sh, h]`. Simplify using `[DCx.D_apply, DCx.Dh, DCx.Dv, sh, h, shC]`. Simplify using `[DCx.D_apply, DCx.Dh, DCx.Dv, sh, shC]`.
+
+Simplify using `[DCx.D_apply, DCx.Dh, DCx.Dv, sh, shC, pow_succ]`.
+-/
 theorem D_sh (K : DCx.{w} R) (x : ∀ p q, K.X p q) (h : ∀ q, x 0 q = 0) : (shC K).D (sh K x) = sh K (K.D x) := by
   funext p q
   rcases p with _ | p <;> rcases q with _ | q
@@ -57,6 +65,11 @@ theorem D_sh (K : DCx.{w} R) (x : ∀ p q, K.X p q) (h : ∀ q, x 0 q = 0) : (sh
   · simp [DCx.D_apply, DCx.Dh, DCx.Dv, sh, shC]
   · simp [DCx.D_apply, DCx.Dh, DCx.Dv, sh, shC, pow_succ]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p q`. Apply the tactic sequence `rcases p with _ | _ | p <;> rcases q with _ | q`. Simplify using `[DCx.D_apply, DCx.Dh, DCx.Dv, un]`. Simplify using `[DCx.D_apply, DCx.Dh, DCx.Dv, un]`. Simplify using `[DCx.D_apply, DCx.Dh, DCx.Dv, un]`.
+
+Simplify using `[DCx.D_apply, DCx.Dh, DCx.Dv, un, shC]`. Simplify using `[DCx.D_apply, DCx.Dh, DCx.Dv, un, shC]`. Simplify using `[DCx.D_apply, DCx.Dh, DCx.Dv, un, shC, pow_succ]`.
+-/
 theorem D_un (K : DCx.{w} R) (y : ∀ p q, (shC K).X p q) : K.D (un K y) = un K ((shC K).D y) := by
   funext p q
   rcases p with _ | _ | p <;> rcases q with _ | q
@@ -67,12 +80,24 @@ theorem D_un (K : DCx.{w} R) (y : ∀ p q, (shC K).X p q) : K.D (un K y) = un K 
   · simp [DCx.D_apply, DCx.Dh, DCx.Dv, un, shC]
   · simp [DCx.D_apply, DCx.Dh, DCx.Dv, un, shC, pow_succ]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p q`. Break down `p with _ | p` into its components or cases. Conclude with `(h q).symm`. Both sides reduce to the same expression.
+-/
 theorem un_sh (K : DCx.{w} R) (x : ∀ p q, K.X p q) (h : ∀ q, x 0 q = 0) : un K (sh K x) = x := by
   funext p q
   rcases p with _ | p
   · exact (h q).symm
   · rfl
 
+/- English proof (translation)
+Set `A : Cx.{0} R` to `⟨fun _ => PUnit, fun _ => 0, fun _ _ => rfl⟩`. Set `e : DCx.AugCol A K` to `⟨fun _ => 0, fun _ _ => map_zero _, fun p x => by simp⟩`. Establish `hs` using `P.dc_col_surj e 1 m (fun p q hpq y hy => by`. Take `⟨t, ht⟩` from `(h p).2 q (by omega) y hy`. Conclude with `⟨t, by rw [one_smul, ht]⟩)`.
+
+Use the proof step `(fun y hy => ⟨0, by rw [one_smul, map_zero]; exact ((h m).1 (by omega) (hy.trans (map_zero _).symm)).symm⟩)`. Use the proof step `(fun y _ => Subsingleton.elim _ _)`. Establish `hc : K.tot.d m ⟨x, hx⟩ = 0` using `Subtype.ext hD`. Take `⟨t, ht⟩` from `hs (K.tot.cls ⟨x, hx⟩ hc)`. Establish `ht0 : t = 0` using `Subsingleton.elim _ _`.
+
+Rewrite `ht` using `[ht0, map_zero, one_pow, one_smul]`. Establish `hB` using `((P.cls_surj K.tot m).2.1 _ hc).1 ht.symm`. Consider the cases of `m with`. Consider the case `zero`. Establish `h0 : x = 0` using `congrArg Subtype.val ((Submodule.mem_bot R).1 hB)`.
+
+Conclude with `⟨0, fun _ _ _ => rfl, by rw [map_zero, h0]⟩`. Consider the case `succ m`. Take `⟨z, hz⟩` from `hB`. Conclude with `⟨z.1, fun p q hpq => z.2 p q (by omega), congrArg Subtype.val hz⟩`.
+-/
 theorem vanish (K : DCx.{w} R) (a m : ℕ) (h : Ex K a) (hm : m < a) (x : ∀ p q, K.X p q) (hx : x ∈ K.T m)
     (hD : K.D x = 0) : ∃ z : ∀ p q, K.X p q, (∀ p q, p + q + 1 ≠ m → z p q = 0) ∧ K.D z = x := by
   let A : Cx.{0} R := ⟨fun _ => PUnit, fun _ => 0, fun _ _ => rfl⟩
@@ -96,6 +121,13 @@ theorem vanish (K : DCx.{w} R) (a m : ℕ) (h : Ex K a) (hm : m < a) (x : ∀ p 
     obtain ⟨z, hz⟩ := hB
     exact ⟨z.1, fun p q hpq => z.2 p q (by omega), congrArg Subtype.val hz⟩
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero`. Establish `hx0 : x = 0`. Use function extensionality and compare the values at `p q`. Break down `p with _ | p` into its components or cases.
+
+Conclude with `h0 q`. Conclude with `hx (p + 1) q (by omega)`. Conclude with `⟨0, fun _ _ _ => rfl, fun _ => rfl, by rw [map_zero, hx0]⟩`. Consider the case `succ m`. Take `⟨z, hz, hDz⟩` from `vanish (shC K) a m h.sh (by omega) (sh K x) (fun p q hpq => hx (p + 1) q (by omega)) (by rw [D_sh K x h0, hD]; rfl)`.
+
+Use `⟨un K z, fun p q hpq => ?_, fun q => rfl, ?_⟩` and prove the remaining obligations. Break down `p with _ | p` into its components or cases. Both sides reduce to the same expression. Conclude with `hz p q (by omega)`. Rewrite using `[D_un, hDz, un_sh K x h0]`.
+-/
 theorem tail (K : DCx.{w} R) (a n : ℕ) (h : Ex K a) (hn : n ≤ a) (x : ∀ p q, K.X p q) (hx : x ∈ K.T n)
     (hD : K.D x = 0) (h0 : ∀ q, x 0 q = 0) :
     ∃ y : ∀ p q, K.X p q, (∀ p q, p + q + 1 ≠ n → y p q = 0) ∧ (∀ q, y 0 q = 0) ∧ K.D y = x := by
@@ -118,6 +150,21 @@ theorem tail (K : DCx.{w} R) (a n : ℕ) (h : Ex K a) (hn : n ≤ a) (x : ∀ p 
 
 variable {K : DCx.{w} R} {A : Cx.{w'} R}
 
+/- English proof (translation)
+Establish `hz : K.tot.d a (e.edge.f a c) = 0` using `by rw [e.edge.comm, hc, map_zero]`. Establish `key : e.edge.f a c ∈ K.tot.B a`. Consider the cases of `a with`. Consider the case `zero`. Establish `h0 : e.ε 0 c = 0` using `(Submodule.mem_bot R).1 hB`.
+
+Express the relevant statement in the definitionally equal form `(K.inj 0 0 0 (Nat.zero_add 0)) (e.ε 0 c) ∈ _`. Rewrite using `[h0, map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `succ m`. Take `⟨w, hw⟩` from `hB`.
+
+Establish `hw' : K.dv 0 m w = e.ε (m + 1) c` using `hw`. Establish `hsT : K.sgl 0 m w ∈ K.T m` using `fun p q hpq => K.sgl_ne w (by omega)`. Use `set x := (e.edge.f (m + 1) c).1 - K.D (K.sgl 0 m w) with hxdef`. Establish `hxT : x ∈ K.T (m + 1)` using `Submodule.sub_mem _ (e.edge.f (m + 1) c).2 (K.D_mem m _ hsT)`. Establish `hDx : K.D x = 0`.
+
+Rewrite using `[hxdef, map_sub, K.DD, sub_zero]`. Conclude with `congrArg Subtype.val hz`. Establish `h0 : ∀ q, x 0 q = 0`. Introduce `q`. Rewrite using `[hxdef, K.D_sgl, hw']`.
+
+Express the relevant statement in the definitionally equal form `K.sgl 0 (m + 1) (e.ε (m + 1) c) 0 q - _ = 0`. Simplify using `only [pow_zero, one_smul, Pi.add_apply, Pi.sub_apply]`. Rewrite using `[K.sgl_ne (K.dh 0 m w) (Or.inl (by omega) : 0 ≠ 0 + 1 ∨ q ≠ m)]`. Simplify using the standard rewrite rules. Take `⟨y, hy, -, hDy⟩` from `tail K (m + 1) (m + 1) h le_rfl x hxT hDx h0`.
+
+Establish `hyT : K.sgl 0 m w + y ∈ K.T m` using `Submodule.add_mem _ hsT fun p q hpq => hy p q (by omega)`. Use `⟨⟨_, hyT⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `K.D (K.sgl 0 m w + y) = (e.edge.f (m + 1) c).1`. Rewrite using `[map_add, hDy, hxdef]`. Normalize the expressions using the abelian group laws.
+
+Establish `h1 : e.edge.mapH a (A.cls c hc) = 0`. Rewrite using `[P.mapH_cls _ a c hc hz]`. Conclude with `((P.cls_surj K.tot a).2.1 _ hz).2 key`. Conclude with `((P.cls_surj A a).2.1 c hc).1 (hb (h1.trans (map_zero _).symm))`.
+-/
 theorem deg_inj (e : DCx.AugRow A K) (a : ℕ) (hb : Function.Injective (e.edge.mapH a)) (h : Ex K a)
     (c : A.X a) (hc : A.d a c = 0) (hB : e.ε a c ∈ (K.col 0).B a) : c ∈ A.B a := by
   have hz : K.tot.d a (e.edge.f a c) = 0 := by rw [e.edge.comm, hc, map_zero]
@@ -156,6 +203,19 @@ theorem deg_inj (e : DCx.AugRow A K) (a : ℕ) (hb : Function.Injective (e.edge.
     exact ((P.cls_surj K.tot a).2.1 _ hz).2 key
   exact ((P.cls_surj A a).2.1 c hc).1 (hb (h1.trans (map_zero _).symm))
 
+/- English proof (translation)
+Consider the cases of `a with`. Consider the case `zero`. Establish `h0 : K.dh 0 0 y₀ = 0` using `(Submodule.mem_bot R).1 hB`. Use `⟨K.sgl 0 0 y₀, fun p q hpq => K.sgl_ne _ (by omega), ?_, K.sgl_self _ _ _⟩` and prove the remaining obligations. Rewrite using `[K.D_sgl, h0, hy]`.
+
+Simplify using the standard rewrite rules. Consider the case `succ m`. Take `⟨z, hz⟩` from `hB`. Establish `hz' : K.dv 1 m z = K.dh 0 (m + 1) y₀` using `hz`. Use `set x₁ := K.sgl 0 (m + 1) y₀ + K.sgl 1 m z with hx₁`.
+
+Use `set c := K.sgl 2 m (K.dh 1 m z) with hc`. Establish `hDx₁ : K.D x₁ = c`. Rewrite using `[hx₁, map_add, K.D_sgl, K.D_sgl, hy, hz']`. Simplify using `[hc]`. Establish `hc0 : ∀ q, c 0 q = 0` using `fun q => K.sgl_ne _ (Or.inl (by omega))`.
+
+Establish `hc1 : ∀ q, c 1 q = 0` using `fun q => K.sgl_ne _ (Or.inl (by omega))`. Establish `hDc : K.D c = 0` using `by rw [← hDx₁, K.DD]`. Take `⟨y', hy1, hy2, hy3⟩` from `tail (shC K) (m + 1) (m + 1) h.sh le_rfl (sh K c) (fun p q hpq => K.sgl_ne _ (by omega)) (by rw [D_sh K c hc0, hDc]; rfl) hc1`. Use `⟨x₁ - un K y', fun p q hpq => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : x₁ p q = 0`.
+
+Rewrite using `[hx₁, Pi.add_apply, Pi.add_apply, K.sgl_ne _ (by omega), K.sgl_ne _ (by omega), add_zero]`. Establish `h2 : un K y' p q = 0`. Break down `p with _ | p` into its components or cases. Both sides reduce to the same expression. Conclude with `hy1 p q (by omega)`.
+
+Rewrite using `[Pi.sub_apply, Pi.sub_apply, h1, h2, sub_zero]`. Rewrite using `[map_sub, D_un, hy3, un_sh K c hc0, hDx₁, sub_self]`. Express the relevant statement in the definitionally equal form `x₁ 0 (m + 1) - 0 = y₀`. Rewrite using `[sub_zero, hx₁, Pi.add_apply, Pi.add_apply, K.sgl_self, K.sgl_ne _ (Or.inl (by omega)), add_zero]`.
+-/
 theorem extend (a : ℕ) (h : Ex K a) (y₀ : K.X 0 a) (hy : K.dv 0 a y₀ = 0) (hB : K.dh 0 a y₀ ∈ (K.col 1).B a) :
     ∃ x : ∀ p q, K.X p q, x ∈ K.T a ∧ K.D x = 0 ∧ x 0 a = y₀ := by
   cases a with
@@ -189,6 +249,17 @@ theorem extend (a : ℕ) (h : Ex K a) (y₀ : K.X 0 a) (hy : K.dv 0 a y₀ = 0) 
     · change x₁ 0 (m + 1) - 0 = y₀
       rw [sub_zero, hx₁, Pi.add_apply, Pi.add_apply, K.sgl_self, K.sgl_ne _ (Or.inl (by omega)), add_zero]
 
+/- English proof (translation)
+Take `⟨x, hxT, hDx, hx0⟩` from `extend a h y₀ hy hB`. Establish `hxc : K.tot.d a ⟨x, hxT⟩ = 0` using `Subtype.ext hDx`. Take `⟨t, ht⟩` from `hb (K.tot.cls ⟨x, hxT⟩ hxc)`. Take `⟨c, hc, rfl⟩` from `(P.cls_surj A a).1 t`. Establish `hz : K.tot.d a (e.edge.f a c) = 0` using `by rw [e.edge.comm, hc, map_zero]`.
+
+Rewrite `ht` using `[P.mapH_cls _ a c hc hz]`. Establish `hd` using `((P.cls_surj K.tot a).2.2.1 _ _ hz hxc).1 ht`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `hv : (e.edge.f a c).1 0 a = e.ε a c` using `K.sgl_self _ _ _`. Consider the cases of `a with`.
+
+Consider the case `zero`. Establish `h0` using `congrArg Subtype.val ((Submodule.mem_bot R).1 hd)`. Establish `h1 : (e.edge.f 0 c).1 0 0 - x 0 0 = 0` using `congrFun (congrFun h0 0) 0`. Rewrite `h1` using `[hv, hx0]`. Rewrite using `[h1]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `succ m`. Take `⟨w, hw⟩` from `hd`. Establish `h1 : K.D w.1 0 (m + 1) = (e.edge.f (m + 1) c).1 0 (m + 1) - x 0 (m + 1)` using `congrFun (congrFun (congrArg Subtype.val hw) 0) (m + 1)`. Rewrite `h1` using `[hv, hx0]`.
+
+Use `⟨w.1 0 m, ?_⟩` and prove the remaining obligations. Rewrite using `[← h1]`. Simplify using `[DCx.D_apply, DCx.Dh, DCx.Dv]`.
+-/
 theorem deg_surj (e : DCx.AugRow A K) (a : ℕ) (hb : Function.Surjective (e.edge.mapH a)) (h : Ex K a)
     (y₀ : K.X 0 a) (hy : K.dv 0 a y₀ = 0) (hB : K.dh 0 a y₀ ∈ (K.col 1).B a) :
     ∃ (c : A.X a) (_ : A.d a c = 0), e.ε a c - y₀ ∈ (K.col 0).B a := by
@@ -229,11 +300,23 @@ def prj (F : C ⥤ ModuleCat.{w} R) {ι : Type} (U : ι → ObjectProperty C) (p
     Cx.Hom ((cechCC F U).dcx.col p) (CH.cx ((capT U i).ι ⋙ F)) (RingHom.id R) :=
   ⟨fun _ => LinearMap.proj i, fun _ _ => rfl⟩
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.CechSerre.pi_H_bij (fun i : Fin (p + 1) → ι => CH.cx ((capT U i).ι ⋙ F)) (prj F U p) (fun _ => Function.bijective_id) q`.
+-/
 theorem prj_bij (F : C ⥤ ModuleCat.{w} R) {ι : Type} (U : ι → ObjectProperty C) (p q : ℕ) :
     Function.Bijective (fun (x : ((cechCC F U).dcx.col p).H q) i => (prj F U p i).mapH q x) :=
   GlobalTheory.CompanionTheory.CechSerre.pi_H_bij (fun i : Fin (p + 1) → ι => CH.cx ((capT U i).ι ⋙ F)) (prj F U p)
     (fun _ => Function.bijective_id) q
 
+/- English proof (translation)
+Introduce `p`. Use `⟨fun ha => ?_, fun q hq x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Use function extensionality and compare the values at `i`.
+
+Establish `hzi : CH.d ((capT U i).ι ⋙ F) 0 (z i) = 0` using `congrFun hz i`. Use `hvan p i 0 ha` as an intermediate fact. Establish `h0 : (CH.cx ((capT U i).ι ⋙ F)).cls (z i) hzi = 0` using `Subsingleton.elim _ _`. Conclude with `(Submodule.mem_bot R).1 (((P.cls_surj _ 0).2.1 _ hzi).1 h0)`. Establish `hex : ∀ i, ∃ y, CH.d ((capT U i).ι ⋙ F) q y = x i`.
+
+Introduce `i`. Establish `hxi : CH.d ((capT U i).ι ⋙ F) (q + 1) (x i) = 0` using `congrFun hx i`. Use `hvan p i (q + 1) hq` as an intermediate fact. Establish `h0 : (CH.cx ((capT U i).ι ⋙ F)).cls (x i) hxi = 0` using `Subsingleton.elim _ _`. Conclude with `((P.cls_surj _ (q + 1)).2.1 _ hxi).1 h0`.
+
+Use `choose y hy using hex`. Conclude with `⟨y, funext hy⟩`.
+-/
 theorem ex_of (F : C ⥤ ModuleCat.{w} R) {ι : Type} (U : ι → ObjectProperty C) (a : ℕ)
     (hvan : ∀ (p : ℕ) (i : Fin (p + 1) → ι) (j : ℕ), j < a → Subsingleton (HU F (capT U i) j)) :
     Ex (cechCC F U).dcx a := by
@@ -255,17 +338,28 @@ theorem ex_of (F : C ⥤ ModuleCat.{w} R) {ι : Type} (U : ι → ObjectProperty
     choose y hy using hex
     exact ⟨y, funext hy⟩
 
+/- English proof (translation)
+Use `P.dc_row (cechAugRowU F U) 1 (GlobalTheory.CompanionTheory.CechRowExact.cech_rows F U hU hc) n` as an intermediate fact. Rewrite `this` using `[one_pow]`. Conclude with `(P.upTo_alg _ (LinearMap.id (R := R)) 1 1).2.2.2.2.1 this`.
+-/
 theorem edge_bij (F : C ⥤ ModuleCat.{w} R) {ι : Type} (U : ι → ObjectProperty C) (hU : ∀ α, Cosieve (U α))
     (hc : ∀ T, ∃ α, U α T) (n : ℕ) : Function.Bijective ((cechAugRowU F U).edge.mapH n) := by
   have := P.dc_row (cechAugRowU F U) 1 (GlobalTheory.CompanionTheory.CechRowExact.cech_rows F U hU hc) n
   rw [one_pow] at this
   exact (P.upTo_alg _ (LinearMap.id (R := R)) 1 1).2.2.2.2.1 this
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prj_eps (F : C ⥤ ModuleCat.{w} R) {ι : Type} (U : ι → ObjectProperty C) (a : ℕ) (i : Fin (0 + 1) → ι)
     (c : CH.Cn F a) (hc : CH.d F a c = 0) (hε : ((cechCC F U).dcx.col 0).d a ((cechAugRowU F U).ε a c) = 0) :
     (prj F U 0 i).mapH a (((cechCC F U).dcx.col 0).cls _ hε) =
       (CH.Mor.restrict F (capT U i).ι).pull a ((CH.cx F).cls c hc) := rfl
 
+/- English proof (translation)
+Take `⟨c, hcz, rfl⟩` from `(P.cls_surj (CH.cx F) a).1 x`. Establish `hε : ((cechCC F U).dcx.col 0).d a ((cechAugRowU F U).ε a c) = 0`. Use `((cechAugRowU F U).comm a c).trans ?_` and prove the remaining obligations. Rewrite using `[show (CH.cx F).d a c = 0 from hcz, map_zero]`. Establish `h1 : ((cechCC F U).dcx.col 0).cls _ hε = 0` using `(prj_bij F U 0 a).1 (funext fun i => by`.
+
+Simplify using `only [map_zero]`. Conclude with `(prj_eps F U a i c hcz hε).trans (hx i))`. Establish `hB` using `((P.cls_surj _ a).2.1 _ hε).1 h1`. Conclude with `((P.cls_surj (CH.cx F) a).2.1 c hcz).2 (deg_inj (cechAugRowU F U) a (edge_bij F U hU hc a).1 (ex_of F U a hvan) c hcz hB)`.
+-/
 theorem cov_inj (F : C ⥤ ModuleCat.{w} R) {ι : Type} (U : ι → ObjectProperty C) (hU : ∀ α, Cosieve (U α))
     (hc : ∀ T, ∃ α, U α T) (a : ℕ)
     (hvan : ∀ (p : ℕ) (i : Fin (p + 1) → ι) (j : ℕ), j < a → Subsingleton (HU F (capT U i) j))
@@ -281,6 +375,19 @@ theorem cov_inj (F : C ⥤ ModuleCat.{w} R) {ι : Type} (U : ι → ObjectProper
   exact ((P.cls_surj (CH.cx F) a).2.1 c hcz).2
     (deg_inj (cechAugRowU F U) a (edge_bij F U hU hc a).1 (ex_of F U a hvan) c hcz hB)
 
+/- English proof (translation)
+Take `⟨ŷ, hŷ⟩` from `(prj_bij F U 0 a).2 y`. Take `⟨y₀, hy₀, rfl⟩` from `(P.cls_surj _ a).1 ŷ`. Establish `hzi : ∀ i : Fin (0 + 1) → ι, CH.d ((capT U i).ι ⋙ F) a (y₀ i) = 0` using `fun i => congrFun hy₀ i`. Establish `hyi : ∀ i : Fin (0 + 1) → ι, y i = (CH.cx ((capT U i).ι ⋙ F)).cls (y₀ i) (hzi i)` using `fun i => (congrFun hŷ i).symm`. Establish `hdz : ((cechCC F U).dcx.col 1).d a ((cechCC F U).dcx.dh 0 a y₀) = 0`.
+
+Use `((cechCC F U).dcx.hv 0 a y₀).symm.trans ?_` and prove the remaining obligations. Rewrite using `[show (cechCC F U).dcx.dv 0 a y₀ = 0 from hy₀, map_zero]`. Establish `hcl : ((cechCC F U).dcx.col 1).cls _ hdz = 0` using `(prj_bij F U 1 a).1 (funext fun t => by`. Simplify using `only [map_zero]`. Establish `hval : (cechCC F U).dcx.dh 0 a y₀ t = (resU F (U` using `capT U (t ∘ (0 : Fin 2).succAbove)) (V := capT U t) fun _ h _ => h _).pullC a (y₀ (t ∘ (0 : Fin 2).succAbove)) - (resU F (U := capT U (t ∘ (1 : Fin 2).succAbove)) (V := capT U t) fun _ h _ => h _).pullC a (y₀ (t ∘ (1 : Fin 2).succAbove)) := by`.
+
+Establish `e` using `congrFun (Cos.d_apply ((cechCC F U).cos a) 0 y₀) t`. Rewrite `e` using `[Fin.sum_univ_two]`. Use `e.trans ?_` and prove the remaining obligations. Simplify using `[sub_eq_add_neg]`. Establish `h0` using `hy t`.
+
+Rewrite `h0` using `[hyi, hyi]`. Establish `h1` using `((P.cls_surj (CH.cx ((capT U t).ι ⋙ F)) a).2.2.1 _ _ (((resU F _).d_pullC a _).trans (by rw [hzi, map_zero])) (((resU F _).d_pullC a _).trans (by rw [hzi, map_zero]))).1 h0`. Rewrite `h1` using `[← hval]`. Conclude with `((P.cls_surj _ a).2.1 _ _).2 h1)`. Establish `hB` using `((P.cls_surj _ a).2.1 _ hdz).1 hcl`.
+
+Take `⟨c, hcz, hd⟩` from `deg_surj (cechAugRowU F U) a (edge_bij F U hU hc a).2 (ex_of F U a hvan) y₀ hy₀ hB`. Establish `hε : ((cechCC F U).dcx.col 0).d a ((cechAugRowU F U).ε a c) = 0`. Use `((cechAugRowU F U).comm a c).trans ?_` and prove the remaining obligations. Rewrite using `[hcz, map_zero]`. Establish `heq` using `((P.cls_surj _ a).2.2.1 _ _ hε hy₀).2 hd`.
+
+Use `⟨(CH.cx F).cls c hcz, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← prj_eps F U a i c hcz hε, heq]`. Conclude with `congrFun hŷ i`.
+-/
 theorem cov_glue (F : C ⥤ ModuleCat.{w} R) {ι : Type} (U : ι → ObjectProperty C) (hU : ∀ α, Cosieve (U α))
     (hc : ∀ T, ∃ α, U α T) (a : ℕ)
     (hvan : ∀ (p : ℕ) (i : Fin (p + 1) → ι) (j : ℕ), j < a → Subsingleton (HU F (capT U i) j))
@@ -329,6 +436,9 @@ def kap (F : C ⥤ ModuleCat.{w} R) {P Q' : ObjectProperty C} {Q : ObjectPropert
   τ _ := LinearMap.id
   nat _ _ := rfl
 
+/- English proof (translation)
+Set `L : Q'.FullSubcategory ⥤ Q.FullSubcategory` to `Q.lift (P.lift Q'.ι fun T => (h' _ T.property).choose) fun T => (h' _ T.property).choose_spec`. Use `CrystallineSemistableComparison.P.mapH_bij (kap F h).hom (fun k => ⟨fun z z' e => funext fun s => ?_, fun w => ⟨fun s => w (s ⋙ L), ?_⟩⟩) n` and prove the remaining obligations. Conclude with `congrFun e (s ⋙ L)`. Use function extensionality and compare the values at `t`. Both sides reduce to the same expression.
+-/
 theorem kap_bij (F : C ⥤ ModuleCat.{w} R) {P Q' : ObjectProperty C} {Q : ObjectProperty P.FullSubcategory}
     (h : ∀ T, Q T → Q' T.obj) (h' : ∀ T, Q' T → ∃ hp : P T, Q ⟨T, hp⟩) (n : ℕ) :
     Function.Bijective ((kap F h).pull n) := by
@@ -339,12 +449,18 @@ theorem kap_bij (F : C ⥤ ModuleCat.{w} R) {P Q' : ObjectProperty C} {Q : Objec
   · funext t
     rfl
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+-/
 theorem kap_top (F : C ⥤ ModuleCat.{w} R) {Top P Q' : ObjectProperty C} {Q : ObjectProperty P.FullSubcategory}
     (h : ∀ T, Q T → Q' T.obj) (hP : P ≤ Top) (hQ : Q' ≤ Top) (n : ℕ) (x : HU F Top n) :
     (CH.Mor.restrict (P.ι ⋙ F) Q.ι).pull n ((resU F hP).pull n x) = (kap F h).pull n ((resU F hQ).pull n x) := by
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   rfl
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+-/
 theorem kap_res (F : C ⥤ ModuleCat.{w} R) {P Q₁' Q₂' : ObjectProperty C} {Q₁ Q₂ : ObjectProperty P.FullSubcategory}
     (h₁ : ∀ T, Q₁ T → Q₁' T.obj) (h₂ : ∀ T, Q₂ T → Q₂' T.obj) (hle : Q₁ ≤ Q₂) (hle' : Q₁' ≤ Q₂') (n : ℕ)
     (x : HU F Q₂' n) :
@@ -352,6 +468,21 @@ theorem kap_res (F : C ⥤ ModuleCat.{w} R) {P Q₁' Q₂' : ObjectProperty C} {
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x
   rfl
 
+/- English proof (translation)
+Set `cov : ObjectProperty C` to `fun T => ∃ α, V α T`. Set `U' : ι → ObjectProperty cov.FullSubcategory` to `fun α T => V α T.obj`. Establish `hU' : ∀ α, Cosieve (U' α)` using `fun α T T' φ hT => hV α φ.hom hT`. Establish `hc' : ∀ T, ∃ α, U' α T` using `fun T => T.property`. Establish `hvan' : ∀ (p : ℕ) (i : Fin (p + 1) → ι) (j : ℕ), j < a → Subsingleton (HU (cov.ι ⋙ F) (capT U' i) j)`.
+
+Introduce `p i j hj`. Use `hvan p i j hj` as an intermediate fact. Conclude with `(kap_bij F (P := cov) (Q := capT U' i) (Q' := capT V i) (fun T hT => hT) (fun T hT => ⟨⟨i 0, hT 0⟩, hT⟩) j).2.subsingleton`. Establish `k1 : ∀ (i : Fin (0 + 1) → ι) (T : cov.FullSubcategory), capT U' i T → V (i 0) T.obj` using `fun i T hT => hT 0`. Establish `k1' : ∀ (i : Fin (0 + 1) → ι) (T : C), V (i 0) T → ∃ hp : cov T, capT U' i ⟨T, hp⟩` using `fun i T hT => ⟨⟨i 0, hT⟩, fun k => by`.
+
+Take `rfl : k = 0` from `Subsingleton.elim (α := Fin 1) _ _`. Conclude with `hT⟩`. Prove the components needed by the constructor for the conclusion. Introduce `x x' hxx`. Use `(hb a).1 (sub_eq_zero.1 ?_)` and prove the remaining obligations.
+
+Rewrite using `[← map_sub]`. Use `cov_inj (cov.ι ⋙ F) U' hU' hc' a hvan' _ fun i => ?_` and prove the remaining obligations. Rewrite using `[kap_top F (k1 i) hcov (h (i 0)), map_sub, map_sub]`. Use `congrFun hxx (i 0)` as an intermediate fact. Simplify using `only at this`.
+
+Rewrite using `[this, sub_self]`. Introduce `y hy`. Take `⟨x', hx'⟩` from `cov_glue (cov.ι ⋙ F) U' hU' hc' a hvan' (fun i => (kap F (k1 i)).pull a (y (i 0))) (fun t => by`. Establish `kt : ∀ (T : cov.FullSubcategory), capT U' t T → W (t 0) (t 1) T.obj` using `fun T hT => (hW _ _ _).2 ⟨hT 0, hT 1⟩`. Use `(kap_res F kt (k1 (t ∘ (0 : Fin 2).succAbove)) _ (h₂ (t 0) (t 1)) a _).trans ?_` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (kap_res F kt (k1 (t ∘ (1 : Fin 2).succAbove)) _ (h₁ (t 0) (t 1)) a _).symm` and prove the remaining obligations. Conclude with `congrArg _ (hy (t 0) (t 1)).symm)`. Take `⟨x, rfl⟩` from `(hb a).2 x'`. Use `⟨x, fun α => ?_⟩` and prove the remaining obligations. Use `(kap_bij F (k1 fun _ => α) (k1' fun _ => α) a).1 ?_` and prove the remaining obligations.
+
+Conclude with `(kap_top F (k1 fun _ => α) hcov (h α) a x).symm.trans (hx' fun _ => α)`.
+-/
 theorem descent (F : C ⥤ ModuleCat.{w} R) {ι : Type} (Top : ObjectProperty C) (V : ι → ObjectProperty C)
     (W : ι → ι → ObjectProperty C) (hV : ∀ α, Cosieve (V α)) (hW : ∀ α β T, W α β T ↔ V α T ∧ V β T)
     (hcov : (fun T => ∃ α, V α T) ≤ Top) (a : ℕ)
@@ -400,6 +531,13 @@ end Cover
 
 end GlobalTheory.CompanionTheory.CechDeg
 
+/- English proof (translation)
+Introduce `K _ X q ι U hU a hvan h h₁ h₂`. Establish `hcov : (fun T => ∃ α, CrystallineSemistableComparison.Onto.inU q (U α) T) ≤ CrystallineSemistableComparison.Onto.inU q ⊤` using `fun T ⟨α, hα⟩ => h α T hα`. Use `GlobalTheory.CompanionTheory.CechDeg.descent (CrystallineSemistableComparison.Onto.G q a) (CrystallineSemistableComparison.Onto.inU q ⊤) (fun α => CrystallineSemistableComparison.Onto.inU q (U α)) (fun α β => CrystallineSemistableComparison.Onto.inU q (U α ⊓ U β)) (fun α T T' φ h …` and prove the remaining obligations. Introduce `p i j hj`. Establish `hS : (Finset.univ.image i).Nonempty` using `⟨i 0, Finset.mem_image_of_mem _ (Finset.mem_univ _)⟩`.
+
+Use `hvan _ hS j hj` as an intermediate fact. Establish `e₁ : CrystallineSemistableComparison.Pb.capT (fun α => CrystallineSemistableComparison.Onto.inU q (U α)) i ≤ CrystallineSemistableComparison.Onto.inU q (⨅ α ∈ Finset.univ.image i, U α)` using `fun T hT => (GlobalTheory.CompanionTheory.Thick.inU_iInf_finset U _ T).2 fun α hα => by`. Take `⟨k, -, rfl⟩` from `Finset.mem_image.1 hα`. Conclude with `hT k`. Establish `e₂ : CrystallineSemistableComparison.Onto.inU q (⨅ α ∈ Finset.univ.image i, U α) ≤ CrystallineSemistableComparison.Pb.capT (fun α => CrystallineSemistableComparison.Onto.inU q (U α)) i` using `fun T hT k => (GlobalTheory.CompanionTheory.Thick.inU_iInf_finset U _ T).1 hT _ (Finset.mem_image_of_mem _ (Finset.mem_univ _))`.
+
+Conclude with `(CrystallineSemistableComparison.Onto.resU_bij_of_le (CrystallineSemistableComparison.Onto.G q a) e₁ e₂ j).2.subsingleton`.
+-/
 theorem GlobalTheory.CompanionTheory.CechDeg.om_cech : ∀ {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) {ι : Type} (U : ι → X.Opens),
     (⨆ α, U α) = ⊤ → ∀ a : ℕ, (∀ S : Finset ι, S.Nonempty → ∀ j < a, Subsingleton (CrystallineSemistableComparison.Onto.HV q (⨅ α ∈ S, U α) a j)) →
     ∀ (h : ∀ α, CrystallineSemistableComparison.Onto.inU q (U α) ≤ CrystallineSemistableComparison.Onto.inU q ⊤)

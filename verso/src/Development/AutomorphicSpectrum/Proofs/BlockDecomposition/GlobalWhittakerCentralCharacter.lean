@@ -19,6 +19,17 @@ open GlobalTheory.CompanionTheory.CenTheta
 
 namespace GlobalTheory.CompanionTheory.CenTheta
 
+/- English proof (translation)
+Introduce `K _ _ h2 c n t M hM z g`. Take `⟨hok, S0, hS0⟩` from `hM`. Take `⟨hc1, hc2, hc3, hc4⟩` from `GlobalTheory.T.adelic_realPart_properties`. Take `⟨S1, hS1⟩` from `GlobalTheory.CompanionTheory.AdelicIntegral.exists_finset_finAt_mem_integralGL g`. Take `⟨S2, hS2⟩` from `hc4 z`.
+
+Establish `hreal : WcR (chC n (Complex.I * t)) (PhiInf n) (GL2Classical.realPart (dg2 z z * g)) = omR n t (RationalIdeles.realPart z) * WcR (chC n (Complex.I * t)) (PhiInf n) (GL2Classical.realPart g)`. Rewrite using `[hc2, hc3]`. Conclude with `GlobalTheory.T.real_weil_action_central_character n t _ _ 1`. Establish `hloc : ∀ v, (M v).W (finAt v (dg2 z z * g)) = omW (M v) (Ad3.R.lc v z) * (M v).W (finAt v g)`. Introduce `v`.
+
+Rewrite using `[GroundTheory.Automorphic.Reduction.finAt_mul, hc1]`. Conclude with `GlobalTheory.T.local_whittaker_central_character K h2 c v (M v) (hok v) _ _`. Establish `hs1 : (Function.mulSupport fun v => omW (M v) (Ad3.R.lc v z)).Finite`. Use `(S0 ∪ S2).finite_toSet.subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`.
+
+Simplify using `only [Finset.coe_union, Set.mem_union, Finset.mem_coe, not_or] at hn`. Conclude with `hv (GlobalTheory.T.unramified_central_scalars_trivial K h2 c v (M v) (hS0 v hn.1).1 (hok v) _ (hS2 v hn.2)).1`. Establish `hs2 : (Function.mulSupport fun v => (M v).W (finAt v g)).Finite`. Use `(S0 ∪ S1).finite_toSet.subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`.
+
+Simplify using `only [Finset.coe_union, Set.mem_union, Finset.mem_coe, not_or] at hn`. Conclude with `hv (GlobalTheory.T.unramified_standard_values_at_integral K h2 c v (M v) (hS0 v hn.1).1 (hok v) (hS0 v hn.1).2 _ (hS1 v hn.2)).1`. Unfold `WM pw2 uW`. Rewrite using `[hreal, finprod_congr hloc, finprod_mul_distrib hs1 hs2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem WM_central : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (c : HeckeCharacter K) (n : ℤ) (t : ℝ) (M : ∀ v : Pl, LM c v), AdmM M → ∀ (z : Jd) (g : G2), WM n t M (dg2 z z * g) = uW n t M z * WM n t M g := by
   intro K _ _ h2 c n t M hM z g
   classical

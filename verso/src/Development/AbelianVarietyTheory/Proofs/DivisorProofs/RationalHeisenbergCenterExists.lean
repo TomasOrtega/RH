@@ -11,24 +11,36 @@ namespace GlobalTheory.LiftCentral
 section Gen
 variable {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.smul_apply, dotProduct, smul_eq_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+-/
 theorem vmv_mul_vmv (a b c d : n → R) :
     Matrix.vecMulVec a b * Matrix.vecMulVec c d = (b ⬝ᵥ c) • Matrix.vecMulVec a d := by
   ext i j
   simp only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.smul_apply, dotProduct, smul_eq_mul, Finset.sum_mul]
   exact Finset.sum_congr rfl fun k _ => by ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.vecMul, dotProduct, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+-/
 theorem vmv_mul {k : Type} [Fintype k] (a : n → R) (b : n → R) (M : Matrix n k R) :
     Matrix.vecMulVec a b * M = Matrix.vecMulVec a (b ᵥ* M) := by
   ext i j
   simp only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.vecMul, dotProduct, Finset.mul_sum]
   exact Finset.sum_congr rfl fun k _ => by ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.mulVec, dotProduct, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+-/
 theorem mul_vmv (a b : n → R) (M : Matrix n n R) :
     M * Matrix.vecMulVec a b = Matrix.vecMulVec (M *ᵥ a) b := by
   ext i j
   simp only [Matrix.mul_apply, Matrix.vecMulVec_apply, Matrix.mulVec, dotProduct, Finset.sum_mul]
   exact Finset.sum_congr rfl fun k _ => by ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply]`.
+-/
 theorem vmv_neg (a b : n → R) : Matrix.vecMulVec a (-b) = -Matrix.vecMulVec a b := by
   ext i j; simp [Matrix.vecMulVec_apply]
 
@@ -42,6 +54,11 @@ def trv (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x : Fin n
 
 variable {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {x : Fin n → E}
 
+/- English proof (translation)
+Establish `hAA : Matrix.vecMulVec x (J *ᵥ fun i => σ (x i)) * Matrix.vecMulVec x (J *ᵥ fun i => σ (x i)) = 0`. Rewrite using `[vmv_mul_vmv, dotProduct_comm]`. Express the relevant statement in the definitionally equal form `form σ J x x • _ = _`. Rewrite using `[hxx, zero_smul]`. Simplify using `only [trv, sub_mul, mul_sub, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, hAA, smul_zero, add_smul]`.
+
+Use `module`.
+-/
 theorem trv_mul (hxx : form σ J x x = 0) (f g : E) : trv σ J x f * trv σ J x g = trv σ J x (f + g) := by
   have hAA : Matrix.vecMulVec x (J *ᵥ fun i => σ (x i)) * Matrix.vecMulVec x (J *ᵥ fun i => σ (x i)) = 0 := by
     rw [vmv_mul_vmv, dotProduct_comm]
@@ -50,8 +67,22 @@ theorem trv_mul (hxx : form σ J x x = 0) (f g : E) : trv σ J x f * trv σ J x 
   simp only [trv, sub_mul, mul_sub, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, hAA, smul_zero, add_smul]
   module
 
+/- English proof (translation)
+Simplify using `[trv]`.
+-/
 theorem trv_zero : trv σ J x 0 = 1 := by simp [trv]
 
+/- English proof (translation)
+Use `set c : Fin n → E := J *ᵥ fun i => σ (x i) with hc`. Establish `hsc : (fun i => σ (c i)) = -(x ᵥ* J)`. Use extensionality with `j`. Simplify using `only [hc, Matrix.mulVec, dotProduct, map_sum, Pi.neg_apply, Matrix.vecMul]`. Rewrite using `[← Finset.sum_neg_distrib]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => by rw [map_mul, hσ, hJ]; ring`. Establish `hT : (trv σ J x f)ᵀ = 1 - f • Matrix.vecMulVec c x`. Simplify using `[trv, Matrix.transpose_sub, Matrix.transpose_smul, Matrix.transpose_vecMulVec, hc]`. Establish `hM : (trv σ J x f).map σ = 1 - f • Matrix.vecMulVec (fun i => σ (x i)) (fun i => σ (c i))`. Use extensionality with `i j`.
+
+Simplify using `[trv, Matrix.one_apply, Matrix.vecMulVec_apply, apply_ite σ, hf, hc]`. Use `set V := Matrix.vecMulVec c (x ᵥ* J) with hV`. Establish `h1 : Matrix.vecMulVec c x * J = V` using `vmv_mul _ _ _`. Establish `h2 : J * Matrix.vecMulVec (fun i => σ (x i)) (fun i => σ (c i)) = -V`. Rewrite using `[mul_vmv, hsc, vmv_neg]`.
+
+Establish `h3 : V * Matrix.vecMulVec (fun i => σ (x i)) (fun i => σ (c i)) = 0`. Rewrite using `[vmv_mul_vmv, ← Matrix.dotProduct_mulVec]`. Express the relevant statement in the definitionally equal form `form σ J x x • _ = _`. Rewrite using `[hxx, zero_smul]`. Rewrite using `[hT, hM, sub_mul, one_mul, smul_mul_assoc, h1]`.
+
+Simplify using `only [sub_mul, mul_sub, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, h2, h3, smul_zero, smul_neg]`. Use `module`.
+-/
 theorem trv_unitary (hσ : ∀ e, σ (σ e) = e) (hJ : ∀ i j, σ (J j i) = -J i j) (hxx : form σ J x x = 0) {f : E}
     (hf : σ f = f) : (trv σ J x f)ᵀ * J * (trv σ J x f).map σ = J := by
   set c : Fin n → E := J *ᵥ fun i => σ (x i) with hc
@@ -83,6 +114,11 @@ namespace GlobalTheory.LiftCentral
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `only [form, Matrix.mulVec, dotProduct, map_sum, map_mul, hσ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hJ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_swap_skew {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hσ : ∀ e, σ (σ e) = e)
     (hJ : ∀ i j, σ (J j i) = -J i j) (x y : Fin n → E) : form σ J y x = -σ (form σ J x y) := by
   simp only [form, Matrix.mulVec, dotProduct, map_sum, map_mul, hσ, Finset.mul_sum]
@@ -92,6 +128,15 @@ theorem form_swap_skew {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [hJ]; ring
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mulVec_surjective_iff_isUnit]`. Establish `hL : (W.L : Set (Fin (m + 2) → E)) ⊆ LinearMap.range (Matrix.mulVecLin (basQ H))`. Introduce `z hz`. Take `⟨s, t, u, -, -, -, rfl⟩` from `hH.split z hz`. Use `⟨fun i => Sum.elim (Sum.elim (fun _ => s) u) (fun _ => t) (ixE m i), ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `q`. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, basQ, Matrix.submatrix_apply, id]`. Rewrite using `[(ixE m).sum_comp (fun j => basP H q j * Sum.elim (Sum.elim (fun _ => s) u) (fun _ => t) j)]`. Simplify using `[Fintype.sum_sum_type, basP, Matrix.mulVec, dotProduct, mul_comm]`. Establish `htop : Submodule.span E (W.L : Set (Fin (m + 2) → E)) = ⊤` using `by haveI := hW.lat`.
+
+Conclude with `Submodule.IsLattice.span_eq_top`. Introduce `z`. Establish `hz : z ∈ LinearMap.range (Matrix.mulVecLin (basQ H))`. Establish `h` using `Submodule.span_le.2 hL`. Rewrite `h` using `[htop]`.
+
+Conclude with `h Submodule.mem_top`. Take `⟨v, hv⟩` from `hz`. Conclude with `⟨v, hv⟩`.
+-/
 theorem basQ_isUnit {σ : E →ₐ[F] E} {B : Base F E} {m : ℕ} {W : Spc F E (m + 2)} {r s : ℕ} (hW : W.IsSkew σ B r s)
     {W₁ : Spc F E m} {H : Plane E (m + 2) m} {i₀ i₁ : ℕ} (hH : H.IsAdapted σ B W W₁ i₀ i₁) : IsUnit (basQ H) := by
   rw [← Matrix.mulVec_surjective_iff_isUnit]
@@ -120,10 +165,26 @@ namespace GlobalTheory.LiftCentral
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Apply the tactic sequence `ext ((i | i) | i) ((j | j) | j) <;> simp [Heisenberg₂, Matrix.one_apply, Matrix.fromBlocks, apply_ite φ]`.
+-/
 theorem heis_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {m : ℕ} (a w : Fin m → R) (α : R) :
     (Heisenberg₂ a w α).map φ = Heisenberg₂ (fun k => φ (a k)) (fun k => φ (w k)) (φ α) := by
   ext ((i | i) | i) ((j | j) | j) <;> simp [Heisenberg₂, Matrix.one_apply, Matrix.fromBlocks, apply_ite φ]
 
+/- English proof (translation)
+Establish `hyx : form σ W.J H.y H.x = -1` using `by rw [form_swap_skew hσ hW.skew, hH.xy, map_one]`. Establish `hι : ∀ k, form σ W.J (fun q => H.ι q k) H.x = 0`. Introduce `k`. Establish `h` using `(hH.orth (Pi.single k 1)).1`. Rewrite `h` using `[Matrix.mulVec_single_one]`. Then use the resulting hypothesis.
+
+Establish `hcol : ∀ i, ((W.J *ᵥ fun i => σ (H.x i)) ᵥ* basQ H) ((ixE m).symm i) = form σ W.J (fun q => basP H q i) H.x`. Introduce `i`. Simplify using `only [Matrix.vecMul, form, basQ, Matrix.submatrix_apply, id, Equiv.apply_symm_apply]`. Conclude with `dotProduct_comm _ _`. Establish `hR : ∀ q i, (basQ H * (Heisenberg₂ 0 0 f).submatrix (ixE m) (ixE m)) q ((ixE m).symm i) = ∑ i', basP H q i' * Heisenberg₂ 0 0 f i' i`.
+
+Introduce `q i`. Simplify using `only [Matrix.mul_apply, basQ, Matrix.submatrix_apply, id, Equiv.apply_symm_apply]`. Conclude with `(ixE m).sum_comp (fun i' => basP H q i' * Heisenberg₂ 0 0 f i' i)`. Establish `hL : ∀ q i, (basQ H) q ((ixE m).symm i) = basP H q i`. Introduce `q i`.
+
+Simplify using `[basQ]`. Rewrite using `[trv, sub_mul, one_mul, smul_mul_assoc, vmv_mul]`. Use extensionality with `q j`. Take `⟨i, rfl⟩` from `(ixE m).symm.surjective j`. Rewrite using `[hR, Matrix.sub_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, hcol, hL]`.
+
+Break down `i with ((i | k) | i)` into its components or cases. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Simplify using `[hH.xx, Fintype.sum_sum_type, Heisenberg₂, Matrix.fromBlocks, basP, Matrix.one_apply]`. Simplify using `[hι, Fintype.sum_sum_type, Heisenberg₂, Matrix.fromBlocks, basP, Matrix.one_apply]`. Take `rfl : i = 0` from `Subsingleton.elim _ _`.
+
+Simplify using `[hyx, Fintype.sum_sum_type, Heisenberg₂, Matrix.fromBlocks, basP, Matrix.one_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trv_mul_basQ {σ : E →ₐ[F] E} {B : Base F E} {m : ℕ} {W : Spc F E (m + 2)} {r s : ℕ} (hσ : ∀ e, σ (σ e) = e)
     (hW : W.IsSkew σ B r s) {W₁ : Spc F E m} {H : Plane E (m + 2) m} {i₀ i₁ : ℕ} (hH : H.IsAdapted σ B W W₁ i₀ i₁)
     (f : E) : trv σ W.J H.x f * basQ H = basQ H * (Heisenberg₂ 0 0 f).submatrix (ixE m) (ixE m) := by
@@ -161,9 +222,21 @@ namespace GlobalTheory.LiftCentral
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `[cA, inclR]`.
+-/
 theorem cA_inclR' (σ : E →ₐ[F] E) (e : E) : cA σ (inclR (F := F) (AF F) e) = inclR (F := F) (AF F) (σ e) := by
   simp [cA, inclR]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ B m W r s hW W₁ H i₀ i₁ hH f hf`. Establish `hxx : form σ W.J H.x H.x = 0` using `hH.xx`. Set `g : GL (Fin (m + 2)) E` to `⟨trv σ W.J H.x f, trv σ W.J H.x (-f), by rw [trv_mul hxx, add_neg_cancel, trv_zero], by rw [trv_mul hxx, neg_add_cancel, trv_zero]⟩`. Establish `hg : (g : Matrix (Fin (m + 2)) (Fin (m + 2)) E)ᵀ * W.J * (g : Matrix (Fin (m + 2)) (Fin (m + 2)) E).map σ = W.J` using `trv_unitary hσ hW.skew hxx hf`. Set `γ : UA σ W.J` to `⟨Matrix.GeneralLinearGroup.map (inclR (F := F) (AF F)) g, by show ((g : Matrix (Fin (m + 2)) (Fin (m + 2)) E).map (inclR (F := F) (AF F)))ᵀ * W.J.map (inclR (F := F) (AF F)) * ((g : Matrix (Fin (m + 2)) (Fin (m + 2)) E).map (inclR (F := F) (AF F))).map (cA σ) = W.J.map (inclR (F …`.
+
+Rewrite using `[Matrix.map_map, show (cA σ ∘ inclR (F := F) (AF F)) = inclR (F := F) (AF F) ∘ σ from funext (cA_inclR' σ), ← Matrix.map_map, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, hg]⟩`. Establish `hmat : mat γ = (trv σ W.J H.x f).map (inclR (F` using `F) (AF F)) := rfl`. Use `⟨γ, Subgroup.mem_subgroupOf.2 ⟨g, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hP : IsUnit (incM F (basQ H)).det`. Rewrite using `[incM, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+
+Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 (basQ_isUnit hW hH)).map _`. Establish `key : mat γ * incM F (basQ H) = incM F (basQ H) * incM F ((Heisenberg₂ 0 0 f).submatrix (ixE m) (ixE m))`. Rewrite using `[hmat, incM, incM, ← Matrix.map_mul, ← Matrix.map_mul, trv_mul_basQ hσ hW hH]`. Unfold `crd`. Rewrite using `[Matrix.mul_assoc, key, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hP, Matrix.one_mul]`.
+
+Establish `h0 : (0 : Fin m → AE F E) = fun k => inclR (F` using `F) (AF F) ((0 : Fin m → E) k) := by ext; simp`. Rewrite using `[h0, ← heis_map (inclR (F := F) (AF F)) 0 0 f]`. Use extensionality with `i j`. Simplify using `[incM]`.
+-/
 theorem exists_rat_heis_center : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), (∀ e, σ (σ e) = e) → ∀ (B : Base F E) {m : ℕ} (W : Spc F E (m + 2)) (r s : ℕ), W.IsSkew σ B r s →
     ∀ (W₁ : Spc F E m) (H : Plane E (m + 2) m) (i₀ i₁ : ℕ), H.IsAdapted σ B W W₁ i₀ i₁ → ∀ f : E, σ f = f → ∃ γ ∈ ratU σ W.J, crd H γ = Heisenberg₂ 0 0 (inclR (F := F) (AF F) f) := by
   intro F E _ _ _ _ _ σ hσ B m W r s hW W₁ H i₀ i₁ hH f hf

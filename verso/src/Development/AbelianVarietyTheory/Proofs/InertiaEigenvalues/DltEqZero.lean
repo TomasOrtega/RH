@@ -51,23 +51,41 @@ def Win (I I' : Finset ι) (L k : ℕ) (p : ι → ℤ) : Prop :=
 def Mid (S : Finset ι) (L k : ℕ) (p : ι → ℤ) : Prop :=
   ∀ i ∉ S, (L : ℤ) ≤ p i ∧ p i ≤ 2 * k - L
 
+/- English proof (translation)
+Unfold `UQ.eta val`. Rewrite using `[map_mul, WithZero.log_mul (by simpa using hx) (by simpa using hy), neg_add, zpow_add₀ (by norm_num)]`.
+-/
 theorem eta_mul {x y : K.E} (hx : x ≠ 0) (hy : y ≠ 0) : K.eta (x * y) = K.eta x * K.eta y := by
   unfold UQ.eta val
   rw [map_mul, WithZero.log_mul (by simpa using hx) (by simpa using hy), neg_add, zpow_add₀ (by norm_num)]
 
+/- English proof (translation)
+Unfold `UQ.eta`. Rewrite using `[← mul_zpow]`. Simplify using the standard rewrite rules.
+-/
 theorem eta_sq (x : K.E) : K.eta x * K.eta x = 1 := by
   unfold UQ.eta
   rw [← mul_zpow]; simp
 
+/- English proof (translation)
+Unfold `UQ.eta`. Simplify using the standard rewrite rules.
+-/
 theorem abs_eta (x : K.E) : |K.eta x| = 1 := by
   unfold UQ.eta; simp
 
+/- English proof (translation)
+Apply the tactic sequence `unfold indM; split_ifs <;> simp`.
+-/
 theorem abs_indM (M : Submodule K.O B.A) (y : B.A) : |indM B M y| ≤ 1 := by
   unfold indM; split_ifs <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `unfold indD; split_ifs <;> simp`.
+-/
 theorem abs_indD (M : Submodule K.O B.A) (y : B.A) : |indD B M y| ≤ 1 := by
   unfold indD; split_ifs <;> simp
 
+/- English proof (translation)
+The claim follows from `|dlt π I f y| ≤ 2 ^ I.card := by unfold dlt refine (Finset.abs_sum_le_sum_abs _ _).trans ?_ calc ∑ J ∈ I.powerset, |(-1 : ℚ) ^ J.card * f ((∏ j ∈ J, π j) * y)| ≤ ∑ J ∈ I.powerset, (1 : ℚ) := Finset.sum_le_sum fun J _ => by rw [abs_mul, abs_pow, abs_neg, abs_one, one_pow, one_mul] …`.
+-/
 theorem abs_dlt {A : Type} [CommMonoid A] (π : ι → A) (I : Finset ι) (f : A → ℚ) (hf : ∀ y, |f y| ≤ 1) (y : A) :
     |dlt π I f y| ≤ 2 ^ I.card := by
   unfold dlt
@@ -76,12 +94,20 @@ theorem abs_dlt {A : Type} [CommMonoid A] (π : ι → A) (I : Finset ι) (f : A
         Finset.sum_le_sum fun J _ => by rw [abs_mul, abs_pow, abs_neg, abs_one, one_pow, one_mul]; exact hf _
     _ = 2 ^ I.card := by simp [Finset.card_powerset]
 
+/- English proof (translation)
+The claim follows from `|term B π I I' u s M| ≤ 2 ^ I.card * 2 ^ I'.card := by unfold term rw [abs_mul] exact mul_le_mul (abs_dlt _ _ _ (abs_indM B M) _) (abs_dlt _ _ _ (abs_indD B M) _) (abs_nonneg _) (by positivity)`.
+-/
 theorem abs_term (π : ι → B.A) (I I' : Finset ι) (u s : B.A) (M : Submodule K.O B.A) :
     |term B π I I' u s M| ≤ 2 ^ I.card * 2 ^ I'.card := by
   unfold term
   rw [abs_mul]
   exact mul_le_mul (abs_dlt _ _ _ (abs_indM B M) _) (abs_dlt _ _ _ (abs_indD B M) _) (abs_nonneg _) (by positivity)
 
+/- English proof (translation)
+Unfold `dlt`. Rewrite using `[← Finset.insert_erase hi, Finset.sum_powerset_insert (Finset.notMem_erase i I)]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun J hJ => ?_` and prove the remaining obligations. Establish `hJ' : i ∉ J` using `fun h => Finset.notMem_erase i I (Finset.mem_powerset.1 hJ h)`.
+
+Rewrite using `[Finset.prod_insert hJ', Finset.card_insert_of_notMem hJ', mul_assoc, h J (Finset.mem_powerset.1 hJ)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dlt_eq_zero {A : Type} [CommMonoid A] (π : ι → A) (I : Finset ι) (f : A → ℚ) (y : A) (i : ι) (hi : i ∈ I)
     (h : ∀ J ⊆ I.erase i, f (π i * ((∏ j ∈ J, π j) * y)) = f ((∏ j ∈ J, π j) * y)) : dlt π I f y = 0 := by
   unfold dlt

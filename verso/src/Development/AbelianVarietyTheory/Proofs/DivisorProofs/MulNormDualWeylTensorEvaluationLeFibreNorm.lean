@@ -12,6 +12,11 @@ noncomputable section
 
 namespace GlobalTheory.TSup
 
+/- English proof (translation)
+Rewrite using `[← coe_basis]`. Establish `h : basis la ℂ j = ∑ i, onMat la i j • (toSpace la).symm (onBasis la i)`. Apply `(toSpace la).injective` to reduce the goal to its premises. Rewrite using `[map_sum]`. Simplify using `only [map_smul, LinearEquiv.apply_symm_apply, onMat, Matrix.of_apply]`.
+
+Conclude with `((onBasis la).sum_repr _).symm`. Rewrite using `[h, Submodule.coe_sum, map_sum]`. Simplify using `[Submodule.coe_smul, map_smul]`.
+-/
 theorem evalAt_intVec {n : ℕ} (la : Fin n → ℕ) (y : Matrix (Fin n) (Fin n) ℂ) (j : Idx la) :
     evalAt y (map (Int.castRingHom ℂ) (intVec la j)) =
       ∑ i, onMat la i j * evalAt y (((toSpace la).symm (onBasis la i) : nabla la ℂ) : Pol n ℂ) := by
@@ -26,6 +31,11 @@ theorem evalAt_intVec {n : ℕ} (la : Fin n → ℕ) (y : Matrix (Fin n) (Fin n)
 
 variable {T : Type} [Fintype T] [DecidableEq T] {N : T → ℕ}
 
+/- English proof (translation)
+Unfold `tval`. Repeatedly rewrite using `[evalAt_intVec, Fintype.prod_sum, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct, kron, Matrix.of_apply, Finset.sum_mul, Finset.prod_mul_distrib]`.
+
+Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tval_eq_onb (la : ∀ t, Fin (N t) → ℕ) (z : TIdx la → ℂ) (y : ∀ t, Matrix (Fin (N t)) (Fin (N t)) ℂ) :
     tval la z y = ∑ J : TIdx la, ((kron fun t => onMat (la t)) *ᵥ z) J *
       ∏ t, evalAt (y t) (((toSpace (la t)).symm (onBasis (la t) (J t)) : nabla (la t) ℂ) : Pol (N t) ℂ) := by
@@ -37,6 +47,9 @@ theorem tval_eq_onb (la : ∀ t, Fin (N t) → ℕ) (z : TIdx la → ℂ) (y : �
   refine Finset.sum_congr rfl fun I _ => ?_
   ring
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `[norm_mul]`. Use `_ ≤ _ := Real.sum_mul_le_sqrt_mul_sqrt _ _ _`.
+-/
 theorem norm_sum_mul_le {ι : Type} [Fintype ι] (a b : ι → ℂ) :
     ‖∑ i, a i * b i‖ ≤ Real.sqrt (∑ i, ‖a i‖ ^ 2) * Real.sqrt (∑ i, ‖b i‖ ^ 2) := by
   calc ‖∑ i, a i * b i‖ ≤ ∑ i, ‖a i‖ * ‖b i‖ := by
@@ -44,6 +57,21 @@ theorem norm_sum_mul_le {ι : Type} [Fintype ι] (a b : ι → ℂ) :
         simp [norm_mul]
     _ ≤ _ := Real.sum_mul_le_sqrt_mul_sqrt _ _ _
 
+/- English proof (translation)
+Introduce `T _ _ N la hla x X u s hs`. Establish `h1 : tval la x (fun t => X t * (u t).1) = tval la ((kron fun t => rhoMat (la t) (X t)) *ᵥ x) (fun t => (u t).1)`. Establish `h` using `GlobalTheory.T.dualWeylTensorEvaluation_translate_kronecker T N la ℂ ℂ (RingHom.id ℂ) x X (fun t => (u t).1)`. Simplify `h` using `only [RingHom.id_apply, RingHom.coe_id, Matrix.map_id]`. Establish `hk` using `(GlobalTheory.T.kroneckerProductFamily_mul_one_det T (fun t => Idx (la t)) ℂ (fun t => onMat (la t)) (fun t => rhoMat (la t) (X t))).1`.
+
+Use `set E : TIdx la → ℂ := fun J => ∏ t, evalAt (u t).1 (((toSpace (la t)).symm (onBasis (la t) (J t)) : nabla (la t) ℂ) : Pol (N t) ℂ) with hE`. Establish `h2 : (s : ℂ) * tval la x (fun t => X t * (u t).1) = ∑ J, (fibY la s X *ᵥ x) J * E J`. Rewrite using `[h1, tval_eq_onb, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Establish `hsm : ∀ (M : Matrix (TIdx la) (TIdx la) ℂ) (v : TIdx la → ℂ), ((s : ℂ) • M) *ᵥ v = (s : ℂ) • (M *ᵥ v)`.
+
+Introduce `M v`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc]`. Rewrite using `[fibY, hsm, ← hk, ← Matrix.mulVec_mulVec, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h3 : ∑ J, ‖E J‖ ^ 2 ≤ 1`. Establish `: ∑ J, ‖E J‖ ^ 2 = ∏ t, ∑ i, ‖evalAt (u t).1 (((toSpace (la t)).symm (onBasis (la t) i) : nabla (la t) ℂ) : Pol (N t) ℂ)‖ ^ 2`. Rewrite using `[Fintype.prod_sum]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Simplify using `only [hE, norm_prod, Finset.prod_pow]`.
+
+Rewrite using `[this]`. Conclude with `Finset.prod_le_one (fun t _ => Finset.sum_nonneg fun _ _ => by positivity) (fun t _ => GlobalTheory.T.dualWeyl_orthonormal_basis_values_at_unitary_sum_sq_le_one (N t) (la t) (hla t) (u t))`. Establish `h4 : s * ‖tval la x (fun t => X t * (u t).1)‖ = ‖(s : ℂ) * tval la x (fun t => X t * (u t).1)‖`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg hs]`. Rewrite using `[h4, h2]`.
+
+Use `(norm_sum_mul_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left ?_ (Real.sqrt_nonneg _)` and prove the remaining obligations. Rewrite using `[Real.sqrt_le_one]`. Conclude with `h3`.
+
+Use `_ = _ := mul_one _`.
+-/
 theorem mul_norm_tval_le_fibNorm : ∀ (T : Type) [Fintype T] [DecidableEq T] (N : T → ℕ) (la : ∀ t, Fin (N t) → ℕ), (∀ t, Antitone (la t)) → ∀ (x : TIdx la → ℂ) (X : ∀ t, Matrix (Fin (N t)) (Fin (N t)) ℂ) (u : ∀ t, UN (N t)) (s : ℝ), 0 ≤ s → s * ‖tval la x (fun t => X t * (u t).1)‖ ≤ Real.sqrt (∑ I, ‖(fibY la s X *ᵥ x) I‖ ^ 2) := by
   intro T _ _ N la hla x X u s hs
   have h1 : tval la x (fun t => X t * (u t).1) =

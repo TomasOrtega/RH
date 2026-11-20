@@ -9,6 +9,13 @@ namespace Formalism.MainNotions.PairMembershipBlocks
 
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNotions.SourceCleaning Formalism.MainNotions.Pf14 Formalism.MainNotions.PlaneGramData Formalism.MainNotions.TestSideCounting Formalism.MainNotions.TestSideWords Formalism.MainNotions.Proposition5Numerics
 
+/- English proof (translation)
+Unfold `valS sDegs`. Establish `ht : twistSub LL S (lastIdx n) A = twistSub LL S' (lastIdx n) A`. Unfold `twistSub`. Simplify using `only [MvPolynomial.coe_eval₂Hom]`. Apply `MvPolynomial.eval₂_congr` to reduce the goal to its premises.
+
+Introduce `v c hv hc`. Establish `hvL : v.1 ∈ L` using `(MvPolynomial.mem_supported.mp hA) ((MvPolynomial.mem_vars v).mpr ⟨c, MvPolynomial.mem_support_iff.mpr hc, hv⟩)`. Distinguish the cases in `hS : v.1 ∈ S`. Establish `hS' : v.1 ∈ S'` using `(h v.1 hvL).mp hS`. Simplify using `only [hS, hS', if_true]`.
+
+Establish `hS' : v.1 ∉ S'` using `fun h' => hS ((h v.1 hvL).mpr h')`. Simplify using `only [hS, hS', if_false]`. Rewrite using `[ht]`.
+-/
 theorem valS_congr_supp {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] (LL : Letters ι) (S S' L : Set ι)
     (A : MvPolynomial (ι × Fin n) R) (hA : A ∈ supported R {v : ι × Fin n | v.1 ∈ L})
     (h : ∀ y ∈ L, y ∈ S ↔ y ∈ S') : valS LL S A = valS LL S' A := by
@@ -27,6 +34,9 @@ theorem valS_congr_supp {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero 
       simp only [hS, hS', if_false]
   rw [ht]
 
+/- English proof (translation)
+Unfold `sl g2mg Bo levDeg`. Rewrite using `[show Y * (((r + K : ℕ) : ℝ)) ^ 2 = (((r + K : ℕ) : ℝ)) ^ 2 * Y from mul_comm _ _]`. Establish `h1` using `Int.self_le_toNat ⌊(deg (posOf n' (F.oldest j x)) : ℝ) / (p : ℝ) ^ F.dist j (F.oldest j x) / ((((r + K : ℕ) : ℝ)) ^ 2 * Y)⌋`. Rewrite `h1` using `[Int.floor_toNat]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sl_le_g2mg (p n' : ℕ) [NeZero n'] (r K : ℕ) (F : Frames n' r) (deg : Fin n' → ℕ) (mS : ℕ) (Y : ℝ) (j x : ℤ) :
     (mS : ℤ) + sl p F deg Y (r + K) j x ≤ g2mg p n' r K F deg mS Y j x := by
   unfold sl g2mg Bo levDeg
@@ -40,6 +50,13 @@ section Geo
 
 variable {n' r : ℕ} [NeZero n'] {Fr : Frames n' r} {L₁ N₁ : ℕ}
 
+/- English proof (translation)
+Take `⟨k, hk, rfl⟩` from `List.mem_iff_getElem.1 hy`. Establish `hp` using `List.pairwise_iff_getElem.1 hs`. Break down `Nat.lt_or_ge k b with h | h` into its components or cases. Break down `Nat.lt_or_ge k a with h' | h'` into its components or cases. Conclude with `lt_asymm h1 (hp k a hk (by omega) h')`.
+
+Establish `: k = a` using `by omega`. Substitute `this` using the available equality. Conclude with `lt_irrefl _ h1`. Break down `Nat.lt_or_ge b k with h' | h'` into its components or cases. Conclude with `lt_asymm h2 (hp b k hb hk h')`.
+
+Establish `: k = b` using `by omega`. Substitute `this` using the available equality. Conclude with `lt_irrefl _ h2`.
+-/
 private theorem false_of_mem_between_adjacent_of_pairwise_lt (L : List ℤ) (hs : L.Pairwise (· < ·)) (a b : ℕ) (hb : b < L.length)
     (hab : b = a + 1) (y : ℤ) (hy : y ∈ L) (h1 : L[a]'(by omega) < y) (h2 : y < L[b]) : False := by
   obtain ⟨k, hk, rfl⟩ := List.mem_iff_getElem.1 hy
@@ -56,6 +73,11 @@ private theorem false_of_mem_between_adjacent_of_pairwise_lt (L : List ℤ) (hs 
       subst this
       exact lt_irrefl _ h2
 
+/- English proof (translation)
+Take `⟨k, hk, rfl⟩` from `List.mem_iff_getElem.1 hy`. Establish `hp` using `List.pairwise_iff_getElem.1 hs`. Break down `Nat.lt_or_ge k a with h | h` into its components or cases. Conclude with `lt_asymm h1 (hp k a hk (by omega) h)`. Establish `: k = a` using `by omega`.
+
+Substitute `this` using the available equality. Conclude with `lt_irrefl _ h1`.
+-/
 private theorem false_of_mem_gt_last_of_pairwise_lt (L : List ℤ) (hs : L.Pairwise (· < ·)) (a : ℕ) (ha : a + 1 = L.length)
     (y : ℤ) (hy : y ∈ L) (h1 : L[a]'(by omega) < y) : False := by
   obtain ⟨k, hk, rfl⟩ := List.mem_iff_getElem.1 hy
@@ -66,6 +88,29 @@ private theorem false_of_mem_gt_last_of_pairwise_lt (L : List ℤ) (hs : L.Pairw
     subst this
     exact lt_irrefl _ h1
 
+/- English proof (translation)
+Take `⟨hJ, hper, hmono, hgap, hpos, hnot, hLL, hN1, hold⟩` from `hV`. Use `set N := (Fr.LLset j).card with hNdef`. Use `set L := (Fr.LLset j).sort (· ≤ ·) with hLdef`. Establish `hLlen : L.length = N` using `Finset.length_sort _`. Establish `hsorted : L.Pairwise (· < ·)` using `(Finset.sortedLT_sort _).pairwise`.
+
+Establish `hNr : r ≤ N` using `(hLL j).1`. Establish `hLpos : ∀ k (hk : k < N), llPos Fr j k = L[k]'(by omega)` using `fun k hk => by`. Unfold `llPos`. Rewrite using `[← hLdef, List.getD_eq_getElem]`. Establish `hLmem : ∀ k (hk : k < N), L[k]'(by omega) ∈ Fr.LLset j` using `fun k hk => (Finset.mem_sort _).1 (List.getElem_mem _)`.
+
+Establish `hLLb : ∀ z ∈ Fr.LLset j, Fr.fr (j - 1) (r - 1) < z ∧ z < Fr.fr j 0` using `fun z hz => Finset.mem_Ioo.1 (Finset.mem_filter.1 hz).1`. Establish `hinLL : ∀ z ∈ Fr.letters j, Fr.fr (j - 1) (r - 1) < z → z < Fr.fr j 0 → z ∈ Fr.LLset j` using `fun z hz h1 h2 => Finset.mem_filter.2 ⟨Finset.mem_Ioo.2 ⟨h1, h2⟩, (Finset.mem_filter.1 hz).2⟩`. Establish `key : posU Fr N j (u - 1) < posU Fr N j u ∧ ∀ z ∈ Fr.letters j, posU Fr N j (u - 1) < z → z < posU Fr N j u → False`. Distinguish the cases in `hu1 : u < N`. Establish `hpu : posU Fr N j u = L[u]'(by omega)`.
+
+Unfold `posU`. Rewrite using `[if_pos hu1, hLpos u hu1]`. Establish `hpu1 : posU Fr N j (u - 1) = L[u - 1]'(by omega)`. Unfold `posU`. Rewrite using `[if_pos (by omega), hLpos (u - 1) (by omega)]`.
+
+Rewrite using `[hpu, hpu1]`. Use `⟨List.pairwise_iff_getElem.1 hsorted _ _ _ _ (by omega), fun z hz hz1 hz2 => ?_⟩` and prove the remaining obligations. Establish `hzLL` using `hinLL z hz (lt_trans (hLLb _ (hLmem (u - 1) (by omega))).1 hz1) (lt_trans hz2 (hLLb _ (hLmem u hu1)).2)`. Conclude with `false_of_mem_between_adjacent_of_pairwise_lt L hsorted (u - 1) u (by omega) (by omega) z ((Finset.mem_sort _).2 hzLL) hz1 hz2`. Distinguish the cases in `hu2 : u = N`.
+
+Establish `hpu : posU Fr N j u = Fr.fr j 0`. Unfold `posU`. Rewrite using `[if_neg hu1, show u - N = 0 by omega]`. Establish `hpu1 : posU Fr N j (u - 1) = L[u - 1]'(by omega)`. Unfold `posU`.
+
+Rewrite using `[if_pos (by omega), hLpos (u - 1) (by omega)]`. Rewrite using `[hpu, hpu1]`. Use `⟨(hLLb _ (hLmem (u - 1) (by omega))).2, fun z hz hz1 hz2 => ?_⟩` and prove the remaining obligations. Establish `hzLL` using `hinLL z hz (lt_trans (hLLb _ (hLmem (u - 1) (by omega))).1 hz1) hz2`. Conclude with `false_of_mem_gt_last_of_pairwise_lt L hsorted (u - 1) (by omega) z ((Finset.mem_sort _).2 hzLL) hz1`.
+
+Establish `hpu : posU Fr N j u = Fr.fr j (u - N)`. Unfold `posU`. Rewrite using `[if_neg hu1]`. Establish `hpu1 : posU Fr N j (u - 1) = Fr.fr j (u - 1 - N)`. Unfold `posU`.
+
+Rewrite using `[if_neg (by omega)]`. Rewrite using `[hpu, hpu1]`. Establish `hi : u - 1 - N + 1 = u - N` using `by omega`. Establish `hir : u - 1 - N + 1 < r` using `by omega`. Use `⟨by rw [← hi]; exact hmono j _ hir, fun z hz hz1 hz2 => ?_⟩` and prove the remaining obligations.
+
+Conclude with `hnot j (u - 1 - N) z hir hz1 (by rw [hi]; exact hz2) (Finset.mem_filter.1 hz).2`. Prove the components needed by the constructor for the conclusion. Introduce `hle`. Conclude with `lt_of_le_of_lt hle key.1`. Introduce `hlt`.
+
+Assume the negation of the conclusion as `hgt`. Use `push_neg at hgt`. Conclude with `key.2 y hy hgt hlt`.
+-/
 theorem le_pred_iff (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (j : ℤ) (u : ℕ) (h1 : 1 ≤ u) (hu : u < (Fr.LLset j).card + r)
     (y : ℤ) (hy : y ∈ Fr.letters j) :
     y ≤ posU Fr (Fr.LLset j).card j (u - 1) ↔ y < posU Fr (Fr.LLset j).card j u := by
@@ -129,6 +174,13 @@ theorem le_pred_iff (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (j : ℤ) (u : ℕ)
     push_neg at hgt
     exact key.2 y hy hgt hlt
 
+/- English proof (translation)
+Establish `hfilt : (Fr.letters j).filter (fun z => Even z ∧ z < posU Fr (Fr.LLset j).card j (u - 1)) = (Fr.letters j).filter (fun z => Even z ∧ z < posU Fr (Fr.LLset j).card j u)`. Apply `Finset.filter_congr` to reduce the goal to its premises. Introduce `z hz`. Establish `hiff` using `le_pred_iff hV hr j u h1 hu z hz`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨he, hlt⟩`. Conclude with `⟨he, hiff.1 hlt.le⟩`. Introduce and unpack `⟨he, hlt⟩`. Use `⟨he, lt_of_le_of_ne (hiff.2 hlt) ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Conclude with `hodd he`. Simplify using `only [Frames.oldest, hfilt]`.
+-/
 theorem oldest_pred (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (j : ℤ) (u : ℕ) (h1 : 1 ≤ u) (hu : u < (Fr.LLset j).card + r)
     (hodd : ¬ Even (posU Fr (Fr.LLset j).card j (u - 1))) :
     Fr.oldest j (posU Fr (Fr.LLset j).card j (u - 1)) = Fr.oldest j (posU Fr (Fr.LLset j).card j u) := by
@@ -148,6 +200,23 @@ theorem oldest_pred (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (j : ℤ) (u : ℕ)
 
 end Geo
 
+/- English proof (translation)
+Introduce `p n' r K _ _ _ O _ Fr L₁ N₁ hV deg Y mS J _ nL hJ hnL j A G M hA hc ka hN u hu`. Establish `hr : 1 ≤ r` using `NeZero.pos r`. Establish `e` using `hnL j`. Unfold `thStar`. Simplify using `only [e] at hu hN ⊢`.
+
+Take `⟨hxm, hxw⟩` from `posU_mem' hV hr (segZ j) u hu`. Take `⟨c1, c2, c3⟩` from `hc _ hxm hxw`. Introduce `k hk`. Establish `hB : Bo p Fr deg (segZ j) (posU Fr (Fr.LLset (segZ j)).card (segZ j) u) / 2 ≤ (k : ℝ)` using `c3 k hk`. Use `max_le hB (max_le ?_ ?_)` and prove the remaining obligations.
+
+Use `split_ifs with h1`. Take `⟨d1, d2⟩` from `c1 h1`. Establish `k1` using `(hN u hu _).2 d1`. Rewrite `d2` using `[hk]`. Establish `d3` using `WithTop.coe_le_coe.1 d2`.
+
+Establish `s1` using `sl_le_g2mg p n' r K Fr deg mS Y (segZ j) (posU Fr (Fr.LLset (segZ j)).card (segZ j) u)`. Establish `: ka j (u + 1) 0 + (mS : ℤ) + sl p Fr deg Y (r + K) (segZ j) (posU Fr (Fr.LLset (segZ j)).card (segZ j) u) ≤ k` using `by linarith`. Conclude with `this` after adjusting the coercions. Conclude with `hB`. Use `split_ifs with h2`.
+
+Take `⟨h21, h22⟩` from `h2`. Take `⟨hxm', hxw'⟩` from `posU_mem' hV hr (segZ j) (u - 1) (by omega)`. Take `⟨-, c2', -⟩` from `hc _ hxm' hxw'`. Take `⟨d1, d2⟩` from `c2' h22`. Establish `k1` using `(hN (u - 1) (by omega) _).1 d1`.
+
+Establish `ev : valS LZ {y | y ≤ posU Fr (Fr.LLset (segZ j)).card (segZ j) (u - 1)} A = valS LZ {y | y < posU Fr (Fr.LLset (segZ j)).card (segZ j) u} A` using `valS_congr_supp LZ _ _ {y | y ∈ Fr.letters (segZ j)} A hA (fun y hy => le_pred_iff hV hr (segZ j) u h21 hu y hy)`. Rewrite `d2` using `[ev, hk]`. Establish `d3` using `WithTop.coe_le_coe.1 d2`. Establish `s1` using `sl_le_g2mg p n' r K Fr deg mS Y (segZ j) (posU Fr (Fr.LLset (segZ j)).card (segZ j) u)`. Establish `eo` using `oldest_pred hV hr (segZ j) u h21 hu h22`.
+
+Establish `eg : g2mg p n' r K Fr deg mS Y (segZ j) (posU Fr (Fr.LLset (segZ j)).card (segZ j) (u - 1)) = g2mg p n' r K Fr deg mS Y (segZ j) (posU Fr (Fr.LLset (segZ j)).card (segZ j) u)`. Unfold `g2mg`. Rewrite using `[eo]`. Rewrite `d3` using `[eg]`. Establish `: ka j (u - 1) 0 + (mS : ℤ) + sl p Fr deg Y (r + K) (segZ j) (posU Fr (Fr.LLset (segZ j)).card (segZ j) u) ≤ k` using `by linarith`.
+
+Conclude with `this` after adjusting the coercions. Conclude with `hB`.
+-/
 theorem restTh : RestTh := by
   intro p n' r K _ _ _ O _ Fr L₁ N₁ hV deg Y mS J _ nL hJ hnL j A G M hA hc ka hN u hu
   have hr : 1 ≤ r := NeZero.pos r

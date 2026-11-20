@@ -13,6 +13,13 @@ def RInvA (φ : (Fin (n + 1) × Fin (n + 1) → ℂ) → ℂ) : Prop :=
   ∀ (x : Fin (n + 1) × Fin (n + 1) → ℂ) (a b : Fin (n + 1)) (t : ℂ), a < b → b.val < n →
     φ (lhwline_rowOp a b t x) = φ x
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Use `congr 1`. Consider the case `insert b S hb ih`. Establish `hpS : p ∉ S` using `fun h => lt_irrefl p (hS p (Finset.mem_insert_of_mem h)).1`.
+
+Establish `hpb` using `hS b (Finset.mem_insert_self b S)`. Establish `heq : lhwline_mrow p (insert b S) t x = lhwline_rowOp p b (t b) (lhwline_mrow p S t x)`. Use function extensionality and compare the values at `v`. Simplify using `only [lhwline_mrow, lhwline_rowOp, Finset.mem_insert]`. Distinguish the cases in `hv : v.1 = b`.
+
+Simplify using `[hv, hb, hpS]`. Simplify using `[hv]`. Rewrite using `[heq, hφ _ p b _ hpb.1 hpb.2, ih fun b' hb' => hS b' (Finset.mem_insert_of_mem hb')]`.
+-/
 theorem mrow_invA (φ : (Fin (n + 1) × Fin (n + 1) → ℂ) → ℂ) (hφ : RInvA φ) (p : Fin (n + 1))
     (t : Fin (n + 1) → ℂ) (x : Fin (n + 1) × Fin (n + 1) → ℂ) (S : Finset (Fin (n + 1)))
     (hS : ∀ b ∈ S, p < b ∧ b.val < n) :
@@ -35,6 +42,9 @@ def stepA (p q : Fin (n + 1)) (x : Fin (n + 1) × Fin (n + 1) → ℂ) : Fin (n 
   let y := lhwline_mrow p (Finset.univ.filter fun b => p < b ∧ b.val < n) (fun b => -(x (b, q) / x (p, q))) x
   lhwline_mcol q (Finset.univ.filter fun j => q < j) (fun j => -(y (p, j) / y (p, q))) y
 
+/- English proof (translation)
+Unfold `stepA`. Simplify using `only`. Rewrite using `[lhwline_mcol_inv φ hC _ _ _ _ (fun j hj => (Finset.mem_filter.mp hj).2), mrow_invA φ hR _ _ _ _ (fun b hb => (Finset.mem_filter.mp hb).2)]`.
+-/
 theorem stepA_inv (φ : (Fin (n + 1) × Fin (n + 1) → ℂ) → ℂ) (hR : RInvA φ) (hC : lhwline_CInv φ)
     (p q : Fin (n + 1)) (x : Fin (n + 1) × Fin (n + 1) → ℂ) : φ (stepA p q x) = φ x := by
   unfold stepA
@@ -47,6 +57,11 @@ def elimA : ℕ → (Fin (n + 1) × Fin (n + 1) → ℂ) → (Fin (n + 1) × Fin
   | k + 1, x =>
     if h : k < n then stepA ⟨k, by omega⟩ ⟨k, by omega⟩ (elimA k x) else elimA k x
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Simplify using `only [elimA]`. Use `split_ifs`.
+
+Rewrite using `[stepA_inv φ hR hC, ih]`. Conclude with `ih`.
+-/
 theorem elimA_inv (φ : (Fin (n + 1) × Fin (n + 1) → ℂ) → ℂ) (hR : RInvA φ) (hC : lhwline_CInv φ)
     (k : ℕ) (x : Fin (n + 1) × Fin (n + 1) → ℂ) : φ (elimA k x) = φ x := by
   induction k with
@@ -60,6 +75,9 @@ theorem elimA_inv (φ : (Fin (n + 1) × Fin (n + 1) → ℂ) → ℂ) (hR : RInv
 def clearedA (k : ℕ) (x : Fin (n + 1) × Fin (n + 1) → ℂ) : Prop :=
   ∀ (a j : Fin (n + 1)), a.val < n → a.val ≠ j.val → (a.val < k ∨ j.val < k) → x (a, j) = 0
 
+/- English proof (translation)
+Simplify using `only [stepA, lhwline_mcol, lhwline_mrow, Finset.mem_filter, Finset.mem_univ, true_and, lt_irrefl, false_and, if_false]`. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem stepA_apply (p q : Fin (n + 1)) (x : Fin (n + 1) × Fin (n + 1) → ℂ) (a j : Fin (n + 1)) :
     stepA p q x (a, j) =
       (if p < a ∧ a.val < n then x (a, j) + -(x (a, q) / x (p, q)) * x (p, j) else x (a, j)) +
@@ -69,6 +87,17 @@ theorem stepA_apply (p q : Fin (n + 1)) (x : Fin (n + 1) × Fin (n + 1) → ℂ)
     lt_irrefl, false_and, if_false]
   split_ifs <;> ring
 
+/- English proof (translation)
+Introduce `a j ha hne hlt`. Rewrite using `[stepA_apply]`. Simplify using `only [Fin.lt_def]`. Break down `lt_trichotomy j.val k with hj | hj | hj` into its components or cases. Establish `h1 : y (⟨k, by omega⟩, j) = 0` using `hy _ _ (by show k < n; omega) (by show k ≠ j.val; omega) (Or.inr hj)`.
+
+Establish `h2 : y (a, j) = 0` using `hy _ _ ha hne (Or.inr hj)`. Rewrite using `[if_neg (show ¬ k < j.val by omega)]`. Apply the tactic sequence `split_ifs <;> simp [h1, h2]`. Establish `hjq : j = ⟨k, by omega⟩` using `Fin.ext hj`. Rewrite using `[hjq]`.
+
+Simplify using `only [Fin.val_mk, lt_irrefl, if_false, add_zero]`. Use `split_ifs with ha'`. Rewrite using `[neg_mul, div_mul_cancel₀ _ hp, add_neg_cancel]`. Rewrite using `[← hjq]`. Conclude with `hy _ _ ha hne (Or.inl (by omega))`.
+
+Establish `ha2 : a.val ≤ k` using `by omega`. Establish `hka : ¬ (k < a.val ∧ a.val < n)` using `by omega`. Simplify using `only [if_neg hka, if_pos hj]`. Break down `lt_or_eq_of_le ha2 with ha2 | ha2` into its components or cases. Establish `h1 : y (a, j) = 0` using `hy _ _ ha hne (Or.inl ha2)`.
+
+Establish `h2 : y (a, ⟨k, by omega⟩) = 0` using `hy _ _ ha (by show a.val ≠ k; omega) (Or.inl ha2)`. Simplify using `[h1, h2]`. Establish `hap : a = ⟨k, by omega⟩` using `Fin.ext ha2`. Rewrite using `[hap, neg_mul, div_mul_cancel₀ _ hp, add_neg_cancel]`.
+-/
 theorem stepA_cleared (k : ℕ) (hk : k < n) (y : Fin (n + 1) × Fin (n + 1) → ℂ)
     (hy : clearedA k y) (hp : y (⟨k, by omega⟩, ⟨k, by omega⟩) ≠ 0) :
     clearedA (k + 1) (stepA ⟨k, by omega⟩ ⟨k, by omega⟩ y) := by
@@ -97,6 +126,15 @@ theorem stepA_cleared (k : ℕ) (hk : k < n) (y : Fin (n + 1) × Fin (n + 1) →
     · have hap : a = ⟨k, by omega⟩ := Fin.ext ha2
       rw [hap, neg_mul, div_mul_cancel₀ _ hp, add_neg_cancel]
 
+/- English proof (translation)
+Unfold `lpMinor at hd`. Rewrite `hd` using `[RingHom.map_det]`. Establish `hM : (eval y).mapMatrix (Matrix.of fun p q : Fin (k + 1) => (X (Fin.castLE (show k + 1 ≤ n + 1 by omega) p, Fin.castLE (show k + 1 ≤ n + 1 by omega) q) : MvPolynomial (Fin (n + 1) × Fin (n + 1)) ℂ)) = Matrix.diagonal (fun p => y (Fin.castLE (show k + 1 ≤ n + 1 by omega) p, Fin.ca …`. Use extensionality with `p q`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, eval_X, Matrix.diagonal_apply]`.
+
+Use `split_ifs with h`. Substitute `h` using the available equality. Both sides reduce to the same expression. Establish `hpq : p.val ≠ q.val` using `fun e => h (Fin.ext e)`. Use `p.isLt` as an intermediate fact.
+
+Use `q.isLt` as an intermediate fact. Apply `hy` to reduce the goal to its premises. Simplify using `only [Fin.val_castLE]`. Use linear arithmetic over natural numbers and integers. Simplify using `using hpq`.
+
+Simplify using `only [Fin.val_castLE]`. Use linear arithmetic over natural numbers and integers. Rewrite `hd` using `[hM, Matrix.det_diagonal]`. Use `Finset.prod_ne_zero_iff.mp hd (Fin.last k) (Finset.mem_univ _)` as an intermediate fact. Apply the tactic sequence `convert this using 3 <;> ext <;> simp`.
+-/
 theorem pivotA_ne (k : ℕ) (hk : k < n) (y : Fin (n + 1) × Fin (n + 1) → ℂ)
     (hy : clearedA k y) (hd : eval y (lpMinor ℂ (k + 1) (by omega) (by omega) :
       MvPolynomial (Fin (n + 1) × Fin (n + 1)) ℂ) ≠ 0) :
@@ -124,10 +162,20 @@ theorem pivotA_ne (k : ℕ) (hk : k < n) (y : Fin (n + 1) × Fin (n + 1) → ℂ
   have := Finset.prod_ne_zero_iff.mp hd (Fin.last k) (Finset.mem_univ _)
   convert this using 3 <;> ext <;> simp
 
+/- English proof (translation)
+Introduce `x a b t hab _` and use `lhwline_minor_RInv s hr hr x a b t hab`.
+-/
 theorem minorA_RInv (s : ℕ) (hr : s ≤ n + 1) :
     RInvA (fun x : Fin (n + 1) × Fin (n + 1) → ℂ => eval x (lpMinor ℂ s hr hr)) :=
   fun x a b t hab _ => lhwline_minor_RInv s hr hr x a b t hab
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `_ a j _ _ h`. Use linear arithmetic over natural numbers and integers.
+
+Consider the case `succ k ih`. Introduce `hk`. Establish `hkn : k < n` using `by omega`. Establish `hc` using `ih (by omega)`. Simplify using `only [elimA, dif_pos hkn]`.
+
+Apply `stepA_cleared k hkn _ hc` to reduce the goal to its premises. Apply `pivotA_ne k hkn _ hc` to reduce the goal to its premises. Establish `hk1 : k + 1 ≤ n + 1` using `by omega`. Rewrite using `[elimA_inv (fun y => eval y (lpMinor ℂ (k + 1) hk1 hk1 : MvPolynomial (Fin (n + 1) × Fin (n + 1)) ℂ)) (minorA_RInv _ _) (lhwline_minor_CInv _ _ _)]`. Conclude with `hx k hkn`.
+-/
 theorem elimA_cleared (x : Fin (n + 1) × Fin (n + 1) → ℂ)
     (hx : ∀ (s : ℕ) (hs : s + 1 ≤ n), eval x (lpMinor ℂ (s + 1) (by omega) (by omega) :
       MvPolynomial (Fin (n + 1) × Fin (n + 1)) ℂ) ≠ 0) :
@@ -150,6 +198,17 @@ theorem elimA_cleared (x : Fin (n + 1) × Fin (n + 1) → ℂ)
       (minorA_RInv _ _) (lhwline_minor_CInv _ _ _)]
     exact hx k hkn
 
+/- English proof (translation)
+Use `set P : MvPolynomial (Fin (n + 1) × Fin (n + 1)) ℂ := ∏ s : Fin n, lpMinor ℂ (s.val + 1) (by have := s.isLt; omega) (by have := s.isLt; omega) with hPdef`. Establish `hP : P ≠ 0`. Introduce `h`. Use `congrArg (eval (idPoint ℂ (n + 1) (n + 1))) h` as an intermediate fact. Simplify using `only [hPdef, map_prod, eval_idPoint_lpMinor, Finset.prod_const_one, map_zero] at this`.
+
+Conclude with `one_ne_zero this`. Establish `hgP : g * P = 0`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[map_mul, map_zero]`.
+
+Distinguish the cases in `hx : ∀ (s : ℕ) (hs : s + 1 ≤ n), eval x (lpMinor ℂ (s + 1) (by omega) (by omega) : MvPolynomial (Fin (n + 1) × Fin (n + 1)) ℂ) ≠ 0`. Establish `h1 : eval x g = eval (elimA n x) g` using `(elimA_inv (fun y => eval y g) hR hC n x).symm`. Rewrite using `[h1, hD _ (fun a j ha h => elimA_cleared x hx n le_rfl a j ha (fun e => h (Fin.ext e)) (Or.inl ha)), zero_mul]`. Use `push Not at hx`. Take `⟨s, hs, hs0⟩` from `hx`.
+
+Establish `: eval x P = 0`. Rewrite using `[hPdef, map_prod]`. Conclude with `Finset.prod_eq_zero (i := ⟨s, by omega⟩) (Finset.mem_univ _) hs0`. Rewrite using `[this, mul_zero]`. Break down `mul_eq_zero.mp hgP with h | h` into its components or cases.
+
+Conclude with `h`. Conclude with `absurd h hP`.
+-/
 theorem vanishA (g : MvPolynomial (Fin (n + 1) × Fin (n + 1)) ℂ)
     (hR : RInvA (fun x => eval x g)) (hC : lhwline_CInv (fun x => eval x g))
     (hD : ∀ D : Fin (n + 1) × Fin (n + 1) → ℂ,

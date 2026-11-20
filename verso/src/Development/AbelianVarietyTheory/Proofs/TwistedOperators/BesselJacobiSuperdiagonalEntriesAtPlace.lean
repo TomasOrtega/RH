@@ -22,6 +22,37 @@ open GlobalTheory.AscFin
 
 open GlobalTheory.SeeSaw (idV FI dI) in
 
+/- English proof (translation)
+Introduce `D hD T L μ0 hL sc G W M0 hM0 F hF ρ h M 𝔠 h𝔠 v hM i j hij`. Take `⟨-, f2, -, -, -, -, -⟩` from `GlobalTheory.T.fractionalIdealCompletion_properties_at_place D W.ψ W.ψ_std v`. Establish `hmono : MonoAt (F.dJ ρ h) (G.Λ (.grid (2 * ρ + 1) 0)) (G.Λ (.core (2 * ρ + 1))) v` using `((GlobalTheory.T.grid_lattices_compact_selfDual_splitting D hD T L μ0 hL sc G W M0 hM0 F hF).2.1 ρ h).2.1 v |>.2`. Take `⟨hcB, heB, -⟩` from `hF.hB ρ h`. Take `⟨hcJ, heJ, -⟩` from `hF.hJ ρ h`.
+
+Establish `hlatB` using `G.sp.colLat (2 * ρ + 2) (by omega) h`. Establish `hlatJ` using `G.sp.colLat (2 * ρ + 1) (by omega) (by omega)`. Establish `hx : ∀ n : ℕ, (-D.host.xi0) ^ n ≠ 0` using `fun n => pow_ne_zero _ (neg_ne_zero.2 cmHost_imaginaryGenerator_ne_zero)`. Set `𝔟B : Fin ρ → FI D` to `fun p => FractionalIdeal.spanSingleton _ (((-D.host.xi0) ^ (p.1 + 1))⁻¹) * stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * ρ + 2 - 1) (Fin.castLE (by omega) p)`. Set `𝔟J : Fin ρ → FI D` to `fun p => FractionalIdeal.spanSingleton _ (((-D.host.xi0) ^ (p.1 + 1))⁻¹) * stairId (G.pl.stA sc) (G.pl.stAbar sc) (2 * ρ + 1 - 1) (Fin.castLE (by omega) p)`.
+
+Establish `lineB : ∀ (p : Fin ρ) (a : AE D), GlobalTheory.FinPl.colMul (F.dB ρ h).jX p a ∈ latV _ (G.Λ (.grid (2 * ρ + 2) 0)) (· = v) ↔ a ∈ idV (𝔟B p) v`. Introduce `p a`. Establish `e1 : GlobalTheory.FinPl.colMul (F.dB ρ h).jX p a = fun k => a * incA D ((-D.host.xi0) ^ (p.1 + 1) * (G.colDec (2 * ρ + 2) (by omega) h).a k (Fin.castLE (by omega) p))`. Use function extensionality and compare the values at `k`. Simplify using `only [GlobalTheory.FinPl.colMul, HypDec.jX, rat, Matrix.map_apply, heB, colsOf]`.
+
+Rewrite using `[e1]`. Establish `e2 : G.Λ (.grid (2 * ρ + 2) 0) = _` using `hlatB`. Rewrite using `[e2]`. Conclude with `GlobalTheory.StairLine.line_mem_iff _ _ _ _ (by simp only [Fin.coe_castLE]; omega) (hx _) v a`. Establish `lineJ : ∀ (p : Fin ρ) (a : AE D), GlobalTheory.FinPl.colMul (F.dJ ρ h).jX p a ∈ latV _ (G.Λ (.grid (2 * ρ + 1) 0)) (· = v) ↔ a ∈ idV (𝔟J p) v`.
+
+Introduce `p a`. Establish `e1 : GlobalTheory.FinPl.colMul (F.dJ ρ h).jX p a = fun k => a * incA D ((-D.host.xi0) ^ (p.1 + 1) * (G.colDec (2 * ρ + 1) (by omega) (by omega)).a k (Fin.castLE (by omega) p))`. Use function extensionality and compare the values at `k`. Simplify using `only [GlobalTheory.FinPl.colMul, HypDec.jX, rat, Matrix.map_apply, heJ, colsOf]`. Rewrite using `[e1]`.
+
+Establish `e2 : G.Λ (.grid (2 * ρ + 1) 0) = _` using `hlatJ`. Rewrite using `[e2]`. Conclude with `GlobalTheory.StairLine.line_mem_iff _ _ _ _ (by simp only [Fin.coe_castLE]; omega) (hx _) v a`. Establish `hN : ((G.pl.modul sc : Ideal (𝓞 D.host.E)) : FI D) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 (G.pl.modul_ne_bot sc)`. Establish `hN' : ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : FI D) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 (GlobalTheory.AscFin.PrimStd.modulBar_ne_bot G.pl sc)`.
+
+Establish `hA : G.pl.stA sc ≠ 0` using `mul_ne_zero (GlobalTheory.CuspCharLattice.host_AA_ne_zero _) (inv_ne_zero hN')`. Establish `hAb : G.pl.stAbar sc ≠ 0` using `mul_ne_zero (GlobalTheory.Member.LatSelfDual.AAbar_ne_zero D) (inv_ne_zero hN)`. Establish `hsp : ∀ n : ℕ, FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ (((-D.host.xi0) ^ n)⁻¹) ≠ 0` using `fun n => by`. Rewrite using `[Ne, FractionalIdeal.spanSingleton_eq_zero_iff]`. Conclude with `inv_ne_zero (hx _)`.
+
+Establish `hb0B : ∀ p, 𝔟B p ≠ 0` using `fun p => mul_ne_zero (hsp _) (by`. Unfold `stairId`. Conclude with `mul_ne_zero (pow_ne_zero _ hA) (inv_ne_zero (pow_ne_zero _ hAb)))`. Establish `hb0J : ∀ p, 𝔟J p ≠ 0` using `fun p => mul_ne_zero (hsp _) (by`. Unfold `stairId`.
+
+Conclude with `mul_ne_zero (pow_ne_zero _ hA) (inv_ne_zero (pow_ne_zero _ hAb)))`. Establish `hrat : 𝔟J i * (𝔟B j)⁻¹ = FractionalIdeal.spanSingleton _ D.host.xi0 * G.pl.stAbar sc`. Rewrite using `[mul_inv_eq_iff_eq_mul₀ (hb0B j)]`. Establish `hneg : FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ (-D.host.xi0) = FractionalIdeal.spanSingleton _ D.host.xi0` using `FractionalIdeal.spanSingleton_eq_spanSingleton.2 ⟨-1, by simp⟩`. Establish `e2 : ((-D.host.xi0) ^ (i.1 + 1))⁻¹ = -D.host.xi0 * ((-D.host.xi0) ^ (j.1 + 1))⁻¹`.
+
+Establish `hξ : -D.host.xi0 ≠ 0` using `neg_ne_zero.2 cmHost_imaginaryGenerator_ne_zero`. Rewrite using `[hij]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `show FractionalIdeal.spanSingleton _ _ * stairId _ _ _ _ = _ * (FractionalIdeal.spanSingleton _ _ * stairId _ _ _ _)`.
+
+Rewrite using `[e2, ← FractionalIdeal.spanSingleton_mul_spanSingleton, hneg]`. Unfold `stairId`. Simplify using `only [Fin.coe_castLE]`. Establish `e3 : 2 * ρ + 1 - 1 - i.1 = 2 * ρ + 2 - 1 - j.1` using `by omega`. Rewrite using `[e3, hij, pow_succ (G.pl.stAbar sc) (i.1 + 1), mul_inv]`.
+
+Use `conv_lhs => rw [show (G.pl.stAbar sc ^ (i.1 + 1))⁻¹ = G.pl.stAbar sc * ((G.pl.stAbar sc ^ (i.1 + 1))⁻¹ * (G.pl.stAbar sc)⁻¹) by`. Rewrite using `[mul_comm ((G.pl.stAbar sc ^ (i.1 + 1))⁻¹), ← mul_assoc, mul_inv_cancel₀ hAb, one_mul]]`. Expand and normalize the polynomial expressions, which then agree. Establish `hxA : GlobalTheory.FinPlLoc.idem D (· = v) * ((F.dJ ρ h).pX ⬝ (M ⬝ (F.dB ρ h).jX)) i j ∈ idAt D (· = v)` using `Ideal.mul_mem_right _ _ (GlobalTheory.FinPlLoc.idem_mem_idAt _)`. Rewrite using `[← hrat]`.
+
+Use `(f2 𝔠 _ h𝔠 (mul_ne_zero (hb0J i) (inv_ne_zero (hb0B j))) _ hxA).1 ?_` and prove the remaining obligations. Introduce `s hs`. Establish `hsA : s ∈ idAt D (· = v)` using `GlobalTheory.SeeSaw.LiftModel.idV_le_idAt _ _ s hs`. Use `(f2 (𝔟B j) (𝔟J i) (hb0B j) (hb0J i) _ (Ideal.mul_mem_right _ _ hxA)).1 ?_` and prove the remaining obligations. Introduce `c hc`.
+
+Establish `hcA : c ∈ idAt D (· = v)` using `GlobalTheory.SeeSaw.LiftModel.idV_le_idAt _ _ c hc`. Establish `h1` using `hM _ ((lineB j c).2 hc) s hs`. Establish `h3` using `((hmono _).1 h1).1 i`. Rewrite `h3` using `[Matrix.mulVec_smul, GlobalTheory.FinPl.PsiUnit.mulVec_colMul, GlobalTheory.FinPl.PsiUnit.mulVec_colMul]`. Establish `h4` using `(lineJ i _).1 h3`.
+
+Establish `e4 : ((s • GlobalTheory.FinPl.colMul ((F.dJ ρ h).pX ⬝ (M ⬝ (F.dB ρ h).jX)) j c) i) = GlobalTheory.FinPlLoc.idem D (· = v) * ((F.dJ ρ h).pX ⬝ (M ⬝ (F.dB ρ h).jX)) i j * s * c`. Rewrite using `[Pi.smul_apply, smul_eq_mul, GlobalTheory.FinPl.colMul]`. Establish `hc'` using `(GlobalTheory.FinPlLoc.mem_idAt_iff _ c).1 hcA`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h4` using `[e4]`. Then use the resulting hypothesis.
+-/
 theorem GlobalTheory.AscFin.coef_superdiag : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m)
     (M : WO (G.V (.grid (2 * ρ + 2) 0)) (G.V (.grid (2 * ρ + 1) 0))) (𝔠 : GlobalTheory.SeeSaw.FI D), 𝔠 ≠ 0 →
     ∀ v : GlobalTheory.FinPl.Pl D, (∀ y ∈ latV _ (G.Λ (.grid (2 * ρ + 2) 0)) (· = v), ∀ s ∈ GlobalTheory.SeeSaw.idV 𝔠 v,

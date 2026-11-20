@@ -6,6 +6,19 @@ open scoped Real ContDiff
 noncomputable section
 namespace GlobalTheory.ThetaMetInv
 
+/- English proof (translation)
+Use `set Y : Matrix (Fin g) (Fin g) ℝ := τ.map Complex.im with hY`. Use `set y : Fin g → ℝ := fun i => (z i).im with hy`. Use `set p : Fin g → ℝ := fun i => l (Sum.inl i) with hp`. Establish `hYs : Yᵀ = Y`. Use extensionality with `i j`.
+
+Simplify using `[hY, ← hτ.1.apply i j]`. Establish `hdet : IsUnit Y.det` using `(hτ.2.det_pos).ne'.isUnit`. Establish `hinv : Y⁻¹ * Y = 1` using `Matrix.nonsing_inv_mul Y hdet`. Establish `hinv' : Y * Y⁻¹ = 1` using `Matrix.mul_nonsing_inv Y hdet`. Establish `him : (fun i => ((z + per τ l) i).im) = y + p ᵥ* Y`.
+
+Use extensionality with `i`. Simplify using `[per, hy, hp, hY, Matrix.vecMul, dotProduct, Complex.im_sum]`. Establish `hw : Y⁻¹ *ᵥ (p ᵥ* Y) = p`. Rewrite using `[← Matrix.mulVec_transpose, hYs, Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`. Establish `hth : (2 * π * Complex.I * thetaExp τ l z).re = 2 * π * ((p ᵥ* Y) ⬝ᵥ p) / 2 + 2 * π * (p ⬝ᵥ y)`.
+
+Simplify using `[thetaExp, hy, hp, hY, Matrix.vecMul, dotProduct, Complex.im_sum, Complex.re_sum, Complex.mul_re, Complex.mul_im]`. Expand and normalize the polynomial expressions, which then agree. Establish `hq : (y + p ᵥ* Y) ⬝ᵥ (Y⁻¹ *ᵥ (y + p ᵥ* Y)) = y ⬝ᵥ (Y⁻¹ *ᵥ y) + 2 * (p ⬝ᵥ y) + (p ᵥ* Y) ⬝ᵥ p`. Rewrite using `[Matrix.mulVec_add, hw, add_dotProduct, dotProduct_add, dotProduct_add]`. Establish `h1 : (p ᵥ* Y) ⬝ᵥ (Y⁻¹ *ᵥ y) = p ⬝ᵥ y`.
+
+Rewrite using `[← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, hinv', Matrix.one_mulVec]`. Rewrite using `[h1, dotProduct_comm y p]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[him, hq, Complex.norm_exp, hth, ← Real.exp_nat_mul, ← Real.exp_add]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem theta_metric_invariance {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (hτ : GlobalTheory.IsSiegel τ)
     (l : Fl g) (z : Fin g → ℂ) :
     Real.exp (-2 * π * ((fun i => ((z + per τ l) i).im) ⬝ᵥ (((τ.map Complex.im)⁻¹) *ᵥ

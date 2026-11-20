@@ -13,6 +13,11 @@ namespace GlobalTheory.Unfold.LsubG
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `Submodule.exists_isCompl X`. Establish `hC' : IsCompl C X` using `hC.symm`. Use `⟨C.projection X hC', fun x hx => (Submodule.projection_apply_eq_zero_iff hC').2 hx, fun v => ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.projection_eq_self_sub_projection hC']`. Conclude with `Submodule.projection_apply_mem _ _`.
+
+Conclude with `Submodule.projection_apply_of_mem_left hC' (Submodule.projection_apply_mem _ _)`.
+-/
 theorem exists_proj (X : Submodule D.host.E (VS D).V) :
     ∃ Q : (VS D).V →ₗ[D.host.E] (VS D).V, (∀ x ∈ X, Q x = 0) ∧ (∀ v, v - Q v ∈ X) ∧ ∀ v, Q (Q v) = Q v := by
   obtain ⟨C, hC⟩ := Submodule.exists_isCompl X
@@ -25,6 +30,11 @@ theorem exists_proj (X : Submodule D.host.E (VS D).V) :
 def endP (p : PlF D) (Q : (VS D).V →ₗ[D.host.E] (VS D).V) : Vp D p →ₗ[(D.s.atP p).Ep] Vp D p :=
   Fintype.linearCombination (D.s.atP p).Ep (fun i => baseChange₂ D p (Q ((VS D).frame i)))
 
+/- English proof (translation)
+Rewrite using `[endP, Fintype.linearCombination_apply]`. Use `conv_rhs => rw [← (VS D).frame.sum_repr x]`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, baseChange_smul₂]`.
+
+Both sides reduce to the same expression.
+-/
 theorem bcP_endP (p : PlF D) (Q : (VS D).V →ₗ[D.host.E] (VS D).V) (x : (VS D).V) :
     endP p Q (baseChange₂ D p x) = baseChange₂ D p (Q x) := by
   rw [endP, Fintype.linearCombination_apply]
@@ -34,6 +44,13 @@ theorem bcP_endP (p : PlF D) (Q : (VS D).V →ₗ[D.host.E] (VS D).V) (x : (VS D
   rw [map_smul, baseChange_smul₂]
   rfl
 
+/- English proof (translation)
+Use `Submodule.span_induction (p := fun y _ => endP p Q y ∈ lattice₂ D Z.M p (Λ.map (Q.restrictScalars (𝓞 D.host.E)))) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[bcP_endP]`. Conclude with `Submodule.subset_span ⟨Q x, Submodule.mem_map_of_mem hx, rfl⟩`. Rewrite using `[map_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Introduce `a b _ _ ha hb`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ ha hb`. Introduce `c a _ ha`.
+
+Establish `e : endP p Q (c • a) = c • endP p Q a`. Rewrite using `[Subring.smul_def, Subring.smul_def, map_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ c ha`.
+-/
 theorem endP_latP (Z : LocDat D) (p : PlF D) (Q : (VS D).V →ₗ[D.host.E] (VS D).V) (Λ : LV D) {y : Vp D p}
     (hy : y ∈ lattice₂ D Z.M p Λ) : endP p Q y ∈ lattice₂ D Z.M p (Λ.map (Q.restrictScalars (𝓞 D.host.E))) := by
   refine Submodule.span_induction (p := fun y _ => endP p Q y ∈ lattice₂ D Z.M p (Λ.map (Q.restrictScalars (𝓞 D.host.E))))
@@ -49,9 +66,15 @@ theorem endP_latP (Z : LocDat D) (p : PlF D) (Q : (VS D).V →ₗ[D.host.E] (VS 
       rw [Subring.smul_def, Subring.smul_def, map_smul]
     rw [e]; exact Submodule.smul_mem _ c ha
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono (Set.image_mono h)`.
+-/
 theorem localLattice_mono' (Z : LocDat D) (p : PlF D) {Λ Λ' : LV D} (h : Λ ≤ Λ') : lattice₂ D Z.M p Λ ≤ lattice₂ D Z.M p Λ' :=
   Submodule.span_mono (Set.image_mono h)
 
+/- English proof (translation)
+Establish `r` using `((GlobalTheory.T.numberField_lattice_determined_by_local_lattices (GlobalTheory.HL.placesOf Z) (nV D) (LatLoc.cL Γ) (LatLoc.isLattice_map _ _ hΓ)).1 (LatLoc.cE D x)).2 (fun p => by rw [← LatLoc.baseChange_eq, ← LatLoc.localLattice_eq]; exact h p)`. Take `⟨y, hy, hxy⟩` from `Submodule.mem_map.1 r`. Establish `: y = x` using `(LatLoc.cE D).injective hxy`. Conclude with `this ▸ hy`.
+-/
 theorem mem_of_local (Z : LocDat D) (Γ : LV D) (hΓ : Submodule.IsLattice D.host.E Γ) (x : (VS D).V)
     (h : ∀ p, baseChange₂ D p x ∈ lattice₂ D Z.M p Γ) : x ∈ Γ := by
   have r := ((GlobalTheory.T.numberField_lattice_determined_by_local_lattices (GlobalTheory.HL.placesOf Z) (nV D) (LatLoc.cL Γ) (LatLoc.isLattice_map _ _ hΓ)).1
@@ -60,11 +83,19 @@ theorem mem_of_local (Z : LocDat D) (Γ : LV D) (hΓ : Submodule.IsLattice D.hos
   have : y = x := (LatLoc.cE D).injective hxy
   exact this ▸ hy
 
+/- English proof (translation)
+Rewrite using `[H.h_herm (c • w) u, H.h_smul_left, map_mul, ← H.h_herm w u]`.
+-/
 theorem herm_smul_right {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E] [Algebra F E]
     [TopologicalSpace E] [MeasurableSpace E] {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V]
     (H : Loc.HermSp M V) (c : E) (u w : V) : H.h u (c • w) = M.L.cj c * H.h u w := by
   rw [H.h_herm (c • w) u, H.h_smul_left, map_mul, ← H.h_herm w u]
 
+/- English proof (translation)
+Introduce `w hw`. Use `Submodule.span_induction (p := fun w _ => H.h u w = 0) hS ?_ ?_ ?_ hw` and prove the remaining obligations. Rewrite using `[H.h_herm 0 u, H.h_zero_left, map_zero]`. Introduce `a b _ _ ha hb`. Rewrite using `[H.h_herm (a + b) u, H.h_add_left, map_add, ← H.h_herm a u, ← H.h_herm b u, ha, hb, add_zero]`.
+
+Introduce `c a _ ha`. Rewrite using `[herm_smul_right, ha, mul_zero]`.
+-/
 theorem herm_span_right {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E] [Algebra F E]
     [TopologicalSpace E] [MeasurableSpace E] {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V]
     (H : Loc.HermSp M V) (u : V) (S : Set V) (hS : ∀ s ∈ S, H.h u s = 0) :
@@ -77,6 +108,15 @@ theorem herm_span_right {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpac
   · intro c a _ ha
     rw [herm_smul_right, ha, mul_zero]
 
+/- English proof (translation)
+Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `y hy`. Establish `hgen : ∀ b, (VS D).hT y (G.fl.e b) = 0`. Introduce `b`. Use `Submodule.span_induction (p := fun y _ => (VS D).hT y (G.fl.e b) = 0) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `G.fl.e_iso a b`. Simplify using the standard rewrite rules. Introduce `a c _ _ ha hc`. Simplify using `[ha, hc]`.
+
+Introduce `c a _ ha`. Simplify using `[ha]`. Use `Submodule.span_induction (p := fun x _ => (VS D).hT y x = 0) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `hgen b`.
+
+Simplify using the standard rewrite rules. Introduce `a c _ _ ha hc`. Simplify using `[ha, hc]`. Introduce `c a _ ha`. Simplify using `[ha]`.
+-/
 theorem X_iso {T : D.host.E} (G : LFlag (VS D) D.R.rS T) {x : (VS D).V} (hx : x ∈ Xsp G) :
     x ∈ orth (VS D) (Xsp G) := by
   simp only [orth, Submodule.mem_iInf, LinearMap.mem_ker]
@@ -94,10 +134,40 @@ theorem X_iso {T : D.host.E} (G : LFlag (VS D) D.R.rS T) {x : (VS D).V} (hx : x 
   · intro a c _ _ ha hc; simp [ha, hc]
   · intro c a _ ha; simp [ha]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.fg, h.span_eq_top⟩`.
+-/
 example (Λ : LV D) (h : Submodule.IsLattice D.host.E Λ) : Λ.FG ∧ Submodule.span D.host.E (Λ : Set (VS D).V) = ⊤ :=
   ⟨h.fg, h.span_eq_top⟩
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Take `⟨Q, hQX, hQv, hQQ⟩` from `exists_proj (Xsp G)`. Use `set Γ : LV D := Λ₂ ⊔ Λ₂.map (Q.restrictScalars (𝓞 D.host.E)) with hΓdef`. Establish `hΓ : Submodule.IsLattice D.host.E Γ` using `⟨h₂.fg.sup (h₂.fg.map _), eq_top_iff.2 (h₂.span_eq_top.symm.le.trans (Submodule.span_mono (show (Λ₂ : Set (VS D).V) ⊆ Γ from fun z hz => Submodule.mem_sup_left hz)))⟩`. Introduce `v hv`. Establish `hvo : v ∈ orth (VS D) (Xsp G)` using `hv.2`.
+
+Take `⟨l, hl, x, hx, rfl⟩` from `Submodule.mem_sup.1 hv.1`. Establish `hlo : l ∈ orth (VS D) (Xsp G)` using `hl.2`. Establish `hloc : ∀ p, baseChange₂ D p (Q (l + x)) ∈ lattice₂ D Z.M p Γ`. Introduce `p`. Establish `hXQ : ∀ w ∈ (locH Z p).X (f p), endP p Q w = 0`.
+
+Introduce `w hw`. Use `Submodule.span_induction (p := fun w _ => endP p Q w = 0) ?_ ?_ ?_ ?_ hw` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[hf p]`. Simplify using `only`.
+
+Rewrite using `[map_smul, bcP_endP, hQX _ (Submodule.subset_span ⟨a, by simp [frame, FlagG.fvec]⟩), map_zero, smul_zero]`. Conclude with `map_zero _`. Introduce `a b _ _ ha hb`. Rewrite using `[map_add, ha, hb, add_zero]`. Introduce `c a _ ha`.
+
+Rewrite using `[map_smul, ha, smul_zero]`. Establish `hperp : baseChange₂ D p l ∈ (locH Z p).perp ((locH Z p).X (f p))`. Introduce `w hw`. Use `herm_span_right (locH Z p) (baseChange₂ D p l) _ ?_ w hw` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`.
+
+Rewrite using `[hf p]`. Simplify using `only`. Rewrite using `[herm_smul_right]`. Establish `e0 : (locH Z p).h (baseChange₂ D p l) (baseChange₂ D p (frame G a.castSucc)) = 0` using `by show LocFacts₂ Z.M p (baseChange₂ D p l) (baseChange₂ D p (frame G a.castSucc)) = 0`. Rewrite using `[baseChangeAt_form Z.M p (Z.hcj p), brS]`.
+
+Establish `hmem : frame G a.castSucc ∈ Xsp G` using `Submodule.subset_span ⟨a, by simp [frame, FlagG.fvec]⟩`. Use `hlo` as an intermediate fact. Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker] at this`. Rewrite using `[this _ hmem, map_zero]`. Rewrite using `[e0, mul_zero]`.
+
+Take `⟨y, hy, hyw⟩` from `hL p ⟨⟨baseChange₂ D p l, hperp⟩, Submodule.subset_span ⟨l, hl.1, rfl⟩, rfl⟩`. Establish `hdiff : ((y : Vp D p) - baseChange₂ D p l) ∈ (locH Z p).X (f p)`. Use `(Submodule.Quotient.eq _).1 hyw` as an intermediate fact. Simplify using `using this`. Establish `e : endP p Q (baseChange₂ D p l) = endP p Q y`.
+
+Use `hXQ _ hdiff` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Conclude with `this.symm`. Rewrite using `[← bcP_endP, map_add, map_add, e, bcP_endP p Q x, hQX x hx, map_zero, add_zero]`. Conclude with `localLattice_mono' Z p (le_sup_right : Λ₂.map (Q.restrictScalars (𝓞 D.host.E)) ≤ Γ) (endP_latP Z p Q Λ₂ hy)`.
+
+Establish `hmem : Q (l + x) ∈ Γ` using `mem_of_local Z Γ hΓ _ hloc`. Take `⟨a, ha, b', hb', hab⟩` from `Submodule.mem_sup.1 hmem`. Take `⟨b, hb, rfl⟩` from `Submodule.mem_map.1 hb'`. Establish `hQab : Q a + Q b = Q (l + x)`. Use `congrArg Q hab` as an intermediate fact.
+
+Simplify using `only [LinearMap.restrictScalars_apply, map_add, hQQ] at this`. Rewrite using `[map_add Q l x]`. Conclude with `this`. Establish `h2 : Q (l + x - (a + b)) = 0`. Rewrite using `[map_sub Q, map_add Q a b, hQab, sub_self]`.
+
+Establish `hc : l + x - (a + b) ∈ Xsp G`. Establish `h1` using `hQv (l + x - (a + b))`. Rewrite `h1` using `[h2, sub_zero]`. Conclude with `h1`. Establish `hco : a + b ∈ orth (VS D) (Xsp G)`.
+
+Establish `: a + b = (l + x) - (l + x - (a + b))` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ hvo (X_iso G hc)`. Use `⟨Submodule.mem_sup.2 ⟨a + b, ⟨Submodule.add_mem _ ha hb, hco⟩, l + x - (a + b), hc, by abel⟩, hvo⟩` and prove the remaining obligations.
+-/
 theorem lsub_le (Z : LocDat D) {T : D.host.E} (G : LFlag (VS D) D.R.rS T)
     (f : ∀ p : PlF D, Fin (D.R.rS + 1) → Vp D p)
     (hf : ∀ p, f p = fun a => frFac Z.δ p a • baseChange₂ D p (frame G a)) (Λ₁ Λ₂ : LV D)
@@ -169,6 +239,9 @@ theorem lsub_le (Z : LocDat D) {T : D.host.E} (G : LFlag (VS D) D.R.rS T)
     exact Submodule.sub_mem _ hvo (X_iso G hc)
   refine ⟨Submodule.mem_sup.2 ⟨a + b, ⟨Submodule.add_mem _ ha hb, hco⟩, l + x - (a + b), hc, by abel⟩, hvo⟩
 
+/- English proof (translation)
+Introduce `D Z T G Fr hFr Λ₁ Λ₂ h₁ h₂ hL`. Conclude with `le_antisymm (lsub_le Z G (fun p => (Fr p).f) hFr Λ₁ Λ₂ h₂ fun p => (hL p).le) (lsub_le Z G (fun p => (Fr p).f) hFr Λ₂ Λ₁ h₁ fun p => (hL p).ge)`.
+-/
 theorem lsub_eq_of_local : ∀ (D : D7) (Z : LocDat D) {T : D.host.E} (G : LFlag (VS D) D.R.rS T) (Fr : ∀ p : PlF D, LocNG.FrameD (locH Z p) D.R.rS), (∀ p, (Fr p).f = (fun a => frFac Z.δ p a • baseChange₂ D p (frame G a))) → ∀ Λ₁ Λ₂ : LV D, Submodule.IsLattice D.host.E Λ₁ → Submodule.IsLattice D.host.E Λ₂ → (∀ p, (locH Z p).Lset (lattice₂ D Z.M p Λ₁) (Fr p).f = (locH Z p).Lset (lattice₂ D Z.M p Λ₂) (Fr p).f) → Lsub Λ₁ G = Lsub Λ₂ G := by
   intro D Z T G Fr hFr Λ₁ Λ₂ h₁ h₂ hL
   exact le_antisymm

@@ -9,6 +9,15 @@ noncomputable section
 
 namespace GlobalTheory.InertBridge
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hTr v w hI hT L _ _ ϖ σL q δ JS JT ψL κ ιS ιT hC ω hω s hs g h hg hh`. Take `⟨unr, odd, intS, intT, hermS, hermT, hδ, psiInt, psiNe, hAt, hSurj, hLat, hPsi, hEq, hιS, hιT, hKS, hKT⟩` from `hC`. Establish `hvac : G.M'.vac v ∈ SB (Fin a' × Fin (a + a') → Fv F v)` using `hs ▸ s.2`. Establish `h1 : ω (1, h) s = s`. Establish `hA : Acts (evFin F v) (om' (ιS 1, ιT h)) (s : (Fin a' × Fin (a + a') → Fv F v) → ℂ) (G.M'.vac v)`.
+
+Rewrite using `[map_one, hs]`. Conclude with `GlobalTheory.T.inertPlace_latticeStabilizer_fixes_vacuum F E σ B a a' G X om om' hTr v w hI hT (ιT h) (hKT h hh)`. Conclude with `Subtype.ext (((hω 1 h s _ hvac).mp hA).trans hs.symm)`. Establish `h2 : ω (g, 1) s = s`. Establish `hA : Acts (evFin F v) (om' (ιS g, ιT 1)) (s : (Fin a' × Fin (a + a') → Fv F v) → ℂ) (G.M'.vac v)`.
+
+Rewrite using `[map_one, hs]`. Conclude with `GlobalTheory.T.inertPlace_stabilizer_fixes_vacuum_left F E σ B a a' G X om om' hTr v w hI hT (ιS g) (hKS g hg)`. Conclude with `Subtype.ext (((hω g 1 s _ hvac).mp hA).trans hs.symm)`. Establish `hgh : ((g, h) : Formalism.UG.UJ σL (JS : Matrix (Fin a') (Fin a') L) × Formalism.UG.UJ σL (JT : Matrix (Fin (a + a')) (Fin (a + a')) L)) = (g, 1) * (1, h)`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hgh, map_mul, Module.End.mul_apply, h1, h2]`.
+-/
 theorem fix_vac : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w → v ∉ X.T →

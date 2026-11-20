@@ -58,6 +58,9 @@ def BoundAtTwoAndThreeForFamily {eps : ℝ} (Fm : FamP eps) : Prop := ∃ C x0 :
     (_ : CmpOf (Fm.D x i).loc (Fm.D x i).locA HW F) (X : KillingConditions.HubData (Fm.D x i)) (C₂ : ℝ),
     Setup (Fm.L x i) (Fm.ex x hx i).nch HW X C₂ → BoundAtTwoThree (Fm.L x i) X.ρ C
 
+/- English proof (translation)
+Take `⟨C, x0, h⟩` from `h`. Conclude with `⟨C, x0, fun x hx0 _ i _ _ _ X _ S => h x hx0 i S.sha X.r X.ρ S.canon.fam S.kill⟩`.
+-/
 theorem BoundAtTwoAndThreeForFamily.of_all {eps : ℝ} {Fm : FamP eps} (h : BoundAtTwoThreeFamily Fm) : BoundAtTwoAndThreeForFamily Fm := by
   obtain ⟨C, x0, h⟩ := h
   exact ⟨C, x0, fun x hx0 _ i _ _ _ X _ S => h x hx0 i S.sha X.r X.ρ S.canon.fam S.kill⟩

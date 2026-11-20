@@ -17,6 +17,11 @@ section GLmat
 
 variable {E : Type} [Field E] {n : ℕ}
 
+/- English proof (translation)
+Establish `h : Matrix.GeneralLinearGroup.toLin (toGLm E n ga) = (LinearMap.GeneralLinearGroup.generalLinearEquiv E (Sp E n)).symm ga`. Simplify using `[toGLm]`. Establish `h2` using `congrArg (fun u : LinearMap.GeneralLinearGroup E (Sp E n) => (u : Sp E n →ₗ[E] Sp E n) x) h`. Simplify using `only [Matrix.GeneralLinearGroup.coe_toLin, Matrix.mulVecLin_apply] at h2`. Rewrite using `[h2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem toGLm_mulVec (ga : Sp E n ≃ₗ[E] Sp E n) (x : Sp E n) :
     ((toGLm E n ga : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ x = ga x := by
   have h : Matrix.GeneralLinearGroup.toLin (toGLm E n ga) =
@@ -27,6 +32,9 @@ theorem toGLm_mulVec (ga : Sp E n ≃ₗ[E] Sp E n) (x : Sp E n) :
   rw [h2]
   rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[gmap, toGLm_mulVec]`.
+-/
 theorem gmap_eq_map (ga : Sp E n ≃ₗ[E] Sp E n) {R : Type} [CommRing R] [Algebra R E]
     (L : Submodule R (Sp E n)) :
     gmap ga L = L.map ((Matrix.mulVecLin ((toGLm E n ga : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)).restrictScalars R) := by
@@ -40,6 +48,11 @@ section DecoAct
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
   {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
 
+/- English proof (translation)
+Unfold `Deco.L gmap`. Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_image, Deco.act, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hf⟩`. Use `⟨ga.symm x, ⟨(mem_gmap ga d.N x).1 hx, hf⟩, by simp⟩` and prove the remaining obligations. Introduce and unpack `⟨y, ⟨hy, hf⟩, rfl⟩`. Use `⟨(mem_gmap ga d.N (ga y)).2 (by simpa using hy), fun P => by simpa using hf P⟩` and prove the remaining obligations.
+-/
 theorem Deco.L_act (d : Deco E n ST SG) (ga : Sp E n ≃ₗ[E] Sp E n) (h : GLG E n SG) :
     (d.act ga h).L = gmap ga d.L := by
   unfold Deco.L gmap
@@ -53,11 +66,21 @@ theorem Deco.L_act (d : Deco E n ST SG) (ga : Sp E n ≃ₗ[E] Sp E n) (h : GLG 
   · rintro ⟨y, ⟨hy, hf⟩, rfl⟩
     refine ⟨(mem_gmap ga d.N (ga y)).2 (by simpa using hy), fun P => by simpa using hf P⟩
 
+/- English proof (translation)
+Unfold `Deco.Lsh`. Rewrite using `[Deco.L_act, dual_gmap ga hga]`.
+-/
 theorem Deco.Lsh_act (d : Deco E n ST SG) {ga : Sp E n ≃ₗ[E] Sp E n} (hga : ga ∈ UF E n) (h : GLG E n SG) :
     (d.act ga h).Lsh = gmap ga d.Lsh := by
   unfold Deco.Lsh
   rw [Deco.L_act, dual_gmap ga hga]
 
+/- English proof (translation)
+Unfold `Deco.LshKer gmap`. Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_image, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`.
+
+Rewrite using `[Deco.Lsh_act d hga h]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hf⟩`. Use `⟨ga.symm x, ⟨(mem_gmap ga d.Lsh x).1 hx, hf⟩, by simp⟩` and prove the remaining obligations. Introduce and unpack `⟨y, ⟨hy, hf⟩, rfl⟩`.
+
+Use `⟨(mem_gmap ga d.Lsh (ga y)).2 (by simpa using hy), by simpa [Deco.act] using hf⟩` and prove the remaining obligations.
+-/
 theorem Deco.LshKer_act (d : Deco E n ST SG) {ga : Sp E n ≃ₗ[E] Sp E n} (hga : ga ∈ UF E n)
     (h : GLG E n SG) (P : ST) :
     (d.act ga h).LshKer P = gmap ga (d.LshKer P) := by
@@ -73,6 +96,9 @@ theorem Deco.LshKer_act (d : Deco E n ST SG) {ga : Sp E n ≃ₗ[E] Sp E n} (hga
   · rintro ⟨y, ⟨hy, hf⟩, rfl⟩
     refine ⟨(mem_gmap ga d.Lsh (ga y)).2 (by simpa using hy), by simpa [Deco.act] using hf⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Deco.N_act (d : Deco E n ST SG) (ga : Sp E n ≃ₗ[E] Sp E n) (h : GLG E n SG) :
     (d.act ga h).N = gmap ga d.N := rfl
 
@@ -82,13 +108,28 @@ section KLat
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_dualFr (M : Submodule (𝓞 K) (Fin n → K)) (φ : Fin n → K) :
     φ ∈ dualFr M ↔ ∀ x ∈ M, φ ⬝ᵥ x ∈ (1 : Submodule (𝓞 K) K) := Iff.rfl
 
+/- English proof (translation)
+Simplify using `[gLat]`.
+-/
 theorem mem_gLat (g : GL (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K)) (x : Fin n → K) :
     x ∈ gLat g M ↔ ∃ y ∈ M, (g : Matrix (Fin n) (Fin n) K) *ᵥ y = x := by
   simp [gLat]
 
+/- English proof (translation)
+Establish `hinv : (((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K))ᵀ * (g : Matrix (Fin n) (Fin n) K)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]`. Use extensionality with `φ`. Rewrite using `[mem_dualFr, mem_gLat]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use `⟨(g : Matrix (Fin n) (Fin n) K)ᵀ *ᵥ φ, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Use `h ((g : Matrix (Fin n) (Fin n) K) *ᵥ x) ((mem_gLat g M _).2 ⟨x, hx, rfl⟩)` as an intermediate fact. Rewrite `this` using `[Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose]`. Then use the resulting hypothesis.
+
+Use `show (((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K))ᵀ *ᵥ ((g : Matrix (Fin n) (Fin n) K)ᵀ *ᵥ φ) = φ`. Rewrite using `[Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`. Introduce and unpack `⟨ψ, hψ, rfl⟩ y hy`. Take `⟨x, hx, rfl⟩` from `(mem_gLat g M y).1 hy`. Use `(mem_dualFr M ψ).1 hψ x hx` as an intermediate fact.
+
+Use `show (((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K))ᵀ *ᵥ ψ ⬝ᵥ ((g : Matrix (Fin n) (Fin n) K) *ᵥ x) ∈ _`. Rewrite using `[Matrix.dotProduct_mulVec, Matrix.mulVec_transpose, Matrix.vecMul_vecMul, Units.inv_mul, Matrix.vecMul_one]` and apply the resulting hypothesis.
+-/
 theorem dualFr_gLat (g : GL (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K)) :
     dualFr (gLat g M) = gLat (inside₂ K n g) (dualFr M) := by
   have hinv : (((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K))ᵀ * (g : Matrix (Fin n) (Fin n) K)ᵀ = 1 := by
@@ -112,6 +153,15 @@ theorem dualFr_gLat (g : GL (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K)) :
 
 variable {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Establish `hE` using `(nabDelEquiv K ι n lam M g).1`. Use extensionality with `x`. Simplify using `only [nabK, Submodule.mem_comap, Submodule.mem_map, LinearMap.coe_restrictScalars, Submodule.subtype_apply]`. Rewrite using `[hE, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy, hyx⟩`. Establish `hyV : y ∈ VV K lam`. Establish `: y = actP lam g⁻¹ x.1`. Rewrite using `[← hyx]`. Use `show y = actP lam g⁻¹ (actP lam g y)`.
+
+Rewrite using `[← polyAction_mul, inv_mul_cancel, polyAction_one₂]`. Rewrite using `[this]`. Conclude with `polyAction_mem_VV lam g⁻¹ x.2`. Conclude with `⟨⟨y, hyV⟩, hy, Subtype.ext (by rw [rhoK_coe]; exact hyx)⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Conclude with `⟨y.1, hy, (rhoK_coe lam g y).symm⟩`.
+-/
 theorem nabK_gLat (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin n → K)) (g : ι → GL (Fin n) K) :
     nabK lam (fun τ => gLat (g τ) (M τ)) = (nabK lam M).map ((rhoK lam g).restrictScalars (𝓞 K)) := by
   have hE := (nabDelEquiv K ι n lam M g).1
@@ -132,6 +182,15 @@ theorem nabK_gLat (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin
   · rintro ⟨y, hy, rfl⟩
     exact ⟨y.1, hy, (rhoK_coe lam g y).symm⟩
 
+/- English proof (translation)
+Establish `hE` using `(nabDelEquiv K ι n lam M g).2`. Use extensionality with `x`. Simplify using `only [delK, Submodule.mem_comap, Submodule.mem_map, LinearMap.coe_restrictScalars, Submodule.subtype_apply]`. Rewrite using `[hE, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy, hyx⟩`. Establish `hyV : y ∈ VV K lam`. Establish `: y = actP lam g⁻¹ x.1`. Rewrite using `[← hyx]`. Use `show y = actP lam g⁻¹ (actP lam g y)`.
+
+Rewrite using `[← polyAction_mul, inv_mul_cancel, polyAction_one₂]`. Rewrite using `[this]`. Conclude with `polyAction_mem_VV lam g⁻¹ x.2`. Conclude with `⟨⟨y, hyV⟩, hy, Subtype.ext (by rw [rhoK_coe]; exact hyx)⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Conclude with `⟨y.1, hy, (rhoK_coe lam g y).symm⟩`.
+-/
 theorem delK_gLat (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin n → K)) (g : ι → GL (Fin n) K) :
     delK lam (fun τ => gLat (g τ) (M τ)) = (delK lam M).map ((rhoK lam g).restrictScalars (𝓞 K)) := by
   have hE := (nabDelEquiv K ι n lam M g).2
@@ -159,29 +218,44 @@ section Brackets
 variable {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] {ι : Type} [Fintype ι] {n : ℕ}
   (emb : ι → E →+* K)
 
+/- English proof (translation)
+Rewrite using `[gmap_eq_map]`. Conclude with `tauLatG E K ι n emb τ L (toGLm E n ga)`.
+-/
 theorem tauLat_gmap (τ : ι) (ga : Sp E n ≃ₗ[E] Sp E n) (L : Submodule (𝓞 E) (Sp E n)) :
     tauLat emb τ (gmap ga L) = gLat (embGL emb (toGLm E n ga) τ) (tauLat emb τ L) := by
   rw [gmap_eq_map]
   exact tauLatG E K ι n emb τ L (toGLm E n ga)
 
+/- English proof (translation)
+Unfold `nabAt`. Repeatedly rewrite using `[tauLat_gmap]`. Conclude with `nabK_gLat lam _ _`.
+-/
 theorem nabAt_gmap (lam : ι → DomWeight n) (ga : Sp E n ≃ₗ[E] Sp E n) (L : Submodule (𝓞 E) (Sp E n)) :
     nabAt emb lam (gmap ga L) = (nabAt emb lam L).map ((rhoV emb lam (toGLm E n ga)).restrictScalars (𝓞 K)) := by
   unfold nabAt
   simp_rw [tauLat_gmap]
   exact nabK_gLat lam _ _
 
+/- English proof (translation)
+Unfold `delAt`. Repeatedly rewrite using `[tauLat_gmap]`. Conclude with `delK_gLat lam _ _`.
+-/
 theorem delAt_gmap (lam : ι → DomWeight n) (ga : Sp E n ≃ₗ[E] Sp E n) (L : Submodule (𝓞 E) (Sp E n)) :
     delAt emb lam (gmap ga L) = (delAt emb lam L).map ((rhoV emb lam (toGLm E n ga)).restrictScalars (𝓞 K)) := by
   unfold delAt
   simp_rw [tauLat_gmap]
   exact delK_gLat lam _ _
 
+/- English proof (translation)
+Unfold `nabAtr`. Repeatedly rewrite using `[tauLat_gmap, dualFr_gLat]`. Conclude with `nabK_gLat lam _ (invTrK (embGL emb (toGLm E n ga)))`.
+-/
 theorem nabAtr_gmap (lam : ι → DomWeight n) (ga : Sp E n ≃ₗ[E] Sp E n) (L : Submodule (𝓞 E) (Sp E n)) :
     nabAtr emb lam (gmap ga L) = (nabAtr emb lam L).map ((rhoVr emb lam (toGLm E n ga)).restrictScalars (𝓞 K)) := by
   unfold nabAtr
   simp_rw [tauLat_gmap, dualFr_gLat]
   exact nabK_gLat lam _ (invTrK (embGL emb (toGLm E n ga)))
 
+/- English proof (translation)
+Unfold `delAtr`. Repeatedly rewrite using `[tauLat_gmap, dualFr_gLat]`. Conclude with `delK_gLat lam _ (invTrK (embGL emb (toGLm E n ga)))`.
+-/
 theorem delAtr_gmap (lam : ι → DomWeight n) (ga : Sp E n ≃ₗ[E] Sp E n) (L : Submodule (𝓞 E) (Sp E n)) :
     delAtr emb lam (gmap ga L) = (delAtr emb lam L).map ((rhoVr emb lam (toGLm E n ga)).restrictScalars (𝓞 K)) := by
   unfold delAtr
@@ -194,24 +268,36 @@ section PkEquiv
 
 variable (X : Fields) {n : ℕ} (lam : X.Tau → DomWeight n) {D : Type} (L : D → Submodule (𝓞 X.E) (Sp X.E n))
 
+/- English proof (translation)
+Use `show nabAtr X.emb lam (L d') = _`. Rewrite using `[h, nabAtr_gmap]`. Both sides reduce to the same expression.
+-/
 theorem roundPk_nab {ga : UF X.E n} {d d' : D} (h : L d' = gmap ga.1 (L d)) :
     (roundPk X lam L).Nab d' = ((roundPk X lam L).Nab d).map (((roundPk X lam L).rho ga).restrictScalars (𝓞 X.K)) := by
   show nabAtr X.emb lam (L d') = _
   rw [h, nabAtr_gmap]
   rfl
 
+/- English proof (translation)
+Use `show delAtr X.emb lam (L d') = _`. Rewrite using `[h, delAtr_gmap]`. Both sides reduce to the same expression.
+-/
 theorem roundPk_del {ga : UF X.E n} {d d' : D} (h : L d' = gmap ga.1 (L d)) :
     (roundPk X lam L).Del d' = ((roundPk X lam L).Del d).map (((roundPk X lam L).rho ga).restrictScalars (𝓞 X.K)) := by
   show delAtr X.emb lam (L d') = _
   rw [h, delAtr_gmap]
   rfl
 
+/- English proof (translation)
+Use `show nabAt X.emb lam (L d') = _`. Rewrite using `[h, nabAt_gmap]`. Both sides reduce to the same expression.
+-/
 theorem squarePk_nab {ga : UF X.E n} {d d' : D} (h : L d' = gmap ga.1 (L d)) :
     (squarePk X lam L).Nab d' = ((squarePk X lam L).Nab d).map (((squarePk X lam L).rho ga).restrictScalars (𝓞 X.K)) := by
   show nabAt X.emb lam (L d') = _
   rw [h, nabAt_gmap]
   rfl
 
+/- English proof (translation)
+Use `show delAt X.emb lam (L d') = _`. Rewrite using `[h, delAt_gmap]`. Both sides reduce to the same expression.
+-/
 theorem squarePk_del {ga : UF X.E n} {d d' : D} (h : L d' = gmap ga.1 (L d)) :
     (squarePk X lam L).Del d' = ((squarePk X lam L).Del d).map (((squarePk X lam L).rho ga).restrictScalars (𝓞 X.K)) := by
   show delAt X.emb lam (L d') = _
@@ -224,18 +310,27 @@ section ValsEquiv
 
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R)
 
+/- English proof (translation)
+The claim follows from `roundPk_nab X _ _ (d.1.Lsh_act a.1.2 a.2)`.
+-/
 theorem colVal_nab_smul (u : Pr.Word) (j : ℕ) {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))}
     (a : UF X.E (R.N j) × GLG X.E (R.N j) SG) (d : DecoSet X.E (R.N j) ST SG) :
     (colVal W u j ST SG).Nab (a • d) =
       ((colVal W u j ST SG).Nab d).map (((colVal W u j ST SG).rho a.1).restrictScalars (𝓞 X.K)) :=
   roundPk_nab X _ _ (d.1.Lsh_act a.1.2 a.2)
 
+/- English proof (translation)
+The claim follows from `roundPk_del X _ _ (d.1.Lsh_act a.1.2 a.2)`.
+-/
 theorem colVal_del_smul (u : Pr.Word) (j : ℕ) {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))}
     (a : UF X.E (R.N j) × GLG X.E (R.N j) SG) (d : DecoSet X.E (R.N j) ST SG) :
     (colVal W u j ST SG).Del (a • d) =
       ((colVal W u j ST SG).Del d).map (((colVal W u j ST SG).rho a.1).restrictScalars (𝓞 X.K)) :=
   roundPk_del X _ _ (d.1.Lsh_act a.1.2 a.2)
 
+/- English proof (translation)
+Use `show delAtr X.emb (W.lamTrue u j) ((a • d).1.LshKer P) = _`. Rewrite using `[DecoSet.smul_val, Deco.LshKer_act _ a.1.2, delAtr_gmap]`. Both sides reduce to the same expression.
+-/
 theorem BvLat_smul (u : Pr.Word) (j : ℕ) {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))} (P : ST)
     (a : UF X.E (R.N j) × GLG X.E (R.N j) SG) (d : DecoSet X.E (R.N j) ST SG) :
     BvLat W u j P (a • d) = (BvLat W u j P d).map (((colVal W u j ST SG).rho a.1).restrictScalars (𝓞 X.K)) := by
@@ -243,21 +338,33 @@ theorem BvLat_smul (u : Pr.Word) (j : ℕ) {ST SG : Finset (HeightOneSpectrum (�
   rw [DecoSet.smul_val, Deco.LshKer_act _ a.1.2, delAtr_gmap]
   rfl
 
+/- English proof (translation)
+The claim follows from `squarePk_nab X _ _ (d.1.N_act a.1.1 a.2)`.
+-/
 theorem rowVal_nab_smul {SG : Finset (HeightOneSpectrum (𝓞 X.E))}
     (a : UF X.E (R.N R.m - 1) × GLG X.E (R.N R.m - 1) SG) (d : DecoSet X.E (R.N R.m - 1) ∅ SG) :
     (rowVal W SG).Nab (a • d) = ((rowVal W SG).Nab d).map (((rowVal W SG).rho a.1).restrictScalars (𝓞 X.K)) :=
   squarePk_nab X _ _ (d.1.N_act a.1.1 a.2)
 
+/- English proof (translation)
+The claim follows from `squarePk_del X _ _ (d.1.N_act a.1.1 a.2)`.
+-/
 theorem rowVal_del_smul {SG : Finset (HeightOneSpectrum (𝓞 X.E))}
     (a : UF X.E (R.N R.m - 1) × GLG X.E (R.N R.m - 1) SG) (d : DecoSet X.E (R.N R.m - 1) ∅ SG) :
     (rowVal W SG).Del (a • d) = ((rowVal W SG).Del d).map (((rowVal W SG).rho a.1).restrictScalars (𝓞 X.K)) :=
   squarePk_del X _ _ (d.1.N_act a.1.1 a.2)
 
+/- English proof (translation)
+The claim follows from `roundPk_nab X _ _ (d.1.N_act a.1.1 a.2)`.
+-/
 theorem mtVal_nab_smul (j : ℕ) {SG : Finset (HeightOneSpectrum (𝓞 X.E))}
     (a : UF X.E R.nV × GLG X.E R.nV SG) (d : DecoSet X.E R.nV ∅ SG) :
     (mtVal W j SG).Nab (a • d) = ((mtVal W j SG).Nab d).map (((mtVal W j SG).rho a.1).restrictScalars (𝓞 X.K)) :=
   roundPk_nab X _ _ (d.1.N_act a.1.1 a.2)
 
+/- English proof (translation)
+The claim follows from `roundPk_del X _ _ (d.1.N_act a.1.1 a.2)`.
+-/
 theorem mtVal_del_smul (j : ℕ) {SG : Finset (HeightOneSpectrum (𝓞 X.E))}
     (a : UF X.E R.nV × GLG X.E R.nV SG) (d : DecoSet X.E R.nV ∅ SG) :
     (mtVal W j SG).Del (a • d) = ((mtVal W j SG).Del d).map (((mtVal W j SG).rho a.1).restrictScalars (𝓞 X.K)) :=
@@ -269,10 +376,18 @@ section PkPair
 
 variable {E : Type} [Field E] [StarRing E] {n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[Formalism.UG.P.glEquiv_apply', toGLm_mulVec]`.
+-/
 theorem glEquiv_toGLm (ga : Sp E n ≃ₗ[E] Sp E n) : Formalism.UG.glEquiv (toGLm E n ga) = ga := by
   ext x
   rw [Formalism.UG.P.glEquiv_apply', toGLm_mulVec]
 
+/- English proof (translation)
+Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(∑ k, star ((Pi.single i (1 : E) : Sp E n) k) * (Pi.single j (1 : E) : Sp E n) k) = (1 : Matrix (Fin n) (Fin n) E) i j`. Rewrite using `[Matrix.one_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Simplify using `[Pi.single_apply]`. Simplify using `[Pi.single_apply, h, Ne.symm h]`.
+-/
 theorem gram_hStd : Formalism.UG.gram (hStd E n) = 1 := by
   ext i j
   change (∑ k, star ((Pi.single i (1 : E) : Sp E n) k) * (Pi.single j (1 : E) : Sp E n) k) = (1 : Matrix (Fin n) (Fin n) E) i j
@@ -282,6 +397,9 @@ theorem gram_hStd : Formalism.UG.gram (hStd E n) = 1 := by
     simp [Pi.single_apply]
   · simp [Pi.single_apply, h, Ne.symm h]
 
+/- English proof (translation)
+Establish `h` using `(Formalism.UG.P.hermitian_lattice_correspondence_holds E (Fin n) (hStd E n) (toGLm E n ga.1)).2`. Rewrite `h` using `[gram_hStd, glEquiv_toGLm]`. Conclude with `h ga.2`.
+-/
 theorem toGLm_mem_UJ (ga : UF E n) : toGLm E n ga.1 ∈ Formalism.UG.UJ (starRingEnd E) (1 : Matrix (Fin n) (Fin n) E) := by
   have h := (Formalism.UG.P.hermitian_lattice_correspondence_holds E (Fin n) (hStd E n) (toGLm E n ga.1)).2
   rw [gram_hStd, glEquiv_toGLm] at h
@@ -293,21 +411,33 @@ section PkPair2
 
 variable (X : Fields) {n : ℕ} (lam : X.Tau → DomWeight n) {D : Type} (L : D → Submodule (𝓞 X.E) (Sp X.E n))
 
+/- English proof (translation)
+The claim follows from `pairInv X.K X.Tau n lam _ _ (fun τ => (uJUnitary X.E X.K X.Tau n X.emb (starRingEnd X.E) τ (fun x => (hst τ x).symm) 1 _ (toGLm_mem_UJ ga)).2 (by simp)) x y`.
+-/
 theorem roundPk_inv (hst : ∀ (τ : X.Tau) (x : X.E), X.emb τ (star x) = star (X.emb τ x)) (ga : UF X.E n)
     (x y : VV X.K lam) :
     (roundPk X lam L).pair ((roundPk X lam L).rho ga x) ((roundPk X lam L).rho ga y) = (roundPk X lam L).pair x y :=
   pairInv X.K X.Tau n lam _ _ (fun τ => (uJUnitary X.E X.K X.Tau n X.emb (starRingEnd X.E) τ
     (fun x => (hst τ x).symm) 1 _ (toGLm_mem_UJ ga)).2 (by simp)) x y
 
+/- English proof (translation)
+The claim follows from `pairInv X.K X.Tau n lam _ _ (fun τ => (uJUnitary X.E X.K X.Tau n X.emb (starRingEnd X.E) τ (fun x => (hst τ x).symm) 1 _ (toGLm_mem_UJ ga)).1) x y`.
+-/
 theorem squarePk_inv (hst : ∀ (τ : X.Tau) (x : X.E), X.emb τ (star x) = star (X.emb τ x)) (ga : UF X.E n)
     (x y : VV X.K lam) :
     (squarePk X lam L).pair ((squarePk X lam L).rho ga x) ((squarePk X lam L).rho ga y) = (squarePk X lam L).pair x y :=
   pairInv X.K X.Tau n lam _ _ (fun τ => (uJUnitary X.E X.K X.Tau n X.emb (starRingEnd X.E) τ
     (fun x => (hst τ x).symm) 1 _ (toGLm_mem_UJ ga)).1) x y
 
+/- English proof (translation)
+The claim follows from `delLeNab X.K X.Tau n lam _`.
+-/
 theorem roundPk_del_le (d : D) : (roundPk X lam L).Del d ≤ (roundPk X lam L).Nab d :=
   delLeNab X.K X.Tau n lam _
 
+/- English proof (translation)
+The claim follows from `delLeNab X.K X.Tau n lam _`.
+-/
 theorem squarePk_del_le (d : D) : (squarePk X lam L).Del d ≤ (squarePk X lam L).Nab d :=
   delLeNab X.K X.Tau n lam _
 
@@ -319,10 +449,16 @@ variable (K : Type) [Field K] {ι : Type} [Fintype ι] {n : ℕ}
 
 def extVV (lam : ι → DomWeight n) : Pol K ι n := ten fun τ => extremal K n (lam τ)
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨fun τ => extremal K n (lam τ), fun τ => Formalism.GradedWeylDivisibility.hwMem K n n le_rfl _ (natW_antitone (lam τ)), rfl⟩`.
+-/
 theorem extVV_mem (lam : ι → DomWeight n) : extVV K lam ∈ VV K lam :=
   Submodule.subset_span ⟨fun τ => extremal K n (lam τ),
     fun τ => Formalism.GradedWeylDivisibility.hwMem K n n le_rfl _ (natW_antitone (lam τ)), rfl⟩
 
+/- English proof (translation)
+Unfold `extVV ten`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `τ _`. Establish `hinj : Function.Injective (Formalism.GradedWeylDivisibility.blockEmb K (k` using `n) (n := n) τ) := MvPolynomial.rename_injective _ (fun a b h => (Prod.mk.inj h).2)`. Conclude with `(map_ne_zero_iff _ hinj).mpr (Formalism.GradedWeylDivisibility.hwNe K n n le_rfl _)`.
+-/
 theorem extVV_ne_zero (lam : ι → DomWeight n) : extVV K lam ≠ 0 := by
   unfold extVV ten
   rw [Finset.prod_ne_zero_iff]
@@ -334,8 +470,14 @@ theorem extVV_ne_zero (lam : ι → DomWeight n) : extVV K lam ≠ 0 := by
 instance VV_nontrivial (lam : ι → DomWeight n) : Nontrivial (VV K lam) :=
   ⟨⟨⟨extVV K lam, extVV_mem K lam⟩, 0, fun h => extVV_ne_zero K lam (congrArg Subtype.val h)⟩⟩
 
+/- English proof (translation)
+The claim follows from `VV_nontrivial X.K C.lam`.
+-/
 theorem CoefPk.V_nontrivial {X : Fields} {D : Type} (C : CoefPk X n D) : Nontrivial C.V := VV_nontrivial X.K C.lam
 
+/- English proof (translation)
+Use `C.V_nontrivial` as an intermediate fact. Establish `: Module.Finite X.K C.V` using `Module.Finite.of_basis C.bV`. Conclude with `Module.finrank_pos`.
+-/
 theorem CoefPk.finrank_pos {X : Fields} {D : Type} (C : CoefPk X n D) : 0 < Module.finrank X.K C.V := by
   have := C.V_nontrivial
   have : Module.Finite X.K C.V := Module.Finite.of_basis C.bV
@@ -347,6 +489,23 @@ section LastEntry
 
 variable {X : Fields} {Word : Type} {R : Ranks} (W : Wts X Word R)
 
+/- English proof (translation)
+Establish `hm` using `R.two_le_m`. Establish `hk : 1 ≤ R.k` using `by have := R.m_add_three_le_k; omega`. Establish `ht : 1 ≤ R.t` using `R.t_odd.pos`. Establish `hmul : R.m * (R.t + 1) = (R.m - 1) * (R.t + 1) + (R.t + 1)`. Rewrite using `[← Nat.succ_mul]`.
+
+Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hN : R.N R.m = R.k + (R.m - 1) * (R.t + 1) + R.t + 1` using `by unfold Ranks.N; rw [hmul]; ring`. Establish `hN1 : 0 < R.N R.m` using `by omega`. Establish `hN2 : 0 < R.N R.m - 1` using `by omega`.
+
+Unfold `DomWeight.detShift`. Rewrite using `[dif_pos hN1, dif_pos hN2]`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[Wts.lamTrue_eq, Wts.lamN_eq W u le_rfl]`. Establish `hlt : ¬ R.N R.m - 1 < R.k` using `by omega`.
+
+Rewrite using `[dif_neg hlt]`. Establish `e1 : (R.N R.m - 1 - R.k) / (R.t + 1) = R.m - 1`. Establish `: R.N R.m - 1 - R.k = (R.m - 1) * (R.t + 1) + R.t` using `by omega`. Rewrite using `[this]`. Conclude with `(divmod (R.t + 1) (R.m - 1) R.t (by omega)).1`.
+
+Simplify using `only [e1]`. Take `⟨P, hP⟩` from `hW.row_ok τ`. Establish `hrow : (W.hc u τ).e = P.e`. Use `congrArg RowPar.e ((hW.hc_row u τ).trans hP.symm)` as an intermediate fact. Simplify `this` using `[RowPar.of]`.
+
+Rewrite using `[hrow]`. Use `show _ = (((W.row τ).sgTrue.w ⟨R.N R.m - 1 - 1, by omega⟩ : ℤ) : ℚ)`. Rewrite using `[← hP, RowPar.sgTrue_eq]`. Establish `hi : R.N R.m - 1 - 1 = R.k - 1 + (R.m - 1) * (R.t + 1) + R.t` using `by omega`. Simplify using `only [hi]`.
+
+Rewrite using `[RowPar.sgHC_e _ (R.m - 1) R.t ht le_rfl, RowPar.eAt_of P (by omega)]`. Unfold `rhoVec wG RowPar.sh`. Establish `c1 : ((R.N R.m - 1 : ℕ) : ℚ) = (R.k : ℚ) + ((R.m : ℚ) - 1) * ((R.t : ℚ) + 1) + R.t`. Rewrite using `[hN]; push_cast [Nat.cast_sub (by omega : 1 ≤ R.m)]; ring`. Establish `c2 : ((R.k - 1 + (R.m - 1) * (R.t + 1) + R.t : ℕ) : ℚ) = (R.k : ℚ) - 1 + ((R.m : ℚ) - 1) * ((R.t : ℚ) + 1) + R.t`.
+
+Move the coercions through the operations in `[Nat.cast_sub hk, Nat.cast_sub (by omega : 1 ≤ R.m)]; ring`. Rewrite using `[c1, c2]`. Move the coercions through the operations in `[Nat.cast_sub (by omega : 1 ≤ R.m)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lamTrue_sgTrue_detShift (hW : W.Ok) (u : Word) (τ : X.Tau) :
     (W.lamTrue u R.m τ).detShift = (W.sgTrue τ).detShift := by
   have hm := R.two_le_m

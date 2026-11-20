@@ -30,6 +30,47 @@ noncomputable section
 
 namespace GlobalTheory.ConeSmallMidJB
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B a b G G₁ H H' hC e' he K μK μ hKs hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ V V' W₁' hT' e W₂ H₂ i₀ i₁ hH₂ emb hemb w hw nn hnn`. Use `⟨0, fun T hTr s _ hL Gf hG => ?_⟩` and prove the remaining obligations. Use `set f := GlobalTheory.ConeSmall.coneI B G G₁ H H' e' K μK μ X.ν om' om₁' Φ' (s + ((a : ℂ) + 1) / 2) with hfdef`. Establish `hf : Measurable f` using `GlobalTheory.ConeSmallSerInt.measurable_coneI hK F E σ B a b G G₁ H H' hC e' he K μK μ hKs hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ _`. Establish `hinv : ∀ p ∈ ratU σ G.W.J, GlobalTheory.ConeSmallSer.StabLn H'.x p → ∀ h, f (p * h) = f h` using `fun p hp hs h => GlobalTheory.T.seesaw_evaluation_haar_nonarchimedean hK F E σ B a b G G₁ H H' hC e' he K μK μ hKs hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ _ p hp hs h`.
+
+Establish `hun : ∀ u ∈ unip σ G.W H', ∀ h, f (u * h) = f h` using `fun u hu h => GlobalTheory.T.seesaw_evaluation_haar_archimedean hK F E σ B a b G G₁ H H' hC e' he K μK μ hKs hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ _ u hu h`. Use `clear_value f`. Take `⟨R, hR⟩` from `GlobalTheory.UnipCompact.exists_bounded_translate F E σ B _ _ G.W G₁.W H' _ _ _ _ hT.base hT.geo.hW hC.hH'`. Take `⟨hembr, hwr, hwinj, hwsh⟩` from `GlobalTheory.T.reconfigured_triple_compatibility F E σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ V V' W₁' hT' e W₂ H₂ i₀ i₁ hH₂ emb hemb w hw nn hnn`. Take `⟨T₁, hT₁r, ε, hε⟩` from `GlobalTheory.T.reconfigured_triple_integral_equality F E σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ V V' W₁' hT' e W₂ H₂ i₀ i₁ hH₂ emb hemb w hw nn hnn T hTr`.
+
+Establish `hsb` using `GlobalTheory.T.cone_series_locally_uniform F E σ _ _ G.W H' R hR T hTr f hinv hL`. Establish `hbc : ∀ g, ∃ C : ℝ, ∀ u ∈ unip σ G.W H', Summable (fun c : E => ‖f (w * nn (inclR (F` using `F) (AF F) c) * u * g)‖) ∧ ∑' c : E, ‖f (w * nn (inclR (F := F) (AF F) c) * u * g)‖ ≤ C := by`. Introduce `g`. Take `⟨C, hCb⟩` from `hsb g`. Use `⟨C, fun u hu => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `GlobalTheory.T.cone_series_representatives_sum F E σ _ G.W.J H'.x T hTr f hinv E (fun c => w * nn (inclR (F := F) (AF F) c)) hwr hwinj (u * g) C (hCb u hu).1 (hCb u hu).2`. Simplify `h1` using `only [mul_assoc]`. Take `⟨κ, ν, hκ, hν, hcore⟩` from `GlobalTheory.T.reconfigured_triple_local_identity F E σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ V V' W₁' hT' e W₂ H₂ i₀ i₁ hH₂ emb hemb w hw nn hnn f hf hinv hun hbc Gf hG`. Take `⟨i1, i2, i3, i4⟩` from `GlobalTheory.UnipCT.topFacts (F := F) σ G.W.J`. Use `haveI : BorelSpace (UA σ G.W.J) := ⟨rfl⟩`.
+
+Use `haveI := GlobalTheory.UnipCT.countable_ratU (σ := σ) G₁.W.J`. Use `haveI : Countable T₁ := Function.Injective.countable (f := fun t : T₁ => (⟨t.1, hT₁r t.2⟩ : ratU σ G₁.W.J)) fun x y hxy => Subtype.ext (congrArg (fun z : ratU σ G₁.W.J => z.1) hxy)`. Use `haveI : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable`. Establish `hfε : ∀ (t : GlobalTheory.ConeSmallSer.midSet H'.x T) (v : UA σ G.W.J), f (t.1 * v) = f (w * nn (inclR (F` using `F) (AF F) (ε t).2) * emb (ε t).1.1 * v) := by`. Introduce `t v`.
+
+Establish `hp : w * nn (inclR (F` using `F) (AF F) (ε t).2) * emb (ε t).1.1 * t.1⁻¹ ∈ ratU σ G.W.J := mul_mem (mul_mem (hwr _) (hembr _ (hT₁r (ε t).1.2))) (inv_mem (hTr.1 t.2.1))`. Rewrite using `[← hinv _ hp (hε t) (t.1 * v)]`. Use `congr 1`. Use `group`. Establish `hsumε : ∀ v : UA σ G.W.J, Summable (fun t : T => ‖f (t.1 * v)‖) → Summable (fun p : T₁ × E => ‖f (w * nn (inclR (F` using `F) (AF F) p.2) * emb p.1.1 * v)‖) ∧ ∑' p : T₁ × E, ‖f (w * nn (inclR (F := F) (AF F) p.2) * emb p.1.1 * v)‖ ≤ ∑' t : T, ‖f (t.1 * v)‖ := by`.
+
+Introduce `v hs`. Establish `hfun : (fun p : T₁ × E => ‖f (w * nn (inclR (F` using `F) (AF F) p.2) * emb p.1.1 * v)‖) = (fun t : GlobalTheory.ConeSmallSer.midSet H'.x T => ‖f (t.1 * v)‖) ∘ ε.symm := by`. Use function extensionality and compare the values at `p`. Simplify using `only [Function.comp_apply, hfε, Equiv.apply_symm_apply]`. Set `ι : GlobalTheory.ConeSmallSer.midSet H'.x T → T` to `fun t => ⟨t.1, t.2.1⟩`.
+
+Establish `hι : Function.Injective ι` using `fun x y hxy => Subtype.ext (congrArg (fun z : T => z.1) hxy)`. Establish `hs' : Summable (fun t : GlobalTheory.ConeSmallSer.midSet H'.x T => ‖f (t.1 * v)‖)`. Establish `h0` using `hs.comp_injective hι`. Conclude with `h0`. Rewrite using `[hfun]`.
+
+Use `⟨ε.symm.summable_iff.2 hs', ?_⟩` and prove the remaining obligations. Conclude with `(ε.symm.tsum_eq (fun t : GlobalTheory.ConeSmallSer.midSet H'.x T => ‖f (t.1 * v)‖)).le.trans (hs'.tsum_le_tsum_of_inj ι hι (fun _ _ => norm_nonneg _) (fun _ => le_rfl) hs)`. Establish `key : ∀ (μ' : Measure (unip σ G.W H')) (𝓕 : Set (unip σ G.W H')), μ'.IsHaarMeasure → IsFundamentalDomain ((ratU σ G.W.J).subgroupOf (unip σ G.W H')) 𝓕 μ' → μ' 𝓕 = 1 → ∀ h, (∫ u in 𝓕, GlobalTheory.ConeSmallSer.partSum f (GlobalTheory.ConeSmallSer.midSet H'.x T) (u.1 * h) ∂μ' = ∑' …` using `F) (AF F) c) * emb γ.1 * (u.1 * h)) ∂μ') ∧ Summable (fun γ : T₁ => ‖∫ u in 𝓕, ∑' c : E, f (w * nn (inclR (F := F) (AF F) c) * emb γ.1 * (u.1 * h)) ∂μ'‖) ∧ ∀ γ : T₁, ∫ u in 𝓕, ∑' c : E, f (w * nn (inclR (F := F) (AF F) c) * emb γ.1 * (u.1 * h)) ∂μ' = κ * ∫ c, Gf (w * nn c * emb γ. …`. Introduce `μ' 𝓕 hμ' h𝓕 h1 h`. Take `⟨Ch, hCh⟩` from `hsb h`.
+
+Set `Φ : T₁ → E → unip σ G.W H' → ℂ` to `fun γ c u => f (w * nn (inclR (F := F) (AF F) c) * emb γ.1 * (u.1 * h))`. Establish `hΦm : ∀ γ c, Measurable (Φ γ c)` using `fun γ c => hf.comp ((continuous_const.mul (continuous_subtype_val.mul continuous_const))).measurable`. Establish `hΦb : ∀ u, Summable (fun p : T₁ × E => ‖Φ p.1 p.2 u‖) ∧ ∑' p : T₁ × E, ‖Φ p.1 p.2 u‖ ≤ Ch`. Introduce `u`. Take `⟨hs1, hs2⟩` from `hsumε (u.1 * h) (hCh u.1 u.2).1`.
+
+Conclude with `⟨hs1, hs2.trans (hCh u.1 u.2).2⟩`. Take `⟨hF1, hF2⟩` from `GlobalTheory.T.integral_double_series_interchange (unip σ G.W H') μ' 𝓕 (by rw [h1]; exact ENNReal.one_ne_top) T₁ E Φ hΦm Ch hΦb`. Use `⟨?_, hF2, fun γ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hF1]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations.
+
+Use `show ∑' t : GlobalTheory.ConeSmallSer.midSet H'.x T, f (t.1 * (u.1 * h)) = _`. Rewrite using `[← ε.symm.tsum_eq]`. Use `tsum_congr fun p => ?_` and prove the remaining obligations. Rewrite using `[hfε, Equiv.apply_symm_apply]`. Set `Ψ : UA σ G.W.J → ℂ` to `fun v => ∑' c : E, f (w * nn (inclR (F := F) (AF F) c) * v * (emb γ.1 * h))`.
+
+Establish `hΨ : ∀ δ ∈ ratU σ G.W.J ⊓ unip σ G.W H', ∀ u ∈ unip σ G.W H', Ψ (δ * u) = Ψ u`. Introduce `δ hδ u _`. Take `⟨a₀, ha₀⟩` from `hwsh δ hδ`. Establish `e1 : ∀ c : E, f (w * nn (inclR (F` using `F) (AF F) c) * (δ * u) * (emb γ.1 * h)) = f (w * nn (inclR (F := F) (AF F) (c + a₀)) * u * (emb γ.1 * h)) := by`. Introduce `c`.
+
+Establish `hp : w * nn (inclR (F` using `F) (AF F) c) * δ * (w * nn (inclR (F := F) (AF F) (c + a₀)))⁻¹ ∈ ratU σ G.W.J := mul_mem (mul_mem (hwr c) hδ.1) (inv_mem (hwr (c + a₀)))`. Combine the equalities or inequalities in the displayed calculation. Use `show ∑' c : E, _ = ∑' c : E, _`. Simplify using `only [e1]`. Conclude with `(Equiv.addRight a₀).tsum_eq (fun c => f (w * nn (inclR (F := F) (AF F) c) * u * (emb γ.1 * h)))`.
+
+Establish `hc` using `GlobalTheory.T.levi_constant_term_integral F E σ _ _ G.W G₁.W H' γ.1 (emb γ.1) (hembr _ (hT₁r γ.2)) (hemb γ.1) Ψ hΨ μ' 𝓕 hμ' h𝓕 h1`. Establish `e2 : ∀ u : unip σ G.W H', Ψ (emb γ.1 * u.1 * (emb γ.1)⁻¹) = ∑' c : E, Φ γ c u`. Introduce `u`. Use `tsum_congr fun c => ?_` and prove the remaining obligations. Use `show f _ = f _`.
+
+Use `congr 1`. Use `group`. Establish `e3` using `(hcore μ' 𝓕 hμ' h𝓕 h1 (emb γ.1 * h)).2`. Simplify using `only [e2] at hc`. Rewrite using `[hc, e3]`.
+
+Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun c => ?_)` and prove the remaining obligations. Simplify using `only [mul_assoc]`. Take `⟨μ₀, 𝓕₀, hμ₀, h𝓕₀, h₀⟩` from `GlobalTheory.T.exists_fundamental_domain_unipotent F E σ B _ _ G.W G₁.W H' _ _ _ _ hT.base hT.geo.hW hC.hH'`. Use `⟨T₁, κ, ν, hν, ?_, fun h => ?_, fun h γ => ?_⟩` and prove the remaining obligations.
+
+Introduce `μ' 𝓕 hμ' h𝓕 h1 h`. Take `⟨k1, -, k3⟩` from `key μ' 𝓕 hμ' h𝓕 h1 h`. Rewrite using `[k1]`. Use `beta_reduce`. Rewrite using `[← tsum_mul_left]`.
+
+Conclude with `tsum_congr fun γ => (k3 γ).symm`. Take `⟨-, k2, k3⟩` from `key μ₀ 𝓕₀ hμ₀ h𝓕₀ h₀ h`. Establish `e4 : ∀ γ : T₁, ‖∫ c, Gf (w * nn c * emb γ.1 * h) ∂ν‖ = ‖κ‖⁻¹ * ‖∫ u in 𝓕₀, ∑' c : E, f (w * nn (inclR (F` using `F) (AF F) c) * emb γ.1 * (u.1 * h)) ∂μ₀‖ := by`. Introduce `γ`. Rewrite using `[k3 γ, norm_mul, ← mul_assoc, inv_mul_cancel₀ (norm_ne_zero_iff.2 hκ), one_mul]`.
+
+Simplify using `only [e4]`. Conclude with `k2.mul_left _`. Establish `h5` using `(hcore μ₀ 𝓕₀ hμ₀ h𝓕₀ h₀ (emb γ.1 * h)).1`. Simplify `h5` using `only [mul_assoc]`.
+-/
 theorem ctMid_unfold : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →
     ∀ e', IsEv B G.M' G₁.M' H.ι H'.ι (isoB H H') e' → ∀ (K : Subgroup (UA σ G.V'.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ),
     IsStab B K → μK.IsHaarMeasure → μ.IsHaarMeasure →

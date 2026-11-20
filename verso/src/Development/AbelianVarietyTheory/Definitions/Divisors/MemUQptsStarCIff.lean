@@ -18,13 +18,26 @@ instance Datum.finVQ : FiniteDimensional ℚ D.VQ := by
 def Datum.actQ : D.O →+* Module.End ℚ D.VQ :=
   (Module.End.baseChangeHom ℤ ℚ D.La).toRingHom.comp (Module.toModuleEnd ℤ (S := D.O) D.La)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Datum.actQ_tmul (b : D.O) (q : ℚ) (x : D.La) : D.actQ b (q ⊗ₜ x) = q ⊗ₜ (b • x) := rfl
 
 def Datum.EFQ : LinearMap.BilinForm ℚ D.VQ := D.EF.baseChange ℚ
 
+/- English proof (translation)
+Simplify using `[Datum.EFQ, LinearMap.BilinForm.baseChange_tmul, mul_comm]`.
+-/
 theorem Datum.EFQ_tmul (q q' : ℚ) (x y : D.La) : D.EFQ (q ⊗ₜ x) (q' ⊗ₜ y) = (D.EF x y : ℚ) * (q * q') := by
   simp [Datum.EFQ, LinearMap.BilinForm.baseChange_tmul, mul_comm]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' h h' => simp only [map_add, LinearMap.add_apply, h, h']`. Expand and normalize the polynomial expressions, which then agree. Consider the case `tmul q x`.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add y y' h h' => simp only [map_add, LinearMap.add_apply, h, h']`. Expand and normalize the polynomial expressions, which then agree. Consider the case `tmul q' y => rw [D.EFQ_tmul, D.EFQ_tmul, D.EF_swap x y]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Datum.EFQ_swap (x y : D.VQ) : D.EFQ y x = - D.EFQ x y := by
   induction x using TensorProduct.induction_on with
   | zero => simp
@@ -35,6 +48,11 @@ theorem Datum.EFQ_swap (x y : D.VQ) : D.EFQ y x = - D.EFQ x y := by
     | add y y' h h' => simp only [map_add, LinearMap.add_apply, h, h']; ring
     | tmul q' y => rw [D.EFQ_tmul, D.EFQ_tmul, D.EF_swap x y]; push_cast; ring
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' h h' => simp only [map_add, LinearMap.add_apply, h, h']`. Consider the case `tmul q x`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add y y' h h' => simp only [map_add, h, h']`. Consider the case `tmul q' y => rw [D.actQ_tmul, D.actQ_tmul, D.EFQ_tmul, D.EFQ_tmul, D.adj]`.
+-/
 theorem Datum.EFQ_actQ (b : D.O) (x y : D.VQ) : D.EFQ (D.actQ b x) y = D.EFQ x (D.actQ (D.star b).unop y) := by
   induction x using TensorProduct.induction_on with
   | zero => simp
@@ -45,6 +63,17 @@ theorem Datum.EFQ_actQ (b : D.O) (x y : D.VQ) : D.EFQ (D.actQ b x) y = D.EFQ x (
     | add y y' h h' => simp only [map_add, h, h']
     | tmul q' y => rw [D.actQ_tmul, D.actQ_tmul, D.EFQ_tmul, D.EFQ_tmul, D.adj]
 
+/- English proof (translation)
+Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, 0, one_ne_zero, by simp⟩`. Consider the case `tmul q x`. Distinguish the cases in `h : q = 0`. Conclude with `⟨1, 0, one_ne_zero, by simp [h]⟩`.
+
+Conclude with `⟨q, x, h, rfl⟩`. Consider the case `add v v' h h'`. Take `⟨q, x, -, rfl⟩` from `h`. Take `⟨q', x', -, rfl⟩` from `h'`. Establish `hd : (q.den : ℚ) ≠ 0` using `by exact_mod_cast q.den_ne_zero`.
+
+Establish `hd' : (q'.den : ℚ) ≠ 0` using `by exact_mod_cast q'.den_ne_zero`. Use `⟨1 / (q.den * q'.den), (q.num * q'.den : ℤ) • x + (q'.num * q.den : ℤ) • x', by positivity, ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_add, ← TensorProduct.smul_tmul, ← TensorProduct.smul_tmul]`. Use `congr 2`. Rewrite using `[zsmul_eq_mul]`.
+
+Use `push_cast`. Use `conv_lhs => rw [← Rat.num_div_den q]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[zsmul_eq_mul]`. Use `push_cast`.
+
+Use `conv_lhs => rw [← Rat.num_div_den q']`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem Datum.exists_tmul (v : D.VQ) : ∃ (q : ℚ) (x : D.La), q ≠ 0 ∧ v = q ⊗ₜ x := by
   induction v using TensorProduct.induction_on with
   | zero => exact ⟨1, 0, one_ne_zero, by simp⟩
@@ -65,6 +94,11 @@ theorem Datum.exists_tmul (v : D.VQ) : ∃ (q : ℚ) (x : D.La), q ≠ 0 ∧ v =
     · rw [zsmul_eq_mul]; push_cast; conv_lhs => rw [← Rat.num_div_den q']
       field_simp
 
+/- English proof (translation)
+Take `⟨q, x, hq, rfl⟩` from `D.exists_tmul v`. Establish `hx : D.EF x = D.EF 0`. Use extensionality with `y`. Use `h (1 ⊗ₜ y)` as an intermediate fact. Rewrite `this` using `[D.EFQ_tmul, mul_one]`.
+
+Establish `h2 : (D.EF x y : ℚ) = 0` using `(mul_eq_zero.1 this).resolve_right hq`. Simplify using `using h2`. Rewrite using `[D.nondeg hx, TensorProduct.tmul_zero]`.
+-/
 theorem Datum.eq_zero_of_EFQ {v : D.VQ} (h : ∀ w, D.EFQ v w = 0) : v = 0 := by
   obtain ⟨q, x, hq, rfl⟩ := D.exists_tmul v
   have hx : D.EF x = D.EF 0 := by
@@ -75,47 +109,86 @@ theorem Datum.eq_zero_of_EFQ {v : D.VQ} (h : ∀ w, D.EFQ v w = 0) : v = 0 := by
     simpa using h2
   rw [D.nondeg hx, TensorProduct.tmul_zero]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ h => D.eq_zero_of_EFQ h, fun v h => D.eq_zero_of_EFQ fun w => by rw [D.EFQ_swap, h, neg_zero]⟩`.
+-/
 theorem Datum.EFQ_nondeg : D.EFQ.Nondegenerate :=
   ⟨fun _ h => D.eq_zero_of_EFQ h, fun v h => D.eq_zero_of_EFQ fun w => by rw [D.EFQ_swap, h, neg_zero]⟩
 
 def Datum.adjE (g : Module.End ℚ D.VQ) : Module.End ℚ D.VQ := D.EFQ.leftAdjointOfNondegenerate D.EFQ_nondeg g
 
+/- English proof (translation)
+The claim follows from `D.EFQ.isAdjointPairLeftAdjointOfNondegenerate D.EFQ_nondeg g x y`.
+-/
 theorem Datum.EFQ_adjE_left (g : Module.End ℚ D.VQ) (x y : D.VQ) : D.EFQ (D.adjE g x) y = D.EFQ x (g y) :=
   D.EFQ.isAdjointPairLeftAdjointOfNondegenerate D.EFQ_nondeg g x y
 
+/- English proof (translation)
+Rewrite using `[D.EFQ_swap y, D.EFQ_swap (D.adjE g y), D.EFQ_adjE_left]`.
+-/
 theorem Datum.EFQ_adjE_right (g : Module.End ℚ D.VQ) (x y : D.VQ) : D.EFQ (g x) y = D.EFQ x (D.adjE g y) := by
   rw [D.EFQ_swap y, D.EFQ_swap (D.adjE g y), D.EFQ_adjE_left]
 
+/- English proof (translation)
+Use `LinearMap.ext fun x => sub_eq_zero.1 (D.eq_zero_of_EFQ fun y => ?_)` and prove the remaining obligations. Rewrite using `[map_sub, LinearMap.sub_apply, H, sub_self]`.
+-/
 theorem Datum.end_ext {g h : Module.End ℚ D.VQ} (H : ∀ x y, D.EFQ (g x) y = D.EFQ (h x) y) : g = h := by
   refine LinearMap.ext fun x => sub_eq_zero.1 (D.eq_zero_of_EFQ fun y => ?_)
   rw [map_sub, LinearMap.sub_apply, H, sub_self]
 
+/- English proof (translation)
+The claim follows from `D.end_ext fun x y => by rw [D.EFQ_adjE_left, D.EFQ_adjE_right]`.
+-/
 theorem Datum.adjE_adjE (g : Module.End ℚ D.VQ) : D.adjE (D.adjE g) = g :=
   D.end_ext fun x y => by rw [D.EFQ_adjE_left, D.EFQ_adjE_right]
 
+/- English proof (translation)
+The claim follows from `D.end_ext fun x y => by simp only [D.EFQ_adjE_left, Module.End.mul_apply]`.
+-/
 theorem Datum.adjE_mul (g h : Module.End ℚ D.VQ) : D.adjE (g * h) = D.adjE h * D.adjE g :=
   D.end_ext fun x y => by simp only [D.EFQ_adjE_left, Module.End.mul_apply]
 
+/- English proof (translation)
+The claim follows from `D.end_ext fun x y => by simp only [D.EFQ_adjE_left, LinearMap.add_apply, map_add]`.
+-/
 theorem Datum.adjE_add (g h : Module.End ℚ D.VQ) : D.adjE (g + h) = D.adjE g + D.adjE h :=
   D.end_ext fun x y => by simp only [D.EFQ_adjE_left, LinearMap.add_apply, map_add]
 
+/- English proof (translation)
+The claim follows from `D.end_ext fun x y => by simp only [D.EFQ_adjE_left, LinearMap.smul_apply, map_smul]`.
+-/
 theorem Datum.adjE_smul (q : ℚ) (g : Module.End ℚ D.VQ) : D.adjE (q • g) = q • D.adjE g :=
   D.end_ext fun x y => by simp only [D.EFQ_adjE_left, LinearMap.smul_apply, map_smul]
 
+/- English proof (translation)
+The claim follows from `D.end_ext fun x y => by simp only [D.EFQ_adjE_left, Module.End.one_apply]`.
+-/
 theorem Datum.adjE_one : D.adjE 1 = 1 :=
   D.end_ext fun x y => by simp only [D.EFQ_adjE_left, Module.End.one_apply]
 
+/- English proof (translation)
+The claim follows from `D.end_ext fun x y => by simp [D.EFQ_adjE_left]`.
+-/
 theorem Datum.adjE_zero : D.adjE 0 = 0 :=
   D.end_ext fun x y => by simp [D.EFQ_adjE_left]
 
+/- English proof (translation)
+The claim follows from `D.end_ext fun x y => by rw [D.EFQ_adjE_left, D.EFQ_actQ, D.star_star]`.
+-/
 theorem Datum.adjE_actQ (b : D.O) : D.adjE (D.actQ b) = D.actQ (D.star b).unop :=
   D.end_ext fun x y => by rw [D.EFQ_adjE_left, D.EFQ_actQ, D.star_star]
 
 def Datum.endO : Subalgebra ℚ (Module.End ℚ D.VQ) := Subalgebra.centralizer ℚ (Set.range D.actQ)
 
+/- English proof (translation)
+Simplify using `[Datum.endO, Subalgebra.mem_centralizer_iff]`.
+-/
 theorem Datum.mem_endO {g : Module.End ℚ D.VQ} : g ∈ D.endO ↔ ∀ b, D.actQ b * g = g * D.actQ b := by
   simp [Datum.endO, Subalgebra.mem_centralizer_iff]
 
+/- English proof (translation)
+Rewrite `hg`, the goal using `[D.mem_endO]`. Introduce `b`. Establish `h` using `congrArg D.adjE (hg (D.star b).unop)`. Rewrite `h` using `[D.adjE_mul, D.adjE_mul, D.adjE_actQ, D.star_star]`. Conclude with `h.symm`.
+-/
 theorem Datum.adjE_mem {g : Module.End ℚ D.VQ} (hg : g ∈ D.endO) : D.adjE g ∈ D.endO := by
   rw [D.mem_endO] at hg ⊢
   intro b
@@ -130,19 +203,31 @@ def Datum.starC : D.endO →+* D.endOᵐᵒᵖ where
   map_zero' := MulOpposite.unop_injective (Subtype.ext D.adjE_zero)
   map_add' g h := MulOpposite.unop_injective (Subtype.ext (D.adjE_add g h))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Datum.coe_starC (g : D.endO) : (((D.starC g).unop : D.endO) : Module.End ℚ D.VQ) = D.adjE g := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (D.adjE_adjE g)`.
+-/
 theorem Datum.starC_starC (g : D.endO) : (D.starC (D.starC g).unop).unop = g := Subtype.ext (D.adjE_adjE g)
 
 def Datum.actInt : 𝓞 D.F →+* D.endO :=
   (D.actQ.comp (algebraMap (𝓞 D.F) D.O)).codRestrict D.endO fun c => D.mem_endO.2 fun b => by
     rw [RingHom.comp_apply, ← map_mul, ← map_mul, Algebra.commutes]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Datum.coe_actInt (c : 𝓞 D.F) : (D.actInt c : Module.End ℚ D.VQ) = D.actQ (algebraMap (𝓞 D.F) D.O c) := rfl
 
 def Datum.actFL : D.F →ₗ[ℚ] D.endO :=
   (integralBasis D.F).constr ℚ fun i => D.actInt (RingOfIntegers.basis D.F i)
 
+/- English proof (translation)
+Establish `h : (D.actFL.restrictScalars ℤ).comp (algebraMap (𝓞 D.F) D.F).toIntAlgHom.toLinearMap = D.actInt.toIntAlgHom.toLinearMap`. Use `(RingOfIntegers.basis D.F).ext fun i => ?_` and prove the remaining obligations. Use `show D.actFL (algebraMap (𝓞 D.F) D.F (RingOfIntegers.basis D.F i)) = D.actInt _`. Rewrite using `[← integralBasis_apply, Datum.actFL, Module.Basis.constr_basis]`. Conclude with `LinearMap.congr_fun h c`.
+-/
 theorem Datum.actFL_coe (c : 𝓞 D.F) : D.actFL (c : D.F) = D.actInt c := by
   have h : (D.actFL.restrictScalars ℤ).comp (algebraMap (𝓞 D.F) D.F).toIntAlgHom.toLinearMap =
       D.actInt.toIntAlgHom.toLinearMap := by
@@ -159,8 +244,16 @@ def Datum.actF : D.F →ₐ[ℚ] D.endO :=
     rw [integralBasis_apply, integralBasis_apply, ← map_mul]
     exact (D.actFL_coe _).trans ((map_mul _ _ _).trans (by rw [← D.actFL_coe, ← D.actFL_coe])))
 
+/- English proof (translation)
+The claim follows from `D.actFL_coe c`.
+-/
 theorem Datum.actF_coe (c : 𝓞 D.F) : D.actF (c : D.F) = D.actInt c := D.actFL_coe c
 
+/- English proof (translation)
+Establish `h : (LinearMap.mulRight ℚ g).comp D.actFL = (LinearMap.mulLeft ℚ g).comp D.actFL`. Use `(integralBasis D.F).ext fun i => ?_` and prove the remaining obligations. Use `show D.actFL (integralBasis D.F i) * g = g * D.actFL (integralBasis D.F i)`. Rewrite using `[integralBasis_apply]`. Use `erw [D.actFL_coe]`.
+
+Conclude with `Subtype.ext (D.mem_endO.1 g.2 _)`. Conclude with `LinearMap.congr_fun h x`.
+-/
 theorem Datum.actF_comm (x : D.F) (g : D.endO) : D.actF x * g = g * D.actF x := by
   have h : (LinearMap.mulRight ℚ g).comp D.actFL = (LinearMap.mulLeft ℚ g).comp D.actFL := by
     refine (integralBasis D.F).ext fun i => ?_
@@ -172,6 +265,9 @@ theorem Datum.actF_comm (x : D.F) (g : D.endO) : D.actF x * g = g * D.actF x := 
 
 instance Datum.algebraF : Algebra D.F D.endO := D.actF.toRingHom.toAlgebra' D.actF_comm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Datum.algebraMap_endO (x : D.F) : algebraMap D.F D.endO x = D.actF x := rfl
 
 instance Datum.towerF : IsScalarTower ℚ D.F D.endO :=
@@ -179,6 +275,11 @@ instance Datum.towerF : IsScalarTower ℚ D.F D.endO :=
 
 instance Datum.finEndO : FiniteDimensional D.F D.endO := Module.Finite.of_restrictScalars_finite ℚ D.F D.endO
 
+/- English proof (translation)
+Set `L : D.endO →ₗ[ℚ] D.endO` to `{ toFun := fun g => (D.starC g).unop map_add' := fun g h => by rw [map_add, MulOpposite.unop_add] map_smul' := fun q g => Subtype.ext (D.adjE_smul q g) }`. Establish `h : L.comp D.actFL = D.actFL.comp (GlobalTheory.LKTrip.conjQ D.F).toLinearMap`. Use `(integralBasis D.F).ext fun i => ?_` and prove the remaining obligations. Use `show (D.starC (D.actFL (integralBasis D.F i))).unop = D.actFL (IsCMField.complexConj D.F (integralBasis D.F i))`. Rewrite using `[integralBasis_apply]`.
+
+Use `erw [← D.bar_eq, D.actFL_coe, D.actFL_coe]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[D.coe_starC, D.coe_actInt, D.coe_actInt, D.adjE_actQ, D.star_F, MulOpposite.unop_op]`. Conclude with `LinearMap.congr_fun h x`.
+-/
 theorem Datum.starC_algebraMap (x : D.F) :
     (D.starC (algebraMap D.F D.endO x)).unop = algebraMap D.F D.endO (IsCMField.complexConj D.F x) := by
   let L : D.endO →ₗ[ℚ] D.endO :=
@@ -194,6 +295,15 @@ theorem Datum.starC_algebraMap (x : D.F) :
     rw [D.coe_starC, D.coe_actInt, D.coe_actInt, D.adjE_actQ, D.star_F, MulOpposite.unop_op]
   exact LinearMap.congr_fun h x
 
+/- English proof (translation)
+Take `⟨g, c⟩` from `x`. Rewrite using `[GlobalTheory.LKTrip.UQpts, GlobalTheory.LKTrip.mem_uGroup]`. Establish `e : (g : D.endO) * (D.starC g).unop = algebraMap ℚ D.endO c ↔ (D.starC g).unop * (g : D.endO) = algebraMap ℚ D.endO c`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `: (D.starC g).unop = (g⁻¹ : D.endOˣ) * algebraMap ℚ D.endO c`. Rewrite using `[← h, Units.inv_mul_cancel_left]`. Rewrite using `[this, ← Algebra.commutes, mul_assoc, Units.inv_mul, mul_one]`. Introduce `h`. Establish `: (D.starC g).unop = algebraMap ℚ D.endO c * (g⁻¹ : D.endOˣ)`.
+
+Rewrite using `[← h, Units.mul_inv_cancel_right]`. Rewrite using `[this, Algebra.commutes, ← mul_assoc, Units.mul_inv, one_mul]`. Use `e.trans ⟨fun h v w => ?_, fun h => Subtype.ext (D.end_ext fun v w => ?_)⟩` and prove the remaining obligations. Establish `h'` using `congrArg (fun k : D.endO => D.EFQ ((k : Module.End ℚ D.VQ) v) w) h`. Simplify `h'` using `[D.coe_starC, D.EFQ_adjE_left, Algebra.algebraMap_eq_smul_one]`.
+
+Simplify `h v w` using `[D.coe_starC, D.EFQ_adjE_left, Algebra.algebraMap_eq_smul_one]`.
+-/
 theorem Datum.mem_UQpts_starC_iff (x : D.endOˣ × ℚˣ) :
     x ∈ GlobalTheory.LKTrip.UQpts D.starC ↔ ∀ v w : D.VQ,
       D.EFQ (((x.1 : D.endO) : Module.End ℚ D.VQ) v) (((x.1 : D.endO) : Module.End ℚ D.VQ) w) =
@@ -216,8 +326,14 @@ theorem Datum.mem_UQpts_starC_iff (x : D.endOˣ × ℚˣ) :
     simpa [D.coe_starC, D.EFQ_adjE_left, Algebra.algebraMap_eq_smul_one] using h'
   · simpa [D.coe_starC, D.EFQ_adjE_left, Algebra.algebraMap_eq_smul_one] using h v w
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.LKTrip.UQpts D.starC).one_mem`.
+-/
 example : ((1, 1) : D.endOˣ × ℚˣ) ∈ GlobalTheory.LKTrip.UQpts D.starC := (GlobalTheory.LKTrip.UQpts D.starC).one_mem
 
+/- English proof (translation)
+Rewrite using `[D.algebraMap_endO, D.actF_coe]`. Both sides reduce to the same expression.
+-/
 example (x : D.La) : ((algebraMap D.F D.endO (D.ω : D.F) : D.endO) : Module.End ℚ D.VQ) (1 ⊗ₜ x) =
     1 ⊗ₜ D.smulF D.ω x := by
   rw [D.algebraMap_endO, D.actF_coe]; rfl

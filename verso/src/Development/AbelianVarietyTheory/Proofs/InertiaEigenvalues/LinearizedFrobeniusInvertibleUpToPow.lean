@@ -20,6 +20,9 @@ section Algebra
 variable {A B M N : Type} [CommRing A] [CommRing B] [AddCommGroup M] [Module A M] [AddCommGroup N] [Module B N]
   {f : A →+* B} {u : M →ₛₗ[f] N}
 
+/- English proof (translation)
+Take `⟨w, -, hw⟩` from `h (N ⧸ Submodule.span B (Set.range u)) 0`. Establish `h1` using `hw (Submodule.mkQ _) fun x => (Submodule.Quotient.mk_eq_zero _).2 (Submodule.subset_span ⟨x, rfl⟩)`. Establish `h2` using `hw 0 fun _ => rfl`. Rewrite using `[← Submodule.ker_mkQ (Submodule.span B (Set.range u)), h1, ← h2, LinearMap.ker_zero]`.
+-/
 theorem span_range_eq_top (h : SemiBC u) : Submodule.span B (Set.range u) = ⊤ := by
   obtain ⟨w, -, hw⟩ := h (N ⧸ Submodule.span B (Set.range u)) 0
   have h1 := hw (Submodule.mkQ _) fun x =>
@@ -27,6 +30,11 @@ theorem span_range_eq_top (h : SemiBC u) : Submodule.span B (Set.range u) = ⊤ 
   have h2 := hw 0 fun _ => rfl
   rw [← Submodule.ker_mkQ (Submodule.span B (Set.range u)), h1, ← h2, LinearMap.ker_zero]
 
+/- English proof (translation)
+Establish `hy : y ∈ Submodule.span B (Set.range u)` using `by rw [span_range_eq_top h]; trivial`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem _ hx => obtain ⟨x, rfl⟩ := hx`. Conclude with `h0 x`. Consider the case `zero => rw [← map_zero u]`.
+
+Conclude with `h0 0`. Consider the case `add y z _ _ hy hz => exact h1 y z hy hz`. Consider the case `smul b y _ hy => exact h2 b y hy`.
+-/
 theorem induction_bc (h : SemiBC u) (p : N → Prop) (h0 : ∀ x, p (u x)) (h1 : ∀ y z, p y → p z → p (y + z))
     (h2 : ∀ (b : B) y, p y → p (b • y)) (y : N) : p y := by
   have hy : y ∈ Submodule.span B (Set.range u) := by rw [span_range_eq_top h]; trivial
@@ -36,6 +44,9 @@ theorem induction_bc (h : SemiBC u) (p : N → Prop) (h0 : ∀ x, p (u x)) (h1 :
   | add y z _ _ hy hz => exact h1 y z hy hz
   | smul b y _ hy => exact h2 b y hy
 
+/- English proof (translation)
+Use `letI : Module B P := Module.compHom P τ`. Take `⟨W, hW, -⟩` from `h P { toFun := w, map_add' := w.map_add, map_smul' := fun a x => hw a x }`. Conclude with `⟨{ toFun := W, map_add' := W.map_add, map_smul' := fun b y => W.map_smul b y }, hW⟩`.
+-/
 theorem exists_ext {C P : Type} [CommRing C] [AddCommGroup P] [Module C P] (h : SemiBC u) (τ : B →+* C)
     (w : M →+ P) (hw : ∀ (a : A) x, w (a • x) = τ (f a) • w x) :
     ∃ κ : N →ₛₗ[τ] P, ∀ x, κ (u x) = w x := by
@@ -43,6 +54,13 @@ theorem exists_ext {C P : Type} [CommRing C] [AddCommGroup P] [Module C P] (h : 
   obtain ⟨W, hW, -⟩ := h P { toFun := w, map_add' := w.map_add, map_smul' := fun a x => hw a x }
   exact ⟨{ toFun := W, map_add' := W.map_add, map_smul' := fun b y => W.map_smul b y }, hW⟩
 
+/- English proof (translation)
+Introduce `Q _ _ m`. Take `⟨W, hW, hU⟩` from `hw Q { toFun := fun x => m (u x) map_add' := fun x y => by rw [map_add, map_add] map_smul' := fun a x => by rw [u.map_smulₛₗ, m.map_smulₛₗ, hρ] }`. Use `⟨W, fun y => ?_, fun W' hW' => hU W' fun x => by rw [← hκ]; exact hW' (u x)⟩` and prove the remaining obligations. Use `induction_bc h (fun y => W (κ y) = m y) (fun x => ?_) (fun y z hy hz => ?_) (fun b y hy => ?_) y` and prove the remaining obligations. Use `show W (κ (u x)) = m (u x)`.
+
+Rewrite using `[hκ]`. Conclude with `hW x`. Use `show W (κ (y + z)) = m (y + z)`. Rewrite using `[map_add, map_add, map_add, hy, hz]`. Use `show W (κ (b • y)) = m (b • y)`.
+
+Rewrite using `[κ.map_smulₛₗ, W.map_smul, m.map_smulₛₗ, hy]`.
+-/
 theorem semiBC_cancel {C P : Type} [CommRing C] [AddCommGroup P] [Module C P] {τ : B →+* C} {ρ : A →+* C}
     (h : SemiBC u) {w : M →ₛₗ[ρ] P} (hw : SemiBC w) (hρ : ∀ a, ρ a = τ (f a)) (κ : N →ₛₗ[τ] P)
     (hκ : ∀ x, κ (u x) = w x) : SemiBC κ := by
@@ -68,6 +86,25 @@ instance Tw.addCommGroup {Q Q' : Type} [CommRing Q] [AddCommGroup Q'] (σ : Q �
 instance Tw.module {Q Q' : Type} [CommRing Q] [AddCommGroup Q'] [Module Q Q'] (σ : Q →+* Q) : Module Q (Tw σ Q') :=
   Module.compHom Q' σ
 
+/- English proof (translation)
+Introduce `Q' _ _ m`. Take `⟨W₁, hW₁, hU₁⟩` from `hV (Tw σ Q') { toFun := fun x => (m x : Tw σ Q') map_add' := fun x y => map_add m x y map_smul' := fun b x => by show m (b • x) = σ (α b) • m x`. Rewrite using `[m.map_smulₛₗ, hβ] }`. Set `e : Fin d → Q'` to `fun i => (W₁ (Pi.single i 1) : Q')`. Establish `he : ∀ z : Fin d → Q, (W₁ z : Q') = ∑ i, σ (z i) • e i` using `fun z => by conv_lhs => rw [pi_eq_sum_univ' z]`.
+
+Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => W₁.map_smul (z i) (Pi.single i 1)`. Use `⟨Fintype.linearCombination Q e, fun x => ?_, fun W' hW' => ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.linearCombination_apply]`. Establish `h1` using `he (V x)`.
+
+Establish `h2 : (W₁ (V x) : Q') = m x` using `hW₁ x`. Rewrite `h1` using `[h2]`. Rewrite using `[h1]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hw]`. Set `W'' : (Fin d → Q) →ₗ[Q] Tw σ Q'` to `{ toFun := fun z => (W' (fun i => σ (z i)) : Tw σ Q') map_add' := fun z z' => by show W' (fun i => σ ((z + z') i)) = W' (fun i => σ (z i)) + W' (fun i => σ (z' i))`.
+
+Rewrite using `[← map_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Use the proof step `map_smul' := fun c z => by show W' (fun i => σ ((c • z) i)) = σ c • W' (fun i => σ (z i))`.
+
+Rewrite using `[← map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `}`. Establish `h1 : W'' = W₁` using `hU₁ W'' fun x => by show W' (fun i => σ (V x i)) = m x`.
+
+Rewrite using `[← hW' x]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[hw]`. Use `LinearMap.pi_ext fun i c => ?_` and prove the remaining obligations.
+
+Rewrite using `[Fintype.linearCombination_apply_single]`. Establish `h2 : Pi.single i c = c • (Pi.single i (1 : Q) : Fin d → Q)`. Rewrite using `[← Pi.single_smul, smul_eq_mul, mul_one]`. Rewrite using `[h2, map_smul]`. Use `congr 1`.
+
+Establish `h3 : (W'' (Pi.single i 1) : Q') = W' (Pi.single i 1)` using `by show W' (fun j => σ ((Pi.single i (1 : Q) : Fin d → Q) j)) = W' (Pi.single i 1)`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hj]`. Rewrite using `[← h3, h1]`.
+-/
 theorem semiBC_frob {Q : Type} [CommRing Q] {d : ℕ} {α β : B →+* Q} (σ : Q →+* Q) (hβ : ∀ b, β b = σ (α b))
     {V : N →ₛₗ[α] (Fin d → Q)} (hV : SemiBC V) (w : N →ₛₗ[β] (Fin d → Q)) (hw : ∀ x i, w x i = σ (V x i)) :
     SemiBC w := by
@@ -116,14 +153,23 @@ theorem semiBC_frob {Q : Type} [CommRing Q] {d : ℕ} {α β : B →+* Q} (σ : 
 
 end Algebra
 
+/- English proof (translation)
+The claim follows from `funext fun i => (mul_cancel_left_mem_nonZeroDivisors he).1 (congrFun h i)`.
+-/
 theorem smul_cancel_nzd {R n : Type} [CommRing R] {e : R} (he : e ∈ nonZeroDivisors R) {v w : n → R}
     (h : e • v = e • w) : v = w :=
   funext fun i => (mul_cancel_left_mem_nonZeroDivisors he).1 (congrFun h i)
 
+/- English proof (translation)
+Rewrite using `[mul_pow, mul_comm, mul_smul]`.
+-/
 theorem mul_pow_smul {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (c e : R) (a : ℕ) (v : M) :
     (c * e) ^ a • v = e ^ a • c ^ a • v := by
   rw [mul_pow, mul_comm, mul_smul]
 
+/- English proof (translation)
+Establish `h2` using `congrArg (fun w => A' *ᵥ w) h`. Simplify using `only [Matrix.mulVec_zero, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hA, Matrix.smul_mulVec, Matrix.one_mulVec, smul_smul] at h2`. Rewrite using `[show (c * E) ^ (a + b) = (c ^ b * E ^ a) * (c ^ a * E ^ b) by ring, mul_smul, h2, smul_zero]`.
+-/
 theorem ker_gen {R n : Type} [CommRing R] [Fintype n] [DecidableEq n] {A A' : Matrix n n R} {E c : R} {a b : ℕ}
     (hA : A' * A = E ^ b • 1) {v : n → R} (h : c ^ a • (A *ᵥ v) = 0) : (c * E) ^ (a + b) • v = 0 := by
   have h2 := congrArg (fun w => A' *ᵥ w) h
@@ -131,6 +177,9 @@ theorem ker_gen {R n : Type} [CommRing R] [Fintype n] [DecidableEq n] {A A' : Ma
     Matrix.one_mulVec, smul_smul] at h2
   rw [show (c * E) ^ (a + b) = (c ^ b * E ^ a) * (c ^ a * E ^ b) by ring, mul_smul, h2, smul_zero]
 
+/- English proof (translation)
+Substitute `hT` using the available equality. Simplify using `only [Matrix.mulVec_smul, Matrix.mulVec_mulVec, hA, Matrix.smul_mulVec, Matrix.one_mulVec, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem img_gen {R n : Type} [CommRing R] [Fintype n] [DecidableEq n] {A A' : Matrix n n R} {E c T : R} {a b : ℕ}
     (hA : A * A' = E ^ b • 1) (hT : T = c * E) (v : n → R) :
     c ^ a • (A *ᵥ ((T ^ (a + b) * (E ^ a * c ^ b)) • (A' *ᵥ v))) = T ^ (2 * (a + b)) • v := by
@@ -139,6 +188,9 @@ theorem img_gen {R n : Type} [CommRing R] [Fintype n] [DecidableEq n] {A A' : Ma
   congr 1
   ring
 
+/- English proof (translation)
+Rewrite using `[two_mul, pow_add, mul_smul, h, smul_zero]`.
+-/
 theorem smul_pow_two_mul {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] {t : R} {n : ℕ} {y : M}
     (h : t ^ n • y = 0) : t ^ (2 * n) • y = 0 := by
   rw [two_mul, pow_add, mul_smul, h, smul_zero]
@@ -148,6 +200,9 @@ def piMap {R R' n : Type} [CommRing R] [CommRing R'] (g : R →+* R') : (n → R
   map_add' z z' := funext fun i => map_add g _ _
   map_smul' r z := funext fun i => map_mul g _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piMap_apply {R R' n : Type} [CommRing R] [CommRing R'] (g : R →+* R') (z : n → R) :
     piMap g z = fun i => g (z i) := rfl
 
@@ -159,9 +214,21 @@ def piMapMul {R R' n : Type} [CommRing R] [CommRing R'] [Fintype n] (g : R →+*
   map_smul' r z := by
     rw [← Matrix.mulVec_smul]; congr 1; funext i; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piMapMul_apply {R R' n : Type} [CommRing R] [CommRing R'] [Fintype n] (g : R →+* R') (M : Matrix n n R')
     (z : n → R) : piMapMul g M z = M *ᵥ (fun i => g (z i)) := rfl
 
+/- English proof (translation)
+Establish `hd : X.det * Y.det = s ^ Fintype.card n`. Rewrite using `[← Matrix.det_mul, h, Matrix.det_smul, Matrix.det_one, mul_one]`. Establish `h1 : X * (Y * X - s • 1) = 0`. Rewrite using `[Matrix.mul_sub, ← Matrix.mul_assoc, h, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, Matrix.one_mul, sub_self]`. Establish `h2 : X.det • (Y * X - s • 1) = 0`.
+
+Establish `h5 : X.adjugate * (X * (Y * X - s • 1)) = X.det • (Y * X - s • 1)`. Rewrite using `[← Matrix.mul_assoc, Matrix.adjugate_mul, Matrix.smul_mul, Matrix.one_mul]`. Rewrite using `[← h5, h1, Matrix.mul_zero]`. Rewrite using `[← sub_eq_zero]`. Use extensionality with `i j`.
+
+Establish `h3` using `congrFun (congrFun h2 i) j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply] at h3 ⊢`. Establish `h4 : s ^ Fintype.card n * (Y * X - s • 1) i j = s ^ Fintype.card n * 0`. Rewrite using `[← hd]`. Take the linear combination `Y.det * h3`.
+
+Conclude with `(mul_cancel_left_mem_nonZeroDivisors (pow_mem hs _)).1 h4`.
+-/
 theorem mul_eq_smul_comm {R n : Type} [CommRing R] [Fintype n] [DecidableEq n] {X Y : Matrix n n R} {s : R}
     (hs : s ∈ nonZeroDivisors R) (h : X * Y = s • 1) : Y * X = s • 1 := by
   have hd : X.det * Y.det = s ^ Fintype.card n := by
@@ -181,6 +248,17 @@ theorem mul_eq_smul_comm {R n : Type} [CommRing R] [Fintype n] [DecidableEq n] {
     rw [← hd]; linear_combination Y.det * h3
   exact (mul_cancel_left_mem_nonZeroDivisors (pow_mem hs _)).1 h4
 
+/- English proof (translation)
+Establish `e1 : Ap * ((Ep ^ a * cp ^ b) • (A'p * ε)) = (Ep ^ a * cp ^ b * Ep ^ b) • ε`. Rewrite using `[Matrix.mul_smul, ← Matrix.mul_assoc, h3, Matrix.smul_mul, Matrix.one_mul, smul_smul]`. Establish `e2 : Ap * ((Eq ^ a * cq ^ b) • (φε * A'q)) = (cq ^ b * Ep ^ a * Eq ^ b) • ε`. Establish `: Ap * ((Eq ^ a * cq ^ b) • (φε * A'q)) = cq ^ b • ((Eq ^ a • (Ap * φε)) * A'q)`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, smul_smul, Matrix.mul_assoc, mul_comm (Eq ^ a)]`.
+
+Rewrite using `[this, hφ, Matrix.smul_mul, Matrix.mul_assoc, h2, Matrix.mul_smul, Matrix.mul_one, smul_smul, smul_smul, mul_assoc]`. Establish `e3 : Ap * ((Ep ^ a * cp ^ b) • (A'p * ε) - (Eq ^ a * cq ^ b) • (φε * A'q)) = 0`. Rewrite using `[Matrix.mul_sub, e1, e2, ← sub_smul]`. Establish `: Ep ^ a * cp ^ b * Ep ^ b - cq ^ b * Ep ^ a * Eq ^ b = Ep ^ a * ((cp * Ep) ^ b - (cq * Eq) ^ b)` using `by ring`. Rewrite using `[this, hT, sub_self, mul_zero, zero_smul]`.
+
+Establish `e4 : (cp * Ep) ^ (a + b) • ((Ep ^ a * cp ^ b) • (A'p * ε) - (Eq ^ a * cq ^ b) • (φε * A'q)) = 0`. Establish `: (cp * Ep) ^ (a + b) • ((Ep ^ a * cp ^ b) • (A'p * ε) - (Eq ^ a * cq ^ b) • (φε * A'q)) = (cp ^ (a + b) * Ep ^ a) • (A'p * (Ap * ((Ep ^ a * cp ^ b) • (A'p * ε) - (Eq ^ a * cq ^ b) • (φε * A'q))))`. Rewrite using `[← Matrix.mul_assoc, h1, Matrix.smul_mul, Matrix.one_mul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this, e3, Matrix.mul_zero, smul_zero]`. Rewrite `e4` using `[smul_sub, sub_eq_zero, smul_smul, smul_smul]`. Establish `l1 : ((cp * Ep) ^ (a + b) * (Ep ^ a * cp ^ b)) • (A'p *ᵥ (ε *ᵥ w)) = (((cp * Ep) ^ (a + b) * (Ep ^ a * cp ^ b)) • (A'p * ε)) *ᵥ w`. Rewrite using `[Matrix.smul_mulVec, Matrix.mulVec_mulVec]`. Establish `l2 : φε *ᵥ (((cq * Eq) ^ (a + b) * (Eq ^ a * cq ^ b)) • (A'q *ᵥ w)) = (((cp * Ep) ^ (a + b) * (Eq ^ a * cq ^ b)) • (φε * A'q)) *ᵥ w`.
+
+Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_mulVec, Matrix.smul_mulVec, hT]`. Rewrite using `[l1, l2, e4]`.
+-/
 theorem descent_identity {R n : Type} [CommRing R] [Fintype n] [DecidableEq n] (Ap A'p Aq A'q ε φε : Matrix n n R)
     (Ep Eq cp cq : R) (a b : ℕ) (w : n → R) (h1 : A'p * Ap = Ep ^ b • 1) (h2 : Aq * A'q = Eq ^ b • 1)
     (h3 : Ap * A'p = Ep ^ b • 1) (hφ : Eq ^ a • (Ap * φε) = Ep ^ a • (ε * Aq)) (hT : cp * Ep = cq * Eq) :
@@ -217,12 +295,18 @@ namespace GlobalTheory.BSP.LinFrob
 
 open scoped Matrix
 
+/- English proof (translation)
+Rewrite using `[← Matrix.map_mul, S.A_mul]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`.
+-/
 theorem map_A_mul {l : ℕ} [Fact l.Prime] {K : FinExt l} {bk : BK K} {d : ℕ} (S : Strat bk d) {R : Type} [CommRing R]
     (g : bk.S →+* R) : S.A.map g * S.A'.map g = g bk.E ^ S.b • (1 : Matrix (Fin d) (Fin d) R) := by
   rw [← Matrix.map_mul, S.A_mul]
   ext i j
   by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
 
+/- English proof (translation)
+Set `w : N →ₛₗ[a.f.comp B.D.φ] (Fin d → Q.A)` to `{ toFun := fun x i => Q.D.φ (V.v a g x i) map_add' := fun x y => funext fun i => by simp map_smul' := fun b x => funext fun i => by`. Simplify using `[(V.v a g).map_smulₛₗ, a.f_φ] }`. Establish `hw : SemiBC w` using `semiBC_frob Q.D.φ (fun b => a.f_φ b) (V.bc a g) w fun _ _ => rfl`. Take `⟨κ, hκ⟩` from `exists_ext hu a.f w.toAddMonoidHom fun b x => w.map_smulₛₗ b x`. Conclude with `⟨κ, semiBC_cancel hu hw (fun _ => rfl) κ hκ, fun x i => by rw [hκ]; rfl⟩`.
+-/
 theorem exists_kappa {l : ℕ} [Fact l.Prime] {K : FinExt l} {bk : BK K} {d : ℕ} {S : Strat bk d}
     {B : Obj l ↥(OL K)} {N : Type} [AddCommGroup N] [Module B.A N] (V : Eval S B N) {P : Type} [AddCommGroup P]
     [Module B.A P] {u : N →ₛₗ[B.D.φ] P} (hu : SemiBC u) {Q : Obj l ↥(OL K)} (a : Hom B Q) (g : Hom bk.prism Q) :
@@ -236,6 +320,9 @@ theorem exists_kappa {l : ℕ} [Fact l.Prime] {K : FinExt l} {bk : BK K} {d : �
   obtain ⟨κ, hκ⟩ := exists_ext hu a.f w.toAddMonoidHom fun b x => w.map_smulₛₗ b x
   exact ⟨κ, semiBC_cancel hu hw (fun _ => rfl) κ hκ, fun x i => by rw [hκ]; rfl⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, RingHom.map_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem map_smul_mulVec {R R' n : Type} [CommRing R] [CommRing R'] [Fintype n] (g : R →+* R') (s : R)
     (M : Matrix n n R) (v : n → R) :
     (fun i => g ((s • (M *ᵥ v)) i)) = g s • ((M.map g) *ᵥ (fun i => g (v i))) := by
@@ -243,6 +330,13 @@ theorem map_smul_mulVec {R R' n : Type} [CommRing R] [CommRing R'] [Fintype n] (
   rw [Pi.smul_apply, smul_eq_mul, map_mul, RingHom.map_mulVec]
   rfl
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Establish `hEp` using `(GlobalTheory.T.breuilKisinHom_eisenstein_span_and_nonZeroDivisor l K bk D (p.comp f)).2`. Establish `hT' : p.f c * BK.hf (p.comp f) bk.E = q.f c * BK.hf (q.comp f) bk.E` using `(map_mul p.f c _).symm.trans (hT.trans (map_mul q.f c _))`. Establish `key` using `descent_identity (S.A.map (BK.hf (p.comp f))) (S.A'.map (BK.hf (p.comp f))) (S.A.map (BK.hf (q.comp f))) (S.A'.map (BK.hf (q.comp f))) (S.ε (p.comp f) (q.comp f)) ((S.ε (p.comp f) (q.comp f)).map D.D.φ) _ _ (p.f c) (q.f c) S.a S.b (fun j => q.f (v j)) (mul_eq_smul_comm (pow_mem h …`. Establish `hmp : (S.A'.map (BK.hf f)).map p.f = S.A'.map (BK.hf (p.comp f))` using `Matrix.map_map`.
+
+Establish `hmq : (S.A'.map (BK.hf f)).map q.f = S.A'.map (BK.hf (q.comp f))` using `Matrix.map_map`. Establish `hsp : p.f ((c * BK.hf f bk.E) ^ (S.a + S.b) * (BK.hf f bk.E ^ S.a * c ^ S.b)) = (p.f c * BK.hf (p.comp f) bk.E) ^ (S.a + S.b) * (BK.hf (p.comp f) bk.E ^ S.a * p.f c ^ S.b)`. Simplify using `only [map_mul, map_pow]`. Both sides reduce to the same expression. Establish `hsq : q.f ((c * BK.hf f bk.E) ^ (S.a + S.b) * (BK.hf f bk.E ^ S.a * c ^ S.b)) = (q.f c * BK.hf (q.comp f) bk.E) ^ (S.a + S.b) * (BK.hf (q.comp f) bk.E ^ S.a * q.f c ^ S.b)`.
+
+Simplify using `only [map_mul, map_pow]`. Both sides reduce to the same expression. Use `((map_smul_mulVec p.f _ _ _).trans ?_).trans (congrArg (Matrix.mulVec ((S.ε (p.comp f) (q.comp f)).map D.D.φ)) (map_smul_mulVec q.f _ _ _)).symm` and prove the remaining obligations. Conclude with `(congrArg₂ (· • ·) hsp (congrArg₂ Matrix.mulVec hmp hv)).trans (key.trans (congrArg (Matrix.mulVec ((S.ε (p.comp f) (q.comp f)).map D.D.φ)) (congrArg₂ (· • ·) hsq (congrArg₂ Matrix.mulVec hmq rfl))).symm)`.
+-/
 theorem descent_compat {l : ℕ} [Fact l.Prime] {K : FinExt l} {bk : BK K} {d : ℕ} (S : Strat bk d)
     {C D : Obj l ↥(OL K)} (f : Hom bk.prism C) (p q : Hom C D) (c T : C.A) (hT : p.f T = q.f T)
     (hc : c * BK.hf f bk.E = T) (v : Fin d → C.A)
@@ -273,6 +367,11 @@ theorem descent_compat {l : ℕ} [Fact l.Prime] {K : FinExt l} {bk : BK K} {d : 
     (congrArg (Matrix.mulVec ((S.ε (p.comp f) (q.comp f)).map D.D.φ))
       (congrArg₂ (· • ·) hsq (congrArg₂ Matrix.mulVec hmq rfl))).symm)
 
+/- English proof (translation)
+Use `induction_bc hu (fun y => V.v h f (L y) = c ^ S.a • (S.A.map (BK.hf f)) *ᵥ (κ y)) (fun x => ?_) (fun y z (hy : V.v h f (L y) = _) (hz : V.v h f (L z) = _) => ?_) (fun b y (hy : V.v h f (L y) = _) => ?_) y` and prove the remaining obligations. Use `show V.v h f (L (u x)) = c ^ S.a • (S.A.map (BK.hf f)) *ᵥ (κ (u x))`. Establish `h2 : (fun i => C.D.φ (V.v h f x i)) = κ (u x)` using `funext fun i => (hκu x i).symm`. Conclude with `smul_cancel_nzd (pow_mem hEnzd S.a) ((congrArg (fun v => BK.hf f bk.E ^ S.a • V.v h f v) (hL x)).trans ((hΨ h f x).trans ((congrArg (fun v => h.f t ^ S.a • (S.A.map (BK.hf f)) *ᵥ v) h2).trans ((congrArg (fun s => s ^ S.a • (S.A.map (BK.hf f)) *ᵥ (κ (u x))) hc.symm).trans (mul_pow …`. Conclude with `((congrArg (V.v h f) (L.map_add y z)).trans ((V.v h f).map_add _ _)).trans ((congrArg₂ (· + ·) hy hz).trans ((congrArg (fun v => c ^ S.a • (S.A.map (BK.hf f)) *ᵥ v) (κ.map_add y z)).trans ((congrArg (c ^ S.a • ·) (Matrix.mulVec_add _ _ _)).trans (smul_add _ _ _))).symm)`.
+
+Conclude with `((congrArg (V.v h f) (L.map_smul b y)).trans ((V.v h f).map_smulₛₗ _ _)).trans ((congrArg (h.f b • ·) hy).trans ((congrArg (fun v => c ^ S.a • (S.A.map (BK.hf f)) *ᵥ v) (κ.map_smulₛₗ b y)).trans ((congrArg (c ^ S.a • ·) (Matrix.mulVec_smul _ _ _)).trans (smul_comm _ _ _))).symm)`.
+-/
 theorem coord_relation {l : ℕ} [Fact l.Prime] {K : FinExt l} {bk : BK K} {d : ℕ} {S : Strat bk d}
     {B : Obj l ↥(OL K)} {N : Type} [AddCommGroup N] [Module B.A N] (V : Eval S B N) {t : B.A}
     {Ψ : N →ₛₗ[B.D.φ] N} (hΨ : IsPsi V t Ψ) {P : Type} [AddCommGroup P] [Module B.A P] {u : N →ₛₗ[B.D.φ] P}
@@ -301,6 +400,27 @@ theorem coord_relation {l : ℕ} [Fact l.Prime] {K : FinExt l} {bk : BK K} {d : 
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `l _ K bk d S B N _ _ V t ht Ψ hΨ P _ _ u hu L hL`. Use `haveI := V.fin`. Use `haveI := V.proj`. Take `⟨hPf, hPp⟩` from `hu.finite_projective`. Take `⟨C, h, ⟨f⟩, hC⟩` from `GlobalTheory.T.exists_prism_cover_receiving_breuilKisin l K bk B`.
+
+Take `⟨D, p, q, hpo⟩` from `hC.stable.po C h`. Take `⟨hinj, heq⟩` from `GlobalTheory.T.prism_cover_injective_and_descent l ↥(OL K) B C h hC`. Take `⟨hEC, hEnzd⟩` from `GlobalTheory.T.breuilKisinHom_eisenstein_span_and_nonZeroDivisor l K bk C f`. Take `⟨hVinj, -⟩` from `GlobalTheory.T.injective_and_range_of_prism_cover l K bk d S B C N V h f hC`. Take `⟨κ, hκbc, hκu⟩` from `exists_kappa V hu h f`.
+
+Take `⟨κD, hκDbc, hκDu⟩` from `exists_kappa V hu (p.comp h) (p.comp f)`. Establish `htC : h.f t ∈ C.I` using `h.f_I t ht`. Rewrite `htC` using `[hEC]`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 htC`. Establish `hAC` using `map_A_mul S (BK.hf f)`.
+
+Establish `hA'C` using `mul_eq_smul_comm (pow_mem hEnzd S.b) hAC`. Establish `hR` using `coord_relation V hΨ hu L hL h f hEnzd κ hκu c hc`. Establish `hV2 : ∀ x, V.v (p.comp h) (q.comp f) x = V.v (q.comp h) (q.comp f) x` using `fun x => congrArg (fun a : Hom B D => V.v a (q.comp f) x) hpo.comm`. Establish `e1 : ∀ x, V.v (p.comp h) (p.comp f) x = (S.ε (p.comp f) (q.comp f)) *ᵥ (fun j => q.f (V.v h f x j))` using `fun x => (V.v_ε (p.comp h) (p.comp f) (q.comp f) x).trans (congrArg (Matrix.mulVec (S.ε (p.comp f) (q.comp f))) ((hV2 x).trans (funext fun j => V.v_nat q h f x j)))`. Take `⟨u₁, hu₁⟩ : ∃ u₁ : (Fin d → C.A) →ₛₗ[p.f] (Fin d → D.A), ∀ z, u₁ z = fun i => p.f (z i)` from `⟨piMap p.f, piMap_apply p.f⟩`.
+
+Take `⟨u₂, hu₂⟩ : ∃ u₂ : (Fin d → C.A) →ₛₗ[q.f] (Fin d → D.A), ∀ z, u₂ z = ((S.ε (p.comp f) (q.comp f)).map D.D.φ) *ᵥ (fun i => q.f (z i))` from `⟨piMapMul q.f _, piMapMul_apply q.f _⟩`. Establish `hw1 : ∀ y, κD y = u₁ (κ y)`. Introduce `y`. Use `induction_bc hu (fun y => κD y = u₁ (κ y)) (fun x => ?_) (fun y z (hy : κD y = _) (hz : κD z = _) => ?_) (fun b y (hy : κD y = _) => ?_) y` and prove the remaining obligations. Conclude with `(funext fun i => (hκDu x i).trans ((congrArg D.D.φ (V.v_nat p h f x i)).trans ((p.f_φ _).symm.trans (congrArg p.f (hκu x i).symm)))).trans (hu₁ _).symm`.
+
+Conclude with `(κD.map_add y z).trans ((congrArg₂ (· + ·) hy hz).trans ((congrArg u₁ (κ.map_add y z)).trans (u₁.map_add _ _)).symm)`. Conclude with `(κD.map_smulₛₗ b y).trans ((congrArg ((p.comp h).f b • ·) hy).trans ((congrArg u₁ (κ.map_smulₛₗ b y)).trans (u₁.map_smulₛₗ _ _)).symm)`. Establish `hw2 : ∀ y, κD y = u₂ (κ y)`. Introduce `y`. Use `induction_bc hu (fun y => κD y = u₂ (κ y)) (fun x => ?_) (fun y z (hy : κD y = _) (hz : κD z = _) => ?_) (fun b y (hy : κD y = _) => ?_) y` and prove the remaining obligations.
+
+Use `(funext fun i => ?_).trans (hu₂ _).symm` and prove the remaining obligations. Conclude with `(hκDu x i).trans ((congrArg (fun v => D.D.φ (v i)) (e1 x)).trans ((RingHom.map_mulVec D.D.φ _ _ i).trans (congrArg (fun v => (((S.ε (p.comp f) (q.comp f)).map D.D.φ) *ᵥ v) i) (funext fun j => (q.f_φ _).symm.trans (congrArg q.f (hκu x j).symm)))))`. Conclude with `(κD.map_add y z).trans ((congrArg₂ (· + ·) hy hz).trans ((congrArg u₂ (κ.map_add y z)).trans (u₂.map_add _ _)).symm)`. Establish `hb : (p.comp h).f b = q.f (h.f b)` using `RingHom.congr_fun (congrArg Hom.f hpo.comm) b`. Conclude with `(κD.map_smulₛₗ b y).trans ((congrArg ((p.comp h).f b • ·) hy).trans ((congrArg (· • u₂ (κ y)) hb).trans ((congrArg u₂ (κ.map_smulₛₗ b y)).trans (u₂.map_smulₛₗ _ _)).symm))`.
+
+Use `haveI := hPf`. Use `haveI := hPp`. Take `⟨hκinj, hdesc⟩` from `GlobalTheory.T.finite_projective_module_element_descent_equalizer B.A C.A D.A h.f p.f q.f (congrArg Hom.f hpo.comm) hinj (fun b hb => heq D p q hpo b hb) P (Fin d → C.A) (Fin d → D.A) κ u₁ u₂ κD hκbc hκDbc hw1 hw2`. Use `⟨2 * (S.a + S.b), fun y hy => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `h0 : t ^ (S.a + S.b) • y = 0` using `hκinj (((κ.map_smulₛₗ _ _).trans ((congrArg (· • κ y) ((map_pow h.f t _).trans (congrArg (· ^ (S.a + S.b)) hc.symm))).trans (ker_gen hA'C ((hR y).symm.trans ((congrArg (V.v h f) hy).trans (map_zero _)))))).trans (map_zero κ).symm)`.
+
+Conclude with `smul_pow_two_mul h0`. Establish `hcomp : u₁ ((h.f t ^ (S.a + S.b) * (BK.hf f bk.E ^ S.a * c ^ S.b)) • ((S.A'.map (BK.hf f)) *ᵥ (V.v h f x))) = u₂ ((h.f t ^ (S.a + S.b) * (BK.hf f bk.E ^ S.a * c ^ S.b)) • ((S.A'.map (BK.hf f)) *ᵥ (V.v h f x)))` using `(hu₁ _).trans ((descent_compat S f p q c (h.f t) (RingHom.congr_fun (congrArg Hom.f hpo.comm) t) hc (V.v h f x) ((funext fun i => (V.v_nat p h f x i).symm).trans (e1 x))).trans (hu₂ _).symm)`. Take `⟨y, hy⟩` from `hdesc _ hcomp`. Use `⟨y, hVinj ?_⟩` and prove the remaining obligations. Establish `e3 : c ^ S.a • (S.A.map (BK.hf f)) *ᵥ ((h.f t ^ (S.a + S.b) * (BK.hf f bk.E ^ S.a * c ^ S.b)) • ((S.A'.map (BK.hf f)) *ᵥ (V.v h f x))) = h.f t ^ (2 * (S.a + S.b)) • V.v h f x` using `img_gen hAC hc.symm _`.
+
+Conclude with `(hR y).trans ((congrArg (fun v => c ^ S.a • (S.A.map (BK.hf f)) *ᵥ v) hy).trans (e3.trans (((V.v h f).map_smulₛₗ _ _).trans (congrArg (· • V.v h f x) (map_pow h.f t _))).symm))`.
+-/
 theorem linFrob_inv_pow : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ) (S : Strat bk d)
     (B : Obj l ↥(OL K)) (N : Type) [AddCommGroup N] [Module B.A N] (V : Eval S B N) (t : B.A), t ∈ B.I →
     ∀ Ψ : N →ₛₗ[B.D.φ] N, IsPsi V t Ψ → ∀ (P : Type) [AddCommGroup P] [Module B.A P] (u : N →ₛₗ[B.D.φ] P),

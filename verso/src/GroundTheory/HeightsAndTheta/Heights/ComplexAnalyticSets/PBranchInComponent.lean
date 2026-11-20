@@ -11,6 +11,11 @@ noncomputable section
 
 namespace BranchInComponent
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp only [eval_C]`. Conclude with `differentiable_const a`. Consider the case `add p q hp hq => simp only [map_add]`. Conclude with `hp.add hq`.
+
+Consider the case `mul_X p i hp => simp only [map_mul, eval_X]`. Conclude with `hp.mul (differentiable_apply i)`.
+-/
 theorem differentiable_eval {n : ℕ} (g : MvPolynomial (Fin n) ℂ) :
     Differentiable ℂ (fun x : Fin n → ℂ => eval x g) := by
   induction g using MvPolynomial.induction_on with
@@ -18,6 +23,13 @@ theorem differentiable_eval {n : ℕ} (g : MvPolynomial (Fin n) ℂ) :
   | add p q hp hq => simp only [map_add]; exact hp.add hq
   | mul_X p i hp => simp only [map_mul, eval_X]; exact hp.mul (differentiable_apply i)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨U, subset_rfl, hU, hne, fun x _ => by simp⟩`. Consider the case `insert a s ha ih`. Take `⟨V, hVU, hVo, ⟨z, hz⟩, hV⟩` from `ih (fun i hi => hf i (Finset.mem_insert_of_mem hi)) (fun i hi => hnz i (Finset.mem_insert_of_mem hi))`. Establish `hfa` using `hf a (Finset.mem_insert_self a s)`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨w, hwV, hw⟩ : ∃ w ∈ V, f a w ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Use `hnz a (Finset.mem_insert_self a s) (hfa.eqOn_zero_of_preconnected_of_eventuallyEq_zero hUc (hVU hz) ?_)` and prove the remaining obligations. Use `filter_upwards [hVo.mem_nhds hz] with x hx using hcon x hx`.
+
+Use `⟨V ∩ f a ⁻¹' {0}ᶜ, inter_subset_left.trans hVU, (hfa.continuousOn.mono hVU).isOpen_inter_preimage hVo isOpen_compl_singleton, ⟨w, hwV, hw⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨hxV, hx⟩`. Rewrite using `[Finset.prod_insert ha]`. Conclude with `mul_ne_zero hx (hV x hxV)`.
+-/
 theorem exists_open_prod_ne_zero {k : ℕ} {U : Set (Fin k → ℂ)} (hU : IsOpen U) (hUc : IsPreconnected U)
     (hne : U.Nonempty) {ι : Type*} (s : Finset ι) (f : ι → (Fin k → ℂ) → ℂ)
     (hf : ∀ i ∈ s, AnalyticOnNhd ℂ (f i) U) (hnz : ∀ i ∈ s, ¬ EqOn (f i) 0 U) :
@@ -41,6 +53,19 @@ theorem exists_open_prod_ne_zero {k : ℕ} {U : Set (Fin k → ℂ)} (hU : IsOpe
     rw [Finset.prod_insert ha]
     exact mul_ne_zero hx (hV x hxV)
 
+/- English proof (translation)
+Introduce `n I k q c`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Use `set B : Set (Fin k → ℂ) := ball 0 c.radius with hB`. Establish `hBo : IsOpen B` using `isOpen_ball`.
+
+Establish `hBc : IsPreconnected B` using `(convex_ball (0 : Fin k → ℂ) c.radius).isPreconnected`. Establish `hBne : B.Nonempty` using `⟨0, mem_ball_self c.radius_pos⟩`. Establish `hfin : I.minimalPrimes.Finite` using `Ideal.finite_minimalPrimes_of_isNoetherianRing _ I`. Establish `hch : ∀ J : I.minimalPrimes, ∃ g ∈ (J : Ideal (MvPolynomial (Fin n) ℂ)), ¬ EqOn (fun τ => eval (c.toFun τ) g) 0 B`. Introduce `J`.
+
+Establish `hJ` using `hcon J J.2`. Simplify using `only [Set.MapsTo, not_forall, exists_prop] at hJ`. Take `⟨τ, hτB, hτZ⟩` from `hJ`. Simplify using `only [zeroSet, mem_ofPred_eq, not_forall] at hτZ`. Take `⟨g, hg, hgτ⟩` from `hτZ`.
+
+Conclude with `⟨g, hg, fun h => hgτ (h hτB)⟩`. Use `choose g hgJ hgnz using hch`. Set `_ : Fintype I.minimalPrimes` to `hfin.fintype`. Establish `han : ∀ J : I.minimalPrimes, AnalyticOnNhd ℂ (fun τ => eval (c.toFun τ) (g J)) B` using `fun J => IndefiniteRowSideFullHecke.ComplexSets.RiemannExtensionAnalytic.analyticOnNhd_of_differentiableOn hBo ((differentiable_eval (g J)).comp_differentiableOn c.differentiableOn)`. Take `⟨V, hVB, -, ⟨x, hx⟩, hV⟩` from `exists_open_prod_ne_zero hBo hBc hBne Finset.univ (fun J τ => eval (c.toFun τ) (g J)) (fun J _ => han J) (fun J _ => hgnz J)`.
+
+Use `set G : MvPolynomial (Fin n) ℂ := ∏ J : I.minimalPrimes, g J with hG`. Establish `hGrad : G ∈ I.radical`. Rewrite using `[← Ideal.sInf_minimalPrimes, Submodule.mem_sInf]`. Introduce `J hJ`. Rewrite using `[hG, ← Finset.mul_prod_erase Finset.univ g (Finset.mem_univ ⟨J, hJ⟩)]`.
+
+Conclude with `Ideal.mul_mem_right _ _ (hgJ ⟨J, hJ⟩)`. Take `⟨N, hN⟩` from `hGrad`. Establish `h0` using `c.mapsTo (hVB hx) _ hN`. Rewrite `h0` using `[map_pow, hG, map_prod]`. Conclude with `hV x hx (pow_eq_zero_iff'.1 h0).1`.
+-/
 theorem proof : BranchInComponent.Statement := by
   classical
   intro n I k q c

@@ -11,6 +11,11 @@ variable {R : Type} [CommRing R] {I : Ideal R} {σ : Type}
 noncomputable def comp (e : ℕ) (Q : MvPolynomial σ (reesAlgebra I)) : MvPolynomial σ R :=
   ∑ m ∈ Q.support, monomial m ((coeff m Q).val.coeff e)
 
+/- English proof (translation)
+Rewrite using `[comp, coeff_sum]`. Simplify using `only [coeff_monomial, Finset.sum_ite_eq', mem_support_iff]`. Use `split_ifs with h`. Both sides reduce to the same expression. Use `push_neg at h`.
+
+Rewrite using `[h]`. Simplify using the standard rewrite rules.
+-/
 theorem coeff_comp (e : ℕ) (Q : MvPolynomial σ (reesAlgebra I)) (m : σ →₀ ℕ) :
     coeff m (comp e Q) = (coeff m Q).val.coeff e := by
   classical
@@ -28,12 +33,20 @@ noncomputable def liftFun (I : Ideal R) (e : ℕ) (r : R) : reesAlgebra I :=
     · subst hi; exact h
     · exact zero_mem _)⟩ else 0
 
+/- English proof (translation)
+Unfold `liftFun`. Rewrite using `[dif_pos (zero_mem _)]`. Use `ext1`. Simplify using the standard rewrite rules.
+-/
 theorem liftFun_zero (e : ℕ) : liftFun I e 0 = 0 := by
   unfold liftFun; rw [dif_pos (zero_mem _)]; ext1; simp
 
 noncomputable def lift (I : Ideal R) (e : ℕ) (P : MvPolynomial σ R) : MvPolynomial σ (reesAlgebra I) :=
   ∑ m ∈ P.support, monomial m (liftFun I e (coeff m P))
 
+/- English proof (translation)
+Rewrite using `[lift, coeff_sum]`. Simplify using `only [coeff_monomial, Finset.sum_ite_eq', mem_support_iff]`. Use `split_ifs with h`. Both sides reduce to the same expression. Use `push_neg at h`.
+
+Rewrite using `[h, liftFun_zero]`.
+-/
 theorem coeff_lift (e : ℕ) (P : MvPolynomial σ R) (m : σ →₀ ℕ) :
     coeff m (lift I e P) = liftFun I e (coeff m P) := by
   classical
@@ -43,6 +56,11 @@ theorem coeff_lift (e : ℕ) (P : MvPolynomial σ R) (m : σ →₀ ℕ) :
   · rfl
   · push_neg at h; rw [h, liftFun_zero]
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[coeff_comp, coeff_lift]`. Unfold `liftFun`. Rewrite using `[dif_pos (hP m)]`. Use `show (Polynomial.monomial e (coeff m P)).coeff e' = _`.
+
+Rewrite using `[Polynomial.coeff_monomial]`. Distinguish the cases in `h : e' = e`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`. Rewrite using `[if_neg (Ne.symm h), if_neg h, coeff_zero]`.
+-/
 theorem comp_lift (e e' : ℕ) (P : MvPolynomial σ R) (hP : ∀ m, coeff m P ∈ I ^ e) :
     comp e' (lift I e P) = if e' = e then P else 0 := by
   ext m
@@ -54,25 +72,40 @@ theorem comp_lift (e e' : ℕ) (P : MvPolynomial σ R) (hP : ∀ m, coeff m P �
   · subst h; rw [if_pos rfl, if_pos rfl]
   · rw [if_neg (Ne.symm h), if_neg h, coeff_zero]
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[coeff_sub, coeff_comp, coeff_comp, coeff_comp, coeff_sub]`. Conclude with `Polynomial.coeff_sub _ _ _`.
+-/
 theorem comp_sub (e : ℕ) (Q₁ Q₂ : MvPolynomial σ (reesAlgebra I)) :
     comp e (Q₁ - Q₂) = comp e Q₁ - comp e Q₂ := by
   ext m; rw [coeff_sub, coeff_comp, coeff_comp, coeff_comp, coeff_sub]
   exact Polynomial.coeff_sub _ _ _
 
+/- English proof (translation)
+Use extensionality with `m`. Rewrite using `[coeff_comp, X_pow_eq_monomial, X_pow_eq_monomial, coeff_monomial_mul', coeff_monomial_mul']`. Apply the tactic sequence `split_ifs <;> simp [coeff_comp]`.
+-/
 theorem comp_X_pow_mul (e : ℕ) (k : σ) (L : ℕ) (Q : MvPolynomial σ (reesAlgebra I)) :
     comp e (X k ^ L * Q) = X k ^ L * comp e Q := by
   ext m
   rw [coeff_comp, X_pow_eq_monomial, X_pow_eq_monomial, coeff_monomial_mul', coeff_monomial_mul']
   split_ifs <;> simp [coeff_comp]
 
+/- English proof (translation)
+Introduce `d hd` and use `hP (fun h0 => hd (by rw [coeff_lift, h0, liftFun_zero]))`.
+-/
 theorem isHomogeneous_lift {e t : ℕ} {P : MvPolynomial σ R} (hP : P.IsHomogeneous t) :
     (lift I e P).IsHomogeneous t :=
   fun d hd => hP (fun h0 => hd (by rw [coeff_lift, h0, liftFun_zero]))
 
+/- English proof (translation)
+Introduce `d hd` and use `hQ (fun h0 => hd (by rw [coeff_comp, h0]; simp))`.
+-/
 theorem isHomogeneous_comp {e t : ℕ} {Q : MvPolynomial σ (reesAlgebra I)} (hQ : Q.IsHomogeneous t) :
     (comp e Q).IsHomogeneous t :=
   fun d hd => hQ (fun h0 => hd (by rw [coeff_comp, h0]; simp))
 
+/- English proof (translation)
+Rewrite `*` using `[← mem_homogeneousSubmodule]`. Conclude with `Submodule.sub_mem _ hP hQ`.
+-/
 theorem isHomogeneous_sub' {S : Type} [CommRing S] {P Q : MvPolynomial σ S} {t : ℕ}
     (hP : P.IsHomogeneous t) (hQ : Q.IsHomogeneous t) : (P - Q).IsHomogeneous t := by
   rw [← mem_homogeneousSubmodule] at *; exact Submodule.sub_mem _ hP hQ
@@ -81,6 +114,21 @@ end GlobalTheory.UniformSerre
 
 open GlobalTheory.UniformSerre in
 
+/- English proof (translation)
+Introduce `R _ _ I n J hJ`. Take `⟨𝔞, hgr, hmem⟩` from `GlobalTheory.T.exists_homogeneous_ideal_over_reesAlgebra R I n J hJ`. Take `⟨d₀, hd₀⟩` from `GlobalTheory.T.exists_homogeneous_form_of_compatible_fractions (reesAlgebra I) n 𝔞 hgr`. Use `⟨d₀, fun d hd e N F hFh hFc hFcomp => ?_⟩` and prove the remaining obligations. Establish `hmemiff : ∀ t (H : MvPolynomial (Fin (n+1)) (reesAlgebra I)), H.IsHomogeneous t → (H ∈ 𝔞 ↔ ∀ e', comp e' H ∈ J e')`.
+
+Introduce `t H hH`. Rewrite using `[hmem t H hH]`. Prove the components needed by the constructor for the conclusion. Introduce `h e'`. Conclude with `h e' _ (fun m => coeff_comp e' H m)`.
+
+Introduce `h e' G hG`. Establish `: G = comp e' H` using `by ext m; rw [hG m, coeff_comp]`. Rewrite using `[this]`. Conclude with `h e'`. Take `⟨G', hG'h, hG'⟩` from `hd₀ d hd N (fun i => lift I e (F i)) (fun i => isHomogeneous_lift (hFh i)) (by`.
+
+Introduce `i j`. Take `⟨L, hL⟩` from `hFcomp i j`. Use `⟨L, ?_⟩` and prove the remaining obligations. Establish `hhom` using `((((isHomogeneous_X (reesAlgebra I) i).mul (isHomogeneous_X _ j)).pow L).mul (isHomogeneous_sub' (((isHomogeneous_X _ j).pow N).mul (isHomogeneous_lift (I := I) (e := e) (hFh i))) (((isHomogeneous_X _ i).pow N).mul (isHomogeneous_lift (I := I) (e := e) (hFh j)))))`. Rewrite using `[hmemiff _ _ hhom]`.
+
+Introduce `e'`. Rewrite using `[mul_pow, mul_assoc, comp_X_pow_mul, comp_X_pow_mul, comp_sub, comp_X_pow_mul, comp_X_pow_mul, comp_lift _ _ _ (hFc i), comp_lift _ _ _ (hFc j)]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[← mul_assoc, ← mul_pow]`.
+
+Conclude with `hL`. Use the proof step `simp)`. Use `⟨comp e G', isHomogeneous_comp hG'h, fun m => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_comp]`. Conclude with `(mem_reesAlgebra_iff I _).1 (coeff m G').2 e`.
+
+Take `⟨L, hL⟩` from `hG' i`. Use `⟨L, ?_⟩` and prove the remaining obligations. Establish `hhom` using `((isHomogeneous_X (reesAlgebra I) i).pow L).mul (isHomogeneous_sub' (isHomogeneous_lift (I := I) (e := e) (hFh i)) (by rw [show d + N = 1 * N + d by ring]; exact ((isHomogeneous_X _ i).pow N).mul hG'h))`. Use `(hmemiff _ _ hhom).1 hL e` as an intermediate fact. Rewrite `this` using `[comp_X_pow_mul, comp_sub, comp_X_pow_mul, comp_lift _ _ _ (hFc i), if_pos rfl]`. Then use the resulting hypothesis.
+-/
 theorem GlobalTheory.uniform_serre_sections : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R), ∀ (n : ℕ) (J : ℕ → Ideal (MvPolynomial (Fin (n + 1)) R)), (∀ (e t : ℕ) (a : R) (F : MvPolynomial (Fin (n + 1)) R), a ∈ I → F.IsHomogeneous t → (∀ m, coeff m F ∈ I ^ e) → F ∈ J e → C a * F ∈ J (e + 1)) → ∃ d₀ : ℕ, ∀ d, d₀ ≤ d → ∀ e : ℕ, ∀ (N : ℕ) (F : Fin (n + 1) → MvPolynomial (Fin (n + 1)) R), (∀ i, (F i).IsHomogeneous (d + N)) → (∀ i m, coeff m (F i) ∈ I ^ e) → (∀ i j, ∃ L : ℕ, ((X i : MvPolynomial (Fin (n + 1)) R) * X j) ^ L * (X j ^ N * F i - X i ^ N * F j) ∈ J e) → ∃ G : MvPolynomial (Fin (n + 1)) R, G.IsHomogeneous d ∧ (∀ m, coeff m G ∈ I ^ e) ∧ ∀ i, ∃ L : ℕ, (X i : MvPolynomial (Fin (n + 1)) R) ^ L * (F i - X i ^ N * G) ∈ J e := by
   intro R _ _ I n J hJ
   obtain ⟨𝔞, hgr, hmem⟩ := GlobalTheory.T.exists_homogeneous_ideal_over_reesAlgebra R I n J hJ

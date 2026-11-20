@@ -162,6 +162,11 @@ structure IsBaseChange (π : Submodule ℂ (UA E n → ℂ)) {c : ℕ} {N : Fin 
 
   weight : ∀ τ lam, HasWeightAt π τ lam → ∑ i, m i τ = infOfWeight lam
 
+/- English proof (translation)
+Use `ad_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[pInf_complexConj]`. Express the relevant statement in the definitionally equal form `(infEq E).symm (infEq E _) = _`. Rewrite using `[RingEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+
+Conclude with `conjFin_algebraMap _ x`.
+-/
 theorem conjAd_algebraMap (x : E) :
     conjAd E (algebraMap E (Ad E) x) = algebraMap E (Ad E) (IsCMField.complexConj E x) := by
   refine ad_ext ?_ ?_
@@ -171,6 +176,13 @@ theorem conjAd_algebraMap (x : E) :
     rfl
   · exact conjFin_algebraMap _ x
 
+/- English proof (translation)
+Establish `h0 : (fun _ => 1 : UA E n → ℂ) ≠ 0` using `fun h => one_ne_zero (congrFun h 1)`. Establish `hc : ∀ φ ∈ Submodule.span ℂ {(fun _ => 1 : UA E n → ℂ)}, ∀ x, RU E n x φ = φ` using `fun φ hφ x => by`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hφ`. Both sides reduce to the same expression. Use `⟨fun φ hφ => ⟨?_, ?_, ?_, ?_⟩, fun x φ hφ => by rwa [hc φ hφ], by simpa using h0, fun W hW _ => (nonzero_span_atom _ h0).le_iff.1 hW⟩` and prove the remaining obligations.
+
+Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hφ`. Conclude with `continuous_const`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hφ`. Conclude with `fun _ _ _ => rfl`. Rewrite using `[Set.eq_univ_of_forall (s := {k : finU E n | RU E n k φ = φ}) fun k => hc φ hφ k]`.
+
+Conclude with `isOpen_univ`. Use `FiniteDimensional.span_of_finite ℂ ((Set.finite_singleton φ).subset ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `hc φ hφ k`.
+-/
 theorem isAutRepU_const : IsAutRepU (Submodule.span ℂ {(fun _ => 1 : UA E n → ℂ)}) := by
   have h0 : (fun _ => 1 : UA E n → ℂ) ≠ 0 := fun h => one_ne_zero (congrFun h 1)
   have hc : ∀ φ ∈ Submodule.span ℂ {(fun _ => 1 : UA E n → ℂ)}, ∀ x, RU E n x φ = φ := fun φ hφ x => by
@@ -188,13 +200,22 @@ theorem isAutRepU_const : IsAutRepU (Submodule.span ℂ {(fun _ => 1 : UA E n �
     rintro _ ⟨k, rfl⟩
     exact hc φ hφ k
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, Submodule.mem_span_singleton_self _, fun h => one_ne_zero (congrFun h 1), fun _ _ _ => rfl⟩`.
+-/
 theorem isUnramU_const (w : HeightOneSpectrum (𝓞 E)) :
     IsUnramU (Submodule.span ℂ {(fun _ => 1 : UA E n → ℂ)}) w :=
   ⟨_, Submodule.mem_span_singleton_self _, fun h => one_ne_zero (congrFun h 1), fun _ _ _ => rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun φ hφ => (P.cusp φ hφ).1, h, P.stable, P.ne_bot, P.irred⟩`.
+-/
 theorem isDiscrete_of_cuspSub (P : CuspSub E a) (h : ∀ φ ∈ P.V, IsSqInt φ.1) : IsDiscrete P.V :=
   ⟨fun φ hφ => (P.cusp φ hφ).1, h, P.stable, P.ne_bot, P.irred⟩
 
+/- English proof (translation)
+Use `⟨.refl _ _, fun o φ ψ h => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 φ.2`. Express the relevant statement in the definitionally equal form `ψ.1 = act o φ.1`. Rewrite using `[h, ← hc, map_smul, map_smul, act_oneFn, act_oneFn]`. Apply the tactic sequence `cases o <;> rfl`.
+-/
 theorem isCsdGL_const : IsCsdGL (Submodule.span ℂ {oneFn E a}) := by
   refine ⟨.refl _ _, fun o φ ψ h => ?_⟩
   obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.1 φ.2
@@ -202,6 +223,9 @@ theorem isCsdGL_const : IsCsdGL (Submodule.span ℂ {oneFn E a}) := by
   rw [h, ← hc, map_smul, map_smul, act_oneFn, act_oneFn]
   cases o <;> rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => isAutForm_const, fun φ hφ => by obtain ⟨c, rfl⟩ := Submodule.mem_span_singleton.1 hφ exact h c, isStable_const, fun e => oneFn_ne_zero (Submodule.span_singleton_eq_bot.1 e), fun W hW _ => (nonzero_span_atom _ oneFn_ne_zero).le_iff.1 hW⟩`.
+-/
 theorem isDiscrete_const (h : ∀ c : ℂ, IsSqInt fun _ : GA E a => c * 1) :
     IsDiscrete (Submodule.span ℂ {oneFn E a}) :=
   ⟨fun _ => isAutForm_const, fun φ hφ => by
@@ -210,6 +234,11 @@ theorem isDiscrete_const (h : ∀ c : ℂ, IsSqInt fun _ : GA E a => c * 1) :
     isStable_const, fun e => oneFn_ne_zero (Submodule.span_singleton_eq_bot.1 e),
     fun W hW _ => (nonzero_span_atom _ oneFn_ne_zero).le_iff.1 hW⟩
 
+/- English proof (translation)
+Use `⟨exists_congr fun T => ⟨fun h o φ => Subtype.ext (h o φ _ rfl), fun h o φ ψ e => ?_⟩, fun w σ => ⟨?_, ?_⟩, fun _ _ => Iff.rfl⟩` and prove the remaining obligations. Rewrite using `[show ψ = P.op (thetaOp o) φ from Subtype.ext e, h]`. Both sides reduce to the same expression. Introduce and unpack `⟨f, h0, h1, h2⟩`. Conclude with `⟨f.codRestrict _ h1, fun e => h0 (LinearMap.ext fun v => congrArg Subtype.val (LinearMap.congr_fun e v)), fun g v => Subtype.ext (h2 g v)⟩`.
+
+Introduce and unpack `⟨f, h0, h1⟩`. Conclude with `⟨P.V.subtype.comp f, fun e => h0 (LinearMap.ext fun v => Subtype.ext (LinearMap.congr_fun e v)), fun v => (f v).2, fun g v => congrArg Subtype.val (h1 g v)⟩`.
+-/
 theorem cuspSub_iff (P : CuspSub E a) :
     (IsCsdGL P.V ↔ P.IsCsd) ∧ (∀ w σ, IsLocCompGL P.V w σ ↔ P.IsLocComp w σ) ∧
       ∀ τ m, HasInfCharGL P.V τ m ↔ P.HasInfChar τ m := by

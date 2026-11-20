@@ -18,18 +18,27 @@ section Words
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact e`. Consider the case `cons p w ih => exact RCalc.Rd_congr (bs p) ih`.
+-/
 theorem Rw_congr (w : List (Ix n)) {f h : Mat n → V} (e : Set.EqOn f h (GLs n)) :
     Set.EqOn (Rw w f) (Rw w h) (GLs n) := by
   induction w with
   | nil => exact e
   | cons p w ih => exact RCalc.Rd_congr (bs p) ih
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => exact hf`. Consider the case `cons p w ih => exact RCalc.Rd_contDiffOn (bs p) ih`.
+-/
 theorem Rw_smooth (w : List (Ix n)) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) :
     ContDiffOn ℝ ∞ (Rw w f) (GLs n) := by
   induction w with
   | nil => exact hf
   | cons p w ih => exact RCalc.Rd_contDiffOn (bs p) ih
 
+/- English proof (translation)
+Proceed by induction on `w' with`. Consider the case `nil => rfl`. Consider the case `cons p w' ih => show Rd (bs p) (Rw w' (Rw w f)) = Rd (bs p) (Rw (w' ++ w) f)`. Rewrite using `[ih]`.
+-/
 theorem Rw_append (w w' : List (Ix n)) (f : Mat n → V) : Rw w' (Rw w f) = Rw (w' ++ w) f := by
   induction w' with
   | nil => rfl
@@ -56,6 +65,11 @@ section Bracket
 
 def cf (M : Mat n) (p : Ix n) : ℝ := if p.1 then (M p.2.1 p.2.2).re else (M p.2.1 p.2.2).im
 
+/- English proof (translation)
+Rewrite using `[OmDec.sum_Ix]`. Use `conv_rhs => rw [Matrix.matrix_eq_sum_single M]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [cf, bs, if_true, Bool.false_eq_true, if_false, Matrix.add_apply, Matrix.smul_apply, Matrix.single_apply]`.
+
+Distinguish the cases in `h : a = i ∧ b = j`. Simplify using `only [h, and_self, if_true]`. Take `⟨rfl, rfl⟩` from `h`. Simplify using `[Complex.real_smul, Complex.re_add_im]`. Simplify using `[h]`.
+-/
 theorem sum_cf (M : Mat n) : ∑ p : Ix n, cf M p • bs p = M := by
   rw [OmDec.sum_Ix]
   conv_rhs => rw [Matrix.matrix_eq_sum_single M]
@@ -70,6 +84,9 @@ theorem sum_cf (M : Mat n) : ∑ p : Ix n, cf M p • bs p = M := by
 
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← sum_cf M]`. Simplify using `only [Rd, Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, map_smul]`. Conclude with `(Complex.coe_smul _ _).symm`.
+-/
 theorem Rd_sum_cf (M : Mat n) (f : Mat n → V) (g : Mat n) :
     Rd M f g = ∑ p : Ix n, ((cf M p : ℝ) : ℂ) • Rd (bs p) f g := by
   conv_lhs => rw [← sum_cf M]

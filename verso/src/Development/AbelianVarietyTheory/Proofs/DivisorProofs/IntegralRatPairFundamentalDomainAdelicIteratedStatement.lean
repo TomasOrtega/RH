@@ -25,6 +25,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open MeasureTheory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PeriodicIteratedIntegral.integral_ratPair_fundamentalDomain_eq_iterated | exact GlobalTheory.PeriodicIteratedIntegral.integral_ratPair_fundamentalDomain_eq_iterated | (intros; apply GlobalTheory.PeriodicIteratedIntegral.integral_ratPair_fundamentalDoma …`.
+-/
 theorem _root_.GlobalTheory.T.integral_ratPairFundamentalDomain_adelic_iterated : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ],
     letI : MeasurableSpace (κ → AF F) := borel _
     letI : MeasurableSpace ((κ → AF F) × (κ → AF F)) := borel _

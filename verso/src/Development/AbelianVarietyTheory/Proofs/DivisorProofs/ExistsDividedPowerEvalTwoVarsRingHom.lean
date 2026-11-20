@@ -12,6 +12,9 @@ def bv (p : ℕ × ℕ) : MvPolynomial (Fin 2) ℚ :=
 
 def ex (p : ℕ × ℕ) : Fin 2 →₀ ℕ := Finsupp.single 0 p.1 + Finsupp.single 1 p.2
 
+/- English proof (translation)
+Introduce `p q h`. Establish `h0` using `congrArg (fun f : Fin 2 →₀ ℕ ↦ f 0) h`. Establish `h1` using `congrArg (fun f : Fin 2 →₀ ℕ ↦ f 1) h`. Simplify using `[ex] at h0 h1`. Conclude with `Prod.ext h0 h1`.
+-/
 theorem ex_injective : Function.Injective ex := by
   intro p q h
   have h0 := congrArg (fun f : Fin 2 →₀ ℕ ↦ f 0) h
@@ -19,12 +22,20 @@ theorem ex_injective : Function.Injective ex := by
   simp [ex] at h0 h1
   exact Prod.ext h0 h1
 
+/- English proof (translation)
+Rewrite using `[bv, ex, X_pow_eq_monomial, X_pow_eq_monomial, smul_monomial, smul_monomial, monomial_mul, smul_monomial]`. Simplify using the standard rewrite rules.
+-/
 theorem bv_eq (p : ℕ × ℕ) :
     bv p = ((p.1.factorial : ℚ)⁻¹ * (p.2.factorial : ℚ)⁻¹) • monomial (ex p) (1 : ℚ) := by
   rw [bv, ex, X_pow_eq_monomial, X_pow_eq_monomial, smul_monomial, smul_monomial, monomial_mul,
     smul_monomial]
   simp
 
+/- English proof (translation)
+Establish `h` using `((basisMonomials (Fin 2) ℚ).linearIndependent.comp ex ex_injective).units_smul (fun p : ℕ × ℕ ↦ Units.mk0 ((p.1.factorial : ℚ)⁻¹ * (p.2.factorial : ℚ)⁻¹) (by positivity))`. Establish `e : bv = (fun p : ℕ × ℕ ↦ Units.mk0 ((p.1.factorial : ℚ)⁻¹ * (p.2.factorial : ℚ)⁻¹) (by positivity)) • (⇑(basisMonomials (Fin 2) ℚ) ∘ ex)`. Use function extensionality and compare the values at `p`. Simplify using `[bv_eq, Units.smul_def, coe_basisMonomials]`. Rewrite using `[e]`.
+
+Conclude with `h`.
+-/
 theorem bv_li : LinearIndependent ℚ bv := by
   have h := ((basisMonomials (Fin 2) ℚ).linearIndependent.comp ex ex_injective).units_smul
     (fun p : ℕ × ℕ ↦ Units.mk0 ((p.1.factorial : ℚ)⁻¹ * (p.2.factorial : ℚ)⁻¹) (by positivity))
@@ -34,9 +45,15 @@ theorem bv_li : LinearIndependent ℚ bv := by
     simp [bv_eq, Units.smul_def, coe_basisMonomials]
   rw [e]; exact h
 
+/- English proof (translation)
+Simplify using `only [ex, Prod.fst_add, Prod.snd_add, Finsupp.single_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem ex_add (p q : ℕ × ℕ) : ex (p + q) = ex p + ex q := by
   simp only [ex, Prod.fst_add, Prod.snd_add, Finsupp.single_add]; abel
 
+/- English proof (translation)
+Rewrite using `[bv_eq, bv_eq, bv_eq, smul_mul_smul, monomial_mul, ← ex_add, ← Nat.cast_smul_eq_nsmul ℚ, smul_smul, mul_one]`. Use `congr 1`. Simplify using `only [Prod.fst_add, Prod.snd_add, Nat.cast_mul, Nat.cast_add_choose]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem bv_mul (p q : ℕ × ℕ) :
     bv p * bv q = ((p.1 + q.1).choose p.1 * (p.2 + q.2).choose p.2 : ℕ) • bv (p + q) := by
   rw [bv_eq, bv_eq, bv_eq, smul_mul_smul, monomial_mul, ← ex_add, ← Nat.cast_smul_eq_nsmul ℚ, smul_smul,
@@ -47,13 +64,28 @@ theorem bv_mul (p q : ℕ × ℕ) :
 
 def D : Submodule ℤ (MvPolynomial (Fin 2) ℚ) := Submodule.span ℤ (Set.range bv)
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨p, rfl⟩`.
+-/
 theorem bv_mem (p : ℕ × ℕ) : bv p ∈ D := Submodule.subset_span ⟨p, rfl⟩
 
 def β : Module.Basis (ℕ × ℕ) ℤ D := Module.Basis.span (bv_li.restrict_scalars' ℤ)
 
+/- English proof (translation)
+The claim follows from `Module.Basis.span_apply _ p`.
+-/
 theorem β_eq (p : ℕ × ℕ) : β p = ⟨bv p, bv_mem p⟩ :=
   Module.Basis.span_apply _ p
 
+/- English proof (translation)
+Use `Submodule.span_induction₂ (p := fun x y _ _ ↦ x * y ∈ D) ?_ ?_ ?_ ?_ ?_ ?_ ?_ hx hy` and prove the remaining obligations. Introduce and unpack `_ _ ⟨m, rfl⟩ ⟨n, rfl⟩`. Rewrite using `[bv_mul]`. Conclude with `Submodule.smul_of_tower_mem _ _ (bv_mem _)`. Introduce `y _`.
+
+Simplify using the standard rewrite rules. Introduce `y _`. Simplify using the standard rewrite rules. Introduce `x y z _ _ _ h1 h2`. Rewrite using `[add_mul]`.
+
+Conclude with `add_mem h1 h2`. Introduce `x y z _ _ _ h1 h2`. Rewrite using `[mul_add]`. Conclude with `add_mem h1 h2`. Introduce `r x y _ _ h`.
+
+Rewrite using `[smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ _ h`. Introduce `r x y _ _ h`. Rewrite using `[mul_smul_comm]`. Conclude with `Submodule.smul_mem _ _ h`.
+-/
 theorem mul_mem {x y : MvPolynomial (Fin 2) ℚ} (hx : x ∈ D) (hy : y ∈ D) : x * y ∈ D := by
   refine Submodule.span_induction₂ (p := fun x y _ _ ↦ x * y ∈ D) ?_ ?_ ?_ ?_ ?_ ?_ ?_ hx hy
   · rintro _ _ ⟨m, rfl⟩ ⟨n, rfl⟩
@@ -74,24 +106,51 @@ open Classical in
 
 def φ (q : MvPolynomial (Fin 2) ℚ) : B := if h : q ∈ D then ψ u v ⟨q, h⟩ else 0
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem φ_of_mem {q : MvPolynomial (Fin 2) ℚ} (h : q ∈ D) : φ u v q = ψ u v ⟨q, h⟩ := dif_pos h
 
+/- English proof (translation)
+Rewrite using `[φ_of_mem u v (bv_mem p), ← β_eq, ψ, Module.Basis.constr_basis]`.
+-/
 theorem φ_bv (p : ℕ × ℕ) : φ u v (bv p) = u p.1 * v p.2 := by
   rw [φ_of_mem u v (bv_mem p), ← β_eq, ψ, Module.Basis.constr_basis]
 
+/- English proof (translation)
+Rewrite using `[φ_of_mem u v hx, φ_of_mem u v hy, φ_of_mem u v (add_mem hx hy), ← map_add]`. Both sides reduce to the same expression.
+-/
 theorem φ_add {x y : MvPolynomial (Fin 2) ℚ} (hx : x ∈ D) (hy : y ∈ D) :
     φ u v (x + y) = φ u v x + φ u v y := by
   rw [φ_of_mem u v hx, φ_of_mem u v hy, φ_of_mem u v (add_mem hx hy), ← map_add]; rfl
 
+/- English proof (translation)
+Rewrite using `[φ_of_mem u v hx, φ_of_mem u v (Submodule.smul_mem _ z hx), ← map_zsmul]`. Both sides reduce to the same expression.
+-/
 theorem φ_zsmul (z : ℤ) {x : MvPolynomial (Fin 2) ℚ} (hx : x ∈ D) : φ u v (z • x) = z • φ u v x := by
   rw [φ_of_mem u v hx, φ_of_mem u v (Submodule.smul_mem _ z hx), ← map_zsmul]; rfl
 
+/- English proof (translation)
+Rewrite using `[← Nat.cast_smul_eq_nsmul ℤ n x, φ_zsmul u v _ hx, Nat.cast_smul_eq_nsmul]`.
+-/
 theorem φ_nsmul (n : ℕ) {x : MvPolynomial (Fin 2) ℚ} (hx : x ∈ D) : φ u v (n • x) = n • φ u v x := by
   rw [← Nat.cast_smul_eq_nsmul ℤ n x, φ_zsmul u v _ hx, Nat.cast_smul_eq_nsmul]
 
+/- English proof (translation)
+Rewrite using `[φ_of_mem u v (zero_mem _)]`. Conclude with `map_zero (ψ u v)`.
+-/
 theorem φ_zero : φ u v 0 = 0 := by
   rw [φ_of_mem u v (zero_mem _)]; exact map_zero (ψ u v)
 
+/- English proof (translation)
+Use `Submodule.span_induction₂ (p := fun x y hx hy ↦ φ u v (x * y) = φ u v x * φ u v y) ?_ ?_ ?_ ?_ ?_ ?_ ?_ hx hy` and prove the remaining obligations. Introduce and unpack `_ _ ⟨p, rfl⟩ ⟨q, rfl⟩`. Rewrite using `[bv_mul, φ_nsmul u v _ (bv_mem _), φ_bv, φ_bv, φ_bv, nsmul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Prod.fst_add, Prod.snd_add, Nat.cast_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = u p.1 * v p.2 * (u q.1 * v q.2) := by rw [← hu, ← hv]; ring`. Introduce `y _`. Simplify using `[φ_zero]`. Introduce `y _`.
+
+Simplify using `[φ_zero]`. Introduce `x y z hx hy hz h1 h2`. Rewrite using `[add_mul, φ_add u v (mul_mem hx hz) (mul_mem hy hz), φ_add u v hx hy, h1, h2, add_mul]`. Introduce `x y z hx hy hz h1 h2`. Rewrite using `[mul_add, φ_add u v (mul_mem hx hy) (mul_mem hx hz), φ_add u v hy hz, h1, h2, mul_add]`.
+
+Introduce `r x y hx hy h`. Rewrite using `[smul_mul_assoc, φ_zsmul u v r (mul_mem hx hy), φ_zsmul u v r hx, h, smul_mul_assoc]`. Introduce `r x y hx hy h`. Rewrite using `[mul_smul_comm, φ_zsmul u v r (mul_mem hx hy), φ_zsmul u v r hy, h, mul_smul_comm]`.
+-/
 theorem φ_mul (hu : ∀ m n, u m * u n = ((m + n).choose m : B) * u (m + n))
     (hv : ∀ m n, v m * v n = ((m + n).choose m : B) * v (m + n))
     {x y : MvPolynomial (Fin 2) ℚ} (hx : x ∈ D) (hy : y ∈ D) :
@@ -121,6 +180,9 @@ namespace GlobalTheory
 
 open DPEval2 in
 
+/- English proof (translation)
+Introduce `B _ u v _ _ hu hv`. Use `⟨φ u v, fun a c ↦ φ_bv u v (a, c), fun d hd e he ↦ ?_, fun z d hd ↦ φ_zsmul u v z hd⟩` and prove the remaining obligations. Conclude with `⟨φ_add u v hd he, mul_mem hd he, φ_mul u v hu hv hd he⟩`.
+-/
 theorem dpEval_two :
     ∀ (B : Type) [CommRing B] (u v : ℕ → B), u 0 = 1 → v 0 = 1 →
     (∀ m n, u m * u n = ((m + n).choose m : B) * u (m + n)) →

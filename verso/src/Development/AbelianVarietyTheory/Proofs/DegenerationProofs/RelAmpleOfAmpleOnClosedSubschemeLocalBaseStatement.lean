@@ -11,5 +11,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AmpleLocalBase.relAmple_of_closed | exact GlobalTheory.AmpleLocalBase.relAmple_of_closed | (intros; apply GlobalTheory.AmpleLocalBase.relAmple_of_closed <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.relAmple_of_ample_on_closed_subscheme_localBase : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (B : Over (Spec (CommRingCat.of R))) (M : LB B.left), Flat B.hom → IsProjBy B.hom → M.IsLB → ∀ (R₀ : Type) [CommRing R₀] [Nontrivial R₀] (g : R →+* R₀), Function.Surjective g → ∀ (Y₀ : Over (Spec (CommRingCat.of R₀))) (b : Y₀.left ⟶ B.left), IsPullback b Y₀.hom B.hom (Spec.map (CommRingCat.ofHom g)) → ∀ N₀ : LB Y₀.left, N₀.IsLB → LBIso N₀ (M.pull b) → RelAmple Y₀ N₀ → RelAmple B M := by
   first | exact @GlobalTheory.AmpleLocalBase.relAmple_of_closed | exact GlobalTheory.AmpleLocalBase.relAmple_of_closed | (intros; apply GlobalTheory.AmpleLocalBase.relAmple_of_closed <;> assumption)

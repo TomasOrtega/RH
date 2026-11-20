@@ -13,6 +13,15 @@ open scoped Matrix nonZeroDivisors
 
 namespace GlobalTheory.FrameNorm
 
+/- English proof (translation)
+Use extensionality with `j`. Take `⟨⟨τ', a⟩, rfl⟩` from `e.symm.surjective j`. Simplify using `only [Matrix.mulVec_single_one, Matrix.col_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hτ : τ' = τ`. Substitute `hτ` using the available equality.
+
+Rewrite using `[Finset.sum_eq_single a (fun b _ hb => ?_) (by simp), Pi.single_eq_same, mul_one]`. Rewrite using `[Pi.single_eq_of_ne, mul_zero]`. Introduce `hh`. Conclude with `hb (eq_of_heq (Sigma.mk.inj (e.symm.injective hh)).2).symm`. Rewrite using `[Finset.sum_eq_zero fun b _ => ?_]`.
+
+Assume the negation of the conclusion as `hne`. Use `hs _ _ hne` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply, Equiv.apply_symm_apply]`. Conclude with `hτ this`. Rewrite using `[Pi.single_eq_of_ne, mul_zero]`.
+
+Introduce `hh`. Conclude with `hτ (Sigma.mk.inj (e.symm.injective hh)).1`.
+-/
 theorem mulVec_single_of_support {T : Type} {m : T → ℕ} {g : ℕ} (e : Fin g ≃ Σ τ : T, Fin (m τ))
     (h : Matrix (Fin g) (Fin g) ℂ) (hs : ∀ j j', h j j' ≠ 0 → (e j).1 = (e j').1) (τ : T) (i : Fin (m τ)) :
     h *ᵥ Pi.single (e.symm ⟨τ, i⟩) 1 =
@@ -38,6 +47,21 @@ theorem mulVec_single_of_support {T : Type} {m : T → ℕ} {g : ℕ} (e : Fin g
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ g e F k P P₀ h₀ y y₀ hP hP₀ hh hs hy hy₀ hu hu₀`. Take `⟨hdet, hpt, hex⟩` from `GlobalTheory.FamRigid.ex_eq_of_level_group GlobalTheory.latMinkowski E H Dw l Xo _ g _ F k P P₀ (LinearEquiv.refl _ _) h₀ hP hP₀ (fun _ _ => rfl) (fun a _ => ⟨0, by simp⟩) (fun a => ⟨0, by simp⟩) hh`. Establish `hinj : ∀ j j', (e j).1 = (e j').1 → ((e j).2 : ℕ) = (e j').2 → j = j'`. Introduce `j j' h1 h2`. Apply `e.injective` to reduce the goal to its premises.
+
+Conclude with `Sigma.ext h1 ((Fin.heq_ext_iff (by rw [h1])).2 h2)`. Establish `hdiag : ∀ j, h₀ j j ≠ 0`. Rewrite `hdet` using `[GlobalTheory.PerBor.det_of_support (fun j => (e j).1) (fun j => ((e j).2 : ℕ)) hinj h₀ hs]`. Conclude with `fun j => Finset.prod_ne_zero_iff.1 hdet.ne_zero j (Finset.mem_univ j)`. Establish `hx : y.x = y₀.x` using `hy.trans (hpt.trans hy₀.symm)`.
+
+Set `cf : ∀ τ, Fin (Dw.mult τ) → Fin (Dw.mult τ) → CAt σ` to `fun τ i i' => (h₀ (e.symm ⟨τ, i'⟩) (e.symm ⟨τ, i⟩) : ℂ)`. Establish `hc : ∀ τ i, IsCombAt y₀.x (y₀.u τ) (cf τ i) (y.u τ i)`. Introduce `τ i`. Establish `d1` using `(GlobalTheory.ExpChain.isDerivAt0_ex_iff E H Dw l Xo _ g _ F k P hP k P₀ (Matrix.mulVecLin h₀) hP₀ hex _ _).1 (hu τ i)`. Rewrite `d1` using `[Matrix.mulVecLin_apply, mulVec_single_of_support e h₀ (fun j j' h => (hs j j' h).1)]`.
+
+Establish `d2` using `(GlobalTheory.DerLin.isCombAt_iff_isDerivAt0 E H Dw l Xo _ g _ F k P₀ hP₀ _ (y₀.u τ) (fun i => Pi.single (e.symm ⟨τ, i⟩) 1) (hu₀ τ) _ (y.u τ i)).2 d1`. Rewrite using `[hy₀]`. Conclude with `d2`. Take `⟨t, ht⟩` from `(frBor_calculus E H Dw l Xo c (CAt σ) y₀ y y).2.1 hx fun τ i => ⟨cf τ i, isUnit_iff_ne_zero.2 (hdiag _), fun j hj => by`. Assume the negation of the conclusion as `hne`.
+
+Use `(hs _ _ hne).2` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply, Equiv.apply_symm_apply]`. Conclude with `absurd hj (not_lt.2 this), hc τ i⟩`. Use `⟨t, ht, fun j => ?_⟩` and prove the remaining obligations. Take `⟨⟨τ, i⟩, rfl⟩` from `e.symm.surjective j`.
+
+Rewrite using `[Equiv.apply_symm_apply]`. Take `⟨a, ha, -, hac⟩` from `ht.2.1 τ i`. Establish `htan : IsTanAt y₀.x (y.u τ i)` using `by rw [← hx]; exact y.tan τ i`. Use `(y₀.basis τ (y.u τ i) htan (y.eig τ i)).unique hac (hc τ i)` as an intermediate fact. Rewrite using `[← ha, this]`.
+
+Both sides reduce to the same expression.
+-/
 theorem frBor_of_triangular_period : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1)) (k : Fin F.n) (P P₀ : (F.Di k).La →+ (Fin g → ℂ)) (h₀ : Matrix (Fin g) (Fin g) ℂ) (y y₀ : FrPt Xo c (CAt σ)), IsPeriod (F.Di k) (fun j => relab c σ (e j).1) P → IsPeriod (F.Di k) (fun j => relab c σ (e j).1) P₀ → (∀ a, P₀ a = h₀ *ᵥ P a) → (∀ j j', h₀ j j' ≠ 0 → (e j).1 = (e j').1 ∧ ((e j).2 : ℕ) ≤ (e j').2) → y.x = F.u k P → y₀.x = F.u k P₀ → (∀ τ (i : Fin (Dw.mult τ)), IsDerivAt0 (fun z => (F.ex k P z).left) (Pi.single (e.symm ⟨τ, i⟩) 1) (y.u τ i)) → (∀ τ (i : Fin (Dw.mult τ)), IsDerivAt0 (fun z => (F.ex k P₀ z).left) (Pi.single (e.symm ⟨τ, i⟩) 1) (y₀.u τ i)) → ∃ t : Ix Dw → (CAt σ)ˣ, FrBor t y₀ y ∧ ∀ j, toC (t (some (e j)) : CAt σ) = h₀ j j := by
   intro E _ _ _ H Dw l Xo c σ g e F k P P₀ h₀ y y₀ hP hP₀ hh hs hy hy₀ hu hu₀
   classical

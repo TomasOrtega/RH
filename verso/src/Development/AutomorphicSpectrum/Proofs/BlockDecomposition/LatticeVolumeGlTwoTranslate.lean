@@ -9,6 +9,17 @@ open GlobalTheory.CompanionTheory.LFUDom
 
 namespace GlobalTheory.CompanionTheory.LFUDom
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ _ A`. Use `set S : Set (Fin 2 → F) := {x | ∀ i, x i ∈ 𝒪[F]} with hS`. Establish `hSo : IsOpen S`. Establish `: S = Set.univ.pi fun _ => (𝒪[F] : Set F)`. Use extensionality with `x`.
+
+Simplify using `[hS]`. Rewrite using `[this]`. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => Valuation.isOpen_integer`. Establish `hSm : MeasurableSet S` using `hSo.measurableSet`. Establish `hcont : Continuous fun x : Fin 2 → F => (A : Matrix (Fin 2) (Fin 2) F) *ᵥ x` using `Continuous.matrix_mulVec continuous_const continuous_id`.
+
+Establish `hPm : MeasurableSet ((fun x : Fin 2 → F => (A : Matrix (Fin 2) (Fin 2) F) *ᵥ x) ⁻¹' S)` using `(hSo.preimage hcont).measurableSet`. Establish `key` using `GlobalTheory.CompanionTheory.LFGTorus.integral_mulVec ψ A (S.indicator fun _ => (1 : ℂ))`. Establish `e1 : (fun x : Fin 2 → F => S.indicator (fun _ => (1 : ℂ)) ((A : Matrix (Fin 2) (Fin 2) F) *ᵥ x)) = ((fun x : Fin 2 → F => (A : Matrix (Fin 2) (Fin 2) F) *ᵥ x) ⁻¹' S).indicator fun _ => (1 : ℂ)`. Use extensionality with `x`. Distinguish the cases in `h : (A : Matrix (Fin 2) (Fin 2) F) *ᵥ x ∈ S`.
+
+Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (Set.mem_preimage.2 h)]`. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (fun h' => h (Set.mem_preimage.1 h'))]`. Rewrite `key` using `[e1, integral_indicator_const _ hPm, integral_indicator_const _ hSm]`. Establish `hmp : Ad3.mp (GeneralLinearGroup.det A) (-1) = (((modulus ((GeneralLinearGroup.det A : Fˣ) : F) : ℝ)⁻¹ : ℝ) : ℂ)`. Simplify using `[Ad3.mp, Complex.cpow_neg]`.
+
+Rewrite `key` using `[hmp]`. Establish `: ((Ad3.LFS.vol2 ψ).real ((fun x : Fin 2 → F => (A : Matrix (Fin 2) (Fin 2) F) *ᵥ x) ⁻¹' S) : ℂ) = (((modulus ((GeneralLinearGroup.det A : Fˣ) : F) : ℝ)⁻¹ * (Ad3.LFS.vol2 ψ).real S : ℝ) : ℂ)`. Simplify using `using key`. Conclude with `this` after adjusting the coercions.
+-/
 theorem latvol : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle), Ad3.IsStd ψ → ∀ A : GL (Fin 2) F,
   (Ad3.LFS.vol2 ψ).real {x : Fin 2 → F | ∀ i, ((A : Matrix (Fin 2) (Fin 2) F) *ᵥ x) i ∈ 𝒪[F]} = (modulus ((GeneralLinearGroup.det A : Fˣ) : F) : ℝ)⁻¹ * (Ad3.LFS.vol2 ψ).real {x : Fin 2 → F | ∀ i, x i ∈ 𝒪[F]} := by
   intro F _ _ _ _ _ _ ψ _ A

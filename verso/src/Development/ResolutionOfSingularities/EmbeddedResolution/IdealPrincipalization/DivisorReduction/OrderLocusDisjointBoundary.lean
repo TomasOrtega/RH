@@ -25,6 +25,15 @@ namespace FunctorialResolution.EmbeddedResolution
 
 namespace DivisorReduction
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Set.mem_inter_iff, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce `hx hker`. Establish `hcl : IsClosed (Set.range ⇑ι.base)` using `(AlgebraicGeometry.Scheme.Hom.isClosedEmbedding ι).isClosed_range`. Establish `hmem : x ∈ closure (Set.range ⇑ι.base)`.
+
+Rewrite `hker` using `[Scheme.Hom.support_ker ι]`. Conclude with `hker`. Rewrite `hmem` using `[hcl.closure_eq]`. Take `⟨y, hy⟩` from `hmem`. Establish `hxo : (m : ℕ∞) ≤ orderAt J x` using `hx`.
+
+Establish `hyo : (m : ℕ∞) ≤ orderAt (J.comap ι) y`. Use `le_trans ?_ (orderAt_le_orderAt_comap ι J y)` and prove the remaining obligations. Rewrite using `[hy]`. Conclude with `hxo`. Establish `hy' : y ∈ orderAtLeastLocus (J.comap ι) m` using `hyo`.
+
+Rewrite `hy'` using `[h]`. Conclude with `hy'`.
+-/
 theorem orderAtLeastLocus_inter_ker_support_eq_empty_of_comap
     {S X : Scheme.{u}} (ι : S ⟶ X) [AlgebraicGeometry.IsClosedImmersion ι]
     (J : X.IdealSheafData) (m : ℕ) (h : orderAtLeastLocus (J.comap ι) m = ∅) :
@@ -48,6 +57,11 @@ theorem orderAtLeastLocus_inter_ker_support_eq_empty_of_comap
   rw [h] at hy'
   exact hy'
 
+/- English proof (translation)
+Establish `hid : lowerIdealWithoutBlowup T = T.ideal` using `by show T.ideal.comap (CategoryStruct.id T.scheme) = T.ideal`. Simplify using the standard rewrite rules. Establish `hcomap` using `comap_controlledTransform_embeddingIntoAmbient hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr s.length le_rfl hdiv`. Establish `hctrl : (ambientBlowupSeq hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr).controlledTransform T.ideal T.mult s.length = (ambientBlowupSeq hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr).controlledTransform (lower …` using `congrArg (fun I => (ambientBlowupSeq hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr).controlledTransform I T.mult s.length) hid.symm`. Use `orderAtLeastLocus_inter_ker_support_eq_empty_of_comap (embeddingIntoAmbient hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr s.length) _ T.mult ?_` and prove the remaining obligations.
+
+Rewrite using `[hctrl, hcomap]`. Conclude with `hempty`.
+-/
 theorem orderAtLeastLocus_inter_support_ker_eq_empty
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hno : BlowupPreservesNoetherian.{u})
     (T : MarkedIdealWithBoundary.{u}) [AlgebraicGeometry.IsNoetherian T.scheme] (j : ℕ)
@@ -91,6 +105,9 @@ theorem orderAtLeastLocus_inter_support_ker_eq_empty
   rw [hctrl, hcomap]
   exact hempty
 
+/- English proof (translation)
+Establish `h1` using `BlowupSequenceData.controlledTransform_prepend_succ (containedComponentsIdeal T j hj) hb (ambientBlowupSeq hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr) T.ideal (lowerIdealAfterBlowup T j hj) T.mult hone s.length`. Establish `h2` using `comap_controlledTransform_embeddingIntoAmbient hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr s.length le_rfl hdiv`. Use `orderAtLeastLocus_inter_ker_support_eq_empty_of_comap (embeddingIntoAmbient hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr s.length) _ T.mult ?_` and prove the remaining obligations. Rewrite using `[h1, h2]`. Conclude with `hempty`.
+-/
 theorem orderAtLeastLocus_controlledTransform_inter_ker_support_eq_empty
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u}) (hno : BlowupPreservesNoetherian.{u})
     (T : MarkedIdealWithBoundary.{u}) [AlgebraicGeometry.IsNoetherian T.scheme] (j : ℕ)

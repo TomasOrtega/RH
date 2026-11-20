@@ -10,6 +10,13 @@ namespace GlobalTheory.Cyc.IntBasis
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Introduce `a ha`. Distinguish the cases in `hfa : f a = 0`. Rewrite using `[hfa, norm_zero]`. Conclude with `norm_nonneg _`. Establish `hat : a ∈ s.filter (fun b => f b ≠ 0)` using `Finset.mem_filter.2 ⟨ha, hfa⟩`.
+
+Rewrite using `[← Finset.sum_filter_ne_zero s, IsUltrametricDist.norm_sum_eq_sup'_of_pairwise_ne ⟨a, hat⟩]`. Conclude with `Finset.le_sup' (fun b => ‖f b‖) hat`. Introduce `b hb c hc hbc`. Establish `hb'` using `Finset.mem_filter.1 (Finset.mem_coe.1 hb)`. Establish `hc'` using `Finset.mem_filter.1 (Finset.mem_coe.1 hc)`.
+
+Conclude with `h b hb'.1 c hc'.1 hbc hb'.2 hc'.2`.
+-/
 theorem norm_le_norm_sum {ι : Type} (s : Finset ι) (f : ι → Om l)
     (h : ∀ a ∈ s, ∀ b ∈ s, a ≠ b → f a ≠ 0 → f b ≠ 0 → ‖f a‖ ≠ ‖f b‖) :
     ∀ a ∈ s, ‖f a‖ ≤ ‖∑ b ∈ s, f b‖ := by
@@ -27,6 +34,21 @@ theorem norm_le_norm_sum {ι : Type} (s : Finset ι) (f : ι → Om l)
     have hc' := Finset.mem_filter.1 (Finset.mem_coe.1 hc)
     exact h b hb'.1 c hc'.1 hbc hb'.2 hc'.2
 
+/- English proof (translation)
+Take `⟨n, hn⟩` from `GlobalTheory.T.norm_mem_cyclotomic_layer_prime_rpow l K (i - 1) (by omega) z hz h0`. Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hl0 : (0 : ℝ) < l` using `by linarith`. Establish `hζC : IsPrimitiveRoot (ζ : PadicComplex l) (l ^ i)`. Use `hζ.map_of_injective (algebraMap (PadicAlgCl l) (PadicComplex l)).injective` as an intermediate fact.
+
+Simplify `this` using `[← PadicComplex.coe_eq]`. Establish `hnorm1 : ‖ζ - 1‖ = (l : ℝ) ^ (-(1 : ℝ) / ((l : ℝ) ^ (i - 1) * ((l : ℝ) - 1)))`. Rewrite using `[← GlobalTheory.T.norm_primitiveRoot_primePow_sub_one_padicComplex l i (by omega) _ hζC, ← PadicComplex.norm_extends]`. Use `congr 1`. Rewrite using `[PadicComplex.coe_eq, PadicComplex.coe_eq, map_sub, map_one]`.
+
+Use `set D : ℝ := (l : ℝ) ^ (i - 1) * ((l : ℝ) - 1) with hD`. Establish `hpow : (l : ℝ) ^ (i - 1) = (l : ℝ) ^ (i - 1 - 1) * l`. Rewrite using `[← pow_succ]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hD' : (0 : ℝ) < (l : ℝ) ^ (i - 1 - 1) * ((l : ℝ) - 1)`. Apply `mul_pos (pow_pos hl0 _)` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨n, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hn]`.
+
+Use `congr 1`. Rewrite using `[hD, hpow]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Introduce `a`.
+
+Rewrite using `[norm_mul, norm_pow, hnorm1, hn, ← Real.rpow_mul_natCast hl0.le, ← Real.rpow_add hl0]`. Use `congr 1`. Rewrite using `[hD, hpow]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_term (K : FinExt l) (i : ℕ) (hi : 2 ≤ i) (ζ : Om l) (hζ : IsPrimitiveRoot ζ (l ^ i))
     (z : Om l) (hz : z ∈ Ks K (i - 1)) (h0 : z ≠ 0) :
     ∃ n : ℤ, ‖z‖ = (l : ℝ) ^ (((n * l : ℤ) : ℝ) / ((l : ℝ) ^ (i - 1) * ((l : ℝ) - 1))) ∧
@@ -64,6 +86,17 @@ theorem norm_term (K : FinExt l) (i : ℕ) (hi : 2 ≤ i) (ζ : Om l) (hζ : IsP
     field_simp
     ring
 
+/- English proof (translation)
+Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Apply `norm_le_norm_sum _ _ _ a (Finset.mem_range.2 ha)` to reduce the goal to its premises. Introduce `b hb c hc hbc hb0 hc0 heq`. Establish `hzb : z b ≠ 0` using `left_ne_zero_of_mul hb0`. Establish `hzc : z c ≠ 0` using `left_ne_zero_of_mul hc0`.
+
+Take `⟨nb, -, hnb⟩` from `norm_term K i hi ζ hζ (z b) (hz b) hzb`. Take `⟨nc, -, hnc⟩` from `norm_term K i hi ζ hζ (z c) (hz c) hzc`. Rewrite `heq` using `[hnb b, hnc c]`. Establish `hD : (0 : ℝ) < (l : ℝ) ^ (i - 1) * ((l : ℝ) - 1)`. Apply `mul_pos (pow_pos (by linarith) _)` to reduce the goal to its premises.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : (((nb * l - b : ℤ) : ℝ)) / ((l : ℝ) ^ (i - 1) * ((l : ℝ) - 1)) = (((nc * l - c : ℤ) : ℝ)) / ((l : ℝ) ^ (i - 1) * ((l : ℝ) - 1))` using `le_antisymm ((Real.rpow_le_rpow_left_iff hl).1 heq.le) ((Real.rpow_le_rpow_left_iff hl).1 heq.ge)`. Establish `h2 : nb * (l : ℤ) - b = nc * l - c`. Conclude with `(div_left_inj' hD.ne').1 h1` after adjusting the coercions. Establish `hb' : b < l` using `Finset.mem_range.1 hb`.
+
+Establish `hc' : c < l` using `Finset.mem_range.1 hc`. Establish `key : (nb - nc) * (l : ℤ) = b - c` using `by rw [sub_mul]; linarith`. Break down `lt_trichotomy nb nc with h | h | h` into its components or cases. Establish `: (nb - nc) * (l : ℤ) ≤ -l` using `by nlinarith`. Use linear arithmetic over natural numbers and integers.
+
+Substitute `h` using the available equality. Use linear arithmetic over natural numbers and integers. Establish `: (l : ℤ) ≤ (nb - nc) * l` using `by nlinarith`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem term_le (K : FinExt l) (i : ℕ) (hi : 2 ≤ i) (ζ : Om l) (hζ : IsPrimitiveRoot ζ (l ^ i))
     (z : ℕ → Om l) (hz : ∀ a, z a ∈ Ks K (i - 1)) (a : ℕ) (ha : a < l) :
     ‖z a * (ζ - 1) ^ a‖ ≤ ‖∑ b ∈ Finset.range l, z b * (ζ - 1) ^ b‖ := by
@@ -94,6 +127,17 @@ theorem term_le (K : FinExt l) (i : ℕ) (hi : 2 ≤ i) (ζ : Om l) (hζ : IsPri
   · have : (l : ℤ) ≤ (nb - nc) * l := by nlinarith
     omega
 
+/- English proof (translation)
+Distinguish the cases in `hz0 : z = 0`. Rewrite using `[hz0, norm_zero]`. Conclude with `zero_le_one`. Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Take `⟨n, hn, hna⟩` from `norm_term K i hi ζ hζ z hz hz0`.
+
+Establish `hD : (0 : ℝ) < (l : ℝ) ^ (i - 1) * ((l : ℝ) - 1)`. Apply `mul_pos (pow_pos (by linarith) _)` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h` using `[hna a]`. Establish `h1 : ((n * l - a : ℤ) : ℝ) / ((l : ℝ) ^ (i - 1) * ((l : ℝ) - 1)) ≤ 0`.
+
+Assume the negation of the conclusion as `h1`. Conclude with `absurd h (not_le.2 (Real.one_lt_rpow hl (lt_of_not_ge h1)))`. Establish `h2 : n * (l : ℤ) - a ≤ 0`. Use `(div_le_iff₀ hD).1 h1` as an intermediate fact. Rewrite `this` using `[zero_mul]`.
+
+Conclude with `this` after adjusting the coercions. Establish `h3 : n ≤ 0`. Assume the negation of the conclusion as `hn'`. Establish `: (l : ℤ) ≤ n * l` using `by nlinarith`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[hn]`. Apply `Real.rpow_le_one_of_one_le_of_nonpos hl.le` to reduce the goal to its premises. Apply `div_nonpos_of_nonpos_of_nonneg _ hD.le` to reduce the goal to its premises. Establish `: n * (l : ℤ) ≤ 0` using `by nlinarith`. Conclude with `this` after adjusting the coercions.
+-/
 theorem coeff_le (K : FinExt l) (i : ℕ) (hi : 2 ≤ i) (ζ : Om l) (hζ : IsPrimitiveRoot ζ (l ^ i))
     (z : Om l) (hz : z ∈ Ks K (i - 1)) (a : ℕ) (ha : a < l) (h : ‖z * (ζ - 1) ^ a‖ ≤ 1) :
     ‖z‖ ≤ 1 := by
@@ -123,6 +167,23 @@ theorem coeff_le (K : FinExt l) (i : ℕ) (hi : 2 ≤ i) (ζ : Om l) (hζ : IsPr
   have : n * (l : ℤ) ≤ 0 := by nlinarith
   exact_mod_cast this
 
+/- English proof (translation)
+Establish `hlp : l.Prime` using `Fact.out`. Establish `hl0 : l ≠ 0` using `hlp.ne_zero`. Establish `hζl : ζ ^ l ∈ Ks K (i - 1)`. Unfold `Ks`. Apply `(le_sup_right : IntermediateField.adjoin ℚ_[l] _ ≤ K0 K ⊔ _)` to reduce the goal to its premises.
+
+Apply `IntermediateField.subset_adjoin` to reduce the goal to its premises. Use `show (ζ ^ l) ^ l ^ (i - 1) = 1`. Rewrite using `[← pow_mul, ← pow_succ', Nat.sub_add_cancel (by omega : 1 ≤ i)]`. Conclude with `hζ.pow_eq_one`. Use `set F := Ks K (i - 1) with hF`.
+
+Use `set p0 : (↥F)[X] := X ^ l - C ⟨ζ ^ l, hζl⟩ with hp0`. Establish `hmon : p0.Monic` using `monic_X_pow_sub_C _ hl0`. Establish `hroot : aeval ζ p0 = 0`. Simplify using `[hp0]`. Establish `hint : IsIntegral F ζ` using `⟨p0, hmon, by rw [← aeval_def]; exact hroot⟩`.
+
+Establish `hdeg : (minpoly F ζ).natDegree ≤ l`. Establish `h1` using `natDegree_le_natDegree (minpoly.min F ζ hmon hroot)`. Establish `h2 : p0.natDegree = l` using `natDegree_X_pow_sub_C`. Use linear arithmetic over natural numbers and integers. Establish `hle : Ks K i ≤ (IntermediateField.adjoin F {ζ}).restrictScalars ℚ_[l]`.
+
+Rewrite using `[IntermediateField.restrictScalars_adjoin_eq_sup]`. Unfold `Ks`. Apply `sup_le` to reduce the goal to its premises. Conclude with `le_sup_left.trans (le_sup_left : F ≤ F ⊔ _)`. Rewrite using `[IntermediateField.adjoin_le_iff]`.
+
+Introduce `y hy`. Establish `: NeZero (l ^ i)` using `⟨pow_ne_zero _ hl0⟩`. Take `⟨k, -, rfl⟩` from `hζ.eq_pow_of_pow_eq_one hy`. Conclude with `pow_mem ((le_sup_right : IntermediateField.adjoin ℚ_[l] {ζ} ≤ F ⊔ _) (IntermediateField.subset_adjoin _ _ (Set.mem_singleton ζ))) k`. Establish `hxF : x ∈ IntermediateField.adjoin F {ζ}` using `(IntermediateField.mem_restrictScalars ℚ_[l]).1 (hle hx)`.
+
+Take `⟨f, hfdeg, hf⟩` from `(IntermediateField.adjoin.powerBasis hint).exists_eq_aeval ⟨x, hxF⟩`. Use `⟨f, lt_of_lt_of_le hfdeg hdeg, ?_⟩` and prove the remaining obligations. Use `congrArg (fun y : IntermediateField.adjoin F {ζ} => (y : Om l)) hf` as an intermediate fact. Simplify using `only [IntermediateField.adjoin.powerBasis_gen] at this`. Rewrite `this` using `[← IntermediateField.aeval_coe, IntermediateField.AdjoinSimple.coe_gen]`.
+
+Conclude with `this.symm`.
+-/
 theorem exists_poly (K : FinExt l) (i : ℕ) (hi : 2 ≤ i) (ζ : Om l) (hζ : IsPrimitiveRoot ζ (l ^ i))
     (x : Om l) (hx : x ∈ Ks K i) :
     ∃ p : (↥(Ks K (i - 1)))[X], p.natDegree < l ∧ aeval ζ p = x := by
@@ -175,6 +236,9 @@ def intRing (F : IntermediateField ℚ_[l] (Om l)) : Subring (Om l) where
   zero_mem' := ⟨zero_mem _, by simp⟩
   neg_mem' := fun {a} ha => ⟨neg_mem ha.1, by simpa using ha.2⟩
 
+/- English proof (translation)
+Rewrite using `[Polynomial.taylor_apply, Polynomial.aeval_comp]`. Simplify using the standard rewrite rules.
+-/
 theorem aeval_taylor' {R : Type} [CommRing R] [Algebra R (Om l)] (p : R[X]) (r : R) (w : Om l) :
     aeval w (taylor r p) = aeval (w + algebraMap R _ r) p := by
   rw [Polynomial.taylor_apply, Polynomial.aeval_comp]
@@ -182,6 +246,11 @@ theorem aeval_taylor' {R : Type} [CommRing R] [Algebra R (Om l)] (p : R[X]) (r :
 
 end GlobalTheory.Cyc.IntBasis
 
+/- English proof (translation)
+Rewrite using `[taylor_coeff, eval_eq_sum_range]`. Use `push_cast`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one` to reduce the goal to its premises. Introduce `m _`. Rewrite using `[hasseDeriv_coeff]`.
+
+Use `push_cast`. Rewrite using `[norm_mul, norm_mul, norm_pow]`. Establish `h1` using `IsUltrametricDist.norm_natCast_le_one (Om l) ((m + n).choose n)`. Conclude with `mul_le_one₀ (mul_le_one₀ h1 (norm_nonneg _) (hg _)) (by positivity) (pow_le_one₀ (norm_nonneg _) hr)`.
+-/
 private lemma norm_coeff_taylor_le_one {l : ℕ} [Fact l.Prime] {F : IntermediateField ℚ_[l] (Om l)}
     (g : (↥F)[X]) (r : F) (hr : ‖(r : Om l)‖ ≤ 1) (hg : ∀ b, ‖(g.coeff b : Om l)‖ ≤ 1) (n : ℕ) :
     ‖((taylor r g).coeff n : Om l)‖ ≤ 1 := by
@@ -196,6 +265,9 @@ private lemma norm_coeff_taylor_le_one {l : ℕ} [Fact l.Prime] {F : Intermediat
   exact mul_le_one₀ (mul_le_one₀ h1 (norm_nonneg _) (hg _)) (by positivity)
     (pow_le_one₀ (norm_nonneg _) hr)
 
+/- English proof (translation)
+Rewrite using `[aeval_eq_sum_range' hq]`. Simplify using `[Algebra.smul_def]`.
+-/
 private lemma aeval_eq_sum_range_of_natDegree_lt {l : ℕ} [Fact l.Prime] {F : IntermediateField ℚ_[l] (Om l)}
     (q : (↥F)[X]) {n : ℕ} (hq : q.natDegree < n) (w : Om l) :
     aeval w q = ∑ b ∈ Finset.range n, (q.coeff b : Om l) * w ^ b := by
@@ -204,6 +276,31 @@ private lemma aeval_eq_sum_range_of_natDegree_lt {l : ℕ} [Fact l.Prime] {F : I
 
 open GlobalTheory.Cyc.IntBasis in
 
+/- English proof (translation)
+Introduce `l _ K i hi ζ hζ`. Establish `hlp : l.Prime` using `Fact.out`. Establish `hζ1 : ζ ≠ 1` using `hζ.ne_one (Nat.one_lt_pow (by omega) hlp.one_lt)`. Prove the components needed by the constructor for the conclusion. Introduce `x hx hx1`.
+
+Take `⟨p, hpdeg, hpx⟩` from `exists_poly K i hi ζ hζ x hx`. Use `set Q := taylor (1 : ↥(Ks K (i - 1))) p with hQ`. Establish `hQdeg : Q.natDegree < l` using `by rw [hQ, natDegree_taylor]; exact hpdeg`. Establish `hQx : x = ∑ b ∈ Finset.range l, (Q.coeff b : Om l) * (ζ - 1) ^ b`. Rewrite using `[← aeval_eq_sum_range_of_natDegree_lt Q hQdeg, hQ, aeval_taylor', ← hpx]`.
+
+Simplify using the standard rewrite rules. Establish `hQc : ∀ b, ‖(Q.coeff b : Om l)‖ ≤ 1`. Introduce `b`. Distinguish the cases in `hb : b < l`. Apply `coeff_le K i hi ζ hζ _ (Q.coeff b).2 b hb` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[coeff_eq_zero_of_natDegree_lt (by omega)]`. Simplify using the standard rewrite rules. Establish `hpQ : p = taylor (-1 : ↥(Ks K (i - 1))) Q`. Rewrite using `[hQ, taylor_taylor]`.
+
+Simplify using the standard rewrite rules. Use `⟨fun a => (p.coeff a : Om l), fun a => ⟨(p.coeff a).2, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hpQ]`. Conclude with `norm_coeff_taylor_le_one Q (-1) (by simp) hQc a`. Rewrite using `[← hpx, aeval_eq_sum_range_of_natDegree_lt p hpdeg, ← Fin.sum_univ_eq_sum_range (fun a => (p.coeff a : Om l) * ζ ^ a)]`.
+
+Conclude with `Finset.sum_congr rfl (fun a _ => mul_comm _ _)`. Introduce `y hy hsum set c : Fin l → ↥(Ks K (i - 1)) := fun a => ⟨y a, hy a⟩ with hc set P : (↥(Ks K (i - 1)))[X] := ∑ a : Fin l, C (c a) * X ^ (a : ℕ) with hP`. Establish `hPdeg : P.natDegree < l`. Distinguish the cases in `hP0 : P = 0`. Rewrite using `[hP0, natDegree_zero]`.
+
+Conclude with `hlp.pos`. Conclude with `(natDegree_lt_iff_degree_lt hP0).2 (degree_sum_fin_lt c)`. Establish `hPcoeff : ∀ a : Fin l, (P.coeff a : Om l) = y a`. Introduce `a`. Simplify using `[hP, Fin.val_inj, hc]`.
+
+Establish `hPζ : aeval ζ P = 0`. Rewrite using `[aeval_eq_sum_range_of_natDegree_lt P hPdeg, ← Fin.sum_univ_eq_sum_range (fun a => (P.coeff a : Om l) * ζ ^ a), ← hsum]`. Conclude with `Finset.sum_congr rfl (fun a _ => by rw [hPcoeff a, mul_comm])`. Use `set Q := taylor (1 : ↥(Ks K (i - 1))) P with hQ`. Establish `hQdeg : Q.natDegree < l` using `by rw [hQ, natDegree_taylor]; exact hPdeg`.
+
+Establish `hQ0 : ∑ b ∈ Finset.range l, (Q.coeff b : Om l) * (ζ - 1) ^ b = 0`. Rewrite using `[← aeval_eq_sum_range_of_natDegree_lt Q hQdeg, hQ, aeval_taylor']`. Simplify using `using hPζ`. Establish `hQz : Q = 0`. Use `Polynomial.ext fun b => ?_` and prove the remaining obligations.
+
+Rewrite using `[coeff_zero]`. Distinguish the cases in `hb : b < l`. Establish `h1` using `term_le K i hi ζ hζ (fun c => (Q.coeff c : Om l)) (fun c => (Q.coeff c).2) b hb`. Rewrite `h1` using `[hQ0, norm_zero]`. Establish `h2 : (Q.coeff b : Om l) * (ζ - 1) ^ b = 0` using `norm_le_zero_iff.1 h1`.
+
+Establish `h3 : (ζ - 1) ^ b ≠ 0` using `pow_ne_zero _ (sub_ne_zero.2 hζ1)`. Establish `h4 : (Q.coeff b : Om l) = 0` using `(mul_eq_zero.1 h2).resolve_right h3`. Conclude with `h4` after adjusting the coercions. Conclude with `coeff_eq_zero_of_natDegree_lt (by omega)`. Establish `hP0 : P = 0` using `taylor_injective (1 : ↥(Ks K (i - 1))) (by rw [← hQ, hQz, map_zero])`.
+
+Introduce `a`. Rewrite using `[← hPcoeff a, hP0, coeff_zero]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.Cyc.integers_eq_sum_zeta_pow : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (i : ℕ), 2 ≤ i → ∀ ζ : Om l, IsPrimitiveRoot ζ (l ^ i) → (∀ x : Om l, x ∈ Ks K i → ‖x‖ ≤ 1 → ∃ y : Fin l → Om l, (∀ a, y a ∈ Ks K (i - 1) ∧ ‖y a‖ ≤ 1) ∧ x = ∑ a : Fin l, ζ ^ (a : ℕ) * y a) ∧ ∀ y : Fin l → Om l, (∀ a, y a ∈ Ks K (i - 1)) → ∑ a : Fin l, ζ ^ (a : ℕ) * y a = 0 → ∀ a, y a = 0 := by
   intro l _ K i hi ζ hζ
   have hlp : l.Prime := Fact.out

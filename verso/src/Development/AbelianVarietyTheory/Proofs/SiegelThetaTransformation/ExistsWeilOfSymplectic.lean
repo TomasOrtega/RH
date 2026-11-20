@@ -10,6 +10,11 @@ open scoped ComplexConjugate Real
 
 namespace GlobalTheory.SW
 
+/- English proof (translation)
+Take `⟨ω, hω⟩` from `h`. Take `⟨ω', hω'⟩` from `h'`. Use `⟨fun φ => ω (ω' φ), fun φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨hs', ht', hi'⟩` from `hω' φ hφ`. Take `⟨hs, ht, hi⟩` from `hω (ω' φ) hs'`.
+
+Use `⟨hs, GlobalTheory.T.siegelThetaTransformationLaw_mul κ ι σ' σ hσ' hσ φ (ω' φ) (ω (ω' φ)) ht' ht, fun φ' hφ' => ?_⟩` and prove the remaining obligations. Rewrite using `[hi _ (hω' φ' hφ').1, hi' φ' hφ']`.
+-/
 theorem exists_weil_mul {κ ι : Type} [Fintype κ] [Fintype ι] [DecidableEq ι]
     {σ σ' : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ}
     (hσ : σ ∈ Matrix.symplecticGroup ι ℚ) (hσ' : σ' ∈ Matrix.symplecticGroup ι ℚ)
@@ -27,6 +32,13 @@ theorem exists_weil_mul {κ ι : Type} [Fintype κ] [Fintype ι] [DecidableEq ι
   refine ⟨hs, GlobalTheory.T.siegelThetaTransformationLaw_mul κ ι σ' σ hσ' hσ φ (ω' φ) (ω (ω' φ)) ht' ht, fun φ' hφ' => ?_⟩
   rw [hi _ (hω' φ' hφ').1, hi' φ' hφ']
 
+/- English proof (translation)
+Introduce `κ ι _ _ _ σ hκ hσ`. Take `⟨p₁, h₁, p₂, h₂, p₃, h₃, l₁, l₂, l₃, rfl⟩` from `GlobalTheory.T.symplectic_eq_parabolic_J_parabolic_J_parabolic' ι σ hσ`. Establish `hJ : Matrix.J ι ℚ ∈ Matrix.symplecticGroup ι ℚ` using `SymplecticGroup.J_mem ι ℚ`. Establish `w₁` using `GlobalTheory.T.siegelTheta_transformation_siegelParabolic κ ι p₁ hκ h₁ l₁`. Establish `w₂` using `GlobalTheory.T.siegelTheta_transformation_siegelParabolic κ ι p₂ hκ h₂ l₂`.
+
+Establish `w₃` using `GlobalTheory.T.siegelTheta_transformation_siegelParabolic κ ι p₃ hκ h₃ l₃`. Establish `wJ` using `GlobalTheory.T.exists_unitary_siegelThetaTransformationLaw_standardJ κ ι hκ`. Establish `a₁` using `mul_mem h₁ hJ`. Establish `a₂` using `mul_mem a₁ h₂`. Establish `a₃` using `mul_mem a₂ hJ`.
+
+Conclude with `exists_weil_mul a₃ h₃ (exists_weil_mul a₂ hJ (exists_weil_mul a₁ h₂ (exists_weil_mul h₁ hJ w₁ wJ) w₂) wJ) w₃`.
+-/
 theorem exists_weil_of_symplectic :
     ∀ (κ ι : Type) [Fintype κ] [Fintype ι] [DecidableEq ι] (σ : Matrix (ι ⊕ ι) (ι ⊕ ι) ℚ), Even (Fintype.card κ) → σ ∈ Matrix.symplecticGroup ι ℚ → ∃ ω : (Matrix κ ι ℚ → ℂ) → (Matrix κ ι ℚ → ℂ), ∀ φ, IsSB φ → IsSB (ω φ) ∧ TransS σ φ (ω φ) ∧ ∀ φ', IsSB φ' → ip (ω φ) (ω φ') = ip φ φ' := by
   intro κ ι _ _ _ σ hκ hσ

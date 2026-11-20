@@ -78,28 +78,52 @@ def galEt (E : Type) [CommRing E] [Algebra ℚ_[l] E] {k : Type} [Field k] (Ω :
   pullEt l E (GlobalTheory.Et.galMap Ω q σ) n t
 
 variable (E) in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullEt_zero {Y Y' : Scheme.{0}} (u : Y ⟶ Y') (n : ℤ) : pullEt l E u n 0 = pullE l E u n := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem opT_zero {A : Over S} [GrpObj A] (act : OActN O A) {m : ℕ} (p : S ⟶ B) (b : B' ⟶ B)
     (ε : Matrix (Fin m) (Fin m) O →₀ E) (n : ℤ) : opT l act p b ε n 0 = op l act p b ε n := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem HxiT_zero {A : Over S} [GrpObj A] (act : OActN O A) {m : ℕ} (p : S ⟶ B) (b : B' ⟶ B)
     (ε : Matrix (Fin m) (Fin m) O →₀ E) (k : ℕ) (i : ℤ) : HxiT l act p b ε k 0 i = Hxi l act p b ε k i := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galEt_zero (E : Type) [CommRing E] [Algebra ℚ_[l] E] {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω]
     {Y : Scheme.{0}} (q : Y ⟶ Spec (CommRingCat.of k)) (n : ℤ) (σ : Ω ≃ₐ[k] Ω) :
     galEt l E Ω q n 0 σ = galE l E Ω q n σ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (Y : Scheme.{0}) (n : ℤ) : HEt l E Y n 0 = HE l E Y n := rfl
 
+/- English proof (translation)
+Simplify using `[opT]`.
+-/
 @[simp] theorem opT_zero_comb {A : Over S} [GrpObj A] (act : OActN O A) {m : ℕ} (p : S ⟶ B) (b : B' ⟶ B) (n t : ℤ) :
     opT l act p b (0 : Matrix (Fin m) (Fin m) O →₀ E) n t = 0 := by
   simp [opT]
 
+/- English proof (translation)
+Rewrite using `[HxiT, opT_zero_comb, LinearMap.range_zero]`.
+-/
 theorem HxiT_zero_comb {A : Over S} [GrpObj A] (act : OActN O A) {m : ℕ} (p : S ⟶ B) (b : B' ⟶ B) (k : ℕ) (t i : ℤ) :
     HxiT l act p b (0 : Matrix (Fin m) (Fin m) O →₀ E) k t i = ⊥ := by
   rw [HxiT, opT_zero_comb, LinearMap.range_zero]
 
+/- English proof (translation)
+Unfold `opT`. Conclude with `Finsupp.sum_add_index' (fun _ => zero_smul _ _) (fun _ _ _ => add_smul _ _ _)`.
+-/
 theorem opT_add {A : Over S} [GrpObj A] (act : OActN O A) {m : ℕ} (p : S ⟶ B) (b : B' ⟶ B)
     (ε ε' : Matrix (Fin m) (Fin m) O →₀ E) (n t : ℤ) : opT l act p b (ε + ε') n t = opT l act p b ε n t + opT l act p b ε' n t := by
   unfold opT
@@ -107,6 +131,9 @@ theorem opT_add {A : Over S} [GrpObj A] (act : OActN O A) {m : ℕ} (p : S ⟶ B
 
 abbrev latRep {p : ℕ} [Fact p.Prime] (D : Datum p) : D.O →+* Module.End ℤ D.La := Module.toModuleEnd ℤ D.La
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] (A : Over S) (m : ℕ) (p : S ⟶ Spec (CommRingCat.of k)) :
     ksBC A m p (Spec.map (CommRingCat.ofHom (algebraMap k Ω))) = GlobalTheory.Et.geom Ω ((pow A m).hom ≫ p) := rfl
 

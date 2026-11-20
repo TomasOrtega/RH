@@ -13,19 +13,31 @@ variable {ℓ : ℕ} [Fact ℓ.Prime] (R : Setup ℓ) {r : ℕ}
 
 def hat (M : Matrix (Fin r) (Fin r) R.As) : Matrix (Fin r) (Fin r) R.WC := (M.map R.jA).map R.ι
 
+/- English proof (translation)
+Unfold `hat`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`.
+-/
 lemma hat_mul (M M' : Matrix (Fin r) (Fin r) R.As) : hat R (M * M') = hat R M * hat R M' := by
   unfold hat
   rw [Matrix.map_mul, Matrix.map_mul]
 
+/- English proof (translation)
+Unfold `hat`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 lemma hat_one : hat R (1 : Matrix (Fin r) (Fin r) R.As) = 1 := by
   unfold hat
   rw [Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `F.injj (F.injι (congrFun (congrFun h i) j))`.
+-/
 lemma hat_inj {M0 h0 : ℕ} (F : R.Facts r M0 h0) {M M' : Matrix (Fin r) (Fin r) R.As}
     (h : hat R M = hat R M') : M = M' := by
   ext i j
   exact F.injj (F.injι (congrFun (congrFun h i) j))
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `F.injι (congrFun (congrFun h i) j)`.
+-/
 lemma map_inj_ι {M0 h0 : ℕ} (F : R.Facts r M0 h0) {M M' : Matrix (Fin r) (Fin r) R.AA}
     (h : M.map R.ι = M'.map R.ι) : M = M' := by
   ext i j
@@ -33,6 +45,21 @@ lemma map_inj_ι {M0 h0 : ℕ} (F : R.Facts r M0 h0) {M M' : Matrix (Fin r) (Fin
 
 end
 
+/- English proof (translation)
+Introduce `ℓ _ R r L En M0 h0 W F`. Establish `cancel : ∀ M M' : Matrix (Fin r) (Fin r) R.WC, M * W.Xx = M' * W.Xx → M = M'`. Introduce `M M' h`. Establish `: M * W.Xx * W.Xi = M' * W.Xx * W.Xi` using `by rw [h]`. Rewrite `this` using `[Matrix.mul_assoc, Matrix.mul_assoc, W.inv1, Matrix.mul_one, Matrix.mul_one]`. Then use the resulting hypothesis.
+
+Prove the components needed by the constructor for the conclusion. Apply `hat_inj R F` to reduce the goal to its premises. Apply `cancel` to reduce the goal to its premises. Rewrite using `[hat_one, Matrix.one_mul]`. Use `W.W2 1` as an intermediate fact.
+
+Rewrite `this` using `[L.one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`. Rewrite using `[show hat R (W.Gm 1) * W.Xx = ((W.Gm 1).map R.jA).map R.ι * W.Xx from rfl, ← this]`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Introduce `h`.
+
+Apply `hat_inj R F` to reduce the goal to its premises. Apply `cancel` to reduce the goal to its premises. Establish `e1 : (hat R (W.Gm h)).map (R.act R.γ) = hat R ((W.Gm h).map R.σ)`. Use extensionality with `i j`. Use `show R.act R.γ (R.ι (R.jA (W.Gm h i j))) = R.ι (R.jA (R.σ (W.Gm h i j)))`.
+
+Rewrite using `[← F.eqι, F.gσ]`. Establish `e2 : ((L.ρ h).map (algebraMap ℤ_[ℓ] R.WC)).map (R.act R.γ) = (L.ρ h).map (algebraMap ℤ_[ℓ] R.WC)`. Use extensionality with `i j`. Conclude with `F.actZ _ _`. Establish `e3 : W.Xx.map (R.act (R.γ * h)) = (W.Xx.map (R.act h)).map (R.act R.γ)`.
+
+Use extensionality with `i j`. Simplify using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[L.mul, Matrix.map_mul, Matrix.map_mul, e2, e3, Matrix.mul_assoc]`. Use `_ = (hat R (W.Gm h)).map (R.act R.γ) * (W.Xx.map (R.act R.γ) * (L.ρ R.γ).map (algebraMap ℤ_[ℓ] R.WC)) := by`.
+
+Rewrite using `[W.W2 h, Matrix.map_mul, Matrix.mul_assoc]`. Both sides reduce to the same expression. Use `_ = hat R ((W.Gm h).map R.σ * W.Gm R.γ) * W.Xx := by`. Rewrite using `[W.W2 R.γ, e1, hat_mul, Matrix.mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem gmCocycle : StatGmCocycle := by
   intro ℓ _ R r L En M0 h0 W F
   have cancel : ∀ M M' : Matrix (Fin r) (Fin r) R.WC, M * W.Xx = M' * W.Xx → M = M' := by
@@ -75,6 +102,11 @@ theorem gmCocycle : StatGmCocycle := by
           rw [W.W2 R.γ, e1, hat_mul, Matrix.mul_assoc]
           rfl
 
+/- English proof (translation)
+Introduce `ℓ _ R r L En M0 h0 W F k i`. Take `⟨g1, gmul⟩` from `gmCocycle ℓ R r L En M0 h0 W F`. Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[pow_zero, g1, Function.iterate_zero, id]`.
+
+Use function extensionality and compare the values at `j`. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`. Consider the case `succ k ih`. Rewrite using `[pow_succ', gmul, Function.iterate_succ_apply', ← ih, Matrix.mul_apply_eq_vecMul]`. Both sides reduce to the same expression.
+-/
 theorem gmIter : StatGmIter := by
   intro ℓ _ R r L En M0 h0 W F k i
   obtain ⟨g1, gmul⟩ := gmCocycle ℓ R r L En M0 h0 W F
@@ -87,6 +119,13 @@ theorem gmIter : StatGmIter := by
     rw [pow_succ', gmul, Function.iterate_succ_apply', ← ih, Matrix.mul_apply_eq_vecMul]
     rfl
 
+/- English proof (translation)
+Introduce `ℓ _ R r L En M0 h0 W F a b`. Establish `hℓ : ℓ.Prime` using `Fact.out`. Establish `hz : R.z ∣ (ℓ : R.Tt.Om)` using `⟨R.z', by rw [F.zz]; simp⟩`. Establish `hϖ : R.ϖ ∣ (ℓ : R.Tt.Om)` using `⟨R.ϖ₁, by rw [F.ϖϖ]; simp⟩`. Use `w3Um ℓ hℓ R.As R.Tt.Om R.σ R.πs R.ϑs R.z R.ϖ R.ϖ' r R.s (n0 ℓ (M0 + h0)) (W.Gm R.γ) F.σ1 F.σ2 (W.W3 R.γ) F.ϑπ F.dv' hz hϖ F.dvd a b` as an intermediate fact.
+
+Rewrite `this` using `[← gmIter ℓ R r L En M0 h0 W F, ← F.pg]`. Establish `e : (VmW R L W - 1) a b = R.ϑs (W.Gm (R.p R.gg) a b - (1 : Matrix (Fin r) (Fin r) R.As) a b)`. Rewrite using `[map_sub, Matrix.sub_apply]`. Use `congr 1`. Apply the tactic sequence `by_cases h : a = b <;> simp [Matrix.one_apply, h]`.
+
+Rewrite using `[e]`. Conclude with `this`.
+-/
 theorem w3Vm : HypothesisWGivesUnitCongruence := by
   intro ℓ _ R r L En M0 h0 W F a b
   have hℓ : ℓ.Prime := Fact.out
@@ -103,6 +142,19 @@ theorem w3Vm : HypothesisWGivesUnitCongruence := by
   rw [e]
   exact this
 
+/- English proof (translation)
+Introduce `ℓ _ R r L En M0 h0 W A F hA g`. Establish `key : A.map (R.actA g) * (L.ρ g).map (algebraMap ℤ_[ℓ] R.AA) = ((R.cx g) ^ M0 • W.Gm g).map R.jA * A`. Apply `map_inj_ι R F` to reduce the goal to its premises. Establish `e1 : (A.map (R.actA g)).map R.ι = (A.map R.ι).map (R.act g)`. Use extensionality with `i j`.
+
+Conclude with `F.eqι g _`. Establish `e2 : ((L.ρ g).map (algebraMap ℤ_[ℓ] R.AA)).map R.ι = (L.ρ g).map (algebraMap ℤ_[ℓ] R.WC)`. Use extensionality with `i j`. Conclude with `F.algι _`. Establish `e3 : ((R.ι (R.jA R.x)) ^ M0 • W.Xx).map (R.act g) = (R.ι (R.jA (R.cx g)) * R.ι (R.jA R.x)) ^ M0 • W.Xx.map (R.act g)`.
+
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, map_pow]`. Rewrite using `[← F.eqι, F.gx, map_mul]`. Establish `e4 : (((R.cx g) ^ M0 • W.Gm g).map R.jA).map R.ι = (R.ι (R.jA (R.cx g))) ^ M0 • ((W.Gm g).map R.jA).map R.ι`. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Matrix.map_mul, Matrix.map_mul, e1, e2, hA, e3, e4, Matrix.smul_mul, W.W2 g, Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_pow]`. Use `congrArg (fun M => M.map R.ϑ) key` as an intermediate fact. Simplify using `only [Matrix.map_mul] at this`. Establish `f1 : (A.map (R.actA g)).map R.ϑ = (A.map R.ϑ).map (R.actO g)`.
+
+Use extensionality with `i j`. Conclude with `F.eqϑ g _`. Establish `f2 : ((L.ρ g).map (algebraMap ℤ_[ℓ] R.AA)).map R.ϑ = (L.sl R.actO).Mx g`. Use extensionality with `i j`. Conclude with `F.algϑ _`.
+
+Rewrite `this` using `[f1, f2]`. Conclude with `this`.
+-/
 theorem wInter : StatWInter := by
   intro ℓ _ R r L En M0 h0 W A F hA g
   have key : A.map (R.actA g) * (L.ρ g).map (algebraMap ℤ_[ℓ] R.AA)
@@ -136,6 +188,15 @@ theorem wInter : StatWInter := by
   rw [f1, f2] at this
   exact this
 
+/- English proof (translation)
+Introduce `ℓ _ R r L En M0 h0 W F`. Establish `hℓ : ℓ.Prime` using `Fact.out`. Use `set X := R.ϑ (R.jA R.x) with hX`. Establish `hN : 1 ≤ ℓ ^ n0 ℓ (M0 + h0) * (ℓ - 1)` using `Nat.mul_pos (pow_pos hℓ.pos _) (Nat.sub_pos_of_lt hℓ.one_lt)`. Establish `nzd : ∀ a : R.OC, X * a = 0 → a = 0`.
+
+Introduce `a ha`. Apply `F.lnzd` to reduce the goal to its premises. Take `⟨N, hN'⟩` from `Nat.exists_eq_add_of_le hN`. Rewrite using `[← F.thx, hN', add_comm, pow_succ]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hc : R.ϑ (R.jA (R.cx (R.p R.gg))) = 1`. Establish `h1` using `congrArg R.ϑ (F.gx (R.p R.gg))`. Rewrite `h1` using `[F.eqϑ, F.fixx, map_mul]`. Establish `: X * (R.ϑ (R.jA (R.cx (R.p R.gg))) - 1) = 0`. Rewrite using `[mul_sub, mul_one, mul_comm, ← h1, sub_self]`.
+
+Conclude with `sub_eq_zero.mp (nzd _ this)`. Use extensionality with `a b`. Use `show R.ϑ (R.jA ((R.cx (R.p R.gg)) ^ M0 * W.Gm (R.p R.gg) a b)) = R.emb (algebraMap R.Tt.Om R.Tt.Oi (R.ϑs (W.Gm (R.p R.gg) a b)))`. Rewrite using `[F.embϑ, map_mul, map_mul, map_pow, map_pow, hc, one_pow, one_mul]`.
+-/
 theorem umVm : StatUmVm := by
   intro ℓ _ R r L En M0 h0 W F
   have hℓ : ℓ.Prime := Fact.out
@@ -160,12 +221,18 @@ theorem umVm : StatUmVm := by
     = R.emb (algebraMap R.Tt.Om R.Tt.Oi (R.ϑs (W.Gm (R.p R.gg) a b)))
   rw [F.embϑ, map_mul, map_mul, map_pow, map_pow, hc, one_pow, one_mul]
 
+/- English proof (translation)
+Unfold `SL.ofFun`. Rewrite using `[dif_pos h]`.
+-/
 lemma ofFun_Mx {ℓ : ℕ} [Fact ℓ.Prime] {G : Type} [Group G] {OC : Type} [CommRing OC] [Algebra ℤ_[ℓ] OC]
     (actO : G →* (OC ≃ₐ[ℤ_[ℓ]] OC)) {r : ℕ} (Um : G → Matrix (Fin r) (Fin r) OC)
     (h : Um 1 = 1 ∧ ∀ g h, Um (g * h) = (Um h).map (actO g) * Um g) : (SL.ofFun actO Um).Mx = Um := by
   unfold SL.ofFun
   rw [dif_pos h]
 
+/- English proof (translation)
+Unfold `matrixMapOnH1`. Rewrite using `[dif_pos h]`.
+-/
 lemma matrix_map_H1_eq_onH1 {ℓ : ℕ} [Fact ℓ.Prime] {G G' : Type} [Group G] [Group G'] [TopologicalSpace G'] {OC : Type}
     [CommRing OC] [Algebra ℤ_[ℓ] OC] [TopologicalSpace OC] [IsTopologicalRing OC]
     [ContinuousConstSMul ℤ_[ℓ] OC] {actO : G →* (OC ≃ₐ[ℤ_[ℓ]] OC)} {r : ℕ} (S S' : SL actO r)
@@ -174,6 +241,13 @@ lemma matrix_map_H1_eq_onH1 {ℓ : ℕ} [Fact ℓ.Prime] {G G' : Type} [Group G]
   unfold matrixMapOnH1
   rw [dif_pos h]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, _⟩` from `genM ℓ (R.χ R.γ) R.s (M0 + h0) F.s1 F.s2 F.valγ`. Establish `hw : R.w = (R.χ R.γ) ^ (ℓ ^ (R.s + n0 ℓ (M0 + h0) + 1))`. Unfold `Setup.w`. Rewrite using `[F.pg, map_pow]`. Rewrite `h1` using `[← hw]`.
+
+Use `⟨h1, h2, h3, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0' : (R.w : ℤ_[ℓ]) - 1 = 0`. Rewrite using `[h0']`. Conclude with `dvd_zero _`. Rewrite using `[← Ideal.mem_span_singleton, PadicInt.mem_span_pow_iff_le_valuation _ h0', h1]`.
+
+Conclude with `h3`.
+-/
 lemma w_facts {ℓ : ℕ} [Fact ℓ.Prime] (R : Setup ℓ) {r M0 h0 : ℕ} (F : R.Facts r M0 h0) :
     PadicInt.valuation ((R.w : ℤ_[ℓ]) - 1) = mOf ℓ R.s (M0 + h0) ∧ 1 ≤ mOf ℓ R.s (M0 + h0) ∧
       2 ≤ mOf ℓ R.s (M0 + h0) ∧ (ℓ : ℤ_[ℓ]) ^ 2 ∣ (R.w : ℤ_[ℓ]) - 1 := by
@@ -188,6 +262,17 @@ lemma w_facts {ℓ : ℕ} [Fact ℓ.Prime] (R : Setup ℓ) {r M0 h0 : ℕ} (F : 
   · rw [← Ideal.mem_span_singleton, PadicInt.mem_span_pow_iff_le_valuation _ h0', h1]
     exact h3
 
+/- English proof (translation)
+Introduce `ℓ _ R r L En M0 h0 W U A Y' F hX hA hY1 hY2 hHT i infm infX hInf hT4`. Take `⟨hv, hm1, hm2, hw2⟩` from `w_facts R F`. Establish `hI` using `wInter ℓ R r L En M0 h0 W A F hA`. Establish `hcoc` using `slOfInter ℓ R.Gg R.OC R.actO r (L.sl R.actO) (UmW R L W) (A.map R.ϑ) Y' F.lnzd hI hY1`. Establish `hMx` using `ofFun_Mx R.actO (UmW R L W) hcoc`.
+
+Establish `hDT : Inter (SL.ofFun R.actO (UmW R L W)) (L.sl R.actO) (A.map R.ϑ)`. Introduce `g`. Rewrite using `[hMx]`. Conclude with `hI g`. Establish `hTD` using `interInv ℓ R.Gg R.OC R.actO r _ _ _ Y' F.lnzd hDT hY1 hY2`.
+
+Establish `hDTi` using `interTwist ℓ R.Gg R.OC R.actO r _ _ _ R.χ i hDT`. Establish `hTDi` using `interTwist ℓ R.Gg R.OC R.actO r _ _ _ R.χ i hTD`. Establish `hVm` using `w3Vm ℓ R r L En M0 h0 W F`. Establish `hT3 : ∀ j : ℤ, _` using `fun j => t3W ℓ R.Tt r (VmW R L W) R.z R.z' R.ϖ R.ϖ₁ R.w j F.zz F.ϖϖ hX.1 hX.2 hVm hw2`. Use `⟨?_, hInf, hT4, hT3 i, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x show matrixMapOnH1 _ _ (A.map R.ϑ) R.p (matrixMapOnH1 _ _ Y' R.p x) = _`. Rewrite using `[matrix_map_H1_eq_onH1 _ _ _ _ hDTi, matrix_map_H1_eq_onH1 _ _ _ _ hTDi]`. Conclude with `sandwich_composite_on_H1 ℓ R.Gg R.G R.OC R.actO r _ _ _ _ hDTi hTDi R.p hY2 x`. Introduce `x hx`. Use function extensionality and compare the values at `k`.
+
+Conclude with `F.omtf _ (congrFun hx k)`. Conclude with `htW ℓ R.Tt r (VmW R L W) R.w U F.omtf hHT (fun u _ => (hT3 u).1) i`.
+-/
 theorem pieceWThm : StatPieceW := by
   intro ℓ _ R r L En M0 h0 W U A Y' F hX hA hY1 hY2 hHT i infm infX hInf hT4
   obtain ⟨hv, hm1, hm2, hw2⟩ := w_facts R F

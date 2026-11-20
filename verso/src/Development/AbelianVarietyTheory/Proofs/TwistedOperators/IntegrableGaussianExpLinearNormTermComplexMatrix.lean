@@ -10,6 +10,13 @@ noncomputable section
 
 namespace GlobalTheory.FockTransl
 
+/- English proof (translation)
+Establish `hg : Integrable fun w : ℂ => Real.exp (-(c / 4) * ‖w‖ ^ 2)`. Establish `h` using `(GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := ℂ) (b := ((c / 4 : ℝ) : ℂ)) (by simp; linarith) 0 0).norm`. Use `h.congr (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using `[Complex.norm_exp, ← Complex.ofReal_pow]`. Use `(hg.const_mul (Real.exp (r ^ 2 / c))).mono' (by fun_prop) (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Real.norm_of_nonneg (Real.exp_pos _).le, ← Real.exp_add]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `key : r ^ 2 / c + -(c / 4) * ‖w‖ ^ 2 - (r * ‖w‖ - c * ‖w‖ ^ 2 / 2) = (r - c * ‖w‖ / 2) ^ 2 / c`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `: 0 ≤ (r - c * ‖w‖ / 2) ^ 2 / c` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem integrable_exp_lin_sub_sq_norm_complex {c r : ℝ} (hc : 0 < c) (hr : 0 ≤ r) :
     Integrable fun w : ℂ => Real.exp (r * ‖w‖ - c * ‖w‖ ^ 2 / 2) := by
   have hg : Integrable fun w : ℂ => Real.exp (-(c / 4) * ‖w‖ ^ 2) := by
@@ -28,6 +35,11 @@ theorem integrable_exp_lin_sub_sq_norm_complex {c r : ℝ} (hc : 0 < c) (hr : 0 
   have : 0 ≤ (r - c * ‖w‖ / 2) ^ 2 / c := by positivity
   linarith
 
+/- English proof (translation)
+Establish `key : ∀ z : VCx ι a b, Real.exp ((∑ k : DVar ι a b, ‖(c k.1 : ℂ) * z₀ k.1 k.2.1 k.2.2‖ * ‖z k.1 k.2.1 k.2.2‖) - gq c z / 2) = ∏ τ, ∏ i, ∏ j, Real.exp (‖(c τ : ℂ) * z₀ τ i j‖ * ‖z τ i j‖ - c τ * ‖z τ i j‖ ^ 2 / 2)`. Introduce `z`. Simplify using `only [← Real.exp_sum, gq, DVar, Fintype.sum_prod_type, Finset.sum_div, ← Finset.sum_sub_distrib]`. Repeatedly rewrite using `[key]`. Use `Integrable.fintype_prod (f := fun τ (x : Fin b → Fin a → ℂ) => ∏ i, ∏ j, Real.exp (‖(c τ : ℂ) * z₀ τ i j‖ * ‖x i j‖ - c τ * ‖x i j‖ ^ 2 / 2)) fun τ => ?_` and prove the remaining obligations.
+
+Use `Integrable.fintype_prod (f := fun i (y : Fin a → ℂ) => ∏ j, Real.exp (‖(c τ : ℂ) * z₀ τ i j‖ * ‖y j‖ - c τ * ‖y j‖ ^ 2 / 2)) fun i => ?_` and prove the remaining obligations. Use `Integrable.fintype_prod (f := fun j (w : ℂ) => Real.exp (‖(c τ : ℂ) * z₀ τ i j‖ * ‖w‖ - c τ * ‖w‖ ^ 2 / 2)) fun j => ?_` and prove the remaining obligations. Conclude with `integrable_exp_lin_sub_sq_norm_complex (hc τ) (norm_nonneg _)`.
+-/
 theorem integrable_exp_lin_sub_gq (ι : Type) [Fintype ι] (a b : ℕ) (c : ι → ℝ) (hc : ∀ τ, 0 < c τ)
     (z₀ : VCx ι a b) :
     Integrable fun z : VCx ι a b => Real.exp ((∑ k : DVar ι a b,

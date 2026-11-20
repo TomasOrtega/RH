@@ -5,6 +5,15 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.CrysPrism
 
+/- English proof (translation)
+Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ t i n c`. Use function extensionality and compare the values at `τ`. Establish `hR : (cstW t K c * uFam a K ^ (n % e) * dFam a K e (n / e) * xFam a K i) τ = C (C (algebraMap O K (emb t τ c) / (dpDen e i n : K)) * X ^ n) * X ^ i`. Simplify using `only [Pi.mul_apply, Pi.pow_apply, cstW, uFam, dFam, xFam]`. Establish `h1 : (X : K⟦X⟧) ^ n = X ^ (n % e) * X ^ (e * (n / e))`.
+
+Rewrite using `[← pow_add, Nat.mod_add_div]`. Rewrite using `[h1, dpDen, Nat.cast_mul, div_eq_mul_inv, mul_inv]`. Simplify using `only [map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hR]`.
+
+Use extensionality with `i' n'`. Rewrite using `[coeff_ofW, coeff_C_mul, coeff_X_pow, Pi.single_apply]`. Distinguish the cases in `hi : i' = i`. Substitute `hi` using the available equality. Distinguish the cases in `hn : n' = n`.
+
+Substitute `hn` using the available equality. Simplify using `[coeff_C_mul, coeff_X_pow]`. Simplify using `[coeff_C_mul, coeff_X_pow, hn]`. Simplify using `[hi]`.
+-/
 theorem ofW_single : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] (t : Wq l a →ₐ[ℤ_[l]] O), ∀ (i n : ℕ) (c : Wq l a), ofW t K e (Pi.single (i, n) c) = cstW t K c * uFam a K ^ (n % e) * dFam a K e (n / e) * xFam a K i := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ t i n c
   funext τ

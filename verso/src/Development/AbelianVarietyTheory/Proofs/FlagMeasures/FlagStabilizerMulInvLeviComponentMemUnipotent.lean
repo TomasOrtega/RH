@@ -8,14 +8,29 @@ namespace GlobalTheory.LeviUnip
 
 variable {n n₀ a : ℕ} {j : Fin a → ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem umul {ε : Fin n → Bool} (g h : UJ ε) : uMat (g * h) = uMat g * uMat h := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uone {ε : Fin n → Bool} : uMat (1 : UJ ε) = 1 := rfl
 
+/- English proof (translation)
+Rewrite using `[← umul, mul_inv_cancel, uone]`.
+-/
 theorem umul_inv {ε : Fin n → Bool} (g : UJ ε) : uMat g * uMat g⁻¹ = 1 := by rw [← umul, mul_inv_cancel, uone]
 
+/- English proof (translation)
+Rewrite using `[← umul, inv_mul_cancel, uone]`.
+-/
 theorem uinv_mul {ε : Fin n → Bool} (g : UJ ε) : uMat g⁻¹ * uMat g = 1 := by rw [← umul, inv_mul_cancel, uone]
 
+/- English proof (translation)
+Use `(hB k _).2 ⟨Pi.single i u, fun i' hi' => ?_, ?_⟩` and prove the remaining obligations. Establish `hne : i' ≠ i` using `by rintro rfl; exact hi' hi`. Conclude with `Pi.single_eq_of_ne hne _`. Rewrite using `[Finset.sum_eq_single i (fun b _ hb => by rw [Pi.single_eq_of_ne hb, Matrix.mulVec_zero]) (fun h => absurd (Finset.mem_univ i) h), Pi.single_eq_same]`.
+-/
 theorem col_mem {B : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ} {W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)}
     (hB : SpansFlag B W) {k : Fin (a + 1)} {i : Fin a} (hi : i.castSucc < k) (u : Fin (j i) → ℂ) :
     B i *ᵥ u ∈ W k := by
@@ -26,6 +41,11 @@ theorem col_mem {B : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ} {W : Fin (a + 1) →
   · rw [Finset.sum_eq_single i (fun b _ hb => by rw [Pi.single_eq_of_ne hb, Matrix.mulVec_zero])
       (fun h => absurd (Finset.mem_univ i) h), Pi.single_eq_same]
 
+/- English proof (translation)
+Take `⟨u, hu, rfl⟩` from `(hB k y).1 hy`. Rewrite using `[Matrix.mulVec_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i.castSucc < k`. Rewrite using `[Matrix.mulVec_mulVec]`.
+
+Conclude with `h i hi (u i)`. Rewrite using `[hu i hi, Matrix.mulVec_zero, Matrix.mulVec_zero]`. Conclude with `U.zero_mem`.
+-/
 theorem map_mem {B : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ} {W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)}
     (hB : SpansFlag B W) {k : Fin (a + 1)} (F : Matrix (Fin n) (Fin n) ℂ) (U : Submodule ℂ (Fin n → ℂ))
     (h : ∀ i : Fin a, i.castSucc < k → ∀ u, (F * B i) *ᵥ u ∈ U) {y : Fin n → ℂ} (hy : y ∈ W k) :
@@ -39,6 +59,9 @@ theorem map_mem {B : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ} {W : Fin (a + 1) →
   · rw [hu i hi, Matrix.mulVec_zero, Matrix.mulVec_zero]
     exact U.zero_mem
 
+/- English proof (translation)
+Rewrite using `[Matrix.sum_mulVec]`. Use `(hB k _).2 ⟨fun i => q i *ᵥ u, fun i hi => by show q i *ᵥ u = 0` and prove the remaining obligations. Rewrite using `[hq i hi, Matrix.zero_mulVec], ?_⟩`. Conclude with `Finset.sum_congr rfl fun i _ => (Matrix.mulVec_mulVec _ _ _).symm`.
+-/
 theorem sum_col_mem {B : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ} {W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)}
     (hB : SpansFlag B W) {k : Fin (a + 1)} {r : ℕ} (q : ∀ i, Matrix (Fin (j i)) (Fin r) ℂ)
     (hq : ∀ i : Fin a, ¬ i.castSucc < k → q i = 0) (u : Fin r → ℂ) : (∑ i, B i * q i) *ᵥ u ∈ W k := by
@@ -48,6 +71,53 @@ theorem sum_col_mem {B : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ} {W : Fin (a + 1)
     rw [hq i hi, Matrix.zero_mulVec], ?_⟩
   exact Finset.sum_congr rfl fun i _ => (Matrix.mulVec_mulVec _ _ _).symm
 
+/- English proof (translation)
+Establish `hpu : ∀ i, IsUnit (p i i).det` using `fun i => isUnit_iff_ne_zero.2 (hpd i)`. Establish `hyu : ∀ i, IsUnit (y i).det` using `fun i => isUnit_iff_ne_zero.2 (hy i)`. Use `set x : ∀ i, Matrix (Fin (j i)) (Fin (j i)) ℂ := fun i => p i i * y i * (p i i)⁻¹ with hx`. Establish `hxu : ∀ i, IsUnit (x i).det`. Introduce `i`.
+
+Rewrite using `[isUnit_iff_ne_zero]`. Simplify using `[hx, Matrix.det_mul, Matrix.det_nonsing_inv, hpd i, hy i]`. Establish `hMB : ∀ i, uMat m⁻¹ * B i = B i * (x i)⁻¹`. Introduce `i`. Establish `h1 : uMat m * B i = B i * x i`.
+
+Rewrite using `[hm]`. Conclude with `GlobalTheory.LeviIso.IsFrame.lev_mul_B _ _ hF i`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_nonsing_inv _ (hxu i), Matrix.mul_one]`. Use `_ = (uMat m⁻¹ * uMat m) * B i * (x i)⁻¹ := by`.
+
+Rewrite using `[← Matrix.mul_assoc (B i), ← h1]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = B i * (x i)⁻¹ := by rw [uinv_mul, Matrix.one_mul]`. Establish `hG : ∀ k (v : Fin n → ℂ), v ∈ W k → uMat g *ᵥ v ∈ W k` using `fun k v hv => map_mem hA (uMat g) (W k) (fun i hi u => by`. Rewrite using `[hg i, ← Matrix.mulVec_mulVec]`.
+
+Conclude with `col_mem hA hi _) hv`. Establish `hsub : ∀ v : Fin n → ℂ, uMat (g * m⁻¹) *ᵥ v - v = (uMat g * uMat m⁻¹ - 1) *ᵥ v`. Introduce `v`. Rewrite using `[umul, Matrix.sub_mulVec, Matrix.one_mulVec]`. Establish `hNA : ∀ l, (uMat g * uMat m⁻¹ - 1) * A l = uMat g * ∑ k, B k * ((x k)⁻¹ * p k l - p k l * (y l)⁻¹)`.
+
+Introduce `l`. Establish `e1 : uMat m⁻¹ * A l = ∑ k, B k * ((x k)⁻¹ * p k l)`. Rewrite using `[hAB l, Matrix.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc, hMB k, Matrix.mul_assoc]`.
+
+Establish `e2 : uMat g * A l * (y l)⁻¹ = A l`. Rewrite using `[hg l, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (hyu l), Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc]`. Use `_ = uMat g * ∑ k, B k * ((x k)⁻¹ * p k l) - uMat g * A l * (y l)⁻¹ := by rw [e1, e2]`.
+
+Use `_ = _ := by`. Rewrite using `[hAB l]`. Simplify using `only [Matrix.mul_sub, Finset.sum_sub_distrib, Matrix.mul_sum, Matrix.sum_mul, Matrix.mul_assoc]`. Establish `hq0 : ∀ l k, l ≤ k → (x k)⁻¹ * p k l - p k l * (y l)⁻¹ = 0`. Introduce `l k hlk`.
+
+Break down `hlk.lt_or_eq with h | rfl` into its components or cases. Rewrite using `[hp k l h, Matrix.mul_zero, Matrix.zero_mul, sub_zero]`. Establish `: (x l)⁻¹ * p l l = p l l * (y l)⁻¹`. Rewrite using `[hx, Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ (hpu l), Matrix.mul_assoc, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (hpu l), Matrix.mul_one]`. Rewrite using `[this, sub_self]`.
+
+Establish `hNB₀ : (uMat g * uMat m⁻¹ - 1) * B₀ = (∑ k, B k * d k) * uMat s⁻¹ - uMat g * (∑ k, B k * d k) * (uMat h⁻¹ * uMat s⁻¹)`. Establish `hinv : (s * h * s⁻¹)⁻¹ = s * h⁻¹ * s⁻¹` using `by group`. Establish `e1 : uMat m⁻¹ * B₀ = B₀ * (uMat s * uMat h⁻¹ * uMat s⁻¹)`. Establish `h1 : uMat m * B₀ = B₀ * uMat (s * h * s⁻¹)`. Rewrite using `[hm]`.
+
+Conclude with `GlobalTheory.LeviIso.IsFrame.lev_mul_B₀ _ _ hF`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[umul_inv, Matrix.mul_one]`. Use `_ = (uMat m⁻¹ * uMat m) * B₀ * uMat (s * h * s⁻¹)⁻¹ := by`. Rewrite using `[← Matrix.mul_assoc B₀, ← h1]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [uinv_mul, Matrix.one_mul, hinv, umul, umul]`. Establish `e2 : B₀ * uMat s = A₀ - ∑ k, B k * d k`. Rewrite using `[hA₀]`. Normalize the expressions using the abelian group laws.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc]`. Use `_ = uMat g * (B₀ * uMat s) * (uMat h⁻¹ * uMat s⁻¹) - B₀ := by`. Rewrite using `[e1]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = (A₀ * uMat h - uMat g * ∑ k, B k * d k) * (uMat h⁻¹ * uMat s⁻¹) - B₀ := by`. Rewrite using `[e2, Matrix.mul_sub, hg₀]`. Use `_ = A₀ * uMat s⁻¹ - uMat g * (∑ k, B k * d k) * (uMat h⁻¹ * uMat s⁻¹) - B₀ := by`. Rewrite using `[Matrix.sub_mul, Matrix.mul_assoc A₀, ← Matrix.mul_assoc (uMat h), umul_inv h, Matrix.one_mul]`. Use `_ = (B₀ * uMat s + ∑ k, B k * d k) * uMat s⁻¹ - uMat g * (∑ k, B k * d k) * (uMat h⁻¹ * uMat s⁻¹) - B₀ := by rw [← hA₀]`.
+
+Use `_ = _ := by`. Rewrite using `[Matrix.add_mul, Matrix.mul_assoc B₀, umul_inv s, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Establish `hlast : ∀ i : Fin a, i.castSucc < Fin.last a` using `fun i => Fin.castSucc_lt_last i`. Establish `hD : ∀ z, (∑ k, B k * d k) *ᵥ z ∈ W (Fin.last a)` using `fun z => sum_col_mem hB d (fun i hi => absurd (hlast i) hi) z`.
+
+Simplify using `only [flagN, Set.mem_ofPred_eq]`. Use `⟨fun i v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[hsub]`. Use `map_mem hA _ (W i.castSucc) (fun l hl u => ?_) hv` and prove the remaining obligations. Rewrite using `[hNA l, ← Matrix.mulVec_mulVec]`.
+
+Use `hG _ _ (sum_col_mem hB (fun k => (x k)⁻¹ * p k l - p k l * (y l)⁻¹) (fun k hk => hq0 l k ?_) u)` and prove the remaining obligations. Rewrite `hk` using `[Fin.castSucc_lt_castSucc_iff, not_lt]`. Rewrite `hl` using `[Fin.castSucc_lt_succ_iff]`. Conclude with `hl.trans hk`. Rewrite using `[hsub]`.
+
+Establish `hBJ : ∀ i, (B i)ᴴ *ᵥ (Jm ε *ᵥ v) = 0`. Introduce `i`. Use function extensionality and compare the values at `c`. Establish `hc` using `hv _ (col_mem hB (hlast i) (Pi.single c 1))`. Rewrite `hc` using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec]`.
+
+Simplify using `using hc`. Establish `hdec : v = (∑ i, B i *ᵥ ((B i)ᴴ *ᵥ v)) + B₀ *ᵥ (B₀ᴴ *ᵥ v)`. Establish `hF'` using `hF`. Unfold `IsFrame at hF'`. Take `⟨-, -, -, -, -, -, hsum⟩` from `hF'`.
+
+Use `congrArg (· *ᵥ v) hsum` as an intermediate fact. Simplify using `only [Matrix.one_mulVec, Matrix.add_mulVec, Matrix.sum_mulVec, ← Matrix.mulVec_mulVec, hBJ, Matrix.mulVec_zero, Finset.sum_const_zero, add_zero] at this`. Conclude with `this.symm`. Rewrite using `[hdec, Matrix.mulVec_add]`. Use `add_mem ?_ ?_` and prove the remaining obligations.
+
+Use `map_mem hB _ (W (Fin.last a)) (fun i _ u => ?_) ((hB _ _).2 ⟨_, fun i hi => absurd (hlast i) hi, rfl⟩)` and prove the remaining obligations. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, hMB i, Matrix.sub_mulVec]`. Use `sub_mem ?_ (col_mem hB (hlast i) u)` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Conclude with `hG _ _ (col_mem hB (hlast i) _)`.
+
+Rewrite using `[Matrix.mulVec_mulVec, hNB₀, Matrix.sub_mulVec]`. Use `sub_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `hD _`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`.
+
+Conclude with `hG _ _ (hD _)`.
+-/
 theorem mul_inv_mem_flagN (n n₀ a : ℕ) (j : Fin a → ℕ) (ε : Fin n → Bool) (ε₀ : Fin n₀ → Bool)
     (B : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (B₀ : Matrix (Fin n) (Fin n₀) ℂ) (hF : IsFrame ε ε₀ B B₀)
     (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)) (A : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ)

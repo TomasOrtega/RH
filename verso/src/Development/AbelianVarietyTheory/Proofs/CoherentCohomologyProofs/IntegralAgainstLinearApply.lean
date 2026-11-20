@@ -7,6 +7,9 @@ namespace GlobalTheory.IntegralAgainstMeasure
 variable {K B : Type*} [TopologicalSpace K] [CompactSpace K] [MeasurableSpace K]
   [OpensMeasurableSpace K] [NormedAddCommGroup B] [NormedSpace ℂ B]
 
+/- English proof (translation)
+The claim follows from `(f.continuous.smul p.continuous).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+-/
 theorem integrable_smul (μ : Measure K) [IsFiniteMeasure μ] (p : C(K, B)) (f : C(K, ℂ)) :
     Integrable (fun k => f k • p k) μ :=
   (f.continuous.smul p.continuous).integrable_of_hasCompactSupport
@@ -22,9 +25,15 @@ noncomputable def integralAgainstLinear (μ : Measure K) [IsFiniteMeasure μ] (p
     simp only [ContinuousMap.smul_apply, smul_assoc, RingHom.id_apply]
     exact integral_smul c _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem integralAgainstLinear_apply (μ : Measure K) [IsFiniteMeasure μ] (p : C(K, B))
     (f : C(K, ℂ)) : integralAgainstLinear μ p f = ∫ k, f k • p k ∂μ := rfl
 
+/- English proof (translation)
+Establish `h : ∀ᵐ k ∂μ, ‖f k • p k‖ ≤ ‖p‖ * ‖f‖` using `Filter.Eventually.of_forall fun k => by`. Rewrite using `[norm_smul, mul_comm]`. Conclude with `mul_le_mul (p.norm_coe_le_norm k) (f.norm_coe_le_norm k) (norm_nonneg _) (norm_nonneg _)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_integral_smul_le (μ : Measure K) [IsFiniteMeasure μ] (p : C(K, B)) (f : C(K, ℂ)) :
     ‖∫ k, f k • p k ∂μ‖ ≤ (μ.real Set.univ * ‖p‖) * ‖f‖ := by
   have h : ∀ᵐ k ∂μ, ‖f k • p k‖ ≤ ‖p‖ * ‖f‖ := Filter.Eventually.of_forall fun k => by
@@ -37,6 +46,9 @@ noncomputable def integralAgainst (μ : Measure K) [IsFiniteMeasure μ] (p : C(K
     C(K, ℂ) →L[ℂ] B :=
   (integralAgainstLinear μ p).mkContinuous (μ.real Set.univ * ‖p‖) (norm_integral_smul_le μ p)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem integralAgainst_apply (μ : Measure K) [IsFiniteMeasure μ] (p : C(K, B))
     (f : C(K, ℂ)) : integralAgainst μ p f = ∫ k, f k • p k ∂μ := rfl
 

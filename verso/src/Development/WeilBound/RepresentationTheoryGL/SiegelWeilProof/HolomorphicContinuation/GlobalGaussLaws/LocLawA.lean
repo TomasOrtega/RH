@@ -22,12 +22,18 @@ open Classical in
 def atT {m : ℕ} (σ : (D.what₂.Tau → ℂ) →+ AE D) (τ : D.what₂.Tau) (M : Matrix (Fin m) (Fin n) ℂ) : Mx D m n :=
   fun i j => σ (Pi.single τ (M i j))
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [compAt, atT, Matrix.map_apply, h.comp, Pi.single_eq_same]`.
+-/
 theorem compAt_atT {m : ℕ} {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h : GlobalTheory.FockCompare.Chart θ σ) (τ : D.what₂.Tau)
     (M : Matrix (Fin m) (Fin n) ℂ) : compAt θ τ (atT σ τ M) = M := by
   classical
   ext i j
   simp only [compAt, atT, Matrix.map_apply, h.comp, Pi.single_eq_same]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [compAt, atT, Matrix.map_apply, h.comp, Matrix.zero_apply]`. Conclude with `Pi.single_eq_of_ne hne _`.
+-/
 theorem compAt_atT_ne {m : ℕ} {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h : GlobalTheory.FockCompare.Chart θ σ) {τ τ' : D.what₂.Tau}
     (hne : τ' ≠ τ) (M : Matrix (Fin m) (Fin n) ℂ) : compAt θ τ' (atT σ τ M) = 0 := by
   classical
@@ -35,9 +41,15 @@ theorem compAt_atT_ne {m : ℕ} {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) �
   simp only [compAt, atT, Matrix.map_apply, h.comp, Matrix.zero_apply]
   exact Pi.single_eq_of_ne hne _
 
+/- English proof (translation)
+The claim follows from `h.fin _`.
+-/
 theorem finPart_atT {m : ℕ} {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h : GlobalTheory.FockCompare.Chart θ σ) (τ : D.what₂.Tau)
     (M : Matrix (Fin m) (Fin n) ℂ) (i : Fin m) (j : Fin n) : finPart D (atT σ τ M i j) = 0 := h.fin _
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[compAt]`.
+-/
 theorem compAt_zero {m : ℕ} (θ : InfFam D) (τ : D.what₂.Tau) : compAt θ τ (0 : Mx D m n) = 0 := by
   ext i j; simp [compAt]
 
@@ -52,6 +64,11 @@ open Classical in
 def g0 (D : D7) (m n : ℕ) : (Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ := fun a =>
   if (QuotientAddGroup.mk (show Matrix (Fin m) (Fin n) _ from a) : _ ⧸ intW D m n) = 0 then (1 : ℂ) else 0
 
+/- English proof (translation)
+Establish `hWe : (intW D m n : Set (Matrix (Fin m) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E))) = ⋂ i, ⋂ j, (fun a : Matrix (Fin m) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E) => a i j) ⁻¹' (intAE D : Set (Af D.host.F ⊗[D.host.F] D.host.E))`. Use extensionality with `a`. Simplify using `only [Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]`. Both sides reduce to the same expression. Establish `hWo : IsOpen (intW D m n : Set (Matrix (Fin m) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E)))`.
+
+Rewrite using `[hWe]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (GlobalTheory.SchwartzBruhatTensor.isOpen_intAE D).preimage ((continuous_apply j).comp (continuous_apply i))`. Establish `hWc : IsCompact (intW D m n : Set (Matrix (Fin m) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E)))` using `isCompact_pi_infinite fun _ => isCompact_pi_infinite fun _ => GlobalTheory.SchwartzBruhatTensor.isCompact_intAE D`. Conclude with `GlobalTheory.SchwartzBruhatTensor.coset_mem_SB (intW D m n) hWo hWc 0`.
+-/
 theorem gaussian_mem_schwartz_bruhat (D : D7) (m n : ℕ) : g0 D m n ∈ GlobalTheory.WeilM.SB (Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) := by
   classical
   have hWe : (intW D m n : Set (Matrix (Fin m) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E))) =
@@ -68,6 +85,9 @@ theorem gaussian_mem_schwartz_bruhat (D : D7) (m n : ℕ) : g0 D m n ∈ GlobalT
     isCompact_pi_infinite fun _ => isCompact_pi_infinite fun _ => GlobalTheory.SchwartzBruhatTensor.isCompact_intAE D
   exact GlobalTheory.SchwartzBruhatTensor.coset_mem_SB (intW D m n) hWo hWc 0
 
+/- English proof (translation)
+Simplify using `only [g0]`. Rewrite using `[if_pos]`. Conclude with `(QuotientAddGroup.eq_zero_iff (N := intW D m n) (0 : Matrix (Fin m) (Fin n) _)).2 (intW D m n).zero_mem`.
+-/
 theorem gaussian_at_zero_eq_one (D : D7) (m n : ℕ) : g0 D m n 0 = 1 := by
   classical
   simp only [g0]
@@ -79,10 +99,18 @@ def psi0 (θ : InfFam D) (V : HSp D) (n : ℕ) (l : D.what₂.Tau → ℝ) (s : 
   evalPoly (1 : MvPolynomial (D.what₂.Tau × Fin V.rank × Fin n × Bool) ℂ) (fun τ => compAt θ τ x) *
     gAway V l s τ (fun τ => compAt θ τ x) * g0 D V.rank n (fun i j => finPart D (x i j))
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨1, g0 D V.rank n, gaussian_mem_schwartz_bruhat D V.rank n, fun v hv => by simp at hv, rfl⟩`.
+-/
 theorem unitaryFinitePointsToGLFiniteAdeles_isUnitary (θ : InfFam D) (V : HSp D) (n : ℕ) (l : D.what₂.Tau → ℝ) (s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (τ : D.what₂.Tau) : psi0 θ V n l s τ ∈ awayA θ V n l s τ :=
   Submodule.subset_span ⟨1, g0 D V.rank n, gaussian_mem_schwartz_bruhat D V.rank n, fun v hv => by simp at hv, rfl⟩
 
+/- English proof (translation)
+Simplify using `only [gAway]`. Rewrite using `[Finset.sum_eq_zero]`. Simplify using the standard rewrite rules. Introduce `τ' h'`. Rewrite using `[hz τ' (Finset.mem_filter.1 h').2]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem gAway_of {V : HSp D} (l : D.what₂.Tau → ℝ) (s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (τ : D.what₂.Tau)
     (z : D.what₂.Tau → Matrix (Fin V.rank) (Fin n) ℂ) (hz : ∀ τ', τ' ≠ τ → z τ' = 0) : gAway V l s τ z = 1 := by
   classical
@@ -93,6 +121,9 @@ theorem gAway_of {V : HSp D} (l : D.what₂.Tau → ℝ) (s : D.what₂.Tau → 
     rw [hz τ' (Finset.mem_filter.1 h').2]
     simp
 
+/- English proof (translation)
+Establish `e1 : (fun i j => finPart D (atT σ τ M i j)) = (0 : Fin V.rank → Fin n → Af D.host.F ⊗[D.host.F] D.host.E)`. Use function extensionality and compare the values at `i j`. Conclude with `finPart_atT h τ M i j`. Simplify using `only [psi0, evalPoly, map_one, one_mul, e1, gaussian_at_zero_eq_one, mul_one]`. Conclude with `gAway_of l s τ _ fun τ' h' => compAt_atT_ne h h' M`.
+-/
 theorem gaussian_vacuum_archimedean_point {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h : GlobalTheory.FockCompare.Chart θ σ) (V : HSp D)
     (l : D.what₂.Tau → ℝ) (s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (τ : D.what₂.Tau)
     (M : Matrix (Fin V.rank) (Fin n) ℂ) : psi0 θ V n l s τ (atT σ τ M) = 1 := by
@@ -101,6 +132,9 @@ theorem gaussian_vacuum_archimedean_point {θ : InfFam D} {σ : (D.what₂.Tau �
   simp only [psi0, evalPoly, map_one, one_mul, e1, gaussian_at_zero_eq_one, mul_one]
   exact gAway_of l s τ _ fun τ' h' => compAt_atT_ne h h' M
 
+/- English proof (translation)
+Establish `e1 : (fun i j => finPart D ((0 : Mx D V.rank n) i j)) = (0 : Fin V.rank → Fin n → Af D.host.F ⊗[D.host.F] D.host.E)`. Use function extensionality and compare the values at `i j`. Simplify using the standard rewrite rules. Simplify using `only [psi0, evalPoly, map_one, one_mul, e1, gaussian_at_zero_eq_one, mul_one]`. Conclude with `gAway_of l s τ _ fun τ' _ => compAt_zero θ τ'`.
+-/
 theorem cmTraceAdditiveCharacter_zero (θ : InfFam D) (V : HSp D) (l : D.what₂.Tau → ℝ) (s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (τ : D.what₂.Tau) : psi0 θ V n l s τ 0 = 1 := by
   have e1 : (fun i j => finPart D ((0 : Mx D V.rank n) i j)) = (0 : Fin V.rank → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) := by
@@ -108,6 +142,11 @@ theorem cmTraceAdditiveCharacter_zero (θ : InfFam D) (V : HSp D) (l : D.what₂
   simp only [psi0, evalPoly, map_one, one_mul, e1, gaussian_at_zero_eq_one, mul_one]
   exact gAway_of l s τ _ fun τ' _ => compAt_zero θ τ'
 
+/- English proof (translation)
+Use function extensionality and compare the values at `u`. Set `U : Matrix (Fin V.rank) (Fin n) ℂ` to `u`. Use `congrFun e (atT σ τ (fr * U))` as an intermediate fact. Simplify using `only [tens, compAt_atT h, gaussian_vacuum_archimedean_point h, mul_one] at this`. Establish `e2 : fr⁻¹ * (fr * U) = U`.
+
+Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hfr, Matrix.one_mul]`. Rewrite `this` using `[e2]`. Conclude with `this`.
+-/
 theorem tens_cancel {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h : GlobalTheory.FockCompare.Chart θ σ) (V : HSp D)
     (l : D.what₂.Tau → ℝ) (s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (τ : D.what₂.Tau)
     {fr : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hfr : IsUnit fr.det) {f f' : (Fin V.rank → Fin n → ℂ) → ℂ}
@@ -121,11 +160,17 @@ theorem tens_cancel {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h 
   rw [e2] at this
   exact this
 
+/- English proof (translation)
+Simplify using `only [tens, compAt_zero, Matrix.mul_zero]`. Both sides reduce to the same expression.
+-/
 theorem tens_zero {m : ℕ} (θ : InfFam D) (τ : D.what₂.Tau) (fr : Matrix (Fin m) (Fin m) ℂ) (f : (Fin m → Fin n → ℂ) → ℂ)
     (Ψ : Mx D m n → ℂ) : tens θ τ fr f Ψ 0 = f 0 * Ψ 0 := by
   simp only [tens, compAt_zero, Matrix.mul_zero]
   rfl
 
+/- English proof (translation)
+Simplify using `only [phiS, dif_pos hm]`.
+-/
 theorem phiS_val {m : ℕ} {θ : InfFam D} {τ : D.what₂.Tau} {fr : Matrix (Fin m) (Fin m) ℂ} {c : ℝ} {Ψ : Mx D m n → ℂ}
     {P : PX m n} (hm : tens θ τ fr (fP c P) Ψ ∈ schwartzA θ m n) : (phiS θ τ fr c Ψ P).1 = tens θ τ fr (fP c P) Ψ := by
   simp only [phiS, dif_pos hm]

@@ -26,6 +26,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.LinksInputs
 
+/- English proof (translation)
+Introduce `hW _ hH hC D`. Take `⟨hcart, hsd, hsp, hdim, hpet, hsm⟩` from `GlobalTheory.Mem.EasyInputs.easy_inputs D`. Conclude with `{ weil := Formalism.IndefR.WeilFull.weilExistsFull_of (hW D) (GlobalTheory.T.weil_datum_fixes_lattice_vacua_at_inert_places D) (GlobalTheory.T.weilDatum_realDerivative_fockVectors_all D) vac := GlobalTheory.Member.vacuum_oriented_exists D stepVec := GlobalTheory.PlaceDatum.stepVe …`.
+-/
 theorem inputs_of_hypotheses : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists →
     GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, Inputs D := by
   intro hW _ hH hC D

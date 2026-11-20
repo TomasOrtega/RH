@@ -11,6 +11,17 @@ open GlobalTheory.Twist (resM resM_resM resM_smul app_resM sec_ext_of_cover)
 
 namespace GlobalTheory.LineQuot
 
+/- English proof (translation)
+Introduce `k _ N S T g L Q s φ hL _ hs i j W hW t`. Use `haveI := hL.isQuasicoherent`. Use `beta_reduce`. Use `set A := (Scheme.Modules.pullback g).map (s j)`. Use `set B := (Scheme.Modules.pullback g).map (s i)`.
+
+Establish `hsmul : ∀ (U : S.Opens) (hU : U ≤ (g ≫ φ) ⁻¹ᵁ ProjSpace.chart k N i) (c : Γ(S, U)) (u : Γ((Scheme.Modules.pullback g).obj L, U)), A.app U u = ProjSpace.pullRatio (g ≫ φ) U i hU j • B.app U u → A.app U (c • u) = ProjSpace.pullRatio (g ≫ φ) U i hU j • B.app U (c • u)`. Introduce `U hU c u h`. Rewrite using `[Scheme.Modules.Hom.app_smul, Scheme.Modules.Hom.app_smul, h, smul_smul, smul_smul, mul_comm]`. Establish `hW' : W ≤ g ⁻¹ᵁ (φ ⁻¹ᵁ ProjSpace.chart k N i)` using `hW`. Establish `loc : ∀ y : W, ∃ (V : T.Opens) (e : Fin 1 → Γ(L, V)), (y : S) ∈ g ⁻¹ᵁ V ∧ V ≤ φ ⁻¹ᵁ ProjSpace.chart k N i ∧ IsFrame e` using `fun y => by`.
+
+Take `⟨V, e, -, hy, hV, he⟩` from `hL.exists_affine (x := g y) (V := φ ⁻¹ᵁ ProjSpace.chart k N i) (hW' y.2)`. Conclude with `⟨V, e, hy, hV, he⟩`. Use `choose V e hy hV he using loc`. Use `sec_ext_of_cover (fun y => W ⊓ g ⁻¹ᵁ V y) (fun _ => inf_le_left) (fun y hyW => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨y, hyW⟩, hyW, hy _⟩) fun y => ?_` and prove the remaining obligations. Establish `hU : W ⊓ g ⁻¹ᵁ V y ≤ (g ≫ φ) ⁻¹ᵁ ProjSpace.chart k N i` using `inf_le_left.trans hW`.
+
+Establish `hgV : g ⁻¹ᵁ V y ≤ (g ≫ φ) ⁻¹ᵁ ProjSpace.chart k N i` using `g.preimage_mono (hV y)`. Establish `hpb : A.app (g ⁻¹ᵁ V y) (QCoh.pullbackSections g L (le_refl _) (e y 0)) = ProjSpace.pullRatio (g ≫ φ) (g ⁻¹ᵁ V y) i hgV j • B.app (g ⁻¹ᵁ V y) (QCoh.pullbackSections g L (le_refl _) (e y 0))`. Rewrite using `[QCoh.pullback_map_app_pullbackSections, QCoh.pullback_map_app_pullbackSections, hs i j (V y) (hV y) (e y 0), QCoh.pullbackSections_smul, ProjSpace.appLE_pullRatio]`. Establish `hres : A.app (W ⊓ g ⁻¹ᵁ V y) (resM _ inf_le_right (QCoh.pullbackSections g L (le_refl _) (e y 0))) = ProjSpace.pullRatio (g ≫ φ) (W ⊓ g ⁻¹ᵁ V y) i hU j • B.app (W ⊓ g ⁻¹ᵁ V y) (resM _ inf_le_right (QCoh.pullbackSections g L (le_refl _) (e y 0)))`. Rewrite using `[app_resM, app_resM, hpb, resM_smul, ProjSpace.resG_pullRatio]`.
+
+Take `⟨a, ha⟩` from `((he y).pullback g (W ⊓ g ⁻¹ᵁ V y) inf_le_right).2 (resM _ inf_le_left t)`. Rewrite `ha` using `[Fintype.linearCombination_apply, Fin.sum_univ_one]`. Rewrite using `[← app_resM, resM_smul, ← app_resM, ProjSpace.resG_pullRatio, ← ha]`. Conclude with `hsmul _ _ _ _ hres`.
+-/
 theorem rel_pullback : ∀ (k : Type) [CommRing k] (N : ℕ) (S T : Scheme.{0}) (g : S ⟶ T) (L Q : T.Modules)
     (s : Fin (N + 1) → (L ⟶ Q)) (φ : T ⟶ PSpace k N), IsVB L 1 → IsVB Q 1 → Rel φ s →
     Rel (g ≫ φ) fun j => (Scheme.Modules.pullback g).map (s j) := by

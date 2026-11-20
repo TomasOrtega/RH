@@ -6,6 +6,11 @@ noncomputable section
 
 namespace Formalism.ZeroFreeDirichlet
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : (p : ℂ) ^ (-s) = 1` using `(sub_eq_zero.1 h).symm`. Establish `h2` using `congrArg norm h1`. Rewrite `h2` using `[norm_natCast_cpow_of_pos hp.pos, norm_one, neg_re]`. Establish `h3 : (p : ℝ) ^ (-s.re) < 1` using `Real.rpow_lt_one_of_one_lt_of_neg (by exact_mod_cast hp.one_lt) (by linarith)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma one_sub_prime_cpow_neg_ne_zero (p : ℕ) (hp : p.Prime) {s : ℂ} (hs : 0 < s.re) :
     (1 : ℂ) - (p : ℂ) ^ (-s) ≠ 0 := by
   intro h
@@ -16,6 +21,11 @@ lemma one_sub_prime_cpow_neg_ne_zero (p : ℕ) (hp : p.Prime) {s : ℂ} (hs : 0 
     Real.rpow_lt_one_of_one_lt_of_neg (by exact_mod_cast hp.one_lt) (by linarith)
   linarith
 
+/- English proof (translation)
+Introduce `q _ s hs hs1 h0`. Establish `hmul` using `DirichletCharacter.LFunctionTrivChar_eq_mul_riemannZeta (N := q) hs1`. Establish `h0' : (∏ p ∈ q.primeFactors, (1 - (p : ℂ) ^ (-s))) * riemannZeta s = 0`. Rewrite using `[← hmul]`. Conclude with `h0`.
+
+Break down `mul_eq_zero.1 h0' with h | h` into its components or cases. It suffices to derive a contradiction. Take `⟨p, hp, hp0⟩` from `Finset.prod_eq_zero_iff.1 h`. Conclude with `one_sub_prime_cpow_neg_ne_zero p (Nat.prime_of_mem_primeFactors hp) hs hp0`. Conclude with `h`.
+-/
 theorem trivialCharZerosOfZeta : TrivZeros := by
   intro q _ s hs hs1 h0
   have hmul := DirichletCharacter.LFunctionTrivChar_eq_mul_riemannZeta (N := q) hs1
@@ -28,6 +38,11 @@ theorem trivialCharZerosOfZeta : TrivZeros := by
     exact one_sub_prime_cpow_neg_ne_zero p (Nat.prime_of_mem_primeFactors hp) hs hp0
   · exact h
 
+/- English proof (translation)
+Distinguish the cases in `ha : IsUnit a`. Establish `h2 : χ a * χ a = 1`. Rewrite using `[← sq, ← MulChar.pow_apply' χ two_ne_zero, hχ, MulChar.one_apply ha]`. Break down `mul_self_eq_one_iff.1 h2 with h | h` into its components or cases. Rewrite using `[h, map_one]`.
+
+Rewrite using `[h, map_neg, map_one]`. Rewrite using `[MulChar.map_nonunit χ ha, map_zero]`.
+-/
 lemma conj_apply_of_sq_eq_one {q : ℕ} (χ : DirichletCharacter ℂ q) (hχ : χ ^ 2 = 1) (a : ZMod q) :
     starRingEnd ℂ (χ a) = χ a := by
   by_cases ha : IsUnit a
@@ -38,6 +53,13 @@ lemma conj_apply_of_sq_eq_one {q : ℕ} (χ : DirichletCharacter ℂ q) (hχ : �
     · rw [h, map_neg, map_one]
   · rw [MulChar.map_nonunit χ ha, map_zero]
 
+/- English proof (translation)
+Establish `hz' : 1 < (starRingEnd ℂ z).re` using `by rwa [Complex.conj_re]`. Rewrite using `[DirichletCharacter.LFunction_eq_LSeries χ hz', DirichletCharacter.LFunction_eq_LSeries χ hz, LSeries, LSeries, Complex.conj_tsum]`. Use `congr 1`. Use function extensionality and compare the values at `m`. Rewrite using `[LSeries.term_def, LSeries.term_def]`.
+
+Use `split_ifs with hm`. Conclude with `map_zero _`. Use `show starRingEnd ℂ (χ m / (m : ℂ) ^ starRingEnd ℂ z) = χ m / (m : ℂ) ^ z`. Establish `harg : (m : ℂ).arg ≠ Real.pi`. Rewrite using `[Complex.natCast_arg]`.
+
+Conclude with `Real.pi_ne_zero.symm`. Rewrite using `[map_div₀, conj_apply_of_sq_eq_one χ hχ, Complex.cpow_conj _ _ harg, map_natCast (starRingEnd ℂ) m, Complex.conj_conj]`.
+-/
 lemma conj_LFunction_conj_of_sq_eq_one {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ^ 2 = 1)
     (z : ℂ) (hz : 1 < z.re) :
     starRingEnd ℂ (DirichletCharacter.LFunction χ (starRingEnd ℂ z)) =
@@ -57,6 +79,13 @@ lemma conj_LFunction_conj_of_sq_eq_one {q : ℕ} [NeZero q] (χ : DirichletChara
     rw [map_div₀, conj_apply_of_sq_eq_one χ hχ, Complex.cpow_conj _ _ harg, map_natCast (starRingEnd ℂ) m,
       Complex.conj_conj]
 
+/- English proof (translation)
+Introduce `q _ χ hχ h1 s`. Establish `hL : Differentiable ℂ (DirichletCharacter.LFunction χ)` using `DirichletCharacter.differentiable_LFunction h1`. Establish `hG : Differentiable ℂ (fun z => starRingEnd ℂ (DirichletCharacter.LFunction χ (starRingEnd ℂ z)))`. Introduce `z`. Use `(hL (starRingEnd ℂ z)).conj_conj` as an intermediate fact.
+
+Rewrite `this` using `[Complex.conj_conj]`. Conclude with `this`. Establish `heq : (fun z => starRingEnd ℂ (DirichletCharacter.LFunction χ (starRingEnd ℂ z))) = DirichletCharacter.LFunction χ`. Use `AnalyticOnNhd.eq_of_eventuallyEq (z₀ := 2) (analyticOnNhd_univ_iff_differentiable.2 hG) (analyticOnNhd_univ_iff_differentiable.2 hL) ?_` and prove the remaining obligations. Establish `hopen : IsOpen {z : ℂ | 1 < z.re}` using `isOpen_lt continuous_const Complex.continuous_re`.
+
+Use `filter_upwards [hopen.mem_nhds (show (1 : ℝ) < (2 : ℂ).re by norm_num)] with z hz`. Conclude with `conj_LFunction_conj_of_sq_eq_one χ hχ z hz`. Use `congrFun heq (starRingEnd ℂ s)` as an intermediate fact. Simplify using `only [Complex.conj_conj] at this`. Conclude with `this.symm`.
+-/
 theorem realCharConj : RealConj := by
   intro q _ χ hχ h1 s
   have hL : Differentiable ℂ (DirichletCharacter.LFunction χ) :=

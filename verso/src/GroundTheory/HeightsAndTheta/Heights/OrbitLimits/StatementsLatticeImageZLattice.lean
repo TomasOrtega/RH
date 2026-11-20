@@ -9,6 +9,9 @@ open NumberField NumberField.mixedEmbedding
 noncomputable def latticeImage (F : Type*) [Field F] (L : AddSubgroup F) : Submodule ℤ (mixedSpace F) :=
   (L.map (mixedEmbedding F).toAddMonoidHom).toIntSubmodule
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `y ∈ L.map (mixedEmbedding F).toAddMonoidHom ↔ _`. Simplify using the standard rewrite rules.
+-/
 theorem mem_latticeImage {F : Type*} [Field F] (L : AddSubgroup F) (y : mixedSpace F) :
     y ∈ latticeImage F L ↔ ∃ x ∈ L, mixedEmbedding F x = y := by
   change y ∈ L.map (mixedEmbedding F).toAddMonoidHom ↔ _

@@ -39,6 +39,9 @@ def unitaryGroup (h : HermL F E A) : Subgroup (A ≃ₗ[E] A) where
     conv_rhs => rw [← a.apply_symm_apply x, ← a.apply_symm_apply y]
     rw [ha]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_unitaryGroup {h : HermL F E A} {g : A ≃ₗ[E] A} :
     g ∈ h.unitaryGroup ↔ ∀ x y, h.form (g x) (g y) = h.form x y := Iff.rfl
 
@@ -84,6 +87,9 @@ def tensHerm (hA : HermL F E A) (hB : HermL F E B) :
         LinearMap.mk₂'ₛₗ_apply, map_smul, smul_eq_mul]
       ring))
 
+/- English proof (translation)
+Simplify using `only [tensHerm, TensorProduct.lift.tmul, LinearMap.mk₂_apply, tensorHermitianPartial, LinearMap.mk₂'ₛₗ_apply]`.
+-/
 @[simp] theorem tensHerm_tmul (hA : HermL F E A) (hB : HermL F E B) (a a' : A) (b b' : B) :
     tensHerm hA hB (a ⊗ₜ b) (a' ⊗ₜ b') = hA.form a a' * hB.form b b' := by
   simp only [tensHerm, TensorProduct.lift.tmul, LinearMap.mk₂_apply, tensorHermitianPartial,
@@ -103,6 +109,9 @@ def weilForm (ξ : E) (hA : HermL F E A) (hB : HermL F E B) : LinearMap.BilinFor
       change Algebra.trace F E (ξ * (conj F E (algebraMap F E c) * _)) = _
       rw [conj_algebraMap, mul_left_comm, ← Algebra.smul_def, map_smul, smul_eq_mul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem weilForm_apply (ξ : E) (hA : HermL F E A) (hB : HermL F E B) (w w' : A ⊗[E] B) :
     weilForm ξ hA hB w w' = Algebra.trace F E (ξ * tensHerm hA hB w w') := rfl
 
@@ -156,6 +165,9 @@ def Sp (ω : LinearMap.BilinForm R W) : Subgroup (W ≃ₗ[R] W) where
     conv_rhs => rw [← a.apply_symm_apply w, ← a.apply_symm_apply w']
     rw [ha]
 
+/- English proof (translation)
+The claim follows from `Iff.rfl @[ext]`.
+-/
 theorem mem_Sp {ω : LinearMap.BilinForm R W} {g : W ≃ₗ[R] W} :
     g ∈ Sp ω ↔ ∀ w w', ω (g w) (g w') = ω w w' := Iff.rfl
 
@@ -170,8 +182,14 @@ variable {ω : LinearMap.BilinForm R W}
 
 instance : One (Heis ω) := ⟨⟨0, 0⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem Heis.one_w : (1 : Heis ω).w = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem Heis.indicator_eq_one_of_true : (1 : Heis ω).t = 0 := rfl
 
 variable [Invertible (2 : R)]
@@ -180,12 +198,24 @@ instance : Mul (Heis ω) := ⟨fun h h' => ⟨h.w + h'.w, h.t + h'.t + ⅟2 * ω
 
 instance : Inv (Heis ω) := ⟨fun h => ⟨-h.w, -h.t + ⅟2 * ω h.w h.w⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem Heis.mul_w (h h' : Heis ω) : (h * h').w = h.w + h'.w := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem Heis.product_torus_component (h h' : Heis ω) : (h * h').t = h.t + h'.t + ⅟2 * ω h.w h'.w := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem Heis.inv_w (h : Heis ω) : h⁻¹.w = -h.w := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem Heis.exists_inverse_fontaineElement_mem_fil_neg_one (h : Heis ω) : h⁻¹.t = -h.t + ⅟2 * ω h.w h.w := rfl
 
 instance : Group (Heis ω) :=
@@ -444,6 +474,9 @@ def adelicPolEquiv (P : Polarization ω X Y) :
     (AdelicPoints K X × AdelicPoints K Y) ≃ₗ[𝔸[K]] AdelicPoints K W :=
   (TensorProduct.prodRight K 𝔸[K] 𝔸[K] X Y).symm ≪≫ₗ P.e.baseChange K 𝔸[K] (X × Y) W
 
+/- English proof (translation)
+Rewrite using `[show ((a ⊗ₜ[K] x : AdelicPoints K X), (0 : AdelicPoints K Y)) = (a ⊗ₜ x, a ⊗ₜ (0 : Y)) by`. Rewrite using `[TensorProduct.tmul_zero]]`. Rewrite using `[adelicPolEquiv, LinearEquiv.trans_apply, TensorProduct.prodRight_symm_tmul, LinearEquiv.baseChange_tmul]`.
+-/
 theorem adelicPolEquiv_tmul_fst (P : Polarization ω X Y) (a : 𝔸[K]) (x : X) :
     adelicPolEquiv P (a ⊗ₜ x, 0) = a ⊗ₜ P.e (x, 0) := by
   rw [show ((a ⊗ₜ[K] x : AdelicPoints K X), (0 : AdelicPoints K Y)) = (a ⊗ₜ x, a ⊗ₜ (0 : Y)) by
@@ -451,6 +484,9 @@ theorem adelicPolEquiv_tmul_fst (P : Polarization ω X Y) (a : 𝔸[K]) (x : X) 
   rw [adelicPolEquiv, LinearEquiv.trans_apply, TensorProduct.prodRight_symm_tmul,
     LinearEquiv.baseChange_tmul]
 
+/- English proof (translation)
+Rewrite using `[show ((0 : AdelicPoints K X), (a ⊗ₜ[K] y : AdelicPoints K Y)) = (a ⊗ₜ (0 : X), a ⊗ₜ y) by`. Rewrite using `[TensorProduct.tmul_zero]]`. Rewrite using `[adelicPolEquiv, LinearEquiv.trans_apply, TensorProduct.prodRight_symm_tmul, LinearEquiv.baseChange_tmul]`.
+-/
 theorem adelicPolEquiv_tmul_snd (P : Polarization ω X Y) (a : 𝔸[K]) (y : Y) :
     adelicPolEquiv P (0, a ⊗ₜ y) = a ⊗ₜ P.e (0, y) := by
   rw [show ((0 : AdelicPoints K X), (a ⊗ₜ[K] y : AdelicPoints K Y)) = (a ⊗ₜ (0 : X), a ⊗ₜ y) by
@@ -521,6 +557,9 @@ def gaussFormL : GaussQ →ₗ[GaussQ] GaussQ →ₛₗ[conjHom ℚ GaussQ] Gaus
       rw [map_mul]
       ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gaussFormL_apply (x y : GaussQ) : gaussFormL x y = x * conj ℚ GaussQ y := rfl
 
 def gaussHermL : HermL ℚ GaussQ GaussQ where
@@ -539,22 +578,34 @@ def gaussHermL : HermL ℚ GaussQ GaussQ where
       rw [gaussFormL_apply, h, mul_comm]
       rfl
 
+/- English proof (translation)
+Use `show (1 : GaussQ) * conj ℚ GaussQ 1 = 1`. Rewrite using `[map_one, mul_one]`.
+-/
 theorem gaussHermL_one_one : gaussHermL.form 1 1 = 1 := by
   show (1 : GaussQ) * conj ℚ GaussQ 1 = 1
   rw [map_one, mul_one]
 
 def gaussI : GaussQ := ⟨0, 1⟩
 
+/- English proof (translation)
+Use `ext`. Rewrite using `[conj_gaussQ_re]`. Simplify using `[gaussI]`. Rewrite using `[conj_gaussQ_im]`. Simplify using `[gaussI]`.
+-/
 theorem conj_gaussI : conj ℚ GaussQ gaussI = -gaussI := by
   ext
   · rw [conj_gaussQ_re]; simp [gaussI]
   · rw [conj_gaussQ_im]; simp [gaussI]
 
+/- English proof (translation)
+Use `isUnit_iff_ne_zero.mpr fun h => ?_` and prove the remaining obligations. Use `congrArg QuadraticAlgebra.im h` as an intermediate fact. Simplify using `[gaussI] at this`.
+-/
 theorem isUnit_gaussI : IsUnit gaussI := by
   refine isUnit_iff_ne_zero.mpr fun h => ?_
   have := congrArg QuadraticAlgebra.im h
   simp [gaussI] at this
 
+/- English proof (translation)
+Rewrite using `[weilForm_apply, tensHerm_tmul]`. Use `show Algebra.trace ℚ GaussQ (gaussI * ((1 * conj ℚ GaussQ gaussI) * (1 * conj ℚ GaussQ 1))) = 2`. Rewrite using `[conj_gaussI, map_one, trace_gaussQ]`. Simplify using `[gaussI]`.
+-/
 theorem weilForm_gauss : weilForm gaussI gaussHermL gaussHermL (1 ⊗ₜ 1) (gaussI ⊗ₜ 1) = 2 := by
   rw [weilForm_apply, tensHerm_tmul]
   show Algebra.trace ℚ GaussQ
@@ -562,6 +613,9 @@ theorem weilForm_gauss : weilForm gaussI gaussHermL gaussHermL (1 ⊗ₜ 1) (gau
   rw [conj_gaussI, map_one, trace_gaussQ]
   simp [gaussI]
 
+/- English proof (translation)
+Introduce `h`. Use `weilForm_gauss` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`.
+-/
 theorem weilForm_gauss_ne_zero : weilForm gaussI gaussHermL gaussHermL ≠ 0 := by
   intro h
   have := weilForm_gauss
@@ -575,12 +629,25 @@ def stdSymp (R : Type*) [CommRing R] : LinearMap.BilinForm R (R × R) :=
     (fun _ _ _ => by simp only [Prod.fst_add, Prod.snd_add]; ring)
     (fun _ _ _ => by simp only [Prod.smul_fst, Prod.smul_snd, smul_eq_mul]; ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem stdSymp_apply (R : Type*) [CommRing R] (u v : R × R) :
     stdSymp R u v = u.1 * v.2 - u.2 * v.1 := rfl
 
+/- English proof (translation)
+Introduce `u` and use `by rw [stdSymp_apply]; ring`.
+-/
 theorem stdSymp_isAlt (R : Type*) [CommRing R] : (stdSymp R).IsAlt := fun u => by
   rw [stdSymp_apply]; ring
 
+/- English proof (translation)
+Use `⟨fun u hu => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h1` using `hu (0, 1)`. Establish `h2` using `hu (1, 0)`. Rewrite `h1`, `h2` using `[stdSymp_apply]`. Simplify using `only [mul_one, mul_zero, sub_zero, zero_sub, neg_eq_zero] at h1 h2`.
+
+Conclude with `Prod.ext h1 h2`. Establish `h1` using `hv (0, 1)`. Establish `h2` using `hv (1, 0)`. Rewrite `h1`, `h2` using `[stdSymp_apply]`. Simplify using `only [one_mul, zero_mul, sub_zero, zero_sub, neg_eq_zero] at h1 h2`.
+
+Conclude with `Prod.ext h1 h2`.
+-/
 theorem stdSymp_nondegenerate (K : Type*) [Field K] : (stdSymp K).Nondegenerate := by
   refine ⟨fun u hu => ?_, fun v hv => ?_⟩
   · have h1 := hu (0, 1)
@@ -599,6 +666,9 @@ def stdPol (R : Type*) [CommRing R] : Polarization (stdSymp R) R R where
   isotropic_X x x' := by simp [stdSymp_apply]
   isotropic_Y y y' := by simp [stdSymp_apply]
 
+/- English proof (translation)
+Introduce `h`. Use `congrArg Heis.t h` as an intermediate fact. Simplify using `only [Heis.product_torus_component, stdSymp_apply] at this`. Evaluate the numerical expressions using `at this`.
+-/
 theorem heis_std_noncomm :
     (⟨(1, 0), 0⟩ * ⟨(0, 1), 0⟩ : Heis (stdSymp ℝ)) ≠ ⟨(0, 1), 0⟩ * ⟨(1, 0), 0⟩ := by
   intro h
@@ -606,10 +676,20 @@ theorem heis_std_noncomm :
   simp only [Heis.product_torus_component, stdSymp_apply] at this
   norm_num at this
 
+/- English proof (translation)
+Simplify using `[schr, Polarization.pair, Polarization.xPart, Polarization.yPart, stdPol, stdSymp_apply]`.
+-/
 theorem schr_stdPol (ψ : AddChar ℝ Circle) (a b t : ℝ) (φ : ℝ → ℂ) (x : ℝ) :
     schr ψ (stdPol ℝ) ⟨(a, b), t⟩ φ x = (ψ (t + x * b + ⅟2 * (a * b)) : ℂ) * φ (x + a) := by
   simp [schr, Polarization.pair, Polarization.xPart, Polarization.yPart, stdPol, stdSymp_apply]
 
+/- English proof (translation)
+Use `⟨fun h => ?_, stdSymp_isAlt ℝ, stdSymp_nondegenerate ℝ, Real.continuous_fourierChar, fun h => ?_⟩` and prove the remaining obligations. Take `⟨ε, hε, hb⟩` from `Metric.isOpen_iff.mp (isOpen_discrete ({0} : Set ℝ)) 0 rfl`. Establish `: ε / 2 ∈ Metric.ball (0 : ℝ) ε`. Rewrite using `[Metric.mem_ball, Real.dist_eq, sub_zero, abs_of_pos (half_pos hε)]`. Conclude with `half_lt_self hε`.
+
+Establish `h0 : ε / 2 = 0` using `hb this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `congrArg (fun χ : AddChar ℝ Circle => ((χ (1 / 2) : Circle) : ℂ)) h`. Simplify using `only [Real.fourierChar_apply, AddChar.one_apply, Circle.coe_one] at h1`. Rewrite `h1` using `[show ((2 * Real.pi * (1 / 2) : ℝ) : ℂ) * Complex.I = Real.pi * Complex.I by push_cast; ring, Complex.exp_pi_mul_I]`.
+
+Evaluate the numerical expressions using `at h1`.
+-/
 theorem real_hypotheses :
     ¬ DiscreteTopology ℝ ∧ (stdSymp ℝ).IsAlt ∧ (stdSymp ℝ).Nondegenerate ∧
       Continuous Real.fourierChar ∧ Real.fourierChar ≠ 1 := by
@@ -627,11 +707,17 @@ theorem real_hypotheses :
       push_cast; ring, Complex.exp_pi_mul_I] at h1
     norm_num at h1
 
+/- English proof (translation)
+The claim follows from `Or.inr ⟨1, ContinuousAddEquiv.refl _, GroundTheory.Global.gaussianSchwartz _, fun _ => rfl⟩`.
+-/
 theorem isSchwartzBruhat_gaussian :
     IsSchwartzBruhat (GroundTheory.Global.gaussianSchwartz (EuclideanSpace ℝ (Fin 1)) :
       EuclideanSpace ℝ (Fin 1) → ℂ) :=
   Or.inr ⟨1, ContinuousAddEquiv.refl _, GroundTheory.Global.gaussianSchwartz _, fun _ => rfl⟩
 
+/- English proof (translation)
+Introduce `h`. Use `congrFun h 0` as an intermediate fact. Simplify using `[GroundTheory.Global.gaussianSchwartz_apply] at this`.
+-/
 theorem gaussianSchwartz_ne_zero :
     (GroundTheory.Global.gaussianSchwartz (EuclideanSpace ℝ (Fin 1)) : EuclideanSpace ℝ (Fin 1) → ℂ) ≠ 0 := by
   intro h
@@ -641,6 +727,9 @@ theorem gaussianSchwartz_ne_zero :
 def adelicStdPol : Polarization ((stdSymp ℚ).baseChange 𝔸[ℚ]) (AdelicPoints ℚ ℚ) (AdelicPoints ℚ ℚ) :=
   (stdPol ℚ).baseChange
 
+/- English proof (translation)
+Establish `he : adelicStdPol.e ((1 : 𝔸[ℚ]) ⊗ₜ q, 0) = (1 : 𝔸[ℚ]) ⊗ₜ ((q, 0) : ℚ × ℚ)` using `adelicPolEquiv_tmul_fst (stdPol ℚ) 1 q`. Establish `hs : adelicStdPol.e.symm ((1 : 𝔸[ℚ]) ⊗ₜ ((q, 0) : ℚ × ℚ)) = ((1 : 𝔸[ℚ]) ⊗ₜ q, 0)`. Rewrite using `[← he, LinearEquiv.symm_apply_apply]`. Simplify using `only [schr, Polarization.xPart, Polarization.yPart, Polarization.pair, hs, Prod.mk_zero_zero, map_zero, mul_zero, add_zero, AddChar.map_zero_eq_one, Circle.coe_one, one_mul]`.
+-/
 theorem schr_adelicStdPol_translate (ψ : AddChar 𝔸[ℚ] Circle) (q : ℚ)
     (φ : AdelicPoints ℚ ℚ → ℂ) (x : AdelicPoints ℚ ℚ) :
     letI := invertibleTwoAdele ℚ

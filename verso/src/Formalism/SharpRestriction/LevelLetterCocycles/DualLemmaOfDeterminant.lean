@@ -19,19 +19,31 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ} [NeZero n]
     (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Conclude with `PowerSeries.HasSubst.of_constantCoeff_zero' hz`.
+-/
 theorem hasSubst_π₀ (hz : PowerSeries.constantCoeff W.π₀₁ = 0) : PowerSeries.HasSubst W.π₀₁ := by
   exact PowerSeries.HasSubst.of_constantCoeff_zero' hz
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `PowerSeries.subst_add (PowerSeries.HasSubst.of_constantCoeff_zero' hz) f g`.
+-/
 theorem evaluation_add (hz : PowerSeries.constantCoeff W.π₀₁ = 0) (f g : PowerSeries O) :
     Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W (f + g) = Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W f + Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W g := by
   funext i
   exact PowerSeries.subst_add (PowerSeries.HasSubst.of_constantCoeff_zero' hz) f g
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `PowerSeries.subst_mul (PowerSeries.HasSubst.of_constantCoeff_zero' hz) f g`.
+-/
 theorem evalZero_mul (hz : PowerSeries.constantCoeff W.π₀₁ = 0) (f g : PowerSeries O) :
     Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W (f * g) = Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W f * Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W g := by
   funext i
   exact PowerSeries.subst_mul (PowerSeries.HasSubst.of_constantCoeff_zero' hz) f g
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show PowerSeries.subst W.π₀₁ PowerSeries.X = W.π₀ i`. Rewrite using `[PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero' hz)]`. Both sides reduce to the same expression.
+-/
 theorem evalZero_X_eq_pi0 (hz : PowerSeries.constantCoeff W.π₀₁ = 0) :
     Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W PowerSeries.X = W.π₀ := by
   funext i
@@ -39,6 +51,9 @@ theorem evalZero_X_eq_pi0 (hz : PowerSeries.constantCoeff W.π₀₁ = 0) :
   rw [PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero' hz)]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show PowerSeries.subst W.π₀₁ (PowerSeries.C c) = _`. Rewrite using `[PowerSeries.subst_C]`. Both sides reduce to the same expression.
+-/
 theorem evalZero_C (c : O) : Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W (PowerSeries.C c) = algebraMap O (LetA O n) c := by
   funext i
   show PowerSeries.subst W.π₀₁ (PowerSeries.C c) = _

@@ -9,6 +9,23 @@ namespace GlobalTheory.ExportSeries
 
 open MvPolynomial Matrix
 
+/- English proof (translation)
+Use `set d : MvPolynomial (D.what₂.Tau × Fin n × Fin n) ℂ := ∏ τ, (Matrix.of fun a b => (X (τ, a, b) : MvPolynomial (D.what₂.Tau × Fin n × Fin n) ℂ)).det with hd`. Establish `hev : ∀ v : D.what₂.Tau × Fin n × Fin n → ℂ, eval v d = ∏ τ, (Matrix.of fun a b => v (τ, a, b)).det`. Introduce `v`. Rewrite using `[hd, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.of_apply, eval_X]`. Establish `hd0 : d ≠ 0`.
+
+Introduce `h`. Use `hev (fun w => (1 : Matrix (Fin n) (Fin n) ℂ) w.2.1 w.2.2)` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Establish `h1 : ∀ τ : D.what₂.Tau, (Matrix.of fun a b => (1 : Matrix (Fin n) (Fin n) ℂ) a b).det = 1`. Introduce `τ`.
+
+Establish `: (Matrix.of fun a b => (1 : Matrix (Fin n) (Fin n) ℂ) a b) = 1` using `by ext a b; rfl`. Rewrite using `[this, det_one]`. Rewrite `this` using `[Finset.prod_eq_one fun τ _ => h1 τ]`. Conclude with `zero_ne_one this`. Establish `hFd : F * d = 0`.
+
+Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[map_mul, map_zero, hev]`. Distinguish the cases in `h : ∏ τ, (Matrix.of fun a b => v (τ, a, b)).det = 0`. Rewrite using `[h, mul_zero]`.
+
+Establish `hτ : ∀ τ, (Matrix.of fun a b => v (τ, a, b)).det ≠ 0` using `fun τ hτ => h (Finset.prod_eq_zero (Finset.mem_univ τ) hτ)`. Set `x : GLR D n` to `fun τ => GeneralLinearGroup.mkOfDetNeZero _ (hτ τ)`. Establish `hx` using `hF x`. Rewrite `hx` using `[coefFn]`. Establish `hu : ((detFam (fun τ => (lam τ).detShift) x : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`.
+
+Establish `h2` using `(mul_eq_zero.mp hx).resolve_left hu`. Establish `h3 : (fun w : D.what₂.Tau × Fin n × Fin n => (x w.1).val w.2.1 w.2.2) = v`. Use function extensionality and compare the values at `w`. Both sides reduce to the same expression. Rewrite `h2` using `[h3]`.
+
+Establish `h4 : eval v F = 0`. Rewrite using `[← h2]`. Both sides reduce to the same expression. Rewrite using `[h4, zero_mul]`. Conclude with `(mul_eq_zero.mp hFd).resolve_right hd0`.
+-/
 theorem eq_zero_of_coefFn_id_eq_zero (D : D7) (n : ℕ) (lam : D.what₂.Tau → DomWeight n) (F : Formalism.L2.DIV.Pol ℂ D.what₂.Tau n)
     (hF : ∀ x : GLR D n, coefFn (RingHom.id ℂ) lam F x = 0) : F = 0 := by
   classical

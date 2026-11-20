@@ -26,10 +26,16 @@ variable {O O' : Type} [CommRing O] [CommRing O']
 abbrev SpAlg (O B : Type) [CommRing O] [CommRing B] [Algebra O B] : Over (Sp O) :=
   Over.mk (spMap (algebraMap O B))
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (Cris.spMap_id B)`.
+-/
 @[simp] theorem spOver_id (B : Type) [CommRing B] [Algebra O B] :
     spOver (AlgHom.id O B) = 𝟙 (SpAlg O B) :=
   Over.OverMorphism.ext (Cris.spMap_id B)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem spOver_left {B C : Type} [CommRing B] [Algebra O B] [CommRing C] [Algebra O C]
     (φ : B →ₐ[O] C) : (spOver φ).left = spMap (φ : B →+* C) := rfl
 
@@ -58,14 +64,23 @@ def ptsDown (m : GrpMor κ u A κ' u' A' ρ (spMap σ) φ) (B : Type) [CommRing 
         exact h.symm.trans (Category.id_comp _)
       exact key _ _ rfl rfl)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ptsDown_left (m : GrpMor κ u A κ' u' A' ρ (spMap σ) φ) (B : Type) [CommRing B]
     [Algebra O B] [Algebra O' B] (hB : ∀ r, algebraMap O B r = algebraMap O' B (σ r))
     (z : SpAlg O' B ⟶ A') : (ptsDown m B hB z).left = z.left ≫ φ := rfl
 
+/- English proof (translation)
+The claim follows from `GrpMor.of_isGrpPullback (Cris.isDPMorphism_of_eq_bot _ rfl _ _) (by simp) h`.
+-/
 theorem grpMor_of_isGrpPullback (h : IsGrpPullback A' A (spMap σ) φ) :
     GrpMor (dp0 O) (𝟙 _) A (dp0 O') (𝟙 _) A' σ (spMap σ) φ :=
   GrpMor.of_isGrpPullback (Cris.isDPMorphism_of_eq_bot _ rfl _ _) (by simp) h
 
+/- English proof (translation)
+Use `⟨fun x y e => Over.OverMorphism.ext (h.hom_ext (congrArg Over.Hom.left e) ((Over.w x).trans (Over.w y).symm)), fun z => ?_⟩` and prove the remaining obligations. Establish `e : z.left ≫ A.hom = spMap (algebraMap O' B) ≫ spMap σ`. Rewrite using `[Over.w, ← Cris.spMap_comp]`. Conclude with `congrArg spMap (RingHom.ext hB)`. Conclude with `⟨Over.homMk (h.lift _ _ e) (h.lift_snd _ _ e), Over.OverMorphism.ext (h.lift_fst _ _ e)⟩`.
+-/
 theorem ptsDown_bijective (m : GrpMor κ u A κ' u' A' ρ (spMap σ) φ)
     (h : IsPullback φ A'.hom A.hom (spMap σ)) (B : Type) [CommRing B]
     [Algebra O B] [Algebra O' B] (hB : ∀ r, algebraMap O B r = algebraMap O' B (σ r)) :
@@ -84,6 +99,9 @@ variable {B C : Type} [CommRing B] [Algebra O B] [CommRing C] [Algebra O C]
 
 def gmCoord (z : SpAlg O B ⟶ Gm (Sp O)) : B := Diag.charVal z (ULift.up 1)
 
+/- English proof (translation)
+The claim follows from `(Diag.left_eq_iff (φ : B →+* C) (Over.w (spOver φ)).symm (spOver φ ≫ z) z).1 rfl _`.
+-/
 theorem gmCoord_comp (φ : B →ₐ[O] C) (z : SpAlg O B ⟶ Gm (Sp O)) :
     gmCoord (spOver φ ≫ z) = φ (gmCoord z) :=
   (Diag.left_eq_iff (φ : B →+* C) (Over.w (spOver φ)).symm (spOver φ ≫ z) z).1 rfl _
@@ -93,6 +111,9 @@ def gmCoordHom : (SpAlg O B ⟶ Gm (Sp O)) →* B where
   map_one' := Diag.charVal_one _
   map_mul' x y := Diag.charVal_mul x y _
 
+/- English proof (translation)
+Set `f : (SpAlg O B ⟶ Gm (Sp O)) → (Multiplicative ℤ →* Bˣ)` to `fun z => MonoidHom.toHomUnits { toFun := fun k => Diag.charVal z (ULift.up k.toAdd) map_one' := Diag.charVal_zero z map_mul' := fun k l => Diag.charVal_add z ⟨k.toAdd⟩ ⟨l.toAdd⟩ }`. Establish `e : f x = f y` using `MonoidHom.ext_mint (Units.ext h)`. Conclude with `Diag.charVal_ext fun k => congrArg (fun g : Multiplicative ℤ →* Bˣ => (g (Multiplicative.ofAdd k.down) : B)) e`.
+-/
 theorem gmCoord_ext {x y : SpAlg O B ⟶ Gm (Sp O)} (h : gmCoord x = gmCoord y) : x = y := by
   let f : (SpAlg O B ⟶ Gm (Sp O)) → (Multiplicative ℤ →* Bˣ) := fun z => MonoidHom.toHomUnits
     { toFun := fun k => Diag.charVal z (ULift.up k.toAdd)
@@ -108,6 +129,9 @@ def gmPoint (u : Bˣ) : SpAlg O B ⟶ Gm (Sp O) :=
   Diag.ofVal _ ((Units.coeHom B).comp ((zpowersHom Bˣ u).comp
     (AddMonoidHom.toMultiplicative (AddEquiv.ulift : ULift.{0} ℤ ≃+ ℤ).toAddMonoidHom)))
 
+/- English proof (translation)
+The claim follows from `(Diag.charVal_ofVal _ _).trans (congrArg Units.val (zpow_one u))`.
+-/
 @[simp] theorem gmCoord_gmPoint (u : Bˣ) : gmCoord (gmPoint O u) = u :=
   (Diag.charVal_ofVal _ _).trans (congrArg Units.val (zpow_one u))
 
@@ -145,6 +169,9 @@ def muIncl (n : ℕ) : SpAlg O ((mu p O).A n) ⟶ Gm (Sp O) :=
 
 variable {p O} in
 
+/- English proof (translation)
+Rewrite using `[gmCoord_comp, muIncl, gmCoord_gmPoint]`. Both sides reduce to the same expression.
+-/
 theorem gmCoord_muIncl {n : ℕ} {B : Type} [CommRing B] [Algebra O B]
     (φ : (mu p O).A n →ₐ[O] B) : gmCoord (spOver φ ≫ muIncl p O n) = φ (muT O (p ^ n)) := by
   rw [gmCoord_comp, muIncl, gmCoord_gmPoint]; rfl
@@ -167,6 +194,9 @@ def muTower : (mu p O).TorsionTower (Gm (Sp O)) where
 
 variable {p O} in
 
+/- English proof (translation)
+The claim follows from `gmCoord_muIncl φ`.
+-/
 theorem gmCoord_muTower {n : ℕ} {B : Type} [CommRing B] [Algebra O B]
     (φ : (mu p O).A n →ₐ[O] B) :
     gmCoord (spOver φ ≫ (muTower p O).y n) = φ (muT O (p ^ n)) := gmCoord_muIncl φ
@@ -186,14 +216,23 @@ def pts : WithConv (G.A n →ₐ[O] B) →* (SpAlg O B ⟶ A) :=
 
 variable {B} in
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pts_apply (φ : WithConv (G.A n →ₐ[O] B)) :
     t.pts n B φ = spOver φ.ofConv ≫ t.y n := rfl
 
+/- English proof (translation)
+Introduce `_ _ h` and use `ofConv_injective (t.inj n B _ _ h)`.
+-/
 theorem pts_injective : Function.Injective (t.pts n B) := fun _ _ h =>
   ofConv_injective (t.inj n B _ _ h)
 
 variable {B}
 
+/- English proof (translation)
+Use `⟨?_, t.surj n B z⟩` and prove the remaining obligations. Introduce and unpack `⟨φ, rfl⟩`. Rewrite using `[← ofConv_toConv φ, ← pts_apply, ← map_pow, G.pts_pow_self, map_one]`.
+-/
 theorem exists_iff (z : SpAlg O B ⟶ A) :
     (∃ φ : G.A n →ₐ[O] B, spOver φ ≫ t.y n = z) ↔ z ^ p ^ n = 1 := by
   refine ⟨?_, t.surj n B z⟩
@@ -202,30 +241,48 @@ theorem exists_iff (z : SpAlg O B ⟶ A) :
 
 variable (B) in
 
+/- English proof (translation)
+The claim follows from `Set.ext fun z => Iff.trans ⟨fun ⟨φ, h⟩ => ⟨φ.ofConv, h⟩, fun ⟨φ, h⟩ => ⟨toConv φ, h⟩⟩ (t.exists_iff n z)`.
+-/
 theorem range_pts : Set.range (t.pts n B) = {z | z ^ p ^ n = 1} :=
   Set.ext fun z => Iff.trans ⟨fun ⟨φ, h⟩ => ⟨φ.ofConv, h⟩, fun ⟨φ, h⟩ => ⟨toConv φ, h⟩⟩
     (t.exists_iff n z)
 
+/- English proof (translation)
+The claim follows from `(t.exists_iff n _).1 ⟨AlgHom.id O _, by rw [spOver_id, Category.id_comp]⟩`.
+-/
 theorem y_pow : t.y n ^ p ^ n = 1 :=
   (t.exists_iff n _).1 ⟨AlgHom.id O _, by rw [spOver_id, Category.id_comp]⟩
 
 def lift (z : SpAlg O B ⟶ A) (hz : z ^ p ^ n = 1) : G.A n →ₐ[O] B := (t.surj n B z hz).choose
 
+/- English proof (translation)
+The claim follows from `(t.surj n B z hz).choose_spec`.
+-/
 @[simp] theorem lift_y (z : SpAlg O B ⟶ A) (hz : z ^ p ^ n = 1) :
     spOver (t.lift n z hz) ≫ t.y n = z := (t.surj n B z hz).choose_spec
 
+/- English proof (translation)
+Rewrite using `[← map_one (t.pts n B), ← ofConv_toConv φ, ← pts_apply, (t.pts_injective n B).eq_iff]`. Conclude with `⟨fun h a => DFunLike.congr_fun (congrArg ofConv h) a, fun h => ofConv_injective (AlgHom.ext h)⟩`.
+-/
 theorem eq_one_iff (φ : G.A n →ₐ[O] B) :
     spOver φ ≫ t.y n = 1 ↔ ∀ a, φ a = algebraMap O B (counit a) := by
   rw [← map_one (t.pts n B), ← ofConv_toConv φ, ← pts_apply, (t.pts_injective n B).eq_iff]
   exact ⟨fun h a => DFunLike.congr_fun (congrArg ofConv h) a,
     fun h => ofConv_injective (AlgHom.ext h)⟩
 
+/- English proof (translation)
+Establish `h` using `map_pow (t.pts n (G.A n)) (toConv (AlgHom.id O _)) k`. Rewrite `h` using `[pts_apply, pts_apply, ← comp_mulBy_pts, ofConv_toConv, spOver_id, Category.id_comp]`. Conclude with `h`.
+-/
 theorem mulBy_y (k : ℕ) :
     spOver (mulBy O (G.A n) k : G.A n →ₐ[O] G.A n) ≫ t.y n = t.y n ^ k := by
   have h := map_pow (t.pts n (G.A n)) (toConv (AlgHom.id O _)) k
   rw [pts_apply, pts_apply, ← comp_mulBy_pts, ofConv_toConv, spOver_id, Category.id_comp] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[← t.res n, ← Category.assoc, spOver_comp, ← t.mulBy_y, ← G.mulP_comp_res]`. Both sides reduce to the same expression.
+-/
 theorem mulP_y : spOver (G.mulP n : G.A n →ₐ[O] G.A (n + 1)) ≫ t.y n = t.y (n + 1) ^ p := by
   rw [← t.res n, ← Category.assoc, spOver_comp, ← t.mulBy_y, ← G.mulP_comp_res]
   rfl
@@ -260,6 +317,11 @@ variable {R R' : Type} [CommRing R] [CommRing R'] {I : Ideal R} {I' : Ideal R'}
   {ρ : R →+* R'} {σ : O →+* O'} {G' : PDivGroup p O'} {A' : Over (Sp O')} [GrpObj A']
   {φ : A'.left ⟶ A.left} (t' : G'.TorsionTower A') (t : G.TorsionTower A)
 
+/- English proof (translation)
+Set `_ : Algebra O B` to `(f.comp (algebraMap O _)).toAlgebra`. Establish `e : g.comp (algebraMap O (G.A n)) = f.comp (algebraMap O _)`. Establish `h1` using `congrArg (· ≫ A.hom) h`. Simplify using `only [Category.assoc, Over.w] at h1`. Establish `h2 : spMap (f.comp (algebraMap O _)) = spMap (g.comp (algebraMap O (G.A n)))`.
+
+Rewrite using `[Cris.spMap_comp, Cris.spMap_comp]`. Conclude with `h1`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h2).symm`. Conclude with `congrArg AlgHom.toRingHom (t.inj n B { f with commutes' := fun _ => rfl } { g with commutes' := RingHom.congr_fun e } (Over.OverMorphism.ext h))`.
+-/
 theorem ringHom_ext {n : ℕ} {B : Type} [CommRing B] {f g : G.A n →+* B}
     (h : spMap f ≫ (t.y n).left = spMap g ≫ (t.y n).left) : f = g := by
   let _ : Algebra O B := (f.comp (algebraMap O _)).toAlgebra
@@ -272,6 +334,9 @@ theorem ringHom_ext {n : ℕ} {B : Type} [CommRing B] {f g : G.A n →+* B}
   exact congrArg AlgHom.toRingHom (t.inj n B { f with commutes' := fun _ => rfl }
     { g with commutes' := RingHom.congr_fun e } (Over.OverMorphism.ext h))
 
+/- English proof (translation)
+Set `_ : Algebra O (G'.A n)` to `((algebraMap O' _).comp σ).toAlgebra`. Take `⟨g, hg⟩` from `t.surj n (G'.A n) (ptsDown m _ (fun _ => rfl) (t'.y n)) (by rw [← map_pow, t'.y_pow, map_one])`. Conclude with `⟨g, g.commutes, congrArg Over.Hom.left hg⟩`.
+-/
 theorem exists_ringHom (m : GrpMor κ u A κ' u' A' ρ (spMap σ) φ) (n : ℕ) :
     ∃ g : G.A n →+* G'.A n, (∀ r, g (algebraMap O _ r) = algebraMap O' _ (σ r)) ∧
       spMap g ≫ (t.y n).left = (t'.y n).left ≫ φ := by
@@ -280,6 +345,11 @@ theorem exists_ringHom (m : GrpMor κ u A κ' u' A' ρ (spMap σ) φ) (n : ℕ) 
     (by rw [← map_pow, t'.y_pow, map_one])
   exact ⟨g, g.commutes, congrArg Over.Hom.left hg⟩
 
+/- English proof (translation)
+Establish `e : (ptsDown m B hB (t'.pts n B x)).left = spMap ((x.ofConv : G'.A n →+* B).comp g) ≫ (t.y n).left`. Rewrite using `[Cris.spMap_comp, Category.assoc, hg]`. Conclude with `Category.assoc _ _ _`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Conclude with `RingHom.congr_fun (t.ringHom_ext ((congrArg Over.Hom.left h).trans e))`. Introduce `h`. Use `Over.OverMorphism.ext (Eq.trans ?_ e.symm)` and prove the remaining obligations. Rewrite using `[← show (x₀.ofConv : G.A n →+* B) = (x.ofConv : G'.A n →+* B).comp g from RingHom.ext h]`. Both sides reduce to the same expression.
+-/
 theorem pts_eq_ptsDown (m : GrpMor κ u A κ' u' A' ρ (spMap σ) φ) {n : ℕ} {g : G.A n →+* G'.A n}
     (hg : spMap g ≫ (t.y n).left = (t'.y n).left ≫ φ) {B : Type} [CommRing B] [Algebra O B]
     [Algebra O' B] (hB : ∀ r, algebraMap O B r = algebraMap O' B (σ r))
@@ -316,10 +386,16 @@ def semiOf (m : GrpMor κ u A κ' u' A' ρ (spMap σ) φ) : SemiHom σ G' G wher
     exact (congrArg (·.left ≫ φ) (t'.res n)).trans ((h n).symm.trans
       (congrArg (_ ≫ ·.left) (t.res n)).symm)
 
+/- English proof (translation)
+The claim follows from `(t'.exists_ringHom t m n).choose_spec.2`.
+-/
 theorem semiOf_y (m : GrpMor κ u A κ' u' A' ρ (spMap σ) φ) (n : ℕ) :
     spMap ((t'.semiOf t m).app n).toRingHom ≫ (t.y n).left = (t'.y n).left ≫ φ :=
   (t'.exists_ringHom t m n).choose_spec.2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => h ▸ t'.semiOf_y t m, fun h => SemiHom.ext_apply fun n => RingHom.congr_fun (t.ringHom_ext ((h n).trans (t'.semiOf_y t m n).symm))⟩`.
+-/
 theorem eq_semiOf_iff (m : GrpMor κ u A κ' u' A' ρ (spMap σ) φ) (s : SemiHom σ G' G) :
     s = t'.semiOf t m ↔ ∀ n, spMap (s.app n).toRingHom ≫ (t.y n).left = (t'.y n).left ≫ φ :=
   ⟨fun h => h ▸ t'.semiOf_y t m, fun h => SemiHom.ext_apply fun n =>
@@ -328,6 +404,9 @@ theorem eq_semiOf_iff (m : GrpMor κ u A κ' u' A' ρ (spMap σ) φ) (s : SemiHo
 abbrev semiHom (m : GrpMor (dp0 O) (𝟙 _) A (dp0 O') (𝟙 _) A' σ (spMap σ) φ) : SemiHom σ G' G :=
   t'.semiOf t m
 
+/- English proof (translation)
+The claim follows from `RingHom.congr_fun (t.ringHom_ext (g := (s'.app n).toRingHom.comp (s.app n).toRingHom) (by rw [Cris.spMap_comp, Category.assoc, h, h'', ← Category.assoc, ← Category.assoc, h'])) a`.
+-/
 theorem semiOf_semiOf {τ : O' →+* O''} {υ : O →+* O''} {G'' : PDivGroup p O''}
     {A'' : Over (Sp O'')} [GrpObj A''] {ψ : A''.left ⟶ A'.left} (t'' : G''.TorsionTower A'')
     {s : SemiHom σ G' G} {s' : SemiHom τ G'' G'} {s'' : SemiHom υ G'' G}
@@ -344,31 +423,52 @@ section Map
 
 variable (t : G.TorsionTower A) (t₁ : H.TorsionTower A₁) (t₂ : K.TorsionTower A₂)
 
+/- English proof (translation)
+Rewrite using `[Cris.spMap_id]`. Conclude with `DeRham.homMor _ _ f`.
+-/
 theorem _root_.GlobalTheory.PDiv.grpMor_of_hom (f : A ⟶ A₁) [IsMonHom f] :
     GrpMor (dp0 O) (𝟙 _) A₁ (dp0 O) (𝟙 _) A (RingHom.id O) (spMap (RingHom.id O)) f.left := by
   rw [Cris.spMap_id]; exact DeRham.homMor _ _ f
 
 def map (f : A ⟶ A₁) [IsMonHom f] : G ⟶ H := (t.semiHom t₁ (grpMor_of_hom f)).toHom
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (t.semiOf_y t₁ (grpMor_of_hom f) n)`.
+-/
 theorem map_y (f : A ⟶ A₁) [IsMonHom f] (n : ℕ) :
     spOver ((t.map t₁ f).app n : H.A n →ₐ[O] G.A n) ≫ t₁.y n = t.y n ≫ f :=
   Over.OverMorphism.ext (t.semiOf_y t₁ (grpMor_of_hom f) n)
 
+/- English proof (translation)
+The claim follows from `hom_ext fun n => BialgHom.coe_toAlgHom_injective (t₁.inj n _ _ _ (h n))`.
+-/
 theorem hom_ext_y {g g' : G ⟶ H} (h : ∀ n, spOver (g.app n : H.A n →ₐ[O] G.A n) ≫ t₁.y n =
     spOver (g'.app n : H.A n →ₐ[O] G.A n) ≫ t₁.y n) : g = g' :=
   hom_ext fun n => BialgHom.coe_toAlgHom_injective (t₁.inj n _ _ _ (h n))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => h ▸ t.map_y t₁ f, fun h => t₁.hom_ext_y fun n => (h n).trans (t.map_y t₁ f n).symm⟩`.
+-/
 theorem eq_map_iff (f : A ⟶ A₁) [IsMonHom f] (g : G ⟶ H) :
     g = t.map t₁ f ↔ ∀ n, spOver (g.app n : H.A n →ₐ[O] G.A n) ≫ t₁.y n = t.y n ≫ f :=
   ⟨fun h => h ▸ t.map_y t₁ f, fun h => t₁.hom_ext_y fun n => (h n).trans (t.map_y t₁ f n).symm⟩
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem map_congr {f g : A ⟶ A₁} [IsMonHom f] [IsMonHom g] (e : f = g) :
     t.map t₁ f = t.map t₁ g := by subst e; rfl
 
+/- English proof (translation)
+The claim follows from `((t.eq_map_iff t _ _).2 fun n => by rw [Category.comp_id]; exact (congrArg (· ≫ t.y n) (spOver_id _)).trans (Category.id_comp _)).symm`.
+-/
 @[simp] theorem map_id : t.map t (𝟙 A) = 𝟙 G :=
   ((t.eq_map_iff t _ _).2 fun n => by
     rw [Category.comp_id]; exact (congrArg (· ≫ t.y n) (spOver_id _)).trans (Category.id_comp _)).symm
 
+/- English proof (translation)
+The claim follows from `((t.eq_map_iff t₂ _ _).2 fun n => by rw [← Category.assoc, ← t.map_y t₁, Category.assoc, ← t₁.map_y t₂, ← Category.assoc, spOver_comp] rfl).symm`.
+-/
 theorem map_comp (f : A ⟶ A₁) (g : A₁ ⟶ A₂) [IsMonHom f] [IsMonHom g] :
     t.map t₂ (f ≫ g) = t.map t₁ f ≫ t₁.map t₂ g :=
   ((t.eq_map_iff t₂ _ _).2 fun n => by
@@ -376,12 +476,18 @@ theorem map_comp (f : A ⟶ A₁) (g : A₁ ⟶ A₂) [IsMonHom f] [IsMonHom g] 
       spOver_comp]
     rfl).symm
 
+/- English proof (translation)
+The claim follows from `((t.eq_map_iff t₁ _ _).2 fun n => by rw [MonObj.comp_mul, ← t.map_y t₁, ← t.map_y t₁] exact t₁.mul n _ (toPts ((t.map t₁ f).conv n)) (toPts ((t.map t₁ g).conv n))).symm`.
+-/
 theorem map_mul (f g : A ⟶ A₁) [IsMonHom f] [IsMonHom g] [IsMonHom (f * g)] :
     t.map t₁ (f * g) = t.map t₁ f + t.map t₁ g :=
   ((t.eq_map_iff t₁ _ _).2 fun n => by
     rw [MonObj.comp_mul, ← t.map_y t₁, ← t.map_y t₁]
     exact t₁.mul n _ (toPts ((t.map t₁ f).conv n)) (toPts ((t.map t₁ g).conv n))).symm
 
+/- English proof (translation)
+The claim follows from `((t.eq_map_iff t₁ _ _).2 fun n => by rw [MonObj.comp_one]; exact _root_.map_one (t₁.pts n _)).symm`.
+-/
 theorem map_one [IsMonHom (1 : A ⟶ A₁)] : t.map t₁ 1 = 0 :=
   ((t.eq_map_iff t₁ _ _).2 fun n => by
     rw [MonObj.comp_one]; exact _root_.map_one (t₁.pts n _)).symm
@@ -398,11 +504,17 @@ theorem map_one [IsMonHom (1 : A ⟶ A₁)] : t.map t₁ 1 = 0 :=
   hom_inv_id := by rw [← map_comp, t.map_congr t (Category.comp_id _), map_id]
   inv_hom_id := by rw [← map_comp, t'.map_congr t' (Category.comp_id _), map_id]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨t.uniqueIso t', fun n => (t.map_y t' _ n).trans (Category.comp_id _), fun _ h => Iso.ext ((t.eq_map_iff t' _ _).2 fun n => (h n).trans (Category.comp_id _).symm)⟩`.
+-/
 theorem existsUnique_iso (t' : H.TorsionTower A) : ∃! e : G ≅ H,
     ∀ n, spOver (e.hom.app n : H.A n →ₐ[O] G.A n) ≫ t'.y n = t.y n :=
   ⟨t.uniqueIso t', fun n => (t.map_y t' _ n).trans (Category.comp_id _), fun _ h =>
     Iso.ext ((t.eq_map_iff t' _ _).2 fun n => (h n).trans (Category.comp_id _).symm)⟩
 
+/- English proof (translation)
+Use `RingHom.congr_fun (t₁.ringHom_ext (f := (s.app n).toRingHom.comp ((t.map t₁ f).app n : H.A n →+* G.A n)) (g := ((t'.map t₁' f').app n : H'.A n →+* G'.A n).comp (s₁.app n).toRingHom) ?_) a` and prove the remaining obligations. Establish `h2 : spMap ((t.map t₁ f).app n : H.A n →+* G.A n) ≫ (t₁.y n).left = (t.y n).left ≫ f.left` using `congrArg Over.Hom.left (t.map_y t₁ f n)`. Establish `h3 : spMap ((t'.map t₁' f').app n : H'.A n →+* G'.A n) ≫ (t₁'.y n).left = (t'.y n).left ≫ f'.left` using `congrArg Over.Hom.left (t'.map_y t₁' f' n)`. Rewrite using `[Cris.spMap_comp, Cris.spMap_comp, Category.assoc, Category.assoc, h2, h₁, reassoc_of% h, reassoc_of% h3, e]`.
+-/
 theorem semi_map {σ : O →+* O'} {G' H' : PDivGroup p O'} {A' A₁' : Over (Sp O')} [GrpObj A']
     [GrpObj A₁'] (t' : G'.TorsionTower A') (t₁' : H'.TorsionTower A₁') {φ : A'.left ⟶ A.left}
     {φ₁ : A₁'.left ⟶ A₁.left} {s : SemiHom σ G' G} {s₁ : SemiHom σ H' H}
@@ -423,6 +535,9 @@ theorem semi_map {σ : O →+* O'} {G' H' : PDivGroup p O'} {A' A₁' : Over (Sp
 
 variable [Fact p.Prime]
 
+/- English proof (translation)
+The claim follows from `((t.eq_map_iff t _ _).2 fun n => by rw [natCast_smul_id_app, mulBy_y, MonObj.comp_pow, Category.comp_id]).symm`.
+-/
 theorem map_pow_id (k : ℕ) [IsMonHom (𝟙 A ^ k)] : t.map t (𝟙 A ^ k) = (k : ℤ_[p]) • 𝟙 G :=
   ((t.eq_map_iff t _ _).2 fun n => by
     rw [natCast_smul_id_app, mulBy_y, MonObj.comp_pow, Category.comp_id]).symm
@@ -440,6 +555,9 @@ def ringAct [IsCommMonObj A] {Λ : Type} [Ring Λ] (a : RingAct A Λ) : Action �
       have : IsMonHom (a.act x * a.act y) := e ▸ a.hom _
       exact (t.map_congr t e).trans (t.map_mul t _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ringAct_apply [IsCommMonObj A] {Λ : Type} [Ring Λ] (a : RingAct A Λ) (x : Λ)
     [IsMonHom (a.act x)] : t.ringAct a x = t.map t (a.act x) := rfl
 
@@ -456,6 +574,9 @@ def act {Λ : Type} [CommRing Λ] (a : OAct Λ A) : Action Λ G :=
       have : IsMonHom (a.act x * a.act y) := a.add x y ▸ a.hom _
       exact (t.map_congr t (a.add x y)).trans (t.map_mul t _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem act_apply {Λ : Type} [CommRing Λ] (a : OAct Λ A) (x : Λ) [IsMonHom (a.act x)] :
     t.act a x = t.map t (a.act x) := rfl
 
@@ -465,6 +586,9 @@ def _root_.GlobalTheory.PDivGroup.Action.padicExtend {Λ : Type} [Ring Λ] (ρ :
   (Algebra.TensorProduct.lift (algebraMap ℤ_[p] (End G)).toIntAlgHom (RingHom.toIntAlgHom ρ)
     fun r _ ↦ Algebra.commutes r _).toRingHom
 
+/- English proof (translation)
+The claim follows from `(Algebra.smul_def c (ρ x)).symm`.
+-/
 @[simp] theorem _root_.GlobalTheory.PDivGroup.Action.padicExtend_tmul {Λ : Type} [Ring Λ] (ρ : Action Λ G)
     (c : ℤ_[p]) (x : Λ) : ρ.padicExtend (c ⊗ₜ x) = c • ρ x := (Algebra.smul_def c (ρ x)).symm
 
@@ -479,11 +603,17 @@ def baseChangeY (n : ℕ) : SpAlg O' (O' ⊗[O] G.A n) ⟶ A' :=
   ((ptsDown_bijective (grpMor_of_isGrpPullback h) h.1 (O' ⊗[O] G.A n) fun _ => rfl).2
     (spOver Algebra.TensorProduct.includeRight ≫ t.y n)).choose
 
+/- English proof (translation)
+The claim follows from `congrArg Over.Hom.left ((ptsDown_bijective (grpMor_of_isGrpPullback h) h.1 (O' ⊗[O] G.A n) fun _ => rfl).2 (spOver Algebra.TensorProduct.includeRight ≫ t.y n)).choose_spec`.
+-/
 theorem baseChangeY_left (n : ℕ) : (t.baseChangeY h n).left ≫ φ =
     spMap (toBaseChange O O' (G.A n)).toRingHom ≫ (t.y n).left :=
   congrArg Over.Hom.left ((ptsDown_bijective (grpMor_of_isGrpPullback h) h.1 (O' ⊗[O] G.A n)
     fun _ => rfl).2 (spOver Algebra.TensorProduct.includeRight ≫ t.y n)).choose_spec
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (by rw [ptsDown_left, Over.comp_left, Category.assoc, baseChangeY_left, spOver_left, ← Category.assoc, ← Cris.spMap_comp] rfl)`.
+-/
 theorem ptsDown_baseChangeY (n : ℕ) (B : Type) [CommRing B] [Algebra O B] [Algebra O' B]
     (hB : ∀ r, algebraMap O B r = algebraMap O' B (algebraMap O O' r))
     (x : WithConv (O' ⊗[O] G.A n →ₐ[O'] B)) :
@@ -521,9 +651,15 @@ def baseChange : (G.baseChange O').TorsionTower A' where
       ← Cris.spMap_comp, ← Cris.spMap_comp]
     rfl
 
+/- English proof (translation)
+The claim follows from `(t.baseChangeY_left h n).symm`.
+-/
 theorem toBase_y (n : ℕ) : spMap ((G.toBase O').app n).toRingHom ≫ (t.y n).left =
     ((t.baseChange h).y n).left ≫ φ := (t.baseChangeY_left h n).symm
 
+/- English proof (translation)
+The claim follows from `(((t.baseChange h).eq_semiOf_iff t (grpMor_of_isGrpPullback h) (G.toBase O')).2 (t.toBase_y h)).symm`.
+-/
 theorem semiHom_baseChange :
     (t.baseChange h).semiHom t (grpMor_of_isGrpPullback h) = G.toBase O' :=
   (((t.baseChange h).eq_semiOf_iff t (grpMor_of_isGrpPullback h) (G.toBase O')).2
@@ -532,6 +668,11 @@ theorem semiHom_baseChange :
 def baseChangeIso {G' : PDivGroup p O'} (t' : G'.TorsionTower A') : G' ≅ G.baseChange O' :=
   t'.uniqueIso (t.baseChange h)
 
+/- English proof (translation)
+Use `baseChange_hom_ext fun n a => ?_` and prove the remaining obligations. Rewrite using `[SemiHom.lift_app, one_smul]`. Establish `h1 : ∀ n, spMap ((SemiHom.ofHom (t.baseChangeIso h t').hom).app n).toRingHom ≫ ((t.baseChange h).y n).left = (t'.y n).left ≫ 𝟙 _` using `fun n => congrArg Over.Hom.left (t'.map_y (t.baseChange h) (𝟙 A') n)`. Establish `h2 : ∀ n, spMap ((t'.semiHom t (grpMor_of_isGrpPullback h)).app n).toRingHom ≫ (t.y n).left = (t'.y n).left ≫ 𝟙 _ ≫ φ` using `fun n => by`. Rewrite using `[Category.id_comp]`.
+
+Conclude with `t'.semiOf_y t _ n`. Conclude with `((t.baseChange h).semiOf_semiOf t t' (t.toBase_y h) h1 h2 n a).symm`.
+-/
 theorem baseChangeIso_hom {G' : PDivGroup p O'} (t' : G'.TorsionTower A') :
     (t.baseChangeIso h t').hom = (t'.semiHom t (grpMor_of_isGrpPullback h)).lift := by
   refine baseChange_hom_ext fun n a => ?_
@@ -556,9 +697,15 @@ def _root_.GlobalTheory.PDiv.epsTo (B : Type) [CommRing B] [Algebra O B] :
     commutes' := fun r => by
       ext <;> simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl'] }
 
+/- English proof (translation)
+The claim follows from `add_zero _`.
+-/
 @[simp] theorem _root_.GlobalTheory.PDiv.fst_epsTo (B : Type) [CommRing B] [Algebra O B]
     (z : DualNumber O) : (epsTo O B z).fst = algebraMap O B z.fst := add_zero _
 
+/- English proof (translation)
+The claim follows from `zero_add _`.
+-/
 @[simp] theorem _root_.GlobalTheory.PDiv.snd_epsTo (B : Type) [CommRing B] [Algebra O B]
     (z : DualNumber O) : (epsTo O B z).snd = algebraMap O B z.snd := zero_add _
 
@@ -571,9 +718,17 @@ variable (p) in
 abbrev _root_.GlobalTheory.PDiv.epsRedPow {A : Over (Sp O)} (n : ℕ) (v : epsR O ⟶ A) :
     SpAlg O (DualNumber (ModPow p O n)) ⟶ A := spOver (epsTo O (ModPow p O n)) ≫ v
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.PDiv.epsScale_eq (c : O) : GrpTangent.epsScale c =
     spOver (TrivSqZeroExt.map (c • (LinearMap.id : O →ₗ[O] O))) := rfl
 
+/- English proof (translation)
+Establish `h : spOver (epsTo O (ModPow p O n)) ≫ GrpTangent.epsScale ((p ^ n : ℕ) : O) = spOver (epsTo O (ModPow p O n)) ≫ GrpTangent.epsScale 0`. Rewrite using `[epsScale_eq, epsScale_eq, spOver_comp, spOver_comp]`. Use `congrArg spOver (AlgHom.ext fun z => ?_)` and prove the remaining obligations. Establish `h0 : (p : ModPow p O n) ^ n = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk _), ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `Ideal.mem_span_singleton_self _`. Apply the tactic sequence `ext <;> simp [h0]`. Rewrite using `[← MonObj.comp_pow, GrpTangent.pow_eq_epsScale_comp hv, ← Category.assoc, h, Category.assoc, GrpTangent.epsScale_zero_comp hv, MonObj.comp_one]`.
+-/
 theorem _root_.GlobalTheory.PDiv.epsRedPow_pow {v : epsR O ⟶ A} (hv : IsTangent v) (n : ℕ) :
     epsRedPow p n v ^ p ^ n = 1 := by
   have h : spOver (epsTo O (ModPow p O n)) ≫ GrpTangent.epsScale ((p ^ n : ℕ) : O) =
@@ -599,9 +754,15 @@ variable {v v' : epsR O ⟶ A}
 def tanPt (hv : IsTangent v) (n : ℕ) : G.A n →ₐ[O] DualNumber (ModPow p O n) :=
   t.lift n _ (epsRedPow_pow hv n)
 
+/- English proof (translation)
+The claim follows from `t.lift_y ..`.
+-/
 theorem tanPt_y (hv : IsTangent v) (n : ℕ) :
     spOver (t.tanPt hv n) ≫ t.y n = epsRedPow p n v := t.lift_y ..
 
+/- English proof (translation)
+Use `(t.eq_one_iff n ((TrivSqZeroExt.fstHom O _ _).comp (t.tanPt hv n))).1 ?_ a` and prove the remaining obligations. Rewrite using `[← spOver_comp, Category.assoc, tanPt_y, ← MonObj.comp_one (spOver ((TrivSqZeroExt.fstHom O _ _).comp (epsTo O (ModPow p O n)))), ← GrpTangent.epsScale_zero_comp hv, epsScale_eq, ← Category.assoc, ← Category.assoc, spOver_comp, spOver_comp]`. Conclude with `congrArg (spOver · ≫ v) (AlgHom.ext fun z => by simp)`.
+-/
 theorem fst_tanPt (hv : IsTangent v) (n : ℕ) (a : G.A n) :
     (t.tanPt hv n a).fst = algebraMap O _ (counit a) := by
   refine (t.eq_one_iff n ((TrivSqZeroExt.fstHom O _ _).comp (t.tanPt hv n))).1 ?_ a
@@ -615,9 +776,17 @@ def tanDer (hv : IsTangent v) (n : ℕ) : Cot O (G.A n) →ₗ[O] ModPow p O n :
   AugCot.lift _ ((TrivSqZeroExt.sndHom _ _).restrictScalars O ∘ₗ (t.tanPt hv n).toLinearMap)
     fun a b => by simp [t.fst_tanPt hv, Algebra.smul_def, mul_comm]
 
+/- English proof (translation)
+The claim follows from `AugCot.lift_d ..`.
+-/
 @[simp] theorem tanDer_d (hv : IsTangent v) (n : ℕ) (a : G.A n) :
     t.tanDer hv n (dUnit O a) = (t.tanPt hv n a).snd := AugCot.lift_d ..
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h n w`. Take `⟨ψ, h1, h2⟩` from `h.2 n`. Take `⟨a, ha⟩` from `AugCot.d_surjective _ (w.1 n)`. Rewrite using `[h2 w a ha, ← ha, tanDer_d, t.inj n _ _ _ (h1.trans (t.tanPt_y hv n).symm)]`.
+
+Conclude with `fun h => ⟨hv, fun n => ⟨_, t.tanPt_y hv n, fun w a ha => by rw [h, ← ha, tanDer_d]⟩⟩`.
+-/
 theorem lieCorr_iff (hv : IsTangent v) (x : G.Lie) : t.LieCorr x v ↔
     ∀ (n : ℕ) (w : G.omega), Ideal.Quotient.mk _ (x w) = t.tanDer hv n (w.1 n) := by
   constructor
@@ -629,11 +798,23 @@ theorem lieCorr_iff (hv : IsTangent v) (x : G.Lie) : t.LieCorr x v ↔
 
 variable {t} {x x' : G.Lie}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(GrpTangent.isTangent_iff _).2 (MonObj.comp_one _), fun n => ⟨(1 : WithConv (G.A n →ₐ[O] DualNumber (ModPow p O n))).ofConv, (_root_.map_one (t.pts n _)).trans (MonObj.comp_one _).symm, fun w a _ => by rw [LinearMap.zero_apply, map_zero]; rfl⟩⟩`.
+-/
 theorem lieCorr_zero : t.LieCorr 0 1 :=
   ⟨(GrpTangent.isTangent_iff _).2 (MonObj.comp_one _), fun n =>
     ⟨(1 : WithConv (G.A n →ₐ[O] DualNumber (ModPow p O n))).ofConv, (_root_.map_one (t.pts n _)).trans (MonObj.comp_one _).symm, fun w a _ => by
       rw [LinearMap.zero_apply, map_zero]; rfl⟩⟩
 
+/- English proof (translation)
+Establish `hv : IsTangent (v * v')` using `(GrpTangent.isTangent_iff _).2 (by`. Rewrite using `[MonObj.comp_mul, (GrpTangent.isTangent_iff _).1 h.1, (GrpTangent.isTangent_iff _).1 h'.1, _root_.mul_one])`. Use `⟨hv, fun n => ⟨(toConv (t.tanPt h.1 n) * toConv (t.tanPt h'.1 n)).ofConv, by` and prove the remaining obligations. Rewrite using `[t.mul, tanPt_y, tanPt_y, ← MonObj.comp_mul], fun w a ha => ?_⟩⟩`. Rewrite using `[LinearMap.add_apply, map_add, (t.lieCorr_iff h.1 x).1 h, (t.lieCorr_iff h'.1 x').1 h', ← ha, tanDer_d, tanDer_d, AlgHom.convMul_apply]`.
+
+Establish `e1` using `congrArg (t.tanPt h.1 n) (congrArg (TensorProduct.rid O _) (lTensor_counit_comul a))`. Establish `e2` using `congrArg (t.tanPt h'.1 n) (congrArg (TensorProduct.lid O _) (rTensor_counit_comul a))`. Rewrite `e1` using `[TensorProduct.rid_tmul, one_smul]`. Rewrite `e2` using `[TensorProduct.lid_tmul, one_smul]`. Rewrite using `[← e1, ← e2]`.
+
+Generalize the expression as in `comul (R := O) a = c`. Proceed by induction on `c with`. Consider the case `zero => simp`. Consider the case `add c d hc hd => simp only [map_add, TrivSqZeroExt.snd_add, ← hc, ← hd]`. Normalize the expressions using the abelian group laws.
+
+Consider the case `tmul b c`. Rewrite using `[Algebra.TensorProduct.lift_tmul, LinearMap.lTensor_tmul, LinearMap.rTensor_tmul, TensorProduct.rid_tmul, TensorProduct.lid_tmul, map_smul, map_smul, DualNumber.snd_mul, ofConv_toConv, ofConv_toConv, fst_tanPt, fst_tanPt, TrivSqZeroExt.snd_smul, TrivSqZeroExt.snd_smul, Algebra.sm …`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem LieCorr.add (h : t.LieCorr x v) (h' : t.LieCorr x' v') : t.LieCorr (x + x') (v * v') := by
   have hv : IsTangent (v * v') := (GrpTangent.isTangent_iff _).2 (by
     rw [MonObj.comp_mul, (GrpTangent.isTangent_iff _).1 h.1, (GrpTangent.isTangent_iff _).1 h'.1,
@@ -658,6 +839,11 @@ theorem LieCorr.add (h : t.LieCorr x v) (h' : t.LieCorr x' v') : t.LieCorr (x + 
       TrivSqZeroExt.snd_smul, Algebra.smul_def, Algebra.smul_def]
     ring
 
+/- English proof (translation)
+Use `⟨GrpTangent.isTangent_epsScale c h.1, fun n => ?_⟩` and prove the remaining obligations. Take `⟨ψ, h1, h2⟩` from `h.2 n`. Use `⟨((TrivSqZeroExt.map (c • LinearMap.id)).restrictScalars O).comp ψ, ?_, fun w a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[← spOver_comp, Category.assoc, h1, epsScale_eq, epsRedPow, epsRedPow, ← Category.assoc, ← Category.assoc, spOver_comp, spOver_comp]`. Apply the tactic sequence `exact congrArg (spOver · ≫ v) (AlgHom.ext fun z => by ext <;> simp [Algebra.smul_def])`.
+
+Simplify using `[h2 w a ha, Algebra.smul_def]`.
+-/
 theorem LieCorr.smul (h : t.LieCorr x v) (c : O) :
     t.LieCorr (c • x) (GrpTangent.epsScale c ≫ v) := by
   refine ⟨GrpTangent.isTangent_epsScale c h.1, fun n => ?_⟩
@@ -668,6 +854,9 @@ theorem LieCorr.smul (h : t.LieCorr x v) (c : O) :
     exact congrArg (spOver · ≫ v) (AlgHom.ext fun z => by ext <;> simp [Algebra.smul_def])
   · simp [h2 w a ha, Algebra.smul_def]
 
+/- English proof (translation)
+Use `⟨GrpTangent.isTangent_comp h.1 f, fun n => ?_⟩` and prove the remaining obligations. Take `⟨ψ, h1, h2⟩` from `h.2 n`. Use `⟨ψ.comp ((t.map t₁ f).app n : H.A n →ₐ[O] G.A n), ?_, fun w a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[← spOver_comp, Category.assoc, map_y, ← Category.assoc, h1, Category.assoc]`. Conclude with `h2 _ _ (by rw [omegaMap_val, ← ha, cotMap_d]; rfl)`.
+-/
 theorem LieCorr.map [Fact p.Prime] (h : t.LieCorr x v) (f : A ⟶ A₁) [IsMonHom f] :
     t₁.LieCorr (lieMap G H (t.map t₁ f) x) (v ≫ f) := by
   refine ⟨GrpTangent.isTangent_comp h.1 f, fun n => ?_⟩
@@ -676,6 +865,13 @@ theorem LieCorr.map [Fact p.Prime] (h : t.LieCorr x v) (f : A ⟶ A₁) [IsMonHo
   · rw [← spOver_comp, Category.assoc, map_y, ← Category.assoc, h1, Category.assoc]
   · exact h2 _ _ (by rw [omegaMap_val, ← ha, cotMap_d]; rfl)
 
+/- English proof (translation)
+Take `⟨ψ, h1, h2⟩` from `h.2 n`. Take `⟨ψ', h1', h2'⟩` from `h'.2 n`. Take `⟨a, ha⟩` from `AugCot.d_surjective _ (w.1 n)`. Set `τ : ModPow p O n →+* ModPow p O' n` to `Ideal.quotientMap _ σ (by`. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.mem_comap, map_pow, map_natCast]`.
+
+Conclude with `Ideal.mem_span_singleton_self _)`. Establish `k1 : spMap (ψ : G.A n →+* DualNumber (ModPow p O n)) ≫ (t.y n).left = spMap (epsTo O (ModPow p O n)).toRingHom ≫ v.left` using `congrArg Over.Hom.left h1`. Establish `k2 : spMap (ψ' : G'.A n →+* DualNumber (ModPow p O' n)) ≫ (t'.y n).left = spMap (epsTo O' (ModPow p O' n)).toRingHom ≫ v'.left` using `congrArg Over.Hom.left h1'`. Establish `k` using `t.ringHom_ext (f := (ψ' : G'.A n →+* DualNumber (ModPow p O' n)).comp (s.app n).toRingHom) (g := (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR τ).comp (ψ : G.A n →+* DualNumber (ModPow p O n))) (by`. Rewrite using `[Cris.spMap_comp, Cris.spMap_comp, Category.assoc, Category.assoc, hs, k1, reassoc_of% k2, e, ← Category.assoc, ← Category.assoc, ← Cris.spMap_comp, ← Cris.spMap_comp]`.
+
+Use `congrArg (spMap · ≫ v.left) (RingHom.ext fun z => TrivSqZeroExt.ext ?_ ?_)` and prove the remaining obligations. Conclude with `(fst_epsTo ..).trans ((congrArg _ (add_zero _)).trans ((add_zero _).trans (congrArg τ (fst_epsTo _ z))).symm)`. Conclude with `(snd_epsTo ..).trans ((congrArg _ (zero_add _)).trans ((zero_add _).trans (congrArg τ (snd_epsTo _ z))).symm))`. Rewrite using `[h2' _ (s.app n a) (by rw [SemiHom.omega_val, ← ha, SemiBialgHom.cot_d])]`. Conclude with `(congrArg TrivSqZeroExt.snd (RingHom.congr_fun k a)).trans ((zero_add _).trans (congrArg τ (h2 w a ha).symm))`.
+-/
 theorem LieCorr.semi_mod {σ : O →+* O'} {G' : PDivGroup p O'} {A' : Over (Sp O')} [GrpObj A']
     {t' : G'.TorsionTower A'} {φ : A'.left ⟶ A.left} {s : SemiHom σ G' G}
     (hs : ∀ n, spMap (s.app n).toRingHom ≫ (t.y n).left = (t'.y n).left ≫ φ)
@@ -707,6 +903,9 @@ theorem LieCorr.semi_mod {σ : O →+* O'} {G' : PDivGroup p O'} {A' : Over (Sp 
   exact (congrArg TrivSqZeroExt.snd (RingHom.congr_fun k a)).trans
     ((zero_add _).trans (congrArg τ (h2 w a ha).symm))
 
+/- English proof (translation)
+The claim follows from `sub_eq_zero.1 <| IsHausdorff.haus' (I := Ideal.span {(p : O')}) _ fun n => by rw [SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, ← Ideal.Quotient.eq] exact h.semi_mod hs h' e w n`.
+-/
 theorem LieCorr.semi {σ : O →+* O'} [IsHausdorff (Ideal.span {(p : O')}) O'] {G' : PDivGroup p O'}
     {A' : Over (Sp O')} [GrpObj A'] {t' : G'.TorsionTower A'} {φ : A'.left ⟶ A.left}
     {s : SemiHom σ G' G}
@@ -718,6 +917,9 @@ theorem LieCorr.semi {σ : O →+* O'} [IsHausdorff (Ideal.span {(p : O')}) O'] 
     rw [SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, ← Ideal.Quotient.eq]
     exact h.semi_mod hs h' e w n
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun w => sub_eq_zero.1 <| IsHausdorff.haus' (I := Ideal.span {(p : O)}) _ fun n => by rw [SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, ← Ideal.Quotient.eq, (t.lieCorr_iff h.1 x).1 h, (t.lieCorr_iff h.1 x').1 h']`.
+-/
 theorem LieCorr.unique_left [IsHausdorff (Ideal.span {(p : O)}) O] (h : t.LieCorr x v)
     (h' : t.LieCorr x' v) : x = x' :=
   LinearMap.ext fun w => sub_eq_zero.1 <| IsHausdorff.haus' (I := Ideal.span {(p : O)}) _ fun n => by
@@ -726,6 +928,13 @@ theorem LieCorr.unique_left [IsHausdorff (Ideal.span {(p : O)}) O] (h : t.LieCor
 
 variable (t) in
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `AugCot.d_surjective _ w`. Set `π : ModPow p O (n + 1) →ₐ[O] ModPow p O n` to `Ideal.Quotient.factorₐ O (Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow _ n.le_succ))`. Set `_ : Algebra (ModPow p O (n + 1)) (ModPow p O n)` to `π.toRingHom.toAlgebra`. Set `π' : DualNumber (ModPow p O (n + 1)) →ₐ[O] DualNumber (ModPow p O n)` to `{ (epsTo (ModPow p O (n + 1)) (ModPow p O n)).toRingHom with commutes' := fun r => (epsTo (ModPow p O (n + 1)) (ModPow p O n)).commutes _ }`. Establish `e : (t.tanPt hv n).comp (G.res n : G.A (n + 1) →ₐ[O] G.A n) = π'.comp (t.tanPt hv (n + 1))` using `t.inj _ _ _ _ (by`.
+
+Rewrite using `[← spOver_comp, ← spOver_comp, Category.assoc, Category.assoc, t.res, tanPt_y, tanPt_y, ← Category.assoc, spOver_comp]`. Use `congrArg (spOver · ≫ v) (AlgHom.ext fun z => ?_)` and prove the remaining obligations. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Conclude with `(fst_epsTo ..).trans ((fst_epsTo ..).trans (congrArg π (fst_epsTo _ z))).symm`. Conclude with `(snd_epsTo ..).trans ((snd_epsTo ..).trans (congrArg π (snd_epsTo _ z))).symm)`.
+
+Rewrite `hc` using `[tanDer_d]`. Rewrite using `[cotMap_d, tanDer_d]`. Conclude with `((congrArg TrivSqZeroExt.snd (DFunLike.congr_fun e a)).trans ((snd_epsTo ..).trans (congrArg π hc.symm))).symm`.
+-/
 theorem tanDer_succ (hv : IsTangent v) (n : ℕ) (w : Cot O (G.A (n + 1))) (c : O)
     (hc : Ideal.Quotient.mk _ c = t.tanDer hv (n + 1) w) :
     Ideal.Quotient.mk _ c = t.tanDer hv n (cotMap (G.res n) w) := by
@@ -751,6 +960,15 @@ theorem tanDer_succ (hv : IsTangent v) (n : ℕ) (w : Cot O (G.A (n + 1))) (c : 
 
 variable (t) in
 
+/- English proof (translation)
+Establish `hm : ∀ (n : ℕ) (a b : O), a ≡ b [SMOD (Ideal.span {(p : O)} ^ n • ⊤ : Submodule O O)] ↔ (Ideal.Quotient.mk _ a : ModPow p O n) = Ideal.Quotient.mk _ b` using `fun n a b => by`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.Quotient.eq]`. Establish `ex : ∀ w : G.omega, ∃ L : O, ∀ n, Ideal.Quotient.mk _ L = t.tanDer hv n (w.1 n)` using `fun w => by choose c hc using fun n => Ideal.Quotient.mk_surjective (t.tanDer hv n (w.1 n))`. Establish `h1 : ∀ n, c n ≡ c (n + 1) [SMOD (Ideal.span {(p : O)} ^ n • ⊤ : Submodule O O)]` using `fun n => (hm n _ _).2 <| by rw [hc, t.tanDer_succ hv n _ _ (hc (n + 1)), w.2 n]`. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := Ideal.span {(p : O)}) c fun {m n} hmn => by`.
+
+Proceed by induction on `n, hmn using Nat.le_induction with`. Consider the case `base => rfl`. Consider the case `succ n hmn ih`. Conclude with `ih.trans ((h1 n).mono (Submodule.smul_mono_left (Ideal.pow_le_pow_right hmn)))`. Conclude with `⟨L, fun n => ((hm n _ _).1 (hL n)).symm.trans (hc n)⟩`.
+
+Use `choose L hL using ex`. Establish `hu : ∀ a b : O, (∀ n, (Ideal.Quotient.mk _ a : ModPow p O n) = Ideal.Quotient.mk _ b) → a = b` using `fun a b h => sub_eq_zero.1 <| IsHausdorff.haus' (I := Ideal.span {(p : O)}) _ fun n => SModEq.zero.2 (SModEq.sub_mem.1 ((hm n a b).2 (h n)))`. Set `x : G.Lie` to `{ toFun := L map_add' := fun w w' => hu _ _ fun n => by rw [map_add, hL, hL, hL, ← map_add]; rfl map_smul' := fun c w => hu _ _ fun n => by`. Rewrite using `[RingHom.id_apply, smul_eq_mul, _root_.map_mul, hL, hL]`. Conclude with `(map_smul (t.tanDer hv n) c (w.1 n)).trans (Algebra.smul_def _ _) }`.
+
+Establish `hx` using `(t.lieCorr_iff hv x).2 fun n w => hL w n`. Conclude with `⟨x, hx, fun _ h => h.unique_left hx⟩`.
+-/
 theorem existsUnique_lieCorr [IsAdicComplete (Ideal.span {(p : O)}) O] (hv : IsTangent v) :
     ∃! x : G.Lie, t.LieCorr x v := by
   have hm : ∀ (n : ℕ) (a b : O), a ≡ b [SMOD (Ideal.span {(p : O)} ^ n • ⊤ : Submodule O O)] ↔
@@ -787,6 +1005,11 @@ section Values
 
 variable (p O) [Fact p.Prime]
 
+/- English proof (translation)
+Use `((muTower p O).lieCorr_iff (Diag.isTangent_lieVec _) _).2 fun n w => ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `(toSpanSingleton_dlogT_bijective p O).2 w`. Rewrite using `[LinearMap.toSpanSingleton_apply, map_smul, muLieGen_dlogT, smul_eq_mul, _root_.mul_one]`. Use `Eq.trans ?_ (map_smul ((muTower p O).tanDer _ n) c (dUnit O (muT O (p ^ n)))).symm` and prove the remaining obligations. Rewrite using `[TorsionTower.tanDer_d, ← gmCoord_muTower, TorsionTower.tanPt_y, gmCoord_comp, gmCoord, Diag.charVal_lieVec, snd_epsTo]`.
+
+Simplify using `[Algebra.smul_def, show AddEquiv.ulift (ULift.up (1 : ℤ)) = 1 from rfl]`.
+-/
 theorem lieCorr_muLieGen [IsAdicComplete (Ideal.span {(p : O)}) O] :
     (muTower p O).LieCorr (muLieGen p O) (Diag.lieVec
       ((Int.castAddHom O).comp (AddEquiv.ulift : ULift.{0} ℤ ≃+ ℤ).toAddMonoidHom)) := by
@@ -798,10 +1021,18 @@ theorem lieCorr_muLieGen [IsAdicComplete (Ideal.span {(p : O)}) O] :
     Diag.charVal_lieVec, snd_epsTo]
   simp [Algebra.smul_def, show AddEquiv.ulift (ULift.up (1 : ℤ)) = 1 from rfl]
 
+/- English proof (translation)
+The claim follows from `(muTower p O).map_pow_id k`.
+-/
 example (k : ℕ) [IsMonHom (𝟙 (Gm (Sp O)) ^ k)] :
     (muTower p O).map (muTower p O) (𝟙 _ ^ k) = (k : ℤ_[p]) • 𝟙 (mu p O) :=
   (muTower p O).map_pow_id k
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `(Diag.isTangent_iff_exists v).1 h.1`. Use `gmCoord_ext ?_` and prove the remaining obligations. Establish `h0 : c ⟨1⟩ = 0` using `IsHausdorff.haus' (I := Ideal.span {(p : O)}) _ fun n => by`. Establish `h1` using `((muTower p O).lieCorr_iff h.1 0).1 h n (dlogT p O)`. Establish `h2 : (dlogT p O).1 n = dUnit O (muT O (p ^ n))` using `rfl`.
+
+Rewrite `h1` using `[h2, TorsionTower.tanDer_d, ← gmCoord_muTower, TorsionTower.tanPt_y, gmCoord_comp, gmCoord, Diag.charVal_lieVec, snd_epsTo]`. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, ← Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `using h1.symm`. Rewrite using `[gmCoord, gmCoord, Diag.charVal_lieVec, Diag.charVal_one, h0]`. Simplify using the standard rewrite rules.
+-/
 example [IsHausdorff (Ideal.span {(p : O)}) O] (v : epsR O ⟶ Gm (Sp O))
     (h : (muTower p O).LieCorr 0 v) : v = 1 := by
   obtain ⟨c, rfl⟩ := (Diag.isTangent_iff_exists v).1 h.1

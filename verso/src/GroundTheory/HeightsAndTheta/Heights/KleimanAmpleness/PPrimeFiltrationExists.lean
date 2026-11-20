@@ -18,9 +18,23 @@ variable {R : Type*} [CommRing R] {L : Type*} [AddCommGroup L] [Module R L]
 abbrev colonIdeal (A : Submodule R L) (y : L) : Ideal R :=
   A.comap (LinearMap.toSpanSingleton R L y)
 
+/- English proof (translation)
+Simplify using `[colonIdeal]`.
+-/
 theorem mem_colonIdeal {A : Submodule R L} {y : L} {r : R} : r ∈ colonIdeal A y ↔ r • y ∈ A := by
   simp [colonIdeal]
 
+/- English proof (translation)
+Use `set B : Submodule R L := A ⊔ Submodule.span R {y}`. Set `A' : Submodule R B` to `A.comap B.subtype`. Establish `e1 : Module.length R B = Module.length R A' + Module.length R (B ⧸ A')` using `Module.length_eq_add_of_exact A'.subtype A'.mkQ A'.injective_subtype A'.mkQ_surjective (LinearMap.exact_subtype_mkQ A')`. Set `yB : B` to `⟨y, Submodule.mem_sup_right (Submodule.mem_span_singleton_self y)⟩`. Set `φ : R →ₗ[R] B ⧸ A'` to `A'.mkQ ∘ₗ LinearMap.toSpanSingleton R B yB`.
+
+Establish `hφ : Function.Surjective φ`. Introduce `z`. Take `⟨⟨m, hm⟩, rfl⟩` from `A'.mkQ_surjective z`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hm`. Take `⟨r, rfl⟩` from `Submodule.mem_span_singleton.mp hb`.
+
+Use `⟨r, ?_⟩` and prove the remaining obligations. Simplify using `only [φ, LinearMap.comp_apply, LinearMap.toSpanSingleton_apply, Submodule.mkQ_apply]`. Rewrite using `[Submodule.Quotient.eq]`. Express the relevant statement in the definitionally equal form `(r • y - (a + r • y) : L) ∈ A`. Simplify using `using A.neg_mem ha`.
+
+Establish `hker : LinearMap.ker φ = colonIdeal A y`. Use extensionality with `r`. Simplify using `only [LinearMap.mem_ker, φ, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, mem_colonIdeal]`. Both sides reduce to the same expression. Establish `e3 : (R ⧸ colonIdeal A y) ≃ₗ[R] B ⧸ A'` using `(Submodule.quotEquivOfEq _ _ hker.symm).trans (φ.quotKerEquivOfSurjective hφ)`.
+
+Rewrite using `[e1, (Submodule.comapSubtypeEquivOfLe (le_sup_left : A ≤ B)).length_eq, e3.length_eq]`.
+-/
 theorem length_sup_span_singleton (A : Submodule R L) (y : L) :
     Module.length R (A ⊔ Submodule.span R {y} : Submodule R L) =
       Module.length R A + Module.length R (R ⧸ colonIdeal A y) := by
@@ -63,6 +77,11 @@ def IsGradedSub (A : Submodule (Poly S N) M) : Prop :=
 
 variable {𝓜}
 
+/- English proof (translation)
+Use `conv_lhs => rw [← sum_homogeneousComponent r]`. Rewrite using `[Finset.sum_smul, DirectSum.decompose_sum]`. Rewrite using `[DFinsupp.finsetSum_apply, Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hm` using `𝓜.smul_mem i e _ g (homogeneousComponent_isHomogeneous i r) hg`.
+
+Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `DirectSum.decompose_of_mem_same _ hm`. Conclude with `DirectSum.decompose_of_mem_ne _ hm h`.
+-/
 theorem decompose_smul_eq {g : M} {e : ℤ} (hg : g ∈ 𝓜.piece e) (r : Poly S N) (c : ℤ) :
     (DirectSum.decompose 𝓜.piece (r • g) c : M) =
       ∑ i ∈ Finset.range (r.totalDegree + 1),
@@ -76,6 +95,9 @@ theorem decompose_smul_eq {g : M} {e : ℤ} (hg : g ∈ 𝓜.piece e) (r : Poly 
   · subst h; exact DirectSum.decompose_of_mem_same _ hm
   · exact DirectSum.decompose_of_mem_ne _ hm h
 
+/- English proof (translation)
+Rewrite using `[decompose_smul_eq hg]`. Simplify using `only [add_right_inj, Nat.cast_inj, Finset.sum_ite_eq', Finset.mem_range]`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[homogeneousComponent_eq_zero d r (by omega), zero_smul]`.
+-/
 theorem decompose_smul_add {g : M} {e : ℤ} (hg : g ∈ 𝓜.piece e) (r : Poly S N) (d : ℕ) :
     (DirectSum.decompose 𝓜.piece (r • g) (e + d) : M) = homogeneousComponent d r • g := by
   rw [decompose_smul_eq hg]
@@ -84,11 +106,19 @@ theorem decompose_smul_add {g : M} {e : ℤ} (hg : g ∈ 𝓜.piece e) (r : Poly
   · rfl
   · rw [homogeneousComponent_eq_zero d r (by omega), zero_smul]
 
+/- English proof (translation)
+Introduce `m hm c`. Rewrite using `[(Submodule.mem_bot _).mp hm, DirectSum.decompose_zero]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem isGradedSub_bot : 𝓜.IsGradedSub ⊥ := by
   intro m hm c
   rw [(Submodule.mem_bot _).mp hm, DirectSum.decompose_zero]
   exact Submodule.zero_mem _
 
+/- English proof (translation)
+Introduce `m hm c`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hm`. Take `⟨r, rfl⟩` from `Submodule.mem_span_singleton.mp hb`. Rewrite using `[DirectSum.decompose_add, DirectSum.add_apply, Submodule.coe_add, decompose_smul_eq hg]`. Use `Submodule.add_mem _ (Submodule.mem_sup_left (hA a ha c)) (Submodule.sum_mem _ fun i _ => ?_)` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `Submodule.mem_sup_right (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self g))`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem isGradedSub_sup_span {A : Submodule (Poly S N) M} (hA : 𝓜.IsGradedSub A) {g : M} {e : ℤ}
     (hg : g ∈ 𝓜.piece e) : 𝓜.IsGradedSub (A ⊔ Submodule.span (Poly S N) {g}) := by
   intro m hm c
@@ -100,12 +130,20 @@ theorem isGradedSub_sup_span {A : Submodule (Poly S N) M} (hA : 𝓜.IsGradedSub
   · exact Submodule.mem_sup_right (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self g))
   · exact Submodule.zero_mem _
 
+/- English proof (translation)
+Rewrite using `[mem_colonIdeal, ← decompose_smul_add hg]`. Conclude with `hA _ (mem_colonIdeal.mp hr) _`.
+-/
 theorem homogeneousComponent_mem_colonIdeal {A : Submodule (Poly S N) M} (hA : 𝓜.IsGradedSub A)
     {g : M} {e : ℤ} (hg : g ∈ 𝓜.piece e) {r : Poly S N} (hr : r ∈ colonIdeal A g) (d : ℕ) :
     homogeneousComponent d r ∈ colonIdeal A g := by
   rw [mem_colonIdeal, ← decompose_smul_add hg]
   exact hA _ (mem_colonIdeal.mp hr) _
 
+/- English proof (translation)
+Use `by_contra! h`. Apply `hne` to reduce the goal to its premises. Rewrite using `[eq_top_iff]`. Introduce `m _`. Rewrite using `[← DirectSum.sum_support_decompose 𝓜.piece m]`.
+
+Conclude with `Submodule.sum_mem _ fun c _ => h _ c (SetLike.coe_mem _)`.
+-/
 theorem exists_homogeneous_notMem {A : Submodule (Poly S N) M} (hne : A ≠ ⊤) :
     ∃ (g : M) (e : ℤ), g ∈ 𝓜.piece e ∧ g ∉ A := by
   classical
@@ -118,6 +156,19 @@ theorem exists_homogeneous_notMem {A : Submodule (Poly S N) M} (hne : A ≠ ⊤)
 
 attribute [local instance] MvPolynomial.gradedAlgebra in
 
+/- English proof (translation)
+Take `⟨g0, e0, hg0, hg0A⟩` from `exists_homogeneous_notMem (𝓜 := 𝓜) hne`. Take `⟨I, ⟨g, e, hg, hgA, rfl⟩, hmax⟩` from `set_has_maximal_iff_noetherian.mpr (inferInstance : IsNoetherian (Poly S N) (Poly S N)) {I | ∃ (g : M) (e : ℤ), g ∈ 𝓜.piece e ∧ g ∉ A ∧ I = colonIdeal A g} ⟨_, g0, e0, hg0, hg0A, rfl⟩`. Use `⟨(g, e), hg, ?_, fun p hp d => homogeneousComponent_mem_colonIdeal hA hg hp d⟩` and prove the remaining obligations. Use `Ideal.IsHomogeneous.isPrime_of_homogeneous_mem_or_mem (𝒜 := homogeneousSubmodule (Fin (N + 1)) S) ?_ ?_ ?_` and prove the remaining obligations. Introduce `i r hr`.
+
+Express the relevant statement in the definitionally equal form `(decomposition.decompose' r i : Poly S N) ∈ _`. Rewrite using `[decomposition.decompose'_apply]`. Conclude with `homogeneousComponent_mem_colonIdeal hA hg hr i`. Introduce `htop`. Apply `hgA` to reduce the goal to its premises.
+
+Establish `h1 : (1 : Poly S N) ∈ colonIdeal A g` using `htop ▸ Submodule.mem_top`. Simplify `h1` using `[mem_colonIdeal]`. Introduce and unpack `a b ⟨i, ha⟩ ⟨j, hb⟩ hab by_contra! hn`. Take `⟨ha', hb'⟩` from `hn`. Establish `hag : a • g ∈ 𝓜.piece (e + i)` using `𝓜.smul_mem i e a g ((mem_homogeneousSubmodule _ _).mp ha) hg`.
+
+Establish `hagA : a • g ∉ A` using `fun h => ha' (mem_colonIdeal.mpr h)`. Establish `hle : colonIdeal A g ≤ colonIdeal A (a • g)` using `fun p hp => by`. Rewrite `hp`, the goal using `[mem_colonIdeal]`. Rewrite using `[smul_comm]`. Conclude with `A.smul_mem a hp`.
+
+Establish `heq : colonIdeal A g = colonIdeal A (a • g)`. Assume the negation of the conclusion as `hne'`. Conclude with `hmax _ ⟨_, _, hag, hagA, rfl⟩ (lt_of_le_of_ne hle hne')`. Apply `hb'` to reduce the goal to its premises. Rewrite using `[heq, mem_colonIdeal, smul_smul, mul_comm]`.
+
+Conclude with `mem_colonIdeal.mp hab`.
+-/
 theorem exists_isPrime_colonIdeal [IsNoetherianRing S] {A : Submodule (Poly S N) M}
     (hA : 𝓜.IsGradedSub A) (hne : A ≠ ⊤) :
     ∃ ge : M × ℤ, ge.1 ∈ 𝓜.piece ge.2 ∧ (colonIdeal A ge.1).IsPrime ∧
@@ -162,6 +213,9 @@ open Classical in
 def primeFiltNext [IsNoetherianRing S] (A : Submodule (Poly S N) M) : M × ℤ :=
   if h : 𝓜.IsGradedSub A ∧ A ≠ ⊤ then Classical.choose (exists_isPrime_colonIdeal h.1 h.2) else (0, 0)
 
+/- English proof (translation)
+Unfold `primeFiltNext`. Use `split_ifs with h`. Conclude with `(Classical.choose_spec (exists_isPrime_colonIdeal h.1 h.2)).1`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem primeFiltNext_mem [IsNoetherianRing S] (A : Submodule (Poly S N) M) :
     (𝓜.primeFiltNext A).1 ∈ 𝓜.piece (𝓜.primeFiltNext A).2 := by
   unfold primeFiltNext
@@ -169,6 +223,9 @@ theorem primeFiltNext_mem [IsNoetherianRing S] (A : Submodule (Poly S N) M) :
   · exact (Classical.choose_spec (exists_isPrime_colonIdeal h.1 h.2)).1
   · exact Submodule.zero_mem _
 
+/- English proof (translation)
+Unfold `primeFiltNext`. Rewrite using `[dif_pos ⟨hA, hne⟩]`. Conclude with `(Classical.choose_spec (exists_isPrime_colonIdeal hA hne)).2`.
+-/
 theorem primeFiltNext_spec [IsNoetherianRing S] {A : Submodule (Poly S N) M}
     (hA : 𝓜.IsGradedSub A) (hne : A ≠ ⊤) :
     (colonIdeal A (𝓜.primeFiltNext A).1).IsPrime ∧
@@ -182,12 +239,20 @@ def primeFiltSeq [IsNoetherianRing S] : ℕ → Submodule (Poly S N) M
   | 0 => ⊥
   | k + 1 => primeFiltSeq k ⊔ Submodule.span (Poly S N) {(𝓜.primeFiltNext (primeFiltSeq k)).1}
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact isGradedSub_bot`. Consider the case `succ k ih => exact isGradedSub_sup_span ih (𝓜.primeFiltNext_mem _)`.
+-/
 theorem primeFiltSeq_isGradedSub [IsNoetherianRing S] (k : ℕ) :
     𝓜.IsGradedSub (𝓜.primeFiltSeq k) := by
   induction k with
   | zero => exact isGradedSub_bot
   | succ k ih => exact isGradedSub_sup_span ih (𝓜.primeFiltNext_mem _)
 
+/- English proof (translation)
+Establish `hmono : Monotone 𝓜.primeFiltSeq` using `monotone_nat_of_le_succ fun k => le_sup_left`. Take `⟨n, hn⟩` from `monotone_stabilizes_iff_noetherian.mpr (inferInstance : IsNoetherian (Poly S N) M) ⟨𝓜.primeFiltSeq, hmono⟩`. Use `⟨n, by_contra fun hne => ?_⟩` and prove the remaining obligations. Establish `hp` using `(𝓜.primeFiltNext_spec (𝓜.primeFiltSeq_isGradedSub n) hne).1`. Apply `hp.ne_top` to reduce the goal to its premises.
+
+Rewrite using `[Ideal.eq_top_iff_one, mem_colonIdeal, one_smul]`. Establish `h1 : (𝓜.primeFiltNext (𝓜.primeFiltSeq n)).1 ∈ 𝓜.primeFiltSeq (n + 1)` using `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`. Establish `h2 : 𝓜.primeFiltSeq n = 𝓜.primeFiltSeq (n + 1)` using `hn (n + 1) (Nat.le_succ n)`. Rewrite `h1` using `[← h2]`. Then use the resulting hypothesis.
+-/
 theorem exists_primeFiltSeq_eq_top [IsNoetherianRing S] [Module.Finite (Poly S N) M] :
     ∃ n, 𝓜.primeFiltSeq n = ⊤ := by
   have hmono : Monotone 𝓜.primeFiltSeq := monotone_nat_of_le_succ fun k => le_sup_left
@@ -231,6 +296,35 @@ variable {S : Type u} [CommRing S] {N : ℕ}
 variable {M : Type v} [AddCommGroup M] [Module (Poly S N) M] [Module S M]
   {𝓜 : GradedPMod S N M}
 
+/- English proof (translation)
+Set `R` to `Localization.AtPrime pp`. Set `f` to `LocalizedModule.mkLinearMap pp.primeCompl M`. Set `Loc : Submodule (Poly S N) M → Submodule R (LocalizedModule pp.primeCompl M)` to `fun A => A.localized' R pp.primeCompl f`. Establish `hstep : ∀ k : Fin F.n, Module.length R (Loc (F.step k.succ)) = Module.length R (Loc (F.step k.castSucc)) + if F.prime k = pp then 1 else 0`. Introduce `k`.
+
+Establish `hsup : Loc (F.step k.succ) = Loc (F.step k.castSucc) ⊔ Submodule.span R {f (F.gen k)}`. Simplify using `only [Loc]`. Rewrite using `[F.step_succ k, (Submodule.localized'gi R pp.primeCompl f).gc.l_sup, Submodule.localized'_span, Set.image_singleton]`. Rewrite using `[hsup, length_sup_span_singleton]`. Use `congr 1`.
+
+Establish `hmemloc : ∀ r : Poly S N, r • F.gen k ∈ F.step k.castSucc → algebraMap (Poly S N) R r ∈ colonIdeal (Loc (F.step k.castSucc)) (f (F.gen k))`. Introduce `r hr`. Rewrite using `[mem_colonIdeal, algebraMap_smul, ← LinearMap.map_smul]`. Conclude with `⟨r • F.gen k, hr, 1, IsLocalizedModule.mk'_one _ _ _⟩`. Use `split_ifs with h`.
+
+Establish `hI : colonIdeal (Loc (F.step k.castSucc)) (f (F.gen k)) = IsLocalRing.maximalIdeal R`. Apply `le_antisymm` to reduce the goal to its premises. Apply `IsLocalRing.le_maximalIdeal` to reduce the goal to its premises. Introduce `htop`. Establish `h1 : (1 : R) ∈ colonIdeal (Loc (F.step k.castSucc)) (f (F.gen k))` using `htop ▸ Submodule.mem_top`.
+
+Rewrite `h1` using `[mem_colonIdeal, one_smul]`. Take `⟨m, hm, s, hms⟩` from `h1`. Rewrite `hms` using `[IsLocalizedModule.mk'_eq_iff, ← LinearMap.map_smul_of_tower]`. Take `⟨c, hc⟩` from `IsLocalizedModule.exists_of_eq (S := pp.primeCompl) hms`. Establish `hcs : ((c : Poly S N) * s) ∈ F.prime k`.
+
+Rewrite using `[F.mem_prime, mul_smul]`. Express the relevant statement in the definitionally equal form `(c : Poly S N) • ((s : Poly S N) • F.gen k) ∈ _`. Rewrite using `[← Submonoid.smul_def s, ← Submonoid.smul_def c, ← hc, Submonoid.smul_def]`. Conclude with `Submodule.smul_mem _ _ hm`. Rewrite `hcs` using `[h]`.
+
+Conclude with `(pp.primeCompl.mul_mem c.2 s.2) hcs`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_le_iff_le_comap]`. Introduce `r hr`. Conclude with `hmemloc r ((F.mem_prime k r).mp (h ▸ hr))`. Rewrite using `[hI]`.
+
+Establish `: IsSimpleModule R (R ⧸ IsLocalRing.maximalIdeal R)` using `isSimpleModule_iff_isCoatom.mpr (Ideal.isMaximal_def.mp (IsLocalRing.maximalIdeal.isMaximal R))`. Conclude with `Module.length_eq_one _ _`. Establish `hnle : ¬ F.prime k ≤ pp` using `fun hle => h (le_antisymm hle (hpp.2 ⟨F.isPrime k, F.ann_le k⟩ hle))`. Take `⟨t, ht, htp⟩` from `Set.not_subset.mp hnle`. Establish `hI : colonIdeal (Loc (F.step k.castSucc)) (f (F.gen k)) = ⊤` using `Ideal.eq_top_of_isUnit_mem _ (hmemloc t ((F.mem_prime k t).mp ht)) (IsLocalization.map_units R (⟨t, htp⟩ : pp.primeCompl))`.
+
+Rewrite using `[hI]`. Conclude with `Module.length_eq_zero_iff.mpr (Submodule.Quotient.subsingleton_iff.mpr rfl)`. Establish `key : ∀ j (hj : j ≤ F.n), Module.length R (Loc (F.step ⟨j, by omega⟩)) = ∑ i ∈ Finset.range j, (if h : i < F.n then (if F.prime ⟨i, h⟩ = pp then 1 else 0) else 0 : ℕ∞)`. Introduce `j`. Proceed by induction on `j with`.
+
+Consider the case `zero`. Introduce `_`. Rewrite using `[Finset.sum_range_zero, show (⟨0, by omega⟩ : Fin (F.n + 1)) = 0 from rfl, F.step_zero]`. Express the relevant statement in the definitionally equal form `Module.length R (Submodule.localized' R pp.primeCompl f ⊥) = 0`. Rewrite using `[Submodule.localized'_bot]`.
+
+Conclude with `Module.length_bot`. Consider the case `succ j ih`. Introduce `hj`. Rewrite using `[Finset.sum_range_succ, ← ih (by omega), dif_pos (by omega)]`. Conclude with `hstep ⟨j, by omega⟩`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.card_filter]`. Use `push_cast`. Both sides reduce to the same expression. Use `_ = ∑ i ∈ Finset.range F.n, (if h : i < F.n then (if F.prime ⟨i, h⟩ = pp then 1 else 0) else 0 : ℕ∞) := by`.
+
+Rewrite using `[← Fin.sum_univ_eq_sum_range]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [dif_pos k.isLt]`. Use `_ = Module.length R (Loc (F.step ⟨F.n, by omega⟩)) := (key _ le_rfl).symm`. Use `_ = Module.length R (LocalizedModule pp.primeCompl M) := by`. Rewrite using `[show (⟨F.n, by omega⟩ : Fin (F.n + 1)) = Fin.last F.n from rfl, F.step_last]`.
+
+Express the relevant statement in the definitionally equal form `Module.length R (Submodule.localized' R pp.primeCompl f ⊤) = _`. Rewrite using `[Submodule.localized'_top]`. Conclude with `Module.length_top`.
+-/
 theorem card_prime_eq_length (F : PrimeFilt 𝓜) (pp : Ideal (Poly S N)) [pp.IsPrime]
     (hpp : pp ∈ (Module.annihilator (Poly S N) M).minimalPrimes) :
     (((Finset.univ.filter fun k => F.prime k = pp).card : ℕ) : ℕ∞) =
@@ -318,6 +412,9 @@ theorem card_prime_eq_length (F : PrimeFilt 𝓜) (pp : Ideal (Poly S N)) [pp.Is
 
 end PrimeFilt
 
+/- English proof (translation)
+Introduce `S _ _ Ω _ _ N x M _ _ _ _ 𝓜 _ _`. Set `_` to `𝓜.isInternal.chooseDecomposition`. Conclude with `⟨⟨𝓜.primeFilt⟩, fun F pp _ hpp => F.card_prime_eq_length pp hpp⟩`.
+-/
 theorem PrimeFiltration.Exists.proof : PrimeFiltration.Exists.Statement.{u, v, w} := by
   intro S _ _ Ω _ _ N x M _ _ _ _ 𝓜 _ _
   let _ := 𝓜.isInternal.chooseDecomposition

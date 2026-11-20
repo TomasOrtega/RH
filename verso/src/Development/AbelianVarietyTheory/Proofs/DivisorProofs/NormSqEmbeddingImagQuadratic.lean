@@ -18,6 +18,19 @@ set_option autoImplicit false
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hnoreal : ∀ w : InfinitePlace K, ¬ InfinitePlace.IsReal w`. Introduce `w hw`. Establish `h` using `InfinitePlace.conjugate_embedding_eq_of_isReal hw`. Establish `h1 : w.embedding δ ^ 2 = -(d : ℂ)` using `by rw [← map_pow, hδ]; simp`. Establish `h2 : (starRingEnd ℂ) (w.embedding δ) = w.embedding δ`.
+
+Use `congrArg (fun f : K →+* ℂ => f δ) h` as an intermediate fact. Simplify `this` using `[ComplexEmbedding.conjugate_coe_eq]`. Take `⟨r, hr⟩ : ∃ r : ℝ, w.embedding δ = r` from `⟨(w.embedding δ).re, (Complex.conj_eq_iff_re.mp h2).symm⟩`. Rewrite `h1` using `[hr]`. Establish `h3 : (r ^ 2 : ℝ) = -(d : ℝ)` using `by exact_mod_cast h1`.
+
+Establish `h4 : (0 : ℝ) < d` using `Nat.cast_pos.mpr hd`. Use polynomial arithmetic with `[sq_nonneg r]`. Establish `hR : InfinitePlace.nrRealPlaces K = 0` using `Fintype.card_eq_zero_iff.mpr ⟨fun w => hnoreal w.1 w.2⟩`. Establish `hC : InfinitePlace.nrComplexPlaces K = 1`. Use `InfinitePlace.card_add_two_mul_card_eq_rank K` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hcard : Fintype.card (InfinitePlace K) = 1`. Rewrite using `[InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, hR, hC]`. Establish `huniv : (Finset.univ : Finset (InfinitePlace K)) = {InfinitePlace.mk io}`. Rewrite using `[Finset.eq_singleton_iff_unique_mem]`.
+
+Conclude with `⟨Finset.mem_univ _, fun w _ => Fintype.card_le_one_iff.mp hcard.le w _⟩`. Establish `h` using `InfinitePlace.prod_eq_abs_norm x`. Rewrite `h` using `[huniv, Finset.prod_singleton, (InfinitePlace.not_isReal_iff_isComplex.mp (hnoreal _)).mult_eq_two, InfinitePlace.apply]`. Rewrite using `[Complex.normSq_eq_norm_sq, h]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem normSq_embedding_eq_abs_norm_of_imagQuad {K : Type} [Field K] [NumberField K] (d : ℕ)
     (δ : K) (io : K →+* ℂ) (hK : Module.finrank ℚ K = 2) (hd : 0 < d) (hδ : δ ^ 2 = -(d : K))
     (x : K) : Complex.normSq (io x) = |((Algebra.norm ℚ x : ℚ) : ℝ)| := by

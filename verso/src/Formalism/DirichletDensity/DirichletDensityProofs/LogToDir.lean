@@ -7,9 +7,19 @@ noncomputable section
 
 namespace Formalism.HF.P
 
+/- English proof (translation)
+The claim follows from `div_nonneg (Real.log_natCast_nonneg n) (Real.rpow_nonneg (Nat.cast_nonneg n) x)`.
+-/
 lemma log_div_rpow_nonneg (n : ℕ) (x : ℝ) : 0 ≤ Real.log n / (n : ℝ) ^ x :=
   div_nonneg (Real.log_natCast_nonneg n) (Real.rpow_nonneg (Nat.cast_nonneg n) x)
 
+/- English proof (translation)
+Use `set ε := (y - 1) / 2 with hε`. Establish `hε0 : 0 < ε` using `by rw [hε]; linarith`. Establish `hs : Summable (fun n : ℕ => (1 / ε) * ((n : ℝ) ^ (y - ε))⁻¹)` using `(Real.summable_nat_rpow_inv.2 (by rw [hε]; linarith)).mul_left _`. Use `Summable.of_nonneg_of_le (fun n => log_div_rpow_nonneg n y) (fun n => ?_) hs` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases.
+
+Simplify using `only [Nat.cast_zero, Real.log_zero, zero_div]`. Conclude with `mul_nonneg (div_nonneg zero_le_one hε0.le) (inv_nonneg.2 (Real.rpow_nonneg le_rfl _))`. Establish `hn' : (0:ℝ) < n` using `Nat.cast_pos.2 hn`. Establish `h1` using `Real.log_le_rpow_div hn'.le hε0`. Establish `hpos : 0 < (n:ℝ) ^ y` using `Real.rpow_pos_of_pos hn' y`.
+
+Establish `hposε : 0 < (n:ℝ) ^ ε` using `Real.rpow_pos_of_pos hn' ε`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.rpow_sub hn', inv_div]`. Clear the denominators using the available nonvanishing facts.
+-/
 lemma summable_log_div_rpow {y : ℝ} (hy : 1 < y) :
     Summable (fun n : ℕ => Real.log n / (n : ℝ) ^ y) := by
   set ε := (y - 1) / 2 with hε
@@ -29,6 +39,13 @@ lemma summable_log_div_rpow {y : ℝ} (hy : 1 < y) :
         rw [Real.rpow_sub hn', inv_div]
         field_simp
 
+/- English proof (translation)
+Distinguish the cases in `h : n ∈ {p : ℕ | p.Prime ∧ p ∈ S}`. Simplify using `only [Set.indicator_of_mem h]`. Establish `hn : (0:ℝ) < n` using `Nat.cast_pos.2 h.1.pos`. Establish `h1` using `(Real.hasStrictDerivAt_const_rpow hn x).hasDerivAt`. Establish `h2` using `h1.inv (Real.rpow_pos_of_pos hn x).ne'`.
+
+Establish `hfun : (fun x : ℝ => 1 / (n:ℝ) ^ x) = fun x => ((n:ℝ) ^ x)⁻¹`. Use function extensionality and compare the values at `z`. Conclude with `one_div _`. Establish `h3 : HasDerivAt (fun x : ℝ => ((n:ℝ) ^ x)⁻¹) (-((n:ℝ) ^ x * Real.log n) / ((n:ℝ) ^ x) ^ 2) x` using `h2`. Rewrite using `[hfun]`.
+
+Use `h3.congr_deriv ?_` and prove the remaining obligations. Establish `: 0 < (n:ℝ) ^ x` using `Real.rpow_pos_of_pos hn x`. Rewrite using `[neg_div, pow_two, mul_div_mul_left _ _ this.ne']`. Simplify using `only [Set.indicator_of_notMem h, neg_zero]`. Conclude with `hasDerivAt_const x 0`.
+-/
 lemma hasDerivAt_term (S : Set ℕ) (n : ℕ) (x : ℝ) :
     HasDerivAt (fun x : ℝ => {p : ℕ | p.Prime ∧ p ∈ S}.indicator (fun m : ℕ => 1 / (m : ℝ) ^ x) n)
       (-{p : ℕ | p.Prime ∧ p ∈ S}.indicator (fun m : ℕ => Real.log m / (m : ℝ) ^ x) n) x := by
@@ -47,6 +64,9 @@ lemma hasDerivAt_term (S : Set ℕ) (n : ℕ) (x : ℝ) :
   · simp only [Set.indicator_of_notMem h, neg_zero]
     exact hasDerivAt_const x 0
 
+/- English proof (translation)
+Use `Summable.of_nonneg_of_le (fun n => ?_) (fun n => ?_) (Real.summable_nat_rpow_inv.2 hx)` and prove the remaining obligations. Conclude with `Set.indicator_nonneg (fun m _ => by positivity) n`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma summable_F (S : Set ℕ) {x : ℝ} (hx : 1 < x) :
     Summable (fun n : ℕ => {p : ℕ | p.Prime ∧ p ∈ S}.indicator (fun m : ℕ => 1 / (m : ℝ) ^ x) n) := by
   refine Summable.of_nonneg_of_le (fun n => ?_) (fun n => ?_) (Real.summable_nat_rpow_inv.2 hx)
@@ -54,6 +74,13 @@ lemma summable_F (S : Set ℕ) {x : ℝ} (hx : 1 < x) :
   · calc _ ≤ 1 / (n:ℝ) ^ x := Set.indicator_le_self' (fun m _ => by positivity) n
       _ = _ := one_div _
 
+/- English proof (translation)
+Use `set y := (1 + x) / 2 with hy`. Establish `hy1 : 1 < y` using `by rw [hy]; linarith`. Establish `hyx : y < x` using `by rw [hy]; linarith`. Rewrite using `[← tsum_neg]`. Use `hasDerivAt_tsum_of_isPreconnected (u := fun n : ℕ => Real.log n / (n : ℝ) ^ y) (g := fun n z => {p : ℕ | p.Prime ∧ p ∈ S}.indicator (fun m : ℕ => 1 / (m : ℝ) ^ z) n) (g' := fun n z => -{p : ℕ | p.Prime ∧ p ∈ S}.indicator (fun m : ℕ => Real.log m / (m : ℝ) ^ z) n) (summable_log_di …` and prove the remaining obligations.
+
+Establish `hz' : y < z` using `mem_Ioi.1 hz`. Rewrite using `[norm_neg, Real.norm_eq_abs, abs_of_nonneg (Set.indicator_nonneg (fun m _ => log_div_rpow_nonneg m z) n)]`. Use `(Set.indicator_le_self' (fun m _ => log_div_rpow_nonneg m z) n).trans ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using the standard rewrite rules.
+
+Establish `hn1 : (1:ℝ) ≤ n` using `Nat.one_le_cast.2 hn`. Establish `hpos : 0 < (n:ℝ) ^ y` using `Real.rpow_pos_of_pos (by linarith) y`. Conclude with `div_le_div_of_nonneg_left (Real.log_natCast_nonneg n) hpos (Real.rpow_le_rpow_of_exponent_le hn1 hz'.le)`. Conclude with `summable_F S (by linarith)`.
+-/
 lemma hasDerivAt_F (S : Set ℕ) {x : ℝ} (hx : 1 < x) :
     HasDerivAt (fun x : ℝ => ∑' n : ℕ, {p : ℕ | p.Prime ∧ p ∈ S}.indicator
         (fun m : ℕ => 1 / (m : ℝ) ^ x) n)
@@ -80,6 +107,11 @@ lemma hasDerivAt_F (S : Set ℕ) {x : ℝ} (hx : 1 < x) :
         (Real.rpow_le_rpow_of_exponent_le hn1 hz'.le)
   · exact summable_F S (by linarith)
 
+/- English proof (translation)
+Establish `h1 : Tendsto (fun x : ℝ => x - 1) (𝓝[>] 1) (𝓝[>] 0)`. Use `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ ?_ ?_` and prove the remaining obligations. Establish `: Tendsto (fun x : ℝ => x - 1) (𝓝 1) (𝓝 (1 - 1))` using `(continuous_sub_right (1:ℝ)).tendsto 1`. Rewrite `this` using `[sub_self]`. Conclude with `this.mono_left nhdsWithin_le_nhds`.
+
+Conclude with `eventually_nhdsWithin_of_forall (fun x hx => mem_Ioi.2 (sub_pos.2 hx))`. Establish `h2` using `tendsto_neg_atBot_atTop.comp (Real.tendsto_log_nhdsGT_zero.comp h1)`. Use `h2.congr (fun x => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, one_div, Real.log_inv]`.
+-/
 lemma tendsto_log_inv_sub_one :
     Tendsto (fun x : ℝ => Real.log (1 / (x - 1))) (𝓝[>] 1) atTop := by
   have h1 : Tendsto (fun x : ℝ => x - 1) (𝓝[>] 1) (𝓝[>] 0) := by
@@ -93,6 +125,41 @@ lemma tendsto_log_inv_sub_one :
   refine h2.congr (fun x => ?_)
   simp only [Function.comp_apply, one_div, Real.log_inv]
 
+/- English proof (translation)
+Unfold `LogDensity at h`. Unfold `DirDensity`. Use `set f : ℝ → ℝ := fun x => ∑' n : ℕ, {p : ℕ | p.Prime ∧ p ∈ S}.indicator (fun m : ℕ => 1 / (m : ℝ) ^ x) n with hf`. Use `set g : ℝ → ℝ := fun x => ∑' n : ℕ, {p : ℕ | p.Prime ∧ p ∈ S}.indicator (fun m : ℕ => Real.log m / (m : ℝ) ^ x) n with hg`. Use `set L : ℝ → ℝ := fun x => Real.log (1 / (x - 1)) with hLdef`.
+
+Establish `hder : ∀ x, 1 < x → HasDerivAt f (-g x) x` using `fun x hx => hasDerivAt_F S hx`. Establish `hlogder : ∀ t : ℝ, 1 < t → HasDerivAt (fun t : ℝ => Real.log (t - 1)) (1 / (t - 1)) t` using `fun t ht => ((hasDerivAt_id' t).sub_const 1).log (sub_pos.2 ht).ne'`. Establish `hL : Tendsto L (𝓝[>] 1) atTop` using `tendsto_log_inv_sub_one`. Establish `hLeq : ∀ x, L x = -Real.log (x - 1)` using `fun x => by`. Simplify using `only [hLdef, one_div, Real.log_inv]`.
+
+Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Use `set e := ε / 4 with he`. Establish `he0 : 0 < e` using `by rw [he]; linarith`. Establish `hev` using `(Metric.tendsto_nhds.1 h) e he0`.
+
+Rewrite `hev` using `[Filter.eventually_iff, mem_nhdsGT_iff_exists_Ioo_subset]`. Take `⟨u, hu1, hu⟩` from `hev`. Establish `hu1' : 1 < u` using `mem_Ioi.1 hu1`. Use `set x₀ := (1 + u) / 2 with hx₀`. Establish `hx₀1 : 1 < x₀` using `by rw [hx₀]; linarith`.
+
+Establish `hx₀u : x₀ < u` using `by rw [hx₀]; linarith`. Establish `hgb : ∀ t, 1 < t → t < x₀ → (δ - e) / (t - 1) ≤ g t ∧ g t ≤ (δ + e) / (t - 1)`. Introduce `t ht1 ht2`. Establish `ht : t ∈ Ioo 1 u` using `⟨ht1, by linarith⟩`. Establish `hd` using `hu ht`.
+
+Simplify using `only [mem_ofPred_eq, Real.dist_eq] at hd`. Rewrite `hd` using `[abs_lt]`. Establish `hpos : 0 < t - 1` using `sub_pos.2 ht1`. Prove the components needed by the constructor for the conclusion. Rewrite using `[div_le_iff₀ hpos]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[le_div_iff₀ hpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmono : MonotoneOn (fun t => f t + (δ + e) * Real.log (t - 1)) (Ioc 1 x₀)`. Establish `hd : ∀ t, 1 < t → HasDerivAt (fun t => f t + (δ + e) * Real.log (t - 1)) (-g t + (δ + e) * (1 / (t - 1))) t` using `fun t ht => (hder t ht).add ((hlogder t ht).const_mul (δ + e))`.
+
+Use `monotoneOn_of_hasDerivWithinAt_nonneg (convex_Ioc 1 x₀) (fun t ht => (hd t ht.1).continuousAt.continuousWithinAt) (fun t ht => (hd t (by rw [interior_Ioc] at ht; exact ht.1)).hasDerivWithinAt) ?_` and prove the remaining obligations. Introduce `t ht`. Rewrite `ht` using `[interior_Ioc]`. Use `(hgb t ht.1 ht.2).2` as an intermediate fact. Rewrite using `[mul_one_div]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hanti : AntitoneOn (fun t => f t + (δ - e) * Real.log (t - 1)) (Ioc 1 x₀)`. Establish `hd : ∀ t, 1 < t → HasDerivAt (fun t => f t + (δ - e) * Real.log (t - 1)) (-g t + (δ - e) * (1 / (t - 1))) t` using `fun t ht => (hder t ht).add ((hlogder t ht).const_mul (δ - e))`. Use `antitoneOn_of_hasDerivWithinAt_nonpos (convex_Ioc 1 x₀) (fun t ht => (hd t ht.1).continuousAt.continuousWithinAt) (fun t ht => (hd t (by rw [interior_Ioc] at ht; exact ht.1)).hasDerivWithinAt) ?_` and prove the remaining obligations. Introduce `t ht`.
+
+Rewrite `ht` using `[interior_Ioc]`. Use `(hgb t ht.1 ht.2).1` as an intermediate fact. Rewrite using `[mul_one_div]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set Cp := f x₀ + (δ + e) * Real.log (x₀ - 1) with hCp`.
+
+Use `set Cm := f x₀ + (δ - e) * Real.log (x₀ - 1) with hCm`. Establish `hx₀mem : x₀ ∈ Ioc 1 x₀` using `⟨hx₀1, le_rfl⟩`. Establish `hup : ∀ x, 1 < x → x < x₀ → f x ≤ Cp + (δ + e) * L x`. Introduce `x h1 h2`. Use `hmono ⟨h1, h2.le⟩ hx₀mem h2.le` as an intermediate fact.
+
+Simplify using `only at this`. Rewrite using `[hLeq]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlo : ∀ x, 1 < x → x < x₀ → Cm + (δ - e) * L x ≤ f x`. Introduce `x h1 h2`.
+
+Use `hanti ⟨h1, h2.le⟩ hx₀mem h2.le` as an intermediate fact. Simplify using `only at this`. Rewrite using `[hLeq]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnear : Ioo 1 x₀ ∈ 𝓝[>] (1:ℝ)` using `Ioo_mem_nhdsGT hx₀1`.
+
+Establish `hLpos : ∀ᶠ x in 𝓝[>] (1:ℝ), 0 < L x` using `hL.eventually (eventually_gt_atTop 0)`. Establish `hcp : ∀ᶠ x in 𝓝[>] (1:ℝ), |Cp| / L x < e` using `(tendsto_const_nhds.div_atTop hL).eventually (gt_mem_nhds he0)`. Establish `hcm : ∀ᶠ x in 𝓝[>] (1:ℝ), |Cm| / L x < e` using `(tendsto_const_nhds.div_atTop hL).eventually (gt_mem_nhds he0)`. Use `filter_upwards [hnear, hLpos, hcp, hcm] with x hx hLp hcpx hcmx`. Establish `h1` using `hup x hx.1 hx.2`.
+
+Establish `h2` using `hlo x hx.1 hx.2`. Establish `hcp' : |Cp| < e * L x` using `by rw [div_lt_iff₀ hLp] at hcpx; linarith`. Establish `hcm' : |Cm| < e * L x` using `by rw [div_lt_iff₀ hLp] at hcmx; linarith`. Establish `hq : f x = (f x / L x) * L x` using `by field_simp`. Establish `hupper : (f x / L x) * L x < (δ + 2 * e) * L x`.
+
+Rewrite using `[← hq]`. Use polynomial arithmetic with `[le_abs_self Cp]`. Establish `hlower : (δ - 2 * e) * L x < (f x / L x) * L x`. Rewrite using `[← hq]`. Use polynomial arithmetic with `[neg_abs_le Cm]`.
+
+Establish `hu'` using `lt_of_mul_lt_mul_right hupper hLp.le`. Establish `hl'` using `lt_of_mul_lt_mul_right hlower hLp.le`. Rewrite using `[Real.dist_eq, abs_sub_lt_iff]`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem dirichlet_density_of_log_density (S : Set ℕ) (δ : ℝ) (h : LogDensity S δ) : DirDensity S δ := by
   unfold LogDensity at h
   unfold DirDensity
@@ -192,6 +259,9 @@ end Formalism.HF.P
 
 namespace Formalism.HF
 
+/- English proof (translation)
+Introduce `S δ h` and use `Formalism.HF.P.dirichlet_density_of_log_density S δ h`.
+-/
 theorem logToDir : LogToDir := fun S δ h => Formalism.HF.P.dirichlet_density_of_log_density S δ h
 
 end Formalism.HF

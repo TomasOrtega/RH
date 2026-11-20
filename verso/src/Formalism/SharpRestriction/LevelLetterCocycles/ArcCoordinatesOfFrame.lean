@@ -22,6 +22,19 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL] [CommRing O] [Algebra O LL]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro _`. Simplify using `using hx`. Consider the case `succ k ih`.
+
+Introduce `hk`. Use `set a : LetA O n := ∏ s ∈ Finset.range k, ((W.φA ^ s) W.q) ^ E (k - s) with ha`. Establish `hy : a • ((W.φD T) ^ k) x ∈ W.N T` using `ih (by omega)`. Establish `hlet : (letE (c + (k : ZMod n)) : LetA O n) • (a • ((W.φD T) ^ k) x) = a • ((W.φD T) ^ k) x`. Rewrite using `[smul_comm, φD_pow_letter W T c x hxc k]`.
+
+Establish `hNl : a • ((W.φD T) ^ k) x ∈ W.Nl T (c + ((k + 1 : ℕ) : ZMod n) - 1)`. Rewrite using `[show c + ((k + 1 : ℕ) : ZMod n) - 1 = c + (k : ZMod n) by push_cast; ring]`. Conclude with `⟨_, hy, by rw [LinearMap.smul_apply, LinearMap.id_apply]; exact hlet⟩`. Establish `h1` using `h5.1 (c + ((k + 1 : ℕ) : ZMod n)) _ hNl`. Establish `hQ : W.Q = W.q` using `by simp [LocWach.Q, hs]`.
+
+Rewrite `h1` using `[hQ]`. Establish `hMk` using `hM (k + 1) (by omega) hk`. Establish `h2 : W.q ^ E (k + 1) • W.φD T (a • ((W.φD T) ^ k) x) ∈ W.N T`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le hMk`. Rewrite using `[hd, pow_add, mul_comm, mul_smul]`.
+
+Conclude with `(W.N T).smul_mem _ h1`. Rewrite `h2` using `[φD_smulA, smul_smul, ← pow_apply_succ]`. Establish `e : W.q ^ E (k + 1) * W.φA a = ∏ s ∈ Finset.range (k + 1), ((W.φA ^ s) W.q) ^ E (k + 1 - s)`. Rewrite using `[Finset.prod_range_succ', ha, map_prod, pow_zero, AlgHom.one_apply, Nat.sub_zero, mul_comm]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun s hs' => ?_` and prove the remaining obligations. Rewrite using `[map_pow, pow_succ', AlgHom.mul_apply, show k + 1 - (s + 1) = k - s by omega]`. Rewrite `h2` using `[e]`. Conclude with `h2`.
+-/
 theorem chainE (hs : W.s = 1) (T : LocLat G Qp LL O) {M h : ZMod n → ℕ}
     (h5 : Formalism.MainNotions.DeltaInvariantLattices.p5 W T M h) (c : ZMod n) (E : ℕ → ℕ) (e : ℕ)
     (hM : ∀ m : ℕ, 1 ≤ m → m ≤ e → M (c + (m : ZMod n)) ≤ E m) (x : W.DD T) (hx : x ∈ W.N T)
@@ -58,6 +71,19 @@ theorem chainE (hs : W.s = 1) (T : LocLat G Qp LL O) {M h : ZMod n → ℕ}
     rw [e] at h2
     exact h2
 
+/- English proof (translation)
+Establish `hlet : c' + (e : ZMod n) - ((e - m : ℕ) : ZMod n) = c' + (m : ZMod n)`. Rewrite using `[Nat.cast_sub hme]`. Expand and normalize the polynomial expressions, which then agree. Unfold `Formalism.MainNotions.ArcLiftingSetup.ArcP.Hs`. Rewrite using `[hlet]`.
+
+Distinguish the cases in `h1 : A.ty (c' + (m : ZMod n)) = Formalism.MainNotions.LocalTheoryWindows.LT.thin`. Rewrite using `[if_pos (Or.inl h1), h1]`. Simplify using `[Mw]`. Distinguish the cases in `h2 : e - (e - m) ≤ A.j`. Rewrite using `[if_pos (Or.inr h2)]`.
+
+Conclude with `mw_le A hA c' hc' m hm1 (by omega)`. Rewrite using `[if_neg (by tauto)]`. Apply the tactic sequence `have hth : (A.ty (c' + (m : ZMod n))).thick := by revert h1; cases A.ty (c' + (m : ZMod n)) <;> simp [Formalism.MainNotions.LocalTheoryWindows.LT.thick]`. Establish `hsz` using `hA.2.2.2.2.2.2.2.1 _ hth`. Establish `hok` using `hA.2.2.2.2.1 (c' + (m : ZMod n))`.
+
+Use `revert hsz hok`. Consider the cases of `A.ty (c' + (m : ZMod n)) with`. Consider the case `thin => intro _ _`. Simplify using `[Mw]`. Conclude with `hA.2.2.2.2.2.1`.
+
+Consider the case `up b => intro hsz hok`. Simplify using `only [Formalism.MainNotions.LocalTheoryWindows.LT.size] at hsz`. Simplify using `only [Formalism.MainNotions.LocalTheoryWindows.LT.ok] at hok`. Simplify using `only [Mw]`. Use linear arithmetic over natural numbers and integers.
+
+Consider the case `down b => intro hsz _`. Simplify using `only [Formalism.MainNotions.LocalTheoryWindows.LT.size] at hsz`. Simplify using `only [Mw]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem hs_ge (A : Formalism.MainNotions.ArcLiftingSetup.ArcP n) (hA : A.OK) (c' : ZMod n) (hc' : c' ∈ A.cuts) (e m : ℕ)
     (hm1 : 1 ≤ m) (hme : m ≤ e) :
     Mw A.G₀ A.S A.η (A.ty (c' + (m : ZMod n))) ≤ A.Hs (c' + (e : ZMod n)) e (e - m) := by
@@ -81,26 +107,56 @@ theorem hs_ge (A : Formalism.MainNotions.ArcLiftingSetup.ArcP n) (hA : A.OK) (c'
       | up b => intro hsz hok; simp only [Formalism.MainNotions.LocalTheoryWindows.LT.size] at hsz; simp only [Formalism.MainNotions.LocalTheoryWindows.LT.ok] at hok; simp only [Mw]; omega
       | down b => intro hsz _; simp only [Formalism.MainNotions.LocalTheoryWindows.LT.size] at hsz; simp only [Mw]; omega
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.LiftingTheory.pk`. Rewrite using `[pow_add, AlgHom.mul_apply]`.
+-/
 theorem φpow_pk (a b : ℕ) : (W.φA ^ a) (Formalism.MainNotions.LiftingTheory.pk W b) = Formalism.MainNotions.LiftingTheory.pk W (a + b) := by
   unfold Formalism.MainNotions.LiftingTheory.pk
   rw [pow_add, AlgHom.mul_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pk_eq_ps (s : ℕ) : Formalism.MainNotions.LiftingTheory.pk W s = Formalism.MainNotions.ArcLiftingSetup.ps W s := rfl
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.ArcLiftingSetup.ArcP.Hs`. Use `split_ifs`. Conclude with `hA.2.2.2.2.2.1`. Conclude with `le_rfl`.
+-/
 theorem hs_le_h (A : Formalism.MainNotions.ArcLiftingSetup.ArcP n) (hA : A.OK) (a : ZMod n) (e s : ℕ) : A.Hs a e s ≤ A.h := by
   unfold Formalism.MainNotions.ArcLiftingSetup.ArcP.Hs
   split_ifs
   · exact hA.2.2.2.2.2.1
   · exact le_rfl
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.ArcLiftingSetup.ArcP.Hs`. Rewrite using `[if_pos (Or.inr h)]`.
+-/
 theorem hs_top (A : Formalism.MainNotions.ArcLiftingSetup.ArcP n) (a : ZMod n) (e s : ℕ) (h : e - s ≤ A.j) : A.Hs a e s = A.G₀ := by
   unfold Formalism.MainNotions.ArcLiftingSetup.ArcP.Hs
   rw [if_pos (Or.inr h)]
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.ArcLiftingSetup.ArcP.M`. Conclude with `Nat.lt_mul_div_succ _ (by omega)`.
+-/
 theorem two_h_lt (A : Formalism.MainNotions.ArcLiftingSetup.ArcP n) (h5 : 5 ≤ PD.p) : 2 * A.h < (PD.p - 1) * A.M PD.p := by
   unfold Formalism.MainNotions.ArcLiftingSetup.ArcP.M
   exact Nat.lt_mul_div_succ _ (by omega)
 
+/- English proof (translation)
+Establish `hlt` using `two_h_lt A h5`. Use `set m := e - A.j with hm`. Use `set M := A.M PD.p with hMdef`. Take `⟨u, hu, u', -, -, hT⟩` from `hTr m M`. Establish `hM1 : 1 ≤ M` using `by simp [hMdef, Formalism.MainNotions.ArcLiftingSetup.ArcP.M]`.
+
+Use `set R : LetA O n := ∏ s ∈ Finset.range m, Formalism.MainNotions.ArcLiftingSetup.ps W s ^ ((PD.p - 1) * M - 2 * A.Hs a e s) with hR`. Use `⟨u * W.π₀ ^ (M - 1) * R, W.AΔ.mul_mem (W.AΔ.mul_mem hu (W.AΔ.pow_mem hπ _)) (W.AΔ.prod_mem fun s _ => W.AΔ.pow_mem (ps_mem_AΔ W hπ s) _), ?_⟩` and prove the remaining obligations. Establish `he : e = m + A.j` using `by omega`. Establish `hJ : (W.φA ^ m) (Formalism.MainNotions.LiftingTheory.JJ W A.j (2 * A.G₀) M) = ((W.φA ^ m) W.π₀) ^ M * ∏ k ∈ Finset.range A.j, Formalism.MainNotions.LiftingTheory.pk W (m + k) ^ (2 * A.G₀)`. Unfold `Formalism.MainNotions.LiftingTheory.JJ`.
+
+Rewrite using `[map_mul, map_pow, map_prod]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [map_pow, φpow_pk]`. Establish `hL : Formalism.MainNotions.ArcLiftingSetup.abelian₂ W A a e = (∏ s ∈ Finset.range m, Formalism.MainNotions.ArcLiftingSetup.ps W s ^ A.Hs a e s) * ∏ k ∈ Finset.range A.j, Formalism.MainNotions.ArcLiftingSetup.ps W (m + k) ^ A.G₀`. Unfold `Formalism.MainNotions.ArcLiftingSetup.abelian₂`.
+
+Rewrite using `[he, Finset.prod_range_add, ← he]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun k hk => by`. Rewrite using `[hs_top A a e (m + k) (by simp at hk; omega)]`. Establish `hA1 : ∏ s ∈ Finset.range m, Formalism.MainNotions.LiftingTheory.pk W s ^ ((PD.p - 1) * M) = (∏ s ∈ Finset.range m, Formalism.MainNotions.ArcLiftingSetup.ps W s ^ A.Hs a e s) ^ 2 * R`.
+
+Rewrite using `[hR, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Use `hs_le_h A hA a e s` as an intermediate fact. Rewrite using `[← pow_mul, ← pow_add, pk_eq_ps]`. Use `congr 1`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hA2 : ∏ k ∈ Finset.range A.j, Formalism.MainNotions.LiftingTheory.pk W (m + k) ^ (2 * A.G₀) = (∏ k ∈ Finset.range A.j, Formalism.MainNotions.ArcLiftingSetup.ps W (m + k) ^ A.G₀) ^ 2`. Rewrite using `[← Finset.prod_pow]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [← pow_mul, pk_eq_ps, mul_comm]`. Rewrite using `[hJ, hT, hL, hA1, hA2]`.
+
+Establish `hpM : W.π₀ ^ M = W.π₀ * W.π₀ ^ (M - 1)`. Rewrite using `[← pow_succ', Nat.sub_add_cancel hM1]`. Rewrite using `[hpM]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem arc_ring
     (hTr : ∀ j r : ℕ, ∃ u ∈ W.AΔ, ∃ u' ∈ W.AΔ, u * u' = 1 ∧
       ((W.φA ^ j) W.π₀) ^ r = u * W.π₀ ^ r * ∏ k ∈ Finset.range j, Formalism.MainNotions.LiftingTheory.pk W k ^ ((PD.p - 1) * r))
@@ -150,6 +206,11 @@ theorem arc_ring
   rw [hpM]
   ring
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `hR.2.2.2.2.1`. Rewrite `hw` using `[eat_eq]`. Use `⟨∏ s ∈ Finset.range k, ((W.φA ^ s) (w : LetA O n)) ^ E s, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_induction _ IsUnit (fun a b ha hb => ha.mul hb) isUnit_one fun s _ => ((w.isUnit.map (W.φA ^ s)).pow (E s))`. Rewrite using `[← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_pow, hw, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem prod_q_eqE (hR : Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W 1 (PD.p - 1) W.π₀
       (fun _ => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O))) (k : ℕ) (E : ℕ → ℕ) :
     ∃ u : LetA O n, IsUnit u ∧ ∏ s ∈ Finset.range k, ((W.φA ^ s) W.q) ^ E s =
@@ -164,10 +225,22 @@ theorem prod_q_eqE (hR : Formalism.MainNotions.DeltaInvariantLattices.wachRingRe
     rw [← mul_pow, hw, map_mul]
     rfl
 
+/- English proof (translation)
+The claim follows from `W.AΔ.prod_mem fun s _ => W.AΔ.pow_mem (ps_mem_AΔ W hπ s) _`.
+-/
 theorem lam_mem_AΔ (hπ : W.π₀ ∈ W.AΔ) (A : Formalism.MainNotions.ArcLiftingSetup.ArcP n) (a : ZMod n) (e : ℕ) :
     Formalism.MainNotions.ArcLiftingSetup.abelian₂ W A a e ∈ W.AΔ :=
   W.AΔ.prod_mem fun s _ => W.AΔ.pow_mem (ps_mem_AΔ W hπ s) _
 
+/- English proof (translation)
+Take `⟨⟨hxN, hxΔ⟩, ⟨y, hyN, hyx⟩⟩` from `hx`. Establish `hxc : (letE c' : LetA O n) • x = x`. Rewrite using `[← hyx, LinearMap.smul_apply, LinearMap.id_apply, smul_smul, letE_mul_self]`. Use `set a : ZMod n := c' + (e : ZMod n)`. Establish `h1` using `chainE W hs T h5 c' (fun m => A.Hs a e (e - m)) e (fun m hm1 hme => hs_ge A hA c' hc' e m hm1 hme) x hxN hxc e le_rfl`.
+
+Establish `he : ∏ s ∈ Finset.range e, ((W.φA ^ s) W.q) ^ (A.Hs a e (e - (e - s))) = ∏ s ∈ Finset.range e, ((W.φA ^ s) W.q) ^ (A.Hs a e s)` using `Finset.prod_congr rfl fun s hs' => by`. Rewrite using `[Nat.sub_sub_self (Finset.mem_range.1 hs').le]`. Rewrite `h1` using `[he]`. Take `⟨u, hu, hue⟩` from `prod_q_eqE W hR e (fun s => A.Hs a e s)`. Rewrite `h1` using `[hue, mul_smul]`.
+
+Establish `hN : Formalism.MainNotions.ArcLiftingSetup.abelian₂ W A a e • ((W.φD T) ^ e) x ∈ W.N T`. Take `⟨u', hu'⟩` from `hu.exists_left_inv`. Use `(W.N T).smul_mem u' h1` as an intermediate fact. Rewrite `this` using `[smul_smul, hu', one_smul]`. Then use the resulting hypothesis. Establish `hP` using `lam_mem_AΔ W hR.1 A a e`.
+
+Use `⟨⟨hN, fun δ hδ => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[γD_smulA, hP δ hδ, φD_pow_Δ W T hxΔ e δ hδ]`. Rewrite using `[smul_comm, φD_pow_letter W T c' x hxc e]`.
+-/
 theorem lam_phi_mem (hs : W.s = 1) (hR : Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W 1 (PD.p - 1) W.π₀
       (fun _ => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O))) (T : LocLat G Qp LL O)
     (A : Formalism.MainNotions.ArcLiftingSetup.ArcP n) (hA : A.OK)
@@ -199,6 +272,13 @@ theorem lam_phi_mem (hs : W.s = 1) (hR : Formalism.MainNotions.DeltaInvariantLat
   · rw [γD_smulA, hP δ hδ, φD_pow_Δ W T hxΔ e δ hδ]
   · rw [smul_comm, φD_pow_letter W T c' x hxc e]
 
+/- English proof (translation)
+Use `set P : LetA O n := Formalism.MainNotions.ArcLiftingSetup.abelian₂ W A (c' + (e : ZMod n)) e with hPdef`. Establish `h5T` using `h5 T _ _ hT.1 (jumpsLet_of_win W A hA T hT)`. Establish `hP : P ∈ W.AΔ` using `lam_mem_AΔ W hR.1 A _ e`. Set `S : AddSubgroup (W.DD T)` to `{ carrier := {y | P • y ∈ W.NΔ T ∧ (letE (c' + (e : ZMod n)) : LetA O n) • (P • y) = P • y} add_mem' := fun {a b} ha hb => ⟨by rw [smul_add]; exact (W.NΔ T).add_mem ha.1 hb.1, by rw [smul_add, smul_add, ha.2, hb.2]⟩ zero_mem' := ⟨by rw [smul_zero]; exact (W.NΔ T).zero_mem, by rw …`. Establish `hgen : {z | ∃ a ∈ W.AΔ, ∃ x, Formalism.MainNotions.LiftingTheory.InNΔi W T c' x ∧ z = a • ((W.φD T) ^ e) x} ⊆ (S : Set (W.DD T))`.
+
+Introduce and unpack `z ⟨a, ha, x, hx, rfl⟩`. Take `⟨h1, h2⟩` from `lam_phi_mem W hs hR T A hA h5T c' hc' e x hx`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm]`. Conclude with `smul_mem_NΔ W T ha h1`.
+
+Rewrite using `[smul_comm P a, smul_comm _ a, h2]`. Introduce `y hy`. Take `⟨hy1, hy2⟩` from `(AddSubgroup.closure_le S).2 hgen hy`. Conclude with `⟨P • y, hy1, hy2, (one_smul _ _).symm⟩`.
+-/
 theorem arc_up (hs : W.s = 1) (hR : Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W 1 (PD.p - 1) W.π₀
       (fun _ => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O)))
     (h5 : ∀ (T : LocLat G Qp LL O) (M h : ZMod n → ℕ), IsCrys PD T.ρ →
@@ -228,6 +308,27 @@ theorem arc_up (hs : W.s = 1) (hR : Formalism.MainNotions.DeltaInvariantLattices
   obtain ⟨hy1, hy2⟩ := (AddSubgroup.closure_le S).2 hgen hy
   exact ⟨P • y, hy1, hy2, (one_smul _ _).symm⟩
 
+/- English proof (translation)
+Establish `hlet : c' + (e : ZMod n) - (s : ZMod n) = c' + ((e - s : ℕ) : ZMod n)`. Rewrite using `[Nat.cast_sub hse.le]`. Expand and normalize the polynomial expressions, which then agree. Unfold `Formalism.MainNotions.ArcLiftingSetup.ArcP.Hs`. Rewrite using `[hlet]`.
+
+Distinguish the cases in `h1 : A.ty (c' + ((e - s : ℕ) : ZMod n)) = Formalism.MainNotions.LocalTheoryWindows.LT.thin`. Rewrite using `[if_pos (Or.inl h1), h1]`. Simplify using `[Hw]`. Distinguish the cases in `h2 : e - s ≤ A.j`. Rewrite using `[if_pos (Or.inr h2)]`.
+
+Break down `hA.2.2.2.2.2.2.2.2 with h | ⟨hj, hth, hsz⟩` into its components or cases. Rewrite using `[h c' hc' (e - s) (by omega) h2]; simp [Hw]`. Establish `hk : e - s = 1` using `by omega`. Rewrite `h1`, the goal using `[hk]`. Establish `hsz1` using `hsz c' hc'`.
+
+Establish `hok` using `hA.2.2.2.2.1 (c' + 1)`. Simplify using `only [Nat.cast_one] at h1 ⊢`. Use `revert hsz1 hok`. Consider the cases of `A.ty (c' + 1) with`. Consider the case `thin => intro _ _`.
+
+Simplify using `[Hw]`. Consider the case `up b => intro hs hok`. Simplify using `only [Formalism.MainNotions.LocalTheoryWindows.LT.size] at hs`. Simplify using `only [Hw]`. Use linear arithmetic over natural numbers and integers.
+
+Consider the case `down b => intro hs hok`. Simplify using `only [Formalism.MainNotions.LocalTheoryWindows.LT.size] at hs`. Simplify using `only [Formalism.MainNotions.LocalTheoryWindows.LT.ok] at hok`. Simplify using `only [Hw]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[if_neg (by tauto)]`. Apply the tactic sequence `have hth : (A.ty (c' + ((e - s : ℕ) : ZMod n))).thick := by revert h1; cases A.ty (c' + ((e - s : ℕ) : ZMod n)) <;> simp [Formalism.MainNotions.LocalTheoryWindows.LT.thick]`. Establish `hsz` using `hA.2.2.2.2.2.2.2.1 _ hth`. Establish `hok` using `hA.2.2.2.2.1 (c' + ((e - s : ℕ) : ZMod n))`. Use `revert hsz hok`.
+
+Consider the cases of `A.ty (c' + ((e - s : ℕ) : ZMod n)) with`. Consider the case `thin => intro _ _`. Simplify using `[Hw]`. Conclude with `hA.2.2.2.2.2.1`. Consider the case `up b => intro hsz _`.
+
+Simplify using `only [Formalism.MainNotions.LocalTheoryWindows.LT.size] at hsz`. Simplify using `only [Hw]`. Use linear arithmetic over natural numbers and integers. Consider the case `down b => intro hsz hok`. Simplify using `only [Formalism.MainNotions.LocalTheoryWindows.LT.size] at hsz`.
+
+Simplify using `only [Formalism.MainNotions.LocalTheoryWindows.LT.ok] at hok`. Simplify using `only [Hw]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem hw_le_hs (A : Formalism.MainNotions.ArcLiftingSetup.ArcP n) (hA : A.OK) (c' : ZMod n) (hc' : c' ∈ A.cuts) (e s : ℕ)
     (hse : s < e) :
     Hw A.G₀ A.S A.η (A.ty (c' + (e : ZMod n) - (s : ZMod n))) ≤ A.Hs (c' + (e : ZMod n)) e s := by
@@ -264,6 +365,13 @@ theorem hw_le_hs (A : Formalism.MainNotions.ArcLiftingSetup.ArcP n) (hA : A.OK) 
       | down b => intro hsz hok; simp only [Formalism.MainNotions.LocalTheoryWindows.LT.size] at hsz
                   simp only [Formalism.MainNotions.LocalTheoryWindows.LT.ok] at hok; simp only [Hw]; omega
 
+/- English proof (translation)
+Set `U : Submodule (LetA O n) (W.DD T)` to `{ carrier := {z | ((W.φD T) ^ k) z ∈ Submodule.span (LetA O n) (((W.φD T) ^ (k + 1)) '' S)} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_ofPred_eq, map_add] at ha hb ⊢`. Conclude with `Submodule.add_mem _ ha hb`. Use the proof step `zero_mem' := by simp only [Set.mem_ofPred_eq, map_zero]; exact Submodule.zero_mem _`. Use the proof step `smul_mem' := fun c z hz => by`.
+
+Simplify using `only [Set.mem_ofPred_eq] at hz ⊢`. Rewrite using `[SatPW.φD_pow_smulA]`. Conclude with `Submodule.smul_mem _ _ hz }`. Establish `hle : Submodule.span (LetA O n) (W.φD T '' S) ≤ U`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Express the relevant statement in the definitionally equal form `((W.φD T) ^ k) (W.φD T y) ∈ Submodule.span (LetA O n) (((W.φD T) ^ (k + 1)) '' S)`. Rewrite using `[show ((W.φD T) ^ k) (W.φD T y) = ((W.φD T) ^ (k + 1)) y by rw [pow_succ]; rfl]`. Conclude with `Submodule.subset_span ⟨y, hy, rfl⟩`. Conclude with `hle hz`.
+-/
 theorem φpow_span (T : LocLat G Qp LL O) (S : Set (W.DD T)) (k : ℕ) (z : W.DD T)
     (hz : z ∈ Submodule.span (LetA O n) (W.φD T '' S)) :
     ((W.φD T) ^ k) z ∈ Submodule.span (LetA O n) (((W.φD T) ^ (k + 1)) '' S) := by
@@ -283,6 +391,19 @@ theorem φpow_span (T : LocLat G Qp LL O) (S : Set (W.DD T)) (k : ℕ) (z : W.DD
     exact Submodule.subset_span ⟨y, hy, rfl⟩
   exact hle hz
 
+/- English proof (translation)
+Establish `hQ : W.Q = W.q` using `by simp [LocWach.Q, hs]`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `y hy`.
+
+Simplify using `only [Finset.range_zero, Finset.prod_empty, one_smul, pow_zero, Nat.cast_zero, sub_zero]`. Conclude with `Submodule.subset_span ⟨y, hy, rfl⟩`. Consider the case `succ k ih`. Introduce `y hy`. Use `set c : LetA O n := ((W.φA ^ k) W.q) ^ hh (a - (k : ZMod n)) with hc`.
+
+Establish `hlet : a - ((k + 1 : ℕ) : ZMod n) = a - (k : ZMod n) - 1` using `by push_cast; ring`. Set `U : Submodule (LetA O n) (W.DD T)` to `(Submodule.span (LetA O n) (((W.φD T) ^ (k + 1)) '' (W.Nl T (a - ((k + 1 : ℕ) : ZMod n)) : Set (W.DD T)))).comap (c • LinearMap.id)`. Establish `hle : Submodule.span (LetA O n) (((W.φD T) ^ k) '' (W.Nl T (a - (k : ZMod n)) : Set (W.DD T))) ≤ U`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y', hy', rfl⟩`.
+
+Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, LinearMap.smul_apply, LinearMap.id_apply]`. Establish `h1` using `h5.2.1 (a - (k : ZMod n)) y' hy'`. Rewrite `h1` using `[hQ]`. Establish `h2` using `φpow_span W T _ k _ h1`. Rewrite `h2` using `[SatPW.φD_pow_smulA, map_pow, ← hc]`.
+
+Rewrite using `[hlet]`. Conclude with `h2`. Establish `h3` using `hle (ih y hy)`. Simplify using `only [U, Submodule.mem_comap, LinearMap.smul_apply, LinearMap.id_apply, smul_smul] at h3`. Rewrite using `[Finset.prod_range_succ, mul_comm]`.
+
+Conclude with `h3`.
+-/
 theorem iter_down (hs : W.s = 1) (T : LocLat G Qp LL O) {M hh : ZMod n → ℕ}
     (h5 : Formalism.MainNotions.DeltaInvariantLattices.p5 W T M hh) (a : ZMod n) :
     ∀ k : ℕ, ∀ y ∈ W.Nl T a,
@@ -317,6 +438,11 @@ theorem iter_down (hs : W.s = 1) (T : LocLat G Qp LL O) {M hh : ZMod n → ℕ}
     rw [Finset.prod_range_succ, mul_comm]
     exact h3
 
+/- English proof (translation)
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨z, hz, rfl⟩, rfl⟩`. Take `⟨aa, haa⟩` from `hb z hz`. Rewrite using `[SetLike.mem_coe, LinearMap.smul_apply, LinearMap.id_apply, haa, Finset.smul_sum, map_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_comm, SatPW.φD_pow_smulA]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+-/
 theorem span_pow_le (T : LocLat G Qp LL O) {r : ℕ} (b : Fin r → W.DD T)
     (hb : ∀ x ∈ W.N T, ∃ a : Fin r → LetA O n, x = ∑ j, a j • b j) (c : ZMod n) (e : ℕ) :
     Submodule.span (LetA O n) (((W.φD T) ^ e) '' (W.Nl T c : Set (W.DD T))) ≤
@@ -329,6 +455,21 @@ theorem span_pow_le (T : LocLat G Qp LL O) {r : ℕ} (b : Fin r → W.DD T)
   rw [smul_comm, SatPW.φD_pow_smulA]
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
+/- English proof (translation)
+Use `set a : ZMod n := c' + (e : ZMod n) with ha`. Use `set Λ : LetA O n := Formalism.MainNotions.ArcLiftingSetup.abelian₂ W A a e with hΛdef`. Take `⟨y, hyN, hya, rfl⟩` from `hx`. Rewrite using `[one_smul]`. Establish `hyl : y ∈ W.Nl T a` using `⟨y, hyN.1, by rw [LinearMap.smul_apply, LinearMap.id_apply]; exact hya⟩`.
+
+Establish `h1` using `iter_down W hs T h5 a e y hyl`. Rewrite `h1` using `[show a - (e : ZMod n) = c' by rw [ha]; ring]`. Use `set Pe : LetA O n := ∏ s ∈ Finset.range e, ((W.φA ^ s) W.q) ^ Hw A.G₀ A.S A.η (A.ty (a - (s : ZMod n))) with hPe`. Use `set Rs : LetA O n := ∏ s ∈ Finset.range e, ((W.φA ^ s) W.q) ^ (A.Hs a e s - Hw A.G₀ A.S A.η (A.ty (a - (s : ZMod n)))) with hRs`. Take `⟨u, hu, hue⟩` from `prod_q_eqE W hR e (fun s => A.Hs a e s)`.
+
+Establish `hsplit : ∏ s ∈ Finset.range e, ((W.φA ^ s) W.q) ^ A.Hs a e s = Rs * Pe`. Rewrite using `[hRs, hPe, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun s hs' => ?_` and prove the remaining obligations. Use `hw_le_hs A hA c' hc' e s (Finset.mem_range.1 hs')` as an intermediate fact. Rewrite `this` using `[← ha]`.
+
+Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Take `⟨u', hu'⟩` from `hu.exists_left_inv`. Establish `hΛ : Λ = u' * (Rs * Pe)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h2 : Λ • y ∈ Submodule.span (LetA O n) (((W.φD T) ^ e) '' (W.Nl T c' : Set (W.DD T)))`. Rewrite using `[hΛ, mul_smul, mul_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ h1)`. Take `⟨⟨r, b, hb, huniq, -⟩, -⟩` from `hmod`.
+
+Establish `h3` using `span_pow_le W T b (fun z hz => (huniq z hz).exists) c' e h2`. Take `⟨cc, hcc⟩` from `(Submodule.mem_span_range_iff_exists_fun (LetA O n)).1 h3`. Establish `hbΔ : ∀ j, Formalism.MainNotions.LiftingTheory.InNΔi W T c' ((letE c' : LetA O n) • b j)` using `fun j => ⟨PhiPowers.smul_mem_NΔ W T (SatPW.letE_mem_AΔ W c') (hb j), ⟨b j, (hb j).1, by rw [LinearMap.smul_apply, LinearMap.id_apply]⟩⟩`. Take `⟨d, hd, hzd⟩` from `average hΔ cc (fun j => ((W.φD T) ^ e) ((letE c' : LetA O n) • b j)) (fun j δ hδ => φD_pow_Δ W T (hbΔ j).1.2 e δ hδ) (fun δ hδ => (PhiPowers.smul_mem_NΔ W T (lam_mem_AΔ W hR.1 A a e) hyN).2 δ hδ) hcc.symm`. Use `⟨∑ j, d j • ((W.φD T) ^ e) ((letE c' : LetA O n) • b j), ?_, by rw [one_smul]; exact hzd⟩` and prove the remaining obligations.
+
+Conclude with `AddSubgroup.sum_mem _ fun j _ => AddSubgroup.subset_closure ⟨d j, hd j, _, hbΔ j, rfl⟩`.
+-/
 theorem arc_down [NeZero n] (hs : W.s = 1) (hR : Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W 1 (PD.p - 1) W.π₀
       (fun _ => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O))) (T : LocLat G Qp LL O)
     (A : Formalism.MainNotions.ArcLiftingSetup.ArcP n) (hA : A.OK)
@@ -376,6 +517,13 @@ theorem arc_down [NeZero n] (hs : W.s = 1) (hR : Formalism.MainNotions.DeltaInva
   refine ⟨∑ j, d j • ((W.φD T) ^ e) ((letE c' : LetA O n) • b j), ?_, by rw [one_smul]; exact hzd⟩
   exact AddSubgroup.sum_mem _ fun j _ => AddSubgroup.subset_closure ⟨d j, hd j, _, hbΔ j, rfl⟩
 
+/- English proof (translation)
+Set `S : AddSubgroup (W.DD T)` to `{ carrier := {y | (letE (c + (e : ZMod n)) : LetA O n) • y = y} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_ofPred_eq] at ha hb ⊢`. Rewrite using `[smul_add, ha, hb]`. Use the proof step `zero_mem' := by simp only [Set.mem_ofPred_eq, smul_zero]`. Use the proof step `neg_mem' := fun {a} ha => by simp only [Set.mem_ofPred_eq] at ha ⊢; rw [smul_neg, ha] }`.
+
+Establish `hgen : {z | ∃ a ∈ W.AΔ, ∃ x, Formalism.MainNotions.LiftingTheory.InNΔi W T c x ∧ z = a • ((W.φD T) ^ e) x} ⊆ (S : Set (W.DD T))`. Introduce and unpack `_ ⟨a, -, x, ⟨-, ⟨y', -, hyx⟩⟩, rfl⟩`. Establish `hxc : (letE c : LetA O n) • x = x`. Rewrite using `[← hyx, LinearMap.smul_apply, LinearMap.id_apply, smul_smul, letE_mul_self]`. Use `show (letE (c + (e : ZMod n)) : LetA O n) • (a • ((W.φD T) ^ e) x) = a • ((W.φD T) ^ e) x`.
+
+Rewrite using `[smul_comm, φD_pow_letter W T c x hxc e]`. Conclude with `(AddSubgroup.closure_le S).2 hgen hy`.
+-/
 theorem Pp_letter (T : LocLat G Qp LL O) (c : ZMod n) (e : ℕ) (y : W.DD T)
     (hy : y ∈ Formalism.MainNotions.ArcLiftingSetup.Pp W T c e) : (letE (c + (e : ZMod n)) : LetA O n) • y = y := by
   let S : AddSubgroup (W.DD T) :=
@@ -393,6 +541,15 @@ theorem Pp_letter (T : LocLat G Qp LL O) (c : ZMod n) (e : ℕ) (y : W.DD T)
     rw [smul_comm, φD_pow_letter W T c x hxc e]
   exact (AddSubgroup.closure_le S).2 hgen hy
 
+/- English proof (translation)
+Use `set Λ : LetA O n := Formalism.MainNotions.ArcLiftingSetup.abelian₂ W A (c' + (e : ZMod n)) e with hΛdef`. Take `⟨y, hyP, hyx⟩` from `hx`. Rewrite `hyx` using `[one_smul]`. Take `⟨z, hzN, -, hzy⟩` from `hup y hyP`. Establish `hΛ2 : (Λ * Λ) • x ∈ W.NΔ T`.
+
+Rewrite using `[mul_smul, hyx, hzy, one_smul]`. Conclude with `hzN`. Take `⟨k, w, hwN, -, hwk⟩` from `hk`. Establish `hPi : Λ ∈ Formalism.MainNotions.ArcLiftingSetup.PiPs W` using `Submonoid.prod_mem _ fun s _ => Submonoid.pow_mem _ (Submonoid.subset_closure (Set.mem_insert_of_mem _ (Set.mem_range_self s))) _`. Take `⟨x', hx'N, hxx'⟩` from `hsat hCA T 1 (Λ * Λ) hT (Submonoid.one_mem _) (Submonoid.mul_mem _ hPi hPi) x hΛ2 ⟨k, w, hwN, hwk⟩`.
+
+Rewrite `hxx'` using `[one_smul]`. Take `⟨h3, h6⟩` from `SatW.ring_clauses W hR`. Establish `hU : SatW.UPi PD.p Λ` using `SatW.UPi.prod _ _ fun s _ => (SatW.UPi_qpow W h3 h6 s).pow _`. Establish `hlet : Λ • ((letE (c' + (e : ZMod n)) : LetA O n) • x) = Λ • x`. Rewrite using `[smul_comm, hyx, Pp_letter W T c' e y hyP]`.
+
+Establish `hxa` using `SatW.smul_cancel W T (SatW.isUnit_EE_of_UPi W hU) hlet`. Conclude with `⟨x, by rw [hxx']; exact hx'N, hxa, (one_smul _ _).symm⟩`.
+-/
 theorem arc_sat (hCA : Formalism.MainNotions.LiftingTheory.CaseA W) (hsat : Formalism.MainNotions.ArcLiftingSetup.SATcore W)
     (hR : Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W 1 (PD.p - 1) W.π₀
       (fun _ => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O)))
@@ -425,6 +582,9 @@ theorem arc_sat (hCA : Formalism.MainNotions.LiftingTheory.CaseA W) (hsat : Form
 
 open TensorProduct
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [Formalism.MainNotions.TruncatedSeriesCountingBounds.crisMap, φVB]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem crisMap_φVB {T₁ T₂ : LocLat G Qp LL O} (f : T₁.V →ₗ[LL] T₂.V) (z : T₁.V ⊗[Qp] B) :
     Formalism.MainNotions.TruncatedSeriesCountingBounds.crisMap B f (φVB PD (LL := LL) (V := T₁.V) z) =
       φVB PD (LL := LL) (V := T₂.V) (Formalism.MainNotions.TruncatedSeriesCountingBounds.crisMap B f z) := by
@@ -433,6 +593,9 @@ theorem crisMap_φVB {T₁ T₂ : LocLat G Qp LL O} (f : T₁.V →ₗ[LL] T₂.
   | tmul v b => simp [Formalism.MainNotions.TruncatedSeriesCountingBounds.crisMap, φVB]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `e with`. Consider the case `zero => simp`. Consider the case `succ e ih => rw [pow_succ', Module.End.mul_apply, crisMap_φVB, ih, pow_succ', Module.End.mul_apply]`.
+-/
 theorem crisMap_φVB_pow {T₁ T₂ : LocLat G Qp LL O} (f : T₁.V →ₗ[LL] T₂.V) (e : ℕ) (z : T₁.V ⊗[Qp] B) :
     Formalism.MainNotions.TruncatedSeriesCountingBounds.crisMap B f (((φVB PD (LL := LL) (V := T₁.V)) ^ e) z) =
       ((φVB PD (LL := LL) (V := T₂.V)) ^ e) (Formalism.MainNotions.TruncatedSeriesCountingBounds.crisMap B f z) := by
@@ -440,6 +603,9 @@ theorem crisMap_φVB_pow {T₁ T₂ : LocLat G Qp LL O} (f : T₁.V →ₗ[LL] T
   | zero => simp
   | succ e ih => rw [pow_succ', Module.End.mul_apply, crisMap_φVB, ih, pow_succ', Module.End.mul_apply]
 
+/- English proof (translation)
+Take `⟨z, hz, rfl⟩` from `hx`. Use `⟨W.γD T δ z, W.N_Γ T δ z hz, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[γD_smulA, γA_letE]`.
+-/
 theorem γD_Nl (T : LocLat G Qp LL O) (c : ZMod n) (δ : W.Gam) {x : W.DD T} (hx : x ∈ W.Nl T c) :
     W.γD T δ x ∈ W.Nl T c := by
   obtain ⟨z, hz, rfl⟩ := hx
@@ -447,19 +613,43 @@ theorem γD_Nl (T : LocLat G Qp LL O) (c : ZMod n) (δ : W.Gam) {x : W.DD T} (hx
   simp only [LinearMap.smul_apply, LinearMap.id_apply]
   rw [γD_smulA, γA_letE]
 
+/- English proof (translation)
+Take `⟨z, hz, rfl⟩` from `hx`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Conclude with `(W.N T).smul_mem _ hz`.
+-/
 theorem Nl_le_N (T : LocLat G Qp LL O) (c : ZMod n) {x : W.DD T} (hx : x ∈ W.Nl T c) : x ∈ W.N T := by
   obtain ⟨z, hz, rfl⟩ := hx
   simp only [LinearMap.smul_apply, LinearMap.id_apply]
   exact (W.N T).smul_mem _ hz
 
+/- English proof (translation)
+The claim follows from `((W.map F).restrictScalars (LetA O n)).map_smul a x`.
+-/
 theorem map_smulA {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (a : LetA O n) (x : W.DD T₁) :
     W.map F (a • x) = a • W.map F x :=
   ((W.map F).restrictScalars (LetA O n)).map_smul a x
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul (LetA O n) c x, map_smulA, algebraMap_smul]`.
+-/
 theorem map_smulO {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (c : O) (x : W.DD T₁) :
     W.map F (c • x) = c • W.map F x := by
   rw [← algebraMap_smul (LetA O n) c x, map_smulA, algebraMap_smul]
 
+/- English proof (translation)
+Introduce `_ T₁ T₂ F hSur c' rr e hK x₂ hx₂`. Take `⟨⟨hx₂N, hx₂Δ⟩, hx₂l⟩` from `hx₂`. Take `⟨x₁', hx₁'l, hmap⟩` from `hK x₂ hx₂l hx₂Δ`. Simplify using `only [LinearMap.coe_restrictScalars] at hmap`. Take `⟨u, hu⟩` from `hΔ`.
+
+Use `set x₁ : W.DD T₁ := ((u⁻¹ : Oˣ) : O) • ∑ δ ∈ W.DelF, W.γD T₁ δ x₁' with hx₁`. Establish `hx₁l : x₁ ∈ W.Nl T₁ c'` using `Submodule.smul_of_tower_mem _ _ (Submodule.sum_mem _ fun δ _ => γD_Nl W T₁ c' δ hx₁'l)`. Establish `hx₁N : x₁ ∈ W.N T₁` using `Nl_le_N W T₁ c' hx₁l`. Establish `hx₁Δ : ∀ δ' ∈ W.DelF, W.γD T₁ δ' x₁ = x₁`. Introduce `δ' hδ'`.
+
+Rewrite using `[hx₁, map_smul, map_sum]`. Use `congr 1`. Use `Finset.sum_equiv (Equiv.mulLeft δ') (fun δ => ?_) (fun δ _ => ?_)` and prove the remaining obligations. Conclude with `mem_DelF_mul hδ' δ`. Rewrite using `[← W.γD_mul]`.
+
+Both sides reduce to the same expression. Establish `hlp : Formalism.MainNotions.LiftingTheory.lp W rr • x₂ = (((PD.p : ℕ) : O) ^ rr) • x₂`. Rewrite using `[← algebraMap_smul (LetA O n) (((PD.p : ℕ) : O) ^ rr) x₂, map_pow, map_natCast]`. Both sides reduce to the same expression. Establish `hmap1 : W.map F x₁ = (((PD.p : ℕ) : O) ^ rr) • x₂`.
+
+Rewrite using `[hx₁, map_smulO, map_sum]`. Establish `h1 : ∀ δ ∈ W.DelF, W.map F (W.γD T₁ δ x₁') = (((PD.p : ℕ) : O) ^ rr) • x₂`. Introduce `δ hδ`. Rewrite using `[W.map_γ, hmap, hlp, map_smul, hx₂Δ δ hδ]`. Rewrite using `[Finset.sum_congr rfl h1, Finset.sum_const, ← Nat.cast_smul_eq_nsmul O, smul_smul, ← hu, Units.inv_mul, one_smul]`.
+
+Establish `hN2 : W.map F x₁ ∈ W.N T₂` using `W.map_N F hSur.1 hSur.2.1 x₁ hx₁N`. Use `⟨x₁, ⟨⟨hx₁N, hx₁Δ⟩, hx₁l⟩, ?_⟩` and prove the remaining obligations. Unfold `Formalism.MainNotions.ArcLiftingSetup.cmpD`. Rewrite using `[dif_pos hx₁N, dif_pos hx₂N, crisMap_φVB_pow]`. Establish `hc` using `W.cmp_map F hSur.1 hSur.2.1 ⟨x₁, hx₁N⟩ hN2`.
+
+Establish `e1 : Formalism.MainNotions.TruncatedSeriesCountingBounds.crisMap B F.f (W.cmp T₁ ⟨x₁, hx₁N⟩) = W.cmp T₂ ⟨W.map F x₁, hN2⟩` using `hc.symm`. Establish `e2 : (⟨W.map F x₁, hN2⟩ : ↥(W.N T₂)) = (((PD.p : ℕ) : O) ^ rr) • ⟨x₂, hx₂N⟩` using `Subtype.ext hmap1`. Rewrite using `[e1, e2, W.cmp_smul, map_smul, map_pow, map_natCast]`.
+-/
 theorem arcL_at [NeZero n] (hΔ : IsUnit ((W.DelF.card : ℕ) : O)) : Formalism.MainNotions.ArcLiftingSetup.ArcLCore W := by
   intro _ T₁ T₂ F hSur c' rr e hK x₂ hx₂
   obtain ⟨⟨hx₂N, hx₂Δ⟩, hx₂l⟩ := hx₂
@@ -496,6 +686,15 @@ theorem arcL_at [NeZero n] (hΔ : IsUnit ((W.DelF.card : ℕ) : O)) : Formalism.
     Subtype.ext hmap1
   rw [e1, e2, W.cmp_smul, map_smul, map_pow, map_natCast]
 
+/- English proof (translation)
+Use `set Λ : LetA O n := Formalism.MainNotions.ArcLiftingSetup.abelian₂ W A (c' + (e : ZMod n)) e with hΛdef`. Take `⟨κ, κ', Hh, aa, -, haa, y, hyP, hy⟩` from `h0`. Establish `haa0 : ∀ k, aa k = 0` using `fun k => W.EE_inj (by rw [map_zero, ← (haa k).2, Pi.zero_apply, mul_zero])`. Simplify using `only [haa0, zero_smul, Finset.sum_const_zero, sub_zero] at hy`. Establish `hPi : Λ ∈ Formalism.MainNotions.ArcLiftingSetup.PiPs W` using `Submonoid.prod_mem _ fun s _ => Submonoid.pow_mem _ (Submonoid.subset_closure (Set.mem_insert_of_mem _ (Set.mem_range_self s))) _`.
+
+Establish `hπ : W.π₀ ∈ Formalism.MainNotions.ArcLiftingSetup.PiPs W` using `Submonoid.subset_closure (Set.mem_insert _ _)`. Take `⟨h3, h6⟩` from `SatW.ring_clauses W hR`. Establish `hU : SatW.UPi PD.p Λ` using `SatW.UPi.prod _ _ fun s _ => (SatW.UPi_qpow W h3 h6 s).pow _`. Establish `hk : Formalism.MainNotions.ArcLiftingSetup.InFP W T c' e (W.π₀ * Λ) (Formalism.MainNotions.ArcLiftingSetup.lA W ^ (κ' + κ) • x)`. Use `⟨y, hyP, SatW.smul_cancel W T (SatW.isUnit_EE_of_UPi W hU) ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : Λ • (Formalism.MainNotions.ArcLiftingSetup.lA W ^ (κ' + κ) • x) = Formalism.MainNotions.ArcLiftingSetup.lA W ^ κ' • Formalism.MainNotions.ArcLiftingSetup.lA W ^ κ • Λ • x`. Rewrite using `[pow_add, mul_smul, smul_comm Λ, smul_comm Λ (Formalism.MainNotions.ArcLiftingSetup.lA W ^ κ)]`. Rewrite using `[e1, hy, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `hsatP hCA T c' e (W.π₀ * Λ) Λ hT (Submonoid.mul_mem _ hπ hPi) hPi x hx ⟨κ' + κ, hk⟩`.
+-/
 theorem arc_pi (hCA : Formalism.MainNotions.LiftingTheory.CaseA W) (hsatP : Formalism.MainNotions.ArcLiftingSetup.SATPcore W)
     (hR : Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W 1 (PD.p - 1) W.π₀
       (fun _ => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O)))
@@ -582,6 +781,11 @@ def ArcFrame : Prop :=
   ArcHyp W (FrameBasis W) ∧ ArcHyp W (SecOfP W) ∧ ArcHyp W (POfSec W) ∧ ArcHyp W (SecOfN W) ∧
     ArcHyp W (NOfSec W) ∧ ArcHyp W (SecCrit W)
 
+/- English proof (translation)
+Introduce `hCA h5p A hA c hc e hje hel c' a Λ M σ`. Take `⟨hF0, hF1, hF2, hF3, hF4, hF6⟩` from `hF`. Establish `hs : W.s = 1` using `hCA.2.1`. Establish `hc' : c' ∈ A.cuts` using `((hA.2.2.1 c hc).2.2).1`. Establish `hup` using `fun T hT => arc_up W hs hR h5 A hA c' hc' e T hT`.
+
+Use `⟨arc_ring W (hTr hCA).2.1 hR.1 h5p A hA a e hje, fun T hT => ⟨hup T hT, fun x hx => arc_down W hs hR T A hA (h5 T _ _ hT.1 (jumpsLet_of_win W A hA T hT)) (hmod T hT.1) hΔ c' hc' e x hx, fun x hx hk => arc_sat W hCA hsat hR T hT.1 A c' e (hup T hT) x hx hk, fun d b sol hb => ⟨hF0 …` and prove the remaining obligations.
+-/
 theorem arcCore_of [NeZero n] (hTr : Formalism.MainNotions.LiftingTheory.coreTr W)
     (hR : Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W 1 (PD.p - 1) W.π₀
       (fun _ => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O)))
@@ -615,6 +819,13 @@ def ArcFrameL (D : D7) (HW : HWOf D.loc) : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (hG : Good K 1 LL), CaseA K LL → 5 ≤ l →
     ArcC.ArcFrame ((HW l).W K 1 LL hG)
 
+/- English proof (translation)
+Introduce and unpack `⟨-, -, h5, h9, -, hTr, -, hSat⟩ l _ K LL hG hCA h5l`. Use `neZero_finrank_max_unramified K` as an intermediate fact. Establish `: FiniteDimensional ℚ_[l] ↥LL.1` using `LL.2`. Establish `hCW : Formalism.MainNotions.LiftingTheory.CaseA ((HW l).W K 1 LL hG)` using `caseA_of_unram' (D.loc l) (HW l) hG hCA.1 hCA.2.1`. Establish `hs : ((HW l).W K 1 LL hG).s = 1` using `(HW l).W_s K 1 LL hG`.
+
+Establish `hp : ((D.loc l).PD K).p ≠ 2` using `by rw [(D.loc l).PD_p]; exact hCA.2.1`. Establish `hK` using `finrank_K0_eq_one_of_le_Kur hCA.1`. Establish `hR` using `ring_condition_uniformizer_polynomial D HW F h9 l K LL hCA`. Establish `hmod : ∀ T, IsCrys ((D.loc l).PD K) T.ρ → Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters ((HW l).W K 1 LL hG) T ((HW l).W K 1 LL hG).π₀` using `fun T hT => ((h9 l K 1 LL hG T hT hs hp).2.2 hK).2`. Establish `hc1` using `Formalism.MainNotions.LiftingTheory.gen_one_crys ((HW l).W K 1 LL hG)`.
+
+Use `Formalism.MainNotions.LiftingTheory.lkd_local (D.loc l) LL` as an intermediate fact. Establish `hΔ : IsUnit ((((HW l).W K 1 LL hG).DelF.card : ℕ) : ↥(OL LL))` using `cardΔ_of (W := (HW l).W K 1 LL hG) (not_isUnit_p ((HW l).W K 1 LL hG) (valRing_rec (D.loc l) LL)) (card_DelF (W := (HW l).W K 1 LL hG) hs hp hK (h9 l K 1 LL hG _ hc1))`. Conclude with `⟨ArcC.arcCore_of _ (hTr l K 1 LL hG) hR (h5 l K 1 LL hG) hmod hΔ (hSat l K LL hG hCA h5l) (saturation_pullback_of_ring_condition D HW F h9 l K LL hG hCA h5l) (hFr l K LL hG hCA h5l), ArcC.arcL_at _ hΔ⟩`.
+-/
 theorem arc_coordinates_of_frame (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (hFr : ArcFrameL D HW) : ArcCoordinatesTheorem D HW F Cm := by
   rintro ⟨-, -, h5, h9, -, hTr, -, hSat⟩ l _ K LL hG hCA h5l

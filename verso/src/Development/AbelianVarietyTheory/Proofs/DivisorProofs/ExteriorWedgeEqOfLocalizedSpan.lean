@@ -5,6 +5,11 @@ open GlobalTheory.PD GlobalTheory.CechDR KaehlerDifferential
 
 namespace GlobalTheory.WedgeDen
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.AlternatingLinearCombination.alternating_map_linear_combination`. Consider the case `exact _root_.GlobalTheory.AlternatingLinearCombination.alternating_map_linear_combination`. Consider the case `(apply _root_.GlobalTheory.AlternatingLinearCombination.alternating_map_linear_combination <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.AlternatingLinearCombination.alternating_map_linear_combination <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.AlternatingLinearCombination.alternating_map_linear_combination <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.AlternatingLinearCombination.alternating_map_linear_combination ..)`.
+-/
 theorem alternatingMap_sum_smul_eq_det_smul' {L M N : Type} [Field L] [AddCommGroup M] [Module L M]
     [AddCommGroup N] [Module L N] {n : ℕ} (f : M [⋀^Fin n]→ₗ[L] N) (g : Fin n → M)
     (a : Fin n → Fin n → L) :
@@ -17,6 +22,11 @@ theorem alternatingMap_sum_smul_eq_det_smul' {L M N : Type} [Field L] [AddCommGr
   | (intros; apply @_root_.GlobalTheory.AlternatingLinearCombination.alternating_map_linear_combination <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.AlternatingLinearCombination.alternating_map_linear_combination ..)
 
+/- English proof (translation)
+Introduce `R L M _ _ _ _ _ S n g w h`. Use `choose r hr c hc using h`. Use `⟨∏ i, r i, prod_mem fun i _ => hr i, (Matrix.of c).det, ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod, ← AlternatingMap.map_smul_univ]`. Repeatedly rewrite using `[hc]`.
+
+Rewrite using `[alternatingMap_sum_smul_eq_det_smul', RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem exists_smul_ιMulti_eq_smul_ιMulti : ∀ (R L M : Type) [CommRing R] [Field L] [Algebra R L] [AddCommGroup M] [Module L M] (S : Submonoid R) (n : ℕ) (g w : Fin n → M), (∀ i, ∃ r ∈ S, ∃ c : Fin n → R, algebraMap R L r • w i = ∑ l, algebraMap R L (c l) • g l) → ∃ r ∈ S, ∃ c : R, algebraMap R L r • ExteriorAlgebra.ιMulti L n w = algebraMap R L c • ExteriorAlgebra.ιMulti L n g := by
   intro R L M _ _ _ _ _ S n g w h
   classical

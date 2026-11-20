@@ -6,6 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.E.t_
 namespace LateralTheory.E.ZCovPf
 set_option linter.style.haveILetI false
 
+/- English proof (translation)
+Introduce `p hp hd`. Take `⟨a, ha⟩` from `h (p.map e.symm.toRingHom) (hp.map _) (by rwa [Polynomial.natDegree_map_eq_of_injective e.symm.injective])`. Use `⟨e a, ?_⟩` and prove the remaining obligations. Establish `hc : (e : R →+* S).comp e.symm.toRingHom = RingHom.id S` using `by ext x; simp`. Establish `hq : p = (p.map e.symm.toRingHom).map (e : R →+* S)`.
+
+Rewrite using `[Polynomial.map_map, hc, Polynomial.map_id]`. Rewrite using `[hq, show e a = (e : R →+* S) a from rfl, Polynomial.eval_map_apply, ha, map_zero]`.
+-/
 theorem aic_of_equiv {R S : Type} [CommRing R] [CommRing S] (e : R ≃+* S) (h : AIC R) : AIC S := by
   intro p hp hd
   obtain ⟨a, ha⟩ := h (p.map e.symm.toRingHom) (hp.map _)
@@ -16,6 +21,15 @@ theorem aic_of_equiv {R S : Type} [CommRing R] [CommRing S] (e : R ≃+* S) (h :
     rw [Polynomial.map_map, hc, Polynomial.map_id]
   rw [hq, show e a = (e : R →+* S) a from rfl, Polynomial.eval_map_apply, ha, map_zero]
 
+/- English proof (translation)
+Distinguish the cases in `hW : IsEmpty W`. Conclude with `Or.inl hW`. Use `right`. Take `⟨x⟩ : Nonempty W` from `not_isEmpty_iff.mp hW`. Establish `hO : IsAffineOpen (j ''ᵁ ⊤)` using `(isAffineOpen_top W).image_of_isOpenImmersion j`.
+
+Establish `hne : ((j ''ᵁ ⊤ : Z.Opens) : Set Z).Nonempty` using `⟨j x, x, trivial, rfl⟩`. Establish `hA : AIC Γ(W, ⊤)` using `aic_of_equiv (j.appIso ⊤).commRingCatIsoToRingEquiv (hZ.2 _ hO hne)`. Use `haveI : IsIntegral Z := hZ.1`. Use `haveI : Nonempty W := ⟨x⟩`. Use `haveI : IsIntegral W := isIntegral_of_isOpenImmersion j`.
+
+Use `haveI : Nonempty (⊤ : W.Opens) := ⟨⟨x, trivial⟩⟩`. Set `φ : A →+* Γ(W, ⊤)` to `((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ (j ≫ p).appTop).hom`. Use `letI : Algebra A Γ(W, ⊤) := φ.toAlgebra`. Use `⟨Γ(W, ⊤), inferInstance, inferInstance, inferInstance, hA, W.isoSpec, ?_⟩` and prove the remaining obligations. Establish `hφ : CommRingCat.ofHom (algebraMap A Γ(W, ⊤)) = (Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ (j ≫ p).appTop` using `rfl`.
+
+Rewrite using `[hφ, Spec.map_comp, Scheme.isoSpec_hom, ← Category.assoc, ← Scheme.toSpecΓ_naturality, Category.assoc, ← SpecMap_ΓSpecIso_hom, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.comp_id]`.
+-/
 theorem good_of_affine {A : Type} [CommRing A] {Z W : Scheme.{0}} (hZ : AICSch Z) (j : W ⟶ Z) [IsOpenImmersion j]
     [IsAffine W] (p : Z ⟶ Spec (CommRingCat.of A)) : Good (j ≫ p) := by
   by_cases hW : IsEmpty W
@@ -40,10 +54,16 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 
 def D (i : Fin 2) : P1.Opens := Proj.basicOpen (MvPolynomial.homogeneousSubmodule (Fin 2) ℤ) (MvPolynomial.X i)
 
+/- English proof (translation)
+The claim follows from `Proj.isAffineOpen_basicOpen _ _ (f_deg := (MvPolynomial.mem_homogeneousSubmodule _ _).mpr (MvPolynomial.isHomogeneous_X ℤ i)) (hm := Nat.one_pos)`.
+-/
 theorem D_affine (i : Fin 2) : IsAffineOpen (D i) :=
   Proj.isAffineOpen_basicOpen _ _ (f_deg := (MvPolynomial.mem_homogeneousSubmodule _ _).mpr
     (MvPolynomial.isHomogeneous_X ℤ i)) (hm := Nat.one_pos)
 
+/- English proof (translation)
+Establish `h` using `Proj.isAffineOpen_basicOpen (MvPolynomial.homogeneousSubmodule (Fin 2) ℤ) (MvPolynomial.X 0 * MvPolynomial.X 1) (f_deg := (MvPolynomial.mem_homogeneousSubmodule _ _).mpr ((MvPolynomial.isHomogeneous_X ℤ 0).mul (MvPolynomial.isHomogeneous_X ℤ 1))) (hm := Nat.two_pos)`. Rewrite `h` using `[Proj.basicOpen_mul]`. Conclude with `h`.
+-/
 theorem D_inf : IsAffineOpen (D 0 ⊓ D 1) := by
   have h := Proj.isAffineOpen_basicOpen (MvPolynomial.homogeneousSubmodule (Fin 2) ℤ)
     (MvPolynomial.X 0 * MvPolynomial.X 1) (f_deg := (MvPolynomial.mem_homogeneousSubmodule _ _).mpr
@@ -51,6 +71,15 @@ theorem D_inf : IsAffineOpen (D 0 ⊓ D 1) := by
   rw [Proj.basicOpen_mul] at h
   exact h
 
+/- English proof (translation)
+Establish `h` using `Proj.iSup_basicOpen_eq_top (MvPolynomial.homogeneousSubmodule (Fin 2) ℤ) (fun i : Fin 2 => (MvPolynomial.X i : MvPolynomial (Fin 2) ℤ)) ?_`. Use `eq_top_iff.mpr (le_trans (le_of_eq h.symm) (iSup_le fun i => ?_)) fin_cases i` and prove the remaining obligations. Conclude with `le_sup_left`. Conclude with `le_sup_right`. Introduce `x hx`.
+
+Establish `h0` using `(HomogeneousIdeal.mem_irrelevant_iff _ _).mp hx`. Establish `hc : MvPolynomial.coeff 0 x = 0`. Rewrite `h0` using `[GradedRing.proj_apply]`. Establish `e : ((DirectSum.decompose (MvPolynomial.homogeneousSubmodule (Fin 2) ℤ) x) 0 : MvPolynomial (Fin 2) ℤ) = MvPolynomial.homogeneousComponent 0 x` using `MvPolynomial.decomposition.decompose'_apply x 0`. Rewrite `h0` using `[e]`.
+
+Use `congrArg (MvPolynomial.coeff 0) h0` as an intermediate fact. Rewrite `this` using `[MvPolynomial.coeff_homogeneousComponent, MvPolynomial.coeff_zero]`. Simplify using `using this`. Rewrite using `[← Set.image_univ, MvPolynomial.mem_ideal_span_X_image]`. Introduce `m hm`.
+
+Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `hm0 : m = 0` using `Finsupp.ext fun i => hne i trivial`. Substitute `hm0` using the available equality. Conclude with `(MvPolynomial.mem_support_iff.mp hm) hc`.
+-/
 theorem D_cover : D 0 ⊔ D 1 = ⊤ := by
   have h := Proj.iSup_basicOpen_eq_top (MvPolynomial.homogeneousSubmodule (Fin 2) ℤ)
     (fun i : Fin 2 => (MvPolynomial.X i : MvPolynomial (Fin 2) ℤ)) ?_
@@ -76,6 +105,15 @@ theorem D_cover : D 0 ⊔ D 1 = ⊤ := by
     subst hm0
     exact (MvPolynomial.mem_support_iff.mp hm) hc
 
+/- English proof (translation)
+Introduce `A _ Z p hp hZ`. Take `⟨L, u, l, hu, ⟨-, f0, hpb⟩, rfl⟩` from `hp`. Establish `hf0 : IsAffineHom f0` using `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @IsAffineHom) hpb.flip inferInstance`. Set `φ : Z ⟶ P1` to `u ≫ f0`. Set `U : Z.Opens` to `φ ⁻¹ᵁ D 0`.
+
+Set `V : Z.Opens` to `φ ⁻¹ᵁ D 1`. Establish `hU : IsAffineOpen U` using `(D_affine 0).preimage φ`. Establish `hV : IsAffineOpen V` using `(D_affine 1).preimage φ`. Establish `hUV : IsAffineOpen (U ⊓ V)` using `D_inf.preimage φ`. Use `haveI : IsAffine U := hU`.
+
+Use `haveI : IsAffine V := hV`. Use `haveI : IsAffine (U ⊓ V : Z.Opens) := hUV`. Use `haveI : IsAffine (pullback U.ι V.ι) := IsAffine.of_isIso (isPullback_opens_inf U V).isoPullback.inv`. Use `⟨U, V, U.ι, V.ι, inferInstance, inferInstance, ?_, good_of_affine hZ U.ι _, good_of_affine hZ V.ι _, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Opens.range_ι, Scheme.Opens.range_ι]`.
+
+Establish `h` using `congrArg (fun O : P1.Opens => ((φ ⁻¹ᵁ O : Z.Opens) : Set Z)) D_cover`. Simplify `h` using `[U, V]`. Rewrite using `[← Category.assoc]`. Conclude with `good_of_affine hZ (pullback.fst U.ι V.ι ≫ U.ι) _`.
+-/
 theorem projectiveLine_integers_affine_cover_absolutely_integrally_closed : ZCov := by
   intro A _ Z p hp hZ
   obtain ⟨L, u, l, hu, ⟨-, f0, hpb⟩, rfl⟩ := hp

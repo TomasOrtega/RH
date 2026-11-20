@@ -22,6 +22,11 @@ noncomputable section
 namespace GlobalTheory.KeyKa.ClosedApprox
 open EtBaseChange
 
+/- English proof (translation)
+Establish `h0 : valT w U (AbLaw.cst p U c) = valT w U ((p.appLE ⊤ U le_top).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c))` using `rfl`. Use `h0.trans ((valT_appLE w p (U := ⊤) le_top h _).trans ?_)` and prove the remaining obligations. Rewrite using `[hw, ← Category.comp_id (spMap F)]`. Use `(valT_spMap F (𝟙 (Sp R)) le_top _).trans (congrArg F ((valT_eq _ _ le_top _).trans ?_))` and prove the remaining obligations. Establish `e3 : Scheme.Hom.appLE (𝟙 (Sp R)) ⊤ ⊤ le_top = 𝟙 _`.
+
+Rewrite using `[← Scheme.Hom.id_appTop]`. Conclude with `Scheme.Hom.appLE_eq_app _`. Unfold `valH`. Use `erw [e3]`. Conclude with `congrArg (fun q => q.hom c) (Scheme.ΓSpecIso (CommRingCat.of R)).inv_hom_id`.
+-/
 theorem valT_cst {R T : Type} [CommRing R] [CommRing T] {X : Scheme.{0}} (p : X ⟶ Sp R) (w : Sp T ⟶ X) (F : R →+* T)
     (hw : w ≫ p = spMap F) (U : X.Opens) (h : ⊤ ≤ w ⁻¹ᵁ U) (c : R) : valT w U (AbLaw.cst p U c) = F c := by
   have h0 : valT w U (AbLaw.cst p U c) =
@@ -35,10 +40,18 @@ theorem valT_cst {R T : Type} [CommRing R] [CommRing T] {X : Scheme.{0}} (p : X 
   erw [e3]
   exact congrArg (fun q => q.hom c) (Scheme.ΓSpecIso (CommRingCat.of R)).inv_hom_id
 
+/- English proof (translation)
+Introduce `p _` and use `((IsLocalRing.specializes_closedPoint p).map w.continuous).mem_open U.isOpen h`.
+-/
 theorem top_le_of_closedPoint {T : Type} [CommRing T] [IsLocalRing T] {X : Scheme.{0}} (w : Sp T ⟶ X) {U : X.Opens}
     (h : w (IsLocalRing.closedPoint T) ∈ U) : ⊤ ≤ w ⁻¹ᵁ U := fun p _ =>
   ((IsLocalRing.specializes_closedPoint p).map w.continuous).mem_open U.isOpen h
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : X.presheaf.stalk z ⟶ .of T, Spec.map φ ≫ X.fromSpecStalk z = w := by`. Substitute `hz` using the available equality. Conclude with `⟨_, Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := .of T) w⟩`. Use `⟨φ.hom, fun U hU a => ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ, JacGen.valT_specMap_fromSpecStalk hU, gs_eq (𝟙 X) z U hU]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_stalk_hom {T : Type} [CommRing T] [IsLocalRing T] {X : Scheme.{0}} (w : Sp T ⟶ X) (z : X)
     (hz : w (IsLocalRing.closedPoint T) = z) : ∃ ψ : X.presheaf.stalk z →+* T, ∀ (U : X.Opens), z ∈ U →
       ∀ a : Γ(X, U), valT w U a = ψ (gs (𝟙 X) z U a) := by
@@ -49,6 +62,11 @@ theorem exists_stalk_hom {T : Type} [CommRing T] [IsLocalRing T] {X : Scheme.{0}
   rw [← hφ, JacGen.valT_specMap_fromSpecStalk hU, gs_eq (𝟙 X) z U hU]
   rfl
 
+/- English proof (translation)
+Establish `key : ∀ q : MvPolynomial σ K, (q : MvPowerSeries σ K) ∈ S` using `fun q => by`. Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a => rw [MvPolynomial.coe_C]`. Conclude with `hC a`. Consider the case `add p q hp hq => simpa using S.add_mem hp hq`.
+
+Consider the case `mul_X p i hp => simpa using S.mul_mem hp (hX i)`. Use `⟨_, key (MvPowerSeries.truncTotal r G), ?_⟩` and prove the remaining obligations. Rewrite using `[← germIdeal_eq_span, mem_germIdeal_pow_iff]`. Introduce `d hd`. Rewrite using `[map_sub, MvPolynomial.coeff_coe, MvPowerSeries.coeff_truncTotal _ hd, sub_self]`.
+-/
 theorem exists_mem_sub_mem_pow {σ K : Type} [Finite σ] [CommRing K] (S : Subring (MvPowerSeries σ K))
     (hC : ∀ a, algebraMap K _ a ∈ S) (hX : ∀ i, MvPowerSeries.X i ∈ S) (r : ℕ) (G : MvPowerSeries σ K) :
     ∃ p ∈ S, G - p ∈ Ideal.span (Set.range (MvPowerSeries.X : σ → MvPowerSeries σ K)) ^ r := by
@@ -62,6 +80,11 @@ theorem exists_mem_sub_mem_pow {σ K : Type} [Finite σ] [CommRing K] (S : Subri
   intro d hd
   rw [map_sub, MvPolynomial.coeff_coe, MvPowerSeries.coeff_truncTotal _ hd, sub_self]
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`. Take `⟨k, hk⟩` from `exists_chart x.P.isLB (φ y)`. Establish `hle : (x.P.L.pull φ).U (fun _ => k) ⊓ x'.P.L.U i ≤ φ ⁻¹ᵁ x.P.L.U k` using `fun y hy => mem_pull.1 hy.1`. Establish `e` using `hs (fun _ => k) i hle`. Establish `hm : y ∈ (x.P.L.pull φ).U (fun _ => k) ⊓ x'.P.L.U i` using `⟨mem_pull.2 hk, x'.P.A.left.basicOpen_le _ hi⟩`.
+
+Establish `h1 : y ∈ x'.P.A.left.basicOpen ((φ.appLE _ _ hle).hom (s.f k))`. Use `(congrArg x'.P.A.left.basicOpen e).ge ((Scheme.basicOpen_mul _ _ _).ge ⟨?_, ?_⟩)` and prove the remaining obligations. Conclude with `(Scheme.basicOpen_of_isUnit _ ((w.s (fun _ => k, i)).isUnit.pow l)).ge hm`. Conclude with `(Scheme.basicOpen_res _ _ _).ge ⟨hm, hi⟩`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨k, ((Scheme.basicOpen_appLE φ _ (x.P.L.U k) hle (s.f k)).le h1).2⟩`.
+-/
 theorem mem_nonzeroLocus_of_via {R R' : Type} [CommRing R] [CommRing R'] {x : KeyIn R} {x' : KeyIn R'}
     {φ : x'.P.A.left ⟶ x.P.A.left} {w : LB.Iso x'.P.L (x.P.L.pull φ)} {l : ℕ} {s' : RR x' l} {s : RR x l}
     (hs : SecVia x' x φ w s' s) (y : x'.P.A.left) (hy : y ∈ Out.nonzeroLocus s') : φ y ∈ Out.nonzeroLocus s := by
@@ -76,6 +99,9 @@ theorem mem_nonzeroLocus_of_via {R R' : Type} [CommRing R] [CommRing R'] {x : Ke
     · exact (Scheme.basicOpen_res _ _ _).ge ⟨hm, hi⟩
   exact TopologicalSpace.Opens.mem_iSup.2 ⟨k, ((Scheme.basicOpen_appLE φ _ (x.P.L.U k) hle (s.f k)).le h1).2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a ha => by rw [MvPowerSeries.isUnit_iff_constantCoeff] at ha ⊢ by_contra h have : MvPowerSeries.constantCoeff a ∈ RingHom.ker f := hf ▸ h rw [MvPowerSeries.constantCoeff_map, RingHom.mem_ker.1 this] at ha exact not_isUnit_zero ha⟩`.
+-/
 theorem isLocalHom_map {σ O K : Type} [CommRing O] [IsLocalRing O] [Field K] (f : O →+* K)
     (hf : RingHom.ker f = IsLocalRing.maximalIdeal O) : IsLocalHom (MvPowerSeries.map (σ := σ) f) :=
   ⟨fun a ha => by
@@ -85,11 +111,19 @@ theorem isLocalHom_map {σ O K : Type} [CommRing O] [IsLocalRing O] [Field K] (f
     rw [MvPowerSeries.constantCoeff_map, RingHom.mem_ker.1 this] at ha
     exact not_isUnit_zero ha⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨s, fun _ => rfl⟩`.
+-/
 theorem exists_sec_cast {R : Type} [CommRing R] (x : KeyIn R) {l l' : ℕ} (h : l = l') (s : RR x l) :
     ∃ s' : RR x l', ∀ c, (show Γ(x.P.A.left, x.P.L.U c) from s'.f c) = (show Γ(x.P.A.left, x.P.L.U c) from s.f c) := by
   subst h
   exact ⟨s, fun _ => rfl⟩
 
+/- English proof (translation)
+Establish `e : G - (u : T) ^ N * ψ g = (u : T) ^ N * ((((u⁻¹ : Tˣ) : T) ^ N * G - ψ a) - ψ (g - a))`. Establish `: (u : T) ^ N * ((u⁻¹ : Tˣ) : T) ^ N = 1` using `by rw [← mul_pow, Units.mul_inv, one_pow]`. Rewrite using `[map_sub]`. Take the linear combination `(-G) * this`. Rewrite using `[e]`.
+
+Conclude with `Ideal.mul_mem_left _ _ (Ideal.sub_mem _ (Ideal.mem_sup_right h₂) (Ideal.mem_sup_left (hI h₁)))`.
+-/
 theorem sub_mem_sup {S T : Type} [CommRing S] [CommRing T] (ψ : S →+* T) (u : Tˣ) (N : ℕ) {I : Ideal S} {J J' : Ideal T}
     (hI : I ≤ J.comap ψ) {g a : S} {G : T} (h₁ : g - a ∈ I) (h₂ : ((u⁻¹ : Tˣ) : T) ^ N * G - ψ a ∈ J') :
     G - (u : T) ^ N * ψ g ∈ J ⊔ J' := by
@@ -105,6 +139,27 @@ end GlobalTheory.KeyKa.ClosedApprox
 namespace GlobalTheory.KeyKa
 open EtBaseChange ClosedApprox
 
+/- English proof (translation)
+Introduce `hL O _ _ _ K _ _ f x n l s b m Y θ c hf hn hl hb hm hZ hθ hco hc hinj hz r G`. Take `⟨x', φ, w, hg, s', b', m', ⟨_, _, _, hp, -⟩, hs', hb', hB', hm', -, hZ'⟩` from `GlobalTheory.T.exists_keyData_baseChange_sections_matrices hL O K f x n l s b m hl hb hm`. Use `replace hZ' := hZ' (inferInstanceAs (Finite (PrimeSpectrum K))) hZ`. Set `F : MvPowerSeries (Fin x.P.g) O →+* MvPowerSeries (Fin x.P.g) K` to `MvPowerSeries.map f`. Establish `hF : IsLocalHom F` using `isLocalHom_map f hf`.
+
+Establish `hw : ∀ y, (spMap F ≫ θ y) ≫ x.P.A.hom = spMap (algebraMap K (MvPowerSeries (Fin x.P.g) K)) ≫ spMap f` using `fun y => by`. Establish `: F.comp (algebraMap O _) = (algebraMap K (MvPowerSeries (Fin x.P.g) K)).comp f` using `RingHom.ext fun a => MvPowerSeries.map_C f a`. Rewrite using `[Category.assoc, hθ, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, this]`. Take `⟨θ', h₁, h₂⟩ : ∃ θ' : Y → (Sp (MvPowerSeries (Fin x.P.g) K) ⟶ x'.P.A.left), (∀ y, θ' y ≫ φ = spMap F ≫ θ y) ∧ ∀ y, θ' y ≫ x'.P.A.hom = spMap (algebraMap K (MvPowerSeries (Fin x.P.g) K))` from `⟨fun y => hp.1.lift _ _ (hw y), fun y => hp.1.lift_fst _ _ _, fun y => hp.1.lift_snd _ _ _⟩`. Set `P : Y → x'.P.A.left` to `fun y => θ' y (IsLocalRing.closedPoint (MvPowerSeries (Fin x.P.g) K))`.
+
+Establish `hP : ∀ y, φ (P y) = θ y (IsLocalRing.closedPoint (MvPowerSeries (Fin x.P.g) O))` using `fun y => (congrArg (fun q => q (IsLocalRing.closedPoint (MvPowerSeries (Fin x.P.g) K))) (h₁ y)).trans (congrArg (θ y) (IsLocalRing.comap_closedPoint F))`. Establish `hPinj : Function.Injective P` using `fun y y' h => hinj ((hP y).symm.trans ((congrArg φ h).trans (hP y')))`. Use `choose c' hc' using exists_chart x'.P.isLB`. Establish `hU : ∀ y, ⊤ ≤ θ' y ⁻¹ᵁ x'.P.L.U (c' (P y))` using `fun y => top_le_of_closedPoint _ (hc' (P y))`. Establish `hφ : ∀ y {V : x.P.A.left.Opens}, ⊤ ≤ θ y ⁻¹ᵁ V → ⊤ ≤ (θ' y ≫ φ) ⁻¹ᵁ V` using `fun y V h p _ => by`.
+
+Rewrite using `[h₁ y]`. Conclude with `h (show spMap F p ∈ ⊤ from trivial)`. Establish `hval : ∀ y {V : x.P.A.left.Opens}, ⊤ ≤ θ y ⁻¹ᵁ V → ∀ a, valT (θ' y ≫ φ) V a = F (valT (θ y) V a)` using `fun y V h a => (congrArg (fun q => valT q V a) (h₁ y)).trans (valT_spMap F (θ y) h a)`. Establish `hW` using `fun y => le_inf_pull (θ' y) (c y) (c' (P y)) (hφ y (hc y)) (hU y)`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u : Y → (MvPowerSeries (Fin x.P.g) K)ˣ, ∀ y (l : ℕ) (sg : RR x l) (sg' : RR x' l), SecVia x' x φ w sg' sg → F (valT (θ y) (x.P.L.U (c y)) (sg.f (c y))) = (u y : MvPowerSeries (Fin x.P.g) K) ^ l * valT (θ' y) (x'.P.L.U (c' (P y))) (sg'.f (c' (P y))) := by`.
+
+Use `⟨fun y => Units.map (valH (θ' y) _ (hW y)).toMonoidHom (w.s (fun _ => c y, c' (P y))), fun y l sg sg' h => (hval y (hc y) _).symm.trans ((valT_via h (θ' y) (c y) (c' (P y)) (hφ y (hc y)) (hU y)).trans (congrArg (· ^ l * _) (valT_eq _ _ (hW y) _)))⟩` and prove the remaining obligations. Use `choose ψ hψ using fun y z (h : P y = z) => exists_stalk_hom (θ' y) z h`. Establish `ha : ∀ z : x'.P.A.left, ∃ a : x'.P.A.left.presheaf.stalk z, ∀ y (h : P y = z), (((u y)⁻¹ : (MvPowerSeries (Fin x.P.g) K)ˣ) : MvPowerSeries (Fin x.P.g) K) ^ (l - 0 * n) * G y - ψ y z h a ∈ Ideal.span (Set.range MvPowerSeries.X) ^ r` using `fun z => by`. Distinguish the cases in `hz : ∃ y, P y = z`. Take `⟨y, rfl⟩` from `hz`.
+
+Take `⟨V, t, hV, ht⟩` from `hco y`. Take `⟨_, ⟨a, rfl⟩, ha⟩` from `exists_mem_sub_mem_pow (ψ y _ rfl).range (fun a => ⟨_, (hψ y _ rfl _ (hc' _) _).symm.trans (valT_cst _ _ _ (h₂ y) _ (hU y) a)⟩) (fun i => ⟨_, (hψ y _ rfl (φ ⁻¹ᵁ V) (hφ y hV trivial) _).symm.trans ((valT_appLE (θ' y) φ le_rfl (hφ y hV) (t i)).trans ((hval y hV _).trans ((congrArg …`. Use `⟨a, fun y' h => ?_⟩` and prove the remaining obligations. Take `rfl` from `hPinj h`. Conclude with `ha`.
+
+Conclude with `⟨0, fun y h => (hz ⟨y, h⟩).elim⟩`. Use `choose a ha using ha`. Take `⟨sg₀, hsg₀⟩` from `(GlobalTheory.T.koszul_sections_exact_algClosed_polarisedAV hL K x' n l s' b' m' c' hn (hg ▸ hl) hZ' hB' hm' hc').2.1 a`. Take `⟨sg, hsg⟩` from `exists_sec_cast x' (show l = l - 0 * n by simp) sg₀`. Take `⟨v, hv, -⟩` from `hB' 0 (Nat.zero_le _) sg`.
+
+Establish `hN : (l - 0 * n) ^ x'.P.g = (l - 0 * n) ^ x.P.g` using `congrArg (fun r => (l - 0 * n) ^ r) hg`. Use `⟨fun k => v (k.cast hN.symm), fun y => ?_⟩` and prove the remaining obligations. Establish `hzero : ∀ i, P y ∉ Out.nonzeroLocus (s' i)` using `fun i h => hz y (i.cast hg) (hP y ▸ mem_nonzeroLocus_of_via (hs' i) _ h)`. Establish `e : ∑ k, v (k.cast hN.symm) • F (valT (θ y) (x.P.L.U (c y)) ((b 0 k).f (c y))) = (u y : MvPowerSeries (Fin x.P.g) K) ^ (l - 0 * n) * ψ y _ rfl (gs (𝟙 _) (P y) (x'.P.L.U (c' (P y))) (sg₀.f (c' (P y))))`. Establish `e₁` using `(hψ y _ rfl _ (hc' _) _).symm.trans ((congrArg (valT (θ' y) (x'.P.L.U (c' (P y)))) ((hsg (c' (P y))).symm.trans (hv (c' (P y))))).trans ((valT_eq _ _ (hU y) _).trans (map_sum _ _ _)))`.
+
+Use `Eq.trans ?_ (congrArg (_ * ·) e₁.symm)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `(Fintype.sum_equiv (finCongr hN) _ _ fun k => ?_).symm` and prove the remaining obligations. Rewrite using `[map_mul, ← valT_eq, ← valT_eq, valT_cst _ _ _ (h₂ y) _ (hU y), mul_left_comm, Algebra.smul_def]`. Conclude with `congrArg (_ * ·) (hu y _ _ _ (hb' 0 k)).symm`.
+
+Use `(congrArg (fun q => G y - q ∈ _) e).mpr (sub_mem_sup (ψ y _ rfl) (u y) _ ?_ (hsg₀ (P y) hzero) (ha _ y rfl))` and prove the remaining obligations. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Use `Ideal.mem_comap.2 ((Ideal.unit_mul_mem_iff_mem _ ((u y).isUnit.pow n)).1 (Ideal.subset_span (Set.mem_range.2 ⟨i.cast hg, ?_⟩)))` and prove the remaining obligations. Conclude with `(hu y _ _ _ (hs' i)).trans (congrArg (_ * ·) (hψ y _ rfl _ (hc' _) _))`.
+-/
 theorem exists_comb_sub_mem_sup_pow : Out.Laws → ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] (K : Type) [Field K] [IsAlgClosed K] (f : O →+* K) (x : KeyIn O) (n l : ℕ) (s : Fin x.P.g → RR x n) (b : ∀ j, Fin ((l - j * n) ^ x.P.g) → RR x (l - j * n)) (m) (Y : Type) (θ : Y → (Sp (MvPowerSeries (Fin x.P.g) O) ⟶ x.P.A.left)) (c : Y → x.P.L.ι), RingHom.ker f = IsLocalRing.maximalIdeal O → 1 ≤ n → x.P.g * n < l → (∀ j ≤ x.P.g, IsBasis x (b j)) → IsMul x l s b m → FinZ x s → (∀ y, θ y ≫ x.P.A.hom = spMap (algebraMap O (MvPowerSeries (Fin x.P.g) O))) → (∀ y, (∃ (V : x.P.A.left.Opens) (t : Fin x.P.g → Γ(x.P.A.left, V)), ⊤ ≤ (θ y) ⁻¹ᵁ V ∧ ∀ i, valT (T := (MvPowerSeries (Fin x.P.g) O)) (θ y) V (t i) = MvPowerSeries.X i)) → (∀ y, ⊤ ≤ (θ y) ⁻¹ᵁ x.P.L.U (c y)) → Function.Injective (fun y => θ y (IsLocalRing.closedPoint (MvPowerSeries (Fin x.P.g) O))) → (∀ y i, θ y (IsLocalRing.closedPoint (MvPowerSeries (Fin x.P.g) O)) ∉ Out.nonzeroLocus (s i)) → ∀ (r : ℕ) (G : Y → MvPowerSeries (Fin x.P.g) K), ∃ v : Fin ((l - 0 * n) ^ x.P.g) → K, ∀ y, G y - ∑ k, v k • MvPowerSeries.map f (valT (T := (MvPowerSeries (Fin x.P.g) O)) (θ y) (x.P.L.U (c y)) ((b 0 k).f (c y))) ∈ Ideal.span (Set.range fun i => MvPowerSeries.map f (valT (T := (MvPowerSeries (Fin x.P.g) O)) (θ y) (x.P.L.U (c y)) ((s i).f (c y)))) ⊔ Ideal.span (Set.range MvPowerSeries.X) ^ r := by
   intro hL O _ _ _ K _ _ f x n l s b m Y θ c hf hn hl hb hm hZ hθ hco hc hinj hz r G
   obtain ⟨x', φ, w, hg, s', b', m', ⟨_, _, _, hp, -⟩, hs', hb', hB', hm', -, hZ'⟩ :=

@@ -23,6 +23,13 @@ namespace PLC
 
 variable {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Establish `hPf` using `isPotential_ofFun A f hf`. Establish `hPf'` using `isPotential_ofFun A f' hf'`. Establish `hI : ∀ {h : X → ℝ}, IsPotential A (LocPot.ofFun h) → MIntegrable A (Fin.cons (LocPot.ofFun h) ![]) (logNormSec L s)` using `fun hP => logNormIntegrable A L s m _ hL hs hsnc _ (Fin.forall_fin_one.2 hP)`. Establish `h1 : mInt A ![LocPot.ofFun (fun z => f z + f' z)] (logNormSec L s) = mInt A ![LocPot.ofFun f] (logNormSec L s) + mInt A ![LocPot.ofFun f'] (logNormSec L s)`. Conclude with `(mInt_congr_phi A _ (Fin.cons (LocPot.ofFun f + LocPot.ofFun f') ![]) (fun i a b => by fin_cases i; rfl) _).trans (mIntAdd (e := 0) A _ _ ![] hPf hPf' (fun i => i.elim0) _ (hI hPf) (hI hPf'))`.
+
+Establish `hLp : ∀ i, IsPotential A (![L] i)` using `Fin.forall_fin_one.2 hL`. Establish `h2 : mInt A ![L] (fun z => f z + f' z) = mInt A ![L] f + mInt A ![L] f'`. Use `mIntLinear A ![L] hLp 1 f f' (mIntegrableCont A _ hLp f (continuous_of_smooth A hf)) (mIntegrableCont A _ hLp f' (continuous_of_smooth A hf'))` as an intermediate fact. Simplify using `using this`. Unfold `plDefect`.
+
+Rewrite using `[h1, h2]`. Simplify using `only [mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem plDefect_add [CompactSpace X] [T2Space X] (A : FinHolAtlas 1 X) (L : LocPot X)
     (s : X → X → ℂ) {r : ℕ} (m : Fin r → ℕ) (p : Fin r → X)
     (hL : IsPotential A L) (hs : IsSection A L s) (hsnc : IsSNC A L s m (fun k => {p k}))
@@ -48,6 +55,9 @@ theorem plDefect_add [CompactSpace X] [T2Space X] (A : FinHolAtlas 1 X) (L : Loc
   simp only [mul_add, Finset.sum_add_distrib]
   ring
 
+/- English proof (translation)
+Unfold `plDefect`. Establish `h0 : mInt A ![LocPot.ofFun fun _ => (0 : ℝ)] (logNormSec L s) = 0` using `mIntConstPot (e := 0) A 0 ![] _`. Rewrite using `[h0, mInt_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem plDefect_zero (A : FinHolAtlas 1 X) (L : LocPot X) (s : X → X → ℂ) {r : ℕ}
     (m : Fin r → ℕ) (p : Fin r → X) : plDefect A L s m p (fun _ => 0) = 0 := by
   unfold plDefect
@@ -56,6 +66,21 @@ theorem plDefect_zero (A : FinHolAtlas 1 X) (L : LocPot X) (s : X → X → ℂ)
   rw [h0, mInt_zero]
   simp
 
+/- English proof (translation)
+Use `choose ψ hψ hxψ hloc using fun x => plc_local A L s m p hL hs hsnc x`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun x => (ψ x).source) (fun x => (ψ x).open_source) (fun x _ => Set.mem_iUnion.2 ⟨x, hxψ x⟩)`. Set `F : Fin t.card → OpenPartialHomeomorph X (Fin 1 → ℂ)` to `fun i => ψ (t.equivFin.symm i)`. Take `⟨B, hAB, -, hB⟩` from `atlasOfCompat A F (fun i => hψ _) (by`. Introduce `x`.
+
+Take `⟨y, hy, hx⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ x))`. Conclude with `⟨t.equivFin ⟨y, hy⟩, by simpa [F] using hx⟩)`. Take `⟨P⟩` from `existsPartition B`. Establish `hχ : ∀ j, A.Smooth (P.χ j)` using `fun j => smoothOn_of_compatible hAB.symm' isOpen_univ (P.smooth j)`. Establish `hpiece : ∀ j, plDefect A L s m p (fun z => P.χ j z * v z) = 0`.
+
+Introduce `j`. Take `⟨i, hi⟩` from `hB j`. Establish `hsub : tsupport (P.χ j) ⊆ (ψ (t.equivFin.symm i)).source`. Use `P.tsupport_subset j` as an intermediate fact. Rewrite `this` using `[hi]`. Then use the resulting hypothesis.
+
+Use `hloc (t.equivFin.symm i) (fun z => P.χ j z * v z) (smooth_mul A (hχ j) hv) (tsupport_mul_subset_left.trans hsub)` as an intermediate fact. Unfold `plDefect`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hind : ∀ S : Finset (Fin B.n), plDefect A L s m p (fun z => ∑ j ∈ S, P.χ j z * v z) = 0`.
+
+Introduce `S`. Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Simplify using `using plDefect_zero A L s m p`. Introduce `a S ha ih`. Establish `hfun : (fun z => ∑ j ∈ insert a S, P.χ j z * v z) = fun z => P.χ a z * v z + ∑ j ∈ S, P.χ j z * v z`.
+
+Use function extensionality and compare the values at `z`. Rewrite using `[Finset.sum_insert ha]`. Rewrite using `[hfun, plDefect_add A L s m p hL hs hsnc (smooth_mul A (hχ a) hv) (smooth_sum A S fun j => smooth_mul A (hχ j) hv), hpiece a, ih, add_zero]`. Establish `hv' : (fun z => ∑ j, P.χ j z * v z) = v`. Use function extensionality and compare the values at `z`.
+
+Rewrite using `[← Finset.sum_mul, P.sum_eq_one, one_mul]`. Establish `h` using `hind Finset.univ`. Rewrite `h` using `[hv']`. Unfold `plDefect at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem plc_global [CompactSpace X] [T2Space X] (A : FinHolAtlas 1 X) (L : LocPot X)
     (s : X → X → ℂ) {r : ℕ} (m : Fin r → ℕ) (p : Fin r → X)
     (hL : IsPotential A L) (hs : IsSection A L s) (hsnc : IsSNC A L s m (fun k => {p k}))
@@ -106,6 +131,9 @@ theorem plc_global [CompactSpace X] [T2Space X] (A : FinHolAtlas 1 X) (L : LocPo
 
 end PLC
 
+/- English proof (translation)
+Introduce `X _ _ _ A L s r m p _ hL hs hsnc v hv`. Conclude with `PLC.plc_global A L s m p hL hs hsnc v hv`.
+-/
 theorem plCurve : PoincareLelongCurveStatement := by
   intro X _ _ _ A L s r m p _ hL hs hsnc v hv
   exact PLC.plc_global A L s m p hL hs hsnc v hv

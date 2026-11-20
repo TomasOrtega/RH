@@ -15,10 +15,16 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K : FinExt l)
 def dualEquiv : (Fin (finrank ℚ_[l] V) → ℚ_[l]) ≃ₗ[ℚ_[l]] Module.Dual ℚ_[l] V :=
   (Module.finBasis ℚ_[l] V).dualBasis.equivFun.symm
 
+/- English proof (translation)
+Simplify using `[dualEquiv, Basis.equivFun_symm_apply, Finset.sum_apply, Basis.dualBasis_apply_self, Finsupp.single_apply]`.
+-/
 theorem dualEquiv_basis (z : Fin (finrank ℚ_[l] V) → ℚ_[l]) (i : Fin (finrank ℚ_[l] V)) :
     dualEquiv z (Module.finBasis ℚ_[l] V i) = z i := by
   simp [dualEquiv, Basis.equivFun_symm_apply, Finset.sum_apply, Basis.dualBasis_apply_self, Finsupp.single_apply]
 
+/- English proof (translation)
+Use `conv_rhs => rw [← (dualEquiv (V := V)).apply_symm_apply f]`. Rewrite using `[dualEquiv_basis]`.
+-/
 theorem dualEquiv_symm_apply (f : Module.Dual ℚ_[l] V) (i : Fin (finrank ℚ_[l] V)) :
     (dualEquiv (V := V)).symm f i = f (Module.finBasis ℚ_[l] V i) := by
   conv_rhs => rw [← (dualEquiv (V := V)).apply_symm_apply f]
@@ -26,9 +32,15 @@ theorem dualEquiv_symm_apply (f : Module.Dual ℚ_[l] V) (i : Fin (finrank ℚ_[
 
 def chiS (g : ↥(GK K)) : ℚ_[l] := ((cycLL (P.PD K) ℚ_[l] g : ℚ_[l]ˣ) : ℚ_[l])
 
+/- English proof (translation)
+Simplify using `[chiS]`.
+-/
 theorem chiS_mul (g h : ↥(GK K)) : chiS P K (g * h) = chiS P K g * chiS P K h := by
   simp [chiS]
 
+/- English proof (translation)
+Simplify using `[chiS]`.
+-/
 theorem chiS_one : chiS P K 1 = 1 := by simp [chiS]
 
 def dualOp (ρ : Representation ℚ_[l] ↥(GK K) V) (g : ↥(GK K)) :
@@ -37,6 +49,9 @@ def dualOp (ρ : Representation ℚ_[l] ↥(GK K) V) (g : ↥(GK K)) :
   map_add' y z := by simp [LinearMap.add_comp, smul_add]
   map_smul' c y := by simp [LinearMap.smul_comp, smul_comm c]
 
+/- English proof (translation)
+Simplify using `[dualOp]`.
+-/
 theorem dualEquiv_dualOp (ρ : Representation ℚ_[l] ↥(GK K) V) (g : ↥(GK K)) (y) :
     dualEquiv (dualOp P K ρ g y) = chiS P K g • (dualEquiv y).comp (ρ g⁻¹) := by
   simp [dualOp]
@@ -58,6 +73,9 @@ def dualRep (ρ : Representation ℚ_[l] ↥(GK K) V) :
 def dualPair : V →ₗ[ℚ_[l]] (Fin (finrank ℚ_[l] V) → ℚ_[l]) →ₗ[ℚ_[l]] ℚ_[l] :=
   (dualEquiv (V := V)).toLinearMap.flip
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualPair_apply (x : V) (y : Fin (finrank ℚ_[l] V) → ℚ_[l]) : dualPair x y = dualEquiv y x := rfl
 
 end GlobalTheory.DualTwist
@@ -65,15 +83,32 @@ end GlobalTheory.DualTwist
 namespace GlobalTheory.DualTwist
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Simplify using `[chiS, cycLL, P.PD_χ]`.
+-/
 theorem chiS_eq (P : LocPrime l) (K : FinExt l) (g : ↥(GK K)) :
     chiS P K g = (P.χQ (g : GQ l) : ℚ_[l]) := by
   simp [chiS, cycLL, P.PD_χ]
 
+/- English proof (translation)
+Establish `h : chiS P K = fun g : ↥(GK K) => (P.χQ (g : GQ l) : ℚ_[l])` using `funext (chiS_eq P K)`. Rewrite using `[h]`. Conclude with `(GlobalTheory.Cyc.IsCyc.continuous P.χQ_cyc).comp continuous_subtype_val`.
+-/
 theorem chiS_cont (P : LocPrime l) (K : FinExt l) : Continuous (chiS P K) := by
   have h : chiS P K = fun g : ↥(GK K) => (P.χQ (g : GQ l) : ℚ_[l]) := funext (chiS_eq P K)
   rw [h]
   exact (GlobalTheory.Cyc.IsCyc.continuous P.χQ_cyc).comp continuous_subtype_val
 
+/- English proof (translation)
+Introduce `l _ P K V _ _ _ _ _ _ _ ρ hc`. Use `⟨dualRep P K ρ, dualPair, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`. Apply `continuous_pi` to reduce the goal to its premises. Introduce `i`.
+
+Establish `h : (fun g : ↥(GK K) => dualRep P K ρ g y i) = fun g => chiS P K g * dualEquiv y (ρ g⁻¹ (Module.finBasis ℚ_[l] V i))`. Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `dualOp P K ρ g y i = _`. Simplify using `[dualOp, dualEquiv_symm_apply]`. Rewrite using `[h]`.
+
+Establish `hy : Continuous (dualEquiv (V` using `V) y) := IsModuleTopology.continuous_of_linearMap (dualEquiv (V := V) y)`. Conclude with `(chiS_cont P K).mul (hy.comp ((hc _).comp continuous_inv))`. Introduce `g x y`. Express the relevant statement in the definitionally equal form `dualEquiv (dualOp P K ρ g y) (ρ g x) = chiS P K g * dualEquiv y x`. Rewrite using `[dualEquiv_dualOp, LinearMap.smul_apply, LinearMap.comp_apply, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply, smul_eq_mul]`.
+
+Introduce `x hx`. Apply `(Module.finBasis ℚ_[l] V).forall_coord_eq_zero_iff.mp` to reduce the goal to its premises. Introduce `i`. Use `hx ((dualEquiv (V := V)).symm ((Module.finBasis ℚ_[l] V).coord i))` as an intermediate fact. Rewrite `this` using `[dualPair_apply, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+
+Introduce `y hy`. Use function extensionality and compare the values at `i`. Conclude with `(dualEquiv_basis y i).symm.trans (hy _)`. Simplify using the standard rewrite rules.
+-/
 theorem exists_dual1 : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (V : Type) [AddCommGroup V] [Module ℚ_[l] V] [FiniteDimensional ℚ_[l] V] [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] [ContinuousAdd V] [ContinuousConstSMul ℚ_[l] V] (ρ : Representation ℚ_[l] ↥(GK K) V), (∀ v, Continuous fun g => ρ g v) → ∃ (ρ' : Representation ℚ_[l] ↥(GK K) (Fin (finrank ℚ_[l] V) → ℚ_[l])) (m : V →ₗ[ℚ_[l]] (Fin (finrank ℚ_[l] V) → ℚ_[l]) →ₗ[ℚ_[l]] ℚ_[l]), (∀ y, Continuous fun g => ρ' g y) ∧ IsDual1 (P.PD K) ρ ρ' m := by
   intro l _ P K V _ _ _ _ _ _ _ ρ hc
   refine ⟨dualRep P K ρ, dualPair, ?_, ?_, ?_, ?_, ?_⟩

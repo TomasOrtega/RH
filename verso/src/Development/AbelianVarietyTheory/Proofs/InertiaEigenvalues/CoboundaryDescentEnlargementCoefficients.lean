@@ -8,6 +8,17 @@ namespace GlobalTheory.UseLoc.DescBD
 
 section Abstract
 
+/- English proof (translation)
+Use `letI : Algebra K K' := φ.toAlgebra`. Use `letI : Algebra O K' := (φ.comp (algebraMap O K)).toAlgebra`. Use `letI : Algebra O O' := f.toAlgebra`. Use `letI : Algebra O' K' := j.toAlgebra`. Use `haveI : IsScalarTower O K K' := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+
+Use `haveI : IsScalarTower O O' K' := IsScalarTower.of_algebraMap_eq hc`. Use `haveI : IsScalarTower Z O O' := IsScalarTower.of_algebraMap_eq hf`. Use `haveI : Module.Finite O O' := Module.Finite.of_restrictScalars_finite Z _ _`. Set `L : Submodule O K'` to `LinearMap.range (IsScalarTower.toAlgHom O O' K').toLinearMap`. Use `haveI : Module.Finite O L := inferInstance`.
+
+Establish `hsp : Submodule.span K (L : Set K') = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨a, ha, y, hy⟩` from `hs x`. Establish `e : x = a⁻¹ • j y`.
+
+Rewrite using `[hy]`. Express the relevant statement in the definitionally equal form `x = φ a⁻¹ * (φ a * x)`. Rewrite using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ ha, map_one, one_mul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨y, rfl⟩)`.
+
+Take `⟨T, hT, hT'⟩` from `GlobalTheory.St.G.Inter.exists_retraction (O := O) (K := K) (Algebra.linearMap K K') φ.injective L hsp`. Conclude with `⟨T.toAddMonoidHom, fun a x => T.map_smul a x, hT, fun x => hT' (j x) ⟨x, rfl⟩⟩`.
+-/
 theorem exists_retr_abs {Z O O' K K' : Type} [CommRing Z] [CommRing O] [CommRing O'] [IsDedekindDomain O]
     [Field K] [Field K'] [Algebra O K] [IsFractionRing O K] [Algebra Z O] [Algebra Z O'] [Module.Finite Z O']
     (f : O →+* O') (hf : ∀ c, algebraMap Z O' c = f (algebraMap Z O c)) (j : O' →+* K') (φ : K →+* K')
@@ -37,6 +48,13 @@ theorem exists_retr_abs {Z O O' K K' : Type} [CommRing Z] [CommRing O] [CommRing
     (Algebra.linearMap K K') φ.injective L hsp
   exact ⟨T.toAddMonoidHom, fun a x => T.map_smul a x, hT, fun x => hT' (j x) ⟨x, rfl⟩⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm⟩`. Take `⟨m, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Use `⟨m, fun g v hv => ?_⟩` and prove the remaining obligations. Establish `hg` using `(congrFun hm g).trans hv.symm`.
+
+Establish `hg' : matRep (mapM (algebraMap O K) N) g m - m - v ∈ stdG O K k` using `(Submodule.Quotient.eq _).1 hg`. Take `⟨u, hu⟩` from `hg'`. Conclude with `⟨u, fun j => congrFun hu j⟩`. Introduce and unpack `⟨m, hm⟩`. Use `⟨Submodule.Quotient.mk m, funext fun g => ?_⟩` and prove the remaining obligations.
+
+Take `⟨v, hv⟩` from `Submodule.Quotient.mk_surjective _ (z g)`. Take `⟨u, hu⟩` from `hm g v hv`. Establish `key : matRep (mapM (algebraMap O K) N) g m - m - v ∈ stdG O K k` using `⟨u, funext hu⟩`. Conclude with `((Submodule.Quotient.eq _).2 key).trans hv`.
+-/
 theorem mem_BD_iff {O K : Type} [CommRing O] [Field K] [Algebra O K]
     (hinj : Function.Injective (algebraMap O K)) {Γ : Type} [Group Γ] {k : ℕ}
     (N : Γ →* Matrix (Fin k) (Fin k) O) (z : Γ → (Fin k → K) ⧸ stdG O K k) :
@@ -57,6 +75,11 @@ theorem mem_BD_iff {O K : Type} [CommRing O] [Field K] [Algebra O K]
     have key : matRep (mapM (algebraMap O K) N) g m - m - v ∈ stdG O K k := ⟨u, funext hu⟩
     exact ((Submodule.Quotient.eq _).2 key).trans hv
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `(mem_BD_iff hinj' (mapM f N) (fun g => q (z g))).1 hz`. Use `(mem_BD_iff hinj N z).2 ⟨fun j => R (m j), fun g v hv => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `hm g (fun j => φ (v j)) (by rw [← hv, hq])`. Use `choose r hr using hRO`. Use `⟨fun j => r (u j), fun j => ?_⟩` and prove the remaining obligations.
+
+Establish `hj : algebraMap O' K' (u j) = ∑ t, algebraMap O' K' (f (N g j t)) * m t - m j - φ (v j)` using `hu j`. Rewrite using `[hr, hj, map_sub, map_sub, map_sum, hR1]`. Simplify using `only [hc, hR]`.
+-/
 theorem desc_abs {O K O' K' : Type} [CommRing O] [Field K] [Algebra O K] [CommRing O'] [Field K'] [Algebra O' K']
     (hinj : Function.Injective (algebraMap O K)) (hinj' : Function.Injective (algebraMap O' K'))
     (f : O →+* O') (φ : K →+* K') (hc : ∀ a, algebraMap O' K' (f a) = φ (algebraMap O K a))
@@ -81,6 +104,15 @@ end Abstract
 section Gen
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Use `haveI := LL.2`. Use `haveI := LL'.2`. Use `haveI : IsDedekindDomain ↥(OL LL) := integralClosure.isDedekindDomain ℤ_[l] ℚ_[l] ↥LL.1`. Use `haveI : IsFractionRing ↥(OL LL) ↥LL.1 := integralClosure.isFractionRing_of_finite_extension ℚ_[l] ↥LL.1`. Use `haveI : Module.Finite ℤ_[l] ↥(OL LL') := IsIntegralClosure.finite ℤ_[l] ℚ_[l] ↥LL'.1 (integralClosure ℤ_[l] ↥LL'.1)`.
+
+Take `⟨R, h1, h2, h3⟩` from `exists_retr_abs (Z := ℤ_[l]) (O := ↥(OL LL)) (O' := ↥(OL LL')) (K := ↥LL.1) (K' := ↥LL'.1) (incO h) (fun _ => rfl) (OL LL').val.toRingHom (IntermediateField.inclusion h).toRingHom (fun _ => rfl) (fun x => by`. Establish `hx : IsAlgebraic ℤ_[l] x` using `(IsFractionRing.isAlgebraic_iff ℤ_[l] ℚ_[l] ↥LL'.1).2 (Algebra.IsAlgebraic.isAlgebraic x)`. Take `⟨y, hy, hi⟩` from `hx.exists_integral_multiple`. Use `⟨algebraMap ℤ_[l] ↥LL.1 y, ?_, ⟨y • x, hi⟩, Algebra.smul_def y x⟩` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] ↥LL.1]`.
+
+Simplify using `using hy)`. Use `⟨R, h1, h2, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `h3 ⟨x, hx⟩`. Establish `hy' : (y : ↥LL'.1) = ((IntermediateField.inclusion h).restrictScalars ℤ_[l]) (R x)` using `hy`. Establish `: IsIntegral ℤ_[l] (((IntermediateField.inclusion h).restrictScalars ℤ_[l]) (R x))` using `hy' ▸ y.2`.
+
+Conclude with `(isIntegral_algHom_iff ((IntermediateField.inclusion h).restrictScalars ℤ_[l]) (IntermediateField.inclusion h).injective).1 this`.
+-/
 theorem exists_retr {LL LL' : FinExt l} (h : LL.1 ≤ LL'.1) :
     ∃ R : ↥LL'.1 →+ ↥LL.1, (∀ a x, R (IntermediateField.inclusion h a * x) = a * R x) ∧
       (∀ a, R (IntermediateField.inclusion h a) = a) ∧ ∀ x ∈ OL LL', R x ∈ OL LL := by
@@ -106,6 +138,9 @@ theorem exists_retr {LL LL' : FinExt l} (h : LL.1 ≤ LL'.1) :
   exact (isIntegral_algHom_iff ((IntermediateField.inclusion h).restrictScalars ℤ_[l])
     (IntermediateField.inclusion h).injective).1 this
 
+/- English proof (translation)
+Take `⟨R, hR, hR1, hRO⟩` from `exists_retr h`. Conclude with `desc_abs (O := ↥(OL LL)) (K := ↥LL.1) (O' := ↥(OL LL')) (K' := ↥LL'.1) Subtype.val_injective Subtype.val_injective (incO h) (IntermediateField.inclusion h).toRingHom (fun _ => rfl) R hR hR1 (fun x => ⟨⟨R x, hRO _ x.2⟩, rfl⟩) N (liftQ h k) (liftQ_mk h k) z hz`.
+-/
 theorem desc {LL LL' : FinExt l} (h : LL.1 ≤ LL'.1) {Γ : Type} [Group Γ] {k : ℕ}
     (N : Γ →* Matrix (Fin k) (Fin k) ↥(OL LL))
     (z : Γ → (Fin k → ↥LL.1) ⧸ stdG ↥(OL LL) ↥LL.1 k)
@@ -119,6 +154,9 @@ theorem desc {LL LL' : FinExt l} (h : LL.1 ≤ LL'.1) {Γ : Type} [Group Γ] {k 
 
 end Gen
 
+/- English proof (translation)
+Introduce `D i w hw C _ M z hz` and use `desc C.le (Br.locO (D.nbr i w hw) (M.comp (decS D.nd w))) z hz`.
+-/
 theorem main : ∀ (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
     (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (k : ℕ) (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i))
     (z : Br.G D.nbr i w hw → (Fin k → Br.LL D.nbr i w hw) ⧸ (Br.locLat D.nbr i w hw M).T),

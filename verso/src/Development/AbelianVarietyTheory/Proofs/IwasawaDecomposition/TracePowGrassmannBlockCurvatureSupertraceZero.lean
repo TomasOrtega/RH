@@ -11,11 +11,20 @@ variable {n : ℕ}
 def Sg (m : ℕ) (z : Big n) : Prop :=
   ∀ a : Fin n, ((1 : Ext n) ⊗ₜ vec n a) * z = (-1) ^ m * (z * ((1 : Ext n) ⊗ₜ vec n a))
 
+/- English proof (translation)
+Introduce `a`. Simplify using the standard rewrite rules.
+-/
 theorem sg_zero (m : ℕ) : Sg m (0 : Big n) := by intro a; simp
 
+/- English proof (translation)
+Introduce `a`. Rewrite using `[mul_add, hz a, hw a, add_mul, mul_add]`.
+-/
 theorem sg_add {m : ℕ} {z w : Big n} (hz : Sg m z) (hw : Sg m w) : Sg m (z + w) := by
   intro a; rw [mul_add, hz a, hw a, add_mul, mul_add]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => simpa using sg_zero m`. Consider the case `cons x s hx ih`. Rewrite using `[Finset.sum_cons]`. Conclude with `sg_add (h x (by simp)) (ih fun i hi => h i (by simp [hi]))`.
+-/
 theorem sg_sum {ι : Type*} (s : Finset ι) (m : ℕ) (f : ι → Big n) (h : ∀ i ∈ s, Sg m (f i)) :
     Sg m (∑ i ∈ s, f i) := by
   induction s using Finset.cons_induction with
@@ -24,38 +33,62 @@ theorem sg_sum {ι : Type*} (s : Finset ι) (m : ℕ) (f : ι → Big n) (h : �
     rw [Finset.sum_cons]
     exact sg_add (h x (by simp)) (ih fun i hi => h i (by simp [hi]))
 
+/- English proof (translation)
+Introduce `a`. Establish `hc : Commute ((-1 : Big n) ^ l) z` using `(Commute.neg_one_left z).pow_left l`. Rewrite using `[← mul_assoc, hz a, mul_assoc, mul_assoc, hw a, pow_add, ← mul_assoc z, ← hc.eq]`. Simplify using `only [mul_assoc]`.
+-/
 theorem sg_mul {m l : ℕ} {z w : Big n} (hz : Sg m z) (hw : Sg l w) : Sg (m + l) (z * w) := by
   intro a
   have hc : Commute ((-1 : Big n) ^ l) z := (Commute.neg_one_left z).pow_left l
   rw [← mul_assoc, hz a, mul_assoc, mul_assoc, hw a, pow_add, ← mul_assoc z, ← hc.eq]
   simp only [mul_assoc]
 
+/- English proof (translation)
+Introduce `a`. Simplify using the standard rewrite rules.
+-/
 theorem sg_one : Sg 0 (1 : Big n) := by intro a; simp
 
+/- English proof (translation)
+Introduce `a`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`.
+-/
 theorem sg_left (x : Ext n) : Sg 0 (x ⊗ₜ (1 : Ext n)) := by
   intro a; simp [Algebra.TensorProduct.tmul_mul_tmul]
 
+/- English proof (translation)
+Introduce `a`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul, vec_mul_vec_comm n a b, TensorProduct.tmul_neg]`.
+-/
 theorem sg_right (b : Fin n) : Sg 1 ((1 : Ext n) ⊗ₜ vec n b) := by
   intro a
   simp [Algebra.TensorProduct.tmul_mul_tmul, vec_mul_vec_comm n a b, TensorProduct.tmul_neg]
 
 def MSg {r s : Type*} (m : ℕ) (M : Matrix r s (Big n)) : Prop := ∀ i j, Sg m (M i j)
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `sg_sum _ _ _ fun k _ => sg_mul (hM i k) (hN k j)`.
+-/
 theorem msg_mul {r s t : Type*} [Fintype s] {m l : ℕ} {M : Matrix r s (Big n)}
     {N : Matrix s t (Big n)} (hM : MSg m M) (hN : MSg l N) : MSg (m + l) (M * N) := by
   intro i j; rw [Matrix.mul_apply]; exact sg_sum _ _ _ fun k _ => sg_mul (hM i k) (hN k j)
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `sg_one`. Conclude with `sg_zero 0`.
+-/
 theorem msg_one {r : Type*} [Fintype r] [DecidableEq r] : MSg 0 (1 : Matrix r r (Big n)) := by
   intro i j; rw [Matrix.one_apply]; split_ifs
   · exact sg_one
   · exact sg_zero 0
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => simpa using (msg_one : MSg 0 (1 : Matrix r r (Big n)))`. Consider the case `succ j ih => rw [pow_succ]`. Conclude with `msg_mul ih hM`.
+-/
 theorem msg_pow {r : Type*} [Fintype r] [DecidableEq r] {M : Matrix r r (Big n)} (hM : MSg 1 M)
     (j : ℕ) : MSg j (M ^ j) := by
   induction j with
   | zero => simpa using (msg_one : MSg 0 (1 : Matrix r r (Big n)))
   | succ j ih => rw [pow_succ]; exact msg_mul ih hM
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [pow_succ', pow_succ', Matrix.mul_assoc, ih, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_assoc A B A]`.
+-/
 theorem pow_mul_left {p q : ℕ} {R : Type*} [Semiring R] (A : Matrix (Fin p) (Fin q) R)
     (B : Matrix (Fin q) (Fin p) R) (m : ℕ) : (A * B) ^ m * A = A * (B * A) ^ m := by
   induction m with
@@ -63,6 +96,15 @@ theorem pow_mul_left {p q : ℕ} {R : Type*} [Semiring R] (A : Matrix (Fin p) (F
   | succ m ih => rw [pow_succ', pow_succ', Matrix.mul_assoc, ih, ← Matrix.mul_assoc, ← Matrix.mul_assoc,
       Matrix.mul_assoc A B A]
 
+/- English proof (translation)
+Establish `hB1 : MSg 1 B`. Introduce `b i`. Take `⟨a, ha⟩` from `hB b i`. Rewrite using `[ha]`. Conclude with `sg_right a`.
+
+Establish `hY : MSg m (A * (B * A) ^ m)`. Simplify `msg_mul hB1 hA) m)` using `using msg_mul hA (msg_pow (by simpa`. Establish `h1 : (B * A) ^ (m + 1) = B * (A * (B * A) ^ m)`. Rewrite using `[pow_succ', Matrix.mul_assoc]`. Establish `h2 : (A * B) ^ (m + 1) = (A * (B * A) ^ m) * B`.
+
+Rewrite using `[pow_succ, ← Matrix.mul_assoc, pow_mul_left]`. Generalize the expression as in `A * (B * A) ^ m = Y at hY h1 h2`. Rewrite using `[h1, h2]`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Finset.mul_sum]`. Use `conv_lhs => rw [Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hB b i`. Rewrite using `[ha, hY i b a]`.
+-/
 theorem trace_swap {p q : ℕ} (A : Matrix (Fin p) (Fin q) (Big n)) (B : Matrix (Fin q) (Fin p) (Big n))
     (hA : MSg 0 A) (hB : ∀ b i, ∃ a, B b i = (1 : Ext n) ⊗ₜ vec n a) (m : ℕ) :
     ((B * A) ^ (m + 1)).trace = (-1) ^ m * ((A * B) ^ (m + 1)).trace := by
@@ -82,10 +124,16 @@ theorem trace_swap {p q : ℕ} (A : Matrix (Fin p) (Fin q) (Big n)) (B : Matrix 
   obtain ⟨a, ha⟩ := hB b i
   rw [ha, hY i b a]
 
+/- English proof (translation)
+Simplify using `[Matrix.trace, map_sum]`.
+-/
 theorem val_trace {r : Type*} [Fintype r] (M : Matrix r r (EvenPart n)) :
     ((EvenPart n).val M.trace) = (M.map (EvenPart n).val).trace := by
   simp [Matrix.trace, map_sum]
 
+/- English proof (translation)
+The claim follows from `map_pow ((EvenPart n).val.toRingHom.mapMatrix) M k`.
+-/
 theorem val_pow {r : Type*} [Fintype r] [DecidableEq r] (M : Matrix r r (EvenPart n)) (k : ℕ) :
     (M ^ k).map (EvenPart n).val = (M.map (EvenPart n).val) ^ k :=
   map_pow ((EvenPart n).val.toRingHom.mapMatrix) M k
@@ -93,6 +141,19 @@ theorem val_pow {r : Type*} [Fintype r] [DecidableEq r] (M : Matrix r r (EvenPar
 end GlobalTheory.GrassModel.SuperTrace
 
 open GlobalTheory.GrassModel GlobalTheory.GrassModel.SuperTrace in
+/- English proof (translation)
+Take `⟨m, rfl⟩ : ∃ m, k = m + 1` from `⟨k - 1, by omega⟩`. Use `set A : Matrix (Fin p) (Fin q) (Big n) := Matrix.of fun i b => vec n (e (i, b)) ⊗ₜ (1 : Ext n)`. Use `set B : Matrix (Fin q) (Fin p) (Big n) := Matrix.of fun b j => (1 : Ext n) ⊗ₜ vec n (e (j, b))`. Establish `hA : MSg 0 A` using `fun i b => sg_left _`. Establish `hB : ∀ b i, ∃ a, B b i = (1 : Ext n) ⊗ₜ vec n a` using `fun b i => ⟨e (i, b), rfl⟩`.
+
+Establish `hL : ((blockPoly e).map (toEven n)).map (EvenPart n).val = A * B`. Use extensionality with `i j`. Simplify using `[A, B, blockPoly, toEven, gen, Matrix.mul_apply, map_sum, Algebra.TensorProduct.tmul_mul_tmul]`. Establish `hD : (Matrix.transpose ((blockPolyBar e).map (toEven n))).map (EvenPart n).val = B * A`. Use extensionality with `i j`.
+
+Simplify using `[A, B, blockPolyBar, toEven, gen, Matrix.mul_apply, map_sum, Algebra.TensorProduct.tmul_mul_tmul]`. Establish `hneg : (-blockPolyBar e).map (toEven n) = -((blockPolyBar e).map (toEven n))`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Apply `Subtype.val_injective` to reduce the goal to its premises.
+
+Use `show (EvenPart n).val (_ + _) = (EvenPart n).val 0`. Rewrite using `[map_add, map_zero, hneg, ← Matrix.trace_transpose (( -_ ) ^ _), Matrix.transpose_pow, Matrix.transpose_neg, val_trace, val_trace, val_pow, val_pow, hL]`. Rewrite using `[show (-Matrix.transpose ((blockPolyBar e).map (toEven n))).map (EvenPart n).val = -(B * A) by`. Rewrite using `[← hD]`. Use extensionality with `i j`.
+
+Use the proof step `simp]`. Break down `Nat.even_or_odd (m + 1) with h | h` into its components or cases. Rewrite using `[h.neg_pow, trace_swap A B hA hB m]`. Establish `: Odd m` using `by rcases h with ⟨t, ht⟩; exact ⟨t - 1, by omega⟩`. Rewrite using `[this.neg_one_pow]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h.neg_pow, Matrix.trace_neg, trace_swap A B hA hB m]`. Establish `: Even m` using `by rcases h with ⟨t, ht⟩; exact ⟨t, by omega⟩`. Rewrite using `[this.neg_one_pow]`. Simplify using the standard rewrite rules.
+-/
 theorem GlobalTheory.GrassModel.trace_pow_blockPoly_add_trace_pow_neg_blockPolyBar {n p q : ℕ}
     (e : Fin p × Fin q → Fin n) (k : ℕ) (hk : 1 ≤ k) :
     ((blockPoly e).map (toEven n) ^ k).trace + ((-blockPolyBar e).map (toEven n) ^ k).trace = 0 := by

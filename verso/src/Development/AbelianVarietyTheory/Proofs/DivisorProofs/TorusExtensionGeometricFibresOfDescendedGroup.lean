@@ -13,6 +13,11 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `R _ S π hlft hsurj G' _ G _ β h hG' Ω _ _ p`. Use `haveI := hlft`. Use `haveI := hsurj`. Take `⟨t, rfl⟩` from `GlobalTheory.GeomSurj.exists_lift_of_surjective π p`. Establish `h1` using `(isGrpPullback_pullback G' t).comp h`.
+
+Establish `h2` using `isGrpPullback_pullback G (t ≫ π)`. Take `⟨e, he, -⟩` from `grpPullback_iso h1 h2`. Use `haveI := he`. Conclude with `⟨torusExtOfIso e (hG' Ω t).some⟩`.
+-/
 theorem torusExtension_of_descended : ∀ (R : Type) [CommRing R] (S : Scheme.{0}) (π : S ⟶ Sp R), LocallyOfFiniteType π → Surjective π → ∀ (G' : Over S) [GrpObj G'] (G : Over (Sp R)) [GrpObj G] (β : G'.left ⟶ G.left), IsGrpPullback G' G π β → (∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (t : Spec (.of Ω) ⟶ S), Nonempty (TorusExtension ((Over.pullback t).obj G'))) → ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (p : Spec (.of Ω) ⟶ Sp R), Nonempty (TorusExtension ((Over.pullback p).obj G)) := by
   intro R _ S π hlft hsurj G' _ G _ β h hG' Ω _ _ p
   haveI := hlft

@@ -9,6 +9,25 @@ namespace ReciprocityTheory.ChartRestriction.DS.Mult1
 
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.B2
 
+/- English proof (translation)
+Take `⟨hB2, -, -, -, hUWb, -⟩` from `h`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hHU, hHI, -, hCG, hCN, hCW, -⟩` from `hB2`. Introduce `k r Wp _ _ _ D X _ _ γ hγ`. Establish `hG` using `hCG k r`. Establish `hEG : embWb k r γ ∈ GV k r`.
+
+Establish `hmem : embWb k r γ ∈ UWb k r` using `by rw [(hUWb k r).1]; exact ⟨γ, hγ.1, rfl⟩`. Conclude with `hmem.1`. Establish `hE` using `hG.unit _ hEG`. Establish `hz` using `InvGrp.frame_conjugation_fixes_point hG hEG D.z D.T_pos hγ.2`. Set `gb : Mt k r → Mt k r` to `fun x i j => gbar k r γ (Matrix.of x) i j`.
+
+Establish `hgb : Continuous gb`. Simplify using `only [gb, gbar]`. Use `fun_prop`. Establish `hff : ∀ x, gb (gb x) = x`. Introduce `x`.
+
+Use function extensionality and compare the values at `i j`. Express the relevant statement in the definitionally equal form `gbar k r γ (gbar k r γ (Matrix.of x)) i j = x i j`. Rewrite using `[InvGrp.gbar_gbar hE]`. Both sides reduce to the same expression. Establish `hl : ∀ U : Set (Mat k r), (∀ a ∈ U, gbar k r γ a ∈ U) → ∀ a ∈ U, ∃ b ∈ U, ∀ x, lmulM a (gb x) = gb (lmulM b x)`.
+
+Introduce `U hU a ha`. Use `⟨gbar k r γ a, hU a ha, fun x => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i j`. Express the relevant statement in the definitionally equal form `(a * gbar k r γ (Matrix.of x)) i j = gbar k r γ (gbar k r γ a * Matrix.of x) i j`. Rewrite using `[InvGrp.gbar_mul hE, InvGrp.gbar_gbar hE]`.
+
+Establish `hG1 : ∀ g ∈ GV k r, gbar k r γ g ∈ GV k r` using `InvGrp.gbar_mem_GV hG hEG`. Establish `hN1 : ∀ m ∈ Nset k r, gbar k r γ m ∈ Nset k r` using `InvGrp.gbar_mem_N hG hEG`. Establish `hW1 : ∀ h ∈ UWset k r D.z, gbar k r γ h ∈ UWset k r D.z` using `InvGrp.gbar_mem_UW hG hEG D.z hz`. Establish `hmapG : D.μG.map gb = D.μG` using `InvGrp.map_invol_eq hHU hG D.haarG gb hgb hff (fun x hx => hG1 _ hx) (hl _ hG1)`. Use `⟨hG1, hN1, hW1, InvGrp.gbar_mem_UU hG hEG D.z hz, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `g _ g' _`. Unfold `th`. Rewrite using `[InvGrp.gbar_mul hE, Matrix.mul_inv_rev]`. Introduce `g hg`. Unfold `th`.
+
+Rewrite using `[InvGrp.gbar_inv hE _ (hG.unit _ (hG1 g hg)), InvGrp.gbar_gbar hE]`. Conclude with `Matrix.nonsing_inv_nonsing_inv g (hG.unit g hg)`. Establish `hth : (fun x : Mt k r => fun i j => th k r γ (Matrix.of x) i j) = invM ∘ gb`. Use function extensionality and compare the values at `x`. Both sides reduce to the same expression.
+
+Rewrite using `[hth, ← Measure.map_map InvGrp.measurable_invM hgb.measurable, hmapG, hHI k r (GV k r) D.μG hG D.haarG]`. Conclude with `InvGrp.map_invol_eq hHU (hCN k r) D.haarN gb hgb hff (fun x hx => hN1 _ hx) (hl _ hN1)`. Conclude with `InvGrp.map_invol_eq hHU (hCW k r D.z) D.haarW gb hgb hff (fun x hx => hW1 _ hx) (hl _ hW1)`.
+-/
 theorem stInvGroup (h : UnitaryGroupStructuralFacts) : StInvGroup := by
   obtain ⟨hB2, -, -, -, hUWb, -⟩ := h
   obtain ⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hHU, hHI, -, hCG, hCN, hCW, -⟩ := hB2

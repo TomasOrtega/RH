@@ -5,6 +5,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
+/- English proof (translation)
+Introduce `h t hbig O _ _ ψ hψ l e hl hl2 he het`. Establish `hB` using `bchiFacts h t hbig`. Establish `hC` using `hostComp h O ψ hψ`. Use `⟨fun hnB => ?_, fun hinB => ?_⟩` and prove the remaining obligations. Take `⟨_, hlo, hlq, _, _, _, _, hE⟩` from `hB.2.2.2.2 l hl hl2 hnB`.
+
+Establish `hCl` using `hC.2.2 l hl hl2`. Establish `hord : ¬ l ∣ orderOf ψ`. Introduce `hd`. Establish `hd'` using `hd.trans hC.1`. Break down `(Nat.Prime.dvd_mul hl).1 hd' with h2 | h2` into its components or cases.
+
+Conclude with `hl2 ((Nat.prime_dvd_prime_iff_eq hl Nat.prime_two).1 (hl.dvd_of_dvd_pow h2))`. Conclude with `hlo h2`. Establish `hP` using `(partOrd _ l hl ψ hC.2.1).2.2.2.2.2.1 hord`. Establish `hth : th0 l ψ = ψ` using `hP.2`. Establish `hchi : l - 1 ∣ 2 * e → chiP l ψ = ψ`.
+
+Introduce `hdiv`. Establish `hc1 : comp l ψ = 1` using `hCl.2.2.2 (hE e he het hdiv).2.2`. Use `show th0 l ψ * (comp l (th0 l ψ))⁻¹ = ψ`. Rewrite using `[hth, hc1, inv_one, mul_one]`. Use `⟨hord, hCl.2.2.1 hlq, hth, hP.1, hchi, ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hdiv : l - 1 ∣ 2 * e`. Distinguish the cases in `h1 : ψ = 1`. Conclude with `Or.inr (Or.inl ⟨hnB, hdiv, h1⟩)`. Distinguish the cases in `hodd : Odd (orderOf ψ)`. Conclude with `Or.inr (Or.inr (Or.inr ⟨hnB, hdiv, hodd, h1⟩))`.
+
+Use `Or.inr (Or.inr (Or.inl ⟨(hE e he het hdiv).1, ?_, Or.inr hdiv⟩)) show Even (orderOf (chiP l ψ))` and prove the remaining obligations. Rewrite using `[hchi hdiv]`. Conclude with `Nat.not_odd_iff_even.mp hodd`. Conclude with `Or.inl ⟨hnB, hdiv⟩`. Distinguish the cases in `he1 : e = 1`.
+
+Conclude with `Or.inr (Or.inr ⟨hinB, he1⟩)`. Establish `h2e : 2 ≤ e` using `by omega`. Distinguish the cases in `hev : Even (orderOf (chiP l ψ))`. Conclude with `Or.inl ⟨h2e, hev, Or.inl hinB⟩`. Conclude with `Or.inr (Or.inl ⟨hinB, h2e, Nat.not_even_iff_odd.mp hev⟩)`.
+-/
 theorem UpperTheory.V.HV.cases :
     ∀ (h : Host) (t : ℕ), h.Big t → ∀ (O : Type) [CommRing O] [IsDomain O] (ψ : DirichletCharacter O h.N), h.IsChar ψ → ∀ l e : ℕ, l.Prime → l ≠ 2 → 0 < e → e < t →
       (l ∉ Bchi h.chi → ¬ l ∣ orderOf ψ ∧ comp l ψ ^ 2 = 1 ∧ th0 l ψ = ψ ∧ kap l ψ = 1 ∧ (l - 1 ∣ 2 * e → chiP l ψ = ψ) ∧

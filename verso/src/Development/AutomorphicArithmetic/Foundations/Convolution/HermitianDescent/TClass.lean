@@ -11,16 +11,27 @@ namespace UpperTheory.ConvolutionTheory.D
 section
 variable {k R : Type} [CommRing k] [CommRing R] [Algebra k R] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[ct, ct, ct, Matrix.map_mul, Matrix.transpose_mul]`.
+-/
 private theorem ct_mul' (c : R ≃ₐ[k] R) (X Y : Matrix (Fin n) (Fin n) R) :
     ct c (X * Y) = ct c Y * ct c X := by
   rw [ct, ct, ct, Matrix.map_mul, Matrix.transpose_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `DFunLike.congr_fun h.pow (X i j)` as an intermediate fact. Simplify `this` using `[ct, pow_two]`.
+-/
 private theorem ct_ct' {c : R ≃ₐ[k] R} (h : IsGal c 2) (X : Matrix (Fin n) (Fin n) R) :
     ct c (ct c X) = X := by
   ext i j
   have := DFunLike.congr_fun h.pow (X i j)
   simpa [ct, pow_two] using this
 
+/- English proof (translation)
+Establish `a1 : G⁻¹ * G = 1` using `Matrix.nonsing_inv_mul _ hG`. Establish `a2 : G * G⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hG`. Establish `hN : (G⁻¹ * X * G) * M = 1`. Rewrite using `[mul_assoc, mul_assoc, ← mul_assoc X, h1, a1]`. Establish `hN' : M * (G⁻¹ * X * G) = 1` using `mul_eq_one_comm.1 hN`.
+
+Establish `e : M * (G⁻¹ * X) = G⁻¹`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem comm_gram (G B M X : Matrix (Fin n) (Fin n) R) (hG : IsUnit G.det)
     (h1 : X * G * M = G) (h2 : X * B * M = B) : G⁻¹ * B * M = M * (G⁻¹ * B) := by
   have a1 : G⁻¹ * G = 1 := Matrix.nonsing_inv_mul _ hG
@@ -35,6 +46,9 @@ private theorem comm_gram (G B M X : Matrix (Fin n) (Fin n) R) (hG : IsUnit G.de
     _ = M * (G⁻¹ * (X * B * M)) := by simp only [mul_assoc]
     _ = M * (G⁻¹ * B) := by rw [h2]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem comm_inv (Y Z M : Matrix (Fin n) (Fin n) R) (h1 : Y * Z = 1) (h2 : Z * Y = 1)
     (h : Y * M = M * Y) : Z * M = M * Z := by
   calc Z * M = Z * (M * (Y * Z)) := by rw [h1, mul_one]
@@ -48,6 +62,9 @@ end
 section
 variable {k R A : Type} [CommRing k] [CommRing R] [Algebra k R] [CommRing A] [Algebra k A]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r a => simp [io]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 private theorem comm_io (c : R ≃ₐ[k] R) (z : R ⊗[k] A) :
     (Algebra.TensorProduct.congr AlgEquiv.refl c : A ⊗[k] R ≃ₐ[A] A ⊗[k] R)
         (Algebra.TensorProduct.comm k R A z) = Algebra.TensorProduct.comm k R A (io c A z) := by
@@ -56,6 +73,9 @@ private theorem comm_io (c : R ≃ₐ[k] R) (z : R ⊗[k] A) :
   | tmul r a => simp [io]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `h.fix _ ((comm_io c z).trans (by rw [hz]))`. Use `⟨a, ?_⟩` and prove the remaining obligations. Apply `(Algebra.TensorProduct.comm k R A).injective` to reduce the goal to its premises. Rewrite using `[← ha]`. Simplify using `[Algebra.TensorProduct.algebraMap_apply]`.
+-/
 private theorem fixed_tmul {c : R ≃ₐ[k] R}
     (h : IsGal (Algebra.TensorProduct.congr AlgEquiv.refl c : A ⊗[k] R ≃ₐ[A] A ⊗[k] R) 2)
     (z : R ⊗[k] A) (hz : io c A z = z) : ∃ a : A, z = (1 : R) ⊗ₜ[k] a := by
@@ -65,6 +85,15 @@ private theorem fixed_tmul {c : R ≃ₐ[k] R}
   rw [← ha]
   simp [Algebra.TensorProduct.algebraMap_apply]
 
+/- English proof (translation)
+Establish `hu' : io c A (u⁻¹).val = (u⁻¹).val`. Establish `e : io c A (u⁻¹).val * u.val = 1` using `by conv_lhs => rw [← hu]`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨a, ha⟩` from `fixed_tmul h _ hu`.
+
+Take `⟨a', ha'⟩` from `fixed_tmul h _ hu'`. Establish `hm : a * a' = 1`. Apply `h.inj` to reduce the goal to its premises. Establish `e1 : (1 : R) ⊗ₜ[k] (a * a') = 1`. Use `u.mul_inv` as an intermediate fact.
+
+Rewrite `this` using `[ha, ha', Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Conclude with `this`. Establish `e2` using `congrArg (Algebra.TensorProduct.comm k R A) e1`. Rewrite using `[map_one]`. Simplify `e2` using `[Algebra.TensorProduct.algebraMap_apply]`.
+
+Conclude with `⟨⟨a, a', hm, by rw [mul_comm, hm]⟩, ha.symm⟩`.
+-/
 private theorem fixed_unit {c : R ≃ₐ[k] R}
     (h : IsGal (Algebra.TensorProduct.congr AlgEquiv.refl c : A ⊗[k] R ≃ₐ[A] A ⊗[k] R) 2)
     (u : (R ⊗[k] A)ˣ) (hu : io c A u.val = u.val) :
@@ -88,12 +117,21 @@ private theorem fixed_unit {c : R ≃ₐ[k] R}
     simpa [Algebra.TensorProduct.algebraMap_apply] using e2
   exact ⟨⟨a, a', hm, by rw [mul_comm, hm]⟩, ha.symm⟩
 
+/- English proof (translation)
+The claim follows from `map_mul _ _ _`.
+-/
 private theorem mat_mul' {n : ℕ} (b : Module.Basis (Fin n) k A) (s t : R ⊗[k] A) :
     mat b (s * t) = mat b s * mat b t := map_mul _ _ _
 
+/- English proof (translation)
+The claim follows from `Algebra.leftMulMatrix_injective _`.
+-/
 private theorem mat_inj {n : ℕ} (b : Module.Basis (Fin n) k A) :
     Function.Injective (mat (R := R) b) := Algebra.leftMulMatrix_injective _
 
+/- English proof (translation)
+The claim follows from `map_one _`.
+-/
 private theorem mat_one' {n : ℕ} (b : Module.Basis (Fin n) k A) :
     mat (R := R) b 1 = 1 := map_one _
 
@@ -102,6 +140,41 @@ end
 end UpperTheory.ConvolutionTheory.D
 
 open UpperTheory.ConvolutionTheory.D in
+/- English proof (translation)
+Introduce `k R _ _ _ _ A _ _ n b c hc g hg w hw d hd`. Take `⟨hfin, -, -, hgal⟩` from `galBase k R A c 2 hc`. Take `⟨hG1, -, hG3⟩` from `gramBasic k R A n b c hc`. Take `⟨hunit, hinj, hcomm⟩` from `hG3 g hg`. Establish `hsep : (mat b g.val).charpoly.Separable` using `hg.2`.
+
+Take `⟨x0, hx0⟩` from `(conjSep k R n (mat b g.val) hsep).1 (d * th c d).val hd`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y : GL (Fin n) R, (d * th c d).val * y.val = y.val * mat b g.val := by`. Use `⟨x0⁻¹, ?_⟩` and prove the remaining obligations. Establish `e1 : (x0⁻¹).val * x0.val = 1` using `Units.inv_mul x0`. Establish `e2 : x0.val * (x0⁻¹).val = 1` using `Units.mul_inv x0`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, one_mul]`. Use `_ = (x0⁻¹).val * (x0.val * (d * th c d).val) * (x0⁻¹).val := by simp only [mul_assoc]`. Use `_ = (x0⁻¹).val * (mat b g.val * x0.val) * (x0⁻¹).val := by rw [hx0]`. Use `_ = (x0⁻¹).val * mat b g.val * (x0.val * (x0⁻¹).val) := by simp only [mul_assoc]`.
+
+Use `_ = (x0⁻¹).val * mat b g.val := by rw [e2, mul_one]`. Take `⟨U, hU⟩ : ∃ U : GL (Fin n) R, U = (thConj c y d)⁻¹` from `⟨_, rfl⟩`. Establish `hUv : U.val = ct c y.val * (d⁻¹ : GL (Fin n) R).val * y.val`. Rewrite using `[hU, thConj, _root_.mul_inv_rev, _root_.mul_inv_rev, inv_inv, Units.val_mul, Units.val_mul, mul_assoc]`. Both sides reduce to the same expression.
+
+Establish `hBG : (d⁻¹ : GL (Fin n) R).val * (d * th c d).val = ct c (d⁻¹ : GL (Fin n) R).val`. Establish `e : (d * th c d).val = d.val * ct c (d⁻¹ : GL (Fin n) R).val` using `rfl`. Rewrite using `[e, ← mul_assoc, Units.inv_mul, one_mul]`. Establish `hUM : U.val * mat b g.val = ct c U.val`. Rewrite using `[hUv]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = ct c y.val * ct c (d⁻¹ : GL (Fin n) R).val * y.val := by rw [hBG]`. Use `_ = ct c (ct c y.val * (d⁻¹ : GL (Fin n) R).val * y.val) := by`. Rewrite using `[ct_mul', ct_mul', ct_ct' hc]`.
+
+Simplify using `only [mul_assoc]`. Establish `hXU : ct c (mat b g.val) * U.val * mat b g.val = U.val`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc]`. Use `_ = ct c (mat b g.val) * ct c U.val := by rw [hUM]`.
+
+Use `_ = ct c (U.val * mat b g.val) := (ct_mul' c _ _).symm`. Use `_ = U.val := by rw [hUM, ct_ct' hc]`. Establish `hGu : IsUnit (gramL b (1 : R ⊗[k] A)).det`. Rewrite `hunit` using `[gram, ← Algebra.TensorProduct.one_def]`. Conclude with `hunit`.
+
+Establish `hXG : ct c (mat b g.val) * gramL b (1 : R ⊗[k] A) * mat b g.val = gramL b (1 : R ⊗[k] A)`. Rewrite using `[(hG1 1 g.val).1, (hG1 _ g.val).2.1, mul_one, mul_comm, hg.1]`. Establish `hY` using `comm_gram _ U.val _ _ hGu hXG hXU`. Take `⟨s, hs⟩` from `hcomm _ hY`. Establish `a1` using `Matrix.nonsing_inv_mul _ hGu`.
+
+Establish `a2` using `Matrix.mul_nonsing_inv _ hGu`. Establish `u1 : U.val * (U⁻¹).val = 1` using `Units.mul_inv U`. Establish `u2 : (U⁻¹).val * U.val = 1` using `Units.inv_mul U`. Establish `hYZ : (gramL b (1 : R ⊗[k] A))⁻¹ * U.val * ((U⁻¹).val * gramL b (1 : R ⊗[k] A)) = 1`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [mul_assoc]`. Use `_ = 1 := by rw [u1, mul_one, a1]`. Establish `hZY : (U⁻¹).val * gramL b (1 : R ⊗[k] A) * ((gramL b (1 : R ⊗[k] A))⁻¹ * U.val) = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`.
+
+Use `_ = 1 := by rw [a2, mul_one, u2]`. Take `⟨t, ht⟩` from `hcomm _ (comm_inv _ _ _ hYZ hZY hY)`. Establish `hst : s * t = 1`. Apply `mat_inj (R := R) b` to reduce the goal to its premises. Rewrite using `[mat_mul', mat_one', ← hs, ← ht, hYZ]`.
+
+Establish `hUs : U.val = gramL b s`. Use `(hG1 1 s).2.1` as an intermediate fact. Rewrite `this` using `[one_mul, ← hs, ← mul_assoc, a2, one_mul]`. Conclude with `this`. Establish `hfix : io c A s = s * g.val`.
+
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[← (hG1 s s).2.2.1, ← (hG1 s g.val).2.1, ← hUs, hUM]`. Establish `h1 : w.val * (g.val * io c A (w⁻¹).val) = 1`. Rewrite using `[← mul_assoc, mul_comm w.val, ← hw, ← map_mul, Units.mul_inv, map_one]`. Establish `h2 : g.val * io c A (w⁻¹).val = (w⁻¹).val`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, Units.inv_mul, one_mul]`. Use `_ = (w⁻¹).val := by rw [h1, mul_one]`. Set `su : (R ⊗[k] A)ˣ` to `⟨s, t, hst, by rw [mul_comm, hst]⟩`. Establish `hu : io c A (su * w⁻¹).val = (su * w⁻¹).val`.
+
+Express the relevant statement in the definitionally equal form `io c A (s * (w⁻¹).val) = s * (w⁻¹).val`. Rewrite using `[map_mul, hfix, mul_assoc, h2]`. Take `⟨x, hx⟩` from `fixed_unit hgal _ hu`. Use `⟨x, y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hU, hUs, hx]`.
+
+Express the relevant statement in the definitionally equal form `gramL b s = gramL b (s * (w⁻¹).val * w.val)`. Rewrite using `[mul_assoc, Units.inv_mul, mul_one]`.
+-/
 theorem UpperTheory.ConvolutionTheory.D.tClass :
     UpperTheory.ConvolutionTheory.D.TClass := by
   intro k R _ _ _ _ A _ _ n b c hc g hg w hw d hd

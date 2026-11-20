@@ -9,6 +9,13 @@ universe u v
 
 open Cardinal
 
+/- English proof (translation)
+Establish `: FaithfulSMul A C` using `(faithfulSMul_iff_algebraMap_injective A C).mpr hAC`. Establish `: FaithfulSMul C B` using `(faithfulSMul_iff_algebraMap_injective C B).mpr hCB`. Establish `: IsScalarTower (A ⧸ p) (C ⧸ Q) (B ⧸ P)` using `IsScalarTower.of_algebraMap_eq fun x ↦ by`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Simplify using `[Ideal.Quotient.algebraMap_mk_of_liesOver, ← IsScalarTower.algebraMap_apply]`.
+
+Establish `t₁` using `trdeg_add_eq A C (A := B)`. Establish `t₂` using `trdeg_add_eq (A ⧸ p) (C ⧸ Q) (A := B ⧸ P)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← t₂]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ ≤ (ofENat Q.height + Algebra.trdeg C B) + Algebra.trdeg (A ⧸ p) (C ⧸ Q) := by gcongr`. Use `_ = (ofENat Q.height + Algebra.trdeg (A ⧸ p) (C ⧸ Q)) + Algebra.trdeg C B := by ring`. Use `_ ≤ (ofENat p.height + Algebra.trdeg A C) + Algebra.trdeg C B := by gcongr`. Use `_ = ofENat p.height + Algebra.trdeg A B := by rw [add_assoc, t₁]`.
+-/
 theorem DimensionInequality.tower_step {A : Type u} {C B : Type v} [CommRing A] [CommRing C]
     [CommRing B] [IsDomain A] [IsDomain C] [IsDomain B] [Algebra A C] [Algebra C B] [Algebra A B]
     [IsScalarTower A C B] (hAC : Function.Injective (algebraMap A C))
@@ -32,6 +39,23 @@ theorem DimensionInequality.tower_step {A : Type u} {C B : Type v} [CommRing A] 
     _ ≤ (ofENat p.height + Algebra.trdeg A C) + Algebra.trdeg C B := by gcongr
     _ = ofENat p.height + Algebra.trdeg A B := by rw [add_assoc, t₁]
 
+/- English proof (translation)
+Introduce `A B _ _ _ _ _ _ _ hinj P _`. It suffices to establish `key : ∀ (n : ℕ) (B : Type v) [CommRing B] [IsDomain B] [Algebra A B] (x : Fin n → B), Algebra.adjoin A (Set.range x) = ⊤ → Function.Injective (algebraMap A B) → ∀ (P : Ideal B) [P.IsPrime] (p : Ideal A) [p.IsPrime] [P.LiesOver p], ofENat P.height + Algebra.trdeg (A ⧸ p) (B ⧸ P) ≤ …`. Take `⟨s, hs⟩` from `Algebra.FiniteType.out (R := A) (A := B)`. Use `key s.card B (fun i ↦ (s.equivFin.symm i : B)) ?_ hinj P (P.under A)` and prove the remaining obligations. Rewrite using `[← hs]`.
+
+Use `congr 1`. Use extensionality with `b`. Use `⟨?_, fun hb ↦ ⟨s.equivFin ⟨b, hb⟩, by simp⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨i, rfl⟩`. Conclude with `(s.equivFin.symm i).2`.
+
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `B _ _ _ x hx hinj P _ p _ _`. Take `rfl : p = P.under A` from `Ideal.LiesOver.over`.
+
+Use `h₁ A B 0 ?_ hinj P` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← hx]`. Conclude with `Algebra.adjoin_mono (by simp [Set.range_eq_empty])`. Consider the case `succ n ih`. Introduce `B _ _ _ x hx hinj P _ p _ _`.
+
+Use `set C : Subalgebra A B := Algebra.adjoin A (Set.range (x ∘ Fin.succ)) with hC`. Set `y : Fin n → C` to `fun i ↦ ⟨x i.succ, Algebra.subset_adjoin ⟨i, rfl⟩⟩`. Establish `hy : Algebra.adjoin A (Set.range y) = ⊤`. Apply `Subalgebra.map_injective (f := C.val) Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[AlgHom.map_adjoin, Algebra.map_top, Subalgebra.range_val, ← Set.range_comp]`.
+
+Both sides reduce to the same expression. Establish `hAC : Function.Injective (algebraMap A C)` using `fun a b hab ↦ hinj (congrArg Subtype.val hab :)`. Establish `hCB : Function.Injective (algebraMap C B)` using `Subtype.val_injective`. Establish `: Algebra.FiniteType A C` using `⟨⟨Finset.univ.image y, by simpa [Finset.coe_image] using hy⟩⟩`. Establish `: IsNoetherianRing C` using `Algebra.FiniteType.isNoetherianRing A C`.
+
+Establish `hB : Algebra.adjoin C {x 0} = ⊤`. Apply `Subalgebra.restrictScalars_injective A` to reduce the goal to its premises. Rewrite using `[Subalgebra.restrictScalars_top, ← Algebra.adjoin_union_eq_adjoin_adjoin, eq_top_iff, ← hx]`. Apply `Algebra.adjoin_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Consider the cases of `i using Fin.cases with`. Consider the case `zero => exact Or.inr rfl`. Consider the case `succ j => exact Or.inl ⟨j, rfl⟩`. Establish `: (P.under C).LiesOver p` using `Ideal.LiesOver.tower_bot P (P.under C) p`. Conclude with `DimensionInequality.tower_step hAC hCB P (P.under C) p (ih C y hy hAC (P.under C) p) (h₂ C B (x 0) hB hCB P)`.
+-/
 theorem DimensionInequality.proof (h₁ : DimensionInequalityOneGenerator.Statement.{u, v})
     (h₂ : DimensionInequalityOneGenerator.Statement.{v, v}) :
     DimensionInequality.Statement.{u, v} := by

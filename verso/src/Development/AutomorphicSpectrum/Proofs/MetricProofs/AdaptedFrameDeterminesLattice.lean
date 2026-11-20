@@ -19,18 +19,27 @@ namespace LatEmb
 
 variable (C : LatEmb F)
 
+/- English proof (translation)
+Simplify using `[perExt, Module.Basis.constr_apply_fintype]`.
+-/
 theorem perExt_eq_sum (R : RiemLat E g Λ) (y : Ψ → Fin (j + j') → ℂ) :
     C.perExt R y = ∑ k, C.bas.repr y k • R.P (C.lam k) := by
   simp [perExt, Module.Basis.constr_apply_fintype]
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Establish `h` using `hf (x + y)`. Simplify using `only [map_add, LinearMap.add_apply, hf] at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem form_antisymm {M : Type} [AddCommGroup M] (f : M →ₗ[ℤ] M →ₗ[ℤ] ℤ) (hf : ∀ x, f x x = 0) (x y : M) :
     f x y = - f y x := by
   have h := hf (x + y)
   simp only [map_add, LinearMap.add_apply, hf] at h
   linarith
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `R.unimod.2 (C.lam.coord i)`. Use `⟨-x, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, form_antisymm R.form R.alt, neg_neg, hx]`. Simplify using `[Module.Basis.coord_apply, Finsupp.single_apply]`.
+-/
 theorem exists_dual (R : RiemLat E g Λ) (i : Fin (2 * g)) :
     ∃ z : Λ, ∀ k, R.form (C.lam k) z = if k = i then 1 else 0 := by
   obtain ⟨x, hx⟩ := R.unimod.2 (C.lam.coord i)
@@ -38,6 +47,15 @@ theorem exists_dual (R : RiemLat E g Λ) (i : Fin (2 * g)) :
   rw [map_neg, form_antisymm R.form R.alt, neg_neg, hx]
   simp [Module.Basis.coord_apply, Finsupp.single_apply]
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Establish `hc : ∀ i, C.bas.repr y i = 0`. Introduce `i`. Take `⟨z, hz⟩` from `C.exists_dual R i`.
+
+Establish `h0 : ((C.perExt R y) ⬝ᵥ R.Hm *ᵥ star (R.P z)).im = 0` using `by simp [hy]`. Establish `hk : ∀ k, ((C.bas.repr y k • R.P (C.lam k)) ⬝ᵥ R.Hm *ᵥ star (R.P z)).im = C.bas.repr y k * (R.form (C.lam k) z : ℝ)`. Introduce `k`. Rewrite using `[smul_dotProduct, Complex.smul_im, R.im]`. Simplify using the standard rewrite rules.
+
+Rewrite `h0` using `[C.perExt_eq_sum, sum_dotProduct, Complex.im_sum]`. Simplify using `only [hk, hz] at h0`. Simplify using `using h0`. Apply `C.bas.repr.injective` to reduce the goal to its premises. Use extensionality with `i`.
+
+Simplify using `using hc i`.
+-/
 theorem perExt_injective (R : RiemLat E g Λ) : Function.Injective (C.perExt R) := by
   rw [injective_iff_map_eq_zero]
   intro y hy
@@ -57,6 +75,9 @@ theorem perExt_injective (R : RiemLat E g Λ) : Function.Injective (C.perExt R) 
   ext i
   simpa using hc i
 
+/- English proof (translation)
+Establish `hd : Module.finrank ℝ (Ψ → Fin (j + j') → ℂ) = Module.finrank ℝ (Fin g → ℂ)`. Rewrite using `[Module.finrank_eq_card_basis C.bas]`. Simplify using `[Module.finrank_pi_fintype, Complex.finrank_real_complex, mul_comm]`. Conclude with `⟨C.perExt_injective R, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hd).1 (C.perExt_injective R)⟩`.
+-/
 theorem perExt_bijective (R : RiemLat E g Λ) : Function.Bijective (C.perExt R) := by
   have hd : Module.finrank ℝ (Ψ → Fin (j + j') → ℂ) = Module.finrank ℝ (Fin g → ℂ) := by
     rw [Module.finrank_eq_card_basis C.bas]
@@ -65,6 +86,11 @@ theorem perExt_bijective (R : RiemLat E g Λ) : Function.Bijective (C.perExt R) 
 
 def latPt (x : Λ) : Ψ → Fin (j + j') → ℂ := ∑ k, ((C.lam.repr x k : ℤ) : ℝ) • C.bas k
 
+/- English proof (translation)
+Establish `hb : ∀ k, C.perExt R (C.bas k) = R.P (C.lam k)` using `fun k => by`. Simplify using `[perExt, Module.Basis.constr_basis]`. Use `conv_rhs => rw [← C.lam.sum_repr x, map_sum]`. Unfold `latPt`. Rewrite using `[map_sum]`.
+
+Simplify using `only [map_smul, hb, Int.cast_smul_eq_zsmul, map_zsmul]`.
+-/
 theorem perExt_latPt (R : RiemLat E g Λ) (x : Λ) : C.perExt R (C.latPt x) = R.P x := by
   have hb : ∀ k, C.perExt R (C.bas k) = R.P (C.lam k) := fun k => by
     simp [perExt, Module.Basis.constr_basis]
@@ -75,14 +101,23 @@ theorem perExt_latPt (R : RiemLat E g Λ) (x : Λ) : C.perExt R (C.latPt x) = R.
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Simplify using `[sgI, fromBlocks_multiply]`.
+-/
 theorem sgI_mul_self : sgI j j' * sgI j j' = 1 := by
   simp [sgI, fromBlocks_multiply]
 
+/- English proof (translation)
+Unfold `cinv`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc Mᴴ, hu, sgI_mul_self]`.
+-/
 theorem cinv_mul {M : Matrix (Fin (j + j')) (Sg j j') ℂ} {τ : Ψ} (hu : Mᴴ * C.sgr τ * M = sgI j j') :
     C.cinv M τ * M = 1 := by
   unfold cinv
   rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc Mᴴ, hu, sgI_mul_self]
 
+/- English proof (translation)
+The claim follows from `(Matrix.mul_eq_one_comm_of_equiv finSumFinEquiv).1 (C.cinv_mul hu)`.
+-/
 theorem mul_cinv {M : Matrix (Fin (j + j')) (Sg j j') ℂ} {τ : Ψ} (hu : Mᴴ * C.sgr τ * M = sgI j j') :
     M * C.cinv M τ = 1 :=
   (Matrix.mul_eq_one_comm_of_equiv finSumFinEquiv).1 (C.cinv_mul hu)
@@ -93,6 +128,9 @@ def aPart (A : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ) (y : Ψ → Fin (j + 
 def bPart (A : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ) (y : Ψ → Fin (j + j') → ℂ) (τ : Ψ) : Fin (j + j') → ℂ :=
   A τ *ᵥ Sum.elim 0 (fun i => (C.cinv (A τ) τ *ᵥ y τ) (Sum.inr i))
 
+/- English proof (translation)
+Unfold `aPart bPart`. Rewrite using `[← mulVec_add]`. Establish `h : (Sum.elim (fun i => (C.cinv (A τ) τ *ᵥ y τ) (Sum.inl i)) (0 : Fin j' → ℂ) + Sum.elim (0 : Fin j → ℂ) (fun i => (C.cinv (A τ) τ *ᵥ y τ) (Sum.inr i)) : Sg j j' → ℂ) = C.cinv (A τ) τ *ᵥ y τ`. Apply the tactic sequence `ext (i | i) <;> simp`. Rewrite using `[h, mulVec_mulVec, C.mul_cinv (hu τ), one_mulVec]`.
+-/
 theorem aPart_add_bPart {A : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ}
     (hu : ∀ τ, (A τ)ᴴ * C.sgr τ * A τ = sgI j j') (y : Ψ → Fin (j + j') → ℂ) (τ : Ψ) :
     C.aPart A y τ + C.bPart A y τ = y τ := by
@@ -109,6 +147,9 @@ def cxStr (A : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ) (y : Ψ → Fin (j + 
 
 open Classical in
 
+/- English proof (translation)
+Establish `h2` using `(smul_eq_zero.1 h).resolve_left (by norm_num)`. Rewrite using `[sub_eq_zero.1 h2, smul_smul]`. Simplify using the standard rewrite rules.
+-/
 theorem perExt_single_I_of_pPart (R : RiemLat E g Λ) (τ : Ψ) (w : Fin (j + j') → ℂ) (h : C.pPart R τ w = 0) :
     C.perExt R (Pi.single τ (Complex.I • w)) = (-Complex.I) • C.perExt R (Pi.single τ w) := by
   have h2 := (smul_eq_zero.1 h).resolve_left (by norm_num)
@@ -117,6 +158,9 @@ theorem perExt_single_I_of_pPart (R : RiemLat E g Λ) (τ : Ψ) (w : Fin (j + j'
 
 open Classical in
 
+/- English proof (translation)
+Establish `h2` using `(smul_eq_zero.1 h).resolve_left (by norm_num)`. Rewrite using `[eq_neg_of_add_eq_zero_left h2, smul_neg, smul_smul]`. Simplify using the standard rewrite rules.
+-/
 theorem perExt_single_I_of_pBar (R : RiemLat E g Λ) (τ : Ψ) (w : Fin (j + j') → ℂ) (h : C.pBar R τ w = 0) :
     C.perExt R (Pi.single τ (Complex.I • w)) = Complex.I • C.perExt R (Pi.single τ w) := by
   have h2 := (smul_eq_zero.1 h).resolve_left (by norm_num)
@@ -125,6 +169,11 @@ theorem perExt_single_I_of_pBar (R : RiemLat E g Λ) (τ : Ψ) (w : Fin (j + j')
 
 open Classical in
 
+/- English proof (translation)
+Establish `ha` using `C.perExt_single_I_of_pPart R τ (C.aPart A y τ) (hA.ker τ _)`. Establish `hb` using `C.perExt_single_I_of_pBar R τ (C.bPart A y τ) (hA.kerBar τ _)`. Establish `hy : C.perExt R (Pi.single τ (y τ)) = C.perExt R (Pi.single τ (C.aPart A y τ)) + C.perExt R (Pi.single τ (C.bPart A y τ))`. Rewrite using `[← map_add, ← Pi.single_add, C.aPart_add_bPart hA.unit]`. Unfold `cxStr`.
+
+Rewrite using `[neg_smul, Pi.single_add, map_add, Pi.single_neg, map_neg, ha, hb, hy, smul_add]`. Simplify using the standard rewrite rules.
+-/
 theorem perExt_single_cxStr {R : RiemLat E g Λ} {A : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ} (hA : C.IsAdapted R A)
     (y : Ψ → Fin (j + j') → ℂ) (τ : Ψ) :
     C.perExt R (Pi.single τ (C.cxStr A y τ)) = Complex.I • C.perExt R (Pi.single τ (y τ)) := by
@@ -139,16 +188,33 @@ theorem perExt_single_cxStr {R : RiemLat E g Λ} {A : Ψ → Matrix (Fin (j + j'
 
 open Classical in
 
+/- English proof (translation)
+Rewrite using `[← map_sum, Finset.univ_sum_single]`.
+-/
 theorem perExt_eq_sum_single (R : RiemLat E g Λ) (y : Ψ → Fin (j + j') → ℂ) :
     C.perExt R y = ∑ τ, C.perExt R (Pi.single τ (y τ)) := by
   rw [← map_sum, Finset.univ_sum_single]
 
+/- English proof (translation)
+Rewrite using `[C.perExt_eq_sum_single R (C.cxStr A y), C.perExt_eq_sum_single R y, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun τ _ => C.perExt_single_cxStr hA y τ`.
+-/
 theorem perExt_cxStr {R : RiemLat E g Λ} {A : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ} (hA : C.IsAdapted R A)
     (y : Ψ → Fin (j + j') → ℂ) : C.perExt R (C.cxStr A y) = Complex.I • C.perExt R y := by
   classical
   rw [C.perExt_eq_sum_single R (C.cxStr A y), C.perExt_eq_sum_single R y, Finset.smul_sum]
   exact Finset.sum_congr rfl fun τ _ => C.perExt_single_cxStr hA y τ
 
+/- English proof (translation)
+Set `eL` to `LinearEquiv.ofBijective (C.perExt R) (C.perExt_bijective R)`. Set `eL'` to `LinearEquiv.ofBijective (C.perExt R') (C.perExt_bijective R')`. Set `φ : (Fin g → ℂ) ≃ₗ[ℝ] (Fin g → ℂ)` to `eL.symm.trans eL'`. Establish `hφL : ∀ y, φ (C.perExt R y) = C.perExt R' y`. Introduce `y`.
+
+Establish `h : eL.symm (C.perExt R y) = y` using `eL.symm_apply_apply y`. Use `show eL' (eL.symm (C.perExt R y)) = _`. Rewrite using `[h]`. Both sides reduce to the same expression. Establish `hI : ∀ z, φ (Complex.I • z) = Complex.I • φ z`.
+
+Introduce `z`. Take `⟨y, rfl⟩` from `(C.perExt_bijective R).2 z`. Rewrite using `[← C.perExt_cxStr hA, hφL, hφL, C.perExt_cxStr hA']`. Establish `hz : ∀ (c : ℂ) (w : Fin g → ℂ), c • w = c.re • w + c.im • (Complex.I • w)`. Introduce `c w`.
+
+Use extensionality with `k`. Simplify using `only [Pi.smul_apply, Pi.add_apply, smul_eq_mul, Complex.real_smul]`. Use `conv_lhs => rw [← Complex.re_add_im c]`. Expand and normalize the polynomial expressions, which then agree. Establish `hs : ∀ (c : ℂ) z, φ (c • z) = c • φ z`.
+
+Introduce `c z`. Rewrite using `[hz c z, map_add, map_smul, map_smul, hI, ← hz]`. Use `⟨{ toFun := φ, invFun := φ.symm, left_inv := φ.left_inv, right_inv := φ.right_inv, map_add' := φ.map_add, map_smul' := hs }, fun x => ?_⟩` and prove the remaining obligations. Use `show R'.P x = φ (R.P x)`. Rewrite using `[← C.perExt_latPt R x, hφL, C.perExt_latPt]`.
+-/
 theorem eqvBy_of_adapted (R R' : RiemLat E g Λ) {A : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ}
     (hA : C.IsAdapted R A) (hA' : C.IsAdapted R' A) : R.EqvBy R' 1 := by
   let eL := LinearEquiv.ofBijective (C.perExt R) (C.perExt_bijective R)
@@ -180,6 +246,9 @@ theorem eqvBy_of_adapted (R R' : RiemLat E g Λ) {A : Ψ → Matrix (Fin (j + j'
 
 end LatEmb
 
+/- English proof (translation)
+The claim follows from `C.eqvBy_of_adapted R R' hA hA'`.
+-/
 theorem adapted_eqvBy (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ)
     (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (F : UnivFam E Ψ j j' n g Λ) (C : LatEmb F) (R R' : RiemLat E g Λ)
     (A : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ) (_ : R.form = F.form) (_ : R'.form = F.form)

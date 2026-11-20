@@ -27,6 +27,13 @@ section Normal
 
 variable {E K A : Type} [Field E] [NumberField E] [Field K] {n : ℕ} (S : GStep E K n) (b : S.β) (f : S.D b → A)
 
+/- English proof (translation)
+Establish `h` using `Classical.epsilon_spec (p := fun r => ∃ g : S.G b, r = f (g • q)) ⟨f q, 1, by rw [one_smul]⟩`. Take `⟨g, hg⟩` from `h`. Use `⟨g, ?_⟩` and prove the remaining obligations. Unfold `GStep.NormalFor`. Rewrite using `[← hg]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `r`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g', rfl⟩`.
+
+Conclude with `⟨g' * g⁻¹, by rw [← mul_smul, inv_mul_cancel_right]⟩`. Introduce and unpack `⟨g', rfl⟩`. Conclude with `⟨g' * g, by rw [mul_smul]⟩`.
+-/
 theorem exists_normal (q : S.D b) : ∃ g : S.G b, S.NormalFor b f (g • q) := by
   have h := Classical.epsilon_spec (p := fun r => ∃ g : S.G b, r = f (g • q)) ⟨f q, 1, by rw [one_smul]⟩
   obtain ⟨g, hg⟩ := h
@@ -42,6 +49,9 @@ theorem exists_normal (q : S.D b) : ∃ g : S.G b, S.NormalFor b f (g • q) := 
   · rintro ⟨g', rfl⟩
     exact ⟨g' * g, by rw [mul_smul]⟩
 
+/- English proof (translation)
+Unfold `GStep.NormalFor at h h'`. Rewrite using `[h, h']`. Use `congr 1`. Use function extensionality and compare the values at `r`. Conclude with `propext (e r)`.
+-/
 theorem normal_eq {b' : S.β} {f' : S.D b' → A} {q : S.D b} {q' : S.D b'} (h : S.NormalFor b f q) (h' : S.NormalFor b' f' q')
     (e : ∀ r, (∃ g : S.G b, r = f (g • q)) ↔ ∃ g : S.G b', r = f' (g • q')) : f q = f' q' := by
   unfold GStep.NormalFor at h h'
@@ -54,6 +64,11 @@ end Normal
 
 variable {B : Base} {X : PreX B.toPre} {I : TC B X}
 
+/- English proof (translation)
+Establish `h2` using `B.R.two_le_m`. Distinguish the cases in `h0 : j = 0`. Take `⟨g, hg⟩` from `exists_normal (I.stp0 u a j) b (fun q' : (I.stp0 u a j).D b => q'.1.1.deco) q`. Conclude with `⟨g, fun _ => hg, fun h => by omega, fun h => absurd h hj⟩`. Take `⟨g, hg⟩` from `exists_normal (I.stp0 u a j) b (fun q' : (I.stp0 u a j).D b => cosetIn q') q`.
+
+Conclude with `⟨g, fun h => absurd h h0, fun _ => hg, fun h => absurd h hj⟩`.
+-/
 theorem exists_pref (u : B.Word) (a : I.ι) (j : ℕ) (hj : j ≠ B.R.m) (b : (I.stp0 u a j).β) (q : (I.stp0 u a j).D b) :
     ∃ g : (I.stp0 u a j).G b, I.pref u a j b ((I.stp0 u a j).act b g q) := by
   have h2 := B.R.two_le_m
@@ -63,6 +78,11 @@ theorem exists_pref (u : B.Word) (a : I.ι) (j : ℕ) (hj : j ≠ B.R.m) (b : (I
   · obtain ⟨g, hg⟩ := exists_normal (I.stp0 u a j) b (fun q' : (I.stp0 u a j).D b => cosetIn q') q
     exact ⟨g, fun h => absurd h h0, fun _ => hg, fun h => absurd h hj⟩
 
+/- English proof (translation)
+Take `⟨b, c⟩` from `c`. Take `⟨q, rfl⟩` from `Quotient.exists_rep c`. Take `⟨g, hg⟩` from `exists_pref u a j hj b q`. Establish `hp` using `@pref_prefRep _ _ _ ((I.stp0 u a j).actD b) (I.pref u a j b) _ hg`. Establish `e : (I.stp0 u a j).rp b = (I.stp0 u a j).rp b → Quotient.mk (@MulAction.orbitRel _ _ _ ((I.stp0 u a j).actD b)) ((I.stp0 u a j).act b g q) = Quotient.mk _ q` using `fun _ => Quotient.sound ⟨g, rfl⟩`.
+
+Rewrite `hp` using `[e rfl]`. Conclude with `hp`.
+-/
 theorem pref_rep (u : B.Word) (a : I.ι) (j : ℕ) (hj : j ≠ B.R.m) (c : (I.stp u a j).Cl) : I.pref u a j c.1 ((I.stp u a j).rep c) := by
   obtain ⟨b, c⟩ := c
   obtain ⟨q, rfl⟩ := Quotient.exists_rep c
@@ -73,6 +93,9 @@ theorem pref_rep (u : B.Word) (a : I.ι) (j : ℕ) (hj : j ≠ B.R.m) (c : (I.st
   rw [e rfl] at hp
   exact hp
 
+/- English proof (translation)
+Establish `h : q.1.2 ∈ (ysAt B.R I.sel (I.tup a) (I.cst a) j).ys q.1.1.deco.1.N` using `q.2`. Rewrite `h` using `[ysAt_ys_of_ne I.sel (I.tup a) (I.cst a) hj]`. Establish `h' : q.1.2 = ∅` using `h`. Use extensionality with `z`. Simplify using `[cosetIn, h']`.
+-/
 theorem cosetIn_empty (u : B.Word) (a : I.ι) (j : ℕ) (hj : j + 1 ≠ B.R.m) (q : PtAt B.R I.sel (I.tup a) (I.cst a) u j) (P) :
     cosetIn q P = ∅ := by
   have h : q.1.2 ∈ (ysAt B.R I.sel (I.tup a) (I.cst a) j).ys q.1.1.deco.1.N := q.2
@@ -83,6 +106,9 @@ theorem cosetIn_empty (u : B.Word) (a : I.ι) (j : ℕ) (hj : j + 1 ≠ B.R.m) (
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Establish `hch` using `TC.ok_chains I h`. Establish `hlev` using `LevelLaw.atIn_ok I h`. Establish `hper` using `PerLaw.perIn_laws I h`. Establish `hall` using `fun u a => laws_all (I.chIn u a) (I.atIn u a) B.fields.emb B.embLL (B.hcW u) (base_fOk B) (hch u a).1 (hlev u a) (I.perIn u a) (hper u a).1 B.places`. Conclude with `{ pr := (base_fields_primes_ok B X).2.1 ch := fun u a => (hch u a).1 lev := hlev per := fun u a => (hper u a).1 ovr := fun u a => (hper u a).2 atL := fun u a => (hall u a).1 fmL := fun u a => (hall u a).2 xi0 := h.trueColumnChoices_heckeChar_reference_eq_one idx0 := fun a => (hch …`.
+-/
 theorem laws (h : I.Ok) : I.Laws := by
   have hch := TC.ok_chains I h
   have hlev := LevelLaw.atIn_ok I h
@@ -106,12 +132,20 @@ section Gen
 variable {E K ι : Type} [Field E] [NumberField E] [StarRing E] [Field K] [NumberField K] [StarRing K] [Fintype ι] {n : ℕ}
   (emb : ι → E →+* K) (σ : K →+* ℂ) (lam : ι → DomWeight n)
 
+/- English proof (translation)
+Introduce `c g`. Take `rfl : g = 1` from `Subtype.ext (hS c.1 g.1 _ g.2)`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+-/
 theorem mem_formsK (S : GStep E K n) (hS : S.Free) (hF : (S.fam emb lam).Ok) (x : S.Cl → VV K lam) : x ∈ S.FormsK emb lam hF := by
   intro c g
   obtain rfl : g = 1 := Subtype.ext (hS c.1 g.1 _ g.2)
   rw [map_one]
   rfl
 
+/- English proof (translation)
+Set `e : S.FormsK emb lam hF ≃ₗ[K] S'.FormsK emb lam hF'` to `{ toFun := fun x => ⟨fun c => x.1 (e0.symm c), mem_formsK emb lam S' hS' hF' _⟩ invFun := fun x => ⟨fun c => x.1 (e0 c), mem_formsK emb lam S hS hF _⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl left_inv := fun x => Subtype.ext (funext fun c => congrArg x.1 (e0.symm_ap …`. Use `⟨e, fun x => ?_, fun x => rfl⟩` and prove the remaining obligations. Use `show (∀ c, x.1 c ∈ delAtr emb lam (S.Lsh _ (S.rep c))) ↔ ∀ c, x.1 (e0.symm c) ∈ delAtr emb lam (S'.Lsh _ (S'.rep c))`. Rewrite using `[← e0.forall_congr_right]`. Use `forall_congr' fun c => ?_` and prove the remaining obligations.
+
+Rewrite using `[e0.symm_apply_apply, hL]`.
+-/
 theorem forms_equiv (S S' : GStep E K n) (hS : S.Free) (hS' : S'.Free) (hF : (S.fam emb lam).Ok) (hF' : (S'.fam emb lam).Ok)
     (e0 : S.Cl ≃ S'.Cl) (hL : ∀ c, S'.Lsh _ (S'.rep (e0 c)) = S.Lsh _ (S.rep c)) :
     ∃ e : (S.hlat emb lam hF).V ≃ₗ[K] (S'.hlat emb lam hF').V,
@@ -130,6 +164,11 @@ theorem forms_equiv (S S' : GStep E K n) (hS : S.Free) (hS' : S'.Free) (hF : (S.
   refine forall_congr' fun c => ?_
   rw [e0.symm_apply_apply, hL]
 
+/- English proof (translation)
+Use `letI := Q.clFin h`. Use `haveI : FiniteDimensional ℂ (VV ℂ Q.sgT) := Module.Finite.of_basis (bVV ℂ Q.sgT)`. Set `r : Q.Mt emb σ →ₗ[ℂ] (Q.S'.Cl → VV ℂ Q.sgT)` to `{ toFun := fun F c => ⟨F.1 c.1 (Q.S'.rep c), (F.2 c.1 _).1⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Use `FiniteDimensional.of_injective r ((injective_iff_map_eq_zero r).2 fun F hF => ?_)` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `b d`. Establish `h0 : F.1 b (Q.S'.rep (Q.S'.cl b d)) = 0` using `congrArg Subtype.val (congrFun hF (Q.S'.cl b d))`. Establish `h1` using `(F.2 b (Q.S'.rep (Q.S'.cl b d))).2 (Q.S'.mv b d) (by rw [hH]; trivial)`. Rewrite `h1` using `[h0, map_zero, smul_zero]`. Conclude with `(congrArg (F.1 b) (Q.S'.mv_smul b d)).symm.trans h1`.
+-/
 theorem mt_finite {R : Ranks} {J : ChainIn E K ι R} (Q : PerIn J) (h : Q.Ok) (hH : ∀ b, Q.H b = ⊤) :
     FiniteDimensional ℂ (Q.Mt emb σ) := by
   letI := Q.clFin h
@@ -149,6 +188,9 @@ end Gen
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `u a`. Take `⟨e, h1, h2⟩` from `forms_equiv B.fields.emb B.embLL (lamT (B.hcW u) 0) (I.stp u I.mu0 0) (I.stp u a 0) (l.lev u _).free0 (l.lev u a).free0 ((l.fmL u I.mu0).fam 0) ((l.fmL u a).fam 0) (I.eCls0 l u a) fun c => congrArg (fun d : DecoSet B.fields.E (B.R.N 0) ((B.primes X).vT u) (B.primes X).vGs => d.1. …`. Conclude with `⟨e, h1, h2⟩`.
+-/
 theorem law0 (h : I.Ok) (l : I.Laws) : I.Law0 l := by
   intro u a
   obtain ⟨e, h1, h2⟩ := forms_equiv B.fields.emb B.embLL (lamT (B.hcW u) 0) (I.stp u I.mu0 0) (I.stp u a 0)
@@ -158,6 +200,11 @@ theorem law0 (h : I.Ok) (l : I.Laws) : I.Law0 l := by
       ((ClsZero.stepZero_classes_bijective_same_deco I h u a _).2 c)
   exact ⟨e, h1, h2⟩
 
+/- English proof (translation)
+Unfold `MemberForms.ipC`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `congr 1`.
+
+Simplify using `[ColumnChain.wt]`. Conclude with `(ClassSumPos.ipVal_herm _ _ _ _ _).symm`.
+-/
 theorem ipC_herm (l : I.Laws) (u : B.Word) (x y) :
     starRingEnd ℂ (((I.cols l).fm u).ipC 0 y x) = ((I.cols l).fm u).ipC 0 x y := by
   unfold MemberForms.ipC
@@ -168,11 +215,21 @@ theorem ipC_herm (l : I.Laws) (u : B.Word) (x y) :
   · simp [ColumnChain.wt]
   · exact (ClassSumPos.ipVal_herm _ _ _ _ _).symm
 
+/- English proof (translation)
+Use `letI := (I.chIn u I.mu0).clFin (l.ch u _) 0`. Conclude with `(ClassSumPos.classSum_pos_herm (I.stp u I.mu0 0) B.fields.emb B.embLL (lamT (B.hcW u) 0) (base_fOk B) ((l.ch u _).step 0)).1 x hx h0`.
+-/
 theorem ipC_pos (l : I.Laws) (u : B.Word) (x) (hx : x ∈ ((I.cols l).mem u).A.Mu0) (h0 : x ≠ 0) :
     0 < (((I.cols l).fm u).ipC 0 x x).re := by
   letI := (I.chIn u I.mu0).clFin (l.ch u _) 0
   exact (ClassSumPos.classSum_pos_herm (I.stp u I.mu0 0) B.fields.emb B.embLL (lamT (B.hcW u) 0) (base_fOk B) ((l.ch u _).step 0)).1 x hx h0
 
+/- English proof (translation)
+Establish `key : ∀ u a, Nonempty (((I.cols l).PTw u a).Mt ≃ₗ[ℂ] RowsRestModel.Eu (Module.finrank ℂ ((I.perIn B.u₀ a).Mt B.fields.emb B.embLL)))` using `fun u a => by haveI := mt_finite B.fields.emb B.embLL (I.perIn B.u₀ a) (l.per _ a) fun _ => rfl`. Establish `key : Nonempty ((I.perIn B.u₀ a).Mt B.fields.emb B.embLL ≃ₗ[ℂ] RowsRestModel.Eu (Module.finrank ℂ ((I.perIn B.u₀ a).Mt B.fields.emb B.embLL)))` using `FiniteDimensional.nonempty_linearEquiv_of_finrank_eq finrank_euclideanSpace_fin.symm`. Conclude with `key`. Use `⟨fun u => key u I.mu0, key, fun u x y => ipC_herm l u _ _, fun u x => ?_, fun u x hx => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : x.1 = 0`.
+
+Simplify using `[h0, MemberForms.ipC]`. Conclude with `(ipC_pos l u x.1 x.2.1 h0).le`. Assume the negation of the conclusion as `h0`. Use `ipC_pos l u x.1 x.2.1 fun e => h0 (Subtype.ext e)` as an intermediate fact. Rewrite `this` using `[hx]`.
+
+Simplify using `at this`.
+-/
 theorem fits (l : I.Laws) : RowsRestModel.Fits (I.cols l)
     fun a => Module.finrank ℂ ((I.perIn B.u₀ a).Mt B.fields.emb B.embLL) := by
   have key : ∀ u a, Nonempty (((I.cols l).PTw u a).Mt ≃ₗ[ℂ]
@@ -191,6 +248,11 @@ theorem fits (l : I.Laws) : RowsRestModel.Fits (I.cols l)
     rw [hx] at this
     simp at this
 
+/- English proof (translation)
+Take `⟨Del, letter, hD, hinj, gap, hu⟩` from `hB`. Set `W` to `RowsRestModel.model (fits l) 1 1 1`. Take `⟨L⟩` from `locStage_inhabited`. Take `⟨N, -⟩` from `GaloisStage.exists_nStage_adapt B _ W L`. Take `⟨V, -⟩` from `DivInhab.exists_divStage B _ (GaloisStage.adapt W)`.
+
+Take `⟨S⟩` from `SStageInhab.nonempty_sStage B _ (GaloisStage.adapt W) Del hD gap letter hinj hu (fun u x _ y _ => ipC_herm l u x y) (fun u x hx h => ipC_pos l u x hx h) (show 1 ≤ 2 * 1 by omega)`. Take `⟨G⟩` from `GJInhab.nonempty_stage B (I.cols l)`. Conclude with `⟨⟨GaloisStage.adapt W, V, S, N, G⟩⟩`.
+-/
 theorem later (l : I.Laws) (hB : StagesInhab.HasLetters B.toPre) : Nonempty (TC.Later B (I.cols l)) := by
   obtain ⟨Del, letter, hD, hinj, gap, hu⟩ := hB
   let W := RowsRestModel.model (fits l) 1 1 1
@@ -202,6 +264,9 @@ theorem later (l : I.Laws) (hB : StagesInhab.HasLetters B.toPre) : Nonempty (TC.
   obtain ⟨G⟩ := GJInhab.nonempty_stage B (I.cols l)
   exact ⟨⟨GaloisStage.adapt W, V, S, N, G⟩⟩
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `PtTwist.exists_ptOf_twists I h u _ (extTo I.SQ ((I.stp u I.mu0 i).rep c).1.1)`. Conclude with `Classical.epsilon_spec (p := fun g : GA B (B.R.N i) => PtOf (g * kStd X u (B.R.N i)) (extTo I.SQ ((I.stp u I.mu0 i).rep c).1.1)) ⟨g * (kStd X u (B.R.N i))⁻¹, by rwa [inv_mul_cancel_right]⟩`.
+-/
 theorem yStd_spec (h : I.Ok) (u : B.Word) (i : ℕ) (c : (I.stp u I.mu0 i).Cl) :
     PtOf (I.yStd u i c * kStd X u (B.R.N i)) (extTo I.SQ ((I.stp u I.mu0 i).rep c).1.1) := by
   obtain ⟨g, hg⟩ := PtTwist.exists_ptOf_twists I h u _ (extTo I.SQ ((I.stp u I.mu0 i).rep c).1.1)
@@ -209,6 +274,9 @@ theorem yStd_spec (h : I.Ok) (u : B.Word) (i : ℕ) (c : (I.stp u I.mu0 i).Cl) :
     (p := fun g : GA B (B.R.N i) => PtOf (g * kStd X u (B.R.N i)) (extTo I.SQ ((I.stp u I.mu0 i).rep c).1.1))
     ⟨g * (kStd X u (B.R.N i))⁻¹, by rwa [inv_mul_cancel_right]⟩
 
+/- English proof (translation)
+The claim follows from `Classical.epsilon_spec (BasePoint.exists_kStd X (base_fields_primes_ok B X).2.1 u n)`.
+-/
 theorem kStd_spec (X : PreX B.toPre) (u : B.Word) (n : ℕ) :
     (∃ p : DecoF B.fields.E n ∅ ∅ ∅, PtOf (kStd X u n) p ∧ p.deco.1.N = stdLat B.fields.E n) ∧
     (∀ v : HeightOneSpectrum (𝓞 B.host.F), (B.T u : 𝓞 B.host.F) ∉ v.asIdeal → bc (prV (E := B.host.E) v) (kStd X u n) = 1) ∧
@@ -216,6 +284,19 @@ theorem kStd_spec (X : PreX B.toPre) (u : B.Word) (n : ℕ) :
       (if j = r then Ideal.Quotient.mk P.1.asIdeal (B.fields.conjO (X.piT u)) else 0) :=
   Classical.epsilon_spec (BasePoint.exists_kStd X (base_fields_primes_ok B X).2.1 u n)
 
+/- English proof (translation)
+Take `⟨P, hL, ⟨X₀⟩, -, hdu⟩` from `KerT.JetsInhab.exists_pre_sized`. Take `⟨f⟩ : Nonempty (Top.Fr P)` from `P.nonempty_hframe X₀.e_even`. Take `⟨X, hX⟩` from `InEx.exists_oriented X₀ f.P`. Use `letI := P.host.cmStar`. Establish `hs : ∀ x : P.host.E, star x = P.host.conj x` using `bridge_star_holds P.R P.host`.
+
+Establish `hpz : star (X.piT P.u₀ : P.host.E) * (X.piT P.u₀ : P.host.E) = (P.T P.u₀ : P.host.E)`. Rewrite using `[hs, mul_comm]`. Conclude with `X.piT_norm P.u₀`. Establish `hne : ∀ u, (X.piT u : P.host.E) ≠ 0` using `fun u h => by`. Establish `h1` using `X.piT_norm u`.
+
+Rewrite `h1` using `[h, zero_mul]`. Conclude with `(P.T_prime u).ne_zero (by exact_mod_cast h1.symm)`. Set `cm` to `host_cmData P.R P.host`. Establish `hT` using `P.T_prime P.u₀`. Set `Q : Pre` to `{ P with sp := DiagSp.spacesNorm P.R cm _ hT _ hpz Y_sigval := fun j _ τ => DiagSp.spacesNorm_Y_sig P.R cm _ hT _ hpz j τ auxiliaryFrame := fun j _ hj => DiagSp.spacesNorm_hasFrame P.R cm _ hT _ hpz j hj V_pos := fun j _ _ => rfl z_norm := DiagSp.spacesNorm_z_norm P.R cm _ hT _ h …`.
+
+Establish `h1` using `hne u`. Establish `h2 : P.host.conj (X.piT u : P.host.E) ≠ 0` using `(map_ne_zero _).2 h1`. Rewrite using `[← X.piT_norm u, ← X.piT_norm P.u₀, map_div₀]`. Clear denominators, using `}` for the nonvanishing conditions. Use `⟨Q, { X with }, f, hL, hX, DiagSp.spacesNorm_coord P.R cm _ hT _ hpz, hdu, fun a b hab => ?_, fun u => div_mul_cancel₀ _ (hne u)⟩` and prove the remaining obligations.
+
+Establish `gen : ∀ (n N : ℕ) (a : Fin n) (b : Fin N), (a : ℕ) = b → GlobalTheory.Mem.DiagSp.extTo n N (Pi.basisFun P.host.E (Fin n) a) = Pi.basisFun P.host.E (Fin N) b`. Introduce `n N a b hab`. Use function extensionality and compare the values at `i`. Simplify using `only [GlobalTheory.Mem.DiagSp.extTo, Pi.basisFun_apply, LinearMap.coe_mk, AddHom.coe_mk, Pi.single_apply, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+
+Conclude with `gen _ _ a b hab`.
+-/
 theorem exists_pre : ∃ (P : Pre) (X : PreX P) (f : Top.Fr P), StagesInhab.HasLetters P ∧ InEx.Oriented X f.P ∧
     (letI := P.host.cmStar; DiagSpaces P.sp) ∧ (∀ u, (P.duStar u : ℝ) = duStarOf P.host (P.hcW u)) ∧
     (letI := P.host.cmStar; ∀ (a : Fin P.sp.X'.rank) (b : Fin (P.sp.X P.R.m).rank), (a : ℕ) = b →
@@ -259,6 +340,21 @@ theorem exists_pre : ∃ (P : Pre) (X : PreX P) (f : Top.Fr P), StagesInhab.HasL
     split_ifs <;> first | rfl | omega
   exact gen _ _ a b hab
 
+/- English proof (translation)
+Take `⟨P, X, f, hL, hX, hsp, hdu, p1, p2⟩` from `exists_pre`. Take `⟨M, hM, -, -, m1, m2, -⟩` from `FrameVal.frame_values P.R P.host _ f fun j τ => (P.hc τ).e_int j`. Take `⟨α, hα, gα⟩` from `@DatHecke.exists_gen M hM`. Use `choose r hr using fun q : ℕ => IsAlgClosed.exists_pow_nat_eq (q : ℂ) (n := 2) two_pos`. Take `⟨Y, hY, gY⟩` from `InEx.exists_holds (2 * P.R.m) ({1, f.del, f.del'} : Set (Formalism.L2.Host.HChar P.host.E))`.
+
+Take `⟨B, rfl, -, -, h2⟩` from `BaseExt.exists_base P ∅ ∅ (insert α (Y ∪ Finset.univ.image fun k => r (P.host.g k))) (by simp) (by simp) (fun z hz => by`. Break down `Finset.mem_insert.1 hz with rfl | hz` into its components or cases. Conclude with `hα`. Break down `Finset.mem_union.1 hz with h | h` into its components or cases. Conclude with `hY z h`.
+
+Take `⟨k, -, rfl⟩` from `Finset.mem_image.1 h`. Conclude with `IsAlgebraic.of_pow two_pos (by rw [hr]; exact isAlgebraic_natCast _))`. Establish `i1` using `gα B.LL B.embLL (h2 _ (Finset.mem_insert_self _ _))`. Establish `hf : ({1, f.del, f.del'} : Set (Formalism.L2.Host.HChar B.host.E)).Finite` using `Set.toFinite _`. Establish `ht : ∀ ξ ∈ ({1, f.del, f.del'} : Set (Formalism.L2.Host.HChar B.host.E)), Chr.IsTwist B.host (InEx.avoid B.toPre) ξ` using `fun ξ hξ => InEx.isTwist_of_mem_set B f (Top.TwDat.untw B ∅) ξ (.inl hξ)`.
+
+Take `⟨sel, hsel⟩` from `Formalism.L2.Col.exists_sel B.fields`. Take `⟨J, hJ⟩` from `exists_ambIn_ok B.host`. Take `⟨I, a1, -⟩` from `InEx.exists_colIn B X f hX hsp hdu (InEx.avoid B.toPre) (fun u => ⟨Or.inr (Or.inr (Or.inr (Or.inr (Or.inl (Exists.intro u rfl))))), B.T_ne_pde u⟩) (fun i => ⟨Or.inr (Or.inl (Exists.intro i rfl)), (B.host.pde_ne_g i).1.symm, (B.host.pde_ne_g i).2.symm⟩) (fun _ hp h => InEx.mem_avo …`. Take `⟨s, hs⟩` from `h2 _ (Finset.mem_insert_of_mem (Finset.mem_union_right _ (Finset.mem_image_of_mem _ (Finset.mem_univ i))))`. Conclude with `⟨s, B.embLL.injective (by rw [map_pow, hs, hr, map_natCast])⟩) sel hsel J hJ`.
+
+Use `⟨B, X, I, hL, a1, ⟨p1, p2⟩, fun e => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, hw'⟩` from `Ideal.exists_le_maximal (Ideal.span {(B.host.pde : 𝓞 B.host.E)}) (by`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Introduce `hu`. Establish `h1` using `hu.map (Algebra.norm ℤ)`.
+
+Rewrite `h1` using `[← map_natCast (algebraMap ℤ (𝓞 B.host.E)), Algebra.norm_algebraMap, isUnit_pow_iff Module.finrank_pos.ne', Int.isUnit_iff_natAbs_eq]`. Conclude with `B.host.pde_prime.ne_one (by simpa using h1))`. Establish `hm : (B.host.pde : 𝓞 B.host.E) ∈ w` using `hw' (Ideal.mem_span_singleton_self _)`. Establish `hb : w ≠ ⊥`. Introduce and unpack `rfl`.
+
+Conclude with `B.host.pde_prime.ne_zero (by simpa using hm)`. Establish `h1 : I.C.del = 1` using `by rw [← a1.xi_star, e, a1.trueColumnChoices_heckeChar_reference_eq_one]`. Establish `h3` using `(I.C.isDel.ine ⟨w, hw.isPrime, hb⟩ hm 1).1 fun x _ => by rw [h1]; simp`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_ok_pins : ∃ (B : Base) (X : PreX B.toPre) (I : TC B X), StagesInhab.HasLetters B.toPre ∧ I.Ok ∧ TC.Pins B X ∧
     I.muStar ≠ I.mu0 := by
   classical
@@ -308,6 +404,9 @@ theorem exists_ok_pins : ∃ (B : Base) (X : PreX B.toPre) (I : TC B X), StagesI
   have h3 := (I.C.isDel.ine ⟨w, hw.isPrime, hb⟩ hm 1).1 fun x _ => by rw [h1]; simp
   omega
 
+/- English proof (translation)
+Take `⟨B, X, I, hL, h, hP, hs⟩` from `exists_ok_pins`. Take `⟨Z⟩` from `later (laws h) hL`. Conclude with `⟨B, X, I, laws h, Z, h, hP, law0 h _, hs, ⟨I.tw _ (law0 h _) Z⟩⟩`.
+-/
 theorem exists_all : ∃ (B : Base) (X : PreX B.toPre) (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)),
     I.Ok ∧ TC.Pins B X ∧ I.Law0 l ∧ I.muStar ≠ I.mu0 ∧ Nonempty (TwForms (I.rec7 l Z)) := by
   obtain ⟨B, X, I, hL, h, hP, hs⟩ := exists_ok_pins

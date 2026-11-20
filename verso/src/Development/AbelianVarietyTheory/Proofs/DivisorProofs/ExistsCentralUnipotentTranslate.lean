@@ -14,15 +14,29 @@ namespace GlobalTheory.UnipMass.CentralShift
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_mul' {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g g' : UA σ J) :
     mat (g * g') = mat g * mat g' := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_one' {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} : mat (1 : UA σ J) = 1 := rfl
 
+/- English proof (translation)
+Rewrite using `[← mat_mul', inv_mul_cancel, mat_one']`.
+-/
 theorem mat_inv_mul' {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g : UA σ J) :
     mat g⁻¹ * mat g = 1 := by
   rw [← mat_mul', inv_mul_cancel, mat_one']
 
+/- English proof (translation)
+Establish `hg : (mat g)ᵀ * incM F J * (mat g).map (cA σ) = incM F J` using `g.2`. Establish `hc : (fun i => cA σ ((mat g *ᵥ w) i)) = (mat g).map (cA σ) *ᵥ fun i => cA σ (w i)`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (cA σ).toRingHom (mat g) w i`. Rewrite using `[hA, hA, hc, ← Matrix.vecMul_transpose (mat g) v, ← Matrix.dotProduct_mulVec]`.
+
+Simplify using `only [Matrix.mulVec_mulVec]`. Rewrite using `[← Matrix.mul_assoc, hg]`.
+-/
 theorem hA_mat (σ : E →ₐ[F] E) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g : UA σ J) (v w : Fin n → AE F E) :
     hA σ J (mat g *ᵥ v) (mat g *ᵥ w) = hA σ J v w := by
   have hg : (mat g)ᵀ * incM F J * (mat g).map (cA σ) = incM F J := g.2
@@ -34,6 +48,11 @@ theorem hA_mat (σ : E →ₐ[F] E) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g 
 
 variable {σ : E →ₐ[F] E} {d d₁ : ℕ} {W : Spc F E d} {H' : Plane E d d₁}
 
+/- English proof (translation)
+Proceed by induction on `hu using Subgroup.closure_induction with`. Consider the case `mem g hg => exact hg.1`. Consider the case `one => rw [mat_one', Matrix.one_mulVec]`. Consider the case `mul g g' _ _ hg hg' => rw [mat_mul', ← Matrix.mulVec_mulVec, hg', hg]`. Consider the case `inv g _ hg => conv_lhs => rw [← hg]`.
+
+Rewrite using `[Matrix.mulVec_mulVec, mat_inv_mul', Matrix.one_mulVec]`.
+-/
 theorem unip_fix (u : UA σ W.J) (hu : u ∈ unip σ W H') : mat u *ᵥ incV F H'.x = incV F H'.x := by
   induction hu using Subgroup.closure_induction with
   | mem g hg => exact hg.1
@@ -49,6 +68,23 @@ namespace GlobalTheory.UnipMass.CentralShift
 
 open GlobalTheory.UnipMass
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B d d₁ W W₁ H' i₀ i₁ r' s' hcm hW hH t`. Establish `hσ : ∀ a, σ (σ a) = a` using `cm_conj_conj hcm`. Establish `horth : ∀ z, hA σ W.J (incM F H'.ι *ᵥ z) (incV F H'.x) = 0`. Introduce `z`. Rewrite using `[hA_incM_incV]`.
+
+Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `h1` using `(hH.orth (Pi.single j 1)).1`. Rewrite `h1` using `[Matrix.mulVec_single_one]`. Rewrite using `[show (fun i => H'.ι i j) = H'.ι.col j from rfl, h1, map_zero, mul_zero]`. Establish `h : Hyp σ W H'` using `⟨hσ, hW.skew, by rw [hA_incV, hH.xx, map_zero], horth⟩`.
+
+Use `set c : AE F E := algebraMap (AF F) (AE F E) t with hc_def`. Establish `hcc : cA σ c = c` using `(cA σ).commutes t`. Establish `hc : c - cA σ c = -hA σ W.J (incM F H'.ι *ᵥ (0 : Fin d₁ → AE F E)) (incM F H'.ι *ᵥ 0)`. Rewrite using `[hcc, sub_self, Matrix.mulVec_zero, hA_zero_left, neg_zero]`. Use `set z := elt h 0 c hc with hz`.
+
+Establish `hmz : ∀ v, mat (z : UA σ W.J) *ᵥ v = v - hA σ W.J v (incV F H'.x) • (c • incV F H'.x)`. Introduce `v`. Rewrite using `[hz, mat_elt, nmat_mulVec, Matrix.mulVec_zero, hA_zero_right, zero_smul, sub_zero, zero_add]`. Use `⟨(z : UA σ W.J), z.2, fun u hu => ?_, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Units.ext` to reduce the goal to its premises. Use `show mat (z : UA σ W.J) * mat u = mat u * mat (z : UA σ W.J)`. Use `Matrix.ext_of_mulVec_single fun i => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hmz, hmz, Matrix.mulVec_sub, Matrix.mulVec_smul, Matrix.mulVec_smul, unip_fix u hu]`. Establish `e : hA σ W.J (mat u *ᵥ Pi.single i 1) (incV F H'.x) = hA σ W.J (Pi.single i 1) (incV F H'.x)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Establish `hxy : hA σ W.J (incV F H'.x) (incV F H'.y) = 1` using `by rw [hA_incV, hH.xy, map_one]`. Establish `hyx : hA σ W.J (incV F H'.y) (incV F H'.x) = -1`. Use `hA_skew h.σσ h.skew (incV F H'.x) (incV F H'.y)` as an intermediate fact.
+
+Rewrite `this` using `[hxy, map_one]`. Rewrite using `[← neg_neg (hA σ W.J (incV F H'.y) (incV F H'.x)), ← this]`. Establish `hs : hA σ W.J (incV F H'.y - c • incV F H'.x) (incV F H'.x) = -1`. Rewrite using `[sub_eq_add_neg, hA_add_left, ← neg_smul, show hA σ W.J ((-c) • incV F H'.x) (incV F H'.x) = (-c) * hA σ W.J (incV F H'.x) (incV F H'.x) by`. Simplify using `[hA, smul_dotProduct],`.
+
+Use the proof step `h.xx, mul_zero, add_zero, hyx]`. Establish `hzy : mat (z : UA σ W.J) *ᵥ (incV F H'.y - c • incV F H'.x) = incV F H'.y`. Rewrite using `[hmz, hs, neg_one_smul, sub_neg_eq_add, sub_add_cancel]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_central_shift : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (d d₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ r' s' : ℕ), IsCMExt F E σ → W.IsSkew σ B r' s' →
     H'.IsAdapted σ B W W₁ i₀ i₁ → ∀ t : AF F, ∃ z : UA σ W.J, z ∈ unip σ W H' ∧ (∀ u ∈ unip σ W H', z * u = u * z) ∧

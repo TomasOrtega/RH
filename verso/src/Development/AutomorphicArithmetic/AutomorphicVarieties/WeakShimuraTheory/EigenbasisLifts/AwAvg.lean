@@ -3,6 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial Matrix UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Eb GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Establish `hQ : Finite (H ⧸ N.subgroupOf H)` using `inferInstance`. Use `letI : Fintype (H ⧸ N.subgroupOf H) := Fintype.ofFinite _`. Establish `hzout : ∀ (g : H) (q : H ⧸ N.subgroupOf H), z (((g • q).out : H) : Γ) = z g + R g (z ((q.out : H) : Γ))`. Introduce `g q`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (N.subgroupOf H) (g * q.out)`.
+
+Establish `hq : g • q = (QuotientGroup.mk (g * q.out) : H ⧸ N.subgroupOf H)` using `by conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Rewrite using `[hq, hk]`. Establish `hk0 : z ((k : H) : Γ) = 0` using `hN _ (k : H).2 (Subgroup.mem_subgroupOf.mp k.2)`. Simplify using `only [Subgroup.coe_mul, hco, hk0, map_zero, add_zero]`.
+
+Establish `hm : ((Fintype.card (H ⧸ N.subgroupOf H) : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`. Use `⟨-(((Fintype.card (H ⧸ N.subgroupOf H) : ℕ) : K)⁻¹ • ∑ q : H ⧸ N.subgroupOf H, z ((q.out : H) : Γ)), fun g hg => ?_⟩` and prove the remaining obligations. Establish `hsum : ∑ q : H ⧸ N.subgroupOf H, z ((q.out : H) : Γ) = ((Fintype.card (H ⧸ N.subgroupOf H) : ℕ) : K) • z g + R g (∑ q : H ⧸ N.subgroupOf H, z ((q.out : H) : Γ))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_add_distrib, map_sum, Finset.sum_const, Finset.card_univ, Nat.cast_smul_eq_nsmul]`.
+
+Establish `hR : R g (∑ q : H ⧸ N.subgroupOf H, z ((q.out : H) : Γ)) = ∑ q : H ⧸ N.subgroupOf H, z ((q.out : H) : Γ) - ((Fintype.card (H ⧸ N.subgroupOf H) : ℕ) : K) • z g`. Rewrite using `[eq_sub_iff_add_eq, add_comm]`. Conclude with `hsum.symm`. Rewrite using `[map_neg, map_smul, hR, smul_sub, smul_smul, inv_mul_cancel₀ hm, one_smul]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem exists_coboundary_on_h_of_vanish_on_finiteIndex {K : Type*} [Field K] [CharZero K] {Γ : Type*} [Group Γ] {M : Type*}
     [AddCommGroup M] [Module K M] (R : Representation K Γ M) (z : Γ → M)
     (hco : ∀ g h, z (g * h) = z g + R g (z h)) (H N : Subgroup Γ) [N.FiniteIndex]
@@ -44,6 +53,25 @@ private theorem exists_coboundary_on_h_of_vanish_on_finiteIndex {K : Type*} [Fie
   rw [map_neg, map_smul, hR, smul_sub, smul_smul, inv_mul_cancel₀ hm, one_smul]
   abel
 
+/- English proof (translation)
+Introduce `l _ L Ω _ _ _ _ _ _ s V hS c n r R z hz hIp hI0 w hw`. Establish `hco : ∀ g h, z (g * h) = z g + R g (z h)` using `hz.2`. Establish `hz1 : z 1 = 0` using `by simpa using hco 1 1`. Distinguish the cases in `hwS : w ∈ V.S'`. Use `swap`.
+
+Use `⟨0, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hg1 : toGS Ω V.S' g = 1` using `(QuotientGroup.eq_one_iff _).mpr (Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure (Set.mem_iUnion₂.mpr ⟨w, hwS, Set.mem_iUnion₂.mpr ⟨s.A w, s.hA w, hg⟩⟩)))`. Rewrite using `[map_zero, sub_zero]`. Conclude with `(congrArg z hg1).trans hz1`. Establish `hlift : ∀ g ∈ Ine (F` using `W.Lp L) (s.A w), ∃ h ∈ Ine (F := L) (s.A w), ((V.pr h : V.η.ker) : GS Ω V.S') = toGS Ω V.S' g := by`.
+
+Introduce `g hg`. Take `⟨h, rfl⟩` from `s.unr (s.A w) w (s.hA w) hg`. Conclude with `⟨h, hg, rfl⟩`. Rewrite `hwS` using `[hS]`. Break down `hwS with hl | hSt | h0` into its components or cases.
+
+Conclude with `absurd hl hw`. Set `N : Subgroup V.frame.Γ` to `(⨅ i, (r.chib i).ker).map V.frame.η.ker.subtype`. Set `H : Subgroup V.frame.Γ` to `(V.frame.Iu ⟨w, hSt⟩).map V.frame.η.ker.subtype`. Use `haveI : N.FiniteIndex := by`. Establish `h1 : Finite (V.frame.G₀ ⧸ (⨅ i, (r.chib i).ker))` using `Subgroup.quotient_finite_of_isOpen' V.frame.η.ker _ V.frame.η_open (by`.
+
+Rewrite using `[Subgroup.coe_iInf]`. Conclude with `isOpen_iInter_of_finite (fun i => r.chib_open i))`. Establish `h2 : Finite (V.frame.Γ ⧸ V.frame.η.ker)` using `Subgroup.quotient_finite_of_isOpen _ V.frame.η_open`. Conclude with `⟨by`. Rewrite using `[Subgroup.index_map_subtype]`.
+
+Conclude with `mul_ne_zero Subgroup.index_ne_zero_of_finite Subgroup.index_ne_zero_of_finite⟩`. Establish `hN : ∀ g ∈ H, g ∈ N → z g = 0`. Introduce `g hgH hgN`. Take `⟨a, ha, rfl⟩` from `Subgroup.mem_map.mp hgH`. Take `⟨b, hb, hab⟩` from `Subgroup.mem_map.mp hgN`.
+
+Establish `hba : b = a` using `Subtype.ext hab`. Substitute `hba` using the available equality. Conclude with `hIp ⟨w, hSt⟩ b ⟨ha, hb⟩`. Take `⟨X, hX⟩` from `exists_coboundary_on_h_of_vanish_on_finiteIndex R z hco H N hN`. Use `⟨X, fun g hg => ?_⟩` and prove the remaining obligations.
+
+Take `⟨h, hh, hgh⟩` from `hlift g hg`. Rewrite using `[← hgh]`. Conclude with `hX _ ⟨V.pr h, ⟨h, hh, rfl⟩, rfl⟩`. Substitute `h0` using the available equality. Use `⟨0, fun g hg => ?_⟩` and prove the remaining obligations.
+
+Take `⟨h, hh, hgh⟩` from `hlift g hg`. Rewrite using `[← hgh, map_zero, sub_zero]`. Conclude with `hI0 _ ⟨h, hh, rfl⟩`.
+-/
 theorem UpperTheory.V.Ws.Eb.bkAw :
     ∀ {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {s : W.HidaSetting l L Ω} (V : s.Lev), V.S' = s.S → ∀ {c : Coef l} {n : ℕ} (r : W.Resid V.frame c.O n) (R : Representation (PadicAlgCl l) V.frame.Γ (Matrix (Fin n) (Fin n) (PadicAlgCl l))), ∀ z ∈ Z1 R, (∀ u, ∀ g ∈ r.Ip u, z g = 0) → (∀ g ∈ V.frame.I0, z g = 0) →
         ∀ w : HeightOneSpectrum (𝓞 (W.Lp L)), ((l : ℕ) : 𝓞 (W.Lp L)) ∉ w.asIdeal → ∃ X, ∀ g ∈ Ine (F := W.Lp L) (s.A w), z (toGS Ω V.S' g) = R (toGS Ω V.S' g) X - X := by

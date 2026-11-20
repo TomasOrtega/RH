@@ -20,6 +20,9 @@ section Local
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {n : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Rewrite using `[GlobalTheory.CongLevel.extE_apply, Pi.add_apply, GlobalTheory.CongLevel.inX_apply, dif_pos (show l.1 < n from l.2)]`. Use `show v l + (κ v l - v l) = κ v l`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem extE_zero (κ : Sp E n ≃ₗ[E] Sp E n) (v : Sp E (n + 0)) : GlobalTheory.CongLevel.extE 0 κ v = κ v := by
   funext l
   rw [GlobalTheory.CongLevel.extE_apply, Pi.add_apply, GlobalTheory.CongLevel.inX_apply, dif_pos (show l.1 < n from l.2)]
@@ -27,6 +30,9 @@ theorem extE_zero (κ : Sp E n ≃ₗ[E] Sp E n) (v : Sp E (n + 0)) : GlobalTheo
   ring
 
 omit [StarRing E] in
+/- English proof (translation)
+Use `split_ifs at h`. Use `(intAt_nat (P := P) (qOf P)).mul h` as an intermediate fact. Rewrite `this` using `[zpow_one, mul_inv_cancel_left₀ qOf_ne_zero]`. Then use the resulting hypothesis. Simplify using `using h`.
+-/
 theorem intAt_of_ite {a : E} {p : Prop} [Decidable p]
     (h : IntAt P (((qOf P : E) ^ (if p then (1 : ℤ) else 0))⁻¹ * a)) : IntAt P a := by
   split_ifs at h
@@ -34,6 +40,15 @@ theorem intAt_of_ite {a : E} {p : Prop} [Decidable p]
     rwa [zpow_one, mul_inv_cancel_left₀ qOf_ne_zero] at this
   · simpa using h
 
+/- English proof (translation)
+Introduce `l`. Establish `e : κ.1 x l = ∑ b, x b * κ.1 (Pi.single b 1) l` using `apply_eq_sum (κ.1 : Sp E n →ₗ[E] Sp E n) x l`. Rewrite using `[e, Finset.mul_sum]`. Use `intAt_sum _ fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `have ha := glint_entry κ l b`.
+
+Establish `hxb` using `intAt_of_ite (hx b)`. Distinguish the cases in `hl : D l.1`. Rewrite using `[if_pos hl, zpow_one]`. Distinguish the cases in `hb : D b.1`. Establish `h1` using `hx b`.
+
+Rewrite `h1` using `[if_pos hb, zpow_one]`. Use `h1.mul ha` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : redP P (κ.1 (Pi.single b 1) l) = 0` using `h l b hl hb`.
+
+Use `hxb.mul (hd _ ha h0)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hl, zpow_zero, inv_one, one_mul]`. Conclude with `hxb.mul ha`.
+-/
 theorem maps_D (hd : ∀ a : E, IntAt P a → redP P a = 0 → IntAt P (a / (qOf P : E))) (κ : GLint E n P)
     (D : ℕ → Prop) [DecidablePred D] (h : ∀ l b : Fin n, D l.1 → ¬ D b.1 → redMat κ l b = 0) (x : Sp E n)
     (hx : ∀ l : Fin n, IntAt P (((qOf P : E) ^ (if D l.1 then (1 : ℤ) else 0))⁻¹ * x l)) :
@@ -59,6 +74,9 @@ theorem maps_D (hd : ∀ a : E, IntAt P a → redP P a = 0 → IntAt P (a / (qOf
   · rw [if_neg hl, zpow_zero, inv_one, one_mul]
     exact hxb.mul ha
 
+/- English proof (translation)
+Use `⟨fun hx => ?_, maps_D hd κ D h x⟩` and prove the remaining obligations. Use `maps_D hd κ⁻¹ D h' _ hx` as an intermediate fact. Establish `e : (κ⁻¹ : GLint E n P).1 (κ.1 x) = x` using `κ.1.symm_apply_apply x`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem stab_D (hd : ∀ a : E, IntAt P a → redP P a = 0 → IntAt P (a / (qOf P : E))) (κ : GLint E n P)
     (D : ℕ → Prop) [DecidablePred D] (h : ∀ l b : Fin n, D l.1 → ¬ D b.1 → redMat κ l b = 0)
     (h' : ∀ l b : Fin n, D l.1 → ¬ D b.1 → redMat κ⁻¹ l b = 0) (x : Sp E n) :
@@ -69,6 +87,11 @@ theorem stab_D (hd : ∀ a : E, IntAt P a → redP P a = 0 → IntAt P (a / (qOf
   have e : (κ⁻¹ : GLint E n P).1 (κ.1 x) = x := κ.1.symm_apply_apply x
   rwa [e] at this
 
+/- English proof (translation)
+Unfold `LocE.flagS`. Rewrite using `[GlobalTheory.CongLevel.mem_sclLat]`. Use `forall_congr' fun l => ?_` and prove the remaining obligations. Establish `hl : l.1 < n` using `l.2`. Apply the tactic sequence `have hf : LocE.fPos k 0 n l.1 = l.1 := by unfold LocE.fPos; split_ifs <;> omega`.
+
+Establish `hs : LocE.scE n (fun i => i + 1) l.1 = 0` using `by unfold LocE.scE; rw [if_pos hl]`. Rewrite using `[hf, hs, zero_add]`.
+-/
 theorem mem_symmetricFlagLattice_iff_of_no_extra (k rS s : ℕ) (x : Sp E (n + 0)) :
     x ∈ LocE.flagS P (qOf P) k rS n 0 s ↔
       ∀ l : Fin n, IntAt P (((qOf P : E) ^ (if LocE.bd5 k rS s ≤ symIdx k rS l.1 then (1 : ℤ) else 0))⁻¹ * x l) := by
@@ -81,6 +104,11 @@ theorem mem_symmetricFlagLattice_iff_of_no_extra (k rS s : ℕ) (x : Sp E (n + 0
   rw [hf, hs, zero_add]
 
 omit [StarRing E] in
+/- English proof (translation)
+Unfold `LocE.bvecS LocE.bvecG`. Apply the tactic sequence `have hf : LocE.fIdx k 0 n (symIdxInv k rS s) = symIdxInv k rS s := by unfold LocE.fIdx; split_ifs <;> omega`. Establish `hs : LocE.scE n (fun i => i + 1) (symIdxInv k rS s) = 0` using `by unfold LocE.scE; rw [if_pos h]`. Rewrite using `[hf, hs, zpow_zero, one_smul]`. Use function extensionality and compare the values at `l`.
+
+Unfold `Loc.eN`. Simplify using `[Pi.single_apply, Fin.ext_iff]`.
+-/
 theorem symmetricFlagBasisVector_eq_single_of_no_extra (k rS s : ℕ) (h : symIdxInv k rS s < n) :
     LocE.bvecS E (qOf P) k rS n 0 s = (Pi.single (⟨symIdxInv k rS s, h⟩ : Fin n) 1 : Sp E n) := by
   unfold LocE.bvecS LocE.bvecG
@@ -99,6 +127,11 @@ namespace GlobalTheory.Mem.LastGrp
 
 open GlobalTheory.TopStep
 
+/- English proof (translation)
+Rewrite using `[lvSym_of_lt hb]`. Distinguish the cases in `hl : l < rSym k rS`. Rewrite using `[lvSym_of_lt hl]`. Unfold `posSym symIdx at *`. Apply the tactic sequence `split_ifs at * <;> omega`.
+
+Establish `h1` using `lvSym_of_ge (t := t) hl`. Establish `h2` using `posSym_lt hb`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem lv_lt {k rS t b l : ℕ} (hb : b < rSym k rS) (h : symIdx k rS b < symIdx k rS l) :
     lvSym k rS t b < lvSym k rS t l := by
   rw [lvSym_of_lt hb]
@@ -110,6 +143,19 @@ theorem lv_lt {k rS t b l : ℕ} (hb : b < rSym k rS) (h : symIdx k rS b < symId
     have h2 := posSym_lt hb
     omega
 
+/- English proof (translation)
+Establish `hbl : symIdx k rS b < symIdx k rS l` using `by omega`. Distinguish the cases in `hbr : b < rSym k rS`. Conclude with `lv_lt hbr hbl`. Apply the tactic sequence `have hsb : symIdx k rS b = b := by unfold symIdx rSym at *; split_ifs <;> omega`. Break down `hs with hs | ⟨i, rfl⟩` into its components or cases.
+
+It suffices to derive a contradiction. Apply the tactic sequence `have : LocE.bd5 k rS s ≤ s := by unfold LocE.bd5; split_ifs <;> omega`. Use linear arithmetic over natural numbers and integers. Establish `hd : LocE.bd5 k rS (rSym k rS + i * t) = rSym k rS + i * t`. Unfold `LocE.bd5 rSym; rw [if_neg (by omega)]`.
+
+Rewrite `hl`, `hb` using `[hd]`. Establish `hlr : ¬ l < rSym k rS`. Apply the tactic sequence `intro h; unfold symIdx rSym at *; split_ifs at hl <;> omega`. Apply the tactic sequence `have hsl : symIdx k rS l = l := by unfold symIdx rSym at *; split_ifs <;> omega`. Rewrite `hb` using `[hsb]`.
+
+Rewrite `hl` using `[hsl]`. Unfold `lvSym`. Rewrite using `[if_neg hbr, if_neg hlr]`. Establish `ht : 0 < t`. Break down `Nat.eq_zero_or_pos t with h0 | h0` into its components or cases.
+
+Substitute `h0` using the available equality. Simplify using `at hb`. Use linear arithmetic over natural numbers and integers. Conclude with `h0`. Establish `h1 : (b - rSym k rS) / t < i` using `Nat.div_lt_of_lt_mul (by rw [mul_comm]; omega)`.
+
+Establish `h2 : i ≤ (l - rSym k rS) / t` using `(Nat.le_div_iff_mul_le ht).2 (by omega)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem lv_flag {k rS t s l b : ℕ} (hs : s < rSym k rS ∨ ∃ i, s = rSym k rS + i * t)
     (hl : LocE.bd5 k rS s ≤ symIdx k rS l) (hb : ¬ LocE.bd5 k rS s ≤ symIdx k rS b) :
     lvSym k rS t b < lvSym k rS t l := by
@@ -149,6 +195,31 @@ section Local
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {n : ℕ}
 
+/- English proof (translation)
+Establish `hst : ∀ s, (s < rSym k rS ∨ ∃ i, s = rSym k rS + i * t) → GlobalTheory.CongLevel.extE 0 κ.1 ∈ stabL E (n + 0) (LocE.flagS P (qOf P) k rS n 0 s)`. Introduce `s hs v`. Rewrite using `[extE_zero, mem_symmetricFlagLattice_iff_of_no_extra, mem_symmetricFlagLattice_iff_of_no_extra]`. Conclude with `stab_D hd κ (fun y => LocE.bd5 k rS s ≤ symIdx k rS y) (fun l b hl hb => h1 l b (lv_flag hs hl hb)) (fun l b hl hb => h1' l b (lv_flag hs hl hb)) v`. Use `⟨GlobalTheory.CongLevel.extE_stab P (qOf P) 0 _ κ.1 κ.2, fun s hs => hst s (Or.inr hs), fun s hs => ⟨hst s (Or.inl hs), ?_⟩⟩` and prove the remaining obligations.
+
+Apply the tactic sequence `have hb : symIdxInv k rS s < n := by unfold symIdxInv rSym at *; split_ifs <;> omega`. Rewrite using `[extE_zero, symmetricFlagBasisVector_eq_single_of_no_extra k rS s hb, mem_symmetricFlagLattice_iff_of_no_extra]`. Introduce `l`. Use `set b : Fin n := ⟨symIdxInv k rS s, hb⟩ with hbdef`. Apply the tactic sequence `have ha := glint_entry κ l b`.
+
+Establish `hbr : b.1 < rSym k rS` using `by show symIdxInv k rS s < rSym k rS`. Apply the tactic sequence `unfold symIdxInv rSym at *; split_ifs <;> omega`. Establish `hsg : IntAt P ((Pi.single b 1 : Sp E n) l)`. Distinguish the cases in `h : l = b`. Substitute `h` using the available equality.
+
+Simplify using `using intAt_one`. Simplify `intAt_zero` using `[h]`. Rewrite using `[Pi.sub_apply]`. Use `split_ifs with hl`. Rewrite using `[zpow_one]`.
+
+Establish `key : redMat κ l b = (Pi.single b 1 : Fin n → 𝓞 E ⧸ P.asIdeal) l`. Distinguish the cases in `hlb : l = b`. Substitute `hlb` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `h2 _ hbr`.
+
+Rewrite using `[Pi.single_eq_of_ne hlb]`. Establish `hsb : symIdx k rS b.1 = s` using `symIdx_symIdxInv k rS s`. Distinguish the cases in `hsk : s = rS + k`. Establish `hb1 : b.1 = k + rS` using `by show symIdxInv k rS s = k + rS`. Apply the tactic sequence `unfold symIdxInv; split_ifs <;> omega`.
+
+Distinguish the cases in `hlk : l.1 < k`. Conclude with `h3 l b hlk hb1`. Use `h1 l b (lv_lt (by rw [hb1]; unfold rSym; omega) ?_)` and prove the remaining obligations. Establish `hd5 : LocE.bd5 k rS s = rS` using `by unfold LocE.bd5; rw [if_pos hsk]`. Rewrite `hl` using `[hd5]`.
+
+Establish `: l.1 ≠ b.1` using `fun e => hlb (Fin.ext e)`. Rewrite using `[hsb]`. Unfold `symIdx at hl ⊢`. Apply the tactic sequence `split_ifs at hl ⊢ <;> omega`. Establish `hd5 : LocE.bd5 k rS s = s` using `by unfold LocE.bd5; rw [if_neg hsk]`.
+
+Rewrite `hl` using `[hd5]`. Use `h1 l b (lv_lt hbr ?_)` and prove the remaining obligations. Establish `hne : symIdx k rS l.1 ≠ symIdx k rS b.1` using `fun e => hlb (Fin.ext (by`. Use `congrArg (symIdxInv k rS) e` as an intermediate fact. Rewrite using `[symIdxInv_symIdx, symIdxInv_symIdx] at this))` and apply the resulting hypothesis.
+
+Use linear arithmetic over natural numbers and integers. Establish `h0 : redP P (κ.1 (Pi.single b 1) l - (Pi.single b 1 : Sp E n) l) = 0`. Rewrite using `[reduction_sub ha hsg]`. Establish `e1 : redP P (κ.1 (Pi.single b 1) l) = redMat κ l b` using `rfl`. Establish `e2 : redP P ((Pi.single b 1 : Sp E n) l) = (Pi.single b 1 : Fin n → 𝓞 E ⧸ P.asIdeal) l`.
+
+Distinguish the cases in `h : l = b`. Substitute `h` using the available equality. Simplify using `using reduction_one₂`. Simplify `reduction_zero` using `[h]`. Rewrite using `[e1, e2, key, sub_self]`.
+
+Use `hd _ (intAt_sub ha hsg) h0` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[zpow_zero, inv_one, one_mul]`. Conclude with `intAt_sub ha hsg`.
+-/
 theorem mem_JGsym0 (hd : ∀ a : E, IntAt P a → redP P a = 0 → IntAt P (a / (qOf P : E))) {k rS t : ℕ}
     (hn : rSym k rS ≤ n) (κ : GLint E n P)
     (h1 : ∀ x y : Fin n, lvSym k rS t y.1 < lvSym k rS t x.1 → redMat κ x y = 0)
@@ -220,6 +291,9 @@ theorem mem_JGsym0 (hd : ∀ a : E, IntAt P a → redP P a = 0 → IntAt P (a / 
   · rw [zpow_zero, inv_one, one_mul]
     exact intAt_sub ha hsg
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Conclude with `mem_JGsym0 hd hn κ h1 h1' h2 h3`.
+-/
 theorem mem_JGsym_c (hd : ∀ a : E, IntAt P a → redP P a = 0 → IntAt P (a / (qOf P : E))) {k rS t c : ℕ} (hc : c = 0)
     (hn : rSym k rS ≤ n) (κ : GLint E n P)
     (h1 : ∀ x y : Fin n, lvSym k rS t y.1 < lvSym k rS t x.1 → redMat κ x y = 0)
@@ -238,6 +312,21 @@ namespace GlobalTheory.Mem.LastGrp
 
 open GlobalTheory.TopStep
 
+/- English proof (translation)
+Introduce `X Pr R Ch sel S mu cst L G m2 hX hPr hsel hL hs j hj b w κ _ e M hM`. Establish `hm` using `hL.hm`. Take `rfl : j = m2 + 1` from `by omega`. Establish `hc : cOf R (m2 + 1) = 0` using `by unfold cOf; omega`. Rewrite using `[hL.grpG]`.
+
+Take `⟨k0, hk0⟩` from `GlobalTheory.Mem.Col2.redGL_surjective (n := R.N (m2 + 1)) w.1 M`. Use `⟨k0.1, ?_, fun x hx => by rw [redV_redGL k0 hx, hk0]⟩` and prove the remaining obligations. Rewrite using `[hL.last_h]`. Establish `hd` using `GlobalTheory.TypePrimeUnif.intAt_div_qOf X Pr hX hPr w.1 w.2`. Establish `eM : ∀ x y, redMat k0 x y = M.1 x y` using `fun x y => by rw [← redGL_val, hk0]`.
+
+Establish `eMi : ∀ x y, redMat k0⁻¹ x y = (M⁻¹).1 x y` using `fun x y => by rw [← redGL_val, map_inv, hk0]`. Take `⟨hA, hB⟩` from `hM`. Establish `hr : rSym R.k R.rS = R.r` using `rSym_rSD R`. Establish `hn : rSym R.k R.rS ≤ R.N (m2 + 1)`. Rewrite using `[hr]`.
+
+Unfold `Ranks.r Ranks.N`. Use `Nat.le_mul_of_pos_right (m2 + 1) (by omega : 0 < R.t + 1)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `ent : ∀ x y, ((Matrix.GeneralLinearGroup.map e.toRingHom M : GL _ _) : Matrix _ _ _) x y = e (M.1 x y)` using `fun _ _ => rfl`. Establish `ent' : ∀ x y, (((Matrix.GeneralLinearGroup.map e.toRingHom M)⁻¹ : GL _ _) : Matrix _ _ _) x y = e ((M⁻¹).1 x y)` using `fun x y => by rw [← map_inv]; rfl`.
+
+Establish `z : ∀ a, e a = 0 → a = 0` using `fun a h => e.injective (h.trans (map_zero e).symm)`. Establish `o : ∀ a, e a = 1 → a = 1` using `fun a h => e.injective (h.trans (map_one e).symm)`. Establish `hJ : GlobalTheory.CongLevel.extE (cOf R (m2 + 1)) k0.1 ∈ Jat (Pr` using `Pr) (R := R) cst.sharp (m2 + 1) w.1 := by`. Unfold `Jat`. Rewrite using `[if_pos w.2, hs, if_pos rfl, ← hr]`.
+
+Use `mem_JGsym_c hd hc hn k0 (fun x y hxy => ?_) (fun x y hxy => ?_) (fun x hx => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[eM]; exact z _ (by rw [← ent]; exact hA.1 x y hxy)`. Rewrite using `[eMi]; exact z _ (by rw [← ent']; exact hB.1 x y hxy)`. Rewrite using `[eM]; exact o _ (by rw [← ent]; exact hA.2.1 x hx)`. Rewrite using `[eM]; exact z _ (by rw [← ent]; exact hA.2.2.1 x y hx hy)`.
+
+Conclude with `⟨GlobalTheory.CongLevel.extE (cOf R (m2 + 1)) k0.1, ⟨GlobalTheory.CongLevel.extendByIdOnLastCoordsLinearEquiv_mem_firstRowGroup _ _, by simpa using hJ⟩, GlobalTheory.CongLevel.extE_inX _ _⟩`.
+-/
 theorem mem_levG_last : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (G : ChGlob X R.m) (m2 : ℕ), X.Ok → Pr.Ok → IsSel X sel → L.Ok Ch sel mu cst G m2 → cst.sharp = true → ∀ (j : ℕ), j + 1 = R.m → ∀ (b : L.β j) (w : {w // w ∈ Pr.vGs}) (κ : Type) [Field κ] (e : (𝓞 X.E ⧸ w.1.asIdeal) ≃+* κ) (M : GL (Fin (R.N j)) (𝓞 X.E ⧸ w.1.asIdeal)), Matrix.GeneralLinearGroup.map e.toRingHom M ∈ JSymG κ (R.N j) R.k (rSD R) R.t false → M ∈ (L.levG j b w).H := by
   intro X Pr R Ch sel S mu cst L G m2 hX hPr hsel hL hs j hj b w κ _ e M hM
   have hm := hL.hm

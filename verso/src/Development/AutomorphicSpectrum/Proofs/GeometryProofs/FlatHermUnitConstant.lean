@@ -6,6 +6,9 @@ open MvPolynomial NumberField ReciprocityTheory.ChartRestriction.G.Geo Reciproci
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
+/- English proof (translation)
+Introduce `hh`. Apply `h0` to reduce the goal to its premises. Establish `e` using `UnitChart.aeval_scaled y (fun _ => 1) h`. Simplify using `only [mul_one] at e`. Rewrite using `[e, show mConeMap y h = 0 from hh, map_zero]`.
+-/
 theorem notMem_mCoordIdeal_of_aeval_ne_zero {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
     {y : (Σ k, ι k) → Ω} {h : MRing ι} (h0 : aeval y h ≠ 0) : h ∉ mCoordIdeal y := by
   intro hh
@@ -14,6 +17,21 @@ theorem notMem_mCoordIdeal_of_aeval_ne_zero {K : Type} [Fintype K] {ι : K → T
   simp only [mul_one] at e
   rw [e, show mConeMap y h = 0 from hh, map_zero]
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ F _ _ y φ α hO`. Take `⟨hy, hR⟩` from `hO`. Use `choose c hc using id hy`. Take `⟨m, G, hG, e⟩` from `UnitChart.chart_form hc (hR c hc (α : 𝓞 F))`. Establish `hα : ((α : 𝓞 F) : F) ≠ 0`.
+
+Simplify using the standard rewrite rules. Establish `hφα : φ ((α : 𝓞 F) : F) ≠ 0` using `(map_ne_zero φ).2 hα`. Establish `hprod : (∏ k, y ⟨k, c k⟩ ^ m k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k)`. Establish `hg0 : aeval y (UnitChart.cMon c m) ≠ 0` using `by rwa [UnitChart.aeval_cMon]`. Establish `hG0 : aeval y G ≠ 0` using `by rw [← e]; exact mul_ne_zero hφα hprod`.
+
+Establish `e' : aeval y G = φ ((α : 𝓞 F) : F) * aeval y (UnitChart.cMon c m)`. Rewrite using `[UnitChart.aeval_cMon, e]`. Establish `hq : aeval y G / aeval y (UnitChart.cMon c m) = φ ((α : 𝓞 F) : F)`. Rewrite using `[e', mul_div_cancel_right₀ _ hg0]`. Establish `hinv : φ (((α⁻¹ : (𝓞 F)ˣ) : 𝓞 F) : F) = (φ ((α : 𝓞 F) : F))⁻¹`.
+
+Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← map_mul]`. Establish `: (((α⁻¹ : (𝓞 F)ˣ) : 𝓞 F) : F) * ((α : 𝓞 F) : F) = 1`. Establish `h1 : ((α⁻¹ : (𝓞 F)ˣ) : 𝓞 F) * (α : 𝓞 F) = 1` using `α.inv_mul`. Establish `h2` using `congrArg (algebraMap (𝓞 F) F) h1`.
+
+Rewrite `h2` using `[map_mul, map_one]`. Conclude with `h2`. Rewrite using `[this, map_one]`. Establish `hfn` using `notMem_mCoordIdeal_of_aeval_ne_zero hG0`. Establish `hgn` using `notMem_mCoordIdeal_of_aeval_ne_zero hg0`.
+
+Use `⟨{ M := 1 M_pos := one_pos f := G g := UnitChart.cMon c m df := m dg := m hf := hG hg := UnitChart.homog_cMon c m deg := fun k => by simp [constLine, HermLine.ofWeight] f_ne := hfn g_ne := hgn unit := ?_ κ := fun σ => ‖σ ((α : 𝓞 F) : F)‖ κ_pos := fun σ => norm_pos_iff.2 ((map_ne_ …` and prove the remaining obligations. Rewrite using `[isUnitSec_iff_chart K ι Ω y G _ m m hy hG (UnitChart.homog_cMon c m) hfn hgn]`. Introduce `c' hc'`. Simplify using `only [sub_self, neg_zero, zpow_zero, Finset.prod_const_one, mul_one, hq]`. Conclude with `⟨hR c' hc' _, hinv ▸ hR c' hc' _⟩`.
+
+Introduce `σ z hz`. Rewrite using `[hz.2 _ m G _ hG (UnitChart.homog_cMon c m) e', norm_mul]`. Simplify using `[constLine, HermLine.ofWeight]`.
+-/
 theorem exists_flatHerm_unit : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (F : Type) [Field F] [NumberField F] (y : (Σ k, ι k) → Ω) (φ : F →+* Ω) (α : (𝓞 F)ˣ), OverInt y φ → ∃ S : FlatHerm y φ (constLine (ι := ι) 0), S.M = 1 ∧ ∀ σ, S.κ σ = ‖σ ((α : 𝓞 F) : F)‖ := by
   intro K _ ι _ Ω _ F _ _ y φ α hO
   obtain ⟨hy, hR⟩ := hO

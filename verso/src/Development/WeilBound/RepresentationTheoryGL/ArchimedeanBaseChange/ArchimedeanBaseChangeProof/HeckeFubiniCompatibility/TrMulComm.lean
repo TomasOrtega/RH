@@ -11,9 +11,17 @@ namespace PVC
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_nilrad {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} {X : Matrix (Fin n) (Fin n) ℂ} :
     X ∈ nilrad W₁ W₂ ↔ (∀ y, X *ᵥ y ∈ W₂) ∧ (∀ y ∈ W₂, X *ᵥ y ∈ W₁) ∧ ∀ y ∈ W₁, X *ᵥ y = 0 := Iff.rfl
 
+/- English proof (translation)
+Rewrite `hX`, `hY`, the goal using `[mem_nilrad]`. Use `⟨fun y => ?_, fun y _ => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `hX.1 _`. Rewrite using `[← Matrix.mulVec_mulVec]`.
+
+Conclude with `hX.2.1 _ (hY.1 y)`. Rewrite using `[← Matrix.mulVec_mulVec, hY.2.2 y hy, Matrix.mulVec_zero]`.
+-/
 theorem nil_mul_mem {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} {X Y : Matrix (Fin n) (Fin n) ℂ}
     (hX : X ∈ nilrad W₁ W₂) (hY : Y ∈ nilrad W₁ W₂) : X * Y ∈ nilrad W₁ W₂ := by
   rw [mem_nilrad] at hX hY ⊢
@@ -22,6 +30,9 @@ theorem nil_mul_mem {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} {X Y : Matrix (F
   · rw [← Matrix.mulVec_mulVec]; exact hX.2.1 _ (hY.1 y)
   · rw [← Matrix.mulVec_mulVec, hY.2.2 y hy, Matrix.mulVec_zero]
 
+/- English proof (translation)
+Rewrite `hX` using `[mem_nilrad]`. Use `Matrix.toLin'.injective (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, Matrix.zero_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Conclude with `hX.2.2 _ (hX.2.1 _ (hX.1 v))`.
+-/
 theorem nil_cube {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} {X : Matrix (Fin n) (Fin n) ℂ}
     (hX : X ∈ nilrad W₁ W₂) : X * X * X = 0 := by
   rw [mem_nilrad] at hX
@@ -91,6 +102,9 @@ def eH (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) : nilrad W₁ W₂ ≃ₜ nil
     apply Continuous.subtype_mk
     exact (Units.continuous_val.comp continuous_subtype_val).sub continuous_const
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eH_val {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} (X : nilrad W₁ W₂) :
     ((eH W₁ W₂ X : nilSub W₁ W₂) : G n).val = 1 + X.1 := rfl
 
@@ -100,6 +114,15 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {W₁ W₂ : Submodule ℂ (Fin n → ℂ)}
 
+/- English proof (translation)
+Establish `: FiniteDimensional ℝ (nilrad W₁ W₂)` using `Module.Finite.trans ℂ (nilrad W₁ W₂)`. Set `ℓ : nilrad W₁ W₂ →ₗ[ℝ] nilrad W₁ W₂` to `{ toFun := fun X => ⟨Y.1 * X.1, nil_mul_mem Y.2 X.2⟩ map_add' := fun X X' => Subtype.ext (by simp [Matrix.mul_add]) map_smul' := fun r X => Subtype.ext (by simp) }`. Establish `hnil : IsNilpotent ℓ`. Use `⟨3, LinearMap.ext fun X => Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[pow_three]`.
+
+Use `show Y.1 * (Y.1 * (Y.1 * X.1)) = 0`. Rewrite using `[← mul_assoc, ← mul_assoc, nil_cube Y.2, zero_mul]`. Establish `hdet : LinearMap.det (1 + ℓ) = 1`. Establish `h` using `LinearMap.eval_charpoly (-ℓ) (1 : ℝ)`. Rewrite `h` using `[IsNilpotent.charpoly_eq_X_pow_finrank hnil.neg, Polynomial.eval_pow, Polynomial.eval_X, one_pow, map_one, sub_neg_eq_add]`.
+
+Conclude with `h.symm`. Establish `hLc : Continuous ((1 + ℓ : nilrad W₁ W₂ →ₗ[ℝ] nilrad W₁ W₂) : nilrad W₁ W₂ → nilrad W₁ W₂)` using `by show Continuous fun X : nilrad W₁ W₂ => (⟨X.1 + Y.1 * X.1, add_mem X.2 (nil_mul_mem Y.2 X.2)⟩ : nilrad W₁ W₂)`. Conclude with `Continuous.subtype_mk (by fun_prop) _`. Establish `hA : (fun X : nilrad W₁ W₂ => (⟨Y.1 + (X.1 + Y.1 * X.1), add_mem Y.2 (add_mem X.2 (nil_mul_mem Y.2 X.2))⟩ : nilrad W₁ W₂)) = (fun X => Y + X) ∘ ((1 + ℓ : nilrad W₁ W₂ →ₗ[ℝ] nilrad W₁ W₂) : nilrad W₁ W₂ → nilrad W₁ W₂)`. Use function extensionality and compare the values at `X`.
+
+Both sides reduce to the same expression. Establish `key` using `@MeasureTheory.Measure.map_linearMap_addHaar_eq_smul_addHaar (nilrad W₁ W₂) _ _ _ (by exact ‹BorelSpace (nilrad W₁ W₂)›) _ ν (by exact ‹ν.IsAddHaarMeasure›) (1 + ℓ) (by rw [hdet]; exact one_ne_zero)`. Rewrite using `[hA, ← Measure.map_map (measurable_const_add Y) hLc.measurable, key, hdet, inv_one, abs_one, ENNReal.ofReal_one, one_smul, map_add_left_eq_self]`.
+-/
 theorem map_aff [MeasurableSpace (nilrad W₁ W₂)] [BorelSpace (nilrad W₁ W₂)] (ν : Measure (nilrad W₁ W₂))
     [ν.IsAddHaarMeasure] (Y : nilrad W₁ W₂) :
     Measure.map (fun X : nilrad W₁ W₂ =>
@@ -133,6 +156,9 @@ theorem map_aff [MeasurableSpace (nilrad W₁ W₂)] [BorelSpace (nilrad W₁ W�
   rw [hA, ← Measure.map_map (measurable_const_add Y) hLc.measurable, key, hdet, inv_one, abs_one,
     ENNReal.ofReal_one, one_smul, map_add_left_eq_self]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun K hK => by have h := (eH W₁ W₂).toMeasurableEquiv.map_apply (μ := ν) K rw [Homeomorph.toMeasurableEquiv_coe] at h rw [h] exact ((eH W₁ W₂).isCompact_preimage.2 hK).measure_lt_top⟩ toIsOpenPosMeasure := (eH W₁ W₂).continuous.isOpenPosMeasure_map (eH W₁ W₂).surjective toIsMulL …`.
+-/
 theorem haar_map [MeasurableSpace (G n)] [BorelSpace (G n)] [MeasurableSpace (nilrad W₁ W₂)]
     [BorelSpace (nilrad W₁ W₂)] (ν : Measure (nilrad W₁ W₂)) [ν.IsAddHaarMeasure] :
     (Measure.map (eH W₁ W₂) ν).IsHaarMeasure where
@@ -158,6 +184,9 @@ theorem haar_map [MeasurableSpace (G n)] [BorelSpace (G n)] [MeasurableSpace (ni
 
 end Haar
 
+/- English proof (translation)
+Establish `h : ∀ X Y : V →L[ℂ] V, ((X * Y : V →L[ℂ] V) : V →ₗ[ℂ] V) = (X : V →ₗ[ℂ] V) * (Y : V →ₗ[ℂ] V)` using `fun _ _ => rfl`. Rewrite using `[h, h, LinearMap.trace_mul_comm]`.
+-/
 theorem tr_mul_comm {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V]
     (A B : V →L[ℂ] V) :
     LinearMap.trace ℂ V ((A * B : V →L[ℂ] V) : V →ₗ[ℂ] V) = LinearMap.trace ℂ V ((B * A : V →L[ℂ] V) : V →ₗ[ℂ] V) := by
@@ -168,6 +197,25 @@ theorem tr_mul_comm {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [Finit
 end PVC
 
 open PVC in
+/- English proof (translation)
+Introduce `n _ _ μ M Tθ k val T hT hM hVC`. Take `⟨m, c, w, g, ks, hks, hsum, -⟩` from `hM`. Establish `hG : ∀ x : G n, x.val ∈ PositivityTheory.RgBcC.GLs n` using `fun x => (Matrix.isUnits_det_units x).ne_zero`. Use `⟨fun u d hθ => ?_, fun d W₁ W₂ hne hle hp1 hp2 u hu _ _ ν _ => ?_⟩` and prove the remaining obligations. Establish `hs : star u.val = (u⁻¹ : G n).val`.
+
+Establish `h` using `congrArg Units.val hθ`. Rewrite `h` using `[thetaR_val]`. Rewrite using `[← h]`. Use extensionality with `i j`. Simplify using `[Matrix.star_apply]`.
+
+Set `U : Matrix.unitaryGroup (Fin n) ℂ` to `⟨u.val, Matrix.mem_unitaryGroup_iff'.2 (by rw [hs]; exact u.inv_mul)⟩`. Establish `hUi : ((U⁻¹ : Matrix.unitaryGroup (Fin n) ℂ) : Mat n) = (u⁻¹ : G n).val`. Rewrite using `[← hs]`. Both sides reduce to the same expression. Establish `hval : (PositivityTheory.Rg.Tf.Loc.twConj (thetaR (starRingEnd ℂ) n) u d).val = ((U⁻¹ : Matrix.unitaryGroup (Fin n) ℂ) : Mat n) * d.val * (U : Mat n)`.
+
+Rewrite using `[PositivityTheory.Rg.Tf.Loc.twConj, hθ, hUi, Units.val_mul, Units.val_mul]`. Establish `hkey : k (PositivityTheory.Rg.Tf.Loc.twConj (thetaR (starRingEnd ℂ) n) u d).val = M.ρ U⁻¹ * k d.val * M.ρ U`. Rewrite using `[hsum _ (hG (PositivityTheory.Rg.Tf.Loc.twConj (thetaR (starRingEnd ℂ) n) u d)), hsum _ (hG d), hval, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[(hks i).2.2.2.1 _ (hG d) U⁻¹ U]`.
+
+Simplify using `only [mul_smul_comm, smul_mul_assoc]`. Establish `e1 : M.ρ U⁻¹ * k d.val * M.ρ U * Tθ = M.ρ U⁻¹ * (k d.val * Tθ * M.ρ U)`. Rewrite using `[mul_assoc _ (M.ρ U), ← hT U]`. Simplify using `only [mul_assoc]`. Establish `e2 : k d.val * Tθ * M.ρ U * M.ρ U⁻¹ = k d.val * Tθ`.
+
+Rewrite using `[mul_assoc, ← map_mul, mul_inv_cancel, map_one, mul_one]`. Simplify using `only [PositivityTheory.RgBcC.phiOf]`. Rewrite using `[hkey, e1, tr_mul_comm, e2]`. Establish `hImg : ∀ W : Submodule ℂ (Fin n → ℂ), (fun v => d.val *ᵥ v) '' PositivityTheory.RgBcC.perp W = ((perpD (starRingEnd ℂ) d W : Submodule ℂ (Fin n → ℂ)) : Set (Fin n → ℂ))`. Introduce `W`.
+
+Establish `h1 : (⇑(Matrix.toLin' d.val)) = fun v => d.val *ᵥ v` using `funext fun v => Matrix.toLin'_apply _ _`. Establish `h2 : ((PositivityTheory.Rg.BcB.perp (starRingEnd ℂ) W : Submodule ℂ (Fin n → ℂ)) : Set (Fin n → ℂ)) = PositivityTheory.RgBcC.perp W`. Use extensionality with `v`. Conclude with `Iff.rfl`. Rewrite using `[perpD, PositivityTheory.Rg.BcB.img, Submodule.map_coe, h1, h2]`.
+
+Establish `hc1 : (fun v => d.val *ᵥ v) '' PositivityTheory.RgBcC.perp W₂ = (W₁ : Set (Fin n → ℂ))` using `by rw [hImg, hp2]`. Establish `hc2 : (fun v => d.val *ᵥ v) '' PositivityTheory.RgBcC.perp W₁ = (W₂ : Set (Fin n → ℂ))` using `by rw [hImg, hp1]`. Use `haar_map (W₁ := W₁) (W₂ := W₂) ν` as an intermediate fact. Establish `hz` using `hVC d W₁ W₂ hle hne hc1 hc2 (nilSub W₁ W₂) rfl (Measure.map (eH W₁ W₂) ν)`. Establish `hint : ∫ w : nilSub W₁ W₂, PositivityTheory.RgBcC.phiOf M Tθ k (w * d) ∂(Measure.map (eH W₁ W₂) ν) = ∫ X, PositivityTheory.RgBcC.phiOf M Tθ k ((eH W₁ W₂ X : G n) * d) ∂ν`.
+
+Use `integral_map_equiv (μ := ν) (eH W₁ W₂).toMeasurableEquiv (fun w : nilSub W₁ W₂ => PositivityTheory.RgBcC.phiOf M Tθ k (w * d))` as an intermediate fact. Rewrite `this` using `[Homeomorph.toMeasurableEquiv_coe]`. Conclude with `this`. Establish `hu' : ∀ X, ((eH W₁ W₂ X : nilSub W₁ W₂) : G n) = u X` using `fun X => Units.ext (by rw [hu X]; rfl)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem vcBridge : VCBridge := by
   intro n _ _ μ M Tθ k val T hT hM hVC
   obtain ⟨m, c, w, g, ks, hks, hsum, -⟩ := hM

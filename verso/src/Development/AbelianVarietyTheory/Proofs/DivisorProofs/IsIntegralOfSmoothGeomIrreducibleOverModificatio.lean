@@ -9,6 +9,9 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.MumInt
 
+/- English proof (translation)
+Introduce `R _ _ M G hsm hgi _`. Use `haveI := M.integral`. Use `haveI : IsReduced G.left := GlobalTheory.isReduced_of_smooth_of_isReduced G.hom`. Use `haveI : IrreducibleSpace G.left := GeometricallyIrreducible.irreducibleSpace G.hom G.hom.isOpenMap`. Conclude with `isIntegral_of_irreducibleSpace_of_isReduced _`.
+-/
 theorem isIntegral_of_smooth : ∀ (R : Type) [CommRing R] [IsDomain R] (M : Modif R) (G : Over M.S),
     Smooth G.hom → GeometricallyIrreducible G.hom → Nonempty G.left → IsIntegral G.left := by
   intro R _ _ M G hsm hgi _

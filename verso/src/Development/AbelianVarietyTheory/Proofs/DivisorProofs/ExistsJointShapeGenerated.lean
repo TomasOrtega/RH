@@ -18,6 +18,9 @@ section Objects
 
 variable {P Q R S : ℕ}
 
+/- English proof (translation)
+Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `[Eab, Matrix.trace_single_eq_same]`. Simplify using `[Eab, Matrix.trace_single_eq_of_ne _ _ _ h]`.
+-/
 theorem trace_Eab {p q : ℕ} (a b : Ix p q) : (Eab a b).trace = if a = b then 1 else 0 := by
   split_ifs with h
   · subst h; simp [Eab, Matrix.trace_single_eq_same]
@@ -26,6 +29,9 @@ theorem trace_Eab {p q : ℕ} (a b : Ix p q) : (Eab a b).trace = if a = b then 1
 def chAct (p q : ℕ) (x : ℚ) : Mat p q →ₗ[ℂ] Module.End ℂ ℂ :=
   ((x : ℂ) • Matrix.traceLinearMap (Ix p q) ℂ ℂ).smulRight LinearMap.id
 
+/- English proof (translation)
+Simplify using `[chAct]`.
+-/
 theorem chAct_apply (p q : ℕ) (x : ℚ) (X : Mat p q) (z : ℂ) :
     chAct p q x X z = ((x : ℂ) * X.trace) • z := by
   simp [chAct]
@@ -74,6 +80,9 @@ abbrev shiftMod {r s : ℕ} (M : GKMod r s) (t : ℚ) : GKMod r s where
     rw [trace_Eab, if_pos rfl]
     linear_combination (norm := module) this
 
+/- English proof (translation)
+Use `show ((M.act - ((t : ℂ) • Matrix.traceLinearMap (Ix r s) ℂ ℂ).smulRight LinearMap.id : Mat r s →ₗ[ℂ] Module.End ℂ M.V) Y) v = _`. Rewrite using `[LinearMap.sub_apply, LinearMap.sub_apply]`. Simplify using `[mul_smul]`.
+-/
 theorem shiftMod_act {r s : ℕ} (M : GKMod r s) (t : ℚ) (Y : Mat r s) (v : M.V) :
     (shiftMod M t).act Y v = M.act Y v - ((t : ℂ) * Y.trace) • v := by
   show ((M.act - ((t : ℂ) • Matrix.traceLinearMap (Ix r s) ℂ ℂ).smulRight LinearMap.id :
@@ -87,6 +96,9 @@ section Main
 
 variable {P Q R S : ℕ}
 
+/- English proof (translation)
+Use `congrArg (TensorProduct.lid ℂ V) h` as an intermediate fact. Simplify using `using this`.
+-/
 theorem tmul_one_eq_zero {V : Type} [AddCommGroup V] [Module ℂ V] {v : V}
     (h : (1 : ℂ) ⊗ₜ[ℂ] v = 0) : v = 0 := by
   have := congrArg (TensorProduct.lid ℂ V) h
@@ -96,12 +108,21 @@ def fMap (x t : ℚ) {M : GKMod R S} (pr : Pol P Q R S →ₗ[ℂ] M.V) :
     Pol P Q R S →ₗ[ℂ] TensorProduct ℂ (chMod P Q x).V (shiftMod M t).V :=
   TensorProduct.mk ℂ ℂ M.V 1 ∘ₗ pr
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fMap_apply (x t : ℚ) {M : GKMod R S} (pr : Pol P Q R S →ₗ[ℂ] M.V) (f : Pol P Q R S) :
     fMap x t pr f = (1 : ℂ) ⊗ₜ[ℂ] pr f := rfl
 
+/- English proof (translation)
+The claim follows from `tmul_one_eq_zero h`.
+-/
 theorem fMap_eq_zero {x t : ℚ} {M : GKMod R S} {pr : Pol P Q R S →ₗ[ℂ] M.V} {f : Pol P Q R S}
     (h : fMap x t pr f = 0) : pr f = 0 := tmul_one_eq_zero h
 
+/- English proof (translation)
+Use `⟨fun X => LinearMap.ext fun f => ?_, fun Y => LinearMap.ext fun f => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 : ℂ) ⊗ₜ[ℂ] pr (fockAct1 P Q R S X f) = TensorProduct.map (chAct P Q x X) LinearMap.id ((1 : ℂ) ⊗ₜ[ℂ] pr f)`. Rewrite using `[TensorProduct.map_tmul, LinearMap.id_apply, hL.2.1 X f, chAct_apply, TensorProduct.tmul_smul, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Express the relevant statement in the definitionally equal form `(1 : ℂ) ⊗ₜ[ℂ] pr (fockAct2 P Q R S Y f) = TensorProduct.map LinearMap.id ((shiftMod M t).act Y) ((1 : ℂ) ⊗ₜ[ℂ] pr f)`. Rewrite using `[TensorProduct.map_tmul, LinearMap.id_apply, shiftMod_act, hL.2.2 Y f, add_sub_cancel_right]`.
+-/
 theorem intw_fMap {x t : ℚ} {M : GKMod R S} {pr : Pol P Q R S →ₗ[ℂ] M.V} (hL : IsLift x t M pr) :
     Intw (chMod P Q x) (shiftMod M t) (fMap x t pr) := by
   refine ⟨fun X => LinearMap.ext fun f => ?_, fun Y => LinearMap.ext fun f => ?_⟩
@@ -112,6 +133,11 @@ theorem intw_fMap {x t : ℚ} {M : GKMod R S} {pr : Pol P Q R S →ₗ[ℂ] M.V}
       TensorProduct.map LinearMap.id ((shiftMod M t).act Y) ((1 : ℂ) ⊗ₜ[ℂ] pr f)
     rw [TensorProduct.map_tmul, LinearMap.id_apply, shiftMod_act, hL.2.2 Y f, add_sub_cancel_right]
 
+/- English proof (translation)
+Use `⟨one_ne_zero, (mem_hwSub _ _ _).2 ⟨fun a => ?_, fun a b hab => ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `chAct p q x _ 1 - _ = 0`. Rewrite using `[chAct_apply, trace_Eab, if_pos rfl]`. Simplify using `[smul_eq_mul]`. Express the relevant statement in the definitionally equal form `chAct p q x _ 1 = 0`.
+
+Establish `: a ≠ b`. Introduce and unpack `rfl`. Apply the tactic sequence `cases a <;> simp [posC] at hab`. Rewrite using `[chAct_apply, trace_Eab, if_neg this]`. Simplify using the standard rewrite rules.
+-/
 theorem hw_chMod (p q : ℕ) (x : ℚ) : IsHW (chMod p q x).act (fun _ => x) (1 : ℂ) := by
   refine ⟨one_ne_zero, (mem_hwSub _ _ _).2 ⟨fun a => ?_, fun a b hab => ?_⟩⟩
   · change chAct p q x _ 1 - _ = 0
@@ -122,6 +148,11 @@ theorem hw_chMod (p q : ℕ) (x : ℚ) : IsHW (chMod p q x).act (fun _ => x) (1 
       cases a <;> simp [posC] at hab
     rw [chAct_apply, trace_Eab, if_neg this]; simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Establish `h1` using `((mem_hwSub _ _ _).1 h.2).1 a`. Express the relevant statement in the definitionally equal form `chAct p q x _ w - _ = 0 at h1`. Rewrite `h1` using `[chAct_apply, trace_Eab, if_pos rfl, mul_one, ← sub_smul, smul_eq_zero]`. Break down `h1 with h1 | h1` into its components or cases.
+
+Conclude with `(sub_eq_zero.1 h1).symm` after adjusting the coercions. Conclude with `absurd h1 h.1`.
+-/
 theorem hw_chMod_eq {p q : ℕ} {x : ℚ} {ν : Ix p q → ℚ} {w : (chMod p q x).V}
     (h : IsHW (chMod p q x).act ν w) : ν = fun _ => x := by
   funext a
@@ -132,14 +163,55 @@ theorem hw_chMod_eq {p q : ℕ} {x : ℚ} {ν : Ix p q → ℚ} {w : (chMod p q 
   · exact_mod_cast (sub_eq_zero.1 h1).symm
   · exact absurd h1 h.1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstanceAs (Nontrivial ℂ), fun N _ => Ideal.eq_bot_or_top N⟩`.
+-/
 theorem irr_chMod (p q : ℕ) (x : ℚ) : IrrGK (chMod p q x) :=
   ⟨inferInstanceAs (Nontrivial ℂ), fun N _ => Ideal.eq_bot_or_top N⟩
 
+/- English proof (translation)
+Introduce `_` and use `inferInstanceAs (FiniteDimensional ℂ ↥(hwSub (chAct p q x) _))`.
+-/
 theorem admissible_traceCharacterGKModule (p q : ℕ) (x : ℚ) : AdmGK (chMod p q x) := fun _ =>
   inferInstanceAs (FiniteDimensional ℂ ↥(hwSub (chAct p q x) _))
 
 end Main
 
+/- English proof (translation)
+Introduce `P Q R S x t M pr hL hM`. Establish `hI` using `intw_fMap (P := P) (Q := Q) hL`. Establish `hf : fMap x t pr ≠ 0`. Take `⟨v, hv⟩` from `exists_ne (0 : M.V)`. Take `⟨f, rfl⟩` from `hL.1 v`.
+
+Introduce `h`. Conclude with `hv (fMap_eq_zero (LinearMap.congr_fun h f))`. Establish `hmin : ∀ ν w, IsHW (chMod P Q x).act ν w → degW (cPair R S) (fun _ : Ix P Q => x) ≤ degW (cPair R S) ν`. Introduce `ν w h`. Rewrite using `[hw_chMod_eq h]`.
+
+Take `⟨⟨μ', P0, hJ0, h10, h20, hf0⟩, -⟩` from `GlobalTheory.FockAlg.min_first P Q R S (chMod P Q x) (shiftMod M t) (fMap x t pr) (irr_chMod P Q x) (admissible_traceCharacterGKModule P Q x) hI hf (fun _ => x) ⟨1, hw_chMod P Q x⟩ hmin`. Establish `hpr0 : pr P0 ≠ 0` using `fun h => hf0 (by rw [fMap_apply, h, TensorProduct.tmul_zero])`. Establish `hP0mem : P0 ∈ hwSub (fockAct1 P Q R S) (fun _ => x) ⊓ hwSub (fockAct2 P Q R S) μ' ⊓ Submodule.span ℂ (jointHarm P Q R S)` using `⟨⟨h10.2, h20.2⟩, Submodule.subset_span hJ0⟩`. Establish `hshape : JointShape P Q R S (fun _ => x) μ'`. Assume the negation of the conclusion as `h`.
+
+Use `hP0mem` as an intermediate fact. Rewrite `this` using `[GlobalTheory.FockAlg.jointHarm_hw_eq_bot P Q R S _ _ h, Submodule.mem_bot]`. Conclude with `h10.1 this`. Establish `hw0 : IsHW M.act (fun c => μ' c + t) (pr P0)`. Use `⟨hpr0, (mem_hwSub _ _ _).2 ⟨fun a => ?_, fun a b hab => ?_⟩⟩` and prove the remaining obligations.
+
+Establish `e` using `((mem_hwSub _ _ _).1 h20.2).1 a`. Rewrite using `[hL.2.2, trace_Eab, if_pos rfl, sub_eq_zero.1 e, map_smul]`. Use `push_cast`. Use `module`. Establish `e` using `((mem_hwSub _ _ _).1 h20.2).2 a b hab`.
+
+Establish `: a ≠ b`. Introduce and unpack `rfl`. Apply the tactic sequence `cases a <;> simp [posC] at hab`. Rewrite using `[hL.2.2, trace_Eab, if_neg this, e, map_zero]`. Simplify using the standard rewrite rules.
+
+Use `⟨μ', hshape, pr P0, hw0, ?_⟩` and prove the remaining obligations. Use `set G := genSub M.act {pr P0} with hG`. Use `set T : Submodule ℂ (Pol P Q R S) := G.comap pr with hT`. Establish `hT1 : ∀ X, ∀ y ∈ T, fockAct1 P Q R S X y ∈ T`. Introduce `X y hy`.
+
+Rewrite using `[Submodule.mem_comap, hL.2.1]`. Conclude with `G.smul_mem _ hy`. Establish `hT2 : ∀ Z, ∀ y ∈ T, fockAct2 P Q R S Z y ∈ T`. Introduce `Z y hy`. Establish `e` using `hL.2.2 Z y`.
+
+Rewrite using `[Submodule.mem_comap, eq_sub_of_add_eq e.symm]`. Conclude with `G.sub_mem (genSub_stable _ _ Z hy) (G.smul_mem _ hy)`. Establish `hker : LinearMap.ker (fMap x t pr) ≤ T`. Introduce `y hy`. Rewrite using `[Submodule.mem_comap, fMap_eq_zero (LinearMap.mem_ker.1 hy)]`.
+
+Conclude with `G.zero_mem`. Establish `hP0T : P0 ∈ T` using `subset_genSub M.act {pr P0} rfl`. Establish `hJ : ∀ P' ∈ jointHarm P Q R S, P' ∈ hwSub (fockAct1 P Q R S) (fun _ => x) → P' ∈ T`. Introduce `P' hJ' hh`. Take `⟨U, fU, hU, sU⟩` from `((GlobalTheory.FockPolGK.pol_locFin_weights P Q R S).2 P').1`.
+
+Take `⟨-, -, s2, -⟩` from `GlobalTheory.FockAlg.harm_graded_stable P Q R S _ (Or.inr (Or.inr rfl))`. Establish `sH : KStable (fockAct2 P Q R S) (hwSub (fockAct1 P Q R S) (fun _ => x))` using `fun Z _ w hw => hw_map (fockAct2 P Q R S Z) (fun Y _ v => fockAct1_fockAct2_commute Y Z v) hw`. Assume the negation of the conclusion as `hPT`. Take `⟨ν, u, hu, hhw, hN⟩` from `exists_hw_notMem kLie2 wts2 (W := U ⊓ (Submodule.span ℂ (jointHarm P Q R S) ⊓ hwSub (fockAct1 P Q R S) (fun _ => x))) (N := T) inferInstance (kStable_inf sU (kStable_inf s2 sH)) (fun Z _ y hy => hT2 Z y hy) (fun h => hPT (h ⟨hU, Submodule.subset_span hJ', hh⟩))`. Establish `hmem : u ∈ hwSub (fockAct1 P Q R S) (fun _ => x) ⊓ hwSub (fockAct2 P Q R S) ν ⊓ Submodule.span ℂ (jointHarm P Q R S)` using `⟨⟨hu.2.2, hhw.2⟩, hu.2.1⟩`.
+
+Establish `hsh : JointShape P Q R S (fun _ => x) ν`. Assume the negation of the conclusion as `h`. Rewrite `hmem` using `[GlobalTheory.FockAlg.jointHarm_hw_eq_bot P Q R S _ _ h, Submodule.mem_bot]`. Conclude with `hhw.1 hmem`. Take `rfl : ν = μ'` from `(GlobalTheory.JointShapeUniq.jointShape_unique_deg P Q R S _ _ _ _ hsh hshape).1.1 rfl`.
+
+Establish `hline` using `GlobalTheory.JointHarm.finrank_joint_highest_of_shape P Q R S _ _ hshape`. Take `⟨c, hc⟩` from `(finrank_eq_one_iff_of_nonzero' (⟨P0, hP0mem⟩ : ↥(hwSub (fockAct1 P Q R S) (fun _ => x) ⊓ hwSub (fockAct2 P Q R S) ν ⊓ Submodule.span ℂ (jointHarm P Q R S))) (fun h => h10.1 (congrArg Subtype.val h))).1 hline ⟨u, hmem⟩`. Establish `hu' : u = c • P0` using `(congrArg Subtype.val hc).symm`. Conclude with `hN (hu' ▸ T.smul_mem c hP0T)`. Establish `hall : ∀ P', P' ∈ T`.
+
+Introduce `P'`. Take `⟨W, fW, hW, sW⟩` from `((GlobalTheory.FockPolGK.pol_locFin_weights P Q R S).1 P').1`. Assume the negation of the conclusion as `hPT`. Take `⟨ν, u, hu, hhw, hN⟩` from `exists_hw_notMem kLie1 wts1 fW sW (fun X _ y hy => hT1 X y hy) (fun h => hPT (h hW))`. Establish `hpru : pr u ≠ 0` using `fun h => hN (by rw [Submodule.mem_comap, h]; exact G.zero_mem)`.
+
+Choose the witnesses or unpack the hypotheses as in `rfl : ν = fun _ => x := by`. Use function extensionality and compare the values at `a`. Establish `e` using `((mem_hwSub _ _ _).1 hhw.2).1 a`. Establish `e2` using `congrArg pr e`. Rewrite `e2` using `[map_sub, map_smul, hL.2.1, trace_Eab, if_pos rfl, mul_one, map_zero, ← sub_smul, smul_eq_zero]`.
+
+Break down `e2 with e2 | e2` into its components or cases. Conclude with `(sub_eq_zero.1 e2).symm` after adjusting the coercions. Conclude with `absurd e2 hpru`. Conclude with `hN (hw_mem hI hmin T hker hT2 hJ hhw.2)`. Use `eq_top_iff.2 fun v _ => ?_` and prove the remaining obligations.
+
+Take `⟨f, rfl⟩` from `hL.1 v`. Conclude with `hall f`.
+-/
 theorem genBy_of_isLift : ∀ (P Q R S : ℕ) (x t : ℚ) (M : Formalism.BasicNotions.TH.GKMod R S)
     (pr : Formalism.BasicNotions.TH.Pol P Q R S →ₗ[ℂ] M.V), GlobalTheory.RealLift.IsLift x t M pr → Nontrivial M.V →
     ∃ μ' : Formalism.BasicNotions.TH.Ix R S → ℚ, Formalism.BasicNotions.TH.JointShape P Q R S (fun _ => x) μ' ∧

@@ -28,32 +28,53 @@ def topV (i t : ℕ) (x : Fin i → k) : Fin (i + t) → k := Fin.append x 0
 
 def midV (i t : ℕ) (v : Fin t → k) : Fin (i + t) → k := Fin.append 0 v
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show unip k n (Multiplicative.ofAdd (a + b)) = unip k n (Multiplicative.ofAdd a) * unip k n (Multiplicative.ofAdd b)`. Rewrite using `[ofAdd_add, map_mul]`.
+-/
 theorem uM_add (n : ℕ) (a b : Fin n → k) : uM k n (a + b) = uM k n a * uM k n b := by
   apply Subtype.ext
   show unip k n (Multiplicative.ofAdd (a + b)) = unip k n (Multiplicative.ofAdd a) * unip k n (Multiplicative.ofAdd b)
   rw [ofAdd_add, map_mul]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show unip k n (Multiplicative.ofAdd 0) = 1`. Rewrite using `[ofAdd_zero, map_one]`.
+-/
 theorem uM_zero (n : ℕ) : uM k n 0 = 1 := by
   apply Subtype.ext
   show unip k n (Multiplicative.ofAdd 0) = 1
   rw [ofAdd_zero, map_one]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, rfl⟩`.
+-/
 theorem uM_mem (n : ℕ) (y : Fin n → k) : uM k n y ∈ MirUin k n := ⟨_, rfl⟩
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `(hu : (u : GL (Fin (n + 1)) k) ∈ MirU k n)`. Conclude with `⟨v.toAdd, Subtype.ext hv.symm⟩`.
+-/
 theorem exists_uM_of_mem (n : ℕ) {u : Mir k n} (hu : u ∈ MirUin k n) : ∃ y, u = uM k n y := by
   obtain ⟨v, hv⟩ := (hu : (u : GL (Fin (n + 1)) k) ∈ MirU k n)
   exact ⟨v.toAdd, Subtype.ext hv.symm⟩
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `glEmb_mul_unip' k n g (Multiplicative.ofAdd y)`.
+-/
 theorem levi_mul_uM (n : ℕ) (g : GL (Fin n) k) (y : Fin n → k) :
     levi k n g * uM k n y = uM k n ((g : Matrix (Fin n) (Fin n) k).mulVec y) * levi k n g := by
   apply Subtype.ext
   exact glEmb_mul_unip' k n g (Multiplicative.ofAdd y)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Apply the tactic sequence `induction j using Fin.addCases <;> simp [topV, midV]`.
+-/
 theorem topV_add_midV (i t : ℕ) (x : Fin i → k) (v : Fin t → k) :
     topV k i t x + midV k i t v = Fin.append x v := by
   funext j
   induction j using Fin.addCases <;> simp [topV, midV]
 
+/- English proof (translation)
+Use `⟨fun j => y (Fin.castAdd t j), fun j => y (Fin.natAdd i j), ?_⟩` and prove the remaining obligations. Rewrite using `[topV_add_midV]`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `induction j using Fin.addCases <;> simp`.
+-/
 theorem exists_top_mid (i t : ℕ) (y : Fin (i + t) → k) : ∃ x v, y = topV k i t x + midV k i t v := by
   refine ⟨fun j => y (Fin.castAdd t j), fun j => y (Fin.natAdd i j), ?_⟩
   rw [topV_add_midV]

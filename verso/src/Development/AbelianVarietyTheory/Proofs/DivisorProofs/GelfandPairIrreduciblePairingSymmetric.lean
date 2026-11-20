@@ -9,6 +9,11 @@ namespace GlobalTheory.GelfandCount
 
 variable {G : Type} [Group G]
 
+/- English proof (translation)
+Use extensionality with `⟨h, hK⟩`. Simplify using `only [Subgroup.mem_subgroupOf, mem_stabSub, Subgroup.mem_map, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h2⟩`. Conclude with `⟨_, h2, by group⟩`.
+
+Introduce and unpack `⟨k, hk, rfl⟩`. Establish `e : g⁻¹ * (g * k * g⁻¹) * g = k` using `by group`. Conclude with `⟨hK, by rw [e]; exact hk⟩`.
+-/
 theorem stabSub_subgroupOf_eq (K : Subgroup G) (g : G) :
     (stabSub K g).subgroupOf K = (K.map (MulAut.conj g).toMonoidHom).subgroupOf K := by
   ext ⟨h, hK⟩
@@ -21,6 +26,9 @@ theorem stabSub_subgroupOf_eq (K : Subgroup G) (g : G) :
     have e : g⁻¹ * (g * k * g⁻¹) * g = k := by group
     exact ⟨hK, by rw [e]; exact hk⟩
 
+/- English proof (translation)
+Rewrite using `[stabSub_subgroupOf_eq]`. Conclude with `⟨h⟩`.
+-/
 theorem finiteIndex_stabSub (K : Subgroup G) (g : G)
     (h : (K.map (MulAut.conj g).toMonoidHom).relIndex K ≠ 0) :
     ((stabSub K g).subgroupOf K).FiniteIndex := by
@@ -28,6 +36,21 @@ theorem finiteIndex_stabSub (K : Subgroup G) (g : G)
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem y h`. Take `⟨g, rfl⟩` from `h`. Use `haveI := hFI g`.
+
+Use `⟨(stabSub K g).subgroupOf K, inferInstance, fun H hH hHf => ?_⟩` and prove the remaining obligations. Use `haveI := hHf`. Establish `key` using `finsum_quot_le hH (fun y : K => ρ ((y : G) * g) x) (fun y h hh => by`. Establish `hh' : (h : G) ∈ stabSub K g` using `Subgroup.mem_subgroupOf.1 hh`. Establish `e : ((y * h : K) : G) * g = (y : G) * g * (g⁻¹ * (h : G) * g)`.
+
+Simplify using `only [Subgroup.coe_mul]`. Use `group`. Use `show ρ (((y * h : K) : G) * g) x = ρ ((y : G) * g) x`. Rewrite using `[e, map_mul, Module.End.mul_apply, hx _ hh'.2])`. Establish `hs : ∑ᶠ p : K ⧸ (stabSub K g).subgroupOf K, ρ (((p.out : K) : G) * g) x = heckeOp ρ K g x`.
+
+Rewrite using `[finsum_eq_sum_of_fintype, heckeOp_apply]`. Establish `e2 : ∀ q : K ⧸ H, ρ (q.out : G) (ρ g x) = ρ ((q.out : G) * g) x` using `fun q => by`. Rewrite using `[map_mul, Module.End.mul_apply]`. Rewrite using `[finsum_congr e2, key, hs]`. Conclude with `Submodule.smul_of_tower_mem _ _ (Submodule.subset_span ⟨g, rfl⟩)`.
+
+Consider the case `zero => exact ⟨⊤, inferInstance, fun H _ _ => by simp⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨H₁, hf₁, h₁⟩` from `ha`. Take `⟨H₂, hf₂, h₂⟩` from `hb`. Use `⟨H₁ ⊓ H₂, inferInstance, fun H hH hHf => ?_⟩` and prove the remaining obligations.
+
+Use `haveI := hHf`. Simplify using `only [map_add]`. Rewrite using `[finsum_add_distrib (Set.toFinite _) (Set.toFinite _)]`. Conclude with `Submodule.add_mem _ (h₁ H (hH.trans inf_le_left) hHf) (h₂ H (hH.trans inf_le_right) hHf)`. Consider the case `smul c a _ ha`.
+
+Take `⟨H₀, hf, h⟩` from `ha`. Use `⟨H₀, hf, fun H hH hHf => ?_⟩` and prove the remaining obligations. Simplify using `only [map_smul]`. Rewrite using `[← smul_finsum]`. Conclude with `Submodule.smul_mem _ _ (h H hH hHf)`.
+-/
 theorem avg_mem_span_hecke (K : Subgroup G) [∀ g, Fintype (K ⧸ (stabSub K g).subgroupOf K)]
     (hFI : ∀ g, ((stabSub K g).subgroupOf K).FiniteIndex)
     (ρ : Representation ℂ G V) {x : V} (hx : ∀ k ∈ K, ρ k x = x) :
@@ -74,6 +97,35 @@ end GlobalTheory.GelfandCount
 
 open GlobalTheory.GelfandLine GlobalTheory.GelfandCount in
 
+/- English proof (translation)
+Introduce `G _ K hrel θ hmul hinv hdc V _ _ ρ hrank hirr x y hx hy hx0`. Establish `hFI : ∀ g, ((stabSub K g).subgroupOf K).FiniteIndex` using `fun g => finiteIndex_stabSub K g (hrel g)`. Use `haveI : ∀ g, Fintype (K ⧸ (stabSub K g).subgroupOf K) := fun g => by haveI := hFI g; exact Fintype.ofFinite _`. Establish `hfix : ∀ g, ∀ v ∈ fixed ρ K, heckeOp ρ K g v ∈ fixed ρ K` using `fun g v hv => mem_fixed_iff.2 (heckeOp_fixed ρ K g (mem_fixed_iff.1 hv))`. Set `T : G → Module.End ℂ (fixed ρ K)` to `fun g => (heckeOp ρ K g).restrict (hfix g)`.
+
+Establish `hTc : ∀ a b, Commute (T a) (T b)` using `fun a b => by`. Use extensionality with `⟨v, hv⟩`. Conclude with `heckeOp_comm ρ K θ hmul hinv hdc a b (mem_fixed_iff.1 hv)`. Establish `hspanV : ∀ z : V, z ≠ 0 → Submodule.span ℂ (Set.range fun g : G => ρ g z) = ⊤`. Introduce `z hz0`.
+
+Use `(hirr _ ?_).resolve_left ?_` and prove the remaining obligations. Introduce `g v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem y h`. Take `⟨a, rfl⟩` from `h`.
+
+Conclude with `Submodule.subset_span ⟨g * a, by simp [map_mul]⟩`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha => rw [map_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ ha`. Introduce `h`. Establish `: z ∈ Submodule.span ℂ (Set.range fun g : G => ρ g z)` using `Submodule.subset_span ⟨1, by simp⟩`. Rewrite `this` using `[h]`. Conclude with `hz0 ((Submodule.mem_bot ℂ).1 this)`.
+
+Establish `hcover : ∀ z ∈ fixed ρ K, z ≠ 0 → ∀ v ∈ fixed ρ K, v ∈ Submodule.span ℂ (Set.range fun g : G => heckeOp ρ K g z)`. Introduce `z hz hz0 v hv`. Take `⟨H₀, hf, hH⟩` from `avg_mem_span_hecke K hFI ρ (mem_fixed_iff.1 hz) v (hspanV z hz0 ▸ Submodule.mem_top)`. Establish `h1` using `hH H₀ le_rfl hf`. Use `haveI := hf`.
+
+Use `haveI := Fintype.ofFinite (K ⧸ H₀)`. Establish `e : ∑ᶠ q : K ⧸ H₀, ρ (q.out : G) v = (Fintype.card (K ⧸ H₀) : ℂ) • v`. Rewrite using `[finsum_eq_sum_of_fintype, Finset.sum_congr rfl fun q _ => mem_fixed_iff.1 hv _ (q.out).2, Finset.sum_const, Finset.card_univ, Nat.cast_smul_eq_nsmul]`. Rewrite `h1` using `[e]`. Conclude with `(Submodule.smul_mem_iff _ (Nat.cast_ne_zero.2 Fintype.card_ne_zero)).1 h1`.
+
+Establish `hirrW : ∀ N : Submodule ℂ (fixed ρ K), (∀ g, ∀ w ∈ N, T g w ∈ N) → N = ⊥ ∨ N = ⊤`. Introduce `N hN`. Distinguish the cases in `h : N = ⊥`. Conclude with `Or.inl h`. Use `right`.
+
+Take `⟨z, hzN, hz0⟩` from `(Submodule.ne_bot_iff N).1 h`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `hv` using `hcover z z.2 (fun e => hz0 (Subtype.ext e)) v v.2`. Establish `hsub : Submodule.span ℂ (Set.range fun g : G => heckeOp ρ K g (z : V)) ≤ N.map (fixed ρ K).subtype`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `⟨T g z, hN g z hzN, rfl⟩`. Take `⟨w, hw, hwv⟩` from `hsub hv`. Establish `: w = v` using `Subtype.ext hwv`.
+
+Conclude with `this ▸ hw`. Establish `hrankW : Module.rank ℂ (fixed ρ K) ≤ Cardinal.aleph0` using `(Submodule.rank_le _).trans hrank`. Establish `hxF : x ∈ fixed ρ K` using `mem_fixed_iff.2 hx`. Establish `hscal : ∀ g, heckeOp ρ K g x ∈ ℂ ∙ x`. Introduce `g`.
+
+Take `⟨c, hc⟩` from `GlobalTheory.dixmier_commutant_scalar G (fixed ρ K) T hrankW hirrW (T g) (fun i => (hTc g i).eq)`. Establish `h2 : T g ⟨x, hxF⟩ = c • ⟨x, hxF⟩` using `by rw [hc]; rfl`. Establish `h3 : heckeOp ρ K g x = c • x` using `congrArg Subtype.val h2`. Rewrite using `[h3]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self x)`.
+
+Establish `hyS` using `hcover x hxF hx0 y (mem_fixed_iff.2 hy)`. Establish `hle : Submodule.span ℂ (Set.range fun g : G => heckeOp ρ K g x) ≤ ℂ ∙ x`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `hscal g`.
+
+Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.1 (hle hyS)`. Conclude with `⟨a, ha.symm⟩`.
+-/
 theorem GlobalTheory.fixed_line_of_gelfand_countable : ∀ (G : Type) [Group G] (K : Subgroup G), (∀ g : G, (K.map (MulAut.conj g).toMonoidHom).relIndex K ≠ 0) →
     ∀ θ : G → G, (∀ x y, θ (x * y) = θ y * θ x) → (∀ x, θ (θ x) = x) → (∀ g, ∃ a ∈ K, ∃ b ∈ K, θ g = a * g * b) →
     ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V), Module.rank ℂ V ≤ Cardinal.aleph0 →

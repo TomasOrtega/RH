@@ -12,6 +12,39 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsDecomposit
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
+/- English proof (translation)
+Use `haveI : CompactSpace (Dec (F := F) A) := isCompact_iff_compactSpace.mp (isClosed_Dec A).isCompact`. Set `χ : Dec (F` to `F) A →* ℤ_[l]ˣ := (cycZ F Ω l).comp (Dec (F := F) A).subtype`. Set `ρ : Representation ℤ_[l] (Dec (F` to `F) A) (QZ l) := (qzG F Ω l e).comp (Dec (F := F) A).subtype`. Establish `hV : IsClosed (decImage F l A : Set ℤ_[l]ˣ)` using `Subgroup.isClosed_of_isOpen _ (isOpen_decImage hv hA)`. Establish `hVp : l ≠ 2 ∨ decImage F l A ≤ KStar.TotallyRealRoots.princ l 2`.
+
+Break down `hP with h | h` into its components or cases. Conclude with `Or.inl h`. Use `right`. Introduce and unpack `_ ⟨g, -, rfl⟩`. Establish `h1` using `h g`.
+
+Simplify using `only [cycR, MonoidHom.comp_apply, Units.ext_iff, Units.coe_map, Units.val_one] at h1`. Rewrite using `[KStar.TotallyRealRoots.mem_princ]`. Establish `h2 : PadicInt.toZModPow 2 ((cycZ F Ω l g : ℤ_[l]) - 1) = 0`. Rewrite using `[map_sub, map_one]`. Simplify using `using sub_eq_zero.mpr h1`.
+
+Rewrite `h2` using `[← RingHom.mem_ker, PadicInt.ker_toZModPow, Ideal.mem_span_singleton]`. Conclude with `h2` after adjusting the coercions. Take `⟨γ', hγ'V, hgen'⟩` from `existsGen l (decImage F l A) hV hVp`. Take `⟨γ, hγ, hγχ⟩` from `Subgroup.mem_map.mp hγ'V`. Establish `hq : Continuous fun p : G F Ω × QZ l => qzG F Ω l e p.1 p.2` using `contAction_qzG e`.
+
+Establish `hpm : Continuous fun p : Dec (F` using `F) A × QZ l => ((p.1 : G F Ω), p.2) := (continuous_subtype_val.comp continuous_fst).prodMk continuous_snd`. Establish `hρc0` using `hq.comp hpm`. Establish `hρc : ReciprocityTheory.Gal.ContAction ρ`. Unfold `ReciprocityTheory.Gal.ContAction`. Use `hρc0.congr fun p => ?_` and prove the remaining obligations.
+
+Simplify using `only [ρ, Function.comp_apply, MonoidHom.comp_apply, Subgroup.coe_subtype]`. Establish `hχc0` using `(continuous_cycZ F Ω l).comp (continuous_subtype_val (p := fun g : G F Ω => g ∈ Dec (F := F) A))`. Establish `hχc : Continuous χ`. Use `hχc0.congr fun g => ?_` and prove the remaining obligations. Simplify using `only [χ, Function.comp_apply, MonoidHom.comp_apply, Subgroup.coe_subtype]`.
+
+Establish `htriv : ∀ g, χ g = 1 → ∀ m, ρ g m = m`. Introduce `g hg m`. Simplify using `only [χ, MonoidHom.comp_apply, Subgroup.coe_subtype] at hg`. Simplify using `only [ρ, MonoidHom.comp_apply, Subgroup.coe_subtype, qzG_apply, hg, one_zpow, Units.val_one, one_smul]`. Establish `hgen : ∀ g, χ g ∈ (Subgroup.zpowers (χ ⟨γ, hγ⟩)).topologicalClosure`.
+
+Introduce `g`. Establish `h1 : χ ⟨γ, hγ⟩ = γ'`. Simplify using `only [χ, MonoidHom.comp_apply, Subgroup.coe_subtype]`. Conclude with `hγχ`. Rewrite using `[h1]`.
+
+Apply `hgen'` to reduce the goal to its premises. Simplify using `only [χ, MonoidHom.comp_apply, Subgroup.coe_subtype]`. Conclude with `Subgroup.mem_map_of_mem _ g.2`. Establish `hne : (cycZ F Ω l γ) ^ (-e) ≠ 1`. Introduce `h1`.
+
+Take `⟨g, hg, hg1⟩` from `GlobalTheory.CycDec.exists_mem_Dec_cycZ_zpow_ne_one F Ω l v A hv hA (-e) (neg_ne_zero.mpr he)`. Set `K : Subgroup ℤ_[l]ˣ` to `(zpowGroupHom (-e) : ℤ_[l]ˣ →* ℤ_[l]ˣ).ker`. Establish `hK : IsClosed (K : Set ℤ_[l]ˣ)`. Establish `: (K : Set ℤ_[l]ˣ) = {x : ℤ_[l]ˣ | x ^ (-e) = 1}`. Use extensionality with `x`.
+
+Simplify using `[K]`. Rewrite using `[this]`. Conclude with `isClosed_eq (continuous_zpow (-e)) continuous_const`. Establish `hzK : Subgroup.zpowers γ' ≤ K`. Rewrite using `[Subgroup.zpowers_le, MonoidHom.mem_ker, zpowGroupHom_apply, ← hγχ]`.
+
+Conclude with `h1`. Establish `hmem` using `Subgroup.topologicalClosure_minimal _ hzK hK (hgen' (Subgroup.mem_map_of_mem _ hg))`. Rewrite `hmem` using `[MonoidHom.mem_ker, zpowGroupHom_apply]`. Conclude with `hg1 hmem`. Establish `hsurj : Function.Surjective fun m => ρ ⟨γ, hγ⟩ m - m`.
+
+Introduce `y`. Establish `hu : ((cycZ F Ω l γ ^ (-e) : ℤ_[l]ˣ) : ℤ_[l]) - 1 ≠ 0`. Introduce `h0'`. Conclude with `hne (Units.val_eq_one.mp (sub_eq_zero.mp h0'))`. Take `⟨x, hx⟩` from `(qzBasic l).1 _ hu y`.
+
+Use `⟨x, ?_⟩` and prove the remaining obligations. Simplify using `only [ρ, MonoidHom.comp_apply, Subgroup.coe_subtype, qzG_apply]`. Rewrite using `[← hx]`. Simplify using `only [sub_smul, one_smul]`. Establish `hzr : (fun g : Dec (F` using `F) A => z g) ∈ Z1 ρ := by`.
+
+Use `⟨hz.1.comp continuous_subtype_val, fun a b => ?_⟩` and prove the remaining obligations. Use `hz.2 a b` as an intermediate fact. Simplify using `only [ρ, MonoidHom.comp_apply, Subgroup.coe_subtype, Subgroup.coe_mul]`. Conclude with `this`. Establish `hB` using `cobOfGen l (Dec (F := F) A) χ ℤ_[l] (QZ l) ρ ⟨γ, hγ⟩ hχc hρc htriv hgen hsurj _ hzr (fun g hg => h0 g g.2 (by simpa [χ] using hg))`.
+
+Take `⟨m, hm⟩` from `(mem_coboundaries1 ρ _).mp hB`. Use `⟨m, fun g hg => ?_⟩` and prove the remaining obligations. Use `hm ⟨g, hg⟩` as an intermediate fact. Simplify `this` using `[ρ]`.
+-/
 private theorem UpperTheory.V.Kum.decCob {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     {l : ℕ} [Fact l.Prime] {e : ℤ} (he : e ≠ 0) (hP : Procyc F Ω l) {v : HeightOneSpectrum (𝓞 F)}
     {A : ValuationSubring Ω} (hv : v ∈ Above F l) (hA : IsPlaceOver A v) {z : G F Ω → QZ l}
@@ -99,6 +132,31 @@ private theorem UpperTheory.V.Kum.decCob {F Ω : Type} [Field F] [NumberField F]
   have := hm ⟨g, hg⟩
   simpa [ρ] using this
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ l _ D e he hP`. Apply `le_antisymm (resInfMem F Ω l D e)` to reduce the goal to its premises. Introduce `φ hφ`. Establish `hX` using `(Submodule.mem_inf.mp hφ).1`. Establish `hC` using `(Submodule.mem_iInf _).mp (Submodule.mem_inf.mp hφ).2`.
+
+Establish `hlc : IsLocallyConstant φ` using `hX.1`. Establish `hadd : ∀ a b, φ (a * b) = φ a + φ b` using `hX.2.1`. Establish `hIne : ∀ (A : ValuationSubring Ω) (u : Uinf F Ω l), (u : G F Ω) ∈ Ine A → φ u = 0` using `hX.2.2.1`. Establish `hDec : ∀ (A : ValuationSubring Ω), A.valuation (l : Ω) < 1 → ∀ u : Uinf F Ω l, (u : G F Ω) ∈ Dec A → φ u = 0` using `hX.2.2.2`. Establish `hmemU : ∀ g : G F Ω, cycZ F Ω l g = 1 → g ∈ Uinf F Ω l`.
+
+Introduce `g hg`. Simplify using `only [Uinf, cycU, Subgroup.mem_inf, MonoidHom.mem_ker]`. Conclude with `⟨Subgroup.mem_top g, hg⟩`. Establish `htriv : ∀ u ∈ Uinf F Ω l, ∀ m, qzG F Ω l e u m = m`. Introduce `u hu m`.
+
+Simplify using `only [Uinf, cycU, Subgroup.mem_inf, MonoidHom.mem_ker] at hu`. Rewrite using `[qzG_apply, hu.2, one_zpow, Units.val_one, one_smul]`. Take `⟨z, hz, hzφ⟩` from `extCocycle F Ω l ℤ_[l] (QZ l) (qzG F Ω l e) φ hP (contAction_qzG e) htriv (qzBasic l).2.1 hlc hadd hC`. Establish `hρ' : ∀ g m, ((qzTw D e).comp (toGS Ω (D.S : Set (HeightOneSpectrum (𝓞 F))))) g m = qzG F Ω l e g m`. Introduce `g m`.
+
+Rewrite using `[qzTw_comp_toGS]`. Establish `hz' : z ∈ Z1 ((qzTw D e).comp (toGS Ω (D.S : Set (HeightOneSpectrum (𝓞 F)))))`. Rewrite using `[qzTw_comp_toGS]`. Conclude with `hz`. Establish `hsha` using `shaInfl F Ω D.S D.A D.hA ℤ_[l] (QZ l) (qzTw D e) (contTw F Ω l D e).1`.
+
+Establish `hmk : (Submodule.Quotient.mk ⟨z, hz'⟩ : H1 ((qzTw D e).comp (toGS Ω (D.S : Set (HeightOneSpectrum (𝓞 F)))))) ∈ ShaAbs ((qzTw D e).comp (toGS Ω (D.S : Set (HeightOneSpectrum (𝓞 F))))) (D.S : Set (HeightOneSpectrum (𝓞 F)))`. Rewrite using `[mk_mem_ShaAbs]`. Use `⟨fun v hv A hA => ?_, fun v hv A hA => ⟨0, fun g hg => ?_⟩⟩` and prove the remaining obligations. Rewrite `hv` using `[D.hS]`. Establish `hAl : A.valuation (l : Ω) < 1` using `((placeDict F Ω).2.2.2 A v l hA).mpr hv`.
+
+Take `⟨m, hm⟩` from `decCob he hP hv hA hz (fun g hg hg1 => by`. Rewrite using `[show z g = φ ⟨g, hmemU g hg1⟩ from hzφ ⟨g, hmemU g hg1⟩]`. Conclude with `hDec A hAl ⟨g, hmemU g hg1⟩ hg)`. Use `⟨m, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[hρ']`.
+
+Conclude with `hm g hg`. Establish `hgN : g ∈ NS Ω (D.S : Set (HeightOneSpectrum (𝓞 F)))` using `Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure (Set.mem_biUnion (x := v) hv (Set.mem_biUnion (x := A) hA hg)))`. Establish `hg1 : cycZ F Ω l g = 1`. Rewrite using `[← DFunLike.congr_fun D.hchi g, MonoidHom.comp_apply]`. Establish `: toGS Ω (D.S : Set (HeightOneSpectrum (𝓞 F))) g = 1` using `(QuotientGroup.eq_one_iff g).mpr hgN`.
+
+Rewrite using `[this, map_one]`. Simplify using `only [map_zero, sub_zero]`. Use `show z g = 0`. Rewrite using `[show z g = φ ⟨g, hmemU g hg1⟩ from hzφ ⟨g, hmemU g hg1⟩]`. Conclude with `hIne A ⟨g, hmemU g hg1⟩ hg`.
+
+Rewrite `hmk` using `[← hsha]`. Take `⟨y, hy, hyz⟩` from `Submodule.mem_map.mp hmk`. Use `Submodule.mem_map.mpr ⟨y, hy, ?_⟩` and prove the remaining obligations. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (restrictCocycles1 (qzTw D e) (toGS Ω (D.S : Set (HeightOneSpectrum (𝓞 F)))) _ w) = Submodule.Quotient.mk ⟨z, hz'⟩ at hyz`.
+
+Rewrite `hyz` using `[Submodule.Quotient.eq, Submodule.mem_comap, Submodule.coe_subtype, mem_coboundaries1]`. Take `⟨m, hm⟩` from `hyz`. Use function extensionality and compare the values at `u`. Establish `h1` using `hm u`. Rewrite `h1` using `[hρ', htriv u u.2, sub_self, Submodule.coe_sub, Pi.sub_apply, sub_eq_zero]`.
+
+Rewrite using `[resInf_mk, ← hzφ u]`. Conclude with `h1`.
+-/
 theorem UpperTheory.V.Kum.resInfOnto :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (D : LData F Ω l) (e : ℤ), e ≠ 0 → Procyc F Ω l → (Sha D e).map (resInf D e) = EqHom l (Uinf F Ω l) (qzG F Ω l e) := by
   intro F Ω _ _ _ _ _ l _ D e he hP

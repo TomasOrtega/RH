@@ -13,9 +13,15 @@ namespace GlobalTheory.GaugeSecondDeriv
 
 variable {k : Type} [CommRing k] {d : ℕ}
 
+/- English proof (translation)
+The claim follows from `CZ.cons (cc_pt 1) (CZ.cons (cc_pt 2) CZ.nil)`.
+-/
 theorem cz12 : CZ (![pt k (n := 3) d 1, pt k d 2] : Fin 2 → Pt k 3 d) :=
   CZ.cons (cc_pt 1) (CZ.cons (cc_pt 2) CZ.nil)
 
+/- English proof (translation)
+Establish `hc : CZ (![pt k (n` using `3) d 0, q] : Fin 2 → Pt k 3 d) := CZ.cons (cc_pt 0) (CZ.cons hq CZ.nil)`. Rewrite using `[pderiv_ev hc, Fintype.sum_prod_type, Fin.sum_univ_two]`. Simplify using `[pderiv_pt]`.
+-/
 theorem pderiv_ev_second (h : PS k 2 d) (q : Pt k 3 d) (hq : ∀ c, constantCoeff (q c) = 0) (b : Fin d) :
     pderiv k ((2 : Fin 3), b) (ev (n := 3) ![pt k d 0, q] h) =
       ∑ j, ev (n := 3) ![pt k d 0, q] (pderiv k ((1 : Fin 2), j) h) * pderiv k ((2 : Fin 3), b) (q j) := by
@@ -23,6 +29,11 @@ theorem pderiv_ev_second (h : PS k 2 d) (q : Pt k 3 d) (hq : ∀ c, constantCoef
   rw [pderiv_ev hc, Fintype.sum_prod_type, Fin.sum_univ_two]
   simp [pderiv_pt]
 
+/- English proof (translation)
+Rewrite using `[pderiv_ev cz12, Fintype.sum_prod_type, Fin.sum_univ_two]`. Establish `e : ((1 : Fin 3) = 2) = False` using `by simp`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, pderiv_pt, Prod.mk.injEq, e, false_and, if_false, mul_zero, Finset.sum_const_zero, zero_add, true_and, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[ev_ev czZ cz12]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `j c`. Apply the tactic sequence `fin_cases j <;> simp [pt_apply, ev_X czZ]`.
+-/
 theorem ev_pderiv_add (F : PS k 2 d) (b : Fin d) :
     ev (n := 2) ![pt k d 0, pt k d 1, 0]
       (pderiv k ((2 : Fin 3), b) (ev (n := 3) ![pt k d 1, pt k d 2] F)) =
@@ -37,6 +48,11 @@ theorem ev_pderiv_add (F : PS k 2 d) (b : Fin d) :
   funext j c
   fin_cases j <;> simp [pt_apply, ev_X czZ]
 
+/- English proof (translation)
+Establish `h1 : CZ (![pt k (n` using `2) d 1] : Fin 1 → Pt k 2 d) := CZ.cons (cc_pt 1) CZ.nil`. Establish `e` using `congrArg (ev (n := 2) ![pt k d 1]) (formalGroupLaw_ev_x_zero G c)`. Rewrite `e` using `[ev_ev h1 cz1, ev_X h1]`. Rewrite using `[ev_ev czZ cz12]`. Use `Eq.trans ?_ e` and prove the remaining obligations.
+
+Use `congr 1`. Use function extensionality and compare the values at `j c`. Apply the tactic sequence `fin_cases j <;> simp [pt_apply, ev_X czZ, ev_X h1, ev_zero' h1]`.
+-/
 theorem ev_add_axis (G : FGLaw k d) (c : Fin d) :
     ev (n := 2) ![pt k d 0, pt k d 1, 0] (ev (n := 3) ![pt k d 1, pt k d 2] (G.F c)) =
       pt k (n := 2) d 1 c := by
@@ -49,6 +65,21 @@ theorem ev_add_axis (G : FGLaw k d) (c : Fin d) :
   funext j c
   fin_cases j <;> simp [pt_apply, ev_X czZ, ev_X h1, ev_zero' h1]
 
+/- English proof (translation)
+Introduce `R _ d O _ _ k _ _ _ B h hc b`. Establish `hA : ∀ c, constantCoeff (addOf (B.FK k) (pt k (n` using `3) d 1) (pt k d 2) c) = 0 := fun c => constantCoeff_ev cz12 ((lawK k B).const c)`. Establish `c02 : CZ (![pt k (n` using `3) d 0, pt k d 2] : Fin 2 → Pt k 3 d) := CZ.cons (cc_pt 0) (CZ.cons (cc_pt 2) CZ.nil)`. Establish `cA : CZ (![pt k (n` using `3) d 0, addOf (B.FK k) (pt k (n := 3) d 1) (pt k d 2)] : Fin 2 → Pt k 3 d) := CZ.cons (cc_pt 0) (CZ.cons hA CZ.nil)`. Establish `hH0 : constantCoeff (ev (n` using `3) ![pt k d 0, pt k d 1] h + ev (n := 3) ![pt k d 0, pt k d 2] h - ev (n := 3) ![pt k d 0, addOf (B.FK k) (pt k d 1) (pt k d 2)] h) = 0 := by`.
+
+Rewrite using `[map_sub, map_add, cc_ev' cz01, cc_ev' c02, cc_ev' cA, cc_h hc]`. Simplify using the standard rewrite rules. Establish `hH` using `ig_dlog B.ph2 (constantCoeff_second_factor B) _ hH0 hc.ph2 ((2 : Fin 3), b)`. Establish `h2` using `ig_ev czZ integral_family_pair_zero hH`. Apply the tactic sequence `have t1 : pderiv k ((2 : Fin 3), b) (ev (n := 3) ![pt k d 0, pt k d 1] h) = 0 := pderiv_ev_zero cz01 _ _ (fun j l => by fin_cases j <;> simp [pderiv_pt])`.
+
+Establish `t2 : ev (n` using `2) ![pt k d 0, pt k d 1, 0] (pderiv k ((2 : Fin 3), b) (ev (n := 3) ![pt k d 0, pt k d 2] h)) = ev (n := 2) ![pt k d 0, 0] (pderiv k ((1 : Fin 2), b) h) := by`. Rewrite using `[pderiv_ev_second h _ (cc_pt 2)]`. Simplify using `only [pderiv_pt, Prod.mk.injEq, true_and, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[ev_ev czZ c02]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `j c`. Apply the tactic sequence `fin_cases j <;> simp [pt_apply, ev_X czZ]`. Establish `t3 : ev (n` using `2) ![pt k d 0, pt k d 1, 0] (pderiv k ((2 : Fin 3), b) (ev (n := 3) ![pt k d 0, addOf (B.FK k) (pt k d 1) (pt k d 2)] h)) = ∑ j, ev (n := 2) ![pt k d 1, 0] (pderiv k ((1 : Fin 2), b) (B.FK k j)) * pderiv k ((1 : Fin 2), j) h := by`. Rewrite using `[pderiv_ev_second h _ hA, ev_sum czZ]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Establish `e : (fun i c => ev (n` using `2) ![pt k d 0, pt k d 1, 0] ((![pt k (n := 3) d 0, addOf (B.FK k) (pt k (n := 3) d 1) (pt k d 2)] : Fin 2 → Pt k 3 d) i c)) = fun i => pt k (n := 2) d i := by`. Use function extensionality and compare the values at `i c`. Use `fin_cases i`. Simplify using `[pt_apply, ev_X czZ]`. Conclude with `ev_add_axis (lawK k B) c`.
+
+Rewrite using `[ev_mul czZ, ev_ev czZ cA, e, ev_pt, mul_comm]`. Use `congr 1`. Conclude with `ev_pderiv_add (B.FK k j) b`. Rewrite `h2` using `[map_sub, map_add, t1, zero_add, ev_sub czZ, t2, t3]`. Take `⟨K, hK⟩` from `RingHom.mem_range.1 h2`.
+
+Use `⟨-K, ?_⟩` and prove the remaining obligations. Rewrite using `[FB.toK, map_neg, hK]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem main : (∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k] (B : FB R d O) (h : PS k 2 d), B.IsCanonGauge k h → ∀ b : Fin d, ∃ K : PS R 2 d, ∑ j, ev (n := 2) ![pt k d 1, 0] (pderiv k ((1 : Fin 2), b) (B.FK k j)) * pderiv k ((1 : Fin 2), j) h =
     FB.toK k K + ev (n := 2) ![pt k d 0, 0] (pderiv k ((1 : Fin 2), b) h)) := by
   intro R _ d O _ _ k _ _ _ B h hc b

@@ -3,6 +3,11 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DualInfinitesima
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.AlgRepEndIrreducible
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro b _ x`. Rewrite using `[rp_zero, rp_zero, mul_one, one_mul]`. Consider the case `succ n ih`.
+
+Introduce `b hb x`. Establish `h` using `ih (Fin.tail b) (fun i y => hb i.succ y) (Fin.tail x)`. Rewrite using `[rp_succ, rp_succ, ← mul_assoc, h, mul_assoc, hb, ← mul_assoc]`. Both sides reduce to the same expression.
+-/
 private theorem rp_comm {X M : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup M] [Module ℂ M]
     (κ : Module.End ℂ M) (g : X → X) :
     ∀ (n : ℕ) (b : Fin n → X →ₗ[ℂ] Module.End ℂ M), (∀ i y, κ * b i y = b i (g y) * κ) →
@@ -16,6 +21,13 @@ private theorem rp_comm {X M : Type} [AddCommGroup X] [Module ℂ X] [AddCommGro
     rw [rp_succ, rp_succ, ← mul_assoc, h, mul_assoc, hb, ← mul_assoc]
     rfl
 
+/- English proof (translation)
+Introduce `X M _ _ _ _ n`. Proceed by induction on `n with`. Consider the case `zero => intro a b κ g _ _ f f' _ x`. Rewrite using `[tel_zero, tel_zero, map_zero]`. Consider the case `succ n ih`.
+
+Introduce `a b κ g ha hb f f' hf x`. Establish `h1` using `ih (Fin.tail a) (Fin.tail b) κ g (fun i y => ha i.succ y) (fun i y => hb i.succ y) f f' hf (Fin.tail x)`. Establish `h2` using `LinearMap.congr_fun (rp_comm κ g n (Fin.tail b) (fun i y => hb i.succ y) (Fin.tail x)) (f (x 0))`. Establish `h3` using `LinearMap.congr_fun (ha 0 (x 0)) (tel n (Fin.tail a) (Fin.tail b) f (Fin.tail x))`. Simplify using `only [Module.End.mul_apply] at h2 h3`.
+
+Rewrite using `[tel_succ, tel_succ, map_add, h2, h3, h1, hf]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.AlgRepEndIrreducible.telGrp :
     ∀ (X M : Type) [AddCommGroup X] [Module ℂ X] [AddCommGroup M] [Module ℂ M] (n : ℕ) (a b : Fin n → X →ₗ[ℂ] Module.End ℂ M) (κ : Module.End ℂ M) (g : X → X),
       (∀ i y, κ * a i y = a i (g y) * κ) → (∀ i y, κ * b i y = b i (g y) * κ) →

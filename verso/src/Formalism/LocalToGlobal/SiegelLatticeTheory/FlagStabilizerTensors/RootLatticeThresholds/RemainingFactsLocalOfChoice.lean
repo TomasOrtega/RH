@@ -24,6 +24,9 @@ def AmplitudeBoundsForChoice {D : D7} (large₂ : SizeData₂ D) {X : HidaSettin
       (∀ τ, Formalism.QuantumDeterminants.IsSection D.R.k D.R.rS (WX C u u' τ).z (WX C u u' τ).z' (sec τ)) →
       ∏ τ, MMv D u u' (AX hB u u' τ) (sec τ) ≤ ENNReal.ofReal (large₂.sc.b ^ (Cn * (D.R.m : ℝ) ^ 2 * D.R.f) * Ire)
 
+/- English proof (translation)
+Take `⟨hIre, θ, C, hB, h0, hw, hl, ⟨νl, hQ, hU, hM⟩, hK, hW, hN⟩` from `h`. Conclude with `⟨hIre, θ, C, hB, h0, hw, hl, ⟨νl, hQ, locNormPK_of Y u u' C hB large₂ C1 νl hU hM hK hW⟩, hN⟩`.
+-/
 theorem remainingFactsLocal_of_choice {D : D7} {large₂ : SizeData₂ D} {X : HidaSetting D} {Y : Full X} {u u' : D.what₂.Word}
     {ν : X.B.I.Ginf → Measure X.B.I.Ginf} {C1 Cn Ire : ℝ} (h : AmplitudeBoundsForChoice large₂ Y u u' ν C1 Cn Ire) :
     LocalAmplitudeBounds large₂ Y u u' ν C1 Cn Ire := by
@@ -43,6 +46,9 @@ def AmplitudeBoundsForChoiceUniform : Prop :=
         MassDataAdmissible X Y u u' (bkU X hb Y u u' X0 ψ sd C Th vR Q i0 i0' νq) Irat Ire →
       ∀ ν, Pinned X u u' ν → AmplitudeBoundsForChoice large₂ Y u u' ν C1 Cn Ire
 
+/- English proof (translation)
+Use `Formalism.L2.SG.Pf.OOCore3.theoremB_fixed_of_expansion_lemmaJ hE hA fun Cg cb Cw cT CT C0 => ?_` and prove the remaining obligations. Take `⟨C1, Cn, a, b, h2⟩` from `hR Cg cb Cw cT CT C0`. Conclude with `⟨C1, Cn, a, b, fun C' Cl h1 h3 D large₂ X Y u u' hc hb X0 ψ hT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hO ν hp => remainingFactsLocal_of_choice (h2 C' Cl h1 h3 D large₂ X Y u u' hc hb X0 ψ hT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hO ν hp)⟩`.
+-/
 theorem theoremB_fixed_of_choice (hE : Formalism.MainNotions.RotatedPoints.WeightedExpansionRotated) (hA : AmpUnif) (hR : AmplitudeBoundsForChoiceUniform) :
     StepThmBPinnedC := by
   refine Formalism.L2.SG.Pf.OOCore3.theoremB_fixed_of_expansion_lemmaJ hE hA fun Cg cb Cw cT CT C0 => ?_

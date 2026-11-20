@@ -21,6 +21,19 @@ def RestWinNum (CM : ℝ) : Prop :=
 
 variable {C0 CE1 CE2 X}
 
+/- English proof (translation)
+Use `haveI : NeZero X.r := ⟨X.hm⟩`. Introduce `dl hdl aTop haTop x hx n₁ e he hli horth hdiag`. Establish `haTop' : aTop ∈ Fintype.piFinset (fun _ : Fin X.s => X.winA)`. Unfold `cbox at haTop`. Conclude with `(Finset.mem_filter.mp haTop).1`.
+
+Unfold `idx at hx`. Rewrite `hx` using `[Finset.mem_sigma]`. Establish `hK : Kept X.p X.r (X.S C0 CE1 CE2) aTop x.fst` using `(mem_keptSet _ _ _ _ _).mp (Finset.mem_filter.mp hx.1).1`. Establish `hlv : x.snd ∈ levels (gB C0 CE1 CE2 X aTop 0 x.fst)` using `hx.2`. Unfold `levels at hlv`.
+
+Establish `hLOK : (gB C0 CE1 CE2 X aTop 0 x.fst).LevelOK x.snd.1 x.snd.2` using `(Finset.mem_filter.mp hlv).2`. Establish `hJ : JN (gB C0 CE1 CE2 X aTop 0 x.fst) x.snd.2 ≤ (X.S C0 CE1 CE2).bPlus` using `le_trans (min_le_right _ _) (Nat.sub_le _ _)`. Take `⟨hob, hYD, h, hWh, hJh, hineq⟩` from `hN aTop haTop' x.fst hK _ hJ`. Take `⟨hA1, hdeg, hB, hz, -⟩` from `gB_deg_le C0 CE1 CE2 X hCYb hCE1 hCE2 hH aTop haTop' X.L.a haw x.fst hK`. Establish `hW : 0 < X.winA.card` using `Finset.card_pos.mpr ⟨_, haw⟩`.
+
+Establish `hk : 0 ≤ ⌊X.L.Y * D1r C0 CE1 CE2 X CM⌋` using `Int.floor_nonneg.mpr hYD`. Establish `hmain` using `hL X.p (2 * X.s + 1) X.r (gB C0 CE1 CE2 X aTop 0 x.fst) (gB_blockOK _ _ _ _ _ _ _) x.snd.1 x.snd.2 hLOK (aBig X) hA1 hdeg hB hz n₁ e he hli horth ⌊D1r C0 CE1 CE2 X CM⌋ hdiag (X.L.a - x.fst.oPlus) X.winA.card h _ hk hW hWh hJh`. Establish `hbe : ∀ (aPlus z : ℕ), aPlus - x.fst.oPlus = z → bejj (r` using `X.r) X.p (gB C0 CE1 CE2 X aTop aPlus x.fst) x.snd.1 x.snd.2 = bejj (r := X.r) X.p (setZ (gB C0 CE1 CE2 X aTop 0 x.fst) z) x.snd.1 x.snd.2 := by`. Introduce and unpack `aPlus z rfl`. Both sides reduce to the same expression.
+
+Rewrite using `[winA_sum]`. Use `le_trans (le_of_eq (Finset.sum_congr rfl (fun i _ => ?_))) (le_trans hmain ?_)` and prove the remaining obligations. Rewrite using `[hbe (X.L.a + i) (X.L.a - x.fst.oPlus + i) (by omega)]`. Both sides reduce to the same expression. Rewrite using `[mul_comm (5 / X.L.Y)]`.
+
+Apply `mul_le_mul_of_nonneg_left _ (Nat.cast_nonneg _)` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_left hineq (Nat.cast_nonneg _)`.
+-/
 theorem restWin_of_lvl {CYb Cde Ck CD Cb Cc : ℝ} (hCYb : 1 ≤ CYb) (hCE1 : 0 ≤ CE1) (hCE2 : 0 ≤ CE2)
     (hH : flipOneThree.HI C0 CYb Cde Ck CD Cb Cc X) (CM : ℝ) (hL : WinLvl) (hN : RestWinNum C0 CE1 CE2 X CM)
     (haw : X.L.a ∈ X.winA) :

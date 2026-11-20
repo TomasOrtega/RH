@@ -14,11 +14,17 @@ section
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Introduce `x hx i`. Conclude with `le_trans (show valuation k (Multiplicative.toAdd x i) ≤ valuation k (s₁ : k) from hx i) h`.
+-/
 theorem polyBall_le_of_valuation_le {n : ℕ} {s₁ s₂ : kˣ}
     (h : valuation k (s₁ : k) ≤ valuation k (s₂ : k)) : polyBall n s₁ ≤ polyBall n s₂ := by
   intro x hx i
   exact le_trans (show valuation k (Multiplicative.toAdd x i) ≤ valuation k (s₁ : k) from hx i) h
 
+/- English proof (translation)
+Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `w ⟨m, u, rfl⟩`. Conclude with `⟨⟨m.1, polyBall_le_of_valuation_le h m.2⟩, u, rfl⟩`.
+-/
 theorem twKer_polyBall_le_of_valuation_le (ψ : AddChar k Circle) {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (Multiplicative (Fin n → k)) V) (a : Fin n → k) {s₁ s₂ : kˣ}
     (h : valuation k (s₁ : k) ≤ valuation k (s₂ : k)) :
@@ -28,6 +34,13 @@ theorem twKer_polyBall_le_of_valuation_le (ψ : AddChar k Circle) {n : ℕ} {V :
   rintro w ⟨m, u, rfl⟩
   exact ⟨⟨m.1, polyBall_le_of_valuation_le h m.2⟩, u, rfl⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Establish `hx : ∀ i, valuation k ((Multiplicative.toAdd x.1) i) ≤ valuation k (s : k)` using `x.2`. Establish `hd : (a - b) ⬝ᵥ Multiplicative.toAdd x.1 ∈ cball c` using `by show valuation k _ ≤ valuation k (c : k)`. Unfold `dotProduct`. Use `Valuation.map_sum_le _ fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Valuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `key : a ⬝ᵥ Multiplicative.toAdd x.1 = b ⬝ᵥ Multiplicative.toAdd x.1 + (a - b) ⬝ᵥ Multiplicative.toAdd x.1`. Rewrite using `[sub_dotProduct]`. Normalize the expressions using the abelian group laws.
+
+Use `show ((Circle.toUnits (ψ (a ⬝ᵥ Multiplicative.toAdd x.1)) : ℂˣ) : ℂ) = ((Circle.toUnits (ψ (b ⬝ᵥ Multiplicative.toAdd x.1)) : ℂˣ) : ℂ)`. Rewrite using `[key, AddChar.map_add_eq_mul, hc _ hd, mul_one]`.
+-/
 theorem resChr_polyBall_eq (ψ : AddChar k Circle) {n : ℕ} {c s : kˣ}
     (hc : ∀ y ∈ cball c, ψ y = 1) {a b : Fin n → k}
     (hab : ∀ i, (a - b) i ∈ cball (c * s⁻¹)) :
@@ -49,6 +62,9 @@ theorem resChr_polyBall_eq (ψ : AddChar k Circle) {n : ℕ} {c s : kˣ}
     ((Circle.toUnits (ψ (b ⬝ᵥ Multiplicative.toAdd x.1)) : ℂˣ) : ℂ)
   rw [key, AddChar.map_add_eq_mul, hc _ hd, mul_one]
 
+/- English proof (translation)
+Break down `T.eq_empty_or_nonempty with hT | hT` into its components or cases. Conclude with `⟨1, by simp [hT]⟩`. Take `⟨a₀, -, ha₀⟩` from `T.exists_max_image (fun a => valuation k (S a : k)) hT`. Conclude with `⟨S a₀, ha₀⟩`.
+-/
 theorem exists_unit_valuation_ge {ι : Type} (S : ι → kˣ) (T : Finset ι) :
     ∃ s : kˣ, ∀ a ∈ T, valuation k (S a : k) ≤ valuation k (s : k) := by
   classical
@@ -59,6 +75,31 @@ theorem exists_unit_valuation_ge {ι : Type} (S : ι → kˣ) (T : Finset ι) :
 
 end
 
+/- English proof (translation)
+Establish `hU : IsOpen {z : Circle | 0 < (z : ℂ).re}` using `isOpen_lt continuous_const (Complex.continuous_re.comp continuous_subtype_val)`. Establish `hW : ψ ⁻¹' {z : Circle | 0 < (z : ℂ).re} ∈ 𝓝 (0 : k)`. Apply `hψ.continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Rewrite using `[AddChar.map_zero_eq_one]`. Conclude with `hU.mem_nhds (by simp)`.
+
+Establish `hW' : {f : Fin 1 → k | f 0 ∈ ψ ⁻¹' {z : Circle | 0 < (z : ℂ).re}} ∈ 𝓝 (0 : Fin 1 → k)` using `(continuous_apply 0).continuousAt.preimage_mem_nhds hW`. Take `⟨c, hcW⟩` from `GlobalTheory.SplitWeil.FourierPi.exists_box_subset hW'`. Use `⟨c, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ m : ℕ, m • y ∈ GlobalTheory.SplitWeil.cball c`. Introduce `m`.
+
+Proceed by induction on `m with`. Consider the case `zero => simp only [zero_smul, GlobalTheory.SplitWeil.cball, Set.mem_setOf_eq, map_zero]`. Conclude with `zero_le'`. Consider the case `succ m ih`. Rewrite using `[succ_nsmul]`.
+
+Simplify using `only [GlobalTheory.SplitWeil.cball, Set.mem_setOf_eq] at ih hy ⊢`. Conclude with `Valuation.map_add_le _ ih hy`. Establish `hpos : ∀ m : ℕ, 0 < (((ψ y) ^ m : Circle) : ℂ).re`. Introduce `m`. Use `hcW (show (fun _ : Fin 1 => m • y) ∈ GlobalTheory.SplitWeil.FourierPi.box (Fin 1) c from fun i _ => hmem m)` as an intermediate fact.
+
+Rewrite using `[← AddChar.map_nsmul_eq_pow]`. Conclude with `this`. Establish `hn : ∀ w : Circle, (w : ℂ).re * (w : ℂ).re + (w : ℂ).im * (w : ℂ).im = 1`. Introduce `w`. Rewrite using `[← Complex.normSq_apply]`.
+
+Conclude with `Circle.normSq_coe w`. Establish `hsq : ∀ w : Circle, ((w ^ 2 : Circle) : ℂ).re = 2 * (w : ℂ).re ^ 2 - 1`. Introduce `w`. Establish `h2 : ((w ^ 2 : Circle) : ℂ) = (w : ℂ) * (w : ℂ)` using `by rw [pow_two]; rfl`. Rewrite using `[h2, Complex.mul_re]`.
+
+Use polynomial arithmetic with `[hn w]`. Establish `hle1 : ∀ w : Circle, (w : ℂ).re ≤ 1` using `fun w => by nlinarith [hn w]`. Establish `hstep : ∀ j : ℕ, (ψ y) ^ (2 ^ (j + 1)) = ((ψ y) ^ (2 ^ j)) ^ 2` using `fun j => by rw [pow_succ, pow_mul]`. Establish `hgrow : ∀ j : ℕ, (2 : ℝ) ^ j * (1 - ((ψ y : Circle) : ℂ).re) ≤ 1 - ((((ψ y) ^ (2 ^ j) : Circle)) : ℂ).re`. Introduce `j`.
+
+Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[hstep j, hsq]`. Establish `h0` using `hpos (2 ^ j)`.
+
+Establish `h1` using `hle1 ((ψ y) ^ (2 ^ j))`. Rewrite using `[pow_succ]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hx0 : 1 ≤ ((ψ y : Circle) : ℂ).re`. Assume the negation of the conclusion as `hlt`.
+
+Use `push_neg at hlt`. Establish `hd : 0 < 1 - ((ψ y : Circle) : ℂ).re` using `by linarith`. Take `⟨j, hj⟩` from `pow_unbounded_of_one_lt (1 / (1 - ((ψ y : Circle) : ℂ).re)) (by norm_num : (1 : ℝ) < 2)`. Establish `h1` using `hgrow j`. Establish `h2` using `hpos (2 ^ j)`.
+
+Establish `h3 : 1 < (2 : ℝ) ^ j * (1 - ((ψ y : Circle) : ℂ).re)`. Rewrite `hj` using `[div_lt_iff₀ hd]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hre : ((ψ y : Circle) : ℂ).re = 1` using `le_antisymm (hle1 _) hx0`.
+
+Establish `him : ((ψ y : Circle) : ℂ).im = 0` using `by nlinarith [hn (ψ y)]`. Apply `Circle.ext` to reduce the goal to its premises. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[hre]`. Simplify using `[him]`.
+-/
 private theorem isHecke_div_and_resEtaPow_div {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ψ : AddChar k Circle) (hψ : Continuous ψ) : ∃ c : kˣ, ∀ y ∈ GlobalTheory.SplitWeil.cball c, ψ y = 1 := by
   have hU : IsOpen {z : Circle | 0 < (z : ℂ).re} :=
@@ -123,6 +164,13 @@ private theorem isHecke_div_and_resEtaPow_div {k : Type} [Field k] [ValuativeRel
   · simp [hre]
   · simp [him]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ψ hψ n V _ _ ρ v t hv`. Take `⟨c, hc⟩` from `isHecke_div_and_resEtaPow_div ψ hψ`. Use `choose S hS using hv`. Take `⟨T, hT⟩` from `(GlobalTheory.SplitWeil.FourierPi.isCompact_box (n := Fin n) t).elim_finite_subcover (fun a : Fin n → k => (fun b => b - a) ⁻¹' GlobalTheory.SplitWeil.FourierPi.box (Fin n) (c * (S a)⁻¹)) (fun a => (GlobalTheory.SplitWeil.FourierPi.isOpen_box _).preimage (continuous_id.sub contin …`. Take `⟨s, hs⟩` from `exists_unit_valuation_ge S T`.
+
+Use `⟨s, fun a ha => ?_⟩` and prove the remaining obligations. Establish `haK : a ∈ GlobalTheory.SplitWeil.FourierPi.box (Fin n) t` using `fun i _ => ha i`. Take `⟨b, hbT, hab⟩` from `Set.mem_iUnion₂.1 (hT haK)`. Establish `heq : resChr ψ a (polyBall n (S b)) = resChr ψ b (polyBall n (S b))` using `resChr_polyBall_eq ψ hc (fun i => hab i (Set.mem_univ i))`. Establish `h1` using `hS b`.
+
+Rewrite `h1` using `[← heq]`. Conclude with `twKer_polyBall_le_of_valuation_le ψ ρ a (hs b hbT) h1`.
+-/
 theorem exists_polyBall_twKer_uniform : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle), Continuous ψ →
     ∀ {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]

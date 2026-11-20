@@ -19,6 +19,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} [NeZero n] {W : LocWach PD LL O v n}
     {Lb : LevB W}
 
+/- English proof (translation)
+Establish `h : ∀ y, ιV PD (LL` using `LL) (V := T.V) y = ((PD.ι.toLinearMap.restrictScalars Qp).lTensor T.V) y := fun y => by`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x b => simp [ιV]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+
+Establish `hi : Function.Injective (PD.ι.toLinearMap.restrictScalars Qp)` using `PD.ι_inj`. Introduce `a b hab`. Rewrite `hab` using `[h, h]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap _ hi hab`.
+-/
 theorem crystalline_to_deRham_injective (T : LocLat G Qp LL O) : Function.Injective (ιV PD (LL := LL) (V := T.V)) := by
   have h : ∀ y, ιV PD (LL := LL) (V := T.V) y =
       ((PD.ι.toLinearMap.restrictScalars Qp).lTensor T.V) y := fun y => by
@@ -31,6 +36,11 @@ theorem crystalline_to_deRham_injective (T : LocLat G Qp LL O) : Function.Inject
   rw [h, h] at hab
   exact Module.Flat.lTensor_preserves_injective_linearMap _ hi hab
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `Lb.supp T i ζ x`. Apply `crystalline_to_deRham_injective (PD := PD) (LL := LL) T` to reduce the goal to its premises. Rewrite using `[← levN_eq, W.levN_smul, cv_map _ _ _ m hm]`. Unfold `cv`. Use `congr 1`.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[levN_eq]`.
+-/
 theorem levelExpansion_smul
     (levN_eq : ∀ (T : LocLat G Qp LL O) (i : ZMod n) (ζ : LL) (x : ↥(W.N T)) (k : ℤ),
       W.levN T i ζ x k = ιV PD (LL := LL) (V := T.V) (Lb.levB T i ζ x k))
@@ -44,6 +54,9 @@ theorem levelExpansion_smul
   funext j
   rw [levN_eq]
 
+/- English proof (translation)
+Take `⟨E, hE0, -, hE⟩` from `W.lev_π i 1 ⟨0, by simp⟩`. Establish `h` using `congrArg PowerSeries.constantCoeff hE`. Simplify using `only [map_add, map_mul, hE0, mul_one, map_one] at h`. Take the linear combination `h`.
+-/
 theorem level_pi_constantCoeff_zero (i : ZMod n) :
     PowerSeries.constantCoeff (W.lev i 1 (letπ : LetA O n)) = 0 := by
   obtain ⟨E, hE0, -, hE⟩ := W.lev_π i 1 ⟨0, by simp⟩
@@ -51,6 +64,11 @@ theorem level_pi_constantCoeff_zero (i : ZMod n) :
   simp only [map_add, map_mul, hE0, mul_one, map_one] at h
   linear_combination h
 
+/- English proof (translation)
+Establish `hX : PowerSeries.constantCoeff (W.lev i 1 W.X) = 0`. Establish `: W.X = (letπ : LetA O n)` using `by show (W.φA ^ (W.s - 1)) _ = _`. Rewrite using `[hs1, Nat.sub_self, pow_zero]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Conclude with `level_pi_constantCoeff_zero (W := W) i`. Apply `crystalline_to_deRham_injective (PD := PD) (LL := LL) T` to reduce the goal to its premises. Rewrite using `[← levN_eq, map_zero]`. Conclude with `((hP4.1 i 1 ⟨0, by simp⟩ hX).1 x k).2 hk`.
+-/
 theorem levelExpansion_neg_eq_zero
     (levN_eq : ∀ (T : LocLat G Qp LL O) (i : ZMod n) (ζ : LL) (x : ↥(W.N T)) (k : ℤ),
       W.levN T i ζ x k = ιV PD (LL := LL) (V := T.V) (Lb.levB T i ζ x k))
@@ -68,6 +86,9 @@ theorem levelExpansion_neg_eq_zero
   rw [← levN_eq, map_zero]
   exact ((hP4.1 i 1 ⟨0, by simp⟩ hX).1 x k).2 hk
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `hp9.2.2.1`. Rewrite using `[hw, map_mul, map_pow]`. Use `Dvd.dvd.mul_left (pow_dvd_pow_of_dvd ?_ _) _` and prove the remaining obligations. Rewrite using `[PowerSeries.X_dvd_iff]`. Conclude with `level_pi_constantCoeff_zero (W := W) i`.
+-/
 theorem level_pi0_X_pow_dvd
     (hp9 : Formalism.MainNotions.DeltaInvariantLattices.wachRingRelations W 1 (PD.p - 1) W.π₀ (fun _ => Polynomial.X + Polynomial.C ((PD.p : ℕ) : O)))
     (i : ZMod n) : (PowerSeries.X : PowerSeries LL) ^ (PD.p - 1) ∣ W.lev i 1 W.π₀ := by
@@ -77,6 +98,9 @@ theorem level_pi0_X_pow_dvd
   rw [PowerSeries.X_dvd_iff]
   exact level_pi_constantCoeff_zero (W := W) i
 
+/- English proof (translation)
+Use `levB_Γ T hT W.gam i 1 1 0 1 (by simp) ?_ (by simp) x hx k` and prove the remaining obligations. Rewrite using `[Nat.cast_one, W.gam_gen]`. Simplify using the standard rewrite rules.
+-/
 theorem levelExpansion_gamma
     (levB_Γ : ∀ T : LocLat G Qp LL O, IsCrys PD T.ρ → ∀ (g : W.Gam) (i : ZMod n) (ζ ζ' : LL) (j a : ℕ),
       IsPrimitiveRoot ζ (PD.p ^ j) → (j : WithTop ℚ) ≤ v (algebraMap O LL (W.χΓ g : O) - (a : LL)) →
@@ -90,6 +114,15 @@ theorem levelExpansion_gamma
   rw [Nat.cast_one, W.gam_gen]
   simp
 
+/- English proof (translation)
+Establish `hsub : (⟨W.γD T W.gam (x : W.DD T), hx⟩ : ↥(W.N T)) - x = W.π₀ ^ M • y` using `Subtype.ext (by`. Rewrite using `[Submodule.coe_sub, Submodule.coe_smul]`. Conclude with `hxy)`. Establish `hz : Lb.levB T i 1 (W.π₀ ^ M • y) k = 0`. Rewrite using `[levelExpansion_smul levN_eq]`.
+
+Use `cv_vanish _ _ (fun k hk => levelExpansion_neg_eq_zero levN_eq hs1 T hP4 i y k hk) ((PD.p - 1) * M) ?_ k hk` and prove the remaining obligations. Rewrite using `[map_pow, pow_mul]`. Conclude with `pow_dvd_pow_of_dvd (level_pi0_X_pow_dvd hp9 i) M`. Establish `he : Lb.levB T i 1 ⟨W.γD T W.gam (x : W.DD T), hx⟩ k - Lb.levB T i 1 x k = 0`. Rewrite using `[← Pi.sub_apply, ← map_sub, hsub]`.
+
+Conclude with `hz`. Rewrite `he` using `[levelExpansion_gamma levB_Γ T hT i x hx k]`. Establish `he' : ((algebraMap O LL (W.χΓ W.gam : O)) ^ k - 1) • Lb.levB T i 1 x k = 0`. Rewrite using `[sub_smul, one_smul]`. Conclude with `he`.
+
+Establish `hu : (algebraMap O LL (W.χΓ W.gam : O)) ^ k ≠ 1`. Use `ValuationPow.zpow_ne_one v PD.p PD.hp hp2 W.v_l _ ?_ k hk0.ne'` and prove the remaining obligations. Rewrite using `[W.gam_gen, hs1]`. Simplify using the standard rewrite rules. Conclude with `(smul_eq_zero.1 he').resolve_left (sub_ne_zero.2 hu)`.
+-/
 theorem expansion_at_one
     (levN_eq : ∀ (T : LocLat G Qp LL O) (i : ZMod n) (ζ : LL) (x : ↥(W.N T)) (k : ℤ),
       W.levN T i ζ x k = ιV PD (LL := LL) (V := T.V) (Lb.levB T i ζ x k))

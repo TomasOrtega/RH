@@ -19,6 +19,9 @@ open GlobalTheory.CompanionTheory.Ar.Pub.CxChart (chartSet chartComponents chart
 open GroundTheory.Heights₂.Heights (chartProjMatrix chartWeight chartPot chartDens chartAbsDens)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Pub.CxGoodProj.exists_goodProj_coord | exact GlobalTheory.CompanionTheory.Ar.Pub.CxGoodProj.exists_goodProj_coord | (intros; apply GlobalTheory.CompanionTheory.Ar.Pub.CxGoodProj.exists_goodProj_coord <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_goodProj_first_coordinate : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (Q : Ideal (MRingOver ℂ ι)) (e : ℕ) (i : (k : K) → ι k),
     IsCxVar Q e → (∃ z ∈ conePts Q, segre z i ≠ 0) →

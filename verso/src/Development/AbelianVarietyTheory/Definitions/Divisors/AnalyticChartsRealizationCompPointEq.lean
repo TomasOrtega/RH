@@ -15,6 +15,11 @@ namespace GlobalTheory.AnPer
 open CategoryTheory AlgebraicGeometry GlobalTheory.CatCoh GlobalTheory.Cris DividedPowers
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi
 
+/- English proof (translation)
+Use `(isDPMorphism_iff _ _ _).2 ⟨Ideal.map_le_iff_le_comap.2 h, fun n _ a ha ↦ ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit ((n.factorial : ℕ) : C')`. Use `(IsUnit.mk0 (n.factorial : ℚ) (by exact_mod_cast n.factorial_ne_zero)).map (algebraMap ℚ C')` as an intermediate fact. Simplify using `using this`. Use `hu.mul_left_cancel ?_` and prove the remaining obligations.
+
+Rewrite using `[δ'.factorial_mul_dpow_eq_pow (h a ha), ← map_pow, ← δ.factorial_mul_dpow_eq_pow ha, map_mul, map_natCast]`.
+-/
 theorem isDPMorphism_of_rat {C C' : Type} [CommRing C] [CommRing C'] [Algebra ℚ C'] {J : Ideal C} {J' : Ideal C'}
     (δ : DividedPowers J) (δ' : DividedPowers J') (φ : C →+* C') (h : ∀ c ∈ J, φ c ∈ J') : IsDPMorphism δ δ' φ := by
   refine (isDPMorphism_iff _ _ _).2 ⟨Ideal.map_le_iff_le_comap.2 h, fun n _ a ha ↦ ?_⟩
@@ -24,6 +29,15 @@ theorem isDPMorphism_of_rat {C C' : Type} [CommRing C] [CommRing C'] [Algebra �
   refine hu.mul_left_cancel ?_
   rw [δ'.factorial_mul_dpow_eq_pow (h a ha), ← map_pow, ← δ.factorial_mul_dpow_eq_pow ha, map_mul, map_natCast]
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `h`. Establish `key : ∀ l : List (ℕ × C), (∀ p ∈ l, p.2 ∈ J) → (l.map fun p ↦ δ.dpow p.1 p.2).prod ∈ J ^ (l.map Prod.fst).sum`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => simp`.
+
+Consider the case `cons p l ih`. Introduce `hl`. Establish `hp : p.2 ∈ J` using `hl p (by simp)`. Simplify using `only [List.map_cons, List.sum_cons, List.prod_cons, pow_add]`. Use `Ideal.mul_mem_mul ?_ (ih fun q hq ↦ hl q (by simp [hq]))` and prove the remaining obligations.
+
+Establish `hu : IsUnit ((p.1.factorial : ℕ) : C)`. Use `(IsUnit.mk0 (p.1.factorial : ℚ) (by exact_mod_cast p.1.factorial_ne_zero)).map (algebraMap ℚ C)` as an intermediate fact. Simplify using `using this`. Rewrite using `[← Ideal.unit_mul_mem_iff_mem _ hu, δ.factorial_mul_dpow_eq_pow hp]`. Conclude with `Ideal.pow_mem_pow hp _`.
+
+Use `⟨N, fun l hl hs ↦ ?_⟩` and prove the remaining obligations. Use `Ideal.pow_le_pow_right hs (key l hl)` as an intermediate fact. Rewrite `this` using `[hN, Ideal.zero_eq_bot, Ideal.mem_bot]`. Then use the resulting hypothesis.
+-/
 theorem isPDNilpotent_of_rat {C : Type} [CommRing C] [Algebra ℚ C] {J : Ideal C} (δ : DividedPowers J)
     (h : IsNilpotent J) : IsNilDP δ := by
   obtain ⟨N, hN⟩ := h
@@ -99,6 +113,9 @@ def obj (T : K.Obj) : Thick (dp0 B) s where
     congr 1
     exact RingHom.ext fun b ↦ congrArg (Ideal.Quotient.mk T.J) (T.ρ_cst (σ b))
 
+/- English proof (translation)
+Establish `e : (Ideal.quotientMap T'.J (f.φ : T.C →+* T'.C) f.mem).comp ((Ideal.Quotient.mk T.J).comp T.ρ) = ((Ideal.Quotient.mk T'.J).comp T'.ρ).comp (Charts.sh (Charts.Hom.le f))` using `RingHom.ext fun h ↦ Ideal.Quotient.eq.2 (f.close.sub_mem h)`. Rewrite using `[← r.compat (Charts.Hom.le f), ← Category.assoc, ← Category.assoc, ← Cris.spMap_comp, ← Cris.spMap_comp, e]`.
+-/
 theorem analyticChartsRealization_comp_point_eq {T T' : K.Obj} (f : T ⟶ T') :
     spMap (Ideal.quotientMap T'.J (f.φ : T.C →+* T'.C) f.mem) ≫ spMap ((Ideal.Quotient.mk T.J).comp T.ρ) ≫ r.x T.k =
       spMap ((Ideal.Quotient.mk T'.J).comp T'.ρ) ≫ r.x T'.k := by
@@ -131,11 +148,25 @@ namespace MulGrp
 
 open ReciprocityTheory.ChartRestriction.G.TB.ValAt Polynomial
 
+/- English proof (translation)
+The claim follows from `fun q _ ↦ by rw [show q = p from Subsingleton.elim (α := PrimeSpectrum ℂ) q p] exact h`.
+-/
 theorem top_le_preimage {Y : Scheme.{0}} {x : Sp ℂ ⟶ Y} {U : Y.Opens} {p : Sp ℂ} (h : x p ∈ U) : ⊤ ≤ x ⁻¹ᵁ U :=
   fun q _ ↦ by
     rw [show q = p from Subsingleton.elim (α := PrimeSpectrum ℂ) q p]
     exact h
 
+/- English proof (translation)
+Introduce `U f`. Set `p : Sp ℂ` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum ℂ)`. Establish `key : ∀ b₀ ∈ {b ∈ D | ⊤ ≤ z b ⁻¹ᵁ U}, ∃ N ∈ 𝓝 b₀, N ⊆ {b ∈ D | ⊤ ≤ z b ⁻¹ᵁ U} ∧ DifferentiableOn ℂ (fun b ↦ valAt' (z b) U f) N`. Introduce and unpack `b₀ ⟨hb₀, hU⟩`. Take `⟨r, hrU, hr0⟩` from `(isAffineOpen_top T).exists_basicOpen_le (V := U) ⟨z b₀ p, hU (Set.mem_univ _)⟩ trivial`.
+
+Establish `htop : ∀ b, ⊤ ≤ z b ⁻¹ᵁ (⊤ : T.Opens)` using `fun b p _ ↦ trivial`. Establish `hNo : IsOpen {b ∈ D | valAt' (z b) ⊤ r ≠ 0}` using `(hz r).continuousOn.isOpen_inter_preimage hD isOpen_ne`. Establish `hm : ∀ b, valAt' (z b) ⊤ r ≠ 0 → ⊤ ≤ z b ⁻¹ᵁ T.basicOpen r` using `fun b hb ↦ top_le_preimage ((valAt'_ne_zero_iff (z b) ⊤ (htop b) r p).1 hb)`. Take `⟨⟨a, s⟩, hk⟩` from `IsLocalization.surj (Submonoid.powers r) (T.presheaf.map (homOfLE hrU).op f)`. Take `⟨k, hks⟩` from `s.2`.
+
+Simplify using `only at hk`. Use `⟨_, hNo.mem_nhds ⟨hb₀, (valAt'_ne_zero_iff (z b₀) ⊤ (htop b₀) r p).2 hr0⟩, fun b hb ↦ ⟨hb.1, (hm b hb.2).trans (Scheme.Hom.preimage_mono _ hrU)⟩, ?_⟩` and prove the remaining obligations. Establish `hs : {b ∈ D | valAt' (z b) ⊤ r ≠ 0} ⊆ D` using `fun _ hb ↦ hb.1`. Establish `hq : DifferentiableOn ℂ (fun b ↦ valAt' (z b) ⊤ a * (valAt' (z b) ⊤ r ^ k)⁻¹) {b ∈ D | valAt' (z b) ⊤ r ≠ 0}` using `((hz a).mono hs).mul ((((hz r).mono hs).pow k).inv fun b hb ↦ pow_ne_zero _ hb.2)`. Use `hq.congr fun b hb ↦ ?_` and prove the remaining obligations.
+
+Establish `e` using `congrArg (valAt' (z b) (T.basicOpen r)) hk`. Establish `e2 : ∀ x : Γ(T, ⊤), valAt' (z b) (T.basicOpen r) (algebraMap Γ(T, ⊤) Γ(T, T.basicOpen r) x) = valAt' (z b) ⊤ x` using `fun x ↦ valAt'_res (z b) le_top (hm b hb.2) x`. Establish `e3 : valAt' (z b) ⊤ (r ^ k) = valAt' (z b) ⊤ r ^ k` using `map_pow (valHom (z b) ⊤ (htop b)) r k`. Rewrite `e` using `[valAt'_mul, valAt'_res (z b) hrU (hm b hb.2), e2, e2, ← hks, e3]`. Conclude with `(eq_mul_inv_iff_mul_eq₀ (pow_ne_zero _ hb.2)).2 e`.
+
+Use `⟨isOpen_iff_mem_nhds.2 fun b hb ↦ ?_, fun b hb ↦ ?_⟩` and prove the remaining obligations. Take `⟨N, hN, hs, -⟩` from `key b hb`. Conclude with `mem_of_superset hN hs`. Take `⟨N, hN, -, hd⟩` from `key b hb`. Conclude with `(hd.differentiableAt hN).differentiableWithinAt`.
+-/
 theorem isHolTo_affine {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {T : Scheme.{0}} [IsAffine T] {D : Set V}
     (hD : IsOpen D) {z : V → (Sp ℂ ⟶ T)}
     (hz : ∀ r : Γ(T, ⊤), DifferentiableOn ℂ (fun b ↦ valAt' (z b) ⊤ r) D) : IsHolTo D z := by
@@ -170,6 +201,11 @@ theorem isHolTo_affine {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {T 
   · obtain ⟨N, hN, -, hd⟩ := key b hb
     exact (hd.differentiableAt hN).differentiableWithinAt
 
+/- English proof (translation)
+Establish `h : ⊤ ≤ (spMap ψ) ⁻¹ᵁ ⊤` using `le_top`. Rewrite using `[valAt', dif_pos h, valAt]`. Establish `e : (spMap ψ).appLE ⊤ ⊤ h = (spMap ψ).appTop` using `(spMap ψ).appLE_eq_app`. Establish `n` using `congrArg (fun φ ↦ φ.hom t) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom ψ))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at n`.
+
+Rewrite using `[e]`. Use `erw [← n]`. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv_hom_id_apply _`.
+-/
 theorem valAt'_spMap {R : Type} [CommRing R] (ψ : R →+* ℂ) (t : R) :
     valAt' (spMap ψ) ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom t) = ψ t := by
   have h : ⊤ ≤ (spMap ψ) ⁻¹ᵁ ⊤ := le_top
@@ -181,6 +217,19 @@ theorem valAt'_spMap {R : Type} [CommRing R] (ψ : R →+* ℂ) (t : R) :
   erw [← n]
   exact (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv_hom_id_apply _
 
+/- English proof (translation)
+Introduce `per per' h`. Take `⟨G, hG⟩` from `H1.mk_eq_mk.1 h`. Set `G₀ : Hol (F.allCharts.W F.totChart)` to `G (F.allCharts.triv F.totChart)`. Establish `hd : ∀ a (p : Tot I g) (hp : p ∈ F.allCharts.W F.totChart), (dw a G₀).fn p = 0` using `fun a p hp ↦ by`. Establish `h0` using `congrFun (congrFun (congrFun hG _) _) (Charts.ptHom (F.allCharts.dualAt F.totChart p hp) (F.allCharts.le_refl F.totChart))`.
+
+Establish `h1` using `congrFun (congrFun (congrFun hG _) _) (F.allCharts.tangentHom F.totChart a p hp)`. Establish `h2 : (TrivSqZeroExt.inl (Hol.ev p hp (Charts.sh (F.allCharts.le_refl F.totChart) G₀)) : DualNumber ℂ) = tangentAt a p hp G₀` using `sub_right_injective (G := F.allCharts.Oc.obj (F.allCharts.dualAt F.totChart p hp)) (h0.trans h1.symm)`. Establish `h3` using `congrArg TrivSqZeroExt.snd h2`. Rewrite using `[← Hol.ev_apply p hp]`. Simplify `h3.symm` using `[tangentAt]`.
+
+Establish `hc : ∀ z ∈ F.V, ∀ w w', G₀.fn (z, w) = G₀.fn (z, w')` using `fun z hz w w' ↦ by`. Establish `hf : ∀ w, HasFDerivAt (fun w ↦ G₀.fn (z, w)) (0 : (Fin g → ℂ) →L[ℂ] ℂ) w` using `fun w ↦ by`. Establish `k` using `(G₀.analytic (z, w) hz).differentiableAt.hasFDerivAt.comp w (hasFDerivAt_prodMk_right (𝕜 := ℂ) z w)`. Use `k.congr_fderiv ?_` and prove the remaining obligations. Apply `ContinuousLinearMap.coe_injective` to reduce the goal to its premises.
+
+Use `LinearMap.pi_ext' fun a ↦ LinearMap.ext_ring ?_` and prove the remaining obligations. Use `(Hol.fn_der ((0, Pi.single a 1) : Tot I g) G₀ (p := (z, w)) hz).symm.trans (hd a (z, w) hz)` as an intermediate fact. Simplify using `using this`. Conclude with `is_const_of_fderiv_eq_zero (𝕜 := ℂ) (fun w ↦ (hf w).differentiableAt) (fun w ↦ (hf w).fderiv) w w'`. Use `AddMonoidHom.ext fun l ↦ Hol.ext_fn fun z hz ↦ ?_` and prove the remaining obligations.
+
+Establish `h3` using `congrFun (congrFun (congrFun hG _) _) (F.transl l)`. Establish `hl : F.allCharts.le l F.totChart F.totChart` using `fun _ h ↦ h`. Express the relevant statement in the definitionally equal form `G₀ - Charts.sh hl G₀ = F.allCharts.cst F.totChart (per l) - F.allCharts.cst F.totChart (per' l) at h3`. Establish `hp : ((z, 0) : Tot I g) ∈ F.allCharts.W F.totChart` using `hz`. Establish `h4` using `congrArg (Hol.ev _ hp) h3`.
+
+Simplify using `only [map_sub, Hol.ev_apply, Charts.fn_cst _ _ _ hp] at h4`. Rewrite `h4` using `[Charts.fn_sh _ _ hp, Fam.shift, hc z hz 0 (0 + F.τ l z), sub_self]`. Conclude with `sub_eq_zero.1 h4.symm`.
+-/
 theorem perCl_injective (F : Fam I g Λ) : Function.Injective F.allCharts.perCl := by
   intro per per' h
   obtain ⟨G, hG⟩ := H1.mk_eq_mk.1 h
@@ -238,26 +287,41 @@ def coord : Ring B := algebraMap B[X] (Ring B) Polynomial.X
 def pt {C : Type} [CommRing C] (σ : B →+* C) (e : C) (h : IsUnit e) : Ring B →+* C :=
   IsLocalization.Away.lift (Polynomial.X : B[X]) (g := eval₂RingHom σ e) (by simpa using h)
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun b ↦ by rw [RingHom.comp_apply, IsScalarTower.algebraMap_apply B B[X] (Ring B), pt, IsLocalization.Away.lift_eq] simp`.
+-/
 theorem pt_const {C : Type} [CommRing C] (σ : B →+* C) (e : C) (h : IsUnit e) :
     (pt σ e h).comp (algebraMap B (Ring B)) = σ := RingHom.ext fun b ↦ by
   rw [RingHom.comp_apply, IsScalarTower.algebraMap_apply B B[X] (Ring B), pt, IsLocalization.Away.lift_eq]
   simp
 
+/- English proof (translation)
+The claim follows from `(IsLocalization.Away.lift_eq _ _ _).trans (eval₂_X _ _)`.
+-/
 theorem pt_coord {C : Type} [CommRing C] (σ : B →+* C) (e : C) (h : IsUnit e) : pt σ e h (coord B) = e :=
   (IsLocalization.Away.lift_eq _ _ _).trans (eval₂_X _ _)
 
+/- English proof (translation)
+The claim follows from `IsLocalization.ringHom_ext (Submonoid.powers (Polynomial.X : B[X])) (Polynomial.ringHom_ext (fun b ↦ by simp [pt, hσ]) (by simp [pt, he]))`.
+-/
 theorem comp_pt {C C' : Type} [CommRing C] [CommRing C'] (φ : C →+* C') {σ : B →+* C} {e : C} (h : IsUnit e)
     {σ' : B →+* C'} {e' : C'} (h' : IsUnit e') (hσ : ∀ b, φ (σ b) = σ' b) (he : φ e = e') :
     φ.comp (pt σ e h) = pt σ' e' h' :=
   IsLocalization.ringHom_ext (Submonoid.powers (Polynomial.X : B[X])) (Polynomial.ringHom_ext
     (fun b ↦ by simp [pt, hσ]) (by simp [pt, he]))
 
+/- English proof (translation)
+The claim follows from `((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 ↦ ℂ) 0).analyticAt _).comp analyticAt_snd`.
+-/
 theorem analyticAt_fibre (p : Tot I 1) : AnalyticAt ℂ (fun p : Tot I 1 ↦ p.2 0) p :=
   ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 ↦ ℂ) 0).analyticAt _).comp analyticAt_snd
 
 def expFn (W : Opens (Tot I 1)) : Hol W :=
   Hol.mk (fun p ↦ Complex.exp (p.2 0)) fun p _ ↦ (analyticAt_fibre p).cexp'
 
+/- English proof (translation)
+The claim follows from `IsUnit.of_mul_eq_one (Hol.mk (fun p ↦ Complex.exp (-p.2 0)) fun p _ ↦ (analyticAt_fibre p).neg.cexp') (Subtype.ext (funext fun p ↦ by change Complex.exp _ * Complex.exp _ = 1 rw [← Complex.exp_add, add_neg_cancel, Complex.exp_zero]))`.
+-/
 theorem isUnit_expFn (W : Opens (Tot I 1)) : IsUnit (expFn W) :=
   IsUnit.of_mul_eq_one (Hol.mk (fun p ↦ Complex.exp (-p.2 0)) fun p _ ↦ (analyticAt_fibre p).neg.cexp')
     (Subtype.ext (funext fun p ↦ by
@@ -278,6 +342,9 @@ def real (K : Charts (fam I)) : Real K (str B) σ where
 def expPt (p : Tot I 1) : Ring B →+* ℂ :=
   pt ((Hol.ev (W := (fam I).V) p.1 trivial).toRingHom.comp σ) (Complex.exp (p.2 0)) (Complex.exp_ne_zero _).isUnit
 
+/- English proof (translation)
+The claim follows from `comp_pt _ _ _ (fun _ ↦ rfl) rfl`.
+-/
 theorem ev_comp_pt (K : Charts (fam I)) (k : K.K) (p : Tot I 1) (hp : p ∈ K.W k) :
     (Hol.ev p hp).toRingHom.comp (pt ((K.cst k).comp σ) (expFn (K.W k)) (isUnit_expFn _)) = expPt σ p :=
   comp_pt _ _ _ (fun _ ↦ rfl) rfl
@@ -298,23 +365,38 @@ def unif : Unif (fam I) (str B) σ where
     rw [← ev_comp_pt σ (fam I).allCharts (fam I).totChart p hp]
     exact Hol.ev_apply p hp _
 
+/- English proof (translation)
+The claim follows from `fun k p hp ↦ (Cris.spMap_comp _ _).symm.trans (congrArg spMap (ev_comp_pt σ K k p hp))`.
+-/
 theorem isFor (K : Charts (fam I)) : (real σ K).IsFor (unif σ) := fun k p hp ↦
   (Cris.spMap_comp _ _).symm.trans (congrArg spMap (ev_comp_pt σ K k p hp))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⊤, isAffineOpen_top _, fun _ _ ↦ le_top⟩`.
+-/
 theorem based : (unif σ).Based := ⟨⊤, isAffineOpen_top _, fun _ _ ↦ le_top⟩
 
+/- English proof (translation)
+The claim follows from `fun h ↦ by have e := congrArg (fun φ ↦ φ.hom (coord B)) (Spec.map_injective h) simp only [CommRingCat.hom_ofHom, expPt, pt_coord] at e simp at e norm_num at e`.
+-/
 theorem unif_ne (z : I → ℂ) : (unif σ).E (z, 0) ≠ (unif σ).E (z, fun _ ↦ Real.pi * Complex.I) := fun h ↦ by
   have e := congrArg (fun φ ↦ φ.hom (coord B)) (Spec.map_injective h)
   simp only [CommRingCat.hom_ofHom, expPt, pt_coord] at e
   simp at e
   norm_num at e
 
+/- English proof (translation)
+The claim follows from `perCl_injective _ ((h _ _ (isFor σ _)).symm.trans (h' _ _ (isFor σ _)))`.
+-/
 theorem isPeriod_unique {c : FirstDeRham (str B)} {per per' : ℤ →+ Hol (fam I).V} (h : IsPeriod (unif σ) c per)
     (h' : IsPeriod (unif σ) c per') : per = per' :=
   perCl_injective _ ((h _ _ (isFor σ _)).symm.trans (h' _ _ (isFor σ _)))
 
 end MulGrp
 
+/- English proof (translation)
+The claim follows from `fun K r _ ↦ by rw [map_zero] refine (H1.mk_eq_zero.2 ⟨0, ?_⟩).symm rw [map_zero] funext T T' f exact (@map_zero _ _ _ _ _ _ _ (@algebraMap _ T'.C _ _ T'.alg)).symm`.
+-/
 theorem isPeriod_zero_zero {s : X ⟶ Sp B} {σ : B →+* Hol F.V} (u : Unif F s σ) : IsPeriod u 0 0 := fun K r _ ↦ by
   rw [map_zero]
   refine (H1.mk_eq_zero.2 ⟨0, ?_⟩).symm
@@ -322,10 +404,16 @@ theorem isPeriod_zero_zero {s : X ⟶ Sp B} {σ : B →+* Hol F.V} (u : Unif F s
   funext T T' f
   exact (@map_zero _ _ _ _ _ _ _ (@algebraMap _ T'.C _ _ T'.alg)).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h ↦ MulGrp.isPeriod_unique σ h (isPeriod_zero_zero _), fun e ↦ e ▸ isPeriod_zero_zero _⟩`.
+-/
 example (σ : B →+* Hol (MulGrp.fam I).V) (per : ℤ →+ Hol (MulGrp.fam I).V) :
     IsPeriod (MulGrp.unif σ) 0 per ↔ per = 0 :=
   ⟨fun h ↦ MulGrp.isPeriod_unique σ h (isPeriod_zero_zero _), fun e ↦ e ▸ isPeriod_zero_zero _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨MulGrp.unif _, _, MulGrp.real _ _, MulGrp.based _, Fam.allCharts_rich _, Fam.allCharts_based _, MulGrp.isFor _ _, _, _, MulGrp.unif_ne _ 0⟩`.
+-/
 example : ∃ (u : Unif (MulGrp.fam Unit) (MulGrp.str ℂ) (algebraMap ℂ _)) (K : Charts (MulGrp.fam Unit))
     (r : Real K (MulGrp.str ℂ) (algebraMap ℂ _)), u.Based ∧ K.Rich ∧ K.Based ∧ r.IsFor u ∧ ∃ p q, u.E p ≠ u.E q :=
   ⟨MulGrp.unif _, _, MulGrp.real _ _, MulGrp.based _, Fam.allCharts_rich _, Fam.allCharts_based _, MulGrp.isFor _ _,

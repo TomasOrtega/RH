@@ -20,11 +20,21 @@ instance isLocalRing_dualNumber (R : Type) [CommRing R] [IsLocalRing R] : IsLoca
 
 variable {R : Type} [CommRing R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G]
 
+/- English proof (translation)
+Rewrite using `[Hom.one_def, Over.comp_left, Over.toUnit_left]`.
+-/
 theorem one_left (X : Over (Sp R)) : (1 : X ⟶ G).left = X.hom ≫ (η[G]).left := by
   rw [Hom.one_def, Over.comp_left, Over.toUnit_left]
 
 variable [IsCommMonObj G]
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun w => w.left) (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv_mem v)`. Simplify using `only [smT_left, one_left] at h`. Establish `hl0 : IsLocalHom (epsMul (0 : R))` using `⟨fun a ha => (TrivSqZeroExt.isUnit_iff_isUnit_fst).2 (by`. Simplify `(TrivSqZeroExt.isUnit_iff_isUnit_fst).1 ha)⟩` using `[epsMul]`. Establish `hl1 : IsLocalHom (algebraMap R (DualNumber R))` using `⟨fun a ha => by`.
+
+Simplify `(TrivSqZeroExt.isUnit_iff_isUnit_fst).1 ha⟩` using `[TrivSqZeroExt.algebraMap_eq_inl]`. Establish `e0 : (spMap (epsMul (0 : R))) (IsLocalRing.closedPoint (DualNumber R)) = IsLocalRing.closedPoint (DualNumber R)` using `Spec_closedPoint (f := CommRingCat.ofHom (epsMul (0 : R)))`. Establish `e1 : (spMap (algebraMap R (DualNumber R))) (IsLocalRing.closedPoint (DualNumber R)) = IsLocalRing.closedPoint R` using `Spec_closedPoint (f := CommRingCat.ofHom (algebraMap R (DualNumber R)))`. Establish `h2` using `congrArg (fun φ => φ (IsLocalRing.closedPoint (DualNumber R))) h`. Establish `h3 : (tv v).left (IsLocalRing.closedPoint (DualNumber R)) = (tv v).left ((spMap (epsMul (0 : R))) (IsLocalRing.closedPoint (DualNumber R)))` using `(congrArg (fun y => (tv v).left y) e0).symm`.
+
+Rewrite using `[h3]`. Use `h2.trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun y => (η[G]).left y) e1`.
+-/
 theorem tv_closedPoint (v : TanM (𝟙 (Sp R)) G) :
     (tv v).left (IsLocalRing.closedPoint (DualNumber R)) = origin G := by
   have h := congrArg (fun w => w.left) (ReciprocityTheory.ChartRestriction.G.PullbackSections.tv_mem v)
@@ -53,6 +63,9 @@ def tanDer (v : TanM (𝟙 (Sp R)) G) (f : G.left.presheaf.stalk (origin G)) : R
       Scheme.stalkClosedPointTo (R := CommRingCat.of (DualNumber R)) (tv v).left).hom f).snd
   else 0
 
+/- English proof (translation)
+Rewrite using `[tanDer, dif_pos (tv_closedPoint G v)]`.
+-/
 theorem tanDer_eq (v : TanM (𝟙 (Sp R)) G) (f : G.left.presheaf.stalk (origin G)) :
     tanDer G v f = (((G.left.presheaf.stalkCongr (Inseparable.of_eq (tv_closedPoint G v).symm)).hom ≫
       Scheme.stalkClosedPointTo (R := CommRingCat.of (DualNumber R)) (tv v).left).hom f).snd := by

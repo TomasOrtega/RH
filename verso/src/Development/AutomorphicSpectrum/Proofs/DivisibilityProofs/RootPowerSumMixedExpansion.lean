@@ -9,11 +9,17 @@ open ReciprocityTheory.ChartRestriction.G.Geo (HermLine IsSmoothHerm IsArithVar 
 
 namespace GlobalTheory.CompanionTheory.Ar.Num
 
+/- English proof (translation)
+Simplify using `only [mixDiff, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mixDiff_mul_leibniz {σ : Type} (A B : MvPolynomial σ ℝ) :
     mixDiff (A * B) = mixDiff A * rename Sum.inl B + rename Sum.inr A * mixDiff B := by
   simp only [mixDiff, map_mul]
   ring
 
+/- English proof (translation)
+Establish `h : Q.totalDegree = 0` using `Nat.eq_zero_of_le_zero hQ.totalDegree_le`. Rewrite `h` using `[MvPolynomial.totalDegree_eq_zero_iff_eq_C]`. Rewrite using `[h]`. Simplify using `only [mixDiff, rename_C, sub_self]`.
+-/
 theorem mixDiff_eq_zero_of_isHomogeneous_zero {σ : Type} {Q : MvPolynomial σ ℝ}
     (hQ : Q.IsHomogeneous 0) : mixDiff Q = 0 := by
   have h : Q.totalDegree = 0 := Nat.eq_zero_of_le_zero hQ.totalDegree_le
@@ -21,6 +27,25 @@ theorem mixDiff_eq_zero_of_isHomogeneous_zero {σ : Type} {Q : MvPolynomial σ �
   rw [h]
   simp only [mixDiff, rename_C, sub_self]
 
+/- English proof (translation)
+Introduce `Ψ _ _ N d k hk1 hk2 τ Q hQ`. Take `⟨Hs, hMix⟩` from `GlobalTheory.T.exists_mixed_difference_expansion (Ψ × Fin N) (d + 1 - k) Q hQ`. Unfold `IsMixExpansion at hMix`. Take `⟨hHs, hHdeg⟩` from `hMix`. Establish `hQl : (rename Sum.inl Q : MvPolynomial ((Ψ × Fin N) ⊕ (Ψ × Fin N)) ℝ).IsHomogeneous (d + 1 - k)` using `hQ.rename_isHomogeneous`.
+
+Establish `hE` using `GlobalTheory.T.power_sum_mixed_expansion (Ψ × Fin N) N k (d + 1 - k) (fun a => (τ, a)) (rename Sum.inl Q) hQl`. Unfold `IsMixExpansion at hE`. Take `⟨hE1, hE2⟩` from `hE`. Choose the witnesses or unpack the hypotheses as in `⟨Hs', hz, hmixQ, hdeg'⟩ : ∃ Hs' : Ψ × Fin N → MvPolynomial ((Ψ × Fin N) ⊕ (Ψ × Fin N)) ℝ, (k = d + 1 → ∀ i, Hs' i = 0) ∧ mixDiff Q = ∑ i, (X (Sum.inl i) - X (Sum.inr i)) * Hs' i ∧ ∀ i, (Hs' i).IsHomogeneous (d - k) := by`. Distinguish the cases in `hkd : k = d + 1`.
+
+Use `⟨fun _ => 0, fun _ _ => rfl, ?_, fun _ => MvPolynomial.isHomogeneous_zero _ _ _⟩` and prove the remaining obligations. Establish `h0 : Q.IsHomogeneous 0`. Establish `e : d + 1 - k = 0` using `by omega`. Rewrite `hQ` using `[e]`. Conclude with `hQ`.
+
+Simplify using `only [mul_zero, Finset.sum_const_zero]`. Conclude with `mixDiff_eq_zero_of_isHomogeneous_zero h0`. Use `⟨Hs, fun h => absurd h hkd, hHs, fun i => ?_⟩` and prove the remaining obligations. Establish `h3` using `hHdeg i`. Establish `e : d + 1 - k - 1 = d - k` using `by omega`.
+
+Rewrite `h3` using `[e]`. Conclude with `h3`. Unfold `IsMixExpansion`. Use `⟨Hs', hdeg', hz, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mixDiff_mul_leibniz, hmixQ]`.
+
+Establish `h1 : mixDiff (rootPs τ k : MvPolynomial (Ψ × Fin N) ℝ) * rename Sum.inl Q = ∑ i, (X (Sum.inl i) - X (Sum.inr i)) * ((∑ a ∈ Finset.univ.filter (fun a : Fin N => (τ, a) = i), rename (Sum.map (fun a => (τ, a)) (fun a => (τ, a))) (MvPolynomial.map (Int.castRingHom ℝ) (psumExpansion N …` using `hE1`. Establish `h2 : (rename Sum.inr (rootPs τ k : MvPolynomial (Ψ × Fin N) ℝ) : MvPolynomial ((Ψ × Fin N) ⊕ (Ψ × Fin N)) ℝ) = ∑ a : Fin N, X (Sum.inr (τ, a)) ^ k`. Simplify using `only [rootPs, map_sum, map_pow, rename_X]`. Rewrite using `[h1, h2, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `i`. Apply `MvPolynomial.IsHomogeneous.add` to reduce the goal to its premises. Establish `h4` using `hE2 i`. Establish `e : k - 1 + (d + 1 - k) = d` using `by omega`.
+
+Rewrite `h4` using `[e]`. Conclude with `h4`. Establish `hS : (∑ a : Fin N, X (Sum.inr (τ, a)) ^ k : MvPolynomial ((Ψ × Fin N) ⊕ (Ψ × Fin N)) ℝ).IsHomogeneous k` using `MvPolynomial.IsHomogeneous.sum _ _ _ (fun a _ => MvPolynomial.isHomogeneous_X_pow _ _)`. Distinguish the cases in `hkd : k = d + 1`. Rewrite using `[hz hkd i, mul_zero]`.
+
+Conclude with `MvPolynomial.isHomogeneous_zero _ _ _`. Establish `h5` using `hS.mul (hdeg' i)`. Establish `e : k + (d - k) = d` using `by omega`. Rewrite `h5` using `[e]`. Conclude with `h5`.
+-/
 theorem rootPs_mul_mixExpansion : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N d k : ℕ), 1 ≤ k → k ≤ d + 1 → ∀ (τ : Ψ) (Q : MvPolynomial (Ψ × Fin N) ℝ), Q.IsHomogeneous (d + 1 - k) → ∃ Hs : Ψ × Fin N → MvPolynomial ((Ψ × Fin N) ⊕ (Ψ × Fin N)) ℝ, (∀ i, (Hs i).IsHomogeneous (d - k)) ∧ (k = d + 1 → ∀ i, Hs i = 0) ∧ IsMixExpansion d (mixDiff (rootPs τ k * Q)) (fun i => (∑ a ∈ Finset.univ.filter (fun a : Fin N => (τ, a) = i), rename (Sum.map (fun a => (τ, a)) (fun a => (τ, a))) (MvPolynomial.map (Int.castRingHom ℝ) (psumExpansion N k a))) * rename Sum.inl Q + (∑ a : Fin N, X (Sum.inr (τ, a)) ^ k) * Hs i) := by
   intro Ψ _ _ N d k hk1 hk2 τ Q hQ
   obtain ⟨Hs, hMix⟩ := GlobalTheory.T.exists_mixed_difference_expansion (Ψ × Fin N) (d + 1 - k) Q hQ

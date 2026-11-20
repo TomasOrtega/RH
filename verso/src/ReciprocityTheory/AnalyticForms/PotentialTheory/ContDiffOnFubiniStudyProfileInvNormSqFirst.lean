@@ -12,20 +12,39 @@ def p1Re : (Fin 1 → ℂ) →L[ℝ] ℝ :=
 def p1Im : (Fin 1 → ℂ) →L[ℝ] ℝ :=
   Complex.imCLM.comp (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin 1 => ℂ) 0)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem rea_apply (w : Fin 1 → ℂ) : p1Re w = (w 0).re := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ima_apply (w : Fin 1 → ℂ) : p1Im w = (w 0).im := rfl
 
 def projectiveLineNormSqDerivative : (Fin 1 → ℂ) →L[ℝ] ((Fin 1 → ℂ) →L[ℝ] ℝ) :=
   (2 : ℝ) • (p1Re.smulRight p1Re + p1Im.smulRight p1Im)
 
+/- English proof (translation)
+Simplify using `only [projectiveLineNormSqDerivative, ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.smulRight_apply, rea_apply, ima_apply, smul_eq_mul]`.
+-/
 theorem dNormSq_apply (w v : Fin 1 → ℂ) :
     projectiveLineNormSqDerivative w v = 2 * ((w 0).re * (v 0).re + (w 0).im * (v 0).im) := by
   simp only [projectiveLineNormSqDerivative, ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply,
     ContinuousLinearMap.smulRight_apply, rea_apply, ima_apply, smul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`.
+-/
 theorem projLine_norm_sq_eq (z : ℂ) : ‖z‖ ^ 2 = z.re * z.re + z.im * z.im := by
   rw [Complex.sq_norm, Complex.normSq_apply]
 
+/- English proof (translation)
+Establish `h : (fun w : Fin 1 → ℂ => ‖w 0‖ ^ 2) = fun w => p1Re w * p1Re w + p1Im w * p1Im w`. Use function extensionality and compare the values at `w`. Rewrite using `[projLine_norm_sq_eq]`. Both sides reduce to the same expression. Rewrite using `[h]`.
+
+Establish `h2 : HasFDerivAt (fun w => p1Re w * p1Re w + p1Im w * p1Im w) ((p1Re w • p1Re + p1Re w • p1Re) + (p1Im w • p1Im + p1Im w • p1Im)) w` using `(p1Re.hasFDerivAt.mul p1Re.hasFDerivAt).add (p1Im.hasFDerivAt.mul p1Im.hasFDerivAt)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `v`. Rewrite using `[dNormSq_apply]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, rea_apply, ima_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem projLine_hasFDerivAt_normSq (w : Fin 1 → ℂ) :
     HasFDerivAt (fun w : Fin 1 → ℂ => ‖w 0‖ ^ 2) (projectiveLineNormSqDerivative w) w := by
   have h : (fun w : Fin 1 → ℂ => ‖w 0‖ ^ 2) = fun w => p1Re w * p1Re w + p1Im w * p1Im w := by
@@ -43,8 +62,18 @@ theorem projLine_hasFDerivAt_normSq (w : Fin 1 → ℂ) :
     ima_apply]
   ring
 
+/- English proof (translation)
+The claim follows from `(continuous_norm.comp (continuous_apply 0)).pow 2`.
+-/
 theorem projLine_continuous_normSq : Continuous (fun w : Fin 1 → ℂ => ‖w 0‖ ^ 2) := (continuous_norm.comp (continuous_apply 0)).pow 2
 
+/- English proof (translation)
+Establish `hqd : ∀ w : Fin 1 → ℂ, HasFDerivAt (fun w : Fin 1 → ℂ => ‖w 0‖ ^ 2) (projectiveLineNormSqDerivative w) w` using `projLine_hasFDerivAt_normSq`. Establish `hev : ∀ᶠ w in 𝓝 y, HasFDerivAt F (G' (‖w 0‖ ^ 2) • projectiveLineNormSqDerivative w) w`. Establish `h1 : ∀ᶠ w in 𝓝 y, ∀ᶠ z in 𝓝 w, F z = G (‖z 0‖ ^ 2)` using `hF.eventually_nhds`. Establish `h2 : ∀ᶠ w in 𝓝 y, HasDerivAt G (G' (‖w 0‖ ^ 2)) (‖w 0‖ ^ 2)` using `(projLine_continuous_normSq.tendsto y).eventually hG`. Use `filter_upwards [h1, h2] with w hw1 hw2`.
+
+Conclude with `(hw2.comp_hasFDerivAt w (hqd w)).congr_of_eventuallyEq hw1`. Establish `hfd : fderiv ℝ F =ᶠ[𝓝 y] fun w => G' (‖w 0‖ ^ 2) • projectiveLineNormSqDerivative w` using `hev.mono fun w hw => hw.fderiv`. Establish `hc : HasFDerivAt (fun w : Fin 1 → ℂ => G' (‖w 0‖ ^ 2)) (G'' • projectiveLineNormSqDerivative y) y` using `hG'.comp_hasFDerivAt y (hqd y)`. Establish `hL : HasFDerivAt (fun w : Fin 1 → ℂ => projectiveLineNormSqDerivative w) projectiveLineNormSqDerivative y` using `projectiveLineNormSqDerivative.hasFDerivAt`. Establish `h2` using `(hc.smul hL).congr_of_eventuallyEq hfd`.
+
+Rewrite using `[levi, h2.fderiv]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, smul_eq_mul, dNormSq_apply, Pi.smul_apply, Complex.mul_re, Complex.mul_im, Complex.I_re, Complex.I_im]`. Rewrite using `[projLine_norm_sq_eq (y 0), projLine_norm_sq_eq (v 0)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem projLine_leviForm_radial {F : (Fin 1 → ℂ) → ℝ} {G G' : ℝ → ℝ} {G'' : ℝ} {y : Fin 1 → ℂ}
     (hF : ∀ᶠ w in 𝓝 y, F w = G (‖w 0‖ ^ 2))
     (hG : ∀ᶠ t in 𝓝 (‖y 0‖ ^ 2), HasDerivAt G (G' t) t)
@@ -71,6 +100,9 @@ theorem projLine_leviForm_radial {F : (Fin 1 → ℂ) → ℝ} {G G' : ℝ → �
   rw [projLine_norm_sq_eq (y 0), projLine_norm_sq_eq (v 0)]
   ring
 
+/- English proof (translation)
+Rewrite using `[projLine_leviForm_radial hF hG hG' v]`. Conclude with `mul_nonneg hpos (by positivity)`.
+-/
 theorem projLine_leviForm_radial_nonneg {F : (Fin 1 → ℂ) → ℝ} {G G' : ℝ → ℝ} {G'' : ℝ} {y : Fin 1 → ℂ}
     (hF : ∀ᶠ w in 𝓝 y, F w = G (‖w 0‖ ^ 2))
     (hG : ∀ᶠ t in 𝓝 (‖y 0‖ ^ 2), HasDerivAt G (G' t) t)
@@ -80,6 +112,17 @@ theorem projLine_leviForm_radial_nonneg {F : (Fin 1 → ℂ) → ℝ} {G G' : �
   exact mul_nonneg hpos (by positivity)
 
 open scoped Classical in
+/- English proof (translation)
+Use `set g : ℂ → OnePoint ℂ := fun z => if z = 0 then (∞ : OnePoint ℂ) else ((z⁻¹ : ℂ) : OnePoint ℂ) with hg_def`. Establish `hg : Continuous g`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `z`. Distinguish the cases in `hz : z = 0`.
+
+Substitute `hz` using the available equality. Establish `hf0 : g 0 = ∞` using `by simp [hg_def]`. Use `show Tendsto g (𝓝 0) (𝓝 (g 0))`. Rewrite using `[← nhdsNE_sup_pure (0 : ℂ)]`. Use `Tendsto.sup ?_ (tendsto_pure_nhds g 0)` and prove the remaining obligations.
+
+Establish `h1 : Tendsto (fun w : ℂ => ((w⁻¹ : ℂ) : OnePoint ℂ)) (𝓝[≠] 0) (𝓝 ∞)`. Use `OnePoint.tendsto_coe_infty.comp ?_` and prove the remaining obligations. Rewrite using `[Filter.coclosedCompact_eq_cocompact, ← Metric.cobounded_eq_cocompact]`. Conclude with `Filter.tendsto_inv₀_nhdsNE_zero`. Rewrite using `[hf0]`.
+
+Use `h1.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with w hw`. Establish `hw' : w ≠ 0` using `hw`. Simplify using `[hg_def, hw']`. Establish `h1 : ContinuousAt (fun w : ℂ => ((w⁻¹ : ℂ) : OnePoint ℂ)) z` using `OnePoint.continuous_coe.continuousAt.comp (continuousAt_inv₀ hz)`.
+
+Use `h1.congr ?_` and prove the remaining obligations. Use `filter_upwards [isOpen_ne.mem_nhds hz] with w hw`. Simplify using `[hg_def, hw]`. Conclude with `hg.comp (continuous_apply 0)`.
+-/
 theorem continuous_chart1_inv :
     Continuous (fun w : Fin 1 → ℂ => if w 0 = 0 then (∞ : OnePoint ℂ) else (((w 0)⁻¹ : ℂ) : OnePoint ℂ)) := by
   set g : ℂ → OnePoint ℂ := fun z => if z = 0 then (∞ : OnePoint ℂ) else ((z⁻¹ : ℂ) : OnePoint ℂ)
@@ -109,14 +152,26 @@ theorem continuous_chart1_inv :
       simp [hg_def, hw]
   exact hg.comp (continuous_apply 0)
 
+/- English proof (translation)
+The claim follows from `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 => ℂ) 0).analyticAt w`.
+-/
 theorem projLine_analyticAt_apply_zero (w : Fin 1 → ℂ) : AnalyticAt ℂ (fun w : Fin 1 → ℂ => w 0) w := (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 => ℂ) 0).analyticAt w
 
+/- English proof (translation)
+The claim follows from `(projLine_analyticAt_apply_zero w).inv hw`.
+-/
 theorem projLine_analyticAt_inv_apply_zero {w : Fin 1 → ℂ} (hw : w 0 ≠ 0) :
     AnalyticAt ℂ (fun w : Fin 1 → ℂ => (w 0)⁻¹) w := (projLine_analyticAt_apply_zero w).inv hw
 
+/- English proof (translation)
+The claim follows from `AnalyticAt.pi fun _ => projLine_analyticAt_apply_zero w`.
+-/
 theorem projLine_analyticAt_const_apply_zero (w : Fin 1 → ℂ) :
     AnalyticAt ℂ (fun w : Fin 1 → ℂ => fun _ : Fin 1 => w 0) w := AnalyticAt.pi fun _ => projLine_analyticAt_apply_zero w
 
+/- English proof (translation)
+The claim follows from `AnalyticAt.pi fun _ => projLine_analyticAt_inv_apply_zero hw`.
+-/
 theorem projLine_analyticAt_const_inv_apply_zero {w : Fin 1 → ℂ} (hw : w 0 ≠ 0) :
     AnalyticAt ℂ (fun w : Fin 1 → ℂ => fun _ : Fin 1 => (w 0)⁻¹) w := AnalyticAt.pi fun _ => projLine_analyticAt_inv_apply_zero hw
 
@@ -124,14 +179,25 @@ def fubiniStudyProfile (t : ℝ) : ℝ := (1 / 2) * Real.log (1 + t)
 def fubiniStudyProfileInv (t : ℝ) : ℝ := (1 / 2) * Real.log (1 + t⁻¹)
 def fsQ (w : Fin 1 → ℂ) : ℝ := ‖w 0‖ ^ 2
 
+/- English proof (translation)
+The claim follows from `(contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ 0)`.
+-/
 theorem contDiff_fsQ : ContDiff ℝ (⊤ : ℕ∞) fsQ := (contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ 0)
 
+/- English proof (translation)
+Unfold `fubiniStudyProfile`. Use `contDiff_const.mul ((contDiff_const.add contDiff_fsQ).log fun w => ?_)` and prove the remaining obligations. Establish `h0 : 0 ≤ fsQ w` using `by unfold fsQ; positivity`. Conclude with `ne_of_gt (by linarith)`.
+-/
 theorem contDiff_fubiniStudyProfile_normSqFirst : ContDiff ℝ (⊤ : ℕ∞) (fun w => fubiniStudyProfile (fsQ w)) := by
   unfold fubiniStudyProfile
   refine contDiff_const.mul ((contDiff_const.add contDiff_fsQ).log fun w => ?_)
   have h0 : 0 ≤ fsQ w := by unfold fsQ; positivity
   exact ne_of_gt (by linarith)
 
+/- English proof (translation)
+Unfold `fubiniStudyProfileInv`. Establish `hne : ∀ w ∈ {w : Fin 1 → ℂ | w 0 ≠ 0}, fsQ w ≠ 0`. Introduce `w hw`. Unfold `fsQ`. Conclude with `pow_ne_zero 2 (norm_ne_zero_iff.mpr hw)`.
+
+Use `contDiffOn_const.mul ((contDiffOn_const.add (contDiff_fsQ.contDiffOn.inv hne)).log ?_)` and prove the remaining obligations. Introduce `w hw`. Establish `h0 : 0 ≤ (fsQ w)⁻¹` using `by unfold fsQ; positivity`. Use `show 1 + (fsQ w)⁻¹ ≠ 0`. Conclude with `ne_of_gt (by linarith)`.
+-/
 theorem contDiffOn_fubiniStudyProfileInv_normSqFirst : ContDiffOn ℝ (⊤ : ℕ∞) (fun w => fubiniStudyProfileInv (fsQ w)) {w | w 0 ≠ 0} := by
   unfold fubiniStudyProfileInv
   have hne : ∀ w ∈ {w : Fin 1 → ℂ | w 0 ≠ 0}, fsQ w ≠ 0 := by
@@ -144,6 +210,13 @@ theorem contDiffOn_fubiniStudyProfileInv_normSqFirst : ContDiffOn ℝ (⊤ : ℕ
   show 1 + (fsQ w)⁻¹ ≠ 0
   exact ne_of_gt (by linarith)
 
+/- English proof (translation)
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Take `⟨j, hj⟩` from `A.cover x`. Establish `hf' : A.SmoothOn Set.univ f` using `hf`. Establish `hc : ContinuousOn (f ∘ (A.chart j).symm) (A.chart j).target`.
+
+Establish `h0` using `(hf' j).continuousOn`. Simplify using `using h0`. Establish `h1 : ContinuousAt (f ∘ (A.chart j).symm) (A.chart j x)` using `hc.continuousAt ((A.chart j).open_target.mem_nhds ((A.chart j).map_source hj))`. Establish `h2 : ContinuousAt ((f ∘ (A.chart j).symm) ∘ (A.chart j)) x` using `h1.comp ((A.chart j).continuousAt hj)`. Use `h2.congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy`. Simplify using `[(A.chart j).left_inv hy]`.
+-/
 theorem projLine_continuous_of_smooth {e : ℕ} {X : Type*} [TopologicalSpace X]
     (A : FinHolAtlas e X) {f : X → ℝ} (hf : A.Smooth f) : Continuous f := by
   rw [continuous_iff_continuousAt]
@@ -161,11 +234,19 @@ theorem projLine_continuous_of_smooth {e : ℕ} {X : Type*} [TopologicalSpace X]
   filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy
   simp [(A.chart j).left_inv hy]
 
+/- English proof (translation)
+Establish `h1 : HasDerivAt (fun x : ℝ => 1 + x) 1 t` using `(hasDerivAt_id t).const_add 1`. Establish `h2` using `(h1.log (ne_of_gt (by linarith))).const_mul (1 / 2 : ℝ)`. Conclude with `h2.congr_deriv (by simp only [one_div])`.
+-/
 theorem hasDerivAt_fubiniStudyProfile {t : ℝ} (ht : -1 < t) : HasDerivAt fubiniStudyProfile ((1 / 2) * (1 + t)⁻¹) t := by
   have h1 : HasDerivAt (fun x : ℝ => 1 + x) 1 t := (hasDerivAt_id t).const_add 1
   have h2 := (h1.log (ne_of_gt (by linarith))).const_mul (1 / 2 : ℝ)
   exact h2.congr_deriv (by simp only [one_div])
 
+/- English proof (translation)
+Establish `ht0 : t ≠ 0` using `ht.ne'`. Establish `ht1 : t + 1 ≠ 0` using `by positivity`. Establish `h1 : HasDerivAt (fun x : ℝ => 1 + x⁻¹) (-(t ^ 2)⁻¹) t` using `(hasDerivAt_inv ht0).const_add 1`. Establish `hne : 1 + t⁻¹ ≠ 0` using `by positivity`. Establish `h2` using `(h1.log hne).const_mul (1 / 2 : ℝ)`.
+
+Use `h2.congr_deriv ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+-/
 theorem hasDerivAt_fubiniStudyProfileInv {t : ℝ} (ht : 0 < t) :
     HasDerivAt fubiniStudyProfileInv (-(1 / 2) * (t * (t + 1))⁻¹) t := by
   have ht0 : t ≠ 0 := ht.ne'

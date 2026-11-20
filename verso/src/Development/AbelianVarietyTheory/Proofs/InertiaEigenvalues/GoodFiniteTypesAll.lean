@@ -17,6 +17,15 @@ namespace GlobalTheory.GoodMem
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `hP hL`. Establish `hA` using `GlobalTheory.T.coefficient_duty_in_place hL`. Establish `hO` using `GlobalTheory.T.conjugate_vector_in_subspace hP`. Use `EvG.imp (EvG.inter hA hO) fun K _ _ _ _ h => ?_` and prove the remaining obligations. Use `large₂.imp (large₂.inter h.1 h.2) fun B f T _ g => ?_` and prove the remaining obligations.
+
+Introduce `hK w Z Wt p0 t nch n xd c _ _ hpin`. Establish `hop` using `g.1 hK w Z Wt p0 t nch n xd c ‹_› ‹_› hpin`. Establish `hrow` using `g.2 hK w hpin Z Wt t.hX t.r.z p0 t.r.Y t.r.intersectionNumber_baseChange t.exAt t.inGeo t.grp t.grpAt`. Use `GlobalTheory.T.exists_representation_component hP.green hP.zel hP.dz hL (w.D Z) _ nch n.tp c.a hop ?_` and prove the remaining obligations. Establish `key : ∀ (D' : D7) (_ : D' = withLoc c.a.nt.L) (r' : D'.what₂.FT → NG.FinTyp D'.host.E D'.R.r), HEq c.a.nt.rep r' → (∀ (I : GlobalTheory.TypeRec.Ident D') cp, GlobalTheory.TypeRec.IsComp I r' cp → ∀ σ, ∃ (V : Type) (_ : AddCommGroup V) (_ : Module ℂ V) (ρ : Representation ℂ (G0g D …`.
+
+Introduce and unpack `_ rfl r' hr h`. Establish `e : c.a.nt.rep = r'` using `eq_of_heq hr`. Rewrite using `[e]`. Introduce `I cp hc σ`. Conclude with `h ⟨I.i, I.cont⟩ cp hc σ`.
+
+Conclude with `key _ c.a.nt.eq _ c.row.rep_eq hrow`.
+-/
 theorem goodFTAll_atMem : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL,
     AtMem hL fun _ _ _ _ w Z _ _ t nch n c => GoodFTAll (w.D Z) := by
   intro hP hL

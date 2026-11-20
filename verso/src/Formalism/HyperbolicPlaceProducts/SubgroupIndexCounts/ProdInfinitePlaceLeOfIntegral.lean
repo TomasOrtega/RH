@@ -4,6 +4,19 @@ open NumberField
 
 namespace Formalism.SLP.GlobalBoundRefinements.P
 
+/- English proof (translation)
+Introduce `E _ _ α P hP hw h1 hm`. Take `⟨n, hn, hpow⟩` from `NumberField.Embeddings.pow_eq_one_of_norm_eq_one E ℂ (NumberField.RingOfIntegers.isIntegral_coe α) (fun φ => by`. Use `hw (NumberField.InfinitePlace.mk φ)` as an intermediate fact. Rewrite using `[NumberField.InfinitePlace.apply] at this)` and apply the resulting hypothesis. Establish `hpowO : α ^ n = 1` using `NumberField.RingOfIntegers.ext (by simpa using hpow)`.
+
+Establish `hu : Units.ofPowEqOne α n hpowO hn.ne' ∈ NumberField.Units.torsion E`. Rewrite using `[NumberField.Units.mem_torsion]`. Introduce `w`. Simplify using `using hw w`. Establish `hm1 : α ^ Nat.card (NumberField.Units.torsion E) = 1`.
+
+Use `congrArg (fun g : NumberField.Units.torsion E => (((g : (RingOfIntegers E)ˣ)) : RingOfIntegers E)) (pow_card_eq_one' (x := (⟨_, hu⟩ : NumberField.Units.torsion E)))` as an intermediate fact. Simplify using `only [SubgroupClass.coe_pow, Units.val_pow_eq_pow_val, Units.val_ofPowEqOne, OneMemClass.coe_one, Units.val_one] at this`. Conclude with `this`. Assume the negation of the conclusion as `hne`. Apply `hm` to reduce the goal to its premises.
+
+Establish `hsum : ∑ i ∈ Finset.range (Nat.card (NumberField.Units.torsion E)), α ^ i = 0`. Establish `h` using `geom_sum_mul α (Nat.card (NumberField.Units.torsion E))`. Rewrite `h` using `[hm1, sub_self]`. Conclude with `(mul_eq_zero.mp h).resolve_right (sub_ne_zero.mpr hne)`. Establish `hdiff : ∑ i ∈ Finset.range (Nat.card (NumberField.Units.torsion E)), (α ^ i - 1) ∈ P`.
+
+Use `Ideal.sum_mem _ (fun i _ => ?_)` and prove the remaining obligations. Take `⟨c, hc⟩ : α - 1 ∣ α ^ i - 1` from `by simpa using sub_dvd_pow_sub_pow α 1 i`. Rewrite using `[hc]`. Conclude with `P.mul_mem_right c h1`. Rewrite `hdiff` using `[Finset.sum_sub_distrib, hsum, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one, zero_sub, neg_mem_iff]`.
+
+Conclude with `hdiff`.
+-/
 theorem eq_one_of_sub_one_mem_prime : Formalism.SLP.GlobalBoundRefinements.RootUnityTriv := by
   intro E _ _ α P hP hw h1 hm
 
@@ -38,6 +51,15 @@ theorem eq_one_of_sub_one_mem_prime : Formalism.SLP.GlobalBoundRefinements.RootU
     zero_sub, neg_mem_iff] at hdiff
   exact hdiff
 
+/- English proof (translation)
+Introduce `F _ _ s q x hs hq hβ hw`. Take `⟨β, hβ⟩` from `hβ`. Establish `hβ0 : β ≠ 0`. Introduce `h0`. Establish `: s / q = 0` using `by rw [← hβ, h0]; simp`.
+
+Conclude with `div_ne_zero hs hq this`. Establish `hN : (1 : ℝ) ≤ ∏ w : NumberField.InfinitePlace F, w (s / q) ^ w.mult`. Rewrite using `[NumberField.InfinitePlace.prod_eq_abs_norm, ← hβ, ← Algebra.coe_norm_int]`. Establish `hne : Algebra.norm ℤ β ≠ 0` using `Algebra.norm_ne_zero_iff.mpr hβ0`. Establish `: (1 : ℤ) ≤ |Algebra.norm ℤ β|` using `Int.one_le_abs hne`.
+
+Conclude with `this` after adjusting the coercions. Establish `hdiv : ∏ w : NumberField.InfinitePlace F, w (s / q) ^ w.mult = (∏ w : NumberField.InfinitePlace F, w s ^ w.mult) / ∏ w : NumberField.InfinitePlace F, w q ^ w.mult`. Rewrite using `[← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl (fun w _ => ?_)` and prove the remaining obligations. Rewrite using `[map_div₀, div_pow]`.
+
+Establish `hqpos : 0 < ∏ w : NumberField.InfinitePlace F, w q ^ w.mult` using `Finset.prod_pos (fun w _ => pow_pos (NumberField.InfinitePlace.pos_iff.mpr hq) _)`. Establish `hsle : ∏ w : NumberField.InfinitePlace F, w s ^ w.mult ≤ ∏ w, (x w ^ 2) ^ w.mult` using `Finset.prod_le_prod (fun w _ => pow_nonneg (NumberField.InfinitePlace.pos_iff.mpr hs).le _) (fun w _ => pow_le_pow_left₀ (NumberField.InfinitePlace.pos_iff.mpr hs).le (hw w) _)`. Rewrite `hN` using `[hdiv, le_div_iff₀ hqpos, one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem prod_infinitePlace_le_of_integral : Formalism.SLP.GlobalBoundRefinements.ThmBNorm := by
   intro F _ _ s q x hs hq hβ hw
   obtain ⟨β, hβ⟩ := hβ

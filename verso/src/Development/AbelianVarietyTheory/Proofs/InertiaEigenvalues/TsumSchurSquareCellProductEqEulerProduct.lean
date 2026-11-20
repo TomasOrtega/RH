@@ -12,6 +12,17 @@ noncomputable section
 
 namespace GlobalTheory.RSCellSum
 
+/- English proof (translation)
+Set `g : {l : Fin n → ℕ // Antitone l} → (Fin n → ℤ)` to `fun l i => (l.1 i : ℤ)`. Establish `hg : Function.Injective g`. Introduce `a b h`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+
+Use `congrFun h i` as an intermediate fact. Simplify `this` using `[g]`. Establish `hs : Function.support (GlobalTheory.RSCell.locFac q α x) ⊆ Set.range g`. Introduce `ν hν`. Rewrite `hν` using `[Function.mem_support]`.
+
+Unfold `GlobalTheory.RSCell.locFac at hν`. Use `split_ifs at hν with h`. Use `⟨⟨fun i => (ν i).toNat, fun i j hij => Int.toNat_le_toNat (h.1 hij)⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[g, Int.toNat_of_nonneg (h.2 i)]`.
+
+Conclude with `absurd rfl hν`. Rewrite using `[← hg.tsum_eq hs, GlobalTheory.RSPole.schurDir]`. Use `tsum_congr fun l => ?_` and prove the remaining obligations. Establish `hA : Antitone (g l) ∧ ∀ i, 0 ≤ g l i` using `⟨fun i j hij => by simpa [g] using l.2 hij, fun i => by simp [g]⟩`. Rewrite using `[GlobalTheory.RSCell.locFac, if_pos hA]`.
+
+Simplify using `[g]`.
+-/
 theorem schurDir_eq_tsum_locFac (q : ℕ) {n : ℕ} (α : Fin n → ℂ) (x : ℝ) :
     GlobalTheory.RSPole.schurDir q α x = ∑' ν : Fin n → ℤ, GlobalTheory.RSCell.locFac q α x ν := by
   let g : {l : Fin n → ℕ // Antitone l} → (Fin n → ℤ) := fun l i => (l.1 i : ℤ)
@@ -37,6 +48,15 @@ theorem schurDir_eq_tsum_locFac (q : ℕ) {n : ℕ} (α : Fin n → ℂ) (x : �
   rw [GlobalTheory.RSCell.locFac, if_pos hA]
   simp [g]
 
+/- English proof (translation)
+Set `sh : GlobalTheory.CellDec.abelian₂ E n T ≃ GlobalTheory.CellDec.abelian₂ E n T` to `{ toFun := fun l => ⟨l.1 - l₀.1, fun v hv => by simp [l.2 v hv, l₀.2 v hv]⟩ invFun := fun l => ⟨l.1 + l₀.1, fun v hv => by simp [l.2 v hv, l₀.2 v hv]⟩ left_inv := fun l => Subtype.ext (by simp) right_inv := fun l => Subtype.ext (by simp) }`. Establish `h1 : ∑' l : GlobalTheory.CellDec.abelian₂ E n T, GlobalTheory.RSCell.cellProd T α x (l.1 - l₀.1) = ∑' l : GlobalTheory.CellDec.abelian₂ E n T, GlobalTheory.RSCell.cellProd T α x l.1` using `sh.tsum_eq (fun l => GlobalTheory.RSCell.cellProd T α x l.1)`. Rewrite using `[h1]`. Establish `hsupp : ∀ l : GlobalTheory.CellDec.abelian₂ E n T, ∀ w ∈ l.1.support, w ∉ T` using `fun l w hw hT => (Finsupp.mem_support_iff.1 hw) (l.2 w hT)`. Set `e : GlobalTheory.CellDec.abelian₂ E n T ≃ ({w : HeightOneSpectrum (𝓞 E) // w ∉ T} →₀ (Fin n → ℤ))` to `{ toFun := fun l => l.1.subtypeDomain (fun w => w ∉ T) invFun := fun ν => ⟨ν.extendDomain, fun v hv => by simp [Finsupp.extendDomain_apply, hv]⟩ left_inv := fun l => Subtype.ext (Finsupp.extendDomain_subtypeDomain l.1 (hsupp l)) right_inv := fun ν => Finsupp.subtypeDomain_extendD …`.
+
+Set `f : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} → (Fin n → ℤ) → ℝ≥0∞` to `fun w ν => GlobalTheory.RSCell.locFac (Ideal.absNorm w.1.asIdeal) (α w) x ν`. Establish `hf0 : ∀ w, f w 0 = 1` using `fun w => GlobalTheory.RSCell.locFac_zero _ _ _`. Set `h : HeightOneSpectrum (𝓞 E) → (Fin n → ℤ) → ℝ≥0∞` to `fun w ν => if hw : w ∈ T then 1 else GlobalTheory.RSCell.locFac (Ideal.absNorm w.asIdeal) (α ⟨w, hw⟩) x ν`. Establish `h2 : ∀ l : GlobalTheory.CellDec.abelian₂ E n T, GlobalTheory.RSCell.cellProd T α x l.1 = (e l).prod f`. Introduce `l`.
+
+Establish `: (e l).prod f = (l.1.subtypeDomain (fun w => w ∉ T)).prod (fun a b => h a.1 b)`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [h, dif_neg a.2, f]`. Both sides reduce to the same expression. Rewrite using `[this, Finsupp.prod_subtypeDomain_index (hsupp l)]`.
+
+Both sides reduce to the same expression. Rewrite using `[tsum_congr h2, e.tsum_eq (fun ν => ν.prod f), (GlobalTheory.EulerSum.euler_product_intVec_ennreal n f hf0).2, GlobalTheory.RSPole.eulD]`. Use `tprod_congr fun w => ?_` and prove the remaining obligations. Rewrite using `[schurDir_eq_tsum_locFac]`.
+-/
 theorem tsum_cellProd_sub_eq_eulD (E : Type) [Field E] [NumberField E] (n : ℕ)
     (T : Finset (HeightOneSpectrum (𝓞 E)))
     (α : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} → Fin n → ℂ) (x : ℝ) (l₀ : GlobalTheory.CellDec.abelian₂ E n T) :

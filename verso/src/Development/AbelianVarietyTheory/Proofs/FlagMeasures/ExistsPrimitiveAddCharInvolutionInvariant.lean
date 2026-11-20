@@ -5,6 +5,21 @@ open scoped Classical
 
 namespace GlobalTheory.GramCount
 
+/- English proof (translation)
+Break down `subsingleton_or_nontrivial B with hB | hB` into its components or cases. Use `⟨1, fun a ha => absurd (Subsingleton.elim a 0) ha, fun u => by simp⟩` and prove the remaining obligations. Take `⟨ψ, hψ⟩` from `(AddChar.exists_apply_ne_zero (a := (1 : B))).2 one_ne_zero`. Set `T : B →+ B` to `AddMonoidHom.id B + c.toAddMonoidHom`. Establish `hT : ∀ u, T u = u + c u` using `fun u => rfl`.
+
+Use `⟨ψ.compAddMonoidHom T, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha h`. Establish `hex : ∃ u, a * u + c (a * u) ≠ 0`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+
+Establish `h1` using `hne 1`. Establish `h2` using `hne ω`. Rewrite `h1` using `[mul_one]`. Rewrite `h2` using `[map_mul]`. Establish `h3 : a * (ω - c ω) = 0` using `by linear_combination h2 - c ω * h1`.
+
+Conclude with `ha ((hω.mul_left_eq_zero).1 h3)`. Take `⟨u, hu⟩` from `hex`. Establish `hs : c (a * u + c (a * u)) = a * u + c (a * u)`. Rewrite using `[map_add, hc, add_comm]`. Take `⟨s', hs'⟩` from `(hfix _ hs hu).exists_right_inv`.
+
+Establish `hcs : c s' = s'`. Establish `h4` using `congrArg c hs'`. Rewrite `h4` using `[map_mul, hs, map_one]`. Take the linear combination `s' * h4 - c s' * hs'`. Establish `h5 : T (a * (u * s')) = 1`.
+
+Rewrite using `[hT, ← mul_assoc, map_mul c (a * u), hcs, ← hs']`. Expand and normalize the polynomial expressions, which then agree. Establish `h6` using `DFunLike.congr_fun h (u * s')`. Rewrite `h6` using `[AddChar.mulShift_apply, AddChar.compAddMonoidHom_apply, h5]`. Conclude with `hψ (by simpa using h6)`.
+
+Introduce `u`. Simplify using `only [AddChar.compAddMonoidHom_apply, hT, hc, add_comm]`.
+-/
 theorem exists_isPrimitive_invol_invariant {B : Type} [CommRing B] [Fintype B] (c : B →+* B)
     (hc : ∀ u, c (c u) = u) (ω : B) (hω : IsUnit (ω - c ω))
     (hfix : ∀ t, c t = t → t ≠ 0 → IsUnit t) :

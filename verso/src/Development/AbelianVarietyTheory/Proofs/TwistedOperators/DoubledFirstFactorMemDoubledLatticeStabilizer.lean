@@ -12,6 +12,19 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.DiagonalFixingDo
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.KFinLoc
 open scoped TensorProduct Matrix
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d W v k hk`. Use `⟨?_, fun z hz => ?_⟩` and prove the remaining obligations. Introduce `u hu`. Rewrite using `[GlobalTheory.InertDbl.matD_inlD]`. Establish `h1` using `hk.1 u hu`.
+
+Establish `h1' : u • (mat k - 1) = 0` using `h1`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Use `congrFun (congrFun h1' i) j` as an intermediate fact. Simplify `this` using `[Matrix.fromBlocks, Matrix.one_apply]`.
+
+Apply the tactic sequence `all_goals simp [Matrix.fromBlocks, Matrix.one_apply]`. Establish `hinv : GlobalTheory.InertDbl.matD (GlobalTheory.InertDbl.inlD σ W k)⁻¹ = Matrix.fromBlocks (mat k⁻¹) 0 0 1`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression. Rewrite using `[hinv, GlobalTheory.InertDbl.matD_inlD]`.
+
+Take `⟨hz1, hz2⟩` from `hz`. Take `⟨a1, a2⟩` from `hk.2 _ hz1`. Use `⟨⟨?_, ?_⟩, ⟨?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [Matrix.fromBlocks_mulVec]`. Use `a1 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Function.comp_def]`. Simplify `hz2` using `[Matrix.fromBlocks_mulVec]`. Simplify using `only [Matrix.fromBlocks_mulVec]`. Use `a2 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Function.comp_def]`. Simplify `hz2` using `[Matrix.fromBlocks_mulVec]`.
+-/
 theorem GlobalTheory.InertDbl.inlD_mem_KAtD : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d : ℕ) (W : Spc F E d) (v : Pl F),
     ∀ k ∈ GlobalTheory.InertSph.KAt σ W v, GlobalTheory.InertDbl.inlD σ W k ∈ GlobalTheory.InertDbl.KAtD σ W v := by
   intro F E _ _ _ _ _ σ d W v k hk

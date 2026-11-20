@@ -5,6 +5,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.TriPr
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.CA UpperTheory.V.Pa Polynomial
 open scoped TensorProduct
 
+/- English proof (translation)
+Set `f : Matrix (Fin n) (Fin n) R →* Matrix (Fin n) (Fin n) R` to `{ toFun := fun A => (↑w⁻¹ : Matrix (Fin n) (Fin n) R) * A * ↑w map_one' := by simp map_mul' := fun A B => by`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (↑w : Matrix (Fin n) (Fin n) R) (↑w⁻¹ : Matrix (Fin n) (Fin n) R)]`. Simplify using `}`. Establish `hf : ∀ k, f ((M k : Matrix (Fin n) (Fin n) R) - c k • (1 : Matrix (Fin n) (Fin n) R)) = ((w⁻¹ * M k * w : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) - c k • (1 : Matrix (Fin n) (Fin n) R)`.
+
+Introduce `k`. Simplify using `[f, Matrix.mul_sub, Matrix.sub_mul, Units.val_mul]`. Establish `key : f (List.ofFn fun k => (M k : Matrix (Fin n) (Fin n) R) - c k • (1 : Matrix (Fin n) (Fin n) R)).prod = 0`. Rewrite using `[map_list_prod, List.map_ofFn]`. Apply `tri_prod_zero` to reduce the goal to its premises.
+
+Introduce `k i j hij`. Simplify using `only [Function.comp_apply, hf, Matrix.sub_apply, Matrix.smul_apply, Matrix.one_apply_ne (ne_of_lt hij).symm, smul_zero, sub_zero]`. Conclude with `h1 k i j hij`. Introduce `k`. Simplify using `only [Function.comp_apply, hf, Matrix.sub_apply, Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one]`.
+
+Rewrite using `[h2 k, sub_self]`. Establish `back : ∀ A : Matrix (Fin n) (Fin n) R, A = (↑w : Matrix (Fin n) (Fin n) R) * f A * (↑w⁻¹ : Matrix (Fin n) (Fin n) R)`. Introduce `A`. Simplify using `only [f, MonoidHom.coe_mk, OneHom.coe_mk, ← Matrix.mul_assoc]`. Simplify using `[Matrix.mul_assoc]`.
+
+Rewrite using `[back (List.ofFn _).prod, key]`. Simplify using the standard rewrite rules.
+-/
 private theorem conj_prod_zero {R : Type} [CommRing R] {n : ℕ} (w : GL (Fin n) R) (M : Fin n → GL (Fin n) R)
     (c : Fin n → R) (h1 : ∀ k i j, j < i → (w⁻¹ * M k * w : GL (Fin n) R) i j = 0)
     (h2 : ∀ k, (w⁻¹ * M k * w : GL (Fin n) R) k k = c k) :
@@ -38,6 +49,11 @@ private theorem conj_prod_zero {R : Type} [CommRing R] {n : ℕ} (w : GL (Fin n)
   rw [back (List.ofFn _).prod, key]
   simp
 
+/- English proof (translation)
+Establish `e : (List.ofFn fun k => M - c k • (1 : Matrix (Fin n) (Fin n) R)).prod = aeval M (∏ i, (X - C (c i)))`. Rewrite using `[← List.prod_ofFn, map_list_prod, List.map_ofFn]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Simplify using `only [Function.comp_apply, map_sub, aeval_X, aeval_C, Algebra.algebraMap_eq_smul_one]`. Rewrite using `[e, ← h, aeval_self_charpoly]`.
+-/
 private theorem ch_prod_zero {R : Type} [CommRing R] {n : ℕ} (M : Matrix (Fin n) (Fin n) R) (c : Fin n → R)
     (h : M.charpoly = ∏ i, (X - C (c i))) :
     (List.ofFn fun k => M - c k • (1 : Matrix (Fin n) (Fin n) R)).prod = 0 := by
@@ -51,6 +67,31 @@ private theorem ch_prod_zero {R : Type} [CommRing R] {n : ℕ} (M : Matrix (Fin 
     simp only [Function.comp_apply, map_sub, aeval_X, aeval_C, Algebra.algebraMap_eq_smul_one]
   rw [e, ← h, aeval_self_charpoly]
 
+/- English proof (translation)
+Introduce `l _ L G G0 h n x O _ _ _ _ _ _ r B _ _ _ u P z hz`. Establish `hs : ∀ (g : G.G₀) (b : B), P.rep (MonoidAlgebra.single g b) = P.f b • ((x.ρ (h.p₀ g) : GL (Fin n) x.A) : Matrix (Fin n) (Fin n) x.A)`. Introduce `g b`. Simplify using `[OoPt.rep, GDet.repAlg, mat]`. Establish `hfac : ∀ (g : G.G₀) (b : B), P.rep (MonoidAlgebra.single g 1 - MonoidAlgebra.single 1 b) = ((x.ρ (h.p₀ g) : GL (Fin n) x.A) : Matrix (Fin n) (Fin n) x.A) - P.f b • (1 : Matrix (Fin n) (Fin n) x.A)`.
+
+Introduce `g b`. Rewrite using `[map_sub, hs, hs]`. Simplify using the standard rewrite rules. Establish `hst : ∀ y, P.rep y = 0 → P.rep (G.frame.star O B n y) = 0`. Introduce `y hy`.
+
+Rewrite using `[rep_star, hy, Matrix.transpose_zero]`. Establish `hL : ∀ (m : ℕ) (F : Fin m → MonoidAlgebra B G.G₀), P.rep (List.ofFn F).prod = (List.ofFn fun i => P.rep (F i)).prod`. Introduce `m F`. Rewrite using `[map_list_prod, List.map_ofFn]`. Both sides reduce to the same expression.
+
+Establish `hφ : ∀ v (g : L.Gv v), h.p₀ (G.frame.φ v g) = G0.frame.φ v g`. Introduce `v g`. Conclude with `Subtype.ext (h.φ v g)`. Establish `kOrd : ∀ v g, P.rep (G.frame.oEl v (u.ψ v) g) = 0`. Introduce `v g`.
+
+Rewrite using `[GFrame.oEl, hL]`. Simplify using `only [hfac]`. Apply `conj_prod_zero (x.w v) (fun i => x.ρ (h.p₀ (G.frame.φ v (g i)))) (fun i => P.f ↑(u.ψ v i (g i)))` to reduce the goal to its premises. Introduce `k i j hij`. Rewrite using `[hφ]`.
+
+Conclude with `(x.tri v (g k)).1 i j hij`. Introduce `k`. Rewrite using `[hφ, (x.tri v (g k)).2 k, ← P.maps.2 v k]`. Both sides reduce to the same expression. Establish `kI : ∀ w, ∀ g ∈ r.Ip w, P.rep (MonoidAlgebra.single g 1) = 1`.
+
+Introduce `w g hg`. Rewrite `hg` using `[P.Ip w]`. Take `⟨a, ha, rfl⟩` from `hg`. Establish `e : h.p₀ (G.φu w a) = G0.φu w a` using `Subtype.ext (h.φu w a)`. Establish `hin : G0.φu w a ∈ G0.frame.Iu w` using `⟨a, ha, rfl⟩`.
+
+Rewrite using `[hs, e, x.ine w _ hin]`. Simplify using the standard rewrite rules. Establish `kq1 : ∀ j, P.rep (q1El (P.ph j) (P.U j)) = 0`. Introduce `j`. Rewrite using `[q1El, hL]`.
+
+Simplify using `only [hfac]`. Conclude with `ch_prod_zero _ _ (P.eig j)`. Establish `kq2 : ∀ j i, P.rep (q2El (P.ph j) (P.ta j) (P.U j) i (P.y j i)) = 0`. Introduce `j i`. Rewrite using `[q2El, map_mul, map_sub, map_sub, hs, hs, P.p_ta j, P.f_y j i]`.
+
+Simplify using the standard rewrite rules. Break down `hz with hz | hz` into its components or cases. Break down `hz with ⟨v, g, rfl | rfl⟩ | ⟨w, g, hg, rfl | rfl⟩` into its components or cases. Conclude with `kOrd v g`. Conclude with `hst _ (kOrd v g)`.
+
+Rewrite using `[map_sub, kI w g hg, map_one, sub_self]`. Rewrite using `[map_sub, rep_star, kI w g hg, map_one, Matrix.transpose_one, sub_self]`. Break down `hz with ⟨j, rfl | rfl⟩ | ⟨j, i, rfl | rfl⟩` into its components or cases. Conclude with `kq1 j`. Conclude with `hst _ (kq1 j)`.
+
+Conclude with `kq2 j i`. Conclude with `hst _ (kq2 j i)`.
+-/
 theorem UpperTheory.V.Pa.rep_gens :
     ∀ {l : ℕ} [Fact l.Prime] {L : Loc} {G G0 : Glob l L} {h : G.Hom G0} {n : ℕ} {x : NP G0.frame n} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] [Algebra O x.K] {r : Resid G.frame O n} {B : Type} [CommRing B] [Algebra O B] [IsCO O B] {u : Pair r B} (P : OoPt h x u), ∀ z ∈ P.gens, P.rep z = 0 := by
   intro l _ L G G0 h n x O _ _ _ _ _ _ r B _ _ _ u P z hz

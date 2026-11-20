@@ -26,6 +26,11 @@ private def slS (l : ℕ) [Fact l.Prime] : Subring (Bcr l) where
     change (PP l).ιB (-a) ∈ ((PP l).PD (botExt l)).Fil 0
     rw [map_neg]; exact Submodule.neg_mem _ ha
 
+/- English proof (translation)
+Establish `h : (PP l).ιB (algebraMap ↥(K0 K) (Bcr l) c) ∈ ((PP l).PD K).Fil 0`. Rewrite using `[← (PP l).PD_ι K, AlgHom.commutes, IsScalarTower.algebraMap_apply ↥(K0 K) ↥K.1 (PP l).R.BdR, Algebra.algebraMap_eq_smul_one]`. Conclude with `(((PP l).PD K).Fil 0).smul_mem _ ((PP l).PD K).one_mem`. Establish `h2` using `(PP l).PD_Fil K (botExt l) 0`. Express the relevant statement in the definitionally equal form `(PP l).ιB _ ∈ (((PP l).PD (botExt l)).Fil 0 : Set (PP l).R.BdR)`.
+
+Rewrite using `[← h2]`. Conclude with `h`.
+-/
 private theorem sl_alg (K : FinExt l) (c : ↥(K0 K)) : algebraMap ↥(K0 K) (Bcr l) c ∈ slS l := by
   have h : (PP l).ιB (algebraMap ↥(K0 K) (Bcr l) c) ∈ ((PP l).PD K).Fil 0 := by
     rw [← (PP l).PD_ι K, AlgHom.commutes, IsScalarTower.algebraMap_apply ↥(K0 K) ↥K.1 (PP l).R.BdR,
@@ -39,6 +44,25 @@ private theorem sl_alg (K : FinExt l) (c : ↥(K0 K)) : algebraMap ↥(K0 K) (Bc
 end UpperTheory.V
 
 open UpperTheory.V in
+/- English proof (translation)
+Introduce `l hl K f hf hσ d M M' A F hMM hA hφ hF a hFil β hβ`. Take `⟨u, hu, hφu⟩` from `UpperTheory.exists_crystalline_unit_frobenius_eigen l (-a)`. Establish `hMM' : M' * M = 1` using `mul_eq_one_comm.1 hMM`. Establish `hc : ∀ k : ℕ, ((PP l).φB)^[k] = ⇑((PP l).φB ^ k)` using `fun k => (AlgHom.coe_pow _ _).symm`. Establish `hit : ∀ k : ℕ, ((PP l).φB)^[k] (u : Bcr l) = algebraMap ℚ_[l] (Bcr l) (((l : ℚ_[l]) ^ (-a)) ^ k) * (u : Bcr l)`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply', ih, map_mul, AlgHom.commutes, hφu, pow_succ, map_mul, mul_assoc]`.
+
+Establish `huM : ∀ i j, (u : Bcr l) * M i j ∈ slS l` using `fun i j => by`. Use `((PP l).PD (botExt l)).Fil_mul _ _ _ _ hu (hFil i j)` as an intermediate fact. Rewrite `this` using `[neg_add_cancel, ← map_mul]`. Conclude with `this`. Establish `key : ∀ (k : ℕ) (E : Matrix (Fin d) (Fin d) ↥(K0 K)), M.map (((PP l).φB)^[k]) = M * E.map (algebraMap ↥(K0 K) (Bcr l)) → ((u : Bcr l) • M).map (((PP l).φB)^[k]) = ((u : Bcr l) • M) * (algebraMap ℚ_[l] ↥(K0 K) (((l : ℚ_[l]) ^ (-a)) ^ k) • E).map (algebraMap ↥(K0 K) (Bcr l))`.
+
+Introduce `k E hE`. Use extensionality with `i j`. Establish `h1` using `congrFun (congrFun hE i) j`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply] at h1`. Establish `h2 : ((PP l).φB)^[k] ((u : Bcr l) * M i j) = ((PP l).φB)^[k] (u : Bcr l) * ((PP l).φB)^[k] (M i j)`.
+
+Rewrite using `[hc, map_mul]`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[h2, hit, h1, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← IsScalarTower.algebraMap_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h` using `UpperTheory.norm_le_one_of_mem_spectrum_frobenius_matrix_fil_zero K f hf hσ ((u : Bcr l) • M) (((u⁻¹ : (Bcr l)ˣ) : Bcr l) • M') _ (by rw [Matrix.smul_mul, Matrix.mul_smul, smul_smul, Units.inv_mul, one_smul, hMM']) (fun k i j => by`. Take `⟨E, -, hE⟩` from `UpperTheory.frobenius_iterate_matrix_form K M A hA hφ k`. Establish `h1` using `congrFun (congrFun (key k E hE) i) j`. Rewrite `h1` using `[Matrix.map_apply, Matrix.mul_apply]`.
+
+Rewrite using `[h1]`. Conclude with `Subring.sum_mem (slS l) fun r _ => Subring.mul_mem _ (huM _ _) (sl_alg K _))`. Use the proof step `(key f F hF)`. Apply `h` to reduce the goal to its premises. Establish `hl0 : ((l : Om l) ^ f) ^ (-a) ≠ 0` using `zpow_ne_zero _ (pow_ne_zero _ (Nat.cast_ne_zero.2 hl.out.ne_zero))`.
+
+Establish `e : (algebraMap ℚ_[l] ↥(K0 K) (((l : ℚ_[l]) ^ (-a)) ^ f) • F).map (algebraMap ↥(K0 K) (Om l)) = Units.mk0 _ hl0 • F.map (algebraMap ↥(K0 K) (Om l))`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, map_pow, map_zpow₀, map_natCast, Units.smul_mk0]`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, mul_comm (f : ℤ)]`. Rewrite using `[e]`.
+
+Conclude with `(spectrum.smul_mem_smul_iff (r := Units.mk0 _ hl0)).2 hβ`.
+-/
 theorem UpperTheory.filtration_entries_of_frobenius_matrix :
     ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) (f : ℕ), 0 < f → (∀ x : ↥(K0 K), (((PP l).PD K).σ)^[f] x = x) → ∀ {d : ℕ} (M M' : Matrix (Fin d) (Fin d) (Bcr l)) (A F : Matrix (Fin d) (Fin d) ↥(K0 K)), M * M' = 1 → IsUnit A.det → M.map (PP l).φB = M * A.map (algebraMap ↥(K0 K) (Bcr l)) → M.map (((PP l).φB)^[f]) = M * F.map (algebraMap ↥(K0 K) (Bcr l)) → ∀ a : ℤ, (∀ i j, (PP l).ιB (M i j) ∈ ((PP l).PD (botExt l)).Fil a) → ∀ β ∈ spectrum (Om l) (F.map (algebraMap ↥(K0 K) (Om l))), ‖((l : Om l) ^ f) ^ (-a) * β‖ ≤ 1 := by
   intro l hl K f hf hσ d M M' A F hMM hA hφ hF a hFil β hβ

@@ -15,6 +15,11 @@ namespace QrCap
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Introduce `i hi`. Unfold `bvec`. Rewrite using `[Pi.single_apply, if_neg]`. Introduce and unpack `rfl`. Simplify using `[wI] at hi`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem inWb_bvec_wI (j : Fin (k + 1)) : inWb k r (bvec (wI k r j)) := by
   intro i hi
   unfold bvec
@@ -29,6 +34,13 @@ section Frame
 
 variable {z : Fin (2 * r + k + 1) → ℂ} {g : Mx k r}
 
+/- English proof (translation)
+Use `⟨fun a => ?_, fun a b => ?_, fun a v hv => ?_⟩` and prove the remaining obligations. Conclude with `Qx8.inWb_mulVec (show g ∈ Glev k r (Fin.last r) from ⟨hgU, fun c _ => hgfix c⟩) (inWb_bvec_wI _)`. Unfold `fr`. Rewrite using `[Qx8.herm_UH hgU, Qx8.herm_wI]`. Distinguish the cases in `h : a = b`.
+
+Substitute `h` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl, if_neg (Fin.castSucc_lt_last a).ne]`. Rewrite using `[if_neg (fun e => h (Fin.castSucc_injective _ e)), if_neg h]`. Rewrite `hv` using `[List.mem_singleton]`. Substitute `hv` using the available equality.
+
+Unfold `fr`. Rewrite using `[← hgz, Qx8.herm_UH hgU, Qx8.herm_smul_right', Qx8.herm_wI, if_neg (Fin.castSucc_lt_last a).ne, mul_zero]`.
+-/
 theorem fr_frame (hgU : g ∈ UH (Hpk k r))
     (hgfix : ∀ a : Fin r, g *ᵥ bvec (eI k r a) = bvec (eI k r a) ∧ g *ᵥ bvec (esI k r a) = bvec (esI k r a))
     (s : ℂ) (hgz : g *ᵥ (s • bvec (wI k r (Fin.last k))) = z) : IsFrameOf k r [z] (fr k r g) := by
@@ -45,16 +57,25 @@ theorem fr_frame (hgU : g ∈ UH (Hpk k r))
     unfold fr
     rw [← hgz, Qx8.herm_UH hgU, Qx8.herm_smul_right', Qx8.herm_wI, if_neg (Fin.castSucc_lt_last a).ne, mul_zero]
 
+/- English proof (translation)
+Use `j.isLt` as an intermediate fact. Unfold `GBasic.sig`. Rewrite using `[if_neg (by simp only [wI]; omega)]`.
+-/
 theorem sig_wI (j : Fin (k + 1)) : GBasic.sig k r (wI k r j) = wI k r j := by
   have := j.isLt
   unfold GBasic.sig
   rw [if_neg (by simp only [wI]; omega)]
 
+/- English proof (translation)
+Use `j.isLt` as an intermediate fact. Unfold `GBasic.sgn`. Rewrite using `[if_neg (by simp only [wI, Fin.val_castSucc]; omega)]`.
+-/
 theorem sgn_wI_cs (j : Fin k) : GBasic.sgn k r (wI k r j.castSucc) = 1 := by
   have := j.isLt
   unfold GBasic.sgn
   rw [if_neg (by simp only [wI, Fin.val_castSucc]; omega)]
 
+/- English proof (translation)
+Unfold `fr`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Qx8.herm_bvec_right, Qx8.Hpk_mulVec, sig_wI, sgn_wI_cs, one_mul]`.
+-/
 theorem herm_fr (hgU : g ∈ UH (Hpk k r)) (v : Fin (2 * r + k + 1) → ℂ) (b : Fin k) :
     herm (Hpk k r) v (fr k r g b) = (g⁻¹ *ᵥ v) (wI k r b.castSucc) := by
   unfold fr
@@ -64,6 +85,11 @@ theorem herm_fr (hgU : g ∈ UH (Hpk k r)) (v : Fin (2 * r + k + 1) → ℂ) (b 
     _ = (g⁻¹ *ᵥ v) (wI k r b.castSucc) := by
       rw [Qx8.herm_bvec_right, Qx8.Hpk_mulVec, sig_wI, sgn_wI_cs, one_mul]
 
+/- English proof (translation)
+Rewrite using `[Matrix.single_mulVec]`. Use extensionality with `l`. Distinguish the cases in `h : l = x`. Substitute `h` using the available equality. Simplify using `[bvec]`.
+
+Simplify using `[bvec, Pi.single_apply, h]`.
+-/
 theorem single_mulVec_one {n : ℕ} (x y : Fin n) (v : Fin n → ℂ) : Matrix.single x y (1 : ℂ) *ᵥ v = v y • bvec x := by
   rw [Matrix.single_mulVec]
   ext l
@@ -72,6 +98,9 @@ theorem single_mulVec_one {n : ℕ} (x y : Fin n) (v : Fin n → ℂ) : Matrix.s
     simp [bvec]
   · simp [bvec, Pi.single_apply, h]
 
+/- English proof (translation)
+Apply `SkewHermitianParts.mat_ext_b` to reduce the goal to its premises. Introduce `p`. Rewrite using `[Qx8.unitB_mulVec, herm_fr hgU, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, single_mulVec_one, Matrix.mulVec_smul]`. Both sides reduce to the same expression.
+-/
 theorem unitB_fr (hgU : g ∈ UH (Hpk k r)) (a b : Fin k) :
     unitB (Hpk k r) (fr k r g) a b = g * Matrix.single (wI k r a.castSucc) (wI k r b.castSucc) (1 : ℂ) * g⁻¹ := by
   apply SkewHermitianParts.mat_ext_b
@@ -82,6 +111,13 @@ theorem unitB_fr (hgU : g ∈ UH (Hpk k r)) (a b : Fin k) :
 
 end Frame
 
+/- English proof (translation)
+Apply `SkewHermitianParts.mat_ext_b` to reduce the goal to its premises. Introduce `p`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Qx8.unitB_mulVec]`. Establish `h1 : (unitB (Hpk k r) Bs a b)ᴴ *ᵥ (Hpk k r *ᵥ bvec p) = herm (Hpk k r) (bvec p) (Bs a) • (Hpk k r *ᵥ Bs b)`. Use function extensionality and compare the values at `q`.
+
+Establish `e1 : ((unitB (Hpk k r) Bs a b)ᴴ *ᵥ (Hpk k r *ᵥ bvec p)) q = star (herm (Hpk k r) (bvec q) (Bs b)) * (star (Bs a) ⬝ᵥ (Hpk k r *ᵥ bvec p))`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.conjTranspose_apply, unitB, Matrix.of_apply, star_mul', Pi.star_apply, Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `x _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, Qx2.herm_star, Qx8.herm_bvec_right, Pi.smul_apply, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression. Rewrite using `[h1, Qx8.hpk_inv, Matrix.mulVec_smul, Matrix.mulVec_mulVec, WeylGroupFacts.hpk_sq, Matrix.one_mulVec]`.
+-/
 theorem unitB_adj {m : ℕ} (Bs : Fin m → Fin (2 * r + k + 1) → ℂ) (a b : Fin m) :
     (Hpk k r)⁻¹ * (unitB (Hpk k r) Bs a b)ᴴ * Hpk k r = unitB (Hpk k r) Bs b a := by
   apply SkewHermitianParts.mat_ext_b
@@ -103,11 +139,17 @@ theorem unitB_adj {m : ℕ} (Bs : Fin m → Fin (2 * r + k + 1) → ℂ) (a b : 
     rfl
   rw [h1, Qx8.hpk_inv, Matrix.mulVec_smul, Matrix.mulVec_mulVec, WeylGroupFacts.hpk_sq, Matrix.one_mulVec]
 
+/- English proof (translation)
+Unfold `hpart1`. Rewrite using `[unitB_adj Bs a a, sub_self, smul_zero]`.
+-/
 theorem hpart1_self {m : ℕ} (Bs : Fin m → Fin (2 * r + k + 1) → ℂ) (a : Fin m) :
     hpart1 (Hpk k r) (unitB (Hpk k r) Bs a a) = 0 := by
   unfold hpart1
   rw [unitB_adj Bs a a, sub_self, smul_zero]
 
+/- English proof (translation)
+Unfold `hpart2`. Rewrite using `[unitB_adj Bs a a, ← two_smul ℂ, smul_smul]`. Use `congr 1`. Rewrite using `[one_div, mul_inv, mul_comm, ← mul_assoc, mul_inv_cancel₀ two_ne_zero, one_mul, Complex.inv_I]`.
+-/
 theorem hpart2_self {m : ℕ} (Bs : Fin m → Fin (2 * r + k + 1) → ℂ) (a : Fin m) :
     hpart2 (Hpk k r) (unitB (Hpk k r) Bs a a) = (-Complex.I) • unitB (Hpk k r) Bs a a := by
   unfold hpart2
@@ -120,6 +162,23 @@ def Dg (θ : Fin k → ℝ) : Matrix (Fin k) (Fin k) ℂ := Matrix.diagonal fun 
 def dθ (k r : ℕ) (θ : Fin k → ℝ) (i : Fin (2 * r + k + 1)) : ℂ :=
   if h : r ≤ i.val ∧ i.val < r + k then (θ ⟨i.val - r, by omega⟩ : ℂ) * Complex.I else 0
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.sum_apply, Matrix.diagonal_apply]`. Simplify using `only [Matrix.smul_apply, Matrix.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Rewrite using `[if_pos rfl]`. Unfold `dθ`. Distinguish the cases in `hin : r ≤ i.val ∧ i.val < r + k`. Rewrite using `[dif_pos hin, Finset.sum_eq_single ⟨i.val - r, by omega⟩]`. Rewrite using `[if_pos]`.
+
+Apply the tactic sequence `constructor <;> (apply Fin.ext; simp only [wI, Fin.val_castSucc]; omega)`. Introduce `c _ hc`. Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, -⟩`. Apply `hc` to reduce the goal to its premises.
+
+Apply `Fin.ext` to reduce the goal to its premises. Use `congrArg Fin.val h1` as an intermediate fact. Simplify using `only [wI, Fin.val_castSucc] at this`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[dif_neg hin]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c _`.
+
+Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, -⟩`. Apply `hin` to reduce the goal to its premises. Use `congrArg Fin.val h1` as an intermediate fact. Use `c.isLt` as an intermediate fact.
+
+Simplify using `only [wI, Fin.val_castSucc] at *`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hij]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c _`.
+
+Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `hij (h1.symm.trans h2)`.
+-/
 theorem sum_single (θ : Fin k → ℝ) :
     ∑ c : Fin k, ((θ c : ℂ) * Complex.I) • Matrix.single (wI k r c.castSucc) (wI k r c.castSucc) (1 : ℂ) =
       Matrix.diagonal (dθ k r θ) := by
@@ -161,6 +220,19 @@ theorem sum_single (θ : Fin k → ℝ) :
     rintro ⟨h1, h2⟩
     exact hij (h1.symm.trans h2)
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.diagonal_apply]`. Distinguish the cases in `hi : PI.HwUniqW.InB k r i`. Distinguish the cases in `hj : PI.HwUniqW.InB k r j`. Rewrite using `[PI.HwUniqW.blockW_in _ hi hj]`.
+
+Unfold `Dg`. Rewrite using `[Matrix.diagonal_apply]`. Unfold `PI.HwUniqW.InB at hi hj`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Rewrite using `[if_pos rfl, if_pos rfl, Pi.coe_exp]`. Unfold `dθ`. Rewrite using `[dif_pos hi, ← Complex.exp_eq_exp_ℂ]`. Rewrite using `[if_neg hij, if_neg]`. Introduce `h`.
+
+Apply `hij` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only at this`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[PI.HwUniqW.blockW_in_out _ hi hj, if_neg (PI.HwUniqW.ne_of_inB hi hj)]`. Rewrite using `[PI.HwUniqW.blockW_out _ hi]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl, Pi.coe_exp]`.
+
+Unfold `dθ`. Rewrite using `[dif_neg (show ¬ (r ≤ i.val ∧ i.val < r + k) from hi), NormedSpace.exp_zero]`. Rewrite using `[if_neg hij, if_neg hij]`.
+-/
 theorem diag_exp_blockW (θ : Fin k → ℝ) :
     Matrix.diagonal (NormedSpace.exp (dθ k r θ)) = PI.UpqRep.blockW k r (Dg θ) := by
   ext i j
@@ -192,6 +264,11 @@ theorem diag_exp_blockW (θ : Fin k → ℝ) :
       rw [dif_neg (show ¬ (r ≤ i.val ∧ i.val < r + k) from hi), NormedSpace.exp_zero]
     · rw [if_neg hij, if_neg hij]
 
+/- English proof (translation)
+Establish `hu : IsUnit g` using `(Matrix.isUnit_iff_isUnit_det _).2 (WeylGroupFacts.isUnit_of_uh hgU)`. Establish `hs : ∑ c : Fin k, ((θ c : ℂ) * Complex.I) • unitB (Hpk k r) (fr k r g) c c = g * Matrix.diagonal (dθ k r θ) * g⁻¹`. Repeatedly rewrite using `[unitB_fr hgU]`. Rewrite using `[← sum_single (r := r) θ, Finset.mul_sum, Finset.sum_mul]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `c _`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[hs, Matrix.exp_conj _ _ hu, Matrix.exp_diagonal, diag_exp_blockW]`.
+-/
 theorem torus {g : Mx k r} (hgU : g ∈ UH (Hpk k r)) (θ : Fin k → ℝ) :
     NormedSpace.exp (∑ c : Fin k, ((θ c : ℂ) * Complex.I) • unitB (Hpk k r) (fr k r g) c c) =
       g * PI.UpqRep.blockW k r (Dg θ) * g⁻¹ := by
@@ -205,6 +282,13 @@ theorem torus {g : Mx k r} (hgU : g ∈ UH (Hpk k r)) (θ : Fin k → ℝ) :
     rw [Matrix.mul_smul, Matrix.smul_mul]
   rw [hs, Matrix.exp_conj _ _ hu, Matrix.exp_diagonal, diag_exp_blockW]
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff']`. Unfold `Dg`. Rewrite using `[Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `a`. Rewrite using `[Pi.star_apply, Complex.star_def, ← Complex.exp_conj, ← Complex.exp_add]`. Establish `e : (starRingEnd ℂ) ((θ a : ℂ) * Complex.I) + (θ a : ℂ) * Complex.I = 0`. Rewrite using `[map_mul, Complex.conj_ofReal, Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, Complex.exp_zero]`. Rewrite using `[PI.HwUniqW.Jm_allPos, Matrix.mul_one, Matrix.one_mul]`.
+-/
 theorem Dg_mem (θ : Fin k → ℝ) : Dg θ ∈ PI.UpqRep.Kset (PI.UpqRep.allPos k) := by
   refine ⟨?_, ?_⟩
   · rw [Matrix.mem_unitaryGroup_iff']
@@ -220,6 +304,9 @@ theorem Dg_mem (θ : Fin k → ℝ) : Dg θ ∈ PI.UpqRep.Kset (PI.UpqRep.allPos
     rw [e, Complex.exp_zero]
   · rw [PI.HwUniqW.Jm_allPos, Matrix.mul_one, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `c1 : Hpk k r * PI.UpqRep.blockW k r h = PI.UpqRep.blockW k r h * Hpk k r` using `PI.HwUniqW.Hpk_blockW_comm (k := k) (r := r) h`. Use `show (PI.UpqRep.blockW k r h)ᴴ * Hpk k r * PI.UpqRep.blockW k r h = Hpk k r`. Rewrite using `[PI.HwUniqW.blockW_conjTranspose, Matrix.mul_assoc, c1, ← Matrix.mul_assoc, PI.HwUniqW.blockW_mul, hh, PI.HwUniqW.blockW_one, Matrix.one_mul]`.
+-/
 theorem blockW_uh {h : Matrix (Fin k) (Fin k) ℂ} (hh : hᴴ * h = 1) :
     PI.UpqRep.blockW k r h ∈ UH (Hpk k r) := by
   have c1 : Hpk k r * PI.UpqRep.blockW k r h = PI.UpqRep.blockW k r h * Hpk k r :=
@@ -228,6 +315,11 @@ theorem blockW_uh {h : Matrix (Fin k) (Fin k) ℂ} (hh : hᴴ * h = 1) :
   rw [PI.HwUniqW.blockW_conjTranspose, Matrix.mul_assoc, c1, ← Matrix.mul_assoc, PI.HwUniqW.blockW_mul, hh,
     PI.HwUniqW.blockW_one, Matrix.one_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[Qx8.mulVec_bvec]`. Distinguish the cases in `hi : PI.HwUniqW.InB k r i`. Rewrite using `[PI.HwUniqW.blockW_in_out _ hi hl]`. Simplify using `only [bvec, Pi.single_apply]`.
+
+Rewrite using `[if_neg (PI.HwUniqW.ne_of_inB hi hl)]`. Rewrite using `[PI.HwUniqW.blockW_out _ hi]`. Simplify using `only [bvec, Pi.single_apply]`.
+-/
 theorem blockW_fix (h : Matrix (Fin k) (Fin k) ℂ) {l : Fin (2 * r + k + 1)} (hl : ¬ PI.HwUniqW.InB k r l) :
     PI.UpqRep.blockW k r h *ᵥ bvec l = bvec l := by
   funext i
@@ -239,6 +331,15 @@ theorem blockW_fix (h : Matrix (Fin k) (Fin k) ℂ) {l : Fin (2 * r + k + 1)} (h
   · rw [PI.HwUniqW.blockW_out _ hi]
     simp only [bvec, Pi.single_apply]
 
+/- English proof (translation)
+Establish `hgg : ∀ x, g⁻¹ *ᵥ (g *ᵥ x) = x`. Introduce `x`. Rewrite using `[Matrix.mulVec_mulVec, Qx8.inv_mul_uh hgU, Matrix.one_mulVec]`. Establish `hfix : ∀ x l, ¬ PI.HwUniqW.InB k r l → g *ᵥ bvec l = x → (g * PI.UpqRep.blockW k r h * g⁻¹) *ᵥ x = x`. Introduce `x l hl hx`.
+
+Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← hx, hgg, blockW_fix h hl]`. Use `⟨WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul hgU (blockW_uh hh)) (WeylGroupFacts.uh_inv hgU), fun a => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `hfix _ (eI k r a) ?_ (hgfix a).1` and prove the remaining obligations. Unfold `PI.HwUniqW.InB`. Simplify using `only [eI]`.
+
+Use linear arithmetic over natural numbers and integers. Use `hfix _ (esI k r a) ?_ (hgfix a).2` and prove the remaining obligations. Use `a.isLt` as an intermediate fact. Unfold `PI.HwUniqW.InB`. Simplify using `only [esI]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[← hgz, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hgg, Matrix.mulVec_smul, blockW_fix h (by unfold PI.HwUniqW.InB; simp only [wI, Fin.val_last]; omega)]`.
+-/
 theorem emb_uw {z : Fin (2 * r + k + 1) → ℂ} {g : Mx k r} (hgU : g ∈ UH (Hpk k r))
     (hgfix : ∀ a : Fin r, g *ᵥ bvec (eI k r a) = bvec (eI k r a) ∧ g *ᵥ bvec (esI k r a) = bvec (esI k r a))
     (s : ℂ) (hgz : g *ᵥ (s • bvec (wI k r (Fin.last k))) = z) {h : Matrix (Fin k) (Fin k) ℂ} (hh : hᴴ * h = 1) :
@@ -257,6 +358,27 @@ theorem emb_uw {z : Fin (2 * r + k + 1) → ℂ} {g : Mx k r} (hgU : g ∈ UH (H
     unfold PI.HwUniqW.InB; simp only [esI]; omega
   · rw [← hgz, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hgg, Matrix.mulVec_smul, blockW_fix h (by unfold PI.HwUniqW.InB; simp only [wI, Fin.val_last]; omega)]
 
+/- English proof (translation)
+Use `set P : Matrix (Fin k) (Fin k) ℂ := Matrix.of fun c a => herm (Hpk k r) (Bs a) (Bs' c) with hP`. Use `set Q : Matrix (Fin k) (Fin k) ℂ := Matrix.of fun b d => herm (Hpk k r) (Bs' d) (Bs b) with hQ`. Establish `hexp : ∀ a, Bs a = ∑ c, P c a • Bs' c`. Introduce `a`. Conclude with `HermitianFormSums.complete0 hz (HermitianFormSums.hzz hT) hB' (hB.1 a) (hB.2.2 a z (by simp))`.
+
+Establish `hQP : Q * P = 1`. Use extensionality with `b a`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Establish `h1 : herm (Hpk k r) (Bs a) (Bs b) = herm (Hpk k r) (∑ c, P c a • Bs' c) (Bs b)`. Rewrite using `[← hexp a]`.
+
+Rewrite `h1` using `[HermitianFormSums.herm_lsum, hB.2.1]`. Rewrite using `[show (if b = a then (1 : ℂ) else 0) = if a = b then 1 else 0 by simp only [eq_comm], h1]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `c _`. Simplify using `only [hQ, Matrix.of_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hPQ : P * Q = 1` using `mul_eq_one_comm.1 hQP`. Establish `hunit : ∀ a b, unitB (Hpk k r) Bs a b = ∑ x ∈ (Finset.univ : Finset (Fin k)) ×ˢ (Finset.univ : Finset (Fin k)), (P x.1 a * Q b x.2) • unitB (Hpk k r) Bs' x.1 x.2`. Introduce `a b`. Rewrite using `[Finset.sum_product]`.
+
+Use extensionality with `p q`. Establish `h1 : Bs a p = ∑ c, P c a * Bs' c p`. Use `congrFun (hexp a) p` as an intermediate fact. Rewrite `this` using `[Finset.sum_apply]`. Conclude with `this`.
+
+Establish `h2 : herm (Hpk k r) (bvec q) (Bs b) = ∑ d, Q b d * herm (Hpk k r) (bvec q) (Bs' d)`. Establish `h3 : herm (Hpk k r) (bvec q) (Bs b) = herm (Hpk k r) (bvec q) (∑ d, P d b • Bs' d)`. Rewrite using `[← hexp b]`. Rewrite using `[h3, HermitianFormSums.herm_rsum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `d _`. Simplify using `only [hP, hQ, Matrix.of_apply, Qx2.herm_star]`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, unitB, Matrix.of_apply, smul_eq_mul]`. Rewrite using `[h1, h2, Finset.sum_mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `c _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `d _`. Expand and normalize the polynomial expressions, which then agree. Establish `hEB : EB π Bs = Econj (EB π Bs') P Q`.
+
+Use function extensionality and compare the values at `a b`. Unfold `EB Econj`. Rewrite using `[hunit a b, (HermitianFormSums.ec_sum elementary_lie_elements hπ _ _ (fun x : Fin k × Fin k => unitB (Hpk k r) Bs' x.1 x.2) (fun x => QrD.frame_lie hB' x.1 x.2) _ (QrD.frame_lie hB' a a)).2, Finset.sum_product]`. Use extensionality with `v`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hEB]`. Conclude with `((contractions_covariant (Module.End ℂ W) k (EB π Bs') P Q (frame_general_linear W k r k z π Bs' hπ hB').1 hQP hPQ w 0 0 0 0).1)`.
+-/
 theorem capChange {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] [FiniteDimensional ℂ W]
     {z : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (W →L[ℂ] W)} (hz : inWb k r z) (hT : 0 < Tz k r z)
     (hπ : IsRepW k r z π) {Bs Bs' : Fin k → Fin (2 * r + k + 1) → ℂ} (hB : IsFrameOf k r [z] Bs)

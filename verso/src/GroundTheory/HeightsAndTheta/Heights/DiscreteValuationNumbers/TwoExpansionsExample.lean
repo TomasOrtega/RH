@@ -36,6 +36,11 @@ def Common.Statement : Prop :=
       pairNum (pointIdeal O y) x x' f g (divExp G) Q =
         pairNum (pointIdeal O y) u u' f₂ g₂ (divExp G) Q
 
+/- English proof (translation)
+Introduce `μ hμ k`. Establish `h0 : μ = 0`. Assume the negation of the conclusion as `h`. Rewrite `hμ` using `[mem_support_iff, coeff_one, if_neg (Ne.symm h)]`. Conclude with `hμ rfl`.
+
+Substitute `h0` using the available equality. Simplify using the standard rewrite rules.
+-/
 theorem isMultiHomog_one {R : Type*} [CommRing R] {K : Type} {ι : K → Type} [∀ k, Fintype (ι k)] :
     ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog (1 : ReciprocityTheory.ChartRestriction.G.Geo.MRingOver R ι) (fun _ => 0) := by
   classical
@@ -47,6 +52,9 @@ theorem isMultiHomog_one {R : Type*} [CommRing R] {K : Type} {ι : K → Type} [
   subst h0
   simp
 
+/- English proof (translation)
+Establish `h1 : ∀ W : Ideal (MRing ι O), W.IsPrime → (1 : MRing ι O) ∉ W` using `fun W hW h => hW.ne_top ((Ideal.eq_top_iff_one W).mpr h)`. Use `⟨⟨fun _ => 0, fun _ => 0, isMultiHomog_one, isMultiHomog_one, fun k => by simp⟩, h1 P hP, h1 P hP, fun W hW _ _ => ⟨1, 1, ⟨_, isMultiHomog_one⟩, ⟨_, isMultiHomog_one⟩, h1 W hW.1, h1 W hW.1, by simp⟩⟩` and prove the remaining obligations.
+-/
 theorem isVertDiv_one {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {K : Type}
     [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {P : Ideal (MRing ι O)} (hP : P.IsPrime)
     (b : K → ℤ) : IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsVertDiv O P (b - b) 1 1 := by

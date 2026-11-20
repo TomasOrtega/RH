@@ -7,6 +7,13 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Fo
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F _ _ Λ`. Take `⟨J, hJ⟩` from `exists_idealFiniteAdeles_subset (K := F) (W := (Λ : Set (FiniteAdeleRing (𝓞 F) F))) (Λ.isOpen.mem_nhds Λ.zero_mem)`. Use `⟨(idealFiniteAdeles (traceDualIdeal F J) : Set (FiniteAdeleRing (𝓞 F) F)), isCompact_idealFiniteAdeles _, fun x hx => ?_⟩` and prove the remaining obligations. Use `(forall_finiteAdelicChar_mul_eq_one_iff J x.2).1 fun y hy => ?_` and prove the remaining obligations. Establish `h` using `hx (finiteAdeleInr y) rfl (hJ hy)`.
+
+Establish `e : finiteAdeleInr y * x = finiteAdeleInr (y * x.2)`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(0 : _) * x.1 = 0`. Conclude with `zero_mul _`. Rewrite `h` using `[e]`.
+
+Rewrite using `[finiteAdelicChar_apply]`. Conclude with `Circle.ext h`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.perpCpt :
     ∀ (F : Type) [Field F] [NumberField F] (Λ : OpenAddSubgroup (FiniteAdeleRing (𝓞 F) F)), ∃ K : Set (FiniteAdeleRing (𝓞 F) F), IsCompact K ∧
     ∀ x : A F, (∀ a : A F, a.1 = 0 → a.2 ∈ Λ → ψ (a * x) = 1) → x.2 ∈ K := by

@@ -14,6 +14,19 @@ namespace Formalism.L2.Th1.H
 
 namespace KR
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Set `f : stdLat L m → (∀ _ : m, L.lattice)` to `fun x i => ⟨x.1 i, x.2 i (Set.mem_univ i)⟩`. Establish `hf : Continuous f` using `continuous_pi fun i => Continuous.subtype_mk ((continuous_apply i).comp continuous_subtype_val) _`. Establish `hinj : Function.Injective f`. Introduce `x y hxy`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Conclude with `congrArg Subtype.val (congrFun hxy i)`. Conclude with `DiscreteTopology.of_continuous_injective hf hinj`. Rewrite using `[eq_top_iff]`.
+
+Introduce `x _`. Establish `hx : x = ∑ i, Pi.single i (x i)`. Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hx]`.
+
+Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `h1 : x i ∈ Submodule.span ℝ (L.lattice : Set ℂ)`. Rewrite using `[IsZLattice.span_top (K := ℝ) (L := L.lattice)]`. Discharge the goal by the elementary cases of `trivial`. Establish `h2 : (Submodule.span ℝ (L.lattice : Set ℂ)).map (LinearMap.single ℝ (fun _ : m => ℂ) i) ≤ Submodule.span ℝ ((stdLat L m : AddSubgroup (m → ℂ)) : Set (m → ℂ))`.
+
+Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Introduce `j _`. Distinguish the cases in `hj : j = i`.
+
+Substitute `hj` using the available equality. Simplify using `using hy`. Simplify using `[hj]`. Conclude with `h2 ⟨x i, h1, rfl⟩`.
+-/
 theorem isLat_stdLat (L : PeriodPair) (m : Type) [Fintype m] : IsLat (stdLat L m) := by
   classical
   constructor
@@ -48,6 +61,15 @@ theorem isLat_stdLat (L : PeriodPair) (m : Type) [Fintype m] : IsLat (stdLat L m
       · simp [hj]
     exact h2 ⟨x i, h1, rfl⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `hL.1` as an intermediate fact. Take `⟨N, hN⟩ : ∃ N : ℕ, N = (Λ.relIndex Λ₁).factorial` from `⟨_, rfl⟩`. Establish `hN0 : N ≠ 0` using `by rw [hN]; exact Nat.factorial_ne_zero _`. Establish `hmem : ∀ x : Λ₁, N • (x : V) ∈ Λ` using `fun x => (AddSubgroup.nsmul_mem_of_relIndex_ne_zero_of_dvd h2 x.2 (fun k hk hk' => by rw [hN]; exact Nat.dvd_factorial hk hk')).1`.
+
+Set `f : Λ₁ → Λ` to `fun x => ⟨N • (x : V), hmem x⟩`. Establish `hf : Continuous f` using `Continuous.subtype_mk (continuous_subtype_val.const_smul N) _`. Establish `hinj : Function.Injective f`. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `h3 : N • (x : V) = N • (y : V)` using `congrArg Subtype.val hxy`. Rewrite `h3` using `[← Nat.cast_smul_eq_nsmul ℝ, ← Nat.cast_smul_eq_nsmul ℝ]`. Conclude with `smul_right_injective V (by exact_mod_cast hN0 : (N : ℝ) ≠ 0) h3`. Conclude with `DiscreteTopology.of_continuous_injective hf hinj`. Establish `h3` using `(isLat_inf hL h1).2`.
+
+Rewrite using `[eq_top_iff, ← h3]`. Conclude with `Submodule.span_mono fun x hx => hx.2`.
+-/
 theorem isLat_of_comm {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] {Λ Λ₁ : AddSubgroup V}
     (hL : IsLat Λ) (h1 : Λ₁.relIndex Λ ≠ 0) (h2 : Λ.relIndex Λ₁ ≠ 0) : IsLat Λ₁ := by
   constructor
@@ -70,10 +92,18 @@ theorem isLat_of_comm {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] {Λ
     rw [eq_top_iff, ← h3]
     exact Submodule.span_mono fun x hx => hx.2
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.relIndex_ne_zero_trans h12 h23`.
+-/
 theorem relIdx_trans {V : Type*} [AddCommGroup V] {Λ₁ Λ₂ Λ₃ : AddSubgroup V} (h12 : relIdx Λ₁ Λ₂ ≠ 0)
     (h23 : relIdx Λ₂ Λ₃ ≠ 0) : relIdx Λ₁ Λ₃ ≠ 0 :=
   AddSubgroup.relIndex_ne_zero_trans h12 h23
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [imgLat, AddSubgroup.mem_map, LinearMap.toAddMonoidHom_coe, LinearEquiv.coe_coe, LinearEquiv.trans_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨g y, ⟨y, hy, rfl⟩, rfl⟩`.
+
+Introduce and unpack `⟨_, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `⟨y, hy, rfl⟩`.
+-/
 theorem imgLat_trans {V : Type*} [AddCommGroup V] [Module ℂ V] (g g' : V ≃ₗ[ℂ] V) (Λ : AddSubgroup V) :
     imgLat ((g.trans g' : V ≃ₗ[ℂ] V) : V →ₗ[ℂ] V) Λ = imgLat (g' : V →ₗ[ℂ] V) (imgLat (g : V →ₗ[ℂ] V) Λ) := by
   ext x
@@ -85,6 +115,11 @@ theorem imgLat_trans {V : Type*} [AddCommGroup V] [Module ℂ V] (g g' : V ≃�
   · rintro ⟨_, ⟨y, hy, rfl⟩, rfl⟩
     exact ⟨y, hy, rfl⟩
 
+/- English proof (translation)
+Establish `h1 : ‖ι c‖ ^ 8 = ‖ι D‖ ^ 4`. Rewrite using `[← norm_pow, ← norm_pow, ← map_pow, ← map_pow, hc8]`. Establish `h2 : (‖ι κ‖ * ‖ι c‖) ^ 8 = 1`. Rewrite using `[mul_pow, h1]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[map_mul, norm_mul]`. Conclude with `(pow_eq_one_iff_of_nonneg (by positivity) (by norm_num)).1 h2`.
+-/
 theorem norm_mul_eq_one {l : ℕ} [Fact l.Prime] (ι : ℂ ≃+* ℂ_[l]) (κ c D : ℂ) (hc8 : c ^ 8 = D ^ 4)
     (hκ : ‖ι κ‖ ^ 2 * ‖ι D‖ = 1) : ‖ι (κ * c)‖ = 1 := by
   have h1 : ‖ι c‖ ^ 8 = ‖ι D‖ ^ 4 := by
@@ -100,6 +135,49 @@ end KR
 
 open KR in
 
+/- English proof (translation)
+Introduce `L ω₀ n _ _ h Λ α β g₀ g₁ D0 D1 hfix`. Establish `hE : UnitaryEighth` using `UnitaryEighth_of hC (UnitaryGauss_of gaussSumEighthPower) unitary_index`. Take `⟨H, hHdef⟩ : ∃ H : Sesq (Fin 4 × n → ℂ), H = stdH L (Fin 4 × n)` from `⟨_, rfl⟩`. Take `⟨Λ₀, hΛ₀⟩ : ∃ Λ₀ : AddSubgroup (Fin 4 × n → ℂ), Λ₀ = stdLat L (Fin 4 × n)` from `⟨_, rfl⟩`. Take `⟨Λa, hΛa⟩ : ∃ Λa : AddSubgroup (Fin 4 × n → ℂ), Λa = imgLat (g₀ : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ)` from `⟨_, rfl⟩`.
+
+Take `⟨Λb, hΛb⟩ : ∃ Λb : AddSubgroup (Fin 4 × n → ℂ), Λb = imgLat (g₁ : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ)` from `⟨_, rfl⟩`. Take `⟨δ, hδ⟩ : ∃ δ : (Fin 4 × n → ℂ) ≃ₗ[ℂ] (Fin 4 × n → ℂ), δ = g₀.symm.trans g₁` from `⟨_, rfl⟩`. Take `⟨F, hF⟩ : ∃ F : (Fin 4 × n → ℂ) → ℂ, F = F0 L ω₀ (Fin 4 × n)` from `⟨_, rfl⟩`. Establish `hHerm : IsHerm H` using `hHdef ▸ (stdHBasic L (Fin 4 × n)).2.1`. Establish `hPos : IsPosDef H` using `hHdef ▸ (stdHBasic L (Fin 4 × n)).2.2`.
+
+Establish `hδap : ∀ x, δ x = g₁ (g₀.symm x)` using `fun x => by rw [hδ]; rfl`. Establish `hδsy : ∀ x, δ.symm x = g₀ (g₁.symm x)` using `fun x => by rw [hδ]; rfl`. Establish `hδΛ : imgLat (δ : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) Λa = Λb`. Rewrite using `[hΛa, ← imgLat_trans, hΛb, hδ]`. Use `congr 2`.
+
+Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `i0a : relIdx Λ₀ Λa ≠ 0` using `by rw [hΛ₀, hΛa]; exact D0.idx₁`. Establish `ia0 : relIdx Λa Λ₀ ≠ 0` using `by rw [hΛ₀, hΛa]; exact D0.idx₂`. Establish `i0b : relIdx Λ₀ Λb ≠ 0` using `by rw [hΛ₀, hΛb]; exact D1.idx₁`.
+
+Establish `ib0 : relIdx Λb Λ₀ ≠ 0` using `by rw [hΛ₀, hΛb]; exact D1.idx₂`. Establish `iab : relIdx Λa Λb ≠ 0` using `relIdx_trans ia0 i0b`. Establish `iba : relIdx Λb Λa ≠ 0` using `relIdx_trans ib0 i0a`. Establish `sd0 : IsSelfDual H Λ₀` using `by rw [hHdef, hΛ₀]; exact stdSelfDual L _`. Establish `sda : IsSelfDual H Λa` using `by rw [hHdef, hΛa]; exact D0.selfDual`.
+
+Establish `sdb : IsSelfDual H Λb` using `by rw [hHdef, hΛb]; exact D1.selfDual`. Establish `sc0 : IsSemiChar H Λ₀ β`. Rewrite using `[hHdef, hΛ₀]`. Conclude with `isSemiChar_congr _ _ _ _ D0.betaStd (stdSemiChar L ω₀ (Fin 4 × n) D0.per)`. Establish `sca : IsSemiChar H Λa β` using `by rw [hHdef, hΛa]; exact D0.betaSemi`.
+
+Establish `scb : IsSemiChar H Λb β` using `by rw [hHdef, hΛb]; exact D1.betaSemi`. Establish `hLat0 : IsLat Λ₀` using `by rw [hΛ₀]; exact isLat_stdLat L _`. Establish `hLata : IsLat Λa` using `isLat_of_comm hLat0 ia0 i0a`. Establish `hiso : IsIsom H H (δ : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ))`. Introduce `x y`.
+
+Establish `h1` using `D1.isom (g₀.symm x) (g₀.symm y)`. Establish `h0` using `D0.isom (g₀.symm x) (g₀.symm y)`. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at h0 h1 ⊢`. Rewrite using `[hδap, hδap, hHdef, h1, h0]`. Establish `hinj : Function.Injective ((LinearMap.id - (δ.symm : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ))) : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ))`.
+
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `h1 : x = g₀ (g₁.symm x)`. Establish `: x - δ.symm x = 0` using `hx`. Rewrite `this` using `[sub_eq_zero, hδsy]`.
+
+Conclude with `this`. Establish `h2 : g₁.symm x = 0` using `hfix _ (by rw [← h1]; simp)`. Simplify using `using congrArg g₁ h2`. Take `⟨Ae, hAe⟩ : ∃ Ae : (Fin 4 × n → ℂ) ≃ₗ[ℂ] (Fin 4 × n → ℂ), ∀ x, Ae x = x - δ.symm x` from `⟨LinearEquiv.ofInjectiveEndo _ hinj, fun x => rfl⟩`. Establish `hU : UnitaryData H Λa β δ Ae` using `{ herm := hHerm pos := hPos selfDual := sda semi := sca isom := hiso semi' := by rw [hδΛ]; exact scb inv := by`.
+
+Introduce `x _`. Rewrite using `[hδap, D1.betaAlpha, ← D0.betaAlpha, LinearEquiv.apply_symm_apply]`. Use `idx₁ := by rw [hδΛ]; exact iba`. Use `idx₂ := by rw [hδΛ]; exact iab`. Use `cay := hAe }`.
+
+Take `⟨hFmem, hF1⟩` from `product_theta_mem' L ω₀ (Fin 4 × n) D0.per D0.half β D0.betaStd`. Rewrite `hFmem` using `[← hF, ← hHdef, ← hΛ₀]`. Rewrite `hF1` using `[← hF]`. Establish `hFne : F ≠ 0`. Introduce `h0`.
+
+Rewrite `hF1` using `[h0]`. Simplify using `at hF1`. Establish `hFline : ∀ G ∈ Th H β Λ₀, ∃ c : ℂ, G = c • F`. Introduce `G hG`. Rewrite `hG` using `[hHdef, hΛ₀]`.
+
+Conclude with `⟨G 0, hF ▸ thStd L ω₀ _ D0.per D0.half β D0.betaStd G hG⟩`. Take `⟨hGa0, hGaline⟩` from `lineTransport (Fin 4 × n → ℂ) H hHerm Λ₀ Λa β sd0 sda sc0 sca i0a ia0 F hFmem hFne hFline`. Establish `hGamem : inter H β Λ₀ Λa F ∈ Th H β Λa` using `interTh _ H hHerm Λ₀ Λa β sca i0a F hFmem`. Establish `hLine : AtMostLine H β Λa`. Introduce `θ hθ hθ0 G hG`.
+
+Take `⟨a, ha⟩` from `hGaline θ hθ`. Take `⟨b, hb⟩` from `hGaline G hG`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `hθ0 (by rw [ha, zero_smul])`.
+
+Conclude with `⟨b * a⁻¹, by rw [ha, hb, smul_smul, inv_mul_cancel_right₀ ha0]⟩`. Establish `hidxA : relIdx (latA Λa δ Ae) Λa ≠ 0`. Take `⟨-, hidx⟩` from `unitary_index _ H Λa β δ Ae hLata hU`. Introduce `h0`. Rewrite `hidx` using `[h0]`.
+
+Establish `hdt0 : LinearMap.det (Ae : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) ≠ 0` using `(LinearEquiv.isUnit_det' Ae).ne_zero`. Establish `h1 : (relIdx (imgLat (δ : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) Λa) Λa : ℝ) ≠ 0`. Conclude with `hU.idx₁` after adjusting the coercions. Establish `h2 : ‖LinearMap.det (Ae : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ))‖ ^ 2 ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.mpr hdt0)`. Conclude with `mul_ne_zero h1 h2 (by simpa using hidx.symm)`.
+
+Take `⟨S, hS⟩` from `(repsExist _ _ _ hidxA).1`. Establish `hconst` using `hC _ H Λa β δ Ae hLata hU hLine S hS _ hGamem`. Establish `hc8` using `hE _ H Λa β δ Ae hLata hU hLine _ hGamem hGa0 _ hconst`. Take `⟨c, hc⟩ : ∃ c : ℂ, c = (‖LinearMap.det (Ae : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ))‖ : ℂ) / LinearMap.det (Ae : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) * gaussC H β Ae S` from `⟨_, rfl⟩`. Rewrite `hconst`, `hc8` using `[← hc]`.
+
+Rewrite `hconst` using `[hδΛ]`. Establish `hT : TripleData H β Λ₀ Λa Λb` using `{ herm := hHerm, sd₁ := sd0, sd₂ := sda, sd₃ := sdb, sc₁ := sc0, sc₂ := sca, sc₃ := scb i₁₂ := i0a, i₂₁ := ia0, i₁₃ := i0b, i₃₁ := ib0, i₂₃ := iab, i₃₂ := iba }`. Take `⟨S₂, hS₂⟩` from `(repsExist _ _ _ i0a).1`. Take `⟨S₃, hS₃⟩` from `(repsExist _ _ _ iab).1`. Establish `hμ8` using `TripleEighth_proof _ H β Λ₀ Λa Λb hT ⟨F, hFmem.2, hFne⟩ S₂ S₃ hS₂ hS₃`.
+
+Establish `hμ` using `TripleFormula_proof _ H β Λ₀ Λa Λb hT S₂ S₃ hS₂ hS₃ F hFmem.2`. Use `⟨c * tripleMu H β Λ₀ Λa Λb S₂ S₃, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, hμ8, mul_one, hc8, hδ]`. Use function extensionality and compare the values at `z`. Establish `h1` using `congrFun hconst (g₁ z)`.
+
+Simplify using `only [pullInv, Pi.smul_apply, smul_eq_mul, hδsy, LinearEquiv.symm_apply_apply, hμ] at h1`. Simplify using `only [kernel4, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← hHdef, ← hΛ₀, ← hΛa, ← hΛb, ← hF, h1, mul_assoc]`.
+-/
 theorem KernelRatio_of (hC : UnitaryConstant) : KernelRatio := by
   intro L ω₀ n _ _ h Λ α β g₀ g₁ D0 D1 hfix
   have hE : UnitaryEighth := UnitaryEighth_of hC (UnitaryGauss_of gaussSumEighthPower) unitary_index
@@ -229,6 +307,9 @@ theorem KernelRatio_of (hC : UnitaryConstant) : KernelRatio := by
     simp only [kernel4, Pi.smul_apply, smul_eq_mul]
     rw [← hHdef, ← hΛ₀, ← hΛa, ← hΛb, ← hF, h1, mul_assoc]
 
+/- English proof (translation)
+Introduce `l _ L ι ω₀ lg linv ph hlog hph hTr n _ _ h Λ α β g₀ g₁ D0 D1 hfix hl κ hκ θ hθ hθκ t N hN hlN hNt O _ τ γ B' hB`. Take `⟨c, hc8, hc⟩` from `hK L ω₀ n h Λ α β g₀ g₁ D0 D1 hfix`. Use `quadraticSemicharacters_fact l L ι ω₀ lg linv ph hlog hph hTr n h Λ α β g₁ D1 hl (κ * c) ?_ θ hθ ?_ t N hN hlN hNt O τ γ B' hB` and prove the remaining obligations. Conclude with `le_of_eq (KR.norm_mul_eq_one ι κ c _ hc8 hκ)`. Rewrite using `[hθκ, hc, smul_smul]`.
+-/
 theorem quadraticSemicharacterIdentityEquivalent_of_kernelRatio (hK : KernelRatio) : quadraticSemicharacterIdentityEquivalent := by
   intro l _ L ι ω₀ lg linv ph hlog hph hTr n _ _ h Λ α β g₀ g₁ D0 D1 hfix hl κ hκ θ hθ hθκ t N hN hlN hNt
     O _ τ γ B' hB
@@ -240,6 +321,21 @@ theorem quadraticSemicharacterIdentityEquivalent_of_kernelRatio (hK : KernelRati
 
 open KR in
 
+/- English proof (translation)
+Introduce `a b c d ha hd lam hlam hOK n _ _ h Λ g₀ hg₀ hsd hst i1 i2`. Take `⟨h4, hodd, h8, hprime⟩` from `hOK`. Establish `hsda` using `CmData.selfDual_img _ _ g₀ hg₀ _ (CmData.isSelfDual_matH_blk4_pow4 h Λ hsd)`. Establish `hsta : ∀ x ∈ imgLat (g₀ : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ), Formalism.L2.Th1.F.cmTheta b d • x ∈ imgLat (g₀ : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ)`. Introduce and unpack `x ⟨x', hx', rfl⟩`.
+
+Use `⟨Formalism.L2.Th1.F.cmTheta b d • x', fun a' => hst _ (hx' a'), ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Take `⟨κ, hκ0, hκalg, hκabs, hκl⟩` from `hκ a b c d ha hd lam hlam ⟨h4, hodd, h8, hprime⟩ (Fin 4 × n) _ hsda hsta i1 i2`. Use `⟨κ, hκ0, hκalg, hκabs, fun θ hθ hθκ l _ ι => ?_⟩` and prove the remaining obligations. Take `⟨δ, hδiso, hδfix, j1, jl, j2⟩` from `hL a b c d ha hd lam hlam ⟨h4, hodd, h8, hprime⟩ (Fin 4 × n) _ hsda hsta i1 i2 l Fact.out`.
+
+Establish `hκδ` using `hκl l ι δ hδiso j1 jl j2`. Rewrite `j1`, `jl`, `j2` using `[← imgLat_trans]`. Establish `hg₁ : IsIsom (matH (blk4 h)) (stdH (cmL a b d ha hd lam hlam) (Fin 4 × n)) ((g₀.trans δ : (Fin 4 × n → ℂ) ≃ₗ[ℂ] (Fin 4 × n → ℂ)) : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ))`. Introduce `x y`. Establish `h1` using `hδiso (g₀ x) (g₀ y)`.
+
+Establish `h0` using `hg₀ x y`. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.trans_apply] at h0 h1 ⊢`. Rewrite using `[h1, h0]`. Establish `D0` using `StdDataCm_proof a b c d ha hd lam hlam h4 hodd h8 n h Λ g₀ hg₀ hsd hst i1 i2`. Establish `D1` using `StdDataCm_proof a b c d ha hd lam hlam h4 hodd h8 n h Λ (g₀.trans δ) hg₁ hsd hst j1 j2`.
+
+Establish `hcomp : g₀.symm.trans (g₀.trans δ) = δ`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hfix : ∀ x, (g₀.trans δ) x = g₀ x → x = 0`. Introduce `x hx`.
+
+Establish `h1 : g₀ x = 0` using `hδfix _ hx`. Simplify using `using congrArg g₀.symm h1`. Rewrite `hκδ` using `[← hcomp]`. Use `⟨g₀.trans δ, hg₁, jl, j2, ?_, fun lg linv ph hlog hph hTr t N hN hlN hNt O _ τ γ B' hB => quadraticSemicharacterIdentityEquivalent_of_kernelRatio hK l _ ι _ lg linv ph hlog hph hTr n h Λ _ _ g₀ (g₀.trans δ) D0 D1 hfix jl κ hκδ θ hθ hθκ t N hN hlN hNt O τ γ B' hB⟩` and prove the remaining obligations. Take `⟨e, he8, he⟩` from `hK _ _ n h Λ _ _ g₀ (g₀.trans δ) D0 D1 hfix`.
+
+Conclude with `⟨κ * e, norm_mul_eq_one ι κ e _ he8 hκδ, by rw [hθκ, he, smul_smul]⟩`.
+-/
 theorem quadraticSemicharacterIdentityReformulated_of_kernelRatio_of_localStandard_of_kappaExists (hK : KernelRatio) (hL : LocalStandard) (hκ : KappaExists) : quadraticSemicharacterIdentityReformulated := by
   intro a b c d ha hd lam hlam hOK n _ _ h Λ g₀ hg₀ hsd hst i1 i2
   obtain ⟨h4, hodd, h8, hprime⟩ := hOK

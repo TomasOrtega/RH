@@ -17,6 +17,13 @@ open GlobalTheory.AboveL GlobalTheory.SmGL
 
 namespace GlobalTheory.AbStep
 
+/- English proof (translation)
+Introduce `Ω _ F _ _ _ _ A v h a ha χ hχ`. Set `ξ : Weil h →* ℂˣ` to `χ.comp (Subgroup.inclusion (Weil_le_Dec h))`. Establish `hξ : GlobalTheory.WeilDeligne.IsSmooth ξ`. Establish `hc : Continuous (fun σ : Ine (F` using `F) A => (⟨(σ : G F Ω), Weil_le_Dec h (Ine_le_Weil h σ.2)⟩ : Dec (F := F) A)) := continuous_subtype_val.subtype_mk _`. Conclude with `hχ.preimage hc`.
+
+Take `⟨θ, hθs, hθ⟩` from `ha.factor ξ hξ`. Establish `hfi : χ.ker.FiniteIndex` using `GlobalTheory.LocVec.finiteIndex_of_isOpen (Dec (F := F) A) (ReciprocityTheory.Gal.isClosed_Dec A).isCompact subset_rfl χ.ker hχ`. Use `⟨θ, hθs, ⟨χ.ker.index, Nat.pos_of_ne_zero hfi.index_ne_zero, ?_⟩, fun σ => ?_⟩` and prove the remaining obligations. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Take `⟨σ, rfl⟩` from `ha.surj x`.
+
+Establish `hm` using `Subgroup.pow_index_mem χ.ker (Subgroup.inclusion (Weil_le_Dec h) σ)`. Rewrite `hm` using `[MonoidHom.mem_ker, map_pow]`. Rewrite using `[MonoidHom.pow_apply, MonoidHom.one_apply, ← MonoidHom.comp_apply θ a, ← hθ]`. Conclude with `hm`. Conclude with `(DFunLike.congr_fun hθ σ).symm`.
+-/
 theorem loc_char : ∀ (Ω : Type) [Field Ω] (F : Type) [Field F] [NumberField F] [Algebra F Ω] [IsAlgClosure F Ω] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)) (h : IsPlaceOver A v) (a : Weil h →* (v.adicCompletion F)ˣ), IsLocalArtin h a → ∀ χ : Dec (F := F) A →* ℂˣ, IsOpen (χ.ker : Set (Dec (F := F) A)) → ∃ θ : (v.adicCompletion F)ˣ →* ℂˣ, IsSmoothChar θ ∧ (∃ N : ℕ, 0 < N ∧ θ ^ N = 1) ∧ ∀ σ : Weil h, θ (a σ) = χ (Subgroup.inclusion (Weil_le_Dec h) σ) := by
   intro Ω _ F _ _ _ _ A v h a ha χ hχ
   classical
@@ -38,6 +45,21 @@ theorem loc_char : ∀ (Ω : Type) [Field Ω] (F : Type) [Field F] [NumberField 
     exact hm
   · exact (DFunLike.congr_fun hθ σ).symm
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ art ha η hηf _`. Take `⟨n, hn, hηn⟩` from `hηf`. Establish `hpow : ∀ x, η.1 x ^ n = 1` using `fun x => congrArg (fun ξ : HChar F => ξ.1 x) hηn`. Establish `hko : IsOpen (η.1.ker : Set (Ideles F))` using `GlobalTheory.HeckeGal.isOpen_ker_of_pow η.1 η.2.1 hn hpow`. Establish `hinf : infConn F ≤ η.1.ker`.
+
+Set `ι : (InfiniteAdeleRing F)ˣ →* Ideles F` to `Units.map (MonoidHom.inl (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F))`. Establish `hιc : Continuous ι` using `Continuous.units_map _ (continuous_id.prodMk continuous_const)`. Establish `hO : IsOpen ((η.1.ker.comap ι : Subgroup _) : Set (InfiniteAdeleRing F)ˣ)` using `hko.preimage hιc`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `(IsClopen.connectedComponent_subset ⟨Subgroup.isClosed_of_isOpen _ hO, hO⟩ (Subgroup.one_mem _)) hy`.
+
+Establish `hker : art.ker ≤ η.1.ker`. Rewrite using `[ha.ker]`. Use `Subgroup.topologicalClosure_minimal _ (sup_le ?_ hinf) (η.1.ker.isClosed_of_isOpen hko)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `η.2.2 k`.
+
+Establish `hs : Function.Surjective art` using `ha.quot.surjective`. Set `e` to `QuotientGroup.quotientKerEquivOfSurjective art hs`. Set `ρ : Gab F Ω →* ℂˣ` to `(QuotientGroup.lift art.ker η.1 hker).comp e.symm.toMonoidHom`. Establish `hρ : ∀ x, ρ (art x) = η.1 x` using `fun x => by`. Establish `he : e.symm (art x) = (x : Ideles F ⧸ art.ker)` using `e.symm_apply_eq.2 rfl`.
+
+Use `show QuotientGroup.lift art.ker η.1 hker (e.symm (art x)) = _`. Rewrite using `[he]`. Both sides reduce to the same expression. Use `⟨ρ, ?_, hρ⟩` and prove the remaining obligations. Establish `hk : (ρ.ker : Set (Gab F Ω)) = art '' (η.1.ker : Set (Ideles F))`.
+
+Use extensionality with `g`. Take `⟨x, rfl⟩` from `hs g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Conclude with `⟨x, by rw [SetLike.mem_coe, MonoidHom.mem_ker, ← hρ]; exact hg, rfl⟩`.
+
+Introduce and unpack `⟨y, hy, e'⟩ show ρ _ = 1`. Rewrite using `[← e', hρ]`. Conclude with `hy`. Rewrite using `[hk]`. Conclude with `ha.quot.isOpenMap _ hko`.
+-/
 theorem gal_char : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] (art : Ideles F →* Gab F Ω), IsGlobalArtin art → ∀ η : HChar F, (∃ n : ℕ, 0 < n ∧ η.OrderDvd n) → (∀ u : InfinitePlace F, η.locInf u = 1) → ∃ ρ : Gab F Ω →* ℂˣ, IsOpen (ρ.ker : Set (Gab F Ω)) ∧ ∀ x, ρ (art x) = η.1 x := by
   intro F Ω _ _ _ _ art ha η hηf _
   obtain ⟨n, hn, hηn⟩ := hηf
@@ -82,6 +104,31 @@ end GlobalTheory.AbStep
 
 namespace GlobalTheory.AbStep
 
+/- English proof (translation)
+Take `⟨art, ha⟩` from `GlobalTheory.globalArtinReciprocity_holds F Ω`. Take `⟨a, haL⟩` from `GlobalTheory.localArtinExists_holds F Ω A v h`. Take `⟨θ, hθs, hθf, hθ⟩` from `loc_char Ω F A v h a haL χ hχ`. Establish `hne : ∀ u ∈ T, u ≠ v` using `fun u hu e => hT (e ▸ hu)`. Take `⟨η, hηf, hηi, hηl⟩` from `GlobalTheory.DelEps.Twist.exists_hchar_prescribed F (insert v T) (Function.update (fun _ => 1) v θ) (fun w hw => by`.
+
+Break down `Finset.mem_insert.1 hw with rfl | hw` into its components or cases. Rewrite using `[Function.update_self]`. Conclude with `hθs`. Rewrite using `[Function.update_of_ne (hne w hw)]`. Unfold `IsSmoothChar`.
+
+Use the proof step `simp)`. Use the proof step `(fun w hw => by`. Break down `Finset.mem_insert.1 hw with rfl | hw` into its components or cases. Rewrite using `[Function.update_self]`. Conclude with `hθf`.
+
+Rewrite using `[Function.update_of_ne (hne w hw)]`. Conclude with `⟨1, one_pos, one_pow _⟩)`. Establish `hηv : η.loc v = θ` using `by rw [hηl v (Finset.mem_insert_self _ _), Function.update_self]`. Establish `hηT : ∀ u ∈ T, η.loc u = 1` using `fun u hu => by`. Rewrite using `[hηl u (Finset.mem_insert_of_mem hu), Function.update_of_ne (hne u hu)]`.
+
+Take `⟨ρ, hρo, hρ⟩` from `gal_char F Ω art ha η hηf hηi`. Set `r : G F Ω →* ℂˣ` to `ρ.comp (toAb F Ω)`. Establish `hro : IsOpen (r.ker : Set (G F Ω))` using `hρo.preimage (QuotientGroup.isQuotientMap_mk _).continuous`. Establish `hW : ∀ σ : Weil h, r σ = χ (Subgroup.inclusion (Weil_le_Dec h) σ)` using `fun σ => by show ρ (toAb F Ω σ) = _`. Rewrite using `[← haL.glob art ha σ, hρ, ← hθ σ, ← hηv]`.
+
+Both sides reduce to the same expression. Establish `hD : ∀ g : Dec (F` using `F) A, r g = χ g := by`. Introduce `g`. Take `⟨O, hOo, hO⟩` from `isOpen_induced_iff.1 hχ`. Establish `h1 : (1 : G F Ω) ∈ O`.
+
+Establish `: (1 : Dec (F` using `F) A) ∈ (χ.ker : Set (Dec (F := F) A)) := χ.ker.one_mem`. Rewrite `this` using `[← hO]`. Conclude with `this`. Take `⟨L, hLf, hLs⟩` from `(krullTopology_mem_nhds_one_iff F Ω _).1 ((hro.inter hOo).mem_nhds ⟨r.ker.one_mem, h1⟩)`. Take `⟨τ, hτ⟩` from `GlobalTheory.ConjWD.exists_weil_eq_on (h := h) g.2 L`.
+
+Establish `hfix : (τ : G F Ω)⁻¹ * g ∈ L.fixingSubgroup` using `fun x => by show ((τ : G F Ω)⁻¹ * (g : G F Ω)) x = x`. Rewrite using `[AlgEquiv.mul_apply, ← hτ x x.2]`. Use `show ((τ : G F Ω)⁻¹ * τ) x = x`. Simplify using the standard rewrite rules. Take `⟨hr1, hO1⟩` from `hLs hfix`.
+
+Establish `hk : (Subgroup.inclusion (Weil_le_Dec h) τ)⁻¹ * g ∈ χ.ker`. Establish `: (Subgroup.inclusion (Weil_le_Dec h) τ)⁻¹ * g ∈ (Subtype.val ⁻¹' O : Set (Dec (F` using `F) A)) := hO1`. Rewrite `this` using `[hO]`. Conclude with `this`. Rewrite `hk` using `[MonoidHom.mem_ker, map_mul, map_inv, inv_mul_eq_one]`.
+
+Establish `hr1' : r ((τ : G F Ω)⁻¹ * g) = 1` using `hr1`. Rewrite `hr1'` using `[map_mul, map_inv, inv_mul_eq_one]`. Rewrite using `[← hr1', hW τ, hk]`. Use `⟨r, hro, hD, fun j c hc => ?_, fun u hu A' hA' g hg => ?_⟩` and prove the remaining obligations. Use `show ρ (toAb F Ω c) = 1`.
+
+Rewrite using `[← GlobalTheory.HilbertFromArtin.art_sign_eq ha j c hc, hρ]`. Conclude with `DFunLike.congr_fun (hηi _) (-1)`. Establish `hm : toAb F Ω g ∈ (art.comp (localIdele F u)).range.topologicalClosure`. Rewrite using `[ha.dec u A' hA']`. Conclude with `⟨g, hg, rfl⟩`.
+
+Establish `hle : (art.comp (localIdele F u)).range ≤ ρ.ker`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, hρ]`. Conclude with `DFunLike.congr_fun (hηT u hu) x`. Conclude with `Subgroup.topologicalClosure_minimal _ hle (ρ.ker.isClosed_of_isOpen hρo) hm`.
+-/
 theorem one_char (Ω : Type) [Field Ω] (F : Type) [Field F] [NumberField F] [Algebra F Ω] [IsAlgClosure F Ω]
     (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)) (h : IsPlaceOver A v)
     (χ : Dec (F := F) A →* ℂˣ) (hχ : IsOpen (χ.ker : Set (Dec (F := F) A)))
@@ -159,6 +206,31 @@ end GlobalTheory.AbStep
 
 namespace GlobalTheory.AbStep
 
+/- English proof (translation)
+Introduce `Ω _ F _ _ _ _ _ A v h V hVo hVc T hvT`. Use `haveI : V.Normal := GlobalTheory.normal_of_commutator_le V hVc`. Use `haveI : V.FiniteIndex := GlobalTheory.LocVec.finiteIndex_of_isOpen (Dec (F := F) A) (ReciprocityTheory.Gal.isClosed_Dec A).isCompact subset_rfl V hVo`. Use `letI : CommGroup (Dec (F := F) A ⧸ V) := { (inferInstance : Group (Dec (F := F) A ⧸ V)) with mul_comm := fun a b => by`. Proceed by induction on `a using QuotientGroup.induction_on with | H a => ?_`.
+
+Proceed by induction on `b using QuotientGroup.induction_on with | H b => ?_`. Rewrite using `[← QuotientGroup.mk_mul, ← QuotientGroup.mk_mul, QuotientGroup.eq]`. Apply `hVc` to reduce the goal to its premises. Use `Subgroup.commutator_mem_commutator (Subgroup.mem_top b⁻¹) (Subgroup.mem_top a⁻¹)` as an intermediate fact. Use `show _ ∈ ⁅(⊤ : Subgroup (Dec (F := F) A)), ⊤⁆`.
+
+Simplify `this }` using `[commutatorElement_def, mul_assoc]`. Establish `hsep : ∀ q : Dec (F` using `F) A ⧸ V, ∃ ψ : (Dec (F := F) A ⧸ V) →* ℂˣ, q ≠ 1 → ψ q ≠ 1 := fun q => by`. Distinguish the cases in `hq : q = 1`. Conclude with `⟨1, fun h => (h hq).elim⟩`. Take `⟨ψ, hψ⟩` from `CommGroup.exists_apply_ne_one_of_hasEnoughRootsOfUnity (Dec (F := F) A ⧸ V) ℂ hq`.
+
+Conclude with `⟨ψ, fun _ => hψ⟩`. Use `choose ψ hψ using hsep`. Establish `hopen : ∀ q, IsOpen (((ψ q).comp (QuotientGroup.mk' V)).ker : Set (Dec (F` using `F) A)) := fun q => Subgroup.isOpen_mono (fun g hg => by`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, QuotientGroup.mk'_apply, (QuotientGroup.eq_one_iff g).2 hg, map_one]) hVo`. Use `choose r hro hrD hrc hrT using fun q => one_char Ω F A v h ((ψ q).comp (QuotientGroup.mk' V)) (hopen q) T hvT`.
+
+Set `φ : G F Ω →* (Dec (F` to `F) A ⧸ V → ℂˣ) := Pi.monoidHom r`. Establish `hφ : ∀ σ, φ σ = 1 ↔ ∀ q, r q σ = 1` using `fun σ => funext_iff`. Establish `hker : (φ.ker : Set (G F Ω)) = ⋂ q, (r q).ker`. Use extensionality with `σ`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_iInter]`.
+
+Conclude with `hφ σ`. Establish `ho : IsOpen (φ.ker : Set (G F Ω))`. Rewrite using `[hker]`. Conclude with `isOpen_iInter_of_finite hro`. Take `⟨L, hLf, hLa, hL⟩` from `GlobalTheory.RayFromArtin.exists_field φ ho`.
+
+Establish `hmem : ∀ σ : G F Ω, σ ∈ L.fixingSubgroup ↔ ∀ q, r q σ = 1` using `fun σ => by`. Rewrite using `[← IntermediateField.restrictNormalHom_ker, MonoidHom.mem_ker, hL, hφ]`. Use `⟨L, hLf, hLa, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `φ' haveI : Algebra.IsAlgebraic L Ω := Algebra.IsAlgebraic.tower_top (K := F) L haveI : IsGalois F Ω := {}`. Set `j : Ω →+* ℂ` to `ComplexEmbedding.lift Ω φ'`.
+
+Establish `hj : j.comp (algebraMap L Ω) = φ'` using `ComplexEmbedding.lift_comp_algebraMap _ _`. Establish `hreal : ComplexEmbedding.IsReal (j.comp (algebraMap F Ω))`. Conclude with `IsTotallyReal.complexEmbedding_isReal _`. Take `⟨σ, hσ⟩` from `ComplexEmbedding.exists_comp_symm_eq_of_comp_eq (k := F) j (ComplexEmbedding.conjugate j) (by`. Rewrite using `[ComplexEmbedding.conjugate_comp, ComplexEmbedding.isReal_iff.1 hreal])`.
+
+Establish `hc : ∀ x, j (σ.symm x) = starRingEnd ℂ (j x)` using `fun x => DFunLike.congr_fun hσ x`. Establish `hfix : σ.symm ∈ L.fixingSubgroup` using `(hmem _).2 fun q => hrc q j σ.symm hc`. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Rewrite using `[← hj]`.
+
+Use `show starRingEnd ℂ (j (x : Ω)) = j (x : Ω)`. Rewrite using `[← hc]`. Conclude with `congrArg j (hfix x)`. Introduce `g`. Rewrite using `[hmem]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `H`. Assume the negation of the conclusion as `hg`. Establish `hq : (QuotientGroup.mk' V g) ≠ 1` using `fun e => hg ((QuotientGroup.eq_one_iff g).1 e)`. Conclude with `hψ _ hq (by rw [← H (QuotientGroup.mk' V g), hrD]; rfl)`.
+
+Introduce `hg q`. Rewrite using `[hrD, MonoidHom.comp_apply, QuotientGroup.mk'_apply, (QuotientGroup.eq_one_iff g).2 hg, map_one]`. Introduce `u hu A' hA' g hg`. Conclude with `(hmem g).2 fun q => hrT q u hu A' hA' g hg`.
+-/
 theorem exists_abelian_real_field : ∀ (Ω : Type) [Field Ω] (F : Type) [Field F] [NumberField F] [Algebra F Ω] [IsAlgClosure F Ω] [IsTotallyReal F] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)) (h : IsPlaceOver A v) (V : Subgroup (Dec (F := F) A)), IsOpen (V : Set (Dec (F := F) A)) → commutator (Dec (F := F) A) ≤ V → ∀ T : Finset (HeightOneSpectrum (𝓞 F)), v ∉ T → ∃ F₁ : IntermediateField F Ω, FiniteDimensional F F₁ ∧ IsAbelianGalois F F₁ ∧ (∀ φ : F₁ →+* ℂ, ComplexEmbedding.IsReal φ) ∧ (∀ g : Dec (F := F) A, (g : G F Ω) ∈ F₁.fixingSubgroup ↔ g ∈ V) ∧ ∀ u ∈ T, ∀ A' : ValuationSubring Ω, IsPlaceOver A' u → Dec (F := F) A' ≤ F₁.fixingSubgroup := by
   intro Ω _ F _ _ _ _ _ A v h V hVo hVc T hvT
   haveI : V.Normal := GlobalTheory.normal_of_commutator_le V hVc

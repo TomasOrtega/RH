@@ -19,6 +19,13 @@ def derForm (A' : Matrix (Fin P) (Fin Q) ℂ) (x' : Ix P Q → ℂ) (T : MvPolyn
     (f : MvPolynomial (Ix P Q) ℂ) : ℂ :=
   ∑ i, ∑ j, A' i j * T (pderiv (Sum.inl i) (pderiv (Sum.inr j) f)) + ∑ l, x' l * T (pderiv l f)
 
+/- English proof (translation)
+Simplify using `only [derForm, hU, mul_add, Finset.sum_add_distrib, Finset.mul_sum]`. Establish `h1 : ∑ i, ∑ j, ∑ k, A' i j * (b k * T (pderiv (e k) (pderiv (Sum.inl i) (pderiv (Sum.inr j) f)))) = ∑ k, ∑ i, ∑ j, b k * (A' i j * T (pderiv (Sum.inl i) (pderiv (Sum.inr j) (pderiv (e k) f))))`. Rewrite using `[Finset.sum_comm (s := (Finset.univ : Finset κ))]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Oscillator.pderiv_pderiv_comm (e k), GlobalTheory.Oscillator.pderiv_pderiv_comm (e k), mul_left_comm]`. Establish `h2 : ∑ l, ∑ k, x' l * (b k * T (pderiv (e k) (pderiv l f))) = ∑ k, ∑ l, b k * (x' l * T (pderiv l (pderiv (e k) f)))`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.Oscillator.pderiv_pderiv_comm (e k), mul_left_comm]`. Rewrite using `[h1, h2]`. Simplify using `only [mul_left_comm a]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem derForm_comb {κ : Type} [Fintype κ] (A' : Matrix (Fin P) (Fin Q) ℂ) (x' : Ix P Q → ℂ)
     (T U : MvPolynomial (Ix P Q) ℂ → ℂ) (a : ℂ) (b : κ → ℂ) (e : κ → Ix P Q)
     (hU : ∀ g, U g = a * T g + ∑ k, b k * T (pderiv (e k) g)) (f : MvPolynomial (Ix P Q) ℂ) :
@@ -40,6 +47,9 @@ theorem derForm_comb {κ : Type} [Fintype κ] (A' : Matrix (Fin P) (Fin Q) ℂ) 
   simp only [mul_left_comm a]
   ring
 
+/- English proof (translation)
+Rewrite using `[Derivation.leibniz, pderiv_X, smul_eq_mul, smul_eq_mul, Pi.single_apply]`. Distinguish the cases in `h : m = l`. Simplify using `[h]`. Simplify using `[h, Ne.symm h]`.
+-/
 theorem pderiv_X_mul (m l : Ix P Q) (f : MvPolynomial (Ix P Q) ℂ) :
     pderiv m (X l * f) = X l * pderiv m f + if m = l then f else 0 := by
   rw [Derivation.leibniz, pderiv_X, smul_eq_mul, smul_eq_mul, Pi.single_apply]
@@ -47,6 +57,9 @@ theorem pderiv_X_mul (m l : Ix P Q) (f : MvPolynomial (Ix P Q) ℂ) :
   · simp [h]
   · simp [h, Ne.symm h]
 
+/- English proof (translation)
+Simplify using `only [derForm, pderiv_X_mul, map_add, apply_ite T, map_zero, mul_add, Finset.sum_add_distrib, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, reduceCtorEq, if_false, add_zero, Sum.inl.injEq]`. Rewrite using `[Finset.sum_comm (f := fun i' j => if i' = i then A' i' j * T (pderiv (Sum.inr j) f) else 0)]`. Simplify using `only [Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem derForm_X_inl (A' : Matrix (Fin P) (Fin Q) ℂ) (x' : Ix P Q → ℂ)
     (T : MvPolynomial (Ix P Q) ℂ →+ ℂ) (i : Fin P) (f : MvPolynomial (Ix P Q) ℂ) :
     derForm A' x' T (X (Sum.inl i) * f) = derForm A' x' (fun g => T (X (Sum.inl i) * g)) f +
@@ -57,6 +70,9 @@ theorem derForm_X_inl (A' : Matrix (Fin P) (Fin Q) ℂ) (x' : Ix P Q → ℂ)
   simp only [Finset.sum_ite_eq', Finset.mem_univ, if_true]
   ring
 
+/- English proof (translation)
+Simplify using `only [derForm, pderiv_X_mul, map_add, apply_ite T, apply_ite (pderiv _), map_zero, mul_add, Finset.sum_add_distrib, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, reduceCtorEq, if_false, add_zero, Sum.inr.injEq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem derForm_X_inr (A' : Matrix (Fin P) (Fin Q) ℂ) (x' : Ix P Q → ℂ)
     (T : MvPolynomial (Ix P Q) ℂ →+ ℂ) (j : Fin Q) (f : MvPolynomial (Ix P Q) ℂ) :
     derForm A' x' T (X (Sum.inr j) * f) = derForm A' x' (fun g => T (X (Sum.inr j) * g)) f +
@@ -71,6 +87,9 @@ def pair (F : Fock (Ix P Q)) (v : F.H) : MvPolynomial (Ix P Q) ℂ →+ ℂ wher
   map_zero' := by simp
   map_add' f g := by simp [inner_add_left]
 
+/- English proof (translation)
+Rewrite using `[derForm_comb A' x' (T 0) _ (a 0) (b 0) e (hU 0)]`. Simplify using `only [hU]`. Use `((ha.fun_mul h0).fun_add (HasDerivAt.fun_sum (u := Finset.univ) fun k _ => (hb k).fun_mul (h1 (e k)))).congr_deriv ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem step {κ : Type} [Fintype κ] (A' : Matrix (Fin P) (Fin Q) ℂ) (x' : Ix P Q → ℂ)
     (T : ℝ → MvPolynomial (Ix P Q) ℂ → ℂ) (l : Ix P Q) (a : ℝ → ℂ) (b : ℝ → κ → ℂ) (a' : ℂ) (b' : κ → ℂ)
     (e : κ → Ix P Q) (ha : HasDerivAt a a' 0) (hb : ∀ k, HasDerivAt (fun t => b t k) (b' k) 0)
@@ -86,6 +105,27 @@ theorem step {κ : Type} [Fintype κ] (A' : Matrix (Fin P) (Fin Q) ℂ) (x' : Ix
   rw [Finset.sum_add_distrib]
   ring
 
+/- English proof (translation)
+Introduce `P Q F A x v A' x' hv hA hx f`. Express the relevant statement in the definitionally equal form `HasDerivAt (fun t => pair F (v t) f) (derForm A' x' (pair F (v 0)) f) 0`. Establish `key : ∀ (N : ℕ) (α : Ix P Q →₀ ℕ), α.degree ≤ N → ∀ c : ℂ, HasDerivAt (fun t => pair F (v t) (monomial α c)) (derForm A' x' (pair F (v 0)) (monomial α c)) 0`. Establish `h0 : ∀ c : ℂ, HasDerivAt (fun t => pair F (v t) (monomial 0 c)) (derForm A' x' (pair F (v 0)) (monomial 0 c)) 0` using `fun c => by`. Establish `e : ∀ t, pair F (v t) (monomial 0 c) = (starRingEnd ℂ) c` using `fun t => by`.
+
+Establish `e1 : (monomial 0 c : MvPolynomial (Ix P Q) ℂ) = c • monomial 0 1`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Express the relevant statement in the definitionally equal form `inner ℂ (F.ι (monomial 0 c)) (v t) = _`. Rewrite using `[e1, map_smul, inner_smul_left, hv t 0]`. Simplify using `[expPS, MvPowerSeries.coeff_apply]`.
+
+Simplify using `only [e]`. Use `(hasDerivAt_const _ _).congr_deriv ?_` and prove the remaining obligations. Simplify using `[derForm]`. Introduce `N`. Proceed by induction on `N with`.
+
+Consider the case `zero`. Introduce `α hα c`. Take `rfl : α = 0` from `(Finsupp.degree_eq_zero_iff α).1 (Nat.le_zero.1 hα)`. Conclude with `h0 c`. Consider the case `succ N ih`.
+
+Introduce `α hα c`. Distinguish the cases in `hz : α = 0`. Substitute `hz` using the available equality. Conclude with `h0 c`. Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l, α l ≠ 0 := by`.
+
+Assume the negation of the conclusion as `hh`. Use `push Not at hh`. Conclude with `hz (Finsupp.ext hh)`. Take `⟨β, rfl⟩ : ∃ β, α = Finsupp.single l 1 + β` from `exists_add_of_le (Finsupp.single_le_iff.2 (Nat.pos_of_ne_zero hl))`. Establish `hβ : β.degree ≤ N`.
+
+Rewrite `hα` using `[map_add, Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers. Establish `e : (monomial (Finsupp.single l 1 + β) c : MvPolynomial (Ix P Q) ℂ) = X l * monomial β c`. Rewrite using `[X, monomial_mul, one_mul]`. Establish `h1 : ∀ m, HasDerivAt (fun t => pair F (v t) (pderiv m (monomial β c))) (derForm A' x' (pair F (v 0)) (pderiv m (monomial β c))) 0` using `fun m => by`.
+
+Rewrite using `[pderiv_monomial]`. Conclude with `ih _ ((Finsupp.degree_mono tsub_le_self).trans hβ) _`. Rewrite using `[e]`. Break down `l with i | j` into its components or cases. Rewrite using `[derForm_X_inl]`.
+
+Conclude with `step A' x' (fun t => pair F (v t)) _ (fun t => x t (Sum.inl i)) (fun t j => A t i j) _ _ Sum.inr (hx _) (hA i) (fun t => (GlobalTheory.T.gaussianVector_annihilator_equations P Q F _ _ _ (hv t)).1 i) _ (ih _ hβ c) h1`. Rewrite using `[derForm_X_inr]`. Conclude with `step A' x' (fun t => pair F (v t)) _ (fun t => x t (Sum.inr j)) (fun t i => A t i j) _ _ Sum.inl (hx _) (fun i => hA i j) (fun t => (GlobalTheory.T.gaussianVector_annihilator_equations P Q F _ _ _ (hv t)).2 j) _ (ih _ hβ c) h1`. Proceed by induction on `f using MvPolynomial.induction_on' with`. Consider the case `monomial α c => exact key _ α le_rfl c`.
+
+Consider the case `add f g hf hg`. Simplify using `only [map_add]`. Use `(hf.fun_add hg).congr_deriv ?_` and prove the remaining obligations. Simplify using `only [derForm, map_add, mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasDerivAt_inner_gauss : ∀ (P Q : ℕ) (F : Fock (Ix P Q)) (A : ℝ → Matrix (Fin P) (Fin Q) ℂ) (x : ℝ → Ix P Q → ℂ) (v : ℝ → F.H) (A' : Matrix (Fin P) (Fin Q) ℂ) (x' : Ix P Q → ℂ), (∀ t, HasCoeff F (v t) (expPS (gaussPoly (A t) (x t)))) → (∀ i j, HasDerivAt (fun t => A t i j) (A' i j) 0) → (∀ l, HasDerivAt (fun t => x t l) (x' l) 0) → ∀ f : MvPolynomial (Ix P Q) ℂ, HasDerivAt (fun t => inner ℂ (F.ι f) (v t)) (∑ i, ∑ j, A' i j * inner ℂ (F.ι (MvPolynomial.pderiv (Sum.inl i) (MvPolynomial.pderiv (Sum.inr j) f))) (v 0) + ∑ l, x' l * inner ℂ (F.ι (MvPolynomial.pderiv l f)) (v 0)) 0 := by
   intro P Q F A x v A' x' hv hA hx f
   change HasDerivAt (fun t => pair F (v t) f) (derForm A' x' (pair F (v 0)) f) 0

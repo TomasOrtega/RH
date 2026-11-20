@@ -9,6 +9,9 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 
 open Topology Metric Filter
 
+/- English proof (translation)
+Use `analyticOnNhd_of_continuousOn_of_separately hO hg.continuousOn fun z hz i => ?_` and prove the remaining obligations. Establish `h1 : DifferentiableAt ℂ g (Function.update z i (z i))`. Rewrite using `[Function.update_eq_self]`. Conclude with `hg.differentiableAt (hO.mem_nhds hz)`. Conclude with `h1.comp (z i) (hasFDerivAt_update z (z i)).differentiableAt`.
+-/
 theorem NonIsolatedFibreCurve.analyticOnNhd_of_differentiableOn {k : ℕ} {O : Set (Fin k → ℂ)}
     {g : (Fin k → ℂ) → ℂ} (hO : IsOpen O) (hg : DifferentiableOn ℂ g O) : AnalyticOnNhd ℂ g O := by
   refine analyticOnNhd_of_continuousOn_of_separately hO hg.continuousOn fun z hz i => ?_
@@ -17,6 +20,23 @@ theorem NonIsolatedFibreCurve.analyticOnNhd_of_differentiableOn {k : ℕ} {O : S
     exact hg.differentiableAt (hO.mem_nhds hz)
   exact h1.comp (z i) (hasFDerivAt_update z (z i)).differentiableAt
 
+/- English proof (translation)
+Introduce `k m U f p hU hf hp hacc`. Use `set Z : Set (Fin k → ℂ) := {v | v ∈ U ∧ f v = f p} with hZ`. Establish `hZan : IsAnalyticNear Z p`. Use `⟨U, m, fun i v => f v i - f p i, hU, hp, fun i => ?_, ?_⟩` and prove the remaining obligations. Conclude with `analyticOnNhd_of_differentiableOn hU ((differentiableOn_pi.1 hf i).sub_const _)`.
+
+Use extensionality with `v`. Simplify using `only [hZ, Set.mem_inter_iff, Set.mem_ofPred_eq, sub_eq_zero, funext_iff]`. The claim follows by propositional logic. Take `⟨n, Y, hY, W, hW, hZW⟩` from `hComp (Fin k) Z p hZan ⟨hp, rfl⟩`. Establish `hfreq : ∃ᶠ y in 𝓝 p, y ≠ p ∧ y ∈ ⋃ i, Y i`.
+
+Establish `h` using `accPt_iff_frequently.1 hacc`. Use `(h.and_eventually hW).mono fun y ⟨⟨hne, hyZ⟩, hyW⟩ => ⟨hne, ?_⟩` and prove the remaining obligations. Establish `: y ∈ Z ∩ W` using `⟨hyZ, hyW⟩`. Rewrite `this` using `[hZW]`. Conclude with `this.1`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, AccPt p (𝓟 (Y i)) := by`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Establish `hev : ∀ᶠ y in 𝓝 p, ∀ i, ¬ (y ≠ p ∧ y ∈ Y i)`. Use `eventually_all.2 fun i => ?_` and prove the remaining obligations.
+
+Use `hno i` as an intermediate fact. Rewrite `this` using `[accPt_iff_frequently, Filter.not_frequently]`. Conclude with `this`. Take `⟨y, ⟨hne, hyU⟩, hy⟩` from `(hfreq.and_eventually hev).exists`. Take `⟨j, hj⟩` from `Set.mem_iUnion.1 hyU`.
+
+Conclude with `hy j ⟨hne, hj⟩`. Take `⟨r, hr, γ, hγd, hγi, hγ0, hγm⟩` from `hCurve (Fin k) (Y i) p (hY i).1 (hY i).2 hi`. Establish `hcont : ContinuousAt γ 0` using `(hγd.differentiableAt (isOpen_ball.mem_nhds (mem_ball_self hr))).continuousAt`. Establish `hpre : γ ⁻¹' W ∈ 𝓝 (0 : ℂ)` using `hcont.preimage_mem_nhds (by rwa [hγ0])`. Take `⟨ε, hε, hεW⟩` from `Metric.mem_nhds_iff.1 hpre`.
+
+Establish `hsub : ball (0 : ℂ) (min r ε) ⊆ ball 0 r` using `ball_subset_ball (min_le_left _ _)`. Use `⟨min r ε, lt_min hr hε, γ, hγd.mono hsub, hγi.mono hsub, hγ0, fun τ hτ => ?_⟩` and prove the remaining obligations. Establish `hτW : γ τ ∈ W` using `hεW (ball_subset_ball (min_le_right _ _) hτ)`. Establish `: γ τ ∈ (⋃ j, Y j) ∩ W` using `⟨Set.mem_iUnion.2 ⟨i, hγm (hsub hτ)⟩, hτW⟩`. Rewrite `this` using `[← hZW]`.
+
+Conclude with `this.1`.
+-/
 theorem NonIsolatedFibreCurve.proof (hComp : AnalyticGermComponents.Statement)
     (hCurve : IrreducibleGermCurve.Statement) : NonIsolatedFibreCurve.Statement := by
   intro k m U f p hU hf hp hacc

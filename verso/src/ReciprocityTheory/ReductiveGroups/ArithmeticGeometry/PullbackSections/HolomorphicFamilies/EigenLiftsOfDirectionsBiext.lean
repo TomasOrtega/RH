@@ -53,6 +53,11 @@ def PrimeConductorEigenLifts : Prop :=
 
 namespace Pf.EigA
 
+/- English proof (translation)
+Take `⟨b, c, h1, h2⟩` from `idem_data_basis ψ hint w hw`. Use `set eq := Fintype.equivFin (Module.Free.ChooseBasisIndex ℤ (𝓞 E))`. Use `⟨_, fun i => b (eq.symm i), fun i => c (eq.symm i), ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Equiv.sum_comp eq.symm (fun x => algebraMap V k (c x) * ψ (algebraMap (𝓞 E) E (b x)))]`. Conclude with `h1`.
+
+Take `⟨m, hm1, hm2⟩` from `h2 a`. Use `⟨fun i j => m (eq.symm i) (eq.symm j), fun i => ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[hm1, ← Equiv.sum_comp eq.symm (fun x => m (eq.symm i) x • b x)]`. Rewrite using `[Equiv.sum_comp eq.symm (fun x => (m x (eq.symm j) : k) * algebraMap V k (c x))]`. Conclude with `hm2 _`.
+-/
 theorem idem_data {E : Type} [Field E] [NumberField E] {k V : Type} [Field k] [CommRing V] [Algebra V k]
     (ψ : E →+* k) (hint : ∀ x : 𝓞 E, ∃ v : V, algebraMap V k v = ψ (algebraMap (𝓞 E) E x)) (w : V)
     (hw : algebraMap V k w * (((discr E).natAbs : ℕ) : k) = 1) :

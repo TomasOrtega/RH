@@ -19,6 +19,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.GermJets
 
+/- English proof (translation)
+Establish `htop : M.U i₀ = ⊤` using `top_le_iff.1 h`. Establish `hle : ∀ i, M.U i ≤ M.U i ⊓ M.U i₀` using `fun i => le_inf le_rfl (htop ▸ le_top)`. Use `⟨⟨fun i => res (hle i) (M.g i i₀)⟩, fun i j => ?_⟩` and prove the remaining obligations. Establish `hc` using `hM.cocycle i j i₀`. Establish `h3 : M.U i ⊓ M.U j ≤ M.U i ⊓ M.U j ⊓ M.U i₀` using `le_inf le_rfl (htop ▸ le_top)`.
+
+Establish `hc'` using `congrArg (res h3) hc`. Rewrite `hc'` using `[map_mul, res_res', res_res', res_res']`. Rewrite using `[res_res', res_res']`. Use `hc'.symm using 2` and compare the differences between its conclusion and the goal. Conclude with `((res_res' inf_le_left h3 (M.g i j)).symm.trans (res_of_le_of_le inf_le_left h3 (M.g i j))).symm`.
+-/
 theorem exists_gen_of_top {Y : Scheme.{0}} (M : LB Y) (hM : M.IsLB) (i₀ : M.ι) (h : ⊤ ≤ M.U i₀) :
     ∃ e : M.Gen, e.IsGen := by
   have htop : M.U i₀ = ⊤ := top_le_iff.1 h
@@ -32,6 +37,13 @@ theorem exists_gen_of_top {Y : Scheme.{0}} (M : LB Y) (hM : M.IsLB) (i₀ : M.ι
   convert hc'.symm using 2
   exact ((res_res' inf_le_left h3 (M.g i j)).symm.trans (res_of_le_of_le inf_le_left h3 (M.g i j))).symm
 
+/- English proof (translation)
+Establish `h₁ : ⊤ ≤ (𝟙 (Spec (CommRingCat.of A))) ⁻¹ᵁ LB.wchart L (K` using `Fin 1) (fun _ => p ≫ 𝟙 X) (fun _ => j) := GermExist.top_le_preimage_wchart L _ j _ (fun _ => by rw [Category.id_comp, Category.comp_id]; exact hp)`. Establish `h₂ : ⊤ ≤ p ⁻¹ᵁ LB.wchart L (K` using `Fin 1) (fun _ => 𝟙 X) (fun _ => j) := GermExist.top_le_preimage_wchart L _ j _ (fun _ => by rw [Category.comp_id]; exact hp)`. Use `⟨JetSer.fnVal (𝟙 _) _ (τ.s (fun _ => j)).val, ?_, fun σ a h => ?_⟩` and prove the remaining obligations. Conclude with `(JetSer.fnVal_eq_fnValHom _ _ h₁ _).symm ▸ (Units.isUnit (τ.s (fun _ => j))).map (JetSer.fnValHom _ _ h₁)`. Apply `(Scheme.ΓSpecIso (CommRingCat.of A)).symm.commRingCatIsoToRingEquiv.injective` to reduce the goal to its premises.
+
+Apply `TopCat.Presheaf.section_ext (Spec (CommRingCat.of A)).sheaf ⊤` to reduce the goal to its premises. Introduce `z hz`. Take `⟨J, hJ, e⟩` from `exists_good L hL z (K := Unit) (fun _ => p ≫ 𝟙 X) (fun _ => j) (fun _ _ _ => rfl) (fun _ => by rw [Category.comp_id]; exact hp hz)`. Use `h z J hJ` as an intermediate fact. Rewrite `this` using `[sval_of σ p z J (fun _ => j) (fun _ => e ()), val_of τ _ z J (fun _ => j) (fun _ => by rw [Category.id_comp]; exact e ()), gs_eq _ z ⊤ trivial]`.
+
+Use `(JetSer.valSer_germ_fnVal p _ h₂ z _).trans (this.trans ?_)` and prove the remaining obligations. Use `(congrArg₂ (· * ·) rfl ((gs_unit (𝟙 _) z _ (h₁ hz) _).symm.trans (JetSer.valSer_germ_fnVal (𝟙 _) _ h₁ z _).symm)).trans ?_` and prove the remaining obligations. Use `show _ = ((Spec (CommRingCat.of A)).presheaf.germ ⊤ z trivial).hom ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom (a * _))`. Rewrite using `[map_mul, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem exists_unit_fnVal {A : Type} [CommRing A] {X : Scheme.{0}} (L : LB X) (hL : L.IsLB) (j : L.ι)
     (p : Spec (CommRingCat.of A) ⟶ X) (hp : ⊤ ≤ p ⁻¹ᵁ L.U j) (q : ℕ)
     (τ : LB.Gen (LB.LinComb L (K := Fin 1) (fun _ => p ≫ 𝟙 X) (fun _ => (q : ℤ)))) :
@@ -62,6 +74,19 @@ theorem exists_unit_fnVal {A : Type} [CommRing A] {X : Scheme.{0}} (L : LB X) (h
     rw [map_mul, map_mul]
     rfl
 
+/- English proof (translation)
+Establish `h : ∀ m : κ →₀ ℕ, ∃ b : Fin l → V, ∀ e : κ →₀ ℕ, e.degree ≤ n → ∑ i, b i * MvPowerSeries.coeff e (gi i) = if e = m then 1 else 0`. Introduce `m`. Establish `hm : JetSer.toJet n (MvPowerSeries.monomial m (1 : V)) ∈ Submodule.span V (Set.range fun i => JetSer.toJet n (gi i))` using `by rw [hs]; trivial`. Take `⟨b, hb⟩` from `(Submodule.mem_span_range_iff_exists_fun V).1 hm`. Use `⟨b, fun e he => ?_⟩` and prove the remaining obligations.
+
+Establish `h2 : JetSer.toJet n (∑ i, b i • gi i) = JetSer.toJet n (MvPowerSeries.monomial m (1 : V))`. Rewrite using `[← hb, ← JetSer.toJetHom_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smul, JetSer.toJetHom_apply]`. Establish `h3` using `(JetSer.toJet_eq_iff n _ _).1 h2 e (by omega)`. Rewrite `h3` using `[MvPowerSeries.coeff_monomial, map_sum]`.
+
+Simplify using `using h3`. Use `choose b hb using h`. Set `S` to `(Finsupp.finite_of_degree_le (σ := κ) n).toFinset`. Establish `hc : ∀ i, 0 ≤ v (∑ m ∈ S, MvPowerSeries.coeff m g * φ (b m i))` using `fun i => AddValuation.map_le_sum v fun m _ => by rw [AddValuation.map_mul]; exact add_nonneg (hg m) (hφ _)`. Use `⟨fun i => ∑ m ∈ S, MvPowerSeries.coeff m g * φ (b m i), hc, fun mo => ?_, fun mo hmo => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sum]`. Use `AddValuation.map_le_sum v fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_map, AddValuation.map_mul]`. Conclude with `add_nonneg (hc i) (hφ _)`. Rewrite using `[map_sum]`.
+
+Simplify using `only [MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_map, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `: ∀ m ∈ S, ∑ i, MvPowerSeries.coeff m g * φ (b m i) * φ (MvPowerSeries.coeff mo (gi i)) = if mo = m then MvPowerSeries.coeff m g else 0`. Introduce `m _`. Simplify using `only [_root_.mul_assoc, ← map_mul]`.
+
+Rewrite using `[← Finset.mul_sum, ← map_sum, hb m mo hmo]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Finset.sum_congr rfl this, Finset.sum_ite_eq, if_pos]`. Simplify `hmo` using `[S]`.
+-/
 theorem exists_comb {V F κ : Type} [CommRing V] [Field F] [Finite κ] (φ : V →+* F) (v : AddValuation F (WithTop ℚ))
     (hφ : ∀ x, 0 ≤ v (φ x)) (n : ℕ) {l : ℕ} (gi : Fin l → MvPowerSeries κ V)
     (hs : Submodule.span V (Set.range fun i => JetSer.toJet n (gi i)) = ⊤) (g : MvPowerSeries κ F)
@@ -109,6 +134,9 @@ section Fam
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {D : DegData V (maximalIdeal V)}
   {F : Type} [Field F] [Algebra (FractionRing V) F] {k : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty, zero_f]`. Consider the case `insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, add_f, ih]`.
+-/
 theorem fam_sum_f {K : Type} (S : Finset K) (t : K → Fam D.toPre F k) (α : D.toPre.X) (j) :
     ((∑ i ∈ S, t i).s α).f j = ∑ i ∈ S, ((t i).s α).f j := by
   classical
@@ -116,6 +144,11 @@ theorem fam_sum_f {K : Type} (S : Finset K) (t : K → Fam D.toPre F k) (α : D.
   | empty => rw [Finset.sum_empty, Finset.sum_empty, zero_f]
   | insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, add_f, ih]
 
+/- English proof (translation)
+Introduce `j₁ j₂ hc`. Use `erw [fam_sum_f, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e` using `h i α j₁ j₂ hc`. Simplify using `only [resTop, map_one, _root_.one_mul] at e`.
+
+Use `erw [smul_f, map_mul, SecOps.resTop_res]`. Conclude with `congrArg₂ (· * ·) rfl e.symm`.
+-/
 theorem secLin_comb {l : ℕ} (c : Fin l → F) {θ : Fin l → Fam D.toPre F k} {f : Fin l → ∀ α, D.toPre.SecB k α}
     (h : ∀ i α, GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre F α) (DegPre.famε k) ((θ i).s α) (D.toPre.famφB α)
       (DegPre.famε k) (f i α) (DegPre.prB D.toPre F).left 1) (α : D.toPre.X) :
@@ -132,6 +165,9 @@ theorem secLin_comb {l : ℕ} (c : Fin l → F) {θ : Fin l → Fam D.toPre F k}
 
 variable {Q : D.toPre.X → ℤ} {v : AddValuation F (WithTop ℚ)}
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact fun χ => vge_of_zero (fun j => by rw [Finset.sum_empty, zero_f]) _`. Consider the case `insert a S ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `NuGe.add Q (fun _ _ => rfl) (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem nuGe_sum {K : Type} (S : Finset K) (t : K → Fam D.toPre F k) (r : ℚ) (h : ∀ i ∈ S, NuGe D Q F v k (t i) r) :
     NuGe D Q F v k (∑ i ∈ S, t i) r := by
   classical
@@ -142,6 +178,15 @@ theorem nuGe_sum {K : Type} (S : Finset K) (t : K → Fam D.toPre F k) (r : ℚ)
     exact NuGe.add Q (fun _ _ => rfl) (h a (Finset.mem_insert_self _ _))
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Introduce `α`. Distinguish the cases in `hα : ∃ z, α = χ + k • z`. Take `⟨z, rfl⟩` from `hα`. Establish `h0 : VGe D F v k χ (θ.s χ) 0` using `⟨1, fun _ => 1, fun _ => f χ, fun _ => θ.s χ, fun _ => h χ, fun _ => by simp, fun j => by simp [DegPre.constBF]⟩`. Use `(SectionScalarValuation.fe_move hϖ hQ hv k z χ θ h0).mono (le_of_eq ?_)` and prove the remaining obligations.
+
+Establish `hk0 : (k : ℚ) ≠ 0` using `by exact_mod_cast (by omega : k ≠ 0)`. Rewrite using `[q_shift hϖ hQ χ z k]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Use `push Not at hα`. Use `vge_of_zero (fun j => ?_) _` and prove the remaining obligations. Use `sec_ext_val D.toPre.P.isLB (s' := SecOps.secZero) (fun y J hJ => ?_) j` and prove the remaining obligations. Rewrite using `[← SectionScalarValuation.secScal_sval (h α) _ _ hJ]`. Establish `g0 : ∀ {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens), gs f y U 0 = 0` using `fun f y U => by`.
+
+Unfold `gs`. Apply the tactic sequence `split_ifs <;> simp`. Conclude with `(congrArg (gs _ y _) (hz α hα _)).trans ((g0 _ _ _).trans (g0 _ _ _).symm)`.
+-/
 theorem nuGe_of_class {ϖ : V} (hϖ : Irreducible ϖ) (hQ : QForm.IsQ D.toPre ϖ Q) (hv : ValOver ϖ F v) (hk : 1 ≤ k)
     {θ : Fam D.toPre F k} {f : ∀ α, D.toPre.SecB k α}
     (h : ∀ α, GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre F α) (DegPre.famε k) (θ.s α) (D.toPre.famφB α)
@@ -166,6 +211,19 @@ theorem nuGe_of_class {ϖ : V} (hϖ : Irreducible ϖ) (hQ : QForm.IsQ D.toPre ϖ
 
 end Fam
 
+/- English proof (translation)
+Take `⟨h1, -⟩` from `hrep R G d x hx (Fin 1 × Fin d)`. Take `⟨y, hy, -⟩` from `h1 (Germ.pt R (n := 1) d 0) (TB.WickVanishing.gp_pt 0)`. Take `⟨ψ, hψ, e⟩` from `hy.2 n`. Use `⟨ψ, fun w => ?_, fun U hU f S hS => ?_⟩` and prove the remaining obligations. Take `⟨P, rfl⟩` from `Ideal.Quotient.mk_surjective w`.
+
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => exact ⟨algebraMap R _ a, ψ.commutes a⟩`. Consider the case `add p q hp hq`. Take `⟨a, ha⟩` from `hp`. Take `⟨b, hb⟩` from `hq`.
+
+Conclude with `⟨a + b, by rw [map_add, map_add, ha, hb]⟩`. Consider the case `mul_X p i hp`. Take `⟨a, ha⟩` from `hp`. Take `⟨i₀, i⟩` from `i`. Take `rfl : i₀ = 0` from `Subsingleton.elim _ _`.
+
+Conclude with `⟨a * Chart.zR n i, by rw [map_mul, map_mul, ha, hψ]; exact congrArg _ (JetSer.toJet_X n _)⟩`. Establish `hs` using `(hS 1 _ y hy n).2`. Establish `e' : Germ.ev (n` using `1) ![Germ.pt R (n := 1) d 0] S = S := by`. Establish `: (![Germ.pt R d 0] : Fin 1 → Germ.Pt R 1 d) = fun j => Germ.pt R d j`. Use function extensionality and compare the values at `j`.
+
+Use `fin_cases j`. Both sides reduce to the same expression. Rewrite using `[this]`. Unfold `Germ.ev`. Conclude with `congrFun MvPowerSeries.subst_self S`.
+
+Rewrite `hs` using `[e']`. Use `hs.symm.trans ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[e]`. Conclude with `JetSer.fnVal_specMap ψ.toRingHom (x n).left U hU f`.
+-/
 theorem exists_jet_map (hrep : JetSer.RepSt) {R : Type} [CommRing R] {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
     {d : ℕ} {x : JetSer.Fam G (Fin d)} (hx : Chart.IsUnivChart G d x) (n : ℕ) :
     ∃ ψ : Chart.JetR R (Fin d) n →ₐ[R] Chart.JetR R (Fin 1 × Fin d) n, Function.Surjective ψ ∧
@@ -200,6 +258,13 @@ theorem exists_jet_map (hrep : JetSer.RepSt) {R : Type} [CommRing R] {G : Over (
     rw [e]
     exact JetSer.fnVal_specMap ψ.toRingHom (x n).left U hU f
 
+/- English proof (translation)
+Use `JetSer.top_le_preimage_of_nil (Chart.jetZeroR R (Fin d) n).toRingHom (fun w => ?_) (fun a ha => ?_) (x n).left U ?_` and prove the remaining obligations. Take `⟨P, rfl⟩` from `Ideal.Quotient.mk_surjective w`. Conclude with `⟨Ideal.Quotient.mk _ P, rfl⟩`. Take `⟨P, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Establish `hP : P ∈ _` using `Ideal.Quotient.eq_zero_iff_mem.1 ha`.
+
+Rewrite `hP` using `[zero_add, pow_one]`. Conclude with `⟨n + 1, by rw [← map_pow]; exact Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.pow_mem_pow hP _)⟩`. Establish `e` using `congrArg (·.left) (hx.2.1 n)`. Establish `e' : Spec.map (CommRingCat.ofHom (Chart.jetZeroR R (Fin d) n).toRingHom) ≫ (x n).left = (toUnit (Chart.sp (R₀` using `R) (Chart.JetR R (Fin d) 0))).left ≫ η[G].left := e`. Rewrite using `[e']`.
+
+Conclude with `JetSer.top_le_preimage_comp _ _ U hU`.
+-/
 theorem top_le_jet {R : Type} [CommRing R] {G : Over (Spec (CommRingCat.of R))} [GrpObj G]
     {d : ℕ} {x : JetSer.Fam G (Fin d)} (hx : Chart.IsUnivChart G d x) (n : ℕ) (U : G.left.Opens)
     (hU : ⊤ ≤ η[G].left ⁻¹ᵁ U) : ⊤ ≤ (x n).left ⁻¹ᵁ U := by
@@ -217,6 +282,25 @@ theorem top_le_jet {R : Type} [CommRing R] {G : Over (Spec (CommRingCat.of R))} 
     rw [e']
     exact JetSer.top_le_preimage_comp _ _ U hU
 
+/- English proof (translation)
+Introduce `hL _ hT _ hrep hser hex _ E _ _ _ H V _ _ _ F _ _ _ _ _ _ y`. Set `_` to `H.starRing`. Introduce `rk b Cc M₀ hR q n hq hn`. Establish `hLB` using `y.P.U.LG.isLB`. Establish `hxj` using `top_le_jet y.hx n _ y.hj`.
+
+Take `⟨τ, hτ⟩` from `exists_gen_of_top (LB.LinComb y.P.U.LG.L (K := Fin 1) (fun _ => (y.x n).left ≫ 𝟙 y.t.G.left) (fun _ => (q : ℤ))) (linComb_isLB _ hLB _ _) (fun _ => y.j) (fun z hz => Set.mem_iInter.2 fun _ => by rw [Category.comp_id]; exact hxj hz)`. Take `⟨l, σ, f, χ, a, hexp, hΦ, hχ, hsupp, hval, hspan⟩` from `SmallJets.small_characters_span_jets hL hT V y.ϖ y.hϖ y.P.D y.P.A y.t.G y.P.U y.Q y.hQ rk b Cc M₀ hR.1 hR.2.1 hR.2.2.1 hR.2.2.2 q n hq hn y.d y.x y.hx τ hτ`. Take `⟨u, hu, hua⟩` from `exists_unit_fnVal y.P.U.LG.L hLB y.j (y.x n).left hxj q τ`. Take `⟨ψ, hψ, hψS⟩` from `exists_jet_map hrep y.hx n`. Take `⟨h1, -⟩` from `hex V y.t.G y.d y.x y.hx`.
+
+Establish `hw : η[y.t.G] ≫ y.t.act.act H.w0 = η[y.t.G]`. Use `y.t.act.hom H.w0` as an intermediate fact. Conclude with `IsMonHom.one_hom _`. Take `⟨r, hr, -⟩` from `h1 (LB.wchart y.P.U.LG.L (JetSer.primφ (y.t.act.act H.w0)) (fun _ => y.j)) (GermExist.top_le_preimage_wchart _ _ y.j _ (fun k => by rw [GermExist.unit_comp_primφ _ hw k]; exact y.hj)) (y.ρ.s (fun _ => y.j)).val`. Establish `hS` using `fun i => (h1 (LB.wchart y.P.U.LG.L (K := Fin 1) (fun _ => 𝟙 y.t.G.left) (fun _ => y.j)) (GermExist.top_le_preimage_wchart _ _ y.j _ (fun _ => by rw [Category.comp_id]; exact y.hj)) ((σ i).f (fun _ => y.j))).exists`.
+
+Use `choose S hS using hS`. Take `⟨w, hw'⟩` from `(GermExist.isUnit_of_isSer1 hrep hser y.hx (Units.isUnit _) hr).pow q`. Establish `hSa : ∀ i, JetSer.toJet n (S i) = ψ (a i * u)` using `fun i => (hψS _ (GermExist.top_le_preimage_wchart _ _ y.j _ (fun _ => by rw [Category.comp_id]; exact hxj)) _ _ (hS i)).trans (congrArg ψ (hua (σ i) (a i) (hval i)))`. Establish `hsp : Submodule.span V (Set.range fun i => JetSer.toJet n (S i * (w⁻¹).val)) = ⊤`. Rewrite using `[eq_top_iff]`.
+
+Introduce and unpack `t -`. Take `⟨u', rfl⟩` from `hu`. Take `⟨t', ht'⟩` from `hψ (t * JetSer.toJetHom V _ n w.val)`. Establish `hm : t' * (u'⁻¹).val ∈ Submodule.span V (Set.range a)` using `by rw [hspan]; trivial`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun V).1 hm`.
+
+Use `(Submodule.mem_span_range_iff_exists_fun V).2 ⟨c, ?_⟩` and prove the remaining obligations. Establish `e1 : ∀ i, JetSer.toJet n (S i * (w⁻¹).val) = ψ (a i) * (ψ u'.val * JetSer.toJetHom V _ n (w⁻¹).val)` using `fun i => by`. Rewrite using `[← JetSer.toJetHom_apply, map_mul, JetSer.toJetHom_apply n (S i), hSa, map_mul, _root_.mul_assoc]`. Simplify using `only [e1, ← smul_mul_assoc, ← map_smul]`. Rewrite using `[← Finset.sum_mul, ← map_sum, hc, ← _root_.mul_assoc, ← map_mul, Units.inv_mul_cancel_right, ht', _root_.mul_assoc, ← map_mul, Units.mul_inv, map_one, _root_.mul_one]`.
+
+Establish `hθ` using `fun i => (hΦ i).elim fun Φ hΦ' => FamBaseChange.main hL.globalFns V (maximalIdeal V) y.P.D q Φ (f i) hΦ' F`. Use `choose θ hθ using hθ`. Establish `hq0 : (0 : ℝ) < q` using `by exact_mod_cast (by omega : 0 < q)`. Choose the witnesses or unpack the hypotheses as in `⟨gm, h0, hle, hge⟩ : ∃ gm : ℚ, 0 ≤ gm ∧ (gm : ℝ) ≤ (n : ℝ) ^ 2 * Cc / q ∧ ∀ i, (y.Q (χ i) : ℚ) / q ≤ gm := by`. Use `⟨(⌊(n : ℝ) ^ 2 * Cc⌋ : ℤ) / q, ?_, ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Establish `: 0 ≤ ⌊(n : ℝ) ^ 2 * Cc⌋` using `Int.floor_nonneg.2 (mul_nonneg (sq_nonneg _) hR.1)`. Check the signs of the components of the expression. Use `push_cast`. Conclude with `div_le_div_of_nonneg_right (Int.floor_le _) hq0.le`. Conclude with `div_le_div_of_nonneg_right (by exact_mod_cast Int.le_floor.2 (hχ i)) (Nat.cast_nonneg q)`.
+
+Use `⟨gm, h0, hle, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hint, hjet⟩` from `exists_comb (TWO.algVF (V := V) (F := F)) y.v (fun x => (TWO.v_of_V y.v y.hϖ y.hv x).1) n (fun i => S i * (w⁻¹).val) hsp g hg`. Use `⟨∑ i, c i • θ i, _, nuGe_sum _ _ _ fun i _ => ?_, ⟨l, c, σ, f, fun i => S i * (w⁻¹).val, r, hexp, secLin_comb c hθ, hr, fun i => ⟨S i, hS i, by rw [← hw', Units.inv_mul_cancel_right]⟩, rfl⟩, hint, hjet⟩` and prove the remaining obligations. Establish `h2` using `NuGe.smul y.Q (q := 0) (hc i) ((isSmul_iff _ _ _).2 rfl) (nuGe_of_class y.hϖ y.hQ y.hv (by omega) (hθ i) (χ i) (hsupp i))`. Conclude with `NuGe.mono y.Q h2 (by have := hge i; linarith)`.
+-/
 theorem jets : Laws → Laws4 → TwistBCSpanStatement → JetSer.JetAlgSt → JetSer.RepSt → JetSer.SerSt →
     JetSer.SerExSt → FamGerm.GermExSt → JetsSt := by
   intro hL _ hT _ hrep hser hex _ E _ _ _ H V _ _ _ F _ _ _ _ _ _ y

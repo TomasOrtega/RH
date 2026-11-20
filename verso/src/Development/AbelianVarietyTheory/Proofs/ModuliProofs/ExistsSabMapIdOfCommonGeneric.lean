@@ -20,6 +20,9 @@ open scoped CategoryTheory.Obj TensorProduct Pointwise
 namespace GlobalTheory
 namespace TripleExt
 
+/- English proof (translation)
+Take `⟨e, he, hφ⟩` from `grpPullback_iso h (isGrpPullback_pullback G j)`. Take `⟨e', he', hφ'⟩` from `grpPullback_iso h' (isGrpPullback_pullback G' j)`. Take `⟨F, ⟨hF, hFf⟩, -⟩` from `hx (e.inv ≫ e'.hom) inferInstance`. Use `⟨F, hF, ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ, Category.assoc, ← ExtUnique.pullback_map_left_fst j F, hFf, ← Category.assoc, ← Over.comp_left, e.hom_inv_id_assoc, hφ']`.
+-/
 theorem exists_hom {X U : Scheme.{0}} {j : U ⟶ X} {G G' : Over X} [GrpObj G] [GrpObj G'] {G₀ : Over U} [GrpObj G₀]
     {φ : G₀.left ⟶ G.left} {φ' : G₀.left ⟶ G'.left} (h : IsGrpPullback G₀ G j φ) (h' : IsGrpPullback G₀ G' j φ')
     (hx : ∀ f : (Over.pullback j).obj G ⟶ (Over.pullback j).obj G', IsMonHom f →
@@ -35,6 +38,21 @@ theorem exists_hom {X U : Scheme.{0}} {j : U ⟶ X} {G G' : Over X} [GrpObj G] [
 end TripleExt
 end GlobalTheory
 
+/- English proof (translation)
+Introduce `hdvr E _ _ _ H X U j hX hj₁ hj₂ hj₃ hj₄ t₀ t t' a a' hp`. Take `⟨hgen, -, hdom, -⟩` from `densePart_basic X U j hj₁ hj₂ hj₃ hj₄`. Establish `hred : IsReduced X`. Establish `: ∀ x : X, _root_.IsReduced (X.presheaf.stalk x)` using `fun x => by`. Use `(hX.1 x).1` as an intermediate fact.
+
+Use `infer_instance`. Conclude with `isReduced_of_isReduced_stalk X`. Establish `hnoeth : IsLocallyNoetherian X`. Take `⟨z, hz, -⟩` from `hX.2`. Conclude with `LocallyOfFiniteType.isLocallyNoetherian z`.
+
+Use `hdom hred` as an intermediate fact. Take `⟨_, _⟩` from `ExtUnique.flat_and_isSeparated_of_isSemiAbelian t.G t.semi`. Take `⟨_, _⟩` from `ExtUnique.flat_and_isSeparated_of_isSemiAbelian t'.G t'.semi`. Take `⟨F, hF, hφ⟩` from `TripleExt.exists_hom a.cart a'.cart (GlobalTheory.T.existsUnique_hom_extension_semiAbelian_normal_base_alt hdvr X U j hX hj₁ hj₂ hj₃ hj₄ t.G t'.G t.semi t'.semi)`. Take `⟨F', -, hφ'⟩` from `TripleExt.exists_hom a'.cart a.cart (GlobalTheory.T.existsUnique_hom_extension_semiAbelian_normal_base_alt hdvr X U j hX hj₁ hj₂ hj₃ hj₄ t'.G t.G t'.semi t.semi)`.
+
+Establish `hiso : IsIso F` using `ExtUnique.isIso_of_isPullback a.cart.1 a'.cart.1 (Iso.refl _) F F' ((Category.id_comp _).trans hφ.symm) ((Category.id_comp _).trans hφ'.symm)`. Establish `gp : IsGrpPullback t.G t'.G (𝟙 X) F.left` using `haveI : IsMonHom (asIso F).hom := hF isGrpPullback_of_iso (asIso F)`. Establish `hact : ∀ x, (t.act.act x).left ≫ F.left = F.left ≫ (t'.act.act x).left` using `fun x => by`. Establish `: t.act.act x ≫ F = F ≫ t'.act.act x` using `ExtUnique.over_hom_ext_of_isPullback a.cart.1 (by`. Rewrite using `[Over.comp_left, Over.comp_left, ← Category.assoc, ← a.act, Category.assoc, hφ, ← Category.assoc, hφ, a'.act])`.
+
+Conclude with `congrArg (fun z => z.left) this`. Establish `hlb : LBIso t.PP.L (t'.PP.L.pull F.left)`. Take `⟨w, hw, -⟩` from `(isPullCubical_iff _ _ _).1 a.lin`. Take `⟨w', hw', -⟩` from `(isPullCubical_iff _ _ _).1 a'.lin`. Establish `hw'' : ∃ w'' : LB.Iso t₀.PP.L (t'.PP.L.pull (a.cm.F ≫ F.left)), PGen w''`.
+
+Rewrite using `[hφ]`. Conclude with `⟨w', hw'⟩`. Take `⟨w'', hw''⟩` from `hw''`. Take `⟨r, hr, -⟩` from `Exist.CubicalExtension.exists_quot_of_isos t'.PP.isLB t.PP.isLB t₀.PP.isLB w w'' hw hw'' a.cart.1.isoPullback.inv (pullback.fst t.G.hom j) a.cart.1.isoPullback_inv_fst`. Take `⟨ρ, hρ, -⟩` from `Exist.CubicalExtension.exists_quot_of_gens (CubeMap.ofHom F).e_comm t'.PP.rig t.PP.rig t'.PP.rigGen t.PP.rigGen`.
+
+Establish `sm` using `t.semi.smooth`. Establish `gc` using `t.semi.geomConnected`. Conclude with `GlobalTheory.T.exists_lineBundleGenerator_extending_densePart X U j hX.1 hj₁ hj₂ hj₃ hj₄ t.G (eSec t.G) (LB.div (t'.PP.L.pull F.left) t.PP.L) (Over.w η[t.G]) sm (grpObj_geometricallyIntegral_of_smooth X t.G) (LB.isLB_div (pull_isLB t'.PP.isLB _) t.PP.isLB) ⟨ρ, hρ⟩ ⟨r, hr⟩`. Take `⟨b, hb⟩` from `exists_sabMap_of_lbIso E H X X t' t (𝟙 X) F.left ⟨hred, hgen.trans (range_subset_abLocus_of_isProper t.semi a.cart.1)⟩ gp hact hlb`. Conclude with `⟨b, by rw [hb]; exact hφ⟩`.
+-/
 theorem GlobalTheory.exists_sabMap_id_of_common_generic : (∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G'], IsSemiAbelian G → IsSemiAbelian G' → ∀ f : (Over.pullback (spMap (algebraMap T K))).obj G ⟶ (Over.pullback (spMap (algebraMap T K))).obj G', IsMonHom f → ∃! F : G ⟶ G', IsMonHom F ∧ (Over.pullback (spMap (algebraMap T K))).map F = f) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X U : Scheme.{0}) (j : U ⟶ X), (Geo.Tor.IsNormalScheme X ∧ ∃ z : X ⟶ Sp ℤ, LocallyOfFiniteType z ∧ Flat z) → IsPreimmersion j → Flat j → IsDominant j → QuasiCompact j → ∀ (t₀ : SAB H U) (t t' : SAB H X) (a : SABMap t₀ t j) (a' : SABMap t₀ t' j), IsProper t₀.G.hom → ∃ b : SABMap t t' (𝟙 X), a.φ ≫ b.φ = a'.φ := by
   intro hdvr E _ _ _ H X U j hX hj₁ hj₂ hj₃ hj₄ t₀ t t' a a' hp
   obtain ⟨hgen, -, hdom, -⟩ := densePart_basic X U j hj₁ hj₂ hj₃ hj₄

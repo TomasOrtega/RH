@@ -13,6 +13,9 @@ namespace GlobalTheory.LocMod.GValProof
 section
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem card_frame {N : ℕ} {Y : Type} [Fintype Y] [DecidableEq Y] (F : Frame k N Y) : Fintype.card Y = N := by
   apply le_antisymm
   · calc Fintype.card Y = (F.γ * F.β).rank := by rw [F.γβ, Matrix.rank_one]
@@ -24,6 +27,21 @@ theorem card_frame {N : ℕ} {Y : Type} [Fintype Y] [DecidableEq Y] (F : Frame k
       _ ≤ F.γ.rank := Matrix.rank_mul_le_right _ _
       _ ≤ Fintype.card Y := Matrix.rank_le_card_height _
 
+/- English proof (translation)
+Take `⟨hc, hA, -, hz, -⟩` from `h`. Set `f : D.host.E →+* k` to `p.π.comp (incA D)`. Establish `hpr : ∀ a, p.pr a = f a` using `fun _ => rfl`. Set `e : n ⊕ Unit → n ⊕ Fin c` to `Sum.elim Sum.inl fun _ => Sum.inr ⟨ρ, by omega⟩`. Establish `he : Function.Injective e`.
+
+Apply the tactic sequence `rintro (a | ⟨⟩) (b | ⟨⟩) hab <;> simp_all [e]`. Set `βA : Matrix (Fin B.V₀.rank) n k` to `B.o.iA.map p.pr * FA.β`. Set `β : Matrix (Fin B.V₀.rank) (n ⊕ Unit) k` to `Matrix.of fun r y => Sum.elim (fun a => βA r a) (fun _ => s * p.pr (vecB B.o B.ζ r)) y`. Set `I : Matrix (Fin B.V.rank) (Fin B.V₀.rank) k` to `B.d.i₀.map p.pr`. Establish `hmap : I * B.o.iA.map p.pr = (B.d.i₀ * B.o.iA).map p.pr` using `(Matrix.map_mul (f := f)).symm`.
+
+Establish `hIβ : I * β = G.β.submatrix id e`. Use extensionality with `r (a | ⟨⟩)`. Simplify using `only [submatrix_apply, id, e, Sum.elim_inl]`. Rewrite using `[hA]`. Establish `: (I * β) r (Sum.inl a) = (I * βA) r a`.
+
+Simplify using `only [Matrix.mul_apply, β, Matrix.of_apply, Sum.elim_inl]`. Rewrite using `[this, ← Matrix.mul_assoc, hmap]`. Simplify using `only [submatrix_apply, id, e, Sum.elim_inr]`. Rewrite using `[hz ⟨ρ, by omega⟩ rfl r, hpr, RingHom.map_mulVec]`. Simplify using `only [Matrix.mul_apply, β, Matrix.of_apply, Sum.elim_inr, mulVec, dotProduct, Finset.mul_sum, I, Function.comp_apply, hpr]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, hpr]`. Expand and normalize the polynomial expressions, which then agree. Set `γ : Matrix (n ⊕ Unit) (Fin B.V₀.rank) k` to `G.γ.submatrix e id * I`. Establish `hγβ : γ * β = 1`.
+
+Rewrite using `[Matrix.mul_assoc, hIβ, ← Matrix.submatrix_mul _ _ _ _ _ Function.bijective_id, G.γβ, Matrix.submatrix_one _ he]`. Establish `hcard : Fintype.card (n ⊕ Unit) = B.V₀.rank`. Establish `h1` using `card_frame G`. Establish `h2` using `B.d.rank_add`. Simplify using `only [Fintype.card_sum, Fintype.card_fin, Fintype.card_unit] at h1 ⊢`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hβγ : β * γ = 1` using `(Matrix.mul_eq_one_comm_of_equiv (Fintype.equivFinOfCardEq hcard)).1 hγβ`. Conclude with `⟨⟨β, γ, hβγ, hγβ⟩, fun r a => rfl, fun r => rfl⟩`.
+-/
 theorem core_of_bes (p : Place D k) {ρ : ℕ} (B : BesLev D ρ) (s : k) {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
     (FA : Frame k B.A.rank n) (G : Frame k B.V.rank (n ⊕ Fin c)) (h : p.IsBesFrame B s FA G) :
     ∃ F₀ : Frame k B.V₀.rank (n ⊕ Unit), p.IsCoreFrame B s FA F₀ := by
@@ -63,6 +81,9 @@ theorem core_of_bes (p : Place D k) {ρ : ℕ} (B : BesLev D ρ) (s : k) {n : Ty
   have hβγ : β * γ = 1 := (Matrix.mul_eq_one_comm_of_equiv (Fintype.equivFinOfCardEq hcard)).1 hγβ
   exact ⟨⟨β, γ, hβγ, hγβ⟩, fun r a => rfl, fun r => rfl⟩
 
+/- English proof (translation)
+Set `f : D.host.E →+* k` to `p.π.comp (incA D)`. Establish `hpr : ∀ a, p.pr a = f a` using `fun _ => rfl`. Rewrite using `[Place.hz, Place.hz, Place.xi, l.norm, hpr, hpr, hpr, map_mul, map_mul, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hz_link (p : Place D k) {ρ σ : ℕ} (B : BesLev D ρ) (B' : BesLev D σ) (l : Link B B'.L B'.ζ) :
     p.hz B = -p.xi ^ 2 * p.hz B' := by
   let f : D.host.E →+* k := p.π.comp (incA D)
@@ -70,8 +91,20 @@ theorem hz_link (p : Place D k) {ρ σ : ℕ} (B : BesLev D ρ) (B' : BesLev D �
   rw [Place.hz, Place.hz, Place.xi, l.norm, hpr, hpr, hpr, map_mul, map_mul, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, map_neg]
   ring
 
+/- English proof (translation)
+The claim follows from `h.continuous`.
+-/
 theorem cont_of_cond (ψ : AddChar k Circle) (h : HasConductor ψ 1) : Continuous ψ := h.continuous
 
+/- English proof (translation)
+Use `set S : Set (Matrix n n' k) := {x | ∀ r q, x r q ∈ 𝒪[k]} with hSdef`. Establish `hS : (S : Set (n → n' → k)) = Set.univ.pi fun _ => Set.univ.pi fun _ => (𝒪[k] : Set k)`. Use extensionality with `x`. Conclude with `⟨fun h r _ q _ => h r q, fun h r q => h r (Set.mem_univ _) q (Set.mem_univ _)⟩`. Establish `hO : IsOpen S`.
+
+Express the relevant statement in the definitionally equal form `IsOpen (S : Set (n → n' → k))`. Rewrite using `[hS]`. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => Valuation.isOpen_integer (v := valuation k)`. Establish `hK : IsCompact S`. Express the relevant statement in the definitionally equal form `IsCompact (S : Set (n → n' → k))`.
+
+Rewrite using `[hS]`. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall k 1`. Use `⟨?_, HasCompactSupport.intro hK fun x hx => by simp [Set.indicator, hx]⟩` and prove the remaining obligations. Use `(IsLocallyConstant.iff_exists_open _).2 fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ S`.
+
+Conclude with `⟨S, hO, hx, fun y hy => by simp [Set.indicator, hy, hx]⟩`. Conclude with `⟨Sᶜ, hK.isClosed.isOpen_compl, hx, fun y hy => by`. Establish `hy' : y ∉ S` using `hy`. Simplify using `[Set.indicator, hy', hx]⟩`.
+-/
 theorem one_mem_SB (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] :
     (Set.indicator {x : Matrix n n' k | ∀ r q, x r q ∈ 𝒪[k]} fun _ => (1 : ℂ)) ∈ SB (Matrix n n' k) := by
   set S : Set (Matrix n n' k) := {x | ∀ r q, x r q ∈ 𝒪[k]} with hSdef
@@ -95,6 +128,13 @@ theorem one_mem_SB (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [Decid
       have hy' : y ∉ S := hy
       simp [Set.indicator, hy', hx]⟩
 
+/- English proof (translation)
+Establish `hc : Continuous fun a : Matrix n n' k => fromCols a (0 : Matrix n Unit k)`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Break down `j with j | j` into its components or cases. Simplify using `only [fromCols_apply_inl]`. Conclude with `continuous_id.matrix_elem i j`.
+
+Simplify using `only [fromCols_apply_inr]`. Conclude with `continuous_const`. Establish `hd : Continuous fun x : Matrix n (n' ⊕ Unit) k => x.toCols₁` using `continuous_matrix fun i j => continuous_id.matrix_elem i (Sum.inl j)`. Use `⟨hf.1.comp_continuous hc, HasCompactSupport.intro (hf.2.isCompact.image hd) fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`.
+
+Conclude with `ha ⟨fromCols a 0, subset_tsupport _ h0, toCols₁_fromCols _ _⟩`.
+-/
 theorem sliceCol_mem {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {f : Matrix n (n' ⊕ Unit) k → ℂ}
     (hf : f ∈ SB _) : (fun a : Matrix n n' k => f (fromCols a 0)) ∈ SB _ := by
   have hc : Continuous fun a : Matrix n n' k => fromCols a (0 : Matrix n Unit k) := by
@@ -108,6 +148,13 @@ theorem sliceCol_mem {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [Dec
   by_contra h0
   exact ha ⟨fromCols a 0, subset_tsupport _ h0, toCols₁_fromCols _ _⟩
 
+/- English proof (translation)
+Establish `hc : Continuous fun a : Matrix n n' k => fromRows a (0 : Matrix Unit n' k)`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Break down `i with i | i` into its components or cases. Simplify using `only [fromRows_apply_inl]`. Conclude with `continuous_id.matrix_elem i j`.
+
+Simplify using `only [fromRows_apply_inr]`. Conclude with `continuous_const`. Establish `hd : Continuous fun x : Matrix (n ⊕ Unit) n' k => x.toRows₁` using `continuous_matrix fun i j => continuous_id.matrix_elem (Sum.inl i) j`. Use `⟨hf.1.comp_continuous hc, HasCompactSupport.intro (hf.2.isCompact.image hd) fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`.
+
+Conclude with `ha ⟨fromRows a 0, subset_tsupport _ h0, toRows₁_fromRows _ _⟩`.
+-/
 theorem sliceRow_mem {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {f : Matrix (n ⊕ Unit) n' k → ℂ}
     (hf : f ∈ SB _) : (fun a : Matrix n n' k => f (fromRows a 0)) ∈ SB _ := by
   have hc : Continuous fun a : Matrix n n' k => fromRows a (0 : Matrix Unit n' k) := by
@@ -122,6 +169,43 @@ theorem sliceRow_mem {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [Dec
   exact ha ⟨fromRows a 0, subset_tsupport _ h0, toRows₁_fromRows _ _⟩
 end
 
+/- English proof (translation)
+Introduce `D hBF hFB hCL hSym k _ _ _ _ _ _ ν hν p s κ S t _ _ ψ hstd hchar j c H`. Distinguish the cases in `hc : ∃ r, c = 2 * r`. Use `swap`. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations. Introduce `σ B J B' F`.
+
+Conclude with `absurd ⟨σ, by have := F.bes.1; omega⟩ hc`. Take `⟨r, hr⟩` from `hc`. Take `⟨-, hPC, hPR, hDS⟩` from `hSym k ν hν s κ S t`. Take `⟨-, C, hC, hval⟩` from `hDS j c H r hr`. Use `⟨(C : ℂ), by exact_mod_cast hC.ne', ?_⟩` and prove the remaining obligations.
+
+Introduce `σ B J B' F s₁ s₂ l vL c₁ c₂ hc₁ hc₂ T₁ T₂ hT₁ hT₂ Φ₁ Φ₂ O₁ O₂ hΦ₁ hΦ₂ hO₁ hO₂`. Establish `hσ : σ = r` using `by have := F.bes.1; omega`. Substitute `hσ` using the available equality. Establish `hψc : Continuous S.ψ` using `cont_of_cond S.ψ S.cond`. Take `⟨C₀, hC₀⟩` from `core_of_bes p B F.s F.F₀ F.G₀ F.bes`.
+
+Take `⟨C₂, hC₂⟩` from `core_of_bes p B' (F.s * p.xi) F.F₂ F.G₂ F.bes'`. Establish `hjac : p.IsJacFrame J F.s (-p.xi ^ 2 * p.hz B') F.F₁ F.G₁`. Rewrite using `[← hz_link p B B' l]`. Conclude with `F.jac`. Take `⟨U₁, hU₁, hU₁e⟩` from `hBF k p ν hν.1 ψ S.ψ hchar (σ + 1) B J s₁ F.s F.s_ne _ _ (c + 1 + 1) F.F₀ C₀ F.G₀ F.F₁ F.G₁ hC₀ F.bes F.jac T₁ hT₁`.
+
+Take `⟨U₂, hU₂, hU₂e⟩` from `hFB k p ν hν.1 ψ S.ψ hchar σ J B' s₂ F.s F.s_ne _ _ (c + 1) F.F₁ F.G₁ F.F₂ C₂ F.G₂ hjac hC₂ F.bes' T₂ hT₂`. Take `⟨Λ, hΛ, hΛe⟩` from `hCL k p ν hν.1 ψ hstd S.ψ hchar (σ + 1) σ B B' l J.W₀ vL F.s F.s_ne _ _ _ F.F₀ C₀ F.F₁ F.F₂ C₂ hC₀ hC₂ U₁ U₂ hU₁ hU₂`. Establish `hfl` using `GlobalTheory.LocFlat.flat_SB_onto k S.ψ ν hψc hν.1`. Establish `m₁` using `fun Φ : SB _ => ((hfl (XIx (Fin κ) t (j + 1)) (XIx (Fin κ) t j) (c + 1 + 1) (σ + 1 + 1) (by omega)).1 (by omega)).1 Φ.1 Φ.2`. Establish `m₂` using `fun Φ : SB _ => ((hfl (XIx (Fin κ) t (j + 1 + 1)) (XIx (Fin κ) t (j + 1)) (c + 1) (σ + 1) (by omega)).2 (by omega)).1 Φ.1 Φ.2`.
+
+Set `Ψ₁ : SB _` to `⟨_, m₁ Φ₁⟩`. Set `Ψ₂ : SB _` to `⟨_, m₂ Φ₂⟩`. Set `P₁ : SB _` to `⟨_, m₁ O₁⟩`. Set `P₂ : SB _` to `⟨_, m₂ O₂⟩`. Rewrite using `[hU₁e Φ₁ Ψ₁ rfl, hU₂e Φ₂ Ψ₂ rfl, hU₁e O₁ P₁ rfl, hU₂e O₂ P₂ rfl]`.
+
+Take `⟨Ξ, hΞ, e1⟩` from `hΛe Ψ₁ Ψ₂`. Take `⟨ΞO, hΞO, e2⟩` from `hΛe P₁ P₂`. Rewrite using `[e1, e2]`. Apply the tactic sequence `have hE₁ : (S.T t).entry S.ψ ν j (c + 1) (by omega) 1 1 ∈ SB _ := by`. Take `⟨C', hC', hpc⟩` from `hPC j (c + 1) (by omega) (σ + 1) (by omega)`.
+
+Establish `hs` using `sliceCol_mem Ψ₁.2`. Apply the tactic sequence `have e : (S.T t).entry S.ψ ν j (c + 1) (by omega) 1 1 = (C'⁻¹ : ℂ) • fun a => Ψ₁.1 (fromCols a 0) := by`. Use function extensionality and compare the values at `a`. Simplify using `only [Ψ₁, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hΦ₁, hpc]`.
+
+Establish `hC'0 : (C' : ℂ) ≠ 0` using `by exact_mod_cast hC'.ne'`. Simplify using `only [toCols₁_fromCols, fromCols_apply_inr, Matrix.zero_apply]`. Establish `hz : (fun _ => (0 : k)) ∈ box (XIx (Fin κ) t (j + 1)) (S.ϖ ^ (σ + 1))⁻¹` using `(box _ _).zero_mem`. Simplify using `only [hz, if_true, mul_one]`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hC'0, one_mul]`.
+
+Rewrite using `[e]`. Conclude with `(SB _).smul_mem _ hs`. Apply the tactic sequence `have hE₂ : (S.T t).entry S.ψ ν (j + 1) c H 1 1 ∈ SB _ := by`. Take `⟨C', hC', hpr⟩` from `hPR (j + 1) c H σ hr`. Establish `hs` using `sliceRow_mem Ψ₂.2`.
+
+Apply the tactic sequence `have e : (S.T t).entry S.ψ ν (j + 1) c H 1 1 = (C'⁻¹ : ℂ) • fun a => Ψ₂.1 (fromRows a 0) := by`. Use function extensionality and compare the values at `a`. Simplify using `only [Ψ₂, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hΦ₂, hpr]`. Establish `hC'0 : (C' : ℂ) ≠ 0` using `by exact_mod_cast hC'.ne'`.
+
+Simplify using `only [toRows₁_fromRows, fromRows_apply_inr, Matrix.zero_apply]`. Establish `hz : a.fromRows (0 : Matrix Unit (XIx (Fin κ) t (j + 1)) k) (Sum.inr ()) ∈ box (XIx (Fin κ) t (j + 1)) (S.ϖ ^ (σ + 1))` using `(box _ _).zero_mem`. Simplify using `only [hz, if_true, mul_one]`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hC'0, one_mul]`. Rewrite using `[e]`.
+
+Conclude with `(SB _).smul_mem _ hs`. Set `E₁ : SB _` to `⟨_, hE₁⟩`. Set `E₂ : SB _` to `⟨_, hE₂⟩`. Establish `hCne : (C : ℂ) ≠ 0` using `by exact_mod_cast hC.ne'`. Establish `hΞ' : ∀ q, ((C : ℂ)⁻¹ • Ξ).1 q = E₁.1 q.1 * E₂.1 q.2`.
+
+Introduce `q`. Rewrite using `[Submodule.coe_smul, Pi.smul_apply, hΞ]`. Simplify using `only [Ψ₁, Ψ₂, E₁, E₂]`. Rewrite using `[hΦ₁, hΦ₂, hval q, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hΞe : Ξ = (C : ℂ) • ((C : ℂ)⁻¹ • Ξ)` using `by rw [smul_smul, mul_inv_cancel₀ hCne, one_smul]`. Establish `hun` using `GlobalTheory.LocFlat.flat_contr_intIndicator k S.ψ ν S.cond hν`. Set `Q₁ : SB (Matrix (XIx (Fin κ) t (j + 1)) (XIx (Fin κ) t j) k)` to `⟨_, one_mem_SB _ _⟩`. Set `Q₂ : SB (Matrix (XIx (Fin κ) t (j + 1 + 1)) (XIx (Fin κ) t (j + 1)) k)` to `⟨_, one_mem_SB _ _⟩`. Establish `hP₁ : P₁.1 = Set.indicator {x : Matrix (XIx (Fin κ) t (j + 1)) (XIx (Fin κ) t j ⊕ Unit) k | ∀ r q, x r q ∈ 𝒪[k]} fun _ => 1`.
+
+Simplify using `only [P₁]`. Rewrite using `[hO₁, (hun (XIx (Fin κ) t (j + 1)) (XIx (Fin κ) t j) (XIx (Fin κ) t j) (c + 1 + 1) (σ + 1 + 1)).1, if_neg (by omega)]`. Establish `hP₂ : P₂.1 = Set.indicator {x : Matrix (XIx (Fin κ) t (j + 1 + 1) ⊕ Unit) (XIx (Fin κ) t (j + 1)) k | ∀ r q, x r q ∈ 𝒪[k]} fun _ => 1`. Simplify using `only [P₂]`. Rewrite using `[hO₂, (hun (XIx (Fin κ) t (j + 1 + 1)) (XIx (Fin κ) t (j + 1)) (XIx (Fin κ) t j) (c + 1) (σ + 1)).2.1 (by omega) (by omega)]`.
+
+Establish `hΞO' : ∀ q, ΞO.1 q = Q₁.1 q.1 * Q₂.1 q.2`. Introduce `q`. Rewrite using `[hΞO, hP₁, hP₂]`. Conclude with `(hun (XIx (Fin κ) t (j + 1)) (XIx (Fin κ) t j) (XIx (Fin κ) t (j + 1 + 1)) 0 0).2.2 q`. Establish `hbi` using `(GlobalTheory.BiComb.comb_bimodel_and_line D k p ψ _ _ _).1 B.A J.W₀ B'.A F.F₀ F.F₁ F.F₂ Λ c₁ c₂ E₁ Q₁ E₂ Q₂ ((C : ℂ)⁻¹ • Ξ) ΞO hΛ hc₁ hc₂ rfl rfl hΞ' hΞO'`.
+
+Rewrite using `[hΞe, map_smul, hbi]`.
+-/
 theorem gval : ∀ (D : D7), FlatBF D → FlatFB D → ContrLoc D → GlobalTheory.LocFlat.SymCollapse →
   ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k), IsUnitVol ν →
   ∀ (p : Place D k) (s κ : ℕ) (S : SymData k s κ) (t : Type) [Fintype t] [DecidableEq t]
@@ -222,6 +306,11 @@ theorem gval : ∀ (D : D7), FlatBF D → FlatFB D → ContrLoc D → GlobalTheo
   have hbi := (GlobalTheory.BiComb.comb_bimodel_and_line D k p ψ _ _ _).1 B.A J.W₀ B'.A F.F₀ F.F₁ F.F₂ Λ c₁ c₂ E₁ Q₁ E₂ Q₂ ((C : ℂ)⁻¹ • Ξ) ΞO hΛ hc₁ hc₂ rfl rfl hΞ' hΞO'
   rw [hΞe, map_smul, hbi]
 
+/- English proof (translation)
+Introduce `D hBF hFB hCL hSym k _ _ _ _ _ _ ν hν p s κ S t _ _ ψ hchar j c H`. Distinguish the cases in `hstd : IsStdChar D ψ (-1)`. Conclude with `gval D hBF hFB hCL hSym k ν hν p s κ S t ψ hstd hchar j c H`. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations. Introduce `σ B J B' F s₁`.
+
+Conclude with `absurd s₁.weil.std hstd`.
+-/
 theorem gval_of_laws : ∀ (D : D7), FlatBF D → FlatFB D → ContrLoc D → GlobalTheory.LocFlat.SymCollapse → GVal D := by
   intro D hBF hFB hCL hSym k _ _ _ _ _ _ ν hν p s κ S t _ _ ψ hchar j c H
   by_cases hstd : IsStdChar D ψ (-1)

@@ -14,6 +14,9 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Spread.dvd_of_dvd_near_closedFibre | exact GlobalTheory.Spread.dvd_of_dvd_near_closedFibre | (intros; apply GlobalTheory.Spread.dvd_of_dvd_near_closedFibre <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.divisibility_on_closed_fibre_spreads : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsNoetherianRing R → IsIntegrallyClosed R →
     ∀ (G : Over (Sp R)) [GrpObj G], IsSemiAbelian G → ∀ (r : R), r ≠ 0 → ∀ (W : G.left.Opens) (a : Γ(G.left, W))
     (x : G.left), x ∈ W → (∀ y ∈ W, (∃ z : G.left, G.hom z = closedPoint R ∧ y ⤳ z) → cst G.hom y r ∣ gs (𝟙 G.left) y W a) →

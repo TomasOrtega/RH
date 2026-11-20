@@ -25,10 +25,16 @@ def renumU {J : Matrix (Fin n) (Fin n) E} {J₂ : Matrix (Fin (n + n)) (Fin (n +
         (GlobalTheory.WeilM.dbl (incM F J)).submatrix finSumFinEquiv.symm finSumFinEquiv.symm
       rw [Matrix.transpose_submatrix, ← Matrix.submatrix_map, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, hp]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_renumU {J : Matrix (Fin n) (Fin n) E} {J₂ : Matrix (Fin (n + n)) (Fin (n + n)) E}
     (hJ : J₂ = dblGram finSumFinEquiv J) (p : UG (cA σ) (GlobalTheory.WeilM.dbl (incM F J))) :
     mat (renumU hJ p) = p.1.1.submatrix finSumFinEquiv.symm finSumFinEquiv.symm := rfl
 
+/- English proof (translation)
+Establish `h1 : Continuous fun p : UG (cA σ) (GlobalTheory.WeilM.dbl (incM F J)) => mat (renumU hJ p)` using `(Units.continuous_val.comp continuous_subtype_val).matrix_submatrix _ _`. Use `continuous_induced_rng.2 (Units.continuous_iff.2 ⟨h1, (h1.comp continuous_inv).congr fun k => ?_⟩)` and prove the remaining obligations. Rewrite using `[Function.comp_apply, map_inv]`. Both sides reduce to the same expression.
+-/
 theorem continuous_renumU {J : Matrix (Fin n) (Fin n) E} {J₂ : Matrix (Fin (n + n)) (Fin (n + n)) E}
     (hJ : J₂ = dblGram finSumFinEquiv J) : Continuous (renumU (F := F) (σ := σ) hJ) := by
   have h1 : Continuous fun p : UG (cA σ) (GlobalTheory.WeilM.dbl (incM F J)) => mat (renumU hJ p) :=
@@ -40,12 +46,21 @@ theorem continuous_renumU {J : Matrix (Fin n) (Fin n) E} {J₂ : Matrix (Fin (n 
 def tw {A : Type} (w : Matrix (Fin d) (Fin n ⊕ Fin n) A) : Matrix (Fin (n + n)) (Fin d) A :=
   fun k j => w j (finSumFinEquiv.symm k)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[upB, tw, Matrix.toCols₁]`.
+-/
 theorem upB_tw {A : Type} (w : Matrix (Fin d) (Fin n ⊕ Fin n) A) : upB (tw w) = (Matrix.toCols₁ w)ᵀ := by
   ext i j; simp [upB, tw, Matrix.toCols₁]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [loB, tw, Equiv.symm_apply_apply]`. Both sides reduce to the same expression.
+-/
 theorem loB_tw {A : Type} (w : Matrix (Fin d) (Fin n ⊕ Fin n) A) : loB (tw w) = (Matrix.toCols₂ w)ᵀ := by
   ext i j; simp only [loB, tw, Equiv.symm_apply_apply]; rfl
 
+/- English proof (translation)
+Rewrite using `[diagCols, Matrix.transpose_fromRows, Matrix.transpose_one, Matrix.mul_fromCols, Matrix.mul_one]`. Use `funext fun k => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.funLeft_apply, Function.comp_apply, Matrix.transpose_apply, tw, Equiv.symm_apply_apply]`. Both sides reduce to the same expression.
+-/
 theorem tw_diag_mem {A : Type} [CommRing A] (z : Matrix (Fin d) (Fin n) A) (j : Fin d) :
     (tw (z * (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) A)ᵀ))ᵀ j ∈ diagSub A finSumFinEquiv := by
   rw [diagCols, Matrix.transpose_fromRows, Matrix.transpose_one, Matrix.mul_fromCols, Matrix.mul_one]
@@ -53,6 +68,9 @@ theorem tw_diag_mem {A : Type} [CommRing A] (z : Matrix (Fin d) (Fin n) A) (j : 
   simp only [LinearMap.funLeft_apply, Function.comp_apply, Matrix.transpose_apply, tw, Equiv.symm_apply_apply]
   rfl
 
+/- English proof (translation)
+Rewrite `h` using `[← Matrix.fromBlocks_toBlocks P, diagCols, Matrix.fromBlocks_mul_fromRows, Matrix.fromRows_mul]`. Simplify using `using Matrix.fromRows_inj h`.
+-/
 theorem blocks_of_diagCols {A : Type} [CommRing A] {P : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) A}
     {t : Matrix (Fin n) (Fin n) A}
     (h : (P * (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) A) : Matrix (Fin n ⊕ Fin n) (Fin n) A) =
@@ -67,9 +85,39 @@ def reixRep {G κ κ' : Type} [Group G] (e : κ ≃ κ') (om : G →* Module.End
   map_one' := LinearMap.ext fun φ => by simp
   map_mul' g h := LinearMap.ext fun φ => by simp
 
+/- English proof (translation)
+The claim follows from `(reix e).apply_symm_apply _`.
+-/
 theorem reix_reixRep {G κ κ' : Type} [Group G] (e : κ ≃ κ') (om : G →* Module.End ℂ ((κ' → AF F) → ℂ)) (g : G)
     (φ : (κ → AF F) → ℂ) : reix e (reixRep e om g φ) = om g (reix e φ) := (reix e).apply_symm_apply _
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s' r₁ s₁ hP X₂ hJ i hi Mb χ χ' omb r₂ s₂ hPb hbox l hl hne hinv hlaw g φ₁ hφ₁ φ₂ hφ₂`. Take `⟨-, ⟨d', hd', -, dd, omd, hdd, ⟨-, hSd, hR⟩, hres⟩, -⟩` from `hP.weil`. Establish `hSb` using `hPb.weil.isUSplitting`. Set `R` to `reix (R := AF F) (rIdx n d)`. Set `ρ : UG (cA σ) (GlobalTheory.WeilM.dbl (incM F X.J)) →* Module.End ℂ (Fn F (n + n) d)` to `omb.comp ((MonoidHom.inl _ _).comp (renumU hJ))`.
+
+Establish `hρ : ∀ p, ρ p = omb (renumU hJ p, 1)` using `fun p => rfl`. Establish `hrho : ∀ w φ, R (dd.rho B.ψ w φ) = Mb.co.rho B.ψ (tw w) (R φ)` using `fun w φ => by`. Rewrite using `[hbox.rho_reix, upB_tw, loB_tw, ← hd', ← hd', Matrix.transpose_transpose, Matrix.transpose_transpose, ← hdd, Matrix.fromCols_toCols]`. Both sides reduce to the same expression. Establish `hact : ∀ (p : UG (cA σ) (GlobalTheory.WeilM.dbl (incM F X.J))) (w : Matrix (Fin d) (Fin n ⊕ Fin n) (AE F E)), tw (actB (cA σ) p w) = actAB (cA σ) (renumU hJ p, (1 : UA σ W.J)) (tw w)` using `fun p w => by`.
+
+Express the relevant statement in the definitionally equal form `tw (w * p.1.1ᵀ) = mat (renumU hJ p) * tw w * (1 : Matrix (Fin d) (Fin d) (AE F E))ᵀ`. Rewrite using `[Matrix.transpose_one, Matrix.mul_one, mat_renumU]`. Use extensionality with `k j`. Simplify using `only [tw, Matrix.mul_apply, Matrix.transpose_apply, Matrix.submatrix_apply]`. Rewrite using `[← finSumFinEquiv.symm.sum_comp]`.
+
+Conclude with `Finset.sum_congr rfl fun x _ => mul_comm _ _`. Establish `hR' : ∀ φ ∈ schA F ((Fin n × Fin d) ⊕ (Fin n × Fin d)), R φ ∈ schA F (Fin (n + n) × Fin d)` using `fun φ h => reix_mem_schA _ h`. Establish `hS₁ : IsSplitting (adeleClass F) B.ψ dd (actB (cA σ)) (reixRep (rIdx n d) ρ)`. Use `⟨fun p φ hφ => (reix_mem_schA_iff (rIdx n d)).1 ?_, fun p w φ hφ => R.injective ?_, fun p l' hl' => ?_⟩` and prove the remaining obligations. Rewrite using `[reix_reixRep]`.
+
+Conclude with `hSb.pres _ _ (hR' φ hφ)`. Rewrite using `[hrho, reix_reixRep, reix_reixRep, hrho, hρ, hSb.impl _ _ _ (hR' φ hφ), hact]`. Conclude with `comp_reix_mem_adm (rIdx n d) (hSb.adm (renumU hJ p, 1) _ (comp_reix_mem_adm (rIdx n d).symm hl'))`. Establish `hC₁ : IsContOn (adeleClass F) (reixRep (rIdx n d) ρ)` using `fun l' hl' φ hφ => (hSb.cont _ (comp_reix_mem_adm (rIdx n d).symm hl') _ (hR' φ hφ)).comp ((continuous_renumU hJ).prodMk continuous_const)`. Establish `hsc : ∀ u : (AE F E)ˣ, ((((adeleClass F).modu (Units.map (Algebra.norm (AF F) : AE F E →* AF F) u) : ℝ) ^ ((Fintype.card (Fin d) : ℝ) / 2) : ℝ) : ℂ) = GlobalTheory.Doubling.npow (absE F E u) ((d : ℂ) / 2)`.
+
+Introduce `u`. Rewrite using `[GlobalTheory.ModuAdele.modu_norm_eq_absE, GlobalTheory.Doubling.npow, Complex.ofReal_cpow (NNReal.coe_nonneg _)]`. Use `congr 1`. Use `push_cast`. Simplify using `only [Fintype.card_fin]`.
+
+Establish `heq` using `GlobalTheory.T.weil_doubled_darboux_coordinates F E σ hP.base.cm d n W.J X.J 1 (fun i j => by simp [hP.herm.herm i j]) (isUnit_det_of_isHerm F E σ B n X r s' hP.herm).ne_zero B.ψ hP.base.std _ dd omd (reixRep (rIdx n d) ρ) hSd.toIsSplitting hSd.cont hS₁ hC₁ (l ∘ₗ R.toLinearMap) ( …`. Take `⟨φ, hφ, h⟩` from `hne`. Conclude with `⟨R.symm φ, reix_mem_schA (rIdx n d).symm hφ, by simpa using h⟩)`. Use the proof step `(fun p t hpt φ hφ => by`. Establish `h1` using `hR (l ∘ₗ R.toLinearMap) (comp_reix_mem_adm (rIdx n d) hl) (fun z φ hφ => by`.
+
+Express the relevant statement in the definitionally equal form `l (R (dd.rho B.ψ _ φ)) = l (R φ)`. Rewrite using `[hrho]`. Conclude with `hinv _ (tw_diag_mem z) _ (hR' φ hφ)) p t hpt φ hφ`. Establish `hb` using `blocks_of_diagCols hpt`. Establish `hsub : (mat (renumU hJ p)).submatrix finSumFinEquiv finSumFinEquiv = p.1.1`.
+
+Rewrite using `[mat_renumU]`. Simplify using the standard rewrite rules. Establish `hlev : leviMat finSumFinEquiv (mat (renumU hJ p)) = t.1` using `by rw [leviMat, hsub, hb.1]`. Establish `hmem : renumU hJ p ∈ siegelOf finSumFinEquiv (UG (cA σ) (incM F X₂.J)).subtype`. Rewrite using `[mem_siegelOf]`.
+
+Express the relevant statement in the definitionally equal form `KeepsDiag finSumFinEquiv (mat (renumU hJ p))`. Rewrite using `[KeepsDiag, hlev, hsub, hb.2]`. Establish `ha : aOf finSumFinEquiv (UG (cA σ) (incM F X₂.J)).subtype ⟨_, hmem⟩ = Matrix.GeneralLinearGroup.det t` using `Units.ext (congrArg Matrix.det hlev)`. Establish `h2` using `hlaw ⟨_, hmem⟩ _ (hR' φ hφ)`. Rewrite `h2` using `[ha]`.
+
+Rewrite using `[h1, hsc]`. Express the relevant statement in the definitionally equal form `_ = l (R (reixRep (rIdx n d) ρ p φ))`. Rewrite using `[reix_reixRep]`. Conclude with `h2.symm)`. Establish `hg : renumU hJ (GlobalTheory.DblEvalLaw.leftU g) = i (g, 1)`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `mat _ = mat _`. Rewrite using `[hi, mat_renumU]`. Both sides reduce to the same expression.
+
+Establish `h3` using `congrArg R ((hres g (GlobalTheory.DblEvalLaw.leftU g) rfl φ₁ hφ₁ φ₂ hφ₂).symm.trans (heq _ _ (GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ φ₁ hφ₁ φ₂ hφ₂)))`. Rewrite `h3` using `[reix_reixRep, hρ, hg]`. Conclude with `h3.symm`.
+-/
 theorem left_factor : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s' r₁ s₁ : ℕ),
     IsPair B M χX χW om r s' r₁ s₁ →
     ∀ X₂ : Spc F E (n + n), X₂.J = dblGram finSumFinEquiv X.J →

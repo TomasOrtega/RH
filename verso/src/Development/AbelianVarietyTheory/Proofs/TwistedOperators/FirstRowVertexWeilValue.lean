@@ -15,6 +15,27 @@ noncomputable section
 
 namespace GlobalTheory.FirstRowTermLaw
 
+/- English proof (translation)
+Take `⟨e, he, hsupp, hexp⟩` from `hτ`. Establish `hm : D.R.m ≠ 0` using `by have := D.R.two_le_m; omega`. Distinguish the cases in `hh : (∀ j, IsHalf e (xs j)) ∧ ∀ i, IsHalf e (ys i)`. Establish `hh' : ∀ i, IsHalf e (Function.update ys (GlobalTheory.FirstRowVertex.firstIx D) ((actO (G.pS (.chi (GlobalTheory.FirstRowVertex.firstIx D) D.R.m : Pair T)) (G.pT (.chi (GlobalTheory.FirstRowVertex.firstIx D) D.R.m : Pair T)) (G.toPair (.chi (GlobalTheory.FirstRowVertex.firstIx D) …`. Introduce `i`.
+
+Distinguish the cases in `h : i = (GlobalTheory.FirstRowVertex.firstIx D)`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `(GlobalTheory.SchrMove.isHalf_actO_iff _ _ _).2 (hh.2 _)`. Rewrite using `[Function.update_of_ne h]`.
+
+Conclude with `hh.2 i`. Rewrite using `[hexp xs _ hh.1 hh', hexp xs ys hh.1 hh.2]`. Establish `hloc : ∀ w : locPl G t, (locGrid G t w).edgeFactor .one (Pi.mulSingle (0, D.R.m) (kapAt S t w k)) (.ex 0 D.R.m) * (S.term t Φ β w).datum (S.colAt t w xs) (S.rowAt t w (Function.update ys (GlobalTheory.FirstRowVertex.firstIx D) ((actO (G.pS (.chi (GlobalTheory.FirstRowVertex.first …`. Introduce `w`. Rewrite using `[GlobalTheory.T.firstRowArgument_conjugateMove_left_mul_inv_component S ht w w.2 k ys]`.
+
+Conclude with `GlobalTheory.FirstRowTermLaw.datum_law (Γ := locGrid G t w) one_le_sLen hm _ _ _ _ _ _ _ _ (hlam w) _ _`. Establish `hprod` using `Finset.prod_congr rfl fun w (_ : w ∈ Finset.univ) => hloc w`. Rewrite `hprod` using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib]`. Conclude with `key_cancel _ _ _ _ _ (Finset.prod_ne_zero_iff.2 fun w _ => edgeFactor_ne_zero _ _ _) hs hprod`. Establish `hz : ∀ d ∈ τ.support, (∏ j, (d.1 j).fn (xs j)) * ∏ i, (d.2 i).fn (ys i) = 0 ∧ (∏ j, (d.1 j).fn (xs j)) * ∏ i, (d.2 i).fn (Function.update ys (GlobalTheory.FirstRowVertex.firstIx D) ((actO (G.pS (.chi (GlobalTheory.FirstRowVertex.firstIx D) D.R.m : Pair T)) (G.pT (.chi (GlobalTheo …`.
+
+Introduce `d hd`. Establish `hX : ∀ j, (d.1 j).fn (xs j) ≠ 0 → IsHalf e (xs j)` using `fun j h => ((hsupp d hd).1 j).2.1 ▸ (d.1 j).sb.1 _ h`. Establish `hY : ∀ i y, (d.2 i).fn y ≠ 0 → IsHalf e y` using `fun i y h => ((hsupp d hd).2 i).2.1 ▸ (d.2 i).sb.1 _ h`. Distinguish the cases in `hx : ∀ j, IsHalf e (xs j)`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, ¬ IsHalf e (ys i) := by`.
+
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hh ⟨hx, hc⟩`. Establish `h1 : (d.2 i).fn (ys i) = 0` using `by by_contra h; exact hi (hY i _ h)`. Establish `h2 : (d.2 i).fn (Function.update ys (GlobalTheory.FirstRowVertex.firstIx D) ((actO (G.pS (.chi (GlobalTheory.FirstRowVertex.firstIx D) D.R.m : Pair T)) (G.pT (.chi (GlobalTheory.FirstRowVertex.firstIx D) D.R.m : Pair T)) (G.toPair (.chi (GlobalTheory.FirstRowVertex.firstIx D) D.R …`.
+
+Assume the negation of the conclusion as `h`. Establish `h'` using `hY i _ h`. Distinguish the cases in `hi0 : i = (GlobalTheory.FirstRowVertex.firstIx D)`. Substitute `hi0` using the available equality. Rewrite `h'` using `[Function.update_self]`.
+
+Conclude with `hi ((GlobalTheory.SchrMove.isHalf_actO_iff _ _ _).1 h')`. Rewrite `h'` using `[Function.update_of_ne hi0]`. Conclude with `hi h'`. Conclude with `⟨by rw [show (∏ i, (d.2 i).fn (ys i)) = 0 from Finset.prod_eq_zero (Finset.mem_univ i) h1, mul_zero], by rw [show (∏ i, (d.2 i).fn (Function.update ys (GlobalTheory.FirstRowVertex.firstIx D) ((actO (G.pS (.chi (GlobalTheory.FirstRowVertex.firstIx D) D.R.m : Pair T)) (G.pT (.chi ( …`. Use `push_neg at hx`.
+
+Take `⟨j, hj⟩` from `hx`. Establish `h1 : (d.1 j).fn (xs j) = 0` using `by by_contra h; exact hj (hX j h)`. Rewrite using `[show (∏ j, (d.1 j).fn (xs j)) = 0 from Finset.prod_eq_zero (Finset.mem_univ j) h1]`. Simplify using `only [zero_mul, and_self]`. Simplify using `only [Finsupp.sum]`.
+
+Rewrite using `[Finset.sum_eq_zero fun d hd => by rw [mul_assoc, (hz d hd).2, mul_zero], Finset.sum_eq_zero fun d hd => by rw [mul_assoc, (hz d hd).1, mul_zero], mul_zero]`.
+-/
 theorem law_gen {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
     (S : GridChoice W U) {t : T} (ht : t ∈ U) {Φ : G.Datum} {β : CosFam G t} {τ : PureDat G t →₀ ℂ}
     (hτ : S.IsExpansion t Φ β τ) (k : FinPt G (.grid 0 D.R.m)) (lam : locPl G t → ℂ)
@@ -76,6 +97,11 @@ namespace GlobalTheory.FirstRowTermLaw
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hP hS`. Take `⟨a₁, h₁⟩` from `GlobalTheory.T.first_vertex_weil_scalar hP hS`. Use `⟨a₁, fun ε CF hC => ?_⟩` and prove the remaining obligations. Take `⟨x₁, hc₁⟩` from `h₁ ε CF hC`. Use `⟨x₁, ?_⟩` and prove the remaining obligations.
+
+Introduce `D large₂ e hx Γ _ _ Pl0 T A Ks _ _ _ R F s ch hi hsc t a β hβ τ hτ k hkl hk c hc xs ys`. Take `⟨lam, hlam, hscal⟩` from `hc₁ D large₂ e hx Γ Pl0 T A Ks R F s ch hi hsc t a k hkl hk c hc`. Establish `hL : (τ.sum fun d a' => a' * (∏ j, (d.1 j).fn (xs j)) * ∏ i, Function.update (fun i => (d.2 i).fn) (GlobalTheory.FirstRowVertex.firstIx D) (fun y => (d.2 (GlobalTheory.FirstRowVertex.firstIx D)).fn ((actO (ch.G.pS (.chi (GlobalTheory.FirstRowVertex.firstIx D) D.R.m : Pair T)) (ch …` using `sum_update_comp τ (fun d j => (d.1 j).fn) (fun d i => (d.2 i).fn) (GlobalTheory.FirstRowVertex.firstIx D) (actO (ch.G.pS (.chi (GlobalTheory.FirstRowVertex.firstIx D) D.R.m : Pair T)) (ch.G.pT (.chi (GlobalTheory.FirstRowVertex.firstIx D) D.R.m : Pair T)) (ch.G.toPair (.chi (Glob …`. Rewrite using `[hL]`. Conclude with `law_gen ch.S.toGridChoice (Set.mem_univ t) hτ k lam hlam _ hscal xs ys`.
+-/
 theorem main : GlobalTheory.FunPr.Hypotheses₂ → SumOKK → Big fun {D} {_Γ} _ _ {_Pl0} {T} {_A} {_Ks} _ _ _ {R} ch =>
     ∀ (t : T) a, ∀ β ∈ ch.S.supp t (ch.Phi a), ∀ τ, ch.S.IsExpansion t (ch.Phi a) β τ →
     ∀ (k : FinPt ch.G (.grid 0 D.R.m)), finG (ch.G.V (.grid 0 D.R.m)) k ∈ ch.S.levRow t 0 (Nat.zero_le _) →

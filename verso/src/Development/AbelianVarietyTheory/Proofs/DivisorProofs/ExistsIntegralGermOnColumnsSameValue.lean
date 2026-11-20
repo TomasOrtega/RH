@@ -23,6 +23,11 @@ namespace GlobalTheory.ColApprox
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
 
+/- English proof (translation)
+Unfold `polyT polyP polyH`. Rewrite using `[map_prod, map_prod, ← Finset.prod_filter_of_ne (p := fun f => cx f ≠ 0) (fun f _ hf h0 => hf (by rw [h0, pow_zero, map_one])), Finset.prod_subtype (p := fun f => cx f ≠ 0) _ (fun f => by simp)]`. Use `Finset.prod_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.aeval_rename, GlobalTheory.FGDepth.detPow, map_pow, map_pow, RingHom.map_det, AlgHom.map_det, ← Matrix.det_transpose]`. Use `congr 2`.
+
+Use extensionality with `a b : 2`. Simplify using `[GlobalTheory.CombMinor.cMat]`.
+-/
 theorem map_polyT {T : CDVR} {C : Type} [Field C] (φ : T.Fr →+* C) (cx : Lt1 Dw → ℕ) {n : ℕ}
     (B : ∀ f : Lt1 Dw, Fin (rk f) → Fin n → T.V) :
     MvPolynomial.map φ (polyT B cx) = MvPolynomial.aeval (fun ℓ : Let cx => ∑ j,
@@ -39,6 +44,15 @@ theorem map_polyT {T : CDVR} {C : Type} [Field C] (φ : T.Fr →+* C) (cx : Lt1 
   ext a b : 2
   simp [GlobalTheory.CombMinor.cMat]
 
+/- English proof (translation)
+Take `⟨blk, hb⟩` from `hB`. Use `choose x h0 h1 h2 using fun f => (hb f).2.2 N`. Use `⟨fun b => x b.1 b.2, fun b j => h1 b.1 b.2 j, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨f, b⟩ ⟨f', b'⟩`. Distinguish the cases in `hf : f = f'`.
+
+Substitute `hf` using the available equality. Simplify `h2 f b' b` using `only [mul_comm]`. Rewrite using `[Finset.sum_eq_zero]`. Conclude with `Ideal.zero_mem _`. Introduce `j _`.
+
+Simplify using `only`. Distinguish the cases in `hj : j ∈ Set.range fun j => blk ⟨f, j⟩`. Rewrite using `[h0 f' b' j, mul_zero]`. Introduce and unpack `⟨j2, e2⟩`. Take `⟨j1, e1⟩` from `hj`.
+
+Conclude with `hf (congrArg Sigma.fst (blk.injective (e1.trans e2.symm)))`. Rewrite using `[h0 f b j hj, map_zero, zero_mul]`.
+-/
 theorem exists_cols {c : Coeff l} {T : CDVR} {io : c.F →+* T.Fr} {p : ℕ} {cx : Lt1 Dw → ℕ} {n : ℕ}
     {B : ∀ f : Lt1 Dw, Fin (rk f) → Fin n → T.V} (hB : IsCols c T io p cx B) (N : ℕ) :
     ∃ x : Col cx → Fin n → 𝓞 E,
@@ -62,17 +76,28 @@ theorem exists_cols {c : Coeff l} {T : CDVR} {io : c.F →+* T.Fr} {p : ℕ} {cx
       exact hf (congrArg Sigma.fst (blk.injective (e1.trans e2.symm)))
     · rw [h0 f b j hj, map_zero, zero_mul]
 
+/- English proof (translation)
+Rewrite using `[isIntV_iff, ← X.ints.isIntegral_iff_v_le_one]`. Conclude with `(map_isIntegral_int φ (Algebra.IsIntegral.isIntegral a)).tower_top`.
+-/
 theorem isIntV_ringHom {T : CDVR} {p : ℕ} [Fact p.Prime] (X : ValExt T p) (φ : 𝓞 E →+* X.C) (a : 𝓞 E) :
     IsIntV (vX_vp X) (φ a) := by
   rw [isIntV_iff, ← X.ints.isIntegral_iff_v_le_one]
   exact (map_isIntegral_int φ (Algebra.IsIntegral.isIntegral a)).tower_top
 
+/- English proof (translation)
+Rewrite using `[AddValuation.map_mul, AddValuation.map_pow, vX_vp_p]`. Use `le_add_of_le_of_nonneg (le_of_eq ?_) hz` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem le_v_pow_mul {T : CDVR} {p : ℕ} [Fact p.Prime] (X : ValExt T p) (N : ℕ) {z : X.C}
     (hz : IsIntV (vX_vp X) z) : (((N : ℝ) : ℝ) : WithTop ℝ) ≤ vX_vp X ((p : X.C) ^ N * z) := by
   rw [AddValuation.map_mul, AddValuation.map_pow, vX_vp_p]
   refine le_add_of_le_of_nonneg (le_of_eq ?_) hz
   simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Unfold `lin`. Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single (e.symm q)]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Establish `hq : e b ≠ q` using `fun h => hb (by rw [← h]; simp)`. Simplify using `[hq]`. Simplify using the standard rewrite rules.
+-/
 theorem lin_col {C : Type} [Field C] {d m : ℕ} {κ : Type} [Fintype κ] {ι : κ → Type} [∀ b, Fintype (ι b)]
     (e : κ ≃ Fin m) (u : ∀ b, ι b → Fin d → C) (q : Fin m) :
     lin (fun ℓ : Σ b, ι b => u ℓ.1 ℓ.2) (fun ℓ => if e ℓ.1 = q then 1 else 0) =
@@ -87,6 +112,29 @@ theorem lin_col {C : Type} [Field C] {d m : ℕ} {κ : Type} [Fintype κ] {ι : 
     simp [hq]
   · simp
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c`. Use `letI := H.starRing`. Introduce `p _ la T io e _ y Ch X cx n B hB N k g hg`. Use `letI := io.toAlgebra`. Take `⟨BT, -, -, -, -, -, -, e7⟩` from `GlobalTheory.integralChart_formalBiext E H Dw l Xo c T io y Ch`.
+
+Use `letI : Algebra T.Fr X.C := X.ιF.toAlgebra`. Use `letI : Algebra T.V X.C := (X.ιF.comp (algebraMap T.V T.Fr)).toAlgebra`. Use `haveI : IsScalarTower T.V T.Fr X.C := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Take `⟨h1, h2, h3, h4⟩` from `e7 X.C`. Establish `hc` using `(h3 _).2 h4`.
+
+Set `eC` to `Fintype.equivFin (Col cx)`. Set `σ : Col cx → 𝓞 E →+* X.C` to `fun b => X.ιF.comp (io.comp (embK c b.1.1.1))`. Establish `heig : ∀ (a : 𝓞 E) (ℓ : Lt1 Dw), (dAct X.C BT a).mulVec (lieVec Ch X ℓ) = X.ιF (io (embK c ℓ.1 a)) • lieVec Ch X ℓ`. Introduce `a ℓ`. Use function extensionality and compare the values at `i`.
+
+Establish `h` using `congrArg X.ιF (congrFun (GlobalTheory.PowGerm.eigDirSt E H Dw l Xo c T io y Ch a ℓ) i)`. Establish `hu : ∀ i, lieVec Ch X ℓ i = X.ιF (Ch.ch.uvec ℓ i)` using `fun i => congrArg X.ιF (Ch.gen.1.2.2.2.2.2.2 ℓ i).symm`. Simplify using `only [Matrix.mulVec, dotProduct, dAct, h2, hu, Pi.smul_apply, smul_eq_mul]`. Simplify using `only [Matrix.mulVec, dotProduct, dAct, FB.actK, MvPowerSeries.coeff_map, map_sum, map_mul, Pi.smul_apply, smul_eq_mul] at h ⊢`. Conclude with `h`.
+
+Take `⟨K, hK⟩` from `exists_germ_close (v := vX_vp X) BT (G := lawX Ch X) h1.symm (fgl Ch X).F_int (fun ℓ : Let cx => eC ℓ.1) (fun ℓ => frame Ch X ℓ.1.1.1 ℓ.2) (fun b a => σ (eC.symm b) a) (fun a ℓ => by rw [eC.symm_apply_apply]; exact heig a _) (isIntV_jX X) hc H.w0 (fun ℓ i => isIntV_jX X _) (fun b …`. Take `⟨N', hN'⟩` from `exists_nat_ge ((N : ℝ) + K)`. Take `⟨x, hx1, hx2⟩` from `exists_cols hB N'`. Set `β : Col cx → Fin n → X.C` to `fun b j => jX X (B b.1.1 b.2 j)`. Take `⟨f, hf, hv⟩` from `hK N' (fun b => x (eC.symm b)) (fun b => β (eC.symm b)) (fun b j => isIntV_jX X _) (fun b j => by`.
+
+Take `⟨z, hz⟩` from `hx1 (eC.symm b) j`. Establish `: β (eC.symm b) j - σ (eC.symm b) (x (eC.symm b) j) = (p : X.C) ^ N' * jX X (-z)` using `by show _ - X.ιF (io (embK c _ _)) = _`. Rewrite using `[hz]`. Use `show jX X _ - jX X _ = _`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this]`. Conclude with `le_v_pow_mul X N' (isIntV_jX X _))`. Use the proof step `(fun b b' => by`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton.1 (hx2 (eC.symm b) (eC.symm b'))`. Establish `: σ (eC.symm b') (H.w0 * ∑ j, star (x (eC.symm b) j) * x (eC.symm b') j) = (p : X.C) ^ N' * σ (eC.symm b') (H.w0 * r)`.
+
+Rewrite using `[show ∑ j, star (x (eC.symm b) j) * x (eC.symm b') j = _ from hr, mul_left_comm, map_mul, map_pow, map_natCast]`. Rewrite using `[this]`. Conclude with `le_v_pow_mul X N' (isIntV_ringHom X _ _))`. Establish `cX : ∀ q : Fin (Fintype.card (Col cx)) × Fin (chD Ch.ch), MvPowerSeries.constantCoeff (MvPowerSeries.X ⟨eC.symm q.1, q.2⟩ : MvPowerSeries (Σ _ : Col cx, Fin (chD Ch.ch)) X.C) = 0` using `fun q => by simp`. Establish `hE : MvPowerSeries.HasSubst (expH Ch X cx)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => nc_exPt (fgl Ch X) (fun i => by simp) q.2`.
+
+Apply the tactic sequence `refine ⟨MvPowerSeries.subst (fun q : Fin (Fintype.card (Col cx)) × Fin (chD Ch.ch) => (MvPowerSeries.X ⟨eC.symm q.1, q.2⟩ : MvPowerSeries (Σ _ : Col cx, Fin (chD Ch.ch)) X.C)) f, ReciprocityTheory.ChartRestriction.G.Sh.PTb.mvIsInt_subst _ hf (fun q α => by rw [MvPowerSeries.coeff …`. Use `le_trans (WithTop.coe_le_coe.2 (by linarith)) (hv.trans (le_of_eq ?_))` and prove the remaining obligations. Use `congr 2`. Establish `hA` using `GlobalTheory.ExpCoord.constantCoeff_dpolyN_eq_derivAt0 X.C (vX_vp X) _ (lawX Ch X) (fgl Ch X) (fun _ => rfl) n (LtN Dw n) (Let cx) (fun ℓ => ℓ.2.2) (fun ℓ => lieVec Ch X ⟨ℓ.1, ℓ.2.1⟩) (fun ℓ => β ℓ.1) (fun ℓ j => ⟨ℓ.1.1.1.1, Fin.castLE (rk_le _) ℓ.2, j⟩) (fun ℓ => frame Ch X ℓ.1. …`. Unfold `nabX nabValN`.
+
+Rewrite using `[map_polyT]`. Simplify using `only [eC.symm_apply_apply, FB.hL, h2]`. Conclude with `(hA _).symm`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero cX) hE]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `q`. Rewrite using `[MvPowerSeries.subst_X hE]`. Unfold `colExp`. Rewrite using `[lin_col eC (fun b : Col cx => frame Ch X b.1.1)]`. Both sides reduce to the same expression.
+-/
 theorem exists_germ_cols : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (p : ℕ) [Fact p.Prime] (la : PointsOfFlagModel.abelian₂ p c) (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ), OverLa la.1 T.V io e → ∀ (y : IntFr Xo c T io) (Ch : IntegralChartA3 Xo c T io y) (X : ValExt T p) (cx : Lt1 Dw → ℕ) (n : ℕ) (B : ∀ f : Lt1 Dw, Fin (rk f) → Fin n → T.V), IsCols c T io p cx B → ∀ (N k : ℕ) (g : PS X.C n (chD Ch.ch)), MvIsInt (vX_vp X) g → ∃ f : MvPowerSeries (Σ _ : GlobalTheory.IndefiniteRowSideFullHecke.LocalValuationColumns.Col cx, Fin (chD Ch.ch)) X.C, MvIsInt (vX_vp X) f ∧ (((N : ℝ) : ℝ) : WithTop ℝ) ≤ vX_vp X (GlobalTheory.IndefiniteRowSideFullHecke.LocalValuationColumns.nabX Ch X cx B k g - derivAt0 (GlobalTheory.IndefiniteRowSideFullHecke.LocalValuationColumns.polyH X.C cx) (MvPowerSeries.subst (GlobalTheory.IndefiniteRowSideFullHecke.LocalValuationColumns.expH Ch X cx) f)) := by
   intro E _ _ _ H Dw l Xo c
   letI := H.starRing

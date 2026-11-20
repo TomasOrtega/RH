@@ -9,6 +9,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CompanionTheory.Axis
 
+/- English proof (translation)
+Introduce `R _ X s hsep hqc`. Use `haveI : CompactSpace X := QuasiCompact.compactSpace_of_compactSpace s`. Establish `hdiag : IsAffineHom (Limits.pullback.diagonal s)` using `inferInstance`. Establish `hinf : ∀ U V : X.Opens, IsAffineOpen U → IsAffineOpen V → IsAffineOpen (U ⊓ V)` using `fun U V hU hV => isAffineHom_diagonal_iff.mp hdiag ⊤ (isAffineOpen_top _) U (by simp) V (by simp) hU hV`. Take `⟨S, hS, e⟩` from `(isCompact_iff_finite_and_eq_biUnion_affineOpens (U := (⊤ : X.Opens))).mp (by simpa using isCompact_univ)`.
+
+Set `A : Set X.Opens` to `infClosure ((fun i : X.affineOpens => i.1) '' S)`. Establish `hA : ∀ U ∈ A, IsAffineOpen U` using `infClosure_min (t := {U | IsAffineOpen U}) (by rintro _ ⟨i, -, rfl⟩; exact i.2) (fun a ha b hb => hinf a b ha hb)`. Use `letI inst : SemilatticeInf A := Subtype.semilatticeInf (fun _ _ ha hb => infClosed_infClosure ha hb)`. Use `haveI hfin : Finite A := ((hS.image _).infClosure).to_subtype`. Use `⟨A, inst, hfin, ⟨⟨fun j => ⟨j.1, hA j.1 j.2⟩, fun a b => rfl, ?_⟩⟩⟩` and prove the remaining obligations.
+
+Apply `top_le_iff.mp` to reduce the goal to its premises. Rewrite using `[e]`. Conclude with `iSup₂_le fun i hi => le_iSup_of_le (⟨i.1, subset_infClosure ⟨i, hi, rfl⟩⟩ : A) le_rfl`.
+-/
 theorem exists_finite_sys_of_separated_quasiCompact :
     ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R), IsSeparated s → QuasiCompact s →
     ∃ (P : Type) (_ : SemilatticeInf P) (_ : Finite P), Nonempty (Sys X P) := by

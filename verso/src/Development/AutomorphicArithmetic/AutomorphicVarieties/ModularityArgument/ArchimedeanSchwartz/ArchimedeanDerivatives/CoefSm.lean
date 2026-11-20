@@ -17,6 +17,13 @@ section Abs
 variable {P α V ι : Type} [NormedAddCommGroup P] [NormedSpace ℝ P] [MeasurableSpace α] {ν : Measure α}
   [IsFiniteMeasure ν] [Fintype ι] {U : Set P} {D : ι → V → V} {f : V → P → α → ℂ} {A : ι → P → P →L[ℝ] ℝ}
 
+/- English proof (translation)
+Use `choose C hC using hb`. Establish `hi : ∀ w, Integrable (f w y) ν` using `fun w => Integrable.of_bound (hm w y hy) (C w) (Filter.Eventually.of_forall (hC w y hy))`. Establish `hs : {z | z ∈ U ∧ ∀ b, ‖A b z‖ < ‖A b y‖ + 1} ∈ 𝓝 y`. Use `Filter.inter_mem (hU.mem_nhds hy) (Filter.eventually_all.2 fun b => ?_)` and prove the remaining obligations. Conclude with `((hA b).continuousAt (hU.mem_nhds hy)).norm.eventually (gt_mem_nhds (lt_add_one _))`.
+
+Establish `hL : ∀ b, Integrable (fun x => (A b y).smulRight (f (D b v) y x)) ν` using `fun b => (ContinuousLinearMap.smulRightL ℝ P ℂ (A b y)).integrable_comp (hi _)`. Establish `key` using `hasFDerivAt_integral_of_dominated_of_fderiv_le (𝕜 := ℝ) (μ := ν) (F := f v) (F' := fun z x => ∑ b, (A b z).smulRight (f (D b v) z x)) (bound := fun _ => ∑ b, (‖A b y‖ + 1) * C (D b v)) hs (Filter.eventually_of_mem (hU.mem_nhds hy) (hm v)) (hi v) (integrable_finset_sum _ fun b _ = …`. Rewrite using `[ContinuousLinearMap.norm_smulRight_apply]`. Conclude with `mul_le_mul (hz.2 b).le (hC _ z hz.1 x) (norm_nonneg _) (by positivity)))`. Use the proof step `(integrable_const _) (Filter.Eventually.of_forall fun x z hz => hd v x z hz.1)`.
+
+Rewrite `key` using `[integral_finset_sum _ fun b _ => hL b]`. Use `key.congr_fderiv (Finset.sum_congr rfl fun b _ => ?_)` and prove the remaining obligations. Conclude with `((ContinuousLinearMap.smulRightL ℝ P ℂ (A b y)).integral_comp_comm (hi _))`.
+-/
 private theorem abs_deriv (hU : IsOpen U) (hA : ∀ b, ContinuousOn (A b) U)
     (hm : ∀ v, ∀ y ∈ U, AEStronglyMeasurable (f v y) ν) (hb : ∀ v, ∃ C, ∀ y ∈ U, ∀ x, ‖f v y x‖ ≤ C)
     (hd : ∀ v x, ∀ y ∈ U, HasFDerivAt (fun y => f v y x) (∑ b, (A b y).smulRight (f (D b v) y x)) y)
@@ -43,6 +50,11 @@ private theorem abs_deriv (hU : IsOpen U) (hA : ∀ b, ContinuousOn (A b) U)
   refine key.congr_fderiv (Finset.sum_congr rfl fun b _ => ?_)
   exact ((ContinuousLinearMap.smulRightL ℝ P ℂ (A b y)).integral_comp_comm (hi _))
 
+/- English proof (translation)
+Rewrite using `[contDiffOn_infty]`. Introduce `n`. Proceed by induction on `n generalizing v with`. Consider the case `zero => exact contDiffOn_zero.2 fun y hy => (hd v y hy).continuousAt.continuousWithinAt`. Consider the case `succ n ih`.
+
+Rewrite using `[Nat.cast_succ, contDiffOn_succ_iff_hasFDerivWithinAt_of_uniqueDiffOn hU.uniqueDiffOn]`. Use `⟨fun h => by simp at h, fun y => ∑ b, (A b y).smulRight (G (D b v) y), ?_, fun y hy => (hd v y hy).hasFDerivWithinAt⟩` and prove the remaining obligations. Conclude with `ContDiffOn.sum fun b _ => ((hA b).of_le (by exact_mod_cast le_top)).smulRight (ih _)`.
+-/
 private theorem abs_smooth {G : V → P → ℂ} (hU : IsOpen U) (hA : ∀ b, ContDiffOn ℝ ∞ (A b) U)
     (hd : ∀ v, ∀ y ∈ U, HasFDerivAt (G v) (∑ b, (A b y).smulRight (G (D b v) y)) y) (v : V) :
     ContDiffOn ℝ ∞ (G v) U := by
@@ -72,6 +84,9 @@ private def lm (K : Type) [Field K] [NumberField K] (n : ℕ) : Lie K n →L[ℝ
       map_smul' := fun c y => ContinuousLinearMap.ext fun X => map_smul (rmul X) c y }
 
 omit [IsTotallyComplex K] in
+/- English proof (translation)
+Take `⟨u, hu⟩` from `hy`. Take `rfl : y = toL u.val` from `hu.symm`. Conclude with `⟨ContinuousLinearEquiv.equivOfInverse (lm K n (toL u.val)) (lm K n (toL (u⁻¹).val)) (fun X => u.inv_mul_cancel_left (Matrix.of X)) (fun X => u.mul_inv_cancel_left (Matrix.of X)), rfl⟩`.
+-/
 private theorem lm_equiv {y : Lie K n} (hy : y ∈ invSet K n) : ∃ e : Lie K n ≃L[ℝ] Lie K n, (e : Lie K n →L[ℝ] Lie K n) = lm K n y := by
   obtain ⟨u, hu⟩ := hy
   obtain rfl : y = toL u.val := hu.symm
@@ -82,6 +97,9 @@ private def cf (K : Type) [Field K] [NumberField K] (n : ℕ) (b : Fin (Module.f
   (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ (Lie K n)).coord b)).comp (lm K n y).inverse
 
 omit [IsTotallyComplex K] in
+/- English proof (translation)
+Introduce `y hy`. Take `⟨e, he⟩` from `lm_equiv hy`. Establish `h1 : ContDiffAt ℝ ∞ (fun z => (lm K n z).inverse) y` using `ContDiffAt.comp y (g := ContinuousLinearMap.inverse) (he ▸ contDiffAt_map_inverse e) (lm K n).contDiff.contDiffAt`. Conclude with `(contDiffAt_const.clm_comp h1).contDiffWithinAt`.
+-/
 private theorem cf_smooth (b : Fin (Module.finrank ℝ (Lie K n))) : ContDiffOn ℝ ∞ (cf K n b) (invSet K n) := by
   intro y hy
   obtain ⟨e, he⟩ := lm_equiv hy
@@ -89,6 +107,13 @@ private theorem cf_smooth (b : Fin (Module.finrank ℝ (Lie K n))) : ContDiffOn 
     ContDiffAt.comp y (g := ContinuousLinearMap.inverse) (he ▸ contDiffAt_map_inverse e) (lm K n).contDiff.contDiffAt
   exact (contDiffAt_const.clm_comp h1).contDiffWithinAt
 
+/- English proof (translation)
+Establish `h` using `(((φ.2 g).contDiffAt (isOpen_invSet.mem_nhds hy)).differentiableAt (by simp)).hasFDerivAt`. Use `h.congr_fderiv (Eq.symm ?_)` and prove the remaining obligations. Take `⟨e, he⟩` from `lm_equiv hy`. Use `ext1 Z`. Take `⟨X, rfl⟩` from `e.surjective Z`.
+
+Establish `e1 : ∀ Y, chart (lie K n Y φ).1 g y = fderiv ℝ (chart φ.1 g) y (e Y)` using `fun Y => by`. Establish `: e Y = rmul Y y` using `congrArg (fun L : Lie K n →L[ℝ] Lie K n => L Y) he`. Rewrite using `[this]`. Conclude with `chart_lieD φ.2 Y g hy`. Establish `e2 : ∀ b, cf K n b y (e X) = (Module.finBasis ℝ (Lie K n)).repr X b` using `fun b => by`.
+
+Simplify using `[cf, ← he]`. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smulRight_apply, e1, e2, ← map_smul, ← map_sum, Module.Basis.sum_repr]`.
+-/
 private theorem chart_deriv (φ : Sm K n) (g : GA K n) {y : Lie K n} (hy : y ∈ invSet K n) :
     HasFDerivAt (chart φ.1 g) (∑ b, (cf K n b y).smulRight (chart (lie K n (Module.finBasis ℝ (Lie K n) b) φ).1 g y)) y := by
   have h := (((φ.2 g).contDiffAt (isOpen_invSet.mem_nhds hy)).differentiableAt (by simp)).hasFDerivAt
@@ -106,6 +131,9 @@ private theorem chart_deriv (φ : Sm K n) (g : GA K n) {y : Lie K n} (hy : y ∈
     Module.Basis.sum_repr]
 
 omit [IsTotallyComplex K] in
+/- English proof (translation)
+Establish `: lm K n (oneL K n) = ContinuousLinearMap.id ℝ _` using `ContinuousLinearMap.ext fun X => Matrix.one_mul (Matrix.of X)`. Simplify using `[cf, this]`.
+-/
 private theorem cf_one (b : Fin (Module.finrank ℝ (Lie K n))) (X : Lie K n) :
     cf K n b (oneL K n) X = (Module.finBasis ℝ (Lie K n)).repr X b := by
   have : lm K n (oneL K n) = ContinuousLinearMap.id ℝ _ := ContinuousLinearMap.ext fun X => Matrix.one_mul (Matrix.of X)
@@ -117,11 +145,29 @@ section Main
 
 variable {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨ψ, rfl⟩` from `(Cm.carrierEq σ).surjective φ`. Conclude with `⟨ψ.1.2.1.continuous, exists_norm_le_of_cusp hn ψ.1.2 (h ψ.2)⟩`.
+-/
 private theorem cusp_facts (hn : 1 ≤ n) {σ : CuspSub K n} (h : Cm.carrier σ ≤ centralCuspForms K n) (φ : σ.V) :
     Continuous φ.1.1 ∧ ∃ C, ∀ y, ‖φ.1.1 y‖ ≤ C := by
   obtain ⟨ψ, rfl⟩ := (Cm.carrierEq σ).surjective φ
   exact ⟨ψ.1.2.1.continuous, exists_norm_le_of_cusp hn ψ.1.2 (h ψ.2)⟩
 
+/- English proof (translation)
+Establish `: IsFiniteMeasure (μ.restrict (RightCosetSpace.fundamentalDomain (Reduction.rationalGLOne K n)))` using `isFiniteMeasure_restrict.2 (GJGlobal.measure_fundamentalDomain_rationalGLOne_lt_top μ).ne`. Take `⟨C₂, hC₂⟩` from `CuspidalSpectrum.exists_norm_le_of_mem_cuspForms φ₂.2`. Establish `h2c : Continuous φ₂.1` using `φ₂.2.1.continuous`. Set `f : σ.V → Lie K n → Reduction.normOneGL K n → ℂ` to `fun v z x => chart v.1.1 ((x : AdelicGLn.AdelicGL K n) * g) z * (starRingEnd ℂ) (φ₂.1 x)`. Establish `hf : ∀ (v : σ.V), ∀ z ∈ invSet K n, chart (GJGlobal.matrixCoeff μ v.1.1 φ₂.1) g z = ∫ x in RightCosetSpace.fundamentalDomain (Reduction.rationalGLOne K n), f v z x ∂μ`.
+
+Introduce `v z hz`. Take `⟨u, hu⟩` from `hz`. Take `rfl : z = toL u.val` from `hu.symm`. Simplify using `only [f, chart_val, GJGlobal.matrixCoeff, mul_assoc]`. Establish `key` using `abs_deriv (ν := μ.restrict (RightCosetSpace.fundamentalDomain (Reduction.rationalGLOne K n))) (f := f) (D := fun b v => σ.op (.lie (Module.finBasis ℝ (Lie K n) b)) v) (A := cf K n) isOpen_invSet (fun b => (cf_smooth b).continuousOn) ?_ ?_ ?_ φ hy`.
+
+Simplify using `only [hf _ y hy]`. Conclude with `key.congr_of_eventuallyEq (Filter.eventually_of_mem (isOpen_invSet.mem_nhds hy) (hf φ))`. Introduce `v z hz`. Take `⟨u, hu⟩` from `hz`. Take `rfl : z = toL u.val` from `hu.symm`.
+
+Use `Continuous.aestronglyMeasurable ?_` and prove the remaining obligations. Simplify using `only [f, chart_val]`. Conclude with `((cusp_facts hn h v).1.comp ((continuous_subtype_val.mul continuous_const).mul continuous_const)).mul (continuous_star.comp (h2c.comp continuous_subtype_val))`. Introduce `v`. Take `⟨C, hC⟩` from `(cusp_facts hn h v).2`.
+
+Use `⟨C * C₂, fun z hz x => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `hz`. Take `rfl : z = toL u.val` from `hu.symm`. Simplify using `only [f, chart_val]`. Rewrite using `[norm_mul, Complex.norm_conj]`.
+
+Conclude with `mul_le_mul (hC _) (hC₂ _ x.2) (norm_nonneg _) ((norm_nonneg _).trans (hC 1))`. Introduce `v x z hz`. Use `((chart_deriv v.1 ((x : AdelicGLn.AdelicGL K n) * g) hz).mul_const _).congr_fderiv ?_` and prove the remaining obligations. Use `ext1 Z`. Simplify using `only [f, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, Finset.mul_sum, Complex.real_smul]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_assoc]`. Both sides reduce to the same expression.
+-/
 private theorem coef_deriv (hn : 1 ≤ n) (μ : Measure (Reduction.normOneGL K n)) [μ.IsHaarMeasure] {σ : CuspSub K n}
     (h : Cm.carrier σ ≤ centralCuspForms K n) (φ₂ : cuspForms K n) (g : GA K n) (φ : σ.V) {y : Lie K n}
     (hy : y ∈ invSet K n) :
@@ -168,6 +214,11 @@ private theorem coef_deriv (hn : 1 ≤ n) (μ : Measure (Reduction.normOneGL K n
     rw [mul_comm, mul_assoc]
     rfl
 
+/- English proof (translation)
+Establish `: IsFiniteMeasure (μ.restrict (RightCosetSpace.fundamentalDomain (Reduction.rationalGLOne K n)))` using `isFiniteMeasure_restrict.2 (GJGlobal.measure_fundamentalDomain_rationalGLOne_lt_top μ).ne`. Take `⟨C₂, hC₂⟩` from `CuspidalSpectrum.exists_norm_le_of_mem_cuspForms φ₂.2`. Establish `h2c : Continuous φ₂.1` using `φ₂.2.1.continuous`. Take `⟨hc, C, hC⟩` from `cusp_facts hn h φ`. Use `Integrable.of_bound (Continuous.aestronglyMeasurable ?_) (C * C₂) (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Conclude with `(hc.comp (continuous_subtype_val.mul continuous_const)).mul (continuous_star.comp (h2c.comp continuous_subtype_val))`. Rewrite using `[norm_mul, Complex.norm_conj]`. Conclude with `mul_le_mul (hC _) (hC₂ _ x.2) (norm_nonneg _) ((norm_nonneg _).trans (hC 1))`.
+-/
 private theorem coef_int (hn : 1 ≤ n) (μ : Measure (Reduction.normOneGL K n)) [μ.IsHaarMeasure] {σ : CuspSub K n}
     (h : Cm.carrier σ ≤ centralCuspForms K n) (φ₂ : cuspForms K n) (g : GA K n) (φ : σ.V) :
     Integrable (fun x : Reduction.normOneGL K n => φ.1.1 ((x : AdelicGLn.AdelicGL K n) * g) * (starRingEnd ℂ) (φ₂.1 x))
@@ -195,6 +246,13 @@ private def coefMap (hn : 1 ≤ n) (μ : Measure (Reduction.normOneGL K n)) [μ.
     refine Eq.trans ?_ (integral_const_mul c _)
     exact integral_congr_ae (Filter.Eventually.of_forall fun x => mul_assoc _ _ _))
 
+/- English proof (translation)
+Establish `e : σ.op (.lie X) φ = ∑ b, (((Module.finBasis ℝ (Lie K n)).repr X b : ℝ) : ℂ) • σ.op (.lie (Module.finBasis ℝ (Lie K n) b)) φ`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_sum]`. Express the relevant statement in the definitionally equal form `lie K n X φ.1 = ∑ b, (((Module.finBasis ℝ (Lie K n)).repr X b : ℝ) : ℂ) • lie K n (Module.finBasis ℝ (Lie K n) b) φ.1`. Use `conv_lhs => rw [← (Module.finBasis ℝ (Lie K n)).sum_repr X]`.
+
+Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, Complex.coe_smul]`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Establish `h1 : oneL K n ∈ invSet K n` using `val_mem_invSet (1 : GL (Fin n) (Cinf K))`. Establish `hc : ∀ F : GA K n → ℂ, chart F g (oneL K n) = F g` using `fun F => (chart_val F g 1).trans (by rw [map_one, mul_one])`. Establish `h2` using `congrArg (fun L : Lie K n →L[ℝ] ℂ => L X) (coef_deriv hn μ h φ₂ g φ h1).fderiv`.
+
+Use `Eq.trans ?_ h2.symm` and prove the remaining obligations. Simplify using `only [e, map_sum, map_smul, ContinuousLinearMap.sum_apply, ContinuousLinearMap.smulRight_apply, cf_one, hc, Submodule.coe_sum, Finset.sum_apply, Submodule.coe_smul, Pi.smul_apply, Complex.real_smul, smul_eq_mul]`. Both sides reduce to the same expression.
+-/
 private theorem coefMap_lie (hn : 1 ≤ n) (μ : Measure (Reduction.normOneGL K n)) [μ.IsHaarMeasure] {σ : CuspSub K n}
     (h : Cm.carrier σ ≤ centralCuspForms K n) (φ₂ : cuspForms K n) (X : Lie K n) (φ : σ.V) :
     coefMap hn μ h φ₂ (σ.op (.lie X) φ) = lie K n X (coefMap hn μ h φ₂ φ) := by
@@ -215,6 +273,17 @@ private theorem coefMap_lie (hn : 1 ≤ n) (μ : Measure (Reduction.normOneGL K 
     Submodule.coe_sum, Finset.sum_apply, Submodule.coe_smul, Pi.smul_apply, Complex.real_smul, smul_eq_mul]
   rfl
 
+/- English proof (translation)
+Set `S : Subalgebra ℂ (Module.End ℂ (Sm K n))` to `{ carrier := {z | ∀ ψ : σ.V, ∃ ψ' : σ.V, ψ'.1 = z ψ.1 ∧ T ψ' = z (T ψ)} mul_mem' := fun {x y} hx hy ψ => by`. Take `⟨a, ha, ha'⟩` from `hy ψ`. Take `⟨b, hb, hb'⟩` from `hx a`. Conclude with `⟨b, by rw [hb, ha]; rfl, by rw [hb', ha']; rfl⟩`. Use the proof step `add_mem' := fun {x y} hx hy ψ => by`.
+
+Take `⟨a, ha, ha'⟩` from `hx ψ`. Take `⟨b, hb, hb'⟩` from `hy ψ`. Conclude with `⟨a + b, by rw [Submodule.coe_add, hb, ha]; rfl, by rw [map_add, hb', ha']; rfl⟩`. Use the proof step `algebraMap_mem' := fun c ψ => ⟨c • ψ, rfl, map_smul T c ψ⟩ }`. Establish `hl : ∀ X, lie K n X ∈ S` using `fun X ψ => ⟨σ.op (.lie X) ψ, rfl, hT X ψ⟩`.
+
+Establish `hE : ∀ i j : Fin n, Eop τ i j ∈ S` using `fun i j => by`. Establish `: Eop (a` using `n) τ i j = AlgRepEndIrreducible.eL (N := Module.End ℂ (Sm K n)) (lie K n) τ i j := rfl`. Rewrite using `[this, AlgRepEndIrreducible.eL]`. Conclude with `S.smul_mem (S.sub_mem (hl _) (S.smul_mem (hl _) _)) _`. Establish `hc : cap τ u ∈ S`.
+
+Use `Fb.map_qdet S.val (fun i j => ⟨Eop τ i j, hE i j⟩) (u + ((n : ℂ) - 1) / 2)` as an intermediate fact. Establish `e2 : cap τ u = Formalism.REAL.qdet (Eop (a` using `n) τ) (u + ((n : ℂ) - 1) / 2) := rfl`. Rewrite using `[e2]`. Conclude with `(show _ = Formalism.REAL.qdet (Eop (a := n) τ) (u + ((n : ℂ) - 1) / 2) from this) ▸ Subtype.prop _`. Take `⟨a, ha, ha'⟩` from `hc φ`.
+
+Rewrite using `[← ha', Subtype.ext (e.trans ha.symm)]`.
+-/
 private theorem cap_comm {σ : CuspSub K n} (T : σ.V →ₗ[ℂ] Sm K n)
     (hT : ∀ X φ, T (σ.op (.lie X) φ) = lie K n X (T φ)) (τ : K →+* ℂ) (u : ℂ) (φ φ' : σ.V)
     (e : φ'.1 = cap τ u φ.1) : T φ' = cap τ u (T φ) := by
@@ -246,6 +315,9 @@ end Main
 
 end UpperTheory.V.Z.Inf
 
+/- English proof (translation)
+Introduce `K _ _ _ n hn μ _ σ h φ₂`. Conclude with `⟨coefMap hn μ h φ₂, fun _ => rfl, cap_comm _ (coefMap_lie hn μ h φ₂)⟩`.
+-/
 theorem UpperTheory.V.Z.Inf.coefSm :
     UpperTheory.V.Z.Inf.CoefSm := by
   intro K _ _ _ n hn μ _ σ h φ₂

@@ -11,6 +11,39 @@ open Formalism.MainNotions.SumRepresentations Formalism.BasicNotions Formalism.C
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) {i : N.Loc}
   (r : N.X i → (G H.E N.Om →* GL (Fin R.nV) (N.O i)))
 
+/- English proof (translation)
+Establish `hw : w ∉ placesOver H.E (N.l i)` using `N.SQ_l i w (Or.inl hS)`. Establish `hcont : Continuous fun g => ((mapRep (iotaOQ N A i) (r x) g : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (Qbar (N.l i)))` using `contQ_of_continuous N A i (r x) (hr x).1`. Take `⟨P, -, hP0⟩` from `hL x`. Take `⟨s, hP⟩ : ∃ s : ℝ, RelU N A (A.wdOf i (mapRep (iotaOQ N A i) (r x)) w) (A.lpTw (A.locV i P w) s)` from `⟨_, hP0⟩`. Establish `hγ₀I : N.gam0 i w ∈ Ine (F` using `H.E) (N.plOm.1 w) := N.locNd_chebotarevPlace_mem i w`.
+
+Establish `htame` using `(N.restN_tameGenerator_generates i w (Or.inl hS)).2`. Establish `hcpQ : ∀ g, (((mapRep (iotaOQ N A i) (r x) g : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (Qbar (N.l i)))).charpoly = (((r x g : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (N.O i))).charpoly.map (iotaOQ N A i)` using `fun g => Matrix.charpoly_map _ _`. Establish `hle : rootMultiplicity (iotaOQ N A i (chi1 N i (N.gam0 i w))) (((mapRep (iotaOQ N A i) (r x) (N.gam0 i w) : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (Qbar (N.l i)))).charpoly ≤ R.t`. Rewrite using `[hcpQ, ← hmult x]`. Use `(rootMult_le_of_maps (iotaOQ N A i) (iotaOQ_injective N A i) (IsLocalRing.residue (N.O i)) _ (Matrix.charpoly_monic _) _).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Rewrite using `[← Matrix.charpoly_map]`. Both sides reduce to the same expression. Establish `hine : ∀ σ ∈ Ine (F` using `H.E) (N.plOm.1 w), (((mapRep (iotaOQ N A i) (r x) σ : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (Qbar (N.l i)))).charpoly.map (A.iotaQC i).toRingHom = A.inePol (A.locV i P w) σ := fun σ hσ => ((A.wdOf_ine i _ w hw hcont σ hσ).trans (hP.ine σ hσ)).trans (A.inePol_tw _ s σ hσ)`. Establish `hdim : A.lpDim (A.locV i P w) = R.nV`. Rewrite using `[← A.lpDim_tw _ s, ← hP.dim, A.wdOf_dim]`.
+
+Establish `hne : ∀ σ ∈ Ine (F` using `H.E) (N.plOm.1 w), A.inePol (A.locV i P w) σ ≠ 0 := by`. Introduce `σ hσ`. Rewrite using `[← hine σ hσ]`. Conclude with `((Matrix.charpoly_monic _).map _).ne_zero`. Establish `hleC : rootMultiplicity (iotaO N A i (chi1 N i (N.gam0 i w))) (A.inePol (A.locV i P w) (N.gam0 i w)) ≤ R.t`.
+
+Rewrite using `[← hine _ hγ₀I]`. Conclude with `(eq_rootMultiplicity_map (A.iotaQC i).injective _).symm.trans_le hle`. Take `⟨a, b, hab, -, -, -, hb⟩` from `hTY.2.1 i P w hS hg htame hleC`. Establish `hdivC : ∀ σ ∈ Ine (F` using `H.E) (N.plOm.1 w), (X - C (iotaO N A i (chi1 N i σ))) ^ R.t ∣ A.inePol (A.locV i P w) σ := by`. Introduce `σ hσ`.
+
+Rewrite using `[hab, A.inePol_sum, hb σ hσ]`. Conclude with `dvd_mul_left _ _`. Establish `hge : R.t ≤ rootMultiplicity (iotaOQ N A i (chi1 N i (N.gam0 i w))) (((mapRep (iotaOQ N A i) (r x) (N.gam0 i w) : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (Qbar (N.l i)))).charpoly`. Establish `h1` using `(le_rootMultiplicity_iff (hne _ hγ₀I)).mpr (hdivC _ hγ₀I)`. Rewrite `h1` using `[← hine _ hγ₀I]`.
+
+Conclude with `h1.trans_eq (eq_rootMultiplicity_map (A.iotaQC i).injective _).symm`. Establish `hinj : Function.Injective (Polynomial.map (R` using `Qbar (N.l i)) (A.iotaQC i).toRingHom) := Polynomial.map_injective _ (A.iotaQC i).injective`. Establish `ht0 : R.t ≠ 0` using `fun h => by`. Use `R.t_odd` as an intermediate fact. Rewrite `this` using `[h]`.
+
+Conclude with `(Nat.not_odd_zero this)`. Establish `hiO : Function.Injective (iotaO N A i)` using `fun a b h => iotaOQ_injective N A i ((A.iotaQC i).injective h)`. Take `⟨χ, hχ⟩ : ∃ χ : G H.E N.Om →* (Qbar (N.l i))ˣ, χ = (Units.map (iotaOQ N A i).toMonoidHom).comp (N.chi i 1)` from `⟨_, rfl⟩`. Establish `hχv : ∀ g, ((χ g : (Qbar (N.l i))ˣ) : Qbar (N.l i)) = iotaOQ N A i (chi1 N i g)`. Introduce `g`.
+
+Rewrite using `[hχ]`. Both sides reduce to the same expression. Establish `hχcont : Continuous fun g => ((χ g : (Qbar (N.l i))ˣ) : Qbar (N.l i))`. Simplify using `only [hχv]`. Conclude with `(continuous_iotaOQ N A i).comp (N.chi_cont i 1)`.
+
+Establish `hfin` using `(A.wdOf_mono0 i _ w hw hcont).mp hP.mono`. Establish `hfo : ∀ σ ∈ Ine (F` using `H.E) (N.plOm.1 w), IsOfFinOrder (mapRep (iotaOQ N A i) (r x) σ) := by`. Introduce `σ hσ`. Use `finite_zpowers.mp (hfin.subset ?_)` and prove the remaining obligations. Introduce `g hg`.
+
+Take `⟨k, rfl⟩` from `Subgroup.mem_zpowers_iff.mp hg`. Conclude with `⟨σ ^ k, Subgroup.zpow_mem _ hσ k, map_zpow _ σ k⟩`. Establish `hwild : ∀ σ ∈ wildSet N (N.plOm.1 w), σ ∈ Ine (F` using `H.E) (N.plOm.1 w) ∧ (((mapRep (iotaOQ N A i) (r x) σ : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (Qbar (N.l i)))).charpoly = (X - 1) ^ R.nV ∧ χ σ = 1 := by`. Introduce `σ hσ`. Establish `hσI : σ ∈ Ine (F` using `H.E) (N.plOm.1 w) := GlobalTheory.TameEig.wild_mem_Ine (N.plOm.1 w) σ hσ`.
+
+Establish `hX : A.inePol (A.locV i P w) σ = (X - 1) ^ R.nV`. Rewrite using `[← A.inePol_tw _ s σ hσI, hP.nice.1 σ hσI hσ, A.lpDim_tw, hdim]`. Use `⟨hσI, ?_, ?_⟩` and prove the remaining obligations. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hine σ hσI, hX]`.
+
+Simplify using the standard rewrite rules. Establish `h1` using `hdivC σ hσI`. Rewrite `h1` using `[hX, show (X - 1 : Polynomial ℂ) = X - C 1 by simp]`. Establish `h2` using `(Polynomial.prime_X_sub_C (iotaO N A i (chi1 N i σ))).dvd_of_dvd_pow ((dvd_pow_self _ ht0).trans h1)`. Establish `h3` using `Polynomial.dvd_iff_isRoot.mp h2`.
+
+Rewrite `h3` using `[Polynomial.root_X_sub_C]`. Establish `h4 : chi1 N i σ = 1` using `hiO (by rw [← h3, map_one])`. Use `ext`. Rewrite using `[hχv, h4, map_one]`. Both sides reduce to the same expression.
+
+Establish `hm : rootMultiplicity ((χ (N.gam0 i w) : (Qbar (N.l i))ˣ) : Qbar (N.l i)) (((mapRep (iotaOQ N A i) (r x) (N.gam0 i w) : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (Qbar (N.l i)))).charpoly = R.t`. Rewrite using `[hχv]`. Conclude with `le_antisymm hle hge`. Take `⟨U, U', hUU, hd, hact⟩` from `split_tame (Ine (F := H.E) (N.plOm.1 w)) (wildSet N (N.plOm.1 w)) (N.gam0 i w) hγ₀I htame (mapRep (iotaOQ N A i) (r x)) hcont χ hχcont hfo hwild hm`. Use `⟨U, U', hUU, hd, fun γ hγ => ⟨(hact γ hγ).1, fun v hv => ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[(hact γ hγ).2 v hv, hχv]`.
+-/
 private theorem exists_isCompl_finrank_inertia_of_charpoly (A : NAut N) (hr : GoodR N i r) (hTY : At.MonodromyInertiaType N A)
     (w : PlE H) (hS : w ∈ N.S i) (hg : ∃ k, w ∈ placesOver H.E (H.g k)) (hL : LGCatN N r A w)
     (hmult : ∀ x, rootMultiplicity (IsLocalRing.residue (N.O i) (chi1 N i (N.gam0 i w)))
@@ -127,6 +160,9 @@ private theorem exists_isCompl_finrank_inertia_of_charpoly (A : NAut N) (hr : Go
   refine ⟨U, U', hUU, hd, fun γ hγ => ⟨(hact γ hγ).1, fun v hv => ?_⟩⟩
   rw [(hact γ hγ).2 v hv, hχv]
 
+/- English proof (translation)
+Establish `hw : w ∉ placesOver H.E (N.l i)` using `N.SQ_l i w (Or.inl hS)`. Conclude with `weil_deligne_clause_of_split N r (charpoly_clause_of_chebotarev N hC i r hr) w (iotaOQ N A i) (iotaOQ_injective N A i) (exists_isCompl_finrank_inertia_of_charpoly N r A hr hTY w hS hg hL (mult_of_rhobar N r hC hr rb hrb w hw hnr)) (mult_of_rhobar N r hC hr rb hrb w hw hnr)`.
+-/
 theorem exists_inertia_charpoly_factor_of_tame_type (A : NAut N) (hC : Cheb N) (hr : GoodR N i r) (hT : At.TieGal N A) (hTY : At.MonodromyInertiaType N A)
     (w : PlE H) (hS : w ∈ N.S i) (hg : ∃ k, w ∈ placesOver H.E (H.g k))
     (hL : LGCatN N r A w)
@@ -144,6 +180,21 @@ theorem exists_inertia_charpoly_factor_of_tame_type (A : NAut N) (hC : Cheb N) (
     (exists_isCompl_finrank_inertia_of_charpoly N r A hr hTY w hS hg hL (mult_of_rhobar N r hC hr rb hrb w hw hnr))
     (mult_of_rhobar N r hC hr rb hrb w hw hnr)
 
+/- English proof (translation)
+Establish `hcont : Continuous fun g => ((mapRep (iotaOQ N A i) (r x) g : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (Qbar (N.l i)))` using `contQ_of_continuous N A i (r x) (hr x).1`. Take `⟨P, -, hP0⟩` from `hL x`. Take `⟨s, hP⟩ : ∃ s : ℝ, RelU N A (A.wdOf i (mapRep (iotaOQ N A i) (r x)) w) (A.lpTw (A.locV i P w) s)` from `⟨_, hP0⟩`. Establish `hine : ∀ σ ∈ Ine (F` using `H.E) (N.plOm.1 w), (((mapRep (iotaOQ N A i) (r x) σ : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (Qbar (N.l i)))).charpoly.map (A.iotaQC i).toRingHom = A.inePol (A.locV i P w) σ := fun σ hσ => ((A.wdOf_ine i _ w hw hcont σ hσ).trans (hP.ine σ hσ)).trans (A.inePol_tw _ s σ hσ)`. Establish `hfin` using `(A.wdOf_mono0 i _ w hw hcont).mp hP.mono`.
+
+Establish `ht0 : R.t ≠ 0` using `fun h => by`. Use `R.t_odd` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `(Nat.not_odd_zero this)`. Use `haveI : CharZero (Kf N i) := ((A.iotaQC i).toRingHom.comp (A.iotaQ i)).charZero`.
+
+Set `ρ : Ine (F` to `H.E) (N.plOm.1 w) →* GL (Fin (R.r + R.t)) (Kf N i) := (mapRep (algebraMap (N.O i) (Kf N i)) (r x)).comp (Ine (F := H.E) (N.plOm.1 w)).subtype`. Set `χ : Ine (F` to `H.E) (N.plOm.1 w) →* (Kf N i)ˣ := ((Units.map (algebraMap (N.O i) (Kf N i)).toMonoidHom).comp (N.chi i 1)).comp (Ine (F := H.E) (N.plOm.1 w)).subtype`. Establish `hrange : (Set.range ρ).Finite`. Use `Set.Finite.of_finite_image (f := Units.map (RingHom.toMonoidHom (RingHom.mapMatrix (m := Fin (R.r + R.t)) (A.iotaQ i)))) ?_ ?_` and prove the remaining obligations. Use `hfin.subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨_, ⟨γ, rfl⟩, rfl⟩`. Conclude with `⟨γ.1, γ.2, Units.ext rfl⟩`. Introduce `u _ v _ h`. Apply `Units.ext` to reduce the goal to its premises. Establish `h'` using `congrArg (fun z : GL (Fin (R.r + R.t)) (Qbar (N.l i)) => (z : Matrix (Fin (R.r + R.t)) (Fin (R.r + R.t)) (Qbar (N.l i)))) h`.
+
+Conclude with `Matrix.map_injective (A.iotaQ i).injective h'`. Establish `hcp : ∀ γ, ((ρ γ : GL _ _) : Matrix (Fin (R.r + R.t)) (Fin (R.r + R.t)) (Kf N i)).charpoly = (X - 1) ^ R.r * (X - C ((χ γ : (Kf N i)ˣ) : Kf N i)) ^ R.t`. Introduce `γ`. Apply `Polynomial.map_injective ((A.iotaQC i).toRingHom.comp (A.iotaQ i)) ((A.iotaQC i).toRingHom.comp (A.iotaQ i)).injective` to reduce the goal to its premises. Establish `hmat : ((ρ γ : GL _ _) : Matrix (Fin (R.r + R.t)) (Fin (R.r + R.t)) (Kf N i)).map (A.iotaQ i) = ((mapRep (iotaOQ N A i) (r x) γ.1 : GL _ _) : Matrix (Fin R.nV) (Fin R.nV) (Qbar (N.l i)))`.
+
+Both sides reduce to the same expression. Rewrite using `[← Polynomial.map_map, ← Matrix.charpoly_map, hmat]`. Use `(hine γ.1 γ.2).trans ?_` and prove the remaining obligations. Rewrite using `[(hty P).2 γ.1 γ.2]`. Simplify using `only [Polynomial.map_mul, Polynomial.map_pow, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_one, Polynomial.map_C]`.
+
+Both sides reduce to the same expression. Take `⟨Pm, hPm⟩` from `split_of_charpoly ht0 ρ χ hrange hcp`. Conclude with `⟨Pm, fun γ hγ => hPm ⟨γ, hγ⟩⟩`.
+-/
 theorem SplitI_of_TY (A : NAut N) (hr : GoodR N i r) (w : PlE H) (hw : w ∉ placesOver H.E (N.l i))
     (hL : LGCatN N r A w)
     (hty : ∀ P : A.AV i, A.mono0 (A.locV i P w) ∧ ∀ σ ∈ Ine (F := H.E) (N.plOm.1 w),

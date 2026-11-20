@@ -3,6 +3,9 @@ open NumberField TensorProduct
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
+/- English proof (translation)
+Set `bV` to `Module.finBasis K V`. Set `bW` to `Module.finBasis K W`. Rewrite using `[← LinearMap.det_toMatrix bW, ← LinearMap.det_toMatrix bV, map_add, map_add, LinearMap.toMatrix_comp bW bV bW, LinearMap.toMatrix_comp bV bW bV, LinearMap.toMatrix_one, LinearMap.toMatrix_one, Matrix.det_one_add_mul_comm]`.
+-/
 theorem det_one_add_comp_comm_field {K V W : Type*} [Field K] [AddCommGroup V] [Module K V]
     [AddCommGroup W] [Module K W] [Module.Finite K V] [Module.Finite K W]
     (A : V →ₗ[K] W) (B : W →ₗ[K] V) :
@@ -14,6 +17,17 @@ theorem det_one_add_comp_comm_field {K V W : Type*} [Field K] [AddCommGroup V] [
     LinearMap.toMatrix_comp bW bV bW, LinearMap.toMatrix_comp bV bW bV,
     LinearMap.toMatrix_one, LinearMap.toMatrix_one, Matrix.det_one_add_mul_comm]
 
+/- English proof (translation)
+Introduce `E _ _ La _ _ _ _ I g hg`. Take `⟨n, p, i, -, -, hpi⟩` from `Module.Finite.exists_comp_eq_id_of_projective (𝓞 E) La`. Use `set N : (Fin n → 𝓞 E) →ₗ[𝓞 E] (Fin n → 𝓞 E) := i ∘ₗ ((g - 1) ∘ₗ p) with hN`. Establish `key : ∀ (x : La), x ∈ I • (⊤ : Submodule (𝓞 E) La) → ∀ k, i x k ∈ I`. Introduce `x hx k`.
+
+Use `Submodule.smul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `r hr y _`. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `I.mul_mem_right _ hr`. Introduce `x y hx hy`.
+
+Rewrite using `[map_add, Pi.add_apply]`. Conclude with `I.add_mem hx hy`. Use `⟨LinearMap.det (1 + N), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq, ← LinearMap.det_toMatrix', RingHom.map_det, map_one]`. Establish `: (Ideal.Quotient.mk I).mapMatrix (LinearMap.toMatrix' (1 + N)) = 1`.
+
+Rewrite using `[map_add, map_add, LinearMap.toMatrix'_one, map_one, add_eq_left]`. Use extensionality with `a b`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.zero_apply, LinearMap.toMatrix'_apply]`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `key _ (hg _) _`.
+
+Rewrite using `[this, Matrix.det_one]`. Establish `h1 : ((LinearMap.det (1 + N) : 𝓞 E) : E) = LinearMap.det ((1 + N).baseChange E)` using `(LinearMap.det_baseChange (A := E) (1 + N)).symm`. Rewrite using `[h1, LinearMap.baseChange_add, LinearMap.baseChange_one, hN, LinearMap.baseChange_comp, det_one_add_comp_comm_field, ← LinearMap.baseChange_comp, LinearMap.comp_assoc, hpi, LinearMap.comp_id, LinearMap.baseChange_sub, LinearMap.baseChange_one, add_sub_cancel]`.
+-/
 theorem exists_det_congr_one : ∀ (E : Type) [Field E] [NumberField E] (La : Type) [AddCommGroup La] [Module (𝓞 E) La] [Module.Finite (𝓞 E) La] [Module.Projective (𝓞 E) La] (I : Ideal (𝓞 E)) (g : La →ₗ[𝓞 E] La), (∀ a, g a - a ∈ I • (⊤ : Submodule (𝓞 E) La)) → ∃ u : 𝓞 E, u - 1 ∈ I ∧ (u : E) = LinearMap.det (g.baseChange E) := by
   intro E _ _ La _ _ _ _ I g hg
   classical

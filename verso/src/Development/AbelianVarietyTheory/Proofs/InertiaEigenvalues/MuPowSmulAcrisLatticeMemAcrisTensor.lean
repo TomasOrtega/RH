@@ -11,6 +11,9 @@ noncomputable section
 
 namespace GlobalTheory.BKGal.CrisInt
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, smul_zero]`. Consider the case `add x y hx hy => simp only [map_add, smul_add, hx, hy]`. Consider the case `tmul a t => simp [TWincl, TensorProduct.smul_tmul']`.
+-/
 theorem tw_incl_smul {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp] [Field LL]
     [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL]
     {R R' : Type} [CommRing R] [Algebra O R] [CommRing R'] [Algebra O R']
@@ -21,6 +24,9 @@ theorem tw_incl_smul {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} 
   | add x y hx hy => simp only [map_add, smul_add, hx, hy]
   | tmul a t => simp [TWincl, TensorProduct.smul_tmul']
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a t => simp [TWincl]`.
+-/
 theorem tw_incl_comp {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp] [Field LL]
     [Algebra Qp LL] [CommRing O] [Algebra O LL] [TopologicalSpace LL]
     {R R' R'' : Type} [CommRing R] [Algebra O R] [CommRing R'] [Algebra O R'] [CommRing R''] [Algebra O R'']
@@ -31,6 +37,21 @@ theorem tw_incl_comp {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} 
   | add x y hx hy => simp only [map_add, hx, hy]
   | tmul a t => simp [TWincl]
 
+/- English proof (translation)
+Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ ι _ _ P T I α β hLM hML jB hcmp ε hε z`. Take `⟨δ, hδ, -⟩` from `hε.2`. Establish `hK` using `(GlobalTheory.T.breuilKisin_lattice_exponents_ainf_comparison l a e O K t ϖ ι P T I α β hLM hML ε δ hε hδ).2.2.2`. Establish `step1 : ∀ c : ι → OA l O, ∃ y : TW (OA l O) T, jB (fun i => toB l O (((1 : O) ⊗ₜ[ℤ_[l]] muOf ε ^ α) * c i)) = TWincl (toB l O) T y`. Introduce `c`.
+
+Take `⟨y, hy⟩` from `hK (inclL t ϖ P c) ⟨c, rfl⟩`. Use `⟨y, hcmp _ y ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`. Use `congr 1`. Rewrite using `[inclL_apply, inclL_apply, ← Matrix.mulVec_smul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[map_mul, Algebra.TensorProduct.tmul_pow]`. Use `choose y hy using fun i : ι => step1 (Pi.single i 1)`. Use `⟨∑ i, z i • TWincl (toOCr l O) T (y i), ?_⟩` and prove the remaining obligations.
+
+Establish `hsingle : ∀ i, toB l O ((1 : O) ⊗ₜ[ℤ_[l]] muOf ε ^ α) • jB (Pi.single i 1) = TWincl (toB l O) T (y i)`. Introduce `i`. Rewrite using `[← hy i, ← map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Establish `hz : (fun i => toOB l O (z i)) = ∑ i, toOB l O (z i) • (Pi.single i (1 : OB l O))`.
+
+Use function extensionality and compare the values at `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hz, map_sum, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_comm, hsingle, tw_incl_smul, tw_incl_comp]`.
+
+Both sides reduce to the same expression.
+-/
 theorem mu_pow_smul_mem : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] [TameDescentExponentData K l e a] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod O K l e a ι) (T : LocLat (Gl l) ℚ_[l] K O) (I : Ident t ϖ P T) (α β : ℕ), (∀ m ∈ P.L, E K l e ^ α • m ∈ P.M) → (∀ m ∈ P.M, E K l e ^ β • m ∈ P.L) → ∀ (jB : (ι → OB l O) ≃ₗ[OB l O] TW (OB l O) T), IsCrisCmp I jB → ∀ ε : OCb l, IsEps ε → ∀ z : ι → OCr l O, ∃ w : TW (OCr l O) T, toB l O ((1 : O) ⊗ₜ[ℤ_[l]] muOf ε ^ α) • jB (fun i => toOB l O (z i)) = TWincl (toOB l O) T w := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ _ t ϖ ι _ _ P T I α β hLM hML jB hcmp ε hε z
   obtain ⟨δ, hδ, -⟩ := hε.2

@@ -3,6 +3,11 @@ import Formalism.HermitianCurvature.PositionExpansionTopCoefficients
 
 namespace Bl.HermitianSesquilinear
 
+/- English proof (translation)
+Establish `h1` using `(h (x + y)).2`. Establish `h2` using `(h (x + Complex.I • y)).2`. Establish `hx` using `(h x).2`. Establish `hy` using `(h y).2`. Simplify using `only [map_add, LinearMap.add_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, Complex.add_im, Complex.mul_im, Complex.add_re, Complex.mul_re, Complex.I_re, Complex.I_im, Complex.conj_I, Complex.neg_re, Complex.neg_im, RingHom.id_apply] at h1 h2`.
+
+Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [Complex.conj_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [Complex.conj_im]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem conj_eq_of_nonneg_real {M : Type} [AddCommGroup M] [Module ℂ M] (Ξ : Formalism.FourierDecayAlt.F7.Sesq M)
     (h : ∀ m : M, 0 ≤ (Ξ m m).re ∧ (Ξ m m).im = 0) (x y : M) :
     starRingEnd ℂ (Ξ x y) = Ξ y x := by
@@ -19,6 +24,11 @@ private theorem conj_eq_of_nonneg_real {M : Type} [AddCommGroup M] [Module ℂ M
   · simp only [Complex.conj_im]
     linarith
 
+/- English proof (translation)
+Introduce `M _ _ Ξ h x y`. Set `c : PreInnerProductSpace.Core ℂ M` to `{ inner := fun a b => Ξ b a conj_inner_symm := fun a b => conj_eq_of_nonneg_real Ξ h a b re_inner_nonneg := fun a => (h a).1 add_left := fun a b z => map_add (Ξ z) a b smul_left := fun a b r => (map_smulₛₗ (Ξ b) r a).trans (smul_eq_mul _ _) }`. Establish `key` using `InnerProductSpace.Core.inner_mul_inner_self_le (𝕜 := ℂ) (F := M) y x`. Express the relevant statement in the definitionally equal form `‖Ξ x y‖ * ‖Ξ y x‖ ≤ (Ξ y y).re * (Ξ x x).re at key`. Rewrite `key` using `[← conj_eq_of_nonneg_real Ξ h x y, RCLike.norm_conj]`.
+
+Rewrite using `[sq, mul_comm (Ξ x x).re]`. Conclude with `key`.
+-/
 theorem goal1 :
   ∀ {M : Type} [inst : AddCommGroup.{0} M] [inst_1 : Module.{0, 0} Complex M] (Ξ : Formalism.FourierDecayAlt.F7.Sesq M),
   (∀ (m : M),

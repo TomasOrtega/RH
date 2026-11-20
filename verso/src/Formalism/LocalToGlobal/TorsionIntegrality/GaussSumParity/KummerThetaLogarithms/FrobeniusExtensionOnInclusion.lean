@@ -15,6 +15,9 @@ section Norms
 
 variable (l : ℕ) [hl : Fact l.Prime]
 
+/- English proof (translation)
+Establish `h1 : (((l : ℚ_[l]) : PadicAlgCl l) : ℂ_[l]) = (l : ℂ_[l])` using `by simp`. Rewrite using `[← h1, PadicComplex.norm_extends, PadicAlgCl.norm_extends]`. Use `first`. Consider the case `exact Padic.norm_p`. Consider the case `simp [Padic.norm_p]`.
+-/
 lemma norm_l_eq : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹ := by
   have h1 : (((l : ℚ_[l]) : PadicAlgCl l) : ℂ_[l]) = (l : ℂ_[l]) := by simp
   rw [← h1, PadicComplex.norm_extends, PadicAlgCl.norm_extends]
@@ -22,14 +25,25 @@ lemma norm_l_eq : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹ := by
     | exact Padic.norm_p
     | simp [Padic.norm_p]
 
+/- English proof (translation)
+Conclude with `hl.out.pos` after adjusting the coercions.
+-/
 lemma l_pos_real : (0 : ℝ) < (l : ℝ) := by
   exact_mod_cast hl.out.pos
 
+/- English proof (translation)
+Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast hl.out.one_lt)`.
+-/
 lemma l_inv_lt_one : (l : ℝ)⁻¹ < 1 := by
   exact inv_lt_one_of_one_lt₀ (by exact_mod_cast hl.out.one_lt)
 
 variable {l}
 
+/- English proof (translation)
+Establish `h1 : ‖a ^ l‖ = 1` using `by rw [norm_pow, ha, one_pow]`. Establish `h2 : ‖(l : ℂ_[l]) * b‖ < 1`. Rewrite using `[norm_mul, norm_l_eq]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [h1]; exact h2.ne'), h1]`.
+
+Conclude with `max_eq_left h2.le`.
+-/
 lemma norm_pow_add_eq_one {a b : ℂ_[l]} (ha : ‖a‖ = 1) (hb : ‖b‖ ≤ 1) :
     ‖a ^ l + (l : ℂ_[l]) * b‖ = 1 := by
   have h1 : ‖a ^ l‖ = 1 := by rw [norm_pow, ha, one_pow]
@@ -41,6 +55,11 @@ lemma norm_pow_add_eq_one {a b : ℂ_[l]} (ha : ‖a‖ = 1) (hb : ‖b‖ ≤ 1
   rw [IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [h1]; exact h2.ne'), h1]
   exact max_eq_left h2.le
 
+/- English proof (translation)
+Establish `h1 : ‖a ^ l‖ < 1`. Rewrite using `[norm_pow]`. Conclude with `pow_lt_one₀ (norm_nonneg a) ha hl.out.ne_zero`. Establish `h2 : ‖(l : ℂ_[l]) * b‖ < 1`. Rewrite using `[norm_mul, norm_l_eq]`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt h1 h2)`.
+-/
 lemma norm_pow_add_lt_one {a b : ℂ_[l]} (ha : ‖a‖ < 1) (hb : ‖b‖ ≤ 1) :
     ‖a ^ l + (l : ℂ_[l]) * b‖ < 1 := by
   have h1 : ‖a ^ l‖ < 1 := by
@@ -53,6 +72,11 @@ lemma norm_pow_add_lt_one {a b : ℂ_[l]} (ha : ‖a‖ < 1) (hb : ‖b‖ ≤ 1
       _ < 1 := by rw [mul_one]; exact l_inv_lt_one l
   exact lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt h1 h2)
 
+/- English proof (translation)
+Establish `hN1 : ‖a ^ N‖ < 1`. Rewrite using `[norm_pow]`. Conclude with `pow_lt_one₀ (norm_nonneg a) ha hN`. Establish `h1 : ‖a ^ N - 1‖ = 1`. Rewrite using `[sub_eq_add_neg, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [norm_neg, norm_one]; exact hN1.ne), norm_neg, norm_one]`.
+
+Conclude with `max_eq_right hN1.le`. Establish `h2 : a ^ (N + 1) - a = a * (a ^ N - 1)` using `by ring`. Establish `h3` using `congrArg norm h`. Rewrite `h3` using `[h2, norm_mul, h1, mul_one, norm_mul, norm_l_eq]`. Conclude with `h3`.
+-/
 lemma norm_eq_of_pow_sub {a b : ℂ_[l]} {N : ℕ} (hN : N ≠ 0) (ha : ‖a‖ < 1)
     (h : a ^ (N + 1) - a = (l : ℂ_[l]) * b) : ‖a‖ = (l : ℝ)⁻¹ * ‖b‖ := by
   have hN1 : ‖a ^ N‖ < 1 := by
@@ -73,6 +97,39 @@ end KF
 
 open KF
 
+/- English proof (translation)
+Introduce `hA l hl σ0 hσ`. Take `⟨hle, hpow⟩` from `hA l`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.out.one_lt`. Establish `hlpos : (0 : ℝ) < l` using `by linarith`. Establish `hl0 : (l : ℝ) ≠ 0` using `hlpos.ne'`.
+
+Establish `hform : ∀ x : ringA l, ∃ y : ringA l, ((σ0 x : ringA l) : ℂ_[l]) = (x : ℂ_[l]) ^ l + (l : ℂ_[l]) * (y : ℂ_[l])`. Introduce `x`. Take `⟨y, hy⟩` from `hσ x`. Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg Subtype.val hy`.
+
+Move the coercions through the operations in `at h`. Take the linear combination `h`. Establish `hsm : ∀ x : ringA l, ‖(x : ℂ_[l])‖ < 1 → ‖((σ0 x : ringA l) : ℂ_[l])‖ < 1`. Introduce `x hx`. Take `⟨y, hy⟩` from `hform x`.
+
+Rewrite using `[hy]`. Conclude with `norm_pow_add_lt_one hx (hle _ y.2)`. Establish `hun : ∀ x : ringA l, ‖(x : ℂ_[l])‖ = 1 → ‖((σ0 x : ringA l) : ℂ_[l])‖ = 1`. Introduce `x hx`. Take `⟨y, hy⟩` from `hform x`.
+
+Rewrite using `[hy]`. Conclude with `norm_pow_add_eq_one hx (hle _ y.2)`. Establish `hrel : ∀ x : ringA l, ‖(x : ℂ_[l])‖ < 1 → ∃ y : ringA l, ‖(x : ℂ_[l])‖ = (l : ℝ)⁻¹ * ‖(y : ℂ_[l])‖ ∧ ‖((σ0 x : ringA l) : ℂ_[l])‖ = (l : ℝ)⁻¹ * ‖((σ0 y : ringA l) : ℂ_[l])‖`. Introduce `x hx`. Take `⟨f, hf, y, hy, hxy⟩` from `hpow (x : ℂ_[l]) x.2`.
+
+Establish `hN : l ^ f - 1 ≠ 0`. Establish `: 2 ≤ l ^ f` using `le_trans hl.out.two_le (Nat.le_self_pow hf.ne' l)`. Use linear arithmetic over natural numbers and integers. Establish `hN1 : l ^ f - 1 + 1 = l ^ f` using `Nat.sub_add_cancel (Nat.one_le_pow _ _ hl.out.pos)`. Establish `e : x ^ (l ^ f) - x = (l : ringA l) * ⟨y, hy⟩` using `Subtype.ext (by push_cast; exact hxy)`.
+
+Establish `e2` using `congrArg (fun z => ((σ0 z : ringA l) : ℂ_[l])) e`. Simplify using `only [map_sub, map_pow, map_mul, map_natCast] at e2`. Move the coercions through the operations in `at e2`. Use `⟨⟨y, hy⟩, ?_, ?_⟩` and prove the remaining obligations. Apply `norm_eq_of_pow_sub hN hx` to reduce the goal to its premises.
+
+Rewrite using `[hN1]`. Conclude with `hxy`. Apply `norm_eq_of_pow_sub hN (hsm x hx)` to reduce the goal to its premises. Rewrite using `[hN1]`. Conclude with `e2`.
+
+Establish `key : ∀ k : ℕ, ∀ x : ringA l, ((l : ℝ)⁻¹) ^ k < l * ‖(x : ℂ_[l])‖ → ‖((σ0 x : ringA l) : ℂ_[l])‖ = ‖(x : ℂ_[l])‖`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `x hx`.
+
+Break down `(hle _ x.2).lt_or_eq with h | h` into its components or cases. It suffices to derive a contradiction. Take `⟨y, hy1, -⟩` from `hrel x h`. Establish `hy` using `hle _ y.2`. Rewrite `hx` using `[pow_zero]`.
+
+Establish `hxy : (l : ℝ) * ‖(x : ℂ_[l])‖ = ‖(y : ℂ_[l])‖`. Rewrite using `[hy1]`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[h]`.
+
+Conclude with `hun x h`. Consider the case `succ k ih`. Introduce `x hx`. Break down `(hle _ x.2).lt_or_eq with h | h` into its components or cases. Take `⟨y, hy1, hy2⟩` from `hrel x h`.
+
+Establish `hyx : ‖(y : ℂ_[l])‖ = l * ‖(x : ℂ_[l])‖`. Rewrite using `[hy1]`. Clear the denominators using the available nonvanishing facts. Establish `hk : ((l : ℝ)⁻¹) ^ k < l * ‖(y : ℂ_[l])‖`. Rewrite using `[hyx]`.
+
+Rewrite `hx` using `[pow_succ]`. Establish `h2` using `mul_lt_mul_of_pos_left hx hlpos`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hy2, ih y hk, hy1]`. Rewrite using `[h]`.
+
+Conclude with `hun x h`. Introduce `x`. Distinguish the cases in `hx0 : ‖(x : ℂ_[l])‖ = 0`. Establish `hx : x = 0` using `Subtype.ext (by simpa using hx0)`. Substitute `hx` using the available equality.
+
+Simplify using the standard rewrite rules. Establish `hpos : 0 < (l : ℝ) * ‖(x : ℂ_[l])‖` using `mul_pos hlpos (lt_of_le_of_ne (norm_nonneg _) (Ne.symm hx0))`. Take `⟨k, hk⟩` from `exists_pow_lt_of_lt_one hpos (inv_lt_one_of_one_lt₀ hl1)`. Conclude with `key k x hk`.
+-/
 theorem FrobAIsom_of : RingAFacts → FrobAIsom := by
   intro hA l hl σ0 hσ
   obtain ⟨hle, hpow⟩ := hA l
@@ -169,17 +226,29 @@ section Extend
 
 variable (l : ℕ) [hl : Fact l.Prime]
 
+/- English proof (translation)
+The claim follows from `Subring.le_topologicalClosure _`.
+-/
 lemma ringA_le_ringB : ringA l ≤ ringB l := Subring.le_topologicalClosure _
 
 def incAB : ringA l →+* ringB l := Subring.inclusion (ringA_le_ringB l)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma incAB_coe (x : ringA l) : ((incAB l x : ringB l) : ℂ_[l]) = x := rfl
 
+/- English proof (translation)
+Establish `h1 : IsUniformInducing ((↑) : ringB l → ℂ_[l])` using `isUniformEmbedding_subtype_val.isUniformInducing`. Rewrite using `[← h1.of_comp_iff]`. Conclude with `isUniformEmbedding_subtype_val.isUniformInducing`.
+-/
 lemma incAB_unif : IsUniformInducing (incAB l) := by
   have h1 : IsUniformInducing ((↑) : ringB l → ℂ_[l]) := isUniformEmbedding_subtype_val.isUniformInducing
   rw [← h1.of_comp_iff]
   exact isUniformEmbedding_subtype_val.isUniformInducing
 
+/- English proof (translation)
+Unfold `DenseRange`. Rewrite using `[Subtype.dense_iff]`. Introduce `x hx`. Establish `hsub : (ringA l : Set ℂ_[l]) ⊆ Subtype.val '' Set.range (incAB l)` using `fun y hy => ⟨incAB l ⟨y, hy⟩, ⟨_, rfl⟩, rfl⟩`. Conclude with `closure_mono hsub hx`.
+-/
 lemma incAB_dense : DenseRange (incAB l) := by
   unfold DenseRange
   rw [Subtype.dense_iff]
@@ -194,6 +263,9 @@ variable (σ0 : ringA l →+* ringA l) (hiso : ∀ x : ringA l, ‖(σ0 x : ℂ_
 def sigF : ringA l →+* ℂ_[l] := (ringA l).subtype.comp σ0
 
 include hiso in
+/- English proof (translation)
+Apply `Isometry.uniformContinuous` to reduce the goal to its premises. Apply `AddMonoidHomClass.isometry_of_norm` to reduce the goal to its premises. Introduce `x`. Conclude with `hiso x`.
+-/
 lemma sigF_unif : UniformContinuous (sigF σ0) := by
   apply Isometry.uniformContinuous
   apply AddMonoidHomClass.isometry_of_norm
@@ -203,12 +275,21 @@ lemma sigF_unif : UniformContinuous (sigF σ0) := by
 def sig1 : ringB l →+* ℂ_[l] :=
   IsDenseInducing.extendRingHom (incAB_unif l) (incAB_dense l) (sigF_unif σ0 hiso)
 
+/- English proof (translation)
+The claim follows from `(uniformContinuous_uniformly_extend (incAB_unif l) (incAB_dense l) (sigF_unif σ0 hiso)).continuous`.
+-/
 lemma frobenius_extension_continuous : Continuous (sig1 σ0 hiso) :=
   (uniformContinuous_uniformly_extend (incAB_unif l) (incAB_dense l) (sigF_unif σ0 hiso)).continuous
 
+/- English proof (translation)
+The claim follows from `uniformly_extend_of_ind (incAB_unif l) (incAB_dense l) (sigF_unif σ0 hiso) a`.
+-/
 lemma frobenius_extension_on_inclusion (a : ringA l) : sig1 σ0 hiso (incAB l a) = (σ0 a : ℂ_[l]) :=
   uniformly_extend_of_ind (incAB_unif l) (incAB_dense l) (sigF_unif σ0 hiso) a
 
+/- English proof (translation)
+Use `(incAB_dense l).induction_on x ?_ ?_` and prove the remaining obligations. Conclude with `IsClosed.preimage (frobenius_extension_continuous σ0 hiso) (Subring.isClosed_topologicalClosure (ringA l))`. Introduce `a`. Rewrite using `[frobenius_extension_on_inclusion]`. Conclude with `ringA_le_ringB l (σ0 a).2`.
+-/
 lemma frobenius_extension_mem (x : ringB l) : sig1 σ0 hiso x ∈ ringB l := by
   refine (incAB_dense l).induction_on x ?_ ?_
   · exact IsClosed.preimage (frobenius_extension_continuous σ0 hiso) (Subring.isClosed_topologicalClosure (ringA l))
@@ -216,6 +297,11 @@ lemma frobenius_extension_mem (x : ringB l) : sig1 σ0 hiso x ∈ ringB l := by
     rw [frobenius_extension_on_inclusion]
     exact ringA_le_ringB l (σ0 a).2
 
+/- English proof (translation)
+Use `(incAB_dense l).induction_on x ?_ ?_` and prove the remaining obligations. Conclude with `isClosed_le (continuous_norm.comp ((frobenius_extension_continuous σ0 hiso).sub (continuous_subtype_val.pow l))) continuous_const`. Introduce `a`. Rewrite using `[frobenius_extension_on_inclusion, incAB_coe]`. Take `⟨y, hy⟩` from `hσ a`.
+
+Establish `h` using `congrArg Subtype.val hy`. Move the coercions through the operations in `at h`. Rewrite using `[h, norm_mul, norm_l_eq l]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma frobenius_extension_congruence (hA : ∀ x ∈ ringA l, ‖x‖ ≤ 1)
     (hσ : ∀ x : ringA l, ∃ y : ringA l, σ0 x - x ^ l = (l : ringA l) * y) (x : ringB l) :
     ‖sig1 σ0 hiso x - (x : ℂ_[l]) ^ l‖ ≤ (l : ℝ)⁻¹ := by
@@ -239,16 +325,27 @@ def jBK (hB : ∀ x : ℂ_[l], x ∈ ringB l ↔ x ∈ MaximalUnramifiedExtensio
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Conclude with `RingHom.codRestrict_apply _ _ _ x`.
+-/
 lemma jBK_coe (hB : ∀ x : ℂ_[l], x ∈ ringB l ↔ x ∈ MaximalUnramifiedExtension l ∧ ‖x‖ ≤ 1) (x : ringB l) :
     ((jBK hB x : MaximalUnramifiedExtension l) : ℂ_[l]) = x := by
   exact RingHom.codRestrict_apply _ _ _ x
 
+/- English proof (translation)
+Introduce `x y h`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← jBK_coe hB x, ← jBK_coe hB y, h]`.
+-/
 lemma jBK_inj (hB : ∀ x : ℂ_[l], x ∈ ringB l ↔ x ∈ MaximalUnramifiedExtension l ∧ ‖x‖ ≤ 1) :
     Function.Injective (jBK hB) := by
   intro x y h
   apply Subtype.ext
   rw [← jBK_coe hB x, ← jBK_coe hB y, h]
 
+/- English proof (translation)
+Introduce `h`. Establish `h2` using `congrArg (fun z : MaximalUnramifiedExtension l => (z : ℂ_[l])) h`. Move the coercions through the operations in `at h2`. Establish `h3` using `norm_l_eq l`. Rewrite `h3` using `[h2, norm_zero]`.
+
+Conclude with `(inv_pos.mpr (l_pos_real l)).ne h3`.
+-/
 lemma l_ne_zero_Kur : (l : MaximalUnramifiedExtension l) ≠ 0 := by
   intro h
   have h2 := congrArg (fun z : MaximalUnramifiedExtension l => (z : ℂ_[l])) h
@@ -257,6 +354,11 @@ lemma l_ne_zero_Kur : (l : MaximalUnramifiedExtension l) ≠ 0 := by
   rw [h2, norm_zero] at h3
   exact (inv_pos.mpr (l_pos_real l)).ne h3
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt ‖(z : ℂ_[l])‖ (by exact_mod_cast hl.out.one_lt : (1 : ℝ) < l)`. Establish `hmem : ((z * (l : MaximalUnramifiedExtension l) ^ k : MaximalUnramifiedExtension l) : ℂ_[l]) ∈ ringB l`. Rewrite using `[hB]`. Use `⟨(z * (l : MaximalUnramifiedExtension l) ^ k).2, ?_⟩` and prove the remaining obligations. Use `push_cast`.
+
+Rewrite using `[norm_mul, norm_pow, norm_l_eq l, inv_pow, ← div_eq_mul_inv]`. Conclude with `(div_le_one (pow_pos (l_pos_real l) k)).mpr hk.le`. Conclude with `⟨k, ⟨_, hmem⟩, Subtype.ext (jBK_coe hB ⟨_, hmem⟩).symm⟩`.
+-/
 lemma jBK_surj (hB : ∀ x : ℂ_[l], x ∈ ringB l ↔ x ∈ MaximalUnramifiedExtension l ∧ ‖x‖ ≤ 1) (z : MaximalUnramifiedExtension l) :
     ∃ (k : ℕ) (b : ringB l), z * (l : MaximalUnramifiedExtension l) ^ k = jBK hB b := by
   obtain ⟨k, hk⟩ := pow_unbounded_of_one_lt ‖(z : ℂ_[l])‖ (by exact_mod_cast hl.out.one_lt : (1 : ℝ) < l)
@@ -268,6 +370,13 @@ lemma jBK_surj (hB : ∀ x : ℂ_[l], x ∈ ringB l ↔ x ∈ MaximalUnramifiedE
     exact (div_le_one (pow_pos (l_pos_real l) k)).mpr hk.le
   exact ⟨k, ⟨_, hmem⟩, Subtype.ext (jBK_coe hB ⟨_, hmem⟩).symm⟩
 
+/- English proof (translation)
+Use `letI := (jBK hB).toAlgebra`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, n, rfl⟩ show IsUnit (jBK hB ((l : ringB l) ^ n))`. Rewrite using `[map_pow, map_natCast]`. Conclude with `(IsUnit.mk0 _ l_ne_zero_Kur).pow n`.
+
+Introduce `z`. Take `⟨k, b, hb⟩` from `jBK_surj hB z`. Use `⟨⟨b, ⟨(l : ringB l) ^ k, k, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Use `show z * jBK hB ((l : ringB l) ^ k) = jBK hB b`. Rewrite using `[map_pow, map_natCast]`.
+
+Conclude with `hb`. Introduce `x y h`. Conclude with `⟨1, by rw [jBK_inj hB h]⟩`.
+-/
 lemma jBK_away (hB : ∀ x : ℂ_[l], x ∈ ringB l ↔ x ∈ MaximalUnramifiedExtension l ∧ ‖x‖ ≤ 1) :
     @IsLocalization.Away (ringB l) _ (l : ringB l) (MaximalUnramifiedExtension l) _ (jBK hB).toAlgebra := by
   letI := (jBK hB).toAlgebra
@@ -285,6 +394,13 @@ lemma jBK_away (hB : ∀ x : ℂ_[l], x ∈ ringB l ↔ x ∈ MaximalUnramifiedE
   · intro x y h
     exact ⟨1, by rw [jBK_inj hB h]⟩
 
+/- English proof (translation)
+Use `letI := (jBK hB).toAlgebra`. Use `haveI := jBK_away hB`. Set `ψ : ringB l →+* MaximalUnramifiedExtension l` to `(jBK hB).comp (g.codRestrict (ringB l) hg)`. Establish `hu : IsUnit (ψ (l : ringB l))`. Rewrite using `[map_natCast]`.
+
+Conclude with `IsUnit.mk0 _ l_ne_zero_Kur`. Use `⟨IsLocalization.Away.lift (l : ringB l) hu, fun x hx => ?_⟩` and prove the remaining obligations. Establish `key : IsLocalization.Away.lift (l : ringB l) hu (algebraMap (ringB l) (MaximalUnramifiedExtension l) ⟨x, hx⟩) = ψ ⟨x, hx⟩` using `by first`. Consider the case `exact IsLocalization.Away.lift_eq (S := MaximalUnramifiedExtension l) (l : ringB l) hu ⟨x, hx⟩`. Consider the case `exact IsLocalization.lift_eq _ _`.
+
+Consider the case `simp`. Establish `hx' : algebraMap (ringB l) (MaximalUnramifiedExtension l) ⟨x, hx⟩ = x` using `Subtype.ext (jBK_coe hB _)`. Rewrite `key` using `[hx']`. Rewrite using `[key]`. Both sides reduce to the same expression.
+-/
 lemma exists_ext (hB : ∀ x : ℂ_[l], x ∈ ringB l ↔ x ∈ MaximalUnramifiedExtension l ∧ ‖x‖ ≤ 1)
     (g : ringB l →+* ℂ_[l]) (hg : ∀ x, g x ∈ ringB l) :
     ∃ σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExtension l, ∀ (x : MaximalUnramifiedExtension l) (hx : (x : ℂ_[l]) ∈ ringB l),
@@ -311,6 +427,19 @@ end Extend
 
 end KF
 
+/- English proof (translation)
+Introduce `hF hI hK hU l hl hl2`. Take `⟨σ0, hmu, hσ⟩` from `hF l`. Establish `hiso` using `hI l σ0 hσ`. Take `⟨hB, -, -⟩` from `hK l`. Establish `hA : ∀ x ∈ ringA l, ‖x‖ ≤ 1` using `fun x hx => ((hB x).1 (ringA_le_ringB l hx)).2`.
+
+Take `⟨σ, hσe⟩` from `exists_ext hB (sig1 σ0 hiso) (frobenius_extension_mem σ0 hiso)`. Use `⟨σ, ⟨hl.out, hl2, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show ‖((l : MaximalUnramifiedExtension l) : ℂ_[l])‖ = _`. Use `push_cast`. Conclude with `norm_l_eq l`.
+
+Introduce `a ha`. Take `⟨k, hk⟩` from `hU l (a : ℂ_[l]) a.2 (fun h => ha (Subtype.ext h))`. Use `⟨-k, ?_⟩` and prove the remaining obligations. Use `show ‖(a : ℂ_[l])‖ = _`. Rewrite using `[hk, norm_l_eq l, inv_zpow']`.
+
+Introduce `a ha`. Establish `ha' : (a : ℂ_[l]) ∈ ringB l` using `(hB a).2 ⟨a.2, ha⟩`. Establish `h1` using `hσe a ha'`. Use `show ‖((σ a - a ^ l : MaximalUnramifiedExtension l) : ℂ_[l])‖ ≤ _`. Use `push_cast`.
+
+Rewrite using `[h1]`. Conclude with `frobenius_extension_congruence σ0 hiso hA hσ ⟨a, ha'⟩`. Introduce `ζ hζ`. Establish `hζA : (ζ : ℂ_[l]) ∈ ringA l` using `Subring.subset_closure hζ`. Establish `hζB` using `ringA_le_ringB l hζA`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hσe ζ hζB]`. Establish `he : (⟨(ζ : ℂ_[l]), hζB⟩ : ringB l) = incAB l ⟨ζ, hζA⟩` using `rfl`. Rewrite using `[he, frobenius_extension_on_inclusion, hmu ⟨ζ, hζA⟩ hζ]`. Simplify using the standard rewrite rules.
+-/
 theorem KurFrob_of : FrobA → FrobAIsom → KurIntegers → KurUnram → KurFrob := by
   intro hF hI hK hU l hl hl2
   obtain ⟨σ0, hmu, hσ⟩ := hF l

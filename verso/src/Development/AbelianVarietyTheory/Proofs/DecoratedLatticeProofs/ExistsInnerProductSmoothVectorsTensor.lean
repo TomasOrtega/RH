@@ -14,9 +14,17 @@ variable {ι : Type} [Fintype ι] {E : ι → Type*} [∀ i, NormedAddCommGroup 
 def ellA (a : ∀ i, E i) : (⨂[ℂ] i, E i) →ₗ[ℂ] ℂ :=
   PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra ℂ ι ℂ).compLinearMap fun i => innerₛₗ ℂ (a i))
 
+/- English proof (translation)
+Simplify using `[ellA]`.
+-/
 theorem ellA_tprod (a b : ∀ i, E i) : ellA a (PiTensorProduct.tprod ℂ b) = ∏ i, ⟪a i, b i⟫_ℂ := by
   simp [ellA]
 
+/- English proof (translation)
+Establish `: (fun j => ⟪Function.update a i z j, b j⟫_ℂ) = Function.update (fun j => ⟪a j, b j⟫_ℂ) i ⟪z, b i⟫_ℂ`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[h]`. Rewrite using `[this, Finset.prod_update_of_mem (Finset.mem_univ i)]`.
+-/
 theorem prod_inner_update [DecidableEq ι] (a b : ∀ i, E i) (i : ι) (z : E i) :
     ∏ j, ⟪Function.update a i z j, b j⟫_ℂ = ⟪z, b i⟫_ℂ * ∏ j ∈ Finset.univ \ {i}, ⟪a j, b j⟫_ℂ := by
   have : (fun j => ⟪Function.update a i z j, b j⟫_ℂ) = Function.update (fun j => ⟪a j, b j⟫_ℂ) i ⟪z, b i⟫_ℂ := by
@@ -26,12 +34,18 @@ theorem prod_inner_update [DecidableEq ι] (a b : ∀ i, E i) (i : ι) (z : E i)
     · simp [h]
   rw [this, Finset.prod_update_of_mem (Finset.mem_univ i)]
 
+/- English proof (translation)
+Apply `PiTensorProduct.ext` to reduce the goal to its premises. Use extensionality with `b`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.add_apply, ellA_tprod, prod_inner_update, inner_add_left, add_mul]`.
+-/
 theorem ellA_update_add [DecidableEq ι] (a : ∀ i, E i) (i : ι) (x y : E i) :
     ellA (Function.update a i (x + y)) = ellA (Function.update a i x) + ellA (Function.update a i y) := by
   apply PiTensorProduct.ext
   ext b
   simp only [LinearMap.compMultilinearMap_apply, LinearMap.add_apply, ellA_tprod, prod_inner_update, inner_add_left, add_mul]
 
+/- English proof (translation)
+Apply `PiTensorProduct.ext` to reduce the goal to its premises. Use extensionality with `b`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.smul_apply, ellA_tprod, prod_inner_update, inner_smul_left, smul_eq_mul, mul_assoc]`.
+-/
 theorem ellA_update_smul [DecidableEq ι] (a : ∀ i, E i) (i : ι) (c : ℂ) (x : E i) :
     ellA (Function.update a i (c • x)) = conj c • ellA (Function.update a i x) := by
   apply PiTensorProduct.ext
@@ -41,8 +55,14 @@ theorem ellA_update_smul [DecidableEq ι] (a : ∀ i, E i) (i : ι) (c : ℂ) (x
 def ellC (a : ∀ i, E i) : (⨂[ℂ] i, E i) →ₗ⋆[ℂ] ℂ :=
   (starLinearEquiv ℂ : ℂ ≃ₗ⋆[ℂ] ℂ).toLinearMap.comp (ellA a)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ellC_apply (a : ∀ i, E i) (w : ⨂[ℂ] i, E i) : ellC a w = conj (ellA a w) := rfl
 
+/- English proof (translation)
+Rewrite using `[ellC_apply, ellA_tprod, map_prod]`. Simplify using the standard rewrite rules.
+-/
 theorem ellC_tprod (a b : ∀ i, E i) : ellC a (PiTensorProduct.tprod ℂ b) = ∏ i, ⟪b i, a i⟫_ℂ := by
   rw [ellC_apply, ellA_tprod, map_prod]; simp
 
@@ -55,10 +75,18 @@ def ellM : MultilinearMap ℂ E ((⨂[ℂ] i, E i) →ₗ⋆[ℂ] ℂ) where
 
 def ipT : (⨂[ℂ] i, E i) →ₗ[ℂ] (⨂[ℂ] i, E i) →ₗ⋆[ℂ] ℂ := PiTensorProduct.lift ellM
 
+/- English proof (translation)
+Simplify using `[ipT, ellM, ellC_tprod]`.
+-/
 theorem ipT_tprod (a b : ∀ i, E i) :
     ipT (PiTensorProduct.tprod ℂ a) (PiTensorProduct.tprod ℂ b) = ∏ i, ⟪b i, a i⟫_ℂ := by
   simp [ipT, ellM, ellC_tprod]
 
+/- English proof (translation)
+Proceed by induction on `w using PiTensorProduct.induction_on generalizing w' with`. Consider the case `smul_tprod r a`. Proceed by induction on `w' using PiTensorProduct.induction_on with`. Consider the case `smul_tprod s b`. Simplify using `only [map_smul, map_smulₛₗ, LinearMap.smul_apply, ipT_tprod, smul_eq_mul, map_mul, map_prod, inner_conj_symm, RingHomCompTriple.comp_apply, RingHom.id_apply, Complex.conj_conj]`.
+
+Expand and normalize the polynomial expressions, which then agree. Consider the case `add x y hx hy => rw [map_add, hx, hy, map_add, LinearMap.add_apply, map_add]`. Consider the case `add x y hx hy => simp [map_add, LinearMap.add_apply, hx, hy]`.
+-/
 theorem ipT_herm (w w' : ⨂[ℂ] i, E i) : ipT w w' = conj (ipT w' w) := by
   induction w using PiTensorProduct.induction_on generalizing w' with
   | smul_tprod r a =>
@@ -78,6 +106,11 @@ namespace GlobalTheory.PiTensorInner
 
 variable {ι : Type} [Fintype ι] {E : ι → Type*} [∀ i, NormedAddCommGroup (E i)] [∀ i, InnerProductSpace ℂ (E i)]
 
+/- English proof (translation)
+Proceed by induction on `x using PiTensorProduct.induction_on generalizing y with`. Consider the case `smul_tprod r a`. Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `smul_tprod s b`. Simplify using `only [map_smul, map_smulₛₗ, LinearMap.smul_apply, PiTensorProduct.map_tprod, ipT_tprod, hf]`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `add x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy]`.
+-/
 theorem ipT_map {G : ι → Type*} [∀ i, NormedAddCommGroup (G i)] [∀ i, InnerProductSpace ℂ (G i)]
     (f : ∀ i, G i →ₗ[ℂ] E i) (hf : ∀ i x y, ⟪f i x, f i y⟫_ℂ = ⟪x, y⟫_ℂ) (x y : ⨂[ℂ] i, G i) :
     ipT (PiTensorProduct.map f x) (PiTensorProduct.map f y) = ipT x y := by
@@ -89,6 +122,21 @@ theorem ipT_map {G : ι → Type*} [∀ i, NormedAddCommGroup (G i)] [∀ i, Inn
     | add x y hx hy => simp only [map_add, hx, hy]
   | add x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy]
 
+/- English proof (translation)
+Set `e` to `fun i => stdOrthonormalBasis ℂ (E i)`. Set `B` to `Basis.piTensorProduct fun i => (e i).toBasis`. Establish `hB : ∀ p q, ipT (B p) (B q) = if p = q then 1 else 0`. Introduce `p q`. Simplify using `only [B, Basis.piTensorProduct_apply, OrthonormalBasis.coe_toBasis, ipT_tprod]`.
+
+Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `[OrthonormalBasis.inner_eq_ite]`. Take `⟨i, hi⟩` from `Function.ne_iff.mp h`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp [OrthonormalBasis.inner_eq_ite, Ne.symm hi])`.
+
+Use `set c := B.repr x`. Establish `hsum : ipT x x = ∑ p, c p * conj (c p)` using `by conv_lhs => rw [← B.sum_repr x]`. Simplify using `only [map_sum, map_smul, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, hB, smul_eq_mul]`. Simplify using `[Finset.mul_sum, c]`. Conclude with `Finset.sum_congr rfl (fun _ _ => mul_comm _ _)`.
+
+Establish `hc : c ≠ 0`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Rewrite using `[← B.sum_repr x]`. Simplify using `[c] at h`.
+
+Simplify using `[h]`. Choose the witnesses or unpack the hypotheses as in `⟨p, hp⟩ : ∃ p, c p ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hc (Finsupp.ext h)`.
+
+Rewrite using `[hsum, Complex.re_sum]`. Use `Finset.sum_pos' (fun q _ => ?_) ⟨p, Finset.mem_univ p, ?_⟩` and prove the remaining obligations. Rewrite using `[Complex.mul_conj]`. Simplify using `[Complex.normSq_nonneg]`. Rewrite using `[Complex.mul_conj]`.
+
+Simplify using `using Complex.normSq_pos.mpr hp`.
+-/
 theorem ipT_pos_fd [∀ i, FiniteDimensional ℂ (E i)] (x : ⨂[ℂ] i, E i) (hx : x ≠ 0) : 0 < (ipT x x).re := by
   classical
   let e := fun i => stdOrthonormalBasis ℂ (E i)
@@ -124,6 +172,11 @@ namespace GlobalTheory.PiTensorInner
 
 variable {ι : Type} [Fintype ι] {E : ι → Type*} [∀ i, NormedAddCommGroup (E i)] [∀ i, InnerProductSpace ℂ (E i)]
 
+/- English proof (translation)
+Proceed by induction on `w using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r a`. Use `⟨fun i => ℂ ∙ a i, fun i => inferInstance, r • PiTensorProduct.tprod ℂ (fun i => ⟨a i, Submodule.mem_span_singleton_self _⟩), ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Consider the case `add x y hx hy`.
+
+Take `⟨F₁, h₁, x₀, rfl⟩` from `hx`. Take `⟨F₂, h₂, y₀, rfl⟩` from `hy`. Use `⟨fun i => F₁ i ⊔ F₂ i, fun i => inferInstance, PiTensorProduct.map (fun i => Submodule.inclusion (le_sup_left : F₁ i ≤ F₁ i ⊔ F₂ i)) x₀ + PiTensorProduct.map (fun i => Submodule.inclusion (le_sup_right : F₂ i ≤ F₁ i ⊔ F₂ i)) y₀, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, ← LinearMap.comp_apply, ← LinearMap.comp_apply, ← PiTensorProduct.map_comp, ← PiTensorProduct.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem exists_fd (w : ⨂[ℂ] i, E i) : ∃ F : ∀ i, Submodule ℂ (E i), (∀ i, FiniteDimensional ℂ (F i)) ∧
     ∃ w₀ : ⨂[ℂ] i, F i, PiTensorProduct.map (fun i => (F i).subtype) w₀ = w := by
   induction w using PiTensorProduct.induction_on with
@@ -139,6 +192,9 @@ theorem exists_fd (w : ⨂[ℂ] i, E i) : ∃ F : ∀ i, Submodule ℂ (E i), (�
     rw [map_add, ← LinearMap.comp_apply, ← LinearMap.comp_apply, ← PiTensorProduct.map_comp, ← PiTensorProduct.map_comp]
     rfl
 
+/- English proof (translation)
+Take `⟨F, hF, w₀, rfl⟩` from `exists_fd w`. Establish `h0 : w₀ ≠ 0` using `by rintro rfl; exact hw (map_zero _)`. Rewrite using `[ipT_map (fun i => (F i).subtype) (fun i x y => rfl)]`. Conclude with `ipT_pos_fd w₀ h0`.
+-/
 theorem ipT_pos (w : ⨂[ℂ] i, E i) (hw : w ≠ 0) : 0 < (ipT w w).re := by
   obtain ⟨F, hF, w₀, rfl⟩ := exists_fd w
   have h0 : w₀ ≠ 0 := by rintro rfl; exact hw (map_zero _)
@@ -149,6 +205,9 @@ end GlobalTheory.PiTensorInner
 
 namespace GlobalTheory.ChainOnto
 
+/- English proof (translation)
+Introduce `D V S M`. Conclude with `⟨GlobalTheory.PiTensorInner.ipT, fun v v' => GlobalTheory.PiTensorInner.ipT_tprod v v', GlobalTheory.PiTensorInner.ipT_herm, GlobalTheory.PiTensorInner.ipT_pos⟩`.
+-/
 theorem exists_ipD_smT : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S), ∃ ipD : SmT M →ₗ[ℂ] SmT M →ₗ⋆[ℂ] ℂ,
     (∀ v v' : M.Vec, ipD (PiTensorProduct.tprod ℂ v) (PiTensorProduct.tprod ℂ v') = ∏ τ, ⟪(v' τ : M.H τ), (v τ : M.H τ)⟫_ℂ) ∧
     (∀ w w', ipD w w' = conj (ipD w' w)) ∧ ∀ w, w ≠ 0 → 0 < (ipD w w).re := by

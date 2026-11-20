@@ -8,6 +8,11 @@ namespace GlobalTheory.JSW
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Establish `hn : Continuous fun x : BlockIx a r → Ad E => (nilM x : Matrix (Fin a) (Fin a) (Ad E))`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [nilM, Matrix.of_apply]`. Use `split_ifs`. Conclude with `continuous_apply _`.
+
+Conclude with `continuous_const`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_const.add hn`. Conclude with `continuous_const.sub hn`.
+-/
 theorem continuous_unip_adele {r : ℕ} : Continuous fun x : BlockIx a r → Ad E => (unip x : GA E a) := by
   have hn : Continuous fun x : BlockIx a r → Ad E => (nilM x : Matrix (Fin a) (Fin a) (Ad E)) := by
     refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -19,6 +24,17 @@ theorem continuous_unip_adele {r : ℕ} : Continuous fun x : BlockIx a r → Ad 
   · exact continuous_const.add hn
   · exact continuous_const.sub hn
 
+/- English proof (translation)
+Introduce `E _ _ _ a`. Use `⟨⟨continuous_const, ⟨0, fun g => by simp⟩, ?_, fun _ _ => rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `r _ _ _ _ μ 𝓕 _ _ g`. Simplify using the standard rewrite rules. Introduce `c F G hF hG`.
+
+Take `⟨CF, hCF⟩` from `hF.bdd`. Take `⟨CG, hCG⟩` from `hG.bdd`. Use `⟨(hF.cont.const_smul c).add hG.cont, ⟨‖c‖ * CF + CG, fun g => ?_⟩, ?_, fun γ g => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Use `(norm_add_le _ _).trans (add_le_add ?_ (hCG g))` and prove the remaining obligations.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hCF g) (norm_nonneg c)`. Introduce `r h0 h1 _ _ μ 𝓕 hμ hFd g haveI := hμ`. Establish `hfin` using `covol_lt_top μ 𝓕 hFd`. Establish `hint : ∀ H : GA E a → ℂ, IsBCC H → IntegrableOn (fun x => H (unip x * g)) 𝓕 μ`.
+
+Introduce `H hH`. Take `⟨C, hC⟩` from `hH.bdd`. Establish `hc : Continuous fun x : BlockIx a r → Ad E => H (unip x * g)` using `hH.cont.comp (continuous_unip_adele.mul continuous_const)`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by rw [Measure.restrict_apply_univ]; exact hfin⟩`. Conclude with `Integrable.of_bound hc.aestronglyMeasurable C (Filter.Eventually.of_forall fun x => hC _)`.
+
+Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[integral_add ((hint F hF).const_mul c) (hint G hG), integral_const_mul, hF.cusp r h0 h1 μ 𝓕 hμ hFd g, hG.cusp r h0 h1 μ 𝓕 hμ hFd g]`. Simplify using the standard rewrite rules. Simplify using `only [Pi.add_apply, Pi.smul_apply, hF.left, hG.left]`.
+-/
 theorem isBCC_zero_and_add : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ),
     IsBCC (0 : GA E a → ℂ) ∧
     ∀ (c : ℂ) (F G : GA E a → ℂ), IsBCC F → IsBCC G → IsBCC (c • F + G) := by

@@ -18,11 +18,23 @@ variable {n : ℕ}
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.PhiEigenfun.analytic_Phi lam (1 : Matrix (Fin n) (Fin n) ℂ) 1 z (by simpa using hz)`. Simplify using `using h`.
+-/
 lemma analyticAt_Phi (lam : Fin n → ℝ) {z : Matrix (Fin n) (Fin n) ℂ} (hz : z ∈ Omega n) :
     AnalyticAt ℂ (Phi lam) z := by
   have h := GlobalTheory.PhiEigenfun.analytic_Phi lam (1 : Matrix (Fin n) (Fin n) ℂ) 1 z (by simpa using hz)
   simpa using h
 
+/- English proof (translation)
+Establish `hne : a ≠ b` using `ne_of_lt hab`. Establish `hγ : HasDerivAt (fun t : ℂ => z + t • (z * Matrix.single a b 1)) (z * Matrix.single a b 1) 0`. Establish `h0` using `((hasDerivAt_id' (0 : ℂ)).smul_const (z * Matrix.single a b 1)).const_add z`. Rewrite `h0` using `[one_smul]`. Then use the resulting hypothesis. Establish `hP : HasFDerivAt (Phi lam) (fderiv ℂ (Phi lam) z) (z + (0 : ℂ) • (z * Matrix.single a b 1))`.
+
+Rewrite using `[zero_smul, add_zero]`. Conclude with `(analyticAt_Phi lam hz).differentiableAt.hasFDerivAt`. Establish `h1` using `hP.comp_hasDerivAt (0 : ℂ) hγ`. Establish `hc : ∀ᶠ t : ℂ in nhds 0, 1 + t ≠ 0`. Establish `hca : ContinuousAt (fun t : ℂ => 1 + t) 0` using `(continuous_const.add continuous_id).continuousAt`.
+
+Conclude with `hca.eventually_ne (by norm_num)`. Establish `hev : (fun t : ℂ => Phi lam (z + t • (z * Matrix.single a b 1))) =ᶠ[nhds 0] fun _ => Phi lam z` using `by filter_upwards [hc] with t ht`. Establish `hm` using `GlobalTheory.PhiEigenfun.Phi_mul_single lam hz hab.le ht`. Rewrite `hm` using `[if_neg hne, one_mul, Matrix.mul_add, Matrix.mul_one, Matrix.mul_smul]`. Conclude with `hm`.
+
+Establish `h2 : HasDerivAt (fun t : ℂ => Phi lam (z + t • (z * Matrix.single a b 1))) 0 0` using `(hasDerivAt_const (0 : ℂ) (Phi lam z)).congr_of_eventuallyEq hev`. Conclude with `h1.unique h2`.
+-/
 lemma fderiv_Phi_single (lam : Fin n → ℝ) {z : Matrix (Fin n) (Fin n) ℂ} (hz : z ∈ Omega n) {a b : Fin n}
     (hab : a < b) : fderiv ℂ (Phi lam) z (z * Matrix.single a b 1) = 0 := by
   have hne : a ≠ b := ne_of_lt hab
@@ -47,6 +59,11 @@ lemma fderiv_Phi_single (lam : Fin n → ℝ) {z : Matrix (Fin n) (Fin n) ℂ} (
 
 def sgn (ε : Fin n → Bool) (a : Fin n) : ℂ := if ε a then 1 else -1
 
+/- English proof (translation)
+Establish `h' : Yᴴ * Jm ε + Jm ε * Y = 0` using `h`. Establish `h1` using `congrFun (congrFun h' b) a`. Simplify using `only [Jm, Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, Matrix.zero_apply] at h1`. Unfold `sgn`. Apply the tactic sequence `rcases Bool.eq_false_or_eq_true (ε a) with ha | ha <;>`.
+
+Apply the tactic sequence `rcases Bool.eq_false_or_eq_true (ε b) with hb | hb <;>`. Apply the tactic sequence `simp only [ha, hb, if_true, if_false, Bool.false_eq_true] at h1 ⊢ <;>`. Apply the tactic sequence `first | linear_combination h1 | linear_combination -h1`.
+-/
 lemma star_entry {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ} (h : inG ε Y) (a b : Fin n) :
     star (Y a b) = -(sgn ε b * sgn ε a) * Y b a := by
   have h' : Yᴴ * Jm ε + Jm ε * Y = 0 := h
@@ -59,6 +76,13 @@ lemma star_entry {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ} (h : inG
     simp only [ha, hb, if_true, if_false, Bool.false_eq_true] at h1 ⊢ <;>
     first | linear_combination h1 | linear_combination -h1
 
+/- English proof (translation)
+Take `⟨hu, hJ⟩` from `hk`. Establish `hkk : kᴴ * k = 1`. Simplify `Matrix.mem_unitaryGroup_iff'.mp hu` using `[Matrix.star_eq_conjTranspose]`. Establish `hinv : k⁻¹ = kᴴ` using `Matrix.inv_eq_left_inv hkk`. Establish `hJ' : Jm ε * kᴴ = kᴴ * Jm ε`.
+
+Establish `h2` using `congrArg Matrix.conjTranspose hJ`. Rewrite `h2` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Jm_conjTranspose]`. Conclude with `h2`. Establish `hX' : Xᴴ * Jm ε + Jm ε * X = 0` using `hX`. Use `show (k⁻¹ * X * k)ᴴ * Jm ε + Jm ε * (k⁻¹ * X * k) = 0`.
+
+Rewrite using `[hinv, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hJ, hJ']`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hX', Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 lemma inG_conj {ε : Fin n → Bool} {k X : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (hX : inG ε X) :
     inG ε (k⁻¹ * X * k) := by
   obtain ⟨hu, hJ⟩ := hk
@@ -78,6 +102,31 @@ lemma inG_conj {ε : Fin n → Bool} {k X : Matrix (Fin n) (Fin n) ℂ} (hk : k 
         rw [hJ, hJ']; simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]
     _ = 0 := by rw [hX', Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+Introduce `n ε lam`. Use `⟨fun c d z => if d < c then 0 else -(sgn ε c * sgn ε d) * star (fderiv ℂ (Phi lam) z (z * Matrix.single d c 1)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c d z hdc`. Simplify using `only [hdc, if_true]`. Introduce `c d`.
+
+Distinguish the cases in `hdc : d < c`. Simplify using `only [hdc, if_true]`. Conclude with `continuousOn_const`. Simplify using `only [hdc, if_false]`. Establish `hA : AnalyticOnNhd ℂ (Phi lam) (Omega n)` using `fun z hz => analyticAt_Phi lam hz`.
+
+Establish `hF : ContinuousOn (fderiv ℂ (Phi lam)) (Omega n)` using `hA.fderiv.continuousOn`. Establish `hv : ContinuousOn (fun z : Matrix (Fin n) (Fin n) ℂ => z * Matrix.single d c 1) (Omega n)` using `(continuous_id.matrix_mul continuous_const).continuousOn`. Conclude with `continuousOn_const.mul (hF.clm_apply hv).star`. Introduce `k hk g hg hw X hX`. Establish `hkk : kᴴ * k = 1`.
+
+Simplify `Matrix.mem_unitaryGroup_iff'.mp hk.1` using `[Matrix.star_eq_conjTranspose]`. Establish `hkk' : k * kᴴ = 1`. Simplify `Matrix.mem_unitaryGroup_iff.mp hk.1` using `[Matrix.star_eq_conjTranspose]`. Establish `hinv : k⁻¹ = kᴴ` using `Matrix.inv_eq_left_inv hkk`. Establish `hYG : inG ε (k⁻¹ * X * k)` using `inG_conj hk hX`.
+
+Set `L : Matrix (Fin n) (Fin n) ℂ →L[ℂ] Matrix (Fin n) (Fin n) ℂ` to `LinearMap.toContinuousLinearMap ((LinearMap.mulLeft ℂ k⁻¹).comp (LinearMap.mulRight ℂ k))`. Establish `hL : ∀ M, L M = k⁻¹ * (M * k)` using `fun M => rfl`. Establish `hcurve : HasDerivAt (fun s : ℂ => k⁻¹ * (g * NormedSpace.exp (s • X)) * k) ((k⁻¹ * g * k) * (k⁻¹ * X * k)) 0`. Establish `h0` using `L.hasFDerivAt.comp_hasDerivAt (0 : ℂ) (GlobalTheory.PhiEigenfun.hasDerivAt_curve g X)`. Establish `hLgX : L (g * X) = (k⁻¹ * g * k) * (k⁻¹ * X * k)`.
+
+Rewrite using `[hL, hinv]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc k kᴴ (X * k), hkk', Matrix.one_mul]`. Use `(h0.congr_deriv hLgX).congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Conclude with `Matrix.mul_assoc _ _ _`.
+
+Establish `hP : HasFDerivAt (Phi lam) (fderiv ℂ (Phi lam) (k⁻¹ * g * k)) (k⁻¹ * (g * NormedSpace.exp ((0 : ℂ) • X)) * k)`. Rewrite using `[zero_smul, NormedSpace.exp_zero, Matrix.mul_one]`. Conclude with `(analyticAt_Phi lam hw).differentiableAt.hasFDerivAt`. Establish `hφ` using `hP.comp_hasDerivAt (0 : ℂ) hcurve`. Establish `hφ' : HasDerivAt (fun s : ℂ => Phi lam (k⁻¹ * (g * NormedSpace.exp (s • X)) * k)) (fderiv ℂ (Phi lam) (k⁻¹ * g * k) ((k⁻¹ * g * k) * (k⁻¹ * X * k))) ((0 : ℝ) : ℂ)`.
+
+Rewrite using `[Complex.ofReal_zero]`. Conclude with `hφ`. Establish `hst` using `hφ'.comp_ofReal.star`. Establish `hexp : ∀ (w Y : Matrix (Fin n) (Fin n) ℂ), fderiv ℂ (Phi lam) w (w * Y) = ∑ c, ∑ d, Y c d * fderiv ℂ (Phi lam) w (w * Matrix.single c d 1)`. Introduce `w Y`.
+
+Use `conv_lhs => rw [Matrix.matrix_eq_sum_single Y]`. Simplify using `only [Matrix.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Establish `hs : Matrix.single c d (Y c d) = Y c d • Matrix.single c d (1 : ℂ)`. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`.
+
+Rewrite using `[hs, Matrix.mul_smul, map_smul, smul_eq_mul]`. Establish `hD0 : ∀ c d : Fin n, d < c → fderiv ℂ (Phi lam) (k⁻¹ * g * k) ((k⁻¹ * g * k) * Matrix.single d c 1) = 0` using `fun c d h => fderiv_Phi_single lam hw h`. Establish `hfun : (fun t : ℝ => Phi lam ((k⁻¹ * (g * NormedSpace.exp ((t : ℂ) • X)) * k).map star)) = fun t : ℝ => star (Phi lam (k⁻¹ * (g * NormedSpace.exp ((t : ℂ) • X)) * k))`. Use function extensionality and compare the values at `t`. Conclude with `GlobalTheory.Dec.FormF.Phi_star lam _`.
+
+Rewrite using `[hfun]`. Use `hst.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[hexp, star_sum]`. Apply the tactic sequence `simp only [star_sum, star_mul', star_entry hYG]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[hD0 _ _ h]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_deriv_Phi_conj : ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ), ∃ l : Fin n → Fin n → Matrix (Fin n) (Fin n) ℂ → ℂ, (∀ c d z, d < c → l c d z = 0) ∧ (∀ c d, ContinuousOn (l c d) (Omega n)) ∧ ∀ k ∈ Kset ε, ∀ g ∈ UJset ε, k⁻¹ * g * k ∈ Omega n → ∀ X : Matrix (Fin n) (Fin n) ℂ, inG ε X → HasDerivAt (fun t : ℝ => Phi lam ((k⁻¹ * (g * NormedSpace.exp ((t : ℂ) • X)) * k).map star)) (∑ c, ∑ d, (k⁻¹ * X * k) c d * l c d (k⁻¹ * g * k)) 0 := by
   intro n ε lam
   refine ⟨fun c d z => if d < c then 0 else

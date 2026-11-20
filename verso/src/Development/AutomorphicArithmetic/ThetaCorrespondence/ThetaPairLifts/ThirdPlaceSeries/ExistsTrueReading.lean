@@ -18,6 +18,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.TrueReading
 open GlobalTheory.WeilDeligne GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `hAF hL D P hR`. Use `haveI := GlobalTheory.CuspRep.host_isCMField D.host`. Establish `hex : ∀ w : PlE D.host, IsSplitPl D.host w → ∃ s : SplitPlace D.host.E, s.w = w`. Introduce `w hw`. Take `⟨w', hw'⟩` from `GlobalTheory.ToricFactor.exists_isConjPl w`.
+
+Take `⟨s, -, hs, -⟩` from `GlobalTheory.SplitConjPlace.splitEx_all D w' (GlobalTheory.ConjugatePlaceSplitting.isSplitPl_of_isConjPl hw hw')`. Conclude with `⟨s, GlobalTheory.ToricFactor.isConjPl_unique hs (GlobalTheory.ToricFactor.isConjPl_symm hw')⟩`. Establish `key : ∀ i (w : PlE D.host), IsSplitPl D.host w → ∃ X : ReadAt P.T i w, X.rc = _root_.GlobalTheory.NPin.weilDeligneOfLocalIrrep hL D w ∧ ∀ (s : SplitPlace D.host.E), s.w = w → ∀ Y : ReadAt P.T i s.w, HEq Y X → (∀ σ, D.what₂.isot (D.nd.j i) σ ≠ ⊥ → IsLocS (P.rep σ).S s (Y.row σ).to …` using `D.R.nV) (P.H.av.S i Q) s (Y.rep Q).toIrrRep) ∧ (∀ j : Fin D.R.m, j.1 + 1 = D.nd.j i → IsComp (P.tp.tup (D.nd.mu i) j) s.w Y.mu) ∧ IsComp P.cf.eta s.w Y.eta := by`. Introduce `i w hw`. Take `⟨s₀, rfl⟩` from `hex w hw`.
+
+Take `⟨X, h1, h2⟩` from `_root_.GlobalTheory.TrueReading.readAt_exists_m_alt hAF hL D P hR i s₀`. Use `⟨X, h1, fun s hs Y hY => ?_⟩` and prove the remaining obligations. Take `rfl` from `GlobalTheory.SplitUniq.splitPlace_eq_of_w_eq D.host.E s s₀ hs`. Take `rfl` from `eq_of_heq hY`. Conclude with `h2`.
+
+Use `choose S hS using key`. Use `⟨S, ⟨fun i w hw => (hS i w hw).1, fun i s hw σ hσ => ((hS i s.w hw).2 s rfl _ HEq.rfl).1 σ hσ, fun i s hw Q => ((hS i s.w hw).2 s rfl _ HEq.rfl).2.1 Q, fun i w hw j hj => ?_, fun i w hw => ?_⟩, fun i w hw => ?_, fun i w hw => ?_⟩` and prove the remaining obligations. Take `⟨s, rfl⟩` from `hex w hw`. Conclude with `((hS i s.w hw).2 s rfl _ HEq.rfl).2.2.1 j hj`. Take `⟨s, rfl⟩` from `hex w hw`.
+
+Conclude with `((hS i s.w hw).2 s rfl _ HEq.rfl).2.2.2`. Rewrite using `[(hS i w hw).1]`. Conclude with `(_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (D.nd.plOm.2 w)).recLaws`. Rewrite using `[(hS i w hw).1]`. Conclude with `_root_.UpperTheory.Zero.LLC.IsRecT.recSupp (_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (D.nd.plOm.2 w))`.
+-/
 theorem exists_true_reading_alt : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D),
     (∀ i : D.nd.Loc, Nonempty (RowMod D P.rep (D.nd.j i))) →
     ∃ S : Reading P.T, _root_.GlobalTheory.NPin.IsFaithfulReading P S ∧ _root_.GlobalTheory.SplitRead.LawsAlt S ∧ SuppLaws S := by

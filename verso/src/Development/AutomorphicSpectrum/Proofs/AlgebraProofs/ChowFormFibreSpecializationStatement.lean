@@ -7,6 +7,9 @@ open GroundTheory.Heights₂.Heights MeasureTheory MvPolynomial Matrix GlobalThe
 open scoped ENNReal
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Relay.chow_form_fibre_specialization | exact GlobalTheory.CompanionTheory.Relay.chow_form_fibre_specialization | (intros; apply GlobalTheory.CompanionTheory.Relay.chow_form_fibre_specialization <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.chow_form_fibre_specialization : ∀ (n e δ : ℕ) (h : HermNorm n) (W : Ideal (MvPolynomial (Fin n) ℂ))
   (g : MvPolynomial (Fin (e + 1) × Fin n) ℂ) (π : Fin (e + 1) → Fin n → ℂ) (u₀ : Fin n → ℂ),
   IsProjPrime W → IsChowForm W (e + 1) g → IsMultiHomog δ g →

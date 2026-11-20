@@ -19,6 +19,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 
 namespace GlobalTheory.CenAtLoc
 
+/- English proof (translation)
+Rewrite using `[Subalgebra.mem_center_iff]`. Introduce `a`. Proceed by induction on `a using MonoidAlgebra.induction_on with`. Consider the case `of m`. Establish `e : MonoidAlgebra.of S G m = MonoidAlgebra.mapRingHom G f (MonoidAlgebra.of R G m)`.
+
+Simplify using `only [MonoidAlgebra.of_apply, MonoidAlgebra.mapRingHom_single, map_one]`. Rewrite using `[e]`. Use `show MonoidAlgebra.mapRingHom G f _ * MonoidAlgebra.mapRingHom G f _ = MonoidAlgebra.mapRingHom G f _ * MonoidAlgebra.mapRingHom G f _`. Rewrite using `[← map_mul, ← map_mul, hz]`. Consider the case `add x y hx hy => rw [add_mul, mul_add, hx, hy]`.
+
+Consider the case `smul r x hx => rw [smul_mul_assoc, mul_smul_comm, hx]`.
+-/
 theorem mapCoef_mem_center' {R S G : Type} [CommRing R] [CommRing S] [Group G] (f : R →+* S) (z : MonoidAlgebra R G)
     (hz : ∀ a, z * a = a * z) :
     Formalism.MainNotions.PairedCharacterCondition.mapCoef f z ∈ Subalgebra.center S (MonoidAlgebra S G) := by
@@ -35,6 +42,15 @@ theorem mapCoef_mem_center' {R S G : Type} [CommRing R] [CommRing S] [Group G] (
   | add x y hx hy => rw [add_mul, mul_add, hx, hy]
   | smul r x hx => rw [smul_mul_assoc, mul_smul_comm, hx]
 
+/- English proof (translation)
+Introduce `i z hz x`. Establish `hc` using `mapCoef_mem_center' D.what₂.embLL z hz`. Establish `key : ∀ (μ : D.what₂.Tup) (j : ℕ), 1 ≤ j → j ≤ D.R.m → ∀ x : D.what₂.MtL μ j, ∃ y : D.what₂.MtL μ j, D.what₂.jMt μ j y = D.ntypes.cenMt μ j ⟨_, hc⟩ (D.what₂.jMt μ j x)`. Introduce `μ j h1 h2 x`. Take `⟨k, rfl⟩ : ∃ k : Fin D.R.m, j = (k : ℕ) + 1` from `⟨⟨j - 1, by omega⟩, by simp; omega⟩`.
+
+Set `a : MonoidAlgebra D.what₂.LL G` to `MonoidAlgebra.ofCoeff (Finsupp.equivMapDomain eG.symm.toEquiv z.coeff)`. Establish `ha : ∀ g : G, D.what₂.embLL (a.coeff g) = ((⟨_, hc⟩ : ↥(Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd)))) : MonoidAlgebra ℂ (G0g D.nd)).coeff (eG g)`. Introduce `g`. Simplify using `[a, Formalism.MainNotions.PairedCharacterCondition.mapCoef, Finsupp.equivMapDomain_apply]`. Take `⟨-, -, h3⟩` from `h.cen μ ⟨_, hc⟩ a ha`.
+
+Use `h3 k ((h.eMt k μ).symm x)` as an intermediate fact. Use `⟨h.eMt k μ (((A.fam.L k (tp μ)).S.lvlOp (A.fam.L k (tp μ)).r (A.fam.lvlA P0 ψ0).P (A.fam.lvlA P0 ψ0).ψ a).mulVec ((h.eMt k μ).symm x)), ?_⟩` and prove the remaining obligations. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Conclude with `this.symm`. Take `⟨y, hy⟩` from `key (D.nd.mu i) (D.nd.j i) (D.nd.j_range i).1 (D.nd.j_range i).2 x`.
+
+Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[hy]`. Unfold `NTypes.onMt`. Rewrite using `[dif_pos hc]`.
+-/
 theorem zlStable_of_allT {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type}
     {A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T D.R.m} {P0 : Subgroup G} {ψ0 : P0 →* D.what₂.LLˣ} {P1 : Subgroup G}
     {ψ1 : P1 →* D.what₂.LLˣ} {X0 : BaseLevelRowSide D} {tp : D.what₂.Tup → T} {eG : G ≃* G0g D.nd}
@@ -61,10 +77,16 @@ theorem zlStable_of_allT {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type
   unfold NTypes.onMt
   rw [dif_pos hc]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.HeightCounting.JumpsAt.evLgG_of_forall fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hR _ => hR.elim fun r => zlStable_of_allT r.all`.
+-/
 theorem zlStable_at (hL : GlobalTheory.Published.LocalLanglandsGL) :
     AtMem hL fun _ _ _ _ w Z _ _ _ _ _ _ => GlobalTheory.PendOf.ZLStable (w.D Z) :=
   GlobalTheory.HeightCounting.JumpsAt.evLgG_of_forall fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hR _ => hR.elim fun r => zlStable_of_allT r.all
 
+/- English proof (translation)
+Introduce `hL` and use `GlobalTheory.HeightCounting.Up.Model.AtMem.and (GlobalTheory.T.central_character_local hL) (GlobalTheory.HeightCounting.Up.Model.AtMem.and (zlStable_at hL) (GlobalTheory.T.central_character_integral hL))`.
+-/
 theorem cen_at : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t nch n c => CenLoc (w.D Z) c.a.all.gal.mt ∧ GlobalTheory.PendOf.ZLStable (w.D Z) ∧ GlobalTheory.PendOf.CenInt (w.D Z) := fun hL =>
   GlobalTheory.HeightCounting.Up.Model.AtMem.and (GlobalTheory.T.central_character_local hL) (GlobalTheory.HeightCounting.Up.Model.AtMem.and (zlStable_at hL) (GlobalTheory.T.central_character_integral hL))
 

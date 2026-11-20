@@ -17,6 +17,11 @@ local notation "ℚ̄" => AlgebraicClosure ℚ
 
 attribute [local instance 2000] Rep.hV2
 
+/- English proof (translation)
+Use `⟨fun x₁ x₂ hx => hγ.1 (AddMonoidHom.ext fun y' => ?_), fun χ => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `e.surjective y'`. Rewrite using `[← hβγ, ← hβγ, hx]`. Take `⟨x, hx⟩` from `hγ.2 (χ.comp e.symm.toAddMonoidHom)`. Use `⟨x, AddMonoidHom.ext fun y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hβγ, hx, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, AddEquiv.symm_apply_apply]`.
+-/
 theorem bijective_of_bijective_precomp {X Y Y' Z : Type*} [AddCommGroup X] [AddCommGroup Y]
     [AddCommGroup Y'] [AddCommGroup Z] (β : X →+ Y →+ Z) (γ : X →+ Y' →+ Z) (e : Y ≃+ Y')
     (hβγ : ∀ x y, β x y = γ x (e y)) (hγ : Function.Bijective γ) : Function.Bijective β := by
@@ -48,6 +53,9 @@ section Abstract
 variable {F Fsep : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [Field Fsep] [Algebra F Fsep] [IsSepClosure F Fsep]
 
+/- English proof (translation)
+Set `_` to `algebraicValuativeRel F Fsep`. Set `_` to `algebraicTopology F Fsep`. Use `algebraicTopology_isValuativeTopology F Fsep` as an intermediate fact. Use `algebraicValuativeRel_valuativeExtension F Fsep` as an intermediate fact. Conclude with `brauerInvZ_cohomologyULiftIntAddEquiv F Fsep x`.
+-/
 theorem brauerInvZOfIsSepClosure_cohomologyULiftIntAddEquiv (x : galoisBrauerGroup F Fsep) :
     brauerInvZOfIsSepClosure F Fsep (cohomologyULiftIntAddEquiv (galUnits.{0} F Fsep) 2 x) =
       brauerInvOfIsSepClosure F Fsep x := by
@@ -57,6 +65,9 @@ theorem brauerInvZOfIsSepClosure_cohomologyULiftIntAddEquiv (x : galoisBrauerGro
   have := algebraicValuativeRel_valuativeExtension F Fsep
   exact brauerInvZ_cohomologyULiftIntAddEquiv F Fsep x
 
+/- English proof (translation)
+Establish `hnat` using `cohomologyULiftIntAddEquiv_cohomologyMapAlong A (MonoidHom.id _) continuous_id f f' hf 2 z`. Rewrite `hnat` using `[cohomologyMapAlong_id_eq_cohomologyMap]`. Rewrite using `[← brauerInvZOfIsSepClosure_cohomologyULiftIntAddEquiv, hnat]`. Conclude with `congrArg _ (ConcreteCategory.congr_hom (cohomologyMapAlong_id_eq_cohomologyMap f' 2) _).symm`.
+-/
 theorem brauerInvZOfIsSepClosure_cohomologyMap_uliftInt (A : Rep.{0} (ULift.{0} ℤ) Gal(Fsep/F))
     [IsDiscreteRep A] (f : A ⟶ galUnits.{0} F Fsep) (f' : uliftIntToIntRep A ⟶ galUnitsZ.{0} F Fsep)
     (hf : ∀ a, f'.hom a = f.hom a) (z : cohomology A 2) :
@@ -67,6 +78,9 @@ theorem brauerInvZOfIsSepClosure_cohomologyMap_uliftInt (A : Rep.{0} (ULift.{0} 
   rw [← brauerInvZOfIsSepClosure_cohomologyULiftIntAddEquiv, hnat]
   exact congrArg _ (ConcreteCategory.congr_hom (cohomologyMapAlong_id_eq_cohomologyMap f' 2) _).symm
 
+/- English proof (translation)
+The claim follows from `AddMonoidHom.ext fun z => brauerInvZOfIsSepClosure_cohomologyMap_uliftInt A f f' hf z`.
+-/
 theorem brauerInvZOfIsSepClosure_comp_cohomologyMap_uliftInt (A : Rep.{0} (ULift.{0} ℤ) Gal(Fsep/F))
     [IsDiscreteRep A] (f : A ⟶ galUnits.{0} F Fsep) (f' : uliftIntToIntRep A ⟶ galUnitsZ.{0} F Fsep)
     (hf : ∀ a, f'.hom a = f.hom a) :
@@ -96,12 +110,22 @@ def dualToCartierDual :
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [IsSepClosure F Fsep]
   [IsTopologicalGroup G] [IsDiscreteRep D] [IsDiscreteRep M] [Finite M] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualToCartierDual_hom_apply (f : M →ₗ[ULift.{0} ℤ] D) (m : M) :
     ((dualToCartierDual ψ D ρ M).hom f : M →ₗ[ULift.{0} ℤ] galUnits.{0} F Fsep) m = ρ.hom (f m) :=
   rfl
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [IsTopologicalGroup G]
   [IsDiscreteRep D] [IsDiscreteRep M] in
+/- English proof (translation)
+Establish `hDv` using `nonempty_addEquiv_galRootsOfUnity (Ksep := Fsep) hn`. Establish `: Finite D` using `finite_of_nonempty_addEquiv hD`. Establish `: Finite (galRootsOfUnity.{0} F Fsep n)` using `finite_of_nonempty_addEquiv hDv`. Establish `: Finite (dualRep D M)` using `finite_dualRep`. Establish `: Finite (dualRep D (dualRep D M))` using `finite_dualRep`.
+
+Establish `: Finite (dualRep (galRootsOfUnity.{0} F Fsep n) (Rep.res ψ.toMonoidHom M))` using `finite_dualRep`. Use `set e := dualRepRootsOfUnityIso F Fsep (Rep.res ψ.toMonoidHom M) n hM`. Establish `he : Function.Injective e.inv.hom` using `fun a b hab => by`. Establish `h` using `congrArg e.hom.hom hab`. Rewrite `h` using `[← ConcreteCategory.comp_apply, ← ConcreteCategory.comp_apply, e.inv_hom_id]`. Then use the resulting hypothesis.
+
+Establish `: Finite (cartierDual F Fsep (Rep.res ψ.toMonoidHom M))` using `Finite.of_injective _ he`. Use `Function.Injective.bijective_of_nat_card_le ?_ ?_` and prove the remaining obligations. Introduce `f f' hff'`. Conclude with `LinearMap.ext fun m => hρ (LinearMap.congr_fun hff' m)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem bijective_dualToCartierDual {n : ℕ} [NeZero n] (hn : (n : F) ≠ 0)
     (hD : Nonempty (D ≃+ ZMod n)) (hρ : Function.Injective ρ.hom) (hM : ∀ m : M, n • m = 0) :
     Function.Bijective (dualToCartierDual ψ D ρ M).hom := by
@@ -129,6 +153,9 @@ theorem bijective_dualToCartierDual {n : ℕ} [NeZero n] (hn : (n : F) ≠ 0)
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [IsSepClosure F Fsep]
   [IsTopologicalGroup G] [IsDiscreteRep D] [IsDiscreteRep M] [Finite M] in
 
+/- English proof (translation)
+Use `Rep.Hom.ext (Representation.IntertwiningMap.ext (LinearMap.ext fun x => ?_))` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a f => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem tensorHom_dualToCartierDual_cartierPairing :
     (𝟙 (Rep.res ψ.toMonoidHom M) ⊗ₘ dualToCartierDual ψ D ρ M) ≫
         cartierPairing F Fsep (Rep.res ψ.toMonoidHom M) =
@@ -141,6 +168,9 @@ theorem tensorHom_dualToCartierDual_cartierPairing :
 
 omit [Finite M] in
 
+/- English proof (translation)
+Rewrite using `[localDualityPairing_apply]`. Use `congrArg (brauerInvOfIsSepClosure F Fsep) ?_` and prove the remaining obligations. Establish `hc` using `cupPairing_cohomologyMap (cartierPairing F Fsep (Rep.res ψ.toMonoidHom M)) (𝟙 _) (dualToCartierDual ψ D ρ M) h ξ η`. Rewrite `hc` using `[cohomologyMap_id, ModuleCat.id_apply]`. Rewrite using `[hc, tensorHom_dualToCartierDual_cartierPairing, cohomologyMap_cupPairing]`.
+-/
 theorem localDualityPairing_dualToCartierDual [Finite M] {r s : ℕ} (h : r + s = 2)
     (ξ : cohomology (Rep.res ψ.toMonoidHom M) r)
     (η : cohomology (Rep.res ψ.toMonoidHom (dualRep D M)) s) :
@@ -155,6 +185,11 @@ theorem localDualityPairing_dualToCartierDual [Finite M] {r s : ℕ} (h : r + s 
   rw [cohomologyMap_id, ModuleCat.id_apply] at hc
   rw [hc, tensorHom_dualToCartierDual_cartierPairing, cohomologyMap_cupPairing]
 
+/- English proof (translation)
+Establish `hM' : (Nat.card (Rep.res ψ.toMonoidHom M) : F) ≠ 0`. Use `fun h0 => hn ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `card_dvd_exponent_nsmul_rank' (Rep.res ψ.toMonoidHom M) hM`. Establish `h1 : ((n ^ AddGroup.rank (Rep.res ψ.toMonoidHom M) : ℕ) : F) = 0`. Rewrite using `[hc, Nat.cast_mul, h0, zero_mul]`.
+
+Rewrite `h1` using `[Nat.cast_pow]`. Conclude with `pow_eq_zero_iff'.1 h1 |>.1`. Use `bijective_of_bijective_precomp β (localDualityPairing F Fsep (Rep.res ψ.toMonoidHom M) h) (cohomologyAddEquivOfIso (Rep.isoOfBijective (dualToCartierDual ψ D ρ M) (bijective_dualToCartierDual ψ D ρ M hn hD hρ hM)) s) (fun ξ η => ?_) (bijective_localDualityPairing _ hM' h)` and prove the remaining obligations. Rewrite using `[cohomologyAddEquivOfIso_apply, hβ, hinv, AddMonoidHom.comp_apply]`. Conclude with `(localDualityPairing_dualToCartierDual ψ D ρ M h ξ η).symm`.
+-/
 theorem bijective_localInvPairing {n : ℕ} [NeZero n] (hn : (n : F) ≠ 0) (hD : Nonempty (D ≃+ ZMod n))
     (hρ : Function.Injective ρ.hom) (hM : ∀ m : M, n • m = 0)
     (inv : cohomology (Rep.res ψ.toMonoidHom D) 2 →+ QZ)
@@ -201,6 +236,9 @@ def gsRootsToLocalUnits (v : S) :
           (((Additive.toMul ζ : rootsOfUnity n _) : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) :
             maxUnramifiedOutside K.1 ℚ̄ S)))⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gsRootsToLocalUnits_hom_apply (v : S)
     (ζ : Additive (rootsOfUnity n (maxUnramifiedOutside K.1 ℚ̄ S))) :
     ((Additive.toMul ((gsRootsToLocalUnits S ιs n v).hom ζ) :
@@ -209,6 +247,11 @@ theorem gsRootsToLocalUnits_hom_apply (v : S)
       ιs v (((Additive.toMul ζ : rootsOfUnity n _) : (maxUnramifiedOutside K.1 ℚ̄ S)ˣ) : ℚ̄) :=
   rfl
 
+/- English proof (translation)
+Introduce `a b hab`. Establish `h` using `congrArg (fun x => ((Additive.toMul x : (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))ˣ) : AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))) hab`. Express the relevant statement in the definitionally equal form `ιs v _ = ιs v _ at h`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Units.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(ιs v).toRingHom.injective h`.
+-/
 theorem gsRootsToLocalUnits_injective (v : S) :
     Function.Injective (gsRootsToLocalUnits S ιs n v).hom := by
   intro a b hab
@@ -222,6 +265,9 @@ theorem gsRootsToLocalUnits_injective (v : S) :
   apply Subtype.ext
   exact (ιs v).toRingHom.injective h
 
+/- English proof (translation)
+The claim follows from `(gsLocalInvRootsQZ_eq S ιs n v).trans (brauerInvZOfIsSepClosure_comp_cohomologyMap_uliftInt _ (gsRootsToLocalUnits S ιs n v) (rootsLocalMorZ S ιs n v) (fun _ => rfl))`.
+-/
 theorem gsLocalInvRootsQZ_eq_comp (v : S) :
     gsLocalInvRootsQZ S ιs n v =
       (brauerInvOfIsSepClosure _ _).comp (cohomologyMap (gsRootsToLocalUnits S ιs n v) 2).hom.toAddMonoidHom :=
@@ -229,6 +275,9 @@ theorem gsLocalInvRootsQZ_eq_comp (v : S) :
     (brauerInvZOfIsSepClosure_comp_cohomologyMap_uliftInt _ (gsRootsToLocalUnits S ιs n v)
       (rootsLocalMorZ S ιs n v) (fun _ => rfl))
 
+/- English proof (translation)
+The claim follows from `bijective_localInvPairing (gsFinFamily S ιs v) (gsRoots S n) (gsRootsToLocalUnits S ιs n v) M (Nat.cast_ne_zero.2 (NeZero.ne n)) hD (gsRootsToLocalUnits_injective S ιs n v) hM (gsLocalInvRootsQZ S ιs n v) (gsLocalInvRootsQZ_eq_comp S ιs n v) h _ (ptLocalPairing_apply _ _ _ _ v h)`.
+-/
 theorem bijective_gsLocalPairing [NeZero n] (hD : Nonempty (gsRoots S n ≃+ ZMod n))
     (M : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S)) [IsDiscreteRep M] [Finite M]
     (hM : ∀ m : M, n • m = 0) (v : S) {r s : ℕ} (h : r + s = 2) :

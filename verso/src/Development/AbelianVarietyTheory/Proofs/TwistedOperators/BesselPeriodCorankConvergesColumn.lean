@@ -18,6 +18,15 @@ open scoped Pointwise
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨K, hK, hcov⟩` from `GlobalTheory.Mem.AnisoQuotient.exists_compact D A hA`. Take `⟨K', hK', hcov'⟩` from `(GlobalTheory.Mem.UnipCocompact.radicals_cocompact D B _ _ he).1`. Take `⟨s, -, hs, -⟩` from `GlobalTheory.Mem.UnitaryEmb.exists_embHom D B A ι hι`. Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D A`. Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B`.
+
+Use `haveI := hμ`. Establish `hfin : μ 𝓕 < ⊤` using `GlobalTheory.BesselConvDefinite.measure_fundamentalDomain_lt_top (GQ A) hK hcov μ h𝓕`. Take `⟨M, hM⟩` from `(hK.prod hK').exists_bound_of_continuousOn hc.continuousOn`. Use `FJConv.iterated_integrableOn hfin.ne (by rw [hN.2.2]; exact ENNReal.one_ne_top) hc (M := M) fun g n => ?_` and prove the remaining obligations. Take `⟨γ, hγ, k, hk, rfl⟩` from `hcov g`.
+
+Take `⟨γ', hγ', k', hk', e⟩` from `hcov' ⟨_, hQ.norm _ γ⁻¹ ((hs _ _).2 rfl) n n.2⟩`. Establish `e' : s γ⁻¹ * n * (s γ⁻¹)⁻¹ = (γ' : GA D B) * k'` using `congrArg Subtype.val e`. Establish `e1 : (n : GA D B) = s γ * (γ' * k') * (s γ)⁻¹`. Rewrite using `[← e']`. Simplify using `only [map_inv, inv_inv, mul_assoc, mul_inv_cancel_left, mul_inv_cancel, mul_one]`.
+
+Use `le_trans (le_of_eq ?_) (hM (k, k') ⟨hk, hk'⟩)` and prove the remaining obligations. Rewrite using `[e1, hQ.conj k _ (mul_mem γ'.2 k'.2) γ hγ _ ((hs _ _).2 rfl), hQ.left k _ k'.2 _ γ'.2 hγ']`.
+-/
 theorem integrable_of_haar {A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V} {ρ : ℕ} {e : Matrix (Fin B.rank) (Fin ρ) D.host.E}
     {Q : GA D A → GA D B → ℂ} (hQ : IsRatInv ι e Q) (he : IsIsoSub B e) (hι : HSpace.IsIsomEmb A B ι) (hA : IsAniso A)
     (hc : Continuous fun q : GA D A × NFlag B e => Q q.1 q.2) {μ : Measure (GA D A)} {𝓕 : Set (GA D A)}
@@ -41,6 +50,9 @@ theorem integrable_of_haar {A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V} {ρ : �
   refine le_trans (le_of_eq ?_) (hM (k, k') ⟨hk, hk'⟩)
   rw [e1, hQ.conj k _ (mul_mem γ'.2 k'.2) γ hγ _ ((hs _ _).2 rfl), hQ.left k _ k'.2 _ γ'.2 hγ']
 
+/- English proof (translation)
+Take `⟨U, hU, hUφ⟩` from `h.level`. Conclude with `⟨fun γ hγ g => by simp only [Pi.star_apply, h.left γ hγ g], ⟨U, hU, fun k hk hkf g => by simp only [Pi.star_apply, hUφ k hk hkf g]⟩, h.cont.star⟩`.
+-/
 theorem isAutFun_star {V : HSp D} {φ : GA D V → ℂ} (h : IsAutFun V φ) : IsAutFun V (star φ) := by
   obtain ⟨U, hU, hUφ⟩ := h.level
   exact ⟨fun γ hγ g => by simp only [Pi.star_apply, h.left γ hγ g],
@@ -52,6 +64,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup (coefPlus Cols le
 
 variable {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (θ : InfFam D)
 
+/- English proof (translation)
+Establish `e : GlobalTheory.CoefModel.realGL θ (Xp G) h = 1` using `funext fun τ => by show Formalism.UG.bc (θ τ) (infHom (Xp G) h) = 1`. Rewrite using `[show infHom (Xp G) h = 1 from hh, map_one]`. Use `show GlobalTheory.CoefModel.rhoH _ _ (invTrK (GlobalTheory.CoefModel.realGL θ (Xp G) h)) = 1`. Rewrite using `[e, map_one, map_one]`.
+-/
 theorem coefPlus_fin {h : GA D (G.V (.top 0))} (hh : h ∈ GfC (G.V (.top 0))) : (coefPlus G θ).ρ h = 1 := by
   have e : GlobalTheory.CoefModel.realGL θ (Xp G) h = 1 := funext fun τ => by
     show Formalism.UG.bc (θ τ) (infHom (Xp G) h) = 1
@@ -59,6 +74,11 @@ theorem coefPlus_fin {h : GA D (G.V (.top 0))} (hh : h ∈ GfC (G.V (.top 0))) :
   show GlobalTheory.CoefModel.rhoH _ _ (invTrK (GlobalTheory.CoefModel.realGL θ (Xp G) h)) = 1
   rw [e, map_one, map_one]
 
+/- English proof (translation)
+Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (G.V (.top 0))`. Use `GlobalTheory.CoefModel.continuous_rhoH _ _ (fun h => invTrK (GlobalTheory.CoefModel.realGL θ (Xp G) h)) (fun τ => ?_) x` and prove the remaining obligations. Use `(((GlobalTheory.CoefModel.realGL_laws hθ (Xp G)).1 τ).comp continuous_inv).matrix_transpose.congr fun h => ?_` and prove the remaining obligations. Use `show Matrix.transpose (GlobalTheory.CoefModel.realGL θ (Xp G) h⁻¹ τ : Matrix (Fin (Xp G).rank) (Fin (Xp G).rank) ℂ) = _`. Rewrite using `[map_inv]`.
+
+Both sides reduce to the same expression.
+-/
 theorem coefPlus_cont (hθ : IsInfFam θ) (x : (coefPlus G θ).W) : Continuous fun h => (coefPlus G θ).ρ h x := by
   obtain ⟨_, _, _, _, _, _, _⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (G.V (.top 0))
   refine GlobalTheory.CoefModel.continuous_rhoH _ _ (fun h => invTrK (GlobalTheory.CoefModel.realGL θ (Xp G) h)) (fun τ => ?_) x
@@ -67,17 +87,28 @@ theorem coefPlus_cont (hθ : IsInfFam θ) (x : (coefPlus G θ).W) : Continuous f
   rw [map_inv]
   rfl
 
+/- English proof (translation)
+Establish `key : (coefPlus G θ).ρ (γ * g)⁻¹ * (coefPlus G θ).ρ γ = (coefPlus G θ).ρ g⁻¹`. Rewrite using `[← MonoidHom.map_mul, mul_inv_rev, mul_assoc, inv_mul_cancel, mul_one]`. Rewrite using `[← Module.End.mul_apply, key]`.
+-/
 theorem rho_cancel (ξ : Module.Dual ℂ (coefPlus G θ).W) (x : (coefPlus G θ).W) (γ g : GA D (G.V (.top 0))) :
     ξ ((coefPlus G θ).ρ (γ * g)⁻¹ ((coefPlus G θ).ρ γ x)) = ξ ((coefPlus G θ).ρ g⁻¹ x) := by
   have key : (coefPlus G θ).ρ (γ * g)⁻¹ * (coefPlus G θ).ρ γ = (coefPlus G θ).ρ g⁻¹ := by
     rw [← MonoidHom.map_mul, mul_inv_rev, mul_assoc, inv_mul_cancel, mul_one]
   rw [← Module.End.mul_apply, key]
 
+/- English proof (translation)
+Rewrite using `[mul_inv_rev, MonoidHom.map_mul (coefPlus G θ).ρ k⁻¹ g⁻¹, Module.End.mul_apply, hk, Module.End.one_apply]`.
+-/
 theorem rho_right (ξ : Module.Dual ℂ (coefPlus G θ).W) (x : (coefPlus G θ).W) (k g : GA D (G.V (.top 0)))
     (hk : (coefPlus G θ).ρ k⁻¹ = 1) :
     ξ ((coefPlus G θ).ρ (g * k)⁻¹ x) = ξ ((coefPlus G θ).ρ g⁻¹ x) := by
   rw [mul_inv_rev, MonoidHom.map_mul (coefPlus G θ).ρ k⁻¹ g⁻¹, Module.End.mul_apply, hk, Module.End.one_apply]
 
+/- English proof (translation)
+Establish `hk2 : (finHom (G.V (.top 0))).rangeRestrict k ∈ levPlus G`. Rewrite `hk` using `[Subgroup.mem_comap]`. Rewrite using `[levPlus, Subgroup.mem_comap, Lev.toAfE, Subgroup.mem_comap]`. Conclude with `hk`. Establish `h1` using `(mem_cols G θ Ψ).1 hΨ 1 ((finHom (G.V (.top 0))).rangeRestrict g) ⟨_, hk2⟩`.
+
+Simplify using `only [map_one, one_mul, OneMemClass.coe_one, Module.End.one_apply] at h1`. Rewrite using `[map_mul]`. Conclude with `h1`.
+-/
 theorem col_right {Ψ : Bridge.Gf (G.V (.top 0)) → (coefPlus G θ).W} (hΨ : Ψ ∈ Cols G θ) (g : GA D (G.V (.top 0)))
     {k : GA D (G.V (.top 0))} (hk : k ∈ (G.Kplus).comap (Lev.finE (G.V (.top 0)))) :
     Ψ ((finHom (G.V (.top 0))).rangeRestrict (g * k)) = Ψ ((finHom (G.V (.top 0))).rangeRestrict g) := by
@@ -89,6 +120,11 @@ theorem col_right {Ψ : Bridge.Gf (G.V (.top 0)) → (coefPlus G θ).W} (hΨ : �
   simp only [map_one, one_mul, OneMemClass.coe_one, Module.End.one_apply] at h1
   rw [map_mul]; exact h1
 
+/- English proof (translation)
+Rewrite using `[pairVec_apply, pairVec_apply]`. Establish `h1` using `(mem_cols G θ Ψ).1 hΨ ⟨γ, hγ⟩ ((finHom (G.V (.top 0))).rangeRestrict g) 1`. Simplify using `only [OneMemClass.coe_one, mul_one] at h1`. Establish `e1 : (finHom (G.V (.top 0))).rangeRestrict (γ * g) = Bridge.ratF (G.V (.top 0)) ⟨γ, hγ⟩ * (finHom (G.V (.top 0))).rangeRestrict g` using `map_mul _ _ _`. Rewrite using `[e1, h1]`.
+
+Conclude with `rho_cancel G θ ξ _ γ g`.
+-/
 theorem pairVec_left (ξ : Module.Dual ℂ (coefPlus G θ).W) {Ψ : Bridge.Gf (G.V (.top 0)) → (coefPlus G θ).W}
     (hΨ : Ψ ∈ Cols G θ) {γ : GA D (G.V (.top 0))} (hγ : γ ∈ GQ (G.V (.top 0))) (g : GA D (G.V (.top 0))) :
     pairVec (coefPlus G θ) ξ Ψ (γ * g) = pairVec (coefPlus G θ) ξ Ψ g := by
@@ -100,6 +136,9 @@ theorem pairVec_left (ξ : Module.Dual ℂ (coefPlus G θ).W) {Ψ : Bridge.Gf (G
   rw [e1, h1]
   exact rho_cancel G θ ξ _ γ g
 
+/- English proof (translation)
+Rewrite using `[pairVec_apply, pairVec_apply, col_right G θ hΨ g hk]`. Conclude with `rho_right G θ ξ _ k g (coefPlus_fin G θ (inv_mem hkf))`.
+-/
 theorem pairVec_right (ξ : Module.Dual ℂ (coefPlus G θ).W) {Ψ : Bridge.Gf (G.V (.top 0)) → (coefPlus G θ).W}
     (hΨ : Ψ ∈ Cols G θ) {k : GA D (G.V (.top 0))} (hk : k ∈ (G.Kplus).comap (Lev.finE (G.V (.top 0))))
     (hkf : k ∈ GfC (G.V (.top 0))) (g : GA D (G.V (.top 0))) :
@@ -107,6 +146,13 @@ theorem pairVec_right (ξ : Module.Dual ℂ (coefPlus G θ).W) {Ψ : Bridge.Gf (
   rw [pairVec_apply, pairVec_apply, col_right G θ hΨ g hk]
   exact rho_right G θ ξ _ k g (coefPlus_fin G θ (inv_mem hkf))
 
+/- English proof (translation)
+Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (G.V (.top 0))`. Establish `hV` using `G.isV (X := .top 0) (Nat.zero_le _) (fun j e => by cases e)`. Establish `hU` using `(congLev_open_compact (G.V (.top 0)) hV.sd.1 (G.pl.modul_ne_bot sc)).1`. Use `continuous_iff_continuousAt.2 fun h0 => ?_` and prove the remaining obligations. Establish `hn : h0 • (((G.Kplus).comap (Lev.finE (G.V (.top 0))) : Subgroup _) : Set (GA D (G.V (.top 0)))) ∈ nhds h0` using `(hU.leftCoset h0).mem_nhds ⟨1, one_mem _, mul_one h0⟩`.
+
+Establish `hev : (fun h => pairVec (coefPlus G θ) ξ Ψ h) =ᶠ[nhds h0] fun h => ξ ((coefPlus G θ).ρ h⁻¹ (Ψ ((finHom (G.V (.top 0))).rangeRestrict h0)))` using `by filter_upwards [hn] with h hh`. Take `⟨k, hk, rfl⟩` from `hh`. Rewrite using `[pairVec_apply]`. Simplify using `only [smul_eq_mul]`. Rewrite using `[col_right G θ hΨ h0 hk]`.
+
+Use `ContinuousAt.congr ?_ hev.symm` and prove the remaining obligations. Conclude with `((LinearMap.continuous_of_finiteDimensional ξ).comp ((coefPlus_cont G θ hθ _).comp continuous_inv)).continuousAt`.
+-/
 theorem pairVec_cont (hθ : IsInfFam θ) (ξ : Module.Dual ℂ (coefPlus G θ).W)
     {Ψ : Bridge.Gf (G.V (.top 0)) → (coefPlus G θ).W} (hΨ : Ψ ∈ Cols G θ) :
     Continuous (pairVec (coefPlus G θ) ξ Ψ) := by
@@ -126,6 +172,9 @@ theorem pairVec_cont (hθ : IsInfFam θ) (ξ : Module.Dual ℂ (coefPlus G θ).W
   refine ContinuousAt.congr ?_ hev.symm
   exact ((LinearMap.continuous_of_finiteDimensional ξ).comp ((coefPlus_cont G θ hθ _).comp continuous_inv)).continuousAt
 
+/- English proof (translation)
+Establish `hV` using `G.isV (X := .top 0) (Nat.zero_le _) (fun j e => by cases e)`. Conclude with `⟨fun γ hγ g => pairVec_left G θ ξ hΨ hγ g, ⟨_, (congLev_open_compact (G.V (.top 0)) hV.sd.1 (G.pl.modul_ne_bot sc)).1, fun k hk hkf g => pairVec_right G θ ξ hΨ hk hkf g⟩, pairVec_cont G θ hθ ξ hΨ⟩`.
+-/
 theorem pairVec_isAutFun (hθ : IsInfFam θ) (ξ : Module.Dual ℂ (coefPlus G θ).W)
     {Ψ : Bridge.Gf (G.V (.top 0)) → (coefPlus G θ).W} (hΨ : Ψ ∈ Cols G θ) :
     IsAutFun (G.V (.top 0)) (pairVec (coefPlus G θ) ξ Ψ) := by
@@ -136,6 +185,13 @@ theorem pairVec_isAutFun (hθ : IsInfFam θ) (ξ : Module.Dual ℂ (coefPlus G �
 
 end Col
 
+/- English proof (translation)
+Introduce `D T L sc G W M hM ξ Ψ hΨ F hF`. Establish `hV` using `G.isV (X := .top 0) (Nat.zero_le _) (fun j e => by cases e)`. Establish `hA : IsAniso (G.V (.top 0))` using `GlobalTheory.Per.isAniso_of_posDef hV.sigOK fun τ => by`. Rewrite using `[hV.sig τ, hV.rank]`. Simplify using `[Node.neg]`.
+
+Establish `hφ` using `isAutFun_star (pairVec_isAutFun G W.θ W.θ_is ξ hΨ)`. Establish `hι` using `(G.rowDec 0 (by have := D.R.two_le_m; omega)).isom`. Establish `hs : ∀ h, EmbRel _ _ (G.rowDec 0 (by have` using `D.R.two_le_m; omega)).ι (embTop G h) h := fun h => (embRel_iff _ h _).2 rfl`. Establish `hQ` using `bes_inv W.ψ_std hι G.besTop hs hφ hF`. Take `⟨hμ, h𝓕⟩` from `hM.top.haar_fund`.
+
+Take `⟨-, -, -, -, _, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (G.V (.grid D.R.m 0))`. Establish `H` using `integrable_of_haar hQ G.besTop.e_iso hι hA (((hφ.cont.comp continuous_fst).star.mul (hF.cont.comp (((continuous_subtype_val.comp continuous_snd).mul ((emb_continuous hι hs).comp continuous_fst)).mul continuous_const))).mul ((GlobalTheory.BesselChar.besChar_continuous W.ψ W.ψ_std. …`. Unfold `BplusConv`. Rewrite using `[besInt_eq]`. Conclude with `H`.
+-/
 theorem bplusConv_col : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (M : Vol G)
     (_hM : M.IsRow) (ξ : Module.Dual ℂ (GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.coefPlus G W.θ).W)
     (Ψ : Bridge.Gf (G.V (.top 0)) → (GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.coefPlus G W.θ).W) (_hΨ : Ψ ∈ GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.Cols G W.θ)

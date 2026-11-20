@@ -29,6 +29,19 @@ section General
 
 variable {G : Type} [Group G] [TopologicalSpace G] {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Use `haveI := hν.2.1`. Establish `hFm : Measurable fun g => ‖F g‖ₑ` using `hF.measurable.enorm`. Establish `h1 : ∫⁻ g, β g * ‖F g‖ₑ ∂μ = 0`. Use `(lintegral_eq_zero_iff (hβ.mul hFm)).2 ?_` and prove the remaining obligations. Use `filter_upwards [h0] with g hg`.
+
+Simplify using `only [Pi.zero_apply, Pi.mul_apply, mul_eq_zero, Complex.ofReal_eq_zero, ENNReal.toReal_eq_zero_iff, hβt g, or_false, star_eq_zero, or_self] at hg ⊢`. Break down `hg with h | h` into its components or cases. Conclude with `Or.inl h`. Use `right`. Simplify using `[h]`.
+
+Establish `h2 : ∀ m ∈ N, ∫⁻ g, β (m⁻¹ * g) * ‖F g‖ₑ ∂μ = 0`. Introduce `m hm`. Rewrite using `[← lintegral_mul_left_eq_self _ m, ← h1]`. Simplify using `only [inv_mul_cancel_left, hinv m hm]`. Establish `hN : ∀ᵐ m ∂ν, m ∈ N` using `hν.2.2.1`.
+
+Establish `h3 : ∫⁻ m, ∫⁻ g, β (m⁻¹ * g) * ‖F g‖ₑ ∂μ ∂ν = 0`. Rewrite using `[lintegral_congr_ae (g := fun _ => 0) (hN.mono fun m hm => h2 m hm)]`. Simplify using the standard rewrite rules. Establish `hmeas : Measurable (Function.uncurry fun m g : G => β (m⁻¹ * g) * ‖F g‖ₑ)` using `(hβ.comp (measurable_fst.inv.mul measurable_snd)).mul (hFm.comp measurable_snd)`. Rewrite `h3` using `[lintegral_lintegral_swap hmeas.aemeasurable]`.
+
+Establish `h4 : ∫⁻ g, ‖F g‖ₑ ∂μ = 0`. Rewrite using `[← h3]`. Use `lintegral_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[lintegral_mul_const (f := fun m => β (m⁻¹ * g)) _ (hβ.comp (measurable_inv.mul_const g)), hβ1, one_mul]`. Rewrite `h4` using `[lintegral_eq_zero_iff hFm]`.
+
+Establish `h5 : F =ᵐ[μ] 0` using `by filter_upwards [h4] with g hg`. Simplify using `using hg`. Conclude with `congrFun ((hF.ae_eq_iff_eq μ continuous_const).1 h5)`.
+-/
 theorem eq_zero_of_cutoff [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] (N : Set G) (ν : Measure G)
     (hν : IsHaarSub N ν) (β : G → ENNReal) (hβ : Measurable β) (hβt : ∀ y, β y ≠ ⊤)
@@ -69,6 +82,11 @@ theorem eq_zero_of_cutoff [IsTopologicalGroup G] [LocallyCompactSpace G] [Second
 def Decays (ρ : G → (H →L[ℂ] H)) (D : G → ℝ) (c : ℝ) (v u : H) : Prop :=
   ∃ C : ℝ, ∀ g : G, ‖⟪v, ρ g u⟫_ℂ‖ ≤ C * Real.exp (-(c * D g))
 
+/- English proof (translation)
+Establish `e : ρ x (ρ x⁻¹ u) = u`. Use `congrArg (fun T : H →L[ℂ] H => T u) (hρ.2.1 x x⁻¹)` as an intermediate fact. Simplify using `only [mul_inv_cancel, hρ.1] at this`. Simplify using `using this.symm`. Set `f : H →ₗᵢ[ℂ] H` to `⟨(ρ x : H →ₗ[ℂ] H), hρ.2.2.1 x⟩`.
+
+Use `f.inner_map_map v (ρ x⁻¹ u)` as an intermediate fact. Rewrite using `[← this]`. Use `show _ = ⟪ρ x v, ρ x (ρ x⁻¹ u)⟫_ℂ`. Rewrite using `[e]`.
+-/
 theorem inner_move {ρ : G → (H →L[ℂ] H)} (hρ : IsURep ρ) (x : G) (v u : H) :
     ⟪ρ x v, u⟫_ℂ = ⟪v, ρ x⁻¹ u⟫_ℂ := by
   have e : ρ x (ρ x⁻¹ u) = u := by
@@ -83,12 +101,20 @@ theorem inner_move {ρ : G → (H →L[ℂ] H)} (hρ : IsURep ρ) (x : G) (v u :
 
 omit [TopologicalSpace G] in
 
+/- English proof (translation)
+Rewrite using `[hρ.2.1]`. Both sides reduce to the same expression.
+-/
 theorem act_mul [TopologicalSpace G] {ρ : G → (H →L[ℂ] H)} (hρ : IsURep ρ) (x y : G) (u : H) :
     ρ (x * y) u = ρ x (ρ y u) := by
   rw [hρ.2.1]; rfl
 
 omit [Group G] [TopologicalSpace G] in
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.DecayOfMemSpan.decay_of_mem_span`. Consider the case `exact _root_.GlobalTheory.DecayOfMemSpan.decay_of_mem_span`. Consider the case `(apply _root_.GlobalTheory.DecayOfMemSpan.decay_of_mem_span <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.DecayOfMemSpan.decay_of_mem_span <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.DecayOfMemSpan.decay_of_mem_span <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.DecayOfMemSpan.decay_of_mem_span ..)`.
+-/
 theorem decays_span_left {ρ : G → (H →L[ℂ] H)} {D : G → ℝ} {c : ℝ} {S : Set H} {u : H}
     (h : ∀ v ∈ S, Decays ρ D c v u) : ∀ v ∈ Submodule.span ℂ S, Decays ρ D c v u := by
   first
@@ -101,6 +127,11 @@ theorem decays_span_left {ρ : G → (H →L[ℂ] H)} {D : G → ℝ} {c : ℝ} 
 
 omit [Group G] [TopologicalSpace G] in
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.SpanDecay.span_decay`. Consider the case `exact _root_.GlobalTheory.SpanDecay.span_decay`. Consider the case `(apply _root_.GlobalTheory.SpanDecay.span_decay <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SpanDecay.span_decay <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.SpanDecay.span_decay <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SpanDecay.span_decay ..)`.
+-/
 theorem decays_span_right {ρ : G → (H →L[ℂ] H)} {D : G → ℝ} {c : ℝ} {S : Set H} {v : H}
     (h : ∀ u ∈ S, Decays ρ D c v u) : ∀ u ∈ Submodule.span ℂ S, Decays ρ D c v u := by
   first
@@ -111,6 +142,13 @@ theorem decays_span_right {ρ : G → (H →L[ℂ] H)} {D : G → ℝ} {c : ℝ}
   | (intros; apply @_root_.GlobalTheory.SpanDecay.span_decay <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.SpanDecay.span_decay ..)
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `h`. Establish `hC0 : 0 ≤ C`. Use `(norm_nonneg _).trans (hC 1)` as an intermediate fact. Conclude with `nonneg_of_mul_nonneg_left this (Real.exp_pos _)`. Use `⟨C * Real.exp (c * (D x + D y⁻¹)), fun g => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[inner_move hρ, ← act_mul hρ, ← act_mul hρ]`. Use `(hC _).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc C, ← Real.exp_add]`. Use `mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 ?_) hC0` and prove the remaining obligations. Establish `h1` using `hD x (x⁻¹ * g * y * y⁻¹)`.
+
+Establish `h2` using `hD (x⁻¹ * g * y) y⁻¹`. Establish `e : x * (x⁻¹ * g * y * y⁻¹) = g` using `by group`. Rewrite `h1` using `[e]`. Establish `: c * D g ≤ c * (D x + D y⁻¹ + D (x⁻¹ * g * y))` using `mul_le_mul_of_nonneg_left (by linarith) hc`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem decays_translate {ρ : G → (H →L[ℂ] H)} (hρ : IsURep ρ) {D : G → ℝ} {c : ℝ} (hc : 0 ≤ c)
     (hD : ∀ g g', D (g * g') ≤ D g + D g') {v u : H} (h : Decays ρ D c v u) (x y : G) :
     Decays ρ D c (ρ x v) (ρ y u) := by
@@ -130,6 +168,11 @@ theorem decays_translate {ρ : G → (H →L[ℂ] H)} (hρ : IsURep ρ) {D : G �
   have : c * D g ≤ c * (D x + D y⁻¹ + D (x⁻¹ * g * y)) := mul_le_mul_of_nonneg_left (by linarith) hc
   nlinarith
 
+/- English proof (translation)
+Introduce `v hv u hu`. Use `decays_span_left ?_ v hv` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Use `decays_span_right ?_ u hu` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Conclude with `decays_translate hρ hc hD h x y`.
+-/
 theorem decays_orbit {ρ : G → (H →L[ℂ] H)} (hρ : IsURep ρ) {D : G → ℝ} {c : ℝ} (hc : 0 ≤ c)
     (hD : ∀ g g', D (g * g') ≤ D g + D g') {w : H} (h : Decays ρ D c w w) :
     ∀ v ∈ Submodule.span ℂ (Set.range fun g => ρ g w), ∀ u ∈ Submodule.span ℂ (Set.range fun g => ρ g w),
@@ -141,6 +184,11 @@ theorem decays_orbit {ρ : G → (H →L[ℂ] H)} (hρ : IsURep ρ) {D : G → �
   rintro _ ⟨y, rfl⟩
   exact decays_translate hρ hc hD h x y
 
+/- English proof (translation)
+Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨g, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨x * g, act_mul hρ x g w⟩`.
+
+Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul a b _ hb => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hb`.
+-/
 theorem orbit_stable {ρ : G → (H →L[ℂ] H)} (hρ : IsURep ρ) (w : H) (x : G) :
     ∀ v ∈ Submodule.span ℂ (Set.range fun g => ρ g w), ρ x v ∈ Submodule.span ℂ (Set.range fun g => ρ g w) := by
   intro v hv
@@ -152,6 +200,9 @@ theorem orbit_stable {ρ : G → (H →L[ℂ] H)} (hρ : IsURep ρ) (w : H) (x :
   | add a b _ _ ha hb => rw [map_add]; exact Submodule.add_mem _ ha hb
   | smul a b _ hb => rw [map_smul]; exact Submodule.smul_mem _ _ hb
 
+/- English proof (translation)
+Establish `h1` using `(Complex.nonneg_iff.1 (h ((a : ℂ) • x - (b : ℂ) • y))).1`. Simplify using `only [map_add, map_sub, LinearMap.map_smulₛₗ, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.smul_apply, map_smul, smul_eq_mul, Complex.conj_ofReal, Complex.add_re, Complex.sub_re, Complex.re_ofReal_mul, RingHom.id_apply] at h1 ⊢`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem form_add_le {V : Type} [AddCommGroup V] [Module ℂ V] (I : V →ₗ⋆[ℂ] V →ₗ[ℂ] ℂ) (h : ∀ x, 0 ≤ I x x)
     (x y : V) (a b : ℝ) :
     (I ((a : ℂ) • x + (b : ℂ) • y) ((a : ℂ) • x + (b : ℂ) • y)).re ≤
@@ -169,6 +220,9 @@ section Main
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
   {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Establish `hm : Measurable fun m : G => x * m * x⁻¹` using `(measurable_const_mul x).mul_const _`. Rewrite using `[← integral_map hm.aemeasurable hf.aestronglyMeasurable, h, integral_smul_measure, ENNReal.toReal_ofReal (Real.exp_pos t).le, Complex.real_smul]`.
+-/
 theorem integral_conj {ν : Measure G} {x : G} {t : ℝ}
     (h : ν.map (fun m => x * m * x⁻¹) = ENNReal.ofReal (Real.exp t) • ν) (f : G → ℂ) (hf : Continuous f) :
     ∫ m, f (x * m * x⁻¹) ∂ν = (Real.exp t : ℂ) * ∫ m, f m ∂ν := by
@@ -178,6 +232,9 @@ theorem integral_conj {ν : Measure G} {x : G} {t : ℝ}
 
 omit [IsTopologicalGroup G] in
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `h`. Establish `hc : Continuous fun g => ⟪v, ρ g u⟫_ℂ` using `continuous_const.inner (hρ.2.2.2 u)`. Conclude with `(hi.const_mul C).mono' hc.aestronglyMeasurable (Filter.Eventually.of_forall hC)`.
+-/
 theorem Decays.integrable {ρ : G → (H →L[ℂ] H)} (hρ : IsURep ρ) {D : G → ℝ} {c : ℝ} {ν : Measure G}
     (hi : Integrable (fun m => Real.exp (-(c * D m))) ν) {v u : H} (h : Decays ρ D c v u) :
     Integrable (fun m => ⟪v, ρ m u⟫_ℂ) ν := by
@@ -187,6 +244,11 @@ theorem Decays.integrable {ρ : G → (H →L[ℂ] H)} (hρ : IsURep ρ) {D : G 
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [BorelSpace G] [Group G] in
 
+/- English proof (translation)
+Use `⟨LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) (fun v u : V => ∫ m, ⟪(v : H), ρ m u⟫_ℂ ∂ν) (fun x x' y => ?_) (fun c x y => ?_) (fun x y y' => ?_) (fun c x y => ?_), fun _ _ => rfl⟩` and prove the remaining obligations. Simplify using `only [Submodule.coe_add, inner_add_left]`. Conclude with `integral_add (hi _ x.2 _ y.2) (hi _ x'.2 _ y.2)`. Simplify using `only [Submodule.coe_smul, inner_smul_left, smul_eq_mul, integral_const_mul]`. Simplify using `only [Submodule.coe_add, map_add, inner_add_right]`.
+
+Conclude with `integral_add (hi _ x.2 _ y.2) (hi _ x.2 _ y'.2)`. Simplify using `only [Submodule.coe_smul, map_smul, inner_smul_right, smul_eq_mul, RingHom.id_apply, integral_const_mul]`.
+-/
 theorem exists_form (ρ : G → (H →L[ℂ] H)) (ν : Measure G) (V : Submodule ℂ H)
     (hi : ∀ v ∈ V, ∀ u ∈ V, Integrable (fun m => ⟪v, ρ m u⟫_ℂ) ν) :
     ∃ I : V →ₗ⋆[ℂ] V →ₗ[ℂ] ℂ, ∀ v u : V, I v u = ∫ m, ⟪(v : H), ρ m u⟫_ℂ ∂ν := by
@@ -201,6 +263,15 @@ theorem exists_form (ρ : G → (H →L[ℂ] H)) (ν : Measure G) (V : Submodule
 
 omit [IsTopologicalGroup G] in
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `h`. Establish `hC0 : 0 ≤ C`. Use `(norm_nonneg _).trans (hC 1)` as an intermediate fact. Conclude with `nonneg_of_mul_nonneg_left this (Real.exp_pos _)`. Use `⟨C * ∫ m, Real.exp (-(c / 3 * D m)) ∂ν, mul_nonneg hC0 (integral_nonneg fun _ => (Real.exp_pos _).le), fun s => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← integral_const_mul, ← integral_mul_const]`. Use `norm_integral_le_of_norm_le ((hi.const_mul C).mul_const _) ?_` and prove the remaining obligations. Establish `hN' : ∀ᵐ m ∂ν, m ∈ N` using `hN`. Use `filter_upwards [hN'] with m hm`. Use `(hC _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc, ← Real.exp_add]`. Use `mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 ?_) hC0` and prove the remaining obligations. Establish `h1` using `hD (m * a s) (a s)⁻¹`. Rewrite `h1` using `[mul_inv_cancel_right, hDi]`. Establish `h2` using `ha s`.
+
+Establish `h3` using `ha' s m hm`. Establish `: c / 3 * (D m + |s|) ≤ c / 3 * (3 * D (m * a s))` using `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem torus_decay {ρ : G → (H →L[ℂ] H)} {D : G → ℝ} {c : ℝ} (hc : 0 ≤ c) {ν : Measure G} {N : Set G}
     (hN : ν Nᶜ = 0) (hD : ∀ g g', D (g * g') ≤ D g + D g') (hDi : ∀ g, D g⁻¹ = D g)
     (hi : Integrable (fun m => Real.exp (-(c / 3 * D m))) ν) {a : ℝ → G} (ha : ∀ s, D (a s) ≤ |s|)
@@ -227,6 +298,17 @@ theorem torus_decay {ρ : G → (H →L[ℂ] H)} {D : G → ℝ} {c : ℝ} (hc :
     mul_le_mul_of_nonneg_left (by linarith) (by linarith)
   nlinarith
 
+/- English proof (translation)
+Use `⟨Real.exp |k| ^ 2 * (1 + k ^ 2), by positivity, fun s hs => ?_⟩` and prove the remaining obligations. Establish `h1 : |k * s| ≤ |k|`. Rewrite using `[abs_mul]`. Conclude with `mul_le_of_le_one_right (abs_nonneg _) hs`. Establish `h2 : Real.exp (k * s) ≤ Real.exp |k|` using `Real.exp_le_exp.2 ((le_abs_self _).trans h1)`.
+
+Establish `h3 : 1 ≤ Real.exp |k|` using `Real.one_le_exp (abs_nonneg _)`. Establish `h4 : Real.exp (k * s) ^ 2 ≤ Real.exp |k| ^ 2` using `pow_le_pow_left₀ (Real.exp_pos _).le h2 2`. Use `⟨h4.trans (le_mul_of_one_le_right (by positivity) (by nlinarith [sq_nonneg k])), ?_⟩` and prove the remaining obligations. Establish `h5 : |Real.exp (k * s) - 1| ≤ Real.exp |k| * |k * s|` using `by set x := k * s`. Establish `a1` using `Real.add_one_le_exp x`.
+
+Establish `a2` using `Real.add_one_le_exp (-x)`. Establish `a3 : Real.exp x * Real.exp (-x) = 1` using `by rw [← Real.exp_add]; simp`. Establish `a4` using `Real.exp_pos x`. Establish `a5` using `le_abs_self x`. Establish `a6` using `neg_abs_le x`.
+
+Establish `a7` using `abs_nonneg x`. Rewrite using `[abs_le]`. Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left a2 a4.le, mul_le_mul_of_nonneg_right h2 a7, mul_le_mul_of_nonneg_left a5 a4.le]`.
+
+Establish `h6` using `pow_le_pow_left₀ (abs_nonneg _) h5 2`. Rewrite `h6` using `[sq_abs, mul_pow, sq_abs]`. Use polynomial arithmetic with `[mul_nonneg (sq_nonneg (Real.exp |k|)) (sq_nonneg s)]`.
+-/
 theorem exp_sub_one_sq_le (k : ℝ) : ∃ K : ℝ, 0 ≤ K ∧ ∀ s : ℝ, |s| ≤ 1 →
     Real.exp (k * s) ^ 2 ≤ K ∧ (Real.exp (k * s) - 1) ^ 2 ≤ K * s ^ 2 := by
   refine ⟨Real.exp |k| ^ 2 * (1 + k ^ 2), by positivity, fun s hs => ?_⟩
@@ -261,6 +343,43 @@ section Flow
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
   {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Establish `hc0 : 0 ≤ c` using `by linarith`. Establish `hint : ∀ v ∈ V, ∀ u ∈ V, Integrable (fun m => ⟪v, ρ m u⟫_ℂ) ν` using `fun v hv u hu => (hdec v hv u hu).integrable hρ (hi c (by linarith))`. Take `⟨I, hI⟩` from `exists_form ρ ν V hint`. Establish `hainv : ∀ s, (a s)⁻¹ = a (-s)` using `fun s => by`. Rewrite using `[inv_eq_iff_mul_eq_one, ← hadd, add_neg_cancel, ha0]`.
+
+Establish `hnorm' : ∀ v : V, I v v = (((∫ g, (β g).toReal * ‖∫ m, ⟪(v : H), ρ (m * g) w⟫_ℂ ∂ν‖ ^ 2 ∂μ) / r : ℝ) : ℂ)`. Introduce `v`. Establish `h` using `hnorm v v.2`. Rewrite using `[hI, Complex.ofReal_div, eq_div_iff (by exact_mod_cast hr.ne'), ← h, ← integral_complex_ofReal]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations.
+
+Simplify using `only [RCLike.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hpos : ∀ v : V, 0 ≤ I v v`. Introduce `v`.
+
+Rewrite using `[hnorm']`. Conclude with `div_nonneg (integral_nonneg fun g => by positivity) hr.le` after adjusting the coercions. Set `R : G → V →ₗ[ℂ] V` to `fun g => (ρ g : H →ₗ[ℂ] H).restrict (hV g)`. Establish `hR : ∀ g (v : V), ((R g v : V) : H) = ρ g v` using `fun _ _ => rfl`. Establish `key : ∀ s (x : H) (u : H), ∫ m, ⟪ρ (a s) x, ρ m u⟫_ℂ ∂ν = (Real.exp (κ * (-s)) : ℂ) * ∫ m, ⟪x, ρ m (ρ (a (-s)) u)⟫_ℂ ∂ν`.
+
+Introduce `s x u`. Rewrite using `[← integral_conj (hmod (-s)) (fun m => ⟪x, ρ m (ρ (a (-s)) u)⟫_ℂ) (continuous_const.inner (hρ.2.2.2 _))]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun m => ?_)` and prove the remaining obligations. Simplify using `only []`. Rewrite using `[inner_move hρ, ← act_mul hρ, ← act_mul hρ, hainv, inv_mul_cancel_right]`.
+
+Set `U : ℝ → V →ₗ[ℂ] V` to `fun s => ((Real.exp (κ / 2 * s) : ℝ) : ℂ) • R (a s)`. Establish `hU : ∀ s (v : V), U s v = ((Real.exp (κ / 2 * s) : ℝ) : ℂ) • R (a s) v` using `fun _ _ => rfl`. Introduce `v hv`. Rewrite using `[← hI ⟨v, hv⟩ ⟨v, hv⟩]`. Take `⟨K, hK0, hK⟩` from `exp_sub_one_sq_le (-(κ / 2))`.
+
+Use `GlobalTheory.T.coeff_eq_zero_of_lipschitz_unitary_flow_decay V I U (2 * K * (|C₀| / r) + 2 * K) ⟨v, hv⟩ hpos ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Use extensionality with `x`. Simplify using `[hU, hR, ha0, hρ.1]`. Introduce `s t`. Use extensionality with `x`.
+
+Simplify using `only [LinearMap.comp_apply, hU, map_smul, Submodule.coe_smul, hR, hadd, act_mul hρ, smul_smul, mul_add, Real.exp_add, Complex.ofReal_mul]`. Introduce `s x y`. Simplify using `only [hU, LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, Complex.conj_ofReal, RingHom.id_apply]`. Rewrite using `[hI, hI, hR, hR, key, ← act_mul hρ, ← hadd, neg_add_cancel, ha0, hρ.1, ← mul_assoc, ← mul_assoc, ← Complex.ofReal_mul, ← Complex.ofReal_mul, ← Real.exp_add, ← Real.exp_add]`. Establish `: κ / 2 * s + κ / 2 * s + κ * -s = 0` using `by ring`.
+
+Rewrite using `[this, Real.exp_zero, Complex.ofReal_one, one_mul]`. Both sides reduce to the same expression. Introduce `s x hs set z : V := ((Real.exp (κ * s) : ℝ) : ℂ) • R (a s) x - x with hz`. Establish `e1 : U s x - x = ((Real.exp (-(κ / 2) * s) : ℝ) : ℂ) • z + ((Real.exp (-(κ / 2) * s) - 1 : ℝ) : ℂ) • x`. Rewrite using `[hz, hU, smul_sub, smul_smul, ← Complex.ofReal_mul, ← Real.exp_add, Complex.ofReal_sub, sub_smul]`.
+
+Establish `: -(κ / 2) * s + κ * s = κ / 2 * s` using `by ring`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `e2 : ∀ g, ∫ m, ⟪(z : H), ρ (m * g) w⟫_ℂ ∂ν = (∫ m, ⟪(x : H), ρ (m * (a (-s) * g)) w⟫_ℂ ∂ν) - ∫ m, ⟪(x : H), ρ (m * g) w⟫_ℂ ∂ν`. Introduce `g`.
+
+Use `hI z ⟨ρ g w, hV g w hw⟩` as an intermediate fact. Simplify using `only [act_mul hρ]`. Rewrite using `[← this, hz]`. Simplify using `only [map_sub, LinearMap.map_smulₛₗ, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, Complex.conj_ofReal, hI, hR]`. Rewrite using `[key, ← mul_assoc, ← Complex.ofReal_mul, ← Real.exp_add]`.
+
+Simplify using the standard rewrite rules. Establish `e3 : (I z z).re ≤ |C₀| / r * s ^ 2 * (I x x).re`. Establish `h` using `hlip x x.2 (-s) (by rwa [abs_neg])`. Rewrite `h` using `[← hI, neg_sq]`. Establish `hx` using `(Complex.nonneg_iff.1 (hpos x)).1`.
+
+Rewrite using `[hnorm' z, Complex.ofReal_re, div_le_iff₀ hr]`. Simplify using `only [e2]`. Use `h.trans ?_` and prove the remaining obligations. Establish `: |C₀| / r * s ^ 2 * (I x x).re * r = |C₀| * s ^ 2 * (I x x).re` using `by field_simp`. Rewrite using `[this]`.
+
+Use `gcongr`. Conclude with `le_abs_self _`. Rewrite using `[e1]`. Use `(form_add_le I hpos z x _ _).trans ?_` and prove the remaining obligations. Establish `hx` using `(Complex.nonneg_iff.1 (hpos x)).1`.
+
+Establish `hz0` using `(Complex.nonneg_iff.1 (hpos z)).1`. Take `⟨k1, k2⟩` from `hK s hs`. Establish `b1 : Real.exp (-(κ / 2) * s) ^ 2 * (I z z).re ≤ K * (|C₀| / r * s ^ 2 * (I x x).re)` using `mul_le_mul k1 e3 hz0 hK0`. Establish `b2` using `mul_le_mul_of_nonneg_right k2 hx`. Use the polynomial consequences of the given equalities and inequalities.
+
+Take `⟨A, hA0, hA⟩` from `torus_decay hc0 hN hD hDi (hi (c / 3) (by linarith)) ha ha' (hdec v hv v hv)`. Use `⟨A, c / 3 - τ, by linarith, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[hU, map_smul, smul_eq_mul, hI, hR, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]`. Establish `h` using `hA s`. Simplify using `only [act_mul hρ] at h`.
+
+Use `(mul_le_mul_of_nonneg_left h (Real.exp_pos _).le).trans ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, ← Real.exp_add]`. Use `mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 ?_) hA0` and prove the remaining obligations. Establish `h1 : κ * s ≤ |κ| * |s|` using `by rw [← abs_mul]; exact le_abs_self _`. Establish `h2` using `mul_le_mul_of_nonneg_right hκ (abs_nonneg s)`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem form_zero {ρ : G → (H →L[ℂ] H)} (hρ : IsURep ρ) {D : G → ℝ} {c τ r κ C₀ : ℝ} (hτ : 0 ≤ τ) (hc : 3 * τ < c)
     (hr : 0 < r) (hκ : |κ| ≤ 2 * τ) {μ ν : Measure G} {N : Set G} (hN : ν Nᶜ = 0)
     (hD : ∀ g g', D (g * g') ≤ D g + D g') (hDi : ∀ g, D g⁻¹ = D g)
@@ -375,6 +494,9 @@ theorem form_zero {ρ : G → (H →L[ℂ] H)} (hρ : IsURep ρ) {D : G → ℝ}
 
 end Flow
 
+/- English proof (translation)
+Establish `h1 : ∫ x, RCLike.re (f x) ∂μ = 0` using `by rw [integral_re hi, h, map_zero]`. Establish `h2` using `(integral_eq_zero_iff_of_nonneg (fun x => (Complex.nonneg_iff.1 (h0 x)).1) hi.re).1 h1`. Use `filter_upwards [h2] with x hx`. Conclude with `Complex.ext hx (Complex.nonneg_iff.1 (h0 x)).2.symm`.
+-/
 theorem ae_zero_of_nonneg {X : Type} [MeasurableSpace X] {μ : Measure X} {f : X → ℂ} (hi : Integrable f μ)
     (h0 : ∀ x, 0 ≤ f x) (h : ∫ x, f x ∂μ = 0) : f =ᵐ[μ] 0 := by
   have h1 : ∫ x, RCLike.re (f x) ∂μ = 0 := by rw [integral_re hi, h, map_zero]
@@ -382,6 +504,31 @@ theorem ae_zero_of_nonneg {X : Type} [MeasurableSpace X] {μ : Measure X} {f : X
   filter_upwards [h2] with x hx
   exact Complex.ext hx (Complex.nonneg_iff.1 (h0 x)).2.symm
 
+/- English proof (translation)
+Introduce `n ε W ν hW hν H _ _ _ σ d c α w hσ hd hc hw hα hαc hfix hdec x y`. Establish `hn : 1 ≤ n`. Break down `Nat.eq_zero_or_pos n with rfl | h` into its components or cases. Conclude with `absurd (Subsingleton.elim _ _) hW.1`. Conclude with `h`.
+
+Set `ρ : UJ ε → (H →L[ℂ] H)` to `fun g => σ (umat g)`. Set `D : UJ ε → ℝ` to `fun g => dOp (umat g)`. Establish `hmem : ∀ g : UJ ε, umat g ∈ UJset ε` using `fun g => g.2`. Establish `hcu : Continuous fun g : UJ ε => umat g` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hρ : IsURep ρ` using `⟨hσ.1.1, fun a b => hσ.1.2 _ (hmem a) _ (hmem b), fun g => hσ.2.1 _ (hmem g), fun v => (hσ.2.2 v).comp_continuous hcu hmem⟩`.
+
+Establish `hD : ∀ g g', D (g * g') ≤ D g + D g'` using `fun g g' => ((GlobalTheory.Count.Cartan.cartan_distances n ε).2.1 g g' hn).2.2.1`. Establish `hDi : ∀ g, D g⁻¹ = D g` using `fun g => ((GlobalTheory.Count.Cartan.cartan_distances n ε).2.1 g g hn).2.1`. Establish `hq : (0 : ℝ) ≤ n * rkR ε` using `by positivity`. Establish `hc0 : 0 ≤ c` using `by linarith`. Establish `hc8 : 8 * (n : ℝ) * rkR ε < c` using `by linarith`.
+
+Take `⟨β, hβ, hβt, hβ1⟩` from `GlobalTheory.T.exists_measurable_cutoff_fibre_integral_one_subgroup (UJ ε) (nwSub ε W) ν (isClosed_NW ε W) hν`. Take `⟨a, Hm, hHm, haH, ha, ha', -, hiw⟩` from `GlobalTheory.T.isotropic_splitTorus_iwasawa_unitaryGroup n ε W hW`. Take `⟨κ, hκ, hmod⟩` from `GlobalTheory.T.torus_modulus_unipotentRadical_unitaryGroup n ε W ν hW hν a Hm hHm haH ha fun s m hm => (ha' s m hm).1`. Take `⟨L, hL⟩` from `GlobalTheory.T.hasDerivAt_orbit_and_decay_of_decay n ε H σ α w hσ hα hαc hfix`. Take `⟨C₀, hC₀⟩` from `GlobalTheory.T.one_parameter_conjugation_bound n ε W ν hW hν β hβ hβt hβ1 a Hm hHm haH hiw κ hmod H σ d c w L hσ hd hc8 fun X hX => (hL X hX).1`.
+
+Establish `hright` using `(GlobalTheory.T.haar_subgroup_bi_invariant n ε W ν hW hν).1`. Establish `hvol` using `(GlobalTheory.T.unipotentRadical_volume_growth n ε W ν hW hν).2`. Set `V : Submodule ℂ H` to `Submodule.span ℂ (Set.range fun g => ρ g w)`. Establish `hVd : ∀ v ∈ V, ∀ u ∈ V, Decays ρ D c v u` using `decays_orbit hρ hc0 hD hdec`. Establish `hwV : w ∈ V` using `Submodule.subset_span ⟨1, by simp [hρ.1]⟩`.
+
+Establish `hnorm` using `fun v (hv : v ∈ V) => GlobalTheory.T.unitary_rep_matrix_coefficient_bound n ε W ν hW hν β hβ hβt hβ1 H σ d c w v v hσ hd hc8 (hVd v hv w hwV) (hVd v hv w hwV) (hVd v hv v hv)`. Establish `ha0 : a 0 = 1`. Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Use `haH 0` as an intermediate fact. Simplify using `using this`.
+
+Establish `hadd : ∀ s t, a (s + t) = a s * a t`. Introduce `s t`. Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Use `show umat (a (s + t)) = umat (a s) * umat (a t)`. Rewrite using `[haH, haH, haH, Complex.ofReal_add, add_smul]`.
+
+Conclude with `Matrix.exp_add_of_commute _ _ (((Commute.refl Hm).smul_left _).smul_right _)`. Establish `hzero` using `form_zero (μ := muG ε) (ν := ν) (N := NW ε W) (C₀ := C₀) (r := ‖w‖ ^ 2 / d) (τ := 4 * n * rkR ε) (κ := κ) (c := c) (D := D) hρ (by linarith) (by linarith) (by rw [hw]; have := hd.1; positivity) (by linarith) hν.2.2.1 hD hDi hvol ha0 hadd ha (fun s m hm => (ha' s m hm).2) hmod V ( …`. Establish `hv : ρ x⁻¹ w ∈ V` using `Submodule.subset_span ⟨x⁻¹, rfl⟩`. Use `set v := ρ x⁻¹ w with hvdef`. Take `⟨h1, h2, h3⟩` from `hnorm v hv`.
+
+Establish `h4` using `hzero v hv`. Establish `hF` using `eq_zero_of_cutoff (muG ε) (NW ε W) ν hν β hβ hβt hβ1 _ h1 ?_ ?_ y`. Rewrite using `[← hF]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun m => ?_)` and prove the remaining obligations. Use `show ⟪w, ρ (x * m * y) w⟫_ℂ = ⟪ρ x⁻¹ w, ρ (m * y) w⟫_ℂ`.
+
+Rewrite using `[inner_move hρ, inv_inv, ← act_mul hρ, mul_assoc]`. Introduce `m hm g`. Establish `hcf : Continuous fun k : UJ ε => ⟪v, ρ (k * g) w⟫_ℂ` using `continuous_const.inner ((hρ.2.2.2 w).comp (continuous_mul_const g))`. Use `integral_map (μ := ν) (measurable_mul_const m).aemeasurable hcf.aestronglyMeasurable` as an intermediate fact. Rewrite `this` using `[hright m hm]`.
+
+Simplify using `only [mul_assoc] at this`. Conclude with `this.symm`. Use `ae_zero_of_nonneg h2 (fun g => ?_) ?_` and prove the remaining obligations. Conclude with `mul_nonneg (by exact_mod_cast ENNReal.toReal_nonneg) (mul_star_self_nonneg _)`. Rewrite using `[h3]`.
+
+Conclude with `mul_eq_zero_of_left h4 _`.
+-/
 theorem constant_term_zero : ∀ (n : ℕ) (ε : Fin n → Bool) (W : Submodule ℂ (Fin n → ℂ)) (ν : Measure (UJ ε)), IsIsoC ε W → IsHaarSub (NW ε W) ν → ∀ (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (d c : ℝ) (α : Matrix (Fin n) (Fin n) ℂ → ℂ) (w : H), IsURepOn (UJset ε) σ → IsFdeg (muG ε) σ d → 12 * n * rkR ε < c → ‖w‖ = 1 → SmoothOnG ε α → HasCompactSupport (fun g : UJ ε => α (umat g)) → (∀ u : H, ∫ g : UJ ε, α (umat g) * ⟪u, σ (umat g) w⟫_ℂ ∂(muG ε) = ⟪u, w⟫_ℂ) → (∃ C : ℝ, ∀ g : UJ ε, ‖⟪w, σ (umat g) w⟫_ℂ‖ ≤ C * Real.exp (-(c * dOp (umat g)))) → ∀ x y : UJ ε, ∫ m, ⟪w, σ (umat (x * m * y)) w⟫_ℂ ∂ν = 0 := by
   intro n ε W ν hW hν H _ _ _ σ d c α w hσ hd hc hw hα hαc hfix hdec x y
   have hn : 1 ≤ n := by

@@ -31,6 +31,11 @@ instance (LL : FinExt l) : ContinuousConstSMul ↥(OL LL) (FracModInt LL) where
 
 def FracModInt.mk (LL : FinExt l) : ↥LL.1 →ₗ[↥(OL LL)] FracModInt LL := (intSub LL).mkQ
 
+/- English proof (translation)
+Take `⟨a, ha, -⟩` from `P.χQ_cyc (g : GQ l) 0 1 (by simp)`. Rewrite using `[P.PD_χ]`. Establish `h1 : ‖((P.χQ (g : GQ l) : ℚ_[l]ˣ) : ℚ_[l]) - (a : ℚ_[l])‖ ≤ 1` using `by simpa using ha`. Establish `h2 : ‖(a : ℚ_[l])‖ ≤ 1` using `by simpa using Padic.norm_int_le_one (p := l) (a : ℤ)`. Establish `h3` using `IsUltrametricDist.norm_add_le_max (((P.χQ (g : GQ l) : ℚ_[l]ˣ) : ℚ_[l]) - (a : ℚ_[l])) (a : ℚ_[l])`.
+
+Rewrite `h3` using `[sub_add_cancel]`. Conclude with `h3.trans (max_le h1 h2)`.
+-/
 theorem norm_chi_le_one (P : LocPrime l) (K : FinExt l) (g : ↥(GK K)) :
     ‖(((P.PD K).χ g : ℚ_[l]ˣ) : ℚ_[l])‖ ≤ 1 := by
   obtain ⟨a, ha, -⟩ := P.χQ_cyc (g : GQ l) 0 1 (by simp)
@@ -57,6 +62,9 @@ def fracModIntTwist (P : LocPrime l) (K LL : FinExt l) :
     Representation ↥(OL LL) ↥(GK K) (FracModInt LL) :=
   Formalism.GaloisCohomology.scalRep (FracModInt LL) (chiO P K LL)
 
+/- English proof (translation)
+Rewrite using `[fracModIntTwist, Formalism.GaloisCohomology.scalRep_apply, ← map_smul]`. Use `congr 1`.
+-/
 theorem fracModIntTwist_mk (P : LocPrime l) (K LL : FinExt l) (g : ↥(GK K)) (x : ↥LL.1) :
     fracModIntTwist P K LL g (FracModInt.mk LL x) =
       FracModInt.mk LL (algebraMap ℚ_[l] ↥LL.1 (((P.PD K).χ g : ℚ_[l]ˣ) : ℚ_[l]) * x) := by
@@ -78,6 +86,9 @@ def TateLocalDualityDegreeTwoGood (D : D7) : Prop :=
   ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l), Good K s LL →
     TateLocalDualityDegreeTwoAt (D.loc l) K LL
 
+/- English proof (translation)
+Introduce `l _ K _ LL _` and use `h l K LL`.
+-/
 theorem TateLocalDualityDegreeTwoAll.tateDualityTop_of_all {D : D7} (h : TateLocalDualityDegreeTwoAll D) : TateLocalDualityDegreeTwoGood D :=
   fun l _ K _ LL _ => h l K LL
 

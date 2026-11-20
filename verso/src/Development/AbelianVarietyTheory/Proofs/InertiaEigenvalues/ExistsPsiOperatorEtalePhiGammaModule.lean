@@ -9,6 +9,21 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `ψ : M →ₗ[R] M` to `{ toFun := fun z => ∑ j, ψE (b'.repr z j) • b j map_add' := fun z w => by`. Simplify using `only [map_add, Finsupp.add_apply, add_smul, Finset.sum_add_distrib]`. Use the proof step `map_smul' := fun c z => by`. Simplify using `only [RingHom.id_apply, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← algebraMap_smul E c z, map_smul, Finsupp.smul_apply, smul_eq_mul, ← Algebra.smul_def, map_smul, smul_assoc] }`. Establish `hψ : ∀ z, ψ z = ∑ j, ψE (b'.repr z j) • b j` using `fun z => rfl`. Establish `hdec : ∀ z : M, z = ∑ j, b'.repr z j • φD (b j)`. Introduce `z`. Use `conv_lhs => rw [← b'.sum_repr z]`.
+
+Simplify using `only [hb]`. Establish `hkey : ∀ (x : E) (y : M), ψ (x • φD y) = ψE x • y`. Introduce `x y`. Establish `hy : φD y = ∑ j, φE (b.repr y j) • b' j` using `by conv_lhs => rw [← b.sum_repr y]`. Rewrite using `[map_sum]`.
+
+Simplify using `only [hφD, hb]`. Rewrite using `[hψ, hy, Finset.smul_sum]`. Simplify using `only [smul_smul]`. Rewrite using `[b'.repr_sum_self]`. Use `conv_rhs => rw [← b.sum_repr y, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, hψφ, smul_smul, mul_comm]`. Use `⟨ψ, fun x => ?_, fun a z => ?_, fun g z => ?_⟩` and prove the remaining obligations. Use `hkey 1 x` as an intermediate fact. Rewrite `this` using `[one_smul, hψone, one_smul]`. Then use the resulting hypothesis.
+
+Rewrite using `[hψ, hψ, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, hψφ, mul_smul]`. Rewrite using `[hψ z, map_sum] conv_lhs => rw [hdec z, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hγD, ← hφγ, hkey, hψγ, hγD]`.
+-/
 theorem psi_of_etale_basis {R E M Γ : Type*} [CommRing R] [CommRing E] [Algebra R E]
     [AddCommGroup M] [Module E M] [Module R M] [IsScalarTower R E M]
     (φE : E →+* E) (φD : M →ₗ[R] M) (hφD : ∀ (e : E) (x : M), φD (e • x) = φE e • φD x)
@@ -59,6 +74,11 @@ theorem psi_of_etale_basis {R E M Γ : Type*} [CommRing R] [CommRing E] [Algebra
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D HW F l _ K s LL h W T`. Take `⟨r, b, b', hb⟩` from `GlobalTheory.T.wachEtaleModule_frobenius_basis D HW F l K s LL h T`. Take `⟨ψE, hψφ, hψγ, hψ1⟩` from `GlobalTheory.T.wachFunctorRing_psiOperator_exists_of_good D HW F l K s LL h`. Establish `hψone : ψE 1 = 1`. Use `hψ1 0 (Fact.out : l.Prime).pos 1` as an intermediate fact.
+
+Simplify using `using this`. Conclude with `psi_of_etale_basis (W.φE : W.EE →+* W.EE) (W.φD T) (W.φD_smul T) (fun g => (W.γE g : W.EE →+* W.EE)) (W.γD T) (W.γD_smul T) (W.φγ_comm T) b b' hb ψE hψφ hψγ hψone`.
+-/
 theorem psiD_exists : ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; ∀ T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL), ∃ ψ : W.DD T →ₗ[↥(OL LL)] W.DD T, (∀ x, ψ (W.φD T x) = x) ∧ (∀ (a : W.EE) x, ψ (W.φE a • x) = a • ψ x) ∧ ∀ g x, ψ (W.γD T g x) = W.γD T g (ψ x) := by
   intro D HW F l _ K s LL h W T
   obtain ⟨r, b, b', hb⟩ := GlobalTheory.T.wachEtaleModule_frobenius_basis D HW F l K s LL h T

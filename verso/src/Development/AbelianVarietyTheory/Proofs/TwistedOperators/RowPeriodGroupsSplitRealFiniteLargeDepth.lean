@@ -16,6 +16,17 @@ noncomputable section
 
 namespace GlobalTheory.RowGrpSplit
 
+/- English proof (translation)
+Introduce `j hj`. Establish `hj'` using `List.mem_range'_1.1 hj`. Take `⟨hi, hf, hc, he, hu, hrest⟩` from `GlobalTheory.AdelicSplit.adelic_split D (ch.G.V (.grid D.R.m j))`. Establish `hV` using `ch.G.isV (X := .grid D.R.m j) ⟨le_rfl, by omega⟩ (fun k hk => by`. Simplify using `only [Node.grid.injEq] at hk`.
+
+Use the proof step `omega)`. Establish `hlat` using `congLev_open_compact (ch.G.V (.grid D.R.m j)) hV.sd.1 (𝔪 := ⊤) top_ne_bot`. Establish `hR : IsClosed ((rowGrp ch.G j : Subgroup (GA D (ch.G.V (.grid D.R.m j)))) : Set (GA D (ch.G.V (.grid D.R.m j)))) ∧ (∀ a ∈ GinfC _, ∀ b ∈ GfC _, a * b ∈ rowGrp ch.G j → a ∈ rowGrp ch.G j ∧ b ∈ rowGrp ch.G j) ∧ (∀ μ : Measure (rowGrp ch.G j), μ.IsHaarMeasure → μ.IsInvInvariant) ∧ ∀ …`. Distinguish the cases in `h1 : j + 2 * ((D.R.m - 1 - j) / 2) + 1 = D.R.m`. Rewrite using `[show rowGrp ch.G j = _ from dif_pos h1]`.
+
+Take `⟨a, b, c⟩` from `(hrest _ _ _).1`. Conclude with `⟨GlobalTheory.jacGrp_isClosed D _ _ _ _, a, b, c⟩`. Establish `h2 : j + 2 * ((D.R.m - 2 - j) / 2) + 2 = D.R.m` using `by omega`. Rewrite using `[show rowGrp ch.G j = _ from (dif_neg h1).trans (dif_pos h2)]`. Take `⟨a, b, c⟩` from `(hrest _ _ _).2 _ _ _`.
+
+Conclude with `⟨GlobalTheory.BesClosed.besGrp_isClosed D _ _ _ _ _ _ _, a, b, c⟩`. Conclude with `{ clA := hi clB := hf clR := hR.1 comm := hc prod := he split := hR.2.1 le := inf_le_left cpt := hlat.2 opn := by`. Establish `e : (((latGrp ch.G j).subgroupOf (GfC _) : Subgroup (GfC (ch.G.V (.grid D.R.m j)))) : Set (GfC (ch.G.V (.grid D.R.m j)))) = Subtype.val ⁻¹' (((ch.G.levMax (.grid D.R.m j)).comap (Lev.finE _) : Subgroup (GA D (ch.G.V (.grid D.R.m j)))) : Set (GA D (ch.G.V (.grid D.R.m j))))`. Use extensionality with `x`. Conclude with `⟨fun h => h.2, fun h => ⟨x.2, h⟩⟩`.
+
+Rewrite using `[e]`. Conclude with `hlat.1.preimage continuous_subtype_val`. Use `uniR := hR.2.2.1`. Use `uniRB := hR.2.2.2`. Use `uniB := hu }`.
+-/
 theorem grpAt_all {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R) : GrpAt ch := by
   intro j hj
@@ -57,6 +68,9 @@ theorem grpAt_all {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A
       uniRB := hR.2.2.2
       uniB := hu }
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun _ _ _ => ⟨0, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ch _ _ => grpAt_all ch⟩⟩`.
+-/
 theorem grpAt_big : Big fun ch => GrpAt ch :=
   ⟨0, fun _ _ _ => ⟨0, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ch _ _ => grpAt_all ch⟩⟩
 

@@ -5,6 +5,13 @@ open scoped TensorProduct
 
 namespace GlobalTheory.FixedUnitNorm
 
+/- English proof (translation)
+Introduce `D v a ha`. Establish `h : finPart D a ∈ intAE D` using `ha.2`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.compFin D v (finPart D a) ∈ intV D v`. Generalize the expression as in `finPart D a = b at h ⊢`. Proceed by induction on `h using AddSubgroup.closure_induction with`.
+
+Consider the case `mem y hy`. Take `⟨α, hα, x, rfl⟩` from `hy`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Conclude with `⟨_, hα v, x, rfl⟩`. Consider the case `zero => rw [RingHom.map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [RingHom.map_add]`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [RingHom.map_neg]`. Conclude with `neg_mem hy`.
+-/
 theorem compAt_mem_intV_of_intAt : ∀ (D : D7) (v : Pl D) (a : AE D), a ∈ intAt D (· = v) → compAt D v a ∈ intV D v := by
   intro D v a ha
   have h : finPart D a ∈ intAE D := ha.2

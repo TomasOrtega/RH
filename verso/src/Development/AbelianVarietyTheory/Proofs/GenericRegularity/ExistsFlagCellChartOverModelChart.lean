@@ -25,6 +25,11 @@ section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {M : MChart Y}
 
+/- English proof (translation)
+Use `haveI := Y.jQ_open`. Establish `h : Λ.xF = Λ'.xF`. Rewrite using `[← cancel_mono Y.jQ]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc]`.
+
+Conclude with `Λ.xF_j.trans Λ'.xF_j.symm`. Rewrite using `[Category.assoc, Category.assoc, Y.jQ_over]`. Conclude with `Λ.xF_snd.trans Λ'.xF_snd.symm`. Rewrite using `[← Λ.xF_fst, h, Λ'.xF_fst]`.
+-/
 theorem lift_point_unique {R : Type} [CommRing R] [Algebra c.F R] {f : Γ(Y.X, M.U) →+* R} {x x' : Sp R ⟶ Xo.X}
     (Λ : M.Lift f x) (Λ' : M.Lift f x') : x = x' := by
   haveI := Y.jQ_open
@@ -37,11 +42,17 @@ theorem lift_point_unique {R : Type} [CommRing R] [Algebra c.F R] {f : Γ(Y.X, M
       exact Λ.xF_snd.trans Λ'.xF_snd.symm
   rw [← Λ.xF_fst, h, Λ'.xF_fst]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Reg.TieUniq.frPt_eq_of_tie E H Dw l Xo c O β Y M L f u y z hy hz (lift_point_unique hy.choose hz.choose)`.
+-/
 theorem tie_unique {L : Type} [Field L] [Algebra c.F L] {f : Γ(Y.X, M.U) →+* L}
     {u : ∀ τ : E →+* ℂ, Matrix (Fin M.n) (Fin (Dw.mult τ)) L} {y z : FrPt Xo c L} (hy : M.Comparison₂ f u y)
     (hz : M.Comparison₂ f u z) : y = z :=
   GlobalTheory.Reg.TieUniq.frPt_eq_of_tie E H Dw l Xo c O β Y M L f u y z hy hz (lift_point_unique hy.choose hz.choose)
 
+/- English proof (translation)
+Take `rfl : f = f'` from `RingHom.ext hf`. Take `rfl : u = u'` from `funext fun τ => Matrix.ext (hu τ)`. Conclude with `hy`.
+-/
 theorem tie_congr {R : Type} [CommRing R] [Algebra c.F R] {f f' : Γ(Y.X, M.U) →+* R}
     {u u' : ∀ τ : E →+* ℂ, Matrix (Fin M.n) (Fin (Dw.mult τ)) R} {y : FrPt Xo c R} (hy : M.Comparison₂ f u y)
     (hf : ∀ a, f a = f' a) (hu : ∀ τ i j, u τ i j = u' τ i j) : M.Comparison₂ f' u' y := by
@@ -51,6 +62,9 @@ theorem tie_congr {R : Type} [CommRing R] [Algebra c.F R] {f f' : Γ(Y.X, M.U) �
 
 end
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h i => funext fun j => congrFun (congrFun h j) i, fun h => Matrix.ext fun j i => congrFun (h i) j⟩`.
+-/
 theorem mul_eq_smul_iff_cols {R : Type} [CommRing R] {n r : ℕ} (P : Matrix (Fin n) (Fin n) R) (N : R)
     (u : Matrix (Fin n) (Fin r) R) : P * u = N • u ↔ ∀ i, P.mulVec (fun j => u j i) = N • fun j => u j i :=
   ⟨fun h i => funext fun j => congrFun (congrFun h j) i, fun h => Matrix.ext fun j i => congrFun (h i) j⟩
@@ -61,6 +75,49 @@ namespace GlobalTheory.Reg
 
 open GlobalTheory.Reg.CellChart in
 
+/- English proof (translation)
+Introduce `hS E _ _ _ H Dw l Xo c hbc O _ _ _ _ _ Y hpush M ix`. Use `haveI := M.dom`. Take `⟨α, es, -, hft, hinj, hne, hes, hop, hpt⟩` from `GlobalTheory.Reg.ChartOpens.moduli_basicOpens E H Dw l Xo c O Y M`. Take `⟨ρ, hρ⟩` from `GlobalTheory.Reg.MChart.exists_ringHom_rho E H Dw l Xo c O _ Y M`. Establish `hemb : Function.Injective (embF (E` using `E) c) := fun τ τ' h => RingHom.ext fun a => congrArg Subtype.val (RingHom.congr_fun h a)`.
+
+Use `choose N p hN hp using exists_projector E c.F (embF c) hemb O Γ(Y.X, M.U) α M.n ρ`. Establish `heig : ∀ (R : Type) [CommRing R] [Algebra c.F R] (f : Γ(Y.X, M.U) →+* R), f.comp α = (algebraMap c.F R).comp (algebraMap O c.F) → ∀ τ x, M.Eig f τ x ↔ ((p τ).map f).mulVec x = f (α (N τ)) • x`. Introduce `R _ _ f hf τ x`. Rewrite using `[← (hp τ R f hf).2 x]`. Simplify using `only [hρ]`.
+
+Both sides reduce to the same expression. Establish `hfN : ∀ (L : Type) [Field L] [Algebra c.F L] (f : Γ(Y.X, M.U) →+* L), f.comp α = (algebraMap c.F L).comp (algebraMap O c.F) → ∀ τ, f (α (N τ)) ≠ 0`. Introduce `L _ _ f hf τ`. Rewrite using `[show f (α (N τ)) = algebraMap c.F L (algebraMap O c.F (N τ)) from RingHom.congr_fun hf _]`. Conclude with `(map_ne_zero _).mpr ((map_ne_zero_iff _ (IsFractionRing.injective O c.F)).mpr (hN τ))`.
+
+Establish `hlift : ∀ e ∈ es, ∀ (R : Type) [CommRing R] [Algebra c.F R] (f : Γ(Y.X, M.U) →+* R), f.comp α = (algebraMap c.F R).comp (algebraMap O c.F) → IsUnit (f e) → ∃ x, Nonempty (M.Lift f x)`. Introduce `e he R _ _ f hf hu`. Take `⟨xF, h1, h2⟩` from `(hop e he R f hf hu).1`. Conclude with `⟨_, MChart.nonempty_lift E H Dw l Xo c O _ Y M R f xF h1 h2⟩`. Establish `hrk : ∀ (L : Type) [Field L] [Algebra c.F L] (f : Γ(Y.X, M.U) →+* L), f.comp α = (algebraMap c.F L).comp (algebraMap O c.F) → ∀ e ∈ es, f e ≠ 0 → ∀ τ, ((p τ).map f).rank = Dw.mult τ`.
+
+Introduce `L _ _ f hf e he hfe τ`. Take `⟨x, ⟨Λ⟩⟩` from `hlift e he L f hf hfe.isUnit`. Set `S : Submodule L (Fin M.n → L)` to `Module.End.eigenspace ((p τ).map f).mulVecLin (f (α (N τ)))`. Establish `hS' : ∀ y, y ∈ S ↔ ((p τ).map f).mulVec y = f (α (N τ)) • y` using `fun y => Module.End.mem_eigenspace_iff`. Rewrite using `[rank_of_quasi_idem _ _ (hfN L f hf τ) (hp τ L f hf).1 S hS']`.
+
+Conclude with `GlobalTheory.Reg.finrank_chart_eig E H Dw l Xo c O _ Y M L f x Λ τ S fun y => (hS' y).trans (heig L f hf τ y).symm`. Establish `hpoint : ∀ (L : Type) [Field L] [Algebra c.F L] (f : Γ(Y.X, M.U) →+* L) (y : FrPt Xo c L) (Λ : M.Lift f y.x) (u : ∀ τ : E →+* ℂ, Matrix (Fin M.n) (Fin (Dw.mult τ)) L) (b : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) L), (∀ τ, (b τ).BlockTriangular id ∧ ∀ i, b τ i i …`. Introduce `L _ _ f y Λ u b hb ht`. Take `⟨hf, he⟩` from `hpt L f Λ.xF Λ.xF_snd Λ.xF_j`. Use `⟨hf, he, fun τ => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (p τ).map f * (u τ * b τ) = f (α (N τ)) • (u τ * b τ)` using `(mul_eq_smul_iff_cols _ _ _).mpr fun i => (heig L f hf τ _).mp ((GlobalTheory.Reg.isEigAt_iff_eig E H Dw l Xo c O _ Y M L f y.x Λ τ _ _ (ht τ i)).mp (y.eig τ i))`. Establish `hd : IsUnit (b τ).det`. Rewrite using `[Matrix.det_of_upperTriangular (hb τ).1]`. Conclude with `(Finset.prod_ne_zero_iff.mpr fun i _ => (hb τ).2 i).isUnit`. Establish `h2` using `congrArg (· * (b τ)⁻¹) h1`.
+
+Simplify using `only [Matrix.mul_assoc, Matrix.smul_mul, Matrix.mul_nonsing_inv _ hd, Matrix.mul_one] at h2`. Conclude with `h2`. Distinguish the cases in `hκ : ∃ κ₀ : ∀ τ, Fin (Dw.mult τ) → Fin M.n, ∀ τ, ((p τ).submatrix (ix τ) (κ₀ τ)).det ≠ 0`. Use `swap`. Use `⟨Empty, inferInstance, Empty.elim, fun L _ _ W f y Λ u b _ _ hc hb ht => (hκ ?_).elim⟩` and prove the remaining obligations.
+
+Take `⟨hf, -, hu⟩` from `hpoint L f y Λ u b hb ht`. Use `choose κ hκL using fun τ => exists_minor _ _ (hfN L f hf τ) (ix τ) (u τ) (hu τ) (hc τ)`. Use `⟨κ, fun τ h => hκL τ ?_⟩` and prove the remaining obligations. Use `RingHom.map_det f ((p τ).submatrix (ix τ) (κ τ))` as an intermediate fact. Rewrite `this` using `[h, map_zero]`.
+
+Conclude with `this.symm`. Take `⟨κ₀, hκ₀⟩` from `hκ`. Take `⟨Ω, _, _, gens, es', g, u, h1, h2, h3, h4, h5, h6, h7, h8, h9⟩` from `exists_cell_algebra c.F O Γ(Y.X, M.U) (E →+* ℂ) α hft hinj es hes hne M.n Dw.mult ix N hN p (fun L _ _ f hf τ => (hp τ L f hf).1) hrk (fun e he R _ _ f hf hu => (hop e he R f hf hu).2) κ₀ hκ₀`. Use `choose hsm fe ue k1 k2 k3 k4 k5 k6 using h8`. Establish `hy : ∀ e (he : e ∈ es'), ∃ y : FrPt Xo c (Algebra.adjoin c.F (insert e⁻¹ (gens : Set Ω))), M.Comparison₂ (fe e he) (ue e he) y`.
+
+Introduce `e he`. Take `⟨e₀, he₀, hu⟩` from `k4 e he`. Take `⟨x, ⟨Λ⟩⟩` from `hlift e₀ he₀ _ (fe e he) (k3 e he) hu`. Take `⟨y, -, hy⟩` from `GlobalTheory.Reg.exists_frPt_tie hS E H Dw l Xo c O _ Y M _ (fe e he) x Λ (ue e he) (fun τ i => (heig _ _ (k3 e he) τ _).mpr ((mul_eq_smul_iff_cols _ _ _).mp (k5 e he τ) i)) (fun τ cv h => k6 e he τ cv ((heig _ _ (k3 e he) τ _).mp h))`. Conclude with `⟨y, hy⟩`.
+
+Use `choose yy hyy using hy`. Establish `hgen : ∀ e (he : e ∈ es') z, FrMap (Algebra.adjoin c.F (insert e⁻¹ (gens : Set Ω))).val (yy e he) z → M.Comparison₂ g u z` using `fun e he z hz => tie_congr (GlobalTheory.Reg.MChart.tie_baseChange E H Dw l Xo c O _ Y M _ _ _ _ _ _ _ (hyy e he) hz) (k1 e he) (k2 e he)`. Take `⟨e₁, he₁⟩` from `id h2`. Take `⟨yg, hyg⟩` from `hbc _ _ (Algebra.adjoin c.F (insert e₁⁻¹ (gens : Set Ω))).val (yy e₁ he₁)`. Establish `hint : ∀ e (he : e ∈ es') (T : CDVR) (io : c.F →+* T.Fr), letI` using `io.toAlgebra ∀ (ψ : Algebra.adjoin c.F (insert e⁻¹ (gens : Set Ω)) →ₐ[c.F] T.Fr), (∀ a : O, io (algebraMap O c.F a) ∈ Set.range (algebraMap T.V T.Fr)) → (∀ w : Algebra.adjoin c.F (insert e⁻¹ (gens : Set Ω)), (w : Ω) ∈ gens → ψ w ∈ Set.range (algebraMap T.V T.Fr)) → ∀ z : FrPt Xo …`.
+
+Introduce `e he T io`. Use `letI := io.toAlgebra`. Introduce `ψ hO hg z hz`. Establish `hVinj : Function.Injective (algebraMap T.V T.Fr)` using `IsFractionRing.injective _ _`. Establish `hB : ∀ w ∈ Subring.closure (Set.range ((algebraMap c.F Ω).comp (algebraMap O c.F)) ∪ (gens : Set Ω)), w ∈ (((algebraMap T.V T.Fr).range.comap ψ.toRingHom).map (Algebra.adjoin c.F (insert e⁻¹ (gens : Set Ω))).val.toRingHom)`.
+
+Introduce `w hw`. Use `(Subring.closure_le.mpr ?_) hw` and prove the remaining obligations. Introduce and unpack `w (⟨o, rfl⟩ | hw)`. Use `⟨algebraMap c.F _ (algebraMap O c.F o), ?_, rfl⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `hO o`.
+
+Conclude with `⟨v, hv.trans (ψ.commutes _).symm⟩`. Conclude with `⟨⟨w, Algebra.subset_adjoin (Or.inr hw)⟩, hg _ hw, rfl⟩`. Establish `hfa : ∀ a, ψ.toRingHom.comp (fe e he) a ∈ (algebraMap T.V T.Fr).range`. Introduce `a`. Take `⟨w, hw, hw'⟩` from `hB _ (h4 a)`.
+
+Take `rfl : w = fe e he a` from `Subtype.ext (hw'.trans (k1 e he a).symm)`. Conclude with `hw`. Set `φ` to `(algebraMap T.V T.Fr).rangeRestrict`. Set `ε : T.V ≃+* (algebraMap T.V T.Fr).range` to `RingEquiv.ofBijective φ ⟨fun a b h => hVinj (congrArg Subtype.val h), (algebraMap T.V T.Fr).rangeRestrict_surjective⟩`. Set `f₀ : Γ(Y.X, M.U) →+* T.V` to `ε.symm.toRingHom.comp ((ψ.toRingHom.comp (fe e he)).codRestrict _ hfa)`.
+
+Establish `hf₀ : ∀ a, algebraMap T.V T.Fr (f₀ a) = ψ (fe e he a)` using `fun a => congrArg Subtype.val (ε.apply_symm_apply ⟨_, hfa a⟩)`. Use `choose u₀ hu₀ using fun τ i j => hg (ue e he τ i j) (by rw [k2]; exact h5 τ i j)`. Use `GlobalTheory.Reg.tie_integral hS E H Dw l Xo c O _ Y M hpush T io f₀ ix u₀ (fun τ => ⟨fun i j hij => hVinj ?_, fun i => hVinj ?_⟩) z (tie_congr (GlobalTheory.Reg.MChart.tie_baseChange E H Dw l Xo c O _ Y M _ _ _ _ _ _ _ (hyy e he) hz) (fun a => (hf₀ a).symm) fun τ i j => (hu₀ τ i …` and prove the remaining obligations. Rewrite using `[hu₀, show ue e he τ (ix τ i) j = 0 from Subtype.ext ((k2 e he τ _ _).trans ((h7 τ).1 i j hij)), map_zero, map_zero]`. Rewrite using `[hu₀, show ue e he τ (ix τ i) i = 1 from Subtype.ext ((k2 e he τ _ _).trans ((h7 τ).2 i)), map_one, map_one]`.
+
+Set `P : PChart Xo c (algebraMap O c.F)` to `{ Ω := Ω, gens := gens, frac := h1, es := es', es_ne := h2, es_mem := h3, sm := hsm, yg := yg, y := yy gen := fun e he => by`. Take `⟨z, hz⟩` from `hbc _ _ (Algebra.adjoin c.F (insert e⁻¹ (gens : Set Ω))).val (yy e he)`. Rewrite using `[tie_unique (hgen _ _ _ hyg) (hgen _ _ _ hz)]`. Conclude with `hz`. Use `int := hint }`.
+
+Use `⟨Unit, inferInstance, fun _ => P, fun L _ _ W f y Λ u' b hW hW' hc hb ht => ⟨(), ?_⟩⟩` and prove the remaining obligations. Take `⟨hf, ⟨e₀, he₀, hfe⟩, hu⟩` from `hpoint L f y Λ u' b hb ht`. Take `⟨e, he, ψ, hψ1, hψ2⟩` from `h9 L f hf e₀ he₀ hfe u' hu hc`. Take `⟨z, hz⟩` from `hbc _ _ ψ (yy e he)`. Establish `htz : M.Comparison₂ f u' z`.
+
+Use `tie_congr (GlobalTheory.Reg.MChart.tie_baseChange E H Dw l Xo c O _ Y M _ _ _ _ _ _ _ (hyy e he) hz) (fun a => ?_) fun τ i j => ?_` and prove the remaining obligations. Conclude with `(congrArg ψ (Subtype.ext (k1 e he a))).trans (hψ1 a (k1 e he a ▸ (fe e he a).2))`. Conclude with `(congrArg ψ (Subtype.ext (k2 e he τ i j))).trans (hψ2 τ i j (k2 e he τ i j ▸ (ue e he τ i j).2))`. Take `⟨t, ht'⟩` from `GlobalTheory.Reg.frBor_of_tie E H Dw l Xo c O _ Y M L f y z Λ u' b (lift_point_unique htz.choose Λ) hb ht htz`. Use `⟨e, he, ψ, z, t, ?_, hz, ht'⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨w, hw⟩ hwg`. Break down `h6 w hwg with ⟨a, rfl⟩ | ⟨τ, i, j, rfl⟩` into its components or cases. Conclude with `(hψ1 a hw).symm ▸ hW a`. Conclude with `(hψ2 τ i j hw).symm ▸ hW' τ i j`.
+-/
 theorem exists_pChart_of_cell : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), FrBC Xo c → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra O c.F] [IsFractionRing O c.F] (Y : Model Xo c (algebraMap O c.F)), PushInvertible Y.t.G Y.t.PP.L → ∀ (M : MChart Y) (ix : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) ↪ Fin M.n), ∃ (J : Type) (_ : Finite J) (P : J → PChart Xo c (algebraMap O c.F)), ∀ (L : Type) [Field L] [Algebra c.F L] (W : ValuationSubring L) (f : Γ(Y.X, M.U) →+* L) (y : FrPt Xo c L) (Λ : M.Lift f y.x) (u : ∀ τ : E →+* ℂ, Matrix (Fin M.n) (Fin (Dw.mult τ)) L) (b : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) L), (∀ a, f a ∈ W) → (∀ τ i j, u τ i j ∈ W) → (∀ τ, InCell (ix τ) (u τ)) → (∀ τ, (b τ).BlockTriangular id ∧ ∀ i, b τ i i ≠ 0) → Λ.LieTie (fun τ => u τ * b τ) y.u → ∃ j, (P j).Catches W y := by
   intro hS E _ _ _ H Dw l Xo c hbc O _ _ _ _ _ Y hpush M ix
   haveI := M.dom

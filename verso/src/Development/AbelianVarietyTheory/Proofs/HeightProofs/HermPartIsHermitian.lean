@@ -15,14 +15,28 @@ section Host
 
 variable {R : Ranks} (H : Host R)
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Subtype.ext ((factEmb R H).1.1 h)`.
+-/
 theorem tau_injective : Function.Injective (tau H) := fun _ _ h =>
   Subtype.ext ((factEmb R H).1.1 h)
 
+/- English proof (translation)
+The claim follows from `((factEmb R H).2 _).2 τ.2`.
+-/
 theorem tau_sqrt (τ : Pl R) : tau H τ H.sqrtMinusD = Complex.I * (Real.sqrt H.d : ℂ) :=
   ((factEmb R H).2 _).2 τ.2
 
+/- English proof (translation)
+The claim follows from `Real.sqrt_pos.2 (by exact_mod_cast H.hyp.2.1.pos)`.
+-/
 theorem sqrt_d_pos : 0 < Real.sqrt H.d := Real.sqrt_pos.2 (by exact_mod_cast H.hyp.2.1.pos)
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `(factEmb R H).1.2 σ`. Distinguish the cases in `hg : g ∈ R.Psi`. Conclude with `⟨⟨g, hg⟩, Or.inl rfl⟩`. Rewrite `hg` using `[Formalism.L2.Geo.mem_Psi_iff_mul_cc_notMem, not_not]`. Use `⟨⟨_, hg⟩, Or.inr (RingHom.ext fun x => ?_)⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `H.emb g x = starRingEnd ℂ (H.emb (g * R.cc) x)`. Rewrite using `[Formalism.L2.Geo.emb_mul_cc_comp]`. Express the relevant statement in the definitionally equal form `_ = starRingEnd ℂ (H.emb g (H.conj x))`. Rewrite using `[show H.emb g (H.conj x) = _ from H.conjE_apply _ x]`. Simplify using the standard rewrite rules.
+-/
 theorem emb_cases (σ : H.E →+* ℂ) :
     ∃ τ : Pl R, σ = tau H τ ∨ σ = (starRingEnd ℂ).comp (tau H τ) := by
   obtain ⟨g, rfl⟩ := (factEmb R H).1.2 σ
@@ -36,6 +50,11 @@ theorem emb_cases (σ : H.E →+* ℂ) :
     rw [show H.emb g (H.conj x) = _ from H.conjE_apply _ x]
     simp
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `congrArg Complex.im (DFunLike.congr_fun h H.sqrtMinusD)`. Rewrite `h1` using `[RingHom.comp_apply, tau_sqrt, tau_sqrt]`. Use `sqrt_d_pos H` as an intermediate fact. Simplify using `at h1`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem tau_ne_conj (τ τ' : Pl R) : tau H τ ≠ (starRingEnd ℂ).comp (tau H τ') := by
   intro h
   have h1 := congrArg Complex.im (DFunLike.congr_fun h H.sqrtMinusD)
@@ -53,6 +72,9 @@ variable {R : Ranks} {H : Host R} {n : ℕ}
 def mulR (c : Pl R → ℂ) (u : XR R n) : XR R n := fun τ i => c τ * u τ i
 
 open Classical in
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single τ (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_single_left (b : Pl R → Matrix (Fin n) (Fin n) ℂ) (τ : Pl R) (z : Fin n → ℂ) (v : XR R n) :
     ∑ τ', 2 * (star ((Pi.single τ z : XR R n) τ') ⬝ᵥ b τ' *ᵥ v τ').re = 2 * (star z ⬝ᵥ b τ *ᵥ v τ).re := by
   rw [Finset.sum_eq_single τ (fun b _ hb => by simp [hb]) (by simp)]

@@ -16,5 +16,8 @@ open GlobalTheory.TrMult
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Chamber GlobalTheory.TruncKer GlobalTheory.Cusp
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AdelicIwasawa.iwasawa | exact GlobalTheory.AdelicIwasawa.iwasawa | (intros; apply GlobalTheory.AdelicIwasawa.iwasawa <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.iwasawa_decomposition_adelic : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (L : _) (a : _), Φ.IsGood D.sp.cm L a → ∀ g : GA D V, ∃ p : PA Φ.flag0, ∃ k ∈ (levelAll D.sp.cm.sig V.gram L a), g = p * k := by
   first | exact @GlobalTheory.AdelicIwasawa.iwasawa | exact GlobalTheory.AdelicIwasawa.iwasawa | (intros; apply GlobalTheory.AdelicIwasawa.iwasawa <;> assumption)

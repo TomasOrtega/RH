@@ -17,9 +17,19 @@ open private UpperTheory.V.Af.exists_sign from Development.AutomorphicArithmetic
 
 namespace UpperTheory.Gal.SV
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact h | exact UpperTheory.GalStar.Row0.row0b _ h`.
+-/
 theorem rowB (h : RowT) : UpperTheory.GalStar.Row0b fun h rc => IsRecT h rc := by
   first | exact h | exact UpperTheory.GalStar.Row0.row0b _ h
 
+/- English proof (translation)
+Establish `hc` using `continuous_of_iso H.cont h`. Take `⟨g, hg⟩` from `h`. Establish `hg' : ∀ s, g * r s = r' s * g` using `fun s => by rw [hg, inv_mul_cancel_right]`. Establish `ew : ∀ (w : HeightOneSpectrum (𝓞 E)) (hw : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) (A : ValuationSubring Ω) (h : IsPlaceOver A w), wdOf h hw ι r' = wdOf h hw ι r` using `fun w hw A h => ((isWDOf_wdOf (h := h) hw ι (Units.continuous_val.comp H.cont)).of_conj hw g fun s => hg' _).wdOf_eq hw`. Use `⟨hc, hs, fun w hw A h rc hrc σ hσ => ew w hw A h ▸ H.away w hw A h rc hrc σ hσ, H.weights, H.weights_conj, fun P AI T w A h O _ _ _ Bw hj => ?_⟩` and prove the remaining obligations.
+
+Establish `Ha` using `H.above P AI T w A h O Bw hj`. Establish `e : ∀ s : ↥(Dec (F` using `E) A), r'.comp (Dec (F := E) A).subtype s = g * r.comp (Dec (F := E) A).subtype s * g⁻¹ := fun s => hg s`. Take `⟨c1, c2, -, c4⟩` from `GlobalTheory.T.padicHodgeProperties_conj_invariant l P E Ω O _ Bw m _ _ g e`. Use `⟨fun σ hσ hf => ?_, fun σ hσ rc hrc h1 h2 => ?_⟩` and prove the remaining obligations. Take `⟨a1, a2, a3⟩` from `Ha.crys σ hσ hf`.
+
+Conclude with `⟨c2 a1, c1 a2, fun τ L τ' hτ => c4 _ _ (a3 τ L τ' hτ)⟩`. Take `⟨a1, a2, a3, a4⟩` from `Ha.nice σ hσ rc hrc h1 h2`. Conclude with `⟨c1 a1, isPstAt_conj P Bw g e a2, fun τ L τ' hτ => c4 _ _ (a3 τ L τ' hτ), wdAt_conj P ι Bw h hj g e ▸ a4⟩`.
+-/
 theorem propsB_iso {Rc : UpperTheory.GalStar.RecNotion} {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω] {l : ℕ} [Fact l.Prime] {m : ℕ}
     [NumberField E] [IsAlgClosure E Ω] [IsCMField E] {π : CuspSub E m}
     {ι : Qbar l ≃+* ℂ} {r r' : G E Ω →* GL (Fin m) (Qbar l)} {wt : ℤ}

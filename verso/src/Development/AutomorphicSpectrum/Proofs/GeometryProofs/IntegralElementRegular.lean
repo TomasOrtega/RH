@@ -11,6 +11,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.CompanionTheory.Ar.IntReg
 
+/- English proof (translation)
+Introduce `X Ω _ ξ p hξ hcl a ha`. Establish `hinj : Function.Injective (genMap ξ p)` using `hξ.inj p`. Set `_ : Algebra (X.presheaf.stalk p.1) Ω` to `(genMap ξ p).toAlgebra`. Establish `hmap : ∀ x, algebraMap (X.presheaf.stalk p.1) Ω x = genMap ξ p x` using `fun _ => rfl`. Establish `: IsDomain (X.presheaf.stalk p.1)` using `hinj.isDomain _`.
+
+Establish `: FaithfulSMul (X.presheaf.stalk p.1) Ω` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hinj`. Establish `: IsFractionRing (X.presheaf.stalk p.1) Ω` using `IsFractionRing.of_field _ _ fun z => by`. Take `⟨b, c, hc, e⟩` from `exists_frac_genMap ξ hξ p z`. Conclude with `⟨b, c, by rw [hmap, hmap, ← e, mul_div_cancel_right₀ _ hc]⟩`. Establish `hb : _root_.IsIntegral (X.presheaf.stalk p.1) a` using `ha.tower_top`.
+
+Take `⟨w, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hb`. Conclude with `⟨w, rfl⟩`.
+-/
 theorem mem_regAt_of_isIntegral_of_stalk :
     ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (p : Cpt ξ), IsCptGen ξ →
       IsIntegrallyClosed (X.presheaf.stalk p.1) → ∀ a : Ω, IsIntegral ℤ a → a ∈ regAt ξ p := by

@@ -12,11 +12,21 @@ noncomputable section
 
 namespace GlobalTheory.WeylSpan
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pure_eq_pureA {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (f : SInf F κ)
     (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) :
     pure f φ = pureA F (⇑f) (fun y : κ → FiniteAdeleRing (𝓞 F) F => ∏ᶠ v, φ v fun i => evalV F v (y i)) := by
   rfl
 
+/- English proof (translation)
+Introduce `F _ _ κ _`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `Φ ⟨f, g, hg, rfl⟩`. Set `L : ((κ → FiniteAdeleRing (𝓞 F) F) → ℂ) →ₗ[ℂ] ((κ → AdeleRing (𝓞 F) F) → ℂ)` to `{ toFun := fun g => pureA F (⇑f) g map_add' := fun a b => by funext x; simp [pureA, mul_add] map_smul' := fun c a => by funext x; simp [pureA]; ring }`.
+
+Establish `h` using `GlobalTheory.SBSpan.mem_span_restrictedProd F κ g hg`. Establish `h2 : L g ∈ Submodule.map L (Submodule.span ℂ _)` using `Submodule.mem_map_of_mem h`. Rewrite `h2` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ h2` and prove the remaining obligations. Introduce and unpack `_ ⟨p, ⟨φ, hφ, hcof, rfl⟩, rfl⟩`.
+
+Conclude with `⟨f, φ, hφ, hcof, (pure_eq_pureA f φ).symm⟩`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `Φ ⟨f, φ, hφ, hcof, rfl⟩`. Use `Submodule.subset_span ⟨f, _, ?_, pure_eq_pureA f φ⟩` and prove the remaining obligations. Conclude with `⟨GlobalTheory.WeilM.isLocallyConstant_finprod_evalV φ hφ hcof, GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ hφ hcof⟩`.
+-/
 theorem schA_eq_span_pure : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ],
     schA F κ = Submodule.span ℂ {Φ | ∃ (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ), (∀ v, φ v ∈ SB _) ∧
       (∀ᶠ v in cofinite, φ v = GlobalTheory.SympChange.indO v) ∧ Φ = pure f φ} := by

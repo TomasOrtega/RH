@@ -28,6 +28,15 @@ variable {D : D7} {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] 
 end Two
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX}
+/- English proof (translation)
+Establish `hr : 2 ≤ D.R.r` using `by have := D.R.two_le_m; have := D.R.m_add_three_le_k; unfold Ranks.r; omega`. Establish `hk : 2 ≤ D.R.k` using `by have := D.R.two_le_m; have := D.R.m_add_three_le_k; omega`. Set `a : Fin D.R.r` to `⟨0, by omega⟩`. Set `b : Fin D.R.r` to `⟨1, by omega⟩`. Establish `hab : a ≠ b` using `fun e => by have := congrArg Fin.val e; simp [a, b] at this`.
+
+Set `g : 𝓞 D.host.E → ∀ P : (_root_.GlobalTheory.Fam.pk_z W).Pg, GL (Fin D.R.r) (kP P.1)` to `fun z P => elem a b hab (Ideal.Quotient.mk P.1.asIdeal (if P = PP then z else 0))`. Use `⟨fun z => if h : g z ∈ (_root_.GlobalTheory.Fam.complexLevelStructure W).H then (((_root_.GlobalTheory.Fam.complexLevelStructure W).chi ⟨g z, h⟩ : ℂˣ) : ℂ) else 0, ?_⟩` and prove the remaining obligations. Introduce `u f v n G pl hG i hi z`. Establish `hex : ∀ j, ∃ x, GlobalTheory.LevZero.Red (G j) (pl j).1 x (g z (pl j))` using `fun j => (GlobalTheory.LevZero.exists_red_iff_isPat (G j) (pl j).1 (hG.idem j).1 _).2 (isPat_elem a b hab (Or.inl ⟨by simp only [a]; omega, by simp only [b]; omega, by simp [a, b]⟩) _)`. Establish `hmem : g z ∈ (_root_.GlobalTheory.Fam.complexLevelStructure W).H` using `(hG.lev (g z)).1.2 hex`.
+
+Use `choose x hx using hex`. Establish `hchi` using `(hG.lev (g z)).2 hmem x hx`. Establish `hlam : ∀ j, (((G j).S.P.lam (x j) : ℂˣ) : ℂ) = (G j).S.ψ ((((G j).S.ϖ⁻¹ : (G j).kˣ) : (G j).k) * (ofSplit (G j).q).pr ((if pl j = PP then z else 0 : 𝓞 D.host.E) : D.host.E))` using `fun j => GlobalTheory.LevZero.lam_eq_of_red (G j) (pl j).1 (hG.idem j).1 (x j) _ (hx j) _ (edgeSum_elem a b hab ⟨rfl, by simp only [a]; omega⟩ _).symm`. Simplify using `only [dif_pos hmem]`. Rewrite using `[hchi, Units.coe_prod, Finset.prod_eq_single i (fun j _ hj => ?_) (by simp), hlam, if_pos hi]`.
+
+Rewrite using `[hlam, if_neg (fun e => hj (pl.injective (e.trans hi.symm)))]`. Simplify using `[Place.pr]`.
+-/
 theorem addChar_uniformizer_eq_chi_of_gRead (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (PP : (_root_.GlobalTheory.Fam.pk_z W).Pg) : ∃ χ : 𝓞 D.host.E → ℂ, ∀ u (f : _root_.GlobalTheory.Fam.FamilyCharacter W u) (v : VCom f.c) (n : ℕ)
     (G : Fin n → GLoc v) (pl : Fin n ≃ (_root_.GlobalTheory.Fam.pk_z W).Pg), _root_.GlobalTheory.Fam.LocalGroupReading f G pl → ∀ i, pl i = PP → ∀ z : 𝓞 D.host.E,
       ((G i).S.ψ ((((G i).S.ϖ⁻¹ : (G i).kˣ) : (G i).k) * (ofSplit (G i).q).pr (z : D.host.E)) : ℂ) = χ z := by
@@ -56,6 +65,21 @@ theorem addChar_uniformizer_eq_chi_of_gRead (W : _root_.GlobalTheory.MiS.RealPac
   rw [hlam, if_neg (fun e => hj (pl.injective (e.trans hi.symm)))]
   simp [Place.pr]
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hs` using `(G i).hs`. Establish `hodd` using `(G i).S.odd`. Establish `hρ : D.R.rS = (G i).S.ρ` using `by unfold Ranks.rS; omega`. Establish `h₀ : 0 + 2 * D.R.rS + 2 = D.R.m` using `by omega`. Establish `he` using `(hG.idem i).1`.
+
+Take `⟨μ, lam, hμ, hv, hτ⟩` from `hB.norm`. Establish `hsc` using `sc_mul_mu (G i) μ lam hμ o.ζ₀ hτ (hB.last i)`. Take `⟨e, hord, hM⟩` from `hG.frame i 0 ((G i).s + 1) (Nat.zero_add _)`. Set `p : Fin ((G i).s + 1)` to `⟨D.R.rS, by omega⟩`. Use `⟨e (.inl (.inr p)), hord _, fun r => ?_⟩` and prove the remaining obligations.
+
+Use `e_mul_of_prF (G i).q he _ _ _ ?_` and prove the remaining obligations. Use `map_inv_mulVec ((G i).q.prF he) _ _ (fun r => ((_root_.GlobalTheory.Fam.pk_z W).βY 0).val r (e (.inl (.inr p)))) _ (fun r => ?_) r` and prove the remaining obligations. Use `choose lf hlf using fun x : Formalism.IndefR.Datum.EAf D => GlobalTheory.ResLoc.toEAf_surj x`. Establish `h1` using `congrFun (congrFun (hM (((_root_.GlobalTheory.Fam.pk_z W).βY 0).val.map lf) (Matrix.ext fun a b => hlf _)) r) (e (.inl (.inr p)))`. Establish `h2 : (G i).q.prF he (((Formalism.IndefR.Lev.finE (Yc D 0) (f.g.b 0)).val *ᵥ fun r => ((_root_.GlobalTheory.Fam.pk_z W).βY 0).val r (e (.inl (.inr p)))) r) = (ofSplit (G i).q).π ((Formalism.L2.Theta.mt (Yc D 0) (f.g.b 0) * ((_root_.GlobalTheory.Fam.pk_z W).βY 0).val.map lf) r (e ( …`.
+
+Rewrite using `[Matrix.mul_apply, map_sum, mulVec, dotProduct, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← hlf (((_root_.GlobalTheory.Fam.pk_z W).βY 0).val a _)]`. Conclude with `(congrArg ((G i).q.prF he) ((toEAf D).map_mul _ _).symm).trans ((G i).q.prF_toEAf he _)`. Establish `h3 : (ofSplit (G i).q).π ((Formalism.L2.Theta.mt (Yc D 0) (f.g.b 0) * ((_root_.GlobalTheory.Fam.pk_z W).βY 0).val.map lf) r (e (.inl (.inr p)))) = ((G i).FY 0 ((G i).s + 1) (Nat.zero_add _)).β r (.inr p) * ((G i).S.ϖ : (G i).k) ^ (D.R.rS + 1)`.
+
+Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[submatrix_apply, Equiv.symm_apply_apply, GlobalTheory.LevZeroUp.bas_val, mul_diagonal]`. Rewrite using `[GlobalTheory.StepData.standardOrderExtendedBasis_apply_low_block (Fin D.R.k) (Fin D.R.t) (l := (G i).s + 1) 0 ((G i).s + 1) (Nat.zero_add _) p]`. Both sides reduce to the same expression. Establish `h4` using `((G i).bes 0 D.R.rS h₀ ((G i).s + 1) (Nat.zero_add _)).2.2.2.1 p rfl r`.
+
+Establish `h5 : B.d.i₀ *ᵥ vecB B.o B.ζ = (f.c.B 0 D.R.rS h₀).d.i₀ *ᵥ vecB (f.c.B 0 D.R.rS h₀).o (f.c.B 0 D.R.rS h₀).ζ` using `eq_of_heq (congr_arg_heq (fun B' : BesLev D D.R.rS => B'.d.i₀ *ᵥ vecB B'.o B'.ζ) (hB.lev h₀))`. Rewrite `h4` using `[← h5, hv r]`. Establish `h6 : (G i).q.prF he (algebraMap D.host.E (Formalism.IndefR.Lev.EAf D) (W.S.X.ιE (W.S.X.zR u (Fin.cast (rank_eq W.S.X W.Q.instEq) r)))) = (ofSplit (G i).q).pr (W.S.X.ιE (W.S.X.zR u (Fin.cast (rank_eq W.S.X W.Q.instEq) r)))` using `(G i).q.prF_toEAf he (incA D _)`. Establish `h7 : ∀ x y, (ofSplit (G i).q).pr (x * y) = (ofSplit (G i).q).pr x * (ofSplit (G i).q).pr y` using `fun x y => ((G i).q.pr.comp (incA D)).map_mul x y`. Rewrite `h4` using `[h7, ← mul_assoc, hsc, one_mul]`.
+
+Rewrite using `[h6, h2, h3, h4, mul_comm, mul_assoc, ← mul_pow, Units.mul_inv, one_pow, mul_one]`.
+-/
 theorem base_inv_alt_alt (W : _root_.GlobalTheory.MiS.RealPackAlt ex) {u : D.what₂.Word} (f : _root_.GlobalTheory.Fam.FamilyCharacter W u) (B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0))
     {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {ι : Type}
     (v : VCom f.c) (o : TDat f.c k ι) {n : ℕ} (G : Fin n → GLoc v) (pl : Fin n ≃ (_root_.GlobalTheory.Fam.pk_z W).Pg) (hG : _root_.GlobalTheory.Fam.LocalGroupReading f G pl)
@@ -103,6 +127,9 @@ theorem base_inv_alt_alt (W : _root_.GlobalTheory.MiS.RealPackAlt ex) {u : D.wha
     ((G i).q.pr.comp (incA D)).map_mul x y
   rw [h7, ← mul_assoc, hsc, one_mul] at h4
   rw [h6, h2, h3, h4, mul_comm, mul_assoc, ← mul_pow, Units.mul_inv, one_pow, mul_one]
+/- English proof (translation)
+Establish `h` using `GlobalTheory.MiTop.fixAux W.S.X W.Q.instEq hW.bot.idE (Formalism.L2.SG.PoincareInHH.PoincareSetting.fixSet W.S.X u) (W.S.X.zR u) (Or.inr rfl) (embA B.d B.o g)⁻¹ ((B.tieH _).1 ((embA B.d B.o).range.inv_mem ⟨g, rfl⟩))`. Use function extensionality and compare the values at `r`. Rewrite using `[← map_inv]`. Conclude with `((toEAf D).map_mulVec _ _ r).symm.trans (congrArg (toEAf D) (congrFun h r))`.
+-/
 theorem inv_mulVec_adelic_embedding_eq_self (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (hW : _root_.GlobalTheory.Fam.PackageHypotheses W) {u : D.what₂.Word} (B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0))
     (g : GA D (D.sp.X 0)) :
     ((Formalism.IndefR.Lev.finE (D.sp.Y 0) (embA B.d B.o g))⁻¹).val *ᵥ (fun r => algebraMap D.host.E (Formalism.IndefR.Lev.EAf D)
@@ -116,6 +143,21 @@ theorem inv_mulVec_adelic_embedding_eq_self (W : _root_.GlobalTheory.MiS.RealPac
 end GlobalTheory.MiTop.MoveZ
 open GlobalTheory.MiTop.MoveZ in
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W hW hr PP hPP`. Take `⟨χ, hχ⟩` from `_root_.GlobalTheory.MiTop.MoveZ.addChar_uniformizer_eq_chi_of_gRead W ⟨PP, hPP⟩`. Distinguish the cases in `hex : ∃ u, ∃ (f : _root_.GlobalTheory.Fam.FamilyCharacter W u) (B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)), _root_.GlobalTheory.MiTop.PlacedAlt f B`. Use `swap`. Conclude with `⟨0, fun u f B h => absurd ⟨u, f, B, h⟩ hex⟩`.
+
+Take `⟨u₀, f₀, B₀, k₀, _, _, _, _, ι₀, v₀, o₀, n₀, G₀, pl₀, -, -, -, -, -, hG₀, hB₀⟩` from `hex`. Take `⟨i₀, hi₀⟩` from `pl₀.surjective ⟨PP, hPP⟩`. Establish `he₀ : Formalism.L2.NTheta.IsIdemAt (G₀ i₀).q.e PP` using `by have := (hG₀.idem i₀).1; rwa [hi₀] at this`. Take `⟨j₀, hj₀, -⟩` from `_root_.GlobalTheory.MiTop.MoveZ.base_inv_alt_alt W f₀ B₀ v₀ o₀ G₀ pl₀ hG₀ hB₀ i₀`. Use `⟨fun r => toEAf D ((G₀ i₀).q.sec (((((G₀ i₀).S.ϖ⁻¹ : (G₀ i₀).kˣ) : (G₀ i₀).k)) ^ (D.R.rS + 1))) * ((_root_.GlobalTheory.Fam.pk_z W).βY 0).val r j₀, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `u f B ⟨k, _, _, _, _, ι, v, o, n, G, pl, -, -, -, -, -, hG, hB⟩ a₀ a -`. Take `⟨i, hi⟩` from `pl.surjective ⟨PP, hPP⟩`. Establish `he : Formalism.L2.NTheta.IsIdemAt (G i).q.e PP` using `by have := (hG.idem i).1; rwa [hi] at this`. Establish `hee : (G₀ i₀).q.e = (G i).q.e` using `GlobalTheory.LocMod.PinInhab.idem_unique he₀ he`. Take `⟨j, hj, hz⟩` from `_root_.GlobalTheory.MiTop.MoveZ.base_inv_alt_alt W f B v o G pl hG hB i`.
+
+Take `rfl : j = j₀` from `Fin.ext (hj.trans hj₀.symm)`. Establish `hrat` using `unif_ratio (G₀ i₀).q (G i).q he₀ hee (_root_.GlobalTheory.Fam.pk_z W).ψ _ _ (G₀ i₀).char (G i).char (G₀ i₀).S.cond _ _ (G₀ i₀).S.unif (G i).S.unif fun z => (hχ u₀ f₀ v₀ n₀ G₀ pl₀ hG₀ i₀ hi₀ z).trans (hχ u f v n G pl hG i hi z).symm`. Take `⟨θ, hθ, h1, h2⟩` from `exists_theta (G₀ i₀).q he₀ _ (pow_sub_one_lt hrat (D.R.rS + 1))`. Use `⟨θ, hθ, h1, fun ei hei => ?_⟩` and prove the remaining obligations. Take `rfl : ei = (G i).q.e` from `GlobalTheory.LocMod.PinInhab.idem_unique hei he`.
+
+Establish `h3 : toEAf D ((G i).q.sec (((((G i).S.ϖ⁻¹ : (G i).kˣ) : (G i).k)) ^ (D.R.rS + 1))) = toEAf D (G i).q.e * θ * toEAf D ((G₀ i₀).q.sec (((((G₀ i₀).S.ϖ⁻¹ : (G₀ i₀).kˣ) : (G₀ i₀).k)) ^ (D.R.rS + 1)))`. Rewrite using `[← hee, h2, ← RingHom.map_mul, ← sec_mul_sec, ← mul_pow, mul_right_comm, Units.mul_inv, one_mul, ← map_pow, sec_chg]`. Establish `h4 : (((Formalism.IndefR.Lev.finE (Yc D 0) (show GA D (Yc D 0) from embA B.d B.o (a₀ * a) * (show GA D (D.sp.Y 0) from f.g.b 0))))⁻¹ : GL (Fin (Yc D 0).rank) (Formalism.IndefR.Lev.EAf D)).val = ((Formalism.IndefR.Lev.finE (Yc D 0) (f.g.b 0))⁻¹).val * ((Formalism.IndefR.Lev.finE ( …`. Use `(Formalism.IndefR.Lev.finE (D.sp.Y 0)).map_mul (embA B.d B.o (a₀ * a)) (f.g.b 0)` as an intermediate fact. Conclude with `congrArg Units.val ((congrArg Inv.inv this).trans (_root_.mul_inv_rev _ _))`.
+
+Use function extensionality and compare the values at `r`. Rewrite using `[h4, ← mulVec_mulVec]`. Establish `h5` using `_root_.GlobalTheory.MiTop.MoveZ.inv_mulVec_adelic_embedding_eq_self W hW B (a₀ * a)`. Use `Eq.trans ?_ ((hz r).trans ?_)` and prove the remaining obligations. Conclude with `congrArg (fun w => toEAf D (G i).q.e * (((Formalism.IndefR.Lev.finE (Yc D 0) (f.g.b 0))⁻¹).val *ᵥ w) r) h5`.
+
+Rewrite using `[h3, mul_assoc, mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.MiTop.base_moves_vector_z_alt_bis : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.PackageHypotheses W → 1 ≤ D.R.rS → ∀ PP ∈ (W.Q.Rl.dat0 (W.Q.Rl.toRealDat.levR W.Q.F.lv2 true)).Pg, ∃ Γ : Fin (Yc D 0).rank → Formalism.IndefR.Lev.EAf D, ∀ u (f : _root_.GlobalTheory.Fam.FamilyCharacter W u) (B : SBes W.S.X W.Q.instEq u W.Q.Rl.ψ (D.sp.X 0)), _root_.GlobalTheory.MiTop.PlacedAlt f B → ∀ a₀ a, _root_.GlobalTheory.MiTop.IsTranslate' f B a₀ a → ∃ (θ : Formalism.IndefR.Lev.EAf D) (hθ : θ ∈ Formalism.L2.Herm.intAf D.host.F D.host.E), Formalism.L2.DIV.resS D.host.F PP ⟨θ, hθ⟩ = 1 ∧ ∀ ei : AE D, Formalism.L2.NTheta.IsIdemAt ei PP → toEAf D ei • Matrix.mulVec (((Formalism.IndefR.Lev.finE (Yc D 0) (show GA D (Yc D 0) from embA B.d B.o (a₀ * a) * (show GA D (D.sp.Y 0) from f.g.b 0))))⁻¹ : GL (Fin (Yc D 0).rank) (Formalism.IndefR.Lev.EAf D)).val (fun r => algebraMap D.host.E (Formalism.IndefR.Lev.EAf D) (W.S.X.ιE (W.S.X.zR u (Fin.cast (rank_eq W.S.X W.Q.instEq) r)))) = toEAf D ei • (θ • Γ) := by
   intro D L hT Gi Gl Kc Yd cX ex W hW hr PP hPP
   obtain ⟨χ, hχ⟩ := _root_.GlobalTheory.MiTop.MoveZ.addChar_uniformizer_eq_chi_of_gRead W ⟨PP, hPP⟩

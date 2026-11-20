@@ -20,11 +20,19 @@ namespace GlobalTheory
 
 namespace WeightDvd
 
+/- English proof (translation)
+Rewrite using `[← gs_pull r g z U h, gs_stalkMap r z _ h]`. Conclude with `congrArg _ ((gs_pull (𝟙 Y) g (r z) U h a).trans (by rw [Category.id_comp]))`.
+-/
 theorem gs_comp_stalkMap {X Y Z : Scheme.{0}} (r : Z ⟶ Y) (g : Y ⟶ X) (z : Z) (U : X.Opens) (h : g (r z) ∈ U)
     (a : Γ(X, U)) : gs (r ≫ g) z U a = (r.stalkMap z).hom (gs g (r z) U a) := by
   rw [← gs_pull r g z U h, gs_stalkMap r z _ h]
   exact congrArg _ ((gs_pull (𝟙 Y) g (r z) U h a).trans (by rw [Category.id_comp]))
 
+/- English proof (translation)
+Rewrite using `[← Ideal.mem_span_singleton, (isAffineOpen_top P).mem_ideal_iff]`. Introduce `z hz`. Rewrite using `[Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton]`. Establish `k : ∀ c : Γ(T, W), (P.presheaf.germ ⊤ z hz).hom ((p.appLE W ⊤ e).hom c) = (p.stalkMap z).hom (gs (𝟙 T) (p z) W c)` using `fun c => ((gs_eq (𝟙 P) z ⊤ hz _).symm.trans (gs_appLE p W ⊤ e (𝟙 P) z hz c)).trans ((by rw [Category.id_comp] : gs (𝟙 P ≫ p) z W c = gs p z W c).trans (gs_stalkMap p z W (e hz) c))`. Use `map_dvd (p.stalkMap z).hom (h (p z) (e hz))` as an intermediate fact.
+
+Rewrite `this` using `[← k, ← k]`. Conclude with `this`.
+-/
 theorem appLE_dvd {P T : Scheme.{0}} [IsAffine P] (p : P ⟶ T) (W : T.Opens) (e : ⊤ ≤ p ⁻¹ᵁ W) (u v : Γ(T, W))
     (h : ∀ w ∈ W, gs (𝟙 T) w W u ∣ gs (𝟙 T) w W v) : (p.appLE W ⊤ e).hom u ∣ (p.appLE W ⊤ e).hom v := by
   rw [← Ideal.mem_span_singleton, (isAffineOpen_top P).mem_ideal_iff]
@@ -38,6 +46,13 @@ theorem appLE_dvd {P T : Scheme.{0}} [IsAffine P] (p : P ⟶ T) (W : T.Opens) (e
   rw [← k, ← k] at this
   exact this
 
+/- English proof (translation)
+Introduce `χ₀ hχ₀`. Establish `k : ∀ (w : (splitTorus S X ⊗ Y).left) (hw : (snd (splitTorus S X) Y).left w ∈ V) (c : Γ(Y.left, V)), gs (𝟙 _) w ((snd (splitTorus S X) Y).left ⁻¹ᵁ V) (((snd (splitTorus S X) Y).left.app V).hom c) = gs (snd (splitTorus S X) Y).left w V c` using `fun w hw c => (gs_pull (𝟙 _) _ w V hw c).trans (by rw [Category.id_comp])`. Establish `H` using `appLE_dvd (TorusInj.pt (X := X) hV) _ (TorusInj.pt_le hV) (((snd (splitTorus S X) Y).left.app V).hom a) (∑ χ ∈ s, ((splitTorus S X ⊗ Y).left.presheaf.map (homOfLE le_top).op).hom (TorusInj.chiP X Y χ) * ((snd (splitTorus S X) Y).left.app V).hom (h χ)) fun w hw => by`. Rewrite using `[k w hw, gs_fsum (𝟙 _) w _ hw]`. Use `(hs w hw).trans (dvd_of_eq (Finset.sum_congr rfl fun χ _ => ?_))` and prove the remaining obligations.
+
+Rewrite using `[gs_mul (𝟙 _) w _ hw, k w hw, gs_res (𝟙 _) w _ hw]`. Establish `H' : TorusInj.ev hV (((snd (splitTorus S X) Y).left.app V).hom a) ∣ TorusInj.ev hV (∑ χ ∈ s, ((splitTorus S X ⊗ Y).left.presheaf.map (homOfLE le_top).op).hom (TorusInj.chiP X Y χ) * ((snd (splitTorus S X) Y).left.app V).hom (h χ))` using `map_dvd (Scheme.ΓSpecIso (TorusInj.GA (X := X) (V := V))).hom.hom H`. Simplify using `only [map_sum, map_mul, TorusInj.ev_chi, TorusInj.ev_snd, AddMonoidAlgebra.single_mul_single, add_zero, _root_.one_mul] at H'`. Take `⟨g, hg⟩` from `H'`. Establish `hc` using `congrArg (fun f => f.coeff χ₀) hg`.
+
+Rewrite `hc` using `[TorusInj.coeff_sum_single X s _ χ₀ hχ₀]`. Use `⟨g.coeff χ₀, hc.trans ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem dvd_of_sum {S : Scheme.{0}} (X : Type) [AddCommGroup X] (Y : Over S) {V : Y.left.Opens} (hV : IsAffineOpen V)
     (s : Finset X) (a : Γ(Y.left, V)) (h : X → Γ(Y.left, V))
     (hs : ∀ w : (splitTorus S X ⊗ Y).left, (snd (splitTorus S X) Y).left w ∈ V →
@@ -71,6 +86,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
   {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G) (e k : ℕ)
 
+/- English proof (translation)
+Establish `E` using `val_corr hJ ((U.gt e).t_weight β) (𝟙 _)`. Rewrite `E` using `[val_mul hJ, val_pull hJ, val_pull hJ, Category.id_comp, Category.id_comp]`. Use `(congrArg Units.val E).trans ((Units.val_mul _ _).trans (congrArg₂ (· * ·) ?_ rfl))` and prove the remaining obligations. Establish `hm` using `hJ.mem (L := D.toPre.P.L) (K := PEmpty) (Y := (WeightPf.Te D.toPre I e ⊗ thickObj R I e G).left) PEmpty.elim (𝟙 _)`. Conclude with `(congrArg Units.val (gm_rp₁ (fst (WeightPf.Te D.toPre I e) (thickObj R I e G)).left w ⊤ _ _ hm (charUnit _ D.toPre.X β))).trans ((gs_unit _ w ⊤ trivial _).symm.trans ((gs_pull (𝟙 _) (fst (WeightPf.Te D.toPre I e) (thickObj R I e G)).left w ⊤ trivial _).trans (by rw [Category.id_c …`.
+-/
 theorem val_act (β : D.toPre.X) (w : (WeightPf.Te D.toPre I e ⊗ thickObj R I e G).left) {J}
     (hJ : Good D.toPre.P.L w J) :
     (val (tG U e β) (WeightPf.act (U.gt e)).left w J).val =
@@ -86,6 +104,25 @@ theorem val_act (β : D.toPre.X) (w : (WeightPf.Te D.toPre I e ⊗ thickObj R I 
       ((gs_pull (𝟙 _) (fst (WeightPf.Te D.toPre I e) (thickObj R I e G)).left w ⊤ trivial _).trans
         (by rw [Category.id_comp])).symm)
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `expandsAt_val U e k σ f hE`. Distinguish the cases in `hα : α ∉ S`. Use `(hS _ (𝟙 _) y J hJ).1 α hα` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Rewrite using `[this]`.
+
+Conclude with `dvd_zero _`. Use `push Not at hα`. Set `jf : D.toPre.X → Fin 4 → D.toPre.P.L.ι` to `fun β a => J (pGl U e ≫ D.toPre.famφB β a)`. Set `jt : D.toPre.X → Fin 4 → D.toPre.P.L.ι` to `fun β a => J (Oφl U e β a)`. Establish `hy : y ∈ S.inf (fun β => pGl U e ⁻¹ᵁ LB.wchart D.toPre.P.L (D.toPre.famφB β) (jf β) ⊓ LB.wchart D.toPre.P.L (Oφl U e β) (jt β))` using `mem_finf S _ _ fun β _ => ⟨hJ.mem (D.toPre.famφB β) (pGl U e), Set.mem_iInter.2 fun a => hJ _⟩`.
+
+Take `⟨_, ⟨V, hV, rfl⟩, hyV, hVW⟩` from `((thickObj R I e G).left.isBasis_affineOpens).exists_subset_of_mem_open hy (S.inf (fun β => pGl U e ⁻¹ᵁ LB.wchart D.toPre.P.L (D.toPre.famφB β) (jf β) ⊓ LB.wchart D.toPre.P.L (Oφl U e β) (jt β))).2`. Establish `hVW' : V ≤ S.inf (fun β => pGl U e ⁻¹ᵁ LB.wchart D.toPre.P.L (D.toPre.famφB β) (jf β) ⊓ LB.wchart D.toPre.P.L (Oφl U e β) (jt β))` using `hVW`. Establish `hVf : ∀ β ∈ S, V ≤ pGl U e ⁻¹ᵁ LB.wchart D.toPre.P.L (D.toPre.famφB β) (jf β)` using `fun β hβ => hVW'.trans ((Finset.inf_le hβ).trans inf_le_left)`. Establish `hVt : ∀ β ∈ S, V ≤ LB.wchart D.toPre.P.L (Oφl U e β) (jt β)` using `fun β hβ => hVW'.trans ((Finset.inf_le hβ).trans inf_le_right)`. Establish `ex : ∀ β ∈ S, ∃ c : Γ((thickObj R I e G).left, V), ∀ (Z : Scheme.{0}) (ρ : Z ⟶ (thickObj R I e G).left) (z : Z), ρ z ∈ V → gs ρ z V c = gs (ρ ≫ pGl U e) z (LB.wchart D.toPre.P.L (D.toPre.famφB β) (jf β)) ((f β).f (jf β)) * (gm ρ z (LB.wchart D.toPre.P.L (Oφl U e β) (jt β)) ((tG U …` using `fun β hβ => ⟨((pGl U e).appLE _ V (hVf β hβ)).hom ((f β).f (jf β)) * (res (hVt β hβ) ((tG U e β).s (jt β))).val, fun Z ρ z hz => (gs_mul ρ z V hz _ _).trans (congrArg₂ (· * ·) (gs_appLE _ _ V _ ρ z hz _) ((gs_unit ρ z V hz _).trans (congrArg Units.val (gm_res ρ z _ hz _))))⟩`.
+
+Use `choose! c hc using ex`. Establish `hpG` using `WeightPf.act_left_pG (U.gt e)`. Establish `hb : pGl U e ≫ D.toPre.P.A.hom = fGl I G e ≫ G.hom` using `(Over.w (U.gt e).pG).trans (Over.w (fstG I e G)).symm`. Establish `H` using `dvd_of_sum D.toPre.X (thickObj R I e G) hV S (constFn (pGl U e ≫ D.toPre.P.A.hom) V r) c (fun w hw => by choose d hd using fun ψ : (WeightPf.Te D.toPre I e ⊗ thickObj R I e G).left ⟶ D.toPre.P.A.left => exists_chart D.toPre.P.isLB (ψ w)`. Set `J₂ : ((WeightPf.Te D.toPre I e ⊗ thickObj R I e G).left ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι` to `fun ψ => if ψ w ∈ D.toPre.P.L.U (J ((WeightPf.sec (D := D.toPre) (G := G) (I := I) (e := e)).left ≫ ψ)) then J ((WeightPf.sec (D := D.toPre) (G := G) (I := I) (e := e)).left ≫ ψ) else d ψ`.
+
+Establish `hJ₂ : Good D.toPre.P.L w J₂` using `fun ψ => by`. Distinguish the cases in `h : ψ w ∈ D.toPre.P.L.U (J ((WeightPf.sec (D := D.toPre) (G := G) (I := I) (e := e)).left ≫ ψ))`. Simplify `h` using `only [J₂, if_pos h]`. Simplify `hd ψ` using `only [J₂, if_neg h]`. Establish `eJ : ∀ φ : (thickObj R I e G).left ⟶ D.toPre.P.A.left, φ ((snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left w) ∈ D.toPre.P.L.U (J φ) → J₂ ((snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left ≫ φ) = J φ` using `fun φ h => by`.
+
+Establish `e₁ : (WeightPf.sec (D` using `D.toPre) (G := G) (I := I) (e := e)).left ≫ (snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left ≫ φ = φ := by`. Rewrite using `[← Category.assoc, WeightPf.sec_left_snd, Category.id_comp]`. Simplify using `only [J₂, e₁]`. Conclude with `if_pos h`. Take `⟨jL, hL⟩` from `exists_chart U.LG.isLB (fGl I G e ((WeightPf.act (U.gt e)).left w))`.
+
+Establish `E` using `(hS _ (WeightPf.act (U.gt e)).left w J₂ hJ₂).2 jL hL`. Establish `hs : sv U k σ ((WeightPf.act (U.gt e)).left ≫ fGl I G e) w jL = cst (((WeightPf.act (U.gt e)).left ≫ fGl I G e) ≫ G.hom) w r * sv U k τ ((WeightPf.act (U.gt e)).left ≫ fGl I G e) w jL` using `secIsMul_gs hσ _ w (fun _ => jL) (Set.mem_iInter.2 fun _ => hL)`. Establish `e₂ : ((WeightPf.act (U.gt e)).left ≫ fGl I G e) ≫ G.hom = (snd (WeightPf.Te D.toPre I e) (thickObj R I e G)).left ≫ pGl U e ≫ D.toPre.P.A.hom`. Rewrite using `[Category.assoc, ← hb, ← Category.assoc, hpG, Category.assoc]`. Rewrite `E` using `[hs, e₂, mul_left_comm]`.
+
+Use `(dvd_of_eq (gs_constFn _ V _ w hw r)).trans ((Dvd.intro _ E).trans (dvd_of_eq (Finset.sum_congr rfl fun β hβ => ?_)))` and prove the remaining obligations. Rewrite using `[hc β hβ _ _ w hw, val_act U e β w hJ₂, mul_left_comm, hpG, sval_of (f β) _ w J₂ (jf β) (fun a => by`. Rewrite using `[Category.assoc]`. Conclude with `eJ _ (Set.mem_iInter.1 (hVf β hβ hw) a)),`. Use `val_of (tG U e β) _ w J₂ (jt β) (fun a => eJ _ (Set.mem_iInter.1 (hVt β hβ hw) a))]) α hα`.
+
+Take `⟨g, hg⟩` from `H`. Establish `E` using `hc α hα _ (𝟙 _) y hyV`. Rewrite `E` using `[hg, gs_mul (𝟙 _) y V hyV, gs_constFn _ V (𝟙 _) y hyV, Category.id_comp, Category.id_comp]`. Conclude with `(Units.dvd_mul_right).1 (Dvd.intro _ E)`.
+-/
 theorem dvd_on_group (r : R) (σ τ : H0 U.LG.L k) (f : ∀ α : D.toPre.X, D.toPre.SecB k α) (hσ : SecIsMul G.hom r σ τ)
     (hE : U.ExpandsAt e k σ f) (α : D.toPre.X) (y : (thickObj R I e G).left) (J) (hJ : Good D.toPre.P.L y J) :
     cst (pGl U e ≫ D.toPre.P.A.hom) y r ∣ sval (f α) (pGl U e) y J := by
@@ -162,6 +199,13 @@ theorem dvd_on_group (r : R) (σ τ : H0 U.LG.L k) (f : ∀ α : D.toPre.X, D.to
 
 end WeightDvd
 
+/- English proof (translation)
+Introduce `R _ _ I D A G _ _ U e k r σ τ f hσ hE α x J hJ`. Use `(U.gt e).q_flat` as an intermediate fact. Take `⟨y, rfl⟩` from `(U.gt e).q_surj.surj x`. Use `choose J' hJ' using fun ψ : (thickObj R I e G).left ⟶ D.toPre.P.A.left => exists_chart D.toPre.P.isLB (ψ y)`. Establish `H` using `WeightDvd.dvd_on_group U e k r σ τ f hσ hE α y J' hJ'`.
+
+Establish `hm` using `hJ.mem (D.toPre.famφB α) (fstG I e D.toPre.P.A).left`. Establish `e₁` using `WeightDvd.gs_comp_stalkMap (U.gt e).q.left (fstG I e D.toPre.P.A).left y _ hm ((f α).f fun a => J ((fstG I e D.toPre.P.A).left ≫ D.toPre.famφB α a))`. Establish `e₂` using `WeightDvd.gs_comp_stalkMap (U.gt e).q.left ((fstG I e D.toPre.P.A).left ≫ D.toPre.P.A.hom) y ⊤ trivial ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r)`. Establish `e₃` using `sec_trans (f α) (pGl U e) y hm (Good.mem hJ' (D.toPre.famφB α) (pGl U e))`. Use `dvd_descend (U.gt e).q.left y ?_` and prove the remaining obligations.
+
+Conclude with `(dvd_of_eq e₂.symm).trans ((H.mul_left _).trans (dvd_of_eq (e₃.symm.trans e₁)))`.
+-/
 theorem expandsAt_dvd_of_secIsMul : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G) (e k : ℕ) (r : R) (σ τ : H0 U.LG.L k) (f : ∀ α : D.toPre.X, D.toPre.SecB k α), SecIsMul G.hom r σ τ → U.ExpandsAt e k σ f → ∀ (α : D.toPre.X) (x : (thickObj R I e D.toPre.P.A).left) (J), Geo.Tor.Good D.toPre.P.L x J → Geo.Tor.cst ((fstG I e D.toPre.P.A).left ≫ D.toPre.P.A.hom) x r ∣ Geo.Tor.sval (f α) (fstG I e D.toPre.P.A).left x J := by
   intro R _ _ I D A G _ _ U e k r σ τ f hσ hE α x J hJ
   have := (U.gt e).q_flat

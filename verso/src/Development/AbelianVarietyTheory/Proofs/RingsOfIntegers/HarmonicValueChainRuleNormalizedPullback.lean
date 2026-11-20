@@ -12,6 +12,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.PlaceInt
 namespace GlobalTheory.PlaceInt
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c inst hstar nab hnab S _ _ y a N k k' haN hk n F F' hF w P hP`. Establish `e : inst = H.starRing` using `GlobalTheory.PowGerm.starRing_ext_of_star _ _ (fun x => (hstar x).trans rfl)`. Substitute `e` using the available equality. Take `⟨⟨b, hbM⟩, hb⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors (𝓞 c.F)) P.support (fun m => P.coeff m)`. Establish `hb0 : algebraMap (𝓞 c.F) c.F b ≠ 0`.
+
+Introduce `h0`. Conclude with `nonZeroDivisors.ne_zero hbM ((IsFractionRing.injective (𝓞 c.F) c.F) (by rw [h0, map_zero]))`. Establish `hsmul : ∀ (k0 : ℕ) (G : Fin n → SecN Xo y.x k0), hv Xo c nab y k0 G (algebraMap (𝓞 c.F) c.F b • P) = algebraMap c.F S (algebraMap (𝓞 c.F) c.F b) * hv Xo c nab y k0 G P`. Introduce `k0 G`. Unfold `hv`.
+
+Rewrite using `[MvPolynomial.support_smul_eq hb0, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun m _ => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul, map_mul, _root_.mul_assoc]`. Establish `hQ : algebraMap (𝓞 c.F) c.F b • P ∈ harmA c w n`. Unfold `HH HHa at hP`.
+
+Take `⟨h1, h2, h3⟩` from `hP`. Use `⟨⟨Submodule.smul_mem _ _ h1, fun σ i i' hi t => by rw [map_smul, h2 σ i i' hi t], fun m hm σ i => h3 m (MvPolynomial.support_smul hm) σ i⟩, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`. Distinguish the cases in `hm : m ∈ P.support`. Take `⟨r, hr⟩` from `hb m hm`.
+
+Establish `hr' : algebraMap (𝓞 c.F) c.F r = algebraMap (𝓞 c.F) c.F b * P.coeff m`. Rewrite using `[hr, Algebra.smul_def]`. Rewrite using `[← hr']`. Conclude with `r.2`. Rewrite using `[MvPolynomial.notMem_support_iff.mp hm, mul_zero]`.
+
+Conclude with `Subring.zero_mem _`. Establish `key : hv Xo c nab y k' F' (algebraMap (𝓞 c.F) c.F b • P) = algebraMap c.F S (nrm Dw c w a) * hv Xo c nab y k F (algebraMap (𝓞 c.F) c.F b • P)` using `GlobalTheory.T.harmonic_value_normalised_pullback_chain_rule E H Dw l Xo c nab hnab S y a N k (k' : ℤ) (by rw [hstar]; exact haN) (by exact_mod_cast hk) n F F' (fun i => hF i) w _ hQ`. Rewrite `key` using `[hsmul, hsmul, _root_.mul_left_comm]`. Conclude with `mul_left_cancel₀ ((map_ne_zero _).mpr hb0) key`.
+-/
 theorem hv_pulls : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ nab : NabV Xo c, IsNab Xo c nab → ∀ (S : Type) [Field S] [Algebra c.F S] (y : FrPt Xo c S) (a : 𝓞 E) (N k k' : ℕ), a * H.bar a = (N : 𝓞 E) → k' = k * N → ∀ (n : ℕ) (F : Fin n → SecN Xo y.x k) (F' : Fin n → SecN Xo y.x k'), (∀ b, Pulls Xo a (F b) (F' b)) → ∀ (w : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (LtN Dw n) c.F), P ∈ HH c w n → hv Xo c nab y k' F' P = algebraMap c.F S (nrm Dw c w a) * hv Xo c nab y k F P := by
   intro E _ _ _ H Dw l Xo c inst hstar nab hnab S _ _ y a N k k' haN hk n F F' hF w P hP
   have e : inst = H.starRing := GlobalTheory.PowGerm.starRing_ext_of_star _ _ (fun x => (hstar x).trans rfl)

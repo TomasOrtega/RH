@@ -23,11 +23,17 @@ def RestValNum : Prop :=
             2 * (expU X.p (r := X.r) (gB C0 CE1 CE2 X aTop aPlus b) (aBig X) : ℝ) ≤
           (padicValNat X.p (μ.prod fun _ k => k.factorial) : ℝ) + levelPassageLoss X
 
+/- English proof (translation)
+Introduce `aTop hT aPlus hP b hK l hl z hz μ hμ`. Take `⟨j', jp', hl', hw⟩` from `SSZ_support X.p (r := X.r) (gB C0 CE1 CE2 X aTop aPlus b) z hz μ hμ`. Conclude with `h aTop hT aPlus hP b hK l hl j' jp' hl' μ hw`.
+-/
 theorem restVal_of_num (h : RestValNum C0 CE1 CE2 X) : RestVal C0 CE1 CE2 X := by
   intro aTop hT aPlus hP b hK l hl z hz μ hμ
   obtain ⟨j', jp', hl', hw⟩ := SSZ_support X.p (r := X.r) (gB C0 CE1 CE2 X aTop aPlus b) z hz μ hμ
   exact h aTop hT aPlus hP b hK l hl j' jp' hl' μ hw
 
+/- English proof (translation)
+The claim follows from `block_valuation_Zp_of_valuation_bound C0 CE1 CE2 X hCYb hCE1 hCE2 hH (restVal_of_num C0 CE1 CE2 X hV)`.
+-/
 theorem block_valuation_Zp_of_numeric_bound {CYb Cde Ck CD Cb Cc : ℝ} (hCYb : 1 ≤ CYb) (hCE1 : 0 ≤ CE1) (hCE2 : 0 ≤ CE2)
     (hH : flipOneThree.HI C0 CYb Cde Ck CD Cb Cc X) (hV : RestValNum C0 CE1 CE2 X) : BlockBoundIntegers C0 CE1 CE2 X :=
   block_valuation_Zp_of_valuation_bound C0 CE1 CE2 X hCYb hCE1 hCE2 hH (restVal_of_num C0 CE1 CE2 X hV)

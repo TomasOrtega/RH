@@ -7,6 +7,21 @@ noncomputable section
 
 namespace GlobalTheory.JR.GLift
 
+/- English proof (translation)
+Use `set t : Matrix (Fin r) (Fin r) F := (m : Matrix _ _ F).submatrix Fin.castSucc Fin.castSucc with ht`. Establish `hcol : ∀ i, (m : Matrix _ _ F) i (Fin.last r) = (Pi.single (Fin.last r) (1 : F) : Fin (r + 1) → F) i`. Introduce `i`. Use `congrFun hc i` as an intermediate fact. Simplify `this` using `[GlobalTheory.JR.Step.eL, Matrix.mulVec_single_one]`.
+
+Establish `hrow : ∀ j, (m : Matrix _ _ F) (Fin.last r) j = (Pi.single (Fin.last r) (1 : F) : Fin (r + 1) → F) j`. Introduce `j`. Use `congrFun hr j` as an intermediate fact. Simplify `this` using `[GlobalTheory.JR.Step.eL, Matrix.single_one_vecMul]`. Establish `hm : (m : Matrix _ _ F) = GlobalTheory.JR.Step.embHom r F t`.
+
+Use extensionality with `i j`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Rewrite using `[hrow j]`. Proceed by induction on `j using Fin.lastCases with`.
+
+Consider the case `last => simp [GlobalTheory.JR.Step.embHom]`. Consider the case `cast j => simp [GlobalTheory.JR.Step.embHom, Fin.castSucc_ne_last]`. Consider the case `cast i`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => rw [hcol]`.
+
+Simplify using `[GlobalTheory.JR.Step.embHom, Fin.castSucc_ne_last]`. Consider the case `cast j => simp [GlobalTheory.JR.Step.embHom, ht]`. Establish `hdet : (m : Matrix (Fin (r + 1)) (Fin (r + 1)) F).det = t.det`. Rewrite using `[hm]`. Simplify using `[GlobalTheory.JR.Step.embHom, Matrix.det_fromBlocks_zero₂₁]`.
+
+Establish `hu : IsUnit t.det`. Rewrite using `[← hdet]`. Conclude with `(Matrix.isUnit_iff_isUnit_det (m : Matrix (Fin (r + 1)) (Fin (r + 1)) F)).mp (Units.isUnit m)`. Use `⟨Matrix.nonsingInvUnit t hu, ?_⟩` and prove the remaining obligations. Use extensionality with `: 1`.
+
+Rewrite using `[hm]`. Both sides reduce to the same expression.
+-/
 theorem exists_emb_of_last {F : Type} [Field F] (r : ℕ) (m : GL (Fin (r + 1)) F)
     (hc : (m : Matrix _ _ F) *ᵥ GlobalTheory.JR.Step.eL r F = GlobalTheory.JR.Step.eL r F)
     (hr : GlobalTheory.JR.Step.eL r F ᵥ* (m : Matrix _ _ F) = GlobalTheory.JR.Step.eL r F) :
@@ -48,6 +63,17 @@ end GlobalTheory.JR.GLift
 
 namespace GlobalTheory.JR.GLift
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ r Z μ l hμ g hg`. Take `⟨-, hb, hc, -⟩` from `Set.mem_of_indicator_ne_zero hg`. Simplify using `only [act, GlobalTheory.JR.Step.lift] at hb hc`. Use `set e : Fin (r + 1) → F := GlobalTheory.JR.Step.eL r F with he`. Establish `hv : ∀ i, ‖((g : Matrix (Fin (r + 1)) (Fin (r + 1)) F) *ᵥ e) i‖ ≤ 1`.
+
+Introduce `i`. Use `hb i` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, norm_mul, hμ, one_mul]`. Then use the resulting hypothesis. Establish `hw : ∀ i, ‖(e ᵥ* ((g⁻¹ : GL (Fin (r + 1)) F) : Matrix (Fin (r + 1)) (Fin (r + 1)) F)) i‖ ≤ 1` using `hc`. Establish `hgg : ((g⁻¹ : GL (Fin (r + 1)) F) : Matrix (Fin (r + 1)) (Fin (r + 1)) F) * (g : Matrix (Fin (r + 1)) (Fin (r + 1)) F) = 1` using `Units.inv_mul g`.
+
+Establish `hee : e ⬝ᵥ e = 1` using `by simp [he, GlobalTheory.JR.Step.eL]`. Establish `hwv : (e ᵥ* ((g⁻¹ : GL (Fin (r + 1)) F) : Matrix (Fin (r + 1)) (Fin (r + 1)) F)) ⬝ᵥ ((g : Matrix (Fin (r + 1)) (Fin (r + 1)) F) *ᵥ e) = 1`. Rewrite using `[← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, hgg, Matrix.one_mulVec, hee]`. Take `⟨k, hk, hkv, hkw⟩` from `GlobalTheory.LatL.glO_transitive_pairs F E r _ _ hv hw hwv`. Establish `hkv' : (k : Matrix (Fin (r + 1)) (Fin (r + 1)) F) *ᵥ e = (g : Matrix (Fin (r + 1)) (Fin (r + 1)) F) *ᵥ e` using `hkv`.
+
+Establish `hkw' : (e ᵥ* ((g⁻¹ : GL (Fin (r + 1)) F) : Matrix (Fin (r + 1)) (Fin (r + 1)) F)) ᵥ* (k : Matrix (Fin (r + 1)) (Fin (r + 1)) F) = e` using `hkw`. Establish `hkk : ((k⁻¹ : GL (Fin (r + 1)) F) : Matrix (Fin (r + 1)) (Fin (r + 1)) F) * (k : Matrix (Fin (r + 1)) (Fin (r + 1)) F) = 1` using `Units.inv_mul k`. Establish `hkk' : (k : Matrix (Fin (r + 1)) (Fin (r + 1)) F) * ((k⁻¹ : GL (Fin (r + 1)) F) : Matrix (Fin (r + 1)) (Fin (r + 1)) F) = 1` using `Units.mul_inv k`. Establish `hek : e ᵥ* ((k⁻¹ : GL (Fin (r + 1)) F) : Matrix (Fin (r + 1)) (Fin (r + 1)) F) = e ᵥ* ((g⁻¹ : GL (Fin (r + 1)) F) : Matrix (Fin (r + 1)) (Fin (r + 1)) F)` using `by conv_lhs => rw [← hkw']`. Rewrite using `[Matrix.vecMul_vecMul, hkk', Matrix.vecMul_one]`.
+
+Take `⟨s, hs⟩` from `exists_emb_of_last r (k⁻¹ * g) (by`. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, ← hkv', Matrix.mulVec_mulVec, hkk, Matrix.one_mulVec])`. Use the proof step `(by rw [Units.val_mul, ← Matrix.vecMul_vecMul, hek, Matrix.vecMul_vecMul, hgg, Matrix.vecMul_one])`. Conclude with `⟨k, hk, s, by rw [← hs, mul_inv_cancel_left]⟩`.
+-/
 theorem support_lift : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] (r : ℕ) (Z : Gl r F) (μ l : F), ‖μ‖ = 1 →
     ∀ g : GL (Fin (r + 1)) F, unitG (r + 1) F (act g (GlobalTheory.JR.Step.lift Z μ l)) ≠ 0 →

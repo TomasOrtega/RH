@@ -10,6 +10,33 @@ open GlobalTheory.CompanionTheory.GodementH
 
 namespace GlobalTheory.CompanionTheory.GodementH
 
+/- English proof (translation)
+Introduce `Q h h1 C c hc s hs`. Establish `hC : 0 ≤ C`. Establish `h2` using `(hc 1 le_rfl).2`. Establish `h3 : (0:ℝ) ≤ (Set.ncard {q | h q ≤ 1} : ℝ)` using `Nat.cast_nonneg _`. Simplify using `only [one_pow, mul_one] at h2`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `set r : ℝ := (2:ℝ) ^ ((c:ℝ) - s) with hr`. Establish `hr0 : 0 ≤ r` using `by positivity`. Establish `hr1 : r < 1` using `Real.rpow_lt_one_of_one_lt_of_neg (by norm_num) (by linarith)`. Establish `hg : Summable fun k : ℕ => C * 2 ^ c * r ^ k` using `(summable_geometric_of_lt_one hr0 hr1).mul_left _`.
+
+Establish `hg0 : ∀ k : ℕ, 0 ≤ C * 2 ^ c * r ^ k` using `fun k => by positivity`. Use `set K : Q → ℕ := fun q => ⌊Real.logb 2 (h q)⌋₊ with hK`. Establish `hlog0 : ∀ q, 0 ≤ Real.logb 2 (h q)` using `fun q => Real.logb_nonneg (by norm_num) (h1 q)`. Establish `hlow : ∀ q, (2:ℝ) ^ (K q : ℝ) ≤ h q` using `fun q => by`. Establish `hq : (0:ℝ) < h q` using `lt_of_lt_of_le one_pos (h1 q)`.
+
+Establish `: (K q : ℝ) ≤ Real.logb 2 (h q)` using `Nat.floor_le (hlog0 q)`. Combine the equalities or inequalities in the displayed calculation. Establish `hupp : ∀ q, h q ≤ (2:ℝ) ^ (K q + 1)` using `fun q => by`. Establish `hq : (0:ℝ) < h q` using `lt_of_lt_of_le one_pos (h1 q)`. Establish `: Real.logb 2 (h q) ≤ ((K q + 1 : ℕ) : ℝ)`.
+
+Use `push_cast`. Conclude with `(Nat.lt_floor_add_one _).le`. Combine the equalities or inequalities in the displayed calculation. Establish `hterm : ∀ q, h q ^ (-s) ≤ ((2:ℝ) ^ (K q : ℝ)) ^ (-s)` using `fun q => Real.rpow_le_rpow_of_nonpos (by positivity) (hlow q) (by linarith [(Nat.cast_nonneg c : (0:ℝ) ≤ c)])`. Establish `hfib : ∀ (u : Finset Q) (k : ℕ), ∑ q ∈ u with K q = k, h q ^ (-s) ≤ C * 2 ^ c * r ^ k`.
+
+Introduce `u k`. Establish `hT : (1:ℝ) ≤ (2:ℝ) ^ (k + 1)` using `one_le_pow₀ (by norm_num)`. Take `⟨hfin, hcard⟩` from `hc _ hT`. Establish `hsub : ((u.filter fun q => K q = k : Finset Q) : Set Q) ⊆ {q | h q ≤ (2:ℝ) ^ (k + 1)}`. Introduce `q hq`.
+
+Establish `hq' : K q = k` using `(Finset.mem_filter.mp (Finset.mem_coe.mp hq)).2`. Use `hupp q` as an intermediate fact. Rewrite `this` using `[hq']`. Conclude with `this`. Establish `hcard2 : ((u.filter fun q => K q = k : Finset Q).card : ℝ) ≤ C * ((2:ℝ) ^ (k + 1)) ^ c`.
+
+Use `le_trans ?_ hcard` and prove the remaining obligations. Use `Set.ncard_le_ncard hsub hfin` as an intermediate fact. Rewrite `this` using `[Set.ncard_coe_finset]`. Conclude with `this` after adjusting the coercions. Establish `hb : ∀ q ∈ u.filter (fun q => K q = k), h q ^ (-s) ≤ ((2:ℝ) ^ (k : ℝ)) ^ (-s)`.
+
+Introduce `q hq`. Establish `hq' : K q = k` using `(Finset.mem_filter.mp hq).2`. Use `hterm q` as an intermediate fact. Rewrite `this` using `[hq']`. Conclude with `this`.
+
+Establish `hb0 : (0:ℝ) ≤ ((2:ℝ) ^ (k : ℝ)) ^ (-s)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Simplify `Finset.sum_le_card_nsmul _ _ _ hb` using `[nsmul_eq_mul]`. Use `_ ≤ (C * ((2:ℝ) ^ (k + 1)) ^ c) * ((2:ℝ) ^ (k : ℝ)) ^ (-s) := mul_le_mul_of_nonneg_right hcard2 hb0`. Use `_ = C * 2 ^ c * r ^ k := by`.
+
+Establish `e1 : ((2:ℝ) ^ (k + 1)) ^ c = 2 ^ c * ((2:ℝ) ^ (k : ℝ)) ^ (c : ℝ)`. Rewrite using `[Real.rpow_natCast, Real.rpow_natCast, pow_succ, mul_pow, mul_comm]`. Establish `e2 : r ^ k = ((2:ℝ) ^ (k : ℝ)) ^ (c : ℝ) * ((2:ℝ) ^ (k : ℝ)) ^ (-s)`. Rewrite using `[← Real.rpow_add (by positivity), hr, ← Real.rpow_natCast, ← Real.rpow_mul (by norm_num), ← Real.rpow_mul (by norm_num)]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree. Use `summable_of_sum_le (c := ∑' k : ℕ, C * 2 ^ c * r ^ k) (fun q => Real.rpow_nonneg (by linarith [h1 q]) _) ?_` and prove the remaining obligations. Introduce `u`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem summable_rpow_neg_of_polynomial_count :
     ∀ (Q : Type) (h : Q → ℝ), (∀ q, 1 ≤ h q) → ∀ (C : ℝ) (c : ℕ),
     (∀ T : ℝ, 1 ≤ T → {q | h q ≤ T}.Finite ∧ (Set.ncard {q | h q ≤ T} : ℝ) ≤ C * T ^ c) → ∀ s : ℝ, (c : ℝ) < s →

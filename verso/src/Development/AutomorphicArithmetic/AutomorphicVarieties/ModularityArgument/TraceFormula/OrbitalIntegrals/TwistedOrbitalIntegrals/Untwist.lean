@@ -2,12 +2,24 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open MeasureTheory Topology PositivityTheory.Rg.Tf.Loc UpperTheory.V.Z.Tf.Orb
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `⟨μ, hμ, fun _ => Iff.rfl, fun _ => rfl⟩`.
+-/
 private theorem aux {G : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G] (μG : Measure G) (H H' : Subgroup G) (e : H' = H)
     (μ : Measure H) (hμ : μ.IsHaarMeasure) : ∃ μ' : Measure H', μ'.IsHaarMeasure ∧
       (∀ ρ, IsQuotNormaliser H' μ' ρ ↔ IsQuotNormaliser H μ ρ) ∧ ∀ F, quotIntegral μG H' μ' F = quotIntegral μG H μ F := by
   subst e
   exact ⟨μ, hμ, fun _ => Iff.rfl, fun _ => rfl⟩
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n _ _ μk γ`. Establish `h1 : ∀ g : GL (Fin n) k, sigmaGL (1 : k ≃ₐ[k] k) g = g` using `fun g => by rw [sigmaGL_one]; rfl`. Use `⟨fun τ => ?_, h1, fun h => ?_, fun μ hμ => ?_⟩` and prove the remaining obligations. Establish `: τ = 1` using `AlgEquiv.ext fun x => τ.commutes x`. Rewrite using `[this]`.
+
+Conclude with `one_mem _`. Establish `: normGL (1 : k ≃ₐ[k] k) γ = γ`. Rewrite using `[normGL, Module.finrank_self]`. Simplify using `[twNorm]`. Rewrite using `[IsTwRegSemisimple, this]` and apply the resulting hypothesis.
+
+Establish `e : twCent (sigmaGL (1 : k ≃ₐ[k] k)) γ = Subgroup.centralizer {γ}`. Use extensionality with `x`. Rewrite using `[mem_twCent, h1, Subgroup.mem_centralizer_singleton_iff, mul_assoc, inv_mul_eq_iff_eq_mul, eq_comm]`. Take `⟨μ', a, b, c⟩` from `aux μk _ _ e μ hμ`. Use `⟨μ', a, b, fun f => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[twOrbIntegralC, orbIntegralC, c]`. Simplify using `only [twConj, h1]`.
+-/
 theorem UpperTheory.V.Z.Tf.Orb.untwist :
     UpperTheory.V.Z.Tf.Orb.Untwist := by
   intro k _ _ _ _ n _ _ μk γ

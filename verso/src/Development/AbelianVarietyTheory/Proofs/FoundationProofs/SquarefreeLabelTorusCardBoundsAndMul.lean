@@ -4,11 +4,17 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.SamePartIffOfNeZ
 open Polynomial Classical GlobalTheory.BadShare
 namespace GlobalTheory.BadShare
 
+/- English proof (translation)
+Introduce `d hd`. Take `⟨P, hP, rfl⟩` from `Multiset.mem_map.1 hd`. Conclude with `(UniqueFactorizationMonoid.irreducible_of_normalized_factor P hP).natDegree_pos`.
+-/
 theorem degType_pos (g : ℕ) [Fact g.Prime] (f : (ZMod g)[X]) : ∀ d ∈ degType g f, 0 < d := by
   intro d hd
   obtain ⟨P, hP, rfl⟩ := Multiset.mem_map.1 hd
   exact (UniqueFactorizationMonoid.irreducible_of_normalized_factor P hP).natDegree_pos
 
+/- English proof (translation)
+Unfold `degType`. Rewrite using `[← natDegree_multiset_prod _ (UniqueFactorizationMonoid.zero_notMem_normalizedFactors f)]`. Conclude with `natDegree_eq_of_degree_eq (degree_eq_degree_of_associated (UniqueFactorizationMonoid.prod_normalizedFactors hf))`.
+-/
 theorem degType_sum (g : ℕ) [Fact g.Prime] (f : (ZMod g)[X]) (hf : f ≠ 0) :
     (degType g f).sum = f.natDegree := by
   unfold degType
@@ -16,6 +22,9 @@ theorem degType_sum (g : ℕ) [Fact g.Prime] (f : (ZMod g)[X]) (hf : f ≠ 0) :
   exact natDegree_eq_of_degree_eq
     (degree_eq_degree_of_associated (UniqueFactorizationMonoid.prod_normalizedFactors hf))
 
+/- English proof (translation)
+Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a s ih`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, Multiset.sum_cons, pow_add]`. Conclude with `Nat.mul_le_mul (Nat.sub_le _ _) ih`.
+-/
 theorem prod_pow_sub_one_le (g : ℕ) (s : Multiset ℕ) :
     (s.map fun d => g ^ d - 1).prod ≤ g ^ s.sum := by
   induction s using Multiset.induction_on with
@@ -24,6 +33,11 @@ theorem prod_pow_sub_one_le (g : ℕ) (s : Multiset ℕ) :
     rw [Multiset.map_cons, Multiset.prod_cons, Multiset.sum_cons, pow_add]
     exact Nat.mul_le_mul (Nat.sub_le _ _) ih
 
+/- English proof (translation)
+Unfold `sqSet at hf`. Rewrite `hf` using `[Finset.mem_filter, Finset.mem_image]`. Take `⟨⟨c, -, rfl⟩, -⟩` from `hf`. Establish `h : (∑ i : Fin N, C (c i) * X ^ (i : ℕ) : (ZMod g)[X]).degree < N` using `degree_sum_fin_lt c`. Use `⟨(monic_X_pow_add h).ne_zero, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[natDegree_add_eq_left_of_degree_lt (by rwa [degree_X_pow]), natDegree_X_pow]`.
+-/
 theorem ne_zero_natDegree_of_mem_sqSet (g : ℕ) [Fact g.Prime] (N : ℕ) (f : (ZMod g)[X])
     (hf : f ∈ sqSet g N) : f ≠ 0 ∧ f.natDegree = N := by
   unfold sqSet at hf
@@ -33,6 +47,19 @@ theorem ne_zero_natDegree_of_mem_sqSet (g : ℕ) [Fact g.Prime] (N : ℕ) (f : (
   refine ⟨(monic_X_pow_add h).ne_zero, ?_⟩
   rw [natDegree_add_eq_left_of_degree_lt (by rwa [degree_X_pow]), natDegree_X_pow]
 
+/- English proof (translation)
+Introduce `g hg`. Use `⟨fun N f hf => ?_, fun h f hh hf => ?_, fun P hP => ?_⟩` and prove the remaining obligations. Take `⟨h0, hN⟩` from `ne_zero_natDegree_of_mem_sqSet g N f hf`. Establish `hs : (degType g f).sum = N` using `(degType_sum g f h0).trans hN`. Use `⟨?_, ?_, hs, degType_pos g f⟩` and prove the remaining obligations.
+
+Unfold `torusCard`. Apply `Multiset.prod_pos` to reduce the goal to its premises. Introduce `a ha`. Take `⟨d, hd, rfl⟩` from `Multiset.mem_map.1 ha`. Conclude with `Nat.sub_pos_of_lt (Nat.one_lt_pow (degType_pos g f d hd).ne' hg.out.one_lt)`.
+
+Rewrite using `[← hs]`. Conclude with `prod_pow_sub_one_le g _`. Establish `hd : degType g (h * f) = degType g h + degType g f`. Unfold `degType`. Rewrite using `[UniqueFactorizationMonoid.normalizedFactors_mul hh hf, Multiset.map_add]`.
+
+Use `⟨hd, ?_⟩` and prove the remaining obligations. Unfold `torusCard`. Rewrite using `[hd, Multiset.map_add, Multiset.prod_add]`. Establish `hd : degType g P = {P.natDegree}`. Unfold `degType`.
+
+Rewrite using `[UniqueFactorizationMonoid.normalizedFactors_irreducible hP, Multiset.map_singleton]`. Use `congr 1`. Conclude with `natDegree_eq_of_degree_eq (degree_eq_degree_of_associated (normalize_associated P))`. Use `⟨hd, ?_⟩` and prove the remaining obligations. Unfold `torusCard`.
+
+Rewrite using `[hd, Multiset.map_singleton, Multiset.prod_singleton]`.
+-/
 theorem torusCard_bounds_mul : ∀ (g : ℕ) [Fact g.Prime], (∀ (N : ℕ), ∀ f ∈ sqSet g N, 0 < torusCard g f ∧ torusCard g f ≤ g ^ N ∧ (degType g f).sum = N ∧ ∀ d ∈ degType g f, 0 < d) ∧ (∀ h f : (ZMod g)[X], h ≠ 0 → f ≠ 0 → degType g (h * f) = degType g h + degType g f ∧ torusCard g (h * f) = torusCard g h * torusCard g f) ∧ ∀ P : (ZMod g)[X], Irreducible P → degType g P = {P.natDegree} ∧ torusCard g P = g ^ P.natDegree - 1 := by
   intro g hg
   refine ⟨fun N f hf => ?_, fun h f hh hf => ?_, fun P hP => ?_⟩

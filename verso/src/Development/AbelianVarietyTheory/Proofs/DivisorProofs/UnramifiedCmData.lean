@@ -5,6 +5,11 @@ open scoped Matrix TensorProduct
 
 namespace GlobalTheory.ThKUTr
 
+/- English proof (translation)
+Introduce `hx`. Take `⟨_, hE, _, hτ⟩` from `h`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `IsTotallyComplex.complexEmbedding_not_isReal τ` to reduce the goal to its premises. Rewrite using `[ComplexEmbedding.isReal_iff]`.
+
+Use extensionality with `x`. Use `hτ τ x` as an intermediate fact. Rewrite `this` using `[hx]`. Simplify using `using this.symm`.
+-/
 theorem cmConj_ne_id {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ¬ ∀ x, σ x = x := by
   intro hx
@@ -17,6 +22,13 @@ theorem cmConj_ne_id {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   rw [hx] at this
   simpa using this.symm
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `ha`. Establish `hs : IsSimpleOrder (Subalgebra F E)` using `Subalgebra.isSimpleOrder_of_finrank_prime F E (by rw [h.2.2.1]; exact Nat.prime_two)`. Establish `ha' : a ∈ AlgHom.equalizer σ (AlgHom.id F E)` using `ha`. Break down `hs.eq_bot_or_eq_top (AlgHom.equalizer σ (AlgHom.id F E)) with h0 | h0` into its components or cases.
+
+Rewrite `ha'` using `[h0, Algebra.mem_bot]`. Conclude with `ha'`. It suffices to derive a contradiction. Use `cmConj_ne_id h fun x => ?_` and prove the remaining obligations. Establish `: x ∈ AlgHom.equalizer σ (AlgHom.id F E)` using `h0 ▸ Algebra.mem_top`.
+
+Conclude with `this`. Introduce and unpack `⟨b, rfl⟩`. Conclude with `σ.commutes b`.
+-/
 theorem cmConj_fixed {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (a : E) : σ a = a ↔ a ∈ (algebraMap F E).range := by
   constructor
@@ -41,10 +53,20 @@ noncomputable def intRestr {F E : Type} [Field F] [NumberField F] [Field E] [Num
       apply Subtype.ext
       exact σ.commutes (r : F) }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem intRestr_coe {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E) (x : 𝓞 E) :
     algebraMap (𝓞 E) E (intRestr σ x) = σ (algebraMap (𝓞 E) E x) := rfl
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `hF : Algebra.FormallyUnramified (𝓞 F) (𝓞 E)` using `hU.formallyUnramified`. Establish `he : AlgHom.id (𝓞 F) (𝓞 E) = intRestr σ` using `Algebra.FormallyUnramified.ext_of_iInf P (Ideal.iInf_pow_eq_bot_of_isDomain P hP) fun x => Ideal.Quotient.eq.2 (hc x)`. Establish `h1 : ∀ y : 𝓞 E, σ (algebraMap (𝓞 E) E y) = algebraMap (𝓞 E) E y` using `fun y => by`.
+
+Rewrite using `[← intRestr_coe, ← he]`. Both sides reduce to the same expression. Apply `hne` to reduce the goal to its premises. Introduce `x`. Take `⟨a, b, _, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) x`.
+
+Rewrite using `[map_div₀, h1, h1]`.
+-/
 theorem exists_sub_notMem {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E) (hne : ¬ ∀ x, σ x = x) (hU : Algebra.Unramified (𝓞 F) (𝓞 E))
     (P : Ideal (𝓞 E)) (hP : P ≠ ⊤) : ∃ θ : 𝓞 E, θ - intRestr σ θ ∉ P := by
@@ -61,6 +83,9 @@ theorem exists_sub_notMem {F E : Type} [Field F] [NumberField F] [Field E] [Numb
   obtain ⟨a, b, _, rfl⟩ := IsFractionRing.div_surjective (A := 𝓞 E) x
   rw [map_div₀, h1, h1]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ h hU`. Use `letI := GlobalTheory.ThKUTr.starOf σ hσ`. Use `⟨⟨h.2.1, fun φ a => h.2.2.2 φ a, fun P hP => ?_⟩, h.1, h.2.2.1, fun a => cmConj_fixed h a⟩` and prove the remaining obligations. Take `⟨θ, hθ⟩` from `exists_sub_notMem σ (cmConj_ne_id h) hU P hP.ne_top`. Conclude with `⟨θ, intRestr σ θ, rfl, hθ⟩`.
+-/
 theorem cmData_starOf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x), IsCMExt F E σ → Algebra.Unramified (𝓞 F) (𝓞 E) → @Formalism.BasicNotions.CMData F E _ _ _ _ (GlobalTheory.ThKUTr.starOf σ hσ) _ := by
   intro F E _ _ _ _ _ σ hσ h hU
   letI := GlobalTheory.ThKUTr.starOf σ hσ

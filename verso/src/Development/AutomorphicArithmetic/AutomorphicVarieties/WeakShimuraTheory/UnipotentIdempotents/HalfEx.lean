@@ -5,11 +5,27 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Loca
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp UpperTheory.V.Ws.Lk
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l), PadicAlgCl.norm_extends]`. Both sides reduce to the same expression.
+-/
 private theorem norm_algebraMap_padicInt_padicAlgCl {l : ℕ} [Fact l.Prime] (a : ℤ_[l]) :
     ‖algebraMap ℤ_[l] (PadicAlgCl l) a‖ = ‖a‖ := by
   rw [IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l), PadicAlgCl.norm_extends]
   rfl
 
+/- English proof (translation)
+Take `⟨p, hm, hp⟩` from `hx`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hd0 : p.natDegree ≠ 0`. Introduce `h0`.
+
+Establish `h1` using `Polynomial.eq_one_of_monic_natDegree_zero hm h0`. Substitute `h1` using the available equality. Simplify using `at hp`. Take `⟨m, hmdeg⟩ : ∃ m, p.natDegree = m + 1` from `⟨p.natDegree - 1, by omega⟩`. Establish `hc : p.coeff (m + 1) = 1`.
+
+Rewrite using `[← hmdeg]`. Conclude with `Polynomial.Monic.coeff_natDegree hm`. Rewrite `hp` using `[Polynomial.eval₂_eq_sum_range, hmdeg, Finset.sum_range_succ, hc, map_one, one_mul]`. Establish `hsum : ‖∑ i ∈ Finset.range (m + 1), (algebraMap ℤ_[l] (PadicAlgCl l)) (p.coeff i) * x ^ i‖ ≤ ‖x‖ ^ m`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity)` to reduce the goal to its premises.
+
+Introduce `i hi`. Rewrite using `[norm_mul, norm_pow]`. Establish `h1 : ‖(algebraMap ℤ_[l] (PadicAlgCl l)) (p.coeff i)‖ ≤ 1`. Rewrite using `[norm_algebraMap_padicInt_padicAlgCl]`. Conclude with `PadicInt.norm_le_one _`.
+
+Establish `h2 : ‖x‖ ^ i ≤ ‖x‖ ^ m` using `pow_le_pow_right₀ h.le (Nat.lt_succ_iff.mp (Finset.mem_range.mp hi))`. Combine the equalities or inequalities in the displayed calculation. Establish `heq : x ^ (m + 1) = -∑ i ∈ Finset.range (m + 1), (algebraMap ℤ_[l] (PadicAlgCl l)) (p.coeff i) * x ^ i`. Take the linear combination `hp`. Establish `hn` using `congrArg norm heq`.
+
+Rewrite `hn` using `[norm_neg, norm_pow]`. Establish `h3 : ‖x‖ ^ (m + 1) ≤ ‖x‖ ^ m` using `hn ▸ hsum`. Establish `h4 : ‖x‖ ^ m < ‖x‖ ^ (m + 1)` using `pow_lt_pow_right₀ h (Nat.lt_succ_self m)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem norm_le_one_of_isIntegral_padicInt' {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) (hx : IsIntegral ℤ_[l] x) :
     ‖x‖ ≤ 1 := by
   obtain ⟨p, hm, hp⟩ := hx
@@ -46,15 +62,36 @@ private theorem norm_le_one_of_isIntegral_padicInt' {l : ℕ} [Fact l.Prime] (x 
   have h4 : ‖x‖ ^ m < ‖x‖ ^ (m + 1) := pow_lt_pow_right₀ h (Nat.lt_succ_self m)
   linarith
 
+/- English proof (translation)
+Use `haveI := c.fin`. Use `haveI : Algebra.IsIntegral ℤ_[l] c.O := Algebra.IsIntegral.of_finite ℤ_[l] c.O`. Conclude with `norm_le_one_of_isIntegral_padicInt' _ ((Algebra.IsIntegral.isIntegral x).map c.O.val)`.
+-/
 private theorem norm_coe_padicAlgCl_coefO_le_one {l : ℕ} [Fact l.Prime] (c : Coef l) (x : c.O) :
     ‖(x : PadicAlgCl l)‖ ≤ 1 := by
   haveI := c.fin
   haveI : Algebra.IsIntegral ℤ_[l] c.O := Algebra.IsIntegral.of_finite ℤ_[l] c.O
   exact norm_le_one_of_isIntegral_padicInt' _ ((Algebra.IsIntegral.isIntegral x).map c.O.val)
 
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap ℤ_[l] (PadicAlgCl l)) l, norm_algebraMap_padicInt_padicAlgCl, PadicInt.norm_p]`.
+-/
 private theorem norm_natCast_prime_padicAlgCl_eq_inv {l : ℕ} [Fact l.Prime] : ‖(l : PadicAlgCl l)‖ = (l : ℝ)⁻¹ := by
   rw [← map_natCast (algebraMap ℤ_[l] (PadicAlgCl l)) l, norm_algebraMap_padicInt_padicAlgCl, PadicInt.norm_p]
 
+/- English proof (translation)
+Use `haveI := c.dvr`. Establish `hcast : ((l : c.O) : PadicAlgCl l) = (l : PadicAlgCl l)` using `by simp`. Establish `hl : ‖((l : c.O) : PadicAlgCl l)‖ = (l : ℝ)⁻¹` using `by rw [hcast, norm_natCast_prime_padicAlgCl_eq_inv]`. Establish `hlt : (l : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)`. Establish `hl0 : (l : c.O) ≠ 0`.
+
+Introduce `h0`. Establish `hne : (l : ℝ)⁻¹ ≠ 0` using `inv_ne_zero (Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero)`. Rewrite `hl` using `[h0, ZeroMemClass.coe_zero, norm_zero]`. Conclude with `hne hl.symm`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible c.O`.
+
+Establish `hL : Ideal.span {(l : c.O)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hl0`. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.ideal_eq_span_pow_irreducible hL hϖ`. Establish `hdvd : ϖ ∣ x`.
+
+Rewrite `hϖ` using `[IsDiscreteValuationRing.irreducible_iff_uniformizer]`. Rewrite `hx` using `[hϖ, Ideal.mem_span_singleton]`. Conclude with `hx`. Establish `hxn : x ^ n ∈ Ideal.span {(l : c.O)}`. Rewrite using `[hn, Ideal.mem_span_singleton]`.
+
+Conclude with `pow_dvd_pow_of_dvd hdvd n`. Rewrite `hxn` using `[Ideal.mem_span_singleton]`. Take `⟨y, hy⟩` from `hxn`. Establish `hy' : (x : PadicAlgCl l) ^ n = ((l : c.O) : PadicAlgCl l) * (y : PadicAlgCl l)`. Establish `h5` using `congrArg (fun z : c.O => (z : PadicAlgCl l)) hy`.
+
+Simplify using `using h5`. Establish `hnorm : ‖(x : PadicAlgCl l)‖ ^ n < 1`. Rewrite using `[← norm_pow, hy', norm_mul, hl]`. Combine the equalities or inequalities in the displayed calculation. Break down `Nat.eq_zero_or_pos n with h0 | hpos` into its components or cases.
+
+Rewrite `hnorm` using `[h0, pow_zero]`. Conclude with `absurd hnorm (lt_irrefl 1)`. Conclude with `(pow_lt_one_iff_of_nonneg (norm_nonneg _) hpos.ne').mp hnorm`.
+-/
 private theorem norm_coe_lt_one_of_mem_maximalIdeal_coefO {l : ℕ} [Fact l.Prime] (c : Coef l) (x : c.O)
     (hx : x ∈ IsLocalRing.maximalIdeal c.O) : ‖(x : PadicAlgCl l)‖ < 1 := by
   haveI := c.dvr
@@ -94,6 +131,13 @@ private theorem norm_coe_lt_one_of_mem_maximalIdeal_coefO {l : ℕ} [Fact l.Prim
     exact absurd hnorm (lt_irrefl 1)
   · exact (pow_lt_one_iff_of_nonneg (norm_nonneg _) hpos.ne').mp hnorm
 
+/- English proof (translation)
+Establish `hz1 : ‖z‖ ≤ 1`. Establish `h1` using `IsUltrametricDist.norm_add_le_max (z - 1) 1`. Rewrite `h1` using `[sub_add_cancel, norm_one]`. Conclude with `h1.trans (max_le h.le le_rfl)`. Rewrite using `[← geom_sum_mul, norm_mul, mul_comm]`.
+
+Establish `h2 : ‖∑ j ∈ Finset.range i, z ^ j‖ ≤ 1`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) hz1`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem norm_pow_sub_one_le_of_norm_sub_one_lt_one {l : ℕ} [Fact l.Prime] (z : PadicAlgCl l) (h : ‖z - 1‖ < 1) (i : ℕ) :
     ‖z ^ i - 1‖ ≤ ‖z - 1‖ := by
   have hz1 : ‖z‖ ≤ 1 := by
@@ -110,6 +154,13 @@ private theorem norm_pow_sub_one_le_of_norm_sub_one_lt_one {l : ℕ} [Fact l.Pri
         mul_le_mul_of_nonneg_left h2 (norm_nonneg _)
     _ = ‖z - 1‖ := mul_one _
 
+/- English proof (translation)
+Establish `hS : ∑ i ∈ Finset.range m, z ^ i = (m : PadicAlgCl l) + ∑ i ∈ Finset.range m, (z ^ i - 1)`. Rewrite using `[Finset.sum_sub_distrib]`. Simplify using the standard rewrite rules. Establish `hsmall : ‖∑ i ∈ Finset.range m, (z ^ i - 1)‖ < 1` using `lt_of_le_of_lt (IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) (fun i _ => norm_pow_sub_one_le_of_norm_sub_one_lt_one z h i)) h`. Establish `hSn : ‖∑ i ∈ Finset.range m, z ^ i‖ = 1`.
+
+Rewrite using `[hS, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [hm]; exact hsmall.ne'), hm]`. Conclude with `max_eq_left hsmall.le`. Establish `hprod : (∑ i ∈ Finset.range m, z ^ i) * (z - 1) = 0`. Rewrite using `[geom_sum_mul, hz, sub_self]`. Break down `mul_eq_zero.mp hprod with h0 | h0` into its components or cases.
+
+Rewrite `hSn` using `[h0, norm_zero]`. Conclude with `absurd hSn zero_ne_one`. Conclude with `sub_eq_zero.mp h0`.
+-/
 private theorem padicAlgCl_eq_one_of_pow_eq_one_of_norm_sub_one_lt_one {l : ℕ} [Fact l.Prime] (z : PadicAlgCl l) (m : ℕ)
     (hm : ‖(m : PadicAlgCl l)‖ = 1) (hz : z ^ m = 1) (h : ‖z - 1‖ < 1) : z = 1 := by
   have hS : ∑ i ∈ Finset.range m, z ^ i =
@@ -129,6 +180,11 @@ private theorem padicAlgCl_eq_one_of_pow_eq_one_of_norm_sub_one_lt_one {l : ℕ}
     exact absurd hSn zero_ne_one
   · exact sub_eq_zero.mp h0
 
+/- English proof (translation)
+Establish `hmem : (u : ℤ_[l]) ^ (l - 1) - 1 ∈ RingHom.ker (PadicInt.toZMod (p` using `l)) := by`. Rewrite using `[RingHom.mem_ker, map_sub, map_pow, map_one]`. Establish `hne : PadicInt.toZMod (u : ℤ_[l]) ≠ 0` using `((u.isUnit).map PadicInt.toZMod).ne_zero`. Rewrite using `[ZMod.pow_card_sub_one_eq_one hne, sub_self]`. Rewrite `hmem` using `[PadicInt.ker_toZMod]`.
+
+Conclude with `PadicInt.mem_nonunits.mp ((IsLocalRing.mem_maximalIdeal _).mp hmem)`.
+-/
 private theorem norm_padicInt_unit_pow_pred_sub_one_lt_one {l : ℕ} [Fact l.Prime] (u : ℤ_[l]ˣ) :
     ‖(u : ℤ_[l]) ^ (l - 1) - 1‖ < 1 := by
   have hmem : (u : ℤ_[l]) ^ (l - 1) - 1 ∈ RingHom.ker (PadicInt.toZMod (p := l)) := by
@@ -138,6 +194,9 @@ private theorem norm_padicInt_unit_pow_pred_sub_one_lt_one {l : ℕ} [Fact l.Pri
   rw [PadicInt.ker_toZMod] at hmem
   exact PadicInt.mem_nonunits.mp ((IsLocalRing.mem_maximalIdeal _).mp hmem)
 
+/- English proof (translation)
+Establish `hl1 : 1 ≤ l` using `(Fact.out : l.Prime).one_lt.le`. Establish `hlt : (l : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)`. Rewrite using `[Nat.cast_sub hl1, Nat.cast_one, sub_eq_neg_add, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [norm_neg, norm_one, norm_natCast_prime_padicAlgCl_eq_inv]; exact hlt.ne'), norm_neg, norm_one, norm_natCast_prime_padicAlgCl_eq_inv]`. Conclude with `max_eq_left hlt.le`.
+-/
 private theorem norm_natCast_prime_sub_one_padicAlgCl_eq_one {l : ℕ} [Fact l.Prime] : ‖((l - 1 : ℕ) : PadicAlgCl l)‖ = 1 := by
   have hl1 : 1 ≤ l := (Fact.out : l.Prime).one_lt.le
   have hlt : (l : ℝ)⁻¹ < 1 :=
@@ -148,6 +207,15 @@ private theorem norm_natCast_prime_sub_one_padicAlgCl_eq_one {l : ℕ} [Fact l.P
     norm_neg, norm_one, norm_natCast_prime_padicAlgCl_eq_inv]
   exact max_eq_left hlt.le
 
+/- English proof (translation)
+Establish `hy0 : y ≠ 0`. Introduce `h0`. Rewrite `hy1` using `[h0, norm_zero]`. Conclude with `zero_ne_one hy1`. Establish `hb1 : ‖b ^ 2 - 1‖ < 1` using `lt_of_le_of_lt (norm_pow_sub_one_le_of_norm_sub_one_lt_one b hb 2) hb`.
+
+Establish `hz : (b ^ 2 * w * y⁻¹) ^ (l - 1) = 1`. Rewrite using `[mul_pow, mul_pow, ← pow_mul, hbn, hw, mul_one, inv_pow, mul_inv_cancel₀ (pow_ne_zero _ hy0)]`. Establish `hyi : ‖y⁻¹‖ = 1` using `by rw [norm_inv, hy1, inv_one]`. Establish `hz1 : ‖b ^ 2 * w * y⁻¹ - 1‖ < 1`. Establish `hyy : y * y⁻¹ = 1` using `mul_inv_cancel₀ hy0`.
+
+Establish `hsplit : b ^ 2 * w * y⁻¹ - 1 = (b ^ 2 - 1) * w * y⁻¹ + (w - y) * y⁻¹`. Take the linear combination `hyy`. Rewrite using `[hsplit]`. Use `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, hyi, mul_one]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, hyi, mul_one]`. Conclude with `hwy`. Conclude with `(mul_inv_eq_one₀ hy0).mp (padicAlgCl_eq_one_of_pow_eq_one_of_norm_sub_one_lt_one _ (l - 1) norm_natCast_prime_sub_one_padicAlgCl_eq_one hz hz1)`.
+-/
 private theorem sq_mul_eq_of_pow_two_mul_pred_eq_of_norm_sub_lt_one {l : ℕ} [Fact l.Prime] (b w y : PadicAlgCl l) (hb : ‖b - 1‖ < 1)
     (hw : w ^ (l - 1) = 1) (hw1 : ‖w‖ ≤ 1) (hwy : ‖w - y‖ < 1) (hy1 : ‖y‖ = 1)
     (hbn : b ^ (2 * (l - 1)) = y ^ (l - 1)) : b ^ 2 * w = y := by
@@ -173,26 +241,53 @@ private theorem sq_mul_eq_of_pow_two_mul_pred_eq_of_norm_sub_lt_one {l : ℕ} [F
       exact hwy
   exact (mul_inv_eq_one₀ hy0).mp (padicAlgCl_eq_one_of_pow_eq_one_of_norm_sub_one_lt_one _ (l - 1) norm_natCast_prime_sub_one_padicAlgCl_eq_one hz hz1)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem coe_cycBar_eq_algebraMap_cycZ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime]
     (g : G ℚ Ω) :
     ((cycBar ℚ Ω l g : (PadicAlgCl l)ˣ) : PadicAlgCl l) =
       algebraMap ℤ_[l] (PadicAlgCl l) (cycZ ℚ Ω l g : ℤ_[l]) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem coe_toQ_apply {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime]
     {c : Coef l} (om : G ℚ Ω →* (↥c.O)ˣ) (g : G ℚ Ω) :
     ((toQ om g : (PadicAlgCl l)ˣ) : PadicAlgCl l) = ((om g : c.O) : PadicAlgCl l) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem coe_chiO_eq_algebraMap_cycZ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime]
     {c : Coef l} (g : G ℚ Ω) :
     ((chiO ℚ Ω l c.O g : c.O) : PadicAlgCl l) =
       algebraMap ℤ_[l] (PadicAlgCl l) (cycZ ℚ Ω l g : ℤ_[l]) := rfl
 
+/- English proof (translation)
+The claim follows from `(Ideal.Quotient.eq (I := IsLocalRing.maximalIdeal c.O)).mp h`.
+-/
 private theorem sub_chiO_mem_maximalIdeal_of_bar_eq {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime]
     {c : Coef l} (om : G ℚ Ω →* (↥c.O)ˣ) (g : G ℚ Ω)
     (h : Raw.bar om g = Raw.bar (chiO ℚ Ω l c.O) g) :
     (om g : c.O) - (chiO ℚ Ω l c.O g : c.O) ∈ IsLocalRing.maximalIdeal c.O :=
   (Ideal.Quotient.eq (I := IsLocalRing.maximalIdeal c.O)).mp h
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D hD`. Establish `hl2 : l ≠ 2` using `hD.l_odd`. Establish `hlp : l.Prime` using `Fact.out`. Take `⟨π, hπapp⟩ : ∃ π : G ℚ Ω →* ℤ_[l]ˣ, ∀ g, π g = (cycZ ℚ Ω l g) ^ (l - 1)` from `⟨(cycZ ℚ Ω l) ^ (l - 1), fun g => rfl⟩`. Establish `hπc : Continuous π`.
+
+Establish `hfun : (⇑π) = fun g => (cycZ ℚ Ω l g) ^ (l - 1)` using `funext hπapp`. Rewrite using `[hfun]`. Conclude with `(continuous_cycZ ℚ Ω l).pow _`. Establish `hπn : ∀ s, ‖((π s : ℤ_[l]ˣ) : ℤ_[l]) - 1‖ < 1`. Introduce `s`.
+
+Rewrite using `[hπapp, Units.val_pow_eq_pow_val]`. Conclude with `norm_padicInt_unit_pow_pred_sub_one_lt_one _`. Establish `hn : 0 < 2 * (l - 1)`. Use `hlp.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨t, β, c₁, htc, htk, htβ, hβc, hβ1, hβn, -⟩` from `Tw.rootChar l hl2 (G ℚ Ω) π hπc hπn (2 * (l - 1)) hn`. Use `⟨β, hβc, fun g => (hβ1 g).2, ?_, ?_⟩` and prove the remaining obligations. Introduce `g`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_pow_eq_pow_val, coe_cycBar_eq_algebraMap_cycZ, coe_toQ_apply]`.
+
+Apply `sq_mul_eq_of_pow_two_mul_pred_eq_of_norm_sub_lt_one (l := l) _ _ _ (hβ1 g).2` to reduce the goal to its premises. Establish `h` using `congrArg (fun f : G ℚ Ω →* (↥c.O)ˣ => ((f g : c.O) : PadicAlgCl l)) hD.om_pow`. Simplify using `using h`. Conclude with `norm_coe_padicAlgCl_coefO_le_one c _`. Establish `h` using `norm_coe_lt_one_of_mem_maximalIdeal_coefO c _ (sub_chiO_mem_maximalIdeal_of_bar_eq D.om g (hD.om_bar g))`.
+
+Rewrite `h` using `[AddSubgroupClass.coe_sub, coe_chiO_eq_algebraMap_cycZ]`. Conclude with `h`. Rewrite using `[norm_algebraMap_padicInt_padicAlgCl]`. Conclude with `PadicInt.isUnit_iff.mp (Units.isUnit _)`. Rewrite using `[hβn g, hπapp, Units.val_pow_eq_pow_val, map_pow]`.
+
+Introduce `g hg`. Apply `htβ` to reduce the goal to its premises. Rewrite using `[htk, MonoidHom.mem_ker, hπapp, (MonoidHom.mem_ker).mp hg, one_pow]`.
+-/
 theorem UpperTheory.V.Ws.Lk.halfEx :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c}, D.Good → ∃ γ : G ℚ Ω →* (PadicAlgCl l)ˣ, Continuous γ ∧ (∀ g, ‖(γ g : PadicAlgCl l) - 1‖ < 1) ∧ (∀ g, γ g ^ 2 * toQ D.om g = cycBar ℚ Ω l g) ∧ (cycZ ℚ Ω l).ker ≤ γ.ker := by
   intro Ω _ _ _ l _ c D hD

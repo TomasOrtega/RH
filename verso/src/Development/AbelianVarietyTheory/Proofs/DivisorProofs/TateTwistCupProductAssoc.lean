@@ -18,18 +18,46 @@ namespace GlobalTheory.EtC.CupAssoc
 def trPair {q : ℕ} {I J : Cx (ZMod q)} {k k' : ℤ} (h : k = k') (μ : Pair I J (res _ (tw q k))) :
     Pair I J (res _ (tw q k')) := h ▸ μ
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hμ`.
+-/
 theorem trPair_isTwPair {q : ℕ} {i j k k' : ℤ} (h : k = k') (μ : Pair (res _ (tw q i)) (res _ (tw q j)) (res _ (tw q k)))
     (hμ : IsTwPair μ) : IsTwPair (trPair h μ) := by
   subst h; exact hμ
 
+/- English proof (translation)
+Substitute `h` using the available equality. Substitute `hw` using the available equality. Both sides reduce to the same expression.
+-/
 theorem trPair_cup {q : ℕ} {I J : Cx (ZMod q)} {k k' : ℤ} (h : k = k') (μ : Pair I J (res _ (tw q k))) (E : Spc)
     {n m w : ℤ} (hw : n + m = w) (a : CohomologyClass ((chains _).obj E) I n) (b : CohomologyClass ((chains _).obj E) J m) :
     (trPair h μ).cup E hw a b = Ht.cast hw h (μ.cup E rfl a b) := by
   subst h; subst hw; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem secMap_id {R : Type} [CommRing R] (K : Cx R) (s : ℤ) {U : Scheme.{0}} (x : Sec (K.X s) U) :
     Sec.map (HomologicalComplex.Hom.f (𝟙 K) s) x = x := rfl
 
+/- English proof (translation)
+Introduce `q _ E n m k i j l a b c`. Establish `hk : i + (j + l) = i + j + l` using `by ring`. Establish `hd : n + (m + k) = n + m + k` using `by ring`. Use `set μ := twPair q i j with hμdef`. Use `set P := twPair q (i + j) l with hPdef`.
+
+Use `set μ' := twPair q j l with hμ'def`. Use `set Q' := trPair hk (twPair q i (j + l)) with hQ'def`. Establish `hμ : IsTwPair μ` using `(GlobalTheory.T.tateTwistResolutionPairing_spec_and_cup_unique q i j).1`. Establish `hP : IsTwPair P` using `(GlobalTheory.T.tateTwistResolutionPairing_spec_and_cup_unique q (i + j) l).1`. Establish `hμ' : IsTwPair μ'` using `(GlobalTheory.T.tateTwistResolutionPairing_spec_and_cup_unique q j l).1`.
+
+Establish `hQ' : IsTwPair Q'` using `trPair_isTwPair hk _ (GlobalTheory.T.tateTwistResolutionPairing_spec_and_cup_unique q i (j + l)).1`. Establish `hfun` using `GlobalTheory.EtC.ZcFun.main (ZMod q)`. Establish `cpush_id : ∀ (K I : Cx (ZMod q)) (n : ℤ) x, cpush K (𝟙 I) n x = x` using `fun K I n x => ((hfun.1 K I n x).2)`. Take `⟨hIi, hFi, -⟩` from `GlobalTheory.T.tateTwistResolution_map_exists_unique_homotopy q i`. Take `⟨hIj, hFj, -⟩` from `GlobalTheory.T.tateTwistResolution_map_exists_unique_homotopy q j`.
+
+Take `⟨hIl, hFl, -⟩` from `GlobalTheory.T.tateTwistResolution_map_exists_unique_homotopy q l`. Take `⟨-, -, hext⟩` from `GlobalTheory.T.tateTwistResolution_map_exists_unique_homotopy q (i + j + l)`. Take `⟨T, τ, hτ⟩` from `GlobalTheory.T.exists_isTensor_etaleSheafComplexPairing (ZMod q) (res _ (tw q i)) (res _ (tw q j))`. Take `⟨T3, τ', hτ'⟩` from `GlobalTheory.T.exists_isTensor_etaleSheafComplexPairing (ZMod q) T (res _ (tw q l))`. Establish `hT` using `GlobalTheory.T.isTateTwistResolution_tensor_flat q i j (i + j) rfl _ _ hIi hIj hFj τ hτ`.
+
+Establish `hT3` using `GlobalTheory.T.isTateTwistResolution_tensor_flat q (i + j) l (i + j + l) rfl _ _ hT hIl hFl τ' hτ'`. Take `⟨u, hu, -⟩` from `(GlobalTheory.T.isTensor_universal_property (ZMod q) τ hτ).1 μ (𝟙 _) (𝟙 _)`. Take `⟨u₁, hu₁, -⟩` from `(GlobalTheory.T.isTensor_universal_property (ZMod q) τ' hτ').1 P u (𝟙 _)`. Establish `L1 : μ.cup E rfl a b = cpush _ u (n + m) (τ.cup E rfl a b)`. Rewrite using `[GlobalTheory.T.cupProduct_natural_in_sheafComplexPairing (ZMod q) τ μ (𝟙 _) (𝟙 _) u hu E rfl a b, cpush_id, cpush_id]`.
+
+Establish `L2 : P.cup E rfl (cpush _ u (n + m) (τ.cup E rfl a b)) c = cpush _ u₁ (n + m + k) (τ'.cup E rfl (τ.cup E rfl a b) c)`. Rewrite using `[GlobalTheory.T.cupProduct_natural_in_sheafComplexPairing (ZMod q) τ' P u (𝟙 _) u₁ hu₁ E rfl _ c, cpush_id]`. Take `⟨ν, hν⟩` from `GlobalTheory.T.exists_sheafComplexPairing_tensor_assoc_desc (ZMod q) τ τ' hτ hτ' μ' Q'`. Take `⟨u₂, hu₂, -⟩` from `(GlobalTheory.T.isTensor_universal_property (ZMod q) τ' hτ').1 ν (𝟙 _) (𝟙 _)`. Establish `R1 : ν.cup E rfl (τ.cup E rfl a b) c = Q'.cup E hd a (μ'.cup E rfl b c)` using `GlobalTheory.T.cupProduct_assoc_of_pairing_assoc (ZMod q) τ ν μ' Q' hν E rfl rfl rfl hd a b c`.
+
+Establish `R2 : cpush _ u₂ (n + m + k) (τ'.cup E rfl (τ.cup E rfl a b) c) = ν.cup E rfl (τ.cup E rfl a b) c`. Rewrite using `[GlobalTheory.T.cupProduct_natural_in_sheafComplexPairing (ZMod q) τ' ν (𝟙 _) (𝟙 _) u₂ hu₂ E rfl _ c, cpush_id, cpush_id]`. Establish `hgen : ∀ (U : Scheme.{0}) (ζ : Prim q Γ(U, ⊤)), Sec.map (u₁.f 0) (τ'.mul U 0 0 0 (add_zero 0) (τ.mul U 0 0 0 (add_zero 0) (resGen i ζ) (resGen j ζ)) (resGen l ζ)) = Sec.map (u₂.f 0) (τ'.mul U 0 0 0 (add_zero 0) (τ.mul U 0 0 0 (add_zero 0) (resGen i ζ) (resGen j ζ)) (resGen l ζ))`. Introduce `U ζ`. Rewrite using `[hu₁, hu₂]`.
+
+Apply the tactic sequence `try simp only [secMap_id]`. Rewrite using `[hu]`. Apply the tactic sequence `try simp only [secMap_id]`. Rewrite using `[hμ U ζ, hP U ζ, hν U 0 0 0 0 0 0 (add_zero 0) (add_zero 0) (add_zero 0) (add_zero 0), hμ' U ζ, hQ' U ζ]`. Take `⟨hH⟩` from `(hext _ hT3).2 u₁ u₂ hgen`.
+
+Establish `hpush` using `((hfun.2.2.2.2 u₁ u₂ ⟨hH⟩) ((chains _).obj E) (n + m + k)).2`. Use `show P.cup E rfl (μ.cup E rfl a b) c = _`. Rewrite using `[L1, L2, hpush, R2, R1, hQ'def, trPair_cup]`. Both sides reduce to the same expression.
+-/
 theorem main : ∀ (q : ℕ) [NeZero q] (E : Spc) {n m k i j l : ℤ} (a : Ht q E n i) (b : Ht q E m j) (c : Ht q E k l),
     cup q (cup q a b) c = (cup q a (cup q b c)).cast (by ring) (by ring) := by
   intro q _ E n m k i j l a b c

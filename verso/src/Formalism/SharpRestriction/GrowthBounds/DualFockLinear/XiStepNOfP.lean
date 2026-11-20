@@ -53,6 +53,23 @@ def RestXiP (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg CH CE C6 C18 : ℝ)
     ∃ CDf C₁ : ℝ, 0 < CDf ∧ 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → XiStepP C CDf CLa
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H φ hφ K _ _ hk hrk F hF E' hE' nb B hB hli hc e he htgt hm g hhm hg hbasis`. Use `letI : Algebra (WF p n') O := algOfIdent j φ`. Introduce `FsB hFsB Θ hΘ`. Establish `hkr : orbitWindowCount r de h x + 2 * r ≤ (m + 1) - r` using `H.2.2.2.2.2.2.2.1`. Establish `hr2 : 2 ≤ r` using `H.2.1`.
+
+Take `⟨Θ', hΘ1, hΘ2⟩` from `theta_exists p n' W Qq O Kf ι σ j w hSet.1 φ hφ m r (vecE n') (dT TT lam0) (flW (dT TT lam0)) (by omega) (by omega) (isFlat_flW _) hm hhm`. Establish `hΘeq : Θ = Θ'` using `LinearEquiv.ext fun G => Subtype.ext (by rw [hΘ G, hΘ2 G])`. Establish `hw : algebraMap O (KK O) w ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O (KK O))).2 hSet.2.1.ne_zero`. Take `⟨DX, hDX, hP⟩` from `hP p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H K hk hrk F hF E' hE' nb B hB hli hc`. Use `⟨DX, hDX, fun F1 h1 h2 h3 => ?_⟩` and prove the remaining obligations.
+
+Use `hP (subst p n' O w n' r g (F1 : MvPolynomial (TV n' (m + 1)) (KK O))) ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[subst_eq_Lin]`. Use `Lin_OpCl (Nsub p n' O w r g) (NsubInv p n' O w r g) (Nsub_mul p n' O w r hw hg) TT c0 _ _ ?_ _ h1` and prove the remaining obligations. Introduce `f0 hf0`. Proceed by induction on `hf0 using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Take `⟨b, rfl⟩` from `hy`. Use `Submodule.subset_span ⟨b, ?_⟩` and prove the remaining obligations. Use `show symP p O hk hrk F _ _ (B b) = _`. Rewrite using `[← subst_eq_Lin, hFsB b]`.
+
+Unfold `symB toK symP`. Rewrite using `[subst_SPtrue w F hF.2.1 hSet.1.even (by omega) hrk hg, map_mul]`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+
+Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`. Conclude with `substPol p n' W Qq O Kf ι σ j w hSet.1 φ hφ (m + 1) r (dT TT lam0) g hg _ F1.2`. Establish `h4 : Θ' F1 ∈ scale (algebraMap O Kf w ^ ((0 : ℕ) : ℤ)) (Re p ι σ w r (flW (dT TT lam0)) e)`.
+
+Rewrite using `[← hΘeq]`. Conclude with `mem_scale.2 ⟨Θ F1, h2, by simp⟩`. Conclude with `(hΘ1.2 g hg e hbasis F1 0).2 h4`. Introduce `hI`. Apply `h3` to reduce the goal to its premises.
+
+Establish `h4` using `(hΘ1.2 g hg e hbasis F1 1).1 hI`. Rewrite `h4` using `[← hΘeq]`. Simplify using `using h4`.
+-/
 theorem xiStepN_of_P (C CD CLa : ℝ) (hP : XiStepP C CD CLa) : XiStepN C CD CLa := by
   intro p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H φ hφ K
     _ _ hk hrk F hF E' hE' nb B hB hli hc e he htgt hm g hhm hg hbasis
@@ -94,12 +111,18 @@ theorem xiStepN_of_P (C CD CLa : ℝ) (hP : XiStepP C CD CLa) : XiStepN C CD CLa
     rw [← hΘeq] at h4
     simpa using h4
 
+/- English proof (translation)
+Introduce `hA h14b`. Take `⟨CDf, C₁, h1, h2, h3⟩` from `hP hA h14b`. Conclude with `⟨CDf, C₁, h1, h2, fun C hC => xiStepN_of_P C CDf CLa (h3 C hC)⟩`.
+-/
 theorem restXiN_of_P (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg CH CE C6 C18 : ℝ)
     (hP : RestXiP D CLa Ck Crk Cdeg CH CE C6 C18) : RestXiN D CLa Ck Crk Cdeg CH CE C6 C18 := by
   intro hA h14b
   obtain ⟨CDf, C₁, h1, h2, h3⟩ := hP hA h14b
   exact ⟨CDf, C₁, h1, h2, fun C hC => xiStepN_of_P C CDf CLa (h3 C hC)⟩
 
+/- English proof (translation)
+The claim follows from `restXi_of_N D CLa Ck Crk Cdeg CH CE C6 C18 (restXiN_of_P D CLa Ck Crk Cdeg CH CE C6 C18 hP)`.
+-/
 theorem restXi_of_P (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg CH CE C6 C18 : ℝ)
     (hP : RestXiP D CLa Ck Crk Cdeg CH CE C6 C18) : RestXi D CLa Ck Crk Cdeg CH CE C6 C18 :=
   restXi_of_N D CLa Ck Crk Cdeg CH CE C6 C18 (restXiN_of_P D CLa Ck Crk Cdeg CH CE C6 C18 hP)

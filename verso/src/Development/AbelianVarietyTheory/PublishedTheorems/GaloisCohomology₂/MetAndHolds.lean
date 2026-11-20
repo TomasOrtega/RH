@@ -16,12 +16,18 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.Published.CharCrysModel
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ l _ P AI hT ι art ha χ n μ h1 h2 h3 w A h O _ _ _ Bw hj` and use `(H E Ω l P AI hT ι art ha χ n μ h1 h2 h3 w A h O Bw hj).2.2.1`.
+-/
 theorem of_above (H : HeckeLAdicCharacterAbove) : HeckeLAdicCharacterCrystalline :=
   fun E Ω _ _ _ _ _ l _ P AI hT ι art ha χ n μ h1 h2 h3 w A h O _ _ _ Bw hj =>
     (H E Ω l P AI hT ι art ha χ n μ h1 h2 h3 w A h O Bw hj).2.2.1
 
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Take `⟨P, AI, hT⟩` from `GlobalTheory.MemLoc.exists_locPrime_tied l`. Take `⟨art, ha⟩` from `hA E Ω`. Take `⟨μ, h1, h2, h3, A, h, LL, Bw, hj, -⟩` from `CharAboveModel.hypotheses_met ι art ha m w hw`. Conclude with `⟨P, AI, hT, art, ha, μ, h1, h2, h3, A, h, LL, Bw, hj, (Model.absPow_isAbsPow E m).1 w, (CharAboveModel.conclusion_absPow P AI hT ι art ha m μ h2 h3 A _ Bw).2.2.1⟩`.
+-/
 theorem met_and_holds (hA : GlobalArtinReciprocity) (ι : Qbar l ≃+* ℂ) (m : ℕ) (w : HeightOneSpectrum (𝓞 E))
     (hw : w ∈ placesOver E l) :
     ∃ (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) ∧ ∃ art : Ideles E →* Gab E Ω, IsGlobalArtin art ∧
@@ -36,6 +42,11 @@ theorem met_and_holds (hA : GlobalArtinReciprocity) (ι : Qbar l ≃+* ℂ) (m :
   exact ⟨P, AI, hT, art, ha, μ, h1, h2, h3, A, h, LL, Bw, hj, (Model.absPow_isAbsPow E m).1 w,
     (CharAboveModel.conclusion_absPow P AI hT ι art ha m μ h2 h3 A _ Bw).2.2.1⟩
 
+/- English proof (translation)
+Use `forall_congr' fun x => imp_congr_left ?_` and prove the remaining obligations. Establish `h0 : Valued.v (x : w.adicCompletion E) ≠ 0` using `by simp`. Rewrite using `[← ord_eq_zero_iff, SphCompletion.ord_completion, neg_eq_zero, IsUnitAt]`. Prove the components needed by the constructor for the conclusion. Introduce `hl`.
+
+Rewrite using `[← WithZero.exp_log h0, hl, WithZero.exp_zero]`. Introduce `hv`. Rewrite using `[hv, WithZero.log_one]`.
+-/
 theorem isUnram_iff (χ : HChar E) (w : HeightOneSpectrum (𝓞 E)) : IsUnram (χ.loc w) ↔ χ.UnrAt w := by
   refine forall_congr' fun x => imp_congr_left ?_
   have h0 : Valued.v (x : w.adicCompletion E) ≠ 0 := by simp
@@ -46,6 +57,9 @@ theorem isUnram_iff (χ : HChar E) (w : HeightOneSpectrum (𝓞 E)) : IsUnram (�
   · intro hv
     rw [hv, WithZero.log_one]
 
+/- English proof (translation)
+Establish `hξ` using `ParamAboveModel.isComp_loc (w := w) χ`. Rewrite using `[← GlobalTheory.PstLaws.unr_wdAt_iff Bw h hj P ι _ hr, CharWDModel.holds_finite P ι Bw h hj ha hk hχ hμ hL hr hξ ha', GlobalTheory.LocLanglands.Test.unr_lpOfChar_iff ha' hξ.1]`. Conclude with `isUnram_iff χ w`.
+-/
 theorem finite_iff (P : LocPrime l) (ι : Qbar l ≃+* ℂ)
     {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)}
@@ -60,6 +74,13 @@ theorem finite_iff (P : LocPrime l) (ι : Qbar l ≃+* ℂ)
     GlobalTheory.LocLanglands.Test.unr_lpOfChar_iff ha' hξ.1]
   exact isUnram_iff χ w
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ l _ P AI hT ι art ha χ n μ h1 h2 h3 w A h O _ _ _ Bw hj hu`. Take `⟨rc, ⟨a, ha', -⟩, -⟩` from `hL.1 E Ω A w h`. Establish `hξ` using `ParamAboveModel.isComp_loc (w := w) χ`. Establish `hc : Continuous fun g : ↥(Dec (F` using `E) A) => (((rk1 μ).comp (Dec (F := E) A).subtype g : GL (Fin 1) (Om l)) : Matrix (Fin 1) (Fin 1) (Om l)) := by`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations.
+
+Establish `e : (fun g : ↥(Dec (F` using `E) A) => (((rk1 μ).comp (Dec (F := E) A).subtype g : GL (Fin 1) (Om l)) : Matrix (Fin 1) (Fin 1) (Om l)) i j) = fun g : ↥(Dec (F := E) A) => ((μ g : (Om l)ˣ) : Om l) := by`. Use function extensionality and compare the values at `g`. Rewrite using `[Subsingleton.elim i j]`. Simplify using `[rk1]`. Rewrite using `[e]`.
+
+Conclude with `Units.continuous_val.comp (h2.comp continuous_subtype_val)`. Establish `hr` using `hB.isPstAt hT.some Bw _ hc (hD E Ω l P AI hT ι art ha χ n μ h1 h2 h3 w A h O Bw hj).1`. Rewrite using `[← GlobalTheory.PstLaws.unr_wdAt_iff Bw h hj P ι _ hr, hW E Ω l P AI hT ι art ha χ n μ h1 h2 h3 w A h O Bw hj _ hξ a ha', GlobalTheory.LocLanglands.Test.unr_lpOfChar_iff ha' hξ.1]`. Conclude with `(isUnram_iff χ w).2 hu`.
+-/
 theorem of_classicalTheorems (hD : HeckeLAdicCharacterDeRham) (hB : DeRhamPotSemistable) (hW : AlgebraicCharacterWD)
     (hL : LocalLanglandsGL) : HeckeLAdicCharacterCrystalline := by
   intro E Ω _ _ _ _ _ l _ P AI hT ι art ha χ n μ h1 h2 h3 w A h O _ _ _ Bw hj hu

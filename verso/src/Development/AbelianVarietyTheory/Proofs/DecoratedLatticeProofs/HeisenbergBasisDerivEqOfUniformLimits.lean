@@ -18,6 +18,11 @@ open GlobalTheory.ThetaDens
 
 namespace GlobalTheory.ThetaLimDeriv
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[Metric.tendstoUniformly_iff]`. Introduce `ε hε`. Use `filter_upwards [h ε hε] with j hj t`. Use `hj (w + x t)` as an intermediate fact. Rewrite `this`, the goal using `[dist_eq_norm]`.
+
+Simplify using `only [heisO]`. Rewrite using `[← mul_sub, norm_mul, hψ.1.2.1, one_mul]`. Conclude with `this`.
+-/
 theorem tendstoUniformly_heisO {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {S T : HSp D}
     {G : ℕ → WO S T → ℂ} {F : WO S T → ℂ} (h : TendstoUniformly G F Filter.atTop) (x : ℝ → WO S T) (w : WO S T) :
     TendstoUniformly (fun j t => heisO ψ S T (x t) (G j) w) (fun t => heisO ψ S T (x t) F w) Filter.atTop := by
@@ -30,6 +35,13 @@ theorem tendstoUniformly_heisO {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : 
   rw [← mul_sub, norm_mul, hψ.1.2.1, one_mul]
   exact this
 
+/- English proof (translation)
+Introduce `D ψ hψ θ hθ S T G F F' hG hF a hF'`. Establish `hL` using `GlobalTheory.OrientedHeis.isRealDir_lineAt (S := S) (T := T) hθ a.1 (Matrix.single a.2.1 a.2.2.1 (if a.2.2.2 then Complex.I else 1))`. Establish `e : ∀ f, GlobalTheory.Size.heisDer ψ θ a f = GlobalTheory.OrientedHeis.dLine ψ S T (lineAt θ a.1 (Matrix.single a.2.1 a.2.2.1 (if a.2.2.2 then Complex.I else 1))) f` using `fun _ => rfl`. Simplify using `only [e] at hF' ⊢`. Generalize the expression as in `lineAt θ a.1 (Matrix.single a.2.1 a.2.2.1 (if a.2.2.2 then Complex.I else 1)) = L at hL hF' ⊢`.
+
+Use function extensionality and compare the values at `w`. Establish `h1` using `tendstoUniformly_heisO hψ hF L w`. Establish `h2` using `tendstoUniformly_heisO hψ hF' L w`. Establish `h3` using `hasDerivAt_of_tendstoUniformly h2 (Filter.Eventually.of_forall fun j s => GlobalTheory.OrientedHeis.hasDerivAt_heisO hθ hψ hL (hG j) w s) (fun s => h1.tendsto_at s) 0`. Establish `h4` using `h3.deriv`.
+
+Rewrite `h4` using `[map_zero, GlobalTheory.OrientedHeis.heisO_zero]`. Conclude with `h4`.
+-/
 theorem heisDer_of_tendstoUniformly : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ (S T : HSp D) (G : ℕ → WO S T → ℂ) (F F' : WO S T → ℂ), (∀ j, IsThetaFunO ψ S T (G j)) → TendstoUniformly G F Filter.atTop → ∀ a : (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool), TendstoUniformly (fun j => GlobalTheory.Size.heisDer ψ θ a (G j)) F' Filter.atTop → GlobalTheory.Size.heisDer ψ θ a F = F' := by
   intro D ψ hψ θ hθ S T G F F' hG hF a hF'
   have hL := GlobalTheory.OrientedHeis.isRealDir_lineAt (S := S) (T := T) hθ a.1

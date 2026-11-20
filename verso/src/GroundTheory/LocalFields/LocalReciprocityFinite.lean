@@ -23,6 +23,9 @@ noncomputable def transportReciprocity {K' L' : OpenSubgroup (Ω ≃ₐ[K] Ω)} 
     (((localClassFieldData K Ω).reciprocityAbEquiv hLK (classFieldAxiom_units K Ω)).trans
       (QuotientGroup.congr _ _ u hN))
 
+/- English proof (translation)
+The claim follows from `isDiscreteModule_units (K := K) (Ω := Ω) (transportReciprocity hLK e u N hN).symm (u a : M ⧸ N) = e.abelianizationCongr (((localClassFieldData K Ω).reciprocityAbEquiv hLK (classFieldAxiom_units K Ω)).symm (a : tateZero Ωˣ (K' : Subgroup (Ω ≃ₐ[K] Ω)) (L' : Subgroup (Ω ≃ₐ[K] Ω)))) …`.
+-/
 theorem transportReciprocity_symm_mk {K' L' : OpenSubgroup (Ω ≃ₐ[K] Ω)} (hLK : L' ≤ K')
     [((L' : Subgroup (Ω ≃ₐ[K] Ω)).subgroupOf K').Normal] {Γ M : Type*} [Group Γ] [CommGroup M]
     (e : (K' : Subgroup (Ω ≃ₐ[K] Ω)) ⧸ (L' : Subgroup (Ω ≃ₐ[K] Ω)).subgroupOf K' ≃* Γ)
@@ -51,14 +54,27 @@ noncomputable def restrictTop :
   (AlgEquiv.restrictNormalHom L).comp (⊤ : Subgroup (Ω ≃ₐ[K] Ω)).subtype
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem restrictTop_apply (σ : ((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω))) :
     restrictTop L σ = (σ : Ω ≃ₐ[K] Ω).restrictNormal L :=
   rfl
 
+/- English proof (translation)
+Introduce `τ` and use `by obtain ⟨σ, hσ⟩ := AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := L) (E := Ω) τ exact ⟨⟨σ, Subgroup.mem_top σ⟩, hσ⟩`.
+-/
 theorem restrictTop_surjective : Function.Surjective (restrictTop L) := fun τ => by
   obtain ⟨σ, hσ⟩ := AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := L) (E := Ω) τ
   exact ⟨⟨σ, Subgroup.mem_top σ⟩, hσ⟩
 
+/- English proof (translation)
+Use extensionality with `σ`. Establish `hc : ∀ y : L, ((((σ : Ω ≃ₐ[K] Ω).restrictNormal L) y : L) : Ω) = (σ : Ω ≃ₐ[K] Ω) y` using `fun y => AlgEquiv.restrictNormal_commutes _ _ y`. Rewrite using `[MonoidHom.mem_ker, Subgroup.mem_subgroupOf, coe_fixingOpenSubgroup, IntermediateField.mem_fixingSubgroup_iff, restrictTop_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`.
+
+Use `congrArg (fun τ : L ≃ₐ[K] L => ((τ ⟨x, hx⟩ : L) : Ω)) h` as an intermediate fact. Simplify using `only [hc, AlgEquiv.one_apply] at this`. Conclude with `this`. Introduce `h`. Use extensionality with `x`.
+
+Rewrite using `[hc, AlgEquiv.one_apply]`. Conclude with `h x x.2`.
+-/
 theorem ker_restrictTop :
     (restrictTop L).ker = (fixingOpenSubgroup L : Subgroup (Ω ≃ₐ[K] Ω)).subgroupOf
       ((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω)) := by
@@ -91,10 +107,18 @@ noncomputable def baseQuotientEquiv :
     (QuotientGroup.quotientKerEquivOfSurjective _ (restrictTop_surjective L))
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem baseQuotientEquiv_mk (σ : ((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω))) :
     baseQuotientEquiv L (σ : _ ⧸ _) = (σ : Ω ≃ₐ[K] Ω).restrictNormal L :=
   rfl
 
+/- English proof (translation)
+Use `haveI : (L.fixingSubgroup.subgroupOf ⊤).FiniteIndex := inferInstanceAs (((fixingOpenSubgroup L : Subgroup (Ω ≃ₐ[K] Ω)).subgroupOf ((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω))).FiniteIndex)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨a, rfl⟩, rfl⟩`. Conclude with `⟨_, (baseUnitsEquiv_norm L a).symm⟩`.
+
+Introduce and unpack `⟨b, rfl⟩`. Use `⟨_, ⟨(fixedModuleUnitsEquiv L).symm b, rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `baseUnitsEquiv (Abstract.norm Ωˣ ⊤ L.fixingSubgroup _) = _`. Rewrite using `[baseUnitsEquiv_norm, MulEquiv.apply_symm_apply]`.
+-/
 theorem map_baseUnitsEquiv_range_norm :
     (norm Ωˣ ((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω))
         (fixingOpenSubgroup L : Subgroup (Ω ≃ₐ[K] Ω))).range.map
@@ -116,6 +140,9 @@ noncomputable def localReciprocity : Abelianization (L ≃ₐ[K] L) ≃* Kˣ ⧸
   transportReciprocity (K' := ⊤) (L' := fixingOpenSubgroup L) le_top (baseQuotientEquiv L)
     baseUnitsEquiv (normUnits K L).range (map_baseUnitsEquiv_range_norm L)
 
+/- English proof (translation)
+The claim follows from `isDiscreteModule_units (K := K) (Ω := Ω) (localReciprocity L).symm (baseUnitsEquiv a : Kˣ ⧸ (normUnits K L).range) = (baseQuotientEquiv L).abelianizationCongr (((localClassFieldData K Ω).reciprocityAbEquiv (le_top : fixingOpenSubgroup L ≤ ⊤) (classFieldAxiom_units K Ω)).symm (a : …`.
+-/
 theorem localReciprocity_symm_mk_baseUnitsEquiv
     (a : fixedModule Ωˣ ((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω))) :
     haveI := isDiscreteModule_units (K := K) (Ω := Ω)
@@ -132,6 +159,9 @@ section Frobenius
 variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
   {Ω : Type*} [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
 
+/- English proof (translation)
+Rewrite using `[inertiaDegree]`. Express the relevant statement in the definitionally equal form `((⊤ : Subgroup (Ω ≃ₐ[K] Ω)).map (unramifiedDegree K Ω)).index = 1`. Rewrite using `[← MonoidHom.range_eq_map, MonoidHom.range_eq_top_of_surjective _ unramifiedDegree_surjective, Subgroup.index_top]`.
+-/
 theorem inertiaDegree_top_unramifiedDegree :
     inertiaDegree (unramifiedDegree K Ω)
       ((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω)) = 1 := by
@@ -140,6 +170,9 @@ theorem inertiaDegree_top_unramifiedDegree :
   rw [← MonoidHom.range_eq_map, MonoidHom.range_eq_top_of_surjective _ unramifiedDegree_surjective,
     Subgroup.index_top]
 
+/- English proof (translation)
+Establish `h` using `(localClassFieldData K Ω).valuation_pow ⊤ a`. Rewrite `h` using `[localClassFieldData_deg, inertiaDegree_top_unramifiedDegree, pow_one]`. Rewrite using `[h]`. Use `erw [norm_self]`. Both sides reduce to the same expression.
+-/
 theorem valuation_top_localClassFieldData
     (a : fixedModule Ωˣ ((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω))) :
     (localClassFieldData K Ω).valuation ⊤ a =
@@ -157,6 +190,13 @@ noncomputable def unramifiedFrobenius (L : IntermediateField K Ω) [Normal K L] 
 
 variable (L : IntermediateField K Ω) [FiniteDimensional K L] [IsGalois K L]
 
+/- English proof (translation)
+Use `haveI := isDiscreteModule_units (K := K) (Ω := Ω)`. Use `set σ := (maximalUnramifiedExtensionFrobenius K Ω).liftNormal Ω with hσdef`. Establish `hσ : σ.restrictNormal (maximalUnramifiedExtension K Ω) = maximalUnramifiedExtensionFrobenius K Ω` using `AlgEquiv.restrict_liftNormal _ _`. Take `⟨a, rfl⟩` from `(baseUnitsEquiv (K := K) (Ω := Ω)).surjective x`. Rewrite using `[localReciprocity_symm_mk_baseUnitsEquiv]`.
+
+Establish `hu : ((⊤ : OpenSubgroup (Ω ≃ₐ[K] Ω)) : Subgroup (Ω ≃ₐ[K] Ω)) ⊓ (localClassFieldData K Ω).deg.ker ≤ (fixingOpenSubgroup L : Subgroup (Ω ≃ₐ[K] Ω))`. Rewrite using `[localClassFieldData_deg, ker_unramifiedDegree, coe_fixingOpenSubgroup]`. Conclude with `inf_le_right.trans (IntermediateField.fixingSubgroup_antitone hL)`. Establish `hφ : (localClassFieldData K Ω).relDeg ⊤ ⟨σ, Subgroup.mem_top σ⟩ = Multiplicative.ofAdd 1`. Rewrite using `[ClassFieldData.relDeg_eq_iff, localClassFieldData_deg, inertiaDegree_top_unramifiedDegree, pow_one]`.
+
+Conclude with `(restrictNormal_eq_maximalUnramifiedExtensionFrobenius_iff σ).1 hσ`. Rewrite using `[(localClassFieldData K Ω).reciprocityAbEquiv_symm_of_unramified_of_valuation le_top (classFieldAxiom_units K Ω) hu hφ a _ (valuation_top_localClassFieldData a), map_zpow]`. Both sides reduce to the same expression.
+-/
 theorem localReciprocity_symm_mk_of_le_maximalUnramifiedExtension
     (hL : L ≤ maximalUnramifiedExtension K Ω) (x : Kˣ) :
     (localReciprocity L).symm (x : Kˣ ⧸ (normUnits K L).range) =
@@ -188,6 +228,9 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
 
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [IsSepClosure K Ω] in
 
+/- English proof (translation)
+The claim follows from `FiniteDimensional.of_injective (IntermediateField.inclusion h).toLinearMap fun x y hxy => Subtype.ext (congrArg (fun z : F => (z : Ω)) hxy)`.
+-/
 theorem finiteDimensional_of_le' {E F : IntermediateField K Ω} (h : E ≤ F) [FiniteDimensional K F] :
     FiniteDimensional K E :=
   FiniteDimensional.of_injective (IntermediateField.inclusion h).toLinearMap
@@ -195,6 +238,9 @@ theorem finiteDimensional_of_le' {E F : IntermediateField K Ω} (h : E ≤ F) [F
 
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [IsSepClosure K Ω] in
 
+/- English proof (translation)
+Introduce `_ hx` and use `IntermediateField.fixingSubgroup_antitone h hx`.
+-/
 theorem fixingOpenSubgroup_anti {L F : IntermediateField K Ω} [FiniteDimensional K L]
     [FiniteDimensional K F] (h : L ≤ F) : fixingOpenSubgroup F ≤ fixingOpenSubgroup L :=
   fun _ hx => IntermediateField.fixingSubgroup_antitone h hx
@@ -202,6 +248,11 @@ theorem fixingOpenSubgroup_anti {L F : IntermediateField K Ω} [FiniteDimensiona
 variable {E F : IntermediateField K Ω} (h : E ≤ F) [FiniteDimensional K F]
   [IsGalois E (IntermediateField.extendScalars h)]
 
+/- English proof (translation)
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨a, rfl⟩, rfl⟩`. Conclude with `⟨_, (unitsEquivOfForall_norm (K' : Subgroup (Ω ≃ₐ[K] Ω)) L' h hK hL a).symm⟩`. Introduce and unpack `⟨b, rfl⟩`.
+
+Use `⟨_, ⟨(unitsEquivOfForall (L' : Subgroup (Ω ≃ₐ[K] Ω)) (IntermediateField.extendScalars h) (mem_extendScalars_iff_forall _ h hL)).symm b, rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `unitsEquivOfForall _ E _ (norm Ωˣ _ _ _) = _`. Rewrite using `[unitsEquivOfForall_norm (K' : Subgroup (Ω ≃ₐ[K] Ω)) L' h hK hL, MulEquiv.apply_symm_apply]`.
+-/
 theorem map_unitsEquivOfForall_range_norm (K' L' : OpenSubgroup (Ω ≃ₐ[K] Ω))
     (hK : E.fixingSubgroup = K') (hL : F.fixingSubgroup = L') :
     (norm Ωˣ (K' : Subgroup (Ω ≃ₐ[K] Ω)) (L' : Subgroup (Ω ≃ₐ[K] Ω))).range.map
@@ -265,6 +316,13 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
 
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [IsSepClosure K Ω] in
 
+/- English proof (translation)
+Use extensionality with `τ`. Rewrite using `[mem_map_conj, IntermediateField.mem_fixingSubgroup_iff, IntermediateField.mem_fixingSubgroup_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hτ y hy`. Use `hτ (σ y) ⟨y, hy, rfl⟩` as an intermediate fact.
+
+Rewrite using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply, AlgEquiv.aut_inv, AlgEquiv.symm_apply_eq]`. Conclude with `this`. Introduce and unpack `hτ _ ⟨y, hy, rfl⟩`. Use `hτ y hy` as an intermediate fact. Rewrite `this` using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply, AlgEquiv.aut_inv, AlgEquiv.symm_apply_eq]`.
+
+Conclude with `this`.
+-/
 theorem fixingSubgroup_map_conj (σ : Ω ≃ₐ[K] Ω) (E : IntermediateField K Ω) :
     (E.map (σ : Ω →ₐ[K] Ω)).fixingSubgroup = E.fixingSubgroup.map (MulAut.conj σ).toMonoidHom := by
   ext τ
@@ -281,6 +339,9 @@ theorem fixingSubgroup_map_conj (σ : Ω ≃ₐ[K] Ω) (E : IntermediateField K 
     exact this
 
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [IsSepClosure K Ω] in
+/- English proof (translation)
+Rewrite using `[← hE, fixingSubgroup_map_conj]`. Both sides reduce to the same expression.
+-/
 theorem fixingSubgroup_eq_conjOpen (σ : Ω ≃ₐ[K] Ω) {E E₂ : IntermediateField K Ω}
     [FiniteDimensional K E] (hE : E.map (σ : Ω →ₐ[K] Ω) = E₂) :
     E₂.fixingSubgroup = (conjOpen σ (fixingOpenSubgroup E) : Subgroup (Ω ≃ₐ[K] Ω)) := by
@@ -288,6 +349,9 @@ theorem fixingSubgroup_eq_conjOpen (σ : Ω ≃ₐ[K] Ω) {E E₂ : Intermediate
   rfl
 
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [IsSepClosure K Ω] in
+/- English proof (translation)
+Rewrite using `[← hE]`. Conclude with `⟨y, hy, rfl⟩`.
+-/
 theorem apply_mem_of_map_eq (σ : Ω ≃ₐ[K] Ω) {E E₂ : IntermediateField K Ω}
     (hE : E.map (σ : Ω →ₐ[K] Ω) = E₂) {y : Ω} (hy : y ∈ E) : σ y ∈ E₂ := by
   rw [← hE]
@@ -312,11 +376,17 @@ omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [IsSep
   [FiniteDimensional K F] [IsGalois E (IntermediateField.extendScalars h)] [FiniteDimensional K F₂]
   [IsGalois E₂ (IntermediateField.extendScalars h₂)] in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_conjUnits (x : Eˣ) : (((conjUnits σ hE x : E₂ˣ) : E₂) : Ω) = σ (x : Ω) :=
   rfl
 
 omit [IsGalois E₂ (IntermediateField.extendScalars h₂)] in
 include hE hF in
+/- English proof (translation)
+The claim follows from `(IntermediateField.mem_extendScalars h₂).2 (apply_mem_of_map_eq σ hF ((IntermediateField.mem_extendScalars h).1 x.2))`.
+-/
 theorem conj_mem_extendScalars (x : IntermediateField.extendScalars h) :
     σ (x : Ω) ∈ IntermediateField.extendScalars h₂ :=
   (IntermediateField.mem_extendScalars h₂).2
@@ -335,6 +405,13 @@ noncomputable def conjGal :
       (galoisTateModel (fixingOpenSubgroup E : Subgroup (Ω ≃ₐ[K] Ω)) (fixingOpenSubgroup F)
         h rfl rfl).quotientEquiv.symm.toMonoidHom)
 
+/- English proof (translation)
+Use `haveI := finiteDimensional_of_le' h`. Use `set T := galoisTateModel (fixingOpenSubgroup E : Subgroup (Ω ≃ₐ[K] Ω)) (fixingOpenSubgroup F) h rfl rfl`. Use `set T₂ := galoisTateModel (conjOpen σ (fixingOpenSubgroup E) : Subgroup (Ω ≃ₐ[K] Ω)) (conjOpen σ (fixingOpenSubgroup F)) h₂ (fixingSubgroup_eq_conjOpen σ hE) (fixingSubgroup_eq_conjOpen σ hF)`. Use `haveI := T.normal`. Take `⟨ρ, rfl⟩` from `T.surjective_hom τ`.
+
+Establish `e : T.quotientEquiv.symm (T.hom ρ) = (ρ : _ ⧸ _)`. Rewrite using `[MulEquiv.symm_apply_eq, TateModel.quotientEquiv_mk]`. Establish `hρ : ∀ y : IntermediateField.extendScalars h, ((T.hom ρ y : IntermediateField.extendScalars h) : Ω) = (ρ : Ω ≃ₐ[K] Ω) y` using `fun y => coe_restrictHom_apply _ h rfl ρ y`. Establish `hρ₂ : ∀ (ρ₂ : (conjOpen σ (fixingOpenSubgroup E) : Subgroup (Ω ≃ₐ[K] Ω))) (y : IntermediateField.extendScalars h₂), ((T₂.hom ρ₂ y : IntermediateField.extendScalars h₂) : Ω) = (ρ₂ : Ω ≃ₐ[K] Ω) y` using `fun ρ₂ y => coe_restrictHom_apply _ h₂ (fixingSubgroup_eq_conjOpen σ hE) ρ₂ y`. Rewrite using `[hρ]`.
+
+Express the relevant statement in the definitionally equal form `((T₂.quotientEquiv (galConj σ (fixingOpenSubgroup E) (fixingOpenSubgroup F) (T.quotientEquiv.symm (T.hom ρ))) ⟨σ x, _⟩ : IntermediateField.extendScalars h₂) : Ω) = _`. Rewrite using `[e, galConj_mk, TateModel.quotientEquiv_mk, hρ₂]`. Simplify using `[AlgEquiv.mul_apply]`.
+-/
 theorem conjGal_apply (τ : IntermediateField.extendScalars h ≃ₐ[E] IntermediateField.extendScalars h)
     (x : IntermediateField.extendScalars h) :
     ((conjGal h σ h₂ hE hF τ ⟨σ x, conj_mem_extendScalars h σ h₂ hE hF x⟩ :

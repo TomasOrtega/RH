@@ -6,6 +6,11 @@ open scoped ContDiff BigOperators Real RealInnerProductSpace
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Rewrite using `[Module.Basis.mem_span_iff_repr_mem]`. Prove the components needed by the constructor for the conclusion. Introduce `h choose ν hν using h`. Use `⟨ν, ?_⟩` and prove the remaining obligations. Use extensionality with `k`.
+
+Simplify using `using (hν k).symm`. Introduce and unpack `⟨ν, rfl⟩ i`. Conclude with `⟨ν i, by simp⟩`.
+-/
 private theorem mem_intLattice_iff {n : ℕ} (x : EuclideanSpace ℝ (Fin n)) :
     x ∈ Submodule.span ℤ (Set.range (EuclideanSpace.basisFun (Fin n) ℝ).toBasis) ↔
       ∃ ν : Fin n → ℤ, x = WithLp.toLp 2 fun k => (ν k : ℝ) := by
@@ -19,6 +24,11 @@ private theorem mem_intLattice_iff {n : ℕ} (x : EuclideanSpace ℝ (Fin n)) :
   · rintro ⟨ν, rfl⟩ i
     exact ⟨ν i, by simp⟩
 
+/- English proof (translation)
+Rewrite using `[mem_innerDual_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h choose m hm using fun k => h ((EuclideanSpace.basisFun (Fin n) ℝ).toBasis k) (Submodule.subset_span ⟨k, rfl⟩)`. Use `⟨m, ?_⟩` and prove the remaining obligations. Use extensionality with `k`.
+
+Simplify `(hm k).symm` using `[EuclideanSpace.inner_single_right]`. Introduce and unpack `⟨ν, rfl⟩ y hy`. Take `⟨μ, rfl⟩` from `(mem_intLattice_iff y).1 hy`. Conclude with `⟨∑ k, μ k * ν k, by simp [PiLp.inner_apply]⟩`.
+-/
 private theorem mem_intLattice_dual_iff {n : ℕ} (x : EuclideanSpace ℝ (Fin n)) :
     x ∈ LinearMap.BilinForm.dualSubmodule (innerₗ (EuclideanSpace ℝ (Fin n)))
       (Submodule.span ℤ (Set.range (EuclideanSpace.basisFun (Fin n) ℝ).toBasis)) ↔
@@ -35,6 +45,31 @@ private theorem mem_intLattice_dual_iff {n : ℕ} (x : EuclideanSpace ℝ (Fin n
     obtain ⟨μ, rfl⟩ := (mem_intLattice_iff y).1 hy
     exact ⟨∑ k, μ k * ν k, by simp [PiLp.inner_apply]⟩
 
+/- English proof (translation)
+Introduce `n w hw hper`. Use `set L : Submodule ℤ (EuclideanSpace ℝ (Fin n)) := Submodule.span ℤ (Set.range (EuclideanSpace.basisFun (Fin n) ℝ).toBasis) with hL`. Use `set A : EuclideanSpace ℝ (Fin n) → ℂ := fun y => w y.ofLp with hAdef`. Establish `hA : ContDiff ℝ ∞ A` using `hw.comp (EuclideanSpace.equiv (Fin n) ℝ).contDiff`. Establish `hAp : ∀ x ∈ L, Function.Periodic A x` using `fun x hx y => by`.
+
+Take `⟨ν, rfl⟩` from `(mem_intLattice_iff x).1 hx`. Conclude with `hper ν y.ofLp`. Set `v : (Fin n → ℤ) → EuclideanSpace ℝ (Fin n)` to `fun ν => WithLp.toLp 2 fun k => (ν k : ℝ)`. Establish `hv : ∀ ν, v ν ∈ LinearMap.BilinForm.dualSubmodule (innerₗ (EuclideanSpace ℝ (Fin n))) L` using `fun ν => (mem_intLattice_dual_iff _).2 ⟨ν, rfl⟩`. Set `φ : (Fin n → ℤ) ≃ LinearMap.BilinForm.dualSubmodule (innerₗ (EuclideanSpace ℝ (Fin n))) L` to `Equiv.ofBijective (fun ν => ⟨v ν, hv ν⟩) ⟨fun ν μ h => by`.
+
+Use function extensionality and compare the values at `k`. Use `congrArg (fun z => (z.1 : EuclideanSpace ℝ (Fin n)).ofLp k) h` as an intermediate fact. Simplify `this, fun z => by` using `[v]`. Take `⟨ν, hν⟩` from `(mem_intLattice_dual_iff z.1).1 z.2`. Conclude with `⟨ν, Subtype.ext hν.symm⟩⟩`.
+
+Establish `hbd : ∀ k : ℕ, ∃ M, ∀ ν, (4 * ‖v ν‖) ^ k * ‖latticeFourierCoeff L A (v ν)‖ ≤ M`. Introduce `k`. Establish `hAk : ContDiff ℝ k A` using `hA.of_le (by exact_mod_cast le_top)`. Take `⟨M, hM⟩` from `exists_bound_of_lattice_periodic (L := L) (f := iteratedFDeriv ℝ k A) (fun x hx b ↦ by`. Rewrite using `[← iteratedFDeriv_comp_add_right, show (fun z ↦ A (z + x)) = A from funext (hAp x hx)])`.
+
+Use the proof step `(hAk.continuous_iteratedFDeriv le_rfl)`. Conclude with `⟨M, fun ν => pow_mul_norm_latticeFourierCoeff_le hAp hAk hM (hv ν)⟩`. Use `⟨fun ν => latticeFourierCoeff L A (v ν), fun N => ?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨M₀, h₀⟩` from `hbd 0`. Take `⟨M, hM⟩` from `hbd N`.
+
+Use `⟨2 ^ (N - 1) * (M₀ + n ^ N * M), fun ν => ?_⟩` and prove the remaining obligations. Establish `hS0 : 0 ≤ ∑ k, |(ν k : ℝ)|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `hS : ∑ k, |(ν k : ℝ)| ≤ n * (4 * ‖v ν‖)`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun k _ => ?_` and prove the remaining obligations.
+
+Establish `h1 : ‖(v ν).ofLp k‖ ≤ ‖v ν‖` using `PiLp.norm_apply_le _ _`. Establish `h2 : ‖(v ν).ofLp k‖ = |(ν k : ℝ)|` using `rfl`. Combine the linear relations using `[norm_nonneg (v ν)]`. Use `_ = _ := by simp`. Establish `h1` using `add_pow_le zero_le_one hS0 N`.
+
+Establish `h2 : (∑ k, |(ν k : ℝ)|) ^ N ≤ n ^ N * (4 * ‖v ν‖) ^ N`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ hS0 hS N`. Establish `h3` using `h₀ ν`. Establish `h4` using `mul_le_mul_of_nonneg_left (hM ν) (show (0 : ℝ) ≤ n ^ N by positivity)`.
+
+Rewrite `h3` using `[pow_zero, one_mul]`. Rewrite `h1` using `[one_pow]`. Use `set c := ‖latticeFourierCoeff L A (v ν)‖`. Establish `hc : 0 ≤ c` using `norm_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `mul_le_mul_of_nonneg_left (h1.trans ?_) hc` and prove the remaining obligations. Use `gcongr`. Use `_ = 2 ^ (N - 1) * (c + n ^ N * ((4 * ‖v ν‖) ^ N * c)) := by ring`. Use `_ ≤ _ := by gcongr`. Establish `h` using `(latticeFourier_of_contDiff (L := L) hA hAp).2.2.1 (WithLp.toLp 2 x)`.
+
+Rewrite `h` using `[← φ.hasSum_iff]`. Use `h.tsum_eq.symm.trans (tsum_congr fun ν => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cexp (2 * π * I * ((⟪v ν, WithLp.toLp 2 x⟫ : ℝ) : ℂ)) • latticeFourierCoeff L A (v ν) = _`. Rewrite using `[smul_eq_mul, mul_comm]`. Use `congr 3`.
+
+Simplify using `[v, PiLp.inner_apply, mul_comm]`.
+-/
 theorem exists_rapid_fourierSeries_of_int_periodic :
     ∀ (n : ℕ) (w : (Fin n → ℝ) → ℂ), ContDiff ℝ ∞ w →
       (∀ (ν : Fin n → ℤ) x, w (x + fun k => (ν k : ℝ)) = w x) →

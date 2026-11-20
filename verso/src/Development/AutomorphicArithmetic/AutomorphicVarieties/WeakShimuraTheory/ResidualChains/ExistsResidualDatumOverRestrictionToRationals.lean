@@ -6,6 +6,49 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Introduce `_ Ω _ _ _ l _ c D T hT k _ a ha c₀ hc₀ hin`. Establish `hG : D.Good`. Break down `hT.2 with h | h` into its components or cases. Conclude with `h.1.1`. Conclude with `h.1.1`.
+
+Use `haveI : NumberField T.F := T.nF`. Establish `hl : l.Prime` using `Fact.out`. Establish `hpl : ∀ v, ∃ g : G ℚ Ω, (∀ x : Ω, g x ∈ T.pl v ↔ x ∈ D.pl l) ∧ (∀ s ∈ Dec (T.pl v), g⁻¹ * resQ T.F s * g ∈ Dec (D.pl l)) ∧ (∀ s ∈ Ine (T.pl v), g⁻¹ * resQ T.F s * g ∈ Ine (D.pl l))` using `fun v => Rq.placeMove T.F l hl (T.pl v) (D.pl l) (T.ovl v) (hG.pl_over l hl)`. Use `choose g hg using hpl`. Establish `hne : ∀ h : G ℚ Ω, a ((frQ D T.pr (resQ T.F T.g0)).ν h : c.O) ≠ 0`.
+
+Introduce `h`. Conclude with `((Units.map a.toMonoidHom) ((frQ D T.pr (resQ T.F T.g0)).ν h)).ne_zero`. Establish `hn : ∀ v, ∃ n' : UpperTheory.V.GradeZeroInterpolatingElement.M4 k, IsLow n' ∧ IsUp (adj n' * c₀.r (g v) * c₀.n ()) ∧ (SuppM nP (c₀.r (g v)) ∧ SuppM qQ (c₀.n ()) → SuppM qQ n')` using `fun v => Rt.flagNew k _ (c₀.r (g v)) (c₀.n ()) (hne (g v)) (hc₀.pair.mult (g v)) (hc₀.pair.low ()) (Or.inl ⟨hin.1 (g v), hin.2 ()⟩)`. Use `choose n' hn' using hn`. Establish `key : ∀ v, ∀ s ∈ Dec (T.pl v), IsUp (adj (n' v) * c₀.r (resQ T.F s) * n' v) ∧ ∀ i, (adj (n' v) * c₀.r (resQ T.F s) * n' v) i i = a ((frQ D T.pr (resQ T.F T.g0)).χ i (resQ T.F s) : c.O)`.
+
+Introduce `v s hs`. Establish `hconj` using `(hg v).2.1 s hs`. Establish `hX : c₀.r (g v) * c₀.r (g v)⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`. Take `⟨h1, h2⟩` from `Rt.flagMove k (c₀.r (g v)) (c₀.r (g v)⁻¹) (c₀.r ((g v)⁻¹ * resQ T.F s * g v)) (c₀.n ()) (n' v) hX (hc₀.pair.low ()) (hn' v).1 (hn' v).2.1 (hc₀.pair.flag () _ hconj)`.
+
+Establish `he : c₀.r (g v) * c₀.r ((g v)⁻¹ * resQ T.F s * g v) * c₀.r (g v)⁻¹ = c₀.r (resQ T.F s)`. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Use `group`. Rewrite `h1`, `h2` using `[he]`.
+
+Use `⟨h1, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[h2 i]`. Use `(hc₀.res.char () _ hconj i).trans ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_inv, mul_comm _ ((frQ D T.pr (resQ T.F T.g0)).χ i (resQ T.F s)), inv_mul_cancel_right]`. Use `⟨⟨c₀.r.comp (resQ T.F), n'⟩, ⟨⟨?_, ?_, ?_, ?_, ?_, ?_⟩, ⟨?_, ?_, ?_⟩, ?_⟩, ⟨rfl, fun v => ⟨(), g v, (hg v).1, (hn' v).2.1⟩⟩⟩` and prove the remaining obligations.
+
+Introduce `h`. Conclude with `hc₀.pair.mult (resQ T.F h)`. Introduce and unpack `h ⟨A, hA, hI, hb⟩ show c₀.r (resQ T.F h) = 1`. Establish `hAl : ¬ A.valuation (l : Ω) < 1` using `hA l (Finset.mem_insert_self _ _)`. Distinguish the cases in `hS : ∃ p ∈ D.Sb, A.valuation (p : Ω) < 1`.
+
+Take `⟨p, hp, hpA⟩` from `hS`. Establish `hpS : p ∈ D.S` using `(Finset.mem_filter.1 hp).1`. Establish `hpp : p.Prime` using `hG.S_prime p hpS`. Take `⟨γ, -, -, hγ⟩` from `Rq.placeMove T.F p hpp A (D.pl p) hpA (hG.pl_over p hpp)`. Establish `hmem` using `hγ h hI`.
+
+Establish `hψ : D.ψ (resQ T.F h) = 1`. Use `hT.1.kb A ?_ h hI hb` and prove the remaining obligations. Introduce `q hq`. Rewrite `hq` using `[Finset.mem_singleton]`. Substitute `hq` using the available equality.
+
+Conclude with `hAl`. Establish `hk` using `hc₀.pair.kill (γ⁻¹ * resQ T.F h * γ) (Or.inr ⟨p, hp, Subgroup.mem_inf.2 ⟨hmem, by`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_mul, hψ, mul_one, map_inv, inv_mul_cancel]⟩⟩)`. Establish `hx : resQ T.F h = γ * (γ⁻¹ * resQ T.F h * γ) * γ⁻¹` using `by group`. Rewrite using `[hx, map_mul, map_mul, hk, mul_one, ← map_mul, mul_inv_cancel, map_one]`.
+
+Use `push_neg at hS`. Use `hc₀.pair.kill _ (Or.inl ⟨A, ?_, hI, hb⟩)` and prove the remaining obligations. Introduce `q hq`. Break down `Finset.mem_insert.1 hq with rfl | hq` into its components or cases. Conclude with `hAl`.
+
+Conclude with `not_lt.2 (hS q hq)`. Conclude with `hc₀.pair.nrm`. Introduce `v`. Conclude with `(hn' v).1`. Introduce `v s hs`.
+
+Conclude with `(key v s hs).1`. Introduce `v s hs i`. Take `⟨hsD, m, hm⟩` from `hs`. Use `((key v s hsD).2 i).trans ?_` and prove the remaining obligations. Establish `hchar : CharP k l` using `by haveI := c.dvr haveI := c.fin`.
+
+Establish `hmax : ((l : ℕ) : c.O) ∈ IsLocalRing.maximalIdeal c.O`. Take `⟨Q, hQ, hQc⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (R := ℤ_[l]) (S := c.O) (IsLocalRing.maximalIdeal ℤ_[l]) (IsLocalRing.le_maximalIdeal (RingHom.ker_ne_top _))`. Establish `hlQ : ((l : ℕ) : c.O) ∈ Q`. Establish `h0 : ((l : ℕ) : ℤ_[l]) ∈ Q.comap (algebraMap ℤ_[l] c.O)`. Rewrite using `[hQc, PadicInt.maximalIdeal_eq_span_p]`.
+
+Conclude with `Ideal.subset_span (Set.mem_singleton _)`. Simplify using `using h0`. Conclude with `(IsLocalRing.mem_maximalIdeal _).2 fun hu => hQ.ne_top (Ideal.eq_top_of_isUnit_mem _ hlQ hu)`. Rewrite using `[CharP.charP_iff_prime_eq_zero hl]`. Establish `h0` using `ha _ hmax`.
+
+Simplify using `using h0`. Set `φ : G T.F Ω →* kˣ` to `(Units.map a.toMonoidHom).comp (((frQ D T.pr (resQ T.F T.g0)).χ i).comp (resQ T.F))`. Establish `hφv : ∀ x, (φ x : k) = c₀.r (resQ T.F x) i i` using `fun x => (hc₀.res.diag (resQ T.F x) i).symm`. Establish `hlc : IsLocallyConstant (fun x : G T.F Ω => c₀.r (resQ T.F x) i i)`. Establish `h1` using `(hc₀.cont i i 1).comp_continuous (UpperTheory.V.Af.continuous_restrictScalarsHom ℚ T.F Ω)`.
+
+Use `IsLocallyConstant.desc _ (Ideal.Quotient.mk ((⊥ : Ideal k) ^ 1)) h1 ?_` and prove the remaining obligations. Introduce `x y hxy`. Rewrite `hxy` using `[Ideal.Quotient.eq, pow_one, Ideal.mem_bot, sub_eq_zero]`. Conclude with `hxy`. Establish `hcl : IsClosed ((φ.ker : Subgroup (G T.F Ω)) : Set (G T.F Ω))`.
+
+Establish `he : ((φ.ker : Subgroup (G T.F Ω)) : Set (G T.F Ω)) = (fun x : G T.F Ω => c₀.r (resQ T.F x) i i) ⁻¹' {1}`. Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_preimage, Set.mem_singleton_iff, ← hφv, Units.val_eq_one]`. Rewrite using `[he]`. Conclude with `(hlc.isClopen_fiber 1).isClosed`.
+
+Establish `hcomm : ⁅Dec (T.pl v), Dec (T.pl v)⁆ ≤ φ.ker` using `le_trans (Subgroup.commutator_mono le_top le_top) (Abelianization.commutator_subset_ker φ)`. Establish `hker` using `Subgroup.topologicalClosure_minimal _ hcomm hcl hm`. Rewrite `hker` using `[MonoidHom.mem_ker, map_pow]`. Establish `hx : (φ s : k) ^ (l ^ m) = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, hker, Units.val_one]`.
+
+Establish `hz : ((φ s : k) - 1) ^ (l ^ m) = 0`. Rewrite using `[sub_pow_char_pow, one_pow, hx, sub_self]`. Conclude with `sub_eq_zero.1 (pow_eq_zero_iff (pow_ne_zero _ hl.ne_zero) |>.1 hz)`. Introduce `h i`. Conclude with `hc₀.res.diag (resQ T.F h) i`.
+
+Introduce `v s hs i`. Conclude with `(key v s hs).2 i`. Conclude with `Or.inl ⟨fun h => hin.1 (resQ T.F h), fun v => (hn' v).2.2 ⟨hin.1 _, hin.2 ()⟩⟩`. Introduce `i j N`. Conclude with `(hc₀.cont i j N).comp_continuous (UpperTheory.V.Af.continuous_restrictScalarsHom ℚ T.F Ω)`.
+-/
 theorem UpperTheory.V.Ws.Chain.exists_residual_datum_over_restriction_to_rationals :
     CohomologyHyp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D), T.Fit → ∀ (k : Type) [Field k] (a : c.O →+* k), (∀ x ∈ maximalIdeal c.O, a x = 0) →
       ∀ c₀ : PD Unit (G ℚ Ω) k, (frQ D T.pr (resQ T.F T.g0)).IsRes a c₀ → c₀.In nP →

@@ -13,6 +13,15 @@ open Classical
 
 namespace GlobalTheory.Poinc.TestAtPt
 
+/- English proof (translation)
+Introduce `o' Ω _ _ _ S ρ M U₀ EE FinalForm R _ _ _ G _ _ gm D A U p _ y₀ ev u ε hBC l α s hs`. Take `⟨ev₀, _, hD, bc, -, -, hx, hev, -⟩` from `hBC`. Establish `hs' : PsiCoord D.toPre (hD.xe (ε α)) s` using `by rw [hx]; exact hs`. Take `⟨w, hw⟩` from `GlobalTheory.PelCoordPull.psiCoord_pull hD (ε α) s hs'`. Take `⟨j, hj, hv⟩` from `GlobalTheory.Poinc.valF_psi_of_psiCoord u.V u.D.toPre (ε α) _ hw`.
+
+Establish `hq` using `l.q_eq (ε α) j hj`. Rewrite `hq` using `[hv]`. Establish `unit_norm : ∀ v : u.Vˣ, ‖algebraMap (FractionRing u.V) (PadicAlgCl p) (algebraMap u.V (FractionRing u.V) (v : u.V))‖ = 1`. Introduce `v`. Establish `h1` using `(u.norm_le _).2 ⟨(v : u.V), rfl⟩`.
+
+Establish `h2` using `(u.norm_le _).2 ⟨((v⁻¹ : u.Vˣ) : u.V), rfl⟩`. Establish `hm : algebraMap (FractionRing u.V) (PadicAlgCl p) (algebraMap u.V (FractionRing u.V) (v : u.V)) * algebraMap (FractionRing u.V) (PadicAlgCl p) (algebraMap u.V (FractionRing u.V) ((v⁻¹ : u.Vˣ) : u.V)) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Establish `hn` using `congrArg norm hm`. Rewrite `hn` using `[norm_mul, norm_one]`.
+
+Use polynomial arithmetic with `[norm_nonneg (algebraMap (FractionRing u.V) (PadicAlgCl p) (algebraMap u.V (FractionRing u.V) (v : u.V))), norm_nonneg (algebraMap (FractionRing u.V) (PadicAlgCl p) (algebraMap u.V (FractionRing u.V) ((v⁻¹ : u.Vˣ) : u.V)))]`. Rewrite `hq` using `[map_mul, map_mul, norm_mul, unit_norm w, _root_.one_mul, hev]`. Conclude with `hq`.
+-/
 theorem norm_psi_coord : ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' Ω] (S : ThetaSys o' Ω) (ρ : S.Real) (M : RatModel o' Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (FinalForm : ZHOut ρ M U₀ EE) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (gm : G.left ⟶ FinalForm.G.left) (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A G) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (ev : R →+* OO p) (u : ρ.UTest p y₀) (ε : D.toPre.X ≃+ u.D.toPre.X), GlobalTheory.Poinc.TestAtPt.IsBC FinalForm gm U ev u ε → ∀ (l : u.Lab) α s, PsiCoord D.toPre α s → ‖(ev s : PadicAlgCl p)‖ = Real.exp (-l.q (ε α)) := by
   intro o' Ω _ _ _ S ρ M U₀ EE FinalForm R _ _ _ G _ _ gm D A U p _ y₀ ev u ε hBC l α s hs
   obtain ⟨ev₀, _, hD, bc, -, -, hx, hev, -⟩ := hBC

@@ -11,6 +11,13 @@ noncomputable section
 
 namespace GlobalTheory.TorsionForm.Pullback
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℝ V`. Establish `hexp : ∀ x (v : V), L x v = ∑ k, b.repr v k • L x (b k)`. Introduce `x v`. Set `Lx : V →ₗ[ℝ] F` to `IsLinearMap.mk' (L x) (hlin x)`. Combine the equalities or inequalities in the displayed calculation.
+
+Set `c : Fin (Module.finrank ℝ V) → V →L[ℝ] ℝ` to `fun k => LinearMap.toContinuousLinearMap (b.coord k)`. Establish `hc : ∀ k (v : V), c k v = b.repr v k` using `fun k v => by simp [c]`. Establish `hterm : ∀ k ∈ (Finset.univ : Finset (Fin (Module.finrank ℝ V))), HasFDerivAt (fun x => c k (u x) • L x (b k)) (c k (u x₀) • (fderiv ℝ (fun x => L x (b k)) x₀) + ((c k).comp u').smulRight (L x₀ (b k))) x₀` using `fun k _ => ((c k).hasFDerivAt.comp x₀ hu).smul (hL (b k)).hasFDerivAt`. Use `⟨_, (HasFDerivAt.sum hterm).congr_of_eventuallyEq ?_, ?_⟩` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun x => by`.
+
+Simplify using `only [Finset.sum_apply, hc]`. Conclude with `hexp x (u x)`. Introduce `w`. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.comp_apply, hu0, map_zero, hc, Finsupp.coe_zero, Pi.zero_apply, zero_smul, zero_add]`. Conclude with `(hexp x₀ (u' w)).symm`.
+-/
 theorem hasFDerivAt_apply_of_vanish {X V F : Type} [NormedAddCommGroup X] [NormedSpace ℝ X]
     [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     [NormedAddCommGroup F] [NormedSpace ℝ F]
@@ -41,6 +48,17 @@ theorem hasFDerivAt_apply_of_vanish {X V F : Type} [NormedAddCommGroup X] [Norme
       zero_smul, zero_add]
     exact (hexp x₀ (u' w)).symm
 
+/- English proof (translation)
+Introduce `E E' _ _ _ _ _ _ g m n N φ β b z h1 h2 h3`. Establish `hφb : DifferentiableAt ℂ φ b` using `h3.self_of_nhds`. Establish `han : AnalyticAt ℂ φ b` using `GlobalTheory.SCV.analyticAt_iff_eventually_differentiableAt.mpr h3`. Establish `hD : DifferentiableAt ℂ (fderiv ℂ φ) b` using `han.fderiv.differentiableAt`. Establish `hpair : DifferentiableAt ℝ (fun P : Pt E' g => (φ P.1, P.2)) (b, z)` using `((hφb.restrictScalars ℝ).comp (b, z) differentiableAt_fst).prodMk differentiableAt_snd`.
+
+Establish `key : ∀ i, ∃ D : Pt E' g →L[ℝ] Ext m, HasFDerivAt (fun P : Pt E' g => N i (φ P.1, P.2) (fderiv ℂ φ P.1 (β i) - fderiv ℂ φ b (β i))) D (b, z) ∧ ∀ w : Pt E' g, D w = N i (φ b, z) (fderiv ℂ (fun c => fderiv ℂ φ c (β i)) b w.1)`. Introduce `i`. Establish `hψ : DifferentiableAt ℂ (fun c => fderiv ℂ φ c (β i)) b` using `hD.clm_apply (differentiableAt_const _)`. Establish `hu : HasFDerivAt (fun P : Pt E' g => fderiv ℂ φ P.1 (β i) - fderiv ℂ φ b (β i)) (((fderiv ℂ (fun c => fderiv ℂ φ c (β i)) b).restrictScalars ℝ).comp (ContinuousLinearMap.fst ℝ E' (Fin g → ℂ))) (b, z)`. Establish `h0 : HasFDerivAt (fun c : E' => fderiv ℂ φ c (β i)) ((fderiv ℂ (fun c => fderiv ℂ φ c (β i)) b).restrictScalars ℝ) b` using `hψ.hasFDerivAt.restrictScalars ℝ`.
+
+Establish `h00 : HasFDerivAt (fun P : Pt E' g => fderiv ℂ φ P.1 (β i)) (((fderiv ℂ (fun c => fderiv ℂ φ c (β i)) b).restrictScalars ℝ).comp (ContinuousLinearMap.fst ℝ E' (Fin g → ℂ))) (b, z)`. Establish `h'` using `h0.comp (b, z) (hasFDerivAt_fst (𝕜 := ℝ) (p := ((b, z) : E' × (Fin g → ℂ))))`. Conclude with `h'`. Conclude with `h00.sub_const _`. Conclude with `hasFDerivAt_apply_of_vanish (fun P : Pt E' g => N i (φ P.1, P.2)) (fun P => h1 i _) (b, z) (fun v => by have h' := (h2 i v).comp (b, z) hpair; exact h') _ _ hu (sub_self _)`.
+
+Use `choose D hD1 hD2 using key`. Establish `hsum` using `HasFDerivAt.sum (u := Finset.univ) (fun i _ => hD1 i)`. Establish `hsum' : HasFDerivAt (fun P : Pt E' g => ∑ i, N i (φ P.1, P.2) (fderiv ℂ φ P.1 (β i) - fderiv ℂ φ b (β i))) (∑ i, D i) (b, z)`. Rewrite `hsum` using `[Finset.sum_fn]`. Conclude with `hsum`.
+
+Use `⟨hsum'.differentiableAt, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[hsum'.fderiv, ContinuousLinearMap.sum_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => hD2 i w`.
+-/
 theorem corr_deriv_base_change : ∀ {E E' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] [NormedAddCommGroup E'] [NormedSpace ℂ E'] [FiniteDimensional ℂ E'] {g m n : ℕ} (N : Fin n → Pt E g → E → Ext m) (φ : E' → E) (β : Fin n → E') (b : E') (z : Fin g → ℂ), (∀ i Q, IsLinearMap ℝ (N i Q)) → (∀ i v, DifferentiableAt ℝ (fun Q => N i Q v) (φ b, z)) → (∀ᶠ c in 𝓝 b, DifferentiableAt ℂ φ c) → DifferentiableAt ℝ (fun P : Pt E' g => ∑ i, N i (φ P.1, P.2) (fderiv ℂ φ P.1 (β i) - fderiv ℂ φ b (β i))) (b, z) ∧ ∀ w : Pt E' g, fderiv ℝ (fun P : Pt E' g => ∑ i, N i (φ P.1, P.2) (fderiv ℂ φ P.1 (β i) - fderiv ℂ φ b (β i))) (b, z) w = ∑ i, N i (φ b, z) (fderiv ℂ (fun c => fderiv ℂ φ c (β i)) b w.1) := by
   intro E E' _ _ _ _ _ _ g m n N φ β b z h1 h2 h3
   have hφb : DifferentiableAt ℂ φ b := h3.self_of_nhds

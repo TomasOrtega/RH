@@ -10,13 +10,28 @@ namespace PI.SqfRootsInj.W
 
 open PI.SqfLab
 
+/- English proof (translation)
+Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hx]`. Evaluate the numerical expressions.
+-/
 theorem rpow_quarter_pow_four (x : ℝ) (hx : 0 ≤ x) : (x ^ ((1 : ℝ) / 4)) ^ 4 = x := by
   rw [← Real.rpow_natCast, ← Real.rpow_mul hx]; norm_num
 
+/- English proof (translation)
+Rewrite using `[inv_pow, ← Real.rpow_natCast, ← Real.rpow_mul hx, Real.rpow_neg hx]`. Evaluate the numerical expressions.
+-/
 theorem rpow_neg_half_eq (x : ℝ) (hx : 0 ≤ x) :
     x ^ (-(1 / 2 : ℝ)) = ((x ^ ((1 : ℝ) / 4))⁻¹) ^ 2 := by
   rw [inv_pow, ← Real.rpow_natCast, ← Real.rpow_mul hx, Real.rpow_neg hx]; norm_num
 
+/- English proof (translation)
+Establish `hL : (Lp g e ℓ : ℝ) ≤ s ^ e`. Establish `h4 : ((Lp g e ℓ : ℝ)) ^ 4 ≤ (s ^ e) ^ 4`. Rewrite using `[← pow_mul, mul_comm e 4, pow_mul, hs4]`. Conclude with `lp_pow_four_le hℓ hB he1 her` after adjusting the coercions. Conclude with `le_of_pow_le_pow_left₀ (by norm_num) (by positivity) h4`.
+
+Establish `hgj : (g : ℝ) ^ j ≤ s ^ (2 * e)`. Rewrite using `[← hs4, ← pow_mul]; exact pow_le_pow_right₀ hs1 (by omega)`. Establish `hcast : (((g ^ j - 1) * Lp g e ℓ * g ^ (r - e) : ℕ) : ℝ) ≤ (g : ℝ) ^ j * Lp g e ℓ * (g : ℝ) ^ (r - e)`. Establish `: (g ^ j - 1) * Lp g e ℓ * g ^ (r - e) ≤ g ^ j * Lp g e ℓ * g ^ (r - e)` using `Nat.mul_le_mul_right _ (Nat.mul_le_mul_right _ (Nat.sub_le _ _))`. Conclude with `this` after adjusting the coercions.
+
+Establish `key : (g : ℝ) ^ r * (s⁻¹) ^ e = (g : ℝ) ^ (r - e) * s ^ (3 * e)`. Establish `h1 : (g : ℝ) ^ r = (g : ℝ) ^ (r - e) * (s ^ 4) ^ e`. Rewrite using `[hs4, ← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h2 : s ^ e * (s⁻¹) ^ e = 1` using `by rw [← mul_pow, mul_inv_cancel₀ hs0.ne', one_pow]`. Rewrite using `[h1]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[key]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem termA_le (g r e j ℓ : ℕ) (s : ℝ) (hs0 : 0 < s) (hs1 : 1 ≤ s) (hs4 : s ^ 4 = g)
     (hℓ : ℓ.Prime) (hB : ℓ ∉ BB r g) (he1 : 1 ≤ e) (her : e ≤ r) (hj : 2 * j ≤ e) :
     (((g ^ j - 1) * Lp g e ℓ * g ^ (r - e) : ℕ) : ℝ) ≤ (g : ℝ) ^ r * (s⁻¹) ^ e := by
@@ -45,6 +60,15 @@ theorem termA_le (g r e j ℓ : ℕ) (s : ℝ) (hs0 : 0 < s) (hs1 : 1 ≤ s) (hs
     _ ≤ s ^ (2 * e) * s ^ e * (g : ℝ) ^ (r - e) := by gcongr
     _ = (g : ℝ) ^ (r - e) * s ^ (3 * e) := by ring
 
+/- English proof (translation)
+Establish `hL : (Lp g e ℓ : ℝ) ≤ s ^ e`. Establish `h4 : ((Lp g e ℓ : ℝ)) ^ 4 ≤ (s ^ e) ^ 4`. Rewrite using `[← pow_mul, mul_comm e 4, pow_mul, hs4]`. Conclude with `lp_pow_four_le hℓ hB he1 (by omega)` after adjusting the coercions. Conclude with `le_of_pow_le_pow_left₀ (by norm_num) (by positivity) h4`.
+
+Establish `key : (g : ℝ) ^ r * (s⁻¹) ^ (3 * e) = (g : ℝ) ^ e' * s ^ e * (g : ℝ) ^ (r - e - e')`. Establish `h1 : (g : ℝ) ^ r = (g : ℝ) ^ (r - e - e') * (g : ℝ) ^ e' * (s ^ 4) ^ e`. Rewrite using `[hs4, ← pow_add, ← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h2 : s ^ (3 * e) * (s⁻¹) ^ (3 * e) = 1`. Rewrite using `[← mul_pow, mul_inv_cancel₀ hs0.ne', one_pow]`. Rewrite using `[h1]`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree.
+
+Use `_ = _ := by rw [h2, mul_one]`. Rewrite using `[key]`. Use `push_cast`. Use `gcongr`.
+-/
 theorem termB_le (g r e e' ℓ : ℕ) (s : ℝ) (hs0 : 0 < s) (hs4 : s ^ 4 = g)
     (hℓ : ℓ.Prime) (hB : ℓ ∉ BB r g) (he1 : 1 ≤ e) (hsum : e + e' ≤ r) :
     ((g ^ e' * Lp g e ℓ * g ^ (r - e - e') : ℕ) : ℝ) ≤ (g : ℝ) ^ r * (s⁻¹) ^ (3 * e) := by
@@ -67,11 +91,61 @@ theorem termB_le (g r e e' ℓ : ℕ) (s : ℝ) (hs0 : 0 < s) (hs4 : s ^ 4 = g)
   push_cast
   gcongr
 
+/- English proof (translation)
+Rewrite using `[← Real.log_pow]`. Conclude with `Real.log_le_log (by positivity) (by exact_mod_cast h)`.
+-/
 theorem log_cast_le (n g k : ℕ) (hn : n ≠ 0) (h : n ≤ g ^ k) :
     Real.log n ≤ k * Real.log g := by
   rw [← Real.log_pow]
   exact Real.log_le_log (by positivity) (by exact_mod_cast h)
 
+/- English proof (translation)
+Establish `hg1 : 1 < g` using `hgp.out.one_lt`. Establish `hg0 : (0 : ℝ) ≤ g` using `Nat.cast_nonneg g`. Use `set s := (g : ℝ) ^ ((1 : ℝ) / 4) with hs`. Establish `hs4 : s ^ 4 = g` using `rpow_quarter_pow_four _ hg0`. Establish `hsn : 0 ≤ s` using `Real.rpow_nonneg hg0 _`.
+
+Establish `hs8 : 8 ≤ s`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `h1 : s ^ 4 < 8 ^ 4` using `pow_lt_pow_left₀ h hsn (by norm_num)`. Rewrite `h1` using `[hs4]`.
+
+Establish `h2 : ((2 ^ 12 : ℕ) : ℝ) ≤ g` using `by exact_mod_cast hg`. Evaluate the numerical expressions using `at h1 h2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs0 : 0 < s` using `by linarith`. Establish `hs1 : 1 ≤ s` using `by linarith`.
+
+Use `set t := s⁻¹ with ht`. Establish `ht0 : 0 ≤ t` using `inv_nonneg.2 hsn`. Establish `ht8 : t ≤ 1 / 8`. Rewrite using `[ht, one_div]; exact inv_anti₀ (by norm_num) hs8`. Establish `hl2 : (1 / 2 : ℝ) < Real.log 2` using `by have := Real.log_two_gt_d9; linarith`.
+
+Establish `hl2p : 0 < Real.log 2` using `by linarith`. Establish `hA : 0 ≤ Real.log g` using `Real.log_nonneg (by exact_mod_cast hg1.le)`. Use `set large₂ := Real.log g / Real.log 2 with hLg`. Establish `hLg0 : 0 ≤ large₂` using `div_nonneg hA hl2p.le`. Establish `hLg2 : large₂ ≤ 2 * Real.log g`.
+
+Rewrite using `[hLg, div_le_iff₀ hl2p]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hG : (0 : ℝ) ≤ (g : ℝ) ^ r` using `by positivity`. Establish `hne : ∀ e, 1 ≤ e → g ^ e - 1 ≠ 0` using `fun e he => g_pow_sub_one_ne hg1 he`. Establish `hSA : (SA g r : ℝ) ≤ 4 * large₂ * (g : ℝ) ^ r * t ^ 2`.
+
+Establish `hper : ∀ e ∈ Finset.Icc 2 r, (∑ j ∈ Finset.Icc 1 (e / 2), ∑ ℓ ∈ LS g r (g ^ e - 1), (((g ^ j - 1) * Lp g e ℓ * g ^ (r - e) : ℕ) : ℝ)) ≤ (large₂ * (g : ℝ) ^ r / 2) * ((e : ℝ) ^ 2 * t ^ e)`. Introduce `e he`. Take `⟨he2, her⟩` from `Finset.mem_Icc.1 he`. Establish `hcj : ((Finset.Icc 1 (e / 2)).card : ℝ) ≤ (e : ℝ) / 2`. Establish `h1 : (Finset.Icc 1 (e / 2)).card = e / 2` using `by simp`.
+
+Rewrite using `[h1]`. Use `(Nat.cast_div_le (m := e) (n := 2) : ((e / 2 : ℕ) : ℝ) ≤ _)` as an intermediate fact. Simplify using `using this`. Establish `hcl : ((LS g r (g ^ e - 1)).card : ℝ) ≤ e * large₂`. Use `(card_LS_le g r _ (hne e (by omega))).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hLg, mul_div_assoc']`. Conclude with `div_le_div_of_nonneg_right (log_cast_le _ g e (hne e (by omega)) (Nat.sub_le _ _)) hl2p.le`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun j hj => Finset.sum_le_sum fun ℓ hℓ => ?_` and prove the remaining obligations. Establish `hj'` using `Finset.mem_Icc.1 hj`.
+
+Take `⟨hℓ1, hℓB⟩` from `Finset.mem_filter.1 hℓ`. Conclude with `termA_le g r e j ℓ s hs0 hs1 hs4 (Nat.prime_of_mem_primeFactors hℓ1) hℓB (by omega) her (by omega)`. Use `_ = ((Finset.Icc 1 (e / 2)).card : ℝ) * (((LS g r (g ^ e - 1)).card : ℝ) * ((g : ℝ) ^ r * t ^ e)) := by`. Simplify using `only [Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ ((e : ℝ) / 2) * ((e * large₂) * ((g : ℝ) ^ r * t ^ e)) := by`.
+
+Apply `mul_le_mul hcj (mul_le_mul_of_nonneg_right hcl (by positivity)) (by positivity) (by positivity)` to reduce the goal to its premises. Use `_ = (large₂ * (g : ℝ) ^ r / 2) * ((e : ℝ) ^ 2 * t ^ e) := by ring`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [SA, Nat.cast_sum]`. Use `_ ≤ ∑ e ∈ Finset.Icc 2 r, (large₂ * (g : ℝ) ^ r / 2) * ((e : ℝ) ^ 2 * t ^ e) := Finset.sum_le_sum hper`.
+
+Use `_ = (large₂ * (g : ℝ) ^ r / 2) * ∑ e ∈ Finset.Icc 2 r, (e : ℝ) ^ 2 * t ^ e := by`. Rewrite using `[Finset.mul_sum]`. Use `_ ≤ (large₂ * (g : ℝ) ^ r / 2) * (8 * t ^ 2) := by gcongr`. Conclude with `sum_sq_pow_le_two t ht0 ht8 r`. Use `_ = 4 * large₂ * (g : ℝ) ^ r * t ^ 2 := by ring`.
+
+Establish `hSB : (SB g r : ℝ) ≤ 4 * large₂ * (g : ℝ) ^ r * t ^ 3`. Establish `hper : ∀ e ∈ Finset.Icc 1 r, (∑ e' ∈ Finset.Icc 1 (min e (r - e)), ∑ ℓ ∈ LS g r ((g ^ e - 1) * (g ^ e' - 1)), ((g ^ e' * Lp g e ℓ * g ^ (r - e - e') : ℕ) : ℝ)) ≤ (2 * large₂ * (g : ℝ) ^ r) * ((e : ℝ) ^ 2 * t ^ e * t ^ 2)`. Introduce `e he`. Take `⟨he1, her⟩` from `Finset.mem_Icc.1 he`. Establish `hce : ((Finset.Icc 1 (min e (r - e))).card : ℝ) ≤ e`.
+
+Establish `h1 : (Finset.Icc 1 (min e (r - e))).card ≤ e` using `by simp`. Conclude with `h1` after adjusting the coercions. Establish `ht3 : t ^ (3 * e) ≤ t ^ e * t ^ 2`. Rewrite using `[show 3 * e = e + 2 * e by ring, pow_add]`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_of_le_one ht0 (by linarith) (by omega : 2 ≤ 2 * e)) (pow_nonneg ht0 e)`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun e' he' => Finset.sum_le_sum fun ℓ hℓ => ?_` and prove the remaining obligations. Establish `he''` using `Finset.mem_Icc.1 he'`. Take `⟨hℓ1, hℓB⟩` from `Finset.mem_filter.1 hℓ`. Conclude with `termB_le g r e e' ℓ s hs0 hs4 (Nat.prime_of_mem_primeFactors hℓ1) hℓB he1 (by omega)`.
+
+Use `_ = ∑ e' ∈ Finset.Icc 1 (min e (r - e)), ((LS g r ((g ^ e - 1) * (g ^ e' - 1))).card : ℝ) * ((g : ℝ) ^ r * t ^ (3 * e)) := by`. Simplify using `only [Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ ∑ e' ∈ Finset.Icc 1 (min e (r - e)), (2 * e * large₂) * ((g : ℝ) ^ r * t ^ (3 * e)) := by`. Use `Finset.sum_le_sum fun e' he' => ?_` and prove the remaining obligations. Establish `he''` using `Finset.mem_Icc.1 he'`.
+
+Establish `hn0 : (g ^ e - 1) * (g ^ e' - 1) ≠ 0` using `Nat.mul_ne_zero (hne e he1) (hne e' he''.1)`. Establish `hnle : (g ^ e - 1) * (g ^ e' - 1) ≤ g ^ (2 * e)`. Combine the equalities or inequalities in the displayed calculation. Establish `hcl : ((LS g r ((g ^ e - 1) * (g ^ e' - 1))).card : ℝ) ≤ 2 * e * large₂`. Use `(card_LS_le g r _ hn0).trans ?_` and prove the remaining obligations.
+
+Use `log_cast_le _ g (2 * e) hn0 hnle` as an intermediate fact. Rewrite using `[hLg, mul_div_assoc']`. Use `div_le_div_of_nonneg_right ?_ hl2p.le` and prove the remaining obligations. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `mul_le_mul_of_nonneg_right hcl (by positivity)`. Use `_ = ((Finset.Icc 1 (min e (r - e))).card : ℝ) * ((2 * e * large₂) * ((g : ℝ) ^ r * t ^ (3 * e))) := by`. Simplify using `only [Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ (e : ℝ) * ((2 * e * large₂) * ((g : ℝ) ^ r * (t ^ e * t ^ 2))) := by`. Apply `mul_le_mul hce _ (by positivity) (by positivity)` to reduce the goal to its premises.
+
+Use `gcongr`. Use `_ = (2 * large₂ * (g : ℝ) ^ r) * ((e : ℝ) ^ 2 * t ^ e * t ^ 2) := by ring`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [SB, Nat.cast_sum]`. Use `_ ≤ ∑ e ∈ Finset.Icc 1 r, (2 * large₂ * (g : ℝ) ^ r) * ((e : ℝ) ^ 2 * t ^ e * t ^ 2) := Finset.sum_le_sum hper`.
+
+Use `_ = (2 * large₂ * (g : ℝ) ^ r * t ^ 2) * ∑ e ∈ Finset.Icc 1 r, (e : ℝ) ^ 2 * t ^ e := by`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun e _ => by ring` and prove the remaining obligations. Use `_ ≤ (2 * large₂ * (g : ℝ) ^ r * t ^ 2) * (2 * t) := by gcongr`. Conclude with `sum_sq_pow_le_one t ht0 ht8 r`.
+
+Use `_ = 4 * large₂ * (g : ℝ) ^ r * t ^ 3 := by ring`. Establish `ht3 : t ^ 3 ≤ t ^ 2 / 8`. Rewrite using `[pow_succ]`. Use `mul_le_mul_of_nonneg_left ht8 (sq_nonneg t)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[rpow_neg_half_eq _ hg0, ← hs, ← ht, Nat.cast_add]`. Establish `hX : 0 ≤ Real.log g * ((g : ℝ) ^ r * t ^ 2)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem sums_le (g r : ℕ) [hgp : Fact g.Prime] (hg : 2 ^ 12 ≤ g) :
     ((SA g r + SB g r : ℕ) : ℝ) ≤ 23 * Real.log g * (g : ℝ) ^ (-(1 / 2 : ℝ)) * (g : ℝ) ^ r := by
   have hg1 : 1 < g := hgp.out.one_lt
@@ -224,6 +298,9 @@ theorem sums_le (g r : ℕ) [hgp : Fact g.Prime] (hg : 2 ^ 12 ≤ g) :
     _ ≤ (9 / 2) * (2 * Real.log g) * ((g : ℝ) ^ r * t ^ 2) := by gcongr
     _ ≤ 23 * Real.log g * t ^ 2 * (g : ℝ) ^ r := by nlinarith
 
+/- English proof (translation)
+Introduce `g r _ _ hg T hT`. Establish `h1` using `card_le_SA_SB g r T hT`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem local_orbit_count : Count := by
   intro g r _ _ hg T hT
   have h1 := card_le_SA_SB g r T hT

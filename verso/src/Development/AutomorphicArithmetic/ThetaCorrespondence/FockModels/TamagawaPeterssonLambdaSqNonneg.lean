@@ -40,6 +40,31 @@ end GlobalTheory.SupModel
 
 open GlobalTheory.SupModel in
 
+/- English proof (translation)
+Introduce `hMB hTB D j H Dw l Xo c U dict hLw σ hσ la w hw0 hspread hχ P hP`. Establish `hr : 0 < D.R.r`. Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `Formalism.BasicNotions.Ranks.r`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hcusp` using `abelian₂.holSub_SS siegelSpaceAlgebra_holds (U σ).X la hP`. Establish `hdat` using `fun k => GlobalTheory.T.exists_selfDual_data_transvection_principal_level D j H Dw l Xo c U dict hLw σ hσ k`. Use `choose Xx hXx hg hΛ hL' M' hM' hk hT using hdat`. Establish `hfs : ∀ k, ∃ x0, IsOrth ((U σ).X k) x0 ∧ ∃ FF, IsFundSet ((U σ).X k) x0 FF` using `fun k => by`. Take `⟨x0, ho, FF, hF, -⟩` from `GlobalTheory.DriftCovolume.finMu_unconditional D.R.r ((U σ).X k)`.
+
+Conclude with `⟨x0, ho, FF, hF⟩`. Use `choose x0 ho FF hF using hfs`. Use `set Φ : ∀ k, Frame ((U σ).X k).Ψ D.R.r → ℝ≥0∞ := fun k u => ENNReal.ofReal (((U σ).X k).pnorm (la k) (((U σ).X k).dom.piecewise (P k) 0) u ^ 2) with hΦdef`. Establish `hsec : ∀ k, ((U σ).X k).IsSec (la k) (P k)` using `fun k => (hcusp k).1.1`. Establish `hΦm : ∀ k, Measurable (Φ k)` using `fun k => by`.
+
+Establish `hm` using `GlobalTheory.PeterssonCompare.measurable_pnorm ((U σ).X k) (la k) (P := ((U σ).X k).dom.piecewise (P k) 0) ((hsec k).1.continuousOn.congr fun u hu => Set.piecewise_eq_of_mem _ _ _ hu) (fun u hu => by rw [Set.piecewise_eq_of_notMem _ _ _ hu]; rfl)`. Conclude with `ENNReal.measurable_ofReal.comp (hm.pow_const 2)`. Establish `hΦΓ : ∀ k, ∀ γ ∈ ((U σ).X k).Γ, ∀ x ∈ ((U σ).X k).dom, Φ k (lact γ x) = Φ k x`. Introduce `k γ hγ u hu`. Establish `hu'` using `GlobalTheory.MajInv.lact_mem_dom ((U σ).X k) (((U σ).X k).Γ_stab γ hγ) hu`.
+
+Simplify using `only [hΦdef]`. Rewrite using `[pnorm_piecewise_eq _ _ _ hu, pnorm_piecewise_eq _ _ _ hu', pnorm_lact_eq _ (hsec k) hγ hu]`. Establish `hΦB : ∀ k, ∀ b ∈ Bor ((U σ).X k).Ψ D.R.r, ∀ x ∈ ((U σ).X k).dom, Φ k (rmul x b) = Φ k x`. Introduce `k b hb u hu`. Establish `hu'` using `OrthogonalFrameDomain.rmul_mem_dom ((U σ).X k) hu hb`.
+
+Simplify using `only [hΦdef]`. Rewrite using `[pnorm_piecewise_eq _ _ _ hu, pnorm_piecewise_eq _ _ _ hu', FrameDegreeData.pnorm_rmul ((U σ).X k) (la k) (P k) (hsec k).2.1 u hu b hb]`. Take `⟨hS0, hStop, hΦeq⟩` from `GlobalTheory.T.adelicProbability_eq_normalised_fundamentalSets D j H Dw l Xo c U dict hLw σ hσ x0 FF (fun k => ⟨ho k, hF k⟩)`. Establish `heq` using `hΦeq Φ hΦm hΦΓ hΦB`. Establish `hms` using `MainStatements.Tam.Plug.comp D j H Dw l Xo c U dict hLw σ hσ x0 FF (fun k => ⟨ho k, hF k⟩)`.
+
+Take `⟨Kf, th, hr', -, -, hU, -⟩` from `hLw.dictU σ hσ`. Establish `hdom : ∀ g, (dict σ g).2 ∈ ((U σ).X (dict σ g).1).dom` using `hU.2.2.2.1`. Establish `hpet : (∫⁻ q, Φ (dict σ q.out).1 (dict σ q.out).2 ∂(muQ1 (D.sp.W j))) = petE (D.sp.W j) (dict σ) (muQ1 (D.sp.W j)) la P ^ 2`. Rewrite using `[petE, eLpNorm_eq_lintegral_rpow_enorm (by norm_num) (by norm_num), ← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]`. Evaluate the numerical expressions.
+
+Use `lintegral_congr fun q => ?_` and prove the remaining obligations. Simplify using `only [hΦdef, ptN]`. Rewrite using `[pnorm_piecewise_eq _ _ _ (hdom _), Real.enorm_eq_ofReal (pnorm_nonneg₀ _ _ _ _), ← ENNReal.ofReal_pow (pnorm_nonneg₀ _ _ _ _)]`. Use `set S := ∑ k, muF ((U σ).X k) (x0 k) (FF k) with hSdef`. Establish `hpt : ∀ p : Formalism.L2.Pj.FPt (U σ).X, ENNReal.ofReal (((U σ).X p.1).pnorm (la p.1) (P p.1) p.2) ^ 2 ≤ ENNReal.ofReal (MainStatements.Tam.Plug.supConst2 D.host.E D.R.r D.host.d l.M w) * petE (D.sp.W j) (dict σ) (muQ1 (D.sp.W j)) la P ^ 2`.
+
+Introduce and unpack `⟨k, y, hy⟩`. Rewrite using `[← ENNReal.ofReal_pow (pnorm_nonneg₀ _ _ _ _)]`. Establish `h1` using `GlobalTheory.SupModel.comp_bound hr ((U σ).X k) (Xx k) (hXx k) (la k) (P k) (hcusp k) w hw0 (hspread k) (hχ k) D.host.d l.M (hL' k) (M' k) (hM' k) (hk k) (hT k) (x0 k) (FF k) (ho k) (hF k) y hy`. Establish `h2 : (∫⁻ z in FF k, Φ k (ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt ((U σ).X k) (x0 k) z) ∂(muF ((U σ).X k) (x0 k))) ≤ petE (D.sp.W j) (dict σ) (muQ1 (D.sp.W j)) la P ^ 2 * ENNReal.ofReal (MainStatements.Tam.massLev2 D.host.E D.R.r l.M)`. Combine the equalities or inequalities in the displayed calculation.
+
+Distinguish the cases in `hLc : 0 ≤ locConst D.host.E D.R.r w (epsLev D.host.E D.host.d l.M w)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[MainStatements.Tam.Plug.supConst2, ENNReal.ofReal_mul hLc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[ENNReal.ofReal_of_nonpos (le_of_lt (not_le.mp hLc)), zero_mul]`.
+
+Conclude with `(le_antisymm h1 bot_le) ▸ bot_le`. Use `show (⨆ p : Formalism.L2.Pj.FPt (U σ).X, ENNReal.ofReal (((U σ).X p.1).pnorm (la p.1) (P p.1) p.2)) ^ 2 ≤ _`. Break down `isEmpty_or_nonempty (Formalism.L2.Pj.FPt (U σ).X) with hE | hN` into its components or cases. Rewrite using `[iSup_of_empty]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[ENNReal.iSup_pow]`. Conclude with `iSup_le hpt`.
+-/
 theorem _root_.UpperTheory.Lit.Tam.tamagawa_local_volume_factor : True → GlobalTheory.UCls.TorusBound → ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (dict : ∀ σ : c.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r), Laws D j Xo c U dict → ∀ σ, GoodEmb c σ → ∀ (la : ∀ k, Wt ((U σ).X k).Ψ D.R.r) (w : ℝ), 0 < w → (∀ k, (∑ τ, ((U σ).X k).spread (la k) τ) ≤ w) → (∀ k, ∀ γ ∈ ((U σ).X k).Γ, ((U σ).X k).χ (la k) γ = 1) → ∀ P ∈ holSub (U σ).X la, supE (U σ).X la P ^ 2 ≤ ENNReal.ofReal (MainStatements.Tam.Plug.supConst2 D.host.E D.R.r D.host.d l.M w) * petE (D.sp.W j) (dict σ) (muQ1 (D.sp.W j)) la P ^ 2 := by
   classical
   intro hMB hTB D j H Dw l Xo c U dict hLw σ hσ la w hw0 hspread hχ P hP
@@ -141,6 +166,33 @@ open Module
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hM hT D j H Dw l Xo c U dict hL a n hDom`. Take `⟨σ, hσ⟩ : ∃ σ : c.F →+* ℂ, GoodEmb c σ` from `⟨_, goodEmb_goodOf c c.F.val.toRingHom⟩`. Take `⟨Kf, th, hr, hK, hth, hd, hu⟩` from `hL.dictU σ hσ`. Establish `hU : IsUnf (U σ)` using `hL.unf σ hσ`. Take `⟨w, hw_def⟩ : ∃ w : ℝ, w = ((absA Dw a : ℕ) : ℝ) + ((fdeg D.host.E * D.R.r * n : ℕ) : ℝ) + 1` from `⟨_, rfl⟩`.
+
+Rewrite using `[← hw_def]`. Establish `hw : 0 < w` using `by rw [hw_def]; positivity`. Establish `hspread : ∀ k, (∑ τ, ((U σ).X k).spread (laU (U σ) a n k) τ) ≤ w` using `fun k => (GlobalTheory.T.sum_weightSpread_le_exponentNorm_add D j H Dw l Xo c U dict hL σ hσ a n k).trans (by rw [hw_def]; linarith)`. Establish `hχ` using `hL.chiTriv σ hσ a n hDom`. Establish `hsup` using `UpperTheory.Lit.Tam.tamagawa_local_volume_factor hM hT D j H Dw l Xo c U dict hL σ hσ (laU (U σ) a n) w hw hspread hχ`.
+
+Take `⟨Cw, hCw⟩ : ∃ Cw, Cw = cuspW Xo c U (wtZ a n)` from `⟨_, rfl⟩`. Rewrite using `[← hCw]`. Establish `hsecOf : ∀ f ∈ Cw, f ∈ sec Xo c a n` using `fun f hf => by`. Rewrite `hf` using `[hCw, cuspW_wtZ]`. Conclude with `cusp_le_sec Xo c U a n hf`.
+
+Establish `hgen : ∀ f ∈ Cw, rdU (U σ) f ∈ holSub (U σ).X (laU (U σ) a n) ∧ (∀ k, ContinuousOn (rdU (U σ) f k) ((U σ).X k).dom) ∧ (∀ k, ∀ γ ∈ ((U σ).X k).Γ, ∀ x ∈ ((U σ).X k).dom, rdU (U σ) f k (lact γ x) = rdU (U σ) f k x) ∧ (∀ k x, x ∉ ((U σ).X k).dom → rdU (U σ) f k x = 0)`. Introduce `f hf`. Establish `hs` using `hU.2.2.2.2.1 a n hDom f (hsecOf f hf)`. Use `⟨?_, fun k => (hs k).1.continuousOn, fun k γ hγ x hx => ?_, fun k x hx => ?_⟩` and prove the remaining obligations. Rewrite `hf` using `[hCw]`.
+
+Use `(mem_cuspW.1 hf).2 σ hσ` as an intermediate fact. Rewrite `this` using `[modelWt_wtZ]`. Then use the resulting hypothesis. Rewrite using `[(hs k).2.2 γ hγ x hx, hχ k γ hγ, one_mul]`. Rewrite using `[dif_neg hx]`. Take `⟨S, hS_def⟩ : ∃ S : Submodule ℂ (FDSec (U σ).X), S = Submodule.span ℂ (rdU (U σ) '' (Cw : Set (Rul Xo c)))` from `⟨_, rfl⟩`.
+
+Establish `hS : ∀ P ∈ S, P ∈ holSub (U σ).X (laU (U σ) a n) ∧ (∀ k, ContinuousOn (P k) ((U σ).X k).dom) ∧ (∀ k, ∀ γ ∈ ((U σ).X k).Γ, ∀ x ∈ ((U σ).X k).dom, P k (lact γ x) = P k x) ∧ (∀ k x, x ∉ ((U σ).X k).dom → P k x = 0)`. Introduce `P hP`. Rewrite `hP` using `[hS_def]`. Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem P hP`.
+
+Take `⟨f, hf, rfl⟩` from `hP`. Conclude with `hgen f hf`. Consider the case `zero => exact ⟨Submodule.zero_mem _, fun k => continuousOn_const, fun _ _ _ _ _ => rfl, fun _ _ _ => rfl⟩`. Consider the case `add P Q _ _ hP hQ`. Use `⟨Submodule.add_mem _ hP.1 hQ.1, fun k => (hP.2.1 k).add (hQ.2.1 k), fun k γ hγ x hx => ?_, fun k x hx => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Pi.add_apply]`. Rewrite using `[hP.2.2.1 k γ hγ x hx, hQ.2.2.1 k γ hγ x hx]`. Simplify using `only [Pi.add_apply]`. Rewrite using `[hP.2.2.2 k x hx, hQ.2.2.2 k x hx, add_zero]`. Consider the case `smul z P _ hP`.
+
+Use `⟨Submodule.smul_mem _ z hP.1, fun k => (hP.2.1 k).const_smul z, fun k γ hγ x hx => ?_, fun k x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply]`. Rewrite using `[hP.2.2.1 k γ hγ x hx]`. Simplify using `only [Pi.smul_apply]`. Rewrite using `[hP.2.2.2 k x hx, smul_zero]`.
+
+Take `⟨hSfin, hSle⟩` from `finrank_le_of_sup (D.sp.W j) (dict σ) (laU (U σ) a n) (Nat.pos_of_ne_zero (by`. Use `l.three_le` as an intermediate fact. Use the proof step `omega)) hth hd hK hu S hS (MainStatements.Tam.Plug.supConst_nonneg2 _ _ _ _ _) fun P hP => hsup P (hS P hP).1`. Establish `hind : ∀ (m : ℕ) (b : Fin m → Rul Xo c), (∀ i, b i ∈ Cw) → LinearIndependent c.F b → LinearIndependent ℂ (fun i => rdU (U σ) (b i))` using `fun m b hb hli => (GlobalTheory.reading_linearIndependent_and_injective GlobalTheory.lawsFieldsSeparately.2.1 _ H Dw l Xo c σ _ (Formalism.L2.PjFree.Unf.ofPj (U σ)) ((Formalism.L2.PjFree.isUnf_ofPj _).2 hU) a n).1 m b (fun i => hsecOf _ (hb i)) hli`. Establish `hcard : ∀ s : Finset Cw, LinearIndependent c.F (fun i : s => (i : Cw)) → s.card ≤ finrank ℂ S`.
+
+Introduce `s hs`. Set `e : Fin s.card ≃ s` to `s.equivFin.symm`. Set `b : Fin s.card → Rul Xo c` to `fun i => ((e i : Cw) : Rul Xo c)`. Establish `hb : LinearIndependent c.F b` using `((hs.comp e e.injective).map' Cw.subtype (Submodule.ker_subtype _))`. Establish `hrd` using `hind s.card b (fun i => (e i : Cw).2) hb`.
+
+Set `v : Fin s.card → S` to `fun i => ⟨rdU (U σ) (b i), hS_def ▸ Submodule.subset_span ⟨b i, (e i : Cw).2, rfl⟩⟩`. Establish `hv : LinearIndependent ℂ v` using `LinearIndependent.of_comp S.subtype hrd`. Simplify using `using hv.fintype_card_le_finrank`. Use `haveI : Module.Free c.F Cw := Module.Free.of_divisionRing c.F Cw`. Establish `hrank : Module.rank c.F Cw ≤ ((finrank ℂ S : ℕ) : Cardinal)` using `rank_le hcard`.
+
+Establish `hfin : FiniteDimensional c.F Cw` using `Module.rank_lt_aleph0_iff.1 (lt_of_le_of_lt hrank (Cardinal.nat_lt_aleph0 _))`. Establish `h2 : finrank c.F Cw ≤ finrank ℂ S` using `finrank_le_of_rank_le hrank`. Use `⟨hfin, le_trans ?_ hSle⟩` and prove the remaining obligations. Conclude with `Nat.cast_le.2 h2`.
+-/
 theorem _root_.UpperTheory.Lit.Tam.finrank_cuspW_le_supConst2 : True → GlobalTheory.UCls.TorusBound → ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (dict : ∀ σ : c.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r), Laws D j Xo c U dict → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → FiniteDimensional c.F (cuspW Xo c U (wtZ a n)) ∧ (Module.finrank c.F (cuspW Xo c U (wtZ a n)) : ℝ) ≤ MainStatements.Tam.Plug.supConst2 D.host.E D.R.r D.host.d l.M (((absA Dw a : ℕ) : ℝ) + ((fdeg D.host.E * D.R.r * n : ℕ) : ℝ) + 1) := by
   intro hM hT D j H Dw l Xo c U dict hL a n hDom
   obtain ⟨σ, hσ⟩ : ∃ σ : c.F →+* ℂ, GoodEmb c σ := ⟨_, goodEmb_goodOf c c.F.val.toRingHom⟩
@@ -237,6 +289,25 @@ namespace GlobalTheory.LamPet
 
 open scoped ENNReal
 
+/- English proof (translation)
+Introduce `hM hT D j H Dw l Xo c U dict hL _ χ hχ a n hD F hF hF0`. Establish `hFc : (F : Rul Xo c) ∈ cusp Xo c U a n` using `cuspW_wtZ (Xo := Xo) (c := c) (U := U) a n ▸ F.2`. Establish `hF0' : (F : Rul Xo c) ≠ 0` using `fun h => hF0 (Subtype.ext h)`. Establish `hsup` using `GlobalTheory.T.meanLogSupNorm_lowerBound_principalLevel D j H Dw l Xo c U dict hL χ hχ a n hD _ hFc hF hF0'`. Establish `hsl` using `UpperTheory.Lit.Tam.tamagawa_local_volume_factor hM hT D j H Dw l Xo c U dict hL`.
+
+Establish `hsp` using `GlobalTheory.T.sum_weightSpread_le_exponentNorm_add D j H Dw l Xo c U dict hL`. Establish `hdef : Formalism.L2.Pj.SupDef Xo c U` using `(Formalism.L2.PjFree.supDef_ofPj U).1 (GlobalTheory.supNorm_definite_on_cusp _ H Dw l Xo c _ _ hL.unf)`. Use `set x := xiR D`. Use `set K := MainStatements.Tam.Plug.supConst2 D.host.E D.R.r D.host.d l.M (((absA Dw a : ℕ) : ℝ) + ((fdeg D.host.E * D.R.r * n : ℕ) : ℝ) + 1) with hK`. Establish `hper : ∀ σ : c.F →+* ℂ, 0 < normW U x (fun _ => D.sp.W j) dict (wtZ a n) σ F ∧ Real.log (supC Xo c U x (goodOf c σ) a n F) ≤ 1 / 2 * Real.log K + Real.log (normW U x (fun _ => D.sp.W j) dict (wtZ a n) σ F)`.
+
+Introduce `σ`. Establish `hσ : GoodEmb c (goodOf c σ)` using `Formalism.L2.PjFree.goodEmb_goodOf c σ`. Establish `hhol` using `((mem_cusp Xo c U a n _).1 hFc).2 _ hσ`. Establish `hw : (0 : ℝ) < ((absA Dw a : ℕ) : ℝ) + ((fdeg D.host.E * D.R.r * n : ℕ) : ℝ) + 1` using `by positivity`. Establish `hb` using `hsl _ hσ (laU (U (goodOf c σ)) a n) _ hw (fun k => (hsp _ hσ a n k).trans (by linarith)) (hL.chiTriv _ hσ a n hD) _ hhol`.
+
+Establish `hne0 : supE (U (goodOf c σ)).X (laU (U (goodOf c σ)) a n) (rdU (U (goodOf c σ)) F) ≠ 0`. Introduce `h0`. Use `hF0' (hdef a n hD _ hσ _ hFc ?_)` and prove the remaining obligations. Unfold `supN`. Rewrite using `[h0, ENNReal.toReal_zero]`.
+
+Establish `hfin` using `supE_cusp_ne_top hσ hFc`. Take `⟨_, _, _, _, _, hdu, _⟩` from `hL.dictU _ hσ`. Establish `hpfin : petE (D.sp.W j) (dict (goodOf c σ)) (muQ1 (D.sp.W j)) (laU (U (goodOf c σ)) a n) (rdU (U (goodOf c σ)) F) ≠ ⊤` using `petE_ne_top _ _ _ prob_le_one hdu.2.2.2.1 hhol`. Establish `key` using `log_le_of_sq_le (lieFac_pos Dw x a) hfin hpfin hne0 hb`. Establish `e : normW U x (fun _ => D.sp.W j) dict (wtZ a n) σ F = lieFac Dw x a * (petE (D.sp.W j) (dict (goodOf c σ)) (muQ1 (D.sp.W j)) (laU (U (goodOf c σ)) a n) (rdU (U (goodOf c σ)) F)).toReal` using `by show lieFacZ Dw x (wtZ a n) * _ = _`.
+
+Rewrite using `[lieFacZ_wtZ, modelWt_wtZ]`. Rewrite using `[e]`. Conclude with `key`. Use `⟨fun σ => (hper σ).1, ?_⟩` and prove the remaining obligations. Establish `hN : (0 : ℝ) < (Module.finrank ℚ c.F : ℝ)` using `by exact_mod_cast Module.finrank_pos`.
+
+Establish `hcard : (Finset.univ : Finset (c.F →+* ℂ)).card = Module.finrank ℚ c.F`. Rewrite using `[Finset.card_univ]`. Conclude with `NumberField.Embeddings.card c.F ℂ`. Establish `hsum : (∑ σ : c.F →+* ℂ, Real.log (supC Xo c U x (goodOf c σ) a n F)) - (Module.finrank ℚ c.F : ℝ) * (1 / 2 * Real.log K) ≤ ∑ σ : c.F →+* ℂ, Real.log (normW U x (fun _ => D.sp.W j) dict (wtZ a n) σ F)`. Use `Finset.sum_le_sum (s := Finset.univ) fun σ _ => (hper σ).2` as an intermediate fact.
+
+Rewrite `this` using `[Finset.sum_add_distrib, Finset.sum_const, hcard, nsmul_eq_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : UpperTheory.Lit.Tam.lamPet2 D.host.E D.R.r Dw.q D.host.d l.M (GlobalTheory.CM.logOm D.host.E χ).re ((absA Dw a : ℕ) : ℝ) ((fdeg D.host.E * D.R.r * n : ℕ) : ℝ) = lamSup D.host.E D.R.r Dw.q D.host.d l.M (GlobalTheory.CM.logOm D.host.E χ).re ((absA Dw a : ℕ) : ℝ) ((fdeg D.host.E …` using `rfl`. Rewrite using `[e, le_div_iff₀ hN]`. Rewrite `hsup` using `[le_div_iff₀ hN]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem _root_.UpperTheory.Lit.Tam.petersson_norm_tamagawa_formula : True → GlobalTheory.UCls.TorusBound → ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (dict : ∀ σ : c.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r), Laws D j Xo c U dict → ∀ [NeZero H.d] (χ : DirichletCharacter ℂ H.d), GlobalTheory.IsKroneckerChar χ → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → ∀ F : cuspW Xo c U (wtZ a n), F ∈ latW U (wtZ a n) → F ≠ 0 → (∀ σ, 0 < normW U (xiR D) (fun _ => D.sp.W j) dict (wtZ a n) σ F) ∧ -UpperTheory.Lit.Tam.lamPet2 D.host.E D.R.r Dw.q D.host.d l.M (GlobalTheory.CM.logOm D.host.E χ).re ((absA Dw a : ℕ) : ℝ) ((fdeg D.host.E * D.R.r * n : ℕ) : ℝ) ≤ (∑ σ : c.F →+* ℂ, Real.log (normW U (xiR D) (fun _ => D.sp.W j) dict (wtZ a n) σ F)) / (Module.finrank ℚ c.F : ℝ) := by
   intro hM hT D j H Dw l Xo c U dict hL _ χ hχ a n hD F hF hF0
   have hFc : (F : Rul Xo c) ∈ cusp Xo c U a n := cuspW_wtZ (Xo := Xo) (c := c) (U := U) a n ▸ F.2
@@ -303,6 +374,15 @@ set_option synthInstance.maxHeartbeats 400000
 
 namespace GlobalTheory.LamMuMax
 
+/- English proof (translation)
+Introduce `hMass hTor D j H Dw l Xo c U dict hL _ χ hχ a n hD hG h0`. Establish `hTC : IsTotallyComplex c.F` using `⟨fun v => by`. Rewrite using `[← InfinitePlace.not_isReal_iff_isComplex, InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]`. Conclude with `fun e => GlobalTheory.CompHt.conj_comp_ne (c := c) v.embedding (RingHom.ext fun a => RingHom.congr_fun e a)⟩`. Establish `hj : ∀ (σ : c.F →+* ℂ) (f : cuspW Xo c U (wtZ a n)), normW U (xiR D) (fun _ => D.sp.W j) dict (wtZ a n) ((starRingEnd ℂ).comp σ) f = normW U (xiR D) (fun _ => D.sp.W j) dict (wtZ a n) σ f` using `fun σ f => by`.
+
+Rewrite using `[normW, normW, petW, petW, GlobalTheory.CompHt.goodOf_conj σ]`. Establish `hP` using `UpperTheory.Lit.Tam.petersson_norm_tamagawa_formula hMass hTor D j H Dw l Xo c U dict hL χ hχ a n hD`. Establish `hR` using `UpperTheory.Lit.Tam.finrank_cuspW_le_supConst2 hMass hTor D j H Dw l Xo c U dict hL a n hD`. Establish `hS` using `GlobalTheory.T.maxSlope_sq_le_of_no_short_vector c.F (cuspW Xo c U (wtZ a n)) (normW U (xiR D) (fun _ => D.sp.W j) dict (wtZ a n)) (latW U (wtZ a n)) _ hG.1 hj hG.2.1 h0 (fun F hF hF0 => (hP F hF hF0).2)`. Use `haveI := hR.1`.
+
+Take `⟨F, hF, hF0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h0`. Use `haveI : Nontrivial (cuspW Xo c U (wtZ a n)) := ⟨⟨F, 0, hF0⟩⟩`. Establish `hpos : (0 : ℝ) < (Module.finrank c.F (cuspW Xo c U (wtZ a n)) : ℝ)`. Conclude with `Module.finrank_pos` after adjusting the coercions. Establish `hlog` using `Real.log_le_log hpos hR.2`.
+
+Use `hS.trans ?_` and prove the remaining obligations. Rewrite using `[UpperTheory.Lit.Tam.lamPet2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem _root_.UpperTheory.Lit.Tam.petersson_norm_local_factor_eq : True → GlobalTheory.UCls.TorusBound → ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (dict : ∀ σ : c.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r), Laws D j Xo c U dict → ∀ [NeZero H.d] (χ : DirichletCharacter ℂ H.d), GlobalTheory.IsKroneckerChar χ → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → GoodW U (xiR D) (fun _ => D.sp.W j) dict (wtZ a n) → latW U (wtZ a n) ≠ ⊥ → slopeMax_sq (normW U (xiR D) (fun _ => D.sp.W j) dict (wtZ a n)) (latW U (wtZ a n)) ≤ 2 * lamSup D.host.E D.R.r Dw.q D.host.d l.M (GlobalTheory.CM.logOm D.host.E χ).re ((absA Dw a : ℕ) : ℝ) ((fdeg D.host.E * D.R.r * n : ℕ) : ℝ) + 2 * Real.log (MainStatements.Tam.Plug.supConst2 D.host.E D.R.r D.host.d l.M (((absA Dw a : ℕ) : ℝ) + ((fdeg D.host.E * D.R.r * n : ℕ) : ℝ) + 1)) + Real.log |(discr c.F : ℝ)| / (Module.finrank ℚ c.F : ℝ) := by
   intro hMass hTor D j H Dw l Xo c U dict hL _ χ hχ a n hD hG h0
   have hTC : IsTotallyComplex c.F := ⟨fun v => by
@@ -335,6 +415,9 @@ open scoped ENNReal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hT` and use `UpperTheory.Lit.Tam.tamagawa_local_volume_factor trivial GlobalTheory.T.normOneTorusClassNumberBound_proof`.
+-/
 theorem _root_.UpperTheory.Lit.Tam.holSub_supE_sq_le_supConst2_mul_petE_sq : True → ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (dict : ∀ σ : c.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r), Laws D j Xo c U dict → ∀ σ, GoodEmb c σ → ∀ (la : ∀ k, Wt ((U σ).X k).Ψ D.R.r) (w : ℝ), 0 < w → (∀ k, (∑ τ, ((U σ).X k).spread (la k) τ) ≤ w) → (∀ k, ∀ γ ∈ ((U σ).X k).Γ, ((U σ).X k).χ (la k) γ = 1) → ∀ P ∈ holSub (U σ).X la, supE (U σ).X la P ^ 2 ≤ ENNReal.ofReal (MainStatements.Tam.Plug.supConst2 D.host.E D.R.r D.host.d l.M w) * petE (D.sp.W j) (dict σ) (muQ1 (D.sp.W j)) la P ^ 2 := fun hT =>
   UpperTheory.Lit.Tam.tamagawa_local_volume_factor trivial GlobalTheory.T.normOneTorusClassNumberBound_proof
 
@@ -347,6 +430,9 @@ open scoped ENNReal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hT` and use `UpperTheory.Lit.Tam.petersson_norm_local_factor_eq trivial GlobalTheory.T.normOneTorusClassNumberBound_proof`.
+-/
 theorem _root_.UpperTheory.Lit.Tam.tamagawa_measure_comparison : True → ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (dict : ∀ σ : c.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r), Laws D j Xo c U dict → ∀ [NeZero H.d] (χ : DirichletCharacter ℂ H.d), GlobalTheory.IsKroneckerChar χ → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → GoodW U (xiR D) (fun _ => D.sp.W j) dict (wtZ a n) → latW U (wtZ a n) ≠ ⊥ → slopeMax_sq (normW U (xiR D) (fun _ => D.sp.W j) dict (wtZ a n)) (latW U (wtZ a n)) ≤ 2 * lamSup D.host.E D.R.r Dw.q D.host.d l.M (GlobalTheory.CM.logOm D.host.E χ).re ((absA Dw a : ℕ) : ℝ) ((fdeg D.host.E * D.R.r * n : ℕ) : ℝ) + 2 * Real.log (MainStatements.Tam.Plug.supConst2 D.host.E D.R.r D.host.d l.M (((absA Dw a : ℕ) : ℝ) + ((fdeg D.host.E * D.R.r * n : ℕ) : ℝ) + 1)) + Real.log |(discr c.F : ℝ)| / (Module.finrank ℚ c.F : ℝ) := fun hT =>
   UpperTheory.Lit.Tam.petersson_norm_local_factor_eq trivial GlobalTheory.T.normOneTorusClassNumberBound_proof
 
@@ -368,6 +454,29 @@ namespace GlobalTheory.BergComp
 
 open MeasureTheory
 
+/- English proof (translation)
+Introduce `hT D j H Dw l Xo c U dict hL σ hσ G hG w hw hsp Z y hy`. Establish `hU : IsUnf (U σ)` using `hL.unf σ hσ`. Take `⟨Kf, th, hr, -, -, hDU, -⟩` from `hL.dictU σ hσ`. Establish `hdom : ∀ g, (dict σ g).2 ∈ ((U σ).X (dict σ g).1).dom` using `Formalism.L2.Pj.dict_dom_of hDU`. Use `set A := AllWt.framesOn (U σ) Z with hA`.
+
+Use `set S : Set (U σ).Comp := {k | ∃ f, (⟨k, f⟩ : Σ k, ReciprocityTheory.ChartRestriction.G.FD.Frame ((U σ).X k).Ψ D.R.r) ∈ A} with hS`. Establish `key : ∀ g, dict σ g ∈ A ↔ (dict σ g).1 ∈ S` using `fun g => ⟨fun h => ⟨_, h⟩, fun ⟨f, hf⟩ => GlobalTheory.FramesUnion.framesOn_of_mem D.host.E H Dw l Xo c D.R.r U σ hU Z _ f _ (hdom g) hf⟩`. Use `set la := AllWt.modelWt (U σ) G with hla`. Establish `hchi` using `GlobalTheory.AllWt.Model.chi_modelWt (U σ) (hL.chiTriv σ hσ) G hG`. Use `set Cl := AllWt.classesOver (D.sp.W j) (dict σ) A with hCl`.
+
+Establish `hyS : y.1 ∈ S` using `⟨y.2.1, hy⟩`. Unfold `AllWt.bergOn AllWt.bergE`. Use `iSup₂_le fun P hP => ?_` and prove the remaining obligations. Use `set P' : Formalism.L2.Pj.FDSec (U σ).X := fun k => if k ∈ S then P k else 0 with hP'`. Establish `hP'm : P' ∈ Formalism.L2.Pj.holSub (U σ).X la`.
+
+Use `Formalism.L2.Pj.holCusp_mem_holSub _ _ fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k ∈ S`. Simplify using `only [hP', if_pos hk]`. Conclude with `Formalism.L2.Pj.holSub_comp_SS _ _ _ hP k`. Simplify using `only [hP', if_neg hk]`.
+
+Conclude with `(ReciprocityTheory.ChartRestriction.G.FD.siegelSpaceAlgebra_holds (E := D.host.E) D.R.r ((U σ).X k) (la k) (la k) 0).1.1`. Establish `hpt : ∀ z : Σ k, ReciprocityTheory.ChartRestriction.G.FD.Frame ((U σ).X k).Ψ D.R.r, AllWt.ptN la P' z = if z.1 ∈ S then AllWt.ptN la P z else 0` using `fun z => by`. Distinguish the cases in `hz : z.1 ∈ S`. Simplify using `only [AllWt.ptN, hP', if_pos hz]`. Simplify using `only [AllWt.ptN, hP', if_neg hz]`.
+
+Conclude with `Formalism.L2.Pj.pnorm_zero _ _ _`. Establish `h1 : ENNReal.ofReal (AllWt.ptN la P ⟨y.1, y.2.1⟩) ^ 2 ≤ Formalism.L2.Pj.supE (U σ).X la P' ^ 2`. Establish `e : AllWt.ptN la P ⟨y.1, y.2.1⟩ = AllWt.ptN la P' ⟨y.1, y.2.1⟩`. Rewrite using `[hpt, if_pos hyS]`. Rewrite using `[e]`.
+
+Use `gcongr`. Conclude with `le_iSup (fun p : Formalism.L2.Pj.FPt (U σ).X => ENNReal.ofReal (((U σ).X p.1).pnorm (la p.1) (P' p.1) p.2)) y`. Establish `h2` using `UpperTheory.Lit.Tam.holSub_supE_sq_le_supConst2_mul_petE_sq hT D j H Dw l Xo c U dict hL σ hσ la w hw hsp hchi P' hP'm`. Establish `h3 : AllWt.petE (D.sp.W j) (dict σ) (muQ1 (D.sp.W j)) la P' ≤ AllWt.petE (D.sp.W j) (dict σ) (AllWt.muOn (U σ) (D.sp.W j) (dict σ) Z) la P`. Establish `hsupp : Function.support (fun q : AutQ (D.sp.W j) => AllWt.ptN la P' (dict σ q.out)) ⊆ Cl`.
+
+Introduce `q hq`. Assume the negation of the conclusion as `hn`. Apply `hq` to reduce the goal to its premises. Establish `: ¬ (dict σ q.out).1 ∈ S` using `fun h => hn ((key _).2 h)`. Use `show AllWt.ptN la P' (dict σ q.out) = 0`.
+
+Rewrite using `[hpt, if_neg this]`. Unfold `AllWt.petE`. Rewrite using `[← eLpNorm_restrict_eq_of_support_subset hsupp]`. Combine the equalities or inequalities in the displayed calculation. Use `eLpNorm_mono fun q => ?_` and prove the remaining obligations.
+
+Rewrite using `[Real.norm_of_nonneg (AllWt.ptN_nonneg _ _ _), Real.norm_of_nonneg (AllWt.ptN_nonneg _ _ _), hpt]`. Use `split_ifs`. Conclude with `le_rfl`. Conclude with `AllWt.ptN_nonneg _ _ _`. Use `_ ≤ eLpNorm (fun q : AutQ (D.sp.W j) => AllWt.ptN la P (dict σ q.out)) 2 (AllWt.muOn (U σ) (D.sp.W j) (dict σ) Z) := by show _ ≤ eLpNorm _ 2 ((muQ1 (D.sp.W j) Cl)⁻¹ • (muQ1 (D.sp.W j)).restrict Cl)`.
+
+Rewrite using `[eLpNorm_smul_measure_of_ne_top (by norm_num)]`. Use `le_mul_of_one_le_left (by simp) ?_` and prove the remaining obligations. Conclude with `ENNReal.one_le_rpow (ENNReal.one_le_inv.2 prob_le_one) (by norm_num)`. Establish `h4 : ENNReal.ofReal (AllWt.ptN la P ⟨y.1, y.2.1⟩) ^ 2 ≤ ENNReal.ofReal (MainStatements.Tam.Plug.supConst2 D.host.E D.R.r D.host.d l.M w) * AllWt.petE (D.sp.W j) (dict σ) (AllWt.muOn (U σ) (D.sp.W j) (dict σ) Z) la P ^ 2` using `h1.trans (h2.trans (by gcongr))`. Conclude with `ENNReal.div_le_of_le_mul h4`.
+-/
 theorem _root_.UpperTheory.Lit.Tam.tamagawaPeterssonLambdaSq_nonneg : True → ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (dict : ∀ σ : c.F →+* ℂ, GA D (D.sp.W j) → Σ k, ReciprocityTheory.ChartRestriction.G.FD.Frame ((U σ).X k).Ψ D.R.r), GlobalTheory.LevGeo.Laws D j Xo c U dict → ∀ σ, GoodEmb c σ → ∀ (G : WTZ D.host.E), Even G.2 → ∀ (w : ℝ), 0 < w → (∀ k, (∑ τ, ((U σ).X k).spread (AllWt.modelWt (U σ) G k) τ) ≤ w) → ∀ (Z : Comp Xo c) (y : FPt (U σ).X), (⟨y.1, y.2.1⟩ : Σ k, ReciprocityTheory.ChartRestriction.G.FD.Frame ((U σ).X k).Ψ D.R.r) ∈ AllWt.framesOn (U σ) Z → AllWt.bergOn (U σ) (D.sp.W j) (dict σ) Z G y ≤ ENNReal.ofReal (MainStatements.Tam.Plug.supConst2 D.host.E D.R.r D.host.d l.M w) := by
   intro hT D j H Dw l Xo c U dict hL σ hσ G hG w hw hsp Z y hy
   classical
@@ -455,6 +564,27 @@ open scoped TensorProduct
 
 namespace GlobalTheory.ConstSzRows
 
+/- English proof (translation)
+Introduce `D M Lb w hM hLb hMl hsz hfrl hw hwl`. Use `haveI : IsCMField D.host.E := inferInstance`. Establish `hfd` using `GlobalTheory.FramedCMPointCompare.fdeg_host D`. Establish `hf0 : 1 ≤ D.R.f` using `by have : 0 < D.R.n := D.R.ord_pos; unfold Formalism.BasicNotions.Ranks.f; omega`. Establish `hr2 : 2 ≤ D.R.r`.
+
+Use `D.R.two_le_m` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `Formalism.BasicNotions.Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `hqd` using `D.host.qd_big`.
+
+Establish `hd1 : 1 ≤ D.host.d` using `by omega`. Establish `hq1 : 1 ≤ D.host.q` using `by omega`. Establish `hfR : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast hf0`. Establish `hrR : (1 : ℝ) ≤ D.R.r` using `by exact_mod_cast (by omega : 1 ≤ D.R.r)`. Establish `hnR : (Module.finrank ℚ D.host.E : ℝ) = 2 * D.R.f` using `by exact_mod_cast D.host.finrank_E'`.
+
+Establish `hnpos : (0 : ℝ) < Module.finrank ℚ D.host.E` using `by rw [hnR]; linarith`. Establish `hrd` using `(GlobalTheory.CovTop.log_rd_le_fieldSz D.host.E).trans hsz`. Establish `hld : Real.log |(discr D.host.E : ℝ)| ≤ 6 * D.R.f * Lb`. Establish `h` using `(div_le_iff₀ hnpos).1 hrd`. Rewrite `h` using `[hnR]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `set L : ℝ := 25 * Lb / 2 with hL`. Establish `hdE : Real.log (ReciprocityTheory.ChartRestriction.G.FD.dE D.host.E) ≤ 4 * (ReciprocityTheory.ChartRestriction.G.FD.fdeg D.host.E : ℝ) * L`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.dE`. Rewrite using `[hfd]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hdpow : D.host.d ^ D.R.f ≤ (discr D.host.E).natAbs` using `Nat.le_of_dvd (Nat.pos_of_ne_zero (Int.natAbs_ne_zero.2 (discr_ne_zero _))) (UpperTheory.HF.rad_bounds2 D.host.toHostAx).2.2.1`. Establish `hdpowR : ((D.host.d : ℝ)) ^ D.R.f ≤ |(discr D.host.E : ℝ)|`. Establish `: (((discr D.host.E).natAbs : ℕ) : ℝ) = |(discr D.host.E : ℝ)|`. Rewrite using `[Nat.cast_natAbs, Int.cast_abs]`.
+
+Rewrite using `[← this]`. Conclude with `hdpow` after adjusting the coercions. Establish `hdR : (0 : ℝ) < D.host.d` using `by exact_mod_cast hd1`. Establish `hlogd : Real.log D.host.d ≤ 4 * L`. Establish `h1` using `Real.log_le_log (by positivity) hdpowR`.
+
+Rewrite `h1` using `[Real.log_pow]`. Establish `h3 : (D.R.f : ℝ) * Real.log D.host.d ≤ D.R.f * (6 * Lb)` using `by linarith`. Establish `h4` using `le_of_mul_le_mul_left h3 (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlogfr : Real.log ((ReciprocityTheory.ChartRestriction.G.FD.fdeg D.host.E : ℝ) * D.R.r) ≤ L`.
+
+Rewrite using `[hfd]`. Move the coercions through the operations in `at hfrl`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmain` using `MainStatements.Tam.Plug.supremum_constant_log_bound_alt D.host.E D.R.r D.host.d M w L hr2 hd1 hM (by linarith) hw hlogfr (by linarith) hdE hlogd (by linarith)`. Use `⟨hmain.1, hmain.2.trans ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hfd]`. Establish `hx : (1 : ℝ) ≤ (D.R.f : ℝ) * D.R.r` using `one_le_mul_of_one_le_of_one_le hfR hrR`. Establish `h1 : ((D.R.f : ℝ) * D.R.r) ^ 2 * Lb ≤ ((D.R.f : ℝ) * D.R.r) ^ 3 * Lb ^ 3` using `mul_le_mul (pow_le_pow_right₀ hx (by norm_num)) (le_self_pow₀ hLb (by norm_num)) (by linarith) (by positivity)`. Establish `h2 : (0 : ℝ) ≤ ((D.R.f : ℝ) * D.R.r) ^ 2 * Lb` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem _root_.UpperTheory.Lit.Tam.supConst2Bounds : ∀ (D : D7) (M : ℕ) (Lb w : ℝ), 1 ≤ M → 1 ≤ Lb → Real.log M ≤ 30 * Lb → fieldSz D.host.E ≤ 3 * Lb → Real.log (D.R.f * D.R.r) ≤ Lb → 1 ≤ w → Real.log w ≤ 25 * Lb → 1 ≤ MainStatements.Tam.Plug.supConst2 D.host.E D.R.r D.host.d M w ∧ Real.log (MainStatements.Tam.Plug.supConst2 D.host.E D.R.r D.host.d M w) ≤ 4000 * ((D.R.f : ℝ) * D.R.r * Lb) ^ 3 := by
   intro D M Lb w hM hLb hMl hsz hfrl hw hwl
   haveI : IsCMField D.host.E := inferInstance
@@ -524,6 +654,29 @@ end GlobalTheory.BergRank
 
 namespace GlobalTheory.BergRank
 
+/- English proof (translation)
+Introduce `hP`. Use `⟨4000, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `D T hT j hp hq hE hj Y e o hY Lb hLb hM hsz hfr ho la hla hS Z`. Establish `hL` using `(GlobalTheory.T.deepLevelCover_principalLevel_laws_galois D T j Y e o hT hj hY hY.unit hY.modelW).1`. Use `set S : ℝ := ∑ τ, ∑ k, |(la τ k : ℝ)| with hSdef`.
+
+Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`. Use `set n : ℝ := (Module.finrank ℚ D.host.E : ℝ) with hn`. Establish `hn1 : 1 ≤ n`. Establish `: 0 < Module.finrank ℚ D.host.E` using `Module.finrank_pos`. Rewrite using `[hn]`.
+
+Conclude with `this` after adjusting the coercions. Establish `hnlog : Real.log n ≤ 3 * Lb` using `(log_finrank_le_fieldSz _).trans hsz`. Use `set w : ℝ := 2 * n * S + 1 with hw`. Establish `hnS : 0 ≤ n * S` using `mul_nonneg (by linarith) hS0`. Establish `hw1 : 1 ≤ w` using `by rw [hw]; nlinarith`.
+
+Establish `hlogw : Real.log w ≤ 25 * Lb`. Establish `hint : S = (((∑ τ, ∑ k, |la τ k|) : ℤ) : ℝ)` using `by rw [hSdef]; push_cast; rfl`. Establish `hz : (0 : ℤ) ≤ ∑ τ, ∑ k, |la τ k|` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`. Break down `hz.eq_or_lt with h0 | h1` into its components or cases. Establish `: S = 0` using `by rw [hint, ← h0]; simp`.
+
+Rewrite using `[hw, this]`. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hS1 : 1 ≤ S` using `by rw [hint]; exact_mod_cast h1`. Establish `hwle : w ≤ 3 * (n * S)` using `by rw [hw]; nlinarith`.
+
+Establish `hlS : Real.log S ≤ 20 * Lb` using `hS`. Establish `e1 : Real.log w ≤ Real.log (3 * (n * S))` using `Real.log_le_log (by linarith) hwle`. Rewrite `e1` using `[Real.log_mul (by norm_num) (by positivity), Real.log_mul (by positivity) (by positivity)]`. Establish `h3 : Real.log 3 < 2`. Use `Real.log_two_lt_d9; have h4 : Real.log 3 < Real.log 4 := Real.log_lt_log (by norm_num) (by norm_num)` as an intermediate fact.
+
+Establish `: Real.log 4 = 2 * Real.log 2` using `by rw [show (4:ℝ) = 2 ^ 2 by norm_num, Real.log_pow]; norm_num`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hβ1, hβ⟩` from `UpperTheory.Lit.Tam.supConst2Bounds D Y.d.l₂.M Lb w (by have := Y.d.l₂.three_le; omega) hLb hM hsz hfr hw1 hlogw`. Use `set β := MainStatements.Tam.Plug.supConst2 D.host.E D.R.r D.host.d Y.d.l₂.M w with hβdef`.
+
+Establish `hβexp : β ≤ Real.exp (4000 * ((D.R.f : ℝ) * D.R.r * Lb) ^ 3)`. Rewrite using `[← Real.exp_log (by linarith : 0 < β)]; exact Real.exp_le_exp.2 hβ`. Establish `hsp : ∀ σ k, ∑ τ, ((Y.U σ).X k).spread (AllWt.modelWt (Y.U σ) (wtOf _ la 0) k) τ ≤ w` using `fun σ k => (sum_spread_modelWt_le _ la k).trans (by rw [hw]; linarith)`. Establish `hB : BergLe Z Y.U (fun _ => D.sp.W j) Y.dict la β` using `fun σ hσ y hy => UpperTheory.Lit.Tam.tamagawaPeterssonLambdaSq_nonneg trivial D j _ _ _ _ _ Y.U Y.dict hL σ hσ (wtOf _ la 0) (AllWt.even_wtOf la 0) w (by linarith) (hsp σ) Z y hy`. Establish `hBexp : BergLe Z Y.U (fun _ => D.sp.W j) Y.dict la (Real.exp (4000 * ((D.R.f : ℝ) * D.R.r * Lb) ^ 3))` using `fun σ hσ y hy => (hB σ hσ y hy).trans (ENNReal.ofReal_le_ofReal hβexp)`.
+
+Use `⟨hBexp, ?_, ?_⟩` and prove the remaining obligations. Use `SupBdWt.of_bergOn (Real.exp_pos _).le ?_ hBexp` and prove the remaining obligations. Introduce `σ hσ g`. Take `⟨th, hr, -, hd⟩` from `hY.dictU σ hσ`. Conclude with `Formalism.L2.Pj.dict_dom_of hd g`.
+
+Establish `hrk` using `GlobalTheory.T.cuspFormRank_le_bergmanBound_goodCover D T.toCore j Y e o hY la Z β (by linarith) hB`. Establish `hpos : 0 ≤ 4000 * ((D.R.f : ℝ) * D.R.r * Lb) ^ 3` using `by positivity`. Break down `(show (0 : ℝ) ≤ Y.rkC la Z by unfold Deep.rkC; positivity).eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0, Real.log_zero]`. Conclude with `hpos`.
+
+Conclude with `(Real.log_le_log h0 hrk).trans hβ`.
+-/
 theorem _root_.UpperTheory.Lit.Tam.tamagawa_weight_bound : Hypotheses2 → ∃ C : ℝ, 0 ≤ C ∧ ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ Lb : ℝ, 1 ≤ Lb → Real.log Y.d.l₂.M ≤ 30 * Lb → fieldSz D.host.E ≤ 3 * Lb → Real.log (D.R.f * D.R.r) ≤ Lb → o ≤ 391 * (D.R.f * D.R.r * Lb) ^ 2 → ∀ la : AllWt.Weight (T.Q.Dw j), (∀ τ, Antitone (la τ)) → Real.log (∑ τ, ∑ k, |(la τ k : ℝ)|) ≤ 20 * Lb → ∀ Z, BergLe Z Y.U (fun _ => D.sp.W j) Y.dict la (Real.exp (C * ((D.R.f : ℝ) * D.R.r * Lb) ^ 3)) ∧ SupBdWt Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z la (Real.exp (C * ((D.R.f : ℝ) * D.R.r * Lb) ^ 3)) ∧ Real.log (Y.rkC la Z) ≤ C * ((D.R.f : ℝ) * D.R.r * Lb) ^ 3 := by
   intro hP
   refine ⟨4000, by norm_num, ?_⟩
@@ -593,6 +746,37 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hj : Formalism.L2.Pj.InR D ((i : ℕ) + 1)` using `⟨by omega, i.2⟩`. Take `⟨hLaws, hnorm⟩` from `GlobalTheory.LevGeo.laws_of_coreJ D p.T _ p.fw.laws hj`. Establish `hn : normW (p.T.U ((i : ℕ) + 1)) (xiR D) (fun _ => D.sp.W ((i : ℕ) + 1)) (GlobalTheory.LevGeo.coreDict p.T.toCore ((i : ℕ) + 1)) (Gk p i) = nrmK p.fw i`. Use function extensionality and compare the values at `σ f`. Conclude with `hnorm _ σ f`.
+
+Take `⟨_, χ, hχ, hOm, -, -⟩` from `GlobalTheory.T.logPeriod_eq_kroneckerCharacter_logPeriod_of_host D L p.T.Q p.fw.laws.pins.1 p.Del p.h0`. Establish `hgood : GoodW (p.T.U ((i : ℕ) + 1)) (xiR D) (fun _ => D.sp.W ((i : ℕ) + 1)) (GlobalTheory.LevGeo.coreDict p.T.toCore ((i : ℕ) + 1)) (Gk p i)` using `⟨by rw [hn]; exact hG.2.2.2.1, hG.2.2.2.2⟩`. Establish `main` using `UpperTheory.Lit.Tam.tamagawa_measure_comparison h6 D _ _ _ _ _ _ _ _ hLaws χ hχ (wtA (p.κ i)) (p.κ i).n hW.dom hgood (latW_ne_bot p i hG)`. Rewrite `main` using `[hn]`. Use `main.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hOm, p.fw.laws.pins.2.1.1, hW.cols]`. Take `⟨-, hL, hLx, -⟩` from `hN.big`. Establish `hfd : fdeg D.host.E = D.R.f` using `by unfold fdeg; rw [hN.deg]; omega`. Establish `hf : (8 : ℝ) ≤ D.R.f` using `by exact_mod_cast hN.f8`. Establish `hr2 : 2 ≤ D.R.r`.
+
+Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_add_three_le_k`. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `hr : (1 : ℝ) ≤ D.R.r` using `by exact_mod_cast (by omega : 1 ≤ D.R.r)`.
+
+Establish `hnV : (1 : ℝ) ≤ D.R.nV` using `by exact_mod_cast (by unfold Ranks.nV; omega : 1 ≤ D.R.nV)`. Establish `hbL : L.sc.b = Real.exp L.sc.L` using `rfl`. Establish `hb : 1 ≤ L.sc.b` using `by rw [hbL]; exact Real.one_le_exp (by linarith)`. Establish `hx0 : 0 < L.sc.x` using `by linarith`. Establish `hXb : L.sc.x ^ A ≤ L.sc.b` using `by simpa using hN.room`.
+
+Establish `hP` using `hN.poly.2.2`. Establish `hfr : (1 : ℝ) ≤ (D.R.f : ℝ) * D.R.r` using `by nlinarith`. Establish `hZ : (D.R.f : ℝ) * D.R.r * L.sc.L ≤ L.sc.x ^ A` using `le_trans (mul_le_mul_of_nonneg_right (le_mul_of_one_le_right (by positivity) hnV) (by linarith)) hP`. Establish `ht : ((fdeg D.host.E * D.R.r * D.R.nV : ℕ) : ℝ) ≤ L.sc.b`. Rewrite using `[hfd]`.
+
+Use `push_cast`. Conclude with `(le_mul_of_one_le_right (by positivity) (by linarith)).trans (hP.trans hXb)`. Establish `hs : ((GlobalTheory.LevGeo.absA (dat p i) (wtA (p.κ i)) : ℕ) : ℝ) ≤ 8 * ((D.R.f : ℝ) * D.R.r) * L.sc.b`. Use `absA_le (dat p i) (wtA (p.κ i)) (p.κ i).n (by positivity) hW.up` as an intermediate fact. Rewrite `this` using `[hW.sig.2.2, hN.deg]`.
+
+Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs0 : (0 : ℝ) ≤ ((GlobalTheory.LevGeo.absA (dat p i) (wtA (p.κ i)) : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `ht0 : (0 : ℝ) ≤ ((fdeg D.host.E * D.R.r * D.R.nV : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Generalize the expression as in `((GlobalTheory.LevGeo.absA (dat p i) (wtA (p.κ i)) : ℕ) : ℝ) = s at *`.
+
+Generalize the expression as in `((fdeg D.host.E * D.R.r * D.R.nV : ℕ) : ℝ) = t at *`. Establish `hbb : L.sc.b ≤ (D.R.f : ℝ) * D.R.r * L.sc.b` using `le_mul_of_one_le_left (by linarith) hfr`. Establish `hw : s + t + 1 ≤ 10 * ((D.R.f : ℝ) * D.R.r) * L.sc.b` using `by linarith`. Establish `hlw : Real.log (s + t + 1) ≤ 2 * (2 * L.sc.L)`. Use `(Real.log_le_log (by linarith) hw).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_mul (by norm_num) (by positivity), hbL, Real.log_exp]`. Combine the linear relations using `[hN.logfr.1, Real.log_le_sub_one_of_pos (by norm_num : (0 : ℝ) < 10)]`. Establish `hg : ∀ k, 0 < D.host.g k` using `fun k => (D.host.g_prime k).pos`. Establish `hM : 1 ≤ D.host.g 0 * D.host.g 1` using `Nat.mul_pos (hg 0) (hg 1)`. Establish `hlM : Real.log ((D.host.g 0 * D.host.g 1 : ℕ) : ℝ) ≤ 30 * (2 * L.sc.L)`.
+
+Use `push_cast`. Rewrite using `[Real.log_mul (by exact_mod_cast (hg 0).ne') (by exact_mod_cast (hg 1).ne')]`. Combine the linear relations using `[hN.logg 0, hN.logg 1]`. Establish `hd : 1 ≤ D.host.d` using `by rw [← p.fw.laws.pins.1.1]; exact p.T.Q.H.d_prime.pos`. Establish `hl1 : Real.log ((fdeg D.host.E : ℝ) * D.R.r) ≤ 2 * L.sc.L` using `by rw [hfd]; linarith [hN.logfr.1]`.
+
+Establish `hl2 : Real.log (dE D.host.E) ≤ 4 * (fdeg D.host.E : ℝ) * (2 * L.sc.L)`. Rewrite using `[hfd]`. Unfold `dE`. Establish `: 0 ≤ (D.R.f : ℝ) * L.sc.L` using `by positivity`. Combine the linear relations using `[hN.disc]`.
+
+Establish `hl3 : Real.log (D.host.d : ℝ) ≤ 4 * (2 * L.sc.L)` using `by linarith [hN.logd]`. Establish `n1` using `(MainStatements.Tam.Plug.supremum_constant_log_bound_alt D.host.E D.R.r D.host.d _ (s + t + 1) (2 * L.sc.L) hr2 hd hM (by linarith) (by linarith) hl1 hlM hl2 hl3 hlw).2`. Establish `n2` using `GlobalTheory.T.meanLogSupNormLoss_le_linear_in_weight D.host.E D.R.r (dat p i).q D.host.d _ (ofRecord D L p.Del p.h0).logOm s t (2 * L.sc.L) (by omega) hd hM (by linarith) hs0 ht0 hl1 hlM hl2 hl3 hlw`. Establish `n3` using `(log_rd_le_fieldSz _).trans (hR.core_size_le p (by linarith))`. Rewrite `n1`, `n2` using `[hfd]`.
+
+Establish `hq : ((dat p i).q : ℝ) ≤ D.R.r` using `by exact_mod_cast (by have := hW.sig.2.2; omega : (dat p i).q ≤ D.R.r)`. Establish `e : L.sc.x ^ (2 * A + 4) = L.sc.x ^ 4 * (L.sc.x ^ A) ^ 2`. Rewrite using `[Real.rpow_add hx0, mul_comm 2 A, Real.rpow_mul hx0.le, mul_comm]`. Use `norm_cast`. Rewrite using `[e]`.
+
+Conclude with `collect hf hr (Nat.cast_nonneg _) hq hL hLx hb hZ hW.om (add_nonneg hs0 ht0) (by linarith) n2 n1 n3`.
+-/
 theorem _root_.UpperTheory.Lit.Tam.slopeMax_sq_latW_le_pow_mul (h6 : True) {PP A : ℝ} (hR : RecTied D L) (hG : GramAt p i)
     (hN : HostNum D L PP A 1) (hW : WtNum p i PP) :
     slopeMax_sq (nrmK p.fw i) (latW (p.T.U ((i : ℕ) + 1)) (Gk p i)) ≤ L.sc.x ^ (2 * A + 4) * L.sc.b := by
@@ -669,6 +853,11 @@ theorem _root_.UpperTheory.Lit.Tam.slopeMax_sq_latW_le_pow_mul (h6 : True) {PP A
   rw [e]
   exact collect hf hr (Nat.cast_nonneg _) hq hL hLx hb hZ hW.om (add_nonneg hs0 ht0) (by linarith) n2 n1 n3
 
+/- English proof (translation)
+Introduce `hP hG`. Use `Closed.imp (Closed.and hG (Closed.and (GlobalTheory.CovTop.Sizes.hostN 1) GlobalTheory.T.weight_bound_holds)) ?_` and prove the remaining obligations. Introduce and unpack `eps Fm CH - ⟨⟨_, -, h1⟩, ⟨A, hA, h2⟩, ⟨_, -, h3⟩⟩`. Take `⟨x0, h⟩` from `h1.and (h2.and h3)`. Use `⟨2 * A + 4, by linarith, x0, fun x hx hle ι p hp i => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, b, c⟩` from `h x hx hle ι p hp`. Conclude with `UpperTheory.Lit.Tam.slopeMax_sq_latW_le_pow_mul p i trivial hp.2 (a i) (b i) (c i)`.
+-/
 theorem _root_.UpperTheory.Lit.Tam.integral_cusp_slope_power_bound : Hypotheses2 → Gram → Lifts fun Fm x _ ι p i _ A =>
     slopeMax_sq (nrmK p.fw i) (latW (p.T.U ((i : ℕ) + 1)) (Gk p i)) ≤ (Fm.L x ι).sc.x ^ A * (Fm.L x ι).sc.b := by
   intro hP hG
@@ -684,5 +873,11 @@ end GlobalTheory.CovTop.LamCore
 end
 end
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : type_of% @UpperTheory.Lit.Tam.tamagawa_weight_bound = type_of% @GlobalTheory.T.antitone_weight_log_bound := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : type_of% @UpperTheory.Lit.Tam.integral_cusp_slope_power_bound = type_of% @GlobalTheory.T.slope_max_squared_bound := rfl

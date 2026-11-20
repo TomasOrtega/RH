@@ -21,6 +21,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : LocWach PD LL O v n) {l : ℕ}
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `h.symm`. Establish `e : (W.π₀ : LetA O n) = letπ ^ m * fun _ => (w : O⟦X⟧)` using `funext fun _ => hw.symm`. Establish `hu : IsUnit (algebraMap (LetA O n) W.EE W.π₀)`. Rewrite using `[e, map_mul, map_pow]`. Conclude with `(W.EE_π.pow _).mul (IsUnit.map _ (Pi.isUnit_iff.2 fun _ => w.isUnit))`.
+
+Use `haveI := W.EE_complete`. Establish `hJ` using `IsAdicComplete.le_jacobson_bot (Ideal.span {((PD.p : ℕ) : W.EE)}) (Ideal.mem_span_singleton_self _)`. Take `⟨u, hu⟩` from `hu`. Establish `h1` using `(Ideal.mem_jacobson_bot.1 hJ (↑u⁻¹ : W.EE)).mul u.isUnit`. Rewrite using `[map_add, map_natCast, ← hu]`.
+
+Use `h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[add_mul, mul_assoc, Units.inv_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isUnit_q_of_associated {m : ℕ} (h : Associated W.π₀₁ (X ^ m)) :
     IsUnit (algebraMap (LetA O n) W.EE (W.π₀ + ((PD.p : ℕ) : LetA O n))) := by
   obtain ⟨w, hw⟩ := h.symm
@@ -41,6 +48,17 @@ variable [Fact l.Prime] [IsDomain O] [CharZero O] [Algebra ℤ_[l] O] (hp : PD.p
   (χ : W.Gam →* ℤ_[l]ˣ) (hχ : ∀ g, algebraMap ℤ_[l] O (χ g : ℤ_[l]) = (W.χΓ g : O))
 include hp hχ
 
+/- English proof (translation)
+Establish `hγ` using `γ₀_eq W hp χ hχ`. Establish `hχi : Function.Injective χ` using `fun a b hab => W.χΓ_inj (Units.ext (by rw [← hχ, ← hχ, hab]))`. Set `Δ : Subgroup ℤ_[l]ˣ` to `(CommGroup.torsion W.Gam).map χ`. Establish `hΔ : (Δ : Set ℤ_[l]ˣ) = ↑(W.DelF.image χ)`. Use extensionality with `x`.
+
+Simplify using `only [Δ, Subgroup.coe_map, Set.mem_image, SetLike.mem_coe, CommGroup.mem_torsion, Finset.coe_image, Finset.mem_coe, mem_DelF_iff]`. Establish `hfa : ∀ p : ℤ_[l]ˣ → Prop, (∀ δ ∈ Δ, p δ) ↔ ∀ δ ∈ W.DelF, p (χ δ)`. Introduce `p`. Simplify using `only [← SetLike.mem_coe, hΔ, Finset.coe_image, Set.forall_mem_image]`. Use `haveI : Finite Δ := by`.
+
+Express the relevant statement in the definitionally equal form `Finite (Δ : Set ℤ_[l]ˣ)`. Rewrite using `[hΔ]`. Use `infer_instance`. Establish `hcard : Nat.card Δ = W.DelF.card`. Express the relevant statement in the definitionally equal form `Nat.card (Δ : Set ℤ_[l]ˣ) = _`.
+
+Rewrite using `[hΔ, Nat.card_coe_set_eq, Set.ncard_coe_finset, Finset.card_image_of_injective _ hχi]`. Establish `hs : HasSubst ξ` using `HasSubst.of_constantCoeff_zero' h0`. Establish `hX : (substAlgHom hs : O⟦X⟧ →ₐ[O] O⟦X⟧) X = ξ` using `by rw [coe_substAlgHom, subst_X hs]`. Take `⟨h2, h3⟩` from `injective_and_range_eq_invariants Δ (substAlgHom hs : O⟦X⟧ →ₐ[O] O⟦X⟧) (by rw [hX, hcard]; exact hξ) ((hfa _).2 fun δ hδ => by rw [← hγ, hX]; exact hinv δ hδ)`. Use `⟨_, hX, h2, fun a => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h3, hfa]`. Simplify using `only [hγ]`.
+-/
 theorem exists_subst_invariants (ξ : O⟦X⟧) (hξ : Associated ξ (X ^ W.DelF.card))
     (h0 : constantCoeff ξ = 0) (hinv : ∀ δ ∈ W.DelF, W.γ₀ δ ξ = ξ) :
     ∃ j : O⟦X⟧ →ₐ[O] O⟦X⟧, j X = ξ ∧ Function.Injective j ∧
@@ -71,6 +89,27 @@ theorem exists_subst_invariants (ξ : O⟦X⟧) (hξ : Associated ξ (X ^ W.DelF
   refine ⟨_, hX, h2, fun a => ?_⟩
   rw [h3, hfa]; simp only [hγ]
 
+/- English proof (translation)
+Establish `h2l` using `(Fact.out : l.Prime).two_le`. Establish `hl0 : (l : O) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Take `⟨p2, p3, w, hw⟩` from `π₀₁_spec W hp χ hχ hl hc`. Establish `hq` using `(φ₀_eq W hp).2`. Establish `hγ` using `γ₀_eq W hp χ hχ`.
+
+Establish `hX0 : (X : O⟦X⟧) ∣ W.π₀₁` using `(dvd_pow_self _ (by omega)).trans p2.symm.dvd`. Establish `h0` using `X_dvd_iff.1 hX0`. Take `⟨j, hj, hji, hjr⟩` from `exists_subst_invariants W hp χ hχ _ p2 h0 p3`. Set `J : O⟦X⟧ →ₐ[O] O⟦X⟧` to `j.comp σ`. Establish `hJ : ∀ c, J c = j (σ c)` using `fun _ => rfl`.
+
+Establish `hσ' : σ X = X + (l : O⟦X⟧)` using `by rw [hσ, map_natCast]`. Establish `hJX : J X = W.π₀₁ + (l : O⟦X⟧)` using `by rw [hJ, hσ', map_add, hj, map_natCast]`. Establish `hσl : σ (X - (l : O⟦X⟧)) = X` using `by rw [map_sub, hσ', map_natCast]; ring`. Establish `hr : ∀ a, (∃ b, J b = a) ↔ ∀ δ ∈ W.DelF, W.γ₀ δ a = a` using `fun a => by`. Rewrite using `[← hjr]`.
+
+Conclude with `⟨fun ⟨b, hb⟩ => ⟨σ b, hb⟩, fun ⟨b, hb⟩ => ⟨σ.symm b, by rw [hJ, σ.apply_symm_apply, hb]⟩⟩`. Establish `hk : ∀ c, constantCoeff (J c) = 0 → X - (l : O⟦X⟧) ∣ c` using `fun c h => by`. Rewrite `h` using `[hJ, constantCoeff_algHom j (hj ▸ hX0)]`. Rewrite using `[← map_dvd_iff σ, hσl, X_dvd_iff, h]`. Establish `hc0 : constantCoeff (J X) = (l : O)` using `by rw [hJX, map_add, h0, map_natCast, zero_add]`.
+
+Establish `hwu : IsUnit w`. Establish `h1` using `congrArg constantCoeff hw`. Rewrite `h1` using `[← hJX, hc0, map_mul, show constantCoeff (lvl l O 0) = (l : O) by simp [lvl]]`. Rewrite using `[isUnit_iff_constantCoeff, ← mul_left_cancel₀ hl0 ((mul_one _).trans h1)]`. Conclude with `isUnit_one`.
+
+Establish `hass : Associated (J X) (lvl l O 0)`. Rewrite using `[hJX, hw]`. Conclude with `associated_mul_unit_left _ _ hwu`. Establish `hne : J X ≠ 0` using `fun h => hl0 (by rw [← hc0, h, map_zero])`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : J X * X ∣ W.γ₀ g (J X) - J X := by`.
+
+Establish `h1` using `dvd_act_sub (O := O) 1 (χ g) 1 (by rwa [pow_one]) (J X)`. Establish `h2` using `mul_lvl (l := l) (O := O) 0`. Rewrite `h2` using `[pow_zero, pow_one, add_sub_cancel_left, zero_add]`. Rewrite `h1` using `[act_one, ← hγ, ← h2, mul_comm]`. Conclude with `(mul_dvd_mul_right hass.dvd _).trans h1`.
+
+Establish `hinv` using `(hr (J X)).1 ⟨X, rfl⟩`. Take `⟨y', hy'⟩` from `(hr (X * y)).2 fun δ hδ => by`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Establish `h1` using `congrArg (W.γ₀ δ) hy`. Rewrite `h1` using `[mul_assoc, map_mul, map_sub, hinv δ hδ, hγ δ, hγ g, act_comm, ← hγ δ, hinv δ hδ, ← hγ g, hy, mul_assoc]`.
+
+Conclude with `h1.symm`. Take `⟨z, hz⟩` from `hk y' (by rw [hy']; simp)`. Establish `hs : IsUnit (1 + y')`. Rewrite using `[← MulEquiv.isUnit_map σ, hz, map_add, map_mul, hσl, isUnit_iff_constantCoeff]`. Simplify using the standard rewrite rules.
+
+Use `⟨J, hji.comp σ.injective, hr, by rw [hp, hJX], by rw [hp]; exact hk, ⟨hs.unit, ?_, ?_⟩, hq ▸ hass, isUnit_q_of_associated W p2⟩` and prove the remaining obligations. Rewrite using `[hs.unit_spec, map_add, map_one, hy']`. Take the linear combination `hy`. Rewrite using `[hp, hs.unit_spec, add_sub_cancel_left]`. Conclude with `⟨z, hz⟩`.
+-/
 theorem exists_qFrame_of_card [IsNoetherianRing O] (hl : l ≠ 2) (hc : W.DelF.card = l - 1)
     (σ : O⟦X⟧ ≃ₐ[O] O⟦X⟧) (hσ : σ X = X + C (l : O)) (g : W.Gam)
     (hg : (l : ℤ_[l]) ∣ (χ g : ℤ_[l]) - 1) : ∃ J, QFrame W g J := by
@@ -128,6 +167,15 @@ theorem exists_qFrame_of_card [IsNoetherianRing O] (hl : l ≠ 2) (hc : W.DelF.c
 
 end Generic
 
+/- English proof (translation)
+Introduce `l _ P K LL n W g ⟨hK, hl, h⟩ hg`. Establish `p1 : Module.finrank ↥(K0 K) ↥K.1 = 1`. Rewrite using `[Algebra.finrank_eq_one_iff_bijective_algebraMap]`. Conclude with `⟨(algebraMap ↥(K0 K) ↥K.1).injective, fun x => ⟨⟨x.1, x.2, hK x.2⟩, rfl⟩⟩`. Establish `hc` using `GlobalTheory.TorsionCard.card_torsion_mul_finrank P K LL W hl h.2.2.1`.
+
+Rewrite `hc` using `[p1, mul_one]`. Take `⟨χ, hχ, -⟩` from `GlobalTheory.exists_cyclotomicChar_padicInt_units P K LL W`. Take `⟨_, _, hu⟩` from `GlobalTheory.FinExtIntegers.dvr_complete LL`. Take `⟨σ, hσ⟩` from `GlobalTheory.NB.LT.exists_algEquiv_X_add_C (IsLocalRing.maximalIdeal ↥(OL LL)) (l : ↥(OL LL)) hu`. Use `⟨?_, exists_qFrame_of_card W (P.PD_p K) χ hχ hl hc σ hσ g ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `IsLocalRing.isUnit_or_isUnit_one_sub_self (l : ↥(OL LL))`. Rewrite using `[hc, Nat.cast_sub (Fact.out : l.Prime).one_le, Nat.cast_one, ← IsUnit.neg_iff, neg_sub]`. Conclude with `h1.resolve_left hu`. Establish `h1 : (χ g : ℤ_[l]) = 1 + l` using `GlobalTheory.algebraMap_padicInt_OL_injective LL (by`. Rewrite using `[hχ, hg, map_add, map_one, map_natCast])`.
+
+Rewrite using `[h1, add_sub_cancel_left]`.
+-/
 theorem exists_qFrame : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l) {n : ℕ} (W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) n) (g : W.Gam), CaseA K LL → ((W.χΓ g : (↥(OL LL))ˣ) : ↥(OL LL)) = 1 + (l : ↥(OL LL)) → IsUnit (W.DelF.card : ↥(OL LL)) ∧ ∃ J, QFrame W g J := by
   intro l _ P K LL n W g ⟨hK, hl, h⟩ hg
   have p1 : Module.finrank ↥(K0 K) ↥K.1 = 1 := by

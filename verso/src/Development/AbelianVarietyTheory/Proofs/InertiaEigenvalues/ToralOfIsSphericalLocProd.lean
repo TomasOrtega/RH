@@ -20,6 +20,9 @@ abbrev clsOf {w : HeightOneSpectrum (𝓞 E)} {a : ℕ} (σ : SmIrr (GL (Fin a) 
     IrrGL (w.adicCompletion E) :=
   IrrGL.of σ.ρ σ.smooth σ.irred
 
+/- English proof (translation)
+Establish `hs : IsSubquotient (IrrGL.of (locProd h w σ) (isSmooth_parInd _ _) hi).rep (prodIrr (fun i => clsOf (σ i)) h)`. Set `e` to `prodIrrEquiv (k := w.adicCompletion E) h (fun i => (σ i).ρ) (fun i => (σ i).smooth) (fun i => (σ i).irred)`. Set `f` to `e.symm.trans (IrrGL.equivOf (locProd h w σ) (isSmooth_parInd _ _) hi)`. Conclude with `IsSubquotient.of_surjective f.toIntertwiningMap f.toLinearEquiv.surjective`. Conclude with `(GlobalTheory.RecT.good_toral_of_isSubquotient_prodIrr _ c (fun i => clsOf (σ i)) (IrrGL.of (locProd h w σ) (isSmooth_parInd _ _) hi) h hs).1 hG`.
+-/
 theorem good_of_good_locProd {c n : ℕ} {N : Fin c → ℕ} (h : ∑ i, N i = n) (w : HeightOneSpectrum (𝓞 E))
     (σ : ∀ i, SmIrr (GL (Fin (N i)) (w.adicCompletion E))) (hi : (locProd h w σ).IsIrreducible)
     (hG : Good (IrrGL.of (locProd h w σ) (isSmooth_parInd _ _) hi)) : ∀ i, Good (clsOf (σ i)) := by
@@ -30,6 +33,9 @@ theorem good_of_good_locProd {c n : ℕ} {N : Fin c → ℕ} (h : ∑ i, N i = n
     exact IsSubquotient.of_surjective f.toIntertwiningMap f.toLinearEquiv.surjective
   exact (GlobalTheory.RecT.good_toral_of_isSubquotient_prodIrr _ c (fun i => clsOf (σ i)) (IrrGL.of (locProd h w σ) (isSmooth_parInd _ _) hi) h hs).1 hG
 
+/- English proof (translation)
+Take `⟨x, hx, h0⟩` from `(Submodule.ne_bot_iff _).1 h`. Use `(Submodule.ne_bot_iff _).2 ⟨e.toIntertwiningMap x, GlobalTheory.LGrp.mem_fixed.2 fun k hk => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Representation.IntertwiningMap.isIntertwining ρ τ e.toIntertwiningMap k x, GlobalTheory.LGrp.mem_fixed.1 hx k hk]`. Introduce `h1`. Conclude with `h0 (e.toLinearEquiv.injective (by simpa using h1))`.
+-/
 theorem isSpherical_of_equiv {G X Y : Type} [Group G] [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y]
     {ρ : Representation ℂ G X} {τ : Representation ℂ G Y} (e : ρ.Equiv τ) {K : Subgroup G}
     (h : GlobalTheory.LGrp.IsSpherical ρ K) : GlobalTheory.LGrp.IsSpherical τ K := by
@@ -39,6 +45,9 @@ theorem isSpherical_of_equiv {G X Y : Type} [Group G] [AddCommGroup X] [Module �
   · intro h1
     exact h0 (e.toLinearEquiv.injective (by simpa using h1))
 
+/- English proof (translation)
+The claim follows from `e ▸ h`.
+-/
 theorem isSphericalFor_of_eq {G X : Type} [Group G] [AddCommGroup X] [Module ℂ X] {ρ : Representation ℂ G X}
     {K K' : Subgroup G} (e : K = K') (h : GlobalTheory.SmGL.IsSphericalFor ρ K) : GlobalTheory.SmGL.IsSphericalFor ρ K' := e ▸ h
 

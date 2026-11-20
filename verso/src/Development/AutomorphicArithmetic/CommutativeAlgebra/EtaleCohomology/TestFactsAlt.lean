@@ -6,6 +6,15 @@ set_option backward.isDefEq.respectTransparency false
 
 open CategoryTheory AlgebraicGeometry CrystallineSemistableComparison CrystallineSemistableComparison.R
 
+/- English proof (translation)
+Establish `hj : ϖ ∈ (⊥ : Ideal S).jacobson` using `IsAdicComplete.le_jacobson_bot _ (Ideal.mem_span_singleton_self ϖ)`. Establish `hjb : ∀ J : Ideal S, Ideal.Quotient.mk J ϖ ∈ (⊥ : Ideal (S ⧸ J)).jacobson`. Introduce `J`. Rewrite using `[Ideal.mem_jacobson_bot]`. Introduce `y`.
+
+Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Simplify using `using (Ideal.mem_jacobson_bot.1 hj z).map (Ideal.Quotient.mk J)`. Establish `hd : ∀ P : Ideal S, P.IsPrime → Dich (Ideal.Quotient.mk (compI P) ϖ)` using `fun P hP => RL.dich_of_mod _ (hjb _) (RL.valuation_square_of_valuation_mod ϖ h0 P hP)`. Establish `hv : Val ϖ` using `RL.val_of_dich ϖ fun m hm => hd m hm.isPrime`. Use `⟨hv, RL.aic_limit ϖ (RL.step_glob ϖ fun m hm => ?_) (RL.pow_dvd ϖ hnz hv)⟩` and prove the remaining obligations.
+
+Use `RL.step_comp _ (hjb _) ((RL.dich_comp ϖ m hm.isPrime).2 hnz) (hd m hm.isPrime) ?_` and prove the remaining obligations. Use `(RL.surj_pass (Ideal.Quotient.lift (Ideal.span {ϖ ^ 2}) ((Ideal.Quotient.mk (Ideal.span {Ideal.Quotient.mk (compI m) ϖ ^ 2})).comp (Ideal.Quotient.mk (compI m))) ?_) (Ideal.Quotient.lift_surjective_of_surjective _ _ (Ideal.Quotient.mk_surjective.comp Ideal.Quotient.mk_surjective) …` and prove the remaining obligations. Introduce `a ha'`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 ha'`. Simplify using `only [RingHom.comp_apply, map_mul, map_pow]`.
+
+Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))`.
+-/
 private theorem val_aic {S : Type} [CommRing S] (ϖ : S) [IsAdicComplete (Ideal.span {ϖ}) S]
     (hnz : ϖ ∈ nonZeroDivisors S) (h0 : Val0 (S ⧸ Ideal.span {ϖ ^ 2})) (ha : Aic (S ⧸ Ideal.span {ϖ ^ 2})) :
     Val ϖ ∧ Aic S := by
@@ -31,12 +40,24 @@ private theorem val_aic {S : Type} [CommRing S] (ϖ : S) [IsAdicComplete (Ideal.
   simp only [RingHom.comp_apply, map_mul, map_pow]
   exact Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))
 
+/- English proof (translation)
+Take `⟨h0, hm, h1⟩` from `RL.sec_rules Y f`. Conclude with `h1 (RL.glue (SecOn f) h0 (fun e e' _ _ h => hm e e' h) (fun e e' h₁ h₂ h₃ => RL.sec_add Y f e e' h₁ h₂ h₃) fun m hm' => RL.split_pt ha hl Y f he hs m hm')`.
+-/
 private theorem splits {T : Type} [CommRing T] (ha : Aic T) (hl : Loc T) (Y : Scheme.{0})
     (f : Y ⟶ Spec (CommRingCat.of T)) (he : Etale f) (hs : Surjective f) : ∃ s, s ≫ f = 𝟙 _ := by
   obtain ⟨h0, hm, h1⟩ := RL.sec_rules Y f
   exact h1 (RL.glue (SecOn f) h0 (fun e e' _ _ h => hm e e' h)
     (fun e e' h₁ h₂ h₃ => RL.sec_add Y f e e' h₁ h₂ h₃) fun m hm' => RL.split_pt ha hl Y f he hs m hm')
 
+/- English proof (translation)
+Introduce `l _ A hA`. Take `⟨ϖ, hϖ, h0, ha⟩` from `RL.untilt_valuation_mod_square A hA`. Establish `hl : (l : A.U) ∈ nonZeroDivisors A.U` using `(RL.u_tf A).1`. Establish `hl0 : l ≠ 0` using `(Fact.out : l.Prime).ne_zero`. Use `haveI : IsAdicComplete (Ideal.span {ϖ}) A.U := (RL.val_pow ϖ l hl0).2 (by rw [hϖ]; exact RL.u_complete A)`.
+
+Establish `hnz : ϖ ∈ nonZeroDivisors A.U`. Establish `h : ϖ ^ (l - 1) * ϖ ∈ nonZeroDivisors A.U`. Rewrite using `[← pow_succ, Nat.sub_add_cancel (Nat.pos_of_ne_zero hl0), hϖ]`. Conclude with `hl`. Conclude with `(mul_mem_nonZeroDivisors.1 h).2`.
+
+Take `⟨hv, hU⟩` from `val_aic ϖ hnz h0 ha`. Establish `hvl : Val (l : A.U)`. Rewrite using `[← hϖ]`. Conclude with `(RL.val_pow ϖ l hl0).1.2 hv`. Take `⟨hL, hLg⟩` from `(RL.loc_aic (l : A.U)).1 hvl`.
+
+Conclude with `⟨hl, RL.int_closed _ hl hvl, fun Y f he hs => splits ((RL.loc_aic (l : A.U)).2 hU) hLg Y f he hs, fun Y f he hs => splits hU hL Y f he hs, RL.idem_au A⟩`.
+-/
 theorem UpperTheory.Ru.crystallineComparison.testFacts :
     UpperTheory.Ru.crystallineComparison.TestFacts := by
   intro l _ A hA

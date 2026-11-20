@@ -16,6 +16,15 @@ open scoped Matrix
 
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.HS.IndexFormula
 
+/- English proof (translation)
+Establish `h1 : (A.map f).relIndex (B.map f) = (A ⊔ f.ker).relIndex B`. Rewrite using `[← AddSubgroup.relIndex_comap, AddSubgroup.comap_map_eq]`. Establish `h2 : (A ⊔ f.ker) ⊓ B = A ⊔ (B ⊓ f.ker)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`.
+
+Take `⟨hx1, hx2⟩` from `AddSubgroup.mem_inf.mp hx`. Take `⟨a, ha, k, hk, rfl⟩` from `AddSubgroup.mem_sup.mp hx1`. Use `AddSubgroup.mem_sup.mpr ⟨a, ha, k, AddSubgroup.mem_inf.mpr ⟨?_, hk⟩, rfl⟩` and prove the remaining obligations. Use `B.sub_mem hx2 (hAB ha)` as an intermediate fact. Simplify using `using this`.
+
+Use `sup_le (le_inf le_sup_left hAB) (le_inf ?_ inf_le_left)` and prove the remaining obligations. Conclude with `inf_le_right.trans le_sup_right`. Establish `h3 : A.relIndex (A ⊔ (B ⊓ f.ker)) = A.relIndex (B ⊓ f.ker)` using `AddSubgroup.relIndex_sup_left _ _`. Establish `h4` using `AddSubgroup.relIndex_mul_relIndex A ((A ⊔ f.ker) ⊓ B) B (le_inf le_sup_left hAB) inf_le_right`. Rewrite `h4` using `[AddSubgroup.inf_relIndex_right, h2, h3]`.
+
+Rewrite using `[h1, ← h4, mul_comm]`.
+-/
 theorem relIndex_split {G H : Type*} [AddCommGroup G] [AddCommGroup H] (f : G →+ H)
     (A B : AddSubgroup G) (hAB : A ≤ B) :
     A.relIndex B = (A.map f).relIndex (B.map f) * A.relIndex (B ⊓ f.ker) := by
@@ -40,16 +49,25 @@ theorem relIndex_split {G H : Type*} [AddCommGroup G] [AddCommGroup H] (f : G �
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `[blk]`.
+-/
 theorem blk_castSucc_castSucc {m : ℕ} (σ : E →ₐ[F] E) (c : Matrix (Fin m) (Fin m) E)
     (u : Fin m → E) (d : E) (a b : Fin m) :
     blk σ c u d a.castSucc b.castSucc = c a b := by
   simp [blk]
 
+/- English proof (translation)
+Simplify using `[blk]`.
+-/
 theorem blk_castSucc_last {m : ℕ} (σ : E →ₐ[F] E) (c : Matrix (Fin m) (Fin m) E)
     (u : Fin m → E) (d : E) (a : Fin m) :
     blk σ c u d a.castSucc (Fin.last m) = u a := by
   simp [blk]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_castSucc, blk_castSucc_castSucc, blk_castSucc_last]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem blk_mulVec_castSucc {m : ℕ} (σ : E →ₐ[F] E) (c : Matrix (Fin m) (Fin m) E)
     (u : Fin m → E) (d : E) (y : Fin (m + 1) → E) (i : Fin m) :
     (blk σ c u d).mulVec y i.castSucc
@@ -64,9 +82,15 @@ def proj (E : Type) [Field E] [NumberField E] (m : ℕ) :
     (Fin (m + 1) → E) →ₗ[𝓞 E] (Fin m → E) :=
   LinearMap.funLeft (𝓞 E) E Fin.castSucc
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem proj_apply (m : ℕ) (v : Fin (m + 1) → E) (i : Fin m) :
     proj E m v i = v i.castSucc := rfl
 
+/- English proof (translation)
+Introduce `i`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Conclude with `⟨o, by simp⟩`. Take `⟨p, hp⟩` from `hy j`. Conclude with `⟨p, by simp [hp]⟩`.
+-/
 theorem snoc_mem_intVec {m : ℕ} {y : Fin m → E} (hy : y ∈ intVec E m) (o : 𝓞 E) :
     (Fin.snoc (α := fun _ => E) y (algebraMap (𝓞 E) E o) : Fin (m + 1) → E) ∈ intVec E (m + 1) := by
   intro i
@@ -75,9 +99,17 @@ theorem snoc_mem_intVec {m : ℕ} {y : Fin m → E} (hy : y ∈ intVec E m) (o :
   · obtain ⟨p, hp⟩ := hy j
     exact ⟨p, by simp [hp]⟩
 
+/- English proof (translation)
+Introduce `i` and use `hy i.castSucc`.
+-/
 theorem proj_mem_intVec {m : ℕ} {y : Fin (m + 1) → E} (hy : y ∈ intVec E (m + 1)) :
     proj E m y ∈ intVec E m := fun i => hy i.castSucc
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `proj_mem_intVec hy`. Introduce `y hy`. Use `⟨_, snoc_mem_intVec hy 0, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+-/
 theorem map_proj_intVec (m : ℕ) : (intVec E (m + 1)).map (proj E m) = intVec E m := by
   apply le_antisymm
   · rintro _ ⟨y, hy, rfl⟩
@@ -87,12 +119,31 @@ theorem map_proj_intVec (m : ℕ) : (intVec E (m + 1)).map (proj E m) = intVec E
     funext i
     simp
 
+/- English proof (translation)
+The claim follows from `le_sup_left`.
+-/
 theorem intVec_le_lam {m : ℕ} (c : Matrix (Fin m) (Fin m) E) : intVec E m ≤ lam c := le_sup_left
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_sup_right ⟨y, hy, rfl⟩`.
+-/
 theorem mulVec_mem_lam {m : ℕ} (c : Matrix (Fin m) (Fin m) E) {y : Fin m → E}
     (hy : y ∈ intVec E m) : c.mulVec y ∈ lam c :=
   Submodule.mem_sup_right ⟨y, hy, rfl⟩
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Take `⟨x, hx, z, ⟨y, hy, rfl⟩, rfl⟩` from `Submodule.mem_sup.mp hw`. Take `⟨o, ho⟩` from `hy (Fin.last m)`. Establish `e : proj E m (x + (blk σ c u d).mulVecLin.restrictScalars (𝓞 E) y) = (proj E m x + c.mulVec (proj E m y)) + o • u`.
+
+Use function extensionality and compare the values at `i`. Use `blk_mulVec_castSucc σ c u d y i` as an intermediate fact. Simplify using `only [proj_apply, Pi.add_apply, map_add, LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply, Pi.smul_apply, Algebra.smul_def, ho]`. Rewrite using `[this, add_assoc]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Use `Submodule.add_mem _ (Submodule.mem_sup_left ?_) (Submodule.mem_sup_right (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self u)))` and prove the remaining obligations. Conclude with `Submodule.add_mem _ (intVec_le_lam c (proj_mem_intVec hx)) (mulVec_mem_lam c (proj_mem_intVec hy))`. Use `sup_le (sup_le ?_ ?_) ?_` and prove the remaining obligations. Rewrite using `[← map_proj_intVec m]`.
+
+Conclude with `Submodule.map_mono (intVec_le_lam _)`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `⟨(blk σ c u d).mulVec (Fin.snoc (α := fun _ => E) y (algebraMap (𝓞 E) E 0)), mulVec_mem_lam _ (snoc_mem_intVec hy 0), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[proj_apply, blk_mulVec_castSucc]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Use `⟨(blk σ c u d).mulVec (Fin.snoc (α := fun _ => E) 0 (algebraMap (𝓞 E) E 1)), mulVec_mem_lam _ (snoc_mem_intVec (Submodule.zero_mem _) 1), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[proj_apply, blk_mulVec_castSucc]`.
+
+Simplify using `[show (fun _ : Fin m => (0 : E)) = 0 from rfl]`.
+-/
 theorem map_proj_lam {m : ℕ} (σ : E →ₐ[F] E) (c : Matrix (Fin m) (Fin m) E)
     (u : Fin m → E) (d : E) :
     (lam (blk σ c u d)).map (proj E m) = lam c ⊔ Submodule.span (𝓞 E) {u} := by
@@ -129,6 +180,15 @@ theorem map_proj_lam {m : ℕ} (σ : E →ₐ[F] E) (c : Matrix (Fin m) (Fin m) 
       rw [proj_apply, blk_mulVec_castSucc]
       simp [show (fun _ : Fin m => (0 : E)) = 0 from rfl]
 
+/- English proof (translation)
+Set `φ : 𝓞 E →+ (Fin m → E)` to `(LinearMap.toSpanSingleton (𝓞 E) _ u).toAddMonoidHom`. Establish `hsup : (lam c ⊔ Submodule.span (𝓞 E) {u}).toAddSubgroup = (lam c).toAddSubgroup ⊔ (⊤ : AddSubgroup (𝓞 E)).map φ`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hx`.
+
+Take `⟨t, rfl⟩` from `Submodule.mem_span_singleton.mp hb`. Conclude with `AddSubgroup.add_mem_sup ha ⟨t, trivial, rfl⟩`. Use `sup_le (fun x hx => Submodule.mem_sup_left hx) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, -, rfl⟩`. Conclude with `Submodule.mem_sup_right (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self u))`.
+
+Establish `hcomap : (lam c).toAddSubgroup.comap φ = (tor c u).toAddSubgroup`. Use extensionality with `t`. Express the relevant statement in the definitionally equal form `t • u ∈ lam c ↔ t ∈ tor c u`. Rewrite using `[tor, Ideal.mem_torsionOf_iff, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[hsup, AddSubgroup.relIndex_sup_left, ← AddSubgroup.relIndex_comap, hcomap, AddSubgroup.relIndex_top_right]`.
+
+Both sides reduce to the same expression.
+-/
 theorem relIndex_lam_sup {m : ℕ} (c : Matrix (Fin m) (Fin m) E) (u : Fin m → E) :
     (lam c).toAddSubgroup.relIndex (lam c ⊔ Submodule.span (𝓞 E) {u}).toAddSubgroup
       = Ideal.absNorm (tor c u) := by
@@ -155,6 +215,13 @@ theorem relIndex_lam_sup {m : ℕ} (c : Matrix (Fin m) (Fin m) E) (u : Fin m →
 def lastInc (E : Type) [Field E] [NumberField E] (m : ℕ) : E →+ (Fin (m + 1) → E) :=
   (LinearMap.single (𝓞 E) (fun _ : Fin (m + 1) => E) (Fin.last m)).toAddMonoidHom
 
+/- English proof (translation)
+Use extensionality with `x`. Express the relevant statement in the definitionally equal form `(Pi.single (Fin.last m) x : Fin (m + 1) → E) ∈ intVec E (m + 1) ↔ x ∈ (1 : Submodule (𝓞 E) E)`. Rewrite using `[Submodule.mem_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Take `⟨o, ho⟩` from `h (Fin.last m)`. Conclude with `⟨o, by simpa using ho⟩`. Introduce and unpack `⟨o, rfl⟩ i`. Distinguish the cases in `hi : i = Fin.last m`. Substitute `hi` using the available equality.
+
+Conclude with `⟨o, by simp⟩`. Conclude with `⟨0, by simp [Pi.single_apply, hi]⟩`.
+-/
 theorem comap_lastInc_intVec (m : ℕ) :
     (intVec E (m + 1)).toAddSubgroup.comap (lastInc E m)
       = (1 : Submodule (𝓞 E) E).toAddSubgroup := by
@@ -172,6 +239,17 @@ theorem comap_lastInc_intVec (m : ℕ) :
       exact ⟨o, by simp⟩
     · exact ⟨0, by simp [Pi.single_apply, hi]⟩
 
+/- English proof (translation)
+Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Use `AddSubgroup.mem_inf.mpr ⟨hx, ?_⟩` and prove the remaining obligations. Rewrite using `[AddMonoidHom.mem_ker]`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[lastInc, Pi.single_apply, Fin.castSucc_ne_last]`. Introduce `hv`. Take `⟨h1, h2⟩` from `AddSubgroup.mem_inf.mp hv`. Rewrite `h2` using `[AddMonoidHom.mem_ker]`.
+
+Establish `hv' : lastInc E m (v (Fin.last m)) = v`. Use function extensionality and compare the values at `i`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[lastInc]`. Use `congrFun h2 j` as an intermediate fact.
+
+Simplify using `only [LinearMap.toAddMonoidHom_coe, proj_apply, Pi.zero_apply] at this`. Simplify using `[lastInc, Pi.single_apply, Fin.castSucc_ne_last, this]`. Use `⟨v (Fin.last m), ?_, hv'⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `lastInc E m (v (Fin.last m)) ∈ lam C`. Rewrite using `[hv']`.
+
+Conclude with `h1`.
+-/
 theorem map_lastInc_lastFib {m : ℕ} (C : Matrix (Fin (m + 1)) (Fin (m + 1)) E) :
     (lastFib C).toAddSubgroup.map (lastInc E m)
       = (lam C).toAddSubgroup ⊓ (proj E m).toAddMonoidHom.ker := by
@@ -197,6 +275,13 @@ theorem map_lastInc_lastFib {m : ℕ} (C : Matrix (Fin (m + 1)) (Fin (m + 1)) E)
     rw [hv']
     exact h1
 
+/- English proof (translation)
+Establish `hC` using `(GlobalTheory.T.delta_eq_lattice_index E (m + 1) (blk σ c u d)).2`. Establish `hc` using `(GlobalTheory.T.delta_eq_lattice_index E m c).2`. Establish `hsplit` using `relIndex_split (proj E m).toAddMonoidHom (intVec E (m + 1)).toAddSubgroup (lam (blk σ c u d)).toAddSubgroup (intVec_le_lam (blk σ c u d))`. Establish `hA : (intVec E (m + 1)).toAddSubgroup.map (proj E m).toAddMonoidHom = (intVec E m).toAddSubgroup`. Rewrite using `[← map_proj_intVec m]`.
+
+Both sides reduce to the same expression. Establish `hB : (lam (blk σ c u d)).toAddSubgroup.map (proj E m).toAddMonoidHom = (lam c ⊔ Submodule.span (𝓞 E) {u}).toAddSubgroup`. Rewrite using `[← map_proj_lam σ c u d]`. Both sides reduce to the same expression. Establish `hmul` using `AddSubgroup.relIndex_mul_relIndex (intVec E m).toAddSubgroup (lam c).toAddSubgroup (lam c ⊔ Submodule.span (𝓞 E) {u}).toAddSubgroup (intVec_le_lam c) (fun x hx => Submodule.mem_sup_left hx)`.
+
+Establish `hfib : (intVec E (m + 1)).toAddSubgroup.relIndex ((lam (blk σ c u d)).toAddSubgroup ⊓ (proj E m).toAddMonoidHom.ker) = idx E (lastFib (blk σ c u d))`. Rewrite using `[← map_lastInc_lastFib, ← AddSubgroup.relIndex_comap, comap_lastInc_intVec]`. Both sides reduce to the same expression. Rewrite using `[hC, hc, hsplit, hA, hB, hfib, ← hmul, relIndex_lam_sup]`.
+-/
 theorem delta_blk (F E : Type) [Field F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (m : ℕ) (c : Matrix (Fin m) (Fin m) E) (u : Fin m → E) (d : E) :
     delta (blk σ c u d) = delta c * Ideal.absNorm (tor c u) * idx E (lastFib (blk σ c u d)) := by

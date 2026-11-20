@@ -15,12 +15,25 @@ namespace GlobalTheory.SgInf
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+The claim follows from `Matrix.isUnit_det_of_right_inverse (hpkFacts k r).2.1`.
+-/
 theorem isUnit_det_Hpk : IsUnit (Hpk k r).det :=
   Matrix.isUnit_det_of_right_inverse (hpkFacts k r).2.1
 
+/- English proof (translation)
+The claim follows from `((uHGroup _ _ isUnit_det_Hpk).2.2 g hg).1`.
+-/
 theorem isUnit_det_of_mem_GG {g : Mat k r} (hg : g ∈ GG k r) : IsUnit g.det :=
   ((uHGroup _ _ isUnit_det_Hpk).2.2 g hg).1
 
+/- English proof (translation)
+Establish `h1 : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Establish `h2` using `congrArg Matrix.det h1`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`. Establish `h3 : star g.det * g.det = 1`. Establish `h4 : (star g.det * g.det) * (Hpk k r).det = 1 * (Hpk k r).det`.
+
+Rewrite using `[one_mul]`. Take the linear combination `h2`. Conclude with `(isUnit_det_Hpk (k := k) (r := r)).mul_right_cancel h4`. Establish `h5 : Complex.normSq g.det = 1`. Establish `h6` using `Complex.normSq_eq_conj_mul_self (z := g.det)`.
+
+Rewrite `h6` using `[starRingEnd_apply, h3]`. Conclude with `h6` after adjusting the coercions. Establish `h7 : ‖g.det‖ ^ 2 = 1` using `by rw [Complex.sq_norm, h5]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).mp h7`.
+-/
 theorem norm_det_of_mem_GG {g : Mat k r} (hg : g ∈ GG k r) : ‖g.det‖ = 1 := by
   have h1 : gᴴ * Hpk k r * g = Hpk k r := hg
   have h2 := congrArg Matrix.det h1
@@ -36,31 +49,60 @@ theorem norm_det_of_mem_GG {g : Mat k r} (hg : g ∈ GG k r) : ‖g.det‖ = 1 :
   have h7 : ‖g.det‖ ^ 2 = 1 := by rw [Complex.sq_norm, h5]
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).mp h7
 
+/- English proof (translation)
+Take `⟨hG, hc, h1, hm, hi⟩` from `hS`. Conclude with `⟨h1, hm, hi, fun a ha => isUnit_det_of_mem_GG (hG ha), hc⟩`.
+-/
 theorem IsClosedSub.isClosedSubgroup {S : Set (Mat k r)} (hS : IsClosedSub k r S) :
     Formalism.FourierDecayAlt.B2.IsClosedSubgroup S := by
   obtain ⟨hG, hc, h1, hm, hi⟩ := hS
   exact ⟨h1, hm, hi, fun a ha => isUnit_det_of_mem_GG (hG ha), hc⟩
 
+/- English proof (translation)
+Unfold `IsClosedSub`. Conclude with `⟨h, hS.closed, hS.one_mem, hS.mul_mem, hS.inv_mem⟩`.
+-/
 theorem isClosedSub_of {S : Set (Mat k r)} (hS : Formalism.FourierDecayAlt.B2.IsClosedSubgroup S) (h : S ⊆ GG k r) :
     IsClosedSub k r S := by
   unfold IsClosedSub
   exact ⟨h, hS.closed, hS.one_mem, hS.mul_mem, hS.inv_mem⟩
 
+/- English proof (translation)
+The claim follows from `isClosedSub_of (Formalism.FourierDecayAlt.P.unitary_group_closed k r) subset_rfl`.
+-/
 theorem isClosedSub_GG : IsClosedSub k r (GG k r) :=
   isClosedSub_of (Formalism.FourierDecayAlt.P.unitary_group_closed k r) subset_rfl
 
+/- English proof (translation)
+The claim follows from `isClosedSub_of (Formalism.FourierDecayAlt.P.unipotent_radical_closed k r) fun _ hg => hg.1`.
+-/
 theorem isClosedSub_Nset : IsClosedSub k r (Nset k r) :=
   isClosedSub_of (Formalism.FourierDecayAlt.P.unipotent_radical_closed k r) fun _ hg => hg.1
 
+/- English proof (translation)
+The claim follows from `isClosedSub_of (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z) fun _ hg => hg.1`.
+-/
 theorem isClosedSub_UWset (z : Fin (2 * r + k + 1) → ℂ) : IsClosedSub k r (UWset k r z) :=
   isClosedSub_of (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z) fun _ hg => hg.1
 
+/- English proof (translation)
+Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem inv_eq_Hpk_conjTranspose_of_mem_GG {g : Mat k r} (hg : g ∈ GG k r) : g⁻¹ = Hpk k r * gᴴ * Hpk k r := by
   apply Matrix.inv_eq_left_inv
   have hg' : gᴴ * Hpk k r * g = Hpk k r := hg
   calc Hpk k r * gᴴ * Hpk k r * g = Hpk k r * (gᴴ * Hpk k r * g) := by simp only [Matrix.mul_assoc]
     _ = 1 := by rw [hg', (hpkFacts k r).2.1]
 
+/- English proof (translation)
+Take `⟨h1, hmul, hinv⟩` from `sGroup k r z hz`. Establish `hN` using `Formalism.FourierDecayAlt.P.unipotent_radical_closed k r`. Establish `hK : IsCompact (UWset k r z)` using `Formalism.FourierDecayAlt.P.B2x3.compactW k r z hz hT`. Establish `hsub : Sset k r z ⊆ GG k r`. Introduce and unpack `s ⟨h, hh, m, hm, rfl⟩`.
+
+Conclude with `(uHGroup _ _ isUnit_det_Hpk).2.1 h hh.1 m hm.1`. Establish `hclosed : IsClosed (Sset k r z)`. Establish `: CompactSpace (UWset k r z)` using `isCompact_iff_compactSpace.mp hK`. Establish `hC : IsClosed {p : UWset k r z × Mat k r | Hpk k r * (p.1 : Mat k r)ᴴ * Hpk k r * p.2 ∈ Nset k r}` using `IsClosed.preimage (f := fun p : UWset k r z × Mat k r => Hpk k r * (p.1 : Mat k r)ᴴ * Hpk k r * p.2) (((continuous_const.mul (continuous_subtype_val.comp continuous_fst).matrix_conjTranspose).mul continuous_const).mul continuous_snd) hN.closed`. Establish `himg : Sset k r z = Prod.snd '' {p : UWset k r z × Mat k r | Hpk k r * (p.1 : Mat k r)ᴴ * Hpk k r * p.2 ∈ Nset k r}`.
+
+Use extensionality with `s`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, m, hm, rfl⟩`. Use `⟨(⟨h, hh⟩, h * m), ?_, rfl⟩` and prove the remaining obligations. Use `show Hpk k r * hᴴ * Hpk k r * (h * m) ∈ Nset k r`.
+
+Rewrite using `[← inv_eq_Hpk_conjTranspose_of_mem_GG hh.1, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (isUnit_det_of_mem_GG hh.1), Matrix.one_mul]`. Conclude with `hm`. Introduce and unpack `⟨⟨⟨h, hh⟩, s'⟩, hp, rfl⟩`. Use `⟨h, hh, Hpk k r * hᴴ * Hpk k r * s', hp, ?_⟩` and prove the remaining obligations. Use `show s' = h * (Hpk k r * hᴴ * Hpk k r * s')`.
+
+Rewrite using `[← inv_eq_Hpk_conjTranspose_of_mem_GG hh.1, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (isUnit_det_of_mem_GG hh.1), Matrix.one_mul]`. Rewrite using `[himg]`. Conclude with `isClosedMap_snd_of_compactSpace _ hC`. Unfold `IsClosedSub`. Conclude with `⟨hsub, hclosed, h1, hmul, hinv⟩`.
+-/
 theorem isClosedSub_Sset {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z) :
     IsClosedSub k r (Sset k r z) := by
   obtain ⟨h1, hmul, hinv⟩ := sGroup k r z hz
@@ -95,6 +137,11 @@ theorem isClosedSub_Sset {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT
   unfold IsClosedSub
   exact ⟨hsub, hclosed, h1, hmul, hinv⟩
 
+/- English proof (translation)
+Establish `: IsFiniteMeasureOnCompacts μ` using `⟨h.finite_compact⟩`. Establish `hsf : SigmaFinite μ` using `inferInstance`. Prove the components needed by the constructor for the conclusion. Unfold `Formalism.MainNotions.S.IsHaarOn`. Conclude with `⟨hsf, h.ne_zero, h.conc, h.left⟩`.
+
+Unfold `IsUnimod`. Conclude with `⟨h.right, Formalism.FourierDecayAlt.P.haar_measure_inversion k r S μ hS.isClosedSubgroup h⟩`.
+-/
 theorem haar_unimod_of_biinv {S : Set (Mat k r)} (hS : IsClosedSub k r S) {μ : Measure (Mt k r)}
     (h : Formalism.FourierDecayAlt.B.IsHaarOn S μ) : IsHaarOn S μ ∧ IsUnimod S μ := by
   have : IsFiniteMeasureOnCompacts μ := ⟨h.finite_compact⟩
@@ -105,12 +152,18 @@ theorem haar_unimod_of_biinv {S : Set (Mat k r)} (hS : IsClosedSub k r S) {μ : 
   · unfold IsUnimod
     exact ⟨h.right, Formalism.FourierDecayAlt.P.haar_measure_inversion k r S μ hS.isClosedSubgroup h⟩
 
+/- English proof (translation)
+Take `⟨μ, hμ⟩` from `Formalism.FourierDecayAlt.P.unitary_group_haar_exists k r`. Conclude with `⟨μ, haar_unimod_of_biinv isClosedSub_GG hμ⟩`.
+-/
 theorem exists_unimod_GG : ∃ μ : Measure (Mt k r), IsHaarOn (GG k r) μ ∧ IsUnimod (GG k r) μ := by
   obtain ⟨μ, hμ⟩ := Formalism.FourierDecayAlt.P.unitary_group_haar_exists k r
   exact ⟨μ, haar_unimod_of_biinv isClosedSub_GG hμ⟩
 
 def zStd (k r : ℕ) : Fin (2 * r + k + 1) → ℂ := bvec (wI k r (Fin.last k))
 
+/- English proof (translation)
+Establish `hH : herm (Hpk k r) (zStd k r) (zStd k r) = Hpk k r (wI k r (Fin.last k)) (wI k r (Fin.last k))`. Simplify using `[herm, zStd, bvec, Matrix.mulVec, dotProduct, Pi.single_apply]`. Rewrite using `[Tz, hH]`. Simplify using `[Hpk, wI]`.
+-/
 theorem Tz_zStd : Tz k r (zStd k r) = 1 := by
   have hH : herm (Hpk k r) (zStd k r) (zStd k r) =
       Hpk k r (wI k r (Fin.last k)) (wI k r (Fin.last k)) := by
@@ -120,6 +173,11 @@ theorem Tz_zStd : Tz k r (zStd k r) = 1 := by
 
 def detRep (k r m : ℕ) (h : Mat k r) : ℂ →L[ℂ] ℂ := h.det ^ m • ContinuousLinearMap.id ℂ ℂ
 
+/- English proof (translation)
+Use `⟨!![-1, 0; 0, 1], ⟨?_, fun a => a.elim0, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show (!![-1, 0; 0, 1] : Matrix (Fin 2) (Fin 2) ℂ)ᴴ * Hpk 1 0 * !![-1, 0; 0, 1] = Hpk 1 0`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, Hpk]`. Use `show (!![-1, 0; 0, 1] : Matrix (Fin 2) (Fin 2) ℂ) *ᵥ (Pi.single 1 1) = Pi.single 1 1`.
+
+Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp`. Use `show (!![-1, 0; 0, 1] : Matrix (Fin 2) (Fin 2) ℂ).det ^ 1 • (1 : ℂ) = -1`. Simplify using the standard rewrite rules.
+-/
 example : ∃ h ∈ UWset 1 0 (zStd 1 0), detRep 1 0 1 h 1 = -1 := by
   refine ⟨!![-1, 0; 0, 1], ⟨?_, fun a => a.elim0, ?_⟩, ?_⟩
   · show (!![-1, 0; 0, 1] : Matrix (Fin 2) (Fin 2) ℂ)ᴴ * Hpk 1 0 * !![-1, 0; 0, 1] = Hpk 1 0
@@ -131,6 +189,13 @@ example : ∃ h ∈ UWset 1 0 (zStd 1 0), detRep 1 0 1 h 1 = -1 := by
   · show (!![-1, 0; 0, 1] : Matrix (Fin 2) (Fin 2) ℂ).det ^ 1 • (1 : ℂ) = -1
     simp
 
+/- English proof (translation)
+Introduce and unpack `⟨-, -, h⟩`. Apply `h` to reduce the goal to its premises. Establish `h0 : Dmin 1 0 (zStd 1 0) (zStd 1 0) 1 ⟨0, by omega⟩ = 1` using `by simp [Dmin]`. Establish `hz : zStd 1 0 = ![0, 1]`. Use extensionality with `i`.
+
+Apply the tactic sequence `fin_cases i <;> simp [zStd, bvec, wI]`. Establish `h1 : Dmin 1 0 (zStd 1 0) (zStd 1 0) 1 (Fin.last 1) = -1` using `by show Matrix.det (n := Fin 1) _ = _`. Rewrite using `[Matrix.det_fin_one, hz]`. Simplify using `[Zhat, fvec, herm, Hpk, Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Unfold `Gf`.
+
+Rewrite using `[h0, h1, Tz_zStd]`. Simplify using the standard rewrite rules.
+-/
 example : (1 : Mat 1 0) ∉ Greg 1 0 (zStd 1 0) (zStd 1 0) := by
   rintro ⟨-, -, h⟩
   apply h

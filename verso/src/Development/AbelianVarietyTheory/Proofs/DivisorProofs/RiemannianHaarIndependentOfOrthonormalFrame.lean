@@ -10,9 +10,19 @@ abbrev cj {r : ℕ} (A : Matrix (Fin r) (Fin r) ℂ) : Matrix (Fin r) (Fin r) �
 
 def IsSkew {r : ℕ} (D Y : Matrix (Fin r) (Fin r) ℂ) : Prop := Yᵀ * D + D * cj Y = 0
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul`.
+-/
 theorem cj_mul {r : ℕ} (A B : Matrix (Fin r) (Fin r) ℂ) : cj (A * B) = cj A * cj B :=
   Matrix.map_mul
 
+/- English proof (translation)
+Unfold `IsSkew at *`. Establish `e1 : kᵀ * D = D' * cj l`. Establish `: cj k * cj l = 1` using `by rw [← cj_mul, hkl]; simp`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : D * cj k = lᵀ * D'`.
+
+Establish `: lᵀ * kᵀ = 1` using `by rw [← Matrix.transpose_mul, hkl, Matrix.transpose_one]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.transpose_mul, cj_mul, Matrix.mul_assoc]`. Use `_ = lᵀ * (Yᵀ * D' + D' * cj Y) * cj l := by`.
+
+Rewrite using `[e1, e2]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hY]; simp`.
+-/
 theorem isSkew_conj {r : ℕ} {D D' k l Y : Matrix (Fin r) (Fin r) ℂ} (hlk : l * k = 1) (hkl : k * l = 1)
     (h : kᵀ * D * cj k = D') (hY : IsSkew D' Y) : IsSkew D (k * Y * l) := by
   unfold IsSkew at *
@@ -30,10 +40,16 @@ theorem isSkew_conj {r : ℕ} {D D' k l Y : Matrix (Fin r) (Fin r) ℂ} (hlk : l
         rw [e1, e2]; simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]
     _ = 0 := by rw [hY]; simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.trace_mul_comm, ← Matrix.mul_assoc, hlk, Matrix.one_mul]`.
+-/
 theorem trace_conj {r : ℕ} {k l Y : Matrix (Fin r) (Fin r) ℂ} (hlk : l * k = 1) :
     (k * Y * l).trace = Y.trace := by
   rw [Matrix.trace_mul_comm, ← Matrix.mul_assoc, hlk, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `: (k * Y * l) * (k * Z * l) = k * (Y * Z) * l`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this, trace_conj hlk]`.
+-/
 theorem trace_conj_mul {r : ℕ} {k l Y Z : Matrix (Fin r) (Fin r) ℂ} (hlk : l * k = 1) :
     ((k * Y * l) * (k * Z * l)).trace = (Y * Z).trace := by
   have : (k * Y * l) * (k * Z * l) = k * (Y * Z) * l := by
@@ -41,6 +57,17 @@ theorem trace_conj_mul {r : ℕ} {k l Y Z : Matrix (Fin r) (Fin r) ℂ} (hlk : l
       _ = _ := by rw [hlk]; simp only [Matrix.mul_one, Matrix.mul_assoc]
   rw [this, trace_conj hlk]
 
+/- English proof (translation)
+Establish `key : ∀ u w, hermC τ G (A *ᵥ u) w + hermC τ G u (A *ᵥ w) = ∑ a, ∑ b, u a * (Aᵀ * G.map τ + G.map τ * cj A) a b * conj (w b)`. Introduce `u w`. Simplify using `only [hermC, Matrix.mulVec, dotProduct, Matrix.add_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum, mul_add, add_mul, Finset.sum_add_distrib]`. Use `congr 1`. Use `(Finset.sum_congr rfl fun y _ => Finset.sum_comm).trans (Finset.sum_comm.trans (Finset.sum_congr rfl fun x _ => ?_))` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun y _ => by ring`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => by ring` and prove the remaining obligations.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Unfold `IsSkew`. Use extensionality with `a b`. Use `h (Pi.single a 1) (Pi.single b 1)` as an intermediate fact.
+
+Rewrite `this` using `[key]`. Simplify `this` using `[Pi.single_apply]`. Introduce `h u w`. Unfold `IsSkew at h`. Rewrite using `[key, h]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem herm_skew_iff {E : Type} [Field E] {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (A : Matrix (Fin r) (Fin r) ℂ) :
     (∀ u w, hermC τ G (A *ᵥ u) w + hermC τ G u (A *ᵥ w) = 0) ↔ IsSkew (G.map τ) A := by
@@ -68,6 +95,9 @@ theorem herm_skew_iff {E : Type} [Field E] {r : ℕ} (τ : E →+* ℂ) (G : Mat
     unfold IsSkew at h
     rw [key, h]; simp
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.gram, hermC, ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem gram_eq {E : Type} [Field E] {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (M : Matrix (Fin r) (Fin r) ℂ) : gram τ G M = Mᵀ * G.map τ * cj M := by
   ext a b
@@ -77,17 +107,36 @@ theorem gram_eq {E : Type} [Field E] {r : ℕ} (τ : E →+* ℂ) (G : Matrix (F
 
 abbrev sgnMat (r p : ℕ) : Matrix (Fin r) (Fin r) ℂ := Matrix.diagonal fun a : Fin r => ((sgn p (a : ℕ) : ℝ) : ℂ)
 
+/- English proof (translation)
+Apply the tactic sequence `unfold sgn; split_ifs <;> norm_num`.
+-/
 theorem sgn_sq (p a : ℕ) : sgn p a * sgn p a = 1 := by unfold sgn; split_ifs <;> norm_num
 
+/- English proof (translation)
+Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[← Complex.ofReal_mul, sgn_sq]`. Simplify using the standard rewrite rules.
+-/
 theorem sgnMat_mul (r p : ℕ) : sgnMat r p * sgnMat r p = 1 := by
   rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
   congr 1; funext a; rw [← Complex.ofReal_mul, sgn_sq]; simp
 
+/- English proof (translation)
+The claim follows from `Matrix.diagonal_transpose _`.
+-/
 theorem sgnMat_transpose (r p : ℕ) : (sgnMat r p)ᵀ = sgnMat r p := Matrix.diagonal_transpose _
 
+/- English proof (translation)
+Apply the tactic sequence `ext a b; by_cases h : a = b <;> simp [h, Matrix.diagonal_apply]`.
+-/
 theorem cj_sgnMat (r p : ℕ) : cj (sgnMat r p) = sgnMat r p := by
   ext a b; by_cases h : a = b <;> simp [h, Matrix.diagonal_apply]
 
+/- English proof (translation)
+Rewrite `h` using `[gram_eq]`. Establish `h1 : Mᵀ * (G.map τ * cj M * sgnMat r p) = 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h, sgnMat_mul]`. Establish `hu : IsUnit M.det`. Use `Matrix.isUnit_det_of_right_inverse h1` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.det_transpose]`. Then use the resulting hypothesis. Establish `hMi : M * M⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Establish `hiM : M⁻¹ * M = 1` using `Matrix.nonsing_inv_mul _ hu`. Use `⟨hMi, hiM, ?_⟩` and prove the remaining obligations. Establish `c1 : (M⁻¹)ᵀ * Mᵀ = 1` using `by rw [← Matrix.transpose_mul, hMi, Matrix.transpose_one]`.
+
+Establish `c2 : cj M * cj (M⁻¹) = 1` using `by rw [← cj_mul, hMi]; simp`. Rewrite using `[← h]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = G.map τ := by rw [c1, c2, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem frame_facts {E : Type} [Field E] {r p : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (M : Matrix (Fin r) (Fin r) ℂ) (h : gram τ G M = sgnMat r p) :
     M * M⁻¹ = 1 ∧ M⁻¹ * M = 1 ∧ (M⁻¹)ᵀ * sgnMat r p * cj (M⁻¹) = G.map τ := by
@@ -123,10 +172,16 @@ def cjW {ι : Type} [Fintype ι] {r : ℕ} (k l : ι → Matrix (Fin r) (Fin r) 
     have : blk (c • Y) i.1 = (c : ℂ) • blk Y i.1 := by ext a b; simp [blk]
     simp [this]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[cjW, blk]`.
+-/
 theorem blk_cjW {ι : Type} [Fintype ι] {r : ℕ} (k l : ι → Matrix (Fin r) (Fin r) ℂ) (Y : WW ι r) (t : ι) :
     blk (cjW k l Y) t = k t * blk Y t * l t := by
   ext a b; simp [cjW, blk]
 
+/- English proof (translation)
+Use extensionality with `⟨t, a, b⟩`. Establish `: l t * (k t * blk Y t * l t) * k t = blk Y t`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : blk (cjW l k (cjW k l Y)) t = blk Y t` using `by rw [blk_cjW, blk_cjW, this]`. Conclude with `congrArg (fun A : Matrix (Fin r) (Fin r) ℂ => A a b) h2`.
+-/
 theorem cjW_cjW {ι : Type} [Fintype ι] {r : ℕ} {k l : ι → Matrix (Fin r) (Fin r) ℂ} (h : ∀ t, l t * k t = 1)
     (Y : WW ι r) : cjW l k (cjW k l Y) = Y := by
   ext ⟨t, a, b⟩
@@ -136,6 +191,17 @@ theorem cjW_cjW {ι : Type} [Fintype ι] {r : ℕ} {k l : ι → Matrix (Fin r) 
   have h2 : blk (cjW l k (cjW k l Y)) t = blk Y t := by rw [blk_cjW, blk_cjW, this]
   exact congrArg (fun A : Matrix (Fin r) (Fin r) ℂ => A a b) h2
 
+/- English proof (translation)
+Establish `key : ∀ t a b, (starRingEnd ℂ) ((d a : ℂ) * Y (t, a, b) * (d b : ℂ)) = -(Y (t, b, a))`. Introduce `t a b`. Establish `h` using `congrArg (fun A : Matrix (Fin r) (Fin r) ℂ => A a b) (hY t)`. Simplify using `only [IsSkew, Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.transpose_apply, Matrix.map_apply, blk, Matrix.of_apply, Matrix.zero_apply] at h`. Establish `hb : (d b : ℂ) * d b = 1` using `by rw [← Complex.ofReal_mul, hd]; simp`.
+
+Rewrite using `[map_mul, map_mul, Complex.conj_ofReal, Complex.conj_ofReal]`. Take the linear combination `(d b : ℂ) * h - Y (t, b, a) * hb`. Establish `hc : ∀ u w : ℂ, ⟪u, w⟫_ℝ = ((starRingEnd ℂ) u * w).re` using `fun u w => by`. Rewrite using `[Complex.inner, mul_comm]`. Establish `hs : ∑ i, (starRingEnd ℂ) (cjW (fun _ => Matrix.diagonal fun a => (d a : ℂ)) (fun _ => Matrix.diagonal fun a => (d a : ℂ)) Y i) * Z i = -∑ t, (blk Y t * blk Z t).trace`.
+
+Rewrite using `[Fintype.sum_prod_type, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Establish `e : ∀ a b, (cjW (fun _ => Matrix.diagonal fun a => (d a : ℂ)) (fun _ => Matrix.diagonal fun a => (d a : ℂ)) Y) (t, a, b) = (d a : ℂ) * Y (t, a, b) * (d b : ℂ)`. Introduce `a b`.
+
+Simplify using `[cjW, blk, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify using `only [e, key, Matrix.trace, Matrix.diag, Matrix.mul_apply, blk, Matrix.of_apply, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`. Rewrite using `[PiLp.inner_apply]`.
+
+Simplify using `only [hc]`. Rewrite using `[← Complex.re_sum, hs, Complex.neg_re]`.
+-/
 theorem inner_theta {ι : Type} [Fintype ι] {r : ℕ} (d : Fin r → ℝ) (hd : ∀ a, d a * d a = 1) (Y Z : WW ι r)
     (hY : ∀ t, IsSkew (Matrix.diagonal fun a => (d a : ℂ)) (blk Y t)) :
     ⟪cjW (fun _ => Matrix.diagonal fun a => (d a : ℂ)) (fun _ => Matrix.diagonal fun a => (d a : ℂ)) Y, Z⟫_ℝ =
@@ -167,6 +233,13 @@ theorem inner_theta {ι : Type} [Fintype ι] {r : ℕ} (d : Fin r → ℝ) (hd :
   simp only [hc]
   rw [← Complex.re_sum, hs, Complex.neg_re]
 
+/- English proof (translation)
+Rewrite using `[Submodule.mem_comap]`. Use `show (∀ τ : Ψ, (Matrix.of (fromFrame x Y τ)).trace = 0 ∧ ∀ u w, hermC τ.1 G (Matrix.of (fromFrame x Y τ) *ᵥ u) w + hermC τ.1 G u (Matrix.of (fromFrame x Y τ) *ᵥ w) = 0) ↔ _`. Use `forall_congr' fun τ => ?_` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `frame_facts τ.1 G (mat x τ) (hx τ)`. Establish `e : Matrix.of (fromFrame x Y τ) = mat x τ * blk Y τ * (mat x τ)⁻¹` using `rfl`.
+
+Rewrite using `[e, herm_skew_iff, trace_conj h2]`. Use `and_congr Iff.rfl ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Use `isSkew_conj h1 h2 h3 h` as an intermediate fact. Establish `e2 : (mat x τ)⁻¹ * (mat x τ * blk Y τ * (mat x τ)⁻¹) * mat x τ = blk Y τ`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite `this` using `[e2]`. Then use the resulting hypothesis. Conclude with `isSkew_conj h2 h1 (by rw [← gram_eq]; exact hx τ) h`.
+-/
 theorem mem_comap_iff {E : Type} [Field E] [NumberField E] [IsCMField E] {r p : ℕ} {Ψ : Finset (E →+* ℂ)}
     (G : Matrix (Fin r) (Fin r) E) (x : Frame Ψ r) (hx : ∀ τ : Ψ, gram τ.1 G (mat x τ) = sgnMat r p)
     (Y : WW Ψ r) :
@@ -186,6 +259,9 @@ theorem mem_comap_iff {E : Type} [Field E] [NumberField E] [IsCMField E] {r p : 
     rwa [e2] at this
   · exact isSkew_conj h2 h1 (by rw [← gram_eq]; exact hx τ) h
 
+/- English proof (translation)
+Set `b` to `stdOrthonormalBasis ℝ V`. Rewrite using `[← LinearMap.det_toMatrix b.toBasis, ← LinearMap.det_toMatrix b.toBasis A, LinearMap.toMatrix_adjoint, Matrix.det_conjTranspose]`. Simplify using the standard rewrite rules.
+-/
 theorem det_adjoint_eq {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDimensional ℝ V]
     (A : V →ₗ[ℝ] V) : LinearMap.det (LinearMap.adjoint A) = LinearMap.det A := by
   classical
@@ -194,6 +270,19 @@ theorem det_adjoint_eq {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ 
     Matrix.det_conjTranspose]
   simp
 
+/- English proof (translation)
+Set `J : V ≃ₗᵢ[ℝ] W` to `(stdOrthonormalBasis ℝ V).equiv (stdOrthonormalBasis ℝ W) (finCongr L.finrank_eq)`. Set `A : V →ₗ[ℝ] V` to `J.symm.toLinearEquiv.toLinearMap ∘ₗ L.toLinearMap`. Set `T : V →ₗ[ℝ] V` to `J.symm.toLinearEquiv.toLinearMap ∘ₗ τ ∘ₗ J.toLinearEquiv.toLinearMap`. Establish `hA : LinearMap.adjoint A ∘ₗ T ∘ₗ A = σ`. Use extensionality with `x`.
+
+Use `ext_inner_right ℝ fun y => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, LinearMap.adjoint_inner_left, ← h]`. Simplify using `[A, T]`. Establish `hT : T ∘ₗ T = LinearMap.id` using `by ext x; simp [T, hτ]`. Establish `hS : σ ∘ₗ σ = LinearMap.id` using `by ext x; simp [hσ]`.
+
+Establish `d1` using `congrArg LinearMap.det hA`. Establish `d2` using `congrArg LinearMap.det hT`. Establish `d3` using `congrArg LinearMap.det hS`. Simplify using `only [LinearMap.det_comp, det_adjoint_eq, LinearMap.det_id] at d1 d2 d3`. Establish `d4 : |LinearMap.det A| = 1`.
+
+Establish `e : LinearMap.det A ^ 4 = 1`. Rewrite `d3` using `[← d1]`. Take the linear combination `d3 - LinearMap.det A ^ 4 * d2`. Establish `e2 : |LinearMap.det A| ^ 4 = 1` using `by rw [← abs_pow, e, abs_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (abs_nonneg _) (by norm_num)).1 e2`.
+
+Establish `e1 : L '' s = J.symm ⁻¹' (A '' s)`. Use extensionality with `w`. Simplify using `only [Set.mem_image, Set.mem_preimage, A]`. Use `exists_congr fun x => and_congr_right fun _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Rewrite using `[e1]`. Use `MeasurePreserving.measure_preimage_equiv (f := J.symm.toHomeomorph.toMeasurableEquiv) (J.symm.measurePreserving) (A '' s)` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[Measure.addHaar_image_linearMap, d4]`. Simplify using the standard rewrite rules.
+-/
 theorem volume_image_of_form {V W : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDimensional ℝ V]
     [NormedAddCommGroup W] [InnerProductSpace ℝ W] [FiniteDimensional ℝ W]
     [MeasurableSpace V] [BorelSpace V] [MeasurableSpace W] [BorelSpace W]
@@ -230,6 +319,9 @@ theorem volume_image_of_form {V W : Type} [NormedAddCommGroup V] [InnerProductSp
   refine this.trans ?_
   rw [Measure.addHaar_image_linearMap, d4]; simp
 
+/- English proof (translation)
+Rewrite using `[blk_cjW]`. Use `⟨by rw [trace_conj (sgnMat_mul r p)]; exact (hY t).1, isSkew_conj (sgnMat_mul r p) (sgnMat_mul r p) ?_ (hY t).2⟩` and prove the remaining obligations. Rewrite using `[sgnMat_transpose, cj_sgnMat, sgnMat_mul, Matrix.one_mul]`.
+-/
 theorem theta_mem {ι : Type} [Fintype ι] {r p : ℕ} (Y : WW ι r)
     (hY : ∀ t, (blk Y t).trace = 0 ∧ IsSkew (sgnMat r p) (blk Y t)) (t : ι) :
     (blk (cjW (fun _ => sgnMat r p) (fun _ => sgnMat r p) Y) t).trace = 0 ∧
@@ -239,6 +331,29 @@ theorem theta_mem {ι : Type} [Fintype ι] {r p : ℕ} (Y : WW ι r)
     isSkew_conj (sgnMat_mul r p) (sgnMat_mul r p) ?_ (hY t).2⟩
   rw [sgnMat_transpose, cj_sgnMat, sgnMat_mul, Matrix.one_mul]
 
+/- English proof (translation)
+Introduce `E _ _ _ r p0 p1 Ψ G x y _ hx hy`. Set `k : Ψ → Matrix (Fin r) (Fin r) ℂ` to `fun τ => (mat x τ)⁻¹ * mat y τ`. Set `l : Ψ → Matrix (Fin r) (Fin r) ℂ` to `fun τ => (mat y τ)⁻¹ * mat x τ`. Establish `fx` using `fun τ : Ψ => frame_facts τ.1 G (mat x τ) (hx τ)`. Establish `fy` using `fun τ : Ψ => frame_facts τ.1 G (mat y τ) (hy τ)`.
+
+Establish `hlk : ∀ τ, l τ * k τ = 1` using `fun τ => by`. Combine the equalities or inequalities in the displayed calculation. Establish `hkl : ∀ τ, k τ * l τ = 1` using `fun τ => by`. Combine the equalities or inequalities in the displayed calculation. Establish `hK : ∀ τ, (k τ)ᵀ * sgnMat r p0 * cj (k τ) = sgnMat r p1` using `fun τ => by`.
+
+Use `hy τ` as an intermediate fact. Rewrite `this` using `[gram_eq, ← (fx τ).2.2]`. Use `Eq.trans ?_ this` and prove the remaining obligations. Simplify using `only [k, Matrix.transpose_mul, cj_mul, Matrix.mul_assoc]`. Establish `hL : ∀ τ, (l τ)ᵀ * sgnMat r p1 * cj (l τ) = sgnMat r p0` using `fun τ => by`.
+
+Use `hx τ` as an intermediate fact. Rewrite `this` using `[gram_eq, ← (fy τ).2.2]`. Use `Eq.trans ?_ this` and prove the remaining obligations. Simplify using `only [l, Matrix.transpose_mul, cj_mul, Matrix.mul_assoc]`. Establish `m1` using `mem_comap_iff G x hx`.
+
+Establish `m2` using `mem_comap_iff G y hy`. Establish `hLV : ∀ Y ∈ (realLie Ψ G).comap (fromFrame y), cjW k l Y ∈ (realLie Ψ G).comap (fromFrame x)` using `fun Y hY => (m1 _).2 fun τ => by`. Rewrite using `[blk_cjW]`. Conclude with `⟨by rw [trace_conj (hlk τ)]; exact ((m2 Y).1 hY τ).1, isSkew_conj (hlk τ) (hkl τ) (hK τ) ((m2 Y).1 hY τ).2⟩`. Establish `hKV : ∀ Y ∈ (realLie Ψ G).comap (fromFrame x), cjW l k Y ∈ (realLie Ψ G).comap (fromFrame y)` using `fun Y hY => (m2 _).2 fun τ => by`.
+
+Rewrite using `[blk_cjW]`. Conclude with `⟨by rw [trace_conj (hkl τ)]; exact ((m1 Y).1 hY τ).1, isSkew_conj (hkl τ) (hlk τ) (hL τ) ((m1 Y).1 hY τ).2⟩`. Set `L : (realLie Ψ G).comap (fromFrame y) ≃ₗ[ℝ] (realLie Ψ G).comap (fromFrame x)` to `LinearEquiv.ofLinear ((cjW k l).restrict hLV) ((cjW l k).restrict hKV) (by ext1 Y; exact Subtype.ext (cjW_cjW hkl Y.1)) (by ext1 Y; exact Subtype.ext (cjW_cjW hlk Y.1))`. Establish `hθx : ∀ Y ∈ (realLie Ψ G).comap (fromFrame x), cjW (fun _ => sgnMat r p0) (fun _ => sgnMat r p0) Y ∈ (realLie Ψ G).comap (fromFrame x)` using `fun Y hY => (m1 _).2 (theta_mem Y ((m1 Y).1 hY))`. Establish `hθy : ∀ Y ∈ (realLie Ψ G).comap (fromFrame y), cjW (fun _ => sgnMat r p1) (fun _ => sgnMat r p1) Y ∈ (realLie Ψ G).comap (fromFrame y)` using `fun Y hY => (m2 _).2 (theta_mem Y ((m2 Y).1 hY))`.
+
+Establish `hvol : ∀ s, volume (L '' s) = volume s` using `volume_image_of_form L ((cjW _ _).restrict hθy) ((cjW _ _).restrict hθx) (fun Y => Subtype.ext (cjW_cjW (fun _ => sgnMat_mul r p1) Y.1)) (fun Y => Subtype.ext (cjW_cjW (fun _ => sgnMat_mul r p0) Y.1)) (fun a b => by`. Simplify using `only [Submodule.coe_inner, LinearMap.restrict_coe_apply]`. Express the relevant statement in the definitionally equal form `⟪cjW (fun _ => sgnMat r p0) (fun _ => sgnMat r p0) (cjW k l a.1), cjW k l b.1⟫_ℝ = ⟪cjW (fun _ => sgnMat r p1) (fun _ => sgnMat r p1) a.1, b.1⟫_ℝ`. Rewrite using `[inner_theta (fun a : Fin r => sgn p0 (a : ℕ)) (fun a => sgn_sq p0 a) _ _ (fun t => ((m1 _).1 (hLV _ a.2) t).2), inner_theta (fun a : Fin r => sgn p1 (a : ℕ)) (fun a => sgn_sq p1 a) _ _ (fun t => ((m2 _).1 a.2 t).2)]`. Simplify using `only [blk_cjW, trace_conj_mul (hlk _)])`.
+
+Establish `hLm : Measurable (fun Y : (realLie Ψ G).comap (fromFrame y) => L Y)` using `L.toLinearMap.continuous_of_finiteDimensional.measurable`. Establish `hmap : Measure.map (fun Y : (realLie Ψ G).comap (fromFrame y) => L Y) volume = volume`. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply hLm hs, ← hvol, Set.image_preimage_eq s L.surjective]`. Establish `hfx : Measurable (fun Y : (realLie Ψ G).comap (fromFrame x) => fromFrame x Y.1)` using `(fromFrame x ∘ₗ ((realLie Ψ G).comap (fromFrame x)).subtype).continuous_of_finiteDimensional.measurable`.
+
+Establish `hcomp : (fun Y : (realLie Ψ G).comap (fromFrame x) => fromFrame x Y.1) ∘ (fun Y : (realLie Ψ G).comap (fromFrame y) => L Y) = fun Y : (realLie Ψ G).comap (fromFrame y) => fromFrame y Y.1`. Use function extensionality and compare the values at `Y`. Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `(mat x τ * blk (cjW k l Y.1) τ * (mat x τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ) = mat y τ * blk Y.1 τ * (mat y τ)⁻¹`. Rewrite using `[blk_cjW]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [k, l, Matrix.mul_assoc]`. Use `_ = _ := by rw [(fx τ).1, Matrix.one_mul, Matrix.mul_one]`. Establish `hlie : riemLie Ψ G x = riemLie Ψ G y`. Unfold `riemLie`.
+
+Rewrite using `[OrthonormalBasis.addHaar_eq_volume, OrthonormalBasis.addHaar_eq_volume, ← hmap, Measure.map_map hfx hLm, hcomp]`. Unfold `riemHaar`. Rewrite using `[hlie]`.
+-/
 theorem riemHaar_frame_indep : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r p0 p1 : ℕ)
     (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) (x y : Frame Ψ r), (∀ a b, cc (G a b) = G b a) →
     (∀ τ : Ψ, gram τ.1 G (mat x τ) = Matrix.diagonal fun a : Fin r => ((sgn p0 (a : ℕ) : ℝ) : ℂ)) →

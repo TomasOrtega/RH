@@ -17,6 +17,9 @@ section W
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Proceed by induction on `x using WD.ind with`. Consider the case `hP m a`. Rewrite using `[WD.lpTwist_mk, WD.lpTwist_mk, WD.lpTwist_mk]`. Use `WD.sound ⟨LinearEquiv.refl ℂ _, fun σ v => ?_, fun v => rfl⟩` and prove the remaining obligations. Simplify using `[smul_smul, mul_comm]`.
+-/
 theorem lpTwist_lpTwist (x : WD h) (α β : Weil h →* ℂˣ) (hα : IsSmooth α) (hβ : IsSmooth β) (hαβ : IsSmooth (α * β)) :
     (x.lpTwist α hα).lpTwist β hβ = x.lpTwist (α * β) hαβ := by
   induction x using WD.ind with
@@ -37,8 +40,20 @@ def degDvd (n : ℕ) : Subgroup (Weil h) where
     show (n : ℤ) ∣ deg a⁻¹
     rw [deg_inv]; exact (dvd_neg).mpr ha
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_degDvd {n : ℕ} {σ : Weil h} : σ ∈ degDvd h n ↔ (n : ℤ) ∣ deg σ := Iff.rfl
 
+/- English proof (translation)
+Use `haveI : NeZero n := ⟨hn.ne'⟩`. Set `f : Weil h →* Multiplicative (ZMod n)` to `(AddMonoidHom.toMultiplicative (Int.castAddHom (ZMod n))).comp (degHom h)`. Establish `hker : f.ker = degDvd h n`. Use extensionality with `σ`. Rewrite using `[MonoidHom.mem_ker, mem_degDvd]`.
+
+Use `show Multiplicative.ofAdd ((deg σ : ℤ) : ZMod n) = 1 ↔ _`. Rewrite using `[← ofAdd_zero, Multiplicative.ofAdd.injective.eq_iff]`. Conclude with `ZMod.intCast_zmod_eq_zero_iff_dvd _ _`. Establish `hsurj : Function.Surjective f`. Introduce `z`.
+
+Take `⟨k, hk⟩` from `ZMod.intCast_surjective (Multiplicative.toAdd z)`. Take `⟨σ, hσ⟩` from `deg_surjective (h := h) k`. Use `⟨σ, ?_⟩` and prove the remaining obligations. Use `show Multiplicative.ofAdd ((deg σ : ℤ) : ZMod n) = z`. Rewrite using `[hσ, hk]`.
+
+Both sides reduce to the same expression. Rewrite using `[← hker, Subgroup.index_ker, MonoidHom.range_eq_top.mpr hsurj, Subgroup.card_top]`. Use `show Nat.card (ZMod n) = n`. Conclude with `Nat.card_zmod n`.
+-/
 theorem index_degDvd {n : ℕ} (hn : 0 < n) : (degDvd h n).index = n := by
   haveI : NeZero n := ⟨hn.ne'⟩
   let f : Weil h →* Multiplicative (ZMod n) :=
@@ -62,6 +77,11 @@ theorem index_degDvd {n : ℕ} (hn : 0 < n) : (degDvd h n).index = n := by
 
 end W
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite K`. Use `haveI : Fintype Kˣ := inferInstance`. Rewrite using `[gs, finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Finset.mul_sum]`. Rewrite using `[← Equiv.sum_comp (Equiv.mulLeft β⁻¹)]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations.
+
+Establish `e1 : (β : K) * ((β⁻¹ * z : Kˣ) : K) = (z : K)`. Rewrite using `[Units.val_mul, ← mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mul]`. Rewrite using `[Equiv.coe_mulLeft, e1]`. Simplify using `only [map_mul, map_inv, mul_inv, inv_inv, MonoidHom.inv_apply, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gs_scaled {g : ℕ} [Fact g.Prime] (ψ₀ : AddChar (ZMod g) Circle) {K : Type} [Field K] [Finite K]
     [Algebra (ZMod g) K] (η : Kˣ →* ℂˣ) (β : Kˣ) :
     ∑ᶠ z : Kˣ, (((η z)⁻¹ : ℂˣ) : ℂ) * (ψ₀ (Algebra.trace (ZMod g) K ((β : K) * z)) : ℂ) =

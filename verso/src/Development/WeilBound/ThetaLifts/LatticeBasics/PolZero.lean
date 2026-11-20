@@ -11,6 +11,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Introduce `γ hγ x` and use `by unfold Model.I have e : ∀ g, theta om Φ g (γ * x) = theta om Φ g x := fun g => by simpa only [one_mul] using h 1 (one_mem _) γ hγ g x simp only [e]`.
+-/
 theorem I_left {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) {om : Rep σ X W} {Φ : Fn F n d}
     (h : ∀ γ ∈ ratU σ X.J, ∀ γ' ∈ ratU σ W.J, ∀ g h, theta om Φ (γ * g) (γ' * h) = theta om Φ g h) :
     ∀ γ ∈ ratU σ W.J, ∀ x, M.I om Φ (γ * x) = M.I om Φ x := fun γ hγ x => by
@@ -18,12 +21,20 @@ theorem I_left {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) {o
   have e : ∀ g, theta om Φ g (γ * x) = theta om Φ g x := fun g => by simpa only [one_mul] using h 1 (one_mem _) γ hγ g x
   simp only [e]
 
+/- English proof (translation)
+The claim follows from `integral_integral_swap (f := fun a b => f (a, b)) (Integrable.of_bound c.aestronglyMeasurable C (Eventually.of_forall hC))`.
+-/
 theorem swap_bdd {A B : Type} [TopologicalSpace A] [MeasurableSpace A] [BorelSpace A] [SecondCountableTopology A]
     [TopologicalSpace B] [MeasurableSpace B] [BorelSpace B] [SecondCountableTopology B] (μ : Measure A) (ν : Measure B)
     [IsFiniteMeasure μ] [IsFiniteMeasure ν] {f : A × B → ℂ} (c : Continuous f) {C : ℝ} (hC : ∀ x, ‖f x‖ ≤ C) :
     ∫ a, ∫ b, f (a, b) ∂ν ∂μ = ∫ b, ∫ a, f (a, b) ∂μ ∂ν :=
   integral_integral_swap (f := fun a b => f (a, b)) (Integrable.of_bound c.aestronglyMeasurable C (Eventually.of_forall hC))
 
+/- English proof (translation)
+Use `haveI := cX.sc`. Use `haveI := cW.sc`. Use `haveI : IsFiniteMeasure (M.μ.restrict M.dom) := isFiniteMeasure_restrict.2 (cX.fin _ _ h1 h2).ne`. Use `haveI : IsFiniteMeasure (μ.restrict D) := isFiniteMeasure_restrict.2 (cW.fin _ _ hμ hD).ne`. Establish `c : Continuous fun x : UA σ X.J × UA σ W.J => φ x.2 * star (theta om Ψ x.1 x.2)` using `(pc.comp continuous_snd).mul hc.star`.
+
+Take `⟨C, hC⟩` from `cX.bdd₂ cW c fun γ hγ δ hδ g g' => by simp only [pi δ hδ, hi γ hγ δ hδ]`. Unfold `th pet Model.I`. Use `(swap_bdd _ _ c hC).trans <| integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [integral_const_mul]`. Conclude with `congrArg _ integral_conj`.
+-/
 theorem int_th {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) {om : Rep σ X W} {Ψ : Fn F n d}
     (cX : Cpt σ X.J) (cW : Cpt σ W.J) (h1 : M.μ.IsHaarMeasure) (h2 : IsFundamentalDomain (ratU σ X.J) M.dom M.μ)
     {μ : Measure (UA σ W.J)} {D : Set (UA σ W.J)} (hμ : μ.IsHaarMeasure) (hD : IsFundamentalDomain (ratU σ W.J) D μ)
@@ -41,6 +52,31 @@ theorem int_th {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) {o
   simp only [integral_const_mul]
   exact congrArg _ integral_conj
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' R Rf h hp hq`. Establish `t` using `h.triple`. Establish `cW` using `hC F E σ B _ G.W _ _ t.base (Or.inr t.geo.hW) (by omega)`. Establish `cV` using `hC F E σ B _ G.V' _ _ t.base (Or.inl t.geo.hV') (by omega)`. Take `⟨μ, D, hμ, hD⟩` from `cW.ex`.
+
+Take `⟨m1, m2, m3⟩` from `hM F E σ B a a' G X om om' R Rf h`. Establish `b1` using `(hB F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV t)).1`. Establish `b2` using `(hB F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV' t)).1`. Establish `s1 : ∀ y ∈ pairs B G X R Rf, y.1 ∈ schA F _` using `fun y hy => hP F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV t) _ (m3 _ _ hy.1 hy.2).1`. Establish `s2 : ∀ y ∈ pairs B G X R Rf, y.2 ∈ schA F _` using `fun y hy => hP F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV' t) _ (m3 _ _ hy.1 hy.2).2.1`.
+
+Establish `c1` using `(hI F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV t)).1 (Or.inr (by omega))`. Establish `c2` using `(hI F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV' t)).1 (Or.inr (by omega))`. Establish `cc : ∀ s u, ∀ y ∈ pairs B G X R Rf, Continuous (comb G om om' s u y)` using `fun s u y hy => ((c1 _ (s1 y hy)).const_smul s).add ((c2 _ (s2 y hy)).const_smul u)`. Establish `ci : ∀ s u, ∀ y ∈ pairs B G X R Rf, ∀ γ ∈ ratU σ G.W.J, ∀ g, comb G om om' s u y (γ * g) = comb G om om' s u y g` using `fun s u y hy γ hγ g => by`. Simplify using `only [comb, Pi.add_apply, Pi.smul_apply, I_left G.M (b1 _ (s1 y hy)).2.1 γ hγ, I_left G.M' (b2 _ (s2 y hy)).2.1 γ hγ]`.
+
+Establish `e01 : ∀ y, comb G om om' 0 1 y = G.M'.I om' y.2` using `fun y => by simp [comb]`. Use `haveI : IsFiniteMeasure (μ.restrict D) := isFiniteMeasure_restrict.2 (cW.fin _ _ hμ hD).ne`. Establish `ig : ∀ s u s' u', ∀ y ∈ pairs B G X R Rf, ∀ y' ∈ pairs B G X R Rf, Integrable (fun g => comb G om om' s u y g * star (comb G om om' s' u' y' g)) (μ.restrict D)` using `fun s u s' u' y hy y' hy' => by`. Establish `c` using `(cc s u y hy).mul (cc s' u' y' hy').star`. Take `⟨C, hC⟩` from `cW.bdd c fun γ hγ g => by simp only [Pi.mul_apply, ci s u y hy γ hγ, ci s' u' y' hy' γ hγ]`.
+
+Conclude with `Integrable.of_bound c.aestronglyMeasurable C (Eventually.of_forall hC)`. Take `⟨c, hc⟩` from `hH F E σ B a a' G X om om' R Rf h hp hq μ D hμ hD 1 0 0 1`. Establish `orth : ∀ y ∈ pairs B G X R Rf, pet μ D (comb G om om' 1 (-c) y) (comb G om om' 0 1 y) = 0` using `fun y hy => by`. Establish `e : pet μ D (comb G om om' 1 (-c) y) (comb G om om' 0 1 y) = pet μ D (comb G om om' 1 0 y) (comb G om om' 0 1 y) - c * pet μ D (comb G om om' 0 1 y) (comb G om om' 0 1 y)`. Unfold `pet`.
+
+Rewrite using `[← integral_const_mul, ← integral_sub (ig _ _ _ _ y hy y hy) ((ig _ _ _ _ y hy y hy).const_mul c)]`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [comb, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hc y hy y hy, sub_self]`.
+
+Take `⟨lam, hl⟩` from `hH F E σ B a a' G X om om' R Rf h hp hq μ D hμ hD 1 (-c) 1 (-c)`. Take `⟨⟨Φ₀, q1, q2⟩, Φ', r1, r2⟩` from `And.imp (fun f => f hp) (fun f => f hq) (hN F E σ B a a' G X om om' t)`. Take `⟨Φ, hΦ⟩` from `m2 Φ' r1.1`. Establish `hy : (Φ, Φ') ∈ pairs B G X R Rf` using `⟨r1.2, hΦ⟩`. Establish `v0` using `cV.vol_ne t.geo.hM'.haar t.geo.hM'.dom`.
+
+Establish `key : ∀ s u, th om' μ D (comb G om om' s u (Φ, Φ')) Φ' = fun _ => pet μ D (comb G om om' s u (Φ, Φ')) (comb G om om' 0 1 (Φ, Φ')) / (G.M'.μ.real G.M'.dom : ℂ)` using `fun s u => by`. Establish `k` using `(hT F E σ B a a' G X om om' R Rf h s u (fun y hy => cW.rapid (cc s u y hy) (ci s u y hy)) μ D hμ hD _ hy).2 Φ' (s2 _ hy)`. Establish `i` using `int_th G.M' cV cW t.geo.hM'.haar t.geo.hM'.dom hμ hD (b2 _ (s2 _ hy)).1 (b2 _ (s2 _ hy)).2.1 (cc s u _ hy) (ci s u _ hy)`. Simplify using `only [k, setIntegral_const, Complex.real_smul] at i`. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[k, e01, ← i, mul_div_cancel_left₀ _ (Complex.ofReal_ne_zero.2 v0)]`. Establish `n0 : pet μ D (comb G om om' 0 1 (Φ, Φ')) (comb G om om' 0 1 (Φ, Φ')) ≠ 0` using `fun h0 => r2 (e01 (Φ, Φ') ▸ cW.eq_zero hμ hD (cc 0 1 _ hy) (ci 0 1 _ hy) h0)`. Establish `l0 : lam = 0`. Use `hL F E σ B a a' G X om om' R Rf h hp hq μ D hμ hD 1 (-c) lam hl _ hy Φ' r1.1` as an intermediate fact. Rewrite `this` using `[key, key, orth _ hy]`.
+
+Generalize the expression as in `pet μ D (comb G om om' 0 1 (Φ, Φ')) (comb G om om' 0 1 (Φ, Φ')) = x at this n0`. Simplify `this` using `[pet, n0, v0]`. Establish `main : PolConst B G X om om' R Rf c` using `fun Ψ Ψ' h1 h2 g => by`. Establish `hz : (Ψ, Ψ') ∈ pairs B G X R Rf` using `⟨h1, h2⟩`. Use `congrFun (cW.eq_zero hμ hD (cc 1 (-c) _ hz) (ci 1 (-c) _ hz) (by rw [hl _ hz _ hz, l0, zero_mul])) g` as an intermediate fact.
+
+Simplify using `only [comb, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this`. Take the linear combination `this`. Use `⟨c, fun c0 => q2 (funext fun g => ?_), main⟩` and prove the remaining obligations. Take `⟨Ψ', h1, h2⟩` from `m1 Φ₀ q1`. Rewrite using `[main Φ₀ Ψ' h1 h2 g, c0, zero_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem polZero_of (hC : CptAll) (hH : HermLine) (hL : CoefLine) (hT : ThConst) (hN : NonZeroAn) (hM : MatchEx)
     (hB : ThetaBasic) (hI : PositivityTheory.ThKF.ICont) (hP : PolSch) : PolZero := by
   intro F E _ _ _ _ _ σ B a a' G X om om' R Rf h hp hq

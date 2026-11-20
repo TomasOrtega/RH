@@ -15,6 +15,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.DualLocus
 
+/- English proof (translation)
+Use `haveI := hB.proper`. Use `haveI := hB.geomConnected`. Use `haveI := hB.smooth`. Establish `hP` using `ProperFinite.nonempty_perf_of_isProper (R := R) B.hom hF`. Establish `hQ` using `ProperFinite.nonempty_perf_of_isProper (R := R) B.hom (isLB_pw hF (-1))`.
+
+Establish `hC` using `GlobalTheory.TrivLocus.isClosed_trivLocus R _ B.hom F hF hP hQ hB.proper (GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ hB.smooth hB.geomConnected)`. Take `⟨I, hI⟩` from `TrivRep.exists_ideal (TrivRep.TrivOn B.hom F) (TrivRep.TrivOn.comp B.hom F) (fun p => by`. Distinguish the cases in `hp : p ∈ {p : PrimeSpectrum R | ∃ (K : Type) (_ : Field K) (g : R →+* K) (X' : Scheme.{0}) (π : X' ⟶ B.left) (f' : X' ⟶ Spec (CommRingCat.of K)), RingHom.ker g = p.asIdeal ∧ IsPullback π f' B.hom (Spec.map (CommRingCat.ofHom g)) ∧ Triv (F.pull π)}`. Take `⟨K, _, g₀, X₀, π₀, f₀, hk, h₀, ht⟩` from `hp`. Take `⟨r, I, hr, -, H⟩` from `GlobalTheory.AbLaw.Seesaw.seesaw R _ B.hom F hF hP inferInstance inferInstance K g₀ X₀ π₀ f₀ h₀ (CubeOpen.bijective_appTop hG B hB h₀) ht`.
+
+Conclude with `⟨r, hk ▸ hr, I, fun S _ g hu => H S g _ _ _ (IsPullback.of_hasPullback _ _) hu⟩`. Take `⟨_, ⟨r, rfl⟩, hr, hU⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (Set.mem_compl hp) hC.isOpen_compl`. Use `⟨r, hr, ⊤, fun S _ g hu => ⟨fun ht => ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Break down `subsingleton_or_nontrivial S with _ | _` into its components or cases. Conclude with `fun a _ => Subsingleton.elim _ _`.
+
+Take `⟨m, hm⟩` from `Ideal.exists_maximal S`. Use `letI := Ideal.Quotient.field m`. Set `g'` to `(Ideal.Quotient.mk m).comp g`. Use `(hU (a := ⟨RingHom.ker g', RingHom.ker_isPrime g'⟩) (hu.map (Ideal.Quotient.mk m)).ne_zero ?_).elim` and prove the remaining obligations. Conclude with `⟨S ⧸ m, inferInstance, g', _, _, _, rfl, IsPullback.of_hasPullback _ _, ht.comp B.hom F S g _ _⟩`.
+
+Use `haveI : Subsingleton S := subsingleton_of_zero_eq_one ((h (Submodule.mem_top (x := 1))).symm.trans (map_one g))`. Conclude with `TrivRep.trivOn_of_subsingleton B.hom F S g)`. Use `⟨I, fun S _ g X' π f' h => ?_⟩` and prove the remaining obligations. Rewrite using `[← hI S g]`. Conclude with `forall_congr' fun q => TrivRep.loc_iff B.hom F h q`.
+-/
 theorem exists_ideal_locTriv_noeth (hG : GlobalFnsSt) (R : Type) [CommRing R] [IsNoetherianRing R]
     (B : Over (Spec (CommRingCat.of R))) [GrpObj B] (hB : IsAbelianScheme B) (F : LB B.left) (hF : F.IsLB) :
     ∃ I : Ideal R, ∀ (R' : Type) [CommRing R'] (g : R →+* R') (X' : Scheme.{0}) (π : X' ⟶ B.left)
@@ -55,6 +66,11 @@ theorem exists_ideal_locTriv_noeth (hG : GlobalFnsSt) (R : Type) [CommRing R] [I
 
 variable {S : Scheme.{0}} (A : Over S)
 
+/- English proof (translation)
+Establish `h₀ : IsPullback (pullback.fst A.hom T.hom) (snd A T).left A.hom T.hom` using `IsPullback.of_hasPullback A.hom T.hom`. Establish `e₁ : (lift (fst A Y) (snd A Y ≫ y)).left ≫ pullback.fst A.hom T.hom = (fst A Y).left`. Rewrite using `[show pullback.fst A.hom T.hom = (fst A T).left from rfl, ← Over.comp_left, lift_fst]`. Establish `big : IsPullback ((lift (fst A Y) (snd A Y ≫ y)).left ≫ pullback.fst A.hom T.hom) (snd A Y).left A.hom (y.left ≫ T.hom)`. Use `IsPullback.of_hasPullback A.hom Y.hom` as an intermediate fact.
+
+Rewrite using `[e₁, Over.w y]`. Conclude with `this`. Conclude with `IsPullback.of_right big (by rw [← Over.comp_left, lift_snd, Over.comp_left]) h₀`.
+-/
 theorem isPullback_lift {Y T : Over S} (y : Y ⟶ T) :
     IsPullback (lift (fst A Y) (snd A Y ≫ y)).left (snd A Y).left (snd A T).left y.left := by
   have h₀ : IsPullback (pullback.fst A.hom T.hom) (snd A T).left A.hom T.hom :=
@@ -68,6 +84,17 @@ theorem isPullback_lift {Y T : Over S} (y : Y ⟶ T) :
     exact this
   exact IsPullback.of_right big (by rw [← Over.comp_left, lift_snd, Over.comp_left]) h₀
 
+/- English proof (translation)
+Establish `h₀ : IsPullback (pullback.fst A.hom T.hom) (snd A T).left A.hom T.hom` using `IsPullback.of_hasPullback A.hom T.hom`. Take `⟨I, hI⟩` from `TrivSubscheme.exists_idealSheaf (TrivSubscheme.LocTrivOver (snd A T).left F) TrivSubscheme.LocTrivOver.comp TrivSubscheme.locTrivOver_of_affine (fun U => by haveI := IsLocallyNoetherian.component_noetherian U`. Set `t : Spec (CommRingCat.of Γ(T.left, U)) ⟶ S` to `U.2.fromSpec ≫ T.hom`. Establish `h₁ : IsPullback (pullback.fst A.hom t) (pullback.snd A.hom t) A.hom (U.2.fromSpec ≫ T.hom)` using `IsPullback.of_hasPullback _ _`. Set `φ` to `h₀.lift _ _ (h₁.w.trans (Category.assoc _ _ _).symm)`.
+
+Establish `h₂ : IsPullback φ (pullback.snd A.hom t) (snd A T).left U.2.fromSpec` using `IsPullback.of_right (by rw [h₀.lift_fst]; exact h₁) (h₀.lift_snd _ _ _) h₀`. Take `⟨I, hI⟩` from `exists_ideal_locTriv_noeth hG Γ(T.left, U) ((Over.pullback t).obj A) (CubeGen.isAb_baseChange hA t) (F.pull φ) (LB.isLB_pull hF φ)`. Use `⟨I, fun R g => ?_⟩` and prove the remaining obligations. Establish `h₃` using `IsPullback.of_hasPullback (pullback.snd A.hom t) (Spec.map g)`. Rewrite using `[← hI R g.hom _ _ _ h₃, TrivSubscheme.locTrivOver_iff (h₃.paste_horiz h₂)]`.
+
+Use `forall_congr' fun y => exists_congr fun V => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc]`. Conclude with `((TrivSubscheme.triv_pull_iff _ _ _).trans (TrivSubscheme.triv_pull_iff _ _ _)).symm)`. Use `⟨Over.mk (I.subschemeι ≫ T.hom), Over.homMk I.subschemeι rfl, inferInstanceAs (IsClosedImmersion I.subschemeι), fun Y y => ?_⟩` and prove the remaining obligations. Rewrite using `[hI]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : I.subschemeι.ker ≤ y.left.ker` using `by rwa [Scheme.IdealSheafData.ker_subschemeι]`. Use `⟨Over.homMk (IsClosedImmersion.lift I.subschemeι y.left h') ?_, ?_⟩` and prove the remaining obligations. Conclude with `(IsClosedImmersion.lift_fac_assoc _ _ _ _).trans (Over.w y)`.
+
+Conclude with `Over.OverMorphism.ext (IsClosedImmersion.lift_fac _ _ _)`. Introduce and unpack `⟨z, rfl⟩`. Conclude with `I.ker_subschemeι.ge.trans (Scheme.Hom.le_ker_comp z.left I.subschemeι)`.
+-/
 theorem exists_closed_locTriv_noeth (hG : GlobalFnsSt) {T : Over S} [GrpObj A] [IsLocallyNoetherian T.left]
     (hA : IsAbelianScheme A) (F : LB (A ⊗ T).left) (hF : F.IsLB) :
     ∃ (G : Over S) (i : G ⟶ T), IsClosedImmersion i.left ∧ ∀ (Y : Over S) (y : Y ⟶ T),
@@ -105,6 +132,29 @@ theorem exists_closed_locTriv_noeth (hG : GlobalFnsSt) {T : Over S} [GrpObj A] [
 
 variable {A} [GrpObj A]
 
+/- English proof (translation)
+Set `ψ` to `(lift (fst A Y) (snd A Y ≫ y)).left`. Set `p` to `(snd A Y).left`. Set `e` to `(lift (1 : Y ⟶ A) (𝟙 Y)).left`. Establish `he : e ≫ p = 𝟙 Y.left`. Simplify using `only [e, p]`.
+
+Rewrite using `[← Over.comp_left, lift_snd, Over.id_left]`. Establish `hs : Same A N N' y y ↔ CechPic.pull ψ (cls F hF) = 0`. Rewrite using `[same_iff hN.isLB hN'.isLB, hc, map_sub, sub_eq_zero]`. Both sides reduce to the same expression. Establish `key : ∀ {Z : Scheme.{0}} (r : Z ⟶ (A ⊗ Y).left), Triv (F.pull (r ≫ ψ)) ↔ CechPic.pull r (CechPic.pull ψ (cls F hF)) = 0` using `fun r => by`.
+
+Rewrite using `[← pull_comp, ← cls_pull hF _ (pull_isLB hF _)]`. Conclude with `(cls_eq_zero_iff (pull_isLB hF _)).symm`. Establish `z₀ : CechPic.pull (e ≫ ψ) (cls F hF) = 0`. Establish `ee : e ≫ ψ = (lift (1 : Y ⟶ A) y).left`. Simplify using `only [e, ψ]`.
+
+Rewrite using `[← Over.comp_left, comp_lift, lift_fst, lift_snd_assoc, Category.id_comp]`. Rewrite using `[ee, hc, map_sub]`. Establish `a` using `hN.add.evc_one hN.isLB y`. Establish `b` using `hN'.add.evc_one hN'.isLB y`. Simplify using `only [evc] at a b`.
+
+Rewrite using `[a, b, sub_zero]`. Rewrite using `[TrivSubscheme.locTrivOver_iff (isPullback_lift A y), hs]`. Prove the components needed by the constructor for the conclusion. Introduce `h q`. Conclude with `⟨⊤, trivial, (key _).2 (by rw [h, map_zero])⟩`.
+
+Introduce `h`. Establish `cl : ∀ {Z : Scheme.{0}} (φ' : Fin 2 → (Z ⟶ (A ⊗ T).left)), Triv (LB.LinComb F φ' ![1, -1]) ↔ CechPic.pull (φ' 0) (cls F hF) - CechPic.pull (φ' 1) (cls F hF) = 0` using `fun φ' => by`. Use `(cls_eq_zero_iff (LB.isLB_linComb hF _ _)).symm.trans ?_` and prove the remaining obligations. Rewrite using `[cls_linComb hF, Fin.sum_univ_two]`. Simplify using `[sub_eq_add_neg]`.
+
+Establish `sec : ∀ {Z : Scheme.{0}} (r : Z ⟶ (A ⊗ Y).left), CechPic.pull (r ≫ p ≫ e ≫ ψ) (cls F hF) = 0` using `fun r => by`. Rewrite using `[pull_comp, pull_comp, z₀, map_zero, map_zero]`. Establish `T₀ : Triv (LB.LinComb F ![ψ, p ≫ e ≫ ψ] ![1, -1])`. Use `CubeGen.triv_of_local hF _ _ p e he (fun Z b U _ k => ?_) (fun V => ?_) (fun s => ?_)` and prove the remaining obligations. Establish `w : b ≫ e ≫ p ≫ e ≫ ψ = b ≫ e ≫ ψ`.
+
+Rewrite using `[reassoc_of% he]`. Simplify using `[Fin.prod_univ_two, w]`. Set `YV : Over S` to `Over.mk (V.ι ≫ Y.hom)`. Set `v : YV ⟶ Y` to `Over.homMk V.ι rfl`. Conclude with `⟨_, _, (snd A YV).left, isPullback_lift A v, surj_snd hG hA YV⟩`.
+
+Take `⟨U, hU, ht⟩` from `h s`. Use `⟨U, hU, ?_⟩` and prove the remaining obligations. Unfold `CubeGen.TrivAt`. Rewrite using `[cl]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]`.
+
+Rewrite using `[sec, sub_zero, pull_comp]`. Conclude with `(key _).1 ht`. Use `(cl _).1 T₀` as an intermediate fact. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] at this`. Establish `s₁` using `sec (𝟙 _)`.
+
+Rewrite `s₁` using `[Category.id_comp]`. Rewrite `this` using `[s₁, sub_zero]`. Then use the resulting hypothesis.
+-/
 theorem same_iff_locTriv (hG : GlobalFnsSt) (hA : IsAbelianScheme A) {T : Over S} {N N' : LB (A ⊗ T).left}
     (hN : Fam A N) (hN' : Fam A N') {F : LB (A ⊗ T).left} (hF : F.IsLB)
     (hc : cls F hF = cls N hN.isLB - cls N' hN'.isLB) (Y : Over S) (y : Y ⟶ T) :
@@ -166,6 +216,9 @@ theorem same_iff_locTriv (hG : GlobalFnsSt) (hA : IsAbelianScheme A) {T : Over S
     rw [Category.id_comp] at s₁
     rwa [s₁, sub_zero] at this
 
+/- English proof (translation)
+Introduce `S A T _ _ hA N N' hN hN'`. Take `⟨F, hF, hc⟩` from `cls_surj (cls N hN.isLB - cls N' hN'.isLB)`. Take `⟨G, i, hi, hG⟩` from `exists_closed_locTriv_noeth A ExpansionTotal.globalFns hA F hF`. Conclude with `⟨G, i, hi, fun Y y => (same_iff_locTriv ExpansionTotal.globalFns hA hN hN' hF hc Y y).trans (hG Y y)⟩`.
+-/
 theorem exists_closed_same : ∀ (S : Scheme.{0}) (A T : Over S) [GrpObj A] [IsLocallyNoetherian T.left],
     IsAbelianScheme A → ∀ (N N' : LB (A ⊗ T).left), Fam A N → Fam A N' → ∃ (G : Over S) (i : G ⟶ T),
       IsClosedImmersion i.left ∧ ∀ (Y : Over S) (y : Y ⟶ T), Same A N N' y y ↔ ∃ z : Y ⟶ G, z ≫ i = y := by

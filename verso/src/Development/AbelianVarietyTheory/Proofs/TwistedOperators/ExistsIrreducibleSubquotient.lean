@@ -22,6 +22,11 @@ section General
 variable {G H V W U : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V]
   [AddCommGroup W] [Module ℂ W] [AddCommGroup U] [Module ℂ U]
 
+/- English proof (translation)
+Set `φ` to `Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := ρ)`. Use `haveI : Nontrivial ρ.asModule := inferInstanceAs (Nontrivial V)`. Take `⟨v, hv⟩` from `exists_ne (0 : ρ.asModule)`. Establish `hc` using `CompleteLattice.Iic_coatomic_of_compact_element (Submodule.singleton_span_isCompactElement (R := MonoidAlgebra ℂ G) v)`. Break down `hc.eq_top_or_exists_le_coatom ⊥ with h | ⟨T, hT, -⟩` into its components or cases.
+
+Establish `h1 : (⊥ : Submodule (MonoidAlgebra ℂ G) ρ.asModule) = Submodule.span _ {v}` using `congrArg Subtype.val h`. Conclude with `absurd (Submodule.span_singleton_eq_bot.1 h1.symm) hv`. Establish `h1 : T.1 ⋖ Submodule.span _ {v}` using `(covBy_iff_coatom_Iic T.2).2 hT`. Establish `h2 : φ.symm T.1 ⋖ φ.symm (Submodule.span _ {v})` using `(apply_covBy_apply_iff φ.symm).2 h1`. Conclude with `⟨_, _, _, _, isIrreducible_subQuot h2, _, ⟨Submodule.mkQ _, fun g => LinearMap.ext fun x => rfl⟩, Submodule.mkQ_surjective _⟩`.
+-/
 theorem exists_irreducible_subquotient [Nontrivial V] (ρ : Representation ℂ G V) :
     ∃ (Y : Type) (_ : AddCommGroup Y) (_ : Module ℂ Y) (τ : Representation ℂ G Y),
       τ.IsIrreducible ∧ IsSubquotient τ ρ := by
@@ -60,6 +65,11 @@ section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Take `⟨Φ⟩` from `(IndDual.inductionContragredient k).nonempty_equiv e hρ`. Set `g` to `Φ.symm.toIntertwiningMap.comp (transpose hπ f)`. Use `⟨Model.evalOne e g, fun h => hf (LinearMap.ext fun x => Subtype.ext (LinearMap.ext fun v => ?_))⟩` and prove the remaining obligations. Establish `h1 : g v = 0` using `Subtype.ext (Subtype.ext (funext fun y => by`. Establish `h2 : (g (π y v)).1.1 1 = 0` using `LinearMap.congr_fun h (Submodule.Quotient.mk (π y v))`.
+
+Rewrite using `[g.isIntertwining, parInd_apply, one_mul] at h2))` and apply the resulting hypothesis. Establish `h2 : transpose hπ f v = 0` using `(map_eq_zero_iff Φ.symm Φ.symm.injective).1 h1`. Conclude with `LinearMap.congr_fun (congrArg Subtype.val h2) x`.
+-/
 theorem exists_jac_map {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)]
     [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] (e : (Σ a, m a) ≃ n)
     {ρ : Representation ℂ (Levi k m) W} (hρ : IsSmooth ρ) {π : Representation ℂ (GL n k) V}
@@ -74,6 +84,15 @@ theorem exists_jac_map {α n : Type} {m : α → Type} [Fintype α] [LinearOrder
   have h2 : transpose hπ f v = 0 := (map_eq_zero_iff Φ.symm Φ.symm.injective).1 h1
   exact LinearMap.congr_fun (congrArg Subtype.val h2) x
 
+/- English proof (translation)
+Take `⟨Φ⟩` from `(SwapBlocks.lower_equiv_upper_swap k a b n e _).1 (extTensor R (detRep b χ))`. Set `ρ : Representation ℂ (Levi k (Two b a)) (W ⊗[ℂ] ℂ)` to `((extTensor R (detRep b χ)).comp (MulEquiv.prodComm : GL b k × GL a k ≃* GL a k × GL b k).toMonoidHom).comp (leviTwo k b a).symm.toMonoidHom`. Take `⟨Ψ⟩` from `(Placing.parInd_jac_placing k _ n _ (two e') (two ((Equiv.sumComm b a).trans e)) _).1 ρ`. Establish `hρ : IsSmooth ρ` using `isSmooth_comp (isSmooth_comp (isSmooth_extTensor hR ((isSmooth_ofChar_iff _).2 hχ.detChar)) _ continuous_swap) _ ((continuous_apply false).prodMk (continuous_apply true))`. Take `⟨φ, hφ⟩` from `exists_jac_map (two e') hρ hπ (f.comp (Ψ.trans Φ.symm).toIntertwiningMap) fun h => hf (LinearMap.ext fun x => by`.
+
+Take `⟨y, rfl⟩` from `(Ψ.trans Φ.symm).surjective x`. Conclude with `LinearMap.congr_fun h y)`. Use `⟨_, _, _, _, φ, hφ, fun g hg l => Subtype.ext (LinearMap.ext fun w => ?_)⟩` and prove the remaining obligations. Establish `key : ρ g⁻¹ w = (detChar b χ⁻¹ (g false) : ℂ) • w` using `by show extTensor R (detRep b χ) ((g true)⁻¹, (g false)⁻¹) w = _`. Rewrite using `[hg]`.
+
+Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, hx, hy, smul_add]`. Consider the case `tmul x y`. Rewrite using `[extTensor_tmul, ← TensorProduct.tmul_smul]`.
+
+Simplify using `[detRep]`. Rewrite using `[contra_apply, key, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem exists_jac₂_map {a b n : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b]
     [Fintype n] [DecidableEq n] (e : a ⊕ b ≃ n) (e' : b ⊕ a ≃ n) {R : Representation ℂ (GL a k) W}
     (hR : IsSmooth R) {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) {π : Representation ℂ (GL n k) V}
@@ -109,6 +128,9 @@ theorem exists_jac₂_map {a b n : Type} [Fintype a] [DecidableEq a] [Fintype b]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Introduce `z v` and use `by have : Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar (Fin β) z) = z ^ β := by ext; simp [Matrix.GeneralLinearGroup.scalar] simp [detRep, this]`.
+-/
 theorem hasCentralChar_detRep (β : ℕ) (χ : kˣ →* ℂˣ) : HasCentralChar (detRep (Fin β) χ) (χ ^ β) :=
   fun z v => by
     have : Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar (Fin β) z) = z ^ β := by
@@ -124,6 +146,9 @@ open Matrix
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `add x y hx hy => rw [map_add, hx, hy, smul_add]`. Consider the case `smul_tprod r x`. Rewrite using `[map_smul, smul_comm, piTensor_tprod, ← MultilinearMap.map_smul_univ]`. Simplify using `only [h]`.
+-/
 theorem piTensor_scalar {α : Type} [Fintype α] {Γ X : α → Type} [∀ a, Group (Γ a)]
     [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (ρ : ∀ a, Representation ℂ (Γ a) (X a))
     (g : ∀ a, Γ a) (c : α → ℂ) (h : ∀ a x, ρ a (g a) x = c a • x) (y : ⨂[ℂ] a, X a) :
@@ -134,6 +159,13 @@ theorem piTensor_scalar {α : Type} [Fintype α] {Γ X : α → Type} [∀ a, Gr
     rw [map_smul, smul_comm, piTensor_tprod, ← MultilinearMap.map_smul_univ]
     simp only [h]
 
+/- English proof (translation)
+Establish `h1 : ∀ a, GeneralLinearGroup.det (GeneralLinearGroup.scalar (m a) z) = z ^ Fintype.card (m a)` using `fun a => by ext; simp [GeneralLinearGroup.scalar]`. Establish `h2 : ∑ a, modExp m a * (Fintype.card (m a) : ℤ) = 0`. Simplify using `only [modExp, sub_mul, Finset.sum_sub_distrib, Finset.sum_mul, Finset.sum_filter, ite_mul, zero_mul]`. Rewrite using `[Finset.sum_comm, sub_eq_zero]`. Simplify using `only [mul_comm]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[val_deltaHalf, modulus]`. Establish `h3 : ∀ a, nabs k (z ^ Fintype.card (m a)) ^ modExp m a = nabs k z ^ (modExp m a * (Fintype.card (m a) : ℤ))` using `fun a => by`. Rewrite using `[mul_comm, _root_.zpow_mul, zpow_natCast]`. Simplify using `[nabs]`.
+
+Simplify using `only [h1, h3, ← Real.rpow_intCast]`. Rewrite using `[← Real.rpow_sum_of_pos (nabs_pos' k z), ← Int.cast_sum, h2]`. Simplify using the standard rewrite rules.
+-/
 theorem deltaHalf_scalar {α : Type} (m : α → Type) [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)]
     [∀ a, DecidableEq (m a)] (z : kˣ) :
     deltaHalf k m (fun a => GeneralLinearGroup.scalar (m a) z) = 1 := by
@@ -154,6 +186,15 @@ theorem deltaHalf_scalar {α : Type} (m : α → Type) [Fintype α] [LinearOrder
   rw [← Real.rpow_sum_of_pos (nabs_pos' k z), ← Int.cast_sum, h2]
   simp
 
+/- English proof (translation)
+Establish `h1 : leviEmb k e (fun a => GeneralLinearGroup.scalar (m a) z) = GeneralLinearGroup.scalar n z`. Use extensionality with `i j`. Take `⟨⟨a, i⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨b, j⟩, rfl⟩` from `e.surjective j`. Distinguish the cases in `hab : a = b`.
+
+Substitute `hab` using the available equality. Rewrite using `[leviEmb_apply_same]`. Simplify using `[GeneralLinearGroup.scalar, diagonal_apply]`. Rewrite using `[leviEmb_apply_ne k e _ hab]`. Simplify using `[GeneralLinearGroup.scalar, diagonal_apply, hab]`.
+
+Use `Subtype.ext (Subtype.ext (funext fun x => ?_))` and prove the remaining obligations. Establish `h2` using `parInd_law e _ f ⟨_, leviEmb_mem_parab k e fun a => GeneralLinearGroup.scalar (m a) z⟩ x`. Rewrite `h2` using `[leviProj_leviEmb, deltaHalf_scalar, piTensor_scalar ρ _ _ fun a => h a z]`. Establish `h3 : x * GeneralLinearGroup.scalar n z = GeneralLinearGroup.scalar n z * x`. Use extensionality with `i j`.
+
+Simplify using `[GeneralLinearGroup.scalar, mul_comm]`. Use `show f.1.1 (x * GeneralLinearGroup.scalar n z) = (_ : ℂ) • f.1.1 x`. Rewrite using `[h3, ← h1]`. Simplify using `using h2`.
+-/
 theorem multiProd_scalar {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)]
     [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] (e : (Σ a, m a) ≃ n) {X : α → Type}
     [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (ρ : ∀ a, Representation ℂ (GL (m a) k) (X a))

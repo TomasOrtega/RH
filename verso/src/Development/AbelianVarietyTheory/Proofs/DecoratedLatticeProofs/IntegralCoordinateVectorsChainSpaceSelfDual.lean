@@ -14,6 +14,13 @@ namespace GlobalTheory.AdForm
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `B X I hI l Z j hj L hL`. Establish `hG : ((I.rec7 l Z).sp.X j).gram = 1` using `GlobalTheory.AdForm.PinInhab.gram_X hI j`. Establish `hm : ∀ x : Fin ((I.rec7 l Z).sp.X j).rank → (I.rec7 l Z).host.E, x ∈ Examples₂.stdLat _ ↔ ∀ i, IsIntegral ℤ (x i)` using `fun x => by`. Rewrite using `[Examples₂.stdLat, Module.Basis.mem_span_iff_repr_mem]`. Conclude with `forall_congr' fun i => ⟨fun ⟨b, hb⟩ => by rw [← show _ = x i from hb]; exact b.2, fun h => ⟨⟨_, h⟩, rfl⟩⟩`.
+
+Establish `hLe : L = Examples₂.stdLat _`. Use extensionality with `z`. Rewrite using `[hL z, hm]`. Both sides reduce to the same expression. Substitute `hLe` using the available equality.
+
+Use `⟨Examples₂.stdLat_isLattice _, fun y => GlobalTheory.Ker.Inhab.selfDual_diag (fun _ => false) _ (fun i k => ?_) y⟩` and prove the remaining obligations. Rewrite using `[hG, Matrix.one_apply]`. Simplify using `[Examples₂.sgn]`.
+-/
 theorem intVec_isSelfDualC : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (j : ℕ), j ≤ B.R.m →
     ∀ L : Lat ((I.rec7 l Z).sp.X j), (∀ z, z ∈ L ↔ z ∈ intVec (I.rec7 l Z) _) → IsSelfDualC ((I.rec7 l Z).sp.X j) L := by
   intro B X I hI l Z j hj L hL

@@ -2,6 +2,33 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.T
 import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.MapRepApply
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module UpperTheory.V.Loc Topology
 
+/- English proof (translation)
+Set `J : Submodule ℚ_[l] B` to `LinearMap.ker p.toLinearMap`. Establish `hJ : ∀ a, a ∈ J ↔ p a = 0` using `fun _ => Iff.rfl`. Use `letI : TopologicalSpace J := moduleTopology ℚ_[l] J`. Use `haveI : IsModuleTopology ℚ_[l] J := ⟨rfl⟩`. Use `haveI : ContinuousAdd J := IsModuleTopology.toContinuousAdd ℚ_[l] J`.
+
+Use `haveI : IsTopologicalAddGroup J := IsModuleTopology.topologicalAddGroup ℚ_[l] J`. Use `haveI : ContinuousSMul ℚ_[l] J := IsModuleTopology.toContinuousSMul ℚ_[l] J`. Establish `hι : Continuous (fun a : J => (a : B))` using `IsModuleTopology.continuous_of_linearMap J.subtype`. Take `⟨π, hπ⟩` from `J.subtype.exists_leftInverse_of_injective J.ker_subtype`. Establish `hπc : Continuous π` using `IsModuleTopology.continuous_of_linearMap π`.
+
+Establish `hπ' : ∀ a : J, π a = a` using `fun a => LinearMap.congr_fun hπ a`. Take `⟨s, hs⟩` from `p.toLinearMap.exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 hp)`. Establish `hsc : Continuous s` using `IsModuleTopology.continuous_of_linearMap s`. Establish `hs' : ∀ a, p (s a) = a` using `fun a => LinearMap.congr_fun hs a`. Set `ρ : Representation ℚ_[l] G J` to `{ toFun := fun g => (LinearMap.mulLeft ℚ_[l] (χ g)).restrict fun a ha => by`.
+
+Rewrite `ha`, the goal using `[hJ]`. Simplify using `[ha]`. Use the proof step `map_one' := by ext a; simp`. Use the proof step `map_mul' := fun g h => by ext a; simp [mul_assoc] }`. Establish `hρ : ∀ g (a : J), (ρ g a : B) = χ g * a` using `fun _ _ => rfl`.
+
+Establish `hρc : ContAction ρ`. Unfold `ReciprocityTheory.Gal.ContAction`. Establish `: (fun q : G × J => ρ q.1 q.2) = fun q => π (χ q.1 * q.2)` using `funext fun q => by rw [← hρ, hπ']`. Rewrite using `[this]`. Conclude with `hπc.comp ((hχ.comp continuous_fst).mul (hι.comp continuous_snd))`.
+
+Take `⟨-, hfin, -, hd⟩` from `tateRat hP (l := l) φ hφ (E := ℚ_[l]) ρ hρc`. Establish `hbot : H0dual ((cycA v l ℚ_[l]).comp φ) ρ = ⊥`. Use `eq_bot_iff.2 fun F hF => ?_` and prove the remaining obligations. Take `⟨g, u, hu⟩` from `h0`. Use `LinearMap.ext fun a => ?_` and prove the remaining obligations.
+
+Set `b : J` to `⟨(u⁻¹ : Bˣ) * (a : B), by rw [hJ, map_mul, (hJ _).1 a.2, mul_zero]⟩`. Establish `e : a = ρ g b - (((cyc v l (φ g) : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l]) • b`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sub, hρ, Submodule.coe_smul, Algebra.smul_def, ← sub_mul, ← hu]`. Conclude with `(Units.mul_inv_cancel_left u _).symm`.
+
+Rewrite using `[e, map_sub, hF g b, map_smul]`. Conclude with `sub_self _`. Rewrite `hd` using `[hbot, finrank_bot]`. Use `haveI : Subsingleton (H2 ρ) := finrank_zero_iff.1 hd`. Set `z : G × G → B` to `fun q => s (x' (q.1 * q.2)) - s (x' q.1) - χ q.1 * s (x' q.2) - f q.1 q.2`.
+
+Establish `hzJ : ∀ q, z q ∈ J` using `fun q => by`. Rewrite using `[hJ]`. Simplify using `only [z, map_sub, map_mul, hs', hx]`. Expand and normalize the polynomial expressions, which then agree. Establish `hzc : Continuous z`.
+
+Use `hsc.comp hx'` as an intermediate fact. Conclude with `(((this.comp continuous_mul).sub (this.comp continuous_fst)).sub ((hχ.comp continuous_fst).mul (this.comp continuous_snd))).sub hf`. Set `Z : Z2 ρ` to `⟨fun q => ⟨z q, hzJ q⟩, by`. Establish `: (fun q => (⟨z q, hzJ q⟩ : J)) = fun q => π (z q)` using `funext fun q => (hπ' ⟨z q, hzJ q⟩).symm`. Rewrite using `[this]`.
+
+Conclude with `hπc.comp hzc, fun g h k => by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_sub, Submodule.coe_add, hρ, z, map_mul, mul_assoc, Submodule.coe_zero]`. Take the linear combination `hc g h k⟩`. Establish `hZ : (Submodule.Quotient.mk Z : H2 ρ) = 0` using `Subsingleton.elim _ _`.
+
+Take `⟨y, hy, hyZ⟩` from `(separated_dvr_second_cohomology_mem ρ _).1 (Submodule.mem_comap.1 ((Submodule.Quotient.mk_eq_zero _).1 hZ))`. Use `⟨fun g => s (x' g) + y g, (hsc.comp hx').add (hι.comp hy), fun g h => ?_, fun g => ?_⟩` and prove the remaining obligations. Establish `e : χ g * y h - y (g * h) + y g = z (g, h)` using `congrArg Subtype.val (congrFun hyZ (g, h))`. Simplify using `only [z] at e`. Take the linear combination `-e`.
+
+Rewrite using `[map_add, hs', (hJ _).1 (y g).2, add_zero]`.
+-/
 theorem UpperTheory.V.Loc.cocLift (hP : LocalPublishedTheorems) {v l : ℕ} [Fact v.Prime] [Fact l.Prime] {G : Type} [Group G]
     [TopologicalSpace G] [IsTopologicalGroup G] (φ : G →* GQ v) (hφ : IsOpenEmbedding φ)
     {B : Type} [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [TopologicalSpace B] [IsModuleTopology ℚ_[l] B]
@@ -90,6 +117,9 @@ private def bor (α β u a b c d : B) : M4 B :=
      0, 0, α * u, -a * u;
      0, 0, 0, u]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [bor, Matrix.mul_apply, Fin.sum_univ_four] <;> ring`.
+-/
 private theorem bor_mul (α β u a b c d α' β' u' a' b' c' d' : B) :
     bor α β u a b c d * bor α' β' u' a' b' c' d' =
       bor (α * α') (β * β') (u * u') (a + α * a') (b + β * b') (c + α * β * c' + a * β * b')
@@ -97,25 +127,48 @@ private theorem bor_mul (α β u a b c d α' β' u' a' b' c' d' : B) :
   ext i j
   fin_cases i <;> fin_cases j <;> simp [bor, Matrix.mul_apply, Fin.sum_univ_four] <;> ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [bor]`.
+-/
 private theorem bor_one : bor (1 : B) 1 1 0 0 0 0 = 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [bor]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [bor, Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn, Fin.rev] <;> ring`.
+-/
 private theorem bor_gsp (α β u a b c d : B) : IsGSp (α * α * β * u * u) (bor α β u a b c d) := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [bor, Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn, Fin.rev] <;> ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [bor]`.
+-/
 private theorem bor_map (p : B →+* B') (α β u a b c d : B) :
     (bor α β u a b c d).map p = bor (p α) (p β) (p u) (p a) (p b) (p c) (p d) := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [bor]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨((hα.mul hβ).mul hu).mul_right_cancel (congrFun (congrFun h 0) 1), (hα.mul hu).mul_right_cancel (congrFun (congrFun h 1) 2), (hα.mul hu).mul_right_cancel (congrFun (congrFun h 0) 2), hu.mul_right_cancel (congrFun (congrFun h 0) 3)⟩`.
+-/
 private theorem bor_inj {α β u a b c d a' b' c' d' : B} (hα : IsUnit α) (hβ : IsUnit β) (hu : IsUnit u)
     (h : bor α β u a b c d = bor α β u a' b' c' d') : a = a' ∧ b = b' ∧ c = c' ∧ d = d' :=
   ⟨((hα.mul hβ).mul hu).mul_right_cancel (congrFun (congrFun h 0) 1),
     (hα.mul hu).mul_right_cancel (congrFun (congrFun h 1) 2),
     (hα.mul hu).mul_right_cancel (congrFun (congrFun h 0) 2), hu.mul_right_cancel (congrFun (congrFun h 0) 3)⟩
 
+/- English proof (translation)
+Establish `e1` using `congrFun (congrFun hT 0) 1`. Establish `e2` using `congrFun (congrFun hT 0) 2`. Establish `l10` using `hl 1 0 (by decide)`. Establish `l20` using `hl 2 0 (by decide)`. Establish `l30` using `hl 3 0 (by decide)`.
+
+Establish `l21` using `hl 2 1 (by decide)`. Establish `l31` using `hl 3 1 (by decide)`. Establish `l32` using `hl 3 2 (by decide)`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_four, adj_apply, sgn, Fin.rev, l21, l31, l32, h1, h2, h3] at e1 e2`. Establish `k1 : α' * β' * u' * (α * β * u) = 1` using `by linear_combination (β * β' * u * u') * hα + (u * u') * hβ + hu`.
+
+Establish `k2 : α' * u' * (α * u) = 1` using `by linear_combination (u * u') * hα + hu`. Establish `f1 : T 2 3 = -(T 0 1 * (α' * β' * u')) * u`. Take the linear combination `(α' * β' * u') * e1 - T 2 3 * k1`. Establish `f2 : T 1 3 = (T 0 2 * (α' * u') - T 0 1 * (α' * β' * u') * (T 1 2 * (α' * u'))) * u`. Rewrite `e2` using `[f1]`.
+
+Take the linear combination `(-(α' * u')) * e2 - T 1 3 * k2`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [bor, l10, l20, l30, l21, l31, l32, h0, h1, h2, h3, f1, f2]`. Rewrite using `[mul_assoc, k1, mul_one]`. Rewrite using `[mul_assoc, k2, mul_one]`.
+
+Rewrite using `[mul_assoc, mul_comm u', hu, mul_one]`. Rewrite using `[mul_assoc, k2, mul_one]`.
+-/
 private theorem bor_of {α β u α' β' u' ν : B} (hα : α * α' = 1) (hβ : β * β' = 1) (hu : u * u' = 1) (T : M4 B)
     (hl : ∀ i j, j < i → T i j = 0) (h0 : T 0 0 = α * α * β * u) (h1 : T 1 1 = α * β * u) (h2 : T 2 2 = α * u)
     (h3 : T 3 3 = u) (hT : IsGSp ν T) :
@@ -143,6 +196,9 @@ private theorem bor_of {α β u α' β' u' ν : B} (hα : α * α' = 1) (hβ : �
   · rw [mul_assoc, mul_comm u', hu, mul_one]
   · rw [mul_assoc, k2, mul_one]
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [bor] <;> fun_prop`.
+-/
 private theorem bor_cont {X : Type} [TopologicalSpace X] [TopologicalSpace B] [IsTopologicalRing B]
     {α β u a b c d : X → B} (hα : Continuous α) (hβ : Continuous β) (hu : Continuous u) (ha : Continuous a)
     (hb : Continuous b) (hc : Continuous c) (hd : Continuous d) (i j : Fin 4) :
@@ -153,6 +209,19 @@ end UpperTheory.V.Loc.SpBor
 
 open UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Loc.SpBor in
 
+/- English proof (translation)
+Establish `hpc : Continuous p` using `IsModuleTopology.continuous_of_linearMap p.toLinearMap`. Establish `hi : ∀ (χ : G →* B) g, p (χ g) * p (χ g⁻¹) = 1` using `fun χ g => by`. Rewrite using `[← map_mul, ← map_mul, mul_inv_cancel, map_one, map_one]`. Establish `hun : ∀ (χ : G →* B) g, IsUnit (p (χ g))` using `fun χ g => IsUnit.of_mul_eq_one _ (hi χ g)`. Choose the witnesses or unpack the hypotheses as in `⟨a', b', c', d', ha', hb', hc', hd', hT'⟩ : ∃ a' b' c' d' : G → B', Continuous a' ∧ Continuous b' ∧ Continuous c' ∧ Continuous d' ∧ ∀ g, T' g = bor (p (α g)) (p (β g)) (p (u g)) (a' g) (b' g) (c' g) (d' g) := by`.
+
+Establish `c1 : Continuous fun g => p (α g⁻¹)` using `hpc.comp (hα.comp continuous_inv)`. Establish `c2 : Continuous fun g => p (β g⁻¹)` using `hpc.comp (hβ.comp continuous_inv)`. Establish `c3 : Continuous fun g => p (u g⁻¹)` using `hpc.comp (hu.comp continuous_inv)`. Use `⟨_, _, _, _, (hT 0 1).mul ((c1.mul c2).mul c3), (hT 1 2).mul (c1.mul c3), (hT 0 2).mul (c1.mul c3), (hT 0 3).mul c3, fun g => ?_⟩` and prove the remaining obligations. Take `⟨ν, hν⟩` from `hG g`.
+
+Conclude with `bor_of (hi α g) (hi β g) (hi u g) (T' g) (hl g) (by simpa using hd g 0) (by simpa using hd g 1) (by simpa using hd g 2) (by simpa using hd g 3) hν`. Establish `key` using `fun g h => by`. Establish `e` using `(hT' (g * h)).symm`. Rewrite `e` using `[map_mul T', hT' g, hT' h, bor_mul, ← map_mul p, ← map_mul p, ← map_mul p, ← map_mul α, ← map_mul β, ← map_mul u]`. Conclude with `bor_inj (hun α (g * h)) (hun β (g * h)) (hun u (g * h)) e`.
+
+Take `⟨a, ha, ea, pa⟩` from `cocLift hP φ hφ p hp α hα (h0 _ (by simp)) (fun _ _ => 0) continuous_const (by simp) a' ha' fun g h => by rw [(key g h).1, map_zero, add_zero]`. Take `⟨b, hb, eb, pb⟩` from `cocLift hP φ hφ p hp β hβ (h0 _ (by simp)) (fun _ _ => 0) continuous_const (by simp) b' hb' fun g h => by rw [(key g h).2.1, map_zero, add_zero]`. Take `⟨c, hc, ec, pc⟩` from `cocLift hP φ hφ p hp (α * β) (hα.mul hβ) (h0 _ (by simp)) (fun g h => a g * β g * b h) (by fun_prop) (fun g h k => by simp only [ea, eb, map_mul, MonoidHom.mul_apply]; ring) c' hc' fun g h => by simp only [(key g h).2.2.1, map_mul, MonoidHom.mul_apply, pa, pb]`. Take `⟨d, hd, ed, pd⟩` from `cocLift hP φ hφ p hp (α * α * β) ((hα.mul hα).mul hβ) (h0 _ (by simp)) (fun g h => a g * α g * β g * (c h - a h * b h) - c g * α g * a h) (by fun_prop) (fun g h k => by simp only [ea, eb, ec, map_mul, MonoidHom.mul_apply]; ring) d' hd' fun g h => by simp only [(key g h).2.2.2, ma …`. Establish `a1 : a 1 = 0` using `by simpa using ea 1 1`.
+
+Establish `b1 : b 1 = 0` using `by simpa using eb 1 1`. Establish `c1 : c 1 = 0` using `by simpa [a1] using ec 1 1`. Establish `d1 : d 1 = 0` using `by simpa [a1, c1] using ed 1 1`. Use `⟨{ toFun := fun g => bor (α g) (β g) (u g) (a g) (b g) (c g) (d g) map_one' := by rw [a1, b1, c1, d1, map_one, map_one, map_one, bor_one] map_mul' := fun g h => by` and prove the remaining obligations. Simplify using `only [bor_mul, ea, eb, ec, ed, map_mul, MonoidHom.mul_apply, add_zero] },`.
+
+Use `bor_cont hα hβ hu ha hb hc hd, fun g i j h => ?_, fun g i => ?_, fun g => bor_gsp _ _ _ _ _ _ _, fun g => ?_⟩`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first | rfl | exact absurd h (by decide)`. Apply the tactic sequence `fin_cases i <;> rfl`. Rewrite using `[hT', ← pa, ← pb, ← pc, ← pd]`. Conclude with `bor_map (p : B →+* B') _ _ _ _ _ _ _`.
+-/
 theorem UpperTheory.V.Loc.borLift (hP : LocalPublishedTheorems) {v l : ℕ} [Fact v.Prime] [Fact l.Prime] {G : Type} [Group G]
     [TopologicalSpace G] [IsTopologicalGroup G] (φ : G →* GQ v) (hφ : IsOpenEmbedding φ)
     {B : Type} [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [TopologicalSpace B] [IsModuleTopology ℚ_[l] B]

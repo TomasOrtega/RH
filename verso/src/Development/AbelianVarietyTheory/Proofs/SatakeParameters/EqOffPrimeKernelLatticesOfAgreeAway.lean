@@ -10,6 +10,9 @@ set_option maxHeartbeats 4000000
 
 namespace GlobalTheory.TwV.Xc
 
+/- English proof (translation)
+Substitute `h` using the available equality. Consider the cases of `ha`. Consider the cases of `hb`. Conclude with `h'`.
+-/
 theorem eqOffPrime_of_heq_lattices_rank_eq {D : D7} {P : HeightOneSpectrum (𝓞 D.host.E)} {n m : ℕ} (h : n = m)
     {A B : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} {A' B' : Submodule (𝓞 D.host.E) (Fin m → D.host.E)}
     (ha : HEq A A') (hb : HEq B B') (h' : GL3Theta.EqOff D P A' B') : GL3Theta.EqOff D P A B := by
@@ -18,6 +21,15 @@ theorem eqOffPrime_of_heq_lattices_rank_eq {D : D7} {P : HeightOneSpectrum (𝓞
   cases hb
   exact h'
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD hSpl v P hP j hj La Lb hSA`. Establish `hLa` using `hSA.1`. Establish `hLb` using `hSA.2.1`. Establish `h1` using `hSA.2.2.1`. Establish `hch : J.chart std j hj La = J.chart std j hj Lb`.
+
+Take `⟨c, A⟩` from `La`. Take `⟨c', B⟩` from `Lb`. Simplify using `only at h1`. Substitute `h1` using the available equality. Conclude with `GlobalTheory.T.latticeTuple_chart_eq_of_same_component S hD hSpl j hj c A B hLa hLb`.
+
+Establish `hoff` using `(GlobalTheory.T.adelicPoints_agreeAway_of_latticeTuples_agreeAway S hD hSpl v j hj La Lb hSA).1`. Take `⟨⟨hr, -⟩, -, hKa, -⟩` from `hD j hj La hLa`. Take `⟨-, -, hKb, -⟩` from `hD j hj Lb hLb`. Rewrite `hKb` using `[← hch]`. Establish `key` using `GlobalTheory.T.kernelLattice_eq_away_from_prime_of_agree_off_place D (D.R.N 0) (D.what₂.places.resChar w) (D.gat u w hg) (A0 J) J.one.int hSpl.1 v P hP (D.R.N j) (gramN D j hj) J.a ((J.St j hj).K (J.chart std j hj La)).lev.Lb ((J.St j hj).K (J.chart std j hj La)).lev.Lb_fin ((J.S …`.
+
+Conclude with `eqOffPrime_of_heq_lattices_rank_eq hr hKa hKb key`.
+-/
 theorem eqOff_kerN_of_sameAway : Sites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => ∀ v (P : HeightOneSpectrum (𝓞 D.host.E)), PrimeOf (D.what₂.places.resChar w) ((sysS H X std).G.P.W v) (J.rho std v) P → ∀ j (hj : j ≤ D.R.m) (La Lb : (sysS H X std).Lt j), SameAway (hT := hT) (H := H) (X := X) std v j La Lb → GL3Theta.EqOff D P ((J.fd std).kerN j La) ((J.fd std).kerN j Lb)) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD hSpl v P hP j hj La Lb hSA
   have hLa := hSA.1

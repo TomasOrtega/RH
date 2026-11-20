@@ -3,11 +3,47 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
 namespace GlobalTheory.LatL
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg, ← norm_neg y]`. Conclude with `IsUltrametricDist.norm_add_le_max _ _`.
+-/
 theorem norm_sub_le_max_ultra' {K : Type} [NormedField K] [IsUltrametricDist K] (x y : K) :
     ‖x - y‖ ≤ max ‖x‖ ‖y‖ := by
   rw [sub_eq_add_neg, ← norm_neg y]
   exact IsUltrametricDist.norm_add_le_max _ _
 
+/- English proof (translation)
+Take `⟨i₀, hi₀⟩` from `Finite.exists_max (fun i => ‖w i‖)`. Establish `hw0 : w i₀ ≠ 0`. Introduce `h`. Establish `: w = 0` using `funext fun i => norm_le_zero_iff.mp (by simpa [h] using hi₀ i)`. Simplify using `[this] at hwv`.
+
+Establish `hratio : ∀ i, ‖w i / w i₀‖ ≤ 1` using `fun i => by`. Rewrite using `[norm_div]`. Conclude with `div_le_one_of_le₀ (hi₀ i) (norm_nonneg _)`. Set `s : Fin r → Fin (r + 1)` to `i₀.succAbove`. Establish `hs : ∀ c, s c ≠ i₀` using `fun c => Fin.succAbove_ne i₀ c`.
+
+Set `u : Fin r → Fin (r + 1) → F` to `fun c => Pi.single (s c) 1 - (w (s c) / w i₀) • Pi.single i₀ 1`. Set `ρ : Fin r → Fin (r + 1) → F` to `fun c => Pi.single (s c) 1 - v (s c) • w`. Set `col : Fin (r + 1) → Fin (r + 1) → F` to `Fin.lastCases v u`. Set `row : Fin (r + 1) → Fin (r + 1) → F` to `Fin.lastCases w ρ`. Set `K : Matrix (Fin (r + 1)) (Fin (r + 1)) F` to `Matrix.of fun a b => col b a`.
+
+Set `L : Matrix (Fin (r + 1)) (Fin (r + 1)) F` to `Matrix.of fun a b => row a b`. Establish `hwu : ∀ c, w ⬝ᵥ u c = 0`. Introduce `c`. Simplify using `only [u, dotProduct_sub, dotProduct_smul, dotProduct_single, smul_eq_mul, mul_one]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hdot : ∀ a b, row a ⬝ᵥ col b = (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) F) a b`. Introduce `a b`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`.
+
+Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => simp [row, col, hwv]`. Consider the case `cast c => simp [row, col, hwu, Matrix.one_apply, (Fin.castSucc_lt_last c).ne']`. Consider the case `cast c`. Proceed by induction on `b using Fin.lastCases with`.
+
+Consider the case `last`. Simplify using `[row, col, ρ, sub_dotProduct, smul_dotProduct, single_dotProduct, hwv, Matrix.one_apply, (Fin.castSucc_lt_last c).ne]`. Consider the case `cast c'`. Simplify using `only [row, col, Fin.lastCases_castSucc, ρ, sub_dotProduct, smul_dotProduct, single_dotProduct, hwu, smul_eq_mul, mul_zero, sub_zero, one_mul, u, Pi.sub_apply, Pi.smul_apply, Pi.single_apply, hs c, if_false, mul_zero, sub_zero, Matrix.one_apply, Fin.castSucc_inj]`. Distinguish the cases in `h : c = c'`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `: s c ≠ s c'` using `fun e => h (Fin.succAbove_right_injective e)`. Simplify using `[this, h]`. Establish `hLK : L * K = 1`.
+
+Use extensionality with `a b`. Rewrite using `[← hdot a b]`. Simplify using `[L, K, Matrix.mul_apply, dotProduct]`. Establish `hKL : K * L = 1` using `mul_eq_one_comm.mp hLK`. Set `k : GL (Fin (r + 1)) F` to `⟨K, L, hKL, hLK⟩`.
+
+Establish `hsingle : ∀ i j : Fin (r + 1), ‖(Pi.single i (1 : F) : Fin (r + 1) → F) j‖ ≤ 1`. Introduce `i j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Pi.single_apply, h]`. Establish `hcol : ∀ b a, ‖col b a‖ ≤ 1`. Introduce `b a`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => simpa [col] using hv a`.
+
+Consider the case `cast c`. Simplify using `only [col, Fin.lastCases_castSucc, u, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Use `(norm_sub_le_max_ultra' _ _).trans (max_le (hsingle _ _) ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hratio _) (norm_nonneg _) (hsingle _ _)`.
+
+Establish `hrow : ∀ a b, ‖row a b‖ ≤ 1`. Introduce `a b`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => simpa [row] using hw b`. Consider the case `cast c`.
+
+Simplify using `only [row, Fin.lastCases_castSucc, ρ, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Use `(norm_sub_le_max_ultra' _ _).trans (max_le (hsingle _ _) ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hv _) (norm_nonneg _) (hw _)`. Use `⟨k, fun i j => ⟨by simpa [k, K] using hcol j i, by simpa [k, L] using hrow i j⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `a`. Simplify using `[k, K, col, Matrix.mulVec_single]`. Use extensionality with `b`. Rewrite using `[show (w ᵥ* (k : Matrix _ _ F)) b = row (Fin.last r) ⬝ᵥ col b by`. Simplify using `[k, K, row, Matrix.vecMul, dotProduct]]`.
+
+Rewrite using `[hdot, Matrix.one_apply, Pi.single_apply]`. Simplify using `only [eq_comm]`.
+-/
 theorem exists_glO_pair {F : Type} [NormedField F] [IsUltrametricDist F] (r : ℕ)
     (v w : Fin (r + 1) → F) (hv : ∀ i, ‖v i‖ ≤ 1) (hw : ∀ i, ‖w i‖ ≤ 1) (hwv : w ⬝ᵥ v = 1) :
     ∃ k ∈ glO (r + 1) F, (k : Matrix _ _ F) *ᵥ Pi.single (Fin.last r) 1 = v ∧
@@ -91,6 +127,9 @@ theorem exists_glO_pair {F : Type} [NormedField F] [IsUltrametricDist F] (r : �
     rw [hdot, Matrix.one_apply, Pi.single_apply]
     simp only [eq_comm]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ hU r v w hv hw hwv`. Use `haveI : IsUltrametricDist F := hU.ultraF`. Conclude with `exists_glO_pair r v w hv hw hwv`.
+-/
 theorem glO_transitive_pairs : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] [Unram F E] (r : ℕ) (v w : Fin (r + 1) → F), (∀ i, ‖v i‖ ≤ 1) →
     (∀ i, ‖w i‖ ≤ 1) → w ⬝ᵥ v = 1 → ∃ k ∈ glO (r + 1) F,

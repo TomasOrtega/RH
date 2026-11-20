@@ -17,6 +17,9 @@ namespace GlobalTheory.FlagMove
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `Xsp Xflag`. Simplify using `only [Formalism.MainNotions.S.FlagG.X, Formalism.MainNotions.S.FlagG.Xa]`. Use `congr 1`. Use extensionality with `v`. Simplify using the standard rewrite rules.
+-/
 theorem Xsp_eq_Xflag {T : D.host.E} (F : LFlag (VS D) D.R.rS T) : Xsp F = Xflag F D.R.rS := by
   unfold Xsp Xflag
   simp only [Formalism.MainNotions.S.FlagG.X, Formalism.MainNotions.S.FlagG.Xa]
@@ -24,6 +27,11 @@ theorem Xsp_eq_Xflag {T : D.host.E} (F : LFlag (VS D) D.R.rS T) : Xsp F = Xflag 
   ext v
   simp
 
+/- English proof (translation)
+Establish `h : Xflag F j = Submodule.span D.host.E (Set.range (fun i : {i : Fin D.R.rS // i.1 < j} => F.fl.e i.1))`. Unfold `Xflag`. Simplify using `only [Formalism.MainNotions.S.FlagG.Xa]`. Use `congr 1`. Use extensionality with `v`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h, finrank_span_eq_card]`. Conclude with `F.fl.e_indep.comp _ Subtype.val_injective`.
+-/
 private lemma finrank_Xflag {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (j : ℕ) :
     Module.finrank D.host.E (Xflag F j) = Fintype.card {i : Fin D.R.rS // i.1 < j} := by
   have h : Xflag F j = Submodule.span D.host.E
@@ -36,10 +44,20 @@ private lemma finrank_Xflag {T : D.host.E} (F : LFlag (VS D) D.R.rS T) (j : ℕ)
   rw [h, finrank_span_eq_card]
   exact F.fl.e_indep.comp _ Subtype.val_injective
 
+/- English proof (translation)
+Rewrite using `[finrank_Xflag, finrank_Xflag]`.
+-/
 theorem finrank_Xflag_eq {T T0 : D.host.E} (F : LFlag (VS D) D.R.rS T) (F0 : LFlag (VS D) D.R.rS T0) (j : ℕ) :
     Module.finrank D.host.E (Xflag F j) = Module.finrank D.host.E (Xflag F0 j) := by
   rw [finrank_Xflag, finrank_Xflag]
 
+/- English proof (translation)
+Establish `hiso : ∀ x y, (VS D).hT (β x) (β y) = (VS D).hT x y` using `hi`. Unfold `orth`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`.
+
+Rewrite using `[← hiso]`. Conclude with `h (β x) ((hU x).2 hx)`. Introduce `h x hx`. Establish `hx' : β.symm x ∈ U` using `(hU _).1 (by rw [LinearEquiv.apply_symm_apply]; exact hx)`. Establish `h'` using `h _ hx'`.
+
+Rewrite `h'` using `[← hiso, LinearEquiv.apply_symm_apply]`. Conclude with `h'`.
+-/
 theorem orth_iff {β : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hi : β ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
     {U U' : Submodule D.host.E (VS D).V} (hU : ∀ x, β x ∈ U' ↔ x ∈ U) (y : (VS D).V) :
     β y ∈ orth (VS D) U' ↔ y ∈ orth (VS D) U := by
@@ -56,6 +74,9 @@ theorem orth_iff {β : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hi : β ∈ Formalis
     rw [← hiso, LinearEquiv.apply_symm_apply] at h'
     exact h'
 
+/- English proof (translation)
+Establish `e : a = Fin.castSucc ⟨a.1, hr⟩` using `Fin.ext rfl`. Rewrite using `[e]`. Unfold `frame Xflag`. Simplify using `only [Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_castSucc, Formalism.MainNotions.S.FlagG.Xa]`. Conclude with `Submodule.subset_span ⟨⟨a.1, hr⟩, ha, rfl⟩`.
+-/
 private lemma frame_mem_Xflag {T0 : D.host.E} (F0 : LFlag (VS D) D.R.rS T0) (j : ℕ)
     (a : Fin (D.R.rS + 1)) (ha : a.1 < j) (hr : a.1 < D.R.rS) : frame F0 a ∈ Xflag F0 j := by
   have e : a = Fin.castSucc ⟨a.1, hr⟩ := Fin.ext rfl
@@ -64,6 +85,15 @@ private lemma frame_mem_Xflag {T0 : D.host.E} (F0 : LFlag (VS D) D.R.rS T0) (j :
   simp only [Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_castSucc, Formalism.MainNotions.S.FlagG.Xa]
   exact Submodule.subset_span ⟨⟨a.1, hr⟩, ha, rfl⟩
 
+/- English proof (translation)
+Introduce `x hx`. Establish `key : Submodule.span D.host.E (F.fl.e '' {i | i.1 < j}) ≤ (Xflag F0 j).comap (σ : (VS D).V →ₗ[D.host.E] (VS D).V)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Establish `hi' : i.1 < j` using `hi`.
+
+Use `show σ (F.fl.e i) ∈ Xflag F0 j`. Establish `he : F.fl.e i = frame F (Fin.castSucc i)`. Unfold `frame`. Simplify using `[Formalism.MainNotions.S.FlagG.fvec]`. Rewrite using `[he, hf]`.
+
+Use `Submodule.sum_mem _ (fun a _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hab : Fin.castSucc i < a`. Rewrite using `[(hU a (Fin.castSucc i)).1 hab, zero_smul]`. Conclude with `Submodule.zero_mem _`. Establish `h1 : a.1 ≤ i.1`.
+
+Simplify `hab` using `[Fin.lt_def]`. Establish `h2` using `i.2`. Conclude with `Submodule.smul_mem _ _ (frame_mem_Xflag F0 j a (by omega) (by omega))`. Conclude with `key hx`.
+-/
 theorem map_Xflag_le {T T0 : D.host.E} (F : LFlag (VS D) D.R.rS T) (F0 : LFlag (VS D) D.R.rS T0)
     (σ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (U : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E)
     (hU : IsUpUni U) (hf : ∀ b, σ (frame F b) = ∑ a, U a b • frame F0 a) (j : ℕ) :
@@ -89,6 +119,15 @@ theorem map_Xflag_le {T T0 : D.host.E} (F : LFlag (VS D) D.R.rS T) (F0 : LFlag (
       exact Submodule.smul_mem _ _ (frame_mem_Xflag F0 j a (by omega) (by omega))
   exact key hx
 
+/- English proof (translation)
+Establish `hle : (Xflag F j).map (σ : (VS D).V →ₗ[D.host.E] (VS D).V) ≤ Xflag F0 j`. Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `y hy`. Conclude with `map_Xflag_le F F0 σ U hU hf j y hy`. Establish `hfin : FiniteDimensional D.host.E (Xflag F0 j)` using `by show FiniteDimensional D.host.E (Submodule.span D.host.E (F0.fl.e '' {i | i.1 < j}))`.
+
+Conclude with `FiniteDimensional.span_of_finite D.host.E ((Set.toFinite _).image _)`. Establish `heq : (Xflag F j).map (σ : (VS D).V →ₗ[D.host.E] (VS D).V) = Xflag F0 j`. Use `Submodule.eq_of_le_of_finrank_le hle ?_` and prove the remaining obligations. Conclude with `le_of_eq ((finrank_Xflag_eq F0 F j).trans (LinearEquiv.finrank_map_eq σ (Xflag F j)).symm)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Rewrite `h` using `[← heq, Submodule.mem_map]`. Take `⟨y, hy, hyx⟩` from `h`. Establish `hyx' : y = x` using `σ.injective hyx`. Rewrite `hy` using `[hyx']`.
+
+Conclude with `hy`. Conclude with `map_Xflag_le F F0 σ U hU hf j x`.
+-/
 theorem mem_Xflag_iff {T T0 : D.host.E} (F : LFlag (VS D) D.R.rS T) (F0 : LFlag (VS D) D.R.rS T0)
     (σ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (U : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E)
     (hU : IsUpUni U) (hf : ∀ b, σ (frame F b) = ∑ a, U a b • frame F0 a) (j : ℕ) (x : (VS D).V) :
@@ -112,6 +151,23 @@ theorem mem_Xflag_iff {T T0 : D.host.E} (F : LFlag (VS D) D.R.rS T) (F0 : LFlag 
     exact hy
   · exact map_Xflag_le F F0 σ U hU hf j x
 
+/- English proof (translation)
+Introduce `D T F F0 σ U hσ hU hf n`. Establish `hX : ∀ j x, σ x ∈ Xflag F0 j ↔ x ∈ Xflag F j` using `fun j x => mem_Xflag_iff F F0 σ U hU hf j x`. Establish `hS : ∀ x, σ x ∈ Xsp F0 ↔ x ∈ Xsp F`. Introduce `x`. Rewrite using `[Xsp_eq_Xflag, Xsp_eq_Xflag]`.
+
+Conclude with `hX _ x`. Establish `hO : ∀ x, σ x ∈ orth (VS D) (Xsp F0) ↔ x ∈ orth (VS D) (Xsp F)` using `orth_iff hσ hS`. Establish `hc : ∀ x, (σ * n * σ⁻¹) (σ x) = σ (n x)`. Introduce `x`. Use `show σ (n (σ.symm (σ x))) = σ (n x)`.
+
+Rewrite using `[LinearEquiv.symm_apply_apply]`. Establish `hsub : ∀ x, σ (n x) - σ x = σ (n x - x)` using `fun x => (map_sub σ _ _).symm`. Unfold `NRat`. Simplify using `only [Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨mul_mem (mul_mem hσ h1) (inv_mem hσ), ?_, ?_⟩` and prove the remaining obligations. Introduce `j x hx`. Take `⟨y, rfl⟩` from `σ.surjective x`. Rewrite using `[hc, hsub, hX]`.
+
+Conclude with `h2 j y ((hX _ y).1 hx)`. Introduce `x hx`. Take `⟨y, rfl⟩` from `σ.surjective x`. Rewrite using `[hc, hsub, hS]`. Conclude with `h3 y ((hO y).1 hx)`.
+
+Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : n = σ⁻¹ * (σ * n * σ⁻¹) * σ` using `by group`. Rewrite using `[e]`. Conclude with `mul_mem (mul_mem (inv_mem hσ) h1) hσ`.
+
+Introduce `j x hx`. Establish `h'` using `h2 j (σ x) ((hX _ x).2 hx)`. Rewrite `h'` using `[hc, hsub, hX]`. Conclude with `h'`. Introduce `x hx`.
+
+Establish `h'` using `h3 (σ x) ((hO x).2 hx)`. Rewrite `h'` using `[hc, hsub, hS]`. Conclude with `h'`.
+-/
 theorem nrat_conj_iff : ∀ (D : D7) {T : D.host.E} (F F0 : LFlag (VS D) D.R.rS T)
     (σ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (U : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E),
     σ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT → IsUpUni U → (∀ b, σ (frame F b) = ∑ a, U a b • frame F0 a) →

@@ -9,6 +9,53 @@ open scoped ComplexConjugate
 
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
+/- English proof (translation)
+Introduce `r X ξ ep0 hξ hep z hz hgap δ`. Establish `hz' : z ∈ X.dom ∧ ∀ τ : X.Ψ, X.c τ * X.maj z τ (Data.emb τ.1 ξ) = 1` using `hz`. Establish `hz1 : z ∈ X.dom` using `hz'.1`. Use `haveI hzf : Fact (z ∈ X.dom) := ⟨hz1⟩`. Establish `hk0 : 0 < X.k0` using `X.minWeight_pos`.
+
+Establish `hk0ne : X.k0 ≠ 0` using `hk0.ne'`. Establish `hdE : 0 < dE E`. Unfold `dE`. Conclude with `abs_pos.mpr (Int.cast_ne_zero.mpr (NumberField.discr_ne_zero (K := E)))`. Establish `hdEne : dE E ≠ 0` using `hdE.ne'`.
+
+Establish `hrd : 0 ≤ rdE E`. Unfold `rdE`. Conclude with `Real.rpow_nonneg hdE.le _`. Establish `hepne : ep0 ≠ 0` using `hep.ne'`. Take `⟨d, hd⟩ : ∃ d : VT (X` from `X.toData) z ξ, ∀ u ∈ X.Uz z ξ, ∀ τ : X.Ψ, δ τ (u τ) = X.Hf z τ (u τ) (d.val τ) := by`.
+
+Apply the tactic sequence `apply FinrankRieszBounds.riesz <;> assumption`. Take `⟨d', hd'⟩ : ∃ d' : VT (X` from `X.toData) z ξ, d' = (2 / (dE E * X.k0 ^ 2)) • Bmap z ξ d := ⟨_, rfl⟩`. Take `⟨μ, hμ⟩ : ∃ μ : X.Λp ξ, ‖d' - phi z ξ hξ μ‖ ≤ (finrank ℝ (VT (X` from `X.toData) z ξ) : ℝ) ^ 3 * X.NA / (2 * X.k0 * Real.sqrt ep0) := by`. Apply the tactic sequence `apply DiscreteLatticeMinimum.covering (Y := X) (z := z) (ξ := ξ) (hD3 := integerApproximationCount_holds) (hep := hep) <;> assumption`. Establish `hfin : finrank ℝ (VT (X` using `X.toData) z ξ) ≤ 2 * fdeg E * (r - 2) := by`.
+
+Apply the tactic sequence `apply FinrankRieszBounds.finrank_le <;> assumption`. Take `⟨n, hn⟩ : ∃ n : ℕ, n = finrank ℝ (VT (X` from `X.toData) z ξ) := ⟨_, rfl⟩`. Rewrite `hμ`, `hfin` using `[← hn]`. Take `⟨D, hDdef⟩ : ∃ D : ℝ, D = ‖d' - phi z ξ hξ μ‖` from `⟨_, rfl⟩`. Rewrite `hμ` using `[← hDdef]`.
+
+Take `⟨w, hw⟩ : ∃ w : VT (X` from `X.toData) z ξ, w = (-(dE E / 2)) • Bmap z ξ (d' - phi z ξ hξ μ) := ⟨_, rfl⟩`. Establish `hd_eq : (-(dE E / 2)) • Bmap z ξ d' = d`. Rewrite using `[hd', map_smul, DiscreteLatticeMinimum.Bmap_Bmap, smul_smul, smul_smul]`. Use `one_smul ℝ d using 2` and compare the differences between its conclusion and the goal. Apply the tactic sequence `field_simp <;> ring`.
+
+Establish `hw_eq : w = d - (-(dE E / 2)) • Bmap z ξ (phi z ξ hξ μ)`. Rewrite using `[hw, map_sub, smul_sub, hd_eq]`. Establish `hwn : ‖w‖ = dE E / 2 * (X.k0 * D)`. Rewrite using `[hw, norm_smul, DiscreteLatticeMinimum.norm_Bmap, ← hDdef, Real.norm_eq_abs, abs_neg, abs_of_pos (half_pos hdE)]`. Establish `hspos : 0 < Real.sqrt ep0` using `Real.sqrt_pos.mpr hep`.
+
+Establish `hsq : Real.sqrt ep0 ^ 2 = ep0` using `Real.sq_sqrt hep.le`. Establish `hden : 0 < 2 * X.k0 * Real.sqrt ep0` using `mul_pos (mul_pos two_pos hk0) hspos`. Establish `hD0 : 0 ≤ D` using `by rw [hDdef]; exact norm_nonneg _`. Establish `hB : D * (2 * X.k0 * Real.sqrt ep0) ≤ (n : ℝ) ^ 3 * X.NA` using `(le_div_iff₀ hden).mp hμ`. Establish `hD2 : D ^ 2 * (4 * X.k0 ^ 2 * ep0) ≤ ((n : ℝ) ^ 3 * X.NA) ^ 2`.
+
+Establish `h0 : 0 ≤ D * (2 * X.k0 * Real.sqrt ep0)` using `mul_nonneg hD0 hden.le`. Establish `h1` using `pow_le_pow_left₀ h0 hB 2`. Establish `h2 : D ^ 2 * (4 * X.k0 ^ 2 * ep0) = (D * (2 * X.k0 * Real.sqrt ep0)) ^ 2`. Take the linear combination `(-(4 * D ^ 2 * X.k0 ^ 2)) * hsq`. Rewrite using `[h2]`.
+
+Conclude with `h1`. Establish `hx : 0 ≤ (X.NC : ℝ) ^ 2 * rdE E / ep0` using `div_nonneg (mul_nonneg (sq_nonneg _) hrd) hep.le`. Establish `hM2 : frameIndexBound r (fdeg E) (dE E) (rdE E) X.NA X.NC ep0 ^ 2 = (fdeg E : ℝ) ^ 2 * ((2 * fdeg E * (r - 2) : ℕ) : ℝ) ^ 6 * dE E ^ 2 * (X.NA : ℝ) ^ 2 * ((X.NC : ℝ) ^ 2 * rdE E / ep0)`. Establish `hs` using `Real.sq_sqrt hx`. Rewrite using `[frameIndexBound]`.
+
+Take the linear combination `((fdeg E : ℝ) * ((2 * fdeg E * (r - 2) : ℕ) : ℝ) ^ 3 * dE E * (X.NA : ℝ)) ^ 2 * hs`. Establish `hwM : ‖w‖ ^ 2 ≤ frameIndexBound r (fdeg E) (dE E) (rdE E) X.NA X.NC ep0 ^ 2 * X.k0`. Rewrite using `[hwn, hM2]`. Establish `hlhs : (dE E / 2 * (X.k0 * D)) ^ 2 * (16 * ep0) ≤ dE E ^ 2 * (X.NA : ℝ) ^ 2 * (n : ℝ) ^ 6`. Establish `h3 : (dE E / 2 * (X.k0 * D)) ^ 2 * (16 * ep0) = dE E ^ 2 * (D ^ 2 * (4 * X.k0 ^ 2 * ep0))` using `by ring`.
+
+Rewrite using `[h3]`. Combine the equalities or inequalities in the displayed calculation. Establish `hQ : 0 ≤ dE E ^ 2 * (X.NA : ℝ) ^ 2` using `by positivity`. Establish `hS : 0 ≤ (X.NC : ℝ) ^ 2 * X.k0 * rdE E` using `mul_nonneg (mul_nonneg (sq_nonneg _) hk0.le) hrd`. Establish `hn6 : (n : ℝ) ^ 6 ≤ ((2 * fdeg E * (r - 2) : ℕ) : ℝ) ^ 6` using `pow_le_pow_left₀ (Nat.cast_nonneg _) (by exact_mod_cast hfin) 6`.
+
+Establish `hinv : ep0 * ep0⁻¹ = 1` using `mul_inv_cancel₀ hepne`. Establish `heq : (fdeg E : ℝ) ^ 2 * ((2 * fdeg E * (r - 2) : ℕ) : ℝ) ^ 6 * dE E ^ 2 * (X.NA : ℝ) ^ 2 * ((X.NC : ℝ) ^ 2 * rdE E / ep0) * X.k0 * (16 * ep0) = 16 * ((fdeg E : ℝ) ^ 2 * (dE E ^ 2 * (X.NA : ℝ) ^ 2 * ((2 * fdeg E * (r - 2) : ℕ) : ℝ) ^ 6)) * ((X.NC : ℝ) ^ 2 * X.k0 * rdE E)`. Take the linear combination `(16 * (fdeg E : ℝ) ^ 2 * ((2 * fdeg E * (r - 2) : ℕ) : ℝ) ^ 6 * dE E ^ 2 * (X.NA : ℝ) ^ 2 * (X.NC : ℝ) ^ 2 * rdE E * X.k0) * hinv`. Establish `hP : 0 ≤ dE E ^ 2 * (X.NA : ℝ) ^ 2 * ((2 * fdeg E * (r - 2) : ℕ) : ℝ) ^ 6`. Check the signs of the components of the expression.
+
+Establish `h6 : dE E ^ 2 * (X.NA : ℝ) ^ 2 * (n : ℝ) ^ 6 ≤ dE E ^ 2 * (X.NA : ℝ) ^ 2 * ((2 * fdeg E * (r - 2) : ℕ) : ℝ) ^ 6` using `mul_le_mul_of_nonneg_left hn6 hQ`. Establish `hrhs : dE E ^ 2 * (X.NA : ℝ) ^ 2 * (n : ℝ) ^ 6 ≤ 16 * ((fdeg E : ℝ) ^ 2 * (dE E ^ 2 * (X.NA : ℝ) ^ 2 * ((2 * fdeg E * (r - 2) : ℕ) : ℝ) ^ 6)) * ((X.NC : ℝ) ^ 2 * X.k0 * rdE E)`. Distinguish the cases in `hN : ((2 * fdeg E * (r - 2) : ℕ) : ℝ) = 0`. Establish `hP0 : dE E ^ 2 * (X.NA : ℝ) ^ 2 * ((2 * fdeg E * (r - 2) : ℕ) : ℝ) ^ 6 = 0`. Rewrite using `[hN]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h5 : 0 ≤ 16 * ((fdeg E : ℝ) ^ 2 * (dE E ^ 2 * (X.NA : ℝ) ^ 2 * ((2 * fdeg E * (r - 2) : ℕ) : ℝ) ^ 6)) * ((X.NC : ℝ) ^ 2 * X.k0 * rdE E)` using `mul_nonneg (mul_nonneg (by norm_num) (mul_nonneg (sq_nonneg _) hP)) hS`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hN' : 2 * fdeg E * (r - 2) ≠ 0` using `by exact_mod_cast hN`. Establish `hf0 : fdeg E ≠ 0` using `fun h => hN' (by simp [h])`.
+
+Establish `hr : 0 < r` using `Nat.pos_of_ne_zero (fun h => hN' (by simp [h]))`. Establish `hk : 2 ≤ (X.NC : ℝ) ^ 2 * X.k0 * rdE E`. Apply the tactic sequence `apply DiscriminantTraceBounds.two_le_normSq_mul_rootDisc <;> assumption`. Establish `hf1 : (1 : ℝ) ≤ (fdeg E : ℝ) ^ 2`. Establish `h1 : (1 : ℝ) ≤ fdeg E` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr hf0`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `h7 : 2 ≤ (fdeg E : ℝ) ^ 2 * ((X.NC : ℝ) ^ 2 * X.k0 * rdE E)` using `by nlinarith`. Establish `h8` using `mul_le_mul_of_nonneg_left h7 hP`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `le_of_mul_le_mul_right (hlhs.trans (hrhs.trans_eq heq.symm)) (mul_pos (by norm_num) hep)`.
+
+Use `⟨(μ : Fin r → E), μ.2, ?_⟩` and prove the remaining obligations. Introduce `u hu τ`. Establish `hsm : ∀ (c : ℝ) (v : Fin r → ℂ), X.Hf z τ (u τ) (c • v) = (c : ℂ) * X.Hf z τ (u τ) v`. Introduce `c v`. Establish `hcv : c • v = (c : ℂ) • v` using `(Complex.coe_smul c v).symm`.
+
+Rewrite using `[hcv, UnipotentCoefficientShift.Hf_smul_right, Complex.conj_ofReal]`. Establish `hkey : δ τ (u τ) - (dE E : ℂ) * (-τ.1 X.ξ0) * hermC τ.1 X.Gm (u τ) (X.ucomp z ξ (X.embV (μ : Fin r → E)) τ) = X.Hf z τ (u τ) (w.val τ)`. Rewrite using `[hw_eq, VT.val_sub, VT.val_smul, Pi.sub_apply, Pi.smul_apply, MajorantOperators.Hf_sub_right, ← hd u hu τ, DiscreteLatticeMinimum.Bmap_val, RealTangentSpace.phi_val]`. Use `congr 1`. Rewrite using `[hsm]`.
+
+Simplify using `only [MajorantOperators.Bop]`. Rewrite using `[UnipotentCoefficientShift.Hf_smul_right, Data.Hf_eq_jp, X.hermC_jp_jp hz1]`. Simplify using `only [map_mul, map_neg, map_ofNat, MajorantOperators.conj_purely_imaginary_generator]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hkey, FinrankRieszBounds.maj_csmul hz1]`. Establish `hc : X.k0 * X.maj z τ (Data.emb τ.1 ξ) = 1`. Establish `h2` using `hz'.2 τ`. Simplify using `only [Data.c] at h2`. Rewrite `h2` using `[X.ξ0_abs τ]`.
+
+Take the linear combination `h2`. Establish `hme : 0 ≤ X.maj z τ (Data.emb τ.1 ξ)` using `MajorantOperators.maj_nonneg hz1 τ _`. Establish `hmu : 0 ≤ X.maj z τ (u τ)` using `MajorantOperators.maj_nonneg hz1 τ _`. Establish `hcs` using `MajorantOperators.Hf_cs hz1 τ (u τ) (w.val τ)`. Establish `hmw : X.maj z τ (w.val τ) ≤ ‖w‖ ^ 2`.
+
+Apply `RealTangentSpace.maj_le_norm_sq` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hc, mul_one]`.
+-/
 theorem noShortVectorLowerBound_holds : NoShortVectorLowerBound (E := E) := by
   intro r X ξ ep0 hξ hep z hz hgap δ
   have hz' : z ∈ X.dom ∧ ∀ τ : X.Ψ, X.c τ * X.maj z τ (Data.emb τ.1 ξ) = 1 := hz

@@ -8,6 +8,17 @@ namespace GroundTheory.PAdicHodge
 
 open Laurent Filter Topology
 
+/- English proof (translation)
+Establish `hQ1 : 1 < Q` using `by omega`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j : ℕ, A * θ ^ Q ^ j ≤ 1 / 2 := by`. Establish `h1` using `(tendsto_pow_atTop_nhds_zero_of_lt_one hθ0 hθ1).const_mul A`. Rewrite `h1` using `[mul_zero]`. Take `⟨j, hj⟩` from `(h1.eventually (ge_mem_nhds (by norm_num : (0 : ℝ) < 1 / 2))).exists`.
+
+Use `⟨j, le_trans ?_ hj⟩` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_of_le_one hθ0 hθ1.le (Nat.lt_pow_self hQ1).le) hA`. Use `set B := A * θ ^ Q ^ j`. Establish `hB0 : 0 ≤ B` using `by positivity`. Establish `hlim : Tendsto (fun k : ℕ => A ^ j * (1 / 2 : ℝ) ^ (k - j)) atTop (𝓝 0)`.
+
+Establish `: Tendsto (fun k : ℕ => (1 / 2 : ℝ) ^ (k - j)) atTop (𝓝 0)` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num) (by norm_num)).comp (tendsto_sub_atTop_nat j)`. Simplify using `using this.const_mul (A ^ j)`. Use `tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds hlim (Eventually.of_forall fun k => by positivity) ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop j] with k hk`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hk`.
+
+Establish `hexp : Q ^ j * d ≤ Q ^ (j + d) - 1`. Establish `h1 : d + 1 ≤ Q ^ d` using `Nat.lt_pow_self hQ1`. Establish `h2 : 1 ≤ Q ^ j` using `Nat.one_le_pow _ _ (by omega)`. Rewrite using `[pow_add]`. Establish `: Q ^ j * (d + 1) ≤ Q ^ j * Q ^ d` using `Nat.mul_le_mul_left _ h1`.
+
+Rewrite `this` using `[mul_add, mul_one]`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem tendsto_mul_pow_pow_sub_one {A θ : ℝ} (hA : 0 ≤ A) (hθ0 : 0 ≤ θ) (hθ1 : θ < 1) {Q : ℕ}
     (hQ : 2 ≤ Q) : Tendsto (fun k : ℕ => A ^ k * θ ^ (Q ^ k - 1)) atTop (𝓝 0) := by
   have hQ1 : 1 < Q := by omega
@@ -48,6 +59,11 @@ namespace TeichLift
 variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [IsUltrametricDist L]
   [CharP L p] [PerfectRing L p] {Γ : Type*} [CommRing Γ] (T : TeichLift p L Γ)
 
+/- English proof (translation)
+Use `convergesAt_of_eventually hρ0 (T.coeffB_neg_exists b) fun ε hε => ?_` and prove the remaining obligations. Take `⟨K, hK⟩` from `exists_pow_lt_of_lt_one (show 0 < ε / (θ + 1) by positivity) hρ1`. Use `⟨K, fun n hn => ?_⟩` and prove the remaining obligations. Use `lift n to ℕ using (by omega)`. Establish `hn' : K ≤ n` using `by exact_mod_cast hn`.
+
+Rewrite using `[zpow_natCast]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem convergesAt_of_norm_coeffB_le {b : T.B} {θ : ℝ} (hθ : 0 ≤ θ)
     (h : ∀ n, ‖T.coeffB b n‖ ≤ θ) {ρ : ℝ} (hρ0 : 0 < ρ) (hρ1 : ρ < 1) :
     ConvergesAt (T.coeffB b) ρ := by
@@ -63,6 +79,17 @@ theorem convergesAt_of_norm_coeffB_le {b : T.B} {θ : ℝ} (hθ : 0 ≤ θ)
     _ ≤ (θ + 1) * (ε / (θ + 1)) := mul_le_mul_of_nonneg_left hK.le (by linarith)
     _ = ε := by field_simp
 
+/- English proof (translation)
+Establish `hρ0 : 0 < σ ^ Q` using `pow_pos hσ0 Q`. Establish `hρ1 : σ ^ Q < 1` using `pow_lt_one₀ hσ0.le hσ1 (by omega)`. Establish `hc` using `T.convergesAt_of_norm_coeffB_le hθ0 h hρ0 hρ1`. Use `set X := θ ^ (Q - 1) * gaussNorm (T.coeffB b) (σ ^ Q)`. Establish `hX : 0 ≤ X` using `mul_nonneg (pow_nonneg hθ0 _) (gaussNorm_nonneg hρ0)`.
+
+Establish `hQ0 : Q ≠ 0` using `by omega`. Establish `hterm : ∀ n : ℤ, ‖T.coeffB b n‖ * σ ^ n ≤ X ^ ((Q : ℝ)⁻¹)`. Introduce `n`. Establish `ha : 0 ≤ ‖T.coeffB b n‖ * σ ^ n` using `mul_nonneg (norm_nonneg _) (zpow_pos hσ0 n).le`. Establish `hpow : (‖T.coeffB b n‖ * σ ^ n) ^ Q ≤ X`.
+
+Establish `e : (‖T.coeffB b n‖ * σ ^ n) ^ Q = ‖T.coeffB b n‖ ^ (Q - 1) * (‖T.coeffB b n‖ * (σ ^ Q) ^ n)`. Rewrite using `[mul_pow, ← zpow_natCast (σ ^ n), ← zpow_mul, ← zpow_natCast σ Q, ← zpow_mul, mul_comm n]`. Rewrite using `[show ‖T.coeffB b n‖ ^ Q = ‖T.coeffB b n‖ ^ (Q - 1) * ‖T.coeffB b n‖ by`. Rewrite using `[← pow_succ]`. Use `congr 1`.
+
+Use the proof step `omega]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mul_le_mul (pow_le_pow_left₀ (norm_nonneg _) (h n) _) (hc.le_gaussNorm n) (mul_nonneg (norm_nonneg _) (zpow_pos hρ0 n).le) (pow_nonneg hθ0 _)`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gaussNorm_pow_le {b : T.B} {θ : ℝ} (hθ0 : 0 ≤ θ)
     (h : ∀ n, ‖T.coeffB b n‖ ≤ θ) {Q : ℕ} (hQ : 1 ≤ Q) {σ : ℝ} (hσ0 : 0 < σ) (hσ1 : σ < 1) :
     gaussNorm (T.coeffB b) σ ^ Q ≤ θ ^ (Q - 1) * gaussNorm (T.coeffB b) (σ ^ Q) := by
@@ -93,11 +120,17 @@ theorem gaussNorm_pow_le {b : T.B} {θ : ℝ} (hθ0 : 0 ≤ θ)
         pow_le_pow_left₀ (gaussNorm_nonneg hσ0) (gaussNorm_le hterm) _
     _ = X := Real.rpow_inv_natCast_pow hX hQ0
 
+/- English proof (translation)
+Use `T.coeffB_eq ?_` and prove the remaining obligations. Rewrite using `[T.invSelf_pow_mul_pow, map_one]`.
+-/
 theorem coeffB_invSelf_pow (c : ℕ) :
     T.coeffB (IsLocalization.Away.invSelf T.π ^ c) = fun k => T.zcoeff 1 (k + c) := by
   refine T.coeffB_eq ?_
   rw [T.invSelf_pow_mul_pow, map_one]
 
+/- English proof (translation)
+Rewrite using `[T.coeffB_invSelf_pow, convergesAt_shift_iff hρ0, gaussNorm_shift hρ0, zcoeff_one, gaussNorm_pi_single _ _ hρ0]`. Conclude with `⟨convergesAt_pi_single _ _ _, by simp⟩`.
+-/
 theorem gaussNorm_invSelf_pow (c : ℕ) {ρ : ℝ} (hρ0 : 0 < ρ) :
     ConvergesAt (T.coeffB (IsLocalization.Away.invSelf T.π ^ c)) ρ ∧
       gaussNorm (T.coeffB (IsLocalization.Away.invSelf T.π ^ c)) ρ = ρ ^ (-(c : ℤ)) := by
@@ -112,6 +145,9 @@ namespace TeichLift
 variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [IsUltrametricDist L]
   [CharP L p] [PerfectRing L p] {Γ : Type*} [CommRing Γ] {T : TeichLift p L Γ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ρ ^ ((Q : ℝ)⁻¹), Real.rpow_pos_of_pos hρ0 _, Real.rpow_lt_one hρ0.le hρ1 (by positivity), Real.rpow_inv_natCast_pow hρ0.le (by omega)⟩`.
+-/
 theorem exists_pow_eq_radius {Q : ℕ} (hQ : 1 ≤ Q) {ρ : ℝ} (hρ0 : 0 < ρ) (hρ1 : ρ < 1) :
     ∃ σ : ℝ, 0 < σ ∧ σ < 1 ∧ σ ^ Q = ρ :=
   ⟨ρ ^ ((Q : ℝ)⁻¹), Real.rpow_pos_of_pos hρ0 _,
@@ -121,8 +157,14 @@ namespace TeichFrob
 
 variable (F : T.TeichFrob)
 
+/- English proof (translation)
+The claim follows from `F.q_pos`.
+-/
 theorem one_le_q : 1 ≤ p ^ F.a := F.q_pos
 
+/- English proof (translation)
+Introduce `ρ hρ0 hρ1`. Take `⟨σ, hσ0, hσ1, rfl⟩` from `exists_pow_eq_radius F.one_le_q hρ0 hρ1`. Conclude with `(F.convergesAt_coeffB_toB_iff hσ0 hσ1 z).2 (hz σ hσ0 hσ1)`.
+-/
 theorem convergesAt_toB_of_forall {z : T.B}
     (hz : ∀ ρ : ℝ, 0 < ρ → ρ < 1 → ConvergesAt (T.coeffB z) ρ) :
     ∀ ρ : ℝ, 0 < ρ → ρ < 1 → ConvergesAt (T.coeffB (F.toB z)) ρ := by
@@ -130,6 +172,9 @@ theorem convergesAt_toB_of_forall {z : T.B}
   obtain ⟨σ, hσ0, hσ1, rfl⟩ := exists_pow_eq_radius F.one_le_q hρ0 hρ1
   exact (F.convergesAt_coeffB_toB_iff hσ0 hσ1 z).2 (hz σ hσ0 hσ1)
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using hz`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply']`. Conclude with `F.convergesAt_toB_of_forall ih`.
+-/
 theorem convergesAt_toB_iterate_of_forall {z : T.B}
     (hz : ∀ ρ : ℝ, 0 < ρ → ρ < 1 → ConvergesAt (T.coeffB z) ρ) (k : ℕ) :
     ∀ ρ : ℝ, 0 < ρ → ρ < 1 → ConvergesAt (T.coeffB ((⇑F.toB)^[k] z)) ρ := by
@@ -138,6 +183,11 @@ theorem convergesAt_toB_iterate_of_forall {z : T.B}
   | succ k ih =>
     rw [Function.iterate_succ_apply']; exact F.convergesAt_toB_of_forall ih
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using hz`. Consider the case `succ k ih`. Establish `hk0 : 0 < σ ^ (p ^ F.a) ^ k` using `pow_pos hσ0 _`. Establish `hk1 : σ ^ (p ^ F.a) ^ k < 1` using `pow_lt_one₀ hσ0.le hσ1 (pow_pos F.q_pos k).ne'`.
+
+Rewrite using `[Function.iterate_succ_apply', pow_succ, pow_mul]`. Use `⟨(F.convergesAt_coeffB_toB_iff hk0 hk1 _).2 ih.1, ?_⟩` and prove the remaining obligations. Rewrite using `[F.gaussNorm_coeffB_toB hk0 hk1 ih.1, ih.2, ← pow_mul]`.
+-/
 theorem gaussNorm_toB_iterate {z : T.B} {σ : ℝ} (hσ0 : 0 < σ) (hσ1 : σ < 1)
     (hz : ConvergesAt (T.coeffB z) σ) (k : ℕ) :
     ConvergesAt (T.coeffB ((⇑F.toB)^[k] z)) (σ ^ (p ^ F.a) ^ k) ∧
@@ -152,6 +202,9 @@ theorem gaussNorm_toB_iterate {z : T.B} {σ : ℝ} (hσ0 : 0 < σ) (hσ1 : σ < 
     refine ⟨(F.convergesAt_coeffB_toB_iff hk0 hk1 _).2 ih.1, ?_⟩
     rw [F.gaussNorm_coeffB_toB hk0 hk1 ih.1, ih.2, ← pow_mul]
 
+/- English proof (translation)
+Establish `hQ : 1 ≤ (p ^ F.a) ^ k` using `Nat.one_le_pow _ _ F.q_pos`. Take `⟨σ, hσ0, hσ1, rfl⟩` from `exists_pow_eq_radius hQ hρ0 hρ1`. Take `⟨h1, h2⟩` from `F.gaussNorm_toB_iterate hσ0 hσ1 (T.convergesAt_of_norm_coeffB_le hθ0 hw hσ0 hσ1) k`. Conclude with `⟨h1, h2 ▸ T.gaussNorm_pow_le hθ0 hw hQ hσ0 hσ1⟩`.
+-/
 theorem gaussNorm_toB_iterate_le {w : T.B} {θ : ℝ} (hθ0 : 0 ≤ θ)
     (hw : ∀ n, ‖T.coeffB w n‖ ≤ θ) (k : ℕ) {ρ : ℝ} (hρ0 : 0 < ρ) (hρ1 : ρ < 1) :
     ConvergesAt (T.coeffB ((⇑F.toB)^[k] w)) ρ ∧
@@ -165,9 +218,23 @@ theorem gaussNorm_toB_iterate_le {w : T.B} {θ : ℝ} (hθ0 : 0 ≤ θ)
 
 def fwd (c : ℕ) (z : T.B) : T.B := IsLocalization.Away.invSelf T.π ^ c * F.toB z
 
+/- English proof (translation)
+Rewrite using `[fwd, ← mul_assoc, ← mul_pow, IsLocalization.Away.mul_invSelf, one_pow, one_mul]`.
+-/
 theorem toB_eq_fwd (c : ℕ) (z : T.B) : F.toB z = algebraMap Γ T.B T.π ^ c * F.fwd c z := by
   rw [fwd, ← mul_assoc, ← mul_pow, IsLocalization.Away.mul_invSelf, one_pow, one_mul]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => intro ρ hρ0 hρ1`. Simplify using `using hz ρ hρ0 hρ1`. Consider the case `succ k ih`. Introduce `ρ hρ0 hρ1`.
+
+Take `⟨σ, hσ0, hσ1, rfl⟩` from `exists_pow_eq_radius F.one_le_q hρ0 hρ1`. Take `⟨ih1, ih2⟩` from `ih σ hσ0 hσ1`. Establish `hq0 : 0 < σ ^ p ^ F.a` using `pow_pos hσ0 _`. Establish `hq1 : σ ^ p ^ F.a < 1` using `pow_lt_one₀ hσ0.le hσ1 F.q_pos.ne'`. Establish `htw` using `(F.convergesAt_coeffB_toB_iff hσ0 hσ1 _).2 ih1`.
+
+Take `⟨hi1, hi2⟩` from `T.gaussNorm_invSelf_pow c hq0`. Take `⟨hm1, hm2⟩` from `T.convergesAt_coeffB_mul hq0 hq1 hi1 htw`. Establish `hzk` using `F.convergesAt_toB_iterate_of_forall hz k σ hσ0 hσ1`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply']`. Use `⟨hm1, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `gaussNorm (T.coeffB (IsLocalization.Away.invSelf T.π ^ c * F.toB _)) _ = _`. Rewrite using `[hm2, hi2, F.gaussNorm_coeffB_toB hσ0 hσ1 ih1, ih2, mul_pow, ← F.gaussNorm_coeffB_toB hσ0 hσ1 hzk, ← mul_assoc]`. Use `congr 1`. Rewrite using `[← zpow_natCast σ (p ^ F.a), ← zpow_mul, ← zpow_natCast (σ ^ (-((c * k : ℕ) : ℤ))), ← zpow_mul, ← zpow_mul, ← zpow_add₀ hσ0.ne']`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gaussNorm_fwd_iterate (c : ℕ) {z : T.B}
     (hz : ∀ ρ : ℝ, 0 < ρ → ρ < 1 → ConvergesAt (T.coeffB z) ρ) (k : ℕ) :
     ∀ ρ : ℝ, 0 < ρ → ρ < 1 → ConvergesAt (T.coeffB ((F.fwd c)^[k] z)) ρ ∧
@@ -205,9 +272,17 @@ namespace TeichLift
 variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [IsUltrametricDist L]
   [CharP L p] [PerfectRing L p] {Γ : Type*} [CommRing Γ] (T : TeichLift p L Γ)
 
+/- English proof (translation)
+Rewrite using `[← map_zero (algebraMap Γ T.B), coeffB_algebraMap, (T.zcoeff_eq_zero_iff 0).2 rfl]`.
+-/
 theorem coeffB_zero_B : T.coeffB 0 = 0 := by
   rw [← map_zero (algebraMap Γ T.B), coeffB_algebraMap, (T.zcoeff_eq_zero_iff 0).2 rfl]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, T.coeffB_zero_B]`. Conclude with `⟨convergesAt_zero, by simp [gaussNorm, hM]⟩`. Consider the case `insert i s hi ih`.
+
+Rewrite using `[Finset.sum_insert hi]`. Take `⟨h1, h2⟩` from `h i (Finset.mem_insert_self i s)`. Take `⟨h3, h4⟩` from `ih fun j hj => h j (Finset.mem_insert_of_mem hj)`. Take `⟨h5, h6⟩` from `T.convergesAt_coeffB_add hρ0 hρ1 h1 h3`. Conclude with `⟨h5, h6.trans (max_le h2 h4)⟩`.
+-/
 theorem gaussNorm_finsetSum_le {ι : Type*} (s : Finset ι) (f : ι → T.B) {ρ M : ℝ} (hρ0 : 0 < ρ)
     (hρ1 : ρ < 1) (hM : 0 ≤ M)
     (h : ∀ i ∈ s, ConvergesAt (T.coeffB (f i)) ρ ∧ gaussNorm (T.coeffB (f i)) ρ ≤ M) :
@@ -228,6 +303,9 @@ namespace TeichFrob
 
 variable {T} (F : T.TeichFrob)
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `F.gaussNorm_fwd_iterate c (fun σ hσ0 hσ1 => T.convergesAt_of_norm_coeffB_le hθ0 hw hσ0 hσ1) k ρ hρ0 hρ1`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (F.gaussNorm_toB_iterate_le hθ0 hw k hρ0 hρ1).2 (zpow_pos hρ0 _).le`.
+-/
 theorem gaussNorm_fwd_iterate_le (c : ℕ) {w : T.B} {θ : ℝ} (hθ0 : 0 ≤ θ)
     (hw : ∀ n, ‖T.coeffB w n‖ ≤ θ) (k : ℕ) {ρ : ℝ} (hρ0 : 0 < ρ) (hρ1 : ρ < 1) :
     ConvergesAt (T.coeffB ((F.fwd c)^[k] w)) ρ ∧
@@ -242,6 +320,11 @@ theorem gaussNorm_fwd_iterate_le (c : ℕ) {w : T.B} {θ : ℝ} (hθ0 : 0 ≤ θ
 
 def fwdSum (c : ℕ) (w : T.B) (K : ℕ) : T.B := -∑ k ∈ Finset.range K, (F.fwd c)^[k] w
 
+/- English proof (translation)
+Proceed by induction on `K with`. Consider the case `zero => simp [fwdSum]`. Consider the case `succ K ih`. Establish `e : F.fwdSum c w (K + 1) = F.fwdSum c w K - (F.fwd c)^[K] w`. Simplify using `only [fwdSum, Finset.sum_range_succ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_sub, F.toB_eq_fwd c ((F.fwd c)^[K] w), ← Function.iterate_succ_apply' (F.fwd c)]`. Take the linear combination `ih`.
+-/
 theorem toB_fwdSum_sub (c : ℕ) (w : T.B) (K : ℕ) :
     F.toB (F.fwdSum c w K) - algebraMap Γ T.B T.π ^ c * F.fwdSum c w K =
       algebraMap Γ T.B T.π ^ c * w - algebraMap Γ T.B T.π ^ c * (F.fwd c)^[K] w := by
@@ -253,6 +336,11 @@ theorem toB_fwdSum_sub (c : ℕ) (w : T.B) (K : ℕ) :
     rw [e, map_sub, F.toB_eq_fwd c ((F.fwd c)^[K] w), ← Function.iterate_succ_apply' (F.fwd c)]
     linear_combination ih
 
+/- English proof (translation)
+Establish `e : F.fwdSum c w K' - F.fwdSum c w K = -∑ k ∈ Finset.Ico K K', (F.fwd c)^[k] w`. Simplify using `only [fwdSum, Finset.sum_Ico_eq_sub _ hKK']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Take `⟨h1, h2⟩` from `T.gaussNorm_finsetSum_le (Finset.Ico K K') (fun k => (F.fwd c)^[k] w) hρ0 hρ1 hM fun k hk => by`.
+
+Take `⟨h3, h4⟩` from `F.gaussNorm_fwd_iterate_le c hθ0 hw k hρ0 hρ1`. Conclude with `⟨h3, h4.trans (h k (Finset.mem_Ico.1 hk).1)⟩`. Take `⟨h5, h6⟩` from `T.convergesAt_coeffB_neg hρ0 hρ1 h1`. Conclude with `⟨h5, h6 ▸ h2⟩`.
+-/
 theorem gaussNorm_fwdSum_sub_le (c : ℕ) {w : T.B} {θ : ℝ} (hθ0 : 0 ≤ θ)
     (hw : ∀ n, ‖T.coeffB w n‖ ≤ θ) {K K' : ℕ} (hKK' : K ≤ K') {ρ : ℝ} (hρ0 : 0 < ρ)
     (hρ1 : ρ < 1) {M : ℝ} (hM : 0 ≤ M)

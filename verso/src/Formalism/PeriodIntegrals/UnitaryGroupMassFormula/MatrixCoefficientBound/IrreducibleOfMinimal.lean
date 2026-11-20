@@ -16,6 +16,19 @@ section Irr
 
 variable {G : Type} [Monoid G] {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
 
+/- English proof (translation)
+Establish `hWs : W.toSubmodule ≠ ⊥` using `fun h => hW (Subrepresentation.toSubmodule_injective h)`. Establish `: Nontrivial (Subrepresentation W.toRepresentation)`. Take `⟨x, hxW, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hWs`. Use `⟨⟨⊥, ⊤, fun h => hx0 ?_⟩⟩` and prove the remaining obligations. Establish `hmem : (⟨x, hxW⟩ : W.toSubmodule) ∈ (⊤ : Subrepresentation W.toRepresentation).toSubmodule` using `Submodule.mem_top`.
+
+Rewrite `hmem` using `[← h]`. Conclude with `congrArg Subtype.val ((Submodule.mem_bot ℂ).mp hmem)`. Use `⟨fun S => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hS : S = ⊥`. Conclude with `Or.inl hS`.
+
+Use `right`. Establish `hSs : S.toSubmodule ≠ ⊥` using `fun h => hS (Subrepresentation.toSubmodule_injective h)`. Set `S' : Subrepresentation π` to `⟨S.toSubmodule.map W.toSubmodule.subtype, by`. Introduce and unpack `g _ ⟨y, hy, rfl⟩`. Conclude with `⟨W.toRepresentation g y, S.apply_mem_toSubmodule g hy, rfl⟩⟩`.
+
+Establish `hS'0 : S' ≠ ⊥`. Take `⟨y, hyS, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hSs`. Introduce `h`. Establish `hmem : (y : V) ∈ S'.toSubmodule` using `⟨y, hyS, rfl⟩`. Rewrite `hmem` using `[h]`.
+
+Conclude with `hy0 (Subtype.ext ((Submodule.mem_bot ℂ).mp hmem))`. Establish `hle : S' ≤ W`. Introduce and unpack `_ ⟨y, _, rfl⟩`. Conclude with `y.2`. Establish `hrank` using `hmin S' hS'0 hle`.
+
+Establish `e1 : Module.finrank ℂ S'.toSubmodule = Module.finrank ℂ S.toSubmodule` using `(Submodule.equivMapOfInjective _ W.toSubmodule.injective_subtype S.toSubmodule).finrank_eq.symm`. Establish `htop : S.toSubmodule = ⊤` using `Submodule.eq_top_of_finrank_eq (by`. Use `Submodule.finrank_le S.toSubmodule` as an intermediate fact. Use the proof step `omega)`. Conclude with `Subrepresentation.toSubmodule_injective htop`.
+-/
 theorem irreducible_of_minimal (π : Representation ℂ G V) (W : Subrepresentation π) (hW : W ≠ ⊥)
     (hmin : ∀ W' : Subrepresentation π, W' ≠ ⊥ → W' ≤ W →
       Module.finrank ℂ W.toSubmodule ≤ Module.finrank ℂ W'.toSubmodule) :
@@ -53,6 +66,9 @@ theorem irreducible_of_minimal (π : Representation ℂ G V) (W : Subrepresentat
     omega)
   exact Subrepresentation.toSubmodule_injective htop
 
+/- English proof (translation)
+Establish `hex : ∃ d, ∃ W : Subrepresentation π, W ≠ ⊥ ∧ W ≤ E ∧ Module.finrank ℂ W.toSubmodule = d` using `⟨_, E, hE, le_rfl, rfl⟩`. Take `⟨W, hW, hWE, hWd⟩` from `Nat.find_spec hex`. Use `⟨W, hW, hWE, irreducible_of_minimal π W hW fun W' hW' hW'W => ?_⟩` and prove the remaining obligations. Rewrite using `[hWd]`. Conclude with `Nat.find_min' hex ⟨W', hW', hW'W.trans hWE, rfl⟩`.
+-/
 theorem exists_irreducible_le (π : Representation ℂ G V) (E : Subrepresentation π) (hE : E ≠ ⊥) :
     ∃ W : Subrepresentation π, W ≠ ⊥ ∧ W ≤ E ∧ W.toRepresentation.IsIrreducible := by
   have hex : ∃ d, ∃ W : Subrepresentation π, W ≠ ⊥ ∧ W ≤ E ∧ Module.finrank ℂ W.toSubmodule = d :=
@@ -66,6 +82,9 @@ end Irr
 
 variable {F : Type} [Field F] [Fintype F] {k : ℕ}
 
+/- English proof (translation)
+Simplify using `only [repGam, LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul]`. Use `first`. Consider the case `rfl`. Consider the case `simp`.
+-/
 theorem repGam_subrep {V : Type} [AddCommGroup V] [Module ℂ V] (ψ₀ : AddChar F ℂ)
     (π : Representation ℂ (GL (Fin k) F) V) (W : Subrepresentation π) (u : W.toSubmodule) :
     ((repGam ψ₀ W.toRepresentation u : W.toSubmodule) : V) = repGam ψ₀ π (u : V) := by
@@ -74,6 +93,15 @@ theorem repGam_subrep {V : Type} [AddCommGroup V] [Module ℂ V] (ψ₀ : AddCha
     | rfl
     | simp
 
+/- English proof (translation)
+Establish `hsd : superdiag k (1 : Matrix (Fin k) (Fin k) F) = 0`. Unfold `superdiag`. Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[Matrix.one_apply_ne]`.
+
+Introduce `hij`. Substitute `hij` using the available equality. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Establish `hpsi : psiNat ψ₀ (1 : GL (Fin k) F) = 1`.
+
+Unfold `psiNat psiU`. Rewrite using `[if_pos isUni_one, Units.val_one, hsd, AddChar.map_zero_eq_one]`. Unfold `gam`. Establish `h1 : ∀ y : GL (Fin k) F, y * 1 * y⁻¹ = 1` using `fun y => by group`. Establish `h2 : ∀ y : GL (Fin k) F, y * y⁻¹ = 1` using `fun y => by group`.
+
+Simplify using `only [h1, h2, hpsi, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gam_one_real (ψ₀ : AddChar F ℂ) :
     gam ψ₀ (1 : GL (Fin k) F) = (((Fintype.card (GL (Fin k) F) : ℝ) / (cardU F k : ℝ) : ℝ) : ℂ) := by
   have hsd : superdiag k (1 : Matrix (Fin k) (Fin k) F) = 0 := by
@@ -95,6 +123,11 @@ theorem gam_one_real (ψ₀ : AddChar F ℂ) :
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[gam_one_real, Complex.ofReal_re]`. Establish `hU : 0 < cardU F k`. Unfold `cardU`. Use `haveI : Nonempty {x : GL (Fin k) F // IsUni k x} := ⟨⟨1, isUni_one⟩⟩`. Conclude with `Nat.card_pos`.
+
+Establish `hG : 0 < Fintype.card (GL (Fin k) F)` using `Fintype.card_pos`. Conclude with `div_pos (by exact_mod_cast hG) (by exact_mod_cast hU)`.
+-/
 theorem gam_one_re_pos (ψ₀ : AddChar F ℂ) : 0 < (gam ψ₀ (1 : GL (Fin k) F)).re := by
   rw [gam_one_real, Complex.ofReal_re]
   have hU : 0 < cardU F k := by
@@ -104,6 +137,31 @@ theorem gam_one_re_pos (ψ₀ : AddChar F ℂ) : 0 < (gam ψ₀ (1 : GL (Fin k) 
   have hG : 0 < Fintype.card (GL (Fin k) F) := Fintype.card_pos
   exact div_pos (by exact_mod_cast hG) (by exact_mod_cast hU)
 
+/- English proof (translation)
+Establish `hcomm` using `PI.GGConvScalarW.representation_commutes_gamma F k ψ₀ V π`. Set `E : Subrepresentation π` to `⟨LinearMap.ker (repGam ψ₀ π - c • LinearMap.id), by`. Introduce `g v hv`. Simplify using `only [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at hv ⊢`. Establish `h1` using `congrArg (fun f => f v) (hcomm g)`.
+
+Simplify using `only [LinearMap.comp_apply] at h1`. Rewrite using `[← h1, hv, map_smul]⟩`. Establish `hmemE : ∀ v, v ∈ E.toSubmodule ↔ repGam ψ₀ π v = c • v`. Introduce `v`. Simplify using `only [E, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+
+Establish `hE : E ≠ ⊥`. Introduce `h`. Establish `hwE : w ∈ E.toSubmodule` using `(hmemE w).mpr hc`. Rewrite `hwE` using `[h]`. Conclude with `hw ((Submodule.mem_bot ℂ).mp hwE)`.
+
+Take `⟨W, hW0, hWE, hirr⟩` from `exists_irreducible_le π E hE`. Establish `hWs : W.toSubmodule ≠ ⊥` using `fun h => hW0 (Subrepresentation.toSubmodule_injective h)`. Take `⟨u, huW, hu0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hWs`. Establish `hu_eig : repGam ψ₀ π u = c • u` using `(hmemE u).mp (hWE huW)`. Establish `hpos` using `gam_one_re_pos (k := k) ψ₀`.
+
+Establish `hg1 : gam ψ₀ (1 : GL (Fin k) F) ≠ 0`. Introduce `h`. Rewrite `hpos` using `[h, Complex.zero_re]`. Conclude with `lt_irrefl 0 hpos`. Establish `hCS` using `hC F k ψ₀ hψ W.toSubmodule W.toRepresentation hirr`.
+
+Establish `hrep : repGam ψ₀ W.toRepresentation = gam ψ₀ (1 : GL (Fin k) F) • ((gam ψ₀ (1 : GL (Fin k) F))⁻¹ • repGam ψ₀ W.toRepresentation)`. Rewrite using `[smul_smul, mul_inv_cancel₀ hg1, one_smul]`. Rewrite `hrep` using `[hCS]`. Establish `k0` using `repGam_subrep ψ₀ π W ⟨u, huW⟩`. Rewrite `k0` using `[hrep, hu_eig]`.
+
+Establish `hreal` using `gam_one_real (k := k) ψ₀`. Establish `hre : (gam ψ₀ (1 : GL (Fin k) F)).re = (Fintype.card (GL (Fin k) F) : ℝ) / (cardU F k : ℝ)`. Rewrite using `[hreal, Complex.ofReal_re]`. Distinguish the cases in `hgen : Generic ψ₀ W.toRepresentation`. Rewrite `k0` using `[if_pos hgen]`.
+
+Establish `k1 : (gam ψ₀ (1 : GL (Fin k) F) * ((cardU F k : ℂ) / (Module.finrank ℂ W.toSubmodule : ℂ))) • u = c • u`. Rewrite using `[← k0, mul_smul]`. Both sides reduce to the same expression. Establish `hc_eq : c = gam ψ₀ (1 : GL (Fin k) F) * ((cardU F k : ℂ) / (Module.finrank ℂ W.toSubmodule : ℂ))` using `(smul_left_injective ℂ hu0 k1).symm`. Use `⟨(Fintype.card (GL (Fin k) F) : ℝ) / (cardU F k : ℝ) * ((cardU F k : ℝ) / (Module.finrank ℂ W.toSubmodule : ℝ)), ?_, by positivity, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hc_eq, hreal]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hre]`. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises.
+
+Conclude with `(hR F k ψ₀ hψ W.toSubmodule W.toRepresentation hirr hgen).trans (ratio_numeric k _ (by exact_mod_cast hq))`. Rewrite `k0` using `[if_neg hgen, smul_zero]`. Establish `hcu : c • u = 0`. Rewrite using `[← k0]`. Both sides reduce to the same expression.
+
+Use `⟨0, ?_, le_rfl, ?_⟩` and prove the remaining obligations. Break down `smul_eq_zero.mp hcu with h | h` into its components or cases. Rewrite using `[h, Complex.ofReal_zero]`. Conclude with `absurd h hu0`. Rewrite using `[hre]`.
+
+Check the signs of the components of the expression.
+-/
 theorem eig_place (hC : ConvScalar) (hR : GenericRatio) (ψ₀ : AddChar F ℂ) (hψ : ψ₀ ≠ 1)
     (hq : 3 ≤ Fintype.card F) {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (π : Representation ℂ (GL (Fin k) F) V) (c : ℂ) (w : V) (hw : w ≠ 0)
@@ -176,6 +234,13 @@ theorem eig_place (hC : ConvScalar) (hR : GenericRatio) (ψ₀ : AddChar F ℂ) 
     · rw [hre]
       positivity
 
+/- English proof (translation)
+Introduce `hC hR F _ _ k ψ₀ hψ hq V _ _ _ π W μ hW _ hμ`. Take `⟨w, hwW, hw0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW`. Take `⟨r, hr, hr0, hr1⟩` from `eig_place hC hR ψ₀ hψ hq π μ w hw0 (hμ w hwW)`. Establish `hpos` using `gam_one_re_pos (k := k) ψ₀`. Use `set g := (gam ψ₀ (1 : GL (Fin k) F)).re with hg`.
+
+Establish `hg0 : g ≠ 0` using `hpos.ne'`. Establish `hgam : gam ψ₀ (1 : GL (Fin k) F) = (g : ℂ)`. Rewrite using `[hg, gam_one_real, Complex.ofReal_re]`. Use `⟨r / g, ?_, div_nonneg hr0 hpos.le, ?_⟩` and prove the remaining obligations. Rewrite using `[hr, hgam, ← Complex.ofReal_mul]`.
+
+Use `congr 1`. Clear the denominators using the available nonvanishing facts. Use `first`. Consider the case `(rw [div_le_iff₀ hpos]; linarith)`. Consider the case `(rw [div_le_iff hpos]; linarith)`.
+-/
 theorem local_place_bound : PlaceBound := by
   intro hC hR F _ _ k ψ₀ hψ hq V _ _ _ π W μ hW _ hμ
   obtain ⟨w, hwW, hw0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hW

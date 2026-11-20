@@ -105,6 +105,19 @@ def RestMon (C₀ : ℝ) : Prop :=
           (Finset.range (r * X.Qc p K j)).filter fun e => e % X.Qc p K j = ρ i % X.Qc p K j,
             (Nat.card (X.Idx p K j (X.restr j (X.setTau j b e))) : ℝ)
 
+/- English proof (translation)
+Introduce `p n' r K _ _ _ X O _ _ _ S hX hLa hk j`. Use `⟨fun b => (Nat.card (X.Idx p K j (X.restr j b)) : ℝ), fun b => Nat.cast_nonneg _, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `b b' hbb`. Establish `: X.restr j b = X.restr j b'`. Use function extensionality and compare the values at `x`.
+
+Unfold `Dat.restr`. Use `split_ifs with hx`. Conclude with `hbb x hx`. Both sides reduce to the same expression. Simplify using `only [this]`.
+
+Introduce `b h0 hW hA`. Establish `hB : X.BOK p K j b` using `⟨h0, hW, hA⟩`. Establish `hfin` using `hF p n' r K X O j b h0`. Establish `hli` using `hI p n' r K X O S hX hLa hk j b hB`. Establish `hmem` using `hM p n' r K X O S hX hLa hk j b hB`.
+
+Establish `hli' : LinearIndependent O (fun q : X.Idx p K j (X.restr j b) => (⟨X.famEl p K O j b q.1, hmem q⟩ : X.Mj p K O j b))`. Use `LinearIndependent.of_comp (X.Mj p K O j b).subtype ?_` and prove the remaining obligations. Conclude with `hli`. Establish `hfinI : Finite (X.Idx p K j (X.restr j b))` using `hli'.finite`. Use `Fintype.ofFinite (X.Idx p K j (X.restr j b))` as an intermediate fact.
+
+Establish `h` using `hli'.fintype_card_le_finrank`. Use `beta_reduce`. Rewrite using `[Nat.card_eq_fintype_card]`. Conclude with `h` after adjusting the coercions. Introduce `b hA ρ`.
+
+Take `⟨hfin, hT1⟩` from `hT p n' r K X hX hLa hk j b hA`. Use `le_trans ?_ (hN p n' r K X hX hLa hk j b hA hfin ρ)` and prove the remaining obligations. Unfold `Dat.segBound`. Conclude with `mul_le_mul_of_nonneg_right hT1 (by positivity)`.
+-/
 theorem restSeg_of (C₀ : ℝ) (hM : RestMem C₀) (hI : RestInd C₀) (hF : RestFin) (hT : GoodPathWeight C₀) (hN : RestMon C₀) :
     RestSeg C₀ := by
   intro p n' r K _ _ _ X O _ _ _ S hX hLa hk j

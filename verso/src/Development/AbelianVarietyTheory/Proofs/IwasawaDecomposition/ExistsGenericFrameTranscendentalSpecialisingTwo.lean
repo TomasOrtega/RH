@@ -14,6 +14,9 @@ open Matrix ReciprocityTheory.ChartRestriction.G.PullbackSections
 def mixM {K R : Type} [CommRing K] [CommRing R] {n : ℕ} (κ : K →+* R) (u : R) (A : Matrix (Fin n) (Fin n) K) :
     Matrix (Fin n) (Fin n) R := (1 - u) • (1 : Matrix (Fin n) (Fin n) R) + u • A.map κ
 
+/- English proof (translation)
+Use extensionality with `a b`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[mixM]`. Simplify using `[mixM, Matrix.one_apply_ne h]`.
+-/
 theorem mixM_map {K R R' : Type} [CommRing K] [CommRing R] [CommRing R'] {n : ℕ} (κ : K →+* R) (u : R)
     (A : Matrix (Fin n) (Fin n) K) (ψ : R →+* R') : (mixM κ u A).map ψ = mixM (ψ.comp κ) (ψ u) A := by
   ext a b
@@ -24,6 +27,9 @@ theorem mixM_map {K R R' : Type} [CommRing K] [CommRing R] [CommRing R'] {n : �
 def detPoly {K : Type} [CommRing K] {n : ℕ} (A : Matrix (Fin n) (Fin n) K) : Polynomial K :=
   (mixM Polynomial.C Polynomial.X A).det
 
+/- English proof (translation)
+Rewrite using `[detPoly, ← Polynomial.coe_eval₂RingHom, RingHom.map_det, RingHom.mapMatrix_apply, mixM_map]`. Use `congr 2`. Use extensionality with `a`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem det_mixM {K R : Type} [CommRing K] [CommRing R] {n : ℕ} (κ : K →+* R) (u : R) (A : Matrix (Fin n) (Fin n) K) :
     (mixM κ u A).det = (detPoly A).eval₂ κ u := by
   rw [detPoly, ← Polynomial.coe_eval₂RingHom, RingHom.map_det, RingHom.mapMatrix_apply, mixM_map]
@@ -31,12 +37,21 @@ theorem det_mixM {K R : Type} [CommRing K] [CommRing R] {n : ℕ} (κ : K →+* 
   · ext a; simp
   · simp
 
+/- English proof (translation)
+Simplify using `[mixM]`.
+-/
 theorem mixM_zero {K : Type} [CommRing K] {n : ℕ} (A : Matrix (Fin n) (Fin n) K) : mixM (RingHom.id K) 0 A = 1 := by
   simp [mixM]
 
+/- English proof (translation)
+Simplify using `[mixM]`.
+-/
 theorem mixM_one {K : Type} [CommRing K] {n : ℕ} (A : Matrix (Fin n) (Fin n) K) : mixM (RingHom.id K) 1 A = A := by
   simp [mixM]
 
+/- English proof (translation)
+Introduce `h`. Use `det_mixM (RingHom.id K) 0 A` as an intermediate fact. Rewrite `this` using `[h, mixM_zero, Polynomial.eval₂_zero, det_one]`. Conclude with `one_ne_zero this`.
+-/
 theorem detPoly_ne_zero {K : Type} [Field K] {n : ℕ} (A : Matrix (Fin n) (Fin n) K) : detPoly A ≠ 0 := by
   intro h
   have := det_mixM (RingHom.id K) 0 A
@@ -54,6 +69,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
 
+/- English proof (translation)
+Establish `hsum : ∀ τ (a : Fin (Dw.mult τ) → R), ∑ i, a i • ∑ j, T τ j i • f.vec τ j = ∑ j, (T τ *ᵥ a) j • f.vec τ j`. Introduce `τ a`. Simplify using `only [Finset.smul_sum, smul_smul, mulVec, dotProduct, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by rw [mul_comm]`.
+
+Set `g : EigFrame Z φ x` to `EigFrame.ofVec (fun τ i => ∑ j, T τ j i • f.vec τ j) (fun τ i a => by`. Simplify using `only [map_sum, map_smul, f.act_vec, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => smul_comm _ _ _)`. Use the proof step `(fun τ w hw => by`. Take `⟨b, hb, hbu⟩` from `f.existsUnique_sum τ w hw`.
+
+Use `⟨(T τ)⁻¹ *ᵥ b, ?_, fun a ha => ?_⟩` and prove the remaining obligations. Use `show w = ∑ i, ((T τ)⁻¹ *ᵥ b) i • ∑ j, T τ j i • f.vec τ j`. Rewrite using `[hsum, mulVec_mulVec, mul_nonsing_inv _ (hT τ), one_mulVec]`. Conclude with `hb`. Establish `h1 : T τ *ᵥ a = b` using `hbu _ (ha.trans (hsum τ a))`.
+
+Rewrite using `[← h1, mulVec_mulVec, nonsing_inv_mul _ (hT τ), one_mulVec])`. Use `⟨g, fun τ => EigFrame.co_eq fun i => ?_⟩` and prove the remaining obligations. Conclude with `(isComb_iff (f.vec τ) (fun a => T τ a i) (∑ j, T τ j i • f.vec τ j)).2 rfl`.
+-/
 theorem exists_co_eq {R : Type} [CommRing R] {φ : c.F →+* R} {x : Sp R ⟶ Z.X} (f : EigFrame Z φ x)
     (T : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) R) (hT : ∀ τ, IsUnit (T τ).det) :
     ∃ g : EigFrame Z φ x, ∀ τ, f.co g τ = T τ := by
@@ -78,10 +102,16 @@ theorem exists_co_eq {R : Type} [CommRing R] {φ : c.F →+* R} {x : Sp R ⟶ Z.
   refine ⟨g, fun τ => EigFrame.co_eq fun i => ?_⟩
   exact (isComb_iff (f.vec τ) (fun a => T τ a i) (∑ j, T τ j i • f.vec τ j)).2 rfl
 
+/- English proof (translation)
+Rewrite using `[← f₁.co_mul f₀ f₂ τ, ← h, f₁.co_mul f₀ f₁ τ, f₁.co_self τ]`.
+-/
 theorem co_eq_one {R : Type} [CommRing R] {φ : c.F →+* R} {x : Sp R ⟶ Z.X} {f₀ f₁ f₂ : EigFrame Z φ x}
     {τ : E →+* ℂ} (h : f₀.co f₁ τ = f₀.co f₂ τ) : f₁.co f₂ τ = 1 := by
   rw [← f₁.co_mul f₀ f₂ τ, ← h, f₁.co_mul f₀ f₁ τ, f₁.co_self τ]
 
+/- English proof (translation)
+Use `⟨hx, hφ, fun τ i => ⟨fun a => f'.co g τ a i, by simp [h], fun k hk => by` and prove the remaining obligations. Simplify using `[h, Matrix.one_apply_ne hk.ne'], ?_⟩⟩`. Rewrite using `[← funext (hf τ)]`. Conclude with `f'.co_spec g τ i`.
+-/
 theorem tri_of_co_eq_one {R R' : Type} [CommRing R] [CommRing R'] {φ : c.F →+* R} {x : Sp R ⟶ Z.X}
     {φ' : c.F →+* R'} {x' : Sp R' ⟶ Z.X} {f : EigFrame Z φ x} {ψ : R →+* R'} {f' g : EigFrame Z φ' x'}
     (hf : f.IsMap ψ f') (hφ : φ' = ψ.comp φ) (hx : x' = spMap ψ ≫ x) (h : ∀ τ, f'.co g τ = 1) : f.Tri ψ g 1 := by
@@ -90,6 +120,9 @@ theorem tri_of_co_eq_one {R R' : Type} [CommRing R] [CommRing R'] {φ : c.F →+
   rw [← funext (hf τ)]
   exact f'.co_spec g τ i
 
+/- English proof (translation)
+Introduce `τ i` and use `by have h1 : spMap (dualMap (RingHom.id R)) = 𝟙 _ := by rw [← Spec.map_id] congr 1 ext r <;> simp [dualMap] rw [h1, Category.id_comp]`.
+-/
 theorem isMap_id {R : Type} [CommRing R] {φ : c.F →+* R} {x : Sp R ⟶ Z.X} (f : EigFrame Z φ x) :
     f.IsMap (RingHom.id R) f := fun τ i => by
   have h1 : spMap (dualMap (RingHom.id R)) = 𝟙 _ := by
@@ -98,6 +131,9 @@ theorem isMap_id {R : Type} [CommRing R] {φ : c.F →+* R} {x : Sp R ⟶ Z.X} (
     ext r <;> simp [dualMap]
   rw [h1, Category.id_comp]
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [← Spec.map_comp]; rfl
@@ -106,6 +142,25 @@ end GlobalTheory.GenFrame
 
 open Matrix in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z K _ χ x g g' L _ ι s hs xL hxL`. Establish `hP : ∀ τ, (GlobalTheory.GenFrame.detPoly (g.co g' τ)).eval₂ ι s ≠ 0` using `fun τ h => GlobalTheory.GenFrame.detPoly_ne_zero _ (hs _ h)`. Take `⟨gB, hgB⟩` from `g.exists_isMap ι (φ' := ι.comp χ) rfl hxL`. Take `⟨gL, hgL⟩` from `GlobalTheory.GenFrame.exists_co_eq gB (fun τ => GlobalTheory.GenFrame.mixM ι s (g.co g' τ)) fun τ => by`. Rewrite using `[GlobalTheory.GenFrame.det_mixM]`.
+
+Conclude with `(hP τ).isUnit`. Use `⟨gL, fun V _ _ ν ιV r sV hνι hrι hker hνs => ?_⟩` and prove the remaining obligations. Take `⟨gVB, hgVB⟩` from `g.exists_isMap ιV (φ' := ιV.comp χ) (x' := spMap ιV ≫ x) rfl rfl`. Establish `hxν : xL = spMap ν ≫ spMap ιV ≫ x`. Rewrite using `[hxL, ← Category.assoc, GlobalTheory.GenFrame.spMap_comp, hνι]`.
+
+Establish `hxr : x = spMap r ≫ spMap ιV ≫ x`. Rewrite using `[← Category.assoc, GlobalTheory.GenFrame.spMap_comp, hrι]`. Conclude with `(Category.id_comp x).symm.trans (congrArg (· ≫ x) (Spec.map_id _).symm)`. Establish `hφν : ι.comp χ = ν.comp (ιV.comp χ)` using `by rw [← RingHom.comp_assoc, hνι]`. Establish `hφr : χ = r.comp (ιV.comp χ)` using `by rw [← RingHom.comp_assoc, hrι]; rfl`.
+
+Establish `hBν : gVB.IsMap ν gB` using `fun τ i => by`. Rewrite using `[hgB τ i, hgVB τ i, GlobalTheory.GradedPieces.dual_comp, hνι]`. Establish `hBr : gVB.IsMap r g` using `fun τ i => by`. Rewrite using `[hgVB τ i, GlobalTheory.GradedPieces.dual_comp, hrι]`. Conclude with `(GlobalTheory.GenFrame.isMap_id g τ i)`.
+
+Establish `main : ∀ (hu : ∀ τ, IsUnit (GlobalTheory.GenFrame.mixM ιV sV (g.co g' τ)).det), ∃ gV : EigFrame Z (ιV.comp χ) (spMap ιV ≫ x), gV.Tri ν gL 1 ∧ ∃ gVr : EigFrame Z χ x, gV.IsMap r gVr ∧ ∀ τ, g.co gVr τ = GlobalTheory.GenFrame.mixM (RingHom.id K) (r sV) (g.co g' τ)`. Introduce `hu`. Take `⟨gV, hgV⟩` from `GlobalTheory.GenFrame.exists_co_eq gVB (fun τ => GlobalTheory.GenFrame.mixM ιV sV (g.co g' τ)) hu`. Take `⟨gVν, hgVν⟩` from `gV.exists_isMap ν hφν hxν`. Take `⟨gVr, hgVr⟩` from `gV.exists_isMap r hφr hxr`.
+
+Use `⟨gV, GlobalTheory.GenFrame.tri_of_co_eq_one hgVν hφν hxν fun τ => GlobalTheory.GenFrame.co_eq_one (f₀ := gB) ?_, gVr, hgVr, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[hBν.co τ hgVν hxν, hgV, hgL, GlobalTheory.GenFrame.mixM_map, hνι, hνs]`. Rewrite using `[hBr.co τ hgVr hxr, hgV, GlobalTheory.GenFrame.mixM_map, hrι]`. Establish `hunit : (∀ τ, r (GlobalTheory.GenFrame.mixM ιV sV (g.co g' τ)).det ≠ 0) → ∀ τ, IsUnit (GlobalTheory.GenFrame.mixM ιV sV (g.co g' τ)).det` using `fun h τ => by`. Rewrite using `[← IsLocalRing.notMem_maximalIdeal, ← hker, RingHom.mem_ker]`.
+
+Conclude with `h τ`. Establish `hr : ∀ τ, r (GlobalTheory.GenFrame.mixM ιV sV (g.co g' τ)).det = (GlobalTheory.GenFrame.mixM (RingHom.id K) (r sV) (g.co g' τ)).det` using `fun τ => by`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, GlobalTheory.GenFrame.mixM_map, hrι]`. Use `⟨fun h0 => ?_, fun h1 => ?_⟩` and prove the remaining obligations. Take `⟨gV, hL, gVr, hgVr, hco⟩` from `main (hunit fun τ => by`.
+
+Rewrite using `[hr, h0, GlobalTheory.GenFrame.mixM_zero, det_one]`. Conclude with `one_ne_zero)`. Use `⟨gV, 1, 1, hL, GlobalTheory.GenFrame.tri_of_co_eq_one hgVr hφr hxr fun τ => GlobalTheory.GenFrame.co_eq_one (f₀ := g) ?_⟩` and prove the remaining obligations. Rewrite using `[hco, h0, GlobalTheory.GenFrame.mixM_zero, g.co_self]`. Take `⟨gV, hL, gVr, hgVr, hco⟩` from `main (hunit fun τ => by`.
+
+Rewrite using `[hr, h1, GlobalTheory.GenFrame.mixM_one]`. Conclude with `(g.isUnit_det_co g' τ).ne_zero)`. Use `⟨gV, 1, 1, hL, GlobalTheory.GenFrame.tri_of_co_eq_one hgVr hφr hxr fun τ => GlobalTheory.GenFrame.co_eq_one (f₀ := g) ?_⟩` and prove the remaining obligations. Rewrite using `[hco, h1, GlobalTheory.GenFrame.mixM_one]`.
+-/
 theorem GlobalTheory.GenFrame.exists_generic_frame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (K : Type) [Field K] (χ : c.F →+* K) (x : Sp K ⟶ Z.X) (g g' : EigFrame Z χ x) (L : Type) [Field L] (ι : K →+* L) (s : L), (∀ P : Polynomial K, P.eval₂ ι s = 0 → P = 0) → ∀ (xL : Sp L ⟶ Z.X), xL = spMap ι ≫ x → ∃ gL : EigFrame Z (ι.comp χ) xL, ∀ (V : Type) [CommRing V] [IsLocalRing V] (ν : V →+* L) (ιV : K →+* V) (r : V →+* K) (sV : V), ν.comp ιV = ι → r.comp ιV = RingHom.id K → RingHom.ker r = IsLocalRing.maximalIdeal V → ν sV = s → (r sV = 0 → ∃ (gV : EigFrame Z (ιV.comp χ) (spMap ιV ≫ x)) (tL : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Lˣ) (tk : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Kˣ), gV.Tri ν gL tL ∧ gV.Tri r g tk) ∧ (r sV = 1 → ∃ (gV : EigFrame Z (ιV.comp χ) (spMap ιV ≫ x)) (tL : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Lˣ) (tk : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Kˣ), gV.Tri ν gL tL ∧ gV.Tri r g' tk) := by
   intro E _ _ _ H Dw l Xo c O _ β Z K _ χ x g g' L _ ι s hs xL hxL
   have hP : ∀ τ, (GlobalTheory.GenFrame.detPoly (g.co g' τ)).eval₂ ι s ≠ 0 := fun τ h =>

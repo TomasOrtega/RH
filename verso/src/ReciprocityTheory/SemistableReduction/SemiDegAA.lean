@@ -15,9 +15,15 @@ def waR {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r) (x : F
     simp only [HermForm.h, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]
     exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem waR_apply {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     (x y : Fin r → K) : waR S x y = S.h x y := rfl
 
+/- English proof (translation)
+Unfold `HermForm.h`. Simplify using `only [map_sum, map_mul, S.c_invol, S.G_herm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem wa_symm {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     (x y : Fin r → K) : S.h y x = S.c (S.h x y) := by
   unfold HermForm.h
@@ -25,34 +31,55 @@ theorem wa_symm {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r
   conv_rhs => rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Simplify using `only [HermForm.h, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]`.
+-/
 theorem wa_sub_right {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     (x y z : Fin r → K) : S.h x (y - z) = S.h x y - S.h x z := by
   simp only [HermForm.h, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Simplify using `only [HermForm.h, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem wa_smul_right {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     (a : K) (x y : Fin r → K) : S.h x (a • y) = a * S.h x y := by
   simp only [HermForm.h, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Simplify using `[HermForm.h]`.
+-/
 theorem wa_zero_right {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     (x : Fin r → K) : S.h x 0 = 0 := by
   simp [HermForm.h]
 
+/- English proof (translation)
+Simplify using `only [HermForm.h, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]`.
+-/
 theorem wa_sub_left {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     (x y z : Fin r → K) : S.h (x - y) z = S.h x z - S.h y z := by
   simp only [HermForm.h, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Simplify using `only [HermForm.h, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem wa_smul_left {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     (a : K) (x y : Fin r → K) : S.h (a • x) y = S.c a * S.h x y := by
   simp only [HermForm.h, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Rewrite using `[← waR_apply S x, map_sum]`. Simplify using `only [map_smul, smul_eq_mul, waR_apply]`.
+-/
 theorem wa_sum_right {K : Type} [Field K] [NumberField K] {r n : ℕ} (S : HermForm K r)
     (x : Fin r → K) (t : Fin n → K) (b : Fin n → Fin r → K) :
     S.h x (∑ i, t i • b i) = ∑ i, t i * S.h x (b i) := by
   rw [← waR_apply S x, map_sum]
   simp only [map_smul, smul_eq_mul, waR_apply]
 
+/- English proof (translation)
+Rewrite using `[wa_symm S y, wa_sum_right, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← wa_symm S y (b i)]`.
+-/
 theorem wa_sum_left {K : Type} [Field K] [NumberField K] {r n : ℕ} (S : HermForm K r)
     (y : Fin r → K) (t : Fin n → K) (b : Fin n → Fin r → K) :
     S.h (∑ i, t i • b i) y = ∑ i, S.c (t i) * S.h (b i) y := by
@@ -60,6 +87,15 @@ theorem wa_sum_left {K : Type} [Field K] [NumberField K] {r n : ℕ} (S : HermFo
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [map_mul, ← wa_symm S y (b i)]
 
+/- English proof (translation)
+Establish `hsup : W ⊔ LinearMap.ker f = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `hv : v = (f v / f z) • z + (v - (f v / f z) • z)` using `by abel`. Rewrite using `[hv]`.
+
+Use `Submodule.add_mem_sup (W.smul_mem _ hz) ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, map_sub, map_smul, smul_eq_mul, div_mul_cancel₀ _ hfz, sub_self]`. Establish `hker : finrank K (LinearMap.ker f) + 1 = finrank K V`. Establish `h` using `LinearMap.finrank_range_add_finrank_ker f`. Establish `hr : LinearMap.range f = ⊤`.
+
+Rewrite using `[eq_top_iff]`. Introduce `a _`. Conclude with `⟨(a / f z) • z, by rw [map_smul, smul_eq_mul, div_mul_cancel₀ _ hfz]⟩`. Rewrite `h` using `[hr, finrank_top, Module.finrank_self]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h` using `Submodule.finrank_sup_add_finrank_inf_eq W (LinearMap.ker f)`. Rewrite `h` using `[hsup, finrank_top]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem wa_finrank_inf_ker {K : Type} [Field K] {V : Type} [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] (W : Submodule K V) (f : V →ₗ[K] K) (z : V) (hz : z ∈ W)
     (hfz : f z ≠ 0) : finrank K ↥(W ⊓ LinearMap.ker f) + 1 = finrank K W := by
@@ -82,6 +118,23 @@ theorem wa_finrank_inf_ker {K : Type} [Field K] {V : Type} [AddCommGroup V] [Mod
   rw [hsup, finrank_top] at h
   omega
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `W _ _`. Conclude with `⟨Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0⟩`.
+
+Consider the case `succ n ih`. Introduce `W hW han`. Establish `hne : W ≠ ⊥`. Introduce `h`. Rewrite `hW` using `[h, finrank_bot]`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨z, hzW, hz0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Establish `hzz : S.h z z ≠ 0` using `fun h => hz0 (han z hzW h)`. Establish `hW' : finrank K ↥(W ⊓ LinearMap.ker (waR S z)) = n`. Establish `h` using `wa_finrank_inf_ker W (waR S z) z hzW (by rw [waR_apply]; exact hzz)`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨b, hbW, hb0, hbo⟩` from `ih (W ⊓ LinearMap.ker (waR S z)) hW' (fun x hx hxx => han x hx.1 hxx)`. Establish `hk : ∀ k, S.h z (b k) = 0` using `fun k => (hbW k).2`. Use `⟨Fin.cons z b, fun i => ?_, fun i => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Consider the cases of `i using Fin.cases with`.
+
+Consider the case `zero => simpa using hzW`. Consider the case `succ i => simpa using (hbW i).1`. Consider the cases of `i using Fin.cases with`. Consider the case `zero => simpa using hz0`. Consider the case `succ i => simpa using hb0 i`.
+
+Consider the cases of `i using Fin.cases with`. Consider the case `zero`. Consider the cases of `j using Fin.cases with`. Consider the case `zero => exact absurd rfl hij`. Consider the case `succ j => simpa using hk j`.
+
+Consider the case `succ i`. Consider the cases of `j using Fin.cases with`. Consider the case `zero`. Simplify using `only [Fin.cons_succ, Fin.cons_zero]`. Rewrite using `[wa_symm S z (b i), hk i, map_zero]`.
+
+Consider the case `succ j`. Simplify using `only [Fin.cons_succ]`. Conclude with `hbo i j fun h => hij (by rw [h])`.
+-/
 theorem wa_diag {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r) :
     ∀ (n : ℕ) (W : Submodule K (Fin r → K)), finrank K W = n →
       (∀ x ∈ W, S.h x x = 0 → x = 0) →
@@ -126,6 +179,15 @@ theorem wa_diag {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r
           simp only [Fin.cons_succ]
           exact hbo i j fun h => hij (by rw [h])
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨w, hwW, hw⟩ : ∃ w ∈ W, S.h x w ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hx0 (hnd x hxW hc)`. Take `⟨u, hu⟩ : ∃ u, u = (S.h x w)⁻¹ • w` from `⟨_, rfl⟩`.
+
+Establish `huW : u ∈ W` using `hu ▸ W.smul_mem _ hwW`. Establish `hxu : S.h x u = 1` using `by rw [hu, wa_smul_right, inv_mul_cancel₀ hw]`. Establish `hux : S.h u x = 1` using `by rw [wa_symm S x u, hxu, map_one]`. Establish `hcuu : S.c (S.h u u) = S.h u u` using `(wa_symm S u u).symm`. Take `⟨t, ht⟩ : ∃ t, t = S.h u u / 2` from `⟨_, rfl⟩`.
+
+Establish `hct : S.c t = t` using `by rw [ht, map_div₀, hcuu, map_ofNat]`. Use `⟨u - t • x, W.sub_mem huW (W.smul_mem _ hxW), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[wa_sub_right, hxu, wa_smul_right, hxx, mul_zero, sub_zero]`. Simplify using `only [wa_sub_left, wa_sub_right, wa_smul_left, wa_smul_right, hux, hxu, hxx, hct]`. Rewrite using `[ht]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wa_hyp {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     (W : Submodule K (Fin r → K)) (hnd : ∀ x ∈ W, (∀ y ∈ W, S.h x y = 0) → x = 0)
     (x : Fin r → K) (hxW : x ∈ W) (hx0 : x ≠ 0) (hxx : S.h x x = 0) :
@@ -147,6 +209,15 @@ theorem wa_hyp {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     rw [ht]
     ring
 
+/- English proof (translation)
+Introduce `z hz hzo`. Take `⟨⟨hzW, hzx⟩, hzy⟩` from `hz`. Establish `hzx : S.h x z = 0` using `hzx`. Establish `hzy : S.h y z = 0` using `hzy`. Apply `hnd z hzW` to reduce the goal to its premises.
+
+Introduce `w hwW`. Establish `hyx : S.h y x = 1` using `by rw [wa_symm S x y, hxy, map_one]`. Establish `hw' : w - S.h y w • x - S.h x w • y ∈ W ⊓ LinearMap.ker (waR S x) ⊓ LinearMap.ker (waR S y)`. Use `⟨⟨W.sub_mem (W.sub_mem hwW (W.smul_mem _ hxW)) (W.smul_mem _ hyW), ?_⟩, ?_⟩` and prove the remaining obligations. Use `show S.h x _ = 0`.
+
+Simplify using `only [wa_sub_right, wa_smul_right, hxx, hxy]`. Expand and normalize the polynomial expressions, which then agree. Use `show S.h y _ = 0`. Simplify using `only [wa_sub_right, wa_smul_right, hyx, hyy]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h1` using `hzo _ hw'`. Establish `hzx' : S.h z x = 0` using `by rw [wa_symm S x z, hzx, map_zero]`. Establish `hzy' : S.h z y = 0` using `by rw [wa_symm S y z, hzy, map_zero]`. Simplify using `only [wa_sub_right, wa_smul_right, hzx', hzy', mul_zero, sub_zero] at h1`. Conclude with `h1`.
+-/
 theorem wa_perp_nondeg {K : Type} [Field K] [NumberField K] {r : ℕ} (S : HermForm K r)
     (W : Submodule K (Fin r → K)) (hnd : ∀ x ∈ W, (∀ y ∈ W, S.h x y = 0) → x = 0)
     (x y : Fin r → K) (hxW : x ∈ W) (hyW : y ∈ W) (hxx : S.h x x = 0) (hxy : S.h x y = 1)

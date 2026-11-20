@@ -5,6 +5,23 @@ open scoped TensorProduct ENNReal NNReal Matrix
 
 namespace GlobalTheory.CompanionTheory.Arch
 
+/- English proof (translation)
+Introduce `N₁ N₂ N₃ β h₁ h₂ hβ`. Establish `smul₁ : ∀ (c : ℝ) u v, β (c • u) v = c • β u v`. Introduce `c u v`. Conclude with `map_real_smul (AddMonoidHom.mk' (fun u => β u v) fun u u' => h₁ u u' v) (hβ.comp (continuous_id.prodMk continuous_const)) c u`. Establish `smul₂ : ∀ (c : ℝ) u v, β u (c • v) = c • β u v`.
+
+Introduce `c u v`. Conclude with `map_real_smul (AddMonoidHom.mk' (fun v => β u v) fun v v' => h₂ u v v') (hβ.comp (continuous_const.prodMk continuous_id)) c v`. Establish `zero₁ : ∀ v, β 0 v = 0` using `fun v => by simpa using smul₁ 0 0 v`. Establish `zero₂ : ∀ u, β u 0 = 0` using `fun u => by simpa using smul₂ 0 u 0`. Take `⟨δ, hδ, hsmall⟩` from `Metric.continuous_iff.mp hβ 0 1 one_pos`.
+
+Establish `key : ∀ u v, ‖u‖ < δ → ‖v‖ < δ → ‖β u v‖ < 1`. Introduce `u v hu hv`. Establish `h` using `hsmall (u, v) (by rw [dist_zero_right, Prod.norm_def]; exact max_lt hu hv)`. Simplify `h` using `[zero₁, dist_zero_right]`. Take `⟨s, rfl⟩ : ∃ s, δ = 2 * s` from `⟨δ / 2, by ring⟩`.
+
+Establish `hs0 : 0 < s` using `by linarith`. Establish `hsδ : s < 2 * s` using `by linarith`. Use `⟨4 / (2 * s) ^ 2, by positivity, fun u v => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hu : u = 0`. Simplify using `[hu, zero₁]`.
+
+Distinguish the cases in `hv : v = 0`. Simplify using `[hv, zero₂]`. Establish `hu' : 0 < ‖u‖` using `norm_pos_iff.mpr hu`. Establish `hv' : 0 < ‖v‖` using `norm_pos_iff.mpr hv`. Establish `hnu : ‖(s / ‖u‖) • u‖ = s`.
+
+Rewrite using `[norm_smul, Real.norm_of_nonneg (div_pos hs0 hu').le]`. Clear the denominators using the available nonvanishing facts. Establish `hnv : ‖(s / ‖v‖) • v‖ = s`. Rewrite using `[norm_smul, Real.norm_of_nonneg (div_pos hs0 hv').le]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hb` using `key ((s / ‖u‖) • u) ((s / ‖v‖) • v) (by rw [hnu]; exact hsδ) (by rw [hnv]; exact hsδ)`. Rewrite `hb` using `[smul₁, smul₂, smul_smul, norm_smul, Real.norm_of_nonneg (mul_pos (div_pos hs0 hu') (div_pos hs0 hv')).le]`. Establish `e : s / ‖u‖ * (s / ‖v‖) * ‖β u v‖ = (‖β u v‖ * (s * s)) / (‖u‖ * ‖v‖)` using `by ring`. Rewrite `hb` using `[e, div_lt_one (mul_pos hu' hv')]`. Rewrite using `[show 4 / (2 * s) ^ 2 * ‖u‖ * ‖v‖ = (‖u‖ * ‖v‖) / (s * s) by ring, le_div_iff₀ (mul_pos hs0 hs0)]`.
+
+Conclude with `hb.le`.
+-/
 theorem continuous_biadditive_bounded :
     ∀ (N₁ N₂ N₃ : ℕ) (β : (Fin N₁ → ℝ) → (Fin N₂ → ℝ) → (Fin N₃ → ℝ)),
       (∀ u u' v, β (u + u') v = β u v + β u' v) →

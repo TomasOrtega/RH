@@ -123,6 +123,11 @@ def FramesStdExist : Prop :=
       (∀ j, j < D.R.m → IsFrame (γ j) (Formalism.L2.Herm.crdLat (D.sp.X j) (D.sp.X j).L0)) →
       ∃ L' : LevCh D T, SameChars L L' ∧ FrameClauses L' ∧ StdShape L' γ E Ev z
 
+/- English proof (translation)
+Establish `h1` using `D.sp.X_rank j hj.le`. Establish `h2` using `D.sp.Y_rank j hj.le`. Establish `h3` using `a.2`. Establish `h4 : j * (D.R.t + 1) = j * D.R.t + j` using `by ring`. Simplify using `only [Ranks.N, Ranks.rankY, Ranks.r] at h1 h2`.
+
+Unfold `nAux`. Generalize the expression as in `j * D.R.t = u at *`. Apply the tactic sequence `constructor <;> intro h <;> omega`.
+-/
 theorem idx_lt {j : ℕ} (hj : j < D.R.m) (a : Fin (D.sp.Y j).rank) :
     ((a : ℕ) < D.R.k → (a : ℕ) < (D.sp.X j).rank) ∧
       (¬ (a : ℕ) < D.R.k + nAux D j → (a : ℕ) - nAux D j < (D.sp.X j).rank) := by
@@ -135,6 +140,15 @@ theorem idx_lt {j : ℕ} (hj : j < D.R.m) (a : Fin (D.sp.Y j).rank) :
   generalize j * D.R.t = u at *
   constructor <;> intro h <;> omega
 
+/- English proof (translation)
+Establish `hρ : nAux D 0 / 2 = D.R.rS`. Take `⟨a, ha⟩` from `D.R.m_even`. Unfold `nAux Ranks.rS`. Use linear arithmetic over natural numbers and integers. Establish `sym : ∀ x y, (D.sp.Y 0).hT x y = 0 → (D.sp.Y 0).hT y x = 0` using `fun x y h => by`.
+
+Rewrite using `[← (D.sp.Y 0).herm.eq x y, h, map_zero]`. Unfold `IsAuxiliaryHeckeCharacter HSpace.hD`. Rewrite using `[hρ]`. Use `⟨fun i hi l hl => ?_, fun i hi x => ?_, fun _ => ⟨D.sp.zm_norm, D.sp.zm_orth, fun i hi => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [dif_pos hi, dif_pos hl]`.
+
+Use `⟨D.sp.hyp_ee _ _, D.sp.hyp_ff _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[← (D.sp.Y 0).herm.eq, D.sp.hyp_ef]`. Apply the tactic sequence `by_cases h : i = l <;> simp [h]`. Simplify using `only [dif_pos hi]`. Conclude with `D.sp.hyp_orthX _ x`.
+
+Simplify using `only [dif_pos hi]`. Conclude with `D.sp.hyp_orthz _`.
+-/
 theorem isAuxiliaryHyperbolicPart_initialChainSpace : IsAuxiliaryHeckeCharacter D 0 (fun i => if h : i < D.R.rS then D.sp.hypE ⟨i, h⟩ else 0)
     (fun i => if h : i < D.R.rS then D.sp.hypF ⟨i, h⟩ else 0) D.sp.zm := by
   have hρ : nAux D 0 / 2 = D.R.rS := by

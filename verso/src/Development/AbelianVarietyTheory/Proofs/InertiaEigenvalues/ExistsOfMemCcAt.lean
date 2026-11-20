@@ -13,6 +13,13 @@ noncomputable section
 
 namespace GlobalTheory.CutFam
 
+/- English proof (translation)
+Unfold `ccAt Ideal.map at hc`. Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, hf, rfl⟩` from `hx`. Conclude with `⟨f, hf, rfl⟩`.
+
+Consider the case `zero => exact ⟨0, zero_mem _, rfl⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨f, hf, rfl⟩` from `hx`. Take `⟨g, hg, rfl⟩` from `hy`. Conclude with `⟨f + g, add_mem hf hg, rfl⟩`.
+
+Consider the case `smul r x _ hx`. Take `⟨f, hf, rfl⟩` from `hx`. Use `⟨algebraMap O T r * f, Ideal.mul_mem_left _ _ hf, ?_⟩` and prove the remaining obligations. Simplify using `[smul_eq_mul]`.
+-/
 theorem exists_of_mem_ccAt {O X : Type} [CommRing O] (T : Subalgebra O (X → O)) (Z : Finset X) (π : X)
     {c : O} (hc : c ∈ ccAt T Z π) : ∃ f ∈ ccIdeal T Z, ((f : T) : X → O) π = c := by
   unfold ccAt Ideal.map at hc
@@ -30,6 +37,11 @@ theorem exists_of_mem_ccAt {O X : Type} [CommRing O] (T : Subalgebra O (X → O)
     refine ⟨algebraMap O T r * f, Ideal.mul_mem_left _ _ hf, ?_⟩
     simp [smul_eq_mul]
 
+/- English proof (translation)
+Unfold `ccIdeal`. Rewrite using `[RingHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Use `congrFun h ⟨y, hy⟩` as an intermediate fact.
+
+Simplify using `using this`. Introduce `h`. Use function extensionality and compare the values at `y`. Simplify using `using h y.1 y.2`.
+-/
 theorem mem_ccIdeal_iff {O X : Type} [CommRing O] (T : Subalgebra O (X → O)) (Z : Finset X) (f : T) :
     f ∈ ccIdeal T Z ↔ ∀ y, y ∉ Z → (f : X → O) y = 0 := by
   unfold ccIdeal
@@ -42,6 +54,15 @@ theorem mem_ccIdeal_iff {O X : Type} [CommRing O] (T : Subalgebra O (X → O)) (
     funext y
     simpa using h y.1 y.2
 
+/- English proof (translation)
+Establish `h : ∀ x : {x // x ∉ Z}, ∃ f : T, (f : X → O) x.1 ≠ (f : X → O) π`. Introduce `x`. Take `⟨f, hfT, hf⟩` from `hsep x.1 π (fun h => x.2 (h ▸ hπ))`. Conclude with `⟨⟨f, hfT⟩, hf⟩`. Use `choose g hg using h`.
+
+Use `⟨∏ x : {x // x ∉ Z}, (g x - algebraMap O T ((g x : X → O) x.1)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_ccIdeal_iff]`. Introduce `y hy`. Rewrite using `[SubmonoidClass.coe_finset_prod, Finset.prod_apply]`. Use `Finset.prod_eq_zero (Finset.mem_univ ⟨y, hy⟩) ?_` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Rewrite using `[SubmonoidClass.coe_finset_prod, Finset.prod_apply]`. Use `Finset.prod_ne_zero_iff.mpr fun x _ => ?_` and prove the remaining obligations. Establish `e : ∀ c : O, ((algebraMap O T c : T) : X → O) π = c` using `fun c => by simp`. Rewrite using `[AddSubgroupClass.coe_sub, Pi.sub_apply, e]`.
+
+Conclude with `sub_ne_zero.mpr (hg x).symm`.
+-/
 theorem exists_ne_zero {O X : Type} [CommRing O] [IsDomain O] [Fintype X] (T : Subalgebra O (X → O))
     (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ T, f x ≠ f y) (Z : Finset X) (π : X) (hπ : π ∈ Z) :
     ∃ f ∈ ccIdeal T Z, ((f : T) : X → O) π ≠ 0 := by
@@ -63,6 +84,11 @@ theorem exists_ne_zero {O X : Type} [CommRing O] [IsDomain O] [Fintype X] (T : S
     rw [AddSubgroupClass.coe_sub, Pi.sub_apply, e]
     exact sub_ne_zero.mpr (hg x).symm
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ht hϖ`. Rewrite using `[IsDiscreteValuationRing.addVal_def' u hϖ n]`. Establish `: Ideal.span {(u : O) * ϖ ^ n} = IsLocalRing.maximalIdeal O ^ n`. Rewrite using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.span_singleton_mul_left_unit u.isUnit]`.
+
+Rewrite using `[this, IsDiscreteValuationRing.length_quotient_pow_maximalIdeal]`.
+-/
 theorem length_span {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (t : O) (ht : t ≠ 0) :
     Module.length O (O ⧸ Ideal.span {t}) = IsDiscreteValuationRing.addVal O t := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
@@ -72,6 +98,11 @@ theorem length_span {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRin
     rw [hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.span_singleton_mul_left_unit u.isUnit]
   rw [this, IsDiscreteValuationRing.length_quotient_pow_maximalIdeal]
 
+/- English proof (translation)
+Unfold `lenUnit`. Rewrite using `[length_span _ (mul_ne_zero ha hb), length_span _ ha, length_span _ hb, IsDiscreteValuationRing.addVal_mul]`. Establish `h1 : IsDiscreteValuationRing.addVal O a ≠ ⊤` using `fun h => ha (IsDiscreteValuationRing.addVal_eq_top_iff.mp h)`. Establish `h2 : IsDiscreteValuationRing.addVal O b ≠ ⊤` using `fun h => hb (IsDiscreteValuationRing.addVal_eq_top_iff.mp h)`. Rewrite using `[ENat.toNat_add h1 h2]`.
+
+Use `push_cast`. Rewrite using `[add_div]`.
+-/
 theorem lenUnit_mul {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (l : ℕ) {a b : O}
     (ha : a ≠ 0) (hb : b ≠ 0) :
     lenUnit (O := O) l (O ⧸ Ideal.span {a * b}) =
@@ -89,6 +120,9 @@ theorem lenUnit_mul {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRin
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h` using `(Submodule.mem_iInf _).mp hu f`. Rewrite `h` using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[h, algebraMap_smul]`.
+-/
 theorem act_bc_eig (i : D.nd.Loc) (f : D.nd.T i) (x : D.nd.X i)
     {u : TensorProduct (D.nd.O i) (FractionRing (D.nd.O i)) (D.nd.Mt i)}
     (hu : u ∈ heckeEig (D.nd.T i) (D.nd.act i) x) :
@@ -97,6 +131,11 @@ theorem act_bc_eig (i : D.nd.Loc) (f : D.nd.T i) (x : D.nd.X i)
   rw [Module.End.mem_eigenspace_iff] at h
   rw [h, algebraMap_smul]
 
+/- English proof (translation)
+Use `(Submodule.mem_iInf _).mpr fun f => ?_` and prove the remaining obligations. Establish `h` using `(Submodule.mem_iInf _).mp hu f`. Rewrite `h`, the goal using `[Module.End.mem_eigenspace_iff]`. Establish `e : (D.nd.act i f).baseChange (FractionRing (D.nd.O i)) (β.baseChange (FractionRing (D.nd.O i)) u) = β.baseChange (FractionRing (D.nd.O i)) ((D.nd.act i f).baseChange (FractionRing (D.nd.O i)) u)`. Rewrite using `[← Module.End.mul_apply, ← LinearMap.baseChange_mul, ← hβ f, LinearMap.baseChange_mul, Module.End.mul_apply]`.
+
+Rewrite using `[e, h, map_smul]`.
+-/
 theorem bc_mem_eig (i : D.nd.Loc) (β : Module.End (D.nd.O i) (D.nd.Mt i))
     (hβ : ∀ f : D.nd.T i, β * D.nd.act i f = D.nd.act i f * β) (x : D.nd.X i)
     {u : TensorProduct (D.nd.O i) (FractionRing (D.nd.O i)) (D.nd.Mt i)}
@@ -111,6 +150,19 @@ theorem bc_mem_eig (i : D.nd.Loc) (β : Module.End (D.nd.O i) (D.nd.Mt i))
       Module.End.mul_apply]
   rw [e, h, map_smul]
 
+/- English proof (translation)
+Take `⟨_, hπZ, hXZ, hcomm, hb0, hbπ, hbout, hblen⟩` from `h`. Establish `hπc : π ∈ cutLocus i Xs` using `by simp [cutLocus, hπZ]`. Take `⟨f0, hf0, hf0π⟩` from `exists_ne_zero (D.nd.T i) (D.nd.T_sep i) _ π hπc`. Take `⟨c, hc⟩ : ∃ c, ccAt (D.nd.T i) (cutLocus i Xs) π = Ideal.span {c}` from `⟨Submodule.IsPrincipal.generator _, (Ideal.span_singleton_generator _).symm⟩`. Establish `hcI : c ∈ ccAt (D.nd.T i) (cutLocus i Xs) π` using `hc ▸ Ideal.mem_span_singleton_self c`.
+
+Take `⟨g, hg, hgπ⟩` from `exists_of_mem_ccAt _ _ _ hcI`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Establish `hm : ((Pi.evalRingHom (fun _ : D.nd.X i => D.nd.O i) π).comp (D.nd.T i).val.toRingHom) f0 ∈ ccAt (D.nd.T i) (cutLocus i Xs) π` using `Ideal.mem_map_of_mem _ hf0`. Rewrite `hm` using `[hc, Ideal.span_singleton_eq_bot.mpr rfl, Ideal.mem_bot]`.
+
+Conclude with `hf0π hm`. Use `⟨D.nd.act i g * β, c * b, ?_, ?_, mul_ne_zero hc0 hb0, ?_, ?_⟩` and prove the remaining obligations. Introduce `f`. Rewrite using `[mul_assoc, hcomm f, ← mul_assoc, ← map_mul, mul_comm g f, map_mul, mul_assoc]`. Introduce `x hx u hu`.
+
+Rewrite using `[LinearMap.baseChange_mul, Module.End.mul_apply]`. Distinguish the cases in `hxs : x ∈ Xs`. Establish `hxZ : x ∉ D.nd.Z i` using `fun hz => hx (hXZ x hxs hz)`. Establish `hxc : x ∉ cutLocus i Xs` using `by simp [cutLocus, hxZ, hxs]`. Rewrite using `[act_bc_eig i g x (bc_mem_eig i β hcomm x hu), (mem_ccIdeal_iff _ _ g).mp hg x hxc, zero_smul]`.
+
+Rewrite using `[hbout x hxs u hu, map_zero]`. Introduce `u hu`. Rewrite using `[LinearMap.baseChange_mul, Module.End.mul_apply, hbπ u hu, LinearMap.map_smul_of_tower, act_bc_eig i g π hu, hgπ, smul_smul, mul_comm]`. Unfold `vccCut`. Rewrite using `[lenUnit_mul _ hc0 hb0, ← hc]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem perPoint (i : D.nd.Loc) (k : Fin 2) (π : D.nd.X i) (Xs : Set (D.nd.X i))
     (β : Module.End (D.nd.O i) (D.nd.Mt i)) (b : D.nd.O i) (h : CutAt i k π Xs β b) :
     ∃ (α : Module.End (D.nd.O i) (D.nd.Mt i)) (a : D.nd.O i),
@@ -152,6 +204,11 @@ theorem perPoint (i : D.nd.Loc) (k : Fin 2) (π : D.nd.X i) (Xs : Set (D.nd.X i)
     rw [lenUnit_mul _ hc0 hb0, ← hc]
     linarith
 
+/- English proof (translation)
+Introduce `D CT i k ρ eta hcut`. Take `⟨Xs, β, b, h⟩` from `hcut`. Establish `hp : ∀ π ∈ D.nd.Zgood i, ∃ (α : Module.End (D.nd.O i) (D.nd.Mt i)) (a : D.nd.O i), (∀ f : D.nd.T i, α * D.nd.act i f = D.nd.act i f * α) ∧ (∀ x, x ∉ D.nd.Zgood i → ∀ u ∈ heckeEig (D.nd.T i) (D.nd.act i) x, α.baseChange (FractionRing (D.nd.O i)) u = 0) ∧ a ≠ 0 ∧ (∀ u ∈ heckeEig (D …` using `D.nd.O i) (D.nd.l i) (D.nd.O i ⧸ Ideal.span {a}) ≤ vccCut i (Xs π) π + padicValNat (D.host.g k) D.what₂.restRowsFiniteGroupCard := fun π hπ => perPoint i k π (Xs π) (β π) (b π) (h π hπ).1`. Use `choose! α a hα using hp`. Use `⟨α '' ((D.nd.Zgood i : Finset (D.nd.X i)) : Set (D.nd.X i)), a, fun π => vccCut i (Xs π) π, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨π, hπ, rfl⟩`. Conclude with `⟨(hα π hπ).1, (hα π hπ).2.1⟩`. Introduce `π hπ`. Take `⟨_, _, h3, h4, h5⟩` from `hα π hπ`. Conclude with `⟨h3, ⟨α π, ⟨π, hπ, rfl⟩, h4⟩, h5, (h π hπ).2⟩`.
+-/
 theorem fam_of_cut : ∀ (D : D7) (CT : ℕ) (i : D.nd.Loc) (k : Fin 2)
     (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (eta : ℕ),
     CongruenceLocalDecomposition CT i k ρ eta → CongruenceFamilyEndomorphisms CT i k ρ eta := by

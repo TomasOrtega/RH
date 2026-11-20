@@ -15,12 +15,20 @@ def levAll (P : Places p O Kf) : Level P where
 
 variable (P : Places p O Kf)
 
+/- English proof (translation)
+Use extensionality with `a b`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[Places.gPos]`. Simplify using `[Places.gPos, Matrix.one_apply_ne h]`.
+-/
 theorem gPos_one (v : Fin P.nV) (s : Fin (P.n' v)) : P.gPos v s 1 = 1 := by
   ext a b
   by_cases h : a = b
   · subst h; simp [Places.gPos]
   · simp [Places.gPos, Matrix.one_apply_ne h]
 
+/- English proof (translation)
+Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨v, s, a, t⟩`. Simplify using `only [Places.subst, aeval_X, AlgHom.id_apply]`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Rewrite using `[Matrix.one_apply_ne (Ne.symm hb)]`. Simplify using the standard rewrite rules. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem subst_one : P.subst (fun _ _ => 1) = AlgHom.id Kf P.Xsp := by
   apply MvPolynomial.algHom_ext
   rintro ⟨v, s, a, t⟩
@@ -31,12 +39,18 @@ theorem subst_one : P.subst (fun _ _ => 1) = AlgHom.id Kf P.Xsp := by
     rw [Matrix.one_apply_ne (Ne.symm hb)]; simp
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Unfold `Places.natAct`. Simplify using `only [Units.val_one, inv_one, gPos_one, Matrix.det_one, one_zpow, Finset.prod_const_one, one_smul, subst_one]`. Both sides reduce to the same expression.
+-/
 theorem natAct_one : P.natAct (fun _ => 1) = LinearMap.id := by
   unfold Places.natAct
   simp only [Units.val_one, inv_one, gPos_one, Matrix.det_one, one_zpow, Finset.prod_const_one, one_smul,
     subst_one]
   rfl
 
+/- English proof (translation)
+Unfold `colSpan`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `congr 1`.
+-/
 theorem map_colSpan {R K : Type*} [CommRing R] [Field K] [Algebra R K] {k : ℕ} (A g : Matrix (Fin k) (Fin k) K) :
     (colSpan R g).map ((Matrix.mulVecLin A).restrictScalars R) = colSpan R (A * g) := by
   unfold colSpan
@@ -45,18 +59,34 @@ theorem map_colSpan {R K : Type*} [CommRing R] [Field K] [Algebra R K] {k : ℕ}
 
 def sgnEl : (levAll P).Γ := ((1 : ∀ v, GL (Fin (P.m + 1)) (P.Qq v)), (-1 : ℤˣ))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Use `show (L v).map ((Matrix.mulVecLin ((1 : GL (Fin (P.m + 1)) (P.Qq v)) : Matrix _ _ (P.Qq v))).restrictScalars (P.W v)) = L v`. Rewrite using `[Units.val_one, Matrix.mulVecLin_one]`. Conclude with `Submodule.map_id _`.
+-/
 theorem smul_sgnEl (L : P.Tup) : (levAll P).smul (sgnEl P) L = L := by
   funext v
   show (L v).map ((Matrix.mulVecLin ((1 : GL (Fin (P.m + 1)) (P.Qq v)) : Matrix _ _ (P.Qq v))).restrictScalars (P.W v)) = L v
   rw [Units.val_one, Matrix.mulVecLin_one]
   exact Submodule.map_id _
 
+/- English proof (translation)
+The claim follows from `natAct_one P`.
+-/
 theorem actX_sgnEl : (levAll P).actX (sgnEl P) = LinearMap.id := natAct_one P
 
+/- English proof (translation)
+Use `show ((Int.castRingHom O : ℤ →+* O) : ℤ →* O) ((-1 : ℤˣ) : ℤ) = -1`. Simplify using the standard rewrite rules.
+-/
 theorem chi_sgnEl : (((levAll P).χ (sgnEl P) : Oˣ) : O) = -1 := by
   show ((Int.castRingHom O : ℤ →+* O) : ℤ →* O) ((-1 : ℤˣ) : ℤ) = -1
   simp
 
+/- English proof (translation)
+Rewrite using `[eq_bot_iff]`. Introduce `F hF`. Establish `h` using `hF.2`. Rewrite `h` using `[SetLike.mem_coe, Submodule.mem_iInf]`. Establish `h'` using `h (sgnEl P)`.
+
+Rewrite `h'` using `[Submodule.mem_iInf]`. Rewrite using `[Submodule.mem_bot]`. Use function extensionality and compare the values at `L`. Establish `h3` using `h' L`. Rewrite `h3` using `[LinearMap.mem_ker]`.
+
+Simplify using `only [LinearMap.sub_apply, LinearMap.proj_apply, LinearMap.comp_apply, smul_sgnEl, actX_sgnEl, chi_sgnEl, neg_smul, one_smul] at h3`. Establish `h5 : F L - -(F L) = 0` using `h3`. Establish `h4 : (2 : Kf) • F L = 0` using `by rw [two_smul, ← sub_neg_eq_add]; exact h5`. Conclude with `(smul_eq_zero.mp h4).resolve_left h2`.
+-/
 theorem levAll_funMod (h2 : (2 : Kf) ≠ 0) (Hv : P.Tup → Submodule O P.Xsp) : (levAll P).funMod Hv = ⊥ := by
   rw [eq_bot_iff]
   intro F hF
@@ -74,8 +104,16 @@ theorem levAll_funMod (h2 : (2 : Kf) ≠ 0) (Hv : P.Tup → Submodule O P.Xsp) :
   have h4 : (2 : Kf) • F L = 0 := by rw [two_smul, ← sub_neg_eq_add]; exact h5
   exact (smul_eq_zero.mp h4).resolve_left h2
 
+/- English proof (translation)
+The claim follows from `levAll_funMod P h2 _`.
+-/
 theorem levAll_M (h2 : (2 : Kf) ≠ 0) : (levAll P).M = ⊥ := levAll_funMod P h2 _
 
+/- English proof (translation)
+Use `choose g hg hgL using hL`. Use `choose g' hg' hgL' using hL'`. Use `⟨((fun v => Matrix.GeneralLinearGroup.mk'' (g' v * (g v)⁻¹) (by` and prove the remaining obligations. Rewrite using `[Matrix.det_mul]`. Conclude with `(hg' v).mul (Matrix.isUnit_nonsing_inv_det _ (hg v)))), 1), ?_⟩`.
+
+Use function extensionality and compare the values at `v`. Use `show L' v = (L v).map ((Matrix.mulVecLin (g' v * (g v)⁻¹)).restrictScalars (P.W v))`. Rewrite using `[hgL v, hgL' v, map_colSpan, Matrix.nonsing_inv_mul_cancel_right _ _ (hg v)]`.
+-/
 theorem levAll_trans (L L' : P.Tup) (hL : P.IsLatTup L) (hL' : P.IsLatTup L') :
     ∃ γ : (levAll P).Γ, L' = (levAll P).smul γ L := by
   choose g hg hgL using hL
@@ -86,9 +124,17 @@ theorem levAll_trans (L L' : P.Tup) (hL : P.IsLatTup L) (hL' : P.IsLatTup L') :
   show L' v = (L v).map ((Matrix.mulVecLin (g' v * (g v)⁻¹)).restrictScalars (P.W v))
   rw [hgL v, hgL' v, map_colSpan, Matrix.nonsing_inv_mul_cancel_right _ _ (hg v)]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => colSpan _ 1, fun _ => ⟨1, by simp, rfl⟩⟩`.
+-/
 theorem exists_latTup : ∃ L : P.Tup, P.IsLatTup L :=
   ⟨fun _ => colSpan _ 1, fun _ => ⟨1, by simp, rfl⟩⟩
 
+/- English proof (translation)
+Rewrite using `[eq_bot_iff]`. Introduce `F hF`. Rewrite using `[Submodule.mem_bot]`. Use function extensionality and compare the values at `c`. Use `hF c (Set.mem_univ c)` as an intermediate fact.
+
+Establish `h1 : F c ∈ (G.lev c).M` using `this`. Rewrite `h1` using `[h c]`. Conclude with `h1`.
+-/
 theorem gat_M_bot (G : GAtP p) (h : ∀ c, (G.lev c).M = ⊥) : G.M = ⊥ := by
   rw [eq_bot_iff]
   intro F hF
@@ -99,6 +145,9 @@ theorem gat_M_bot (G : GAtP p) (h : ∀ c, (G.lev c).M = ⊥) : G.M = ⊥ := by
   rw [h c] at h1
   exact h1
 
+/- English proof (translation)
+Unfold `GAtP.d`. Rewrite using `[h]`. Conclude with `finrank_bot _ _`.
+-/
 theorem gat_d_zero (G : GAtP p) (h : G.M = ⊥) : G.d = 0 := by
   unfold GAtP.d
   rw [h]

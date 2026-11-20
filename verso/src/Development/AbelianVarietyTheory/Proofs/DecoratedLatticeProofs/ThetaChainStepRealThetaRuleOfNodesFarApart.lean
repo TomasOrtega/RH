@@ -14,6 +14,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Corev.ChainParOfGap
 
+/- English proof (translation)
+Introduce `D h k`. Unfold `GlobalTheory.Chain.ChainPar`. Introduce `τ`. Take `⟨al, be, ga, de, hc, h1, h2⟩` from `GlobalTheory.ArchRec.ParChain.parChain D k τ`. Unfold `GlobalTheory.ArchRec.Centred at hc`.
+
+Unfold `Formalism.MainNotions.SchurIrreducible.DataAR`. Use `⟨al, be, ga, de, ⟨hc.1, hc.2.2 h⟩, hc.2.1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1] clear hc h1 h2 h`. Use `congr 1`. Unfold `expT GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.alT`.
+
+Break down `Nat.even_or_odd (k : ℕ) with hk | hk` into its components or cases. Establish `ho : Odd ((k : ℕ) + 1)` using `hk.add_one`. Establish `hne : ¬ Odd (k : ℕ)` using `Nat.not_odd_iff_even.mpr hk`. Establish `hne2 : ¬ Even ((k : ℕ) + 1)` using `Nat.not_even_iff_odd.mpr ho`. Apply the tactic sequence `simp [ho, hk, hne, hne2] <;> ring`.
+
+Establish `ho : Even ((k : ℕ) + 1)` using `hk.add_one`. Establish `hne : ¬ Even (k : ℕ)` using `Nat.not_even_iff_odd.mpr hk`. Establish `hne2 : ¬ Odd ((k : ℕ) + 1)` using `Nat.not_odd_iff_even.mpr ho`. Apply the tactic sequence `simp [ho, hk, hne, hne2] <;> ring`. Rewrite using `[h2] clear hc h1 h2 h`.
+
+Use `congr 1`. Unfold `expS GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.alS`. Break down `Nat.even_or_odd (k : ℕ) with hk | hk` into its components or cases. Establish `ho : Odd ((k : ℕ) + 1)` using `hk.add_one`. Establish `hne : ¬ Odd (k : ℕ)` using `Nat.not_odd_iff_even.mpr hk`.
+
+Establish `hne2 : ¬ Even ((k : ℕ) + 1)` using `Nat.not_even_iff_odd.mpr ho`. Apply the tactic sequence `simp [ho, hk, hne, hne2] <;> ring`. Establish `ho : Even ((k : ℕ) + 1)` using `hk.add_one`. Establish `hne : ¬ Even (k : ℕ)` using `Nat.not_even_iff_odd.mpr hk`. Establish `hne2 : ¬ Odd ((k : ℕ) + 1)` using `Nat.not_odd_iff_even.mpr ho`.
+
+Apply the tactic sequence `simp [ho, hk, hne, hne2] <;> ring`.
+-/
 theorem chainPar_of_nodeGap : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.NodeGap D → ∀ k, ChainPar D k := by
   intro D h k
   unfold GlobalTheory.Chain.ChainPar

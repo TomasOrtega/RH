@@ -11,6 +11,9 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Form
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Use `show Continuous (fun t : ℂ => fun i j => (G.ptLong (n + 1) t * G.upper v) i j)`. Establish `h : Continuous (fun t : ℂ => (G.ptLong (n + 1) t * G.upper v : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ))`. Unfold `G.ptLong`. Conclude with `(continuous_id.smul continuous_const).matrix_mul continuous_const`. Conclude with `continuous_pi fun i => continuous_pi fun j => (continuous_apply j).comp ((continuous_apply i).comp h)`.
+-/
 theorem continuous_unipotent_vector_scalar (n : ℕ) (v : G.UT (n + 1) → ℂ) : Continuous (fun t : ℂ => Zv n t v) := by
   show Continuous (fun t : ℂ => fun i j => (G.ptLong (n + 1) t * G.upper v) i j)
   have h : Continuous (fun t : ℂ => (G.ptLong (n + 1) t * G.upper v : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ)) := by
@@ -20,6 +23,111 @@ theorem continuous_unipotent_vector_scalar (n : ℕ) (v : G.UT (n + 1) → ℂ) 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hIntG` using `Formalism.FourierDecayAlt.P.JCTx6.Int.intG`. Establish `hTrans` using `Formalism.FourierDecayAlt.P.JCTx6.Int.orbit_slice_integrable`. Take `⟨CcU, hCcU⟩` from `Formalism.FourierDecayAlt.P.corollary_u2_germ_hypothesis 127 0`. Use `⟨max CcU 0, le_max_right _ _, ?_⟩` and prove the remaining obligations. Introduce `k ph n ρ Wp Wq _ _ _ _ _ _ z z' hz hz' Θ o κ hΘ χ A₀ ε hχ hε σ d t0 hd ht0 As mm A ho hκ hmm hAs hA hA₀`.
+
+Establish `hw : (G.wMat (n + 1)).det ≠ 0` using `Formalism.FourierDecayAlt.P.G2.det_wMat_ne_zero (n + 1)`. Use `set c₀ : ℂ := (U.hMat σ d).det * (t0 ^ (n + 1) * (G.wMat (n + 1)).det) with hc₀def`. Establish `hc₀ : c₀ ≠ 0` using `mul_ne_zero (Formalism.FourierDecayAlt.P.Ux10.det_hMat_ne σ d hd) (mul_ne_zero (pow_ne_zero _ ht0) hw)`. Establish `hc₀n : 0 < ‖c₀‖` using `norm_pos_iff.mpr hc₀`. Take `⟨χD, hχD, hχD1, hχDs⟩` from `bump_exists hc₀`.
+
+Take `⟨δ, hδ, hχε⟩` from `isCutG_scale hχ hε`. Use `set ε' : ℝ := δ * ε / (2 * ‖c₀‖) ^ 2 with hε'def`. Establish `hε' : 0 < ε'` using `by positivity`. Set `UD : U.UData k ph (n + 1) ρ Wp Wq Unit` to `⟨σ, d, z, z', fun _ => Θ, χD, fun x => χ (ε⁻¹ * x), δ * ε, ε', o, κ, 0, mm, As⟩`. Establish `hAs1 : 1 ≤ As` using `le_trans (Nat.one_le_pow _ _ (by omega)) hAs`.
+
+Establish `hOk : UD.Ok 0`. Use `⟨hd, by omega, hz, hz', fun _ => hΘ, hχD, hχε, hε', ?_, ho, hκ, by simp [UD], hmm, hAs, by simpa using hAs1⟩` and prove the remaining obligations. Introduce `w hw'`. Establish `h2` using `(hχDs w hw').2`. Establish `h3 : ‖w‖ ^ 2 ≤ (2 * ‖c₀‖) ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) h2 2`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hA₀U : CcU * (((ph + (n + 1) + ρ : ℕ) : ℝ) + 1) ^ 4 * (As : ℝ) ≤ A₀`. Use `le_trans ?_ hA₀` and prove the remaining obligations. Use `gcongr`. Conclude with `le_max_left _ _`.
+
+Take `⟨ha1, -, -, C, hC⟩` from `hCcU k ph (n + 1) ρ Wp Wq Unit UD hOk A₀ hA₀U`. Use `set a := UD.a 0 A₀ with ha_def`. Use `set Iv : ℝ := ∫ v, (1 + ‖v‖) ^ (-a) ∂(G.muPi U.betaU (G.UT (n + 1))) with hIv`. Use `⟨ε', hε', ?_⟩` and prove the remaining obligations. Introduce `f c hc F hF`.
+
+Establish `hc0 : 0 ≤ c` using `Formalism.FourierDecayAlt.P.JCx2.pd_ccle_nonneg hc`. Take `⟨V, indexVFirst, indexVSecond, hVc, ⟨MM⟩⟩` from `Formalism.FourierDecayAlt.P.compactly_supported_banach_model k ρ (Unit → (Wq →L[ℂ] Wp)) (UD.a 0 A₀) mm UD.S`. Take `⟨Φ, hΦev, hΦreg⟩` from `hC f c hc V MM`. Take `⟨C1, hC1⟩` from `Formalism.FourierDecayAlt.P.corollary_u1_truncated_alt k (ph + (n + 1)) ρ Wp Wq z z' o κ Θ χD (fun x => χ (ε⁻¹ * x)) (δ * ε) hΘ hχD hχε 0 (3 * As) A₀ (by omega)`. Establish `hStar` using `hC1 f c hc`.
+
+Use `set F₁ := B.opApply Θ (U.cutDG k (ph + (n + 1)) ρ z z' χD (fun x => χ (ε⁻¹ * x)) f) with hF₁def`. Establish `hcF : Continuous (fun t : ℂ => (U.hMat σ d).det * (t ^ (n + 1) * (G.wMat (n + 1)).det))` using `by fun_prop`. Take `⟨δ1, hδ1, hδ1c⟩` from `Metric.continuous_iff.mp hcF t0 (‖c₀‖ / 4) (div_pos hc₀n (by norm_num))`. Establish `ht0n : 0 < ‖t0‖` using `norm_pos_iff.mpr ht0`. Use `set δ0 : ℝ := min δ1 (‖t0‖ / 2) with hδ0def`.
+
+Establish `hδ0 : 0 < δ0` using `lt_min hδ1 (by positivity)`. Establish `hnear : ∀ t : ℂ, dist t t0 < δ0 → ‖t0‖ / 2 ≤ ‖t‖ ∧ t ≠ 0 ∧ dist ((U.hMat σ d).det * (t ^ (n + 1) * (G.wMat (n + 1)).det)) c₀ < ‖c₀‖ / 4`. Introduce `t ht`. Establish `h1 : dist t t0 < ‖t0‖ / 2` using `lt_of_lt_of_le ht (min_le_right _ _)`. Establish `h2 : ‖t0‖ / 2 ≤ ‖t‖`.
+
+Establish `h3` using `norm_sub_norm_le t0 t`. Rewrite `h1` using `[dist_eq_norm]`. Rewrite `h3` using `[norm_sub_rev]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨h2, fun h0 => ?_, hδ1c t (lt_of_lt_of_le ht (min_le_left _ _))⟩` and prove the remaining obligations.
+
+Rewrite `h2` using `[h0, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : ∀ g ∈ B.GV k (ph + (n + 1) + ρ), dist (U.DjU k (ph + (n + 1)) ρ g) c₀ < ‖c₀‖ / 4 → F g = F₁ g`. Introduce `g hg hgc`. Establish `hne : U.DjU k (ph + (n + 1)) ρ g ≠ 0`.
+
+Introduce `h0`. Rewrite `hgc` using `[h0, dist_zero_left]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hF g hg hne]`. Use `opApply_congr_open Θ (O := {x | dist (U.DjU k (ph + (n + 1)) ρ x) c₀ < ‖c₀‖ / 4}) ?_ ?_ g ?_` and prove the remaining obligations.
+
+Conclude with `isOpen_lt ((cont_DjU k (ph + (n + 1)) ρ).dist continuous_const) continuous_const`. Introduce `x hx`. Simplify using `only [U.cutDG]`. Rewrite using `[hχD1 _ (le_of_lt hx), one_mul, div_eq_inv_mul]`. Conclude with `hgc`.
+
+Establish `hZne : ∀ t : ℂ, t ≠ 0 → ∀ v : G.UT (n + 1) → ℂ, G.detM (Zv n t v) ≠ 0`. Introduce `t ht v`. Establish `e : G.detM (Zv n t v) = t ^ (n + 1) * (G.wMat (n + 1)).det` using `detM_Zv n t v`. Rewrite using `[e]`. Conclude with `mul_ne_zero (pow_ne_zero _ ht) hw`.
+
+Establish `hOrb : ∀ t : ℂ, dist t t0 < δ0 → ∀ (ξ : U.Xi k ph (n + 1) ρ σ) (v : G.UT (n + 1) → ℂ) (γ : B.Mat k ρ), γ ∈ B.GV k ρ → F (U.gaXi k ρ σ d ξ (Zv n t v) γ) = F₁ (U.gaXi k ρ σ d ξ (Zv n t v) γ)`. Introduce `t ht ξ v γ hγ`. Take `⟨-, ht', hc'⟩` from `hnear t ht`. Apply `hB _ (Formalism.FourierDecayAlt.P.Ux10.gaXi_mem Formalism.FourierDecayAlt.P.slice_membership Formalism.FourierDecayAlt.P.radical_parametrisation σ d hd ξ _ (hZne t ht' v) hγ)` to reduce the goal to its premises. Rewrite using `[Formalism.FourierDecayAlt.P.Ux10.DjU_gaXi Formalism.FourierDecayAlt.P.hat_z_on_slice]`.
+
+Establish `e : G.detM (Zv n t v) = t ^ (n + 1) * (G.wMat (n + 1)).det` using `detM_Zv n t v`. Rewrite using `[e]`. Conclude with `hc'`. Establish `hK : IsCompact ((fun w : ℂ => ‖w‖) '' tsupport χD)` using `hχD.2.1.isCompact.image continuous_norm`. Establish `hK0 : (fun w : ℂ => ‖w‖) '' tsupport χD ⊆ Set.Ioi 0`.
+
+Introduce and unpack `_ ⟨w, hw', rfl⟩`. Conclude with `lt_of_lt_of_le (by positivity) (hχDs w hw').1`. Establish `hthr : 2 * ((ph + (n + 1) + ρ : ℕ) : ℝ) * ((2 * (ph + (n + 1) + ρ) + k + 1 : ℕ) : ℝ) < (A₀ - (κ : ℝ) - ((ph + (n + 1) : ℕ) : ℝ) * (o : ℝ) - 2 * (((ph + (n + 1) + ρ : ℕ) : ℝ) + 1) * ((0 + o : ℕ) : ℝ)) / (8 * (2 * ((ph + (n + 1) + ρ : ℕ) : ℝ) + 1))`. Establish `hnd : ((2 * (ph + (n + 1) + ρ) + k + 1 : ℕ) : ℝ) ≤ (As : ℝ)`. Establish `h1 : 2 * (ph + (n + 1) + ρ) + k + 1 ≤ (2 * (ph + (n + 1) + ρ) + k + 1) ^ 3` using `Nat.le_self_pow (by norm_num) _`.
+
+Conclude with `h1.trans hAs` after adjusting the coercions. Establish `ha1'` using `ha1`. Simplify using `only [ha_def, U.UData.a, U.a1] at ha1'`. Use `set R : ℝ := ((ph + (n + 1) + ρ : ℕ) : ℝ) with hR`. Establish `hR0 : 0 ≤ R` using `Nat.cast_nonneg _`.
+
+Establish `hD : 0 < 8 * (2 * R + 1)` using `by positivity`. Use `set Nd : ℝ := ((2 * (ph + (n + 1) + ρ) + k + 1 : ℕ) : ℝ) with hNd`. Establish `hNd1 : 1 ≤ Nd` using `by rw [hNd]; exact_mod_cast Nat.succ_le_succ (Nat.zero_le _)`. Establish `hle : (A₀ - (κ : ℝ) - ((ph + (n + 1) : ℕ) : ℝ) * (o : ℝ) - 2 * (R + 1) * (((0 * (n + 1) ^ 2 + 1 + mm) + o : ℕ) : ℝ) - 5 * R * (((0 * (n + 1) ^ 2 : ℕ) : ℝ) + 1) - 2 * R * (mm : ℝ)) / (8 * (2 * R + 1)) ≤ (A₀ - (κ : ℝ) - ((ph + (n + 1) : ℕ) : ℝ) * (o : ℝ) - 2 * (R + 1) * ((0 + o : ℕ …`. Apply `div_le_div_of_nonneg_right _ hD.le` to reduce the goal to its premises.
+
+Use `push_cast`. Establish `hm0 : (0 : ℝ) ≤ mm` using `Nat.cast_nonneg _`. Use the polynomial consequences of the given equalities and inequalities. Establish `hlt : 2 * R * Nd < (((127 : ℕ) : ℝ) + 1) * (R + 1) ^ 3 * (As : ℝ)`. Establish `hAs' : (1 : ℝ) ≤ As` using `by exact_mod_cast hAs1`.
+
+Establish `h1 : 2 * R * Nd < 128 * (R + 1) * Nd` using `by nlinarith`. Establish `h2 : 128 * (R + 1) * Nd ≤ 128 * (R + 1) ^ 3 * (As : ℝ)`. Establish `h3 : (R + 1) ≤ (R + 1) ^ 3` using `le_self_pow₀ (by linarith) (by norm_num)`. Establish `h4 : (R + 1) * Nd ≤ (R + 1) ^ 3 * (As : ℝ)` using `mul_le_mul h3 hnd (by linarith) (by positivity)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `lt_of_lt_of_le hlt (le_trans ha1' hle)`. Establish `hInt : ∀ t : ℂ, dist t t0 < δ0 → ∀ γ ∈ B.GV k ρ, Integrable (gInt k ph n ρ σ d t z z' F γ) (muG k ph n ρ σ)`. Introduce `t ht γ hγ`.
+
+Establish `ht'` using `(hnear t ht).2.1`. Establish `h1` using `hIntG k ph n ρ σ d t hd ht' _ hK hK0 0 _ hthr z z' (Wq →L[ℂ] Wp) F₁ (C1 * c) hStar γ hγ`. Establish `e : gInt k ph n ρ σ d t z z' F γ = gInt k ph n ρ σ d t z z' F₁ γ`. Use function extensionality and compare the values at `y`. Unfold `gInt`.
+
+Establish `e1 : U.gaXi k ρ σ d (y.1, y.2.1) (Matrix.of.symm (t • G.wMat (n + 1) * G.upper y.2.2)) γ = U.gaXi k ρ σ d (y.1, y.2.1) (Zv n t y.2.2) γ` using `rfl`. Rewrite using `[e1, hOrb t ht _ _ γ hγ]`. Rewrite using `[e]`. Conclude with `h1`. Establish `hcore : ∀ t : ℂ, dist t t0 < δ0 → ∀ γ ∈ B.GV k ρ, U.PhiFun (p` using `ph + (n + 1)) (s := 0) k ρ (Dx2.SL.sigP σ) (Dx2.SL.dP d t) z z' F (fun a => a.elim0) γ = ((Real.pi ^ ((n + 1) * n / 2) : ℝ) : ℂ) • G.OmLong U.betaU n (fun Z => U.PhiFun (p := ph) (s := n + 1) k ρ σ d z z' F Z γ) t := fun t ht γ hγ => Dx2.SL.core σ d t z z' F γ (hTrans k ph n ρ σ …`.
+
+Establish `ha128 : 128 * (((ph + (n + 1) + ρ : ℕ) : ℝ) + 1) ^ 3 * (As : ℝ) ≤ a`. Establish `h` using `ha1`. Evaluate the numerical expressions using `at h ⊢`. Conclude with `h`. Establish `ha0 : 0 ≤ a` using `le_trans (by positivity) ha128`.
+
+Establish `hψc : Continuous (fun v : G.UT (n + 1) → ℂ => G.psi U.betaU (G.superSum (G.upper v)))`. Establish `h1 : Continuous fun v : G.UT (n + 1) → ℂ => G.superSum (G.upper v)`. Unfold `G.superSum`. Conclude with `continuous_finsetSum _ fun i _ => (continuous_apply _).comp ((continuous_apply _).comp Dx2.SL.cont_upper)`. Unfold `G.psi`.
+
+Conclude with `Complex.continuous_exp.comp (continuous_const.mul (Complex.continuous_ofReal.comp (Complex.continuous_re.comp (continuous_const.mul h1))))`. Establish `hΦc : ∀ t : ℂ, t ≠ 0 → Continuous (fun v : G.UT (n + 1) → ℂ => Φ (Zv n t v))`. Introduce `t ht`. Establish `hZc : Continuous (fun v : G.UT (n + 1) → ℂ => Zv n t v)` using `by show Continuous (fun v : G.UT (n + 1) → ℂ => (G.ptLong (n + 1) t * G.upper v : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ))`. Conclude with `continuous_const.matrix_mul Dx2.SL.cont_upper`.
+
+Conclude with `continuous_iff_continuousAt.2 fun v => ((hΦreg _ (hZne t ht v)).1.continuousAt).comp hZc.continuousAt`. Establish `hCc : 0 ≤ C * c`. Establish `h` using `(hΦreg _ (hZne t0 ht0 0)).2 0 (Nat.zero_le _)`. Rewrite `h` using `[norm_iteratedFDeriv_zero]`. Establish `hp : 0 < (1 + ‖Zv n t0 0‖) ^ (-a)` using `Real.rpow_pos_of_pos (by positivity) _`.
+
+Assume the negation of the conclusion as `hneg`. Use `mul_neg_of_neg_of_pos (lt_of_not_ge hneg) hp` as an intermediate fact. Combine the linear relations using `[norm_nonneg (Φ (Zv n t0 0))]`. Establish `hbound : ∀ t : ℂ, t ≠ 0 → ∀ v : G.UT (n + 1) → ℂ, ‖G.psi U.betaU (G.superSum (G.upper v)) • Φ (Zv n t v)‖ ≤ C * c * (min 1 ‖t‖) ^ (-a) * (1 + ‖v‖) ^ (-a)`. Introduce `t ht v`.
+
+Rewrite using `[norm_smul, Formalism.FourierDecayAlt.P.WirtingerIntegrationByParts.norm_psi, one_mul]`. Establish `h` using `(hΦreg _ (hZne t ht v)).2 0 (Nat.zero_le _)`. Rewrite `h` using `[norm_iteratedFDeriv_zero]`. Use `h.trans ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left (Zv_decay n ht v ha0) hCc` as an intermediate fact.
+
+Rewrite `this` using `[← mul_assoc]`. Conclude with `this`. Establish `hfin : (Module.finrank ℝ (G.UT (n + 1) → ℂ) : ℝ) < a`. Establish `e : Module.finrank ℝ (G.UT (n + 1) → ℂ) = Fintype.card (G.UT (n + 1)) * 2`. Rewrite using `[Module.finrank_pi_fintype]`.
+
+Simplify using `[Complex.finrank_real_complex]`. Establish `hcard : Fintype.card (G.UT (n + 1)) ≤ (n + 1) * (n + 1)`. Use `Fintype.card_subtype_le (fun p : Fin (n + 1) × Fin (n + 1) => p.1 < p.2)` as an intermediate fact. Simplify `this` using `[Fintype.card_prod, Fintype.card_fin]`. Establish `hcardR : ((Fintype.card (G.UT (n + 1)) * 2 : ℕ) : ℝ) ≤ 2 * (((n : ℝ) + 1) * ((n : ℝ) + 1))`.
+
+Establish `: Fintype.card (G.UT (n + 1)) * 2 ≤ 2 * ((n + 1) * (n + 1))` using `by omega`. Conclude with `this` after adjusting the coercions. Rewrite using `[e]`. Use `lt_of_le_of_lt hcardR (lt_of_lt_of_le ?_ ha128)` and prove the remaining obligations. Establish `hn : ((n : ℝ) + 1) ≤ ((ph + (n + 1) + ρ : ℕ) : ℝ) + 1` using `by push_cast; linarith [(Nat.cast_nonneg ph : (0:ℝ) ≤ ph), (Nat.cast_nonneg ρ : (0:ℝ) ≤ ρ)]`.
+
+Establish `hAs' : (1 : ℝ) ≤ As` using `by exact_mod_cast hAs1`. Use `set R1 : ℝ := ((ph + (n + 1) + ρ : ℕ) : ℝ) + 1`. Establish `hR1 : 1 ≤ R1`. Establish `: (0 : ℝ) ≤ ((ph + (n + 1) + ρ : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hn0 : (1 : ℝ) ≤ (n : ℝ) + 1` using `by linarith [(Nat.cast_nonneg n : (0:ℝ) ≤ n)]`. Establish `h1 : 2 * (((n : ℝ) + 1) * ((n : ℝ) + 1)) ≤ 2 * (R1 * R1)` using `by gcongr`. Establish `h2 : 2 * (R1 * R1) < 128 * R1 ^ 3` using `by nlinarith`. Establish `h3 : 128 * R1 ^ 3 ≤ 128 * R1 ^ 3 * (As : ℝ)` using `by nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `set m0 : ℝ := min 1 (‖t0‖ / 2) with hm0`. Establish `hm0p : 0 < m0` using `lt_min one_pos (by positivity)`. Establish `hbound' : ∀ t : ℂ, dist t t0 < δ0 → ∀ v : G.UT (n + 1) → ℂ, ‖G.psi U.betaU (G.superSum (G.upper v)) • Φ (Zv n t v)‖ ≤ C * c * m0 ^ (-a) * (1 + ‖v‖) ^ (-a)`. Introduce `t ht v`. Take `⟨h2, ht', -⟩` from `hnear t ht`.
+
+Use `(hbound t ht' v).trans ?_` and prove the remaining obligations. Establish `hmle : m0 ≤ min 1 ‖t‖` using `min_le_min le_rfl h2`. Establish `h3 : (min 1 ‖t‖) ^ (-a) ≤ m0 ^ (-a)` using `Real.rpow_le_rpow_of_nonpos hm0p hmle (by linarith)`. Establish `hv : 0 ≤ (1 + ‖v‖) ^ (-a)` using `Real.rpow_nonneg (by positivity) _`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left h3 hCc) hv`.
+
+Establish `hgint : Integrable (fun v : G.UT (n + 1) → ℂ => C * c * m0 ^ (-a) * (1 + ‖v‖) ^ (-a)) (G.muPi U.betaU (G.UT (n + 1)))`. Rewrite using `[Dx2.SL.muPi_betaU]`. Apply `Integrable.smul_measure_nnreal` to reduce the goal to its premises. Conclude with `(integrable_one_add_norm hfin).const_mul _`. Set `Wt : ℂ → V` to `fun t => ∫ v, G.psi U.betaU (G.superSum (G.upper v)) • Φ (Zv n t v) ∂(G.muPi U.betaU (G.UT (n + 1)))`.
+
+Establish `hWc : ContinuousAt Wt t0`. Establish `hball : ∀ᶠ t in 𝓝 t0, dist t t0 < δ0` using `Metric.ball_mem_nhds t0 hδ0`. Use `continuousAt_of_dominated ?_ ?_ hgint ?_` and prove the remaining obligations. Use `filter_upwards [hball] with t ht`. Conclude with `(hψc.smul (hΦc t (hnear t ht).2.1)).aestronglyMeasurable`.
+
+Use `filter_upwards [hball] with t ht`. Conclude with `Eventually.of_forall (hbound' t ht)`. Use `Eventually.of_forall fun v => ?_` and prove the remaining obligations. Conclude with `continuousAt_const.smul (ContinuousAt.comp (g := Φ) (f := fun t : ℂ => Zv n t v) (x := t0) ((hΦreg _ (hZne t0 ht0 v)).1.continuousAt) (continuous_unipotent_vector_scalar n v).continuousAt)`. Establish `key : ∀ t : ℂ, dist t t0 < δ0 → ∀ γ ∈ B.GV k ρ, U.PhiFun (p` using `ph + (n + 1)) (s := 0) k ρ (Dx2.SL.sigP σ) (Dx2.SL.dP d t) z z' F (fun a => a.elim0) γ = MM.ev (((Real.pi ^ ((n + 1) * n / 2) : ℝ) : ℂ) • Wt t) γ () := by`.
+
+Introduce `t ht γ hγ`. Establish `ht'` using `(hnear t ht).2.1`. Establish `hφint : Integrable (fun v : G.UT (n + 1) → ℂ => G.psi U.betaU (G.superSum (G.upper v)) • Φ (Zv n t v)) (G.muPi U.betaU (G.UT (n + 1)))` using `hgint.mono' (hψc.smul (hΦc t ht')).aestronglyMeasurable (Eventually.of_forall (hbound' t ht))`. Establish `hgN : 0 < B.gN γ ^ a` using `Real.rpow_pos_of_pos (Formalism.FourierDecayAlt.P.Ux1.gN_pos hγ) a`. Set `L₀ : V →ₗ[ℂ] (Wq →L[ℂ] Wp)` to `(LinearMap.proj (R := ℂ) (φ := fun _ : Unit => Wq →L[ℂ] Wp) ()) ∘ₗ (LinearMap.proj (R := ℂ) (φ := fun _ : B.Mat k ρ => Unit → (Wq →L[ℂ] Wp)) γ) ∘ₗ MM.ev`.
+
+Establish `hL₀ : ∀ w, L₀ w = MM.ev w γ ()` using `fun w => rfl`. Establish `hbd : ∀ w, ‖L₀ w‖ ≤ (B.gN γ ^ a)⁻¹ * ‖w‖`. Introduce `w`. Rewrite using `[hL₀]`. Establish `h1` using `(MM.mem w).2 [] [] (by simp) (by simp) (by simp) γ hγ`.
+
+Rewrite using `[inv_mul_eq_div, le_div_iff₀' hgN]`. Conclude with `le_trans (mul_le_mul_of_nonneg_left (norm_le_pi_norm _ ()) hgN.le) h1`. Set `L : V →L[ℂ] (Wq →L[ℂ] Wp)` to `L₀.mkContinuous _ hbd`. Establish `hL : ∀ w, L w = MM.ev w γ ()` using `fun w => rfl`. Establish `hΨ : ∀ v : G.UT (n + 1) → ℂ, U.PhiFun (p` using `ph) (s := n + 1) k ρ σ d z z' F (Zv n t v) γ = MM.ev (Φ (Zv n t v)) γ () := by`.
+
+Introduce `v`. Rewrite using `[hΦev _ (hZne t ht' v) γ hγ]`. Use `show _ = (U.PhiFun (p := ph) (s := n + 1) k ρ σ d z z' (UD.F1 f) (Zv n t v) γ) ()`. Unfold `U.PhiFun`. Establish `e` using `(ContinuousLinearEquiv.funUnique Unit ℂ (Wq →L[ℂ] Wp)).integral_comp_comm (μ := U.muXi k ph (n + 1) ρ σ) (fun ξ => U.psiStar k ρ σ z z' ξ • UD.F1 f (U.gaXi k ρ σ d ξ (Zv n t v) γ))`.
+
+Use `Eq.trans ?_ e` and prove the remaining obligations. Use `integral_congr_ae (Eventually.of_forall fun ξ => ?_)` and prove the remaining obligations. Use `show U.psiStar k ρ σ z z' ξ • F (U.gaXi k ρ σ d ξ (Zv n t v) γ) = U.psiStar k ρ σ z z' ξ • F₁ (U.gaXi k ρ σ d ξ (Zv n t v) γ)`. Rewrite using `[hOrb t ht ξ v γ hγ]`. Rewrite using `[hcore t ht γ hγ]`.
+
+Establish `hOm : G.OmLong U.betaU n (fun Z => U.PhiFun (p` using `ph) (s := n + 1) k ρ σ d z z' F Z γ) t = L (Wt t) := by show _ = L (∫ v, G.psi U.betaU (G.superSum (G.upper v)) • Φ (Zv n t v) ∂(G.muPi U.betaU (G.UT (n + 1))))`. Rewrite using `[← L.integral_comp_comm hφint]`. Unfold `G.OmLong`. Use `integral_congr_ae (Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Use `show G.psi U.betaU (G.superSum (G.upper v)) • U.PhiFun (p := ph) (s := n + 1) k ρ σ d z z' F (Zv n t v) γ = L (G.psi U.betaU (G.superSum (G.upper v)) • Φ (Zv n t v))`.
+
+Rewrite using `[L.map_smul, hL, hΨ v]`. Rewrite using `[hOm, hL, map_smul]`. Both sides reduce to the same expression. Establish `hAa : A ≤ a` using `le_trans hA ha128`. Establish `hCCv : ∀ w : V, B.CCle A mm (fun γ => MM.ev w γ ()) ‖w‖` using `fun w => Formalism.FourierDecayAlt.P.compactly_supported_monotone k ρ (Wq →L[ℂ] Wp) a A ‖w‖ mm _ hAa (ccle_unit (MM.mem w))`.
+
+Use `set πc : ℂ := ((Real.pi ^ ((n + 1) * n / 2) : ℝ) : ℂ) with hπc`. Establish `hWfc : ContinuousAt (fun t => πc • Wt t) t0` using `continuousAt_const.smul hWc`. Take `⟨δ2, hδ2, hδ2c⟩` from `Metric.continuousAt_iff.mp hWfc 1 one_pos`. Establish `hself : dist t0 t0 < δ0` using `by rw [dist_self]; exact hδ0`. Use `⟨min δ0 δ2, ‖πc • Wt t0‖ + 1, fun t => ‖πc • Wt t - πc • Wt t0‖, lt_min hδ0 hδ2, tendsto_iff_norm_sub_tendsto_zero.mp hWfc, fun t ht => ?_⟩` and prove the remaining obligations.
+
+Establish `ht0' : dist t t0 < δ0` using `lt_of_lt_of_le ht (min_le_left _ _)`. Establish `ht2 : dist t t0 < δ2` using `lt_of_lt_of_le ht (min_le_right _ _)`. Use `⟨(hnear t ht0').2.1, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `Formalism.FourierDecayAlt.P.Ux1.cc_congr (fun γ hγ => (key t ht0' γ hγ).symm) (hCCv (πc • Wt t))`. Use `Formalism.FourierDecayAlt.P.JCx2.pd_ccle_mono_c h1 ?_` and prove the remaining obligations.
+
+Establish `h2` using `hδ2c ht2`. Simplify using `only [dist_eq_norm] at h2`. Establish `h3` using `norm_le_insert' (πc • Wt t) (πc • Wt t0)`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `γ hγ hne`.
+
+Assume the negation of the conclusion as `hlt`. Establish `hnot : γ ∉ UD.S` using `fun h => hlt h`. Apply `hne` to reduce the goal to its premises. Rewrite using `[key t ht0' γ hγ, MM.off _ γ hγ hnot]`. Both sides reduce to the same expression.
+
+Establish `heq : ∀ γ ∈ B.GV k ρ, MM.ev (πc • Wt t - πc • Wt t0) γ () = U.PhiFun (p` using `ph + (n + 1)) (s := 0) k ρ (Dx2.SL.sigP σ) (Dx2.SL.dP d t) z z' F (fun a => a.elim0) γ - U.PhiFun (p := ph + (n + 1)) (s := 0) k ρ (Dx2.SL.sigP σ) (Dx2.SL.dP d t0) z z' F (fun a => a.elim0) γ := by`. Introduce `γ hγ`. Rewrite using `[key t ht0' γ hγ, key t0 hself γ hγ, map_sub]`. Apply the tactic sequence `try rfl`. Conclude with `Formalism.FourierDecayAlt.P.Ux1.cc_congr heq (hCCv (πc • Wt t - πc • Wt t0))`.
+-/
 theorem posCoreCont : ∃ Cc : ℝ, 0 ≤ Cc ∧
   ∀ (k ph n ρ : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]

@@ -16,6 +16,15 @@ open scoped Pointwise ENNReal Classical
 
 namespace GlobalTheory.HL.GluingKernels
 
+/- English proof (translation)
+Use `haveI : Finite (Submodule R D) := Finite.of_injective _ (SetLike.coe_injective (A := Submodule R D))`. Set `A` to `Σ I : {I : Submodule R D // Nat.card I = j}, (Fin m → I.1)`. Set `Ψ : A → β` to `fun a => Φ fun i => (a.2 i : D)`. Establish `hsub : T ⊆ Ψ '' Set.univ`. Introduce `t ht`.
+
+Take `⟨I, hI, x, hx, rfl⟩` from `hT t ht`. Conclude with `⟨⟨⟨I, hI⟩, fun i => ⟨x i, hx i⟩⟩, trivial, rfl⟩`. Use `haveI : Fintype {I : Submodule R D // Nat.card I = j} := Fintype.ofFinite _`. Establish `hA : Nat.card A ≤ Nat.card (Submodule R D) * j ^ m`. Establish `h1 : Nat.card A = ∑ I : {I : Submodule R D // Nat.card I = j}, j ^ m`.
+
+Rewrite using `[Nat.card_sigma]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.card_fun, I.2, Nat.card_eq_fintype_card, Fintype.card_fin]`. Rewrite using `[h1, Finset.sum_const, Finset.card_univ, smul_eq_mul, ← Nat.card_eq_fintype_card]`. Conclude with `Nat.mul_le_mul_right _ (Nat.card_le_card_of_injective _ Subtype.val_injective)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Set.encard_univ, ENat.card_eq_coe_natCard]`. Use `_ ≤ _ := by exact_mod_cast hA`.
+-/
 theorem encard_le_of_param {R D β : Type} [CommRing R] [AddCommGroup D] [Module R D] [Finite D]
     (m j : ℕ) (Φ : (Fin m → D) → β) (T : Set β)
     (hT : ∀ t ∈ T, ∃ I : Submodule R D, Nat.card I = j ∧ ∃ x : Fin m → D, (∀ i, x i ∈ I) ∧ Φ x = t) :
@@ -45,6 +54,17 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] {L : LocE F E}
   {r k : ℕ} (S : Frames L r k)
 
+/- English proof (translation)
+Take `⟨hSD, hW, -, h1, h2, hli, -⟩` from `GlobalTheory.HL.TermBasic.term_basic L r k S d Λ hΛ`. Use `haveI : IsPrincipalIdealRing L.O := (GlobalTheory.UnramOrder.order_facts L S.ϖ S.ϖ_irr).2.2.2.1`. Establish `hfg : (S.sat Λ).FG` using `by haveI : IsNoetherian L.O Λ := isNoetherian_of_fg_of_noetherian Λ hSD.1.1`. Conclude with `(isNoetherian_submodule.1 this) _ inf_le_left`. Establish `hsp` using `(GlobalTheory.T.frameLattice_gramDet_and_minors_orbit_invariant L r k S _ hW.2.2.1 _ hW.2.2.2.1).2.2`.
+
+Use `set y := Sum.elim (S.fr d Λ) (S.fr' d Λ) with hy`. Establish `hr : Set.range (y ∘ finSumFinEquiv.symm) = Set.range y` using `finSumFinEquiv.symm.surjective.range_comp y`. Take `⟨b, -, hb⟩` from `GlobalTheory.OrderBasis.order_basis L (y ∘ finSumFinEquiv.symm) (hli.comp _ finSumFinEquiv.symm.injective) (S.sat Λ) hfg (by`. Rewrite using `[hr]`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Establish `hx2 : x ∈ S.ME` using `hx.2`. Rewrite `hx2` using `[← hsp]`. Use `(Submodule.span_le.2 ?_) hx2` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨i | i, rfl⟩`. Conclude with `Submodule.subset_span ⟨Sum.inl i, rfl⟩`. Conclude with `Submodule.smul_mem _ _ (Submodule.sub_mem _ (Submodule.subset_span ⟨Sum.inr i, rfl⟩) (Submodule.subset_span ⟨Sum.inl i, rfl⟩))`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨i | i, rfl⟩`.
+
+Use `(h1 (r + 1) le_rfl (S.fr d Λ i)).2 (Submodule.subset_span ⟨i, i.2, rfl⟩)` as an intermediate fact. Conclude with `⟨this.1, Submodule.mem_sup_left this.2⟩`. Use `(h2 (r + 1) le_rfl (S.fr' d Λ i)).2 (Submodule.subset_span ⟨i, i.2, rfl⟩)` as an intermediate fact. Conclude with `⟨this.1, Submodule.mem_sup_right this.2⟩)`. Conclude with `⟨b, hb⟩`.
+-/
 theorem sat_gens (d : S.Datum) (Λ : Submodule L.O S.V) (hΛ : S.IsTerm d Λ) :
     ∃ b : Fin ((r + 1) + (r + 1)) → S.V, S.sat Λ = Submodule.span L.O (Set.range b) := by
   obtain ⟨hSD, hW, -, h1, h2, hli, -⟩ := GlobalTheory.HL.TermBasic.term_basic L r k S d Λ hΛ
@@ -77,6 +97,11 @@ theorem sat_gens (d : S.Datum) (Λ : Submodule L.O S.V) (hΛ : S.IsTerm d Λ) :
           exact ⟨this.1, Submodule.mem_sup_right this.2⟩)
   exact ⟨b, hb⟩
 
+/- English proof (translation)
+Take `⟨-, -, h3, h4, -⟩` from `GlobalTheory.T.exists_gluing_homomorphism_defect_group L r k S d Λ hΛ`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using ((h4 0 (Submodule.zero_mem _)).1 (Submodule.zero_mem _)).2`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`.
+
+Conclude with `h3 (c a) (c a).2 _ _ _ _ (h a) ih`.
+-/
 theorem tauRel_sum (d : S.Datum) (Λ : Submodule L.O S.V) (hΛ : S.IsTerm d Λ) {ι : Type}
     (s : Finset ι) (c : ι → L.O) (w y : ι → S.V) (h : ∀ i, S.TauRel d Λ (w i) (y i)) :
     S.TauRel d Λ (∑ i ∈ s, c i • w i) (∑ i ∈ s, c i • y i) := by
@@ -87,6 +112,37 @@ theorem tauRel_sum (d : S.Datum) (Λ : Submodule L.O S.V) (hΛ : S.IsTerm d Λ) 
     rw [Finset.sum_insert ha, Finset.sum_insert ha]
     exact h3 (c a) (c a).2 _ _ _ _ (h a) ih
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ L r k S d C Mh j`. Break down `Set.eq_empty_or_nonempty {Λ | S.IsTerm d Λ ∧ S.Fr d Λ = C ∧ S.sat Λ = Mh ∧ S.cardI d Λ = j} with h0 | ⟨Λ₀, h₀, hC₀, hM₀, -⟩` into its components or cases. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Take `⟨-, -, -, -, -, b, -, hb⟩` from `GlobalTheory.T.exists_gluing_homomorphism_defect_group L r k S d Λ₀ h₀`.
+
+Take `⟨-, -, -, -, -, ⟨i₀, hi₀, hbe⟩, -⟩` from `GlobalTheory.T.term_exponents_nonneg_and_defect_group_bound L r k S d Λ₀ h₀`. Establish `hq : 2 ≤ S.q` using `(GlobalTheory.UnramOrder.order_facts L S.ϖ S.ϖ_irr).2.2.2.2.2.2.1`. Set `M₀ : Submodule L.O Mh` to `(S.M d Λ₀).comap Mh.subtype`. Establish `hcard : Nat.card (Mh ⧸ M₀) = S.q ^ i₀`. Rewrite using `[← hbe, Frames.be, hM₀]`.
+
+Both sides reduce to the same expression. Use `haveI : Finite (Mh ⧸ M₀) := Nat.finite_of_card_ne_zero (by rw [hcard]; positivity)`. Take `⟨g, hg⟩` from `sat_gens S d Λ₀ h₀`. Rewrite `hg` using `[hM₀]`. Establish `hgm : ∀ i, g i ∈ Mh` using `fun i => by rw [hg]; exact Submodule.subset_span ⟨i, rfl⟩`.
+
+Establish `hgen : Submodule.span L.O (Set.range fun i => M₀.mkQ ⟨g i, hgm i⟩) = ⊤`. Establish `h1 : Submodule.span L.O (Set.range fun i => (⟨g i, hgm i⟩ : Mh)) = ⊤`. Apply `Submodule.map_injective_of_injective Mh.injective_subtype` to reduce the goal to its premises. Rewrite using `[Submodule.map_span, ← Set.range_comp, Submodule.map_subtype_top]`. Conclude with `hg.symm`.
+
+Establish `h2 : (Set.range fun i => M₀.mkQ ⟨g i, hgm i⟩) = M₀.mkQ '' Set.range fun i => (⟨g i, hgm i⟩ : Mh)`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[h2, ← Submodule.map_span, h1, Submodule.map_top, Submodule.range_mkQ]`. Establish `hsub` using `(GlobalTheory.SubmoduleCount.card_submodule_and_hom_le L (Mh ⧸ M₀) _ _ hgen).1`.
+
+Establish `key` using `encard_le_of_param (R := L.O) (k - 1) j (fun x : Fin (k - 1) → Mh ⧸ M₀ => (LinearMap.ker (Fintype.linearCombination L.O x)).map (Fintype.linearCombination L.O b)) ((fun Λ : Submodule L.O S.V => Λ ⊓ S.W0.restrictScalars L.O) '' {Λ | S.IsTerm d Λ ∧ S.Fr d Λ = C ∧ S.sat Λ = Mh ∧ S.c …`. Introduce and unpack `_ ⟨Λ, ⟨hΛ, hC, hM, hj⟩, rfl⟩`. Take `⟨t1, t2, -, t4, t5, -⟩` from `GlobalTheory.T.exists_gluing_homomorphism_defect_group L r k S d Λ hΛ`. Rewrite `t1`, `t5` using `[hM]`. Establish `hMM : S.M d Λ = S.M d Λ₀`.
+
+Establish `hmem : (S.fr d Λ, S.fr' d Λ) ∈ S.frameCls (S.fr d Λ₀) (S.fr' d Λ₀)`. Use `(GlobalTheory.HL.FrameClass.frame_classes L r k S (S.fr d Λ) (S.fr' d Λ)).1` as an intermediate fact. Establish `h2 : S.frameCls (S.fr d Λ) (S.fr' d Λ) = S.frameCls (S.fr d Λ₀) (S.fr' d Λ₀)` using `hC.trans hC₀.symm`. Rewrite `this` using `[h2]`. Then use the resulting hypothesis. Conclude with `((GlobalTheory.HL.FrameClass.frame_classes L r k S _ _).2.1 _ hmem).2`.
+
+Establish `hbL : ∀ i, b i ∈ S.complementLatticeOfDatum d` using `fun i => by`. Rewrite using `[hb]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Use `choose y hy hty using fun i => t1 (b i) (hbL i)`. Use `⟨((S.Ihat d Λ).comap Mh.subtype).map M₀.mkQ, ?_, fun i => M₀.mkQ ⟨y i, hy i⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hj, Frames.cardI, hMM, ← AddSubgroup.relIndex_addSubgroupOf (L := Mh.toAddSubgroup) t5]`. Establish `hk : (S.M d Λ₀).toAddSubgroup.addSubgroupOf Mh.toAddSubgroup = M₀.mkQ.toAddMonoidHom.ker`. Use extensionality with `x`. Conclude with `(Submodule.Quotient.mk_eq_zero M₀).symm`. Rewrite using `[hk, AddSubgroup.relIndex_ker]`.
+
+Both sides reduce to the same expression. Introduce `i`. Conclude with `⟨⟨y i, hy i⟩, Submodule.mem_sup_right (Submodule.subset_span ⟨b i, hbL i, hty i⟩), rfl⟩`. Establish `hz : ∀ c : Fin (k - 1) → L.O, Fintype.linearCombination L.O (fun i => M₀.mkQ ⟨y i, hy i⟩) c = 0 ↔ S.TauRel d Λ (∑ i, c i • b i) 0`. Introduce `c`.
+
+Rewrite using `[t2 _ _ 0 (tauRel_sum S d Λ hΛ Finset.univ c b y hty), sub_zero, hMM, Fintype.linearCombination_apply]`. Simplify using `only [← map_smul, ← map_sum]`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Simplify using `[M₀]`. Use extensionality with `w`.
+
+Simplify using `only [Submodule.mem_map, LinearMap.mem_ker, hz, Submodule.mem_inf, Submodule.restrictScalars_mem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, rfl⟩`. Establish `hL : ∑ i, c i • b i ∈ S.complementLatticeOfDatum d`. Rewrite using `[hb]`.
+
+Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[Fintype.linearCombination_apply]`. Conclude with `⟨(t4 _ hL.1).2 ⟨hL, hc⟩, hL.1⟩`. Introduce and unpack `⟨hw, hw0⟩`. Take `⟨hL, ht⟩` from `(t4 w hw0).1 hw`.
+
+Rewrite `hL` using `[hb]`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun L.O).1 hL`. Conclude with `⟨c, ht, Fintype.linearCombination_apply _ _ _⟩)`. Establish `hN : Nat.card (Submodule L.O (Mh ⧸ M₀)) * j ^ (k - 1) ≤ S.q ^ (S.a.toNat * (2 * r + 2)) * j ^ (k - 1)`. Use `Nat.mul_le_mul_right _ (hsub.trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[hcard, ← pow_mul]`. Use `Nat.pow_le_pow_right (by omega) (Nat.mul_le_mul (by omega) (by omega))` and prove the remaining obligations. Establish `h3` using `key.trans (Nat.cast_le.2 hN)`. Establish `h4` using `ENat.toENNReal_le.2 h3`. Simplify using `using h4`.
+-/
 theorem encard_kernels_le : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ (d : S.Datum) C (Mh : Submodule L.O S.V) (j : ℕ), ((((fun Λ : Submodule L.O S.V => Λ ⊓ S.W0.restrictScalars L.O) '' {Λ | S.IsTerm d Λ ∧ S.Fr d Λ = C ∧ S.sat Λ = Mh ∧ S.cardI d Λ = j}).encard : ℕ∞) : ℝ≥0∞) ≤ (S.q : ℝ≥0∞) ^ (S.a.toNat * (2 * r + 2)) * (j : ℝ≥0∞) ^ (k - 1) := by
   intro F _ _ _ _ _ E _ _ _ L r k S d C Mh j
   rcases Set.eq_empty_or_nonempty

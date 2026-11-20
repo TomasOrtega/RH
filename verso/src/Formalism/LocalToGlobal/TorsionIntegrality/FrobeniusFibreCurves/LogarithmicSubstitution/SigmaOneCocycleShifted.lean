@@ -8,10 +8,16 @@ namespace Formalism.L2.Th1.B.Cor
 open Formalism.DworkPowerSeriesWeights (Integral)
 open Formalism.InvariantFactorPaths.G7 (Simeq at1 cob d1 swap2 DivAB)
 
+/- English proof (translation)
+Introduce `K _ _ _ g2 g3 s2 c0 e1 P l i ep F hP he hF hC hc h2`. Conclude with `simeqHalf K Unit _ _ h2 ((diffPh K g2 g3 s2 c0 e1 P l i ep F hP he hF hC).2 hc)`.
+-/
 theorem even_phi_simeq_odd_phi : PhESimPhO := by
   intro K _ _ _ g2 g3 s2 c0 e1 P l i ep F hP he hF hC hc h2
   exact simeqHalf K Unit _ _ h2 ((diffPh K g2 g3 s2 c0 e1 P l i ep F hP he hF hC).2 hc)
 
+/- English proof (translation)
+Introduce `K _ _ _ g2 g3 s2 c0 e1 P l i ep F hP he hF hi hC hc hk h2`. Establish `hW` using `wOfWp K g2 g3 e1 P hP he`. Establish `hw` using `(wIntegral K c0 e1 P l i ep F hF hC hc).2`. Take `⟨a, -, b, c⟩` from `f1E K (3 * e1) (3 * e1 ^ 2 - g2 / 4) e1 s2 (wOf e1 P) l i F hW hF hi hk hw h2`. Conclude with `⟨a, b, c⟩`.
+-/
 theorem sigma_one_cocycle_shifted : SigmaOneCocycleShifted := by
   intro K _ _ _ g2 g3 s2 c0 e1 P l i ep F hP he hF hi hC hc hk h2
   have hW := wOfWp K g2 g3 e1 P hP he
@@ -19,6 +25,11 @@ theorem sigma_one_cocycle_shifted : SigmaOneCocycleShifted := by
   obtain ⟨a, -, b, c⟩ := f1E K (3 * e1) (3 * e1 ^ 2 - g2 / 4) e1 s2 (wOf e1 P) l i F hW hF hi hk hw h2
   exact ⟨a, b, c⟩
 
+/- English proof (translation)
+Establish `key : ∀ g : PowerSeries K, PowerSeries.constantCoeff (PowerSeries.derivative K g) = PowerSeries.coeff 1 g`. Introduce `g`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_derivative]`. Simplify using the standard rewrite rules. Unfold `Dinv`.
+
+Rewrite using `[map_mul, PowerSeries.constantCoeff_inv, key, key, h1, inv_one, one_mul]`.
+-/
 theorem cc_Dinv {K : Type} [Field K] [CharZero K] (l f : PowerSeries K)
     (h1 : PowerSeries.coeff 1 l = 1) :
     PowerSeries.constantCoeff (Dinv l f) = PowerSeries.coeff 1 f := by
@@ -30,6 +41,15 @@ theorem cc_Dinv {K : Type} [Field K] [CharZero K] (l f : PowerSeries K)
   unfold Dinv
   rw [map_mul, PowerSeries.constantCoeff_inv, key, key, h1, inv_one, one_mul]
 
+/- English proof (translation)
+Introduce `K _ _ _ l i f hl0 hl1 hi hS`. Take `⟨hi0, -, hil⟩` from `hi`. Take `⟨hg0, hE⟩` from `hS`. Establish `hi1 : PowerSeries.coeff 1 i = -1`. Establish `e` using `law_coeff_one_subst l i hi0`.
+
+Rewrite `e` using `[hil, map_neg, hl1, one_mul]`. Conclude with `e.symm`. Establish `hE1 : PowerSeries.coeff 1 (PowerSeries.subst (PowerSeries.subst i f - f : PowerSeries K) (PowerSeries.exp K) : PowerSeries K) = PowerSeries.coeff 1 (PowerSeries.subst i f - f : PowerSeries K)`. Rewrite using `[law_coeff_one_subst _ _ hg0, PowerSeries.coeff_exp]`. Simplify using the standard rewrite rules.
+
+Establish `hn : ‖PowerSeries.coeff 1 (PowerSeries.subst i f - f : PowerSeries K)‖ ≤ 1`. Rewrite using `[← hE1]`. Conclude with `hE (Finsupp.single () 1)`. Rewrite `hn` using `[map_sub, law_coeff_one_subst f i hi0, hi1]`. Rewrite using `[cc_Dinv l f hl1, ← norm_neg]`.
+
+Establish `: -(2 * PowerSeries.coeff 1 f) = PowerSeries.coeff 1 f * -1 - PowerSeries.coeff 1 f`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `hn`.
+-/
 theorem first_jet_of_formal_law : JetOne := by
   intro K _ _ _ l i f hl0 hl1 hi hS
   obtain ⟨hi0, -, hil⟩ := hi
@@ -53,6 +73,11 @@ theorem first_jet_of_formal_law : JetOne := by
   rw [this]
   exact hn
 
+/- English proof (translation)
+Introduce `K _ _ _ g2 g3 s2 c0 P l i ep F hP hF hi hC h2 n hn`. Break down `hn with rfl | hn` into its components or cases. Establish `hS` using `phOEven K s2 P l i hP.2.1 hF.2.2.1 hF.2.2.2.1 hi`. Establish `h` using `first_jet_of_formal_law K l i _ hF.2.2.1 hF.2.2.2.1 hi hS`. Rewrite `h` using `[norm_mul, h2, one_mul]`.
+
+Conclude with `h`. Conclude with `jetsThree K F l _ hF (f1O K g2 g3 s2 c0 P l i ep F hP hF hi hC h2).2.2.1 n hn`.
+-/
 theorem jets_of_odd_parallelogram_phi : JetsPhO := by
   intro K _ _ _ g2 g3 s2 c0 P l i ep F hP hF hi hC h2 n hn
   rcases hn with rfl | hn

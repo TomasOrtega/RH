@@ -22,6 +22,19 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 open scoped Formalism.Per NNReal
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `l _ K bk d ρ T0 Wm Wm' A0 A0' hT0 hA0 hA0' hfr hAA hW hW' hWW`. Establish `hO` using `GlobalTheory.T.integral_elements_unit_factorization l K bk`. Establish `hgal : ∀ g : ↥(GK K), bk.FixFlat g → Wm.map (galW l (g : GQ l)) = Wm`. Introduce `g hg`. Conclude with `Matrix.ext fun i j => by`.
+
+Simplify using `only [Matrix.map_apply]`. Conclude with `hO.2.2.2.2.2.1 g hg _ (hW i j)`. Establish `hfrob : ∀ M : Matrix (Fin d) (Fin d) (WCb l), (∀ i j, M i j ∈ bk.OE) → ∀ i j, M.map (frobW l) i j ∈ bk.OE`. Introduce `M hM i j`. Conclude with `hO.2.2.2.2.2.2 _ (hM i j)`.
+
+Establish `hmul : ∀ M N : Matrix (Fin d) (Fin d) (WCb l), (∀ i j, M i j ∈ bk.OE) → (∀ i j, N i j ∈ bk.OE) → ∀ i j, (M * N) i j ∈ bk.OE`. Introduce `M N hM hN i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ (fun k _ => Subring.mul_mem _ (hM i k) (hN k j))`. Establish `hW'W : Wm' * Wm = 1` using `mul_eq_one_comm.mp hWW`.
+
+Use `⟨?_, Wm' * A0 * Wm.map (frobW l), Wm'.map (frobW l) * A0' * Wm, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Establish `hmap : (T0 * Wm).map (galW l (g : GQ l)) = T0.map (galW l (g : GQ l)) * Wm.map (galW l (g : GQ l))` using `Matrix.map_mul (f := ((galW l (g : GQ l)) : WCb l →+* WCb l))`. Rewrite using `[hmap, hgal g hg, ← Matrix.mul_assoc, hT0 g hg]`. Conclude with `hmul _ _ (hmul _ _ hW' hA0) (hfrob _ hW)`.
+
+Conclude with `hmul _ _ (hmul _ _ (hfrob _ hW') hA0') hW`. Establish `hmap : (T0 * Wm).map (frobW l) = T0.map (frobW l) * Wm.map (frobW l)` using `Matrix.map_mul (f := ((frobW l) : WCb l →+* WCb l))`. Rewrite using `[hmap, hfr]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Wm Wm', hWW, Matrix.one_mul]`.
+
+Establish `hφ : Wm.map (frobW l) * Wm'.map (frobW l) = 1`. Establish `e : (Wm * Wm').map (frobW l) = Wm.map (frobW l) * Wm'.map (frobW l)` using `Matrix.map_mul (f := ((frobW l) : WCb l →+* WCb l))`. Rewrite using `[← e, hWW]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem GlobalTheory.ChangeEtaleBasis.main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (T0 Wm Wm' A0 A0' : Matrix (Fin d) (Fin d) (WCb l)), (∀ g : ↥(GK K), bk.FixFlat g → zW (ρ g) * T0.map (galW l (g : GQ l)) = T0) → (∀ i j, A0 i j ∈ bk.OE) → (∀ i j, A0' i j ∈ bk.OE) → T0.map (frobW l) = T0 * A0 → A0 * A0' = 1 → (∀ i j, Wm i j ∈ bk.OE) → (∀ i j, Wm' i j ∈ bk.OE) → Wm * Wm' = 1 → (∀ g : ↥(GK K), bk.FixFlat g → zW (ρ g) * (T0 * Wm).map (galW l (g : GQ l)) = T0 * Wm) ∧ ∃ A1 A1' : Matrix (Fin d) (Fin d) (WCb l), (∀ i j, A1 i j ∈ bk.OE) ∧ (∀ i j, A1' i j ∈ bk.OE) ∧ (T0 * Wm).map (frobW l) = (T0 * Wm) * A1 ∧ A1 * A1' = 1 := by
   intro l _ K bk d ρ T0 Wm Wm' A0 A0' hT0 hA0 hA0' hfr hAA hW hW' hWW
   have hO := GlobalTheory.T.integral_elements_unit_factorization l K bk

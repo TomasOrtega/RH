@@ -3,6 +3,29 @@ open Polynomial
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K _ _ g a ρ d hρ ha hle hlt`. Establish `hsub : ∀ x y : K, ‖x - y‖ ≤ max ‖x‖ ‖y‖`. Introduce `x y`. Simplify `IsUltrametricDist.norm_add_le_max x (-y)` using `[sub_eq_add_neg, norm_neg]`. Establish `hcoef : ∀ k, ((X - C a) * g).coeff (k + 1) = g.coeff k - g.coeff (k + 1) * a`.
+
+Introduce `k`. Rewrite using `[mul_comm]`. Conclude with `coeff_mul_X_sub_C`. Establish `hcoef0 : ((X - C a) * g).coeff 0 = -a * g.coeff 0`. Rewrite using `[mul_coeff_zero]`.
+
+Simplify using the standard rewrite rules. Establish `hM : 0 < ‖g.coeff d‖ * ρ ^ d`. Establish `h` using `hlt (d + 1) (Nat.lt_succ_self d)`. Establish `: 0 ≤ ‖g.coeff (d + 1)‖ * ρ ^ (d + 1)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hsmall : ‖g.coeff (d + 1) * a‖ < ‖g.coeff d‖`. Rewrite using `[norm_mul]`. Establish `hp : 0 < ρ ^ (d + 1)` using `by positivity`. Establish `h` using `hlt (d + 1) (Nat.lt_succ_self d)`. Establish `hn : 0 ≤ ‖g.coeff (d + 1)‖ * ρ ^ (d + 1)` using `by positivity`.
+
+Establish `h2 : ‖g.coeff (d + 1)‖ * ‖a‖ * ρ ^ (d + 1) < ‖g.coeff d‖ * ρ ^ (d + 1)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `lt_of_mul_lt_mul_right h2 hp.le`. Establish `htopn : ‖((X - C a) * g).coeff (d + 1)‖ = ‖g.coeff d‖`. Rewrite using `[hcoef d, sub_eq_add_neg, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [norm_neg]; exact hsmall.ne'), norm_neg]`.
+
+Conclude with `max_eq_left hsmall.le`. Establish `htop : ‖((X - C a) * g).coeff (d + 1)‖ * ρ ^ (d + 1) = ρ * (‖g.coeff d‖ * ρ ^ d)`. Rewrite using `[htopn]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ k, ‖((X - C a) * g).coeff (k + 1)‖ * ρ ^ (k + 1) ≤ max (ρ * (‖g.coeff k‖ * ρ ^ k)) (ρ * (‖g.coeff (k + 1)‖ * ρ ^ (k + 1)))`.
+
+Introduce `k`. Rewrite using `[hcoef k]`. Establish `h1` using `hsub (g.coeff k) (g.coeff (k + 1) * a)`. Rewrite `h1` using `[norm_mul]`. Establish `hp : 0 ≤ ρ ^ (k + 1)` using `by positivity`.
+
+Establish `hn : 0 ≤ ‖g.coeff (k + 1)‖ * ρ ^ (k + 1)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Apply `max_le_max` to reduce the goal to its premises. Conclude with `le_of_eq (by ring)`. Combine the equalities or inequalities in the displayed calculation.
+
+Prove the components needed by the constructor for the conclusion. Introduce `j`. Rewrite using `[htop]`. Consider the cases of `j with`. Consider the case `zero`.
+
+Rewrite using `[hcoef0, norm_mul, norm_neg, pow_zero, mul_one]`. Establish `h0` using `hle 0`. Rewrite `h0` using `[pow_zero, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Consider the case `succ k`.
+
+Conclude with `(key k).trans (max_le (mul_le_mul_of_nonneg_left (hle k) hρ.le) (mul_le_mul_of_nonneg_left (hle (k + 1)) hρ.le))`. Introduce `j hj`. Rewrite using `[htop]`. Take `⟨k, rfl⟩ : ∃ k, j = k + 1` from `⟨j - 1, by omega⟩`. Conclude with `(key k).trans_lt (max_lt (mul_lt_mul_of_pos_left (hlt k (by omega)) hρ) (mul_lt_mul_of_pos_left (hlt (k + 1) (by omega)) hρ))`.
+-/
 theorem newton_step_root_in_disc :
     ∀ (K : Type) [NormedField K] [IsUltrametricDist K] (g : K[X]) (a : K) (ρ : ℝ) (d : ℕ),
       0 < ρ → ‖a‖ ≤ ρ → (∀ j, ‖g.coeff j‖ * ρ ^ j ≤ ‖g.coeff d‖ * ρ ^ d) →

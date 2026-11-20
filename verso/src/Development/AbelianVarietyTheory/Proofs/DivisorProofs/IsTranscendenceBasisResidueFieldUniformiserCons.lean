@@ -17,6 +17,19 @@ namespace GlobalTheory.FieldPair.ResidueTrBasis
 
 open IsLocalRing
 
+/- English proof (translation)
+Use `letI : Algebra ℂ S.ring := S.const.toAlgebra`. Use `letI : Algebra ℂ L := cL.toAlgebra`. Use `letI : Algebra ℂ K := cK.toAlgebra`. Use `haveI : IsScalarTower ℂ S.ring L := IsScalarTower.of_algebraMap_eq' rfl`. Establish `hcomp : ψ.comp (algebraMap ℂ S.ring) = algebraMap ℂ K` using `RingHom.ext hc`.
+
+Use `haveI : Algebra.EssFiniteType ℂ S.ring := S.essFiniteType`. Use `haveI := formallySmooth_of_isRegularLocalRing_of_perfectField ℂ S.ring`. Establish `hker : RingHom.ker ψ = maximalIdeal S.ring` using `by haveI := RingHom.ker_isMaximal_of_surjective ψ hψ`. Conclude with `IsLocalRing.eq_maximalIdeal this`. Establish `hL : Algebra.trdeg ℂ L = (m + 2 : ℕ)`.
+
+Use `IsTranscendenceBasis.cardinalMk_eq_trdeg (R := ℂ) hx` as an intermediate fact. Rewrite `this` using `[Cardinal.mk_fin]`. Conclude with `this.symm`. Establish `hR : Algebra.trdeg ℂ (ResidueField S.ring) = (m + 1 : ℕ)` using `trdeg_residueField_of_trdeg ℂ S.ring L hL`. Take `⟨s, hs⟩` from `exists_isTranscendenceBasis ℂ K`.
+
+Set `res` to `IsLocalRing.residue S.ring`. Set `lift : s → S.ring` to `fun i => Function.surjInv hψ (i : K)`. Establish `hlift : ψ ∘ lift = Subtype.val` using `funext fun i => Function.surjInv_eq hψ _`. Establish `hg : AlgebraicIndependent ℂ (fun i => res (lift i))`. Use `algebraicIndependent_iff.2 fun P hP => ?_` and prove the remaining obligations.
+
+Establish `h0 : res (MvPolynomial.eval₂ (algebraMap ℂ S.ring) lift P) = 0`. Rewrite using `[MvPolynomial.eval₂_comp_left]`. Conclude with `hP`. Rewrite `h0` using `[IsLocalRing.residue_eq_zero_iff, ← hker, RingHom.mem_ker, MvPolynomial.hom_eval₂, hcomp, show (fun i => ψ (lift i)) = Subtype.val from hlift]`. Conclude with `algebraicIndependent_iff.1 hs.1 P h0`.
+
+Establish `h1` using `hg.cardinalMk_le_trdeg`. Rewrite `h1` using `[hs.cardinalMk_eq_trdeg, hR]`. Conclude with `h1`.
+-/
 theorem trdeg_le_of_residue {L K : Type} [Field L] [Field K] (cL : ℂ →+* L) (cK : ℂ →+* K)
     (S : Place cL) (ψ : S.ring →+* K) (hψ : Function.Surjective ψ)
     (hc : ∀ a, ψ (S.const a) = cK a) (m : ℕ) (x : Fin (m + 2) → L) (hx : TrBasis cL x) :
@@ -54,6 +67,35 @@ theorem trdeg_le_of_residue {L K : Type} [Field L] [Field K] (cL : ℂ →+* L) 
   rw [hs.cardinalMk_eq_trdeg, hR] at h1
   exact h1
 
+/- English proof (translation)
+Introduce `L K _ _ cL cK S ψ hψ hc F m π y ⟨x, hx⟩ hπ hy hP`. Establish `htr` using `trdeg_le_of_residue cL cK S ψ hψ hc m x hx`. Use `letI : Algebra ℂ F.ring := F.const.toAlgebra`. Use `letI : Algebra ℂ K := cK.toAlgebra`. Establish `hπ0 : π ≠ 0`.
+
+Introduce and unpack `rfl`. Simplify using `[Place.ord] at hπ`. Establish `hπm : π ∈ F.ring` using `(F.ord_nonneg_iff hπ0).1 (by omega)`. Set `f : F.ring` to `⟨π, hπm⟩`. Establish `hf0 : f ≠ 0` using `fun h => hπ0 (congrArg Subtype.val h)`.
+
+Establish `hfm : f ∈ maximalIdeal F.ring`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Use `F.ord_eq_zero hu` as an intermediate fact. Express the relevant statement in the definitionally equal form `F.ord π = 0 at this`.
+
+Use linear arithmetic over natural numbers and integers. Set `w : Fin m → F.ring` to `fun i => ⟨y i, hy i⟩`. Establish `hev : ∀ P : MvPolynomial (Fin m) ℂ, ((MvPolynomial.eval₂ (algebraMap ℂ F.ring) w P : F.ring) : K) = MvPolynomial.eval₂ cK y P`. Introduce `P`. Establish `h` using `MvPolynomial.hom_eval₂ P (algebraMap ℂ F.ring) F.ring.subtype w`.
+
+Rewrite `h` using `[ValuationSubring.subtype_apply]`. Rewrite using `[h]`. Both sides reduce to the same expression. Establish `hwu : ∀ P : MvPolynomial (Fin m) ℂ, P ≠ 0 → IsUnit (MvPolynomial.eval₂ (algebraMap ℂ F.ring) w P)`. Introduce `P hP0`.
+
+Take `⟨h1, h2⟩` from `hP P hP0`. Use `IsUnit.of_mul_eq_one (⟨_, h2⟩ : F.ring) (Subtype.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((MvPolynomial.eval₂ (algebraMap ℂ F.ring) w P : F.ring) : K) * _ = 1`. Rewrite using `[hev]`. Conclude with `mul_inv_cancel₀ h1`.
+
+Establish `hsplit : ∀ P : MvPolynomial (Fin (m + 1)) ℂ, MvPolynomial.eval₂ (algebraMap ℂ F.ring) (Fin.cons f w : Fin (m + 1) → F.ring) P = Polynomial.eval f (Polynomial.map (MvPolynomial.eval₂Hom (algebraMap ℂ F.ring) w) (MvPolynomial.finSuccEquiv ℂ m P))`. Introduce `P`. Establish `hrh : MvPolynomial.eval₂Hom (algebraMap ℂ F.ring) (Fin.cons f w : Fin (m + 1) → F.ring) = (Polynomial.evalRingHom f).comp ((Polynomial.mapRingHom (MvPolynomial.eval₂Hom (algebraMap ℂ F.ring) w)).comp (MvPolynomial.finSuccEquiv ℂ m : MvPolynomial (Fin (m + 1)) ℂ →+* _))`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`.
+
+Simplify using `[MvPolynomial.finSuccEquiv_apply]`. Introduce `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;>`. Simplify using `[MvPolynomial.finSuccEquiv_X_zero, MvPolynomial.finSuccEquiv_X_succ]`. Conclude with `RingHom.congr_fun hrh P`.
+
+Establish `hcoe : ∀ P : MvPolynomial (Fin (m + 1)) ℂ, MvPolynomial.aeval (Fin.cons π y : Fin (m + 1) → K) P = ((MvPolynomial.eval₂ (algebraMap ℂ F.ring) (Fin.cons f w : Fin (m + 1) → F.ring) P : F.ring) : K)`. Introduce `P`. Establish `h` using `MvPolynomial.hom_eval₂ P (algebraMap ℂ F.ring) F.ring.subtype (Fin.cons f w : Fin (m + 1) → F.ring)`. Rewrite `h` using `[ValuationSubring.subtype_apply]`. Rewrite using `[h, MvPolynomial.aeval_def]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;> rfl`. Establish `hind : AlgebraicIndependent ℂ (Fin.cons π y : Fin (m + 1) → K)`. Use `algebraicIndependent_iff.2 fun P hP => ?_` and prove the remaining obligations.
+
+Rewrite `hP` using `[hcoe, ZeroMemClass.coe_eq_zero, hsplit]`. Use `set Q := MvPolynomial.finSuccEquiv ℂ m P with hQ`. Establish `hq` using `eq_zero_of_eval_mem_maximalIdeal hf0 hfm _ (fun i hi => by`. Rewrite `hi`, the goal using `[Polynomial.coeff_map]`. Use `hwu _ fun h0 => hi ?_` and prove the remaining obligations.
+
+Rewrite using `[h0, map_zero]) hP`. Establish `hQ0 : Q = 0` using `by ext1 i`. Rewrite using `[Polynomial.coeff_zero]`. Assume the negation of the conclusion as `h0`. Apply `(hwu _ h0).ne_zero` to reduce the goal to its premises.
+
+Use `congrArg (fun p => Polynomial.coeff p i) hq` as an intermediate fact. Simplify `this` using `[Polynomial.coeff_map]`. Conclude with `(MvPolynomial.finSuccEquiv ℂ m).injective (by rw [← hQ, hQ0, map_zero])`. Unfold `TrBasis`. Use `hind.isTranscendenceBasis_of_trdeg_le_of_finite ?_` and prove the remaining obligations.
+
+Rewrite using `[Cardinal.mk_fin]`. Conclude with `htr`.
+-/
 theorem trBasis_cons : ∀ {L K : Type} [Field L] [Field K] (cL : ℂ →+* L) (cK : ℂ →+* K) (S : Place cL) (ψ : S.ring →+* K),
   Function.Surjective ψ → (∀ a, ψ (S.const a) = cK a) →
   ∀ (F : Place cK) (m : ℕ) (π : K) (y : Fin m → K), (∃ x : Fin (m + 2) → L, TrBasis cL x) →

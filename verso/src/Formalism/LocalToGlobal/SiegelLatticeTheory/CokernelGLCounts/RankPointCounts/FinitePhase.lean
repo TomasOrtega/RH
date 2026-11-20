@@ -31,6 +31,11 @@ def FinPhaseC : Prop :=
                 ((Y.cs u').h ((Y.cs u').base s.1.lam') : X.B.I.Gf) s.1.pt) * Formalism.L2.SG.PairVal.phasePair (gS D) L U =
         Formalism.L2.SG.PairVal.phaseAt s.1.toTerm (Formalism.L2.SG.PairVal.ptOf s.1.toTerm)
 
+/- English proof (translation)
+Introduce `R ρ s hrel g hg g' hg' hdec`. Take `⟨L, U, hL, hU, hrat, hreal⟩` from `hC R ρ s hrel`. Establish `hex` using `Formalism.L2.SG.RealObj.RealPointRepresentatives.exists_ptRep X u u' s.1.pt.1 _ L U hL hU hreal`. Establish `hPt : Formalism.L2.SG.RealObj.IsPtRep X u u' (Formalism.L2.SG.PairVal.ptOf s.1.toTerm) (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf s.1.toTerm))`. Unfold `Formalism.L2.SG.RealObj.gamW`.
+
+Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`. Rewrite using `[Formalism.L2.SG.RealObj.RealPhaseFrames.realPhase X u u' hg hg' hdec _ hPt L U hL hU hreal]`. Conclude with `hF R ρ s hrel L U hL hU hrat`.
+-/
 theorem phaseTieC_of (hC : LiftCellC X Y u u' κ) (hF : FinPhaseC X Y u u' κ) :
     Formalism.L2.SG.Pf.RowForm.PhaseTieC X Y u u' κ := by
   intro R ρ s hrel g hg g' hg' hdec

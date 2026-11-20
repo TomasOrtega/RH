@@ -19,6 +19,11 @@ open GlobalTheory.BiTransfer GlobalTheory.WeilVacMove GlobalTheory.FockCompare
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
+/- English proof (translation)
+Establish `hline` using `(smooth_iff_sm_and_real_lines D θ σ h T S).2.1 L ⟨hL, hL0⟩`. Establish `hfs` using `((smooth_iff_sm_and_real_lines D θ σ h T S).1 f).1 hf.smooth`. Establish `e : (fun t : ℝ => heisO ψ S T (L t) f w) = fun t : ℝ => Complex.exp (t * phase lam S T (L 1) w) * f (w + iotaW σ T S (t • piW θ T S (L 1)))`. Use function extensionality and compare the values at `t`. Rewrite using `[heisO, psi_sympl_line hl hlam hL hL0, ← hline t]`.
+
+Unfold `dLine`. Rewrite using `[e]`. Conclude with `(hasDerivAt_exp_mul _ _ f hfs _ w).deriv`.
+-/
 theorem dLine_apply' {S T : HSp D} {θ : GlobalTheory.IndefiniteRowSideFullHecke.FockOrthogonalDecomposition.InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h : Chart θ σ)
     {lam : AF D.host.F →+ ℂ} (hl : Continuous lam) (hlam : ∀ a, sndA D.host.F a = 0 → ψ a = Complex.exp (lam a))
     {L : ℝ →+ WO S T} (hL : Continuous L) (hL0 : ∀ t, (L t).map (finPart D) = 0) {f : WO S T → ℂ}
@@ -35,6 +40,13 @@ theorem dLine_apply' {S T : HSp D} {θ : GlobalTheory.IndefiniteRowSideFullHecke
   rw [e]
   exact (hasDerivAt_exp_mul _ _ f hfs _ w).deriv
 
+/- English proof (translation)
+Take `⟨θ, hθ⟩` from `hψ.2.1`. Take `⟨σ, h⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Take `⟨lam, hl, hlam⟩` from `exists_log hψ`. Establish `hS : Continuous (L + L')` using `hL.add hL'`. Establish `hS0 : ∀ t, ((L + L') t).map (finPart D) = 0` using `fun t => by`.
+
+Rewrite using `[AddMonoidHom.add_apply, Matrix.map_add _ (finPart D).map_add, hL0 t, hL0' t, add_zero]`. Use function extensionality and compare the values at `w`. Rewrite using `[Pi.add_apply, dLine_apply' h hl hlam hS hS0 hf, dLine_apply' h hl hlam hL hL0 hf, dLine_apply' h hl hlam hL' hL0' hf, AddMonoidHom.add_apply, map_add, ContinuousLinearMap.map_add]`. Establish `e : phase lam S T (L 1 + L' 1) w = phase lam S T (L 1) w + phase lam S T (L' 1) w` using `by show lam (symplOH S T w (L 1 + L' 1)) = lam (symplOH S T w (L 1)) + lam (symplOH S T w (L' 1))`. Rewrite using `[symplOH_add_right, map_add]`.
+
+Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dLine_add_line (hψ : IsStdChar D ψ (-1)) {S T : HSp D} {L L' : ℝ →+ WO S T} (hL : Continuous L)
     (hL0 : ∀ t, (L t).map (finPart D) = 0) (hL' : Continuous L') (hL0' : ∀ t, (L' t).map (finPart D) = 0)
     {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
@@ -56,12 +68,18 @@ theorem dLine_add_line (hψ : IsStdChar D ψ (-1)) {S T : HSp D} {L L' : ℝ →
 
 variable {W A A' : HSp D} (d : OrthDec W A (GlobalTheory.ChiGrid.negSp A')) (S : HSp D)
 
+/- English proof (translation)
+Rewrite using `[inlH_apply, inrH_apply, fstH_apply, sndH_apply, ← map_add, Prod.mk_add_mk, add_zero, zero_add]`. Establish `: GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.dagger S A' (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.dagger A' S (d.resS S x).2) = (d.resS S x).2` using `GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.dagger_dagger A' S _`. Rewrite using `[this, Prod.mk.eta, AddEquiv.symm_apply_apply]`.
+-/
 theorem inl_fst_add_inr_snd (x : WO W S) : inlH d S (fstH d S x) + inrH d S (sndH d S x) = x := by
   rw [inlH_apply, inrH_apply, fstH_apply, sndH_apply, ← map_add, Prod.mk_add_mk, add_zero, zero_add]
   have : GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.dagger S A' (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.dagger A' S (d.resS S x).2) = (d.resS S x).2 :=
     GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.dagger_dagger A' S _
   rw [this, Prod.mk.eta, AddEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [dLine, join_apply]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Simplify using `only [heisO, AddMonoidHom.comp_apply, symplOH_split d, map_add, fst_inl, snd_inl, GlobalTheory.WeilVacMove.symplOH_zero_right, add_zero, join_apply]`.
+-/
 theorem dLine_inlH (G : WO A S → WO S A' → ℂ) (M : ℝ →+ WO A S) :
     dLine ψ W S ((inlH d S).comp M) (join d S G) = join d S (fun u v => dLine ψ A S M (fun u' => G u' v) u) := by
   funext x
@@ -71,6 +89,9 @@ theorem dLine_inlH (G : WO A S → WO S A' → ℂ) (M : ℝ →+ WO A S) :
   simp only [heisO, AddMonoidHom.comp_apply, symplOH_split d, map_add, fst_inl, snd_inl,
     GlobalTheory.WeilVacMove.symplOH_zero_right, add_zero, join_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [dLine, join_apply]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Simplify using `only [heisO, AddMonoidHom.comp_apply, symplOH_split d, map_add, fst_inr, snd_inr, GlobalTheory.WeilVacMove.symplOH_zero_right, zero_add, add_zero, join_apply]`.
+-/
 theorem dLine_inrH (G : WO A S → WO S A' → ℂ) (M : ℝ →+ WO S A') :
     dLine ψ W S ((inrH d S).comp M) (join d S G) = join d S (fun u v => dLine ψ S A' M (G u) v) := by
   funext x
@@ -86,6 +107,11 @@ namespace GlobalTheory.BiJoinDeriv
 
 open GlobalTheory.BiTransfer GlobalTheory.WeilVacMove
 
+/- English proof (translation)
+Introduce `D ψ hψ W A S A' d G hG M hM hM0`. Establish `h1 : ∀ s, (fstH d S (M s)).map (finPart D) = 0` using `fun s => map_mul_eq_zero_left _ (hM0 s) _`. Establish `h2 : ∀ s, (sndH d S (M s)).map (finPart D) = 0` using `fun s => fin_dagger A' S (map_mul_eq_zero_left _ (hM0 s) _)`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Establish `hj` using `isThetaFunO_join d hG`.
+
+Establish `eM : M = (inlH d S).comp ((fstH d S).comp M) + (inrH d S).comp ((sndH d S).comp M)` using `by ext1 t`. Conclude with `(inl_fst_add_inr_snd d S (M t)).symm`. Rewrite using `[eM, dLine_add_line hψ ((continuous_inlH d S).comp ((continuous_fstH d S).comp hM)) (fun t => map_inlH d S _ (h1 t)) ((continuous_inrH d S).comp ((continuous_sndH d S).comp hM)) (fun t => fin_inrH d S (h2 t)) hj, dLine_inlH, dLine_inrH, ← eM]`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, join_apply]`.
+-/
 theorem dLine_join : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (W A S A' : HSp D) (d : OrthDec W A (GlobalTheory.ChiGrid.negSp A')) (G : WO A S → WO S A' → ℂ), IsBiTheta ψ A S A' G → ∀ M : ℝ →+ WO W S, Continuous M → (∀ s, (M s).map (finPart D) = 0) → (∀ s, (GlobalTheory.BiTransfer.fstH d S (M s)).map (finPart D) = 0) ∧ (∀ s, (GlobalTheory.BiTransfer.sndH d S (M s)).map (finPart D) = 0) ∧ GlobalTheory.WeilVacMove.dLine ψ W S M (GlobalTheory.BiTransfer.join d S G) = GlobalTheory.BiTransfer.join d S fun u v => GlobalTheory.WeilVacMove.dLine ψ A S ((GlobalTheory.BiTransfer.fstH d S).comp M) (fun u' => G u' v) u + GlobalTheory.WeilVacMove.dLine ψ S A' ((GlobalTheory.BiTransfer.sndH d S).comp M) (G u) v := by
   intro D ψ hψ W A S A' d G hG M hM hM0
   have h1 : ∀ s, (fstH d S (M s)).map (finPart D) = 0 := fun s => map_mul_eq_zero_left _ (hM0 s) _

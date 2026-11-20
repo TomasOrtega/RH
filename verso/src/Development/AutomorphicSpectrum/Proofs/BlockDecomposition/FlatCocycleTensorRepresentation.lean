@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Axis
 
+/- English proof (translation)
+Consider the cases of `nonempty_fintype I`. Establish `hcomp : (LinearMap.pi fun i => ((LinearMap.proj i : (∀ i, M i) →ₗ[R] M i) ∘ₗ e.toLinearMap).rTensor N) = (TensorProduct.piLeft (R` using `R) (N := N) (M := M)).toLinearMap ∘ₗ (LinearEquiv.rTensor N e).toLinearMap := by`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `p n`. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hcomp]`. Conclude with `((LinearEquiv.rTensor N e).trans (TensorProduct.piLeft (R := R) (N := N) (M := M))).bijective`.
+-/
 theorem rTensor_coords_bijective {R : Type} [CommRing R] {I : Type} [Finite I] {P : Type}
     [AddCommGroup P] [Module R P] (M : I → Type) [∀ i, AddCommGroup (M i)] [∀ i, Module R (M i)]
     (e : P ≃ₗ[R] ∀ i, M i) (N : Type) [AddCommGroup N] [Module R N] :
@@ -58,6 +63,9 @@ def evC {T T' : C} (φ : T ⟶ T') : C1 F →ₗ[R] F.obj T' where
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Use extensionality with `f`. Both sides reduce to the same expression.
+-/
 theorem evaluation_comp_coboundary_one {T T' T'' : C} (φ : T ⟶ T') (ψ : T' ⟶ T'') :
     (LinearMap.proj (⟨T, T', T'', φ, ψ⟩ : Σ T : C, Σ T' : C, Σ T'' : C, (T ⟶ T') × (T' ⟶ T'')) :
         (∀ a : (Σ T : C, Σ T' : C, Σ T'' : C, (T ⟶ T') × (T' ⟶ T'')), F.obj a.2.2.1) →ₗ[R] _) ∘ₗ
@@ -68,6 +76,17 @@ theorem evaluation_comp_coboundary_one {T T' T'' : C} (φ : T ⟶ T') (ψ : T' �
 
 end Cochains
 
+/- English proof (translation)
+Use `haveI : ∀ T T' : C, Finite (T ⟶ T') := fun _ _ => Finite.of_subsingleton`. Establish `b1` using `rTensor_coords_bijective (R := R) _ (oneCochainsPiArrowsEquiv F) N`. Establish `b2` using `rTensor_coords_bijective (R := R) _ (twoCochainsPiComposableEquiv F) N`. Take `⟨v, hv⟩` from `b1.2 (fun a => f a.1 a.2.1 a.2.2)`. Establish `hv' : ∀ (T T' : C) (φ : T ⟶ T'), (evC F φ).rTensor N v = f T T' φ` using `fun T T' φ => congrFun hv ⟨T, T', φ⟩`.
+
+Establish `hw : (d1 F).rTensor N v = 0`. Apply `b2.1` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `⟨T, T', T'', φ, ψ⟩`. Establish `h` using `congrArg (fun g => LinearMap.rTensor N g v) (evaluation_comp_coboundary_one F φ ψ)`.
+
+Simplify using `only [LinearMap.rTensor_add, LinearMap.rTensor_sub, LinearMap.rTensor_comp, LinearMap.add_apply, LinearMap.sub_apply, LinearMap.comp_apply, hv'] at h`. Rewrite `h` using `[hf T T' T'' φ ψ]`. Simplify using `only [LinearMap.pi_apply, Pi.zero_apply, LinearMap.rTensor_comp, LinearMap.comp_apply]`. Rewrite using `[h]`. Normalize the expressions using the abelian group laws.
+
+Establish `hex : Function.Exact (Z1 F).subtype (d1 F)` using `fun x => by`. Rewrite using `[← LinearMap.mem_ker, ← commAlgFunctorCocyclesOne_eq_ker]`. Simplify using the standard rewrite rules. Take `⟨t, ht⟩` from `(Module.Flat.rTensor_exact N hex v).1 hw`. Use `⟨t, fun T T' φ => ?_⟩` and prove the remaining obligations.
+
+Establish `: evZ F φ = evC F φ ∘ₗ (Z1 F).subtype` using `rfl`. Rewrite using `[this, LinearMap.rTensor_comp, LinearMap.comp_apply, ht, hv']`.
+-/
 theorem cocycle_of_flat (R : Type) [CommRing R] (C : Type) [Category.{0} C] [Finite C]
     [Quiver.IsThin C] (F : C ⥤ CommAlgCat.{0} R)
     (N : Type) [AddCommGroup N] [Module R N] [Module.Flat R N]

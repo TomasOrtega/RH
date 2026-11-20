@@ -14,10 +14,22 @@ namespace GlobalTheory.FundEq
 
 open GlobalTheory.DegVol
 
+/- English proof (translation)
+The claim follows from `measurable_pi_lambda _ fun v => (GlobalTheory.DegVol.Cov.continuous_lmulM _).measurable.comp (measurable_pi_apply v)`.
+-/
 theorem measurable_mulP {ι : Type} {k r : ℕ} (m : ι → Formalism.QuantumDeterminants.Mt k r) :
     Measurable (fun x : ι → Formalism.QuantumDeterminants.Mt k r => mulP m x) :=
   measurable_pi_lambda _ fun v => (GlobalTheory.DegVol.Cov.continuous_lmulM _).measurable.comp (measurable_pi_apply v)
 
+/- English proof (translation)
+Rewrite using `[← measure_iUnion₀]`. Apply `measure_congr` to reduce the goal to its premises. Establish `: ∀ᵐ x ∂μ, x ∈ R` using `hR`. Use `filter_upwards [this] with x hx`. Take `⟨s, hs, -⟩` from `h x hx`.
+
+Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce `hxS`. Conclude with `Set.mem_iUnion.2 ⟨⟨s, hs.1⟩, hs.2, hxS⟩`. Introduce `hxS`.
+
+Take `⟨a, ha⟩` from `Set.mem_iUnion.1 hxS`. Conclude with `ha.2`. Introduce `a b hab`. Use `measure_mono_null ?_ hR` and prove the remaining obligations. Introduce and unpack `x ⟨ha, hb⟩ hx`.
+
+Conclude with `hab (Subtype.ext ((h x hx).unique ⟨a.2, ha.1⟩ ⟨b.2, hb.1⟩))`. Introduce `a`. Conclude with `((measurable_mulP _ hΩ).inter hS).nullMeasurableSet`.
+-/
 theorem measure_eq_tsum {ι : Type} {k r : ℕ} (μ : Measure (ι → Formalism.QuantumDeterminants.Mt k r))
     (R Γ Ω S : Set (ι → Formalism.QuantumDeterminants.Mt k r)) [Countable Γ] (hR : μ Rᶜ = 0)
     (hΩ : MeasurableSet Ω) (hS : MeasurableSet S) (h : ∀ x ∈ R, ∃! m, m ∈ Γ ∧ mulP m x ∈ Ω) :
@@ -44,6 +56,9 @@ theorem measure_eq_tsum {ι : Type} {k r : ℕ} (μ : Measure (ι → Formalism.
 def invP {ι : Type} {k r : ℕ} (m : ι → Formalism.QuantumDeterminants.Mt k r) : ι → Formalism.QuantumDeterminants.Mt k r :=
   fun v => Matrix.of.symm (Matrix.of (m v))⁻¹
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Use `show (Matrix.of (m v))⁻¹ * (Matrix.of (m v) * Matrix.of (x v)) = x v`. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (hm v), Matrix.one_mul]`. Both sides reduce to the same expression.
+-/
 theorem mulP_invP_mulP {ι : Type} {k r : ℕ} (m : ι → Formalism.QuantumDeterminants.Mt k r) (hm : ∀ v, IsUnit (Matrix.of (m v)).det)
     (x : ι → Formalism.QuantumDeterminants.Mt k r) : mulP (invP m) (mulP m x) = x := by
   funext v
@@ -51,6 +66,9 @@ theorem mulP_invP_mulP {ι : Type} {k r : ℕ} (m : ι → Formalism.QuantumDete
   rw [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (hm v), Matrix.one_mul]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Use `show ((Matrix.of (m v))⁻¹)⁻¹ = m v`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ (hm v)]`. Both sides reduce to the same expression.
+-/
 theorem pointwiseInv_pointwiseInv {ι : Type} {k r : ℕ} (m : ι → Formalism.QuantumDeterminants.Mt k r) (hm : ∀ v, IsUnit (Matrix.of (m v)).det) :
     invP (invP m) = m := by
   funext v
@@ -58,6 +76,15 @@ theorem pointwiseInv_pointwiseInv {ι : Type} {k r : ℕ} (m : ι → Formalism.
   rw [Matrix.nonsing_inv_nonsing_inv _ (hm v)]
   rfl
 
+/- English proof (translation)
+Use `haveI : Countable Γ := hΓ.to_subtype`. Establish `e1` using `measure_eq_tsum μ R Γ Ω₂ Ω₁ hR h₂.1 h₁.1 h₂.2`. Establish `e2` using `measure_eq_tsum μ R Γ Ω₁ Ω₂ hR h₁.1 h₂.1 h₁.2`. Establish `hterm : ∀ a : Γ, μ ((fun x => mulP (a : ι → Formalism.QuantumDeterminants.Mt k r) x) ⁻¹' Ω₂ ∩ Ω₁) = μ ((fun x => mulP (invP (a : ι → Formalism.QuantumDeterminants.Mt k r)) x) ⁻¹' Ω₁ ∩ Ω₂)`. Introduce `a`.
+
+Establish `hs : MeasurableSet ((fun x => mulP (invP (a : ι → Formalism.QuantumDeterminants.Mt k r)) x) ⁻¹' Ω₁ ∩ Ω₂)` using `(measurable_mulP _ h₁.1).inter h₂.1`. Use `conv_rhs => rw [← hpres a a.2, Measure.map_apply (measurable_mulP _) hs]`. Use `congr 1`. Use extensionality with `x`. Use `show (mulP (a : ι → Formalism.QuantumDeterminants.Mt k r) x ∈ Ω₂ ∧ x ∈ Ω₁) ↔ (mulP (invP (a : ι → Formalism.QuantumDeterminants.Mt k r)) (mulP (a : ι → Formalism.QuantumDeterminants.Mt k r) x) ∈ Ω₁ ∧ mulP (a : ι → Formalism.QuantumDeterminants.Mt k r) x ∈ Ω₂)`.
+
+Rewrite using `[mulP_invP_mulP _ (hu a a.2)]`. Conclude with `And.comm`. Set `f : Γ → Γ` to `fun a => ⟨invP a, hinv a a.2⟩`. Establish `hf : Function.Injective f`. Introduce `a b hab`.
+
+Establish `h' : invP (a : ι → Formalism.QuantumDeterminants.Mt k r) = invP b` using `congrArg Subtype.val hab`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← pointwiseInv_pointwiseInv _ (hu a a.2), ← pointwiseInv_pointwiseInv _ (hu b b.2), h']`. Rewrite using `[e1, e2, tsum_congr hterm]`. Conclude with `ENNReal.tsum_comp_le_tsum_of_injective hf (fun b : Γ => μ ((fun x => mulP (b : ι → Formalism.QuantumDeterminants.Mt k r) x) ⁻¹' Ω₁ ∩ Ω₂))`.
+-/
 theorem measure_le {ι : Type} [Fintype ι] {k r : ℕ} (μ : Measure (ι → Formalism.QuantumDeterminants.Mt k r))
     (R Γ Ω₁ Ω₂ : Set (ι → Formalism.QuantumDeterminants.Mt k r)) (hΓ : Γ.Countable) (hR : μ Rᶜ = 0)
     (hinv : ∀ m ∈ Γ, invP m ∈ Γ) (hu : ∀ m ∈ Γ, ∀ v, IsUnit (Matrix.of (m v)).det)
@@ -88,6 +115,17 @@ theorem measure_le {ι : Type} [Fintype ι] {k r : ℕ} (μ : Measure (ι → Fo
   exact ENNReal.tsum_comp_le_tsum_of_injective hf
     (fun b : Γ => μ ((fun x => mulP (b : ι → Formalism.QuantumDeterminants.Mt k r) x) ⁻¹' Ω₁ ∩ Ω₂))
 
+/- English proof (translation)
+Introduce `ι _ k r Γ Ω₁ Ω₂ hΓ _ _ hinv hN h₁ h₂`. Establish `hH` using `GlobalTheory.Amp.NHaar.isHaarOn_lebN k r`. Use `haveI : SigmaFinite (GlobalTheory.Amp.lebN k r) := hH.1`. Establish `hu : ∀ m ∈ Γ, ∀ v, IsUnit (Matrix.of (m v)).det` using `fun m hm v => GlobalTheory.DegVol.RealMat.isUnit_det (hN m hm v).1`. Establish `hnull : Measure.pi (fun _ : ι => GlobalTheory.Amp.lebN k r) (GlobalTheory.DegVol.RP k r (fun _ => 1))ᶜ = 0`.
+
+Use `measure_mono_null (t := ⋃ v : ι, Function.eval v ⁻¹' {x : Formalism.QuantumDeterminants.Mt k r | Matrix.of x ∉ Formalism.QuantumDeterminants.Nset k r}) ?_ (measure_iUnion_null fun v => Measure.pi_eval_preimage_null _ hH.2.2.1)` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [RP, Set.mem_compl_iff, Set.mem_setOf_eq, not_forall] at hx`. Take `⟨v, hv'⟩` from `hx`. Use `Set.mem_iUnion.2 ⟨v, ?_⟩` and prove the remaining obligations.
+
+Introduce `hxN`. Apply `hv'` to reduce the goal to its premises. Use `⟨hxN, ?_⟩` and prove the remaining obligations. Simplify using `using hxN`. Establish `hpres : ∀ m ∈ Γ, (Measure.pi fun _ : ι => GlobalTheory.Amp.lebN k r).map (fun x => mulP m x) = Measure.pi fun _ : ι => GlobalTheory.Amp.lebN k r` using `fun m hm => by`.
+
+Establish `e : ∀ v, (GlobalTheory.Amp.lebN k r).map (Formalism.QuantumDeterminants.lmulM (Matrix.of (m v))) = GlobalTheory.Amp.lebN k r` using `fun v => hH.2.2.2 _ (hN m hm v)`. Use `haveI : ∀ v, SigmaFinite ((GlobalTheory.Amp.lebN k r).map (Formalism.QuantumDeterminants.lmulM (Matrix.of (m v)))) := fun v => by`. Rewrite using `[e]`. Use `infer_instance`. Use `Measure.pi_map_pi (μ := fun _ : ι => GlobalTheory.Amp.lebN k r) (f := fun v => Formalism.QuantumDeterminants.lmulM (Matrix.of (m v))) fun v => (GlobalTheory.DegVol.Cov.continuous_lmulM _).measurable.aemeasurable` as an intermediate fact.
+
+Simplify using `only [e] at this`. Conclude with `this`. Conclude with `le_antisymm (measure_le _ _ Γ Ω₁ Ω₂ hΓ hnull hinv hu hpres h₁ h₂) (measure_le _ _ Γ Ω₂ Ω₁ hΓ hnull hinv hu hpres h₂ h₁)`.
+-/
 theorem measure_eq : ∀ (ι : Type) [Fintype ι] (k r : ℕ) (Γ Ω₁ Ω₂ : Set (ι → Formalism.QuantumDeterminants.Mt k r)),
     Γ.Countable → (fun _ => Matrix.of.symm 1) ∈ Γ → (∀ m ∈ Γ, ∀ m' ∈ Γ, GlobalTheory.DegVol.mulP m m' ∈ Γ) →
     (∀ m ∈ Γ, (fun v => Matrix.of.symm (Matrix.of (m v))⁻¹) ∈ Γ) →

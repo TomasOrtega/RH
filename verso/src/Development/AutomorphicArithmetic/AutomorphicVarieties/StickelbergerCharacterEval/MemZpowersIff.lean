@@ -40,8 +40,16 @@ def mat (c : Γ) (ε : ℤ) (z : MonoidAlgebra A Γ) : Matrix (Qc c) (Qc c) A :=
 
 def detR [Finite Γ] (c : Γ) (ε : ℤ) (z : MonoidAlgebra A Γ) : A := (mat c ε z).det
 
+/- English proof (translation)
+The claim follows from `Quotient.out_eq _`.
+-/
 theorem mk_rep {c : Γ} (i : Qc c) : Qc.mk c (rep i) = i := Quotient.out_eq _
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, rfl⟩`. Establish `h : c ^ (2 : ℤ) = 1` using `by rw [zpow_two, h2]`. Break down `Int.even_or_odd' n with ⟨m, rfl | rfl⟩` into its components or cases. Use `left`.
+
+Simplify using `only [zpow_mul, h, one_zpow]`. Use `right`. Simplify using `only [zpow_add, zpow_mul, h, one_zpow, one_mul, zpow_one]`. Introduce and unpack `(rfl | rfl) exacts [one_mem _, Subgroup.mem_zpowers _]`.
+-/
 theorem mem_zpowers_iff {c : Γ} (h2 : c * c = 1) (g : Γ) : g ∈ Subgroup.zpowers c ↔ g = 1 ∨ g = c := by
   constructor
   · rintro ⟨n, rfl⟩
@@ -52,10 +60,18 @@ theorem mem_zpowers_iff {c : Γ} (h2 : c * c = 1) (g : Γ) : g ∈ Subgroup.zpow
   · rintro (rfl | rfl)
     exacts [one_mem _, Subgroup.mem_zpowers _]
 
+/- English proof (translation)
+Use `QuotientGroup.eq.trans ((mem_zpowers_iff h2 _).trans ?_)` and prove the remaining obligations. Rewrite using `[inv_mul_eq_one, inv_mul_eq_iff_eq_mul, mul_comm g c, eq_comm]`.
+-/
 theorem mk_eq_mk {c : Γ} (h2 : c * c = 1) (g h : Γ) : Qc.mk c g = Qc.mk c h ↔ h = g ∨ h = c * g := by
   refine QuotientGroup.eq.trans ((mem_zpowers_iff h2 _).trans ?_)
   rw [inv_mul_eq_one, inv_mul_eq_iff_eq_mul, mul_comm g c, eq_comm]
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_fiberwise Finset.univ (Qc.mk c) f]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `: Finset.univ.filter (fun g => Qc.mk c g = i) = {rep i, c * rep i}`. Use extensionality with `g`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`.
+
+Rewrite using `[← mk_eq_mk h2, mk_rep, eq_comm]`. Rewrite using `[this, Finset.sum_pair]`. Introduce `h`. Conclude with `h1 (by simpa using h)`.
+-/
 theorem sum_rep [Fintype Γ] {M : Type} [AddCommMonoid M] {c : Γ} (h2 : c * c = 1) (h1 : c ≠ 1) (f : Γ → M) :
     ∑ g, f g = ∑ i : Qc c, (f (rep i) + f (c * rep i)) := by
   classical
@@ -69,32 +85,53 @@ theorem sum_rep [Fintype Γ] {M : Type} [AddCommMonoid M] {c : Γ} (h2 : c * c =
   intro h
   exact h1 (by simpa using h)
 
+/- English proof (translation)
+Use `Fintype.ofFinite Γ` as an intermediate fact. Establish `h` using `sum_rep h2 h1 (fun _ => (1 : ℕ))`. Simplify using `only [Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_one] at h`. Rewrite using `[Nat.card_eq_fintype_card, h, mul_comm]`.
+-/
 theorem card_Qc [Finite Γ] {c : Γ} (h2 : c * c = 1) (h1 : c ≠ 1) : Nat.card Γ = 2 * Fintype.card (Qc c) := by
   have := Fintype.ofFinite Γ
   have h := sum_rep h2 h1 (fun _ => (1 : ℕ))
   simp only [Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_one] at h
   rw [Nat.card_eq_fintype_card, h, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[card_Qc h2 h1]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_Qc' [Finite Γ] {c : Γ} (h2 : c * c = 1) (h1 : c ≠ 1) : Fintype.card (Qc c) = Nat.card Γ / 2 := by
   rw [card_Qc h2 h1]; omega
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[mat]`.
+-/
 theorem mat_map {B : Type} [CommRing B] (f : A →+* B) (c : Γ) (ε : ℤ) (z : MonoidAlgebra A Γ) :
     mat c ε (MonoidAlgebra.mapRingHom Γ f z) = (mat c ε z).map f := by
   ext i j
   simp [mat]
 
+/- English proof (translation)
+Rewrite using `[detR, mat_map, detR, RingHom.map_det, RingHom.mapMatrix_apply]`.
+-/
 theorem detR_map [Finite Γ] {B : Type} [CommRing B] (f : A →+* B) (c : Γ) (ε : ℤ) (z : MonoidAlgebra A Γ) :
     detR c ε (MonoidAlgebra.mapRingHom Γ f z) = f (detR c ε z) := by
   rw [detR, mat_map, detR, RingHom.map_det, RingHom.mapMatrix_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[mat]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mat_smul (c : Γ) (ε : ℤ) (s : A) (z : MonoidAlgebra A Γ) : mat c ε (s • z) = s • mat c ε z := by
   ext i j
   simp [mat]; ring
 
+/- English proof (translation)
+Rewrite using `[detR, mat_smul, Matrix.det_smul, detR]`.
+-/
 theorem detR_smul [Finite Γ] (c : Γ) (ε : ℤ) (s : A) (z : MonoidAlgebra A Γ) :
     detR c ε (s • z) = s ^ Fintype.card (Qc c) * detR c ε z := by
   rw [detR, mat_smul, Matrix.det_smul, detR]
 
+/- English proof (translation)
+Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Proceed by induction on `z using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `single g n => simp [coefMap_single]`.
+-/
 theorem coefMap_eq (B : Type) [CommRing B] : coefMap B Γ = MonoidAlgebra.mapRingHom Γ (Int.castRingHom B) := by
   refine RingHom.ext fun z => ?_
   induction z using MonoidAlgebra.induction_linear with
@@ -102,10 +139,16 @@ theorem coefMap_eq (B : Type) [CommRing B] : coefMap B Γ = MonoidAlgebra.mapRin
   | add x y hx hy => rw [map_add, map_add, hx, hy]
   | single g n => simp [coefMap_single]
 
+/- English proof (translation)
+Simplify using `[coefMap_eq]`.
+-/
 theorem coeff_coefMap (B : Type) [CommRing B] (z : MonoidAlgebra ℤ Γ) (g : Γ) :
     (coefMap B Γ z).coeff g = ((z.coeff g : ℤ) : B) := by
   simp [coefMap_eq]
 
+/- English proof (translation)
+Rewrite using `[coefMap_eq, detR_map]`. Both sides reduce to the same expression.
+-/
 theorem detR_coefMap [Finite Γ] (B : Type) [CommRing B] (c : Γ) (ε : ℤ) (z : MonoidAlgebra ℤ Γ) :
     detR c ε (coefMap B Γ z) = ((detR c ε z : ℤ) : B) := by
   rw [coefMap_eq, detR_map]; rfl
@@ -128,6 +171,9 @@ instance [Finite Γ] (Ω : Type) [Field Ω] (c : Γ) (ε : ℤ) : Fintype (Ch Ω
 def ev (A : Type) [CommRing A] {Ω : Type} [Field Ω] [Algebra A Ω] (χ : Γ →* Ωˣ) : MonoidAlgebra A Γ →ₐ[A] Ω :=
   MonoidAlgebra.lift A Ω Γ ((Units.coeHom Ω).comp χ)
 
+/- English proof (translation)
+Simplify using `[ev, Algebra.smul_def]`.
+-/
 @[simp] theorem ev_single (A : Type) [CommRing A] {Ω : Type} [Field Ω] [Algebra A Ω] (χ : Γ →* Ωˣ) (g : Γ) (s : A) :
     ev A χ (MonoidAlgebra.single g s) = algebraMap A Ω s * ((χ g : Ωˣ) : Ω) := by
   simp [ev, Algebra.smul_def]
@@ -135,6 +181,9 @@ def ev (A : Type) [CommRing A] {Ω : Type} [Field Ω] [Algebra A Ω] (χ : Γ �
 def dirOf {N : ℕ} {Ω : Type} [Field Ω] (π : (ZMod N)ˣ →* Γ) (χ : Γ →* Ωˣ) : DirichletCharacter Ω N :=
   MulChar.ofUnitHom (χ⁻¹.comp π)
 
+/- English proof (translation)
+Simplify using `[dirOf]`.
+-/
 @[simp] theorem dirOf_unit {N : ℕ} {Ω : Type} [Field Ω] (π : (ZMod N)ˣ →* Γ) (χ : Γ →* Ωˣ) (b : (ZMod N)ˣ) :
     dirOf π χ (b : ZMod N) = ((χ (π b)⁻¹ : Ωˣ) : Ω) := by
   simp [dirOf]
@@ -143,18 +192,33 @@ end Chars
 
 def InPow (l : ℕ) [Fact l.Prime] (t : ℕ) (x : ℚ) : Prop := x / (l : ℚ) ^ t ∈ Zl l
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem intAt_iff {Γ : Type} [CommGroup Γ] (l : ℕ) [Fact l.Prime] (t : ℕ) (z : MonoidAlgebra ℚ Γ) :
     IntAt l t z ↔ ∀ g, InPow l t (z.coeff g) := Iff.rfl
 
+/- English proof (translation)
+Simplify using `[InPow]`.
+-/
 theorem InPow.zero (l : ℕ) [Fact l.Prime] (t : ℕ) : InPow l t 0 := by
   simp [InPow]
 
+/- English proof (translation)
+Rewrite using `[InPow, add_div]`. Conclude with `(Zl l).add_mem hx hy`.
+-/
 theorem InPow.add {l : ℕ} [Fact l.Prime] {t : ℕ} {x y : ℚ} (hx : InPow l t x) (hy : InPow l t y) : InPow l t (x + y) := by
   rw [InPow, add_div]; exact (Zl l).add_mem hx hy
 
+/- English proof (translation)
+Rewrite using `[InPow, mul_div_assoc]`. Conclude with `(Zl l).mul_mem hx hy`.
+-/
 theorem InPow.mul {l : ℕ} [Fact l.Prime] {t : ℕ} {x y : ℚ} (hx : x ∈ Zl l) (hy : InPow l t y) : InPow l t (x * y) := by
   rw [InPow, mul_div_assoc]; exact (Zl l).mul_mem hx hy
 
+/- English proof (translation)
+Establish `hl : (l : ℚ) ^ t ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Use `(Zl l).mul_mem hx (pow_mem (natCast_mem (Zl l) l) t)` as an intermediate fact. Rewrite `this` using `[div_mul_cancel₀ _ hl]`. Then use the resulting hypothesis.
+-/
 theorem InPow.mem {l : ℕ} [Fact l.Prime] {t : ℕ} {x : ℚ} (hx : InPow l t x) : x ∈ Zl l := by
   have hl : (l : ℚ) ^ t ≠ 0 := pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)
   have := (Zl l).mul_mem hx (pow_mem (natCast_mem (Zl l) l) t)
@@ -170,6 +234,9 @@ def BD (r N a e : ℕ) : ℝ :=
   r * ((e + 2) * Real.logb 2 N + (e + 1) * Real.logb 2 a + 1 +
     Real.logb 2 ((e + 1) * (e + 1).factorial * (e + 2).factorial))
 
+/- English proof (translation)
+Unfold `denY`. Check the signs of the components of the expression.
+-/
 theorem denY_pos {N k : ℕ} (hN : 0 < N) (hk : 0 < k) : 0 < denY N k := by
   unfold denY; positivity
 

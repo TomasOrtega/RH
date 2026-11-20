@@ -22,11 +22,21 @@ def basisOfIsExtension {K F V W : Type} [Field K] [Field F] [Algebra K F] [AddCo
     have hv : v ∈ Submodule.span K (Set.range B) := B.span_eq ▸ Submodule.mem_top
     exact h hv)
 
+/- English proof (translation)
+Simplify using `[basisOfIsExtension]`.
+-/
 theorem basisOfIsExtension_apply {K F V W : Type} [Field K] [Field F] [Algebra K F] [AddCommGroup V]
     [Module K V] [AddCommGroup W] [Module F W] {a : V →ₛₗ[algebraMap K F] W} (ha : IsExtension a) {I : Type}
     (B : Module.Basis I K V) (i : I) : basisOfIsExtension ha B i = a (B i) := by
   simp [basisOfIsExtension]
 
+/- English proof (translation)
+Introduce `K F V V' W W' _ _ _ _ _ _ _ _ _ _ _ a d ha hd e he`. Set `B` to `Module.Basis.ofVectorSpace K V`. Set `B'` to `B.map (LinearEquiv.ofBijective e he)`. Set `C` to `basisOfIsExtension ha B`. Set `C'` to `basisOfIsExtension hd B'`.
+
+Set `E` to `C.equiv C' (Equiv.refl _)`. Use `⟨E.toLinearMap, E.bijective, fun v => ?_⟩` and prove the remaining obligations. Establish `key : (E.toLinearMap.comp a : V →ₛₗ[algebraMap K F] W') = d.comp e` using `B.ext fun i => by`. Establish `h1 : a (B i) = C i` using `(basisOfIsExtension_apply ha B i).symm`. Establish `h2 : d (e (B i)) = C' i`.
+
+Rewrite using `[basisOfIsExtension_apply hd B' i]`. Simplify using `[B']`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, h1, h2, E, Module.Basis.equiv_apply, Equiv.refl_apply]`. Conclude with `LinearMap.congr_fun key v`.
+-/
 theorem exists_bijective_extension : ∀ (K F V V' W W' : Type) [Field K] [Field F] [Algebra K F] [AddCommGroup V] [Module K V] [AddCommGroup V'] [Module K V'] [AddCommGroup W] [Module F W] [AddCommGroup W'] [Module F W'] (a : V →ₛₗ[algebraMap K F] W) (d : V' →ₛₗ[algebraMap K F] W'), GlobalTheory.FieldBaseChange.IsExtension a → GlobalTheory.FieldBaseChange.IsExtension d → ∀ e : V →ₗ[K] V', Function.Bijective e → ∃ e' : W →ₗ[F] W', Function.Bijective e' ∧ ∀ v, e' (a v) = d (e v) := by
   intro K F V V' W W' _ _ _ _ _ _ _ _ _ _ _ a d ha hd e he
   let B := Module.Basis.ofVectorSpace K V

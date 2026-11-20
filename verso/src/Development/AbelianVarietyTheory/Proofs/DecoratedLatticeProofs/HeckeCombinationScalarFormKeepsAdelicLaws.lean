@@ -20,10 +20,16 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.AdForm.TransLaw
 
+/- English proof (translation)
+Simplify using `[trc, rTrans, Finset.sum_apply]`.
+-/
 theorem trc_apply' {D : D7} {V : HSp D} (c : GA D V →₀ ℂ) (f : GA D V → ℂ) (x : GA D V) :
     trc c f x = ∑ g ∈ c.support, c g * f (x * g) := by
   simp [trc, rTrans, Finset.sum_apply]
 
+/- English proof (translation)
+Proceed by induction on `L generalizing z with`. Consider the case `nil => simp`. Consider the case `cons a L ih`. Rewrite using `[List.prod_cons, ← mul_assoc, ih (fun b hb => hL b (List.mem_cons_of_mem _ hb)) (z * a), hL a List.mem_cons_self]`.
+-/
 theorem list_prod_right {G : Type} [Group G] (F : G → ℂ) (L : List G) (hL : ∀ a ∈ L, ∀ z, F (z * a) = F z) (z : G) :
     F (z * L.prod) = F z := by
   induction L generalizing z with
@@ -31,6 +37,11 @@ theorem list_prod_right {G : Type} [Group G] (F : G → ℂ) (L : List G) (hL : 
   | cons a L ih =>
     rw [List.prod_cons, ← mul_assoc, ih (fun b hb => hL b (List.mem_cons_of_mem _ hb)) (z * a), hL a List.mem_cons_self]
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => exact ⟨U.one_mem, χ.map_one⟩`. Consider the case `cons a L ih`. Take `⟨ha, hχa⟩` from `hL a List.mem_cons_self`. Take `⟨hP, hχP⟩` from `ih (fun b hb => hL b (List.mem_cons_of_mem _ hb))`.
+
+Use `⟨by rw [List.prod_cons]; exact U.mul_mem ha hP, ?_⟩` and prove the remaining obligations. Establish `e : (⟨(a :: L).prod, by rw [List.prod_cons]; exact U.mul_mem ha hP⟩ : U) = ⟨a, ha⟩ * ⟨L.prod, hP⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[List.prod_cons]`. Rewrite using `[e, map_mul, hχa, hχP, one_mul]`.
+-/
 theorem list_prod_chi {G : Type} [Group G] (U : Subgroup G) (χ : U →* ℂˣ) (L : List G)
     (hL : ∀ a ∈ L, ∃ h : a ∈ U, χ ⟨a, h⟩ = 1) : ∃ h : L.prod ∈ U, χ ⟨_, h⟩ = 1 := by
   induction L with
@@ -44,6 +55,11 @@ theorem list_prod_chi {G : Type} [Group G] (U : Subgroup G) (χ : U →* ℂˣ) 
     rw [e, map_mul, hχa, hχP, one_mul]
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Set `eY : (I.chain l u a).Y j ≃ Formalism.L2.Forms.Fr (I.rec7 l Z) j hj` to `{ toFun := fun y => ⟨y.1, y.2⟩, invFun := fun z => ⟨z.1, z.2⟩, left_inv := fun _ => rfl, right_inv := fun _ => rfl }`. Establish `hV` using `GlobalTheory.Mem.Col2.TC.val_tied I hok hpins l Z u a j hj (A.bad j) (Ch j) (A.chOf j) (A.K j hj) eY ⟨A.kb j, hA.reads j hj⟩ (fun _ => rfl)`. Establish `hF` using `(hV.Fi φ).1 hφ`. Take `⟨hL, hK, hR, -⟩` from `GlobalTheory.AdForm.RdLaw.rdS_laws (I.rec7 l Z) θ hθ ((I.rec7 l Z).sp.X j) (B.R.N j) (rankN (I.rec7 l Z) j hj) (gramN (I.rec7 l Z) j hj) rfl (B.T u) (I.rec7 l Z).R.f (A.bad j) (A.K j hj b).lev {c // A.chOf j c = b} (A.K j hj b).y (A.K j hj b).y_bij _ (fun c z => φ c.1 ⟨z.1, z.2⟩) …`. Use `⟨fun γ hγ g => hL γ hγ g, fun κ g => ?_, fun k hk y' hy g => hR k hk ⟨y'.1, y'.2⟩ hy g⟩` and prove the remaining obligations.
+
+Take `⟨hκf, κ', hκ'⟩` from `(hA.U j hj b κ.1).1 κ.2`. Rewrite using `[hA.chi j hj b κ κ' hκ']`. Conclude with `hK κ.1 hκf κ' hκ' g`.
+-/
 theorem rd_laws {B : Base} {X : PreX B.toPre} (I : TC B X) (hok : I.Ok) (hpins : TC.Pins B X) (l : I.Laws) (Z : TC.Later B (I.cols l))
     (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : TwDat I l Z u a Ch) (hA : A.Is) (θ : InfFam (I.rec7 l Z)) (hθ : IsInfFam θ)
     (j : ℕ) (hj : j ≤ B.R.m) (φ : ColT I l u a j) (hφ : φ ∈ (I.fm l u a).Fi j) (b : Ch j) (y : (I.chain l u a).Y j) :
@@ -70,6 +86,23 @@ end GlobalTheory.AdForm.TransLaw
 open GlobalTheory.AdForm.TransLaw in
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `B X I hok hpins l Z u a Ch A hA θ hθ K _ _ _ _ ι p β Q L hT j hj c hc φ hφ hinv b y γ hγ e g0 hg0 κ y' hy`. Take `⟨hLy, hKy, hRy⟩` from `rd_laws I hok hpins l Z u a Ch A hA θ hθ j hj φ hφ b y`. Establish `hT'` using `hT`. Take `⟨⟨eι, -⟩, -⟩` from `hT'`. Use `haveI : Fintype ι := Fintype.ofEquiv _ eι.symm`.
+
+Take `⟨hstab, hdec⟩` from `GlobalTheory.T.twistLevelStabiliserAtLevelPrime_proof I hok hpins l Z u a Ch A hA K ι p β Q L hT Finset.univ.toList (Finset.nodup_toList _) (fun i => Finset.mem_toList.2 (Finset.mem_univ _)) j hj b`. Take `⟨gs, hgs, κ', hκ'off, hκeq⟩` from `hdec κ.1 κ.2`. Use `set s := (Finset.univ.toList.map fun i => (β j i).gl (gs i)).prod with hs`. Take `⟨hsU, hχs⟩` from `list_prod_chi (A.U j b) (A.chi j b) (Finset.univ.toList.map fun i => (β j i).gl (gs i)) (by`. Introduce `x hx`.
+
+Take `⟨i, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `hstab i (gs i) (hgs i))`. Establish `hκ'U : κ' ∈ A.U j b`. Establish `: κ' = s⁻¹ * κ.1` using `by rw [hκeq, ← mul_assoc, inv_mul_cancel, one_mul]`. Rewrite using `[this]`.
+
+Conclude with `(A.U j b).mul_mem ((A.U j b).inv_mem hsU) κ.2`. Establish `hχκ : A.chi j b κ = A.chi j b ⟨κ', hκ'U⟩`. Establish `e1 : κ = (⟨s, hsU⟩ : A.U j b) * ⟨κ', hκ'U⟩` using `Subtype.ext hκeq`. Rewrite using `[e1, map_mul, hχs, one_mul]`. Use `set F := trc c (A.rd θ j hj b φ y) with hF`.
+
+Establish `hcomm : ∀ g' ∈ c.support, κ' * g' = g' * κ'` using `fun g' hg' => ((GlobalTheory.FinPlLoc.part_grp (fun x => ∃ i, x = (p i).v) ((I.rec7 l Z).sp.X j)).2.1 g' (hc g' hg') κ' hκ'off).symm`. Establish `step1 : ∀ x, F (x * κ.1) = (A.chi j b κ : ℂ) * F (x * s)`. Introduce `x`. Rewrite using `[hF, trc_apply', trc_apply', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun g' hg' => ?_` and prove the remaining obligations.
+
+Rewrite using `[hκeq, ← mul_assoc, mul_assoc (x * s), hcomm g' hg', ← mul_assoc, hKy ⟨κ', hκ'U⟩, hχκ]`. Expand and normalize the polynomial expressions, which then agree. Establish `step2 : ∀ x, F (x * s) = F x`. Introduce `x`. Use `list_prod_right F _ ?_ x` and prove the remaining obligations.
+
+Introduce `a' ha' z`. Take `⟨i, -, rfl⟩` from `List.mem_map.1 ha'`. Conclude with `congrFun (hinv b y i (gs i) (hgs i)) z`. Establish `step3 : F (γ * (A.h j b e * g0)) = trc c (A.rd θ j hj b φ y') (A.h j b e)`. Rewrite using `[hF, trc_apply', trc_apply']`.
+
+Use `Finset.sum_congr rfl fun g' hg' => ?_` and prove the remaining obligations. Establish `hfin : g' ∈ GfC ((I.rec7 l Z).sp.X j)` using `GlobalTheory.FinPl.SetCut.grpAt_le_GfC _ _ (hc g' hg')`. Rewrite using `[mul_assoc γ, hLy γ hγ, mul_assoc, ← GlobalTheory.FinTranslate.comm_fin_real _ hfin hg0, ← mul_assoc, hRy g0 hg0 y' hy]`. Rewrite using `[step1, step2, step3]`.
+-/
 theorem GlobalTheory.AdForm.trc_rd_laws : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : TwDat I l Z u a Ch), A.Is → ∀ θ, IsInfFam θ → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type)
     (p : ι → SplitPt (I.rec7 l Z) k) (β : ∀ j i, Frame (p i) ((I.rec7 l Z).sp.X j) (Fin ((I.rec7 l Z).sp.X j).rank))
     (Q : ∀ j, ι → Pair k (Fin ((I.rec7 l Z).sp.X j).rank)) (L : ∀ j, Lat ((I.rec7 l Z).sp.X j)),

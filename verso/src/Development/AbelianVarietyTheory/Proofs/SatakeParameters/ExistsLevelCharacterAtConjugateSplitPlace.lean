@@ -18,27 +18,45 @@ def invTranspose {R : Type} [CommRing R] (n : ℕ) : GL (Fin n) R →* GL (Fin n
     apply Units.ext
     simp only [Units.val_mul, mul_inv_rev, Matrix.transpose_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem invTranspose_val {R : Type} [CommRing R] (n : ℕ) (g : GL (Fin n) R) :
     (invTranspose n g).val = (g⁻¹).val.transpose := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem invTranspose_inv_val {R : Type} [CommRing R] (n : ℕ) (g : GL (Fin n) R) :
     ((invTranspose n g)⁻¹).val = g.val.transpose := rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[invTranspose_val, invTranspose_inv_val, Matrix.transpose_transpose]`.
+-/
 theorem invTranspose_invTranspose {R : Type} [CommRing R] (n : ℕ) (g : GL (Fin n) R) :
     invTranspose n (invTranspose n g) = g := by
   apply Units.ext
   rw [invTranspose_val, invTranspose_inv_val, Matrix.transpose_transpose]
 
+/- English proof (translation)
+Rewrite using `[Units.continuous_iff]`. Conclude with `⟨Units.continuous_coe_inv.matrix_transpose, Units.continuous_val.matrix_transpose⟩`.
+-/
 theorem continuous_invTranspose {R : Type} [CommRing R] [TopologicalSpace R] (n : ℕ) :
     Continuous (invTranspose (R := R) n) := by
   rw [Units.continuous_iff]
   exact ⟨Units.continuous_coe_inv.matrix_transpose, Units.continuous_val.matrix_transpose⟩
 
+/- English proof (translation)
+Take `⟨h, rfl⟩` from `hg`. Conclude with `⟨invTranspose n h, Units.ext rfl⟩`.
+-/
 theorem invTranspose_mem_GLint {F : Type} [Field F] (n : ℕ) (O : Subring F) {g : GL (Fin n) F}
     (hg : g ∈ Formalism.UG.GLint (Fin n) O) : invTranspose n g ∈ Formalism.UG.GLint (Fin n) O := by
   obtain ⟨h, rfl⟩ := hg
   exact ⟨invTranspose n h, Units.ext rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a b => simp [SplitPlace.proj, conjAL, Algebra.TensorProduct.lift_tmul, Algebra.TensorProduct.map_tmul]`. Consider the case `add a b ha hb => rw [map_add, map_add, map_add, ha, hb]`.
+-/
 theorem conjSP_proj {L : Type} [Field L] [NumberField L] [IsCMField L] (s : SplitPlace L) (x : AL L) :
     (conjSP s).proj x = s.proj (conjAL L x) := by
   induction x using TensorProduct.induction_on with
@@ -46,6 +64,11 @@ theorem conjSP_proj {L : Type} [Field L] [NumberField L] [IsCMField L] (s : Spli
   | tmul a b => simp [SplitPlace.proj, conjAL, Algebra.TensorProduct.lift_tmul, Algebra.TensorProduct.map_tmul]
   | add a b ha hb => rw [map_add, map_add, map_add, ha, hb]
 
+/- English proof (translation)
+Establish `hm : κ.1.val * conjT (conjAL L) κ.1.val = 1` using `κ.2`. Establish `h1 : (κ.1⁻¹).val = conjT (conjAL L) κ.1.val` using `Units.inv_eq_of_mul_eq_one_right hm`. Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(conjSP s).proj (κ.1.val i j) = s.proj ((κ.1⁻¹).val j i)`.
+
+Rewrite using `[h1, conjSP_proj]`. Both sides reduce to the same expression.
+-/
 theorem conjSP_loc {L : Type} [Field L] [NumberField L] [IsCMField L] (n : ℕ) (s : SplitPlace L) (κ : GA L n) :
     (conjSP s).loc n κ = invTranspose n (s.loc n κ) := by
   have hm : κ.1.val * conjT (conjAL L) κ.1.val = 1 := κ.2
@@ -56,6 +79,15 @@ theorem conjSP_loc {L : Type} [Field L] [NumberField L] [IsCMField L] (n : ℕ) 
   rw [h1, conjSP_proj]
   rfl
 
+/- English proof (translation)
+Introduce `L _ _ _ n s K θ hK hθ`. Establish `key : ∀ (g' : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) (g) (hg : g ∈ K), g' = invTranspose n g → ∃ h' : g' ∈ K.comap (invTranspose n), θ.comp ((invTranspose n).subgroupComap K) ⟨g', h'⟩ = θ ⟨g, hg⟩`. Introduce and unpack `g' g hg rfl`. Use `⟨by rw [Subgroup.mem_comap, invTranspose_invTranspose]; exact hg, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply]`.
+
+Conclude with `congrArg θ (Subtype.ext (invTranspose_invTranspose n g))`. Use `⟨K.comap (invTranspose n), θ.comp ((invTranspose n).subgroupComap K), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Use `invTranspose_mem_GLint n _ (hK _ hg)` as an intermediate fact. Rewrite `this` using `[invTranspose_invTranspose]`. Then use the resulting hypothesis.
+
+Establish `hc : Continuous ((invTranspose n).subgroupComap K)` using `Continuous.subtype_mk ((continuous_invTranspose n).comp continuous_subtype_val) _`. Conclude with `hθ.preimage hc`. Introduce `κ`. Rewrite using `[conjSP_loc]`. Express the relevant statement in the definitionally equal form `invTranspose n (invTranspose n (s.loc n κ)) ∈ K ↔ _`.
+
+Rewrite using `[invTranspose_invTranspose]`. Introduce `κ h h'`. Conclude with `(key _ _ h (conjSP_loc n s κ)).2`. Introduce `g hg g' hg'`. Conclude with `key g' g hg (Units.ext hg')`.
+-/
 theorem exists_conj_level : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (s : SplitPlace L) (K : Subgroup (GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L)))) (θ : K →* ℂˣ), (∀ g ∈ K, g ∈ Formalism.UG.GLint (Fin n) (s.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring) → IsOpen (θ.ker : Set K) → ∃ (K' : Subgroup (GL (Fin n) ((GlobalTheory.TypeTame.conjSP s).v.adicCompletion (maximalRealSubfield L)))) (θ' : K' →* ℂˣ), (∀ g ∈ K', g ∈ Formalism.UG.GLint (Fin n) ((GlobalTheory.TypeTame.conjSP s).v.adicCompletionIntegers (maximalRealSubfield L)).toSubring) ∧ IsOpen (θ'.ker : Set K') ∧ (∀ κ : GAf L n, (GlobalTheory.TypeTame.conjSP s).loc n κ ∈ K' ↔ s.loc n κ ∈ K) ∧ (∀ (κ : GAf L n) (h : s.loc n κ ∈ K) (h' : (GlobalTheory.TypeTame.conjSP s).loc n κ ∈ K'), θ' ⟨(GlobalTheory.TypeTame.conjSP s).loc n κ, h'⟩ = θ ⟨s.loc n κ, h⟩) ∧ ∀ g (hg : g ∈ K) (g' : GL (Fin n) ((GlobalTheory.TypeTame.conjSP s).v.adicCompletion (maximalRealSubfield L))), g'.val = (g⁻¹).val.transpose → ∃ h' : g' ∈ K', θ' ⟨g', h'⟩ = θ ⟨g, hg⟩ := by
   intro L _ _ _ n s K θ hK hθ
   have key : ∀ (g' : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) (g) (hg : g ∈ K),

@@ -12,6 +12,11 @@ namespace MassDataMassesW.Abs
 variable {G Gf : Type} [Group G] [MeasurableSpace G] [MeasurableMul G]
   [Group Gf] [MeasurableSpace Gf] [MeasurableMul Gf]
 
+/- English proof (translation)
+Rewrite using `[← lintegral_indicator_one hA, h.lintegral_eq_tsum'']`. Unfold `PI.VolStabSW.cntN`. Rewrite using `[lintegral_tsum]`. Both sides reduce to the same expression. Introduce `γ`.
+
+Conclude with `((measurable_const.indicator hA).comp (measurable_const_mul _)).aemeasurable`.
+-/
 theorem meas_eq_lint_cnt {Γ : Subgroup G} [Countable Γ] {μ : Measure G} [μ.IsMulLeftInvariant]
     {𝓕 : Set G} (h : IsFundamentalDomain Γ 𝓕 μ) {A : Set G} (hA : MeasurableSet A) :
     μ A = ∫⁻ g in 𝓕, PI.VolStabSW.cntN Γ A g ∂μ := by
@@ -22,6 +27,9 @@ theorem meas_eq_lint_cnt {Γ : Subgroup G} [Countable Γ] {μ : Measure G} [μ.I
   · intro γ
     exact ((measurable_const.indicator hA).comp (measurable_const_mul _)).aemeasurable
 
+/- English proof (translation)
+Establish `: x • s = (fun y => x⁻¹ * y) ⁻¹' s`. Use extensionality with `y`. Simplify using `[mem_smul_set_iff_inv_smul_mem]`. Rewrite using `[this]`. Conclude with `measurable_const_mul _ hs`.
+-/
 theorem meas_smul_set {s : Set Gf} (hs : MeasurableSet s) (x : Gf) : MeasurableSet (x • s) := by
   have : x • s = (fun y => x⁻¹ * y) ⁻¹' s := by
     ext y
@@ -29,6 +37,63 @@ theorem meas_smul_set {s : Set Gf} (hs : MeasurableSet s) (x : Gf) : MeasurableS
   rw [this]
   exact measurable_const_mul _ hs
 
+/- English proof (translation)
+Take `⟨hC, hS⟩` from `hfin`. Use `haveI := Fintype.ofFinite (DoubleCoset.Quotient (Γf : Set Gf) (U : Set Gf))`. Use `haveI : Countable Γf := by`. Establish `hsurj : Function.Surjective (fun γ : Γ => (⟨p γ, himg ▸ Subgroup.mem_map_of_mem p γ.2⟩ : Γf))`. Introduce and unpack `⟨y, hy⟩`.
+
+Rewrite `hy` using `[← himg]`. Take `⟨γ, hγ, rfl⟩` from `Subgroup.mem_map.1 hy`. Conclude with `⟨⟨γ, hγ⟩, rfl⟩`. Conclude with `hsurj.countable`. Set `cl : Gf → DoubleCoset.Quotient (Γf : Set Gf) (U : Set Gf)` to `DoubleCoset.mk Γf U`.
+
+Set `xo : DoubleCoset.Quotient (Γf : Set Gf) (U : Set Gf) → Gf` to `fun c => Quotient.out c`. Set `Nc : DoubleCoset.Quotient (Γf : Set Gf) (U : Set Gf) → ℕ` to `fun c => Nat.card ↥(Γf ⊓ U.map (MulAut.conj (xo c)).toMonoidHom)`. Establish `hcl : ∀ c, cl ⁻¹' {c} = ⋃ δ : Γf, (δ : Gf) • (xo c • (U : Set Gf))`. Introduce `c`. Use extensionality with `y`.
+
+Simplify using `only [mem_preimage, mem_singleton_iff, mem_iUnion]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `h1` using `(DoubleCoset.eq Γf U (xo c) y).1 (by show DoubleCoset.mk Γf U (Quotient.out c) = DoubleCoset.mk Γf U y`. Rewrite using `[DoubleCoset.out_eq']`.
+
+Conclude with `hy.symm)`. Take `⟨h, hh, k, hk, rfl⟩` from `h1`. Use `⟨⟨h, hh⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul]`. Conclude with `⟨k, hk, by simp [smul_eq_mul]⟩`.
+
+Introduce and unpack `⟨δ, k, hk, hy⟩`. Take `⟨k', hk', rfl⟩` from `hk`. Simplify using `only [smul_eq_mul] at hy`. Use `show DoubleCoset.mk Γf U y = c`. Rewrite using `[← DoubleCoset.out_eq' Γf U c, DoubleCoset.eq]`.
+
+Conclude with `⟨δ⁻¹, Γf.inv_mem δ.2, k'⁻¹, U.inv_mem hk', by rw [← hy]; simp [xo, mul_assoc]⟩`. Establish `hDm : ∀ c, MeasurableSet (cl ⁻¹' {c})`. Introduce `c`. Rewrite using `[hcl c]`. Conclude with `MeasurableSet.iUnion fun δ => meas_smul_set (meas_smul_set hU _) _`.
+
+Establish `hcnt : ∀ c g, PI.VolStabSW.cntN Γ (p ⁻¹' (xo c • (U : Set Gf))) g = (cl ⁻¹' {c}).indicator (fun _ => (Nc c : ℝ≥0∞)) (p g)`. Introduce `c g`. Unfold `PI.VolStabSW.cntN`. Distinguish the cases in `hg : cl (p g) = c`. Rewrite using `[indicator_of_mem (show p g ∈ cl ⁻¹' {c} from hg)]`.
+
+Establish `h1` using `(DoubleCoset.eq Γf U (xo c) (p g)).1 (by show DoubleCoset.mk Γf U (Quotient.out c) = DoubleCoset.mk Γf U (p g)`. Rewrite using `[DoubleCoset.out_eq']`. Conclude with `hg.symm)`. Take `⟨h, hh, k, hk, hpg⟩` from `h1`. Rewrite `hh` using `[← himg]`.
+
+Take `⟨γ0, hγ0, rfl⟩` from `Subgroup.mem_map.1 hh`. Set `V : Subgroup Gf` to `U.map (MulAut.conj (xo c)).toMonoidHom`. Establish `hiff : ∀ γ : Γ, ((γ : G) * g ∈ p ⁻¹' (xo c • (U : Set Gf))) ↔ p ((γ : G) * γ0) ∈ V`. Introduce `γ`. Simplify using `only [mem_preimage, map_mul, hpg]`.
+
+Rewrite using `[mem_smul_set_iff_inv_smul_mem, smul_eq_mul]`. Simplify using `only [V, Subgroup.mem_map, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `hm`. Use `⟨(xo c)⁻¹ * (p γ * p γ0) * xo c, ?_, by group⟩` and prove the remaining obligations.
+
+Use `U.mul_mem hm (U.inv_mem hk)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`. Introduce and unpack `⟨v, hv, hv'⟩`. Establish `e : (xo c)⁻¹ * (p γ * (p γ0 * xo c * k)) = v * k`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Conclude with `U.mul_mem hv hk`. Establish `hsum1 : ∑' γ : Γ, (p ⁻¹' (xo c • (U : Set Gf))).indicator (fun _ => (1 : ℝ≥0∞)) ((γ : G) * g) = ∑' γ : Γ, {γ : Γ | p (γ : G) ∈ V}.indicator (fun _ => (1 : ℝ≥0∞)) (γ * ⟨γ0, hγ0⟩)`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hm : (γ : G) * g ∈ p ⁻¹' (xo c • (U : Set Gf))`. Rewrite using `[indicator_of_mem hm, indicator_of_mem]`. Conclude with `(hiff γ).1 hm`. Rewrite using `[indicator_of_notMem hm, indicator_of_notMem]`. Conclude with `fun h' => hm ((hiff γ).2 h')`.
+
+Establish `hsh : ∑' γ : Γ, {γ : Γ | p (γ : G) ∈ V}.indicator (fun _ => (1 : ℝ≥0∞)) (γ * ⟨γ0, hγ0⟩) = ∑' γ : Γ, {γ : Γ | p (γ : G) ∈ V}.indicator (fun _ => (1 : ℝ≥0∞)) γ` using `(Equiv.mulRight (⟨γ0, hγ0⟩ : Γ)).tsum_eq (fun γ => {γ : Γ | p (γ : G) ∈ V}.indicator (fun _ => (1 : ℝ≥0∞)) γ)`. Rewrite using `[hsum1, hsh]`. Rewrite using `[← tsum_subtype, ENNReal.tsum_one]`. Set `φ : {γ : Γ | p (γ : G) ∈ V} → ↥(Γf ⊓ V)` to `fun t => ⟨p ((t : Γ) : G), Subgroup.mem_inf.2 ⟨by rw [← himg]; exact Subgroup.mem_map_of_mem p (t : Γ).2, t.2⟩⟩`. Establish `hφi : Function.Injective φ`.
+
+Introduce `t t' htt`. Establish `e1 : p ((t : Γ) : G) = p ((t' : Γ) : G)` using `congrArg Subtype.val htt`. Establish `e2 : ((t : Γ) : G)⁻¹ * ((t' : Γ) : G) = 1`. Apply `hinj _ (Γ.mul_mem (Γ.inv_mem (t : Γ).2) (t' : Γ).2)` to reduce the goal to its premises. Rewrite using `[map_mul, map_inv, e1, inv_mul_cancel]`.
+
+Conclude with `Subtype.ext (Subtype.ext (inv_mul_eq_one.1 e2))`. Establish `hφs : Function.Surjective φ`. Introduce and unpack `⟨y, hy⟩`. Take `⟨hy1, hy2⟩` from `Subgroup.mem_inf.1 hy`. Rewrite `hy1` using `[← himg]`.
+
+Take `⟨γ, hγ, rfl⟩` from `Subgroup.mem_map.1 hy1`. Conclude with `⟨⟨⟨γ, hγ⟩, hy2⟩, rfl⟩`. Use `haveI : Finite ↥(Γf ⊓ V) := hS (xo c)`. Use `haveI : Finite {γ : Γ | p (γ : G) ∈ V} := Finite.of_injective φ hφi`. Establish `hT : Nat.card {γ : Γ | p (γ : G) ∈ V} = Nc c` using `Nat.card_congr (Equiv.ofBijective φ ⟨hφi, hφs⟩)`.
+
+Rewrite using `[ENat.card_eq_coe_natCard, hT]`. Simplify using the standard rewrite rules. Rewrite using `[indicator_of_notMem (show p g ∉ cl ⁻¹' {c} from hg)]`. Use `ENNReal.tsum_eq_zero.2 fun γ => indicator_of_notMem (fun hm => hg ?_) _` and prove the remaining obligations. Rewrite `hm` using `[mem_preimage, mem_smul_set]`.
+
+Take `⟨k, hk, hk'⟩` from `hm`. Use `show DoubleCoset.mk Γf U (p g) = c`. Rewrite using `[← DoubleCoset.out_eq' Γf U c, DoubleCoset.eq]`. Use `⟨p γ, by rw [← himg]; exact Subgroup.mem_map_of_mem p γ.2, k⁻¹, U.inv_mem hk, ?_⟩` and prove the remaining obligations. Rewrite `hk'` using `[map_mul, smul_eq_mul]`.
+
+Rewrite using `[← hk']`. Simplify using `[xo]`. Establish `hpiece : ∀ c, (Nc c : ℝ≥0∞) * μ (𝓕 ∩ p ⁻¹' (cl ⁻¹' {c})) = c0`. Introduce `c`. Rewrite using `[← hc0 (xo c), meas_eq_lint_cnt h𝓕 (hp (meas_smul_set hU _))]`.
+
+Repeatedly rewrite using `[hcnt c]`. Establish `: (fun g => (cl ⁻¹' {c}).indicator (fun _ => (Nc c : ℝ≥0∞)) (p g)) = (p ⁻¹' (cl ⁻¹' {c})).indicator (fun _ => (Nc c : ℝ≥0∞))`. Use extensionality with `g`. Simplify using `[indicator]`. Rewrite using `[this, lintegral_indicator_const (hp (hDm c)), Measure.restrict_apply (hp (hDm c)), inter_comm]`.
+
+Establish `hNpos : ∀ c, 0 < Nc c`. Introduce `c`. Use `haveI := hS (xo c)`. Use `haveI : Nonempty ↥(Γf ⊓ U.map (MulAut.conj (xo c)).toMonoidHom) := ⟨1⟩`. Conclude with `Nat.card_pos`.
+
+Establish `hsum : μ 𝓕 = ∑ c, μ (𝓕 ∩ p ⁻¹' (cl ⁻¹' {c}))`. Establish `e1 : μ 𝓕 = μ.restrict 𝓕 univ` using `by rw [Measure.restrict_apply_univ]`. Establish `e2 : (univ : Set G) = ⋃ c ∈ (Finset.univ : Finset (DoubleCoset.Quotient (Γf : Set Gf) (U : Set Gf))), p ⁻¹' (cl ⁻¹' {c})`. Use extensionality with `g`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e1, e2, measure_biUnion_finset]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Measure.restrict_apply (hp (hDm c)), inter_comm]`. Introduce `c _ c' _ hne`. Conclude with `Set.disjoint_left.2 fun g h1 h2 => hne (h1.symm.trans h2)`.
+
+Introduce `c _`. Conclude with `hp (hDm c)`. Rewrite using `[hsum]`. Establish `hm : Formalism.L2.SG.TypedSets.massCl Γf U = ∑ c, ((Nc c : ℕ) : ℝ)⁻¹`. Unfold `Formalism.L2.SG.TypedSets.massCl`.
+
+Rewrite using `[finsum_eq_sum_of_fintype]`. Rewrite using `[hm, ENNReal.ofReal_sum_of_nonneg (fun c _ => by positivity), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `hN0 : (Nc c : ℝ≥0∞) ≠ 0` using `by exact_mod_cast (hNpos c).ne'`. Rewrite using `[ENNReal.ofReal_inv_of_pos (by exact_mod_cast hNpos c), ENNReal.ofReal_natCast, ← div_eq_mul_inv, ENNReal.eq_div_iff hN0 (ENNReal.natCast_ne_top _)]`.
+
+Conclude with `hpiece c`.
+-/
 theorem unfold_mass {Γ : Subgroup G} [Countable Γ] {μ : Measure G} [μ.IsMulLeftInvariant]
     {𝓕 : Set G} (h𝓕 : IsFundamentalDomain Γ 𝓕 μ)
     (p : G →* Gf) (hp : Measurable p) (Γf U : Subgroup Gf)

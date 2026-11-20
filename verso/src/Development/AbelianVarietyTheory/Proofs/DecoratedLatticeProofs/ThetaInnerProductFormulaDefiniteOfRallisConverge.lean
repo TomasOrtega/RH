@@ -20,6 +20,9 @@ noncomputable section
 
 namespace GlobalTheory.IPFConv
 
+/- English proof (translation)
+Establish `h1` using `(GlobalTheory.AutomorphicL2Unitary.memLp_quotMeasure_iff hFD).1 (memLp_one_iff_integrable.2 h)`. Rewrite `h1` using `[hφ.lift_descend]`. Conclude with `memLp_one_iff_integrable.1 h1`.
+-/
 theorem integrableOn_of_quot {D : D7} {V : HSp D} {μ : Measure (GA D V)} [μ.IsMulLeftInvariant]
     {𝓕 : Set (GA D V)} (hFD : IsFundamentalDomain (GQ V) 𝓕 μ) {φ : GA D V → ℂ}
     (hφ : GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ V) φ)
@@ -28,6 +31,9 @@ theorem integrableOn_of_quot {D : D7} {V : HSp D} {μ : Measure (GA D V)} [μ.Is
   rw [hφ.lift_descend] at h1
   exact memLp_one_iff_integrable.1 h1
 
+/- English proof (translation)
+Introduce `γ hγ g` and use `by have e : ((h, γ * g) : GA D V × GA D W) = (1, γ) * (h, g) := by simp show thetaKO ω h (γ * g) φ = thetaKO ω h g φ unfold thetaKO rw [e, map_mul] exact hω.om_aut 1 (one_mem _) γ hγ _ (hω.om_pres _ φ hf)`.
+-/
 theorem thetaKO_left_snd {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D} {χV χW : (AE D)ˣ →* Circle}
     {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)} (hω : IsWeilDatumO ψ V W χV χW ω)
     {φ : WO V W → ℂ} (hf : IsThetaFunO ψ V W φ) (h : GA D V) :
@@ -38,6 +44,31 @@ theorem thetaKO_left_snd {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D}
   rw [e, map_mul]
   exact hω.om_aut 1 (one_mem _) γ hγ _ (hω.om_pres _ φ hf)
 
+/- English proof (translation)
+Introduce `hP D G _ _ Pl0 T A Ks _ _ _ R F hConv hpar`. Introduce `i t σ s P cμ cη m ω BW f₀ f c io hL`. Introduce `ν 𝓕 hν μ 𝓧 hμ Fr hFr mR hmR U₁ hU₁ U₂ hU₂ v₁ v₂ Q₁ Q₂`. Introduce `φ₁ φ₂ F₁ F₂ Z pt`. Establish `hCore : GlobalTheory.Hk3.Core R F` using `hL.1`.
+
+Establish `hω : IsWeilDatumO R.ψ (Vc D i) (Wc D i) cμ (cμ * cη⁻¹) ω` using `hL.2.2.2.2.2.1`. Take `⟨hwitt, hrank, cA, hSet, hA0⟩` from `GlobalTheory.T.liftPair_positiveDefinite_wittIndexZero_cartan R F hCore hpar i σ`. Establish `hFo₁` using `GlobalTheory.T.thetaDatum_fockVectors_areFockVectors R F i t σ s P cμ cη m ω BW f₀ f c io hL Q₁`. Establish `hFo₂` using `GlobalTheory.T.thetaDatum_fockVectors_areFockVectors R F i t σ s P cμ cη m ω BW f₀ f c io hL Q₂`. Establish `hW` using `hCore.models.νW i`.
+
+Use `haveI : (R.νW i).IsHaarMeasure := hW.1.1`. Establish `hFDW : IsFundamentalDomain (GQ (Wc D i)) (R.fdW i) (R.νW i)` using `hW.2`. Use `haveI : ν.IsHaarMeasure := hν.1.1`. Establish `hFDV : IsFundamentalDomain (GQ (Vc D i)) 𝓕 ν` using `hν.2`. Establish `hF₁ : F₁ ∈ GlobalTheory.Cusp.A0 R.θ (Wc D i) cA` using `hA0 U₁ hU₁ v₁`.
+
+Establish `hF₂ : F₂ ∈ GlobalTheory.Cusp.A0 R.θ (Wc D i) cA` using `hA0 U₂ hU₂ v₂`. Establish `hL₁ : GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ (Wc D i)) F₁` using `(Submodule.mem_inf.1 hF₁).2.2.1`. Establish `hL₂ : GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ (Wc D i)) F₂` using `(Submodule.mem_inf.1 hF₂).2.2.1`. Establish `hKP : GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.IsKernelPair R.ψ R.θ (Wc D i) (Vc D i) (cμ * cη⁻¹) cμ (cart (R.MW i σ)) (fun _ => 1) true (fun _ => True) (fun _ => True) (fun g h => thetaKO ω h g φ₁) (fun g h => thetaKO ω h g φ₂) (fun g => l2 μ 𝓧 (ω (1, g) φ₁) φ …` using `⟨ω, φ₁, φ₂, hω, hFo₁, hFo₂, trivial, trivial, fun _ _ => rfl, fun _ _ => rfl, μ, 𝓧, hμ, fun _ => rfl⟩`. Take `⟨hC₁, hC₂, hInt, hEq⟩` from `hConv R.ψ R.θ (Wc D i) (Vc D i) (cμ * cη⁻¹) cμ (cart (R.MW i σ)) (fun _ => 1) D.R.t cA true (fun g h => thetaKO ω h g φ₁) (fun g h => thetaKO ω h g φ₂) (fun g => l2 μ 𝓧 (ω (1, g) φ₁) φ₂) (R.νW i) ν F₁ F₂ hSet (Or.inl hwitt) hrank hKP inferInstance inferInstance hF₁ hF₂`.
+
+Establish `hpetW : ∀ u₁ u₂ : GA D (Wc D i) → ℂ, GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ (Wc D i)) u₁ → GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ (Wc D i)) u₂ → GlobalTheory.Cusp.petersson (Wc D i) (R.νW i) u₁ u₂ = petW R i u₁ u₂` using `fun u₁ u₂ h₁ h₂ => GlobalTheory.AutomorphicL2Unitary.pet_eq hFDW h₁ h₂`. Establish `hlift₁ : GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.lift (R.νW i) (fun g h => thetaKO ω h g φ₁) F₁ = upLift R i ω φ₁ F₁`. Use function extensionality and compare the values at `fun h => hpetW _ _ (thetaKO_left_snd hω hFo₁.1 h) hL₁`. Establish `hlift₂ : GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.lift (R.νW i) (fun g h => thetaKO ω h g φ₂) F₂ = upLift R i ω φ₂ F₂`. Use function extensionality and compare the values at `fun h => hpetW _ _ (thetaKO_left_snd hω hFo₂.1 h) hL₂`.
+
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.LiftConv at hC₁ hC₂`. Rewrite `hC₁`, `hEq` using `[hlift₁]`. Rewrite `hC₂`, `hEq` using `[hlift₂]`. Establish `hZeq : ∀ g, l2 μ 𝓧 (ω (1, g) φ₁) φ₂ * conj (GlobalTheory.Cusp.petersson (Wc D i) (R.νW i) (rTr (Wc D i) g F₁) F₂) = Z g` using `fun g => by`. Rewrite using `[hpetW (rTr (Wc D i) g F₁) F₂ (hL₁.mul_right g) hL₂]`.
+
+Establish `hpc` using `GlobalTheory.T.petersson_principal_level_continuous_right_invariant hP R F hCore i σ`. Establish `hZc : Continuous Z` using `(GlobalTheory.T.continuous_weilCoefficient_fockVectors R F i t σ s P cμ cη m ω BW f₀ f c io hL μ 𝓧 hμ Q₁ Q₂).mul (Complex.continuous_conj.comp (hpc.2 U₁ hU₁ U₂ hU₂ _ _).1)`. Establish `hZi : Integrable Z (R.νW i)` using `hInt.congr (ae_of_all _ hZeq)`. Establish `hZr : ∀ g, ∀ k ∈ levW R i, Z (g * k) = Z g` using `fun g k hk => by`. Establish `hk1` using `GlobalTheory.T.principalLevel_fixes_fockVectors_finiteDatum R F i t σ s P cμ cη m ω BW f₀ f c io hL Q₁ k hk`.
+
+Establish `e : (((1 : GA D (Vc D i)), g * k) : GA D (Vc D i) × GA D (Wc D i)) = (1, g) * (1, k)` using `by simp`. Use `show l2 μ 𝓧 (ω (1, g * k) φ₁) φ₂ * starRingEnd ℂ (petW R i (rTr (Wc D i) (g * k) F₁) F₂) = l2 μ 𝓧 (ω (1, g) φ₁) φ₂ * starRingEnd ℂ (petW R i (rTr (Wc D i) g F₁) F₂)`. Rewrite using `[e, map_mul, Module.End.mul_apply, hk1, (hpc.2 U₁ hU₁ U₂ hU₂ _ _).2 g k hk]`. Take `⟨hfin, hdis⟩` from `GlobalTheory.T.integral_unitaryAdelic_eq_sum_finiteCosets_realIntegrals D R.θ hSet.2.2.2.1 (Wc D i) hSet.2.2.2.2.1 _ (R.νW i) hW.1 hpc.1 Fr hFr mR hmR Z hZc hZi hZr`. Use `⟨fun h => ?_, ?_, hfin, ?_⟩` and prove the remaining obligations.
+
+Establish `hLp : GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ (Wc D i)) (fun g => thetaKO ω h g φ₁ * starRingEnd ℂ (F₁ g))` using `fun γ hγ g => by`. Establish `e1 : thetaKO ω h (γ * g) φ₁ = thetaKO ω h g φ₁` using `thetaKO_left_snd hω hFo₁.1 h γ hγ g`. Establish `e2 : F₁ (γ * g) = F₁ g` using `hL₁ γ hγ g`. Use `show thetaKO ω h (γ * g) φ₁ * starRingEnd ℂ (F₁ (γ * g)) = _`. Rewrite using `[e1, e2]`.
+
+Conclude with `integrableOn_of_quot hFDW hLp (hC₁.1 h)`. Establish `hLp : GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ (Vc D i)) (fun h => upLift R i ω φ₁ F₁ h * starRingEnd ℂ (upLift R i ω φ₂ F₂ h))` using `fun γ hγ g => by`. Establish `e1 : upLift R i ω φ₁ F₁ (γ * g) = upLift R i ω φ₁ F₁ g` using `hC₁.2.1 γ hγ g`. Establish `e2 : upLift R i ω φ₂ F₂ (γ * g) = upLift R i ω φ₂ F₂ g` using `hC₂.2.1 γ hγ g`. Use `show upLift R i ω φ₁ F₁ (γ * g) * starRingEnd ℂ (upLift R i ω φ₂ F₂ (γ * g)) = _`.
+
+Rewrite using `[e1, e2]`. Conclude with `integrableOn_of_quot hFDV hLp (hC₁.2.integrable_mul_conj hC₂.2)`. Establish `hvol : GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.volQ (Vc D i) ν = (ν 𝓕).toReal`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.volQ, GlobalTheory.AutomorphicL2Unitary.autMeasure, Measure.real, GlobalTheory.AutomorphicL2Unitary.quotMeasure_univ hFDV]`. Establish `hpV : GlobalTheory.Cusp.petersson (Vc D i) ν (upLift R i ω φ₁ F₁) (upLift R i ω φ₂ F₂) = l2 ν 𝓕 (upLift R i ω φ₁ F₁) (upLift R i ω φ₂ F₂)` using `GlobalTheory.AutomorphicL2Unitary.pet_eq hFDV hC₁.2.1 hC₂.2.1`.
+
+Establish `hI : ∫ g, l2 μ 𝓧 (ω (1, g) φ₁) φ₂ * conj (GlobalTheory.Cusp.petersson (Wc D i) (R.νW i) (rTr (Wc D i) g F₁) F₂) ∂(R.νW i) = ∫ g, Z g ∂(R.νW i)` using `integral_congr_ae (ae_of_all _ hZeq)`. Rewrite `hEq` using `[hpV, hvol, hI, hdis]`. Conclude with `hEq`.
+-/
 theorem innerProductFormulaC_of_convergent : GlobalTheory.Published.CuspRapidDecay → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.Convergent D → (∃ L : SizeData₂ D, Nonempty (ParameterChoice' D L)) → InnerProductFormulaC R F := by
   intro hP D G _ _ Pl0 T A Ks _ _ _ R F hConv hpar
   intro i t σ s P cμ cη m ω BW f₀ f c io hL

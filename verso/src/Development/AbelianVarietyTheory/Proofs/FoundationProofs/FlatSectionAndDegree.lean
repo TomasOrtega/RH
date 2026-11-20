@@ -22,6 +22,17 @@ namespace GlobalTheory.FlatRow
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {Dw : Datum H} {l : Level H}
 
+/- English proof (translation)
+Introduce `R R' _ _ g j x τ m v v' hv hv'`. Take `⟨t, ⟨n⟩⟩` from `exists_sab x T`. Take `⟨t', ⟨n'⟩⟩` from `exists_sab (spMap g) t`. Take `⟨n'', e''⟩` from `TraitDataOfIntrinsic.map_comp n' n rfl`. Use `choose w hw using fun i => exists_lift n.cart (v i)`.
+
+Use `choose w' hw' _ using fun i => existsUnique_isVecOver n'.cart.1 (w i)`. Establish `hb` using `((fibre_iff n.cart hw).2 n.act _).2 hv`. Use `((fibre_iff n''.cart (v := w') fun i => ?_).2 n''.act _).1 (GlobalTheory.T.isLieEigenbasis_of_localizations_atPrime E H R' t' _ m w' fun q _ => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ≫ n''.φ = _`. Rewrite using `[e'', ← Category.assoc, hw' i, Category.assoc, hw, hv']`.
+
+Set `p` to `q.comap g`. Set `gp : Localization.AtPrime p →+* Localization.AtPrime q` to `Localization.localRingHom p q g rfl`. Establish `hg : gp.comp (algebraMap R _) = (algebraMap R' _).comp g` using `RingHom.ext fun z => Localization.localRingHom_to_map p q g rfl z`. Take `⟨tq, ⟨nq⟩⟩` from `exists_sab (spMap (algebraMap R' (Localization.AtPrime q))) t'`. Take `⟨tp, ⟨np⟩⟩` from `exists_sab (spMap (algebraMap R (Localization.AtPrime p))) t`.
+
+Take `⟨k, ek⟩` from `TraitDataOfIntrinsic.map_comp nq n' rfl`. Take `⟨k', ek'⟩` from `TraitDataOfIntrinsic.map_cancel (g := spMap gp) k np (by rw [spMap_comp_spMap, spMap_comp_spMap, hg])`. Use `choose wq hq _ using fun i => existsUnique_isVecOver nq.cart.1 (w' i)`. Use `choose wp hp _ using fun i => existsUnique_isVecOver np.cart.1 (w i)`. Use `⟨tq, nq, wq, hq, ?_⟩` and prove the remaining obligations.
+
+Establish `h₁` using `GlobalTheory.T.isLieEigenbasis_localization_atPrime E H R p t tp np _ m w wp hb hp`. Establish `h₂` using `GlobalTheory.T.isLieEigenbasis_baseChange_localAlgebra E H l c _ _ ((algebraMap R _).comp j) gp tp tq k' τ m wp wq h₁ fun i => EllComp.isVecOver_cancel np.cart.1 k'.cart.1 (hp i) (by rw [← ek', ek, hg]; exact EllComp.isVecOver_comp (hw' i) (hq i))`. Rewrite `h₂` using `[← RingHom.comp_assoc, hg]`. Then use the resulting hypothesis.
+-/
 theorem eigStable {S : Scheme.{0}} (T : SAB H S) (c : Coeff l) : EigStable T c := by
   intro R R' _ _ g j x τ m v v' hv hv'
   obtain ⟨t, ⟨n⟩⟩ := exists_sab x T
@@ -53,11 +64,17 @@ theorem eigStable {S : Scheme.{0}} (T : SAB H S) (c : Coeff l) : EigStable T c :
 
 variable {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} {U : (Xo.XF c).Opens} {τ : E →+* ℂ}
 
+/- English proof (translation)
+Establish `: IsIso (spMap (RingHom.id c.F))`. Rewrite using `[show spMap (RingHom.id c.F) = 𝟙 _ from Spec.map_id _]`. Use `infer_instance`. Use `infer_instance`.
+-/
 theorem isIso_fst (Y : Model Xo c (RingHom.id c.F)) : IsIso (pullback.fst Y.s (spMap (RingHom.id c.F))) := by
   have : IsIso (spMap (RingHom.id c.F)) := by
     rw [show spMap (RingHom.id c.F) = 𝟙 _ from Spec.map_id _]; infer_instance
   infer_instance
 
+/- English proof (translation)
+Introduce `x`. Use `isIso_fst Y` as an intermediate fact. Set `e` to `(asIso ((pullback.fst Y.s (spMap (RingHom.id c.F))).stalkMap x)).commRingCatIsoToRingEquiv`. Take `⟨h₁, h₂⟩` from `Y.normal (pullback.fst Y.s (spMap (RingHom.id c.F)) x)`. Conclude with `⟨e.symm.toMulEquiv.isDomain _, IsIntegrallyClosed.of_equiv e⟩`.
+-/
 theorem isNormal_genFibre (Y : Model Xo c (RingHom.id c.F)) : Geo.Tor.IsNormalScheme (FramedFlatCoordinates.genFibre Y) := by
   intro x
   have := isIso_fst Y
@@ -65,9 +82,15 @@ theorem isNormal_genFibre (Y : Model Xo c (RingHom.id c.F)) : Geo.Tor.IsNormalSc
   obtain ⟨h₁, h₂⟩ := Y.normal (pullback.fst Y.s (spMap (RingHom.id c.F)) x)
   exact ⟨e.symm.toMulEquiv.isDomain _, IsIntegrallyClosed.of_equiv e⟩
 
+/- English proof (translation)
+The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+-/
 theorem spMap_inj {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : spMap f = spMap g) : f = g :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective h)
 
+/- English proof (translation)
+Establish `: (1 : Matrix (Fin m) (Fin m) R) i = Pi.single i 1`. Use extensionality with `k`. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`. Rewrite using `[this]`. Conclude with `(LieComb.lieComb_algebra _ _ m v hv).2.2.2.1 i`.
+-/
 theorem comb_one {R : Type} [CommRing R] {t : SAB H (Sp R)} {m : ℕ} {v : Fin m → (epsR R ⟶ t.G)}
     (hv : ∀ i, IsTangent (v i)) (i : Fin m) : IsLieComb ((1 : Matrix (Fin m) (Fin m) R) i) v (v i) := by
   have : (1 : Matrix (Fin m) (Fin m) R) i = Pi.single i 1 := by
@@ -82,6 +105,11 @@ variable {L : Type} [Field L] [NumberField L] {j : c.F →+* L} {a : FramedFlatC
 
 end Algebraic
 
+/- English proof (translation)
+Establish `: Finite (𝓞 K ⧸ w.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ w.ne_bot`. Use `w.isMaximal` as an intermediate fact. Set `_` to `Ideal.Quotient.field w.asIdeal`. Use `⟨ringChar (𝓞 K ⧸ w.asIdeal), CharP.char_is_prime (𝓞 K ⧸ w.asIdeal) _, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`.
+
+Conclude with `ringChar.Nat.cast_ringChar`.
+-/
 theorem exists_prime_mem {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K)) :
     ∃ ℓ : ℕ, ℓ.Prime ∧ (ℓ : 𝓞 K) ∈ w.asIdeal := by
   have : Finite (𝓞 K ⧸ w.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ w.ne_bot
@@ -95,6 +123,9 @@ def flatVal_vw (Dw : Datum H) (c : Coeff l) (τ : E →+* ℂ) {K : Type} [Field
     (𝔓 : HeightOneSpectrum (𝓞 K)) (ℓ : ℕ) (x : ℝ) : ℝ :=
   vAdd 𝔓 (ℓ : K) * x - Dw.q * (EigenvectorLieDegree.ordTwist H (EigenvectorLieDegree.embIn c em τ) 𝔓 : ℝ)
 
+/- English proof (translation)
+Take `⟨a, _, _, _, _, _, _, _, _, _, _, -, -, -, -, -, h₁, h₂, rfl⟩` from `h`. Conclude with `mul_pos (pow_pos (norm_pos_iff.2 (hsig _ _ a).ne_zero) 2) (div_pos h₁ h₂)`.
+-/
 theorem IsSqNorm.pos {sig : FramedFlatCoordinates.Rule Y U τ} (hsig : FramedFlatCoordinates.VanishesNowhere sig) {s : c.F →+* ℂ} {κ : ℝ}
     (h : IsSqNorm sig s κ) : 0 < κ := by
   obtain ⟨a, _, _, _, _, _, _, _, _, _, _, -, -, -, -, -, h₁, h₂, rfl⟩ := h

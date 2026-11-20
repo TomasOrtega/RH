@@ -4,6 +4,9 @@ namespace GlobalTheory.ElementarySymmetricNormBound
 
 open Polynomial
 
+/- English proof (translation)
+Establish `h` using `congrArg (Polynomial.eval x) (Multiset.prod_X_sub_X_eq_sum_esymm s)`. Rewrite `h` using `[Polynomial.eval_multiset_prod, Polynomial.eval_finset_sum]`. Simplify using `only [Multiset.map_map, Function.comp_def, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C, Polynomial.eval_mul, Polynomial.eval_pow, Polynomial.eval_neg, Polynomial.eval_one] at h`. Rewrite using `[← h]`. Conclude with `Multiset.prod_eq_zero (Multiset.mem_map.mpr ⟨x, hx, sub_self x⟩)`.
+-/
 theorem sum_esymm_eq_zero (s : Multiset ℂ) (x : ℂ) (hx : x ∈ s) :
     ∑ j ∈ Finset.range (Multiset.card s + 1),
       (-1) ^ j * (s.esymm j * x ^ (Multiset.card s - j)) = 0 := by
@@ -15,6 +18,19 @@ theorem sum_esymm_eq_zero (s : Multiset ℂ) (x : ℂ) (hx : x ∈ s) :
   rw [← h]
   exact Multiset.prod_eq_zero (Multiset.mem_map.mpr ⟨x, hx, sub_self x⟩)
 
+/- English proof (translation)
+Establish `hn1 : 1 ≤ Multiset.card s` using `Multiset.card_pos_iff_exists_mem.mpr ⟨x, hx⟩`. Distinguish the cases in `hx1 : ‖x‖ ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Use `push_neg at hx1`. Establish `h0` using `sum_esymm_eq_zero s x hx`.
+
+Establish `he0 : s.esymm 0 = 1` using `by simp [Multiset.esymm]`. Rewrite `h0` using `[Finset.sum_range_succ']`. Simplify using `only [pow_zero, he0, one_mul, Nat.sub_zero] at h0`. Establish `hxn : x ^ Multiset.card s = -∑ i ∈ Finset.range (Multiset.card s), (-1) ^ (i + 1) * (s.esymm (i + 1) * x ^ (Multiset.card s - (i + 1)))` using `eq_neg_of_add_eq_zero_right h0`. Establish `hbound : ‖x‖ ^ Multiset.card s ≤ (Multiset.card s : ℝ) * M * ‖x‖ ^ (Multiset.card s - 1)`.
+
+Rewrite using `[← norm_pow, hxn, norm_neg]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i hi`. Establish `hi'` using `Finset.mem_range.mp hi`.
+
+Simplify using `only [norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]`. Conclude with `mul_le_mul (h (i + 1) (by omega) (by omega)) (pow_le_pow_right₀ hx1.le (by omega)) (pow_nonneg (norm_nonneg _) _) (by linarith)`. Use `_ = (Multiset.card s : ℝ) * M * ‖x‖ ^ (Multiset.card s - 1) := by`. Simplify using `[Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hpos : 0 < ‖x‖ ^ (Multiset.card s - 1)` using `pow_pos (by linarith) _`. Establish `hsplit : ‖x‖ ^ Multiset.card s = ‖x‖ * ‖x‖ ^ (Multiset.card s - 1)`. Rewrite using `[← pow_succ']`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite `hbound` using `[hsplit]`. Conclude with `le_of_mul_le_mul_right hbound hpos`.
+-/
 theorem norm_le_of_esymm (s : Multiset ℂ) (M : ℝ) (hM : 1 ≤ M)
     (h : ∀ j, 1 ≤ j → j ≤ Multiset.card s → ‖s.esymm j‖ ≤ M) (x : ℂ) (hx : x ∈ s) :
     ‖x‖ ≤ (Multiset.card s : ℝ) * M := by
@@ -55,6 +71,9 @@ theorem norm_le_of_esymm (s : Multiset ℂ) (M : ℝ) (hM : 1 ≤ M)
   rw [hsplit] at hbound
   exact le_of_mul_le_mul_right hbound hpos
 
+/- English proof (translation)
+Introduce `n B M hcard hM h b hb`. Establish `hb'` using `norm_le_of_esymm (B.map (fun b : ℂˣ => (b : ℂ))) M hM (fun j hj1 hj2 => by`. Rewrite `hj2` using `[Multiset.card_map, hcard]`. Conclude with `h j hj1 hj2) (b : ℂ) (Multiset.mem_map_of_mem _ hb)`. Rewrite `hb'` using `[Multiset.card_map, hcard]`. Then use the resulting hypothesis.
+-/
 theorem norm_unit_le_of_esymm :
     ∀ (n : ℕ) (B : Multiset ℂˣ) (M : ℝ), Multiset.card B = n → (1 : ℝ) ≤ M →
       (∀ (j : ℕ), (1 : ℕ) ≤ j → j ≤ n →

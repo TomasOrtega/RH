@@ -11,6 +11,9 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Rewrite using `[rdV_local (F := fun _ => (0 : ℂ)) hG hK.isClosed.isOpen_compl hgK contDiffOn_const (fun h hU hGh => hz h hGh hU) hg]`. Simplify using the standard rewrite rules.
+-/
 private theorem RdV_eq_zero_of_not_mem_compact {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)}
     {X : Matrix (Fin n) (Fin n) ℂ}
     (hG : ∀ g ∈ G, ∀ t : ℝ, g * NormedSpace.exp ((t : ℂ) • X) ∈ G)
@@ -21,6 +24,31 @@ private theorem RdV_eq_zero_of_not_mem_compact {n : ℕ} {G : Set (Matrix (Fin n
     (fun h hU hGh => hz h hGh hU) hg]
   simp
 
+/- English proof (translation)
+Introduce `n G μ X f₁ f₂ hGc hG hconc hinv hfin hs₁ hs₂ hK₁ _`. Take `⟨K₁, hK₁c, hz₁⟩` from `hK₁`. Establish `hc₁` using `contOn_of_smooth hs₁`. Establish `hc₂` using `contOn_of_smooth hs₂`. Establish `hd₁ : ContinuousOn (RdV X f₁) G` using `contOn_rdV hG hs₁`.
+
+Establish `hd₂ : ContinuousOn (RdV X f₂) G` using `contOn_rdV hG hs₂`. Establish `hr₁ : ∀ g ∈ G, g ∉ K₁ → RdV X f₁ g = 0` using `fun g hg hgK => RdV_eq_zero_of_not_mem_compact hG hK₁c hz₁ hg hgK`. Establish `hPc : ContinuousOn (fun g => f₁ g * star (f₂ g)) G` using `hc₁.mul hc₂.star`. Establish `hQc : ContinuousOn (fun g => RdV X f₁ g * star (f₂ g) + f₁ g * star (RdV X f₂ g)) G` using `(hd₁.mul hc₂.star).add (hc₁.mul hd₂.star)`. Establish `hQz : ∀ g ∈ G, g ∉ K₁ → RdV X f₁ g * star (f₂ g) + f₁ g * star (RdV X f₂ g) = 0`.
+
+Introduce `g hg hgK`. Rewrite using `[hr₁ g hg hgK, hz₁ g hg hgK]`. Simplify using the standard rewrite rules. Establish `hrm : ∀ a : Matrix (Fin n) (Fin n) ℂ, Measurable (B.rmulF a)` using `fun a => Continuous.measurable (show Continuous (B.rmulF a) from cont_of.matrix_mul continuous_const)`. Establish `hinvI : ∀ t : ℝ, ∫ x, f₁ (Matrix.of x * NormedSpace.exp ((t : ℂ) • X)) * star (f₂ (Matrix.of x * NormedSpace.exp ((t : ℂ) • X))) ∂μ = ∫ x, f₁ (Matrix.of x) * star (f₂ (Matrix.of x)) ∂μ`.
+
+Introduce `t`. Establish `hsm : AEStronglyMeasurable (fun y : Fin n → Fin n → ℂ => f₁ (Matrix.of y) * star (f₂ (Matrix.of y))) (μ.map (B.rmulF (NormedSpace.exp ((t : ℂ) • X))))`. Rewrite using `[hinv t]`. Conclude with `aesm_of_contOn hGc hconc hPc`. Establish `h` using `integral_map (hrm (NormedSpace.exp ((t : ℂ) • X))).aemeasurable hsm`.
+
+Rewrite `h` using `[hinv t]`. Conclude with `h.symm`. Establish `hF_meas : ∀ᶠ t : ℝ in 𝓝 (0 : ℝ), AEStronglyMeasurable (fun x : Fin n → Fin n → ℂ => f₁ (Matrix.of x * NormedSpace.exp ((t : ℂ) • X)) * star (f₂ (Matrix.of x * NormedSpace.exp ((t : ℂ) • X)))) μ` using `Filter.Eventually.of_forall fun t => aesm_of_contOn (φ := fun g => f₁ (g * NormedSpace.exp ((t : ℂ) • X)) * star (f₂ (g * NormedSpace.exp ((t : ℂ) • X)))) hGc hconc (hPc.comp (continuous_id.matrix_mul continuous_const).continuousOn fun g hg => hG g hg t)`. Establish `hF_int : Integrable (fun x : Fin n → Fin n → ℂ => f₁ (Matrix.of x * NormedSpace.exp (((0 : ℝ) : ℂ) • X)) * star (f₂ (Matrix.of x * NormedSpace.exp (((0 : ℝ) : ℂ) • X)))) μ`. Simplify using `only [flow_zero]`.
+
+Conclude with `integrable_of_contOn hGc hconc hfin hPc hK₁c (fun g hg hgK => by simp [hz₁ g hg hgK])`. Establish `hF'_meas : AEStronglyMeasurable (fun x : Fin n → Fin n → ℂ => RdV X f₁ (Matrix.of x * NormedSpace.exp (((0 : ℝ) : ℂ) • X)) * star (f₂ (Matrix.of x * NormedSpace.exp (((0 : ℝ) : ℂ) • X))) + f₁ (Matrix.of x * NormedSpace.exp (((0 : ℝ) : ℂ) • X)) * star (RdV X f₂ (Matrix.of x * Norm …`. Simplify using `only [flow_zero]`. Conclude with `aesm_of_contOn hGc hconc hQc`. Take `⟨C, hC⟩` from `(hK₁c.inter_left hGc).exists_bound_of_continuousOn (hQc.mono Set.inter_subset_left)`.
+
+Use `set L : Set (Matrix (Fin n) (Fin n) ℂ) := (fun p : Matrix (Fin n) (Fin n) ℂ × ℝ => p.1 * NormedSpace.exp ((p.2 : ℂ) • X)) '' (K₁ ×ˢ Icc (-1 : ℝ) 1) with hLdef`. Establish `hL : IsCompact L` using `(hK₁c.prod isCompact_Icc).image (continuous_fst.matrix_mul ((exp_flow_cont X).comp continuous_snd))`. Establish `hS : IsCompact (Matrix.of ⁻¹' L : Set (Fin n → Fin n → ℂ))` using `hL`. Establish `hbound_int : Integrable ((Matrix.of ⁻¹' L).indicator fun _ => max C 0) μ` using `(integrable_indicator_iff hS.measurableSet).2 (integrableOn_const (hfin _ hS).ne)`. Establish `h_bound : ∀ᵐ x ∂μ, ∀ t ∈ Metric.ball (0 : ℝ) 1, ‖RdV X f₁ (Matrix.of x * NormedSpace.exp ((t : ℂ) • X)) * star (f₂ (Matrix.of x * NormedSpace.exp ((t : ℂ) • X))) + f₁ (Matrix.of x * NormedSpace.exp ((t : ℂ) • X)) * star (RdV X f₂ (Matrix.of x * NormedSpace.exp ((t : ℂ) • X)))‖ ≤ …` using `by filter_upwards [ae_mem hconc] with x hx t ht`.
+
+Establish `hgt` using `hG _ hx t`. Distinguish the cases in `hk : Matrix.of x * NormedSpace.exp ((t : ℂ) • X) ∈ K₁`. Establish `ht' : |t| < 1` using `by simpa [Real.dist_eq] using ht`. Establish `hxS : x ∈ (Matrix.of ⁻¹' L : Set (Fin n → Fin n → ℂ))`. Use `⟨(Matrix.of x * NormedSpace.exp ((t : ℂ) • X), -t), ⟨hk, by linarith [abs_lt.1 ht'], by linarith [abs_lt.1 ht']⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `hcomm : Commute ((t : ℂ) • X) (-((t : ℂ) • X))` using `(Commute.refl _).neg_right`. Use `show Matrix.of x * NormedSpace.exp ((t : ℂ) • X) * NormedSpace.exp (((-t : ℝ) : ℂ) • X) = Matrix.of x`. Rewrite using `[mul_assoc, show (((-t : ℝ) : ℂ) • X) = -((t : ℂ) • X) by push_cast; exact neg_smul _ _, ← Matrix.exp_add_of_commute _ _ hcomm, add_neg_cancel, NormedSpace.exp_zero, mul_one]`. Rewrite using `[Set.indicator_of_mem hxS]`. Conclude with `(hC _ ⟨hgt, hk⟩).trans (le_max_left _ _)`.
+
+Rewrite using `[hQz _ hgt hk, norm_zero]`. Conclude with `Set.indicator_nonneg (fun _ _ => le_max_right _ _) _`. Establish `h_diff : ∀ᵐ x ∂μ, ∀ t ∈ Metric.ball (0 : ℝ) 1, HasDerivAt (fun s : ℝ => f₁ (Matrix.of x * NormedSpace.exp ((s : ℂ) • X)) * star (f₂ (Matrix.of x * NormedSpace.exp ((s : ℂ) • X)))) (RdV X f₁ (Matrix.of x * NormedSpace.exp ((t : ℂ) • X)) * star (f₂ (Matrix.of x * NormedSpace.exp (( …` using `by filter_upwards [ae_mem hconc] with x hx t _`. Conclude with `(hasDerivAt_shift hG hs₁ hx t).mul (hasDerivAt_shift hG hs₂ hx t).star`. Establish `hderiv` using `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (F := fun (t : ℝ) (x : Fin n → Fin n → ℂ) => f₁ (Matrix.of x * NormedSpace.exp ((t : ℂ) • X)) * star (f₂ (Matrix.of x * NormedSpace.exp ((t : ℂ) • X)))) (F' := fun (t : ℝ) (x : Fin n → Fin n → ℂ) => RdV X f₁ (Matrix.of x * NormedS …`.
+
+Establish `hconst : HasDerivAt (fun _ : ℝ => ∫ x, f₁ (Matrix.of x) * star (f₂ (Matrix.of x)) ∂μ) (∫ x, (RdV X f₁ (Matrix.of x * NormedSpace.exp (((0 : ℝ) : ℂ) • X)) * star (f₂ (Matrix.of x * NormedSpace.exp (((0 : ℝ) : ℂ) • X))) + f₁ (Matrix.of x * NormedSpace.exp (((0 : ℝ) : ℂ) • X)) * sta …`. Conclude with `hderiv.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => (hinvI t).symm)`. Establish `h0` using `hconst.unique (hasDerivAt_const _ _)`. Simplify using `only [flow_zero] at h0`. Establish `hI1 : Integrable (fun x : Fin n → Fin n → ℂ => RdV X f₁ (Matrix.of x) * star (f₂ (Matrix.of x))) μ` using `integrable_of_contOn hGc hconc hfin (hd₁.mul hc₂.star) hK₁c (fun g hg hgK => by simp [hr₁ g hg hgK])`.
+
+Establish `hI2 : Integrable (fun x : Fin n → Fin n → ℂ => f₁ (Matrix.of x) * star (RdV X f₂ (Matrix.of x))) μ` using `integrable_of_contOn hGc hconc hfin (hc₁.mul hd₂.star) hK₁c (fun g hg hgK => by simp [hz₁ g hg hgK])`. Rewrite `h0` using `[integral_add hI1 hI2]`. Conclude with `eq_neg_of_add_eq_zero_left h0`.
+-/
 theorem skew_reduction_analytic : StepAnalytic := by
   intro n G μ X f₁ f₂ hGc hG hconc hinv hfin hs₁ hs₂ hK₁ _
   obtain ⟨K₁, hK₁c, hz₁⟩ := hK₁

@@ -16,6 +16,17 @@ namespace GlobalTheory.GoodMetric.Model
 
 def fsGram (v : V 1) : Mat (fun _ : Unit => 1) ℂ := fun _ => Matrix.of fun _ _ => (((1 + ‖v‖ ^ 2)⁻¹ : ℝ) : ℂ)
 
+/- English proof (translation)
+Establish `hn : ‖v 0‖ = ‖v‖` using `by simp [EuclideanSpace.norm_eq]`. Establish `hi : ‖inner ℂ v (coordVec (0 : Fin 1))‖ = ‖v‖`. Rewrite using `[← hn, coordVec, EuclideanSpace.inner_single_right]`. Simplify using the standard rewrite rules. Establish `hp : 0 < 1 + ‖v‖ ^ 2` using `by positivity`.
+
+Establish `hc : ContDiffAt ℝ 2 (fun t : ℝ => (1 + t)⁻¹) (‖v‖ ^ 2)` using `(contDiffAt_const.add contDiffAt_id).inv hp.ne'`. Establish `hd (t : ℝ) (h : 1 + t ≠ 0) : deriv (fun t : ℝ => Real.log (1 + t)⁻¹) t = -(1 + t)⁻¹`. Simplify using `only [Real.log_inv]`. Conclude with `((((hasDerivAt_id t).const_add 1).log h).neg.deriv).trans (by simp)`. Establish `hd2 : deriv (deriv fun t : ℝ => Real.log (1 + t)⁻¹) (‖v‖ ^ 2) = ((1 + ‖v‖ ^ 2) ^ 2)⁻¹`.
+
+Establish `e : deriv (fun t : ℝ => Real.log (1 + t)⁻¹) =ᶠ[𝓝 (‖v‖ ^ 2)] fun t => -(1 + t)⁻¹` using `by filter_upwards [(continuous_const.add continuous_id).continuousAt.eventually_ne hp.ne'] with t h`. Conclude with `hd t h`. Rewrite using `[e.deriv_eq]`. Conclude with `((((hasDerivAt_id _).const_add 1).inv hp.ne').neg.deriv).trans (by simp [div_eq_mul_inv])`. Establish `hii : inner ℂ v (coordVec (0 : Fin 1)) * inner ℂ (coordVec 0) v = ((‖v‖ ^ 2 : ℝ) : ℂ)`.
+
+Rewrite using `[← inner_conj_symm (coordVec 0) v, Complex.mul_conj, Complex.normSq_eq_norm_sq, hi]`. Establish `h1' : inner ℂ (coordVec (0 : Fin 1)) (coordVec (0 : Fin 1)) = (1 : ℂ)` using `by simp [coordVec]`. Rewrite using `[chernTop_line, Matrix.det_unique, Matrix.of_apply, curv_line (f := fun x : V 1 => (1 + ‖x‖ ^ 2)⁻¹) (hc.comp (f := fun x : V 1 => ‖x‖ ^ 2) v (contDiff_norm_sq ℂ).contDiffAt) (inv_ne_zero hp.ne') (Eventually.of_forall fun _ => rfl), show (default : Fin 1) = 0 from rfl, leviForm_co …`. Simplify using `only [Nat.factorial_one, Nat.cast_one, pow_one]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chernTop_fsGram (v : V 1) : chernTop (X ((), 1) ^ 1) fsGram v = (Real.pi * (1 + ‖v‖ ^ 2) ^ 2)⁻¹ := by
   have hn : ‖v 0‖ = ‖v‖ := by simp [EuclideanSpace.norm_eq]
   have hi : ‖inner ℂ v (coordVec (0 : Fin 1))‖ = ‖v‖ := by
@@ -43,6 +54,15 @@ theorem chernTop_fsGram (v : V 1) : chernTop (X ((), 1) ^ 1) fsGram v = (Real.pi
   field_simp
   ring
 
+/- English proof (translation)
+Simplify using `only [chernTop_fsGram]`. Establish `hr : Module.finrank ℝ (V 1) = 2`. Rewrite using `[← Module.finrank_mul_finrank ℝ ℂ (V 1)]`. Simplify using the standard rewrite rules. Rewrite using `[integral_fun_norm_addHaar volume (fun r : ℝ => (Real.pi * (1 + r ^ 2) ^ 2)⁻¹), Measure.real, InnerProductSpace.volume_ball, hr]`.
+
+Establish `hI : ∫ y in Set.Ioi (0 : ℝ), y ^ (2 - 1) • (Real.pi * (1 + y ^ 2) ^ 2)⁻¹ = (2 * Real.pi)⁻¹`. Establish `hder : ∀ y ∈ Set.Ici (0 : ℝ), HasDerivAt (fun y : ℝ => -(2 * Real.pi)⁻¹ * (1 + y ^ 2)⁻¹) (y ^ (2 - 1) • (Real.pi * (1 + y ^ 2) ^ 2)⁻¹) y` using `fun y _ => by`. Establish `hp : 1 + y ^ 2 ≠ 0` using `by positivity`. Use `((((hasDerivAt_pow 2 y).const_add 1).inv hp).const_mul (-(2 * Real.pi)⁻¹)).congr_deriv ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Establish `ht : Tendsto (fun y : ℝ => -(2 * Real.pi)⁻¹ * (1 + y ^ 2)⁻¹) atTop (𝓝 0)`. Simplify using `using ((tendsto_atTop_add_const_left _ 1 (tendsto_pow_atTop (α := ℝ) two_ne_zero)).inv_tendsto_atTop).const_mul (-(2 * Real.pi)⁻¹)`. Rewrite using `[integral_Ioi_of_hasDerivAt_of_nonneg' hder (fun y hy => by have : (0 : ℝ) < y := hy; positivity) ht]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hI]`. Establish `hg : Real.Gamma ((2 : ℕ) / 2 + 1) = 1` using `by norm_num`. Rewrite using `[hg, Real.sq_sqrt Real.pi_pos.le]`. Simplify using `[ENNReal.toReal_ofReal Real.pi_pos.le]`.
+-/
 theorem integral_chernTop_fsGram : ∫ v : V 1, chernTop (X ((), 1) ^ 1) fsGram v = 1 := by
   simp only [chernTop_fsGram]
   have hr : Module.finrank ℝ (V 1) = 2 := by
@@ -67,6 +87,11 @@ theorem integral_chernTop_fsGram : ∫ v : V 1, chernTop (X ((), 1) ^ 1) fsGram 
   rw [hg, Real.sq_sqrt Real.pi_pos.le]
   simp [ENNReal.toReal_ofReal Real.pi_pos.le]
 
+/- English proof (translation)
+Establish `e : antisymm (fibrePoint fun _ : Unit => 3) = (Matrix.of fun i j : Fin 3 => (-X ⟨(), i⟩ : MvPolynomial (Root fun _ : Unit => 3) ℝ) ^ (2 - (j : ℕ))).det`. Rewrite using `[Matrix.det_apply, antisymm]`. Use `Finset.sum_equiv (Equiv.funUnique Unit _) (fun _ => by simp) fun w _ => ?_` and prove the remaining obligations. Simplify using `[fibrePoint, Fintype.prod_sigma, Units.smul_def]`. Establish `h0 : Finset.Iio (0 : Fin 3) = ∅` using `by decide`.
+
+Establish `h1 : Finset.Iio (1 : Fin 3) = {0}` using `by decide`. Establish `h2 : Finset.Iio (2 : Fin 3) = {0, 1}` using `by decide`. Rewrite using `[e, Matrix.det_fin_three, rootDiscr]`. Simplify using `[Fin.prod_univ_three, h0, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem antisymm_fibrePoint_three : antisymm (fibrePoint fun _ : Unit => 3) = rootDiscr fun _ : Unit => 3 := by
   classical
   have e : antisymm (fibrePoint fun _ : Unit => 3) =
@@ -81,6 +106,9 @@ theorem antisymm_fibrePoint_three : antisymm (fibrePoint fun _ : Unit => 3) = ro
   simp [Fin.prod_univ_three, h0, h1, h2]
   ring
 
+/- English proof (translation)
+Introduce `hb` and use `by have hn : ‖v 0‖ = ‖v‖ := by simp [EuclideanSpace.norm_eq] have hp : 0 < ‖v‖ := norm_pos_iff.2 h0 have hi : ‖inner ℂ v (coordVec (0 : Fin 1))‖ = ‖v‖ := by rw [← hn, coordVec, EuclideanSpace.inner_single_right]; simp have e : conn (fun u : V 1 => (Matrix.of fun _ _ => ((‖u‖ ^ 2 …`.
+-/
 theorem not_goodBound_normSq (c : ℝ) (N : ℕ) {v : V 1} (h0 : v ≠ 0) (h : Real.log ‖v‖ < -|c|) :
     ¬ GoodBound Finset.univ c N (fun u : V 1 => (Matrix.of fun _ _ => ((‖u‖ ^ 2 : ℝ) : ℂ) : Matrix (Fin 1) (Fin 1) ℂ)) v :=
   fun hb => by
@@ -98,6 +126,9 @@ theorem not_goodBound_normSq (c : ℝ) (N : ℕ) {v : V 1} (h0 : v ≠ 0) (h : R
   have e2 : (‖v‖ ^ 2)⁻¹ * ‖v‖ * (‖v‖ * -Real.log ‖v‖) = -Real.log ‖v‖ := by field_simp
   linarith [le_abs_self c]
 
+/- English proof (translation)
+Introduce `h` and use `by have hb (z : CxPts X.str σ) : z ∉ ptsIn X.str σ ⊥ := fun hz => mem_ptsIn.1 hz obtain ⟨e, S, -, hy, -, h4, -⟩ := h y (hb y) have hd : Dense (⋂ a : Fin X.dim, {v : V X.dim | v a ≠ 0}) := by refine dense_iInter_of_isOpen (fun a => isOpen_ne_fun (by fun_prop) continuous_const) fun …`.
+-/
 theorem not_isGood_bot {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} {ι : Type} {m : ι → ℕ} (E : Fr (ratOf X) m 0)
     (H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ) (y : CxPts X.str σ) : ¬ IsGood E ⊥ H := fun h => by
   have hb (z : CxPts X.str σ) : z ∉ ptsIn X.str σ ⊥ := fun hz => mem_ptsIn.1 hz
@@ -110,6 +141,11 @@ theorem not_isGood_bot {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} {ι :
   rw [e.right_inv hv] at ha
   exact Set.mem_iInter.1 hv' a ha
 
+/- English proof (translation)
+Establish `e : antisymm Q = Q`. Rewrite using `[antisymm, Finset.sum_eq_single (fun _ => 1) (fun w _ hw => absurd (_root_.funext fun _ => Subsingleton.elim _ _) hw) (by simp)]`. Simplify using `only [Finset.prod_const_one, map_one, Units.val_one, one_smul]`. Conclude with `rename_id_apply Q`. Establish `e2 : rootDiscr (fun _ : ι => 1) = 1`.
+
+Establish `h0 : Finset.Iio (0 : Fin 1) = ∅` using `by decide`. Simplify using `[rootDiscr, h0]`. Rewrite `h` using `[e, e2]`. Rewrite using `[h]`. Simplify using `[fibrePoint]`.
+-/
 theorem flagPushForward_line {F : Type} [Field F] (Y : Var F) {ι : Type} [Fintype ι] (gr : Root (fun _ : ι => 1) → Y.Dv)
     (Q : MvPolynomial (Root fun _ : ι => 1) ℝ) (R : MvPolynomial (ι × ℕ) ℝ)
     (h : antisymm Q = chernRoots (fun _ : ι => 1) R * rootDiscr fun _ : ι => 1) :
@@ -127,11 +163,19 @@ theorem flagPushForward_line {F : Type} [Field F] (Y : Var F) {ι : Type} [Finty
   rw [h]
   simp [fibrePoint]
 
+/- English proof (translation)
+Rewrite using `[← (stdOrthonormalBasis ℝ (V 0)).volume_parallelepiped]`. Use `congr 1`. Conclude with `(Set.eq_univ_of_forall fun x => Subsingleton.elim 0 x ▸ ⟨0, by simp, Subsingleton.elim _ _⟩).symm`.
+-/
 theorem volume_univ_zero : (volume : Measure (V 0)) Set.univ = 1 := by
   rw [← (stdOrthonormalBasis ℝ (V 0)).volume_parallelepiped]
   congr 1
   exact (Set.eq_univ_of_forall fun x => Subsingleton.elim 0 x ▸ ⟨0, by simp, Subsingleton.elim _ _⟩).symm
 
+/- English proof (translation)
+Take `⟨Y, φ, f, E', hd, hR⟩` from `tower _ (ratOf X) X.dim E (good_ratOf X) (fun _ => Nat.zero_le _) rfl`. Take `⟨B, hB⟩` from `E'.nonempty (genericPoint Y.X)`. Take `⟨gr, hgr⟩` from `GlobalTheory.ShFam.GradedDiv.exists_div E' hB`. Use `⟨Y, E', φ, f, fun x => gr x.1 x.2, by simpa using hd, hR, B, hB, fun y x => ?_⟩` and prove the remaining obligations. Take `⟨A, hA, t, h1, -, h3⟩` from `hgr y`.
+
+Conclude with `⟨A, hA, t x.1 x.2, h1 _ _, h3 _ _⟩`.
+-/
 theorem exists_flagSpace {F : Type} [Field F] (X : Var F) {ι : Type} [Fintype ι] {m : ι → ℕ} (E : Fr (ratOf X) m 0) :
     ∃ (Y : Var F) (E' : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X) (gr : Root m → Y.Dv),
       Y.dim = X.dim + ∑ τ, (m τ).choose 2 ∧ Refines E E' φ f ∧ IsGraded E' gr := by

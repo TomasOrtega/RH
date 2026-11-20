@@ -37,6 +37,13 @@ def zeroEquiv (s : List ℕ) : inType P (0 :: s) ≃ₗ[𝓞 E] inType P s :=
       left_inv := fun p => Prod.ext (Subsingleton.elim _ _) rfl
       right_inv := fun _ => rfl }
 
+/- English proof (translation)
+Proceed by induction on `h with`. Consider the case `nil => exact ⟨LinearEquiv.refl _ _⟩`. Consider the case `cons a _ ih`. Take `⟨e⟩` from `ih`. Conclude with `⟨(consEquiv P a _).trans (((LinearEquiv.refl _ _).prodCongr e).trans (consEquiv P a _).symm)⟩`.
+
+Consider the case `swap a b l`. Conclude with `⟨(consEquiv P b _).trans <| ((LinearEquiv.refl _ _).prodCongr (consEquiv P a l)).trans <| (LinearEquiv.prodAssoc _ _ _ _).symm.trans <| ((LinearEquiv.prodComm _ _ _).prodCongr (LinearEquiv.refl _ _)).trans <| (LinearEquiv.prodAssoc _ _ _ _).trans <| ((LinearEquiv.refl _ _).prodCo …`. Consider the case `trans _ _ ih1 ih2`. Take `⟨e1⟩` from `ih1`. Take `⟨e2⟩` from `ih2`.
+
+Conclude with `⟨e1.trans e2⟩`.
+-/
 theorem iso_of_perm {s t : List ℕ} (h : s.Perm t) :
     Nonempty (inType P s ≃ₗ[𝓞 E] inType P t) := by
   induction h with
@@ -56,6 +63,13 @@ theorem iso_of_perm {s t : List ℕ} (h : s.Perm t) :
     obtain ⟨e2⟩ := ih2
     exact ⟨e1.trans e2⟩
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `nil => exact ⟨LinearEquiv.refl _ _⟩`. Consider the case `cons a s ih`. Take `⟨e⟩` from `ih`. Consider the cases of `a with`.
+
+Consider the case `zero`. Establish `hf : (0 :: s).filter (fun a => 0 < a) = s.filter (fun a => 0 < a)` using `by simp`. Rewrite using `[hf]`. Conclude with `⟨(zeroEquiv P s).trans e⟩`. Consider the case `succ m`.
+
+Establish `hf : ((m + 1) :: s).filter (fun a => 0 < a) = (m + 1) :: s.filter (fun a => 0 < a)`. Simplify using the standard rewrite rules. Rewrite using `[hf]`. Conclude with `⟨(consEquiv P _ s).trans (((LinearEquiv.refl _ _).prodCongr e).trans (consEquiv P _ _).symm)⟩`.
+-/
 theorem iso_filter_pos (s : List ℕ) :
     Nonempty (inType P s ≃ₗ[𝓞 E] inType P (s.filter (fun a => 0 < a))) := by
   induction s with
@@ -73,6 +87,11 @@ theorem iso_filter_pos (s : List ℕ) :
       rw [hf]
       exact ⟨(consEquiv P _ s).trans (((LinearEquiv.refl _ _).prodCongr e).trans (consEquiv P _ _).symm)⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ P s`. Use `⟨(s.filter (fun a => 0 < a)).insertionSort (· ≥ ·), List.pairwise_insertionSort _ _, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Use `((List.perm_insertionSort (· ≥ ·) _).mem_iff).mp ha` as an intermediate fact. Simplify using `using (List.mem_filter.mp this).2`.
+
+Take `⟨e1⟩` from `iso_filter_pos P s`. Take `⟨e2⟩` from `iso_of_perm P (List.perm_insertionSort (· ≥ ·) (s.filter (fun a => 0 < a))).symm`. Conclude with `⟨e1.trans e2⟩`.
+-/
 theorem inType_iso_sorted_pos : ∀ {E : Type} [Field E] [NumberField E] [StarRing E] (P : Ideal (𝓞 E)) (s : List ℕ),
     ∃ y : List ℕ, y.Pairwise (· ≥ ·) ∧ (∀ a ∈ y, 0 < a) ∧ Nonempty (inType P s ≃ₗ[𝓞 E] inType P y) := by
   intro E _ _ _ P s

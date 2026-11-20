@@ -13,11 +13,21 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {bs : Module.Basis (Fin d) F E} {v : HeightOneSpectrum (𝓞 F)} {ψv : Fv F v → ℂ} {S : Subring (Fv F v ⊗[F] E)}
   {σS : S →+* S} {ϖ : Fv F v} {ε : ℤ}
 
+/- English proof (translation)
+Rewrite using `[Subring.coe_mul, Subring.coe_pow, Algebra.smul_def, map_pow, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem coe_mul_pS_pow (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (k : ℕ) (t : S) :
     ((t * hG.pS ^ k : S) : Fv F v ⊗[F] E) = (ϖ ^ k) • (t : Fv F v ⊗[F] E) := by
   rw [Subring.coe_mul, Subring.coe_pow, Algebra.smul_def, map_pow, mul_comm]
   rfl
 
+/- English proof (translation)
+Establish `hne : ϖ ^ k ≠ 0` using `pow_ne_zero _ hG.unif_ne`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `Ideal.mem_span_singleton'.2 ⟨⟨_, h⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[coe_mul_pS_pow hG]`.
+
+Use `show (ϖ ^ k) • ((ϖ ^ k)⁻¹ • (s : Fv F v ⊗[F] E) - (ϖ ^ k)⁻¹ • (s' : Fv F v ⊗[F] E)) = (s : Fv F v ⊗[F] E) - s'`. Rewrite using `[← smul_sub, smul_smul, mul_inv_cancel₀ hne, one_smul]`. Introduce `h`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 h`. Establish `e : (s : Fv F v ⊗[F] E) - (s' : Fv F v ⊗[F] E) = (ϖ ^ k) • (c : Fv F v ⊗[F] E)`.
+
+Rewrite using `[← coe_mul_pS_pow hG, hc, AddSubgroupClass.coe_sub]`. Rewrite using `[← smul_sub, e, smul_smul, inv_mul_cancel₀ hne, one_smul]`. Conclude with `c.2`.
+-/
 theorem smul_sub_mem_iff (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (k : ℕ) (s s' : S) :
     (ϖ ^ k)⁻¹ • (s : Fv F v ⊗[F] E) - (ϖ ^ k)⁻¹ • (s' : Fv F v ⊗[F] E) ∈ S ↔ s - s' ∈ lev hG.pS k := by
   have hne : ϖ ^ k ≠ 0 := pow_ne_zero _ hG.unif_ne
@@ -34,6 +44,11 @@ theorem smul_sub_mem_iff (hG : GoodLoc σ J T bs v ψv S σS ϖ ε) (k : ℕ) (s
     rw [← smul_sub, e, smul_smul, inv_mul_cancel₀ hne, one_smul]
     exact c.2
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ M n d J T bs v ψv S σS ϖ ε hG k X X' hX hX'`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Conclude with `Ideal.Quotient.eq.2 ((smul_sub_mem_iff hG k (X a b) (X' a b)).1 (h a b))`.
+
+Introduce `h a b`. Conclude with `(smul_sub_mem_iff hG k (X a b) (X' a b)).2 (Ideal.Quotient.eq.1 (congrFun (congrFun h a) b))`.
+-/
 theorem classLev : ClassLev := by
   intro F E _ _ _ _ _ σ M n d J T bs v ψv S σS ϖ ε hG k X X' hX hX'
   constructor

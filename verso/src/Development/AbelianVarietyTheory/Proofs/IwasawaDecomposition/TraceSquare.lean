@@ -17,6 +17,45 @@ namespace GlobalTheory
 set_option maxHeartbeats 4000000 in
 open GlobalTheory.FunObj GlobalTheory.FunObj.SqNum GlobalTheory.BigTop.Fun in
 
+/- English proof (translation)
+Introduce `X X' T T' L L' sc G G' W W' S S' μ₀ μ₀' ι h M σ hs`. Take `⟨⟨hpre, -, -, ⟨f, f', hff, hC, hC'⟩, hbase, hxi, -, -⟩, hg, -, -⟩` from `h`. Use `clear S S' W W'`. Take `⟨B, C₁, W₁, V₁, S₁, N₁, G₁⟩` from `X`. Take `⟨B', C₂, W₂, V₂, S₂, N₂, G₂⟩` from `X'`.
+
+Consider the cases of `B`. Consider the cases of `B'`. Simplify using `only at hpre`. Substitute `hpre` using the available equality. Take `rfl` from `eq_of_heq hff`.
+
+Establish `hv0 : G'.pl.v0 = G.pl.v0` using `eq_of_heq hg.v0`. Establish `hw : G'.pl.w = G.pl.w` using `eq_of_heq hg.w`. Establish `hchi : G'.ch.chiH = G.ch.chiH` using `eq_of_heq hg.chiH`. Establish `hx : L'.xiH μ₀' = L.xiH μ₀` using `by have := eq_of_heq (hxi μ₀'); rwa [hbase] at this`. Establish `e_levQ : levQ G'.pl = levQ G.pl`.
+
+Unfold `levQ Places.S0 condExp`. Rewrite using `[hv0]`. Conclude with `(Eq.refl (levQ G.pl))`. Establish `e_condE : SqNum.condE G'.pl = SqNum.condE G.pl`. Unfold `SqNum.condE Places.S0 condExp`.
+
+Rewrite using `[hv0, hw]`. Conclude with `(Eq.refl (SqNum.condE G.pl))`. Establish `e_condF : condF G'.pl = condF G.pl`. Unfold `condF Places.S0 condExp`. Rewrite using `[hv0]`.
+
+Conclude with `(Eq.refl (condF G.pl))`. Establish `hmu : L'.C.mu0 = L.C.mu0` using `by rw [hC, hC']; exact (Eq.refl f'.mu0)`. Establish `heta : L'.C.eta = L.C.eta` using `by rw [hC, hC']; exact (Eq.refl f'.eta)`. Establish `hd1 : L'.C.del = L.C.del` using `by rw [hC, hC']; exact (Eq.refl f'.del)`. Establish `hd2 : L'.C.del' = L.C.del'` using `by rw [hC, hC']; exact (Eq.refl f'.del')`.
+
+Establish `e_nu : ∀ i j, nuH G' μ₀' i j = nuH G μ₀ i j`. Introduce `i j`. Unfold `nuH`. Rewrite using `[hmu, hx, hchi]`. Conclude with `(Eq.refl (nuH G μ₀ i j))`.
+
+Establish `e_beta : ∀ i j, betaH G' i j = betaH G i j`. Introduce `i j`. Unfold `betaH`. Rewrite using `[heta, hchi]`. Conclude with `(Eq.refl (betaH G i j))`.
+
+Establish `e_alpha : ∀ i j, alphaH L' μ₀' i j = alphaH L μ₀ i j`. Introduce `i j`. Unfold `alphaH`. Rewrite using `[hmu, hx, heta]`. Conclude with `(Eq.refl (alphaH L μ₀ i j))`.
+
+Establish `e_del : ∀ c, delOf L' c = delOf L c`. Introduce `c`. Unfold `delOf`. Rewrite using `[hd1, hd2]`. Conclude with `(Eq.refl (delOf L c))`.
+
+Establish `eT : ∀ i j s χ x, IsTor G' i j s χ x ↔ IsTor G i j s χ x`. Introduce `i j s χ x`. Unfold `IsTor`. Rewrite using `[e_condF]`. Conclude with `(Iff.refl (IsTor G i j s χ x))`.
+
+Set `hk1 : ∀ {N : ℕ}, Formalism.MainNotions.StandardLatticesGL3.HeckeU (Mem.Stages.toD7 ⟨_, C₁, W₁, V₁, S₁, N₁, G₁⟩) N → Formalism.MainNotions.StandardLatticesGL3.HeckeU (Mem.Stages.toD7 ⟨_, C₂, W₂, V₂, S₂, N₂, G₂⟩) N` to `fun h => { f := ((h.f)), n := ((h.n)), unitary := ((h.unitary)), cont := ((h.cont)), aut := ((h.aut)), norm := ((h.norm)), par := ((h.par)), unr := ((h.unr)) }`. Set `wt1 : ∀ {δ : ℂ} {a d : ℕ} {e0 : Formalism.MainNotions.TaylorLogMetric.VC (Mem.Stages.toD7 ⟨_, C₁, W₁, V₁, S₁, N₁, G₁⟩) a d → ℂ}, Formalism.MainNotions.StandardLatticesGL3.WeilO (Mem.Stages.toD7 ⟨_, C₁, W₁, V₁, S₁, N₁, G₁⟩) ⊤ δ a d e0 → Formalism.MainNotions.StandardLatticesGL3.We …` to `fun w => { chV := hk1 w.chV, chV' := hk1 w.chV', ep := w.ep, ep' := w.ep', ep_pm := w.ep_pm, nz := ((w.nz)), Om := ((w.Om)), maps := ((w.maps)), add := ((w.add)), smul := ((w.smul)), one := ((w.one)), mul := ((w.mul)), lift := ((w.lift)), inert := ((w.inert)), split := ((w.split) …`. Set `pt1 : ∀ {δ t0 : ℂ} {Q : ℕ}, GlobalTheory.NormSum.Pair (Mem.Stages.toD7 ⟨_, C₁, W₁, V₁, S₁, N₁, G₁⟩) ⊤ δ t0 Q → GlobalTheory.NormSum.Pair (Mem.Stages.toD7 ⟨_, C₂, W₂, V₂, S₂, N₂, G₂⟩) ⊤ δ t0 Q` to `fun P => { a := P.a, d := P.d, a_le := P.a_le, d_even := P.d_even, W := wt1 P.W, crv := ((P.crv)), pt0 := ((P.pt0)), e0 := ((P.e0)), vac := ((P.vac)), n := ((P.n)), wt := ((P.wt)), F := ((P.F)), pres := ((P.pres)), fix := ((P.fix)), J := ((P.J)), J_le := ((P.J_le)), idx_ne := ((P …`. Set `hk2 : ∀ {N : ℕ}, Formalism.MainNotions.StandardLatticesGL3.HeckeU (Mem.Stages.toD7 ⟨_, C₂, W₂, V₂, S₂, N₂, G₂⟩) N → Formalism.MainNotions.StandardLatticesGL3.HeckeU (Mem.Stages.toD7 ⟨_, C₁, W₁, V₁, S₁, N₁, G₁⟩) N` to `fun h => { f := ((h.f)), n := ((h.n)), unitary := ((h.unitary)), cont := ((h.cont)), aut := ((h.aut)), norm := ((h.norm)), par := ((h.par)), unr := ((h.unr)) }`. Set `wt2 : ∀ {δ : ℂ} {a d : ℕ} {e0 : Formalism.MainNotions.TaylorLogMetric.VC (Mem.Stages.toD7 ⟨_, C₂, W₂, V₂, S₂, N₂, G₂⟩) a d → ℂ}, Formalism.MainNotions.StandardLatticesGL3.WeilO (Mem.Stages.toD7 ⟨_, C₂, W₂, V₂, S₂, N₂, G₂⟩) ⊤ δ a d e0 → Formalism.MainNotions.StandardLatticesGL3.We …` to `fun w => { chV := hk2 w.chV, chV' := hk2 w.chV', ep := w.ep, ep' := w.ep', ep_pm := w.ep_pm, nz := ((w.nz)), Om := ((w.Om)), maps := ((w.maps)), add := ((w.add)), smul := ((w.smul)), one := ((w.one)), mul := ((w.mul)), lift := ((w.lift)), inert := ((w.inert)), split := ((w.split) …`.
+
+Set `pt2 : ∀ {δ t0 : ℂ} {Q : ℕ}, GlobalTheory.NormSum.Pair (Mem.Stages.toD7 ⟨_, C₂, W₂, V₂, S₂, N₂, G₂⟩) ⊤ δ t0 Q → GlobalTheory.NormSum.Pair (Mem.Stages.toD7 ⟨_, C₁, W₁, V₁, S₁, N₁, G₁⟩) ⊤ δ t0 Q` to `fun P => { a := P.a, d := P.d, a_le := P.a_le, d_even := P.d_even, W := wt2 P.W, crv := ((P.crv)), pt0 := ((P.pt0)), e0 := ((P.e0)), vac := ((P.vac)), n := ((P.n)), wt := ((P.wt)), F := ((P.F)), pres := ((P.pres)), fix := ((P.fix)), J := ((P.J)), J_le := ((P.J_le)), idx_ne := ((P …`. Establish `btr1 : ∀ {δ t0 : ℂ} {Q : ℕ} (i j : Fin (Mem.Stages.toD7 ⟨_, C₂, W₂, V₂, S₂, N₂, G₂⟩).R.m) (P P' : GlobalTheory.NormSum.Pair (Mem.Stages.toD7 ⟨_, C₁, W₁, V₁, S₁, N₁, G₁⟩) ⊤ δ t0 Q), IsBottom G μ₀ i j (SqNum.condE G.pl) P P' → IsBottom G' μ₀' i j (SqNum.condE G'.pl) (pt1 P) (pt1 P' …`. Introduce `δ t0 Q i j P P' h`. Take `⟨h1, h2, h3, h4, h5, h6⟩` from `h`. Use `⟨(h1), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e_beta, e_nu]`. Conclude with `(h2)`. Rewrite using `[e_alpha, e_nu]`. Conclude with `(h3)`. Rewrite using `[e_condE]`.
+
+Conclude with `(h4)`. Rewrite using `[e_condE]`. Conclude with `(h5)`. Rewrite using `[e_condE]`. Conclude with `(h6)`.
+
+Establish `btr2 : ∀ {δ t0 : ℂ} {Q : ℕ} (i j : Fin (Mem.Stages.toD7 ⟨_, C₂, W₂, V₂, S₂, N₂, G₂⟩).R.m) (P P' : GlobalTheory.NormSum.Pair (Mem.Stages.toD7 ⟨_, C₂, W₂, V₂, S₂, N₂, G₂⟩) ⊤ δ t0 Q), IsBottom G' μ₀' i j (SqNum.condE G'.pl) P P' → IsBottom G μ₀ i j (SqNum.condE G.pl) (pt2 P) (pt2 P' …`. Introduce `δ t0 Q i j P P' h`. Take `⟨h1, h2, h3, h4, h5, h6⟩` from `h`. Rewrite `h2` using `[e_beta, e_nu]`. Rewrite `h3` using `[e_alpha, e_nu]`.
+
+Rewrite `h4`, `h5`, `h6` using `[e_condE]`. Conclude with `⟨(h1), (h2), (h3), (h4), (h5), (h6)⟩`. Use `⟨fun hb => ?_, fun i j s c x y h1 h2 h3 h4 => ?_⟩` and prove the remaining obligations. Take `⟨δ, t0, hb⟩` from `hb`. Rewrite `hb` using `[e_levQ]`.
+
+Take `⟨δ', t0', hb'⟩` from `hs.norms ⟨δ, t0, fun ij => by`. Take `⟨P, P', hP, -, -⟩` from `hb ((ij))`. Conclude with `⟨pt2 P, pt2 P', btr2 ((ij.1)) ((ij.2)) P P' hP, trivial, trivial⟩⟩`. Use `⟨δ', t0', fun ij => ?_⟩` and prove the remaining obligations. Rewrite using `[e_levQ]`.
+
+Take `⟨P, P', hP, n1, n2⟩` from `hb' ((ij))`. Conclude with `⟨pt1 P, pt1 P', btr1 ij.1 ij.2 P P' hP, (n1), (n2)⟩`. Rewrite `h3` using `[eT, e_nu]`. Rewrite `h4` using `[eT, e_nu, e_del]`. Conclude with `hs.toric ((i)) ((j)) s c x y h1 ((h2)) ((h3)) ((h4))`.
+-/
 theorem Mem.LiteralAutomorphy.trSq_holds : GlobalTheory.Mem.LiteralAutomorphy.TrSq := by
   intro X X' T T' L L' sc G G' W W' S S' μ₀ μ₀' ι h M σ hs
   obtain ⟨⟨hpre, -, -, ⟨f, f', hff, hC, hC'⟩, hbase, hxi, -, -⟩, hg, -, -⟩ := h

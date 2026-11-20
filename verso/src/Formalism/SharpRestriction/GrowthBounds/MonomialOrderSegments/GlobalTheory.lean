@@ -19,10 +19,20 @@ def SameBlockAlt (ζ ζ' : D.EM) : Prop :=
   (∀ i, ldeg ζ' i = ldeg ζ i) ∧ (∀ t a, ζ' (D.mlab t, a) = ζ (D.mlab t, a)) ∧
     (∀ t a, ζ' (D.mtp t, a) = ζ (D.mtp t, a))
 
+/- English proof (translation)
+Unfold `SameBlockAlt`. Conclude with `⟨fun _ => rfl, fun _ _ => rfl, fun _ _ => rfl⟩`.
+-/
 theorem SameBlockAlt.refl (ζ : D.EM) : D.SameBlockAlt ζ ζ := by
   unfold SameBlockAlt
   exact ⟨fun _ => rfl, fun _ _ => rfl, fun _ _ => rfl⟩
 
+/- English proof (translation)
+Unfold `GoodE at h ⊢`. Unfold `SameBlockAlt at hb`. Take `⟨h1, h2, h3, h4, h5⟩` from `h`. Take `⟨hl, hlab, htp⟩` from `hb`. Use `⟨fun t a => ?_, fun j m hm a => ?_, fun b => (hl _).trans (h3 b), fun t => ?_, fun t => (hl _).le.trans (h5 t)⟩` and prove the remaining obligations.
+
+Rewrite using `[hlab]`. Conclude with `h1 t a`. Rewrite using `[htp]`. Conclude with `h2 j m hm a`. Simplify using `only [hl]`.
+
+Conclude with `h4 t`.
+-/
 theorem GoodE.good_exponent_same_block {p : ℕ} {ζ ζ' : D.EM} (h : D.GoodE p ζ) (hb : D.SameBlockAlt ζ ζ') : D.GoodE p ζ' := by
   unfold GoodE at h ⊢
   unfold SameBlockAlt at hb
@@ -34,6 +44,13 @@ theorem GoodE.good_exponent_same_block {p : ℕ} {ζ ζ' : D.EM} (h : D.GoodE p 
   · rw [htp]; exact h2 j m hm a
   · simp only [hl]; exact h4 t
 
+/- English proof (translation)
+Unfold `SameBlockAlt at hb`. Take `⟨_, hlab, htp⟩` from `hb`. Use extensionality with `⟨i, a⟩`. Simplify using `only [eOut, Finsupp.filter_apply]`. Use `split_ifs with h`.
+
+Break down `i with b | t | t | t` into its components or cases. Conclude with `absurd h (by simp [outB])`. Conclude with `hlab t a`. Conclude with `absurd h (by simp [outB])`. Conclude with `htp t a`.
+
+Both sides reduce to the same expression.
+-/
 theorem output_exponent_same_block {ζ ζ' : D.EM} (hb : D.SameBlockAlt ζ ζ') : eOut D.outP ζ' = eOut D.outP ζ := by
   unfold SameBlockAlt at hb
   obtain ⟨_, hlab, htp⟩ := hb
@@ -47,6 +64,9 @@ theorem output_exponent_same_block {ζ ζ' : D.EM} (hb : D.SameBlockAlt ζ ζ') 
     · exact htp t a
   · rfl
 
+/- English proof (translation)
+Unfold `ldeg eIn`. Use `split_ifs with h`. Simplify using `[Finsupp.filter_apply, h]`. Establish `h' : D.outB i = false` using `by simpa [outP] using h`. Simplify using `[Finsupp.filter_apply, h']`.
+-/
 theorem ldeg_eIn (ζ : D.EM) (i : D.ML) : ldeg (eIn D.outP ζ) i = if D.outP i then 0 else ldeg ζ i := by
   unfold ldeg eIn
   split_ifs with h
@@ -54,6 +74,11 @@ theorem ldeg_eIn (ζ : D.EM) (i : D.ML) : ldeg (eIn D.outP ζ) i = if D.outP i t
   · have h' : D.outB i = false := by simpa [outP] using h
     simp [Finsupp.filter_apply, h']
 
+/- English proof (translation)
+Unfold `SameBlockAlt at hb`. Take `⟨_, _, htp⟩` from `hb`. Unfold `tpE`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Break down `x with ⟨o | t, a⟩` into its components or cases. Both sides reduce to the same expression. Conclude with `htp t a`.
+-/
 theorem tangent_exponent_same_block {ζ ζ' : D.EM} (hb : D.SameBlockAlt ζ ζ') : D.tpE ζ' = D.tpE ζ := by
   unfold SameBlockAlt at hb
   obtain ⟨_, _, htp⟩ := hb
@@ -64,6 +89,9 @@ theorem tangent_exponent_same_block {ζ ζ' : D.EM} (hb : D.SameBlockAlt ζ ζ')
   · rfl
   · exact htp t a
 
+/- English proof (translation)
+Unfold `SameBlockAlt at hb`. Take `⟨_, hlab, _⟩` from `hb`. Use function extensionality and compare the values at `t a`. Conclude with `hlab t a`.
+-/
 theorem label_function_same_block {ζ ζ' : D.EM} (hb : D.SameBlockAlt ζ ζ') : D.labF ζ' = D.labF ζ := by
   unfold SameBlockAlt at hb
   obtain ⟨_, hlab, _⟩ := hb
@@ -73,6 +101,9 @@ theorem label_function_same_block {ζ ζ' : D.EM} (hb : D.SameBlockAlt ζ ζ') :
 def dUp : D.ML → ℕ :=
   Sum.elim D.dB (Sum.elim (fun _ => 0) (Sum.elim D.dT (fun _ => 0)))
 
+/- English proof (translation)
+Unfold `kapL dUp dO`. Use `first`. Consider the case `(simp [Fintype.sum_sum_type]; done)`. Consider the case `(simp [Fintype.sum_sum_type]; rfl)`. Consider the case `(simp only [Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr]; simp; rfl)`.
+-/
 theorem kapL_dUp (p : ℕ) : kapL p D.r D.dUp = kapL p D.r D.dO := by
   unfold kapL dUp dO
   first
@@ -80,6 +111,13 @@ theorem kapL_dUp (p : ℕ) : kapL p D.r D.dUp = kapL p D.r D.dO := by
     | (simp [Fintype.sum_sum_type]; rfl)
     | (simp only [Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr]; simp; rfl)
 
+/- English proof (translation)
+Rewrite using `[ldeg_eIn]`. Unfold `GoodE at h`. Take `⟨_, _, h3, h4, _⟩` from `h`. Use `split_ifs with ho`. Conclude with `Nat.zero_le _`.
+
+Break down `i with b | t | t | t` into its components or cases. Conclude with `(h3 b).le`. Conclude with `(ho rfl).elim`. Establish `hP : 1 ≤ D.P p t` using `Nat.one_le_pow _ _ hp show ldeg ζ (D.mw t) ≤ D.dT t`. Establish `h4t` using `h4 t`.
+
+Use polynomial arithmetic with `[Nat.zero_le (ldeg ζ (D.mw t))]`. Conclude with `(ho rfl).elim`.
+-/
 theorem ldeg_eIn_le {p : ℕ} (hp : 0 < p) {ζ : D.EM} (h : D.GoodE p ζ) (i : D.ML) :
     ldeg (eIn D.outP ζ) i ≤ D.dUp i := by
   rw [ldeg_eIn]
@@ -98,6 +136,13 @@ theorem ldeg_eIn_le {p : ℕ} (hp : 0 < p) {ζ : D.EM} (h : D.GoodE p ζ) (i : D
 
 variable [CharZero K] {v : AddValuation K (WithTop ℚ)} {p : ℕ}
 
+/- English proof (translation)
+Establish `hp` using `two_le_p hD`. Rewrite using `[fact_eq_out_mul_in D.outP ζ, fact_eq_out_mul_in D.outP ζ', D.output_exponent_same_block hb, vN_mul hD (fact_ne_zero _) (fact_ne_zero _), vN_mul hD (fact_ne_zero _) (fact_ne_zero _)]`. Establish `e1 : ∀ i, ldeg (eIn D.outP ζ') i = ldeg (eIn D.outP ζ) i`. Introduce `i`. Rewrite using `[ldeg_eIn, ldeg_eIn, hb.1 i]`.
+
+Establish `h1` using `fact_upper hD e1`. Establish `h2` using `fact_lower hD (α := eIn D.outP ζ) (d := fun i => ldeg (eIn D.outP ζ) i) (fun _ => rfl)`. Establish `h3 : kapL p D.r (fun i => ldeg (eIn D.outP ζ) i) ≤ kapL p D.r D.dUp` using `kapL_mono hp D.r (D.ldeg_eIn_le (by omega) h)`. Establish `h4` using `kapL_le_kap' hp hr D.dO`. Rewrite `h3` using `[D.kapL_dUp]`.
+
+Establish `h5 : D.kapD p = kap p D.r D.dO` using `rfl`. Rewrite using `[h5]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem blk_fact (hD : DVRHyp v p) (hr : 1 ≤ D.r) {ζ ζ' : D.EM} (h : D.GoodE p ζ) (hb : D.SameBlockAlt ζ ζ') :
     vN v (fact ζ') - vN v (fact ζ) ≤ D.kapD p := by
   have hp := two_le_p hD
@@ -114,6 +159,11 @@ theorem blk_fact (hD : DVRHyp v p) (hr : 1 ≤ D.r) {ζ ζ' : D.EM} (h : D.GoodE
   have h5 : D.kapD p = kap p D.r D.dO := rfl
   rw [h5]; linarith
 
+/- English proof (translation)
+Establish `hp` using `two_le_p hD`. Establish `h1` using `fact_add_lower hD (α := D.collapseExponent p ζ) (α' := D.tpE ζ) (d := D.dO) (D.ldeg_phE p ζ h)`. Establish `h4` using `kapL_le_kap' hp hr D.dO`. Establish `h5 : D.kapD p = kap p D.r D.dO` using `rfl`. Establish `h6 : D.n0 v = vN v (∏ i : D.OL, (D.dO i).factorial) / 2` using `rfl`.
+
+Rewrite using `[h5, h6]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem wt_lower (hD : DVRHyp v p) (hr : 1 ≤ D.r) {ζ : D.EM} (h : D.GoodE p ζ) :
     2 * D.n0 v - 2 * D.kapD p ≤ vN v (fact (D.collapseExponent p ζ)) + vN v (fact (D.tpE ζ)) := by
   have hp := two_le_p hD
@@ -123,6 +173,11 @@ theorem wt_lower (hD : DVRHyp v p) (hr : 1 ≤ D.r) {ζ : D.EM} (h : D.GoodE p �
   have h6 : D.n0 v = vN v (∏ i : D.OL, (D.dO i).factorial) / 2 := rfl
   rw [h5, h6]; linarith
 
+/- English proof (translation)
+Establish `hp` using `two_le_p hD`. Establish `h1` using `fact_lower hD (α := D.phE p ζ) (d := D.dO) (D.ldeg_phE p ζ h)`. Establish `h4` using `kapL_le_kap' hp hr D.dO`. Establish `h5 : D.kapD p = kap p D.r D.dO` using `rfl`. Establish `h6 : D.n0 v = vN v (∏ i : D.OL, (D.dO i).factorial) / 2` using `rfl`.
+
+Rewrite using `[h5, h6]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem fact_phE_lower (hD : DVRHyp v p) (hr : 1 ≤ D.r) {ζ : D.EM} (h : D.GoodE p ζ) :
     2 * D.n0 v - D.kapD p ≤ vN v (fact (D.phE p ζ)) := by
   have hp := two_le_p hD
@@ -133,6 +188,9 @@ theorem fact_phE_lower (hD : DVRHyp v p) (hr : 1 ≤ D.r) {ζ : D.EM} (h : D.Goo
   rw [h5, h6]; linarith
 
 omit [CharZero K] in
+/- English proof (translation)
+Unfold `fact`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => Nat.factorial_zero), Fintype.prod_prod_type]`. Simplify using `only [Fintype.prod_sum_type]`. Both sides reduce to the same expression.
+-/
 theorem fact_EM (ζ : D.EM) : fact ζ = (∏ b, ∏ a, (ζ (D.mb b, a)).factorial) *
     ((∏ t, ∏ a, (ζ (D.mlab t, a)).factorial) * ((∏ t, ∏ a, (ζ (D.mw t, a)).factorial) *
       ∏ t, ∏ a, (ζ (D.mtp t, a)).factorial)) := by
@@ -142,6 +200,9 @@ theorem fact_EM (ζ : D.EM) : fact ζ = (∏ b, ∏ a, (ζ (D.mb b, a)).factoria
   rfl
 
 omit [CharZero K] in
+/- English proof (translation)
+Unfold `fact`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => Nat.factorial_zero), Fintype.prod_prod_type]`. Simplify using `only [Fintype.prod_sum_type]`. Simplify using `[collapseExponent]`.
+-/
 theorem factorial_embedded_exponent (ζ : D.EM) : fact (D.collapseExponent p ζ) = (∏ b, ∏ a, (ζ (D.mb b, a)).factorial) *
     ∏ t, ∏ a, (ζ (D.mlab t, a) + D.P p t * ζ (D.mw t, a)).factorial := by
   unfold fact
@@ -150,6 +211,9 @@ theorem factorial_embedded_exponent (ζ : D.EM) : fact (D.collapseExponent p ζ)
   simp [collapseExponent]
 
 omit [CharZero K] in
+/- English proof (translation)
+Unfold `fact`. Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => Nat.factorial_zero), Fintype.prod_prod_type]`. Simplify using `only [Fintype.prod_sum_type]`. Simplify using `[tpE]`.
+-/
 theorem fact_tpE (ζ : D.EM) : fact (D.tpE ζ) = ∏ t, ∏ a, (ζ (D.mtp t, a)).factorial := by
   unfold fact
   rw [Finsupp.prod_fintype _ _ (fun _ => Nat.factorial_zero), Fintype.prod_prod_type]
@@ -161,6 +225,11 @@ def kapC (cst : D.Tau → (Fin D.r → ℕ) → ℕ → K) (ζ : D.EM) : K :=
     ((∏ t : D.Tau, ∏ a, (ζ (D.mlab t, a)).factorial : ℕ) : K)
 
 omit [CharZero K] in
+/- English proof (translation)
+Establish `hL` using `D.label_function_same_block hb`. Unfold `SameBlockAlt at hb`. Take `⟨hl, hlab, _⟩` from `hb`. Unfold `kapC`. Rewrite using `[hL]`.
+
+Simplify using `only [hl, hlab]`.
+-/
 theorem kappa_constant_same_block (cst : D.Tau → (Fin D.r → ℕ) → ℕ → K) {ζ ζ' : D.EM} (hb : D.SameBlockAlt ζ ζ') :
     D.kapC cst ζ' = D.kapC cst ζ := by
   have hL := D.label_function_same_block hb
@@ -170,6 +239,11 @@ theorem kappa_constant_same_block (cst : D.Tau → (Fin D.r → ℕ) → ℕ →
   rw [hL]
   simp only [hl, hlab]
 
+/- English proof (translation)
+Establish `h1 : ∀ t, ((∏ a, (ζ (D.mlab t, a) + D.P p t * ζ (D.mw t, a)).factorial : ℕ) : K) = cst t (D.labF ζ t) (ldeg ζ (D.mw t)) * ((∏ a, (ζ (D.mw t, a)).factorial : ℕ) : K) * gam t (D.labF ζ t) (D.wF ζ t)` using `fun t => ((hdig.1 t (D.labF ζ t) (hζ t)).2 (D.wF ζ t)).2`. Establish `h0 : ((∏ t : D.Tau, ∏ a, (ζ (D.mlab t, a)).factorial : ℕ) : K) ≠ 0`. Rewrite using `[Nat.cast_ne_zero]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun t _ => Finset.prod_ne_zero_iff.mpr fun a _ => Nat.factorial_ne_zero _`. Rewrite using `[factorial_embedded_exponent, fact_tpE, fact_EM, kapC]`.
+
+Rewrite using `[Nat.cast_mul, Nat.cast_prod (s := (univ : Finset D.Tau)) (f := fun t => ∏ a, (ζ (D.mlab t, a) + D.P p t * ζ (D.mw t, a)).factorial)]`. Simplify using `only [h1, Finset.prod_mul_distrib]`. Use `push_cast`. Move the coercions through the operations in `at h0`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem fact_eq_kapC {cst : D.Tau → (Fin D.r → ℕ) → ℕ → K}
     {gam : D.Tau → (Fin D.r → ℕ) → (Fin D.r → ℕ) → K} (hdig : D.DigOK v p cst gam) {ζ : D.EM}
     (hζ : D.LabLowE p ζ) :
@@ -190,6 +264,21 @@ theorem fact_eq_kapC {cst : D.Tau → (Fin D.r → ℕ) → ℕ → K}
   push_cast at h0
   field_simp
 
+/- English proof (translation)
+Establish `hd` using `hdig`. Unfold `DigOK at hd`. Take `⟨h1, _⟩` from `hd`. Establish `heq` using `D.fact_eq_kapC hdig hζ`. Establish `hG : v (∏ t, gam t (D.labF ζ t) (D.wF ζ t)) = 0` using `Finset.prod_induction _ (fun x => v x = 0) (fun a b ha hb => by rw [AddValuation.map_mul, ha, hb, add_zero]) (AddValuation.map_one v) (fun t _ => ((h1 t (D.labF ζ t) (fun a => hζ t a)).2 (D.wF ζ t)).1)`.
+
+Establish `hfact : ∀ {σ : Type} (α : σ →₀ ℕ), ((fact α : ℕ) : K) ≠ 0` using `fun α => Nat.cast_ne_zero.2 (by`. Unfold `fact Finsupp.prod`. Conclude with `Finset.prod_ne_zero_iff.2 fun _ _ => Nat.factorial_ne_zero _)`. Establish `hA` using `hfact (D.collapseExponent p ζ)`. Establish `hB` using `hfact (D.tpE ζ)`.
+
+Establish `hZ` using `hfact ζ`. Establish `hX : D.kapC cst ζ ≠ 0`. Introduce `h0`. Rewrite `heq` using `[h0, zero_mul, zero_mul]`. Conclude with `mul_ne_zero hA hB heq`.
+
+Take `⟨qA, hqA⟩` from `WithTop.ne_top_iff_exists.1 ((AddValuation.top_iff v).not.2 hA)`. Take `⟨qB, hqB⟩` from `WithTop.ne_top_iff_exists.1 ((AddValuation.top_iff v).not.2 hB)`. Take `⟨qZ, hqZ⟩` from `WithTop.ne_top_iff_exists.1 ((AddValuation.top_iff v).not.2 hZ)`. Take `⟨qX, hqX⟩` from `WithTop.ne_top_iff_exists.1 ((AddValuation.top_iff v).not.2 hX)`. Establish `hv` using `congrArg v heq`.
+
+Rewrite `hv` using `[AddValuation.map_mul, AddValuation.map_mul, AddValuation.map_mul, hG, ← hqA, ← hqB, ← hqZ, ← hqX]`. Establish `hq : qA + qB = qX + qZ`. Establish `h2 : ((qA + qB : ℚ) : WithTop ℚ) = ((qX + qZ : ℚ) : WithTop ℚ)`. Rewrite using `[WithTop.coe_add, WithTop.coe_add, hv, add_zero]`. Conclude with `WithTop.coe_eq_coe.1 h2`.
+
+Unfold `vge vR vN`. Rewrite using `[← hqA, ← hqB, ← hqZ, ← hqX]`. Simplify using `only [WithTop.untopD_coe, WithTop.map_coe]`. Establish `hle : (qA : ℝ) + qB - qZ ≤ qX`. Establish `h3 : (qA : ℝ) + qB = qX + qZ` using `by exact_mod_cast hq`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `WithTop.coe_le_coe.2 hle`.
+-/
 theorem vge_kapC (hD : DVRHyp v p) {cst : D.Tau → (Fin D.r → ℕ) → ℕ → K}
     {gam : D.Tau → (Fin D.r → ℕ) → (Fin D.r → ℕ) → K} (hdig : D.DigOK v p cst gam) {ζ : D.EM}
     (hζ : D.LabLowE p ζ) :
@@ -232,6 +321,9 @@ theorem vge_kapC (hD : DVRHyp v p) {cst : D.Tau → (Fin D.r → ℕ) → ℕ �
     linarith
   exact WithTop.coe_le_coe.2 hle
 
+/- English proof (translation)
+Take `⟨cst, gam, h1, h2⟩` from `hDIG hD D.Tau D.r D.g`. Use `⟨cst, gam, ?_⟩` and prove the remaining obligations. Unfold `DigOK`. Conclude with `⟨h1, fun ρ hρ ε hε => h2 ρ hρ D.c hc ε hε⟩`.
+-/
 theorem digOK_exists (hDIG : DIG K v p) (hD : DVRHyp v p) (hc : 1 ≤ D.c) :
     ∃ cst gam, D.DigOK v p cst gam := by
   obtain ⟨cst, gam, h1, h2⟩ := hDIG hD D.Tau D.r D.g

@@ -114,6 +114,9 @@ structure IsCompactIrrep {k : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProd
   rep : IsUnitaryRepOn (Matrix.unitaryGroup (Fin k) ℂ : Set (Matrix (Fin k) (Fin k) ℂ)) π
   type : IsKType (fun _ => true) π ⊤ (u - rhoU k)
 
+/- English proof (translation)
+Use extensionality with `g`. Simplify using `[grpK]`.
+-/
 theorem grpK_const (k : ℕ) : grpK (fun _ : Fin k => true) =
     (Matrix.unitaryGroup (Fin k) ℂ : Set (Matrix (Fin k) (Fin k) ℂ)) := by
   ext g

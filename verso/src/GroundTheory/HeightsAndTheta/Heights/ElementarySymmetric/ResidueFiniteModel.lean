@@ -15,10 +15,16 @@ def ResidueFiniteModel.Statement : Prop :=
   ∀ (P : RigSymForm ℂ) (a : ℕ), 3 ≤ a → ∀ (r : ℕ) (x : Fin (r + 1) → P.Fn), P.IsBasisOf a x →
     ∀ b : ℕ, b < a → Nonempty (ResidueChartModel P a b x)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, le_rfl, rigSymFormTauI_isBasisOf, by norm_num⟩`.
+-/
 theorem residueFiniteModel_hyps :
     rigSymFormTauI.g = 1 ∧ 3 ≤ 3 ∧ rigSymFormTauI.IsBasisOf 3 (r := 2) thetaThreeFam ∧ 1 < 3 :=
   ⟨rfl, le_rfl, rigSymFormTauI_isBasisOf, by norm_num⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨le_rfl, pointX_isBasisOf, by norm_num, ⟨pointChartModel⟩⟩`.
+-/
 theorem residueFiniteModel_point :
     3 ≤ 3 ∧ pointForm.IsBasisOf 3 pointX ∧ 0 < 3 ∧ Nonempty (ResidueChartModel pointForm 3 0 pointX) :=
   ⟨le_rfl, pointX_isBasisOf, by norm_num, ⟨pointChartModel⟩⟩

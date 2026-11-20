@@ -13,6 +13,11 @@ open Formalism.BasicNotions Formalism.L2.Col Formalism.L2.DIV Formalism.L2.Forms
 
 variable {ι : Type} [Fintype ι] {n : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Establish `e1 : ∀ τ, ((invTrK u⁻¹ τ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)ᵀ = (u τ : Matrix (Fin n) (Fin n) ℂ)` using `fun τ => by`. Rewrite using `[invTrK_coe, Matrix.transpose_transpose, Pi.inv_apply, inv_inv]`. Simplify using `only [lT_apply, fnOf, LinearMap.coe_mk, AddHom.coe_mk, Pi.one_apply, Matrix.one_mul, frL, rhoP, MonoidHom.coe_mk, OneHom.coe_mk, actP, trAct, detTwK, LinearMap.smul_apply, AlgHom.toLinearMap_apply, smul_eq_mul, MvPolynomial.smul_eval, Formalism.GradedWeylDivisibility.blockAct, ev …`. Establish `e2 : ∀ τ, detPow ℂ n (invTrK u⁻¹ τ) (lam τ).detShift = (u τ : Matrix (Fin n) (Fin n) ℂ).det ^ (lam τ).detShift` using `fun τ => by rw [detPow, Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply, ← Matrix.det_transpose, e1]`.
+
+Simplify using `only [e2, Matrix.det_mul, mul_zpow, Finset.prod_mul_distrib, shiftOf, Matrix.mul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lT_fnOf (G : ι → Matrix (Fin n) (Fin n) ℂ) (lam : ι → DomWeight n) (u : ι → GL (Fin n) ℂ) (P : Pol ℂ ι n) :
     lT G u (fnOf G (shiftOf lam) 1 P) = fnOf G (shiftOf lam) 1 (rhoP lam (invTrK u⁻¹) P) := by
   funext y
@@ -26,6 +31,17 @@ theorem lT_fnOf (G : ι → Matrix (Fin n) (Fin n) ℂ) (lam : ι → DomWeight 
   simp only [e2, Matrix.det_mul, mul_zpow, Finset.prod_mul_distrib, shiftOf, Matrix.mul_apply]
   ring
 
+/- English proof (translation)
+Substitute `hl hk` using the available equality. Establish `hp : ∀ P, polOf G' (shiftOf lam) o (fnOf G (shiftOf lam) 1 P) = P` using `fun P => by`. Establish `e : (fun τ => (o.1 τ)⁻¹) = 1` using `funext fun τ => by rw [ho τ]; exact inv_one`. Use `polOf_fnOf G' (shiftOf lam) o P` as an intermediate fact. Rewrite `this` using `[e]`.
+
+Conclude with `this`. Establish `hm : w - c • rhoP lam k w ∈ VV ℂ lam` using `sub_mem hw (Submodule.smul_mem _ _ (polyAction_mem_VV lam k hw))`. Establish `h0` using `(pairingBNondegenerate_holds ℂ ι n lam).2 ⟨_, hm⟩ fun P => by`. Take `⟨φ', e1, e2⟩` from `h (lT G k (fnOf G (shiftOf lam) 1 P.1)) (lT_mem G lam k ⟨P.1, by simpa [MvPolynomial.map_id] using map_mem_CSpan (RingHom.id ℂ) lam _ P.2, rfl⟩)`. Establish `e3 : φ' = fnOf G (shiftOf lam) 1 P.1`.
+
+Use `congrArg (lT G k⁻¹) e1` as an intermediate fact. Rewrite `this` using `[← lT_mul, ← lT_mul, mul_inv_cancel, lT_one, lT_one]`. Then use the resulting hypothesis. Rewrite `e2` using `[e3, lT_fnOf, hp, hp]`. Establish `e4` using `pairingBInvariantK_holds ℂ ι n lam k⁻¹ P.1 (rhoP lam k w)`. Establish `e5 : actP lam k⁻¹ (rhoP lam k w) = w` using `by show (rhoP lam k⁻¹ * rhoP lam k) w = w`.
+
+Rewrite using `[← map_mul, inv_mul_cancel, map_one]`. Both sides reduce to the same expression. Rewrite `e4` using `[e5]`. Rewrite using `[pairBK_apply]`. Use `show pairB lam P.1 (w - c • rhoP lam k w) = 0`.
+
+Rewrite using `[map_sub, map_smul, e2, ← e4, smul_eq_mul]`. Conclude with `sub_self _`. Conclude with `sub_eq_zero.1 (congrArg Subtype.val h0)`.
+-/
 theorem eq_smul_of_pair (G G' : ι → Matrix (Fin n) (Fin n) ℂ) (lam lam' : ι → DomWeight n) (hl : lam = lam') (o : Frames G')
     (ho : ∀ τ, o.1 τ = 1) (k k' : ι → GL (Fin n) ℂ) (hk : k = k') {w : Pol ℂ ι n} (hw : w ∈ VV ℂ lam) (c : ℂ)
     (h : ∀ φ ∈ ValC G lam', ∃ φ' : Frames G → ℂ, lT G k φ' = φ ∧
@@ -69,6 +85,15 @@ variable {D : D7} {u : D.what₂.Word} {θ : InfFam D} {S : D.what₂.Tau → SP
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `R` using `(GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ D.sp.X'`. Take `⟨f, hf, a, ha, rfl⟩` from `R.2.2.2.2.2.2.1 γ`. Take `⟨v', e1, e2⟩` from `real_translate (J := J) (χ := χ) hθ hj a ha v`. Establish `e3 : h' = f * h * k`. Use `hasMat_pt hh' ?_` and prove the remaining obligations.
+
+Use `hasMat_finPt (mul_mem (mul_mem hf hh.1) hk.1)` as an intermediate fact. Rewrite `this` using `[finPt_mul, finPt_mul, finPt_of_hasMat hh, finPt_of_hasMat hk, ← finPt_mul_inf f ha, ← e]`. Then use the resulting hypothesis. Use `⟨v', by rw [map_mul (infPt θ), infPt_of_fin θ hf, one_mul, e1], fun T hT => ?_⟩` and prove the remaining obligations. Establish `e4 : h' * b * a = f * a * (h * b * (b⁻¹ * k * b))`. Establish `e5 : h * b * (b⁻¹ * k * b) = h * k * b` using `by group`.
+
+Rewrite using `[e5, e3, mul_assoc f a, comm_of_mem _ ha (mul_mem (mul_mem hh.1 hk.1) hb)]`. Simplify using `only [mul_assoc]`. Rewrite using `[e2 T hT, e4, multT_rel' (h * b * (b⁻¹ * k * b)) (f * a * (h * b * (b⁻¹ * k * b))) 1 (fun m hm w => by`. Rewrite using `[one_mul]`. Conclude with `(hm.aut w).left _ hγ _) hT, one_mul,`.
+
+Use the proof step `multT_rel' (h * b) (h * b * (b⁻¹ * k * b)) (χ (b⁻¹ * k * b)) (fun m hm w => hm.lev w _ hJ (h * b)) hT]`.
+-/
 theorem coset_law_moved (hθ : IsInfFam θ) (hj : IsJ u M j) {b : GA D D.sp.X'} (hb : b ∈ GfC D.sp.X') {γ : GA D D.sp.X'}
     (hγ : γ ∈ GQ D.sp.X') {k h h' : GA D D.sp.X'} {κ x x'} (hk : HasMat k κ) (hJ : b⁻¹ * k * b ∈ J) (hh : HasMat h x)
     (hh' : HasMat h' x') (e : x' = (finPt γ).1 * x * κ) (v : SmT M) :
@@ -100,6 +125,17 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Set `κ0 : (I.stX a).G c.1` to `(1, s.1.2.1, s.1.2.2)`. Establish `hgam : (I.stX a).gam c.1 κ0 = 1` using `map_one (ufGL B.fields.E (B.R.N B.R.m - 1))`. Establish `hp` using `GlobalTheory.Mem.Col2.TilX.isPtOf_rat (hR.pt c) (s.1.1)⁻¹`. Establish `hact : ((I.stX a).act c.1 κ0 ((I.stX a).rep c)).1.1 = (((s.1.1)⁻¹, 1, 1) : UF B.fields.E (B.R.N B.R.m - 1) × GLG B.fields.E (B.R.N B.R.m - 1) (B.primes X).vGs × GLQ B.fields.E (B.R.N B.R.m - 1) (QE I.sel (I.tup a : Chr B.fields.F B.fields.E B.fields.K))) • ((I.stX a).rep c).1.1`. Establish `e1 : FrmG.incl _ _ s.1 • ((I.stX a).rep c).1.1 = ((I.stX a).rep c).1.1` using `congrArg (fun d : (I.stX a).D c.1 => d.1.1) s.2`.
+
+Use `conv_rhs => rw [← e1]`. Use `Eq.trans ?_ (smul_smul _ _ _).symm` and prove the remaining obligations. Establish `e2 : FrmG.incl _ _ κ0 = (((s.1.1)⁻¹, 1, 1) : UF B.fields.E (B.R.N B.R.m - 1) × GLG B.fields.E (B.R.N B.R.m - 1) (B.primes X).vGs × GLQ B.fields.E (B.R.N B.R.m - 1) (QE I.sel (I.tup a : Chr B.fields.F B.fields.E B.fields.K))) * FrmG.incl _ _ s.1`. Use `Prod.ext ?_ (Prod.ext ?_ ?_)` and prove the remaining obligations. Conclude with `(inv_mul_cancel _).symm`.
+
+Conclude with `(one_mul _).symm`. Conclude with `(one_mul _).symm`. Conclude with `congrArg (fun t => t • ((I.stX a).rep c).1.1) e2`. Establish `hyk : y c * κ.1 = ratAd B.host.F (s.1.1)⁻¹ * y c`. Establish `e3 : ratAd B.host.F (s.1.1)⁻¹ = (bc (inclE (F` using `B.host.F) (FiniteAdeleRing (𝓞 B.host.F) B.host.F)) ((I.stX a).gam c.1 s.1))⁻¹ := by`.
+
+Unfold `ratAd`. Rewrite using `[map_inv, map_inv]`. Both sides reduce to the same expression. Rewrite using `[e3]`. Use `conv_rhs => rw [e']`.
+
+Use `group`. Establish `hq : PtOf (y c * κ.1) ((I.stX a).act c.1 κ0 ((I.stX a).rep c)).1.1`. Rewrite using `[hyk, hact]`. Conclude with `hp`. Conclude with `hR.chr c κ κ0 hgam hq`.
+-/
 theorem chi_eq_chr {B : Base} {X : PreX B.toPre} (I : TC B X) (a : I.ι) {Lb U chi y lat st} (hR : I.ReadsP a Lb U chi y lat st)
     (c : (I.stX a).Cl) (s : (I.stX a).Stab c) (κ : U)
     (e' : y c = bc (inclE (F := B.host.F) (FiniteAdeleRing (𝓞 B.host.F) B.host.F)) ((I.stX a).gam c.1 s.1) * y c * κ.1) :
@@ -136,6 +172,11 @@ theorem chi_eq_chr {B : Base} {X : PreX B.toPre} (I : TC B X) (a : I.ι) {Lb U c
     exact hp
   exact hR.chr c κ κ0 hgam hq
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Take `⟨a, ha⟩` from `B.R.t_odd`. Establish `e1 : B.R.m * (B.R.t + 1) / 2 = B.R.m * (a + 1)`. Rewrite using `[ha, show B.R.m * (2 * a + 1 + 1) = 2 * (B.R.m * (a + 1)) by ring]; omega`. Establish `e2 : (B.R.t + 1) / 2 = a + 1` using `by omega`.
+
+Use `show GlobalTheory.Mem.Col2.shW (B.wts.sgW τ) (-((B.R.m : ℤ) * (((B.R.t + 1) / 2 : ℕ) : ℤ))) = Formalism.L2.Forms.shW (B.wts.sgW τ) ((B.R.m * (B.R.t + 1) / 2 : ℕ) : ℤ)`. Rewrite using `[e1, e2]`. Unfold `GlobalTheory.Mem.Col2.shW Formalism.L2.Forms.shW`. Use `congr 1`.
+-/
 theorem sgT_eq {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) :
     (I.perIn u a).sgT = (Formalism.L2.Forms.sgT (D := I.rec7 l Z) u : B.fields.Tau → DomWeight (B.R.N B.R.m - 1)) := by
   funext τ
@@ -149,6 +190,9 @@ theorem sgT_eq {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.L
   unfold GlobalTheory.Mem.Col2.shW Formalism.L2.Forms.shW
   congr 1
 
+/- English proof (translation)
+Establish `e : σ (φ s : K) ^ Nat.card H = 1`. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one', map_one, Units.val_one, map_one]`. Conclude with `(Complex.inv_eq_conj (Complex.norm_eq_one_of_pow_eq_one e Nat.card_pos.ne')).symm`.
+-/
 theorem star_eq_inv {H K : Type} [Group H] [Finite H] [Field K] (φ : H →* Kˣ) (σ : K →+* ℂ) (s : H) :
     star (σ (φ s : K)) = (σ (φ s : K))⁻¹ := by
   have e : σ (φ s : K) ^ Nat.card H = 1 := by
@@ -167,6 +211,21 @@ open GlobalTheory.Core.Rk.TopLift GlobalTheory.Core.Rk.TopOnto GlobalTheory.Core
 set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `B X I hI hP l Z u G _ _ Pl0 T F Ks _ _ _ R g c₀ hX j hj P t a bad K hR hb hL f c w hw hf s`. Establish `hθ : IsInfFam R.θ` using `hX.inf`. Establish `hst : (K.stabI c s).1 = (I.stX a).gam c.1 s.1` using `hR.stab c s`. Take `⟨κ₀, hκ₀, e0⟩` from `(K.stabI_range c (K.stabI c s)).1 ⟨s, rfl⟩`. Set `κ : K.lev.U` to `⟨κ₀, hκ₀⟩⁻¹`.
+
+Establish `e1 : (K.y c).1 = Formalism.UG.bc (Formalism.UG.inclE (F` using `(I.rec7 l Z).host.F) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F)) (K.stabI c s).1 * (K.y c).1 * κ.1 := by`. Rewrite using `[← e0]`. Use `show _ = (K.y c).1 * κ₀ * (K.y c).1⁻¹ * (K.y c).1 * κ₀⁻¹`. Use `group`. Establish `e2` using `chi_eq_chr I a hR c s κ (by`.
+
+Establish `h0` using `e1`. Rewrite `h0` using `[hst]`. Conclude with `h0)`. Use `haveI : Finite ((I.stX a).Stab c) := ((I.fm l u a).stabPFin c : Finite _)`. Establish `e3` using `star_eq_inv (((I.stX a).chr c.1).comp (Subgroup.subtype _ : (I.stX a).Stab c →* _)) B.embLL s`.
+
+Take `⟨γ, hγ, e4, e5⟩` from `exists_ratPt hθ (rankP (I.rec7 l Z)) (K.stabI c s).1 (K.stabI c s).2`. Take `⟨k, hk⟩` from `hasMat_exists (D := I.rec7 l Z) ⟨κ.1, ((K.lev.U_eq _).1 κ.2).1⟩`. Take `⟨h, hh⟩` from `hasMat_exists (D := I.rec7 l Z) (K.y c)`. Establish `e6 : levChi _ R.βX (datXP R P t) (g.bT⁻¹ * k * g.bT) = (B.embLL ((I.stX a).chr c.1 s.1 : B.LL))⁻¹` using `(hL.2 k κ hk).trans ((congrArg star e2).trans e3)`. Use `eq_smul_of_pair (gramC (gramP (I.rec7 l Z)) (embT (I.rec7 l Z))) _ _ _ (sgT_eq I l Z u a) (GlobalTheory.Mem.Col2.fr0 B.fields.emb B.embLL (B.R.N B.R.m - 1)) (fun _ => rfl) (infPt R.θ γ) _ ?_ hw _ fun φ hφ => ?_` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `τ`. Use `Units.ext ((e5 τ).trans ?_)` and prove the remaining obligations. Rewrite using `[hst]`. Use extensionality with `p q`. Use `show B.host.φ₀ _ = _`.
+
+Rewrite using `[← B.embE_φ₀]`. Both sides reduce to the same expression. Take `⟨v, rfl⟩` from `(hj.range ▸ hφ : φ ∈ LinearMap.range j)`. Take `⟨v', e7, e8⟩` from `coset_law_moved (χ := levChi _ R.βX (datXP R P t)) hθ hj hb hγ hk ((hL.1 k).2 ⟨κ, hk⟩) hh hh (e1.trans (congrArg (· * (K.y c).1 * κ.1) e4.symm)) v`. Use `⟨j v', e7, ?_⟩` and prove the remaining obligations.
+
+Establish `e9` using `e8 f.1 f.2`. Rewrite `e9` using `[hf v' h hh, hf v h hh, e6]`. Conclude with `e9`.
+-/
 theorem reading_stab_inv : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (u : B.Word) {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {F : FamIn (I.rec7 l Z).what₂.LL G Pl0 T (I.rec7 l Z).R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks (I.rec7 l Z).what₂.LL] (R : RealDat (I.rec7 l Z) F Ks) (g : GlobalTheory.Fam.Geo (I.rec7 l Z)) (c₀ : ℕ → ℂ), PinX I l Z R.ψ R.θ g.x g.vac c₀ → ∀ j : SmT R.MX →ₗ[ℂ] (FrP (I.rec7 l Z) → ℂ), GlobalTheory.Core.Rk.Top.IsJ u R.MX j → ∀ (P : LevelP R.Pg (I.rec7 l Z).R.r ℂ) (t : T) (a : I.ι), ∀ (bad : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (K : ClassesAtPrimes (D := (I.rec7 l Z)) (u := u) (I.fm l u a) bad), I.ReadsP a K.lev.Lb K.lev.U K.lev.chi (fun c => (K.y c).1) K.lat (fun c s => (K.stabI c s).1) → g.bT ∈ GfC _ → LevG K g.bT (levS _ R.βX (datXP R P t)) (levChi _ R.βX (datXP R P t)) → ∀ f : CXP R P t, ∀ (c : (I.stX a).Cl) (w : Formalism.L2.DIV.Pol ℂ (I.rec7 l Z).what₂.Tau (B.R.N B.R.m - 1)), w ∈ Formalism.L2.DIV.VV ℂ (I.perIn u a).sgT → (∀ v h, GlobalTheory.Core.Rk.Top.HasMat h (K.y c).1 → f.1 v (h * g.bT) = Formalism.L2.DIV.pairB (I.perIn u a).sgT (Formalism.L2.Col.polOf (GlobalTheory.Mem.Col2.Gr B.fields.emb B.embLL (B.R.N B.R.m - 1)) (Formalism.L2.Forms.shiftOf (I.perIn u a).sgT) (GlobalTheory.Mem.Col2.fr0 B.fields.emb B.embLL (B.R.N B.R.m - 1)) (j v)) w) → ∀ s : (I.stX a).Stab c, w = (B.embLL ((I.stX a).chr c.1 s.1 : B.LL))⁻¹ • Formalism.L2.DIV.rhoP (I.perIn u a).sgT (Formalism.L2.DIV.embGL (Formalism.L2.Col.embAt B.embLL B.fields.emb) ((I.stX a).gam c.1 s.1)) w := by
   intro B X I hI hP l Z u G _ _ Pl0 T F Ks _ _ _ R g c₀ hX j hj P t a bad K hR hb hL f c w hw hf s
   have hθ : IsInfFam R.θ := hX.inf

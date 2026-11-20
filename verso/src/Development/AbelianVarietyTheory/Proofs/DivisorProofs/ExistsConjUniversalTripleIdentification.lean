@@ -15,6 +15,23 @@ namespace GlobalTheory.UPoinc.UGalTrans
 
 open GlobalTheory.CechPic GlobalTheory.Poinc.GalTrans
 
+/- English proof (translation)
+Take `⟨P₁, a₁, a₁', ha₁, ha₁', la₁, la₁', hp₁⟩` from `h'`. Rewrite `ha₁`, `hp₁` using `[RingHom.id_comp]`. Use `mono_val S.R S.frac` as an intermediate fact. Establish `: Mono b` using `(MorphismProperty.monomorphisms Scheme).of_isPullback hb.1.flip (.infer_property _)`. Take `⟨κ, hκ, lκ, eκ⟩` from `exists_factor ρ.P P₀ P₁ (Category.id_comp _) hb ha₁ lb la₁`.
+
+Establish `hid : spMap (RingHom.id Ω) = 𝟙 (Sp Ω)` using `by simp [spMap]`. Establish `e₁ : spMap τ ≫ spMap σ = 𝟙 (Sp Ω)` using `(sp_comp hτ).trans hid`. Establish `e₂ : spMap σ ≫ spMap τ = 𝟙 (Sp Ω)` using `(sp_comp hσ).trans hid`. Establish `he : IsGrpPullback P₁.A P₀.A (spMap σ) (κ ≫ t)` using `(hκ.comp ht).congr (Category.id_comp _) rfl`. Establish `le` using `lb_comp P₁.isLB P₀.isLB P₀.isLB lκ lt`.
+
+Establish `: IsIso (spMap σ)` using `⟨_, e₂, e₁⟩`. Establish `: Mono (κ ≫ t)` using `(MorphismProperty.monomorphisms Scheme).of_isPullback he.1.flip (.infer_property _)`. Establish `: IsMonHom (Iso.refl P₀.A).hom` using `inferInstanceAs (IsMonHom (𝟙 P₀.A))`. Apply the tactic sequence `obtain ⟨j, hj, lj, ej⟩ := exists_factor P₀ P₁ P₀ (ψ := 𝟙 _) e₁ he (isGrpPullback_of_iso (Iso.refl P₀.A)) le ((iso_iff P₀.isLB P₀.isLB _).2 (by rw [GlobalTheory.CechPic.pull_id]; try rfl))`. Establish `w₁ : a₁' ≫ ρ'.P.A.hom = (P₁.A.hom ≫ v) ≫ r` using `by rw [ha₁'.1.w, Category.assoc, hv]`.
+
+Establish `k₁` using `hα.1.lift_fst _ _ w₁`. Establish `k₂` using `hα.1.lift_snd _ _ w₁`. Generalize the expression as in `hα.1.lift _ _ w₁ = k₀ at k₁ k₂`. Establish `hs : ∀ x, (ρ.pt x).left ≫ ρ.P.A.hom = 𝟙 _` using `fun x => Over.w (ρ.pt x)`. Use `⟨P₁, κ ≫ t, j, k₀, he, hj, hα.cancel (ha₁'.congr hv.symm k₁.symm) k₂, ?_, ?_, fun x w hw => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← cancel_mono (κ ≫ t), Category.assoc, ej, Category.comp_id, Category.id_comp]`. Establish `c₁` using `(iso_iff (pull_isLB ρ'.P.isLB α) hN β).1 hL`. Rewrite `c₁` using `[cls_pull ρ'.P.isLB]`. Rewrite using `[iso_iff (pull_isLB ρ.P.isLB b) hN, cls_pull ρ.P.isLB, ← (iso_iff P₀.isLB ρ.P.isLB _).1 lb, (iso_iff P₀.isLB P₁.isLB _).1 lj, (iso_iff P₁.isLB ρ'.P.isLB _).1 la₁', ← k₁, pull_comp, pull_comp, pull_comp, c₁]`. Take `⟨u, f₁, f₁'⟩` from `hp₁ (a x)`.
+
+Establish `k₃ : w ≫ P₀.A.hom = 𝟙 _`. Rewrite using `[← cancel_mono (spMap S.R.val.toRingHom), Category.assoc, ← hb.1.w, reassoc_of% hw, hs]`. Simplify using the standard rewrite rules. Establish `c₂ : (spMap σ ≫ w) ≫ P₀.A.hom = 𝟙 _ ≫ spMap σ` using `by rw [Category.assoc, k₃]; simp`. Establish `k₄` using `ht.1.lift_fst _ _ c₂`.
+
+Generalize the expression as in `ht.1.lift _ _ c₂ = w' at k₄`. Establish `k₅ : u ≫ κ = w'`. Rewrite using `[← cancel_mono b, Category.assoc, eκ, f₁, hp x w w' hw k₄]`. Use `⟨u, ?_, by rw [reassoc_of% k₅, k₄], by rw [k₁, f₁']⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono (spMap S.R.val.toRingHom), Category.assoc, ← ha₁.1.w, reassoc_of% f₁, hs]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_twist_along_genericAutomorphism {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S S' : ThetaSys o Ω} (ρ : S.Real)
     (ρ' : S'.Real) (l' : S.Gam → S'.Gam) (h' : USame ρ ρ' l' (RingHom.id _)) (σ τ : Ω →+* Ω)
     (hτ : τ.comp σ = RingHom.id _) (hσ : σ.comp τ = RingHom.id _) (a : S.Gam → S.Gam)
@@ -71,6 +88,11 @@ theorem exists_twist_along_genericAutomorphism {o Ω : Type} [CommRing o] [Field
     rw [← cancel_mono (spMap S.R.val.toRingHom), Category.assoc, ← ha₁.1.w, reassoc_of% f₁, hs]
     simp
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo cf C X₁ D σ a hG c₀ hc R' fg frac hth hev ρ' u' hs hu G _ α β hα hβ hL`. Take `⟨P₀, b, t, hb, ht, lb, lt, hp⟩` from `hG`. Take `⟨P₁, e, j, k₀, he, hj, hk, ej, hL', hpt⟩` from `exists_twist_along_genericAutomorphism D.X.ρ ρ' _ hs (σ : D.X.Ω₁ →+* D.X.Ω₁) (σ.symm : D.X.Ω₁ →+* D.X.Ω₁) (RingHom.ext fun x => σ.symm_apply_apply x) (RingHom.ext fun x => σ.apply_symm_apply x) a P₀ b t hb ht lb lt hp (spMap_val_toRat R') G α hα _ Xo.univ.t.PP.isLB β hL`. Establish `h₁ : spMap (σ.symm : D.X.Ω₁ →+* D.X.Ω₁) ≫ D.X.uΩ = D.X.uΩ`. Rewrite using `[D.pt, ← Category.assoc, sp_comp (RingHom.ext fun x => σ.symm.commutes x)]`.
+
+Establish `hβ' : IsGrpPullback P₀.A Xo.univ.t.G (D.X.uΩ ≫ pullback.fst _ _) (j ≫ k₀ ≫ β)` using `(hj.comp (hk.comp hβ)).congr (by rw [← Category.assoc _ u', hu, ← Category.assoc, h₁]) rfl`. Conclude with `⟨{ G := P₀.A, α := b, β := j ≫ k₀ ≫ β, hα := hb, hβ := hβ', hL := hL' }, P₁.A, inferInstance, e, k₀, he, hk, by rw [reassoc_of% ej], hpt⟩`.
+-/
 theorem exists_conj_uWit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (cf : Coeff l) (C : UCompact Xo cf) (X₁ : USetup C) (D : UDeep X₁) (σ : D.X.Ω₁ ≃ₐ[X₁.Ω₁] D.X.Ω₁) (a : D.X.S.Gam ≃+ D.X.S.Gam), D.GalLab σ a → ∀ (c₀ : D.X.Ω₁) (hc : c₀ ≠ 0) (R' : Subalgebra D.X.o₁ D.X.Ω₁) (fg : R'.FG) (frac : ∀ x : D.X.Ω₁, ∃ a ∈ R', ∃ b ∈ R', x = a / b) (hth : ∀ x, c₀ * D.X.S.th x ∈ R') (hev : ∀ x k, c₀ * D.X.S.ev x k ∈ R') (ρ' : (D.X.S.rechart c₀ hc R' fg frac hth hev).Real) (u' : Sp (ratHull R') ⟶ Xo.XF cf), USame D.X.ρ ρ' (fun x => x) (RingHom.id _) → spMap (ratHull R').val.toRingHom ≫ u' = D.X.uΩ → ∀ (G : Over (Sp (ratHull R'))) (_ : GrpObj G) (α : G.left ⟶ ρ'.P.A.left) (β : G.left ⟶ Xo.univ.t.G.left), IsGrpPullback G ρ'.P.A (spMap (toRat R')) α → IsGrpPullback G Xo.univ.t.G (u' ≫ pullback.fst _ _) β → LBIso (ρ'.P.L.pull α) (Xo.univ.t.PP.L.pull β) → ∃ (wi : UWit D.X) (W₀ : Over (Sp D.X.Ω₁)) (_ : GrpObj W₀) (e : W₀.left ⟶ wi.G.left) (k₀ : W₀.left ⟶ G.left), IsGrpPullback W₀ wi.G (spMap (σ : D.X.Ω₁ →+* D.X.Ω₁)) e ∧ IsGrpPullback W₀ G (spMap (ratHull R').val.toRingHom) k₀ ∧ e ≫ wi.β = k₀ ≫ β ∧ ∀ x (w : Sp D.X.Ω₁ ⟶ wi.G.left), w ≫ wi.α = spMap D.X.S.R.val.toRingHom ≫ (D.X.ρ.pt x).left → ∃ w₀ : Sp D.X.Ω₁ ⟶ W₀.left, w₀ ≫ W₀.hom = 𝟙 _ ∧ w₀ ≫ e = spMap (σ : D.X.Ω₁ →+* D.X.Ω₁) ≫ w ∧ w₀ ≫ k₀ ≫ α = spMap R'.val.toRingHom ≫ (ρ'.pt (a x)).left := by
   intro E _ _ _ H Dw l Xo cf C X₁ D σ a hG c₀ hc R' fg frac hth hev ρ' u' hs hu G _ α β hα hβ hL
   obtain ⟨P₀, b, t, hb, ht, lb, lt, hp⟩ := hG

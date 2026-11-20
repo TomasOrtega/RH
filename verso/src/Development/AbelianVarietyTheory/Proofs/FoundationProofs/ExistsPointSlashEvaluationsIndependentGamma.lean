@@ -24,12 +24,22 @@ def evHom (Γ : Subgroup SL(2, ℤ)) (x : SL(2, ℤ)) (τ : ℍ) : mfMonoid Γ �
     show ((p.1.2 * q.1.2) ∣[Multiplicative.toAdd (p.1.1 * q.1.1)] x) τ = _
     rw [toAdd_mul, ModularForm.mul_slash_SL2]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem evHom_apply (Γ : Subgroup SL(2, ℤ)) (x : SL(2, ℤ)) (τ : ℍ) (p : mfMonoid Γ) :
     evHom Γ x τ p = (p.1.2 ∣[Multiplicative.toAdd p.1.1] x) τ := rfl
 
 open UpperHalfPlane Filter in
 open ModularForm (E₄ E₆) in
 open scoped MatrixGroups ModularForm Manifold Topology in
+/- English proof (translation)
+Rewrite using `[dense_iff_inter_open]`. Introduce and unpack `U hU ⟨τ, hτ⟩`. Assume the negation of the conclusion as `hempty`. Establish `hzero : ∀ σ ∈ U, D σ = 0` using `fun σ hσ => by_contra fun h => hempty ⟨σ, hσ, h⟩`. Establish `hS : IsOpen {w : ℂ | 0 < w.im}` using `isOpen_lt continuous_const Complex.continuous_im`.
+
+Establish `han : AnalyticOnNhd ℂ (D ∘ ofComplex) {w : ℂ | 0 < w.im}` using `(UpperHalfPlane.mdifferentiable_iff.1 hD).analyticOnNhd hS`. Establish `hev : D ∘ ofComplex =ᶠ[𝓝 (τ : ℂ)] 0`. Establish `hUc : IsOpen (((↑) : ℍ → ℂ) '' U)` using `UpperHalfPlane.isOpenEmbedding_coe.isOpenMap U hU`. Use `filter_upwards [hUc.mem_nhds ⟨τ, hτ, rfl⟩] with w hw`. Take `⟨σ, hσ, rfl⟩` from `hw`.
+
+Simplify using `[hzero σ hσ]`. Establish `hall` using `han.eqOn_zero_of_preconnected_of_eventuallyEq_zero (convex_halfSpace_im_gt 0).isPreconnected τ.im_pos hev`. Apply `hD0` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Simplify using `using hall σ.im_pos`.
+-/
 private lemma dense_setOf_ne_zero_of_mdifferentiable_of_ne_zero {D : ℍ → ℂ} (hD : MDiff D) (hD0 : D ≠ 0) :
     Dense {τ | D τ ≠ 0} := by
   rw [dense_iff_inter_open]
@@ -54,6 +64,23 @@ open UpperHalfPlane Filter in
 open ModularForm (E₄ E₆) in
 open scoped MatrixGroups ModularForm Manifold Topology in
 
+/- English proof (translation)
+Introduce `M _ hsep`. Establish `hsep' : ∀ p : SL(2, ℤ) × SL(2, ℤ), ∃ (k : ℤ) (f : ℍ → ℂ), _root_.GlobalTheory.OddFrame.IsMF (CongruenceSubgroup.Gamma M) k f ∧ (p.1 * p.2⁻¹ ∉ CongruenceSubgroup.Gamma M → f ∣[k] p.1 ≠ f ∣[k] p.2)`. Introduce `p`. Distinguish the cases in `hp : p.1 * p.2⁻¹ ∈ CongruenceSubgroup.Gamma M`. Conclude with `⟨0, 0, _root_.GlobalTheory.OddFrame.IsMF.zero _ _, fun h => absurd hp h⟩`.
+
+Take `⟨k, f, hf, hne⟩` from `hsep _ hp`. Use `⟨k, f, hf, fun _ heq => hne ?_⟩` and prove the remaining obligations. Use `congrArg (fun g => g ∣[k] p.2⁻¹) heq` as an intermediate fact. Rewrite `this` using `[← SlashAction.slash_mul, ← SlashAction.slash_mul, mul_inv_cancel, SlashAction.slash_one]`. Then use the resulting hypothesis. Use `choose k f hf hne using hsep'`.
+
+Use `set O : SL(2, ℤ) × SL(2, ℤ) → Set ℍ := fun p => {_τ | p.1 * p.2⁻¹ ∈ CongruenceSubgroup.Gamma M} ∪ {τ | (f p ∣[k p] p.1) τ ≠ (f p ∣[k p] p.2) τ} with hO`. Establish `hcont : ∀ p (y : SL(2, ℤ)), Continuous (f p ∣[k p] y)` using `fun p y => (_root_.GlobalTheory.OddFrame.mdiff_slash (hf p).2.1 _ y).continuous`. Establish `hOopen : ∀ p, IsOpen (O p)` using `fun p => isOpen_const.union (isOpen_ne_fun (hcont p p.1) (hcont p p.2))`. Establish `hOdense : ∀ p, Dense (O p)`. Introduce `p`.
+
+Distinguish the cases in `hp : p.1 * p.2⁻¹ ∈ CongruenceSubgroup.Gamma M`. Conclude with `dense_univ.mono fun τ _ => Or.inl hp`. Establish `hD : MDiff (f p ∣[k p] p.1 - f p ∣[k p] p.2)` using `(_root_.GlobalTheory.OddFrame.mdiff_slash (hf p).2.1 _ _).sub (_root_.GlobalTheory.OddFrame.mdiff_slash (hf p).2.1 _ _)`. Use `(dense_setOf_ne_zero_of_mdifferentiable_of_ne_zero hD (fun h0 => hne p hp (sub_eq_zero.1 h0))).mono fun τ hτ => Or.inr ?_` and prove the remaining obligations. Conclude with `sub_ne_zero.1 hτ`.
+
+Use `haveI : Countable (Matrix (Fin 2) (Fin 2) ℤ) := inferInstanceAs (Countable (Fin 2 → Fin 2 → ℤ))`. Use `haveI : Countable SL(2, ℤ) := Subtype.countable`. Take `⟨τ₀, hτ₀⟩` from `(dense_iInter_of_isOpen hOopen hOdense).nonempty`. Use `⟨τ₀, fun ι _ x c hx hc => ?_⟩` and prove the remaining obligations. Set `χ : ι → (_root_.GlobalTheory.CosetEval.mfMonoid (CongruenceSubgroup.Gamma M) →* ℂ)` to `fun i => _root_.GlobalTheory.CosetEval.evHom (CongruenceSubgroup.Gamma M) (x i) τ₀`.
+
+Establish `hinj : Function.Injective χ`. Introduce `i j hij`. Assume the negation of the conclusion as `hij'`. Establish `hnot : x i * (x j)⁻¹ ∉ CongruenceSubgroup.Gamma M` using `fun h => hij' (hx i j h)`. Break down `Set.mem_iInter.1 hτ₀ (x i, x j) with h | h` into its components or cases.
+
+Conclude with `hnot h`. Conclude with `h (DFunLike.congr_fun hij ⟨(Multiplicative.ofAdd (k (x i, x j)), f (x i, x j)), hf (x i, x j)⟩)`. Establish `hli` using `(linearIndependent_monoidHom (_root_.GlobalTheory.CosetEval.mfMonoid (CongruenceSubgroup.Gamma M)) ℂ).comp χ hinj`. Use function extensionality and compare the values at `i`. Use `Fintype.linearIndependent_iff.1 hli c ?_ i` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `p`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Function.comp_apply, Pi.zero_apply]`. Conclude with `hc _ _ p.2`.
+-/
 theorem _root_.GlobalTheory.CosetEval.evals_independent : ∀ M : ℕ, 0 < M → (∀ x : SL(2, ℤ), x ∉ CongruenceSubgroup.Gamma M → ∃ (k : ℤ) (f : ℍ → ℂ), _root_.GlobalTheory.OddFrame.IsMF (CongruenceSubgroup.Gamma M) k f ∧ f ∣[k] x ≠ f) → ∃ τ₀ : ℍ, ∀ (ι : Type) [Fintype ι] (x : ι → SL(2, ℤ)) (c : ι → ℂ), (∀ i j, x i * (x j)⁻¹ ∈ CongruenceSubgroup.Gamma M → i = j) → (∀ (k : ℤ) (f : ℍ → ℂ), _root_.GlobalTheory.OddFrame.IsMF (CongruenceSubgroup.Gamma M) k f → ∑ i, c i * (f ∣[k] x i) τ₀ = 0) → c = 0 := by
   intro M _ hsep
   classical

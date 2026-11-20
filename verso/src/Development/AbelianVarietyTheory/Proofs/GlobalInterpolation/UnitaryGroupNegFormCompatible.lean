@@ -4,6 +4,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use extensionality with `g`. Use `show Formalism.UG.cT s (g : Matrix n n A) * (-J) * (g : Matrix n n A) = -J ↔ Formalism.UG.cT s (g : Matrix n n A) * J * (g : Matrix n n A) = J`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, neg_inj]`.
+-/
 theorem uj_neg_eq {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n] (s : A →+* A)
     (J : Matrix n n A) : Formalism.UG.UJ s (-J) = Formalism.UG.UJ s J := by
   ext g
@@ -11,16 +14,29 @@ theorem uj_neg_eq {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
     Formalism.UG.cT s (g : Matrix n n A) * J * (g : Matrix n n A) = J
   rw [Matrix.mul_neg, Matrix.neg_mul, neg_inj]
 
+/- English proof (translation)
+Unfold `HR JR`. Rewrite using `[Matrix.map_neg _ (map_neg _), uj_neg_eq]`.
+-/
 theorem hR_neg_eq {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) : HR R σ (-J) = HR R σ J := by
   unfold HR JR
   rw [Matrix.map_neg _ (map_neg _), uj_neg_eq]
 
+/- English proof (translation)
+Unfold `HFin`. Rewrite using `[uj_neg_eq]`.
+-/
 theorem hFin_neg_eq {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) : HFin R σ (-J) = HFin R σ J := by
   unfold HFin
   rw [uj_neg_eq]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ M J J' hJ`. Substitute `hJ` using the available equality. Establish `e` using `(hR_neg_eq (AF F) σ J).symm`. Set `ψ : HA (AF F) σ J ≃* HA (AF F) σ (-J)` to `MulEquiv.subgroupCongr e`. Establish `hψ : ∀ h : HA (AF F) σ J, HA.mat (AF F) σ (-J) (ψ h) = HA.mat (AF F) σ J h` using `fun h => rfl`.
+
+Set `φ : HA (AF F) σ J ≃ₜ* HA (AF F) σ (-J)` to `{ ψ with continuous_toFun := Continuous.subtype_mk continuous_subtype_val _ continuous_invFun := Continuous.subtype_mk continuous_subtype_val _ }`. Establish `hφ : ∀ h : HA (AF F) σ J, HA.mat (AF F) σ (-J) (φ h) = HA.mat (AF F) σ J h` using `fun h => rfl`. Use `⟨φ, hφ, ?_, ?_⟩` and prove the remaining obligations. Introduce `h show (HA.mat (AF F) σ J h) ∈ HFin (AF F) σ J ↔ (HA.mat (AF F) σ (-J) (φ h)) ∈ HFin (AF F) σ (-J)`. Rewrite using `[hFin_neg_eq]`.
+
+Conclude with `Iff.rfl`. Introduce `L h`. Conclude with `Iff.rfl`.
+-/
 theorem unitary_neg_same : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) (J J' : Matrix (Fin M) (Fin M) E), J' = -J → ∃ φ : HA (AF F) σ J ≃ₜ* HA (AF F) σ J', (∀ h, HA.mat (AF F) σ J' (φ h) = HA.mat (AF F) σ J h) ∧ (∀ h, h ∈ HFinIn (AF F) σ J ↔ φ h ∈ HFinIn (AF F) σ J') ∧ ∀ (L : Set (Fin M → E)) h, h ∈ StabFin.SFin σ J L ↔ φ h ∈ StabFin.SFin σ J' L := by
   intro F E _ _ _ _ _ σ M J J' hJ
   subst hJ

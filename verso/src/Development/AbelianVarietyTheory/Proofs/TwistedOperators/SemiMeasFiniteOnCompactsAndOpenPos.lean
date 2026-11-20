@@ -7,6 +7,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.MixPer
 
+/- English proof (translation)
+Set `K : Subgroup G` to `{ carrier := {x | ∃ n ∈ N, ∃ h, x = n * s h} one_mem' := ⟨1, N.one_mem, 1, by simp⟩ mul_mem' := by`. Introduce and unpack `_ _ ⟨n₁, hn₁, h₁, rfl⟩ ⟨n₂, hn₂, h₂, rfl⟩`. Use `⟨n₁ * (s h₁ * n₂ * (s h₁)⁻¹), N.mul_mem hn₁ (hnorm n₂ hn₂ h₁), h₁ * h₂, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `group`.
+
+Use the proof step `inv_mem' := by`. Introduce and unpack `_ ⟨n, hn, h, rfl⟩`. Use `⟨s h⁻¹ * n⁻¹ * (s h⁻¹)⁻¹, hnorm n⁻¹ (N.inv_mem hn) h⁻¹, h⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv]`. Use `group }`.
+
+Establish `hle : N ⊔ s.range ≤ K`. Use `sup_le (fun n hn => ⟨n, hn, 1, by simp⟩) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨h, rfl⟩`. Conclude with `⟨1, N.one_mem, h, by simp⟩`. Conclude with `hle hg`.
+-/
 theorem exists_mul_of_mem_sup_range {G H : Type} [Group G] [Group H] (N : Subgroup G) (s : H →* G)
     (hnorm : ∀ n ∈ N, ∀ h, s h * n * (s h)⁻¹ ∈ N) {g : G} (hg : g ∈ N ⊔ s.range) :
     ∃ n ∈ N, ∃ h, g = n * s h := by
@@ -29,6 +36,25 @@ theorem exists_mul_of_mem_sup_range {G H : Type} [Group G] [Group H] (N : Subgro
     exact ⟨1, N.one_mem, h, by simp⟩
   exact hle hg
 
+/- English proof (translation)
+Introduce `G H _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ N s hN hs hnorm hp μ ν hμ hν _`. Take `⟨p, hpc, hps⟩` from `hp`. Use `haveI : LocallyCompactSpace N := hN.locallyCompactSpace`. Use `haveI : SecondCountableTopology N := inferInstanceAs (SecondCountableTopology (N : Set G))`. Use `haveI : IsFiniteMeasureOnCompacts ν := inferInstance`.
+
+Use `haveI : IsLocallyFiniteMeasure ν := isLocallyFiniteMeasure_of_isFiniteMeasureOnCompacts`. Use `haveI : SigmaFinite ν := sigmaFinite_of_locallyFinite`. Use `haveI : μ.IsOpenPosMeasure := inferInstance`. Use `haveI : ν.IsOpenPosMeasure := inferInstance`. Use `haveI : (μ.prod ν).IsOpenPosMeasure := inferInstance`.
+
+Set `φ : H × N → (N ⊔ s.range : Subgroup G)` to `fun q => ⟨q.2.1 * s q.1, mul_mem (Subgroup.mem_sup_left q.2.2) (Subgroup.mem_sup_right ⟨q.1, rfl⟩)⟩`. Establish `hφc : Continuous φ` using `((continuous_subtype_val.comp continuous_snd).mul (hs.comp continuous_fst)).subtype_mk _`. Establish `hmemN : ∀ k : (N ⊔ s.range : Subgroup G), (k : G) * (s (p k))⁻¹ ∈ N`. Introduce `k`. Take `⟨n, hn, h, hk⟩` from `exists_mul_of_mem_sup_range N s hnorm k.2`.
+
+Establish `hpk : p k = h`. Establish `hk' : k = ⟨n * s h, mul_mem (Subgroup.mem_sup_left hn) (Subgroup.mem_sup_right ⟨h, rfl⟩)⟩` using `Subtype.ext hk`. Rewrite using `[hk']`. Conclude with `hps h ⟨n, hn⟩`. Rewrite using `[hpk, hk, mul_inv_cancel_right]`.
+
+Conclude with `hn`. Set `ψ : (N ⊔ s.range : Subgroup G) → H × N` to `fun k => (p k, ⟨(k : G) * (s (p k))⁻¹, hmemN k⟩)`. Establish `hψc : Continuous ψ` using `hpc.prodMk ((continuous_subtype_val.mul (hs.comp hpc).inv).subtype_mk _)`. Establish `hψφ : ∀ q, ψ (φ q) = q`. Introduce and unpack `⟨h, n⟩`.
+
+Establish `h1 : p (φ (h, n)) = h` using `hps h n`. Use `Prod.ext h1 (Subtype.ext ?_)` and prove the remaining obligations. Use `show (n : G) * s h * (s (p (φ (h, n))))⁻¹ = n`. Rewrite using `[h1, mul_inv_cancel_right]`. Establish `hφψ : ∀ k, φ (ψ k) = k`.
+
+Introduce `k`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (k : G) * (s (p k))⁻¹ * s (p k) = k`. Rewrite using `[inv_mul_cancel_right]`. Establish `hsurj : Function.Surjective φ` using `fun k => ⟨ψ k, hφψ k⟩`.
+
+Use `show IsFiniteMeasureOnCompacts ((μ.prod ν).map φ) ∧ ((μ.prod ν).map φ).IsOpenPosMeasure`. Use `⟨⟨fun C hC => ?_⟩, hφc.isOpenPosMeasure_map hsurj⟩` and prove the remaining obligations. Rewrite using `[Measure.map_apply hφc.measurable hC.measurableSet]`. Use `lt_of_le_of_lt (measure_mono ?_) (hC.image hψc).measure_lt_top` and prove the remaining obligations. Introduce `q hq`.
+
+Conclude with `⟨φ q, hq, hψφ q⟩`.
+-/
 theorem semiMeas_finite_on_compacts_and_open_pos : ∀ {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [LocallyCompactSpace H] [T2Space H] [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H] (N : Subgroup G) (s : H →* G), IsClosed (N : Set G) → Continuous s → (∀ n ∈ N, ∀ h, s h * n * (s h)⁻¹ ∈ N) → (∃ p : (N ⊔ s.range : Subgroup G) → H, Continuous p ∧ ∀ (h : H) (n : N), p ⟨n.1 * s h, mul_mem (Subgroup.mem_sup_left n.2) (Subgroup.mem_sup_right ⟨h, rfl⟩)⟩ = h) → ∀ (μ : Measure H) (ν : Measure N), μ.IsHaarMeasure → ν.IsHaarMeasure → (∀ h, ν.map (fun n : N => s h * n.1 * (s h)⁻¹) = ν.map Subtype.val) → IsFiniteMeasureOnCompacts (semiMeas N s μ ν) ∧ (semiMeas N s μ ν).IsOpenPosMeasure := by
   intro G H _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ N s hN hs hnorm hp μ ν hμ hν _
   obtain ⟨p, hpc, hps⟩ := hp

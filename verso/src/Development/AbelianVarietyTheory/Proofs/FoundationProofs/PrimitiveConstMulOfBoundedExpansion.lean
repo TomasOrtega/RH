@@ -7,6 +7,35 @@ namespace GlobalTheory.PrimConst
 
 open NumberField
 
+/- English proof (translation)
+Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Use `haveI : NumberField E := by`. Use `{ to_charZero := inferInstance, to_finiteDimensional := ?_ }` and prove the remaining obligations. Use `‹FiniteDimensional ℚ E›` and compare the differences between its conclusion and the goal. Conclude with `Subsingleton.elim _ _`.
+
+Establish `hmem : ∀ i, (D : Ω) * c i ∈ E` using `fun i => E.mul_mem (E.natCast_mem D) (hc i).1`. Set `f : ι → 𝓞 E` to `fun i => ⟨⟨(D : Ω) * c i, hmem i⟩, by`. Rewrite using `[mem_integralClosure_iff]`. Conclude with `(isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ E Ω) E.val.injective).1 (hc i).2⟩`. Establish `hf : ∀ i, algebraMap (𝓞 E) Ω (f i) = (D : Ω) * c i` using `fun i => rfl`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨s0, hs0⟩ : ∃ s0 : Finset ι, ∀ i, f i ∈ Submodule.span ℤ ((s0.image f : Finset (𝓞 E)) : Set (𝓞 E)) := by`. Establish `hN : IsNoetherian ℤ (𝓞 E)` using `inferInstance`. Take `⟨M, ⟨s0, rfl⟩, hmax⟩` from `set_has_maximal_iff_noetherian.2 hN (Set.range fun s : Finset ι => Submodule.span ℤ ((s.image f : Finset (𝓞 E)) : Set (𝓞 E))) (Set.range_nonempty _)`. Use `⟨s0, fun i => ?_⟩` and prove the remaining obligations. Establish `hle : Submodule.span ℤ ((s0.image f : Finset (𝓞 E)) : Set (𝓞 E)) ≤ Submodule.span ℤ (((insert i s0).image f : Finset (𝓞 E)) : Set (𝓞 E))` using `Submodule.span_mono (by intro y hy; simp only [Finset.coe_image, Finset.coe_insert] at hy ⊢; exact Set.image_mono (Set.subset_insert _ _) hy)`.
+
+Establish `heq` using `eq_of_le_of_not_lt hle (hmax _ ⟨insert i s0, rfl⟩)`. Rewrite using `[heq]; exact Submodule.subset_span (by simp)`. Use `set v := A.valuation`. Establish `hDv : v (D : Ω) ≠ 0`. Rewrite using `[Valuation.ne_zero_iff]`.
+
+Conclude with `Nat.cast_ne_zero.2 hD.ne'`. Establish `hint : ∀ z : ℤ, v (z : Ω) ≤ 1` using `fun z => (A.valuation_le_one_iff _).2 (intCast_mem A z)`. Take `⟨i1, hi1⟩` from `hne`. Establish `ht : (s0.filter (fun i => c i ≠ 0)).Nonempty`. Assume the negation of the conclusion as `hcon`.
+
+Rewrite `hcon` using `[Finset.not_nonempty_iff_eq_empty, Finset.filter_eq_empty_iff]`. Establish `hz : ∀ y ∈ s0.image f, y = 0`. Introduce `y hy`. Take `⟨j, hj, rfl⟩` from `Finset.mem_image.1 hy`. Use `hcon hj` as an intermediate fact.
+
+Use `push_neg at this`. Use `ext`. Simplify using `[f, this]`. Establish `h1` using `hs0 i1`. Rewrite `h1` using `[Submodule.mem_span_finset]`.
+
+Take `⟨g, -, hg⟩` from `h1`. Rewrite `hg` using `[Finset.sum_eq_zero (fun y hy => by rw [hz y hy, smul_zero])]`. Use `congrArg (algebraMap (𝓞 E) Ω) hg` as an intermediate fact. Rewrite `this` using `[hf, map_zero]`. Conclude with `hi1 ((mul_eq_zero.1 this.symm).resolve_left (Nat.cast_ne_zero.2 hD.ne'))`.
+
+Take `⟨i0, hi0t, hmax⟩` from `(s0.filter (fun i => c i ≠ 0)).exists_max_image (fun i => v (c i)) ht`. Establish `hi0 : c i0 ≠ 0` using `(Finset.mem_filter.1 hi0t).2`. Establish `hmax' : ∀ j ∈ s0, v (c j) ≤ v (c i0)`. Introduce `j hj`. Distinguish the cases in `hcj : c j = 0`.
+
+Rewrite using `[hcj, map_zero]`. Conclude with `zero_le'`. Conclude with `hmax j (Finset.mem_filter.2 ⟨hj, hcj⟩)`. Use `⟨i0, hi0, fun i => ?_⟩` and prove the remaining obligations. Establish `h1` using `hs0 i`.
+
+Rewrite `h1` using `[Submodule.mem_span_finset]`. Take `⟨g, -, hg⟩` from `h1`. Establish `h2` using `congrArg (algebraMap (𝓞 E) Ω) hg`. Rewrite `h2` using `[hf, map_sum]`. Establish `hle : v ((D : Ω) * c i) ≤ v (D : Ω) * v (c i0)`.
+
+Rewrite using `[← h2]`. Use `Valuation.map_sum_le _ (fun y hy => ?_)` and prove the remaining obligations. Take `⟨j, hj, rfl⟩` from `Finset.mem_image.1 hy`. Rewrite using `[map_zsmul, hf, zsmul_eq_mul, map_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite `hle` using `[map_mul]`. Establish `hle' : v (c i) ≤ v (c i0)`. Combine the equalities or inequalities in the displayed calculation. Establish `hv0 : v (c i0) ≠ 0` using `(Valuation.ne_zero_iff _).2 hi0`. Rewrite using `[← A.valuation_le_one_iff, map_mul, map_inv₀]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_dividing {Ω : Type} [Field Ω] [Algebra ℚ Ω] (A : ValuationSubring Ω)
     {ι : Type} (c : ι → Ω) (E : IntermediateField ℚ Ω) [FiniteDimensional ℚ E] (D : ℕ) (hD : 0 < D)
     (hc : ∀ i, c i ∈ E ∧ IsIntegral ℤ ((D : Ω) * c i))
@@ -83,6 +112,15 @@ theorem exists_dividing {Ω : Type} [Field Ω] [Algebra ℚ Ω] (A : ValuationSu
   calc v (c i) * (v (c i0))⁻¹ ≤ v (c i0) * (v (c i0))⁻¹ := by gcongr
     _ = 1 := mul_inv_cancel₀ hv0
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X _ l _ A _ a ha hb`. Take `⟨S, D, hD, hc⟩` from `hb`. Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Use `haveI : FiniteDimensional ℚ (IntermediateField.adjoin ℚ (S : Set Ω)) := IntermediateField.finiteDimensional_adjoin (fun x _ => Algebra.IsIntegral.isIntegral x)`. Establish `hne : ∃ r, (X.exp a).coeff r ≠ 0`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `h0 : X.exp a = 0` using `HahnSeries.ext (funext h)`. Conclude with `ha ((map_eq_zero_iff X.exp (RingHom.injective X.exp.toRingHom)).1 h0)`. Take `⟨r0, h0, hA⟩` from `exists_dividing A (fun r => (X.exp a).coeff r) _ D hD hc hne`.
+
+Establish `hcoef : ∀ (κ : Ω) r, (X.exp (algebraMap Ω X.K κ * a)).coeff r = κ * (X.exp a).coeff r`. Introduce `κ r`. Rewrite using `[map_mul, AlgHom.commutes, HahnSeries.algebraMap_apply', PowerSeries.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, HahnSeries.ofPowerSeries_C, HahnSeries.C_mul_eq_smul, HahnSeries.coeff_smul, smul_eq_mul]`. Use `⟨((X.exp a).coeff r0)⁻¹, inv_ne_zero h0, ⟨fun r => ?_, r0, ?_⟩, S, fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[hcoef, mul_comm]`.
+
+Conclude with `hA r`. Rewrite using `[hcoef, inv_mul_cancel₀ h0, inv_one]`. Conclude with `⟨one_ne_zero, one_mem A⟩`. Rewrite using `[hcoef]`. Conclude with `IntermediateField.mul_mem _ (IntermediateField.inv_mem _ (hc r0).1) (hc r).1`.
+-/
 theorem prim_of_bounded : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : GlobalTheory.KZ.Tower Ω ε), (∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)) →
   ∀ (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω), ((l : ℕ) : Ω) ∈ A.nonunits → ∀ a : X.K, a ≠ 0 → (∃ (S : Finset Ω) (D : ℕ), 0 < D ∧ ∀ r, (X.exp a).coeff r ∈ IntermediateField.adjoin ℚ (S : Set Ω) ∧ IsIntegral ℤ ((D : Ω) * (X.exp a).coeff r)) → ∃ κ : Ω, κ ≠ 0 ∧ Prim A (X.exp (algebraMap Ω X.K κ * a)) ∧ ∃ S : Finset Ω, ∀ r, (X.exp (algebraMap Ω X.K κ * a)).coeff r ∈ IntermediateField.adjoin ℚ (S : Set Ω) := by
   intro Ω _ _ _ ε X _ l _ A _ a ha hb

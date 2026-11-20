@@ -3,6 +3,11 @@ import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.AbByPOfCo
 open GlobalTheory.BI
 namespace GlobalTheory.BI
 
+/- English proof (translation)
+Take `⟨n, ρ, hρ, hχ⟩` from `h`. Establish `: Fintype G` using `Fintype.ofFinite G`. Establish `: Invertible (Nat.card G : L)` using `invertibleOfNonzero (Nat.cast_ne_zero.mpr Nat.card_pos.ne')`. Establish `: ρ.IsIrreducible` using `hρ`. Establish `key` using `ρ.card_inv_mul_sum_char_mul_char_eq_finrank ρ`.
+
+Rewrite `key` using `[Representation.IsIrreducible.finrank_intertwiningMap_self]`. Unfold `pair`. Rewrite using `[finsum_eq_sum_of_fintype]`. Simplify using `only [hχ, Algebra.algebraMap_self, RingHom.id_apply]`. Simplify using `using key`.
+-/
 theorem pair_self_of_isIrrChar_algClosed (L : Type) [Field L] [CharZero L] [IsAlgClosed L] (G : Type) [Group G] [Finite G]
     (χ : G → L) (h : IsIrrChar L L χ) : pair χ χ = 1 := by
   classical

@@ -26,48 +26,87 @@ open Formalism.L2.SG.SplitPrimeNormLemmas
 
 namespace WlocSk
 
+/- English proof (translation)
+Introduce `_ _ z hz hT` and use `HM.compactW z hz hT`.
+-/
 theorem unipotent_set_compact : PtD.UWComp := fun _ _ z hz hT => HM.compactW z hz hT
 
+/- English proof (translation)
+The claim follows from `nIntDecay_of (nCoordHaar_of hNC nilradical_haar_unique)`.
+-/
 theorem nIntDecay_of_chart (hNC : NChart) : NIntDecay := nIntDecay_of (nCoordHaar_of hNC nilradical_haar_unique)
 
+/- English proof (translation)
+The claim follows from `PtD.wave_packet_integrable sigma_decomposition DecayR.decay_estimate DecayR.reproducing_formula_holds subgroup_hypothesis_holds representation_unitary (nIntDecay_of_chart hNC) unipotent_set_compact`.
+-/
 theorem aInt_of_chart (hNC : NChart) : AInt :=
   PtD.wave_packet_integrable sigma_decomposition DecayR.decay_estimate DecayR.reproducing_formula_holds subgroup_hypothesis_holds representation_unitary
     (nIntDecay_of_chart hNC) unipotent_set_compact
 
+/- English proof (translation)
+The claim follows from `PtD.wave_packet_continuous sigma_decomposition DecayR.decay_estimate DecayR.reproducing_formula_holds subgroup_hypothesis_holds representation_unitary (nIntDecay_of_chart hNC) unipotent_set_compact`.
+-/
 theorem aCont_of_chart (hNC : NChart) : ACont :=
   PtD.wave_packet_continuous sigma_decomposition DecayR.decay_estimate DecayR.reproducing_formula_holds subgroup_hypothesis_holds representation_unitary
     (nIntDecay_of_chart hNC) unipotent_set_compact
 
+/- English proof (translation)
+The claim follows from `PtD.aBound_of sigma_decomposition DecayR.decay_estimate DecayR.reproducing_formula_holds subgroup_hypothesis_holds representation_unitary (nIntDecay_of_chart hNC) unipotent_set_compact`.
+-/
 theorem aBound_of_chart (hNC : NChart) : ABound :=
   PtD.aBound_of sigma_decomposition DecayR.decay_estimate DecayR.reproducing_formula_holds subgroup_hypothesis_holds representation_unitary
     (nIntDecay_of_chart hNC) unipotent_set_compact
 
+/- English proof (translation)
+The claim follows from `aEquiv_of subgroup_hypothesis_holds representation_unitary sigma_decomposition hWR hNU (aInt_of_chart hNC)`.
+-/
 theorem aEquiv_of_charts (hNC : NChart) (hWR : WRightInv) (hNU : NUnimod) : AEquiv :=
   aEquiv_of subgroup_hypothesis_holds representation_unitary sigma_decomposition hWR hNU (aInt_of_chart hNC)
 
+/- English proof (translation)
+The claim follows from `AQ.aWeighted_of subgroup_hypothesis_holds representation_unitary sigma_decomposition product_decomposition_holds DecayR.decay_estimate`.
+-/
 theorem wave_packet_weighted_integrable : AWeighted :=
   AQ.aWeighted_of subgroup_hypothesis_holds representation_unitary sigma_decomposition product_decomposition_holds DecayR.decay_estimate
 
+/- English proof (translation)
+The claim follows from `AK.aKind_of sigma_decomposition subgroup_hypothesis_holds (aBound_of_chart hNC) DecayR.decay_estimate Port.schur_orthogonality_relations`.
+-/
 theorem aKind_of_chart (hNC : NChart) : AKind :=
   AK.aKind_of sigma_decomposition subgroup_hypothesis_holds (aBound_of_chart hNC) DecayR.decay_estimate Port.schur_orthogonality_relations
 
+/- English proof (translation)
+The claim follows from `AK.aReprod_of sigma_decomposition subgroup_hypothesis_holds (aBound_of_chart hNC) DecayR.reproducing_formula_holds`.
+-/
 theorem aReprod_of_chart (hNC : NChart) : AReprod :=
   AK.aReprod_of sigma_decomposition subgroup_hypothesis_holds (aBound_of_chart hNC) DecayR.reproducing_formula_holds
 
+/- English proof (translation)
+The claim follows from `AQ.wave_packet_l1_l2_of_hypotheses subgroup_hypothesis_holds representation_unitary sigma_decomposition product_decomposition_holds DecayR.decay_estimate hWR nilradical_unimodular_conj_invariant (aBound_of_chart hNC)`.
+-/
 theorem wave_packet_l1_l2_of_nilpotent_chart (hNC : NChart) (hWR : WRightInv) : WavePacketL1L2 :=
   AQ.wave_packet_l1_l2_of_hypotheses subgroup_hypothesis_holds representation_unitary sigma_decomposition product_decomposition_holds DecayR.decay_estimate hWR nilradical_unimodular_conj_invariant
     (aBound_of_chart hNC)
 
+/- English proof (translation)
+The claim follows from `ANz.aNonzero_of subgroup_hypothesis_holds representation_unitary product_decomposition_holds (aEquiv_of_charts hNC hWR nilradical_unimodular_conj_invariant) (aCont_of_chart hNC)`.
+-/
 theorem aNonzero_of_charts (hNC : NChart) (hWR : WRightInv) : ANonzero :=
   ANz.aNonzero_of subgroup_hypothesis_holds representation_unitary product_decomposition_holds (aEquiv_of_charts hNC hWR nilradical_unimodular_conj_invariant)
     (aCont_of_chart hNC)
 
+/- English proof (translation)
+The claim follows from `scWlocExists_of haar_measure_unipotent_nilradical (aEquiv_of_charts hNC hWR nilradical_unimodular_conj_invariant) (aCont_of_chart hNC) (aKind_of_chart hNC) (aReprod_of_chart hNC) (wave_packet_l1_l2_of_nilpotent_chart hNC hWR) wave_packet_weighted_integrable (aNonzero_of_charts hN …`.
+-/
 theorem wlocExists_of_charts (hNC : NChart) (hWR : WRightInv)
     (hR : Formalism.L2.SG.HCReprodM.HCReprodDSm) : WlocExists :=
   scWlocExists_of haar_measure_unipotent_nilradical (aEquiv_of_charts hNC hWR nilradical_unimodular_conj_invariant) (aCont_of_chart hNC)
     (aKind_of_chart hNC) (aReprod_of_chart hNC) (wave_packet_l1_l2_of_nilpotent_chart hNC hWR) wave_packet_weighted_integrable
     (aNonzero_of_charts hNC hWR) hR
 
+/- English proof (translation)
+The claim follows from `wlocExists_of_charts hNC unipotent_right_invariance hR`.
+-/
 theorem scWlocExists_of_chart (hNC : NChart) (hR : Formalism.L2.SG.HCReprodM.HCReprodDSm) : WlocExists :=
   wlocExists_of_charts hNC unipotent_right_invariance hR
 

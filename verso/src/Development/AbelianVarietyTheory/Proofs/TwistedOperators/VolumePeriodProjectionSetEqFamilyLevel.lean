@@ -33,6 +33,13 @@ section Frame
 variable {A B : HSp D} {c : ℕ} {ε : D.host.E} {d : HermitianOrthogonalExtensionData A B c ε} {N : Subgroup (GA D B)} {em : GA D A →* GA D B}
   {w : Pl D.host.E} {β : GL (Fin A.rank) (Lev.EAf D)} {β' : GL (Fin B.rank) (Lev.EAf D)} {u : Fin c → Kw w}
 
+/- English proof (translation)
+Substitute `ha hb` using the available equality. Take `⟨Γ, h1, -, e⟩` from `frame_val d w hF`. Take `⟨h0, h2⟩` from `hS.2.1 _ (piAt w) x`. Use `Units.ext ((e (em x)).trans ?_)` and prove the remaining obligations. Establish `a1 : (mt B (em x)).map (piAt w) * d.a.map ((piAt w).comp (incA D)) = d.a.map ((piAt w).comp (incA D))` using `Matrix.ext fun r p => congrFun (h2 p) r`.
+
+Establish `e1 : (inBasis rfl β w (Lev.finE A x)).val = ((GlobalTheory.StdFrames.loc w β)⁻¹).val * (mt A x).map (piAt w) * (GlobalTheory.StdFrames.loc w β).val`. Use `Matrix.ext fun r s => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(GlobalTheory.StdFrames.loc w (β⁻¹ * Lev.finE A x * β⁻¹⁻¹)).val r s = ((GlobalTheory.StdFrames.loc w β)⁻¹ * GlobalTheory.StdFrames.loc w (Lev.finE A x) * GlobalTheory.StdFrames.loc w β).val r s`. Rewrite using `[inv_inv, map_mul, map_mul, map_inv]`. Establish `e2 : (mt B (em x)).map (piAt w) * sumCols d (piAt w) (GlobalTheory.StdFrames.loc w β).val u = sumCols d (piAt w) (GlobalTheory.StdFrames.loc w β).val u * fromBlocks (inBasis rfl β w (Lev.finE A x)).val 0 0 1`.
+
+Use `Eq.trans ?_ (fromCols_mul_fromBlocks _ _ _ _ _ _).symm` and prove the remaining obligations. Rewrite using `[e1, sumCols, mul_fromCols, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h0, a1]`. Simplify using `only [Matrix.mul_zero, add_zero, zero_add, Matrix.mul_one, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (GlobalTheory.StdFrames.loc w β).val, Units.mul_inv, Matrix.one_mul]`. Conclude with `(congrArg (Γ * ·) e2).trans ((Matrix.mul_assoc _ _ _).symm.trans ((congrArg (· * _) h1).trans (Matrix.one_mul _)))`.
+-/
 theorem phi_emb (hS : Shape d N em) (hF : IsSumFrame d w β β' u) {a b : ℕ} (ha : a = A.rank) (hb : b = B.rank) (hab : a + c = b)
     (x : GA D A) : phi hb hab β' w (em x) = embX c (inBasis ha β w (Lev.finE A x)) := by
   subst ha hb
@@ -55,6 +62,9 @@ theorem phi_emb (hS : Shape d N em) (hF : IsSumFrame d w β β' u) {a b : ℕ} (
     rw [← Matrix.mul_assoc (GlobalTheory.StdFrames.loc w β).val, Units.mul_inv, Matrix.one_mul]
   exact (congrArg (Γ * ·) e2).trans ((Matrix.mul_assoc _ _ _).symm.trans ((congrArg (· * _) h1).trans (Matrix.one_mul _)))
 
+/- English proof (translation)
+Substitute `ha hb` using the available equality. Take `⟨Γ, h1, h2, e⟩` from `frame_val d w hF`. Take `⟨S₀, ρ, h, rfl, hA⟩` from `hS.1`. Use `(mem_symN_iff hc _).2 fun r s hrs => ?_` and prove the remaining obligations. Conclude with `(congrFun (congrFun (e n) r) s).trans ((hA _ (piAt w) _ _ u (GlobalTheory.StdFrames.loc w β).mul_inv).uni h1 h2 hn r s hrs)`.
+-/
 theorem phi_mem (hS : Shape d N em) (hc : 1 ≤ c) (hF : IsSumFrame d w β β' u) {a b : ℕ} (ha : a = A.rank) (hb : b = B.rank)
     (hab : a + c = b) {n : GA D B} (hn : n ∈ N) : phi hb hab β' w n ∈ symN (Kw w) (Fin a) c := by
   subst ha hb
@@ -63,6 +73,15 @@ theorem phi_mem (hS : Shape d N em) (hc : 1 ≤ c) (hF : IsSumFrame d w β β' u
   refine (mem_symN_iff hc _).2 fun r s hrs => ?_
   exact (congrFun (congrFun (e n) r) s).trans ((hA _ (piAt w) _ _ u (GlobalTheory.StdFrames.loc w β).mul_inv).uni h1 h2 hn r s hrs)
 
+/- English proof (translation)
+Substitute `ha hb` using the available equality. Take `⟨Γ, h, -, e⟩` from `frame_val d w hF`. Use `set π := piAt w`. Use `set b := (GlobalTheory.StdFrames.loc w β).val`. Establish `hf : (mt B g).map π * sumCols d π b u = sumCols d π b u * diagonal (Sum.elim (fun _ => 1) fun p => π (incA D (l p)))`.
+
+Establish `a0 : (mt B g).map π * (frameMat B A d.ι).map (π.comp (incA D)) = (frameMat B A d.ι).map (π.comp (incA D))` using `Matrix.map_mul.symm.trans (congrArg (·.map π) h0)`. Establish `a1 : (mt B g).map π * d.a.map (π.comp (incA D)) = (d.a * diagonal l).map (π.comp (incA D))` using `Matrix.map_mul.symm.trans (congrArg (·.map π) h1)`. Rewrite `a1` using `[Matrix.map_mul, diagonal_map (map_zero _)]`. Rewrite using `[sumCols, mul_fromCols, ← Matrix.mul_assoc, ← Matrix.mul_assoc, a0, a1]`. Use `Matrix.ext fun r s => ?_` and prove the remaining obligations.
+
+Use `Eq.trans ?_ (mul_diagonal _ _ _ _).symm` and prove the remaining obligations. Break down `s with s | s` into its components or cases. Conclude with `(mul_one _).symm`. Simplify using `only [fromCols_apply_inr, mul_diagonal, Sum.elim_inr, RingHom.comp_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `⟨_, (e g).trans ((congrArg (Γ * ·) hf).trans ((Matrix.mul_assoc _ _ _).symm.trans ((congrArg (· * diagonal _) h).trans (Matrix.one_mul _)))), fun _ => rfl⟩`.
+-/
 theorem phi_diag (hF : IsSumFrame d w β β' u) {a b : ℕ} (ha : a = A.rank) (hb : b = B.rank) (hab : a + c = b) {g : GA D B}
     {l : Fin c → D.host.E} (h0 : HMul.hMul (mt B g) (rat (frameMat B A d.ι)) = rat (frameMat B A d.ι))
     (h1 : HMul.hMul (mt B g) (rat d.a) = rat (d.a * diagonal l)) :
@@ -87,6 +106,9 @@ theorem phi_diag (hF : IsSumFrame d w β β' u) {a b : ℕ} (ha : a = A.rank) (h
   exact ⟨_, (e g).trans ((congrArg (Γ * ·) hf).trans ((Matrix.mul_assoc _ _ _).symm.trans
     ((congrArg (· * diagonal _) h).trans (Matrix.one_mul _)))), fun _ => rfl⟩
 
+/- English proof (translation)
+Substitute `ha hb` using the available equality. Take `⟨Γ, h1, h2, e⟩` from `frame_val d w hF`. Conclude with `(hA _ (piAt w) _ _ u (GlobalTheory.StdFrames.loc w β).mul_inv).blocks h1 h2 fun r s hrs => (congrFun (congrFun (e n) r) s).symm.trans ((mem_symN_iff hc _).1 hn r s hrs)`.
+-/
 theorem blocks_of_phi (hc : 1 ≤ c) {S₀ : HSp D} {ρ : ℕ} {h : HypDec B S₀ ρ} (hA : ∀ (K : Type) [Field K] (π : AE D →+* K)
     (b b' : Matrix (Fin A.rank) (Fin A.rank) K) (u : Fin c → K), b * b' = 1 → Adapted π h (sumCols d π b u) (symStep _ c))
     (hF : IsSumFrame d w β β' u) {a b : ℕ} (ha : a = A.rank) (hb : b = B.rank)
@@ -98,6 +120,9 @@ theorem blocks_of_phi (hc : 1 ≤ c) {S₀ : HSp D} {ρ : ℕ} {h : HypDec B S�
 
 end Frame
 
+/- English proof (translation)
+Take `⟨S₀, ρ, h, rfl, hA⟩` from `hS.1`. Conclude with `mem_flagN_of_blocks he h hs (fun w hw => blocks_of_phi hc hA (hF ⟨w, hw⟩) (ha _) (hb _) (hab _) (hn ⟨w, hw⟩)) fun w hw => blocks_of_phi hc hA (hF ⟨w, hw⟩) (ha _) (hb _) (hab _) (by rw [map_inv]; exact inv_mem (hn ⟨w, hw⟩))`.
+-/
 theorem mem_of_phi {A B : HSp D} {c : ℕ} {ε : D.host.E} {d : HermitianOrthogonalExtensionData A B c ε} {N : Subgroup (GA D B)} {em : GA D A →* GA D B}
     (hS : Shape d N em) (hc : 1 ≤ c) {e : AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e P) {β : GL (Fin A.rank) (Lev.EAf D)}
     {β' : GL (Fin B.rank) (Lev.EAf D)} {u : ∀ w : P, Fin c → Kw w.1} (hF : ∀ w : P, IsSumFrame d w.1 β β' (u w)) {a b : P → ℕ}
@@ -107,6 +132,15 @@ theorem mem_of_phi {A B : HSp D} {c : ℕ} {ε : D.host.E} {d : HermitianOrthogo
   exact mem_flagN_of_blocks he h hs (fun w hw => blocks_of_phi hc hA (hF ⟨w, hw⟩) (ha _) (hb _) (hab _) (hn ⟨w, hw⟩))
     fun w hw => blocks_of_phi hc hA (hF ⟨w, hw⟩) (ha _) (hb _) (hab _) (by rw [map_inv]; exact inv_mem (hn ⟨w, hw⟩))
 
+/- English proof (translation)
+Use `set c : Lev.EAf D := toEAf D (e + cA D e) with hc`. Establish `hX : (Lev.finE V x).val = c • (Lev.finE V x).val + (1 - c) • (1 : Matrix _ _ (Lev.EAf D))`. Establish `hM : (Lev.finE V x).val = (mt _ x).map (toEAf D)` using `rfl`. Rewrite using `[hM]`. Use extensionality with `i k`.
+
+Establish `h0` using `congrArg (toEAf D) (hs i k)`. Rewrite `h0` using `[map_mul, Matrix.sub_apply, map_sub]`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Matrix.map_apply]`. Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality.
+
+Simplify using `only [Matrix.one_apply_eq, map_one] at h0 ⊢`. Rewrite `h0` using `[← hc]`. Take the linear combination `-h0`. Simplify using `only [Matrix.one_apply_ne hik, map_zero, sub_zero, mul_zero, add_zero] at h0 ⊢`. Conclude with `h0.symm`.
+
+Conclude with `(GlobalTheory.OffPartLattice.inBasis_mix β _ _ c hX w).1 (GlobalTheory.OffPartLattice.cpt_pair_zero V he w hw)`.
+-/
 theorem inBasis_off {V : HSp D} {e : AE D} {P : Finset (Pl D.host.E)} (he : IsIdemSum e P) {x : GA D V} (hs : SuppAt e V x)
     (β : GL (Fin V.rank) (Lev.EAf D)) {w : Pl D.host.E} (hw : ∀ v ∈ P, w.under (𝓞 D.host.F) ≠ v.under (𝓞 D.host.F)) :
     inBasis rfl β w (Lev.finE V x) = 1 := by
@@ -129,6 +163,13 @@ theorem inBasis_off {V : HSp D} {e : AE D} {P : Finset (Pl D.host.E)} (he : IsId
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `key : ∀ {γ γ' : GL (Fin n) (Lev.EAf D)}, IsFrame γ Λ → IsFrame γ' Λ → ∀ y ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) Λ, (γ' * γ⁻¹).val *ᵥ y ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ := fun {γ γ'} a b y hy => by`. Use `(b _).2 fun i => ?_` and prove the remaining obligations. Establish `e : (γ'⁻¹).val *ᵥ ((γ' * γ⁻¹).val *ᵥ y) = (γ⁻¹).val *ᵥ y`. Rewrite using `[mulVec_mulVec, ← Units.val_mul, inv_mul_cancel_left]`. Conclude with `(congrFun e i) ▸ (a y).1 hy i`.
+
+Establish `hz : β' * β⁻¹ ∈ St β` using `(GlobalTheory.LevSplit.mem_St_iff β Λ h _).2 ⟨key h h', by`. Rewrite using `[_root_.mul_inv_rev, inv_inv]`. Conclude with `key h' h⟩`. Establish `hk` using `KO_of_St rfl β w hz`. Establish `e : inBasis rfl β w x = inBasis rfl β w (β' * β⁻¹) * inBasis rfl β' w x * (inBasis rfl β w (β' * β⁻¹))⁻¹`.
+
+Simplify using `only [inBasis, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, ← map_inv, ← map_mul]`. Use `congr 2`. Use `group`. Rewrite using `[e]`. Conclude with `mul_mem (mul_mem hk hx) (inv_mem hk)`.
+-/
 theorem KO_frame {n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} {β β' : GL (Fin n) (Lev.EAf D)} (h : IsFrame β Λ)
     (h' : IsFrame β' Λ) (w : Pl D.host.E) {x : GL (Fin n) (Lev.EAf D)} (hx : inBasis rfl β' w x ∈ KO (Kw w) (Fin n)) :
     inBasis rfl β w x ∈ KO (Kw w) (Fin n) := by
@@ -153,6 +194,9 @@ end GlobalTheory.PrLevel
 namespace GlobalTheory.PrLevel
 open GlobalTheory.RootEx GlobalTheory.RowRep GlobalTheory.SplitWeil GlobalTheory.FunObj.LevRowSucc
 
+/- English proof (translation)
+Take `⟨f, hf, hf'⟩` from `hy`. Take `⟨g, hg, hg'⟩` from `hz`. Conclude with `⟨_, by rw [Units.val_mul, hf, hg, diagonal_mul_diagonal], fun i => by simp only [hf', hg', mul_one]⟩`.
+-/
 theorem diag_mul {k : Type} [Field k] {n : Type} [Fintype n] [DecidableEq n] {c : ℕ} {y z : GL (n ⊕ Fin c) k}
     (hy : ∃ f, y.val = diagonal f ∧ ∀ i, f (.inl i) = 1) (hz : ∃ f, z.val = diagonal f ∧ ∀ i, f (.inl i) = 1) :
     ∃ f, (y * z).val = diagonal f ∧ ∀ i, f (.inl i) = 1 := by
@@ -160,6 +204,9 @@ theorem diag_mul {k : Type} [Field k] {n : Type} [Fintype n] [DecidableEq n] {c 
   obtain ⟨g, hg, hg'⟩ := hz
   exact ⟨_, by rw [Units.val_mul, hf, hg, diagonal_mul_diagonal], fun i => by simp only [hf', hg', mul_one]⟩
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `(frameGL (k := k) h).surjective z`. Rewrite using `[← map_inv, ← map_mul, ← map_mul, frameGL_KO, Subgroup.map_equiv_eq_comap_symm', Subgroup.map_equiv_eq_comap_symm', Subgroup.mem_comap, Subgroup.mem_comap]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_conj_KO {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {a c b : ℕ}
     (h : a + c = b) (ρ : GL (Fin b) k) (z : GL (Fin a ⊕ Fin c) k) :
     z ∈ ((KO k (Fin b)).map (MulAut.conj ρ).toMonoidHom).map (frameGL h).toMonoidHom ↔
@@ -173,6 +220,31 @@ variable {D : D7}
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Establish `k1` using `prodLev_inf_UA hβ' hsd P hb (fun w => KO (Kw w.1) _) fun _ => rfl`. Establish `k2` using `prodLev_inf_UA hβ'' hsd P (n' := fun _ => B.rank) (fun _ => rfl) (fun w => KO (Kw w.1) _) fun _ => rfl`. Take `⟨Y, hY⟩ : ∃ Y : ∀ w : P, GL (Fin (a w) ⊕ Fin c) (Kw w.1), ∀ w, Y w = phi (hb w) (hab w) β' w.1 δ * frameGL (hab w) (s w)` from `⟨_, fun _ => rfl⟩`. Establish `hYp : ∀ w : P, (∀ u ∈ symN (Kw w.1) (Fin (a w)) c, (Y w)⁻¹ * u * Y w ∈ symN (Kw w.1) (Fin (a w)) c) ∧ (∀ u ∈ symN (Kw w.1) (Fin (a w)) c, Y w * u * (Y w)⁻¹ ∈ symN (Kw w.1) (Fin (a w)) c) ∧ ∀ g, Y w * embX c g = embX c g * Y w` using `fun w => by`. Take `⟨f, hf, hf'⟩` from `diag_mul (phi_diag (hF w) (ha w) (hb w) (hab w) h0 h1) (hs w)`.
+
+Conclude with `diag_props (hY w ▸ hf) hf'`. Establish `px : ∀ w : P, phi (hb w) (hab w) β' w.1 x = Y w * frameGL (hab w) (ρ w)` using `fun w => by`. Establish `e1 : phi (hb w) (hab w) β' w.1 x = phi (hb w) (hab w) β' w.1 (δ * r)` using `congrArg (fun z => frameGL (hab w) (inBasis (hb w) β' w.1 z)) hfin`. Establish `e2 : phi (hb w) (hab w) β' w.1 r = frameGL (hab w) (s w * ρ w)` using `congrArg (frameGL (hab w)) (hloc w)`. Rewrite using `[e1, map_mul, e2, map_mul, hY, mul_assoc]`.
+
+Establish `qx : ∀ w : Pl D.host.E, (∀ v ∈ P, w.under (𝓞 D.host.F) ≠ v.under (𝓞 D.host.F)) → phi rfl d.rank β'' w x = phi rfl d.rank β'' w δ` using `fun w hw => by`. Establish `e1 : phi rfl d.rank β'' w x = phi rfl d.rank β'' w (δ * r)` using `congrArg (fun z => frameGL d.rank (inBasis rfl β'' w z)) hfin`. Establish `e2 : phi rfl d.rank β'' w r = frameGL d.rank 1` using `congrArg (frameGL d.rank) (inBasis_off he hr β'' hw)`. Rewrite using `[e1, map_mul, e2, map_one, mul_one]`. Establish `qp : ∀ w : Pl D.host.E, (∀ u ∈ symN (Kw w) (Fin A.rank) c, (phi rfl d.rank β'' w δ)⁻¹ * u * phi rfl d.rank β'' w δ ∈ symN (Kw w) (Fin A.rank) c) ∧ ∀ g, phi rfl d.rank β'' w δ * embX c g = embX c g * phi rfl d.rank β'' w δ` using `fun w => by`.
+
+Take `⟨v, hv⟩` from `hF' w`. Take `⟨f, hf, hf'⟩` from `phi_diag hv rfl rfl d.rank h0 h1`. Conclude with `⟨(diag_props hf hf').1, (diag_props hf hf').2.2⟩`. Establish `alg : ∀ {G : Type} [Group G] (y n z : G), y * z = z * y → y⁻¹ * (n * z) * y = y⁻¹ * n * y * z` using `fun y n z h => by`. Rewrite using `[mul_assoc _ y z, h]`.
+
+Use `group`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn, -, hk⟩ replace hk : Lev.finE B (x⁻¹ * (n * em g) * x) ∈ congLev D.sp.cm B.gram Λ ⊤ := hk`. Use `Subgroup.mem_inf.2 ⟨Subgroup.mem_iInf.2 fun w => ?_, Subgroup.mem_iInf.2 fun w => Subgroup.mem_iInf.2 fun hw => ?_⟩` and prove the remaining obligations. Establish `h2` using `(frameGL_KO (hab w) _).2 (Subgroup.mem_comap.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 (Subgroup.mem_inf.1 (k1 ▸ hk)).1).1 w)) replace h2 : phi (hb w) (hab w) β' w.1 (x⁻¹ * (n * em g) * x) ∈ KO (Kw w.1) _ := h2`.
+
+Rewrite `h2` using `[map_mul, map_mul, map_mul, map_inv, px, phi_emb hS (hF w) (ha w)]`. Use `⟨_, (hYp w).1 _ (phi_mem hS hc (hF w) (ha w) (hb w) (hab w) hn), (mem_conj_KO _ _ _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[← alg _ _ _ ((hYp w).2.2 _)]`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use `group`.
+
+Establish `h2` using `(frameGL_KO d.rank _).2 (Subgroup.mem_comap.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 (Subgroup.mem_inf.1 (k2 ▸ hk)).1).2 w) hw)) replace h2 : phi rfl d.rank β'' w (x⁻¹ * (n * em g) * x) ∈ KO (Kw w) _ := h2`. Take `⟨v, hv⟩` from `hF' w`. Rewrite `h2` using `[map_mul, map_mul, map_mul, map_inv, qx w hw, phi_emb hS hv rfl, alg _ _ _ ((qp w).2 _)]`. Conclude with `KO_of_mul hc ((qp w).1 _ (phi_mem hS hc hv rfl rfl d.rank hn)) h2`. Introduce `h`.
+
+Take `⟨hP, hO⟩` from `Subgroup.mem_inf.1 h`. Use `choose v hv hv' using fun w : P => Subgroup.mem_comap.1 (Subgroup.mem_iInf.1 hP w)`. Use `choose z hz using fun w : P => exists_inBasis_eq (hb w) β' w.1 ((frameGL (hab w)).symm (Y w * v w * (Y w)⁻¹))`. Take `⟨n, hns, hn⟩` from `exists_suppAt_loc_eq B P e he z`. Establish `pn : ∀ w : P, phi (hb w) (hab w) β' w.1 n = Y w * v w * (Y w)⁻¹` using `fun w => (congrArg (frameGL (hab w)) (hz w _ (hn w))).trans ((frameGL (hab w)).apply_symm_apply _)`.
+
+Establish `e0 : infPart D (e + cA D e) = 0`. Rewrite using `[RingHom.map_add, (GlobalTheory.FunObj.Comparison₂.cpt_idemSum he).1, GlobalTheory.PlaceDatum.infPart_cA (GlobalTheory.FunObj.Comparison₂.cpt_idemSum he).1, add_zero]`. Use `⟨n, mem_of_phi hS hc he hF ha hb hab hns fun w => pn w ▸ (hYp w).2.1 _ (hv w), Subgroup.mem_inf.2 ⟨(GfC B).mul_mem ((GfC B).mul_mem ((GfC B).inv_mem hx) ((GfC B).mul_mem (GlobalTheory.WeilProduct.mem_GfC_of_supp e0 hns) (hS.2.2 g hg))) hx, ?_⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Lev.finE B (x⁻¹ * (n * em g) * x) ∈ congLev D.sp.cm B.gram Λ ⊤`. Rewrite using `[← k1]`.
+
+Use `Subgroup.mem_inf.2 ⟨Subgroup.mem_inf.2 ⟨Subgroup.mem_iInf.2 fun w => ?_, Subgroup.mem_iInf.2 fun w => Subgroup.mem_iInf.2 fun hw => ?_⟩, GlobalTheory.LevSplit.finE_mem_UA _ _⟩` and prove the remaining obligations. Use `Subgroup.mem_comap.2 ((frameGL_KO (hab w) _).1 ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `phi (hb w) (hab w) β' w.1 (x⁻¹ * (n * em g) * x) ∈ KO (Kw w.1) _`. Rewrite using `[map_mul, map_mul, map_mul, map_inv, px, phi_emb hS (hF w) (ha w), pn]`. Establish `h2` using `(mem_conj_KO _ _ _).1 (hv' w)`.
+
+Use `h2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[_root_.mul_inv_rev, mul_assoc (frameGL (hab w) (ρ w))⁻¹, mul_assoc (frameGL (hab w) (ρ w))⁻¹, ← mul_assoc _ (Y w) (frameGL (hab w) (ρ w)), alg _ _ _ ((hYp w).2.2 _)]`. Use `group`. Use `Subgroup.mem_comap.2 (KO_frame hβ' hβ'' w ((frameGL_KO d.rank _).1 ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `phi rfl d.rank β'' w (x⁻¹ * (n * em g) * x) ∈ KO (Kw w) _`.
+
+Take `⟨v, hv⟩` from `hF' w`. Establish `e2 : phi rfl d.rank β'' w n = frameGL d.rank 1` using `congrArg (frameGL d.rank) (inBasis_off he hns β'' hw)`. Rewrite using `[map_mul, map_mul, map_mul, map_inv, qx w hw, phi_emb hS hv rfl, alg _ _ _ ((qp w).2 _), e2, map_one, mul_one, inv_mul_cancel, one_mul]`. Conclude with `embX_KO (Subgroup.mem_comap.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hO w) hw))`.
+-/
 theorem pr_iff {A B : HSp D} {c : ℕ} {ε : D.host.E} {d : HermitianOrthogonalExtensionData A B c ε} {N : Subgroup (GA D B)} {em : GA D A →* GA D B}
     (hS : Shape d N em) (hc : 1 ≤ c) {Λ : Submodule (𝓞 D.host.E) (Fin B.rank → D.host.E)} {β : GL (Fin A.rank) (Lev.EAf D)}
     {β' β'' : GL (Fin B.rank) (Lev.EAf D)} (hβ' : IsFrame β' Λ) (hβ'' : IsFrame β'' Λ) (hsd : IsSelfDualC B Λ)
@@ -272,6 +344,9 @@ open GlobalTheory.RootEx GlobalTheory.RowRep GlobalTheory.SplitWeil GlobalTheory
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
+/- English proof (translation)
+Use `choose y hy _ using fun p : Fin (D.R.m - 1 - j) => exists_gen (rowId_ne_zero G j p) Set.finite_empty (fun _ => 0) fun _ h => absurd h (Set.notMem_empty _)`. Take `⟨β', h1, h2⟩` from `exists_sumFrame (by norm_num : (-1 : D.host.E) ≠ 0) (G.rowDec j hj) (G.isV (X := .top j) hj.le fun _ e => by cases e).sd.1 (S.βp_is j hj.le) (rowId_ne_zero G j) y hy`. Conclude with `⟨β', rowLat_eq G j hj ▸ h1, fun w => ⟨_, h2 w⟩⟩`.
+-/
 theorem exists_frame (S : GridChoice W U) {j : ℕ} (hj : j < D.R.m) : ∃ β'' : GL (Fin (G.V (.grid D.R.m j)).rank) (Lev.EAf D),
     IsFrame β'' (G.Λ (.grid D.R.m j)) ∧ ∀ w, ∃ u, IsSumFrame (G.rowDec j hj) w (S.βp j) β'' u := by
   choose y hy _ using fun p : Fin (D.R.m - 1 - j) =>
@@ -280,6 +355,11 @@ theorem exists_frame (S : GridChoice W U) {j : ℕ} (hj : j < D.R.m) : ∃ β'' 
     (G.isV (X := .top j) hj.le fun _ e => by cases e).sd.1 (S.βp_is j hj.le) (rowId_ne_zero G j) y hy
   exact ⟨β', rowLat_eq G j hj ▸ h1, fun w => ⟨_, h2 w⟩⟩
 
+/- English proof (translation)
+Establish `e : (frameGL h (sgnAt G t s w j)).val = (diagonal fun a => ((if Odd j ∧ topRank (locGrid G t w) j + (D.R.m - 1 - j) / 2 ≤ a.1 then Units.map (Int.castRingHom (Kw w)).toMonoidHom s else 1 : (Kw w)ˣ) : Kw w)).submatrix (frame h) (frame h)` using `rfl`. Use `⟨_, e.trans (submatrix_diagonal_equiv _ (frame h)), fun i => ?_⟩` and prove the remaining obligations. Establish `hi : (frame h (.inl i)).1 = i.1` using `rfl`. Use `i.2` as an intermediate fact. Simplify using `only [Function.comp_apply]`.
+
+Rewrite using `[if_neg (by omega), Units.val_one]`.
+-/
 theorem sgn_diag (t : T) (s : ℤˣ) (w : Pl D.host.E) (j : ℕ)
     (h : topRank (locGrid G t w) j + (D.R.m - 1 - j) = (locGrid G t w).rank (D.R.m, j)) :
     ∃ f, (frameGL h (sgnAt G t s w j)).val = diagonal f ∧ ∀ i, f (.inl i) = 1 := by
@@ -293,6 +373,19 @@ theorem sgn_diag (t : T) (s : ℤˣ) (w : Pl D.host.E) (j : ℕ)
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Establish `hm` using `idx_le hi`. Take `⟨δ, r, hδ, ⟨e, he, hr, hloc⟩, -, a, ha, hab⟩` from `h.2 j hi hj.le`. Take `⟨β'', hβ'', hF'⟩` from `exists_frame S hj`. Take `⟨l, h0, h1⟩` from `tilt_cols hj hδ`. Establish `hfin : Lev.finE (G.V (.grid D.R.m j)) (b j) = Lev.finE (G.V (.grid D.R.m j)) (δ * r)`.
+
+Establish `h : Lev.finE (G.V (.grid D.R.m j)) a = 1`. Simplify using `only [Lev.finE, GinfC, MonoidHom.mem_ker] at ha ⊢`. Rewrite using `[MonoidHom.comp_apply, ha, map_one]`. Rewrite using `[← hab, map_mul, h, one_mul]`. Establish `hf : ∀ {i : ℕ}, 1 ≤ i → i ≤ D.R.m → IsFrame (S.B.β i j) (G.Λ (.grid i j))`.
+
+Introduce and unpack `(_ | i) h h'`. Use linear arithmetic over natural numbers and integers. Conclude with `S.B.isFrame (i + 1) j h h' hj.le`. Establish `hl : ∀ (w : Pl D.host.E) (X : ℕ × ℕ), 1 ≤ X.1 → 1 ≤ X.2 → givenLevel G t w X = KO (Kw w) _`. Introduce and unpack `w ⟨_ | a, _ | b⟩ h h'`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `at h`. Simplify using `at h'`. Both sides reduce to the same expression. Use extensionality with `g`.
+
+Establish `key` using `pr_iff (shape_row G hj) (by omega) (hf (by omega) le_rfl) hβ'' (G.isV (X := .grid D.R.m j) ⟨le_rfl, hj.le⟩ fun k h => by have := (Node.grid.inj h).1; omega).sd he (fun w => S.row t ht w.1 w.2 j hj) hF' (fun w => topRank_eq G t w.1 hj.le) (fun w => rank_vertex G t w.1 (X := (D.R.m …`. Use `key.trans ?_` and prove the remaining obligations. Take `⟨i, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Use `Eq.to_iff (congrArg (fun K => Lev.finE (G.V (.top (i + 1))) g.1 ∈ prodLev (S.βp (i + 1)) (locPl G t) _ K) (funext fun w => ?_))` and prove the remaining obligations. Rewrite using `[← hl w.1 (D.R.m, i + 1) (by show 1 ≤ D.R.m; omega) (by show 1 ≤ i + 1; omega)]`.
+
+Both sides reduce to the same expression.
+-/
 theorem prSet_eq (S : GridChoice W U) {t : T} (ht : t ∈ U) (Φ : G.Datum) (s : ℤˣ) (β : CosFam G t) {b : Pts G}
     (h : IsRep t S.B s β b) {j : ℕ} (hi : j ∈ idx D) (hj : j < D.R.m) (hb : b j ∈ GfC _) :
     prSet G j ⟨b j, hb⟩ = {g | Lev.finE (G.V (.top j)) g.1 ∈ S.levTop t Φ β j hj} := by
@@ -328,6 +421,9 @@ theorem prSet_eq (S : GridChoice W U) {t : T} (ht : t ∈ U) (Φ : G.Datum) (s :
   rw [← hl w.1 (D.R.m, i + 1) (by show 1 ≤ D.R.m; omega) (by show 1 ≤ i + 1; omega)]
   rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun _ _ _ => ⟨0, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ch _ _ s _ hi hj _ _ => ⟨1, one_pos, fun t Φ β _ h hb => by rw [prSet_eq ch.S.toGridChoice (Set.mem_univ t) Φ s β h hi hj hb, one_mul]⟩⟩⟩`.
+-/
 theorem vol_prSet : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ (s : ℤˣ), ∀ j ∈ idx D, ∀ (hj : j < D.R.m) (ν : Measure (GfC (ch.G.V (.top j)))),
     ν.IsHaarMeasure → ∃ c : ℝ, 0 < c ∧ ∀ t Φ β b, IsRep t ch.S.B s β b → ∀ hb : b j ∈ GfC _,
       ν.real (prSet ch.G j ⟨b j, hb⟩) = c * ν.real {g | Lev.finE (ch.G.V (.top j)) g.1 ∈ ch.S.toGridChoice.levTop t Φ β j hj} :=

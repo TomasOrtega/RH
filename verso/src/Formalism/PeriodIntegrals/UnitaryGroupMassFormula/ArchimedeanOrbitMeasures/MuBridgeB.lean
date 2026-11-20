@@ -17,9 +17,15 @@ variable {D : D7} (X : HidaSetting D)
 
 abbrev BrI : Type := InfinitePlace X.B.I.F × Fin X.B.I.n × Fin (D.R.rS + 1 + D.R.rS) × Bool
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reimV_apply {V : Type} {n m : ℕ} (M : V → Matrix (Fin n) (Fin m) ℂ) (p : V × Fin n × Fin m × Bool) :
     reimV M p = if p.2.2.2 then (M p.1 p.2.1 p.2.2.1).re else (M p.1 p.2.1 p.2.2.1).im := rfl
 
+/- English proof (translation)
+Use extensionality with `p`. Apply the tactic sequence `by_cases h : p.2.2.2 <;> simp [reimV, h]`.
+-/
 theorem reimV_addB {V : Type} {n m : ℕ} (A B : V → Matrix (Fin n) (Fin m) ℂ) :
     reimV (A + B) = reimV A + reimV B := by
   ext p
@@ -33,12 +39,20 @@ def bAdd : EuclideanSpace ℝ (KapI X) →+ EuclideanSpace ℝ (BrI X) :=
     rw [tupCoord_symm_add, betaV_add]
     rfl
 
+/- English proof (translation)
+Simplify using `only [betaV, Matrix.of_apply, Matrix.mulVec, dotProduct]`. Conclude with `continuous_finsetSum _ fun j _ => continuous_const.mul ((continuous_thetaInf X v).comp ((continuous_apply j).comp (continuous_apply b)))`.
+-/
 theorem continuous_betaV (v : InfinitePlace X.B.I.F) (i : Fin X.B.I.n) (b : Fin (D.R.rS + 1 + D.R.rS)) :
     Continuous fun Y : TupI X => betaV X v Y i b := by
   simp only [betaV, Matrix.of_apply, Matrix.mulVec, dotProduct]
   exact continuous_finsetSum _ fun j _ => continuous_const.mul
     ((continuous_thetaInf X v).comp ((continuous_apply j).comp (continuous_apply b)))
 
+/- English proof (translation)
+Use `show Continuous fun x => reimV (fun v => betaV X v ((tupCoord X).symm x))`. Use `(PiLp.continuous_toLp 2 _).comp (continuous_pi fun p => ?_)` and prove the remaining obligations. Break down `p with ⟨v, i, b, s⟩` into its components or cases. Consider the cases of `s`. Conclude with `Complex.continuous_im.comp ((continuous_betaV X v i b).comp (tupCoord X).symm.continuous)`.
+
+Conclude with `Complex.continuous_re.comp ((continuous_betaV X v i b).comp (tupCoord X).symm.continuous)`.
+-/
 theorem continuous_bAdd : Continuous (bAdd X) := by
   show Continuous fun x => reimV (fun v => betaV X v ((tupCoord X).symm x))
   refine (PiLp.continuous_toLp 2 _).comp (continuous_pi fun p => ?_)
@@ -50,11 +64,19 @@ theorem continuous_bAdd : Continuous (bAdd X) := by
 def bL : EuclideanSpace ℝ (KapI X) →L[ℝ] EuclideanSpace ℝ (BrI X) :=
   (bAdd X).toRealLinearMap (continuous_bAdd X)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bL_apply (x : EuclideanSpace ℝ (KapI X)) : bL X x = reimV (fun v => betaV X v ((tupCoord X).symm x)) :=
   rfl
 
 def qD (p : BrI X) : ℝ := 2 * (if X.B.I.ε p.1 p.2.1 then 1 else -1)
 
+/- English proof (translation)
+Rewrite using `[betaI_bridge]`. Simplify using `only [Fintype.sum_prod_type, Fintype.sum_bool, bL_apply, reimV_apply, qD, if_true, Bool.false_eq_true, if_false]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem betaI_q (x y : EuclideanSpace ℝ (KapI X)) : betaI X x y = ∑ p : BrI X, qD X p * bL X x p * bL X y p := by
   rw [betaI_bridge]
   simp only [Fintype.sum_prod_type, Fintype.sum_bool, bL_apply, reimV_apply, qD, if_true, Bool.false_eq_true,
@@ -64,11 +86,17 @@ theorem betaI_q (x y : EuclideanSpace ℝ (KapI X)) : betaI X x y = ∑ p : BrI 
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun b _ => ?_
   ring
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Rewrite using `[← Module.finrank_eq_card_chooseBasisIndex, Module.finrank_baseChange, X.B.I.cm.deg2]`.
+-/
 theorem card_cbi : Fintype.card
     (Module.Free.ChooseBasisIndex (Ainf X.B.I.F) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)) = 2 := by
   haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X
   rw [← Module.finrank_eq_card_chooseBasisIndex, Module.finrank_baseChange, X.B.I.cm.deg2]
 
+/- English proof (translation)
+Simplify using `only [Fintype.card_prod, Fintype.card_bool, Fintype.card_fin, card_cbi]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem card_BrI : Fintype.card (BrI X) = Fintype.card (KapI X) := by
   simp only [Fintype.card_prod, Fintype.card_bool, Fintype.card_fin, card_cbi]
   ring
@@ -81,6 +109,9 @@ def U : EuclideanSpace ℝ (BrI X) ≃ₗᵢ[ℝ] EuclideanSpace ℝ (KapI X) :=
 def fK : EuclideanSpace ℝ (KapI X) →ₗ[ℝ] EuclideanSpace ℝ (KapI X) :=
   (U X).toLinearEquiv.toLinearMap ∘ₗ (bL X).toLinearMap
 
+/- English proof (translation)
+Simplify using `[fK, U, Equiv.piCongrLeft'_apply]`.
+-/
 theorem fK_apply (x : EuclideanSpace ℝ (KapI X)) (k : KapI X) : fK X x k = bL X x ((eI X).symm k) := by
   simp [fK, U, Equiv.piCongrLeft'_apply]
 
@@ -89,6 +120,9 @@ open Classical in
 def Bq : Matrix (KapI X) (KapI X) ℝ := fun k l => bL X (EuclideanSpace.single l 1) ((eI X).symm k)
 
 open Classical in
+/- English proof (translation)
+Use extensionality with `k l`. Rewrite using `[LinearMap.toMatrix_apply, OrthonormalBasis.coe_toBasis_repr_apply, EuclideanSpace.basisFun_repr, OrthonormalBasis.coe_toBasis, EuclideanSpace.basisFun_apply, fK_apply]`. Both sides reduce to the same expression.
+-/
 theorem toMatrix_fK : LinearMap.toMatrix (EuclideanSpace.basisFun (KapI X) ℝ).toBasis
     (EuclideanSpace.basisFun (KapI X) ℝ).toBasis (fK X) = Bq X := by
   ext k l
@@ -96,10 +130,18 @@ theorem toMatrix_fK : LinearMap.toMatrix (EuclideanSpace.basisFun (KapI X) ℝ).
     OrthonormalBasis.coe_toBasis, EuclideanSpace.basisFun_apply, fK_apply]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.det_toMatrix (EuclideanSpace.basisFun (KapI X) ℝ).toBasis, toMatrix_fK]`.
+-/
 theorem det_fK : LinearMap.det (fK X) = (Bq X).det := by
   rw [← LinearMap.det_toMatrix (EuclideanSpace.basisFun (KapI X) ℝ).toBasis, toMatrix_fK]
 
 open Classical in
+/- English proof (translation)
+Use extensionality with `k l`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.mul_diagonal, Matrix.transpose_apply]`. Use `show betaI X _ _ = _`. Rewrite using `[betaI_q, ← (eI X).symm.sum_comp]`.
+
+Use `Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations. Simplify using `only [Bq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem matI_eq : matI X = (Bq X)ᵀ * Matrix.diagonal (fun k => qD X ((eI X).symm k)) * Bq X := by
   ext k l
   rw [Matrix.mul_apply]
@@ -110,11 +152,19 @@ theorem matI_eq : matI X = (Bq X)ᵀ * Matrix.diagonal (fun k => qD X ((eI X).sy
   simp only [Bq]
   ring
 
+/- English proof (translation)
+Rewrite using `[matI_eq, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, Matrix.det_diagonal, (eI X).symm.prod_comp (fun p => qD X p)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_matI : (matI X).det = (Bq X).det ^ 2 * ∏ p : BrI X, qD X p := by
   rw [matI_eq, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, Matrix.det_diagonal,
     (eI X).symm.prod_comp (fun p => qD X p)]
   ring
 
+/- English proof (translation)
+Rewrite using `[Finset.abs_prod]`. Establish `h : ∀ p : BrI X, |qD X p| = 2`. Introduce `p`. Unfold `qD`. Apply the tactic sequence `split_ifs <;> norm_num`.
+
+Simplify using `only [h, Finset.prod_const, Finset.card_univ, Fintype.card_prod, Fintype.card_bool, Fintype.card_fin]`. Rewrite using `[← pow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem abs_prod_qD : |∏ p : BrI X, qD X p| =
     ((2 : ℝ) ^ (X.B.I.n * (D.R.rS + 1 + D.R.rS) * Fintype.card (InfinitePlace X.B.I.F))) ^ 2 := by
   rw [Finset.abs_prod]
@@ -127,6 +177,9 @@ theorem abs_prod_qD : |∏ p : BrI X, qD X p| =
   congr 1
   ring
 
+/- English proof (translation)
+The claim follows from `|(Bq X).det| * 2 ^ (X.B.I.n * (D.R.rS + 1 + D.R.rS) * Fintype.card (InfinitePlace X.B.I.F)) := by have hdm := det_matI X refine ⟨fun h0 => hd (by rw [hdm, h0]; ring), ?_⟩ rw [hdm, abs_mul, abs_prod_qD, abs_pow, sq_abs] have hnn : 0 ≤ |(Bq X).det| * (2 : ℝ) ^ (X.B.I.n * (D.R.rS + …`.
+-/
 theorem sqrt_matI (hd : (matI X).det ≠ 0) :
     (Bq X).det ≠ 0 ∧ Real.sqrt |(matI X).det| =
       |(Bq X).det| * 2 ^ (X.B.I.n * (D.R.rS + 1 + D.R.rS) * Fintype.card (InfinitePlace X.B.I.F)) := by
@@ -144,6 +197,15 @@ namespace PI.AprimeInfW
 open MeasureTheory NumberField Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub Formalism.L2.SG.TypedSets
 open Classical
 
+/- English proof (translation)
+Introduce `D X u' ψ hT μinf νinf fibInf hP`. Establish `hd : (matI X).det ≠ 0` using `matNDH_holds X u' ψ hT μinf νinf fibInf hP`. Take `⟨hB0, hsq⟩` from `MuB.sqrt_matI X hd`. Establish `hfd : LinearMap.det (MuB.fK X) ≠ 0` using `by rw [MuB.det_fK]; exact hB0`. Establish `hfun : (fun Y => reimV (fun v => betaV X v Y)) = (MuB.U X).symm ∘ (MuB.fK X) ∘ (tupCoord X)`.
+
+Use function extensionality and compare the values at `Y`. Simplify using `[MuB.fK, MuB.bL_apply]`. Establish `hUm : Measurable (MuB.U X).symm` using `(MuB.U X).symm.continuous.measurable`. Establish `hfKm : Measurable (MuB.fK X)` using `(LinearMap.continuous_of_finiteDimensional (MuB.fK X)).measurable`. Establish `htm : Measurable (tupCoord X)` using `(tupCoord X).continuous.measurable`.
+
+Establish `e1 : μinf.map ((MuB.U X).symm ∘ (MuB.fK X) ∘ (tupCoord X)) = ((μinf.map (tupCoord X)).map (MuB.fK X)).map (MuB.U X).symm`. Rewrite using `[Measure.map_map hUm hfKm, Measure.map_map (hUm.comp hfKm) htm]`. Both sides reduce to the same expression. Rewrite using `[hfun, e1, densMu_holds X u' ψ hT μinf νinf fibInf hP, Measure.map_smul, Measure.map_linearMap_addHaar_eq_smul_addHaar volume hfd, Measure.map_smul, Measure.map_smul, ((MuB.U X).symm.measurePreserving).map_eq, smul_smul, ← ENNReal.ofReal_mul (Real.sqrt_nonneg _), hsq, MuB.det_fK]`. Use `congr 2`.
+
+Establish `ha : |(MuB.Bq X).det| ≠ 0` using `abs_ne_zero.2 hB0`. Rewrite using `[abs_inv]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem muBridge_holds : MuBridge := by
   intro D X u' ψ hT μinf νinf fibInf hP
   have hd : (matI X).det ≠ 0 := matNDH_holds X u' ψ hT μinf νinf fibInf hP
@@ -168,6 +230,19 @@ theorem muBridge_holds : MuBridge := by
   rw [abs_inv]
   field_simp
 
+/- English proof (translation)
+Introduce `D X`. Establish `hinj : Function.Injective (MuB.fK X)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `hb : MuB.bL X x = 0`.
+
+Use `congrArg (MuB.U X).symm hx` as an intermediate fact. Simplify `this` using `[MuB.fK]`. Establish `hβ : ∀ v, betaV X v ((tupCoord X).symm x) = betaV X v 0`. Introduce `v`. Establish `h0 : betaV X v 0 = 0`.
+
+Use `betaV_add X v 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.1 this`. Rewrite using `[h0]`. Use extensionality with `i b`.
+
+Establish `hre` using `congrArg (fun z : EuclideanSpace ℝ (MuB.BrI X) => z (v, i, b, true)) hb`. Establish `him` using `congrArg (fun z : EuclideanSpace ℝ (MuB.BrI X) => z (v, i, b, false)) hb`. Simplify using `only [MuB.bL_apply, MuB.reimV_apply, if_true, Bool.false_eq_true, if_false] at hre him`. Conclude with `Complex.ext (by simpa using hre) (by simpa using him)`. Establish `h1` using `betaV_inj X _ _ hβ`.
+
+Establish `h2 : tupCoord X 0 = 0`. Use `tupCoord_add X 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.1 this`. Rewrite using `[← (tupCoord X).apply_symm_apply x, h1, h2]`.
+
+Establish `hsurj : Function.Surjective (MuB.fK X)` using `LinearMap.injective_iff_surjective.1 hinj`. Set `eF` to `LinearEquiv.ofBijective (MuB.fK X) ⟨hinj, hsurj⟩`. Use `⟨(eF.trans (MuB.U X).symm.toLinearEquiv).toContinuousLinearEquiv, fun Y => ?_⟩` and prove the remaining obligations. Use `show (MuB.U X).symm (MuB.fK X (tupCoord X Y)) = _`. Simplify using `[MuB.fK, MuB.bL_apply]`.
+-/
 theorem betaIso_holds : BetaIso := by
   intro D X
   have hinj : Function.Injective (MuB.fK X) := by

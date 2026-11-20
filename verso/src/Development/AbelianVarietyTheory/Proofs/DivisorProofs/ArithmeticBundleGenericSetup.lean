@@ -30,6 +30,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz]
   {β : Oz →+* c.F} {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β}
 
+/- English proof (translation)
+Take `⟨p, hp, hp'⟩` from `h`. Take `⟨q, hq, hq'⟩` from `h'`. Establish `e : p = q`. Use function extensionality and compare the values at `i`. Conclude with `Over.OverMorphism.ext ((hp i).trans (hq i).symm)`.
+
+Rewrite using `[← hp', ← hq', e]`.
+-/
 theorem isComb_unique {X : Scheme.{0}} {t : SAB H X} {K : Type} [CommRing K] {x : Sp K ⟶ X} {m : ℕ}
     {u : Fin m → (Sp (DualNumber K) ⟶ t.G.left)} {a : Fin m → K} {w w' : Sp (DualNumber K) ⟶ t.G.left}
     (h : IsCombAtG t x u a w) (h' : IsCombAtG t x u a w') : w = w' := by
@@ -40,6 +45,13 @@ theorem isComb_unique {X : Scheme.{0}} {t : SAB H X} {K : Type} [CommRing K] {x 
     exact Over.OverMorphism.ext ((hp i).trans (hq i).symm)
   rw [← hp', ← hq', e]
 
+/- English proof (translation)
+Use `choose T hT using fun b => (g.basis τ _ (hu b).1 (hu b).2).exists`. Use `⟨fun b => T b k, fun a w cf h1 h2 => ?_⟩` and prove the remaining obligations. Set `U : Fin m → TanM x Z.t.G` to `fun b => tanOf (hu b).1`. Establish `e1 : ∀ b, U b = ∑ j, T b j • g.vec τ j` using `fun b => (isComb_iff (g.vec τ) _ (U b)).1 (hT b)`. Establish `h3 : IsCombAtG Z.t x uu a (tv (∑ b, a b • U b)).left` using `(isComb_iff U a _).2 rfl`.
+
+Rewrite `h2` using `[isComb_unique h1 h3]`. Establish `e2` using `(isComb_iff (g.vec τ) cf _).1 h2`. Establish `e3 : ∑ j, cf j • g.vec τ j = ∑ j, (∑ b, a b * T b j) • g.vec τ j`. Rewrite using `[← e2]`. Simplify using `only [e1, Finset.smul_sum, smul_smul, Finset.sum_smul]`.
+
+Conclude with `Finset.sum_comm`. Conclude with `Fintype.linearIndependent_iffₛ.1 (g.linearIndependent_vec τ) _ _ e3 k`.
+-/
 theorem exists_coord_form {K : Type} [CommRing K] {χ : c.F →+* K} {x : Sp K ⟶ Z.X} (g : EigFrame Z χ x)
     (τ : E →+* ℂ) {m : ℕ} {uu : Fin m → (Sp (DualNumber K) ⟶ Z.t.G.left)} (hu : ∀ b, IsEigTan Z χ x τ (uu b))
     (k : Fin (Dw.mult τ)) : ∃ d : Fin m → K, ∀ (a : Fin m → K) (w : Sp (DualNumber K) ⟶ Z.t.G.left)
@@ -57,6 +69,9 @@ theorem exists_coord_form {K : Type} [CommRing K] {χ : c.F →+* K} {x : Sp K �
     exact Finset.sum_comm
   exact Fintype.linearIndependent_iffₛ.1 (g.linearIndependent_vec τ) _ _ e3 k
 
+/- English proof (translation)
+Use `letI := (constF e C.Y).toAlgebra`. Rewrite using `[← Category.assoc, ← C.y0_x, Category.assoc, genStr, Z.jQ_over]`. Conclude with `GlobalTheory.ShFam.ptF_snd _`.
+-/
 theorem genericPt_π_genStr {F : Type} [Field F] {e : F ≃+* c.F} (C : FlagCpt Z e) :
     genericPt C.Y ≫ C.π ≫ genStr Z = spMap (constF e C.Y) := by
   letI := (constF e C.Y).toAlgebra
@@ -65,6 +80,11 @@ theorem genericPt_π_genStr {F : Type} [Field F] {e : F ≃+* c.F} (C : FlagCpt 
 
 end Free
 
+/- English proof (translation)
+Introduce `p _`. Establish `h1 : genPt G p ⤳ genericPoint G`. Establish `: genPt G p ∈ Set.range (G.fromSpecStalk (genericPoint G))` using `⟨p, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Establish `h2 : genPt G p ∈ j ⁻¹ᵁ W` using `h1.mem_open (j ⁻¹ᵁ W).isOpen h`.
+
+Simplify using `using h2`.
+-/
 theorem top_le_genPt {G Y : Scheme.{0}} [IsIntegral G] (j : G ⟶ Y) {W : Y.Opens} (h : j (genericPoint G) ∈ W) :
     ⊤ ≤ (genPt G ≫ j) ⁻¹ᵁ W := by
   intro p _
@@ -74,6 +94,29 @@ theorem top_le_genPt {G Y : Scheme.{0}} [IsIntegral G] (j : G ⟶ Y) {W : Y.Open
   have h2 : genPt G p ∈ j ⁻¹ᵁ W := h1.mem_open (j ⁻¹ᵁ W).isOpen h
   simpa using h2
 
+/- English proof (translation)
+Introduce `D O hO B hB R hR c Bs _ q arq nBs E h H Bg jB πB u Gm hL Y₀ _ π₀ fl₀ hfb ar₀ n₀ G _ j πG pb _ _ φ φs jG r hc a i ch ch' hη`. Use `haveI := (h a).isVB.isQuasicoherent`. Take `⟨hr, -⟩` from `hL.2.2.2.2.2.2 a`. Take `⟨V, f, hV, hf⟩` from `(h a).isVB (π₀ (j (genericPoint G)))`. Establish `m1 : j (genericPoint G) ∈ (ch PUnit.unit).U` using `LB.wchart_le ((fl₀ a).root i) (fun _ : PUnit.{1} => j) ch PUnit.unit hη.1`.
+
+Establish `m2 : j (genericPoint G) ∈ (ch' PUnit.unit).U` using `LB.wchart_le ((fl₀ a).root i) (fun _ : PUnit.{1} => j) ch' PUnit.unit hη.2`. Take `⟨W, hW, t₀, hηW, ht₀⟩` from `GlobalTheory.T.graded_section_lifts_locally (fl₀ a) i (((ch PUnit.unit).U ⊓ (ch' PUnit.unit).U) ⊓ π₀ ⁻¹ᵁ V) (Twist.resM _ (inf_le_left.trans inf_le_left) ((ch PUnit.unit).e 0)) (j (genericPoint G)) ⟨⟨m1, m2⟩, hV⟩`. Establish `hWV : W ≤ π₀ ⁻¹ᵁ V` using `hW.trans inf_le_right`. Establish `hx : ⊤ ≤ (genPt G ≫ j) ⁻¹ᵁ W` using `top_le_genPt j hηW`. Establish `hxV : ⊤ ≤ ((genPt G ≫ jG) ≫ jB) ⁻¹ᵁ V`.
+
+Rewrite using `[Category.assoc, hc.1]`. Conclude with `top_le_genPt _ (by simpa using hV)`. Establish `hpt : genPt G ≫ jG ≫ πB = spMap φ ≫ genericPt (O.var c) ≫ (O.Φ.C c).π`. Rewrite using `[hc.2.1, ← Category.assoc, ← Category.assoc]`. Conclude with `congrArg (· ≫ (O.Φ.C c).π) φs`.
+
+Take `⟨g, hg⟩` from `(O.Φ.C c).f0.exists_isMap φ (φ' := φ.comp (constF O.κ.e (O.var c))) (x' := genPt G ≫ jG ≫ πB ≫ genι O.s.T.Z) rfl (by`. Use `congrArg (· ≫ genι O.s.T.Z) hpt` as an intermediate fact. Simplify `this)` using `only [Category.assoc]`. Establish `hu : IsEigBasis O.s.T.Z (φ.comp (constF O.κ.e (O.var c))) (genPt G ≫ jG ≫ πB ≫ genι O.s.T.Z) (embB D a) (u a V f hf G.functionField (genPt G ≫ jG) hxV)`. Use `(hL.2.2.2.1 a).1 V f hf G.functionField (genPt G ≫ jG) hxV (φ.comp (algebraMap _ (O.var c).Fn)) (by` as an intermediate fact.
+
+Establish `h1` using `congrArg (· ≫ genStr O.s.T.Z ≫ spMap O.κ.e.toRingHom) hpt`. Simplify using `only [Category.assoc] at h1 ⊢`. Rewrite using `[h1, ← Category.assoc (O.Φ.C c).π, ← Category.assoc (genericPt _), genericPt_π_genStr, ← Spec.map_comp, ← Spec.map_comp]`. Use `congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext fun z => ?_))` and prove the remaining obligations. Simplify using `[constF])`.
+
+Rewrite `this` using `[Category.assoc]`. Conclude with `this`. Set `aG : Γ((fl₀ a).F i.succ, W) → Fin (rkB D.what₂.Tau O.N O.j a) → G.functionField` to `fun t b => TangentOrigin.evalPt (genPt G ≫ j) W hx (((hf.pullback π₀).basis hWV).repr (((fl₀ a).ι i.succ).app W t) b)`. Establish `key : ∃ d : Fin (rkB D.what₂.Tau O.N O.j a) → G.functionField, ∀ (c₁ : (((fl₀ a).root i).pull j).ι) (hW₁ : W ≤ (c₁ PUnit.unit).U) (t : Γ((fl₀ a).F i.succ, W)), ((fl₀ a).π i).app W t = Twist.resM _ hW₁ ((c₁ PUnit.unit).e 0) → ∑ b, aG t b * d b = ((r a i c₁)⁻¹ : G.functionFieldˣ)`. Establish `H1` using `fun c₁ hW₁ t ht => hc.2.2 a i hr c₁ V f hf W hW₁ hWV t ht hx hxV`.
+
+Establish `hv` using `funext (hg (embB D a))`. Take `⟨τ, _ | _⟩` from `a`. Take `⟨d, hd, -⟩` from `hu.2 _ ⟨g.tan _ (Fin.cast hr i.rev), g.eig _ (Fin.cast hr i.rev)⟩`. Use `⟨d, fun c₁ hW₁ t ht => (H1 c₁ hW₁ t ht (Fin.cast hr i.rev) d ?_).2 ?_⟩` and prove the remaining obligations. Rewrite `hd` using `[hg]`.
+
+Conclude with `hd`. Use `i.2` as an intermediate fact. Simplify using `only [Fin.val_cast, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Take `⟨d, hd⟩` from `exists_coord_form g _ hu.1 (Fin.cast hr i)`.
+
+Use `⟨d, fun c₁ hW₁ t ht => ?_⟩` and prove the remaining obligations. Take `⟨w, cf, h1, h2, h3, -⟩` from `H1 c₁ hW₁ t ht`. Rewrite using `[← h3]`. Conclude with `(hd _ w cf h1 (hv ▸ h2)).symm`. Take `⟨d, hd⟩` from `key`.
+
+Use `⟨W, hW.trans inf_le_left, hx, fun t => ∑ b, aG t b * d b, fun s t => ?_, ⟨t₀, ?_⟩, fun t ht => hd ch _ t ht, fun t ht => hd ch' _ t ht⟩` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [aG]`. Rewrite using `[Scheme.Modules.Hom.app_smul, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, mul_assoc]`.
+
+Rewrite using `[ht₀, Twist.resM_resM]`.
+-/
 theorem exists_coordFunctional : ∀ (D : D7) (O : Setup D) (hO : O.Core) (B : ℝ) (hB : 2 ≤ B) (R : ℝ) (hR : 2 ≤ R) (c : O.s.Comp)
     (Bs : Scheme.{0}) [IsIntegral Bs] (q : Bs ⟶ Sp (𝓞 D.what₂.LL)) (arq : IsArithVar q (dimGr D.what₂.Tau O.N O.j))
     (nBs : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Bs) (E : D.what₂.Tau × Bool → Bs.Modules)

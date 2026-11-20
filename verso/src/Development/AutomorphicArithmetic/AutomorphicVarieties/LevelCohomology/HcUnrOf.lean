@@ -4,6 +4,23 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LengthCyclotom
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module UpperTheory.V UpperTheory.V.X
 
+/- English proof (translation)
+Introduce `Ω _ _ _ k _ γ K hKn hK SP T z hz hS A hA g hg hgK`. Establish `h1 : z (toGS Ω SP 1) = 0`. Establish `e` using `hz 1 1`. Rewrite `e` using `[mul_one, map_one γ, Units.val_one, one_mul]`. Take the linear combination `(-1 : k) * e`.
+
+Take `⟨hTop, hPl, -, hAb⟩` from `UpperTheory.V.Kum.placeDict ℚ Ω`. Distinguish the cases in `hAT : A = ⊤`. Substitute `hAT` using the available equality. Rewrite `hg` using `[hTop, Subgroup.mem_bot]`. Substitute `hg` using the available equality.
+
+Conclude with `h1`. Take `⟨v, hv⟩` from `hPl A hAT`. Distinguish the cases in `hvS : v ∈ SP`. Break down `hS v hvS with ⟨p, hpT, hp⟩ | ⟨A', hA', hz0⟩` into its components or cases. Conclude with `absurd ((hAb A v p hv).mpr hp) (hA p hpT)`.
+
+Take `⟨σ, hσ⟩` from `exists_smul_eq_of_isPlaceOver hA' hv`. Substitute `hσ` using the available equality. Establish `hc : σ⁻¹ * g * σ ∈ Ine (F` using `ℚ) A' := GlobalTheory.Cut.ShaBound.conj_mem_Ine' hg`. Establish `hcK : σ⁻¹ * g * σ ∈ K`. Establish `e` using `hKn.conj_mem g hgK σ⁻¹`.
+
+Simplify `e` using `only [inv_inv]`. Establish `e0` using `hz0 _ hc hcK`. Establish `e1` using `hz g σ`. Establish `e2` using `hz σ (σ⁻¹ * g * σ)`. Establish `hγ : γ g = 1` using `hK hgK`.
+
+Establish `hm : σ * (σ⁻¹ * g * σ) = g * σ` using `by group`. Rewrite `e1` using `[hγ, Units.val_one, one_mul]`. Rewrite `e2` using `[hm, e0, mul_zero, add_zero]`. Take the linear combination `e2 - e1`. Establish `hN : g ∈ NS Ω SP`.
+
+Unfold `NS`. Apply `Subgroup.le_topologicalClosure` to reduce the goal to its premises. Apply `Subgroup.subset_normalClosure` to reduce the goal to its premises. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨v, hvS, A, hv, hg⟩`.
+
+Establish `e : toGS Ω SP g = toGS Ω SP 1`. Rewrite using `[map_one]`. Conclude with `(QuotientGroup.eq_one_iff g).mpr hN`. Rewrite using `[e]`. Conclude with `h1`.
+-/
 theorem UpperTheory.V.X.unrOf :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (k : Type) [Field k] (γ : G ℚ Ω →* kˣ) (K : Subgroup (G ℚ Ω)) [K.Normal], K ≤ γ.ker → ∀ (SP : Set (HeightOneSpectrum (𝓞 ℚ))) (T : Finset ℕ) (z : GS Ω SP → k), (∀ g h, z (toGS Ω SP (g * h)) = z (toGS Ω SP g) + (γ g : k) * z (toGS Ω SP h)) → (∀ v ∈ SP, (∃ p ∈ T, ((p : ℕ) : 𝓞 ℚ) ∈ v.asIdeal) ∨ ∃ A, IsPlaceOver A v ∧ ∀ g ∈ Ine (F := ℚ) A, g ∈ K → z (toGS Ω SP g) = 0) → ∀ A : ValuationSubring Ω, (∀ p ∈ T, ¬ A.valuation (p : Ω) < 1) → ∀ g ∈ Ine (F := ℚ) A, g ∈ K → z (toGS Ω SP g) = 0 := by
   intro Ω _ _ _ k _ γ K hKn hK SP T z hz hS A hA g hg hgK

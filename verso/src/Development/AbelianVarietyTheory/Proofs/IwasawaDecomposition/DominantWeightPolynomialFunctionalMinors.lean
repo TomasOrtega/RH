@@ -18,6 +18,13 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 
 namespace GlobalTheory.Mem.CanonicalSurjection
 
+/- English proof (translation)
+Introduce `D Pl w N nu ν hfit Q hQ M`. Use `haveI : Infinite D.what₂.LL := Infinite.of_injective (Nat.cast : ℕ → D.what₂.LL) Nat.cast_injective`. Establish `h` using `GlobalTheory.T.weightPolynomial_frames_mem_span_bideterminantProducts D.what₂.LL (Cw D w) (Pl.iL w) D.what₂.Tau N ν M Q hQ`. Establish `e : atBas Pl w M Q = fun y : D.what₂.Tau → Matrix (Fin N) (Fin N) (Cw D w) => MvPolynomial.eval (fun k : D.what₂.Tau × Fin N × Fin N => (M k.1 * y k.1) k.2.1 k.2.2) (MvPolynomial.map (Pl.iL w) Q)` using `rfl`. Rewrite using `[e]`.
+
+Use `Submodule.span_le.2 ?_ h` and prove the remaining obligations. Introduce and unpack `F ⟨g, hg, rfl⟩`. Take `⟨J, hJ⟩` from `GlobalTheory.T.prod_bideterminants_eq_columnChoice_minorProduct D (Cw D w) N nu ν hfit g hg`. Take `⟨ph, hph⟩` from `GlobalTheory.T.exists_functional_frameMinorPolynomials_eq_minorProduct D (Cw D w) N nu J`. Use `⟨ph, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[hJ y]`. Conclude with `hph _`.
+-/
 theorem canOnto_all : ∀ (D : D7) (Pl : Examples₂.EntPl D), CanOnto Pl := by
   intro D Pl w N nu ν hfit Q hQ M
   haveI : Infinite D.what₂.LL := Infinite.of_injective (Nat.cast : ℕ → D.what₂.LL) Nat.cast_injective

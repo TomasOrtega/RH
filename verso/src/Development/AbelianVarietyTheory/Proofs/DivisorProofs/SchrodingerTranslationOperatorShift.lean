@@ -15,6 +15,19 @@ open Classical
 
 namespace GlobalTheory.ThK.EvAt0.PolD
 
+/- English proof (translation)
+Use `⟨2 * Real.pi * Complex.I * ((trP F κ a w.2 - trP F κ w.1 b : ℝ) : ℂ), ?_⟩` and prove the remaining obligations. Introduce `f g g' hg hg'`. Use extensionality with `y`. Establish `hlin : ∀ x c : κ → mixedEmbedding.mixedSpace F, lin c x = ((trP F κ x c : ℝ) : ℂ)` using `fun x c => rfl`. Establish `hL : ∀ x c : κ → mixedEmbedding.mixedSpace F, linL c x = trP F κ x c` using `fun x c => by`.
+
+Rewrite using `[linL_apply]`. Both sides reduce to the same expression. Establish `hadd : trP F κ (y + w.1) b = trP F κ y b + trP F κ w.1 b`. Simplify using `[trP, add_mul, Finset.sum_add_distrib, map_add]`. Use `set φ : (κ → mixedEmbedding.mixedSpace F) → ℂ := fun z => Complex.exp (-(2 * Real.pi * Complex.I) * ((trP F κ z w.2 + trP F κ w.1 w.2 / 2 : ℝ) : ℂ)) with hφdef`.
+
+Establish `hS : ∀ h : (κ → mixedEmbedding.mixedSpace F) → ℂ, schrF (trP F κ) w h = fun z => φ z * h (z + w.1)` using `fun h => rfl`. Establish `h1 : HasFDerivAt (fun z => ((trP F κ z w.2 + trP F κ w.1 w.2 / 2 : ℝ) : ℂ)) (Complex.ofRealCLM.comp (linL w.2)) y`. Use `Complex.ofRealCLM.hasFDerivAt.comp y ((linL w.2).hasFDerivAt.add_const (trP F κ w.1 w.2 / 2))` as an intermediate fact. Conclude with `this.congr_of_eventuallyEq (Filter.Eventually.of_forall fun z => by simp [hL])`. Establish `hφ : HasFDerivAt φ (Complex.exp (-(2 * Real.pi * Complex.I) * ((trP F κ y w.2 + trP F κ w.1 w.2 / 2 : ℝ) : ℂ)) • ((-(2 * Real.pi * Complex.I)) • Complex.ofRealCLM.comp (linL w.2))) y` using `(h1.const_mul (-(2 * Real.pi * Complex.I))).cexp`.
+
+Establish `hf : HasFDerivAt (fun z => f (z + w.1)) (fderiv ℝ f (y + w.1)) y`. Use `(f.differentiableAt (x := y + w.1)).hasFDerivAt.comp y ((hasFDerivAt_id y).add_const w.1)` as an intermediate fact. Conclude with `this`. Establish `hgd : fderiv ℝ g y a = φ y * fderiv ℝ f (y + w.1) a + f (y + w.1) * (φ y * (-(2 * Real.pi * Complex.I) * ((trP F κ a w.2 : ℝ) : ℂ)))`. Establish `hm : HasFDerivAt (fun z => φ z * f (z + w.1)) _ y` using `hφ.mul hf`.
+
+Rewrite using `[hg, hS, hm.fderiv]`. Simplify using `[hL, hφdef]`. Establish `hgy : g y = φ y * f (y + w.1)` using `by rw [hg, hS]`. Establish `hg'y : g' y = φ y * dOp a b f (y + w.1)` using `by rw [hg', hS]`. Rewrite using `[hg'y, SchwartzMap.add_apply, SchwartzMap.smul_apply, smul_eq_mul, dOp_apply, dOp_apply, hgd, hgy, hlin, hlin, hadd]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem schrF_dOp_conj (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
     (w : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)) (a b : κ → mixedEmbedding.mixedSpace F) :
     ∃ t : ℂ, ∀ f g g' : SInf F κ, ⇑g = schrF (trP F κ) w ⇑f → ⇑g' = schrF (trP F κ) w ⇑(dOp a b f) →

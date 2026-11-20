@@ -16,6 +16,11 @@ section Abstract
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Use `⟨{ carrier := {g | π g v = v}, mul_mem' := ?_, one_mem' := ?_, inv_mem' := ?_ }, hπ v, fun k hk => hk⟩` and prove the remaining obligations. Introduce `a b (ha : π a v = v) (hb : π b v = v) show π (a * b) v = v`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`. Use `show π 1 v = v`. Simplify using the standard rewrite rules.
+
+Introduce `a (ha : π a v = v) show π a⁻¹ v = v conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules.
+-/
 private theorem exists_stab {π : Representation ℂ G V} (hπ : IsSmooth π) (v : V) :
     ∃ K : Subgroup G, IsOpen (K : Set G) ∧ ∀ k ∈ K, π k v = v := by
   refine ⟨{ carrier := {g | π g v = v}, mul_mem' := ?_, one_mem' := ?_, inv_mem' := ?_ }, hπ v, fun k hk => hk⟩
@@ -30,6 +35,15 @@ private theorem exists_stab {π : Representation ℂ G V} (hπ : IsSmooth π) (v
     rw [← Module.End.mul_apply, ← map_mul]
     simp
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨v₀, hv₀⟩ : ∃ v, l v ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hl (LinearMap.ext h)`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_` and prove the remaining obligations.
+
+Establish `h1 : IsOpen ((↑) ⁻¹' {g : G | π g v₀ = v₀} : Set B)` using `(hπ v₀).preimage continuous_subtype_val`. Use `Filter.mem_of_superset (h1.mem_nhds (by simp)) fun b hb' => ?_` and prove the remaining obligations. Establish `h2 : π (b : G) v₀ = v₀` using `hb'`. Establish `h3` using `hb b v₀`. Rewrite `h3` using `[h2]`.
+
+Establish `h4 : (χ b : ℂ) = 1`. Establish `: ((χ b : ℂ) - 1) * l v₀ = 0` using `by rw [sub_mul, ← h3]; ring`. Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `sub_eq_zero.1 h`. Conclude with `absurd h hv₀`.
+
+Conclude with `Units.ext h4`.
+-/
 private theorem ker_isOpen {B : Subgroup G} {χ : B →* ℂˣ} {π : Representation ℂ G V} (hπ : IsSmooth π)
     {l : V →ₗ[ℂ] ℂ} (hl : l ≠ 0) (hb : ∀ (b : B) (v : V), l (π b v) = (χ b : ℂ) * l v) :
     IsOpen (χ.ker : Set B) := by
@@ -50,6 +64,13 @@ private theorem ker_isOpen {B : Subgroup G} {χ : B →* ℂˣ} {π : Representa
     · exact absurd h hv₀
   exact Units.ext h4
 
+/- English proof (translation)
+Introduce and unpack `f ⟨h, K, hK, hf⟩`. Use `⟨fun b x => ?_, K.comap (MulAut.conj g⁻¹).toMonoidHom, ?_, fun k hk x => ?_⟩` and prove the remaining obligations. Use `show f (b * x * g) = _ * f (x * g)`. Rewrite using `[mul_assoc, h]`. Conclude with `hK.preimage (by show Continuous fun x : G => g⁻¹ * x * g⁻¹⁻¹ fun_prop)`.
+
+Use `show f (x * k * g) = f (x * g)`. Establish `hk' : g⁻¹ * k * g⁻¹⁻¹ ∈ K` using `hk`. Use `hf _ hk' (x * g)` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`.
+
+Use `group`.
+-/
 private theorem indF_stable (B : Subgroup G) (χ : B →* ℂˣ) (g : G) :
     ∀ f ∈ indF B χ, rightReg ℂ G ℂ g f ∈ indF B χ := by
   rintro f ⟨h, K, hK, hf⟩
@@ -69,9 +90,21 @@ private theorem indF_stable (B : Subgroup G) (χ : B →* ℂˣ) (g : G) :
 private def rho (B : Subgroup G) (χ : B →* ℂˣ) : Representation ℂ G (indF B χ) :=
   sub (rightReg ℂ G ℂ) (indF B χ) (indF_stable B χ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem rho_apply (B : Subgroup G) (χ : B →* ℂˣ) (g : G) (φ : indF B χ) (x : G) :
     ((rho B χ g φ : indF B χ) : G → ℂ) x = (φ : G → ℂ) (x * g) := rfl
 
+/- English proof (translation)
+Introduce `φ`. Take `⟨-, K, hK, hf⟩` from `φ.2`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `g (hg : rho B χ g φ = φ)`. Establish `h1 : IsOpen ((fun x => g⁻¹ * x) ⁻¹' (K : Set G))` using `hK.preimage (by fun_prop)`.
+
+Use `Filter.mem_of_superset (h1.mem_nhds (by simp)) fun y hy => ?_` and prove the remaining obligations. Establish `hy' : g⁻¹ * y ∈ K` using `hy`. Use `show rho B χ y φ = φ`. Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Rewrite using `[rho_apply]`.
+
+Establish `h2 : (φ : G → ℂ) (x * y) = (φ : G → ℂ) (x * g)`. Use `hf _ hy' (x * g)` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Use `group`.
+
+Rewrite using `[h2, ← rho_apply, hg]`.
+-/
 private theorem rho_smooth (B : Subgroup G) (χ : B →* ℂˣ) : IsSmooth (rho B χ) := by
   intro φ
   obtain ⟨-, K, hK, hf⟩ := φ.2
@@ -106,16 +139,29 @@ private def iota {B : Subgroup G} {χ : B →* ℂˣ} {π : Representation ℂ G
     refine Subtype.ext (funext fun g => ?_)
     simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem iota_apply {B : Subgroup G} {χ : B →* ℂˣ} {π : Representation ℂ G V} (hπ : IsSmooth π)
     (l : V →ₗ[ℂ] ℂ) (hb : ∀ (b : B) (v : V), l (π b v) = (χ b : ℂ) * l v) (v : V) (g : G) :
     ((iota hπ l hb v : indF B χ) : G → ℂ) g = l (π g v) := rfl
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Rewrite using `[rho_apply, iota_apply, iota_apply, map_mul, Module.End.mul_apply]`.
+-/
 private theorem iota_equiv {B : Subgroup G} {χ : B →* ℂˣ} {π : Representation ℂ G V} (hπ : IsSmooth π)
     (l : V →ₗ[ℂ] ℂ) (hb : ∀ (b : B) (v : V), l (π b v) = (χ b : ℂ) * l v) (g : G) (v : V) :
     iota hπ l hb (π g v) = rho B χ g (iota hπ l hb v) := by
   refine Subtype.ext (funext fun x => ?_)
   rw [rho_apply, iota_apply, iota_apply, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.ker_eq_bot]`. Set `S : Subrepresentation π` to `⟨LinearMap.ker (iota hπ l hb), fun g v hv => by`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[iota_equiv, hv, map_zero]⟩`. Break down `hirr.eq_bot_or_eq_top S with h | h` into its components or cases.
+
+Conclude with `congrArg Subrepresentation.toSubmodule h`. It suffices to derive a contradiction. Use `hl (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Establish `hv : v ∈ S.toSubmodule` using `by rw [h]; trivial`. Establish `h0 : iota hπ l hb v = 0` using `hv`.
+
+Use `congrArg (fun φ : indF B χ => (φ : G → ℂ) 1) h0` as an intermediate fact. Simplify `this` using `[iota_apply]`.
+-/
 private theorem iota_inj {B : Subgroup G} {χ : B →* ℂˣ} {π : Representation ℂ G V} (hπ : IsSmooth π)
     (hirr : π.IsIrreducible) {l : V →ₗ[ℂ] ℂ} (hl : l ≠ 0)
     (hb : ∀ (b : B) (v : V), l (π b v) = (χ b : ℂ) * l v) : Function.Injective (iota hπ l hb) := by
@@ -134,6 +180,25 @@ private theorem iota_inj {B : Subgroup G} {χ : B →* ℂˣ} {π : Representati
 
 end Abstract
 
+/- English proof (translation)
+Introduce `hF hC hG E _ _ _ _ n σ q hq V _ _ π hπ hirr A hA χ hχ l c hl hlb hlA`. Take `⟨hBc, hNc, ⟨K, hKo, hKc, hKBK⟩, hθ, hs⟩` from `hG E n`. Take `⟨hsc, hsq, hsB, hsN⟩` from `hs σ q hq`. Take `⟨hlc, hsc2, ht2, -, -⟩` from `UpperTheory.V.Z.Tf.Orb.gLTop E n`. Use `haveI : TotallyDisconnectedSpace (GL (Fin n) E) := inferInstance`.
+
+Establish `hχo : IsOpen (χ.ker : Set (borel E (Fin n)))` using `ker_isOpen hπ hl hlb`. Use `set ι := iota hπ l hlb with hι`. Establish `hinj : Function.Injective ι` using `iota_inj hπ hirr hl hlb`. Establish `key : ∀ v g, ((ι (A v) : indF (borel E (Fin n)) χ) : GL (Fin n) E → ℂ) (sg σ g) = c * l (π g v)`. Introduce `v g`.
+
+Rewrite using `[hι, iota_apply, ← hA g v, hlA]`. Use `⟨fun hA0 hc => hA0 (LinearMap.ext fun v => ?_), fun ψ hψ hψσ v => ?_⟩` and prove the remaining obligations. Use `hinj ?_` and prove the remaining obligations. Rewrite using `[LinearMap.zero_apply, map_zero]`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations.
+
+Choose the witnesses or unpack the hypotheses as in `⟨g', rfl⟩ : ∃ g', sg σ g' = g := by`. Take `⟨r, hr⟩ : ∃ r, q = r + 1` from `⟨q - 1, by have := hq.pos; omega⟩`. Use `⟨(sg σ)^[r] g, ?_⟩` and prove the remaining obligations. Use `hsq g` as an intermediate fact. Rewrite `this` using `[hr, Function.iterate_succ_apply']`.
+
+Conclude with `this`. Rewrite using `[key, hc, zero_mul]`. Both sides reduce to the same expression. Use `GlobalTheory.CompanionTheory.PRep.WhitExact.twKer_whitChar_reflect E ψ hψ n π (rho (borel E (Fin n)) χ) hπ (rho_smooth _ _) ι hinj (fun g v => iota_equiv hπ l hlb g v) _ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hnot`.
+
+Take `⟨l₀, hne, hl₀⟩` from `Submodule.exists_le_ker_of_notMem hnot`. Take `⟨L, hL⟩` from `LinearMap.exists_extend l₀`. Establish `hLv : ∀ φ : indF (borel E (Fin n)) χ, L (φ : GL (Fin n) E → ℂ) = l₀ φ` using `fun φ => LinearMap.congr_fun hL φ`. Establish `heq : ∀ (u : unipB E (Fin n)), ∀ φ ∈ indF (borel E (Fin n)) χ, L (fun x => φ (x * u)) = ((whitChar ψ n u : ℂˣ) : ℂ) * L φ`. Introduce `u φ hφ`.
+
+Establish `h1 : rho (borel E (Fin n)) χ u ⟨φ, hφ⟩ - ((whitChar ψ n u : ℂˣ) : ℂ) • ⟨φ, hφ⟩ ∈ twKer (rho (borel E (Fin n)) χ) (unipB E (Fin n)) (whitChar ψ n)` using `Submodule.subset_span ⟨u, _, rfl⟩`. Establish `h2` using `hl₀ h1`. Rewrite `h2` using `[LinearMap.mem_ker, map_sub, map_smul, smul_eq_mul, sub_eq_zero, ← hLv, ← hLv]`. Conclude with `h2`. Establish `hinv` using `hF (GL (Fin n) E) (borel E (Fin n)) (unipB E (Fin n)) hBc hNc K hKo hKc hKBK (sg σ) q hq.pos hsc hsq hsB (fun u hu => sg_mem_unipB σ hu) (hC E n σ) χ (whitChar ψ n) hχo (hθ ψ hψ) hχ (hsN ψ hψσ) L heq`.
+
+Establish `h3` using `hinv _ (ι (A v)).2`. Establish `h4 : ((ι (A v) : indF (borel E (Fin n)) χ) : GL (Fin n) E → ℂ) ∘ sg σ = ((c • ι v : indF (borel E (Fin n)) χ) : GL (Fin n) E → ℂ)`. Use function extensionality and compare the values at `g`. Conclude with `key v g`. Rewrite `h3` using `[h4, hLv, hLv, map_smul, smul_eq_mul]`.
+
+Apply `hne` to reduce the goal to its premises. Rewrite using `[map_sub, map_sub, map_smul, map_smul, smul_eq_mul, ← h3]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem core : FunInv → GLCells → GLFacts → Core := by
   intro hF hC hG E _ _ _ _ n σ q hq V _ _ π hπ hirr A hA χ hχ l c hl hlb hlA
   obtain ⟨hBc, hNc, ⟨K, hKo, hKc, hKBK⟩, hθ, hs⟩ := hG E n

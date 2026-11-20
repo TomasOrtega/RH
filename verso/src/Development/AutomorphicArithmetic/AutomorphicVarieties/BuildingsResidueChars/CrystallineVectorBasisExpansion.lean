@@ -12,6 +12,11 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module Qp V]
     (ρ : Representation Qp G V) {d : ℕ} (e : Basis (Fin d) Qp V)
 
+/- English proof (translation)
+Simplify using `only [map_sum, LinearMap.rTensor_tmul, TensorProduct.lid_tmul, Basis.coord_apply, Basis.repr_self]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Finsupp.single_apply, hj]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem coord_sum (c : Fin d → B) (i : Fin d) :
     (TensorProduct.lid Qp B) (LinearMap.rTensor B (e.coord i) (∑ j, e j ⊗ₜ[Qp] c j)) = c i := by
   simp only [map_sum, LinearMap.rTensor_tmul, TensorProduct.lid_tmul, Basis.coord_apply, Basis.repr_self]
@@ -21,6 +26,13 @@ private theorem coord_sum (c : Fin d → B) (i : Fin d) :
     simp [Finsupp.single_apply, hj]
   · simp
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul v b`. Use `⟨fun j => e.repr v j • b, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← e.sum_repr v]`.
+
+Rewrite using `[sum_tmul]`. Conclude with `Finset.sum_congr rfl fun j _ => smul_tmul _ _ _`. Consider the case `add x y hx hy`. Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`.
+
+Conclude with `⟨a + b, by simp [tmul_add, Finset.sum_add_distrib]⟩`.
+-/
 private theorem exists_coord (x : V ⊗[Qp] B) : ∃ c : Fin d → B, x = ∑ j, e j ⊗ₜ[Qp] c j := by
   induction x using TensorProduct.induction_on with
   | zero => exact ⟨0, by simp⟩
@@ -34,6 +46,11 @@ private theorem exists_coord (x : V ⊗[Qp] B) : ∃ c : Fin d → B, x = ∑ j,
     obtain ⟨b, rfl⟩ := hy
     exact ⟨a + b, by simp [tmul_add, Finset.sum_add_distrib]⟩
 
+/- English proof (translation)
+Simplify using `only [map_sum, Matrix.mulVec, dotProduct, tmul_sum, Matrix.map_apply, LinearMap.toMatrix_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ρ g (e j) ⊗ₜ[Qp] PD.actB g (c j) = _`. Use `conv_lhs => rw [← e.sum_repr (ρ g (e j))]`.
+
+Rewrite using `[sum_tmul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_tmul, Algebra.smul_def]`.
+-/
 private theorem act_sum (c : Fin d → B) (g : G) :
     actVB PD ρ g (∑ j, e j ⊗ₜ[Qp] c j) = ∑ i, e i ⊗ₜ[Qp]
       ((LinearMap.toMatrix e e (ρ g)).map (algebraMap Qp B)).mulVec (fun j => PD.actB g (c j)) i := by
@@ -46,6 +63,17 @@ private theorem act_sum (c : Fin d → B) (g : G) :
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [smul_tmul, Algebra.smul_def]
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `exists_coord e x`. Simplify using `only [Dcris, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at hx`. Establish `hM' : M' * M = 1` using `mul_eq_one_comm.1 hM`. Establish `hy : ∀ g, ((LinearMap.toMatrix e e (ρ g)).map (algebraMap Qp B)).mulVec (fun j => PD.actB g (y j)) = y`. Introduce `g`.
+
+Use function extensionality and compare the values at `i`. Establish `h` using `hx g`. Rewrite `h` using `[act_sum]`. Rewrite using `[← coord_sum e y i, ← h, coord_sum]`. Establish `h2 : ∀ g, M' * (LinearMap.toMatrix e e (ρ g)).map (algebraMap Qp B) = M'.map (PD.actB g)`.
+
+Introduce `g`. Establish `h1 : M.map (PD.actB g) * M'.map (PD.actB g) = 1`. Rewrite using `[← Matrix.map_mul, hM, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `set R := (LinearMap.toMatrix e e (ρ g)).map (algebraMap Qp B) with hR`. Establish `: R * (M.map (PD.actB g) * M'.map (PD.actB g)) = M * M'.map (PD.actB g)`.
+
+Rewrite using `[← Matrix.mul_assoc, hg g]`. Rewrite `this` using `[h1, Matrix.mul_one]`. Rewrite using `[this, ← Matrix.mul_assoc, hM', Matrix.one_mul]`. Use `choose c hc using fun i => PD.invB (M'.mulVec y i) fun g => by conv_rhs => rw [← hy g, Matrix.mulVec_mulVec, h2 g]`. Simplify using `[Matrix.mulVec, dotProduct]`.
+
+Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `h3 : (fun j => algebraMap K₀ B (c j)) = M'.mulVec y` using `funext hc`. Rewrite using `[h3, Matrix.mulVec_mulVec, hM, Matrix.one_mulVec]`.
+-/
 private theorem core (M M' : Matrix (Fin d) (Fin d) B) (hM : M * M' = 1)
     (hg : ∀ g, (LinearMap.toMatrix e e (ρ g)).map (algebraMap Qp B) * M.map (PD.actB g) = M)
     (x : V ⊗[Qp] B) (hx : x ∈ Dcris PD ρ) :
@@ -78,6 +106,11 @@ private theorem core (M M' : Matrix (Fin d) (Fin d) B) (hM : M * M' = 1)
 
 end Coord
 
+/- English proof (translation)
+Introduce `l _ K V _ _ _ ρ d e M M' hM hg x hx`. Use `core ((PP l).PD K) ρ e M M' hM (fun g => ?_) x hx` and prove the remaining obligations. Establish `h5 : M.map (((PP l).PD K).actB g) = M.map ((PP l).actQ (g : GQ l))`. Use extensionality with `i j`. Conclude with `(PP l).PD_actB K g _`.
+
+Rewrite using `[h5, hg]`.
+-/
 theorem UpperTheory.crystalline_vector_basis_expansion :
     ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) {V : Type} [AddCommGroup V] [Module ℚ_[l] V] [FiniteDimensional ℚ_[l] V] (ρ : Representation ℚ_[l] ↥(GK K) V) {d : ℕ} (e : Basis (Fin d) ℚ_[l] V) (M M' : Matrix (Fin d) (Fin d) (Bcr l)), M * M' = 1 → (∀ g : ↥(GK K), (LinearMap.toMatrix e e (ρ g)).map (algebraMap ℚ_[l] (Bcr l)) * M.map ((PP l).actQ (g : GQ l)) = M) → ∀ x ∈ Dcris ((PP l).PD K) ρ, ∃ c : Fin d → ↥(K0 K), x = ∑ i, e i ⊗ₜ[ℚ_[l]] (M.mulVec (fun j => algebraMap ↥(K0 K) (Bcr l) (c j)) i) := by
   intro l _ K V _ _ _ ρ d e M M' hM hg x hx

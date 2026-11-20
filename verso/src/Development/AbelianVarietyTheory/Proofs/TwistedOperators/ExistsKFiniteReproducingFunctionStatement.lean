@@ -33,5 +33,8 @@ open Formalism.REAL Formalism.MainNotions.S GlobalTheory.SmoothGlob GlobalTheory
 open scoped InnerProductSpace
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ReproKFin.reproduce_one | exact GlobalTheory.ReproKFin.reproduce_one | (intros; apply GlobalTheory.ReproKFin.reproduce_one <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_K_finite_reproducing_function : ∀ (n : ℕ) (ε : Fin n → Bool) (W : Type) [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (ρ : Representation ℂ (Formalism.REAL.KG ε) W), GlobalTheory.Published.AutFin.IsContRep ρ → ∃ e : Formalism.REAL.KG ε → ℂ, KFinFun ε e ∧ ∀ h ∈ GlobalTheory.Published.AutFin.coeffSpan ρ, ∫ k, e k * h k ∂(Formalism.REAL.muK ε) = h 1 := by
   first | exact @GlobalTheory.ReproKFin.reproduce_one | exact GlobalTheory.ReproKFin.reproduce_one | (intros; apply GlobalTheory.ReproKFin.reproduce_one <;> assumption)

@@ -8,9 +8,15 @@ namespace Formalism.MainNotions.BridgeLemma₂
 
 open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions Formalism.MainNotions.S Formalism.MainNotions.S.Cnt Formalism.MainNotions.BridgeLemma MeasureTheory
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[epsI]`.
+-/
 theorem deg_epsI_empty {N : ℕ} : epsI (∅ : Finset (Fin N)) = 0 := by
   funext x; simp [epsI]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x = a`. Substitute `hx` using the available equality. Simplify using `[epsI, ha]`. Simplify using `[epsI, hx]`.
+-/
 theorem deg_epsI_insert {N : ℕ} (I : Finset (Fin N)) (a : Fin N) (ha : a ∉ I) :
     epsI (insert a I) = epsI I + Pi.single a 1 := by
   funext x
@@ -18,6 +24,11 @@ theorem deg_epsI_insert {N : ℕ} (I : Finset (Fin N)) (a : Fin N) (ha : a ∉ I
   · subst hx; simp [epsI, ha]
   · simp [epsI, hx]
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `h.2 x`. Distinguish the cases in `hx : x ∈ I`. Use `⟨m + 1, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, epsI, if_pos hx]`. Use `push_cast`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨m, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, epsI, if_neg hx]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem deg_hc_int {N : ℕ} {μ : Fin N → ℝ} (h : IsHCParam μ) (I : Finset (Fin N)) (x : Fin N) :
     ∃ m : ℤ, (μ + epsI I) x - ((N : ℝ) - 1) / 2 = (m : ℝ) := by
   obtain ⟨m, hm⟩ := h.2 x
@@ -30,6 +41,9 @@ theorem deg_hc_int {N : ℕ} {μ : Fin N → ℝ} (h : IsHCParam μ) (I : Finset
     simp only [Pi.add_apply, epsI, if_neg hx]
     linarith
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `h.2 a`. Take `⟨m', hm'⟩` from `h.2 b`. Use `⟨m - m', ?_⟩` and prove the remaining obligations. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem deg_hc_diff {N : ℕ} {μ : Fin N → ℝ} (h : IsHCParam μ) (a b : Fin N) : ∃ m : ℤ, μ a - μ b = (m : ℝ) := by
   obtain ⟨m, hm⟩ := h.2 a
   obtain ⟨m', hm'⟩ := h.2 b
@@ -37,6 +51,13 @@ theorem deg_hc_diff {N : ℕ} {μ : Fin N → ℝ} (h : IsHCParam μ) (a b : Fin
   push_cast
   linarith
 
+/- English proof (translation)
+Use `⟨fun i j hij => ?_, deg_hc_int h I⟩` and prove the remaining obligations. Establish `h1` using `h.1 hij`. Establish `h2` using `h'.1 hij`. Establish `ha : a ∉ I` using `fun hh => lt_irrefl _ (hmax a hh)`. Simplify using `only [Pi.add_apply, epsI, Finset.mem_insert] at h2 ⊢`.
+
+Distinguish the cases in `hja : j = a`. Substitute `hja` using the available equality. Rewrite using `[if_neg ha]`. Apply the tactic sequence `split_ifs <;> linarith`. Distinguish the cases in `hia : i = a`.
+
+Substitute `hia` using the available equality. Establish `hj : j ∉ I` using `fun hh => lt_asymm hij (hmax j hh)`. Rewrite using `[if_neg ha, if_neg hj]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify `h2` using `[hja, hia]`.
+-/
 theorem deg_hc_drop {N : ℕ} {μ : Fin N → ℝ} (h : IsHCParam μ) (I : Finset (Fin N)) (a : Fin N)
     (hmax : ∀ x ∈ I, x < a) (h' : IsHCParam (μ + epsI (insert a I))) : IsHCParam (μ + epsI I) := by
   refine ⟨fun i j hij => ?_, deg_hc_int h I⟩
@@ -55,6 +76,13 @@ theorem deg_hc_drop {N : ℕ} {μ : Fin N → ℝ} (h : IsHCParam μ) (I : Finse
       linarith
     · simpa [hja, hia] using h2
 
+/- English proof (translation)
+Introduce `I`. Proceed by induction on `I using Finset.induction_on_max with`. Consider the case `empty => intro _`. Conclude with `h0`. Consider the case `insert a I hmax ih`.
+
+Introduce `h'`. Establish `ha : a ∉ I` using `fun hh => lt_irrefl _ (hmax a hh)`. Establish `h1` using `deg_hc_drop hμ I a hmax h'`. Use `hs I a ha h1 ?_ (ih h1)` and prove the remaining obligations. Rewrite using `[add_assoc, ← deg_epsI_insert I a ha]`.
+
+Conclude with `h'`.
+-/
 theorem deg_ind_up {N : ℕ} {μ : Fin N → ℝ} (hμ : IsHCParam μ) (Pr : Finset (Fin N) → Prop) (h0 : Pr ∅)
     (hs : ∀ I a, a ∉ I → IsHCParam (μ + epsI I) → IsHCParam (μ + epsI I + Pi.single a 1) → Pr I → Pr (insert a I)) :
     ∀ I, IsHCParam (μ + epsI I) → Pr I := by
@@ -69,6 +97,11 @@ theorem deg_ind_up {N : ℕ} {μ : Fin N → ℝ} (hμ : IsHCParam μ) (Pr : Fin
     rw [add_assoc, ← deg_epsI_insert I a ha]
     exact h'
 
+/- English proof (translation)
+Unfold `fdegHC`. Apply `div_pos` to reduce the goal to its premises. Conclude with `Finset.prod_pos fun a _ => Finset.prod_pos fun b hb => abs_pos.2 (sub_ne_zero.2 (h.1 (Finset.mem_filter.1 hb).2).ne')`. Use `Finset.prod_pos fun a _ => Finset.prod_pos fun b hb => ?_` and prove the remaining obligations. Establish `h1 : a.1 < b.1` using `(Finset.mem_filter.1 hb).2`.
+
+Establish `h2 : (a.1 : ℝ) < b.1` using `by exact_mod_cast h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem deg_fdeg_pos {N : ℕ} {μ : Fin N → ℝ} (h : IsHCParam μ) : 0 < fdegHC μ := by
   unfold fdegHC
   apply div_pos
@@ -79,6 +112,17 @@ theorem deg_fdeg_pos {N : ℕ} {μ : Fin N → ℝ} (h : IsHCParam μ) : 0 < fde
     have h2 : (a.1 : ℝ) < b.1 := by exact_mod_cast h1
     linarith
 
+/- English proof (translation)
+Establish `h0` using `deg_fdeg_pos hμ`. Use `deg_ind_up hμ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[deg_epsI_empty, add_zero, div_self h0.ne']`. Simplify using the standard rewrite rules. Introduce `I a ha h1 h2 ih`.
+
+Take `⟨ihl, ihu⟩` from `ih`. Establish `hr` using `Formalism.QuantumDeterminants.fdegRatio N (μ + epsI I) a h1.1.injective (deg_hc_diff h1) h2.1.injective`. Establish `hb` using `(Formalism.HermitianLatticeCounting.Final.ExpansionTerms.degStepBound N (μ + epsI I) a h1.1.injective (deg_hc_diff h1)).1 h2.1.injective`. Rewrite `hb` using `[← hr]`. Establish `hN : (0 : ℝ) < N`.
+
+Establish `: 0 < N` using `lt_of_le_of_lt (Nat.zero_le _) a.2`. Conclude with `this` after adjusting the coercions. Establish `hp1` using `deg_fdeg_pos h1`. Establish `e : fdegHC (μ + epsI I + Pi.single a 1) / fdegHC μ = (fdegHC (μ + epsI I) / fdegHC μ) * (fdegHC (μ + epsI I + Pi.single a 1) / fdegHC (μ + epsI I))`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[deg_epsI_insert I a ha, ← add_assoc, Finset.card_insert_of_notMem ha, pow_succ, e, mul_inv]`. Establish `hq : 0 ≤ fdegHC (μ + epsI I) / fdegHC μ` using `(div_pos hp1 h0).le`. Prove the components needed by the constructor for the conclusion. Use `mul_le_mul ihl ?_ (by positivity) hq` and prove the remaining obligations. Rewrite using `[← one_div]`.
+
+Conclude with `hb.1`. Conclude with `mul_le_mul ihu hb.2 (le_trans (by positivity) hb.1) (by positivity)`.
+-/
 theorem deg_set_bound {N : ℕ} {μ : Fin N → ℝ} (hμ : IsHCParam μ) : ∀ I : Finset (Fin N), IsHCParam (μ + epsI I) →
     ((N : ℝ) ^ I.card)⁻¹ ≤ fdegHC (μ + epsI I) / fdegHC μ ∧ fdegHC (μ + epsI I) / fdegHC μ ≤ (N : ℝ) ^ I.card := by
   have h0 := deg_fdeg_pos hμ
@@ -104,6 +148,15 @@ theorem deg_set_bound {N : ℕ} {μ : Fin N → ℝ} (hμ : IsHCParam μ) : ∀ 
       rw [← one_div]; exact hb.1
     · exact mul_le_mul ihu hb.2 (le_trans (by positivity) hb.1) (by positivity)
 
+/- English proof (translation)
+Break down `hs with rfl | rfl` into its components or cases. Rewrite `h'`, the goal using `[one_smul]`. Conclude with `deg_set_bound hμ I h'`. Establish `e : μ + (-1 : ℝ) • epsI I + epsI I = μ`. Rewrite using `[neg_one_smul, neg_add_cancel_right]`.
+
+Establish `h` using `deg_set_bound h' I (by rw [e]; exact hμ)`. Rewrite `h` using `[e]`. Establish `h0` using `deg_fdeg_pos hμ`. Establish `h1` using `deg_fdeg_pos h'`. Establish `hx : 0 < fdegHC μ / fdegHC (μ + (-1 : ℝ) • epsI I)` using `div_pos h0 h1`.
+
+Rewrite using `[← inv_div (fdegHC μ) (fdegHC (μ + (-1 : ℝ) • epsI I))]`. Use `⟨inv_anti₀ hx h.2, ?_⟩` and prove the remaining obligations. Establish `h5` using `inv_anti₀ (lt_of_lt_of_le (by`. Use `hx` as an intermediate fact. Conclude with `inv_pos.2 (lt_of_lt_of_le hx h.2)) le_rfl) h.1`.
+
+Rewrite `h5` using `[inv_inv]`. Then use the resulting hypothesis.
+-/
 theorem deg_set_bound' {N : ℕ} {μ : Fin N → ℝ} (hμ : IsHCParam μ) (I : Finset (Fin N)) (s : ℝ) (hs : s = 1 ∨ s = -1)
     (h' : IsHCParam (μ + s • epsI I)) :
     ((N : ℝ) ^ I.card)⁻¹ ≤ fdegHC (μ + s • epsI I) / fdegHC μ ∧ fdegHC (μ + s • epsI I) / fdegHC μ ≤ (N : ℝ) ^ I.card := by
@@ -132,8 +185,14 @@ def deg_VandLine (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 Cn
         ∀ A' : LocS W, GoodS D (lam' + s • epsI I) A' →
           A'.deg / A.deg = fdegHC (lam' + s • epsI I) / fdegHC lam'
 
+/- English proof (translation)
+Rewrite using `[dimS_eq]`.
+-/
 theorem deg_cast_r (D : D7) : ((2 * D.R.rS + D.R.k + 1 : ℕ) : ℝ) = (D.R.r : ℝ) := by rw [dimS_eq]
 
+/- English proof (translation)
+Introduce `hH τ w w' hTT θ hθ W hW lam' hl A hA I s hs A' hA'`. Rewrite using `[h hH τ w w' hTT θ hθ W hW lam' hl A hA I s hs A' hA', one_mul, Real.rpow_natCast, ← deg_cast_r]`. Conclude with `(deg_set_bound' hA.1 I s hs hA'.1).2`.
+-/
 theorem degree_ratio_one_of_vandermonde (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 Cn C1 : ℝ)
     (h : deg_VandLine D large₂ C' Cl Cg cb Cu cT CT C0 Cn C1) : DegreeRatioUnitShiftBound D large₂ C' Cl Cg cb Cu cT CT C0 Cn C1 1 := by
   intro hH τ w w' hTT θ hθ W hW lam' hl A hA I s hs A' hA'

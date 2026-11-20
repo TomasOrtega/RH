@@ -15,6 +15,13 @@ def innerAutTop {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
       change Continuous fun g : G => s⁻¹ * g * s
       fun_prop }
 
+/- English proof (translation)
+Unfold `Formalism.REAL.inUJ at hg ⊢`. Establish `hJ : (Formalism.REAL.Jm ε).map (starRingEnd ℂ) = Formalism.REAL.Jm ε`. Use extensionality with `i j`. Simplify using `only [Formalism.REAL.Jm, Matrix.map_apply, Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `hH : (g.map (starRingEnd ℂ))ᴴ = gᴴ.map (starRingEnd ℂ)`. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply]`. Establish `h2` using `congrArg (fun M : Matrix (Fin n) (Fin n) ℂ => M.map (starRingEnd ℂ)) hg`. Simplify using `only [Matrix.map_mul, hJ] at h2`.
+
+Rewrite using `[hH]`. Conclude with `h2`.
+-/
 theorem inUJ_map_conj {n : ℕ} (ε : Fin n → Bool) {g : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g) :
     Formalism.REAL.inUJ ε (g.map (starRingEnd ℂ)) := by
   unfold Formalism.REAL.inUJ at hg ⊢
@@ -34,9 +41,17 @@ noncomputable def conjUJHom {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.UJ 
   ((Units.map ((starRingEnd ℂ).mapMatrix (m := Fin n)).toMonoidHom).comp (Formalism.REAL.UJ ε).subtype).codRestrict
     (Formalism.REAL.UJ ε) fun g => inUJ_map_conj ε g.2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uMat_conjUJHom {n : ℕ} (ε : Fin n → Bool) (g : Formalism.REAL.UJ ε) :
     uMat (conjUJHom ε g) = (uMat g).map (starRingEnd ℂ) := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show uMat (conjUJHom ε (conjUJHom ε g)) = uMat g`. Rewrite using `[uMat_conjUJHom, uMat_conjUJHom]`. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem conjUJHom_invol {n : ℕ} (ε : Fin n → Bool) (g : Formalism.REAL.UJ ε) : conjUJHom ε (conjUJHom ε g) = g := by
   apply Subtype.ext
   apply Units.ext
@@ -45,6 +60,9 @@ theorem conjUJHom_invol {n : ℕ} (ε : Fin n → Bool) (g : Formalism.REAL.UJ �
   ext i j
   simp
 
+/- English proof (translation)
+Establish `hc : Continuous ((starRingEnd ℂ).mapMatrix (m` using `Fin n)).toMonoidHom := by show Continuous fun M : Matrix (Fin n) (Fin n) ℂ => M.map (starRingEnd ℂ)`. Conclude with `Continuous.matrix_map continuous_id Complex.continuous_conj`. Establish `hu` using `Continuous.units_map _ hc`. Conclude with `Continuous.subtype_mk (hu.comp continuous_subtype_val) _`.
+-/
 theorem continuous_conjUJHom {n : ℕ} (ε : Fin n → Bool) : Continuous (conjUJHom ε) := by
   have hc : Continuous ((starRingEnd ℂ).mapMatrix (m := Fin n)).toMonoidHom := by
     show Continuous fun M : Matrix (Fin n) (Fin n) ℂ => M.map (starRingEnd ℂ)
@@ -61,6 +79,13 @@ noncomputable def conjUJ {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.UJ ε 
   continuous_toFun := continuous_conjUJHom ε
   continuous_invFun := continuous_conjUJHom ε
 
+/- English proof (translation)
+Establish `hT : ∀ g, (C.trans (innerAutTop s)) (C.symm s⁻¹ * g * (C.symm s⁻¹)⁻¹) = C g`. Introduce `g`. Use `show s * C (C.symm s⁻¹ * g * (C.symm s⁻¹)⁻¹) * s⁻¹ = C g`. Simplify using `only [map_mul, map_inv, C.apply_symm_apply]`. Use `group`.
+
+Establish `key` using `gauge_map_of_iso n n ε ε rfl (C.trans (innerAutTop s)) (C.symm s⁻¹) (fun g => by rw [hT]; exact hC g) c c hc hc`. Establish `hf : (fun g => s * C g * s⁻¹) = ⇑(C.trans (innerAutTop s))`. Use function extensionality and compare the values at `g`. Both sides reduce to the same expression. Rewrite using `[hf]`.
+
+Conclude with `key`.
+-/
 theorem gauge_map_inner_comp {n : ℕ} (ε : Fin n → Bool) (C : Formalism.REAL.UJ ε ≃ₜ* Formalism.REAL.UJ ε)
     (hC : ∀ g, Formalism.REAL.hs (uMat (C g) - 1) = Formalism.REAL.hs (uMat g - 1)) (s : Formalism.REAL.UJ ε) (c : ℝ)
     (hc : IsGauge ε c) :
@@ -78,6 +103,15 @@ theorem gauge_map_inner_comp {n : ℕ} (ε : Fin n → Bool) (C : Formalism.REAL
   rw [hf]
   exact key
 
+/- English proof (translation)
+Introduce `n ε τ hτ`. Break down `hτ with rfl | rfl` into its components or cases. Use `⟨ContinuousMulEquiv.refl _, fun g => ?_, fun s c hc => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Conclude with `gauge_map_inner_comp ε (ContinuousMulEquiv.refl _) (fun g => rfl) s c hc`. Use `⟨conjUJ ε, fun g => uMat_conjUJHom ε g, fun s c hc => ?_⟩` and prove the remaining obligations. Use `gauge_map_inner_comp ε (conjUJ ε) (fun g => ?_) s c hc` and prove the remaining obligations. Establish `h1 : uMat (conjUJ ε g) = (uMat g).map (starRingEnd ℂ)` using `uMat_conjUJHom ε g`. Rewrite using `[h1]`.
+
+Unfold `Formalism.REAL.hs`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `e : ((uMat g).map (starRingEnd ℂ) - 1) i j = starRingEnd ℂ ((uMat g - 1) i j)`. Rewrite using `[Matrix.sub_apply, Matrix.sub_apply, Matrix.map_apply, map_sub]`. Use `congr 1`.
+
+Simplify using `only [Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[e, Complex.norm_conj]`.
+-/
 theorem exists_conj_gauge_invariant : ∀ (n : ℕ) (ε : Fin n → Bool) (τ : ℂ →+* ℂ), (τ = RingHom.id ℂ ∨ τ = starRingEnd ℂ) → ∃ C : Formalism.REAL.UJ ε ≃ₜ* Formalism.REAL.UJ ε, (∀ g, uMat (C g) = (uMat g).map τ) ∧ ∀ (s : Formalism.REAL.UJ ε) (c : ℝ), IsGauge ε c → (ENNReal.ofReal c • Formalism.REAL.muG ε).map (fun g => s * C g * s⁻¹) = ENNReal.ofReal c • Formalism.REAL.muG ε := by
   intro n ε τ hτ
   rcases hτ with rfl | rfl

@@ -21,6 +21,9 @@ namespace GlobalTheory.GoodPos
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `congrArg (fun M => star ζ₀ ⬝ᵥ M *ᵥ ζ₀) h` as an intermediate fact. Rewrite `this` using `[← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec, ← star_mulVec, hτ, smul_mulVec, dotProduct_smul, smul_eq_mul, mulVec_smul, star_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, smul_eq_mul]`. Rewrite using `[← this, mul_assoc]`.
+-/
 theorem tau_norm {E : Type} [Field E] [StarRing E] {m n : ℕ} {G : Matrix (Fin m) (Fin m) E} {G' : Matrix (Fin n) (Fin n) E}
     {τ : Matrix (Fin m) (Fin n) E} {t lam : E} {ζ : Fin m → E} {ζ₀ : Fin n → E} (h : τᴴ * (G * τ) = t • G')
     (hτ : τ *ᵥ ζ₀ = lam • ζ) : lam * star lam * (star ζ ⬝ᵥ G *ᵥ ζ) = t * (star ζ₀ ⬝ᵥ G' *ᵥ ζ₀) := by
@@ -32,10 +35,36 @@ theorem tau_norm {E : Type} [Field E] [StarRing E] {m n : ℕ} {G : Matrix (Fin 
 variable {c : Comm D} {v : VCom c} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {ι : Type} {o : TDat c k ι}
 
+/- English proof (translation)
+Establish `h1 : valuation k (p.pr (incA D D.host.xi0)) = 1` using `val_eq_one (isU_xi h)`. Rewrite using `[GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, RingHom.map_mul, RingHom.map_neg, map_mul, map_mul, map_neg, Valuation.map_neg, h1, one_mul]`.
+-/
 theorem val_norm_xi {p : SplitPt D k} (h : p.UnitAA) : valuation k (p.pr (incA D (D.host.xi0 * star D.host.xi0))) = 1 := by
   have h1 : valuation k (p.pr (incA D D.host.xi0)) = 1 := val_eq_one (isU_xi h)
   rw [GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, RingHom.map_mul, RingHom.map_neg, map_mul, map_mul, map_neg, Valuation.map_neg, h1, one_mul]
 
+/- English proof (translation)
+Distinguish the cases in `hex : ∃ j, j + 2 * 0 + 2 = D.R.m`. Use `swap`. Conclude with `⟨1, fun x _ => IsU.one x, fun j h => absurd ⟨j, h⟩ hex⟩`. Take `⟨j, h⟩` from `hex`. Take `⟨lam, hτ, hv⟩` from `pre.lam j h`.
+
+Establish `hn` using `tau_norm (pre.tau j h) hτ`. Establish `hξ` using `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D`. Establish `hlam : lam ≠ 0`. Introduce and unpack `rfl`. Rewrite `hn` using `[zero_mul, zero_mul]`.
+
+Conclude with `mul_ne_zero (neg_ne_zero.2 (mul_ne_zero hξ (star_ne_zero.2 hξ))) pre.line.2 hn.symm`. Take `⟨μ, hμ⟩` from `line_idele (c.oT (j + 1 + 1) h) pre.line (hc.x (j + 1 + 1) (by omega)).sd.1 v.NT (· ∈ v.tP) (hs (j + 1 + 1) h)`. Take `⟨m₀, m1, m2⟩` from `patch v.tP (fun _ => 1) (α * μ * inU lam hlam * (xiU D * cU α)⁻¹)`. Use `⟨m₀, fun x hx a ha => by rw [m1 x hx a ha, Units.val_one, one_mul], fun j' h' => ?_⟩` and prove the remaining obligations. Take `rfl : j = j'` from `by omega`.
+
+Establish `hn'` using `congrArg (incA D) hn`. Use `⟨fun x hx a ha => ?_, fun i => ?_, fun x hx LL hLL hm => ?_⟩` and prove the remaining obligations. Take `⟨LZ, hLZ, ho⟩` from `hs (j + 1 + 1) h x hx`. Establish `h1` using `(line_norm pre.line hLZ fun a ha => (orth_line _ ho _ a).trans (hμ x hx a ha)).neg a ha`. Rewrite using `[h1]`.
+
+Simplify using `only [RingHom.map_mul, RingHom.map_neg, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg] at hn'`. Generalize the expression as in `incA D (star (c.bes j 0 h).ζ ⬝ᵥ (c.bes j 0 h).L.gram *ᵥ (c.bes j 0 h).ζ) = t at hn' ⊢`. Generalize the expression as in `incA D (star o.ζ₀ ⬝ᵥ c.Lz.gram *ᵥ o.ζ₀) = t₀ at hn' ⊢`. Establish `e1` using `m2 x hx _ (Ideal.mul_mem_left _ (cA D m₀ * t) ha)`. Establish `e2` using `congrArg (cA D) (m2 x hx _ (id_conj ha))`.
+
+Generalize the expression as in `hm' : α * μ * inU lam hlam * (xiU D * cU α)⁻¹ = m at e1 e2`. Establish `f2 : (m : AE D) = α * μ * incA D lam * (incA D D.host.xi0⁻¹ * cA D (α⁻¹ : (AE D)ˣ))`. Rewrite using `[← hm', mul_inv]`. Simplify using `only [Units.val_mul, inU_val, cU_inv, xiU, inU_inv]`. Establish `f3 : cA D (m : AE D) = cA D α * cA D μ * incA D (star lam) * (-incA D D.host.xi0⁻¹ * (α⁻¹ : (AE D)ˣ))`.
+
+Rewrite using `[f2]`. Simplify using `only [RingHom.map_mul, GlobalTheory.SeeSaw.cA_cA, cA_xi_inv, FrameLat.cA_incA lam]`. Rewrite `e2` using `[RingHom.map_mul, RingHom.map_mul, GlobalTheory.SeeSaw.cA_cA, f3]`. Establish `g1` using `α.mul_inv`. Establish `g2 : cA D (α : AE D) * cA D ((α⁻¹ : (AE D)ˣ) : AE D) = 1` using `(cU α).mul_inv`.
+
+Establish `g3 : incA D D.host.xi0 * incA D D.host.xi0⁻¹ = 1` using `(xiU D).mul_inv`. Use `iff_of_eq (congrArg (· ∈ _) ?_)` and prove the remaining obligations. Rewrite `e1` using `[f2]`. Generalize the expression as in `incA D D.host.xi0 = ξ at *`. Generalize the expression as in `incA D D.host.xi0⁻¹ = ξ' at *`.
+
+Generalize the expression as in `incA D lam = l at *`. Generalize the expression as in `incA D (star lam) = l' at *`. Generalize the expression as in `cA D (α : AE D) = β at *`. Generalize the expression as in `cA D ((α⁻¹ : (AE D)ˣ) : AE D) = β' at *`. Generalize the expression as in `((α⁻¹ : (AE D)ˣ) : AE D) = α' at *`.
+
+Generalize the expression as in `cA D (μ : AE D) = ν at *`. Generalize the expression as in `cA D (m₀ : AE D) = n₀ at *`. Take the linear combination `-e1 - (α * μ * l * ξ' * β' * t) * e2 + (α * α' * β * β' * μ * ν * ξ' * ξ' * a) * hn' + (μ * ν * t₀ * a * β * β' * ξ * ξ * ξ' * ξ') * g1 + (μ * ν * t₀ * a * ξ * ξ * ξ' * ξ') * g2 + (μ * ν * t₀ * a * (ξ * ξ' + 1)) * g3`. Use `congrArg (fun t => valuation k ((o.p i).pr t)) hn'` as an intermediate fact. Simplify using `only [RingHom.map_mul (incA D) (lam * star lam), RingHom.map_mul (incA D) lam, RingHom.map_mul (incA D) (-_), RingHom.map_neg, RingHom.map_mul (o.p i).pr, Valuation.map_mul, Valuation.map_neg, (hv i).1, (hv i).2, one_mul, val_norm_xi (pre.char i).2] at this`.
+
+Rewrite using `[this, pre.normT i]`. Take `⟨LZ, hLZ, ho⟩` from `hs (j + 1 + 1) h x hx`. Use `⟨LZ, hLZ, ho, kap_of (v.τ j h) (c.bes j 0 h).line pre.line hlam hτ hLL hLZ (hc.x (j + 1) (by omega)).sd (hα x) (fun a ha => (orth_line _ ho _ a).trans (hμ x hx a ha)) fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[hm a ha, inv_same (m2 x hx) a ha]`.
+-/
 theorem top_idele (hc : c.Is) (pre : PreT v o)
     (hs : ∀ n (h : n = D.R.m) x, x ∉ v.tP → ∃ LZ : Lat c.Lz, IsSelfDualC _ LZ ∧ OrthAt (c.oT n h) (c.x n).L v.NT LZ x)
     {α : (AE D)ˣ} (hα : ∀ (x : Pl D) (S : HSp D) (L : Lat S) y,
@@ -114,6 +143,13 @@ theorem top_idele (hc : c.Is) (pre : PreT v o)
 
 def gam (α : (AE D)ˣ) : (AE D)ˣ := α * (xiU D * cU α)⁻¹
 
+/- English proof (translation)
+Establish `g1` using `α.mul_inv`. Establish `g2 : cA D (α : AE D) * cA D ((α⁻¹ : (AE D)ˣ) : AE D) = 1` using `(cU α).mul_inv`. Establish `g3 : incA D D.host.xi0 * incA D D.host.xi0⁻¹ = 1` using `(xiU D).mul_inv`. Rewrite using `[gam, mul_inv]`. Simplify using `only [Units.val_mul, cU_inv, xiU, inU_inv, RingHom.map_mul, GlobalTheory.SeeSaw.cA_cA, cA_xi_inv, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, RingHom.map_neg]`.
+
+Generalize the expression as in `incA D D.host.xi0 = ξ at *`. Generalize the expression as in `incA D D.host.xi0⁻¹ = ξ' at *`. Generalize the expression as in `cA D (α : AE D) = β at *`. Generalize the expression as in `cA D ((α⁻¹ : (AE D)ˣ) : AE D) = β' at *`. Generalize the expression as in `((α⁻¹ : (AE D)ˣ) : AE D) = α' at *`.
+
+Take the linear combination `(β * β' * ξ * ξ * ξ' * ξ') * g1 + (ξ * ξ * ξ' * ξ') * g2 + (ξ * ξ' + 1) * g3`.
+-/
 theorem gam_norm (α : (AE D)ˣ) : (gam α : AE D) * cA D (gam α : AE D) * incA D (D.host.xi0 * star D.host.xi0) = 1 := by
   have g1 := α.mul_inv
   have g2 : cA D (α : AE D) * cA D ((α⁻¹ : (AE D)ˣ) : AE D) = 1 := (cU α).mul_inv
@@ -127,6 +163,13 @@ theorem gam_norm (α : (AE D)ˣ) : (gam α : AE D) * cA D (gam α : AE D) * incA
   generalize ((α⁻¹ : (AE D)ˣ) : AE D) = α' at *
   linear_combination (β * β' * ξ * ξ * ξ' * ξ') * g1 + (ξ * ξ * ξ' * ξ') * g2 + (ξ * ξ' + 1) * g3
 
+/- English proof (translation)
+Proceed by induction on `ρ with`. Consider the case `zero => simpa only [pow_zero, one_mul] using h0`. Consider the case `succ σ ih`. Introduce `j h`. Take `⟨i1, i2⟩` from `ih (j + 1 + 1) (idx_step h)`.
+
+Establish `hn : star (c.bes j (σ + 1) h).ζ ⬝ᵥ (c.bes j (σ + 1) h).L.gram *ᵥ (c.bes j (σ + 1) h).ζ = _` using `(c.lnk j σ h).norm`. Rewrite using `[hn, RingHom.map_mul]`. Use `⟨fun x hx => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `i1 x hx using 1` and compare the differences between its conclusion and the goal. Rewrite using `[pow_succ', mul_assoc (gam α), Units.val_mul, RingHom.map_mul]`.
+
+Generalize the expression as in `((gam α ^ σ * m₀ : (AE D)ˣ) : AE D) = u`. Generalize the expression as in `incA D (star (c.bes (j + 1 + 1) σ (idx_step h)).ζ ⬝ᵥ (c.bes (j + 1 + 1) σ (idx_step h)).L.gram *ᵥ (c.bes (j + 1 + 1) σ (idx_step h)).ζ) = t`. Take the linear combination `(u * cA D u * t) * gam_norm α`. Rewrite using `[RingHom.map_mul, Valuation.map_mul, val_norm_xi (pre.char i).2, one_mul, i2 i]`.
+-/
 theorem level_norm (pre : PreT v o) (α m₀ : (AE D)ˣ) (h0 : ∀ j (h : j + 2 * 0 + 2 = D.R.m),
       (∀ x, x ∉ v.tP → IsU x ((m₀ : AE D) * cA D m₀ *
         incA D (star (c.bes j 0 h).ζ ⬝ᵥ (c.bes j 0 h).L.gram *ᵥ (c.bes j 0 h).ζ))) ∧
@@ -158,22 +201,37 @@ def bB (α m₀ : (AE D)ˣ) (ρ : ℕ) (i : Fin ρ) : (AE D)ˣ := cond α ^ (ρ 
 
 def bJ (α m₀ : (AE D)ˣ) (ρ : ℕ) (i : Fin ρ) : (AE D)ˣ := α⁻¹ * bB α m₀ ρ i
 
+/- English proof (translation)
+Use `j.2` as an intermediate fact. Rewrite using `[bB, bB, show ρ - i.1 = ρ - j.1 + 1 by omega, pow_succ', mul_assoc]`.
+-/
 theorem bB_step (α m₀ : (AE D)ˣ) (ρ : ℕ) (i j : Fin ρ) (h : j.1 = i.1 + 1) : bB α m₀ ρ i = cond α * bB α m₀ ρ j := by
   have := j.2
   rw [bB, bB, show ρ - i.1 = ρ - j.1 + 1 by omega, pow_succ', mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[bJ, bJ, bB_step α m₀ ρ i j h, mul_left_comm]`.
+-/
 theorem bJ_step (α m₀ : (AE D)ˣ) (ρ : ℕ) (i j : Fin ρ) (h : j.1 = i.1 + 1) : bJ α m₀ ρ i = cond α * bJ α m₀ ρ j := by
   rw [bJ, bJ, bB_step α m₀ ρ i j h, mul_left_comm]
 
+/- English proof (translation)
+Rewrite using `[cond, gam, mul_right_comm (xiU D), mul_comm α, mul_mul_mul_comm, mul_inv_cancel, one_mul]`.
+-/
 theorem cond_gam (α : (AE D)ˣ) : cond α * gam α = α * α := by
   rw [cond, gam, mul_right_comm (xiU D), mul_comm α, mul_mul_mul_comm, mul_inv_cancel, one_mul]
 
+/- English proof (translation)
+Use `i.2` as an intermediate fact. Rewrite using `[bJ, bB, show σ + 1 - i.1 = σ - i.1 + 1 by omega, pow_succ', pow_succ', mul_assoc (gam α), mul_mul_mul_comm, cond_gam, mul_assoc α, inv_mul_cancel_left]`.
+-/
 theorem bJ_succ (α m₀ : (AE D)ˣ) (σ : ℕ) (i : Fin (σ + 1)) :
     bJ α m₀ (σ + 1) i = α * (cond α ^ (σ - i.1) * (gam α ^ σ * m₀)) := by
   have := i.2
   rw [bJ, bB, show σ + 1 - i.1 = σ - i.1 + 1 by omega, pow_succ', pow_succ', mul_assoc (gam α), mul_mul_mul_comm, cond_gam,
     mul_assoc α, inv_mul_cancel_left]
 
+/- English proof (translation)
+Rewrite using `[bJ, bB, show ρ - r.1 = 1 by omega, pow_one, cond, mul_comm (xiU D) α, mul_assoc α, mul_assoc α, inv_mul_cancel_left]`.
+-/
 theorem bJ_last (α m₀ : (AE D)ˣ) (ρ : ℕ) (r : Fin ρ) (hr : r.1 + 1 = ρ) :
     bJ α m₀ ρ r = xiU D * cU α * (gam α ^ ρ * m₀) := by
   rw [bJ, bB, show ρ - r.1 = 1 by omega, pow_one, cond, mul_comm (xiU D) α, mul_assoc α, mul_assoc α, inv_mul_cancel_left]
@@ -183,6 +241,17 @@ def HasIdeals {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (L : Lat S) (L�
     (((b i)⁻¹ : (AE D)ˣ) : AE D) * a ∈ intAt D (· = x)) ∧
     ∀ i, ∀ a ∈ idAt D (· = x), colMul d.jY i a ∈ latV S L (· = x) ↔ cA D (b i : AE D) * a ∈ intAt D (· = x)
 
+/- English proof (translation)
+Establish `HB : ∀ j, ∃ N : Lat (c.V j), IsSelfDualC _ N ∧ ∀ ρ h, HasIdeals (c.bes j ρ h).d N (M j ρ h) (b ρ)` using `fun j => by`. Distinguish the cases in `hex : ∃ ρ, j + 2 * ρ + 2 = D.R.m`. Take `⟨ρ, h⟩` from `hex`. Take `⟨N, h1, h2⟩` from `GlobalTheory.FinPl.exists_selfDual_mono_idele D _ _ ρ (c.bes j ρ h).d (M j ρ h) (hM j ρ h) (b ρ)`. Use `⟨N, h1, fun ρ' h' => ?_⟩` and prove the remaining obligations.
+
+Take `rfl : ρ = ρ'` from `by omega`. Conclude with `h2`. Conclude with `⟨_, GlobalTheory.WeilAtPlace.isSelfDualC_frameLat _, fun ρ h => absurd ⟨ρ, h⟩ hex⟩`. Establish `H1 : ∀ j, ∃ N : Lat (c.V (j + 1)), IsSelfDualC _ N ∧ (∀ ρ h, HasIdeals (c.bes (j + 1) ρ h).d N (M (j + 1) ρ h) (b ρ)) ∧ ∀ ρ h, HasIdeals (c.jac j ρ h).d N (c.x (j + 1)).L (b' ρ)` using `fun j => by`. Distinguish the cases in `hex : ∃ ρ, j + 2 * ρ + 2 = D.R.m`.
+
+Take `⟨ρ, h⟩` from `hex`. Take `⟨N, h1, h2⟩` from `GlobalTheory.FinPl.exists_selfDual_mono_idele D _ _ ρ (c.jac j ρ h).d (c.x (j + 1)).L (hc.x (j + 1) (by omega)).sd (b' ρ)`. Use `⟨N, h1, fun ρ' h' => by omega, fun ρ' h' => ?_⟩` and prove the remaining obligations. Take `rfl : ρ = ρ'` from `by omega`. Conclude with `h2`.
+
+Take `⟨N, h1, h2⟩` from `HB (j + 1)`. Conclude with `⟨N, h1, h2, fun ρ h => absurd ⟨ρ, h⟩ hex⟩`. Take `⟨N₀, h0, h0'⟩` from `HB 0`. Use `choose N₁ h1 h2 h3 using H1`. Use `⟨fun j => Nat.casesOn (motive := fun j => Lat (c.V j)) j N₀ N₁, fun j => ?_, fun j => ?_, h3⟩` and prove the remaining obligations.
+
+Consider the cases of `j exacts [h0, h1 _]`. Consider the cases of `j exacts [h0', h2 _]`.
+-/
 theorem exists_N (hc : c.Is) (M : ∀ j ρ h, Lat (c.bes j ρ h).V₀) (hM : ∀ j ρ h, IsSelfDualC _ (M j ρ h))
     (b b' : ∀ ρ, Fin ρ → (AE D)ˣ) : ∃ N : ∀ j, Lat (c.V j), (∀ j, IsSelfDualC _ (N j)) ∧
       (∀ j ρ h, HasIdeals (c.bes j ρ h).d (N j) (M j ρ h) (b ρ)) ∧
@@ -214,6 +283,19 @@ theorem exists_N (hc : c.Is) (M : ∀ j ρ h, Lat (c.bes j ρ h).V₀) (hM : ∀
   · cases j
     exacts [h0', h2 _]
 
+/- English proof (translation)
+Introduce `D c v k _ _ _ _ ι o hc _ pre hs`. Take `⟨α, hα⟩` from `GlobalTheory.IdeleAA.exists_idele_AA D c.ψ hc.std`. Take `⟨m₀, hT, htop⟩` from `top_idele hc pre hs fun x => (hα x).1`. Establish `hlev` using `level_norm pre α m₀ fun j h => ⟨(htop j h).1, (htop j h).2.1⟩`. Establish `hP : Places o.p o.I (· ∈ v.tP)` using `⟨pre.nodup, pre.all, pre.inj, pre.tP, fun i => (pre.char i).2⟩`.
+
+Establish `hmT : ∀ ρ, ∀ x ∈ v.tP, IsU x ((gam α ^ ρ * m₀ : (AE D)ˣ) : AE D)` using `fun ρ x hx => by`. Take `⟨i, rfl⟩` from `(pre.tP x).1 hx`. Establish `h1` using `isU_alpha (pre.char i).2 pre.line (hα _).1`. Establish `h2 : IsU (o.p i).v ((xiU D * cU α : (AE D)ˣ) : AE D)` using `(isU_xi (pre.char i).2).mul h1.conj`. Establish `h3 : IsU (o.p i).v (gam α : AE D)` using `h1.mul (h2.inv (Units.mul_inv _))`.
+
+Rewrite using `[Units.val_mul, Units.val_pow_eq_pow_val]`. Conclude with `(h3.pow ρ).mul (hT _ hx)`. Establish `hcore` using `fun j ρ (h : j + 2 * ρ + 2 = D.R.m) => GlobalTheory.FinPl.CoreIdele.exists_core D k ι o.p o.I _ hP o.q (Fin (c.X j).rank) ρ (c.B j ρ h) (o.β j) (o.Q j) (c.x j).L (hc.x j (by omega)).sd (pre.latT j (by omega)) (hlev ρ j h).2 (gam α ^ ρ * m₀) (hmT ρ) (hlev ρ j h).1`. Use `choose M β₀ hM hglue hoff hz using hcore`. Take `⟨N, hN, hB, hJ⟩` from `exists_N hc M hM (bB α m₀) (bJ α m₀)`.
+
+Establish `hψ : ∀ x : Pl D, ∀ s ∈ idAt D (· = x), (∀ o ∈ intAt D (· = x), psiE c.ψ (s * o) = 1) ↔ (((cond α)⁻¹ : (AE D)ˣ) : AE D) * s ∈ intAt D (· = x)` using `fun x s hs => by`. Rewrite using `[(hα x).2 s hs, cond, mul_inv, mul_inv, Units.val_mul, Units.val_mul, cU_inv, xiU, inU_inv]`. Use `⟨N, M, β₀, fun j _ => hN j, fun x => ⟨fun j ρ h => ?_, fun j σ h => ?_⟩, fun x hx => ⟨fun j ρ h => ?_, fun j h => ?_⟩, hglue⟩` and prove the remaining obligations. Establish `sx` using `(hc.x (j + 1) (by omega)).sd`. Conclude with `⟨TamePlaces.tame D x, hN j, hM j ρ h, hN (j + 1), sx, (hB j ρ h x).1, (hJ j ρ h x).1, prim_of _ (bB_step α m₀ ρ) (hψ x) (hB j ρ h x).2.1, cols_bf _ _ (fun i => (mul_inv_cancel_left α _).symm) ((hα x).1 _ _) (hB j ρ h x).2.1 (hJ j ρ h x).2.1, last_of _ _ (hM j ρ h) (hN (j + 1)) (b …`.
+
+Establish `sx` using `(hc.x (j + 1) (by omega)).sd`. Establish `h'` using `idx_step h`. Conclude with `⟨TamePlaces.tame D x, hN (j + 1), sx, hN (j + 1 + 1), hM _ σ h', (hJ j _ h x).1, (hB _ σ h' x).1, prim_of _ (bJ_step α m₀ _) (hψ x) (hJ j _ h x).2.1, cols_fb _ _ _ (fun i => bJ_succ α m₀ σ i.castSucc) (by rw [bJ_succ, Fin.val_last, Nat.sub_self, pow_zero, one_mul]) ((hα x).1 _ _) …`. Take `⟨LL, h1, h2, -⟩` from `hoff j ρ h x hx`. Conclude with `⟨LL, h1, h2⟩`.
+
+Take `⟨LL, h1, h2, h3⟩` from `hoff j 0 h x hx`. Rewrite `h3` using `[pow_zero, one_mul]`. Take `⟨LZ, g1, g2, g3⟩` from `(htop j h).2.2 x hx LL h1 h3`. Conclude with `⟨LL, LZ, h1, g1, h2, g2, g3⟩`.
+-/
 theorem exists_goodAt : ∀ (D : D7) (c : Comm D) (v : VCom c) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (o : TDat c k ι), c.Is → IsSelfDualC c.T v.NT → PreT v o → (∀ n (h : n = D.R.m) x, x ∉ v.tP → ∃ LZ : Lat c.Lz, IsSelfDualC _ LZ ∧ OrthAt (c.oT n h) (c.x n).L v.NT LZ x) → ∃ (N : ∀ j, Lat (c.V j)) (M : ∀ j ρ h, Lat (c.bes j ρ h).V₀) (β₀ : ∀ j ρ h i, Frame (o.p i) (c.bes j ρ h).V₀ (Fin (c.X j).rank ⊕ Fin 1)), (∀ j, j < D.R.m → IsSelfDualC (c.V j) (N j)) ∧ (∀ x, GoodAt { v with N := N } { o with M := M, β₀ := β₀ } x) ∧ (∀ x, x ∉ v.tP → SplitAt { v with N := N } { o with M := M, β₀ := β₀ } x) ∧ ∀ j ρ h i, GluedCore (c.B j ρ h) (M j ρ h) o.q (o.β j i) (β₀ j ρ h i) (o.Q j i) := by
   intro D c v k _ _ _ _ ι o hc _ pre hs
   obtain ⟨α, hα⟩ := GlobalTheory.IdeleAA.exists_idele_AA D c.ψ hc.std

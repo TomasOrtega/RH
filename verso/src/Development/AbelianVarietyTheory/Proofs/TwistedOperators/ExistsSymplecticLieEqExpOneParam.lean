@@ -11,6 +11,21 @@ namespace GlobalTheory.SymplecticOneParam
 
 variable {l : Type} [Fintype l] [DecidableEq l]
 
+/- English proof (translation)
+Use `letI : NormedRing (Matrix (l ⊕ l) (l ⊕ l) ℝ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℝ (Matrix (l ⊕ l) (l ⊕ l) ℝ) := Matrix.linftyOpNormedAlgebra`. Use `haveI : CompleteSpace (Matrix (l ⊕ l) (l ⊕ l) ℝ) := FiniteDimensional.complete ℝ _`. Establish `hsm` using `GlobalTheory.contDiff_of_continuous_oneParameter (Matrix (l ⊕ l) (l ⊕ l) ℝ) g hc h0 hadd`. Establish `hdiff : Differentiable ℝ g` using `hsm.differentiable (by simp)`.
+
+Use `set Z := deriv g 0 with hZ`. Establish `hd0 : HasDerivAt g Z 0` using `(hdiff 0).hasDerivAt`. Establish `hdt : ∀ t, HasDerivAt g (g t * Z) t`. Introduce `t`. Establish `h1 : HasDerivAt (fun s => g (s - t)) Z t`.
+
+Establish `h` using `hd0`. Rewrite `h` using `[← sub_self t]`. Conclude with `h.comp_sub_const t t`. Establish `h2` using `h1.const_mul (g t)`. Establish `h3 : (fun s => g t * g (s - t)) = g`.
+
+Use function extensionality and compare the values at `s`. Rewrite using `[← hadd, add_sub_cancel]`. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis. Use `⟨hd0, fun t => ?_⟩` and prove the remaining obligations. Use `set h : ℝ → Matrix (l ⊕ l) (l ⊕ l) ℝ := fun s => g s * NormedSpace.exp (s • (-Z)) with hh`.
+
+Establish `hderh : ∀ s, HasDerivAt h 0 s`. Introduce `s`. Establish `he` using `hasDerivAt_exp_smul_const' (𝕂 := ℝ) (-Z) s`. Use `(hdt s).fun_mul he` as an intermediate fact. Establish `key : g s * Z * NormedSpace.exp (s • -Z) + g s * (-Z * NormedSpace.exp (s • -Z)) = 0`.
+
+Rewrite using `[neg_mul, mul_neg, mul_assoc, add_neg_cancel]`. Conclude with `this.congr_deriv key`. Establish `hconst : h t = h 0` using `is_const_of_deriv_eq_zero (fun s => (hderh s).differentiableAt) (fun s => (hderh s).deriv) t 0`. Establish `hh0 : h 0 = 1` using `by simp [hh, h0]`. Establish `hinv : NormedSpace.exp (t • (-Z)) * NormedSpace.exp (t • Z) = 1`.
+
+Rewrite using `[smul_neg, ← Matrix.exp_add_of_commute _ _ (Commute.refl (t • Z)).neg_left, neg_add_cancel, NormedSpace.exp_zero]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem eq_exp_of_continuous_oneParameter (g : ℝ → Matrix (l ⊕ l) (l ⊕ l) ℝ) (hc : Continuous g)
     (h0 : g 0 = 1) (hadd : ∀ s t, g (s + t) = g s * g t) :
     HasDerivAt g (deriv g 0) 0 ∧ ∀ t : ℝ, g t = NormedSpace.exp (t • deriv g 0) := by
@@ -50,6 +65,15 @@ theorem eq_exp_of_continuous_oneParameter (g : ℝ → Matrix (l ⊕ l) (l ⊕ l
     _ = h t * NormedSpace.exp (t • Z) := by rw [hh, mul_assoc]
     _ = NormedSpace.exp (t • Z) := by rw [hconst, hh0, one_mul]
 
+/- English proof (translation)
+Introduce `l _ _ g hc h0 hadd hsym`. Take `⟨hd, hexp⟩` from `eq_exp_of_continuous_oneParameter g hc h0 hadd`. Use `⟨deriv g 0, ?_, hexp⟩` and prove the remaining obligations. Use `set Z := deriv g 0 with hZ`. Use `letI : NormedRing (Matrix (l ⊕ l) (l ⊕ l) ℝ) := Matrix.linftyOpNormedRing`.
+
+Use `letI : NormedAlgebra ℝ (Matrix (l ⊕ l) (l ⊕ l) ℝ) := Matrix.linftyOpNormedAlgebra`. Set `T : Matrix (l ⊕ l) (l ⊕ l) ℝ →L[ℝ] Matrix (l ⊕ l) (l ⊕ l) ℝ` to `LinearMap.toContinuousLinearMap (Matrix.transposeLinearEquiv (l ⊕ l) (l ⊕ l) ℝ ℝ).toLinearMap`. Establish `hT : HasDerivAt (fun t => (g t)ᵀ) Zᵀ 0` using `T.hasFDerivAt.comp_hasDerivAt 0 hd`. Establish `hF` using `(hT.mul_const (Matrix.J l ℝ)).fun_mul hd`. Establish `hconst : (fun t => (g t)ᵀ * Matrix.J l ℝ * g t) = fun _ => Matrix.J l ℝ`.
+
+Use function extensionality and compare the values at `t`. Use `SymplecticGroup.transpose_mem (hsym t)` as an intermediate fact. Rewrite `this` using `[SymplecticGroup.mem_iff, Matrix.transpose_transpose]`. Conclude with `this`. Rewrite `hF` using `[hconst]`.
+
+Establish `huniq` using `hF.unique (hasDerivAt_const (0 : ℝ) (Matrix.J l ℝ))`. Rewrite `huniq` using `[h0, Matrix.transpose_one, mul_one, one_mul, add_eq_zero_iff_eq_neg]`. Use `show Z ∈ skewAdjointMatricesLieSubalgebra (Matrix.J l ℝ)`. Rewrite using `[mem_skewAdjointMatricesLieSubalgebra, mem_skewAdjointMatricesSubmodule, Matrix.IsSkewAdjoint, Matrix.IsAdjointPair, huniq, mul_neg]`.
+-/
 theorem exists_mem_sp_eq_exp : ∀ (l : Type) [Fintype l] [DecidableEq l] (g : ℝ → Matrix (l ⊕ l) (l ⊕ l) ℝ),
     Continuous g → g 0 = 1 →
     (∀ s t, g (s + t) = g s * g t) → (∀ t, g t ∈ Matrix.symplecticGroup l ℝ) →

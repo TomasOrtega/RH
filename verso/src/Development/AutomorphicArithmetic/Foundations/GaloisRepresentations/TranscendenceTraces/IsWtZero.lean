@@ -54,6 +54,9 @@ def IsWt {Z S : Scheme.{0}} (p : Z ⟶ S) (w : Wt Z) : Prop :=
   ∀ (A : Sq p) (φ : A.V → ℤ), IsLocallyConstant φ → ∃ ψ : A.U → ℤ, IsLocallyConstant ψ ∧
     ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (x : gp Ω ⟶ A.U), ψ (pt x) = ∑ᶠ z ∈ fib A.r x, w Ω (z ≫ A.v) * φ (pt z)
 
+/- English proof (translation)
+Introduce `_ _ _` and use `⟨0, IsLocallyConstant.const 0, fun _ _ _ _ => by simp [Wt.const]⟩`.
+-/
 theorem isWt_zero {Z S : Scheme.{0}} (p : Z ⟶ S) : IsWt p (Wt.const Z 0) := fun _ _ _ =>
   ⟨0, IsLocallyConstant.const 0, fun _ _ _ _ => by simp [Wt.const]⟩
 

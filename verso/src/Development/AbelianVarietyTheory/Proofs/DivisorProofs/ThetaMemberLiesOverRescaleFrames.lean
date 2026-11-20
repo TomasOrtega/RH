@@ -22,6 +22,13 @@ open GlobalTheory.UT.CoefBasic
 
 namespace GlobalTheory.GSep
 
+/- English proof (translation)
+Introduce `I X₁ z₁ act V _ _ _ ev Y _ t δ 𝔪 w₀ g w w' x e e' l hl he hw H k hk wk' hwk' hgen s s' v hs hv`. Establish `hlk : l ^ k ≠ 0` using `pow_ne_zero k hl`. Take `⟨wk, hwkg, hwk⟩` from `GlobalTheory.UT.TorsionValue.exists_frm_scale wk' hgen hlk`. Establish `h₁ : ValAt s x e (l ^ k * v)` using `fun z J hJ => by`. Rewrite using `[hv z J hJ]`.
+
+Establish `r₁ : Geo.Tor.val (powFrame 𝔪.A.A 𝔪.A.L x e (k : ℤ)) (𝟙 _) z J = Geo.Tor.val e (𝟙 _) z J ^ (k : ℤ)` using `map_zpow _ _ _`. Establish `r₂ : Geo.Tor.val (powFrame 𝔪.A.A 𝔪.A.L x e' (k : ℤ)) (𝟙 _) z J = Geo.Tor.val e' (𝟙 _) z J ^ (k : ℤ)` using `map_zpow _ _ _`. Rewrite using `[r₁, r₂, zpow_natCast, zpow_natCast, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, he z J hJ]`. Simplify using `only [id, GlobalTheory.Poinc.TorsRatio.cst_eq_cstK, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h₂` using `H k hk wk (fun z J hJ => Units.ext (by`. Rewrite using `[hwk z J hJ, hwk' z J hJ, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, hw z J hJ, mul_pow, GlobalTheory.UT.CoefBasic.cst_eq, map_pow])) hwkg s s' _ hs h₁`. Establish `h₃` using `GlobalTheory.Poinc.Sep.sumF_const_mul (l ^ k)⁻¹ h₂`. Simplify `h₃` using `only [GlobalTheory.UT.TorsionValue.coef_scale hgen hwk, inv_mul_cancel_left₀ hlk]`.
+-/
 theorem over_rescale : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (Y : Type) [AddCommGroup Y] (t : Y → V) (δ : I → Y → Y) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev Y t δ) (w₀ : W0 𝔪.U.toUnifPre) (g : GtPtF 𝔪.D.toPre (FractionRing V)) (w w' : Frm 𝔪.D.toPre (FractionRing V) 1 g.b) (x : TFK (R := V) (FractionRing V) ⟶ 𝔪.A.A) (e e' : FrAt x) (l : FractionRing V), l ≠ 0 → (∀ z J, Good 𝔪.A.L z J → (Geo.Tor.val e' (𝟙 _) z J).val = GlobalTheory.Poinc.TorsRatio.cstK z l * (Geo.Tor.val e (𝟙 _) z J).val) → (∀ z J, Good 𝔪.D.toPre.P.L z J → (val w (𝟙 _) z J).val = cstH (R := V) z l * (val w' (𝟙 _) z J).val) → 𝔪.Over' w₀ g w x e → 𝔪.Over' w₀ g w' x e' := by
   intro I X₁ z₁ act V _ _ _ ev Y _ t δ 𝔪 w₀ g w w' x e e' l hl he hw H k hk wk' hwk' hgen s s' v hs hv
   have hlk : l ^ k ≠ 0 := pow_ne_zero k hl

@@ -14,6 +14,11 @@ section Sup
 
 variable {K Ω : Type*} [Field K] [Field Ω] [Algebra K Ω]
 
+/- English proof (translation)
+Establish `key : ((F₁ ⊔ F₂ : IntermediateField K Ω).val.comp σ.toAlgHom) = ((F₁ ⊔ F₂ : IntermediateField K Ω).val.comp σ'.toAlgHom)`. Use `algHom_ext_of_eq_adjoin K (sup_def F₁ F₂) fun x hx => ?_` and prove the remaining obligations. Break down `hx with hx | hx` into its components or cases. Use `congrArg (fun τ : F₁ ≃ₐ[K] F₁ => ((τ ⟨x, hx⟩ : F₁) : Ω)) h₁` as an intermediate fact. Simplify using `only [restrictAut_apply] at this`.
+
+Conclude with `this`. Use `congrArg (fun τ : F₂ ≃ₐ[K] F₂ => ((τ ⟨x, hx⟩ : F₂) : Ω)) h₂` as an intermediate fact. Simplify using `only [restrictAut_apply] at this`. Conclude with `this`. Conclude with `AlgEquiv.ext fun x => Subtype.ext (congrArg (fun φ => φ x) key)`.
+-/
 theorem algEquiv_ext_sup {F₁ F₂ : IntermediateField K Ω} [Normal K F₁] [Normal K F₂]
     {σ σ' : (F₁ ⊔ F₂ : IntermediateField K Ω) ≃ₐ[K] (F₁ ⊔ F₂ : IntermediateField K Ω)}
     (h₁ : restrictAut le_sup_left σ = restrictAut le_sup_left σ')
@@ -30,6 +35,13 @@ theorem algEquiv_ext_sup {F₁ F₂ : IntermediateField K Ω} [Normal K F₁] [N
       exact this
   exact AlgEquiv.ext fun x => Subtype.ext (congrArg (fun φ => φ x) key)
 
+/- English proof (translation)
+Use `continuous_of_continuousAt_one _ ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one]`. Introduce `s hs`. Take `⟨E', hE', hE's⟩` from `(krullTopology_mem_nhds_one_iff K F s).mp hs`. Set `E'' : IntermediateField K E` to `E'.map (IntermediateField.inclusion h)`.
+
+Establish `: FiniteDimensional K E''` using `(E'.equivMap (IntermediateField.inclusion h)).toLinearEquiv.finiteDimensional`. Use `Filter.mem_map.mpr (mem_of_superset (E''.fixingSubgroup_isOpen.mem_nhds (one_mem _)) fun σ hσ => hE's ?_)` and prove the remaining obligations. Rewrite `hσ`, the goal using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `y hy`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[restrictAut_apply]`. Conclude with `congrArg Subtype.val (hσ ⟨y, h y.2⟩ (by rw [IntermediateField.mem_map]; exact ⟨y, hy, rfl⟩))`.
+-/
 theorem continuous_restrictAut {E F : IntermediateField K Ω} (h : F ≤ E) [Normal K F] :
     Continuous (restrictAut h) := by
   refine continuous_of_continuousAt_one _ ?_
@@ -54,6 +66,9 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
 variable {Ω : Type*} [Field Ω] [ValuativeRel Ω] [TopologicalSpace Ω] [IsValuativeTopology Ω]
   [Algebra K Ω] [ValuativeExtension K Ω] [Algebra.IsAlgebraic K Ω]
 
+/- English proof (translation)
+Set `: Algebra F E` to `(IntermediateField.inclusion h).toRingHom.toAlgebra`. Establish `: IsScalarTower K F E` using `IsScalarTower.of_algebraMap_eq fun _ ↦ rfl`. Establish `: ValuativeExtension F E` using `valuativeExtension_algHom (K := K) (IntermediateField.inclusion h)`. Establish `: FiniteDimensional F E` using `Module.Finite.of_restrictScalars_finite K F E`. Conclude with `Dvd.intro _ (ramificationIndex_tower K F E).symm`.
+-/
 theorem ramificationIndex_dvd_of_le {F E : IntermediateField K Ω} [FiniteDimensional K F]
     [FiniteDimensional K E] (h : F ≤ E) : ramificationIndex K F ∣ ramificationIndex K E := by
   let : Algebra F E := (IntermediateField.inclusion h).toRingHom.toAlgebra
@@ -62,6 +77,9 @@ theorem ramificationIndex_dvd_of_le {F E : IntermediateField K Ω} [FiniteDimens
   have : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite K F E
   exact Dvd.intro _ (ramificationIndex_tower K F E).symm
 
+/- English proof (translation)
+Set `: Algebra F E` to `(IntermediateField.inclusion h).toRingHom.toAlgebra`. Establish `: IsScalarTower K F E` using `IsScalarTower.of_algebraMap_eq fun _ ↦ rfl`. Establish `: ValuativeExtension F E` using `valuativeExtension_algHom (K := K) (IntermediateField.inclusion h)`. Conclude with `Dvd.intro _ (residueDegree_tower K F E).symm`.
+-/
 theorem residueDegree_dvd_of_le {F E : IntermediateField K Ω} [FiniteDimensional K F]
     [FiniteDimensional K E] (h : F ≤ E) : residueDegree K F ∣ residueDegree K E := by
   let : Algebra F E := (IntermediateField.inclusion h).toRingHom.toAlgebra
@@ -89,6 +107,9 @@ variable (hf : IsLubinTateSeries π f) {n : ℕ} (hn : 0 < n) {E : IntermediateF
 
 include hE hn in
 
+/- English proof (translation)
+The claim follows from `hE.isGalois Function.Bijective ((restrictAut (le_sup_left (a := lubinTateField Ω hπ hf n) (b := E))).prod (restrictAut (le_sup_right (a := lubinTateField Ω hπ hf n) (b := E)))) := by have := hE.1 have := hE.isGalois set M := lubinTateField Ω hπ hf n ⊔ E set Φ := (restrictAut (le_ …`.
+-/
 theorem bijective_restrictAut_prod :
     haveI := hE.isGalois
     Function.Bijective ((restrictAut (le_sup_left (a := lubinTateField Ω hπ hf n) (b := E))).prod
@@ -116,6 +137,9 @@ variable [FiniteDimensional K E] {m : ℕ} (hEm : Module.finrank K E = m)
 omit [IsSepClosed Ω] in
 include hE hEm in
 
+/- English proof (translation)
+Use `⟨fun σ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[zpowers_frobenius]`. Conclude with `Subgroup.mem_top σ`. Rewrite using `[card_algEquiv_of_unramified K E hE.ramificationIndex_eq_one, hEm]`.
+-/
 theorem frobenius_generates :
     (∀ σ : E ≃ₐ[K] E, σ ∈ Subgroup.zpowers (frobenius K E hE.ramificationIndex_eq_one)) ∧
       Nat.card (E ≃ₐ[K] E) = m := by
@@ -136,6 +160,9 @@ def lubinTateUnramifiedGalEquiv :
 
 include hn hE in
 
+/- English proof (translation)
+The claim follows from `(lubinTateUnramifiedGalEquiv hπ hf hn hE (m := Module.finrank K E) rfl).injective (by rw [map_mul, map_mul] refine Prod.ext ?_ ?_ · rw [Prod.fst_mul, Prod.fst_mul] exact mul_comm (G := (𝒪[K] ⧸ Ideal.span {π ^ n})ˣ) _ _ · rw [Prod.snd_mul, Prod.snd_mul] exact mul_comm (G := Multip …`.
+-/
 theorem lubinTateUnramified_mul_comm
     (σ τ : (lubinTateField Ω hπ hf n ⊔ E : IntermediateField K Ω) ≃ₐ[K]
       (lubinTateField Ω hπ hf n ⊔ E : IntermediateField K Ω)) :

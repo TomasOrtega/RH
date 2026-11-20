@@ -16,6 +16,41 @@ section Entries
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Establish `hmz : ∀ (W : Module.End ℂ (RadSp P.k P.r z z' π π')) (m : ℂ → ℂ), multiplicationOperator W (fun _ g => m (zeta P.k P.r z z' g)) → NF.IsMulZ W m`. Introduce `W m hWm Φ`. Take `⟨h0, -, -⟩` from `Φ.2`. Use function extensionality and compare the values at `c g`. Rewrite using `[hWm Φ c g]`.
+
+Use `show _ = (Q.DomR P.k P.r z z').indicator (fun x => m (Q.zetaL P.k P.r z z' (Fin.last P.r) x.2) • (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2) (c, g)`. Distinguish the cases in `hx : (c, g) ∈ Q.DomR P.k P.r z z'`. Rewrite using `[Set.indicator_of_mem hx]`. Both sides reduce to the same expression. Establish `hz : (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c g = 0` using `h0 (c, g) hx`.
+
+Simplify using `[Set.indicator_apply, hx, hz]`. Establish `hfun : (fun ζ : ℂ => fsv s ζ) = (fun y : ℂ => Complex.exp (s * id y - conj s * Complex.conjCLE y))` using `funext fun y => rfl`. Establish `hfun2 : (fun ζ : ℂ => Complex.exp (s * ζ - conj s * conj ζ)) = (fun y : ℂ => Complex.exp (s * id y - conj s * Complex.conjCLE y))` using `funext fun y => rfl`. Establish `hder : ∀ ζ : ℂ, HasFDerivAt (fun y : ℂ => Complex.exp (s * id y - conj s * Complex.conjCLE y)) (Complex.exp (s * id ζ - conj s * Complex.conjCLE ζ) • (s • ContinuousLinearMap.id ℝ ℂ - conj s • (Complex.conjCLE : ℂ →L[ℝ] ℂ))) ζ` using `fun ζ => (((hasFDerivAt_id ζ).const_mul s).sub ((Complex.conjCLE.hasFDerivAt).const_mul (conj s))).cexp`. Establish `hv1 : ∀ ζ : ℂ, fderiv ℝ (fun y : ℂ => Complex.exp (s * y - conj s * conj y)) ζ 1 = Complex.exp (s * ζ - conj s * conj ζ) * (s - conj s)`.
+
+Introduce `ζ`. Rewrite using `[hfun2, (hder ζ).fderiv]`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.sub_apply, ContinuousLinearMap.coe_id', id_eq, Complex.conjCLE_apply, map_one, Complex.conj_I, smul_eq_mul, ContinuousLinearMap.coe_coe, ContinuousLinearEquiv.coe_coe, Complex.conjCLE_apply, map_one, Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree. Establish `hvI : ∀ ζ : ℂ, fderiv ℝ (fun y : ℂ => Complex.exp (s * y - conj s * conj y)) ζ Complex.I = Complex.exp (s * ζ - conj s * conj ζ) * ((s + conj s) * Complex.I)`.
+
+Introduce `ζ`. Rewrite using `[hfun2, (hder ζ).fderiv]`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.sub_apply, ContinuousLinearMap.coe_id', id_eq, Complex.conjCLE_apply, map_one, Complex.conj_I, smul_eq_mul, ContinuousLinearMap.coe_coe, ContinuousLinearEquiv.coe_coe, Complex.conjCLE_apply, map_one, Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdZ : ∀ ζ, NF.dZ (fun ζ : ℂ => fsv s ζ) ζ = s * fsv s ζ`.
+
+Introduce `ζ`. Unfold `NF.dZ fsv`. Rewrite using `[hv1, hvI]`. Take the linear combination `(-(1 / 2 : ℂ) * Complex.exp (s * ζ - conj s * conj ζ) * (s + conj s)) * Complex.I_sq`. Establish `hdZb : ∀ ζ, NF.dZb (fun ζ : ℂ => fsv s ζ) ζ = -conj s * fsv s ζ`.
+
+Introduce `ζ`. Unfold `NF.dZb fsv`. Rewrite using `[hv1, hvI]`. Take the linear combination `((1 / 2 : ℂ) * Complex.exp (s * ζ - conj s * conj ζ) * (s + conj s)) * Complex.I_sq`. Establish `hsm : ∀ (c : ℂ) (m : ℂ → ℂ), (∀ ζ, m ζ = c * fsv s ζ) → multiplicationOperator (c • Wv) (fun _ g => m (zeta P.k P.r z z' g))`.
+
+Introduce `c m hm Φ c' g`. Simplify using `only [LinearMap.smul_apply, Submodule.coe_smul, Pi.smul_apply]`. Rewrite using `[hW Φ c' g, smul_smul, hm]`. Establish `hA : ∀ Y, X.t Y 1 0 * Wv = Wv * X.t Y 1 0 - (s • Wv) * X.t Y 1 1 ∧ X.t Y 1 1 * Wv = Wv * X.t Y 1 1 ∧ X.t Y 0 1 * Wv = Wv * X.t Y 0 1 + ((-conj s) • Wv) * X.t Y 1 1` using `fun Y => hZ Wp Wq P z z' π π' hP X (fun ζ => fsv s ζ) (by rw [hfun]; exact ((((contDiff_const.mul contDiff_id).sub (contDiff_const.mul Complex.conjCLE.contDiff)).cexp).contDiffOn)) Wv (s • Wv) ((-conj s) • Wv) (hmz Wv (fun ζ => fsv s ζ) hW) (hmz _ _ (hsm s _ hdZ)) (hmz _ _ (hsm ( …`. Establish `hWW : Wv' * Wv = 1`.
+
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `Φ`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((Wv' (Wv Φ) : RadSp P.k P.r z z' π π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) = (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp))`. Use function extensionality and compare the values at `c g`.
+
+Rewrite using `[hW' (Wv Φ) c g, hW Φ c g, smul_smul]`. Establish `h1 : fsv (-s) (zeta P.k P.r z z' g) * fsv s (zeta P.k P.r z z' g) = 1`. Unfold `fsv`. Rewrite using `[← Complex.exp_add]`. Use `Complex.exp_zero using 2` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[map_neg]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, one_smul]`. Establish `hcore : ∀ A B : Module.End ℂ (RadSp P.k P.r z z' π π'), mkP Wv' Wv * mkP A B * mkP Wv Wv' = mkP (Wv' * A * Wv) (Wv' * B * Wv)`. Introduce `A B`.
+
+Apply `Prod.ext` to reduce the goal to its premises. Simplify using `only [pr_mul_fst, mkPair_fst', mul_assoc]`. Apply `MulOpposite.unop_injective` to reduce the goal to its premises. Simplify using `only [pr_mul_snd, mkPair_snd', mul_assoc]`. Establish `e11 : ∀ Y, Wv' * X.t Y 1 1 * Wv = X.t Y 1 1`.
+
+Introduce `Y`. Rewrite using `[mul_assoc, (hA Y).2.1, ← mul_assoc, hWW, one_mul]`. Establish `e10 : ∀ Y, Wv' * X.t Y 1 0 * Wv = X.t Y 1 0 - s • X.t Y 1 1`. Introduce `Y`. Rewrite using `[mul_assoc, (hA Y).1, mul_sub, ← mul_assoc, hWW, one_mul, smul_mul_assoc, mul_smul_comm, ← mul_assoc, hWW, one_mul]`.
+
+Establish `e01 : ∀ Y, Wv' * X.t Y 0 1 * Wv = X.t Y 0 1 + (-conj s) • X.t Y 1 1`. Introduce `Y`. Rewrite using `[mul_assoc, (hA Y).2.2, mul_add, ← mul_assoc, hWW, one_mul, smul_mul_assoc, mul_smul_comm, ← mul_assoc, hWW, one_mul]`. Use `⟨fun Y => ?_, fun Y => ?_⟩` and prove the remaining obligations. Rewrite using `[hQQ Y, Matrix.smul_apply, mul_smul_comm, smul_mul_assoc]`.
+
+Use `congr 1`. Simplify using `only [ActualOps.QQ, Matrix.of_apply]`. Rewrite using `[hcore, e11 Y, e11 (star Y)]`. Rewrite using `[hQQ Y, Matrix.smul_apply, Matrix.smul_apply, mul_smul_comm, smul_mul_assoc, smul_mul_assoc, ← smul_sub]`. Use `congr 1`.
+
+Simplify using `only [ActualOps.QQ, Matrix.of_apply]`. Rewrite using `[hcore, e10 Y, e01 (star Y)]`. Apply `Prod.ext` to reduce the goal to its premises. Simplify using `only [mkPair_fst', sub_eq_add_neg, pr_add_fst, pr_neg_fst, pr_mul_fst, pr_alg_fst]`. Rewrite using `[← Algebra.commutes, ← Algebra.smul_def]`.
+
+Apply `MulOpposite.unop_injective` to reduce the goal to its premises. Simplify using `only [mkPair_snd', sub_eq_add_neg, pr_add_snd, pr_neg_snd, pr_mul_snd, pr_alg_snd]`. Rewrite using `[← Algebra.smul_def, neg_smul]`.
+-/
 theorem zeta_entries (hZ : NF.ActualZetaSmooth) {P : M.Par} {z z' : Fin (2 * P.r + P.k + 1) → ℂ}
     {π : Mx P.k P.r → (Wp →L[ℂ] Wp)} {π' : Mx P.k P.r → (Wq →L[ℂ] Wq)} (hP : IsPlace P z z' π π')
     (X : ActualOps P.k P.r z z' π π') (st : Fr.Start (Pr (RadSp P.k P.r z z' π π'))) (l0 : ℕ)
@@ -138,6 +173,39 @@ end Entries
 
 open TwistedTransfer in
 
+/- English proof (translation)
+Introduce `hZ Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 K hD`. Take `⟨hP, -, hAL, hQQ, -, -, hSL, hLS⟩` from `hD`. Introduce `w hw s Wv Wv' hW hW' x y _ _ c _ g`. Establish `hW1 : ∀ (Φ : RadSp P.k P.r z z' π π') c g, (Wv Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g = fsv s (zeta P.k P.r z z' g) • (Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g` using `hW`. Establish `hW2 : ∀ (Φ : RadSp P.k P.r z z' π π') c g, (Wv' Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g = fsv (-s) (zeta P.k P.r z z' g) • (Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g` using `hW'`.
+
+Establish `hWW' : Wv * Wv' = 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `Φ`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c g`.
+
+Simplify using `only [Module.End.mul_apply, Module.End.one_apply, hW1, hW2, smul_smul, fsv_mul_fsv_neg, one_smul]`. Establish `hW'W : Wv' * Wv = 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `Φ`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `c g`. Simplify using `only [Module.End.mul_apply, Module.End.one_apply, hW1, hW2, smul_smul, fsv_neg_mul_fsv, one_smul]`. Establish `f_fi : mkP Wv Wv' * mkP Wv' Wv = 1` using `pr_ext (by simpa using hWW') (by simpa using hWW')`. Establish `fi_f : mkP Wv' Wv * mkP Wv Wv' = 1` using `pr_ext (by simpa using hW'W) (by simpa using hW'W)`. Establish `hfn : ∀ g ∈ Fr.zfns L, Commute (mkP Wv Wv') g`.
+
+Take `⟨-, -, -, -, -, -, hz, hzi, hzb, hzbi, hG, hGi, -⟩` from `hAL`. Establish `key : ∀ j j' : Fin 6, Commute (mkP Wv Wv') (mkP (X.fn j) (X.fn j'))`. Introduce `j j'`. Use `show _ * _ = _ * _`. Conclude with `pr_ext (by simpa using mulOp_comm_fn X Wv _ hW j) (by simpa using (mulOp_comm_fn X Wv' _ hW' j').symm)`.
+
+Introduce `g hg`. Simplify using `only [Fr.zfns, Set.mem_insert_iff, Set.mem_singleton_iff] at hg`. Break down `hg with rfl | rfl | rfl | rfl | rfl | rfl` into its components or cases. Rewrite using `[hz]`. Conclude with `key _ _`.
+
+Rewrite using `[hzi]`. Conclude with `key _ _`. Rewrite using `[hzb]`. Conclude with `key _ _`. Rewrite using `[hzbi]`.
+
+Conclude with `key _ _`. Rewrite using `[hG]`. Conclude with `key _ _`. Rewrite using `[hGi]`. Conclude with `key _ _`.
+
+Establish `hGG : Commute (mkP Wv Wv') L.GG` using `hfn _ (mem_zfns L).2.2.2.2.1`. Establish `hfiGG : Commute (mkP Wv' Wv) L.GG` using `(commute_inv hGG.symm f_fi fi_f).symm`. Take `⟨e11, e10⟩` from `zeta_entries hZ hP X st l0 hQQ s Wv Wv' hW hW'`. Establish `hx : ∀ Y, Commute (mkP Wv Wv') (st.x Y)`. Introduce `Y`.
+
+Establish `h` using `e11 Y`. Rewrite `h` using `[hLS.tau Y]`. Establish `h1 : L.GG * (mkP Wv' Wv * st.x Y * mkP Wv Wv') = L.GG * st.x Y` using `by conv_rhs => rw [← h]`. Rewrite using `[← mul_assoc (mkP Wv' Wv) L.GG, hfiGG.eq]`. Simplify using `only [mul_assoc]`.
+
+Establish `h2 : mkP Wv' Wv * st.x Y * mkP Wv Wv' = st.x Y`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, L.GGi_GG, one_mul]`. Use `_ = L.GGi * (L.GG * st.x Y) := by rw [h1]`. Use `_ = st.x Y := by rw [← mul_assoc, L.GGi_GG, one_mul]`.
+
+Use `show mkP Wv Wv' * st.x Y = st.x Y * mkP Wv Wv'`. Combine the equalities or inequalities in the displayed calculation. Establish `hl : ∀ Y ∈ st.inv, mkP Wv' Wv * (L.l0 Y + L.ζb * L.ζi * L.GGi * st.ee Y) * mkP Wv Wv' = L.l0 Y + L.ζb * L.ζi * L.GGi * st.ee Y - algebraMap ℂ _ s`. Introduce `Y hY`. Establish `h` using `e10 Y`.
+
+Rewrite `h` using `[hLS.low Y hY, hLS.tau Y]`. Establish `hfix : Commute (mkP Wv' Wv) (st.x Y)` using `(commute_inv (hx Y).symm f_fi fi_f).symm`. Establish `cancel : ∀ T, st.xi Y * L.GGi * (L.GG * st.x Y * T) = T`. Introduce `T`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [mul_assoc]`. Use `_ = T := by rw [L.GGi_GG, mul_one, (hLS.x_xi Y hY).2, one_mul]`. Establish `h3 : mkP Wv' Wv * (L.GG * st.x Y * (L.l0 Y + L.ζb * L.ζi * L.GGi * st.ee Y)) * mkP Wv Wv' = L.GG * st.x Y * (mkP Wv' Wv * (L.l0 Y + L.ζb * L.ζi * L.GGi * st.ee Y) * mkP Wv Wv')`. Rewrite using `[← mul_assoc (mkP Wv' Wv) (L.GG * st.x Y), ← mul_assoc (mkP Wv' Wv) L.GG, hfiGG.eq, mul_assoc L.GG (mkP Wv' Wv), hfix.eq]`. Simplify using `only [mul_assoc]`.
+
+Rewrite `h` using `[h3, ← mul_sub]`. Rewrite using `[← cancel (mkP Wv' Wv * _ * mkP Wv Wv'), h, cancel]`. Establish `hWH : WaveHyp L st (mkP Wv Wv') (mkP Wv' Wv) s` using `⟨f_fi, fi_f, rfl, hfn, hx, hl⟩`. Take `⟨hFV, hd⟩` from `frame_twist_F hSL hLS hWH w hw.1`. Establish `hM : (Fr.ofWord L st w).d L * (Fr.ofWord L st w).F * Vw (mkP Wv Wv') s w = io (mkP Wv Wv') * ((Fr.ofWord L st w).d L * (Fr.ofWord L st w).F)`.
+
+Rewrite using `[mul_assoc, hFV, ← mul_assoc, ← hd.eq, mul_assoc]`. Unfold `topDens`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[← act_mul, hM, act_mul, act_io, mkPair_fst', hW1, hsInner_smul_left]`.
+-/
 theorem topTwistDensOfZeta : TopTwistDensOfZeta := by
   intro hZ Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 K hD
   obtain ⟨hP, -, hAL, hQQ, -, -, hSL, hLS⟩ := hD

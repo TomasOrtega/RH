@@ -12,32 +12,60 @@ namespace SphereProjectionLaw
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+-/
 theorem ofReal_norm_sq (x : ℂ) : ((‖x‖ ^ 2 : ℝ) : ℂ) = x * star x := by
   rw [Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
+/- English proof (translation)
+Rewrite using `[Complex.ofReal_sum]`. Conclude with `Finset.sum_congr rfl fun j _ ↦ ofReal_norm_sq (v j)`.
+-/
 theorem ofReal_sum_norm_sq (v : Fin n → ℂ) :
     ((∑ j, ‖v j‖ ^ 2 : ℝ) : ℂ) = ∑ j, v j * star (v j) := by
   rw [Complex.ofReal_sum]
   exact Finset.sum_congr rfl fun j _ ↦ ofReal_norm_sq (v j)
 
+/- English proof (translation)
+Simplify using `[coordAlong, Finset.mul_sum, mul_assoc]`.
+-/
 theorem coordAlong_smul (p w : Fin n → ℂ) (c : ℂ) :
     coordAlong p (c • w) = c * coordAlong p w := by
   simp [coordAlong, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Simplify using `[coordAlong, sub_mul, Finset.sum_sub_distrib]`.
+-/
 theorem coordAlong_sub (p z w : Fin n → ℂ) :
     coordAlong p (z - w) = coordAlong p z - coordAlong p w := by
   simp [coordAlong, sub_mul, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Rewrite using `[coordAlong, ← ofReal_sum_norm_sq, hp, Complex.ofReal_one]`.
+-/
 theorem coordAlong_self {p : Fin n → ℂ} (hp : ∑ j, ‖p j‖ ^ 2 = 1) : coordAlong p p = 1 := by
   rw [coordAlong, ← ofReal_sum_norm_sq, hp, Complex.ofReal_one]
 
+/- English proof (translation)
+Simplify using `[HermNorm.norm, HermNorm.std]`.
+-/
 theorem std_norm (v : Fin n → ℂ) : (HermNorm.std n).norm v = √(∑ j, ‖v j‖ ^ 2) := by
   simp [HermNorm.norm, HermNorm.std]
 
+/- English proof (translation)
+Simplify using `[mul_pow, Finset.mul_sum]`.
+-/
 theorem sum_norm_sq_smul (c : ℂ) (w : Fin n → ℂ) :
     ∑ j, ‖(c • w) j‖ ^ 2 = ‖c‖ ^ 2 * ∑ j, ‖w j‖ ^ 2 := by
   simp [mul_pow, Finset.mul_sum]
 
+/- English proof (translation)
+Apply `Complex.ofReal_injective` to reduce the goal to its premises. Use `set a := coordAlong p z with ha`. Establish `hzp : ∑ j, p j * star (z j) = star a`. Simplify using `[ha, coordAlong, star_sum, mul_comm]`. Establish `hpp : ∑ j, p j * star (p j) = 1` using `by rw [← ofReal_sum_norm_sq, hp, Complex.ofReal_one]`.
+
+Establish `hzz : ∑ j, z j * star (z j) = 1` using `by rw [← ofReal_sum_norm_sq, hz, Complex.ofReal_one]`. Establish `key : ∀ j, (z - a • p) j * star ((z - a • p) j) = z j * star (z j) - star a * (z j * star (p j)) - a * (p j * star (z j)) + a * star a * (p j * star (p j))`. Introduce `j`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, star_sub, star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[ofReal_sum_norm_sq, Finset.sum_congr rfl fun j _ ↦ key j]`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum]`. Rewrite using `[hzp, hpp, hzz, ← coordAlong, ← ha, Complex.ofReal_sub, Complex.ofReal_one, ofReal_norm_sq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_norm_sq_sub {p z : Fin n → ℂ} (hp : ∑ j, ‖p j‖ ^ 2 = 1)
     (hz : ∑ j, ‖z j‖ ^ 2 = 1) :
     ∑ j, ‖(z - coordAlong p z • p) j‖ ^ 2 = 1 - ‖coordAlong p z‖ ^ 2 := by
@@ -59,6 +87,17 @@ theorem sum_norm_sq_sub {p z : Fin n → ℂ} (hp : ∑ j, ‖p j‖ ^ 2 = 1)
     ofReal_norm_sq]
   ring
 
+/- English proof (translation)
+Set `p' : EuclideanSpace ℂ (Fin (m + 1))` to `WithLp.toLp 2 p`. Establish `hp' : ‖p'‖ = 1`. Rewrite using `[EuclideanSpace.norm_eq]`. Simplify using `[p', hp]`. Establish `hon : Orthonormal ℂ (({0} : Set (Fin (m + 1))).domRestrict fun _ ↦ p')`.
+
+Rewrite using `[orthonormal_iff_ite]`. Introduce `i j`. Rewrite using `[Subsingleton.elim i j, if_pos rfl, show (({0} : Set (Fin (m + 1))).domRestrict fun _ ↦ p') j = p' from rfl, inner_self_eq_norm_sq_to_K, hp']`. Simplify using the standard rewrite rules. Take `⟨b, hb⟩` from `hon.exists_orthonormalBasis_extension_of_card_eq (by simp)`.
+
+Establish `hb0 : b 0 = p'` using `hb 0 (Set.mem_singleton 0)`. Set `Ulin : (Fin (m + 1) → ℂ) ≃ₗ[ℂ] (Fin (m + 1) → ℂ)` to `(WithLp.linearEquiv 2 ℂ (Fin (m + 1) → ℂ)).symm ≪≫ₗ b.repr.toLinearEquiv ≪≫ₗ WithLp.linearEquiv 2 ℂ (Fin (m + 1) → ℂ)`. Establish `hUapp : ∀ v, Ulin v = (b.repr (WithLp.toLp 2 v)).ofLp` using `fun v ↦ rfl`. Use `⟨Ulin.toLinearMap, fun v ↦ ?_, fun v ↦ ?_⟩` and prove the remaining obligations. Establish `h` using `b.repr.norm_map (WithLp.toLp 2 v)`.
+
+Rewrite `h` using `[EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]`. Establish `h2` using `congrArg (· ^ 2) h`. Simplify using `only [Real.sq_sqrt (Finset.sum_nonneg fun _ _ ↦ sq_nonneg _)] at h2`. Simplify `h2` using `[hUapp]`. Rewrite using `[LinearEquiv.coe_coe, hUapp, OrthonormalBasis.repr_apply_apply, hb0, PiLp.inner_apply]`.
+
+Simplify using `[p', RCLike.inner_apply, coordAlong]`.
+-/
 theorem exists_unitary_first {m : ℕ} (p : Fin (m + 1) → ℂ) (hp : ∑ j, ‖p j‖ ^ 2 = 1) :
     ∃ U : (Fin (m + 1) → ℂ) →ₗ[ℂ] (Fin (m + 1) → ℂ),
       (∀ v, ∑ j, ‖U v j‖ ^ 2 = ∑ j, ‖v j‖ ^ 2) ∧ ∀ v, U v 0 = coordAlong p v := by
@@ -88,6 +127,9 @@ theorem exists_unitary_first {m : ℕ} (p : Fin (m + 1) → ℂ) (hp : ∑ j, �
   · rw [LinearEquiv.coe_coe, hUapp, OrthonormalBasis.repr_apply_apply, hb0, PiLp.inner_apply]
     simp [p', RCLike.inner_apply, coordAlong]
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `finrank_span_le_card (R := ℂ) ({p} : Set (Fin N → ℂ))`. Rewrite `h1` using `[h, finrank_top, Module.finrank_fin_fun]`. Simplify using `at h1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem span_singleton_ne_top {N : ℕ} (hN : 2 ≤ N) (p : Fin N → ℂ) :
     Submodule.span ℂ {p} ≠ ⊤ := by
   intro h
@@ -100,6 +142,23 @@ end SphereProjectionLaw
 
 open SphereProjectionLaw in
 
+/- English proof (translation)
+Introduce `N p hp`. Use `⟨fun hN ↦ ?_, fun hN ↦ ⟨?_, h4 N p hp hN, ?_⟩⟩` and prove the remaining obligations. Substitute `hN` using the available equality. Use `filter_upwards [(h1 1 le_rfl).2.1] with z hz`. Simplify using `only [Fin.sum_univ_one] at hz hp`.
+
+Establish `hz1 : ‖z 0‖ = 1` using `by nlinarith [norm_nonneg (z 0)]`. Establish `hp1 : ‖p 0‖ = 1` using `by nlinarith [norm_nonneg (p 0)]`. Simplify using `[coordAlong, hz1, hp1]`. Establish `hnull` using `measure_eq_zero_iff_ae_notMem.mp ((h1 N (by omega)).2.2 _ (span_singleton_ne_top hN p))`. Use `filter_upwards [(h1 N (by omega)).2.1, hnull] with z hz hzS`.
+
+Use `set a := coordAlong p z with ha`. Use `set w := z - a • p with hw`. Establish `hw0 : w ≠ 0`. Introduce `h`. Apply `hzS` to reduce the goal to its premises.
+
+Rewrite using `[SetLike.mem_coe, Submodule.mem_span_singleton]`. Conclude with `⟨a, (sub_eq_zero.mp h).symm⟩`. Establish `hsq : ∑ j, ‖w j‖ ^ 2 = 1 - ‖a‖ ^ 2` using `sum_norm_sq_sub hp hz`. Establish `hpos : 0 < ∑ j, ‖w j‖ ^ 2`. Take `⟨j, hj⟩` from `Function.ne_iff.mp hw0`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `set s := √(1 - ‖a‖ ^ 2) with hs`. Establish `hs0 : 0 < s` using `Real.sqrt_pos.mpr (hsq ▸ hpos)`. Establish `hss : s ^ 2 = 1 - ‖a‖ ^ 2` using `Real.sq_sqrt (hsq ▸ hpos.le)`. Establish `hdir : orthoDir p z = ((s : ℂ))⁻¹ • w`.
+
+Rewrite using `[orthoDir, std_norm, ← ha, ← hw, hsq]`. Establish `hwp : coordAlong p w = 0`. Rewrite using `[hw, coordAlong_sub, coordAlong_smul, coordAlong_self hp, mul_one, sub_self]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hdir, smul_smul, mul_inv_cancel₀ (Complex.ofReal_ne_zero.mpr hs0.ne'), one_smul, hw, add_sub_cancel]`.
+
+Rewrite using `[hdir, coordAlong_smul, hwp, mul_zero]`. Rewrite using `[hdir, std_norm, sum_norm_sq_smul, hsq, ← hss, norm_inv, Complex.norm_real, Real.norm_of_nonneg hs0.le, inv_pow, inv_mul_cancel₀ (pow_pos hs0 2).ne', Real.sqrt_one]`. Take `⟨m, rfl⟩ : ∃ m, N = m + 1` from `⟨N - 1, by omega⟩`. Take `⟨U, hU, hU0⟩` from `exists_unitary_first p hp`. Establish `hf : (fun z ↦ ‖coordAlong p z‖ ^ 2) = (fun z : Fin (m + 1) → ℂ ↦ ‖z ⟨0, by omega⟩‖ ^ 2) ∘ U`.
+
+Use function extensionality and compare the values at `z`. Simplify using `[hU0]`. Establish `hUm : Measurable U` using `U.continuous_of_finiteDimensional.measurable`. Establish `hgm : Measurable fun z : Fin (m + 1) → ℂ ↦ ‖z ⟨0, by omega⟩‖ ^ 2` using `((continuous_apply _).norm.pow 2).measurable`. Rewrite using `[hf, ← Measure.map_map hgm hUm, h2 _ U hU, h3 _ hN]`.
+-/
 theorem SphereProjectionLaw.proof (h1 : SphereLawBasic.Statement) (h2 : SphereLawUnitary.Statement)
     (h3 : SphereLawFirstCoord.Statement) (h4 : SpherePhase.Statement) :
     SphereProjectionLaw.Statement := by

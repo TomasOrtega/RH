@@ -11,6 +11,21 @@ open scoped Classical
 
 namespace GlobalTheory.ThetaInj
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ κ _ Φ hΦ h`. Establish `hn : ∀ a, ‖ψ a‖ = 1` using `GlobalTheory.StdCharFromIsStd.norm_psi hψ`. Take `⟨a₀, ha₀⟩` from `GlobalTheory.StdCharFromIsStd.exists_ne_one hψ`. Set `ι : (κ → F) → (κ → AF F)` to `fun ξ i => algebraMap F (AF F) (ξ i)`. Establish `hι0 : ι 0 = 0` using `by funext i; simp [ι]`.
+
+Use function extensionality and compare the values at `x`. Establish `hΦx : (fun z => Φ (z + x)) ∈ schA F κ` using `GlobalTheory.SchwartzTranslate.schA_translate F x hΦ`. Establish `hc : Summable fun ξ => ‖Φ (ι ξ + x)‖`. Use `GlobalTheory.WeilM.summable_norm_of_mem_schA F hΦx using 1` and compare the differences between its conclusion and the goal. Establish `key` using `GlobalTheory.SchrodingerUniq.coeff_zero_eq_zero (χ := fun (y : κ → AF F) (ξ : κ → F) => ψ (ι ξ ⬝ᵥ y)) (c := fun ξ => Φ (ι ξ + x)) (fun y ξ => hn _) (fun y y' ξ => by simp only [dotProduct_add, AddChar.map_add_eq_mul]) (fun ξ => by simp only [dotProduct_zero, AddChar.map_zero_eq_o …`.
+
+Take `⟨i, hi⟩` from `Function.ne_iff.1 hξ`. Establish `hi' : ξ i ≠ 0` using `hi`. Use `⟨Pi.single i (algebraMap F (AF F) (ξ i)⁻¹ * a₀), ?_⟩` and prove the remaining obligations. Use `show ψ (ι ξ ⬝ᵥ Pi.single i (algebraMap F (AF F) (ξ i)⁻¹ * a₀)) ≠ 1`. Rewrite using `[dotProduct_single]`.
+
+Use `show ψ (algebraMap F (AF F) (ξ i) * (algebraMap F (AF F) (ξ i)⁻¹ * a₀)) ≠ 1`. Rewrite using `[← mul_assoc, ← map_mul, mul_inv_cancel₀ hi', map_one, one_mul]`. Conclude with `ha₀)`. Use `hc (fun y => ?_)`. Simplify `key` using `[hι0]`.
+
+Establish `h'` using `h (x, y)`. Simplify using `only [GlobalTheory.WeilM.thetaSum, GlobalTheory.WeilM.schr, AddChar.map_add_eq_mul] at h'`. Use `set b := ψ (⅟(2 : AF F) * (x ⬝ᵥ y))`. Establish `hb : b ≠ 0`. Introduce `e`.
+
+Establish `h1 : ‖b‖ = 1` using `hn _`. Rewrite `h1` using `[e, norm_zero]`. Conclude with `zero_ne_one h1`. Establish `e2 : ∑' ξ : κ → F, Φ (ι ξ + x) * ψ (ι ξ ⬝ᵥ y) = b⁻¹ * ∑' ξ : κ → F, ψ (ι ξ ⬝ᵥ y) * b * Φ (ι ξ + x)`. Rewrite using `[← tsum_mul_left]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `ξ`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e2, h', mul_zero]`.
+-/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ], ∀ Φ ∈ schA F κ,
     (∀ w : (κ → AF F) × (κ → AF F), thetaSum F (schr ψ w Φ) = 0) → Φ = 0 := by
   intro F _ _ ψ hψ κ _ Φ hΦ h

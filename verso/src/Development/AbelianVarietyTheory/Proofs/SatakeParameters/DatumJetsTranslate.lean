@@ -15,6 +15,21 @@ namespace GlobalTheory.DatumJets.Transl
 
 open GlobalTheory.LiftTypePrime GlobalTheory.MomT.PtMoments
 
+/- English proof (translation)
+Establish `key : ∀ x : W, ∃ s : ℕ, Nat.Coprime s p ∧ (x ∈ M → (s : 𝓞 E) • x ∈ M')` using `fun x => by`. Distinguish the cases in `hx : x ∈ M`. Use `swap`. Conclude with `⟨1, by simp, fun h => absurd h hx⟩`. Assume the negation of the conclusion as `hn`.
+
+Set `I : Ideal (𝓞 E)` to `M'.comap (LinearMap.toSpanSingleton (𝓞 E) W x)`. Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.1 hp`. Establish `: (Ideal.span {(p : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime hpZ.ne_zero).2 hpZ`. Establish `hI : I.comap (algebraMap ℤ (𝓞 E)) ≤ Ideal.span {(p : ℤ)}` using `fun z hz => by`. Rewrite using `[Ideal.mem_span_singleton, Int.natCast_dvd]`.
+
+Assume the negation of the conclusion as `hz'`. Use `hn ⟨z.natAbs, ((Nat.Prime.coprime_iff_not_dvd hp).2 hz').symm, fun _ => ?_⟩` and prove the remaining obligations. Establish `hz1 : (z : 𝓞 E) • x ∈ M'` using `hz`. Break down `Int.natAbs_eq z with h1 | h1` into its components or cases. Rewrite `hz1` using `[h1, Int.cast_natCast]`.
+
+Conclude with `hz1`. Rewrite `hz1` using `[h1, Int.cast_neg, Int.cast_natCast, neg_smul, neg_mem_iff]`. Conclude with `hz1`. Take `⟨Q, hQ, hQp, hQc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (Ideal.span {(p : ℤ)}) I hI`. Establish `hpQ : (p : 𝓞 E) ∈ Q`.
+
+Establish `: (p : ℤ) ∈ Q.comap (algebraMap ℤ (𝓞 E))` using `hQc ▸ Ideal.mem_span_singleton_self _`. Simplify using `using this`. Establish `hQ0 : Q ≠ ⊥`. Introduce and unpack `rfl`. Conclude with `hp.ne_zero (by simpa using hpQ)`.
+
+Take `⟨c, hc, hcx⟩ : ∃ c : 𝓞 E, c ∉ Q ∧ c • x ∈ M'` from `h ⟨Q, hQp, hQ0⟩ hpQ hx`. Conclude with `hc (hQ hcx)`. Use `choose f hf hfx using key`. Take `⟨S, rfl⟩` from `hM`. Use `⟨∏ x ∈ S, f x, Nat.Coprime.prod_left fun x _ => hf x, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Use `(Submodule.span_le (p := M'.comap (((∏ x ∈ S, f x : ℕ) : 𝓞 E) • LinearMap.id))).2 (fun y hy => ?_) hx` and prove the remaining obligations. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem f (Finset.mem_coe.1 hy)`. Express the relevant statement in the definitionally equal form `((∏ x ∈ S, f x : ℕ) : 𝓞 E) • y ∈ M'`. Rewrite using `[hc, mul_comm, Nat.cast_mul, mul_smul]`. Conclude with `M'.smul_mem _ (hfx y (Submodule.subset_span hy))`.
+-/
 theorem exists_denom {E W : Type} [Field E] [NumberField E] [AddCommGroup W] [Module (𝓞 E) W] {p : ℕ} (hp : p.Prime)
     {M M' : Submodule (𝓞 E) W} (hM : M.FG)
     (h : ∀ P : HeightOneSpectrum (𝓞 E), (p : 𝓞 E) ∈ P.asIdeal → M ≤ localization₂ P.asIdeal M') :
@@ -53,9 +68,19 @@ theorem exists_denom {E W : Type} [Field E] [NumberField E] [AddCommGroup W] [Mo
   rw [hc, mul_comm, Nat.cast_mul, mul_smul]
   exact M'.smul_mem _ (hfx y (Submodule.subset_span hy))
 
+/- English proof (translation)
+The claim follows from `Submodule.fg_pi fun _ => by rw [Submodule.one_eq_span]; exact Submodule.fg_span_singleton _`.
+-/
 theorem stdLat_fg (E : Type) [Field E] (n : ℕ) : (Formalism.L2.Col.stdLat E n).FG :=
   Submodule.fg_pi fun _ => by rw [Submodule.one_eq_span]; exact Submodule.fg_span_singleton _
 
+/- English proof (translation)
+Take `⟨s, hs, h1⟩` from `exists_denom hp hN (M' := Formalism.L2.Col.stdLat D.host.E n) fun P hP => (le_locP _ _).trans (h P hP).le`. Take `⟨t, ht, h2⟩` from `exists_denom hp (stdLat_fg D.host.E n) (M' := N) fun P hP => (le_locP _ _).trans (h P hP).ge`. Establish `hl : ∀ x, x ∈ (recSeam D).lat N ↔ x ∈ N` using `fun x => GlobalTheory.SeamTransport.mem_lat (recSeam D) N x`. Use `⟨Formalism.L2.Col.stdLat D.host.E n, fun x => ?_, s * t, hs.mul_left ht, fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [Formalism.L2.Col.stdLat, Submodule.mem_pi, Set.mem_univ, true_imp_iff, Submodule.mem_one]`.
+
+Conclude with `forall_congr' fun k => ⟨fun ⟨y, hy⟩ => hy ▸ y.isIntegral_coe, fun hy => ⟨⟨_, hy⟩, rfl⟩⟩`. Use `h1 x ((hl x).1 hx)` as an intermediate fact. Rewrite `this`, the goal using `[Nat.cast_smul_eq_nsmul]`. Rewrite using `[mul_comm, mul_smul]`. Conclude with `nsmul_mem this _`.
+
+Use `h2 x hx` as an intermediate fact. Rewrite `this`, the goal using `[Nat.cast_smul_eq_nsmul]`. Rewrite using `[hl, mul_smul]`. Conclude with `nsmul_mem this _`.
+-/
 theorem stdAt_of_stdOver (D : D7) {p : ℕ} (hp : p.Prime) {n : ℕ} {N : Submodule (𝓞 D.host.E) (Sp D.host.E n)} (hN : N.FG)
     (h : StdOver p N) : StdAt D p ((recSeam D).lat N) := by
   obtain ⟨s, hs, h1⟩ := exists_denom hp hN (M' := Formalism.L2.Col.stdLat D.host.E n) fun P hP => (le_locP _ _).trans (h P hP).le
@@ -75,6 +100,11 @@ theorem stdAt_of_stdOver (D : D7) {p : ℕ} (hp : p.Prime) {n : ℕ} {N : Submod
 
 variable {D : D7} {a b : ℕ}
 
+/- English proof (translation)
+Establish `h : inLetters D cD (MvPolynomial.monomial m (1 : ℂ)) = MvPolynomial.monomial m (m.prod fun k n => cD k.1 ^ n)`. Rewrite using `[inLetters, MvPolynomial.aeval_monomial, MvPolynomial.monomial_eq]`. Simplify using `only [mul_pow, Finsupp.prod_mul, map_one, one_mul, map_finsuppProd, map_pow]`. Rewrite using `[h, GL3Theta.applyAt0, Finset.sum_subset MvPolynomial.support_monomial_subset, Finset.sum_singleton, MvPolynomial.coeff_monomial, if_pos rfl, mul_assoc]`. Introduce `x _ hx`.
+
+Rewrite using `[MvPolynomial.notMem_support_iff.1 hx, zero_mul, zero_mul]`.
+-/
 theorem applyAt0_monomial (cD : D.what₂.Tau → ℂ) (G : TaylorLogMetric.VC D a b → ℂ) (m : TaylorLogMetric.Mono D a b) :
     GL3Theta.applyAt0 D (inLetters D cD (MvPolynomial.monomial m 1)) G =
       (m.prod fun k n => cD k.1 ^ n) * ((m.prod fun _ n => (n.factorial : ℂ)) * TaylorLogMetric.taylor D G m) := by

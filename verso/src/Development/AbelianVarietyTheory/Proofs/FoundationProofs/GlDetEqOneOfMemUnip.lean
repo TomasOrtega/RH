@@ -7,6 +7,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TraceIncl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_of_isUpperTriangular (M := (g : Matrix (Fin r) (Fin r) κ)) (fun i j h => unip_lower hg h)]`. Simplify using `[unip_diag hg]`.
+-/
 theorem gl_det_eq_one_of_mem_unip {κ : Type} [CommRing κ] {r : ℕ} {g : GL (Fin r) κ} (hg : g ∈ unip κ r) :
     Matrix.GeneralLinearGroup.det g = 1 := by
   apply Units.ext
@@ -14,6 +17,13 @@ theorem gl_det_eq_one_of_mem_unip {κ : Type} [CommRing κ] {r : ℕ} {g : GL (F
     (fun i j h => unip_lower hg h)]
   simp [unip_diag hg]
 
+/- English proof (translation)
+Introduce `i u hu`. Take `⟨ψ, -, h0, -⟩` from `h.levels`. Establish `h1 : F.P0.comap R.eG.symm.toMonoidHom = Subgroup.pi Set.univ (fun v : R.Pg => unip (kP v.1) D.R.r)` using `congrArg LevelP.H h0`. Establish `h2 : R.eG u ∈ F.P0.comap R.eG.symm.toMonoidHom`. Rewrite using `[Subgroup.mem_comap]`.
+
+Simplify using `using hu`. Rewrite `h2` using `[h1]`. Apply `Units.ext` to reduce the goal to its premises. Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Rewrite using `[h.chiW i u, Units.val_one, map_one]`.
+
+Use `Finset.prod_eq_one fun PP _ => ?_` and prove the remaining obligations. Rewrite using `[gl_det_eq_one_of_mem_unip (h2 PP (Set.mem_univ _)), map_one, Units.val_one]`.
+-/
 theorem chi_eq_one_of_mem_base {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (h : R.IsGrp F) :
     ∀ i, ∀ u ∈ F.P0, (R.FW i).chi u = 1 := by

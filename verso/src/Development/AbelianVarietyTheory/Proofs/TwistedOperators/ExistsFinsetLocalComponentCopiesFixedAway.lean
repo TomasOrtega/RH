@@ -19,9 +19,15 @@ section Abstract
 variable {G N X : Type} [Group G] [AddCommGroup N] [Module ℂ N] [AddCommGroup X] [Module ℂ X]
   {π : Representation ℂ G N} {ρ : Representation ℂ G X}
 
+/- English proof (translation)
+The claim follows from `LinearMap.congr_fun (φ.isIntertwining' g) n`.
+-/
 theorem apply_comm (φ : π.IntertwiningMap ρ) (g : G) (n : N) : φ.toLinearMap (π g n) = ρ g (φ.toLinearMap n) :=
   LinearMap.congr_fun (φ.isIntertwining' g) n
 
+/- English proof (translation)
+Use `haveI := hπ`. Establish `hs : π.IsSemisimpleRepresentation` using `(Representation.isSemisimpleRepresentation_iff_isSemisimpleModule_asModule π).2 inferInstance`. Conclude with `GlobalTheory.ClassFin.isSemisimpleRepresentation_of_iSup_range G X ρ (π.IntertwiningMap ρ) (fun _ => N) (fun _ => π) (fun φ => φ.toLinearMap) (fun _ => hs) (fun φ g x => apply_comm φ g x) h`.
+-/
 theorem isSemisimple_of_isotypic (hπ : π.IsIrreducible) (h : IsIsotypicAlg π ρ) : ρ.IsSemisimpleRepresentation := by
   haveI := hπ
   have hs : π.IsSemisimpleRepresentation :=
@@ -29,6 +35,11 @@ theorem isSemisimple_of_isotypic (hπ : π.IsIrreducible) (h : IsIsotypicAlg π 
   exact GlobalTheory.ClassFin.isSemisimpleRepresentation_of_iSup_range G X ρ (π.IntertwiningMap ρ) (fun _ => N) (fun _ => π)
     (fun φ => φ.toLinearMap) (fun _ => hs) (fun φ g x => apply_comm φ g x) h
 
+/- English proof (translation)
+Introduce `x hx`. Establish `: (⨆ φ ∈ s, LinearMap.range φ.toLinearMap) ≤ (⨆ φ ∈ s, LinearMap.range φ.toLinearMap).comap (ρ g)`. Use `iSup₂_le fun φ hφ => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, rfl⟩`. Rewrite using `[Submodule.mem_comap, ← apply_comm]`.
+
+Conclude with `Submodule.mem_iSup_of_mem φ (Submodule.mem_iSup_of_mem hφ ⟨_, rfl⟩)`. Conclude with `this hx`.
+-/
 theorem stable_biSup (s : Finset (π.IntertwiningMap ρ)) (g : G) :
     ∀ x ∈ ⨆ φ ∈ s, LinearMap.range φ.toLinearMap, ρ g x ∈ ⨆ φ ∈ s, LinearMap.range φ.toLinearMap := by
   intro x hx
@@ -39,6 +50,21 @@ theorem stable_biSup (s : Finset (π.IntertwiningMap ρ)) (g : G) :
     exact Submodule.mem_iSup_of_mem φ (Submodule.mem_iSup_of_mem hφ ⟨_, rfl⟩)
   exact this hx
 
+/- English proof (translation)
+Use `haveI := hπ`. Use `haveI := isSemisimple_of_isotypic hπ h`. Take `⟨C1, hc⟩` from `exists_isCompl C`. Establish `hc' : IsCompl C.toSubmodule C1.toSubmodule` using `IsCompl.of_eq (congrArg Subrepresentation.toSubmodule hc.inf_eq_bot) (congrArg Subrepresentation.toSubmodule hc.sup_eq_top)`. Set `P : X →ₗ[ℂ] X` to `C.toSubmodule.subtype ∘ₗ Submodule.linearProjOfIsCompl _ _ hc'`.
+
+Establish `hPl : ∀ a ∈ C.toSubmodule, P a = a` using `fun a ha => congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left hc' ⟨a, ha⟩)`. Establish `hPr : ∀ b ∈ C1.toSubmodule, P b = 0` using `fun b hb => congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_right hc' ⟨b, hb⟩)`. Establish `hPi : ∀ g x, P (ρ g x) = ρ g (P x)` using `fun g x => by`. Establish `hx : x ∈ C.toSubmodule ⊔ C1.toSubmodule` using `by rw [hc'.sup_eq_top]; trivial`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hx`.
+
+Rewrite using `[map_add, map_add, map_add, hPl a ha, hPr b hb, hPl _ (C.apply_mem_toSubmodule g ha), hPr _ (C1.apply_mem_toSubmodule g hb), add_zero, add_zero]`. Establish `hPm : ∀ x, P x ∈ C.toSubmodule` using `fun x => by simp [P]`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc0, hcne⟩ : ∃ c ∈ C.toSubmodule, c ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Use `push_neg at hn`.
+
+Conclude with `hC (Subrepresentation.toSubmodule_injective (eq_bot_iff.2 fun x hx => hn x hx))`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `hall : ∀ φ : π.IntertwiningMap ρ, LinearMap.range φ.toLinearMap ≤ LinearMap.ker P`. Introduce `φ`.
+
+Set `ψ : π.IntertwiningMap ρ` to `⟨P ∘ₗ φ.toLinearMap, fun g => LinearMap.ext fun n => by`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[apply_comm φ g n, hPi]⟩`. Break down `Representation.IsIrreducible.injective_or_eq_zero ψ with hi | h0` into its components or cases. Take `⟨n, hn⟩` from `hno ψ hi`.
+
+Conclude with `absurd (hPm _) hn`. Introduce and unpack `_ ⟨n, rfl⟩`. Conclude with `DFunLike.congr_fun h0 n`. Establish `: c ∈ LinearMap.ker P`. Establish `h1 : c ∈ isoPartAlg π ρ` using `by rw [h]; trivial`.
+
+Conclude with `(iSup_le hall) h1`. Conclude with `hcne ((hPl c hc0).symm.trans this)`.
+-/
 theorem exists_intertwining_le (hπ : π.IsIrreducible) (h : IsIsotypicAlg π ρ) (C : Subrepresentation ρ)
     (hC : C ≠ ⊥) : ∃ ψ : π.IntertwiningMap ρ, Function.Injective ψ ∧ ∀ n, ψ n ∈ C.toSubmodule := by
   haveI := hπ
@@ -90,6 +116,17 @@ section Abstract
 variable {G N X : Type} [Group G] [AddCommGroup N] [Module ℂ N] [AddCommGroup X] [Module ℂ X]
   {π : Representation ℂ G N} {ρ : Representation ℂ G X}
 
+/- English proof (translation)
+Use `haveI := isSemisimple_of_isotypic hπ h`. Set `A : Subrepresentation ρ` to `⟨Y ⊓ ⨆ φ ∈ s, LinearMap.range φ.toLinearMap, fun g x hx => ⟨hY g x hx.1, stable_biSup s g x hx.2⟩⟩`. Take `⟨C0, hc⟩` from `exists_isCompl A`. Set `C : Subrepresentation ρ` to `⟨Y ⊓ C0.toSubmodule, fun g x hx => ⟨hY g x hx.1, C0.apply_mem_toSubmodule g hx.2⟩⟩`. Establish `hC : C = ⊥`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨ψ, hi, hm⟩` from `exists_intertwining_le hπ h C hne`. Establish `hx0 : ψ v ≠ 0` using `fun e => hv (hi (e.trans (map_zero ψ).symm))`. Establish `hxY : ψ v ∈ Y` using `(hm v).1`. Establish `hxM` using `hF _ hxY fun g hg => by rw [← ψ.isIntertwining, hg]`.
+
+Establish `h1 : ψ v ∈ (A ⊓ C0).toSubmodule` using `⟨⟨hxY, hxM⟩, (hm v).2⟩`. Rewrite `h1` using `[hc.inf_eq_bot]`. Conclude with `hx0 h1`. Introduce `y hy`. Establish `h2 : y ∈ (A ⊔ C0).toSubmodule` using `by rw [hc.sup_eq_top]; trivial`.
+
+Take `⟨a, ha, c, hc', rfl⟩` from `Submodule.mem_sup.1 h2`. Establish `hcY : c ∈ Y` using `by simpa using Y.sub_mem hy ha.1`. Establish `hcC : c ∈ C.toSubmodule` using `⟨hcY, hc'⟩`. Rewrite `hcC` using `[hC]`. Establish `hc0 : c = 0` using `hcC`.
+
+Rewrite using `[hc0, add_zero]`. Conclude with `ha.2`.
+-/
 theorem le_biSup_of_fixed (hπ : π.IsIrreducible) (h : IsIsotypicAlg π ρ) {v : N} (hv : v ≠ 0) (Y : Submodule ℂ X)
     (hY : ∀ g, ∀ x ∈ Y, ρ g x ∈ Y) (s : Finset (π.IntertwiningMap ρ))
     (hF : ∀ x ∈ Y, (∀ g, π g v = v → ρ g x = x) → x ∈ ⨆ φ ∈ s, LinearMap.range φ.toLinearMap) :
@@ -126,15 +163,27 @@ namespace GlobalTheory.FinMultAway
 
 variable {D : D7} {V : HSp D} (u : HeightOneSpectrum (𝓞 D.host.F))
 
+/- English proof (translation)
+The claim follows from `proj_emb_self D.sp.cm.sig V.gram u x`.
+-/
 theorem finLoc_locFin (x : Gv V u) : finLoc V u (locFin V u x) = x :=
   proj_emb_self D.sp.cm.sig V.gram u x
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (commute_emb D.sp.cm.sig V.gram x hk).eq`.
+-/
 theorem commute_locFin (x : Gv V u) {k : GfC V} (hk : finLoc V u k = 1) : Commute (locFin V u x) k :=
   Subtype.ext (commute_emb D.sp.cm.sig V.gram x hk).eq
 
+/- English proof (translation)
+The claim follows from `(continuous_proj D.sp.cm.sig V.gram u).comp continuous_subtype_val`.
+-/
 theorem continuous_finLoc : Continuous (finLoc V u) :=
   (continuous_proj D.sp.cm.sig V.gram u).comp continuous_subtype_val
 
+/- English proof (translation)
+The claim follows from `(continuous_emb D.sp.cm.sig V.gram u).subtype_mk _`.
+-/
 theorem continuous_locFin : Continuous (locFin V u) :=
   (continuous_emb D.sp.cm.sig V.gram u).subtype_mk _
 
@@ -149,14 +198,23 @@ noncomputable def away : GfC V →* GfC V where
     rw [mul_assoc a _ (b * _), hc.eq]
     simp only [mul_assoc]
 
+/- English proof (translation)
+Use `show finLoc V u (k * (locFin V u (finLoc V u k))⁻¹) = 1`. Rewrite using `[map_mul, map_inv, finLoc_locFin, mul_inv_cancel]`.
+-/
 theorem finLoc_away (k : GfC V) : finLoc V u (away u k) = 1 := by
   show finLoc V u (k * (locFin V u (finLoc V u k))⁻¹) = 1
   rw [map_mul, map_inv, finLoc_locFin, mul_inv_cancel]
 
+/- English proof (translation)
+Use `show k * (locFin V u (finLoc V u k))⁻¹ * locFin V u (finLoc V u k) = k`. Use `group`.
+-/
 theorem away_mul (k : GfC V) : away u k * locFin V u (finLoc V u k) = k := by
   show k * (locFin V u (finLoc V u k))⁻¹ * locFin V u (finLoc V u k) = k
   group
 
+/- English proof (translation)
+The claim follows from `continuous_id.mul (((continuous_locFin u).comp (continuous_finLoc u)).inv)`.
+-/
 theorem continuous_away : Continuous (away (V := V) u) :=
   continuous_id.mul (((continuous_locFin u).comp (continuous_finLoc u)).inv)
 
@@ -164,6 +222,25 @@ end GlobalTheory.FinMultAway
 
 namespace GlobalTheory.FinMultAway
 
+/- English proof (translation)
+Introduce `D V u W _ _ σ hσa N _ _ π hπ hπa hloc K hK`. Establish `hiso : IsIsotypicAlg π (σ.comp (locFin V u))` using `hloc`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v : N, v ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Use `push_neg at hn`.
+
+Use `haveI : Subsingleton N := ⟨fun a b => (hn a).trans (hn b).symm⟩`. Conclude with `(bot_ne_top : (⊥ : Subrepresentation π) ≠ ⊤) (Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _))`. Set `St : Subgroup (Gv V u)` to `{ carrier := {g | π g v = v} mul_mem' := fun {a b} ha hb => by show π (a * b) v = v`. Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`. Use the proof step `one_mem' := by simp`.
+
+Use the proof step `inv_mem' := fun {a} ha => by show π a⁻¹ v = v conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Establish `hSt : IsOpen (St : Set (Gv V u))` using `hπa.1 v`. Take `⟨K0, hK0o, hK0c⟩` from `GlobalTheory.CuspDec.exists_compact_open V`. Set `K2 : Subgroup (GfC V)` to `K0 ⊓ St.comap (finLoc V u) ⊓ K.comap (away u)`.
+
+Establish `hK2o : IsOpen (K2 : Set (GfC V))` using `(hK0o.inter (hSt.preimage (continuous_finLoc u))).inter (hK.preimage (continuous_away u))`. Establish `hK2c : IsCompact (K2 : Set (GfC V))` using `hK0c.of_isClosed_subset (K2.isClosed_of_isOpen hK2o) fun k hk => hk.1.1`. Use `haveI := hσa.2 K2 hK2o hK2c`. Set `Y : Submodule ℂ W` to `GlobalTheory.PRep.fixed σ (K ⊓ (finLoc V u).ker)`. Establish `hmemY : ∀ x, x ∈ Y ↔ ∀ k ∈ K, finLoc V u k = 1 → σ k x = x`.
+
+Introduce `x`. Rewrite using `[GlobalTheory.CuspDec.mem_fixed]`. Conclude with `⟨fun h k hk h1 => h k ⟨hk, h1⟩, fun h k hk => h k hk.1 hk.2⟩`. Establish `hY : ∀ g, ∀ x ∈ Y, σ.comp (locFin V u) g x ∈ Y`. Introduce `g x hx`.
+
+Rewrite `hx`, the goal using `[hmemY]`. Introduce `k hk h1`. Use `show σ k (σ (locFin V u g) x) = σ (locFin V u g) x`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← (commute_locFin u g h1).eq, map_mul, Module.End.mul_apply, hx k hk h1]`. Set `F : Submodule ℂ W` to `Y ⊓ GlobalTheory.PRep.fixed (σ.comp (locFin V u)) St`.
+
+Establish `hFle : F ≤ GlobalTheory.PRep.fixed σ K2`. Introduce `y hy`. Rewrite using `[GlobalTheory.CuspDec.mem_fixed]`. Introduce `k hk`. Establish `h1 : σ (locFin V u (finLoc V u k)) y = y` using `(GlobalTheory.CuspDec.mem_fixed.1 hy.2) _ hk.1.2`.
+
+Establish `h2 : σ (away u k) y = y` using `(hmemY y).1 hy.1 _ hk.2 (finLoc_away u k)`. Rewrite using `[← away_mul u k, map_mul, Module.End.mul_apply, h1, h2]`. Use `haveI : FiniteDimensional ℂ F := Submodule.finiteDimensional_of_le hFle`. Establish `hFfg : F.FG` using `Module.Finite.iff_fg.1 inferInstance`. Take `⟨s, hs⟩` from `CompleteLattice.IsCompactElement.exists_finset_of_le_iSup _ ((Submodule.fg_iff_compact F).1 hFfg) (fun φ : π.IntertwiningMap (σ.comp (locFin V u)) => LinearMap.range φ.toLinearMap) (le_of_le_of_eq le_top hiso.symm)`.
+
+Use `⟨s, fun x hx => le_biSup_of_fixed hπ hiso hv Y hY s (fun y hy hfix => hs ⟨hy, ?_⟩) ((hmemY x).2 hx)⟩` and prove the remaining obligations. Conclude with `GlobalTheory.CuspDec.mem_fixed.2 fun k hk => hfix k hk`.
+-/
 theorem exists_finset_fixed_away : ∀ (D : D7) (V : HSp D) (u : HeightOneSpectrum (𝓞 D.host.F)) (W : Type) [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GfC V) W), IsAdmissible σ → ∀ (N : Type) [AddCommGroup N] [Module ℂ N] (π : Representation ℂ (Gv V u) N), π.IsIrreducible → IsAdmissible π → FinHasLocComp V u π σ → ∀ K : Subgroup (GfC V), IsOpen (K : Set (GfC V)) → ∃ s : Finset (π.IntertwiningMap (σ.comp (locFin V u))), ∀ x : W, (∀ k ∈ K, finLoc V u k = 1 → σ k x = x) → x ∈ ⨆ φ ∈ s, LinearMap.range φ.toLinearMap := by
   intro D V u W _ _ σ hσa N _ _ π hπ hπa hloc K hK
   have hiso : IsIsotypicAlg π (σ.comp (locFin V u)) := hloc

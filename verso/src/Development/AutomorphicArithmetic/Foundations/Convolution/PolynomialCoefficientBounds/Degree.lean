@@ -2,6 +2,15 @@ import Mathlib
 
 open MvPolynomial Filter Topology
 
+/- English proof (translation)
+Use `set C : ℝ := Real.exp ((k : ℝ) * k) with hC`. Establish `hCpos : 0 < C` using `Real.exp_pos _`. Establish `h1 : ∀ᶠ n : ℕ in atTop, C ^ n / (n.factorial : ℝ) ≤ 1 / C` using `(FloorSemiring.tendsto_pow_div_factorial_atTop C).eventually (ge_mem_nhds (by positivity))`. Establish `h2 : ∀ᶠ n : ℕ in atTop, C ^ (n + 1) ≤ (n.factorial : ℝ)` using `by filter_upwards [h1] with n hn`. Establish `hf : (0 : ℝ) < n.factorial` using `by exact_mod_cast n.factorial_pos`.
+
+Rewrite `hn` using `[div_le_div_iff₀ hf hCpos]`. Rewrite using `[pow_succ]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `filter_upwards [(Nat.tendsto_div_const_atTop hk).eventually h2] with j hj`. Use `le_trans ?_ hj` and prove the remaining obligations.
+
+Rewrite using `[hC, ← Real.exp_nat_mul]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `h3 : j ≤ k * (j / k + 1)` using `(Nat.lt_mul_div_succ j (Nat.pos_of_ne_zero hk)).le`. Establish `h4 : (j : ℝ) ≤ k * ((j / k + 1 : ℕ) : ℝ)` using `by exact_mod_cast h3`. Establish `h5 : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem UpperTheory.ConvolutionTheory.FX.exp_le_factorial_eventually (k : ℕ) (hk : k ≠ 0) :
     ∀ᶠ j : ℕ in atTop, Real.exp ((k : ℝ) * j) ≤ ((j / k).factorial : ℝ) := by
   set C : ℝ := Real.exp ((k : ℝ) * k) with hC
@@ -25,6 +34,17 @@ private theorem UpperTheory.ConvolutionTheory.FX.exp_le_factorial_eventually (k 
   calc (k : ℝ) * j ≤ k * (k * ((j / k + 1 : ℕ) : ℝ)) := mul_le_mul_of_nonneg_left h4 h5
     _ = _ := by ring
 
+/- English proof (translation)
+Set `P : ℕ → ℕ → Prop` to `fun j k => Real.exp ((k : ℝ) * j) ≤ ((j / k).factorial : ℝ)`. Set `κ : ℕ → ℕ` to `fun j => Nat.findGreatest (P j) j`. Establish `hκ : ∀ K : ℕ, K ≠ 0 → ∀ᶠ j : ℕ in atTop, K ≤ κ j ∧ P j (κ j)`. Introduce `K hK`. Use `filter_upwards [UpperTheory.ConvolutionTheory.FX.exp_le_factorial_eventually K hK, eventually_ge_atTop K] with j h1 h2`.
+
+Conclude with `⟨Nat.le_findGreatest h2 h1, Nat.findGreatest_spec (P := P j) h2 h1⟩`. Establish `hlim : Tendsto κ atTop atTop`. Use `tendsto_atTop.mpr fun K => ?_` and prove the remaining obligations. Use `filter_upwards [hκ (K + 1) (Nat.succ_ne_zero K)] with j hj`. Conclude with `le_trans (Nat.le_succ K) hj.1`.
+
+Use `⟨fun j => j / κ j, ?_, fun B => ?_⟩` and prove the remaining obligations. Establish `h0 : Tendsto (fun j : ℕ => ((κ j : ℝ))⁻¹) atTop (𝓝 0)` using `tendsto_inv_atTop_zero.comp (tendsto_natCast_atTop_atTop.comp hlim)`. Use `squeeze_zero' (Eventually.of_forall fun j => by positivity) ?_ h0` and prove the remaining obligations. Use `filter_upwards [eventually_gt_atTop 0] with j hj`. Establish `hj' : (0 : ℝ) < j` using `by exact_mod_cast hj`.
+
+Rewrite using `[div_le_iff₀ hj', inv_mul_eq_div]`. Conclude with `Nat.cast_div_le`. Use `filter_upwards [hκ (⌈B⌉₊ + 1) (Nat.succ_ne_zero _)] with j hj`. Use `le_trans (Real.exp_le_exp.mpr ?_) hj.2` and prove the remaining obligations. Establish `h1 : ((⌈B⌉₊ + 1 : ℕ) : ℝ) ≤ κ j` using `by exact_mod_cast hj.1`.
+
+Establish `h2 : B ≤ ⌈B⌉₊` using `Nat.le_ceil B`. Move the coercions through the operations in `at h1`. Conclude with `mul_le_mul_of_nonneg_right (by linarith) (Nat.cast_nonneg j)`.
+-/
 theorem UpperTheory.ConvolutionTheory.FX.degree :
     ∃ d : ℕ → ℕ, Tendsto (fun j : ℕ => (d j : ℝ) / j) atTop (𝓝 0) ∧ ∀ B : ℝ, ∀ᶠ j : ℕ in atTop, Real.exp (B * j) ≤ (d j).factorial := by
   classical

@@ -37,53 +37,116 @@ namespace GroundTheory.Heights₂.Heights.TheoremB
 
 open Filter Topology
 
+/- English proof (translation)
+The claim follows from `KaPSplit.proof`.
+-/
 theorem KaPSplit.full : KaPSplit.Statement := KaPSplit.proof
 
+/- English proof (translation)
+The claim follows from `KaPInert.proof`.
+-/
 theorem KaPInert.full : KaPInert.Statement := KaPInert.proof
 
+/- English proof (translation)
+The claim follows from `KaPBound.proof`.
+-/
 theorem KaPBound.full : KaPBound.Statement := KaPBound.proof
 
+/- English proof (translation)
+The claim follows from `RestPBound.proof`.
+-/
 theorem RestPBound.full : RestPBound.Statement := RestPBound.proof
 
+/- English proof (translation)
+The claim follows from `RestSummable.proof RestPBound.full`.
+-/
 theorem RestSummable.full : RestSummable.Statement := RestSummable.proof RestPBound.full
 
+/- English proof (translation)
+The claim follows from `HeightSumIdentity.proof`.
+-/
 theorem HeightSumIdentity.full : HeightSumIdentity.Statement := HeightSumIdentity.proof
 
+/- English proof (translation)
+The claim follows from `ShTotIndependent.proof ShOfPower.proof TotOfPower.proof DegPolyEval.proof CFlPos.proof`.
+-/
 theorem ShTotIndependent.full : ShTotIndependent.Statement :=
   ShTotIndependent.proof ShOfPower.proof TotOfPower.proof DegPolyEval.proof CFlPos.proof
 
+/- English proof (translation)
+The claim follows from `ShTotInvertiblePair.proof ShTotIndependent.full`.
+-/
 theorem ShTotInvertiblePair.full : ShTotInvertiblePair.Statement :=
   ShTotInvertiblePair.proof ShTotIndependent.full
 
+/- English proof (translation)
+The claim follows from `LimitsExist.proof HeightSumIdentity.full ShTotInvertiblePair.full RestSummable.full`.
+-/
 theorem LimitsExist.full : LimitsExist.Statement :=
   LimitsExist.proof HeightSumIdentity.full ShTotInvertiblePair.full RestSummable.full
 
+/- English proof (translation)
+The claim follows from `HeightTauIdentity.proof HeightSumIdentity.full RestSummable.full`.
+-/
 theorem HeightTauIdentity.full : HeightTauIdentity.Statement :=
   HeightTauIdentity.proof HeightSumIdentity.full RestSummable.full
 
+/- English proof (translation)
+The claim follows from `HeightEvaluation.proof HeightTauIdentity.full`.
+-/
 theorem HeightEvaluation.full : HeightEvaluation.Statement := HeightEvaluation.proof HeightTauIdentity.full
 
+/- English proof (translation)
+The claim follows from `HeightLimitIdentity.proof HeightTauIdentity.full ShFormula.full TotFormula.full`.
+-/
 theorem HeightLimitIdentity.full : HeightLimitIdentity.Statement :=
   HeightLimitIdentity.proof HeightTauIdentity.full ShFormula.full TotFormula.full
 
+/- English proof (translation)
+The claim follows from `CBounds.proof`.
+-/
 theorem CBounds.full : CBounds.Statement := CBounds.proof
 
+/- English proof (translation)
+The claim follows from `NormUbar.proof`.
+-/
 theorem NormUbar.full : NormUbar.Statement := NormUbar.proof
 
+/- English proof (translation)
+The claim follows from `TermA.proof`.
+-/
 theorem TermA.full : TermA.Statement := TermA.proof
 
+/- English proof (translation)
+The claim follows from `TermB.proof`.
+-/
 theorem TermB.full : TermB.Statement := TermB.proof
 
+/- English proof (translation)
+The claim follows from `TermC.proof HeightLimitIdentity.full`.
+-/
 theorem TermC.full : TermC.Statement := TermC.proof HeightLimitIdentity.full
 
+/- English proof (translation)
+The claim follows from `TermD.proof`.
+-/
 theorem TermD.full : TermD.Statement := TermD.proof
 
+/- English proof (translation)
+The claim follows from `TheoremTUpper.proof LimitsExist.full HeightEvaluation.full CBounds.full NormUbar.full TermA.full TermB.full TermC.full TermD.full PrimesLogSum.fullNat HomDecompExists.proof`.
+-/
 theorem TheoremTUpper.full : TheoremTUpper.Statement :=
   TheoremTUpper.proof LimitsExist.full HeightEvaluation.full CBounds.full NormUbar.full TermA.full
     TermB.full TermC.full TermD.full PrimesLogSum.fullNat HomDecompExists.proof
 
+/- English proof (translation)
+The claim follows from `LimitTheorem.proof`.
+-/
 theorem LimitTheorem.full : LimitTheorem.Statement := LimitTheorem.proof
 
+/- English proof (translation)
+The claim follows from `TheoremTLower.proof LimitTheorem.full`.
+-/
 theorem TheoremTLower.full : TheoremTLower.Statement := TheoremTLower.proof LimitTheorem.full
 
 namespace EndSample

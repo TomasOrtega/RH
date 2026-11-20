@@ -18,6 +18,9 @@ open GroundTheory.Heights₂.Heights TensorProduct
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Sl.SymplecticLattice.exists_symplectic_basis | exact GlobalTheory.CompanionTheory.Ar.Sl.SymplecticLattice.exists_symplectic_basis | (intros; apply GlobalTheory.CompanionTheory.Ar.Sl.SymplecticLattice.exists_symplectic_basis <;> assum …`.
+-/
 theorem _root_.GlobalTheory.T.exists_symplectic_basis_principal_polarization : ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ),
     DiscreteTopology Λ → Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤ → Hm.IsHermitian →
     (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re) →

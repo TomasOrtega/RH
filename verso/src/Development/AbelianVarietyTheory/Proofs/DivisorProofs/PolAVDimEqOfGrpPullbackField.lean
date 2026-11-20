@@ -13,6 +13,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K _ T P P₀ f a h`. Establish `h2 : SmoothOfRelativeDimension P.g P₀.A.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback h.1 P.smoothDim`. Conclude with `ReciprocityTheory.ChartRestriction.G.H1.dim_unique _ P₀.smoothDim h2 (eSec P₀.A (default : PrimeSpectrum K))`.
+-/
 theorem polAV_g_eq_of_isGrpPullback : ∀ (K : Type) [Field K] (T : Scheme.{0}) (P : PolAV T) (P₀ : PolAV (Sp K)) (f : Sp K ⟶ T) (a : P₀.A.left ⟶ P.A.left), IsGrpPullback P₀.A P.A f a → P₀.g = P.g := by
   intro K _ T P P₀ f a h
   have h2 : SmoothOfRelativeDimension P.g P₀.A.hom :=

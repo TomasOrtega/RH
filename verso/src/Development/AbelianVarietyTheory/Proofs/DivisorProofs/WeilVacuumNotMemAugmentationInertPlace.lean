@@ -11,6 +11,11 @@ noncomputable section
 
 namespace GlobalTheory.InertVacLag
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v w hvw hvT hmem`. Take `⟨C, l, hC, hl, hne⟩` from `GlobalTheory.T.exists_lagrangian_invariantForm_inertVacuum F E σ B a a' G X om om' hT v w hvw hvT`. Establish `hle : augAt om' v ≤ LinearMap.ker l`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `z ⟨g, hg, φ, hφ, φ₁, hφ₁, ha, rfl⟩`.
+
+Use `show φ₁ - φ ∈ LinearMap.ker l`. Rewrite using `[LinearMap.mem_ker, map_sub, GlobalTheory.InertVacLag.inv_of_heisInv F E σ B a a' G X om om' hT v w hvw hvT _ C hC l hl g hg φ hφ φ₁ hφ₁ ha, sub_self]`. Conclude with `hne (hle hmem)`.
+-/
 theorem vac_not_mem_augAt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w → v ∉ X.T →

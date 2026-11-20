@@ -16,6 +16,11 @@ variable (X : Sys p) [IsFractionRing X.G.O X.G.Kf] (E : CEmb X.G)
     (ThF : ∀ j, X.Lt j → X.Lt (j + 1) → MvPowerSeries (X.ZA j) ℂ_[p])
     (DelF : DelTy X E) (hDel : DelDeg X E DelF)
 
+/- English proof (translation)
+Set `_` to `algKfC E`. Prove the components needed by the constructor for the conclusion. Introduce `h v j hj`. Conclude with `⟨_, h v j hj⟩`. Introduce `h v j hj`.
+
+Conclude with `xiOf_spec X ℂ_[p] ThF (h v j hj)`.
+-/
 theorem condition_iff_additive_maps (D : Formalism.BasicNotions.D7) :
     Formalism.MainNotions.FormalGroupSystem.adm5 D X (pendOf X E hfin hst be ThF DelF hDel) ↔
       ∀ v, ∀ j < X.mm, letI := algKfC E; XiEx X ℂ_[p] ThF v j := by
@@ -26,6 +31,9 @@ theorem condition_iff_additive_maps (D : Formalism.BasicNotions.D7) :
   · intro h v j hj
     exact xiOf_spec X ℂ_[p] ThF (h v j hj)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem iC_int (x : (pendOf X E hfin hst be ThF DelF hDel).Kc) :
     x ∈ (pendOf X E hfin hst be ThF DelF hDel).Oc ↔ ‖(RingHom.id ℂ_[p]) x‖ ≤ 1 := Iff.rfl
 
@@ -42,6 +50,9 @@ def thFOf (F : ∀ j, X.Lt j → X.Lt (j + 1) → MvPowerSeries (T × Fin ((X.Pj
     (j : ℕ) (La : X.Lt j) (La' : X.Lt (j + 1)) : MvPowerSeries (X.ZA j) ℂ_[p] :=
   resV (kapOf X pos j) (F j La La')
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem thFOf_coeff
     (F : ∀ j, X.Lt j → X.Lt (j + 1) → MvPowerSeries (T × Fin ((X.Pj (j + 1)).m + 1) × Fin ((X.Pj j).m + 1)) ℂ_[p])
     (j : ℕ) (La : X.Lt j) (La' : X.Lt (j + 1)) (n : X.ZA j →₀ ℕ) :
@@ -50,6 +61,11 @@ theorem thFOf_coeff
         (pos ⟨z.1, z.2.1⟩, Fin.cast (rank_eq X (j + 1)).symm z.2.2.2, Fin.cast (rank_eq X j).symm z.2.2.1))
         (F j La La') := rfl
 
+/- English proof (translation)
+Introduce and unpack `⟨v, s, a, b⟩ ⟨v', s', a', b'⟩ h`. Simplify using `only [kapOf, Prod.mk.injEq, EmbeddingLike.apply_eq_iff_eq, Fin.cast_inj] at h`. Take `⟨h1, h2, h3⟩` from `h`. Consider the cases of `h1`. Substitute `h2 h3` using the available equality.
+
+Both sides reduce to the same expression.
+-/
 theorem kapOf_injective (j : ℕ) : Function.Injective (kapOf X pos j) := by
   rintro ⟨v, s, a, b⟩ ⟨v', s', a', b'⟩ h
   simp only [kapOf, Prod.mk.injEq, EmbeddingLike.apply_eq_iff_eq, Fin.cast_inj] at h
@@ -71,18 +87,30 @@ variable {n : ℕ} (L : IntermediateField (KO p n) (Om p n)) [FiniteDimensional 
 
 def rdW (p : ℕ) [Fact p.Prime] (n : ℕ) : WQ p n →+* WW p := (gWW p n).comp (jW p n)
 
+/- English proof (translation)
+Use extensionality with `k`. Simplify using `only [rdW, gWW, jW, sigW, RingHom.comp_apply, WittVector.map_coeff, WittVector.coeff_frobenius_charP, map_pow]`.
+-/
 theorem rdW_frob (x : WQ p n) : rdW p n (WittVector.frobenius x) = sigW p (rdW p n x) := by
   ext k
   simp only [rdW, gWW, jW, sigW, RingHom.comp_apply, WittVector.map_coeff, WittVector.coeff_frobenius_charP, map_pow]
 
+/- English proof (translation)
+Proceed by induction on `s generalizing x with`. Consider the case `zero => rfl`. Consider the case `succ s ih => rw [Function.iterate_succ_apply, ih, rdW_frob, ← Function.iterate_succ_apply]`.
+-/
 theorem rdW_frob_iter (s : ℕ) (x : WQ p n) : rdW p n ((WittVector.frobenius^[s]) x) = (sigW p)^[s] (rdW p n x) := by
   induction s generalizing x with
   | zero => rfl
   | succ s ih => rw [Function.iterate_succ_apply, ih, rdW_frob, ← Function.iterate_succ_apply]
 
+/- English proof (translation)
+The claim follows from `IsFractionRing.lift_algebraMap (inj_WK p n) x`.
+-/
 theorem iota_alg (x : WQ p n) : iota p n (algebraMap (WQ p n) (QQ p n) x) = algebraMap (OO p n) (KO p n) (jO p n x) :=
   IsFractionRing.lift_algebraMap (inj_WK p n) x
 
+/- English proof (translation)
+Rewrite using `[sig_pow_alg, iota_alg, ← IsScalarTower.algebraMap_apply (OO p n) (KO p n) L, ← rdW_frob_iter]`. Use `show iC (k0ToC p) (gL L _) = _`. Rewrite using `[gL_jO, iC_alg]`. Both sides reduce to the same expression.
+-/
 theorem compat_conc (s : ℕ) (x : WQ p n) :
     embLC (k0ToC p) L (algebraMap (KO p n) L (iota p n ((sig p n ^ s) (algebraMap (WQ p n) (QQ p n) x)))) =
       k0ToC p (algebraMap (WW p) (K0 p) ((sigW p)^[s] (rdW p n x))) := by
@@ -91,6 +119,9 @@ theorem compat_conc (s : ℕ) (x : WQ p n) :
   rw [gL_jO, iC_alg]
   rfl
 
+/- English proof (translation)
+The claim follows from `embLC_int (k0ToC p) (fun y => by rw [witt_fraction_to_Cp_algebraMap]; exact norm_wToC_le p y) L x`.
+-/
 theorem embLC_int' (x : OL p n L) : ‖embLC (k0ToC p) L (algebraMap (OL p n L) L x)‖ ≤ 1 :=
   embLC_int (k0ToC p) (fun y => by rw [witt_fraction_to_Cp_algebraMap]; exact norm_wToC_le p y) L x
 

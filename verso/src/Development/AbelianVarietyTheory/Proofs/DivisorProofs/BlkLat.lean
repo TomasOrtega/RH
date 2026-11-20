@@ -54,6 +54,9 @@ def phi {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (n n
     TaylorLogMetric.VC D (n * 2) (n' * 2) ≃ₗ[ℂ] (Ix D n n' → ℂ) :=
   (reix D n n').trans (gBig B n n')
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phi_apply {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (n n' : ℕ)
     (z : TaylorLogMetric.VC D (n * 2) (n' * 2)) (p : Ix D n n') : phi B n n' z p = B.gC (blk D p.1 z) p.2 := rfl
 

@@ -46,15 +46,26 @@ def psiWeil (ξ : E) : AddChar (Res P) ℂ := (psiRes P).mulShift (redP P ξ)
 
 variable {P}
 
+/- English proof (translation)
+Establish `h1 : ((T : ℕ) : Res P) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk P.asIdeal), Ideal.Quotient.eq_zero_iff_mem, ← h]`. Conclude with `Ideal.absNorm_mem _`. Conclude with `(Nat.prime_dvd_prime_iff_eq (resCh_prime P).out hT).1 ((CharP.cast_eq_zero_iff (Res P) _ _).1 h1)`.
+-/
 theorem resCh_eq {T : ℕ} (hT : T.Prime) (h : Ideal.absNorm P.asIdeal = T) : resCh P = T := by
   have h1 : ((T : ℕ) : Res P) = 0 := by
     rw [← map_natCast (Ideal.Quotient.mk P.asIdeal), Ideal.Quotient.eq_zero_iff_mem, ← h]
     exact Ideal.absNorm_mem _
   exact (Nat.prime_dvd_prime_iff_eq (resCh_prime P).out hT).1 ((CharP.cast_eq_zero_iff (Res P) _ _).1 h1)
 
+/- English proof (translation)
+Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+-/
 theorem card_res (P : HeightOneSpectrum (𝓞 E)) : Nat.card (Res P) = Ideal.absNorm P.asIdeal := by
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
 
+/- English proof (translation)
+Use `letI := resAlg P`. Use `haveI : Finite (Res P) := Ideal.finiteQuotientOfFreeOfNeBot _ P.ne_bot`. Establish `h1 : Module.finrank (ZMod (resCh P)) (Res P) = 1`. Establish `h2` using `Module.natCard_eq_pow_finrank (K := ZMod (resCh P)) (V := Res P)`. Rewrite `h2` using `[card_res, h, Nat.card_zmod, ← resCh_eq hT h]`.
+
+Conclude with `Nat.pow_right_injective (resCh_prime P).out.two_le (by simpa using h2.symm)`. Establish `h3 : Algebra.trace (ZMod (resCh P)) (Res P) (b : Res P) = (b : ZMod (resCh P))`. Rewrite using `[← map_intCast (algebraMap (ZMod (resCh P)) (Res P)), Algebra.trace_algebraMap, h1, one_smul]`. Use `show ZMod.stdAddChar (Algebra.trace (ZMod (resCh P)) (Res P) (b : Res P)) = _`. Rewrite using `[h3, ZMod.stdAddChar_coe, resCh_eq hT h]`.
+-/
 theorem psiRes_intCast {T : ℕ} (hT : T.Prime) (h : Ideal.absNorm P.asIdeal = T) (b : ℤ) :
     psiRes P (b : Res P) = Complex.exp (2 * Real.pi * Complex.I * b / (T : ℂ)) := by
   letI := resAlg P
@@ -68,6 +79,11 @@ theorem psiRes_intCast {T : ℕ} (hT : T.Prime) (h : Ideal.absNorm P.asIdeal = T
   show ZMod.stdAddChar (Algebra.trace (ZMod (resCh P)) (Res P) (b : Res P)) = _
   rw [h3, ZMod.stdAddChar_coe, resCh_eq hT h]
 
+/- English proof (translation)
+Use `letI := resAlg P`. Use `haveI : Finite (Res P) := Ideal.finiteQuotientOfFreeOfNeBot _ P.ne_bot`. Establish `hb : Function.Bijective (algebraMap (ZMod (resCh P)) (Res P))` using `(Nat.bijective_iff_injective_and_card _).2 ⟨(algebraMap (ZMod (resCh P)) (Res P)).injective, by`. Rewrite using `[card_res, h, Nat.card_zmod, resCh_eq hT h]⟩`. Take `⟨z, rfl⟩` from `hb.2 c`.
+
+Take `⟨b, rfl⟩` from `ZMod.intCast_surjective z`. Conclude with `⟨b, (map_intCast _ b).symm⟩`.
+-/
 theorem exists_intCast_res {T : ℕ} (hT : T.Prime) (h : Ideal.absNorm P.asIdeal = T) (c : Res P) : ∃ b : ℤ, (b : Res P) = c := by
   letI := resAlg P
   haveI : Finite (Res P) := Ideal.finiteQuotientOfFreeOfNeBot _ P.ne_bot
@@ -78,10 +94,18 @@ theorem exists_intCast_res {T : ℕ} (hT : T.Prime) (h : Ideal.absNorm P.asIdeal
   obtain ⟨b, rfl⟩ := ZMod.intCast_surjective z
   exact ⟨b, (map_intCast _ b).symm⟩
 
+/- English proof (translation)
+Rewrite using `[psiWeil, AddChar.mulShift_apply, hb, psiRes_intCast hT h]`.
+-/
 theorem psiWeil_apply {T : ℕ} (hT : T.Prime) (h : Ideal.absNorm P.asIdeal = T) (ξ : E) (c : Res P) (b : ℤ)
     (hb : redP P ξ * c = (b : Res P)) : psiWeil P ξ c = Complex.exp (2 * Real.pi * Complex.I * b / (T : ℂ)) := by
   rw [psiWeil, AddChar.mulShift_apply, hb, psiRes_intCast hT h]
 
+/- English proof (translation)
+Use `letI := resAlg P`. Use `haveI : Finite (Res P) := Ideal.finiteQuotientOfFreeOfNeBot _ P.ne_bot`. Take `⟨x, hx⟩` from `Algebra.trace_surjective (ZMod (resCh P)) (Res P) 1`. Introduce `e`. Establish `h1 : ZMod.stdAddChar (Algebra.trace (ZMod (resCh P)) (Res P) x) = 1` using `DFunLike.congr_fun e x`.
+
+Rewrite `h1` using `[hx, ← AddChar.map_zero_eq_one (ZMod.stdAddChar (N := resCh P))]`. Conclude with `one_ne_zero (ZMod.injective_stdAddChar h1)`.
+-/
 theorem psiRes_ne_one (P : HeightOneSpectrum (𝓞 E)) : psiRes P ≠ 1 := by
   letI := resAlg P
   haveI : Finite (Res P) := Ideal.finiteQuotientOfFreeOfNeBot _ P.ne_bot
@@ -91,11 +115,17 @@ theorem psiRes_ne_one (P : HeightOneSpectrum (𝓞 E)) : psiRes P ≠ 1 := by
   rw [hx, ← AddChar.map_zero_eq_one (ZMod.stdAddChar (N := resCh P))] at h1
   exact one_ne_zero (ZMod.injective_stdAddChar h1)
 
+/- English proof (translation)
+Introduce `e` and use `psiRes_ne_one P (AddChar.ext _ _ fun x => by have h1 : psiRes P (redP P ξ * ((redP P ξ)⁻¹ * x)) = 1 := DFunLike.congr_fun e ((redP P ξ)⁻¹ * x) rwa [mul_inv_cancel_left₀ h] at h1)`.
+-/
 theorem psiWeil_ne_one {ξ : E} (h : redP P ξ ≠ 0) : psiWeil P ξ ≠ 1 := fun e =>
   psiRes_ne_one P (AddChar.ext _ _ fun x => by
     have h1 : psiRes P (redP P ξ * ((redP P ξ)⁻¹ * x)) = 1 := DFunLike.congr_fun e ((redP P ξ)⁻¹ * x)
     rwa [mul_inv_cancel_left₀ h] at h1)
 
+/- English proof (translation)
+Rewrite using `[← AddChar.map_nsmul_eq_pow, nsmul_eq_mul, CharP.cast_eq_zero, zero_mul, AddChar.map_zero_eq_one]`.
+-/
 theorem psiWeil_pow (ξ : E) (c : Res P) : psiWeil P ξ c ^ resCh P = 1 := by
   rw [← AddChar.map_nsmul_eq_pow, nsmul_eq_mul, CharP.cast_eq_zero, zero_mul, AddChar.map_zero_eq_one]
 
@@ -113,6 +143,13 @@ def tauAt (w : HeightOneSpectrum (𝓞 X.K)) : Pr.vT u ≃ X.Tau :=
 
 include hPr in
 
+/- English proof (translation)
+Establish `key : ∀ A B : Pr.vT u, A.1 ≠ conjPrime₂ B.1` using `fun A B e => conj_piT_notMem hPr u B (by`. Use `decoFin_mem_of_mem_divs A.2` as an intermediate fact. Rewrite `this` using `[e, mem_conjP]`. Conclude with `this)`. Apply the tactic sequence `rcases h with h | h <;> rcases h' with h' | h'`.
+
+Conclude with `Subtype.ext (h.symm.trans h')`. Conclude with `absurd (h.symm.trans h') (key _ _)`. Conclude with `absurd (h'.symm.trans h) (key _ _)`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.CharVal.conjP_conjP' P.1, ← GlobalTheory.CharVal.conjP_conjP' P'.1]`.
+
+Conclude with `congrArg conjPrime₂ (h.symm.trans h')`.
+-/
 theorem eq_of_sees {w : HeightOneSpectrum (𝓞 X.K)} {τ : X.Tau} {P P' : Pr.vT u} (h : SeesP w τ P.1 ∨ SeesPbar w τ P.1)
     (h' : SeesP w τ P'.1 ∨ SeesPbar w τ P'.1) : P = P' := by
   have key : ∀ A B : Pr.vT u, A.1 ≠ conjPrime₂ B.1 := fun A B e =>
@@ -130,8 +167,16 @@ theorem eq_of_sees {w : HeightOneSpectrum (𝓞 X.K)} {τ : X.Tau} {P P' : Pr.vT
 
 include hPr in
 
+/- English proof (translation)
+The claim follows from `hPr.vT_norm u P.1 P.2 ▸ Ideal.absNorm_mem _`.
+-/
 theorem T_mem_vT (P : Pr.vT u) : ((Pr.T u : ℕ) : 𝓞 X.E) ∈ P.1.asIdeal := hPr.vT_norm u P.1 P.2 ▸ Ideal.absNorm_mem _
 
+/- English proof (translation)
+Establish `h : ∃ e : Pr.vT u ≃ X.Tau, ∀ P, SeesP w (e P) P.1 ∨ SeesPbar w (e P) P.1` using `by choose t ht using fun P : Pr.vT u => GlobalTheory.exists_comap_eq_or_eq_conj X hX _ (hPr.T_prime u) w P.1 hw (T_mem_vT hPr u P)`. Establish `hb : Function.Bijective t` using `(Fintype.bijective_iff_injective_and_card t).2 ⟨fun P P' e => eq_of_sees hPr u (ht P) (e ▸ ht P'), by rw [Fintype.card_coe, hPr.vT_card u]; rfl⟩`. Conclude with `⟨Equiv.ofBijective t hb, ht⟩`. Unfold `tauAt`. Rewrite using `[dif_pos h]`.
+
+Conclude with `h.choose_spec P`.
+-/
 theorem tauAt_sees (hX : X.AbelianUnramifiedExtensionConditions) {w : HeightOneSpectrum (𝓞 X.K)} (hw : ((Pr.T u : ℕ) : 𝓞 X.K) ∈ w.asIdeal) (P : Pr.vT u) :
     SeesP w (tauAt hPr u w P) P.1 ∨ SeesPbar w (tauAt hPr u w P) P.1 := by
   have h : ∃ e : Pr.vT u ≃ X.Tau, ∀ P, SeesP w (e P) P.1 ∨ SeesPbar w (e P) P.1 := by
@@ -144,6 +189,9 @@ theorem tauAt_sees (hX : X.AbelianUnramifiedExtensionConditions) {w : HeightOneS
   rw [dif_pos h]
   exact h.choose_spec P
 
+/- English proof (translation)
+Use `show algebraMap (𝓞 X.F) (𝓞 X.E) x ∈ (pullW (tauAt hPr u w P) w).asIdeal ↔ algebraMap (𝓞 X.F) (𝓞 X.E) x ∈ P.1.asIdeal`. Break down `tauAt_sees hPr u hX hw P with h | h` into its components or cases. Rewrite using `[show pullW _ w = P.1 from h]`. Rewrite using `[show pullW _ w = conjPrime₂ P.1 from h, mem_conjP, show cO X.E (algebraMap (𝓞 X.F) (𝓞 X.E) x) = algebraMap (𝓞 X.F) (𝓞 X.E) x from RingOfIntegers.ext (hX.ok.star_F x)]`.
+-/
 theorem tauAt_mem_iff (hX : X.AbelianUnramifiedExtensionConditions) {w : HeightOneSpectrum (𝓞 X.K)} (hw : ((Pr.T u : ℕ) : 𝓞 X.K) ∈ w.asIdeal) (P : Pr.vT u)
     (x : 𝓞 X.F) : X.embO (tauAt hPr u w P) (algebraMap (𝓞 X.F) (𝓞 X.E) x) ∈ w.asIdeal ↔ x ∈ (P.1.under (𝓞 X.F)).asIdeal := by
   show algebraMap (𝓞 X.F) (𝓞 X.E) x ∈ (pullW (tauAt hPr u w P) w).asIdeal ↔ algebraMap (𝓞 X.F) (𝓞 X.E) x ∈ P.1.asIdeal
@@ -152,6 +200,11 @@ theorem tauAt_mem_iff (hX : X.AbelianUnramifiedExtensionConditions) {w : HeightO
   · rw [show pullW _ w = conjPrime₂ P.1 from h, mem_conjP,
       show cO X.E (algebraMap (𝓞 X.F) (𝓞 X.E) x) = algebraMap (𝓞 X.F) (𝓞 X.E) x from RingOfIntegers.ext (hX.ok.star_F x)]
 
+/- English proof (translation)
+Take `⟨τ₀⟩ : Nonempty X.Tau` from `Fintype.card_pos_iff.1 hX.ok.f_pos`. Establish `hw : ((Pr.T u : ℕ) : 𝓞 X.K) ∈ w.asIdeal`. Rewrite using `[← map_natCast (X.embO τ₀), ← hPr.piT_norm u, map_mul]`. Conclude with `Ideal.mul_mem_right _ _ (hs τ₀)`. Use `(tauAt_sees hPr u hX hw P).resolve_right fun h => conj_piT_notMem hPr u P ?_` and prove the remaining obligations.
+
+Establish `h2 : Pr.piT u ∈ (pullW (tauAt hPr u w P) w).asIdeal` using `hs _`. Rewrite `h2` using `[show pullW _ w = conjPrime₂ P.1 from h]`. Then use the resulting hypothesis.
+-/
 theorem seesP_tauAt (hX : X.AbelianUnramifiedExtensionConditions) {w : HeightOneSpectrum (𝓞 X.K)} (hs : seenC Pr u w) (P : Pr.vT u) :
     SeesP w (tauAt hPr u w P) P.1 := by
   obtain ⟨τ₀⟩ : Nonempty X.Tau := Fintype.card_pos_iff.1 hX.ok.f_pos
@@ -162,6 +215,11 @@ theorem seesP_tauAt (hX : X.AbelianUnramifiedExtensionConditions) {w : HeightOne
   have h2 : Pr.piT u ∈ (pullW (tauAt hPr u w P) w).asIdeal := hs _
   rwa [show pullW _ w = conjPrime₂ P.1 from h] at h2
 
+/- English proof (translation)
+Use `(tauAt_sees hPr u hX hw P).resolve_left fun h => hs fun τ => ?_` and prove the remaining obligations. Establish `h2 : Pr.piT u ∈ (pullW (tauAt hPr u w P) w).asIdeal`. Rewrite using `[show pullW _ w = P.1 from h]`. Conclude with `decoFin_mem_of_mem_divs P.2`. Rewrite using `[show X.embO τ (Pr.piT u) = X.embO (tauAt hPr u w P) (Pr.piT u) from RingOfIntegers.ext (hPr.piT_Kq u _ _)]`.
+
+Conclude with `h2`.
+-/
 theorem seesPbar_tauAt (hX : X.AbelianUnramifiedExtensionConditions) {w : HeightOneSpectrum (𝓞 X.K)} (hw : ((Pr.T u : ℕ) : 𝓞 X.K) ∈ w.asIdeal)
     (hs : ¬ seenC Pr u w) (P : Pr.vT u) : SeesPbar w (tauAt hPr u w P) P.1 := by
   refine (tauAt_sees hPr u hX hw P).resolve_left fun h => hs fun τ => ?_
@@ -189,15 +247,28 @@ def brNorm (hN : N = n + 1) (lam : DomWeight N) (sg : DomWeight n) : ℝ :=
 
 variable (lam : DomWeight N) (sg : DomWeight n) (b : MvPolynomial (Fin N × Fin N) ℂ →ₗ[ℂ] MvPolynomial (Fin n × Fin n) ℂ)
 
+/- English proof (translation)
+Take `⟨s, -, h'⟩` from `GlobalTheory.IndefiniteRowSideFullHecke.TensorPlaceNorm.fockS_self_nonneg (extremal ℂ N lam)`. Simplify using `only [normFock, GlobalTheory.IndefiniteRowSideFullHecke.TensorPlaceNorm.fockF_eq_fockS, h', Complex.div_ofReal_re, Complex.ofReal_re]`.
+-/
 theorem normFock_self_re (f : MvPolynomial (Fin N × Fin N) ℂ) :
     (normFock lam f f).re = (fockS f f).re / (fockS (extremal ℂ N lam) (extremal ℂ N lam)).re := by
   obtain ⟨s, -, h'⟩ := GlobalTheory.IndefiniteRowSideFullHecke.TensorPlaceNorm.fockS_self_nonneg (extremal ℂ N lam)
   simp only [normFock, GlobalTheory.IndefiniteRowSideFullHecke.TensorPlaceNorm.fockF_eq_fockS, h', Complex.div_ofReal_re, Complex.ofReal_re]
 
+/- English proof (translation)
+Rewrite using `[normFock_self_re]`. Conclude with `div_pos (GlobalTheory.TensorNormCompare.fockS_re_pos' hf) (GlobalTheory.TensorNormCompare.extremal_fock_pos lam)`.
+-/
 theorem normFock_self_pos {f : MvPolynomial (Fin N × Fin N) ℂ} (hf : f ≠ 0) : 0 < (normFock lam f f).re := by
   rw [normFock_self_re]
   exact div_pos (GlobalTheory.TensorNormCompare.fockS_re_pos' hf) (GlobalTheory.TensorNormCompare.extremal_fock_pos lam)
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.TensorNormCompare.finiteDimensional_nablaSq lam`. Take `⟨C, -, h⟩` from `GlobalTheory.TensorNormCompare.exists_fock_bound (nablaSq ℂ N lam) (b ∘ₗ (nablaSq ℂ N lam).subtype)`. Establish `h1` using `GlobalTheory.TensorNormCompare.extremal_fock_pos lam`. Establish `h2` using `GlobalTheory.TensorNormCompare.extremal_fock_pos sg`. Use `⟨Real.sqrt (C * (fockS (extremal ℂ N lam) (extremal ℂ N lam)).re / (fockS (extremal ℂ n sg) (extremal ℂ n sg)).re), ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨f, ⟨hf, h0⟩, rfl⟩`. Use `Real.sqrt_le_sqrt ?_` and prove the remaining obligations. Establish `h3 : (fockS (b f) (b f)).re ≤ C * (fockS f f).re` using `h ⟨f, (nablaSq_eq_delSq ℂ lam).symm ▸ hf⟩`. Rewrite using `[div_le_iff₀ (normFock_self_pos lam h0), normFock_self_re, normFock_self_re, div_le_iff₀ h2]`. Use `h3.trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem fockRatios_bddAbove : BddAbove (fockRatios lam sg b) := by
   haveI := GlobalTheory.TensorNormCompare.finiteDimensional_nablaSq lam
   obtain ⟨C, -, h⟩ := GlobalTheory.TensorNormCompare.exists_fock_bound (nablaSq ℂ N lam) (b ∘ₗ (nablaSq ℂ N lam).subtype)
@@ -211,23 +282,38 @@ theorem fockRatios_bddAbove : BddAbove (fockRatios lam sg b) := by
   refine h3.trans (le_of_eq ?_)
   field_simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, extremal ℂ N lam, ⟨nablaSq_eq_delSq ℂ lam ▸ Formalism.GradedWeylDivisibility.hwMem ℂ N N le_rfl _ (natW_anti lam), Formalism.GradedWeylDivisibility.hwNe ℂ N N le_rfl lam.natW⟩, rfl⟩`.
+-/
 theorem fockRatios_nonempty : (fockRatios lam sg b).Nonempty :=
   ⟨_, extremal ℂ N lam, ⟨nablaSq_eq_delSq ℂ lam ▸ Formalism.GradedWeylDivisibility.hwMem ℂ N N le_rfl _ (natW_anti lam),
     Formalism.GradedWeylDivisibility.hwNe ℂ N N le_rfl lam.natW⟩, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Real.sSup_nonneg (by rintro _ ⟨f, -, rfl⟩; exact Real.sqrt_nonneg _)`.
+-/
 theorem fockOpNorm_nonneg : 0 ≤ fockOpNorm lam sg b :=
   Real.sSup_nonneg (by rintro _ ⟨f, -, rfl⟩; exact Real.sqrt_nonneg _)
 
+/- English proof (translation)
+Use `csSup_le (fockRatios_nonempty lam sg b) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, ⟨hf, h0⟩, rfl⟩`. Conclude with `Real.sqrt_le_iff.2 ⟨hC, (div_le_iff₀ (normFock_self_pos lam h0)).2 (h f hf)⟩`.
+-/
 theorem fockOpNorm_le {C : ℝ} (hC : 0 ≤ C)
     (h : ∀ f ∈ delSq ℂ N lam, (normFock sg (b f) (b f)).re ≤ C ^ 2 * (normFock lam f f).re) : fockOpNorm lam sg b ≤ C := by
   refine csSup_le (fockRatios_nonempty lam sg b) ?_
   rintro _ ⟨f, ⟨hf, h0⟩, rfl⟩
   exact Real.sqrt_le_iff.2 ⟨hC, (div_le_iff₀ (normFock_self_pos lam h0)).2 (h f hf)⟩
 
+/- English proof (translation)
+Simplify using `only [fockOpNorm, fockRatios, normFock, extremal, delSq, h, h']`.
+-/
 theorem fockOpNorm_congr {lam lam' : DomWeight N} {sg sg' : DomWeight n} (h : lam.natW = lam'.natW) (h' : sg.natW = sg'.natW) :
     fockOpNorm lam sg b = fockOpNorm lam' sg' b := by
   simp only [fockOpNorm, fockRatios, normFock, extremal, delSq, h, h']
 
+/- English proof (translation)
+Use `le_antisymm (fockOpNorm_le _ _ _ zero_le_one fun f _ => by simp) ?_` and prove the remaining obligations. Take `⟨_, f, ⟨hf, h0⟩, rfl⟩` from `fockRatios_nonempty lam lam LinearMap.id`. Establish `h` using `le_csSup (fockRatios_bddAbove lam lam LinearMap.id) ⟨f, ⟨hf, h0⟩, rfl⟩`. Simplify using `only at h`. Rewrite `h` using `[LinearMap.id_apply, div_self (normFock_self_pos lam h0).ne', Real.sqrt_one]`. Then use the resulting hypothesis.
+-/
 example : fockOpNorm lam lam LinearMap.id = 1 := by
   refine le_antisymm (fockOpNorm_le _ _ _ zero_le_one fun f _ => by simp) ?_
   obtain ⟨_, f, ⟨hf, h0⟩, rfl⟩ := fockRatios_nonempty lam lam LinearMap.id
@@ -241,9 +327,15 @@ section Conj
 
 variable {K : Type} [Field K] [NumberField K] (σ₀ s : K →+* ℂ)
 
+/- English proof (translation)
+The claim follows from `mem_algebraicClosure_iff.2 ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom σ₀.toRatAlgHom)`.
+-/
 theorem emb_mem_Qbar (x : K) : σ₀ x ∈ TaylorLogMetric.Qbar :=
   mem_algebraicClosure_iff.2 ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom σ₀.toRatAlgHom)
 
+/- English proof (translation)
+Take `⟨ρ, h⟩` from `GlobalTheory.ThetaConj.exists_cj_Qbar_eq (GlobalTheory.Glob.imM σ₀) (GlobalTheory.Glob.rhoOf σ₀ s)`. Use `⟨ρ, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← h _ (emb_mem_Qbar σ₀ x) ⟨x, rfl⟩, GlobalTheory.ThetaConj.cj_of_mem (GlobalTheory.Glob.imM σ₀) _ (x := σ₀ x) ⟨x, rfl⟩]`. Conclude with `GlobalTheory.Glob.rhoOf_imEquiv σ₀ s x`.
+-/
 theorem exists_embQbar : ∃ ρ : TaylorLogMetric.Qbar →ₐ[ℚ] ℂ, ∀ x : K, StandardLatticesGL3.cj TaylorLogMetric.Qbar ρ (σ₀ x) = s x := by
   obtain ⟨ρ, h⟩ := GlobalTheory.ThetaConj.exists_cj_Qbar_eq (GlobalTheory.Glob.imM σ₀) (GlobalTheory.Glob.rhoOf σ₀ s)
   refine ⟨ρ, fun x => ?_⟩
@@ -291,6 +383,9 @@ def conjNormSq (s : X.K →+* ℂ) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : S
 def eNorm (s : X.K →+* ℂ) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) : ℝ :=
   Real.sqrt (conjNormSq A s N N' (A.e a b N N'))
 
+/- English proof (translation)
+The claim follows from `Real.sqrt_nonneg _`.
+-/
 theorem eNorm_nonneg (s : X.K →+* ℂ) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) :
     0 ≤ eNorm A s N N' := Real.sqrt_nonneg _
 
@@ -335,6 +430,11 @@ section Val
 variable (hval : ∀ w (x : X.K), x ≠ 0 → Pl.val w x = ((vAdd (plEq w) x : ℤ) : WithTop ℤ))
 include hval
 
+/- English proof (translation)
+Rewrite using `[← (plEq w).valuation_lt_one_iff_mem (K := X.K)]`. Use `show _ ↔ (plEq w).valuation X.K (x : X.K) < 1`. Distinguish the cases in `hx : (x : X.K) = 0`. Simplify using `[hx]`. Establish `h0 : (plEq w).valuation X.K (x : X.K) ≠ 0` using `by simpa using hx`.
+
+Rewrite using `[hval w x hx, vAdd, ← WithZero.exp_log h0, ← WithZero.exp_zero, WithZero.exp_lt_exp, WithZero.log_exp]`. Use `norm_cast`. Conclude with `neg_pos`.
+-/
 theorem val_pos_iff_mem (w : Pl.Pl) (x : 𝓞 X.K) : (0 : WithTop ℤ) < Pl.val w (x : X.K) ↔ x ∈ (plEq w).asIdeal := by
   rw [← (plEq w).valuation_lt_one_iff_mem (K := X.K)]
   show _ ↔ (plEq w).valuation X.K (x : X.K) < 1
@@ -345,6 +445,9 @@ theorem val_pos_iff_mem (w : Pl.Pl) (x : 𝓞 X.K) : (0 : WithTop ℤ) < Pl.val 
   norm_cast
   exact neg_pos
 
+/- English proof (translation)
+Rewrite using `[← val_pos_iff_mem plEq hval, show (((Pl.resChar w : ℕ) : 𝓞 X.K) : X.K) = (Pl.resChar w : ℕ) from map_natCast _ _, Pl.val_resChar]`. Conclude with `Pl.ramIdx_pos w` after adjusting the coercions.
+-/
 theorem resChar_mem (w : Pl.Pl) : ((Pl.resChar w : ℕ) : 𝓞 X.K) ∈ (plEq w).asIdeal := by
   rw [← val_pos_iff_mem plEq hval, show (((Pl.resChar w : ℕ) : 𝓞 X.K) : X.K) = (Pl.resChar w : ℕ) from map_natCast _ _,
     Pl.val_resChar]
@@ -359,6 +462,19 @@ section Same
 variable {X : Fields} {Pr : Primes X} (hX : X.Ok) (hPr : Pr.Ok) {ξ : X.E} (hK : ξ ∈ X.Kq)
 include hX hPr hK
 
+/- English proof (translation)
+Establish `hp` using `hPr.T_prime u`. Distinguish the cases in `h0 : IsEmpty (Pr.vT u)`. Conclude with `⟨0, h0.elim⟩`. Take `⟨P₀⟩` from `not_isEmpty_iff.1 h0`. Establish `hbar : ((X.conjO (Pr.piT u) : 𝓞 X.E) : X.E) ∈ X.Kq` using `fun τ τ' => by show X.emb τ (star ((Pr.piT u : 𝓞 X.E) : X.E)) = X.emb τ' (star ((Pr.piT u : 𝓞 X.E) : X.E))`.
+
+Rewrite using `[hX.emb_star, hX.emb_star, hPr.piT_Kq u τ τ']`. Establish `hint : ∀ (y : 𝓞 X.E) (hy : (y : X.E) ∈ X.Kq), ∃ a : 𝓞 X.Kq, RingOfIntegers.mapRingHom X.Kq.subtype a = y` using `fun y hy => ⟨⟨⟨y, hy⟩, (isIntegral_algHom_iff X.Kq.subtype.toIntAlgHom X.Kq.subtype.injective).1 y.isIntegral_coe⟩, rfl⟩`. Take `⟨b, hb⟩` from `hint _ (hPr.piT_Kq u)`. Take `⟨a, ha⟩` from `hint _ hbar`. Establish `hab : a * b = (Pr.T u : 𝓞 X.Kq)` using `RingOfIntegers.ext (X.Kq.subtype.injective (by`.
+
+Use `congrArg (fun z : 𝓞 X.E => (z : X.E)) (show RingOfIntegers.mapRingHom X.Kq.subtype (a * b) = RingOfIntegers.mapRingHom X.Kq.subtype (Pr.T u) by rw [map_mul, ha, hb, map_natCast, mul_comm, hPr.piT_norm])` as an intermediate fact. Conclude with `this))`. Establish `hnu : ¬ IsUnit (Pr.piT u)` using `fun h => P₀.1.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ (decoFin_mem_of_mem_divs P₀.2) h)`. Establish `hN` using `GlobalTheory.TrueChars.absNorm_span_of_mul_eq hX.quad hp hab (fun h => hnu (cO_cO (Pr.piT u) ▸ (ha ▸ h.map (RingOfIntegers.mapRingHom X.Kq.subtype) : IsUnit (X.conjO (Pr.piT u))).map X.conjO)) (fun h => hnu (hb ▸ h.map (RingOfIntegers.mapRingHom X.Kq.subtype)))`. Take `⟨n, d, hd, h⟩` from `GlobalTheory.TrueChars.exists_nat_red X.Kq.subtype hp hN ⟨ξ, hK⟩`.
+
+Rewrite `hd`, `h` using `[hb]`. Take `⟨c, hc⟩` from `exists_intCast_res hp (hPr.vT_norm u P₀.1 P₀.2) (redP P₀.1 ξ)`. Establish `tr : ∀ (P : Pr.vT u) (x y : ℕ), (x : Res P₀.1) * redP P₀.1 ξ = y → (x : Res P.1) * (c : Res P.1) = y` using `fun P x y e => by`. Establish `e1 : ((x * c - y : ℤ) : Res P₀.1) = 0` using `by push_cast; rw [hc, e, sub_self]`. Rewrite `e1` using `[CharP.intCast_eq_zero_iff _ (resCh P₀.1), resCh_eq hp (hPr.vT_norm u P₀.1 P₀.2), ← resCh_eq hp (hPr.vT_norm u P.1 P.2), ← CharP.intCast_eq_zero_iff (Res P.1)]`.
+
+Move the coercions through the operations in `at e1`. Conclude with `sub_eq_zero.1 e1`. Use `⟨c, fun P => ?_⟩` and prove the remaining obligations. Establish `m` using `fun P : Pr.vT u => decoFin_mem_of_mem_divs P.2`. Break down `h with h | h` into its components or cases.
+
+Conclude with `mul_left_cancel₀ (hd _ (m P)) ((h _ (m P) (hi P)).trans (tr P _ _ (h _ (m P₀) (hi P₀))).symm)`. Establish `h1` using `h _ (m P) (hi P)`. Conclude with `mul_left_cancel₀ (fun e : (n : Res P.1) = 0 => hd _ (m P) (by rw [← h1, e, zero_mul])) (h1.trans (tr P _ _ (h _ (m P₀) (hi P₀))).symm)`.
+-/
 theorem exists_int_red (u : Pr.Word) (hi : ∀ P : Pr.vT u, IntAt P.1 ξ) : ∃ c : ℤ, ∀ P : Pr.vT u, redP P.1 ξ = (c : Res P.1) := by
   have hp := hPr.T_prime u
   by_cases h0 : IsEmpty (Pr.vT u)
@@ -396,12 +512,20 @@ theorem exists_int_red (u : Pr.Word) (hi : ∀ P : Pr.vT u, IntAt P.1 ξ) : ∃ 
     exact mul_left_cancel₀ (fun e : (n : Res P.1) = 0 => hd _ (m P) (by rw [← h1, e, zero_mul]))
       (h1.trans (tr P _ _ (h _ (m P₀) (hi P₀))).symm)
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_int_red hX hPr hK u hi`. Rewrite using `[psiWeil_apply (hPr.T_prime u) (hPr.vT_norm u P.1 P.2) ξ _ (c * a) (by rw [hc]; push_cast; rfl), psiWeil_apply (hPr.T_prime u) (hPr.vT_norm u P'.1 P'.2) ξ _ (c * a) (by rw [hc]; push_cast; rfl)]`.
+-/
 theorem psiWeil_same (u : Pr.Word) (hi : ∀ P : Pr.vT u, IntAt P.1 ξ) (P P' : Pr.vT u) (a : ℤ) :
     psiWeil P.1 ξ (a : Res P.1) = psiWeil P'.1 ξ (a : Res P'.1) := by
   obtain ⟨c, hc⟩ := exists_int_red hX hPr hK u hi
   rw [psiWeil_apply (hPr.T_prime u) (hPr.vT_norm u P.1 P.2) ξ _ (c * a) (by rw [hc]; push_cast; rfl),
     psiWeil_apply (hPr.T_prime u) (hPr.vT_norm u P'.1 P'.2) ξ _ (c * a) (by rw [hc]; push_cast; rfl)]
 
+/- English proof (translation)
+Establish `h : ∀ u (P : Pr.vT u) (c : Multiplicative (Res P.1)), ∃ y, σ₀ y = (psiWeil P.1 ξ).toMonoidHom c` using `fun u P c => hr u _ (resCh_eq (hPr.T_prime u) (hPr.vT_norm u P.1 P.2) ▸ psiWeil_pow ξ c.toAdd)`. Set `Ps : CharT X Pr` to `⟨fun u P => AddChar.toMonoidHomEquiv.symm (GlobalTheory.TrueChars.liftHom σ₀ _ (h u P))⟩`. Establish `hs : ∀ u P c, σ₀ (Ps.psiT u P c) = psiWeil P.1 ξ c` using `fun u P c => GlobalTheory.TrueChars.liftHom_spec σ₀ _ (h u P) (Multiplicative.ofAdd c)`. Use `⟨Ps, ⟨fun u P e => psiWeil_ne_one (hu u P).2 (AddChar.ext _ _ fun c => ?_), fun u P P' a => σ₀.injective ?_⟩, hs⟩` and prove the remaining obligations. Rewrite using `[← hs, e, AddChar.one_apply, AddChar.one_apply, map_one]`.
+
+Rewrite using `[hs, hs]`. Conclude with `psiWeil_same hX hPr hK u (fun P => (hu u P).1) P P' a`.
+-/
 theorem exists_charT (σ₀ : X.K →+* ℂ) (hr : ∀ u (z : ℂ), z ^ Pr.T u = 1 → ∃ y, σ₀ y = z) (hu : ∀ u, XiUnitAt (Pr.vT u) ξ) :
     ∃ Ps : CharT X Pr, Ps.Ok ∧ ∀ u P c, σ₀ (Ps.psiT u P c) = psiWeil P.1 ξ c := by
   have h : ∀ u (P : Pr.vT u) (c : Multiplicative (Res P.1)), ∃ y, σ₀ y = (psiWeil P.1 ξ).toMonoidHom c := fun u P c =>
@@ -420,10 +544,28 @@ section OverBase
 
 variable (B : Base)
 
+/- English proof (translation)
+Rewrite using `[FieldsLaws.mem_Kq_iff]`. Conclude with `div_mem (neg_mem (one_mem _)) (mul_mem (natCast_mem _ _) (IntermediateField.mem_adjoin_simple_self ℚ _))`.
+-/
 theorem hermitianCodeWord_weil_element_mem_quadraticField : B.host.xi0 ∈ B.fields.Kq := by
   rw [FieldsLaws.mem_Kq_iff]
   exact div_mem (neg_mem (one_mem _)) (mul_mem (natCast_mem _ _) (IntermediateField.mem_adjoin_simple_self ℚ _))
 
+/- English proof (translation)
+Introduce `P`. Establish `hsq` using `B.host.sqrtMinusD_sq`. Establish `hint : IsIntegral ℤ B.host.sqrtMinusD`. Use `IsIntegral.of_pow two_pos ?_` and prove the remaining obligations. Rewrite using `[hsq]`.
+
+Conclude with `(isIntegral_natCast _).neg`. Set `r : 𝓞 B.host.E` to `⟨_, hint⟩`. Establish `hr2 : r ^ 2 = -(B.host.d : 𝓞 B.host.E)` using `RingOfIntegers.ext (by`. Rewrite `hsq` using `[← map_natCast (algebraMap (𝓞 B.host.E) B.host.E), ← map_neg]`. Conclude with `hsq)`.
+
+Establish `hT` using `T_mem_vT (GlobalTheory.BasePrimes.primes_ok B X).1 u P`. Establish `hcop : Nat.Coprime (B.T u) B.host.d`. Establish `h1 : Nat.Coprime (B.T u) (B.host.QS * B.host.q * B.host.d)`. Rewrite using `[Nat.Coprime, Nat.gcd_comm, Nat.gcd_rec, B.T_cond u, Nat.gcd_one_left]`. Conclude with `h1.coprime_dvd_right (Dvd.intro_left _ rfl)`.
+
+Establish `hr : r ∉ P.1.asIdeal` using `fun h => by`. Establish `h1 : (B.host.d : 𝓞 B.host.E) ∈ P.1.asIdeal`. Rewrite using `[← neg_mem_iff, ← hr2]`. Conclude with `Ideal.pow_mem_of_mem _ h 2 two_pos`. Take `⟨a, b, e⟩` from `(Nat.isCoprime_iff_coprime.2 hcop).map (Int.castRingHom (𝓞 B.host.E))`.
+
+Use `one_notMem P.1 ?_` and prove the remaining obligations. Rewrite using `[← e]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ (by simpa using hT)) (Ideal.mul_mem_left _ _ (by simpa using h1))`. Establish `h0 : B.host.sqrtMinusD ≠ 0` using `fun e => hr (by rw [show r = 0 from RingOfIntegers.ext e]; exact zero_mem _)`. Establish `e : algebraMap (𝓞 B.host.E) B.host.E r * B.host.xi0 = algebraMap (𝓞 B.host.E) B.host.E (-1)` using `by show B.host.sqrtMinusD * B.host.xi0 = _`.
+
+Rewrite using `[Host.xi0, B.ccK_top, Ideal.absNorm_top, map_neg, map_one]`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Use `⟨⟨-1, r, hr, e⟩, fun h => ?_⟩` and prove the remaining obligations. Establish `h2` using `reduction_spec P.1 hr e`.
+
+Rewrite `h2` using `[show redP P.1 B.host.xi0 = 0 from h, mul_zero, map_neg, map_one]`. Conclude with `one_ne_zero (neg_eq_zero.1 h2.symm)`.
+-/
 theorem xiUnitAt_vT (X : PreX B.toPre) (u : B.Word) : XiUnitAt (X := B.fields) ((B.primes X).vT u) B.host.xi0 := by
   intro P
   have hsq := B.host.sqrtMinusD_sq
@@ -468,9 +610,15 @@ abbrev torAt (s : B.LL →+* ℂ) : TaylorLogMetric.Tor (assemble B C W V S N G)
 
 variable {J}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨top_ne_bot, by rw [Ideal.absNorm_top]; exact Nat.coprime_one_left _⟩, hJ.delta⟩`.
+-/
 theorem crv_of_ok (hJ : J.Ok) : StandardLatticesGL3.Crv (assemble B C W V S N G) ⊤ J.δ :=
   ⟨⟨top_ne_bot, by rw [Ideal.absNorm_top]; exact Nat.coprime_one_left _⟩, hJ.delta⟩
 
+/- English proof (translation)
+The claim follows from `letI := B.fields.starE fun d d' => ⟨(N_even B.R i).elim fun a h => ⟨a, h.trans (two_mul a)⟩, (N_even B.R j).elim fun a h => ⟨a, h.trans (two_mul a)⟩, GlobalTheory.SeamSelfDual.isSDLat_of_isSdLat _ ⟨d.2.lat, d.2.uni⟩, GlobalTheory.SeamSelfDual.isSDLat_of_isSdLat _ ⟨d'.2.lat, d'.2. …`.
+-/
 theorem admissible_assembled_evenRanks (i j : ℕ) {ST SG ST' SG' : Finset (HeightOneSpectrum (𝓞 B.fields.E))} :
     letI := B.fields.starE
     ∀ (d : DecoSet B.fields.E (B.R.N i) ST SG) (d' : DecoSet B.fields.E (B.R.N j) ST' SG'),
@@ -481,6 +629,9 @@ theorem admissible_assembled_evenRanks (i j : ℕ) {ST SG ST' SG' : Finset (Heig
 
 end OverBase
 
+/- English proof (translation)
+Use `psiWeil_apply hT h 1 1 1 (by` as an intermediate fact. Rewrite using `[← map_one (algebraMap (𝓞 E) E), reduction_coe]`. Use the proof step `simp)`. Simplify using `using this`.
+-/
 example {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) {T : ℕ} (hT : T.Prime)
     (h : Ideal.absNorm P.asIdeal = T) : psiWeil P 1 1 = Complex.exp (2 * Real.pi * Complex.I / (T : ℂ)) := by
   have := psiWeil_apply hT h 1 1 1 (by
@@ -488,9 +639,15 @@ example {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) {T
     simp)
   simpa using this
 
+/- English proof (translation)
+The claim follows from `psiWeil_ne_one (xiUnitAt_vT B X u P).2`.
+-/
 example (B : Base) (X : PreX B.toPre) (u : B.Word) (P : (B.primes X).vT u) : psiWeil P.1 B.host.xi0 ≠ 1 :=
   psiWeil_ne_one (xiUnitAt_vT B X u P).2
 
+/- English proof (translation)
+The claim follows from `exists_charT (FieldsLaws.fields_ok B) (GlobalTheory.BasePrimes.primes_ok B X).1 (hermitianCodeWord_weil_element_mem_quadraticField B) B.embLL (fun u z hz => by obtain ⟨y, hy⟩ := B.roots_LL u have h0 := (B.T_prime u).ne_zero exact GlobalTheory.TrueChars.roots_of_isPrimitiveRoot B. …`.
+-/
 example (B : Base) (X : PreX B.toPre) :
     ∃ Ps : CharT B.fields (B.primes X), Ps.Ok ∧ ∀ u P c, B.embLL (Ps.psiT u P c) = psiWeil P.1 B.host.xi0 c :=
   exists_charT (FieldsLaws.fields_ok B) (GlobalTheory.BasePrimes.primes_ok B X).1 (hermitianCodeWord_weil_element_mem_quadraticField B) B.embLL
@@ -501,6 +658,9 @@ example (B : Base) (X : PreX B.toPre) :
         ((hy ▸ Complex.isPrimitiveRoot_exp _ h0 : IsPrimitiveRoot (B.embLL y) _).of_map_of_injective B.embLL.injective) z hz)
     (xiUnitAt_vT B X)
 
+/- English proof (translation)
+The claim follows from `seesP_tauAt hPr u hX hs P`.
+-/
 example {X : Fields} {Pr : Primes X} (hX : X.AbelianUnramifiedExtensionConditions) (hPr : Pr.Ok) (u : Pr.Word) (w : HeightOneSpectrum (𝓞 X.K))
     (hs : seenC Pr u w) (P : Pr.vT u) : pullW (tauAt hPr u w P) w = P.1 := seesP_tauAt hPr u hX hs P
 

@@ -23,14 +23,29 @@ variable (μ) in
 def rhoL (w : Pl E) : Representation ℂ (GL (Fin a) (w.adicCompletion E)) (L2 (latticeGL E a) μ) :=
   (ContinuousLinearMap.toLinearMapRingHom.toMonoidHom.comp (R (latticeGL E a) μ)).comp ((finGL E a).comp (locGL E a w))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rhoL_apply (w : Pl E) (g : GL (Fin a) (w.adicCompletion E)) (v : L2 (latticeGL E a) μ) :
     rhoL μ w g v = R (latticeGL E a) μ (finGL E a (locGL E a w g)) v := rfl
 
+/- English proof (translation)
+The claim follows from `(R_toL2ₗ hm x (π.stable (.fin _) _ x.2)).symm`.
+-/
 theorem toL2ₗ_locRep {π : CuspSub E a} (hm : ∀ φ ∈ π.V, MemL2Quotient (latticeGL E a) μ φ.1) (w : Pl E)
     (g : GL (Fin a) (w.adicCompletion E)) (x : π.V) :
     toL2ₗ μ π.V hm (π.locRep w g x) = rhoL μ w g (toL2ₗ μ π.V hm x) :=
   (R_toL2ₗ hm x (π.stable (.fin _) _ x.2)).symm
 
+/- English proof (translation)
+Establish `hK` using `isKFinL2_of_mem_classes hm hF`. Establish `hc : ∀ g v, H.starProjection (R (latticeGL E a) μ g v) = R (latticeGL E a) μ g (H.starProjection v)` using `fun g v => hH.starProjection_apply (isUnitaryRep_R (latticeGL E a) μ) g v`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `k hk`.
+
+Use `⟨(fun s => k⁻¹ * s) ⁻¹' {s | R (latticeGL E a) μ (finGL E a s) F = F}, fun s hs => ?_, hK.1.preimage (continuous_const.mul continuous_id), by` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, inv_mul_cancel, map_one, ContinuousLinearMap.one_apply]⟩`. Establish `hs' : R (latticeGL E a) μ (finGL E a (k⁻¹ * s)) F = F` using `hs`. Establish `e : s = k * (k⁻¹ * s)` using `by group`. Express the relevant statement in the definitionally equal form `R (latticeGL E a) μ (finGL E a s) (H.starProjection F) = H.starProjection F`.
+
+Rewrite using `[e, map_mul, map_mul, ContinuousLinearMap.mul_apply, ← hc, hs']`. Conclude with `hk`. Use `hK.2` as an intermediate fact. Establish `e : (Set.range fun k : Kinf E a => R (latticeGL E a) μ (infGL E a (Unitary.toUnits k)) (H.starProjection F)) = (H.starProjection : L2 (latticeGL E a) μ →ₗ[ℂ] L2 (latticeGL E a) μ) '' Set.range fun k : Kinf E a => R (latticeGL E a) μ (infGL E a (Unitary.toUnits k)) F`. Rewrite using `[← Set.range_comp]`.
+
+Conclude with `congrArg Set.range (funext fun k => (hc _ F).symm)`. Rewrite using `[e, Submodule.span_image]`. Use `infer_instance`.
+-/
 theorem kFinite_L2_projection {π : CuspSub E a} (hm : ∀ φ ∈ π.V, MemL2Quotient (latticeGL E a) μ φ.1)
     {H : Submodule ℂ (L2 (latticeGL E a) μ)} (hH : IsSubrep (R (latticeGL E a) μ) H) [H.HasOrthogonalProjection]
     {F : L2 (latticeGL E a) μ} (hF : F ∈ classes π.V μ) : IsKFinL2 μ (H.starProjection F) := by
@@ -57,6 +72,17 @@ theorem kFinite_L2_projection {π : CuspSub E a} (hm : ∀ φ ∈ π.V, MemL2Quo
     rw [e, Submodule.span_image]
     infer_instance
 
+/- English proof (translation)
+Use `hH.completeSpace` as an intermediate fact. Take `⟨F, hF, hFn⟩` from `hne`. Take `⟨x0, hx0F⟩` from `(range_toL2ₗ hm).ge hF`. Establish `hP0 : H.starProjection (toL2ₗ μ π.V hm x0) ≠ 0` using `fun e => hFn (hx0F ▸ (Submodule.starProjection_apply_eq_zero_iff H).1 e)`. Establish `hk : IsKFinL2 μ (H.starProjection (toL2ₗ μ π.V hm x0))` using `kFinite_L2_projection hm hH ((range_toL2ₗ hm).le ⟨x0, rfl⟩)`.
+
+Take `⟨y0, hy0⟩` from `(range_toL2ₗ h'.finitePartMemL2).ge (h'.kfin _ (H.starProjection_apply_mem _) hk)`. Establish `hc : ∀ g v, H.starProjection (R (latticeGL E a) μ g v) = R (latticeGL E a) μ g (H.starProjection v)` using `fun g v => hH.starProjection_apply (isUnitaryRep_R (latticeGL E a) μ) g v`. Establish `hinj : Function.Injective (toL2ₗ μ π'.V h'.finitePartMemL2)` using `toL2ₗ_injective h'.finitePartMemL2 fun ψ hψ => ContAut.continuous_of_isOpen_stab E a ψ (π'.cusp ψ hψ).1.level`. Use `filter_upwards [GlobalTheory.CuspRep.UnrSat.eventually_hasSatGL_locRep CuspFormAutomorphicBounds.automorphicFormsFiniteGL E a π, GlobalTheory.CuspRep.UnrSat.eventually_hasSatGL_locRep CuspFormAutomorphicBounds.automorphicFormsFiniteGL E a π', GlobalTheory.CuspRep.AeFix.eventually …`. Take `⟨B, hB⟩` from `hB`.
+
+Take `⟨B', hB'⟩` from `hB'`. Use `⟨B, hB, ?_⟩` and prove the remaining obligations. Establish `hx0 : x0 ≠ 0` using `fun e => hP0 (by rw [e, map_zero, map_zero])`. Establish `h1 : IsSatVecGL w (π.locRep w) x0 B` using `hB.2 x0 hw hx0`. Establish `h2` using `h1.map ((H.starProjection : L2 (latticeGL E a) μ →ₗ[ℂ] L2 (latticeGL E a) μ) ∘ₗ toL2ₗ μ π.V hm) (ρ' := rhoL μ w) (fun g y => by`.
+
+Simplify using `only [LinearMap.comp_apply, ContinuousLinearMap.coe_coe]`. Rewrite using `[toL2ₗ_locRep, rhoL_apply, rhoL_apply, hc]) hP0`. Establish `h2' : IsSatVecGL w (rhoL μ w) (toL2ₗ μ π'.V h'.finitePartMemL2 y0) B`. Rewrite using `[hy0]`. Conclude with `h2`.
+
+Establish `h3` using `IsSatVecGL.of_map (toL2ₗ μ π'.V h'.finitePartMemL2) (fun g y => toL2ₗ_locRep h'.finitePartMemL2 w g y) hinj h2'`. Establish `e` using `h3.unique (hB'.2 y0 h3.2.1 h3.1)`. Substitute `e` using the available equality. Conclude with `hB'`.
+-/
 theorem same_satake_of_projection {π : CuspSub E a} (hm : ∀ φ ∈ π.V, MemL2Quotient (latticeGL E a) μ φ.1)
     {H : Submodule ℂ (L2 (latticeGL E a) μ)}
     (hH : IsSubrep (R (latticeGL E a) μ) H) {π' : CuspSub E a} (h' : IsFinitePartOf μ π' H)
@@ -92,12 +118,18 @@ theorem same_satake_of_projection {π : CuspSub E a} (hm : ∀ φ ∈ π.V, MemL
   subst e
   exact hB'
 
+/- English proof (translation)
+Introduce `φ hφ`. Take `⟨C, hC⟩` from `GlobalTheory.Published.CuspFormsBoundedGL.of_invariant RfCs.cuspidalSpectrumGL.2.2 (π.cusp φ hφ) (hπ φ hφ)`. Conclude with `GlobalTheory.CompanionTheory.CuspInvariant.memL2_of_bounded_continuous_invariant μ (ContAut.continuous_of_isOpen_stab E a φ (π.cusp φ hφ).1.level) (leftInv_latticeGL (π.cusp φ hφ).1.left (hπ φ hφ)) hC`.
+-/
 theorem memL2_of_normalised_alt {π : CuspSub E a} (hπ : IsNormalised π) : ∀ φ ∈ π.V, MemL2Quotient (latticeGL E a) μ φ.1 := by
   intro φ hφ
   obtain ⟨C, hC⟩ := GlobalTheory.Published.CuspFormsBoundedGL.of_invariant RfCs.cuspidalSpectrumGL.2.2 (π.cusp φ hφ) (hπ φ hφ)
   exact GlobalTheory.CompanionTheory.CuspInvariant.memL2_of_bounded_continuous_invariant μ (ContAut.continuous_of_isOpen_stab E a φ (π.cusp φ hφ).1.level)
     (leftInv_latticeGL (π.cusp φ hφ).1.left (hπ φ hφ)) hC
 
+/- English proof (translation)
+The claim follows from `same_satake_of_projection (memL2_of_normalised_alt hπ) hH h' hne`.
+-/
 theorem sameSat_of_not_perp {π : CuspSub E a} (hπ : IsNormalised π) {H : Submodule ℂ (L2 (latticeGL E a) μ)}
     (hH : IsSubrep (R (latticeGL E a) μ) H) {π' : CuspSub E a} (h' : IsFinitePartOf μ π' H)
     (hne : ∃ F ∈ classes π.V μ, F ∉ Hᗮ) : SameSat π π' :=

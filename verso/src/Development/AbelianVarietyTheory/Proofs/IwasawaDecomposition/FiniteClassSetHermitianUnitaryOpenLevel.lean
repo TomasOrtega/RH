@@ -13,10 +13,16 @@ namespace GlobalTheory.Mem.ClassFinite
 
 section Unitary
 
+/- English proof (translation)
+Simplify using `[Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+-/
 theorem hform_eq {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (J : Matrix (Fin n) (Fin n) A) (x y : Fin n → A) :
     Formalism.UG.hform σ J x y = (σ ∘ x) ⬝ᵥ (J *ᵥ y) := by
   simp [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Establish `h : σ ∘ (g *ᵥ x) = (g.map σ) *ᵥ (σ ∘ x)`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec σ g x i`. Rewrite using `[hform_eq, hform_eq, h, Formalism.UG.cT, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec (σ ∘ x) (g.map σ)ᵀ, Matrix.vecMul_transpose]`.
+-/
 theorem hform_mulVec {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (J g : Matrix (Fin n) (Fin n) A)
     (x y : Fin n → A) :
     Formalism.UG.hform σ J (g *ᵥ x) (g *ᵥ y) = Formalism.UG.hform σ (Formalism.UG.cT σ g * J * g) x y := by
@@ -25,10 +31,18 @@ theorem hform_mulVec {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (J g : M
   rw [hform_eq, hform_eq, h, Formalism.UG.cT, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec,
     Matrix.dotProduct_mulVec (σ ∘ x) (g.map σ)ᵀ, Matrix.vecMul_transpose]
 
+/- English proof (translation)
+Simplify using `[Formalism.UG.hform, Pi.single_apply]`.
+-/
 theorem hform_single {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (J : Matrix (Fin n) (Fin n) A) (i j : Fin n) :
     Formalism.UG.hform σ J (Pi.single i 1) (Pi.single j 1) = J i j := by
   simp [Formalism.UG.hform, Pi.single_apply]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Formalism.UG.cT σ (g : Matrix (Fin n) (Fin n) A) * J * (g : Matrix (Fin n) (Fin n) A) = J ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h x y`. Rewrite using `[hform_mulVec, h]`. Introduce `h`.
+
+Use extensionality with `i j`. Use `h (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Rewrite `this` using `[hform_mulVec, hform_single, hform_single]`. Then use the resulting hypothesis.
+-/
 theorem mem_unitary_iff {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (J : Matrix (Fin n) (Fin n) A)
     (g : GL (Fin n) A) :
     g ∈ Formalism.UG.UJ σ J ↔ ∀ x y, Formalism.UG.hform σ J ((g : Matrix (Fin n) (Fin n) A) *ᵥ x)
@@ -40,6 +54,11 @@ theorem mem_unitary_iff {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (J : 
     have := h (Pi.single i 1) (Pi.single j 1)
     rwa [hform_mulVec, hform_single, hform_single] at this
 
+/- English proof (translation)
+Establish `hc : Formalism.UG.cT (sigR R σ) ((g : Matrix (Fin n) (Fin n) E).map (inclR (F` using `F) R)) = (Formalism.UG.cT (σ : E →+* E) (g : Matrix (Fin n) (Fin n) E)).map (inclR (F := F) R) := by`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, sigR, inclR]`. Establish `hg' : Formalism.UG.cT (σ : E →+* E) (g : Matrix (Fin n) (Fin n) E) * J * (g : Matrix (Fin n) (Fin n) E) = J` using `hg`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT (sigR R σ) ((g : Matrix (Fin n) (Fin n) E).map (inclR (F := F) R)) * J.map (inclR (F := F) R) * (g : Matrix (Fin n) (Fin n) E).map (inclR (F := F) R) = J.map (inclR (F := F) R)`.
+
+Rewrite using `[hc, ← Matrix.map_mul, ← Matrix.map_mul, hg']`.
+-/
 theorem baseChange_mem {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (g : GL (Fin n) E)
     (hg : g ∈ Formalism.UG.UJ (σ : E →+* E) J) : Formalism.UG.bc (inclR (F := F) R) g ∈ HR R σ J := by
@@ -51,6 +70,17 @@ theorem baseChange_mem {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type)
       (g : Matrix (Fin n) (Fin n) E).map (inclR (F := F) R) = J.map (inclR (F := F) R)
   rw [hc, ← Matrix.map_mul, ← Matrix.map_mul, hg']
 
+/- English proof (translation)
+Establish `: IsModuleTopology R (R ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (R ⊗[F] E)` using `IsModuleTopology.isTopologicalRing R _`. Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) R`. Establish `: T2Space (R ⊗[F] E)` using `e.isEmbedding.t2Space`. Establish `hc : IsClosed (HR R σ J : Set (GL (Fin M) (R ⊗[F] E)))`.
+
+Establish `hv : Continuous fun g : GL (Fin M) (R ⊗[F] E) => (g : Matrix (Fin M) (Fin M) (R ⊗[F] E))` using `Units.continuous_val`. Conclude with `isClosed_eq (((hv.matrix_map (GlobalTheory.AdelicUnitaryTop.continuous_sigR R σ)).matrix_transpose.matrix_mul continuous_const).matrix_mul hv) continuous_const`. Set `S : Set (Matrix (Fin M) (Fin M) (R ⊗[F] E))` to `Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => C`. Establish `hS : IsCompact S` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hC`. Set `f : Matrix (Fin M) (Fin M) (R ⊗[F] E) → (Matrix (Fin M) (Fin M) (R ⊗[F] E))ᵐᵒᵖ` to `fun A => MulOpposite.op (JR (F := F) R J⁻¹ * (Formalism.UG.cT (sigR R σ) A * JR (F := F) R J))`.
+
+Establish `hf : Continuous f` using `MulOpposite.continuous_op.comp (continuous_const.matrix_mul ((continuous_id.matrix_map (GlobalTheory.AdelicUnitaryTop.continuous_sigR R σ)).matrix_transpose.matrix_mul continuous_const))`. Establish `hemb` using `(Units.isClosedEmbedding_embedProduct (α := Matrix (Fin M) (Fin M) (R ⊗[F] E))).comp hc.isClosedEmbedding_subtypeVal`. Use `⟨_, hemb.isCompact_preimage (hS.prod (hS.image hf)), fun h hh => ?_⟩` and prove the remaining obligations. Establish `hm : (HA.mat R σ J h).1 ∈ S` using `fun i _ j _ => hh i j`. Use `⟨hm, (HA.mat R σ J h).1, hm, ?_⟩` and prove the remaining obligations.
+
+Establish `hu : Formalism.UG.cT (sigR R σ) (HA.mat R σ J h).1 * JR (F` using `F) R J * (HA.mat R σ J h).1 = JR (F := F) R J := h.2`. Establish `h1 : JR (F` using `F) R J⁻¹ * JR (F := F) R J = 1 := by`. Unfold `JR`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ (Ne.isUnit hJ), Matrix.map_one _ (map_zero _) (map_one _)]`. Express the relevant statement in the definitionally equal form `MulOpposite.op _ = MulOpposite.op ((HA.mat R σ J h)⁻¹).1`.
+
+Use `congr 1`. Use `(Units.inv_eq_of_mul_eq_one_left ?_).symm` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, hu, h1]`.
+-/
 theorem exists_compact_of_entries {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
     (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R] [T2Space R]
     (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (hJ : J.det ≠ 0)
@@ -98,11 +128,19 @@ def intLat (E : Type) [Field E] (n : ℕ) : Submodule (𝓞 E) (Fin n → E) :=
 def intSet (E : Type) [Field E] : Set E := {x | IsIntegral ℤ x}
 
 omit [NumberField E] in
+/- English proof (translation)
+Simplify using `only [intLat, Submodule.mem_pi, Set.mem_univ, true_imp_iff, Submodule.mem_one]`. Conclude with `forall_congr' fun i => ⟨fun ⟨y, hy⟩ => hy ▸ y.2, fun h => ⟨⟨_, h⟩, rfl⟩⟩`.
+-/
 theorem mem_intLat (v : Fin n → E) : v ∈ intLat E n ↔ ∀ i, IsIntegral ℤ (v i) := by
   simp only [intLat, Submodule.mem_pi, Set.mem_univ, true_imp_iff, Submodule.mem_one]
   exact forall_congr' fun i => ⟨fun ⟨y, hy⟩ => hy ▸ y.2, fun h => ⟨⟨_, h⟩, rfl⟩⟩
 
 omit [NumberField E] in
+/- English proof (translation)
+Rewrite using `[mem_intLat]`. Introduce `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `using hx`.
+
+Simplify `isIntegral_zero` using `[h]`.
+-/
 theorem single_mem_intLat (i : Fin n) {x : E} (hx : IsIntegral ℤ x) :
     (Pi.single i x : Fin n → E) ∈ intLat E n := by
   rw [mem_intLat]
@@ -112,10 +150,16 @@ theorem single_mem_intLat (i : Fin n) {x : E} (hx : IsIntegral ℤ x) :
   · simpa [h] using isIntegral_zero
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `Submodule.fg_pi fun _ => by rw [Submodule.one_eq_span]; exact Submodule.fg_span_singleton _`.
+-/
 theorem intLat_fg : (intLat E n).FG := Submodule.fg_pi fun _ => by
   rw [Submodule.one_eq_span]; exact Submodule.fg_span_singleton _
 
 omit [NumberField E] in
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← (Pi.basisFun E (Fin n)).span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[Pi.basisFun_apply]`. Conclude with `single_mem_intLat i isIntegral_one`.
+-/
 theorem span_intLat : Submodule.span E (intLat E n : Set (Fin n → E)) = ⊤ := by
   rw [eq_top_iff, ← (Pi.basisFun E (Fin n)).span_eq]
   refine Submodule.span_mono ?_
@@ -123,6 +167,9 @@ theorem span_intLat : Submodule.span E (intLat E n : Set (Fin n → E)) = ⊤ :=
   rw [Pi.basisFun_apply]
   exact single_mem_intLat i isIntegral_one
 
+/- English proof (translation)
+Establish `h : ∀ x : E, x ∈ (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) ↔ IsIntegral ℤ x` using `fun x => by`. Rewrite using `[FractionalIdeal.mem_one_iff]`. Conclude with `⟨fun ⟨y, hy⟩ => hy ▸ y.2, fun h => ⟨⟨_, h⟩, rfl⟩⟩`. Establish `e : intSet E = ((1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Set E)` using `Set.ext fun x => (h x).symm`. Rewrite using `[e, one_tmul_mem_adelicCompletion_fractionalIdeal_iff, h]`.
+-/
 theorem one_tmul_mem_iff (x : E) :
     (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] x ∈ hat1 F (intSet E) ↔ IsIntegral ℤ x := by
   have h : ∀ x : E, x ∈ (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) ↔ IsIntegral ℤ x := fun x => by
@@ -132,12 +179,28 @@ theorem one_tmul_mem_iff (x : E) :
   rw [e, one_tmul_mem_adelicCompletion_fractionalIdeal_iff, h]
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `mul_mem_adelicCompletionOfElementSet_of_mul_mem F (fun _ ha _ hb => IsIntegral.mul ha hb) hx hy`.
+-/
 theorem mul_mem_int {x y : RA F E} (hx : x ∈ hat1 F (intSet E)) (hy : y ∈ hat1 F (intSet E)) :
     x * y ∈ hat1 F (intSet E) :=
   mul_mem_adelicCompletionOfElementSet_of_mul_mem F (fun _ ha _ hb => IsIntegral.mul ha hb) hx hy
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hz i`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`.
+
+Conclude with `tmul_mem_adelicCompletion_of_integral F ha ((mem_intLat x).1 hx i)`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `neg x _ hx => exact neg_mem hx`. Introduce `hz`.
+
+Rewrite using `[← Finset.univ_sum_single z]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Establish `hi` using `hz i`. Generalize the expression as in `z i = t at hi`. Proceed by induction on `hi using AddSubgroup.closure_induction with`.
+
+Consider the case `mem t ht`. Take `⟨a, ha, x, hx, rfl⟩` from `ht`. Use `AddSubgroup.subset_closure ⟨a, ha, _, single_mem_intLat i hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Consider the case `zero => rw [Pi.single_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => rw [Pi.single_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [Pi.single_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem mem_hat_intLat (z : Fin n → RA F E) :
     z ∈ hat F (intLat E n : Set (Fin n → E)) ↔ ∀ i, z i ∈ hat1 F (intSet E) := by
   constructor
@@ -166,6 +229,21 @@ theorem mem_hat_intLat (z : Fin n → RA F E) :
     | add x y _ _ hx hy => rw [Pi.single_add]; exact add_mem hx hy
     | neg x _ hx => rw [Pi.single_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Take `⟨N, hN, hNi⟩` from `HermClass.exists_int_mul_isIntegral E ((Set.finite_range fun p : Fin n × Fin n => G p.1 p.2).union (Set.finite_range fun p : Fin n × Fin n => G⁻¹ p.1 p.2))`. Use `⟨N, hN, fun z hz w hw => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite `hz`, `hw` using `[mem_hat_intLat]`. Simplify using `only [hermA, Finset.mul_sum]`. Use `sum_mem fun a _ => sum_mem fun b _ => ?_` and prove the remaining obligations.
+
+Establish `h1` using `mul_mem_int (mul_mem_int (hz a) ((one_tmul_mem_iff (F := F) _).2 (hNi _ (Or.inl ⟨(a, b), rfl⟩)))) (galoisAut_mem_adelicCompletionOfElementSet F c (I := intSet E) (J := intSet E) (fun x hx => IsIntegral.map (c : E →+* E).toIntAlgHom hx) (hw b))`. Establish `e : (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] ((N : E) * G a b) = ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (N : E)) * ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] G a b)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Rewrite `h1` using `[e]`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ∀ b, (z ᵥ* G.map (inclR (F` using `F) (FiniteAdeleRing (𝓞 F) F))) b ∈ hat1 F (intSet E) := fun b => by`. Use `hz _ (Translate.fv_mem_hat (F := F) (single_mem_intLat b isIntegral_one))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [hermA, Matrix.vecMul, dotProduct, Matrix.map_apply]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single b]`. Simplify using `[fv, inclR, ← Algebra.TensorProduct.one_def]`. Introduce `b' _ hb`. Simplify using `[fv, hb]`.
+
+Simplify using the standard rewrite rules. Establish `h2 : (z ᵥ* G.map (inclR (F` using `F) (FiniteAdeleRing (𝓞 F) F))) ᵥ* G⁻¹.map (inclR (F := F) (FiniteAdeleRing (𝓞 F) F)) = z := by`. Rewrite using `[Matrix.vecMul_vecMul, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ (Ne.isUnit hG), Matrix.map_one _ (map_zero _) (map_one _), Matrix.vecMul_one]`. Rewrite using `[← h2, mem_hat_intLat]`. Introduce `i`.
+
+Generalize the expression as in `z ᵥ* G.map (inclR (F := F) (FiniteAdeleRing (𝓞 F) F)) = u at h1`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Matrix.vecMul, dotProduct, Matrix.map_apply, Finset.mul_sum]`. Use `sum_mem fun b _ => ?_` and prove the remaining obligations. Establish `h3` using `mul_mem_int (h1 b) ((one_tmul_mem_iff (F := F) _).2 (hNi _ (Or.inr ⟨(b, i), rfl⟩)))`. Establish `e : (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] ((N : E) * G⁻¹ b i) = ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (N : E)) * inclR (F` using `F) (FiniteAdeleRing (𝓞 F) F) (G⁻¹ b i) := by`.
+
+Simplify using `[inclR]`. Rewrite `h3` using `[e]`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_int_bound (c : E ≃ₐ[F] E) (G : Matrix (Fin n) (Fin n) E) (hG : G.det ≠ 0) :
     ∃ N : ℤ, N ≠ 0 ∧
       (∀ z ∈ hat F (intLat E n : Set (Fin n → E)), ∀ w ∈ hat F (intLat E n : Set (Fin n → E)),
@@ -221,6 +299,9 @@ section Classes
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 omit [NumberField E] in
+/- English proof (translation)
+Unfold `hermA Formalism.UG.hform`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_comm (x j), ← mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem hermA_transpose (c : E ≃ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → RA F E) :
     hermA c Jᵀ x y = Formalism.UG.hform (sigR (FiniteAdeleRing (𝓞 F) F) (c : E →ₐ[F] E))
       (JR (FiniteAdeleRing (𝓞 F) F) J) y x := by
@@ -231,11 +312,31 @@ theorem hermA_transpose (c : E ≃ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (x y 
   rfl
 
 omit [NumberField E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[fv, inclR, Matrix.mulVec, dotProduct, TensorProduct.tmul_sum]`.
+-/
 theorem map_mulVec_fv (γ : Matrix (Fin n) (Fin n) E) (x : Fin n → E) :
     γ.map (inclR (F := F) (FiniteAdeleRing (𝓞 F) F)) *ᵥ fv F x = fv F (γ *ᵥ x) := by
   funext i
   simp [fv, inclR, Matrix.mulVec, dotProduct, TensorProduct.tmul_sum]
 
+/- English proof (translation)
+Take `⟨N, hN, hN1, hN2⟩` from `exists_int_bound c G hdet`. Use `choose Λ hΛ hfg hsp hhat using fun a => exists_lattice_latOf F E n (intLat E n) (g a) intLat_fg span_intLat`. Establish `hh : ∀ x y, hermA c G (fv F x) (fv F y) = (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] ReciprocityTheory.ChartRestriction.G.FD.herm G x y` using `fun x y => by`. Rewrite using `[hermA_fv_fv]`. Simplify using `only [hc]`.
+
+Both sides reduce to the same expression. Establish `hmem : ∀ a x, x ∈ Λ a ↔ ∃ z ∈ hat F (intLat E n : Set (Fin n → E)), (g a).1 *ᵥ z = fv F x` using `fun a x => by rw [← SetLike.mem_coe, hΛ]; rfl`. Establish `hup : ∀ a, ∀ z ∈ hat F (intLat E n : Set (Fin n → E)), (g a).1 *ᵥ z ∈ hat F (Λ a : Set (Fin n → E))` using `fun a z hz => by rw [← SetLike.mem_coe, hhat]; exact ⟨z, hz, rfl⟩`. Take `⟨S, hS, H⟩` from `GlobalTheory.exists_finite_unitary_classes G (fun a b => (hc _).symm.trans (hG a b)) hdet hN (𝔪 := ⊤) top_ne_bot Λ (fun _ => (Empty.elim : Empty → _)) (fun a => ⟨hfg a, hsp a⟩) (fun a x hx y hy => by`. Take `⟨z, hz, ez⟩` from `(hmem a x).1 hx`.
+
+Take `⟨w, hw, ew⟩` from `(hmem a y).1 hy`. Use `hN1 z hz w hw` as an intermediate fact. Rewrite using `[← hg a, ez, ew, hh, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_tmul_mem_iff] at this)` and apply the resulting hypothesis. Use the proof step `(fun a x hx => by`. Establish `hz : (g a).1 *ᵥ (((g a)⁻¹).1 *ᵥ fv F x) = fv F x`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Use `(hmem a _).2 ⟨_, hN2 (((g a)⁻¹).1 *ᵥ fv F x) fun w hw => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hg a, hz]`. Use `adelicHermitianFormGalois_mem_of_mem_completion c G (fun y hy => ?_) (hup a w hw)` and prove the remaining obligations. Rewrite using `[hh, one_tmul_mem_iff]`.
+
+Conclude with `hx y hy`. Rewrite using `[Matrix.mulVec_smul, hz, Translate.fv_smul])`. Use the proof step `(fun _ i => i.elim)`. Use `⟨S, hS, fun a => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, γ, h1, h2, -⟩` from `H a`.
+
+Use `⟨s, hs, γ, h1, fun z hz => ?_⟩` and prove the remaining obligations. Establish `h3 : γ.1.map (inclR (F` using `F) (FiniteAdeleRing (𝓞 F) F)) *ᵥ ((g a).1 *ᵥ z) ∈ hat F (Λ s : Set (Fin n → E)) := by`. Use `Translate.mulVec_mem_hat (fun x hx => ?_) (hup a z hz)` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, Translate.mem_pre, map_mulVec_fv]`. Conclude with `Translate.fv_mem_hat ((h2 x).1 hx)`.
+
+Rewrite `h3` using `[← SetLike.mem_coe, hhat]`. Take `⟨w, hw, e⟩` from `h3`. Rewrite using `[Units.val_mul, Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Express the relevant statement in the definitionally equal form `((g s)⁻¹).1 *ᵥ (γ.1.map (inclR (F := F) (FiniteAdeleRing (𝓞 F) F)) *ᵥ ((g a).1 *ᵥ z)) ∈ _`. Rewrite using `[← e, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`.
+
+Conclude with `hw`.
+-/
 theorem exists_finite_translates [IsCMField E] (c : E ≃ₐ[F] E) (hc : ∀ x, c x = IsCMField.complexConj E x)
     (G : Matrix (Fin n) (Fin n) E) (hG : ∀ a b, c (G a b) = G b a) (hdet : G.det ≠ 0) {α : Type}
     (g : α → GL (Fin n) (RA F E))
@@ -289,6 +390,9 @@ theorem exists_finite_translates [IsCMField E] (c : E ≃ₐ[F] E) (hc : ∀ x, 
   rw [← e, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]
   exact hw
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `hC.elim_finite_subcover (fun t : H => (fun x => t⁻¹ * x) ⁻¹' (K : Set H)) (fun t => hK.preimage (continuous_const.mul continuous_id)) (fun x _ => Set.mem_iUnion.2 ⟨x, by simp⟩)`. Use `⟨T, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨t, ht, h⟩` from `Set.mem_iUnion₂.1 (hT hx)`. Conclude with `⟨t, ht, h⟩`.
+-/
 theorem exists_finite_cosets {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     (K : Subgroup H) (hK : IsOpen (K : Set H)) (C : Set H) (hC : IsCompact C) :
     ∃ T : Finset H, ∀ x ∈ C, ∃ t ∈ T, t⁻¹ * x ∈ K := by
@@ -301,6 +405,23 @@ theorem exists_finite_cosets {H : Type} [Group H] [TopologicalSpace H] [IsTopolo
 
 end Classes
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ K hK`. Take `⟨h1, h2, h3, h4⟩` from `hσ`. Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `: Algebra.IsQuadraticExtension F E` using `⟨h3⟩`. Establish `: IsCMField E` using `IsCMField.ofCMExtension F E`.
+
+Establish `hc : ∀ x, σ x = IsCMField.complexConj E x` using `fun x => by`. Set `φ : E →+* ℂ` to `Classical.choice (inferInstance : Nonempty _)`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[h4, IsCMField.complexEmbedding_complexConj]`. Both sides reduce to the same expression.
+
+Take `⟨c, rfl⟩ : ∃ c : E ≃ₐ[F] E, (c : E →ₐ[F] E) = σ` from `⟨AlgEquiv.ofBijective σ (Algebra.IsAlgebraic.algHom_bijective σ), rfl⟩`. Establish `: IsModuleTopology (FiniteAdeleRing (𝓞 F) F) (FiniteAdeleRing (𝓞 F) F ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (FiniteAdeleRing (𝓞 F) F ⊗[F] E)` using `IsModuleTopology.isTopologicalRing (FiniteAdeleRing (𝓞 F) F) _`. Establish `: IsTopologicalGroup (HA (FiniteAdeleRing (𝓞 F) F) (c : E →ₐ[F] E) J)` using `inferInstanceAs (IsTopologicalGroup (HR (FiniteAdeleRing (𝓞 F) F) (c : E →ₐ[F] E) J))`. Use `GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F` as an intermediate fact.
+
+Take `⟨C, hC, hCe⟩` from `StabGroup.exists_compact_entries F E (intLat E M) intLat_fg span_intLat`. Take `⟨C', hC', hCe'⟩` from `exists_compact_of_entries (FiniteAdeleRing (𝓞 F) F) (c : E →ₐ[F] E) J hJ.2 C hC`. Take `⟨T, hT⟩` from `exists_finite_cosets K hK C' hC'`. Take `⟨S, hS, H⟩` from `exists_finite_translates c hc Jᵀ (fun a b => hJ.1 a b) (by rw [Matrix.det_transpose]; exact hJ.2) (HA.mat (FiniteAdeleRing (𝓞 F) F) (c : E →ₐ[F] E) J) (fun a x y => by`. Rewrite using `[hermA_transpose, hermA_transpose]`.
+
+Conclude with `(mem_unitary_iff _ _ _).1 a.2 y x)`. Use `⟨Finset.image₂ (· * ·) hS.toFinset T, fun g => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, γ, hγ, hz⟩` from `H g`. Establish `hh : ∀ x y, ReciprocityTheory.ChartRestriction.G.FD.herm Jᵀ x y = Formalism.UG.hform ((c : E →ₐ[F] E) : E →+* E) J y x` using `fun x y => by`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.herm Formalism.UG.hform`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_comm (x j), ← mul_assoc, ReciprocityTheory.ChartRestriction.G.FD.cc, ← hc]`. Both sides reduce to the same expression. Establish `hγU : γ ∈ Formalism.UG.UJ ((c : E →ₐ[F] E) : E →+* E) J` using `(mem_unitary_iff _ _ _).2 fun x y => by rw [← hh, ← hh, hγ]`.
+
+Set `γ' : HA (FiniteAdeleRing (𝓞 F) F) (c : E →ₐ[F] E) J` to `⟨_, baseChange_mem (FiniteAdeleRing (𝓞 F) F) _ J γ hγU⟩`. Set `γ'' : HFinIn (FiniteAdeleRing (𝓞 F) F) (c : E →ₐ[F] E) J` to `⟨γ', γ, hγU, rfl⟩`. Take `⟨t, ht, hk⟩` from `hT (s⁻¹ * (γ' * g)) (hCe' _ (hCe _ hz))`. Use `⟨γ''⁻¹, s * t, Finset.mem_image₂_of_mem (hS.mem_toFinset.2 hs) ht, _, hk, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g = γ'⁻¹ * (s * t * (t⁻¹ * (s⁻¹ * (γ' * g))))`.
+
+Use `group`.
+-/
 theorem exists_finset_classes : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ K : Subgroup (HA (Af F) σ J), IsOpen (K : Set (HA (Af F) σ J)) → ∃ S : Finset (HA (Af F) σ J), ∀ g : HA (Af F) σ J, ∃ γ : HFinIn (Af F) σ J, ∃ s ∈ S, ∃ k ∈ K, g = γ • (s * k) := by
   classical
   intro F E _ _ _ _ _ σ hσ M J hJ K hK

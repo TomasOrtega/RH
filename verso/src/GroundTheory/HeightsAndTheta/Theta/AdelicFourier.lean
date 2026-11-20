@@ -38,11 +38,17 @@ variable {ι : Type*} [Fintype ι] [DecidableEq ι] {κ : Type*} [Fintype κ] [D
 def adelicCoord (b : Basis ι K X) : AdelicPoints K X ≃ₗ[𝔸[K]] (ι → 𝔸[K]) :=
   (b.baseChange 𝔸[K]).equivFun
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[adelicCoord, Basis.equivFun_apply, Basis.baseChange_repr_tmul, Algebra.smul_def]`.
+-/
 theorem adelicCoord_tmul (b : Basis ι K X) (a : 𝔸[K]) (x : X) :
     adelicCoord b (a ⊗ₜ x) = fun i ↦ algebraMap K 𝔸[K] (b.repr x i) * a := by
   funext i
   rw [adelicCoord, Basis.equivFun_apply, Basis.baseChange_repr_tmul, Algebra.smul_def]
 
+/- English proof (translation)
+Rewrite using `[adelicCoord, Basis.equivFun_symm_apply]`. Simplify using `only [Basis.baseChange_apply]`.
+-/
 theorem adelicCoord_symm_apply (b : Basis ι K X) (x : ι → 𝔸[K]) :
     (adelicCoord b).symm x = ∑ i, x i • ((1 : 𝔸[K]) ⊗ₜ[K] b i) := by
   rw [adelicCoord, Basis.equivFun_symm_apply]
@@ -53,13 +59,22 @@ def adelicCoordHomeomorph (b : Basis ι K X) : AdelicPoints K X ≃ₜ (ι → �
   continuous_toFun := IsModuleTopology.continuous_of_linearMap (adelicCoord b).toLinearMap
   continuous_invFun := IsModuleTopology.continuous_of_linearMap (adelicCoord b).symm.toLinearMap
 
+/- English proof (translation)
+The claim follows from `(adelicCoordHomeomorph b).symm.measurableEmbedding`.
+-/
 theorem measurableEmbedding_adelicCoord_symm (b : Basis ι K X) :
     MeasurableEmbedding (adelicCoord b).symm :=
   (adelicCoordHomeomorph b).symm.measurableEmbedding
 
+/- English proof (translation)
+The claim follows from `(measurableEmbedding_adelicCoord_symm b).measurable`.
+-/
 theorem measurable_adelicCoord_symm (b : Basis ι K X) : Measurable (adelicCoord b).symm :=
   (measurableEmbedding_adelicCoord_symm b).measurable
 
+/- English proof (translation)
+Rewrite using `[adelicCoord_symm_apply, _root_.map_sum]`. Use function extensionality and compare the values at `k`. Simplify using `only [map_smul, adelicCoord_tmul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, mul_one, Matrix.mulVec, dotProduct, Matrix.map_apply, Basis.toMatrix_apply]`. Conclude with `Finset.sum_congr rfl fun i _ ↦ mul_comm _ _`.
+-/
 theorem adelicCoord_adelicCoord_symm (b : Basis ι K X) (c : Basis κ K X) (x : ι → 𝔸[K]) :
     adelicCoord c ((adelicCoord b).symm x) = (c.toMatrix b).map (algebraMap K 𝔸[K]) *ᵥ x := by
   rw [adelicCoord_symm_apply, _root_.map_sum]
@@ -73,6 +88,11 @@ variable (K X) in
 def adelicPointsMeasure : Measure (AdelicPoints K X) :=
   (adeleMeasurePi K (ι := Fin (finrank K X))).map (adelicCoord (Module.finBasis K X)).symm
 
+/- English proof (translation)
+Use `set c := Module.finBasis K X`. Establish `hfun : ⇑(adelicCoord b).symm = (adelicCoord c).symm ∘ fun x ↦ (c.toMatrix b).map (algebraMap K 𝔸[K]) *ᵥ x`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply]`. Rewrite using `[← adelicCoord_adelicCoord_symm b c x, LinearEquiv.symm_apply_apply]`.
+
+Establish `hmp` using `measurePreserving_mulVec (c.toMatrix b) (b.toMatrix c) (Basis.toMatrix_mul_toMatrix_flip b c) (Basis.toMatrix_mul_toMatrix_flip c b)`. Rewrite using `[hfun, ← Measure.map_map (measurable_adelicCoord_symm c) hmp.measurable, hmp.map_eq]`. Both sides reduce to the same expression.
+-/
 theorem adelicPointsMeasure_eq_map (b : Basis ι K X) :
     adelicPointsMeasure K X = (adeleMeasurePi K).map (adelicCoord b).symm := by
   set c := Module.finBasis K X
@@ -98,6 +118,13 @@ def schwartzBruhatPoints : Submodule ℂ (AdelicPoints K X → ℂ) :=
   (schwartzBruhatPi K (Fin (finrank K X))).comap
     (LinearMap.funLeft ℂ ℂ (adelicCoord (Module.finBasis K X)).symm)
 
+/- English proof (translation)
+Use `set c := Module.finBasis K X`. Express the relevant statement in the definitionally equal form `f ∘ (adelicCoord c).symm ∈ schwartzBruhatPi K (Fin (finrank K X)) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `comp_mulVec_mem_schwartzBruhatPi (c.toMatrix b) (b.toMatrix c) (Basis.toMatrix_mul_toMatrix_flip b c) (Basis.toMatrix_mul_toMatrix_flip c b) h`.
+
+Use `h' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply]`. Rewrite using `[← adelicCoord_adelicCoord_symm b c x, LinearEquiv.symm_apply_apply]`. Introduce `h`.
+
+Establish `h'` using `comp_mulVec_mem_schwartzBruhatPi (b.toMatrix c) (c.toMatrix b) (Basis.toMatrix_mul_toMatrix_flip c b) (Basis.toMatrix_mul_toMatrix_flip b c) h`. Use `h' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply]`. Rewrite using `[← adelicCoord_adelicCoord_symm c b x, LinearEquiv.symm_apply_apply]`.
+-/
 theorem mem_schwartzBruhatPoints_iff (b : Basis ι K X) {f : AdelicPoints K X → ℂ} :
     f ∈ schwartzBruhatPoints K X ↔ f ∘ (adelicCoord b).symm ∈ schwartzBruhatPi K ι := by
   set c := Module.finBasis K X

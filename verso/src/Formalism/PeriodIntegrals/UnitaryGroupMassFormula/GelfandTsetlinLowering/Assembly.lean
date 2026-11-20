@@ -7,6 +7,15 @@ namespace PI.WGL
 
 open Formalism.BasicNotions MvPolynomial
 
+/- English proof (translation)
+Introduce `n N h lam sg hI io0 hE hx hW s hs`. Take `⟨Z, hZi, hZa⟩` from `hZ n N h lam sg hI`. Take `⟨m, hm, hd⟩` from `hL n N h lam sg hI io0 hE hx hW s hs`. Take `⟨f', hf', hZf⟩` from `hZi m hm`. Use `⟨f', hf', ?_⟩` and prove the remaining obligations.
+
+Establish `hsC : MvPolynomial.map (Int.castRingHom ℂ) s ∈ nablaSq ℂ n sg` using `Formalism.GradedWeylDivisibility.dualWeylMap ℤ ℂ (Int.castRingHom ℂ) n n sg.natW s hs`. Establish `hO : OtherPart h lam sg ≤ LinearMap.ker Z`. Unfold `OtherPart`. Use `iSup_le fun mu => iSup_le fun hmu => iSup_le fun hne => iSup_le fun hw => iSup_le fun φ => iSup_le fun hφ => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ht, rfl⟩`.
+
+Rewrite using `[LinearMap.mem_ker, hZa mu hmu φ hφ t ht, hV n N h lam sg mu hI hmu hne hw, Int.cast_zero, zero_smul]`. Establish `h0` using `hO hd`. Rewrite `h0` using `[LinearMap.mem_ker, map_sub, hZf, hZa sg hI io0 hE _ hsC]`. Establish `hz : zScalar h lam sg sg = cBr h lam sg` using `rfl`. Rewrite `h0` using `[hz]`.
+
+Rewrite using `[map_smul]`. Conclude with `(sub_eq_zero.mp h0).symm`.
+-/
 theorem ioIntegral_of (hZ : CapelliZ) (hL : LiftMod) (hV : ZScalarVanish) : IoIntegral := by
   intro n N h lam sg hI io0 hE hx hW s hs
   obtain ⟨Z, hZi, hZa⟩ := hZ n N h lam sg hI
@@ -28,10 +37,24 @@ theorem ioIntegral_of (hZ : CapelliZ) (hL : LiftMod) (hV : ZScalarVanish) : IoIn
   rw [map_smul]
   exact (sub_eq_zero.mp h0).symm
 
+/- English proof (translation)
+Rewrite using `[sqAct, sqAct, map_smul, smul_comm]`.
+-/
 theorem sqAct_smul {k : ℕ} (mu : DomWeight k) (g : GL (Fin k) ℂ) (c : ℂ)
     (x : MvPolynomial (Fin k × Fin k) ℂ) : sqAct ℂ k mu g (c • x) = c • sqAct ℂ k mu g x := by
   rw [sqAct, sqAct, map_smul, smul_comm]
 
+/- English proof (translation)
+Introduce `n N h lam sg hI`. Take `⟨hc0, hcB, hdeg⟩` from `hN n N h lam sg hI`. Take `⟨hxi0, -⟩` from `hX n N h lam sg hI`. Take `⟨io0, ⟨hE1, hE2⟩, hx, hW⟩` from `hE n N h lam sg hI`. Set `c : ℂ` to `((cBr h lam sg : ℤ) : ℂ)`.
+
+Set `io` to `c • io0`. Establish `hio : ∀ x, io x = c • io0 x` using `fun x => rfl`. Establish `I2 : ∀ s ∈ nablaSq ℂ n sg, io s ∈ nablaSq ℂ N lam` using `fun s hs => Submodule.smul_mem _ _ (hE1 s hs)`. Establish `I3 : ∀ (g : GL (Fin n) ℂ), ∀ s ∈ nablaSq ℂ n sg, io (sqAct ℂ n sg g s) = sqAct ℂ N lam (embGL ℂ n N h g) (io s)`. Introduce `g s hs`.
+
+Rewrite using `[hio, hio, hE2 g s hs, sqAct_smul]`. Establish `I4 : io (extremal ℂ n sg) = c • xi ℂ h lam sg` using `by rw [hio, hx]`. Establish `I5 : LastWeight lam sg io`. Introduce `a s hs`. Rewrite using `[hio, sqAct_smul, hW a s hs, smul_comm]`.
+
+Establish `I1 : ∀ s ∈ nablaSq ℤ n sg, ∃ f ∈ nablaSq ℤ N lam, io (MvPolynomial.map (Int.castRingHom ℂ) s) = MvPolynomial.map (Int.castRingHom ℂ) f`. Introduce `s hs`. Take `⟨f, hf, hf'⟩` from `hP4 n N h lam sg hI io0 ⟨hE1, hE2⟩ hx hW s hs`. Conclude with `⟨f, hf, by rw [hio, ← map_smul]; exact hf'⟩`. Take `⟨I6, br, hrest, hT⟩` from `hA n N h lam sg hI io ⟨I2, I3⟩ I4 I5`.
+
+Establish `B1` using `hB n N h lam sg hI io br I1 I2 hrest.1 hT`. Conclude with `⟨hc0, hcB, hxi0, hdeg, io, br, ⟨I1, I2, I3, I4, I5, I6⟩, ⟨B1, hrest⟩, hT⟩`.
+-/
 theorem gTLower_of_steps (hN : Numbers) (hX : XiFacts) (hE : IoExists) (hP4 : IoIntegral)
     (hA : AdjointBr) (hB : BrIntegral) : PI.GTLower := by
   intro n N h lam sg hI

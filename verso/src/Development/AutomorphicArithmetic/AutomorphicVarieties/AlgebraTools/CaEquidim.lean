@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.IsRegula
 
 open IsLocalRing
 
+/- English proof (translation)
+Introduce `B _ _ _ M _ _ _ xs hxs hreg hdim Z hZ`. Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Conclude with `GlobalTheory.length_le_ringKrullDim_quotient_of_isAssociatedPrime hxs hreg (Module.associatedPrimes.minimalPrimes_annihilator_subset_associatedPrimes B M hZ)`.
+-/
 theorem UpperTheory.V.AlgebraTools.dim_minimalPrime_eq :
     ∀ (B : Type) [CommRing B] [IsLocalRing B] [IsNoetherianRing B] (M : Type) [AddCommGroup M] [Module B M]
       [Module.Finite B M] (xs : List B), (∀ x ∈ xs, x ∈ maximalIdeal B) → RingTheory.Sequence.IsWeaklyRegular M xs →

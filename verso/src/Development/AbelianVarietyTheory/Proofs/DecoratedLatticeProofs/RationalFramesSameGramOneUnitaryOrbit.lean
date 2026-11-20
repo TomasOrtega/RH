@@ -15,6 +15,11 @@ noncomputable section
 namespace GlobalTheory.WittOrbit
 variable {D : D7}
 
+/- English proof (translation)
+Use `⟨fun x => star_star x, ?_, inferInstance, ?_, fun x _ hx => isUnit_iff_ne_zero.2 hx⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h push_neg at h`. Establish `hbot : (⊥ : Subalgebra D.host.F D.host.E) = ⊤` using `eq_top_iff.2 fun x _ => Algebra.mem_bot.2 ((D.sp.cm.fixed x).1 (h x))`. Establish `h1` using `Subalgebra.bot_eq_top_iff_finrank_eq_one.1 hbot`. Rewrite `h1` using `[D.sp.cm.deg2]`.
+
+Conclude with `absurd h1 (by norm_num)`. Conclude with `isUnit_iff_ne_zero.2 two_ne_zero`.
+-/
 theorem isQA_sig (D : D7) : GlobalTheory.SgAlg.IsQA (D.sp.cm.sig : D.host.E →+* D.host.E) := by
   refine ⟨fun x => star_star x, ?_, inferInstance, ?_, fun x _ hx => isUnit_iff_ne_zero.2 hx⟩
   · by_contra h
@@ -26,6 +31,9 @@ theorem isQA_sig (D : D7) : GlobalTheory.SgAlg.IsQA (D.sp.cm.sig : D.host.E →+
     exact absurd h1 (by norm_num)
   · exact isUnit_iff_ne_zero.2 two_ne_zero
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' x) (LinearMap.ker_eq_bot.2 (Matrix.mulVec_injective_iff.2 h))`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Use `congrArg LinearMap.toMatrix' hg` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id]`. Then use the resulting hypothesis.
+-/
 theorem free_of_li {n ρ : ℕ} (x : Matrix (Fin n) (Fin ρ) D.host.E) (h : LinearIndependent D.host.E x.transpose) :
     GlobalTheory.SgAlg.Free x := by
   obtain ⟨g, hg⟩ := LinearMap.exists_leftInverse_of_injective (Matrix.toLin' x)
@@ -34,6 +42,9 @@ theorem free_of_li {n ρ : ℕ} (x : Matrix (Fin n) (Fin ρ) D.host.E) (h : Line
   have := congrArg LinearMap.toMatrix' hg
   rwa [LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id] at this
 
+/- English proof (translation)
+Rewrite using `[Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero]`. Introduce `h0`. Use `congrArg Matrix.det h` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, h0, mul_zero]`. Conclude with `gram_det_ne W this.symm`.
+-/
 theorem isUnit_of_unitary (W : HSp D) {g : Matrix (Fin W.rank) (Fin W.rank) D.host.E}
     (h : gᴴ * W.gram * g = W.gram) : IsUnit g := by
   rw [Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero]
@@ -42,6 +53,19 @@ theorem isUnit_of_unitary (W : HSp D) {g : Matrix (Fin W.rank) (Fin W.rank) D.ho
   rw [Matrix.det_mul, Matrix.det_mul, h0, mul_zero] at this
   exact gram_det_ne W this.symm
 
+/- English proof (translation)
+Introduce `D W ρ x₀ h₀`. Establish `hJ : GlobalTheory.SgAlg.IsHermU (D.sp.cm.sig : D.host.E →+* D.host.E) W.gram` using `⟨gram_conjTranspose W, gram_isUnit_det W⟩`. Use `⟨fun x hx => ?_, fun γ hγ x hx => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, hgx⟩` from `GlobalTheory.SgAlg.witt_free_field _ (isQA_sig D) W.gram hJ x₀ x (free_of_li x₀ h₀) (free_of_li x hx.1) (by show x₀ᴴ * W.gram * x₀ = xᴴ * W.gram * x`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc]`.
+
+Conclude with `hx.2.symm)`. Establish `hg' : gᴴ * W.gram * g = W.gram` using `hg`. Establish `hu : adj (rat g) * (gA W * rat g) = gA W`. Rewrite using `[← rat_conjTranspose, gA, ← rat_mul, ← rat_mul, ← Matrix.mul_assoc, hg']`. Use `⟨ofMat W (rat g) hu, (mem_GQ_iff W _).2 ⟨g, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mt_ofMat, ← rat_mul, hgx]`. Take `⟨g, hg⟩` from `(mem_GQ_iff W γ).1 hγ replace hg : rat g = mt W γ := hg`. Establish `hu : gᴴ * W.gram * g = W.gram` using `rat_injective (by`. Rewrite using `[rat_mul, rat_mul, rat_conjTranspose, hg]`. Conclude with `mt_rel W γ)`.
+
+Establish `hgu` using `isUnit_of_unitary W hu`. Use `⟨g * x, ⟨?_, ?_⟩, by rw [← hg, ← rat_mul]⟩` and prove the remaining obligations. Use `Matrix.mulVec_injective_iff.1 ?_` and prove the remaining obligations. Introduce `v w hvw`. Simplify using `only [← Matrix.mulVec_mulVec] at hvw`.
+
+Conclude with `Matrix.mulVec_injective_iff.2 hx.1 (Matrix.mulVec_injective_iff_isUnit.2 hgu hvw)`. Use `show (g * x)ᴴ * (W.gram * (g * x)) = gramQ W x₀`. Rewrite using `[← hx.2, gramQ, Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = _ := by rw [hu]`.
+-/
 theorem orb_eq_orbit : ∀ (D : D7) (W : HSp D) (ρ : ℕ) (x₀ : Matrix (Fin W.rank) (Fin ρ) D.host.E),
     LinearIndependent D.host.E x₀.transpose →
       (∀ x ∈ Orb W x₀, ∃ γ ∈ GQ W, mt W γ ⬝ (rat x₀ : Mx D W.rank ρ) = rat x) ∧

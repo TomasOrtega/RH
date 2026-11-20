@@ -12,6 +12,13 @@ open Formalism.IndefR.Cx GlobalTheory.BigOn
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T0 A3 Ks _ _ _ R F s hOk hsep hC hE hP hph`. Establish `c` using `RealDat3.characterisation_of_weak hC hE`. Establish `hR` using `complex_data_conditions_base_level_of_primitive_links hOk hsep hC hP`. Use `⟨⟨c.lev, c.grp, c.fam, c.models, c.chain, c.thP⟩, hOk.ok2, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hR.lifts0.1`.
+
+Rewrite `h` using `[GlobalTheory.CharRealise.toCx3_eq_one R F hph]`. Conclude with `h`. Establish `h` using `hR.ratTh`. Rewrite `h` using `[GlobalTheory.CharRealise.toCx3_eq_one R F hph]`. Conclude with `h`.
+
+Establish `h` using `hR.proviso0`. Rewrite `h` using `[GlobalTheory.CharRealise.toCx3_eq_one R F hph]`. Conclude with `h`.
+-/
 theorem GlobalTheory.LowRow.baseLinks_of_prims : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T0 : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), ∀ s : ℕ, A3.fam3.Ok3 s → A3.fam3.TypesSep3 → R.WeakCharacterisation F → R.toRealDat.ExAt → PrimRows3 R F → (∀ i, R.phs i = 1) → GlobalTheory.Hk3.Core R.toRealDat F.lv2 ∧ A3.A.fam.Ok s ∧ BaseLinks R.toRealDat F.lv2 := by
   intro D G _ _ Pl0 I0 T0 A3 Ks _ _ _ R F s hOk hsep hC hE hP hph
   have c := RealDat3.characterisation_of_weak hC hE

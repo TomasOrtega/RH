@@ -15,14 +15,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AV.FrobPow
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem frobOver_left_apply {k : Type} [Field k] [Fintype k] (X : Over (Sp k)) (x : X.left) :
     (GlobalTheory.SS.FrobModel.frobOver X).left x = x := rfl
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.AbLaw.rs_self (X := X.left) h (s ^ Fintype.card k)`.
+-/
 theorem frobOver_appLE {k : Type} [Field k] [Fintype k] (X : Over (Sp k)) (U : X.left.Opens)
     (h : U ≤ (GlobalTheory.SS.FrobModel.frobOver X).left ⁻¹ᵁ U) (s : Γ(X.left, U)) :
     ((GlobalTheory.SS.FrobModel.frobOver X).left.appLE U U h).hom s = s ^ Fintype.card k :=
   GlobalTheory.AbLaw.rs_self (X := X.left) h (s ^ Fintype.card k)
 
+/- English proof (translation)
+Introduce `K _ _ A`. Use `letI : IsMonHom (GlobalTheory.SS.FrobModel.frobOver A.X) := (GlobalTheory.SS.FrobModel.frobG_frobOver A.X).1`. Conclude with `⟨Hom.mk (GlobalTheory.SS.FrobModel.frobOver A.X), GlobalTheory.AV.FrobEx.isFrob_frobOver K A, fun x => frobOver_left_apply A.X x, fun U h s => frobOver_appLE A.X U h s⟩`.
+-/
 theorem exists_isFrob_pow : ∀ (K : Type) [Field K] [Fintype K] (A : AbVar K), ∃ π : End A, IsFrob π ∧
     (∀ x : A.X.left, (Hom.hom (A := A) (B := A) π).left x = x) ∧
     ∀ (U : A.X.left.Opens) (h : U ≤ (Hom.hom (A := A) (B := A) π).left ⁻¹ᵁ U) (s : Γ(A.X.left, U)),

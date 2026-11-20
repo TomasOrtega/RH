@@ -8,6 +8,9 @@ namespace PI.GTS
 
 open Formalism.BasicNotions MvPolynomial
 
+/- English proof (translation)
+Unfold `Formalism.REAL.fockF`. Apply `Finset.sum_subset hS` to reduce the goal to its premises. Introduce `m _ hm`. Establish `h0 : f.coeff m = 0` using `by simpa [MvPolynomial.mem_support_iff] using hm`. Simplify using `[h0]`.
+-/
 private theorem fockF_eq_sum_lemma {σ : Type*} (f g : MvPolynomial σ ℂ) (S : Finset (σ →₀ ℕ))
     (hS : f.support ⊆ S) :
     Formalism.REAL.fockF f g =
@@ -18,6 +21,9 @@ private theorem fockF_eq_sum_lemma {σ : Type*} (f g : MvPolynomial σ ℂ) (S :
   have h0 : f.coeff m = 0 := by simpa [MvPolynomial.mem_support_iff] using hm
   simp [h0]
 
+/- English proof (translation)
+Rewrite using `[fockF_eq_sum_lemma (c • f) _ f.support MvPolynomial.support_smul, fockF_eq_sum_lemma f f f.support subset_rfl, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [MvPolynomial.coeff_smul, smul_eq_mul, star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fockF_smul_self {σ : Type*} (c : ℂ) (f : MvPolynomial σ ℂ) :
     Formalism.REAL.fockF (c • f) (c • f) = (c * star c) * Formalism.REAL.fockF f f := by
   rw [fockF_eq_sum_lemma (c • f) _ f.support MvPolynomial.support_smul,
@@ -26,6 +32,9 @@ theorem fockF_smul_self {σ : Type*} (c : ℂ) (f : MvPolynomial σ ℂ) :
   simp only [MvPolynomial.coeff_smul, smul_eq_mul, star_mul']
   ring
 
+/- English proof (translation)
+Unfold `normFock`. Rewrite using `[fockF_smul_self, mul_div_assoc]`. Establish `hc : c * star c = ((‖c‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[show star c = (starRingEnd ℂ) c from rfl, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Rewrite using `[hc, Complex.re_ofReal_mul]`.
+-/
 theorem re_normFock_smul {N : ℕ} (lam : DomWeight N) (c : ℂ) (x : MvPolynomial (Fin N × Fin N) ℂ) :
     (normFock lam (c • x) (c • x)).re = ‖c‖ ^ 2 * (normFock lam x x).re := by
   unfold normFock
@@ -34,6 +43,9 @@ theorem re_normFock_smul {N : ℕ} (lam : DomWeight N) (c : ℂ) (x : MvPolynomi
     rw [show star c = (starRingEnd ℂ) c from rfl, Complex.mul_conj, Complex.normSq_eq_norm_sq]
   rw [hc, Complex.re_ofReal_mul]
 
+/- English proof (translation)
+Rewrite using `[Units.val_zpow_eq_zpow_val, norm_zpow, ← zpow_natCast, ← zpow_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_units_zpow_sq (u : ℂˣ) (e : ℤ) :
     ‖((u ^ e : ℂˣ) : ℂ)‖ ^ 2 = ‖(u : ℂ)‖ ^ (2 * e) := by
   rw [Units.val_zpow_eq_zpow_val, norm_zpow, ← zpow_natCast, ← zpow_mul]
@@ -41,6 +53,9 @@ theorem norm_units_zpow_sq (u : ℂˣ) (e : ℤ) :
   push_cast
   ring
 
+/- English proof (translation)
+Unfold `sqAct delSq at *`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `Formalism.UG.P.wlocal_main le_rfl lam.natW N 0 (zero_add N) ((g : Matrix (Fin N) (Fin N) ℂ).transpose) ((g⁻¹ : GL (Fin N) ℂ) : Matrix (Fin N) (Fin N) ℂ).transpose (by rw [← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]) (fun i j hj => absurd hj (Nat.not_lt_zero _)) f …`.
+-/
 theorem sqAct_mem_delSq (N : ℕ) (lam : DomWeight N) (g : GL (Fin N) ℂ) (f : MvPolynomial (Fin N × Fin N) ℂ)
     (hf : f ∈ delSq ℂ N lam) : sqAct ℂ N lam g f ∈ delSq ℂ N lam := by
   unfold sqAct delSq at *
@@ -50,6 +65,15 @@ theorem sqAct_mem_delSq (N : ℕ) (lam : DomWeight N) (g : GL (Fin N) ℂ) (f : 
     (by rw [← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one])
     (fun i j hj => absurd hj (Nat.not_lt_zero _)) f hf
 
+/- English proof (translation)
+Introduce `n N h lam sg io br hio hbr a`. Take `⟨-, -, -, -, hio5, hio6⟩` from `hio`. Take `⟨-, -, -, -, hbr5, hbr6⟩` from `hbr`. Establish `ha : ‖(a : ℂ)‖ ≠ 0` using `norm_ne_zero_iff.mpr a.ne_zero`. Establish `hnn : 0 ≤ ‖(a : ℂ)‖ ^ (-(2 * degZ lam sg))` using `zpow_nonneg (norm_nonneg _) _`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `s hs`. Establish `hk : ‖((a⁻¹ ^ degZ lam sg : ℂˣ) : ℂ)‖ ^ 2 = ‖(a : ℂ)‖ ^ (-(2 * degZ lam sg))`. Rewrite using `[norm_units_zpow_sq, Units.val_inv_eq_inv_val, norm_inv, inv_zpow']`. Rewrite using `[hio5 a⁻¹ s hs, re_normFock_smul, hk, mul_assoc]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (hio6 s hs) hnn`. Introduce `f hf`. Establish `hf'` using `sqAct_mem_delSq N lam (lastGL ℂ N a) f hf`. Establish `h1` using `hbr6 _ hf'`. Rewrite `h1` using `[hbr5 a f hf, re_normFock_smul, norm_units_zpow_sq]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← zpow_add₀ ha]`. Simplify using the standard rewrite rules. Use `_ ≤ ‖(a : ℂ)‖ ^ (-(2 * degZ lam sg)) * (brBd h lam sg ^ 2 * (normFock lam (sqAct ℂ N lam (lastGL ℂ N a) f) (sqAct ℂ N lam (lastGL ℂ N a) f)).re) := mul_le_mul_of_nonneg_left h1 hnn`. Use `_ = _ := by ring`.
+-/
 theorem gTScale : PI.GTScale := by
   intro n N h lam sg io br hio hbr a
   obtain ⟨-, -, -, -, hio5, hio6⟩ := hio

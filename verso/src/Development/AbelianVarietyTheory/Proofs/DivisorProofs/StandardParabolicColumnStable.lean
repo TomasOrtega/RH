@@ -14,12 +14,18 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField E] in
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono (Set.image_mono h)`.
+-/
 theorem colSpan_mono (X : Matrix (Fin n) (Fin r) E) {I I' : Set (Fin r)} (h : I ⊆ I') :
     GlobalTheory.StdPar.colSpan F X I ≤ GlobalTheory.StdPar.colSpan F X I' :=
   Submodule.span_mono (Set.image_mono h)
 
 omit [NumberField E] in
 
+/- English proof (translation)
+The claim follows from `biInf_mono h`.
+-/
 theorem colPerp_anti (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (X : Matrix (Fin n) (Fin r) E)
     {I I' : Set (Fin r)} (h : I ⊆ I') :
     GlobalTheory.StdPar.colPerp σ J X I' ≤ GlobalTheory.StdPar.colPerp σ J X I :=
@@ -27,6 +33,11 @@ theorem colPerp_anti (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (X : Ma
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Establish `: GlobalTheory.StdPar.colSpan F X I ≤ (GlobalTheory.StdPar.colSpan F X I).comap M.mulVecLin`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Establish `h1 : (adMat F X)ᵀ l ∈ GlobalTheory.StdPar.colSpan F X I` using `Submodule.subset_span ⟨l, hl, rfl⟩`. Establish `h2` using `colSpan_mono (F := F) X (I' := I) (fun m hm => hI l hl m hm.1) (hM l)`.
+
+Establish `h3` using `add_mem h2 h1`. Rewrite `h3` using `[sub_add_cancel]`. Conclude with `h3`. Conclude with `fun y hy => this hy`.
+-/
 theorem mulVec_mem (X : Matrix (Fin n) (Fin r) E) (M : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) (i : Fin r)
     (hM : ∀ j : Fin r, M *ᵥ (adMat F X)ᵀ j - (adMat F X)ᵀ j ∈ GlobalTheory.StdPar.colSpan F X {l | l < j ∧ l ≤ i})
     (I : Set (Fin r)) (hI : ∀ l ∈ I, ∀ m < l, m ∈ I) :
@@ -41,6 +52,17 @@ theorem mulVec_mem (X : Matrix (Fin n) (Fin r) E) (M : Matrix (Fin n) (Fin n) (A
     exact h3
   exact fun y hy => this hy
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r X S hS i hi h H`. Take `⟨h1, h2⟩` from `H h (Or.inl rfl)`. Take `⟨h3, -⟩` from `H h⁻¹ (Or.inr rfl)`. Establish `e : ∀ y, (matHom _ σ J h⁻¹).1 *ᵥ (matHom _ σ J h).1 *ᵥ y = y` using `fun y => by`. Rewrite using `[mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, one_mulVec]`.
+
+Establish `key : ∀ I : Set (Fin r), (∀ l ∈ I, ∀ m < l, m ∈ I) → ∀ y, y ∈ GlobalTheory.StdPar.colSpan F X I ↔ (matHom _ σ J h).1 *ᵥ y ∈ GlobalTheory.StdPar.colSpan F X I` using `fun I hI y => ⟨mulVec_mem X _ i h1 I hI y, fun hy => by`. Use `mulVec_mem X _ i h3 I hI _ hy` as an intermediate fact. Rewrite using `[e] at this⟩` and apply the resulting hypothesis. Use `Subgroup.mem_inf.2 ⟨Subgroup.mem_iInf.2 fun j => ⟨key _ ?_, fun y hy => ?_⟩, key _ ?_, fun y hy => ?_⟩` and prove the remaining obligations. Introduce and unpack `l ⟨k, hk, hlk, hkj⟩ m hm`.
+
+Conclude with `⟨k, hk, hm.le.trans hlk, hkj⟩`. Unfold `GlobalTheory.StdPar.colSpan at hy`. Rewrite `hy` using `[Set.image_singleton, Submodule.mem_span_singleton]`. Take `⟨a, rfl⟩` from `hy`. Rewrite using `[mulVec_smul, ← smul_sub]`.
+
+Use `Submodule.smul_mem _ a (colSpan_mono X ?_ (h1 j))` and prove the remaining obligations. Introduce and unpack `m ⟨hmj, hmi⟩`. Conclude with `⟨m, hS i hi m hmi, le_rfl, hmj⟩`. Introduce and unpack `l ⟨k, hk, hlk⟩ m hm`. Conclude with `⟨k, hk, hm.le.trans hlk⟩`.
+
+Establish `hsub : {l : Fin r | l ≤ i} ⊆ {l | ∃ k ∈ S, l ≤ k}` using `fun l hl => ⟨i, hi, hl⟩`. Conclude with `colSpan_mono X hsub (h2 y (colPerp_anti σ J X hsub hy))`.
+-/
 theorem mem_unip :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X : Matrix (Fin n) (Fin r) E)
     (S : Finset (Fin r)), (∀ k ∈ S, ∀ i ≤ k, i ∈ S) → ∀ i ∈ S, ∀ h : GAd σ J,

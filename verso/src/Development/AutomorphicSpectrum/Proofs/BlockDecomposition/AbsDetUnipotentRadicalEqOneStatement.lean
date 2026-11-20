@@ -8,5 +8,8 @@ open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doublin
 open GlobalTheory.CompanionTheory.QKAvg
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.QKAvg.absDet_radN | exact GlobalTheory.CompanionTheory.QKAvg.absDet_radN | (intros; apply GlobalTheory.CompanionTheory.QKAvg.absDet_radN <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.absDet_unipotent_radical_eq_one : ∀ (D : D7) (B W : HSp D) (t : ℕ) (d : HypDec B W t), ∀ n ∈ radN d, GlobalTheory.RegSW.absDet d n = 1 := by
   first | exact @GlobalTheory.CompanionTheory.QKAvg.absDet_radN | exact GlobalTheory.CompanionTheory.QKAvg.absDet_radN | (intros; apply GlobalTheory.CompanionTheory.QKAvg.absDet_radN <;> assumption)

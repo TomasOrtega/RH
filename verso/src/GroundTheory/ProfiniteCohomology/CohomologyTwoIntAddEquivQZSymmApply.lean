@@ -7,6 +7,11 @@ namespace GroundTheory.ProfCoh
 
 open CategoryTheory
 
+/- English proof (translation)
+Introduce `x`. Take `⟨q, rfl⟩` from `QuotientAddGroup.mk_surjective (s := AddSubgroup.zmultiples (1 : ℚ)) x`. Use `isOfFinAddOrder_iff_nsmul_eq_zero.2 ⟨q.den, q.den_pos, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((q.den • q : ℚ) : AddCircle (1 : ℚ)) = 0`. Rewrite using `[AddCircle.coe_eq_zero_iff]`.
+
+Use `⟨q.num, ?_⟩` and prove the remaining obligations. Rewrite using `[nsmul_eq_mul, mul_comm, Rat.mul_den_eq_num, zsmul_one]`.
+-/
 theorem isAddTorsion_QZ : IsAddTorsion QZ := by
   intro x
   obtain ⟨q, rfl⟩ := QuotientAddGroup.mk_surjective (s := AddSubgroup.zmultiples (1 : ℚ)) x
@@ -26,10 +31,18 @@ def evalCharacter (σ : G) : (Additive G →ₜ+ QZ) →+ QZ where
   map_add' _ _ := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evalCharacter_apply (σ : G) (χ : Additive G →ₜ+ QZ) :
     evalCharacter σ χ = χ (Additive.ofMul σ) :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `χ hχ`. Establish `hlc : IsLocallyConstant fun g : G => χ (Additive.ofMul g)` using `(IsLocallyConstant.iff_continuous _).2 (χ.continuous.comp continuous_ofMul)`. Establish `h` using `hσ.eq_of_forall_zpow hlc (IsLocallyConstant.const (0 : QZ)) fun n => by`. Express the relevant statement in the definitionally equal form `χ (Additive.ofMul (σ ^ n)) = 0`.
+
+Rewrite using `[ofMul_zpow, map_zsmul]`. Express the relevant statement in the definitionally equal form `n • evalCharacter σ χ = 0`. Rewrite using `[hχ, smul_zero]`. Use extensionality with `x`. Conclude with `congrFun h (Additive.toMul x)`.
+-/
 theorem evalCharacter_injective {σ : G} (hσ : IsTopologicalGenerator σ) :
     Function.Injective (evalCharacter σ) := by
   rw [injective_iff_map_eq_zero]
@@ -44,6 +57,11 @@ theorem evalCharacter_injective {σ : G} (hσ : IsTopologicalGenerator σ) :
   ext x
   exact congrFun h (Additive.toMul x)
 
+/- English proof (translation)
+Introduce `x`. Establish `hn : 0 < addOrderOf x` using `(isAddTorsion_QZ x).addOrderOf_pos`. Take `⟨φ, hφo, hφσ⟩` from `hσ.exists_hom _ hn`. Set `ψ : ZMod (addOrderOf x) →+ QZ` to `ZMod.lift (addOrderOf x) ⟨zmultiplesHom QZ x, by simp [addOrderOf_nsmul_eq_zero]⟩`. Set `χ₀ : Additive G →+ QZ` to `ψ.comp (MonoidHom.toAdditive φ)`.
+
+Establish `hlc : IsLocallyConstant fun a : Additive G => χ₀ a` using `((φ.isLocallyConstant_of_isOpen_ker hφo).comp fun z => ψ (Multiplicative.toAdd z)).comp_continuous continuous_toMul`. Use `⟨⟨χ₀, hlc.continuous⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ψ (Multiplicative.toAdd (φ σ)) = x`. Rewrite using `[hφσ, toAdd_ofAdd, ← Int.cast_one, ZMod.lift_coe]`. Simplify using the standard rewrite rules.
+-/
 theorem evalCharacter_surjective [IsTopologicalGroup G] {σ : G} (hσ : IsZHatGenerator σ) :
     Function.Surjective (evalCharacter σ) := by
   intro x
@@ -65,6 +83,9 @@ noncomputable def evalCharacterEquiv [IsTopologicalGroup G] {σ : G} (hσ : IsZH
   AddEquiv.ofBijective (evalCharacter σ) ⟨evalCharacter_injective hσ.dense, evalCharacter_surjective hσ⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evalCharacterEquiv_apply [IsTopologicalGroup G] {σ : G} (hσ : IsZHatGenerator σ)
     (χ : Additive G →ₜ+ QZ) : evalCharacterEquiv hσ χ = χ (Additive.ofMul σ) :=
   rfl
@@ -84,6 +105,9 @@ noncomputable def cohomologyTwoIntAddEquivQZ (hσ : IsZHatGenerator σ) :
     cohomology (Rep.trivial ℤ G ℤ) 2 ≃+ QZ :=
   (cohomologyTwoIntAddEquiv G).trans (evalCharacterEquiv hσ)
 
+/- English proof (translation)
+Rewrite using `[← cohomologyTwoIntAddEquiv_symm_apply, cohomologyTwoIntAddEquivQZ, AddEquiv.trans_apply, AddEquiv.apply_symm_apply, evalCharacterEquiv_apply]`.
+-/
 theorem cohomologyTwoIntAddEquivQZ_δ (hσ : IsZHatGenerator σ) (χ : Additive G →ₜ+ QZ) :
     cohomologyTwoIntAddEquivQZ hσ
       ((δ (GroundTheory.GroupCoh.ratSES_shortExact G) 1 2 rfl).hom

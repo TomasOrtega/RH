@@ -56,12 +56,18 @@ def MulMorphism : Prop := MulFiniteFlatOnto ∧ MulEtale ∧ TorsionCard
 
 def Laws : Prop := KPowEqTorsion ∧ MulPullIso ∧ MulMorphism
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [mulN, Hom.one_def]`. Consider the case `succ n ih => rw [pow_succ, ← ih]`. Simplify using `[mulN, Hom.mul_def, comp_lift_assoc]`.
+-/
 theorem comp_mulN (A : Over S) [GrpObj A] {T : Over S} (x : T ⟶ A) (n : ℕ) :
     x ≫ mulN A n = x ^ n := by
   induction n with
   | zero => simp [mulN, Hom.one_def]
   | succ n ih => rw [pow_succ, ← ih]; simp [mulN, Hom.mul_def, comp_lift_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (A : Over S) [GrpObj A] (L : LB A.left) {T : Over S} (x : T ⟶ A) :
     translDiffPow A L 1 x = translDiff A L x := rfl
 

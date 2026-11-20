@@ -13,6 +13,23 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c τ τ' σ g ty FU _ _ hτ i e P y v w he hP hy hfr`. Take `⟨-, -, hv, hw⟩` from `hfr`. Establish `hc : ∀ a : 𝓞 E, (σ.comp (tauIn c (ComplexEmbedding.conjugate τ))) a = ComplexEmbedding.conjugate τ' (a : E)`. Introduce `a`. Establish `h1 : tauIn c (ComplexEmbedding.conjugate τ) a = tauIn c τ (H.bar a)`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show ComplexEmbedding.conjugate τ (a : E) = τ ((H.bar a : 𝓞 E) : E)`. Rewrite using `[H.bar_eq, IsCMField.complexEmbedding_complexConj]`. Both sides reduce to the same expression. Use `show σ (tauIn c (ComplexEmbedding.conjugate τ) a) = _`.
+
+Rewrite using `[h1, hτ, H.bar_eq, IsCMField.complexEmbedding_complexConj]`. Both sides reduce to the same expression. Take `⟨V, hVd, hVl, hVs⟩` from `GlobalTheory.T.period_eigen_frame E H D l Xo _ g ty FU i P (under y) (σ.comp (tauIn c τ)) τ' D.p v hP hy hτ hv`. Take `⟨W, hWd, hWl, hWs⟩` from `GlobalTheory.T.period_eigen_frame E H D l Xo _ g ty FU i P (under y) _ (ComplexEmbedding.conjugate τ') D.q w hP hy hc hw`. Take `⟨Hm, hHh, hHp, hHi⟩` from `id hP.2.2.2.2`.
+
+Take `⟨-, hs, hd⟩` from `GlobalTheory.T.period_hermitian_type_compatibility E H (FU.Di i) g ty P Hm hP hHh hHi`. Establish `hcard : Fintype.card (Fin D.p ⊕ Fin D.q) = (FU.Di i).p + (FU.Di i).q`. Rewrite using `[(FU.sig i).1, (FU.sig i).2]`. Simplify using the standard rewrite rules. Establish `hS : (Matrix.of fun m n => τ' (sesq (FU.Di i) (e m) (e n))).det ≠ 0`.
+
+Use `hd 0 _ e hcard he` as an intermediate fact. Establish `h2 : (Matrix.of fun m n => τ' (sesq (FU.Di i) (e m) (e n))) = (Matrix.of fun m n => sesq (FU.Di i) (e m) (e n)).map τ'` using `rfl`. Rewrite using `[h2, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero τ').2 this`. Establish `hlin : IsLinearMap ℂ (tyPart ty τ')`.
+
+Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `intro a b; funext k; simp only [tyPart, Pi.add_apply]; split_ifs <;> simp`. Apply the tactic sequence `intro a b; funext k; simp only [tyPart, Pi.smul_apply]; split_ifs <;> simp`. Take `⟨⟨Fm, B, d⟩, ⟨h1, h2, h3, h4, h5⟩, hu⟩` from `GlobalTheory.T.hermitian_period_linear_algebra D.p D.q g (tyPart ty τ') (tyPart ty (ComplexEmbedding.conjugate τ')) V W (fun m => P (e m)) _ Hm hlin hHh hHp hS hVl hWl (fun n => hVs _) (fun n => hWs _) (fun m n => hs τ' _ _)`. Use `⟨⟨V, W, Fm, B, d⟩, ⟨fun a => (hVd a _).2 rfl, fun j => (hWd j _).2 rfl, h1, h2, h3, h4, h5⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨V', W', Fm', B', d'⟩ ⟨k1, k2, k3, k4, k5, k6, k7⟩`. Establish `eV : V' = V` using `funext fun a => (hVd a _).1 (k1 a)`. Establish `eW : W' = W` using `funext fun a => (hWd a _).1 (k2 a)`. Substitute `eV eW` using the available equality. Use `hu ⟨Fm', B', d'⟩ ⟨k3, k4, k5, k6, k7⟩` as an intermediate fact.
+
+Simplify using `only [Prod.mk.injEq] at this`. Take `⟨rfl, rfl, rfl⟩` from `this`. Both sides reduce to the same expression.
+-/
 theorem anSolve : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (τ τ' : E →+* ℂ) (σ : c.F →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty), IsTypeFn H D.p D.q ty → τ' (H.rt : E) = H.rt0 → (∀ a : 𝓞 E, σ (tauIn c τ a) = τ' (a : E)) → ∀ (i : Fin FU.n) (e : Fin D.p ⊕ Fin D.q → (FU.Di i).La) (P : (FU.Di i).La →+ (Fin g → ℂ)) (y : Sp ℂ ⟶ Xo.XF c) (v : Vecs y D.p) (w : Vecs y D.q), LinearIndependent (𝓞 E) e → IsPeriod (FU.Di i) ty P → under y = FU.u i P → IsFramed Set.univ τ σ y v w → ∃! x : (Fin D.p → Fin g → ℂ) × (Fin D.q → Fin g → ℂ) × Matrix (Fin D.q) (Fin D.p ⊕ Fin D.q) ℂ × Matrix (Fin D.q) (Fin D.p ⊕ Fin D.q) ℂ × ℂ, (∀ a, IsDerivAt0 (fun z => (FU.ex i P z).left) (x.1 a) (v a).left) ∧ (∀ j, IsDerivAt0 (fun z => (FU.ex i P z).left) (x.2.1 j) (w j).left) ∧ (∀ n, tyPart ty (ComplexEmbedding.conjugate τ') (P (e n)) = ∑ j, x.2.2.2.1 j n • x.2.1 j) ∧ (∀ j n, ∑ m, x.2.2.1 j m * τ' (sesq (FU.Di i) (e m) (e n)) = x.2.2.2.1 j n) ∧ x.2.2.2.2 ≠ 0 ∧ (∃ C : Matrix (Fin D.p) (Fin D.p ⊕ Fin D.q) ℂ, ∀ a, tyPart ty τ' (∑ m, C a m • P (e m)) = x.1 a) ∧ ∀ C : Matrix (Fin D.p) (Fin D.p ⊕ Fin D.q) ℂ, (∀ a, tyPart ty τ' (∑ m, C a m • P (e m)) = x.1 a) → (Matrix.fromRows C x.2.2.1).det = x.2.2.2.2 := by
   intro E _ _ _ H D l Xo c τ τ' σ g ty FU _ _ hτ i e P y v w he hP hy hfr
   obtain ⟨-, -, hv, hw⟩ := hfr

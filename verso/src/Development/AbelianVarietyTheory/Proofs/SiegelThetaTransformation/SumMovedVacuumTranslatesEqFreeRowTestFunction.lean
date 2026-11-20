@@ -18,6 +18,9 @@ section Tensor
 variable {M : ℕ} {Λ Λ₁ Λ₂ : Lt E n} {𝔪 𝔞 𝔟 : Ideal (𝓞 E)} {N : Lt E r}
   {y : Matrix (Fin n) (Fin r) E}
 
+/- English proof (translation)
+Rewrite `hy`, the goal using `[mem_tens_iff hΛ]`. Introduce `w hw`. Rewrite using `[ctr_smul]`. Conclude with `Submodule.smul_mem_smul ha (hy w hw)`.
+-/
 theorem smul_tens (hΛ : Λ ∈ Vset E n M) {a : 𝓞 E} (ha : a ∈ 𝔞) (hy : y ∈ tens Λ N) :
     (a : E) • y ∈ tens Λ (𝔞 • N) := by
   rw [mem_tens_iff hΛ] at hy ⊢
@@ -26,6 +29,11 @@ theorem smul_tens (hΛ : Λ ∈ Vset E n M) {a : 𝓞 E} (ha : a ∈ 𝔞) (hy :
   exact Submodule.smul_mem_smul ha (hy w hw)
 
 omit [IsCMField E] in
+/- English proof (translation)
+Use `tens_le fun v hv u hu => ?_` and prove the remaining obligations. Use `Submodule.smul_induction_on hu (fun b hb u hu => ?_) fun x y hx hy => ?_` and prove the remaining obligations. Establish `e : vecMulVec v (b • u) = (b : E) • vecMulVec v u`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `v i * ((b : E) * u j) = (b : E) * (v i * u j)`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h b hb _ (pure_mem hv hu)`. Rewrite using `[vecMulVec_add]`. Conclude with `add_mem hx hy`.
+-/
 theorem tens_smul_le (h : ∀ b ∈ 𝔟, ∀ y ∈ tens Λ₁ N, (b : E) • y ∈ tens Λ₂ N) :
     tens Λ₁ (𝔟 • N) ≤ tens Λ₂ N := by
   refine tens_le fun v hv u hu => ?_
@@ -39,6 +47,9 @@ theorem tens_smul_le (h : ∀ b ∈ 𝔟, ∀ y ∈ tens Λ₁ N, (b : E) • y 
   · rw [vecMulVec_add]; exact add_mem hx hy
 
 omit [IsCMField E] in
+/- English proof (translation)
+Use `tens_le (H := (tens Λ₂ N).comap (DistribMulAction.toAddMonoidHom _ b)) (fun v hv u hu => ?_) hy` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `b • vecMulVec v u ∈ tens Λ₂ N`. Rewrite using `[← smul_vecMulVec]`. Conclude with `pure_mem (h v hv) hu`.
+-/
 theorem smul_tens_left {b : E} (h : ∀ v ∈ Λ₁, b • v ∈ Λ₂) (hy : y ∈ tens Λ₁ N) :
     b • y ∈ tens Λ₂ N := by
   refine tens_le (H := (tens Λ₂ N).comap (DistribMulAction.toAddMonoidHom _ b))
@@ -48,10 +59,16 @@ theorem smul_tens_left {b : E} (h : ∀ v ∈ Λ₁, b • v ∈ Λ₂) (hy : y 
   exact pure_mem (h v hv) hu
 
 omit [IsCMField E] in
+/- English proof (translation)
+The claim follows from `tens_smul_le fun _ hb _ hy => smul_tens_left (fun _ hv => h (Submodule.smul_mem_smul hb hv)) hy`.
+-/
 theorem tens_shift (h : 𝔟 • Λ₁ ≤ Λ₂) : tens Λ₁ (𝔟 • N) ≤ tens Λ₂ N :=
   tens_smul_le fun _ hb _ hy => smul_tens_left (fun _ hv => h (Submodule.smul_mem_smul hb hv)) hy
 
 omit [IsCMField E] in
+/- English proof (translation)
+Use `tens_le (H := (tens Λ₂ N).comap (AddMonoidHom.mk' (fun y => A * y) fun a b => Matrix.mul_add A a b)) (fun v hv u hu => ?_) hy` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `A * vecMulVec v u ∈ tens Λ₂ N`. Rewrite using `[mul_vecMulVec]`. Conclude with `pure_mem (h v hv) hu`.
+-/
 theorem mul_tens {A : Matrix (Fin n) (Fin n) E} (h : ∀ v ∈ Λ₁, A *ᵥ v ∈ Λ₂) (hy : y ∈ tens Λ₁ N) :
     A * y ∈ tens Λ₂ N := by
   refine tens_le (H := (tens Λ₂ N).comap (AddMonoidHom.mk' (fun y => A * y)
@@ -61,11 +78,19 @@ theorem mul_tens {A : Matrix (Fin n) (Fin n) E} (h : ∀ v ∈ Λ₁, A *ᵥ v �
   exact pure_mem (h v hv) hu
 
 omit [IsCMField E] in
+/- English proof (translation)
+The claim follows from `smul_tens_left (fun _ hv => Λ.smul_mem a hv) hy`.
+-/
 theorem int_smul_tens (a : 𝓞 E) (hy : y ∈ tens Λ N) : (a : E) • y ∈ tens Λ N :=
   smul_tens_left (fun _ hv => Λ.smul_mem a hv) hy
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Take `⟨a, m, hm, e⟩` from `Lev.cop_iff.1 hs`. Establish `e' : (a : E) * s + m = 1` using `by exact_mod_cast congrArg (fun x : 𝓞 E => (x : E)) e`. Establish `: y = ((a * (1 + m) : 𝓞 E) : E) • (s : E) • y + (m : E) • (m : E) • y`. Rewrite using `[smul_smul, smul_smul, ← add_smul]`. Establish `: ((a * (1 + m) : 𝓞 E) : E) * s + (m : E) * m = 1`.
+
+Use `push_cast`. Take the linear combination `(1 + (m : E)) * e'`. Rewrite using `[this, one_smul]`. Rewrite using `[this]`. Conclude with `add_mem (int_smul_tens _ h1) (h2 m hm)`.
+-/
 theorem glue {s : 𝓞 E} (hs : IsCoprime (Ideal.span {s}) 𝔪) (h1 : (s : E) • y ∈ tens Λ N)
     (h2 : ∀ m ∈ 𝔪, (m : E) • (m : E) • y ∈ tens Λ N) : y ∈ tens Λ N := by
   obtain ⟨a, m, hm, e⟩ := Lev.cop_iff.1 hs
@@ -79,6 +104,9 @@ theorem glue {s : 𝓞 E} (hs : IsCoprime (Ideal.span {s}) 𝔪) (h1 : (s : E) �
   rw [this]
   exact add_mem (int_smul_tens _ h1) (h2 m hm)
 
+/- English proof (translation)
+Take `⟨s, hs, h⟩` from `what₂ (r := r) hΛ hM`. Take `⟨t, ht, h1, -⟩` from `hN`. Use `⟨t * s, cop_mul ht hs, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul]`. Conclude with `mul_smul_mem h1 𝔟 ((h _ y).1 hy k)`.
+-/
 theorem rows_loc (hΛ : Λ ∈ Vset E n M) (hM : (M : 𝓞 E) ∈ 𝔪) (hN : Near X 𝔪 N)
     (hy : y ∈ tens Λ (𝔟 • N)) (k : Fin n) : y k ∈ Lev.loc 𝔪 (𝔟 • X.Λ) := by
   obtain ⟨s, hs, h⟩ := what₂ (r := r) hΛ hM
@@ -87,6 +115,13 @@ theorem rows_loc (hΛ : Λ ∈ Vset E n M) (hM : (M : 𝓞 E) ∈ 𝔪) (hN : Ne
   rw [mul_smul]
   exact mul_smul_mem h1 𝔟 ((h _ y).1 hy k)
 
+/- English proof (translation)
+Take `⟨s, hs, h⟩` from `what₂ (r := r) hΛ hM`. Take `⟨t, ht, -, h1⟩` from `hN`. Use `choose p hp hq using hk`. Establish `hP : IsCoprime (Ideal.span {∏ k, p k}) 𝔪`. Rewrite using `[← Ideal.prod_span_singleton]`.
+
+Conclude with `IsCoprime.prod_left fun k _ => hp k`. Use `⟨t * (s * ∏ k, p k), cop_mul ht (cop_mul hs hP), (mem_tens_iff hΛ _ _).2 fun w hw => ?_⟩` and prove the remaining obligations. Establish `h2` using `(h (𝔟 • X.Λ) (((∏ k, p k : 𝓞 E) : E) • y)).2 (fun k => by`. Express the relevant statement in the definitionally equal form `(∏ k, p k) • y k ∈ _`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ k), mul_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ (hq k)) w hw`. Rewrite `h2`, the goal using `[ctr_smul]`. Express the relevant statement in the definitionally equal form `(t * (s * ∏ k, p k)) • ctr y w ∈ _`. Rewrite using `[mul_smul, mul_smul]`. Conclude with `mul_smul_mem h1 𝔟 h2`.
+-/
 theorem loc_tens (hΛ : Λ ∈ Vset E n M) (hM : (M : 𝓞 E) ∈ 𝔪) (hN : Near X 𝔪 N)
     (hk : ∀ k, y k ∈ Lev.loc 𝔪 (𝔟 • X.Λ)) :
     ∃ s : 𝓞 E, IsCoprime (Ideal.span {s}) 𝔪 ∧ (s : E) • y ∈ tens Λ (𝔟 • N) := by
@@ -107,11 +142,17 @@ theorem loc_tens (hΛ : Λ ∈ Vset E n M) (hM : (M : 𝓞 E) ∈ 𝔪) (hN : Ne
   exact mul_smul_mem h1 𝔟 h2
 
 omit [IsCMField E] in
+/- English proof (translation)
+Take `⟨c, hc, m, hm, e⟩` from `Ideal.isCoprime_iff_exists.1 h`. Conclude with `⟨c, hc, by rwa [← e, add_sub_cancel_left], Lev.cop_iff.2 ⟨1, m, hm, by rwa [one_mul]⟩⟩`.
+-/
 theorem exists_one (h : IsCoprime 𝔟 𝔪) : ∃ c ∈ 𝔟, 1 - c ∈ 𝔪 ∧ IsCoprime (Ideal.span {c}) 𝔪 := by
   obtain ⟨c, hc, m, hm, e⟩ := Ideal.isCoprime_iff_exists.1 h
   exact ⟨c, hc, by rwa [← e, add_sub_cancel_left], Lev.cop_iff.2 ⟨1, m, hm, by rwa [one_mul]⟩⟩
 
 omit [IsCMField E] in
+/- English proof (translation)
+Take `⟨c, hc, -, hc'⟩` from `exists_one h`. Take `⟨s, hs, hu⟩` from `hu`. Conclude with `⟨c * s, Lev.cop_mul hc' hs, by rw [mul_smul]; exact Submodule.smul_mem_smul hc hu⟩`.
+-/
 theorem loc_smul (h : IsCoprime 𝔟 𝔪) {u : Fin r → E} (hu : u ∈ Lev.loc 𝔪 N) :
     u ∈ Lev.loc 𝔪 (𝔟 • N) := by
   obtain ⟨c, hc, -, hc'⟩ := exists_one h
@@ -119,6 +160,11 @@ theorem loc_smul (h : IsCoprime 𝔟 𝔪) {u : Fin r → E} (hu : u ∈ Lev.loc
   exact ⟨c * s, Lev.cop_mul hc' hs, by rw [mul_smul]; exact Submodule.smul_mem_smul hc hu⟩
 
 omit [IsCMField E] in
+/- English proof (translation)
+Take `⟨s, hs, hu⟩` from `hu`. Take `⟨t, ht, hu'⟩` from `hu'`. Take `⟨a, b, hab⟩` from `Lev.cop_glue h hs ht`. Use `⟨_, hab, ?_⟩` and prove the remaining obligations. Rewrite using `[add_smul, mul_smul, mul_smul]`.
+
+Conclude with `add_mem (N.smul_mem _ hu) (N.smul_mem _ hu')`.
+-/
 theorem loc_glue (h : IsCoprime 𝔞 𝔟) {u : Fin r → E} (hu : u ∈ Lev.loc 𝔞 N)
     (hu' : u ∈ Lev.loc 𝔟 N) : u ∈ Lev.loc (𝔞 * 𝔟) N := by
   obtain ⟨s, hs, hu⟩ := hu
@@ -128,6 +174,9 @@ theorem loc_glue (h : IsCoprime 𝔞 𝔟) {u : Fin r → E} (hu : u ∈ Lev.loc
   rw [add_smul, mul_smul, mul_smul]
   exact add_mem (N.smul_mem _ hu) (N.smul_mem _ hu')
 
+/- English proof (translation)
+Rewrite using `[Lev.cong_iff, sub_zero]`.
+-/
 theorem cong_zero {u : Fin r → E} : Cong X 𝔪 u 0 ↔ u ∈ Lev.loc 𝔪 (𝔪 • X.Λ) := by
   rw [Lev.cong_iff, sub_zero]
 
@@ -139,12 +188,18 @@ def lowD (r n : ℕ) (c : E) : Matrix (Fin n) (Fin n) E :=
   Matrix.diagonal fun k : Fin n => if (k : ℕ) < r then 1 else c
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `only [lowD, Matrix.diagonal_mul, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem lowD_row {m : ℕ} (c : E) (y : Matrix (Fin n) (Fin m) E) (k : Fin n) :
     (lowD r n c * y) k = (if (k : ℕ) < r then 1 else c) • y k := by
   funext j
   simp only [lowD, Matrix.diagonal_mul, Pi.smul_apply, smul_eq_mul]
 
 omit [NumberField E] [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[lowD, lowD, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `split_ifs <;> simp [h]`.
+-/
 theorem lowD_mul {c c' : E} (h : c * c' = 1) : lowD r n c * lowD r n c' = 1 := by
   rw [lowD, lowD, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
   congr 1
@@ -158,12 +213,21 @@ section Move
 variable {D : SW.Level X} {M : ℕ} {𝔐 𝔍 𝔞 : Ideal (𝓞 E)} {α : 𝓞 E} {Λ Λ' Λ'' : Lt E n}
   {L N : Lt E r} {y : Matrix (Fin n) (Fin r) E}
 
+/- English proof (translation)
+Introduce `_ ha` and use `Lev.mem_conjI.2 (h (Lev.mem_conjI.1 ha))`.
+-/
 theorem conjI_mono {P Q : Ideal (𝓞 E)} (h : P ≤ Q) : conjI P ≤ conjI Q :=
   fun _ ha => Lev.mem_conjI.2 (h (Lev.mem_conjI.1 ha))
 
+/- English proof (translation)
+The claim follows from `Lev.mem_conjI.2 (by rwa [map_natCast])`.
+-/
 theorem nat_mem_conjI {P : Ideal (𝓞 E)} (h : (M : 𝓞 E) ∈ P) : (M : 𝓞 E) ∈ conjI P :=
   Lev.mem_conjI.2 (by rwa [map_natCast])
 
+/- English proof (translation)
+Establish `h1 : (α : E) ≠ 0` using `by exact_mod_cast h0`. Establish `h2 : cc (α : E) ≠ 0` using `by simpa [cc] using h1`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem quot_mul (h0 : α ≠ 0) :
     cc (α : E) / (α : E) * ((α : E) / cc (α : E)) = 1 := by
   have h1 : (α : E) ≠ 0 := by exact_mod_cast h0
@@ -171,12 +235,22 @@ theorem quot_mul (h0 : α ≠ 0) :
   field_simp
 
 omit [IsCMField E] in
+/- English proof (translation)
+Take `⟨a, ha, h, -⟩` from `exists_one h𝔞`. Use `⟨a, ha, fun P hP => Lev.cop_iff.2 ⟨1, 1 - a, ?_, by ring⟩⟩` and prove the remaining obligations. Conclude with `(Ideal.span_singleton_le_iff_mem _).2 hP h`.
+-/
 theorem exists_cop (h𝔞 : IsCoprime 𝔞 (Ideal.span {(M : 𝓞 E)})) :
     ∃ a ∈ 𝔞, ∀ P : Ideal (𝓞 E), (M : 𝓞 E) ∈ P → IsCoprime (Ideal.span {a}) P := by
   obtain ⟨a, ha, h, -⟩ := exists_one h𝔞
   refine ⟨a, ha, fun P hP => Lev.cop_iff.2 ⟨1, 1 - a, ?_, by ring⟩⟩
   exact (Ideal.span_singleton_le_iff_mem _).2 hP h
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (hα ▸ Ideal.mul_mem_mul hj ha)`. Establish `h1 : (α : E) ≠ 0` using `by exact_mod_cast h0`. Establish `h2 : (c : E) * α = j * a` using `by exact_mod_cast congrArg (fun x : 𝓞 E => (x : E)) hc`. Establish `: a • (cc (α : E) / (α : E)) • j • u = (c * Lev.bar α) • u`. Use function extensionality and compare the values at `i`.
+
+Express the relevant statement in the definitionally equal form `(a : E) * (cc (α : E) / α * ((j : E) * u i)) = ((c * Lev.bar α : 𝓞 E) : E) * u i`. Rewrite using `[show ((c * Lev.bar α : 𝓞 E) : E) = c * cc (α : E) from by rw [← Lev.coe_bar]; rfl]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-(cc (α : E)) * u i) * h2`. Rewrite using `[this]`.
+
+Conclude with `N.smul_mem _ hu`.
+-/
 theorem smul_quot (h0 : α ≠ 0) (hα : Ideal.span {α} = 𝔍 * 𝔞) {a j : 𝓞 E} (ha : a ∈ 𝔞)
     (hj : j ∈ 𝔍) {u : Fin r → E} (hu : u ∈ N) :
     a • (cc (α : E) / (α : E)) • j • u ∈ N := by
@@ -192,25 +266,48 @@ theorem smul_quot (h0 : α ≠ 0) (hα : Ideal.span {α} = 𝔍 * 𝔞) {a j : �
   rw [this]
   exact N.smul_mem _ hu
 
+/- English proof (translation)
+Use `Submodule.smul_induction_on hu (fun j hj u hu => smul_quot h0 hα ha hj hu) fun x y hx hy => ?_` and prove the remaining obligations. Rewrite using `[smul_add, smul_add]`. Conclude with `add_mem hx hy`.
+-/
 theorem smul_quot' (h0 : α ≠ 0) (hα : Ideal.span {α} = 𝔍 * 𝔞) {a : 𝓞 E} (ha : a ∈ 𝔞)
     {u : Fin r → E} (hu : u ∈ 𝔍 • N) : a • (cc (α : E) / (α : E)) • u ∈ N := by
   refine Submodule.smul_induction_on hu (fun j hj u hu => smul_quot h0 hα ha hj hu)
     fun x y hx hy => ?_
   rw [smul_add, smul_add]; exact add_mem hx hy
 
+/- English proof (translation)
+The claim follows from `mul_tens (fun v hv => (hm v).1 hv) hy`.
+-/
 theorem move (hm : Moves (lowD r n (cc (α : E) / (α : E))) Λ Λ'') (hy : y ∈ tens Λ N) :
     lowD r n (cc (α : E) / (α : E)) * y ∈ tens Λ'' N :=
   mul_tens (fun v hv => (hm v).1 hv) hy
 
+/- English proof (translation)
+The claim follows from `mul_tens (fun v hv => (hm _).2 (by rwa [Matrix.mulVec_mulVec, lowD_mul (quot_mul h0), Matrix.one_mulVec])) hy`.
+-/
 theorem move' (h0 : α ≠ 0) (hm : Moves (lowD r n (cc (α : E) / (α : E))) Λ Λ'')
     (hy : y ∈ tens Λ'' N) : lowD r n ((α : E) / cc (α : E)) * y ∈ tens Λ N :=
   mul_tens (fun v hv => (hm _).2 (by
     rwa [Matrix.mulVec_mulVec, lowD_mul (quot_mul h0), Matrix.one_mulVec])) hy
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc, lowD_mul (quot_mul h0), Matrix.one_mul]`.
+-/
 theorem move_move' (h0 : α ≠ 0) (y : Matrix (Fin n) (Fin r) E) :
     lowD r n (cc (α : E) / (α : E)) * (lowD r n ((α : E) / cc (α : E)) * y) = y := by
   rw [← Matrix.mul_assoc, lowD_mul (quot_mul h0), Matrix.one_mul]
 
+/- English proof (translation)
+Introduce `j hj z hz`. Establish `hM'` using `nat_mem_conjI hM`. Take `⟨a, ha, ha'⟩` from `exists_cop h𝔞`. Take `⟨s, hs, h⟩` from `what₂ (r := r) hΛ hM'`. Take `⟨t, ht, h'⟩` from `what₂ (r := r) hΛ' hM'`.
+
+Use `glue (cop_mul ht (cop_mul (ha' _ hM') hs)) ?_ fun m hm => int_smul_tens _ ?_` and prove the remaining obligations. Rewrite using `[mem_tens_iff hΛ']`. Introduce `w hw`. Establish `h2` using `(h' N (((a * s : 𝓞 E) : E) • (j : E) • z)).2 (fun k => ?_) w hw`. Rewrite `h2`, the goal using `[ctr_smul]`.
+
+Rewrite `h2`, the goal using `[← Lev.O_smul]`. Rewrite using `[mul_smul]` and apply the resulting hypothesis. Establish `h3` using `(h N _).1 (move' h0 hm hz) k`. Express the relevant statement in the definitionally equal form `(a * s) • j • z k ∈ N`. Rewrite using `[← move_move' h0 z, lowD_row]`.
+
+Generalize the expression as in `(lowD r n ((α : E) / cc (α : E)) * z) k = u at h3`. Use `split_ifs`. Rewrite using `[one_smul, mul_smul, smul_comm s j]`. Conclude with `N.smul_mem _ (N.smul_mem _ h3)`. Use `smul_quot h0 hα ha hj h3` as an intermediate fact.
+
+Rewrite using `[mul_smul, smul_comm j, smul_comm s, smul_comm s]` and apply the resulting hypothesis. Use `tens_shift h1 ?_` and prove the remaining obligations. Rewrite using `[mul_comm, Submodule.mul_smul]`. Conclude with `smul_tens hΛ'' hm (smul_tens hΛ'' hj hz)`.
+-/
 theorem smul_moved (hM : (M : 𝓞 E) ∈ 𝔍) (h0 : α ≠ 0) (hα : Ideal.span {α} = 𝔍 * 𝔞)
     (h𝔞 : IsCoprime 𝔞 (Ideal.span {(M : 𝓞 E)})) (hΛ : Λ ∈ Vset E n M) (hΛ' : Λ' ∈ Vset E n M)
     {M'' : ℕ} (hΛ'' : Λ'' ∈ Vset E n M'') (hm : Moves (lowD r n (cc (α : E) / (α : E))) Λ Λ'')
@@ -241,12 +338,21 @@ theorem smul_moved (hM : (M : 𝓞 E) ∈ 𝔍) (h0 : α ≠ 0) (hα : Ideal.spa
     rw [mul_comm, Submodule.mul_smul]
     exact smul_tens hΛ'' hm (smul_tens hΛ'' hj hz)
 
+/- English proof (translation)
+The claim follows from `tens_mono Λ (Lev.smul_le_idq _ _ _)`.
+-/
 theorem tens_le_sh (Λ : Lt E n) : tens Λ (D.𝔪 • L) ≤ tens Λ (D.sh L) :=
   tens_mono Λ (Lev.smul_le_idq _ _ _)
 
+/- English proof (translation)
+The claim follows from `Submodule.smul_le.2 fun b hb _ hv => hv b hb`.
+-/
 theorem conj_smul_sh : conjI D.𝔪 • D.sh L ≤ D.𝔪 • L :=
   Submodule.smul_le.2 fun b hb _ hv => hv b hb
 
+/- English proof (translation)
+Take `⟨c, hc, -, hc'⟩` from `exists_one D.cop.symm`. Conclude with `cong_zero.2 (Lev.loc_loc hc' (rows_loc hΛ' hM (near_of_mem hL) (tens_mono _ conj_smul_sh (smul_tens hΛ' hc hy)) k))`.
+-/
 theorem cong_of_sh (hM : (M : 𝓞 E) ∈ D.𝔪) (hΛ' : Λ' ∈ Vset E n M) (hL : L ∈ D.lats)
     (hy : y ∈ tens Λ' (D.sh L)) (k : Fin n) : Cong X D.𝔪 (y k) 0 := by
   obtain ⟨c, hc, -, hc'⟩ := exists_one D.cop.symm
@@ -261,6 +367,15 @@ variable (hM : (M : 𝓞 E) ∈ D.𝔪) (h𝔪 : D.𝔪 = 𝔐 * 𝔍) (hc : IsC
 
 include hM h𝔪 h0 hα h𝔞 hΛ hΛ' hΛ'' hm h1 hL in
 
+/- English proof (translation)
+Establish `hJ : D.𝔪 ≤ 𝔍` using `h𝔪 ▸ Ideal.mul_le_right`. Take `⟨a, ha, ha'⟩` from `exists_cop h𝔞`. Establish `low : ∀ k : Fin n, r ≤ (k : ℕ) → (lowD r n (cc (α : E) / (α : E)) * y) k ∈ Lev.loc D.𝔪 (𝔐 • X.Λ)` using `fun k hk' => by`. Take `⟨s, hs, h⟩` from `cong_zero.1 (hk k hk')`. Rewrite using `[lowD_row, if_neg (not_lt.2 hk')]`.
+
+Use `⟨a * s, cop_mul (ha' _ hM) hs, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[h𝔪, mul_comm 𝔐, Submodule.mul_smul]`. Rewrite using `[mul_smul, smul_comm s]`. Conclude with `smul_quot' h0 hα ha h`. Use `⟨?_, fun k hk' => ?_⟩` and prove the remaining obligations.
+
+Take `⟨s, hs, h⟩` from `loc_tens (y := lowD r n (cc (α : E) / (α : E)) * y) (𝔟 := Ideal.span {2} * conjI D.𝔪) hΛ' hM (near_of_mem hL) fun k => by`. Distinguish the cases in `hk' : (k : ℕ) < r`. Rewrite using `[lowD_row, if_pos hk', one_smul]`. Conclude with `rows_loc hΛ hM (near_of_mem hL) hy k`. Conclude with `loc_smul (cop_level D) (Lev.loc_mono Submodule.smul_le_right (low k (not_lt.1 hk')))`.
+
+Conclude with `glue hs h fun m hm' => int_smul_tens _ (smul_moved (hJ hM) h0 hα h𝔞 hΛ hΛ' hΛ'' hm h1 m (hJ hm') _ (move hm hy))`. Take `⟨s, hs, h⟩` from `low k hk'`. Conclude with `cong_zero.2 ⟨s, (h𝔪 ▸ hs).of_mul_right_left, h⟩`.
+-/
 theorem moved_mem (hy : y ∈ tens Λ ((Ideal.span {2} * conjI D.𝔪) • L))
     (hk : ∀ k : Fin n, r ≤ (k : ℕ) → Cong X D.𝔪 (y k) 0) :
     lowD r n (cc (α : E) / (α : E)) * y ∈ tens Λ' ((Ideal.span {2} * conjI D.𝔪) • L) ∧
@@ -290,6 +405,23 @@ theorem moved_mem (hy : y ∈ tens Λ ((Ideal.span {2} * conjI D.𝔪) • L))
 
 include hM h𝔪 hc h0 hα h𝔞 hΛ hΛ' hΛ'' hm h2 hL in
 
+/- English proof (translation)
+Establish `hJ : D.𝔪 ≤ 𝔍` using `h𝔪 ▸ Ideal.mul_le_right`. Establish `hαJ : α ∈ 𝔍` using `Ideal.mul_le_left (hα ▸ Ideal.mem_span_singleton_self α)`. Establish `hb : IsCoprime (Ideal.span {Lev.bar α}) D.𝔪`. Take `⟨a, ha, ha'⟩` from `exists_cop h𝔞`. Establish `h3 : IsCoprime (Ideal.span {α}) (conjI D.𝔪)`.
+
+Rewrite using `[hα]`. Establish `h4 : IsCoprime (𝔐 * 𝔍) (conjI D.𝔪)` using `by rw [← h𝔪]; exact D.cop`. Use `IsCoprime.mul_left h4.of_mul_left_right ?_` and prove the remaining obligations. Take `⟨x, m, hm, e⟩` from `Lev.cop_iff.1 (ha' _ (nat_mem_conjI hM))`. Conclude with `Ideal.isCoprime_iff_exists.2 ⟨_, 𝔞.mul_mem_left x ha, m, hm, e⟩`.
+
+Take `⟨x, m, hm, e⟩` from `Lev.cop_iff.1 h3`. Conclude with `Lev.cop_iff.2 ⟨Lev.bar x, Lev.bar m, Lev.mem_conjI.1 hm, by`. Rewrite using `[← map_mul, ← map_add, e, map_one]⟩`. Take `⟨s, hs, h⟩` from `loc_tens (y := lowD r n ((α : E) / cc (α : E)) * y) (𝔟 := D.𝔪) hΛ hM (near_of_mem hL) fun k => by`. Rewrite using `[lowD_row]`.
+
+Use `split_ifs with hk'`. Rewrite using `[one_smul]`. Conclude with `cong_zero.1 (hu k hk')`. Establish `h3 : y k ∈ Lev.loc 𝔍 (𝔐 • X.Λ)`. Take `⟨t, ht, h⟩` from `rows_loc hΛ' hM (near_of_mem hL) hy k`.
+
+Conclude with `loc_smul hc ⟨t, (h𝔪 ▸ ht).of_mul_right_right, Submodule.smul_le_right h⟩`. Take `⟨t, ht, h⟩` from `loc_glue hc (cong_zero.1 (hk k (not_lt.1 hk'))) h3`. Use `⟨Lev.bar α * t, cop_mul hb (h𝔪 ▸ ht), ?_⟩` and prove the remaining obligations. Establish `e : (Lev.bar α * t) • ((α : E) / cc (α : E)) • y k = α • t • y k`. Establish `h4 : (α : E) ≠ 0` using `by exact_mod_cast h0`.
+
+Establish `h5 : cc (α : E) ≠ 0` using `by simpa [cc] using h4`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `((Lev.bar α * t : 𝓞 E) : E) * ((α : E) / cc (α : E) * y k i) = (α : E) * ((t : E) * y k i)`. Rewrite using `[show ((Lev.bar α * t : 𝓞 E) : E) = cc (α : E) * t from by rw [← Lev.coe_bar]; rfl]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[e, h𝔪, mul_comm 𝔐, Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul hαJ h`. Use `glue hs ?_ fun m hm' => tens_le_sh _ (smul_tens hΛ'' hm' (tens_shift h2 ?_))` and prove the remaining obligations. Use `move hm (tens_le_sh _ h)` as an intermediate fact. Rewrite `this` using `[Matrix.mul_smul, move_move' h0]`. Then use the resulting hypothesis.
+
+Rewrite using `[Submodule.mul_smul]`. Conclude with `smul_tens hΛ' (hJ hm') (tens_mono _ (Submodule.smul_mono_left (Ideal.mul_le_right.trans (conjI_mono hJ))) hy)`.
+-/
 theorem mem_moved (hy : y ∈ tens Λ' ((Ideal.span {2} * conjI D.𝔪) • L))
     (hu : ∀ k : Fin n, (k : ℕ) < r → Cong X D.𝔪 (y k) 0)
     (hk : ∀ k : Fin n, r ≤ (k : ℕ) → Cong X 𝔐 (y k) 0) : y ∈ tens Λ'' (D.sh L) := by
@@ -335,6 +467,13 @@ theorem mem_moved (hy : y ∈ tens Λ' ((Ideal.span {2} * conjI D.𝔪) • L))
 
 include hM h𝔪 h0 hα h𝔞 hΛ hΛ' hΛ'' hm h1 in
 
+/- English proof (translation)
+Establish `hJ : D.𝔪 ≤ 𝔍` using `h𝔪 ▸ Ideal.mul_le_right`. Take `⟨c, hc, hc', -⟩` from `exists_one (cop_level D)`. Use `⟨(c : E) • (c : E) • y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mul_smul]`. Conclude with `smul_tens hΛ'' hc (tens_mono _ conj_smul_sh (smul_tens hΛ'' (Ideal.mul_le_right hc) hy))`.
+
+Use `smul_moved (hJ hM) h0 hα h𝔞 hΛ hΛ' hΛ'' hm h1 ((1 + c) * (1 - c)) (hJ (Ideal.mul_mem_left _ _ hc')) y hy` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Rewrite using `[smul_smul]`. Use `conv_lhs => rw [← one_smul E y, smul_smul, mul_one, ← sub_smul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_low (hy : y ∈ tens Λ'' (D.sh L)) :
     ∃ δ ∈ tens Λ'' ((Ideal.span {2} * conjI D.𝔪 * D.𝔪) • L), y - δ ∈ tens Λ' (D.sh L) := by
   have hJ : D.𝔪 ≤ 𝔍 := h𝔪 ▸ Ideal.mul_le_right
@@ -352,6 +491,11 @@ theorem exists_low (hy : y ∈ tens Λ'' (D.sh L)) :
     ring
 
 include hM h𝔪 h0 hα h𝔞 hΛ hΛ' hΛ'' hm h1 hL in
+/- English proof (translation)
+Establish `hJ : D.𝔪 ≤ 𝔍` using `h𝔪 ▸ Ideal.mul_le_right`. Establish `hM' : (M : 𝓞 E) ∈ 𝔐` using `Ideal.mul_le_left (h𝔪 ▸ hM)`. Establish `h3 : y ∈ tens Λ' ((Ideal.span {2} * conjI D.𝔪 * 𝔐) • L)`. Use `tens_smul_le (smul_moved (hJ hM) h0 hα h𝔞 hΛ hΛ' hΛ'' hm h1) ?_` and prove the remaining obligations. Rewrite using `[← Submodule.mul_smul, mul_comm 𝔍, mul_assoc, ← h𝔪]` and apply the resulting hypothesis.
+
+Use `⟨tens_mono _ (Submodule.smul_mono_left Ideal.mul_le_left) h3, fun k hk => ?_, fun k => ?_⟩` and prove the remaining obligations. Use `cong_of_mem (y' := 0) hΛ hM (near_of_mem hL) (by rw [sub_zero]; exact move' h0 hm hy) k` as an intermediate fact. Rewrite `this` using `[lowD_row, if_pos hk, one_smul]`. Then use the resulting hypothesis. Take `⟨s, hs, h⟩` from `near_of_mem hL`. Conclude with `cong_of_mem (y' := 0) hΛ' hM' ⟨s, (h𝔪 ▸ hs).of_mul_right_left, h⟩ (by rw [sub_zero]; exact h3) k`.
+-/
 theorem low_laws (hy : y ∈ tens Λ'' ((Ideal.span {2} * conjI D.𝔪 * D.𝔪) • L)) :
     y ∈ tens Λ' ((Ideal.span {2} * conjI D.𝔪) • L) ∧
       (∀ k : Fin n, (k : ℕ) < r → Cong X D.𝔪 (y k) 0) ∧ ∀ k : Fin n, Cong X 𝔐 (y k) 0 := by
@@ -374,6 +518,9 @@ section Datum
 
 variable {D : SW.Level X} {𝔐 : Ideal (𝓞 E)} {hn : r ≤ n} {y y' : Matrix (Fin n) (Fin r) E}
 
+/- English proof (translation)
+Rewrite using `[datF, dif_pos ⟨⟨κ, h1⟩, h2⟩]`. Use `congr 2`. Conclude with `Subtype.ext (Lev.red_unique (Exists.choose_spec (⟨κ, h1⟩ : ∃ k : D.J, D.Red (fun i => y (Fin.castLE hn i)) k)) h1)`.
+-/
 theorem datF_eq {κ : D.J} (h1 : D.Red (fun i => y (Fin.castLE hn i)) κ)
     (h2 : ∀ k : Fin n, r ≤ (k : ℕ) → Cong X 𝔐 (y k) 0) : datF D 𝔐 hn y = (D.lam κ : ℂˣ) := by
   rw [datF, dif_pos ⟨⟨κ, h1⟩, h2⟩]
@@ -381,19 +528,33 @@ theorem datF_eq {κ : D.J} (h1 : D.Red (fun i => y (Fin.castLE hn i)) κ)
   exact Subtype.ext (Lev.red_unique (Exists.choose_spec (⟨κ, h1⟩ :
     ∃ k : D.J, D.Red (fun i => y (Fin.castLE hn i)) k)) h1)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h'`. Conclude with `h (dif_neg h')`.
+-/
 theorem of_datF_ne (h : datF D 𝔐 hn y ≠ 0) :
     (∃ k : D.J, D.Red (fun i => y (Fin.castLE hn i)) k) ∧
       ∀ k : Fin n, r ≤ (k : ℕ) → Cong X 𝔐 (y k) 0 := by
   by_contra h'
   exact h (dif_neg h')
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dat_eq : D.dat hn y = datF D D.𝔪 hn y := rfl
 
+/- English proof (translation)
+Take `⟨s, hs, h⟩` from `h`. Conclude with `⟨s, hs.of_mul_right_left, Submodule.smul_mono_left Ideal.mul_le_left h⟩`.
+-/
 theorem cong_of_le {𝔍 : Ideal (𝓞 E)} {u v : Fin r → E} (h : Cong X (𝔐 * 𝔍) u v) :
     Cong X 𝔐 u v := by
   obtain ⟨s, hs, h⟩ := h
   exact ⟨s, hs.of_mul_right_left, Submodule.smul_mono_left Ideal.mul_le_left h⟩
 
+/- English proof (translation)
+Establish `key : ∀ y y' : Matrix (Fin n) (Fin r) E, (∀ k, Cong X D.𝔪 (y k) (y' k)) → datF D 𝔐 hn y' ≠ 0 → datF D 𝔐 hn y = datF D 𝔐 hn y'` using `fun y y' h h0 => by`. Take `⟨⟨κ, h1⟩, h2⟩` from `of_datF_ne h0`. Rewrite using `[datF_eq h1 h2, datF_eq (red_congr (fun i => h _) h1) fun k hk => cong_trans (cong_of_le (h𝔪 ▸ h k)) (h2 k hk)]`. Distinguish the cases in `h0 : datF D 𝔐 hn y' = 0`. Assume the negation of the conclusion as `h1`.
+
+Conclude with `h1 (key y' y (fun k => cong_symm (h k)) (h0 ▸ h1)).symm`. Conclude with `key y y' h h0`.
+-/
 theorem datF_congr {𝔍 : Ideal (𝓞 E)} (h𝔪 : D.𝔪 = 𝔐 * 𝔍) (h : ∀ k, Cong X D.𝔪 (y k) (y' k)) :
     datF D 𝔐 hn y = datF D 𝔐 hn y' := by
   have key : ∀ y y' : Matrix (Fin n) (Fin r) E, (∀ k, Cong X D.𝔪 (y k) (y' k)) →
@@ -406,11 +567,17 @@ theorem datF_congr {𝔍 : Ideal (𝓞 E)} (h𝔪 : D.𝔪 = 𝔐 * 𝔍) (h : �
     exact h1 (key y' y (fun k => cong_symm (h k)) (h0 ▸ h1)).symm
   · exact key y y' h h0
 
+/- English proof (translation)
+Rewrite using `[Lev.cong_iff, add_sub_add_comm]`. Conclude with `add_mem (Lev.cong_iff.1 h) (Lev.cong_iff.1 h')`.
+-/
 theorem cong_add {𝔪 : Ideal (𝓞 E)} {u v u' v' : Fin r → E} (h : Cong X 𝔪 u v)
     (h' : Cong X 𝔪 u' v') : Cong X 𝔪 (u + u') (v + v') := by
   rw [Lev.cong_iff, add_sub_add_comm]
   exact add_mem (Lev.cong_iff.1 h) (Lev.cong_iff.1 h')
 
+/- English proof (translation)
+Rewrite using `[Lev.cong_iff, sub_sub_sub_comm]`. Conclude with `sub_mem (Lev.cong_iff.1 h) (Lev.cong_iff.1 h')`.
+-/
 theorem cong_sub {𝔪 : Ideal (𝓞 E)} {u v u' v' : Fin r → E} (h : Cong X 𝔪 u v)
     (h' : Cong X 𝔪 u' v') : Cong X 𝔪 (u - u') (v - v') := by
   rw [Lev.cong_iff, sub_sub_sub_comm]
@@ -423,10 +590,16 @@ section Vacua
 variable {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (idx : Fin g ≃ X.Ψ × Fin r) (hs : IsSympl X bas)
   (he : Even n)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[heisG, heisS, Finset.sum_mul]`.
+-/
 theorem heisG_sum' {ι : Type} (y : Matrix (Fin n) (Fin r) E) (s : Finset ι) (f : ι → TF n g) :
     heisG X bas y (∑ i ∈ s, f i) = ∑ i ∈ s, heisG X bas y (f i) := by
   funext x; simp [heisG, heisS, Finset.sum_mul]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using TensVac.ip_smul_left 0 hv hv`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, TensVac.ip_add_left (hf a) (isSB_sum s f hf) hv, ih]`.
+-/
 theorem ip_sum {ι : Type} (s : Finset ι) (f : ι → TF n g) (hf : ∀ i, IsSB (f i)) {v : TF n g}
     (hv : IsSB v) : SW.ip (∑ i ∈ s, f i) v = ∑ i ∈ s, SW.ip (f i) v := by
   induction s using Finset.induction_on with
@@ -437,6 +610,17 @@ theorem ip_sum {ι : Type} (s : Finset ι) (f : ι → TF n g) (hf : ∀ i, IsSB
 
 include idx hs he
 
+/- English proof (translation)
+Establish `hsb` using `fun q => TensVac.rho_sb (w := w) idx hs he (δ q : Matrix (Fin n) (Fin r) E) hv'.1`. Establish `key : ∀ a b : A, (QuotientAddGroup.mk a : A ⧸ A'.addSubgroupOf A) = QuotientAddGroup.mk b → epsW X w (b : Matrix (Fin n) (Fin r) E) • heisG X bas b v' = epsW X w (a : Matrix (Fin n) (Fin r) E) • heisG X bas a v'` using `fun a b h => by`. Establish `h1 : ((-a + b : A) : Matrix (Fin n) (Fin r) E) ∈ A'` using `AddSubgroup.mem_addSubgroupOf.1 (QuotientAddGroup.eq.1 h)`. Establish `h2` using `hA.rho_rho idx hs he a.2 (-a + b).2 hv'.1`. Rewrite `h2` using `[hv'.2.2 _ h1]`.
+
+Rewrite using `[h2]`. Simplify using the standard rewrite rules. Rewrite using `[hA.uniq hs hv (isSB_sum _ _ hsb), ip_sum _ _ hsb hv.1]`. Use `congr 1`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => SW.ip v' v), Finset.sum_const, nsmul_eq_mul, Finset.card_univ, ← Nat.card_eq_fintype_card]`.
+
+Both sides reduce to the same expression. Introduce `q _`. Rewrite using `[← TensVac.rho_ip (w := w) idx hs he (δ q) hv'.1 hv.1, hv.2.2 _ (δ q).2]`. Introduce `a ha`. Rewrite using `[heisG_sum', Finset.smul_sum]`.
+
+Use `Fintype.sum_equiv (Equiv.addLeft (QuotientAddGroup.mk ⟨a, ha⟩)) _ _ fun q => ?_` and prove the remaining obligations. Rewrite using `[hA.rho_rho idx hs he ha (δ q).2 hv'.1]`. Use `key (δ (QuotientAddGroup.mk ⟨a, ha⟩ + q)) (⟨a, ha⟩ + δ q) (by rw [hδ, QuotientAddGroup.mk_add, hδ])` as an intermediate fact. Rewrite `this` using `[AddSubgroup.coe_add]`. Rewrite using `[Equiv.coe_addLeft]`.
+
+Conclude with `this`.
+-/
 theorem sum_classes {w : E} {A A' : AddSubgroup (Matrix (Fin n) (Fin r) E)}
     (hA : TensVac.Good X w A) {v v' : TF n g} (hv : IsVac X bas w A v) (hv' : IsVac X bas w A' v')
     [Fintype (A ⧸ A'.addSubgroupOf A)] (δ : A ⧸ A'.addSubgroupOf A → A)
@@ -470,6 +654,11 @@ theorem sum_classes {w : E} {A A' : AddSubgroup (Matrix (Fin n) (Fin r) E)}
     rw [Equiv.coe_addLeft]
     exact this
 
+/- English proof (translation)
+Take `⟨y', hy', rfl⟩` from `half_mem hΛ hy`. Take `⟨k, hk⟩` from `(tens_selfDual hΛ hL y').1 (tens_mono Λ Submodule.smul_le_right hy') _ (tens_mono Λ Submodule.smul_le_right hδ)`. Establish `h3 : ∑ i, EF X ((2 • y') i) (δ i) = 2 * k`. Rewrite using `[← hk, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Establish `e : (2 • y') i = 2 • y' i` using `rfl`. Rewrite using `[e, EF_eq_bilin, EF_eq_bilin, map_nsmul, LinearMap.smul_apply, nsmul_eq_mul, Nat.cast_ofNat]`. Rewrite using `[(TensVac.laws idx hs he _ hv).2.2.1, h3, show -(π * I * (((2 : ℚ) * k : ℚ) : ℂ)) = ((-k : ℤ) : ℂ) * (2 * π * I) by push_cast; ring, Complex.exp_int_mul_two_pi_mul_I, one_smul]`.
+-/
 theorem heis_heis {M : ℕ} {Λ : Lt E n} (hΛ : Λ ∈ Vset E n M) {L : Lt E r} (hL : SelfD X L)
     {𝔠 : Ideal (𝓞 E)} {y δ : Matrix (Fin n) (Fin r) E}
     (hy : y ∈ tens Λ ((Ideal.span {2} * 𝔠) • L)) (hδ : δ ∈ tens Λ ((Ideal.span {2} * 𝔠) • L))
@@ -486,6 +675,13 @@ theorem heis_heis {M : ℕ} {Λ : Lt E n} (hΛ : Λ ∈ Vset E n M) {L : Lt E r}
     show -(π * I * (((2 : ℚ) * k : ℚ) : ℂ)) = ((-k : ℤ) : ℂ) * (2 * π * I) by push_cast; ring,
     Complex.exp_int_mul_two_pi_mul_I, one_smul]
 
+/- English proof (translation)
+Unfold `phiF`. Generalize the expression as in `unitv (projA X bas D.w (tens Λ (D.sh L)) (v₀ L)) = v at hv ⊢`. Set `q : ι → tens Λ ((Ideal.span {2} * conjI D.𝔪) • L) ⧸ (tens Λ ((Ideal.span {2} * conjI D.𝔪 * D.𝔪) • L)).addSubgroupOf _` to `fun i => QuotientAddGroup.mk ⟨f i, h1 i⟩`. Establish `hq : ∀ c i, c = q i ↔ f i - (c.out : Matrix (Fin n) (Fin r) E) ∈ tens Λ ((Ideal.span {2} * conjI D.𝔪 * D.𝔪) • L)` using `fun c i => by conv_lhs => rw [← QuotientAddGroup.out_eq' c]`. Rewrite using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf, neg_add_eq_sub]`.
+
+Both sides reduce to the same expression. Establish `hc : ∀ i k, Cong X D.𝔪 (f i k) (((q i).out : Matrix (Fin n) (Fin r) E) k)` using `fun i => cong_of_mem hΛ hM (near_of_mem hL) ((hq _ i).1 rfl)`. Establish `hinj : Function.Injective q` using `fun i j e => h2 i j fun k => cong_trans (hc i k) (e ▸ cong_symm (hc j k))`. Rewrite using `[finsum_eq_sum_of_support_subset (s := Finset.univ.image q), Finset.sum_image hinj.injOn]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[datF_congr h𝔪 (hc i), ← heis_add idx hs he D hΛ hL.1 hS hv (q i).out.2 ((hq _ i).1 rfl), add_sub_cancel]`. Introduce `c hc0`. Take `⟨i, hi⟩` from `h3 (c.out : Matrix (Fin n) (Fin r) E) c.out.2 fun h => hc0 (by simp only [h, zero_smul])`. Use `Finset.mem_coe.2 (Finset.mem_image.2 ⟨i, Finset.mem_univ _, ((hq c i).2 ?_).symm⟩)` and prove the remaining obligations. Conclude with `mem_of_cong hΛ hM (near_of_mem hL) (cop_level D) (sub_mem (h1 i) c.out.2) fun k => cong_symm (hi k)`.
+-/
 theorem phiF_eq_sum {D : SW.Level X} {M : ℕ} {Λ : Lt E n} {L : Lt E r} {𝔐 𝔍 : Ideal (𝓞 E)}
     (h𝔪 : D.𝔪 = 𝔐 * 𝔍) (hn : r ≤ n)
     (hM : (M : 𝓞 E) ∈ D.𝔪) (hΛ : Λ ∈ Vset E n M) (hL : L ∈ D.lats) (hS : SelfD X (D.sh L))
@@ -523,6 +719,11 @@ theorem phiF_eq_sum {D : SW.Level X} {M : ℕ} {Λ : Lt E n} {L : Lt E r} {𝔐 
     exact mem_of_cong hΛ hM (near_of_mem hL) (cop_level D) (sub_mem (h1 i) c.out.2)
       fun k => cong_symm (hi k)
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `(TensVac.vacua E r X g bas idx n hs he D.w D.w_int D.w_tr S hS M Λ hΛ).1`. Take `⟨h1, h2⟩` from `unitv_proj idx hs he hΛ hS h0 hv`. Use `⟨‖SW.ip v₀ v‖, norm_pos_iff.2 h1, ?_⟩` and prove the remaining obligations. Establish `h3 : ((‖SW.ip v₀ v‖ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast norm_ne_zero_iff.2 h1`. Rewrite using `[h2, smul_smul, mul_div_cancel₀ _ h3]`.
+
+Conclude with `(TensVac.vacua E r X g bas idx n hs he D.w D.w_int D.w_tr S hS M Λ hΛ).2.2.1 v₀ h0.1 v hv`.
+-/
 theorem ip_unitv {D : SW.Level X} {M : ℕ} {Λ : Lt E n} (hΛ : Λ ∈ Vset E n M) {S : Lt E r}
     (hS : SelfD X S) {v₀ : TF n g} (h0 : IsVac X bas D.w (tens (stdL E n) S) v₀) :
     ∃ a : ℝ, 0 < a ∧ projA X bas D.w (tens Λ S) v₀ =
@@ -534,6 +735,15 @@ theorem ip_unitv {D : SW.Level X} {M : ℕ} {Λ : Lt E n} (hΛ : Λ ∈ Vset E n
   rw [h2, smul_smul, mul_div_cancel₀ _ h3]
   exact (TensVac.vacua E r X g bas idx n hs he D.w D.w_int D.w_tr S hS M Λ hΛ).2.2.1 v₀ h0.1 v hv
 
+/- English proof (translation)
+Establish `hv'` using `isVac_unitv idx hs he hΛ' hS h0`. Establish `hv''` using `isVac_unitv idx hs he hΛ'' hS h0`. Take `⟨a, ha, ha'⟩` from `ip_unitv idx hs he hΛ' hS h0`. Take `⟨b, hb, hb'⟩` from `ip_unitv idx hs he hΛ'' hS h0`. Establish `h1` using `ProjProj.proj_proj E r X g bas idx n hs he D.w D.w_int D.w_tr S S S hS hS hS _ (Base.stdL_mem_Vset n 1) _ hΛ' _ hΛ'' h v₀ h0`.
+
+Establish `h2` using `(TensVac.vacua E r X g bas idx n hs he D.w D.w_int D.w_tr S hS 1 _ hΛ').2.2.2 S hS _ hΛ'' _ _ hv' hv''`. Generalize the expression as in `unitv (projA X bas D.w (tens Λ' S) v₀) = v' at *`. Generalize the expression as in `unitv (projA X bas D.w (tens Λ'' S) v₀) = v'' at *`. Rewrite `h1` using `[ha', hb', (TensVac.vacua E r X g bas idx n hs he D.w D.w_int D.w_tr S hS 1 _ hΛ'').2.2.1 _ (TensVac.sb_smul _ hv'.1) _ hv'', TensVac.ip_smul_left _ hv'.1 hv''.1]`. Establish `h3` using `congrArg (SW.ip · v'') h1`.
+
+Simplify using `only [TensVac.ip_smul_left _ hv''.1 hv''.1, hv''.2.1, mul_one] at h3`. Establish `h4 : SW.ip v' v'' = ((b / a : ℝ) : ℂ)`. Establish `: (a : ℂ) ≠ 0` using `by exact_mod_cast ha.ne'`. Use `push_cast`. Rewrite using `[← h3, mul_div_cancel_left₀ _ this]`.
+
+Rewrite `h2` using `[h4, Complex.norm_real, Real.norm_of_nonneg (div_pos hb ha).le]`. Use `⟨fun h => by simp [h] at h2, ?_⟩` and prove the remaining obligations. Rewrite using `[h4, ← eq_inv_of_mul_eq_one_right h2, Real.sqrt_sq (div_pos hb ha).le]`.
+-/
 theorem ip_pos {D : SW.Level X} {Λ' Λ'' : Lt E n} (hΛ' : Λ' ∈ Vset E n 1) (hΛ'' : Λ'' ∈ Vset E n 1)
     {S : Lt E r} (hS : SelfD X S) {v₀ : TF n g} (h0 : IsVac X bas D.w (tens (stdL E n) S) v₀)
     (h : tens Λ' S ≤ (tens Λ' S ⊓ tens (stdL E n) S) ⊔ (tens Λ' S ⊓ tens Λ'' S)) :
@@ -564,10 +774,20 @@ theorem ip_pos {D : SW.Level X} {Λ' Λ'' : Lt E n} (hΛ' : Λ' ∈ Vset E n 1) 
 
 end Vacua
 
+/- English proof (translation)
+Take `⟨h1, h2, s, hs, -, h3⟩` from `h`. Conclude with `⟨h1, h2, s, hs, Nat.coprime_one_right s, h3⟩`.
+-/
 theorem mem_Vset_one {M : ℕ} {Λ : Lt E n} (h : Λ ∈ Vset E n M) : Λ ∈ Vset E n 1 := by
   obtain ⟨h1, h2, s, hs, -, h3⟩ := h
   exact ⟨h1, h2, s, hs, Nat.coprime_one_right s, h3⟩
 
+/- English proof (translation)
+Introduce `y hy`. Take `⟨s, -, hs, h1, -⟩` from `hΛ'.2.2`. Take `⟨a, b, hab⟩ : IsCoprime (s : ℤ) ((M : ℤ) * M)` from `(Nat.isCoprime_iff_coprime.2 hs).mul_right (Nat.isCoprime_iff_coprime.2 hs)`. Establish `e : y = a • (s : E) • y + b • (((M : 𝓞 E) * M : 𝓞 E) : E) • y`. Rewrite using `[← Int.cast_smul_eq_zsmul E, ← Int.cast_smul_eq_zsmul E, smul_smul, smul_smul, ← add_smul]`.
+
+Establish `: (a : E) * s + b * (((M : 𝓞 E) * M : 𝓞 E) : E) = 1`. Use `congrArg (Int.cast : ℤ → E) hab` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Conclude with `this`. Rewrite using `[this, one_smul]`.
+
+Rewrite using `[e]`. Use `AddSubgroup.add_mem_sup (zsmul_mem (AddSubgroup.mem_inf.2 ⟨?_, smul_tens_left h1 hy⟩) _) (zsmul_mem (AddSubgroup.mem_inf.2 ⟨int_smul_tens _ hy, smul_tens_left (fun v hv => h2 (Submodule.smul_mem_smul hM hv)) hy⟩) _)` and prove the remaining obligations. Conclude with `int_smul_tens (s : 𝓞 E) hy`.
+-/
 theorem le_sup_inf {M : ℕ} {Λ' Λ'' : Lt E n} {𝔭 : Ideal (𝓞 E)} (hΛ' : Λ' ∈ Vset E n M)
     (hM : ((M : 𝓞 E) * M) ∈ 𝔭) (h2 : 𝔭 • Λ' ≤ Λ'') (S : Lt E r) :
     tens Λ' S ≤ (tens Λ' S ⊓ tens (stdL E n) S) ⊔ (tens Λ' S ⊓ tens Λ'' S) := by
@@ -588,6 +808,53 @@ theorem le_sup_inf {M : ℕ} {Λ' Λ'' : Lt E n} {𝔭 : Ideal (𝓞 E)} (hΛ' :
       (fun v hv => h2 (Submodule.smul_mem_smul hM hv)) hy⟩) _)
   exact int_smul_tens (s : 𝓞 E) hy
 
+/- English proof (translation)
+Introduce `E _ _ _ r X g bas idx n hs he D hn M 𝔐 𝔍 𝔞 α _ hM h𝔪 hc h0 hα h𝔞 v₀ hv₀ h hh Λ hΛ Λ' hΛ' Λ'' hΛ'' hm h1 h2`. Take `rfl : h = lowD r n (cc (α : E) / (α : E))` from `hh`. Take `⟨hX, -, -, hl, -⟩` from `level_laws E r X g bas idx n hs he D hn`. Use `haveI := finite_J D`. Use `haveI : Fintype D.J := Fintype.ofFinite _`.
+
+Establish `hJ : D.𝔪 ≤ 𝔍` using `h𝔪 ▸ Ideal.mul_le_right`. Establish `hΛ₁` using `mem_Vset_one hΛ'`. Set `c : ℂ` to `((Λ'.toAddSubgroup.relIndex Λ''.toAddSubgroup ^ r : ℕ) : ℂ) * (Real.sqrt (((Λ''.toAddSubgroup.relIndex Λ'.toAddSubgroup ^ r : ℕ) : ℝ)⁻¹) : ℝ)`. It suffices to establish `H : ∀ L ∈ D.lats, c ≠ 0 ∧ ∃ s : Finset (Matrix (Fin n) (Fin r) E), D.phi bas hn v₀ L Λ = ∑ y ∈ s, D.dat hn y • heisG X bas y (unitv (projA X bas D.w (tens Λ (D.sh L)) (v₀ L))) ∧ phiF bas D 𝔐 hn v₀ L Λ' = c • ∑ y ∈ s, D.dat hn y • heisG X bas (lowD r n (cc (α : E) / (α : E)) * y) …`. Use `⟨c⁻¹, inv_ne_zero (H _ hX).1, fun L hL => ?_⟩` and prove the remaining obligations.
+
+Take `⟨hc0, s, e1, e2⟩` from `H L hL`. Conclude with `⟨s, e1, by rw [e2, smul_smul, inv_mul_cancel₀ hc0, one_smul]⟩`. Introduce `L hL`. Establish `hS` using `(hl L hL).1`. Establish `hv` using `isVac_unitv idx hs he hΛ hS (hv₀ L hL)`.
+
+Establish `hv'` using `isVac_unitv idx hs he hΛ' hS (hv₀ L hL)`. Establish `hv''` using `isVac_unitv idx hs he hΛ'' hS (hv₀ L hL)`. Establish `good : ∀ N, SelfD X N → ∀ Λ ∈ Vset E n 1, TensVac.Good X D.w (tens Λ N)` using `fun N hN Λ hΛ => ⟨tens_fg hΛ hN.1, tens_selfDual hΛ hN, fun y hy => epsW_semichar hΛ hN D.w_int D.w_tr hy⟩`. Establish `ind` using `fun Λ₁ hΛ₁ => (tens_selfDual_semichar_index E r X g bas idx n hs he D.w D.w_int D.w_tr _ hS 1 Λ₁ hΛ₁).2.2.2.2.2`. Take `⟨i1, i2⟩` from `ip_pos idx hs he hΛ₁ hΛ'' hS (hv₀ L hL) (le_sup_inf hΛ' (Ideal.mul_mem_mul (hJ hM) (nat_mem_conjI (hJ hM))) h2 _)`.
+
+Establish `i3 : (tens Λ' (D.sh L)).relIndex (tens Λ'' (D.sh L)) ≠ 0` using `fun h => by`. Use `(good _ hS _ hΛ'').overlap idx hs he (good _ hS _ hΛ₁) hv'' hv'` as an intermediate fact. Simplify using `[h] at this`. Establish `hc0 : c ≠ 0`. Rewrite `i1` using `[ind _ hΛ₁ _ hΛ'']`.
+
+Rewrite `i3` using `[ind _ hΛ'' _ hΛ₁]`. Use `mul_ne_zero (Nat.cast_ne_zero.2 i3) ?_` and prove the remaining obligations. Conclude with `(Real.sqrt_pos.2 (inv_pos.2 (Nat.cast_pos.2 (Nat.pos_of_ne_zero i1)))).ne'` after adjusting the coercions. Use `⟨hc0, ?_⟩` and prove the remaining obligations. Use `haveI : Finite (tens Λ'' (D.sh L) ⧸ (tens Λ' (D.sh L)).addSubgroupOf (tens Λ'' (D.sh L))) := Nat.finite_of_card_ne_zero i3`.
+
+Use `haveI := Fintype.ofFinite (tens Λ'' (D.sh L) ⧸ (tens Λ' (D.sh L)).addSubgroupOf (tens Λ'' (D.sh L)))`. Establish `hsh : ∀ Λ : Lt E n, tens Λ ((Ideal.span {2} * conjI D.𝔪 * D.𝔪) • L) ≤ tens Λ (D.sh L)` using `fun Λ => (tens_mono Λ (Submodule.smul_mono_left Ideal.mul_le_right)).trans (tens_le_sh Λ)`. Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ, hδ'⟩ : ∃ δ : tens Λ'' (D.sh L) ⧸ (tens Λ' (D.sh L)).addSubgroupOf (tens Λ'' (D.sh L)) → tens Λ'' (D.sh L), (∀ q, QuotientAddGroup.mk (δ q) = q) ∧ ∀ q, (δ q : Matrix (Fin n) (Fin r) E) ∈ tens Λ'' ((Ideal.span {2} * conjI D.𝔪 * D.𝔪) • L) := by`. Establish `: ∀ q : tens Λ'' (D.sh L) ⧸ (tens Λ' (D.sh L)).addSubgroupOf (tens Λ'' (D.sh L)), ∃ d : tens Λ'' (D.sh L), QuotientAddGroup.mk d = q ∧ (d : Matrix (Fin n) (Fin r) E) ∈ tens Λ'' ((Ideal.span {2} * conjI D.𝔪 * D.𝔪) • L)`. Introduce `q`.
+
+Take `⟨a, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Take `⟨d, hd, hd'⟩` from `exists_low hM h𝔪 h0 hα h𝔞 hΛ hΛ' hΛ'' hm h1 a.2`. Use `⟨⟨d, hsh _ hd⟩, QuotientAddGroup.eq.2 ?_, hd⟩` and prove the remaining obligations. Rewrite using `[neg_add_eq_sub]`. Conclude with `hd'`.
+
+Use `choose δ hδ hδ' using this`. Conclude with `⟨δ, hδ, hδ'⟩`. Establish `hlow` using `fun q => low_laws hM h𝔪 h0 hα h𝔞 hΛ hΛ' hΛ'' hm h1 hL (hδ' q)`. Establish `hsum` using `sum_classes idx hs he (good _ hS _ hΛ'') hv'' hv' δ hδ`. Rewrite using `[i2, ind _ hΛ₁ _ hΛ'', ind _ hΛ'' _ hΛ₁, Finset.sum_congr rfl (g := fun q => heisG X bas (δ q) (unitv (projA X bas D.w (tens Λ' (D.sh L)) (v₀ L)))) (fun q _ => by`.
+
+Take `⟨z, hz, e⟩` from `half_mem hΛ' (hlow q).1`. Rewrite using `[e, (good _ hL.1 _ hΛ₁).eps_two hs (tens_mono _ Submodule.smul_le_right hz), one_smul])]`. Use `at hsum`. Take `⟨f, f1, f2, f3, f4⟩` from `exists_reps idx hs he hn hM hΛ (near_of_mem hL)`. Establish `hinj : Function.Injective f` using `fun i j e => f2 i j fun k => e ▸ cong_refl _`.
+
+Establish `f5` using `fun i => of_datF_ne (D := D) (𝔐 := D.𝔪) (hn := hn) (y := f i) fun h => by`. Use `f4 i` as an intermediate fact. Rewrite `this` using `[dat_eq, h, norm_zero]`. Conclude with `zero_ne_one this`. Establish `f6` using `fun i => moved_mem hM h𝔪 h0 hα h𝔞 hΛ hΛ' hΛ'' hm h1 hL (f1 i) (f5 i).2`.
+
+Establish `up : ∀ (y : Matrix (Fin n) (Fin r) E) q (k : Fin n), (k : ℕ) < r → Cong X D.𝔪 ((lowD r n (cc (α : E) / (α : E)) * y + (δ q).1) k) (y k)` using `fun y q k hk => by`. Use `cong_add (cong_refl (X := X) (𝔪 := D.𝔪) (y k)) ((hlow q).2.1 k hk)` as an intermediate fact. Rewrite `this` using `[add_zero]`. Express the relevant statement in the definitionally equal form `Cong X D.𝔪 ((lowD r n (cc (α : E) / (α : E)) * y) k + _) _`. Rewrite using `[lowD_row, if_pos hk, one_smul]` and apply the resulting hypothesis.
+
+Use `⟨Finset.univ.image f, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_image hinj.injOn]`. Conclude with `phi_eq_sum idx hs he hn hM hΛ hL v₀ hv f f1 f2 f3`. Rewrite using `[Finset.sum_image hinj.injOn, phiF_eq_sum idx hs he h𝔪 hn hM hΛ' hL hS v₀ hv' (fun p : D.J × _ => lowD r n (cc (α : E) / (α : E)) * f p.1 + (δ p.2).1) (fun p => add_mem (f6 p.1).1 (hlow p.2).1), Fintype.sum_prod_type, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_comm, ← TensVac.heisG_smul, ← hsum, heisG_sum', Finset.smul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Take `⟨⟨κ, hκ⟩, h5⟩` from `f5 i`. Rewrite using `[heis_heis idx hs he hΛ' hL.1 (f6 i).1 (hlow q).1 hv'.1, dat_eq, datF_eq hκ h5, datF_eq (red_congr (fun a => up _ _ _ a.2) hκ) fun k hk => ?_]`. Use `cong_add ((f6 i).2 k hk) ((hlow q).2.2 k)` as an intermediate fact.
+
+Rewrite `this` using `[add_zero]`. Conclude with `this`. Introduce and unpack `⟨i, q⟩ ⟨j, q'⟩ h`. Take `rfl : i = j` from `f2 i j fun k => by`. Distinguish the cases in `hk : (k : ℕ) < r`.
+
+Conclude with `cong_trans (cong_symm (up _ q k hk)) (cong_trans (h k) (up _ q' k hk))`. Conclude with `cong_trans ((f5 i).2 k (not_lt.1 hk)) (cong_symm ((f5 j).2 k (not_lt.1 hk)))`. Establish `h3` using `mem_of_cong hΛ' hM (near_of_mem hL) (cop_level D) (sub_mem (add_mem (f6 i).1 (hlow q).1) (add_mem (f6 i).1 (hlow q').1)) h`. Rewrite `h3` using `[add_sub_add_left_eq_sub]`. Use `Prod.ext rfl ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `q = q'`. Rewrite using `[← hδ q, ← hδ q', eq_comm, QuotientAddGroup.eq, neg_add_eq_sub]`. Conclude with `hsh _ h3`. Introduce `x hx hx0`. Take `⟨⟨κ, hκ⟩, h5⟩` from `of_datF_ne hx0`.
+
+Take `⟨i, hi⟩` from `f3 (Matrix.of fun k => if (k : ℕ) < r then x k else 0) (by`. Rewrite using `[dat_eq, datF_eq (κ := κ)]`. Conclude with `(D.lam κ).ne_zero`. Use `red_congr (fun a => ?_) hκ` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Cong X D.𝔪 (if _ then _ else _) _`.
+
+Rewrite using `[if_pos (show ((Fin.castLE hn a : Fin n) : ℕ) < r from a.2)]`. Conclude with `cong_refl _`. Introduce `k hk`. Express the relevant statement in the definitionally equal form `Cong X D.𝔪 (if _ then _ else _) _`. Rewrite using `[if_neg (not_lt.2 hk)]`.
+
+Conclude with `cong_refl _)`. Establish `h3 : x - lowD r n (cc (α : E) / (α : E)) * f i ∈ tens Λ'' (D.sh L)`. Use `mem_moved hM h𝔪 hc h0 hα h𝔞 hΛ hΛ' hΛ'' hm h2 hL (sub_mem hx (f6 i).1) (fun k hk => ?_) fun k hk => ?_` and prove the remaining obligations. Establish `h4` using `hi k`. Express the relevant statement in the definitionally equal form `Cong X D.𝔪 (if _ then _ else _) _ at h4`.
+
+Rewrite `h4` using `[if_pos hk]`. Express the relevant statement in the definitionally equal form `Cong X D.𝔪 (x k - (lowD r n (cc (α : E) / (α : E)) * f i) k) 0`. Rewrite using `[lowD_row, if_pos hk, one_smul, cong_zero]`. Conclude with `h4`. Use `cong_sub (h5 k hk) ((f6 i).2 k hk)` as an intermediate fact.
+
+Rewrite `this` using `[sub_zero]`. Conclude with `this`. Use `⟨(i, QuotientAddGroup.mk ⟨_, h3⟩), fun k => ?_⟩` and prove the remaining obligations. Establish `h4` using `QuotientAddGroup.eq.1 (hδ (QuotientAddGroup.mk ⟨_, h3⟩))`. Rewrite `h4` using `[neg_add_eq_sub]`.
+
+Establish `h6` using `cong_zero.1 (cong_of_sh hM hΛ' hL h4 k)`. Rewrite using `[Lev.cong_iff]`. Use `h6 using 1` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `x k - (_ + _) = x k - _ - _`. Rewrite using `[sub_add_eq_sub_sub]`.
+-/
 theorem sum_free : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ (D : SW.Level X) (hn : r ≤ n) (M : ℕ) (𝔐 𝔍 𝔞 : Ideal (𝓞 E)) (α : 𝓞 E), 0 < M → (M : 𝓞 E) ∈ D.𝔪 → D.𝔪 = 𝔐 * 𝔍 → IsCoprime 𝔐 𝔍 → α ≠ 0 → Ideal.span {α} = 𝔍 * 𝔞 → IsCoprime 𝔞 (Ideal.span {(M : 𝓞 E)}) → ∀ v₀ : Lt E r → TF n g, (∀ L ∈ D.lats, IsVac X bas D.w (tens (stdL E n) (D.sh L)) (v₀ L)) → ∀ h : Matrix (Fin n) (Fin n) E, h = Matrix.diagonal (fun k : Fin n => if (k : ℕ) < r then 1 else cc (α : E) / (α : E)) → ∀ Λ ∈ Vset E n M, ∀ Λ' ∈ Vset E n M, ∀ Λ'' ∈ Vset E n 1, Moves h Λ Λ'' → (𝔍 * conjI 𝔍) • Λ'' ≤ Λ' → (𝔍 * conjI 𝔍) • Λ' ≤ Λ'' → ∃ t : ℂ, t ≠ 0 ∧ ∀ L ∈ D.lats, ∃ s : Finset (Matrix (Fin n) (Fin r) E), D.phi bas hn v₀ L Λ = ∑ y ∈ s, D.dat hn y • heisG X bas y (unitv (projA X bas D.w (tens Λ (D.sh L)) (v₀ L))) ∧ ∑ y ∈ s, D.dat hn y • heisG X bas (h * y) (unitv (projA X bas D.w (tens Λ'' (D.sh L)) (v₀ L))) = t • phiF bas D 𝔐 hn v₀ L Λ' := by
   intro E _ _ _ r X g bas idx n hs he D hn M 𝔐 𝔍 𝔞 α _ hM h𝔪 hc h0 hα h𝔞 v₀ hv₀ h hh Λ hΛ Λ' hΛ'
     Λ'' hΛ'' hm h1 h2

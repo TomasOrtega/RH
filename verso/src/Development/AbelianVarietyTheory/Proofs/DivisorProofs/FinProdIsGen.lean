@@ -14,6 +14,11 @@ namespace GlobalTheory.MumSide
 section Helpers
 variable {X Y : Scheme.{0}} {L : LB X}
 
+/- English proof (translation)
+Break down `Int.eq_nat_or_neg n with ⟨m, rfl | rfl⟩` into its components or cases. Conclude with `⟨GeneratorPullback.powGen L φ ε t m, DVR.powGen_isGen _ _ _ _ ht m, fun Z r z J _ => (DVR.val_pow t m r z J).trans (zpow_natCast _ _).symm⟩`. Take `⟨t', ht', hv⟩` from `exists_gen hL (φ' := φ) (ε' := fun k => -(m : ℤ) * ε k) (fun U _ h => by`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show _ = h (φ k) ^ (-(m : ℤ) * ε k)`.
+
+Rewrite using `[neg_mul]) (LB.invGen L _ _ (GeneratorPullback.powGen L φ ε t m))`. Use the proof step `(DVR.invGen_isGen _ _ _ _ (DVR.powGen_isGen _ _ _ _ ht m))`. Use `⟨t', ht', fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hv Z r z J hJ, val_inv, DVR.val_pow, zpow_neg, zpow_natCast]`.
+-/
 theorem exists_zpow (hL : L.IsLB) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (n : ℤ) :
     ∃ t' : LB.Gen (LB.LinComb L φ (fun k => n * ε k)), t'.IsGen ∧
@@ -29,6 +34,11 @@ theorem exists_zpow (hL : L.IsLB) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} 
     refine ⟨t', ht', fun Z r z J hJ => ?_⟩
     rw [hv Z r z J hJ, val_inv, DVR.val_pow, zpow_neg, zpow_natCast]
 
+/- English proof (translation)
+Introduce `(j : I × K → L.ι) (j' : I × K → L.ι)`. Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Establish `v : ∀ j : I × K → L.ι, y ∈ LB.wchart L (fun p : I × K => φ p.1 p.2) j → gm (𝟙 Y) y (LB.wchart L (fun p : I × K => φ p.1 p.2) j) ((GeneratorPullback.finProdGen L φ ε t).s j) = ∏ i, gm (𝟙 Y) y (LB.wchart L (φ i) (fun k => j (i, k))) ((t i).s (fun k => j (i, k)))` using `fun j hj => (map_prod _ _ _).trans (Finset.prod_congr rfl fun _ _ => gm_res (𝟙 Y) y _ hj _)`. Use `((gm_res (𝟙 Y) y _ hy _).trans (v j hy.1)).trans (Eq.trans ?_ ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_linComb L _ _ (𝟙 Y) y j j' hy.1 hy.2) ((gm_res (𝟙 Y) y _ hy _).trans (v j' hy.2)))).symm)` and prove the remaining obligations. Rewrite using `[Fintype.prod_prod_type, ← Finset.prod_mul_distrib]`.
+
+Conclude with `Finset.prod_congr rfl fun i _ => gen_trans (ht i) (𝟙 Y) y (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.1 (i, k)) (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.2 (i, k))`.
+-/
 theorem finProd_isGen {I K : Type} [Fintype I] [Fintype K] (φ : I → K → (Y ⟶ X)) (ε : I → K → ℤ)
     (t : ∀ i, LB.Gen (LB.LinComb L (φ i) (ε i))) (ht : ∀ i, (t i).IsGen) : (GeneratorPullback.finProdGen L φ ε t).IsGen := by
   intro (j : I × K → L.ι) (j' : I × K → L.ι)
@@ -43,6 +53,9 @@ theorem finProd_isGen {I K : Type} [Fintype I] [Fintype K] (φ : I → K → (Y 
   exact Finset.prod_congr rfl fun i _ => gen_trans (ht i) (𝟙 Y) y
     (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.1 (i, k)) (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.2 (i, k))
 
+/- English proof (translation)
+The claim follows from `(map_prod _ _ _).trans (Finset.prod_congr rfl fun i _ => gm_res r z _ (hJ.mem (fun p : I × K => φ p.1 p.2) r) _)`.
+-/
 theorem val_finProd {I K : Type} [Fintype I] [Fintype K] (φ : I → K → (Y ⟶ X)) (ε : I → K → ℤ)
     (t : ∀ i, LB.Gen (LB.LinComb L (φ i) (ε i))) {Z : Scheme.{0}} (r : Z ⟶ Y) (z : Z) {J} (hJ : Good L z J) :
     val (GeneratorPullback.finProdGen L φ ε t) r z J = ∏ i, val (t i) r z J :=
@@ -54,6 +67,11 @@ end Helpers
 section Rows
 variable {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} {r : ℕ} {W : Matrix (Fin r) (Fin r) ℤ}
 
+/- English proof (translation)
+Take `⟨⟨i, j⟩, k⟩` from `k`. Use `fin_cases k`. Conclude with `congrArg (·.left) (MonObj.comp_mul x (pr i) (pr j))`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+
+Conclude with `congrArg (·.left) (MonObj.comp_one (M := B) x)`.
+-/
 theorem comp_tensφ' {S : Scheme.{0}} {B B' T : Over S} [GrpObj B] (pr : Fin r → (B' ⟶ B)) (x : T ⟶ B')
     (k : (Fin r × Fin r) × Fin 4) : x.left ≫ tensφ pr k = GlobalTheory.PolDeg.lamPts (x ≫ pr k.1.1) (x ≫ pr k.1.2) k.2 := by
   obtain ⟨⟨i, j⟩, k⟩ := k
@@ -63,11 +81,21 @@ theorem comp_tensφ' {S : Scheme.{0}} {B B' T : Over S} [GrpObj B] (pr : Fin r �
   · rfl
   · exact congrArg (·.left) (MonObj.comp_one (M := B) x)
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.TensAct.matAct_add T 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_eq_left.1 h.symm`.
+-/
 theorem matAct_zero (T : Tens D D' W) : GlobalTheory.TensAct.matAct T 0 = 1 := by
   have h := GlobalTheory.TensAct.matAct_add T 0 0
   rw [add_zero] at h
   exact mul_eq_left.1 h.symm
 
+/- English proof (translation)
+Substitute `hf` using the available equality. Use `fin_cases a`. Use `show (padd D'.P.A (𝟙 _) _).left = (GlobalTheory.TensAct.matAct T (1 + A)).left`. Rewrite using `[GlobalTheory.TensAct.matAct_add, GlobalTheory.TensAct.matAct_one]`. Both sides reduce to the same expression.
+
+Use `show 𝟙 D'.P.A.left = (GlobalTheory.TensAct.matAct T 1).left`. Rewrite using `[GlobalTheory.TensAct.matAct_one]`. Both sides reduce to the same expression. Both sides reduce to the same expression. Use `show (toUnit D'.P.A ≫ η[D'.P.A]).left = (GlobalTheory.TensAct.matAct T 0).left`.
+
+Rewrite using `[matAct_zero]`. Both sides reduce to the same expression.
+-/
 theorem four_eq (T : Tens D D' W) (A : Matrix (Fin r) (Fin r) ℤ) (f : D'.P.A ⟶ D'.P.A)
     (hf : f = GlobalTheory.TensAct.matAct T A) (a : Fin 4) :
     (![(padd D'.P.A (𝟙 _) f).left, 𝟙 D'.P.A.left, f.left, (toUnit D'.P.A ≫ η[D'.P.A]).left] :
@@ -83,6 +111,11 @@ theorem four_eq (T : Tens D D' W) (A : Matrix (Fin r) (Fin r) ℤ) (f : D'.P.A �
   · show (toUnit D'.P.A ≫ η[D'.P.A]).left = (GlobalTheory.TensAct.matAct T 0).left
     rw [matAct_zero]; rfl
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[Matrix.one_apply_eq, one_smul]`. Introduce `l _ hl`. Rewrite using `[Matrix.one_apply_ne hl.symm, zero_smul]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem sum_one_smul {X : Type} [AddCommGroup X] (v : Fin r → X) (i : Fin r) :
     ∑ k, (1 : Matrix (Fin r) (Fin r) ℤ) i k • v k = v i := by
   rw [Finset.sum_eq_single i]
@@ -92,6 +125,11 @@ theorem sum_one_smul {X : Type} [AddCommGroup X] (v : Fin r → X) (i : Fin r) :
   · intro h
     exact absurd (Finset.mem_univ i) h
 
+/- English proof (translation)
+Use `fin_cases a`. Use `show T.xe (y + GlobalTheory.TensAct.latAct T A y) i = ∑ k, (1 + A) i k • T.xe y k`. Rewrite using `[map_add, Pi.add_apply, GlobalTheory.TensAct.xe_latAct]`. Simplify using `only [Matrix.add_apply, add_smul, Finset.sum_add_distrib, sum_one_smul]`. Use `show T.xe y i = ∑ k, (1 : Matrix (Fin r) (Fin r) ℤ) i k • T.xe y k`.
+
+Rewrite using `[sum_one_smul]`. Use `show T.xe (GlobalTheory.TensAct.latAct T A y) i = ∑ k, A i k • T.xe y k`. Rewrite using `[GlobalTheory.TensAct.xe_latAct]`. Use `show T.xe 0 i = ∑ k, (0 : Matrix (Fin r) (Fin r) ℤ) i k • T.xe y k`. Simplify using `only [map_zero, Pi.zero_apply, Matrix.zero_apply, zero_smul, Finset.sum_const_zero]`.
+-/
 theorem xe_four (T : Tens D D' W) (A : Matrix (Fin r) (Fin r) ℤ) (y : D'.X) (a : Fin 4) (i : Fin r) :
     T.xe ((![y + GlobalTheory.TensAct.latAct T A y, y, GlobalTheory.TensAct.latAct T A y, 0] : Fin 4 → D'.X) a) i =
       ∑ k, (![1 + A, 1, A, 0] : Fin 4 → Matrix (Fin r) (Fin r) ℤ) a i k • T.xe y k := by

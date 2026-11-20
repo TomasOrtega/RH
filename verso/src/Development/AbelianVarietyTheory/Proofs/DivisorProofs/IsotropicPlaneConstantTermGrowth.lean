@@ -19,6 +19,15 @@ namespace GlobalTheory.ThK.DescB.GenGrowth
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
 
+/- English proof (translation)
+Use `haveI : CompleteSpace (Matrix (Fin n) (Fin n) ℂ) := FiniteDimensional.complete ℝ _`. Use `haveI : CompleteSpace (Matrix (Fin n₁) (Fin n₁) ℂ) := FiniteDimensional.complete ℝ _`. Establish `h' : ∀ {k : ℕ} (X : Matrix (Fin n₁) (Fin k) ℂ), π * (ι * X) = X` using `fun X => by`. Rewrite using `[← Matrix.mul_assoc, h, Matrix.one_mul]`. Set `f : Matrix (Fin n₁) (Fin n₁) ℂ × ℂ →+* Matrix (Fin n) (Fin n) ℂ` to `{ toFun := fun p => p.2 • (1 - ι * π) + ι * p.1 * π map_one' := by simp map_mul' := fun p q => by`.
+
+Simplify using `only [Prod.fst_mul, Prod.snd_mul, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, h', Matrix.one_mul, Matrix.mul_one, sub_self, smul_zero, add_zero, zero_add, sub_zero, smul_smul, smul_sub]`. Use `module`. Use the proof step `map_zero' := by simp`. Use the proof step `map_add' := fun p q => by`. Simplify using `only [Prod.fst_add, Prod.snd_add, add_smul, Matrix.mul_add, Matrix.add_mul]`.
+
+Use `abel }`. Establish `hf : Continuous f` using `(continuous_snd.smul continuous_const).add ((continuous_const.matrix_mul continuous_fst).matrix_mul continuous_const)`. Establish `e` using `NormedSpace.map_exp f hf (Z, 0)`. Establish `e1 : f (Z, 0) = ι * Z * π` using `by simp [f]`. Rewrite `e` using `[e1]`.
+
+Use `e.symm.trans ?_` and prove the remaining obligations. Use `show (NormedSpace.exp ((Z, 0) : Matrix (Fin n₁) (Fin n₁) ℂ × ℂ)).2 • (1 - ι * π) + ι * (NormedSpace.exp ((Z, 0) : Matrix (Fin n₁) (Fin n₁) ℂ × ℂ)).1 * π = _`. Establish `a1` using `NormedSpace.map_exp (RingHom.fst (Matrix (Fin n₁) (Fin n₁) ℂ) ℂ) continuous_fst (Z, 0)`. Establish `a2` using `NormedSpace.map_exp (RingHom.snd (Matrix (Fin n₁) (Fin n₁) ℂ) ℂ) continuous_snd (Z, 0)`. Conclude with `congrArg₂ (· + ·) ((congrArg (· • (1 - ι * π)) (a2.trans NormedSpace.exp_zero)).trans (one_smul _ _)) (congrArg (ι * · * π) a1)`.
+-/
 theorem exp_block {n n₁ : ℕ} (ι : Matrix (Fin n) (Fin n₁) ℂ) (π : Matrix (Fin n₁) (Fin n) ℂ) (h : π * ι = 1)
     (Z : Matrix (Fin n₁) (Fin n₁) ℂ) :
     NormedSpace.exp (ι * Z * π) = (1 - ι * π) + ι * NormedSpace.exp Z * π := by
@@ -52,6 +61,25 @@ theorem exp_block {n n₁ : ℕ} (ι : Matrix (Fin n) (Fin n₁) ℂ) (π : Matr
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Use `choose α β z hz using fun j : Fin n => GlobalTheory.UnipCocptForm.decomp σ W.J W₁.J H.x H.y H.ι hsk hσ h.1 h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2.1 h.2.2.2.2.2 hd (Pi.single j 1)`. Set `π : Matrix (Fin n₁) (Fin n) E` to `Matrix.of fun i j => z j i`. Establish `e : (1 : Matrix (Fin n) (Fin n) E) = Matrix.vecMulVec H.x α + Matrix.vecMulVec H.y β + H.ι * π`. Use extensionality with `i j`. Use `congrFun (hz j) i` as an intermediate fact.
+
+Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.single_apply, Matrix.mulVec, dotProduct] at this`. Simplify using `only [Matrix.add_apply, Matrix.vecMulVec_apply, Matrix.mul_apply, π, Matrix.of_apply, Matrix.one_apply, this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hv : ∀ v a : Fin n → E, (∀ u, form σ W.J (H.ι *ᵥ u) v = 0) → H.ιᵀ * W.J * (Matrix.vecMulVec v a).map σ = 0` using `fun v a hv => by`. Use extensionality with `i j`.
+
+Use `hv (Pi.single i 1)` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_single_one]`. Simplify using `only [form, dotProduct, Matrix.mulVec, Matrix.col, Matrix.transpose_apply, Finset.mul_sum] at this`. Rewrite `this` using `[Finset.sum_comm]`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Matrix.vecMulVec_apply, map_mul, Matrix.transpose_apply, Matrix.zero_apply, ← mul_assoc, ← Finset.sum_mul]`.
+
+Simplify using `only [← mul_assoc, ← Finset.sum_mul] at this`. Rewrite using `[this, zero_mul]`. Establish `e2 : H.ιᵀ * W.J = W₁.J * π.map σ`. Establish `e3` using `congrArg (fun X : Matrix (Fin n) (Fin n) E => H.ιᵀ * W.J * X.map σ) e`. Simplify using `only [Matrix.map_add _ (map_add σ), Matrix.mul_add, hv _ _ fun u => (h.2.2.2.2.1 u).1, hv _ _ fun u => (h.2.2.2.2.1 u).2, zero_add, Matrix.map_one _ (map_zero σ) (map_one σ), Matrix.mul_one] at e3`.
+
+Rewrite using `[e3, Matrix.map_mul, ← Matrix.mul_assoc, h.2.2.2.2.2]`. Establish `e4 : π * H.ι = 1`. Establish `e5 : W₁.J * (π * H.ι).map σ = W₁.J * (1 : Matrix (Fin n₁) (Fin n₁) E).map σ`. Rewrite using `[Matrix.map_mul, ← Matrix.mul_assoc, ← e2, h.2.2.2.2.2, Matrix.map_one _ (map_zero σ) (map_one σ), Matrix.mul_one]`. Establish `hu : IsUnit W₁.J` using `(Matrix.isUnit_iff_isUnit_det _).2 (IsUnit.mk0 _ hd)`.
+
+Conclude with `Matrix.map_injective (Function.LeftInverse.injective hσ) (hu.mul_left_cancel e5)`. Use `⟨π, e4, e2, fun h₁ m hm => ?_⟩` and prove the remaining obligations. Take `⟨ax, ay, aι⟩` from `hm`. Simplify using `only [inv_one, Units.val_one, map_one, one_smul] at ax ay`. Establish `hvv : ∀ v a : Fin n → E, incM F (Matrix.vecMulVec v a) = Matrix.vecMulVec (incV F v) (incV F a)` using `fun v a => Matrix.ext fun i j => map_mul (inclR (F := F) (AF F)) _ _`.
+
+Establish `e6 : 1 - H.ι * π = Matrix.vecMulVec H.x α + Matrix.vecMulVec H.y β` using `by rw [sub_eq_iff_eq_add]; exact e`. Establish `e7 : (1 : Matrix (Fin n) (Fin n) (AE F E)) = Matrix.vecMulVec (incV F H.x) (incV F α) + Matrix.vecMulVec (incV F H.y) (incV F β) + incM F H.ι * incM F π`. Use `congrArg (incM F) e` as an intermediate fact. Rewrite using `[← hvv, ← hvv]`. Simplify `this` using `only [incM, Matrix.map_add _ (map_add _), Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Establish `e8 : incM F (1 - H.ι * π) = Matrix.vecMulVec (incV F H.x) (incV F α) + Matrix.vecMulVec (incV F H.y) (incV F β)`. Rewrite using `[e6, ← hvv, ← hvv]`. Conclude with `Matrix.map_add _ (map_add _) _ _`. Rewrite using `[e8, ← aι]`. Use `conv_lhs => rw [← Matrix.mul_one (mat m), e7]`.
+
+Rewrite using `[Matrix.mul_add, Matrix.mul_add, Matrix.mul_vecMulVec, Matrix.mul_vecMulVec, ax, ay, Matrix.mul_assoc]`.
+-/
 theorem exists_proj (hσ : ∀ x, σ (σ x) = x) {n n₁ : ℕ} {H : Plane E n n₁} {W : Spc F E n} {W₁ : Spc F E n₁}
     (h : GlobalTheory.ThK.GLTwo.IsHypPlane σ H W W₁) (hsk : ∀ i j, σ (W.J j i) = -W.J i j) (hd : W₁.J.det ≠ 0) :
     ∃ π : Matrix (Fin n₁) (Fin n) E, π * H.ι = 1 ∧ H.ιᵀ * W.J = W₁.J * π.map σ ∧
@@ -105,6 +133,21 @@ theorem exists_proj (hσ : ∀ x, σ (σ x) = x) {n n₁ : ℕ} {H : Plane E n n
   conv_lhs => rw [← Matrix.mul_one (mat m), e7]
   rw [Matrix.mul_add, Matrix.mul_add, Matrix.mul_vecMulVec, Matrix.mul_vecMulVec, ax, ay, Matrix.mul_assoc]
 
+/- English proof (translation)
+Take `⟨w, τ, Z, hZ, hγ⟩` from `hγ`. Establish `hu : ∀ x : GArch σ J w, (GlobalTheory.Orb.archMat σ J τ x)ᴴ * J.map τ.1 * GlobalTheory.Orb.archMat σ J τ x = J.map τ.1` using `fun x => (archEquiv J h τ x).2`. Establish `h1 : GlobalTheory.Orb.archMat σ J τ (projArch σ J w a)⁻¹ * GlobalTheory.Orb.archMat σ J τ (projArch σ J w a) = 1`. Rewrite using `[← map_mul, inv_mul_cancel, map_one]`. Establish `h2 : GlobalTheory.Orb.archMat σ J τ (projArch σ J w a) * GlobalTheory.Orb.archMat σ J τ (projArch σ J w a)⁻¹ = 1`.
+
+Rewrite using `[← map_mul, mul_inv_cancel, map_one]`. Establish `u1` using `hu (projArch σ J w a)`. Establish `u2` using `hu (projArch σ J w a)⁻¹`. Use `⟨w, τ, GlobalTheory.Orb.archMat σ J τ (projArch σ J w a)⁻¹ * Z * GlobalTheory.Orb.archMat σ J τ (projArch σ J w a), ?_, fun t => ?_⟩` and prove the remaining obligations. Generalize the expression as in `GlobalTheory.Orb.archMat σ J τ (projArch σ J w a)⁻¹ = M' at *`.
+
+Generalize the expression as in `GlobalTheory.Orb.archMat σ J τ (projArch σ J w a) = M at *`. Generalize the expression as in `J.map τ.1 = Q at u1 u2 hZ ⊢`. Establish `e1 : M'ᴴ * Q = Q * M` using `by conv_rhs => rw [← u2, Matrix.mul_assoc, h1, Matrix.mul_one]`. Establish `e2 : Q * M' = Mᴴ * Q` using `by conv_lhs => rw [← u1, Matrix.mul_assoc, h2, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Mᴴ * (Zᴴ * Q + Q * Z) * M := by`. Rewrite using `[e1, e2]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hZ, Matrix.mul_zero, Matrix.zero_mul]`.
+
+Take `⟨y, e1, e2⟩` from `hγ t`. Use `⟨(projArch σ J w a)⁻¹ * y * projArch σ J w a, ?_, ?_⟩` and prove the remaining obligations. Use `show a⁻¹ * γ t * a = _`. Rewrite using `[e1]`. Use `GAd_ext σ J (fun u => ?_) fun v => by simp` and prove the remaining obligations.
+
+Distinguish the cases in `e : u = w`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[projArch_embArch_ne σ J e]`. Rewrite using `[map_mul, map_mul, e2]`.
+
+Generalize the expression as in `GlobalTheory.Orb.archMat σ J τ (projArch σ J w a)⁻¹ = M' at *`. Generalize the expression as in `GlobalTheory.Orb.archMat σ J τ (projArch σ J w a) = M at *`. Establish `hM : IsUnit M` using `⟨⟨M, M', h2, h1⟩, rfl⟩`. Rewrite using `[← Matrix.inv_eq_left_inv h1, ← Matrix.exp_conj' _ _ hM, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem isRealLine_conj {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (h : IsCMExt F E σ) {γ : ℝ → GAd σ J} (hγ : IsRealLine σ J γ) (a : GAd σ J) :
     IsRealLine σ J fun t => a⁻¹ * γ t * a := by
   obtain ⟨w, τ, Z, hZ, hγ⟩ := hγ
@@ -144,6 +187,23 @@ theorem isRealLine_conj {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (h : IsCMExt F 
       have hM : IsUnit M := ⟨⟨M, M', h2, h1⟩, rfl⟩
       rw [← Matrix.inv_eq_left_inv h1, ← Matrix.exp_conj' _ _ hM, Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Take `⟨w, τ, Z, hZ, hγ⟩` from `hγ`. Establish `hone : adMat F (1 - ι * π) + adMat F ι * (1 : Matrix (Fin n₁) (Fin n₁) (AF F ⊗[F] E)) * adMat F π = 1`. Rewrite using `[Matrix.mul_one, adMat, adMat, adMat, ← Matrix.map_mul, ← Matrix.map_add _ (map_add _), sub_add_cancel, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `key : ∀ {R : Type} [CommRing R] (φ : AF F ⊗[F] E →+* R) (x : GAd σ J₁), (matHom _ σ J₁ x).1.map φ = 1 → (matHom _ σ J (M x)).1.map φ = 1` using `fun φ x hx => by`. Rewrite using `[hM, GlobalTheory.EmbHeight.map_aff, hx, ← Matrix.map_one φ (map_zero _) (map_one _), ← GlobalTheory.EmbHeight.map_aff, hone, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Establish `hs : ∀ {a b : ℕ} (X : Matrix (Fin a) (Fin b) E), ((X.map σ)ᵀ).map τ.1 = (X.map τ.1)ᴴ` using `fun X => Matrix.ext fun i j => h.2.2.2 τ.1 (X j i)`. Establish `g1 : π.map τ.1 * ι.map τ.1 = 1` using `by rw [← Matrix.map_mul, h1, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `g2 : (ι.map τ.1)ᴴ * J.map τ.1 = J₁.map τ.1 * π.map τ.1` using `by rw [← hs, ← Matrix.map_mul, h2, Matrix.map_mul]`. Establish `g3 : J.map τ.1 * ι.map τ.1 = (π.map τ.1)ᴴ * J₁.map τ.1` using `by rw [← hs, ← Matrix.map_mul, h3, Matrix.map_mul]`. Use `⟨w, τ, ι.map τ.1 * Z * π.map τ.1, ?_, fun t => ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (π.map τ.1)ᴴ * (Zᴴ * J₁.map τ.1 + J₁.map τ.1 * Z) * π.map τ.1 := by`. Rewrite using `[g2, g3]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`.
+
+Use `_ = 0 := by rw [hZ, Matrix.mul_zero, Matrix.zero_mul]`. Take `⟨y, e1, e2⟩` from `hγ t`. Use `⟨projArch σ J w (M (γ t)), GAd_ext σ J (fun u => ?_) fun v => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : u = w`. Substitute `e` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[projArch_embArch_ne σ J e]`. Establish `: projArch σ J₁ u (γ t) = 1` using `by rw [e1, projArch_embArch_ne σ J₁ e]`. Conclude with `Subtype.ext (Units.ext (key (compInf F E u) (γ t) (congrArg (fun z => z.1.1) this)))`. Establish `: proj σ J₁ v (γ t) = 1` using `by rw [e1]; simp`.
+
+Rewrite using `[show proj σ J v (embArch σ J w (projArch σ J w (M (γ t)))) = 1 by simp]`. Conclude with `Subtype.ext (Units.ext (key (compFin F E v) (γ t) (congrArg (fun z => z.1.1) this)))`. Set `φ` to `(infEmb τ).comp (compInf F E w)`. Establish `h0 : ∀ x : E, φ (inclR (F` using `F) (AF F) x) = τ.1 x := fun x => by`. Express the relevant statement in the definitionally equal form `infEmb τ (evInf F w 1 ⊗ₜ[F] x) = _`.
+
+Simplify using the standard rewrite rules. Establish `h4 : ∀ {a b : ℕ} (X : Matrix (Fin a) (Fin b) E), (adMat F X).map φ = X.map τ.1` using `fun X => Matrix.ext fun i j => h0 _`. Establish `h5 : (matHom _ σ J₁ (γ t)).1.map φ = NormedSpace.exp (t • Z)`. Rewrite using `[← e2, ← projArch_embArch_self σ J₁ w y, ← e1]`. Both sides reduce to the same expression.
+
+Use `show (matHom _ σ J (M (γ t))).1.map φ = _`. Rewrite using `[hM, GlobalTheory.EmbHeight.map_aff, h4, h4, h4, h5, ← Matrix.smul_mul, ← Matrix.mul_smul, exp_block _ _ g1, Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_mul]`.
+-/
 theorem isRealLine_block (h : IsCMExt F E σ) {n n₁ : ℕ} {J : Matrix (Fin n) (Fin n) E} {J₁ : Matrix (Fin n₁) (Fin n₁) E}
     {ι : Matrix (Fin n) (Fin n₁) E} {π : Matrix (Fin n₁) (Fin n) E} (h1 : π * ι = 1)
     (h2 : (ι.map σ)ᵀ * J = J₁ * π) (h3 : J * ι = (π.map σ)ᵀ * J₁) (M : GAd σ J₁ → GAd σ J)
@@ -192,6 +252,11 @@ theorem isRealLine_block (h : IsCMExt F E σ) {n n₁ : ℕ} {J : Matrix (Fin n)
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons γ l ih`. Rewrite using `[List.foldr_cons, ih, List.map_cons, List.foldr_cons]`. Use function extensionality and compare the values at `g`.
+
+Simplify using `only [lineDer]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Simplify using `[mul_assoc]`.
+-/
 theorem foldr_lineDer_hom {n n₁ : ℕ} {J : Matrix (Fin n) (Fin n) E} {J₁ : Matrix (Fin n₁) (Fin n₁) E}
     (M : GAd σ J₁ →* GAd σ J) (a : GAd σ J) (f : GAd σ J → ℂ) (l : List (ℝ → GAd σ J₁)) :
     l.foldr lineDer (fun x => f (M x * a)) =
@@ -206,6 +271,11 @@ theorem foldr_lineDer_hom {n n₁ : ℕ} {J : Matrix (Fin n) (Fin n) E} {J₁ : 
     funext t
     simp [mul_assoc]
 
+/- English proof (translation)
+Establish `h1 : mat (1 : UA σ Y.J) = 1` using `rfl`. Use `⟨?_, fun w => ?_⟩` and prove the remaining obligations. Use `show At (evI F) (mat (1 : UA σ Y.J) - 1)`. Rewrite using `[h1, sub_self]`. Unfold `At`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h1, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `Commute.one_left _`.
+-/
 theorem one_mem_kInf {n : ℕ} (Y : Spc F E n) (τ : ∀ w : InfinitePlace F, EmbOver E w) :
     (1 : UA σ Y.J) ∈ KInf σ Y τ := by
   have h1 : mat (1 : UA σ Y.J) = 1 := rfl
@@ -217,6 +287,15 @@ theorem one_mem_kInf {n : ℕ} (Y : Spc F E n) (τ : ∀ w : InfinitePlace F, Em
   · rw [h1, Matrix.map_one _ (map_zero _) (map_one _)]
     exact Commute.one_left _
 
+/- English proof (translation)
+Take `⟨K, hK⟩` from `GlobalTheory.EmbHeight.exists_heightGL_aff_le F (adMat F (1 - ι * π)) (adMat F ι) (adMat F π)`. Establish `hK' : ∀ x, height σ J (M x) ≤ K * height σ J₁ x` using `fun x => hK _ _ (hM x) (by rw [← map_inv, ← map_inv, ← map_inv]; exact hM x⁻¹)`. Take `⟨C, hC⟩` from `hN (l.map fun γ t => a⁻¹ * M (γ t) * a) (by`. Introduce `γ' hγ'`. Take `⟨γ, hγ, rfl⟩` from `List.mem_map.1 hγ'`.
+
+Conclude with `isRealLine_conj h (isRealLine_block h h1 h2 h3 M hM (hl γ hγ)) a)`. Use `⟨max C 0 * ((K : ℝ) * (height σ J a : ℝ)) ^ N, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[foldr_lineDer_hom M a f l]`. Establish `hh : (height σ J (M x * a) : ℝ) ≤ ((K : ℝ) * (height σ J a : ℝ)) * (height σ J₁ x : ℝ)`. Use `(height_mul_le σ J (M x) a).trans (mul_le_mul' (hK' x) le_rfl)` as an intermediate fact.
+
+Rewrite `this` using `[mul_right_comm]`. Conclude with `this` after adjusting the coercions. Establish `h0 : (0 : ℝ) ≤ (height σ J (M x * a) : ℝ)` using `by positivity`. Use `(hC _).trans ((mul_le_mul_of_nonneg_right (le_max_left C 0) (pow_nonneg h0 N)).trans ?_)` and prove the remaining obligations. Rewrite using `[mul_assoc, ← mul_pow]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ h0 hh N) (le_max_right _ _)`.
+-/
 theorem growth_block (h : IsCMExt F E σ) {n n₁ : ℕ} {J : Matrix (Fin n) (Fin n) E} {J₁ : Matrix (Fin n₁) (Fin n₁) E}
     {ι : Matrix (Fin n) (Fin n₁) E} {π : Matrix (Fin n₁) (Fin n) E} (h1 : π * ι = 1)
     (h2 : (ι.map σ)ᵀ * J = J₁ * π) (h3 : J * ι = (π.map σ)ᵀ * J₁) (M : GAd σ J₁ →* GAd σ J)
@@ -245,6 +324,13 @@ theorem growth_block (h : IsCMExt F E σ) {n n₁ : ℕ} {J : Matrix (Fin n) (Fi
 
 omit [NumberField F] [NumberField E] in
 
+/- English proof (translation)
+Establish `hmm : ∀ {a b : ℕ} (X : Matrix (Fin a) (Fin b) E), (X.map σ).map σ = X` using `fun X => Matrix.ext fun i j => hσ _`. Prove the components needed by the constructor for the conclusion. Use `congrArg (fun X : Matrix (Fin n₁) (Fin n) E => X.map σ) p2` as an intermediate fact. Simplify using `only [Matrix.map_mul, hmm] at this`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, ← this]`.
+
+Both sides reduce to the same expression. Use `congrArg Matrix.transpose p2` as an intermediate fact. Establish `t1 : J.map σ = -Jᵀ` using `Matrix.ext fun i j => hsk j i`. Establish `t2 : J₁.map σ = -J₁ᵀ` using `Matrix.ext fun i j => hsk₁ j i`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose] at this`.
+
+Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, t1, t2, Matrix.neg_mul, Matrix.mul_neg, this]`.
+-/
 theorem gram_rel (hσ : ∀ x, σ (σ x) = x) {n n₁ : ℕ} {J : Matrix (Fin n) (Fin n) E} {J₁ : Matrix (Fin n₁) (Fin n₁) E}
     {ι : Matrix (Fin n) (Fin n₁) E} {π : Matrix (Fin n₁) (Fin n) E} (hsk : ∀ i j, σ (J j i) = -J i j)
     (hsk₁ : ∀ i j, σ (J₁ j i) = -J₁ i j) (p2 : ιᵀ * J = J₁ * π.map σ) (c : E) :
@@ -260,6 +346,9 @@ theorem gram_rel (hσ : ∀ x, σ (σ x) = x) {n n₁ : ℕ} {J : Matrix (Fin n)
     simp only [Matrix.transpose_mul, Matrix.transpose_transpose] at this
     rw [Matrix.mul_smul, Matrix.smul_mul, t1, t2, Matrix.neg_mul, Matrix.mul_neg, this]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(toGAd hσ J hc).toMonoidHom.comp (M₀.comp (toGAd hσ J₁ hc).symm.toMonoidHom), fun _ => (toGAd hσ J hc).symm_apply_apply _, fun _ => rfl, fun _ => rfl⟩`.
+-/
 theorem exists_hom_move (hσ : ∀ x, σ (σ x) = x) {n n₁ : ℕ} (J : Matrix (Fin n) (Fin n) E) (J₁ : Matrix (Fin n₁) (Fin n₁) E)
     {c : E} (hc : c ≠ 0) (M₀ : UA σ J₁ →* UA σ J) :
     ∃ M : GAd σ (c • J₁.map σ) →* GAd σ (c • J.map σ),
@@ -269,6 +358,15 @@ theorem exists_hom_move (hσ : ∀ x, σ (σ x) = x) {n n₁ : ℕ} (J : Matrix 
   ⟨(toGAd hσ J hc).toMonoidHom.comp (M₀.comp (toGAd hσ J₁ hc).symm.toMonoidHom),
     fun _ => (toGAd hσ J hc).symm_apply_apply _, fun _ => rfl, fun _ => rfl⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ B hB n n₁ Y Y₁ P hsk hP c hc _ fa hfa h _ _ g hg`. Establish `hd : Y₁.J.det ≠ 0`. Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace F))`. Conclude with `GlobalTheory.LeviUniqueCartan.det_ne_zero_of_isCartan _ _ _ (hP.2.2.2.2.2.2.2 w)`. Establish `hH` using `GlobalTheory.ThK.GLTwo.IsIsoPlane.isHypPlane hP`.
+
+Take `⟨M₀, -, hM₀, -⟩` from `hH.exists_leviHom hσ hsk hd`. Take `⟨π, p1, p2, p3⟩` from `exists_proj hσ hH hsk hd`. Take `⟨q2, q3⟩` from `gram_rel hσ hsk (hH.skew hσ hsk) p2 c`. Take `⟨N, hN⟩` from `(hfa ⊥ fun x hx => by`. Rewrite using `[Subgroup.mem_bot.1 hx, map_one]`.
+
+Conclude with `one_mem_kInf Y B.emb).growth`. Take `⟨M, m1, m2, m3⟩` from `exists_hom_move hσ Y.J Y₁.J hc M₀`. Use `⟨N, fun l hl => ?_⟩` and prove the remaining obligations. Establish `hgf : (fun x => g ((toGAd hσ Y₁.J hc).symm x)) = fun x => fa ((toGAd hσ Y.J hc).symm (M x * toGAd hσ Y.J hc h))`. Use function extensionality and compare the values at `fun x => by rw [hg _ _ (hM₀ _), map_mul, m1, MulEquiv.symm_apply_apply]`.
+
+Establish `hM : ∀ x, (matHom _ σ _ (M x)).1 = adMat F (1 - P.ι * π) + adMat F P.ι * (matHom _ σ _ x).1 * adMat F π` using `fun x => by`. Rewrite using `[m2, m3, p3 _ _ (hM₀ _)]`. Both sides reduce to the same expression. Rewrite using `[hgf]`. Conclude with `growth_block (f := fun x => fa ((toGAd hσ Y.J hc).symm x)) hB.cm p1 q2 q3 M hM (toGAd hσ Y.J hc h) hN l hl`.
+-/
 theorem main : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E), B.IsGood σ →
     ∀ (n n₁ : ℕ) (Y : Spc F E n) (Y₁ : Spc F E n₁) (P : Plane E n n₁), (∀ i j, σ (Y.J j i) = -Y.J i j) →

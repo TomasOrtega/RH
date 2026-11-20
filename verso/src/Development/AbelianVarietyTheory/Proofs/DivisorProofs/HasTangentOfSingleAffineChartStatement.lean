@@ -10,5 +10,8 @@ open GlobalTheory.Twist (resM)
 open scoped CategoryTheory.Obj RatFunc
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Nef.hasTan_of_affine_chart | exact GlobalTheory.Nef.hasTan_of_affine_chart | (intros; apply GlobalTheory.Nef.hasTan_of_affine_chart <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hasTangent_of_single_affineChart : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (E : Type) [Field E] (c : E) (b : Sp E ⟶ S) (ξ : Sp (PowerSeries E) ⟶ G.left), IsPath G c b ξ → ∀ (n : ℕ) (V : S.Opens) (τ : Fin n → Γ(Lie G, V)) (w : Fin n → E) (U : G.left.Opens), IsAffineOpen U → ∀ (hU : ⊤ ≤ ξ ⁻¹ᵁ U) (V' : S.Opens) (hV : V' ≤ V) (he : V' ≤ unitSec G ⁻¹ᵁ U) (hb : ⊤ ≤ b ⁻¹ᵁ V'), (∀ f : Γ(G.left, U), PowerSeries.coeff 1 (evAt ξ hU f) = ∑ i, w i * evAt b hb (dualApp (τ i) hV (dUnit G he f))) → HasTan G b ξ τ w := by
   first | exact @GlobalTheory.Nef.hasTan_of_affine_chart | exact GlobalTheory.Nef.hasTan_of_affine_chart | (intros; apply GlobalTheory.Nef.hasTan_of_affine_chart <;> assumption)

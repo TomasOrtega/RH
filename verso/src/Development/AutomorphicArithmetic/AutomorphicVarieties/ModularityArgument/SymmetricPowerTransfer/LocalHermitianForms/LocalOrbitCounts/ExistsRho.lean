@@ -4,6 +4,9 @@ open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
 namespace UpperTheory.V.Z.Sym.Loc
 
+/- English proof (translation)
+Set `f : QuadraticAlgebra K a b →ₐ[O] QuadraticAlgebra K a b` to `{ toFun := star map_one' := star_one _ map_mul' := fun u v => by rw [star_mul, mul_comm] map_zero' := star_zero _ map_add' := fun u v => star_add u v commutes' := fun r => by`. Apply the tactic sequence `ext <;> simp [QuadraticAlgebra.algebraMap_re, QuadraticAlgebra.algebraMap_im, IsScalarTower.algebraMap_apply O K (QuadraticAlgebra K a b)] }`. Conclude with `hx.map f`.
+-/
 private theorem su_star {O K : Type} [CommRing O] [CommRing K] [Algebra O K] {a b : K}
     {x : QuadraticAlgebra K a b} (hx : IsIntegral O x) : IsIntegral O (star x) := by
   let f : QuadraticAlgebra K a b →ₐ[O] QuadraticAlgebra K a b :=
@@ -21,6 +24,33 @@ section
 
 variable {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] {Δ τ : K}
 
+/- English proof (translation)
+Use `haveI := h.frac`. Establish `hD : τ ^ 2 - 4 ≠ 0` using `hτ`. Establish `toK : ∀ k : K, IsIntegral O (algebraMap K (Etau K τ) k) → ∃ o : O, algebraMap O K o = k`. Introduce `k hk`. Establish `hk' : IsIntegral O k` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom O K (Etau K τ)) (algebraMap K (Etau K τ)).injective).mp hk`.
+
+Conclude with `IsIntegrallyClosed.isIntegral_iff.mp hk'`. Take `⟨nD, bD, hbD, hnD⟩` from `IsFractionRing.div_surjective O ((τ ^ 2 - 4)⁻¹)`. Take `⟨nτ, bτ, hbτ, hnτ⟩` from `IsFractionRing.div_surjective O τ`. Establish `hbD0 : algebraMap O K bD ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hbD`. Establish `hbτ0 : algebraMap O K bτ ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hbτ`.
+
+Take `⟨u2, hu2⟩` from `h.two`. Establish `hi2 : algebraMap O K (↑u2⁻¹ : O) * 2 = 1`. Rewrite using `[← map_ofNat (algebraMap O K) 2, ← hu2, ← map_mul, Units.inv_mul, map_one]`. Establish `hnD' : algebraMap O K nD = (τ ^ 2 - 4)⁻¹ * algebraMap O K bD`. Rewrite using `[← hnD]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hnτ' : algebraMap O K nτ = τ * algebraMap O K bτ`. Rewrite using `[← hnτ]`. Clear the denominators using the available nonvanishing facts. Use `set a : O := bD * bτ with ha`.
+
+Establish `ha0 : algebraMap O K a ≠ 0`. Rewrite using `[ha, map_mul]`. Conclude with `mul_ne_zero hbD0 hbτ0`. Establish `key : ∀ x : Etau K τ, IsIntegral O x → (∃ u : O, algebraMap O K u = algebraMap O K a * x.re) ∧ (∃ w : O, algebraMap O K w = algebraMap O K a * x.im)`. Introduce `x hx`.
+
+Establish `hs` using `su_star (O := O) hx`. Take `⟨t, ht⟩` from `toK (2 * x.re + τ * x.im) (by`. Establish `e : algebraMap K (Etau K τ) (2 * x.re + τ * x.im) = x + star x`. Apply the tactic sequence `ext <;> simp [QuadraticAlgebra.re_star, QuadraticAlgebra.im_star] <;> ring`. Rewrite using `[e]`.
+
+Conclude with `hx.add hs)`. Take `⟨o1, ho1⟩` from `toK (x.im ^ 2 * (τ ^ 2 - 4)) (by`. Establish `e : algebraMap K (Etau K τ) (x.im ^ 2 * (τ ^ 2 - 4)) = (x - star x) ^ 2`. Apply the tactic sequence `ext <;> simp [pow_two, QuadraticAlgebra.re_star, QuadraticAlgebra.im_star] <;> ring`. Rewrite using `[e]`.
+
+Conclude with `(hx.sub hs).pow 2)`. Establish `hq : IsIntegral O (x.im * algebraMap O K bD)`. Use `⟨Polynomial.X ^ 2 - Polynomial.C (o1 * nD * bD), Polynomial.monic_X_pow_sub_C _ (by norm_num), ?_⟩` and prove the remaining obligations. Simplify using `only [Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_mul, Polynomial.eval₂_C, map_mul, ho1, hnD']`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨w0, hw0⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hq`. Use `⟨⟨(t * bD * bτ - nτ * w0) * ↑u2⁻¹, ?_⟩, ⟨w0 * bτ, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_sub, ht, hnτ', hw0, ha]`. Take the linear combination `(algebraMap O K bD * algebraMap O K bτ * x.re) * hi2`.
+
+Simplify using `only [map_mul, hw0, ha]`. Expand and normalize the polynomial expressions, which then agree. Set `e1 : Etau K τ` to `⟨(algebraMap O K a)⁻¹, 0⟩`. Set `e2 : Etau K τ` to `⟨0, (algebraMap O K a)⁻¹⟩`. Establish `hle : Subalgebra.toSubmodule (integralClosure O (Etau K τ)) ≤ Submodule.span O {e1, e2}`.
+
+Introduce `x hx`. Take `⟨⟨u, hu⟩, ⟨w, hw⟩⟩` from `key x hx`. Establish `hx' : x = (algebraMap O K u) • e1 + (algebraMap O K w) • e2`. Rewrite using `[hu, hw]`. Use `ext`.
+
+Simplify using `[e1, e2]`. Clear the denominators using the available nonvanishing facts. Simplify using `[e1, e2]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hx', algebraMap_smul, algebraMap_smul]`.
+
+Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ (Submodule.subset_span (by simp))) (Submodule.smul_mem _ _ (Submodule.subset_span (by simp)))`. Use `haveI : IsNoetherian O (Submodule.span O ({e1, e2} : Set (Etau K τ))) := isNoetherian_of_fg_of_noetherian _ (Submodule.fg_span (Set.toFinite _))`. Conclude with `Submodule.FG.of_le_of_isNoetherian hle`.
+-/
 private theorem su_fg (h : IsLoc O Δ) (hτ : τ ^ 2 - 4 ≠ 0) :
     (Subalgebra.toSubmodule (integralClosure O (Etau K τ))).FG := by
   classical
@@ -97,6 +127,13 @@ private theorem su_fg (h : IsLoc O Δ) (hτ : τ ^ 2 - 4 ≠ 0) :
 
 end
 
+/- English proof (translation)
+Set `s : Set L` to `Set.range (fun p : Fin 3 × Fin 3 => g p.1 p.2)`. Establish `hs : s.Finite` using `Set.finite_range _`. Set `S` to `Algebra.adjoin O s`. Use `haveI : Module.Finite O S := Algebra.finite_adjoin_of_finite_of_isIntegral hs (by`. Introduce and unpack `x ⟨p, rfl⟩`.
+
+Conclude with `hg p.1 p.2)`. Use `haveI : Module.Finite O (Matrix (Fin 3) (Fin 3) S) := inferInstanceAs (Module.Finite O (Fin 3 → Fin 3 → S))`. Set `g' : Matrix (Fin 3) (Fin 3) S` to `fun i j => ⟨g i j, Algebra.subset_adjoin ⟨(i, j), rfl⟩⟩`. Establish `hg' : (S.val.mapMatrix : Matrix (Fin 3) (Fin 3) S →ₐ[O] Matrix (Fin 3) (Fin 3) L) g' = g`. Use extensionality with `i j`.
+
+Both sides reduce to the same expression. Rewrite using `[← hg']`. Conclude with `(IsIntegral.of_finite O g').map _`.
+-/
 private theorem mat_int {O L : Type} [CommRing O] [CommRing L] [Algebra O L] (g : Matrix (Fin 3) (Fin 3) L)
     (hg : ∀ i j, IsIntegral O (g i j)) : IsIntegral O g := by
   classical
@@ -127,6 +164,11 @@ private noncomputable def ofEA (O : Type) [CommRing O] {K : Type} [Field K] [Alg
     rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one]
     ext <;> simp [ofE, QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]
 
+/- English proof (translation)
+Introduce `x y h`. Express the relevant statement in the definitionally equal form `ofE Δ x = ofE Δ y at h`. Establish `h1` using `congrArg QuadraticAlgebra.re h`. Establish `h2` using `congrArg QuadraticAlgebra.im h`. Simplify using `only [ofE] at h1 h2`.
+
+Use `ext`. Conclude with `(algebraMap K (Lsq K Δ)).injective h1`. Conclude with `(algebraMap K (Lsq K Δ)).injective h2`.
+-/
 private theorem ofEA_inj (O : Type) [CommRing O] {K : Type} [Field K] [Algebra O K] (Δ τ : K) :
     Function.Injective (ofEA O Δ τ) := by
   intro x y h
@@ -138,6 +180,27 @@ private theorem ofEA_inj (O : Type) [CommRing O] {K : Type} [Field K] [Algebra O
   · exact (algebraMap K (Lsq K Δ)).injective h1
   · exact (algebraMap K (Lsq K Δ)).injective h2
 
+/- English proof (translation)
+Set `L` to `Lsq K Δ`. Set `M` to `Matrix (Fin 3) (Fin 3) L`. Set `yi : M` to `((y⁻¹ : U3 Δ) : M)`. Set `yy : M` to `((y : U3 Δ) : M)`. Establish `h1 : yi * yy = 1`.
+
+Express the relevant statement in the definitionally equal form `(((y⁻¹ * y : U3 Δ)) : M) = 1`. Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression. Establish `h2 : yy * yi = 1`. Express the relevant statement in the definitionally equal form `(((y * y⁻¹ : U3 Δ)) : M) = 1`.
+
+Rewrite using `[mul_inv_cancel]`. Both sides reduce to the same expression. Set `c : M →ₐ[L] M` to `{ toFun := fun A => yi * A * yy map_one' := by simp [h1] map_mul' := fun A B => by`. Combine the equalities or inequalities in the displayed calculation. Use the proof step `map_zero' := by simp`.
+
+Use the proof step `map_add' := fun A B => by simp [mul_add, add_mul]`. Use the proof step `commutes' := fun r => by`. Express the relevant statement in the definitionally equal form `yi * algebraMap L M r * yy = algebraMap L M r`. Rewrite using `[← Algebra.commutes r yi, mul_assoc, h1, mul_one] }`. Establish `hc : Function.Injective c`.
+
+Introduce `A B h`. Establish `h' : yy * (yi * A * yy) * yi = yy * (yi * B * yy) * yi`. Express the relevant statement in the definitionally equal form `yy * c A * yi = yy * c B * yi`. Rewrite using `[h]`. Simplify `h'` using `[← mul_assoc, h2, mul_assoc _ yy yi]`.
+
+Set `ρ0 : Sp Δ τ →ₐ[L] M` to `(LinearMap.toMatrixAlgEquiv' : ((Fin 3 → L) →ₗ[L] Fin 3 → L) ≃ₐ[L] M).toAlgHom.comp ((P.conjAlgEquiv L).toAlgHom.comp (Algebra.lmul L (Sp Δ τ)))`. Establish `hρ0 : Function.Injective ρ0`. Introduce `u v h`. Establish `h'` using `(LinearMap.toMatrixAlgEquiv' : ((Fin 3 → L) →ₗ[L] Fin 3 → L) ≃ₐ[L] M).injective h`. Establish `h''` using `(P.conjAlgEquiv L).injective h'`.
+
+Use `LinearMap.congr_fun h'' 1` as an intermediate fact. Simplify using `using this`. Establish `hz : ∀ z, ρ0 (1, ofE Δ (quo z)) = ((ι z : U3 Δ) : M)`. Introduce `z`. Establish `hF : P.toLinearMap ∘ₗ Algebra.lmul L (Sp Δ τ) (1, ofE Δ (quo z)) ∘ₗ P.symm.toLinearMap = Matrix.toLin' ((ι z : U3 Δ) : M)`.
+
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Establish `ht : ((1, ofE Δ (quo z)) : Sp Δ τ) * P.symm v = tor Δ z (P.symm v)` using `Prod.ext (one_mul _) rfl`. Rewrite using `[Matrix.toLin'_apply]`. Express the relevant statement in the definitionally equal form `P (((1, ofE Δ (quo z)) : Sp Δ τ) * P.symm v) = _`.
+
+Rewrite using `[ht, hP, LinearEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `LinearMap.toMatrix' (P.toLinearMap ∘ₗ Algebra.lmul L (Sp Δ τ) (1, ofE Δ (quo z)) ∘ₗ P.symm.toLinearMap) = _`. Rewrite using `[hF, LinearMap.toMatrix'_toLin']`. Use `⟨c.comp ρ0, hc.comp hρ0, fun z => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `yi * ρ0 (1, ofE Δ (quo z)) * yy = _`.
+
+Rewrite using `[hz]`. Both sides reduce to the same expression.
+-/
 private theorem exists_rho {K : Type} [Field K] {Δ τ : K} (ι : (Etau K τ)ˣ →* U3 Δ)
     (P : Sp Δ τ ≃ₗ[Lsq K Δ] (Fin 3 → Lsq K Δ))
     (hP : ∀ z x, P (tor Δ z x) = (ι z : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).mulVec (P x)) (y : U3 Δ) :
@@ -203,6 +266,33 @@ private theorem exists_rho {K : Type} [Field K] {Δ τ : K} (ι : (Etau K τ)ˣ 
 
 end UpperTheory.V.Z.Sym.Loc
 
+/- English proof (translation)
+Introduce `O K _ _ _ _ _ Δ τ h c d m hd δ ι P hM y`. Use `haveI := h.frac`. Take `⟨ρ, hρi, hρ⟩` from `exists_rho ι P hM.tor y`. Establish `hτ` using `hd.reg`. Use `set H := Subgroup.comap ι (Subgroup.comap (MulEquiv.toMonoidHom (MulAut.conj y⁻¹)) (KU O Δ)) with hH`.
+
+Establish `memH : ∀ z, z ∈ H ↔ ∀ i j, IsInt O (((y⁻¹ * ι z * y : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) i j) ∧ IsInt O (star (((y⁻¹ * ι z * y : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) i j))`. Introduce `z`. Rewrite using `[hH, Subgroup.mem_comap, Subgroup.mem_comap, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv]`. Conclude with `Iff.rfl`. Set `ρO` to `ρ.restrictScalars O`.
+
+Establish `intq : ∀ z ∈ H, IsIntegral O (quo z)`. Introduce `z hz`. Rewrite `hz` using `[memH]`. Establish `hm : IsIntegral O (ρ (1, ofE Δ (quo z)))`. Rewrite using `[hρ z]`.
+
+Conclude with `mat_int _ (fun i j => (hz i j).1)`. Establish `h1 : IsIntegral O ((1, ofE Δ (quo z)) : Sp Δ τ)` using `(isIntegral_algHom_iff ρO hρi).mp hm`. Establish `h2 : IsIntegral O (ofEA O Δ τ (quo z))` using `h1.map (AlgHom.snd O (Lsq K Δ) (EL Δ τ))`. Conclude with `(isIntegral_algHom_iff _ (ofEA_inj O Δ τ)).mp h2`. Use `⟨fun z hz => ⟨intq z hz, intq z⁻¹ (H.inv_mem hz)⟩, ?_⟩` and prove the remaining obligations.
+
+Take `⟨s, hs⟩` from `su_fg h hτ`. Set `F : Etau K τ →ₗ[O] Matrix (Fin 3) (Fin 3) (Lsq K Δ)` to `ρO.toLinearMap ∘ₗ LinearMap.inr O (Lsq K Δ) (EL Δ τ) ∘ₗ (ofEA O Δ τ).toLinearMap`. Use `haveI : Algebra.IsAlgebraic K (Lsq K Δ) := Algebra.IsAlgebraic.of_finite K _`. Use `haveI : Algebra.IsAlgebraic O (Lsq K Δ) := ⟨fun x => (IsFractionRing.isAlgebraic_iff O K (Lsq K Δ)).mpr (Algebra.IsAlgebraic.isAlgebraic x)⟩`. Take `⟨e, he0, he⟩` from `Algebra.IsAlgebraic.exists_integral_multiples O (s.biUnion fun g => Finset.univ.image fun p : Fin 3 × Fin 3 => F g p.1 p.2)`.
+
+Establish `hspan : ∀ r ∈ Submodule.span O (s : Set (Etau K τ)), ∀ i j, IsIntegral O (e • F r i j)`. Introduce `r hr`. Proceed by induction on `hr using Submodule.span_induction with`. Consider the case `mem x hx`. Introduce `i j`.
+
+Conclude with `he _ (Finset.mem_biUnion.mpr ⟨x, hx, Finset.mem_image.mpr ⟨(i, j), Finset.mem_univ _, rfl⟩⟩)`. Consider the case `zero`. Introduce `i j`. Simplify using `using (isIntegral_zero : IsIntegral O (0 : Lsq K Δ))`. Consider the case `add x y _ _ hx hy`.
+
+Introduce `i j`. Simplify `(hx i j).add (hy i j)` using `[smul_add]`. Consider the case `smul a x _ hx`. Introduce `i j`. Simplify `(hx i j).smul a` using `[smul_comm e a]`.
+
+Apply `cint_relIndex_ne_zero h hτ he0 H` to reduce the goal to its premises. Introduce `z _ r hr hq`. Rewrite using `[memH]`. Establish `hr' : r ∈ Submodule.span O (s : Set (Etau K τ))`. Rewrite using `[hs]`.
+
+Conclude with `hr`. Establish `hmat : ((y⁻¹ * ι z * y : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) = 1 + e • F r`. Rewrite using `[← hρ z, hq]`. Establish `hp : ((1, ofE Δ (1 + algebraMap O K e • r)) : Sp Δ τ) = 1 + e • ((0, ofEA O Δ τ r) : Sp Δ τ)`. Express the relevant statement in the definitionally equal form `((1, ofEA O Δ τ (1 + algebraMap O K e • r)) : Sp Δ τ) = _`.
+
+Rewrite using `[algebraMap_smul, map_add, map_one, map_smul]`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> simp`. Express the relevant statement in the definitionally equal form `ρO _ = _`. Rewrite using `[hp, map_add, map_one, map_smul]`. Both sides reduce to the same expression.
+
+Establish `hent : ∀ i j, IsIntegral O (((y⁻¹ * ι z * y : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) i j)`. Introduce `i j`. Rewrite using `[hmat, Matrix.add_apply, Matrix.smul_apply, Matrix.one_apply]`. Use `IsIntegral.add ?_ (hspan r hr' i j)` and prove the remaining obligations. Use `split_ifs`.
+
+Conclude with `isIntegral_one`. Conclude with `isIntegral_zero`. Introduce `i j`. Conclude with `⟨hent i j, su_star (hent i j)⟩`.
+-/
 theorem UpperTheory.V.Z.Sym.Loc.stabU :
     UpperTheory.V.Z.Sym.Loc.StabU := by
   classical

@@ -13,6 +13,11 @@ namespace GlobalTheory.PolFan.StarOnCell
 
 variable {X : Type} [AddCommGroup X]
 
+/- English proof (translation)
+Establish `h1 : ∑ i : Fin (n + 1), (Fin.cons (-1) c : Fin (n + 1) → ℝ) i • toReal ((LinearMap.id : LinearMap.BilinForm ℤ X →ₗ[ℤ] LinearMap.BilinForm ℤ X) ((Fin.cons β u : Fin (n + 1) → LinearMap.BilinForm ℤ X) i)) = 0`. Simplify using `[Fin.sum_univ_succ, h]`. Establish `h2` using `sum_mul_eq_zero_of_sum_toReal (j := LinearMap.id) (fun _ _ h => h) ℓ h1`. Simplify using `only [Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ] at h2`. Simplify using `at h2`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ell_of_eq {n : ℕ} (ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ) {β : LinearMap.BilinForm ℤ X}
     {u : Fin n → LinearMap.BilinForm ℤ X} {c : Fin n → ℝ} (h : toReal β = ∑ i, c i • toReal (u i)) :
     (ℓ β : ℝ) = ∑ i, c i * ℓ (u i) := by
@@ -25,6 +30,11 @@ theorem ell_of_eq {n : ℕ} (ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ) {�
   simp at h2
   linarith
 
+/- English proof (translation)
+Take `⟨d, hd, e⟩` from `h`. Use `⟨d, hd, ?_⟩` and prove the remaining obligations. Establish `e' : toReal β = ∑ i : Fin (m + 1), (Fin.cons t d : Fin (m + 1) → ℝ) i • toReal ((Fin.cons v γ : Fin (m + 1) → LinearMap.BilinForm ℤ X) i)`. Rewrite using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`.
+
+Rewrite using `[← e]`. Normalize the expressions using the abelian group laws. Rewrite using `[ell_of_eq ℓ e', Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`.
+-/
 theorem ell_of_sub_mem {m : ℕ} (ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ) {β v : LinearMap.BilinForm ℤ X}
     {γ : Fin m → LinearMap.BilinForm ℤ X} {t : ℝ} (h : toReal β - t • toReal v ∈ rcone γ) :
     ∃ d : Fin m → ℝ, (∀ j, 0 ≤ d j) ∧ (ℓ β : ℝ) = t * ℓ v + ∑ j, d j * ℓ (γ j) := by
@@ -39,6 +49,13 @@ theorem ell_of_sub_mem {m : ℕ} (ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] �
   rw [ell_of_eq ℓ e', Fin.sum_univ_succ]
   simp only [Fin.cons_zero, Fin.cons_succ]
 
+/- English proof (translation)
+Establish `hi : ∀ i, ∃ g : Fin n → ℝ, (∀ j, 0 ≤ g j) ∧ x i • toReal (δ i) = ∑ j, g j • toReal (u j)`. Introduce `i`. Distinguish the cases in `h0 : x i = 0`. Conclude with `⟨0, fun _ => le_rfl, by simp [h0]⟩`. Take `⟨c, hc, hcs⟩` from `h i h0`.
+
+Conclude with `⟨fun j => x i * c j, fun j => mul_nonneg (hx i) (hc j), by`. Rewrite using `[hcs, Finset.smul_sum]; exact Finset.sum_congr rfl fun j _ => by rw [smul_smul]⟩`. Use `choose g hg hgs using hi`. Use `⟨fun j => ∑ i, g i j, fun j => Finset.sum_nonneg fun i _ => hg i j, ?_⟩` and prove the remaining obligations. Rewrite using `[e, Finset.sum_congr rfl fun i _ => hgs i, Finset.sum_comm]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => by rw [Finset.sum_smul]`.
+-/
 theorem inRCone_of_sum {p n : ℕ} {δ : Fin p → LinearMap.BilinForm ℤ X} {u : Fin n → LinearMap.BilinForm ℤ X}
     {β : LinearMap.BilinForm ℤ X} (x : Fin p → ℝ) (hx : ∀ i, 0 ≤ x i) (e : toReal β = ∑ i, x i • toReal (δ i))
     (h : ∀ i, x i ≠ 0 → InRCone u (δ i)) : InRCone u β := by
@@ -55,6 +72,23 @@ theorem inRCone_of_sum {p n : ℕ} {δ : Fin p → LinearMap.BilinForm ℤ X} {u
   rw [e, Finset.sum_congr rfl fun i _ => hgs i, Finset.sum_comm]
   exact Finset.sum_congr rfl fun j _ => by rw [Finset.sum_smul]
 
+/- English proof (translation)
+Take `⟨c, hc, e⟩` from `hβ`. Take `⟨r, v, hiff, -⟩` from `GlobalTheory.MinkWeylReal.cone_orthant_fg (n + 1) ∅ (Set.range fun ab : X × X => (Fin.cons (-β ab.1 ab.2) (fun i => u i ab.1 ab.2) : Fin (n + 1) → ℤ)) Set.finite_empty`. Establish `h1 : (∀ i, 0 ≤ (Fin.cons 1 c : Fin (n + 1) → ℝ) i) ∧ (∀ a ∈ (∅ : Set (Fin (n + 1) → ℤ)), ∑ i, (a i : ℝ) * (Fin.cons 1 c : Fin (n + 1) → ℝ) i ≤ 0) ∧ (∀ b ∈ Set.range fun ab : X × X => (Fin.cons (-β ab.1 ab.2) (fun i => u i ab.1 ab.2) : Fin (n + 1) → ℤ), ∑ i, (b i : ℝ) * (Fin.cons …`. Use `⟨fun i => Fin.cases (by simp) (fun j => by simpa using hc j) i, by simp, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨a, b⟩, rfl⟩`.
+
+Establish `he` using `LinearMap.congr_fun₂ e a b`. Simplify using `only [toReal_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul] at he`. Rewrite using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, Int.cast_neg, mul_one]`. Rewrite using `[he]`.
+
+Rewrite using `[show ∑ i, (u i a b : ℝ) * c i = ∑ i, c i * (u i a b : ℝ) from Finset.sum_congr rfl fun i _ => mul_comm _ _]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨e', he', ht⟩` from `(hiff _).1 h1`. Establish `h0` using `congr_fun ht 0`. Simplify using `only [Fin.cons_zero, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h0`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, v k 0 ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Simplify using `[hne] at h0`. Establish `hv` using `(hiff fun i => (v k i : ℝ)).2 ⟨Pi.single k 1, fun j => by`.
+
+Apply the tactic sequence `by_cases h : j = k <;> simp [Pi.single_apply, h], by`. Use extensionality with `i`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single k (fun j _ hj => by simp [Pi.single_apply, hj]) (by simp)]`. Use the proof step `simp⟩`. Take `⟨-, -, hV⟩` from `hv`.
+
+Use `⟨v k 0, fun i => v k i.succ, Nat.pos_of_ne_zero hk, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Establish `h2` using `hV _ ⟨(a, b), rfl⟩`. Rewrite `h2` using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, Int.cast_neg] at h2`.
+
+Establish `h3 : ((v k 0 : ℤ) * β a b : ℝ) = ((∑ i, (v k i.succ : ℤ) * u i a b : ℤ) : ℝ)`. Use `push_cast`. Rewrite using `[show ∑ i, ((v k i.succ : ℝ) * (u i a b : ℝ)) = ∑ i, (u i a b : ℝ) * (v k i.succ : ℝ) from Finset.sum_congr rfl fun i _ => mul_comm _ _]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : (v k 0 : ℤ) * β a b = ∑ i, (v k i.succ : ℤ) * u i a b` using `by exact_mod_cast h3`.
+
+Simplify `h4` using `[LinearMap.sum_apply]`.
+-/
 theorem exists_nat_of_inRCone {n : ℕ} (u : Fin n → LinearMap.BilinForm ℤ X) (β : LinearMap.BilinForm ℤ X)
     (hβ : InRCone u β) : ∃ (k : ℕ) (c : Fin n → ℕ), 0 < k ∧ k • β = ∑ i, c i • u i := by
   classical
@@ -109,6 +143,13 @@ namespace GlobalTheory.PolFan.StarOnCell
 variable {O : Type} [CommRing O] {bar : O → O} {ψ w : InvFun O} {X : Type} [AddCommGroup X] [Module O X]
   [Module.Finite O X] {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X}
 
+/- English proof (translation)
+Take `⟨c, hc, e⟩` from `hβ`. Establish `hpos' : (0 : ℝ) < h β₀` using `by exact_mod_cast hpos`. Establish `hhβ : (0 : ℝ) ≤ h β`. Rewrite using `[ell_of_eq h e]`. Conclude with `Finset.sum_nonneg fun i _ => mul_nonneg (hc i) (by exact_mod_cast hh i)`.
+
+Establish `key` using `evalR_starDepth_le O bar ψ w X m γ (toReal β) ((h β : ℝ) / h β₀) hγ ⟨c, hc, e⟩ (div_nonneg hhβ hpos'.le) (fun v hv hvp hwv hvin t ht hrest => by`. Take `rfl` from `huniq v hv hvp hwv hvin`. Take `⟨d, hd, hrel⟩` from `ell_of_sub_mem h hrest`. Rewrite using `[le_div_iff₀ hpos']`. Establish `: (0 : ℝ) ≤ ∑ j, d j * h (γ j)` using `Finset.sum_nonneg fun j _ => mul_nonneg (hd j) (by exact_mod_cast hh j)`.
+
+Use the proof step `linarith)`. Rewrite `key` using `[evalR_toReal]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mul_starDepth_le (hγ : IsCell bar ψ γ) {β₀ : LinearMap.BilinForm ℤ X}
     (huniq : ∀ v ∈ balForms bar X, (∀ y, 0 ≤ v y y) → w.evalZ v = 1 → InRCone γ v → v = β₀)
     (h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ) (hh : ∀ j, 0 ≤ h (γ j)) (hpos : 0 < h β₀)
@@ -136,6 +177,29 @@ end GlobalTheory.PolFan.StarOnCell
 
 open GlobalTheory.PolFan.StarOnCell in
 
+/- English proof (translation)
+Introduce `E _ _ _ H q ψ w _ hc X _ _ _ _ hX m γ hγ β₀ hβ₀ hβ₀p hw hin m' s h hf hpos`. Establish `huniq : ∀ v ∈ balForms H.bar X, (∀ y, 0 ≤ v y y) → w.evalZ v = 1 → InRCone γ v → v = β₀` using `fun v hv hvp hwv hvin => (hc X hX).2.2 m γ hγ v hv hvp β₀ hβ₀ hβ₀p hwv hw hvin hin`. Establish `hne : β₀ ≠ 0`. Introduce and unpack `rfl`. Use `(hc X hX).2.1 0 hβ₀ hβ₀p hw 2 0 (by simp)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hpos' : (0 : ℝ) < h β₀` using `by exact_mod_cast hpos`. Establish `hI : ∀ β, InRCone γ β → (h β₀ : ℝ) * (starDepth H.bar ψ w).evalZ β ≤ h β` using `fun β hβ => mul_starDepth_le hγ huniq h hf.1 hpos hβ`. Use `⟨fun β _ _ hβ => hI β hβ, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `le_antisymm ?_ ?_` and prove the remaining obligations.
+
+Use `hI β₀ hin` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hl` using `GlobalTheory.T.centreDepth_le_starDepth_of_cell (𝓞 E) H.bar ψ w X m γ (toReal β₀) β₀ 1 hγ (by`. Take `⟨c, hc0, e⟩` from `hin`. Conclude with `⟨c, hc0, e⟩) hβ₀ hβ₀p hw hin hne huniq zero_le_one`.
+
+Use the proof step `(by rw [one_smul, sub_self]; exact ⟨0, fun _ => le_rfl, by simp⟩)`. Rewrite `hl` using `[evalR_toReal]`. Then use the resulting hypothesis. Introduce `j`. Establish `h0 : h (γ (s j)) = 0` using `(hf.2 (s j)).2 ⟨j, rfl⟩`. Use `hI (γ (s j)) (inRCone_self γ (s j))` as an intermediate fact.
+
+Rewrite `this` using `[h0, Int.cast_zero]`. Establish `hnn : 0 ≤ (starDepth H.bar ψ w).evalZ (γ (s j))` using `starDepth_eval_nonneg _`. Use the polynomial consequences of the given equalities and inequalities. Introduce `β _ _ hβ heq`. Establish `hβr : toReal β ∈ rcone γ` using `by obtain ⟨c, hc0, e⟩ := hβ; exact ⟨c, hc0, e⟩`.
+
+Take `⟨m'', s'', h'', hf'', hpos'', t, ht, e⟩` from `GlobalTheory.StarCover.star_cover X m γ β₀ (toReal β) (fun i => (hγ.mem i).1) hγ.nonneg hne hin hβr`. Establish `hpos''' : (0 : ℝ) < h'' β₀` using `by exact_mod_cast hpos''`. Establish `r2` using `ell_of_eq h'' e`. Rewrite `r2` using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ] at r2`.
+
+Establish `z2 : ∀ j, (h'' (γ (s'' j)) : ℝ) = 0` using `fun j => by`. Rewrite using `[(hf''.2 (s'' j)).2 ⟨j, rfl⟩, Int.cast_zero]`. Simplify using `only [z2, mul_zero, Finset.sum_const_zero, add_zero] at r2`. Establish `hle : (starDepth H.bar ψ w).evalZ β ≤ t 0`. Use `mul_starDepth_le hγ huniq h'' hf''.1 hpos'' hβ` as an intermediate fact.
+
+Rewrite `this` using `[r2]`. Use the polynomial consequences of the given equalities and inequalities. Establish `r1` using `ell_of_eq h e`. Rewrite `r1` using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ] at r1`.
+
+Establish `hnn : ∀ j ∈ Finset.univ, 0 ≤ t j.succ * (h (γ (s'' j)) : ℝ)` using `fun j _ => mul_nonneg (ht _) (by exact_mod_cast hf.1 _)`. Establish `hsum : ∑ j, t j.succ * (h (γ (s'' j)) : ℝ) = 0`. Use `le_antisymm ?_ (Finset.sum_nonneg hnn)` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Establish `hz` using `(Finset.sum_eq_zero_iff_of_nonneg hnn).1 hsum`.
+
+Establish `hcone : InRCone (Fin.cons β₀ fun j => γ (s j) : Fin (m' + 1) → LinearMap.BilinForm ℤ X) β`. Use `inRCone_of_sum t ht e fun i hi => ?_` and prove the remaining obligations. Use `Fin.cases (fun _ => ?_) (fun j hj => ?_) i hi` and prove the remaining obligations. Simplify using `using inRCone_self (Fin.cons β₀ fun j => γ (s j) : Fin (m' + 1) → LinearMap.BilinForm ℤ X) 0`. Establish `h0 : (h (γ (s'' j)) : ℝ) = 0` using `(mul_eq_zero.1 (hz j (Finset.mem_univ _))).resolve_left hj`.
+
+Establish `h0' : h (γ (s'' j)) = 0` using `by exact_mod_cast h0`. Take `⟨k, hk⟩` from `(hf.2 (s'' j)).1 h0'`. Simplify `inRCone_self (Fin.cons β₀ fun j => γ (s j) : Fin (m' + 1) → LinearMap.BilinForm ℤ X) k.succ` using `[hk]`. Conclude with `exists_nat_of_inRCone _ β hcone`.
+-/
 theorem GlobalTheory.PolFan.starDepth_on_cell : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ)
     (ψ w : InvFun (𝓞 E)), IsPolyFan H.bar q ψ → IsCentreSet H.bar q ψ w → ∀ (X : Type) [AddCommGroup X]
     [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Module.finrank (𝓞 E) X ≤ q →

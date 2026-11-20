@@ -23,6 +23,9 @@ variable (K) in
 
 def extD : abelian₂ K →+ abelian₂ K := (CechDR.dDR ℤ K).toAddMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem extD_apply (η : abelian₂ K) : extD K η = CechDR.dDR ℤ K η := rfl
 
 def dlog (g : Kˣ) : Ω[K⁄ℤ] := ((g⁻¹ : Kˣ) : K) • dK (g : K)
@@ -74,6 +77,9 @@ variable {X : Scheme.{0}} [IsIntegral X]
 def locRing (y : X) : Subring X.functionField :=
   (algebraMap (X.presheaf.stalk y) X.functionField).range
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_locRing {y : X} {f : X.functionField} : f ∈ locRing y ↔ RegAt y f := Iff.rfl
 
 def LogUnit (Z : Set X) (y : X) (g : X.functionFieldˣ) : Prop :=

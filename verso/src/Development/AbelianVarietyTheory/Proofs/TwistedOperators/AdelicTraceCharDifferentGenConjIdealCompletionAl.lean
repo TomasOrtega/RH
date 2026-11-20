@@ -16,6 +16,11 @@ namespace GlobalTheory.XCharBF
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `FractionalIdeal.mul_induction_on (C := fun a => D.host.conj a ∈ D.host.AA * D.host.AAbar) ha ?_ ?_` and prove the remaining obligations. Introduce `x hx y hy`. Rewrite using `[map_mul, mul_comm (D.host.conj x)]`. Conclude with `FractionalIdeal.mul_mem_mul (Formalism.L2.Pj.conj_mem_AA D hy) (Formalism.L2.Pj.conj_mem_AAbar D hx)`. Introduce `x y hx hy`.
+
+Rewrite using `[map_add]`. Conclude with `Submodule.add_mem (p := ((D.host.AA * D.host.AAbar : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) : Submodule (𝓞 D.host.E) D.host.E)) hx hy`.
+-/
 theorem conj_mem_AA_mul_AAbar {a : D.host.E} (ha : a ∈ D.host.AA * D.host.AAbar) :
     D.host.conj a ∈ D.host.AA * D.host.AAbar := by
   refine FractionalIdeal.mul_induction_on (C := fun a => D.host.conj a ∈ D.host.AA * D.host.AAbar) ha ?_ ?_
@@ -27,6 +32,9 @@ theorem conj_mem_AA_mul_AAbar {a : D.host.E} (ha : a ∈ D.host.AA * D.host.AAba
     exact Submodule.add_mem (p := ((D.host.AA * D.host.AAbar : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) :
       Submodule (𝓞 D.host.E) D.host.E)) hx hy
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `_ ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)`. Rewrite using `[← Formalism.L2.Pj.dual_eq Formalism.IndefR.Fin.factPrincipalDatum D]`. Establish `h` using `FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_spanSingleton_self (nonZeroDivisors (𝓞 D.host.E)) D.host.xi0) ha`. Rewrite `h` using `[← mul_assoc]`. Then use the resulting hypothesis.
+-/
 theorem hostDifferentGenerator_mul_mem_inverseDifferent {a : D.host.E} (ha : a ∈ D.host.AA * D.host.AAbar) :
     D.host.xi0 * a ∈ GlobalTheory.IdeleAA.Dual D := by
   change _ ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)
@@ -34,18 +42,30 @@ theorem hostDifferentGenerator_mul_mem_inverseDifferent {a : D.host.E} (ha : a �
   have h := FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_spanSingleton_self (nonZeroDivisors (𝓞 D.host.E)) D.host.xi0) ha
   rwa [← mul_assoc] at h
 
+/- English proof (translation)
+Unfold `psiE`. Rewrite using `[map_add, AddChar.map_add_eq_mul]`.
+-/
 theorem psiE_add' (ψ : AddChar (AF D.host.F) ℂ) (x y : AE D) : psiE ψ (x + y) = psiE ψ x * psiE ψ y := by
   unfold psiE
   rw [map_add, AddChar.map_add_eq_mul]
 
+/- English proof (translation)
+Unfold `psiE`. Rewrite using `[map_zero, AddChar.map_zero_eq_one]`.
+-/
 theorem psiE_zero' (ψ : AddChar (AF D.host.F) ℂ) : psiE ψ (0 : AE D) = 1 := by
   unfold psiE
   rw [map_zero, AddChar.map_zero_eq_one]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.IdeleAA.tmul_eq, map_mul, GlobalTheory.SelfDualAt.cA_alg, GlobalTheory.IdeleAA.cA_incA, ← GlobalTheory.IdeleAA.tmul_eq]`.
+-/
 theorem cA_tmul' (p : AF D.host.F) (e : D.host.E) :
     cA D (p ⊗ₜ[D.host.F] e) = p ⊗ₜ[D.host.F] D.host.conj e := by
   rw [GlobalTheory.IdeleAA.tmul_eq, map_mul, GlobalTheory.SelfDualAt.cA_alg, GlobalTheory.IdeleAA.cA_incA, ← GlobalTheory.IdeleAA.tmul_eq]
 
+/- English proof (translation)
+Establish `e : incA D D.host.xi0 * cA D (pairA D.host.F 0 α ⊗ₜ[D.host.F] a) = pairA D.host.F 0 α ⊗ₜ[D.host.F] (D.host.xi0 * D.host.conj a)`. Rewrite using `[cA_tmul', GlobalTheory.IdeleAA.tmul_eq, GlobalTheory.IdeleAA.tmul_eq, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, GlobalTheory.FinPl.Conductor.psiE_eq_chi ψ (by exact TensorProduct.zero_tmul _ _)]`. Conclude with `GlobalTheory.IdeleAA.chi_tmul_dual hψ hα (hostDifferentGenerator_mul_mem_inverseDifferent (conj_mem_AA_mul_AAbar ha))`.
+-/
 theorem adelicTraceChar_differentGen_conj_integral_tmul {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {α : Af D.host.F}
     (hα : α ∈ intAf D.host.F) {a : D.host.E} (ha : a ∈ D.host.AA * D.host.AAbar) :
     psiE ψ (incA D D.host.xi0 * cA D (pairA D.host.F 0 α ⊗ₜ[D.host.F] a)) = 1 := by
@@ -56,6 +76,13 @@ theorem adelicTraceChar_differentGen_conj_integral_tmul {ψ : AddChar (AF D.host
   rw [e, GlobalTheory.FinPl.Conductor.psiE_eq_chi ψ (by exact TensorProduct.zero_tmul _ _)]
   exact GlobalTheory.IdeleAA.chi_tmul_dual hψ hα (hostDifferentGenerator_mul_mem_inverseDifferent (conj_mem_AA_mul_AAbar ha))
 
+/- English proof (translation)
+Introduce `D ψ hψ s hs`. Proceed by induction on `hs using AddSubgroup.closure_induction with`. Consider the case `mem s hs`. Take `⟨α, hα, a, ha, rfl⟩` from `hs`. Conclude with `adelicTraceChar_differentGen_conj_integral_tmul hψ hα ha`.
+
+Consider the case `zero => rw [map_zero, mul_zero]`. Conclude with `psiE_zero' ψ`. Consider the case `add x y _ _ hx hy => rw [map_add, mul_add, psiE_add', hx, hy, one_mul]`. Consider the case `neg x _ hx`. Establish `h` using `psiE_add' ψ (incA D D.host.xi0 * cA D x) (incA D D.host.xi0 * cA D (-x))`.
+
+Rewrite `h` using `[← mul_add, ← map_add, add_neg_cancel, map_zero, mul_zero, psiE_zero', hx, one_mul]`. Conclude with `h.symm`.
+-/
 theorem adelicTraceChar_differentGen_conj_idealCompletion : ∀ {D : D7} {ψ : AddChar (AF D.host.F) ℂ}, IsStdChar D ψ (-1) →
     ∀ s ∈ complId (D.host.AA * D.host.AAbar), psiE ψ (incA D D.host.xi0 * cA D s) = 1 := by
   intro D ψ hψ s hs

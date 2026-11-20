@@ -11,28 +11,48 @@ variable {R : Type} [CommRing R] {r : ℕ}
 def cornerM (r : ℕ) (c : R) : Matrix (Fin (r + 1)) (Fin (r + 1)) R :=
   Matrix.of fun a b => if a = Fin.last r ∧ b = Fin.last r then c else 0
 
+/- English proof (translation)
+Simplify using `[cornerM, (Fin.castSucc_lt_last a).ne]`.
+-/
 theorem cornerM_castSucc_left (c : R) (a : Fin r) (b : Fin (r + 1)) :
     cornerM r c a.castSucc b = 0 := by
   simp [cornerM, (Fin.castSucc_lt_last a).ne]
 
+/- English proof (translation)
+Simplify using `[cornerM, (Fin.castSucc_lt_last b).ne]`.
+-/
 theorem cornerM_castSucc_right (c : R) (a : Fin (r + 1)) (b : Fin r) :
     cornerM r c a b.castSucc = 0 := by
   simp [cornerM, (Fin.castSucc_lt_last b).ne]
 
+/- English proof (translation)
+Simplify using `[cornerM]`.
+-/
 theorem cornerM_last (c : R) : cornerM r c (Fin.last r) (Fin.last r) = c := by
   simp [cornerM]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [cornerM, Matrix.map_apply, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem cornerM_map {S : Type} [CommRing S] (f : R →+* S) (c : R) :
     (cornerM r c).map f = cornerM r (f c) := by
   ext a b
   simp only [cornerM, Matrix.map_apply, Matrix.of_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, Matrix.add_apply, cornerM_castSucc_left, add_zero]`.
+-/
 theorem head_add_cornerM (A : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (c : R) :
     (A + cornerM r c).submatrix Fin.castSucc Fin.castSucc = A.submatrix Fin.castSucc Fin.castSucc := by
   ext a b
   simp only [Matrix.submatrix_apply, Matrix.add_apply, cornerM_castSucc_left, add_zero]
 
+/- English proof (translation)
+Establish `hsub : (A.updateRow (Fin.last r) (Pi.single (Fin.last r) 1)).submatrix Fin.castSucc Fin.castSucc = A.submatrix Fin.castSucc Fin.castSucc`. Use extensionality with `a b`. Simplify using `[Matrix.updateRow_ne (Fin.castSucc_lt_last a).ne]`. Rewrite using `[Matrix.det_succ_row _ (Fin.last r), Finset.sum_eq_single (Fin.last r)]`. Rewrite using `[Fin.succAbove_last, hsub, Matrix.updateRow_self, Pi.single_eq_same, mul_one, Fin.val_last, ← two_mul, pow_mul, neg_one_sq, one_pow, one_mul]`.
+
+Introduce `j _ hj`. Rewrite using `[Matrix.updateRow_self, Pi.single_eq_of_ne hj, mul_zero, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem det_updateRow_last_single (A : Matrix (Fin (r + 1)) (Fin (r + 1)) R) :
     (A.updateRow (Fin.last r) (Pi.single (Fin.last r) 1)).det =
       (A.submatrix Fin.castSucc Fin.castSucc).det := by
@@ -48,6 +68,11 @@ theorem det_updateRow_last_single (A : Matrix (Fin (r + 1)) (Fin (r + 1)) R) :
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Establish `h : A + cornerM r c = A.updateRow (Fin.last r) (A (Fin.last r) + c • Pi.single (Fin.last r) 1)`. Use extensionality with `i j`. Distinguish the cases in `hi : i = Fin.last r`. Substitute `hi` using the available equality. Distinguish the cases in `hj : j = Fin.last r`.
+
+Substitute `hj` using the available equality. Simplify using `[cornerM]`. Simplify using `[cornerM, hj, Pi.single_apply]`. Simplify using `[cornerM, hi, Matrix.updateRow_ne hi]`. Rewrite using `[h, Matrix.det_updateRow_add, Matrix.det_updateRow_smul, Matrix.updateRow_eq_self, det_updateRow_last_single]`.
+-/
 theorem det_add_cornerM (A : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (c : R) :
     (A + cornerM r c).det = A.det + c * (A.submatrix Fin.castSucc Fin.castSucc).det := by
   have h : A + cornerM r c =
@@ -63,6 +88,9 @@ theorem det_add_cornerM (A : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (c : R) :
   rw [h, Matrix.det_updateRow_add, Matrix.det_updateRow_smul, Matrix.updateRow_eq_self,
     det_updateRow_last_single]
 
+/- English proof (translation)
+Unfold `headCols`. Simplify using `only [Matrix.add_apply, cornerM_castSucc_right, add_zero]`.
+-/
 theorem headCols_add_cornerM (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (c : R) :
     headCols (Z + cornerM r c) = headCols Z := by
   unfold headCols
@@ -71,12 +99,23 @@ theorem headCols_add_cornerM (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (c : R) 
 def mbeShift (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (c : R) : MbMod (Z + cornerM r c) ≃ₗ[R] MbMod Z :=
   Submodule.quotEquivOfEq _ _ (headCols_add_cornerM Z c)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mbeShift_mk (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (c : R) (v : Fin (r + 1) → R) :
     mbeShift Z c (Submodule.Quotient.mk v) = Submodule.Quotient.mk v := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mbeShift_eCl (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (c : R) :
     mbeShift Z c (eCl (Z + cornerM r c)) = eCl Z := rfl
 
+/- English proof (translation)
+Unfold `bCls eCl`. Rewrite using `[mbeShift_mk, ← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = Fin.last r`.
+
+Substitute `hi` using the available equality. Simplify using `[cornerM]`. Simplify using `[cornerM, hi, Pi.single_apply]`.
+-/
 theorem mbeShift_bCls (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (c : R) :
     mbeShift Z c (bCls (Z + cornerM r c)) = bCls Z + c • eCl Z := by
   unfold bCls eCl
@@ -88,6 +127,17 @@ theorem mbeShift_bCls (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (c : R) :
     simp [cornerM]
   · simp [cornerM, hi, Pi.single_apply]
 
+/- English proof (translation)
+Establish `he₁` using `mbeShift_eCl Z₁ c`. Establish `he₂` using `mbeShift_eCl Z₂ c`. Establish `hb₁` using `mbeShift_bCls Z₁ c`. Establish `hb₂` using `mbeShift_bCls Z₂ c`. Use `Nat.card_congr { toFun := fun γ => ⟨((mbeShift Z₁ c).symm.trans γ.1).trans (mbeShift Z₂ c), ?_, ?_⟩ invFun := fun δ => ⟨((mbeShift Z₁ c).trans δ.1).trans (mbeShift Z₂ c).symm, ?_, ?_⟩ left_inv := ?_ right_inv := ?_ }` and prove the remaining obligations.
+
+Establish `k : (mbeShift Z₁ c).symm (bCls Z₁) = bCls (Z₁ + cornerM r c) - c • eCl (Z₁ + cornerM r c)`. Rewrite using `[LinearEquiv.symm_apply_eq, map_sub, map_smul, hb₁, he₁, add_sub_cancel_right]`. Simplify using `only [LinearEquiv.trans_apply, k, map_sub, map_smul, γ.2.1, γ.2.2, hb₂, he₂, add_sub_cancel_right]`. Establish `k : (mbeShift Z₁ c).symm (eCl Z₁) = eCl (Z₁ + cornerM r c)`. Rewrite using `[LinearEquiv.symm_apply_eq, he₁]`.
+
+Simplify using `only [LinearEquiv.trans_apply, k, γ.2.2, he₂]`. Simplify using `only [LinearEquiv.trans_apply, hb₁, map_add, map_smul, δ.2.1, δ.2.2]`. Rewrite using `[← map_smul, ← map_add, LinearEquiv.symm_apply_eq, hb₂]`. Simplify using `only [LinearEquiv.trans_apply, he₁, δ.2.2]`. Rewrite using `[LinearEquiv.symm_apply_eq, he₂]`.
+
+Introduce `γ`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearEquiv.ext` to reduce the goal to its premises. Introduce `x`. Simplify using the standard rewrite rules.
+
+Introduce `δ`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearEquiv.ext` to reduce the goal to its premises. Introduce `x`. Simplify using the standard rewrite rules.
+-/
 theorem card_isoMbe_shift (Z₁ Z₂ : Matrix (Fin (r + 1)) (Fin (r + 1)) R) (c : R) :
     Nat.card (IsoMbe (Z₁ + cornerM r c) (Z₂ + cornerM r c)) = Nat.card (IsoMbe Z₁ Z₂) := by
   have he₁ := mbeShift_eCl Z₁ c

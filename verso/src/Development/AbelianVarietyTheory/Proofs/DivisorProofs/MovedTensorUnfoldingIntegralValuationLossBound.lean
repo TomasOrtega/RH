@@ -34,12 +34,22 @@ noncomputable section
 
 namespace GlobalTheory.UnfoldLoss
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `Model.secondCountable_and_t2_local_field (k := k)`. Unfold `varsVol`. Use `infer_instance`.
+-/
 theorem varsVol_isAddLeftInvariant {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (G : Grid k) (ν : Measure k) [ν.IsAddHaarMeasure] : (varsVol G ν).IsAddLeftInvariant := by
   obtain ⟨_, _⟩ := Model.secondCountable_and_t2_local_field (k := k)
   unfold varsVol
   infer_instance
 
+/- English proof (translation)
+Take `⟨y, rfl, hy⟩` from `h`. Take `⟨y', rfl, hy'⟩` from `h'`. Use `⟨y * y', map_mul _ _ _, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : y = 0`. Conclude with `Or.inl (by simp [h0])`.
+
+Distinguish the cases in `h0' : y' = 0`. Conclude with `Or.inl (by simp [h0'])`. Break down `hy with h1 | h1` into its components or cases. Conclude with `absurd h1 h0`. Break down `hy' with h2 | h2` into its components or cases.
+
+Conclude with `absurd h2 h0'`. Use `Or.inr ?_` and prove the remaining obligations. Rewrite using `[Formalism.DivisionValues.ValuationRepresentative.vw_mul w _ _ h0 h0', Int.cast_add]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem lossLe_mul' {D : D7} {w : PlL D} {z z' : ℂ} {a a' : ℝ} (h : LossLe w z a) (h' : LossLe w z' a') :
     LossLe w (z * z') (a + a') := by
   obtain ⟨y, rfl, hy⟩ := h
@@ -62,6 +72,47 @@ section Main
 variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks]
   [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
+/- English proof (translation)
+Establish `hL : R.toLevCh.Is A.μ0` using `hS.core.lev`. Establish `hde` using `GlobalTheory.FlipIntegrand.pde_ne_q_of_setting hS`. Establish `hc' : ∀ Q ∈ R.toLevCh.Q t, ((Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ Q.asIdeal` using `hIs.guard t`. Establish `hm : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Establish `hTT` using `isTensor_Tflip hL ch.W ch.S.B t Φ hde hc' P.2`.
+
+Establish `hcond : HasConductor (psiAt ch.W P.1) 1` using `(((Good.locGrid_isGood hL ch.G ch.W t hde hc').1 P.1 P.2).square 0 hm 0 hm).cond`. Use `haveI := (isUnitVol_unitVol P.1).1`. Take `⟨_, _⟩` from `Model.secondCountable_and_t2_local_field (k := Kw P.1)`. Use `haveI : (varsVol (locGrid ch.G t P) (unitVol P.1)).IsAddLeftInvariant := varsVol_isAddLeftInvariant _ _`. Use `set S := moved (locGrid ch.G t P) (keepAt ch.G P) ((repsAt ch.G t P).elt (β P)) (Tflip ch.W ch.S.B t Φ P) with hSdef`.
+
+Use `set f := flatIntegrand one_le_sLen (psiAt ch.W P.1) S X Y with hf`. Establish `hdat : (ch.S.term t Φ β P).datum X Y = ∫ e, f e ∂(varsVol (locGrid ch.G t P) (unitVol P.1))` using `rfl`. Establish `hcpt : HasCompactSupport f` using `hasCompactSupport_flatIntegrand one_le_sLen _ hTT _ _ X Y`. Use `set q : ℕ := resCard (Kw (P : Pl D.host.E)) with hq`. Use `set vq : ℝ := (vw w ((q : ℕ) : D.what₂.LL) : ℝ) with hvq`.
+
+Establish `hvq0 : 0 ≤ vq`. Rewrite using `[hvq]`. Conclude with `ResidueCardinalityNilpotence.GlobalTheory.CompanionTheory.VolVal.vw_nat_nonneg w q` after adjusting the coercions. Establish `hq0 : 0 < q` using `Nat.pos_of_ne_zero (ResidueCardinalityNilpotence.GlobalTheory.CompanionTheory.VolVal.resCard_ne P.1)`. Distinguish the cases in `h0 : (ch.S.term t Φ β P).datum X Y = 0`.
+
+Rewrite using `[h0]`. Conclude with `⟨0, map_zero _, Or.inl rfl⟩`. Establish `hval : ∀ K1 : ℝ, (∀ z, LossLe w (S z) (c + K1)) → ∀ v, LossLe w (f v) (c + K1)`. Introduce `K1 hK v`. Distinguish the cases in `hv : S (fill one_le_sLen X Y v) = 0`.
+
+Establish `: f v = 0` using `by simp [hf, flatIntegrand, hv]`. Rewrite using `[this]`. Conclude with `⟨0, map_zero _, Or.inl rfl⟩`. Establish `hψ` using `GlobalTheory.T.coeffValuationLossLe_addChar_neg_unfoldingPhase ch large₂ F CF b hS hIs hSc hF t Φ β hβ P X Y v h0 hv w`. Use `lossLe_mul' (hK (fill one_le_sLen X Y v)) hψ` as an intermediate fact.
+
+Rewrite `this` using `[add_zero]`. Conclude with `this`. Establish `hint : ∀ (n : ℕ) (K1 : ℝ), (∀ v, ∀ u ∈ varLat (locGrid ch.G t P) (unifAt P.1) n, ∀ u' ∈ varLat (locGrid ch.G t P) (unifAt P.1) n, f (v + u + u') * f v = f (v + u) * f (v + u')) → (∀ v, LossLe w (f v) (c + K1)) → LossLe w ((ch.S.term t Φ β P).datum X Y) (c + K1 + ((n * varCount (l …`. Introduce `n K1 hrel hv`. Take `⟨-, hlat⟩` from `GlobalTheory.T.variablesUniformizerPowerLattice_basis_open_volume (locGrid ch.G t P) (unitVol P.1) (isUnitVol_unitVol P.1) (unifAt P.1) (isUnif_unifAt P.1)`.
+
+Take `⟨hop, hfin, hvol⟩` from `hlat n`. Take `⟨s, hs⟩` from `GlobalTheory.T.integral_eq_volume_sum_characterTwistedCosets (varsVol (locGrid ch.G t P) (unitVol P.1)) _ hop hfin f hcpt hrel`. Rewrite using `[hdat, hs, hvol]`. Take `⟨h1, h2⟩` from `GlobalTheory.T.coeffValuationLoss_finsetSum_and_invPow w`. Conclude with `lossLe_mul' (h1 s f _ fun i _ => hv i) (h2 q _ hq0)`.
+
+Distinguish the cases in `hW : (P : Pl D.host.E) ∈ ch.G.pl.W0`. Use `set e := cosExp ch.G P with he`. Establish `hdep : depthAt ch.G P = e`. Take `⟨v, hv, hvP⟩` from `Finset.mem_image.1 hW`. Use `depthAt_w ch.G hv` as an intermediate fact.
+
+Rewrite using `[he, ← hvP, this.1, this.2]`. Rewrite `hTT` using `[hdep]`. Establish `hkeep : keepAt ch.G P = false` using `by simp [keepAt, hW]`. Establish `hO` using `oneCoset one_le_sLen (psiAt ch.W P.1) (unitVol P.1) (givenLevel ch.G t P) (Tflip ch.W ch.S.B t Φ P) (unifAt P.1) e D.R.m_even (isUnif_unifAt P.1) hcond hTT (fun j hj _ => ResidueCardinalityNilpotence.GlobalTheory.CompanionTheory.VolVal.givenLevel_KO ch.G t P hj)`. Establish `hb : β P ∈ unfSupport (psiAt ch.W P.1) (unitVol P.1) false (Reps.through one_le_sLen (givenLevel ch.G t P) (stair (locGrid ch.G t P) (unifAt P.1) e)) (Tflip ch.W ch.S.B t Φ P)`.
+
+Use `hβ P` as an intermediate fact. Rewrite `this` using `[hkeep]`. Conclude with `this`. Establish `hβ'` using `funext (hO _ hb)`. Establish `hSeq : S = moved (locGrid ch.G t P) (keepAt ch.G P) ((Reps.through one_le_sLen (givenLevel ch.G t P) (stair (locGrid ch.G t P) (unifAt P.1) e)).elt fun i => DoubleCoset.mk _ _ (stair (locGrid ch.G t P) (unifAt P.1) e (i + 1))) (Tflip ch.W ch.S.B t Φ P)`.
+
+Rewrite using `[hSdef, ← hβ']`. Both sides reduce to the same expression. Establish `hrel : ∀ v, ∀ u ∈ varLat (locGrid ch.G t P) (unifAt P.1) (D.R.m * e), ∀ u' ∈ varLat (locGrid ch.G t P) (unifAt P.1) (D.R.m * e), f (v + u + u') * f v = f (v + u) * f (v + u')`. Introduce `v u hu u' hu'`. Establish `hper` using `GlobalTheory.T.movedStaircaseTensor_periodic_uniformizerPow (locGrid ch.G t P) one_le_sLen (unifAt P.1) (isUnif_unifAt P.1) e _ hTT (givenLevel ch.G t P) (keepAt ch.G P) X Y`.
+
+Establish `hψ2` using `GlobalTheory.T.addChar_neg_unfoldingPhase_mul_uniformizerPowLattice (locGrid ch.G t P) (psiAt ch.W P.1) hcond (unifAt P.1) (isUnif_unifAt P.1) _ X v u u' hu hu'`. Establish `e1` using `hper (v + u) u' hu'`. Establish `e2` using `hper v u hu`. Establish `e3` using `hper v u' hu'`. Rewrite `e1`, `e2`, `e3` using `[← hSeq]`.
+
+Simplify using `only [hf, flatIntegrand]`. Rewrite using `[e1, e2, e3]`. Take the linear combination `(S (fill one_le_sLen X Y v)) ^ 2 * hψ2`. Establish `hmov` using `GlobalTheory.T.movedTensorChosenPlace_coeffValuationLoss_le ch large₂ F CF b hS hIs hSc hF t Φ β hβ P hW w c hc hT`. Establish `h1` using `hint (D.R.m * e) _ hrel (hval _ hmov)`.
+
+Use `h1.mono ?_` and prove the remaining obligations. Establish `hcount` using `GlobalTheory.T.stepVariablesCount_gridLocalFlipGrid_le ch.G t P`. Establish `hle : ((D.R.m * e * varCount (locGrid ch.G t P) : ℕ) : ℝ) ≤ (D.R.m : ℝ) ^ 2 * (bigN D : ℝ) ^ 2 * (e : ℝ)`. Establish `h2 : D.R.m * e * varCount (locGrid ch.G t P) ≤ D.R.m * e * (D.R.m * bigN D ^ 2)` using `Nat.mul_le_mul_left _ hcount`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `h2` after adjusting the coercions. Use `_ = _ := by push_cast; ring`. Establish `h3` using `mul_le_mul_of_nonneg_right hle hvq0`. Use the polynomial consequences of the given equalities and inequalities. Establish `hw : ((Formalism.EigenvalueLevelCeiling.plc (P : Pl D.host.E) : ℕ) : 𝓞 D.what₂.LL) ∉ w.asIdeal` using `hcase.resolve_left hW`.
+
+Establish `hv0 : vq = 0` using `by rw [hvq]; exact_mod_cast GlobalTheory.T.coeffPlace_valuation_residueFieldCard_eq_zero_of_not_mem P.1 w hw`. Establish `he0 : cosExp ch.G P = 0` using `(depthAt_of_notMem ch.G hW).1`. Establish `hlc : IsLocallyConstant f`. Establish `hmv : Continuous ((locGrid ch.G t P).moveArgs .one ((repsAt ch.G t P).elt (β P)))` using `continuous_pi fun b => (continuous_const.matrix_mul (continuous_apply b)).matrix_mul continuous_const`. Establish `hψ : IsLocallyConstant fun e => ((psiAt ch.W P.1 (-phase X e) : Circle) : ℂ)` using `((hcond.isLocallyConstant.comp Subtype.val).comp_continuous (continuous_phase X).neg)`.
+
+Conclude with `((IsLocallyConstant.const _).mul ((IsLocallyConstant.const _).mul ((isLocallyConstant_of_isTensor hTT).comp_continuous (hmv.comp (continuous_fill one_le_sLen X Y))))).mul hψ`. Take `⟨hbasis, -⟩` from `GlobalTheory.T.variablesUniformizerPowerLattice_basis_open_volume (locGrid ch.G t P) (unitVol P.1) (isUnitVol_unitVol P.1) (unifAt P.1) (isUnif_unifAt P.1)`. Take `⟨n, hn⟩` from `hbasis _ ((GlobalTheory.LCIntegralField.isOpen_stab hlc hcpt).mem_nhds (zero_mem _))`. Establish `hrel : ∀ v, ∀ u ∈ varLat (locGrid ch.G t P) (unifAt P.1) n, ∀ u' ∈ varLat (locGrid ch.G t P) (unifAt P.1) n, f (v + u + u') * f v = f (v + u) * f (v + u')`. Introduce `v u hu u' hu'`.
+
+Establish `e1 : ∀ y, f (y + u) = f y` using `hn hu`. Establish `e2 : ∀ y, f (y + u') = f y` using `hn hu'`. Rewrite using `[e2, e1, e2]`. Establish `hmov` using `GlobalTheory.T.movedTensorFactor_coeffValuationLossLe_awayPrime ch large₂ F CF b hS hIs hSc hF t Φ β hβ P hW w hw c hc hT`. Establish `h1` using `hint n 0 hrel (hval 0 fun z => by simpa using hmov z)`.
+
+Simplify `h1` using `[he0, hv0]`.
+-/
 theorem datum_loss {large₂ : SizeData₂ D} {F : Face D A} {CF b : ℝ} (hS : HidaSetting large₂ R F) (ch : Choice R) (hIs : ch.Is)
     (hSc : ch.AtScale CF b) (hF : ch.FieldOK) (t : T) (Φ : ch.G.Datum) (β : CosFam ch.G t) (hβ : β ∈ ch.S.supp t Φ)
     (P : locPl ch.G t) (w : PlL D)
@@ -179,6 +230,9 @@ theorem datum_loss {large₂ : SizeData₂ D} {F : Face D A} {CF b : ℝ} (hS : 
 
 end Main
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun _ _ => ⟨2, fun _ => ⟨0, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hS ch hIs hSc hF t Φ β hβ P w hcase c hc hT X Y => datum_loss hS ch hIs hSc hF t Φ β hβ P w hcase c hc hT X Y⟩⟩⟩`.
+-/
 theorem unfold_loss : ∃ CF0 : ℝ, ∀ CF : ℝ, CF0 ≤ CF → ∃ c₂ : ℝ, ∀ ε : ℝ, ∃ x₀ : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D), large₂.sc.eps = ε → x₀ ≤ large₂.sc.x →
     ∀ (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 T : Type) (A : FamIn D.what₂.LL Γ Pl0 T D.R.m)
       (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), HidaSetting large₂ R F →

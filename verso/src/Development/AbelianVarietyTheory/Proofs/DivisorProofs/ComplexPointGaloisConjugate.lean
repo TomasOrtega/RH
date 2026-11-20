@@ -21,6 +21,11 @@ noncomputable section
 
 namespace GlobalTheory.ConjTransport
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Use `GlobalTheory.ArchMetricCompare.eq_zero_of_isDiff u ?_` and prove the remaining obligations. Introduce `U hU f`. Establish `h0 : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U` using `(GlobalTheory.TangentOrigin.tangent_mem_iff (u := u) (GlobalTheory.ArchMetricCompare.isTangent_zero A) U).1 hU`. Establish `hU' : ⊤ ≤ v.left ⁻¹ᵁ U` using `(GlobalTheory.TangentOrigin.tangent_mem_iff (u := u) hv U).2 h0`.
+
+Rewrite using `[GlobalTheory.ArchMetricCompare.isDiff_zero u U hU f, map_zero, map_sub, ← h U hU' f, ← h' U hU' f, sub_self]`.
+-/
 theorem coord_unique {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g)
     {v : epsR ℂ ⟶ A} (hv : IsTangent v) {w w' : Fin g → ℂ} (h : u.IsDiff w v) (h' : u.IsDiff w' v) : w = w' := by
   rw [← sub_eq_zero]
@@ -31,6 +36,17 @@ theorem coord_unique {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u
   have hU' : ⊤ ≤ v.left ⁻¹ᵁ U := (GlobalTheory.TangentOrigin.tangent_mem_iff (u := u) hv U).2 h0
   rw [GlobalTheory.ArchMetricCompare.isDiff_zero u U hU f, map_zero, map_sub, ← h U hU' f, ← h' U hU' f, sub_self]
 
+/- English proof (translation)
+Take `⟨ε, hP⟩` from `hP`. Take `⟨P, hspan, -, hlie, -⟩` from `hP A g hA hg L hL u`. Establish `hE : LieExact A` using `(hD.2.1 ℂ A g hA hg).1`. Establish `key : ∀ h ∈ Submodule.span ℂ (Set.range P), ∃ (v : epsR ℂ ⟶ A) (w : Fin g → ℂ), IsLieImage h v ∧ u.IsDiff w v`. Introduce `h hh`.
+
+Proceed by induction on `hh using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, rfl⟩` from `hx`. Take `⟨v, h1, h2⟩` from `hlie y`. Conclude with `⟨v, y, h1, h2⟩`.
+
+Consider the case `zero => exact ⟨1, 0, isLieImage_one_iff.2 (zero_mem _), GlobalTheory.UnifDifferential.isDiff_one u⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨v, w, h1, h2⟩` from `hx`. Take `⟨v', w', h1', h2'⟩` from `hy`. Conclude with `⟨v * v', w + w', h1.add h1', GlobalTheory.UnifDifferential.isDiff_mul u ((Chart.isTan_iff _).2 h1.1) ((Chart.isTan_iff _).2 h1'.1) h2 h2'⟩`.
+
+Consider the case `smul c x _ hx`. Take `⟨v, w, h1, h2⟩` from `hx`. Conclude with `⟨_, c • w, h1.smul c, GlobalTheory.PeriodLattice.isDiff_epsScale u h2 c⟩`. Take `⟨h, hh⟩` from `hE.2 v hv`. Take `⟨v₁, w, h1, h2⟩` from `key h (hspan ▸ Submodule.mem_top)`.
+
+Conclude with `⟨w, (hE.1 h).unique h1 hh ▸ h2⟩`.
+-/
 theorem coord_exists (hP : GlobalTheory.Published.PeriodComparison) (hD : GlobalTheory.Published.AbelianDeRham) {A : Over (Sp ℂ)} [GrpObj A]
     {g : ℕ} (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) {L : LB A.left} (hL : L.IsLB)
     (u : HolUnif A L g) {v : epsR ℂ ⟶ A} (hv : IsTangent v) : ∃ w, u.IsDiff w v := by
@@ -58,11 +74,17 @@ theorem coord_exists (hP : GlobalTheory.Published.PeriodComparison) (hD : Global
   obtain ⟨v₁, w, h1, h2⟩ := key h (hspan ▸ Submodule.mem_top)
   exact ⟨w, (hE.1 h).unique h1 hh ▸ h2⟩
 
+/- English proof (translation)
+The claim follows from `GrpMor.of_isGrpPullback (isDPMorphism_of_eq_bot _ rfl _ _) (by rw [Category.comp_id, Category.id_comp]) h`.
+-/
 theorem grpMor_of_pull {R R' : Type} [CommRing R] [CommRing R'] (σ : R →+* R') {A : Over (Sp R)} [GrpObj A]
     {A' : Over (Sp R')} [GrpObj A'] {φ : A'.left ⟶ A.left} (h : IsGrpPullback A' A (spMap σ) φ) :
     GrpMor (dp0 R) (𝟙 _) A (dp0 R') (𝟙 _) A' σ (spMap σ) φ :=
   GrpMor.of_isGrpPullback (isDPMorphism_of_eq_bot _ rfl _ _) (by rw [Category.comp_id, Category.id_comp]) h
 
+/- English proof (translation)
+Use `⟨{ toFun := fun c => g.symm (h' (m.pull c)), map_add' := fun c d => ?_, map_smul' := fun r c => ?_ }, fun c => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add]`. Simplify using `only [LinearMap.map_smulₛₗ, map_smul, smul_eq_mul, map_mul, RingEquiv.coe_toRingHom, RingEquiv.symm_apply_apply, RingHom.id_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_corr_symm {R R' : Type} [CommRing R] [CommRing R'] (g : R ≃+* R') {A : Over (Sp R)} [GrpObj A]
     {A' : Over (Sp R')} [GrpObj A'] {b : Sp R' ⟶ Sp R} {φ : A'.left ⟶ A.left}
     (m : GrpMor (dp0 R) (𝟙 _) A (dp0 R') (𝟙 _) A' (g : R →+* R') b φ) (h' : HdR A') :
@@ -74,6 +96,9 @@ theorem exists_corr_symm {R R' : Type} [CommRing R] [CommRing R'] (g : R ≃+* R
       RingEquiv.symm_apply_apply, RingHom.id_apply]
   · simp
 
+/- English proof (translation)
+Use `letI : Algebra R R' := σ.toAlgebra`. Conclude with `(hD.2.2.1 R A g hA hg R' A' φ h).1.exists x`.
+-/
 theorem exists_corr (hD : GlobalTheory.Published.AbelianDeRham) {R R' : Type} [CommRing R] [CommRing R'] (σ : R →+* R')
     {A : Over (Sp R)} [GrpObj A] {g : ℕ} (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
     {A' : Over (Sp R')} [GrpObj A'] {φ : A'.left ⟶ A.left} (h : IsGrpPullback A' A (spMap σ) φ)
@@ -81,6 +106,9 @@ theorem exists_corr (hD : GlobalTheory.Published.AbelianDeRham) {R R' : Type} [C
   letI : Algebra R R' := σ.toAlgebra
   exact (hD.2.2.1 R A g hA hg R' A' φ h).1.exists x
 
+/- English proof (translation)
+Use `letI : Algebra R R' := σ.toAlgebra`. Conclude with `(hD.2.2.1 R A g hA hg R' A' φ h).1.unique h₁ h₂`.
+-/
 theorem corr_unique (hD : GlobalTheory.Published.AbelianDeRham) {R R' : Type} [CommRing R] [CommRing R'] (σ : R →+* R')
     {A : Over (Sp R)} [GrpObj A] {g : ℕ} (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom)
     {A' : Over (Sp R')} [GrpObj A'] {φ : A'.left ⟶ A.left} (h : IsGrpPullback A' A (spMap σ) φ)
@@ -89,6 +117,11 @@ theorem corr_unique (hD : GlobalTheory.Published.AbelianDeRham) {R R' : Type} [C
   letI : Algebra R R' := σ.toAlgebra
   exact (hD.2.2.1 R A g hA hg R' A' φ h).1.unique h₁ h₂
 
+/- English proof (translation)
+Establish `m` using `grpMor_of_pull (g : ℂ →+* ℂ) hX.grp`. Establish `hE` using `(hD.2.1 ℂ X.A _ X.ab X.dim).1`. Establish `hE'` using `(hD.2.1 ℂ X'.A _ X'.ab X'.dim).1`. Take `⟨h', hh'⟩` from `hE'.2 v'.hom v'.isTangent`. Take `⟨h, hc⟩` from `exists_corr_symm g m h'`.
+
+Take `⟨v₀, hv₀, -⟩` from `hE.1 h`. Conclude with `⟨Serre.Lie.mk X.rm v₀ hv₀.1, Obj.lieCorr_of_isLieImage hD _ hX m hc hv₀ hh'⟩`.
+-/
 theorem exists_lieCorr (hD : GlobalTheory.Published.AbelianDeRham) {F : Type} [Field F] [NumberField F] {𝔠 : FracId F}
     (g : ℂ ≃+* ℂ) {X X' : Obj F 𝔠 (Sp ℂ)} {p : X'.A.left ⟶ X.A.left}
     (hX : X'.IsPullBy X (spMap (g : ℂ →+* ℂ)) p) (v' : X'.Lie) :
@@ -105,6 +138,11 @@ end GlobalTheory.ConjTransport
 
 namespace GlobalTheory.ConjTransport
 
+/- English proof (translation)
+Use `⟨IsPullback.of_horiz_isIso ⟨?_⟩, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Rewrite using `[IsIso.inv_comp_eq, ← Category.assoc, hp.1.w, Category.assoc, IsIso.hom_inv_id, Category.comp_id]`. Set `j : Over.mk ((T.hom ≫ inv b) ≫ b) ⟶ T` to `Over.homMk (𝟙 _) (by simp)`. Establish `e` using `hp.2 (Over.mk (T.hom ≫ inv b)) x₀ y₀ (j ≫ x) (j ≫ y) (by rw [hx]; simp [j]) (by rw [hy]; simp [j])`. Rewrite `e` using `[← MonObj.comp_mul]`.
+
+Rewrite using `[IsIso.eq_comp_inv, ← e]`. Simplify using `[j]`.
+-/
 theorem isGrpPullback_inv {S S' : Scheme.{0}} {b : S' ⟶ S} [IsIso b] {G : Over S} {G' : Over S'} [GrpObj G]
     [GrpObj G'] {p : G'.left ⟶ G.left} (hp : IsGrpPullback G' G b p) [IsIso p] :
     IsGrpPullback G G' (inv b) (inv p) := by
@@ -117,6 +155,11 @@ theorem isGrpPullback_inv {S S' : Scheme.{0}} {b : S' ⟶ S} [IsIso b] {G : Over
     rw [IsIso.eq_comp_inv, ← e]
     simp [j]
 
+/- English proof (translation)
+Use `haveI : IsIso p := hp.1.isIso_fst_of_isIso`. Establish `w : (inv p ≫ α'.left ≫ p) ≫ G.hom = G.hom`. Rewrite using `[Category.assoc, Category.assoc, hp.1.w, ← Category.assoc α'.left, Over.w α', ← hp.1.w, ← Category.assoc, IsIso.inv_hom_id, Category.id_comp]`. Set `α : G ⟶ G` to `Over.homMk (inv p ≫ α'.left ≫ p) w`. Use `⟨α, GlobalTheory.UU.isMonHom_of_over_isMonHom (isGrpPullback_inv hp) (isGrpPullback_inv hp) α' α ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[α]`. Simplify using `[α]`.
+-/
 theorem exists_conj_hom {S S' : Scheme.{0}} {b : S' ⟶ S} [IsIso b] {G : Over S} {G' : Over S'} [GrpObj G]
     [GrpObj G'] {p : G'.left ⟶ G.left} (hp : IsGrpPullback G' G b p) (α' : G' ⟶ G') [IsMonHom α'] :
     ∃ α : G ⟶ G, IsMonHom α ∧ α'.left ≫ p = p ≫ α.left := by
@@ -133,6 +176,13 @@ end GlobalTheory.ConjTransport
 
 namespace GlobalTheory.ConjTransport
 
+/- English proof (translation)
+Take `⟨ψ', ⟨n, a, b, hch, he⟩, h'⟩` from `IsPolForm.pull_comp m (X.isLB c) (π := (lift (𝟙 X.A) (𝟙 X.A)).left) (L := X.P c) hψ`. Take `⟨φ₂, hsq, hiso⟩` from `hX.pol`. Establish `e : (lift (𝟙 X'.A) (𝟙 X'.A)).left ≫ φ₂ = p ≫ (lift (𝟙 X.A) (𝟙 X.A)).left`. Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ ≫ (fst X.A X.A).left = _ ≫ (fst X.A X.A).left`.
+
+Rewrite using `[Category.assoc, hsq.1, ← Category.assoc, ← Over.comp_left, lift_fst, Category.assoc, ← Over.comp_left, lift_fst]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `_ ≫ (snd X.A X.A).left = _ ≫ (snd X.A X.A).left`. Rewrite using `[Category.assoc, hsq.2, ← Category.assoc, ← Over.comp_left, lift_snd, Category.assoc, ← Over.comp_left, lift_snd]`. Simplify using the standard rewrite rules.
+
+Establish `hI : LBIso (X'.diag c) ((X.P c).pull (p ≫ (lift (𝟙 X.A) (𝟙 X.A)).left))` using `GlobalTheory.GenSpread.lbIso_pull_of_lbIso (hiso c) _ e.symm`. Conclude with `⟨ψ', ⟨n, a, b, (isChern_existsUnique_and_iso _ _ _ _ _).2 _ _ (pull_isLB (X.isLB c) _) (pull_isLB (X'.isLB c) _) hI.symm _ hch, he⟩, h'⟩`.
+-/
 theorem exists_polForm {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R R' : Type} [CommRing R] [CommRing R']
     (σ : R →+* R') {X : Obj F 𝔠 (Sp R)} {X' : Obj F 𝔠 (Sp R')} {p : X'.A.left ⟶ X.A.left}
     (hX : X'.IsPullBy X (spMap σ) p) (m : GrpMor (dp0 R) (𝟙 _) X.A (dp0 R') (𝟙 _) X'.A σ (spMap σ) p) (c : 𝔠.elt)
@@ -163,6 +213,9 @@ namespace GlobalTheory.ConjTransport
 
 variable {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I] {𝔠 : FracId (FR E)}
 
+/- English proof (translation)
+Introduce `c` and use `by simp only [CxPt.low, LinearMap.smul_apply, LinearMap.smulRight_apply, LinearMap.flip_apply, smul_eq_mul, hy i c, hs i, map_mul] erw [LinearMap.flip_apply, hψ _ _ _ _ hx (hy i)] rfl`.
+-/
 theorem low_corr {φ φ' : I → E →+* ℂ} {L L' : Set E} (T : CxPt 𝔠 φ L) (T' : CxPt 𝔠 φ' L') (τ : ℂ →+* ℂ)
     {b : Sp ℂ ⟶ Sp ℂ} {p : T'.X.A.left ⟶ T.X.A.left}
     (m : GrpMor (dp0 ℂ) (𝟙 _) T.X.A (dp0 ℂ) (𝟙 _) T'.X.A τ b p)
@@ -178,6 +231,9 @@ end GlobalTheory.ConjTransport
 
 namespace GlobalTheory.ConjTransport
 
+/- English proof (translation)
+Establish `: IsIso (CommRingCat.ofHom (g : ℂ →+* ℂ))` using `⟨⟨CommRingCat.ofHom (g.symm : ℂ →+* ℂ), by ext; simp, by ext; simp⟩⟩`. Unfold `spMap`. Use `infer_instance`.
+-/
 theorem isIso_spMap (g : ℂ ≃+* ℂ) : IsIso (spMap (g : ℂ →+* ℂ)) := by
   have : IsIso (CommRingCat.ofHom (g : ℂ →+* ℂ)) :=
     ⟨⟨CommRingCat.ofHom (g.symm : ℂ →+* ℂ), by ext; simp, by ext; simp⟩⟩
@@ -186,6 +242,13 @@ theorem isIso_spMap (g : ℂ ≃+* ℂ) : IsIso (spMap (g : ℂ →+* ℂ)) := b
 
 variable {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I] {𝔠 : FracId (FR E)}
 
+/- English proof (translation)
+Introduce `v' W' hW'`. Use `choose v hv using fun j => exists_lieCorr hD g hX (v' j)`. Use `choose W hW using fun j => coord_exists hP hD T.X.ab T.X.dim (L := T.X.diag T.U.c) (pull_isLB (T.X.isLB T.U.c) _) T.U.u (v j).isTangent`. Establish `hW'' : W' = κ • (g : ℂ →+* ℂ).mapMatrix W`. Use extensionality with `j k`.
+
+Use `coord_unique U'.u (v' j).isTangent (hW' j) (htan (W j) (v j).hom (v' j).hom (hv j) (hW j))` as an intermediate fact. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hf : Fintype.card (Fin (Module.finrank ℚ (FR E))) = Fintype.card I` using `Fintype.card_congr T.U.e`. Establish `hd : ((g : ℂ →+* ℂ).mapMatrix W).det = g (Matrix.det W)` using `(RingHom.map_det _ _).symm`.
+
+Rewrite using `[hδ v v' hv, T.det v W hW, hW'', Matrix.det_smul, hd, map_mul, hf]`. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression.
+-/
 theorem isDet_transport (hP : GlobalTheory.Published.PeriodComparison) (hD : GlobalTheory.Published.AbelianDeRham) {φ : I → E →+* ℂ}
     {L L' : Set E} (T : CxPt 𝔠 φ L) (g : ℂ ≃+* ℂ) (X' : Obj (FR E) 𝔠 (Sp ℂ)) (p : X'.A.left ⟶ T.X.A.left)
     (U' : Unif (fun i ↦ (g : ℂ →+* ℂ).comp (φ i)) L' 0 X') (κ : ℂ)
@@ -210,6 +273,17 @@ theorem isDet_transport (hP : GlobalTheory.Published.PeriodComparison) (hD : Glo
   field_simp
   rfl
 
+/- English proof (translation)
+Establish `m` using `grpMor_of_pull (g : ℂ →+* ℂ) hX.grp`. Use `⟨fun a α' _ hα' => ?_, ?_⟩` and prove the remaining obligations. Use `haveI := isIso_spMap g`. Take `⟨α, hα, hc⟩` from `exists_conj_hom hX.grp α'`. Use `haveI := hα`.
+
+Establish `h1` using `(T.cm i).1 a α (hend a α α' hc hα')`. Establish `h2 : m.Corr (push (dp0 ℂ) (𝟙 _) α (T.y i)) (push (dp0 ℂ) (𝟙 _) α' y')` using `GrpMor.Corr.push m α α' hc.symm hy`. Rewrite `h2` using `[h1]`. Use `corr_unique hD _ T.X.ab T.X.dim hX.grp m h2 (fun c => ?_)` and prove the remaining obligations. Simplify using `[hy c]`.
+
+Take `⟨v, hv, hd⟩` from `(T.cm i).2`. Establish `hE'` using `(hD.2.1 ℂ X'.A _ X'.ab X'.dim).1`. Take `⟨v', hv', -⟩` from `hE'.1 y'`. Establish `hl` using `Obj.lieCorr_of_isLieImage hD _ hX m hy (v := Serre.Lie.mk T.X.rm v hv.1) (v' := Serre.Lie.mk X'.rm v' hv'.1) hv hv'`. Use `⟨v', hv', ?_⟩` and prove the remaining obligations.
+
+Use `htan _ v v' hl hd` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = U'.e.symm i`. Substitute `hj` using the available equality.
+
+Simplify using `[he]`. Establish `hj' : j ≠ T.U.e.symm i` using `by rwa [← he]`. Simplify using `[Pi.single_apply, hj, hj']`.
+-/
 theorem isCMVec_transport (hD : GlobalTheory.Published.AbelianDeRham) {φ : I → E →+* ℂ} {L L' : Set E} (T : CxPt 𝔠 φ L)
     (g : ℂ ≃+* ℂ) (X' : Obj (FR E) 𝔠 (Sp ℂ)) (p : X'.A.left ⟶ T.X.A.left)
     (U' : Unif (fun i ↦ (g : ℂ →+* ℂ).comp (φ i)) L' 0 X') (κ : ℂ)
@@ -252,6 +326,9 @@ end GlobalTheory.ConjTransport
 
 namespace GlobalTheory.ConjTransport
 
+/- English proof (translation)
+Establish `h1 : ∀ (a b : ℂ ≃+* ℂ), (∀ z, b (a z) = z) → ∀ x, Chart.dualMapR (b : ℂ →+* ℂ) (Chart.dualMapR (a : ℂ →+* ℂ) x) = x` using `fun a b hab x => TrivSqZeroExt.ext (by simp [Chart.dualMapR, hab]) (by simp [Chart.dualMapR, hab])`. Establish `: IsIso (CommRingCat.ofHom (Chart.dualMapR (g : ℂ →+* ℂ)))` using `⟨⟨CommRingCat.ofHom (Chart.dualMapR (g.symm : ℂ →+* ℂ)), CommRingCat.hom_ext (RingHom.ext (h1 g g.symm (fun z => g.symm_apply_apply z))), CommRingCat.hom_ext (RingHom.ext (h1 g.symm g (fun z => g.apply_symm_apply z)))⟩⟩`. Unfold `spMap`. Use `infer_instance`.
+-/
 theorem isIso_spMap_dual (g : ℂ ≃+* ℂ) : IsIso (spMap (Chart.dualMapR (g : ℂ →+* ℂ))) := by
   have h1 : ∀ (a b : ℂ ≃+* ℂ), (∀ z, b (a z) = z) → ∀ x, Chart.dualMapR (b : ℂ →+* ℂ) (Chart.dualMapR (a : ℂ →+* ℂ) x) = x :=
     fun a b hab x => TrivSqZeroExt.ext (by simp [Chart.dualMapR, hab]) (by simp [Chart.dualMapR, hab])
@@ -264,6 +341,19 @@ theorem isIso_spMap_dual (g : ℂ ≃+* ℂ) : IsIso (spMap (Chart.dualMapR (g :
 
 variable {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I] {𝔠 : FracId (FR E)}
 
+/- English proof (translation)
+Take `⟨p₀, m₀, hX₀, hδ₀, hN⟩` from `hO`. Establish `m` using `grpMor_of_pull (g : ℂ →+* ℂ) hX.grp`. Establish `hX'' : T'.X.IsPullBy X₀ (spMap ((g : ℂ →+* ℂ).comp σ)) (p ≫ p₀)`. Rewrite using `[GlobalTheory.Cris.spMap_comp]`. Conclude with `hX.comp hX₀`.
+
+Establish `m''` using `grpMor_of_pull _ hX''.grp`. Use `⟨p ≫ p₀, m'', hX'', ?_, ?_⟩` and prove the remaining obligations. Introduce `v v'' hc choose v' hv' using fun j => exists_lieCorr hD g hX (v'' j)`. Establish `hc₀ : ∀ j, Obj.LieCorr σ p₀ (v j) (v' j)` using `fun j => by`. Establish `e1` using `hc j`.
+
+Establish `e2` using `hv' j`. Unfold `Obj.LieCorr at e1 e2 ⊢`. Establish `k : spMap (Chart.dualMapR (g : ℂ →+* ℂ)) ≫ (v' j).hom.left ≫ p₀ = spMap (Chart.dualMapR (g : ℂ →+* ℂ)) ≫ spMap (Chart.dualMapR σ) ≫ (v j).hom.left`. Rewrite using `[← Category.assoc, ← e2, Category.assoc, e1, ← Category.assoc, ← GlobalTheory.Cris.spMap_comp]`. Use `congr 2`.
+
+Conclude with `RingHom.ext fun x => TrivSqZeroExt.ext (by simp [Chart.dualMapR]) (by simp [Chart.dualMapR])`. Use `haveI := isIso_spMap_dual g`. Conclude with `(cancel_epi _).1 k`. Rewrite using `[hδ v' v'' hv', hδ₀ v v' hc₀]`. Both sides reduce to the same expression.
+
+Introduce `i x₀ x'' hc''`. Take `⟨x, hx⟩` from `exists_corr_symm g m x''`. Establish `hx₀ : m₀.Corr x₀ x` using `fun c => (g : ℂ →+* ℂ).injective (by`. Rewrite using `[← hx, GrpMor.pull_pull m₀ m m'' (fun _ => rfl) rfl c, hc'']`. Use the proof step `rfl)`.
+
+Establish `h1` using `hN i x₀ x hx₀`. Establish `h2` using `hlow i x x'' hx`. Introduce `c`. Rewrite using `[← GrpMor.pull_pull m₀ m m'' (fun _ => rfl) rfl c, h2 (m₀.pull c), h1 c]`. Both sides reduce to the same expression.
+-/
 theorem isOver_transport (hD : GlobalTheory.Published.AbelianDeRham) {φ φ' : I → E →+* ℂ} {L L' : Set E} (T : CxPt 𝔠 φ L)
     (T' : CxPt 𝔠 φ' L') (g : ℂ ≃+* ℂ) (p : T'.X.A.left ⟶ T.X.A.left)
     (hX : T'.X.IsPullBy T.X (spMap (g : ℂ →+* ℂ)) p)
@@ -306,6 +396,13 @@ theorem isOver_transport (hD : GlobalTheory.Published.AbelianDeRham) {φ φ' : I
     rw [← GrpMor.pull_pull m₀ m m'' (fun _ => rfl) rfl c, h2 (m₀.pull c), h1 c]
     rfl
 
+/- English proof (translation)
+Introduce `hP hD _ E _ _ _ I _ 𝔠 φ L L' T R _ σ X₀ δ₀ N hO g X' p U' κ hX hκ he hc htan hend`. Establish `m` using `grpMor_of_pull (g : ℂ →+* ℂ) hX.grp`. Take `⟨δ', hδ', -⟩` from `hX.existsUnique_detGen _ T.δ`. Take `⟨ψ', hψ', hψc⟩` from `exists_polForm _ hX m T.U.c T.pol`. Use `choose y' hy' using fun i => exists_corr hD _ T.X.ab T.X.dim hX.grp m (T.y i)`.
+
+Set `T' : CxPt 𝔠 (fun i ↦ (g : ℂ →+* ℂ).comp (φ i)) L'` to `{ X := X' U := U' δ := δ' C := g T.C / κ ^ Fintype.card I det := isDet_transport hP hD T g X' p U' κ hX hκ htan δ' hδ' ψ := ψ' pol := by rw [hc]; exact hψ' y := y' w := fun i => κ * g (T.w i) s := fun i => g (T.s i) cm := fun i => isCMVec_transport hD T g X' p U' κ hX he htan hen …`. Use `⟨T', isOver_transport hD T T' g p hX hδ' (fun i x x' hx => low_corr T T' _ m hψc hy' (fun i => rfl) i hx) hO, ?_, fun i => ⟨rfl, ?_⟩⟩` and prove the remaining obligations. Use `show g T.C / κ ^ Fintype.card I * κ ^ Fintype.card I = g T.C`. Clear the denominators using the available nonvanishing facts. Use `show g (T.s i) * (κ * g (T.w i)) ^ 2 = κ ^ 2 * g (T.s i * T.w i ^ 2)`.
+
+Simplify using `only [map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_conj_point : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal →
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (𝔠 : FracId (FR E)) (φ : I → E →+* ℂ)
     (L L' : Set E) (T : CxPt 𝔠 φ L) (R : Type) [CommRing R] (σ : R →+* ℂ) (X₀ : Obj (FR E) 𝔠 (Sp R)) (δ₀ : X₀.DetGen)

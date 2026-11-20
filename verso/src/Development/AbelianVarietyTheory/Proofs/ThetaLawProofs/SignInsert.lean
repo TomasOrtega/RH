@@ -18,6 +18,9 @@ namespace GlobalTheory.KeyKa.KoszulCx
 section Alg
 variable {R : Type} [CommRing R] {g d : ℕ} {N : ℕ → ℕ}
 
+/- English proof (translation)
+Rewrite using `[Finset.filter_insert]`. Use `split_ifs with h`. Rewrite using `[Finset.card_insert_of_notMem (fun h' => hi (Finset.mem_filter.1 h').1), pow_succ']`. Rewrite using `[_root_.one_mul]`.
+-/
 theorem sign_insert (I : Finset (Fin g)) {i i' : Fin g} (hi : i ∉ I) :
     ((-1 : R)) ^ ((insert i I).filter (· < i')).card =
       (if i < i' then -1 else 1) * (-1) ^ (I.filter (· < i')).card := by
@@ -26,6 +29,13 @@ theorem sign_insert (I : Finset (Fin g)) {i i' : Fin g} (hi : i ∉ I) :
   · rw [Finset.card_insert_of_notMem (fun h' => hi (Finset.mem_filter.1 h').1), pow_succ']
   · rw [_root_.one_mul]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases p with p | p <;> rcases q with q | q`. Simplify using `only [kosD]`. Use `Finset.sum_eq_zero fun i _ => if_neg ?_` and prove the remaining obligations. Introduce and unpack `⟨hi, hq⟩`. Apply `h` to reduce the goal to its premises.
+
+Simplify using `[kdeg, hq, Finset.card_insert_of_notMem hi]`. Both sides reduce to the same expression. Simplify using `only [kosD]`. Use `if_neg fun hq => h ?_` and prove the remaining obligations. Simplify using `[kdeg, hq]`.
+
+Both sides reduce to the same expression.
+-/
 theorem kosD_deg (m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) R) (ev : ∀ j, Matrix (Fin d) (Fin (N j)) R)
     (p q : KIx g d N) (h : kdeg q ≠ kdeg p + 1) : kosD m ev p q = 0 := by
   rcases p with p | p <;> rcases q with q | q
@@ -40,6 +50,45 @@ theorem kosD_deg (m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) R) (ev
     simp [kdeg, hq]
   · rfl
 
+/- English proof (translation)
+Establish `hc' : ∀ i i' j j₁ j₁' j₂, j₁ = j + 1 → j₁' = j + 1 → j₂ = j + 2 → j₂ ≤ g → m i j j₁ * m i' j₁ j₂ = m i' j j₁' * m i j₁' j₂`. Introduce and unpack `i i' j _ _ _ rfl rfl rfl h`. Conclude with `hc i i' j h`. Establish `he' : ∀ i j j₁, j = 0 → j₁ = 0 + 1 → ev j * m i j j₁ = 0`. Introduce and unpack `i _ _ rfl rfl`.
+
+Conclude with `he i`. Use `⟨kosD_deg m ev, ?_⟩` and prove the remaining obligations. Use extensionality with `p r`. Rewrite using `[Matrix.mul_apply, Fintype.sum_sum_type, Matrix.zero_apply]`. Break down `r with ⟨K, c⟩ | r` into its components or cases.
+
+Use `swap`. Apply the tactic sequence `rcases p with p | p <;> simp [kosD]`. Break down `p with ⟨I, a⟩ | a` into its components or cases. Establish `h2 : ∑ q : Fin d, kosD m ev (.inl ⟨I, a⟩) (.inr q) * kosD m ev (.inr q) (.inl ⟨K, c⟩) = 0`. Simplify using `[kosD]`.
+
+Rewrite using `[h2, add_zero, Fintype.sum_sigma]`. Set `T : Fin g → Fin g → R` to `fun i i' => if i ∉ I ∧ i' ∉ insert i I ∧ K = insert i' (insert i I) then (-1) ^ (I.filter (· < i)).card * (-1) ^ ((insert i I).filter (· < i')).card * (m i I.card (insert i I).card * m i' (insert i I).card K.card) a c else 0`. Establish `h3 : ∀ J : Finset (Fin g), ∑ k : Fin (N J.card), kosD m ev (.inl ⟨I, a⟩) (.inl ⟨J, k⟩) * kosD m ev (.inl ⟨J, k⟩) (.inl ⟨K, c⟩) = ∑ i, if J = insert i I then ∑ i', T i i' else 0`. Introduce `J`. Simplify using `only [kosD, Finset.sum_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hJ : J = insert i I`. Substitute `hJ` using the available equality. Rewrite using `[if_pos rfl]`.
+
+Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i' _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i ∉ I`. Distinguish the cases in `hi' : i' ∉ insert i I ∧ K = insert i' (insert i I)`.
+
+Simplify using `only [T]`. Rewrite using `[if_pos ⟨hi, hi'⟩, Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[if_pos ⟨hi, trivial⟩, if_pos hi']`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [T]`. Rewrite using `[if_neg (fun h => hi' h.2)]`. Conclude with `Finset.sum_eq_zero fun k _ => by rw [if_neg hi', mul_zero]`. Simplify using `only [T]`. Rewrite using `[if_neg (fun h => hi h.1)]`.
+
+Conclude with `Finset.sum_eq_zero fun k _ => by rw [if_neg (fun h => hi h.1), zero_mul]`. Rewrite using `[if_neg hJ]`. Conclude with `Finset.sum_eq_zero fun k _ => by rw [if_neg (fun h => hJ h.2), zero_mul]`. Rewrite using `[Finset.sum_congr rfl fun J _ => h3 J, Finset.sum_comm]`. Simplify using `only [Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+
+Rewrite using `[← Fintype.sum_prod_type']`. Establish `hT : ∀ i i', T i i' + T i' i = 0`. Introduce `i i'`. Distinguish the cases in `h : i ∉ I ∧ i' ∉ insert i I ∧ K = insert i' (insert i I)`. Take `⟨h1, h2, h3⟩` from `h`.
+
+Establish `hne : i' ≠ i` using `fun e => h2 (e ▸ Finset.mem_insert_self _ _)`. Establish `h4 : i' ∉ I` using `fun e => h2 (Finset.mem_insert_of_mem e)`. Establish `h5 : i ∉ insert i' I` using `by simp [h1, hne.symm]`. Establish `h6 : K = insert i (insert i' I)` using `h3.trans (Finset.insert_comm _ _ _)`. Establish `hK : K.card = I.card + 2`.
+
+Rewrite using `[h3, Finset.card_insert_of_notMem h2, Finset.card_insert_of_notMem h1]`. Establish `hg : K.card ≤ g` using `by simpa using Finset.card_le_univ K`. Simplify using `only [T]`. Rewrite using `[if_pos ⟨h1, h2, h3⟩, if_pos ⟨h4, h5, h6⟩, sign_insert I h1, sign_insert I h4, hc' i i' _ _ _ _ (Finset.card_insert_of_notMem h1) (Finset.card_insert_of_notMem h4) hK hg]`. Break down `lt_or_gt_of_ne hne with hlt | hlt` into its components or cases.
+
+Rewrite using `[if_pos hlt, if_neg hlt.not_gt]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_pos hlt, if_neg hlt.not_gt]`. Expand and normalize the polynomial expressions, which then agree. Establish `h' : ¬ (i' ∉ I ∧ i ∉ insert i' I ∧ K = insert i (insert i' I))`.
+
+Introduce and unpack `⟨h1, h2, h3⟩`. Establish `hne : i ≠ i'` using `fun e => h2 (e ▸ Finset.mem_insert_self _ _)`. Conclude with `h ⟨fun e => h2 (Finset.mem_insert_of_mem e), by simp [h1, hne.symm], h3.trans (Finset.insert_comm _ _ _)⟩`. Simplify using `only [T]`. Rewrite using `[if_neg h, if_neg h', add_zero]`.
+
+Use `Finset.sum_involution (fun p _ => p.swap) (fun p _ => hT p.1 p.2) ?_ (fun _ _ => Finset.mem_univ _) (fun p _ => Prod.swap_swap p)` and prove the remaining obligations. Introduce and unpack `⟨i, i'⟩ _ h e`. Apply `h` to reduce the goal to its premises. Take `rfl : i' = i` from `congrArg Prod.fst e`. Conclude with `if_neg fun h => h.2.1 (Finset.mem_insert_self _ _)`.
+
+Establish `h2 : ∑ q : Fin d, kosD m ev (.inr a) (.inr q) * kosD m ev (.inr q) (.inl ⟨K, c⟩) = 0`. Simplify using `[kosD]`. Rewrite using `[h2, add_zero, Fintype.sum_sigma]`. Use `Finset.sum_eq_zero fun J _ => ?_` and prove the remaining obligations. Simplify using `only [kosD]`.
+
+Distinguish the cases in `hJ : J = ∅`. Simplify using `only [if_pos hJ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : i ∉ J ∧ K = insert i J`.
+
+Simplify using `only [if_pos h]`. Establish `e` using `congrFun (congrFun (he' i J.card K.card (by simp [hJ]) (by simp [h.2, hJ])) a) c`. Rewrite `e` using `[Matrix.mul_apply, Matrix.zero_apply]`. Rewrite using `[← mul_zero ((-1 : R) ^ (J.filter (· < i)).card), ← e, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+
+Simplify using `only [if_neg h, mul_zero, Finset.sum_const_zero]`. Simplify using `only [if_neg hJ, zero_mul, Finset.sum_const_zero]`.
+-/
 theorem isCx_kosD (m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) R) (ev : ∀ j, Matrix (Fin d) (Fin (N j)) R)
     (hc : ∀ i i' j, j + 2 ≤ g → m i j (j + 1) * m i' (j + 1) (j + 2) = m i' j (j + 1) * m i (j + 1) (j + 2))
     (he : ∀ i, ev 0 * m i 0 (0 + 1) = 0) : IsCx kdeg (kosD m ev) := by
@@ -163,6 +212,13 @@ def mulSec {X : Scheme.{0}} (L : LB X) {a b c : ℤ} (h : c = a + b) (s : LB.Sec
     rw [h, zpow_add, Units.val_mul]
     exact mul_mul_mul_comm _ _ _ _
 
+/- English proof (translation)
+Establish `h0 : valT (T` using `R) z.left U (cst x.P.A.hom U c) = valT (T := R) z.left U ((x.P.A.hom.appLE ⊤ U le_top).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c)) := rfl`. Use `h0.trans ((EtBaseChange.valT_appLE (T := R) z.left x.P.A.hom (U := ⊤) le_top h _).trans ?_)` and prove the remaining obligations. Establish `hz : z.left ≫ x.P.A.hom = 𝟙 (Sp R)` using `Over.w z`. Use `erw [hz]`. Rewrite using `[EtBaseChange.valT_eq _ _ le_top]`.
+
+Establish `e3 : Scheme.Hom.appLE (𝟙 (Sp R)) ⊤ ⊤ le_top = 𝟙 _`. Rewrite using `[← Scheme.Hom.id_appTop]`. Conclude with `Scheme.Hom.appLE_eq_app _`. Unfold `EtBaseChange.valH`. Use `erw [e3]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem valH_cst (x : KeyIn R) (z : Pt x) (U : x.P.A.left.Opens) (h : ⊤ ≤ z.left ⁻¹ᵁ U) (c : R) :
     valT (T := R) z.left U (cst x.P.A.hom U c) = c := by
   have h0 : valT (T := R) z.left U (cst x.P.A.hom U c) =
@@ -177,12 +233,20 @@ theorem valH_cst (x : KeyIn R) (z : Pt x) (U : x.P.A.left.Opens) (h : ⊤ ≤ z.
   erw [e3]
   simp
 
+/- English proof (translation)
+Establish `: (j + 1) * n ≤ g * n` using `Nat.mul_le_mul_right _ hj`. Establish `h2 : (j + 1) * n = j * n + n` using `Nat.succ_mul _ _`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem cast_step {g n l j : ℕ} (h : g * n < l) (hj : j < g) :
     ((l - j * n : ℕ) : ℤ) = (n : ℤ) + ((l - (j + 1) * n : ℕ) : ℤ) := by
   have : (j + 1) * n ≤ g * n := Nat.mul_le_mul_right _ hj
   have h2 : (j + 1) * n = j * n + n := Nat.succ_mul _ _
   omega
 
+/- English proof (translation)
+Rewrite using `[h1, Finset.mul_sum]`. Simplify using `only [map_sum, map_mul, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, h2 k, Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun k' _ => by ring`.
+-/
 theorem ring_coords {A S₀ S₁ : Type} [CommRing A] [Fintype S₀] [Fintype S₁] (φ : R →+* A) (b₀ : S₀ → A) (b₁ : S₁ → A)
     (M : Matrix S₀ S₁ R) (u f : A) (c : S₁ → R) (h2 : ∀ k, u * b₁ k = ∑ k', φ (M k' k) * b₀ k')
     (h1 : f = ∑ k, φ (c k) * b₁ k) : u * f = ∑ k', φ (∑ k, M k' k * c k) * b₀ k' := by
@@ -193,6 +257,9 @@ theorem ring_coords {A S₀ S₁ : Type} [CommRing A] [Fintype S₀] [Fintype S�
   rw [mul_left_comm, h2 k, Finset.mul_sum]
   exact Finset.sum_congr rfl fun k' _ => by ring
 
+/- English proof (translation)
+Take `rfl : v = ψ` from `funext hv`. Establish `e` using `congrArg ψ h`. Rewrite `e` using `[map_mul, map_sum, hu, zero_mul]`. Simplify using `only [map_mul, hc] at e`. Conclude with `Eq.trans (Finset.sum_congr rfl fun k' _ => mul_comm _ _) e.symm`.
+-/
 theorem ring_eval {A S : Type} [CommRing A] [Fintype S] (φ : R →+* A) (v : A → R) (ψ : A →+* R) (hv : ∀ a, v a = ψ a)
     (hc : ∀ c, v (φ c) = c) (b : S → A) (u f : A) (c : S → R) (hu : v u = 0) (h : u * f = ∑ k, φ (c k) * b k) :
     ∑ k, v (b k) * c k = 0 := by
@@ -202,12 +269,26 @@ theorem ring_eval {A S : Type} [CommRing A] [Fintype S] (φ : R →+* A) (v : A 
   simp only [map_mul, hc] at e
   exact Eq.trans (Finset.sum_congr rfl fun k' _ => mul_comm _ _) e.symm
 
+/- English proof (translation)
+Conclude with `fun i => ring_coords (cst x.P.A.hom (x.P.L.U i)) _ _ M (u i) (f i) c (fun k => hM k i) (hc i)`.
+-/
 theorem coords_mul (x : KeyIn R) {l₀ l₁ N₀ N₁ : ℕ} (b₀ : Fin N₀ → RR x l₀) (b₁ : Fin N₁ → RR x l₁)
     (M : Matrix (Fin N₀) (Fin N₁) R) (u f : ∀ i, Γ(x.P.A.left, x.P.L.U i)) (c : Fin N₁ → R)
     (hM : ∀ k, Coords x b₀ (fun k' => M k' k) (fun i => u i * (show Γ(x.P.A.left, x.P.L.U i) from (b₁ k).f i)))
     (hc : Coords x b₁ c f) : Coords x b₀ (fun k' => ∑ k, M k' k * c k) (fun i => u i * f i) := by
   exact fun i => ring_coords (cst x.P.A.hom (x.P.L.U i)) _ _ M (u i) (f i) c (fun k => hM k i) (hc i)
 
+/- English proof (translation)
+Introduce `R _ x n l d s b z ch hl hb`. Use `⟨?_, fun m hm hz hs => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ i j, ∀ k : Fin ((l - (j + 1) * n) ^ x.P.g), ∃ c : Fin ((l - j * n) ^ x.P.g) → R, j < x.P.g → Coords x (b j) c (fun c => (show Γ(x.P.A.left, x.P.L.U c) from (s i).f c) * (show Γ(x.P.A.left, x.P.L.U c) from (b (j + 1) k).f c))`. Introduce `i j k`. Distinguish the cases in `hj : j < x.P.g`.
+
+Take `⟨c, hc, -⟩` from `hb j hj.le (mulSec x.P.L (cast_step hl hj) (s i) (b (j + 1) k))`. Conclude with `⟨c, fun _ => hc⟩`. Conclude with `⟨0, fun h => absurd h hj⟩`. Use `choose c hc using h1`. Use `⟨fun i j j' => if h : j' = j + 1 then Matrix.of fun k' k => c i j (h ▸ k) k' else 0, fun i j hj k => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [dif_pos, Matrix.of_apply]`. Conclude with `hc i j k hj`. Use `isCx_kosD (N := fun j => (l - j * n) ^ x.P.g) m _ (fun i i' j hj => ?_) (fun i => ?_)` and prove the remaining obligations. Use extensionality with `k' k`. Establish `hj0 : j < x.P.g` using `by omega`.
+
+Establish `hj1 : j + 1 < x.P.g` using `by omega`. Establish `e₁` using `coords_mul x (b j) (b (j + 1)) (m i j (j + 1)) _ _ _ (hm i j hj0) (hm i' (j + 1) hj1 k)`. Establish `e₂` using `coords_mul x (b j) (b (j + 1)) (m i' j (j + 1)) _ _ _ (hm i' j hj0) (hm i (j + 1) hj1 k)`. Establish `hu` using `hb j hj0.le (mulSec x.P.L (cast_step hl hj0) (s i) (mulSec x.P.L (cast_step hl hj1) (s i') (b (j + 2) k)))`. Establish `e₃` using `hu.unique e₁ (fun c => (mul_left_comm _ _ _).trans (e₂ c))`.
+
+Conclude with `congrFun e₃ k'`. Use extensionality with `a k`. Conclude with `ring_eval (cst x.P.A.hom (x.P.L.U (ch a))) (valT (T := R) (z a).left (x.P.L.U (ch a))) _ (EtBaseChange.valT_eq (T := R) (z a).left _ (hz a)) (valH_cst x (z a) _ (hz a)) _ _ _ _ (hs a i) (hm i 0 i.pos k (ch a))`.
+-/
 theorem koszul_isCx : ∀ (R : Type) [CommRing R] (x : KeyIn R) (n l d : ℕ) (s : Fin x.P.g → RR x n) (b : ∀ j, Fin ((l - j * n) ^ x.P.g) → RR x (l - j * n)) (z : Fin d → Pt x) (ch : Fin d → x.P.L.ι), x.P.g * n < l → (∀ j ≤ x.P.g, IsBasis x (b j)) → (∃ m, IsMul x l s b m) ∧ ∀ m, IsMul x l s b m → (∀ a, ⊤ ≤ (z a).left ⁻¹ᵁ x.P.L.U (ch a)) → (∀ a i, valT (T := R) (z a).left (x.P.L.U (ch a)) ((s i).f (ch a)) = 0) → IsCx kdeg (kosD (N := fun j => (l - j * n) ^ x.P.g) m (fun j => Matrix.of fun a k => valT (T := R) (z a).left (x.P.L.U (ch a)) ((b j k).f (ch a)))) := by
   intro R _ x n l d s b z ch hl hb
   refine ⟨?_, fun m hm hz hs => ?_⟩

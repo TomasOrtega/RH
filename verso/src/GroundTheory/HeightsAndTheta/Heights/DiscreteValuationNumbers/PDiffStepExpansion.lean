@@ -10,6 +10,9 @@ namespace DiffStepExpansion
 
 variable {K : Type}
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons t l ih => simp [ih]`.
+-/
 lemma listSum_apply {α : Type} (l : List α) (F : α → (K → ℤ) → ℤ) (m : K → ℤ) :
     (l.map F).sum m = (l.map fun t => F t m).sum := by
   induction l with
@@ -19,6 +22,9 @@ lemma listSum_apply {α : Type} (l : List α) (F : α → (K → ℤ) → ℤ) (
 def expand [DecidableEq K] (l : List ((K × (K → ℤ)) × ℤ)) (f : (K → ℤ) → ℤ) : (K → ℤ) → ℤ :=
   (l.map fun t => t.2 • shiftFn t.1.2 (diffStep (Pi.single t.1.1 1) f)).sum
 
+/- English proof (translation)
+Unfold `expand`. Rewrite using `[listSum_apply]`. Both sides reduce to the same expression.
+-/
 lemma expand_apply [DecidableEq K] (l : List ((K × (K → ℤ)) × ℤ)) (f : (K → ℤ) → ℤ)
     (m : K → ℤ) :
     expand l f m = (l.map fun t => t.2 * diffStep (Pi.single t.1.1 1) f (m - t.1.2)).sum := by
@@ -78,9 +84,19 @@ def expandable (K : Type) [DecidableEq K] : AddSubgroup (K → ℤ) where
     rw [e1, e2]
     ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨[((k, 0), 1)], fun f => by funext m; simp [expand, shiftFn]⟩`.
+-/
 lemma single_mem [DecidableEq K] (k : K) : (Pi.single k 1 : K → ℤ) ∈ expandable K :=
   ⟨[((k, 0), 1)], fun f => by funext m; simp [expand, shiftFn]⟩
 
+/- English proof (translation)
+Introduce `K _ _ b`. Establish `hb : b ∈ expandable K`. Rewrite using `[← Finset.univ_sum_single b]`. Use `AddSubgroup.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Establish `: (Pi.single k (b k) : K → ℤ) = b k • (Pi.single k 1 : K → ℤ)`.
+
+Use extensionality with `j`. Apply the tactic sequence `by_cases h : j = k <;> simp [h]`. Rewrite using `[this]`. Conclude with `AddSubgroup.zsmul_mem _ (single_mem k) _`. Take `⟨l, hl⟩` from `hb`.
+
+Conclude with `⟨l, fun f => hl f⟩`.
+-/
 theorem proof : DiffStepExpansion.Statement := by
   intro K _ _ b
   have hb : b ∈ expandable K := by

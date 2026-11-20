@@ -10,18 +10,32 @@ def UnderFA : Prop := ∀ X : CommRingCat.{0}, IsFinitelyAccessibleCategory.{0} 
 
 def EtSpreads : Prop := MorphismProperty.PreIndSpreads.{0} Et
 
+/- English proof (translation)
+Use `show (f ≫ g).hom.Etale`. Rewrite using `[CommRingCat.hom_comp]`. Conclude with `RingHom.Etale.stableUnderComposition _ _ hf hg`.
+-/
 theorem et_comp : Et.IsStableUnderComposition where
   comp_mem f g hf hg := by
     show (f ≫ g).hom.Etale
     rw [CommRingCat.hom_comp]
     exact RingHom.Etale.stableUnderComposition _ _ hf hg
 
+/- English proof (translation)
+The claim follows from `(RingHom.isStableUnderCobaseChange_toMorphismProperty_iff).2 RingHom.Etale.isStableUnderBaseChange`.
+-/
 theorem et_cobase : Et.IsStableUnderCobaseChange :=
   (RingHom.isStableUnderCobaseChange_toMorphismProperty_iff).2 RingHom.Etale.isStableUnderBaseChange
 
+/- English proof (translation)
+Introduce `_ _ f hf` and use `CommRingCat.isFinitelyPresentable_hom f (RingHom.Etale.iff_flat_and_formallyUnramified.1 hf).2.2`.
+-/
 theorem et_fp : Et ≤ MorphismProperty.isFinitelyPresentable.{0} CommRingCat.{0} := fun _ _ f hf =>
   CommRingCat.isFinitelyPresentable_hom f (RingHom.Etale.iff_flat_and_formallyUnramified.1 hf).2.2
 
+/- English proof (translation)
+Introduce `A B C f g hf hg`. Establish `: ∀ X : CommRingCat.{0}, IsFinitelyAccessibleCategory.{0} (Under X)` using `h1`. Establish `: MorphismProperty.PreIndSpreads.{0} Et` using `h2`. Use `et_comp` as an intermediate fact. Use `et_cobase` as an intermediate fact.
+
+Use `MorphismProperty.IsStableUnderComposition.ind_of_preIndSpreads (P := Et) et_fp` as an intermediate fact. Conclude with `this.comp_mem f g hf hg`.
+-/
 theorem IEComp_of (h1 : UnderFA) (h2 : EtSpreads) : IEComp := by
   intro A B C f g hf hg
   have : ∀ X : CommRingCat.{0}, IsFinitelyAccessibleCategory.{0} (Under X) := h1

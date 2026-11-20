@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.ThK.ConeEuler
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Establish `hm : Continuous fun g : UA σ J => mat g` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hmi : Continuous fun g : UA σ J => mat g⁻¹` using `hm.comp continuous_inv`.
+
+Use `Continuous.subtype_mk (Units.continuous_iff.mpr ⟨?_, ?_⟩) _` and prove the remaining obligations. Conclude with `(hm.const_smul ε).add continuous_const`. Conclude with `(hmi.const_smul ε).add continuous_const`.
+-/
 theorem continuous_idemU {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (ε : AF F) (hε : ε * ε = ε) :
     Continuous (idemU σ J ε hε) := by
@@ -25,6 +30,9 @@ theorem continuous_idemU {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
   · exact (hm.const_smul ε).add continuous_const
   · exact (hmi.const_smul ε).add continuous_const
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun v => continuous_idemU σ J (eFin v) (eFin_idem v), continuous_idemU σ J (eInf F) eInf_idem⟩`.
+-/
 theorem continuous_components (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) :
     (∀ v : Pl F, Continuous (compAt σ J v)) ∧ Continuous (compArch σ J) :=

@@ -20,6 +20,9 @@ def coords : Set (Fin p → E) :=
 
 def lat : Submodule (𝓞 E) (Fin p → E) := Submodule.span (𝓞 E) (coords X)
 
+/- English proof (translation)
+Use `Finset.prod_induction _ (Serre.IsLinearHom (X.A true).t.act X.B.t.act) (fun f g hf hg => hf.mul hg) (Serre.IsLinearHom.one _ _) fun a _ => ?_` and prove the remaining obligations. Conclude with `(Serre.IsLinearHom.act _ _).comp (X.lin (Sum.inl a))`.
+-/
 theorem isLinearHom_prod (x : Fin p → 𝓞 E) :
     Serre.IsLinearHom (X.A true).t.act X.B.t.act (∏ a, ((X.A true).t.act.act (x a) ≫ phiP X a)) := by
   classical
@@ -27,6 +30,9 @@ theorem isLinearHom_prod (x : Fin p → 𝓞 E) :
     (fun f g hf hg => hf.mul hg) (Serre.IsLinearHom.one _ _) fun a _ => ?_
   exact (Serre.IsLinearHom.act _ _).comp (X.lin (Sum.inl a))
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨1, one_pos, x, fun a => by simp, _, isLinearHom_prod X x, pow_one _⟩`.
+-/
 theorem intl_mem (x : Fin p → 𝓞 E) : (fun a => (x a : E)) ∈ lat X :=
   Submodule.subset_span ⟨1, one_pos, x, fun a => by simp, _, isLinearHom_prod X x, pow_one _⟩
 

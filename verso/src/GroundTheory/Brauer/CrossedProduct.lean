@@ -20,6 +20,9 @@ namespace CrossedProduct
 
 variable {f : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_smul_units (σ : L ≃ₐ[K] L) (x : Lˣ) : ((σ • x : Lˣ) : L) = σ x := rfl
 
 def mulCoeff (f : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ) :
@@ -36,11 +39,23 @@ def mulCoeff (f : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ) :
         ext τ c
         simp [add_mul] }
 
+/- English proof (translation)
+Simplify using `[mulCoeff]`.
+-/
 theorem mulCoeff_single_single (σ τ : L ≃ₐ[K] L) (a b : L) :
     mulCoeff f (Finsupp.single σ a) (Finsupp.single τ b) =
       Finsupp.single (σ * τ) (a * σ b * f (σ, τ)) := by
   simp [mulCoeff]
 
+/- English proof (translation)
+Proceed by induction on `x using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [map_add, AddMonoidHom.add_apply, hx, hx']`. Consider the case `single σ a`. Proceed by induction on `y using Finsupp.induction_linear with`.
+
+Consider the case `zero => simp`. Consider the case `add y y' hy hy' => simp only [map_add, AddMonoidHom.add_apply, hy, hy']`. Consider the case `single τ b`. Proceed by induction on `z using Finsupp.induction_linear with`. Consider the case `zero => simp`.
+
+Consider the case `add z z' hz hz' => simp only [map_add, hz, hz']`. Consider the case `single ρ c`. Simplify using `only [mulCoeff_single_single, mul_assoc, AlgEquiv.mul_apply, map_mul]`. Use `congr 1`. Establish `h` using `congrArg (fun x : Lˣ => (x : L)) (hf σ τ ρ)`.
+
+Simplify using `only [Units.val_mul, val_smul_units] at h`. Take the linear combination `(a * σ b * σ (τ c)) * h`.
+-/
 theorem mulCoeff_assoc (hf : IsMulCocycle₂ f) (x y z : (L ≃ₐ[K] L) →₀ L) :
     mulCoeff f (mulCoeff f x y) z = mulCoeff f x (mulCoeff f y z) := by
   induction x using Finsupp.induction_linear with
@@ -61,6 +76,11 @@ theorem mulCoeff_assoc (hf : IsMulCocycle₂ f) (x y z : (L ≃ₐ[K] L) →₀ 
   simp only [Units.val_mul, val_smul_units] at h
   linear_combination (a * σ b * σ (τ c)) * h
 
+/- English proof (translation)
+Proceed by induction on `x using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [smul_add, map_add, AddMonoidHom.add_apply, hx, hx']`. Consider the case `single σ a`. Proceed by induction on `y using Finsupp.induction_linear with`.
+
+Consider the case `zero => simp`. Consider the case `add y y' hy hy' => simp only [smul_add, map_add, hy, hy']`. Consider the case `single τ b`. Simplify using `only [Finsupp.smul_single, smul_eq_mul, mulCoeff_single_single, mul_assoc]`.
+-/
 theorem mulCoeff_smul_left (c : L) (x y : (L ≃ₐ[K] L) →₀ L) :
     mulCoeff f (c • x) y = c • mulCoeff f x y := by
   induction x using Finsupp.induction_linear with
@@ -73,6 +93,13 @@ theorem mulCoeff_smul_left (c : L) (x y : (L ≃ₐ[K] L) →₀ L) :
   | single τ b =>
   simp only [Finsupp.smul_single, smul_eq_mul, mulCoeff_single_single, mul_assoc]
 
+/- English proof (translation)
+Proceed by induction on `x using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [smul_add, map_add, AddMonoidHom.add_apply, hx, hx']`. Consider the case `single σ a`. Proceed by induction on `y using Finsupp.induction_linear with`.
+
+Consider the case `zero => simp`. Consider the case `add y y' hy hy' => simp only [smul_add, map_add, hy, hy']`. Consider the case `single τ b`. Simplify using `only [Finsupp.smul_single, mulCoeff_single_single, Algebra.smul_def, map_mul, AlgEquiv.commutes]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mulCoeff_smul_right (c : K) (x y : (L ≃ₐ[K] L) →₀ L) :
     mulCoeff f x (c • y) = c • mulCoeff f x y := by
   induction x using Finsupp.induction_linear with
@@ -88,6 +115,11 @@ theorem mulCoeff_smul_right (c : K) (x y : (L ≃ₐ[K] L) →₀ L) :
   congr 1
   ring
 
+/- English proof (translation)
+Proceed by induction on `x using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [map_add, hx, hx']`. Consider the case `single τ b`. Simplify using `only [mulCoeff_single_single, map_one_fst_of_isMulCocycle₂ hf, one_mul, AlgEquiv.one_apply]`.
+
+Rewrite using `[mul_right_comm, Units.inv_mul, one_mul]`.
+-/
 theorem one_mulCoeff (hf : IsMulCocycle₂ f) (x : (L ≃ₐ[K] L) →₀ L) :
     mulCoeff f (Finsupp.single 1 (((f (1, 1))⁻¹ : Lˣ) : L)) x = x := by
   induction x using Finsupp.induction_linear with
@@ -98,6 +130,9 @@ theorem one_mulCoeff (hf : IsMulCocycle₂ f) (x : (L ≃ₐ[K] L) →₀ L) :
     AlgEquiv.one_apply]
   rw [mul_right_comm, Units.inv_mul, one_mul]
 
+/- English proof (translation)
+Proceed by induction on `x using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [map_add, AddMonoidHom.add_apply, hx, hx']`. Consider the case `single σ a`. Rewrite using `[mulCoeff_single_single, map_one_snd_of_isMulCocycle₂ hf σ, mul_one, val_smul_units, mul_assoc, ← map_mul, Units.inv_mul, map_one, mul_one]`.
+-/
 theorem mulCoeff_one (hf : IsMulCocycle₂ f) (x : (L ≃ₐ[K] L) →₀ L) :
     mulCoeff f x (Finsupp.single 1 (((f (1, 1))⁻¹ : Lˣ) : L)) = x := by
   induction x using Finsupp.induction_linear with
@@ -116,15 +151,36 @@ instance : Sub (CrossedProduct hf) := ⟨fun x y => ⟨x.coeff - y.coeff⟩⟩
 instance {R : Type*} [SMulZeroClass R L] : SMul R (CrossedProduct hf) :=
   ⟨fun r x => ⟨r • x.coeff⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_zero : (0 : CrossedProduct hf).coeff = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_add (x y : CrossedProduct hf) : (x + y).coeff = x.coeff + y.coeff := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_neg (x : CrossedProduct hf) : (-x).coeff = -x.coeff := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_sub (x y : CrossedProduct hf) : (x - y).coeff = x.coeff - y.coeff := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_smul {R : Type*} [SMulZeroClass R L] (r : R) (x : CrossedProduct hf) :
     (r • x).coeff = r • x.coeff := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_ofCoeff (a : (L ≃ₐ[K] L) →₀ L) : (ofCoeff a : CrossedProduct hf).coeff = a :=
   rfl
 
+/- English proof (translation)
+Introduce `_ _` and use `CrossedProduct.ext`.
+-/
 theorem coeff_injective : Function.Injective (coeff : CrossedProduct hf → _) :=
   fun _ _ => CrossedProduct.ext
 
@@ -152,17 +208,29 @@ def coeffEquiv (R : Type*) [Semiring R] [Module R L] :
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeffEquiv_apply (R : Type*) [Semiring R] [Module R L] (x : CrossedProduct hf) :
     coeffEquiv R x = x.coeff := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeffEquiv_symm_apply (R : Type*) [Semiring R] [Module R L]
     (a : (L ≃ₐ[K] L) →₀ L) : (coeffEquiv R).symm a = (ofCoeff a : CrossedProduct hf) := rfl
 
 instance : Mul (CrossedProduct hf) := ⟨fun x y => ⟨mulCoeff f x.coeff y.coeff⟩⟩
 instance : One (CrossedProduct hf) := ⟨⟨Finsupp.single 1 (((f (1, 1))⁻¹ : Lˣ) : L)⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeff_mul (x y : CrossedProduct hf) : (x * y).coeff = mulCoeff f x.coeff y.coeff := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coeff_one :
     (1 : CrossedProduct hf).coeff = Finsupp.single 1 (((f (1, 1))⁻¹ : Lˣ) : L) := rfl
 
@@ -190,6 +258,9 @@ instance instAlgebra : Algebra K (CrossedProduct hf) :=
       rw [← algebraMap_smul L c x.coeff, mulCoeff_smul_left, algebraMap_smul]))
     (fun c x y => CrossedProduct.ext (mulCoeff_smul_right c x.coeff y.coeff))
 
+/- English proof (translation)
+The claim follows from `Algebra.algebraMap_eq_smul_one c`.
+-/
 theorem algebraMap_eq_smul_one' (c : K) :
     algebraMap K (CrossedProduct hf) c = c • 1 := Algebra.algebraMap_eq_smul_one c
 
@@ -197,41 +268,74 @@ def single (σ : L ≃ₐ[K] L) (a : L) : CrossedProduct hf := ⟨Finsupp.single
 
 def u (σ : L ≃ₐ[K] L) : CrossedProduct hf := single σ 1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_single (σ : L ≃ₐ[K] L) (a : L) :
     (single σ a : CrossedProduct hf).coeff = Finsupp.single σ a := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coeff_u (σ : L ≃ₐ[K] L) : (u σ : CrossedProduct hf).coeff = Finsupp.single σ 1 :=
   rfl
 
+/- English proof (translation)
+Use `ext1`. Simplify using the standard rewrite rules.
+-/
 @[simp] theorem single_zero (σ : L ≃ₐ[K] L) : (single σ 0 : CrossedProduct hf) = 0 := by
   ext1; simp
 
+/- English proof (translation)
+Use `ext1`. Simplify using `[Finsupp.single_add]`.
+-/
 theorem single_add (σ : L ≃ₐ[K] L) (a b : L) :
     (single σ (a + b) : CrossedProduct hf) = single σ a + single σ b := by
   ext1; simp [Finsupp.single_add]
 
+/- English proof (translation)
+Use `ext1`. Simplify using the standard rewrite rules.
+-/
 theorem smul_single (c : L) (σ : L ≃ₐ[K] L) (a : L) :
     c • (single σ a : CrossedProduct hf) = single σ (c * a) := by
   ext1; simp
 
+/- English proof (translation)
+Rewrite using `[u, smul_single, mul_one]`.
+-/
 theorem single_eq_smul_u (σ : L ≃ₐ[K] L) (a : L) :
     (single σ a : CrossedProduct hf) = a • u σ := by
   rw [u, smul_single, mul_one]
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Finsupp.single_injective σ (congrArg coeff h)`.
+-/
 theorem single_injective (σ : L ≃ₐ[K] L) :
     Function.Injective (single σ : L → CrossedProduct hf) := fun _ _ h =>
   Finsupp.single_injective σ (congrArg coeff h)
 
+/- English proof (translation)
+Rewrite using `[← single_zero σ, (single_injective σ).eq_iff]`.
+-/
 @[simp] theorem single_eq_zero {σ : L ≃ₐ[K] L} {a : L} :
     (single σ a : CrossedProduct hf) = 0 ↔ a = 0 := by
   rw [← single_zero σ, (single_injective σ).eq_iff]
 
+/- English proof (translation)
+The claim follows from `CrossedProduct.ext (mulCoeff_single_single σ τ a b)`.
+-/
 theorem single_mul_single (σ τ : L ≃ₐ[K] L) (a b : L) :
     (single σ a : CrossedProduct hf) * single τ b = single (σ * τ) (a * σ b * f (σ, τ)) :=
   CrossedProduct.ext (mulCoeff_single_single σ τ a b)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem one_def : (1 : CrossedProduct hf) = single 1 (((f (1, 1))⁻¹ : Lˣ) : L) := rfl
 
+/- English proof (translation)
+Apply `coeff_injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `x.coeff = coeffAddHom (x.coeff.sum fun σ a => single σ a)`. Rewrite using `[map_finsuppSum]`. Conclude with `(Finsupp.sum_single x.coeff).symm`. Use the proof step `@[elab_as_elim]`.
+-/
 theorem eq_sum_single (x : CrossedProduct hf) :
     x = x.coeff.sum fun σ a => single σ a := by
   apply coeff_injective
@@ -240,6 +344,9 @@ theorem eq_sum_single (x : CrossedProduct hf) :
   exact (Finsupp.sum_single x.coeff).symm
 
 @[elab_as_elim]
+/- English proof (translation)
+Take `⟨c⟩` from `x`. Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => exact zero`. Consider the case `add c d hc hd => exact add ⟨c⟩ ⟨d⟩ hc hd`. Consider the case `single σ a => exact single σ a`.
+-/
 theorem induction_on {p : CrossedProduct hf → Prop} (x : CrossedProduct hf) (zero : p 0)
     (add : ∀ x y, p x → p y → p (x + y)) (single : ∀ σ a, p (single σ a)) : p x := by
   obtain ⟨c⟩ := x
@@ -263,46 +370,81 @@ def incl : L →ₐ[K] CrossedProduct hf where
     ext1
     rw [coeff_smul, coeff_single, coeff_single, Finsupp.smul_single, Algebra.smul_def]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incl_apply (a : L) :
     (incl a : CrossedProduct hf) = single 1 (a * ((f (1, 1))⁻¹ : Lˣ)) := rfl
 
+/- English proof (translation)
+Rewrite using `[incl_apply, one_def, smul_single]`.
+-/
 theorem incl_eq_smul_one (a : L) : (incl a : CrossedProduct hf) = a • 1 := by
   rw [incl_apply, one_def, smul_single]
 
+/- English proof (translation)
+Rewrite using `[incl_eq_smul_one, smul_mul_assoc, one_mul]`.
+-/
 theorem incl_mul (a : L) (x : CrossedProduct hf) : incl a * x = a • x := by
   rw [incl_eq_smul_one, smul_mul_assoc, one_mul]
 
+/- English proof (translation)
+Introduce `a b h` and use `by rw [incl_apply, incl_apply] at h simpa using single_injective 1 h`.
+-/
 theorem incl_injective : Function.Injective (incl : L → CrossedProduct hf) := fun a b h => by
   rw [incl_apply, incl_apply] at h
   simpa using single_injective 1 h
 
 instance : Nontrivial (CrossedProduct hf) := (incl_injective (hf := hf)).nontrivial
 
+/- English proof (translation)
+Rewrite using `[incl_mul, smul_single]`.
+-/
 theorem incl_mul_single (a : L) (σ : L ≃ₐ[K] L) (b : L) :
     (incl a : CrossedProduct hf) * single σ b = single σ (a * b) := by
   rw [incl_mul, smul_single]
 
+/- English proof (translation)
+Rewrite using `[u, incl_mul_single, mul_one]`.
+-/
 theorem incl_mul_u (a : L) (σ : L ≃ₐ[K] L) : (incl a : CrossedProduct hf) * u σ = single σ a := by
   rw [u, incl_mul_single, mul_one]
 
+/- English proof (translation)
+Rewrite using `[incl_apply, single_mul_single, mul_one, map_one_snd_of_isMulCocycle₂ hf σ, val_smul_units, map_mul, mul_assoc, mul_assoc, ← map_mul, Units.inv_mul, map_one, mul_one]`.
+-/
 theorem single_mul_incl (σ : L ≃ₐ[K] L) (a b : L) :
     (single σ a : CrossedProduct hf) * incl b = single σ (a * σ b) := by
   rw [incl_apply, single_mul_single, mul_one, map_one_snd_of_isMulCocycle₂ hf σ, val_smul_units,
     map_mul, mul_assoc, mul_assoc, ← map_mul, Units.inv_mul, map_one, mul_one]
 
+/- English proof (translation)
+Simplify using `only [u]`. Rewrite using `[single_mul_incl, one_mul, incl_mul_single, mul_one]`.
+-/
 theorem u_mul_incl (σ : L ≃ₐ[K] L) (a : L) :
     (u σ : CrossedProduct hf) * incl a = incl (σ a) * u σ := by
   simp only [u]
   rw [single_mul_incl, one_mul, incl_mul_single, mul_one]
 
+/- English proof (translation)
+Simplify using `only [u]`. Rewrite using `[single_mul_single, map_one, one_mul, one_mul, incl_mul_single, mul_one]`.
+-/
 theorem u_mul_u (σ τ : L ≃ₐ[K] L) :
     (u σ : CrossedProduct hf) * u τ = incl (f (σ, τ) : L) * u (σ * τ) := by
   simp only [u]
   rw [single_mul_single, map_one, one_mul, one_mul, incl_mul_single, mul_one]
 
+/- English proof (translation)
+Rewrite using `[incl_apply, Units.mul_inv]`. Both sides reduce to the same expression.
+-/
 theorem u_one : (u 1 : CrossedProduct hf) = incl (f (1, 1) : L) := by
   rw [incl_apply, Units.mul_inv]; rfl
 
+/- English proof (translation)
+Proceed by induction on `x using induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp [add_mul, hx, hy]`. Consider the case `single τ a`. Rewrite using `[single_mul_incl, coeff_single, coeff_single]`.
+
+Distinguish the cases in `h : τ = σ`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+-/
 theorem coeff_mul_incl (x : CrossedProduct hf) (b : L) (σ : L ≃ₐ[K] L) :
     (x * incl b).coeff σ = x.coeff σ * σ b := by
   induction x using induction_on with
@@ -314,10 +456,18 @@ theorem coeff_mul_incl (x : CrossedProduct hf) (b : L) (σ : L ≃ₐ[K] L) :
     · subst h; simp
     · simp [h]
 
+/- English proof (translation)
+Rewrite using `[incl_mul, coeff_smul, Finsupp.smul_apply, smul_eq_mul]`.
+-/
 theorem coeff_incl_mul (b : L) (x : CrossedProduct hf) (σ : L ≃ₐ[K] L) :
     (incl b * x).coeff σ = b * x.coeff σ := by
   rw [incl_mul, coeff_smul, Finsupp.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Establish `h` using `smul_map_inv_div_map_inv_of_isMulCocycle₂ hf σ`. Rewrite `h` using `[map_one_snd_of_isMulCocycle₂ hf σ, div_eq_div_iff_mul_eq_mul]`. Establish `hr : σ • (f (σ⁻¹, σ) * f (1, 1))⁻¹ * (f (σ, σ⁻¹) * f (1, 1)) = 1`. Rewrite using `[smul_inv', smul_mul', inv_mul_eq_one, h, mul_comm]`. Establish `hl : (f (σ⁻¹, σ) * f (1, 1))⁻¹ * (f (σ⁻¹, σ) * f (1, 1)) = 1` using `inv_mul_cancel _`.
+
+Use `isUnit_iff_exists.2 ⟨incl (((f (σ⁻¹, σ) * f (1, 1))⁻¹ : Lˣ) : L) * u σ⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, u_mul_incl, mul_assoc, u_mul_u, mul_inv_cancel, u_one, ← map_mul, ← map_mul, ← val_smul_units, ← Units.val_mul, ← Units.val_mul, hr, Units.val_one, map_one]`. Rewrite using `[mul_assoc, u_mul_u, inv_mul_cancel, u_one, ← map_mul, ← map_mul, ← Units.val_mul, ← Units.val_mul, hl, Units.val_one, map_one]`.
+-/
 theorem isUnit_u (σ : L ≃ₐ[K] L) : IsUnit (u σ : CrossedProduct hf) := by
   have h := smul_map_inv_div_map_inv_of_isMulCocycle₂ hf σ
   rw [map_one_snd_of_isMulCocycle₂ hf σ, div_eq_div_iff_mul_eq_mul] at h
@@ -334,6 +484,9 @@ theorem isUnit_u (σ : L ≃ₐ[K] L) : IsUnit (u σ : CrossedProduct hf) := by
 def basis : Module.Basis (L ≃ₐ[K] L) L (CrossedProduct hf) :=
   (Finsupp.basisSingleOne).map (coeffEquiv L).symm
 
+/- English proof (translation)
+Rewrite using `[basis, Module.Basis.map_apply, Finsupp.coe_basisSingleOne]`. Both sides reduce to the same expression.
+-/
 @[simp] theorem basis_apply (σ : L ≃ₐ[K] L) : (basis σ : CrossedProduct hf) = u σ := by
   rw [basis, Module.Basis.map_apply, Finsupp.coe_basisSingleOne]
   rfl
@@ -346,10 +499,16 @@ instance [FiniteDimensional K L] : Module.Finite L (CrossedProduct hf) :=
 instance [FiniteDimensional K L] : FiniteDimensional K (CrossedProduct hf) :=
   Module.Finite.trans L _
 
+/- English proof (translation)
+The claim follows from `Module.finrank_eq_nat_card_basis basis`.
+-/
 theorem finrank_left [FiniteDimensional K L] :
     Module.finrank L (CrossedProduct hf) = Nat.card (L ≃ₐ[K] L) :=
   Module.finrank_eq_nat_card_basis basis
 
+/- English proof (translation)
+Rewrite using `[← Module.finrank_mul_finrank K L (CrossedProduct hf), finrank_left, IsGalois.card_aut_eq_finrank, sq]`.
+-/
 theorem finrank_eq_sq [FiniteDimensional K L] [IsGalois K L] :
     Module.finrank K (CrossedProduct hf) = Module.finrank K L ^ 2 := by
   rw [← Module.finrank_mul_finrank K L (CrossedProduct hf), finrank_left,

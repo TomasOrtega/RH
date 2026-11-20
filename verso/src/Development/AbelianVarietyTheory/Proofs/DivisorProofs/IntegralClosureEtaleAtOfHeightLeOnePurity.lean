@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.KeyOriginEnlarge
 
+/- English proof (translation)
+Introduce `A _ _ _ _ EA _ _ _ _ _ QA _`. Take `⟨hd, hn⟩` from `GlobalTheory.isDomain_and_isIntegrallyClosed_atPrime_of_etale (Polynomial A) QA (Localization.AtPrime QA)`. Use `haveI : IsNoetherianRing EA := Algebra.FiniteType.isNoetherianRing (Polynomial A) EA`. Use `⟨hd, hn, inferInstance, ?_⟩` and prove the remaining obligations. Use `haveI := hd`.
+
+Use `haveI : Module.Flat (Polynomial A) (Localization.AtPrime QA) := Module.Flat.trans (Polynomial A) EA (Localization.AtPrime QA)`. Establish `h1 : Function.Injective (algebraMap (Polynomial A) (Localization.AtPrime QA))` using `FaithfulSMul.algebraMap_injective (Polynomial A) (Localization.AtPrime QA)`. Establish `h2 : algebraMap A (Localization.AtPrime QA) = (algebraMap (Polynomial A) (Localization.AtPrime QA)).comp (algebraMap A (Polynomial A))` using `IsScalarTower.algebraMap_eq _ _ _`. Rewrite using `[h2]`. Conclude with `h1.comp Polynomial.C_injective`.
+-/
 theorem atPrime_isDomain_isIntegrallyClosed_isNoetherian_injective : ∀ (A : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A]
     (EA : Type) [CommRing EA] [Algebra (Polynomial A) EA] [Algebra A EA]
     [IsScalarTower A (Polynomial A) EA] [Algebra.Etale (Polynomial A) EA]
@@ -39,6 +44,11 @@ theorem atPrime_isDomain_isIntegrallyClosed_isNoetherian_injective : ∀ (A : Ty
   rw [h2]
   exact h1.comp Polynomial.C_injective
 
+/- English proof (translation)
+Introduce `q A _ _ _ _ _ _ EA _ _ _ _ _ QA _ DA _ _ actA htors hyp P _ hP`. Take `⟨hdom, hic, hnoeth, hinj⟩` from `atPrime_isDomain_isIntegrallyClosed_isNoetherian_injective A EA QA`. Use `haveI := GlobalTheory.T.cyclic_torsor_etale _ DA q actA htors`. Use `haveI : Module.Finite (GlobalTheory.LocAcyc.GenFib A (Localization.AtPrime QA)) DA := htors.1`. Use `letI := GlobalTheory.KeyOriginNoeth.closureAlg A (Localization.AtPrime QA) DA`.
+
+Use `haveI := GlobalTheory.T.closure_finite_over_base A (Localization.AtPrime QA) hinj DA`. Conclude with `GlobalTheory.T.etale_atPrime_of_regular_of_isIntegrallyClosedIn (Localization.AtPrime QA) (GlobalTheory.KeyOriginNoeth.closure A (Localization.AtPrime QA) DA) (GlobalTheory.T.isIntegrallyClosedIn_etale_genFib_of_injective A (Localization.AtPrime QA) hinj DA) P (GlobalTheory.T.reg …`.
+-/
 theorem closureEtaleAt_of_comap_height_le_one : ∀ (q : ℕ) (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A] [IsIntegrallyClosed A]
     [Algebra.EssFiniteType ℤ A]
     (EA : Type) [CommRing EA] [Algebra (Polynomial A) EA] [Algebra A EA]

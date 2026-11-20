@@ -4,6 +4,21 @@ namespace GlobalTheory.ComplexValueBound
 
 open Finset
 
+/- English proof (translation)
+Introduce `ι κ M _ _ T l hl s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro u _ _ i hi`. Simplify using `at hi`. Consider the case `insert a s ha ih`.
+
+Introduce `u hu hsum`. Rewrite `hsum` using `[Finset.sum_insert ha]`. Establish `hsa : ∑ i ∈ s, u i = -u a`. Rewrite using `[← sub_eq_zero, sub_neg_eq_add, add_comm]`. Conclude with `hsum`.
+
+Establish `hs : ∀ j ∈ s, u j = 0`. Introduce `j hj`. Establish `hne : a ≠ j` using `fun h => ha (h ▸ hj)`. Take `⟨k, hk⟩` from `hl a j hne`. Establish `hvu : ∀ (i : ι) (k' : κ), (T k' : M → M) ((l i k - l a k) • u i) = l i k' • ((l i k - l a k) • u i)`.
+
+Introduce `i k'`. Rewrite using `[LinearMap.map_smul, hu, smul_comm]`. Establish `hvsum : ∑ i ∈ s, (l i k - l a k) • u i = 0`. Establish `h1 : ∑ i ∈ s, (l i k - l a k) • u i = T k (∑ i ∈ s, u i) - l a k • ∑ i ∈ s, u i`. Rewrite using `[map_sum, Finset.smul_sum, ← Finset.sum_sub_distrib]`.
+
+Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[hu, sub_smul]`. Rewrite using `[h1, hsa, map_neg, hu, smul_neg, sub_neg_eq_add, neg_add_cancel]`. Establish `h` using `ih (fun i => (l i k - l a k) • u i) hvu hvsum j hj`. Conclude with `(smul_eq_zero.mp h).resolve_left (sub_ne_zero.mpr (Ne.symm hk))`.
+
+Introduce `i hi`. Break down `Finset.mem_insert.mp hi with rfl | hi` into its components or cases. Establish `h0 : ∑ i ∈ s, u i = 0` using `Finset.sum_eq_zero hs`. Rewrite `hsum` using `[h0, add_zero]`. Conclude with `hsum`.
+
+Conclude with `hs i hi`.
+-/
 theorem main : ∀ {ι κ M : Type} [inst : AddCommGroup M] [inst_1 : Module ℂ M] (T : κ → M →ₗ[ℂ] M) (l : ι → κ → ℂ), (∀ (i j : ι), i ≠ j → ∃ (k : κ), l i k ≠ l j k) → ∀ (s : Finset ι) (u : ι → M), (∀ (i : ι) (k : κ), (T k : M → M) (u i) = l i k • u i) → ∑ i ∈ s, u i = (0 : M) → ∀ i ∈ s, u i = (0 : M) := by
   intro ι κ M _ _ T l hl s
   classical

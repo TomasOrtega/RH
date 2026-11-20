@@ -19,5 +19,8 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open GlobalTheory.FlatModel
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.unif_norm_indep | exact GlobalTheory.unif_norm_indep | (intros; apply GlobalTheory.unif_norm_indep <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.norm_uniformizer_constant : ∀ (F : Type) [Field F] [NumberField F] (V : ValuationSubring F) [IsDiscreteValuationRing V] (p : ℕ) [Fact p.Prime], (p : F) ∈ V.nonunits → ∀ ϖ : V, Irreducible ϖ → ∃ r : ℝ, ∀ φ : V →+* 𝓞_ℂ_[p], ‖((φ ϖ : 𝓞_ℂ_[p]) : ℂ_[p])‖ = r := by
   first | exact @GlobalTheory.unif_norm_indep | exact GlobalTheory.unif_norm_indep | (intros; apply GlobalTheory.unif_norm_indep <;> assumption)

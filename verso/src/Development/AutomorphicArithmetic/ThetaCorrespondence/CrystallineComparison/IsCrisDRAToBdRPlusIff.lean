@@ -11,6 +11,11 @@ variable {p : ℕ} [Fact p.Prime] {R : Type} [CommRing R] [Fact ¬IsUnit (p : R)
   [IsAdicComplete (Ideal.span {(p : R)}) R] [IsDomain R] [ValuationRing R] [CharZero R]
   [IsAlgClosed (FractionRing R)]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hf`. Use `Bcris.hom_ext fun x => ?_` and prove the remaining obligations. Establish `h` using `BcrisPlus.hom_ext (f := f.comp (algebraMap (BcrisPlus p R) (Bcris p R))) (g := (Bcris.toBdR p R).comp (algebraMap (BcrisPlus p R) (Bcris p R))) (fun y => by`. Simplify using `only [RingHom.comp_apply]`.
+
+Rewrite using `[← IsScalarTower.algebraMap_apply, hf y, Bcris.toBdR_algebraMap_acris])`. Conclude with `RingHom.congr_fun h x`. Introduce and unpack `rfl x`. Conclude with `Bcris.toBdR_algebraMap_acris x`.
+-/
 theorem isCrisDRA_toBdRPlus_iff (f : Bcris p R →+* BdR p R) :
     IsCrisDRA (Acris.toBdRPlus p R) f ↔ f = Bcris.toBdR p R := by
   constructor

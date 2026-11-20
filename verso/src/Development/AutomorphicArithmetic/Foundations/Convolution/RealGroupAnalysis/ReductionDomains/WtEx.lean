@@ -7,6 +7,21 @@ open GroundTheory.Global GroundTheory.Automorphic GroundTheory.Automorphic.GJMat
 open scoped Classical ENNReal NNReal Pointwise
 open UpperTheory.ConvolutionTheory.R2
 
+/- English proof (translation)
+Introduce `F _ _`. Establish `hinj : Function.Injective (fun ξ : F => (nU (rt ξ : A F) : G1 F))`. Introduce `a b h`. Establish `h1 : (nU (rt a : A F) : G1 F) 0 1 = (nU (rt b : A F) : G1 F) 0 1`. Rewrite using `[show (nU (rt a : A F) : G1 F) = nU (rt b : A F) from h]`.
+
+Establish `h2 : (rt a : A F) = rt b` using `by simpa [nU] using h1`. Conclude with `AdeleRing.algebraMap_injective (𝓞 F) F h2`. Set `N : Subgroup (G1 F)` to `{ carrier := Set.range fun ξ : F => (nU (rt ξ : A F) : G1 F) mul_mem' := by`. Introduce and unpack `_ _ ⟨a, rfl⟩ ⟨b, rfl⟩`. Conclude with `⟨a + b, by simp only [rt, map_add, M.nU_add]⟩`.
+
+Use the proof step `one_mem' := ⟨0, by simp only [rt, map_zero, M.nU_zero]⟩`. Use the proof step `inv_mem' := by`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨-a, by simp only [rt, map_neg, M.nU_neg]⟩ }`. Establish `hle : N ≤ Gam F`.
+
+Introduce and unpack `_ ⟨ξ, rfl⟩`. Conclude with `M.nU_rt_mem ξ`. Use `haveI : DiscreteTopology N := DiscreteTopology.of_continuous_injective (f := Subgroup.inclusion hle) (continuous_subtype_val.subtype_mk _) (Subgroup.inclusion_injective hle)`. Take `⟨D, hD, hu, -⟩` from `GlobalTheory.exists_isFundamentalDomain_subgroup N`. Use `⟨D.indicator 1, measurable_one.indicator hD, fun g => ?_⟩` and prove the remaining obligations.
+
+Take `⟨n, hn, huniq⟩` from `hu g`. Take `⟨ξ₀, hξ₀⟩` from `n.2`. Establish `hn' : (nU (rt ξ₀ : A F) : G1 F) * g ∈ D`. Establish `: (n : G1 F) * g ∈ D` using `hn`. Rewrite `this` using `[← hξ₀]`. Then use the resulting hypothesis.
+
+Rewrite using `[tsum_eq_single ξ₀]`. Rewrite using `[Set.indicator_of_mem hn']`. Both sides reduce to the same expression. Introduce `ξ hξ`. Use `Set.indicator_of_notMem (fun hmem => hξ ?_) _` and prove the remaining obligations.
+
+Establish `h1 : (⟨nU (rt ξ : A F), ⟨ξ, rfl⟩⟩ : N) = n` using `huniq _ hmem`. Establish `h2 : (nU (rt ξ : A F) : G1 F) = n` using `congrArg Subtype.val h1`. Conclude with `hinj (h2.trans hξ₀.symm)`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.M.wtEx :
     ∀ (F : Type) [Field F] [NumberField F], ∃ β : G1 F → ℝ≥0∞, M.NWt β := by
   intro F _ _

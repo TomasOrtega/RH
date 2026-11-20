@@ -15,6 +15,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.V.Z.Sym.So
 
+/- English proof (translation)
+Set `f : H ⧸ J.subgroupOf H → G ⧸ J` to `Quotient.map' (fun x : H => (x : G)) (by`. Introduce `a b hab`. Rewrite `hab`, the goal using `[QuotientGroup.leftRel_apply]`. Conclude with `Subgroup.mem_subgroupOf.1 hab)`. Establish `hf : Function.Injective f`.
+
+Introduce `a b`. Proceed by induction on `a using QuotientGroup.induction_on`. Proceed by induction on `b using QuotientGroup.induction_on`. Introduce `hab`. Conclude with `QuotientGroup.eq.2 (Subgroup.mem_subgroupOf.2 (QuotientGroup.eq.1 hab))`.
+
+Use `Set.Finite.of_finite_image (Set.Finite.subset h ?_) hf.injOn` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨u, rfl⟩, rfl⟩`. Conclude with `⟨⟨u.1.1, Subgroup.mem_subgroupOf.1 u.2⟩, rfl⟩`.
+-/
 private theorem finOrb_subgroupOf {G : Type} [Group G] (H J : Subgroup G) (d : H) (h : AlgebraTools.FinOrb J J (d : G)) :
     AlgebraTools.FinOrb (J.subgroupOf H) (J.subgroupOf H) d := by
   let f : H ⧸ J.subgroupOf H → G ⧸ J := Quotient.map' (fun x : H => (x : G)) (by
@@ -33,17 +40,30 @@ private theorem finOrb_subgroupOf {G : Type} [Group G] (H J : Subgroup G) (d : H
 
 variable {L : Type} [Field L] [NumberField L] [IsCMField L]
 
+/- English proof (translation)
+Establish `h : mL u x = ((pLoc L u).comp (pFin L)).mapMatrix ((x : GL (Fin 2) (Ad L)) : Matrix (Fin 2) (Fin 2) (Ad L))` using `rfl`. Rewrite using `[h, ← RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 private theorem det_cLoc (x : UA L 2) (u : Plc L) :
     (mL u x).det = pLoc L u (pFin L ((x : GL (Fin 2) (Ad L)) : Matrix (Fin 2) (Fin 2) (Ad L)).det) := by
   have h : mL u x = ((pLoc L u).comp (pFin L)).mapMatrix ((x : GL (Fin 2) (Ad L)) : Matrix (Fin 2) (Fin 2) (Ad L)) := rfl
   rw [h, ← RingHom.map_det]
   rfl
 
+/- English proof (translation)
+Establish `h : ((x : GL (Fin 2) (Ad L)) : Matrix (Fin 2) (Fin 2) (Ad L)).det = 1` using `congrArg Units.val (show Matrix.GeneralLinearGroup.det (x : GL (Fin 2) (Ad L)) = 1 from hx)`. Rewrite using `[det_cLoc, h, map_one, map_one]`.
+-/
 private theorem det_places (x : UA L 2) (hx : x ∈ SUA L) (u : Plc L) : (mL u x).det = 1 := by
   have h : ((x : GL (Fin 2) (Ad L)) : Matrix (Fin 2) (Fin 2) (Ad L)).det = 1 :=
     congrArg Units.val (show Matrix.GeneralLinearGroup.det (x : GL (Fin 2) (Ad L)) = 1 from hx)
   rw [det_cLoc, h, map_one, map_one]
 
+/- English proof (translation)
+Use `show Matrix.GeneralLinearGroup.det (x : GL (Fin 2) (Ad L)) = 1`. Apply `Units.ext` to reduce the goal to its premises. Use `show ((x : GL (Fin 2) (Ad L)) : Matrix (Fin 2) (Fin 2) (Ad L)).det = 1`. Establish `hi : (pInf L).mapMatrix ((x : GL (Fin 2) (Ad L)) : Matrix (Fin 2) (Fin 2) (Ad L)) = 1` using `congrArg (fun y : GL (Fin 2) (Cinf L) => (y : Matrix (Fin 2) (Fin 2) (Cinf L))) (show cInf x = 1 from hx)`. Apply `Prod.ext` to reduce the goal to its premises.
+
+Use `(infEq L).symm.injective ?_` and prove the remaining obligations. Use `RingHom.map_det (pInf L) ((x : GL (Fin 2) (Ad L)) : Matrix (Fin 2) (Fin 2) (Ad L))` as an intermediate fact. Rewrite `this` using `[hi, Matrix.det_one]`. Conclude with `this.trans (map_one (pInf L)).symm`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `u`. Use `det_cLoc x u` as an intermediate fact. Rewrite `this` using `[h u]`. Conclude with `this.symm.trans rfl`.
+-/
 private theorem mem_SUA_of_places (x : UA L 2) (hx : x ∈ finU L 2) (h : ∀ u : Plc L, (mL u x).det = 1) : x ∈ SUA L := by
   show Matrix.GeneralLinearGroup.det (x : GL (Fin 2) (Ad L)) = 1
   apply Units.ext
@@ -61,6 +81,19 @@ private theorem mem_SUA_of_places (x : UA L 2) (hx : x ∈ finU L 2) (h : ∀ u 
     rw [h u] at this
     exact this.symm.trans rfl
 
+/- English proof (translation)
+Set `Hs : Subgroup Gl` to `Q.comap sec`. Set `j : Hs →* G` to `e.symm.toMonoidHom.comp (sec.subgroupComap Q)`. Set `p : G →* Hs` to `MonoidHom.codRestrict (c.comp (Q.subtype.comp e.toMonoidHom)) Hs (fun u => hsu _ (e u).2)`. Establish `hej : ∀ x : Hs, (e (j x) : M) = sec x` using `fun x => by show ((e (e.symm _)) : M) = _`. Rewrite using `[MulEquiv.apply_symm_apply]`.
+
+Both sides reduce to the same expression. Establish `hp : ∀ u : G, (p u : Gl) = c (e u)` using `fun _ => rfl`. Set `J : Subgroup Hs` to `J₀.subgroupOf Hs`. Establish `hpj : ∀ x, p (j x) = x` using `fun x => Subtype.ext (by rw [hp, hej, hcs])`. Establish `hcm : ∀ (u : G) (x : Hs), u * (j (p u))⁻¹ * j x = j x * (u * (j (p u))⁻¹)`.
+
+Introduce `u x`. Apply `e.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use `hcomm _ (e u).2 x x.2` as an intermediate fact. Simplify using `only [map_mul, map_inv, Subgroup.coe_mul, InvMemClass.coe_inv, hej, hp]`.
+
+Conclude with `this.symm.eq`. Establish `hJ₁ : ∀ h ∈ J, j h ∈ U₁` using `fun h hh => h₃ _ ⟨h, Subgroup.mem_subgroupOf.1 hh, hej h⟩`. Establish `hdH : d ∈ Hs` using `by show sec d ∈ Q`. Rewrite using `[← hg]`. Conclude with `(e g).2`.
+
+Establish `hgj : g = j ⟨d, hdH⟩`. Apply `e.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hg, hej]`. Establish `hfin : AlgebraTools.FinOrb J J (⟨d, hdH⟩ : Hs)` using `finOrb_subgroupOf Hs J₀ _ hd`.
+
+Establish `k₁` using `dcLocal Hs G V j p J U₁ hpj (fun u hu => ⟨Subgroup.mem_subgroupOf.2 (h₁ u hu), hcm u⟩) hJ₁ _ hfin`. Establish `k₂` using `dcLocal Hs G V j p J U₂ hpj (fun u hu => ⟨Subgroup.mem_subgroupOf.2 (h₂ u hu), hcm u⟩) (fun h hh => h₁₂ (hJ₁ h hh)) _ hfin`. Rewrite using `[hgj, k₁.2 ψ fun u hu => hψ u (h₁₂ hu), k₂.2 ψ hψ]`.
+-/
 private theorem dc_eq_of_local {G M Gl V : Type} [Group G] [Group M] [Group Gl] [AddCommGroup V] [Module ℂ V]
     (Q : Subgroup M) (e : G ≃* Q) (sec : Gl →* M) (c : M →* Gl) (hcs : ∀ x, c (sec x) = x)
     (hsu : ∀ x ∈ Q, sec (c x) ∈ Q)
@@ -103,6 +136,11 @@ private theorem dc_eq_of_local {G M Gl V : Type} [Group G] [Group M] [Group Gl] 
     (fun u hu => ⟨Subgroup.mem_subgroupOf.2 (h₂ u hu), hcm u⟩) (fun h hh => h₁₂ (hJ₁ h hh)) _ hfin
   rw [hgj, k₁.2 ψ fun u hu => hψ u (h₁₂ hu), k₂.2 ψ hψ]
 
+/- English proof (translation)
+Take `⟨f1, -, -, -, -, -, f7, -⟩` from `uaFacts L 2`. Take `⟨a, ha, hau⟩` from `f7 w x hx`. Establish `e : a = secW 2 w (cLoc w x)`. Use `(f1 w h).2.2.2 a ha` as an intermediate fact. Rewrite `this` using `[hau w rfl]`. Then use the resulting hypothesis.
+
+Rewrite using `[← e]`. Conclude with `hau u hu`.
+-/
 private theorem sec_cLoc (w : Plc L) (h : IsSplitAt w) (x : UA L 2) (hx : x ∈ finU L 2) (u : Plc L) (hu : un u = un w) :
     cLoc u (secW 2 w (cLoc w x)) = cLoc u x := by
   obtain ⟨f1, -, -, -, -, -, f7, -⟩ := uaFacts L 2
@@ -113,9 +151,17 @@ private theorem sec_cLoc (w : Plc L) (h : IsSplitAt w) (x : UA L 2) (hx : x ∈ 
   rw [← e]
   exact hau u hu
 
+/- English proof (translation)
+The claim follows from `Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hx).2 u) hu`.
+-/
 private theorem loc_off (w : Plc L) (x : UA L 2) (hx : x ∈ locU 2 w) (u : Plc L) (hu : un u ≠ un w) : cLoc u x = 1 :=
   Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hx).2 u) hu
 
+/- English proof (translation)
+Establish `hl : secW 2 w (cLoc w x) ∈ locU 2 w` using `((uaFacts L 2).1 w h).1 _`. Establish `hf : secW 2 w (cLoc w x) ∈ finU L 2` using `(Subgroup.mem_inf.1 hl).1`. Use `Subgroup.mem_inf.2 ⟨hf, mem_SUA_of_places _ hf fun u => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hu : un u = un w`. Use `det_places x (Subgroup.mem_inf.1 hx).2 u` as an intermediate fact.
+
+Rewrite `this` using `[mL, ← sec_cLoc w h x (Subgroup.mem_inf.1 hx).1 u hu]`. Then use the resulting hypothesis. Rewrite using `[mL, loc_off w _ hl u hu]`. Simplify using the standard rewrite rules.
+-/
 private theorem sec_mem (w : Plc L) (h : IsSplitAt w) (x : UA L 2) (hx : x ∈ finU L 2 ⊓ SUA L) :
     secW 2 w (cLoc w x) ∈ finU L 2 ⊓ SUA L := by
   have hl : secW 2 w (cLoc w x) ∈ locU 2 w := ((uaFacts L 2).1 w h).1 _
@@ -127,14 +173,25 @@ private theorem sec_mem (w : Plc L) (h : IsSplitAt w) (x : UA L 2) (hx : x ∈ f
   · rw [mL, loc_off w _ hl u hu]
     simp
 
+/- English proof (translation)
+Use `(uaFacts L 2).2.1 w _ (((uaFacts L 2).1 w h).1 a) _ fun u hu => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, sec_cLoc w h x hx u hu, mul_inv_cancel]`.
+-/
 private theorem sec_comm (w : Plc L) (h : IsSplitAt w) (x : UA L 2) (hx : x ∈ finU L 2) (a : GL (Fin 2) (Kw w)) :
     Commute (secW 2 w a) (x * (secW 2 w (cLoc w x))⁻¹) := by
   refine (uaFacts L 2).2.1 w _ (((uaFacts L 2).1 w h).1 a) _ fun u hu => ?_
   rw [map_mul, map_inv, sec_cLoc w h x hx u hu, mul_inv_cancel]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem eD_congr {K : Type} [Field K] {Δ s s' : K} (a : s * s = Δ) (b : s' * s' = Δ) (h : s = s') : eD a = eD b := by
   subst h; rfl
 
+/- English proof (translation)
+Set `g₀ : GL (Fin 2) (Kv (un w))` to `Matrix.GeneralLinearGroup.map (Sp.i.symm : Kw w →+* Kv (un w)) a`. Establish `e : Matrix.GeneralLinearGroup.map (Sp.i : Kv (un w) →+* Kw w) g₀ = a`. Use extensionality with `i j`. Simplify using `[g₀]`. Rewrite `ha`, the goal using `[← e]`.
+
+Conclude with `(Sp.K 2 g₀).2 (((finFacts _ (Lev.iw _)).2.2.2.2.2 2).2.2.2 ((Sp.J (Lev.iw _) (iw w) rfl Sp.Uo 2 g₀).1 ha))`.
+-/
 private theorem iw_KGL (R : RingBr L) (w : Plc L) (Sp : R.Split w) (a : GL (Fin 2) (Kw w)) (ha : a ∈ (iw w).J 2) :
     a ∈ GlobalTheory.LFun.KGL w 2 := by
   let g₀ : GL (Fin 2) (Kv (un w)) := Matrix.GeneralLinearGroup.map (Sp.i.symm : Kw w →+* Kv (un w)) a
@@ -144,6 +201,15 @@ private theorem iw_KGL (R : RingBr L) (w : Plc L) (Sp : R.Split w) (a : GL (Fin 
   rw [← e] at ha ⊢
   exact (Sp.K 2 g₀).2 (((finFacts _ (Lev.iw _)).2.2.2.2.2 2).2.2.2 ((Sp.J (Lev.iw _) (iw w) rfl Sp.Uo 2 g₀).1 ha))
 
+/- English proof (translation)
+Establish `hl : secW 2 w a ∈ locU 2 w` using `((uaFacts L 2).1 w h).1 a`. Establish `hc : cLoc w (secW 2 w a) = a` using `((uaFacts L 2).1 w h).2.1 a`. Establish `hK : secW 2 w a ∈ Kall L 2`. Use `Subgroup.mem_inf.2 ⟨(Subgroup.mem_inf.1 hl).1, Subgroup.mem_iInf.2 fun u => ?_⟩` and prove the remaining obligations. Use `show cLoc u (secW 2 w a) ∈ GlobalTheory.LFun.KGL u 2`.
+
+Distinguish the cases in `hu : un u = un w`. Conclude with `(uaFacts L 2).2.2.2.2.2.2.2 w h _ (by rw [hc]; exact iw_KGL R w Sp a ha) u hu`. Rewrite using `[loc_off w _ hl u hu]`. Conclude with `one_mem _`. Use `Subgroup.mem_inf.2 ⟨hU.2 w (Finset.mem_singleton_self w) (Subgroup.mem_inf.2 ⟨hl, hK⟩), ?_⟩` and prove the remaining obligations.
+
+Use `Subgroup.mem_iInf.2 fun w' => Subgroup.mem_iInf.2 fun hw' => ?_` and prove the remaining obligations. Use `show cLoc w' (secW 2 w a) ∈ (iw w').J 2`. Distinguish the cases in `e : w' = w`. Substitute `e` using the available equality. Rewrite using `[hc]` and apply the resulting hypothesis.
+
+Rewrite using `[loc_off w _ hl w' (hS w' hw' e)]`. Conclude with `one_mem _`.
+-/
 private theorem sec_lev (R : RingBr L) (w : Plc L) (h : IsSplitAt w) (Sp : R.Split w) (U : Subgroup (UA L 2)) (hU : Full U {w})
     (S₁ : Finset (Plc L)) (hS : ∀ w' ∈ S₁, w' ≠ w → un w' ≠ un w) (a : GL (Fin 2) (Kw w)) (ha : a ∈ (iw w).J 2) :
     secW 2 w a ∈ lev U S₁ iw := by
@@ -165,6 +231,11 @@ private theorem sec_lev (R : RingBr L) (w : Plc L) (h : IsSplitAt w) (Sp : R.Spl
   · rw [loc_off w _ hl w' (hS w' hw' e)]
     exact one_mem _
 
+/- English proof (translation)
+Establish `hv : un w ∈ A.Sg` using `(hF.sg _).2 ⟨w, hw, rfl⟩`. Establish `h1 : y⁻¹ * (u : DA B.Δ) * y⁻¹⁻¹ ∈ A.dat.U2` using `Subgroup.mem_subgroupOf.1 hu`. Establish `h2` using `(((datOk _ _ A hA).2.2.2.2 _).1 h1).1 (un w) hv`. Establish `h3 : (y⁻¹ * (u : DA B.Δ) * y⁻¹⁻¹).1 (un w) = (u : DA B.Δ).1 (un w)` using `by show (y.1 (un w))⁻¹ * (u : DA B.Δ).1 (un w) * ((y.1 (un w))⁻¹)⁻¹ = _`. Rewrite using `[hy _ hv]`.
+
+Simplify using the standard rewrite rules. Rewrite `h2` using `[h3, eD_congr (A.hs _ hv) (T w h).hs (hF.s w hw h)]`. Rewrite using `[hB.splS w (T w h) u, ← hiw]`. Conclude with `((T w h).J (A.V (un w)) (VL w) (hF.c w hw) (hF.H w hw h) 2 _).2 h2`.
+-/
 private theorem lvS_loc (B : Bridge L) (hB : B.Ok) (T : Spl B) (S : Finset (Plc L)) (VL : ∀ w : Plc L, Lev (Kw w)) (A : SD B.Δ) (hA : A.Ok)
     (hF : Fit T S VL A) (w : Plc L) (hw : w ∈ S) (h : IsSplitAt w) (hiw : VL w = iw w) (y : DA B.Δ) (hy : A.dat.Off y)
     (u : SA B.Δ) (hu : u ∈ A.lvS y) : cLoc w (B.bS u : UA L 2) ∈ (iw w).J 2 := by
@@ -183,6 +254,9 @@ end UpperTheory.V.Z.Sym.So
 
 namespace UpperTheory.V.Z.Sym.So
 
+/- English proof (translation)
+The claim follows from `dc_eq_of_local Q e sec c hcs hsu hcomm J₀ _ _ (fun _ hu => h₁ _ hu) h₂ (fun u hu => hu.elim fun h hh => show (e u : M) ∈ U from hh.2 ▸ h₃ h hh.1) (fun u hu => h₁₂ u hu) d hd g hg ψ hψ`.
+-/
 private theorem genL {F : Type} [Field F] [NumberField F] {Δ : F} (A : SD Δ) (y : DA Δ) {M Gl V : Type} [Group M] [Group Gl] [AddCommGroup V] [Module ℂ V]
     (Q : Subgroup M) (e : SA Δ ≃* Q) (sec : Gl →* M) (c : M →* Gl) (hcs : ∀ x, c (sec x) = x)
     (hsu : ∀ x ∈ Q, sec (c x) ∈ Q) (hcomm : ∀ x ∈ Q, ∀ h, sec h ∈ Q → Commute (sec h) (x * (sec (c x))⁻¹))
@@ -194,6 +268,9 @@ private theorem genL {F : Type} [Field F] [NumberField F] {Δ : F} (A : SD Δ) (
   dc_eq_of_local Q e sec c hcs hsu hcomm J₀ _ _ (fun _ hu => h₁ _ hu) h₂
     (fun u hu => hu.elim fun h hh => show (e u : M) ∈ U from hh.2 ▸ h₃ h hh.1) (fun u hu => h₁₂ u hu) d hd g hg ψ hψ
 
+/- English proof (translation)
+The claim follows from `genL A y (finU L 2 ⊓ SUA L) B.bS (secW 2 w) (cLoc w) ((uaFacts L 2).1 w h).2.1 (sec_mem w h) (fun x hx a _ => sec_comm w h x hx.1 a) ((iw w).J 2) (lev U S₁ iw) (fun _ hu => Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hu.2 w) hwS₁) (lvS_loc B hB T S VL A hA hF w hwS h hiw y hy) (sec_ …`.
+-/
 private theorem sLev0 {L : Type} [Field L] [NumberField L] [IsCMField L] (B : Bridge L) (hB : B.Ok) (T : Spl B) (S : Finset (Plc L))
     (VL : ∀ w : Plc L, Lev (Kw w)) (A : SD B.Δ) (hA : A.Ok) (hF : Fit T S VL A) (w : Plc L) (hwS : w ∈ S) (h : IsSplitAt w)
     (S₁ : Finset (Plc L)) (hwS₁ : w ∈ S₁) (hS₁ : S₁ ⊆ S) (hiw : VL w = iw w) (U : Subgroup (UA L 2)) (hU : Full U {w})
@@ -213,6 +290,9 @@ end UpperTheory.V.Z.Sym.So
 set_option allowUnsafeReducibility true in
 attribute [local irreducible] cv Kv Ov DX KD RP SA Lsq dcF SD.lvS lev SUA Subgroup.comap MulEquiv.toMonoidHom Subgroup.toGroup Subgroup.subgroupOf
 
+/- English proof (translation)
+Introduce `L _ _ _ B hB T S VL A hA hF w hw h S₁ a b c U hU y hy hl V _ _ ψ hψ g d hg`. Establish `k` using `sLev0 B hB T S VL A hA hF w hw h S₁ a b c U hU y hy hl V ψ hψ g d hg`. Conclude with `k`.
+-/
 theorem UpperTheory.V.Z.Sym.So.sLev :
     UpperTheory.V.Z.Sym.So.SLev := by
   intro L _ _ _ B hB T S VL A hA hF w hw h S₁ a b c U hU y hy hl V _ _ ψ hψ g d hg

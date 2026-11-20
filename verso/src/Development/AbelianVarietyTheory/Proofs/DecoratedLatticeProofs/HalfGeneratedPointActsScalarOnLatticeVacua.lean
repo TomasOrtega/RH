@@ -12,12 +12,30 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.HalfGenScalar
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : ψ a * ψ (-a) = 1` using `by rw [← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`. Rewrite `h1` using `[h, zero_mul]`. Conclude with `zero_ne_one h1`.
+-/
 theorem addChar_ne_zero {A : Type} [AddCommGroup A] (ψ : AddChar A ℂ) (a : A) : ψ a ≠ 0 := by
   intro h
   have h1 : ψ a * ψ (-a) = 1 := by rw [← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]
   rw [h, zero_mul] at h1
   exact zero_ne_one h1
 
+/- English proof (translation)
+Introduce `D ψ S T Λ z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem u hu`. Take `⟨huΛ, e, he, hh⟩` from `hu`. Conclude with `⟨1, fun f hf => by rw [one_smul]; exact hf.2 e he u huΛ hh⟩`.
+
+Consider the case `zero => exact ⟨1, fun f _ => by rw [one_smul]; exact GlobalTheory.SplitScalar.heisO_zero ψ S T f⟩`. Consider the case `add x y _ _ ihx ihy`. Take `⟨cx, hcx⟩` from `ihx`. Take `⟨cy, hcy⟩` from `ihy`. Use `⟨(ψ (symplOH S T x y))⁻¹ * (cx * cy), fun f hf => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `GlobalTheory.SplitScalar.heisO_heisO ψ S T x y f`. Rewrite `h1` using `[hcy f hf, GlobalTheory.SplitScalar.heisO_smul, hcx f hf, smul_smul]`. Establish `hne` using `addChar_ne_zero ψ (symplOH S T x y)`. Rewrite using `[mul_smul, mul_comm cx cy, h1, smul_smul, inv_mul_cancel₀ hne, one_smul]`. Consider the case `neg x _ ihx`.
+
+Take `⟨cx, hcx⟩` from `ihx`. Distinguish the cases in `h0 : cx = 0`. Use `⟨0, fun f hf => ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.SplitScalar.heisO_heisO ψ S T (-x) x f`. Rewrite `h1` using `[hcx f hf, h0, zero_smul, neg_add_cancel, GlobalTheory.SplitScalar.heisO_zero]`.
+
+Establish `hf0 : f = 0`. Establish `h2 : heisO ψ S T (-x) (0 : WO S T → ℂ) = 0`. Simplify using `using GlobalTheory.SplitScalar.heisO_smul ψ S T (-x) 0 (0 : WO S T → ℂ)`. Rewrite `h1` using `[h2]`. Conclude with `(smul_eq_zero.1 h1.symm).resolve_left (addChar_ne_zero ψ _)`.
+
+Substitute `hf0` using the available equality. Rewrite using `[zero_smul]`. Simplify using `using GlobalTheory.SplitScalar.heisO_smul ψ S T (-x) 0 (0 : WO S T → ℂ)`. Use `⟨ψ (symplOH S T (-x) x) / cx, fun f hf => ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.SplitScalar.heisO_heisO ψ S T (-x) x f`.
+
+Rewrite `h1` using `[hcx f hf, GlobalTheory.SplitScalar.heisO_smul, neg_add_cancel, GlobalTheory.SplitScalar.heisO_zero]`. Rewrite using `[div_eq_inv_mul, mul_smul, ← h1, smul_smul, inv_mul_cancel₀ h0, one_smul]`.
+-/
 theorem exists_scalar : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (Λ : AddSubgroup (WO S T)) (z : WO S T),
     z ∈ AddSubgroup.closure {u | u ∈ Λ ∧ ∃ e, IsSplitIdem D e ∧ IsHalf e u} →
     ∃ c : ℂ, ∀ f, IsLatVac (heisO ψ S T) Λ f → heisO ψ S T z f = c • f := by

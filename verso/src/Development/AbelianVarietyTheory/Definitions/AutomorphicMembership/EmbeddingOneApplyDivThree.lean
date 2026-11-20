@@ -9,6 +9,13 @@ namespace GlobalTheory.Mem.R3.MjModel
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
+/- English proof (translation)
+Establish `h1 : unitMap σ W x = ∑ i, σ (x i) • stdOrthonormalBasis ℂ W i` using `Fintype.linearCombination_apply ℂ (stdOrthonormalBasis ℂ W) (cpt σ x)`. Establish `h2 : ‖unitMap σ W x‖ ^ 2 = ∑ i, ‖σ (x i)‖ ^ 2`. Rewrite using `[← (stdOrthonormalBasis ℂ W).sum_sq_norm_inner_right]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[h1, (stdOrthonormalBasis ℂ W).orthonormal.inner_right_fintype]`.
+
+Rewrite using `[← Real.sqrt_sq (norm_nonneg (unitMap σ W x)), h2, Formalism.HermitianLatticesTheory.cnorm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h3 : Formalism.HermitianLatticesTheory.fcoord (unitLat K (Module.finrank ℂ W)).b (unitLat K (Module.finrank ℂ W)).X (InfinitePlace.mk σ) x i = (InfinitePlace.mk σ).embedding (x i)`. Establish `h4 : ∀ (n : ℕ) (u : Fin n → ℂ), Matrix.mulVec (1 : Matrix (Fin n) (Fin n) ℂ)⁻¹ u = u` using `fun n u => by`.
+
+Rewrite using `[inv_one, Matrix.one_mulVec]`. Conclude with `congrFun (h4 _ _) i`. Rewrite using `[h3, InfinitePlace.norm_embedding_eq, InfinitePlace.apply]`.
+-/
 theorem unitMap_norm (σ : K →+* ℂ) (W : Type) [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W]
     (x : (unitLat K (Module.finrank ℂ W)).V) :
     Formalism.HermitianLatticesTheory.cnorm (Formalism.HermitianLatticesTheory.fcoord (unitLat K (Module.finrank ℂ W)).b (unitLat K (Module.finrank ℂ W)).X
@@ -43,8 +50,16 @@ abbrev seq1 : ℕ → HLat ℚ := latSeq (m := 1) (d := fun _ => 1) (fun _ => tw
 abbrev map1 : ∀ j, (seq1 j).V →ₛₗ[algebraMap ℚ ℂ] ℂ :=
   mapSeq (m := 1) (d := fun _ => 1) (fun _ => twoLat) (fun _ => frame3) (fun _ => ℂ) (fun _ => third)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem embedding_one_apply_div_three (x : Fin 1 → ℚ) : map1 1 x = (x 0 : ℂ) / 3 := rfl
 
+/- English proof (translation)
+Use `show (fun _ => 1 : Fin 1 → ℚ) ∉ twoLat`. Introduce `h`. Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.1 h`. Establish `h1 : (a : ℚ) * 2 = 1` using `congrFun ha 0`. Take `⟨z, rfl⟩` from `Rat.ringOfIntegersEquiv.symm.surjective a`.
+
+Rewrite `h1` using `[Rat.ringOfIntegersEquiv_symm_apply_coe]`. Establish `h2 : z * 2 = 1` using `by exact_mod_cast h1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem one_not_mem : (fun _ => 1 : Fin 1 → ℚ) ∉ (seq1 1).L := by
   show (fun _ => 1 : Fin 1 → ℚ) ∉ twoLat
   intro h
@@ -55,6 +70,11 @@ theorem one_not_mem : (fun _ => 1 : Fin 1 → ℚ) ∉ (seq1 1).L := by
   have h2 : z * 2 = 1 := by exact_mod_cast h1
   omega
 
+/- English proof (translation)
+Rewrite using `[embedding_one_apply_div_three]`. Use `show Formalism.HermitianLatticesTheory.cnorm (Formalism.HermitianLatticesTheory.fcoord (Pi.basisFun ℚ (Fin 1)) frame3 (InfinitePlace.mk (algebraMap ℚ ℂ)) x) = _`. Establish `h : (frame3 (InfinitePlace.mk (algebraMap ℚ ℂ)))⁻¹ = Matrix.diagonal fun _ => (3 : ℂ)⁻¹`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[frame3, Matrix.diagonal_mul_diagonal]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Formalism.HermitianLatticesTheory.cnorm, Formalism.HermitianLatticesTheory.fcoord, h, Fin.sum_univ_one, Real.sqrt_sq (norm_nonneg _), Matrix.mulVec_diagonal]`. Simplify using `[Formalism.HermitianLatticesTheory.vecAt, div_eq_inv_mul]`.
+-/
 theorem metric_one (x : Fin 1 → ℚ) :
     Formalism.HermitianLatticesTheory.cnorm (Formalism.HermitianLatticesTheory.fcoord (seq1 1).b (seq1 1).X (InfinitePlace.mk (algebraMap ℚ ℂ)) x) = ‖map1 1 x‖ := by
   rw [embedding_one_apply_div_three]
@@ -66,12 +86,18 @@ theorem metric_one (x : Fin 1 → ℚ) :
   rw [Formalism.HermitianLatticesTheory.cnorm, Formalism.HermitianLatticesTheory.fcoord, h, Fin.sum_univ_one, Real.sqrt_sq (norm_nonneg _), Matrix.mulVec_diagonal]
   simp [Formalism.HermitianLatticesTheory.vecAt, div_eq_inv_mul]
 
+/- English proof (translation)
+Use `ofCoord_good (L := twoLat) (X := frame3) ⟨Submodule.fg_span (Set.finite_singleton _), ?_⟩ fun v => by simp [frame3]` and prove the remaining obligations. Rewrite using `[twoLat, Submodule.span_span_of_tower, eq_top_iff]`. Introduce `x _`. Conclude with `Submodule.mem_span_singleton.2 ⟨x 0 / 2, by funext i; rw [Subsingleton.elim i 0]; simp⟩`.
+-/
 theorem good_one : (seq1 1).Good := by
   refine ofCoord_good (L := twoLat) (X := frame3) ⟨Submodule.fg_span (Set.finite_singleton _), ?_⟩ fun v => by simp [frame3]
   rw [twoLat, Submodule.span_span_of_tower, eq_top_iff]
   intro x _
   exact Submodule.mem_span_singleton.2 ⟨x 0 / 2, by funext i; rw [Subsingleton.elim i 0]; simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Module.finrank_fin_fun ℚ).trans (Module.finrank_self ℂ), (Module.finrank_fin_fun ℚ).trans (Module.finrank_self ℂ)⟩`.
+-/
 theorem rank_off : Module.finrank ℚ (seq1 0).V = 1 ∧ Module.finrank ℚ (seq1 2).V = 1 :=
   ⟨(Module.finrank_fin_fun ℚ).trans (Module.finrank_self ℂ), (Module.finrank_fin_fun ℚ).trans (Module.finrank_self ℂ)⟩
 
@@ -85,15 +111,24 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat3 D A3 Ks} {F : Face3 D A3}
   {X0 : BaseLevelRowSide D} {Y : Read (A3 := A3) R.toRealDat F.lv2 X0} (Z : ReadL R F X0 Y)
 
+/- English proof (translation)
+The claim follows from `mapSeq_ind_all _ _ D.what₂.Mj Z.jW (fun _ A g => ∀ x : A.V, Formalism.HermitianLatticesTheory.cnorm (Formalism.HermitianLatticesTheory.fcoord A.b A.X (InfinitePlace.mk D.what₂.embLL) x) = ‖g x‖) (fun i => MjCoord.jW_norm Z hH i) (fun _ => unitMap_norm _ _) j x`.
+-/
 theorem jM_metric_all (hH : Holds R F) (j : ℕ) (x : (mjH Z j).V) :
     Formalism.HermitianLatticesTheory.cnorm (Formalism.HermitianLatticesTheory.fcoord (mjH Z j).b (mjH Z j).X (InfinitePlace.mk D.what₂.embLL) x) = ‖jM Z j x‖ :=
   mapSeq_ind_all _ _ D.what₂.Mj Z.jW
     (fun _ A g => ∀ x : A.V, Formalism.HermitianLatticesTheory.cnorm (Formalism.HermitianLatticesTheory.fcoord A.b A.X (InfinitePlace.mk D.what₂.embLL) x) = ‖g x‖)
     (fun i => MjCoord.jW_norm Z hH i) (fun _ => unitMap_norm _ _) j x
 
+/- English proof (translation)
+The claim follows from `(Module.finrank_eq_card_basis (Module.Basis.mk (jM_basis Z hH j).1 (jM_basis Z hH j).2.ge)).symm`.
+-/
 theorem card_mjH (hH : Holds R F) (j : ℕ) : Fintype.card (mjH Z j).ι = Module.finrank ℂ (D.what₂.Mj j) :=
   (Module.finrank_eq_card_basis (Module.Basis.mk (jM_basis Z hH j).1 (jM_basis Z hH j).2.ge)).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨withMj Z hP hH Xd (fun _ _ => 0) (fun _ _ _ => Submodule.zero_mem _), rfl, rfl, _, mjHTie_withMj Z hP hH Xd _ _⟩`.
+-/
 theorem exists_tied {cG : G0 R.Pg D.R.r ≃* G0g D.nd} (hP : Pins R F cG) (hH : Holds R F) (Xd : DivX D) :
     ∃ X : DivX D, X.geo = Xd.geo ∧ X.MjH = mjH Z ∧ ∃ JM, MjHTie D A3.A X (A3.indefDown (s0Of R F)) Z.jW JM :=
   ⟨withMj Z hP hH Xd (fun _ _ => 0) (fun _ _ _ => Submodule.zero_mem _), rfl, rfl, _, mjHTie_withMj Z hP hH Xd _ _⟩

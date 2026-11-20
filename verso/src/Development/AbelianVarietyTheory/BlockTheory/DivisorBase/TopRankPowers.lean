@@ -59,8 +59,14 @@ section Data
 
 variable (X : Data K) (s : Fin X.D → Fin X.N → K) (σ : K →+* ℂ)
 
+/- English proof (translation)
+The claim follows from `Nat.add_sub_cancel' ((Nat.le_succ _).trans X.le_T)`.
+-/
 theorem add_sub_D : X.D + (X.T - X.D) = X.T := Nat.add_sub_cancel' ((Nat.le_succ _).trans X.le_T)
 
+/- English proof (translation)
+The claim follows from `Nat.sub_add_cancel (by have := X.a₀_add; omega)`.
+-/
 theorem sub_add {a : ℕ} (ha : a ≤ X.a₀) : X.T - a + a = X.T :=
   Nat.sub_add_cancel (by have := X.a₀_add; omega)
 
@@ -117,6 +123,9 @@ structure LocalHyp (β κ : (F →+* ℂ) → ℝ) : Prop where
 
 variable {X} in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.totallyComplex, h.beta_pos, h.kappa_pos, h.pos, h.mulStable, h.mulBound, h.integralBound⟩`.
+-/
 theorem LocalHyp.of_meanHyp {β κ : (F →+* ℂ) → ℝ} (h : X.MeanHyp β κ) : LocalHyp X β κ :=
   ⟨h.totallyComplex, h.beta_pos, h.kappa_pos, h.pos, h.mulStable, h.mulBound, h.integralBound⟩
 
@@ -166,14 +175,23 @@ def Lifts : Prop :=
 
 def Statement : Prop := Complexify ∧ Lifts
 
+/- English proof (translation)
+The claim follows from `h F X _ _ (.of_meanHyp hX.meanHyp) E s hs`.
+-/
 theorem Lifts.of_hyp (h : Lifts) (hX : X.Hyp) {s : Fin X.D → Fin X.N → E} (hs : IsChosen X E s) :
     (∀ (τ : E →+* ℂ) (a : ℕ) (ha : a ≤ (X.baseChange E).a₀),
       ExtensionBound τ hs.good (X.T - a) ∧ LiftBound (X := X.baseChange E) τ hs.good X.beta 1 ha) ∧ Ranks X hs.good :=
   h F X _ _ (.of_meanHyp hX.meanHyp) E s hs
 
+/- English proof (translation)
+Apply the tactic sequence `constructor <;> norm_num [cD]`.
+-/
 example : cD 1 = 4 * Real.pi ∧ cD 2 = 8 * Real.pi ^ 2 := by
   constructor <;> norm_num [cD]
 
+/- English proof (translation)
+Use `letI := σ.toAlgebra`. Simplify using `only [CplxEq, Fin.sum_univ_one, Matrix.cons_val_zero, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Conclude with `congrArg (· ⊗ₜ[K] v) ((Algebra.smul_def a (1 : ℂ)).trans (mul_one _)).symm`.
+-/
 example {K V : Type} [Field K] [AddCommGroup V] [Module K V] (σ : K →+* ℂ) (a : K) (v : V) :
     CplxEq σ ![σ a] ![v] ![1] ![a • v] := by
   letI := σ.toAlgebra

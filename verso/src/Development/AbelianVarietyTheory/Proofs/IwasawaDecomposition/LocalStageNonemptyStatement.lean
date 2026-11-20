@@ -5,5 +5,8 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NStage
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.MemLoc
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mem.nonempty_locStage | exact GlobalTheory.Mem.nonempty_locStage | (intros; apply GlobalTheory.Mem.nonempty_locStage <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.local_stage_nonempty : Nonempty GlobalTheory.Mem.LocStage := by
   first | exact @GlobalTheory.Mem.nonempty_locStage | exact GlobalTheory.Mem.nonempty_locStage | (intros; apply GlobalTheory.Mem.nonempty_locStage <;> assumption)

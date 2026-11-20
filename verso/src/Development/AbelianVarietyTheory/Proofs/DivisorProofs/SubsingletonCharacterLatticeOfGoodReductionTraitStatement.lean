@@ -14,5 +14,8 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Poinc.GoodRed.subsingleton_lattice_of_extends | exact GlobalTheory.Poinc.GoodRed.subsingleton_lattice_of_extends | (intros; apply GlobalTheory.Poinc.GoodRed.subsingleton_lattice_of_extends <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.subsingleton_characterLattice_of_goodReduction_trait : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o) (F : SFam g n ζ) (T : Trait F) (ξ : Sp T.V ⟶ F.X), jK T.V ≫ ξ = T.y → Subsingleton T.D.toPre.X := by
   first | exact @GlobalTheory.Poinc.GoodRed.subsingleton_lattice_of_extends | exact GlobalTheory.Poinc.GoodRed.subsingleton_lattice_of_extends | (intros; apply GlobalTheory.Poinc.GoodRed.subsingleton_lattice_of_extends <;> assumption)

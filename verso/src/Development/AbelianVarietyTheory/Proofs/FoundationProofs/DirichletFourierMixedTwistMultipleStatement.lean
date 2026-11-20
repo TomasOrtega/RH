@@ -8,6 +8,9 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RegularizedEisen
 open UpperHalfPlane Complex MeasureTheory CongruenceSubgroup GlobalTheory.EisM Filter Topology
 open scoped MatrixGroups Real ComplexConjugate
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.EisM.hat_mix_twist | exact GlobalTheory.EisM.hat_mix_twist | (intros; apply GlobalTheory.EisM.hat_mix_twist <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.dirichletFourier_mixed_twist_multiple : ∀ (N l : ℕ) (ν : DirichletCharacter ℂ N) (ω : DirichletCharacter ℂ l) (φ : ZMod l → ℂ) (a c : ℤ),
     0 < N → 0 < l → N.Coprime l → (∀ x : ℤ, hat φ x = ch ω x) →
     (∀ d u : ZMod l, IsUnit d → φ u = ω d * φ (d * u)) → IsUnit (c : ZMod N) → IsUnit (a : ZMod l) →

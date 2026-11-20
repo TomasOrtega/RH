@@ -17,6 +17,9 @@ namespace ThmISymm
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Introduce `j`. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `using hX`. Simplify using `using hL j`.
+-/
 theorem smooth_snoc {n : ℕ} {L : Fin n → HermLine ι} {X : HermLine ι} (hL : ∀ j, IsSmoothHerm (L j))
     (hX : IsSmoothHerm X) : ∀ j, IsSmoothHerm ((Fin.snoc L X : Fin (n + 1) → HermLine ι) j) := by
   intro j
@@ -24,6 +27,9 @@ theorem smooth_snoc {n : ℕ} {L : Fin n → HermLine ι} {X : HermLine ι} (hL 
   · simpa using hX
   · simpa using hL j
 
+/- English proof (translation)
+Take `⟨hp, hpW, hWm, hWv⟩` from `hFC K ι P n A s W hP hs hW hv`. Establish `: Fact (charOf W).Prime` using `⟨hp⟩`. Take `⟨I, hI, -⟩` from `hEU (charOf W)`. Rewrite using `[hGN (charOf W) I hI W n (a ∘ τ) hWm hpW hWv, hGN (charOf W) I hI W n a hWm hpW hWv]`. Conclude with `hSy (charOf W) I hI _ n a τ hWv`.
+-/
 theorem geoNum_comp_perm
     (hEU : ∀ (p : ℕ) [Fact p.Prime], ReciprocityTheory.ChartRestriction.G.AI.I1.ExistsUniqueStatement (ZMod p) ι)
     (hSy : ∀ (p : ℕ) [Fact p.Prime], ReciprocityTheory.ChartRestriction.G.AI.I1.SymmStatement (ZMod p) ι)
@@ -38,6 +44,11 @@ theorem geoNum_comp_perm
   rw [hGN (charOf W) I hI W n (a ∘ τ) hWm hpW hWv, hGN (charOf W) I hI W n a hWm hpW hWv]
   exact hSy (charOf W) I hI _ n a τ hWv
 
+/- English proof (translation)
+Unfold `recR`. Use `congr 1`. Use `finsum_mem_congr rfl fun W hW => ?_` and prove the remaining obligations. Use `congr 1`. Use `split_ifs with hh`.
+
+Conclude with `hI W ((divSuppArith K ι P n B s W hP hs hW).1 hh)`. Establish `h` using `geoNum_comp_perm hEU hSy hGN hFC hP hs hW hh (fun j => (L j).a) τ`. Establish `h' : geoNum n W (fun j => ((L ∘ τ) j).a) = geoNum n W (fun j => (L j).a)` using `h`. Rewrite using `[h']`. Conclude with `ptsIntegral_comp_perm P (fun j z => Real.log ((L j).h z)) τ _`.
+-/
 theorem recR_comp_perm
     (hEU : ∀ (p : ℕ) [Fact p.Prime], ReciprocityTheory.ChartRestriction.G.AI.I1.ExistsUniqueStatement (ZMod p) ι)
     (hSy : ∀ (p : ℕ) [Fact p.Prime], ReciprocityTheory.ChartRestriction.G.AI.I1.SymmStatement (ZMod p) ι)
@@ -62,12 +73,20 @@ section Main
 
 variable (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ)
 
+/- English proof (translation)
+Take `⟨a, ha, has, hsP⟩` from `hs`. Conclude with `hR.2 P n L A s a hP hL hA ha has hsP`.
+-/
 theorem rAt (hR : IsRFamily I) {P : Ideal (MRing ι)} {n : ℕ} {L : Fin n → HermLine ι} {A : HermLine ι}
     {s : MRing ι} (hP : IsArithVar P (n + 1)) (hL : ∀ j, IsSmoothHerm (L j)) (hA : IsSmoothHerm A)
     (hs : IsSectionOn P A s) : I P (n + 1) (Fin.snoc L A) = recR I P L A s := by
   obtain ⟨a, ha, has, hsP⟩ := hs
   exact hR.2 P n L A s a hP hL hA ha has hsP
 
+/- English proof (translation)
+Use `set H : HermLine ι := ThmIExists.segreLine (ThmIExists.shift A)`. Establish `hH : IsSmoothHerm H` using `ThmIExists.isSmoothHerm_segreLine _`. Establish `ht` using `ThmIExists.isSectionOn_up hP A`. Establish `hu` using `ThmIExists.isSectionOn_segre hP (ThmIExists.shift A)`. Establish `key : ∀ L' : Fin (m + 1) → HermLine ι, (∀ j, IsSmoothHerm (L' j)) → I P (m + 1 + 1) (Fin.snoc L' A) = recR I P L' (A.tensor H) (ThmIExists.secOf P (ThmIExists.upDeg A)) - recR I P L' H (ThmIExists.secOf P fun _ => ThmIExists.shift A)`.
+
+Introduce `L' hL'`. Establish `h1` using `hR.1 P (m + 1) L' A H hP hL' hA hH`. Rewrite `h1` using `[rAt I hR hP hL' (ThmIExists.smooth_tensor hA hH) ht, rAt I hR hP hL' hH hu]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[key (L ∘ τ) (fun j => hL (τ j)), key L hL, recR_comp_perm hEU hSy hGN hFC I hP L _ ht τ (fun W hW => ih W hW L hL τ), recR_comp_perm hEU hSy hGN hFC I hP L _ hu τ (fun W hW => ih W hW L hL τ)]`.
+-/
 theorem lastFix
     (hEU : ∀ (p : ℕ) [Fact p.Prime], ReciprocityTheory.ChartRestriction.G.AI.I1.ExistsUniqueStatement (ZMod p) ι)
     (hSy : ∀ (p : ℕ) [Fact p.Prime], ReciprocityTheory.ChartRestriction.G.AI.I1.SymmStatement (ZMod p) ι)
@@ -94,6 +113,9 @@ theorem lastFix
     recR_comp_perm hEU hSy hGN hFC I hP L _ ht τ (fun W hW => ih W hW L hL τ),
     recR_comp_perm hEU hSy hGN hFC I hP L _ hu τ (fun W hW => ih W hW L hL τ)]
 
+/- English proof (translation)
+Rewrite using `[rAt I hR hP (smooth_snoc hL (ThmIExists.smooth_tensor hA hC)) hY hy, rAt I hR hP (smooth_snoc hL hA) hY hy, rAt I hR hP (smooth_snoc hL hC) hY hy]`. Conclude with `hRS K ι I P m L A C Y y (fun W L' A' C' hW hL' hA' hC' => hR.1 W m L' A' C' hW hL' hA' hC') hP hL hA hC hY hy`.
+-/
 theorem addX_sec (hR : IsRFamily I) (hRS : RPositionAdd.Statement) {P : Ideal (MRing ι)} {m : ℕ}
     (hP : IsArithVar P (m + 1 + 1)) {L : Fin m → HermLine ι} (hL : ∀ j, IsSmoothHerm (L j))
     {A C Y : HermLine ι} (hA : IsSmoothHerm A) (hC : IsSmoothHerm C) (hY : IsSmoothHerm Y) {y : MRing ι}
@@ -105,6 +127,13 @@ theorem addX_sec (hR : IsRFamily I) (hRS : RPositionAdd.Statement) {P : Ideal (M
   exact hRS K ι I P m L A C Y y (fun W L' A' C' hW hL' hA' hC' => hR.1 W m L' A' C' hW hL' hA' hC')
     hP hL hA hC hY hy
 
+/- English proof (translation)
+Use `set H : HermLine ι := ThmIExists.segreLine (ThmIExists.shift Y)`. Establish `hH : IsSmoothHerm H` using `ThmIExists.isSmoothHerm_segreLine _`. Establish `ht` using `ThmIExists.isSectionOn_up hP Y`. Establish `hu` using `ThmIExists.isSectionOn_segre hP (ThmIExists.shift Y)`. Establish `e : ∀ Z, IsSmoothHerm Z → I P (m + 1 + 1) (Fin.snoc (Fin.snoc L Z) (Y.tensor H)) = I P (m + 1 + 1) (Fin.snoc (Fin.snoc L Z) Y) + I P (m + 1 + 1) (Fin.snoc (Fin.snoc L Z) H)` using `fun Z hZ => hR.1 P (m + 1) (Fin.snoc L Z) Y H hP (smooth_snoc hL hZ) hY hH`.
+
+Establish `h1` using `addX_sec I hR hRS hP hL hA hC (ThmIExists.smooth_tensor hY hH) ht`. Establish `h2` using `addX_sec I hR hRS hP hL hA hC hH hu`. Establish `e1` using `e _ (ThmIExists.smooth_tensor hA hC)`. Establish `e2` using `e A hA`. Establish `e3` using `e C hC`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem addX (hR : IsRFamily I) (hRS : RPositionAdd.Statement) {P : Ideal (MRing ι)} {m : ℕ}
     (hP : IsArithVar P (m + 1 + 1)) {L : Fin m → HermLine ι} (hL : ∀ j, IsSmoothHerm (L j))
     {A C Y : HermLine ι} (hA : IsSmoothHerm A) (hC : IsSmoothHerm C) (hY : IsSmoothHerm Y) :
@@ -124,6 +153,9 @@ theorem addX (hR : IsRFamily I) (hRS : RPositionAdd.Statement) {P : Ideal (MRing
   have e3 := e C hC
   linarith
 
+/- English proof (translation)
+Rewrite using `[rAt I hR hP (smooth_snoc hL hX) hY hy, rAt I hR hP (smooth_snoc hL hY) hX hx]`. Conclude with `hSwap K ι I P m L Y X y x (fun P' L' A' s' hP' hL' hA' hs' => rAt I hR hP' hL' hA' hs') hP hL hY hX hy hx hd`.
+-/
 theorem swap_sec (hR : IsRFamily I) (hSwap : Swap.Statement) {P : Ideal (MRing ι)} {m : ℕ}
     (hP : IsArithVar P (m + 1 + 1)) {L : Fin m → HermLine ι} (hL : ∀ j, IsSmoothHerm (L j))
     {X Y : HermLine ι} (hX : IsSmoothHerm X) (hY : IsSmoothHerm Y) {x y : MRing ι}
@@ -133,6 +165,19 @@ theorem swap_sec (hR : IsRFamily I) (hSwap : Swap.Statement) {P : Ideal (MRing �
   exact hSwap K ι I P m L Y X y x (fun P' L' A' s' hP' hL' hA' hs' => rAt I hR hP' hL' hA' hs')
     hP hL hY hX hy hx hd
 
+/- English proof (translation)
+Use `set S : Set (Ideal (MRing ι)) := insert P (divSupp P y)`. Establish `hS : S.Finite` using `(divSupp_finite P y).insert P`. Establish `hS' : ∀ W ∈ S, IsMultiProjPrime W`. Introduce and unpack `W (rfl | hW)`. Conclude with `hP.2.1`.
+
+Distinguish the cases in `hh : IsHorizontal W`. Conclude with `((divSuppArith K ι P (m + 1) Y y W hP hy hW).1 hh).2.1`. Conclude with `((divSuppArith K ι P (m + 1) Y y W hP hy hW).2 hh).1`. Take `⟨d₀, hd₀⟩` from `Choice.exists_form_avoid (R := ℤ) S hS hS'`. Use `set k : ℕ := ThmIExists.shift X + ∑ l, d₀ l`.
+
+Use `set HK : HermLine ι := ThmIExists.segreLine k`. Establish `hHK : IsSmoothHerm HK` using `ThmIExists.isSmoothHerm_segreLine k`. Establish `hle : ∀ l, d₀ l ≤ ∑ l, d₀ l` using `fun l => Finset.single_le_sum (f := d₀) (fun _ _ => Nat.zero_le _) (Finset.mem_univ l)`. Establish `habs : ∀ l, (X.a l).natAbs ≤ ThmIExists.shift X` using `fun l => Finset.single_le_sum (f := fun l => (X.a l).natAbs) (fun _ _ => Nat.zero_le _) (Finset.mem_univ l)`. Establish `hnn : ∀ l, (d₀ l : ℤ) ≤ X.a l + k` using `fun l => by`.
+
+Establish `h1` using `hle l`. Establish `h2` using `habs l`. Use linear arithmetic over natural numbers and integers. Use `set b : K → ℕ := fun l => (X.a l + k).toNat`. Establish `hb : ∀ l, (b l : ℤ) = X.a l + k` using `fun l => Int.toNat_of_nonneg (le_trans (by positivity) (hnn l))`.
+
+Take `⟨x, hxh, hxS⟩` from `hd₀ b (fun l => by have h := hnn l; rw [← hb l] at h; exact_mod_cast h)`. Take `⟨x', hx'h, hx'S⟩` from `hd₀ (fun _ => k) (fun l => le_add_left (hle l))`. Establish `hxs : IsSectionOn P (X.tensor HK) x` using `⟨b, fun l => by rw [hb l]; rfl, hxh, hxS P (Set.mem_insert _ _)⟩`. Establish `hx's : IsSectionOn P HK x'` using `⟨fun _ => k, fun _ => rfl, hx'h, hx'S P (Set.mem_insert _ _)⟩`. Establish `hd : ∀ t : MRing ι, (∀ W ∈ S, t ∉ W) → ∀ W, W ∈ divSupp P y → W ∉ divSupp P t` using `fun t ht W hW hWt => ht W (Set.mem_insert_of_mem _ hW) (hWt.1.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self t)))`.
+
+Establish `e1` using `addX_sec I hR hRS hP hL hX hHK hY hy`. Establish `e2` using `swap_sec I hR hSwap hP hL (ThmIExists.smooth_tensor hX hHK) hY hxs hy (hd x hxS)`. Establish `e3` using `swap_sec I hR hSwap hP hL hHK hY hx's hy (hd x' hx'S)`. Establish `e4` using `hR.1 P (m + 1) (Fin.snoc L Y) X HK hP (smooth_snoc hL hY) hX hHK`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem swap_half (hR : IsRFamily I) (hRS : RPositionAdd.Statement) (hSwap : Swap.Statement)
     {P : Ideal (MRing ι)} {m : ℕ} (hP : IsArithVar P (m + 1 + 1)) {L : Fin m → HermLine ι}
     (hL : ∀ j, IsSmoothHerm (L j)) {X Y : HermLine ι} (hX : IsSmoothHerm X) (hY : IsSmoothHerm Y)
@@ -175,6 +220,11 @@ theorem swap_half (hR : IsRFamily I) (hRS : RPositionAdd.Statement) (hSwap : Swa
   have e4 := hR.1 P (m + 1) (Fin.snoc L Y) X HK hP (smooth_snoc hL hY) hX hHK
   linarith
 
+/- English proof (translation)
+Use `set H : HermLine ι := ThmIExists.segreLine (ThmIExists.shift Y)`. Establish `hH : IsSmoothHerm H` using `ThmIExists.isSmoothHerm_segreLine _`. Establish `ht` using `ThmIExists.isSectionOn_up hP Y`. Establish `hu` using `ThmIExists.isSectionOn_segre hP (ThmIExists.shift Y)`. Establish `e1` using `hR.1 P (m + 1) (Fin.snoc L X) Y H hP (smooth_snoc hL hX) hY hH`.
+
+Establish `e2` using `swap_half I hR hRS hSwap hP hL hX (ThmIExists.smooth_tensor hY hH) ht`. Establish `e3` using `swap_half I hR hRS hSwap hP hL hX hH hu`. Establish `e4` using `addX I hR hRS hP hL hY hH hX`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem swap_last (hR : IsRFamily I) (hRS : RPositionAdd.Statement) (hSwap : Swap.Statement)
     {P : Ideal (MRing ι)} {m : ℕ} (hP : IsArithVar P (m + 1 + 1)) {L : Fin m → HermLine ι}
     (hL : ∀ j, IsSmoothHerm (L j)) {X Y : HermLine ι} (hX : IsSmoothHerm X) (hY : IsSmoothHerm Y) :
@@ -195,6 +245,11 @@ section Perm
 
 omit [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations. Rewrite using `[Function.comp_apply, Equiv.swap_apply_of_ne_of_ne (Fin.castSucc_lt_last a).ne' (Fin.castSucc_lt_last b).ne']`. Simplify using the standard rewrite rules. Establish `h : Equiv.swap a.castSucc b.castSucc j.castSucc = (Equiv.swap a b j).castSucc`.
+
+Simplify using `only [Equiv.swap_apply_def, Fin.castSucc_inj]`. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[Function.comp_apply, h]`. Simplify using the standard rewrite rules.
+-/
 theorem snoc_comp_swap {n : ℕ} (L : Fin n → HermLine ι) (A : HermLine ι) (a b : Fin n) :
     (Fin.snoc L A : Fin (n + 1) → HermLine ι) ∘ Equiv.swap a.castSucc b.castSucc =
       Fin.snoc (L ∘ Equiv.swap a b) A := by
@@ -209,6 +264,11 @@ theorem snoc_comp_swap {n : ℕ} (L : Fin n → HermLine ι) (A : HermLine ι) (
     rw [Function.comp_apply, h]
     simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Rewrite using `[Function.comp_apply, Equiv.swap_apply_of_ne_of_ne (fun h => (Fin.castSucc_lt_last j).ne (Fin.castSucc_injective _ h)) (Fin.castSucc_lt_last _).ne]`. Simplify using the standard rewrite rules.
+-/
 theorem snoc_snoc_comp_swap {m : ℕ} (L : Fin m → HermLine ι) (X Y : HermLine ι) :
     (Fin.snoc (Fin.snoc L X) Y : Fin (m + 1 + 1) → HermLine ι) ∘
         Equiv.swap (Fin.last m).castSucc (Fin.last (m + 1)) =
@@ -227,6 +287,25 @@ end Perm
 
 end ThmISymm
 
+/- English proof (translation)
+Introduce `K _ ι _ I hR`. It suffices to establish `h : ∀ n P, IsArithVar P n → ∀ L : Fin n → HermLine ι, (∀ j, IsSmoothHerm (L j)) → ∀ σ : Equiv.Perm (Fin n), I P n (L ∘ σ) = I P n L from fun P n L σ hP hL => h n P hP L hL σ`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+
+Introduce `P _ L _ σ`. Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `j.elim0`. Consider the case `succ n ih`.
+
+Consider the cases of `n with`. Consider the case `zero`. Introduce `P _ L _ σ`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+
+Conclude with `congrArg L (Fin.ext (by have := (σ j).isLt; have := j.isLt; omega))`. Consider the case `succ m`. Introduce `P hP`. It suffices to establish `hc : ∀ σ ∈ Submonoid.closure (Set.range fun i : Fin (m + 1) => Equiv.swap i.castSucc i.succ), ∀ L : Fin (m + 1 + 1) → HermLine ι, (∀ j, IsSmoothHerm (L j)) → I P (m + 1 + 1) (L ∘ σ) = I P (m + 1 + 1) L by`. Introduce `L hL σ`.
+
+Use `hc σ ?_ L hL` and prove the remaining obligations. Rewrite using `[Equiv.Perm.mclosure_swap_castSucc_succ]`. Discharge the goal by the elementary cases of `trivial`. Introduce `σ hσ`. Proceed by induction on `hσ using Submonoid.closure_induction with`.
+
+Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Introduce `L hL`. Use `Fin.lastCases ?_ (fun i => ?_) i` and prove the remaining obligations. Establish `hdec : L = Fin.snoc (Fin.snoc (Fin.init (Fin.init L)) (Fin.init L (Fin.last m))) (L (Fin.last (m + 1)))` using `by simp [Fin.snoc_init_self]`.
+
+Establish `hs : ∀ j, IsSmoothHerm (Fin.init (Fin.init L) j)` using `fun j => hL _`. Simplify using `only`. Rewrite using `[Fin.succ_last, hdec, ThmISymm.snoc_snoc_comp_swap]`. Conclude with `(ThmISymm.swap_last I hR hRS hSwap hP hs (hL _) (hL _)).symm`. Establish `hdec : L = Fin.snoc (Fin.init L) (L (Fin.last (m + 1)))` using `by simp [Fin.snoc_init_self]`.
+
+Establish `hs : ∀ j, IsSmoothHerm (Fin.init L j)` using `fun j => hL _`. Simplify using `only`. Rewrite using `[Fin.succ_castSucc, hdec, ThmISymm.snoc_comp_swap]`. Conclude with `ThmISymm.lastFix I (fun p _ => hEU p K ι) (fun p _ => hSy p K ι) (hGN K ι) hFC hR hP ih (Fin.init L) hs _ (hL _) _`. Consider the case `one`.
+
+Introduce `L _`. Both sides reduce to the same expression. Consider the case `mul x y _ _ hx hy`. Introduce `L hL`. Rewrite using `[Equiv.Perm.coe_mul, ← Function.comp_assoc, hy (L ∘ x) (fun j => hL (x j)), hx L hL]`.
+-/
 theorem ThmISymm.proof (hSwap : Swap.Statement) (hRS : RPositionAdd.Statement) (hFC : FibreCompStatement)
     (hEU : ∀ (p : ℕ) [Fact p.Prime] (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)],
       ReciprocityTheory.ChartRestriction.G.AI.I1.ExistsUniqueStatement (ZMod p) ι)

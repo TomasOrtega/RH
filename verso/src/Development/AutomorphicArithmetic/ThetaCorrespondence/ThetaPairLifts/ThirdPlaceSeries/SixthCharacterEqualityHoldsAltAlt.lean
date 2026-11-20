@@ -9,6 +9,13 @@ section
 noncomputable section
 namespace GlobalTheory.HeckeCharacterEquality
 open Formalism.BasicNotions Formalism.ConjugateSelfDual Formalism.MainNotions Formalism.MainNotions.N Polynomial NumberField IsDedekindDomain ReciprocityTheory.Gal GlobalTheory.StringRepresentationDecomposition
+/- English proof (translation)
+Introduce `D hA i χ χ' s ρ h h'`. Establish `hAN` using `hA.1.1.2.2.2.2.2.2.1`. Establish `hloc : ∀ w, w ∉ placesOver D.host.E (D.nd.l i) → D.naut.locG χ w = D.naut.locG χ' w`. Introduce `w hw`. Establish `e` using `congrArg (fun a => D.naut.lpTw a (-s)) ((h w hw).symm.trans (h' w hw))`.
+
+Simplify `e` using `[D.naut.lpTw_add, D.naut.lpTw_zero]`. Establish `hp` using `hAN [⟨1, χ, 1⟩] [⟨1, χ', 1⟩] (by simp) (by simp) (by`. Establish `hfin` using `placesOver_finite_joint_conditions_zpowers D.host.E (D.nd.l i) (D.nd.lPrime i).out.ne_zero`. Use `filter_upwards [hfin.compl_mem_cofinite] with w hw`. Simplify using `only [isoLoc, spehLoc, List.foldr]`.
+
+Rewrite using `[hloc w hw])`. Use `List.perm_singleton.1 hp` as an intermediate fact. Simplify using `using this`.
+-/
 theorem sixth_character_equality_holds_alt_alt : _root_.GlobalTheory.StringRepresentationDecomposition.HeckeCharEqOfLAdicRealisation' := by
   intro D hA i χ χ' s ρ h h'
   have hAN := hA.1.1.2.2.2.2.2.2.1

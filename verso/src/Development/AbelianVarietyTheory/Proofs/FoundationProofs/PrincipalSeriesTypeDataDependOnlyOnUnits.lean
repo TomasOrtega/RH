@@ -6,10 +6,18 @@ namespace GlobalTheory.PsType
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+Simplify using `only [MonoidHom.div_apply, h i u hu, h j u hu]`.
+-/
 theorem agree_div_apply {ψ ω : Fin n → kˣ →* ℂˣ} (h : Agree ψ ω) (i j : Fin n) (u : kˣ)
     (hu : valuation k (u : k) = 1) : (ψ i / ψ j) u = (ω i / ω j) u := by
   simp only [MonoidHom.div_apply, h i u hu, h j u hu]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `H u hu hx`. Rewrite using `[← agree_div_apply h i j u hu]`. Conclude with `H u hu hx`. Introduce `H u hu hx`.
+
+Rewrite using `[agree_div_apply h i j u hu]`. Conclude with `H u hu hx`.
+-/
 theorem agree_triv_iff {ψ ω : Fin n → kˣ →* ℂˣ} (h : Agree ψ ω) (i j : Fin n) (x : k) :
     Triv (ψ i / ψ j) x ↔ Triv (ω i / ω j) x := by
   constructor
@@ -20,6 +28,9 @@ theorem agree_triv_iff {ψ ω : Fin n → kˣ →* ℂˣ} (h : Agree ψ ω) (i j
     rw [agree_div_apply h i j u hu]
     exact H u hu hx
 
+/- English proof (translation)
+Unfold `nxt`. Use `split_ifs`. Conclude with `h _ u hu`. Both sides reduce to the same expression.
+-/
 theorem agree_nxt_apply {ψ ω : Fin n → kˣ →* ℂˣ} (h : Agree ψ ω) (m : Fin n) (u : kˣ)
     (hu : valuation k (u : k) = 1) : nxt ψ m u = nxt ω m u := by
   unfold nxt
@@ -27,6 +38,11 @@ theorem agree_nxt_apply {ψ ω : Fin n → kˣ →* ℂˣ} (h : Agree ψ ω) (m 
   · exact h _ u hu
   · rfl
 
+/- English proof (translation)
+Unfold `ev`. Use `split_ifs with hx`. Establish `hv : valuation k ((Units.mk0 x fun h0 => by simp [h0] at hx : kˣ) : k) = 1`. Simplify using `using hx`. Rewrite using `[MonoidHom.div_apply, MonoidHom.div_apply, h m _ hv, agree_nxt_apply h m _ hv]`.
+
+Both sides reduce to the same expression.
+-/
 theorem agree_ev {ψ ω : Fin n → kˣ →* ℂˣ} (h : Agree ψ ω) (m : Fin n) (x : k) :
     ev (ψ m / nxt ψ m) x = ev (ω m / nxt ω m) x := by
   unfold ev
@@ -36,6 +52,13 @@ theorem agree_ev {ψ ω : Fin n → kˣ →* ℂˣ} (h : Agree ψ ω) (m : Fin n
     rw [MonoidHom.div_apply, MonoidHom.div_apply, h m _ hv, agree_nxt_apply h m _ hv]
   · rfl
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n ψ ω h`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `g`. Simplify using `only [grp, Set.mem_setOf_eq, agree_triv_iff h]`. Use function extensionality and compare the values at `g`.
+
+Unfold `theta`. Conclude with `Finset.prod_congr rfl fun m _ => agree_ev h m _`. Introduce `H i a b j hi ha hb x hT`. Rewrite using `[← agree_triv_iff h]`. Conclude with `H i a b j hi ha hb x ((agree_triv_iff h i j x).2 hT)`.
+
+Introduce `r H i j hi hj hT`. Conclude with `H i j hi hj ((agree_triv_iff h i j 1).2 hT)`.
+-/
 theorem agree_main : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ)
     (ψ ω : Fin n → kˣ →* ℂˣ), Agree ψ ω → grp ψ = grp ω ∧ theta ψ = theta ω ∧ (Ordered ψ → Ordered ω) ∧
       ∀ r, Cut ψ r → Cut ω r := by

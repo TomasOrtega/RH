@@ -15,6 +15,17 @@ noncomputable section
 
 universe u v w
 
+/- English proof (translation)
+Introduce `S _ _ Ω _ _ N x E _ _ _ _ F hF H r h hH`. Take `⟨F', hF'⟩` from `hFam S Ω N x E F H r h hH`. Establish `hmem : ∀ J e, e ∈ F'.sub J ↔ e ∈ secsOnZ F.toSubSystem H.toSubSystem h J` using `fun J e => by`. Rewrite using `[← hF' J, Submodule.restrictScalars_mem]`. Use `⟨F', fun J => ?_, fun a i => ?_⟩` and prove the remaining obligations.
+
+Take `⟨t, ht, hle⟩` from `hFin S Ω N x E F hF H r h hH J`. Conclude with `⟨t, le_antisymm (Submodule.span_le.mpr fun e he => (hmem J e).mpr (ht he)) fun e he => hle ((hmem J e).mp he)⟩`. Take `⟨G, hG⟩` from `hPow S Ω N x E F H.toSubFamily a`. Take `⟨e₁⟩` from `hSub S Ω N x E G.toSubSystem i`. Take `⟨e₂⟩` from `hDbl S Ω N r x h E (fun I => (G.sub I).restrictScalars S) (secsOnZ G.toSubSystem H.toSubSystem h) (secsOnZChart G.toSubSystem H.toSubSystem h) (fun I I' J hI => (hRow S Ω N x E G H r h hH J).1 I I' hI) (fun I J J' hJ => (hCol S Ω N x E G H r h hH I).1 J J' hJ) (fun I => (hCol S Ω …`.
+
+Take `⟨e₃⟩` from `hSub S Ω r h E (F'.twist (twistSys S h (a : ℤ))) i`. Establish `hfun : (fun J => ((F'.twist (twistSys S h (a : ℤ))).sub J).restrictScalars S) = secsOnZ G.toSubSystem H.toSubSystem h`. Use function extensionality and compare the values at `J`. Rewrite using `[hG, ← hTw S Ω N x E F H r h hH a J]`. Express the relevant statement in the definitionally equal form `(Submodule.span (chartRing S h J) {z | ∃ q ∈ twistMod S h (a : ℤ) J, ∃ y ∈ F'.sub J, z = q • y}).restrictScalars S = _`.
+
+Use `congr 3`. Use extensionality with `z`. Simplify using `only [hmem J]`. Rewrite `e₃` using `[hfun]`. Rewrite using `[← hG]`.
+
+Conclude with `⟨e₁.trans (e₂.trans e₃.symm)⟩`.
+-/
 theorem VeryAmpleCech.proof (hFam : VeryAmpleZFamily.Statement.{u, v, w})
     (hFin : VeryAmpleZFinite.Statement.{u, v, w}) (hTw : VeryAmpleZTwist.Statement.{u, v, w})
     (hPow : SubFamilyTwistPow.Statement.{u, v, w}) (hSub : CechHdegOfSub.Statement.{u, v, w})

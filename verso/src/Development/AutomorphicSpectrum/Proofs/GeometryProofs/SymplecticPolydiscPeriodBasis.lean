@@ -18,12 +18,20 @@ namespace Frame
 
 variable {n a g : ℕ} {Λ : Type} [AddCommGroup Λ]
 
+/- English proof (translation)
+Distinguish the cases in `h : k = c`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`.
+-/
 theorem single_re (c k : Fin n) :
     ((Pi.single c (2 * Real.pi * Complex.I) : Fin n → ℂ) k).re = 0 := by
   by_cases h : k = c
   · subst h; simp
   · simp [Pi.single_eq_of_ne h]
 
+/- English proof (translation)
+Use `⟨fun j => ?_, fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.add_apply, Complex.add_re, single_re, add_zero]`. Conclude with `hw.1 j`. Establish `hne : k ≠ Fin.castLE h i`. Introduce `e`.
+
+Establish `: k.val = i.val` using `by rw [e]; rfl`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Pi.add_apply, Pi.single_eq_of_ne hne, add_zero]`. Conclude with `hw.2 k hk`.
+-/
 theorem shift_mem (h : a ≤ n) (i : Fin a) {w : Fin n → ℂ} (hw : w ∈ logCover h) :
     w + Pi.single (Fin.castLE h i) (2 * Real.pi * Complex.I) ∈ logCover h := by
   refine ⟨fun j => ?_, fun k hk => ?_⟩
@@ -36,6 +44,11 @@ theorem shift_mem (h : a ≤ n) (i : Fin a) {w : Fin n → ℂ} (hw : w ∈ logC
     rw [Pi.add_apply, Pi.single_eq_of_ne hne, add_zero]
     exact hw.2 k hk
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Unfold `expCover`. Distinguish the cases in `hk : k = Fin.castLE h i`. Establish `: k.val < a` using `by rw [hk]; exact i.2`. Substitute `hk` using the available equality.
+
+Simplify using `only [this, if_true, Pi.add_apply, Pi.single_eq_same]`. Rewrite using `[Complex.exp_add, Complex.exp_two_pi_mul_I, mul_one]`. Simplify using `[Pi.single_eq_of_ne hk]`.
+-/
 theorem expCover_shift (h : a ≤ n) (i : Fin a) (w : Fin n → ℂ) :
     expCover a (w + Pi.single (Fin.castLE h i) (2 * Real.pi * Complex.I)) = expCover a w := by
   funext k
@@ -47,6 +60,21 @@ theorem expCover_shift (h : a ≤ n) (i : Fin a) (w : Fin n → ℂ) :
     rw [Complex.exp_add, Complex.exp_two_pi_mul_I, mul_one]
   · simp [Pi.single_eq_of_ne hk]
 
+/- English proof (translation)
+Use `⟨fun m k => if k.val < a then -((m : ℂ) + 1) else (((m : ℂ) + 2))⁻¹, fun m => ⟨fun j => ?_, fun k hk => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `: (Fin.castLE h j).val < a` using `j.2`. Simplify using `only [this, if_true, Complex.neg_re, Complex.add_re, Complex.natCast_re, Complex.one_re]`. Establish `: (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `: ¬ k.val < a` using `by omega`. Simplify using `only [this, if_false, norm_inv]`. Establish `h2 : ‖(m : ℂ) + 2‖ = (m : ℝ) + 2`. Establish `: (m : ℂ) + 2 = ((m + 2 : ℕ) : ℂ)` using `by push_cast; ring`. Rewrite using `[this, Complex.norm_natCast]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Establish `: (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Conclude with `inv_lt_one_of_one_lt₀ (by linarith)`.
+
+Rewrite using `[tendsto_pi_nhds]`. Introduce `k`. Simplify using `only [expCover, Pi.zero_apply]`. Distinguish the cases in `hk : k.val < a`. Simplify using `only [hk, if_true]`.
+
+Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Simplify using `only [Complex.norm_exp, Complex.neg_re, Complex.add_re, Complex.natCast_re, Complex.one_re]`. Use `Real.tendsto_exp_atBot.comp ?_` and prove the remaining obligations. Use `tendsto_neg_atTop_atBot.comp ?_` and prove the remaining obligations. Conclude with `tendsto_atTop_add_const_right _ _ tendsto_natCast_atTop_atTop`.
+
+Simplify using `only [hk, if_false]`. Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Establish `h2 : ∀ m : ℕ, ‖((m : ℂ) + 2)⁻¹‖ = ((m : ℝ) + 2)⁻¹`. Introduce `m`. Establish `: (m : ℂ) + 2 = ((m + 2 : ℕ) : ℂ)` using `by push_cast; ring`.
+
+Rewrite using `[norm_inv, this, Complex.norm_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h2]`. Conclude with `tendsto_inv_atTop_zero.comp (tendsto_atTop_add_const_right _ _ tendsto_natCast_atTop_atTop)`.
+-/
 theorem exists_seq (h : a ≤ n) : ∃ u : ℕ → Fin n → ℂ, (∀ m, u m ∈ logCover h) ∧
     Tendsto (fun m => expCover a (u m)) atTop (𝓝 0) := by
   refine ⟨fun m k => if k.val < a then -((m : ℂ) + 1) else (((m : ℂ) + 2))⁻¹, fun m => ⟨fun j => ?_, fun k hk => ?_⟩, ?_⟩
@@ -82,15 +110,24 @@ theorem exists_seq (h : a ≤ n) : ∃ u : ℕ → Fin n → ℂ, (∀ m, u m �
       exact tendsto_inv_atTop_zero.comp
         (tendsto_atTop_add_const_right _ _ tendsto_natCast_atTop_atTop)
 
+/- English proof (translation)
+Take `⟨u, hu, -⟩` from `exists_seq h`. Conclude with `⟨u 0, hu 0⟩`.
+-/
 theorem logCover_nonempty (h : a ≤ n) : (logCover h).Nonempty := by
   obtain ⟨u, hu, -⟩ := exists_seq h
   exact ⟨u 0, hu 0⟩
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `logCover_nonempty L.a_le`. Apply `GlobalTheory.CompanionTheory.Ar.Flat.LogPeriodsModel.P_injective L hw` to reduce the goal to its premises. Rewrite using `[← L.mono i w hw, ← L.s_eq x _ (shift_mem L.a_le i hw), expCover_shift, L.s_eq x w hw]`.
+-/
 theorem T_fix (L : LogPeriods n a g Λ) (i : Fin a) (x : L.W) : L.T i x = x := by
   obtain ⟨w, hw⟩ := logCover_nonempty L.a_le
   apply GlobalTheory.CompanionTheory.Ar.Flat.LogPeriodsModel.P_injective L hw
   rw [← L.mono i w hw, ← L.s_eq x _ (shift_mem L.a_le i hw), expCover_shift, L.s_eq x w hw]
 
+/- English proof (translation)
+Use `haveI := L.free`. Establish `h` using `T_fix L i ⟨k • c, hc⟩`. Simplify using `only [map_zsmul] at h`. Conclude with `smul_right_injective Λ hk h`.
+-/
 theorem T_fix_of_smul (L : LogPeriods n a g Λ) (i : Fin a) {c : Λ} {k : ℤ} (hk : k ≠ 0)
     (hc : k • c ∈ L.W) : L.T i c = c := by
   haveI := L.free
@@ -98,6 +135,9 @@ theorem T_fix_of_smul (L : LogPeriods n a g Λ) (i : Fin a) {c : Λ} {k : ℤ} (
   simp only [map_zsmul] at h
   exact smul_right_injective Λ hk h
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `logCover_nonempty L.a_le`. Establish `h1` using `L.im w hw (L.T i x) (L.T i y)`. Establish `h2` using `L.im _ (shift_mem L.a_le i hw) x y`. Rewrite `h2` using `[expCover_shift, L.mono i w hw, L.mono i w hw, h1]`. Conclude with `h2` after adjusting the coercions.
+-/
 theorem T_isometry (L : LogPeriods n a g Λ) (i : Fin a) (x y : Λ) :
     L.E (L.T i x) (L.T i y) = L.E x y := by
   obtain ⟨w, hw⟩ := logCover_nonempty L.a_le
@@ -106,6 +146,21 @@ theorem T_isometry (L : LogPeriods n a g Λ) (i : Fin a) (x y : Λ) :
   rw [expCover_shift, L.mono i w hw, L.mono i w hw, h1] at h2
   exact_mod_cast h2
 
+/- English proof (translation)
+Use `haveI := L.free`. Use `haveI := L.fin`. Take `⟨b0, hb0, hW, -⟩` from `exists_symplecticBasis_lagrangian_between g Λ L.E L.alt L.unimod L.rank L.W L.coiso`. Set `u : Fin g ⊕ Fin g → ℤ` to `Sum.elim (fun _ => 1) (fun _ => -1)`. Apply the tactic sequence `have hu : ∀ i, IsUnit (u i) := by rintro (i | i) <;> simp [u]`.
+
+Set `bas` to `b0.isUnitSMul hu`. Establish `hl : ∀ i, bas (.inl i) = b0 (.inl i)`. Introduce `i`. Simplify using `[bas, u, Module.Basis.isUnitSMul_apply]`. Establish `hr : ∀ i, bas (.inr i) = - b0 (.inr i)`.
+
+Introduce `i`. Simplify using `[bas, u, Module.Basis.isUnitSMul_apply]`. Establish `hsym : ∀ i j, L.E (bas (.inl i)) (bas (.inl j)) = 0 ∧ L.E (bas (.inr i)) (bas (.inr j)) = 0 ∧ L.E (bas (.inl i)) (bas (.inr j)) = if i = j then -1 else 0`. Introduce `i j`. Take `⟨h1, h2, h3⟩` from `hb0 i j`.
+
+Use `⟨by rw [hl, hl, h1], by rw [hr, hr]; simp [h2], ?_⟩` and prove the remaining obligations. Rewrite using `[hl, hr, map_neg, h3]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hfix : ∀ i k, L.T i (bas (.inl k)) = bas (.inl k)`. Introduce `i k`.
+
+Take `⟨m, hm, hx⟩` from `hW k`. Rewrite using `[hl]`. Conclude with `T_fix_of_smul L i hm hx`. Establish `hshape` using `fun i => symplectic_unipotent_shape g Λ (-L.E) bas (fun x => by simp [L.alt x]) (fun p q => by`. Take `⟨h1, h2, h3⟩` from `hsym p q`.
+
+Use `⟨by simp [h1], by simp [h2], ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.neg_apply, h3]`. Apply the tactic sequence `split_ifs <;> simp)`. Apply the tactic sequence `(L.T i) (fun x y => by simp [T_isometry L i x y]) (hfix i)`. Use `choose B hBs hBt using hshape`.
+
+Conclude with `⟨bas, B, hsym, fun i => by rw [hl]; exact hW i, hfix, hBs, hBt⟩`.
+-/
 theorem exists_basis (L : LogPeriods n a g Λ) :
     ∃ (bas : Module.Basis (Fin g ⊕ Fin g) ℤ Λ) (B : Fin a → Matrix (Fin g) (Fin g) ℤ),
       (∀ i j, L.E (bas (.inl i)) (bas (.inl j)) = 0 ∧ L.E (bas (.inr i)) (bas (.inr j)) = 0 ∧
@@ -148,6 +203,11 @@ theorem exists_basis (L : LogPeriods n a g Λ) :
   choose B hBs hBt using hshape
   exact ⟨bas, B, hsym, fun i => by rw [hl]; exact hW i, hfix, hBs, hBt⟩
 
+/- English proof (translation)
+Use `choose m hm hx using hc`. Use `⟨fun z => Matrix.of fun i => ((m i : ℂ))⁻¹ • L.s ⟨m i • c i, hx i⟩ z, fun i j => ?_, fun w hw i k => ?_⟩` and prove the remaining obligations. Use `(differentiableOn_pi.1 (L.s_hol ⟨_, hx i⟩)) j` as an intermediate fact. Simplify using `using this.const_mul ((m i : ℂ)⁻¹)`. Establish `hmne : (m i : ℂ) ≠ 0` using `by exact_mod_cast hm i`.
+
+Simplify using `only [Matrix.of_apply, Pi.smul_apply, smul_eq_mul, L.s_eq _ w hw]`. Rewrite using `[map_zsmul, Pi.smul_apply, zsmul_eq_mul, inv_mul_cancel_left₀ hmne]`.
+-/
 theorem exists_frame (L : LogPeriods n a g Λ) (c : Fin g → Λ)
     (hc : ∀ i, ∃ k : ℤ, k ≠ 0 ∧ k • c i ∈ L.W) :
     ∃ A : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ,
@@ -162,6 +222,21 @@ theorem exists_frame (L : LogPeriods n a g Λ) (c : Fin g → Λ)
     simp only [Matrix.of_apply, Pi.smul_apply, smul_eq_mul, L.s_eq _ w hw]
     rw [map_zsmul, Pi.smul_apply, zsmul_eq_mul, inv_mul_cancel_left₀ hmne]
 
+/- English proof (translation)
+Set `Am : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ` to `fun w => Matrix.of fun i => L.P w (bas (.inl i))`. Set `Bm : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ` to `fun w => Matrix.of fun i => L.P w (bas (.inr i))`. Establish `hS : ∀ w ∈ logCover L.a_le, (Am w).det ≠ 0 ∧ (Bm w * (Am w)⁻¹)ᵀ = Bm w * (Am w)⁻¹ ∧ ((Bm w * (Am w)⁻¹).map Complex.im).PosDef`. Introduce `w hw`. Take `⟨h1, h2, h3, -⟩` from `siegel_of_riemann g (Am w) (Bm w) (L.H (expCover a w)) (L.herm w hw) (L.pos w hw) (fun i j => ⟨(L.im w hw (bas (.inl i)) (bas (.inl j))).trans (by simp [(hsym i j).1]), (L.im w hw (bas (.inr i)) (bas (.inr j))).trans (by simp [(hsym i j).2.1]), (L.im w hw (bas (.inl i)) (bas (.in …`.
+
+Apply the tactic sequence `rw [(hsym i j).2.2]; split_ifs <;> simp)⟩)`. Conclude with `⟨h1, h2, h3⟩`. Establish `hU : ∀ w ∈ logCover L.a_le, IsUnit (Am w).det` using `fun w hw => isUnit_iff_ne_zero.2 (hS w hw).1`. Establish `hAm : ∀ i j, DifferentiableOn ℂ (fun w => Am w i j) (logCover L.a_le)` using `fun i j => (differentiableOn_pi.1 (L.hol (bas (.inl i)))) j`. Establish `hBm : ∀ i j, DifferentiableOn ℂ (fun w => Bm w i j) (logCover L.a_le)` using `fun i j => (differentiableOn_pi.1 (L.hol (bas (.inr i)))) j`.
+
+Use `⟨{ a_le := L.a_le τ := fun w => Bm w * (Am w)⁻¹ analytic := fun p q => ReciprocityTheory.AnForm.Osgood.osgood n _ _ (isOpen_logCover L.a_le) (GlobalTheory.differentiableOn_matrix_mul_apply hBm (GlobalTheory.differentiableOn_nonsing_inv_apply hAm hU) p q)` and prove the remaining obligations. Use symmetry as in `:= fun w hw => (hS w hw).2.1`. Use `im_posDef := fun w hw => (hS w hw).2.2`. Use `B := B`. Use `B_symm := hBs`.
+
+Use `periodic := fun i w hw => ?_ }, fun _ => rfl, fun w hw j => ?_⟩`. Establish `h1 : Am (w + Pi.single (Fin.castLE L.a_le i) (2 * Real.pi * Complex.I)) = Am w`. Use extensionality with `p q`. Simplify using `only [Am, Matrix.of_apply, L.mono i w hw, hTa]`. Establish `h2 : Bm (w + Pi.single (Fin.castLE L.a_le i) (2 * Real.pi * Complex.I)) = Bm w + (B i).map (Int.cast : ℤ → ℂ) * Am w`.
+
+Use extensionality with `p q`. Simplify using `[Am, Bm, L.mono i w hw, hTb, Matrix.mul_apply, Finset.sum_apply]`. Use `show Bm _ * (Am _)⁻¹ = Bm w * (Am w)⁻¹ + _`. Rewrite using `[h1, h2, Matrix.add_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (hU w hw), Matrix.mul_one]`. Establish `h1 : Bm w = (Bm w * (Am w)⁻¹) * Am w`.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (hU w hw), Matrix.mul_one]`. Use function extensionality and compare the values at `k`. Establish `h2` using `congrFun (congrFun h1 j) k`. Rewrite `h2` using `[Matrix.mul_apply]`. Rewrite using `[Finset.sum_apply]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `h2`.
+-/
 theorem exists_period (L : LogPeriods n a g Λ) (bas : Module.Basis (Fin g ⊕ Fin g) ℤ Λ)
     (B : Fin a → Matrix (Fin g) (Fin g) ℤ)
     (hsym : ∀ i j, L.E (bas (.inl i)) (bas (.inl j)) = 0 ∧ L.E (bas (.inr i)) (bas (.inr j)) = 0 ∧
@@ -214,6 +289,33 @@ theorem exists_period (L : LogPeriods n a g Λ) (bas : Module.Basis (Fin g ⊕ F
     simp only [Pi.smul_apply, smul_eq_mul]
     exact h2
 
+/- English proof (translation)
+Take `⟨u, hu, hlim⟩` from `exists_seq L.a_le`. Establish `h0 : (0 : Fin n → ℂ) ∈ ball (0 : Fin n → ℂ) 1` using `mem_ball_self one_pos`. Establish `hAc : ∀ i j, ContinuousAt (fun z => A z i j) 0` using `fun i j => (hA i j).continuousOn.continuousAt (ball_mem_nhds 0 one_pos)`. Establish `hTc : ∀ i j, ContinuousAt (fun z => T0 z i j) 0` using `fun i j => (hT0.1 i j 0 h0).continuousAt`. Establish `key : ∀ x : L.W, ∃ c : Fin g → ℂ, L.s x 0 = c ᵥ* A 0`.
+
+Introduce `x`. Use `set cu : Fin g → ℤ := fun i => bas.repr x (.inl i) with hcu`. Use `set cv : Fin g → ℤ := fun j => bas.repr x (.inr j) with hcv`. Establish `hx : (x : Λ) = ∑ i, cu i • bas (.inl i) + ∑ j, cv j • bas (.inr j)` using `by conv_lhs => rw [← bas.sum_repr (x : Λ)]`. Rewrite using `[Fintype.sum_sum_type]`.
+
+Establish `hBv : ∀ i k, ∑ j, cv j * Q.B i j k = 0`. Introduce `i k`. Establish `h` using `T_fix L i x`. Rewrite `h` using `[hx]`. Simplify using `only [map_add, map_sum, map_zsmul, hTa, hTb, smul_add, Finset.sum_add_distrib] at h`.
+
+Establish `h' : ∑ j, cv j • ∑ l, Q.B i j l • bas (.inl l) = 0`. Conclude with `add_eq_left.1 (add_left_cancel h)`. Establish `h2` using `congrArg (bas.coord (.inl k)) h'`. Simplify `h2` using `[Finsupp.single_apply, Module.Basis.coord_apply]`. Establish `hpt : ∀ w ∈ logCover L.a_le, ∀ m, L.s x (expCover a w) m = ∑ k, ((cu k : ℂ) + ∑ j, (cv j : ℂ) * T0 (expCover a w) j k) * A (expCover a w) k m`.
+
+Introduce `w hw m`. Establish `e2 : ∀ k, ∑ j, (cv j : ℂ) * T0 (expCover a w) j k = ∑ j, (cv j : ℂ) * Q.τ w j k`. Introduce `k`. Establish `hj : ∀ j, T0 (expCover a w) j k = Q.τ w j k - ∑ i : Fin a, (w (Fin.castLE Q.a_le i) / (2 * Real.pi * Complex.I)) * (Q.B i j k : ℂ)`. Introduce `j`.
+
+Rewrite using `[← hT0.2 w hw]`. Simplify using `[PeriodPolydisc.tau0, Matrix.sub_apply, Matrix.sum_apply]`. Simplify using `only [hj, mul_sub, Finset.sum_sub_distrib]`. Rewrite using `[sub_eq_self]`. Simplify using `only [Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `h3 : (∑ j, (cv j : ℂ) * (Q.B i j k : ℂ)) = 0` using `by exact_mod_cast hBv i k`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring`.
+
+Use `_ = 0 := by rw [h3, mul_zero]`. Establish `e1 : L.P w (x : Λ) = ∑ i, cu i • L.P w (bas (.inl i)) + ∑ j, cv j • ∑ k, Q.τ w j k • L.P w (bas (.inl k))` using `by conv_lhs => rw [hx]`. Simplify using `only [map_add, map_sum, map_zsmul, hQP w hw]`. Rewrite using `[L.s_eq x w hw, e1]`. Simplify using `only [Pi.add_apply, Finset.sum_apply, Pi.smul_apply, zsmul_eq_mul, smul_eq_mul, hAP w hw, Pi.mul_apply, Pi.intCast_apply, add_mul, Finset.sum_add_distrib, e2, Finset.sum_mul, Finset.mul_sum]`.
+
+Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Use `⟨fun k => (cu k : ℂ) + ∑ j, (cv j : ℂ) * T0 0 j k, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `m`.
+
+Establish `hF : ContinuousAt (fun z => ∑ k, ((cu k : ℂ) + ∑ j, (cv j : ℂ) * T0 z j k) * A z k m) 0` using `tendsto_finset_sum _ fun k _ => ContinuousAt.mul (continuousAt_const.add (tendsto_finset_sum _ fun j _ => continuousAt_const.mul (hTc j k))) (hAc k m)`. Establish `hs : ContinuousAt (fun z => L.s x z m) 0` using `(differentiableOn_pi.1 (L.s_hol x) m).continuousOn.continuousAt (ball_mem_nhds 0 one_pos)`. Establish `t1` using `hs.tendsto.comp hlim`. Establish `t2` using `hF.tendsto.comp hlim`. Establish `h` using `tendsto_nhds_unique t1 (t2.congr fun t => (hpt (u t) (hu t) m).symm)`.
+
+Simplify `h` using `[vecMul, dotProduct]`. Establish `hspan : Submodule.span ℂ (Set.range fun x => L.s x 0) ≤ LinearMap.range (A 0).vecMulLinear`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨c, hc⟩` from `key x`.
+
+Conclude with `⟨c, hc.symm⟩`. Rewrite `hspan` using `[L.span]`. Establish `hsurj : Function.Surjective fun v : Fin g → ℂ => v ᵥ* A 0`. Introduce `y`. Take `⟨c, hc⟩` from `hspan (Submodule.mem_top (x := y))`.
+
+Conclude with `⟨c, hc⟩`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 (Matrix.vecMul_surjective_iff_isUnit.1 hsurj)).ne_zero`.
+-/
 theorem det_frame_ne_zero (L : LogPeriods n a g Λ) (bas : Module.Basis (Fin g ⊕ Fin g) ℤ Λ)
     (Q : PeriodPolydisc n a g) (A T0 : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ)
     (hA : ∀ i j, DifferentiableOn ℂ (fun z => A z i j) (ball 0 1)) (hT0 : Q.IsTau0Ext T0)
@@ -302,6 +404,11 @@ theorem det_frame_ne_zero (L : LogPeriods n a g Λ) (bas : Module.Basis (Fin g �
 
 end Frame
 
+/- English proof (translation)
+Introduce `n a g Λ _ L`. Take `⟨bas, B, hsym, hW, hTa, hBs, hTb⟩` from `Frame.exists_basis L`. Take `⟨A, hAd, hAP⟩` from `Frame.exists_frame L (fun i => bas (.inl i)) hW`. Take `⟨Q, hQB, hQP⟩` from `Frame.exists_period L bas B hsym hTa hBs hTb`. Take `⟨hpos, T0, hT0⟩` from `Tau0Holomorphic.cond RiemannExtensionSlices.proof PuncturedExpOrder.proof LogCoverDescent.proof n a g Q`.
+
+Use `⟨bas, Q, A, T0, hsym, hAd, ?_, hT0, hpos, hAP, hQP⟩` and prove the remaining obligations. Conclude with `Frame.det_frame_ne_zero L bas Q A T0 hAd hT0 hTa (fun i j => by simp only [hQB]; exact hTb i j) hAP hQP`.
+-/
 theorem exists_markedPeriods_frame : ∀ (n a g : ℕ) (Λ : Type) [AddCommGroup Λ] (L : GlobalTheory.CompanionTheory.Ar.Flat.LogPeriods n a g Λ), ∃ (bas : Module.Basis (Fin g ⊕ Fin g) ℤ Λ) (Q : GroundTheory.Heights₂.Heights.Regular.PeriodPolydisc n a g) (A T0 : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ), (∀ i j, L.E (bas (.inl i)) (bas (.inl j)) = 0 ∧ L.E (bas (.inr i)) (bas (.inr j)) = 0 ∧ L.E (bas (.inl i)) (bas (.inr j)) = if i = j then -1 else 0) ∧ (∀ i j, DifferentiableOn ℂ (fun z => A z i j) (Metric.ball 0 1)) ∧ (A 0).det ≠ 0 ∧ Q.IsTau0Ext T0 ∧ (∀ i, ((Q.B i).map (Int.cast : ℤ → ℝ)).PosSemidef) ∧ (∀ w ∈ GroundTheory.Heights₂.Heights.Regular.logCover L.a_le, ∀ i k, L.P w (bas (.inl i)) k = A (GroundTheory.Heights₂.Heights.Regular.expCover a w) i k) ∧ ∀ w ∈ GroundTheory.Heights₂.Heights.Regular.logCover L.a_le, ∀ j, L.P w (bas (.inr j)) = ∑ k, Q.τ w j k • L.P w (bas (.inl k)) := by
   intro n a g Λ _ L
   obtain ⟨bas, B, hsym, hW, hTa, hBs, hTb⟩ := Frame.exists_basis L

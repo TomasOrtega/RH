@@ -6,6 +6,43 @@ namespace ReciprocityTheory.MultiplicativeHeights
 
 open MeasureTheory Metric Set Real
 
+/- English proof (translation)
+Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Rewrite using `[Nat.add_sub_cancel]`. Use `set v : EuclideanSpace ℂ (Fin (m + 1)) := WithLp.toLp 2 (fun i => star (WithLp.ofLp c i)) with hvdef`. Establish `hvx : ∀ x : EuclideanSpace ℂ (Fin (m + 1)), inner ℂ v x = ∑ i, WithLp.ofLp c i * WithLp.ofLp x i`. Introduce `x`.
+
+Rewrite using `[PiLp.inner_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `simp [hvdef, RCLike.inner_apply] <;> ring`. Establish `hvn : ‖v‖ = ‖c‖`. Rewrite using `[EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]`.
+
+Simplify using `[hvdef]`. Establish `hc0 : 0 < ‖c‖` using `norm_pos_iff.mpr hc`. Use `set u0 : EuclideanSpace ℂ (Fin (m + 1)) := ((‖c‖⁻¹ : ℝ) : ℂ) • v with hu0`. Establish `hu0n : ‖u0‖ = 1`. Rewrite using `[hu0, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_of_pos hc0, hvn, inv_mul_cancel₀ hc0.ne']`.
+
+Establish `hon : Orthonormal ℂ (Set.restrict ({0} : Set (Fin (m + 1))) (fun _ => u0))`. Rewrite using `[orthonormal_iff_ite]`. Introduce `i j`. Establish `hij : i = j` using `Subtype.ext (by rw [Set.mem_singleton_iff.mp i.2, Set.mem_singleton_iff.mp j.2])`. Substitute `hij` using the available equality.
+
+Simplify using `only [Set.restrict_apply, if_true]`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `show ((‖u0‖ : ℝ) : ℂ) ^ 2 = 1`. Rewrite using `[hu0n]`. Simplify using the standard rewrite rules.
+
+Take `⟨b, hb⟩` from `Orthonormal.exists_orthonormalBasis_extension_of_card_eq (𝕜 := ℂ) (by rw [finrank_euclideanSpace]) hon`. Establish `hb0 : b 0 = u0` using `hb 0 (Set.mem_singleton 0)`. Set `M : EuclideanSpace ℂ (Fin (m + 1)) ≃L[ℂ] (Fin (m + 1) → ℂ)` to `b.repr.toContinuousLinearEquiv.trans (EuclideanSpace.equiv (Fin (m + 1)) ℂ)`. Establish `hMr : ∀ x i, M x i = b.repr x i` using `fun x i => rfl`. Establish `hnorm1 : ∀ x : EuclideanSpace ℂ (Fin (m + 1)), ‖∑ i, WithLp.ofLp c i * WithLp.ofLp x i‖ = ‖c‖ * ‖M x 0‖`.
+
+Introduce `x`. Rewrite using `[hMr, OrthonormalBasis.repr_apply_apply, hb0, hu0, inner_smul_left, hvx, norm_mul, Complex.conj_ofReal, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_of_pos hc0, ← mul_assoc, mul_inv_cancel₀ hc0.ne', one_mul]`. Establish `hnorm2 : ∀ x : EuclideanSpace ℂ (Fin (m + 1)), ‖x‖ ^ 2 = ∑ i, ‖M x i‖ ^ 2`. Introduce `x`. Rewrite using `[← b.repr.norm_map x, EuclideanSpace.norm_sq_eq]`.
+
+Both sides reduce to the same expression. Set `f : Fin (m + 1) → ℂ → ℝ` to `fun i z => if i = 0 then log (‖c‖ * ‖z‖) * exp (-‖z‖ ^ 2) else exp (-‖z‖ ^ 2)`. Set `g : Fin (m + 1) → ℂ → ℝ` to `fun _ z => exp (-‖z‖ ^ 2)`. Establish `hexp : ∀ y : Fin (m + 1) → ℂ, exp (-∑ i, ‖y i‖ ^ 2) = ∏ i, exp (-‖y i‖ ^ 2)`. Introduce `y`.
+
+Rewrite using `[← Real.exp_sum, Finset.sum_neg_distrib]`. Establish `hf : ∀ y : Fin (m + 1) → ℂ, ∏ i, f i (y i) = log (‖c‖ * ‖y 0‖) * ∏ i, exp (-‖y i‖ ^ 2)`. Introduce `y`. Rewrite using `[Fin.prod_univ_succ, Fin.prod_univ_succ (fun i => exp (-‖y i‖ ^ 2))]`. Simplify using `only [f, if_pos rfl, Fin.succ_ne_zero, if_false]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hF1 : ∀ x : EuclideanSpace ℂ (Fin (m + 1)), log ‖∑ i, WithLp.ofLp c i * WithLp.ofLp x i‖ * exp (-‖x‖ ^ 2) = ∏ i, f i (M x i)`. Introduce `x`. Rewrite using `[hf (M x), hnorm1, hnorm2, hexp]`. Establish `hF2 : ∀ x : EuclideanSpace ℂ (Fin (m + 1)), exp (-‖x‖ ^ 2) = ∏ i, g i (M x i)`.
+
+Introduce `x`. Rewrite using `[hnorm2, hexp]`. Use `set μ := (volume : Measure (EuclideanSpace ℂ (Fin (m + 1)))) with hμ`. Set `Me` to `M.toHomeomorph.toMeasurableEquiv`. Use `haveI : (μ.map Me).IsAddHaarMeasure := by`.
+
+Establish `h` using `M.isAddHaarMeasure_map μ`. Conclude with `h`. Use `set k := (μ.map Me).addHaarScalarFactor (volume : Measure (Fin (m + 1) → ℂ))`. Establish `hν : μ.map Me = k • (volume : Measure (Fin (m + 1) → ℂ))` using `Measure.isAddLeftInvariant_eq_smul _ _`. Establish `hk : 0 < k` using `Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _`.
+
+Establish `hint : ∀ H : (Fin (m + 1) → ℂ) → ℝ, ∫ x, H (M x) ∂μ = (k : ℝ) * ∫ y, H y`. Introduce `H`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hν, integral_smul_nnreal_measure, NNReal.smul_def, smul_eq_mul]`. Establish `hintg : ∀ H : (Fin (m + 1) → ℂ) → ℝ, Integrable H → Integrable (fun x => H (M x)) μ`.
+
+Introduce `H hH`. Establish `h1 : Integrable H (μ.map Me)` using `by rw [hν]; exact hH.smul_measure_nnreal`. Conclude with `Me.measurableEmbedding.integrable_map_iff.mp h1`. Establish `hP1 : ∫ y : Fin (m + 1) → ℂ, ∏ i, f i (y i) = gaussLogC ‖c‖ * gaussOneC ^ m`. Rewrite using `[volume_pi, integral_fintype_prod_eq_prod (f := f), Fin.prod_univ_succ]`.
+
+Simplify using `only [f, if_pos rfl, Fin.succ_ne_zero, if_false, Finset.prod_const, Finset.card_univ, Fintype.card_fin, gaussLogC, gaussOneC]`. Establish `hP2 : ∫ y : Fin (m + 1) → ℂ, ∏ i, g i (y i) = gaussOneC ^ (m + 1)`. Rewrite using `[volume_pi, integral_fintype_prod_eq_prod (f := g)]`. Simplify using `only [g, Finset.prod_const, Finset.card_univ, Fintype.card_fin, gaussOneC]`. Establish `hI1 : Integrable (fun y : Fin (m + 1) → ℂ => ∏ i, f i (y i))`.
+
+Rewrite using `[volume_pi]`. Use `Integrable.fintype_prod (f := f) fun i => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality. Simplify `integrable_gaussLogC hc0` using `[f]`.
+
+Simplify `integrable_gaussOneC` using `[f, hi]`. Use `⟨(k : ℝ), NNReal.coe_pos.mpr hk, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hintg _ hI1).congr (Filter.Eventually.of_forall fun x => (hF1 x).symm)`. Rewrite using `[show (fun x : EuclideanSpace ℂ (Fin (m + 1)) => log ‖∑ i, WithLp.ofLp c i * WithLp.ofLp x i‖ * exp (-‖x‖ ^ 2)) = fun x => ∏ i, f i (M x i) from funext hF1]`. Rewrite using `[hint (fun y => ∏ i, f i (y i)), hP1]`.
+
+Rewrite using `[show (fun x : EuclideanSpace ℂ (Fin (m + 1)) => exp (-‖x‖ ^ 2)) = fun x => ∏ i, g i (M x i) from funext hF2]`. Rewrite using `[hint (fun y => ∏ i, g i (y i)), hP2]`.
+-/
 theorem gauss_pair {n : ℕ} (hn : 0 < n) (c : EuclideanSpace ℂ (Fin n)) (hc : c ≠ 0) :
     ∃ s : ℝ, 0 < s ∧
       Integrable (fun x : EuclideanSpace ℂ (Fin n) ↦

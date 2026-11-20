@@ -13,6 +13,9 @@ open ReciprocityTheory.AnForm.R GlobalTheory.ZH GlobalTheory.Poinc GlobalTheory.
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TorsRat.torsion_point_rational | exact GlobalTheory.TorsRat.torsion_point_rational | (intros; apply GlobalTheory.TorsRat.torsion_point_rational <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.abelianScheme_primeToChar_torsion_rational : ∀ (K₀ K : Type) [Field K₀] [IsAlgClosed K₀] [Field K] (e : K₀ →+* K) (Y : Over (Sp K₀)) [GrpObj Y],
   IsAbelianScheme Y → ∀ n : ℕ, IsUnit (n : K₀) → ∀ y : Over.mk (spMap e) ⟶ Y, y ^ n = 1 →
   ∃ y₀ : Sp K₀ ⟶ Y.left, y.left = spMap e ≫ y₀ := by

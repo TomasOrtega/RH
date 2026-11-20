@@ -2,12 +2,18 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `U.exists_isCompl`. Use `⟨C ⊓ W, hC.disjoint.mono_right inf_le_left, ?_⟩` and prove the remaining obligations. Rewrite using `[← sup_inf_assoc_of_le C h, hC.sup_eq_top, top_inf_eq]`.
+-/
 theorem exists_relCompl_submodule {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
     {U W : Submodule K V} (h : U ≤ W) : ∃ C : Submodule K V, Disjoint U C ∧ U ⊔ C = W := by
   obtain ⟨C, hC⟩ := U.exists_isCompl
   refine ⟨C ⊓ W, hC.disjoint.mono_right inf_le_left, ?_⟩
   rw [← sup_inf_assoc_of_le C h, hC.sup_eq_top, top_inf_eq]
 
+/- English proof (translation)
+Set `b` to `Module.finBasis K S`. Use `⟨_, S.subtype ∘ b, b.linearIndependent.map' S.subtype (Submodule.ker_subtype S), ?_⟩` and prove the remaining obligations. Rewrite using `[Set.range_comp, ← Submodule.map_span, b.span_eq, Submodule.map_subtype_top]`.
+-/
 theorem exists_fin_independent_span_eq {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] (S : Submodule K V) :
     ∃ (n : ℕ) (v : Fin n → V), LinearIndependent K v ∧ Submodule.span K (Set.range v) = S := by
@@ -15,6 +21,21 @@ theorem exists_fin_independent_span_eq {K V : Type*} [Field K] [AddCommGroup V] 
   refine ⟨_, S.subtype ∘ b, b.linearIndependent.map' S.subtype (Submodule.ker_subtype S), ?_⟩
   rw [Set.range_comp, ← Submodule.map_span, b.span_eq, Submodule.map_subtype_top]
 
+/- English proof (translation)
+Take `⟨C₁, hd₁, hs₁⟩` from `exists_relCompl_submodule (inf_le_left : W₁ ⊓ W₂ ≤ W₁)`. Take `⟨C₂, hd₂, hs₂⟩` from `exists_relCompl_submodule (inf_le_right : W₁ ⊓ W₂ ≤ W₂)`. Take `⟨a, u, hu, hus⟩` from `exists_fin_independent_span_eq (W₁ ⊓ W₂)`. Take `⟨b, v₁, hv₁, hvs₁⟩` from `exists_fin_independent_span_eq C₁`. Take `⟨c, v₂, hv₂, hvs₂⟩` from `exists_fin_independent_span_eq C₂`.
+
+Establish `hC₁ : C₁ ≤ W₁` using `hs₁ ▸ le_sup_right`. Establish `hC₂ : C₂ ≤ W₂` using `hs₂ ▸ le_sup_right`. Establish `h12 : Disjoint C₁ C₂`. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx₁ hx₂`.
+
+Conclude with `(Submodule.disjoint_def.1 hd₁) x ⟨hC₁ hx₁, hC₂ hx₂⟩ hx₁`. Establish `hU : Disjoint (W₁ ⊓ W₂) (C₁ ⊔ C₂)`. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hx'`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx'`.
+
+Establish `hz1 : z ∈ W₁`. Use `W₁.sub_mem hx.1 (hC₁ hy)` as an intermediate fact. Simplify using `using this`. Establish `hz0 : z = 0` using `(Submodule.disjoint_def.1 hd₂) z ⟨hz1, hC₂ hz⟩ hz`. Substitute `hz0` using the available equality.
+
+Rewrite `hx`, the goal using `[add_zero]`. Conclude with `(Submodule.disjoint_def.1 hd₁) y hx hy`. Establish `hv : LinearIndependent K (Sum.elim v₁ v₂)` using `hv₁.sum_type hv₂ (by rw [hvs₁, hvs₂]; exact h12)`. Establish `hvs : Submodule.span K (Set.range (Sum.elim v₁ v₂)) = C₁ ⊔ C₂`. Rewrite using `[Set.Sum.elim_range, Submodule.span_union, hvs₁, hvs₂]`.
+
+Use `⟨a, b, c, Sum.elim u (Sum.elim v₁ v₂), hu.sum_type hv (by rw [hus, hvs]; exact hU), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Sum.elim_comp_inl, hus]`. Establish `: Sum.elim u (Sum.elim v₁ v₂) ∘ Sum.map id Sum.inl = Sum.elim u v₁`. Apply the tactic sequence `funext x; cases x <;> rfl`. Rewrite using `[this, Set.Sum.elim_range, Submodule.span_union, hus, hvs₁, hs₁]`.
+
+Establish `: Sum.elim u (Sum.elim v₁ v₂) ∘ Sum.map id Sum.inr = Sum.elim u v₂`. Apply the tactic sequence `funext x; cases x <;> rfl`. Rewrite using `[this, Set.Sum.elim_range, Submodule.span_union, hus, hvs₂, hs₂]`. Rewrite using `[Set.Sum.elim_range, Submodule.span_union, hus, hvs, sup_sup_distrib_left, hs₁, hs₂]`.
+-/
 theorem exists_basis_adapted_two_subspaces (K V : Type) [Field K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] (W₁ W₂ : Submodule K V) :
     ∃ (a b c : ℕ) (w : Fin a ⊕ Fin b ⊕ Fin c → V), LinearIndependent K w ∧

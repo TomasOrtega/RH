@@ -14,6 +14,21 @@ noncomputable section
 
 namespace GlobalTheory.CovTop.VolUp.FullLevel
 
+/- English proof (translation)
+Introduce `D V β Λ L hΛ hr hP h hK`. Establish `hfr : Formalism.L2.DIV.IsFrame β Λ` using `by obtain ⟨c, h, -⟩ := hΛ; exact h`. Establish `hl : Formalism.L2.Pj.latHat V = GlobalTheory.AdLat.hat D.host.F (Λ : Set (Fin V.rank → D.host.E))`. Rewrite using `[GlobalTheory.PrincInLevel.eq_latC hΛ]`. Conclude with `(GlobalTheory.Member.latHat_eq_hat_and_gram D V).1`.
+
+Establish `hk : GlobalTheory.Member.FinCong V 1 h`. Introduce `z hz`. Rewrite `hz`, the goal using `[(GlobalTheory.Member.latHat_eq_hat_and_gram D V).1]`. Conclude with `hK.2.1 z hz`. Establish `hc : ∀ a : GA D V, GlobalTheory.Member.FinCong V 1 a → ∀ z ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) Λ, ∃ y ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ, (Formalism.IndefR.Lev.finE V a).1 *ᵥ z - z = (1 : ℕ) • y := by`.
+
+Introduce `a ha`. Unfold `GlobalTheory.Member.FinCong at ha`. Rewrite `ha` using `[hl]`. Conclude with `GlobalTheory.PrincInLevel.cong_swap Λ 1 _ ha`. Establish `hc'` using `hc _ (GlobalTheory.Member.PrincLevel.finCong_inv hk)`.
+
+Rewrite `hc'` using `[map_inv]`. Take `⟨y, hy, -⟩` from `GlobalTheory.PrincInLevel.exists_int (Formalism.L2.Herm.intAf D.host.F D.host.E) β (Formalism.IndefR.Lev.finE V h) (Formalism.L2.Herm.hatL (F := D.host.F) Λ) 1 hfr (hc h hk) hc'`. Establish `hS : Formalism.IndefR.Lev.finE V h ∈ Formalism.L2.DIV.St β` using `⟨y, hy⟩`. Establish `hU : Formalism.IndefR.Lev.finE V h ∈ Formalism.L2.DIV.UA D.sp.cm V.gram` using `GlobalTheory.LevSplit.finE_mem_UA V h`. Establish `hb : ∀ a : Fin V.rank, a.val < L.r` using `fun a => lt_of_lt_of_le a.2 hr`.
+
+Use `Formalism.L2.DIV.mem_lev.2 ⟨Formalism.L2.DIV.mem_parLev.2 ⟨hU, hS, fun PP _ => ?_, fun PP _ => ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. It suffices to derive a contradiction. Simplify using `only [Formalism.L2.DIV.blkOf, if_pos (hb i), if_pos (hb j)] at hij`. Conclude with `lt_irrefl _ hij`.
+
+Introduce `i j hij`. It suffices to derive a contradiction. Simplify using `only [Formalism.L2.DIV.blk2, if_pos (hb i), if_pos (hb j)] at hij`. Conclude with `lt_irrefl _ hij`. Rewrite using `[hP]`.
+
+Conclude with `Subgroup.mem_top _`.
+-/
 theorem finE_mem_lev_of_isKM : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank), Formalism.IndefR.Links.IsSDFrame V β Λ 1 → V.rank ≤ L.r → L.P.H = ⊤ → ∀ h : GA D V, IsKM (IsCMField.complexConj D.host.E) (-(V.gram)ᵀ) (GlobalTheory.Member.latC V : Set (Fin V.rank → D.host.E)) 1 ((finHom V h).1 : Matrix (Fin V.rank) (Fin V.rank) (RA (maximalRealSubfield D.host.E) D.host.E)) → finE V h ∈ Formalism.L2.DIV.lev D.sp.cm V.gram β L := by
   intro D V β Λ L hΛ hr hP h hK
   have hfr : Formalism.L2.DIV.IsFrame β Λ := by obtain ⟨c, h, -⟩ := hΛ; exact h

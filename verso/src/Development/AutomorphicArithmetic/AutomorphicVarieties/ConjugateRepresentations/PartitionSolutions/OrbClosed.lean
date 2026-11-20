@@ -2,6 +2,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ConjugateRepresent
 
 open UpperTheory.V.Cj.A
 
+/- English proof (translation)
+Introduce `Γ V S _ _ _ _ d G hG K hKY hK s s'`. Unfold `UpperTheory.V.Lit.Dr.Geo.Proper at hG`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce and unpack `p ⟨hpY, hpA⟩`. Take `⟨L, hLn, hLY, hL⟩` from `local_compact_nhds (G.isOpen.mem_nhds hpY)`.
+
+Establish `hFfin : {γ | (G.σ γ) s = s' ∧ ∃ q ∈ L ∪ K, (G.ρ γ) q ∈ L ∪ K}.Finite` using `hG (L ∪ K) (Set.union_subset hLY hKY) (hL.union hK) s s'`. Use `set F := {γ | (G.σ γ) s = s' ∧ ∃ q ∈ L ∪ K, (G.ρ γ) q ∈ L ∪ K} with hF`. Establish `hBc : IsClosed (⋃ γ ∈ F, (G.ρ γ) ⁻¹' K)` using `hFfin.isClosed_biUnion fun γ _ => hK.isClosed.preimage (G.ρ γ).continuous`. Establish `hpB : p ∉ ⋃ γ ∈ F, (G.ρ γ) ⁻¹' K`. Simplify using `only [Set.mem_iUnion, Set.mem_preimage, not_exists]`.
+
+Introduce `γ hγF hγ`. Conclude with `hpA ⟨γ, hγF.1, hγ⟩`. Establish `hnb : (⋃ γ ∈ F, (G.ρ γ) ⁻¹' K)ᶜ ∈ nhds p` using `hBc.isOpen_compl.mem_nhds hpB`. Use `filter_upwards [hLn, hnb] with q hqL hqB`. Use `⟨hLY hqL, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨γ, hσ, hγ⟩`. Apply `hqB` to reduce the goal to its premises. Simplify using `only [Set.mem_iUnion, Set.mem_preimage]`. Conclude with `⟨γ, ⟨hσ, q, Or.inl hqL, Or.inr hγ⟩, hγ⟩`.
+-/
 theorem UpperTheory.V.Cj.A.orbClosed :
     OrbClosed := by
   intro Γ V S _ _ _ _ d G hG K hKY hK s s'

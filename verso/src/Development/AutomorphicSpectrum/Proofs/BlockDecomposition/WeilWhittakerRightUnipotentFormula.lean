@@ -16,23 +16,49 @@ namespace GlobalTheory.CompanionTheory.WinertRn
 
 variable {F : Type} [Field F]
 
+/- English proof (translation)
+Simplify using `[uni2, Matrix.det_fin_two, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem det_mul_right_unipotent (x : F) (g : GL (Fin 2) F) : ((g * uni2 x).val).det = (g.val).det := by
   simp [uni2, Matrix.det_fin_two, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Simplify using `[uni2, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem mul_right_unipotent_upper_left (x : F) (g : GL (Fin 2) F) : (g * uni2 x).val 0 0 = g.val 0 0 := by
   simp [uni2, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Simplify using `[uni2, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem mul_right_unipotent_lower_left (x : F) (g : GL (Fin 2) F) : (g * uni2 x).val 1 0 = g.val 1 0 := by
   simp [uni2, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Simplify using `[uni2, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem mul_right_unipotent_upper_right (x : F) (g : GL (Fin 2) F) :
     (g * uni2 x).val 0 1 = g.val 0 0 * x + g.val 0 1 := by
   simp [uni2, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Simplify using `[uni2, Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 theorem mul_right_unipotent_lower_right (x : F) (g : GL (Fin 2) F) :
     (g * uni2 x).val 1 1 = g.val 1 0 * x + g.val 1 1 := by
   simp [uni2, Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Unfold `GL2LocalData.rW`. Distinguish the cases in `hc : C / Δ = 0`. Rewrite using `[if_pos hc, if_pos hc]`. Establish `hN : Algebra.norm F (algebraMap F E (A / Δ) * 1 * t) = (A / Δ) ^ 2 * Δ`. Rewrite using `[mul_one, map_mul, Algebra.norm_algebraMap, hE, ht]`.
+
+Establish `hadd : A / Δ * (A * x + B) * Algebra.norm F (1 : E) = A / Δ * B * Algebra.norm F (1 : E) + x * Algebra.norm F (algebraMap F E (A / Δ) * 1 * t)`. Rewrite using `[hN, map_one]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hadd, AddChar.map_add_eq_mul]`.
+
+Simplify using `only [Circle.coe_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hc, if_neg hc]`. Use `congr 1`. Use `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations.
+
+Establish `hC : C ≠ 0` using `fun h => hc (by simp [h])`. Establish `hN : Algebra.norm F (u * t) = Algebra.norm F u * Δ` using `by rw [map_mul, ht]`. Establish `hadd : (A / Δ * Algebra.norm F (1 : E) + (C * x + D) * Algebra.norm F u - Algebra.trace F E (σ 1 * u)) / (C / Δ) = (A / Δ * Algebra.norm F (1 : E) + D * Algebra.norm F u - Algebra.trace F E (σ 1 * u)) / (C / Δ) + x * Algebra.norm F (u * t)`. Rewrite using `[hN]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only []`. Rewrite using `[hadd, AddChar.map_add_eq_mul]`. Simplify using `only [Circle.coe_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rW_shift {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F]
     {E : Type} [Field E] [TopologicalSpace E] [MeasurableSpace E] [Algebra F E]
@@ -71,6 +97,11 @@ theorem rW_shift {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     simp only [Circle.coe_mul]
     ring
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ hE χ σ μ lam c Φ x g`. Unfold `GL2LocalData.Wc`. Rewrite using `[det_mul_right_unipotent, mul_right_unipotent_upper_left, mul_right_unipotent_lower_left, mul_right_unipotent_upper_right, mul_right_unipotent_lower_right]`. Use `split_ifs with h`. Establish `hΔ : (g.val).det ≠ 0`.
+
+Use `g.isUnit.map (Matrix.detMonoidHom (n := Fin 2) (R := F))` as an intermediate fact. Conclude with `this.ne_zero`. Rewrite using `[rW_shift hE χ σ μ lam Φ x _ _ _ _ _ hΔ (h.choose : E) h.choose_spec]`. Both sides reduce to the same expression.
+-/
 theorem main : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E], Module.finrank F E = 2 → ∀ (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μ : Measure E) (lam : ℂ) (c : Eˣ →* ℂˣ) (Φ : E → ℂ) (x : F) (g : GL (Fin 2) F), GL2LocalData.Wc χ σ μ lam c Φ (g * uni2 x) = GL2LocalData.Wc χ σ μ lam c (fun z => (χ (x * Algebra.norm F z) : ℂ) * Φ z) g := by
   intro F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ hE χ σ μ lam c Φ x g
   unfold GL2LocalData.Wc

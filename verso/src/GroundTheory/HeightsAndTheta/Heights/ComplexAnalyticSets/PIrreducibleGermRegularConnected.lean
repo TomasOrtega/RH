@@ -8,6 +8,11 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 
 open Topology
 
+/- English proof (translation)
+Introduce `σ _ X w hX hirr U hU`. Take `⟨d, A, B, D, δ, N, hBU, hP⟩` from `hpar σ X w hX hirr U hU`. Establish `hS` using `hsheets σ X w B d A D δ N hP hirr`. Take `⟨hBo, hwXB, -, -, -, -, -, -, -, -, hchart, hdense⟩` from `hP`. Establish `hSreg : {x | x ∈ X ∩ B ∧ δ (A x) ≠ 0} ⊆ regLocus (X ∩ B)`.
+
+Introduce and unpack `x ⟨hxXB, hx⟩`. Take `⟨O, V, g, hO, hV, hxV, hg, hAg, hXV⟩` from `hchart x hxXB hx`. Conclude with `⟨hxXB, d, A, O, V, g, hO, hV, hxV, hg, hAg, hXV⟩`. Conclude with `⟨B, hBo, hwXB.2, hBU, hS.subset_closure hSreg ((regLocus_subset _).trans hdense)⟩`.
+-/
 theorem IrreducibleGermRegularConnected.proof (hpar : LocalParametrisation.Statement)
     (hsheets : ParametrisationSheetsConnected.Statement) :
     IrreducibleGermRegularConnected.Statement := by

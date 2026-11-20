@@ -14,6 +14,11 @@ variable (p : ℕ) [Fact p.Prime] (K L : IntermediateField ℚ_[p] (PadicAlgCl p
 
 variable {p K L}
 
+/- English proof (translation)
+Set `γ : IntermediateField ℚ_[p] (PadicAlgCl p) → Kˣ → GK p K` to `fun L a => if h : IsAbLK p K L then (exists_isRecip h a).choose else 1`. Establish `hγ : ∀ L, IsAbLK p K L → ∀ a, IsRecip p K L a (γ L a)`. Introduce `L hL a`. Simplify using `only [γ, dif_pos hL]`. Conclude with `(exists_isRecip hL a).choose_spec`.
+
+Take `⟨f, hf⟩` from `exists_hom_GKab hK γ (fun L hL a b => IsRecip.unique hL (hγ L hL (a * b)) ((hγ L hL a).mul (hγ L hL b))) (fun L L' hL hL' hle a => IsRecip.unique hL (hγ L hL a) ((hγ L' hL' a).of_le hle))`. Conclude with `⟨f, fun a g hg L hL => (hγ L hL a).congr (hf L hL a g hg)⟩`.
+-/
 theorem exists_artin_hom (hK : FiniteDimensional ℚ_[p] K) : ∃ Art : Kˣ →* GKab p K, ∀ (a : Kˣ) (g : GK p K), toAbK p K g = Art a →
     ∀ L, IsAbLK p K L → IsRecip p K L a g := by
   classical
@@ -28,6 +33,11 @@ theorem exists_artin_hom (hK : FiniteDimensional ℚ_[p] K) : ∃ Art : Kˣ →*
     (fun L L' hL hL' hle a => IsRecip.unique hL (hγ L hL a) ((hγ L' hL' a).of_le hle))
   exact ⟨f, fun a g hg L hL => (hγ L hL a).congr (hf L hL a g hg)⟩
 
+/- English proof (translation)
+Rewrite using `[isFrob_iff hK]`. Introduce `ζ m hm hζ`. Take `⟨n, hn, hζn⟩` from `(mem_Kur_iff hK ζ).1 (mem_Kur_of_pow hK hm hζ)`. Establish `h1 : frobK p K ζ = g ζ` using `(mk_eq_mk_iff (M := Kn p K n) (frobK p K) g).1 (QuotientGroup.eq.2 (h n hn)) ζ hζn`. Rewrite using `[← h1]`.
+
+Conclude with `(isFrob_iff hK _).1 (isFrob_frobK hK) ζ m hm hζ`.
+-/
 theorem isFrob_of_forall_Kn (hK : FiniteDimensional ℚ_[p] K) (g : GK p K)
     (h : ∀ n, 0 < n → (frobK p K)⁻¹ * g ∈ subG p K (Kn p K n)) : IsFrob p K g := by
   rw [isFrob_iff hK]
@@ -38,11 +48,19 @@ theorem isFrob_of_forall_Kn (hK : FiniteDimensional ℚ_[p] K) (g : GK p K)
   rw [← h1]
   exact (isFrob_iff hK _).1 (isFrob_frobK hK) ζ m hm hζ
 
+/- English proof (translation)
+The claim follows from `isFrob_of_forall_Kn hK g fun _ hn => IsRecip.unique (isAbLK_Kn hK hn) (isRecip_uniformiser_Kn hK hn π hπ) (h _ (isAbLK_Kn hK hn))`.
+-/
 theorem isFrob_of_isRecip (hK : FiniteDimensional ℚ_[p] K) (π : Kˣ) (hπ : vK p K π = 1) (g : GK p K)
     (h : ∀ L, IsAbLK p K L → IsRecip p K L π g) : IsFrob p K g :=
   isFrob_of_forall_Kn hK g fun _ hn =>
     IsRecip.unique (isAbLK_Kn hK hn) (isRecip_uniformiser_Kn hK hn π hπ) (h _ (isAbLK_Kn hK hn))
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `exists_isRecip hL (a⁻¹ * b)`. Establish `h1 : IsRecip p K L b (g * k)`. Use `h.mul hk` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Establish `h2 : (g * k)⁻¹ * g' ∈ subG p K L` using `IsRecip.unique hL h1 h'`.
+
+Rewrite using `[← hk.mem_subG_iff hK hL]`. Establish `h3 : g⁻¹ * g' = k * ((g * k)⁻¹ * g')` using `by group`. Rewrite using `[h3]`. Conclude with `Subgroup.mul_mem_cancel_right _ h2`.
+-/
 theorem IsRecip.inv_mul_mem (hK : FiniteDimensional ℚ_[p] K) (hL : IsAbLK p K L) {a b : Kˣ} {g g' : GK p K}
     (h : IsRecip p K L a g) (h' : IsRecip p K L b g') : g⁻¹ * g' ∈ subG p K L ↔ a⁻¹ * b ∈ normGrp p K L := by
   obtain ⟨k, hk⟩ := exists_isRecip hL (a⁻¹ * b)
@@ -55,6 +73,17 @@ theorem IsRecip.inv_mul_mem (hK : FiniteDimensional ℚ_[p] K) (hL : IsAbLK p K 
   rw [h3]
   exact Subgroup.mul_mem_cancel_right _ h2
 
+/- English proof (translation)
+Establish `hsurj : ∀ L, IsAbLK p K L → ∀ g : GK p K, ∃ (x : Kˣ) (g' : GK p K), toAbK p K g' = Art x ∧ g'⁻¹ * g ∈ subG p K L`. Introduce `L hL g`. Take `⟨a, ha⟩` from `exists_isRecip_of_gal hK hL g`. Take `⟨g', hg'⟩` from `toAbK_surjective (Art a)`. Conclude with `⟨a, g', hg', IsRecip.unique hL (h a g' hg' L hL) ha⟩`.
+
+Use `⟨?_, ?_, (denseRange_GKab_iff hK Art).2 hsurj, ?_, fun L hL => ⟨hsurj L hL, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[continuous_GKab_iff hK]`. Introduce `L hL x`. Establish `hopen : IsOpen ((fun y : Kˣ => x⁻¹ * y) ⁻¹' (normGrp p K L : Set Kˣ))` using `(isOpen_normGrp hK hL.fin hL.le).preimage (continuous_const.mul continuous_id)`. Establish `hx : x ∈ (fun y : Kˣ => x⁻¹ * y) ⁻¹' (normGrp p K L : Set Kˣ)` using `by show x⁻¹ * x ∈ normGrp p K L`.
+
+Rewrite using `[inv_mul_cancel]`. Conclude with `one_mem _`. Use `filter_upwards [hopen.mem_nhds hx] with y hy g g' hg hg'`. Conclude with `(IsRecip.inv_mul_mem hK hL (h x g hg L hL) (h y g' hg' L hL)).2 hy`. Rewrite using `[injective_iff_map_eq_one]`.
+
+Introduce `a ha`. Use `eq_one_of_forall_mem_normGrp hK a fun L hL => ?_` and prove the remaining obligations. Establish `h1 : toAbK p K 1 = Art a` using `by rw [map_one, ha]`. Conclude with `((h a 1 h1 L hL).mem_subG_iff hK hL).1 (one_mem _)`. Introduce `π hπ g hg`.
+
+Conclude with `isFrob_of_isRecip hK π hπ g (h π g hg)`. Introduce `x g hg`. Conclude with `(h x g hg L hL).mem_subG_iff hK hL`.
+-/
 theorem isArtinK_of_isRecip (hK : FiniteDimensional ℚ_[p] K) (Art : Kˣ →* GKab p K)
     (h : ∀ (a : Kˣ) (g : GK p K), toAbK p K g = Art a → ∀ L, IsAbLK p K L → IsRecip p K L a g) :
     IsArtinK p K Art := by
@@ -84,15 +113,26 @@ theorem isArtinK_of_isRecip (hK : FiniteDimensional ℚ_[p] K) (Art : Kˣ →* G
   · intro x g hg
     exact (h x g hg L hL).mem_subG_iff hK hL
 
+/- English proof (translation)
+Take `⟨Art, h⟩` from `exists_artin_hom hK`. Conclude with `⟨Art, isArtinK_of_isRecip hK Art h⟩`.
+-/
 theorem exists_isArtinK (hK : FiniteDimensional ℚ_[p] K) : ∃ Art : Kˣ →* GKab p K, IsArtinK p K Art := by
   obtain ⟨Art, h⟩ := exists_artin_hom hK
   exact ⟨Art, isArtinK_of_isRecip hK Art h⟩
 
+/- English proof (translation)
+Introduce `χ hχ`. Rewrite using `[pairK_unr hK a χ (hχ.of_le (Kn_le_Kur hn)), ofMul_zpow, map_zsmul]`.
+-/
 theorem isRecip_Kn_zpow (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n) (a : Kˣ) :
     IsRecip p K (Kn p K n) a (frobK p K ^ vK p K a) := by
   intro χ hχ
   rw [pairK_unr hK a χ (hχ.of_le (Kn_le_Kur hn)), ofMul_zpow, map_zsmul]
 
+/- English proof (translation)
+Establish `hab` using `isAbLK_Kn hK hn`. Use `hab.normal` as an intermediate fact. Establish `h1 : frobK p K ^ vK p K a ∈ subG p K (Kn p K n)` using `((isRecip_Kn_zpow hK hn a).mem_subG_iff hK hab).2 ha`. Establish `h2 : frobLK p K (Kn p K n) ^ vK p K a = 1` using `(QuotientGroup.eq_one_iff _).2 h1`. Rewrite using `[← orderOf_frobLK_Kn hK hn]`.
+
+Conclude with `orderOf_dvd_iff_zpow_eq_one.2 h2`.
+-/
 theorem dvd_vK_of_mem_normGrp_Kn (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (hn : 0 < n) (a : Kˣ)
     (ha : a ∈ normGrp p K (Kn p K n)) : (n : ℤ) ∣ vK p K a := by
   have hab := isAbLK_Kn hK hn
@@ -102,6 +142,15 @@ theorem dvd_vK_of_mem_normGrp_Kn (hK : FiniteDimensional ℚ_[p] K) {n : ℕ} (h
   rw [← orderOf_frobLK_Kn hK hn]
   exact orderOf_dvd_iff_zpow_eq_one.2 h2
 
+/- English proof (translation)
+Set `φ : Kˣ →* Kˣ` to `MonoidHom.mk' (fun x => x * (π ^ vK p K x)⁻¹) fun x y => by`. Rewrite using `[vK_mul, zpow_add, mul_inv, mul_mul_mul_comm]`. Establish `hfi : (normGrp p K L).FiniteIndex` using `finiteIndex_normGrp hK hL.fin hL.le`. Take `⟨L', hL', hN⟩` from `existence hK ((normGrp p K L).comap φ) ⟨by rw [Subgroup.index_comap]`. Conclude with `ne_zero_of_dvd_ne_zero hfi.index_ne_zero (Subgroup.relIndex_dvd_index_of_normal _ _)⟩`.
+
+Establish `hn : 0 < degLK p K L` using `degLK_pos hL.fin`. Use `⟨L', degLK p K L, hL', hn, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hN, Subgroup.mem_comap] show π * (π ^ vK p K π)⁻¹ ∈ normGrp p K L`. Rewrite using `[hπ, zpow_one, mul_inv_cancel]`. Conclude with `one_mem _`.
+
+Rewrite using `[← normGrp_le_iff hK hL (hL'.sup (isAbLK_Kn hK hn)), normGrp_sup hK hL' (isAbLK_Kn hK hn), hN]`. Introduce and unpack `x ⟨hx1, hx2⟩`. Take `⟨k, hk⟩` from `dvd_vK_of_mem_normGrp_Kn hK hn x hx2`. Establish `h1 : x * (π ^ vK p K x)⁻¹ ∈ normGrp p K L` using `hx1`. Establish `h2 : π ^ vK p K x ∈ normGrp p K L`.
+
+Rewrite using `[hk, zpow_mul, zpow_natCast]`. Conclude with `zpow_mem (pow_degLK_mem_normGrp hL.le π) k`. Establish `h3` using `mul_mem h1 h2`. Rewrite `h3` using `[inv_mul_cancel_right]`. Then use the resulting hypothesis.
+-/
 theorem exists_le_sup_Kn (hK : FiniteDimensional ℚ_[p] K) (hL : IsAbLK p K L) (π : Kˣ) (hπ : vK p K π = 1) :
     ∃ (L' : IntermediateField ℚ_[p] (PadicAlgCl p)) (n : ℕ), IsAbLK p K L' ∧ 0 < n ∧ π ∈ normGrp p K L' ∧
       L ≤ L' ⊔ Kn p K n := by
@@ -127,6 +176,13 @@ theorem exists_le_sup_Kn (hK : FiniteDimensional ℚ_[p] K) (hL : IsAbLK p K L) 
     have h3 := mul_mem h1 h2
     rwa [inv_mul_cancel_right] at h3
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `toAbK_surjective (Art π)`. Take `⟨g', hg'⟩` from `toAbK_surjective (Art' π)`. Rewrite using `[← hg, ← hg', toAbK_eq_iff hK]`. Introduce `L hL`. Take `⟨L', n, hL', hn, hπL', hle⟩` from `exists_le_sup_Kn hK hL π hπ`.
+
+Use `subG_anti hle ?_` and prove the remaining obligations. Rewrite using `[subG_sup_eq_inf]`. Use `Subgroup.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `mul_mem (inv_mem (((hA.2.2.2.2 L' hL').2 π g hg).2 hπL')) (((hA'.2.2.2.2 L' hL').2 π g' hg').2 hπL')`. Use `subG_anti (Kn_le_Kur hn) ?_` and prove the remaining obligations.
+
+Rewrite using `[← QuotientGroup.eq, (hA.2.2.2.1 π hπ g hg).mk_eq hK, (hA'.2.2.2.1 π hπ g' hg').mk_eq hK]`.
+-/
 theorem IsArtinK.eq_on_uniformiser (hK : FiniteDimensional ℚ_[p] K) {Art Art' : Kˣ →* GKab p K} (hA : IsArtinK p K Art)
     (hA' : IsArtinK p K Art') (π : Kˣ) (hπ : vK p K π = 1) : Art π = Art' π := by
   obtain ⟨g, hg⟩ := toAbK_surjective (Art π)
@@ -141,6 +197,13 @@ theorem IsArtinK.eq_on_uniformiser (hK : FiniteDimensional ℚ_[p] K) {Art Art' 
   · refine subG_anti (Kn_le_Kur hn) ?_
     rw [← QuotientGroup.eq, (hA.2.2.2.1 π hπ g hg).mk_eq hK, (hA'.2.2.2.1 π hπ g' hg').mk_eq hK]
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `exists_vK_eq_one p K hK`. Establish `h0` using `hA.eq_on_uniformiser hK hA' π hπ`. Establish `hu : ∀ u : Kˣ, vK p K u = 0 → Art u = Art' u`. Introduce `u hu`. Establish `h1` using `hA.eq_on_uniformiser hK hA' (π * u) (by rw [vK_mul, hπ, hu, add_zero])`.
+
+Rewrite `h1` using `[map_mul, map_mul, h0]`. Conclude with `mul_left_cancel h1`. Use extensionality with `a`. Establish `h1` using `hu ((π ^ vK p K a)⁻¹ * a) (by rw [vK_mul, vK_inv, vK_zpow, hπ]; ring)`. Rewrite `h1` using `[map_mul, map_mul, map_inv, map_inv, map_zpow, map_zpow, h0]`.
+
+Conclude with `mul_left_cancel h1`.
+-/
 theorem IsArtinK.unique (hK : FiniteDimensional ℚ_[p] K) {Art Art' : Kˣ →* GKab p K} (hA : IsArtinK p K Art)
     (hA' : IsArtinK p K Art') : Art = Art' := by
   obtain ⟨π, hπ⟩ := exists_vK_eq_one p K hK

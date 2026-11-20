@@ -18,6 +18,13 @@ namespace PositivityTheory.Xgp.nef_curve
 
 open GlobalTheory.CompanionTheory.Ar.PB.FA.BlockPot
 
+/- English proof (translation)
+Use `⟨hf.1.comp hg.1, fun j k t ht => ?_⟩` and prove the remaining obligations. Take `⟨ht1, ht2⟩` from `ht`. Take `⟨m, hm⟩` from `B.cover (g ((C.chart j).symm t))`. Establish `h1 : AnalyticAt ℂ (B.chart m ∘ g ∘ (C.chart j).symm) t` using `hg.2 j m t ⟨ht1, hm⟩`. Establish `hu : (B.chart m).symm ((B.chart m ∘ g ∘ (C.chart j).symm) t) = g ((C.chart j).symm t)` using `(B.chart m).left_inv hm`.
+
+Establish `h2 : AnalyticAt ℂ (A.chart k ∘ f ∘ (B.chart m).symm) ((B.chart m ∘ g ∘ (C.chart j).symm) t)` using `hf.2 m k _ ⟨(B.chart m).map_source hm, by`. Rewrite using `[Set.mem_preimage, hu]`. Conclude with `ht2⟩`. Use `(h2.comp h1).congr ?_` and prove the remaining obligations. Establish `hc : ContinuousAt (g ∘ (C.chart j).symm) t` using `hg.1.continuousAt.comp ((C.chart j).continuousAt_symm ht1)`.
+
+Use `filter_upwards [hc ((B.chart m).open_source.mem_nhds hm)] with t' ht'`. Establish `ht'' : g ((C.chart j).symm t') ∈ (B.chart m).source` using `ht'`. Simplify using `only [Function.comp]`. Rewrite using `[(B.chart m).left_inv ht'']`.
+-/
 theorem holoMap_comp {e₁ e₂ e₃ : ℕ} {X Y Z : Type} [TopologicalSpace X] [TopologicalSpace Y]
     [TopologicalSpace Z] {C : FinHolAtlas e₁ Z} {B : FinHolAtlas e₂ Y} {A : FinHolAtlas e₃ X}
     {g : Z → Y} {f : Y → X} (hg : HoloMap C B g) (hf : HoloMap B A f) : HoloMap C A (f ∘ g) := by
@@ -41,6 +48,13 @@ theorem holoMap_comp {e₁ e₂ e₃ : ℕ} {X Y Z : Type} [TopologicalSpace X] 
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Use `contDiffOn_prod fun a _ => ?_` and prove the remaining obligations. Introduce `z hz`. Establish `h0 : (A a).h z ≠ 0` using `((A a).pos z hz).ne'`. Establish `hf` using `hA a z hz`. Establish `key : ∀ m : ℤ, ContDiffWithinAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z => (A a).h z ^ m) {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} z`.
+
+Introduce `m`. Consider the cases of `m with`. Consider the case `ofNat k => simpa only [Int.ofNat_eq_natCast, zpow_natCast] using hf.pow k`. Consider the case `negSucc k`. Simplify using `only [zpow_negSucc]`.
+
+Conclude with `(hf.pow (k + 1)).inv (pow_ne_zero _ h0)`. Conclude with `key _`.
+-/
 theorem smooth_comb {σ : Type} [Fintype σ] {A : σ → HermLine ι} (hA : ∀ a, IsSmoothHerm (A a))
     (n : σ → ℤ) : IsSmoothHerm (GlobalTheory.CompanionTheory.Ar.PB.combLine A n) := by
   refine contDiffOn_prod fun a _ => ?_
@@ -57,6 +71,35 @@ theorem smooth_comb {σ : Type} [Fintype σ] {A : σ → HermLine ι} (hA : ∀ 
       exact (hf.pow (k + 1)).inv (pow_ne_zero _ h0)
   exact key _
 
+/- English proof (translation)
+Introduce `x _`. Establish `hb : IsBlockMap (ι` using `ι) (ι' := ι) id id := isBlockMap_id`. Establish `hxU : x ∈ R.U x` using `R.mem_U x`. Establish `hxU' : h x ∈ R'.U (h x)` using `R'.mem_U _`. Take `⟨cx, hcx, ex⟩` from `orbit_near R R' h hb hO hxU hxU'`.
+
+Use `choose m hm using (R.mem x x hxU).1`. Set `den : K → R.X → ℂ` to `fun k y => R.lift x y ⟨k, m k⟩`. Set `num : K → R.X → ℂ` to `fun k y => R'.lift (h x) (h y) ⟨k, m k⟩`. Set `rat : K → R.X → ℂ` to `fun k y => num k y / den k y / cx k`. Establish `hdenH : ∀ k, R.A.HoloOn (R.U x) (den k)` using `fun k => R.holo x _`.
+
+Establish `hnumH : ∀ k, R.A.HoloOn (h ⁻¹' R'.U (h x)) (num k)` using `fun k => holoOn_comp hh (R'.holo (h x) ⟨k, m k⟩)`. Establish `hdenC : ∀ k, ContinuousAt (den k) x` using `fun k => continuousAt_of_holoOn (hdenH k) hxU`. Establish `hnumC : ∀ k, ContinuousAt (num k) x` using `fun k => continuousAt_of_holoOn (hnumH k) hxU'`. Establish `hratC : ∀ k, ContinuousAt (rat k) x` using `fun k => ((hnumC k).div (hdenC k) (hm k)).div continuousAt_const (hcx k)`. Establish `hrat1 : ∀ k, rat k x = 1`.
+
+Introduce `k`. Use `ex ⟨k, m k⟩` as an intermediate fact. Establish `h1 : den k x ≠ 0` using `hm k`. Establish `h2` using `hcx k`. Simplify using `only [rat, num, den, id] at h1 this ⊢`.
+
+Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts. Establish `hev : ∀ᶠ y in 𝓝 x, y ∈ R.U x ∧ h y ∈ R'.U (h x) ∧ ∀ k, den k y ≠ 0 ∧ rat k y ∈ Complex.slitPlane`. Establish `e1 : ∀ᶠ y in 𝓝 x, y ∈ R.U x` using `(R.isOpen_U x).mem_nhds hxU`. Establish `e2 : ∀ᶠ y in 𝓝 x, h y ∈ R'.U (h x)` using `((R'.isOpen_U (h x)).preimage hh.1).mem_nhds hxU'`.
+
+Establish `e3 : ∀ᶠ y in 𝓝 x, ∀ k, den k y ≠ 0 ∧ rat k y ∈ Complex.slitPlane`. Use `eventually_all.2 fun k => ((hdenC k).eventually_ne (hm k)).and ?_` and prove the remaining obligations. Conclude with `(hratC k).eventually_mem (Complex.isOpen_slitPlane.mem_nhds (by`. Simplify `Complex.one_mem_slitPlane))` using `only [hrat1 k]`. Conclude with `e1.and (e2.and e3)`.
+
+Take `⟨V, hVs, hVo, hxV⟩` from `mem_nhds_iff.1 hev`. Use `⟨V, hVo, hxV, fun y => -∑ k, (L.a k : ℂ) * (Complex.log (rat k y) + (Real.log ‖cx k‖ : ℂ)), ?_, ?_⟩` and prove the remaining obligations. Introduce `j u hu`. Take `⟨hy1, hy2, hy3⟩` from `hVs hu.2`. Establish `hd : ∀ k, AnalyticAt ℂ (fun u => den k ((R.A.chart j).symm u)) u` using `fun k => hdenH k j u ⟨hu.1, hy1⟩`.
+
+Establish `hn : ∀ k, AnalyticAt ℂ (fun u => num k ((R.A.chart j).symm u)) u` using `fun k => hnumH k j u ⟨hu.1, hy2⟩`. Establish `hr : ∀ k, AnalyticAt ℂ (fun u => rat k ((R.A.chart j).symm u)) u` using `fun k => ((hn k).div (hd k) (hy3 k).1).div analyticAt_const (hcx k)`. Establish `hl : ∀ k, AnalyticAt ℂ (fun u => (L.a k : ℂ) * (Complex.log (rat k ((R.A.chart j).symm u)) + (Real.log ‖cx k‖ : ℂ))) u` using `fun k => analyticAt_const.mul (((hr k).clog (hy3 k).2).add analyticAt_const)`. Conclude with `(Finset.analyticAt_fun_sum Finset.univ fun k _ => hl k).neg`. Introduce `y hy`.
+
+Take `⟨hy1, hy2, hy3⟩` from `hVs hy`. Take `⟨c, hc, ec⟩` from `orbit_near R R' h hb hO hy1 hy2`. Establish `hw : R'.lift (h x) (h y) = fun p => c p.1 * R.lift x y p` using `funext fun p => ec p`. Establish `hrat : ∀ k, rat k y = c k / cx k`. Introduce `k`.
+
+Establish `h1 : den k y ≠ 0` using `(hy3 k).1`. Establish `h2` using `ec ⟨k, m k⟩`. Simplify using `only [rat, num, den, id] at h1 h2 ⊢`. Rewrite using `[h2]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hpos : 0 < L.h (R.lift x y)` using `L.pos _ (R.mem x y hy1).1`. Establish `hprod : (∏ k, ‖c k‖ ^ L.a k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.2 (hc k))`. Establish `hL : Real.log (L.h (R'.lift (h x) (h y))) = (∑ k, (L.a k : ℝ) * Real.log ‖c k‖) + Real.log (L.h (R.lift x y))`. Rewrite using `[hw, L.smul c _ hc, Real.log_mul hprod hpos.ne', Real.log_prod]`. Simplify using `only [Real.log_zpow]`.
+
+Conclude with `fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.2 (hc k))`. Establish `hG : (-∑ k, (L.a k : ℂ) * (Complex.log (rat k y) + (Real.log ‖cx k‖ : ℂ))).re = -∑ k, (L.a k : ℝ) * Real.log ‖c k‖`. Rewrite using `[Complex.neg_re, Complex.re_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Establish `hck` using `norm_ne_zero_iff.2 (hc k)`. Establish `hcxk` using `norm_ne_zero_iff.2 (hcx k)`. Establish `hcast : ((L.a k : ℤ) : ℂ) = (((L.a k : ℤ) : ℝ) : ℂ)` using `by push_cast; rfl`. Rewrite using `[hrat k, hcast, Complex.re_ofReal_mul, Complex.add_re, Complex.log_re, Complex.ofReal_re, norm_div, Real.log_div hck hcxk]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `show Real.log (L.h (R.lift x y)) - Real.log (L.h (R'.lift (h x) (h y))) = _`. Rewrite using `[hL, hG]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem samePot_lift {P J P' J' : Ideal (MRing ι)} {e e' : ℕ} (R : AnLogRes P J e) (R' : AnLogRes P' J' e')
     (h : R.X → R'.X) (hh : HoloMap R.A R'.A h) (L : HermLine ι)
     (hO : ∀ x, SameOrbit (R'.lift (h x) (h x)) (R.lift x x)) :
@@ -145,6 +188,11 @@ section Mass
 
 variable {e e' : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨V, hV, hxV, G, hG, e1⟩` from `h1 x hx`. Take `⟨V', hV', hxV', G', hG', e2⟩` from `h2 x hx`. Use `⟨V ∩ V', hV.inter hV', ⟨hxV, hxV'⟩, fun y => G y + G' y, fun j u hu => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Conclude with `(hG j u ⟨hu.1, hu.2.1⟩).add (hG' j u ⟨hu.1, hu.2.2⟩)`.
+
+Rewrite using `[Complex.add_re, ← e1 y hy.1, ← e2 y hy.2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem samePot_trans {A : FinHolAtlas e X} {P Q T : LocPot X} (h1 : SamePot A Set.univ P Q)
     (h2 : SamePot A Set.univ Q T) : SamePot A Set.univ P T := by
   intro x hx
@@ -155,6 +203,9 @@ theorem samePot_trans {A : FinHolAtlas e X} {P Q T : LocPot X} (h1 : SamePot A S
   · rw [Complex.add_re, ← e1 y hy.1, ← e2 y hy.2]
     ring
 
+/- English proof (translation)
+Introduce `x _`. Take `⟨V, hV, hxV, G, hG, e1⟩` from `h1 (h x) (Set.mem_univ _)`. Conclude with `⟨h ⁻¹' V, hV.preimage hh.1, hxV, fun y => G (h y), holoOn_comp hh hG, fun y hy => e1 _ hy⟩`.
+-/
 theorem samePot_pullback {A : FinHolAtlas e X} {B : FinHolAtlas e' Y} {h : Y → X} (hh : HoloMap B A h)
     {P Q : LocPot X} (h1 : SamePot A Set.univ P Q) :
     SamePot B Set.univ (P.pullback h hh.1) (Q.pullback h hh.1) := by
@@ -162,6 +213,9 @@ theorem samePot_pullback {A : FinHolAtlas e X} {B : FinHolAtlas e' Y} {h : Y →
   obtain ⟨V, hV, hxV, G, hG, e1⟩ := h1 (h x) (Set.mem_univ _)
   exact ⟨h ⁻¹' V, hV.preimage hh.1, hxV, fun y => G (h y), holoOn_comp hh hG, fun y hy => e1 _ hy⟩
 
+/- English proof (translation)
+Introduce `j hj`. Establish `hm : (A.chart j).target ∩ (A.chart j).symm ⁻¹' P.U x ∈ 𝓝 (A.chart j x)` using `((A.chart j).isOpen_inter_preimage_symm (P.isOpen_U x)).mem_nhds ⟨(A.chart j).map_source hj, by`. Simplify `P.mem_U x⟩` using `only [Set.mem_preimage, (A.chart j).left_inv hj]`. Conclude with `((hP.1 x j).contDiffAt hm).of_le (by norm_cast)`.
+-/
 theorem isC2At_of_isPotential {A : FinHolAtlas e X} {P : LocPot X} (hP : IsPotential A P) (x : X) :
     IsTwiceDifferentiableAt A P x := by
   intro j hj
@@ -172,12 +226,18 @@ theorem isC2At_of_isPotential {A : FinHolAtlas e X} {P : LocPot X} (hP : IsPoten
 
 noncomputable def mass (B : FinHolAtlas 1 Y) (Q : LocPot Y) : ℝ := mInt B (fun _ => Q) fun _ => 1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Conclude with `Fin.cases rfl (fun i => i.elim0) j`.
+-/
 theorem cons_eq (Q : LocPot Y) : (Fin.cons Q (Fin.elim0 : Fin 0 → LocPot Y) : Fin 1 → LocPot Y) = fun _ => Q := by
   funext j
   exact Fin.cases rfl (fun i => i.elim0) j
 
 variable [CompactSpace Y] [T2Space Y] {B : FinHolAtlas 1 Y}
 
+/- English proof (translation)
+Use `mIntAdd B P Q Fin.elim0 hP hQ (fun i => i.elim0) (fun _ => 1) (by rw [cons_eq]; exact mIntegrableCont B _ (fun _ => hP) _ continuous_const) (by rw [cons_eq]; exact mIntegrableCont B _ (fun _ => hQ) _ continuous_const)` as an intermediate fact. Simplify `this` using `only [cons_eq, mass]`.
+-/
 theorem mass_add {P Q : LocPot Y} (hP : IsPotential B P) (hQ : IsPotential B Q) :
     mass B (P + Q) = mass B P + mass B Q := by
   have := mIntAdd B P Q Fin.elim0 hP hQ (fun i => i.elim0) (fun _ => 1)
@@ -186,22 +246,49 @@ theorem mass_add {P Q : LocPot Y} (hP : IsPotential B P) (hQ : IsPotential B Q) 
   simpa only [cons_eq, mass] using this
 
 omit [CompactSpace Y] [T2Space Y] in
+/- English proof (translation)
+Use `mIntRsmul B c P Fin.elim0 hP (fun i => i.elim0) (fun _ => 1)` as an intermediate fact. Simplify `this` using `only [cons_eq, mass]`.
+-/
 theorem mass_rsmul {P : LocPot Y} (hP : IsPotential B P) (c : ℝ) : mass B (P.rsmul c) = c * mass B P := by
   have := mIntRsmul B c P Fin.elim0 hP (fun i => i.elim0) (fun _ => 1)
   simpa only [cons_eq, mass] using this
 
 omit [CompactSpace Y] [T2Space Y] in
+/- English proof (translation)
+The claim follows from `mIntNonneg B _ (fun _ => hP) (fun _ => h) _ fun _ => zero_le_one`.
+-/
 theorem mass_nonneg {P : LocPot Y} (hP : IsPotential B P) (h : IsPsh B P) : 0 ≤ mass B P :=
   mIntNonneg B _ (fun _ => hP) (fun _ => h) _ fun _ => zero_le_one
 
+/- English proof (translation)
+The claim follows from `massIndep B (fun _ => P) (fun _ => u) (fun _ => hP) fun _ => hu`.
+-/
 theorem mass_fun {P : LocPot Y} (hP : IsPotential B P) {u : Y → ℝ} (hu : B.Smooth u) :
     mass B (P + LocPot.ofFun u) = mass B P :=
   massIndep B (fun _ => P) (fun _ => u) (fun _ => hP) fun _ => hu
 
+/- English proof (translation)
+The claim follows from `(mInt_congr_samePot 1 Y B Set.univ _ _ _ _ (fun j => by simp) (fun _ => h) (fun _ x _ => isC2At_of_isPotential hQ x) (fun _ _ => rfl)).1`.
+-/
 theorem mass_congr {P Q : LocPot Y} (h : SamePot B Set.univ P Q) (hQ : IsPotential B Q) : mass B P = mass B Q :=
   (mInt_congr_samePot 1 Y B Set.univ _ _ _ _ (fun j => by simp) (fun _ => h)
     (fun _ x _ => isC2At_of_isPotential hQ x) (fun _ _ => rfl)).1
 
+/- English proof (translation)
+Take `⟨ht0, -, hreg⟩` from `S.reg a`. Establish `hth : IsPotential S.A (S.th a)` using `(S.sing a).1`. Establish `hpb` using `fun (Q : LocPot S.X) hQ => isPotentialPullback S.A B g hg Q hQ`. Establish `hpp` using `fun (Q : LocPot S.X) hQ => (GlobalTheory.CompanionTheory.Ar.Giv.pullPsh S.A B g hg Q Set.univ (fun _ => 0) isOpen_univ hQ).2.1`. Establish `hT : ∀ t, 0 < t → t ≤ S.t₀ → IsPotential S.A (S.potT a t)` using `fun t h1 h2 => isPotentialAdd _ _ _ hth (isPotential_ofFun _ _ (hreg t h1 h2).1)`.
+
+Establish `hM : ∀ t, 0 < t → t ≤ S.t₀ → mass B ((S.potT a t).pullback g hg.1) = mass B ((S.th a).pullback g hg.1)`. Introduce `t h1 h2`. Establish `hs : B.Smooth (S.phT a t ∘ g)` using `(GlobalTheory.CompanionTheory.Ar.Giv.pullPsh S.A B g hg _ Set.univ (S.phT a t) isOpen_univ hth).1 (hreg t h1 h2).1`. Conclude with `mass_fun (hpb _ hth) hs`. Prove the components needed by the constructor for the conclusion.
+
+Establish `hlim : Tendsto (fun t : ℝ => mass B ((S.th a).pullback g hg.1) + ReciprocityTheory.AnForm.P.epsT S.C t * mass B (S.Θ.pullback g hg.1)) (𝓝[>] 0) (𝓝 (mass B ((S.th a).pullback g hg.1) + (S.C * 0) * mass B (S.Θ.pullback g hg.1)))`. Use `tendsto_const_nhds.add (Tendsto.mul_const _ ?_)` and prove the remaining obligations. Establish `h1 : Tendsto (fun t : ℝ => Real.log (1 / t)) (𝓝[>] 0) atTop`. Simplify using `only [one_div]`. Conclude with `Real.tendsto_log_atTop.comp tendsto_inv_nhdsGT_zero`.
+
+Establish `h2` using `Real.tendsto_pow_log_div_mul_add_atTop 1 0 1 one_ne_zero`. Simplify using `only [one_mul, add_zero, pow_one] at h2`. Use `((h2.comp h1).const_mul S.C).congr fun t => ?_` and prove the remaining obligations. Simplify using `only [ReciprocityTheory.AnForm.P.epsT, Function.comp, mul_div_assoc]`. Rewrite `hlim` using `[mul_zero, zero_mul, add_zero]`.
+
+Use `ge_of_tendsto hlim ?_` and prove the remaining obligations. Use `filter_upwards [Ioc_mem_nhdsGT ht0] with t ht`. Establish `hP : IsPotential S.A (S.potT a t + S.Θ.rsmul (ReciprocityTheory.AnForm.P.epsT S.C t))` using `isPotentialAdd _ _ _ (hT t ht.1 ht.2) (isPotentialRsmul _ _ _ S.potΘ)`. Establish `h0` using `mass_nonneg (hpb _ hP) (hpp _ hP (hreg t ht.1 ht.2).2.2.2.2.1)`. Establish `e1 : (S.potT a t + S.Θ.rsmul (ReciprocityTheory.AnForm.P.epsT S.C t)).pullback g hg.1 = (S.potT a t).pullback g hg.1 + (S.Θ.pullback g hg.1).rsmul (ReciprocityTheory.AnForm.P.epsT S.C t)` using `rfl`.
+
+Rewrite `h0` using `[e1, mass_add (hpb _ (hT t ht.1 ht.2)) (isPotentialRsmul _ _ _ (hpb _ S.potΘ)), mass_rsmul (hpb _ S.potΘ), hM t ht.1 ht.2]`. Then use the resulting hypothesis. Introduce `hfl`. Establish `hP` using `isPotentialRsmul _ (-1) _ (hT _ ht0 le_rfl)`. Establish `h0` using `mass_nonneg (hpb _ hP) (hpp _ hP (hfl _))`. Establish `e1 : ((S.potT a S.t₀).rsmul (-1)).pullback g hg.1 = ((S.potT a S.t₀).pullback g hg.1).rsmul (-1)` using `rfl`.
+
+Rewrite `h0` using `[e1, mass_rsmul (hpb _ (hT _ ht0 le_rfl)), hM _ ht0 le_rfl]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem mass_sys {D : ℕ} {σ : Type} (S : AnSys D σ) {g : Y → S.X} (hg : HoloMap B S.A g) (a : σ) :
     0 ≤ mass B ((S.th a).pullback g hg.1) ∧
       ((∀ t, IsPsh S.A ((S.potT a t).rsmul (-1))) → mass B ((S.th a).pullback g hg.1) ≤ 0) := by
@@ -250,6 +337,21 @@ end Mass
 end PositivityTheory.Xgp.nef_curve
 
 open PositivityTheory.Xgp.nef_curve in
+/- English proof (translation)
+Introduce `hI K _ ι _ D σ _ S P Re Fl hFl hJ n hn W hW hPW`. Take `⟨J', ⟨R'⟩⟩` from `exists_anLogRes hI.resExists (e := 1) hW`. Take `⟨h, hh, hO⟩` from `PositivityTheory.Xgp.t_res_lift K ι P W Re.J J' D 1 Re.R R' hJ hPW`. Establish `hg` using `holoMap_comp hh Re.holo`. Establish `hdeg : ∀ a, geomDeg W (Re.ref a) 1 = mass R'.A ((S.th a).pullback (Re.π ∘ h) hg.1)`.
+
+Introduce `a`. Establish `e1 : geomDeg W (Re.ref a) 1 = mass R'.A (potOf R' (Re.ref a))` using `ptsIntegral_one_eq_mInt hI.resExists resBridge R' (L := fun _ => Re.ref a) hW fun _ => Re.ref_smooth a`. Rewrite using `[e1]`. Conclude with `mass_congr (samePot_trans (samePot_lift R' Re.R h hh _ hO) (samePot_pullback hh (Re.ref_pot a))) (isPotentialPullback _ _ _ hg _ (S.sing a).1)`. Set `I : IFamily ℚ ι` to `fun V _ L => GroundTheory.Heights₂.Heights.NumbersDVR.intNum ℚ V L`.
+
+Establish `hIf : IsFieldIntersection I` using `GroundTheory.Heights₂.Heights.NumbersDVR.IntNumIsFieldIntersection.full _ _ _`. Establish `hWq : IsProjVarF (W.map (MvPolynomial.map (Int.castRingHom ℚ))) 1` using `GroundTheory.Heights₂.Heights.HilbertSamuel.isProjVarF_map_of_isArithVar hW`. Establish `hup : ∀ a : K → ℤ, Function.update (fun _ : Fin 1 => (0 : K → ℤ)) 0 a = fun _ => a`. Introduce `a`. Use function extensionality and compare the values at `j`.
+
+Rewrite using `[Subsingleton.elim j 0]`. Simplify using the standard rewrite rules. Set `d : (K → ℤ) →+ ℤ` to `AddMonoidHom.mk' (fun a => I (W.map (MvPolynomial.map (Int.castRingHom ℚ))) 1 fun _ => a) fun a b => by`. Use `ReciprocityTheory.ChartRestriction.G.AI.I1.multilin_thm ℚ ι I hIf _ 1 (fun _ => 0) 0 a b hWq` as an intermediate fact. Simplify `this` using `only [hup]`.
+
+Establish `hd : ∀ L : HermLine ι, IsSmoothHerm L → geomDeg W L 1 = d L.a` using `fun L hL => GlobalTheory.CompanionTheory.Ar.Giv.degreeGeneric_of_degree hI.degree K ι W 1 (fun _ => L) hW fun _ => hL`. Establish `ha : (combLine Re.ref n).a = ∑ a, n a • (Re.ref a).a`. Use function extensionality and compare the values at `k`. Simplify using `[combLine_a, Finset.sum_apply]`. Rewrite using `[hd _ (smooth_comb Re.ref_smooth n), ha, map_sum, Int.cast_sum]`.
+
+Use `Finset.sum_nonneg fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, smul_eq_mul, Int.cast_mul, ← hd _ (Re.ref_smooth a), hdeg]`. Take `⟨h1, h2⟩` from `mass_sys S hg a`. Distinguish the cases in `hF : a ∈ Fl`. Rewrite using `[le_antisymm (h2 fun t => (hFl a hF t).1) h1, mul_zero]`.
+
+Conclude with `mul_nonneg (by exact_mod_cast hn a hF) h1`.
+-/
 theorem PositivityTheory.Xgp.t_nef_curve : Inputs → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (D : ℕ) (σ : Type) [Fintype σ] (S : AnSys D σ) (P : Ideal (MRing ι)) (Re : Realis S P) (Fl : Set σ), (∀ a ∈ Fl, ∀ t, IsPsh S.A ((S.potT a t).rsmul (-1)) ∧ IsPsh S.A (S.potT a t)) → Re.J = ⊤ → ∀ n : σ → ℤ, (∀ a ∉ Fl, 0 ≤ n a) → ∀ W : Ideal (MRing ι), IsArithVar W 2 → P ≤ W → 0 ≤ geomDeg W (combLine Re.ref n) 1 := by
   intro hI K _ ι _ D σ _ S P Re Fl hFl hJ n hn W hW hPW
   classical

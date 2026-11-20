@@ -17,6 +17,11 @@ open Cardinal IsLocalRing
 
 def RatPow (r t : ℝ) : Prop := t = 0 ∨ ∃ q : ℚ, t = r ^ (q : ℝ)
 
+/- English proof (translation)
+Establish `h : ∀ x : X, ∃ s : ℕ → A, Filter.Tendsto (fun n => f (s n)) Filter.atTop (nhds x)` using `fun x => by`. Take `⟨u, hu, hx⟩` from `mem_closure_iff_seq_limit.1 (hf x)`. Use `choose s hs using hu`. Conclude with `⟨s, by simpa only [hs] using hx⟩`. Use `choose s hs using h`.
+
+Establish `hinj : Function.Injective s` using `fun x y hxy => tendsto_nhds_unique (hs x) (by rw [hxy]; exact hs y)`. Use `(Cardinal.mk_le_of_injective hinj).trans ?_` and prove the remaining obligations. Rewrite using `[← Cardinal.power_def, Cardinal.mk_nat]`. Conclude with `(Cardinal.power_le_power_right hA).trans_eq Cardinal.continuum_power_aleph0`.
+-/
 theorem mk_le_of_dense {A X : Type} [MetricSpace X] (f : A → X) (hf : DenseRange f) (hA : #A ≤ 𝔠) :
     #X ≤ 𝔠 := by
   have h : ∀ x : X, ∃ s : ℕ → A, Filter.Tendsto (fun n => f (s n)) Filter.atTop (nhds x) := fun x => by

@@ -4,6 +4,15 @@ open Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `e` to `Module.finBasisOfFinrankEq B A hd`. Set `Y : Matrix (Fin d) (Fin d) B` to `fun i j => e.equivFun (y j) i`. Establish `key : ∀ v : Fin d → B, e.equivFun (∑ j, v j • y j) = Y *ᵥ v`. Introduce `v`. Use extensionality with `i`.
+
+Simplify using `[Y, Matrix.mulVec, dotProduct, mul_comm]`. Establish `hdet : Y.det ≠ 0`. Introduce `h0`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Establish `h1 : ∑ j, v j • y j = 0`.
+
+Apply `e.equivFun.injective` to reduce the goal to its premises. Rewrite using `[key, hv, map_zero]`. Conclude with `hv0 (funext fun j => Fintype.linearIndependent_iff.mp hy v h1 j)`. Use `⟨Y.adjugate *ᵥ e.equivFun 1, ?_⟩` and prove the remaining obligations. Establish `hsum : ∑ j, (Y.adjugate *ᵥ e.equivFun 1) j • y j = algebraMap B A Y.det`.
+
+Apply `e.equivFun.injective` to reduce the goal to its premises. Rewrite using `[key, Matrix.mulVec_mulVec, Matrix.mul_adjugate, Matrix.smul_mulVec, Matrix.one_mulVec, Algebra.algebraMap_eq_smul_one, map_smul]`. Rewrite using `[hsum, Algebra.norm_algebraMap]`. Conclude with `pow_ne_zero _ hdet`.
+-/
 theorem exists_combination_norm_ne_zero_of_linearIndependent
     {B A : Type} [CommRing B] [IsDomain B] [CommRing A] [Algebra B A]
     [Module.Free B A] [Module.Finite B A] {d : ℕ} (hd : Module.finrank B A = d)

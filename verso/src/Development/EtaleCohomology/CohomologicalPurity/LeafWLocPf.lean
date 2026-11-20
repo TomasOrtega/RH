@@ -4,6 +4,13 @@ noncomputable section
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.CohomologicalPurity.Thom.ExcP.Chart
 
+/- English proof (translation)
+Set `G : Spc ⥤ Type` to `(evaluation _ _).obj n ⋙ (evaluation _ _).obj X`. Set `f` to `(PreservesLimitPair.iso G A B).hom ≫ (Types.binaryProductIso _ _).hom`. Establish `hf : Function.Bijective f` using `(isIso_iff_bijective f).1 inferInstance`. Establish `h1 : f ≫ TypeCat.ofHom (Prod.fst : G.obj A × G.obj B → G.obj A) = G.map prod.fst`. Simplify using `[f, PreservesLimitPair.iso_hom]`.
+
+Establish `h2 : f ≫ TypeCat.ofHom (Prod.snd : G.obj A × G.obj B → G.obj B) = G.map prod.snd`. Simplify using `[f, PreservesLimitPair.iso_hom]`. Establish `e : (fun z : ((A ⨯ B).obj n).obj X => (((prod.fst : A ⨯ B ⟶ A).app n).app X z, ((prod.snd : A ⨯ B ⟶ B).app n).app X z)) = ⇑(ConcreteCategory.hom f)`. Use function extensionality and compare the values at `z`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+
+Conclude with `(congrArg (fun φ => φ z) h1).symm`. Conclude with `(congrArg (fun φ => φ z) h2).symm`. Rewrite using `[e]`. Conclude with `hf`.
+-/
 theorem prod_elt_bij (A B : Spc) (n : SimplexCategoryᵒᵖ) (X : Scheme.{0}ᵒᵖ) :
     Function.Bijective (fun z : ((A ⨯ B).obj n).obj X =>
       (((prod.fst : A ⨯ B ⟶ A).app n).app X z, ((prod.snd : A ⨯ B ⟶ B).app n).app X z)) := by
@@ -36,34 +43,55 @@ def lift1 {C : Type} [Category C] {N : ℕ} {U : Scheme.{0}} (F : C ⥤ Vec N 0 
   map_id c := F.map_id c
   map_comp f g := F.map_comp f g
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `u`. Rewrite using `[hu i, Scheme.basicOpen_mul, Scheme.basicOpen_of_isUnit _ u.isUnit, top_inf_eq]`.
+-/
 theorem bo_hom {N k : ℕ} {U : Scheme.{0}} {v w : Vec N k U} (u : v ⟶ w) (i : Fin N) :
     U.basicOpen (v.1 i) = U.basicOpen (w.1 i) := by
   obtain ⟨u, hu⟩ := u
   rw [hu i, Scheme.basicOpen_mul, Scheme.basicOpen_of_isUnit _ u.isUnit, top_inf_eq]
 
+/- English proof (translation)
+The claim follows from `(bo_hom (c.map (homOfLE (Fin.zero_le a))) i).symm`.
+-/
 theorem bo_chain {N k m : ℕ} {U : Scheme.{0}} (c : ComposableArrows (Vec N k U) m) (a : Fin (m + 1)) (i : Fin N) :
     U.basicOpen ((c.obj a).1 i) = U.basicOpen ((c.obj 0).1 i) :=
   (bo_hom (c.map (homOfLE (Fin.zero_le a))) i).symm
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `p ∈ (O : Scheme.{0}).basicOpen (O.ι.appTop.hom (v.1 i)) ↔ _`. Rewrite using `[← Scheme.preimage_basicOpen_top]`. Both sides reduce to the same expression.
+-/
 theorem mem_bo_map {N k : ℕ} {X : Scheme.{0}} (O : X.Opens) (v : Vec N k X) (i : Fin N) (p : (O : Scheme.{0})) :
     p ∈ (O : Scheme.{0}).basicOpen (((Vec.map N k O.ι).obj v).1 i) ↔ p.val ∈ X.basicOpen (v.1 i) := by
   change p ∈ (O : Scheme.{0}).basicOpen (O.ι.appTop.hom (v.1 i)) ↔ _
   rw [← Scheme.preimage_basicOpen_top]
   rfl
 
+/- English proof (translation)
+The claim follows from `Y.toRingedSpace.isUnit_of_isUnit_germ ⊤ f fun x _ => (Y.mem_basicOpen_top f x).1 (h x)`.
+-/
 theorem isUnit_of_bo {Y : Scheme.{0}} (f : Γ(Y, ⊤)) (h : ∀ p : Y, p ∈ Y.basicOpen f) : IsUnit f :=
   Y.toRingedSpace.isUnit_of_isUnit_germ ⊤ f fun x _ => (Y.mem_basicOpen_top f x).1 (h x)
 
+/- English proof (translation)
+The claim follows from `NatTrans.naturality_apply ((prod.fst : A ⨯ B ⟶ A).app n) f z`.
+-/
 theorem fst_map {A B : Spc} (n : SimplexCategoryᵒᵖ) {X Y : Scheme.{0}ᵒᵖ} (f : X ⟶ Y) (z : ((A ⨯ B).obj n).obj X) :
     ((prod.fst : A ⨯ B ⟶ A).app n).app Y (((A ⨯ B).obj n).map f z) =
       (A.obj n).map f (((prod.fst : A ⨯ B ⟶ A).app n).app X z) :=
   NatTrans.naturality_apply ((prod.fst : A ⨯ B ⟶ A).app n) f z
 
+/- English proof (translation)
+The claim follows from `NatTrans.naturality_apply ((prod.snd : A ⨯ B ⟶ B).app n) f z`.
+-/
 theorem snd_map {A B : Spc} (n : SimplexCategoryᵒᵖ) {X Y : Scheme.{0}ᵒᵖ} (f : X ⟶ Y) (z : ((A ⨯ B).obj n).obj X) :
     ((prod.snd : A ⨯ B ⟶ B).app n).app Y (((A ⨯ B).obj n).map f z) =
       (B.obj n).map f (((prod.snd : A ⨯ B ⟶ B).app n).app X z) :=
   NatTrans.naturality_apply ((prod.snd : A ⨯ B ⟶ B).app n) f z
 
+/- English proof (translation)
+Use `congrArg (fun φ => (φ.app n).app X z) (prod.map_fst f g)` as an intermediate fact. Simplify using `only [NatTrans.comp_app] at this`. Conclude with `this`.
+-/
 theorem map_fst_app {A B A' B' : Spc} (f : A ⟶ A') (g : B ⟶ B') (n : SimplexCategoryᵒᵖ) (X : Scheme.{0}ᵒᵖ)
     (z : ((A ⨯ B).obj n).obj X) :
     ((prod.fst : A' ⨯ B' ⟶ A').app n).app X (((prod.map f g).app n).app X z) =
@@ -72,6 +100,9 @@ theorem map_fst_app {A B A' B' : Spc} (f : A ⟶ A') (g : B ⟶ B') (n : Simplex
   simp only [NatTrans.comp_app] at this
   exact this
 
+/- English proof (translation)
+Use `congrArg (fun φ => (φ.app n).app X z) (prod.map_snd f g)` as an intermediate fact. Simplify using `only [NatTrans.comp_app] at this`. Conclude with `this`.
+-/
 theorem map_snd_app {A B A' B' : Spc} (f : A ⟶ A') (g : B ⟶ B') (n : SimplexCategoryᵒᵖ) (X : Scheme.{0}ᵒᵖ)
     (z : ((A ⨯ B).obj n).obj X) :
     ((prod.snd : A' ⨯ B' ⟶ B').app n).app X (((prod.map f g).app n).app X z) =
@@ -80,11 +111,31 @@ theorem map_snd_app {A B A' B' : Spc} (f : A ⟶ A') (g : B ⟶ B') (n : Simplex
   simp only [NatTrans.comp_app] at this
   exact this
 
+/- English proof (translation)
+The claim follows from `(prod_elt_bij A B n X).1 (Prod.ext h1 h2)`.
+-/
 theorem prod_ext_app {A B : Spc} (n : SimplexCategoryᵒᵖ) (X : Scheme.{0}ᵒᵖ) (z w : ((A ⨯ B).obj n).obj X)
     (h1 : ((prod.fst : A ⨯ B ⟶ A).app n).app X z = ((prod.fst : A ⨯ B ⟶ A).app n).app X w)
     (h2 : ((prod.snd : A ⨯ B ⟶ B).app n).app X z = ((prod.snd : A ⨯ B ⟶ B).app n).app X w) : z = w :=
   (prod_elt_bij A B n X).1 (Prod.ext h1 h2)
 
+/- English proof (translation)
+Introduce `d R _ n X x`. Set `c : ComposableArrows (Vec (d + 1) 0 X) n.unop.len` to `((prod.fst : PR (d + 1) 0 R ⟶ Pj (d + 1) 0).app n).app (op X) x`. Set `s` to `((prod.snd : PR (d + 1) 0 R ⟶ sp R).app n).app (op X) x`. Use `⟨Fin (d + 1), fun j => X.basicOpen ((c.obj 0).1 j), ?_, fun j => ?_⟩` and prove the remaining obligations. Use `eq_top_iff.2 fun p _ => ?_` and prove the remaining obligations.
+
+Take `⟨j, -, hj⟩` from `(c.obj 0).2 p`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨j, hj⟩`. Set `O` to `X.basicOpen ((c.obj 0).1 j)`. Set `cr : ComposableArrows (Vec (d + 1) 0 O) n.unop.len` to `c ⋙ Vec.map (d + 1) 0 O.ι`. Set `sr` to `((sp R).obj n).map O.ι.op s`.
+
+Establish `hbo : ∀ a i (p : (O : Scheme.{0})), p ∈ (O : Scheme.{0}).basicOpen ((cr.obj a).1 i) ↔ p.val ∈ X.basicOpen ((c.obj 0).1 i)` using `fun a i p => by`. Rewrite using `[← bo_chain c a i]`. Conclude with `mem_bo_map O (c.obj a) i p`. Distinguish the cases in `hj : j = 0`. Use `left`.
+
+Take `⟨y, hy⟩` from `(prod_elt_bij (Wsp d) (sp R) n (op (O : Scheme.{0}))).2 (liftW cr (fun a => isUnit_of_bo _ fun p => (hbo a 0 p).2 (hj ▸ p.2)), sr)`. Use `⟨y, prod_ext_app _ _ _ _ ?_ ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((prod.fst : PR (d + 1) 0 R ⟶ _).app n).app _ (((prod.map (Wincl d) (𝟙 (sp R))).app n).app _ y) = _`. Rewrite using `[map_fst_app, fst_map]`. Use `(congrArg (fun w => ((Wincl d).app n).app _ w) (congrArg Prod.fst hy)).trans ?_` and prove the remaining obligations.
+
+Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `((prod.snd : PR (d + 1) 0 R ⟶ _).app n).app _ (((prod.map (Wincl d) (𝟙 (sp R))).app n).app _ y) = _`. Rewrite using `[map_snd_app, snd_map]`. Use `(congrArg (fun w => ((𝟙 (sp R) : sp R ⟶ sp R).app n).app _ w) (congrArg Prod.snd hy)).trans ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+
+Use `right`. Establish `hj1 : 1 ≤ j.val` using `Nat.one_le_iff_ne_zero.2 fun h => hj (Fin.ext h)`. Take `⟨y, hy⟩` from `(prod_elt_bij (Pj (d + 1) 1) (sp R) n (op (O : Scheme.{0}))).2 (lift1 cr (fun a p => ⟨j, hj1, (hbo a j p).2 p.2⟩), sr)`. Use `⟨y, prod_ext_app _ _ _ _ ?_ ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((prod.fst : PR (d + 1) 0 R ⟶ _).app n).app _ (((prod.map (Pj.incl (d + 1)) (𝟙 (sp R))).app n).app _ y) = _`.
+
+Rewrite using `[map_fst_app, fst_map]`. Use `(congrArg (fun w => ((Pj.incl (d + 1)).app n).app _ w) (congrArg Prod.fst hy)).trans ?_` and prove the remaining obligations. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `((prod.snd : PR (d + 1) 0 R ⟶ _).app n).app _ (((prod.map (Pj.incl (d + 1)) (𝟙 (sp R))).app n).app _ y) = _`. Rewrite using `[map_snd_app, snd_map]`.
+
+Use `(congrArg (fun w => ((𝟙 (sp R) : sp R ⟶ sp R).app n).app _ w) (congrArg Prod.snd hy)).trans ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+-/
 theorem LeafWLoc_of : LeafWLoc := by
   intro d R _ n X x
   let c : ComposableArrows (Vec (d + 1) 0 X) n.unop.len :=

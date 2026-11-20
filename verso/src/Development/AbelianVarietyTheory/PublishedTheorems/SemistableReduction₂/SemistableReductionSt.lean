@@ -25,6 +25,11 @@ namespace SemistableReductionSt
 
 variable (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional ℚ_[p] K]
 
+/- English proof (translation)
+Use `⟨K, le_rfl, inferInstance, G, inferInstance, hG, 𝟙 _, ?_⟩` and prove the remaining obligations. Establish `h : spMap (IntermediateField.inclusion (le_refl K)).toRingHom = 𝟙 (Sp K)`. Rewrite using `[← Spec.map_id]`. Use `congr 1`. Establish `: IsMonHom (Iso.refl ((Over.pullback (spMap (algebraMap (integralClosure ℤ_[p] K) K))).obj G)).hom` using `inferInstanceAs (IsMonHom (𝟙 _))`.
+
+Conclude with `(isGrpPullback_of_iso (Iso.refl _)).congr h.symm rfl`.
+-/
 theorem of_semiAbelian_model (G : Over (Sp (integralClosure ℤ_[p] K))) [GrpObj G] (hG : IsSemiAbelian G) :
     ∃ (K' : IntermediateField ℚ_[p] (PadicAlgCl p)) (h : K ≤ K'), FiniteDimensional ℚ_[p] K' ∧
       ∃ (G' : Over (Sp (integralClosure ℤ_[p] K'))) (_ : GrpObj G'), IsSemiAbelian G' ∧
@@ -41,6 +46,9 @@ theorem of_semiAbelian_model (G : Over (Sp (integralClosure ℤ_[p] K))) [GrpObj
     inferInstanceAs (IsMonHom (𝟙 _))
   exact (isGrpPullback_of_iso (Iso.refl _)).congr h.symm rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isAbelianScheme_pullback_obj _ G hG, of_semiAbelian_model p K G (isSemiAbelian_of_isAbelianScheme G hG)⟩`.
+-/
 theorem of_goodReduction (G : Over (Sp (integralClosure ℤ_[p] K))) [GrpObj G] (hG : IsAbelianScheme G) :
     IsAbelianScheme ((Over.pullback (spMap (algebraMap (integralClosure ℤ_[p] K) K))).obj G) ∧
     ∃ (K' : IntermediateField ℚ_[p] (PadicAlgCl p)) (h : K ≤ K'), FiniteDimensional ℚ_[p] K' ∧

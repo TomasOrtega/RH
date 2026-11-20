@@ -15,6 +15,11 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ X f hf A N hA hN hpe`. Use `haveI : AlgebraicGeometry.IsNoetherian X := isNoetherian_of_isProjOver hf`. Establish `hT : (tens A N).IsLB` using `isLB_tens hA.isLB hN`. Use `isAmpleLB_of_subsingleton_coh_one X (tens A N) hT fun F hF => ?_` and prove the remaining obligations. Take `⟨j₀, hj⟩` from `eventually_subsingleton_coh_ample_psEff k X f hf A N hA hN hpe F hF`.
+
+Use `⟨max j₀ 1, le_max_right _ _, ?_⟩` and prove the remaining obligations. Establish `h1` using `hj (max j₀ 1) (max j₀ 1) (le_max_left _ _) le_rfl 1 one_pos`. Take `⟨i⟩` from `nonempty_twist_iso_of_cls_eq F (isLB_tens (isLB_lbPow hA.isLB (max j₀ 1)) (isLB_lbPow hN (max j₀ 1))) (isLB_lbPow hT (max j₀ 1)) (by`. Rewrite using `[cls_tens (isLB_lbPow hA.isLB _) (isLB_lbPow hN _), cls_lbPow hA.isLB, cls_lbPow hN, cls_lbPow hT, cls_tens hA.isLB hN, smul_add])`. Conclude with `(cohOn.mapIso Γ(X, ⊤) ⊤ 1 i).symm.injective.subsingleton`.
+-/
 theorem IsAmpleLB.tens_of_forall_isPsEff : ∀ (k : Type) [Field k] (X : Scheme.{0}) (f : X ⟶ Sp k), IsProjOver f → ∀ A N : LB X, IsAmpleLB A → N.IsLB → (∀ Z : Closeds X, IsIrreducible (Z : Set X) → IsPsEff (N.pull (redι Z))) → IsAmpleLB (tens A N) := by
   intro k _ X f hf A N hA hN hpe
   haveI : AlgebraicGeometry.IsNoetherian X := isNoetherian_of_isProjOver hf

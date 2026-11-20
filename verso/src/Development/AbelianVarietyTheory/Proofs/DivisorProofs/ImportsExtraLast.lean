@@ -2,6 +2,19 @@ import Mathlib
 
 namespace GlobalTheory.NonzeroSmulMembership
 
+/- English proof (translation)
+Establish `hx : x ∈ Submodule.span E (L : Set (Fin n → E))`. Rewrite using `[hL.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`.
+
+Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨a, ha, hay⟩` from `hy`. Take `⟨b, hb, hbz⟩` from `hz`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (a * b) • y = b • a • y` using `by rw [mul_comm, mul_smul]`. Rewrite using `[smul_add, h1, mul_smul]`. Conclude with `L.add_mem (L.smul_mem b hay) (L.smul_mem a hbz)`. Consider the case `smul c y _ hy`. Take `⟨a, ha, hay⟩` from `hy`.
+
+Take `⟨p, q, hq, rfl⟩` from `IsFractionRing.div_surjective (A := NumberField.RingOfIntegers E) c`. Establish `hq0 : q ≠ 0` using `nonZeroDivisors.ne_zero hq`. Establish `hq1 : algebraMap (NumberField.RingOfIntegers E) E q ≠ 0`. Introduce `h`. Conclude with `hq0 (IsFractionRing.injective (NumberField.RingOfIntegers E) E (by simpa using h))`.
+
+Use `⟨q * a, mul_ne_zero hq0 ha, ?_⟩` and prove the remaining obligations. Establish `key : (q * a) • ((algebraMap (NumberField.RingOfIntegers E) E p / algebraMap (NumberField.RingOfIntegers E) E q) • y) = p • a • y`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Simplify using `only [Algebra.smul_def, map_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[key]`. Conclude with `L.smul_mem p hay`.
+-/
 theorem exists_ne_zero_smul_mem {E : Type} [inst : Field E] [NumberField E] {n : ℕ}
     (L : Submodule (NumberField.RingOfIntegers E) (Fin n → E)) (hL : Submodule.IsLattice E L)
     (x : Fin n → E) :

@@ -14,17 +14,37 @@ namespace PositivityTheory.SiegelWeilFormula.kunf
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
   {Y : Spc F E n} {b : GL (Fin n ⊕ Fin n) E} {nb : nA σ Y b → G2 σ Y}
 
+/- English proof (translation)
+Use `conv_lhs => rw [← Matrix.fromBlocks_toBlocks X, ← Matrix.fromBlocks_toBlocks Z]`. Rewrite using `[Matrix.fromBlocks_multiply, Matrix.toBlocks_fromBlocks₁₁]`.
+-/
 theorem toBlocks₁₁_mul' {R : Type} [CommRing R] (X Z : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R) :
     (X * Z).toBlocks₁₁ = X.toBlocks₁₁ * Z.toBlocks₁₁ + X.toBlocks₁₂ * Z.toBlocks₂₁ := by
   conv_lhs => rw [← Matrix.fromBlocks_toBlocks X, ← Matrix.fromBlocks_toBlocks Z]
   rw [Matrix.fromBlocks_multiply, Matrix.toBlocks_fromBlocks₁₁]
 
+/- English proof (translation)
+Rewrite using `[← incM_mul', Units.mul_inv]`. Use extensionality with `i j`. Simplify using `[incM, Matrix.one_apply]`.
+-/
 theorem incM_GL_mul_inv (t₀ : GL (Fin n) E) : incM F t₀.1 * incM F (t₀⁻¹).1 = 1 := by
   rw [← incM_mul', Units.mul_inv]; ext i j; simp [incM, Matrix.one_apply]
 
+/- English proof (translation)
+Rewrite using `[← incM_mul', Units.inv_mul]`. Use extensionality with `i j`. Simplify using `[incM, Matrix.one_apply]`.
+-/
 theorem incM_GL_inv_mul (t₀ : GL (Fin n) E) : incM F (t₀⁻¹).1 * incM F t₀.1 = 1 := by
   rw [← incM_mul', Units.inv_mul]; ext i j; simp [incM, Matrix.one_apply]
 
+/- English proof (translation)
+Take `⟨-, t₀, ht₀⟩` from `hb`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨t, ht⟩` from `mem_parabolic_GL2_iff.1 h`. Conclude with `((isPar_frame ht₀ p t).1 ht).1`.
+
+Introduce `h set P := inFrame b p set P' := inFrame b p⁻¹`. Establish `hPP : P' * P = 1` using `GlobalTheory.EisBL.DoubledParabolic.inFrame_inv_mul b p`. Establish `h1 : P'.toBlocks₁₁ * P.toBlocks₁₁ = 1`. Use `congrArg Matrix.toBlocks₁₁ hPP` as an intermediate fact. Rewrite `this` using `[toBlocks₁₁_mul', h, Matrix.mul_zero, add_zero]`.
+
+Rewrite using `[this]`. Use extensionality with `i j`. Simplify using `[Matrix.toBlocks₁₁, Matrix.one_apply]`. Establish `h2 : P.toBlocks₁₁ * P'.toBlocks₁₁ = 1` using `mul_eq_one_comm.1 h1`. Use `set T0 := incM F t₀.1`.
+
+Use `set Ti := incM F (t₀⁻¹).1`. Establish `hT : T0 * Ti = 1` using `incM_GL_mul_inv t₀`. Set `t : GL (Fin n) (AE F E)` to `⟨T0 * P.toBlocks₁₁ * Ti, T0 * P'.toBlocks₁₁ * Ti, by`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `mem_parabolic_GL2_iff.2 ⟨t, (isPar_frame ht₀ p t).2 ⟨h, rfl⟩⟩`.
+-/
 theorem mem_stabiliser_iff_frame_lower_block (hb : IsFrame2 σ Y b) (p : G2 σ Y) : p ∈ par2 σ Y ↔ (inFrame b p).toBlocks₂₁ = 0 := by
   obtain ⟨-, t₀, ht₀⟩ := hb
   constructor
@@ -52,6 +72,15 @@ theorem mem_stabiliser_iff_frame_lower_block (hb : IsFrame2 σ Y b) (p : G2 σ Y
           _ = 1 := by rw [incM_GL_inv_mul, Matrix.mul_one, h1, Matrix.mul_one, hT]⟩
     exact mem_parabolic_GL2_iff.2 ⟨t, (isPar_frame ht₀ p t).2 ⟨h, rfl⟩⟩
 
+/- English proof (translation)
+Use `set e : AE F E := ((ε : ℤ) : AE F E) with he_def`. Establish `he : e * e = 1`. Rewrite using `[he_def, ← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`. Establish `hg : (w * nb ν) * (w * nb ν')⁻¹ = w * nb (ν - ν') * w⁻¹`. Establish `: nb (ν - ν') = nb ν * (nb ν')⁻¹` using `eq_mul_inv_of_mul_eq (by rw [← nb_add hnb, sub_add_cancel])`.
+
+Rewrite using `[this]`. Use `group`. Use `set W' : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E) := Matrix.fromBlocks 0 (e • 1) 1 0 with hW'`. Establish `hWW : inFrame b w * W' = 1`. Rewrite using `[hw, hW', Matrix.fromBlocks_multiply]`.
+
+Simplify using `[smul_smul, he, Matrix.fromBlocks_one]`. Establish `hwinv : inFrame b w⁻¹ = W'`. Combine the equalities or inequalities in the displayed calculation. Establish `h21` using `(mem_stabiliser_iff_frame_lower_block hb _).1 h`. Rewrite `h21` using `[hg, GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, hw, hnb, hwinv, hW', Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply, Matrix.toBlocks_fromBlocks₂₁]`.
+
+Simplify using `at h21`. Establish `h3` using `congrArg (fun X => e • X) h21`. Simplify using `only [smul_smul, he, one_smul, smul_zero] at h3`. Conclude with `Subtype.ext (sub_eq_zero.1 h3)`.
+-/
 theorem big_inj' (hb : IsFrame2 σ Y b) {ε : ℤˣ} {w : G2 σ Y}
     (hw : inFrame b w = Matrix.fromBlocks 0 1 (((ε : ℤ) : AE F E) • 1) 0) (hnb : IsNMap b nb) {ν ν' : nA σ Y b}
     (h : (w * nb ν) * (w * nb ν')⁻¹ ∈ par2 σ Y) : ν = ν' := by
@@ -76,11 +105,19 @@ theorem big_inj' (hb : IsFrame2 σ Y b) {ε : ℤˣ} {w : G2 σ Y}
   simp only [smul_smul, he, one_smul, smul_zero] at h3
   exact Subtype.ext (sub_eq_zero.1 h3)
 
+/- English proof (translation)
+Take `⟨τ⟩` from `(inferInstance : Nonempty (E →+* ℂ))`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hB.cm.2.2.2 τ, hB.cm.2.2.2 τ, star_star]`.
+-/
 theorem sigma_invol (B : Base F E) (hB : B.IsGood σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ := (inferInstance : Nonempty (E →+* ℂ))
   apply τ.injective
   rw [hB.cm.2.2.2 τ, hB.cm.2.2.2 τ, star_star]
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `hγ`. Establish `hm : mat2 γ = incM F g.1` using `(congrArg Units.val hg).symm`. Establish `hM : inFrame b γ = incM F ((b⁻¹).1 * g.1 * b.1)` using `by show incM F (b⁻¹).1 * mat2 γ * incM F b.1 = _`. Rewrite using `[hm, incM_mul', incM_mul']`. Use `⟨_, hM, ?_⟩` and prove the remaining obligations.
+
+Apply `incM_inj (F := F)` to reduce the goal to its premises. Establish `h` using `frame_eq hε γ`. Rewrite `h` using `[hM]`. Rewrite using `[incM_mul', incM_mul', incM_jw, ← incM_map_cA, incM_transpose', map_intCast]`. Conclude with `h`.
+-/
 theorem rat_frame {ε : ℤˣ} (hε : b.1ᵀ * dbl Y.J * b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0)
     {γ : G2 σ Y} (hγ : γ ∈ rat2 σ Y) :
     ∃ M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E, inFrame b γ = incM F M ∧
@@ -97,6 +134,9 @@ theorem rat_frame {ε : ℤˣ} (hε : b.1ᵀ * dbl Y.J * b.1.map σ = Matrix.fro
   rw [incM_mul', incM_mul', incM_jw, ← incM_map_cA, incM_transpose', map_intCast]
   exact h
 
+/- English proof (translation)
+Establish `h1 : incM F M * incM F M' = 1`. Rewrite using `[← incM_mul', h]`. Use extensionality with `i j`. Simplify using `[incM, Matrix.one_apply]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem inFrame_inv_of_rat {γ : G2 σ Y} {M M' : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E}
     (hM : inFrame b γ = incM F M) (h : M * M' = 1) : inFrame b γ⁻¹ = incM F M' := by
   have h1 : incM F M * incM F M' = 1 := by
@@ -104,6 +144,19 @@ theorem inFrame_inv_of_rat {γ : G2 σ Y} {M M' : Matrix (Fin n ⊕ Fin n) (Fin 
   calc inFrame b γ⁻¹ = inFrame b γ⁻¹ * (incM F M * incM F M') := by rw [h1, Matrix.mul_one]
     _ = incM F M' := by rw [← Matrix.mul_assoc, ← hM, GlobalTheory.EisBL.DoubledParabolic.inFrame_inv_mul, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `hu : IsUnit c.det` using `isUnit_iff_ne_zero.2 hc`. Establish `h1 : c⁻¹ * c = 1` using `Matrix.nonsing_inv_mul c hu`. Establish `h2 : c * c⁻¹ = 1` using `Matrix.mul_nonsing_inv c hu`. Establish `h3 : (c⁻¹).map s * c.map s = 1` using `by rw [← Matrix.map_mul, h1, Matrix.map_one _ (map_zero s) (map_one s)]`. Establish `h4 : c.map s * (c⁻¹).map s = 1` using `by rw [← Matrix.map_mul, h2, Matrix.map_one _ (map_zero s) (map_one s)]`.
+
+Establish `h5 : cᵀ * (c⁻¹)ᵀ = 1` using `by rw [← Matrix.transpose_mul, h1, Matrix.transpose_one]`. Establish `h6 : (c⁻¹)ᵀ * cᵀ = 1` using `by rw [← Matrix.transpose_mul, h2, Matrix.transpose_one]`. Establish `ht : c.map s * dᵀ = -(e • (d.map s * cᵀ))`. Use `congrArg Matrix.transpose h` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_add, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_smul, Matrix.transpose_transpose, Matrix.transpose_transpose, Matrix.transpose_zero, Matrix.smul_mul]`.
+
+Establish `h7` using `congrArg (fun X => e • X) (eq_neg_of_add_eq_zero_right this)`. Simplify using `only [smul_smul, he, one_smul, smul_neg] at h7`. Conclude with `h7`. Establish `key : c.map s * (c⁻¹ * d)ᵀ * cᵀ = c.map s * (-(e • (c⁻¹ * d).map s)) * cᵀ`. Rewrite using `[Matrix.transpose_mul, Matrix.map_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_smul, Matrix.smul_mul, ← Matrix.mul_assoc, h4, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[h3, Matrix.one_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h5, Matrix.mul_one]`. Use `_ = (c⁻¹).map s * (c.map s * (-(e • (c⁻¹ * d).map s)) * cᵀ) * (c⁻¹)ᵀ := by rw [key]`. Use `_ = -(e • (c⁻¹ * d).map s) := by`. Simplify using `only [← Matrix.mul_assoc]`.
+
+Rewrite using `[h3, Matrix.one_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h5, Matrix.mul_one]`.
+-/
 theorem herm_quot {K : Type} [Field K] (s : K →+* K) {e : K} (he : e * e = 1)
     (c d : Matrix (Fin n) (Fin n) K) (hc : c.det ≠ 0)
     (h : c * (d.map s)ᵀ + d * (e • (c.map s)ᵀ) = 0) : (c⁻¹ * d)ᵀ = -(e • (c⁻¹ * d).map s) := by
@@ -133,6 +186,11 @@ theorem herm_quot {K : Type} [Field K] (s : K →+* K) {e : K} (he : e * e = 1)
     _ = -(e • (c⁻¹ * d).map s) := by
         simp only [← Matrix.mul_assoc]; rw [h3, Matrix.one_mul]; simp only [Matrix.mul_assoc]; rw [h5, Matrix.mul_one]
 
+/- English proof (translation)
+Use `set e : AE F E := ((ε : ℤ) : AE F E) with he_def`. Establish `he : e * e = 1`. Rewrite using `[he_def, ← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`. Establish `hWW : inFrame b w * Matrix.fromBlocks 0 (e • 1) 1 0 = 1`. Rewrite using `[hw, Matrix.fromBlocks_multiply]`.
+
+Simplify using `[smul_smul, he, Matrix.fromBlocks_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem inFrame_w_inv {ε : ℤˣ} {w : G2 σ Y}
     (hw : inFrame b w = Matrix.fromBlocks 0 1 (((ε : ℤ) : AE F E) • 1) 0) :
     inFrame b w⁻¹ = Matrix.fromBlocks 0 (((ε : ℤ) : AE F E) • 1) 1 0 := by
@@ -145,26 +203,83 @@ theorem inFrame_w_inv {ε : ℤˣ} {w : G2 σ Y}
   calc inFrame b w⁻¹ = inFrame b w⁻¹ * (inFrame b w * Matrix.fromBlocks 0 (e • 1) 1 0) := by rw [hWW, Matrix.mul_one]
     _ = _ := by rw [← Matrix.mul_assoc, GlobalTheory.EisBL.DoubledParabolic.inFrame_inv_mul, Matrix.one_mul]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← Matrix.fromBlocks_toBlocks M]`. Apply the tactic sequence `ext (i | i) (j | j) <;> rfl`.
+-/
 theorem incM_toBlocks {M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E} :
     incM F M = Matrix.fromBlocks (incM F M.toBlocks₁₁) (incM F M.toBlocks₁₂) (incM F M.toBlocks₂₁)
       (incM F M.toBlocks₂₂) := by
   conv_lhs => rw [← Matrix.fromBlocks_toBlocks M]
   ext (i | i) (j | j) <;> rfl
 
+/- English proof (translation)
+Use `conv_lhs => rw [← Matrix.fromBlocks_toBlocks X, ← Matrix.fromBlocks_toBlocks Z]`. Rewrite using `[Matrix.fromBlocks_multiply, Matrix.toBlocks_fromBlocks₂₁]`.
+-/
 theorem toBlocks₂₁_mul' {R : Type} [CommRing R] (X Z : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R) :
     (X * Z).toBlocks₂₁ = X.toBlocks₂₁ * Z.toBlocks₁₁ + X.toBlocks₂₂ * Z.toBlocks₂₁ := by
   conv_lhs => rw [← Matrix.fromBlocks_toBlocks X, ← Matrix.fromBlocks_toBlocks Z]
   rw [Matrix.fromBlocks_multiply, Matrix.toBlocks_fromBlocks₂₁]
 
+/- English proof (translation)
+Simplify using `[Matrix.fromBlocks_multiply, Matrix.mul_assoc]`.
+-/
 theorem conj_blocks {R : Type} [CommRing R] (a bb c d a' b' c' d' β : Matrix (Fin n) (Fin n) R) :
     Matrix.fromBlocks a bb c d * Matrix.fromBlocks 0 β 0 0 * Matrix.fromBlocks a' b' c' d' =
       Matrix.fromBlocks (a * β * c') (a * β * d') (c * β * c') (c * β * d') := by
   simp [Matrix.fromBlocks_multiply, Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[Matrix.vecMulVec_eq Unit, Matrix.det_one_add_replicateCol_mul_replicateRow, h, add_zero]`.
+-/
 theorem det_one_add_rank_one {R : Type} [CommRing R] (v w : Fin n → R) (h : w ⬝ᵥ v = 0) :
     (1 + Matrix.vecMulVec v w).det = 1 := by
   rw [Matrix.vecMulVec_eq Unit, Matrix.det_one_add_replicateCol_mul_replicateRow, h, add_zero]
 
+/- English proof (translation)
+Establish `hb0` using `hb`. Take `⟨⟨ε₀, hε₀⟩, t₀, ht₀⟩` from `hb`. Establish `hs` using `sigma_invol B hB`. Use `set e : E := ((ε₀ : ℤ) : E) with he_def`. Establish `he : e * e = 1`.
+
+Rewrite using `[he_def, ← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`. Establish `hse : σ.toRingHom e = e` using `map_intCast _ _`. Take `⟨M, hM, hMf⟩` from `rat_frame hε₀ hγ`. Take `⟨hMM', hM'M⟩` from `frame_inv σ.toRingHom hs e he hse M hMf`. Establish `hMi` using `inFrame_inv_of_rat hM hMM'`.
+
+Distinguish the cases in `hc : M.toBlocks₂₁.det ≠ 0`. Use `left`. Establish `hblk : M.toBlocks₂₁ * (M.toBlocks₂₂.map σ.toRingHom)ᵀ + M.toBlocks₂₂ * (e • (M.toBlocks₂₁.map σ.toRingHom)ᵀ) = 0`. Establish `h1` using `congrArg Matrix.toBlocks₂₁ hMM'`. Use `conv_lhs at h1 => rw [← Matrix.fromBlocks_toBlocks M]`.
+
+Rewrite `h1` using `[Matrix.fromBlocks_multiply, Matrix.toBlocks_fromBlocks₂₁]`. Simplify using `only [Matrix.toBlocks_fromBlocks₁₁, Matrix.toBlocks_fromBlocks₁₂, Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₂₂] at h1`. Rewrite using `[h1]`. Use extensionality with `i j`. Simplify using `[Matrix.toBlocks₂₁, Matrix.one_apply]`.
+
+Establish `hν` using `herm_quot σ.toRingHom he _ _ hc hblk`. Use `set νE := M.toBlocks₂₁⁻¹ * M.toBlocks₂₂ with hνE`. Establish `hνA : (incM F νE)ᵀ = -((((ε₀ : ℤ) : AE F E)) • (incM F νE).map (cA σ))`. Rewrite using `[← incM_transpose', hν, incM_map_cA]`. Use extensionality with `i j`.
+
+Simplify using `[incM, he_def]`. Set `ν : nA σ Y b` to `⟨incM F νE, (mem_nA_iff hε₀ _).2 hνA⟩`. Establish `hνF : ν ∈ nF σ Y b` using `mem_nF_iff.2 ⟨νE, rfl⟩`. Establish `hwrat : w ∈ rat2 σ Y` using `rat_of_inFrame (M := jw n ((ε : ℤ) : E)) (by rw [hw, incM_jw, map_intCast]; rfl)`. Use `⟨γ * (w * nb ν)⁻¹, ?_, mul_mem hγ (inv_mem (mul_mem hwrat (nb_rat hnb hνF))), ν, hνF, by group⟩` and prove the remaining obligations.
+
+Rewrite using `[mem_stabiliser_iff_frame_lower_block hb0, mul_inv_rev, ← nb_neg hnb, GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, hM, hnb, inFrame_w_inv hw, incM_toBlocks, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply, Matrix.toBlock …`. Establish `hcd : incM F M.toBlocks₂₁ * incM F νE = incM F M.toBlocks₂₂`. Rewrite using `[← incM_mul', hνE, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hc), Matrix.one_mul]`. Use `show _ = 0`. Simplify using `only [Matrix.mul_one, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.one_mul]`.
+
+Express the relevant statement in the definitionally equal form `incM F M.toBlocks₂₁ * -(incM F νE) + incM F M.toBlocks₂₂ = 0`. Rewrite using `[Matrix.mul_neg, hcd, neg_add_cancel]`. Use `right push Not at hc`. Take `⟨T', hT'⟩` from `mem_nF_iff.1 T.2`. Establish `hTh : T'ᵀ = -(e • T'.map σ.toRingHom)`.
+
+Establish `h1` using `(mem_nA_iff hε₀ T.1.1).1 T.1.2`. Rewrite `h1` using `[hT']`. Apply `incM_inj (F := F)` to reduce the goal to its premises. Rewrite using `[incM_transpose', h1, incM_map_cA]`. Use extensionality with `i j`.
+
+Simplify using `[incM, he_def]`. Establish `hTd : T'.det ≠ 0`. Introduce `h0`. Apply `hT` to reduce the goal to its premises. Use `show T.1.1.det = 0`.
+
+Rewrite using `[hT', incM, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]`. Establish `hda : e • (M.toBlocks₂₁.map σ.toRingHom)ᵀ * M.toBlocks₁₁ + (M.toBlocks₁₁.map σ.toRingHom)ᵀ * M.toBlocks₂₁ = 0`. Establish `h1` using `congrArg Matrix.toBlocks₂₁ hM'M`. Rewrite `h1` using `[toBlocks₂₁_mul', Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₂₂]`. Rewrite using `[h1]`.
+
+Use extensionality with `i j`. Simplify using `[Matrix.toBlocks₂₁, Matrix.one_apply]`. Take `⟨β₁, hβh, hcβ, ⟨v, w', hvw, hvw0⟩, htr⟩` from `exists_beta σ.toRingHom hs e he hse M.toBlocks₁₁ M.toBlocks₂₁ _ hc hda T' hTh hTd`. Establish `hx0 : Algebra.trace F E (2 : E) ≠ 0`. Rewrite using `[show (2 : E) = algebraMap F E 2 from (map_ofNat (algebraMap F E) 2).symm, Algebra.trace_algebraMap, nsmul_eq_mul]`.
+
+Conclude with `mul_ne_zero (Nat.cast_ne_zero.2 Module.finrank_pos.ne') two_ne_zero`. Take `⟨l, hl⟩` from `psi_moves hB.std _ hx0`. Use `set Λ : AE F E := algebraMap (AF F) (AE F E) l with hΛ`. Establish `hcΛ : cA σ Λ = Λ` using `(cA σ).commutes l`. Establish `hβA : (Λ • incM F β₁)ᵀ = -((((ε₀ : ℤ) : AE F E)) • (Λ • incM F β₁).map (cA σ))`.
+
+Rewrite using `[Matrix.transpose_smul, ← incM_transpose', hβh]`. Use extensionality with `i j`. Simplify using `[incM, he_def, hcΛ, GlobalTheory.EisBL.DoubledUnipotentRadical.cA_inclR]`. Expand and normalize the polynomial expressions, which then agree. Set `β₀ : nA σ Y b` to `⟨Λ • incM F β₁, (mem_nA_iff hε₀ _).2 hβA⟩`.
+
+Use `⟨β₀, ?_, ?_⟩` and prove the remaining obligations. Establish `htt : Algebra.trace (AF F) (AE F E) (T.1.1 * β₀.1).trace = l * algebraMap F (AF F) (Algebra.trace F E 2)` using `by show Algebra.trace (AF F) (AE F E) (T.1.1 * (Λ • incM F β₁)).trace = _`. Rewrite using `[hT', Matrix.mul_smul, Matrix.trace_smul, ← incM_mul', smul_eq_mul, hΛ, ← Algebra.smul_def, LinearMap.map_smul, tt_rat, htr, smul_eq_mul]`. Rewrite using `[htt]`. Conclude with `hl`.
+
+Use `set Z : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E := Matrix.fromBlocks 0 β₁ 0 0 with hZ`. Establish `hN : Matrix.fromBlocks 1 (β₀ : Matrix (Fin n) (Fin n) (AE F E)) 0 1 = 1 + Λ • incM F Z` using `by show Matrix.fromBlocks 1 (Λ • incM F β₁) 0 1 = _`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [hZ, incM, Matrix.one_apply]`. Establish `h1 : incM F M * incM F (Matrix.fromBlocks (M.toBlocks₂₂.map σ.toRingHom)ᵀ (e • (M.toBlocks₁₂.map σ.toRingHom)ᵀ) (e • (M.toBlocks₂₁.map σ.toRingHom)ᵀ) (M.toBlocks₁₁.map σ.toRingHom)ᵀ) = 1`. Rewrite using `[← incM_mul', hMM']`.
+
+Use extensionality with `i j`. Simplify using `[incM, Matrix.one_apply]`. Establish `hX : M * Z * Matrix.fromBlocks (M.toBlocks₂₂.map σ.toRingHom)ᵀ (e • (M.toBlocks₁₂.map σ.toRingHom)ᵀ) (e • (M.toBlocks₂₁.map σ.toRingHom)ᵀ) (M.toBlocks₁₁.map σ.toRingHom)ᵀ = Matrix.fromBlocks (M.toBlocks₁₁ * β₁ * (e • (M.toBlocks₂₁.map σ.toRingHom)ᵀ)) (M.toBlocks₁₁ * β₁ * (M.toBlo …` using `by conv_lhs => enter [1, 1]; rw [← Matrix.fromBlocks_toBlocks M]`. Rewrite using `[hZ, conj_blocks]`. Establish `hP : inFrame b (γ * nb β₀ * γ⁻¹) = 1 + Λ • incM F (M * Z * Matrix.fromBlocks (M.toBlocks₂₂.map σ.toRingHom)ᵀ (e • (M.toBlocks₁₂.map σ.toRingHom)ᵀ) (e • (M.toBlocks₂₁.map σ.toRingHom)ᵀ) (M.toBlocks₁₁.map σ.toRingHom)ᵀ)`.
+
+Rewrite using `[GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, hM, hnb, hMi, hN, Matrix.mul_add, Matrix.mul_one, Matrix.add_mul, h1, Matrix.mul_smul, Matrix.smul_mul, incM_mul', incM_mul']`. Establish `h21 : (inFrame b (γ * nb β₀ * γ⁻¹)).toBlocks₂₁ = 0`. Rewrite using `[hP, hX, hcβ]`. Use extensionality with `i j`. Simplify using `[Matrix.toBlocks₂₁, Matrix.one_apply, incM]`.
+
+Establish `h11 : (inFrame b (γ * nb β₀ * γ⁻¹)).toBlocks₁₁ = 1 + Λ • incM F (Matrix.vecMulVec v w')`. Rewrite using `[hP, hX, hvw]`. Use extensionality with `i j`. Simplify using `[Matrix.toBlocks₁₁, Matrix.one_apply, incM]`. Take `⟨t, ht⟩` from `mem_parabolic_GL2_iff.1 ((mem_stabiliser_iff_frame_lower_block hb0 _).2 h21)`.
+
+Establish `ht1` using `((isPar_frame ht₀ _ t).1 ht).2`. Use `⟨t, ht, Units.ext ?_⟩` and prove the remaining obligations. Use `show t.1.det = 1`. Establish `hdet : (1 + Λ • incM F (Matrix.vecMulVec v w')).det = 1`. Rewrite using `[show Λ • incM F (Matrix.vecMulVec v w') = Matrix.vecMulVec (fun i => Λ * inclR (F := F) (AF F) (v i)) (fun j => inclR (F := F) (AF F) (w' j)) by`.
+
+Use extensionality with `i j`. Simplify using `[incM, Matrix.vecMulVec_apply, mul_assoc]]`. Apply `det_one_add_rank_one` to reduce the goal to its premises. Establish `: (fun j => inclR (F` using `F) (AF F) (w' j)) ⬝ᵥ (fun i => Λ * inclR (F := F) (AF F) (v i)) = Λ * inclR (F := F) (AF F) (w' ⬝ᵥ v) := by`. Simplify using `[dotProduct, Finset.mul_sum, map_sum, mul_left_comm]`.
+
+Rewrite using `[this, hvw0, map_zero, mul_zero]`. Rewrite using `[ht1, Matrix.det_mul, Matrix.det_mul, h11, hdet, mul_one, ← Matrix.det_mul, incM_GL_mul_inv, Matrix.det_one]`.
+-/
 theorem cells' (B : Base F E) (hB : B.IsGood σ) (hb : IsFrame2 σ Y b) {ε : ℤˣ} {w : G2 σ Y}
     (hw : inFrame b w = Matrix.fromBlocks 0 1 (((ε : ℤ) : AE F E) • 1) 0) (hnb : IsNMap b nb) (T : nF σ Y b)
     (hT : IsND T) (γ : G2 σ Y) (hγ : γ ∈ rat2 σ Y) :
@@ -287,14 +402,23 @@ theorem cells' (B : Base F E) (hB : B.IsGood σ) (hb : IsFrame2 σ Y b) {ε : �
         rw [this, hvw0, map_zero, mul_zero]
       rw [ht1, Matrix.det_mul, Matrix.det_mul, h11, hdet, mul_one, ← Matrix.det_mul, incM_GL_mul_inv, Matrix.det_one]
 
+/- English proof (translation)
+The claim follows from `mem_stabiliser_iff_frame_lower_block hb p`.
+-/
 theorem mem_stabiliser_iff_lower_block_zero (hb : IsFrame2 σ Y b) (p : G2 σ Y) : p ∈ par2 σ Y ↔ (inFrame b p).toBlocks₂₁ = 0 :=
   mem_stabiliser_iff_frame_lower_block hb p
 
+/- English proof (translation)
+The claim follows from `big_inj' hb hw hnb h`.
+-/
 theorem big_inj (hb : IsFrame2 σ Y b) {ε : ℤˣ} {w : G2 σ Y}
     (hw : inFrame b w = Matrix.fromBlocks 0 1 (((ε : ℤ) : AE F E) • 1) 0) (hnb : IsNMap b nb) {ν ν' : nA σ Y b}
     (h : (w * nb ν) * (w * nb ν')⁻¹ ∈ par2 σ Y) : ν = ν' :=
   big_inj' hb hw hnb h
 
+/- English proof (translation)
+The claim follows from `cells' B hB hb hw hnb T hT γ hγ`.
+-/
 theorem cells (B : Base F E) (hB : B.IsGood σ) (hb : IsFrame2 σ Y b) {ε : ℤˣ} {w : G2 σ Y}
     (hw : inFrame b w = Matrix.fromBlocks 0 1 (((ε : ℤ) : AE F E) • 1) 0) (hnb : IsNMap b nb) (T : nF σ Y b)
     (hT : IsND T) (γ : G2 σ Y) (hγ : γ ∈ rat2 σ Y) :

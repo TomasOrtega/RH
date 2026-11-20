@@ -2,6 +2,17 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set W := Submodule.span ℂ (Set.range fun i => Z (ν i)) with hW`. Use `set M : Matrix (Fin n) (Fin n) ℂ := Matrix.vandermonde ν with hM`. Establish `hunit : IsUnit M.det` using `isUnit_iff_ne_zero.mpr (Matrix.det_vandermonde_ne_zero_iff.mpr hν)`. Establish `hinv : M⁻¹ * M = 1` using `Matrix.nonsing_inv_mul M hunit`. Establish `hZν : ∀ i, Z (ν i) = ∑ l : Fin n, M i l • X l`.
+
+Introduce `i`. Rewrite using `[hZ, ← Fin.sum_univ_eq_sum_range (fun j => ν i ^ j • X j) n]`. Simplify using `[hM, Matrix.vandermonde_apply]`. Establish `hX : ∀ k : Fin n, X k ∈ W`. Introduce `k`.
+
+Establish `key : ∀ l, ∑ i, M⁻¹ k i * M i l = (1 : Matrix (Fin n) (Fin n) ℂ) k l` using `fun l => by`. Rewrite using `[← hinv, Matrix.mul_apply]`. Establish `hsum : ∑ i : Fin n, M⁻¹ k i • Z (ν i) = X k`. Repeatedly rewrite using `[hZν, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Repeatedly rewrite using `[← Finset.sum_smul, key, Matrix.one_apply, ite_smul, one_smul, zero_smul]`. Simplify using the standard rewrite rules. Rewrite using `[← hsum]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `⟨fun j hj => hX ⟨j, hj⟩, fun s => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hZ]`. Conclude with `Submodule.sum_mem _ fun j hj => Submodule.smul_mem _ _ (hX ⟨j, Finset.mem_range.mp hj⟩)`.
+-/
 theorem vecPoly_mem_span_values (V : Type) [AddCommGroup V] [Module ℂ V] (n : ℕ) (Z : ℂ → V)
     (X : ℕ → V) (ν : Fin n → ℂ) (hν : Function.Injective ν)
     (hZ : ∀ s : ℂ, Z s = ∑ j ∈ Finset.range n, s ^ j • X j) :

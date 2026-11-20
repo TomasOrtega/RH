@@ -24,13 +24,22 @@ def tensorOp (C : Matrix (Fin k) (Fin k) ℂ) (A : V →L[ℂ] V) :
         ext c
         simp [Finset.smul_sum, smul_smul, mul_comm] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensorOp_apply (C : Matrix (Fin k) (Fin k) ℂ) (A : V →L[ℂ] V) (y : PiLp 2 (fun _ : Fin k => V)) (c : Fin k) :
     tensorOp C A y c = ∑ d, C c d • A (y d) := rfl
 
+/- English proof (translation)
+Use extensionality with `y c`. Simplify using `[tensorOp_apply, Matrix.one_apply]`.
+-/
 theorem tensorOp_one : tensorOp (1 : Matrix (Fin k) (Fin k) ℂ) (1 : V →L[ℂ] V) = 1 := by
   ext y c
   simp [tensorOp_apply, Matrix.one_apply]
 
+/- English proof (translation)
+Use extensionality with `y c`. Simplify using `only [tensorOp_apply, ContinuousLinearMap.comp_apply, Matrix.mul_apply, Finset.sum_smul, map_sum, map_smul, Finset.smul_sum, smul_smul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem tensorOp_mul (C D : Matrix (Fin k) (Fin k) ℂ) (A B : V →L[ℂ] V) :
     tensorOp (C * D) (A.comp B) = (tensorOp C A).comp (tensorOp D B) := by
   ext y c
@@ -38,6 +47,17 @@ theorem tensorOp_mul (C D : Matrix (Fin k) (Fin k) ℂ) (A B : V →L[ℂ] V) :
     map_smul, Finset.smul_sum, smul_smul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Establish `h1 : inner ℂ (tensorOp C A y) (tensorOp C A y) = inner ℂ y y`. Rewrite using `[PiLp.inner_apply, PiLp.inner_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[tensorOp_apply, sum_inner]`.
+
+Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[inner_sum]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_left, inner_smul_right, mul_assoc]`. Both sides reduce to the same expression.
+
+Use `_ = ∑ d, ∑ e, (∑ c, star (C c d) * C c e) * inner ℂ (A (y d)) (A (y e)) := by`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_mul]`. Use `_ = ∑ d, inner ℂ (y d) (y d) := by`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `only [hC, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K, hA]`.
+
+Rewrite using `[@norm_eq_sqrt_re_inner ℂ, h1, ← @norm_eq_sqrt_re_inner ℂ]`.
+-/
 theorem tensorOp_norm {C : Matrix (Fin k) (Fin k) ℂ} (hC : ∀ d e, ∑ c, star (C c d) * C c e = if d = e then 1 else 0)
     {A : V →L[ℂ] V} (hA : ∀ v, ‖A v‖ = ‖v‖) (y : PiLp 2 (fun _ : Fin k => V)) : ‖tensorOp C A y‖ = ‖y‖ := by
   have h1 : inner ℂ (tensorOp C A y) (tensorOp C A y) = inner ℂ y y := by
@@ -63,6 +83,11 @@ theorem tensorOp_norm {C : Matrix (Fin k) (Fin k) ℂ} (hC : ∀ d e, ∑ c, sta
           rw [inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K, hA]
   rw [@norm_eq_sqrt_re_inner ℂ, h1, ← @norm_eq_sqrt_re_inner ℂ]
 
+/- English proof (translation)
+Rewrite using `[continuousOn_clm_apply]`. Introduce `y`. Establish `h : ContinuousOn (fun x => fun c => ∑ d, C x c d • A x (y d)) s`. Use `continuousOn_pi.2 fun c => continuousOn_finsetSum _ fun d _ => ?_` and prove the remaining obligations. Conclude with `(hC c d).continuousOn.smul (hA.clm_apply continuousOn_const)`.
+
+Conclude with `(PiLp.continuous_toLp 2 (fun _ : Fin k => V)).comp_continuousOn h`.
+-/
 theorem tensorOp_continuousOn {X : Type} [TopologicalSpace X] {s : Set X} {C : X → Matrix (Fin k) (Fin k) ℂ}
     {A : X → (V →L[ℂ] V)} (hC : ∀ c d, Continuous fun x => C x c d) (hA : ContinuousOn A s) :
     ContinuousOn (fun x => tensorOp (C x) (A x)) s := by
@@ -77,12 +102,20 @@ end General
 
 variable {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ}
 
+/- English proof (translation)
+Establish `e : hᴴ * Hpk k r * h = Hpk k r` using `hh.1`. Unfold `herm`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, e]`.
+-/
 theorem herm_inv {h : Mx k r} (hh : h ∈ UWset k r z) (v w : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (h *ᵥ v) (h *ᵥ w) = herm (Hpk k r) v w := by
   have e : hᴴ * Hpk k r * h = Hpk k r := hh.1
   unfold herm
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, e]
 
+/- English proof (translation)
+Rewrite `hv`, the goal using `[Qx8.inWb_iff]`. Introduce `c`. Establish `hc` using `hh.2.1 c`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← Qx8.coord_e (h *ᵥ v) c, ← hc.2, herm_inv hh, Qx8.coord_e]`.
+
+Conclude with `(hv c).1`. Rewrite using `[← Qx8.coord_es (h *ᵥ v) c, ← hc.1, herm_inv hh, Qx8.coord_es]`. Conclude with `(hv c).2`.
+-/
 theorem inWb_mulVec {h : Mx k r} (hh : h ∈ UWset k r z) {v : Fin (2 * r + k + 1) → ℂ} (hv : inWb k r v) :
     inWb k r (h *ᵥ v) := by
   rw [Qx8.inWb_iff] at hv ⊢
@@ -94,6 +127,9 @@ theorem inWb_mulVec {h : Mx k r} (hh : h ∈ UWset k r z) {v : Fin (2 * r + k + 
   · rw [← Qx8.coord_es (h *ᵥ v) c, ← hc.1, herm_inv hh, Qx8.coord_es]
     exact (hv c).2
 
+/- English proof (translation)
+Use `HermitianFormSums.complete0 hz (HermitianFormSums.hzz hT) hB (inWb_mulVec hh (hB.1 d)) ?_` and prove the remaining obligations. Establish `h1` using `herm_inv hh (B d) z`. Rewrite `h1` using `[hh.2.2]`. Rewrite using `[h1]`. Conclude with `hB.2.2 d z (by simp)`.
+-/
 theorem expand {B : Fin k → Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z)
     (hB : IsFrameOf k r [z] B) {h : Mx k r} (hh : h ∈ UWset k r z) (d : Fin k) :
     h *ᵥ B d = ∑ c, herm (Hpk k r) (h *ᵥ B d) (B c) • B c := by
@@ -110,6 +146,19 @@ end GlobalTheory.TensorDualStd
 
 open GlobalTheory.TensorDualStd in
 
+/- English proof (translation)
+Introduce `V _ _ _ k r z π B hz hT hπ hn hB`. Use `⟨fun h => tensorOp (dualMat k r B h) (π h), ⟨⟨?_, ?_⟩, ?_⟩, ?_, fun h _ y c => rfl⟩` and prove the remaining obligations. Establish `h1 : dualMat k r B 1 = 1`. Use extensionality with `c d`. Simplify using `only [dualMat, Matrix.one_mulVec, hB.2.1, Matrix.one_apply]`.
+
+Distinguish the cases in `h : c = d`. Simplify using `[h]`. Simplify using `[h, Ne.symm h]`. Simplify using `only [h1, hπ.1.1]`. Conclude with `tensorOp_one`.
+
+Introduce `a ha b hb`. Establish `h1 : dualMat k r B (a * b) = dualMat k r B a * dualMat k r B b`. Use extensionality with `c d`. Simplify using `only [dualMat, Matrix.mul_apply]`. Rewrite using `[← Matrix.mulVec_mulVec]`.
+
+Use `conv_lhs => rw [expand hz hT hB hb d, Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul]`. Rewrite using `[HermitianFormSums.herm_lsum, star_sum]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[star_mul]`.
+
+Simplify using `only [h1, hπ.1.2 a ha b hb]`. Conclude with `tensorOp_mul _ _ _ _`. Use `tensorOp_continuousOn (fun c d => ?_) hπ.2` and prove the remaining obligations. Unfold `dualMat herm`. Use `fun_prop`.
+
+Introduce `h hh v`. Use `tensorOp_norm (fun d e => ?_) (hn h hh) v` and prove the remaining obligations. Simplify using `only [dualMat, star_star]`. Rewrite using `[← HermitianFormSums.herm_comb hB, ← expand hz hT hB hh, ← expand hz hT hB hh, herm_inv hh, hB.2.1]`.
+-/
 theorem GlobalTheory.tensor_dual_standard : ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] (k r : ℕ) (z : (Fin (2 * r + k + 1) → ℂ)) (π : Mx k r → (V →L[ℂ] V)) (B : Fin k → (Fin (2 * r + k + 1) → ℂ)), inWb k r z → 0 < Tz k r z → IsRepW k r z π → (∀ h ∈ UWset k r z, ∀ v, ‖π h v‖ = ‖v‖) → IsFrameOf k r [z] B → ∃ πt : Mx k r → ((PiLp 2 (fun _ : Fin k => V)) →L[ℂ] (PiLp 2 (fun _ : Fin k => V))), IsRepW k r z πt ∧ (∀ h ∈ UWset k r z, ∀ v, ‖πt h v‖ = ‖v‖) ∧ (∀ h ∈ UWset k r z, ∀ y c, πt h y c = ∑ d, star (herm (Hpk k r) (h *ᵥ B d) (B c)) • π h (y d)) := by
   intro V _ _ _ k r z π B hz hT hπ hn hB
   refine ⟨fun h => tensorOp (dualMat k r B h) (π h), ⟨⟨?_, ?_⟩, ?_⟩, ?_, fun h _ y c => rfl⟩

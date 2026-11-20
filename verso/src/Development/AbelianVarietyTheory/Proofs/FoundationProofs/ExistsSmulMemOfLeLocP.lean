@@ -10,6 +10,13 @@ namespace GlobalTheory.DualWeylDual
 
 variable {K : Type} [Field K] {N : ℕ}
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `hM`. Establish `h1 : ∀ y : s, ∃ a ∈ w.asIdeal.primeCompl, a • (y : Fin N → K) ∈ M'` using `fun y => h (Submodule.subset_span y.2)`. Use `choose a ha0 ha using h1`. Use `⟨∏ y, a y, Submonoid.prod_mem _ fun y _ => ha0 y, fun x hx => ?_⟩` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ (⟨y, hy⟩ : s)), mul_smul]`. Conclude with `M'.smul_mem _ (ha ⟨y, hy⟩)`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [smul_add]`.
+
+Conclude with `M'.add_mem hy hz`. Consider the case `smul c y _ hy => rw [smul_comm]`. Conclude with `M'.smul_mem _ hy`.
+-/
 theorem exists_smul_mem_of_le_locP (w : HeightOneSpectrum (𝓞 K)) {M M' : Submodule (𝓞 K) (Fin N → K)}
     (hM : M.FG) (h : M ≤ localization₂ w.asIdeal M') : ∃ t ∈ w.asIdeal.primeCompl, ∀ x ∈ M, t • x ∈ M' := by
   classical
@@ -26,6 +33,9 @@ theorem exists_smul_mem_of_le_locP (w : HeightOneSpectrum (𝓞 K)) {M M' : Subm
   | add y z _ _ hy hz => rw [smul_add]; exact M'.add_mem hy hz
   | smul c y _ hy => rw [smul_comm]; exact M'.smul_mem _ hy
 
+/- English proof (translation)
+Take `⟨t, ht, htM⟩` from `exists_smul_mem_of_le_locP w hM (fun x hx => h ⟨1, Submonoid.one_mem _, by rwa [one_smul]⟩)`. Introduce and unpack `φ ⟨s, hs, hφ⟩`. Use `⟨t * s, Submonoid.mul_mem _ ht hs, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : (s • φ) ⬝ᵥ (t • x) ∈ (1 : Submodule (𝓞 K) K)` using `hφ _ (htM x hx)`. Rewrite `h1` using `[dotProduct_smul, ← smul_dotProduct, smul_smul]`. Then use the resulting hypothesis.
+-/
 theorem localization_dualFr_le (w : HeightOneSpectrum (𝓞 K)) {M M' : Submodule (𝓞 K) (Fin N → K)}
     (hM : M.FG) (h : localization₂ w.asIdeal M ≤ localization₂ w.asIdeal M') :
     localization₂ w.asIdeal (dualFr M') ≤ localization₂ w.asIdeal (dualFr M) := by
@@ -36,6 +46,15 @@ theorem localization_dualFr_le (w : HeightOneSpectrum (𝓞 K)) {M M' : Submodul
   have h1 : (s • φ) ⬝ᵥ (t • x) ∈ (1 : Submodule (𝓞 K) K) := hφ _ (htM x hx)
   rwa [dotProduct_smul, ← smul_dotProduct, smul_smul] at h1
 
+/- English proof (translation)
+Use extensionality with `φ`. Rewrite using `[mem_colLat_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : ∀ j, ∃ c : 𝓞 K, algebraMap (𝓞 K) K c = φ ⬝ᵥ fun a => (B : Matrix (Fin N) (Fin N) K) a j` using `fun j => Submodule.mem_one.mp (h _ (Submodule.subset_span ⟨j, rfl⟩))`.
+
+Use `choose c hc using h1`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `h2 : (fun j => (c j : K)) = (B : Matrix (Fin N) (Fin N) K)ᵀ *ᵥ φ`. Use function extensionality and compare the values at `j`. Rewrite using `[Matrix.mulVec_transpose]`.
+
+Conclude with `hc j`. Rewrite using `[h2, Matrix.mulVec_mulVec]`. Express the relevant statement in the definitionally equal form `(((B⁻¹ : GL (Fin N) K) : Matrix (Fin N) (Fin N) K)ᵀ * _) *ᵥ φ = φ`. Rewrite using `[← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one, Matrix.one_mulVec]`. Introduce and unpack `⟨c, rfl⟩ x hx`.
+
+Take `⟨d, rfl⟩` from `(mem_colLat_iff _ _).mp hx`. Express the relevant statement in the definitionally equal form `(((B⁻¹ : GL (Fin N) K) : Matrix (Fin N) (Fin N) K)ᵀ *ᵥ _) ⬝ᵥ _ ∈ _`. Rewrite using `[Matrix.mulVec_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Use `Submodule.mem_one.mpr ⟨c ⬝ᵥ d, ?_⟩` and prove the remaining obligations. Simplify using `[dotProduct]`.
+-/
 theorem dualFr_colLat (B : GL (Fin N) K) : dualFr (colLat B) = colLat (Formalism.BasicNotions.inside₂ K N B) := by
   ext φ
   rw [mem_colLat_iff]
@@ -59,6 +78,9 @@ theorem dualFr_colLat (B : GL (Fin N) K) : dualFr (colLat B) = colLat (Formalism
     refine Submodule.mem_one.mpr ⟨c ⬝ᵥ d, ?_⟩
     simp [dotProduct]
 
+/- English proof (translation)
+Unfold `IsBasisAt at hB ⊢`. Rewrite using `[← dualFr_colLat]`. Conclude with `le_antisymm (localization_dualFr_le w (Submodule.fg_span (Set.finite_range _)) hB.ge) (localization_dualFr_le w hL hB.le)`.
+-/
 theorem isBasisAt_dualFr (w : HeightOneSpectrum (𝓞 K)) {L : Submodule (𝓞 K) (Fin N → K)} (hL : L.FG)
     {B : GL (Fin N) K} (hB : IsBasisAt w L B) : IsBasisAt w (dualFr L) (Formalism.BasicNotions.inside₂ K N B) := by
   unfold IsBasisAt at hB ⊢

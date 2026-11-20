@@ -6,6 +6,15 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 
 namespace GlobalTheory.VolBr
 
+/- English proof (translation)
+Introduce `k _ X _ p D hX P s hs hs0 δ hδ`. Use `choose W ρ hW hρ H using GlobalTheory.T.exists_nhds_nu_le_exp_mul_of_far_bound k X p D hX P s hs hs0 δ hδ`. Use `haveI : Finite (k →+* ℂ) := hX.finite_emb`. Establish `hcov : ∀ σ : k →+* ℂ, ∃ t : Finset (CxPts p σ), (Set.univ : Set (CxPts p σ)) ⊆ ⋃ x ∈ t, W σ x`. Introduce `σ`.
+
+Use `haveI : CompactSpace (CxPts p σ) := hX.compactSpace σ`. Take `⟨t, -, ht⟩` from `isCompact_univ.elim_nhds_subcover (W σ) (fun x _ => hW σ x)`. Conclude with `⟨t, ht⟩`. Use `choose t ht using hcov`. Establish `hlow : ∀ {ι : Type} [Finite ι] (g : ι → ℝ), (∀ i, 0 < g i) → ∃ c : ℝ, 0 < c ∧ ∀ i, c ≤ g i`.
+
+Introduce `ι _ g hg`. Break down `isEmpty_or_nonempty ι with h | h` into its components or cases. Conclude with `⟨1, one_pos, fun i => (h.false i).elim⟩`. Take `⟨i, hi⟩` from `Finite.exists_min g`. Conclude with `⟨g i, hg i, hi⟩`.
+
+Take `⟨c, hc, hcle⟩` from `hlow (ι := Σ σ : k →+* ℂ, {x // x ∈ t σ}) (fun z => ρ z.1 z.2.1) (fun z => hρ _ _)`. Use `⟨c, hc, fun N f R hf hR => ⟨hf, fun σ y => ?_⟩⟩` and prove the remaining obligations. Take `⟨x, hx, hy⟩` from `Set.mem_iUnion₂.1 (ht σ (Set.mem_univ y))`. Conclude with `H σ x N f R hf (fun σ' y' h => hR σ' y' ((hcle ⟨σ, ⟨x, hx⟩⟩).trans h)) y hy`.
+-/
 theorem max_principle_global : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), ∀ s : X.functionField, s ∈ P.H 0 1 → s ≠ 0 → ∀ δ : ℝ, 0 < δ → ∃ ρ : ℝ, 0 < ρ ∧ ∀ (N : ℕ) (f : X.functionField) (R : ℝ), f ∈ P.H N 0 → (∀ (σ : k →+* ℂ) (y : CxPts p σ), ρ ≤ P.nu 0 1 σ y s → P.nu N 0 σ y f ≤ R) → f ∈ P.Bl N 0 (Real.exp (δ * N) * R) := by
   intro k _ X _ p D hX P s hs hs0 δ hδ
   classical

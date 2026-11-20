@@ -9,6 +9,9 @@ open AlgebraicGeometry CategoryTheory GlobalTheory.HodgeCoh
 
 namespace UpperTheory.Gal.LocalSmoothExtension
 
+/- English proof (translation)
+Simplify using `only [Finsupp.sum, ← Module.End.mul_eq_comp, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm, map_sum, map_smul, smul_eq_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem trace_comb {M : Type*} [AddCommGroup M] [Module ℂ M] {m : ℕ} {A : Type*}
     (u : Fin m → Module.End ℂ M) (c : Fin m → ℂ) (w : A →₀ ℂ) (e : A → Module.End ℂ M) :
     LinearMap.trace ℂ M ((∑ i, c i • u i) ∘ₗ w.sum fun α r => r • e α) =
@@ -19,6 +22,9 @@ private theorem trace_comb {M : Type*} [AddCommGroup M] [Module ℂ M] {m : ℕ}
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun α _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun α _ => Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem sum_rearrange {m : ℕ} {A : Type*} (R : Finset ℕ) (S : Finset A) (c : Fin m → ℂ) (w : A → ℂ)
     (x z : ℕ → ℂ) (t : Fin m → A → ℕ → ℕ → ℂ) :
     ∑ a ∈ R, x a * ∑ b ∈ R, z b * ∑ i, c i * ∑ α ∈ S, w α * t i α a b =
@@ -36,6 +42,9 @@ private theorem sum_rearrange {m : ℕ} {A : Type*} (R : Finset ℕ) (S : Finset
           Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
         ring
 
+/- English proof (translation)
+Simplify using `only [trace_comb]`. Simplify using `only [Finsupp.sum]`. Conclude with `sum_rearrange (Finset.range (d + 1)) w.support c (fun α => w α) (fun a => (-y) ^ a) (fun b => (-1 : ℂ) ^ b) fun i α a b => LinearMap.trace ℂ (M a b) (u i a b ∘ₗ e α a b)`.
+-/
 private theorem alt_family {M : ℕ → ℕ → Type*} [∀ a b, AddCommGroup (M a b)] [∀ a b, Module ℂ (M a b)]
     (d m : ℕ) {A : Type*} (u : Fin m → ∀ a b : ℕ, Module.End ℂ (M a b)) (c : Fin m → ℂ) (w : A →₀ ℂ)
     (e : A → ∀ a b : ℕ, Module.End ℂ (M a b)) (y : ℂ) :
@@ -48,6 +57,9 @@ private theorem alt_family {M : ℕ → ℕ → Type*} [∀ a b, AddCommGroup (M
   exact sum_rearrange (Finset.range (d + 1)) w.support c (fun α => w α) (fun a => (-y) ^ a) (fun b => (-1 : ℂ) ^ b)
     fun i α a b => LinearMap.trace ℂ (M a b) (u i a b ∘ₗ e α a b)
 
+/- English proof (translation)
+Introduce `Z s d m A u c w e y` and use `alt_family (M := fun a b => hodgeH s a b) d m u c w e y`.
+-/
 theorem altLin_of : AltLin := fun Z s d m A u c w e y =>
   alt_family (M := fun a b => hodgeH s a b) d m u c w e y
 

@@ -12,6 +12,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.LocMod.CombAt
 
+/- English proof (translation)
+Distinguish the cases in `h : ∃ Φ : SB (Matrix Y Y' k), Φ.1 = Ξ`. Take `⟨Φ, hΦ⟩` from `h`. Take `⟨O, hO, hO0⟩` from `GlobalTheory.LocMod.PinModel.exists_isOne (k := k) (Y := Y) (Y' := Y')`. Establish `hne : O ≠ 0`. Introduce and unpack `rfl`.
+
+Simplify using `at hO0`. Take `⟨c, h1, h2⟩` from `GlobalTheory.LocComb.exists_comb D k p Y Y' S T FS FT ψ hψ O Φ hne`. Use `⟨c, h1, fun Tm hT Φ₀ Φ' h₀ h' => ?_⟩` and prove the remaining obligations. Take `rfl : Φ' = Φ` from `Subtype.ext (h'.trans hΦ.symm)`. Take `rfl : Φ₀ = O` from `Subtype.ext (h₀.trans hO.symm)`.
+
+Conclude with `h2 Tm hT`. Conclude with `⟨0, by simp, fun Tm _ Φ₀ Φ _ h' => (h ⟨Φ, h'⟩).elim⟩`.
+-/
 theorem exists_isCombAt {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (p : Place D k) {ψ : AddChar (AF D.host.F) ℂ}
     (hψ : IsStdChar D ψ (-1)) {S T : HSp D} (FS : GlobalTheory.LocMod.Frame k S.rank Y') (FT : GlobalTheory.LocMod.Frame k T.rank Y)
@@ -29,6 +36,17 @@ theorem exists_isCombAt {D : D7} {k : Type} [Field k] [ValuativeRel k] [Topologi
     exact h2 Tm hT
   · exact ⟨0, by simp, fun Tm _ Φ₀ Φ _ h' => (h ⟨Φ, h'⟩).elim⟩
 
+/- English proof (translation)
+Introduce `D u d k _ _ _ _ _ _ ν q s S FX FM hψ`. Take `⟨c₁, h₁⟩` from `exists_isCombAt (ofSplit q) hψ (FX s (by omega)) (FX (s + 1) le_rfl) (fun x₀ => (S.T (Fin D.R.t)).Psi 1 x₀ (S.y0 (Fin D.R.t)))`. Take `⟨c₂, h₂⟩` from `exists_isCombAt (ofSplit q) hψ (FX (s + 1) le_rfl) FM ((S.T (Fin D.R.t)).xiTop (box _ (1 : kˣ)) S.ψ ν (-1) (Submodule.Quotient.mk (S.y0 (Fin D.R.t))))`. Apply the tactic sequence `have key : ∀ j, ∃ c : WO (D.sp.X j) (D.sp.X (j + 1)) →₀ ℂ, (∀ c' (H : j + 1 + c' = s), (ofSplit q).IsCombAt d.c.ψ (FX j (by omega)) (FX (j + 1) (by omega)) c ((S.T (Fin D.R.t)).entry S.ψ ν j c' H 1 1)) ∧ (j = s → HEq c c₁) ∧ (j = s + 1 → HEq c c₂) := by`. Introduce `j`.
+
+Distinguish the cases in `hj : j < s`. Take `⟨c', H⟩ : ∃ c', j + 1 + c' = s` from `⟨s - j - 1, by omega⟩`. Apply the tactic sequence `obtain ⟨c, hc⟩ := exists_isCombAt (ofSplit q) hψ (FX j (by omega)) (FX (j + 1) (by omega)) ((S.T (Fin D.R.t)).entry S.ψ ν j c' H 1 1)`. Use `⟨c, fun c'' H' => ?_, fun h => by omega, fun h => by omega⟩` and prove the remaining obligations. Take `rfl : c'' = c'` from `by omega`.
+
+Conclude with `hc`. Distinguish the cases in `h1 : j = s`. Substitute `h1` using the available equality. Conclude with `⟨c₁, fun c' H => by omega, fun _ => HEq.rfl, fun h => by omega⟩`. Distinguish the cases in `h2 : j = s + 1`.
+
+Substitute `h2` using the available equality. Conclude with `⟨c₂, fun c' H => by omega, fun h => by omega, fun _ => HEq.rfl⟩`. Conclude with `⟨0, fun c' H => by omega, fun h => (h1 h).elim, fun h => (h2 h).elim⟩`. Use `choose cg k1 k2 k3 using key`. Use `⟨cg, k1, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[eq_of_heq (k2 s rfl)]`. Conclude with `h₁`. Rewrite using `[eq_of_heq (k3 (s + 1) rfl)]`. Conclude with `h₂`.
+-/
 theorem exists_cg : ∀ (D : D7) (u : D.what₂.Word) (d : Dat D u) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k) (q : GlobalTheory.FinPl.SplitPt D k) (s : ℕ) (S : SymData k s D.R.k) (FX : ∀ j, j ≤ s + 1 → GlobalTheory.LocMod.Frame k (D.sp.X j).rank (XIx (Fin D.R.k) (Fin D.R.t) j)) (FM : GlobalTheory.LocMod.Frame k (D.sp.X (s + 1 + 1)).rank (Ix (Fin D.R.k ⊕ Fin (s + 1)) (Fin D.R.t) (s + 2) ⊕ Unit)), IsStdChar D d.c.ψ (-1) → ∃ cg : ∀ j, WO (D.sp.X j) (D.sp.X (j + 1)) →₀ ℂ, (∀ j c (H : j + 1 + c = s), (ofSplit q).IsCombAt d.c.ψ (FX j (by omega)) (FX (j + 1) (by omega)) (cg j) ((S.T (Fin D.R.t)).entry S.ψ ν j c H 1 1)) ∧ (ofSplit q).IsCombAt d.c.ψ (FX s (by omega)) (FX (s + 1) le_rfl) (cg s) (fun x₀ => (S.T (Fin D.R.t)).Psi 1 x₀ (S.y0 (Fin D.R.t))) ∧ (ofSplit q).IsCombAt d.c.ψ (FX (s + 1) le_rfl) FM (cg (s + 1)) ((S.T (Fin D.R.t)).xiTop (box _ (1 : kˣ)) S.ψ ν (-1) (Submodule.Quotient.mk (S.y0 (Fin D.R.t)))) := by
   intro D u d k _ _ _ _ _ _ ν q s S FX FM hψ
   obtain ⟨c₁, h₁⟩ := exists_isCombAt (ofSplit q) hψ (FX s (by omega)) (FX (s + 1) le_rfl)

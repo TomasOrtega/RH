@@ -19,6 +19,9 @@ variable {O : Type} [CommRing O] [IsLocalRing O]
 
 private def cst (x : ResidueField O) : O := (residue_surjective x).choose
 
+/- English proof (translation)
+The claim follows from `(residue_surjective x).choose_spec`.
+-/
 private theorem cst_spec (x : ResidueField O) : algebraMap O (ResidueField O) (cst x) = x :=
   (residue_surjective x).choose_spec
 
@@ -27,17 +30,31 @@ private def IsEv (r : Lift O rbar A) (F : MvPowerSeries (σ × ι × ι) O →�
 
 private def Gen (r : Lift O rbar A) : Prop := Algebra.adjoin O {x : A | ∃ g a b, x = r.hom g a b} = ⊤
 
+/- English proof (translation)
+Rewrite using `[← res_eq_zero_iff O, map_sub, r.red, AlgHom.commutes, cst_spec, sub_self]`.
+-/
 private theorem sub_cst_mem (r : Lift O rbar A) (g : Γ) (a b : ι) :
     r.hom g a b - algebraMap O A (cst (rbar g a b)) ∈ maximalIdeal A := by
   rw [← res_eq_zero_iff O, map_sub, r.red, AlgHom.commutes, cst_spec, sub_self]
 
+/- English proof (translation)
+Introduce `t` and use `by rw [AlgHom.comp_apply, h t, map_sub, AlgHom.commutes, Lift.map_hom]`.
+-/
 private theorem IsEv.map {r : Lift O rbar A} {F : MvPowerSeries (σ × ι × ι) O →ₐ[O] A} (h : IsEv s r F)
     (f : A →ₐ[O] A') : IsEv s (r.map f) (f.comp F) := fun t => by
   rw [AlgHom.comp_apply, h t, map_sub, AlgHom.commutes, Lift.map_hom]
 
+/- English proof (translation)
+Rewrite using `[← res_eq_zero_iff O, res_map, res_eq_zero_iff]`.
+-/
 private theorem mem_max_map (f : A →ₐ[O] A') {x : A} : f x ∈ maximalIdeal A' ↔ x ∈ maximalIdeal A := by
   rw [← res_eq_zero_iff O, res_map, res_eq_zero_iff]
 
+/- English proof (translation)
+Establish `h1 : Ideal.map (f : A →+* A') (maximalIdeal A) ≤ maximalIdeal A'`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `y hy`. Conclude with `(mem_max_map f).2 hy`. Establish `h2` using `Ideal.mem_map_of_mem (f : A →+* A') hx`.
+
+Rewrite `h2` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono h1 n h2`.
+-/
 private theorem mem_pow_map (f : A →ₐ[O] A') (n : ℕ) {x : A} (hx : x ∈ maximalIdeal A ^ n) :
     f x ∈ maximalIdeal A' ^ n := by
   have h1 : Ideal.map (f : A →+* A') (maximalIdeal A) ≤ maximalIdeal A' := by
@@ -48,6 +65,11 @@ private theorem mem_pow_map (f : A →ₐ[O] A') (n : ℕ) {x : A} (hx : x ∈ m
   rw [Ideal.map_pow] at h2
   exact Ideal.pow_right_mono h1 n h2
 
+/- English proof (translation)
+Rewrite using `[Ideal.map_pow]`. Use `congr 1`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `y hy`.
+
+Conclude with `(mem_max_map f).2 hy`. Introduce `y hy`. Take `⟨x, rfl⟩` from `hf y`. Conclude with `Ideal.mem_map_of_mem _ ((mem_max_map f).1 hy)`.
+-/
 private theorem map_pow_max (f : A →ₐ[O] A') (hf : Function.Surjective f) (n : ℕ) :
     (maximalIdeal A ^ n).map (f : A →+* A') = maximalIdeal A' ^ n := by
   rw [Ideal.map_pow]
@@ -60,6 +82,9 @@ private theorem map_pow_max (f : A →ₐ[O] A') (hf : Function.Surjective f) (n
     obtain ⟨x, rfl⟩ := hf y
     exact Ideal.mem_map_of_mem _ ((mem_max_map f).1 hy)
 
+/- English proof (translation)
+Establish `hk : Finite (ResidueField A)` using `Finite.of_injective _ (Equiv.ofBijective _ (resMap_bijective O A)).symm.injective`. Establish `hk' : Finite (A ⧸ maximalIdeal A)` using `hk`. Conclude with `Ideal.finite_quotient_pow (IsNoetherian.noetherian _) n`.
+-/
 private theorem fin_quot (O A : Type) [CommRing O] [IsLocalRing O] [Finite (ResidueField O)] [CommRing A]
     [Algebra O A] [IsCO O A] (n : ℕ) : Finite (A ⧸ maximalIdeal A ^ n) := by
   have hk : Finite (ResidueField A) :=
@@ -67,6 +92,11 @@ private theorem fin_quot (O A : Type) [CommRing O] [IsLocalRing O] [Finite (Resi
   have hk' : Finite (A ⧸ maximalIdeal A) := hk
   exact Ideal.finite_quotient_pow (IsNoetherian.noetherian _) n
 
+/- English proof (translation)
+Use `haveI : Nontrivial (A ⧸ maximalIdeal A ^ (n + 1)) := Ideal.Quotient.nontrivial_iff.mpr (by`. Introduce `h`. Establish `hle : maximalIdeal A ^ (n + 1) ≤ maximalIdeal A` using `Ideal.pow_le_self (Nat.succ_ne_zero n)`. Rewrite `hle` using `[h]`. Conclude with `(maximalIdeal.isMaximal A).ne_top (top_le_iff.1 hle))`.
+
+Conclude with `co_quot O A _ (Ideal.Quotient.mkₐ O _) (Ideal.Quotient.mkₐ_surjective O _)`.
+-/
 private theorem co_trunc (O A : Type) [CommRing O] [IsLocalRing O] [CommRing A]
     [Algebra O A] [IsCO O A] (n : ℕ) : IsCO O (A ⧸ maximalIdeal A ^ (n + 1)) := by
   haveI : Nontrivial (A ⧸ maximalIdeal A ^ (n + 1)) := Ideal.Quotient.nontrivial_iff.mpr (by
@@ -76,11 +106,21 @@ private theorem co_trunc (O A : Type) [CommRing O] [IsLocalRing O] [CommRing A]
     exact (maximalIdeal.isMaximal A).ne_top (top_le_iff.1 hle))
   exact co_quot O A _ (Ideal.Quotient.mkₐ O _) (Ideal.Quotient.mkₐ_surjective O _)
 
+/- English proof (translation)
+Rewrite using `[← map_pow_max (Ideal.Quotient.mkₐ O (maximalIdeal A ^ n)) (Ideal.Quotient.mkₐ_surjective O _)]`. Conclude with `Ideal.map_quotient_self _`.
+-/
 private theorem trunc_pow (n : ℕ) [IsCO O (A ⧸ maximalIdeal A ^ n)] :
     maximalIdeal (A ⧸ maximalIdeal A ^ n) ^ n = ⊥ := by
   rw [← map_pow_max (Ideal.Quotient.mkₐ O (maximalIdeal A ^ n)) (Ideal.Quotient.mkₐ_surjective O _)]
   exact Ideal.map_quotient_self _
 
+/- English proof (translation)
+Establish `h' : Algebra.adjoin O {x : A' | ∃ g a b, x = (r.map f).hom g a b} = ⊤` using `h`. Establish `hle : Algebra.adjoin O {x : A' | ∃ g a b, x = (r.map f).hom g a b} ≤ f.range`. Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `x ⟨g, a, b, rfl⟩`. Rewrite using `[Lift.map_hom]`.
+
+Conclude with `AlgHom.mem_range_self f _`. Introduce `y`. Establish `hy : y ∈ Algebra.adjoin O {x : A' | ∃ g a b, x = (r.map f).hom g a b}`. Rewrite using `[h']`. Conclude with `Algebra.mem_top`.
+
+Conclude with `(AlgHom.mem_range f).1 (hle hy)`.
+-/
 private theorem Gen.surj {r : Lift O rbar A} (f : A →ₐ[O] A') (h : Gen (r.map f)) : Function.Surjective f := by
   have h' : Algebra.adjoin O {x : A' | ∃ g a b, x = (r.map f).hom g a b} = ⊤ := h
   have hle : Algebra.adjoin O {x : A' | ∃ g a b, x = (r.map f).hom g a b} ≤ f.range := by
@@ -94,6 +134,9 @@ private theorem Gen.surj {r : Lift O rbar A} (f : A →ₐ[O] A') (h : Gen (r.ma
     exact Algebra.mem_top
   exact (AlgHom.mem_range f).1 (hle hy)
 
+/- English proof (translation)
+Apply `AlgHom.ext_of_adjoin_eq_top h` to reduce the goal to its premises. Introduce and unpack `x ⟨g, a, b, rfl⟩`. Establish `hc` using `congrArg (fun q => q.hom g a b) e`. Simplify `hc` using `only [Lift.map_hom]`.
+-/
 private theorem Gen.ext {r : Lift O rbar A} (h : Gen r) {f f' : A →ₐ[O] A'} (e : r.map f = r.map f') : f = f' := by
   apply AlgHom.ext_of_adjoin_eq_top h
   rintro x ⟨g, a, b, rfl⟩
@@ -102,6 +145,9 @@ private theorem Gen.ext {r : Lift O rbar A} (h : Gen r) {f f' : A →ₐ[O] A'} 
 
 variable [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] [Finite σ]
 
+/- English proof (translation)
+Take `⟨F, ⟨-, h⟩, hu⟩` from `co_ev O O A (σ × ι × ι) (Algebra.ofId O A) _ fun t => sub_cst_mem r (s t.1) t.2.1 t.2.2`. Conclude with `⟨F, h, fun G hG => hu G ⟨fun x => G.commutes x, hG⟩⟩`.
+-/
 private theorem ev_exu (r : Lift O rbar A) : ∃! F, IsEv s r F := by
   obtain ⟨F, ⟨-, h⟩, hu⟩ := co_ev O O A (σ × ι × ι) (Algebra.ofId O A) _
     fun t => sub_cst_mem r (s t.1) t.2.1 t.2.2
@@ -114,6 +160,21 @@ private def Seps (rbar : Γ →* Matrix ι ι (ResidueField O)) [IsCO O (DualNum
 
 variable [IsCO O (DualNumber (ResidueField O))]
 
+/- English proof (translation)
+Establish `hXm : ∀ t, (X t : MvPowerSeries (σ × ι × ι) O) ∈ maximalIdeal (MvPowerSeries (σ × ι × ι) O)`. Introduce `t`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff, MvPowerSeries.constantCoeff_X]`. Conclude with `not_isUnit_zero`. Apply `co_surj O (MvPowerSeries (σ × ι × ι) O) A F` to reduce the goal to its premises.
+
+Establish `hspan` using `co_span O A O (Algebra.ofId O A) (Set.range fun t => F (X t)) (by`. Introduce and unpack `_ ⟨t, rfl⟩`. Use `show F (X t) ∈ maximalIdeal A`. Rewrite using `[h t]`. Conclude with `sub_cst_mem r _ _ _) (by`.
+
+Introduce `f f' _ hff`. Apply `Gen.ext hr` to reduce the goal to its premises. Use `hs _ _ (fun t => ?_)` and prove the remaining obligations. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Rewrite using `[Lift.map_hom, Lift.map_hom]`.
+
+Establish `e1` using `hff (F (X (t, a, b))) ⟨(t, a, b), rfl⟩`. Rewrite `e1` using `[h (t, a, b), map_sub, map_sub, AlgHom.commutes, AlgHom.commutes]`. Conclude with `sub_left_inj.1 e1)`. Use `hspan.trans (sup_le (sup_le ?_ ?_) le_sup_right)` and prove the remaining obligations. Use `le_sup_of_le_left ?_` and prove the remaining obligations.
+
+Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨t, rfl⟩`. Conclude with `Ideal.mem_map_of_mem _ (hXm t)`. Use `le_sup_of_le_left ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+
+Introduce `m hm`. Rewrite using `[Ideal.mem_comap]`. Establish `e2 : (Algebra.ofId O A) m = F (algebraMap O (MvPowerSeries (σ × ι × ι) O) m)`. Rewrite using `[AlgHom.commutes]`. Both sides reduce to the same expression.
+
+Rewrite using `[e2]`. Conclude with `Ideal.mem_map_of_mem _ ((mem_max_map (Algebra.ofId O (MvPowerSeries (σ × ι × ι) O))).2 hm)`.
+-/
 private theorem ev_surj (hs : Seps rbar s) {r : Lift O rbar A} (hr : Gen r)
     {F : MvPowerSeries (σ × ι × ι) O →ₐ[O] A} (h : IsEv s r F) : Function.Surjective F := by
   have hXm : ∀ t, (X t : MvPowerSeries (σ × ι × ι) O) ∈ maximalIdeal (MvPowerSeries (σ × ι × ι) O) := by
@@ -150,6 +211,33 @@ private theorem ev_surj (hs : Seps rbar s) {r : Lift O rbar A} (hr : Gen r)
     rw [e2]
     exact Ideal.mem_map_of_mem _ ((mem_max_map (Algebra.ofId O (MvPowerSeries (σ × ι × ι) O))).2 hm)
 
+/- English proof (translation)
+Use `haveI hk : IsCO O (ResidueField O) := (co_res O).1`. Establish `hres0 : ∀ x : ResidueField O, res O (ResidueField O) x = x`. Introduce `x`. Take `⟨c, rfl⟩` from `residue_surjective x`. Conclude with `AlgHom.commutes _ c`.
+
+Set `r0 : Lift O rbar (ResidueField O)` to `{ hom := rbar cont := fun a b M => hc.comp (fun Mx => Ideal.Quotient.mk (maximalIdeal (ResidueField O) ^ M) (Mx a b)) red := fun g a b => hres0 _ }`. Establish `g0 : Gen r0`. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `residue_surjective x`. Conclude with `Subalgebra.algebraMap_mem _ c`.
+
+Take `⟨F0, hF0, -⟩` from `ev_exu s r0`. Establish `hm0 : maximalIdeal (ResidueField O) ^ (N + 1) = ⊥` using `eq_bot_iff.2 ((Ideal.pow_le_self (Nat.succ_ne_zero N)).trans IsLocalRing.maximalIdeal_eq_bot.le)`. Set `S : Set (Ideal (MvPowerSeries (σ × ι × ι) O))` to `{J | ∃ (B : Type) (_ : CommRing B) (_ : Algebra O B) (_ : IsCO O B) (rB : Lift O rbar B) (F : MvPowerSeries (σ × ι × ι) O →ₐ[O] B), maximalIdeal B ^ (N + 1) = ⊥ ∧ Gen rB ∧ IsEv s rB F ∧ RingHom.ker F = J}`. Establish `hSsub : S ⊆ {J | maximalIdeal (MvPowerSeries (σ × ι × ι) O) ^ (N + 1) ≤ J}`. Introduce and unpack `J ⟨B, iB, aB, cB, rB, F, hB, -, -, rfl⟩`.
+
+Introduce `y hy`. Rewrite using `[RingHom.mem_ker]`. Use `mem_pow_map F (N + 1) hy` as an intermediate fact. Rewrite `this` using `[hB]`. Conclude with `this`.
+
+Establish `hfinT : Set.Finite {J : Ideal (MvPowerSeries (σ × ι × ι) O) | maximalIdeal (MvPowerSeries (σ × ι × ι) O) ^ (N + 1) ≤ J}` using `by haveI := fin_quot O (MvPowerSeries (σ × ι × ι) O) (N + 1)`. Establish `hQ : Finite (Ideal (MvPowerSeries (σ × ι × ι) O ⧸ maximalIdeal (MvPowerSeries (σ × ι × ι) O) ^ (N + 1)))` using `Finite.of_injective (fun J : Ideal (MvPowerSeries (σ × ι × ι) O ⧸ maximalIdeal (MvPowerSeries (σ × ι × ι) O) ^ (N + 1)) => (J : Set (MvPowerSeries (σ × ι × ι) O ⧸ maximalIdeal (MvPowerSeries (σ × ι × ι) O) ^ (N + 1)))) SetLike.coe_injective`. Establish `hE` using `Finite.of_equiv _ (Ideal.relIsoOfSurjective (Ideal.Quotient.mk (maximalIdeal (MvPowerSeries (σ × ι × ι) O) ^ (N + 1))) Ideal.Quotient.mk_surjective).toEquiv`. Rewrite `hE` using `[← RingHom.ker_eq_comap_bot, Ideal.mk_ker]`. Conclude with `Set.finite_coe_iff.mp hE`.
+
+Establish `hfin : S.Finite` using `hfinT.subset hSsub`. Establish `hne : S.Nonempty` using `⟨_, ResidueField O, inferInstance, inferInstance, hk, r0, F0, hm0, g0, hF0, rfl⟩`. Take `⟨J, hJmin⟩` from `hfin.exists_minimal hne`. Take `⟨B, iB, aB, cB, rB, FB, hB, gB, eB, kB⟩` from `hJmin.1`. Use `⟨B, iB, aB, cB, rB, hB, gB, ?_⟩` and prove the remaining obligations.
+
+Introduce `A' _ _ _ r' hA'`. Take `⟨C, iC, aC, cC, rC, p1, p2, hC, gC, e1, e2⟩` from `UpperTheory.exists_lift_dominating_pair_of_maximalIdeal_pow_eq_bot O Γ ι rbar (N + 1) B A' rB r' hB hA'`. Take `⟨FC, hFC, -⟩` from `ev_exu s rC`. Establish `hcomp : p1.comp FC = FB`. Take `⟨F1, -, hu⟩` from `ev_exu s rB`.
+
+Establish `a1` using `hu _ (by rw [← e1]; exact IsEv.map s hFC p1)`. Conclude with `a1.trans (hu FB eB).symm`. Establish `hFCs : Function.Surjective FC` using `ev_surj s hs gC hFC`. Establish `hkC : RingHom.ker FC ∈ S` using `⟨C, iC, aC, cC, rC, FC, hC, gC, hFC, rfl⟩`. Establish `hle : RingHom.ker FC ≤ J`.
+
+Rewrite using `[← kB, ← hcomp]`. Introduce `y hy`. Rewrite `hy`, the goal using `[RingHom.mem_ker]`. Rewrite using `[AlgHom.comp_apply, hy, map_zero]`. Establish `heq : J ≤ RingHom.ker FC` using `hJmin.2 hkC hle`.
+
+Establish `hinj : Function.Injective p1`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨y, rfl⟩` from `hFCs x`. Establish `hy : y ∈ RingHom.ker FB`.
+
+Rewrite using `[RingHom.mem_ker, ← hcomp, AlgHom.comp_apply, hx]`. Rewrite `hy` using `[kB]`. Conclude with `(RingHom.mem_ker).1 (heq hy)`. Establish `hsurj : Function.Surjective p1` using `Gen.surj (r := rC) p1 (by rw [e1]; exact gB)`. Use `⟨p2.comp ((AlgEquiv.ofBijective p1 ⟨hinj, hsurj⟩).symm : B →ₐ[O] C), ?_⟩` and prove the remaining obligations.
+
+Apply `Lift.ext` to reduce the goal to its premises. Apply `MonoidHom.ext` to reduce the goal to its premises. Introduce `g`. Apply `Matrix.ext` to reduce the goal to its premises. Introduce `a b`.
+
+Rewrite using `[Lift.map_hom, ← e2, Lift.map_hom, AlgHom.comp_apply]`. Use `congr 1`. Rewrite using `[← e1, Lift.map_hom]`. Conclude with `(AlgEquiv.ofBijective p1 ⟨hinj, hsurj⟩).symm_apply_apply _`.
+-/
 private theorem level [Finite (ResidueField O)] (hs : Seps rbar s) (hc : IsLocallyConstant rbar) (N : ℕ) :
     ∃ (A : Type) (_ : CommRing A) (_ : Algebra O A) (_ : IsCO O A) (r : Lift O rbar A),
       maximalIdeal A ^ (N + 1) = ⊥ ∧ Gen r ∧ ∀ (A' : Type) [CommRing A'] [Algebra O A'] [IsCO O A']
@@ -234,10 +322,16 @@ private theorem level [Finite (ResidueField O)] (hs : Seps rbar s) (hc : IsLocal
   rw [← e1, Lift.map_hom]
   exact (AlgEquiv.ofBijective p1 ⟨hinj, hsurj⟩).symm_apply_apply _
 
+/- English proof (translation)
+The claim follows from `Lift.ext (MonoidHom.ext fun x => Matrix.ext fun a b => by simp only [Lift.map_hom, AlgHom.comp_apply])`.
+-/
 private theorem lift_map_comp {B : Type} [CommRing B] [Algebra O B] [IsCO O B] (r : Lift O rbar A)
     (h : A →ₐ[O] A') (g : A' →ₐ[O] B) : r.map (g.comp h) = (r.map h).map g :=
   Lift.ext (MonoidHom.ext fun x => Matrix.ext fun a b => by simp only [Lift.map_hom, AlgHom.comp_apply])
 
+/- English proof (translation)
+Establish `hc : IsAdicComplete (maximalIdeal A) A` using `IsCO.complete (O := O)`. Apply `IsHausdorff.haus hc.toIsHausdorff x` to reduce the goal to its premises. Introduce `n`. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Conclude with `Ideal.pow_le_pow_right (Nat.le_succ n) (hx n)`.
+-/
 private theorem eq_zero_of_mem_all_maximalIdeal_pow (x : A) (hx : ∀ N : ℕ, x ∈ maximalIdeal A ^ (N + 1)) : x = 0 := by
   have hc : IsAdicComplete (maximalIdeal A) A := IsCO.complete (O := O)
   apply IsHausdorff.haus hc.toIsHausdorff x
@@ -245,6 +339,91 @@ private theorem eq_zero_of_mem_all_maximalIdeal_pow (x : A) (hx : ∀ N : ℕ, x
   rw [SModEq.zero, smul_eq_mul, Ideal.mul_top]
   exact Ideal.pow_le_pow_right (Nat.le_succ n) (hx n)
 
+/- English proof (translation)
+Use `haveI hPc : IsAdicComplete (maximalIdeal (MvPowerSeries (σ × ι × ι) O)) (MvPowerSeries (σ × ι × ι) O) := IsCO.complete (O := O)`. Use `choose F hF hFu using fun N => ev_exu s (r N)`. Establish `hsurj : ∀ N, Function.Surjective (F N)` using `fun N => ev_surj s hs (h2 N) (hF N)`. Establish `hπex : ∀ N, ∃ π : A (N + 1) →ₐ[O] A N, (r (N + 1)).map π = r N` using `fun N => h3 (N + 1) (A N) (r N) (by rw [pow_succ, h1 N, Ideal.bot_mul])`. Use `choose π hπ using hπex`.
+
+Establish `hFπ : ∀ N, (π N).comp (F (N + 1)) = F N` using `fun N => hFu N _ (by have := IsEv.map s (hF (N + 1)) (π N); rwa [hπ N] at this)`. Establish `hJ1 : ∀ N, maximalIdeal (MvPowerSeries (σ × ι × ι) O) ^ (N + 1) ≤ RingHom.ker (F N)`. Introduce `N x hx`. Rewrite using `[RingHom.mem_ker]`. Use `mem_pow_map (F N) (N + 1) hx` as an intermediate fact.
+
+Rewrite `this` using `[h1 N]`. Conclude with `(Ideal.mem_bot).1 this`. Establish `hJ2 : ∀ N, RingHom.ker (F N) ≤ RingHom.ker (F (N + 1)) ⊔ maximalIdeal (MvPowerSeries (σ × ι × ι) O) ^ (N + 1)`. Introduce `N y hy`. Use `haveI : IsCO O (A (N + 1) ⧸ maximalIdeal (A (N + 1)) ^ (N + 1)) := co_trunc O (A (N + 1)) N`.
+
+Take `⟨f, hf⟩` from `h3 N _ ((r (N + 1)).map (Ideal.Quotient.mkₐ O (maximalIdeal (A (N + 1)) ^ (N + 1)))) (trunc_pow (O := O) (A := A (N + 1)) (N + 1))`. Establish `hfc : f.comp (π N) = Ideal.Quotient.mkₐ O (maximalIdeal (A (N + 1)) ^ (N + 1))`. Apply `Gen.ext (h2 (N + 1))` to reduce the goal to its premises. Rewrite using `[lift_map_comp, hπ N, hf]`. Rewrite `hy` using `[RingHom.mem_ker]`.
+
+Establish `e : π N (F (N + 1) y) = 0` using `by rw [← AlgHom.comp_apply, hFπ N]; exact hy`. Establish `hy' : F (N + 1) y ∈ maximalIdeal (A (N + 1)) ^ (N + 1)`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← Ideal.Quotient.mkₐ_eq_mk O, ← hfc, AlgHom.comp_apply, e, map_zero]`. Rewrite `hy'` using `[← map_pow_max (F (N + 1)) (hsurj (N + 1)) (N + 1)]`. Take `⟨z, hz, hzy⟩` from `(Ideal.mem_map_iff_of_surjective _ (hsurj (N + 1))).1 hy'`.
+
+Establish `hyz : y = (y - z) + z` using `by ring`. Rewrite using `[hyz]`. Use `Ideal.add_mem _ (Ideal.mem_sup_left ?_) (Ideal.mem_sup_right hz)` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker, map_sub, sub_eq_zero]`. Conclude with `hzy.symm`.
+
+Establish `hlim : ∀ y : (N : ℕ) → A N, (∀ N, π N (y (N + 1)) = y N) → ∃ x : MvPowerSeries (σ × ι × ι) O, ∀ N, F N x = y N`. Introduce `y hy`. Take `⟨x, hx, -⟩` from `UpperTheory.exists_limit_of_successive_diff_mem_filtration _ (maximalIdeal (MvPowerSeries (σ × ι × ι) O)) (fun N => RingHom.ker (F N)) hJ1 hJ2 0 (fun N => Function.surjInv (hsurj N) (y N)) (by`. Introduce `N _`. Use `show Function.surjInv (hsurj (N + 1)) (y (N + 1)) - Function.surjInv (hsurj N) (y N) ∈ RingHom.ker (F N)`.
+
+Rewrite using `[RingHom.mem_ker, map_sub, Function.surjInv_eq (hsurj N), ← hFπ N, AlgHom.comp_apply, Function.surjInv_eq (hsurj (N + 1)), hy, sub_self])`. Use `⟨x, fun N => ?_⟩` and prove the remaining obligations. Establish `hxN : x - Function.surjInv (hsurj N) (y N) ∈ RingHom.ker (F N)` using `hx N (Nat.zero_le N)`. Rewrite `hxN` using `[RingHom.mem_ker, map_sub, Function.surjInv_eq (hsurj N), sub_eq_zero]`. Conclude with `hxN`.
+
+Use `choose xe hxe using fun q : Γ × ι × ι => hlim (fun N => (r N).hom q.1 q.2.1 q.2.2) (fun N => by show π N ((r (N + 1)).hom q.1 q.2.1 q.2.2) = (r N).hom q.1 q.2.1 q.2.2`. Rewrite using `[← Lift.map_hom, hπ N])`. Establish `hxe' : ∀ g a b N, F N (xe (g, a, b)) = (r N).hom g a b` using `fun g a b N => hxe (g, a, b) N`. Take `⟨J, hJdef⟩ : ∃ J, J = ⨅ N, RingHom.ker (F N)` from `⟨_, rfl⟩`. Establish `hmemJ : ∀ x, x ∈ J ↔ ∀ N, F N x = 0`.
+
+Introduce `x`. Rewrite using `[hJdef, Ideal.mem_iInf]`. Simplify using `only [RingHom.mem_ker]`. Establish `hq : ∀ x y : MvPowerSeries (σ × ι × ι) O, Ideal.Quotient.mk J x = Ideal.Quotient.mk J y ↔ ∀ N, F N x = F N y`. Introduce `x y`.
+
+Rewrite using `[Ideal.Quotient.eq, hmemJ]`. Simplify using `only [map_sub, sub_eq_zero]`. Use `haveI : Nontrivial (MvPowerSeries (σ × ι × ι) O ⧸ J) := Ideal.Quotient.nontrivial_iff.mpr (by`. Introduce `hJ`. Establish `h1m : (1 : MvPowerSeries (σ × ι × ι) O) ∈ J` using `by rw [hJ]; exact Submodule.mem_top`.
+
+Establish `h10` using `(hmemJ 1).1 h1m 0`. Rewrite `h10` using `[map_one]`. Conclude with `one_ne_zero h10)`. Use `haveI hRc : IsCO O (MvPowerSeries (σ × ι × ι) O ⧸ J) := co_quot O _ _ (Ideal.Quotient.mkₐ O J) (Ideal.Quotient.mkₐ_surjective O J)`. Establish `hanti : ∀ N K, N ≤ K → RingHom.ker (F K) ≤ RingHom.ker (F N)`.
+
+Introduce `N K hNK`. Proceed by induction on `K, hNK using Nat.le_induction with`. Consider the case `base => exact le_rfl`. Consider the case `succ K _ ih`. Use `le_trans ?_ ih` and prove the remaining obligations.
+
+Introduce `z hz`. Rewrite `hz`, the goal using `[RingHom.mem_ker]`. Rewrite using `[← hFπ K, AlgHom.comp_apply, hz, map_zero]`. Establish `hnxt : ∀ N (z : MvPowerSeries (σ × ι × ι) O), ∃ j, z ∈ RingHom.ker (F N) → j ∈ RingHom.ker (F (N + 1)) ∧ z - j ∈ maximalIdeal (MvPowerSeries (σ × ι × ι) O) ^ (N + 1)`. Introduce `N z`.
+
+Distinguish the cases in `hz : z ∈ RingHom.ker (F N)`. Take `⟨j, hj, m, hm, hjm⟩` from `Submodule.mem_sup.1 (hJ2 N hz)`. Use `⟨j, fun _ => ⟨hj, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hjm, add_sub_cancel_left]`. Conclude with `hm`.
+
+Conclude with `⟨0, fun h => absurd h hz⟩`. Use `choose nxt hnxt using hnxt`. Establish `hJ3 : ∀ M, RingHom.ker (F M) ≤ J ⊔ maximalIdeal (MvPowerSeries (σ × ι × ι) O) ^ (M + 1)`. Introduce `M y hy`. Set `q : ℕ → MvPowerSeries (σ × ι × ι) O` to `fun k => Nat.rec y (fun k qk => nxt (M + k) qk) k`.
+
+Establish `hqs : ∀ k, q (k + 1) = nxt (M + k) (q k)` using `fun k => rfl`. Establish `hqk : ∀ k, q k ∈ RingHom.ker (F (M + k))`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact hy`.
+
+Consider the case `succ k ih => rw [hqs]`. Conclude with `(hnxt _ _ ih).1`. Take `⟨x, hx, hxM⟩` from `UpperTheory.exists_limit_of_successive_diff_mem_filtration _ (maximalIdeal (MvPowerSeries (σ × ι × ι) O)) (fun N => RingHom.ker (F N)) hJ1 hJ2 M (fun N => q (N - M)) (by`. Introduce `N hN`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hN`.
+
+Use `show q (M + k + 1 - M) - q (M + k - M) ∈ RingHom.ker (F (M + k))`. Rewrite using `[show M + k + 1 - M = k + 1 by omega, show M + k - M = k by omega, hqs]`. Establish `hm` using `(hnxt _ _ (hqk k)).2`. Conclude with `hJ1 _ (by rw [← neg_sub]; exact (Ideal.neg_mem_iff _).2 hm))`. Establish `hbig : ∀ k, F (M + k) x = 0`.
+
+Introduce `k`. Establish `h1' : x - q (M + k - M) ∈ RingHom.ker (F (M + k))` using `hx (M + k) (Nat.le_add_right M k)`. Rewrite `h1'` using `[show M + k - M = k by omega]`. Establish `h2'` using `Ideal.add_mem _ h1' (hqk k)`. Rewrite `h2'` using `[sub_add_cancel, RingHom.mem_ker]`.
+
+Conclude with `h2'`. Establish `hxJ : x ∈ J`. Rewrite using `[hmemJ]`. Introduce `N`. Distinguish the cases in `hN : M ≤ N`.
+
+Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hN`. Conclude with `hbig k`. Conclude with `RingHom.mem_ker.1 (hanti N M (by omega) (RingHom.mem_ker.2 (by simpa using hbig 0)))`. Establish `hxM' : x - q (M - M) ∈ maximalIdeal (MvPowerSeries (σ × ι × ι) O) ^ (M + 1)` using `hxM`. Rewrite `hxM'` using `[Nat.sub_self]`.
+
+Establish `hyx : y = x - (x - q 0)` using `by simp [q]`. Rewrite using `[hyx]`. Conclude with `Ideal.sub_mem _ (Ideal.mem_sup_left hxJ) (Ideal.mem_sup_right hxM')`. Set `hom : Γ →* Matrix ι ι (MvPowerSeries (σ × ι × ι) O ⧸ J)` to `{ toFun := fun g => Matrix.of fun a b => Ideal.Quotient.mk J (xe (g, a, b)) map_one' := by`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations.
+
+Use `show Ideal.Quotient.mk J (xe (1, a, b)) = (1 : Matrix ι ι _) a b`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs with hab`. Substitute `hab` using the available equality. Rewrite using `[← map_one (Ideal.Quotient.mk J), hq]`.
+
+Introduce `N`. Simplify using `only [hxe', map_one, Matrix.one_apply_eq]`. Rewrite using `[← map_zero (Ideal.Quotient.mk J), hq]`. Introduce `N`. Simplify using `only [hxe', map_zero, map_one, Matrix.one_apply_ne hab]`.
+
+Use the proof step `map_mul' := by`. Introduce `g h`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Use `show Ideal.Quotient.mk J (xe (g * h, a, b)) = (Matrix.of (fun a b => Ideal.Quotient.mk J (xe (g, a, b))) * Matrix.of (fun a b => Ideal.Quotient.mk J (xe (h, a, b)))) a b`. Rewrite using `[Matrix.mul_apply]`.
+
+Simplify using `only [Matrix.of_apply, ← map_mul, ← map_sum]`. Rewrite using `[hq]`. Introduce `N`. Simplify using `only [map_sum, map_mul, hxe', Matrix.mul_apply] }`. Establish `hhom : ∀ g a b, hom g a b = Ideal.Quotient.mk J (xe (g, a, b))` using `fun g a b => rfl`.
+
+Establish `hJ0 : ∀ x ∈ J, F 0 x = 0` using `fun x hx => (hmemJ x).1 hx 0`. Establish `hred : ∀ g a b, res O (MvPowerSeries (σ × ι × ι) O ⧸ J) (hom g a b) = rbar g a b`. Introduce `g a b`. Establish `e0 : Ideal.Quotient.liftₐ J (F 0) hJ0 (hom g a b) = (r 0).hom g a b`. Rewrite using `[hhom, Ideal.Quotient.liftₐ_apply]`.
+
+Conclude with `hxe' g a b 0`. Rewrite using `[← res_map (Ideal.Quotient.liftₐ J (F 0) hJ0), e0, (r 0).red]`. Establish `hcont : ∀ a b, AdicCont (maximalIdeal (MvPowerSeries (σ × ι × ι) O ⧸ J)) fun g => hom g a b`. Introduce `a b K`. Establish `hloc : IsLocallyConstant fun g => (r K).hom g a b`.
+
+Use `IsLocallyConstant.desc _ (Ideal.Quotient.mk (maximalIdeal (A K) ^ (K + 1))) ((r K).cont a b (K + 1)) ?_` and prove the remaining obligations. Introduce `u v huv`. Rewrite `huv` using `[Ideal.Quotient.eq, h1 K, Ideal.mem_bot, sub_eq_zero]`. Conclude with `huv`. Establish `key : (fun g => Ideal.Quotient.mk (maximalIdeal (MvPowerSeries (σ × ι × ι) O ⧸ J) ^ K) (hom g a b)) = (fun u => Ideal.Quotient.mk (maximalIdeal (MvPowerSeries (σ × ι × ι) O ⧸ J) ^ K) (Ideal.Quotient.mk J (Function.surjInv (hsurj K) u))) ∘ (fun g => (r K).hom g a b)`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[Function.comp_apply, hhom, Ideal.Quotient.eq, ← map_sub]`. Establish `hd : xe (g, a, b) - Function.surjInv (hsurj K) ((r K).hom g a b) ∈ RingHom.ker (F K)`. Rewrite using `[RingHom.mem_ker, map_sub, Function.surjInv_eq (hsurj K), hxe', sub_self]`. Take `⟨j, hj, m, hm, hjm⟩` from `Submodule.mem_sup.1 (hJ3 K hd)`.
+
+Rewrite using `[← hjm, map_add, Ideal.Quotient.eq_zero_iff_mem.2 hj, zero_add]`. Conclude with `Ideal.pow_le_pow_right (Nat.le_succ K) (mem_pow_map (Ideal.Quotient.mkₐ O J) (K + 1) hm)`. Establish `hfin` using `hloc.comp (fun u => Ideal.Quotient.mk (maximalIdeal (MvPowerSeries (σ × ι × ι) O ⧸ J) ^ K) (Ideal.Quotient.mk J (Function.surjInv (hsurj K) u)))`. Rewrite `hfin` using `[← key]`. Conclude with `hfin`.
+
+Set `rR : Lift O rbar (MvPowerSeries (σ × ι × ι) O ⧸ J)` to `⟨hom, hcont, hred⟩`. Establish `hE : IsEv s rR (Ideal.Quotient.mkₐ O J)`. Introduce `t`. Use `show Ideal.Quotient.mkₐ O J (X t) = Ideal.Quotient.mk J (xe (s t.1, t.2.1, t.2.2)) - algebraMap O _ (cst (rbar (s t.1) t.2.1 t.2.2))`. Rewrite using `[← (Ideal.Quotient.mkₐ O J).commutes, Ideal.Quotient.mkₐ_eq_mk, ← map_sub, hq]`.
+
+Introduce `N`. Rewrite using `[hF N t, map_sub, hxe', AlgHom.commutes]`. Use `⟨_, inferInstance, inferInstance, hRc, rR, ?_⟩` and prove the remaining obligations. Introduce `R' _ _ _`. Use `⟨fun _ => trivial, fun r' _ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨F', hF', hF'u⟩` from `ev_exu s r'`. Use `haveI : ∀ N, IsCO O (R' ⧸ maximalIdeal R' ^ (N + 1)) := fun N => co_trunc O R' N`. Use `choose fT hfT using fun N => h3 N (R' ⧸ maximalIdeal R' ^ (N + 1)) (r'.map (Ideal.Quotient.mkₐ O (maximalIdeal R' ^ (N + 1)))) (trunc_pow (O := O) (A := R') (N + 1))`. Establish `hcomm : ∀ N, (Ideal.Quotient.mkₐ O (maximalIdeal R' ^ (N + 1))).comp F' = (fT N).comp (F N)`. Introduce `N`.
+
+Establish `e1` using `IsEv.map s hF' (Ideal.Quotient.mkₐ O (maximalIdeal R' ^ (N + 1)))`. Establish `e2` using `IsEv.map s (hF N) (fT N)`. Rewrite `e2` using `[hfT N]`. Take `⟨G, _, hGu⟩` from `ev_exu s (r'.map (Ideal.Quotient.mkₐ O (maximalIdeal R' ^ (N + 1))))`. Rewrite using `[hGu _ e1, hGu _ e2]`.
+
+Establish `hsep : ∀ z : R', (∀ N, Ideal.Quotient.mkₐ O (maximalIdeal R' ^ (N + 1)) z = 0) → z = 0`. Introduce `z hz`. Apply `eq_zero_of_mem_all_maximalIdeal_pow (O := O) (A := R') z` to reduce the goal to its premises. Introduce `N`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `hz N`. Establish `hJF' : ∀ x ∈ J, F' x = 0`. Introduce `x hx`. Apply `hsep` to reduce the goal to its premises. Introduce `N`.
+
+Rewrite using `[← AlgHom.comp_apply, hcomm N, AlgHom.comp_apply, (hmemJ x).1 hx N, map_zero]`. Establish `hfr : rR.map (Ideal.Quotient.liftₐ J F' hJF') = r'`. Apply `Lift.ext` to reduce the goal to its premises. Use `MonoidHom.ext fun g => Matrix.ext fun a b => ?_` and prove the remaining obligations. Rewrite using `[Lift.map_hom]`.
+
+Use `show Ideal.Quotient.liftₐ J F' hJF' (Ideal.Quotient.mk J (xe (g, a, b))) = r'.hom g a b`. Rewrite using `[Ideal.Quotient.liftₐ_apply]`. Use `show F' (xe (g, a, b)) = r'.hom g a b`. Rewrite using `[← sub_eq_zero]`. Apply `hsep` to reduce the goal to its premises.
+
+Introduce `N`. Rewrite using `[map_sub, ← AlgHom.comp_apply, hcomm N, AlgHom.comp_apply, hxe', ← Lift.map_hom, hfT N, Lift.map_hom, sub_self]`. Use `⟨Ideal.Quotient.liftₐ J F' hJF', hfr, fun f1 hf1 => ?_⟩` and prove the remaining obligations. Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Establish `e1` using `IsEv.map s hE f1`.
+
+Establish `e2` using `IsEv.map s hE (Ideal.Quotient.liftₐ J F' hJF')`. Rewrite `e1` using `[hf1]`. Rewrite `e2` using `[hfr]`. Rewrite using `[hF'u _ e1, hF'u _ e2]`.
+-/
 private theorem assemble (hs : Seps rbar s) (A : ℕ → Type) [∀ N, CommRing (A N)] [∀ N, Algebra O (A N)]
     [∀ N, IsCO O (A N)] (r : ∀ N, Lift O rbar (A N)) (h1 : ∀ N, maximalIdeal (A N) ^ (N + 1) = ⊥)
     (h2 : ∀ N, Gen (r N)) (h3 : ∀ N (A' : Type) [CommRing A'] [Algebra O A'] [IsCO O A']
@@ -485,6 +664,15 @@ private theorem assemble (hs : Seps rbar s) (A : ℕ → Type) [∀ N, CommRing 
 
 end
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ _ _ Γ ι _ _ _ _ rbar _ _ _ _ hphi hc`. Use `haveI hD : IsCO O (DualNumber (ResidueField O)) := (co_res O).2`. Use `haveI : Finite (Lift O rbar (DualNumber (ResidueField O))) := UpperTheory.finite_lift_dualNumber_of_phiCond l O Γ ι rbar hphi hc`. Establish `hne : ∀ p : {p : Lift O rbar (DualNumber (ResidueField O)) × Lift O rbar (DualNumber (ResidueField O)) // p.1 ≠ p.2}, ∃ g, p.1.1.hom g ≠ p.1.2.hom g`. Introduce `p`.
+
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `p.2 (Lift.ext (MonoidHom.ext hcon))`. Establish `hs : Seps rbar (fun p => (hne p).choose)`. Introduce `r r' h`.
+
+Assume the negation of the conclusion as `hrr`. Conclude with `(hne ⟨(r, r'), hrr⟩).choose_spec (h ⟨(r, r'), hrr⟩)`. Establish `hlev` using `fun N => level (fun p => (hne p).choose) hs hc N`. Use `choose A iA aA cA r h1 h2 h3 using hlev`. Use `letI := iA`.
+
+Use `letI := aA`. Use `haveI := cA`. Conclude with `assemble (fun p => (hne p).choose) hs A r h1 h2 h3`.
+-/
 theorem UpperTheory.V.Alg.univ_lift :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] [Finite (ResidueField O)] [CharP (ResidueField O) l] (Γ ι : Type) [Group Γ] [TopologicalSpace Γ] [Fintype ι] [DecidableEq ι] (rbar : Γ →* Matrix ι ι (ResidueField O)) [IsTopologicalGroup Γ] [CompactSpace Γ] [TotallyDisconnectedSpace Γ] [T2Space Γ], PhiCond Γ l → IsLocallyConstant rbar →
       ∃ (R : Type) (_ : CommRing R) (_ : Algebra O R) (_ : IsCO O R) (r : Lift O rbar R), Represents (fun _ _ _ _ _ => True) r := by

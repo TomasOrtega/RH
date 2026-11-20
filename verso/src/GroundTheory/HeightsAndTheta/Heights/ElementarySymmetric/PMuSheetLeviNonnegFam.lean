@@ -10,6 +10,19 @@ open GroundTheory.Heights₂.Heights.Regular (RegChartData)
 open ReciprocityTheory.AnForm (levi)
 open ReciprocityTheory.AnForm.A (coordDiv)
 
+/- English proof (translation)
+Introduce `II Ψ _ _ K _ ι _ Ω _ _ E _ _ D X Q _`. Use `filter_upwards [hH K ι (mCoordIdeal D.y) D.n X.M X.S.R Q] with y hy w γ hγ`. Take `⟨j, hsrc, hYo, hev⟩` from `hy w γ hγ`. Establish `hγev : ∀ᶠ y' in 𝓝 y, DifferentiableAt ℂ γ y' ∧ γ y' ∈ mcPts (mCoordIdeal D.y)` using `hγ.2.mono fun _ h => ⟨h.1, h.2.1⟩`. Take `⟨G, hG, hGeq⟩` from `hR K ι _ D.n X.M D.Xo (muLine X.H) X.S γ y j hγev hsrc hev`.
+
+Use `set g : (Fin D.n → ℂ) → Fin D.n → ℂ := fun y'' => X.S.R.chart j (X.M.proj (γ y'')) with hgdef`. Establish `hg : AnalyticAt ℂ g y` using `analyticAt_pi_of_eventually_differentiableAt (hev.mono fun _ h => h.2)`. Establish `hgy : g y ∈ (X.S.R.chart j).target \ coordDiv (X.S.R.S j)` using `⟨(X.S.R.chart j).map_source hsrc, (X.S.R.mem_Yo j _ hsrc).1 hYo⟩`. Establish `hUo : IsOpen ((X.S.R.chart j).target \ coordDiv (X.S.R.S j))` using `(X.S.R.chart j).open_target.sdiff (ReciprocityTheory.AnForm.A.PlurisubharmonicExtension.coordDiv_closed _)`. Establish `hC2 : ContDiffOn ℝ 2 (X.S.R.u j) ((X.S.R.chart j).target \ coordDiv (X.S.R.S j))` using `fun ξ hξ => (RegChartData.contDiffAt_u X.S.R j hξ).contDiffWithinAt`.
+
+Establish `hL` using `((ReciprocityTheory.AnForm.A.isPsh_iff_isLeviPsh_thm _ _ _ hUo hC2).1 (X.S.R.u_psh j)).2`. Establish `hgU : ∀ᶠ y' in 𝓝 y, g y' ∈ (X.S.R.chart j).target \ coordDiv (X.S.R.S j)` using `hg.continuousAt.preimage_mem_nhds (hUo.mem_nhds hgy)`. Establish `heq : (fun y' => phMu X.H (γ y')) =ᶠ[𝓝 y] fun y' => (X.S.R.u j ∘ g) y' + 1 * (G y').re` using `by filter_upwards [hγev, hev, hgU, hGeq] with y' h1 h2 h3 h4`. Establish `hY' : X.M.proj (γ y') ∈ X.S.R.Yo` using `(X.S.R.mem_Yo j _ h2.1).2 h3.2`. Establish `hl` using `X.S.log_h_eq h1.2 hY'`.
+
+Use `show Real.log ((muLine X.H).h (γ y')) = X.S.R.q j (g y') + X.S.R.ph ((X.S.R.chart j).symm (g y')) + 1 * (G y').re`. Rewrite using `[hl, h4, hgdef]`. Simplify using `only [(X.S.R.chart j).left_inv h2.1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hu2 : ContDiffAt ℝ 2 (X.S.R.u j) (g y)` using `RegChartData.contDiffAt_u X.S.R j hgy`.
+
+Establish `hcomp : ContDiffAt ℝ 2 (X.S.R.u j ∘ g) y` using `hu2.comp y hg.restrictScalars.contDiffAt`. Establish `hre : ContDiffAt ℝ 2 (fun y' => (G y').re) y` using `Complex.reCLM.contDiff.contDiffAt.comp y hG.restrictScalars.contDiffAt`. Use `⟨(hcomp.add (contDiffAt_const.mul hre)).congr_of_eventuallyEq heq, fun v => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `0 ≤ levi (fun y' => phMu X.H (γ y')) y v`. Rewrite using `[ReciprocityTheory.AnForm.levi_congr heq, ReciprocityTheory.AnForm.levi_add_smul 1 hcomp hre, ReciprocityTheory.AnForm.levi_re_analytic hG, ReciprocityTheory.AnForm.levi_comp v hg hu2]`.
+
+Simplify using `using hL _ hgy _`.
+-/
 theorem MuSheetLeviNonnegFam.proof (hH : SheetChartHolo.Statement) (hR : RefAlongSheet.Statement) :
     MuSheetLeviNonnegFam.Statement := by
   intro II Ψ _ _ K _ ι _ Ω _ _ E _ _ D X Q _

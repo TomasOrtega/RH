@@ -70,6 +70,9 @@ def CMCurveExists : Prop :=
     ∃ (M : Type) (_ : Field M) (_ : NumberField M) (P : Out.PolAV (Sp (𝓞 M))) (act : OAct (𝓞 K) P.A)
       (ρ : 𝓞 K →+* 𝓞 M) (v : epsR (𝓞 M) ⟶ P.A), IsCMCurve d τ (logPeriod d) M P act ρ v
 
+/- English proof (translation)
+The claim follows from `Embeddings.card M ℂ`.
+-/
 example (M : Type) [Field M] [NumberField M] : Fintype.card (M →+* ℂ) = Module.finrank ℚ M :=
   Embeddings.card M ℂ
 

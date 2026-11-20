@@ -9,6 +9,11 @@ namespace GlobalTheory.SepDescent
 
 def closedRange : MorphismProperty Scheme.{0} := fun _ _ f => IsClosed (Set.range f.base)
 
+/- English proof (translation)
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨e.hom.base x, by simp⟩`. Introduce and unpack `⟨y, rfl⟩`.
+
+Use `⟨e.inv.base y, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, Iso.inv_hom_id_assoc]`.
+-/
 lemma range_iso_comp {X Y Z : Scheme.{0}} (e : X ≅ Y) (f : Y ⟶ Z) :
     Set.range (e.hom ≫ f).base = Set.range f.base := by
   ext z
@@ -54,6 +59,9 @@ end GlobalTheory.SepDescent
 
 open GlobalTheory.SepDescent in
 
+/- English proof (translation)
+Introduce `R _ S π h1 h2 G' G β hp hs`. Establish `hd : (MorphismProperty.diagonal closedRange) G.hom` using `MorphismProperty.of_isPullback_of_descendsAlong (P := MorphismProperty.diagonal closedRange) (Q := @UniversallyClosed ⊓ @Surjective) hp.flip ⟨h1, h2⟩ (pullback.diagonal G'.hom).isClosedMap.isClosed_range`. Conclude with `⟨IsClosedImmersion.of_isPreimmersion _ hd⟩`.
+-/
 theorem GlobalTheory.isSeparated_of_isPullback_universallyClosed_surjective :
     ∀ (R : Type) [CommRing R] (S : Scheme.{0}) (π : S ⟶ Sp R), UniversallyClosed π → Surjective π →
     ∀ (G' : Over S) (G : Over (Sp R)) (β : G'.left ⟶ G.left),

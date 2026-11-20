@@ -2,6 +2,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `h`. Establish `hpos : 0 < Nat.totient (ordProj[r] N)`. Rewrite using `[Nat.totient_pos]`. Conclude with `pow_pos hr.pos _`. Take `⟨k, hk⟩` from `Nat.exists_eq_succ_of_ne_zero hpos.ne'`.
+
+Establish `h0 : idem r N * ((ordProj[r] N : ℕ) : ZMod N) = 0`. Unfold `idem`. Rewrite using `[hk, ← Nat.cast_mul, pow_succ, mul_assoc, mul_comm (ordCompl[r] N), Nat.ordProj_mul_ordCompl_eq_self, Nat.cast_mul, ZMod.natCast_self, mul_zero]`. Use `ext`. Express the relevant statement in the definitionally equal form `idem r N * (u : ZMod N) + (1 - idem r N) = 1`.
+
+Take the linear combination `idem r N * ht + t * h0`.
+-/
 private theorem co_proj_eq_one {N : ℕ} (r : ℕ) (hr : r.Prime) (u : (ZMod N)ˣ)
     (h : ((ordProj[r] N : ℕ) : ZMod N) ∣ (u : ZMod N) - 1) : proj r N u = 1 := by
   obtain ⟨t, ht⟩ := h
@@ -17,6 +24,9 @@ private theorem co_proj_eq_one {N : ℕ} (r : ℕ) (hr : r.Prime) (u : (ZMod N)�
   change idem r N * (u : ZMod N) + (1 - idem r N) = 1
   linear_combination idem r N * ht + t * h0
 
+/- English proof (translation)
+Rewrite `h` using `[Units.ext_iff, ZMod.unitsMap_val, ← ZMod.natCast_val, Units.val_one, ← Nat.cast_one, ZMod.natCast_eq_natCast_iff]`. Take `⟨t, ht⟩` from `h.symm.dvd`. Use `⟨(t : ZMod N), ?_⟩` and prove the remaining obligations. Use `congrArg (Int.cast : ℤ → ZMod N) ht` as an intermediate fact. Simplify using `using this`.
+-/
 private theorem co_dvd_of_unitsMap {N d : ℕ} [NeZero N] (hd : d ∣ N) (u : (ZMod N)ˣ)
     (h : ZMod.unitsMap hd u = 1) : ((d : ℕ) : ZMod N) ∣ (u : ZMod N) - 1 := by
   rw [Units.ext_iff, ZMod.unitsMap_val, ← ZMod.natCast_val,
@@ -26,15 +36,26 @@ private theorem co_dvd_of_unitsMap {N d : ℕ} [NeZero N] (hd : d ∣ N) (u : (Z
   have := congrArg (Int.cast : ℤ → ZMod N) ht
   simpa using this
 
+/- English proof (translation)
+Simplify using `[comp]`.
+-/
 private theorem co_toUnitHom {O : Type} [CommRing O] {N : ℕ} (r : ℕ) (χ : DirichletCharacter O N) (u : (ZMod N)ˣ) :
     (comp r χ).toUnitHom u = χ.toUnitHom (proj r N u) := by
   simp [comp]
 
+/- English proof (translation)
+Use `ext`. Simplify using `[MulChar.pow_apply_coe]`.
+-/
 private theorem co_pow_toUnitHom {O : Type} [CommRing O] {N : ℕ} (χ : DirichletCharacter O N) (k : ℕ) (u : (ZMod N)ˣ) :
     (χ ^ k).toUnitHom u = χ.toUnitHom u ^ k := by
   ext
   simp [MulChar.pow_apply_coe]
 
+/- English proof (translation)
+Repeatedly rewrite using `[← co_pow_toUnitHom]`. Prove the components needed by the constructor for the conclusion. Introduce `h u`. Rewrite using `[h]`. Use `ext`.
+
+Simplify using the standard rewrite rules. Introduce `h`. Use extensionality with `u`. Simplify using `using congrArg Units.val (h u)`.
+-/
 private theorem co_pow_eq_one_iff {O : Type} [CommRing O] {N : ℕ} (χ : DirichletCharacter O N) (k : ℕ) :
     χ ^ k = 1 ↔ ∀ u, χ.toUnitHom u ^ k = 1 := by
   simp_rw [← co_pow_toUnitHom]
@@ -47,6 +68,11 @@ private theorem co_pow_eq_one_iff {O : Type} [CommRing O] {N : ℕ} (χ : Dirich
     ext u
     simpa using congrArg Units.val (h u)
 
+/- English proof (translation)
+Rewrite using `[orderOf_dvd_iff_pow_eq_one, co_pow_eq_one_iff]`. Introduce `u`. Establish `: NeZero (ordProj[r] N)` using `⟨(pow_pos hr.pos _).ne'⟩`. Rewrite using `[← map_pow, co_toUnitHom, co_proj_eq_one r hr, map_one]`. Apply `co_dvd_of_unitsMap (Nat.ordProj_dvd N r)` to reduce the goal to its premises.
+
+Rewrite using `[map_pow, ZMod.pow_totient]`.
+-/
 private theorem co_ord_dvd {O : Type} [CommRing O] {N : ℕ} [NeZero N] (χ : DirichletCharacter O N) (r : ℕ)
     (hr : r.Prime) : orderOf (comp r χ) ∣ Nat.totient (ordProj[r] N) := by
   rw [orderOf_dvd_iff_pow_eq_one, co_pow_eq_one_iff]
@@ -56,6 +82,17 @@ private theorem co_ord_dvd {O : Type} [CommRing O] {N : ℕ} [NeZero N] (χ : Di
   apply co_dvd_of_unitsMap (Nat.ordProj_dvd N r)
   rw [map_pow, ZMod.pow_totient]
 
+/- English proof (translation)
+Establish `hc : (orderOf (comp r χ)).Coprime r` using `((Nat.Prime.coprime_iff_not_dvd hr).2 h).symm`. Establish `h1` using `co_ord_dvd χ r hr`. Distinguish the cases in `hN : r ∣ N`. Establish `hpos : 0 < N.factorization r` using `hr.factorization_pos_of_dvd (NeZero.ne N) hN`. Rewrite `h1` using `[Nat.totient_prime_pow hr hpos]`.
+
+Use `⟨(hc.pow_right _).dvd_of_dvd_mul_left h1, ?_⟩` and prove the remaining obligations. Apply `DirichletCharacter.conductor_dvd_of_mem_conductorSet` to reduce the goal to its premises. Rewrite using `[DirichletCharacter.mem_conductorSet_iff, DirichletCharacter.factorsThrough_iff_ker_unitsMap hN]`. Introduce `u hu`. Rewrite `hu`, the goal using `[MonoidHom.mem_ker]`.
+
+Establish `h2` using `dvd_sub_pow_of_dvd_sub (co_dvd_of_unitsMap hN u hu) (N.factorization r)`. Establish `h3 : (comp r χ).toUnitHom u ^ (r ^ N.factorization r) = 1`. Rewrite using `[← map_pow, co_toUnitHom, co_proj_eq_one r hr, map_one]`. Rewrite `h2` using `[one_pow]`. Use `dvd_trans ?_ (by simpa using h2)` and prove the remaining obligations.
+
+Rewrite using `[Nat.cast_pow]`. Conclude with `pow_dvd_pow _ (Nat.le_succ _)`. Establish `h4` using `(co_pow_eq_one_iff (comp r χ) _).1 (pow_orderOf_eq_one _) u`. Establish `h5` using `pow_gcd_eq_one.2 ⟨h4, h3⟩`. Rewrite `h5` using `[hc.pow_right _, pow_one]`. Then use the resulting hypothesis.
+
+Rewrite `h1` using `[Nat.factorization_eq_zero_of_not_dvd hN, pow_zero, Nat.totient_one, Nat.dvd_one]`. Use `⟨by rw [h1]; exact one_dvd _, ?_⟩` and prove the remaining obligations. Rewrite `h1` using `[orderOf_eq_one_iff]`. Rewrite using `[h1, DirichletCharacter.conductor_one]`. Conclude with `one_dvd _`.
+-/
 private theorem co_tame {O : Type} [CommRing O] {N : ℕ} [NeZero N] (χ : DirichletCharacter O N) (r : ℕ)
     (hr : r.Prime) (h : ¬ r ∣ orderOf (comp r χ)) :
     orderOf (comp r χ) ∣ r - 1 ∧ (comp r χ).conductor ∣ r := by
@@ -85,6 +122,21 @@ private theorem co_tame {O : Type} [CommRing O] {N : ℕ} [NeZero N] (χ : Diric
     rw [h1, DirichletCharacter.conductor_one]
     exact one_dvd _
 
+/- English proof (translation)
+Introduce `O _ _ N _ χ r hr`. Use `⟨co_ord_dvd χ r hr, ?_, co_tame χ r hr, ?_⟩` and prove the remaining obligations. Establish `h1` using `co_ord_dvd χ 2 Nat.prime_two`. Establish `h2 : Nat.totient (ordProj[2] N) ∣ 2 ^ (N.factorization 2 - 1)`. Break down `Nat.eq_zero_or_pos (N.factorization 2) with h | h` into its components or cases.
+
+Simplify using `[h]`. Rewrite using `[Nat.totient_prime_pow Nat.prime_two h]`. Simplify using the standard rewrite rules. Take `⟨k, -, hk⟩` from `(Nat.dvd_prime_pow Nat.prime_two).1 (h1.trans h2)`. Conclude with `⟨k, hk⟩`.
+
+Introduce `l s hl hlr hχ hne`. Establish `h1 : orderOf (comp r χ) ∣ l ^ s`. Rewrite using `[orderOf_dvd_iff_pow_eq_one, co_pow_eq_one_iff]`. Introduce `u`. Rewrite using `[co_toUnitHom]`.
+
+Conclude with `(co_pow_eq_one_iff χ _).1 hχ _`. Take `⟨k, -, hk⟩` from `(Nat.dvd_prime_pow hl).1 h1`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Conclude with `hne (orderOf_eq_one_iff.1 (by simpa using hk))`.
+
+Establish `h2 : ¬ r ∣ orderOf (comp r χ)`. Rewrite using `[hk]`. Introduce `h`. Conclude with `hlr ((Nat.prime_dvd_prime_iff_eq hr hl).1 (hr.dvd_of_dvd_pow h)).symm`. Take `⟨h3, h4⟩` from `co_tame χ r hr h2`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite `h3` using `[hk]`. Conclude with `((Nat.modEq_iff_dvd' hr.one_le).2 ((dvd_pow_self l hk0).trans h3)).symm`. Break down `(Nat.dvd_prime hr).1 h4 with h | h` into its components or cases. Conclude with `absurd (DirichletCharacter.eq_one_iff_conductor_eq_one.2 h) hne`.
+
+Conclude with `h`.
+-/
 theorem UpperTheory.V.HV.compOrd :
     ∀ (O : Type) [CommRing O] [IsDomain O] (N : ℕ) [NeZero N] (χ : DirichletCharacter O N) (r : ℕ), r.Prime →
       orderOf (comp r χ) ∣ Nat.totient (ordProj[r] N) ∧ (∃ k, orderOf (comp 2 χ) = 2 ^ k) ∧

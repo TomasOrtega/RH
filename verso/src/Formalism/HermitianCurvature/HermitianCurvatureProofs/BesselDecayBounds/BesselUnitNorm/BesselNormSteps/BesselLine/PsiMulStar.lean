@@ -12,6 +12,9 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.MainNotions
 variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
   {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
 
+/- English proof (translation)
+Unfold `psi`. Rewrite using `[Complex.star_def, ← Complex.exp_conj, ← Complex.exp_add]`. Use `Complex.exp_zero` and compare the differences between its conclusion and the goal. Apply the tactic sequence `simp <;> ring`.
+-/
 theorem psi_mul_star (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (g : Mx k r) :
     psi k r z c g * star (psi k r z c g) = 1 := by
   unfold psi
@@ -19,6 +22,21 @@ theorem psi_mul_star (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (g : Mx k r) :
   convert Complex.exp_zero
   simp <;> ring
 
+/- English proof (translation)
+Take `⟨g1, g2, g3, g4, g5, g6, g7⟩` from `hG`. Take `⟨hs1, hsm, hsn⟩` from `hσ`. Take `⟨hp1, hpm, hpn⟩` from `hπ`. Take `⟨ψ1, ψ2, ψ3, ψ4⟩` from `hψ`. Take `⟨hP1, hP2⟩` from `hp`.
+
+Establish `hhU : h ∈ UH (Hpk k r)` using `hh.1`. Establish `hmU : m ∈ UH (Hpk k r)` using `hm.1`. Establish `hP1U : Matrix.of p.1 ∈ UH (Hpk k r)` using `hP1.1`. Establish `hP2U : Matrix.of p.2 ∈ UH (Hpk k r)` using `hP2.1`. Establish `hinv : h * h⁻¹ = 1` using `(g2 h hhU).1`.
+
+Establish `e1 : Matrix.of (tEq h m p).1 = Matrix.of p.1 * h` using `rfl`. Establish `e2 : Matrix.of (tEq h m p).2 = h⁻¹ * Matrix.of p.2 * h * m` using `rfl`. Establish `hQ : Matrix.of p.1 * h * (h⁻¹ * Matrix.of p.2 * h * m) = Matrix.of p.1 * Matrix.of p.2 * (h * m)`. Combine the equalities or inequalities in the displayed calculation. Establish `hσw : σ (Matrix.of p.1 * Matrix.of p.2) (σ (h * m) w) = σ (Matrix.of p.1 * Matrix.of p.2 * (h * m)) w`.
+
+Rewrite using `[hsm _ (g1 _ hP1U _ hP2U) _ (g1 _ hhU _ hmU)]`. Both sides reduce to the same expression. Establish `hn : h⁻¹ * Matrix.of p.2 * h ∈ Nset k r` using `g5 h hh _ hP2`. Establish `hψQ : psi k r z c (h⁻¹ * Matrix.of p.2 * h * m) = psi k r z c (Matrix.of p.2) * psi k r z c m`. Rewrite using `[ψ1 _ hn _ hm, ψ2 h hh _ hP2]`.
+
+Establish `hπQ : (π h).comp (π (Matrix.of p.1 * h)⁻¹) = π (Matrix.of p.1)⁻¹`. Establish `hu : h⁻¹ * (Matrix.of p.1)⁻¹ ∈ UWset k r z` using `g7 _ (g3 h hh) _ (g3 _ hP1)`. Rewrite using `[Matrix.mul_inv_rev, ← hpm h hh _ hu, ← Matrix.mul_assoc, hinv, Matrix.one_mul]`. Establish `hms` using `psi_mul_star z c m`. Unfold `beF`.
+
+Rewrite using `[e1, e2, hQ, hσw, hψQ, ContinuousLinearMap.comp_smul, ContinuousLinearMap.smul_comp, hπQ, smul_smul]`. Use `congr 1`. Rewrite using `[star_mul]`. Use `first`. Consider the case `linear_combination (-(⟪v, σ (Matrix.of p.1 * Matrix.of p.2 * (h * m)) w⟫_ℂ * star (psi k r z c (Matrix.of p.2)))) * hms`.
+
+Consider the case `linear_combination (⟪v, σ (Matrix.of p.1 * Matrix.of p.2 * (h * m)) w⟫_ℂ * star (psi k r z c (Matrix.of p.2))) * hms`.
+-/
 theorem beF_tEq (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (σ : Mx k r → (H →L[ℂ] H)) (hG : GrpF k r z) (hσ : SigU σ) (hπ : PiU z π) (hψ : PsiF k r z c)
     (h m : Mx k r) (hh : h ∈ UWset k r z) (hm : m ∈ Nset k r) (w v : H) (p : Mt k r × Mt k r)
@@ -62,6 +80,15 @@ theorem beF_tEq (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp
   | linear_combination (⟪v, σ (Matrix.of p.1 * Matrix.of p.2 * (h * m)) w⟫_ℂ *
       star (psi k r z c (Matrix.of p.2))) * hms
 
+/- English proof (translation)
+Introduce `h hh m hm w hw v hv`. Establish `hint` using `conv_int z c π μW μN σ hG hπ hM hD w hw v hv`. Take `⟨hae, htEq, -, -⟩` from `hM`. Establish `hmp` using `htEq h hh m hm`. Establish `hchg : ∫ p, beF z c π σ w v (tEq h m p) ∂(μW.prod μN) = ∫ p, beF z c π σ w v p ∂(μW.prod μN)`.
+
+Establish `e` using `integral_map (μ := μW.prod μN) (f := beF z c π σ w v) hmp.measurable.aemeasurable (by rw [hmp.map_eq]; exact hint.aestronglyMeasurable)`. Rewrite `e` using `[hmp.map_eq]`. Conclude with `e.symm`. Establish `hint2 : Integrable (fun p => beF z c π σ w v (tEq h m p)) (μW.prod μN)` using `(hmp.integrable_comp hint.aestronglyMeasurable).mpr hint`. Establish `hL` using `ContinuousLinearMap.integral_comp_comm (ContinuousLinearMap.compL ℂ Wp Wp Wp (psi k r z c m • π h)) hint2`.
+
+Simplify using `only [ContinuousLinearMap.compL_apply] at hL`. Unfold `be`. Rewrite using `[← hchg, ← hL]`. Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hae] with p hp`.
+
+Conclude with `beF_tEq z c π σ hG hσ hπ hψ h m hh hm w v p hp`.
+-/
 theorem conv_equiv (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (μW μN : Measure (Mt k r)) [SFinite μN] (σ : Mx k r → (H →L[ℂ] H))
     (hG : GrpF k r z) (hσ : SigU σ) (hπ : PiU z π) (hψ : PsiF k r z c) (hM : MeasF z π μW μN)
@@ -101,6 +128,23 @@ def adjR (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Complet
     simp
   norm_map' T := ContinuousLinearMap.adjoint.norm_map T
 
+/- English proof (translation)
+Take `⟨g1, g2, g3, g4, g5, g6, g7⟩` from `hG`. Take `⟨hs1, hsm, hsn⟩` from `hσ`. Take `⟨hp1, hpm, hpn⟩` from `hπ`. Take `⟨ψ1, ψ2, ψ3, ψ4⟩` from `hψ`. Take `⟨hP1, hP2⟩` from `hp`.
+
+Establish `hP1U : Matrix.of p.1 ∈ UH (Hpk k r)` using `hP1.1`. Establish `hP2U : Matrix.of p.2 ∈ UH (Hpk k r)` using `hP2.1`. Establish `hAU : Matrix.of p.1 * Matrix.of p.2 ∈ UH (Hpk k r)` using `g1 _ hP1U _ hP2U`. Establish `e1 : Matrix.of (tInv p).1 = (Matrix.of p.1)⁻¹` using `rfl`. Establish `e2 : Matrix.of (tInv p).2 = Matrix.of p.1 * (Matrix.of p.2)⁻¹ * (Matrix.of p.1)⁻¹` using `rfl`.
+
+Establish `hQ : (Matrix.of p.1)⁻¹ * (Matrix.of p.1 * (Matrix.of p.2)⁻¹ * (Matrix.of p.1)⁻¹) = (Matrix.of p.1 * Matrix.of p.2)⁻¹`. Rewrite using `[Matrix.mul_inv_rev]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [(g2 _ hP1U).2.1, Matrix.one_mul]`.
+
+Establish `hψQ : psi k r z c (Matrix.of p.1 * (Matrix.of p.2)⁻¹ * (Matrix.of p.1)⁻¹) = star (psi k r z c (Matrix.of p.2))`. Rewrite using `[ψ3 _ hP1 _ (g4 _ hP2), ψ4 _ hP2]`. Establish `hσadj : ⟪w, σ (Matrix.of p.1 * Matrix.of p.2)⁻¹ v⟫_ℂ = ⟪σ (Matrix.of p.1 * Matrix.of p.2) w, v⟫_ℂ` using `by set A := Matrix.of p.1 * Matrix.of p.2 with hAdef`. Establish `hAi` using `g2 A hAU`. Set `L : H →ₗᵢ[ℂ] H` to `{ toLinearMap := (σ A : H →ₗ[ℂ] H), norm_map' := hsn A hAU }`.
+
+Establish `hv : σ A (σ A⁻¹ v) = v`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hsm A hAU _ hAi.2.2, hAi.1, hs1, ContinuousLinearMap.one_apply]`. Combine the equalities or inequalities in the displayed calculation. Establish `hπadj : ContinuousLinearMap.adjoint (π (Matrix.of p.1)⁻¹) = π ((Matrix.of p.1)⁻¹)⁻¹` using `by set A := (Matrix.of p.1)⁻¹ with hAdef`. Establish `hA : A ∈ UWset k r z` using `g3 _ hP1`.
+
+Establish `hAi : A⁻¹ ∈ UWset k r z` using `g3 _ hA`. Establish `h1 : A * A⁻¹ = 1` using `(g2 A hA.1).1`. Set `L : Wp →ₗᵢ[ℂ] Wp` to `{ toLinearMap := (π A : Wp →ₗ[ℂ] Wp), norm_map' := hpn A hA }`. Establish `hx : ∀ x : Wp, π A (π A⁻¹ x) = x`. Introduce `x`.
+
+Rewrite using `[← ContinuousLinearMap.comp_apply, ← hpm A hA _ hAi, h1, hp1, ContinuousLinearMap.one_apply]`. Use `symm`. Rewrite using `[ContinuousLinearMap.eq_adjoint_iff]`. Introduce `x y`. Combine the equalities or inequalities in the displayed calculation.
+
+Unfold `beF`. Rewrite using `[e1, e2, hQ, hψQ, star_star, hσadj, LinearIsometryEquiv.map_smulₛₗ, hπadj]`. Use `congr 1`. Simplify using `only [map_mul, inner_conj_symm, Complex.star_def, Complex.conj_conj]`.
+-/
 theorem beF_tInv (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (σ : Mx k r → (H →L[ℂ] H)) (hG : GrpF k r z) (hσ : SigU σ) (hπ : PiU z π) (hψ : PsiF k r z c)
     (w v : H) (p : Mt k r × Mt k r)
@@ -154,6 +198,13 @@ theorem beF_tInv (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (W
   congr 1
   simp only [map_mul, inner_conj_symm, Complex.star_def, Complex.conj_conj]
 
+/- English proof (translation)
+Introduce `w hw v hv hwK hvK`. Establish `hint` using `conv_int z c π μW μN σ hG hπ hM hD v hv w hwK`. Take `⟨hae, -, hinvmp, -⟩` from `hM`. Establish `hchg : ∫ p, beF z c π σ v w (tInv p) ∂(μW.prod μN) = ∫ p, beF z c π σ v w p ∂(μW.prod μN)`. Establish `e` using `integral_map (μ := μW.prod μN) (f := beF z c π σ v w) hinvmp.measurable.aemeasurable (by rw [hinvmp.map_eq]; exact hint.aestronglyMeasurable)`.
+
+Rewrite `e` using `[hinvmp.map_eq]`. Conclude with `e.symm`. Establish `h1 : ContinuousLinearMap.adjoint (∫ p, beF z c π σ w v p ∂(μW.prod μN)) = ∫ p, ContinuousLinearMap.adjoint (beF z c π σ w v p) ∂(μW.prod μN)` using `((adjR Wp).integral_comp_comm _).symm`. Unfold `be`. Rewrite using `[h1, ← hchg]`.
+
+Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hae] with p hp`. Conclude with `(beF_tInv z c π σ hG hσ hπ hψ w v p hp).symm`.
+-/
 theorem conv_herm (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (μW μN : Measure (Mt k r)) [SFinite μN] (σ : Mx k r → (H →L[ℂ] H))
     (hG : GrpF k r z) (hσ : SigU σ) (hπ : PiU z π) (hψ : PsiF k r z c) (hM : MeasF z π μW μN)
@@ -178,6 +229,9 @@ theorem conv_herm (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (
   filter_upwards [hae] with p hp
   exact (beF_tInv z c π σ hG hσ hπ hψ w v p hp).symm
 
+/- English proof (translation)
+Conclude with `⟨conv_int z c π μW μN σ hG hπ hM hD, conv_cont z c π μW μN σ hG hπ hM hD, conv_equiv z c π μW μN σ hG hσ hπ hψ hM hD, conv_herm z c π μW μN σ hG hσ hπ hψ hM hD⟩`.
+-/
 theorem convAt_of (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (μW μN : Measure (Mt k r)) [SFinite μN] (σ : Mx k r → (H →L[ℂ] H))
     (hG : GrpF k r z) (hσ : SigU σ) (hπ : PiU z π) (hψ : PsiF k r z c) (hM : MeasF z π μW μN)

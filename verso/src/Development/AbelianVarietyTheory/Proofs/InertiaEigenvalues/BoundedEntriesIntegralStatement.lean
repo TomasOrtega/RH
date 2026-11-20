@@ -27,5 +27,8 @@ set_option synthInstance.maxHeartbeats 400000
 open GlobalTheory.StdAtPrime
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.StdAtPrimeLat.trivAt_hLat_of_bnd | exact GlobalTheory.StdAtPrimeLat.trivAt_hLat_of_bnd | (intros; apply GlobalTheory.StdAtPrimeLat.trivAt_hLat_of_bnd <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.bounded_entries_integral : ∀ (D : D7) (ι : (Af D.host.F ⊗[D.host.F] D.host.E) ≃+* FiniteAdeleRing (𝓞 D.host.E) D.host.E), (∀ x : D.host.E, ι ((1 : Af D.host.F) ⊗ₜ[D.host.F] x) = algebraMap D.host.E _ x) → (∀ y, y ∈ intAE D ↔ ∀ P : HeightOneSpectrum (𝓞 D.host.E), Valued.v (ι y P) ≤ 1) → ∀ (V : HSp D), Bridge.hLat V 1 = Formalism.L2.Pj.stdLat D.host.E V.rank → ∀ (p : ℕ) (g : Bridge.Gf V), Bnd p (Matrix.GeneralLinearGroup.map ι.toRingHom g.1).1 → Bnd p (Matrix.GeneralLinearGroup.map ι.toRingHom g.1)⁻¹.1 → (⟨Bridge.hLat V g⟩ : GenLat D.host.E V.rank).TrivAt p := by
   first | exact @GlobalTheory.StdAtPrimeLat.trivAt_hLat_of_bnd | exact GlobalTheory.StdAtPrimeLat.trivAt_hLat_of_bnd | (intros; apply GlobalTheory.StdAtPrimeLat.trivAt_hLat_of_bnd <;> assumption)

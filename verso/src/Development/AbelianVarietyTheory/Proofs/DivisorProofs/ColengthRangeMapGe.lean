@@ -8,6 +8,17 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 
 namespace GlobalTheory.Dieu
 
+/- English proof (translation)
+Establish `hp : (p : k) = 0` using `CharP.cast_eq_zero k p`. Take `⟨hfin, -⟩` from `rigExt_field_of_charP p k hp G`. Take `⟨θ, hθ⟩` from `GlobalTheory.T.exists_theta_dieudonne_mod_frobenius_differentials p T k`. Establish `hred : ∀ m : T.M H, T.red G (T.map q m) = rigExtMap q (T.red H m)` using `fun m => by show T.base.red G trivial (T.base.smap trivial trivial (SemiHom.ofHom q) m) = _`. Rewrite using `[T.base.red_smap, SemiHom.ofHom_rig]`.
+
+Prove the components needed by the constructor for the conclusion. Use `haveI : Module.Finite k G.omega := Module.Finite.of_injective G.rigOfOmega (G.rigOfOmega_injective_of_eq_zero hp)`. Take `⟨-, hsurj, -, hsemi, hnat⟩` from `hθ G`. Set `Q` to `LinearMap.range (omegaMap G H q)`. Use `(GlobalTheory.T.length_ge_finrank_of_semilinear_surjective p k (T.M G) (G.omega ⧸ Q) (WittVector.frobeniusEquiv p k) (Q.mkQ.toAddMonoidHom.comp (θ G)) (Q.mkQ_surjective.comp hsurj) (fun a n => ?_) (LinearMap.range (T.map q))).1 ?_` and prove the remaining obligations.
+
+Use `show Q.mkQ (θ G (WittVector.frobenius a • n)) = WittVector.constantCoeff a • Q.mkQ (θ G n)`. Rewrite using `[hsemi, LinearMap.map_smul]`. Introduce and unpack `_ ⟨m, rfl⟩ show Q.mkQ (θ G (T.map q m)) = 0`. Rewrite using `[hnat, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨_, rfl⟩`.
+
+Use `haveI : Module.Finite k G.dual.Lie := Module.Finite.of_surjective (G.rigToLie hp) (G.rigToLie_surjective hp)`. Set `Q` to `LinearMap.range (lieMap H.dual G.dual (dualHom G H q))`. Use `(GlobalTheory.T.length_ge_finrank_of_semilinear_surjective p k (T.M G) (G.dual.Lie ⧸ Q) (RingEquiv.refl _) ((Q.mkQ ∘ₗ G.rigToLie hp).toAddMonoidHom.comp (T.red G).toAddMonoidHom) ((Q.mkQ_surjective.comp (G.rigToLie_surjective hp)).comp (T.base.red_surjective G trivial)) (fun a n …` and prove the remaining obligations. Use `show Q.mkQ (G.rigToLie hp (T.red G (a • n))) = WittVector.constantCoeff a • Q.mkQ (G.rigToLie hp (T.red G n))`. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.map_smul, LinearMap.map_smul]`.
+
+Introduce and unpack `_ ⟨m, rfl⟩ show Q.mkQ (G.rigToLie hp (T.red G (T.map q m))) = 0`. Rewrite using `[hred, rigToLie_rigExtMap, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨_, rfl⟩`.
+-/
 theorem colength_range_map_ge (p : ℕ) [Fact p.Prime] (T : Theory p) (k : Type) [Field k] [CharP k p]
     [PerfectRing k p] (G H : PDivGroup p k) (q : G ⟶ H) :
     (Module.finrank k (G.omega ⧸ LinearMap.range (omegaMap G H q)) : ℕ∞) ≤

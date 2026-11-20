@@ -5,6 +5,17 @@ namespace GlobalTheory.DenseGL
 
 variable {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E))
 
+/- English proof (translation)
+Establish `hd` using `HeightOneSpectrum.denseRange_algebraMap (K := E) P`. Take `⟨π, hπ⟩` from `HeightOneSpectrum.valuation_exists_uniformizer (K := E) P`. Use `set c : P.adicCompletion E := algebraMap E (P.adicCompletion E) (π ^ M.toNat) with hc`. Establish `hvc : Valued.v c = WithZero.exp (-(M.toNat : ℤ))`. Establish `hv : ∀ k : E, Valued.v (algebraMap E (P.adicCompletion E) k) = P.valuation E k` using `fun k => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P k`.
+
+Rewrite using `[hc, hv, map_pow, hπ, ← WithZero.exp_nsmul]`. Use `congr 1`. Simplify using the standard rewrite rules. Establish `hc0 : Valued.v c ≠ 0` using `by rw [hvc]; exact WithZero.exp_ne_zero`. Establish `hN : {y : P.adicCompletion E | Valued.v (x - y) < Valued.v c} ∈ nhds x`.
+
+Establish `ho` using `(Valued.isOpen_ball (P.adicCompletion E) (Valued.v.restrict c)).preimage (continuous_const.sub continuous_id : Continuous fun y : P.adicCompletion E => x - y)`. Simplify using `only [Set.preimage_ofPred_eq, Valuation.restrict_lt_iff] at ho`. Use `ho.mem_nhds ?_` and prove the remaining obligations. Use `show Valued.v (x - x) < _`. Rewrite using `[sub_self, map_zero]`.
+
+Conclude with `zero_lt_iff.2 hc0`. Take `⟨e, he⟩` from `hd.mem_nhds hN`. Use `⟨e, le_of_lt (lt_of_lt_of_le he ?_)⟩` and prove the remaining obligations. Rewrite using `[hvc, WithZero.exp_le_exp]`. Use `Int.self_le_toNat M` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem approx (x : P.adicCompletion E) (M : ℤ) :
     ∃ e : E, Valued.v (x - algebraMap E (P.adicCompletion E) e) ≤ WithZero.exp (-M) := by
   have hd := HeightOneSpectrum.denseRange_algebraMap (K := E) P
@@ -32,6 +43,11 @@ theorem approx (x : P.adicCompletion E) (M : ℤ) :
   have := Int.self_le_toNat M
   omega
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `Finite.bddAbove_range (fun p : Fin n × Fin n => Valued.v (B p.1 p.2))`. Use `⟨(WithZero.log (max c 1)).toNat, fun r k => ?_⟩` and prove the remaining obligations. Establish `h1 : Valued.v (B r k) ≤ max c 1` using `(hc ⟨(r, k), rfl⟩).trans (le_max_left _ _)`. Establish `h0 : max c 1 ≠ 0` using `ne_of_gt (lt_of_lt_of_le zero_lt_one (le_max_right _ _))`. Use `h1.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← WithZero.exp_log h0, WithZero.exp_le_exp, WithZero.log_exp]`. Conclude with `Int.self_le_toNat _`.
+-/
 theorem bound {n : ℕ} (B : Matrix (Fin n) (Fin n) (P.adicCompletion E)) :
     ∃ L : ℕ, ∀ r k, Valued.v (B r k) ≤ WithZero.exp (L : ℤ) := by
   obtain ⟨c, hc⟩ := Finite.bddAbove_range (fun p : Fin n × Fin n => Valued.v (B p.1 p.2))
@@ -62,6 +78,17 @@ def smallIdeal : Ideal (P.adicCompletionIntegers E) where
     rw [show ((c * x : P.adicCompletionIntegers E) : P.adicCompletion E) = c * x from rfl, map_mul]
     exact lt_of_le_of_lt (mul_le_of_le_one_left' hc) hx
 
+/- English proof (translation)
+Use `set O := P.adicCompletionIntegers E`. Establish `hmem : ∀ r s, X r s ∈ O` using `fun r s => (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (hX r s).le`. Set `X' : Matrix (Fin n) (Fin n) O` to `fun r s => ⟨X r s, hmem r s⟩`. Establish `hmap : O.subtype.mapMatrix (1 + X') = 1 + X`. Rewrite using `[map_add, map_one]`.
+
+Both sides reduce to the same expression. Establish `hq : (Ideal.Quotient.mk (smallIdeal P)).mapMatrix (1 + X') = 1`. Rewrite using `[map_add, map_one, add_eq_left]`. Use extensionality with `r s`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (hX r s)`.
+
+Establish `hd : (1 + X').det - 1 ∈ smallIdeal P`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, RingHom.map_det, hq, Matrix.det_one, map_one, sub_self]`. Establish `hdet : Valued.v (1 + X).det = 1`. Rewrite using `[← hmap, ← RingHom.map_det]`. Establish `h1 : (O.subtype (1 + X').det) = 1 + (((1 + X').det - 1 : O) : P.adicCompletion E)`.
+
+Simplify using `[O]`. Rewrite using `[h1]`. Conclude with `Valuation.map_one_add_of_lt _ hd`. Use `⟨hdet, fun r s => ?_⟩` and prove the remaining obligations. Establish `hdet0 : (1 + X).det ≠ 0` using `fun h => by rw [h, map_zero] at hdet; exact zero_ne_one hdet`.
+
+Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul, map_mul, map_inv₀, hdet, inv_one, one_mul, ← hmap, ← RingHom.map_adjugate]`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 ((1 + X').adjugate r s).2`.
+-/
 theorem one_add_small {n : ℕ} (X : Matrix (Fin n) (Fin n) (P.adicCompletion E))
     (hX : ∀ r s, Valued.v (X r s) < 1) :
     Valued.v (1 + X).det = 1 ∧ ∀ r s, Valued.v ((1 + X)⁻¹ r s) ≤ 1 := by
@@ -94,6 +121,9 @@ end GlobalTheory.DenseGL
 
 namespace GlobalTheory.DenseGL
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_mul' (hB r k) (hC k s)`.
+-/
 theorem entry_le {n : ℕ} {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))] (B C : Matrix (Fin n) (Fin n) K)
     (a b : WithZero (Multiplicative ℤ)) (hB : ∀ r k, Valued.v (B r k) ≤ a) (hC : ∀ k s, Valued.v (C k s) ≤ b) (r s : Fin n) :
     Valued.v ((B * C) r s) ≤ a * b := by
@@ -102,6 +132,31 @@ theorem entry_le {n : ℕ} {K : Type} [Field K] [Valued K (WithZero (Multiplicat
   rw [map_mul]
   exact mul_le_mul' (hB r k) (hC k s)
 
+/- English proof (translation)
+Introduce `E _ _ P n N A`. Use `set f := algebraMap E (P.adicCompletion E)`. Use `set B := (A⁻¹).1 with hBdef`. Establish `hBA : B * A.1 = 1` using `Units.inv_mul A`. Take `⟨L, hL⟩` from `bound P B`.
+
+Use `choose C hC using fun r s => approx P (A.1 r s) ((N : ℤ) + 1 + L)`. Set `Cm : Matrix (Fin n) (Fin n) E` to `Matrix.of C`. Use `set C' := Cm.map f with hC'`. Use `set X := B * C' - 1 with hXdef`. Establish `hXe : X = B * (C' - A.1)` using `by rw [Matrix.mul_sub, hBA]`.
+
+Establish `hsmall : ∀ r s, Valued.v (X r s) ≤ WithZero.exp (-((N : ℤ) + 1))`. Introduce `r s`. Rewrite using `[hXe]`. Use `(entry_le B (C' - A.1) _ (WithZero.exp (-((N : ℤ) + 1 + L))) hL (fun k s => ?_) r s).trans (le_of_eq ?_)` and prove the remaining obligations. Use `show Valued.v (f (C k s) - A.1 k s) ≤ _`.
+
+Rewrite using `[Valuation.map_sub_swap]`. Conclude with `hC k s`. Rewrite using `[← WithZero.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hN1 : WithZero.exp (-((N : ℤ) + 1)) < 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hNN : WithZero.exp (-((N : ℤ) + 1)) ≤ WithZero.exp (-(N : ℤ))`. Rewrite using `[WithZero.exp_le_exp]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hX1 : ∀ r s, Valued.v (X r s) < 1` using `fun r s => (hsmall r s).trans_lt hN1`. Take `⟨hdet, hint⟩` from `one_add_small P X hX1`. Establish `hY : 1 + X = B * C'` using `by rw [hXdef]; abel`. Establish `hCdet : Cm.det ≠ 0`.
+
+Introduce `h0`. Establish `: (1 + X).det = 0`. Rewrite using `[hY, Matrix.det_mul, hC', ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero, mul_zero]`. Rewrite `hdet` using `[this, map_zero]`. Conclude with `zero_ne_one hdet`.
+
+Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero Cm hCdet, fun r s => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(hsmall r s).trans hNN`. Use `set γ := Matrix.GeneralLinearGroup.mkOfDetNeZero Cm hCdet`. Establish `hγ : γ.1 = Cm` using `rfl`. Use `set D := (γ⁻¹).1.map f`.
+
+Establish `hCD : C' * D = 1`. Rewrite using `[hC', ← hγ, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero f) (map_one f)]`. Establish `hYZ : (1 + X) * (D * A.1) = 1`. Rewrite using `[hY, Matrix.mul_assoc, ← Matrix.mul_assoc C', hCD, Matrix.one_mul, hBA]`. Establish `hZ : D * A.1 = (1 + X)⁻¹` using `(Matrix.inv_eq_right_inv hYZ).symm`.
+
+Establish `hZY : (D * A.1) * (1 + X) = 1`. Rewrite using `[hZ]; exact Matrix.nonsing_inv_mul _ (by`. Use `isUnit_iff_ne_zero.2 fun h => ?_` and prove the remaining obligations. Rewrite `hdet` using `[h, map_zero]`. Conclude with `zero_ne_one hdet)`.
+
+Establish `hdiff : D * A.1 - 1 = -((D * A.1) * X)`. Rewrite `hZY` using `[Matrix.mul_add, Matrix.mul_one]`. Rewrite using `[← hZY]`. Normalize the expressions using the abelian group laws. Rewrite using `[hdiff, Matrix.neg_apply, Valuation.map_neg]`.
+
+Use `(entry_le _ X 1 _ (by rw [hZ]; exact hint) hsmall r s).trans ?_` and prove the remaining obligations. Rewrite using `[one_mul]`. Conclude with `hNN`.
+-/
 theorem dense_two_sided : ∀ (E : Type) [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (n N : ℕ) (A : GL (Fin n) (P.adicCompletion E)), ∃ γ : GL (Fin n) E, ∀ r s, Valued.v (((A⁻¹).1 * γ.1.map (algebraMap E (P.adicCompletion E)) - 1) r s) ≤ WithZero.exp (-(N : ℤ)) ∧ Valued.v (((γ⁻¹).1.map (algebraMap E (P.adicCompletion E)) * A.1 - 1) r s) ≤ WithZero.exp (-(N : ℤ)) := by
   intro E _ _ P n N A
   set f := algebraMap E (P.adicCompletion E)

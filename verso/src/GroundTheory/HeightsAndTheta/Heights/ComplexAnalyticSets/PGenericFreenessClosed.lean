@@ -7,6 +7,9 @@ namespace GroundTheory.Heights₂.Heights
 
 universe u v w
 
+/- English proof (translation)
+The claim follows from `GenericFreeness.proof GenericNoetherNormalisation.proof`.
+-/
 theorem GenericFreeness.full : GenericFreeness.Statement.{u, v, w} :=
   GenericFreeness.proof GenericNoetherNormalisation.proof
 

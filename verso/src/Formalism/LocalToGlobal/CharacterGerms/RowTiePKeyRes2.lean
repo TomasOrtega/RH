@@ -14,6 +14,9 @@ section Res
 
 variable {C : Type} [Field C] (V : VF C)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact Iff.rfl`. Consider the case `(simp only [VF.Ge]; done)`. Consider the case `(unfold VF.Ge; done)`. Consider the case `(simp [VF.Ge])`.
+-/
 theorem valuation_nonneg_iff (a : C) : V.Ge 0 a ↔ 0 ≤ V.v a := by
   first
   | exact Iff.rfl
@@ -47,6 +50,15 @@ def mm : Ideal (Rv V) where
       _ = 0 + V.v x := (zero_add _).symm
       _ ≤ V.v c + V.v x := add_le_add hc le_rfl
 
+/- English proof (translation)
+Rewrite using `[Ideal.isMaximal_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `h1`. Establish `h1' : (0 : WithTop ℝ) < V.v ((1 : Rv V) : C)` using `h1`. Simplify using `at h1'`.
+
+Introduce `J x _ hx hxJ`. Establish `hx' : ¬ (0 : WithTop ℝ) < V.v (x : C)` using `hx`. Establish `hx0 : (x : C) ≠ 0`. Introduce `h0`. Apply `hx'` to reduce the goal to its premises.
+
+Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `hvx : V.v (x : C) = 0` using `le_antisymm (not_lt.1 hx') ((valuation_nonneg_iff V x).1 x.2)`. Establish `hy : V.Ge 0 ((x : C)⁻¹)` using `(valuation_nonneg_iff V _).2 (by first`. Consider the case `(rw [AddValuation.map_inv, hvx, neg_zero]; done)`.
+
+Consider the case `(rw [AddValuation.map_inv, hvx, neg_zero]; exact le_rfl)`. Consider the case `simp [AddValuation.map_inv, hvx])`. Establish `h1 : (1 : Rv V) = ⟨(x : C)⁻¹, hy⟩ * x` using `Subtype.ext (by simp [hx0])`. Rewrite using `[h1]`. Conclude with `J.mul_mem_left _ hxJ`.
+-/
 theorem mm_max : (mm V).IsMaximal := by
   rw [Ideal.isMaximal_iff]
   refine ⟨?_, ?_⟩
@@ -76,6 +88,11 @@ abbrev Kr := Rv V ⧸ mm V
 
 noncomputable instance : Field (Kr V) := Ideal.Quotient.field (mm V)
 
+/- English proof (translation)
+Rewrite using `[CharP.charP_iff_prime_eq_zero V.3]`. Rewrite using `[← map_natCast (Ideal.Quotient.mk (mm V)) V.l, Ideal.Quotient.eq_zero_iff_mem]`. Use `show (0 : WithTop ℝ) < V.v ((V.l : Rv V) : C)`. Rewrite using `[SubringClass.coe_natCast, V.4]`. Use `first`.
+
+Consider the case `exact WithTop.coe_lt_coe.2 zero_lt_one`. Consider the case `norm_num`. Consider the case `simp`.
+-/
 theorem charP_Kr : CharP (Kr V) V.l := by
   rw [CharP.charP_iff_prime_eq_zero V.3]
   rw [← map_natCast (Ideal.Quotient.mk (mm V)) V.l, Ideal.Quotient.eq_zero_iff_mem]
@@ -91,12 +108,18 @@ variable {V}
 def red {O : Type} [CommRing O] (f : O →+* C) (hf : ∀ x, V.Ge 0 (f x)) : O →+* Kr V :=
   (Ideal.Quotient.mk (mm V)).comp (f.codRestrict (Rv V) hf)
 
+/- English proof (translation)
+Unfold `red`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, Ideal.Quotient.eq]`. Conclude with `Iff.rfl`.
+-/
 theorem red_eq_iff {O : Type} [CommRing O] (f g : O →+* C) (hf : ∀ x, V.Ge 0 (f x)) (hg : ∀ x, V.Ge 0 (g x))
     (x y : O) : red f hf x = red g hg y ↔ V.MM (f x - g y) := by
   unfold red
   rw [RingHom.comp_apply, RingHom.comp_apply, Ideal.Quotient.eq]
   exact Iff.rfl
 
+/- English proof (translation)
+Unfold `red`. Rewrite using `[RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Iff.rfl`.
+-/
 theorem red_zero_iff {O : Type} [CommRing O] (f : O →+* C) (hf : ∀ x, V.Ge 0 (f x)) (x : O) :
     red f hf x = 0 ↔ V.MM (f x) := by
   unfold red
@@ -109,6 +132,21 @@ section Fin
 
 variable {k : Type} [Field k]
 
+/- English proof (translation)
+Set `φ : ZMod p →+* k` to `ZMod.castHom (dvd_refl p) k`. Establish `hφ : Function.Injective φ` using `φ.injective`. Establish `hp1 : 1 < p` using `hp.out.one_lt`. Establish `hP : (X ^ p - X : k[X]) ≠ 0` using `FiniteField.X_pow_card_sub_X_ne_zero k hp1`. Establish `hroot : ∀ b : k, b ^ p = b → b ∈ (X ^ p - X : k[X]).roots.toFinset`.
+
+Introduce `b hb`. Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_roots hP]`. Simplify using `[hb]`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+
+Establish `hnotin : a ∉ Finset.univ.image φ`. Introduce `h`. Take `⟨i, -, hi⟩` from `Finset.mem_image.1 h`. Apply `hne i.val` to reduce the goal to its premises. Rewrite using `[← hi]`.
+
+Simplify using `[φ]`. Establish `hsub : insert a (Finset.univ.image φ) ⊆ (X ^ p - X : k[X]).roots.toFinset`. Introduce `b hb`. Break down `Finset.mem_insert.1 hb with hb | hb` into its components or cases. Rewrite using `[hb]`.
+
+Conclude with `hroot _ ha`. Take `⟨i, -, hi⟩` from `Finset.mem_image.1 hb`. Rewrite using `[← hi]`. Apply `hroot` to reduce the goal to its premises. Rewrite using `[← map_pow, ZMod.pow_card]`.
+
+Establish `h1` using `Finset.card_le_card hsub`. Establish `h3 : (insert a (Finset.univ.image φ)).card = p + 1` using `by first`. Consider the case `rw [Finset.card_insert_of_notMem hnotin, Finset.card_image_of_injective _ hφ, Finset.card_univ, ZMod.card]`. Consider the case `rw [Finset.card_insert_of_not_mem hnotin, Finset.card_image_of_injective _ hφ, Finset.card_univ, ZMod.card]`. Rewrite `h1` using `[h3]`.
+
+Establish `h2 : (X ^ p - X : k[X]).roots.toFinset.card ≤ p`. Combine the equalities or inequalities in the displayed calculation. Use linear arithmetic over natural numbers and integers.
+-/
 theorem fixed_nat (p : ℕ) [hp : Fact p.Prime] [CharP k p] (a : k) (ha : a ^ p = a) : ∃ i : ℕ, a = i := by
   classical
   let φ : ZMod p →+* k := ZMod.castHom (dvd_refl p) k
@@ -150,6 +188,11 @@ theorem fixed_nat (p : ℕ) [hp : Fact p.Prime] [CharP k p] (a : k) (ha : a ^ p 
       _ = p := FiniteField.X_pow_card_sub_X_natDegree_eq k hp1
   omega
 
+/- English proof (translation)
+Use `choose f hf using fun i => fixed_nat p (Q.coeff i) (hQ i)`. Use `⟨∑ i ∈ Q.support, Polynomial.monomial i ((f i : ℕ) : ℤ), ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.map_sum]`. Use `conv_rhs => rw [Q.as_sum_support]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Polynomial.map_monomial, hf i]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_lift (p : ℕ) [Fact p.Prime] [CharP k p] (Q : k[X]) (hQ : ∀ i, Q.coeff i ^ p = Q.coeff i) :
     ∃ μ : ℤ[X], μ.map (Int.castRingHom k) = Q := by
   classical
@@ -178,6 +221,31 @@ def Hs {O : Type} [CommRing O] (f : O →+* k) (q : ℕ) (hq2 : 2 ≤ q) (hq : �
       exact mul_right_cancel₀ u.ne_zero h5
     exact Units.eq_inv_of_mul_eq_one_left (by rw [mul_comm]; exact hu1)
 
+/- English proof (translation)
+Establish `: ExpChar k p` using `ExpChar.prime hp.out`. Establish `hpow : ∀ (j : ℕ) x, e (j : ZMod d) x = e 0 x ^ (p ^ j)`. Introduce `j x`. Proceed by induction on `j with`. Consider the case `zero => simp`.
+
+Consider the case `succ j ih => rw [Nat.cast_succ, hfr, ih, ← pow_mul, pow_succ]`. Establish `hall : ∀ a x, e a x = e 0 x ^ (p ^ a.val)` using `fun a x => by`. Rewrite using `[← hpow, ZMod.natCast_zmod_val]`. Establish `hkill : ∀ x, e 0 x = 0 → ∀ a, e a x = 0` using `fun x h a => by`. Rewrite using `[hall, h, zero_pow (pow_ne_zero _ hp.out.ne_zero)]`.
+
+Establish `hq : ∀ x, e 0 x ^ (p ^ d) = e 0 x` using `fun x => by rw [← hpow, ZMod.natCast_self]`. Establish `hq1 : 1 < p ^ d` using `Nat.one_lt_pow (NeZero.ne d) hp.out.one_lt`. Establish `hpt : ∀ y, ∃ c, χ y = e c y`. Introduce `y`. Use `set Q : k[X] := ∏ c : ZMod d, (X - Polynomial.C (e c y)) with hQ`.
+
+Establish `hfix : Q.map (frobenius k p) = Q`. Rewrite using `[hQ, Polynomial.map_prod]`. Simplify using `only [Polynomial.map_sub, map_X, map_C, frobenius_def, ← hfr]`. Conclude with `Fintype.prod_equiv (Equiv.addRight 1) _ _ fun c => rfl`. Establish `hcoef : ∀ i, Q.coeff i ^ p = Q.coeff i` using `fun i => by`.
+
+Establish `h1` using `congrArg (fun P => Polynomial.coeff P i) hfix`. Simplify using `only [coeff_map, frobenius_def] at h1`. Conclude with `h1`. Take `⟨μ, hμ⟩` from `exists_lift p Q hcoef`. Establish `hev : ∀ g : O →+* k, g (μ.eval₂ (Int.castRingHom O) y) = Q.eval (g y)` using `fun g => by`.
+
+Rewrite using `[hom_eval₂, RingHom.ext_int (g.comp (Int.castRingHom O)) (Int.castRingHom k), eval₂_eq_eval_map, hμ]`. Establish `hz : χ (μ.eval₂ (Int.castRingHom O) y) = 0` using `hker _ fun a => by`. Rewrite using `[hev, hQ, eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ a) (by rw [eval_sub, eval_X, eval_C, sub_self])`. Rewrite `hz` using `[hev, hQ, eval_prod, Finset.prod_eq_zero_iff]`.
+
+Take `⟨c, -, hc⟩` from `hz`. Rewrite `hc` using `[eval_sub, eval_X, eval_C, sub_eq_zero]`. Conclude with `⟨c, hc⟩`. Establish `hfin : Finite (Hs (e 0) (p ^ d) hq1 hq)`. Establish `hQ0 : (X ^ (p ^ d) - X : k[X]) ≠ 0` using `FiniteField.X_pow_card_sub_X_ne_zero k hq1`.
+
+Establish `hF : Finite ↥(((X ^ (p ^ d) - X : k[X]).roots.toFinset : Set k))` using `(Finset.finite_toSet _).to_subtype`. Use `Finite.of_injective (β := ↥(((X ^ (p ^ d) - X : k[X]).roots.toFinset : Set k))) (fun u => ⟨((u : kˣ) : k), ?_⟩) ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `u.2`. Rewrite using `[Finset.mem_coe, Multiset.mem_toFinset, mem_roots hQ0, IsRoot, eval_sub, eval_pow, eval_X, ← hy, hq, sub_self]`. Introduce `u v huv`.
+
+Conclude with `Subtype.ext (Units.ext (congrArg Subtype.val huv))`. Take `⟨g, hg⟩` from `IsCyclic.exists_generator (α := Hs (e 0) (p ^ d) hq1 hq)`. Take `⟨y0, hy0⟩` from `g.2`. Take `⟨c, hc⟩` from `hpt y0`. Use `⟨c, fun y => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hy : e 0 y = 0`. Rewrite using `[hker y (hkill y hy), hkill y hy c]`. Establish `hmem : Units.mk0 (e 0 y) hy ∈ Hs (e 0) (p ^ d) hq1 hq` using `⟨y, by rw [Units.val_mk0]⟩`. Establish `h1` using `(mem_powers_iff_mem_zpowers).2 (hg ⟨_, hmem⟩)`. Take `⟨m, hm⟩` from `Submonoid.mem_powers_iff _ _ |>.1 h1`.
+
+Establish `h2 : e 0 y0 ^ m = e 0 y`. Establish `h3` using `congrArg (fun s : Hs (e 0) (p ^ d) hq1 hq => ((s : kˣ) : k)) hm`. Simplify using `only [Subgroup.coe_pow, Units.val_pow_eq_pow_val, Units.val_mk0] at h3`. Rewrite using `[hy0]`. Conclude with `h3`.
+
+Establish `h4 : e 0 (y - y0 ^ m) = 0` using `by rw [map_sub, map_pow, h2, sub_self]`. Establish `h5` using `hker _ (hkill _ h4)`. Establish `h6` using `hkill _ h4 c`. Rewrite `h5`, `h6` using `[map_sub, sub_eq_zero]`. Rewrite using `[h5, h6, map_pow, map_pow, hc]`.
+-/
 theorem core (p : ℕ) [hp : Fact p.Prime] [CharP k p] {O : Type} [CommRing O] {d : ℕ} [NeZero d]
     (e : ZMod d → (O →+* k)) (hfr : ∀ a x, e (a + 1) x = e a x ^ p) (χ : O →+* k)
     (hker : ∀ z, (∀ a, e a z = 0) → χ z = 0) : ∃ c, ∀ y, χ y = e c y := by
@@ -248,6 +316,13 @@ theorem core (p : ℕ) [hp : Fact p.Prime] [CharP k p] {O : Type} [CommRing O] {
 
 end Fin
 
+/- English proof (translation)
+Introduce `C _ _ V O _ n d _ K χ hχ hz`. Establish `: Fact V.l.Prime` using `⟨V.l_prime⟩`. Establish `: CharP (Kr V) V.l` using `charP_Kr V`. Establish `hfr : ∀ a x, red (K.em (a + 1)) (K.em_int (a + 1)) x = red (K.em a) (K.em_int a) x ^ V.l`. Introduce `a x`.
+
+Rewrite using `[← map_pow, red_eq_iff, map_pow]`. Conclude with `K.em_frob a x`. Establish `hker : ∀ z, (∀ a, red (K.em a) (K.em_int a) z = 0) → red χ hχ z = 0`. Introduce `z hzz`. Rewrite using `[red_zero_iff]`.
+
+Conclude with `hz z fun a => (red_zero_iff _ _ _).1 (hzz a)`. Take `⟨c, hc⟩` from `core V.l (fun a => red (K.em a) (K.em_int a)) hfr (red χ hχ) hker`. Conclude with `⟨c, fun y => (red_eq_iff _ _ _ _ _ _).1 (hc y)⟩`.
+-/
 theorem keyRes_holds : KeyResSt := by
   intro C _ _ V O _ n d _ K χ hχ hz
   have : Fact V.l.Prime := ⟨V.l_prime⟩

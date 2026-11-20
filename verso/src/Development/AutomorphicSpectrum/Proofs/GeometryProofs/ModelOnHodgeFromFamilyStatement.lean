@@ -11,5 +11,8 @@ open AlgebraicGeometry CategoryTheory NumberField MvPolynomial ReciprocityTheory
 open GroundTheory.Heights₂.Heights.NumbersDVR (pointIdeal segreVec IsFlagFrame IsFlagPair SameGenericFibre IsModelOver divCycle)
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles (mseg fnField)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Num.HodgeModel.model_on_hodge_of_family_pos | exact GlobalTheory.CompanionTheory.Ar.Num.HodgeModel.model_on_hodge_of_family_pos | (intros; apply GlobalTheory.CompanionTheory.Ar.Num.HodgeModel.model_on_hodge_of_family_pos <;> assumpti …`.
+-/
 theorem _root_.GlobalTheory.T.model_on_hodge_from_family : GlobalTheory.CompanionTheory.Ar.Num.FamilyExistsPos → HodgeLatticeFlagBound := by
   first | exact @GlobalTheory.CompanionTheory.Ar.Num.HodgeModel.model_on_hodge_of_family_pos | exact GlobalTheory.CompanionTheory.Ar.Num.HodgeModel.model_on_hodge_of_family_pos | (intros; apply GlobalTheory.CompanionTheory.Ar.Num.HodgeModel.model_on_hodge_of_family_pos <;> assumption)

@@ -19,10 +19,16 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 
 namespace CrystallineSemistableComparison.Pb
 
+/- English proof (translation)
+The claim follows from `@GlobalTheory.CompanionTheory.CLiftEx.nonempty_cLift`.
+-/
 theorem clift_ex : ∀ {O : Type} [CommRing O] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {b : Base} {ht : b.t = 1}
     {κ : O →+* b.R ⧸ b.I} {C : Type 1} [Category.{0} C] (G : C ⥤ Thick ((B.schFn q).cr b ht κ)) (D : E.LineData X),
     (∀ T, ∃ p : Spec (CommRingCat.of ((G.obj T).B ⧸ (G.obj T).J)) ⟶ D.Y, p ≫ D.f = B.thPt (G.obj T)) → Nonempty (B.CLift G D) := @GlobalTheory.CompanionTheory.CLiftEx.nonempty_cLift
 
+/- English proof (translation)
+The claim follows from `@GlobalTheory.CompanionTheory.FirstChernClassFactorial.exists_C1H`.
+-/
 theorem firstChern_acris_family_exists : ∀ {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (M : Model l K) (D : E.LineData M.X),
     sSup (𝒱D D) = ⊤ → ∃ x : (M.HS false 2).lim, B.IsFirstChernFamily M.p D (okToOC l K) false x.1 := @GlobalTheory.CompanionTheory.FirstChernClassFactorial.exists_C1H
 

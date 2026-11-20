@@ -46,6 +46,9 @@ namespace JointsS
 
 variable {ex : Extra D L hT Gi Gl K Y cX} {T : LinkedFamilyData ex}
 
+/- English proof (translation)
+The claim follows from `T.sameChr.idem P`.
+-/
 theorem idem (_ : JointsS T) (P : HeightOneSpectrum (𝓞 D.host.E)) : ∃ e, Formalism.L2.JoinChr.IsPlIdem D e P :=
   T.sameChr.idem P
 
@@ -55,6 +58,9 @@ section
 
 def TiedSJ (ex : Extra D L hT Gi Gl K Y cX) : Prop := ∃ T : LinkedFamilyData ex, JointsS T
 
+/- English proof (translation)
+The claim follows from `let ⟨T, _⟩ := h; ⟨T⟩`.
+-/
 theorem TiedSJ.tiedS {ex : Extra D L hT Gi Gl K Y cX} (h : TiedSJ ex) : LinkedFamilyCondition ex :=
   let ⟨T, _⟩ := h; ⟨T⟩
 
@@ -63,6 +69,9 @@ end
 def EventuallyCompatibleFamilyClass : FamClass := fun {_} Fm =>
   ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, TiedSJ (Fm.ex x hx i)
 
+/- English proof (translation)
+The claim follows from `let ⟨x0, hx0⟩ := h; ⟨x0, fun x hx h0 i => (hx0 x hx h0 i).tiedS⟩`.
+-/
 theorem EventuallyCompatibleFamilyClass.c2s {eps : ℝ} {Fm : FamP eps} (h : EventuallyCompatibleFamilyClass Fm) : LinkedFamiliesLevelClass Fm :=
   let ⟨x0, hx0⟩ := h; ⟨x0, fun x hx h0 i => (hx0 x hx h0 i).tiedS⟩
 

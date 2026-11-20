@@ -27,6 +27,13 @@ section RR
 variable {C : Type} [Field C] [CharZero C] {V : VF C} {OE : Type} [CommRing OE] [StarRing OE] {dd : ℕ} {d : ℕ} [NeZero d]
   {I : Fin 2 → Type} [∀ g, Fintype (I g)]
 
+/- English proof (translation)
+Establish `hx0 : (x : C) ≠ 0`. Introduce `h`. Rewrite `hx` using `[h, V.v.map_zero]`. Conclude with `WithTop.top_ne_zero hx`. Establish `hi : V.Ge 0 ((x : C)⁻¹)`.
+
+Establish `h1 : V.v ((x : C) * (x : C)⁻¹) = 0` using `by rw [mul_inv_cancel₀ hx0, V.v.map_one]`. Rewrite `h1` using `[V.v.map_mul, hx, zero_add]`. Unfold `VF.Ge`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+
+Conclude with `IsUnit.of_mul_eq_one (⟨(x : C)⁻¹, hi⟩ : V.RR) (Subtype.ext (mul_inv_cancel₀ hx0))`.
+-/
 theorem isUnit_RR {x : V.RR} (hx : V.v (x : C) = 0) : IsUnit x := by
   have hx0 : (x : C) ≠ 0 := by
     intro h
@@ -40,6 +47,11 @@ theorem isUnit_RR {x : V.RR} (hx : V.v (x : C) = 0) : IsUnit x := by
     rfl
   exact IsUnit.of_mul_eq_one (⟨(x : C)⁻¹, hi⟩ : V.RR) (Subtype.ext (mul_inv_cancel₀ hx0))
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `hx.exists_right_inv`. Establish `h1 : V.v ((x : C) * (y : C)) = 0`. Establish `: (x : C) * (y : C) = 1` using `congrArg Subtype.val hy`. Rewrite using `[this, V.v.map_one]`. Rewrite `h1` using `[V.v.map_mul]`.
+
+Establish `hx0 : (0 : WithTop ℝ) ≤ V.v (x : C)` using `x.2`. Establish `hy0 : (0 : WithTop ℝ) ≤ V.v (y : C)` using `y.2`. Conclude with `le_antisymm (by calc V.v (x : C) ≤ V.v (x : C) + V.v (y : C) := le_add_of_nonneg_right hy0 _ = 0 := h1) hx0`.
+-/
 theorem v_of_isUnit_RR {x : V.RR} (hx : IsUnit x) : V.v (x : C) = 0 := by
   obtain ⟨y, hy⟩ := hx.exists_right_inv
   have h1 : V.v ((x : C) * (y : C)) = 0 := by
@@ -51,6 +63,9 @@ theorem v_of_isUnit_RR {x : V.RR} (hx : IsUnit x) : V.v (x : C) = 0 := by
   exact le_antisymm (by calc V.v (x : C) ≤ V.v (x : C) + V.v (y : C) := le_add_of_nonneg_right hy0
                           _ = 0 := h1) hx0
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `v_of_isUnit_RR (h.map (i0.codRestrict V.RR hint))`. Establish `h2 : (((i0.codRestrict V.RR hint) ((V.l : ℕ) : T) : V.RR) : C) = (V.l : C)` using `map_natCast i0 _`. Rewrite `h1` using `[h2, V.v_l]`. Conclude with `one_ne_zero h1`.
+-/
 theorem not_isUnit_l {T : Type} [CommRing T] (i0 : T →+* C) (hint : ∀ t, V.Ge 0 (i0 t)) :
     ¬ IsUnit ((V.l : ℕ) : T) := by
   intro h
@@ -59,6 +74,19 @@ theorem not_isUnit_l {T : Type} [CommRing T] (i0 : T →+* C) (hint : ∀ t, V.G
   rw [h2, V.v_l] at h1
   exact one_ne_zero h1
 
+/- English proof (translation)
+Take `⟨P⟩` from `ringPkSt_holds C V Y.cpl`. Set `_` to `P.loc`. Set `_` to `P.alg`. Establish `: Fact ¬IsUnit ((V.l : ℕ) : V.RR)` using `⟨P.nonunit⟩`. Use `P.cpl` as an intermediate fact.
+
+Set `iota : T →+* V.RR` to `i0.codRestrict V.RR hint`. Establish `hcomp : ∀ {n : ℕ} (f : PS T n dd), toC (C` using `C) (MvPowerSeries.map iota f) = MvPowerSeries.map i0 f := by`. Introduce `n f`. Use extensionality with `mu`. Simplify using `only [MvPowerSeries.coeff_map]`.
+
+Both sides reduce to the same expression. Set `emR : Fin 2 → ZMod d → OE →+* V.RR` to `fun g a => (p.em g a).codRestrict V.RR (p.em_int g a)`. Establish `hem : ∀ g a x, algebraMap V.RR C (emR g a x) = p.em g a x` using `fun _ _ _ => rfl`. Establish `hlocI : IsLocalHom iota` using `⟨fun t ht => hloc t (v_of_isUnit_RR ht)⟩`. Establish `hlm : ((V.l : ℕ) : V.RR) ∈ maximalIdeal V.RR` using `(mem_maximalIdeal _).2 P.nonunit`.
+
+Establish `hPl : ∀ g, PlaceIn V.l OE V.RR d (emR g)`. Introduce `g`. Use `placeSt_of_X hPlace V.l OE V.RR hlm hdisc d (emR g) (fun a x => P.mm _ ?_) (fun a a' haa => ?_) ?_` and prove the remaining obligations. Conclude with `p.em_frob g a x`. Take `⟨x, hx⟩` from `p.em_sep (g, a) (g, a') (fun h => haa (Prod.mk.inj h).2)`.
+
+Conclude with `⟨x, fun hm => (mem_maximalIdeal _).1 hm (isUnit_RR hx)⟩`. Take `⟨ε, h1, h2, h3⟩` from `p.em_unr g`. Use `⟨ε, h1, fun a => P.mm _ (h2 a), fun x hx => h3 x fun a => ?_⟩` and prove the remaining obligations. Establish `h4 : (0 : WithTop ℝ) ≤ V.v (p.em g a x)` using `p.em_int g a x`. Conclude with `lt_of_le_of_ne h4 fun h5 => (mem_maximalIdeal _).1 (hx a) (isUnit_RR (x := emR g a x) h5.symm)`.
+
+Establish `hEig : EigIn p V.RR (fun a i => MvPowerSeries.map iota (actT a i)) emR` using `eigIn_of_free eigFreeSt_holds p P.vm P.int (fun x hx => ⟨⟨x, hx⟩, rfl⟩) (fun x => x.2) _ (fun a i => by rw [hcomp]; exact hact a i) emR hem`. Conclude with `upChar_of_upFLaw Y p hr Hc P.vm V.RR P.tie P.int P.pos P.lt (fun x hx => P.mm x hx) T FT actT hL iota hlocI (fun i => by rw [hcomp]; exact hF i) emR hem hPl hEig`.
+-/
 theorem upChar_of_upFLaw_RR [IsDedekindDomain OE] [CharZero OE] [Module.Free ℤ OE] [Module.Finite ℤ OE]
     (hPlace : Pl.PlaceCriterionOfIdempotent)
     (Y : FBChart C V OE dd) (p : PairData Y d I) (hr : (Y.raw p).RankHyp) (Hc : ∀ g, (Y.raw p).CartHyp V g)
@@ -99,6 +127,9 @@ theorem upChar_of_upFLaw_RR [IsDedekindDomain OE] [CharZero OE] [Module.Free ℤ
   exact upChar_of_upFLaw Y p hr Hc P.vm V.RR P.tie P.int P.pos P.lt (fun x hx => P.mm x hx) T FT actT hL
     iota hlocI (fun i => by rw [hcomp]; exact hF i) emR hem hPl hEig
 
+/- English proof (translation)
+The claim follows from `upChar_of_upFLaw_RR hPlace Y p hr Hc T FT actT (upFLaw_of_geoJ hUp Y.l_odd T (not_isUnit_l i0 hint) G aG FT actT hG hdisc) i0 hint hloc hF hact hdisc`.
+-/
 theorem upChar_of_upF_RR [IsDedekindDomain OE] [CharZero OE] [Module.Free ℤ OE] [Module.Finite ℤ OE]
     (hUp : UpFSt V.l) (hPlace : Pl.PlaceCriterionOfIdempotent)
     (Y : FBChart C V OE dd) (p : PairData Y d I) (hr : (Y.raw p).RankHyp) (Hc : ∀ g, (Y.raw p).CartHyp V g)
@@ -145,11 +176,19 @@ def CharacterHypothesisUnramified : Prop :=
     ∀ (Orb : Type) (d : ℕ) [NeZero d] (lab : Lab E Orb d) (ha : LabArith V io ie lab) (hg : LabGeo C3 ie Y lab),
     lab.RankOK Dw → ∀ o (Hc : ∀ g, (Y.raw (pairOfLab ha hg o)).CartHyp V g), RawChart.CHSt Hc
 
+/- English proof (translation)
+Introduce `hstar T io y C3 C _ _ V ie hie hd k Y hY Orb d _ lab ha hg hr o Hc` and use `chSt_of_upChar Y (pairOfLab ha hg o) (rankHyp_ofLab ha hg hr o) Hc (h hstar T io y C3 C V ie hie hd k Y hY Orb d lab ha hg hr o Hc)`.
+-/
 theorem chart_hypothesis_unramified_of_upper (h : UpperCharacterUnramified Xo c) : CharacterHypothesisUnramified Xo c :=
   fun hstar T io y C3 C _ _ V ie hie hd k Y hY Orb d _ lab ha hg hr o Hc =>
     chSt_of_upChar Y (pairOfLab ha hg o) (rankHyp_ofLab ha hg hr o) Hc
       (h hstar T io y C3 C V ie hie hd k Y hY Orb d lab ha hg hr o Hc)
 
+/- English proof (translation)
+Unfold `vV`. Establish `hne : valV T.V (algebraMap T.V T.Fr t) ≠ 0` using `valV_ne_zero ((map_ne_zero_iff _ (IsFractionRing.injective T.V T.Fr)).2 h0)`. Establish `h1 : valV T.V (algebraMap T.V T.Fr t) < 1`. Unfold `valV`. Conclude with `(IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_mem _ t).2 ((mem_maximalIdeal t).2 ht)`.
+
+Establish `h2 : WithZero.log (valV T.V (algebraMap T.V T.Fr t)) < 0` using `(WithZero.log_lt_iff_lt_exp hne).2 (by simpa using h1)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vV_pos (T : CDVR) {t : T.V} (ht : ¬ IsUnit t) (h0 : t ≠ 0) : 0 < vV T.V (algebraMap T.V T.Fr t) := by
   unfold vV
   have hne : valV T.V (algebraMap T.V T.Fr t) ≠ 0 :=
@@ -163,6 +202,21 @@ theorem vV_pos (T : CDVR) {t : T.V} (ht : ¬ IsUnit t) (h0 : t ≠ 0) : 0 < vV T
 
 variable {Xo c} in
 
+/- English proof (translation)
+Establish `hl0 : ((V.l : ℕ) : T.Fr) ≠ 0` using `by exact_mod_cast V.l_prime.ne_zero`. Establish `hvl : (vV T.V ((V.l : ℕ) : T.Fr) : ℝ) ≠ 0`. Introduce `h0`. Use `hie _ hl0` as an intermediate fact. Rewrite `this` using `[map_natCast, V.v_l, h0, div_zero]`.
+
+Simplify using `at this`. Establish `hvl' : (0 : ℝ) < (vV T.V ((V.l : ℕ) : T.Fr) : ℝ)`. Use `vV_algebraMap_nonneg T (V.l : T.V)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `lt_of_le_of_ne (by exact_mod_cast this) (Ne.symm hvl)`.
+
+Use `⟨fun t => embIntSt_holds T C V ie hie t, fun t ht => ?_, fun i => ?_, fun a i => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hu`. Establish `ht0 : t ≠ 0`. Introduce and unpack `rfl`. Rewrite `ht` using `[map_zero, V.v.map_zero]`.
+
+Conclude with `WithTop.top_ne_zero ht`. Establish `hne : algebraMap T.V T.Fr t ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective T.V T.Fr)).2 ht0`. Establish `h1` using `hie _ hne`. Rewrite `ht` using `[RingHom.comp_apply]`. Rewrite `h1` using `[ht]`.
+
+Establish `h2 : (0 : ℝ) = (vV T.V (algebraMap T.V T.Fr t) : ℝ) / (vV T.V ((V.l : ℕ) : T.Fr) : ℝ)` using `WithTop.coe_injective (by simpa using h1)`. Establish `h3 : (0 : ℝ) < (vV T.V (algebraMap T.V T.Fr t) : ℝ)` using `by exact_mod_cast vV_pos T hu ht0`. Use `div_pos h3 hvl'` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hY.F i]`.
+
+Establish `e : (a3B C3).G.F i = MvPowerSeries.map (algebraMap T.V T.Fr) (C3.FT i)` using `C3.gen.1.1 i`. Rewrite using `[e]`. Use extensionality with `mu`. Simplify using `only [MvPowerSeries.coeff_map, RingHom.comp_apply]`. Rewrite using `[hY.act a i]`.
+
+Establish `e : (a3B C3).A.act a i = MvPowerSeries.map (algebraMap T.V T.Fr) (C3.actT a i)` using `C3.gen.1.2.1 a i`. Rewrite using `[e]`. Use extensionality with `mu`. Simplify using `only [MvPowerSeries.coeff_map, RingHom.comp_apply]`.
+-/
 theorem chart_ties {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} {C3 : IntChart T io y}
     {C : Type} [Field C] [CharZero C] {V : VF C} {ie : T.Fr →+* C} (hie : EmbOK T V ie)
     {k : ℕ} {Y : FBChart C V (𝓞 E) (chD C3.ch)} (hY : IsBC C3 ie k Y) :
@@ -208,6 +262,9 @@ theorem chart_ties {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} {C3 : 
 
 variable {Xo c} in
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4⟩` from `chart_ties hie hY`. Conclude with `upChar_of_upFLaw_RR hPlace Y (pairOfLab ha hg o) (rankHyp_ofLab ha hg hr o) Hc T.V C3.FT C3.actT hL (ie.comp (algebraMap T.V T.Fr)) h1 h2 h3 h4 hd`.
+-/
 theorem upChar_at_chartL {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} {C3 : IntChart T io y}
     {C : Type} [Field C] [CharZero C] {V : VF C} {ie : T.Fr →+* C} (hPlace : Pl.PlaceCriterionOfIdempotent)
     (hL : UpFLaw V.l T.V (𝓞 E) (chD C3.ch) C3.FT C3.actT)
@@ -222,6 +279,9 @@ theorem upChar_at_chartL {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} 
 
 variable {Xo c} in
 
+/- English proof (translation)
+The claim follows from `upFLaw_of_geoJ hUp hl2 T.V (not_isUnit_l (ie.comp (algebraMap T.V T.Fr)) fun t => embIntSt_holds T C V ie hie t) C3.I.G.G (fun a => C3.I.G.act.act a) C3.FT C3.actT hGeoJ hd`.
+-/
 theorem upFLaw_at_chart {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} {C3 : IntChart T io y}
     {C : Type} [Field C] [CharZero C] {V : VF C} {ie : T.Fr →+* C} (hUp : UpFSt V.l) (hl2 : V.l ≠ 2)
     (hGeoJ : GeoJ T.V C3.I.G.G (𝓞 E) (fun a => C3.I.G.act.act a) (chD C3.ch) C3.FT C3.actT)
@@ -233,6 +293,9 @@ theorem upFLaw_at_chart {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} {
 
 variable {Xo c} in
 
+/- English proof (translation)
+The claim follows from `upChar_at_chartL hPlace (upFLaw_at_chart hUp Y.l_odd hGeoJ hie hd) hie hd hY ha hg hr o Hc`.
+-/
 theorem upChar_at_chart {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} {C3 : IntChart T io y}
     {C : Type} [Field C] [CharZero C] {V : VF C} {ie : T.Fr →+* C} (hUp : UpFSt V.l) (hPlace : Pl.PlaceCriterionOfIdempotent)
     (hGeoJ : GeoJ T.V C3.I.G.G (𝓞 E) (fun a => C3.I.G.act.act a) (chD C3.ch) C3.FT C3.actT)
@@ -243,11 +306,17 @@ theorem upChar_at_chart {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} {
     UPCharSt Y (pairOfLab ha hg o) Hc :=
   upChar_at_chartL hPlace (upFLaw_at_chart hUp Y.l_odd hGeoJ hie hd) hie hd hY ha hg hr o Hc
 
+/- English proof (translation)
+Introduce `hstar T io y C3 _ _ _ V _ hie hd _ _ hY _ _ _ _ ha hg hr o Hc` and use `upChar_at_chart (hUp V.l) hPlace (hGeo hstar T io y C3) hie hd hY ha hg hr o Hc`.
+-/
 theorem upper_character_unramified_of_forms (hUp : ∀ (p : ℕ) [Fact p.Prime], UpFSt p) (hPlace : Pl.PlaceCriterionOfIdempotent) (hGeo : GeoJA3St Xo c) :
     UpperCharacterUnramified Xo c :=
   fun hstar T io y C3 _ _ _ V _ hie hd _ _ hY _ _ _ _ ha hg hr o Hc =>
     upChar_at_chart (hUp V.l) hPlace (hGeo hstar T io y C3) hie hd hY ha hg hr o Hc
 
+/- English proof (translation)
+The claim follows from `chart_hypothesis_unramified_of_upper Xo c (upper_character_unramified_of_forms Xo c hUp hPlace hGeo)`.
+-/
 theorem chart_hypothesis_unramified_of_forms (hUp : ∀ (p : ℕ) [Fact p.Prime], UpFSt p) (hPlace : Pl.PlaceCriterionOfIdempotent) (hGeo : GeoJA3St Xo c) : CharacterHypothesisUnramified Xo c :=
   chart_hypothesis_unramified_of_upper Xo c (upper_character_unramified_of_forms Xo c hUp hPlace hGeo)
 

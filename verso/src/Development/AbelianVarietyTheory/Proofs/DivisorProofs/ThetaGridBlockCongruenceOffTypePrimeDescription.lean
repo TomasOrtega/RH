@@ -16,6 +16,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 
 namespace GlobalTheory.CompanionTheory.StepGroupOff
 
+/- English proof (translation)
+Rewrite using `[mem_KO, mem_KO, ← map_inv, reGL_symm_val, reGL_symm_val]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun i j => by simpa using h1 (e.symm i) (e.symm j), fun i j => by simpa using h2 (e.symm i) (e.symm j)⟩`. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `⟨fun i j => h1 _ _, fun i j => h2 _ _⟩`.
+-/
 theorem symm_mem_KO_iff {k : Type*} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {a b : Type*} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (e : a ≃ b) (g : GL b k) :
     (reGL e).symm g ∈ KO k a ↔ g ∈ KO k b := by
@@ -26,6 +31,9 @@ theorem symm_mem_KO_iff {k : Type*} [Field k] [ValuativeRel k] [TopologicalSpace
   · rintro ⟨h1, h2⟩
     exact ⟨fun i j => h1 _ _, fun i j => h2 _ _⟩
 
+/- English proof (translation)
+Break down `x with a | ⟨c, b⟩` into its components or cases. Simplify using `[Formalism.L2.DIV.blk2, (ixFin_val G t w j).1 a]`. Simplify using `[Formalism.L2.DIV.blk2, (ixFin_val G t w j).2 c b]`.
+-/
 theorem twoBlock_gridIndex {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (t : T) (w : Pl D.host.E)
     (j : ℕ) (x : Ix (Fin D.R.r) (Fin D.R.t) j) :
     Formalism.L2.DIV.blk2 D.R.r (ixFin G t w j x) = Sum.elim (fun _ => 0) (fun _ => 1) x := by
@@ -33,6 +41,17 @@ theorem twoBlock_gridIndex {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G 
   · simp [Formalism.L2.DIV.blk2, (ixFin_val G t w j).1 a]
   · simp [Formalism.L2.DIV.blk2, (ixFin_val G t w j).2 c b]
 
+/- English proof (translation)
+Introduce `D T L sc G t w hP j g`. Rewrite using `[Subgroup.mem_map_equiv, stepGroup, if_neg hP]`. Distinguish the cases in `hQ : w ∈ L.Q t`. Rewrite using `[if_pos hQ]`. Use `(mem_parahoric (k := Kw w) (r := Fin D.R.r) (s := Fin j × Fin D.R.t) (δ := 1) (hδ := fun _ _ => rfl)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[symm_mem_KO_iff]`. Use `and_congr_right fun _ => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h _ a b hab`. Take `⟨x, rfl⟩` from `(ixFin G t w j).surjective a`.
+
+Take `⟨y, rfl⟩` from `(ixFin G t w j).surjective b`. Rewrite `hab` using `[twoBlock_gridIndex, twoBlock_gridIndex]`. Apply the tactic sequence `rcases x with x | x <;> rcases y with y | y`. Simplify using `at hab`. Simplify using `at hab`.
+
+Simplify `h x y` using `[reGL_symm_val, Matrix.toBlocks₂₁]`. Simplify using `at hab`. Introduce `h i l`. Use `h hQ (ixFin G t w j (.inr i)) (ixFin G t w j (.inl l)) (by simp [twoBlock_gridIndex])` as an intermediate fact. Simplify `this` using `[reGL_symm_val, Matrix.toBlocks₂₁]`.
+
+Rewrite using `[if_neg hQ, symm_mem_KO_iff]`. Conclude with `⟨fun h => ⟨h, fun h' => absurd h' hQ⟩, fun h => h.1⟩`.
+-/
 theorem mem_map_stepGroup_iff : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (t : T) (w : Pl D.host.E), w ∉ L.Pg → ∀ (j : ℕ) (g : GL (Fin ((locGrid G t w).rank (0, j))) (Kw w)), g ∈ (stepGroup L t w j).map (reGL (ixFin G t w j)).toMonoidHom ↔ g ∈ KO (Kw w) (Fin ((locGrid G t w).rank (0, j))) ∧ (w ∈ L.Q t → ∀ a b, Formalism.L2.DIV.blk2 D.R.r b < Formalism.L2.DIV.blk2 D.R.r a → valuation (Kw w) (g.1 a b) < 1) := by
   intro D T L sc G t w hP j g
   rw [Subgroup.mem_map_equiv, stepGroup, if_neg hP]
@@ -74,6 +93,9 @@ open GlobalTheory.FunObj GlobalTheory.ChiGrid GlobalTheory.SplitFlip GlobalTheor
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField GlobalTheory.FunObj.borelKw GlobalTheory.FunObj.borelSpaceKw
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact @IwahoriGroupOffset.GlobalTheory.CompanionTheory.StepGroupOff.mem_map_stepGroup_iff | exact IwahoriGroupOffset.GlobalTheory.CompanionTheory.StepGroupOff.mem_map_stepGroup_iff | (intros; apply IwahoriGroupOffset.GlobalTheory.CompanionTheory.StepGroupOff.mem_map_stepG …`.
+-/
 theorem _root_.GlobalTheory.Adopt.thetaGridBlockCongruence_offTypePrime_description : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (t : T) (w : Pl D.host.E), w ∉ L.Pg → ∀ (j : ℕ) (g : GL (Fin ((locGrid G t w).rank (0, j))) (Kw w)), g ∈ (stepGroup L t w j).map (reGL (ixFin G t w j)).toMonoidHom ↔ g ∈ KO (Kw w) (Fin ((locGrid G t w).rank (0, j))) ∧ (w ∈ L.Q t → ∀ a b, Formalism.L2.DIV.blk2 D.R.r b < Formalism.L2.DIV.blk2 D.R.r a → valuation (Kw w) (g.1 a b) < 1) := by
   first | exact @IwahoriGroupOffset.GlobalTheory.CompanionTheory.StepGroupOff.mem_map_stepGroup_iff | exact IwahoriGroupOffset.GlobalTheory.CompanionTheory.StepGroupOff.mem_map_stepGroup_iff | (intros; apply IwahoriGroupOffset.GlobalTheory.CompanionTheory.StepGroupOff.mem_map_stepGroup_iff <;> assumption)
 

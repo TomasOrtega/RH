@@ -9,9 +9,20 @@ open MvPolynomial
 noncomputable def subst {O : Type} [CommRing O] (ϖ : O) (n : ℕ) (i : Fin (n + 1)) : MvPolynomial (Fin n) O :=
   Fin.cases (C ϖ) (fun j => X j) i
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem subst_zero {O : Type} [CommRing O] (ϖ : O) (n : ℕ) : subst ϖ n 0 = C ϖ := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem subst_succ {O : Type} [CommRing O] (ϖ : O) (n : ℕ) (j : Fin n) : subst ϖ n j.succ = X j := rfl
 
+/- English proof (translation)
+Establish `: Finset.univ.filter (fun i : Fin (n + 1) => (i : ℕ) < 1) = {0}`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `h; exact Fin.ext (by simpa using h)`.
+
+Introduce and unpack `rfl`. Simplify using the standard rewrite rules. Rewrite using `[this, Finset.prod_singleton]`.
+-/
 theorem prod_lt_one {O : Type} [CommRing O] (n : ℕ) :
     (∏ i ∈ Finset.univ.filter (fun i : Fin (n + 1) => (i : ℕ) < 1), (X i : MvPolynomial (Fin (n + 1)) O)) = X 0 := by
   have : Finset.univ.filter (fun i : Fin (n + 1) => (i : ℕ) < 1) = {0} := by
@@ -24,6 +35,9 @@ theorem prod_lt_one {O : Type} [CommRing O] (n : ℕ) :
 noncomputable abbrev gen {O : Type} [CommRing O] (ϖ : O) (n : ℕ) : Ideal (MvPolynomial (Fin (n + 1)) O) :=
   Ideal.span {X 0 - C ϖ}
 
+/- English proof (translation)
+Introduce `a ha`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`. Rewrite using `[map_mul, map_sub, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, aeval_X, aeval_C, subst_zero, algebraMap_eq, sub_self, mul_zero]`.
+-/
 theorem subst_vanish {O : Type} [CommRing O] (ϖ : O) (n : ℕ) :
     ∀ a ∈ gen ϖ n, (aeval (subst ϖ n)).toRingHom a = 0 := by
   intro a ha
@@ -39,9 +53,15 @@ noncomputable def quotInv {O : Type} [CommRing O] (ϖ : O) (n : ℕ) :
     MvPolynomial (Fin n) O →+* (MvPolynomial (Fin (n + 1)) O ⧸ gen ϖ n) :=
   (Ideal.Quotient.mk _).comp (rename Fin.succ).toRingHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem quotMap_mk {O : Type} [CommRing O] (ϖ : O) (n : ℕ) (a : MvPolynomial (Fin (n + 1)) O) :
     quotMap ϖ n (Ideal.Quotient.mk _ a) = aeval (subst ϖ n) a := rfl
 
+/- English proof (translation)
+Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[quotInv, quotMap_mk]`. Introduce `i`. Simplify using `[quotInv, quotMap_mk]`.
+-/
 theorem quotMap_quotInv {O : Type} [CommRing O] (ϖ : O) (n : ℕ) :
     (quotMap ϖ n).comp (quotInv ϖ n) = RingHom.id _ := by
   apply MvPolynomial.ringHom_ext
@@ -50,6 +70,13 @@ theorem quotMap_quotInv {O : Type} [CommRing O] (ϖ : O) (n : ℕ) :
   · intro i
     simp [quotInv, quotMap_mk]
 
+/- English proof (translation)
+Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[quotInv, quotMap_mk]`. Introduce `i`.
+
+Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, quotMap_mk, aeval_X, subst_zero, RingHom.id_apply]`. Simplify using `only [quotInv, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, rename_C]`. Rewrite using `[Ideal.Quotient.eq]`. Rewrite using `[← neg_sub]`.
+
+Conclude with `neg_mem (Ideal.subset_span rfl)`. Simplify using `[quotInv, quotMap_mk]`.
+-/
 theorem quotInv_quotMap {O : Type} [CommRing O] (ϖ : O) (n : ℕ) :
     (quotInv ϖ n).comp (quotMap ϖ n) = RingHom.id _ := by
   apply Ideal.Quotient.ringHom_ext
@@ -64,10 +91,16 @@ theorem quotInv_quotMap {O : Type} [CommRing O] (ϖ : O) (n : ℕ) :
       rw [← neg_sub]; exact neg_mem (Ideal.subset_span rfl)
     · simp [quotInv, quotMap_mk]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Function.LeftInverse.injective (g := quotInv ϖ n) (fun a => congr($(quotInv_quotMap ϖ n) a)), Function.RightInverse.surjective (g := quotInv ϖ n) (fun a => congr($(quotMap_quotInv ϖ n) a))⟩`.
+-/
 theorem quotMap_bijective {O : Type} [CommRing O] (ϖ : O) (n : ℕ) : Function.Bijective (quotMap ϖ n) :=
   ⟨Function.LeftInverse.injective (g := quotInv ϖ n) (fun a => congr($(quotInv_quotMap ϖ n) a)),
     Function.RightInverse.surjective (g := quotInv ϖ n) (fun a => congr($(quotMap_quotInv ϖ n) a))⟩
 
+/- English proof (translation)
+Use `RingHom.ext fun c => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `quotMap ϖ n (Ideal.Quotient.mk _ (C c)) = C c`. Rewrite using `[quotMap_mk, aeval_C, algebraMap_eq]`.
+-/
 theorem quotMap_algebraMap {O : Type} [CommRing O] (ϖ : O) (n : ℕ) :
     (quotMap ϖ n).comp (algebraMap O _) = C := by
   refine RingHom.ext fun c => ?_
@@ -78,6 +111,23 @@ end GlobalTheory.SmChart
 
 open GlobalTheory.SmChart in
 
+/- English proof (translation)
+Introduce `O _ ϖ X p V x hx hsm`. Use `set f := V.ι ≫ p with hf`. Set `x' : V.toScheme` to `⟨x, hx⟩`. Take `⟨W, hW, hxW, -⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp V.toScheme.isBasis_affineOpens (TopologicalSpace.Opens.mem_top x')`. Establish `hW : IsAffineOpen W` using `hW`.
+
+Establish `e : W ≤ f ⁻¹ᵁ ⊤` using `fun _ _ => trivial`. Establish `hφ : (f.appLE ⊤ W e).hom.Smooth` using `f.smooth_appLE (isAffineOpen_top _) hW e`. Rewrite `hφ` using `[RingHom.smooth_iff_locally_isStandardSmooth, RingHom.locally_iff_isLocalization RingHom.isStandardSmooth_respectsIso]`. Take `⟨s, hs, hfs⟩` from `hφ`. Establish `hs'` using `iSup_basicOpen_of_span_eq_top W (s : Set Γ(V.toScheme, W)) hs`.
+
+Establish `hmem : x' ∈ (⨆ i ∈ (s : Set Γ(V.toScheme, W)), V.toScheme.basicOpen i)` using `hs'.symm ▸ hxW`. Take `⟨r, hr, hxr⟩ : ∃ r ∈ s, x' ∈ V.toScheme.basicOpen r` from `by simpa using hmem`. Establish `hW' : IsAffineOpen (V.toScheme.basicOpen r)` using `hW.basicOpen r`. Establish `e' : V.toScheme.basicOpen r ≤ f ⁻¹ᵁ ⊤` using `fun _ _ => trivial`. Use `haveI : IsLocalization.Away r Γ(V.toScheme, V.toScheme.basicOpen r) := hW.isLocalization_basicOpen r`.
+
+Establish `hst : (f.appLE ⊤ _ e').hom.IsStandardSmooth`. Rewrite using `[← f.appLE_map e (homOfLE (V.toScheme.basicOpen_le r)).op]`. Conclude with `hfs r hr _`. Take `⟨n, g, hgC, hg⟩` from `RingHom.IsStandardSmooth.exists_etale_mvPolynomial hst`. Set `c : O →+* Γ(Spec (CommRingCat.of O), ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom`.
+
+Establish `hc : Function.Bijective c` using `(Scheme.ΓSpecIso (CommRingCat.of O)).symm.commRingCatIsoToRingEquiv.bijective`. Set `k` to `V.ι.appIso (V.toScheme.basicOpen r)`. Establish `hk : Function.Bijective k.inv.hom` using `k.symm.commRingCatIsoToRingEquiv.bijective`. Establish `hU : IsAffineOpen (V.ι ''ᵁ V.toScheme.basicOpen r)` using `hW'.image_of_isOpenImmersion V.ι`. Establish `hxU : x ∈ V.ι ''ᵁ V.toScheme.basicOpen r` using `⟨x', hxr, rfl⟩`.
+
+Establish `hcomp : p.appLE ⊤ (V.ι ''ᵁ V.toScheme.basicOpen r) le_top ≫ k.hom = f.appLE ⊤ _ e'`. Establish `h1` using `Scheme.Hom.appLE_comp_appLE V.ι p ⊤ (V.ι ''ᵁ V.toScheme.basicOpen r) (V.toScheme.basicOpen r) le_top (V.ι.preimage_image_eq _).ge`. Establish `h2 : k.hom = V.ι.appLE _ _ (V.ι.preimage_image_eq _).ge`. Rewrite using `[Scheme.Hom.appIso_hom, Scheme.Hom.appLE]`. Both sides reduce to the same expression.
+
+Rewrite using `[h2]`. Conclude with `h1`. Use `⟨_, hU, hxU, n + 1, 1, le_rfl, by omega, ?_⟩` and prove the remaining obligations. Rewrite using `[prod_lt_one]`. Use `⟨k.inv.hom.comp (g.comp ((MvPolynomial.map c).comp (quotMap ϖ n))), ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.of_bijective (quotMap_bijective ϖ n)) (RingHom.Etale.of_bijective ⟨MvPolynomial.map_injective _ hc.1, MvPolynomial.map_surjective _ hc.2⟩)) …`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `k.inv.hom (g (MvPolynomial.map c (quotMap ϖ n (algebraMap O _ a)))) = (p.appLE ⊤ (V.ι ''ᵁ V.toScheme.basicOpen r) le_top).hom (c a)`. Rewrite using `[show quotMap ϖ n (algebraMap O _ a) = MvPolynomial.C a from congr($(quotMap_algebraMap ϖ n) a), MvPolynomial.map_C, show g (MvPolynomial.C (c a)) = (f.appLE ⊤ _ e').hom (c a) from congr($hgC (c a)), ← hcomp]`. Simplify using the standard rewrite rules.
+-/
 theorem GlobalTheory.SSG.chartAt_of_smooth : ∀ (O : Type) [CommRing O] (ϖ : O) (X : Scheme.{0})
     (p : X ⟶ Spec (CommRingCat.of O)) (V : X.Opens) (x : X), x ∈ V → Smooth (V.ι ≫ p) →
     GlobalTheory.SSG.ChartAt ϖ p x := by

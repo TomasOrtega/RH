@@ -7,6 +7,15 @@ namespace GroundTheory.Heights₂.Heights.FourB
 open Matrix
 open scoped ComplexOrder MatrixOrder
 
+/- English proof (translation)
+Establish `hH : (1 + M).IsHermitian` using `isHermitian_one.add hM.isHermitian`. Establish `hev : ∀ i, (1 : ℝ) ≤ hH.eigenvalues i`. Introduce `i`. Rewrite using `[hH.eigenvalues_eq i]`. Establish `hv : star ⇑(hH.eigenvectorBasis i) ⬝ᵥ ⇑(hH.eigenvectorBasis i) = 1`.
+
+Rewrite using `[dotProduct_comm, ← EuclideanSpace.inner_eq_star_dotProduct, inner_self_eq_norm_sq_to_K, hH.eigenvectorBasis.orthonormal.1 i]`. Simplify using the standard rewrite rules. Rewrite using `[add_mulVec, one_mulVec, dotProduct_add, map_add, hv, RCLike.one_re]`. Combine the linear relations using `[hM.re_dotProduct_nonneg (hH.eigenvectorBasis i)]`. Rewrite using `[hH.det_eq_prod_eigenvalues]`.
+
+Establish `hprod : (1 : ℝ) ≤ ∏ i, hH.eigenvalues i`. Combine the equalities or inequalities in the displayed calculation. Establish `key : ((1 : ℝ) : ℂ) ≤ ((∏ i, hH.eigenvalues i : ℝ) : ℂ)` using `Complex.real_le_real.mpr hprod`. Use `key using 1` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules.
+
+Simplify using `[Complex.ofReal_prod]`.
+-/
 theorem HermitianDetMono.one_le_det_one_add {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ}
     (hM : M.PosSemidef) : 1 ≤ (1 + M).det := by
   have hH : (1 + M).IsHermitian := isHermitian_one.add hM.isHermitian
@@ -29,6 +38,17 @@ theorem HermitianDetMono.one_le_det_one_add {n : ℕ} {M : Matrix (Fin n) (Fin n
   · simp
   · simp [Complex.ofReal_prod]
 
+/- English proof (translation)
+Introduce `n A B hB hAB`. Establish `hA : A.PosSemidef` using `by simpa using hB.add hAB`. It suffices to establish `h : B.det ≤ A.det from (Complex.le_def.mp h).1`. Distinguish the cases in `hdet : B.det = 0`. Rewrite using `[hdet]`.
+
+Conclude with `hA.det_nonneg`. Take `⟨y, rfl⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.mp hB.nonneg`. Establish `hy : IsUnit y.det`. Rewrite `hdet` using `[det_mul]`. Conclude with `isUnit_iff_ne_zero.mpr (right_ne_zero_of_mul hdet)`.
+
+Use `set M := (y⁻¹)ᴴ * (A - star y * y) * y⁻¹ with hMdef`. Establish `hM : M.PosSemidef` using `hAB.conjTranspose_mul_mul_same y⁻¹`. Establish `hfac : A = star y * (1 + M) * y`. Establish `h1 : star y * (y⁻¹)ᴴ = 1`. Rewrite using `[star_eq_conjTranspose, ← conjTranspose_mul, nonsing_inv_mul y hy, conjTranspose_one]`.
+
+Rewrite using `[hMdef, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Matrix.one_mul, Matrix.mul_assoc, nonsing_inv_mul y hy, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Establish `hdA : A.det = (1 + M).det * (star y * y).det` using `by conv_lhs => rw [hfac]`. Rewrite using `[det_mul, det_mul, det_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hdA]`. Conclude with `le_mul_of_one_le_left hB.det_nonneg (HermitianDetMono.one_le_det_one_add hM)`.
+-/
 theorem HermitianDetMono.proof : HermitianDetMono.Statement := by
   intro n A B hB hAB
   have hA : A.PosSemidef := by simpa using hB.add hAB

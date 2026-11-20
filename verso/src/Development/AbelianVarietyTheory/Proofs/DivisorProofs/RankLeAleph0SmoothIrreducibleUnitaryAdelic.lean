@@ -13,9 +13,15 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L]
 
 local notation3 "L⁺" => NumberField.maximalRealSubfield L
 
+/- English proof (translation)
+The claim follows from `(Module.finBasis ℚ L).equivFun.toEquiv.injective.countable`.
+-/
 theorem countable_field : Countable L :=
   (Module.finBasis ℚ L).equivFun.toEquiv.injective.countable
 
+/- English proof (translation)
+Establish `h1 : ((o : L) ⊗ₜ[L⁺] (1 : AFplus L) : AL L) ∈ ALint L` using `Subring.subset_closure (Or.inl ⟨o, rfl⟩)`. Establish `h2 : ((1 : L) ⊗ₜ[L⁺] a : AL L) ∈ ALint L` using `Subring.subset_closure (Or.inr ⟨a, ha, rfl⟩)`. Use `Subring.mul_mem _ h1 h2` as an intermediate fact. Rewrite `this` using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem tmul_mem_ALint (o : 𝓞 L) {a : AFplus L} (ha : ∀ v, a v ∈ v.adicCompletionIntegers L⁺) :
     ((o : L) ⊗ₜ[L⁺] a : AL L) ∈ ALint L := by
   have h1 : ((o : L) ⊗ₜ[L⁺] (1 : AFplus L) : AL L) ∈ ALint L :=
@@ -25,6 +31,11 @@ theorem tmul_mem_ALint (o : 𝓞 L) {a : AFplus L} (ha : ∀ v, a v ∈ v.adicCo
   have := Subring.mul_mem _ h1 h2
   rwa [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul] at this
 
+/- English proof (translation)
+Take `⟨y, hy, h⟩` from `exists_integral_multiples ℤ ℚ (L := L) ({e} : Finset L)`. Use `⟨(y * y).natAbs, Int.natAbs_pos.2 (mul_ne_zero hy hy), ?_⟩` and prove the remaining obligations. Establish `hi : IsIntegral ℤ ((y * y).natAbs • e)`. Rewrite using `[← natCast_zsmul, Int.natAbs_of_nonneg (mul_self_nonneg y), mul_smul]`. Conclude with `(h e (Finset.mem_singleton_self e)).smul y`.
+
+Conclude with `⟨⟨_, hi⟩, rfl⟩`.
+-/
 theorem exists_nat_smul_int (e : L) : ∃ D : ℕ, 0 < D ∧ ∃ o : 𝓞 L, (o : L) = D • e := by
   obtain ⟨y, hy, h⟩ := exists_integral_multiples ℤ ℚ (L := L) ({e} : Finset L)
   refine ⟨(y * y).natAbs, Int.natAbs_pos.2 (mul_ne_zero hy hy), ?_⟩
@@ -33,6 +44,13 @@ theorem exists_nat_smul_int (e : L) : ∃ D : ℕ, 0 < D ∧ ∃ o : 𝓞 L, (o 
     exact (h e (Finset.mem_singleton_self e)).smul y
   exact ⟨⟨_, hi⟩, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, zero_mem _, by simp⟩`. Consider the case `add x x' hx hx'`. Take `⟨c, y, hy, rfl⟩` from `hx`. Take `⟨c', y', hy', rfl⟩` from `hx'`.
+
+Conclude with `⟨c + c', y + y', add_mem hy hy', by rw [TensorProduct.add_tmul, smul_add]; abel⟩`. Consider the case `tmul e a`. Take `⟨D, hD, o, ho⟩` from `exists_nat_smul_int e`. Take `⟨k, a', ha', rfl⟩` from `(GlobalTheory.AdLat.strong_approximation_mod_nat L⁺ (D * M) (Nat.mul_pos hD hM)).1 a`. Use `⟨algebraMap L⁺ L k * e, _, tmul_mem_ALint o ha', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[TensorProduct.tmul_add, Algebra.algebraMap_eq_smul_one k, ← TensorProduct.smul_tmul, ← Algebra.smul_def, ho, TensorProduct.smul_tmul', TensorProduct.tmul_smul, mul_comm, mul_smul]`. Simplify using `only [TensorProduct.smul_tmul']`.
+-/
 theorem exists_approx (M : ℕ) (hM : 0 < M) (x : AL L) :
     ∃ c : L, ∃ y ∈ ALint L, x = c ⊗ₜ[L⁺] (1 : AFplus L) + M • y := by
   induction x using TensorProduct.induction_on with
@@ -50,6 +68,11 @@ theorem exists_approx (M : ℕ) (hM : 0 < M) (x : AL L) :
       ← Algebra.smul_def, ho, TensorProduct.smul_tmul', TensorProduct.tmul_smul, mul_comm, mul_smul]
     simp only [TensorProduct.smul_tmul']
 
+/- English proof (translation)
+Take `⟨c, y, hy, rfl⟩` from `exists_approx 1 one_pos x`. Take `⟨D, hD, o, ho⟩` from `exists_nat_smul_int c`. Use `⟨D, hD, ?_⟩` and prove the remaining obligations. Establish `e1 : (D : AL L) * (c ⊗ₜ[L⁺] (1 : AFplus L)) = (o : L) ⊗ₜ[L⁺] (1 : AFplus L)`. Rewrite using `[ho, ← nsmul_eq_mul, TensorProduct.smul_tmul']`.
+
+Rewrite using `[mul_add, e1, one_smul]`. Conclude with `add_mem (tmul_mem_ALint o (fun v => one_mem _)) (Subring.mul_mem _ (natCast_mem _ _) hy)`.
+-/
 theorem exists_denom (x : AL L) : ∃ m : ℕ, 0 < m ∧ (m : AL L) * x ∈ ALint L := by
   obtain ⟨c, y, hy, rfl⟩ := exists_approx 1 one_pos x
   obtain ⟨D, hD, o, ho⟩ := exists_nat_smul_int c
@@ -61,6 +84,9 @@ theorem exists_denom (x : AL L) : ∃ m : ℕ, 0 < m ∧ (m : AL L) * x ∈ ALin
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use `choose m hm h using fun p : Fin n × Fin n => exists_denom (G p.1 p.2)`. Use `⟨∏ p, m p, Finset.prod_pos fun p _ => hm p, fun i j => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem m (Finset.mem_univ (i, j))`. Rewrite using `[hk, Nat.cast_mul, mul_comm ((m (i, j) : ℕ) : AL L), mul_assoc]`. Conclude with `Subring.mul_mem _ (natCast_mem _ _) (h (i, j))`.
+-/
 theorem exists_denom_matrix (G : Matrix (Fin n) (Fin n) (AL L)) :
     ∃ m : ℕ, 0 < m ∧ ∀ i j, (m : AL L) * G i j ∈ ALint L := by
   classical
@@ -70,6 +96,9 @@ theorem exists_denom_matrix (G : Matrix (Fin n) (Fin n) (AL L)) :
   rw [hk, Nat.cast_mul, mul_comm ((m (i, j) : ℕ) : AL L), mul_assoc]
   exact Subring.mul_mem _ (natCast_mem _ _) (h (i, j))
 
+/- English proof (translation)
+Take `⟨m, hm, h⟩` from `exists_denom_matrix (g.1 : Matrix (Fin n) (Fin n) (AL L))`. Use `choose c y hy e using fun i j => exists_approx (m * N) (Nat.mul_pos hm hN) ((g.1 : Matrix (Fin n) (Fin n) (AL L)) i j)`. Conclude with `⟨(m, c), hm, h, fun i j => ⟨y i j, hy i j, e i j⟩⟩`.
+-/
 theorem exists_code (N : ℕ) (hN : 0 < N) (g : GAf L n) :
     ∃ p : ℕ × (Fin n → Fin n → L), 0 < p.1 ∧
       (∀ i j, (p.1 : AL L) * (g.1 : Matrix (Fin n) (Fin n) (AL L)) i j ∈ ALint L) ∧
@@ -80,6 +109,9 @@ theorem exists_code (N : ℕ) (hN : 0 < N) (g : GAf L n) :
     exists_approx (m * N) (Nat.mul_pos hm hN) ((g.1 : Matrix (Fin n) (Fin n) (AL L)) i j)
   exact ⟨(m, c), hm, h, fun i j => ⟨y i j, hy i j, e i j⟩⟩
 
+/- English proof (translation)
+Establish `hm` using `g.2`. Simplify using `only [GA, UGroup, Subgroup.mem_mk] at hm`. Conclude with `Units.inv_eq_of_mul_eq_one_right hm`.
+-/
 theorem inv_val (g : GAf L n) :
     (((g⁻¹ : GAf L n).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) =
       conjT (conjAL L) (g.1 : Matrix (Fin n) (Fin n) (AL L)) := by
@@ -87,6 +119,21 @@ theorem inv_val (g : GAf L n) :
   simp only [GA, UGroup, Subgroup.mem_mk] at hm
   exact Units.inv_eq_of_mul_eq_one_right hm
 
+/- English proof (translation)
+Use `choose y hy ey using e`. Use `choose y' hy' ey' using e'`. Use `set A : Matrix (Fin n) (Fin n) (AL L) := (((g⁻¹ : GAf L n).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) with hAdef`. Establish `hAint : ∀ i j, (m : AL L) * A i j ∈ ALint L`. Introduce `i j`.
+
+Rewrite using `[hAdef, inv_val]`. Simplify using `only [conjT, Matrix.transpose_apply, Matrix.map_apply]`. Use `conjAL_mem_ALint L (hg j i)` as an intermediate fact. Rewrite `this` using `[map_mul, map_natCast]`. Then use the resulting hypothesis. Establish `hAG : A * (g.1 : Matrix (Fin n) (Fin n) (AL L)) = 1` using `Units.inv_mul g.1`.
+
+Use `set Y : Matrix (Fin n) (Fin n) (AL L) := Matrix.of fun i j => y' i j - y i j`. Establish `hG' : (g'.1 : Matrix (Fin n) (Fin n) (AL L)) = (g.1 : Matrix (Fin n) (Fin n) (AL L)) + (N : AL L) • ((m : AL L) • Y)`. Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, Y, Matrix.of_apply, smul_eq_mul, ey, ey', nsmul_eq_mul]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hk : (((g⁻¹ * g' : GAf L n).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) = 1 + (N : AL L) • (((m : AL L) • A) * Y)`. Express the relevant statement in the definitionally equal form `A * (g'.1 : Matrix (Fin n) (Fin n) (AL L)) = _`. Rewrite using `[hG', Matrix.mul_add, hAG, Matrix.mul_smul, Matrix.mul_smul, Matrix.smul_mul]`. Establish `hz : ∀ i j, (((m : AL L) • A) * Y) i j ∈ ALint L`.
+
+Introduce `i j`. Simplify using `only [Matrix.mul_apply, Matrix.smul_apply, Y, Matrix.of_apply, smul_eq_mul]`. Conclude with `Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hAint i k) (Subring.sub_mem _ (hy' k j) (hy k j))`. Use `⟨fun i j => ?_, fun i j => ⟨_, hz i j, ?_⟩⟩` and prove the remaining obligations. Use `show (((g⁻¹ * g' : GAf L n).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) i j ∈ ALint L`.
+
+Rewrite using `[hk, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Use `Subring.add_mem _ ?_ (Subring.mul_mem _ (natCast_mem _ _) (hz i j))` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `Subring.one_mem _`.
+
+Conclude with `Subring.zero_mem _`. Rewrite using `[hk, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cong_of_code {N m : ℕ} {c : Fin n → Fin n → L} {g g' : GAf L n}
     (hg : ∀ i j, (m : AL L) * (g.1 : Matrix (Fin n) (Fin n) (AL L)) i j ∈ ALint L)
     (e : ∀ i j, ∃ y ∈ ALint L, (g.1 : Matrix (Fin n) (Fin n) (AL L)) i j =
@@ -132,10 +179,20 @@ theorem cong_of_code {N m : ℕ} {c : Fin n → Fin n → L} {g g' : GAf L n}
   · rw [hk, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
     ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[rt, mul_assoc]`.
+-/
 theorem rt_mul (h h' : GAf L n) (f : GAf L n → ℂ) : rt L n (h * h') f = rt L n h (rt L n h' f) := by
   funext x
   simp [rt, mul_assoc]
 
+/- English proof (translation)
+Use `haveI := countable_field (L := L)`. Use `choose p _ hp2 hp3 using exists_code (L := L) (n := n) N hN`. Set `Ψ : ℕ × (Fin n → Fin n → L) → (GAf L n → ℂ)` to `fun q => if hq : ∃ g, p g = q then rt L n hq.choose f else 0`. Establish `key : ∀ g, rt L n g f = Ψ (p g)`. Introduce `g`.
+
+Establish `hq : ∃ g', p g' = p g` using `⟨g, rfl⟩`. Simplify using `only [Ψ, dif_pos hq]`. Establish `e` using `hq.choose_spec`. Establish `h3` using `hp3 hq.choose`. Rewrite `h3` using `[e]`.
+
+Establish `hc : Cong L n N (g⁻¹ * hq.choose)` using `cong_of_code (hp2 g) (hp3 g) h3`. Combine the equalities or inequalities in the displayed calculation. Use `(Set.countable_range Ψ).mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `⟨p g, (key g).symm⟩`.
+-/
 theorem countable_range_rt {f : GAf L n → ℂ} {N : ℕ} (hN : 0 < N)
     (hf : ∀ κ, Cong L n N κ → rt L n κ f = f) :
     (Set.range fun h : GAf L n => rt L n h f).Countable := by
@@ -164,6 +221,19 @@ namespace GlobalTheory
 
 open GlobalTheory.FinTypCount in
 
+/- English proof (translation)
+Introduce `L _ _ _ n π`. Take `⟨f, hfS, hf0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot π.ne`. Take `⟨N, hN, hfix⟩` from `π.smooth f hfS`. Set `T` to `Submodule.span ℂ (Set.range fun h : GAf L n => rt L n h f)`. Establish `hle : T ≤ π.S`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨h, rfl⟩`. Conclude with `π.stable h f hfS`. Establish `hst : ∀ h, ∀ u ∈ T, rt L n h u ∈ T`. Introduce `h u hu`.
+
+Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨h', rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨h * h', rt_mul h h' f⟩`. Consider the case `zero => simp`.
+
+Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c ha`. Establish `hfT : f ∈ T` using `Submodule.subset_span ⟨1, by funext x; simp [rt]⟩`.
+
+Establish `hT : T = π.S`. Break down `π.irr T hle hst with h | h` into its components or cases. Conclude with `absurd ((Submodule.mem_bot ℂ).1 (h ▸ hfT)) hf0`. Conclude with `h`. Rewrite using `[← hT]`.
+
+Conclude with `(rank_span_le _).trans (Cardinal.le_aleph0_iff_set_countable.2 (countable_range_rt hN hfix))`.
+-/
 theorem FinTyp.rank_le_aleph0 : ∀ {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
     (π : Formalism.L2.NG.FinTyp L n), Module.rank ℂ π.S ≤ Cardinal.aleph0 := by
   intro L _ _ _ n π

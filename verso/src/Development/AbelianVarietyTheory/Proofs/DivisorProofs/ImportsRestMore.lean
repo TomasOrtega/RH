@@ -15,6 +15,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.GenInterior
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `(Z.2.1 : IsIrreducible (Z : Set (Xo.XF c))).nonempty`. Establish `hxm : TF.Y.j x ∈ barComp TF.Y Z` using `(j_mem_barComp Z x).2 hx`. Set `v : V₀ TF.Y Z` to `⟨x, hxm⟩`. Establish `hU : IsOpen (Set.range (j₀ TF.Y Z))` using `(j₀ TF.Y Z).isOpenEmbedding.isOpen_range`. Conclude with `((genericPoint_spec (X₀ TF.Y Z)).mem_open_set_iff hU).2 ⟨j₀ TF.Y Z v, trivial, v, rfl⟩`.
+-/
 theorem exists_j₀_eq_genericPoint (E : Type) [Field E] [NumberField E] [IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l)
     (TF : TorFlag Xo c) (Z : Comp Xo c) [IsIntegral (X₀ TF.Y Z)] :

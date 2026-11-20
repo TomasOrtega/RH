@@ -31,6 +31,11 @@ abbrev intAE (D : D7) : AddSubgroup (Formalism.L2.Theta.AE D) :=
 
 variable {A : AddSubgroup (Matrix (Fin S.rank) (Fin T.rank) D.host.E)}
 
+/- English proof (translation)
+Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, y, hy, rfl⟩` from `hw`. Conclude with `mem α hα y hy`. Consider the case `zero => exact zero`.
+
+Consider the case `add x y _ _ hx hy => exact add _ _ hx hy`. Consider the case `neg x _ hx => exact neg _ hx`.
+-/
 theorem hatA_induction {p : WO S T → Prop} (mem : ∀ α ∈ intAf D.host.F, ∀ y ∈ A, p (finTens α yᵀ))
     (zero : p 0) (add : ∀ x y, p x → p y → p (x + y)) (neg : ∀ x, p x → p (-x))
     {u : WO S T} (hu : u ∈ hatA S T A) : p u := by
@@ -42,12 +47,29 @@ theorem hatA_induction {p : WO S T → Prop} (mem : ∀ α ∈ intAf D.host.F, �
   | add x y _ _ hx hy => exact add _ _ hx hy
   | neg x _ hx => exact neg _ hx
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨α, hα, y, hy, rfl⟩`.
+-/
 theorem finTens_mem {α : Af D.host.F} (hα : α ∈ intAf D.host.F) {y : Matrix (Fin S.rank) (Fin T.rank) D.host.E}
     (hy : y ∈ A) : finTens α yᵀ ∈ hatA S T A :=
   AddSubgroup.subset_closure ⟨α, hα, y, hy, rfl⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem finW_eq (y : Matrix (Fin S.rank) (Fin T.rank) D.host.E) : finW S T y = finTens 1 yᵀ := rfl
 
+/- English proof (translation)
+Proceed by induction on `ha using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨β, hβ, o, rfl⟩` from `hz`. Use `hatA_induction (p := fun u => (pairA D.host.F 0 β ⊗ₜ[D.host.F] (o : D.host.E) : Formalism.L2.Theta.AE D) • u ∈ hatA S T A) ?_ ?_ ?_ ?_ hu` and prove the remaining obligations. Introduce `α hα y hy`.
+
+Rewrite using `[tmul_smul_finTens, ← Matrix.transpose_smul]`. Conclude with `finTens_mem (mul_mem_intAf hβ hα) (hA o y hy)`. Rewrite using `[smul_zero]`. Conclude with `zero_mem _`. Introduce `x y hx hy`.
+
+Rewrite using `[smul_add]`. Conclude with `add_mem hx hy`. Introduce `x hx`. Rewrite using `[smul_neg]`. Conclude with `neg_mem hx`.
+
+Consider the case `zero => rw [zero_smul]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [add_smul]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [neg_smul]`.
+
+Conclude with `neg_mem hx`.
+-/
 theorem smul_mem_hatA (hA : ∀ o : 𝓞 D.host.E, ∀ y ∈ A, (o : D.host.E) • y ∈ A) {a : Formalism.L2.Theta.AE D}
     (ha : a ∈ intAE D) {u : WO S T} (hu : u ∈ hatA S T A) : a • u ∈ hatA S T A := by
   induction ha using AddSubgroup.closure_induction with
@@ -65,6 +87,11 @@ theorem smul_mem_hatA (hA : ∀ o : 𝓞 D.host.E, ∀ y ∈ A, (o : D.host.E) �
   | add x y _ _ hx hy => rw [add_smul]; exact add_mem hx hy
   | neg x _ hx => rw [neg_smul]; exact neg_mem hx
 
+/- English proof (translation)
+Use `hatA_induction (p := fun u => (pairA D.host.F 0 1 ⊗ₜ[D.host.F] (1 : D.host.E) : Formalism.L2.Theta.AE D) • u = u) ?_ ?_ ?_ ?_ hu` and prove the remaining obligations. Introduce `α _ y _`. Rewrite using `[tmul_smul_finTens, one_mul, one_smul]`. Rewrite using `[smul_zero]`. Introduce `x y hx hy`.
+
+Rewrite using `[smul_add, hx, hy]`. Introduce `x hx`. Rewrite using `[smul_neg, hx]`.
+-/
 theorem one_smul_hatA {u : WO S T} (hu : u ∈ hatA S T A) :
     (pairA D.host.F 0 1 ⊗ₜ[D.host.F] (1 : D.host.E) : Formalism.L2.Theta.AE D) • u = u := by
   refine hatA_induction (p := fun u => (pairA D.host.F 0 1 ⊗ₜ[D.host.F] (1 : D.host.E) : Formalism.L2.Theta.AE D) • u = u)
@@ -75,6 +102,19 @@ theorem one_smul_hatA {u : WO S T} (hu : u ∈ hatA S T A) :
   · intro x y hx hy; rw [smul_add, hx, hy]
   · intro x hx; rw [smul_neg, hx]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `symplHom S T u u' ∈ kerChar ψ`. Use `hatA_induction (p := fun u => symplHom S T u u' ∈ kerChar ψ) ?_ ?_ ?_ ?_ hu` and prove the remaining obligations. Introduce `α hα M hM`. Use `hatA_induction (p := fun u' => symplHom S T (finTens α Mᵀ) u' ∈ kerChar ψ) ?_ ?_ ?_ ?_ hu'` and prove the remaining obligations. Introduce `β hβ N hN`.
+
+Express the relevant statement in the definitionally equal form `ψ (symplO S T _ _) = 1`. Rewrite using `[symplO_finTens]`. Use `GlobalTheory.IntDense.addChar_eq_one_of_integral D.host.F ψ hψ _ (fun a => ?_) _ (mul_mem_intAf hα hβ)` and prove the remaining obligations. Establish `h1` using `h _ (hA (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) a) M hM) N hN`. Rewrite `h1` using `[finW_eq, finW_eq, symplO_finTens, Matrix.transpose_smul, hRat_smul, one_mul, one_mul]`.
+
+Rewrite using `[← h1, ← smul_eq_mul, ← map_smul, Algebra.smul_def, mul_left_comm]`. Both sides reduce to the same expression. Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Introduce `x y hx hy`.
+
+Rewrite using `[map_add]`. Conclude with `add_mem hx hy`. Introduce `x hx`. Rewrite using `[map_neg]`. Conclude with `neg_mem hx`.
+
+Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Introduce `x y hx hy`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`.
+
+Introduce `x hx`. Rewrite using `[map_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem char_sympl_hatA {ψ : AddChar (AF D.host.F) ℂ} (hψ : Continuous ψ)
     (hA : ∀ o : 𝓞 D.host.E, ∀ y ∈ A, (o : D.host.E) • y ∈ A)
     (h : ∀ y ∈ A, ∀ y' ∈ A, ψ (symplO S T (finW S T y) (finW S T y')) = 1) {u u' : WO S T}
@@ -106,9 +146,17 @@ def sg (u : WO S T) : ℂ := ψ (symplOH S T u (ω • u))
 
 variable {ψ ω} {H : AddSubgroup (WO S T)}
 
+/- English proof (translation)
+Rewrite using `[symplOH, symplOH, symplO_skew, mul_neg]`.
+-/
 theorem symplOH_skew (x y : WO S T) : symplOH S T y x = -symplOH S T x y := by
   rw [symplOH, symplOH, symplO_skew, mul_neg]
 
+/- English proof (translation)
+Establish `h2` using `symplO_skew S T x x`. Rewrite using `[symplOH]`. Establish `h3 : symplO S T x x + symplO S T x x = 0` using `by rw [← eq_neg_iff_add_eq_zero]; exact h2`. Establish `h4` using `symplOH_add_self S T x x`. Rewrite `h4` using `[symplOH, ← mul_add, h3, mul_zero]`.
+
+Rewrite using `[← h4, mul_zero]`.
+-/
 theorem symplOH_self (x : WO S T) : symplOH S T x x = 0 := by
   have h2 := symplO_skew S T x x
   rw [symplOH]
@@ -117,6 +165,13 @@ theorem symplOH_self (x : WO S T) : symplOH S T x x = 0 := by
   rw [symplOH, ← mul_add, h3, mul_zero] at h4
   rw [← h4, mul_zero]
 
+/- English proof (translation)
+Establish `h1 : symplOH S T u' (ω • u) = -symplOH S T u (cA D ω • u')`. Rewrite using `[symplOH_skew, symplOH, symplOH, symplO_smul]`. Establish `h2 : symplOH S T u u' = symplOH S T u (ω • u') + symplOH S T u (cA D ω • u')`. Rewrite using `[← symplOH_add_right, hω' u' hu']`. Establish `h3 : cA D ω • u' ∈ H`.
+
+Rewrite using `[eq_sub_of_add_eq' (hω' u' hu')]`. Conclude with `sub_mem hu' (hω u' hu')`. Establish `h4` using `char_half (hH u hu _ h3)`. Simplify using `only [sg, smul_add, symplOH_add_left, symplOH_add_right, h1, AddChar.map_add_eq_mul]`. Rewrite using `[h2, AddChar.map_add_eq_mul, AddChar.map_neg_eq_inv, ← eq_inv_of_mul_eq_one_left h4]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sg_add (hH : ∀ u ∈ H, ∀ u' ∈ H, ψ (symplO S T u u') = 1) (hω : ∀ u ∈ H, ω • u ∈ H)
     (hω' : ∀ u ∈ H, ω • u + cA D ω • u = u) {u u' : WO S T} (hu : u ∈ H) (hu' : u' ∈ H) :
     sg ψ ω (u + u') = sg ψ ω u * sg ψ ω u' * ψ (symplOH S T u u') := by
@@ -131,11 +186,17 @@ theorem sg_add (hH : ∀ u ∈ H, ∀ u' ∈ H, ψ (symplO S T u u') = 1) (hω :
   rw [h2, AddChar.map_add_eq_mul, AddChar.map_neg_eq_inv, ← eq_inv_of_mul_eq_one_left h4]
   ring
 
+/- English proof (translation)
+Establish `h` using `hH u hu _ (hω _ (nsmul_mem hu 2))`. Rewrite using `[sg, ← h, ← symplOH_add_self, ← symplOH_add_left, two_nsmul]`.
+-/
 theorem sg_two (hH : ∀ u ∈ H, ∀ u' ∈ H, ψ (symplO S T u u') = 1) (hω : ∀ u ∈ H, ω • u ∈ H)
     {u : WO S T} (hu : u ∈ H) : sg ψ ω (2 • u) = 1 := by
   have h := hH u hu _ (hω _ (nsmul_mem hu 2))
   rw [sg, ← h, ← symplOH_add_self, ← symplOH_add_left, two_nsmul]
 
+/- English proof (translation)
+Establish `h1` using `hH u hu v hv`. Break down `h with h | h` into its components or cases. Rewrite using `[sg, h, two_nsmul, symplOH_add_right, symplOH_add_right, symplOH_self, zero_add, symplOH_add_self, h1]`. Rewrite using `[sg, h, two_nsmul, symplOH_add_right, symplOH_add_self, h1]`.
+-/
 theorem sg_of_cong (hH : ∀ u ∈ H, ∀ u' ∈ H, ψ (symplO S T u u') = 1) {u v : WO S T} (hu : u ∈ H) (hv : v ∈ H)
     (h : ω • u = u + 2 • v ∨ ω • u = 2 • v) : sg ψ ω u = 1 := by
   have h1 := hH u hu v hv
@@ -164,6 +225,39 @@ end Sign
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D S T C w hw hw1 hw2 M Λ hΛ L hL f hf`. Establish `hA : ∀ o : 𝓞 D.host.E, ∀ y ∈ tens Λ L, (o : D.host.E) • y ∈ tens Λ L` using `fun o y hy => TensLat.smul_mem_tens hΛ o.isIntegral_coe hy`. Establish `hfin` using `(GlobalTheory.T.symplecticCharacter_real_finite_points_match D S T C).2.2.1`. Establish `hH : ∀ u ∈ hatA S T (tens Λ L), ∀ u' ∈ hatA S T (tens Λ L), C.ψ (symplO S T u u') = 1`. Use `fun u hu u' hu' => char_sympl_hatA C.std.1.1 hA (fun y hy y' hy' => ?_) hu hu'` and prove the remaining obligations.
+
+Take `⟨k, hk⟩` from `(TensLat.tens_selfDual hΛ hL y).1 hy y' hy'`. Rewrite using `[← symplOH_add_self, AddChar.map_add_eq_mul, hfin, hk, ← Complex.exp_add, ← Complex.exp_int_mul_two_pi_mul_I (-k)]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `set ω : Formalism.L2.Theta.AE D := pairA D.host.F 0 1 ⊗ₜ[D.host.F] w with hωdef`. Establish `hωi : ω ∈ intAE D` using `AddSubgroup.subset_closure ⟨1, one_mem_intAf _, ⟨w, hw⟩, rfl⟩`. Establish `hω : ∀ u ∈ hatA S T (tens Λ L), ω • u ∈ hatA S T (tens Λ L)` using `fun u hu => smul_mem_hatA hA hωi hu`. Establish `hω' : ∀ u ∈ hatA S T (tens Λ L), ω • u + cA D ω • u = u`. Introduce `u hu`.
+
+Establish `: cA D ω = pairA D.host.F 0 1 ⊗ₜ[D.host.F] cc w` using `rfl`. Rewrite using `[← add_smul, this, hωdef, ← TensorProduct.tmul_add, hw1, one_smul_hatA hu]`. Establish `heps : ∀ y ∈ tens Λ L, sg C.ψ ω (finW S T y) = epsW C.X w y`. Introduce `y hy`. Establish `h1 : ω • finW S T y = finW S T (w • y)`.
+
+Rewrite using `[finW_eq, finW_eq, hωdef, tmul_smul_finTens, one_mul, Matrix.transpose_smul]`. Establish `h2` using `(TensLat.epsW_semichar hΛ hL hw hw1 hy).1`. Rewrite using `[sg, h1, hfin, Complex.exp_neg]`. Conclude with `(eq_inv_of_mul_eq_one_left ((sq _).symm.trans h2)).symm`. Take `⟨s, hs, ⟨a, ha, hwa⟩, ⟨b, hb, h1b⟩, hall⟩` from `GlobalTheory.T.exists_splitIdempotents_of_relTraceOneModTwo D w hw hw1 hw2`.
+
+Establish `hhalf : ∀ e, IsSplitIdem D e → ∀ u ∈ hatA S T (tens Λ L), IsHalf e u → sg C.ψ ω u = 1`. Introduce `e he u hu hh`. Establish `heu` using `(isHalf_iff _ _).1 hh`. Establish `hωu : ω • u = (∑ e' ∈ s, e' * e) • u + 2 • (a • u)`. Rewrite using `[← Finset.sum_mul, mul_smul, heu, hωdef, eq_add_of_sub_eq' hwa, add_smul, two_mul, add_smul, two_nsmul]`.
+
+Establish `hau` using `smul_mem_hatA hA ha hu`. Break down `(hall e he).2 with h | h | ⟨c, hc, h⟩` into its components or cases. Use `sg_of_cong hH hu hau (Or.inl ?_)` and prove the remaining obligations. Rewrite using `[hωu, Finset.sum_eq_single_of_mem e h fun e' he' hne => ((hs e' he').2 e h hne).1, he.1, heu]`. Use `sg_of_cong hH hu hau (Or.inr ?_)` and prove the remaining obligations.
+
+Rewrite using `[hωu, Finset.sum_eq_zero, zero_smul, zero_add]`. Introduce `e' he'`. Distinguish the cases in `hne : e' = cA D e`. Rewrite using `[hne, mul_comm, he.2.1]`. Use `((hs e' he').2 _ h hne).2` as an intermediate fact.
+
+Rewrite `this` using `[GlobalTheory.LatVac.cA_cA]`. Then use the resulting hypothesis. Rewrite using `[← heu, h, two_mul, add_smul, ← two_nsmul]`. Conclude with `sg_two hH hω (smul_mem_hatA hA hc hu)`. Prove the components needed by the constructor for the conclusion. Introduce `hv y hy`.
+
+Establish `hu : finW S T y ∈ hatA S T (tens Λ L)` using `finTens_mem (one_mem_intAf _) hy`. Establish `hhG : ∀ e, IsSplitIdem D e → e • finW S T y ∈ fixGroup hH hω hω' f`. Introduce `e he`. Establish `h1` using `smul_mem_hatA hA (hall e he).1 hu`. Establish `h2 : IsHalf e (e • finW S T y)` using `(isHalf_iff _ _).2 (by rw [smul_smul, he.1])`.
+
+Conclude with `⟨h1, by rw [hhalf e he _ h1 h2, hv.2 e he _ h1 h2, one_smul]⟩`. Establish `hbu` using `smul_mem_hatA hA hb hu`. Establish `hG : finW S T y ∈ fixGroup hH hω hω' f`. Establish `hdec : finW S T y = ∑ e ∈ s, (e • finW S T y + cA D e • finW S T y) + 2 • (b • finW S T y)` using `by conv_lhs => rw [← one_smul_hatA hu, eq_add_of_sub_eq' h1b, add_smul, two_mul, add_smul, ← two_nsmul, Finset.sum_smul]`. Simplify using `only [add_smul]`.
+
+Rewrite using `[hdec]`. Use `add_mem (sum_mem fun e he => ?_) ⟨nsmul_mem hbu 2, ?_⟩` and prove the remaining obligations. Conclude with `add_mem (hhG e (hs e he).1) (hhG _ (isSplitIdem_conj (hs e he).1))`. Rewrite using `[sg_two hH hω hbu, hv.1 _ hbu, one_smul]`. Rewrite using `[← heps y hy]`.
+
+Conclude with `hG.2`. Introduce `hv`. Take `⟨-, -, hap, hop, -⟩` from `GlobalTheory.T.completedTensorLattice_strongApprox_open_compact D S T C Λ L ⟨hΛ.1, DualFamily.span_eq_top Λ hΛ.1 fun x => (hΛ.2.1 x).2⟩ ⟨hL.1, TensLat.span_of_selfD C.X hL⟩`. Take `⟨U, hU, hUf⟩` from `hf.level`. Take `⟨N, hN, hNU⟩` from `hop U hU`.
+
+Establish `hG : ∀ u ∈ hatA S T (tens Λ L), u ∈ fixGroup hH hω hω' f`. Introduce `u hu`. Take `⟨y, hy, u', hu', rfl⟩` from `(hap u hu).2 (2 * N) (by omega)`. Use `add_mem ⟨finTens_mem (one_mem_intAf _) hy, ?_⟩ ⟨nsmul_mem hu' _, ?_⟩` and prove the remaining obligations. Rewrite using `[heps y hy]`.
+
+Conclude with `hv y hy`. Establish `h1 : (2 * N) • u' ∈ U` using `by rw [mul_nsmul]; exact hNU _ (nsmul_mem hu' 2)`. Rewrite using `[hUf _ h1 (hap _ (nsmul_mem hu' _)).1, mul_nsmul', sg_two hH hω (nsmul_mem hu' N), one_smul]`. Use `⟨fun u hu => ?_, fun e he u hu hh => ?_⟩` and prove the remaining obligations. Use `(hG _ (nsmul_mem hu 2)).2` as an intermediate fact.
+
+Rewrite `this` using `[sg_two hH hω hu, one_smul]`. Then use the resulting hypothesis. Use `(hG _ hu).2` as an intermediate fact. Rewrite `this` using `[hhalf e he u hu hh, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem isLatVac_iff : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ w : D.host.E, IsIntegral ℤ w → w + cc w = 1 → IdemTwo w → ∀ (M : ℕ), ∀ Λ ∈ Vset D.host.E S.rank M, ∀ L : Lt D.host.E T.rank, SelfD C.X L → ∀ f, C.IsTh f → (IsLatVac (heisO C.ψ S T) (hatA S T (tens Λ L)) f ↔ ∀ y ∈ tens Λ L, epsW C.X w y • C.rho (finW S T y) f = f) := by
   intro D S T C w hw hw1 hw2 M Λ hΛ L hL f hf
   have hA : ∀ o : 𝓞 D.host.E, ∀ y ∈ tens Λ L, (o : D.host.E) • y ∈ tens Λ L := fun o y hy =>

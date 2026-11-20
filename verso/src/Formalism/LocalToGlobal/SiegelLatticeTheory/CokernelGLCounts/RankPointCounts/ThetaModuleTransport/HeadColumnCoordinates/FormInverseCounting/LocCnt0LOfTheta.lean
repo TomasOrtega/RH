@@ -10,6 +10,15 @@ open ValuativeRel Formalism.MainNotions.S.Loc Formalism.L2.SG.LsDatumA Formalism
 
 namespace Formalism.L2.SG.LocalCountModules.LocCnt0LWork
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M hOK r n hmode V _ _ H hn t₁ f₂ f₂' φ φ' hyp hD Z₁ Z₂ e₁ e₂`. Establish `hs : M.split = none` using `by simpa using hmode`. Rewrite using `[h1 F E M hOK r n hmode V H hn t₁ f₂ f₂' φ φ' hyp hD Z₁ Z₂ e₁ e₂]`. Use `h2 F E M hOK r Z₁ Z₂ ?_ ?_` and prove the remaining obligations. Establish `: Z₁.Z.map M.R.subtype = H.Zhat t₁.f t₁.f'`.
+
+Rewrite using `[e₁]`. Conclude with `zzplusOf_none hs _ _ _`. Unfold `headDet`. Rewrite using `[this, ← dl_eq_det]`. Conclude with `hD`.
+
+Establish `: Z₂.Z.map M.R.subtype = H.Zhat f₂ f₂'`. Rewrite using `[e₂]`. Conclude with `zzplusOf_none hs _ _ _`. Unfold `headDet`. Rewrite using `[this, ← dl_eq_det]`.
+
+Conclude with `dl_zero_two hyp hD`.
+-/
 theorem locCnt0L_of
     (h1 : Formalism.MainNotions.ThinScalesBound.AllLoc (fun M => ∀ r n, ThetaMbe0 M r n false))
     (h2 : Formalism.MainNotions.ThinScalesBound.AllLoc (fun M => ∀ r, Mbe0 M r)) :
@@ -25,14 +34,23 @@ theorem locCnt0L_of
       rw [e₂]; exact zzplusOf_none hs _ _ _
     unfold headDet; rw [this, ← dl_eq_det]; exact dl_zero_two hyp hD
 
+/- English proof (translation)
+The claim follows from `locCnt0L_of h1 (fun _ _ _ _ _ _ _ _ _ M _ r => modularBoundZero_holds M r)`.
+-/
 theorem locCnt0L_of_theta
     (h1 : Formalism.MainNotions.ThinScalesBound.AllLoc (fun M => ∀ r n, ThetaMbe0 M r n false)) :
     Formalism.L2.SG.LocalCountModules.LocCnt0L.LocCnt0L :=
   locCnt0L_of h1 (fun _ _ _ _ _ _ _ _ _ M _ r => modularBoundZero_holds M r)
 
+/- English proof (translation)
+The claim follows from `locCnt0L_of_theta (thetaMbe0_L_of h1 h2)`.
+-/
 theorem locCnt0L_of_coordL_unramified (h1 : CoordL) (h2 : UnramifiedIsoCountZero) : Formalism.L2.SG.LocalCountModules.LocCnt0L.LocCnt0L :=
   locCnt0L_of_theta (thetaMbe0_L_of h1 h2)
 
+/- English proof (translation)
+The claim follows from `locCnt0L_of_coordL_unramified coordL_holds h2`.
+-/
 theorem locCnt0L_of_alg (h2 : UnramifiedIsoCountZero) : Formalism.L2.SG.LocalCountModules.LocCnt0L.LocCnt0L :=
   locCnt0L_of_coordL_unramified coordL_holds h2
 

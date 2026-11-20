@@ -25,6 +25,13 @@ namespace GlobalTheory.Pst.TwistLetters.Invert
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {L : FinExt l}
   {V : Type} [AddCommGroup V] [Module ↥L.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥L.1 V]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Proceed by induction on `y' using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul a' b'`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v c`. Rewrite using `[mulB_tmul, mulB_tmul, mulB_tmul, mulB_tmul, Pi.smul_apply, smul_eq_mul, mul_smul, mul_assoc]`.
+
+Consider the case `add w w' hw hw' => simp only [map_add, hw, hw']`. Consider the case `add y y' hy hy' => simp only [map_add, LinearMap.add_apply, hy, hy']`. Consider the case `add y y' hy hy' => simp only [map_add, LinearMap.add_apply, hy, hy']`.
+-/
 theorem mulB_assoc (y y' : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) (w : V ⊗[ℚ_[l]] Bst P) :
     mulB P V y (mulB P V y' w) = mulB P V (mulB P (Fin 1 → ↥L.1) y y') w := by
   induction y using TensorProduct.induction_on with
@@ -41,6 +48,13 @@ theorem mulB_assoc (y y' : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) (w : V ⊗[ℚ
     | add y y' hy hy' => simp only [map_add, LinearMap.add_apply, hy, hy']
   | add y y' hy hy' => simp only [map_add, LinearMap.add_apply, hy, hy']
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Proceed by induction on `y' using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul a' b'`. Rewrite using `[mulB_tmul, mulB_tmul, mul_comm b b']`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`.
+
+Simplify using `[mul_comm]`. Consider the case `add y y' hy hy' => simp only [map_add, LinearMap.add_apply, hy, hy']`. Consider the case `add y y' hy hy' => simp only [map_add, LinearMap.add_apply, hy, hy']`.
+-/
 theorem mulB_comm (y y' : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) :
     mulB P (Fin 1 → ↥L.1) y y' = mulB P (Fin 1 → ↥L.1) y' y := by
   induction y using TensorProduct.induction_on with
@@ -57,6 +71,9 @@ theorem mulB_comm (y y' : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) :
     | add y y' hy hy' => simp only [map_add, LinearMap.add_apply, hy, hy']
   | add y y' hy hy' => simp only [map_add, LinearMap.add_apply, hy, hy']
 
+/- English proof (translation)
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v c => rw [mulB_tmul, one_smul, one_mul]`. Consider the case `add w w' hw hw' => simp only [map_add, hw, hw']`.
+-/
 theorem one_mulB (w : V ⊗[ℚ_[l]] Bst P) :
     mulB P V ((fun _ => (1 : ↥L.1)) ⊗ₜ (1 : Bst P)) w = w := by
   induction w using TensorProduct.induction_on with
@@ -66,6 +83,9 @@ theorem one_mulB (w : V ⊗[ℚ_[l]] Bst P) :
 
 variable {K : FinExt l}
 
+/- English proof (translation)
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v c => rw [stRep_tmul, stRep_tmul, ht, TensorProduct.smul_tmul']`. Consider the case `add w w' hw hw' => simp only [map_add, smul_add, hw, hw']`.
+-/
 theorem stRep_twist (ρs ρt : Representation ↥L.1 ↥(GK K) V) (χ : ↥(GK K) → ↥L.1)
     (ht : ∀ g v, ρt g v = χ g • ρs g v) (g : ↥(GK K)) (w : V ⊗[ℚ_[l]] Bst P) :
     stRep P ρt g w = χ g • stRep P ρs g w := by
@@ -74,6 +94,9 @@ theorem stRep_twist (ρs ρt : Representation ↥L.1 ↥(GK K) V) (χ : ↥(GK K
   | tmul v c => rw [stRep_tmul, stRep_tmul, ht, TensorProduct.smul_tmul']
   | add w w' hw hw' => simp only [map_add, smul_add, hw, hw']
 
+/- English proof (translation)
+Rewrite using `[stRep_tmul, map_one]`. Both sides reduce to the same expression.
+-/
 theorem stRep_trivial_one (g : ↥(GK K)) :
     stRep P (Representation.trivial ↥L.1 ↥(GK K) (Fin 1 → ↥L.1)) g ((fun _ => (1 : ↥L.1)) ⊗ₜ (1 : Bst P)) =
       (fun _ => (1 : ↥L.1)) ⊗ₜ (1 : Bst P) := by
@@ -86,6 +109,25 @@ set_option maxHeartbeats 1600000 in
 set_option synthInstance.maxHeartbeats 200000 in
 open GlobalTheory.Pst.TwistLetters.Invert in
 
+/- English proof (translation)
+Introduce `l _ P K L V _ _ _ _ ρs ρt ρm χ hm ht y y' hinv z`. Establish `hmτ : ∀ g w, stRep P ρm g w = χ g • stRep P (Representation.trivial ↥L.1 ↥(GK K) (Fin 1 → ↥L.1)) g w` using `stRep_twist _ ρm χ (fun g v => by rw [hm]; rfl)`. Establish `hτmul : ∀ g (a w : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P), stRep P (Representation.trivial ↥L.1 ↥(GK K) (Fin 1 → ↥L.1)) g (mulB P (Fin 1 → ↥L.1) a w) = mulB P (Fin 1 → ↥L.1) (stRep P (Representation.trivial ↥L.1 ↥(GK K) (Fin 1 → ↥L.1)) g a) (stRep P (Representation.trivial ↥L.1 ↥(GK K) ( …` using `fun g a w => stRep_mulB _ _ _ (fun _ => (1 : ↥L.1)) (fun _ _ => by rw [one_smul]; rfl) (fun _ _ => by rw [one_smul]) g a w`. Establish `hsmul : ∀ g (a : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) (w : V ⊗[ℚ_[l]] Bst P), stRep P ρs g (mulB P V a w) = mulB P V (stRep P (Representation.trivial ↥L.1 ↥(GK K) (Fin 1 → ↥L.1)) g a) (stRep P ρs g w)` using `fun g a w => stRep_mulB ρs ρs _ (fun _ => (1 : ↥L.1)) (fun _ _ => by rw [one_smul]; rfl) (fun _ _ => by rw [one_smul]) g a w`. Establish `hτe` using `stRep_trivial_one (P := P) (L := L) (K := K)`.
+
+Establish `hone : ∀ w : V ⊗[ℚ_[l]] Bst P, mulB P V ((fun _ => (1 : ↥L.1)) ⊗ₜ (1 : Bst P)) w = w` using `one_mulB`. Establish `hone' : ∀ w : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P, mulB P (Fin 1 → ↥L.1) ((fun _ => (1 : ↥L.1)) ⊗ₜ (1 : Bst P)) w = w` using `one_mulB`. Establish `hχ : ∀ g, χ g ≠ 0`. Introduce `g h0`. Establish `h1 : ρm (g⁻¹ * g) (fun _ => (1 : ↥L.1)) = fun _ => 1` using `by simp`.
+
+Rewrite `h1` using `[map_mul, Module.End.mul_apply, hm, hm, h0]`. Use `congrFun h1 0` as an intermediate fact. Simplify using `at this`. Establish `hcomm1 : ∀ a : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P, mulB P (Fin 1 → ↥L.1) a ((fun _ => (1 : ↥L.1)) ⊗ₜ (1 : Bst P) : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) = a` using `fun a => by`. Rewrite using `[mulB_comm, hone']`.
+
+Take `⟨K₁, h₁⟩` from `(mem_Dpst P ρm).mp y.2`. Take `⟨K₂, h₂⟩` from `(mem_Dpst P ρt).mp z.2`. Establish `hx : mulB P V y' (z : V ⊗[ℚ_[l]] Bst P) ∈ Dpst P ρs`. Use `(mem_Dpst P ρs).mpr ⟨supExt K₁ K₂, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hy` using `h₁ g (GK_le (K' := supExt K₁ K₂) le_sup_left hg)`.
+
+Establish `hz` using `h₂ g (GK_le (K' := supExt K₁ K₂) le_sup_right hg)`. Establish `hc` using `hχ g`. Establish `hτy : stRep P (Representation.trivial ↥L.1 ↥(GK K) (Fin 1 → ↥L.1)) g (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) = (χ g)⁻¹ • (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P)`. Rewrite `hy` using `[hmτ]`. Use `conv_rhs => rw [← hy]`.
+
+Rewrite using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Establish `hprod : mulB P (Fin 1 → ↥L.1) (stRep P (Representation.trivial ↥L.1 ↥(GK K) (Fin 1 → ↥L.1)) g y') (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) = χ g • ((fun _ => (1 : ↥L.1)) ⊗ₜ (1 : Bst P) : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P)`. Establish `h3` using `congrArg (stRep P (Representation.trivial ↥L.1 ↥(GK K) (Fin 1 → ↥L.1)) g) hinv`. Rewrite `h3` using `[hτmul, hτy, hτe, mulB_smul]`. Rewrite using `[← h3, smul_smul, mul_inv_cancel₀ hc, one_smul]`.
+
+Establish `hτy' : stRep P (Representation.trivial ↥L.1 ↥(GK K) (Fin 1 → ↥L.1)) g y' = χ g • y'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mulB_assoc, mulB_comm (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P)]`. Use `_ = χ g • y' := by rw [hprod, mulB_smul, hcomm1]`. Establish `hsz : stRep P ρs g (z : V ⊗[ℚ_[l]] Bst P) = (χ g)⁻¹ • (z : V ⊗[ℚ_[l]] Bst P)`.
+
+Rewrite `hz` using `[stRep_twist ρs ρt χ ht]`. Use `conv_rhs => rw [← hz]`. Rewrite using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Rewrite using `[hsmul, hτy', hsz, mulB_smul, mulB_smul_left, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Use `⟨⟨_, hx⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[coe_dmul, mulB_assoc, mulB_comm, hinv, hone]`.
+-/
 theorem GlobalTheory.Pst.TwistLetters.exists_dmul_eq_of_inv : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K L : FinExt l} {V : Type} [AddCommGroup V] [Module ↥L.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥L.1 V] (ρs ρt : Representation ↥L.1 ↥(GK K) V) (ρm : Representation ↥L.1 ↥(GK K) (Fin 1 → ↥L.1)) (χ : ↥(GK K) → ↥L.1) (hm : ∀ g v, ρm g v = χ g • v) (ht : ∀ g v, ρt g v = χ g • ρs g v) (y : ↥(Dpst P ρm)) (y' : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P), GlobalTheory.Pst.TwistLetters.mulB P (Fin 1 → ↥L.1) y' (y : (Fin 1 → ↥L.1) ⊗[ℚ_[l]] Bst P) = (fun _ => (1 : ↥L.1)) ⊗ₜ (1 : Bst P) → ∀ z : ↥(Dpst P ρt), ∃ x : ↥(Dpst P ρs), GlobalTheory.Pst.TwistLetters.dmul P ρs ρt ρm χ hm ht x y = z := by
   intro l _ P K L V _ _ _ _ ρs ρt ρm χ hm ht y y' hinv z
   have hmτ : ∀ g w, stRep P ρm g w =

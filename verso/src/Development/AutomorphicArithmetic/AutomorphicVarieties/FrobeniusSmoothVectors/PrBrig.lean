@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+Introduce `i j h`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Break down `lt_or_ge c i with hc | hc` into its components or cases. Rewrite using `[hA i c hc, zero_mul]`.
+
+Rewrite using `[hB c j (lt_of_lt_of_le h hc), mul_zero]`.
+-/
 private theorem upT_mul {K : Type} [CommRing K] {n : ℕ} {A B : Matrix (Fin n) (Fin n) K} (hA : UpT A) (hB : UpT B) :
     UpT (A * B) := by
   intro i j h
@@ -11,6 +16,17 @@ private theorem upT_mul {K : Type} [CommRing K] {n : ℕ} {A B : Matrix (Fin n) 
   · rw [hA i c hc, zero_mul]
   · rw [hB c j (lt_of_lt_of_le h hc), mul_zero]
 
+/- English proof (translation)
+Establish `key : ∀ m : ℕ, ∀ i j : Fin n, n - i.val + j.val = m → j < i → Z i j = 0`. Introduce `m`. Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Introduce `i j hm hji`.
+
+Establish `h0` using `h i j hji`. Establish `hji' : j.val < i.val` using `hji`. Rewrite `h0` using `[Matrix.sub_apply, Matrix.mul_apply, Matrix.mul_apply, Finset.sum_eq_single i, Finset.sum_eq_single j]`. Establish `h1 : (T i i - T j j) * Z i j = 0` using `by linear_combination h0`. Conclude with `(mul_eq_zero.1 h1).resolve_left (sub_ne_zero.2 (hd i j hji.ne'))`.
+
+Introduce `c _ hc`. Break down `lt_or_gt_of_ne hc with hc | hc` into its components or cases. Establish `hc' : c.val < j.val` using `hc`. Rewrite using `[ih (n - i.val + c.val) (by omega) i c rfl (hc.trans hji), zero_mul]`. Rewrite using `[hT c j hc, mul_zero]`.
+
+Simplify using the standard rewrite rules. Introduce `c _ hc`. Break down `lt_or_gt_of_ne hc with hc | hc` into its components or cases. Rewrite using `[hT i c hc, zero_mul]`. Establish `hc' : i.val < c.val` using `hc`.
+
+Use `c.isLt` as an intermediate fact. Rewrite using `[ih (n - c.val + j.val) (by omega) c j rfl (hji.trans hc), mul_zero]`. Simplify using the standard rewrite rules. Conclude with `fun i j hij => key _ i j rfl hij`.
+-/
 private theorem upT_of_comm {K : Type} [Field K] {n : ℕ} {T Z : Matrix (Fin n) (Fin n) K} (hT : UpT T)
     (hd : ∀ i j, i ≠ j → T i i ≠ T j j) (h : UpT (T * Z - Z * T)) : UpT Z := by
   have key : ∀ m : ℕ, ∀ i j : Fin n, n - i.val + j.val = m → j < i → Z i j = 0 := by
@@ -38,6 +54,13 @@ private theorem upT_of_comm {K : Type} [Field K] {n : ℕ} {T Z : Matrix (Fin n)
       · simp
   exact fun i j hij => key _ i j rfl hij
 
+/- English proof (translation)
+Introduce `l _ k _ F n K _ ρ B hOf hG v Y hY`. Take `⟨s, hs⟩` from `hG.ψd v`. Establish `hT` using `B.tri v s`. Establish `hr : (B.r (F.loc v s)).right = 1` using `(B.nu _).trans (F.loc0 v s).2`. Establish `hres : (B.r (F.loc v s)).mat = ρ.r (F.loc0 v s)` using `hOf.res (F.loc0 v s)`.
+
+Establish `h1 : UpT ((B.g v : Matrix (Fin n) (Fin n) K) * ((B.r (F.loc v s)).adFun Y - Y) * (((B.g v)⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K))` using `hY s`. Use `show UpT ((B.g v : Matrix (Fin n) (Fin n) K) * Y * (((B.g v)⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K))`. Use `upT_of_comm hT (fun i j hij => ?_) ?_` and prove the remaining obligations. Rewrite using `[hres, hOf.psi, hOf.psi]`. Conclude with `fun e => hs i j hij (Units.ext e)`.
+
+Use `upT_mul h1 hT using 1` and compare the differences between its conclusion and the goal. Simplify using `only [GG.adFun, hr, if_true, GG.mat, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc, Units.inv_mul_cancel_left]`.
+-/
 theorem UpperTheory.V.Fr.pr_brig :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] {F : Frame l k} {n : ℕ}, ∀ (K : Type) [Field K] (ρ : NRep F n K) (B : Box F n K), B.Of ρ → ρ.Good → ∀ (v : F.V) (Y : Matrix (Fin n) (Fin n) K), (∀ s, B.ad (F.loc v s) Y - Y ∈ B.b v) → Y ∈ B.b v := by
   intro l _ k _ F n K _ ρ B hOf hG v Y hY

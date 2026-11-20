@@ -25,6 +25,25 @@ open GlobalTheory.Core.Rk.Exh GlobalTheory.RegSW
 
 namespace GlobalTheory.Core.Rk.Exh
 
+/- English proof (translation)
+Introduce `hDM D ψ θ A B χA χB sA sB t cA a om ν 𝓕 hP omh homh m hm Φ hΦ u hu`. Take `⟨ha, ht, hb, hθ, hSig, hCart, -⟩` from `hP.setting`. Establish `hW` using `GlobalTheory.weilRepresentationUnitaryPair`. Establish `hTC` using `GlobalTheory.T.doublingMap_thetaIdentity_any_weilData D ψ A B χA χB om omh hP.weil homh`. Establish `hCC` using `GlobalTheory.T.siegelWeilSection_doubling_eq_matrixCoefficient D ψ A B χA χB om omh hP.weil hTC ν 𝓕 hP.covol`.
+
+Take `⟨hφ, -⟩` from `hTC Φ Φ hΦ.1 hΦ.1`. Establish `hK` using `GlobalTheory.T.doublingVector_fockPair_isCompactFinite D ψ θ A B χA χB sA sB t cA a om ν 𝓕 hP omh homh Φ Φ hΦ hΦ`. Establish `hI : HasIwasawa D.sp.cm.sig (dblSp A).gram (Khat A a)` using `GlobalTheory.T.adelicIwasawa_doubledGroup_selfDualLattice D A (frameLat A) a (GlobalTheory.WeilAtPlace.isSelfDualC_frameLat A) hP.maj`. Establish `hmem` using `GlobalTheory.T.doublingSiegelWeilSection_mem_degeneratePrincipalSeries hW D ψ A B χB omh homh ν 𝓕 hP.covol (delta A B Φ Φ) hφ a hK`. Establish `hHk : IsHeckeChar D χB⁻¹`.
+
+Establish `h` using `homh.hecT`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Establish `: (χB⁻¹ : (AE D)ˣ →* Circle) = fun x => (χB x)⁻¹` using `rfl`. Rewrite using `[this]`. Conclude with `h.1.inv`.
+
+Rewrite using `[MonoidHom.inv_apply, h.2 x, inv_one]`. Take `⟨hDM1, -, hDM3⟩` from `hDM D A (by omega) a hP.maj hI χB⁻¹ B.rank hHk (resEta_inv homh.resT) (sZero A B) (swSec A B omh ν 𝓕 (delta A B Φ Φ)) hmem`. Establish `hf` using `GlobalTheory.T.cuspFormsArchimedeanKFinite_star_comp_mem D θ A cA hθ u hu`. Take `⟨hBI, -⟩` from `hDM3 θ hθ hSig cA hCart m hm _ hf _ hf`. Establish `hpt : ∀ s g, flat A a (swSec A B omh ν 𝓕 (delta A B Φ Φ)) (sZero A B) s (io A (g, 1)) * conj (GlobalTheory.Eis.petCoef A m (fun x => conj (u x)) (fun x => conj (u x)) g) = integrand om m ν 𝓕 (frameLat A) a Φ Φ u u s g`.
+
+Introduce `s g`. Establish `e1 : swSec A B omh ν 𝓕 (delta A B Φ Φ) (io A (g, 1)) = wcoef om ν 𝓕 Φ Φ g` using `(hCC Φ Φ hΦ.1 hΦ.1).2 g`. Establish `e2 : conj (GlobalTheory.Eis.petCoef A m (fun x => conj (u x)) (fun x => conj (u x)) g) = rcoef m u u g`. Simplify using `only [GlobalTheory.Eis.petCoef, rcoef, petersson, pet, rTr, GlobalTheory.AutomorphicL2Unitary.descend]`. Rewrite using `[← integral_conj]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `q`. Simplify using the standard rewrite rules. Rewrite using `[integrand, ← e1, ← e2]`. Both sides reduce to the same expression.
+
+Establish `hEF` using `hDM1.1.1`. Use `⟨⟨hEF, fun s hs => (hBI s hs).1⟩, hDM1.1, fun g => hEF.analyticOnNhd_flat g, hDM1.2, fun s hs => ?_⟩` and prove the remaining obligations. Take `⟨-, hconv, heq⟩` from `hBI s hs`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : integrand om m ν 𝓕 (frameLat A) a Φ Φ u u s = fun g => flat A a (swSec A B omh ν 𝓕 (delta A B Φ Φ)) (sZero A B) s (io A (g, 1)) * starRingEnd ℂ (GlobalTheory.Eis.petCoef A m (fun x => conj (u x)) (fun x => conj (u x)) g)`.
+
+Use function extensionality and compare the values at `fun g => (hpt s g).symm`. Rewrite using `[e]`. Conclude with `hconv`. Rewrite using `[GlobalTheory.Eis.zeta, heq]`. Unfold `zetaH pairInt`.
+
+Conclude with `integral_congr_ae (.of_forall fun g => hpt s g)`.
+-/
 theorem zeta_eq_integral_integrand_nc : ResidueKilled.DM → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A B : HSp D) (χA χB : (AE D)ˣ →* Circle) (sA : RealMat A) (sB : RealMat B) (t : ℕ) (cA : CptF A) (a : GL (Fin A.rank) (AE D)) (om : WRep A B) (ν : Measure (WO A B)) (𝓕 : Set (WO A B)), Pair ψ θ A B χA χB sA sB t cA a om ν 𝓕 → ∀ omh : WRep (dblSp A) B, IsWeilDatumO ψ (dblSp A) B 1 χB omh → ∀ m : Measure (GA D A), m.IsHaarMeasure → ∀ Φ, IsFockVec ψ θ A B sA sB Φ → ∀ u ∈ A0 θ A cA, GlobalTheory.Eis.IsZetaFamily A χB⁻¹ m (flat A a (swSec A B omh ν 𝓕 (delta A B Φ Φ)) (sZero A B)) (fun g => conj (u g)) (fun g => conj (u g)) ∧ GlobalTheory.Eis.EisContinues A (flat A a (swSec A B omh ν 𝓕 (delta A B Φ Φ)) (sZero A B)) ∧ (∀ g, AnalyticOnNhd ℂ (GlobalTheory.Eis.eisSer A (flat A a (swSec A B omh ν 𝓕 (delta A B Φ Φ)) (sZero A B)) g) (rightOf (A.rank / 2))) ∧ (∀ s₀, ∃ k, GlobalTheory.Eis.EisRegularAt A (flat A a (swSec A B omh ν 𝓕 (delta A B Φ Φ)) (sZero A B)) s₀ k) ∧ ∀ s : ℂ, (A.rank : ℝ) / 2 < s.re → Integrable (integrand om m ν 𝓕 (frameLat A) a Φ Φ u u s) m ∧ GlobalTheory.Eis.zeta A χB⁻¹ m (flat A a (swSec A B omh ν 𝓕 (delta A B Φ Φ)) (sZero A B)) (fun g => conj (u g)) (fun g => conj (u g)) s = ∫ g, integrand om m ν 𝓕 (frameLat A) a Φ Φ u u s g ∂m := by
   intro hDM D ψ θ A B χA χB sA sB t cA a om ν 𝓕 hP omh homh m hm Φ hΦ u hu
   obtain ⟨ha, ht, hb, hθ, hSig, hCart, -⟩ := hP.setting

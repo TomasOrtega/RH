@@ -9,6 +9,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CMFieldExponential
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
+/- English proof (translation)
+Introduce `σ hσ`. Rewrite `hσ`, the goal using `[MonoidHom.mem_ker]`. Take `⟨hd, χ₀, hχ⟩` from `ψ.factorsThrough_conductor`. Use `haveI : NeZero ψ.conductor := ⟨ψ.conductor_ne_zero⟩`. Establish `e1` using `(Chr.clsFacts ℚ Ω N).2.1 ψ.conductor hd`.
+
+Establish `e2` using `(Chr.clsFacts ℚ Ω m).2.1 ψ.conductor h`. Establish `hc : Chr.cls ℚ Ω ψ.conductor σ = 1`. Rewrite using `[← e2, MonoidHom.comp_apply, hσ, map_one]`. Establish `hu : ∀ u : (ZMod N)ˣ, MulChar.toUnitHom ψ u = MulChar.toUnitHom χ₀ (ZMod.unitsMap hd u)`. Introduce `u`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[MulChar.coe_toUnitHom, MulChar.coe_toUnitHom]`. Use `conv_lhs => rw [hχ]`. Rewrite using `[DirichletCharacter.changeLevel_def, MulChar.ofUnitHom_coe, MonoidHom.comp_apply, MulChar.coe_toUnitHom]`. Unfold `Chr.dirG`.
+
+Rewrite using `[MonoidHom.comp_apply, hu, ← MonoidHom.comp_apply (ZMod.unitsMap hd), e1, hc, map_one]`.
+-/
 private theorem ker_le (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {O : Type} [CommRing O] {N : ℕ} [NeZero N]
     (ψ : DirichletCharacter O N) (m : ℕ) [NeZero m] (h : ψ.conductor ∣ m) :
     (Chr.cls ℚ Ω m).ker ≤ (Chr.dirG ℚ Ω ψ).ker := by
@@ -29,6 +38,25 @@ private theorem ker_le (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω
   unfold Chr.dirG
   rw [MonoidHom.comp_apply, hu, ← MonoidHom.comp_apply (ZMod.unitsMap hd), e1, hc, map_one]
 
+/- English proof (translation)
+Introduce `χ l _ j hl2 Ω _ _ _`. Use `haveI := χ.ne`. Establish `hlp : l.Prime` using `Fact.out`. Establish `hAm : (Lchi χ l).m = l * χ.N`. Simplify using `only [Lchi, AbF.cyc]`.
+
+Conclude with `max_eq_left (Nat.one_le_iff_ne_zero.mpr (mul_ne_zero hlp.ne_zero (NeZero.ne _)))`. Establish `hldvd : l ∣ (Lchi χ l).m` using `by rw [hAm]; exact dvd_mul_right l _`. Take `⟨L₀, i0, i1, hab, hdeg⟩` from `exists_numberField_isAbField_finrank_eq_deg (Lchi χ l)`. Establish `hmu : (Lchi χ l).HasMu l`. Use `⟨hldvd, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `a ⟨u, hu, hua⟩`. Establish `hu1 : u = 1` using `(Subgroup.mem_bot).mp hu`. Rewrite `hua` using `[hu1, Units.val_one]`. Establish `h2 : ((a : ℕ) : ZMod (Lchi χ l).m) = ((1 : ℕ) : ZMod (Lchi χ l).m)`. Rewrite using `[Nat.cast_one]`.
+
+Conclude with `hua.symm`. Conclude with `Nat.ModEq.of_dvd hldvd ((ZMod.natCast_eq_natCast_iff _ _ _).mp h2)`. Take `⟨z, hz⟩` from `(abelianField_hasMu_iff_exists_primitiveRoot (Lchi χ l) l hlp hl2 L₀ hab).mp hmu`. Take `⟨L₁, i2, i3, i4, hlay⟩` from `exists_cyclotomic_layer_of_primitiveRoot l j hlp hl2 L₀ ⟨z, hz⟩`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`.
+
+Use `letI : Algebra L₁ Ω := (IsAlgClosed.lift (R := ℚ) (S := L₁) (M := Ω)).toRingHom.toAlgebra`. Use `letI : Algebra L₀ Ω := ((algebraMap L₁ Ω).comp (algebraMap L₀ L₁)).toAlgebra`. Use `haveI : IsScalarTower L₀ L₁ Ω := IsScalarTower.of_algebraMap_eq (fun x => rfl)`. Use `haveI : IsScalarTower ℚ L₁ Ω := IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)`. Use `haveI : IsScalarTower ℚ L₀ L₁ := IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)`.
+
+Use `haveI hcl : IsAlgClosure L₁ Ω := ⟨inferInstance, Algebra.IsAlgebraic.tower_top (K := ℚ) L₁⟩`. Take `⟨N', hN', H, hlev⟩` from `Chr.layerLevel (Lchi χ l) l j hlp L₀ L₁ hab hlay`. Take `⟨habel, -, -⟩` from `Chr.levGal L₁ N' H hlev`. Establish `hlev0` using `Chr.abLevel.1 (Lchi χ l) L₀ hab`. Establish `hgal0` using `((Chr.levGal L₀ _ _ hlev0).2.2 Ω).1`.
+
+Use `⟨L₀, i0, i1, L₁, i2, i3, i4, inferInstance, hcl, habel, hab, hlay, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Module.finrank_mul_finrank ℚ L₀ L₁, hdeg, hlay.2]`. Apply `Nat.mul_le_mul_right` to reduce the goal to its premises. Rewrite using `[AbF.deg]`. Use `show (⊥ : Subgroup (ZMod (Lchi χ l).m)ˣ).index ≤ l * χ.N`.
+
+Rewrite using `[Subgroup.index_bot, ← hAm]`. Use `haveI : NeZero (Lchi χ l).m := ⟨(AbF.pos _).ne'⟩`. Rewrite using `[Nat.card_eq_fintype_card, ZMod.card_units_eq_totient]`. Conclude with `Nat.totient_le _`. Introduce `O _ _ N _ ψ hψ`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Chr.levH]`. Use `show Subgroup.comap _ ⊥ ≤ _`. Rewrite using `[MonoidHom.comap_bot]`. Conclude with `ker_le Ω ψ _ (hψ.trans (hAm ▸ dvd_mul_left _ _))`.
+-/
 theorem UpperTheory.V.HV.ivField :
     ∀ (χ : PChar) (l : ℕ) [Fact l.Prime] (j : ℕ), l ≠ 2 → ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω],
       ∃ (L₀ : Type) (_ : Field L₀) (_ : NumberField L₀) (L₁ : Type) (_ : Field L₁) (_ : NumberField L₁) (_ : Algebra L₀ L₁) (_ : Algebra L₁ Ω)

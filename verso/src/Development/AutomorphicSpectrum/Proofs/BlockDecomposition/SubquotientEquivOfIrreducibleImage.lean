@@ -8,6 +8,13 @@ open GlobalTheory.PRep GlobalTheory.SmGL
 
 namespace GlobalTheory.CompanionTheory.IsoSub
 
+/- English proof (translation)
+Introduce `hQ`. Establish `hiso : IsIsotypicOfType A M S` using `IsIsotypicOfType.of_isotypicComponent_eq_top h`. Establish `hss : IsSemisimpleModule A M`. Use `IsSemisimpleModule.of_sSup_simples_eq_top (top_le_iff.1 ?_)` and prove the remaining obligations. Rewrite using `[← h]`.
+
+Conclude with `sSup_le_sSup fun m (hm : Nonempty (m ≃ₗ[A] S)) => IsSimpleModule.congr hm.some`. Establish `hT : IsSemisimpleModule A T` using `IsSemisimpleModule.of_injective j hj`. Take `⟨C, hC⟩` from `exists_isCompl (LinearMap.ker f)`. Set `e₁ : C ≃ₗ[A] Q` to `(Submodule.quotientEquivOfIsCompl _ _ hC).symm.trans (f.quotKerEquivOfSurjective hf)`. Establish `hC' : IsSimpleModule A C` using `IsSimpleModule.congr e₁`.
+
+Set `e₂ : C ≃ₗ[A] C.map j` to `Submodule.equivMapOfInjective j hj C`. Establish `hCj : IsSimpleModule A (C.map j)` using `IsSimpleModule.congr e₂.symm`. Take `⟨e₃⟩` from `hiso (C.map j)`. Conclude with `⟨e₁.symm.trans (e₂.trans e₃)⟩`.
+-/
 theorem nonempty_equiv_of_isotypic {A M T Q S : Type*} [Ring A] [AddCommGroup M] [Module A M]
     [AddCommGroup T] [Module A T] [AddCommGroup Q] [Module A Q] [AddCommGroup S] [Module A S]
     [IsSimpleModule A S] (h : isotypicComponent A M S = ⊤) (j : T →ₗ[A] M)
@@ -33,6 +40,17 @@ def inclusion {G Y : Type} [Group G] [AddCommGroup Y] [Module ℂ Y] {R : Repres
     (S : Subrepresentation R) : S.toRepresentation.IntertwiningMap R :=
   ⟨S.toSubmodule.subtype, fun _ => rfl⟩
 
+/- English proof (translation)
+Establish `hρs : IsSimpleModule (MonoidAlgebra ℂ G) ρ.asModule` using `(Representation.irreducible_iff_isSimpleModule_asModule ρ).1 hρ`. Establish `hσs : IsSimpleModule (MonoidAlgebra ℂ G) σ.asModule` using `(Representation.irreducible_iff_isSimpleModule_asModule σ).1 hσ`. Establish `htop : Subrepresentation.asSubmodule (GlobalTheory.CuspFactor.spanRep R ρ) = ⊤`. Establish `hX : (GlobalTheory.CuspFactor.spanRep R ρ).toSubmodule = ⊤` using `hR`. Apply `SetLike.coe_injective` to reduce the goal to its premises.
+
+Use `show ((GlobalTheory.CuspFactor.spanRep R ρ).toSubmodule : Set Y) = Set.univ`. Rewrite using `[hX]`. Use `first`. Consider the case `rfl`. Consider the case `exact Submodule.top_coe`.
+
+Consider the case `simp`. Establish `h : isotypicComponent (MonoidAlgebra ℂ G) R.asModule ρ.asModule = ⊤`. Rewrite using `[← GlobalTheory.CuspFactor.spanRep_asSubmodule R ρ hρ]`. Conclude with `htop`. Take `⟨S, f, hf⟩` from `hsq`.
+
+Set `j` to `Representation.IntertwiningMap.equivLinearMapAsModule _ _ (GlobalTheory.CompanionTheory.IsoSub.inclusion S)`. Establish `hj : Function.Injective j` using `by first`. Consider the case `exact Subtype.val_injective`. Consider the case `(intro x y hxy; exact Subtype.val_injective hxy)`. Set `f'` to `Representation.IntertwiningMap.equivLinearMapAsModule _ _ f`.
+
+Establish `hf' : Function.Surjective f'` using `by first`. Consider the case `exact hf`. Consider the case `(intro y; obtain ⟨x, hx⟩ := hf y; exact ⟨x, hx⟩)`. Conclude with `(GlobalTheory.CuspFactor.nonempty_equiv_iff σ ρ).2 (GlobalTheory.CompanionTheory.IsoSub.nonempty_equiv_of_isotypic h j hj f' hf' hσs)`.
+-/
 theorem equiv_of_isSubquotient (G : Type) [Group G] (V Y W : Type) [AddCommGroup V] [Module ℂ V]
     [AddCommGroup Y] [Module ℂ Y] [AddCommGroup W] [Module ℂ W]
     (ρ : Representation ℂ G V) (R : Representation ℂ G Y) (σ : Representation ℂ G W)

@@ -32,8 +32,14 @@ def OcC : Subring ℂ_[p] where
 
 variable {p}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_OcC (x : ℂ_[p]) : x ∈ OcC p ↔ ‖x‖ ≤ 1 := Iff.rfl
 
+/- English proof (translation)
+Break down `le_total ‖x‖ 1 with h | h` into its components or cases. Conclude with `Or.inl h`. Use `Or.inr ?_ show ‖x⁻¹‖ ≤ 1` and prove the remaining obligations. Rewrite using `[norm_inv]`. Conclude with `inv_le_one_of_one_le₀ h`.
+-/
 theorem OcC_val (x : ℂ_[p]) : x ∈ OcC p ∨ x⁻¹ ∈ OcC p := by
   rcases le_total ‖x‖ 1 with h | h
   · exact Or.inl h
@@ -42,8 +48,20 @@ theorem OcC_val (x : ℂ_[p]) : x ∈ OcC p ∨ x⁻¹ ∈ OcC p := by
     rw [norm_inv]
     exact inv_le_one_of_one_le₀ h
 
+/- English proof (translation)
+The claim follows from `norm_pos_iff.2 (Nat.cast_ne_zero.2 hp.out.ne_zero)`.
+-/
 theorem norm_p_pos : 0 < ‖(p : ℂ_[p])‖ := norm_pos_iff.2 (Nat.cast_ne_zero.2 hp.out.ne_zero)
 
+/- English proof (translation)
+Establish `hx0 : 0 < ‖x‖` using `norm_pos_iff.2 hx`. Prove the components needed by the constructor for the conclusion. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hx0 (norm_p_lt_one (p := p))`. Use `⟨n, ?_⟩` and prove the remaining obligations. Use `show ‖(p : ℂ_[p]) ^ n / x‖ ≤ 1`.
+
+Rewrite using `[norm_div, norm_pow, div_le_one hx0]`. Conclude with `hn.le`. Introduce `h`. Establish `h1 : ‖x‖ < 1`. Assume the negation of the conclusion as `hc`.
+
+Use `h ?_` and prove the remaining obligations. Use `show ‖x⁻¹‖ ≤ 1`. Rewrite using `[norm_inv]`. Conclude with `inv_le_one_of_one_le₀ (not_lt.1 hc)`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one (norm_p_pos (p := p)) h1`.
+
+Use `⟨n, ?_⟩` and prove the remaining obligations. Use `show ‖x ^ n / (p : ℂ_[p])‖ ≤ 1`. Rewrite using `[norm_div, norm_pow, div_le_one norm_p_pos]`. Conclude with `hn.le`.
+-/
 theorem OcC_rank1 (x : ℂ_[p]) (hx : x ≠ 0) :
     (∃ n : ℕ, (p : ℂ_[p]) ^ n / x ∈ OcC p) ∧ (x⁻¹ ∉ OcC p → ∃ n : ℕ, x ^ n / (p : ℂ_[p]) ∈ OcC p) := by
   have hx0 : 0 < ‖x‖ := norm_pos_iff.2 hx
@@ -73,6 +91,11 @@ variable {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Fi
 
 include hi
 
+/- English proof (translation)
+Use `le_antisymm (hi _) ?_` and prove the remaining obligations. Establish `h1 : i (algebraMap O Kf (u : O)) * i (algebraMap O Kf ((u⁻¹ : Oˣ) : O)) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Establish `h2` using `congrArg norm h1`. Rewrite `h2` using `[norm_mul, norm_one]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_unit (u : Oˣ) : ‖i (algebraMap O Kf (u : O))‖ = 1 := by
   refine le_antisymm (hi _) ?_
   have h1 : i (algebraMap O Kf (u : O)) * i (algebraMap O Kf ((u⁻¹ : Oˣ) : O)) = 1 := by
@@ -83,6 +106,17 @@ theorem norm_unit (u : Oˣ) : ‖i (algebraMap O Kf (u : O))‖ = 1 := by
     _ ≤ ‖i (algebraMap O Kf (u : O))‖ * 1 := mul_le_mul_of_nonneg_left (hi _) (norm_nonneg _)
     _ = _ := mul_one _
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hp0 : (p : O) ≠ 0`. Introduce `h0`. Use `congrArg (fun z => i (algebraMap O Kf z)) h0` as an intermediate fact. Simplify using `only [map_natCast, map_zero] at this`.
+
+Conclude with `(Nat.cast_ne_zero.2 hp.out.ne_zero : (p : ℂ_[p]) ≠ 0) this`. Take `⟨e, he⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hp0 hϖ`. Take `⟨u, hu⟩` from `he.symm`. Establish `hϖ1 : ‖i (algebraMap O Kf ϖ)‖ < 1`. Assume the negation of the conclusion as `hc`.
+
+Establish `h1 : ‖i (algebraMap O Kf ϖ)‖ = 1` using `le_antisymm (hi _) (not_lt.1 hc)`. Establish `h2` using `congrArg (fun t => ‖i (algebraMap O Kf t)‖) hu`. Simplify using `only [map_mul, map_pow, map_natCast, norm_mul, norm_pow] at h2`. Rewrite `h2` using `[h1, norm_unit i hi u, one_pow, one_mul]`. Conclude with `absurd h2.symm (ne_of_lt (norm_p_lt_one (p := p)))`.
+
+Establish `hy1 : ϖ ∣ y`. Establish `: y ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal y).2 hy`. Rewrite `this` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Conclude with `this`. Take `⟨z, rfl⟩` from `hy1`.
+
+Rewrite using `[map_mul, map_mul, norm_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right (norm_nonneg _) (hi z)) hϖ1`.
+-/
 theorem norm_nonunit {y : O} (hy : ¬ IsUnit y) : ‖i (algebraMap O Kf y)‖ < 1 := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
   have hp0 : (p : O) ≠ 0 := by
@@ -107,6 +141,15 @@ theorem norm_nonunit {y : O} (hy : ¬ IsUnit y) : ‖i (algebraMap O Kf y)‖ < 
   rw [map_mul, map_mul, norm_mul]
   exact lt_of_le_of_lt (mul_le_of_le_one_right (norm_nonneg _) (hi z)) hϖ1
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Break down `ValuationRing.isInteger_or_isInteger O x with ⟨y, hy⟩ | ⟨y, hy⟩` into its components or cases. Conclude with `⟨y, hy⟩`. Distinguish the cases in `hx0 : x = 0`.
+
+Conclude with `⟨0, by rw [hx0, map_zero]⟩`. Distinguish the cases in `hu : IsUnit y`. Take `⟨u, rfl⟩` from `hu`. Use `⟨((u⁻¹ : Oˣ) : O), ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap O Kf ((u⁻¹ : Oˣ) : O) * algebraMap O Kf (u : O) = 1`.
+
+Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Rewrite `h1` using `[hy]`. Conclude with `(eq_of_mul_inv_eq_one h1)`. It suffices to derive a contradiction. Establish `h1` using `norm_nonunit i hi hu`.
+
+Rewrite `h1` using `[hy, map_inv₀, norm_inv]`. Establish `hpos : 0 < ‖i x‖` using `norm_pos_iff.2 ((map_ne_zero i).2 hx0)`. Conclude with `absurd h1 (not_lt.2 ((one_le_inv₀ hpos).2 hx))`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `hi y`.
+-/
 theorem norm_le_one_iff [IsFractionRing O Kf] (x : Kf) : ‖i x‖ ≤ 1 ↔ x ∈ Set.range (algebraMap O Kf) := by
   constructor
   · intro hx
@@ -135,6 +178,9 @@ structure CEmb (G : GAtP p) where
   iK : G.Kf →+* ℂ_[p]
   int : ∀ x : G.O, ‖iK (algebraMap G.O G.Kf x)‖ ≤ 1
 
+/- English proof (translation)
+Rewrite using `[mem_OcC, norm_le_one_iff E.iK E.int]`. Both sides reduce to the same expression.
+-/
 theorem CEmb.mem_iff {X : Sys p} (E : CEmb X.G) [IsFractionRing X.G.O X.G.Kf] (x : X.G.Kf) :
     E.iK x ∈ OcC p ↔ x ∈ X.intK := by
   rw [mem_OcC, norm_le_one_iff E.iK E.int]
@@ -148,9 +194,15 @@ variable {n : ℕ} (f : K0 p →+* ℂ_[p]) (hf : ∀ x : WW p, ‖f (algebraMap
 def embLC : L →+* ℂ_[p] := (iC f).comp (gL L)
 
 include hf in
+/- English proof (translation)
+The claim follows from `(iC_int_Cp f hf _).1 ((Oc_K L _).2 ⟨x, rfl⟩)`.
+-/
 theorem embLC_int (x : OL p n L) : ‖embLC f L (algebraMap (OL p n L) L x)‖ ≤ 1 :=
   (iC_int_Cp f hf _).1 ((Oc_K L _).2 ⟨x, rfl⟩)
 
+/- English proof (translation)
+Use `show iC f (gL L _) = _`. Rewrite using `[intermediate_map_witt_quadratic, iC_alg]`.
+-/
 theorem witt_embeddings_compatible (a : W2 p n) :
     embLC f L (algebraMap (OO p n) L (algebraMap (W2 p n) (OO p n) a)) =
       f (algebraMap (WW p) (K0 p) (gWW p n a)) := by

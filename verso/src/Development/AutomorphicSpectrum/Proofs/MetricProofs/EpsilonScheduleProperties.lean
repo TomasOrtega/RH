@@ -8,10 +8,18 @@ open scoped ContDiff
 
 namespace GlobalTheory.CompanionTheory.Ar.Num
 
+/- English proof (translation)
+The claim follows from `Real.log_div_self_antitoneOn ha (show Real.exp 1 ≤ b from ha.trans hab) hab`.
+-/
 theorem log_div_self_anti (a b : ℝ) (ha : Real.exp 1 ≤ a) (hab : a ≤ b) :
     Real.log b / b ≤ Real.log a / a :=
   Real.log_div_self_antitoneOn ha (show Real.exp 1 ≤ b from ha.trans hab) hab
 
+/- English proof (translation)
+Establish `ht'0 : 0 < t'` using `ht.trans_le htt`. Establish `h1` using `(GlobalTheory.CompanionTheory.Ar.Giv.log_inv_bounds ht'0 ht').1`. Establish `h2 : Real.log (1 / t') ≤ Real.log (1 / t)`. Rewrite using `[one_div, one_div, Real.log_inv, Real.log_inv]`. Combine the linear relations using `[Real.log_le_log ht htt]`.
+
+Rewrite using `[GlobalTheory.CompanionTheory.Ar.Giv.epsT_eq_mul, GlobalTheory.CompanionTheory.Ar.Giv.epsT_eq_mul]`. Conclude with `mul_le_mul_of_nonneg_left (log_div_self_anti _ _ h1 h2) hC`.
+-/
 theorem epsT_mono (C t t' : ℝ) (hC : 0 ≤ C) (ht : 0 < t) (htt : t ≤ t')
     (ht' : t' ≤ Real.exp (-Real.exp 1)) : epsT C t ≤ epsT C t' := by
   have ht'0 : 0 < t' := ht.trans_le htt
@@ -22,6 +30,13 @@ theorem epsT_mono (C t t' : ℝ) (hC : 0 ≤ C) (ht : 0 < t) (htt : t ≤ t')
   rw [GlobalTheory.CompanionTheory.Ar.Giv.epsT_eq_mul, GlobalTheory.CompanionTheory.Ar.Giv.epsT_eq_mul]
   exact mul_le_mul_of_nonneg_left (log_div_self_anti _ _ h1 h2) hC
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `GlobalTheory.CompanionTheory.Ar.Giv.log_inv_bounds ht hte`. Use `set ℓ := Real.log (1 / t) with hℓ`. Establish `hℓ0 : 0 < ℓ` using `lt_of_lt_of_le (Real.exp_pos 1) h1`. Establish `hle : ℓ ≤ 1 / t`. Use `Real.log_le_sub_one_of_pos (show 0 < 1 / t by positivity)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `htl : t * ℓ ≤ 1`. Use `mul_le_mul_of_nonneg_left hle ht.le` as an intermediate fact. Rewrite `this` using `[mul_one_div_cancel ht.ne']`. Then use the resulting hypothesis. Establish `hA : t ≤ 1 / ℓ` using `by rw [le_div_iff₀ hℓ0]; exact htl`.
+
+Establish `hB : 1 / ℓ ≤ Real.log ℓ / ℓ` using `div_le_div_of_nonneg_right h2 hℓ0.le`. Establish `hq : 0 ≤ Real.log ℓ / ℓ` using `div_nonneg (by linarith) hℓ0.le`. Establish `hC' : Real.log ℓ / ℓ ≤ C * (Real.log ℓ / ℓ)` using `le_mul_of_one_le_left hq hC`. Rewrite using `[GlobalTheory.CompanionTheory.Ar.Giv.epsT_eq_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem le_epsT (C t : ℝ) (hC : 1 ≤ C) (ht : 0 < t) (hte : t ≤ Real.exp (-Real.exp 1)) :
     t ≤ epsT C t := by
   obtain ⟨h1, h2⟩ := GlobalTheory.CompanionTheory.Ar.Giv.log_inv_bounds ht hte
@@ -40,6 +55,13 @@ theorem le_epsT (C t : ℝ) (hC : 1 ≤ C) (ht : 0 < t) (hte : t ≤ Real.exp (-
   rw [GlobalTheory.CompanionTheory.Ar.Giv.epsT_eq_mul]
   linarith
 
+/- English proof (translation)
+Establish `hl : Tendsto (fun x : ℝ => Real.log x / x) atTop (𝓝 0)`. Use `Real.tendsto_pow_log_div_mul_add_atTop 1 0 1 one_ne_zero` as an intermediate fact. Simplify using `using this`. Establish `hL : Tendsto (fun t : ℝ => Real.log (1 / t)) (𝓝[>] 0) atTop`. Use `Real.tendsto_log_atTop.comp tendsto_inv_nhdsGT_zero` as an intermediate fact.
+
+Simplify `this` using `[Function.comp_def, one_div]`. Establish `h` using `(hl.comp hL).const_mul C`. Rewrite `h` using `[mul_zero]`. Establish `e : epsT C = fun t => C * ((fun x : ℝ => Real.log x / x) ∘ (fun t : ℝ => Real.log (1 / t))) t`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[GlobalTheory.CompanionTheory.Ar.Giv.epsT_eq_mul]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem epsT_tendsto (C : ℝ) : Tendsto (epsT C) (𝓝[>] 0) (𝓝 0) := by
   have hl : Tendsto (fun x : ℝ => Real.log x / x) atTop (𝓝 0) := by
     have := Real.tendsto_pow_log_div_mul_add_atTop 1 0 1 one_ne_zero
@@ -56,6 +78,9 @@ theorem epsT_tendsto (C : ℝ) : Tendsto (epsT C) (𝓝[>] 0) (𝓝 0) := by
   rw [e]
   exact h
 
+/- English proof (translation)
+Establish `hev : {t : ℝ | epsT C t < 1} ∈ 𝓝[>] (0 : ℝ)` using `(epsT_tendsto C) (Iio_mem_nhds (show (0 : ℝ) < 1 by norm_num))`. Take `⟨u, hu, hsub⟩` from `mem_nhdsGT_iff_exists_Ioo_subset.1 hev`. Establish `hu0 : (0 : ℝ) < u` using `hu`. Use `⟨u / 2, by linarith, fun t ht hta => ?_⟩` and prove the remaining obligations. Conclude with `(hsub ⟨ht, by linarith⟩ : epsT C t < 1).le`.
+-/
 theorem epsT_le_one (C : ℝ) : ∃ a : ℝ, 0 < a ∧ ∀ t, 0 < t → t ≤ a → epsT C t ≤ 1 := by
   have hev : {t : ℝ | epsT C t < 1} ∈ 𝓝[>] (0 : ℝ) :=
     (epsT_tendsto C) (Iio_mem_nhds (show (0 : ℝ) < 1 by norm_num))
@@ -64,6 +89,9 @@ theorem epsT_le_one (C : ℝ) : ∃ a : ℝ, 0 < a ∧ ∀ t, 0 < t → t ≤ a 
   refine ⟨u / 2, by linarith, fun t ht hta => ?_⟩
   exact (hsub ⟨ht, by linarith⟩ : epsT C t < 1).le
 
+/- English proof (translation)
+Distinguish the cases in `h : Nonempty (Fin n)`. Use `⟨Finset.univ.inf' Finset.univ_nonempty a, (Finset.lt_inf'_iff _).2 (fun j _ => ha j), fun j => Finset.inf'_le _ (Finset.mem_univ j)⟩` and prove the remaining obligations. Conclude with `⟨1, one_pos, fun j => (h ⟨j⟩).elim⟩`.
+-/
 theorem fin_pos_lower (n : ℕ) (a : Fin n → ℝ) (ha : ∀ j, 0 < a j) :
     ∃ b : ℝ, 0 < b ∧ ∀ j, b ≤ a j := by
   by_cases h : Nonempty (Fin n)
@@ -71,6 +99,9 @@ theorem fin_pos_lower (n : ℕ) (a : Fin n → ℝ) (ha : ∀ j, 0 < a j) :
       (Finset.lt_inf'_iff _).2 (fun j _ => ha j), fun j => Finset.inf'_le _ (Finset.mem_univ j)⟩
   · exact ⟨1, one_pos, fun j => (h ⟨j⟩).elim⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨log_div_self_anti, epsT_mono, le_epsT, epsT_tendsto, epsT_le_one, fin_pos_lower⟩`.
+-/
 theorem epsT_numerics :
     (∀ a b : ℝ, Real.exp 1 ≤ a → a ≤ b → Real.log b / b ≤ Real.log a / a) ∧
     (∀ C t t' : ℝ, 0 ≤ C → 0 < t → t ≤ t' → t' ≤ Real.exp (-Real.exp 1) → epsT C t ≤ epsT C t') ∧

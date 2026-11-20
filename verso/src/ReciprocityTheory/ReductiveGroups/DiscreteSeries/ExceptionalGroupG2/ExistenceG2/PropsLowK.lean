@@ -27,6 +27,25 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
   {lam : Fin n → ℝ} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H}
   {E : Fin n → Fin n → Module.End ℂ D} {V : Submodule ℂ D}
 
+/- English proof (translation)
+Establish `hE : IsGlRep E` using `hD.glRep`. Establish `hU : IsInfUnitary ε E` using `ReciprocityTheory.ChartRestriction.DS.isInfUnitary_of_isDerivedOn hσ hD`. Take `⟨hmono, h, hh, hbig⟩` from `hgap`. Establish `hSf : FiniteDimensional ℂ S` using `hST.1`. Establish `hSK : ∀ k ∈ Kset ε, ∀ x ∈ S, σ k x ∈ S` using `hST.2.1`.
+
+Establish `hSgen : S ≤ (genSub E V).map D.subtype` using `ReciprocityTheory.ChartRestriction.DS.G2.data_kfin_le ⟨hmono, h, hh, hbig⟩ hσ hD hV hc hVK S hS hSf hSK`. Establish `hSD : S ≤ D` using `fun x hx => by`. Take `⟨y, -, rfl⟩` from `hSgen hx`. Conclude with `y.2`. Take `⟨w, hwS, hw0, hwK⟩` from `ReciprocityTheory.ChartRestriction.DS.exists_isKHWVec_of_isKTypeOf hσ hD hST hSD`.
+
+Establish `hwG : w ∈ genSub E V`. Take `⟨y, hy, hyw⟩` from `hSgen hwS`. Establish `: y = w` using `Subtype.ext hyw`. Conclude with `this ▸ hy`. Take `⟨w₀, hw₀V, -, m, ws, hwsum, hws⟩` from `ReciprocityTheory.ChartRestriction.DS.G2.k_highest_weight_layer_decomp hE hU hV hc hmono hh hbig hwG hwK`.
+
+Establish `hz : ∀ j, ws j = 0`. Introduce `j`. Assume the negation of the conclusion as `hne`. Take `⟨-, hpos, hle⟩` from `(hws j).2 hne`. Establish `: (0:ℝ) ≤ ((j : ℕ) : ℝ)` using `Nat.cast_nonneg _`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hwV : w ∈ V`. Rewrite using `[hwsum, Finset.sum_eq_zero (fun j _ => hz j), add_zero]`. Conclude with `hw₀V`. Establish `hVT` using `ReciprocityTheory.ChartRestriction.DS.G2.data_isKTypeOf ⟨hmono, h, hh, hbig⟩ hσ hD hV hc hVK`.
+
+Establish `hwVm : (w : H) ∈ V.map D.subtype` using `⟨w, hwV, rfl⟩`. Establish `hwne : (w : H) ≠ 0` using `fun h0 => hw0 (Submodule.coe_eq_zero.1 h0)`. Establish `hinf : S ⊓ V.map D.subtype = S`. Break down `hST.2.2.1 (S ⊓ V.map D.subtype) inf_le_left (fun g hg v hv => ⟨hST.2.1 g hg v hv.1, hVT.2.1 g hg v hv.2⟩) with h0 | h1` into its components or cases. It suffices to derive a contradiction.
+
+Apply `hwne` to reduce the goal to its premises. Establish `hm : (w : H) ∈ S ⊓ V.map D.subtype` using `⟨hwS, hwVm⟩`. Rewrite `hm` using `[h0]`. Conclude with `(Submodule.mem_bot ℂ).1 hm`. Conclude with `h1`.
+
+Establish `hSV : S ≤ V.map D.subtype`. Rewrite using `[← hinf]`. Conclude with `inf_le_right`. Break down `hVT.2.2.1 S hSV hST.2.1 with h0 | h1` into its components or cases. It suffices to derive a contradiction.
+
+Apply `hwne` to reduce the goal to its premises. Rewrite `hwS` using `[h0]`. Conclude with `(Submodule.mem_bot ℂ).1 hwS`. Conclude with `h1`.
+-/
 theorem data_lowK_eq (hgap : StdGap ε lam) (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E)
     (hV : IsKIrrHW ε E (lowK ε lam) V) (hc : ∀ v ∈ V, casimir E v = (casVal lam : ℂ) • v)
     (hVK : ∀ k ∈ Kset ε, ∀ v ∈ V, ∃ w ∈ V, (w : H) = σ k v) (S : Submodule ℂ H) (hS : S ≤ closGen E V)

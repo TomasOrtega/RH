@@ -20,6 +20,9 @@ def omegaB (h : ℕ) : (Fin h ⊕ Fin h → ℤ) →ₗ[ℤ] (Fin h ⊕ Fin h �
     (fun c a b => by
       simp only [omegaStd, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]; congr 1; funext i; ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem omegaB_apply (h : ℕ) (a b : Fin h ⊕ Fin h → ℤ) : omegaB h a b = omegaStd a b := rfl
 
 def emb (h : ℕ) (l : Fin 8) : Fin h ⊕ Fin h → Fin (8 * h) ⊕ Fin (8 * h) :=
@@ -30,6 +33,9 @@ def blk (h : ℕ) (l : Fin 8) : (Fin (8 * h) ⊕ Fin (8 * h) → ℤ) →+ (Fin 
   map_zero' := rfl
   map_add' _ _ := rfl
 
+/- English proof (translation)
+Simplify using `only [omegaStd]`. Rewrite using `[← (finProdFinEquiv (m := 8) (n := h)).sum_comp, Fintype.sum_prod_type]`. Both sides reduce to the same expression.
+-/
 theorem omegaStd_eq_sum_blk (h : ℕ) (a b : Fin (8 * h) ⊕ Fin (8 * h) → ℤ) :
     omegaStd a b = ∑ l, omegaStd (blk h l a) (blk h l b) := by
   simp only [omegaStd]
@@ -38,14 +44,23 @@ theorem omegaStd_eq_sum_blk (h : ℕ) (a b : Fin (8 * h) ⊕ Fin (8 * h) → ℤ
 
 def vMat (d : ℕ) : Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) ℤ := fromBlocks 1 (-(quat d)ᵀ) 0 1
 
+/- English proof (translation)
+Establish `h1 : ((d - 1 : ℕ) : ℤ) = (d : ℤ) - 1` using `by omega`. Rewrite using `[vMat, form, fromBlocks_transpose, fromBlocks_multiply, fromBlocks_multiply, ← fromBlocks_one]`. Apply the tactic sequence `congr 1 <;> simp [Matrix.mul_neg, Matrix.neg_mul, quat_mul_transpose, h1, sub_smul]`.
+-/
 theorem vMat_transpose_mul_form_mul {d : ℕ} (hd : 0 < d) : (vMat d)ᵀ * form d * vMat d = 1 := by
   have h1 : ((d - 1 : ℕ) : ℤ) = (d : ℤ) - 1 := by omega
   rw [vMat, form, fromBlocks_transpose, fromBlocks_multiply, fromBlocks_multiply, ← fromBlocks_one]
   congr 1 <;> simp [Matrix.mul_neg, Matrix.neg_mul, quat_mul_transpose, h1, sub_smul]
 
+/- English proof (translation)
+Simplify using `[Fin.sum_univ_succ, Fintype.sum_sum_type, sig, add_assoc]`.
+-/
 theorem sum_sig {β : Type} [AddCommMonoid β] (g : Fin 4 ⊕ Fin 4 → β) : ∑ k, g (sig k) = ∑ s, g s := by
   simp [Fin.sum_univ_succ, Fintype.sum_sum_type, sig, add_assoc]
 
+/- English proof (translation)
+Introduce `k l hkl`. Apply the tactic sequence `fin_cases k <;> fin_cases l <;> simp_all [sig]`.
+-/
 theorem sig_injective : Function.Injective sig := by
   intro k l hkl
   fin_cases k <;> fin_cases l <;> simp_all [sig]
@@ -53,12 +68,18 @@ theorem sig_injective : Function.Injective sig := by
 def kap (h d : ℕ) (k : Fin 8) : (Fin (8 * h) ⊕ Fin (8 * h) → ℤ) →+ (Fin h ⊕ Fin h → ℤ) :=
   ∑ l, vMat d (sig k) (sig l) • blk h l
 
+/- English proof (translation)
+Unfold `kap`. Rewrite using `[AddMonoidHom.finset_sum_apply]`. Both sides reduce to the same expression.
+-/
 theorem kap_apply (h d : ℕ) (k : Fin 8) (a : Fin (8 * h) ⊕ Fin (8 * h) → ℤ) :
     kap h d k a = ∑ l, vMat d (sig k) (sig l) • blk h l a := by
   unfold kap
   rw [AddMonoidHom.finset_sum_apply]
   rfl
 
+/- English proof (translation)
+Establish `e1 : ∑ k, ∑ l, vMat d (sig k) (sig m) * form d (sig k) (sig l) * vMat d (sig l) (sig n) = ∑ p, ∑ l, vMat d p (sig m) * form d p (sig l) * vMat d (sig l) (sig n)` using `sum_sig (fun p => ∑ l, vMat d p (sig m) * form d p (sig l) * vMat d (sig l) (sig n))`. Establish `e2 : ∀ p, ∑ l, vMat d p (sig m) * form d p (sig l) * vMat d (sig l) (sig n) = ∑ q, vMat d p (sig m) * form d p q * vMat d q (sig n)` using `fun p => sum_sig (fun q => vMat d p (sig m) * form d p q * vMat d q (sig n))`. Rewrite using `[e1, Finset.sum_congr rfl fun p _ => e2 p]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem inner_sum (d : ℕ) (m n : Fin 8) :
     ∑ k, ∑ l, vMat d (sig k) (sig m) * form d (sig k) (sig l) * vMat d (sig l) (sig n) =
       ((vMat d)ᵀ * form d * vMat d) (sig m) (sig n) := by
@@ -72,6 +93,19 @@ theorem inner_sum (d : ℕ) (m n : Fin 8) :
   simp only [Matrix.mul_apply, Matrix.transpose_apply, Finset.sum_mul]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Establish `e2 : ∀ k l, omegaStd (kap h d k a) (kap h d l b) = ∑ m, ∑ n, vMat d (sig k) (sig m) * vMat d (sig l) (sig n) * omegaStd (blk h m a) (blk h n b)`. Introduce `k l`. Rewrite using `[← omegaB_apply, kap_apply, kap_apply]`. Simplify using `only [map_sum, map_zsmul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, omegaB_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [formZ, e2, Finset.mul_sum]`. Establish `e3 : ∀ m n, ∑ k, ∑ l, form d (sig k) (sig l) * (vMat d (sig k) (sig m) * vMat d (sig l) (sig n) * omegaStd (blk h m a) (blk h n b)) = ((vMat d)ᵀ * form d * vMat d) (sig m) (sig n) * omegaStd (blk h m a) (blk h n b)`. Introduce `m n`.
+
+Rewrite using `[← inner_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun m _ => Finset.sum_comm`. Use `_ = ∑ m, ∑ n, ∑ k, ∑ l, form d (sig k) (sig l) * (vMat d (sig k) (sig m) * vMat d (sig l) (sig n) * omegaStd (blk h m a) (blk h n b)) := by`.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun m _ => Finset.sum_comm`. Use `_ = ∑ m, ∑ n, ((vMat d)ᵀ * form d * vMat d) (sig m) (sig n) * omegaStd (blk h m a) (blk h n b) := by`. Simplify using `only [e3]`. Use `_ = omegaStd a b := by`.
+
+Rewrite using `[vMat_transpose_mul_form_mul hd, omegaStd_eq_sum_blk]`. Simplify using `[Matrix.one_apply, sig_injective.eq_iff]`.
+-/
 theorem formZ_kap {h d : ℕ} (hd : 0 < d) (a b : Fin (8 * h) ⊕ Fin (8 * h) → ℤ) :
     formZ d h (fun k => kap h d k a) (fun k => kap h d k b) = omegaStd a b := by
   have e2 : ∀ k l, omegaStd (kap h d k a) (kap h d l b) =
@@ -110,6 +144,11 @@ theorem formZ_kap {h d : ℕ} (hd : 0 < d) (a b : Fin (8 * h) ⊕ Fin (8 * h) �
         rw [vMat_transpose_mul_form_mul hd, omegaStd_eq_sum_blk]
         simp [Matrix.one_apply, sig_injective.eq_iff]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Use `split_ifs with hl`. Substitute `hl` using the available equality. Apply the tactic sequence `rcases x with i | i <;> simp [blk, emb, jlMap]`. Establish `hl1 : 1 ≤ (l : ℕ)` using `Nat.one_le_iff_ne_zero.mpr fun h0 => hl (Fin.ext h0)`.
+
+Apply the tactic sequence `rcases x with i | i <;> simp only [blk, emb, jlMap, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Function.comp_apply, Sum.map_inl, Sum.map_inr, Pi.zero_apply] <;> rw [dif_neg] <;> simp only [finProdFinEquiv_apply_val, not_lt] <;>`. Use polynomial arithmetic with `[i.2]`.
+-/
 theorem blk_jlMap (h : ℕ) (l : Fin 8) (a : Fin h ⊕ Fin h → ℤ) :
     blk h l (jlMap h a) = if l = 0 then a else 0 := by
   funext x
@@ -121,6 +160,9 @@ theorem blk_jlMap (h : ℕ) (l : Fin 8) (a : Fin h ⊕ Fin h → ℤ) :
       Sum.map_inl, Sum.map_inr, Pi.zero_apply] <;> rw [dif_neg] <;> simp only [finProdFinEquiv_apply_val, not_lt] <;>
       nlinarith [i.2]
 
+/- English proof (translation)
+Rewrite using `[kap_apply]`. Simplify using `only [blk_jlMap, smul_ite, smul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Apply the tactic sequence `fin_cases k <;> simp [vMat, sig]`.
+-/
 theorem kap_jlMap (h d : ℕ) (k : Fin 8) (a : Fin h ⊕ Fin h → ℤ) :
     kap h d k (jlMap h a) = if k = 0 then a else 0 := by
   rw [kap_apply]
@@ -133,6 +175,9 @@ namespace GlobalTheory.ZarhinFam
 
 open KappaEx in
 
+/- English proof (translation)
+Introduce `h M d _ _ _ hd _`. Use `⟨kap h d, fun a b => ?_, fun a => ?_, fun k hk a => ?_⟩` and prove the remaining obligations. Rewrite using `[formZ_kap hd]`. Rewrite using `[kap_jlMap, if_pos rfl]`. Rewrite using `[kap_jlMap, if_neg hk]`.
+-/
 theorem exists_kappaOK : ∀ (h M d : ℕ), 1 ≤ h → 3 ≤ M → Odd M → 0 < d → M.Coprime d →
     ∃ κ : Fin 8 → (Fin (8 * h) ⊕ Fin (8 * h) → ℤ) →+ (Fin h ⊕ Fin h → ℤ), GlobalTheory.ZarhinFam.KappaOK h M d κ := by
   intro h M d _ _ _ hd _

@@ -16,6 +16,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FinalJoin2
 
+/- English proof (translation)
+Introduce `D J T EX p hJ hP hS hT hC hF hH hd j hj`. Establish `key : ∀ C : Core D, C = J.toCore → ∀ j, InR D j → ∀ k k', ((C.U j C.σ₀).X k).Gm = ((C.U j C.σ₀).X k').Gm ∧ ((C.U j C.σ₀).X k).ξ0 = ((C.U j C.σ₀).X k').ξ0`. Introduce and unpack `C rfl j hj k k'`. Take `⟨hr, hm⟩` from `hJ.modelW j hj J.toCore.σ₀ J.toCore.good_σ₀`. Conclude with `⟨(hm k).1.trans (hm k').1.symm, (hm k).2.trans (hm k').2.symm⟩`.
+
+Establish `hpin : T.Q.Pins` using `hP.toLawsCore.pins`. Establish `hM : T.Q.l.M = D.host.g 0 * D.host.g 1` using `hpin.2.1.1`. Establish `hA : T.Q.l.A = 1` using `hpin.2.1.2`. Establish `hp : 0 < p`. Break down `hF.own with e | e` into its components or cases.
+
+Conclude with `e ▸ D.host.pde_prime.pos`. Conclude with `e ▸ D.host.pde'_prime.pos`. Use `⟨hS, fun i hi n => (hd i hi n).1, key _ hT, (GlobalTheory.TrivLevel.badN_pos_iff D).2 hF.bad, fun n => (hd j hj n).2, (GlobalTheory.PtTie.halfEX_iff_oriented D T hP EX).1 hH, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.FinalJoin.FieldAlg.fnAlgClosed_of_pins D T.Q hpin hC (D.host.g 0 * D.host.g 1 * p) (Nat.mul_pos (Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos) hp) hF.curve j hj T.Q.l (T.Q.Xo j) T.Q.c hA ?_ rfl` and prove the remaining obligations. Rewrite using `[hM]`.
+
+Conclude with `dvd_mul_right _ _`.
+-/
 theorem liftIndexParameterConditions_of_coreAndShortLaws : ∀ (D : D7) (J : CoreJ D) (T : Top D) (EX : ErrX D) (p : ℕ), LawsJ J → LawsP T → LawsSh T → T.toCore = J.toCore → T.Q.Canon → FieldOK0 D p → HalfEX T.toCore EX → (∀ j, InR D j → ∀ n, (T.dδ j n).l₂.A = 1 ∧ (T.dδ j n).pd = p) → ∀ j, InR D j → ParOK T EX p j := by
   intro D J T EX p hJ hP hS hT hC hF hH hd j hj
   have key : ∀ C : Core D, C = J.toCore → ∀ j, InR D j → ∀ k k', ((C.U j C.σ₀).X k).Gm = ((C.U j C.σ₀).X k').Gm ∧

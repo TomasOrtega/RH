@@ -27,6 +27,13 @@ def dgHom {n a b : ℕ} (h : a + b = n) (w : Pl E) : GLw a w × GLw b w →* GLw
       Matrix.fromBlocks_multiply, Prod.fst_mul, Prod.snd_mul]
     simp
 
+/- English proof (translation)
+Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Establish `e : (fun k : GLw a w × GLw b w => (dgHom h w k).val) = fun k => Matrix.reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h)) (Matrix.fromBlocks k.1.val (k.1.val * (0 : Matrix (Fin a) (Fin b) (w.adicCompletion E))) 0 k.2.val)`. Use function extensionality and compare the values at `k`. Conclude with `LeviBlockConjugation.blk_val h w k 0`.
+
+Express the relevant statement in the definitionally equal form `Continuous fun k : GLw a w × GLw b w => (dgHom h w k).val`. Rewrite using `[e]`. Conclude with `(Continuous.matrix_fromBlocks (Units.continuous_val.comp continuous_fst) ((Units.continuous_val.comp continuous_fst).matrix_mul continuous_const) continuous_const (Units.continuous_val.comp continuous_snd)).matrix_reindex _ _`. Establish `e : (fun k : GLw a w × GLw b w => ((dgHom h w k)⁻¹).val) = fun k => Matrix.reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h)) (Matrix.fromBlocks (k.1⁻¹).val ((k.1⁻¹).val * (0 : Matrix (Fin a) (Fin b) (w.adicCompletion E))) 0 (k.2⁻¹).val)`. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[← map_inv]`. Conclude with `LeviBlockConjugation.blk_val h w k⁻¹ 0`. Express the relevant statement in the definitionally equal form `Continuous fun k : GLw a w × GLw b w => ((dgHom h w k)⁻¹).val`. Rewrite using `[e]`. Conclude with `(Continuous.matrix_fromBlocks (Units.continuous_coe_inv.comp continuous_fst) ((Units.continuous_coe_inv.comp continuous_fst).matrix_mul continuous_const) continuous_const (Units.continuous_coe_inv.comp continuous_snd)).matrix_reindex _ _`.
+-/
 theorem continuous_dgHom {n a b : ℕ} (h : a + b = n) (w : Pl E) : Continuous (dgHom (E := E) h w) := by
   rw [Units.continuous_iff]
   constructor
@@ -53,10 +60,18 @@ def conjLevi {n a b : ℕ} (h : a + b = n) (w : Pl E) (X : Matrix (Fin a) (Fin b
     GLw a w × GLw b w →* GLw n w :=
   (MulAut.conj (blk h w 1 X)⁻¹).toMonoidHom.comp (dgHom h w)
 
+/- English proof (translation)
+Simplify using `[conjLevi, dgHom, MulAut.conj_apply]`.
+-/
 theorem conjLevi_apply {n a b : ℕ} (h : a + b = n) (w : Pl E) (X : Matrix (Fin a) (Fin b) (w.adicCompletion E))
     (k : GLw a w × GLw b w) : conjLevi h w X k = (blk h w 1 X)⁻¹ * blk h w k 0 * blk h w 1 X := by
   simp [conjLevi, dgHom, MulAut.conj_apply]
 
+/- English proof (translation)
+Establish `e : (conjLevi h w X : GLw a w × GLw b w → GLw n w) = fun k => (blk h w 1 X)⁻¹ * dgHom h w k * blk h w 1 X`. Use function extensionality and compare the values at `k`. Rewrite using `[conjLevi_apply]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `(continuous_const.mul (continuous_dgHom h w)).mul continuous_const`.
+-/
 theorem continuous_conjLevi {n a b : ℕ} (h : a + b = n) (w : Pl E) (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)) :
     Continuous (conjLevi h w X) := by
   have e : (conjLevi h w X : GLw a w × GLw b w → GLw n w) = fun k => (blk h w 1 X)⁻¹ * dgHom h w k * blk h w 1 X := by
@@ -68,6 +83,13 @@ end GlobalTheory.LeviDesc.ConjStab
 
 open GlobalTheory.LeviDesc.ConjStab in
 
+/- English proof (translation)
+Introduce `E _ _ n a b h w X`. Use `set P : Subgroup (GLw a w × GLw b w) := (GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)`. Use `set C : Subgroup (GLw a w × GLw b w) := (GlobalTheory.LFun.KGL w n).comap (conjLevi h w X)`. Use `⟨P ⊓ C, inf_le_left, ?_, fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.inf_relIndex_left]`.
+
+Establish `hP : IsCompact (P : Set (GLw a w × GLw b w))`. Simplify using `only [P, Subgroup.coe_prod]`. Conclude with `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a).2.prod (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w b).2`. Establish `hC : IsOpen (C : Set (GLw a w × GLw b w))` using `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n).1.preimage (continuous_conjLevi h w X)`. Use `haveI : CompactSpace P := isCompact_iff_compactSpace.mp hP`.
+
+Use `haveI : Finite (P ⧸ C.subgroupOf P) := Subgroup.quotient_finite_of_isOpen _ (hC.preimage continuous_subtype_val)`. Conclude with `Subgroup.index_ne_zero_of_finite`. Use `(Subgroup.mem_inf.1 hk).2` as an intermediate fact. Rewrite `this` using `[Subgroup.mem_comap, conjLevi_apply]`. Conclude with `this`.
+-/
 theorem GlobalTheory.LeviDesc.ConjStab.exists_stab : ∀ (E : Type) [Field E] [NumberField E] (n a b : ℕ) (h : a + b = n) (w : Pl E)
     (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)), ∃ U : Subgroup (GLw a w × GLw b w),
     U ≤ (GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b) ∧ U.relIndex ((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)) ≠ 0 ∧

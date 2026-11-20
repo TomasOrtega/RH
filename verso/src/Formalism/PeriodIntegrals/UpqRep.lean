@@ -27,6 +27,9 @@ def Kset {n : ℕ} (ε : Fin n → Bool) : Set (Matrix (Fin n) (Fin n) ℂ) :=
 
 def hs {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : ℝ := ∑ i, ∑ j, ‖g i j‖ ^ 2
 
+/- English proof (translation)
+Unfold `Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 lemma Jm_mul_self {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   unfold Jm
   rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -34,6 +37,9 @@ lemma Jm_mul_self {n : ℕ} (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   funext a
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Unfold `Jm`. Rewrite using `[Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `by_cases h : ε a <;> simp [h]`.
+-/
 lemma Jm_conjTranspose {n : ℕ} (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
   unfold Jm
   rw [Matrix.diagonal_conjTranspose]
@@ -87,22 +93,39 @@ def UJLocCompact : Prop :=
 def coeMatrixAlt {n : ℕ} (ε : Fin n → Bool) : UJ ε → Matrix (Fin n) (Fin n) ℂ :=
   fun g => ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma coeMatrix_left_inv {n : ℕ} (ε : Fin n → Bool) (g : Matrix (Fin n) (Fin n) ℂ) (hg : inUJ ε g) :
     (Jm ε * gᴴ * Jm ε) * g = 1 := by
   calc Jm ε * gᴴ * Jm ε * g = Jm ε * (gᴴ * Jm ε * g) := by simp only [Matrix.mul_assoc]
     _ = 1 := by rw [hg, Jm_mul_self]
 
+/- English proof (translation)
+The claim follows from `Units.inv_eq_of_mul_eq_one_left (coeMatrix_left_inv ε _ g.2)`.
+-/
 lemma coeMatrix_inv_eq {n : ℕ} (ε : Fin n → Bool) (g : UJ ε) :
     (((g : (Matrix (Fin n) (Fin n) ℂ)ˣ)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)
       = Jm ε * (coeMatrixAlt ε g)ᴴ * Jm ε := Units.inv_eq_of_mul_eq_one_left (coeMatrix_left_inv ε _ g.2)
 
+/- English proof (translation)
+The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+-/
 lemma continuous_coeMatrix {n : ℕ} (ε : Fin n → Bool) : Continuous (coeMatrixAlt ε) := Units.continuous_val.comp continuous_subtype_val
 
+/- English proof (translation)
+Conclude with `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`.
+-/
 lemma isClosed_pseudoUnitary {n : ℕ} (ε : Fin n → Bool) :
     IsClosed {g : Matrix (Fin n) (Fin n) ℂ | inUJ ε g} := by
   exact isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id)
     continuous_const
 
+/- English proof (translation)
+Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl⟩`. Conclude with `h.2`. Introduce `hg`.
+
+Conclude with `⟨⟨⟨g, Jm ε * gᴴ * Jm ε, mul_eq_one_comm.1 (coeMatrix_left_inv ε g hg), coeMatrix_left_inv ε g hg⟩, hg⟩, rfl⟩`.
+-/
 lemma range_coeMatrix {n : ℕ} (ε : Fin n → Bool) :
     Set.range (coeMatrixAlt ε) = {g | inUJ ε g} := by
   ext g
@@ -112,6 +135,11 @@ lemma range_coeMatrix {n : ℕ} (ε : Fin n → Bool) :
   · intro hg
     exact ⟨⟨⟨g, Jm ε * gᴴ * Jm ε, mul_eq_one_comm.1 (coeMatrix_left_inv ε g hg), coeMatrix_left_inv ε g hg⟩, hg⟩, rfl⟩
 
+/- English proof (translation)
+Establish `hc : Continuous (fun m : Matrix (Fin n) (Fin n) ℂ => (m, MulOpposite.op (Jm ε * mᴴ * Jm ε)))` using `continuous_id.prodMk (MulOpposite.continuous_op.comp ((continuous_const.matrix_mul continuous_id.matrix_conjTranspose).matrix_mul continuous_const))`. Use `IsInducing.of_comp (continuous_coeMatrix ε) hc ?_` and prove the remaining obligations. Establish `e : (fun m : Matrix (Fin n) (Fin n) ℂ => (m, MulOpposite.op (Jm ε * mᴴ * Jm ε))) ∘ coeMatrixAlt ε = Units.embedProduct _ ∘ Subtype.val` using `funext fun g => by`. Simplify using `only [Function.comp_apply, Units.embedProduct_apply, ← coeMatrix_inv_eq]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `Units.isInducing_embedProduct.comp IsInducing.subtypeVal`.
+-/
 lemma isInducing_coeMatrix {n : ℕ} (ε : Fin n → Bool) : IsInducing (coeMatrixAlt ε) := by
   have hc : Continuous (fun m : Matrix (Fin n) (Fin n) ℂ => (m, MulOpposite.op (Jm ε * mᴴ * Jm ε))) :=
     continuous_id.prodMk (MulOpposite.continuous_op.comp
@@ -124,10 +152,18 @@ lemma isInducing_coeMatrix {n : ℕ} (ε : Fin n → Bool) : IsInducing (coeMatr
   rw [e]
   exact Units.isInducing_embedProduct.comp IsInducing.subtypeVal
 
+/- English proof (translation)
+Introduce `a b h`. Conclude with `Subtype.ext (Units.ext h)`.
+-/
 lemma injective_coeMatrix {n : ℕ} (ε : Fin n → Bool) : Function.Injective (coeMatrixAlt ε) := by
   intro a b h
   exact Subtype.ext (Units.ext h)
 
+/- English proof (translation)
+Introduce `n ε`. Use `⟨⟨⟨isInducing_coeMatrix ε, injective_coeMatrix ε⟩, ?_⟩, range_coeMatrix ε⟩` and prove the remaining obligations. Establish `h` using `range_coeMatrix ε`. Unfold `coeMatrixAlt at h`. Rewrite using `[h]`.
+
+Conclude with `isClosed_pseudoUnitary ε`.
+-/
 theorem isClosedEmbeddingMatrix : UJEmb := by
   intro n ε
   refine ⟨⟨⟨isInducing_coeMatrix ε, injective_coeMatrix ε⟩, ?_⟩, range_coeMatrix ε⟩
@@ -136,6 +172,9 @@ theorem isClosedEmbeddingMatrix : UJEmb := by
   rw [h]
   exact isClosed_pseudoUnitary ε
 
+/- English proof (translation)
+Introduce `n ε`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) ℂ) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → ℂ))`. Conclude with `(h n ε).1.locallyCompactSpace`.
+-/
 theorem uJLocCompact_of (h : UJEmb) : UJLocCompact := by
   intro n ε
   haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) ℂ) :=
@@ -159,11 +198,17 @@ def muG {n : ℕ} (ε : Fin n → Bool) : Measure (UJ ε) := Measure.haar
 instance instIsHaarMuG (n : ℕ) (ε : Fin n → Bool) : (muG ε).IsHaarMeasure := by
   unfold muG; infer_instance
 
+/- English proof (translation)
+Use `⟨Submonoid.mul_mem _ hg.1 hh.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, hh.2, ← Matrix.mul_assoc, hg.2, Matrix.mul_assoc]`.
+-/
 lemma Kset_mul {n : ℕ} (ε : Fin n → Bool) {g h : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε)
     (hh : h ∈ Kset ε) : g * h ∈ Kset ε := by
   refine ⟨Submonoid.mul_mem _ hg.1 hh.1, ?_⟩
   rw [Matrix.mul_assoc, hh.2, ← Matrix.mul_assoc, hg.2, Matrix.mul_assoc]
 
+/- English proof (translation)
+Use `⟨Unitary.star_mem hg.1, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg Matrix.conjTranspose hg.2`. Rewrite `h` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Jm_conjTranspose]`. Rewrite using `[Matrix.star_eq_conjTranspose]`. Conclude with `h.symm`.
+-/
 lemma Kset_star {n : ℕ} (ε : Fin n → Bool) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) :
     star g ∈ Kset ε := by
   refine ⟨Unitary.star_mem hg.1, ?_⟩
@@ -194,6 +239,9 @@ def KG {n : ℕ} (ε : Fin n → Bool) : Subgroup (UJ ε) where
     rw [h2]
     exact Kset_star ε hg
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 lemma mem_KG {n : ℕ} (ε : Fin n → Bool) (g : UJ ε) : g ∈ KG ε ↔ toM g ∈ Kset ε := Iff.rfl
 
 abbrev toMK {n : ℕ} {ε : Fin n → Bool} (k : KG ε) : Matrix (Fin n) (Fin n) ℂ := toM (k : UJ ε)

@@ -17,6 +17,9 @@ variable {p : ℕ} [hp : Fact p.Prime]
 
 variable (p) in
 
+/- English proof (translation)
+Establish `h` using `(MulEquiv.irreducible_iff (f := (GroundTheory.LocalField.PadicRank.padicIntEquivInteger p).toMulEquiv) (x := (p : ℤ_[p]))).2 PadicInt.irreducible_p`. Simplify using `using h`.
+-/
 theorem irreducible_p : Irreducible (p : 𝒪[ℚ_[p]]) := by
   have h := (MulEquiv.irreducible_iff
     (f := (GroundTheory.LocalField.PadicRank.padicIntEquivInteger p).toMulEquiv)
@@ -27,10 +30,20 @@ variable (K₀ : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional �
 
 omit [FiniteDimensional ℚ_[p] K₀] in
 
+/- English proof (translation)
+Rewrite using `[integer_eq_normInteger, mem_normInteger]`. Both sides reduce to the same expression.
+-/
 theorem mem_integer_iff (x : K₀) : x ∈ 𝒪[K₀] ↔ ‖(x : PadicAlgCl p)‖ ≤ 1 := by
   rw [integer_eq_normInteger, mem_normInteger]
   rfl
 
+/- English proof (translation)
+Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Establish `h1 : ((((p : 𝒪[K₀]) * v : 𝒪[K₀]) : K₀) : PadicAlgCl p) = 1` using `by rw [hv]; rfl`. Establish `hv1 : ‖(((v : 𝒪[K₀]) : K₀) : PadicAlgCl p)‖ ≤ 1` using `(mem_integer_iff K₀ _).1 v.2`.
+
+Establish `h2 : ‖((((p : 𝒪[K₀]) * v : 𝒪[K₀]) : K₀) : PadicAlgCl p)‖ < 1`. Establish `: ((((p : 𝒪[K₀]) * v : 𝒪[K₀]) : K₀) : PadicAlgCl p) = (p : PadicAlgCl p) * (((v : 𝒪[K₀]) : K₀) : PadicAlgCl p)`. Simplify using the standard rewrite rules. Rewrite using `[this, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_one, ← map_natCast (algebraMap ℚ_[p] (PadicAlgCl p)) p, PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`. Rewrite `h2` using `[h1, norm_one]`. Conclude with `lt_irrefl _ h2`.
+-/
 theorem natCast_p_mem_maximalIdeal : (p : 𝒪[K₀]) ∈ 𝓂[K₀] := by
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]
   intro hu
@@ -55,6 +68,9 @@ instance charP_residueField : CharP 𝓀[K₀] p :=
     rw [← map_natCast (residue 𝒪[K₀]), residue_eq_zero_iff]
     exact natCast_p_mem_maximalIdeal K₀)
 
+/- English proof (translation)
+Rewrite `hx` using `[← (GroundTheory.LocalField.map_maximalIdeal_eq_iff ℚ_[p] K₀).2 inferInstance, (irreducible_p p).maximalIdeal_eq, Ideal.map_span, Set.image_singleton, map_natCast, Ideal.mem_span_singleton]`. Conclude with `hx`.
+-/
 theorem exists_eq_p_mul_of_mem_maximalIdeal
     [GroundTheory.LocalField.IsUnramified ℚ_[p] K₀] {x : 𝒪[K₀]} (hx : x ∈ 𝓂[K₀]) :
     ∃ y : 𝒪[K₀], x = p * y := by

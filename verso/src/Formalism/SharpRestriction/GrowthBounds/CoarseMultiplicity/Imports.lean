@@ -23,6 +23,13 @@ def ωp : BV C0 CE1 CE2 X j → ℕ
   | Sum.inl (a, _) => ωpL X j a
   | Sum.inr (l, β) => if (l : ℕ) = (X.seg C0 CE1 CE2 j).t ∧ β = true then 1 else 0
 
+/- English proof (translation)
+Use `⟨fun a c => rfl, fun l => ?_, ?_⟩` and prove the remaining obligations. Establish `hi` using `(uTop (X.seg C0 CE1 CE2 j) l).2`. Establish `hu : ∀ l' : Fin (X.seg C0 CE1 CE2 j).t, ((uTop (X.seg C0 CE1 CE2 j) l' : Fin _) : ℕ) = (X.seg C0 CE1 CE2 j).sigma + l'` using `fun _ => rfl`. Establish `v0 : ((finPos (2 * segS X.TT j + 1) (2 * (uTop (X.seg C0 CE1 CE2 j) l : ℕ)) : Fin _) : ℕ) = 2 * (uTop (X.seg C0 CE1 CE2 j) l : ℕ)` using `Nat.min_eq_left (by omega)`. Establish `v1 : ((finPos (2 * segS X.TT j + 1) (2 * (uTop (X.seg C0 CE1 CE2 j) l : ℕ) + 1) : Fin _) : ℕ) = 2 * (uTop (X.seg C0 CE1 CE2 j) l : ℕ) + 1` using `Nat.min_eq_left (by omega)`.
+
+Simplify using `only [ωo, ωoL, v0, v1, Fin.val_castSucc]`. Distinguish the cases in `hl : (l : ℕ) = (l0 : ℕ)`. Rewrite using `[if_neg (by simp), if_pos (by simp [hl]), if_pos (by rw [hu, hu]; omega), if_neg (by rw [hu, hu]; omega)]`. Rewrite using `[if_neg (by simp), if_neg (by simp [hl]), if_neg (by rw [hu, hu]; omega), if_neg (by rw [hu, hu]; omega)]`. Establish `hi` using `(uTop (X.seg C0 CE1 CE2 j) l0).2`.
+
+Simplify using `only [ωo, ωoL, Fin.val_castSucc, Fin.val_last]`. Rewrite using `[if_neg (by simp), if_neg (by intro h; have := l0.2; omega), if_neg (by omega), if_neg (by omega)]`.
+-/
 theorem ωo_bal (l0 : Fin (X.seg C0 CE1 CE2 j).t) :
     Balanced X.m (X.seg C0 CE1 CE2 j) (ωo C0 CE1 CE2 X j l0) (ωoL C0 CE1 CE2 X j l0) := by
   refine ⟨fun a c => rfl, fun l => ?_, ?_⟩
@@ -41,6 +48,11 @@ theorem ωo_bal (l0 : Fin (X.seg C0 CE1 CE2 j).t) :
     simp only [ωo, ωoL, Fin.val_castSucc, Fin.val_last]
     rw [if_neg (by simp), if_neg (by intro h; have := l0.2; omega), if_neg (by omega), if_neg (by omega)]
 
+/- English proof (translation)
+Use `⟨fun a c => rfl, fun l => ?_, ?_⟩` and prove the remaining obligations. Establish `hi` using `(uTop (X.seg C0 CE1 CE2 j) l).2`. Establish `v0 : ((finPos (2 * segS X.TT j + 1) (2 * (uTop (X.seg C0 CE1 CE2 j) l : ℕ)) : Fin _) : ℕ) = 2 * (uTop (X.seg C0 CE1 CE2 j) l : ℕ)` using `Nat.min_eq_left (by omega)`. Establish `v1 : ((finPos (2 * segS X.TT j + 1) (2 * (uTop (X.seg C0 CE1 CE2 j) l : ℕ) + 1) : Fin _) : ℕ) = 2 * (uTop (X.seg C0 CE1 CE2 j) l : ℕ) + 1` using `Nat.min_eq_left (by omega)`. Simplify using `only [ωp, ωpL, v0, v1, Fin.val_castSucc]`.
+
+Rewrite using `[if_neg (by simp), if_neg (by intro h; have := l.2; omega), if_neg (by omega), if_neg (by omega)]`. Simplify using `only [ωp, ωpL, Fin.val_castSucc, Fin.val_last]`. Simplify using the standard rewrite rules.
+-/
 theorem ωp_bal : Balanced X.m (X.seg C0 CE1 CE2 j) (ωp C0 CE1 CE2 X j) (ωpL X j) := by
   refine ⟨fun a c => rfl, fun l => ?_, ?_⟩
   · have hi := (uTop (X.seg C0 CE1 CE2 j) l).2
@@ -53,6 +65,15 @@ theorem ωp_bal : Balanced X.m (X.seg C0 CE1 CE2 j) (ωp C0 CE1 CE2 X j) (ωpL X
   · simp only [ωp, ωpL, Fin.val_castSucc, Fin.val_last]
     simp
 
+/- English proof (translation)
+Establish `hi` using `(uTop (X.seg C0 CE1 CE2 j) l0).2`. Unfold `OmB`. Establish `s1 : ∑ l : Fin (X.seg C0 CE1 CE2 j).t, (coarseA X.p (X.seg C0 CE1 CE2 j) b (uTop (X.seg C0 CE1 CE2 j) l) - b.o (uTop (X.seg C0 CE1 CE2 j) l)) * ωo C0 CE1 CE2 X j l0 (Sum.inr (Fin.castSucc l, false)) = 0` using `Finset.sum_eq_zero fun l _ => by simp [ωo]`. Establish `s2 : ωo C0 CE1 CE2 X j l0 (Sum.inr (Fin.last _, false)) = 0` using `by simp [ωo]`. Establish `s3 : ∑ a : Fin (2 * segS X.TT j + 1), (segChain X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b).deg a * ωoL C0 CE1 CE2 X j l0 (Fin.castSucc a) = b.o (uTop (X.seg C0 CE1 CE2 j) l0)`.
+
+Rewrite using `[Finset.sum_eq_single (⟨2 * (uTop (X.seg C0 CE1 CE2 j) l0 : ℕ), by omega⟩ : Fin (2 * segS X.TT j + 1))]`. Simplify using `only [ωoL, Fin.val_castSucc, if_true, mul_one]`. Rewrite using `[segment_chain_degree_even X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b _ (uTop (X.seg C0 CE1 CE2 j) l0) rfl, if_neg (by show ¬ ((X.seg C0 CE1 CE2 j).sigma + (l0 : ℕ) < (X.seg C0 CE1 CE2 j).sigma); omega)]`. Introduce `a _ ha`. Simplify using `only [ωoL, Fin.val_castSucc]`.
+
+Rewrite using `[if_neg (fun h => ha (Fin.ext h)), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `s4 : ωoL C0 CE1 CE2 X j l0 (Fin.last _) = 0`. Simplify using `only [ωoL, Fin.val_last]`.
+
+Rewrite using `[if_neg (by omega)]`. Rewrite using `[s1, s2, s3, s4]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem omB_ωo (b : SegBlock (segS X.TT j) X.m) (l0 : Fin (X.seg C0 CE1 CE2 j).t) :
     OmB X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) b (ωo C0 CE1 CE2 X j l0)
       (ωoL C0 CE1 CE2 X j l0) = b.o (uTop (X.seg C0 CE1 CE2 j) l0) := by
@@ -79,6 +100,15 @@ theorem omB_ωo (b : SegBlock (segS X.TT j) X.m) (l0 : Fin (X.seg C0 CE1 CE2 j).
   rw [s1, s2, s3, s4]
   ring
 
+/- English proof (translation)
+Unfold `OmB`. Establish `s1 : ∑ l : Fin (X.seg C0 CE1 CE2 j).t, (coarseA X.p (X.seg C0 CE1 CE2 j) b (uTop (X.seg C0 CE1 CE2 j) l) - b.o (uTop (X.seg C0 CE1 CE2 j) l)) * ωp C0 CE1 CE2 X j (Sum.inr (Fin.castSucc l, false)) = 0` using `Finset.sum_eq_zero fun l _ => by simp [ωp]`. Establish `s2 : ωp C0 CE1 CE2 X j (Sum.inr (Fin.last _, false)) = 0` using `by simp [ωp]`. Establish `s3 : ∑ a : Fin (2 * segS X.TT j + 1), (segChain X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b).deg a * ωpL X j (Fin.castSucc a) = b.oPlus`. Rewrite using `[Finset.sum_eq_single (⟨2 * segS X.TT j, by omega⟩ : Fin (2 * segS X.TT j + 1))]`.
+
+Simplify using `only [ωpL, Fin.val_castSucc, if_true, mul_one]`. Conclude with `chain_deg_U X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) b _ rfl`. Introduce `a _ ha`. Simplify using `only [ωpL, Fin.val_castSucc]`. Rewrite using `[if_neg (fun h => ha (Fin.ext h)), mul_zero]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `s4 : ωpL X j (Fin.last _) = 0`. Simplify using `only [ωpL, Fin.val_last]`. Rewrite using `[if_neg (by omega)]`.
+
+Rewrite using `[s1, s2, s3, s4]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem omB_ωp (b : SegBlock (segS X.TT j) X.m) :
     OmB X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) b (ωp C0 CE1 CE2 X j) (ωpL X j) = b.oPlus := by
   classical

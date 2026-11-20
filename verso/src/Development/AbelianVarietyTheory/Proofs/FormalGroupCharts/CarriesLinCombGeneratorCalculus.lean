@@ -18,6 +18,11 @@ namespace GlobalTheory.ChartCmp.CarryCalc
 
 variable {X X' Y : Scheme.{0}} {L' : LB X'} {L : LB X} {F : X' ⟶ X} {K : Type} [Fintype K]
 
+/- English proof (translation)
+Use `(maps_iff w φ (fun k => φ k ≫ F) ε g g' (𝟙 Y) (flatGen L F φ ε g') (fun j x hx => wchart_pull_le L F φ j hx) (fun j => rfl)).trans ⟨fun H Z r z p q hp hq => ?_, fun H Z r z p q hp hq => ?_⟩` and prove the remaining obligations. Use `H Z r z p q (Set.mem_iInter.1 hp) (Set.mem_iInter.1 hq)` as an intermediate fact. Rewrite `this` using `[Category.comp_id]`. Conclude with `this`. Rewrite using `[Category.comp_id]`.
+
+Conclude with `H Z r z p q (Set.mem_iInter.2 hp) (Set.mem_iInter.2 hq)`.
+-/
 theorem carries_iff (w : LB.Iso L' (L.pull F)) (φ : K → (Y ⟶ X')) (ε : K → ℤ) (g : LB.Gen (LB.LinComb L' φ ε))
     (g' : LB.Gen (LB.LinComb L (fun k => φ k ≫ F) ε)) :
     Carries L F w φ ε g g' ↔ ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (p : K → L.ι) (q : K → L'.ι),
@@ -34,6 +39,9 @@ theorem carries_iff (w : LB.Iso L' (L.pull F)) (φ : K → (Y ⟶ X')) (ε : K �
 def fac (w : LB.Iso L' (L.pull F)) {Z : Scheme.{0}} (z : Z) (J : (Z ⟶ X) → L.ι) (J' : (Z ⟶ X') → L'.ι) (ψ : Z ⟶ X') :
     (Z.presheaf.stalk z)ˣ := gw w ψ z (J (ψ ≫ F)) (J' ψ)
 
+/- English proof (translation)
+Use `((carries_iff w φ ε g g').1 H Z r z _ _ (hJ.mem _ r) (hJ'.mem _ r)).trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations. Simplify using `only [pw, fac, Category.assoc]`.
+-/
 theorem val_of_carries {w : LB.Iso L' (L.pull F)} {φ : K → (Y ⟶ X')} {ε : K → ℤ} {g : LB.Gen (LB.LinComb L' φ ε)}
     {g' : LB.Gen (LB.LinComb L (fun k => φ k ≫ F) ε)} (H : Carries L F w φ ε g g') {Z : Scheme.{0}} (r : Z ⟶ Y) {z : Z}
     {J : (Z ⟶ X) → L.ι} {J' : (Z ⟶ X') → L'.ι} (hJ : Good L z J) (hJ' : Good L' z J') :
@@ -41,6 +49,11 @@ theorem val_of_carries {w : LB.Iso L' (L.pull F)} {φ : K → (Y ⟶ X')} {ε : 
   refine ((carries_iff w φ ε g g').1 H Z r z _ _ (hJ.mem _ r) (hJ'.mem _ r)).trans (congrArg₂ (· * ·) ?_ rfl)
   simp only [pw, fac, Category.assoc]
 
+/- English proof (translation)
+Take `⟨t, ht, hv⟩` from `exists_up ((isGen_iff w).1 hw) hL hL' g hg`. Establish `hc` using `(carries_iff w φ ε g t).2 hv`. Establish `e : ∀ j, g'.s j = t.s j` using `fun j => unit_ext fun y hy => by choose J hJ using fun ψ : Y ⟶ X => exists_chart hL (ψ y) choose J' hJ' using fun ψ : Y ⟶ X' => exists_chart hL' (ψ y)`. Establish `v' : val g' (𝟙 Y) y J = val t (𝟙 Y) y J` using `(h y J J' hJ hJ').trans (val_of_carries hc (𝟙 Y) hJ hJ').symm`. Conclude with `(gen_trans hg' (𝟙 Y) y hy (Good.mem hJ _ (𝟙 Y))).trans ((congrArg _ v').trans (gen_trans ht (𝟙 Y) y hy (Good.mem hJ _ (𝟙 Y))).symm)`.
+
+Take `⟨s⟩` from `g'`. Take `⟨s'⟩` from `t`. Take `rfl : s = s'` from `funext e`. Conclude with `hc`.
+-/
 theorem carries_of_val {w : LB.Iso L' (L.pull F)} (hL' : L'.IsLB) (hL : L.IsLB) (hw : w.IsGen) {φ : K → (Y ⟶ X')}
     {ε : K → ℤ} {g : LB.Gen (LB.LinComb L' φ ε)} {g' : LB.Gen (LB.LinComb L (fun k => φ k ≫ F) ε)} (hg : g.IsGen)
     (hg' : g'.IsGen) (h : ∀ (y : Y) J J', Good L y J → Good L' y J' →
@@ -58,6 +71,9 @@ theorem carries_of_val {w : LB.Iso L' (L.pull F)} (hL' : L'.IsLB) (hL : L.IsLB) 
   obtain rfl : s = s' := funext e
   exact hc
 
+/- English proof (translation)
+Use `choose J hJ using fun ψ : Z ⟶ X => exists_chart hM (ψ z)`. Conclude with `⟨J, hJ⟩`.
+-/
 theorem exists_good' {M : LB X} (hM : M.IsLB) {Z : Scheme.{0}} (z : Z) : ∃ J, Good M z J := by
   choose J hJ using fun ψ : Z ⟶ X => exists_chart hM (ψ z)
   exact ⟨J, hJ⟩
@@ -67,6 +83,19 @@ end GlobalTheory.ChartCmp.CarryCalc
 namespace GlobalTheory.ChartCmp
 open CarryCalc
 
+/- English proof (translation)
+Introduce `X X' L' L F _ w hL' hL hw`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `Y K _ φ ε g hg`. Take `⟨t, ht, hv⟩` from `exists_up ((isGen_iff w).1 hw) hL hL' g hg`. Conclude with `⟨t, ht, (carries_iff w φ ε g t).2 hv⟩`.
+
+Introduce `Y K K' _ _ φ ε φ' ε' g h g' h' hs _ _ _ _ Hg Hh`. Establish `key : ∀ (y : Y) J J', Good L y J → Good L' y J' → (val g (𝟙 Y) y J' = val h (𝟙 Y) y J' ↔ val g' (𝟙 Y) y J = val h' (𝟙 Y) y J)` using `fun y J J' hJ hJ' => by`. Rewrite using `[val_of_carries Hg (𝟙 Y) hJ hJ', val_of_carries Hh (𝟙 Y) hJ hJ', DVR.prod_zpow_of_sameSum φ ε φ' ε' hs (fun ψ => fac w y J J' (𝟙 Y ≫ ψ)), mul_right_inj]`. Use `⟨fun C => corr_of_val hL fun y J hJ => ?_, fun C => corr_of_val hL' fun y J' hJ' => ?_⟩` and prove the remaining obligations. Take `⟨J', hJ'⟩` from `exists_good' hL' y`.
+
+Conclude with `(key y J J' hJ hJ').1 (val_corr hJ' C _)`. Take `⟨J, hJ⟩` from `exists_good' hL y`. Conclude with `(key y J J' hJ hJ').2 (val_corr hJ C _)`. Introduce `Y Z K _ φ ε g g' r g'' hg _ hg'' H C`. Use `carries_of_val hL' hL hw (DVR.pullGen_isGen _ _ _ _ hg r) hg'' fun y J J' hJ hJ' => ?_` and prove the remaining obligations.
+
+Rewrite using `[val_corr hJ C, val_pull hJ, val_pull hJ', val_of_carries H _ hJ hJ']`. Simplify using `only [Category.assoc]`. Introduce `Y K K' _ _ φ ε φ' ε' g h g' h' p hg hh _ _ hp Hg Hh C`. Use `carries_of_val hL' hL hw (DVR.mulGen_isGen _ _ _ _ _ _ _ hg hh) hp fun y J J' hJ hJ' => ?_` and prove the remaining obligations. Rewrite using `[val_corr hJ C, val_mul hJ, val_mul hJ', val_of_carries Hg _ hJ hJ', val_of_carries Hh _ hJ hJ', Fintype.prod_sum_type, _root_.mul_mul_mul_comm]`.
+
+Both sides reduce to the same expression. Introduce `Y K _ φ ε g g' H`. Use `(carries_iff w φ _ _ _).2 fun Z r z p q hp hq => ?_` and prove the remaining obligations. Use `(map_inv _ _).trans ((congrArg (·⁻¹) ((carries_iff w φ ε g g').1 H Z r z p q hp hq)).trans ?_)` and prove the remaining obligations. Use `(mul_inv _ _).trans (congrArg₂ (· * ·) ?_ (map_inv _ _).symm)` and prove the remaining obligations.
+
+Simplify using `only [pw, zpow_neg, Finset.prod_inv_distrib]`.
+-/
 theorem carries_calculus : ∀ (X X' : Scheme.{0}) (L' : LB X') (L : LB X) (F : X' ⟶ X) [Mono F] (w : LB.Iso L' (L.pull F)), L'.IsLB → L.IsLB → w.IsGen → (∀ (Y : Scheme.{0}) (K : Type) [Fintype K] (φ : K → (Y ⟶ X')) (ε : K → ℤ) (g : LB.Gen (LB.LinComb L' φ ε)), g.IsGen → ∃ g', g'.IsGen ∧ Carries L F w φ ε g g') ∧ (∀ (Y : Scheme.{0}) (K K' : Type) [Fintype K] [Fintype K'] (φ : K → (Y ⟶ X')) (ε : K → ℤ) (φ' : K' → (Y ⟶ X')) (ε' : K' → ℤ) (g : LB.Gen (LB.LinComb L' φ ε)) (h : LB.Gen (LB.LinComb L' φ' ε')) g' h', LB.SameSum φ ε φ' ε' → g.IsGen → h.IsGen → g'.IsGen → h'.IsGen → Carries L F w φ ε g g' → Carries L F w φ' ε' h h' → (LB.Gen.Corr L' _ _ _ _ g h ↔ LB.Gen.Corr L _ _ _ _ g' h')) ∧ (∀ (Y Z : Scheme.{0}) (K : Type) [Fintype K] (φ : K → (Y ⟶ X')) (ε : K → ℤ) (g : LB.Gen (LB.LinComb L' φ ε)) g' (r : Z ⟶ Y) (g'' : LB.Gen (LB.LinComb L (fun k => (r ≫ φ k) ≫ F) ε)), g.IsGen → g'.IsGen → g''.IsGen → Carries L F w φ ε g g' → LB.Gen.Corr L _ _ _ _ g'' (LB.pullGen L _ _ g' r) → Carries L F w (fun k => r ≫ φ k) ε (LB.pullGen L' φ ε g r) g'') ∧ (∀ (Y : Scheme.{0}) (K K' : Type) [Fintype K] [Fintype K'] (φ : K → (Y ⟶ X')) (ε : K → ℤ) (φ' : K' → (Y ⟶ X')) (ε' : K' → ℤ) (g : LB.Gen (LB.LinComb L' φ ε)) (h : LB.Gen (LB.LinComb L' φ' ε')) g' h' (p : LB.Gen (LB.LinComb L (fun k => Sum.elim φ φ' k ≫ F) (Sum.elim ε ε'))), g.IsGen → h.IsGen → g'.IsGen → h'.IsGen → p.IsGen → Carries L F w φ ε g g' → Carries L F w φ' ε' h h' → LB.Gen.Corr L _ _ _ _ p (LB.mulGen L _ _ _ _ g' h') → Carries L F w (Sum.elim φ φ') (Sum.elim ε ε') (LB.mulGen L' _ _ _ _ g h) p) ∧ (∀ (Y : Scheme.{0}) (K : Type) [Fintype K] (φ : K → (Y ⟶ X')) (ε : K → ℤ) (g : LB.Gen (LB.LinComb L' φ ε)) g', Carries L F w φ ε g g' → Carries L F w φ (fun k => - ε k) (LB.invGen L' φ ε g) (LB.invGen L _ ε g')) := by
   intro X X' L' L F _ w hL' hL hw
   refine ⟨?_, ?_, ?_, ?_, ?_⟩

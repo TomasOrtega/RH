@@ -16,6 +16,13 @@ open GlobalTheory.RealInd.Stages Finset GlobalTheory.FlagMeas Formalism.REAL
 
 namespace GlobalTheory.RealInd.Stages
 
+/- English proof (translation)
+Introduce `l`. Proceed by induction on `l using Fin.lastCases with`. Consider the case `last => rw [hl]`. Conclude with `hlast`. Consider the case `cast l`.
+
+Introduce `y hy`. Take `⟨h1, h2⟩` from `(hβ l (β l)).1 rfl`. Establish `hy' : y ∈ W (β l).succ`. Rewrite using `[← hp]`. Conclude with `hW' h2.le hy`.
+
+Establish `hs : g *ᵥ y - c (β l) • y ∈ W' l.castSucc` using `hW' h1 ((hp _).symm ▸ hstep _ y hy')`. Use `(W' _).add_mem hs ((W' _).smul_mem (c (β l)) hy)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem keeps_of_refine {n a b : ℕ} {W : Flag n a} {W' : Flag n b} {β : Fin b → Fin a}
     {p : Fin (a + 1) → Fin (b + 1)} (hW' : Monotone W') (hp : ∀ i, W' (p i) = W i)
     (hl : W' (Fin.last b) = W (Fin.last a))
@@ -36,6 +43,17 @@ theorem keeps_of_refine {n a b : ℕ} {W : Flag n a} {W' : Flag n b} {β : Fin b
     have := (W' _).add_mem hs ((W' _).smul_mem (c (β l)) hy)
     rwa [sub_add_cancel] at this
 
+/- English proof (translation)
+Establish `k1` using `keeps_of_refine hW'.2.1 hp hl hβ ht.2.1 (fun y hy => (ht.1 _ y hy).1)`. Establish `ht'` using `ht.opp hW`. Establish `hoM : Monotone (opp ε W')` using `fun _ _ h => Submodule.map_mono (hW'.2.1 h)`. Establish `k2` using `keeps_of_refine (W := opp ε W) (W' := opp ε W') hoM (fun i => congrArg (fun V => V.map (Jm ε).mulVecLin) (hp i)) (congrArg (fun V => V.map (Jm ε).mulVecLin) hl) hβ ht'.2.1 (fun y hy => (ht'.1 _ y hy).1)`. Use `⟨fun l y hy => ⟨k1 l y hy, ?_⟩, fun l y hy => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hJ : (uMat t)ᴴ = Jm ε * uMat t⁻¹ * Jm ε`. Rewrite using `[mul_assoc, inv_mul_Jm, ← mul_assoc, Jm_mul_self, one_mul]`. Establish `hi` using `GlobalTheory.FlagLeviGroup.inv_keeps (GlobalTheory.FlagLeviGroup.uMat_inv_mul t) _ (k2 l)`. Take `⟨z, hz, e⟩` from `hi _ ⟨y, hy, rfl⟩`. Rewrite `e` using `[mulVecLin_apply, mulVecLin_apply]`.
+
+Rewrite using `[hJ, ← mulVec_mulVec, ← mulVec_mulVec, ← e, mulVec_mulVec, Jm_mul_self, one_mulVec]`. Conclude with `hz`. Take `⟨h1, h2⟩` from `(hβ l (β l)).1 rfl`. Establish `hy' : y ∈ W (β l).succ`. Rewrite using `[← hp]`.
+
+Conclude with `hW'.2.1 (Fin.castSucc_lt_iff_succ_le.1 h2) hy`. Establish `hs` using `ht.2.1 (β l) y hy'`. Rewrite `hs` using `[← hp]`. Conclude with `hW'.2.1 h1 hs`. Rewrite using `[hl]`.
+
+Conclude with `ht.2.2`.
+-/
 theorem isSplit_of_refine {n a b : ℕ} {ε : Fin n → Bool} {j : Fin a → ℕ} {W : Flag n a} {W' : Flag n b}
     {β : Fin b → Fin a} {p : Fin (a + 1) → Fin (b + 1)} (hW : IsIsoFlag ε j W)
     (hW' : IsIsoFlag ε (fun _ => 1) W') (hp : ∀ i, W' (p i) = W i) (hl : W' (Fin.last b) = W (Fin.last a))

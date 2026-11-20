@@ -14,6 +14,9 @@ def tau (w : E) : E ⊗[F] Af F →ₗ[F] Af F :=
   (TensorProduct.lid F (Af F)).toLinearMap ∘ₗ
     TensorProduct.map ((Algebra.trace F E) ∘ₗ LinearMap.mulLeft F w) LinearMap.id
 
+/- English proof (translation)
+Use `first`. Consider the case `simp [tau]`. Consider the case `rfl`.
+-/
 lemma tau_tmul (w e : E) (a : Af F) : tau w (e ⊗ₜ[F] a) = Algebra.trace F E (w * e) • a := by
   first
     | simp [tau]
@@ -23,6 +26,9 @@ variable (F E) in
 
 def dualSet : Set E := {w | ∀ a : 𝓞 E, Algebra.trace F E (w * (a : E)) ∈ (algebraMap (𝓞 F) F).range}
 
+/- English proof (translation)
+Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, tau_tmul, tau_tmul, mul_assoc]`. Consider the case `add x y hx hy => rw [mul_add, map_add, map_add, hx, hy]`.
+-/
 lemma tau_mul_left (w a : E) (r : E ⊗[F] Af F) :
     tau w ((a ⊗ₜ[F] (1 : Af F)) * r) = tau (w * a) r := by
   induction r using TensorProduct.induction_on with
@@ -31,6 +37,9 @@ lemma tau_mul_left (w a : E) (r : E ⊗[F] Af F) :
     rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul, tau_tmul, tau_tmul, mul_assoc]
   | add x y hx hy => rw [mul_add, map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, tau_tmul, tau_tmul, mul_smul_comm]`. Consider the case `add x y hx hy => rw [mul_add, map_add, map_add, hx, hy, mul_add]`.
+-/
 lemma tau_mul_right (w : E) (b : Af F) (r : E ⊗[F] Af F) :
     tau w (((1 : E) ⊗ₜ[F] b) * r) = b * tau w r := by
   induction r using TensorProduct.induction_on with
@@ -39,11 +48,21 @@ lemma tau_mul_right (w : E) (b : Af F) (r : E ⊗[F] Af F) :
     rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul, tau_tmul, tau_tmul, mul_smul_comm]
   | add x y hx hy => rw [mul_add, map_add, map_add, hx, hy, mul_add]
 
+/- English proof (translation)
+Use `show tau w (e ⊗ₜ[F] (1 : Af F)) = _`. Rewrite using `[tau_tmul, Algebra.algebraMap_eq_smul_one]`.
+-/
 lemma tau_incl (w e : E) :
     tau w (Formalism.UG.inclE (F := F) (Af F) e) = algebraMap F (Af F) (Algebra.trace F E (w * e)) := by
   show tau w (e ⊗ₜ[F] (1 : Af F)) = _
   rw [tau_tmul, Algebra.algebraMap_eq_smul_one]
 
+/- English proof (translation)
+Introduce `v`. Establish `h1 : Valued.v (((algebraMap (𝓞 F) F x : F)) : v.adicCompletion F) ≤ 1` using `by first`. Consider the case `rw [IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation'] first`. Consider the case `exact v.valuation_le_one x`. Consider the case `exact v.valuation_le_one F x`.
+
+Consider the case `rw [IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation] first`. Consider the case `exact v.valuation_le_one x`. Consider the case `exact v.valuation_le_one F x`. Use `first`. Consider the case `exact h1`.
+
+Consider the case `exact (IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).mpr h1`.
+-/
 lemma algebraMap_mem_intAd (x : 𝓞 F) : algebraMap F (Af F) (algebraMap (𝓞 F) F x) ∈ Formalism.UG.intAd F := by
   intro v
   have h1 : Valued.v (((algebraMap (𝓞 F) F x : F)) : v.adicCompletion F) ≤ 1 := by
@@ -60,6 +79,11 @@ lemma algebraMap_mem_intAd (x : 𝓞 F) : algebraMap F (Af F) (algebraMap (𝓞 
     | exact h1
     | exact (IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).mpr h1
 
+/- English proof (translation)
+Use `IsDedekindDomain.HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 F) (K := F) f ?_` and prove the remaining obligations. Introduce `v`. Establish `hv : Valued.v ((f : F) : v.adicCompletion F) ≤ 1` using `h v`. Use `first`. Consider the case `rwa [IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation'] at hv`.
+
+Consider the case `rwa [IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation] at hv`.
+-/
 lemma of_algebraMap_mem_intAd (f : F) (h : algebraMap F (Af F) f ∈ Formalism.UG.intAd F) :
     f ∈ (algebraMap (𝓞 F) F).range := by
   refine IsDedekindDomain.HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 F) (K := F) f ?_
@@ -73,6 +97,11 @@ def tSet (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
     Set (E ⊗[F] Af F) :=
   {r | ∀ w ∈ dualSet F E, tau w r ∈ Formalism.UG.intAd F}
 
+/- English proof (translation)
+Use `show ∀ w ∈ dualSet F E, tau w ((1 : E) ⊗ₜ[F] (1 : Af F)) ∈ Formalism.UG.intAd F`. Introduce `w hw`. Establish `hw1` using `(show ∀ a : 𝓞 E, Algebra.trace F E (w * (a : E)) ∈ (algebraMap (𝓞 F) F).range from hw) 1`. Take `⟨x, hx⟩` from `hw1`. Rewrite using `[tau_tmul, ← Algebra.algebraMap_eq_smul_one]`.
+
+Establish `hx' : Algebra.trace F E (w * (1 : E)) = algebraMap (𝓞 F) F x`. Rewrite using `[hx]`. Both sides reduce to the same expression. Rewrite using `[hx']`. Conclude with `algebraMap_mem_intAd x`.
+-/
 lemma one_mem_tSet : (1 : E ⊗[F] Af F) ∈ tSet F E := by
   show ∀ w ∈ dualSet F E, tau w ((1 : E) ⊗ₜ[F] (1 : Af F)) ∈ Formalism.UG.intAd F
   intro w hw
@@ -85,6 +114,9 @@ lemma one_mem_tSet : (1 : E ⊗[F] Af F) ∈ tSet F E := by
   rw [hx']
   exact algebraMap_mem_intAd x
 
+/- English proof (translation)
+Use `show ∀ b : 𝓞 E, Algebra.trace F E (w * algebraMap (𝓞 E) E a * (b : E)) ∈ (algebraMap (𝓞 F) F).range`. Introduce `b`. Establish `h` using `(show ∀ b : 𝓞 E, Algebra.trace F E (w * (b : E)) ∈ (algebraMap (𝓞 F) F).range from hw) (a * b)`. Rewrite using `[mul_assoc]`. Conclude with `h`.
+-/
 private theorem mul_algebraMap_mem_dualSet {w : E} (hw : w ∈ dualSet F E) (a : 𝓞 E) :
     w * algebraMap (𝓞 E) E a ∈ dualSet F E := by
   show ∀ b : 𝓞 E, Algebra.trace F E (w * algebraMap (𝓞 E) E a * (b : E)) ∈ (algebraMap (𝓞 F) F).range
@@ -93,6 +125,25 @@ private theorem mul_algebraMap_mem_dualSet {w : E} (hw : w ∈ dualSet F E) (a :
   rw [mul_assoc]
   exact h
 
+/- English proof (translation)
+Establish `hr' : r ∈ Subring.closure (Set.range (fun x : Formalism.UG.intOE E => (x : E) ⊗ₜ[F] (1 : Af F)) ∪ Set.range (fun y : Formalism.UG.intAd F => (1 : E) ⊗ₜ[F] (y : Af F)))` using `hr`. Use `clear hr`. It suffices to establish `h : ∀ s ∈ tSet F E, r * s ∈ tSet F E by`. Establish `h1` using `h 1 one_mem_tSet`. Rewrite `h1` using `[mul_one]`. Then use the resulting hypothesis.
+
+Proceed by induction on `hr' using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨⟨e, he⟩, rfl⟩ | ⟨⟨b, hb⟩, rfl⟩` into its components or cases. Take `⟨a, rfl⟩` from `he`. Introduce `s hs`.
+
+Use `show ∀ w ∈ dualSet F E, tau w _ ∈ Formalism.UG.intAd F`. Introduce `w hw`. Rewrite using `[tau_mul_left]`. Conclude with `(show ∀ w ∈ dualSet F E, tau w s ∈ Formalism.UG.intAd F from hs) _ (mul_algebraMap_mem_dualSet hw a)`. Introduce `s hs show ∀ w ∈ dualSet F E, tau w _ ∈ Formalism.UG.intAd F`.
+
+Introduce `w hw`. Rewrite using `[tau_mul_right]`. Conclude with `mul_mem hb ((show ∀ w ∈ dualSet F E, tau w s ∈ Formalism.UG.intAd F from hs) w hw)`. Consider the case `zero`. Introduce `s _`.
+
+Use `show ∀ w ∈ dualSet F E, tau w _ ∈ Formalism.UG.intAd F`. Introduce `w _`. Rewrite using `[zero_mul, map_zero]`. Conclude with `zero_mem _`. Consider the case `one`.
+
+Introduce `s hs`. Rewrite using `[one_mul]` and apply the resulting hypothesis. Consider the case `add x y _ _ hx hy`. Introduce `s hs`. Use `show ∀ w ∈ dualSet F E, tau w _ ∈ Formalism.UG.intAd F`.
+
+Introduce `w hw`. Rewrite using `[add_mul, map_add]`. Conclude with `add_mem ((show ∀ w ∈ dualSet F E, tau w (x * s) ∈ Formalism.UG.intAd F from hx s hs) w hw) ((show ∀ w ∈ dualSet F E, tau w (y * s) ∈ Formalism.UG.intAd F from hy s hs) w hw)`. Consider the case `neg x _ hx`. Introduce `s hs`.
+
+Use `show ∀ w ∈ dualSet F E, tau w _ ∈ Formalism.UG.intAd F`. Introduce `w hw`. Rewrite using `[neg_mul, map_neg]`. Conclude with `neg_mem ((show ∀ w ∈ dualSet F E, tau w (x * s) ∈ Formalism.UG.intAd F from hx s hs) w hw)`. Consider the case `mul x y _ _ hx hy`.
+
+Introduce `s hs`. Rewrite using `[mul_assoc]`. Conclude with `hx _ (hy s hs)`.
+-/
 lemma mem_tSet (r : E ⊗[F] Af F) (hr : r ∈ IntAf F E) : r ∈ tSet F E := by
   have hr' : r ∈ Subring.closure (Set.range (fun x : Formalism.UG.intOE E => (x : E) ⊗ₜ[F] (1 : Af F)) ∪
       Set.range (fun y : Formalism.UG.intAd F => (1 : E) ⊗ₜ[F] (y : Af F))) := hr
@@ -144,6 +195,17 @@ lemma mem_tSet (r : E ⊗[F] Af F) (hr : r ∈ IntAf F E) : r ∈ tSet F E := by
 end DictInter
 
 open DictInter in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ e he`. Establish `ht` using `mem_tSet (F := F) (E := E) _ he`. Establish `key : ∀ w ∈ dualSet F E, Algebra.trace F E (w * e) ∈ (algebraMap (𝓞 F) F).range`. Introduce `w hw`. Apply `of_algebraMap_mem_intAd` to reduce the goal to its premises.
+
+Rewrite using `[← tau_incl]`. Conclude with `(show ∀ w ∈ dualSet F E, tau w (Formalism.UG.inclE (F := F) (Af F) e) ∈ Formalism.UG.intAd F from ht) w hw`. Establish `h1 : (1 : FractionalIdeal (𝓞 E)⁰ E) ≠ 0` using `one_ne_zero`. Establish `hd : FractionalIdeal.dual (𝓞 F) F (1 : FractionalIdeal (𝓞 E)⁰ E) ≠ 0` using `by first`. Consider the case `exact FractionalIdeal.dual_ne_zero (𝓞 F) F h1`.
+
+Consider the case `exact FractionalIdeal.dual_ne_zero h1`. Establish `hmem : e ∈ FractionalIdeal.dual (𝓞 F) F (FractionalIdeal.dual (𝓞 F) F (1 : FractionalIdeal (𝓞 E)⁰ E))`. Rewrite using `[FractionalIdeal.mem_dual hd]`. Introduce `a ha`. Rewrite `ha` using `[FractionalIdeal.mem_dual h1]`.
+
+Rewrite using `[Algebra.traceForm_apply, mul_comm]`. Apply `key` to reduce the goal to its premises. Use `show ∀ b : 𝓞 E, Algebra.trace F E (a * (b : E)) ∈ (algebraMap (𝓞 F) F).range`. Introduce `b`. Establish `hb` using `ha (b : E) ((FractionalIdeal.mem_one_iff _).mpr ⟨b, rfl⟩)`.
+
+Rewrite `hb` using `[Algebra.traceForm_apply]`. Then use the resulting hypothesis. Rewrite `hmem` using `[FractionalIdeal.dual_dual]`. Take `⟨x, hx⟩` from `(FractionalIdeal.mem_one_iff _).mp hmem`. Conclude with `⟨x, hx⟩`.
+-/
 theorem dual_intersection : DInter := by
   intro F E _ _ _ _ _ e he
   have ht := mem_tSet (F := F) (E := E) _ he

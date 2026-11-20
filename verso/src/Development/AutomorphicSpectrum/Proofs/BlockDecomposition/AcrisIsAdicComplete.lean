@@ -5,6 +5,9 @@ open CategoryTheory Limits AlgebraicGeometry TensorProduct GroundTheory.PAdicHod
 
 namespace GlobalTheory.CompanionTheory.ACrisAdic
 
+/- English proof (translation)
+Introduce `l _`. Conclude with `ACris.isAdicComplete ℂ_[l] l`.
+-/
 theorem acris_isAdicComplete :
     ∀ {l : ℕ} [Fact l.Prime], IsAdicComplete (Ideal.span {(l : Acris l)}) (Acris l) := by
   intro l _

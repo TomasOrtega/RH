@@ -15,12 +15,18 @@ section Generic
 
 variable {W : Type*} [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', Module.End.mul_apply, ih, map_smul, h, smul_smul, pow_succ]`.
+-/
 theorem pm_pow_eig (A : Module.End ℂ W) {z : ℂ} {f : W} (h : A f = z • f) (k : ℕ) :
     (A ^ k) f = z ^ k • f := by
   induction k with
   | zero => simp
   | succ k ih => rw [pow_succ', Module.End.mul_apply, ih, map_smul, h, smul_smul, pow_succ]
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `hQ1 _ (hfb b).1 (by rw [← h]; exact (hfb b).2)`. Conclude with `hQ0 _ (hfb b).1 _ h (hfb b).2`.
+-/
 theorem pm_proj_decomp (A Q : Module.End ℂ W) (T : Submodule ℂ W) (B : Finset ℝ) (z : ℂ)
     (hQ1 : ∀ f ∈ T, A f = z • f → Q f = f) (hQ0 : ∀ f ∈ T, ∀ z' : ℂ, z' ≠ z → A f = z' • f → Q f = 0)
     (fb : ℝ → W) (hfb : ∀ b, fb b ∈ T ∧ A (fb b) = ((b : ℝ) : ℂ) • fb b) :
@@ -31,6 +37,13 @@ theorem pm_proj_decomp (A Q : Module.End ℂ W) (T : Submodule ℂ W) (B : Finse
   · exact hQ1 _ (hfb b).1 (by rw [← h]; exact (hfb b).2)
   · exact hQ0 _ (hfb b).1 _ h (hfb b).2
 
+/- English proof (translation)
+Establish `hPb : ∀ fb : ℝ → W, (∀ b, fb b ∈ T ∧ A (fb b) = ((b : ℝ) : ℂ) • fb b) → ∀ b ∈ B, P b (∑ b' ∈ B, fb b') = fb b`. Introduce `fb hfb b hb`. Rewrite using `[pm_proj_decomp A (P b) T B _ (hP1 b) (hP0 b) fb hfb]`. Simplify using `[Complex.ofReal_inj, hb]`. Use `⟨fun f hf k => ?_, fun Q z hQ1 hQ0 f hf => ?_⟩` and prove the remaining obligations.
+
+Take `⟨fb, hfb, rfl⟩` from `hdec f hf`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun b hb => ?_` and prove the remaining obligations. Rewrite using `[hPb fb hfb b hb, pm_pow_eig A (hfb b).2]`. Take `⟨fb, hfb, rfl⟩` from `hdec f hf`.
+
+Rewrite using `[pm_proj_decomp A Q T B z hQ1 hQ0 fb hfb]`. Use `Finset.sum_congr rfl fun b hb => ?_` and prove the remaining obligations. Rewrite using `[hPb fb hfb b hb]`.
+-/
 theorem pm_agree (A : Module.End ℂ W) (T : Submodule ℂ W) (B : Finset ℝ)
     (hdec : ∀ f ∈ T, ∃ fb : ℝ → W, (∀ b, fb b ∈ T ∧ A (fb b) = ((b : ℝ) : ℂ) • fb b) ∧ f = ∑ b ∈ B, fb b)
     (P : ℝ → Module.End ℂ W)
@@ -57,11 +70,17 @@ theorem pm_agree (A : Module.End ℂ W) (T : Submodule ℂ W) (B : Finset ℝ)
 
 end Generic
 
+/- English proof (translation)
+Use `(Submodule.mem_pi).2 fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : i = c <;> simp [h, hx]`.
+-/
 theorem pm_single_mem {M : Type*} [AddCommGroup M] [Module ℂ M] (S : Submodule ℂ M) {x : M} (hx : x ∈ S)
     (c : Fin n) : Pi.single c x ∈ tensSub (n := n) S := by
   refine (Submodule.mem_pi).2 fun i _ => ?_
   by_cases h : i = c <;> simp [h, hx]
 
+/- English proof (translation)
+Simplify using `only [ptr_apply, hQ _ (pm_single_mem S hx _), Finset.sum_apply, Pi.smul_apply, Finset.smul_sum]`. Conclude with `Finset.sum_comm`.
+-/
 theorem pm_ptr {M : Type*} [AddCommGroup M] [Module ℂ M] (S : Submodule ℂ M)
     (Q : Module.End ℂ (Fin n → M)) (R : ℝ → Module.End ℂ (Fin n → M)) (B : Finset ℝ) (g : ℝ → ℂ)
     (hQ : ∀ f ∈ tensSub S, Q f = ∑ b ∈ B, g b • R b f) {x : M} (hx : x ∈ S) :
@@ -69,17 +88,26 @@ theorem pm_ptr {M : Type*} [AddCommGroup M] [Module ℂ M] (S : Submodule ℂ M)
   simp only [ptr_apply, hQ _ (pm_single_mem S hx _), Finset.sum_apply, Pi.smul_apply, Finset.smul_sum]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Consider the cases of `dual`. Conclude with `resid_poleV lam s`. Conclude with `resid_poleVd lam s`.
+-/
 theorem pm_resid (dual : Bool) (lam : Fin n → ℝ) (s : Fin n) :
     resid (poleF dual lam) s = ((ratioF dual lam s : ℝ) : ℂ) := by
   cases dual
   · exact resid_poleV lam s
   · exact resid_poleVd lam s
 
+/- English proof (translation)
+Consider the cases of `dual`. Conclude with `poleV_injective hl.injective`. Conclude with `poleVd_injective hl.injective`.
+-/
 theorem pm_pole_inj (dual : Bool) {lam : Fin n → ℝ} (hl : StrictAnti lam) : Function.Injective (poleF dual lam) := by
   cases dual
   · exact poleV_injective hl.injective
   · exact poleVd_injective hl.injective
 
+/- English proof (translation)
+Consider the cases of `dual`. Conclude with `ptr_eeV_pow_char hS k x hx`. Conclude with `ptr_eeVd_pow_char hS k x hx`.
+-/
 theorem pm_char (dual : Bool) {M : Type*} [AddCommGroup M] [Module ℂ M] {E : Fin n → Fin n → Module.End ℂ M}
     {lam : Fin n → ℝ} {S : Submodule ℂ M} (hS : HasGelfandChar E lam S) (k : ℕ) (x : M) (hx : x ∈ S) :
     ptr (eeF dual E ^ k) x = PowerSeries.coeff (k + 1) (resSeries (poleF dual lam)) • x := by
@@ -87,6 +115,21 @@ theorem pm_char (dual : Bool) {M : Type*} [AddCommGroup M] [Module ℂ M] {E : F
   · exact ptr_eeV_pow_char hS k x hx
   · exact ptr_eeVd_pow_char hS k x hx
 
+/- English proof (translation)
+Take `⟨B, hdec, hev⟩` from `ee_decomp dual hσ hD hgap hV hc hVK hW`. Establish `hPex` using `fun b : ℝ => eigenProj_exists dual hσ hD hgap hV hc hVK hW ((b : ℝ) : ℂ)`. Use `choose P hPG hPP hPz hP1 hP0 using hPex`. Establish `hsc` using `fun b => ptr_scalar dual hσ hD hgap hV hc hVK (hPG b)`. Use `choose c hcb using hsc`.
+
+Establish `hPB` using `fun b => eigenProj_formB dual hσ hD hgap hV hc hVK hW _ (hPG b).1 (hPz b) (hP1 b) (hP0 b)`. Establish `htr` using `fun b => trace_nonneg dual hσ hD hsm hgap hV hc hVK hW (hPG b) (hPP b) (hPB b) (hPz b) (hcb b)`. Take `⟨hpow, hagr⟩` from `pm_agree (eeF dual E) (tensSub (genSub E V)) B hdec P hP1 hP0`. Establish `hQ : ∀ (Q : Module.End ℂ (Fin n → D)) (z : ℂ), (∀ f ∈ tensSub (genSub E V), eeF dual E f = z • f → Q f = f) → (∀ f ∈ tensSub (genSub E V), ∀ z' : ℂ, z' ≠ z → eeF dual E f = z' • f → Q f = 0) → ∀ x ∈ genSub E V, ptr Q x = (∑ b ∈ B, if ((b : ℝ) : ℂ) = z then c b else 0) • x`. Introduce `Q z hQ1 hQ0 x hx`.
+
+Rewrite using `[pm_ptr (genSub E V) Q P B (fun b => if ((b : ℝ) : ℂ) = z then 1 else 0) (fun f hf => by`. Rewrite using `[hagr Q z hQ1 hQ0 f hf]`. Apply the tactic sequence `exact sum_congr rfl fun b _ => by split_ifs <;> simp) hx, Finset.sum_smul]`. Use `sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hcb b x hx]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `hVle : V ≤ genSub E V`. Unfold `genSub`. Conclude with `le_sInf fun T hT => hT.1`. Take `⟨x₀, hx₀V, hx₀0, -⟩` from `hV.2.2.2`.
+
+Establish `hx₀ : x₀ ∈ genSub E V` using `hVle hx₀V`. Establish `hmom : ∀ k : ℕ, ∑ i : B, c i * ((i : ℝ) : ℂ) ^ k = ∑ s, resid (poleF dual lam) s * poleF dual lam s ^ k`. Introduce `k`. Rewrite using `[Finset.sum_coe_sort B (fun b => c b * ((b : ℝ) : ℂ) ^ k), ← resSeries_coeff_succ (pm_pole_inj dual hgap.1) k]`. Apply `smul_left_injective ℂ hx₀0` to reduce the goal to its premises.
+
+Use `beta_reduce`. Rewrite using `[← pm_char dual hG k x₀ hx₀, pm_ptr (genSub E V) _ P B (fun b => ((b : ℝ) : ℂ) ^ k) (fun f hf => hpow f hf k) hx₀, Finset.sum_smul]`. Use `sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hcb b x₀ hx₀, smul_smul, mul_comm (c b)]`. Use `⟨B, c, P, hev, fun b => (hPG b).1, hPz, hP1, hcb, fun b h0 => (htr b).2.2 h0, hQ, fun p => ?_, x₀, hx₀, hx₀0⟩` and prove the remaining obligations.
+
+Establish `hf` using `moment_fibre (fun i : B => ((i : ℝ) : ℂ)) (fun i => c i) (poleF dual lam) (resid (poleF dual lam)) hmom p`. Rewrite `hf` using `[Finset.sum_filter, Finset.sum_coe_sort B (fun b => if ((b : ℝ) : ℂ) = p then c b else 0)]`. Rewrite using `[hf]`. Conclude with `sum_congr rfl fun s _ => pm_resid dual lam s`.
+-/
 theorem pm_core (dual : Bool) {lam : Fin n → ℝ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {ε : Fin n → Bool}
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {D : Submodule ℂ H} {E : Fin n → Fin n → Module.End ℂ D}
     (hσ : IsURepOn (UJset ε) σ) (hD : IsDerivedOn ε σ D E) (hsm : ∀ v : D, IsSmoothVecU ε σ v)
@@ -150,11 +193,17 @@ theorem pm_core (dual : Bool) {lam : Fin n → ℝ} {H : Type*} [NormedAddCommGr
   rw [hf]
   exact sum_congr rfl fun s _ => pm_resid dual lam s
 
+/- English proof (translation)
+Use extensionality with `t`. Simplify using `[(pm_pole_inj dual hl).eq_iff]`.
+-/
 theorem pm_filter_pole (dual : Bool) {lam : Fin n → ℝ} (hl : StrictAnti lam) (s : Fin n) :
     univ.filter (fun s' => poleF dual lam s' = poleF dual lam s) = {s} := by
   ext t
   simp [(pm_pole_inj dual hl).eq_iff]
 
+/- English proof (translation)
+Simplify using `[Complex.ofReal_inj, hb]`.
+-/
 theorem pm_sum_single {B : Finset ℝ} {b : ℝ} (hb : b ∈ B) (c : ℝ → ℂ) :
     (∑ b' ∈ B, if ((b' : ℝ) : ℂ) = ((b : ℝ) : ℂ) then c b' else 0) = c b := by
   simp [Complex.ofReal_inj, hb]

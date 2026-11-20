@@ -9,5 +9,8 @@ open GlobalTheory.SeeSaw (idV dI FI)
 open ValuativeRel
 open GlobalTheory.Core.Mi.LatMatch
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Core.Mi.LatMatch.match_down_flag | exact GlobalTheory.Core.Mi.LatMatch.match_down_flag | (intros; apply GlobalTheory.Core.Mi.LatMatch.match_down_flag <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.primitive_character_matches_lines_down_flag : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (L L' : Lat S) (v : GlobalTheory.FinPl.Pl D) (c : AE D), IsSelfDualC S L → PrimAt ψ d L v → PrimAt ψ d L' v → NormOneAt v c → ∀ i j : Fin ρ, j.1 = i.1 + 1 → (∀ a ∈ idAt D (· = v), (colMul d.jX j a ∈ latV S L (· = v) ↔ colMul d.jX j (c * a) ∈ latV S L' (· = v))) → ∀ a ∈ idAt D (· = v), (colMul d.jX i a ∈ latV S L (· = v) ↔ colMul d.jX i (c * a) ∈ latV S L' (· = v)) := by
   first | exact @GlobalTheory.Core.Mi.LatMatch.match_down_flag | exact GlobalTheory.Core.Mi.LatMatch.match_down_flag | (intros; apply GlobalTheory.Core.Mi.LatMatch.match_down_flag <;> assumption)

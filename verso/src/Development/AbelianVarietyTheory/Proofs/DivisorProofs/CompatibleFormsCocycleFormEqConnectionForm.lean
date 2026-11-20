@@ -12,12 +12,18 @@ namespace GlobalTheory.ConnCocycle
 
 attribute [local instance] GlobalTheory.Cris.opModule GlobalTheory.Cris.isCentralScalar_kaehler GlobalTheory.Cris.isScalarTower_kaehler
 
+/- English proof (translation)
+Use `le_bot_iff.1 (Ideal.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨n, a, ha, rfl⟩`. Rewrite using `[Ideal.mem_bot.1 ha]`. Simplify using `[dpow_eval_zero]`.
+-/
 theorem divPowerCompatDeRhamRelIdeal_zero_dividedPowers (R B : Type) [CommRing R] [CommRing B] [Algebra R B] : rel R (dp0 B) = ⊥ := by
   refine le_bot_iff.1 (Ideal.span_le.2 ?_)
   rintro _ ⟨n, a, ha, rfl⟩
   rw [Ideal.mem_bot.1 ha]
   simp [dpow_eval_zero]
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun c ↦ c.2.1 T T' φ) (AddMonoidHom.mem_ker.1 k.2)`. Express the relevant statement in the definitionally equal form `k.1.2 T' - _ - _ = 0 at h`. Rewrite `h` using `[sub_sub, sub_eq_zero]`. Conclude with `h`.
+-/
 theorem cocyc {R : Type} [CommRing R] {X : Scheme.{0}} {s : X ⟶ Sp R} (k : (KK (dp0 R) s).Z1)
     {T T' : Thick (dp0 R) s} (φ : T ⟶ T') :
     k.1.2 T' = km1 (SemiHom.of_algHom φ.φ) φ.dp (k.1.2 T) + kd0 R T'.δ (k.1.1 T T' φ) := by
@@ -33,8 +39,14 @@ def sndK : (diagExt R B).C →+ K1 R (dp0 B) :=
   AddMonoidHom.mk' (fun c ↦ Submodule.Quotient.mk (TrivSqZeroExt.snd c)) fun a b ↦ by
     rw [TrivSqZeroExt.snd_add, Submodule.Quotient.mk_add]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sndK_apply (c : (diagExt R B).C) : sndK R B c = Submodule.Quotient.mk (TrivSqZeroExt.snd c) := rfl
 
+/- English proof (translation)
+Use `show Submodule.Quotient.mk (x * y).snd = x.fst • Submodule.Quotient.mk (p := N1 R (dp0 B)) y.snd + y.fst • Submodule.Quotient.mk (p := N1 R (dp0 B)) x.snd`. Rewrite using `[← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_add]`. Use `congr 1`.
+-/
 theorem sndK_mul (x y : (diagExt R B).C) :
     sndK R B (x * y) = (diagExt R B).π x • sndK R B y + (diagExt R B).π y • sndK R B x := by
   show Submodule.Quotient.mk (x * y).snd = x.fst • Submodule.Quotient.mk (p := N1 R (dp0 B)) y.snd +
@@ -42,9 +54,15 @@ theorem sndK_mul (x y : (diagExt R B).C) :
   rw [← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_add]
   congr 1
 
+/- English proof (translation)
+Rewrite using `[sndK_apply, TrivSqZeroExt.algebraMap_eq_inl', TrivSqZeroExt.snd_inl, Submodule.Quotient.mk_zero]`.
+-/
 theorem sndK_alg (r : R) : sndK R B (algebraMap R (diagExt R B).C r) = 0 := by
   rw [sndK_apply, TrivSqZeroExt.algebraMap_eq_inl', TrivSqZeroExt.snd_inl, Submodule.Quotient.mk_zero]
 
+/- English proof (translation)
+Break down `n with _ | m` into its components or cases. Rewrite using `[(divided₂ (diagExt R B).sq).dpow_one ha, (divided₂ (diagExt R B).sq).dpow_zero ha, map_one, one_smul]`. Establish `h0 : (diagExt R B).π ((divided₂ (diagExt R B).sq).dpow (m + 1) a) = 0` using `(divided₂ (diagExt R B).sq).dpow_mem (Nat.succ_ne_zero m) ha`. Rewrite using `[squareZeroDividedPowers_dpow _ (by omega), map_zero, h0, zero_smul]`.
+-/
 theorem sndK_dpow (n : ℕ) (a : (diagExt R B).C) (ha : a ∈ RingHom.ker ((diagExt R B).π : (diagExt R B).C →+* B)) :
     sndK R B ((divided₂ (diagExt R B).sq).dpow (n + 1) a) =
       (diagExt R B).π ((divided₂ (diagExt R B).sq).dpow n a) • sndK R B a := by
@@ -59,6 +77,11 @@ end
 section
 variable {R B : Type} [CommRing R] [CommRing B] [Algebra R B]
 
+/- English proof (translation)
+Proceed by induction on `κ using ind1 with`. Consider the case `h b c`. Rewrite using `[SemiHom.oneFormMap_smul_semilinear, SemiHom.m1_D, map_smul, Algebra.smul_def, hmul, halg, hD, hg, map_smul, Algebra.smul_def]`. Use `congr 2`. Conclude with `hα b`.
+
+Consider the case `h0 => simp`. Consider the case `ha x y hx hy => rw [map_add, map_add, map_add, hx, hy, map_add, map_add]`.
+-/
 theorem deRhamAlgebraMap_sends_sectionOneForm (ρ : DR R (diagExt R B).C →+ DR R B) (hmul : ∀ x y, ρ (x * y) = ρ x * ρ y)
     (halg : ∀ c, ρ (algebraMap _ (DR R (diagExt R B).C) c) = algebraMap B (DR R B) ((diagExt R B).π c))
     (hD : ∀ c, ρ (ι1 (D R (diagExt R B).C c)) = ι1 (TrivSqZeroExt.snd c))
@@ -76,6 +99,19 @@ theorem deRhamAlgebraMap_sends_sectionOneForm (ρ : DR R (diagExt R B).C →+ DR
 
 end
 
+/- English proof (translation)
+Introduce `R _ X s k f hk B _ _ x hx`. Take `⟨ρ, hadd, hmul, halg, hD, hrel, -, -⟩` from `GlobalTheory.T.exists_formsMap_of_dividedPowerDerivation R B ⊥ (dp0 B) (diagExt R B).C (RingHom.ker ((diagExt R B).π : (diagExt R B).C →+* B)) (divided₂ (diagExt R B).sq) (diagExt R B).π (sndK R B) (sndK_mul R B) (sndK_alg R B) (sndK_dpow R B)`. Establish `h0` using `divPowerCompatDeRhamRelIdeal_zero_dividedPowers R B`. Simplify using `only [h0, Ideal.mem_bot, sub_sub, sub_eq_zero] at hadd hmul halg hD hrel`. Set `ρh : DR R (diagExt R B).C →+ DR R B` to `AddMonoidHom.mk' ρ hadd`.
+
+Establish `hD' : ∀ c, ρh (ι1 (D R (diagExt R B).C c)) = ι1 (TrivSqZeroExt.snd c)` using `fun c ↦ hD c _ rfl`. Set `a` to `(diagExt R B).secHom hx (diagExt R B).i fun _ ↦ rfl`. Set `a'` to `(diagExt R B).secHom hx (diagSec R B) (fst_derSec _)`. Establish `c1` using `cocyc k a`. Establish `c2` using `cocyc k a'`.
+
+Rewrite `c1`, `c2` using `[hk]`. Take `⟨κ, hκ⟩` from `Submodule.Quotient.mk_surjective _ (k.1.2 (Thick.triv B x hx))`. Take `⟨θ, hθ⟩` from `Submodule.Quotient.mk_surjective _ (k.1.2 ((diagExt R B).thick x hx))`. Rewrite `c1`, `c2` using `[← hκ, ← hθ, divPowerCompatOneFormMap_mk, divPowerCompatFunctionDifferential_apply, ← Submodule.Quotient.mk_add, Submodule.Quotient.eq]`. Establish `e1 : ρh (ι1 (θ - ((SemiHom.of_algHom a.φ).m1 κ + D R _ (f.1 _ _ a)))) = 0` using `hrel _ c1`.
+
+Establish `e2 : ρh (ι1 (θ - ((SemiHom.of_algHom a'.φ).m1 κ + D R _ (f.1 _ _ a')))) = 0` using `hrel _ c2`. Establish `r1` using `deRhamAlgebraMap_sends_sectionOneForm ρh hmul halg hD' a.φ (fun _ ↦ rfl) 0 (fun b c ↦ by show (0 : Ω[B⁄R]) = b • TrivSqZeroExt.snd (TrivSqZeroExt.inl c : TrivSqZeroExt B Ω[B⁄R])`. Rewrite using `[TrivSqZeroExt.snd_inl, smul_zero])`. Establish `r2` using `deRhamAlgebraMap_sends_sectionOneForm ρh hmul halg hD' a'.φ (fst_derSec _) (AddMonoidHom.id _) (fun b c ↦ by show b • D R B c = b • TrivSqZeroExt.snd (diagSec R B c)`. Rewrite using `[snd_derSec])`.
+
+Simplify using `only [map_sub, map_add, r1, r2, hD', AddMonoidHom.zero_apply, AddMonoidHom.id_apply, map_zero, zero_add] at e1 e2`. Rewrite using `[← hκ, Submodule.Quotient.eq]`. Express the relevant statement in the definitionally equal form `ι1 _ ∈ rel R (dp0 B)`. Rewrite using `[h0, Ideal.mem_bot, map_sub, sub_eq_zero]`. Simplify using `only [connForm, TrivSqZeroExt.snd_sub, map_sub]`.
+
+Express the relevant statement in the definitionally equal form `ι1 κ = ι1 (TrivSqZeroExt.snd (f.1 _ _ a)) - ι1 (TrivSqZeroExt.snd (f.1 _ _ a'))`. Take the linear combination `(norm := abel1) e1 - e2`.
+-/
 theorem form_eq_connForm : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R) (k : (KK (dp0 R) s).Z1)
     (f : Z1 (O (dp0 R) s)), k.1.1 = f.1 → ∀ (B : Type) [CommRing B] [Algebra R B] (x : Sp B ⟶ X)
     (hx : x ≫ s = spMap (algebraMap R B)),

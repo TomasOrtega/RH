@@ -11,6 +11,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SmoothStable
 
+/- English proof (translation)
+Introduce `D V S M τ g hg w hw`. Establish `hσ : IsURepOn (UJset (M.ε τ)) (M.σ τ)` using `(M.ds τ).2.2.1`. Establish `e : M.sm τ = GlobalTheory.SmVec.smSub (gramAt D V τ) (M.rep τ)` using `Submodule.span_eq (GlobalTheory.SmVec.smSub (gramAt D V τ) (M.rep τ))`. Rewrite `hw`, the goal using `[e]`. Conclude with `GlobalTheory.SmVec.rep_mem (GlobalTheory.SmVec.gram_unit (M.fr_unit τ) (M.fr_gram τ)) (GlobalTheory.SmVec.isURepOn_trRep (M.fr_unit τ) (M.fr_gram τ) hσ) hw hg`.
+-/
 theorem rep_mem_sm : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (τ : D.what₂.Tau), ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ w ∈ M.sm τ, M.rep τ g w ∈ M.sm τ := by
   intro D V S M τ g hg w hw
   have hσ : IsURepOn (UJset (M.ε τ)) (M.σ τ) := (M.ds τ).2.2.1

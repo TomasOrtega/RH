@@ -7,6 +7,13 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 
 namespace QH
 
+/- English proof (translation)
+Establish `hY1 : (1 : ℝ) ≤ Y` using `by linarith`. Establish `hY0 : (0 : ℝ) < Y` using `by linarith`. Establish `h1 : Y ^ ε ≤ Y ^ (1 / 4 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le hY1 hε`. Establish `h2 : (2 : ℝ) ≤ Y ^ (1 / 4 : ℝ)`. Establish `h16 : (16 : ℝ) ^ (1 / 4 : ℝ) = 2`.
+
+Rewrite using `[show (16 : ℝ) = 2 ^ (4 : ℝ) by norm_num, ← Real.rpow_mul (by norm_num)]`. Evaluate the numerical expressions. Rewrite using `[← h16]`. Conclude with `Real.rpow_le_rpow (by norm_num) hY (by norm_num)`. Establish `h3 : Y ^ (1 / 2 : ℝ) = Y ^ (1 / 4 : ℝ) * Y ^ (1 / 4 : ℝ)`.
+
+Rewrite using `[← Real.rpow_add hY0]`. Evaluate the numerical expressions. Establish `h4 : Y ^ (1 / 2 : ℝ) ≤ y ^ (1 / 2 : ℝ)` using `Real.rpow_le_rpow hY0.le hy (by norm_num)`. Establish `h5 : y ^ (1 / 2 : ℝ) ≤ y ^ (1 / 2 + τ)` using `Real.rpow_le_rpow_of_exponent_le (by linarith) (by linarith)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 private lemma num_box {ε τ Y y : ℝ} (hε : ε ≤ 1 / 4) (hτ : 0 < τ) (hY : 16 ≤ Y) (hy : Y ≤ y) :
     Y ^ ε ≤ y ^ (1 / 2 + τ) / 2 := by
   have hY1 : (1 : ℝ) ≤ Y := by linarith
@@ -25,6 +32,19 @@ private lemma num_box {ε τ Y y : ℝ} (hε : ε ≤ 1 / 4) (hτ : 0 < τ) (hY 
     Real.rpow_le_rpow_of_exponent_le (by linarith) (by linarith)
   nlinarith
 
+/- English proof (translation)
+Take `⟨C, hC, hk⟩` from `kappaC`. Use `⟨C, hC, fun ε τ K hε hε4 hτ hK => ?_⟩` and prove the remaining obligations. Take `⟨Y₁, h1⟩` from `hk ε hε (by linarith)`. Take `⟨Y₂, h2⟩` from `tailK ε K hε (by linarith) hK`. Use `⟨max (max Y₁ Y₂) 16, fun Y hY Q N _ χ q κ hlo hhi hg hχ hS => ?_⟩` and prove the remaining obligations.
+
+Establish `hY1 : Y₁ ≤ Y` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hY`. Establish `hY2 : Y₂ ≤ Y` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hY`. Establish `hY16 : 16 ≤ Y` using `le_trans (le_max_right _ _) hY`. Use `⟨hg, h1 Y hY1 Q N χ hlo hhi hg, fun y hy => ?_⟩` and prove the remaining obligations. Establish `ht` using `h2 Y hY2 Q N χ hlo hhi hg`.
+
+Establish `hy0 : 0 < y` using `by linarith [hy.1]`. Establish `hX1 : 1 ≤ Y ^ K` using `by linarith [hy.1, hy.2]`. Establish `hyz : y ≤ (Y ^ K) ^ 400` using `le_trans hy.2 (le_self_pow₀ hX1 (by norm_num))`. Rewrite using `[finite_splitting_of_group N χ y ((Y ^ K) ^ 400) hy0 hyz]`. Establish `hSz : Sz χ y ((Y ^ K) ^ 400) = S ((Y ^ K) ^ 400) y q κ`.
+
+Unfold `Sz S`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n _`. Rewrite using `[hχ n, J, mul_assoc]`. Establish `htail : ‖(y : ℂ) * tailL χ ((Y ^ K) ^ 400)‖ ≤ Y ^ ε`.
+
+Use `le_trans ?_ ht` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, Complex.norm_real, Complex.norm_real, Real.norm_of_nonneg hy0.le, Real.norm_of_nonneg (by linarith)]`. Conclude with `mul_le_mul_of_nonneg_right hy.2 (norm_nonneg _)`. Establish `hn` using `num_box hε4 hτ hY16 hy.1`. Establish `hs` using `hS y hy`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem box_of_S :
     ∃ C : ℝ, 0 < C ∧ ∀ ε τ K : ℝ, 0 < ε → ε ≤ 1 / 4 → 0 < τ → 1 ≤ K → ∃ Y₀ : ℝ, ∀ Y ≥ Y₀, ∀ (Q : ℝ) (N : ℕ) [NeZero N] (χ : DirichletCharacter ℂ N) (q : ℕ) (κ : ℕ → ℂ),
       Y ^ (ε / 6) ≤ Real.log Q → Real.log Q ≤ Y ^ (ε / 4) → GoodC Q χ → (∀ n : ℕ, χ (n : ZMod N) = κ n * J q n) →

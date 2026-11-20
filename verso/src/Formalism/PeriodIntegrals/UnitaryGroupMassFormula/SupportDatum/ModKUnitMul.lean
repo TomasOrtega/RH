@@ -22,6 +22,9 @@ def DetForm : Prop :=
     (a : Loc.Pt (D.s.atP p).Ep (D.R.rS + 1)), modPt δ T T' p w = some a →
     a.mat.det = (D.s.atP p).ιE (Dmin w (D.R.rS + 1)) * C (kind w)
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_lowerTriangular _ (fun i j hij => ?_)]`. Simplify using `[Loc.uLow]`. Establish `hij' : i < j` using `hij`. Simplify using `only [Loc.uLow]`. Rewrite using `[if_neg (ne_of_lt hij'), dif_neg (not_lt.2 hij'.le)]`.
+-/
 theorem uLow_det {E : Type} [CommRing E] {n : ℕ} (x : Loc.IL n → E) : (Loc.uLow x).det = 1 := by
   rw [Matrix.det_of_lowerTriangular _ (fun i j hij => ?_)]
   · simp [Loc.uLow]
@@ -29,6 +32,9 @@ theorem uLow_det {E : Type} [CommRing E] {n : ℕ} (x : Loc.IL n → E) : (Loc.u
     simp only [Loc.uLow]
     rw [if_neg (ne_of_lt hij'), dif_neg (not_lt.2 hij'.le)]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => ?_)]`. Simplify using `[Loc.uUp]`. Establish `hij' : j < i` using `hij`. Simplify using `only [Loc.uUp]`. Rewrite using `[if_neg (ne_of_gt hij'), dif_neg (fun h => absurd h.1 (not_lt.2 hij'.le))]`.
+-/
 theorem uUp_det {E : Type} [CommRing E] {n : ℕ} (w : Loc.Pt E n) (y : Loc.IN w → E) :
     (Loc.uUp w y).det = 1 := by
   rw [Matrix.det_of_upperTriangular (fun i j hij => ?_)]
@@ -37,6 +43,15 @@ theorem uUp_det {E : Type} [CommRing E] {n : ℕ} (w : Loc.Pt E n) (y : Loc.IN w
     simp only [Loc.uUp]
     rw [if_neg (ne_of_gt hij'), dif_neg (fun h => absurd h.1 (not_lt.2 hij'.le))]
 
+/- English proof (translation)
+Establish `hex : ∃ xy, M.bbIntegrand w c xy ≠ 0`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Apply `h` to reduce the goal to its premises. Unfold `Loc.Model.BB`.
+
+Simplify using `[hne]`. Take `⟨⟨x, y⟩, hxy⟩` from `hex`. Unfold `Loc.Model.bbIntegrand at hxy`. Simplify using `only at hxy`. Use `split_ifs at hxy with hZ`.
+
+Establish `h1` using `left_ne_zero_of_mul hxy`. Establish `h2` using `Nat.cast_ne_zero.mp h1`. Unfold `Loc.Model.nIso at h2`. Use `⟨_, ?_, (Nat.card_ne_zero.mp h2).1⟩` and prove the remaining obligations. Use `show (Loc.uLow x * w.mat * Loc.uUp w y).det = _`.
+
+Rewrite using `[Matrix.det_mul, Matrix.det_mul, uLow_det, uUp_det, one_mul, mul_one]`. Conclude with `absurd rfl hxy`.
+-/
 theorem bb_exists {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
     (M : Loc.Model F E) {m : ℕ} (w : Loc.Pt E (m + 1)) (c : M.Cls m) (h : M.BB w c ≠ 0) :
@@ -60,6 +75,11 @@ theorem bb_exists {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     rw [Matrix.det_mul, Matrix.det_mul, uLow_det, uUp_det, one_mul, mul_one]
   · exact absurd rfl hxy
 
+/- English proof (translation)
+Unfold `BBtop at h`. Apply the tactic sequence `rcases hm : modPt δ T T' p w with _ | a <;> rcases c with _ | cl`. Simplify using `[hm] at h`. Simplify using `[hm] at h`. Simplify using `[hm] at h`.
+
+Simplify using `only [hm] at h`. Conclude with `⟨a, cl, rfl, rfl, right_ne_zero_of_mul h⟩`.
+-/
 theorem bbtop_ne {D : Formalism.BasicNotions.D7} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} {T T' : ℕ} {p : PlF D}
     {w : Point D.host.E (D.R.rS + 1)} {c : Option ((M p).Cls D.R.rS)}
@@ -73,6 +93,13 @@ theorem bbtop_ne {D : Formalism.BasicNotions.D7} {δ : ∀ p : PlF D, (D.s.atP p
   · simp only [hm] at h
     exact ⟨a, cl, rfl, rfl, right_ne_zero_of_mul h⟩
 
+/- English proof (translation)
+Establish `hu : (((u : M.R) : E)) * ((((u⁻¹ : (M.R)ˣ) : M.R) : E)) = 1`. Rewrite using `[← Subring.coe_mul, Units.mul_inv, Subring.coe_one]`. Unfold `Loc.Model.modK`. Use `congr 2`. Use extensionality with `z`.
+
+Simplify using `only [Set.mem_image, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨((u : M.R) : E) * y, M.R.mul_mem (u : M.R).2 hy, by ring⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Use `⟨(((u⁻¹ : (M.R)ˣ) : M.R) : E) * y, M.R.mul_mem (↑u⁻¹ : M.R).2 hy, ?_⟩` and prove the remaining obligations. Take the linear combination `(x * y) * hu`.
+-/
 theorem modK_unit_mul {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
     (M : Loc.Model F E) (u : (M.R)ˣ) (x : E) : M.modK ((u : M.R) * x) = M.modK x := by
@@ -89,6 +116,9 @@ theorem modK_unit_mul {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     refine ⟨(((u⁻¹ : (M.R)ˣ) : M.R) : E) * y, M.R.mul_mem (↑u⁻¹ : M.R).2 hy, ?_⟩
     linear_combination (x * y) * hu
 
+/- English proof (translation)
+Use `mem_nonZeroDivisors_iff.2 ⟨fun y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h1 : (x : E) * (y : E) = 0` using `by rw [← Subring.coe_mul, hy, Subring.coe_zero]`. Conclude with `Subtype.ext (by simpa using h.mul_right_eq_zero.1 h1)`. Establish `h1 : (y : E) * (x : E) = 0` using `by rw [← Subring.coe_mul, hy, Subring.coe_zero]`. Conclude with `Subtype.ext (by simpa using h.mul_left_eq_zero.1 h1)`.
+-/
 theorem nzd_of_unit {E : Type} [CommRing E] (S : Subring E) (x : S) (h : IsUnit (x : E)) :
     x ∈ nonZeroDivisors S := by
   refine mem_nonZeroDivisors_iff.2 ⟨fun y hy => ?_, fun y hy => ?_⟩
@@ -97,6 +127,35 @@ theorem nzd_of_unit {E : Type} [CommRing E] (S : Subring E) (x : S) (h : IsUnit 
   · have h1 : (y : E) * (x : E) = 0 := by rw [← Subring.coe_mul, hy, Subring.coe_zero]
     exact Subtype.ext (by simpa using h.mul_left_eq_zero.1 h1)
 
+/- English proof (translation)
+Take `⟨a, cl, ha, hc, hb⟩` from `bbtop_ne hw`. Take `⟨a', cl', ha', hc', hb'⟩` from `bbtop_ne hw'`. Rewrite `hc'` using `[hc]`. Consider the cases of `hc'`. Take `⟨Z, hZ, ⟨φ⟩⟩` from `bb_exists (M p) a cl hb`.
+
+Take `⟨Z', hZ', ⟨φ'⟩⟩` from `bb_exists (M p) a' cl hb'`. Establish `hmap : ∀ Y : (M p).Mat (D.R.rS + 1), (Y.Z.map (M p).R.subtype).det = ((Y.Z.det : (M p).R) : _)` using `fun Y => (RingHom.map_det (M p).R.subtype Y.Z).symm`. Establish `hu1 : IsUnit (Z.Z.map (M p).R.subtype).det` using `Z.unit`. Establish `hu2 : IsUnit (Z'.Z.map (M p).R.subtype).det` using `Z'.unit`. Establish `n1 : Z.Z.det ∈ nonZeroDivisors (M p).R` using `nzd_of_unit _ _ (by rw [← hmap]; exact hu1)`.
+
+Establish `n2 : Z'.Z.det ∈ nonZeroDivisors (M p).R` using `nzd_of_unit _ _ (by rw [← hmap]; exact hu2)`. Take `⟨u, hu⟩` from `hC (M p).R (D.R.rS + 1) Z.Z Z'.Z n1 n2 ⟨φ.1.trans φ'.1.symm⟩`. Take `⟨C, hCf⟩` from `hD D δ p T T'`. Establish `d1` using `hCf w a ha`. Establish `d2` using `hCf w' a' ha'`.
+
+Rewrite `d2` using `[← hk]`. Establish `e : a'.mat.det = ((u : (M p).R) : (D.s.atP p).Ep) * a.mat.det`. Rewrite using `[← hZ, ← hZ', hmap, hmap, hu, Subring.coe_mul]`. Establish `hua : IsUnit a.mat.det` using `hZ ▸ hu1`. Establish `hCu : IsUnit (C (kind w))`.
+
+Rewrite `hua` using `[d1]`. Conclude with `isUnit_of_mul_isUnit_right hua`. Establish `key : (D.s.atP p).ιE (Dmin w' (D.R.rS + 1)) = ((u : (M p).R) : (D.s.atP p).Ep) * (D.s.atP p).ιE (Dmin w (D.R.rS + 1))`. Rewrite `e` using `[d1, d2, ← mul_assoc]`. Conclude with `hCu.mul_right_cancel e`.
+
+Use `⟨by rw [key, modK_unit_mul], ?_⟩` and prove the remaining obligations. Break down `hcase : kind w with _ | ζ` into its components or cases. Establish `h0 : Dmin w D.R.rS = 0`. Unfold `kind at hcase`. Assume the negation of the conclusion as `hne`.
+
+Simplify using `[hne] at hcase`. Establish `hcase' : kind w' = none` using `hk ▸ hcase`. Establish `h0' : Dmin w' D.R.rS = 0`. Unfold `kind at hcase'`. Assume the negation of the conclusion as `hne`.
+
+Simplify using `[hne] at hcase'`. Rewrite using `[h0, h0']`. Establish `hcase' : kind w' = some ζ` using `hk ▸ hcase`. Establish `hr : Dmin w D.R.rS ≠ 0`. Unfold `kind at hcase`.
+
+Assume the negation of the conclusion as `hne`. Simplify using `[hne] at hcase`. Establish `hr' : Dmin w' D.R.rS ≠ 0`. Unfold `kind at hcase'`. Assume the negation of the conclusion as `hne`.
+
+Simplify using `[hne] at hcase'`. Establish `hz : zetaOf w = ζ`. Unfold `kind at hcase`. Simplify `hcase` using `[hr]`. Establish `hz' : zetaOf w' = ζ`.
+
+Unfold `kind at hcase'`. Simplify `hcase'` using `[hr']`. Establish `e1 : Dmin w (D.R.rS + 1) = ζ * Dmin w D.R.rS`. Rewrite using `[← hz, zetaOf, div_mul_cancel₀ _ hr]`. Establish `e1' : Dmin w' (D.R.rS + 1) = ζ * Dmin w' D.R.rS`.
+
+Rewrite using `[← hz', zetaOf, div_mul_cancel₀ _ hr']`. Establish `hζ : ζ ≠ 0`. Introduce `h0`. Apply `hT D w` to reduce the goal to its premises. Rewrite using `[e1, h0, zero_mul]`.
+
+Establish `hζu : IsUnit ((D.s.atP p).ιE ζ)` using `(isUnit_iff_ne_zero.mpr hζ).map (D.s.atP p).ιE`. Establish `key' : (D.s.atP p).ιE (Dmin w' D.R.rS) = ((u : (M p).R) : (D.s.atP p).Ep) * (D.s.atP p).ιE (Dmin w D.R.rS)`. Rewrite `key` using `[e1, e1', map_mul, map_mul]`. Apply `hζu.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[key]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key', modK_unit_mul]`.
+-/
 theorem locStep_of (hC : CokDetL) (hD : DetForm)
     (hT : ∀ (D : Formalism.BasicNotions.D7) (w : Point D.host.E (D.R.rS + 1)), Dmin w (D.R.rS + 1) ≠ 0)
     (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.atP p).Fp)

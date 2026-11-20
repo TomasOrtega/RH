@@ -7,6 +7,9 @@ open GlobalTheory.MatDeriv GlobalTheory.GradedNorm Matrix
 open scoped ComplexOrder
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GradedLogDeriv.deriv_log_grSq_ratio | exact GlobalTheory.GradedLogDeriv.deriv_log_grSq_ratio | (intros; apply GlobalTheory.GradedLogDeriv.deriv_log_grSq_ratio <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hermitian_metric_derivative_bound : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (m : ℕ) (S : Set E) (Hh H0 : E → Matrix (Fin m) (Fin m) ℂ) (rr : E → ℝ) (q : E → E → ℝ) (μ K c₀ C₀ : ℝ), IsOpen S → 0 < c₀ → 0 ≤ μ →
   (∀ w ∈ S, 1 ≤ rr w ∧ (Hh w).PosDef ∧ (H0 w).PosDef ∧ ∀ a b, DifferentiableAt ℝ (fun w' => Hh w' a b) w ∧ DifferentiableAt ℝ (fun w' => H0 w' a b) w) →
   (∀ w ∈ S, ∀ v : Fin m → ℂ, c₀ * ‖v‖ ^ 2 ≤ (star v ⬝ᵥ H0 w *ᵥ v).re ∧ (star v ⬝ᵥ H0 w *ᵥ v).re ≤ C₀ * ‖v‖ ^ 2 ∧

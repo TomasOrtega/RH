@@ -20,16 +20,27 @@ namespace GlobalTheory.ThK.AdaptEv.VacIso
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `only [hTens, Matrix.add_apply, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem hTens_add_left' {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A)
     {α β : Type} [Fintype α] [Fintype β] (JA : Matrix α α A) (JB : Matrix β β A) (x x' y : Matrix α β A) :
     hTens c JA JB (x + x') y = hTens c JA JB x y + hTens c JA JB x' y := by
   simp only [hTens, Matrix.add_apply, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [hTens, Matrix.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem hTens_add_right' {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A)
     {α β : Type} [Fintype α] [Fintype β] (JA : Matrix α α A) (JB : Matrix β β A) (x y y' : Matrix α β A) :
     hTens c JA JB x (y + y') = hTens c JA JB x y + hTens c JA JB x y' := by
   simp only [hTens, Matrix.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [hTens, Matrix.vecMulVec_apply, map_mul]`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hTens_pure {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A)
     {α β : Type} [Fintype α] [Fintype β] (JA : Matrix α α A) (JB : Matrix β β A) (a a' : α → A) (x x' : β → A) :
     hTens c JA JB (Matrix.vecMulVec a x) (Matrix.vecMulVec a' x') =
@@ -41,6 +52,9 @@ theorem hTens_pure {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A �
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_swap {σ : E →ₐ[F] E} (hσ : ∀ e, σ (σ e) = e) {d : ℕ} {J : Matrix (Fin d) (Fin d) E}
     (hJ : ∀ i j, σ (J j i) = -J i j) (a b : Fin d → E) : form σ J a b = -σ (form σ J b a) := by
   simp only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum, ← Finset.sum_neg_distrib]
@@ -48,11 +62,17 @@ theorem form_swap {σ : E →ₐ[F] E} (hσ : ∀ e, σ (σ e) = e) {d : ℕ} {J
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   rw [hJ]; ring
 
+/- English proof (translation)
+Establish `hc : ∀ x : E, cA σ (inclR (F` using `F) (AF F) x) = inclR (F := F) (AF F) (σ x) := fun x => rfl`. Simplify using `only [form, dotProduct, Matrix.mulVec, incV, incM, Matrix.map_apply, hc, map_sum, map_mul, Finset.mul_sum, mul_assoc]`.
+-/
 theorem sum_vv (σ : E →ₐ[F] E) {d : ℕ} (J : Matrix (Fin d) (Fin d) E) (u v : Fin d → E) :
     (∑ j, ∑ l, incV F u j * incM F J j l * cA σ (incV F v l)) = inclR (F := F) (AF F) (form σ J u v) := by
   have hc : ∀ x : E, cA σ (inclR (F := F) (AF F) x) = inclR (F := F) (AF F) (σ x) := fun x => rfl
   simp only [form, dotProduct, Matrix.mulVec, incV, incM, Matrix.map_apply, hc, map_sum, map_mul, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Establish `hc : ∀ x : E, cA σ (inclR (F` using `F) (AF F) x) = inclR (F := F) (AF F) (σ x) := fun x => rfl`. Simplify using `only [form, dotProduct, Matrix.mulVec, incV, incM, Matrix.map_apply, hc, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Conclude with `(Finset.sum_congr rfl fun _ _ => Finset.sum_comm).trans Finset.sum_comm`.
+-/
 theorem sum_vm (σ : E →ₐ[F] E) {d d₁ : ℕ} (J : Matrix (Fin d) (Fin d) E) (u : Fin d → E)
     (ι : Matrix (Fin d) (Fin d₁) E) (z : Fin d₁ → AE F E) :
     (∑ j, ∑ l, incV F u j * incM F J j l * cA σ ((incM F ι *ᵥ z) l)) =
@@ -62,6 +82,9 @@ theorem sum_vm (σ : E →ₐ[F] E) {d d₁ : ℕ} (J : Matrix (Fin d) (Fin d) E
     Finset.sum_mul, mul_assoc]
   exact (Finset.sum_congr rfl fun _ _ => Finset.sum_comm).trans Finset.sum_comm
 
+/- English proof (translation)
+Establish `hc : ∀ x : E, cA σ (inclR (F` using `F) (AF F) x) = inclR (F := F) (AF F) (σ x) := fun x => rfl`. Simplify using `only [form, dotProduct, Matrix.mulVec, incV, incM, Matrix.map_apply, hc, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Use `((Finset.sum_congr rfl fun _ _ => Finset.sum_comm).trans Finset.sum_comm).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_mv (σ : E →ₐ[F] E) {d d₁ : ℕ} (J : Matrix (Fin d) (Fin d) E) (v : Fin d → E)
     (ι : Matrix (Fin d) (Fin d₁) E) (z : Fin d₁ → AE F E) :
     (∑ j, ∑ l, (incM F ι *ᵥ z) j * incM F J j l * cA σ (incV F v l)) =
@@ -73,6 +96,15 @@ theorem sum_mv (σ : E →ₐ[F] E) {d d₁ : ℕ} (J : Matrix (Fin d) (Fin d) E
   refine Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Establish `hcol : ∀ m, ι *ᵥ Pi.single m 1 = fun j => ι j m` using `fun m => by`. Use extensionality with `j`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `col : ∀ m, form σ JW (fun j => ι j m) w₀ = 0` using `fun m => by rw [← hcol]; exact ho _`. Establish `col' : ∀ m, form σ JW w₀ (fun j => ι j m) = 0` using `fun m => by`.
+
+Rewrite using `[form_swap hσ hJ, col m, map_zero, neg_zero]`. Establish `hX : (∑ i, ∑ k, incV F x₀ i * incM F JX i k * cA σ (incV F x₀ k)) = 0`. Rewrite using `[sum_vv, hx, map_zero]`. Establish `hWW : (∑ j, ∑ l, incV F w₀ j * incM F JW j l * cA σ (incV F w₀ l)) = 0`. Rewrite using `[sum_vv, hw, map_zero]`.
+
+Establish `hWm : (∑ j, ∑ l, incV F w₀ j * incM F JW j l * cA σ ((incM F ι *ᵥ z) l)) = 0`. Rewrite using `[sum_vm]`. Simplify using `[col']`. Establish `hmW : (∑ j, ∑ l, (incM F ι *ᵥ z) j * incM F JW j l * cA σ (incV F w₀ l)) = 0`. Rewrite using `[sum_mv]`.
+
+Simplify using `[col]`. Rewrite using `[hTens_add_left', hTens_add_right', hTens_add_right', hTens_pure, hTens_pure, hTens_pure, hTens_pure, hX, hWW, hWm, hmW]`. Simplify using the standard rewrite rules.
+-/
 theorem isotropic_key (σ : E →ₐ[F] E) (hσ : ∀ e, σ (σ e) = e) {n d d₁ : ℕ} (JX : Matrix (Fin n) (Fin n) E)
     (JW : Matrix (Fin d) (Fin d) E) (hJ : ∀ i j, σ (JW j i) = -JW i j) (x₀ : Fin n → E) (w₀ : Fin d → E)
     (ι : Matrix (Fin d) (Fin d₁) E) (hx : form σ JX x₀ x₀ = 0) (hw : form σ JW w₀ w₀ = 0)
@@ -97,6 +129,9 @@ theorem isotropic_key (σ : E →ₐ[F] E) (hσ : ∀ e, σ (σ e) = e) {n d d�
     hX, hWW, hWm, hmW]
   simp
 
+/- English proof (translation)
+Introduce `e`. Set `τ : E →ₐ[ℚ] ℂ` to `IsAlgClosed.lift`. Establish `h` using `hB.cm.2.2.2 τ.toRingHom`. Apply `τ.toRingHom.injective` to reduce the goal to its premises. Rewrite using `[h, h, star_star]`.
+-/
 theorem invol_of_isGood {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ) : ∀ e, σ (σ e) = e := by
   intro e
   let τ : E →ₐ[ℚ] ℂ := IsAlgClosed.lift
@@ -108,6 +143,11 @@ end GlobalTheory.ThK.AdaptEv.VacIso
 
 open GlobalTheory.ThK.AdaptEv.VacIso in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ H H' r' s' i₀ i₁ j₀ j₁ hσ hW hH hH'`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `p ⟨y, z, rfl⟩`. Conclude with `isotropic_key σ hσ X.J W.J hW.skew H.x H'.x H'.ι hH.xx hH'.xx (fun u => (hH'.orth u).1) y z`. Introduce and unpack `q ⟨y, z, rfl⟩`.
+
+Conclude with `isotropic_key σ hσ X.J W.J hW.skew H.y H'.y H'.ι hH.yy hH'.yy (fun u => (hH'.orth u).2) y z`.
+-/
 theorem GlobalTheory.ThK.AdaptEv.VacIso.spans_isotropic : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     {n d n₁ d₁ : ℕ} (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (H : Plane E n n₁) (H' : Plane E d d₁) (r' s' i₀ i₁ j₀ j₁ : ℕ), (∀ e, σ (σ e) = e) → W.IsSkew σ B r' s' → H.IsAdapted σ B X X₁ j₀ j₁ → H'.IsAdapted σ B W W₁ i₀ i₁ →
     (∀ p ∈ GlobalTheory.ThK.AdaptEv.VacuumBlock.spanA (F := F) H H', hTens (cA σ) (incM F X.J) (incM F W.J) p p = 0) ∧

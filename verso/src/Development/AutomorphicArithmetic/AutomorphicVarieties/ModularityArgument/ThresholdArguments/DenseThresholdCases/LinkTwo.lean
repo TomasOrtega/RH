@@ -10,6 +10,19 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Recip
 open private exists_conj ne_top val_nat fin_nat eq_of_mem from Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.UnipotentIdempotents.EqOfMem
 open private bu bu_val bu_open eq_of_ker dec_of from Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.UnipotentIdempotents.EqOfKer
 open private pre_ex from Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.CompactIntegralFields.LinkEx
+/- English proof (translation)
+Introduce `hU Ω _ _ _ l _ c D T hF hD`. Establish `hC : Ctx2 D ∨ Ctx3 D` using `hF.2.imp And.left And.left`. Establish `hG : D.Good` using `hC.elim And.left And.left`. Establish `hO` using `hF.1`. Take `⟨P⟩` from `pre_ex T hO hG hC`.
+
+Take `⟨k1, k2, k3⟩` from `kapCont P`. Take `⟨u1, u2, u3⟩` from `kapUnr P hG`. Set `Q : QCh T` to `{ κ := P.κ, β := P.βL, t := P.tL, κ_cont := k1, β_cont := k2, t_cont := k3, β_t := fun _ hg => P.β_t hg, β_red := fun _ => P.β_red _, conj := kapConj P hD, t_unr := u1, unr := u2, tame := u3, mu := kapMu P hG, cyc := kapCyc P hG }`. Take `⟨c₁, -, hL, hκ, hβ, -⟩` from `Pr.coefEx l c T.L Ω Q.κ Q.β Q.κ_cont Q.β_cont`. Use `⟨c₁, fun c' h h₁ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨κ, a1, a2, -⟩` from `liftO c' Q.κ Q.κ_cont fun g => h₁ (hκ g)`. Take `⟨β, b1, b2, b3⟩` from `liftO c' Q.β Q.β_cont fun g => h₁ (hβ g)`. Take `⟨X⟩` from `ochOf Q c' h κ β a1 b1 a2 b2 fun g => b3 g (Q.β_red g)`. Establish `key : ∀ Y : SetD T, ∃ K : Link T c' h, K.κ = X.κ ∧ K.s = Y.s` using `fun Y => by`. Take `⟨V, hV⟩` from `hU.lev l T.L Ω Y.s Y.s.S Y.fin subset_rfl Y.s.split`.
+
+Take `⟨r, r1, r2, r3⟩` from `residEx X Y V hG hO hV`. Take `⟨σ, hσ, hc⟩` from `Y.cc`. Take `⟨g₀, -, hg₀⟩` from `Y.om0`. Conclude with `⟨{ s := Y.s, V := V, hV := hV, noMu := noMu hG T.L g₀ hg₀, large := fun τ x => h₁ (hL τ x), e := Y.e, hA := Y.hA, κ := X.κ, β := X.β, t := X.t, κ_cont := X.κ_cont, β_cont := X.β_cont, t_cont := X.t_cont, β_t := X.β_t, β_red := X.β_red, conj := fun g g' e => X.conj σ hσ g g' (hc g …`. Take `⟨a, ha⟩` from `(prFacts l T.L Ω Y.s V).2.2.2 v g hg`.
+
+Conclude with `X.mu g a ha`. Use `cyc := X.cyc, r := r, chib := fun i g => by rw [r1]; rfl`. Use `psib := r2, th := r3, v0 := v0ok X Y V hG r r1 }, rfl, rfl⟩`. Take `⟨Y, -⟩` from `UpperTheory.Gal.projectedFormsSystemPart.setAv T hG hO 1 one_ne_zero`. Take `⟨Y', hY⟩` from `UpperTheory.Gal.projectedFormsSystemPart.setAv T hG hO Y.s.p Y.s.p_prime.ne_zero`.
+
+Take `⟨K, k1, k2⟩` from `key Y`. Take `⟨K', k3, k4⟩` from `key Y'`. Conclude with `⟨K, K', k3.trans k1.symm, by rw [k2, k4]; exact hY⟩`.
+-/
 theorem UpperTheory.Gal.projectedFormsSystemPart.exists_two_links_same_kappa_not_dvd_of_fit_deep :
     _root_.UpperTheory.V.Ws.UnramifiedInputs → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D), T.Fit → T.Deep → ∃ c₁ : Coef l, ∀ (c' : Coef l) (h : c.O ≤ c'.O), c₁.O ≤ c'.O → ∃ K K' : Link T c' h, K'.κ = K.κ ∧ ¬ K'.s.p ∣ K.s.p := by
   intro hU Ω _ _ _ l _ c D T hF hD

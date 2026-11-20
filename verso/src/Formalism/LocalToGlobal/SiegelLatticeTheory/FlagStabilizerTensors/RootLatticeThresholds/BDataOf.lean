@@ -22,6 +22,9 @@ section Loc
 
 variable (D : D7)
 
+/- English proof (translation)
+Unfold `kaRe Formalism.MainNotions.S.Bridge.kaS gg`. Both sides reduce to the same expression.
+-/
 theorem kaRe_eq : kaRe D = Formalism.MainNotions.S.Bridge.kaS D := by
   unfold kaRe Formalism.MainNotions.S.Bridge.kaS gg
   rfl
@@ -31,6 +34,9 @@ abbrev locB (τ : D.what₂.Tau) (w w' : D.what₂.Word) (θ : ℝ) (W : LocW D.
     (hT : 0 < Tr D w) (hT' : 0 < Tr D w') : LocBessel D.R.k D.R.rS :=
   Formalism.MainNotions.S.Pv.Frames.turnL (toBessel D τ w w' θ W lam A hW hA hT hT') (Formalism.MainNotions.S.Bridge.kaS D)
 
+/- English proof (translation)
+Use `show ((2 * D.host.ka / ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) : ℝ) : ℂ) = _`. Unfold `Formalism.MainNotions.S.Bridge.kaS gg`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem toBessel_c (τ : D.what₂.Tau) (w w' : D.what₂.Word) (θ : ℝ) (W : LocW D.R.k D.R.rS)
     (lam : Fin (2 * D.R.rS + D.R.k + 1) → ℝ) (A : LocS W) (hW : GoodW D τ w w' θ W) (hA : GoodS D lam A)
     (hT : 0 < Tr D w) (hT' : 0 < Tr D w') :
@@ -40,13 +46,24 @@ theorem toBessel_c (τ : D.what₂.Tau) (w w' : D.what₂.Word) (θ : ℝ) (W : 
   congr 1
   ring
 
+/- English proof (translation)
+Simplify using `[l1]`.
+-/
 theorem lOne_self {n : ℕ} (x : Fin n → ℝ) : l1 x x = 0 := by
   simp [l1]
 
+/- English proof (translation)
+Use `D.R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem one_le_k : 1 ≤ D.R.k := by
   have := D.R.m_add_three_le_k
   omega
 
+/- English proof (translation)
+Establish `h1` using `dimS_eq D.R`. Establish `h2` using `D.R.two_le_m`. Establish `h4` using `D.R.m_add_three_le_k`. Unfold `Ranks.r at h1`. Establish `h3 : 2 * D.R.rS + 2 ≤ D.R.k` using `by omega`.
+
+Conclude with `h3` after adjusting the coercions.
+-/
 theorem m_le_k : ((2 * D.R.rS + 2 : ℕ) : ℝ) ≤ (D.R.k : ℝ) := by
   have h1 := dimS_eq D.R
   have h2 := D.R.two_le_m
@@ -55,6 +72,15 @@ theorem m_le_k : ((2 * D.R.rS + 2 : ℕ) : ℝ) ≤ (D.R.k : ℝ) := by
   have h3 : 2 * D.R.rS + 2 ≤ D.R.k := by omega
   exact_mod_cast h3
 
+/- English proof (translation)
+Establish `hz : Formalism.QuantumDeterminants.Tz D.R.k D.R.rS W.z = Tr D w` using `hW.2.2.2.2.1`. Establish `hz' : Formalism.QuantumDeterminants.Tz D.R.k D.R.rS W.z' = Tr D w'` using `hW.2.2.2.2.2.1`. Establish `hkk : kaRe D / kaRe D = 1` using `by rw [kaRe_eq]; exact div_self hka.ne'`. Use `⟨one_le_k D, rfl, ?_, ?_, ENNReal.ofReal_ne_top, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show Formalism.MainNotions.S.cOfDpsi ((Formalism.MainNotions.S.Bridge.kaS D : ℝ) : ℂ) = Formalism.MainNotions.S.cOfDpsi ((kaRe D : ℝ) : ℂ)`.
+
+Rewrite using `[kaRe_eq]`. Use `show 0 < ENNReal.ofReal ((2 * D.host.v) ^ (-((D.R.rS : ℝ) * D.R.k)) * θ)`. Conclude with `ENNReal.ofReal_pos.2 (mul_pos (Real.rpow_pos_of_pos (by positivity) _) hθ)`. Use `show StdHyp Ch Cg D.R.k D.R.rS (epsSH D.R) (lamD D τ) (uS D w τ) (uS D w' τ) (Formalism.QuantumDeterminants.Tz D.R.k D.R.rS W.z * (kaRe D / kaRe D) ^ (2 * D.R.rS)) (Formalism.QuantumDeterminants.Tz D.R.k D.R.rS W.z' * (kaRe D / kaRe D) ^ (2 * D.R.rS)) (kaRe D) b`. Rewrite using `[hkk, one_pow, mul_one, mul_one, hz, hz', kaRe_eq]`.
+
+Conclude with `hS`. Use `show 1 ≤ Formalism.QuantumDeterminants.Tz D.R.k D.R.rS W.z * kaRe D ^ (2 * D.R.rS)`. Rewrite using `[hz, kaRe_eq]`. Conclude with `hF`. Use `show 1 ≤ Formalism.QuantumDeterminants.Tz D.R.k D.R.rS W.z' * kaRe D ^ (2 * D.R.rS)`.
+
+Rewrite using `[hz', kaRe_eq]`. Conclude with `hF'`.
+-/
 theorem locOk_locB {Ch Cg b : ℝ} (τ : D.what₂.Tau) (w w' : D.what₂.Word) (θ : ℝ) (W : LocW D.R.k D.R.rS)
     (A : LocS W) (hW : GoodW D τ w w' θ W) (hA : GoodS D (lamD D τ) A) (hT : 0 < Tr D w) (hT' : 0 < Tr D w')
     (hka : 0 < Formalism.MainNotions.S.Bridge.kaS D) (hv : 0 < D.host.v) (hθ : 0 < θ)
@@ -107,6 +133,9 @@ def Inputs.sec {u u' : D.what₂.Word} {θ : ℝ} {hT : 0 < Tr D u} {hT' : 0 < T
     (τ : D.what₂.Tau) : ℂ → Matrix (Fin (D.R.k + 1)) (Fin (D.R.k + 1)) ℂ :=
   (Formalism.MainNotions.BridgeLemma.section_exists D.R.k D.R.rS (I.L τ) (one_le_k D)).choose
 
+/- English proof (translation)
+The claim follows from `(Formalism.MainNotions.BridgeLemma.section_exists D.R.k D.R.rS (I.L τ) (one_le_k D)).choose_spec`.
+-/
 theorem Inputs.sec_spec {u u' : D.what₂.Word} {θ : ℝ} {hT : 0 < Tr D u} {hT' : 0 < Tr D u'}
     (I : Inputs D u u' θ hT hT') (τ : D.what₂.Tau) :
     Formalism.QuantumDeterminants.IsSection D.R.k D.R.rS (I.L τ).z (I.L τ).z' (I.sec τ) :=
@@ -125,6 +154,11 @@ def bdOf {Ch Cg b : ℝ} {u u' : D.what₂.Word} {θ : ℝ} {hT : 0 < Tr D u} {h
   hsec := I.sec_spec
   hT τ := ⟨(I.hW τ).2.2.2.2.1, (I.hW τ).2.2.2.2.2.1⟩
 
+/- English proof (translation)
+Introduce `τ s s' hss`. Establish `hm` using `m_le_k D`. Establish `hm0 : (0 : ℝ) ≤ ((2 * D.R.rS + 2 : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `key : Cg * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 4 ≤ Cg' * D.R.k * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 3`. Establish `h3 : 0 ≤ ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 3` using `pow_nonneg hm0 3`.
+
+Establish `: Cg * ((2 * D.R.rS + 2 : ℕ) : ℝ) ≤ Cg' * D.R.k` using `mul_le_mul h1 hm hm0 (h0.trans h1)`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (Cg' * D.R.k) * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 3 := mul_le_mul_of_nonneg_right this h3`. Conclude with `key.trans (hg τ s s' hss)`.
+-/
 theorem gaps_bdOf {Ch Cg Cg' b : ℝ} {u u' : D.what₂.Word} {θ : ℝ} {hT : 0 < Tr D u} {hT' : 0 < Tr D u'}
     (I : Inputs D u u' θ hT hT') (hok : ∀ τ, LocOk D Ch Cg (I.L τ) (lamSH D.R (D.hc τ)) (kaRe D) b (kaRe D))
     (hg : ∀ τ, AllGaps (lamD D τ) (Cg' * D.R.k * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 3)) (h0 : 0 ≤ Cg) (h1 : Cg ≤ Cg') :
@@ -141,6 +175,9 @@ theorem gaps_bdOf {Ch Cg Cg' b : ℝ} {u u' : D.what₂.Word} {θ : ℝ} {hT : 0
       _ ≤ (Cg' * D.R.k) * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 3 := mul_le_mul_of_nonneg_right this h3
   exact key.trans (hg τ s s' hss)
 
+/- English proof (translation)
+Unfold `jSqG`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Conclude with `Formalism.MainNotions.S.Pv.Frames.jNorm2_turn _ _ (toBessel_c D τ u u' θ _ _ _ _ _ hT hT') _ _`.
+-/
 theorem jSqG_bdOf {Ch Cg b : ℝ} {u u' : D.what₂.Word} {θ : ℝ} {hT : 0 < Tr D u} {hT' : 0 < Tr D u'}
     (I : Inputs D u u' θ hT hT') (hok : ∀ τ, LocOk D Ch Cg (I.L τ) (lamSH D.R (D.hc τ)) (kaRe D) b (kaRe D)) :
     jSqG D (bdOf I hok) =
@@ -149,6 +186,9 @@ theorem jSqG_bdOf {Ch Cg b : ℝ} {u u' : D.what₂.Word} {θ : ℝ} {hT : 0 < T
   refine Finset.prod_congr rfl fun τ _ => ?_
   exact Formalism.MainNotions.S.Pv.Frames.jNorm2_turn _ _ (toBessel_c D τ u u' θ _ _ _ _ _ hT hT') _ _
 
+/- English proof (translation)
+The claim follows from `Formalism.MainNotions.S.Pv.Frames.orbSqO_le_turn _ _ hka (toBessel_c D τ u u' θ _ _ _ _ _ hT hT') _ _`.
+-/
 theorem orbSqO_le_bdOf {Ch Cg b : ℝ} {u u' : D.what₂.Word} {θ : ℝ} {hT : 0 < Tr D u} {hT' : 0 < Tr D u'}
     (I : Inputs D u u' θ hT hT') (hok : ∀ τ, LocOk D Ch Cg (I.L τ) (lamSH D.R (D.hc τ)) (kaRe D) b (kaRe D))
     (hka : 0 < Formalism.MainNotions.S.Bridge.kaS D) (τ : D.what₂.Tau) (p : Point ℂ (D.R.rS + 1)) :
@@ -176,6 +216,11 @@ structure AmpIn (large₂ : SizeData₂ D) (C1 Ca : ℝ) (u u' : D.what₂.Word)
       ENNReal.ofReal (K τ * large₂.sc.b ^ (Ca * (D.R.m : ℝ) ^ 2)) *
         Formalism.MainNotions.S.Bridge.orbSqO (toBessel D τ u u' θ (W τ) (lamD D τ) (A τ) (hW τ) (hA τ) hT hT') (f τ) p
 
+/- English proof (translation)
+Establish `hd : ∀ τ, l1dist (lamD D τ) (lamD D τ) ≤ Cn * D.R.k * (D.R.m : ℝ) ^ 3` using `fun τ => by`. Establish `: l1dist (lamD D τ) (lamD D τ) = 0` using `by simp [l1dist]`. Rewrite using `[this]`. Check the signs of the components of the expression. Establish `h` using `fun τ => hAmp hH τ u u' hTT θ hθ (W τ) (hW τ) (lamD D τ) (hd τ) (A τ) (hA τ) hT hT'`.
+
+Use `choose f K hK hf hMM hJ using h`. Conclude with `⟨⟨⟨W, A, hW, hA, f, hf⟩, K, hK, fun τ μsec hs => (hMM τ μsec hs).2, hJ⟩, rfl⟩`.
+-/
 theorem ampIn_exists {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT C0 Cn C1 Ca : ℝ}
     (hAmp : Formalism.MainNotions.S.Bridge.AmpIsBessel D large₂ C' Cl Cg cb Cu cT CT C0 Cn C1 Ca)
     (hH : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) {u u' : D.what₂.Word} (hTT : HypTT D u u') {θ : ℝ}
@@ -202,6 +247,15 @@ def JointAmplitudeFactorization {τ₀ Rw I₀ H H₁ : Type} [Fintype I₀] [No
         Formalism.MainNotions.S.Pv.Frames.turnPt (p τ) = ptLoc D τ w) ∧
       ENNReal.ofReal (N.jacobianSquareBound γ) ≤ ENNReal.ofReal Cfac * ∏ τ, ENNReal.ofReal (hsNormSq ((A τ).J (νR τ) (g τ)))
 
+/- English proof (translation)
+Introduce `γ w hγ hw hb`. Break down `le_or_gt (N.jacobianSquareBound γ) 0 with h0 | h0` into its components or cases. Rewrite using `[ENNReal.ofReal_of_nonpos h0]`. Conclude with `bot_le`. Take `⟨g, p, θ', νR, hloc, hJ2⟩` from `hF γ w hγ hw hb h0`.
+
+Establish `hc : ∀ τ, 0 ≤ I.K τ * large₂.sc.b ^ (Ca * (D.R.m : ℝ) ^ 2)` using `fun τ => mul_nonneg (I.hK τ).le (Real.rpow_nonneg (by have := large₂.sc.one_lt_alt; unfold Scale.b; positivity) _)`. Establish `hplace : ∀ τ, ENNReal.ofReal (hsNormSq ((I.A τ).J (νR τ) (g τ))) ≤ ENNReal.ofReal (I.K τ * large₂.sc.b ^ (Ca * (D.R.m : ℝ) ^ 2)) * orbSq ((bdOf I.toInputs hok).L τ) ((bdOf I.toInputs hok).f τ) (ptLoc D τ w)`. Introduce `τ`. Take `⟨h1, h2, h3, h4⟩` from `hloc τ`. Use `(I.hJ τ (g τ) (p τ) h1 (θ' τ) h2 (νR τ) h3).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← h4]`. Use `gcongr`. Conclude with `orbSqO_le_bdOf I.toInputs hok hka τ (p τ)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hplace τ`.
+
+Use `_ = ENNReal.ofReal (Cfac * ∏ τ, (I.K τ * large₂.sc.b ^ (Ca * (D.R.m : ℝ) ^ 2))) * JSq D (bdOf I.toInputs hok) w := by`. Rewrite using `[Finset.prod_mul_distrib, ENNReal.ofReal_mul hCfac, ENNReal.ofReal_prod_of_nonneg (fun τ _ => hc τ), mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem jointAmplitude_bound_of_local {τ₀ Rw I₀ H H₁ : Type} [Fintype I₀] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] (X : Formalism.FourierDecayAlt.PB.Terms τ₀ Rw I₀ H H₁)
     {Cl Nu : Type} (N : Formalism.FourierDecayAlt.PN.NGData τ₀ D.host.E D.R.rS Cl Nu) {large₂ : SizeData₂ D} {C1 Ca Ch Cg b : ℝ}
@@ -235,6 +289,9 @@ theorem jointAmplitude_bound_of_local {τ₀ Rw I₀ H H₁ : Type} [Fintype I�
         rw [Finset.prod_mul_distrib, ENNReal.ofReal_mul hCfac, ENNReal.ofReal_prod_of_nonneg (fun τ _ => hc τ), mul_assoc]
         rfl
 
+/- English proof (translation)
+Rewrite using `[jSqG_bdOf, ENNReal.ofReal_prod_of_nonneg (fun τ _ => (I.hK τ).le), ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_le_prod' fun τ _ => I.hMM τ (I.sec τ) (I.sec_spec τ)`.
+-/
 theorem jSqG_le_MM {large₂ : SizeData₂ D} {C1 Ca Ch Cg b : ℝ} {u u' : D.what₂.Word} {θ : ℝ} {hT : 0 < Tr D u}
     {hT' : 0 < Tr D u'} (I : AmpIn large₂ C1 Ca u u' θ hT hT')
     (hok : ∀ τ, LocOk D Ch Cg (I.L τ) (lamSH D.R (D.hc τ)) (kaRe D) b (kaRe D)) :
@@ -256,6 +313,9 @@ def PtFacts {D : D7} {X : HidaSetting D} (Y : Full X) (u u' : D.what₂.Word) : 
   ∀ t ∈ (Y.tO u u').ngSet, (Y.tO u u').vec t ≠ 0 →
     Formalism.L2.SG.ThmBUse.IsRowPt D (D.mem u).A.T (D.mem u').A.T (Formalism.L2.SG.PairVal.ptOf t.toTerm)
 
+/- English proof (translation)
+Introduce and unpack `γ ⟨c, ν, t, ht, hv, -, hpt, -⟩`. Conclude with `⟨Formalism.L2.SG.PairVal.ptOf t.toTerm, hpt, h t ht hv⟩`.
+-/
 theorem point_amplitude_relation_normalized {D : D7} {X : HidaSetting D} (Y : Full X) (u u' : D.what₂.Word) (h : PtFacts Y u u')
     (νL νB : X.B.I.Ginf → Measure X.B.I.Ginf) (ng : Formalism.FourierDecayAlt.PN.Pts D.host.E D.R.rS → ℝ) :
     Formalism.L2.SG.ThmBUse.PtTie (Y.tO u u') (NOf2 Y u u' νL νB ng) (D.mem u).A.T (D.mem u').A.T := by
@@ -333,6 +393,9 @@ def ampInOf {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT C0 C1 Ca : ℝ}
     hMM := fun τ μsec hs => ((h τ).choose_spec.choose_spec.2.2.1 μsec hs).2,
     hJ := fun τ => (h τ).choose_spec.choose_spec.2.2.2 }
 
+/- English proof (translation)
+Establish `h1` using `dimS_eq D.R`. Establish `h2` using `D.R.two_le_m`. Unfold `Ranks.r at h1`. Establish `h3 : 2 * D.R.rS + 2 = D.R.m` using `by omega`. Conclude with `h3` after adjusting the coercions.
+-/
 theorem m_eq' (D : D7) : ((2 * D.R.rS + 2 : ℕ) : ℝ) = (D.R.m : ℝ) := by
   have h1 := dimS_eq D.R
   have h2 := D.R.two_le_m
@@ -340,15 +403,26 @@ theorem m_eq' (D : D7) : ((2 * D.R.rS + 2 : ℕ) : ℝ) = (D.R.m : ℝ) := by
   have h3 : 2 * D.R.rS + 2 = D.R.m := by omega
   exact_mod_cast h3
 
+/- English proof (translation)
+Rewrite using `[← Nat.card_eq_fintype_card, Nat.card_congr D.eTau]`. Conclude with `(Formalism.BasicNotions.factCardPsi D.R D.host).1`.
+-/
 theorem card_Tau (D : D7) : Fintype.card D.what₂.Tau = D.R.f := by
   rw [← Nat.card_eq_fintype_card, Nat.card_congr D.eTau]
   exact (Formalism.BasicNotions.factCardPsi D.R D.host).1
 
+/- English proof (translation)
+Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, h24, _⟩` from `hH.1`. Conclude with `h24`.
+-/
 theorem cl_le_m {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT C0 : ℝ} (hH : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) :
     Cl ≤ (D.R.m : ℝ) := by
   obtain ⟨_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, h24, _⟩ := hH.1
   exact h24
 
+/- English proof (translation)
+Establish `hP : 0 ≤ f * L` using `mul_nonneg hf hL`. Establish `hm2 : m ^ 2 ≤ m ^ 5` using `pow_le_pow_right₀ hm (by norm_num)`. Establish `hm5 : 0 ≤ m ^ 5` using `by positivity`. Establish `hm2' : 0 ≤ m ^ 2` using `by positivity`. Establish `h1 : Ca * m ^ 2 ≤ |Ca| * m ^ 5` using `(mul_le_mul_of_nonneg_right (le_abs_self Ca) hm2').trans (mul_le_mul_of_nonneg_left hm2 (abs_nonneg _))`.
+
+Establish `h2 : Cn * m ^ 2 ≤ |Cn| * m ^ 5` using `(mul_le_mul_of_nonneg_right (le_abs_self Cn) hm2').trans (mul_le_mul_of_nonneg_left hm2 (abs_nonneg _))`. Establish `h3 : Cb * Cβ * m ^ 5 ≤ max 0 Cb * Cβ * m ^ 5` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_max_right 0 Cb) hβ) hm5`. Establish `h4 : Ca * m ^ 2 + Cb * Cβ * m ^ 5 + Cn * m ^ 2 ≤ (max 0 Cb * Cβ + |Ca| + |Cn|) * m ^ 5`. Use polynomial arithmetic with `[h1, h2, h3]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem expo_le (L f m Ca Cn Cb Cβ : ℝ) (hL : 0 ≤ L) (hf : 0 ≤ f) (hm : 1 ≤ m) (hβ : 0 ≤ Cβ) :
     Ca * m ^ 2 * f * L + Cb * m ^ 5 * f * (Cβ * L) + Cn * m ^ 2 * f * L ≤
       (max 0 Cb * Cβ + |Ca| + |Cn|) * m ^ 5 * f * L := by
@@ -369,6 +443,19 @@ theorem expo_le (L f m Ca Cn Cb Cβ : ℝ) (hL : 0 ≤ L) (hf : 0 ≤ f) (hm : 1
     _ ≤ ((max 0 Cb * Cβ + |Ca| + |Cn|) * m ^ 5) * (f * L) := mul_le_mul_of_nonneg_right h4 hP
     _ = (max 0 Cb * Cβ + |Ca| + |Cn|) * m ^ 5 * f * L := by ring
 
+/- English proof (translation)
+Establish `hb1 : 1 < large₂.sc.b` using `by unfold Scale.b; exact Real.one_lt_exp_iff.2 (by`. Use `large₂.sc.one_lt_alt` as an intermediate fact. Unfold `Scale.L`. Conclude with `lt_of_lt_of_le zero_lt_one (Real.one_le_rpow this.le large₂.sc.eps_pos.le))`. Establish `hb0 : 0 < large₂.sc.b` using `by linarith`.
+
+Establish `hlog : 0 ≤ Real.log large₂.sc.b` using `(Real.log_pos hb1).le`. Establish `hcard : (Fintype.card D.what₂.Tau : ℝ) = D.R.f` using `by exact_mod_cast card_Tau D`. Establish `hm` using `m_eq' D`. Use `set c : ℝ := large₂.sc.b ^ (Ca * (D.R.m : ℝ) ^ 2) with hc`. Establish `hc0 : 0 < c` using `Real.rpow_pos_of_pos hb0 _`.
+
+Establish `hK0 : 0 ≤ ∏ τ, I.K τ` using `Finset.prod_nonneg fun τ _ => (I.hK τ).le`. Establish `hprod : ∏ τ, (I.K τ * c) = (∏ τ, I.K τ) * c ^ Fintype.card D.what₂.Tau`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`. Use `set E : ℝ := Real.exp (Cb * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 5 * (Fintype.card D.what₂.Tau : ℝ) * Real.log (large₂.sc.b ^ Cβ)) with hE`. Use `set B : ℝ := large₂.sc.b ^ (Cn * (D.R.m : ℝ) ^ 2 * D.R.f) with hB`.
+
+Establish `hcpow : 0 ≤ c ^ Fintype.card D.what₂.Tau` using `pow_nonneg hc0.le _`. Establish `hMM` using `jSqG_le_MM I hok`. Establish `hreal : c ^ Fintype.card D.what₂.Tau * E * B ≤ Real.exp ((max 0 Cb * Cβ + |Ca| + |Cn|) * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 5 * D.R.f * Real.log large₂.sc.b)`. Rewrite using `[hc, hE, hB, Real.log_rpow hb0, Real.rpow_def_of_pos hb0, Real.rpow_def_of_pos hb0, ← Real.exp_nat_mul, ← Real.exp_add, ← Real.exp_add, Real.exp_le_exp, hcard, hm]`. Use `expo_le (Real.log large₂.sc.b) (D.R.f : ℝ) (D.R.m : ℝ) Ca Cn Cb Cβ hlog (Nat.cast_nonneg _) (by have := D.R.two_le_m; exact_mod_cast (by omega : 1 ≤ D.R.m)) hβ` as an intermediate fact.
+
+Use polynomial arithmetic with `[this]`. Unfold `Formalism.L2.SG.ThmBUse.NormTie`. Rewrite using `[one_mul, hprod, ENNReal.ofReal_mul hCfac, ENNReal.ofReal_mul hK0]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.ofReal_mul hcpow, ← ENNReal.ofReal_mul (mul_nonneg hcpow (Real.exp_pos _).le), ← mul_assoc]`.
+
+Use `_ ≤ _ := ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_right hreal hIre)`.
+-/
 theorem normTie_bdOf {large₂ : SizeData₂ D} {C1 Ca Ch Cg Cβ Cb Cn Cfac Ire : ℝ} {u u' : D.what₂.Word} {θ : ℝ}
     {hT : 0 < Tr D u} {hT' : 0 < Tr D u'} (I : AmpIn large₂ C1 Ca u u' θ hT hT')
     (hok : ∀ τ, LocOk D Ch Cg (I.L τ) (lamSH D.R (D.hc τ)) (kaRe D) (large₂.sc.b ^ Cβ) (kaRe D))
@@ -415,6 +502,13 @@ theorem normTie_bdOf {large₂ : SizeData₂ D} {C1 Ca Ch Cg Cβ Cb Cn Cfac Ire 
           ← mul_assoc]
     _ ≤ _ := ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_right hreal hIre)
 
+/- English proof (translation)
+Take `⟨hIre, θ, Cc, hBs, hθ0, hθw, hloc, Cfac, hCfac, hJF, hNF⟩` from `hRow`. Establish `hWg : ∀ τ, GoodW D τ u u' θ (WX Cc u u' τ)` using `fun τ => goodW_of Cc u u' τ (hloc τ).1 (hloc τ).2.1 (hloc τ).2.2.1 (hloc τ).2.2.2.1 (hloc τ).2.2.2.2.1`. Establish `hAg : ∀ τ, GoodS D (lamD D τ) (AX hBs u u' τ)` using `fun τ => goodS_of hBs u u' τ (hloc τ).2.2.2.2.2`. Establish `hv : 0 < D.host.v`. Unfold `Formalism.BasicNotions.Host.v Formalism.BasicNotions.Host.rdE`.
+
+Establish `h : (0 : ℝ) < |(NumberField.discr D.host.E : ℝ)|` using `abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero D.host.E)`. Use `Real.rpow_pos_of_pos h ((1 : ℝ) / (Module.finrank ℚ D.host.E : ℝ))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hS` using `hStd hH`. Establish `hF` using `hTF hH`.
+
+Set `I : AmpIn large₂ C1 Ca u u' θ hT hT'` to `ampInOf hAmp hH hTT hθw hT hT' (WX Cc u u') (AX hBs u u') hWg hAg`. Establish `hok : ∀ τ, LocOk D Ch Cs (I.L τ) (lamSH D.R (D.hc τ)) (kaRe D) (large₂.sc.b ^ Cβ) (kaRe D)` using `fun τ => locOk_locB D τ u u' θ (WX Cc u u' τ) (AX hBs u u' τ) (hWg τ) (hAg τ) hT hT' hka hv hθ0 (hS τ u u').1 (hF u) (hF u')`. Establish `hCj : 0 ≤ Cfac * ∏ τ, (I.K τ * large₂.sc.b ^ (Ca * (D.R.m : ℝ) ^ 2))` using `mul_nonneg hCfac (Finset.prod_nonneg fun τ _ => mul_nonneg (I.hK τ).le (Real.rpow_nonneg (by unfold Scale.b; positivity) _))`. Conclude with `⟨bdOf I.toInputs hok, 1, _, zero_le_one, hCj, gaps_bdOf I.toInputs hok (fun τ => (hS τ u u').2) hCs le_rfl, point_amplitude_relation_normalized Y u u' hpt νL ν ng, Formalism.L2.SG.ThmBUse.weight_normalized Formalism.L2.SG.Pf.weightConclusion Y u u' νL ν ng A, jointAmplitude_bound …`.
+-/
 theorem normalized_amplitude_hypotheses_hold {large₂ : SizeData₂ D} {X : HidaSetting D} (Y : Full X) (u u' : D.what₂.Word)
     {C' Cl Cg cb Cw cT CT C0 C1 Ca Ch Cs Cβ Cb Cn Ire : ℝ} (A : ℕ)
     (hH : Cnt.Hyp0 D large₂ C' Cl Cg cb Cw cT CT C0) (hTT : HypTT D u u') (hT : 0 < Tr D u) (hT' : 0 < Tr D u')
@@ -450,6 +544,11 @@ theorem normalized_amplitude_hypotheses_hold {large₂ : SizeData₂ D} {X : Hid
     jointAmplitude_bound_of_local (Y.tO u u') (NOf2 Y u u' νL ν ng) I hok hka hCfac (hJF νL ng),
     normTie_bdOf I hok hCfac hIre hβ (hNF I.sec I.sec_spec)⟩
 
+/- English proof (translation)
+Take `⟨-, hpu, hpu', h3u, h3u', -, -, -, -, -, -, -, hmod⟩` from `h`. Use `⟨hpu, hpu', h3u, h3u', ?_⟩` and prove the remaining obligations. Unfold `Int.ModEq`. Establish `e : (D.mem u).A.T % (D.host.g 0 * D.host.g 1) = (D.mem u').A.T % (D.host.g 0 * D.host.g 1)` using `hmod`. Establish `e2` using `congrArg (fun n : ℕ => (n : ℤ)) e`.
+
+Simplify `e2` using `[Int.natCast_mod]`.
+-/
 theorem hypTT_of {u u' : D.what₂.Word} (h : Formalism.MainNotions.S.Cnt.Stand D u u') : HypTT D u u' := by
   obtain ⟨-, hpu, hpu', h3u, h3u', -, -, -, -, -, -, -, hmod⟩ := h
   refine ⟨hpu, hpu', h3u, h3u', ?_⟩
@@ -458,11 +557,33 @@ theorem hypTT_of {u u' : D.what₂.Word} (h : Formalism.MainNotions.S.Cnt.Stand 
   have e2 := congrArg (fun n : ℕ => (n : ℤ)) e
   simpa [Int.natCast_mod] using e2
 
+/- English proof (translation)
+Take `⟨-, -, -, h3u, h3u', -⟩` from `h`. Conclude with `⟨Nat.cast_pos.2 (show 0 < (D.mem u).A.T from lt_of_lt_of_le (by norm_num) h3u), Nat.cast_pos.2 (show 0 < (D.mem u').A.T from lt_of_lt_of_le (by norm_num) h3u')⟩`.
+-/
 theorem tr_pos {u u' : D.what₂.Word} (h : Formalism.MainNotions.S.Cnt.Stand D u u') : 0 < Tr D u ∧ 0 < Tr D u' := by
   obtain ⟨-, -, -, h3u, h3u', -⟩ := h
   exact ⟨Nat.cast_pos.2 (show 0 < (D.mem u).A.T from lt_of_lt_of_le (by norm_num) h3u),
     Nat.cast_pos.2 (show 0 < (D.mem u').A.T from lt_of_lt_of_le (by norm_num) h3u')⟩
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0 A`. Take `⟨C1, Cn, c₀, d₀, hR2⟩` from `hR Cg cb Cw cT CT C0`. Take `⟨Ca, -, a₀, b₀, hA2⟩` from `hA Cg cb Cw cT CT C0 C1`. Take `⟨e₀, f₀, hTF2⟩` from `hTF Cg cb Cw cT CT C0`. Take `⟨g₀, h₀, hP2⟩` from `hP Cg cb Cw cT CT C0`.
+
+Take `⟨Cb, Cg₀, hB1⟩` from `hB (A : ℝ) (|CT| + 1 / 8 + 2 * |Cg|)`. Establish `hCB : 0 ≤ max 0 Cb * max 2 Cw + |Ca| + |Cn|`. Establish `h1 : 0 ≤ max 0 Cb` using `le_max_left _ _`. Establish `h2 : 0 ≤ max 2 Cw` using `le_trans (by norm_num) (le_max_left _ _)`. Use `mul_nonneg h1 h2` as an intermediate fact.
+
+Check the signs of the components of the expression. Use `⟨max 0 Cb * max 2 Cw + |Ca| + |Cn|, hCB, max a₀ (max c₀ (max e₀ g₀)), max 8 (max (128 * max Cg₀ 0) (max b₀ (max d₀ (max f₀ h₀)))), ?_⟩` and prove the remaining obligations. Introduce `C' Cl hC' hCl D large₂ X Y u u' hctx hb X0 ψ hBT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBO ν hpin νL ng`. Establish `hC'a : a₀ ≤ C'` using `le_trans (le_max_left _ _) hC'`. Establish `hC'c : c₀ ≤ C'` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hC'`.
+
+Establish `hC'e : e₀ ≤ C'` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) hC'`. Establish `hC'g : g₀ ≤ C'` using `le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_right _ _)) hC'`. Establish `hCl8 : 8 ≤ Cl` using `le_trans (le_max_left _ _) hCl`. Establish `hCls : 128 * max Cg₀ 0 ≤ Cl` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hCl`. Establish `hClb : b₀ ≤ Cl` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) hCl`.
+
+Establish `hCld : d₀ ≤ Cl` using `le_trans (le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) (le_max_right _ _)) hCl`. Establish `hClf : f₀ ≤ Cl` using `le_trans (le_trans (le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) (le_max_right _ _)) (le_max_right _ _)) hCl`. Establish `hClh : h₀ ≤ Cl` using `le_trans (le_trans (le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_right _ _)) (le_max_right _ _)) (le_max_right _ _)) hCl`. Establish `hH : Cnt.Hyp0 D large₂ C' Cl Cg cb Cw cT CT C0` using `hctx.1`. Establish `hTT` using `hypTT_of hctx.2.1`.
+
+Take `⟨hT, hT'⟩` from `tr_pos hctx.2.1`. Establish `hm` using `cl_le_m hH`. Establish `hs0 : 0 ≤ max Cg₀ 0` using `le_max_right _ _`. Establish `hmR : (128 : ℝ) * |max Cg₀ 0| ≤ D.R.m` using `by rw [abs_of_nonneg hs0]; linarith`. Establish `hmR' : |max Cg₀ 0| ≤ D.R.m` using `by rw [abs_of_nonneg hs0]; linarith`.
+
+Establish `hβ2 : (2 : ℝ) ≤ max 2 Cw` using `le_max_left _ _`. Establish `hCh0 : (0 : ℝ) ≤ |CT| + 1 / 8 + 2 * |Cg|` using `by positivity`. Establish `hChT : CT ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|)`. Establish `h1 : |CT| + 1 / 8 + 2 * |Cg| ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|)` using `by nlinarith`. Establish `h2 : CT ≤ |CT| + 1 / 8 + 2 * |Cg|` using `by have := le_abs_self CT; have := abs_nonneg Cg; linarith`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hChg : 1 / 8 + 2 * Cg ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|)`. Establish `h1 : |CT| + 1 / 8 + 2 * |Cg| ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|)` using `by nlinarith`. Establish `h2 : 1 / 8 + 2 * Cg ≤ |CT| + 1 / 8 + 2 * |Cg|` using `by have := le_abs_self Cg; have := abs_nonneg CT; linarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hStd` using `Formalism.MainNotions.BridgeLemma.stdOfHyp_rec D large₂ C' Cl Cg cb Cw cT CT C0 (|CT| + 1 / 8 + 2 * |Cg|) (max Cg₀ 0) (max Cg₀ 0) (max 2 Cw) hCl8 hCh0 hβ2 (le_max_right _ _) hChT hChg hmR hmR'`. Establish `hka` using `(Formalism.MainNotions.BridgeLemma.std_kaS hH hCl8).1`. Establish `hRow` using `hR2 C' Cl hC'c hCld D large₂ X Y u u' hctx hb X0 ψ hBT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBO ν hpin`. Establish `hTB : 0 ≤ Real.exp ((max 0 Cb * max 2 Cw + |Ca| + |Cn|) * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 5 * D.R.f * Real.log large₂.sc.b) * Ire` using `mul_nonneg (Real.exp_pos _).le hRow.1`. Conclude with `Formalism.L2.SG.ThmBUse.point_sum_of_theoremB (Y.tO u u') (NOf2 Y u u' νL ν ng) (hB1 (max Cg₀ 0) (le_max_left _ _) D) (fun γ => Formalism.L2.SG.ThmBUse.J2of_nonneg' Y u u' ν γ) hTB (normalized_amplitude_hypotheses_hold Y u u' A hH hTT hT hT' (hA2 C' Cl hC'a hClb D large₂) hStd (h …`.
+-/
 theorem stepThmBPinnedC_of (hB : Formalism.L2.SG.ThmBUse.JointNormBoundUniform) (hA : AmpUnif) (hTF : TFrameUnif) (hP : PtUnif)
     (hR : RowBDataUnif) : StepThmBPinnedC := by
   intro Cg cb Cw cT CT C0 A
@@ -534,6 +655,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hWg : ∀ τ, GoodW D τ u u' θ (WX Cc u u' τ)` using `fun τ => goodW_of Cc u u' τ (hloc τ).1 (hloc τ).2.1 (hloc τ).2.2.1 (hloc τ).2.2.2.1 (hloc τ).2.2.2.2.1`. Establish `hAg : ∀ τ, GoodS D (lamD D τ) (AX hBs u u' τ)` using `fun τ => goodS_of hBs u u' τ (hloc τ).2.2.2.2.2`. Establish `hv : 0 < D.host.v`. Unfold `Formalism.BasicNotions.Host.v Formalism.BasicNotions.Host.rdE`. Establish `h : (0 : ℝ) < |(NumberField.discr D.host.E : ℝ)|` using `abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero D.host.E)`.
+
+Use `Real.rpow_pos_of_pos h ((1 : ℝ) / (Module.finrank ℚ D.host.E : ℝ))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hS` using `hStd hH`. Establish `hF` using `hTF hH`. Set `I : AmpIn large₂ C1 Ca u u' θ hT hT'` to `ampInOf hAmp hH hTT hθw hT hT' (WX Cc u u') (AX hBs u u') hWg hAg`.
+
+Establish `hok : ∀ τ, LocOk D Ch Cs (I.L τ) (lamSH D.R (D.hc τ)) (kaRe D) (large₂.sc.b ^ Cβ) (kaRe D)` using `fun τ => locOk_locB D τ u u' θ (WX Cc u u' τ) (AX hBs u u' τ) (hWg τ) (hAg τ) hT hT' hka hv hθ0 (hS τ u u').1 (hF u) (hF u')`. Establish `hCj : 0 ≤ Cfac * ∏ τ, (I.K τ * large₂.sc.b ^ (Ca * (D.R.m : ℝ) ^ 2))` using `mul_nonneg hCfac (Finset.prod_nonneg fun τ _ => mul_nonneg (I.hK τ).le (Real.rpow_nonneg (by unfold Scale.b; positivity) _))`. Conclude with `⟨bdOf I.toInputs hok, 1, _, zero_le_one, hCj, gaps_bdOf I.toInputs hok (fun τ => (hS τ u u').2) hCs le_rfl, hpt, hwt, jointAmplitude_bound_of_local XT N I hok hka hCfac hJF, normTie_bdOf I hok hCfac hIre hβ (hNF I.sec I.sec_spec)⟩`.
+-/
 theorem ties_core {τ₀ Rw I₀ H H₁ : Type} [Fintype I₀] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] (XT : Formalism.FourierDecayAlt.PB.Terms τ₀ Rw I₀ H H₁)
     {Cl' Nu : Type} (N : Formalism.FourierDecayAlt.PN.NGData τ₀ D.host.E D.R.rS Cl' Nu)
@@ -583,6 +711,9 @@ def PtFactsG {X : HidaSetting D} (Y : Full X) (u : D.what₂.Word) : Prop :=
   ∀ t ∈ (Y.tO u u).genSet, (Y.tO u u).vec t ≠ 0 →
     Formalism.L2.SG.ThmBUse.IsRowPt D (D.mem u).A.T (D.mem u).A.T (Formalism.L2.SG.PairVal.ptOf t.toTerm)
 
+/- English proof (translation)
+Introduce and unpack `γ ⟨c, ν, t, ht, hv, -, hpt, -⟩`. Rewrite `ht` using `[genT_ngSet]`. Conclude with `⟨Formalism.L2.SG.PairVal.ptOf t.toTerm, hpt, h t ht hv⟩`.
+-/
 theorem ptTie_NOfG {X : HidaSetting D} (Y : Full X) (u : D.what₂.Word) (h : PtFactsG Y u)
     (νL νB : X.B.I.Ginf → Measure X.B.I.Ginf) (ng : Formalism.FourierDecayAlt.PN.Pts D.host.E D.R.rS → ℝ) :
     Formalism.L2.SG.ThmBUse.PtTie (genT (Y.tO u u)) (NOfG Y u νL νB ng) (D.mem u).A.T (D.mem u).A.T := by
@@ -590,6 +721,9 @@ theorem ptTie_NOfG {X : HidaSetting D} (Y : Full X) (u : D.what₂.Word) (h : Pt
   rw [genT_ngSet] at ht
   exact ⟨Formalism.L2.SG.PairVal.ptOf t.toTerm, hpt, h t ht hv⟩
 
+/- English proof (translation)
+Introduce `γ w _ hw hb`. Substitute `hw` using the available equality. Conclude with `Formalism.L2.SG.Pf.weightConclusion D _ _ A w hb`.
+-/
 theorem wtTie_NOfG {X : HidaSetting D} (Y : Full X) (u : D.what₂.Word) (νL νB : X.B.I.Ginf → Measure X.B.I.Ginf)
     (ng : Formalism.FourierDecayAlt.PN.Pts D.host.E D.R.rS → ℝ) (A : ℕ) :
     Formalism.L2.SG.ThmBUse.WtTie (genT (Y.tO u u)) (NOfG Y u νL νB ng) (D.mem u).A.T (D.mem u).A.T A 1 := by
@@ -653,6 +787,25 @@ def StepThmBG : Prop :=
         Formalism.FourierDecayAlt.PN.PointSumInput (genT (Y.tO u u)) (NOfG Y u νL ν ng) (A * (D.R.rS + 1) ^ 2)
           (Real.exp (CB * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 5 * D.R.f * Real.log large₂.sc.b) * Ire)
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0 A`. Take `⟨C1, Cn, c₀, d₀, hR2⟩` from `hR Cg cb Cw cT CT C0`. Take `⟨Ca, -, a₀, b₀, hA2⟩` from `hA Cg cb Cw cT CT C0 C1`. Take `⟨e₀, f₀, hTF2⟩` from `hTF Cg cb Cw cT CT C0`. Take `⟨g₀, h₀, hP2⟩` from `hP Cg cb Cw cT CT C0`.
+
+Take `⟨Cb, Cg₀, hB1⟩` from `hB (A : ℝ) (|CT| + 1 / 8 + 2 * |Cg|)`. Establish `hCB : 0 ≤ max 0 Cb * max 2 Cw + |Ca| + |Cn|`. Establish `h1 : 0 ≤ max 0 Cb` using `le_max_left _ _`. Establish `h2 : 0 ≤ max 2 Cw` using `le_trans (by norm_num) (le_max_left _ _)`. Use `mul_nonneg h1 h2` as an intermediate fact.
+
+Check the signs of the components of the expression. Use `⟨max 0 Cb * max 2 Cw + |Ca| + |Cn|, hCB, max a₀ (max c₀ (max e₀ g₀)), max 8 (max (128 * max Cg₀ 0) (max b₀ (max d₀ (max f₀ h₀)))), ?_⟩` and prove the remaining obligations. Introduce `C' Cl hC' hCl D large₂ X Y u hctx hb X0 ψ hBT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBO ν hpin νL ng`. Establish `hC'a : a₀ ≤ C'` using `le_trans (le_max_left _ _) hC'`. Establish `hC'c : c₀ ≤ C'` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hC'`.
+
+Establish `hC'e : e₀ ≤ C'` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) hC'`. Establish `hC'g : g₀ ≤ C'` using `le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_right _ _)) hC'`. Establish `hCl8 : 8 ≤ Cl` using `le_trans (le_max_left _ _) hCl`. Establish `hCls : 128 * max Cg₀ 0 ≤ Cl` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hCl`. Establish `hClb : b₀ ≤ Cl` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) hCl`.
+
+Establish `hCld : d₀ ≤ Cl` using `le_trans (le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) (le_max_right _ _)) hCl`. Establish `hClf : f₀ ≤ Cl` using `le_trans (le_trans (le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) (le_max_right _ _)) (le_max_right _ _)) hCl`. Establish `hClh : h₀ ≤ Cl` using `le_trans (le_trans (le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_right _ _)) (le_max_right _ _)) (le_max_right _ _)) hCl`. Establish `hH : Cnt.Hyp0 D large₂ C' Cl Cg cb Cw cT CT C0` using `hctx.1`. Establish `hTT` using `hypTT_of hctx.2.1`.
+
+Take `⟨hT, -⟩` from `tr_pos hctx.2.1`. Establish `hm` using `cl_le_m hH`. Establish `hs0 : 0 ≤ max Cg₀ 0` using `le_max_right _ _`. Establish `hmR : (128 : ℝ) * |max Cg₀ 0| ≤ D.R.m` using `by rw [abs_of_nonneg hs0]; linarith`. Establish `hmR' : |max Cg₀ 0| ≤ D.R.m` using `by rw [abs_of_nonneg hs0]; linarith`.
+
+Establish `hβ2 : (2 : ℝ) ≤ max 2 Cw` using `le_max_left _ _`. Establish `hCh0 : (0 : ℝ) ≤ |CT| + 1 / 8 + 2 * |Cg|` using `by positivity`. Establish `hChT : CT ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|)`. Establish `h1 : |CT| + 1 / 8 + 2 * |Cg| ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|)` using `by nlinarith`. Establish `h2 : CT ≤ |CT| + 1 / 8 + 2 * |Cg|` using `by have := le_abs_self CT; have := abs_nonneg Cg; linarith`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hChg : 1 / 8 + 2 * Cg ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|)`. Establish `h1 : |CT| + 1 / 8 + 2 * |Cg| ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|)` using `by nlinarith`. Establish `h2 : 1 / 8 + 2 * Cg ≤ |CT| + 1 / 8 + 2 * |Cg|` using `by have := le_abs_self Cg; have := abs_nonneg CT; linarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hStd` using `Formalism.MainNotions.BridgeLemma.stdOfHyp_rec D large₂ C' Cl Cg cb Cw cT CT C0 (|CT| + 1 / 8 + 2 * |Cg|) (max Cg₀ 0) (max Cg₀ 0) (max 2 Cw) hCl8 hCh0 hβ2 (le_max_right _ _) hChT hChg hmR hmR'`. Establish `hka` using `(Formalism.MainNotions.BridgeLemma.std_kaS hH hCl8).1`. Take `⟨hIre, θ, Cc, hBs, hθ0, hθw, hloc, Cfac, hCfac, hJF, hNF⟩` from `hR2 C' Cl hC'c hCld D large₂ X Y u hctx hb X0 ψ hBT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBO ν hpin`. Establish `hTB : 0 ≤ Real.exp ((max 0 Cb * max 2 Cw + |Ca| + |Cn|) * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 5 * D.R.f * Real.log large₂.sc.b) * Ire` using `mul_nonneg (Real.exp_pos _).le hIre`. Conclude with `Formalism.L2.SG.ThmBUse.point_sum_of_theoremB (genT (Y.tO u u)) (NOfG Y u νL ν ng) (hB1 (max Cg₀ 0) (le_max_left _ _) D) (fun γ => Formalism.L2.SG.ThmBUse.J2of_nonneg' Y u u ν γ) hTB (ties_core (genT (Y.tO u u)) (NOfG Y u νL ν ng) u u A hH hTT hT hT (hA2 C' Cl hC'a hClb D large₂) …`.
+-/
 theorem stepThmBG_of (hB : Formalism.L2.SG.ThmBUse.JointNormBoundUniform) (hA : AmpUnif) (hTF : TFrameUnif) (hP : PtUnifG)
     (hR : RowBDataUnifG) : StepThmBG := by
   intro Cg cb Cw cT CT C0 A
@@ -724,6 +877,25 @@ open Formalism.MainNotions.S.Lat Formalism.L2.SG.HidaSetting Formalism.L2.SG.Poi
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0 A`. Take `⟨C1, Cn, c₀, d₀, hR2⟩` from `hR Cg cb Cw cT CT C0`. Take `⟨Ca, -, a₀, b₀, hA2⟩` from `hA Cg cb Cw cT CT C0 C1`. Take `⟨g₀, h₀, hP2⟩` from `hP Cg cb Cw cT CT C0`. Take `⟨Cb, Cg₀, hB1⟩` from `hB (A : ℝ) (|CT| + 1 / 8 + 2 * |Cg|)`.
+
+Establish `hCB : 0 ≤ max 0 Cb * max 2 Cw + |Ca| + |Cn|`. Establish `h1 : 0 ≤ max 0 Cb` using `le_max_left _ _`. Establish `h2 : 0 ≤ max 2 Cw` using `le_trans (by norm_num) (le_max_left _ _)`. Use `mul_nonneg h1 h2` as an intermediate fact. Check the signs of the components of the expression.
+
+Use `⟨max 0 Cb * max 2 Cw + |Ca| + |Cn|, hCB, max a₀ (max c₀ g₀), max 8 (max (128 * max Cg₀ 0) (max b₀ (max d₀ h₀))), ?_⟩` and prove the remaining obligations. Introduce `C' Cl hC' hCl D large₂ X Y u u' hctx hb X0 ψ hBT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBO ν hpin νL ng`. Establish `hC'a : a₀ ≤ C'` using `le_trans (le_max_left _ _) hC'`. Establish `hC'c : c₀ ≤ C'` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hC'`. Establish `hC'g : g₀ ≤ C'` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hC'`.
+
+Establish `hCl8 : 8 ≤ Cl` using `le_trans (le_max_left _ _) hCl`. Establish `hCls : 128 * max Cg₀ 0 ≤ Cl` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hCl`. Establish `hClb : b₀ ≤ Cl` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) hCl`. Establish `hCld : d₀ ≤ Cl` using `le_trans (le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) (le_max_right _ _)) hCl`. Establish `hClh : h₀ ≤ Cl` using `le_trans (le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_right _ _)) (le_max_right _ _)) hCl`.
+
+Establish `hH : Cnt.Hyp0 D large₂ C' Cl Cg cb Cw cT CT C0` using `hctx.1`. Establish `hTT` using `hypTT_of hctx.2.1`. Take `⟨hT, hT'⟩` from `tr_pos hctx.2.1`. Establish `hm` using `cl_le_m hH`. Establish `hs0 : 0 ≤ max Cg₀ 0` using `le_max_right _ _`.
+
+Establish `hmR : (128 : ℝ) * |max Cg₀ 0| ≤ D.R.m` using `by rw [abs_of_nonneg hs0]; linarith`. Establish `hmR' : |max Cg₀ 0| ≤ D.R.m` using `by rw [abs_of_nonneg hs0]; linarith`. Establish `hβ2 : (2 : ℝ) ≤ max 2 Cw` using `le_max_left _ _`. Establish `hCh0 : (0 : ℝ) ≤ |CT| + 1 / 8 + 2 * |Cg|` using `by positivity`. Establish `hChT : CT ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|)`.
+
+Establish `h1 : |CT| + 1 / 8 + 2 * |Cg| ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|)` using `by nlinarith`. Establish `h2 : CT ≤ |CT| + 1 / 8 + 2 * |Cg|` using `by have := le_abs_self CT; have := abs_nonneg Cg; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hChg : 1 / 8 + 2 * Cg ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|)`. Establish `h1 : |CT| + 1 / 8 + 2 * |Cg| ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|)` using `by nlinarith`.
+
+Establish `h2 : 1 / 8 + 2 * Cg ≤ |CT| + 1 / 8 + 2 * |Cg|` using `by have := le_abs_self Cg; have := abs_nonneg CT; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hStd` using `Formalism.MainNotions.BridgeLemma.stdOfHyp_rec D large₂ C' Cl Cg cb Cw cT CT C0 (|CT| + 1 / 8 + 2 * |Cg|) (max Cg₀ 0) (max Cg₀ 0) (max 2 Cw) hCl8 hCh0 hβ2 (le_max_right _ _) hChT hChg hmR hmR'`. Establish `hka` using `(Formalism.MainNotions.BridgeLemma.std_kaS hH hCl8).1`. Establish `hRow` using `hR2 C' Cl hC'c hCld D large₂ X Y u u' hctx hb X0 ψ hBT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBO ν hpin`.
+
+Establish `hTB : 0 ≤ Real.exp ((max 0 Cb * max 2 Cw + |Ca| + |Cn|) * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 5 * D.R.f * Real.log large₂.sc.b) * Ire` using `mul_nonneg (Real.exp_pos _).le hRow.1`. Conclude with `Formalism.L2.SG.ThmBUse.point_sum_of_theoremB (Y.tO u u') (NOf2 Y u u' νL ν ng) (hB1 (max Cg₀ 0) (le_max_left _ _) D) (fun γ => Formalism.L2.SG.ThmBUse.J2of_nonneg' Y u u' ν γ) hTB (normalized_amplitude_hypotheses_hold Y u u' A hH hTT hT hT' (hA2 C' Cl hC'a hClb D large₂) hStd (f …`.
+-/
 theorem theoremB_fixed_induction_of_uniform (hB : Formalism.L2.SG.ThmBUse.JointNormBoundUniform) (hA : AmpUnif) (hP : PtUnif)
     (hR : RowBDataUnif) : StepThmBPinnedC := by
   intro Cg cb Cw cT CT C0 A
@@ -778,6 +950,25 @@ theorem theoremB_fixed_induction_of_uniform (hB : Formalism.L2.SG.ThmBUse.JointN
     (normalized_amplitude_hypotheses_hold Y u u' A hH hTT hT hT' (hA2 C' Cl hC'a hClb D large₂) hStd (fun _ => hctx.2.2.2.2.2.2.2.2.2)
       (hP2 C' Cl hC'g hClh D large₂ X Y u u' hctx) ν νL ng hRow hs0 hka (by linarith))
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0 A`. Take `⟨C1, Cn, c₀, d₀, hR2⟩` from `hR Cg cb Cw cT CT C0`. Take `⟨Ca, -, a₀, b₀, hA2⟩` from `hA Cg cb Cw cT CT C0 C1`. Take `⟨g₀, h₀, hP2⟩` from `hP Cg cb Cw cT CT C0`. Take `⟨Cb, Cg₀, hB1⟩` from `hB (A : ℝ) (|CT| + 1 / 8 + 2 * |Cg|)`.
+
+Establish `hCB : 0 ≤ max 0 Cb * max 2 Cw + |Ca| + |Cn|`. Establish `h1 : 0 ≤ max 0 Cb` using `le_max_left _ _`. Establish `h2 : 0 ≤ max 2 Cw` using `le_trans (by norm_num) (le_max_left _ _)`. Use `mul_nonneg h1 h2` as an intermediate fact. Check the signs of the components of the expression.
+
+Use `⟨max 0 Cb * max 2 Cw + |Ca| + |Cn|, hCB, max a₀ (max c₀ g₀), max 8 (max (128 * max Cg₀ 0) (max b₀ (max d₀ h₀))), ?_⟩` and prove the remaining obligations. Introduce `C' Cl hC' hCl D large₂ X Y u hctx hb X0 ψ hBT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBO ν hpin νL ng`. Establish `hC'a : a₀ ≤ C'` using `le_trans (le_max_left _ _) hC'`. Establish `hC'c : c₀ ≤ C'` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hC'`. Establish `hC'g : g₀ ≤ C'` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hC'`.
+
+Establish `hCl8 : 8 ≤ Cl` using `le_trans (le_max_left _ _) hCl`. Establish `hCls : 128 * max Cg₀ 0 ≤ Cl` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hCl`. Establish `hClb : b₀ ≤ Cl` using `le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) hCl`. Establish `hCld : d₀ ≤ Cl` using `le_trans (le_trans (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) (le_max_right _ _)) (le_max_right _ _)) hCl`. Establish `hClh : h₀ ≤ Cl` using `le_trans (le_trans (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) (le_max_right _ _)) (le_max_right _ _)) hCl`.
+
+Establish `hH : Cnt.Hyp0 D large₂ C' Cl Cg cb Cw cT CT C0` using `hctx.1`. Establish `hTT` using `hypTT_of hctx.2.1`. Take `⟨hT, -⟩` from `tr_pos hctx.2.1`. Establish `hm` using `cl_le_m hH`. Establish `hs0 : 0 ≤ max Cg₀ 0` using `le_max_right _ _`.
+
+Establish `hmR : (128 : ℝ) * |max Cg₀ 0| ≤ D.R.m` using `by rw [abs_of_nonneg hs0]; linarith`. Establish `hmR' : |max Cg₀ 0| ≤ D.R.m` using `by rw [abs_of_nonneg hs0]; linarith`. Establish `hβ2 : (2 : ℝ) ≤ max 2 Cw` using `le_max_left _ _`. Establish `hCh0 : (0 : ℝ) ≤ |CT| + 1 / 8 + 2 * |Cg|` using `by positivity`. Establish `hChT : CT ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|)`.
+
+Establish `h1 : |CT| + 1 / 8 + 2 * |Cg| ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|)` using `by nlinarith`. Establish `h2 : CT ≤ |CT| + 1 / 8 + 2 * |Cg|` using `by have := le_abs_self CT; have := abs_nonneg Cg; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hChg : 1 / 8 + 2 * Cg ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|)`. Establish `h1 : |CT| + 1 / 8 + 2 * |Cg| ≤ max 2 Cw * (|CT| + 1 / 8 + 2 * |Cg|)` using `by nlinarith`.
+
+Establish `h2 : 1 / 8 + 2 * Cg ≤ |CT| + 1 / 8 + 2 * |Cg|` using `by have := le_abs_self Cg; have := abs_nonneg CT; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hStd` using `Formalism.MainNotions.BridgeLemma.stdOfHyp_rec D large₂ C' Cl Cg cb Cw cT CT C0 (|CT| + 1 / 8 + 2 * |Cg|) (max Cg₀ 0) (max Cg₀ 0) (max 2 Cw) hCl8 hCh0 hβ2 (le_max_right _ _) hChT hChg hmR hmR'`. Establish `hka` using `(Formalism.MainNotions.BridgeLemma.std_kaS hH hCl8).1`. Take `⟨hIre, θ, Cc, hBs, hθ0, hθw, hloc, Cfac, hCfac, hJF, hNF⟩` from `hR2 C' Cl hC'c hCld D large₂ X Y u hctx hb X0 ψ hBT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBO ν hpin`.
+
+Establish `hTB : 0 ≤ Real.exp ((max 0 Cb * max 2 Cw + |Ca| + |Cn|) * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 5 * D.R.f * Real.log large₂.sc.b) * Ire` using `mul_nonneg (Real.exp_pos _).le hIre`. Conclude with `Formalism.L2.SG.ThmBUse.point_sum_of_theoremB (genT (Y.tO u u)) (NOfG Y u νL ν ng) (hB1 (max Cg₀ 0) (le_max_left _ _) D) (fun γ => Formalism.L2.SG.ThmBUse.J2of_nonneg' Y u u ν γ) hTB (ties_core (genT (Y.tO u u)) (NOfG Y u νL ν ng) u u A hH hTT hT hT (hA2 C' Cl hC'a hClb D large₂) …`.
+-/
 theorem theoremB_induction_of_uniform_bounds (hB : Formalism.L2.SG.ThmBUse.JointNormBoundUniform) (hA : AmpUnif) (hP : PtUnifG)
     (hR : RowBDataUnifG) : StepThmBG := by
   intro Cg cb Cw cT CT C0 A

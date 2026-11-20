@@ -17,12 +17,20 @@ variable (X : Data E r) (la : Wt X.Ψ r)
 noncomputable def perB : Module.Basis (Module.Free.ChooseBasisIndex ℤ (perL X la)) ℝ (X.Ψ → ℝ) :=
   (Module.Free.chooseBasis ℤ (perL X la)).ofZLatticeBasis ℝ (perL X la)
 
+/- English proof (translation)
+Rewrite using `[perB, Module.Basis.ofZLatticeBasis_span]`. Both sides reduce to the same expression.
+-/
 theorem perB_span : (Submodule.span ℤ (Set.range (perB X la))).toAddSubgroup = X.periods la := by
   rw [perB, Module.Basis.ofZLatticeBasis_span]
   rfl
 
 instance periods_countable : Countable (X.periods la) := inferInstanceAs (Countable (perL X la))
 
+/- English proof (translation)
+Use `⟨ZSpan.fundamentalDomain (perB X la), ZSpan.fundamentalDomain_measurableSet _, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `ZSpan.isAddFundamentalDomain (perB X la) volume`. Rewrite using `[← perB_span X la]`. Conclude with `h`. Conclude with `pos_iff_ne_zero.mpr (ZSpan.measure_fundamentalDomain_ne_zero _)`.
+
+Conclude with `(ZSpan.fundamentalDomain_isBounded _).measure_lt_top`.
+-/
 theorem fd_exists : ∃ D : Set (X.Ψ → ℝ), MeasurableSet D ∧
     IsAddFundamentalDomain (X.periods la) D volume ∧ 0 < volume D ∧ volume D < ⊤ := by
   refine ⟨ZSpan.fundamentalDomain (perB X la), ZSpan.fundamentalDomain_measurableSet _, ?_, ?_, ?_⟩
@@ -32,6 +40,11 @@ theorem fd_exists : ∃ D : Set (X.Ψ → ℝ), MeasurableSet D ∧
   · exact pos_iff_ne_zero.mpr (ZSpan.measure_fundamentalDomain_ne_zero _)
   · exact (ZSpan.fundamentalDomain_isBounded _).measure_lt_top
 
+/- English proof (translation)
+Use `⟨closure (ZSpan.fundamentalDomain (perB X la)), (ZSpan.fundamentalDomain_isBounded _).isCompact_closure, fun s => ?_⟩` and prove the remaining obligations. Use `⟨(ZSpan.floor (perB X la) s : X.Ψ → ℝ), ?_, subset_closure ?_⟩` and prove the remaining obligations. Rewrite using `[← perB_span X la]`. Conclude with `(ZSpan.floor (perB X la) s).prop`. Rewrite using `[← ZSpan.fract_apply]`.
+
+Conclude with `ZSpan.fract_mem_fundamentalDomain _ _`.
+-/
 theorem compact_reps : ∃ K : Set (X.Ψ → ℝ), IsCompact K ∧ ∀ s, ∃ p ∈ X.periods la, s - p ∈ K := by
   refine ⟨closure (ZSpan.fundamentalDomain (perB X la)),
     (ZSpan.fundamentalDomain_isBounded _).isCompact_closure, fun s => ?_⟩
@@ -49,6 +62,11 @@ variable (X : Data E r) (u : Fin 2 → Fin r → E)
 
 def e00 (s : X.Ψ → ℝ) : X.Ψ → Fin 2 → Fin 2 → ℂ := fun τ i k => if i = 0 ∧ k = 0 then (s τ : ℂ) else 0
 
+/- English proof (translation)
+Introduce `τ i k`. Unfold `e00`. Distinguish the cases in `h : i = 0 ∧ k = 0`. Take `⟨rfl, rfl⟩` from `h`. Simplify using the standard rewrite rules.
+
+Establish `h' : ¬ (k = 0 ∧ i = 0)` using `fun h2 => h ⟨h2.2, h2.1⟩`. Simplify using `[h, h']`.
+-/
 theorem diag_unit_family_hermitian (s : X.Ψ → ℝ) : IsHermFam (e00 X s) := by
   intro τ i k
   unfold e00
@@ -58,6 +76,11 @@ theorem diag_unit_family_hermitian (s : X.Ψ → ℝ) : IsHermFam (e00 X s) := b
   · have h' : ¬ (k = 0 ∧ i = 0) := fun h2 => h ⟨h2.2, h2.1⟩
     simp [h, h']
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Simplify using `only [Data.flow, Data.Zb]`. Use `congr 1`. Use extensionality with `a j`. Simplify using `[Data.flowMat, Data.zmat, e00, Fin.sum_univ_two, Data.emb, cR]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem flow_eq_Zb (s : X.Ψ → ℝ) (y : Frame X.Ψ r) :
     X.flow (u 0) (cR X s) y = X.Zb u (e00 X s) y := by
   funext τ
@@ -67,10 +90,34 @@ theorem flow_eq_Zb (s : X.Ψ → ℝ) (y : Frame X.Ψ r) :
   simp [Data.flowMat, Data.zmat, e00, Fin.sum_univ_two, Data.emb, cR]
   ring
 
+/- English proof (translation)
+Simplify using `[Data.pairR, e00, Fin.sum_univ_two, Complex.re_sum]`.
+-/
 theorem real_pairing_diag_unit (χ : X.Ψ → Fin 2 → Fin 2 → ℂ) (s : X.Ψ → ℝ) :
     X.pairR χ (e00 X s) = ∑ τ, (χ τ 0 0).re * s τ := by
   simp [Data.pairR, e00, Fin.sum_univ_two, Complex.re_sum]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Take `⟨W, hW⟩ : ∃ W : Fin 2 → Fin r → ℂ, W = fun k j => ∑ l, τ.1 (X.Gm j l) * conj (τ.1 (u k l))` from `⟨_, rfl⟩`. Take `⟨V, hV⟩ : ∃ V : Fin 2 → Fin r → ℂ, V = fun i a => τ.1 (u i a)` from `⟨_, rfl⟩`. Establish `hk : ∀ i k : Fin 2, ∑ j, W k j * V i j = 0`. Introduce `i k`.
+
+Establish `h` using `congrArg τ.1 (hu i k)`. Simplify using `only [herm, map_sum, map_mul, emb_cc, map_zero] at h`. Rewrite using `[← h, hW, hV]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun l _ => by ring`. Use `set α : ℂ := I * X.c τ * cR X s τ`. Use `set γ : ℂ := I * X.c τ`. Set `A : Matrix (Fin r) (Fin r) ℂ` to `Matrix.of fun a j => α * V 0 a * W 0 j`. Set `B : Matrix (Fin r) (Fin r) ℂ` to `Matrix.of fun a j => γ * ∑ i, ∑ k, b τ i k * V i a * W k j`.
+
+Establish `hF : X.flowMat (u 0) τ (cR X s τ) = 1 - A`. Use extensionality with `a j`. Simplify using `only [Data.flowMat, A, Matrix.sub_apply, Matrix.one_apply, Matrix.of_apply, hW, hV, α]`. Establish `hZ : X.zmat u b τ = 1 - B`. Use extensionality with `a j`.
+
+Simplify using `only [Data.zmat, B, Matrix.sub_apply, Matrix.one_apply, Matrix.of_apply, hW, hV, γ, Data.emb]`. Establish `hAB : A * B = 0`. Use extensionality with `a j`. Simplify using `only [Matrix.mul_apply, A, B, Matrix.of_apply, Matrix.zero_apply]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun m _ => by ring`.
+
+Use `_ = 0 := by simp [hk]`. Establish `hBA : B * A = 0`. Use extensionality with `a j`. Simplify using `only [Matrix.mul_apply, A, B, Matrix.of_apply, Matrix.zero_apply]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun m _ => by ring`.
+
+Use `_ = 0 := by simp [hk]`. Establish `key : X.flowMat (u 0) τ (cR X s τ) * X.zmat u b τ = X.zmat u b τ * X.flowMat (u 0) τ (cR X s τ)`. Rewrite using `[hF, hZ]`. Simplify using `only [sub_mul, mul_sub, one_mul, mul_one, hAB, hBA]`. Normalize the expressions using the abelian group laws.
+
+Use `show X.flowMat (u 0) τ (cR X s τ) * (X.zmat u b τ * mat y τ) = X.zmat u b τ * (X.flowMat (u 0) τ (cR X s τ) * mat y τ)`. Rewrite using `[← Matrix.mul_assoc, key, Matrix.mul_assoc]`.
+-/
 theorem flow_Zb_comm (hu : ∀ i k, herm X.Gm (u i) (u k) = 0) (s : X.Ψ → ℝ)
     (b : X.Ψ → Fin 2 → Fin 2 → ℂ) (y : Frame X.Ψ r) :
     X.flow (u 0) (cR X s) (X.Zb u b y) = X.Zb u b (X.flow (u 0) (cR X s) y) := by
@@ -129,6 +176,9 @@ theorem flow_Zb_comm (hu : ∀ i k, herm X.Gm (u i) (u k) = 0) (s : X.Ψ → ℝ
     X.zmat u b τ * (X.flowMat (u 0) τ (cR X s τ) * mat y τ)
   rw [← Matrix.mul_assoc, key, Matrix.mul_assoc]
 
+/- English proof (translation)
+Use `continuous_pi fun τ => ?_` and prove the remaining obligations. Simplify using `only [Data.Zb, Data.zmat]`. Use `continuous_pi fun a => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+-/
 theorem Zb_cont (y : Frame X.Ψ r) : Continuous fun b : X.Ψ → Fin 2 → Fin 2 → ℂ => X.Zb u b y := by
   refine continuous_pi fun τ => ?_
   simp only [Data.Zb, Data.zmat]

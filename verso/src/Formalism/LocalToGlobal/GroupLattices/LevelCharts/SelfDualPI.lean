@@ -6,6 +6,9 @@ open scoped TensorProduct
 
 namespace Formalism.L2.G
 
+/- English proof (translation)
+The claim follows from `self_dual_local F E n σ J v Lb T hfin hint hdual hT`.
+-/
 theorem self_dual_lattice_at (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
     (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (v : HeightOneSpectrum (𝓞 F))
     (Lb : Submodule (𝓞 E) (Fin n → E)) (T : ℕ) (hfin : Module.Finite (𝓞 E) Lb)

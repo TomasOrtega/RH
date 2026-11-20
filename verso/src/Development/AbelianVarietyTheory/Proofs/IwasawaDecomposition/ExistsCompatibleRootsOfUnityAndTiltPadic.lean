@@ -7,12 +7,20 @@ namespace GlobalTheory.MemLoc
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc
 open scoped Formalism.Per
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', pow_mul, ← add_assoc, hζ, ih]`.
+-/
 theorem zeta_pow_iter {M : Type*} [Monoid M] {p : ℕ} {ζ : ℕ → M} (hζ : ∀ n, ζ (n + 1) ^ p = ζ n)
     (m n : ℕ) : ζ (m + n) ^ p ^ n = ζ m := by
   induction n with
   | zero => simp
   | succ n ih => rw [pow_succ', pow_mul, ← add_assoc, hζ, ih]
 
+/- English proof (translation)
+Establish `: NeZero (p : K)` using `⟨Nat.cast_ne_zero.2 hp.out.ne_zero⟩`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_root (Polynomial.cyclotomic p K) (ne_of_gt (Polynomial.degree_cyclotomic_pos p K hp.out.pos))`. Establish `hzp : IsPrimitiveRoot z p` using `Polynomial.isRoot_cyclotomic_iff.1 hz`. Use `choose r hr using fun x : K => IsAlgClosed.exists_pow_nat_eq x hp.out.pos`. Use `⟨fun n => Nat.casesOn n 1 (fun m => r^[m] z), rfl, fun n => ?_, hzp.ne_one hp.out.one_lt⟩` and prove the remaining obligations.
+
+Consider the cases of `n with`. Consider the case `zero => exact hzp.pow_eq_one`. Consider the case `succ m => show r^[m + 1] z ^ p = r^[m] z`. Rewrite using `[Function.iterate_succ_apply', hr]`.
+-/
 theorem zeta_exists_system (K : Type*) [Field K] [IsAlgClosed K] [CharZero K] (p : ℕ)
     [hp : Fact p.Prime] :
     ∃ ζ : ℕ → K, ζ 0 = 1 ∧ (∀ m, ζ (m + 1) ^ p = ζ m) ∧ ζ 1 ≠ 1 := by
@@ -33,6 +41,11 @@ section Tilt
 
 variable {p : ℕ} [hp : Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
 
+/- English proof (translation)
+Proceed by induction on `n generalizing m with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply', PreTilt.coeff_frobeniusEquiv_symm, ih]`. Use `congr 2`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem zeta_coeff_root_iterate (x : PreTilt O p) (n m : ℕ) :
     PreTilt.coeff m ((frobeniusEquiv (PreTilt O p) p).symm^[n] x) = PreTilt.coeff (m + n) x := by
   induction n generalizing m with
@@ -42,6 +55,11 @@ theorem zeta_coeff_root_iterate (x : PreTilt O p) (n m : ℕ) :
     congr 2
     omega
 
+/- English proof (translation)
+Set `e : PreTilt O p` to `⟨fun n => Ideal.Quotient.mk (Ideal.span {(p : O)}) (x n), fun n => by show (Ideal.Quotient.mk (Ideal.span {(p : O)}) (x (n + 1))) ^ p = _`. Rewrite using `[← map_pow, hx]⟩`. Use `⟨e, fun n => Perfection.teichmuller_spec fun m => ⟨x (n + m), ?_, by rw [zeta_pow_iter hx]⟩⟩` and prove the remaining obligations. Use `zeta_coeff_root_iterate e n m` as an intermediate fact. Rewrite `this` using `[add_comm]`.
+
+Conclude with `this.symm`.
+-/
 theorem zeta_exists_tilt [IsAdicComplete (Ideal.span {(p : O)}) O] (x : ℕ → O)
     (hx : ∀ n, x (n + 1) ^ p = x n) :
     ∃ e : PreTilt O p, ∀ n, ((frobeniusEquiv (PreTilt O p) p).symm^[n] e).untilt = x n := by
@@ -55,6 +73,13 @@ theorem zeta_exists_tilt [IsAdicComplete (Ideal.span {(p : O)}) O] (x : ℕ → 
 
 end Tilt
 
+/- English proof (translation)
+Take `⟨ζ, h0, hs, h1⟩` from `zeta_exists_system (Om l) l`. Establish `hmem : ∀ m, algebraMap (Om l) ℂ_[l] (ζ m) ∈ PadicComplexInt l` using `fun m => by`. Establish `h : algebraMap (Om l) ℂ_[l] (ζ m) ^ l ^ m = 1`. Use `zeta_pow_iter hs 0 m` as an intermediate fact. Rewrite `this` using `[zero_add, h0]`.
+
+Rewrite using `[← map_pow, this, map_one]`. Establish `h2 : Valued.v (algebraMap (Om l) ℂ_[l] (ζ m)) ^ l ^ m ≤ 1`. Rewrite using `[← map_pow, h, map_one]`. Conclude with `(pow_le_one_iff_of_nonneg zero_le (pow_ne_zero _ hl.out.ne_zero)).1 h2`. Take `⟨e, he⟩` from `zeta_exists_tilt (p := l) (O := Per.OC l) (fun m => ⟨algebraMap (Om l) ℂ_[l] (ζ m), hmem m⟩) (fun m => Subtype.ext (by show algebraMap (Om l) ℂ_[l] (ζ (m + 1)) ^ l = algebraMap (Om l) ℂ_[l] (ζ m)`.
+
+Rewrite using `[← map_pow, hs]))`. Conclude with `⟨ζ, e, h0, hs, h1, fun m => congrArg Subtype.val (he m)⟩`.
+-/
 theorem exists_zeta_eps (l : ℕ) [hl : Fact l.Prime] :
     ∃ (ζ : ℕ → Om l) (ε : Per.Fl l), ζ 0 = 1 ∧ (∀ m, ζ (m + 1) ^ l = ζ m) ∧ ζ 1 ≠ 1 ∧
       ∀ m, (rootT ε m : ℂ_[l]) = algebraMap (Om l) ℂ_[l] (ζ m) := by

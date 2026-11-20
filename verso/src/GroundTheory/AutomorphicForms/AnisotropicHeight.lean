@@ -16,6 +16,15 @@ section Local
 
 variable {F : Type*} [NormedField F] {N m d : ℕ}
 
+/- English proof (translation)
+Distinguish the cases in `hy : y = 0`. Establish `h0 : Φ 0 = 0`. Use `hΦ 0 0` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_pow hd.ne', zero_smul]`. Then use the resulting hypothesis. Rewrite using `[hy, h0, norm_zero, norm_zero, zero_pow hd.ne', mul_zero]`.
+
+Take `⟨j, -⟩` from `Function.ne_iff.1 hy`. Establish `: Nonempty (Fin N)` using `⟨j⟩`. Take `⟨i, hi⟩` from `Finite.exists_max fun i => ‖y i‖`. Establish `hyi : ‖y‖ = ‖y i‖` using `le_antisymm ((pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 hi) (norm_le_pi_norm y i)`. Establish `ht : y i ≠ 0`.
+
+Introduce `h0`. Rewrite `hyi` using `[h0, norm_zero]`. Conclude with `hy (norm_eq_zero.1 hyi)`. Establish `hy' : ‖(y i)⁻¹ • y‖ ≤ 1`. Rewrite using `[norm_smul, norm_inv, hyi, inv_mul_cancel₀ (norm_ne_zero_iff.2 ht)]`.
+
+Establish `hyy : y = y i • ((y i)⁻¹ • y)` using `by rw [smul_smul, mul_inv_cancel₀ ht, one_smul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hΦ, norm_smul, norm_pow]`. Use `_ ≤ ‖y i‖ ^ d * B := mul_le_mul_of_nonneg_left (hB _ hy') (pow_nonneg (norm_nonneg _) _)`. Use `_ = B * ‖y‖ ^ d := by rw [hyi, mul_comm]`.
+-/
 theorem norm_le_mul_pow_of_homogeneous (hd : 0 < d) (Φ : (Fin N → F) → Fin m → F)
     (hΦ : ∀ (t : F) y, Φ (t • y) = t ^ d • Φ y) {B : ℝ} (hB : ∀ y, ‖y‖ ≤ 1 → ‖Φ y‖ ≤ B)
     (y : Fin N → F) : ‖Φ y‖ ≤ B * ‖y‖ ^ d := by
@@ -44,6 +53,11 @@ theorem norm_le_mul_pow_of_homogeneous (hd : 0 < d) (Φ : (Fin N → F) → Fin 
 
 variable {K : Type*} [Field K] [Algebra K F]
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.aeval_def, MvPolynomial.eval₂_eq]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun s _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use `mul_le_of_le_one_right (norm_nonneg _) ?_` and prove the remaining obligations. Rewrite using `[norm_prod]`.
+
+Use `Finset.prod_le_one (fun i _ => norm_nonneg _) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) ((norm_le_pi_norm y i).trans hy)`.
+-/
 theorem norm_aeval_le_sum (p : MvPolynomial (Fin N) K) (y : Fin N → F) (hy : ‖y‖ ≤ 1) :
     ‖MvPolynomial.aeval y p‖ ≤ ∑ s ∈ p.support, ‖algebraMap K F (p.coeff s)‖ := by
   rw [MvPolynomial.aeval_def, MvPolynomial.eval₂_eq]
@@ -55,6 +69,11 @@ theorem norm_aeval_le_sum (p : MvPolynomial (Fin N) K) (y : Fin N → F) (hy : �
   rw [norm_pow]
   exact pow_le_one₀ (norm_nonneg _) ((norm_le_pi_norm y i).trans hy)
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.aeval_def, MvPolynomial.eval₂_eq]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun s hs => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_prod]`. Conclude with `mul_le_one₀ (hp s hs) (Finset.prod_nonneg fun _ _ => norm_nonneg _) (Finset.prod_le_one (fun i _ => norm_nonneg _) fun i _ => by`. Rewrite using `[norm_pow]`.
+
+Conclude with `pow_le_one₀ (norm_nonneg _) ((norm_le_pi_norm y i).trans hy))`.
+-/
 theorem norm_aeval_le_one [IsUltrametricDist F] (p : MvPolynomial (Fin N) K)
     (hp : ∀ s ∈ p.support, ‖algebraMap K F (p.coeff s)‖ ≤ 1) (y : Fin N → F) (hy : ‖y‖ ≤ 1) :
     ‖MvPolynomial.aeval y p‖ ≤ 1 := by
@@ -69,6 +88,31 @@ end Local
 
 variable {K : Type*} [Field K] [NumberField K] {N m d : ℕ}
 
+/- English proof (translation)
+Use `choose Bv hBv using hvB`. Use `choose Bw hBw using hwB`. Use `set S := (Filter.eventually_cofinite.1 hv1).toFinset with hS`. Set `Bf : HeightOneSpectrum (𝓞 K) → ℝ` to `fun v => if v ∈ S then max 1 (Bv v) else 1`. Establish `hBf1 : ∀ v, 1 ≤ Bf v` using `fun v => by`.
+
+Simplify using `only [Bf]`. Use `split_ifs`. Conclude with `le_max_left _ _`. Conclude with `le_rfl`. Establish `hBf : ∀ v y, ‖y‖ ≤ 1 → ‖Φv v y‖ ≤ Bf v`.
+
+Introduce `v y hy`. Simplify using `only [Bf]`. Use `split_ifs with h`. Conclude with `(hBv v y hy).trans (le_max_right _ _)`. Establish `: v ∉ {v | ¬∀ y, ‖y‖ ≤ 1 → ‖Φv v y‖ ≤ 1}`.
+
+Rewrite `h` using `[hS, Set.Finite.mem_toFinset]`. Then use the resulting hypothesis. Simplify using `only [Set.mem_ofPred_eq, not_not] at this`. Conclude with `this y hy`. Set `cw : InfinitePlace K → ℝ` to `fun w => max 1 √(m : ℝ) * max 1 (Bw w)`. Establish `hcw1 : ∀ w, 1 ≤ cw w` using `fun w => one_le_mul_of_one_le_of_one_le (le_max_left _ _) (le_max_left _ _)`.
+
+Establish `hloc_w : ∀ w (z : Fin N → w.Completion), Reduction.euclidNorm (Φw w z) ≤ cw w * Reduction.euclidNorm z ^ d`. Introduce `w z`. Establish `h1` using `norm_le_mul_pow_of_homogeneous hd (Φw w) (hwh w) (B := max 1 (Bw w)) (fun y hy => (hBw w y hy).trans (le_max_right _ _)) z`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Reduction.norm_le_euclidNorm_pi z`.
+
+Use `_ = cw w * Reduction.euclidNorm z ^ d := by simp only [cw]; ring`. Establish `hloc_v : ∀ v (z : Fin N → v.adicCompletion K), ‖Φv v z‖ ≤ Bf v * ‖z‖ ^ d` using `fun v z => norm_le_mul_pow_of_homogeneous hd (Φv v) (hvh v) (hBf v) z`. Use `⟨(∏ w, cw w ^ w.mult) * ∏ v ∈ S, Bf v, ?_, ?_⟩` and prove the remaining obligations. Conclude with `mul_pos (Finset.prod_pos fun w _ => pow_pos (zero_lt_one.trans_le (hcw1 w)) _) (Finset.prod_pos fun v _ => zero_lt_one.trans_le (hBf1 v))`. Introduce `y hy hΦy`.
+
+Use `set T := S ∪ hy.finite_mulSupport.toFinset ∪ hΦy.finite_mulSupport.toFinset with hT`. Establish `hfinΦ : ∏ᶠ v, ‖Reduction.finComp v (Φ y)‖ = ∏ v ∈ T, ‖Reduction.finComp v (Φ y)‖` using `finprod_eq_prod_of_mulSupport_subset _ (by`. Introduce `v hv'`. Simplify using `only [hT, Finset.coe_union, Set.Finite.coe_toFinset]`. Conclude with `Or.inr hv')`.
+
+Establish `hfiny : ∏ᶠ v, ‖Reduction.finComp v y‖ = ∏ v ∈ T, ‖Reduction.finComp v y‖` using `finprod_eq_prod_of_mulSupport_subset _ (by`. Introduce `v hv'`. Simplify using `only [hT, Finset.coe_union, Set.Finite.coe_toFinset]`. Conclude with `Or.inl (Or.inr hv'))`. Establish `hST : ∏ v ∈ T, Bf v = ∏ v ∈ S, Bf v`.
+
+Use `(Finset.prod_subset (fun v hv' => ?_) fun v _ hvS => ?_).symm` and prove the remaining obligations. Rewrite using `[hT, Finset.mem_union, Finset.mem_union]`. Conclude with `Or.inl (Or.inl hv')`. Simplify using `only [Bf, if_neg hvS]`. Establish `hfin_le : ∏ᶠ v, ‖Reduction.finComp v (Φ y)‖ ≤ (∏ v ∈ S, Bf v) * (∏ᶠ v, ‖Reduction.finComp v y‖) ^ d`.
+
+Rewrite using `[hfinΦ, hfiny, ← hST, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun v _ => norm_nonneg _) fun v _ => ?_` and prove the remaining obligations. Rewrite using `[hv]`. Conclude with `hloc_v v _`. Establish `hinf_le : ∏ w, Reduction.euclidNorm (Reduction.infComp w (Φ y)) ^ w.mult ≤ (∏ w, cw w ^ w.mult) * (∏ w, Reduction.euclidNorm (Reduction.infComp w y) ^ w.mult) ^ d`.
+
+Rewrite using `[← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun w _ => pow_nonneg (Reduction.euclidNorm_nonneg _) _) fun w _ => ?_` and prove the remaining obligations. Rewrite using `[hw]`. Combine the equalities or inequalities in the displayed calculation. Unfold `Reduction.adelicNorm`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_adelicNorm_le_mul_pow (hd : 0 < d) (Φ : (Fin N → 𝔸[K]) → Fin m → 𝔸[K])
     (Φv : ∀ v : HeightOneSpectrum (𝓞 K), (Fin N → v.adicCompletion K) → Fin m → v.adicCompletion K)
     (Φw : ∀ w : InfinitePlace K, (Fin N → w.Completion) → Fin m → w.Completion)
@@ -163,6 +207,19 @@ theorem exists_adelicNorm_le_mul_pow (hd : 0 < d) (Φ : (Fin N → 𝔸[K]) → 
               pow_nonneg (Reduction.euclidNorm_nonneg _) _) _))
     _ = _ := by ring
 
+/- English proof (translation)
+Use `exists_adelicNorm_le_mul_pow hd _ (fun v y k => MvPolynomial.aeval y (P k)) (fun w y k => MvPolynomial.aeval y (P k)) ?_ ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `v y`. Use function extensionality and compare the values at `k`. Use `show adeleFiniteEval K v (MvPolynomial.aeval y (P k)) = _`. Rewrite using `[MvPolynomial.comp_aeval_apply]`.
+
+Both sides reduce to the same expression. Introduce `w y`. Use function extensionality and compare the values at `k`. Use `show adeleInfiniteEval K w (MvPolynomial.aeval y (P k)) = _`. Rewrite using `[MvPolynomial.comp_aeval_apply]`.
+
+Both sides reduce to the same expression. Introduce `v t y`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `hvh v t y k`.
+
+Introduce `w t y`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `hwh w t y k`. Introduce `v`.
+
+Use `⟨∑ k, ∑ s ∈ (P k).support, ‖algebraMap K (v.adicCompletion K) ((P k).coeff s)‖, fun y hy => (pi_norm_le_iff_of_nonneg (by positivity)).2 fun k => ?_⟩` and prove the remaining obligations. Conclude with `(norm_aeval_le_sum (P k) y hy).trans (Finset.single_le_sum (f := fun k => ∑ s ∈ (P k).support, ‖algebraMap K (v.adicCompletion K) ((P k).coeff s)‖) (fun k _ => by positivity) (Finset.mem_univ k))`. Establish `h : ∀ᶠ v : HeightOneSpectrum (𝓞 K) in cofinite, ∀ k, ∀ s ∈ (P k).support, ‖algebraMap K (v.adicCompletion K) ((P k).coeff s)‖ ≤ 1` using `Filter.eventually_all.2 fun k => (Filter.eventually_all_finset _).2 fun s _ => Reduction.eventually_norm_le_one _ filter_upwards [h] with v hv y hy`. Conclude with `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun k => norm_aeval_le_one (P k) (hv k) y hy`. Introduce `w`.
+
+Use `⟨∑ k, ∑ s ∈ (P k).support, ‖algebraMap K w.Completion ((P k).coeff s)‖, fun y hy => (pi_norm_le_iff_of_nonneg (by positivity)).2 fun k => ?_⟩` and prove the remaining obligations. Conclude with `(norm_aeval_le_sum (P k) y hy).trans (Finset.single_le_sum (f := fun k => ∑ s ∈ (P k).support, ‖algebraMap K w.Completion ((P k).coeff s)‖) (fun k _ => by positivity) (Finset.mem_univ k))`.
+-/
 theorem exists_adelicNorm_aeval_le (hd : 0 < d) (P : Fin m → MvPolynomial (Fin N) K)
     (hvh : ∀ (v : HeightOneSpectrum (𝓞 K)) (t : v.adicCompletion K)
       (y : Fin N → v.adicCompletion K) k,
@@ -214,6 +271,15 @@ theorem exists_adelicNorm_aeval_le (hd : 0 < d) (P : Fin m → MvPolynomial (Fin
         ‖algebraMap K w.Completion ((P k).coeff s)‖)
         (fun k _ => by positivity) (Finset.mem_univ k))
 
+/- English proof (translation)
+Use `⟨min 1 C⁻¹, lt_min one_pos (inv_pos.2 hC), fun g hg x hx => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, z, hz, he⟩` from `hG g hg x hx`. Establish `hy` using `Reduction.hasFiniteContent_height g hx`. Establish `hfz : Reduction.HasFiniteContent (Φ (Reduction.ratVec x ᵥ* (g : Matrix (Fin n) (Fin n) 𝔸[K])))`. Rewrite using `[he]`.
+
+Conclude with `(Reduction.hasFiniteContent_ratVec hz).smul s`. Establish `h1 : 1 ≤ Reduction.adelicNorm (Φ (Reduction.ratVec x ᵥ* (g : Matrix (Fin n) (Fin n) 𝔸[K])))`. Rewrite using `[he, Reduction.adelicNorm_smul (Reduction.hasFiniteContent_ratVec hz)]`. Conclude with `one_le_mul_of_one_le_of_one_le hs (Reduction.one_le_adelicNorm_ratVec hz)`. Establish `h2` using `h1.trans (hΦ _ hy hfz)`.
+
+Establish `h0 : 0 ≤ Reduction.height g x` using `Reduction.height_nonneg g x`. Express the relevant statement in the definitionally equal form `1 ≤ C * Reduction.height g x ^ d at h2`. Distinguish the cases in `h1' : 1 ≤ Reduction.height g x`. Conclude with `(min_le_left _ _).trans h1'`. Use `replace h1' := not_le.1 h1'`.
+
+Establish `hpow : Reduction.height g x ^ d ≤ Reduction.height g x` using `pow_le_of_le_one h0 h1'.le hd.ne'`. Establish `h3 : 1 ≤ C * Reduction.height g x` using `h2.trans (mul_le_mul_of_nonneg_left hpow hC.le)`. Use `(min_le_right _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_pos_le_height_of_bound {n : ℕ} (G : Set (AdelicGLn.AdelicGL K n))
     (Φ : (Fin n → 𝔸[K]) → Fin m → 𝔸[K]) {C : ℝ} (hC : 0 < C) (hd : 0 < d)
     (hΦ : ∀ y, Reduction.HasFiniteContent y → Reduction.HasFiniteContent (Φ y) →

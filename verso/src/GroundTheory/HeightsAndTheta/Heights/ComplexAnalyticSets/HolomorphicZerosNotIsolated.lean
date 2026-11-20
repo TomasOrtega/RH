@@ -6,6 +6,13 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 
 open Topology Filter Metric
 
+/- English proof (translation)
+Establish `hd : AnalyticAt ℂ (fderiv ℂ f) x` using `hf.fderiv`. Establish `he : ∀ i j : Fin k, AnalyticAt ℂ (fun z => fderiv ℂ f z (Pi.single j 1) i) x`. Introduce `i j`. Set `L : ((Fin k → ℂ) →L[ℂ] Fin k → ℂ) →L[ℂ] ℂ` to `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin k => ℂ) i).comp (ContinuousLinearMap.apply ℂ (Fin k → ℂ) (Pi.single j 1))`. Use `show AnalyticAt ℂ (L ∘ fderiv ℂ f) x`.
+
+Conclude with `(L.analyticAt _).comp hd`. Establish `heq : (fun z => LinearMap.det (fderiv ℂ f z : (Fin k → ℂ) →ₗ[ℂ] Fin k → ℂ)) = fun z => ∑ σ : Equiv.Perm (Fin k), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, fderiv ℂ f z (Pi.single i 1) (σ i)`. Use function extensionality and compare the values at `z`. Rewrite using `[← LinearMap.det_toMatrix', Matrix.det_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Units.smul_def, zsmul_eq_mul]`. Both sides reduce to the same expression. Rewrite using `[heq]`. Conclude with `Finset.analyticAt_fun_sum _ fun σ _ => analyticAt_const.mul (Finset.analyticAt_fun_prod _ fun i _ => he (σ i) i)`.
+-/
 theorem analyticAt_det_fderiv {k : ℕ} {f : (Fin k → ℂ) → Fin k → ℂ} {x : Fin k → ℂ}
     (hf : AnalyticAt ℂ f x) :
     AnalyticAt ℂ (fun z => LinearMap.det (fderiv ℂ f z : (Fin k → ℂ) →ₗ[ℂ] Fin k → ℂ)) x := by
@@ -29,6 +36,49 @@ theorem analyticAt_det_fderiv {k : ℕ} {f : (Fin k → ℂ) → Fin k → ℂ} 
   exact Finset.analyticAt_fun_sum _ fun σ _ =>
     analyticAt_const.mul (Finset.analyticAt_fun_prod _ fun i _ => he (σ i) i)
 
+/- English proof (translation)
+Establish `: Nonempty (Fin k)` using `⟨⟨0, by omega⟩⟩`. Distinguish the cases in `h0 : ∀ᶠ y in 𝓝 c, J y = 0`. Establish `h1 : ∀ᶠ y in 𝓝[≠] c, y ∈ W ∧ J y = 0` using `nhdsWithin_le_nhds (Filter.inter_mem hW h0)`. Take `⟨y, ⟨hyW, hy0⟩, hyc⟩` from `(h1.and self_mem_nhdsWithin).exists`. Conclude with `⟨y, hyW, hyc, hy0⟩`.
+
+Take `⟨v, hv⟩` from `exists_line_eventually_ne_zero hJ h0`. Establish `hv0 : v ≠ 0`. Introduce and unpack `rfl`. Take `⟨t, ht⟩` from `hv.exists`. Simplify using `[hc] at ht`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨u, -, hu⟩ : ∃ u ∈ (⊤ : Submodule ℂ (Fin k → ℂ)), u ∉ ℂ ∙ v := by`. Use `SetLike.exists_of_lt (lt_top_iff_ne_top.2 fun htop => ?_)` and prove the remaining obligations. Establish `h1` using `finrank_span_singleton (K := ℂ) hv0`. Rewrite `h1` using `[htop, finrank_top, Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨R, hR, han⟩` from `hJ.exists_ball_analyticOnNhd`. Take `⟨ε, hε, hεW⟩` from `Metric.mem_nhds_iff.1 hW`. Use `set ρ := min R ε with hρ`. Establish `hρ0 : 0 < ρ` using `lt_min hR hε`. Take `⟨δ, hδ, hδv⟩` from `Metric.eventually_nhds_iff.1 (eventually_nhdsWithin_iff.1 hv)`.
+
+Use `set r := min (δ / 2) (ρ / (2 * (‖v‖ + 1))) with hr`. Establish `hr0 : 0 < r` using `lt_min (by positivity) (by positivity)`. Establish `hrδ : r < δ` using `(min_le_left _ _).trans_lt (by linarith)`. Establish `hrv : r * ‖v‖ < ρ / 2`. Establish `h1 : r ≤ ρ / (2 * (‖v‖ + 1))` using `min_le_right _ _`.
+
+Establish `h2 : r * ‖v‖ ≤ ρ / (2 * (‖v‖ + 1)) * ‖v‖` using `mul_le_mul_of_nonneg_right h1 (norm_nonneg _)`. Establish `h3 : ρ / (2 * (‖v‖ + 1)) * ‖v‖ < ρ / 2`. Rewrite using `[div_mul_eq_mul_div, div_lt_div_iff₀ (by positivity) (by norm_num)]`. Use polynomial arithmetic with `[norm_nonneg v]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hmem : ∀ s t : ℂ, ‖s • u‖ < ρ / 2 → ‖t‖ ≤ r → c + s • u + t • v ∈ ball c ρ`. Introduce `s t hs ht`. Rewrite using `[mem_ball, dist_eq_norm, add_assoc, add_sub_cancel_left]`. Combine the equalities or inequalities in the displayed calculation. Establish `hballR : ball c ρ ⊆ ball c R` using `ball_subset_ball (min_le_left _ _)`.
+
+Establish `hK : IsCompact (sphere (0 : ℂ) r)` using `isCompact_sphere 0 r`. Establish `hKne : (sphere (0 : ℂ) r).Nonempty` using `NormedSpace.sphere_nonempty.2 hr0.le`. Establish `hcontJ : ∀ p ∈ ball c ρ, ContinuousAt J p` using `fun p hp => (han p (hballR hp)).continuousAt`. Establish `hF0 : ∀ t ∈ sphere (0 : ℂ) r, J (c + t • v) ≠ 0`. Introduce `t ht`.
+
+Establish `htn : ‖t‖ = r` using `by simpa using ht`. Use `hδv (by simpa [dist_eq_norm, htn] using hrδ) (by rintro rfl; simp at htn; linarith)` and prove the remaining obligations. Establish `hline : ∀ t : ℂ, ‖t‖ ≤ r → c + t • v ∈ ball c ρ`. Introduce `t ht`. Establish `h1` using `hmem 0 t (by rw [zero_smul, norm_zero]; exact half_pos hρ0) ht`.
+
+Rewrite `h1` using `[zero_smul, add_zero]`. Then use the resulting hypothesis. Establish `hcontK : ContinuousOn (fun t : ℂ => ‖J (c + t • v)‖) (sphere 0 r)`. Introduce `t ht`. Establish `hp` using `hline t (mem_sphere_zero_iff_norm.1 ht).le`. Conclude with `(ContinuousAt.comp (f := fun t : ℂ => c + t • v) (hcontJ _ hp) (by fun_prop)).norm.continuousWithinAt`.
+
+Take `⟨t0, ht0K, ht0min⟩` from `hK.exists_isMinOn hKne hcontK`. Use `set m := ‖J (c + t0 • v)‖ with hm`. Establish `hm0 : 0 < m` using `norm_pos_iff.2 (hF0 t0 ht0K)`. Establish `hcirc : ∀ᶠ s in 𝓝 (0 : ℂ), ∀ t ∈ sphere (0 : ℂ) r, m / 2 < ‖J (c + s • u + t • v)‖`. Use `hK.eventually_forall_of_forall_eventually fun t ht => ?_` and prove the remaining obligations.
+
+Establish `htr : ‖t‖ ≤ r` using `(mem_sphere_zero_iff_norm.1 ht).le`. Establish `hcont : ContinuousAt (fun p : ℂ × ℂ => J (c + p.1 • u + p.2 • v)) (0, t)`. Use `ContinuousAt.comp (f := fun p : ℂ × ℂ => c + p.1 • u + p.2 • v) ?_ (by fun_prop)` and prove the remaining obligations. Conclude with `hcontJ _ (hmem 0 t (by simpa using half_pos hρ0) htr)`. Establish `hle : ‖J (c + t0 • v)‖ ≤ ‖J (c + t • v)‖` using `isMinOn_iff.1 ht0min t ht`.
+
+Conclude with `hcont.norm.eventually (lt_mem_nhds (by simp only [zero_smul, add_zero]; linarith))`. Establish `hcen : ∀ᶠ s in 𝓝 (0 : ℂ), ‖J (c + s • u)‖ < m / 2`. Establish `hcont : ContinuousAt (fun s : ℂ => J (c + s • u)) 0` using `ContinuousAt.comp (f := fun s : ℂ => c + s • u) (by simpa using hcontJ c (mem_ball_self hρ0)) (by fun_prop)`. Establish `h1 : ‖J (c + (0 : ℂ) • u)‖ < m / 2` using `by simpa [hc] using half_pos hm0`. Conclude with `hcont.norm.eventually (gt_mem_nhds h1)`.
+
+Establish `hsmall : ∀ᶠ s in 𝓝 (0 : ℂ), ‖s • u‖ < ρ / 2`. Establish `hcont : ContinuousAt (fun s : ℂ => ‖s • u‖) 0` using `by fun_prop`. Conclude with `hcont.eventually (gt_mem_nhds (by simpa using half_pos hρ0))`. Take `⟨s, ⟨⟨hs1, hs2⟩, hs3⟩, hs0⟩` from `((((hcirc.and hcen).and hsmall).filter_mono (nhdsWithin_le_nhds (s := {(0 : ℂ)}ᶜ))).and (self_mem_nhdsWithin (s := {(0 : ℂ)}ᶜ))).exists`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht, htz⟩ : ∃ t ∈ closedBall (0 : ℂ) r, J (c + s • u + t • v) = 0 := by`.
+
+Assume the negation of the conclusion as `hne`. Simplify using `only [not_exists, not_and] at hne`. Establish `hdiff : DifferentiableOn ℂ (fun t : ℂ => (J (c + s • u + t • v))⁻¹) (closedBall 0 r)`. Introduce `t ht`. Establish `htr : ‖t‖ ≤ r` using `by simpa using ht`.
+
+Establish `hp` using `hmem s t hs3 htr`. Establish `hJd : DifferentiableAt ℂ J (c + s • u + t • v)` using `(han _ (hballR hp)).differentiableAt`. Establish `hcomp : DifferentiableAt ℂ (fun t : ℂ => J (c + s • u + t • v)) t` using `hJd.comp t (by fun_prop : DifferentiableAt ℂ (fun t : ℂ => c + s • u + t • v) t)`. Conclude with `(hcomp.inv (hne t ht)).differentiableWithinAt`. Establish `hdc : DiffContOnCl ℂ (fun t : ℂ => (J (c + s • u + t • v))⁻¹) (ball 0 r)` using `hdiff.diffContOnCl_ball subset_rfl`.
+
+Establish `hbd` using `Complex.norm_le_of_forall_mem_frontier_norm_le isBounded_ball hdc (C := (m / 2)⁻¹) (fun t ht => by`. Rewrite `ht` using `[frontier_ball 0 hr0.ne']`. Rewrite using `[norm_inv]`. Conclude with `inv_anti₀ (half_pos hm0) (hs1 t ht).le)`. Use the proof step `(subset_closure (mem_ball_self hr0))`.
+
+Establish `hJs : J (c + s • u) ≠ 0` using `by simpa using hne 0 (mem_closedBall_self hr0.le)`. Simplify using `only [zero_smul, add_zero, norm_inv] at hbd`. Use `inv_lt_inv₀ (half_pos hm0) (norm_pos_iff.2 hJs) |>.2 hs2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨c + s • u + t • v, hεW ?_, ?_, htz⟩` and prove the remaining obligations.
+
+Conclude with `ball_subset_ball (min_le_right R ε) (hmem s t hs3 (by simpa using ht))`. Introduce `heq`. Apply `hu` to reduce the goal to its premises. Establish `h1 : s • u = -(t • v)`. Establish `: s • u + t • v = 0`.
+
+Use `congrArg (· - c) heq` as an intermediate fact. Simplify `this` using `[add_assoc]`. Conclude with `eq_neg_of_add_eq_zero_left this`. Establish `hs : s ≠ 0` using `by simpa using hs0`. Rewrite using `[Submodule.mem_span_singleton]`.
+
+Use `⟨-(s⁻¹ * t), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_zero_ne_near {k : ℕ} (hk : 2 ≤ k) {J : (Fin k → ℂ) → ℂ} {c : Fin k → ℂ}
     (hJ : AnalyticAt ℂ J c) (hc : J c = 0) {W : Set (Fin k → ℂ)} (hW : W ∈ 𝓝 c) :
     ∃ z ∈ W, z ≠ c ∧ J z = 0 := by

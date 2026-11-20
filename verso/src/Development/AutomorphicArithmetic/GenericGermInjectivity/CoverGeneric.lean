@@ -21,16 +21,25 @@ section Cover
 variable {ι : Type} {Z : Scheme.{0}} [IsIntegral Z] {p : Z ⟶ Sp ℂ} [inst : Algebra ℂ Z.functionField]
   {U : ι → Z.Opens} {B : Finset ι → Subalgebra ℂ Z.functionField}
 
+/- English proof (translation)
+Rewrite using `[cechOpen_eq_inf, top_inf_eq]`. Conclude with `hU.affine s h`.
+-/
 theorem cover_affine (hU : IsAffCover p U B) {s : Finset ι} (h : s.Nonempty) :
     IsAffineOpen (cechOpen ⊤ U s) := by
   rw [cechOpen_eq_inf, top_inf_eq]
   exact hU.affine s h
 
+/- English proof (translation)
+Rewrite using `[cechOpen_eq_inf, top_inf_eq]`. Conclude with `hU.ne s`.
+-/
 theorem cover_generic (hU : IsAffCover p U B) (s : Finset ι) :
     genericPoint Z ∈ cechOpen ⊤ U s := by
   rw [cechOpen_eq_inf, top_inf_eq]
   exact hU.ne s
 
+/- English proof (translation)
+Rewrite using `[← Finset.inf_eq_iInf]`. Conclude with `hU.affine s h`.
+-/
 theorem cover_biInf (hU : IsAffCover p U B) (s : Finset ι) (h : s.Nonempty) :
     IsAffineOpen (⨅ i ∈ s, U i) := by
   rw [← Finset.inf_eq_iInf]
@@ -43,11 +52,21 @@ def gm (hinst : inst = ffAlg p) (hU : IsAffCover p U B) (a : ℕ) (s : Finset ι
   letI := algΓ p
   if h : s.Nonempty then formGermI p a (cover_affine hU h) (cover_generic hU s) hinst else 0
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem gm_pos (hinst : inst = ffAlg p) (hU : IsAffCover p U B) (a : ℕ) {s : Finset ι}
     (h : s.Nonempty) :
     gm p hinst hU a s = formGermI p a (cover_affine hU h) (cover_generic hU s) hinst :=
   dif_pos h
 
+/- English proof (translation)
+Use `⟨fun s hs => ?_, fun s hs => ?_, fun s t h hs y => ?_⟩` and prove the remaining obligations. Rewrite using `[gm_pos hinst hU a hs]`. Conclude with `(affineCechOpen_functionField_generic d Z p ι U B hinst hU a s hs _ _).1`. Rewrite using `[gm_pos hinst hU a hs]`. Conclude with `(affineCechOpen_functionField_generic d Z p ι U B hinst hU a s hs _ _).2`.
+
+Establish `ht : t.Nonempty` using `hs.mono h`. Rewrite using `[gm_pos hinst hU a ht, gm_pos hinst hU a hs]`. Establish `hle : cechOpen ⊤ U t ≤ cechOpen ⊤ U s`. Rewrite using `[cechOpen_eq_inf, cechOpen_eq_inf]`. Conclude with `inf_le_inf_left _ (Finset.inf_mono h)`.
+
+Conclude with `T.genericGerm_differentialForm_restrict_affineOpen Z p hinst a _ _ _ _ _ _ hle y`.
+-/
 theorem gm_spec (d : ℕ) [SmoothOfRelativeDimension d p] (hinst : inst = ffAlg p)
     (hU : IsAffCover p U B) (a : ℕ) :
     letI := algΓ p
@@ -77,6 +96,9 @@ variable (d : ℕ) {Z : Scheme.{0}} [IsIntegral Z] (p : Z ⟶ Sp ℂ) [SmoothOfR
 
 include d
 
+/- English proof (translation)
+Use `letI := algΓ p`. Establish `hs` using `gm_spec (p := p) d hinst hU a`. Conclude with `GlobalTheory.T.cechHomologyEquivFamAlt ℂ ι (DR ℂ Z.functionField) (fun I => omB ℂ Z.functionField (B I) a) (cechCube ℂ (Omega p a) ⊤ U) (gm p hinst hU a) hs.1 hs.2.1 hs.2.2 b`.
+-/
 theorem cube_exists (hinst : inst = ffAlg p) (hU : IsAffCover p U B) (a b : ℕ) :
     letI := algΓ p
     ∃ e : (cechComplex (cechCube ℂ (Omega p a) ⊤ U)).homology b ≃ₗ[ℂ]
@@ -106,6 +128,9 @@ def cmp (hinst : inst = ffAlg p) (hU : IsAffCover p U B) (a b : ℕ) :
   (cechHEquivCoh ℂ hU.cover (cover_biInf hU) (Omega p a) b).symm ≪≫ₗ
     Classical.choose (cube_exists d p hinst hU a b)
 
+/- English proof (translation)
+Use `letI := algΓ p`. Introduce `z w h`. Conclude with `(congrArg (DFunLike.coe (Classical.choose (cube_exists d p hinst hU a b))) (LinearEquiv.symm_apply_apply (cechHEquivCoh ℂ hU.cover (cover_biInf hU) (Omega p a) b) (cechClass _ b z))).trans ((Classical.choose_spec (cube_exists d p hinst hU a b)).1 z w h)`.
+-/
 theorem cmp_class (hinst : inst = ffAlg p) (hU : IsAffCover p U B) (a b : ℕ) :
     letI := algΓ p
     ∀ (z : LinearMap.ker (Cube.d (cechCube ℂ (Omega p a) ⊤ U) (b + 1)))

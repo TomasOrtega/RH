@@ -8,6 +8,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.SJ
 
+/- English proof (translation)
+Establish `hx : x = ∑ k, x k • (Pi.single k 1 : Fin n → K)`. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_rhs => rw [hx]`. Simplify using `only [lin, cpt, Fintype.linearCombination_apply, map_sum, LinearMap.map_smulₛₗ]`.
+-/
 theorem seamEx_lin_cpt {K E : Type} [Field K] [AddCommGroup E] [Module ℂ E] (σ : K →+* ℂ) {n : ℕ}
     (j : (Fin n → K) →ₛₗ[σ] E) (x : Fin n → K) :
     lin (fun k => j (Pi.single k 1)) (cpt σ x) = j x := by
@@ -17,6 +20,15 @@ theorem seamEx_lin_cpt {K E : Type} [Field K] [AddCommGroup E] [Module ℂ E] (�
   conv_rhs => rw [hx]
   simp only [lin, cpt, Fintype.linearCombination_apply, map_sum, LinearMap.map_smulₛₗ]
 
+/- English proof (translation)
+Set `g : (Fin n → K) →ₛₗ[σ] E` to `j.comp e.toLinearMap`. Set `f : (Fin n → ℂ) →ₗ[ℂ] E` to `lin (fun k => g (Pi.single k 1))`. Establish `hf : ∀ x, f (cpt σ x) = j (e x)` using `fun x => seamEx_lin_cpt σ g x`. Establish `hsurj : Function.Surjective f`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hb.2, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨cpt σ (e.symm (b i)), by rw [hf]; simp⟩`. Use `haveI : Module.Finite K V := Module.Finite.equiv e`. Use `haveI : Finite ι := Module.Finite.finite_basis b`. Use `haveI : Fintype ι := Fintype.ofFinite ι`.
+
+Set `B : Module.Basis ι ℂ E` to `Module.Basis.mk hb.1 hb.2.ge`. Use `haveI : Module.Finite ℂ E := Module.Finite.of_basis B`. Establish `hr : Module.finrank ℂ (Fin n → ℂ) = Module.finrank ℂ E`. Rewrite using `[Module.finrank_eq_card_basis B, ← Module.finrank_eq_card_basis b, ← e.finrank_eq]`. Simplify using the standard rewrite rules.
+
+Establish `hinj : Function.Injective f` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hr).2 hsurj`. Conclude with `⟨(LinearEquiv.ofBijective f ⟨hinj, hsurj⟩).symm, hf⟩`.
+-/
 theorem seamEx_coords {K V E ι : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup E] [Module ℂ E]
     (σ : K →+* ℂ) {n : ℕ} (j : V →ₛₗ[σ] E) (b : Module.Basis ι K V) (e : (Fin n → K) ≃ₗ[K] V)
     (hb : LinearIndependent ℂ (fun i => j (b i)) ∧ Submodule.span ℂ (Set.range (fun i => j (b i))) = ⊤) :
@@ -39,6 +51,15 @@ theorem seamEx_coords {K V E ι : Type} [Field K] [AddCommGroup V] [Module K V] 
   have hinj : Function.Injective f := (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hr).2 hsurj
   exact ⟨(LinearEquiv.ofBijective f ⟨hinj, hsurj⟩).symm, hf⟩
 
+/- English proof (translation)
+Use `choose cφ hφ using fun u => seamEx_coords D.what₂.embLL (D.jN u) (D.div.Nu u).b (R.eNu u) (D.jN_basis u)`. Take `⟨c, hc⟩` from `seamEx_coords D.what₂.embLL D.jEE D.div.RR.b R.eRR D.jEE_basis`. Use `⟨{ cφ := cφ cF := lin (fun k => R.jV (Pi.single k 1)) eR := { toFun := fun F => X.iC cr true Bs.μ0 (cjv s (c F)) map_add' := fun F G => ?_ map_smul' := fun a F => ?_ } cφ_eq := hφ cF_eq := fun y => seamEx_lin_cpt _ _ y eR_eq := fun y => ?_ }⟩` and prove the remaining obligations. Rewrite using `[← map_add]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[cjv]`. Rewrite using `[← map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[cjv]`. Use `show X.iC cr true Bs.μ0 (cjv s (c _)) = _`. Rewrite using `[← hc, LinearEquiv.apply_symm_apply]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[cjv, cpt, R.twist]`.
+-/
 theorem seam_nonempty (D : D7) (Bs : DefBase D.what₂.LL) (A : DefAmb Bs) (X : CxData A) (fc : DefSub A → DefFace Bs)
     (s : Bool) (R : Read D X fc s) (cr : Crd A fc) : Nonempty (Seam R cr) := by
   choose cφ hφ using fun u => seamEx_coords D.what₂.embLL (D.jN u) (D.div.Nu u).b (R.eNu u) (D.jN_basis u)

@@ -2,6 +2,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecializa
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.HidaCompleteRings.Component
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsDiscreteValuationRingIntegralClosure
 
+/- English proof (translation)
+Introduce `O Λ B _ _ _ _ _ _ _ φ J m ⟨e⟩ hfin htf Z hZ`. Use `haveI : NoZeroDivisors O := IsDomain.to_noZeroDivisors O`. Use `haveI : IsPrincipalIdealRing O := IsDiscreteValuationRing.toIsPrincipalIdealRing`. Use `haveI : IsNoetherianRing O := PrincipalIdealRing.isNoetherianRing`. Use `haveI : IsLocalRing O := IsDiscreteValuationRing.toIsLocalRing`.
+
+Use `haveI : NoZeroDivisors (MvPowerSeries (Fin m) O) := inferInstance`. Use `haveI : Nontrivial (MvPowerSeries (Fin m) O) := inferInstance`. Use `haveI : IsDomain (MvPowerSeries (Fin m) O) := NoZeroDivisors.to_isDomain _`. Use `haveI : IsDomain Λ := e.toMulEquiv.isDomain`. Use `letI : Algebra Λ (B ⧸ J) := ((Ideal.Quotient.mk J).comp φ).toAlgebra`.
+
+Use `haveI : Module.Finite Λ (B ⧸ J) := hfin`. Use `haveI : Algebra.IsIntegral Λ (B ⧸ J) := Algebra.IsIntegral.of_finite Λ (B ⧸ J)`. Establish `hJZ : J ≤ Z` using `hZ.1.2`. Establish `hZ'` using `hZ`. Rewrite `hZ'` using `[Ideal.minimalPrimes_eq_comap]`.
+
+Take `⟨P, hP, rfl⟩` from `hZ'`. Establish `hnz : ∀ a : Λ, a ≠ 0 → algebraMap Λ (B ⧸ J) a ∈ nonZeroDivisors (B ⧸ J)`. Introduce `a ha`. Rewrite using `[mem_nonZeroDivisors_iff_left]`. Introduce `x hx`.
+
+Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Use `htf a ha b ?_` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_mul]`. Conclude with `hx`.
+
+Establish `h` using `(UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.component Λ (B ⧸ J) hnz P hP).2.2`. Establish `hq : ringKrullDim (B ⧸ P.comap (Ideal.Quotient.mk J)) = ringKrullDim ((B ⧸ J) ⧸ P)`. Establish `hs : Function.Surjective ((Ideal.Quotient.mk P).comp (Ideal.Quotient.mk J))` using `Ideal.Quotient.mk_surjective.comp Ideal.Quotient.mk_surjective`. Establish `hk : P.comap (Ideal.Quotient.mk J) = RingHom.ker ((Ideal.Quotient.mk P).comp (Ideal.Quotient.mk J))`. Use extensionality with `x`.
+
+Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_comap]`. Rewrite using `[hk]`. Conclude with `ringKrullDim_eq_of_ringEquiv (RingHom.quotientKerEquivOfSurjective hs)`. Use `show ringKrullDim _ = _`. Rewrite using `[hq, h, ringKrullDim_eq_of_ringEquiv e.toRingEquiv, GlobalTheory.FormalIsogeny.ringKrullDim_mvPowerSeries, IsDiscreteValuationRing.ringKrullDim_eq_one]`.
+
+Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_fin, Nat.cast_add, Nat.cast_one]`.
+-/
 theorem UpperTheory.V.Pr.dimOf :
     UpperTheory.V.Pr.DimOf := by
   intro O Λ B _ _ _ _ _ _ _ φ J m ⟨e⟩ hfin htf Z hZ

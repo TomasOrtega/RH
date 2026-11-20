@@ -22,6 +22,13 @@ open GlobalTheory.FlagMod (FlagCover)
 open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `_ h2 _ _`. Use `h2.imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨C, hC, x0, -⟩` from `h`. Use `⟨C, hC, x0, fun x hx hle ι p hp i hi Y hY Z TF y T io y' g _ hpt hZ => ?_⟩` and prove the remaining obligations. Establish `hL` using `GlobalTheory.LawsDeep.laws_deep _ p.T _ Y _ _ p.fw.laws ⟨Nat.le_add_left _ _, i.2⟩ hY.1`.
+
+Take `⟨t, ht⟩` from `twSec_keyRoot_val _ _ _ _ _ _ _ Y.U (xiR (Fm.D x ι)) hY.1.unf hY.1.xiAbs hY.1.geo hL.pos hL.good Z`. Use `⟨t, ht T io y' (fun a => ?_) hZ⟩` and prove the remaining obligations. Use `letI := io.toAlgebra`. Establish `h1` using `ptY_str TF.X y'.1`. Rewrite `h1` using `[hpt, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc, Category.assoc]`.
+
+Take `⟨b, hb⟩` from `Spec.map_surjective (Spec.map (CommRingCat.ofHom g) ≫ ((Y₀ TF.X Z).fromSpecStalk y ≫ inc₀ TF.X Z) ≫ flagStr TF.X)`. Rewrite `h1` using `[← hb, ← Spec.map_comp]`. Conclude with `⟨b.hom a, congrArg (fun q => CommRingCat.Hom.hom q a) (Spec.map_injective h1)⟩`.
+-/
 theorem distinguished_section_valuation_eq_zero : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y _ _ => ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : TorFlag Y.d.Xo₂ Y.d.c₂) (y : Y₀ TF.X Z) (T : CDVR) (io : Y.d.c₂.F →+* T.Fr) (y' : IntFr Y.d.Xo₂ Y.d.c₂ T io) (g : (Y₀ TF.X Z).presheaf.stalk y →+* T.V), IsLocalHom g → (letI := io.toAlgebra; TF.X.ptY y'.1 = Spec.map (CommRingCat.ofHom ((algebraMap T.V T.Fr).comp g)) ≫ (Y₀ TF.X Z).fromSpecStalk y ≫ inc₀ TF.X Z) → evI y' (GlobalTheory.FlatLine.idem Z) ≠ 0 → ∃ t : GlobalTheory.FlatTw.TwSec Y.U (xiR (Fm.D x ι)) Z (AllWt.wtOf (dat p i) 0 1), vV T.V (evI y' t.sig) = 0 := by
   intro _ h2 _ _
   refine h2.imp fun Fm CH _ h => ?_
@@ -50,6 +57,9 @@ open GlobalTheory.FlagMod (FlagCover)
 open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.KeyValZero.distinguished_section_valuation_eq_zero | exact _root_.GlobalTheory.KeyValZero.distinguished_section_valuation_eq_zero | (intros; apply _root_.GlobalTheory.KeyValZero.distinguished_section_valuation_eq_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.distinguished_section_boundary_valuation_vanishes : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y _ _ => ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (TF : TorFlag Y.d.Xo₂ Y.d.c₂) (y : Y₀ TF.X Z) (T : CDVR) (io : Y.d.c₂.F →+* T.Fr) (y' : IntFr Y.d.Xo₂ Y.d.c₂ T io) (g : (Y₀ TF.X Z).presheaf.stalk y →+* T.V), IsLocalHom g → (letI := io.toAlgebra; TF.X.ptY y'.1 = Spec.map (CommRingCat.ofHom ((algebraMap T.V T.Fr).comp g)) ≫ (Y₀ TF.X Z).fromSpecStalk y ≫ inc₀ TF.X Z) → evI y' (GlobalTheory.FlatLine.idem Z) ≠ 0 → ∃ t : GlobalTheory.FlatTw.TwSec Y.U (xiR (Fm.D x ι)) Z (AllWt.wtOf (dat p i) 0 1), vV T.V (evI y' t.sig) = 0 := by
   first | exact @_root_.GlobalTheory.KeyValZero.distinguished_section_valuation_eq_zero | exact _root_.GlobalTheory.KeyValZero.distinguished_section_valuation_eq_zero | (intros; apply _root_.GlobalTheory.KeyValZero.distinguished_section_valuation_eq_zero <;> assumption)
 end

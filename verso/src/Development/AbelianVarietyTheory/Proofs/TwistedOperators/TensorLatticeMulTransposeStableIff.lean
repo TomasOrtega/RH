@@ -20,6 +20,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.Adeli
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [incM, Matrix.mul_apply, Matrix.smul_apply, Matrix.map_apply, Matrix.vecMulVec_apply, Matrix.transpose_apply, Pi.smul_apply, Matrix.mulVec, dotProduct, map_mul, Finset.smul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, smul_mul_assoc]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gen_mul_transpose {n d : ℕ} (x : Fin n → E) (y : Fin d → E) (a : AF F)
     (K : Matrix (Fin d) (Fin d) (AE F E)) :
     (a • incM F (Matrix.vecMulVec x y)) * Kᵀ =
@@ -34,6 +39,19 @@ theorem gen_mul_transpose {n d : ℕ} (x : Fin n → E) (y : Fin d → E) (a : A
   congr 1
   ring
 
+/- English proof (translation)
+Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem u hu`. Take `⟨b, hb, hbi, y', hy', rfl⟩` from `hu`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨b, hb, hbi, x, hx, y', hy', ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i j`. Simplify using `only [incM, Matrix.smul_apply, Matrix.map_apply, Matrix.vecMulVec_apply, Pi.smul_apply, map_mul]`. Rewrite using `[mul_smul_comm]`. Consider the case `zero`. Establish `: Matrix.vecMulVec (fun i => inclR (F` using `F) (AF F) (x i)) (0 : Fin d → AE F E) = 0 := by`.
+
+Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply]`. Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `add u v _ _ hu hv`.
+
+Establish `: Matrix.vecMulVec (fun i => inclR (F` using `F) (AF F) (x i)) (u + v) = Matrix.vecMulVec (fun i => inclR (F := F) (AF F) (x i)) u + Matrix.vecMulVec (fun i => inclR (F := F) (AF F) (x i)) v := by`. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply, mul_add]`. Rewrite using `[this]`. Conclude with `add_mem hu hv`.
+
+Consider the case `neg u _ hu`. Establish `: Matrix.vecMulVec (fun i => inclR (F` using `F) (AF F) (x i)) (-u) = -Matrix.vecMulVec (fun i => inclR (F := F) (AF F) (x i)) u := by`. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply]`. Rewrite using `[this]`.
+
+Conclude with `neg_mem hu`.
+-/
 theorem vecMulVec_mem {n d : ℕ} (X : Spc F E n) (W : Spc F E d) (w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)
     (x : Fin n → E) (hx : x ∈ X.L) (u : Fin d → AE F E)
     (hu : u ∈ AddSubgroup.closure {z | ∃ b : AF F, At (evFin F w) b ∧
@@ -64,6 +82,11 @@ theorem vecMulVec_mem {n d : ℕ} (X : Spc F E n) (W : Spc F E d) (w : GlobalThe
       ext i j; simp [Matrix.vecMulVec_apply]
     rw [this]; exact neg_mem hu
 
+/- English proof (translation)
+Proceed by induction on `hγ using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hai, x, hx, y, hy, rfl⟩` from `hz`. Rewrite using `[gen_mul_transpose]`. Conclude with `vecMulVec_mem X W w x hx _ (hK a ha hai y hy)`.
+
+Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => rw [Matrix.add_mul]`. Conclude with `add_mem hu hv`. Consider the case `neg u _ hu => rw [Matrix.neg_mul]`. Conclude with `neg_mem hu`.
+-/
 theorem mul_transpose_mem {n d : ℕ} (X : Spc F E n) (W : Spc F E d) (w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)
     (K : Matrix (Fin d) (Fin d) (AE F E))
     (hK : ∀ a : AF F, At (evFin F w) a → evFin F w a ∈ w.adicCompletionIntegers F →
@@ -81,6 +104,11 @@ theorem mul_transpose_mem {n d : ℕ} (X : Spc F E n) (W : Spc F E d) (w : Globa
   | add u v _ _ hu hv => rw [Matrix.add_mul]; exact add_mem hu hv
   | neg u _ hu => rw [Matrix.neg_mul]; exact neg_mem hu
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n d X W w K K' hKK hK hK' γ`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2` using `mul_transpose_mem X W w K' hK' _ h`. Rewrite `h2` using `[Matrix.mul_assoc, ← Matrix.transpose_mul, hKK, Matrix.transpose_one, Matrix.mul_one]`. Then use the resulting hypothesis.
+
+Conclude with `mul_transpose_mem X W w K hK γ`.
+-/
 theorem latAtV_mul_transpose_iff : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n d : ℕ)
     (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d) (w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)
     (K K' : Matrix (Fin d) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)), K' * K = 1 →

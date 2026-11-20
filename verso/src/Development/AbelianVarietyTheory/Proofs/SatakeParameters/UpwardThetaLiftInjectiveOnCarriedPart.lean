@@ -12,6 +12,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hB hP p c hc w hw hw0 hadj`. Establish `hwp : w ∈ R.EEp3 p`. Unfold `RealDat3.EEp3`. Conclude with `(le_iSup₂ (f := fun (c : Pl D.host.E → List ℤ → ℂ) (_ : R.Carries p c) => R.EEc c) c hc) hw`. Establish `h` using `hB A3.A.μ0 p w hwp`.
+
+Rewrite `h` using `[LinearMap.comp_apply, hadj, map_zero]`. Establish `hpos : 0 < R.kap * ∏ j ∈ Finset.Icc 1 D.R.m, R.lamN A3.A.μ0 j p`. Use `mul_pos hP.1 (Finset.prod_pos fun j _ => ?_)` and prove the remaining obligations. Unfold `RealDat3.lamN`. Use `split_ifs`.
+
+Conclude with `hP.2 _ _ _`. Conclude with `one_pos`. Establish `hne : (((R.kap * ∏ j ∈ Finset.Icc 1 D.R.m, R.lamN A3.A.μ0 j p : ℝ)) : ℂ) ≠ 0`. Conclude with `hpos.ne'` after adjusting the coercions. Conclude with `hw0 ((smul_eq_zero.1 h.symm).resolve_left hne)`.
+-/
 theorem thetaUp_injective_on_carried : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), R.PThmB → (0 < R.kap ∧ ∀ i t p, 0 < R.lam3 i t p A3.A.v0) → ∀ p c, R.Carries p c → ∀ w ∈ R.EEc c, w ≠ 0 → LinearMap.adjoint (R.Th A3.A.μ0) w ≠ 0 := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hB hP p c hc w hw hw0 hadj
   have hwp : w ∈ R.EEp3 p := by

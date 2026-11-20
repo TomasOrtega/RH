@@ -5,6 +5,11 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC CochainComplex.Hom
 
 namespace LateralTheory.EtaleTrace
 
+/- English proof (translation)
+Apply `Sheaf.hom_ext` to reduce the goal to its premises. Use `sheafify_hom_ext (J := Scheme.etaleTopology) (P := (freeP R).obj P) f.hom g.hom G.property ?_` and prove the remaining obligations. Use extensionality with `U : 2`. Apply `ModuleCat.free_hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨x⟩`.
+
+Use `h U.unop x` as an intermediate fact. Simplify using `only [freeGen] at this`. Simplify using `only [freeP, ModuleCat.freeMk] at this`. Simplify using `only [NatTrans.comp_app, ConcreteCategory.comp_apply]`. Conclude with `this`.
+-/
 theorem free_ext (R : Type) [CommRing R] (P : PSh) {G : Shv R} (f g : (free R).obj P ⟶ G)
     (h : ∀ (U : Scheme.{0}) (x : P.obj (op U)),
       (f.hom.app (op U)).hom (freeGen R P U x) = (g.hom.app (op U)).hom (freeGen R P U x)) : f = g := by
@@ -19,6 +24,15 @@ theorem free_ext (R : Type) [CommRing R] (P : PSh) {G : Shv R} (f g : (free R).o
   simp only [NatTrans.comp_app, ConcreteCategory.comp_apply]
   exact this
 
+/- English proof (translation)
+Introduce `R _ F X α β h`. Apply `Cocycle.ext` to reduce the goal to its premises. Apply `Cochain.ext₀` to reduce the goal to its premises. Introduce `q`. Break down `lt_trichotomy q 0 with hq | rfl | hq` into its components or cases.
+
+Establish `: (res R F).IsStrictlyGE 0` using `by unfold res; infer_instance`. Conclude with `(CochainComplex.isZero_of_isStrictlyGE (res R F) 0 q hq).eq_of_tgt _ _`. Establish `key : (chainsXIso R (sch.obj X) 0).inv ≫ α.1.v _ _ (show -((0:ℕ):ℤ) + 0 = 0 by simp) = (chainsXIso R (sch.obj X) 0).inv ≫ β.1.v _ _ (show -((0:ℕ):ℤ) + 0 = 0 by simp)`. Apply `free_ext` to reduce the goal to its premises. Introduce `U x`.
+
+Conclude with `h U x`. Use `congrArg (fun φ => (chainsXIso R (sch.obj X) 0).hom ≫ φ) key` as an intermediate fact. Simplify using `using this`. Apply `IsZero.eq_of_src` to reduce the goal to its premises. Apply `HomologicalComplex.isZero_extend_X` to reduce the goal to its premises.
+
+Introduce `i hi`. Express the relevant statement in the definitionally equal form `-(i:ℤ) = q at hi`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem cocEq : CocEq := by
   intro R _ F X α β h
   apply Cocycle.ext
@@ -40,6 +54,9 @@ theorem cocEq : CocEq := by
     change -(i:ℤ) = q at hi
     omega
 
+/- English proof (translation)
+The claim follows from `cocEq`.
+-/
 theorem CocEq_of : CocEq := cocEq
 
 end LateralTheory.EtaleTrace

@@ -5,6 +5,29 @@ open scoped Classical
 
 namespace GlobalTheory.KapLat
 
+/- English proof (translation)
+Introduce `E _ _ _ w hw K e B u x n γ γ' hγ hγ'`. Take `⟨ψ, hψl, hψu, hψh⟩` from `hγ`. Take `⟨ψ', hψ'l, hψ'u, hψ'h⟩` from `hγ'`. Set `f : (Fin n → w.adicCompletion E) →ₗ[w.adicCompletion E] (Fin n → w.adicCompletion E)` to `{ toFun := fun v => ψ (ψ'.symm v) map_add' := by intro a b; simp map_smul' := by`. Introduce `t v`.
+
+Take `⟨c, rfl⟩ : ∃ c, e c = t` from `⟨e.symm t, e.apply_symm_apply t⟩`. Take `⟨a, rfl⟩ : ∃ a, ψ' a = v` from `⟨ψ'.symm v, ψ'.apply_symm_apply v⟩`. Simplify using `only [RingHom.id_apply]`. Rewrite using `[← hψ'l, AddEquiv.symm_apply_apply, AddEquiv.symm_apply_apply, hψl] }`. Set `g : (Fin n → w.adicCompletion E) →ₗ[w.adicCompletion E] (Fin n → w.adicCompletion E)` to `{ toFun := fun v => ψ' (ψ.symm v) map_add' := by intro a b; simp map_smul' := by`.
+
+Introduce `t v`. Take `⟨c, rfl⟩ : ∃ c, e c = t` from `⟨e.symm t, e.apply_symm_apply t⟩`. Take `⟨a, rfl⟩ : ∃ a, ψ a = v` from `⟨ψ.symm v, ψ.apply_symm_apply v⟩`. Simplify using `only [RingHom.id_apply]`. Rewrite using `[← hψl, AddEquiv.symm_apply_apply, AddEquiv.symm_apply_apply, hψ'l] }`.
+
+Establish `hfg : f ∘ₗ g = LinearMap.id` using `LinearMap.ext fun v => by simp [f, g]`. Establish `hgf : g ∘ₗ f = LinearMap.id` using `LinearMap.ext fun v => by simp [f, g]`. Set `y : GLw n w` to `⟨LinearMap.toMatrix' f, LinearMap.toMatrix' g, by rw [← LinearMap.toMatrix'_comp, hfg, LinearMap.toMatrix'_id], by rw [← LinearMap.toMatrix'_comp, hgf, LinearMap.toMatrix'_id]⟩`. Establish `hy : ∀ v, (y : Matrix (Fin n) (Fin n) (w.adicCompletion E)) *ᵥ v = f v` using `fun v => LinearMap.toMatrix'_mulVec f v`. Establish `hinv : ∀ v v', stdH w (f v) (f v') = stdH w v v'`.
+
+Introduce `v v'`. Take `⟨a, rfl⟩ : ∃ a, ψ' a = v` from `⟨ψ'.symm v, ψ'.apply_symm_apply v⟩`. Take `⟨b, rfl⟩ : ∃ b, ψ' b = v'` from `⟨ψ'.symm v', ψ'.apply_symm_apply v'⟩`. Simplify using `only [f, LinearMap.coe_mk, AddHom.coe_mk, AddEquiv.symm_apply_apply]`. Rewrite using `[hψh, hψ'h]`.
+
+Use `⟨y, ?_, ?_⟩` and prove the remaining obligations. Unfold `UL`. Rewrite using `[if_neg hw]`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT (cj w) (y : Matrix (Fin n) (Fin n) (w.adicCompletion E)) * 1 * (y : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = 1`. Use `set M : Matrix (Fin n) (Fin n) (w.adicCompletion E) := (y : Matrix (Fin n) (Fin n) (w.adicCompletion E)) with hM`.
+
+Establish `key : Mᵀ * M.map (cj w) = 1`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `h1` using `hinv (Pi.single i 1) (Pi.single j 1)`. Rewrite `h1` using `[← hy, ← hy]`. Simplify using `only [stdH, Matrix.mulVec_single_one] at h1`.
+
+Establish `h2 : (if i = j then (1 : w.adicCompletion E) else 0) = ∑ k, M k i * cj w (M k j)`. Simplify `h1` using `[Pi.single_apply, eq_comm]`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply]`. Conclude with `h2.symm`.
+
+Establish `key2` using `congrArg Matrix.transpose key`. Rewrite `key2` using `[Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_one]`. Rewrite using `[Matrix.mul_one]`. Conclude with `key2`. Establish `hc : (y : Matrix (Fin n) (Fin n) (w.adicCompletion E)) * γ'.val = γ.val * y`.
+
+Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Take `⟨a, rfl⟩ : ∃ a, ψ' a = v` from `⟨ψ'.symm v, ψ'.apply_symm_apply v⟩`. Simplify using `only [Matrix.toLin'_apply]`.
+
+Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← hψ'u, hy, hy]`. Simplify using `only [f, LinearMap.coe_mk, AddHom.coe_mk, AddEquiv.symm_apply_apply]`. Rewrite using `[hψu]`. Establish `hc' : y * γ' = γ * y` using `Units.ext hc`. Rewrite using `[mul_assoc, ← hc', ← mul_assoc, inv_mul_cancel, one_mul]`.
+-/
 theorem models_conj : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E), ¬ IsSplitAt w → ∀ (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E) (B : GlobalTheory.UnitLemma.InvAlg K) (u x : B.A) (n : ℕ) (γ γ' : GLw n w), IsModel w e B u x γ → IsModel w e B u x γ' → ∃ y ∈ UL n w, γ' = y⁻¹ * γ * y := by
   intro E _ _ _ w hw K e B u x n γ γ' hγ hγ'
   obtain ⟨ψ, hψl, hψu, hψh⟩ := hγ

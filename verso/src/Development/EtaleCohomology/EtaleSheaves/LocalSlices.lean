@@ -57,6 +57,9 @@ def mapInj (P : C ⥤ D) [P.Additive] [P.PreservesInjectiveObjects] [P.Preserves
   ι := (HomologicalComplex.singleMapHomologicalComplex P _ _).inv.app _ ≫ (P.mapHomologicalComplex _).map I.ι
   quasiIso := inferInstance
 
+/- English proof (translation)
+Set `h1` to `hEq e (mapInj P I) (mapInj P J)`. Set `h2` to `hExt h1 ComplexShape.embeddingUpNat`. Set `h3` to `(HomotopyEquiv.ofIso (extIso P I.cocomplex ComplexShape.embeddingUpNat)).trans (h2.trans (HomotopyEquiv.ofIso (extIso P J.cocomplex ComplexShape.embeddingUpNat).symm))`. Conclude with `⟨(E.mapHomotopyEquiv h3).toHomologyIso n⟩`.
+-/
 theorem gen (P : C ⥤ D) [P.Additive] [P.PreservesInjectiveObjects] [P.PreservesHomology]
     {A : Type*} [Category* A] [Abelian A] (E : D ⥤ A) [E.Additive] {F G : C}
     (I : InjectiveResolution F) (J : InjectiveResolution G) (e : P.obj F ≅ P.obj G) (n : ℤ) :
@@ -87,6 +90,9 @@ instance : PreservesFiniteColimits (Scheme.etaleTopology.{0}.overPullback (Modul
 def InjOver : Prop := ∀ (R : Type) [CommRing R] (X : Scheme.{0}),
   (Scheme.etaleTopology.{0}.overPullback (ModuleCat.{1} (ULift.{1} R)) X).PreservesInjectiveObjects
 
+/- English proof (translation)
+Introduce `_ R _ X F G ⟨e⟩ n`. Use `hI R X` as an intermediate fact. Take `⟨i⟩` from `gen (Scheme.etaleTopology.{0}.overPullback (ModuleCat.{1} (ULift.{1} R)) X) (sheafToPresheaf _ _ ⋙ (evaluation _ _).obj (op (Over.mk (𝟙 X)))) (injectiveResolution F) (injectiveResolution G) e n`. Conclude with `⟨i.toLinearEquiv.toAddEquiv⟩`.
+-/
 theorem LocSlice_of (hI : InjOver) : LateralTheory.E.LeafLocPf.LocSlice := by
   intro _ R _ X F G ⟨e⟩ n
   have := hI R X

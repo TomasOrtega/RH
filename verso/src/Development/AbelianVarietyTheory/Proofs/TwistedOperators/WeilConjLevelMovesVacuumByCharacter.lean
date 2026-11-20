@@ -15,6 +15,25 @@ noncomputable section
 
 namespace GlobalTheory.TopLevelInv
 
+/- English proof (translation)
+Introduce `D T L sc G W U S t μ₀ hL ht Φ β j hj k hk e he Tm hTm`. Express the relevant statement in the definitionally equal form `W.om (.top t j) (1, conjPt S j k) (S.Z.vac (.top t j)) = _ • Tm fun x => halfInd e (stdLatO S (.top t j)) (actO _ _ 1⁻¹ (conjPt S j k)⁻¹ x)`. Establish `ho` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum he`. Establish `he2 : e * e = e` using `ho.idem`. Establish `hc : e * cA D e = 0` using `he.2`.
+
+Take `⟨ε, hε, halg⟩` from `GlobalTheory.T.exists_baseIdempotent_of_splitIdempotentSum he`. Establish `hε' : IsIdempotentElem (1 - ε)` using `hε.one_sub`. Establish `hsplit : (((1 : GA D (G.V (.top j))), conjPt S j k) : GA D (G.V (.top j)) × GA D (G.V (.top (j + 1)))) = (1, resG _ ε (conjPt S j k)) * (1, resG _ (1 - ε) (conjPt S j k))`. Rewrite using `[Prod.mk_mul_mk, one_mul, resG_compl _ hε]`. Establish `hdp : DefPair D.R.m (.top t j : Pair T)` using `by show j + 1 ≤ D.R.m; omega`.
+
+Establish `hW` using `W.om_is (.top t j) (by simp only [Pair.InRange, Node.InRange]; omega)`. Establish `hv` using `S.Z.vac_is _ hdp`. Establish `hS` using `S.N.selfDual (X := .top j) (by show j ≤ D.R.m; omega)`. Establish `hT` using `S.N.selfDual (X := .top (j + 1)) (by show j + 1 ≤ D.R.m; omega)`. Establish `hlaw` using `GlobalTheory.SplitLinear.law_orth hW hS hT ho hc hv.2.theta hv.2.lat one_ne_zero hTm (GlobalTheory.SplitLinear.suppAt_one e _) (suppAt_resG _ hε (conjPt S j k) halg.symm) (isDetAt_detAt he2 _ 1) (isDetAt_detAt he2 _ (resG _ ε (conjPt S j k)))`.
+
+Establish `hvac : Tm (halfInd e (stdLatO S (.top t j))) = S.Z.vac (.top t j)`. Use `hTm.vac` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Rewrite using `[hsplit, map_mul, Module.End.mul_apply, GlobalTheory.T.truncatedConjugate_fixes_standardVacuum_topPair S hL ht j hj k hk e he ε hε halg]`. Use `conv_lhs => rw [← hvac]`.
+
+Use `(hlaw (halfInd e (stdLatO S (.top t j))) (isSBHalf_halfInd e _)).trans ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[detAt_one' he2, detAt_resG_eq he2 hc hε halg, GlobalTheory.T.detIdele_conjugatedTopPoint_eq_prod_local S ht j hj k e he]`. Unfold `GlobalTheory.SplitLinear.fac`. Simplify using `only [splitFacO, map_one, inv_one, one_mul]`.
+
+Rewrite using `[GlobalTheory.T.topPairSourceChar_prod_localIdeles G hL j hj]`. Establish `h1 : GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absFin D 1 = 1` using `by simp [GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absFin, GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absV]`. Establish `hm : GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.modFac (G.pS (.top t j : Pair T)) (G.pT (.top t j : Pair T)) 1 (∏ w : locPl G t, GlobalTheory.LFun.locIdele D.host.F w.1 (gdet (kapAt S t j hj k w))) = 1`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.modFac`. Rewrite using `[GlobalTheory.T.finiteIdeleModulus_prod_localUnitIdeles _ _ (valuation_gdet_kapAt S hj hk), h1, Real.one_rpow, Real.one_rpow, mul_one]`.
+
+Rewrite using `[hm, Complex.ofReal_one, mul_one]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Apply `halfInd_congr` to reduce the goal to its premises. Distinguish the cases in `hx : IsHalf e x`.
+
+Establish `hinv : (conjPt S j k)⁻¹ = resG _ (1 - ε) (conjPt S j k)⁻¹ * (resG _ ε (conjPt S j k))⁻¹`. Rewrite using `[← resG_inv_eq hε', ← _root_.mul_inv_rev, resG_compl _ hε]`. Establish `key : actO (G.pS (.top t j : Pair T)) (G.pT (.top t j : Pair T)) 1⁻¹ (conjPt S j k)⁻¹ x = actO (G.pS (.top t j : Pair T)) (G.pT (.top t j : Pair T)) 1⁻¹ (resG _ ε (conjPt S j k))⁻¹ x`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[key]`.
+
+Apply the tactic sequence `constructor <;> rintro ⟨-, h⟩ <;> exact absurd ((isHalf_actO _ _ _).1 h) hx`.
+-/
 theorem omega_conj_vac_low: ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {t : T} {μ₀ : T}, L.Is μ₀ → t ∈ U → ∀ {Φ : G.Datum} {β : CosFam G t} (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.top (j + 1))),
     finG (G.V (.top (j + 1))) k ∈ S.levTop t Φ β (j + 1) hj → ∀ e : AE D, IsIdemSum e (locPl G t) →
     ∀ Tm : (WO (G.pS (.top t j : Pair T)) (G.pT (.top t j : Pair T)) → ℂ) →ₗ[ℂ] (WO (G.pS (.top t j : Pair T)) (G.pT (.top t j : Pair T)) → ℂ),

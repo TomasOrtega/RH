@@ -9,6 +9,19 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 
 namespace GlobalTheory.CompanionTheory.HopfC.LowDict
 
+/- English proof (translation)
+Establish `hmap : K.map (e : M →ₗ[R] N) = Z`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(hK x).1 hx`.
+
+Introduce `hy`. Conclude with `⟨e.symm y, (hK _).2 (by simpa using hy), by simp⟩`. Set `v : K ≃ₗ[R] Z` to `e.ofSubmodules K Z hmap`. Establish `hv : ∀ x : K, (v x).1 = e x.1` using `fun _ ↦ rfl`. Establish `hq : BZ'.map (v.symm : Z →ₗ[R] K) = BK`.
+
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, hf, rfl⟩`. Use `(hB _ f ?_).2 hf` and prove the remaining obligations. Rewrite using `[← hv]`.
+
+Simplify using the standard rewrite rules. Introduce `hx`. Conclude with `⟨v x, (hB x (v x) (hv x).symm).1 hx, by simp⟩`. Use `⟨Submodule.Quotient.equiv BZ' BK v.symm hq, fun f x h ↦ ?_, fun f ↦ ⟨v.symm f, ?_⟩⟩` and prove the remaining obligations. Establish `hx : v.symm f = x`.
+
+Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `Subtype.ext h.symm`. Rewrite using `[← hx]`. Both sides reduce to the same expression. Rewrite using `[← hv]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_quot_equiv {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
     (e : M ≃ₗ[R] N) (K : Submodule R M) (Z : Submodule R N) (hK : ∀ x, x ∈ K ↔ e x ∈ Z)
     (BK : Submodule R K) (BZ' : Submodule R Z)
@@ -44,10 +57,20 @@ theorem exists_quot_equiv {R M N : Type} [CommRing R] [AddCommGroup M] [Module R
 
 variable {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem d2_apply (z : C2 F) {T T' T'' T''' : C} (φ : T ⟶ T') (ψ : T' ⟶ T'') (χ : T'' ⟶ T''') :
     d2 F z T T' T'' T''' φ ψ χ = z T' T'' T''' ψ χ - z T T'' T''' (φ ≫ ψ) χ + z T T' T''' φ (ψ ≫ χ) -
       mp F χ (z T T' T'' φ ψ) := rfl
 
+/- English proof (translation)
+Use extensionality with `z`. Use `⟨fun h ↦ ?_, fun h T T' T'' T''' φ ψ χ ↦ ?_⟩` and prove the remaining obligations. Use `LinearMap.mem_ker.2 ?_` and prove the remaining obligations. Use function extensionality and compare the values at `T T' T'' T''' φ ψ χ`. Rewrite using `[d2_apply]`.
+
+Use `h φ ψ χ` as an intermediate fact. Simplify using `only [Pi.zero_apply]`. Take the linear combination `-this`. Use `congrFun (congrFun (congrFun (congrFun (congrFun (congrFun (congrFun (LinearMap.mem_ker.1 h) T) T') T'') T''') φ) ψ) χ` as an intermediate fact. Rewrite `this` using `[d2_apply]`.
+
+Simplify using `only [Pi.zero_apply] at this`. Take the linear combination `-this`.
+-/
 theorem Z2_eq_ker : Z2 F = LinearMap.ker (d2 F) := by
   ext z
   refine ⟨fun h ↦ ?_, fun h T T' T'' T''' φ ψ χ ↦ ?_⟩
@@ -62,6 +85,23 @@ theorem Z2_eq_ker : Z2 F = LinearMap.ker (d2 F) := by
     simp only [Pi.zero_apply] at this
     linear_combination -this
 
+/- English proof (translation)
+Introduce `hD R _ C _ F`. Take `⟨e₀, e₁, e₂, e₃, v₀, v₁, v₂, -, h₀, h₁, h₂⟩` from `hD R C F`. Establish `k₁ : ∀ x, x ∈ Zc F 1 ↔ e₁ x ∈ Z1 F` using `fun x ↦ by`. Rewrite using `[commAlgFunctorCocyclesOne_eq_ker, LinearMap.mem_ker, LinearMap.mem_ker, ← h₁, LinearEquiv.map_eq_zero_iff]`. Establish `k₂ : ∀ x, x ∈ Zc F 2 ↔ e₂ x ∈ Z2 F` using `fun x ↦ by`.
+
+Rewrite using `[Z2_eq_ker, LinearMap.mem_ker, LinearMap.mem_ker, ← h₂, LinearEquiv.map_eq_zero_iff]`. Establish `b₁ : ∀ (x : Zc F 1) (f : Z1 F), e₁ x.1 = f.1 → (x ∈ BZ F 1 ↔ f ∈ LinearMap.range ((d0 F).codRestrict (Z1 F) (commAlgFunctorCoboundaryZero_mem_cocyclesOne F)))` using `fun x f hxf ↦ by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg⟩`. Use `⟨e₀ g, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.codRestrict_apply, ← h₀, hg]`. Conclude with `hxf`. Introduce and unpack `⟨g, hg⟩`. Use `⟨e₀.symm g, e₁.injective ?_⟩` and prove the remaining obligations. Rewrite using `[h₀, LinearEquiv.apply_symm_apply]`.
+
+Conclude with `(congrArg Subtype.val hg).trans hxf.symm`. Establish `b₂ : ∀ (x : Zc F 2) (f : Z2 F), e₂ x.1 = f.1 → (x ∈ BZ F 2 ↔ f ∈ LinearMap.range ((d1 F).codRestrict (Z2 F) (differential_one_mem_scaled_lattice F)))` using `fun x f hxf ↦ by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg⟩`. Use `⟨e₁ g, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.codRestrict_apply, ← h₁, hg]`. Conclude with `hxf`. Introduce and unpack `⟨g, hg⟩`. Use `⟨e₁.symm g, e₂.injective ?_⟩` and prove the remaining obligations. Rewrite using `[h₁, LinearEquiv.apply_symm_apply]`.
+
+Conclude with `(congrArg Subtype.val hg).trans hxf.symm`. Take `⟨u₁, c₁, s₁⟩` from `exists_quot_equiv e₁ (Zc F 1) (Z1 F) k₁ (BZ F 1) _ b₁`. Take `⟨u₂, c₂, s₂⟩` from `exists_quot_equiv e₂ (Zc F 2) (Z2 F) k₂ (BZ F 2) _ b₂`. Use `⟨u₁, u₂, fun f x hx ↦ c₁ f x ?_, fun f x hx ↦ c₂ f x ?_, fun f ↦ ?_, fun f ↦ ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' φ`.
+
+Conclude with `(v₁ x.1 T T' φ).trans (hx T T' φ)`. Use function extensionality and compare the values at `T T' T'' φ ψ`. Conclude with `(v₂ x.1 T T' T'' φ ψ).trans (hx T T' T'' φ ψ)`. Take `⟨x, hx⟩` from `s₁ f`. Conclude with `⟨x, fun T T' φ ↦ (v₁ x.1 T T' φ).symm.trans (congrFun (congrFun (congrFun hx T) T') φ)⟩`.
+
+Take `⟨x, hx⟩` from `s₂ f`. Conclude with `⟨x, fun T T' T'' φ ψ ↦ (v₂ x.1 T T' T'' φ ψ).symm.trans (congrFun (congrFun (congrFun (congrFun (congrFun hx T) T') T'') φ) ψ)⟩`.
+-/
 theorem dict_low : DictSt → ∀ {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R),
     ∃ (u₁ : H1 F ≃ₗ[R] HH F 1) (u₂ : H2 F ≃ₗ[R] HH F 2), IsIdealValuedLiftSystemCocycle F u₁.toLinearMap ∧ IsDegreeTwoComparison F u₂.toLinearMap ∧
       (∀ f : Z1 F, ∃ x : Zc F 1, ∀ (T T' : C) (φ : T ⟶ T'), x.1 (ComposableArrows.mk₁ φ) = f.1 T T' φ) ∧

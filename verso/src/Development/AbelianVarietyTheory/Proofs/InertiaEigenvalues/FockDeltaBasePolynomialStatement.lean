@@ -15,5 +15,8 @@ open GlobalTheory.SingleDatum
 set_option synthInstance.maxHeartbeats 400000
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FockLetters.rename_delta_eq_smul_basePoly | exact GlobalTheory.FockLetters.rename_delta_eq_smul_basePoly | (intros; apply GlobalTheory.FockLetters.rename_delta_eq_smul_basePoly <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.fock_delta_base_polynomial : ∀ (D : D7) (H : Geo.Tor.Host D.host.E) (Dw : Datum H) (m n : ℕ) (hΨ : ∀ τ : D.host.E →+* ℂ, InPsi H τ ↔ ∃ ρ, τ = tauE D ρ) (hm : m = Dw.p + Dw.q) (w : Weight D n) (a : (D.host.E →+* ℂ) × ℕ → ℕ), WtIs Dw w a → ∀ (hn : Dw.p + Dw.q ≤ n), ∃ c : ℂ, MvPolynomial.rename (GlobalTheory.FockLetters.fockVarEquiv Dw hΨ hm) (w.delta m) = MvPolynomial.C c * GlobalTheory.Harm.basePoly ℂ hn (GlobalTheory.FockLetters.stepsX Dw a) (GlobalTheory.FockLetters.stepsY Dw a) := by
   first | exact @GlobalTheory.FockLetters.rename_delta_eq_smul_basePoly | exact GlobalTheory.FockLetters.rename_delta_eq_smul_basePoly | (intros; apply GlobalTheory.FockLetters.rename_delta_eq_smul_basePoly <;> assumption)

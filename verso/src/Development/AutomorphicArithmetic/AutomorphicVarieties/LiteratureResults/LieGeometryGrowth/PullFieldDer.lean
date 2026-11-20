@@ -8,6 +8,13 @@ namespace UpperTheory.V.Lit.Geo
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℝ (Lie E a)`. Use `choose c hc using fun k => h (b k) []`. Establish `hc' : ∀ k g, ‖(lie E a (b k) φ).1 g‖ ≤ c k` using `fun k g => by simpa using hc k g`. Establish `h0 : ∀ k, 0 ≤ c k` using `fun k => (norm_nonneg _).trans (hc' k 1)`. Use `⟨∑ k, ‖LinearMap.toContinuousLinearMap (b.coord k)‖ * c k, Finset.sum_nonneg fun k _ => mul_nonneg (norm_nonneg _) (h0 k), fun X g => ?_⟩` and prove the remaining obligations.
+
+Set `L : Lie E a →ₗ[ℝ] ℂ` to `{ toFun := fun X => (lie E a X φ).1 g map_add' := fun X X' => by rw [map_add]; rfl map_smul' := fun r X => by rw [map_smul]; rfl }`. Establish `e : L X = ∑ k, b.repr X k • L (b k)` using `by conv_lhs => rw [← b.sum_repr X]`. Simplify using `only [map_sum, map_smul]`. Express the relevant statement in the definitionally equal form `‖L X‖ ≤ _`. Rewrite using `[e, Finset.sum_mul]`.
+
+Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, mul_right_comm]`. Conclude with `mul_le_mul ((LinearMap.toContinuousLinearMap (b.coord k)).le_opNorm X) (hc' k g) (norm_nonneg _) (mul_nonneg (norm_nonneg _) (norm_nonneg _))`.
+-/
 private theorem lie_bound {φ : Sm E a} (h : BddDer φ) :
     ∃ B : ℝ, 0 ≤ B ∧ ∀ (X : Lie E a) (g : GA E a), ‖(lie E a X φ).1 g‖ ≤ B * ‖X‖ := by
   let b := Module.finBasis ℝ (Lie E a)
@@ -30,6 +37,15 @@ private theorem lie_bound {φ : Sm E a} (h : BddDer φ) :
   exact mul_le_mul ((LinearMap.toContinuousLinearMap (b.coord k)).le_opNorm X) (hc' k g) (norm_nonneg _)
     (mul_nonneg (norm_nonneg _) (norm_nonneg _))
 
+/- English proof (translation)
+Take `⟨x, h1, h2, -⟩` from `h.root g 1 (by simp)`. Establish `hC : 0 ≤ C` using `(norm_nonneg _).trans h2`. Establish `hp : (0 : ℝ) ≤ a * C ^ 2 + 1` using `by positivity`. Establish `e : (Y g).1 = x.val * star x.val - 1` using `by rw [h1, one_smul, add_sub_cancel_left]`. Establish `hx : ∀ i j, ‖x.val i j‖ ≤ C` using `fun i j => ((norm_le_pi_norm (toL x.val i) j).trans (norm_le_pi_norm (toL x.val) i)).trans h2`.
+
+Express the relevant statement in the definitionally equal form `‖toL (Y g).1‖ ≤ _`. Use `(pi_norm_le_iff_of_nonneg hp).2 fun i => (pi_norm_le_iff_of_nonneg hp).2 fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖(Y g).1 i j‖ ≤ _`. Rewrite using `[e, Matrix.sub_apply, Matrix.mul_apply]`. Use `(norm_sub_le _ _).trans (add_le_add ((norm_sum_le _ _).trans ?_) ?_)` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Use `(norm_mul_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Matrix.star_apply, norm_star, sq]`. Conclude with `mul_le_mul (hx i k) (hx j k) (norm_nonneg _) hC`. Use `_ = a * C ^ 2 := by simp`.
+
+Use `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun w => ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem val_bound {U : Subgroup (GL (Fin a) (Af E))} {Y : GA E a → Herm E a} {C : ℝ} (h : IsFld U Y C)
     (g : GA E a) : ‖hv (Y g)‖ ≤ a * C ^ 2 + 1 := by
   obtain ⟨x, h1, h2, -⟩ := h.root g 1 (by simp)
@@ -52,6 +68,15 @@ private theorem val_bound {U : Subgroup (GL (Fin a) (Af E))} {Y : GA E a → Her
     rw [Matrix.one_apply]
     split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `E _ _ _ a U Y C h`. Use `choose φ hφ hb using h.sm`. Use `choose B hB0 hB using fun i j w => lie_bound (hb i j w)`. Take `⟨P, hP⟩` from `LinearMap.exists_leftInverse_of_injective (HV E a).subtype (Submodule.ker_subtype _)`. Establish `hP' : ∀ v : HV E a, LinearMap.toContinuousLinearMap P v.1 = v` using `fun v => LinearMap.congr_fun hP v`.
+
+Set `B' : Lie E a` to `fun i j w => (B i j w : ℂ)`. Establish `hle : ∀ i j w, B i j w ≤ ‖B'‖` using `fun i j w =>`. Combine the equalities or inequalities in the displayed calculation. Use `⟨max (a * C ^ 2 + 1) (‖LinearMap.toContinuousLinearMap P‖ * ‖B'‖), le_max_of_le_left (by positivity), fun g => ⟨le_max_of_le_left (val_bound h g), fun c X h0 hX => ?_⟩⟩` and prove the remaining obligations. Set `D : Lie E a` to `fun i j w => (lie E a X (φ i j w)).1 g`.
+
+Establish `hD : HasDerivAt (fun t => (hv (Y (g * infGL E a (c t)))).1) D 0` using `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => hasDerivAt_pi.2 fun w => (hasDerivAt_curve (φ i j w) g c X h0 hX).congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => (hφ i j w _).symm)`. Establish `hn : ‖D‖ ≤ ‖B'‖ * ‖X‖`. Establish `hp : 0 ≤ ‖B'‖ * ‖X‖` using `by positivity`. Conclude with `(pi_norm_le_iff_of_nonneg hp).2 fun i => (pi_norm_le_iff_of_nonneg hp).2 fun j => (pi_norm_le_iff_of_nonneg hp).2 fun w => (hB i j w X g).trans (mul_le_mul_of_nonneg_right (hle i j w) (norm_nonneg _))`. Use `⟨LinearMap.toContinuousLinearMap P D, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `((LinearMap.toContinuousLinearMap P).le_opNorm_of_le hn).trans ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (le_max_right _ _) (norm_nonneg _)`. Conclude with `((LinearMap.toContinuousLinearMap P).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hD).congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => (hP' _).symm)`.
+-/
 theorem fieldDer : FieldDer := by
   intro E _ _ _ a U Y C h
   choose φ hφ hb using h.sm

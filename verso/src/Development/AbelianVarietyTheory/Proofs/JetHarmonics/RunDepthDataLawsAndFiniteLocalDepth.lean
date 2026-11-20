@@ -12,6 +12,13 @@ open GlobalTheory.RunDepth GlobalTheory.CharDepth
 
 namespace GlobalTheory.RunDepth
 
+/- English proof (translation)
+Introduce `D L Pm Tp hK T EX _ h hs`. Establish `hr1 : 1 ≤ D.R.r`. Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_add_three_le_k`. Unfold `Ranks.r`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hn : 2 * D.R.f * D.R.r ≤ Tp.nWn`. Use `le_trans ?_ Tp.nW_lo.1` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hP : LawsPi T (depOf T EX Tp hK)` using `lawsPi_depRun h EX _ _ _ _ _ fun j _ => hn`.
+
+Establish `hD : LawsDep T` using `⟨hs, fun j _ => (GlobalTheory.IntChartExists.intChart_exists _ _ _ _ (T.Q.Xo j) T.Q.c).2.1 hs, fun j _ => GlobalTheory.ChartCmp.chartIndep_holds _ _ _ _ (T.Q.Xo j) T.Q.c hs⟩`. Conclude with `⟨hP, hD, nuFinAt_of T h.pins _ hP.wts hD.chartEx fun j _ => Formalism.L2.Pj.SaturatedCharts.saturation_charts_holds (T.Q.Xo j) T.Q.c⟩`.
+-/
 theorem laws_and_nuFinAt : ∀ (D : D7) (L : SizeData₂ D) (Pm : ParameterChoice' D L) (Tp : ParamsT D L Pm) (hK : DV.KapDef D) (T : Core D) (EX : ErrX D) [StarRing (𝓞 D.host.E)], LawsM T → (∀ a : 𝓞 D.host.E, star a = T.Q.H.bar a) → LawsPi T (depOf T EX Tp hK) ∧ LawsDep T ∧ NuFinAt T (depOf T EX Tp hK) := by
   intro D L Pm Tp hK T EX _ h hs
   have hr1 : 1 ≤ D.R.r := by

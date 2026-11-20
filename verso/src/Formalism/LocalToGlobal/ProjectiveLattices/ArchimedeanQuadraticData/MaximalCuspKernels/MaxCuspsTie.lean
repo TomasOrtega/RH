@@ -13,6 +13,9 @@ def MaxCuspsTieStatement : Prop :=
   ∀ (D : D7) (T : Core D) (j : ℕ) (cu : T.Cu j),
     WeightFamilies.dualZ D (T.Xc j cu) = (crdI 1 cu.1.2 : Set (Fin (WeightFamilies.rho D j) → D.host.E))
 
+/- English proof (translation)
+Introduce `D T j cu`. Establish `h1 : WeightFamilies.dualZ D (T.Xc j cu) = dualZE (XcFD 1 cu.1.2)` using `rfl`. Rewrite using `[h1, dualZE_eq, xcFD_restrict]`. Take `⟨ι, _, b, hb⟩` from `exists_basis (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) one_ne_zero cu.1.2`. Rewrite using `[← hb, LinearMap.BilinForm.dualSubmodule_dualSubmodule_of_basis _ (trBE_nondeg _) (trBE_symm _) b, hb, Submodule.coe_restrictScalars]`.
+-/
 theorem maxCuspsTieStatement_holds : MaxCuspsTieStatement := by
   intro D T j cu
   have h1 : WeightFamilies.dualZ D (T.Xc j cu) = dualZE (XcFD 1 cu.1.2) := rfl

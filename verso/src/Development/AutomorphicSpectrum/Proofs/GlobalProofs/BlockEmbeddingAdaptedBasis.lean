@@ -15,6 +15,19 @@ open GlobalTheory.UAut GlobalTheory.AdelicU GlobalTheory.SiegelSet
 
 namespace GlobalTheory.CompanionTheory.CuspSmooth
 
+/- English proof (translation)
+Introduce `D _ θ hθ V m Xf Yf hW l d h ι hι F g`. Take `⟨hcm, hJ⟩` from `GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND D.host.F D.host.E D.sp.cm`. Use `GlobalTheory.T.contDiffOn_invSet_of_smooth_along_prod_exp D.host.E d _ {X | ∃ v, ∀ i j, ∀ u, u ≠ v → X i j u = 0} ?_ ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `X _`.
+
+Establish `e : X = ∑ v : InfinitePlace D.host.E, (Matrix.of fun i j => Pi.single v (X i j v))`. Use extensionality with `i j u`. Rewrite using `[Matrix.sum_apply, Finset.sum_apply]`. Simplify using `[Pi.single_apply]`. Rewrite using `[e]`.
+
+Conclude with `Submodule.sum_mem _ fun v _ => Submodule.subset_span ⟨v, fun i j u hu => by simp [hu]⟩`. Introduce `k X hX y hy choose v hv using hX`. Establish `hγ : ∀ i, IsRealLine D.sp.cm.sig V.gram (fun t : ℝ => ι (GlobalTheory.CuspRep.infGL D.host.E d (GlobalTheory.CuspRep.expGLi d (t • X i))))` using `fun i => GlobalTheory.BlockRealLine.isRealLine_blockEmb_exp D.host.F D.host.E D.sp.cm.sig hcm _ V.gram (hJ V) m Xf Yf hW l d h ι hι (v i) (X i) (hv i)`. Use `choose p hp e using fun i => (hγ i).eq_oneP hθ`. Establish `hs` using `F.2 k (fun i => (p i).1) (fun i => (p i).2) hp (ι (g * GlobalTheory.CuspRep.infGL D.host.E d hy.unit))`.
+
+Simplify using `only [← e] at hs`. Use `hs using 2 with t` and compare the differences between its conclusion and the goal. Use `set P : GL (Fin d) (GlobalTheory.CuspRep.Cinf D.host.E) := (List.ofFn fun i => GlobalTheory.CuspRep.expGLi d (t i • X i)).prod`. Establish `hP : (P : Matrix (Fin d) (Fin d) (GlobalTheory.CuspRep.Cinf D.host.E)) = (List.ofFn fun i => NormedSpace.exp (t i • X i)).prod`. Simplify using `only [P]`.
+
+Rewrite using `[← Units.coeHom_apply, map_list_prod, List.map_ofFn]`. Both sides reduce to the same expression. Establish `hU : GlobalTheory.CuspRep.toL (Matrix.of y * (List.ofFn fun i => NormedSpace.exp (t i • X i)).prod) = GlobalTheory.CuspRep.toL (hy.unit * P).val`. Rewrite using `[Units.val_mul, hP]`. Use `congr 2`.
+
+Rewrite using `[hU, GlobalTheory.CuspRep.chart_val]`. Establish `e3 : (List.ofFn fun i => ι (GlobalTheory.CuspRep.infGL D.host.E d (GlobalTheory.CuspRep.expGLi d (t i • X i)))) = (List.ofFn fun i => GlobalTheory.CuspRep.expGLi d (t i • X i)).map (ι.comp (GlobalTheory.CuspRep.infGL D.host.E d))`. Simplify using `[List.map_ofFn, Function.comp_def]`. Rewrite using `[e3, ← map_list_prod]`. Simplify using `only [P, map_mul, MonoidHom.comp_apply, mul_assoc]`.
+-/
 theorem mem_Sm_blockEmb_smFun : ∀ (D : D7) [IsTotallyComplex D.host.E] (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (hθ : IsInfFam θ)
     (V : HSp D) (m : ℕ) (X Y : Matrix (Fin V.rank) (Fin m) D.host.E),
     IsWittFrame D.sp.cm.sig V.gram X Y → ∀ (l d : ℕ) (h : l + d ≤ m)

@@ -83,6 +83,9 @@ def NormPTieG {bad : Set (HeightOneSpectrum (𝓞 D.host.F))} {K : ClassesAtPrim
 
 end Gen
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sgTG_fm (u : D.what₂.Word) : sgTG (D.fm u) = sgT u := rfl
 
 def ClsPTied.toG {u : D.what₂.Word} (K : ClsPTied u) : ClassesAtPrimes (D.fm u) (badG D) where

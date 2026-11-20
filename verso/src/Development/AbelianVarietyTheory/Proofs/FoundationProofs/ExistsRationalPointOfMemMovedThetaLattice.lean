@@ -19,15 +19,24 @@ def mv (g : GL (Fin N) (AE D)) (g' : GL (Fin N') (AE D)) (z : Matrix (Fin N') (F
   ((g'⁻¹ : GL (Fin N') (AE D)) : Matrix (Fin N') (Fin N') (AE D)) * z.map (inc D) *
     (g : Matrix (Fin N) (Fin N) (AE D))
 
+/- English proof (translation)
+Unfold `mv`. Rewrite using `[Matrix.map_zero _ (map_zero _), Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem mv_zero (g : GL (Fin N) (AE D)) (g' : GL (Fin N') (AE D)) : mv g g' 0 = 0 := by
   unfold mv
   rw [Matrix.map_zero _ (map_zero _), Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+Unfold `mv`. Rewrite using `[Matrix.map_add _ (map_add _), Matrix.mul_add, Matrix.add_mul]`.
+-/
 theorem mv_add (g : GL (Fin N) (AE D)) (g' : GL (Fin N') (AE D)) (z w : Matrix (Fin N') (Fin N) D.host.E) :
     mv g g' (z + w) = mv g g' z + mv g g' w := by
   unfold mv
   rw [Matrix.map_add _ (map_add _), Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+Unfold `mv`. Establish `: (e • z).map (inc D) = inc D e • z.map (inc D)`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[this, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem mv_smul (g : GL (Fin N) (AE D)) (g' : GL (Fin N') (AE D)) (e : D.host.E)
     (z : Matrix (Fin N') (Fin N) D.host.E) : mv g g' (e • z) = inc D e • mv g g' z := by
   unfold mv
@@ -36,9 +45,17 @@ theorem mv_smul (g : GL (Fin N) (AE D)) (g' : GL (Fin N') (AE D)) (e : D.host.E)
     simp only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]
   rw [this, Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+The claim follows from `(incl_mem_iff (F := ℚ) (o : D.host.E)).2 ⟨o, rfl⟩`.
+-/
 theorem inc_int (o : 𝓞 D.host.E) : inc D (o : D.host.E) ∈ OhE D :=
   (incl_mem_iff (F := ℚ) (o : D.host.E)).2 ⟨o, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu => exact hT u hu`. Consider the case `zero => rw [mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add u v _ _ hu hv => rw [mulVec_add]`.
+
+Conclude with `add_mem hu hv`. Consider the case `smul s u _ hu`. Establish `e : s • u = (s : R) • u` using `rfl`. Rewrite using `[e, mulVec_smul]`. Conclude with `mul_mem s.2 hu`.
+-/
 theorem mulVec_mem_of_span {R m n : Type} [CommRing R] [Fintype n] {S : Subring R} (M : Matrix m n R) (i : m)
     {T : Set (n → R)} (hT : ∀ u ∈ T, (M *ᵥ u) i ∈ S) {u : n → R} (hu : u ∈ Submodule.span S T) :
     (M *ᵥ u) i ∈ S := by
@@ -51,6 +68,15 @@ theorem mulVec_mem_of_span {R m n : Type} [CommRing R] [Fintype n] {S : Subring 
     rw [e, mulVec_smul]
     exact mul_mem s.2 hu
 
+/- English proof (translation)
+Establish `hL : L = lat g`. Use extensionality with `x`. Conclude with `(h x).trans (mem_lat g x).symm`. Establish `h1` using `(lat_span g ((g : Matrix (Fin N) (Fin N) (AE D)) *ᵥ Pi.single j 1)).2 (by`. Introduce `k`.
+
+Rewrite using `[mulVec_mulVec, Units.inv_mul, one_mulVec, Pi.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _)`. Establish `h3` using `mulVec_mem_of_span (((g'⁻¹ : GL (Fin N') (AE D)) : Matrix (Fin N') (Fin N') (AE D)) * A.map (inc D)) i (by`.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `h2` using `(h' _).1 (hA x (hL ▸ hx)) i`. Establish `e : (fun j => inc D ((A *ᵥ x) j)) = A.map (inc D) *ᵥ (fun j => inc D (x j))`. Use extensionality with `k`. Rewrite using `[RingHom.map_mulVec]`.
+
+Both sides reduce to the same expression. Rewrite `h2` using `[e, mulVec_mulVec]`. Conclude with `h2) h1`. Rewrite `h3` using `[mulVec_mulVec, mulVec_single_one]`. Conclude with `h3`.
+-/
 theorem mv_int_of_maps {g : GL (Fin N) (AE D)} {g' : GL (Fin N') (AE D)}
     {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
     (h : Moves D g L) (h' : Moves D g' L') {A : Matrix (Fin N') (Fin N) D.host.E}
@@ -75,6 +101,11 @@ theorem mv_int_of_maps {g : GL (Fin N) (AE D)} {g' : GL (Fin N') (AE D)}
   rw [mulVec_mulVec, mulVec_single_one] at h3
   exact h3
 
+/- English proof (translation)
+Proceed by induction on `hA using Submodule.span_induction with`. Consider the case `mem A hA => exact mv_int_of_maps h h' hA i j`. Consider the case `zero => rw [mv_zero]`. Conclude with `zero_mem _`. Consider the case `add u v _ _ hu hv => rw [mv_add]`.
+
+Conclude with `add_mem hu hv`. Consider the case `smul o u _ hu`. Establish `e : o • u = (o : D.host.E) • u` using `rfl`. Rewrite using `[e, mv_smul]`. Conclude with `mul_mem (inc_int o) hu`.
+-/
 theorem mv_int_of_hom {g : GL (Fin N) (AE D)} {g' : GL (Fin N') (AE D)}
     {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
     (h : Moves D g L) (h' : Moves D g' L') {A : Matrix (Fin N') (Fin N) D.host.E}
@@ -88,6 +119,11 @@ theorem mv_int_of_hom {g : GL (Fin N) (AE D)} {g' : GL (Fin N') (AE D)}
     rw [e, mv_smul]
     exact mul_mem (inc_int o) hu
 
+/- English proof (translation)
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨c, hc, a, ha, t, ht, rfl⟩` from `hy`. Conclude with `AddSubgroup.subset_closure ⟨c, hc, a, ha, s * t, mul_mem hs ht, by ring⟩`. Consider the case `zero => rw [mul_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add u v _ _ hu hv => rw [mul_add]`. Conclude with `add_mem hu hv`. Consider the case `neg u _ hu => rw [mul_neg]`. Conclude with `neg_mem hu`.
+-/
 theorem mul_mem_IhE {cc : Ideal (𝓞 D.host.K)} {s y : AE D} (hs : s ∈ OhE D) (hy : y ∈ IhE D cc) :
     s * y ∈ IhE D cc := by
   induction hy using AddSubgroup.closure_induction with
@@ -98,6 +134,13 @@ theorem mul_mem_IhE {cc : Ideal (𝓞 D.host.K)} {s y : AE D} (hs : s ∈ OhE D)
   | add u v _ _ hu hv => rw [mul_add]; exact add_mem hu hv
   | neg u _ hu => rw [mul_neg]; exact neg_mem hu
 
+/- English proof (translation)
+Proceed by induction on `hB using Submodule.span_induction with`. Consider the case `mem B hB`. Take `⟨a, ha, A, hA, rfl⟩` from `hB`. Rewrite using `[smul_smul, mv_smul]`. Conclude with `AddSubgroup.subset_closure ⟨c, hc, a, ha, _, mv_int_of_hom h h' hA i j, rfl⟩`.
+
+Consider the case `zero => rw [smul_zero, mv_zero]`. Conclude with `zero_mem _`. Consider the case `add u v _ _ hu hv => rw [smul_add, mv_add]`. Conclude with `add_mem hu hv`. Consider the case `smul o u _ hu`.
+
+Establish `e : o • u = (o : D.host.E) • u` using `rfl`. Rewrite using `[e, smul_comm, mv_smul]`. Conclude with `mul_mem_IhE (inc_int o) hu`.
+-/
 theorem mv_mem_IhE {cc : Ideal (𝓞 D.host.K)} {g : GL (Fin N) (AE D)} {g' : GL (Fin N') (AE D)}
     {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
     (h : Moves D g L) (h' : Moves D g' L') {c : 𝓞 D.host.K} (hc : c ∈ cc)
@@ -115,21 +158,33 @@ theorem mv_mem_IhE {cc : Ideal (𝓞 D.host.K)} {g : GL (Fin N) (AE D)} {g' : GL
     rw [e, smul_comm, mv_smul]
     exact mul_mem_IhE (inc_int o) hu
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i j`. Simplify using `[pt, embV, tor0]`.
+-/
 theorem pt_zero (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) :
     pt D (tor0 D cc δ) δ (0 : Matrix (Fin N') (Fin N) D.host.E) = 0 := by
   funext τ i j
   simp [pt, embV, tor0]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i j`. Simplify using `[pt, embV, tor0, mul_add]`.
+-/
 theorem pt_add (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (z w : Matrix (Fin N') (Fin N) D.host.E) :
     pt D (tor0 D cc δ) δ (z + w) = pt D (tor0 D cc δ) δ z + pt D (tor0 D cc δ) δ w := by
   funext τ i j
   simp [pt, embV, tor0, mul_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i j`. Simplify using `[pt, embV, tor0]`.
+-/
 theorem pt_neg (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (z : Matrix (Fin N') (Fin N) D.host.E) :
     pt D (tor0 D cc δ) δ (-z) = -pt D (tor0 D cc δ) δ z := by
   funext τ i j
   simp [pt, embV, tor0]
 
+/- English proof (translation)
+Rewrite using `[← neg_one_smul D.host.E z, mv_smul, map_neg, map_one, neg_one_smul]`.
+-/
 theorem mv_neg (g : GL (Fin N) (AE D)) (g' : GL (Fin N') (AE D)) (z : Matrix (Fin N') (Fin N) D.host.E) :
     mv g g' (-z) = -mv g g' z := by
   rw [← neg_one_smul D.host.E z, mv_smul, map_neg, map_one, neg_one_smul]
@@ -138,6 +193,21 @@ end GlobalTheory.NormSum.MovedTheta
 
 open GlobalTheory.NormSum.MovedTheta in
 
+/- English proof (translation)
+Introduce `D hG cc δ _ N N' g g' L L' h h' x hx`. Set `P : VC D N N' → Prop` to `fun x => ∃ z : Matrix (Fin N') (Fin N) D.host.E, x = pt D (tor0 D cc δ) δ z ∧ ∀ i j, mv (g : GL (Fin N) (AE D)) (g' : GL (Fin N') (AE D)) z i j ∈ IhE D cc`. Establish `h0 : P 0` using `⟨0, (pt_zero cc δ).symm, fun i j => by rw [mv_zero]; exact zero_mem _⟩`. Establish `hadd : ∀ u v, P u → P v → P (u + v)`. Introduce and unpack `_ _ ⟨z, rfl, hz⟩ ⟨w, rfl, hw⟩`.
+
+Conclude with `⟨z + w, (pt_add cc δ z w).symm, fun i j => by rw [mv_add]; exact add_mem (hz i j) (hw i j)⟩`. Establish `hneg : ∀ u, P u → P (-u)`. Introduce and unpack `_ ⟨z, rfl, hz⟩`. Conclude with `⟨-z, (pt_neg cc δ z).symm, fun i j => by rw [mv_neg]; exact neg_mem (hz i j)⟩`. Use `show P x`.
+
+Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨w, hw, A, hA, rfl⟩` from `hx`. Express the relevant statement in the definitionally equal form `w ∈ lamOf D cc δ at hw`. Proceed by induction on `hw using AddSubgroup.closure_induction with`.
+
+Consider the case `mem w hw`. Take `⟨c, hc, rfl⟩` from `hw`. Use `⟨((c : D.host.K) : D.host.E) • A, ?_, mv_mem_IhE h h' hc hA⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ i j`. Establish `e` using `hG.1 τ (c : D.host.K)`.
+
+Simplify using `only [pt, embV, tor0, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[e, mul_assoc]`. Consider the case `zero => rw [zero_smul]`. Conclude with `h0`. Consider the case `add u v _ _ hu hv => rw [add_smul]`.
+
+Conclude with `hadd _ _ hu hv`. Consider the case `neg u _ hu => rw [neg_smul]`. Conclude with `hneg _ hu`. Consider the case `zero => exact h0`. Consider the case `add u v _ _ hu hv => exact hadd _ _ hu hv`.
+
+Consider the case `neg u _ hu => exact hneg _ hu`.
+-/
 theorem GlobalTheory.NormSum.exists_pt_of_mem_La_moved : ∀ (D : D7), admG1 D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), cc ≠ ⊥ → ∀ (N N' : ℕ) (g : GA D N) (g' : GA D N') (L₁ : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L₁' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)), Moves D (g : GL (Fin N) (AE D)) L₁ → Moves D (g' : GL (Fin N') (AE D)) L₁' → ∀ x ∈ La D (tor0 D cc δ) L₁ L₁', ∃ z : Matrix (Fin N') (Fin N) D.host.E, x = pt D (tor0 D cc δ) δ z ∧ ∀ i j, ((((g' : GL (Fin N') (AE D))⁻¹ : GL (Fin N') (AE D)) : Matrix (Fin N') (Fin N') (AE D)) * z.map (inc D) * ((g : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D))) i j ∈ IhE D cc := by
   intro D hG cc δ _ N N' g g' L L' h h' x hx
   let P : VC D N N' → Prop := fun x => ∃ z : Matrix (Fin N') (Fin N) D.host.E, x = pt D (tor0 D cc δ) δ z ∧

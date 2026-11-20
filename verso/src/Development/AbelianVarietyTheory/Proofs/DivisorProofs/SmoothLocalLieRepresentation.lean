@@ -29,6 +29,11 @@ def sig (J : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ
 
 abbrev skewSub (J : Matrix (Fin n) (Fin n) ℂ) : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ) := (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.lieU J).toSubmodule
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `J⁻¹ * uᴴ * J * u = 1 ↔ uᴴ * J * u = J`. Prove the components needed by the constructor for the conclusion. Introduce `h1`. Use `congrArg (J * ·) h1` as an intermediate fact. Simplify `this` using `only [← mul_assoc, mul_nonsing_inv _ hu, one_mul, mul_one]`.
+
+Introduce `h1`. Rewrite using `[mul_assoc, mul_assoc, ← mul_assoc uᴴ, h1, nonsing_inv_mul _ hu]`.
+-/
 theorem sig_mul_eq_one_iff {J : Matrix (Fin n) (Fin n) ℂ} (hu : IsUnit J.det) (u : Matrix (Fin n) (Fin n) ℂ) :
     sig J u * u = 1 ↔ IsUni J u := by
   change J⁻¹ * uᴴ * J * u = 1 ↔ uᴴ * J * u = J
@@ -39,6 +44,17 @@ theorem sig_mul_eq_one_iff {J : Matrix (Fin n) (Fin n) ℂ} (hu : IsUnit J.det) 
   · intro h1
     rw [mul_assoc, mul_assoc, ← mul_assoc uᴴ, h1, nonsing_inv_mul _ hu]
 
+/- English proof (translation)
+Establish `anti : ∀ a b, sig J (a * b) = sig J b * sig J a` using `fun a b => by`. Express the relevant statement in the definitionally equal form `_ * (a * b)ᴴ * _ = (_ * bᴴ * _) * (_ * aᴴ * _)`. Rewrite using `[conjTranspose_mul]`. Simplify using `only [mul_assoc]`. Rewrite using `[mul_nonsing_inv_cancel_left _ _ hu]`.
+
+Use `⟨anti, ?_, fun a => ?_, Subtype.val_injective, fun X => ⟨fun h => ?_, ?_⟩, fun a b ha hb => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `J⁻¹ * (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * J = 1`. Rewrite using `[conjTranspose_one, mul_one, nonsing_inv_mul _ hu]`. Express the relevant statement in the definitionally equal form `_ * (_ * aᴴ * _)ᴴ * _ = a`. Rewrite using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_nonsing_inv, hJ]`.
+
+Simplify using `only [mul_assoc]`. Rewrite using `[nonsing_inv_mul_cancel_left _ _ hu, nonsing_inv_mul _ hu, mul_one]`. Use `⟨⟨X, ?_⟩, rfl⟩` and prove the remaining obligations. Establish `h1 : J⁻¹ * Xᴴ * J = -X` using `h`. Express the relevant statement in the definitionally equal form `Xᴴ * J + J * X = 0`.
+
+Rewrite using `[← mul_nonsing_inv_cancel_left _ (Xᴴ * J) hu, ← mul_assoc J⁻¹, h1, mul_neg, neg_add_cancel]`. Introduce and unpack `⟨Y, rfl⟩`. Establish `h1 : Y.1ᴴ * J + J * Y.1 = 0` using `Y.2`. Express the relevant statement in the definitionally equal form `_ * Y.1ᴴ * _ = -Y.1`. Rewrite using `[mul_assoc, eq_neg_of_add_eq_zero_left h1, mul_neg, nonsing_inv_mul_cancel_left _ _ hu]`.
+
+Conclude with `hs a b ((sig_mul_eq_one_iff hu a).1 ha) ((sig_mul_eq_one_iff hu b).1 hb)`.
+-/
 theorem isLieData {J : Matrix (Fin n) (Fin n) ℂ} (hJ : Jᴴ = J) (hu : IsUnit J.det) {s : Matrix (Fin n) (Fin n) ℂ → G}
     (hs : IsMulOn J s) : IsLieData (sig J) (skewSub J).subtype s := by
   have anti : ∀ a b, sig J (a * b) = sig J b * sig J a := fun a b => by
@@ -63,6 +79,11 @@ theorem isLieData {J : Matrix (Fin n) (Fin n) ℂ} (hJ : Jᴴ = J) (hu : IsUnit 
     rw [mul_assoc, eq_neg_of_add_eq_zero_left h1, mul_neg, nonsing_inv_mul_cancel_left _ _ hu]
   · exact hs a b ((sig_mul_eq_one_iff hu a).1 ha) ((sig_mul_eq_one_iff hu b).1 hb)
 
+/- English proof (translation)
+Establish `H` using `isLieData hJ hu hs`. Rewrite using `[SecondKind.sm_iff H (hasLog_of_isLieData _ _ _ _ _ _ H) Set.univ (by simp), mem_smLoc]`. Prove the components needed by the constructor for the conclusion. Introduce `h k Y _ g`. Conclude with `h k (fun i => (Y i).1) (fun i => (Y i).2) g`.
+
+Introduce `h k Z hZ g`. Conclude with `h k (fun i => ⟨Z i, hZ i⟩) (fun _ => trivial) g`.
+-/
 theorem mem_smLoc_iff {J : Matrix (Fin n) (Fin n) ℂ} (hJ : Jᴴ = J) (hu : IsUnit J.det)
     {s : Matrix (Fin n) (Fin n) ℂ → G} (hs : IsMulOn J s) (φ : G → ℂ) :
     φ ∈ smLoc J s ↔ Sm (expMap (skewSub J).subtype s) φ := by
@@ -87,17 +108,30 @@ def derL (X : skewSub J) : Module.End ℂ (smLoc J s) where
   map_smul' c φ := Subtype.ext (funext fun g =>
     deriv_const_smul c (Sm.differentiableAt ((mem_smLoc_iff hJ hu hs _).1 φ.2) g X))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem derL_apply (X : skewSub J) (φ : smLoc J s) :
     (derL hJ hu hs X φ).1 = Der (expMap (skewSub J).subtype s) X φ.1 := rfl
 
 include hu hs in
 
+/- English proof (translation)
+Establish `h1 : IsUni J (NormedSpace.exp (t • Z.1))` using `exp_mem_UH hu (t • Z).2`. Establish `h2 : IsUni J (NormedSpace.exp (u • Z.1))` using `exp_mem_UH hu (u • Z).2`. Unfold `lineOf`. Rewrite using `[← hs _ _ h1 h2, add_smul, Matrix.exp_add_of_commute _ _ (((Commute.refl Z.1).smul_left t).smul_right u)]`.
+-/
 theorem lineOf_add (Z : skewSub J) (t u : ℝ) : lineOf s Z.1 t * lineOf s Z.1 u = lineOf s Z.1 (t + u) := by
   have h1 : IsUni J (NormedSpace.exp (t • Z.1)) := exp_mem_UH hu (t • Z).2
   have h2 : IsUni J (NormedSpace.exp (u • Z.1)) := exp_mem_UH hu (u • Z).2
   unfold lineOf
   rw [← hs _ _ h1 h2, add_smul, Matrix.exp_add_of_commute _ _ (((Commute.refl Z.1).smul_left t).smul_right u)]
 
+/- English proof (translation)
+Establish `hsm` using `(mem_smLoc_iff hJ hu hs _).1 φ.2`. Use `set F : ℝ → ℂ := fun τ => φ.1 (g * lineOf s X.1 τ) with hFdef`. Establish `hF : Differentiable ℝ F` using `((hsm g).comp (contDiff_id.smul contDiff_const : ContDiff ℝ ∞ fun τ : ℝ => τ • X)).differentiable (by simp)`. Establish `key : (fun u : ℝ => φ.1 (g * lineOf s X.1 t * expMap (skewSub J).subtype s (u • X))) = fun u => F (t + u)` using `funext fun u => by show φ.1 (g * lineOf s X.1 t * lineOf s X.1 u) = φ.1 (g * lineOf s X.1 (t + u))`. Rewrite using `[mul_assoc, lineOf_add hu hs]`.
+
+Establish `e : (derL hJ hu hs X φ).1 (g * lineOf s X.1 t) = deriv F t`. Rewrite using `[derL_apply]`. Use `show deriv (fun u : ℝ => φ.1 (g * lineOf s X.1 t * expMap (skewSub J).subtype s (u • X))) 0 = _`. Rewrite using `[key, deriv_comp_const_add, add_zero]`. Rewrite using `[e]`.
+
+Conclude with `(hF t).hasDerivAt`.
+-/
 theorem hasDerivAt_derL (X : skewSub J) (φ : smLoc J s) (g : G) (t : ℝ) :
     HasDerivAt (fun τ : ℝ => φ.1 (g * lineOf s X.1 τ)) ((derL hJ hu hs X φ).1 (g * lineOf s X.1 t)) t := by
   have hsm := (mem_smLoc_iff hJ hu hs _).1 φ.2
@@ -121,6 +155,11 @@ namespace GlobalTheory.TorFin
 
 open RightRep in
 
+/- English proof (translation)
+Introduce `n G _ J s hJ hu hs`. Establish `H` using `isLieData hJ hu hs`. Establish `hl` using `hasLog_of_isLieData _ _ _ _ _ _ H`. Set `ρ₀ : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.lieU J → Module.End ℂ (smLoc J s)` to `fun X => derL hJ hu hs ⟨X.1, X.2⟩`. Establish `hsm : ∀ φ : smLoc J s, Sm (expMap (skewSub J).subtype s) φ.1` using `fun φ => (mem_smLoc_iff hJ hu hs _).1 φ.2`.
+
+Take `⟨R, -, hR, hc⟩` from `GlobalTheory.UnitaryLieComplexification.exists_extension hJ hu ρ₀ (fun X Y => LinearMap.ext fun φ => Subtype.ext ((der_smooth_and_linear _ _ _ _ _ _ H hl φ.1 (hsm φ)).2.1 ⟨X.1, X.2⟩ ⟨Y.1, Y.2⟩)) (fun c X => LinearMap.ext fun φ => Subtype.ext ((der_smooth_and_linear _ _ _ _ _ _ H …`. Use `⟨R, hc, fun Z hZ φ g t => ?_⟩` and prove the remaining obligations. Establish `hRZ : R Z = derL hJ hu hs ⟨Z, hZ⟩` using `hR ⟨Z, hZ⟩`. Rewrite using `[hRZ]`. Conclude with `hasDerivAt_derL hJ hu hs ⟨Z, hZ⟩ φ g t`.
+-/
 theorem exists_rightDer_rep : ∀ (n : ℕ) (G : Type) [Group G] (J : Matrix (Fin n) (Fin n) ℂ)
     (s : Matrix (Fin n) (Fin n) ℂ → G), Jᴴ = J → IsUnit J.det → IsMulOn J s →
     ∃ ρ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Module.End ℂ (smLoc J s), IsLieRep ρ ∧ IsRightDer J s ρ := by

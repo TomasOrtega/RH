@@ -14,6 +14,9 @@ open GlobalTheory.Doubling (absE)
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.integral_pull_injective | exact GlobalTheory.integral_pull_injective | (intros; apply GlobalTheory.integral_pull_injective <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.siegel_map_integrable_distribution : ∀ (F : Type) [Field F] [NumberField F] (ι κ : Type) [Fintype ι] [Fintype κ] (D : Matrix κ ι F),
     (∀ z : ι → F, D *ᵥ z = 0 → z = 0) →
     ∀ ν : @Measure (ι → AF F) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) ν →

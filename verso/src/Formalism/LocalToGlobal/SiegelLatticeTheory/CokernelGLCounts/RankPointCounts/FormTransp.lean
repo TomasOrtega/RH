@@ -24,10 +24,19 @@ namespace FormTranspose
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+The claim follows from `(NinfSub X.eR (X.zR u)).mul_mem ha hb`.
+-/
 theorem ninf_mul (u : D.what₂.Word) {a b : X.B.I.Ginf} (ha : a ∈ X.NinfU u) (hb : b ∈ X.NinfU u) : a * b ∈ X.NinfU u := (NinfSub X.eR (X.zR u)).mul_mem ha hb
 
+/- English proof (translation)
+The claim follows from `(NinfSub X.eR (X.zR u)).inv_mem ha`.
+-/
 theorem ninf_inv (u : D.what₂.Word) {a : X.B.I.Ginf} (ha : a ∈ X.NinfU u) : a⁻¹ ∈ X.NinfU u := (NinfSub X.eR (X.zR u)).inv_mem ha
 
+/- English proof (translation)
+Take `⟨h, hh, m, hm, rfl⟩` from `Sinf.levi X u ha`. Establish `e : h * m * n * (h * m)⁻¹ = h * (m * n * m⁻¹) * h⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `Sinf.conj_ninf X u hh (ninf_mul X u (ninf_mul X u hm hn) (ninf_inv X u hm))`.
+-/
 theorem sinf_conj (u : D.what₂.Word) {a : X.B.I.Ginf} (ha : a ∈ X.SinfU u) {n : X.B.I.Ginf} (hn : n ∈ X.NinfU u) :
     a * n * a⁻¹ ∈ X.NinfU u := by
   obtain ⟨h, hh, m, hm, rfl⟩ := Sinf.levi X u ha
@@ -35,6 +44,11 @@ theorem sinf_conj (u : D.what₂.Word) {a : X.B.I.Ginf} (ha : a ∈ X.SinfU u) {
   rw [e]
   exact Sinf.conj_ninf X u hh (ninf_mul X u (ninf_mul X u hm hn) (ninf_inv X u hm))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `ha' : a⁻¹ ∈ X.SinfU u` using `(SinfSub X.B.I X.eR (X.zR u)).inv_mem ha`. Establish `h2` using `sinf_conj X u ha' h`. Simplify `h2` using `[mul_assoc]`.
+
+Conclude with `fun hn => sinf_conj X u ha hn`.
+-/
 theorem sinf_conj_iff (u : D.what₂.Word) {a : X.B.I.Ginf} (ha : a ∈ X.SinfU u) (n : X.B.I.Ginf) :
     a * n * a⁻¹ ∈ X.NinfU u ↔ n ∈ X.NinfU u := by
   constructor
@@ -51,6 +65,11 @@ open FormTranspose
 variable {D : D7} (X : HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u u' : D.what₂.Word)
   (νq : X.B.I.Ginf → Measure X.B.I.Ginf) (κ : TermDef.Term D u u' (X.Fu u) (Y.what₂ u) → ℕ)
 
+/- English proof (translation)
+Take `⟨⟨h, hmk⟩, -, hL, hU, hZ⟩` from `hN`. Establish `hGF` using `(Formalism.L2.SG.Closed.TermFun_holds D u u' (X.Fu u) t.lam ((Y.rowsOK u).1 t.lam t.mem)).1`. Establish `hG' : Formalism.MainNotions.S.Lat.Gval (lf D (X.Fu u)) F' ≠ 0`. Introduce `h0`. Apply `hG` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `TermDef.Gt t.lam (lf D (X.Fu u)) (TermDef.PD D t.lam (lf D (X.Fu u)) u') t.cls = 0`. Rewrite using `[← hmk]`. Conclude with `(TermDef.Gt_mk hGF ⟨F', h⟩).trans h0`. Conclude with `⟨F', ⟨h, hmk⟩, hG', ⟨L, U, hL, hU, hZ⟩⟩`.
+-/
 theorem normRep_atPt (t : TermDef.Term D u u' (X.Fu u) (Y.what₂ u)) (w' : Formalism.MainNotions.S.Point D.host.E (D.R.rS + 1))
     (F' : Formalism.MainNotions.S.Lat.LFlag (VS D) D.R.rS ((Formalism.MainNotions.S.Lat.Tu D u' : ℕ) : D.host.E)) (L U : Formalism.L2.SG.PairVal.MatR D)
     (hN : Formalism.L2.SG.PairVal.NormRep t w' F' L U) (hG : t.G ≠ 0) : t.atPt w' := by
@@ -64,6 +83,9 @@ theorem normRep_atPt (t : TermDef.Term D u u' (X.Fu u) (Y.what₂ u)) (w' : Form
     exact (TermDef.Gt_mk hGF ⟨F', h⟩).trans h0
   exact ⟨F', ⟨h, hmk⟩, hG', ⟨L, U, hL, hU, hZ⟩⟩
 
+/- English proof (translation)
+The claim follows from `FiniteDimensional.complete ℂ (X.Vpi u) OOt t = ((Formalism.L2.SG.PairVal.vRdef D u u' (X.Fu u) (Y.what₂ u) Y.δ Y.M t.toTerm : ℝ) : ℂ) • OO ((νq (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf t.toTerm))).map (fun x => g * x)) Set.univ (X.Wu u) (X.Wu u') t.pt.1 …`.
+-/
 theorem formTransp_term (hP : Formalism.L2.SG.RealObj.NuQPin X u u' νq) (hV : Formalism.L2.SG.VolPin.VolPinC) (hRC : RelCharC)
     (hNR : Formalism.L2.SG.PairVal.NormRepExists D u u' (X.Fu u) (Y.what₂ u))
     (hCPU : Formalism.L2.SG.PairVal.CellPtUnique D u u' (X.Fu u) (Y.what₂ u))
@@ -170,6 +192,9 @@ theorem formTransp_term (hP : Formalism.L2.SG.RealObj.NuQPin X u u' νq) (hV : F
       exact hc ⟨hrel, hgen, ⟨(w, x.1, x.2.1, x.2.2), hx⟩⟩
   rw [hFA, hvR, Complex.coe_smul]
 
+/- English proof (translation)
+The claim follows from `FiniteDimensional.complete ℂ (X.Vpi u) ∃ c : ℝ, OOt t = c • OO ((νq (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf t.toTerm))).map (fun x => g * x)) Set.univ (X.Wu u) (X.Wu u') t.pt.1 := by haveI := FiniteDimensional.complete ℂ (X.Vpi u) set w := Formalism.L2. …`.
+-/
 theorem formTransp_any (hP : Formalism.L2.SG.RealObj.NuQPin X u u' νq) (hRC : RelCharC)
     (t : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')) (hrel : t.relevant)
     (hreal : ∃ γ, Formalism.L2.SG.RealObj.IsPtRep X u u' (Formalism.L2.SG.PairVal.ptOf t.toTerm) γ)
@@ -256,6 +281,13 @@ theorem formTransp_any (hP : Formalism.L2.SG.RealObj.NuQPin X u u' νq) (hRC : R
   have hFA := formAllC_holds D X Y u u' t μR ν (FundOf t) (hRC D X Y u u' t hrel) hHaar hQ' hFO.1 hKu
   exact ⟨_, hFA⟩
 
+/- English proof (translation)
+Introduce `R ρ s hrel g hg g' hg' hdec`. Establish `hat : s.1.toTerm.atPt (Formalism.L2.SG.PairVal.ptOf s.1.toTerm)`. Take `⟨w0, hw0⟩` from `hAt R ρ s hrel`. Conclude with `Formalism.L2.SG.PairVal.ptOf_spec _ ⟨w0, hw0, hrel⟩`. Establish `hG : s.1.G ≠ 0`.
+
+Establish `h1` using `s.2.1`. Introduce `h0`. Apply `h1` to reduce the goal to its premises. Use `show Gt s.1 = 0`. Unfold `Gt`.
+
+Rewrite using `[if_pos h0]`. Conclude with `formTransp_term X Y u u' νq hP hV hRC hNR hCPU hNRat s.1 hrel s.2.2.1 hG hat (hLD R ρ s hrel).1 g hg g' hg' hdec`.
+-/
 theorem formTranspC_of (hP : Formalism.L2.SG.RealObj.NuQPin X u u' νq) (hV : Formalism.L2.SG.VolPin.VolPinC) (hRC : RelCharC)
     (hLD : RowForm.LiftDecompC X Y u u' κ) (hAt : RowForm.LiftAtSomeC X Y u u' κ)
     (hNR : Formalism.L2.SG.PairVal.NormRepExists D u u' (X.Fu u) (Y.what₂ u))
@@ -275,6 +307,9 @@ theorem formTranspC_of (hP : Formalism.L2.SG.RealObj.NuQPin X u u' νq) (hV : Fo
     unfold Gt; rw [if_pos h0]
   exact formTransp_term X Y u u' νq hP hV hRC hNR hCPU hNRat s.1 hrel s.2.2.1 hG hat (hLD R ρ s hrel).1 g hg g' hg' hdec
 
+/- English proof (translation)
+The claim follows from `formTranspC_of X Y u u' νq κ hP hV hRC hLD hAt hNR hCPU (fun t w' F' L U hN hG => normRep_atPt X Y u u' t w' F' L U hN hG)`.
+-/
 theorem formTranspC_of' (hP : Formalism.L2.SG.RealObj.NuQPin X u u' νq) (hV : Formalism.L2.SG.VolPin.VolPinC) (hRC : RelCharC)
     (hLD : RowForm.LiftDecompC X Y u u' κ) (hAt : RowForm.LiftAtSomeC X Y u u' κ)
     (hNR : Formalism.L2.SG.PairVal.NormRepExists D u u' (X.Fu u) (Y.what₂ u))
@@ -282,6 +317,9 @@ theorem formTranspC_of' (hP : Formalism.L2.SG.RealObj.NuQPin X u u' νq) (hV : F
     RowForm.FormTranspC X Y u u' (Formalism.L2.SG.PairVal.vRdef D u u' (X.Fu u) (Y.what₂ u) Y.δ Y.M) νq κ := formTranspC_of X Y u u' νq κ hP hV hRC hLD hAt hNR hCPU
   (fun t w' F' L U hN hG => normRep_atPt X Y u u' t w' F' L U hN hG)
 
+/- English proof (translation)
+The claim follows from `FiniteDimensional.complete ℂ (X.Vpi u) OOt t = ((Formalism.L2.SG.PairVal.vRdef D u u' (X.Fu u) (Y.what₂ u) Y.δ Y.M t.toTerm : ℝ) : ℂ) • OO ((νq (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf t.toTerm))).map (fun x => g * x)) Set.univ (X.Wu u) (X.Wu u') t.pt.1 …`.
+-/
 theorem formTransp_termG (hP : Formalism.L2.SG.RealObj.NuQPin X u u' νq) (hV : Formalism.L2.SG.VolPin.VolPinGC)
     (hPH : Formalism.MainNotions.S.Lat.PrimeHyp D u (Formalism.MainNotions.S.Lat.Tu D u')) (hRC : RelCharC)
     (hNR : Formalism.L2.SG.PairVal.NormRepExists D u u' (X.Fu u) (Y.what₂ u))
@@ -389,6 +427,13 @@ theorem formTransp_termG (hP : Formalism.L2.SG.RealObj.NuQPin X u u' νq) (hV : 
       exact hc ⟨hrel, hgen, ⟨(w, x.1, x.2.1, x.2.2), hx⟩⟩
   rw [hFA, hvR, Complex.coe_smul]
 
+/- English proof (translation)
+Introduce `R ρ s hrel g hg g' hg' hdec`. Establish `hat : s.1.toTerm.atPt (Formalism.L2.SG.PairVal.ptOf s.1.toTerm)`. Take `⟨w0, hw0⟩` from `hAt R ρ s hrel`. Conclude with `Formalism.L2.SG.PairVal.ptOf_spec _ ⟨w0, hw0, hrel⟩`. Establish `hG : s.1.G ≠ 0`.
+
+Establish `h1` using `s.2.1`. Introduce `h0`. Apply `h1` to reduce the goal to its premises. Use `show Gt s.1 = 0`. Unfold `Gt`.
+
+Rewrite using `[if_pos h0]`. Conclude with `formTransp_termG X Y u u' νq hP hV hPH hRC hNR hCPU (fun t w' F' L U hN hG => normRep_atPt X Y u u' t w' F' L U hN hG) s.1 hrel s.2.2.1 hG hat (hLD R ρ s hrel).1 g hg g' hg' hdec`.
+-/
 theorem formTranspC_ofG (hP : Formalism.L2.SG.RealObj.NuQPin X u u' νq) (hV : Formalism.L2.SG.VolPin.VolPinGC)
     (hPH : Formalism.MainNotions.S.Lat.PrimeHyp D u (Formalism.MainNotions.S.Lat.Tu D u')) (hRC : RelCharC)
     (hLD : RowForm.LiftDecompC X Y u u' κ) (hAt : RowForm.LiftAtSomeC X Y u u' κ)
@@ -409,6 +454,9 @@ theorem formTranspC_ofG (hP : Formalism.L2.SG.RealObj.NuQPin X u u' νq) (hV : F
     (fun t w' F' L U hN hG => normRep_atPt X Y u u' t w' F' L U hN hG) s.1 hrel s.2.2.1 hG hat (hLD R ρ s hrel).1
     g hg g' hg' hdec
 
+/- English proof (translation)
+The claim follows from `FiniteDimensional.complete ℂ (X.Vpi u) OOt t = ((Formalism.L2.SG.PairVal.vRdef D u u' (X.Fu u) (Y.what₂ u) Y.δ Y.M t.toTerm : ℝ) : ℂ) • OO ((νq (Formalism.L2.SG.RealObj.gamW X u u' (Formalism.L2.SG.PairVal.ptOf t.toTerm))).map (fun x => g * x)) Set.univ (X.Wu u) (X.Wu u') t.pt.1 …`.
+-/
 theorem formula_transport_term (hP : Formalism.L2.SG.RealObj.NuQPin X u u' νq) (hV : Formalism.L2.SG.VolPin.VolumeOddGeneric)
     (hg3 : ∀ i, 3 ≤ D.host.g i) (hPH : Formalism.MainNotions.S.Lat.PrimeHyp D u (Formalism.MainNotions.S.Lat.Tu D u')) (hRC : RelCharC)
     (hNR : Formalism.L2.SG.PairVal.NormRepExists D u u' (X.Fu u) (Y.what₂ u))
@@ -516,6 +564,13 @@ theorem formula_transport_term (hP : Formalism.L2.SG.RealObj.NuQPin X u u' νq) 
       exact hc ⟨hrel, hgen, ⟨(w, x.1, x.2.1, x.2.2), hx⟩⟩
   rw [hFA, hvR, Complex.coe_smul]
 
+/- English proof (translation)
+Introduce `R ρ s hrel g hg g' hg' hdec`. Establish `hat : s.1.toTerm.atPt (Formalism.L2.SG.PairVal.ptOf s.1.toTerm)`. Take `⟨w0, hw0⟩` from `hAt R ρ s hrel`. Conclude with `Formalism.L2.SG.PairVal.ptOf_spec _ ⟨w0, hw0, hrel⟩`. Establish `hG : s.1.G ≠ 0`.
+
+Establish `h1` using `s.2.1`. Introduce `h0`. Apply `h1` to reduce the goal to its premises. Use `show Gt s.1 = 0`. Unfold `Gt`.
+
+Rewrite using `[if_pos h0]`. Conclude with `formula_transport_term X Y u u' νq hP hV hg3 hPH hRC hNR hCPU (fun t w' F' L U hN hG => normRep_atPt X Y u u' t w' F' L U hN hG) s.1 hrel s.2.2.1 hG hat (hLD R ρ s hrel).1 g hg g' hg' hdec`.
+-/
 theorem formula_transport_of_condition (hP : Formalism.L2.SG.RealObj.NuQPin X u u' νq) (hV : Formalism.L2.SG.VolPin.VolumeOddGeneric)
     (hg3 : ∀ i, 3 ≤ D.host.g i) (hPH : Formalism.MainNotions.S.Lat.PrimeHyp D u (Formalism.MainNotions.S.Lat.Tu D u')) (hRC : RelCharC)
     (hLD : RowForm.LiftDecompC X Y u u' κ) (hAt : RowForm.LiftAtSomeC X Y u u' κ)

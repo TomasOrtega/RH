@@ -28,6 +28,9 @@ def IsAlgComb (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (f₀ F : WO S T �
   ∃ (n : ℕ) (c : Fin n → ℂ) (w : Fin n → WO S T), (∀ p, IsAlgebraic ℚ (c p)) ∧ (∀ p, (w p).map (infPart D) = 0) ∧
     F = ∑ p, c p • heisO ψ S T (w p) f₀
 
+/- English proof (translation)
+Rewrite `ha`, `hb`, the goal using `[← mem_algebraicClosure_iff]`. Conclude with `mul_mem ha hb`.
+-/
 theorem isAlg_mul {a b : ℂ} (ha : IsAlgebraic ℚ a) (hb : IsAlgebraic ℚ b) : IsAlgebraic ℚ (a * b) := by
   rw [← mem_algebraicClosure_iff] at ha hb ⊢
   exact mul_mem ha hb
@@ -36,9 +39,15 @@ section Comb
 
 variable {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {f₀ : WO S T → ℂ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, Fin.elim0, Fin.elim0, fun p => p.elim0, fun p => p.elim0, by simp⟩`.
+-/
 theorem IsAlgComb.zero : IsAlgComb ψ S T f₀ 0 :=
   ⟨0, Fin.elim0, Fin.elim0, fun p => p.elim0, fun p => p.elim0, by simp⟩
 
+/- English proof (translation)
+Take `⟨n, c, w, hc, hw, rfl⟩` from `h`. Use `⟨n, fun p => a * c p, w, fun p => isAlg_mul ha (hc p), hw, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Simplify using `only [smul_smul]`.
+-/
 theorem IsAlgComb.smul {a : ℂ} (ha : IsAlgebraic ℚ a) {F : WO S T → ℂ} (h : IsAlgComb ψ S T f₀ F) :
     IsAlgComb ψ S T f₀ (a • F) := by
   obtain ⟨n, c, w, hc, hw, rfl⟩ := h
@@ -46,6 +55,13 @@ theorem IsAlgComb.smul {a : ℂ} (ha : IsAlgebraic ℚ a) {F : WO S T → ℂ} (
   rw [Finset.smul_sum]
   simp only [smul_smul]
 
+/- English proof (translation)
+Take `⟨n, c, w, hc, hw, rfl⟩` from `hF`. Take `⟨m, c', w', hc', hw', rfl⟩` from `hF'`. Use `⟨n + m, Fin.append c c', Fin.append w w', fun p => ?_, fun p => ?_, ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun q => ?_) (fun q => ?_) p` and prove the remaining obligations. Simplify using `using hc q`.
+
+Simplify using `using hc' q`. Use `Fin.addCases (fun q => ?_) (fun q => ?_) p` and prove the remaining obligations. Simplify using `using hw q`. Simplify using `using hw' q`. Rewrite using `[Fin.sum_univ_add]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem IsAlgComb.add {F F' : WO S T → ℂ} (hF : IsAlgComb ψ S T f₀ F) (hF' : IsAlgComb ψ S T f₀ F') :
     IsAlgComb ψ S T f₀ (F + F') := by
   obtain ⟨n, c, w, hc, hw, rfl⟩ := hF
@@ -60,6 +76,9 @@ theorem IsAlgComb.add {F F' : WO S T → ℂ} (hF : IsAlgComb ψ S T f₀ F) (hF
   · rw [Fin.sum_univ_add]
     simp
 
+/- English proof (translation)
+The claim follows from `| 0, _, _, _, _ => by simpa using (IsAlgComb.zero : IsAlgComb ψ S T f₀ 0) | n + 1, c, F, hc, hF => by rw [Fin.sum_univ_succ] exact (IsAlgComb.smul (hc 0) (hF 0)).add (IsAlgComb.finsum _ _ (fun p => hc _) fun p => hF _)`.
+-/
 theorem IsAlgComb.finsum : ∀ {n : ℕ} (c : Fin n → ℂ) (F : Fin n → WO S T → ℂ), (∀ p, IsAlgebraic ℚ (c p)) →
     (∀ p, IsAlgComb ψ S T f₀ (F p)) → IsAlgComb ψ S T f₀ (∑ p, c p • F p)
   | 0, _, _, _, _ => by simpa using (IsAlgComb.zero : IsAlgComb ψ S T f₀ 0)
@@ -67,12 +86,20 @@ theorem IsAlgComb.finsum : ∀ {n : ℕ} (c : Fin n → ℂ) (F : Fin n → WO S
     rw [Fin.sum_univ_succ]
     exact (IsAlgComb.smul (hc 0) (hF 0)).add (IsAlgComb.finsum _ _ (fun p => hc _) fun p => hF _)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `only [heisO, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun p _ => by ring`.
+-/
 theorem heisO_sum_smul (u : WO S T) {n : ℕ} (c : Fin n → ℂ) (F : Fin n → WO S T → ℂ) :
     heisO ψ S T u (∑ p, c p • F p) = ∑ p, c p • heisO ψ S T u (F p) := by
   funext z
   simp only [heisO, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun p _ => by ring
 
+/- English proof (translation)
+Take `⟨n, c, w, hc, hw, rfl⟩` from `hF`. Use `⟨n, fun p => c p * ψ (symplOH S T u (w p)), fun p => u + w p, fun p => isAlg_mul (hc p) (hψ _ _ hu (hw p)), fun p => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_add _ (map_add (infPart D)), hu, hw p, add_zero]`. Rewrite using `[heisO_sum_smul]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.LinkCompare.heisO_heisO, smul_smul]`.
+-/
 theorem IsAlgComb.Heisenberg₂
     (hψ : ∀ u v : WO S T, u.map (infPart D) = 0 → v.map (infPart D) = 0 → IsAlgebraic ℚ (ψ (symplOH S T u v)))
     {u : WO S T} (hu : u.map (infPart D) = 0) {F : WO S T → ℂ} (hF : IsAlgComb ψ S T f₀ F) :
@@ -87,6 +114,11 @@ theorem IsAlgComb.Heisenberg₂
 
 end Comb
 
+/- English proof (translation)
+Take `⟨n, c, w, hc, hw, rfl⟩` from `hF`. Establish `hv : IsThetaFunO W.ψ (GlobalTheory.Grid.neg A) WW X.vac` using `hX.is.isVac.2.theta`. Establish `e : ∀ p, X.ω t (x, h) (heisO W.ψ (GlobalTheory.Grid.neg A) WW (w p) X.vac) = heisO W.ψ (GlobalTheory.Grid.neg A) WW (actO (GlobalTheory.Grid.neg A) WW ((GlobalTheory.Grid.ofSgn true A).symm x) h (w p)) (X.ω t (x, h) X.vac)` using `fun p => (hX.is.weil t).om_heis ((GlobalTheory.Grid.ofSgn true A).symm x) h (w p) X.vac hv`. Rewrite using `[map_sum]`. Simplify using `only [map_smul, e]`.
+
+Conclude with `IsAlgComb.finsum _ _ hc fun p => IsAlgComb.Heisenberg₂ hψ (GlobalTheory.FinApprox.actO_fin _ _ (hw p)) h0`.
+-/
 theorem om_algComb {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW} (hX : IsBottomTri W i j X)
     (hψ : ∀ u v : WO (GlobalTheory.Grid.neg A) WW, u.map (infPart D) = 0 → v.map (infPart D) = 0 →
